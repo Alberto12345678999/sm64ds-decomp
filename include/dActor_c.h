@@ -334,8 +334,7 @@ struct dActor_c : dBase_c {
        stack, costing +0x14. See notes/mwccarm-codegen.md 6az. */
     void SpawnFireball(const Vector3 &pos, const Vector3_16 *rot, Fix12<int> horzSpeed,
                        Fix12<int> targetSpeed, u32 param1);
-    bool IsPlayerInRange(Fix12<int> posX, Fix12<int> posY, Fix12<int> posZ,
-                          s32 maxDist);
+    bool IsPlayerInRange(Fix12i posX, Fix12i posY, Fix12i posZ, s32 maxDist);
     void DropShadowScaleXYZ(dExtShadowModel_c &, Matrix4x3 &matrix, Fix12<int> scaleX,
                             Fix12<int> scaleY, Fix12<int> scaleZ, u32 opacity);
     s16  ReflectAngle(Fix12<int> normalX, Fix12<int> normalZ, s16 angToReflect);

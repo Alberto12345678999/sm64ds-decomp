@@ -83,25 +83,14 @@ enum {
 
 /* File handles this TU's static initializer constructs, and the two state
    records it copies pointer-to-member descriptors into. Definitions are at
-   the end of the file. SharedFilePtr.h has no fields, so the 8-byte handle
-   is read through SharedFileBytes: fileID at +0, refCount at +2, file at +4. */
-struct SharedFileBytes {
-    u16 fileID;
-    u8 refCount;
-    u8 pad;
-    void *file;
-};
+   the end of the file. */
 
 struct TatumakiModelFilePtr : SharedFilePtr {
-    u32 words[2];
-
     TatumakiModelFilePtr(u32 fileID);
     ~TatumakiModelFilePtr();
 };
 
 struct TatumakiAnimFileHandle : SharedFilePtr {
-    u32 words[2];
-
     TatumakiAnimFileHandle(u32 fileID);
     ~TatumakiAnimFileHandle();
 };
@@ -112,9 +101,6 @@ extern daWater_Tatumaki_c::State data_ov026_02113f2c; /* spin, waiting to catch 
 extern daWater_Tatumaki_c::State data_ov026_02113f3c; /* drag the player down */
 extern BTA_File data_ov026_02112f40;
 
-#define MODEL_FILE (*(SharedFileBytes *)&gWaterTatumakiModelFile)
-#define ANIM_FILE  (*(SharedFileBytes *)&gWaterTatumakiAnimationFile)
-#define AS_SHARED(file) (*(SharedFilePtr *)&(file))
 #define WHIRLPOOL_BTA data_ov026_02112f40
 #define STATE_SPIN (&data_ov026_02113f2c)
 #define STATE_DRAG (&data_ov026_02113f3c)
@@ -137,14 +123,14 @@ extern Matrix4x3 data_020a0e68;
 extern int _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
     unsigned int uniqueID, unsigned int effectID, int x, int y, int z, void *dir, void *callback);
 extern int _Z14ApproachLinearR7Vector3RKS_5Fix12IiE(Vector3 &value, const Vector3 &target, int step);
-extern void _ZN18TextureTransformer7SetFileER8BTA_Filei5Fix12IiEj(TextureTransformer *self, BTA_File &file, int flags, int speed, u32 startFrame);
-extern void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(ModelAnim *self, BCA_File *file, int flags, int speed, u32 startFrame);
+extern void _ZN18TextureTransformer7SetFileER8BTA_Filei5Fix12IiEj(TextureTransformer *self,
+                                                                  BTA_File &file, int flags,
+                                                                  int speed, u32 startFrame);
 }
 
 #define Particle_System_New _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE
 #define ApproachLinearVec _Z14ApproachLinearR7Vector3RKS_5Fix12IiE
 #define TextureTransformer_SetFile _ZN18TextureTransformer7SetFileER8BTA_Filei5Fix12IiEj
-#define ModelAnim_SetAnim _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj
 
 void ApproachLinear2(s16 &value, s16 target, s16 step);
 void ApproachLinear(int &value, int target, int step);
@@ -333,8 +319,8 @@ extern "C" void func_ov026_02111f30(daWater_Tatumaki_c *self)
 // @symbol _ZN18daWater_Tatumaki_c16CleanupResourcesEv
 int daWater_Tatumaki_c::CleanupResources()
 {
-    AS_SHARED(MODEL_FILE).Release();
-    AS_SHARED(ANIM_FILE).Release();
+    gWaterTatumakiModelFile.Release();
+    gWaterTatumakiAnimationFile.Release();
     return 1;
 }
 
@@ -388,12 +374,12 @@ int daWater_Tatumaki_c::Behavior()
 // @symbol _ZN18daWater_Tatumaki_c13InitResourcesEv
 int daWater_Tatumaki_c::InitResources()
 {
-    BMD_File *model = (BMD_File *)Model::LoadFile(AS_SHARED(MODEL_FILE));
+    BMD_File *model = (BMD_File *)Model::LoadFile(gWaterTatumakiModelFile);
     mModelAnim.SetFile(model, 1, -1);
 
-    dExtFrameCtrl_c::LoadFile(AS_SHARED(ANIM_FILE));
+    dExtFrameCtrl_c::LoadFile(gWaterTatumakiAnimationFile);
 
-    TextureTransformer::Prepare(*(BMD_File *)MODEL_FILE.file, WHIRLPOOL_BTA);
+    TextureTransformer::Prepare(*(BMD_File *)gWaterTatumakiModelFile.filePtr, WHIRLPOOL_BTA);
     TextureTransformer_SetFile(&mTextureTransformer, WHIRLPOOL_BTA, 0, kAnimSpeed, 0);
 
     mTextureTransformer.speed = kAnimSpeed;
@@ -404,7 +390,7 @@ int daWater_Tatumaki_c::InitResources()
     mCenter.z = mPosZ;
     mCenter.y -= kFunnelDepth;
 
-    ModelAnim_SetAnim(&mModelAnim, (BCA_File *)ANIM_FILE.file, 0, kAnimSpeed, 0);
+    mModelAnim.SetAnim((BCA_File *)gWaterTatumakiAnimationFile.filePtr, 0, kAnimSpeed, 0);
 
     func_ov026_02111ee0(this, STATE_SPIN);
     return 1;

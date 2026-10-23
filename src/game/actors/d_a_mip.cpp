@@ -78,7 +78,6 @@ void  _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiE
 bool  _ZN5Sound7PlaySubEjjj5Fix12IiEb(u32, u32, u32, s32, int);
 
 /* model / animation / shadow */
-void  _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *, void *, int, s32, u32);
 
 /* path, particle, construction */
 void *_ZN7PathPtrC1Ev(void *);
@@ -142,15 +141,11 @@ struct daMip_cSelf { char pad[0x364]; daMip_cStateFn *pp; };
  * instantiate its vague-linkage D1 into this TU, which deliberately avoids
  * it); the destructor alias points at the ROM's canonical copy. */
 struct DaMipModelFile : SharedFilePtr {
-    u32 words[2];
-
     DaMipModelFile(u32 fileID);
     ~DaMipModelFile();
 };
 
 struct DaMipAnimationFilePtr : SharedFilePtr {
-    u32 words[2];
-
     DaMipAnimationFilePtr(u32 fileID);
     ~DaMipAnimationFilePtr();
 };
@@ -372,7 +367,7 @@ int daMip_c::StateSaveTalkInit()
 
     mActionStep = 0;
     func_02013944();
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, (void *)((int *)&data_ov085_021305c0)[1], 0, 0x1000, 0);
+    mModelAnim.SetAnim((BCA_File *)data_ov085_021305c0.filePtr, 0, 0x1000, 0);
     return 1;
 }
 
@@ -510,7 +505,7 @@ int daMip_c::StateReleasedInit()
     mdCcAc_c.flags |= 0x4000000;
     mdCcAc_c.radius = 0x78000;
     mdCcAc_c.vulnFlags &= ~0x8000;
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, (void *)((int *)&data_ov085_021305c0)[1], 0, 0x1000, 0);
+    mModelAnim.SetAnim((BCA_File *)data_ov085_021305c0.filePtr, 0, 0x1000, 0);
     return 1;
 }
 
@@ -742,7 +737,7 @@ int daMip_c::StateCaughtInit()
     mActionStep = 0;
     mHorzSpeed = 0;
     mdCcAc_c.radius = 0x28000;
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, (void*)((int *)&data_ov085_021305b8)[1], 0, 0x1000, 0);
+    mModelAnim.SetAnim((BCA_File *)data_ov085_021305b8.filePtr, 0, 0x1000, 0);
     return 1;
 }
 
@@ -762,7 +757,7 @@ int daMip_c::StateRestInit()
 {
     extern DaMipAnimationFilePtr data_ov085_021305b0;
 
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, ((void **)&data_ov085_021305b0)[1], 0x40000000, 0x1000, 0);
+    mModelAnim.SetAnim((BCA_File *)data_ov085_021305b0.filePtr, 0x40000000, 0x1000, 0);
     return 1;
 }
 
@@ -931,7 +926,7 @@ int daMip_c::StateFleeInit()
       mPathDir = -1;
   }
 
-  _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, ((void **)&gMipRunAnimationFile)[1], 0, 0x1000, 0);
+  mModelAnim.SetAnim((BCA_File *)gMipRunAnimationFile.filePtr, 0, 0x1000, 0);
   return 1;
 }
 
@@ -950,7 +945,7 @@ int daMip_c::StateStartleInit()
 {
     extern DaMipAnimationFilePtr data_ov085_021305c8;
 
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, ((void **)&data_ov085_021305c8)[1], 0x40000000, 0x1000, 0);
+    mModelAnim.SetAnim((BCA_File *)data_ov085_021305c8.filePtr, 0x40000000, 0x1000, 0);
     return 1;
 }
 
@@ -1025,17 +1020,17 @@ int daMip_c::StateIdleMain()
         switch (mActionStep) {
         case 1:
             mHorzSpeed = 0x4000;
-            _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, ((void **)&gMipRunAnimationFile)[1], 0x40000000, 0x1000, 0);
+            mModelAnim.SetAnim((BCA_File *)gMipRunAnimationFile.filePtr, 0x40000000, 0x1000, 0);
             (mActionStep)++;
             break;
         case 2:
-            _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, ((void **)&data_ov085_021305b0)[1], 0x40000000, 0x1000, 0);
+            mModelAnim.SetAnim((BCA_File *)data_ov085_021305b0.filePtr, 0x40000000, 0x1000, 0);
             mHorzSpeed = 0;
             (mActionStep)++;
             break;
         case 3:
             mStateTimer = (s16)((r & 0x1f) + 0x1e);
-            _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, ((void **)&data_ov085_021305c0)[1], 0, 0x1000, 0);
+            mModelAnim.SetAnim((BCA_File *)data_ov085_021305c0.filePtr, 0, 0x1000, 0);
             mActionStep = 0;
             break;
         }
@@ -1047,7 +1042,7 @@ int daMip_c::StateIdleMain()
             s16 *ang = &mTargetAngY;
             *ang = *ang + (0x1800 - ((r & 3) << 12));
         }
-        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, ((void **)&data_ov085_021305c8)[1], 0x40000000, 0x1000, 0);
+        mModelAnim.SetAnim((BCA_File *)data_ov085_021305c8.filePtr, 0x40000000, 0x1000, 0);
         mActionStep = 1;
     }
 
@@ -1060,7 +1055,7 @@ int daMip_c::StateIdleInit()
 {
   extern DaMipAnimationFilePtr data_ov085_021305c0;
 
-  _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, *(void**)((char*)&data_ov085_021305c0+4), 0, 0x1000, 0);
+  mModelAnim.SetAnim((BCA_File *)(*(void **)((char *)&data_ov085_021305c0 + 4)), 0, 0x1000, 0);
   mIdlePosX = mPosX;
   mIdlePosY = mPosY;
   mIdlePosZ = mPosZ;
@@ -1417,7 +1412,8 @@ int daMip_c::Behavior()
         UpdateMatrixAndShadow();
         mCatchState = 2;
         SetState(&data_ov085_021306ac);
-        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, *(void**)((char*)&data_ov085_021305c0 + 4), 0, 0x1000, 0);
+        mModelAnim.SetAnim((BCA_File *)(*(void **)((char *)&data_ov085_021305c0 + 4)), 0, 0x1000,
+                           0);
         if (*(void**)&mTalkingPlayer == 0)
             *(void**)&mTalkingPlayer = ClosestPlayer();
         return 1;
@@ -1428,7 +1424,8 @@ int daMip_c::Behavior()
         if (p != (void*)&data_ov085_021306ac && p != (void*)&data_ov085_0213068c &&
             p != (void*)&data_ov085_021306bc && p != (void*)&data_ov085_021306dc) {
             SetState(&data_ov085_021306ac);
-            _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, *(void**)((char*)&data_ov085_021305c0 + 4), 0, 0x1000, 0);
+            mModelAnim.SetAnim((BCA_File *)(*(void **)((char *)&data_ov085_021305c0 + 4)), 0,
+                               0x1000, 0);
         }
         mHorzSpeed = 0;
     }

@@ -5853,26 +5853,7 @@
         "return:void"
       ]
     },
-    "_ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt": {
-      "src/game/actors/d_a_bombking.cpp": [
-        "param:#2 void *",
-        "return:int"
-      ],
-      "src/game/actors/d_a_iwante.cpp": [
-        "param:#2 void *"
-      ],
-      "src/game/actors/d_a_jango.cpp": [
-        "return:int"
-      ],
-      "src/game/actors/d_a_king_donketu.cpp": [
-        "param:#2 BCA_File *"
-      ],
-      "src/game/actors/d_a_moray.cpp": [
-        "param:#2 void *"
-      ],
-      "src/game/stages/d_ent_obj.cpp": [
-        "param:#2 void *"
-      ],
+    "_ZN14BlendModelAnim7SetAnimER8BCA_Fileiiit": {
       "src/minigames/unit020bfec0.cpp": [
         "param:#2 void *"
       ]
@@ -5883,17 +5864,6 @@
       ],
       "src/minigames/unit020bfec0.cpp": [
         "return:void"
-      ]
-    },
-    "_ZN14dBgW_KcMbgSclY7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block": {
-      "src/game/actors/d_a_obj_km2_nobiru.cpp": [
-        "param:#3 const Matrix4x3 &",
-        "param:#6 CLPS_Block &"
-      ]
-    },
-    "_ZN14dBgW_KcMbgSclY9SetScaleYE5Fix12IiE": {
-      "include/decl_dBgW_KcMbgSclY.h": [
-        "return:int"
       ]
     },
     "_ZN14dBgW_KcMbgSclYD1Ev": {
@@ -10600,235 +10570,17 @@
         "param:#2 const void *"
       ]
     },
-    "_ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj": {
-      "src/_ZN6Player15St_Balloon_InitEv.cpp": [
-        "param:#5 unsigned int",
-        "return:int"
-      ],
-      "src/_ZN6Player18St_YoshiPower_MainEv.cpp": [
-        "param:#5 unsigned int"
-      ],
-      "src/game/actors/d_a_bakubaku.cpp": [
-        "param:#5 unsigned int"
-      ],
-      "src/game/actors/d_a_basabasa.cpp": [
-        "param:#5 unsigned int"
-      ],
-      "src/game/actors/d_a_brq.cpp": [
-        "param:#5 unsigned int"
-      ],
-      "src/game/actors/d_a_btfly.cpp": [
-        "param:#5 unsigned int"
-      ],
-      "src/game/actors/d_a_btn.cpp": [
-        "param:#5 unsigned int"
-      ],
-      "src/game/actors/d_a_c_jugem.cpp": [
-        "param:#5 unsigned int"
-      ],
-      "src/game/actors/d_a_choropu.cpp": [
-        "param:#5 unsigned int"
-      ],
-      "src/game/actors/d_a_demo.cpp": [
-        "param:#5 unsigned int"
-      ],
-      "src/game/actors/d_a_door.cpp": [
-        "param:#5 unsigned int"
-      ],
-      "src/game/actors/d_a_dossy.cpp": [
-        "param:#5 unsigned int"
-      ],
-      "src/game/actors/d_a_eykn.cpp": [
-        "param:#5 unsigned int"
-      ],
-      "src/game/actors/d_a_f_ring.cpp": [
-        "param:#5 unsigned int"
-      ],
-      "src/game/actors/d_a_fish.cpp": [
-        "param:#5 unsigned int"
-      ],
-      "src/game/actors/d_a_gmch.cpp": [
-        "param:#5 unsigned int"
-      ],
-      "src/game/actors/d_a_hanachan.cpp": [
-        "param:#5 unsigned int",
-        "return:int"
-      ],
-      "src/game/actors/d_a_holhei.cpp": [
-        "param:#5 unsigned int",
-        "return:int"
-      ],
-      "src/game/actors/d_a_huwa.cpp": [
-        "param:#5 unsigned int"
-      ],
-      "src/game/actors/d_a_jgm.cpp": [
-        "param:#5 unsigned int"
-      ],
-      "src/game/actors/d_a_kinopio.cpp": [
-        "param:#5 unsigned int"
-      ],
-      "src/game/actors/d_a_kpa.cpp": [
-        "param:#5 unsigned int"
-      ],
-      "src/game/actors/d_a_krb.cpp": [
-        "param:#5 unsigned int"
-      ],
-      "src/game/actors/d_a_krpa.cpp": [
-        "param:#5 unsigned int"
-      ],
-      "src/game/actors/d_a_kuri_king.cpp": [
-        "param:#5 unsigned int"
-      ],
-      "src/game/actors/d_a_manta.cpp": [
-        "param:#5 unsigned int",
-        "return:int"
-      ],
-      "src/game/actors/d_a_mc_flag.cpp": [
-        "param:#5 unsigned int"
-      ],
-      "src/game/actors/d_a_menbo.cpp": [
-        "param:#5 unsigned int",
-        "return:int"
-      ],
-      "src/game/actors/d_a_mip.cpp": [
-        "param:#5 unsigned int"
-      ],
-      "src/game/actors/d_a_mky.cpp": [
-        "param:#5 unsigned int"
-      ],
-      "src/game/actors/d_a_obj_hatena_block.cpp": [
-        "param:#5 unsigned int"
-      ],
-      "src/game/actors/d_a_obj_hatena_switch.cpp": [
-        "param:#5 unsigned int"
-      ],
-      "src/game/actors/d_a_obj_key.cpp": [
-        "param:#5 unsigned int"
-      ],
-      "src/game/actors/d_a_obj_mario_cap.cpp": [
-        "param:#5 unsigned int"
-      ],
-      "src/game/actors/d_a_obj_rc_carpet.cpp": [
-        "param:#5 unsigned int",
-        "return:int"
-      ],
-      "src/game/actors/d_a_obj_shell.cpp": [
-        "param:#5 unsigned int"
-      ],
-      "src/game/actors/d_a_obj_tbox.cpp": [
-        "param:#5 unsigned int"
-      ],
-      "src/game/actors/d_a_obj_wakame.cpp": [
-        "param:#5 unsigned int"
-      ],
+    "_ZN9ModelAnim7SetAnimEP8BCA_Fileiit": {
       "src/game/actors/d_a_ots.cpp": [
-        "param:#5 unsigned int",
         "return:int"
-      ],
-      "src/game/actors/d_a_owl.cpp": [
-        "param:#5 unsigned int",
-        "return:int"
-      ],
-      "src/game/actors/d_a_peach.cpp": [
-        "param:#1 char *",
-        "param:#5 unsigned int",
-        "return:int"
-      ],
-      "src/game/actors/d_a_pg_bby.cpp": [
-        "param:#5 unsigned int"
-      ],
-      "src/game/actors/d_a_pg_dfdr.cpp": [
-        "param:#5 unsigned int"
-      ],
-      "src/game/actors/d_a_pg_mthr.cpp": [
-        "param:#5 unsigned int"
-      ],
-      "src/game/actors/d_a_pg_rcer.cpp": [
-        "param:#5 unsigned int",
-        "return:int"
-      ],
-      "src/game/actors/d_a_piano.cpp": [
-        "param:#5 unsigned int"
-      ],
-      "src/game/actors/d_a_pkn.cpp": [
-        "param:#5 unsigned int"
-      ],
-      "src/game/actors/d_a_popoi.cpp": [
-        "param:#5 unsigned int"
-      ],
-      "src/game/actors/d_a_propeller_heyho.cpp": [
-        "param:#5 unsigned int"
-      ],
-      "src/game/actors/d_a_pukupuku.cpp": [
-        "param:#5 unsigned int"
-      ],
-      "src/game/actors/d_a_r_flag.cpp": [
-        "param:#5 unsigned int"
-      ],
-      "src/game/actors/d_a_s_bird.cpp": [
-        "param:#5 unsigned int"
-      ],
-      "src/game/actors/d_a_shark.cpp": [
-        "param:#1 char *",
-        "param:#5 unsigned int",
-        "return:int"
-      ],
-      "src/game/actors/d_a_snowman.cpp": [
-        "param:#5 unsigned int"
-      ],
-      "src/game/actors/d_a_spd.cpp": [
-        "param:#5 unsigned int"
-      ],
-      "src/game/actors/d_a_tor.cpp": [
-        "param:#5 unsigned int"
-      ],
-      "src/game/actors/d_a_trs.cpp": [
-        "param:#5 unsigned int",
-        "return:int"
-      ],
-      "src/game/actors/d_a_wanwan.cpp": [
-        "param:#5 unsigned int"
-      ],
-      "src/game/actors/d_a_wanwan2.cpp": [
-        "param:#1 char *",
-        "param:#5 unsigned int",
-        "return:int"
-      ],
-      "src/game/actors/d_a_water_tatumaki.cpp": [
-        "param:#5 unsigned int"
-      ],
-      "src/game/actors/d_a_yegg.cpp": [
-        "param:#5 unsigned int"
-      ],
-      "src/game/actors/d_a_yurei_mucho.cpp": [
-        "param:#5 unsigned int"
-      ],
-      "src/minigames/d_mg3d_heyho_obj_adapter.cpp": [
-        "param:#5 unsigned int",
-        "return:int"
-      ],
-      "src/minigames/d_mg_jump3d_mario.cpp": [
-        "param:#5 unsigned int"
       ],
       "src/minigames/d_mg_trmpln2_mario.cpp": [
-        "param:#1 char *",
         "param:#4 unsigned int",
         "param:#5 int",
         "param:#5 unsigned int",
         "return:int"
       ],
       "src/minigames/unit020bfec0.cpp": [
-        "param:#5 unsigned int"
-      ],
-      "src/unnamed/ov002/func_ov002_020d71a0.c": [
-        "param:#1 char *",
-        "param:#5 unsigned int",
-        "return:int"
-      ],
-      "src/unnamed/ov002/func_ov002_020d71ec.c": [
-        "param:#5 unsigned int"
-      ],
-      "src/unnamed/ov002/func_ov002_020e5948.c": [
         "param:#5 unsigned int"
       ]
     },

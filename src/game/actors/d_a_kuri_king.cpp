@@ -98,36 +98,20 @@ enum daKuriKing_c_AssetId {
 #include "Message.h"
 #include "nitro/fx/fx.h"
 
-/* include/SharedFilePtr.h has no fields; filePtr is the word LoadFile stashes
- * and what SetFile/Prepare consume. daLuigi_c spells the same view. */
-struct LoadedSharedFile {
-    u16 fileID;    /* 0x00 */
-    u8  numRefs;   /* 0x02 */
-    u8  pad;       /* 0x03 */
-    void *filePtr; /* 0x04 */
-};
-#define FileOf(handle) ((LoadedSharedFile *)&(handle))->filePtr
-
 /* Resource handles this TU's static initializer constructs. The wrapper
  * spellings are reconstructed; constructor and destructor addresses, file
  * IDs, widths, and BSS order are the ROM's. */
 struct KuriKingModelFilePtr : SharedFilePtr {
-    u32 words[2];
-
     KuriKingModelFilePtr(u32 fileID);
     ~KuriKingModelFilePtr();
 };
 
 struct KuriKingTexSeqFilePtr : SharedFilePtr {
-    u32 words[2];
-
     KuriKingTexSeqFilePtr(u32 fileID);
     ~KuriKingTexSeqFilePtr();
 };
 
 struct KuriKingAnimationFilePtr : SharedFilePtr {
-    u32 words[2];
-
     KuriKingAnimationFilePtr(u32 fileID);
     ~KuriKingAnimationFilePtr();
 };
@@ -187,7 +171,6 @@ extern "C" void MulMat4x3Mat4x3(void* out, void* a, void* b);
 extern "C" void Vec3_LslInPlace(void* v, int n);
 extern "C" struct Matrix4x3 data_020a0e68;
 extern "C" struct Matrix4x3 IDENTITY_MATRIX4X3;
-extern "C" void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void* anim, void* file, int a, int b, unsigned int u);
 extern "C" void _ZN18TextureTransformer7SetFileER8BTA_Filei5Fix12IiEj(void* tt, void* file, int a, int b, unsigned int u);
 extern "C" void _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(void *self, void *f, int a, s32 fix, u32 c);
 extern "C" void _ZN15MaterialChanger7SetFileER8BMA_Filei5Fix12IiEj(void *self, void *f, int a, s32 fix, u32 c);
@@ -1587,7 +1570,7 @@ extern "C" void func_ov074_02121a4c(char* c, int idx)
     int off = idx * 0xc;
     void* file1 = data_ov074_02122f34[idx].anim->filePtr;
     int arg2 = *(int*)(data_ov074_02122f3c + off);
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&((daKuriKing_c *)c)->mModelAnim, file1, arg2, 0x1000, 0);
+    ((ModelAnim *)&((daKuriKing_c *)c)->mModelAnim)->SetAnim((BCA_File *)file1, arg2, 0x1000, 0);
     _ZN18TextureTransformer7SetFileER8BTA_Filei5Fix12IiEj(
         &((daKuriKing_c *)c)->mTextureTransformer, *(void**)(data_ov074_02122f38 + off), 0, 0x1000, 0);
 }
@@ -1778,20 +1761,21 @@ int daKuriKing_c::InitResources()
         k++;
     } while (k < 4);
 
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, FileOf(data_ov074_02123030), 0, 0x1000, 0);
-    TextureSequence::Prepare(*(BMD_File *)FileOf(gKurikingModelModelFile),
-                             *(BTP_File *)FileOf(gKurikingAngerTextureSequenceFile));
-    MaterialChanger::Prepare(*(BMD_File *)FileOf(gKurikingModelModelFile),
+    mModelAnim.SetAnim((BCA_File *)data_ov074_02123030.filePtr, 0, 0x1000, 0);
+    TextureSequence::Prepare(*(BMD_File *)gKurikingModelModelFile.filePtr,
+                             *(BTP_File *)gKurikingAngerTextureSequenceFile.filePtr);
+    MaterialChanger::Prepare(*(BMD_File *)gKurikingModelModelFile.filePtr,
                              *(BMA_File *)&data_ov010_021123f4);
 
     i = 0;
     do {
-        TextureTransformer::Prepare(*(BMD_File *)FileOf(gKurikingModelModelFile),
+        TextureTransformer::Prepare(*(BMD_File *)gKurikingModelModelFile.filePtr,
                                     *(BTA_File *)data_ov074_02122e5c[i]);
         i++;
     } while (i < 7);
 
-    _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(&mTextureSequence, FileOf(gKurikingAngerTextureSequenceFile), 0, 0x1000, 0);
+    _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(
+        &mTextureSequence, gKurikingAngerTextureSequenceFile.filePtr, 0, 0x1000, 0);
     _ZN15MaterialChanger7SetFileER8BMA_Filei5Fix12IiEj(&mMaterialChanger, &data_ov010_021123f4, 0x40000000, 0x1000, 0);
     _ZN18TextureTransformer7SetFileER8BTA_Filei5Fix12IiEj(&mTextureTransformer, &data_ov010_021124ac, 0, 0x1000, 0);
 
@@ -1965,25 +1949,21 @@ int daKuriKing_c::func_ov074_02122634()
     for (i = 0; i < 7; i++)
         dExtFrameCtrl_c::LoadFile(*sKurikingMinionAnimationFiles[i]);
 
-    if (this->mModelAnim.SetFile((BMD_File *)FileOf(data_ov084_02130cf8), 1, 1) == 0)
+    if (this->mModelAnim.SetFile((BMD_File *)data_ov084_02130cf8.filePtr, 1, 1) == 0)
         return 0;
 
     if (this->mShadowModels[0].InitCylinder() == 0)
         return 0;
 
-    MaterialChanger::Prepare(
-        *(BMD_File *)FileOf(data_ov084_02130cf8),
-        *(BMA_File *)&data_ov084_0213089c);
+    MaterialChanger::Prepare(*(BMD_File *)data_ov084_02130cf8.filePtr,
+                             *(BMA_File *)&data_ov084_0213089c);
 
     _ZN15MaterialChanger7SetFileER8BMA_Filei5Fix12IiEj(
         &this->mMaterialChanger,
         (void *)&data_ov084_0213089c,
         0x40000000, 0x1000, 0);
 
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
-        &this->mModelAnim,
-        (BCA_File *)FileOf(data_ov084_02130cc8),
-        0, 0x1000, 0);
+    this->mModelAnim.SetAnim((BCA_File *)data_ov084_02130cc8.filePtr, 0, 0x1000, 0);
 
     this->mPrevAngleX = this->mAngleX;
     this->mPrevAngleY = this->mAngleY;

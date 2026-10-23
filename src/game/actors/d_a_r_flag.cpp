@@ -29,7 +29,6 @@ struct BCA_File;
 extern "C" {
 
 int _ZN5Sound7PlaySubEjjj5Fix12IiEb(unsigned int, unsigned int, unsigned int, int, int);
-void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *, BCA_File *, int, int, unsigned int);
 void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *, dActor_c *, int, int, unsigned int, unsigned int);
 void Matrix4x3_FromRotationY(void *, int);
 extern Timer data_0209d4c8;
@@ -40,15 +39,11 @@ extern Timer data_0209d4c8;
    SharedFilePtr::Construct and registers SharedFilePtr_Destruct_Anim.
    The manifest aliases these. */
 struct RFlagModelFileHandle : SharedFilePtr {
-    u32 words[2];
-
     RFlagModelFileHandle(u32 fileID);
     ~RFlagModelFileHandle();
 };
 
 struct RFlagAnimResFileHandle : SharedFilePtr {
-    u32 words[2];
-
     RFlagAnimResFileHandle(u32 fileID);
     ~RFlagAnimResFileHandle();
 };
@@ -142,9 +137,7 @@ int daRFlag_c::InitResources()
 {
     mModelAnim.SetFile(
         (BMD_File *)Model::LoadFile(data_ov062_0211e0d4), 1, -1);
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
-        &mModelAnim, (BCA_File *)dExtFrameCtrl_c::LoadFile(data_ov062_0211e0dc),
-        0, 0x1000, 0);
+    mModelAnim.SetAnim((BCA_File *)dExtFrameCtrl_c::LoadFile(data_ov062_0211e0dc), 0, 0x1000, 0);
     _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(
         &mdCcAc_c, this, 0x35555, 0x294000, 0x280000c, 0);
     mHasTouchedFlag = 0xff;

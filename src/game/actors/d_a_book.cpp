@@ -29,7 +29,7 @@
  * does not mangle to the Fix12<int> symbols the ROM has. GetWallResult is
  * not a dBgCh_Actr method; the call is dBgCh_Actr_UpdateContinuous_Veneer,
  * not UpdateContinuous. data_ov020_02114aa0 and 02114ab8 are model handles,
- * 02114aa8 and 02114ab0 animation handles; words[1] is the loaded file.
+ * 02114aa8 and 02114ab0 animation handles; filePtr is the loaded file.
  * State helpers keep address names. The ROM records no English name for them.
  */
 
@@ -103,7 +103,6 @@ void _ZN6Player6BounceE5Fix12IiE(Player *self, int fix);
 void func_ov063_0211cae8(void *found, unsigned int mask);
 void func_0203568c(int *p, int v);
 void func_0201267c(unsigned int id, const Vector3 *pos);
-void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(ModelAnim *, BCA_File *, int, int, u16);
 void dBgCh_Actr_UpdateContinuous_Veneer(void *c_);
 void Matrix4x3_FromRotationZXYExt(void *m, int x, int y, int z);
 void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(dActor_c *thiz, dExtShadowModel_c *sm, Matrix4x3 *mtx, int radius, int depth, u8 opacity);
@@ -129,15 +128,11 @@ extern u8 data_ov020_02114828[];
  * and destroy through SharedFilePtr_Destruct_Anim. The manifest aliases those
  * undefined members onto the ROM symbols. */
 struct BookModelFilePtr : SharedFilePtr {
-    u32 words[2];
-
     BookModelFilePtr(u32 fileID);
     ~BookModelFilePtr();
 };
 
 struct BookAnimationFileHandle : SharedFilePtr {
-    u32 words[2];
-
     BookAnimationFileHandle(u32 fileID);
     ~BookAnimationFileHandle();
 };
@@ -578,7 +573,7 @@ void daBook_c::func_ov020_02111c30()
     }
 
     if (mModelAnim.Finished()) {
-        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, (BCA_File*)data_ov020_02114ab0.words[1], 0, 0x1000, 0);
+        mModelAnim.SetAnim((BCA_File *)data_ov020_02114ab0.filePtr, 0, 0x1000, 0);
         mState = STATE_FLY;
         mHorzSpeed = 0;
         func_ov020_021112b0();
@@ -638,10 +633,10 @@ void daBook_c::func_ov020_02111ee0()
   if(ApproachLinear(mAngleX, -0x2000, 0x200)){
     int s;
     mHorzSpeed = 0;
-    s = mModelAnim.SetFile((BMD_File*)data_ov020_02114aa0.words[1], 1, -1);
+    s = mModelAnim.SetFile((BMD_File *)data_ov020_02114aa0.filePtr, 1, -1);
     if(s == 0) return;
     mState = STATE_WIND_UP;
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, (BCA_File*)data_ov020_02114aa8.words[1], 0x40000000, 0x1000, 0);
+    mModelAnim.SetAnim((BCA_File *)data_ov020_02114aa8.filePtr, 0x40000000, 0x1000, 0);
     mUsesModelAnim = 1;
     mStateTimer = 0;
     {
@@ -867,7 +862,7 @@ int daBook_c::InitResources()
     mHomePosY = mPosY;
     mHomePosZ = mPosZ;
 
-    if (mModel.SetFile((BMD_File*)data_ov020_02114ab8.words[1], 1, -1) == 0)
+    if (mModel.SetFile((BMD_File *)data_ov020_02114ab8.filePtr, 1, -1) == 0)
         return 0;
 
     mShadowMat = IDENTITY_MATRIX4X3;

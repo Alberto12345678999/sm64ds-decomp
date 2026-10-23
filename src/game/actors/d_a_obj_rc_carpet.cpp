@@ -21,7 +21,6 @@
  *   (beforeClsnCallback). This TU calls it; naming belongs with
  *   dBgW in arm9.
  * Leftover: func_ov036_021122c0 / 0211224c keep ROM labels.
- * Leftover: SharedFilePtr +4 BCA load (layout unrecovered).
  * Leftover: data_ov002_0210d9f0 and data_ov036_02112b28 CLPS stay
  *   outside this TU. The three ov036 handles are file-scope objects
  *   at the bottom of this file.
@@ -53,22 +52,16 @@ typedef char FlyingCarpetResources_size_must_be_0x0c[
  * their destructors. The wrapper names are local; the ctor/dtor
  * addresses are the ROM resource-family functions. */
 struct CarpetModelFilePtr : SharedFilePtr {
-    u32 words[2];
-
     CarpetModelFilePtr(u32 fileID);
     ~CarpetModelFilePtr();
 };
 
 struct CarpetAnimationFilePtr : SharedFilePtr {
-    u32 words[2];
-
     CarpetAnimationFilePtr(u32 fileID);
     ~CarpetAnimationFilePtr();
 };
 
 struct CarpetCollisionFilePtr : SharedFilePtr {
-    u32 words[2];
-
     CarpetCollisionFilePtr(u32 fileID);
     ~CarpetCollisionFilePtr();
 };
@@ -97,9 +90,6 @@ extern void __cxa_vec_ctor(
 extern int _ZTV15daObjRcCarpet_c[];
 extern int data_ov002_0210af70[];
 
-extern int _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
-    ModelAnim *model, BCA_File *file, int flags, Fix12i speed,
-    unsigned int startFrame);
 extern int _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
     dBgW_KcMbg *collider, KCL_File *file, const Matrix4x3 *matrix,
     Fix12i scale, s16 angle, CLPS_Block *clps);
@@ -151,9 +141,7 @@ int daObjRcCarpet_c::InitResources()
     void *modelFile = Model::LoadFile(*data_ov036_02113f58.model);
     mModelAnim.SetFile((BMD_File *)modelFile, 1, -1);
     dExtFrameCtrl_c::LoadFile(gRcCarpetWaitAnimationFile);
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
-        &mModelAnim, (BCA_File *)((int *)&gRcCarpetWaitAnimationFile)[1],
-        0, 0x1000, 0);
+    mModelAnim.SetAnim((BCA_File *)gRcCarpetWaitAnimationFile.filePtr, 0, 0x1000, 0);
     func_ov036_021122c0(this);
     UpdateClsnPosAndRot();
     KCL_File *collisionFile =

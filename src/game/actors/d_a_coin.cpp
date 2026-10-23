@@ -41,6 +41,7 @@
 #include "SurfaceInfo.h"
 #include "ModelBase.h"
 #include "dBgCh_Actr.h"
+#include "Sound.h"
 
 /* Views of daObjBC_Switch_c.h and daObjFl_Coin_c.h, same member names and
    offsets: including either header renumbers this TU's @NNN labels. */
@@ -99,7 +100,6 @@ extern s8 NumRedCoins(void);
 extern unsigned int func_02012790(unsigned int a);
 extern void func_02012694(unsigned int id, const Vector3 *v);
 extern int SurfaceInfo_TestFlag0x20(void* p);
-extern void _ZN5Sound9PlayBank3EjRK7Vector3(unsigned int id, const Vector3 &pos);
 extern void _ZN8Particle6System12NewBigSplashE5Fix12IiES2_S2_(int a, int b, int c);
 extern short _ZN8dActor_c12ReflectAngleE5Fix12IiES1_s(void*, int, int, short);
 extern void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
@@ -400,9 +400,9 @@ void daCoin_c::func_ov002_020b16c4(Player *player)
     mDisappearTimer = 0;
     KillAndTrackInDeathTable();
     if (player->mIsUnderwater != 0)
-        _ZN5Sound9PlayBank3EjRK7Vector3(0x12, mCamSpacePos);
+        Sound::PlayBank3(0x12, mCamSpacePos);
     else
-        _ZN5Sound9PlayBank3EjRK7Vector3(0x11, mCamSpacePos);
+        Sound::PlayBank3(0x11, mCamSpacePos);
 
     filter = mSpawnFilter;
     if (filter != 0 && filter <= 7) {
@@ -456,9 +456,9 @@ void daCoin_c::func_ov002_020b1884(Player *player)
     mDisappearTimer = 0;
     KillAndTrackInDeathTable();
     if (player->mIsUnderwater)
-        _ZN5Sound9PlayBank3EjRK7Vector3(0x12, mCamSpacePos);
+        Sound::PlayBank3(0x12, mCamSpacePos);
     else
-        _ZN5Sound9PlayBank3EjRK7Vector3(0x11, mCamSpacePos);
+        Sound::PlayBank3(0x11, mCamSpacePos);
     GiveCoins(player->mPlayerNo, 1);
     player->Heal(0x100);
 }
@@ -579,7 +579,7 @@ void daCoin_c::func_ov002_020b1ad4()
     }
     if (mWithMeshClsn.JustHitGround()) {
         if (SurfaceInfo_TestFlag0x20((char *)mWithMeshClsn.GetFloorResult() + 4) == 0) {
-            _ZN5Sound9PlayBank3EjRK7Vector3(0x52, mCamSpacePos);
+            Sound::PlayBank3(0x52, mCamSpacePos);
             mVertSpeed = 0x19000;
         }
     }
@@ -600,7 +600,7 @@ void daCoin_c::func_ov002_020b1bfc()
     if (!mWithMeshClsn.JustHitGround()) return;
     if (SurfaceInfo_TestFlag0x20((char *)mWithMeshClsn.GetFloorResult() + 4) != 0)
         return;
-    _ZN5Sound9PlayBank3EjRK7Vector3(0x52, mCamSpacePos);
+    Sound::PlayBank3(0x52, mCamSpacePos);
     if (mHorzSpeed == 0) {
         mHorzSpeed = 0x13000;
         mDisappearTimer = 0x12c;
@@ -646,7 +646,7 @@ void daCoin_c::func_ov002_020b1cc0()
         if (isFlCoin != 0) {
             if (mPosY <= flCoin->mPosY) {
                 mPosY = flCoin->mPosY;
-                _ZN5Sound9PlayBank3EjRK7Vector3(0x52, mCamSpacePos);
+                Sound::PlayBank3(0x52, mCamSpacePos);
                 bits = (CoinFlagBits *)((int)&mCoinFlags);
                 bits->bounces++;
                 bounces = ((CoinFlagBits *)&mCoinFlags)->bounces;
@@ -678,7 +678,7 @@ void daCoin_c::func_ov002_020b1cc0()
         if (SurfaceInfo_TestFlag0x20((char *)mWithMeshClsn.GetFloorResult() + 4) == 0) {
             if (mDisappearTimer > 0xf000)
                 mDisappearTimer = 0xf;
-            _ZN5Sound9PlayBank3EjRK7Vector3(0x52, mCamSpacePos);
+            Sound::PlayBank3(0x52, mCamSpacePos);
             bits = (CoinFlagBits *)((int)&mCoinFlags);
             bits->bounces++;
             bounces = ((CoinFlagBits *)&mCoinFlags)->bounces;
@@ -852,7 +852,7 @@ int daCoin_c::Behavior()
 
     if ((unsigned int)(mCoinFlags << 0x1e) >> 0x1f) {
         mCoinFlags &= ~2;
-        _ZN5Sound9PlayBank3EjRK7Vector3(0x30, mCamSpacePos);
+        Sound::PlayBank3(0x30, mCamSpacePos);
     }
     if ((int)(actorID == 0x122) != 0) {
         if ((unsigned int)(mCoinFlags << 0x1f) >> 0x1f)

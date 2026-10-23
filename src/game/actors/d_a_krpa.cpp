@@ -104,8 +104,6 @@ u32 daKrpaFrameController::func_ov070_02121a64()
  * home their class-typed values and do not reproduce the retail callers. */
 struct M48 { int w[12]; };
 struct KrpaModelFilePtr : SharedFilePtr {
-    u32 words[2];
-
     KrpaModelFilePtr(u32 fileID);
     ~KrpaModelFilePtr();
 };
@@ -208,8 +206,6 @@ void daKrpa_c::func_ov070_0212180c()
 // @symbol _ZN8daKrpa_c19func_ov070_021217acEv
 /* SetAnim is another proven Fix12-by-value caller seam. */
 extern "C" {
-extern void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
-    ModelAnim *model, BCA_File *file, int flags, Fix12i speed, u32 startFrame);
 extern char data_ov070_021234c4[];
 extern char data_ov070_021234dc[];
 extern u32 data_ov070_02122404[];
@@ -217,8 +213,7 @@ extern u32 data_ov070_021222e8[];
 }
 
 int daKrpa_c::func_ov070_021217ac() {
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
-        &this->mModelAnim, (BCA_File *)data_ov070_021234c4, 0, 0x1000, 0);
+    this->mModelAnim.SetAnim((BCA_File *)data_ov070_021234c4, 0, 0x1000, 0);
     this->mFrameController.func_ov070_02121ae0(
         data_ov070_02122404, 0x64, 1);
     this->mStateTimer = 0x73;
@@ -252,9 +247,7 @@ int daKrpa_c::func_ov070_02121710() {
 }
 // @symbol _ZN8daKrpa_c19func_ov070_021216b8Ev
 int daKrpa_c::func_ov070_021216b8() {
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
-        &this->mModelAnim, (BCA_File *)data_ov070_021234dc,
-        0x40000000, 0x1000, 0);
+    this->mModelAnim.SetAnim((BCA_File *)data_ov070_021234dc, 0x40000000, 0x1000, 0);
     this->mFrameController.func_ov070_02121ae0(
         data_ov070_021222e8, 0x47, 0);
     this->mStateIndex = 1;
@@ -336,8 +329,7 @@ int daKrpa_c::func_ov070_02121438()
     this->mScaleY = 0x1000;
     this->mScaleZ = 0x1000;
     this->mStateTimer = 0x2d;
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
-        &this->mModelAnim, (BCA_File *)data_ov070_021234c4, 0, 0x1000, 0);
+    this->mModelAnim.SetAnim((BCA_File *)data_ov070_021234c4, 0, 0x1000, 0);
     _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(
         0x43, this->mPosX, this->mPosY, this->mPosZ);
     _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(

@@ -136,7 +136,6 @@ int _ZN6Player11ShowMessageER7fBase_cjPK7Vector3hh(Player *self, fBase_c *actor,
 /* local extern: dCamera_c.h does not declare this member. */
 void _ZN9dCamera_c9SetFlag_3Ev(dCamera_c *cam);
 
-void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(ModelAnim *thiz, BCA_File *file, int flags, int speed, unsigned short startFrame);
 void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(dCcAc_c *self, dActor_c *actor, int radius, int height, unsigned int flags, unsigned int vulnFlags);
 void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(dActor_c *self, dExtShadowModel_c *shadow, Matrix4x3 *mtx, int radius, int depth, unsigned char opacity);
 
@@ -459,8 +458,8 @@ void daRedBombhei_c::func_ov084_0212c960(int state)
 void daRedBombhei_c::func_ov084_0212c92c()
 {
     unsigned int flags = 0;
-    BCA_File *file = (BCA_File *)(((int *)&data_ov084_02130d9c)[1]);
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&this->mModelAnim, file, 0, 0x1000, flags);
+    BCA_File *file = (BCA_File *)data_ov084_02130d9c.filePtr;
+    this->mModelAnim.SetAnim((BCA_File *)file, 0, 0x1000, flags);
 }
 
 // @symbol _ZN14daRedBombhei_c19func_ov084_0212c8b0Ev

@@ -385,22 +385,9 @@ struct Obj {
 };
 */
 
-/* SharedFilePtr's fields, which SharedFilePtr.h leaves undeclared; the
- * names are src/SharedFilePtr.cpp's. filePtr is the loaded file. */
-struct SharedFileView {
-    u16 fileID;    /* 0x00 */
-    u8 numRefs;    /* 0x02 */
-    void *filePtr; /* 0x04 */
-};
-#ifndef SM64DS_PLATFORM_PC
-typedef char SharedFileView_size_must_be_0x8[sizeof(SharedFileView) == 8 ? 1 : -1];
-#endif
-
 /* Lakitu's model-file handle, owned and constructed by d_a_c_jugem.cpp's
  * static init. Same TU-local wrapper spelling as the owning TU. */
 struct JugemModelFile : SharedFilePtr {
-    u32 words[2];
-
     JugemModelFile(u32 fileID);
     ~JugemModelFile();
 };
@@ -519,7 +506,6 @@ extern void func_ov002_020f5fe4(char *c);
 extern int _ZN15dExtFrameCtrl_c7AdvanceEv(char*); /* local extern: untyped this. */
 extern int _ZN15dExtFrameCtrl_c8FinishedEv(char*); /* local extern: untyped this. */
 /* local extern dropped: decl_common.h declares func_ov002_020f6514(unsigned char*, void*, unsigned char) */
-extern void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *self, void *f, int b, int c, unsigned int d);
 extern void _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(void *self, void *f, int b, int c, unsigned int d);
 extern void __cxa_vec_ctor(void* obj, int a, int b, void* cb1, void* cb2);
 extern void *_ZN7Vector3D1Ev(void *object);
@@ -672,17 +658,11 @@ extern JugemModelFile data_ov085_0213074c;
 /* TUBUILD CONFLICT -- alternate declaration of _Znwj, from the legacy file for _ZN8daDemo_c13InitResourcesEv, NOT applied: extern "C" void *_Znwj(int sz); */
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 0 -- _ZN8daDemo_cD1Ev, 0x020f1f70, size 0x24 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN8daDemo_cD1Ev
 daDemo_c::~daDemo_c()
 {
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 1 -- _ZN8daDemo_cD0Ev, 0x020f1f94, size 0x38 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN8daDemo_cD0Ev
 #ifdef _MSC_VER
 /* THE HOST NEEDS THE ROM'S FLAT D0 NAME, AND MSVC NEVER EMITS IT. MSVC
@@ -3668,16 +3648,15 @@ void daDemo_c::anmModel_c::func_ov002_020f6514(void *tbl, unsigned char arg)
     mAnimEntry = arg;
     e = (u8 *)tbl + mAnimEntry * 4;
     v = (e[2] == 0) ? 0x40000000 : 0;
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
-        this, (void *)((struct Ent **)mAnimFiles)[e[0]]->out4, v, 0x1000, 0);
+    ((ModelAnim *)this)->SetAnim((BCA_File *)(mAnimFiles[e[0]]->filePtr), v, 0x1000, 0);
     {
         void *ts = mTexSeq;
         s8 idx;
         if (ts == 0) return;
         idx = (s8)e[1];
         if (idx < 0) return;
-        _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(
-            ts, (void *)((struct Ent **)mTexSeqFiles)[idx]->out4, v, 0x1000, 0);
+        _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(ts, mTexSeqFiles[idx]->filePtr, v,
+                                                           0x1000, 0);
     }
 }
 
@@ -3712,8 +3691,8 @@ int daDemo_c::anmModel_c::func_ov002_020f65ec()
 // @symbol _ZN8daDemo_c10anmModel_c19func_ov002_020f6618EP13SharedFilePtriPS2_ihS3_i
 struct BTP_File;
 extern "C" {
-void* _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(SharedFilePtr& f); /* local extern: untyped file pointer. */
-void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void* self, void* f, int a, int fx, unsigned int e);
+void *_ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(
+    SharedFilePtr &f); /* local extern: untyped file pointer. */
 void* _Znwj(unsigned int sz);
 void* _ZN15TextureSequenceC1Ev(void* self);
 void _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(void* self, void* btp, int a, int fx, unsigned int e);
@@ -3733,8 +3712,7 @@ int daDemo_c::anmModel_c::func_ov002_020f6618(SharedFilePtr *mdl, int nAnims, Sh
     for (i = 0; i < mNumAnimFiles; i++) {
         _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(*mAnimFiles[i]);
     }
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(self, ((SharedFileView *)mAnimFiles[0])->filePtr, 0,
-                                                0x1000, 0);
+    ((ModelAnim *)self)->SetAnim((BCA_File *)(mAnimFiles[0]->filePtr), 0, 0x1000, 0);
     if (texByte) {
         ts = _Znwj(0x14);
         if (ts) ts = _ZN15TextureSequenceC1Ev(ts);
@@ -3744,20 +3722,17 @@ int daDemo_c::anmModel_c::func_ov002_020f6618(SharedFilePtr *mdl, int nAnims, Sh
         mNumTexSeqFiles = texByte;
         mTexSeqFiles = texs;
         for (i = 0; i < mNumTexSeqFiles; i++) {
-            void *bmd = ((SharedFileView *)mModelFile)->filePtr;
+            void *bmd = mModelFile->filePtr;
             void *btp = TextureSequence::LoadFile(*mTexSeqFiles[i]);
             TextureSequence::Prepare(*(BMD_File*)bmd, *(BTP_File*)btp);
         }
-        _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(
-            mTexSeq, ((SharedFileView *)mTexSeqFiles[0])->filePtr, 0, 0x1000, 0);
+        _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(mTexSeq, mTexSeqFiles[0]->filePtr, 0,
+                                                           0x1000, 0);
     }
     mSnapToFloor = (u8)arg5;
     return 1;
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 112 -- _ZN8daDemo_c10anmModel_cD0Ev, 0x020f6778, size 0xf8 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN8daDemo_c10anmModel_cD0Ev
 /* D0, the deleting destructor. Same class shape as the D1 file beside this one;
  * one destructor definition emits D0/D1/D2 and objisolate keeps the variant this
@@ -3766,9 +3741,6 @@ int daDemo_c::anmModel_c::func_ov002_020f6618(SharedFilePtr *mdl, int nAnims, Sh
  * without it the bytes still match and only the relocation destination differs.
  * The D0 variant here emits from the ~anmModel_c definition at ordinal 113. */
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 113 -- _ZN8daDemo_c10anmModel_cD1Ev, 0x020f6870, size 0xf0 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN8daDemo_c10anmModel_cD1Ev
 /* D1, the complete-object destructor.
  *
@@ -3819,9 +3791,6 @@ int daDemo_c::simpleModel_c::func_ov002_020f6960(SharedFilePtr *fp, int n)
     return ((ModelBase *)this)->SetFile(f, 1, n) != 0 ? 1 : 0;
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 115 -- _ZN8daDemo_c13simpleModel_cD0Ev, 0x020f69a8, size 0x58 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN8daDemo_c13simpleModel_cD0Ev
 /* D0, the deleting destructor. Same class shape as the D1 file beside this one;
  * one destructor definition emits D0/D1/D2 and objisolate keeps the variant this
@@ -3830,9 +3799,6 @@ int daDemo_c::simpleModel_c::func_ov002_020f6960(SharedFilePtr *fp, int n)
  * without it the bytes still match and only the relocation destination differs.
  * The D0 variant here emits from the ~simpleModel_c definition at ordinal 116. */
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 116 -- _ZN8daDemo_c13simpleModel_cD1Ev, 0x020f6a00, size 0x50 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN8daDemo_c13simpleModel_cD1Ev
 /* D1, the complete-object destructor.
  *
@@ -4627,9 +4593,6 @@ extern "C" void func_ov002_020f7d74(daDemo_c* self, unsigned char* p, int a2, in
     (self->*data_ov002_0211104c[p[6]])(p + 7, a2, a3);
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 140 -- _ZN8daDemo_c16CleanupResourcesEv, 0x020f8028, size 0x80 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN8daDemo_c16CleanupResourcesEv
 int daDemo_c::CleanupResources()
 {
@@ -4642,9 +4605,6 @@ int daDemo_c::CleanupResources()
   return 1;
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 141 -- _ZN8daDemo_c16OnPendingDestroyEv, 0x020f80a8, size 0x4 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN8daDemo_c16OnPendingDestroyEv
 /* daDemo_c::OnPendingDestroy -- vtable slot 12. The ROM body is empty: the
  * override exists only to occupy the slot. */
@@ -4652,9 +4612,6 @@ void daDemo_c::OnPendingDestroy()
 {
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 142 -- _ZN8daDemo_c6RenderEv, 0x020f80ac, size 0x118 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN8daDemo_c6RenderEv
 int daDemo_c::Render() {
     if (param1 == 0x19) {
@@ -4698,9 +4655,6 @@ int daDemo_c::Render() {
     return 1;
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 143 -- _ZN8daDemo_c8BehaviorEv, 0x020f81c4, size 0x1e0 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN8daDemo_c8BehaviorEv
 int daDemo_c::Behavior()
 {
@@ -4772,9 +4726,6 @@ int daDemo_c::Behavior()
   return 1;
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 144 -- _ZN8daDemo_c13InitResourcesEv, 0x020f83a4, size 0x464 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN8daDemo_c13InitResourcesEv
 /* Each model branch spells the nested class's construction out: param_c's
  * constructor on the tail base, the model base's C2, then the class vptr

@@ -29,6 +29,7 @@
  * member spelling reschedules the clamp under opt_propagation off.
  * Resource handles are initialized by the separate __sinit_ov078_02126660.
  * State records stay data_ov078_021270*.
+ * Sound::ChangeMusicVolume keeps its mangled decl (Fix12<int> by value, S13 wall); the Layer3 pair stays on decl_common.h / the local mangled decl because Sound.h declares only Layer1/Layer2.
  */
 
 /* common.h FIRST: daBombking_c.h reaches math/Matrix.h through BlendModelAnim.h,
@@ -72,7 +73,6 @@ struct Vec3 { int x, y, z; };
 struct M3 { int w[3]; };
 struct BCA_File;
 typedef daBombking_c::StateFunction PMF;
-extern "C" int _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(void *self, void *bca, int a, int b, int fix, unsigned short t);
 
 /* Resource handles owned by this TU and initialized by the separate initializer.
  * Construct/Load/Release use a u16 fileID at +0, a u8 reference count at +2,
@@ -261,8 +261,7 @@ int daBombking_c::func_ov078_02123a3c()
     this->mHorzSpeed = 0;
     this->mStateTimer = 0x32;
     func_ov078_02123864();
-    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(
-        &this->mBlendModelAnim, gBombkingDamageAnimationFile.file, 0, 0, 0x1000, 0);
+    this->mBlendModelAnim.SetAnim(*(BCA_File *)gBombkingDamageAnimationFile.file, 0, 0, 0x1000, 0);
     return 1;
 }
 
@@ -307,8 +306,7 @@ int daBombking_c::func_ov078_02123bc4()
   this->mVertAccel = -0x2000;
   this->mAnimSpeed = 2;
   this->mHorzSpeed = 0xa000;
-  _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(
-      &this->mBlendModelAnim, gBombkingWalk1AnimationFile.file, 4, 0, 0x1000, 0);
+  this->mBlendModelAnim.SetAnim(*(BCA_File *)gBombkingWalk1AnimationFile.file, 4, 0, 0x1000, 0);
   return 1;
 }
 
@@ -350,8 +348,8 @@ struct BCA_File;
 
 int daBombking_c::func_ov078_02123cf0()
 {
-    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(
-        &this->mBlendModelAnim, gBombkingThrowAnimationFile.file, 0, 0x40000000, 0x1000, 0);
+    this->mBlendModelAnim.SetAnim(*(BCA_File *)gBombkingThrowAnimationFile.file, 0, 0x40000000,
+                                  0x1000, 0);
     this->mHorzSpeed = 0;
     return 1;
 }
@@ -412,8 +410,7 @@ int daBombking_c::func_ov078_02123d3c()
 int daBombking_c::func_ov078_02123eb8()
 {
     mVertAccel = -0x2000;
-    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(
-        &mBlendModelAnim, gBombkingWalk2AnimationFile.file, 0, 0, 0x1000, 0);
+    mBlendModelAnim.SetAnim(*(BCA_File *)gBombkingWalk2AnimationFile.file, 0, 0, 0x1000, 0);
     mStateTimer = 0x32;
     mHorzSpeed = 0xa000;
     return 1;
@@ -448,8 +445,8 @@ L6c:
 int daBombking_c::func_ov078_02123fb4()
 {
   this->mVertAccel = -0x2000;
-  _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(
-      &this->mBlendModelAnim, gBombkingLiftAnimationFile.file, 0, 0x40000000, 0x1000, 0);
+  this->mBlendModelAnim.SetAnim(*(BCA_File *)gBombkingLiftAnimationFile.file, 0, 0x40000000, 0x1000,
+                                0);
   return 1;
 }
 
@@ -474,8 +471,8 @@ int daBombking_c::func_ov078_02124000()
 
 int daBombking_c::func_ov078_02124060()
 {
-    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(
-        &this->mBlendModelAnim, gBombkingGetupAnimationFile.file, 0, 0x40000000, 0x1000, 0);
+    this->mBlendModelAnim.SetAnim(*(BCA_File *)gBombkingGetupAnimationFile.file, 0, 0x40000000,
+                                  0x1000, 0);
     return 1;
 }
 
@@ -584,8 +581,7 @@ int func_ov078_021240a0(char* c)
 
 int daBombking_c::func_ov078_021243c0()
 {
-    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(
-        &this->mBlendModelAnim, gBombkingDamageAnimationFile.file, 0, 0, 0x1000, 0);
+    this->mBlendModelAnim.SetAnim(*(BCA_File *)gBombkingDamageAnimationFile.file, 0, 0, 0x1000, 0);
     this->mStateTimer = 0xc8;
     this->mTargetAngY = Vec3_HorzAngle(&this->mPosX, &this->mArenaPosX);
     this->mHealth -= 1;
@@ -618,8 +614,7 @@ int daBombking_c::func_ov078_02124470()
 
 int daBombking_c::func_ov078_021244d0()
 {
-    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(
-        &this->mBlendModelAnim, gBombkingDamageAnimationFile.file, 0, 0, 0x1000, 0);
+    this->mBlendModelAnim.SetAnim(*(BCA_File *)gBombkingDamageAnimationFile.file, 0, 0, 0x1000, 0);
     this->mStateTimer = 0x32;
     return 1;
 }
@@ -709,8 +704,8 @@ int daBombking_c::func_ov078_02124520()
 
 int daBombking_c::func_ov078_02124778()
 {
-    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(
-        &this->mBlendModelAnim, gBombkingStartAnimationFile.file, 8, 0x40000000, 0x1000, 0);
+    this->mBlendModelAnim.SetAnim(*(BCA_File *)gBombkingStartAnimationFile.file, 8, 0x40000000,
+                                  0x1000, 0);
     return 1;
 }
 
@@ -783,9 +778,8 @@ int daBombking_c::func_ov078_021247bc()
         }
 
         if (this->mActionStep == 1) {
-            _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&this->mBlendModelAnim,
-                                                               gBombkingJumpedAnimationFile.file, 0,
-                                                               0x40000000, 0x1000, 0);
+            this->mBlendModelAnim.SetAnim(*(BCA_File *)gBombkingJumpedAnimationFile.file, 0,
+                                          0x40000000, 0x1000, 0);
             this->mVertAccel = -0x2000;
             this->mFlags = 0x10000002;
             func_02012694(0x12c, &this->mCamSpacePosX);
@@ -825,8 +819,8 @@ int daBombking_c::func_ov078_021247bc()
 
 int daBombking_c::func_ov078_02124b40()
 {
-    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(
-        &this->mBlendModelAnim, gBombkingJumpAnimationFile.file, 0, 0x40000000, 0x1000, 0);
+    this->mBlendModelAnim.SetAnim(*(BCA_File *)gBombkingJumpAnimationFile.file, 0, 0x40000000,
+                                  0x1000, 0);
     func_02012694(0x129, &this->mCamSpacePosX);
     this->mWithMeshClsn.ClearGroundFlag();
     this->mPrevAngleX = 0;
@@ -933,8 +927,7 @@ done:
 
 int daBombking_c::func_ov078_02124e9c()
 {
-    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(
-        &this->mBlendModelAnim, gBombkingDamageAnimationFile.file, 0, 0, 0x1000, 0);
+    this->mBlendModelAnim.SetAnim(*(BCA_File *)gBombkingDamageAnimationFile.file, 0, 0, 0x1000, 0);
     if (this->mHealth <= 0)
         this->mFlags = 0x10000000;
     this->mWithMeshClsn.ClearGroundFlag();
@@ -957,8 +950,8 @@ int daBombking_c::func_ov078_02124f28()
     if (this->mActionStep == 0) {
         int b = (this->mFlags & 0x4000) != 0;
         if (b != 0) {
-            _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(
-                &this->mBlendModelAnim, gBombkingStruggleAnimationFile.file, 0, 0, 0x1000, 0);
+            this->mBlendModelAnim.SetAnim(*(BCA_File *)gBombkingStruggleAnimationFile.file, 0, 0,
+                                          0x1000, 0);
             this->mActionStep = 1;
         }
     }
@@ -1121,8 +1114,8 @@ int daBombking_c::func_ov078_02125350()
 
     this->mAnimSpeed = 1;
     this->mVertAccel = -0x2000;
-    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(
-        &this->mBlendModelAnim, gBombkingThrowAnimationFile.file, 0, 0x40000000, 0x1000, 0);
+    this->mBlendModelAnim.SetAnim(*(BCA_File *)gBombkingThrowAnimationFile.file, 0, 0x40000000,
+                                  0x1000, 0);
 
     this->mHorzSpeed = 0;
 
@@ -1257,8 +1250,7 @@ int daBombking_c::func_ov078_02125734()
     this->mAnimSpeed = 1;
     this->mHorzSpeed = 0x5000;
     this->mVertAccel = -0x2000;
-    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(
-        &this->mBlendModelAnim, gBombkingWalk1AnimationFile.file, 8, 0, 0x1000, 0);
+    this->mBlendModelAnim.SetAnim(*(BCA_File *)gBombkingWalk1AnimationFile.file, 8, 0, 0x1000, 0);
     return 1;
 }
 
@@ -1305,8 +1297,8 @@ int daBombking_c::func_ov078_02125790()
 int daBombking_c::func_ov078_021258e4()
 {
     this->mVertAccel = -0x2000;
-    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(
-        &this->mBlendModelAnim, gBombkingStartAnimationFile.file, 8, 0x40000000, 0x1000, 0);
+    this->mBlendModelAnim.SetAnim(*(BCA_File *)gBombkingStartAnimationFile.file, 8, 0x40000000,
+                                  0x1000, 0);
     if (this->mMusicLayer3 == 0) {
         this->mMusicLayer3 = 1;
         this->mFlags = 0x10000002;
@@ -1423,8 +1415,7 @@ int daBombking_c::func_ov078_02125bc8() {
     this->mAnimSpeed = 1;
     this->mVertAccel = -0x2000;
     this->mMusicLayer3Timer = 0;
-    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(
-        &this->mBlendModelAnim, gBombkingWait2AnimationFile.file, 8, 0, 0x1000, 0);
+    this->mBlendModelAnim.SetAnim(*(BCA_File *)gBombkingWait2AnimationFile.file, 8, 0, 0x1000, 0);
     return 1;
 }
 

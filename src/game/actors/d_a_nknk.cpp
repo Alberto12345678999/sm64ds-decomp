@@ -77,16 +77,10 @@ bool ApproachLinear(short &value, short target, short step);
  * animation initialization paths both store a u16 file ID at +0, a byte
  * reference count at +2, and a loaded-file pointer at +4. */
 struct NknkModelFilePtr : SharedFilePtr {
-    u16 fileID;
-    u8 numRefs;
-    void *filePtr;
     NknkModelFilePtr(u32 fileID);
     ~NknkModelFilePtr();
 };
 struct NknkAnimationFileHandle : SharedFilePtr {
-    u16 fileID;
-    u8 numRefs;
-    void *filePtr;
     NknkAnimationFileHandle(u32 fileID);
     ~NknkAnimationFileHandle();
 };
@@ -105,7 +99,6 @@ extern NknkAnimationFileHandle *data_ov062_0211cee8[];
 extern int data_ov062_0211cf0c[];
 /* The called scalar definition takes u16 startFrame. The unused ModelAnim
  * member declaration takes Fix12<int>/u32; its measured form grew this helper. */
-extern void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(ModelAnim *anim, BCA_File *file, int flags, int speed, u16 startFrame);
 extern int Vec3_Dist(void* a, void* b);
 /* Reconstructed receiver/attacker/nullable collision interface; the original
  * source prototype is not uniquely recoverable from the register traffic. */
@@ -1059,13 +1052,8 @@ void daNknk_c::func_ov062_021179e4() {
 
 // @symbol _ZN8daNknk_c19func_ov062_02117994Ei
 void daNknk_c::func_ov062_02117994(int idx) {
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
-        &mModelAnim,
-        (BCA_File*)data_ov062_0211cee8[idx]->filePtr,
-        data_ov062_0211cf0c[idx],
-        mAnimSpeed,
-        0
-    );
+    mModelAnim.SetAnim((BCA_File *)data_ov062_0211cee8[idx]->filePtr, data_ov062_0211cf0c[idx],
+                       mAnimSpeed, 0);
     mAnimIndex = (u8)idx;
 }
 

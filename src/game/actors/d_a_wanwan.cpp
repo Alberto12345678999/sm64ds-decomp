@@ -43,23 +43,19 @@ enum {
 /* Model handles construct through func_02017acc and destroy through
  * func_02017ab4; animation handles construct through SharedFilePtr::Construct
  * and destroy through SharedFilePtr_Destruct_Anim. The manifest aliases those
- * undefined members onto the ROM symbols. words[1] is the BMD or BCA the load
- * just filled in; SharedFilePtr itself has no fields.
+ * undefined members onto the ROM symbols. filePtr is the BMD or BCA the load
+ * just filled in.
  *   02114968  body BMD   sinit 0x9c02, Model::LoadFile, mModelAnim
  *   02114978  link BMD   sinit 0x9c01, Model::LoadFile, mLinkModels
  *   02114980  idle BCA   sinit 0x9c04, dExtFrameCtrl_c::LoadFile
  *   02114970  lunge BCA  sinit 0x9c03, dExtFrameCtrl_c::LoadFile
  */
 struct WanwanModelFilePtr : SharedFilePtr {
-    u32 words[2];
-
     WanwanModelFilePtr(u32 fileID);
     ~WanwanModelFilePtr();
 };
 
 struct WanwanAnimationFileHandle : SharedFilePtr {
-    u32 words[2];
-
     WanwanAnimationFileHandle(u32 fileID);
     ~WanwanAnimationFileHandle();
 };
@@ -92,8 +88,6 @@ void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
 void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
     dActor_c *self, dExtShadowModel_c *shadow, Matrix4x3 *mtx, int radius, int depth,
     unsigned opacity);
-void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
-    ModelAnim *self, void *bca, int flags, int speed, unsigned start);
 /* local extern: Fix12<int> by value; this scalar bridge follows the definition. */
 int _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(
     Player *player, void *pos, unsigned kind, int power, u8 a, u8 b, u8 c);
@@ -129,10 +123,8 @@ namespace call3_267c {
 extern "C" int func_0201267c(int id, void *pos, int unused);
 }
 
-/* SetAnim takes Fix12<int> by value. The scalar extern stays. */
 #define SetChompAnim(self, bca) \
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj( \
-        &(self)->mModelAnim, (BCA_File *)(bca).words[1], 0, 0x1000, 0)
+    (self)->mModelAnim.SetAnim((BCA_File *)(bca).filePtr, 0, 0x1000, 0)
 
 // @symbol daWanwan_c_classInit
 extern "C" daWanwan_c *daWanwan_c_classInit()
@@ -153,7 +145,7 @@ int daWanwan_c::InitResources()
         int i = 0;
         Model *p = mLinkModels;
         do {
-            p->SetFile((BMD_File *)data_ov014_02114978.words[1], 1, 1);
+            p->SetFile((BMD_File *)data_ov014_02114978.filePtr, 1, 1);
             i = i + 1;
             p++;
         } while (i < 7);

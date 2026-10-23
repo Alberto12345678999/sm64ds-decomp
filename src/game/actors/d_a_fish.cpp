@@ -29,8 +29,8 @@
  * leftovers:
  * - ModelAnim::SetAnim stays mangled: it takes Fix12<int> by value
  *   (notes/mwccarm-codegen.md 6az).
- * - SharedFilePtr carries no fields yet, so the loaded file pointer in a
- *   handle's second word is read through a cast.
+ * - SharedFilePtr::filePtr is a void *, so LoadedBCA casts it to the
+ *   BCA_File * SetAnim takes.
  * - data_0209caa0 / data_0209f32c are the arm9 level-state words that
  *   carry the "has water" flag and the water height; neither is named yet.
  * - RawMatrix4x3 / RawVector3_16 are POD views whose aggregate copies
@@ -67,15 +67,11 @@ struct daFishState {
  * constructors and destructors are the ROM resource-family functions,
  * aliased in the manifest. */
 struct FishModelFilePtr : SharedFilePtr {
-    u32 words[2];
-
     FishModelFilePtr(u32 fileID);
     ~FishModelFilePtr();
 };
 
 struct FishAnimationFileHandle : SharedFilePtr {
-    u32 words[2];
-
     FishAnimationFileHandle(u32 fileID);
     ~FishAnimationFileHandle();
 };
@@ -113,10 +109,6 @@ s16 Vec3_HorzAngle(const Vector3 *from, const Vector3 *to);
 void Vec3_Asr(Vector3 *dst, Vector3 *src, int shift);
 void Matrix4x3_FromTranslation(Matrix4x3 *matrix, int x, int y, int z);
 void Matrix4x3_ApplyInPlaceToRotationY(Matrix4x3 *matrix, s16 angle);
-void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
-    ModelAnim *self, BCA_File *file, int flags, int speed,
-    unsigned int startFrame);
-
 }
 
 enum {
@@ -133,10 +125,10 @@ struct RawMatrix4x3 { int words[12]; };
  * each field sign-extended; the ROM moves three plain halfwords. */
 struct RawVector3_16 { s16 words[3]; };
 
-/* A SharedFilePtr's second word is the file it has loaded. */
+/* The animation file a handle has loaded. */
 static inline BCA_File *LoadedBCA(SharedFilePtr *ptr)
 {
-    return (BCA_File *)((void **)ptr)[1];
+    return (BCA_File *)ptr->filePtr;
 }
 
 inline daFish_c::daFish_c()
@@ -164,10 +156,8 @@ s32 daFish_c::InitResources()
     }
     mModelAnim.SetFile(
         (BMD_File *)Model::LoadFile(*data_ov100_021473a4[mModelIndex]), 1, -1);
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
-        &mModelAnim,
-        (BCA_File *)dExtFrameCtrl_c::LoadFile(*data_ov100_021473b0[mModelIndex]),
-        0, 0x1000, 0);
+    mModelAnim.SetAnim((BCA_File *)dExtFrameCtrl_c::LoadFile(*data_ov100_021473b0[mModelIndex]), 0,
+                       0x1000, 0);
     mIsSpawner = 1;
     mSpawnerID = uniqueID;
     mState = 0;
@@ -343,8 +333,8 @@ void daFish_c::func_ov100_02146640()
         s16 ang = Vec3_HorzAngle(&this->mPos, &p->mPos);
         if (ApproachLinear(this->mPrevAngleY, ang, 0x400) != 0) {
             if (this->mModelIndex == 0) {
-                _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
-                    &this->mModelAnim, LoadedBCA(&data_ov100_021489cc), 0, 0x1000, 0);
+                this->mModelAnim.SetAnim((BCA_File *)(LoadedBCA(&data_ov100_021489cc)), 0, 0x1000,
+                                         0);
             }
         }
         Vec3_Sub(&d, &this->mPos, &p->mPos);
@@ -352,13 +342,13 @@ void daFish_c::func_ov100_02146640()
             return;
         this->mStateTimer = -1;
         this->mState = 4;
-        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
-            &this->mModelAnim, LoadedBCA(data_ov100_021473b0[this->mModelIndex]), 0, 0x1000, 0);
+        this->mModelAnim.SetAnim((BCA_File *)(LoadedBCA(data_ov100_021473b0[this->mModelIndex])), 0,
+                                 0x1000, 0);
     } else {
         this->mStateTimer = -1;
         this->mState = 4;
-        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
-            &this->mModelAnim, LoadedBCA(data_ov100_021473b0[this->mModelIndex]), 0, 0x1000, 0);
+        this->mModelAnim.SetAnim((BCA_File *)(LoadedBCA(data_ov100_021473b0[this->mModelIndex])), 0,
+                                 0x1000, 0);
     }
 }
 

@@ -68,22 +68,16 @@ bool ApproachLinear(short &value, short target, short step);
  * TU, which deliberately avoids it); the destructor alias points at the
  * ROM's canonical copy. */
 struct JugemModelFile : SharedFilePtr {
-    u32 words[2];
-
     JugemModelFile(u32 fileID);
     ~JugemModelFile();
 };
 
 struct JugemAnimationFilePtr : SharedFilePtr {
-    u32 words[2];
-
     JugemAnimationFilePtr(u32 fileID);
     ~JugemAnimationFilePtr();
 };
 
 struct JugemTexSequenceFilePtr : SharedFilePtr {
-    u32 words[2];
-
     JugemTexSequenceFilePtr(u32 fileID);
     ~JugemTexSequenceFilePtr();
 };
@@ -131,8 +125,7 @@ void  MulVec3Mat4x3(const void *v, const void *m, void *out);
    which mwccarm passes differently at the call site than the loose scalar
    spelling -- the mangled spelling is the one that matches. Sound.h covers
    PlayLong, so only PlaySub stays. */
-int   _ZN5Sound7PlaySubEjjj5Fix12IiEb(u32 a, u32 b, u32 c, Fix12i d, bool loop);
-void  _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *thiz, void *f, int a, Fix12i b, u32 c);
+int _ZN5Sound7PlaySubEjjj5Fix12IiEb(u32 a, u32 b, u32 c, Fix12i d, bool loop);
 void  _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(void *thiz, BTP_File &f, int a, Fix12i b, u32 c);
 void  _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
          void *thiz, void *sm, void *mtx, int rad, int height, u32 flags);
@@ -967,8 +960,7 @@ int daC_Jugem_c::InitResources()
   mShadowModel2.InitCylinder();
   TextureSequence::Prepare(
       **(BMD_File**)((char*)&data_ov085_0213074c + 4), **(BTP_File**)((char*)&data_ov085_0213073c + 4));
-  _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
-      &mModelAnim1, *(BCA_File**)((char*)&data_ov085_02130744 + 4), 0, 0x1000, 0);
+  mModelAnim1.SetAnim(*(BCA_File **)((char *)&data_ov085_02130744 + 4), 0, 0x1000, 0);
   _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(
       &mTextureSequence, **(BTP_File**)((char*)&data_ov085_0213073c + 4), 0, 0x1000, 0);
   mModelAnim1.speed = 0x1000;

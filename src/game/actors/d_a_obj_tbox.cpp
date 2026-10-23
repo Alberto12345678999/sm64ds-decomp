@@ -33,15 +33,11 @@ enum daObjTbox_c_AssetId {
    SharedFilePtr::Construct and destroys through SharedFilePtr_Destruct_Anim.
    The manifest aliases those undefined members onto the ROM symbols. */
 struct TboxModelFilePtr : SharedFilePtr {
-    u32 id; void *ptr;
-
     TboxModelFilePtr(u32 fileID);
     ~TboxModelFilePtr();
 };
 
 struct TboxAnimationFileHandle : SharedFilePtr {
-    u32 id; void *ptr;
-
     TboxAnimationFileHandle(u32 fileID);
     ~TboxAnimationFileHandle();
 };
@@ -65,8 +61,6 @@ extern TboxModelFilePtr data_ov064_0211c96c;
 extern TboxAnimationFileHandle data_ov064_0211c964;
 extern SharedFilePtr data_ov002_0210d9a8;
 extern SharedFilePtr data_ov002_0210da38;
-void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
-    ModelAnim *self, BCA_File *file, int flags, int speed, u32 startFrame);
 void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(
     dCcAc_c *self, dActor_c *actor, int radius, int height,
     u32 flags, u32 vulnFlags);
@@ -86,10 +80,8 @@ int daObjTbox_c::InitResources()
     Model::LoadFile(data_ov002_0210da38);
     mModelAnim.SetFile(
         (BMD_File *)Model::LoadFile(data_ov064_0211c96c), 1, -1);
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
-        &mModelAnim,
-        (BCA_File *)dExtFrameCtrl_c::LoadFile(data_ov064_0211c964),
-        0x40000000, 0x1000, 0);
+    mModelAnim.SetAnim((BCA_File *)dExtFrameCtrl_c::LoadFile(data_ov064_0211c964), 0x40000000,
+                       0x1000, 0);
     _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(
         &mCylinder, this, 0x96000, 0x96000, 0x200004, 0);
     UpdateModelTransform();

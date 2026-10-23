@@ -916,18 +916,15 @@ bool dActor_c::IsPlayerInRange(s32 maxDist)
 }
 
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN8dActor_c15IsPlayerInRangeE5Fix12IiES1_S1_i
-/* ROM ordinal 55 -- _ZN8dActor_c15IsPlayerInRangeE5Fix12IiES1_S1_i
+// @symbol _ZN8dActor_c15IsPlayerInRangeEiiii
+/* ROM ordinal 55 -- _ZN8dActor_c15IsPlayerInRangeEiiii
  * 0x02010498  size 0x44 */
-/* Fix12<int> by value: defined by its symbol. */
-extern "C" int _ZN8dActor_c15IsPlayerInRangeE5Fix12IiES1_S1_i(dActor_c *self, Fix12i posX,
-                                                              Fix12i posY, Fix12i posZ,
-                                                              int maxDist) {
+bool dActor_c::IsPlayerInRange(Fix12i posX, Fix12i posY, Fix12i posZ, s32 maxDist) {
     Vector3 pos;
     pos.x = posX;
     pos.y = posY;
     pos.z = posZ;
-    Player *closest = self->ClosestPlayer();
+    Player *closest = ClosestPlayer();
     return Vec3_Dist(&pos, &closest->mPos) < (maxDist << 12);
 }
 

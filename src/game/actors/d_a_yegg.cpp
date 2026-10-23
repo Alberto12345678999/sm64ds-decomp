@@ -71,6 +71,7 @@
  *   egg it takes from the held-object queue); who sets 0x400 and 0x2000 is not
  *   recovered. The "idle" and "moving" animation names say when the code
  *   picks each file, not recovered names.
+ * - Sound::PlayLong keeps its u32-last-param local decl (Sound.h declares s16) and PlayCharVoice keeps its void-returning one (Sound.h declares u32): width/return walls, do not convert.
  */
 
 #pragma defer_codegen off
@@ -149,7 +150,6 @@ extern void Matrix4x3_FromRotationZXYExt(void *m, int x, int y, int z);
 extern void _ZN7daBtn_c19func_ov079_02123804EP8dActor_c(struct daBtn_c *self, dActor_c *other);
 extern void _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs(void *thiz, const void *v, unsigned int n, Fix12i f, short s);
 extern int RandomIntInternal(int *seed);
-extern void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *anim, void *file, int a, int b, unsigned int u);
 extern void _Z15ApproachLinear2Rsss(s16 *p, short a, short b);
 /* Numbering pins: func_ov002_020d5f98/020d6048 are now Player members (see
    Player.h) and no call in this TU uses these free spellings anymore. The
@@ -195,10 +195,6 @@ extern void LoadBlueCoinModel(void *self);
 extern void UnloadBlueCoinModel(void *self);
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinals 0 and 1 -- _ZN8daYegg_cD1Ev, 0x020ec56c, size 0x48;
- *                         _ZN8daYegg_cD0Ev, 0x020ec5b4, size 0x5c */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN8daYegg_cD1Ev
 // @symbol _ZN8daYegg_cD0Ev
 /* One native destructor definition emits both ROM variants. D1 is one vtable
@@ -431,7 +427,7 @@ void daYegg_c::func_ov002_020ec938(){
  * speed, zeroes the horizontal speed and sets gravity to -0x2000 (-2 units
  * per frame squared). */
 void daYegg_c::func_ov002_020ec978() {
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, *(void **)(data_ov002_0210eb78 + 4), 0, 0x1000, 0);
+    mModelAnim.SetAnim((BCA_File *)(*(void **)(data_ov002_0210eb78 + 4)), 0, 0x1000, 0);
     mHorzSpeed = 0;
     mVertAccel = -0x2000;
 }
@@ -485,7 +481,7 @@ void daYegg_c::func_ov002_020ec9c4(){
  * animation (file 0x0210eb78) at normal speed. */
 void daYegg_c::func_ov002_020ecad4() {
     mHorzSpeed = 0;
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, *(void **)(data_ov002_0210eb78 + 4), 0, 0x1000, 0);
+    mModelAnim.SetAnim((BCA_File *)(*(void **)(data_ov002_0210eb78 + 4)), 0, 0x1000, 0);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -713,8 +709,7 @@ void daYegg_c::func_ov002_020ecf94()
 void daYegg_c::func_ov002_020ecfc8() {
     dActor_c *r5;
     mTargetId = 0;
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, *(void **)(data_ov002_0210e6b0 + 4), 0,
-                                                0x1000, 0);
+    mModelAnim.SetAnim((BCA_File *)(*(void **)(data_ov002_0210e6b0 + 4)), 0, 0x1000, 0);
     mHorzSpeed = 0x64000;
     if (!func_ov002_020ec654()) {
         mVertAccel = 0;
@@ -870,9 +865,9 @@ void daYegg_c::func_ov002_020ed0d4()
         int speed = idx << 8;
         if (mPlayer->mIsAirborne != 0) speed = 0;
         if (v98 != 0) {
-            _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, *(void **)(data_ov002_0210e6b0 + 4), 0, speed, 0);
+            mModelAnim.SetAnim((BCA_File *)(*(void **)(data_ov002_0210e6b0 + 4)), 0, speed, 0);
         } else {
-            _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, *(void **)(data_ov002_0210eb78 + 4), 0, speed, 0);
+            mModelAnim.SetAnim((BCA_File *)(*(void **)(data_ov002_0210eb78 + 4)), 0, speed, 0);
         }
     }
 
@@ -1339,9 +1334,6 @@ fail:
     return 0;
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 28 -- _ZN8daYegg_c16CleanupResourcesEv, 0x020edf54, size 0x44 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN8daYegg_c16CleanupResourcesEv
 /* recovered: named members + shared header, real C++ method */
 /* Releases the two shared animation files and, if the egg pays a blue coin,
@@ -1355,9 +1347,6 @@ int daYegg_c::CleanupResources()
   return 1;
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 29 -- _ZN8daYegg_c6RenderEv, 0x020edf98, size 0x78 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN8daYegg_c6RenderEv
 /* recovered: named members + shared header, real C++ method -- vtable slot 9 */
 /* Draws the egg's model unless it is hidden: skipped when mFlags has 0x40000,
@@ -1378,9 +1367,6 @@ int daYegg_c::Render()
     return 1;
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 30 -- _ZN8daYegg_c8BehaviorEv, 0x020ee010, size 0x134 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN8daYegg_c8BehaviorEv
 /* recovered: named members + shared header, real C++ method, declarations from a shared header */
 /* recovered: named members + shared header, real C++ method */
@@ -1439,9 +1425,6 @@ int daYegg_c::Behavior()
     return 1;
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 31 -- _ZN8daYegg_c13InitResourcesEv, 0x020ee144, size 0x294 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN8daYegg_c13InitResourcesEv
 /* recovered: named members + shared header, real C++ method
  *
@@ -1491,8 +1474,7 @@ int daYegg_c::InitResources()
             return 0;
     }
 
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
-        &mModelAnim, *(void **)(data_ov002_0210eb78 + 4), 0, 0x1000, 0);
+    mModelAnim.SetAnim((BCA_File *)(*(void **)(data_ov002_0210eb78 + 4)), 0, 0x1000, 0);
 
     mAreaId = -1;
     mSpawnPosX = mPosX;

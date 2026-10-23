@@ -17,6 +17,11 @@
  * reads in ROM order. The four helpers keep their unmangled ROM-only
  * names and take the top by pointer.
  *
+ * S41: _ZTS16daObjDlPyramid_c / _ZTS21daObjDlPyramidDummy_c;
+ * _ZTV16daObjDlPyramid_c 0x021138c8, _ZTV21daObjDlPyramidDummy_c 0x02113844;
+ * D1 0x021111a0 / D0 0x021111ec (pyramid), D1 0x0211124c / D0 0x0211127c (dummy);
+ * D0 emitted from D1 definition, defer_codegen off keeps ROM order.
+ *
  * deslop
  * Leftover: the four helpers keep their unmangled ROM-only names
  *   (func_ov024_021112c0, 02111350, 02111480, 021114c4). They are this TU's
@@ -84,15 +89,11 @@ void func_ov024_021114c4(daObjDlPyramid_c *self);
  * compiler-generated undefined member imports onto the existing
  * evidence-bounded ROM symbols. */
 struct DlPyramidModelFilePtr : SharedFilePtr {
-    u32 words[2];
-
     DlPyramidModelFilePtr(u32 fileID);
     ~DlPyramidModelFilePtr();
 };
 
 struct DlPyramidCollisionFilePtr : SharedFilePtr {
-    u32 words[2];
-
     DlPyramidCollisionFilePtr(u32 fileID);
     ~DlPyramidCollisionFilePtr();
 };
@@ -103,7 +104,6 @@ extern "C" DlPyramidCollisionFilePtr gDlPyramidCollisionFile;
 #pragma defer_codegen off
 
 /* -------------------------------------------------------------------------- */
-/* 0x021111a0 _ZN16daObjDlPyramid_cD1Ev, 0x021111ec _ZN16daObjDlPyramid_cD0Ev   */
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN16daObjDlPyramid_cD1Ev
 daObjDlPyramid_c::~daObjDlPyramid_c()
@@ -115,8 +115,6 @@ daObjDlPyramid_c::~daObjDlPyramid_c()
    it from the definition above. */
 
 /* -------------------------------------------------------------------------- */
-/* 0x0211124c _ZN21daObjDlPyramidDummy_cD1Ev,                                  */
-/* 0x0211127c _ZN21daObjDlPyramidDummy_cD0Ev                                   */
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN21daObjDlPyramidDummy_cD1Ev
 daObjDlPyramidDummy_c::~daObjDlPyramidDummy_c()

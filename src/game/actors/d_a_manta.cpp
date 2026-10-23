@@ -49,21 +49,11 @@ struct MantaState {
  * numRefs/filePtr; the loaders populate the BMD/BCA payload at +4.
  * The registered destructors record file IDs; actor cleanup releases files. */
 struct MantaModelFilePtr : SharedFilePtr {
-    u16 fileID;
-    u8 numRefs;
-    u8 pad;
-    BMD_File* filePtr;
-
     MantaModelFilePtr(u32 fileID);
     ~MantaModelFilePtr();
 };
 
 struct MantaAnimationFilePtr : SharedFilePtr {
-    u16 fileID;
-    u8 numRefs;
-    u8 pad;
-    BCA_File* filePtr;
-
     MantaAnimationFilePtr(u32 fileID);
     ~MantaAnimationFilePtr();
 };
@@ -111,11 +101,9 @@ short Vec3_VertAngle(const Vector3 *v0, const Vector3 *v1);
 void Matrix4x3_FromRotationY(void *m, int angle);
 void Matrix4x3_ApplyInPlaceToRotationX(void *m, short angle);
 void MulVec3Mat4x3(Vector3 *v, void *m, Vector3 *out);
-void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
-    void *self, dActor_c *a, const Vector3 &v, int b, int c,
-    unsigned int d, unsigned int e);
-int _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
-    void *anim, void *file, int a, int b, unsigned int u);
+void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(void *self, dActor_c *a,
+                                                             const Vector3 &v, int b, int c,
+                                                             unsigned int d, unsigned int e);
 }
 
 bool ApproachLinear(short &value, short target, short step);
@@ -239,8 +227,7 @@ int daManta_c::func_ov090_021327e4()
 // @symbol _ZN9daManta_c19func_ov090_02132a58Ev
 int daManta_c::func_ov090_02132a58()
 {
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
-        &mModelAnim, data_ov090_0213452c.filePtr, 0, 0x1000, 0);
+    mModelAnim.SetAnim((BCA_File *)data_ov090_0213452c.filePtr, 0, 0x1000, 0);
     mHitRing = 0;
     mRingWrite = 0;
     mRingRead = 0;

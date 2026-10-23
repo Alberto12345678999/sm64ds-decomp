@@ -69,15 +69,11 @@ enum daPopoi_c_AssetId {
 typedef int (daPopoi_c::*PopoiPMF)();
 
 struct PopoiModelFile : SharedFilePtr {
-    u32 words[2];
-
     PopoiModelFile(u32 fileID);
     ~PopoiModelFile();
 };
 
 struct PopoiAnimationFilePtr : SharedFilePtr {
-    u32 words[2];
-
     PopoiAnimationFilePtr(u32 fileID);
     ~PopoiAnimationFilePtr();
 };
@@ -128,7 +124,6 @@ void func_02012694(int a, void *b, int c);
 extern void Matrix4x3_FromRotationY(void *m, int angle);
 extern void Matrix4x3_ApplyInPlaceToRotationX(void *m, int angle);
 extern void MulVec3Mat4x3(void *in, void *m, void *out);
-extern void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *self, void *bca, int a, int fix, unsigned int j);
 extern void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void*, void*, int, int, unsigned int, unsigned int);
 extern void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(void*, void*, void*, int, int, unsigned int, unsigned int);
 extern void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(void*, void*, int, int, void*, int);
@@ -368,7 +363,7 @@ int daPopoi_c::func_ov077_02126cd4(){
   mModelAnim.speed = 0x1000;
   mHorzSpeed = 0x8000;
   unk_41c = 0;
-  _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, (void*)((int*)&data_ov077_02127c90)[1], 0, 0x1000, 0);
+  mModelAnim.SetAnim((BCA_File *)((void *)((int *)&data_ov077_02127c90)[1]), 0, 0x1000, 0);
   return 1;
 }
 
@@ -457,7 +452,7 @@ int daPopoi_c::func_ov077_02126a84() {
     mHorzSpeed = 0;
     mStateTimer = 0x46;
     mModelAnim.speed = 0x1000;
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, (void*)((void**)&data_ov077_02127c98)[1], 0, 0x1000, 0);
+    mModelAnim.SetAnim((BCA_File *)((void *)((void **)&data_ov077_02127c98)[1]), 0, 0x1000, 0);
     return 1;
 }
 
@@ -477,7 +472,7 @@ int daPopoi_c::func_ov077_02126a50() {
 int daPopoi_c::func_ov077_02126a04() {
     mTargetAngleY = mAngleY + 0x4000;
     mModelAnim.speed = 0x1000;
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, ((void**)&data_ov077_02127c90)[1], 0, 0x1000, 0);
+    mModelAnim.SetAnim((BCA_File *)(((void **)&data_ov077_02127c90)[1]), 0, 0x1000, 0);
     return 1;
 }
 
@@ -509,7 +504,7 @@ int daPopoi_c::func_ov077_02126930(){
   mTurnRate = 0;
   unk_41c = 0;
   mModelAnim.speed = 0x2000;
-  _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, (void*)((int*)&data_ov077_02127c90)[1], 0, 0x1000, 0);
+  mModelAnim.SetAnim((BCA_File *)((void *)((int *)&data_ov077_02127c90)[1]), 0, 0x1000, 0);
   return 1;
 }
 
@@ -580,7 +575,7 @@ int daPopoi_c::func_ov077_0212679c()
 int daPopoi_c::func_ov077_02126758(){
   mHorzSpeed=0;
   mModelAnim.speed=0x1000;
-  _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, ((void**)&data_ov077_02127ca0)[1], 0x40000000, 0x1000, 0);
+  mModelAnim.SetAnim((BCA_File *)(((void **)&data_ov077_02127ca0)[1]), 0x40000000, 0x1000, 0);
   return 1;
 }
 

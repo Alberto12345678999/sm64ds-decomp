@@ -51,15 +51,12 @@ enum d_a_obj_wakame_AssetId {
 #include "SharedFilePtr.h"
 
 /* Model: func_02017acc / func_02017ab4. Animation: SharedFilePtr::Construct /
- * SharedFilePtr_Destruct_Anim. words[1] is the file LoadFile just filled in.
- * SharedFilePtr itself has no fields. */
+ * SharedFilePtr_Destruct_Anim. filePtr is the file LoadFile just filled in. */
 struct WakameModelFilePtr : SharedFilePtr {
-    unsigned int words[2];
     WakameModelFilePtr(unsigned int fileId);
     ~WakameModelFilePtr();
 };
 struct WakameAnimationFileHandle : SharedFilePtr {
-    unsigned int words[2];
     WakameAnimationFileHandle(unsigned int fileId);
     ~WakameAnimationFileHandle();
 };
@@ -72,10 +69,6 @@ extern "C" {
 void Matrix4x3_FromRotationY(Matrix4x3 *m, s16 angleY);
 
 /* ModelAnim::SetAnim -- wall 6az on InitResources. */
-void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(ModelAnim *self,
-                                                BCA_File *animFile,
-                                                int flags, int speed,
-                                                u32 startFrame);
 
 extern WakameModelFilePtr data_ov002_0210e0dc;          /* BMD model */
 extern WakameAnimationFileHandle data_ov002_0210e0d4;  /* BCA animation */
@@ -110,8 +103,7 @@ s32 daObjWakame_c::InitResources()
     mModelAnim.SetFile((BMD_File *)m, 1, -1);
     void *a = dExtFrameCtrl_c::LoadFile(data_ov002_0210e0d4);
     /* MEASURED: by-value Fix12<int> speed is wall 6az. */
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
-        &mModelAnim, (BCA_File *)a, 0, 0x1000, 0);
+    mModelAnim.SetAnim((BCA_File *)a, 0, 0x1000, 0);
     func_ov002_020bc488(this);
     return 1;
 }

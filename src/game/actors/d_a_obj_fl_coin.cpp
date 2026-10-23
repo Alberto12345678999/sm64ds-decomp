@@ -46,8 +46,6 @@
 // - func_ov064_02118ee4 keeps the p_addr/u64 round trip and m1: removing
 //   the locals renumbers the TU's static-init temporaries (@700..@714),
 //   which the manifest pins.
-// - The 0xe7 shake-end sound keeps its pointer-form local decl: including
-//   Sound.h (reference form) renumbers the same temporaries.
 /* Runtime asset handles resolved through the overlay 0 file table. */
 enum daObjFl_Coin_c_AssetId {
     ASSET_FL_14_00_BMD = 0x05ff,
@@ -75,6 +73,7 @@ enum daObjFl_Coin_c_AssetId {
 #include "dBgW.h"
 #include "daCoin_c.h"
 #include "Model.h"
+#include "Sound.h"
 
 /* State table at 0x0211c904. Each entry is a pointer-to-member that Behavior
  * calls. The targets are the piece methods below. */
@@ -95,18 +94,15 @@ struct CLPS_Block { int x; };
  * func_02017ab4 for the models, func_02017b4c / SharedFilePtr_Destruct_Clsn
  * for the collision); the subclasses exist to spell those entry points. */
 struct FlCoinModelFilePtr : SharedFilePtr {
-    u32 words[2];
     FlCoinModelFilePtr(u32 fileID);
     ~FlCoinModelFilePtr();
 };
 struct FlCoinCollisionFilePtr : SharedFilePtr {
-    u32 words[2];
     FlCoinCollisionFilePtr(u32 fileID);
     ~FlCoinCollisionFilePtr();
 };
 
 extern "C" {
-extern void _ZN5Sound9PlayBank3EjRK7Vector3(unsigned int n, const struct Vector3 *v);
 extern void Matrix4x3_FromTranslation(struct Matrix4x3* m, int x, int y, int z);
 extern Entry data_ov064_0211c904[];
 extern int _ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_(void* c, Fix12i a, Fix12i b);
@@ -359,7 +355,7 @@ void daObjFl_Puzzle_c::func_ov064_02118e24(int a1, int a2, int a3)
 
     if (st == 0x14) {
         mShakeOffsetY = 0;
-        _ZN5Sound9PlayBank3EjRK7Vector3(0xe7, &mCamSpacePos);
+        Sound::PlayBank3(0xe7, mCamSpacePos);
     }
 
     if ((int)mStepTimer >= a3 + 0x14) {

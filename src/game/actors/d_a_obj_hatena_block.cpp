@@ -219,7 +219,6 @@ extern void func_02039394(int *p, int v);
 extern void _ZN8dActor_c10EarthquakeERK7Vector35Fix12IiE(void *self, void *pos, s32 radius);
 extern void _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_S5_j(void *self, void *shadow, void *mtx, int fix, int t1, int t2, unsigned int n);
 extern int _ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_(void *self, int a, int b);
-extern void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *thiz, void *bca, int a, int fx, unsigned int f);
 extern void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(void *thiz, void *kcl, void *mtx, int fix, short s, void *clps);
 extern void func_ov102_0214ad14(void *actor);
 extern void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(unsigned id, int x, int y, int z);
@@ -237,19 +236,16 @@ void func_ov102_02149684(int *dst, daObjHatenaBlock_c *src);
    destructors func_02017ab4, SharedFilePtr_Destruct_Anim and
    SharedFilePtr_Destruct_Clsn. */
 struct HatenaBlockModelFilePtr : SharedFilePtr {
-    int unk0; void *file;
     HatenaBlockModelFilePtr(unsigned int id);
     ~HatenaBlockModelFilePtr();
 };
 
 struct HatenaBlockAnimFileHandle : SharedFilePtr {
-    int unk0; void *file;
     HatenaBlockAnimFileHandle(unsigned int id);
     ~HatenaBlockAnimFileHandle();
 };
 
 struct HatenaBlockClsnFileHandle : SharedFilePtr {
-    int unk0; void *file;
     HatenaBlockClsnFileHandle(unsigned int id);
     ~HatenaBlockClsnFileHandle();
 };
@@ -367,8 +363,8 @@ int daObjHatenaBlock_c::InitResources()
     case 0:   /* HATENA_BLOCK */
         modelFile = Model::LoadFile(data_ov102_0214e7e8);
         mModelAnim.SetFile((BMD_File *)Model::LoadFile(data_ov102_0214e808), 1, 0x19);
-        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
-            &mModelAnim, dExtFrameCtrl_c::LoadFile(data_ov102_0214e7f8), 0, 0x1000, 0);
+        mModelAnim.SetAnim((BCA_File *)(dExtFrameCtrl_c::LoadFile(data_ov102_0214e7f8)), 0, 0x1000,
+                           0);
         Model::LoadFile(data_ov002_0210d9e0);
         break;
     case 1:   /* ITEM_BLOCK */

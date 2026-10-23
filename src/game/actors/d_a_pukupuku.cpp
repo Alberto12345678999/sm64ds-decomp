@@ -71,15 +71,11 @@ struct AnimFilePtr { int a; struct BCA_File *file; };
  * local; the handle constructors and destructors are the ROM resource-family
  * functions, aliased in the manifest. */
 struct PukupukuModelFile : SharedFilePtr {
-    u32 words[2];
-
     PukupukuModelFile(u32 fileID);
     ~PukupukuModelFile();
 };
 
 struct PukupukuAnimationFilePtr : SharedFilePtr {
-    u32 words[2];
-
     PukupukuAnimationFilePtr(u32 fileID);
     ~PukupukuAnimationFilePtr();
 };
@@ -118,10 +114,9 @@ extern struct Matrix4x3 data_020a0e68;
 extern unsigned short DecIfAbove0_Short(unsigned short *p);
 extern void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
 void *thisp, struct dActor_c *, struct Vector3 const &, int, int, unsigned int, unsigned int);
-extern void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(
-void *thisp, struct dActor_c *, int, int, struct Vector3_16 *, int);
-extern void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
-void *thisp, struct BCA_File *, int, int, unsigned int);
+extern void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(void *thisp,
+                                                                        struct dActor_c *, int, int,
+                                                                        struct Vector3_16 *, int);
 }
 
 // @symbol daPukupuku_c_classInit
@@ -154,8 +149,7 @@ int daPukupuku_c::InitResources()
     _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(
         &mWithMeshClsn, this, 0x1e000, 0x1e000, 0, 0);
 
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
-        &mModelAnim, ((AnimFilePtr *)&data_ov090_0213455c)->file, 0, 0x1000, 0);
+    mModelAnim.SetAnim((BCA_File *)(((AnimFilePtr *)&data_ov090_0213455c)->file), 0, 0x1000, 0);
 
     func_ov090_021332e8((PukuStatePMF *)&data_ov090_02134594);
     return 1;

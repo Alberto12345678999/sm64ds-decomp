@@ -44,24 +44,16 @@ struct PoofPos {
  * and SharedFilePtr_Destruct_Anim. The wrappers are declared, never defined:
  * the manifest aliases their undefined members onto the ROM veneers. */
 struct BasabasaModelFilePtr : SharedFilePtr {
-    u32 words[2];
-
     BasabasaModelFilePtr(u32 fileID);
     ~BasabasaModelFilePtr();
 };
 
 struct BasabasaAnimationFileHandle : SharedFilePtr {
-    /* SharedFilePtr::Load and func_02017e0c use this local eight-byte layout. */
-    u16 fileID;
-    u8 numRefs;
-    void *filePtr;
-
     BasabasaAnimationFileHandle(u32 fileID);
     ~BasabasaAnimationFileHandle();
 };
 
 extern "C" {
-extern void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(ModelAnim *m, void *f, int a, int fix, unsigned sp0);
 extern void func_ov002_020aea30(void *self, void *actor, void *collision);
 extern void func_02012694(int a, void* b);
 extern void _ZN12dEnemyBase_c20KillByInvincibleCharERK10Vector3_16R6Player5Fix12IiE(dEnemyBase_c* self, short* v, Player* p);
@@ -121,7 +113,7 @@ void daBasabasa_c::func_ov065_0211704c()
     flags = mdCcAc_c.hitFlags;
     if (flags & 0x2400) {
         mIsFlying = 1;
-        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim1, data_ov065_0211d690.filePtr, 0, 0x1000, 0);
+        mModelAnim1.SetAnim((BCA_File *)data_ov065_0211d690.filePtr, 0, 0x1000, 0);
         mDeathState = 2;
         func_ov002_020aea30(this, p, 0);
         func_02012694(0x112, &mCamSpacePosX);
@@ -139,14 +131,14 @@ void daBasabasa_c::func_ov065_0211704c()
     if (flags & 0x40000) {
         mDeathState = 4;
         mIsFlying = 1;
-        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim1, data_ov065_0211d690.filePtr, 0, 0x1000, 0);
+        mModelAnim1.SetAnim((BCA_File *)data_ov065_0211d690.filePtr, 0, 0x1000, 0);
         func_ov002_020aea30(this, p, 0);
         func_02012694(0x112, &mCamSpacePosX);
         return;
     }
     if (flags & 0x4380) {
         mIsFlying = 1;
-        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim1, data_ov065_0211d690.filePtr, 0, 0x1000, 0);
+        mModelAnim1.SetAnim((BCA_File *)data_ov065_0211d690.filePtr, 0, 0x1000, 0);
         mDeathState = 3;
         func_ov002_020aea30(this, p, 0);
         func_02012694(0x112, &mCamSpacePosX);
@@ -154,7 +146,7 @@ void daBasabasa_c::func_ov065_0211704c()
     }
     if (flags & 0x40) {
         mIsFlying = 1;
-        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim1, data_ov065_0211d690.filePtr, 0, 0x1000, 0);
+        mModelAnim1.SetAnim((BCA_File *)data_ov065_0211d690.filePtr, 0, 0x1000, 0);
         mDeathState = 2;
         func_ov002_020aea30(this, p, 0);
         func_02012694(0x112, &mCamSpacePosX);
@@ -287,7 +279,7 @@ int daBasabasa_c::EnterChase()
     mFlags = 0x10000003;
     mStateTimer = 0x64;
     mModelAnim1.speed = 0x2000;
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim1, data_ov065_0211d690.filePtr, 0, 0x1000, 0);
+    mModelAnim1.SetAnim((BCA_File *)data_ov065_0211d690.filePtr, 0, 0x1000, 0);
     mTargetAngleY = ((RandomIntInternal(&data_0209e650) >> 8) & 0xf) << 0xc;
     return 1;
 }
@@ -317,7 +309,7 @@ int daBasabasa_c::EnterDrop()
     mTerminalVelocity = -0xa000;
     mIsFlying = 0;
     mModelAnim2.speed = 0;
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim2, data_ov065_0211d6a0.filePtr, 0, 0x1000, 0);
+    mModelAnim2.SetAnim((BCA_File *)data_ov065_0211d6a0.filePtr, 0, 0x1000, 0);
     PoofPos vec(mPosX, mPosY + 0x64000, mPosZ);
     mStateTimer = 0x19;
     if (mPosY == 0x898000)
@@ -351,7 +343,7 @@ int daBasabasa_c::EnterPerch()
     mFlags = 3;
     mIsFlying = 0;
     mModelAnim2.speed = 0x1000;
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim2, data_ov065_0211d6a0.filePtr, 0, 0x1000, 0);
+    mModelAnim2.SetAnim((BCA_File *)data_ov065_0211d6a0.filePtr, 0, 0x1000, 0);
     return 1;
 }
 

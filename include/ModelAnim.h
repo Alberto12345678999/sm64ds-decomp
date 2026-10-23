@@ -58,8 +58,22 @@
  * stores, zeroes +0x60), D2 (both vptr restores, both base D2 calls) and
  * SetAnim/UpdateVerts reading +0x60.
  *
- * SetAnim's definition stays a mangled free function (wall 6az: its true
- * signature carries Fix12<int>); the declaration below is the real one.
+ * SetAnim IS A REAL METHOD, and its symbol is _ZN9ModelAnim7SetAnimEP8BCA_Fileiit.
+ * It used to be a mangled extern "C" free function taking an explicit `thiz`,
+ * on the grounds that wall 6az forbade the method form. That was wrong: the
+ * wall was the NAME. The old symbol spelled a by-value `Fix12<int>` that we
+ * invented -- the cartridge carries no mangled names at all -- and the
+ * class-typed parameter is what cost +0x18, because the body reads `speed` in
+ * both branches. Retail reads the argument straight out of r3 (`mov r4, r3`),
+ * so the honest parameter is the scalar Fix12i and the honest startFrame is the
+ * u16 the body already loads with `ldrh`. Under that spelling the method
+ * reproduces 0x02016748/0x5c exactly. See notes/mwccarm-codegen.md section 6az,
+ * MEASURED 2026-10-22.
+ *
+ * Four call sites could not follow: d_mg_trmpln2_mario.cpp and unit020bfec0.cpp
+ * have no real ModelAnim to call through, d_a_ots.cpp tail-forwards the result
+ * as an int, and one Player.cpp body passes a non-constant startFrame. Each
+ * keeps a scalar `local extern:` with its reason.
  */
 
 #ifdef __cplusplus
@@ -85,8 +99,7 @@ struct ModelAnim : Model, dExtFrameCtrl_c {
 
     /* --- non-virtual --- */
     ModelAnim();
-    void SetAnim(BCA_File *animFile, int flags, Fix12<int> speed,
-                 u32 startFrame);         /* defined as a free function, wall 6az */
+    void SetAnim(BCA_File *animFile, int flags, Fix12i speed, u16 startFrame);
     void Copy(const ModelAnim &src, char *newFile);
 
     /* ITS OWN, TO RESOLVE AN AMBIGUITY MULTIPLE INHERITANCE CREATES. ModelAnim

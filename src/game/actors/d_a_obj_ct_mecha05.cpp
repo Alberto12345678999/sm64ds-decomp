@@ -13,7 +13,6 @@
  * - data_ov065_0211c0c8 / data_ov065_0211d26c; TTC_MovingBar_ModelFile /
  *   TTC_MovingBar_ClsnFile are symbols.txt BSS labels shared with the
  *   neighbouring class
- * - SharedFilePtr +4 BMD (LoadFile/Release; header has no fields)
  * - common.h first (func_ov065_0211ac0c mShadowMatrix.m[9..11])
  * - return new emits homeless _ZN10dBgActor_cD2Ev; compiler-only policy
  *   deadstrips it
@@ -23,6 +22,9 @@
  * toward the compiler-owned destructor group. Keep the factory first.
  *
  * The factory is `return new` in this file.
+ *
+ * S41: D1 0x0211ab60 size 0x4c, D0 0x0211abac size 0x60; no separate body,
+ * inline virtual destructor + vtable emits D1 then D0, no D2.
  */
 
 /* Runtime asset handles resolved through the overlay 0 file table. */
@@ -48,15 +50,11 @@ enum daObjCtMecha05_c_AssetId {
  * shard's data_ov065_* labels for the same addresses are dropped from
  * symbols.txt, and their stale decl_common.h lines with them (S42). */
 struct Mecha05ModelFile : SharedFilePtr {
-    u32 words[2];
-
     Mecha05ModelFile(u32 fileID);
     ~Mecha05ModelFile();
 };
 
 struct Mecha05CollisionFilePtr : SharedFilePtr {
-    u32 words[2];
-
     Mecha05CollisionFilePtr(u32 fileID);
     ~Mecha05CollisionFilePtr();
 };
@@ -340,8 +338,6 @@ void func_ov065_0211ac0c(daObjCtMecha05_c *actor)
 // @symbol _ZN16daObjCtMecha05_cD1Ev
 // @symbol _ZN16daObjCtMecha05_cD0Ev
 /* -------------------------------------------------------------------------- */
-/*   _ZN16daObjCtMecha05_cD1Ev  0x0211ab60  size 0x4c  (complete-object)      */
-/*   _ZN16daObjCtMecha05_cD0Ev  0x0211abac  size 0x60  (deleting)            */
 /* -------------------------------------------------------------------------- */
 /* No separate body lives here. The inline virtual destructor in the class
  * declaration and this TU's vtable instantiation make mwccarm emit retail's

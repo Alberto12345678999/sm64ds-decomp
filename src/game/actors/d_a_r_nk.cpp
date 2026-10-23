@@ -39,6 +39,7 @@ enum daRNk_c_AssetId {
 #include "Timer.h"
 #include "SharedFilePtr.h"
 #include "nitro/fx/fx.h"
+#include "Sound.h"
 
 /* Actor IDs (symbols/actor_debug_names.tsv). */
 enum {
@@ -108,8 +109,6 @@ typedef void (daRNk_c::*StateFunc)();
 /* The model handle's ctor/dtor are the cartridge's func_02017acc /
    func_02017ab4 pair; the manifest aliases these. */
 struct RNkModelFileHandle : SharedFilePtr {
-    s32 fileId;
-    void *file;
     RNkModelFileHandle(u32 fileID);
     ~RNkModelFileHandle();
 };
@@ -117,25 +116,23 @@ struct RNkModelFileHandle : SharedFilePtr {
 /* The seven animation handles construct through SharedFilePtr::Construct
    and register SharedFilePtr_Destruct_Anim; the manifest aliases these. */
 struct RNkAnimationFileHandle : SharedFilePtr {
-    s32 fileId;
-    void *file;
     RNkAnimationFileHandle(u32 fileID);
     ~RNkAnimationFileHandle();
 };
 
-/* Each SharedFilePtr below is {?, loaded file} with the file at +4. Names are
-   by when SetAnim plays them. */
-#define ANIM_IDLE      (gdaRNkNokonokoWait1AnimationFile.file)   /* after talking, after stopping, at spawn */
-#define ANIM_TALK      (gdaRNkNokonokoWait2AnimationFile.file)   /* turned to face the player and talking */
-#define ANIM_RUN_START (data_ov062_0211e014.file)   /* at the start of the race; then ANIM_RUN */
-#define ANIM_RUN       (data_ov062_0211e024.file)   /* the looping run; speed follows mHorzSpeed */
-#define ANIM_JUMP      (data_ov062_0211e02c.file)   /* in the air */
-#define ANIM_LAND      (data_ov062_0211e004.file)   /* on landing, or when the path ends; then ANIM_RUN */
-#define ANIM_BRAKE     (gdaRNkNokonokoWalkEdAnimationFile.file)   /* STATE_PULL_UP's last frame to a stop */
+/* The animation each handle below has loaded. Names are by when SetAnim
+   plays them. */
+#define ANIM_IDLE      (gdaRNkNokonokoWait1AnimationFile.filePtr)   /* after talking, after stopping, at spawn */
+#define ANIM_TALK      (gdaRNkNokonokoWait2AnimationFile.filePtr)   /* turned to face the player and talking */
+#define ANIM_RUN_START (data_ov062_0211e014.filePtr)   /* at the start of the race; then ANIM_RUN */
+#define ANIM_RUN       (data_ov062_0211e024.filePtr)   /* the looping run; speed follows mHorzSpeed */
+#define ANIM_JUMP      (data_ov062_0211e02c.filePtr)   /* in the air */
+#define ANIM_LAND      (data_ov062_0211e004.filePtr)   /* on landing, or when the path ends; then ANIM_RUN */
+#define ANIM_BRAKE     (gdaRNkNokonokoWalkEdAnimationFile.filePtr)   /* STATE_PULL_UP's last frame to a stop */
 
 /* Play a BCA on Koopa's ModelAnim at normal speed (0x1000 = 1.0), from frame 0. */
 #define SET_ANIM(this, bca, flags) \
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&(this)->mModelAnim, (bca), (flags), 0x1000, 0)
+    (this)->mModelAnim.SetAnim((BCA_File *)(bca), (flags), 0x1000, 0)
 
 bool ApproachLinear(short &value, short target, short step);
 int ApproachLinear(int &value, int target, int step);
@@ -172,10 +169,8 @@ extern void *_ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(unsigned int id, int
 extern short data_02082214[];   /* SINE_TABLE: {sin, cos} pairs in fix12, indexed by angle >> 4 */
 /* This scalar entry follows its C definition, including u16 startFrame.
    ModelAnim.h instead declares u32; that shared contract is still unresolved. */
-extern void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *, void *, int, int, u16);
 extern s16 Vec3_HorzAngle(const Vector3 *v0, const Vector3 *v1);
 extern s32 Vec3_Dist(const Vector3 *a, const Vector3 *b);
-extern void _ZN5Sound22StopLoadedMusic_Layer2Ev(void);
 /* Play2D(3, id): a sound with no position. */
 extern unsigned int func_0201277c(unsigned int id);
 extern signed char data_0209f2f8;   /* LEVEL_ID */
@@ -230,7 +225,7 @@ int daRNk_c::InitResources()
     dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)&gdaRNkNokonokoWait2AnimationFile);
     dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)&data_ov062_0211e02c);
     dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)&data_ov062_0211e004);
-    if (mModelAnim.SetFile((BMD_File *)gdaRNkNokonokoModelFile.file, 1, -1) == 0)
+    if (mModelAnim.SetFile((BMD_File *)gdaRNkNokonokoModelFile.filePtr, 1, -1) == 0)
         return 0;
     if (mShadowModel.InitCylinder() == 0)
         return 0;
@@ -289,7 +284,8 @@ int daRNk_c::CleanupResources()
     ((SharedFilePtr *)&gdaRNkNokonokoWait2AnimationFile)->Release();
     ((SharedFilePtr *)&data_ov062_0211e02c)->Release();
     ((SharedFilePtr *)&data_ov062_0211e004)->Release();
-    if (mIsRacing) _ZN5Sound22StopLoadedMusic_Layer2Ev();
+    if (mIsRacing)
+        Sound::StopLoadedMusic_Layer2();
     return 1;
 }
 
@@ -706,7 +702,7 @@ void daRNk_c::func_ov062_02119be0() {
         this->mStep++;
         SET_ANIM(this, ANIM_TALK, kAnimLoop);
         if (this->mHasFinished == 0) {
-            _ZN5Sound22StopLoadedMusic_Layer2Ev();
+            Sound::StopLoadedMusic_Layer2();
             func_0201277c(kSfx4D);
             this->mIsRacing = 0;
             this->mHasFinished = 1;

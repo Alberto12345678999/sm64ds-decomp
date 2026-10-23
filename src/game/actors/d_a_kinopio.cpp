@@ -108,8 +108,6 @@ void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES
     void *thiz, void *sm, void *mtx, int rad, int height, u32 flags);
 
 /* model / collision / shadow */
-void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
-    void *thiz, BCA_File *file, int a, int speed, u32 flags);
 void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(
     void *thiz, void *actor, Fix12i a, Fix12i b, u32 c, u32 d);
 
@@ -276,9 +274,8 @@ void daKinopio_c::St_Talk_Main()
 void daKinopio_c::St_Talk_Init()
 {
     u32 flags = 0;
-    BCA_File *file = (BCA_File *)(((int *)&data_ov085_02130490)[1]);
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
-        &mModelAnim, file, 0, 0x1000, flags);
+    BCA_File *file = (BCA_File *)data_ov085_02130490.filePtr;
+    mModelAnim.SetAnim((BCA_File *)file, 0, 0x1000, flags);
 }
 
 // @symbol _ZN11daKinopio_c12St_Idle_MainEv
@@ -305,8 +302,7 @@ void daKinopio_c::St_Idle_Main()
 // @symbol _ZN11daKinopio_c12St_Idle_InitEv
 void daKinopio_c::St_Idle_Init()
 {
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
-        &mModelAnim, ((BCA_File **)&data_ov085_02130488)[1], 0, 0x1000, 0);
+    mModelAnim.SetAnim((BCA_File *)data_ov085_02130488.filePtr, 0, 0x1000, 0);
 }
 
 // @symbol _ZN11daKinopio_c8SetStateEi

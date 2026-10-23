@@ -9,6 +9,9 @@
  * daObjBk_Rotebar_c, BK_ROTEBAR registry). Retail does not store
  * that spelling.
  *
+ * S41: RTTI daObjBk_Rotebar_c; D1 0x02112944 size 0x44, D0 0x02112988 size 0x58;
+ * inline dtor in daObjBk_Rotebar_c.h declared first emits D1 then D0, no D2.
+ *
  * deslop
  * Leftover: dBgW_KcMbg::SetFile and dBgActor_c::IsClsnInRange stay
  *   mangled in this TU -- both take Fix12<int> by value (wall 6az);
@@ -40,19 +43,14 @@ enum d_a_obj_bk_rotebar_AssetId {
 struct KCL_File;
 struct CLPS_Block;
 
-/* SharedFilePtr has no fields; the two words are the handle's 8 bytes. The
- * constructors and destructors are the ROM resource-family veneers, aliased
- * in the manifest. */
+/* The constructors and destructors are the ROM resource-family veneers,
+ * aliased in the manifest. */
 struct BkRotebarModelFilePtr : SharedFilePtr {
-    u32 words[2];
-
     BkRotebarModelFilePtr(u32 fileID);
     ~BkRotebarModelFilePtr();
 };
 
 struct BkRotebarCollisionFilePtr : SharedFilePtr {
-    u32 words[2];
-
     BkRotebarCollisionFilePtr(u32 fileID);
     ~BkRotebarCollisionFilePtr();
 };
@@ -137,8 +135,6 @@ s32 daObjBk_Rotebar_c::CleanupResources()
     return 1;
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 1 -- _ZN17daObjBk_Rotebar_cD0Ev, 0x02112988, size 0x58        */
-/* ROM ordinal 0 -- _ZN17daObjBk_Rotebar_cD1Ev, 0x02112944, size 0x44        */
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN17daObjBk_Rotebar_cD1Ev
 // @symbol _ZN17daObjBk_Rotebar_cD0Ev

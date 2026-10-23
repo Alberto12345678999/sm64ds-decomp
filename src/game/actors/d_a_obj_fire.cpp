@@ -8,6 +8,10 @@
  * One class, two C-linkage factories: EAD would name both
  * daObjFire_c_classInit (not_apply=global_classinit_name_collision).
  *
+ * S41: RTTI daObjFire_c; D1 0x020b5734 size 0x30 (slot 16),
+ * D0 0x020b5764 size 0x44 (slot 17); inline dtor in daObjFire_c.h
+ * emits D1 then D0, no D2.
+ *
  * FUNCTION ORDER IS DELIBERATELY THE REVERSE OF THE ROM'S.
  *
  * deslop leftovers:
@@ -169,7 +173,6 @@ int daObjFire_c::Behavior()
     return 1;
 }
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 1 -- _ZN11daObjFire_cD0Ev, 0x020b5764, size 0x44 */
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN11daObjFire_cD0Ev
 /* Deleting destructor, vtable slot 17. No body here: the destructor is inline in
@@ -178,7 +181,6 @@ int daObjFire_c::Behavior()
  * supplies the actor-heap release after complete destruction. */
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 0 -- _ZN11daObjFire_cD1Ev, 0x020b5734, size 0x30 */
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN11daObjFire_cD1Ev
 /* Complete destructor, vtable slot 16. No body here either -- same inline header

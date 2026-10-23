@@ -50,7 +50,8 @@
  *    unnamed: the first two are written here and never read.
  *  - Remaining TUBUILD CONFLICT blocks are the legacy alternates tubuild
  *    create commented out; the ones whose kept side has since been deleted
- *    are noted RESOLVED in the manifest and their blocks removed. */
+ *    are noted RESOLVED in the manifest and their blocks removed.
+ *  - Sound::ChangeMusicVolume keeps its mangled free-function decl (Fix12<int> by value, S13 wall); no Sound.h spelling mangles to it. */
 
 /* TUBUILD NOTE -- codegen is deferred, so .text emits in reverse source
  * order and the function bodies below are ROM-descending. The exception is
@@ -255,17 +256,14 @@ struct PmfEnt { PMF pmf; };
  * Each wrapper's ctor and dtor stay undefined here; the manifest aliases them
  * onto those ROM veneers. */
 struct KpaModelFilePtr : SharedFilePtr {
-    u32 words[2];
     KpaModelFilePtr(u32 fileID);
     ~KpaModelFilePtr();
 };
 struct KpaAnimationFileHandle : SharedFilePtr {
-    u32 words[2];
     KpaAnimationFileHandle(u32 fileID);
     ~KpaAnimationFileHandle();
 };
 struct KpaTexSequenceFilePtr : SharedFilePtr {
-    u32 words[2];
     KpaTexSequenceFilePtr(u32 fileID);
     ~KpaTexSequenceFilePtr();
 };
@@ -419,7 +417,6 @@ extern KpaAnimationFileHandle data_ov060_0211ac90;
 extern short data_ov060_02119294[];
 extern short data_ov060_02119296[];
 extern short data_ov060_02119298[];
-extern void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *anim, void *file, int a, int d, unsigned e);
 extern void _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(void *self, void *btp, int a, int b, unsigned int d);
 extern void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(void *self, void *act, void *pos, int c3, int d, unsigned int e, unsigned int f);
 extern void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(void *self, void *act, int a, int b, void *d1, void *d2);
@@ -527,9 +524,6 @@ int _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *self, void *actor, int fix, 
  * ends the object. */
 #pragma defer_codegen off
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinals 0-1 -- _ZN7daKpa_cD1Ev, 0x02111900 / _ZN7daKpa_cD0Ev, 0x02111950 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN7daKpa_cD1Ev
 // @symbol _ZN7daKpa_cD0Ev
 /*
@@ -556,9 +550,6 @@ daKpa_c::~daKpa_c()
 }
 #endif
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinals 2-3 -- _ZN11daKpaTail_cD1Ev, 0x021119b4 / _ZN11daKpaTail_cD0Ev, 0x021119e4 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN11daKpaTail_cD1Ev
 // @symbol _ZN11daKpaTail_cD0Ev
 /*
@@ -613,9 +604,6 @@ extern "C" daKpaTail_c *daKpaTail_c_classInit(void)
     return new daKpaTail_c;
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 78 -- _ZN11daKpaTail_c13InitResourcesEv, 0x021163b4, size 0x3c */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN11daKpaTail_c13InitResourcesEv
 /*
 Tail setup: a single cylinder collider (dCcAc_c::Init) with radius 0x32000 (50
@@ -628,9 +616,6 @@ int daKpaTail_c::InitResources()
     return 1;
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 77 -- _ZN7daKpa_c13InitResourcesEv, 0x02116130, size 0x284 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN7daKpa_c13InitResourcesEv
 /*
 Bowser's setup, in order: load the model file and hand it to ModelBase::SetFile,
@@ -677,11 +662,11 @@ int daKpa_c::InitResources()
 
     func_ov060_02111cc0(BOWSER_ANIM_IDLE, 0);
 
-    TextureSequence::Prepare(*(BMD_File *)data_ov060_0211ac78.words[1],
-                             *(BTP_File *)data_ov060_0211ac28.words[1]);
+    TextureSequence::Prepare(*(BMD_File *)data_ov060_0211ac78.filePtr,
+                             *(BTP_File *)data_ov060_0211ac28.filePtr);
 
-    _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(
-        &this->mTextureSequence, (void *)data_ov060_0211ac28.words[1], 0, 0x1000, 0);
+    _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(&this->mTextureSequence,
+                                                       data_ov060_0211ac28.filePtr, 0, 0x1000, 0);
 
     this->mTextureSequence.SetFlags(0x40000000);
 
@@ -740,9 +725,6 @@ int daKpa_c::InitResources()
     return 1;
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 76 -- _ZN11daKpaTail_c8BehaviorEv, 0x02116078, size 0xb8 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN11daKpaTail_c8BehaviorEv
 /*
 Per frame: find Bowser by mBowserUniqueID (return 1 if he is gone), put the tail
@@ -778,9 +760,6 @@ int daKpaTail_c::Behavior()
     return 1;
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 75 -- _ZN7daKpa_c8BehaviorEv, 0x02115f64, size 0x114 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN7daKpa_c8BehaviorEv
 /*
 One frame of Bowser, in order: advance the random state once (result unused);
@@ -833,9 +812,6 @@ int daKpa_c::Behavior()
     return 1;
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 74 -- _ZN11daKpaTail_c6RenderEv, 0x02115f5c, size 0x8 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN11daKpaTail_c6RenderEv
 /*
 Draws nothing; returns 1. */
@@ -844,9 +820,6 @@ int daKpaTail_c::Render()
     return 1;
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 73 -- _ZN7daKpa_c6RenderEv, 0x02115f0c, size 0x50 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN7daKpa_c6RenderEv
 /*
 Draw Bowser. Skipped while mOpacity < 8, where the opacity handed to the model
@@ -863,9 +836,6 @@ int daKpa_c::Render()
     return 1;
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 72 -- _ZN7daKpa_c16OnPendingDestroyEv, 0x02115f08, size 0x4 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN7daKpa_c16OnPendingDestroyEv
 /*
 Empty override: the ROM body is a single `bx lr`. */
@@ -873,9 +843,6 @@ void daKpa_c::OnPendingDestroy()
 {
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 71 -- _ZN11daKpaTail_c16CleanupResourcesEv, 0x02115f00, size 0x8 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN11daKpaTail_c16CleanupResourcesEv
 /*
 Releases nothing; returns 1. The tail loads no files of its own:
@@ -885,9 +852,6 @@ int daKpaTail_c::CleanupResources()
     return 1;
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 70 -- _ZN7daKpa_c16CleanupResourcesEv, 0x02115e80, size 0x80 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN7daKpa_c16CleanupResourcesEv
 /*
 Release every handle InitResources loaded (the model, the 0x1c animations, the six
@@ -1645,21 +1609,21 @@ BOWSER_STATE_IDLE, and after any other animation (the one playing when the state
 is entered) start animation 8; the three are started with 0x40000000 (play once). */
 void daKpa_c::func_ov060_02114e9c(){
     this->mHorzSpeed = 0;
-    if ((int)this->mModelAnim.file == data_ov060_0211ac20.words[1]) {
+    if ((int)this->mModelAnim.file == (int)data_ov060_0211ac20.filePtr) {
         if (this->mModelAnim.WillHitFrame(8)) {
             func_02012694(BOWSER_SND_B5, (const Vector3 *)(&this->mCamSpacePosX));
         }
     }
     if (Bowser_IsAnimAtLastFrame() == 0) return;
-    if (*(int *)&this->mModelAnim.file == data_ov060_0211ac20.words[1]) {
+    if (*(int *)&this->mModelAnim.file == (int)data_ov060_0211ac20.filePtr) {
         func_ov060_02111cc0(6, 0x40000000);
         return;
     }
-    if (*(int *)&this->mModelAnim.file == data_ov060_0211ac68.words[1]) {
+    if (*(int *)&this->mModelAnim.file == (int)data_ov060_0211ac68.filePtr) {
         func_ov060_02111cc0(7, 0x40000000);
         return;
     }
-    if (*(int *)&this->mModelAnim.file == data_ov060_0211ac70.words[1]) {
+    if (*(int *)&this->mModelAnim.file == (int)data_ov060_0211ac70.filePtr) {
         this->mState = BOWSER_STATE_IDLE;
         return;
     }
@@ -1830,8 +1794,9 @@ mStep: 0 starts animation 0x16 (once) with sound 0xb5, 1 starts 0x15 (looping),
 void daKpa_c::func_ov060_02114858(){
     int new_var2;
     s32 v134 = (s32)this->mModelAnim.file;
-    if ((v134 == data_ov060_0211acd8.words[1]) || ((v134 == data_ov060_0211acf0.words[1]) && ((((u32) (((u32) (this->mModelAnim.currFrame)) << 4)) >> 16) > 0x2a)))
-    {
+    if ((v134 == (int)data_ov060_0211acd8.filePtr) ||
+        ((v134 == (int)data_ov060_0211acf0.filePtr) &&
+         ((((u32)(((u32)(this->mModelAnim.currFrame)) << 4)) >> 16) > 0x2a))) {
         s32 v12c = this->mModelAnim.currFrame;
         s32 v450 = *(volatile s32 *)&this->mSoundID;
         s32 r4 = ((u32) (v12c << 4)) >> 16;
@@ -2178,7 +2143,7 @@ void daKpa_c::func_ov060_021140c0(){
             this->mFireballShots = 3;
         }
     }
-    if ((int)this->mModelAnim.file == data_ov060_0211abe0.words[1]) {
+    if ((int)this->mModelAnim.file == (int)data_ov060_0211abe0.filePtr) {
         if (this->mModelAnim.WillHitFrame(5)) {
             Vector3 pos;
             u16 dir[3];
@@ -2221,7 +2186,7 @@ void daKpa_c::func_ov060_021140c0(){
         }
     }
     if (Bowser_IsAnimAtLastFrame() != 0) {
-        if ((int)this->mModelAnim.file == data_ov060_0211abe0.words[1]) {
+        if ((int)this->mModelAnim.file == (int)data_ov060_0211abe0.filePtr) {
             this->mStep++;
             if (this->mStep >= this->mFireballShots) {
                 this->mState = BOWSER_STATE_IDLE;
@@ -2716,7 +2681,7 @@ void daKpa_c::func_ov060_021134ac(){
     this->unk_422 = 1;
     func_ov060_02115a84((char *)&this->mStepCounter);
     if (this->mWithMeshClsn.JustHitGround()) {
-        if ((int)this->mModelAnim.file == (int)data_ov060_0211ac88.words[1]) {
+        if ((int)this->mModelAnim.file == (int)data_ov060_0211ac88.filePtr) {
             func_ov060_02111cc0(5, 0x40000000);
         }
         this->mHorzSpeed >>= 1;
@@ -2744,7 +2709,7 @@ more than 0x6000 (135 degrees), that is, he is looking toward Bowser; otherwise
 int daKpa_c::func_ov060_02113404(){
     int r = 0;
     func_ov060_02112350();
-    if ((int)this->mModelAnim.file == (int)data_ov060_0211ac60.words[1]) {
+    if ((int)this->mModelAnim.file == (int)data_ov060_0211ac60.filePtr) {
         char* player = (char *)this->mTargetPlayer;
         if (player != 0) {
             int* targetPos = &this->mTargetPlayer->mPosX;
@@ -3441,7 +3406,8 @@ is entry 5 of the animation table), start animation 3 (looping). */
 void daKpa_c::func_ov060_02112350(){
     int finished = this->mModelAnim.Finished();
     if (!finished) return;
-    if ((int)this->mModelAnim.file != data_ov060_0211acd0.words[1]) return;
+    if ((int)this->mModelAnim.file != (int)data_ov060_0211acd0.filePtr)
+        return;
     func_ov060_02111cc0(3, 0);
 }
 
@@ -3560,7 +3526,7 @@ int daKpa_c::func_ov060_02111f08(){
 // @symbol _ZN7daKpa_c19func_ov060_02111cc0Eii
 /*
 Switch the model to animation idx (entries 0..0x1b of the table at
-data_ov060_021192dc; entry [1] of each handle is the file) and pick the texture
+data_ov060_021192dc; each handle's filePtr is the file) and pick the texture
 pattern that goes with it. The third parameter reaches ModelAnim::SetAnim
 unchanged as its flags word: the local `a` below is never assigned, and the ROM
 passes the caller's third argument (still in r2) straight through. Callers pass
@@ -3571,38 +3537,50 @@ with texture-sequence flags 0x40000000); 3 and 5 use ac10, 0xe uses abf0, and
 every other idx (0 included) uses ac28 (these three with flags 0). */
 void daKpa_c::func_ov060_02111cc0(int idx, int animFlags){
     int a;  /* deliberately never assigned: it is animFlags, still in r2 (see above) */
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&this->mModelAnim, (void *)((int *)data_ov060_021192dc[idx])[1], a, 0x1000, 0);
+    this->mModelAnim.SetAnim((BCA_File *)(data_ov060_021192dc[idx]->filePtr), a, 0x1000, 0);
     switch (idx) {
     case 1:
-        TextureSequence::Prepare(*(BMD_File *)data_ov060_0211ac78.words[1], *(BTP_File *)data_ov060_0211ac40.words[1]);
-        _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(&this->mTextureSequence, (void *)data_ov060_0211ac40.words[1], 0, 0x1000, 0);
+        TextureSequence::Prepare(*(BMD_File *)data_ov060_0211ac78.filePtr,
+                                 *(BTP_File *)data_ov060_0211ac40.filePtr);
+        _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(
+            &this->mTextureSequence, data_ov060_0211ac40.filePtr, 0, 0x1000, 0);
         this->mTextureSequence.SetFlags(0x40000000);
         return;
     case 2:
-        TextureSequence::Prepare(*(BMD_File *)data_ov060_0211ac78.words[1], *(BTP_File *)data_ov060_0211acb8.words[1]);
-        _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(&this->mTextureSequence, (void *)data_ov060_0211acb8.words[1], 0, 0x1000, 0);
+        TextureSequence::Prepare(*(BMD_File *)data_ov060_0211ac78.filePtr,
+                                 *(BTP_File *)data_ov060_0211acb8.filePtr);
+        _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(
+            &this->mTextureSequence, data_ov060_0211acb8.filePtr, 0, 0x1000, 0);
         this->mTextureSequence.SetFlags(0x40000000);
         return;
     case 3:
     case 5:
-        TextureSequence::Prepare(*(BMD_File *)data_ov060_0211ac78.words[1], *(BTP_File *)data_ov060_0211ac10.words[1]);
-        _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(&this->mTextureSequence, (void *)data_ov060_0211ac10.words[1], 0, 0x1000, 0);
+        TextureSequence::Prepare(*(BMD_File *)data_ov060_0211ac78.filePtr,
+                                 *(BTP_File *)data_ov060_0211ac10.filePtr);
+        _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(
+            &this->mTextureSequence, data_ov060_0211ac10.filePtr, 0, 0x1000, 0);
         this->mTextureSequence.SetFlags(0);
         return;
     case 14:
-        TextureSequence::Prepare(*(BMD_File *)data_ov060_0211ac78.words[1], *(BTP_File *)data_ov060_0211abf0.words[1]);
-        _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(&this->mTextureSequence, (void *)data_ov060_0211abf0.words[1], 0, 0x1000, 0);
+        TextureSequence::Prepare(*(BMD_File *)data_ov060_0211ac78.filePtr,
+                                 *(BTP_File *)data_ov060_0211abf0.filePtr);
+        _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(
+            &this->mTextureSequence, data_ov060_0211abf0.filePtr, 0, 0x1000, 0);
         this->mTextureSequence.SetFlags(0);
         return;
     case 10:
-        TextureSequence::Prepare(*(BMD_File *)data_ov060_0211ac78.words[1], *(BTP_File *)data_ov060_0211ac30.words[1]);
-        _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(&this->mTextureSequence, (void *)data_ov060_0211ac30.words[1], 0, 0x1000, 0);
+        TextureSequence::Prepare(*(BMD_File *)data_ov060_0211ac78.filePtr,
+                                 *(BTP_File *)data_ov060_0211ac30.filePtr);
+        _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(
+            &this->mTextureSequence, data_ov060_0211ac30.filePtr, 0, 0x1000, 0);
         this->mTextureSequence.SetFlags(0x40000000);
         return;
     case 0:
     default:
-        TextureSequence::Prepare(*(BMD_File *)data_ov060_0211ac78.words[1], *(BTP_File *)data_ov060_0211ac28.words[1]);
-        _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(&this->mTextureSequence, (void *)data_ov060_0211ac28.words[1], 0, 0x1000, 0);
+        TextureSequence::Prepare(*(BMD_File *)data_ov060_0211ac78.filePtr,
+                                 *(BTP_File *)data_ov060_0211ac28.filePtr);
+        _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(
+            &this->mTextureSequence, data_ov060_0211ac28.filePtr, 0, 0x1000, 0);
         this->mTextureSequence.SetFlags(0);
         return;
     }
@@ -3619,11 +3597,11 @@ frame number minus 0x31 from frame 0x31 on; while animation 6 plays
 (data_ov060_0211ac68) it is the frame number plus 0xb; otherwise -1. */
 int daKpa_c::func_ov060_02111c68(){
     int anim = (int)this->mModelAnim.file;
-    if (anim == (int)data_ov060_0211ac20.words[1]) {
+    if (anim == (int)data_ov060_0211ac20.filePtr) {
         unsigned int frame = ((unsigned int)this->mModelAnim.currFrame << 4) >> 0x10;
         if (frame >= 0x31) return frame - 0x31;
     }
-    if (anim == (int)data_ov060_0211ac68.words[1]) {
+    if (anim == (int)data_ov060_0211ac68.filePtr) {
         return (((unsigned int)this->mModelAnim.currFrame << 4) >> 0x10) + 0xb;
     }
     return -1;
@@ -3655,30 +3633,30 @@ void daKpa_c::func_ov060_02111a28(){
     int foot = 0;
     this->mFootfallLatch = 0;
 
-    if (anim == data_ov060_0211acb0.words[1]) {
+    if (anim == (int)data_ov060_0211acb0.filePtr) {
         if (n >= 0x14 && n <= 0x17)
             foot = 2;
         else if (n == 0x29 || n < 2)
             foot = 1;
-    } else if (anim == data_ov060_0211ac00.words[1]) {
+    } else if (anim == (int)data_ov060_0211ac00.filePtr) {
         if (n >= 0xf && n <= 0x12)
             foot = 2;
-    } else if (anim == data_ov060_0211ace0.words[1]) {
+    } else if (anim == (int)data_ov060_0211ace0.filePtr) {
         if (n >= 0x1c)
             foot = 1;
-    } else if (anim == data_ov060_0211aca0.words[1]) {
+    } else if (anim == (int)data_ov060_0211aca0.filePtr) {
         if (n >= 6 && n <= 9)
             foot = 2;
         else if (n >= 0xf)
             foot = 1;
-    } else if (anim == data_ov060_0211abf8.words[1]) {
+    } else if (anim == (int)data_ov060_0211abf8.filePtr) {
         if (n >= 0x10 && n <= 0x13)
             foot = 1;
         else if (n >= 0x1e && n <= 0x21)
             foot = 2;
         else if (n >= 0x2d && n <= 0x30)
             foot = 1;
-    } else if (anim == data_ov060_0211ac90.words[1]) {
+    } else if (anim == (int)data_ov060_0211ac90.filePtr) {
         if (n >= 0xa && n <= 0xd)
             foot = 1;
         else if (n >= 0x18 && n <= 0x1b)

@@ -40,8 +40,6 @@
  * - func_ov002_020aea30 (fire hit), func_02012694 (sound at a
  *   camera-space position), data_02082214 (sin/cos pairs) and
  *   data_0209e650 (random seed) keep linker names.
- * - The SharedFilePtr subclasses and the loaded-file word at [1] stay
- *   spelled through handles: SharedFilePtr has no recovered fields.
  */
 
 /* Runtime asset handles resolved through the overlay 0 file table. */
@@ -88,10 +86,9 @@ void MulVec3Mat4x3(Vector3 *v, Matrix4x3 *m, Vector3 *res);
 
 void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(
     dCcAc_c *self, dActor_c *actor, int radius, int height, u32 flags, u32 vulnFlags);
-void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(
-    dBgCh_Actr *self, dActor_c *actor, int radius, int height, Vector3_16 *a, Vector3_16 *b);
-void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
-    ModelAnim *self, BCA_File *file, int flags, int speed, u16 startFrame);
+void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(dBgCh_Actr *self, dActor_c *actor,
+                                                                 int radius, int height,
+                                                                 Vector3_16 *a, Vector3_16 *b);
 int _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
     u32 slot, u32 effect, int x, int y, int z, const Vector3_16 *rot, void *cb);
 }
@@ -102,12 +99,10 @@ int _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
  * declared-only subclasses so the static initializer names the real entry
  * points. */
 struct HyuhyuModelFilePtr : SharedFilePtr {
-    u32 words[2];
     HyuhyuModelFilePtr(u32 fileID);
     ~HyuhyuModelFilePtr();
 };
 struct HyuhyuAnimationFileHandle : SharedFilePtr {
-    u32 words[2];
     HyuhyuAnimationFileHandle(u32 fileID);
     ~HyuhyuAnimationFileHandle();
 };
@@ -304,8 +299,7 @@ int daHyuhyu_c::func_ov091_02134044(daHyuhyu_c_State *state)
 /* Cloud, waiting: enter. Loop the wait animation. */
 int daHyuhyu_c::func_ov091_0213400c()
 {
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&this->mModelAnim,
-        ((BCA_File **)&data_ov091_02135684)[1], 0, 0x1000, 0);
+    this->mModelAnim.SetAnim((BCA_File *)data_ov091_02135684.filePtr, 0, 0x1000, 0);
     return 1;
 }
 
@@ -339,8 +333,7 @@ int daHyuhyu_c::func_ov091_02133f60()
 /* Cloud, blowing: enter. Play the blow animation once. */
 int daHyuhyu_c::func_ov091_02133f24()
 {
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&this->mModelAnim,
-        ((BCA_File **)&data_ov091_0213567c)[1], 0x40000000, 0x1000, 0);
+    this->mModelAnim.SetAnim((BCA_File *)data_ov091_0213567c.filePtr, 0x40000000, 0x1000, 0);
     return 1;
 }
 
