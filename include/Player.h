@@ -135,7 +135,11 @@ struct Player : dActor_c {
        dExtFrameCtrl_c base (+0x50) and unk_148 at 0x148 was that base's currFrame
        (+0x58). Both are reachable through the member now. */
     ModelAnim mModelAnim3;            /* 0x0f0 */
-    /* EIGHT more models, same element type and the same evidence: CleanupResources
+    /* EIGHT more models, but Models, not ModelAnims: func_ov002_020e5948 news
+       [0..2] and [4..7] as 0x50 bytes + _ZN5ModelC1Ev and only [3] as 0x64 +
+       _ZN9ModelAnimC1Ev (it alone gets SetAnim, and the Yoshi sites that drive
+       its frame downcast it). Every other access is Model-level: data,
+       mat4x3, SetPolygonMode, Render. CleanupResources
        destroys `i < 4` and then `i + 4` over this one base, TurnOffToonShading
        indexes it at `j` and `j + 4`, and Render indexes it with
        func_ov002_020becf4(mBodyModelId, 1). That helper can also return 8 or 9,
@@ -146,18 +150,16 @@ struct Player : dActor_c {
        (Yoshi: yoshi_head) from data_ov002_0210a69c, [4..7] the head_nocap ones
        (Yoshi: yoshi_head_fill) from data_ov002_0210a6ac; Render pins each to body
        bone 15 (face_1). */
-    ModelAnim *mHeadModels[8]; /* 0x154 */
+    Model *mHeadModels[8]; /* 0x154 */
     /* The other ModelAnim, destroyed FIRST of the two. 0x174..0x1d8, closing
        exactly at mSleepBubbleModel; mAnimation2 at 0x1c4 was its dExtFrameCtrl_c base. */
     ModelAnim mModelAnim4;            /* 0x174 */
-    /* A Model *, though still declared u8 (every site reads the word through a
-       cast). func_ov002_020e5948 news a 0x50-byte Model here and SetFiles it
+    /* func_ov002_020e5948 news a 0x50-byte Model here (_ZN5ModelC1Ev) and SetFiles it
        from data_ov002_0210da38 (file 0x8004, the bubble d_a_pkn also sleeps
        with); func_ov002_020e444c places it in front of the face, Render draws
        it at mSleepBubbleScale while func_ov002_020d225c (Yoshi, sleep stage 2)
        holds, and CleanupResources deletes it. */
-    u8 mSleepBubbleModel; /* 0x1d8 */
-    u8  pad_1d9[0x3];
+    Model *mSleepBubbleModel; /* 0x1d8 */
     /* The three __cxa_vec_cleanup calls in ~Player, in the order it makes them
        (last array first). Both element types assert 0x14, which is exactly
        the stride the destructor passes. unk_25c and unk_270 were the
