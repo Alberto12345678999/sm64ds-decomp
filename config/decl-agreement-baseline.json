@@ -5853,26 +5853,7 @@
         "return:void"
       ]
     },
-    "_ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt": {
-      "src/game/actors/d_a_bombking.cpp": [
-        "param:#2 void *",
-        "return:int"
-      ],
-      "src/game/actors/d_a_iwante.cpp": [
-        "param:#2 void *"
-      ],
-      "src/game/actors/d_a_jango.cpp": [
-        "return:int"
-      ],
-      "src/game/actors/d_a_king_donketu.cpp": [
-        "param:#2 BCA_File *"
-      ],
-      "src/game/actors/d_a_moray.cpp": [
-        "param:#2 void *"
-      ],
-      "src/game/stages/d_ent_obj.cpp": [
-        "param:#2 void *"
-      ],
+    "_ZN14BlendModelAnim7SetAnimER8BCA_Fileiiit": {
       "src/minigames/unit020bfec0.cpp": [
         "param:#2 void *"
       ]

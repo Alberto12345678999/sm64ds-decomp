@@ -368,8 +368,9 @@ extern void func_020398fc(void *p);
 /* ---- arm9 / ov002 methods, mangled ROM spelling ---- */
 extern void _Z14ApproachLinearR7Vector3RKS_5Fix12IiE(void *out, void *tgt, int step);
 extern void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(void *self, void *kcl, void *mtx, int fix, short s, void *clps);
-extern void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(void *self, void *actor, Vector3 *v, s32 f1, s32 f2, u32 a, u32 b);
-extern void _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(void *self, void *bca, int a, int b, int fix, unsigned short t);
+extern void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(void *self, void *actor,
+                                                                    Vector3 *v, s32 f1, s32 f2,
+                                                                    u32 a, u32 b);
 extern void _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(void *self, void *btp, int a, int fix, unsigned int b);
 extern void _ZN5Sound17ChangeMusicVolumeEj5Fix12IiE(unsigned int a, int b);
 extern void _ZN5Sound22LoadAndSetMusic_Layer3Ej(unsigned int a);
@@ -501,13 +502,13 @@ int Eyerok::func_ov066_0211603c()
         if (hit != 0) {
             if (mHitPoints > 0) {
                 if (mPartIdx == PART_HAND_2) {
-                    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(
-                        &mBlendModelAnim, data_ov066_0211ae5c.filePtr, 4, 0x40000000, 0x1000, 0);
+                    mBlendModelAnim.SetAnim(*(BCA_File *)data_ov066_0211ae5c.filePtr, 4, 0x40000000,
+                                            0x1000, 0);
                     _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(
                         &mTextureSequence, data_ov066_0211ae3c.filePtr, 0x40000000, 0x1000, 0);
                 } else {
-                    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(
-                        &mBlendModelAnim, data_ov066_0211ae84.filePtr, 4, 0x40000000, 0x1000, 0);
+                    mBlendModelAnim.SetAnim(*(BCA_File *)data_ov066_0211ae84.filePtr, 4, 0x40000000,
+                                            0x1000, 0);
                     _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(
                         &mTextureSequence, data_ov066_0211aebc.filePtr, 0x40000000, 0x1000, 0);
                 }
@@ -611,11 +612,9 @@ void Eyerok::func_ov066_021164ec()
     mFlags = 0x10000000;
     mdCcAcPos_c.flags |= 2;
     if (mPartIdx == PART_HAND_2) {
-        _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(
-            &mBlendModelAnim, data_ov066_0211ae64.filePtr, 4, 0, 0x1000, 0);
+        mBlendModelAnim.SetAnim(*(BCA_File *)data_ov066_0211ae64.filePtr, 4, 0, 0x1000, 0);
     } else {
-        _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(
-            &mBlendModelAnim, data_ov066_0211ae44.filePtr, 4, 0, 0x1000, 0);
+        mBlendModelAnim.SetAnim(*(BCA_File *)data_ov066_0211ae44.filePtr, 4, 0, 0x1000, 0);
     }
     mStateWork1 = 1;
 }
@@ -630,13 +629,11 @@ void Eyerok::func_ov066_021164ec()
 void Eyerok::func_ov066_021165cc()
 {
     if (mPartIdx == PART_HAND_2) {
-        _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(
-            &mBlendModelAnim, data_ov066_0211ae54.filePtr, 4, 0x40000000, 0x1000, 0);
+        mBlendModelAnim.SetAnim(*(BCA_File *)data_ov066_0211ae54.filePtr, 4, 0x40000000, 0x1000, 0);
         _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(
             &mTextureSequence, data_ov066_0211ae3c.filePtr, 0x40000000, 0x1000, 0);
     } else {
-        _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(
-            &mBlendModelAnim, data_ov066_0211ae94.filePtr, 4, 0x40000000, 0x1000, 0);
+        mBlendModelAnim.SetAnim(*(BCA_File *)data_ov066_0211ae94.filePtr, 4, 0x40000000, 0x1000, 0);
         _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(
             &mTextureSequence, data_ov066_0211aebc.filePtr, 0x40000000, 0x1000, 0);
     }
@@ -660,13 +657,11 @@ void Eyerok::func_ov066_021166c8()
 {
 
     if (mPartIdx == PART_HAND_2) {
-        _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(
-            &mBlendModelAnim, data_ov066_0211ae54.filePtr, 4, 0x40000000, 0x1000, 0);
+        mBlendModelAnim.SetAnim(*(BCA_File *)data_ov066_0211ae54.filePtr, 4, 0x40000000, 0x1000, 0);
         _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(
             &mTextureSequence, data_ov066_0211ae2c.filePtr, 0x40000000, 0x1000, 0);
     } else {
-        _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(
-            &mBlendModelAnim, data_ov066_0211ae94.filePtr, 4, 0x40000000, 0x1000, 0);
+        mBlendModelAnim.SetAnim(*(BCA_File *)data_ov066_0211ae94.filePtr, 4, 0x40000000, 0x1000, 0);
         _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(
             &mTextureSequence, data_ov066_0211ae9c.filePtr, 0x40000000, 0x1000, 0);
     }
@@ -875,11 +870,9 @@ int Eyerok::func_ov066_02116d14()
     mSubState = 0;
     mHorzSpeed = -0xa000;
     if (mPartIdx == PART_HAND_2) {
-        _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(
-            &mBlendModelAnim, data_ov066_0211aea4.filePtr, 4, 0x40000000, 0x1000, 0);
+        mBlendModelAnim.SetAnim(*(BCA_File *)data_ov066_0211aea4.filePtr, 4, 0x40000000, 0x1000, 0);
     } else {
-        _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(
-            &mBlendModelAnim, data_ov066_0211ae8c.filePtr, 4, 0x40000000, 0x1000, 0);
+        mBlendModelAnim.SetAnim(*(BCA_File *)data_ov066_0211ae8c.filePtr, 4, 0x40000000, 0x1000, 0);
     }
     return 1;
 }
@@ -1848,13 +1841,11 @@ int Eyerok::func_ov066_02118678()
 int Eyerok::func_ov066_021187c8()
 {
     if (mPartIdx == PART_HAND_2) {
-        _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(
-            &mBlendModelAnim, data_ov066_0211ae74.filePtr, 4, 0x40000000, 0x1000, 0);
+        mBlendModelAnim.SetAnim(*(BCA_File *)data_ov066_0211ae74.filePtr, 4, 0x40000000, 0x1000, 0);
         _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(
             &mTextureSequence, data_ov066_0211ae3c.filePtr, 0x40000000, 0x1000, 0);
     } else {
-        _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(
-            &mBlendModelAnim, data_ov066_0211ae7c.filePtr, 4, 0x40000000, 0x1000, 0);
+        mBlendModelAnim.SetAnim(*(BCA_File *)data_ov066_0211ae7c.filePtr, 4, 0x40000000, 0x1000, 0);
         _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(
             &mTextureSequence, data_ov066_0211aebc.filePtr, 0x40000000, 0x1000, 0);
     }
