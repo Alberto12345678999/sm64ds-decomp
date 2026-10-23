@@ -101,6 +101,8 @@ extern unsigned int func_02012790(unsigned int arg);
 extern void Mg_SubmitScore(int self);
 extern int data_ov006_0213e948[];
 extern void Slot3_ReelDigits(char *c, int i);
+/* S4 WALL (wave-2): kept: local void return disagrees with Sound.h u32
+   (definition returns unsigned int); params match, callers ignore r0. */
 extern void _ZN5Sound12PlayBank2_2DEj(unsigned int id);
 extern int Sound_PlayIfNotActive(int, int, int, int);
 extern int RandomIntInternal(int *seed);
