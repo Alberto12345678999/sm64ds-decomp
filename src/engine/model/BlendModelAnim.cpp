@@ -47,7 +47,8 @@ int func_020165c4(BlendModelAnim *self, char *file);
    _ZN14BlendModelAnim7SetAnimER8BCA_Fileiiit; only the class-typed
    `5Fix12IiE` spelling costs. The rename is a campaign, not a local edit --
    notes/mwccarm-codegen.md 6az, MEASURED 2026-10-22. The declarations in
-   BlendModelAnim.h and dExtFrameCtrl_c.h are the real ones. */
+   BlendModelAnim.h and dExtFrameCtrl_c.h are the ones callers use; the
+   measured method takes Fix12i where they say Fix12<int>. */
 void _ZN15dExtFrameCtrl_c12SetAnimationEti5Fix12IiEt(dExtFrameCtrl_c *self, u16 numFrames, s32 flags, s32 speed, u16 startFrame);
 }
 
