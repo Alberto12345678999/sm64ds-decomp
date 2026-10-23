@@ -14405,7 +14405,7 @@ matched: yes</title></rect><rect x="556.67" y="207.57" width="5.49" height="11.6
 module: ov002
 addr: 0x020beecc
 size: 96 bytes
-matched: yes</title></rect><rect x="562.16" y="207.57" width="30.21" height="11.63" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN6Player7SetAnimEji5Fix12IiEj
+matched: yes</title></rect><rect x="562.16" y="207.57" width="30.21" height="11.63" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN6Player7SetAnimEjiit
 module: ov002
 addr: 0x020bef2c
 size: 528 bytes
