@@ -147,7 +147,7 @@ struct System {
     static void NewSimple(unsigned int id, int x, int y, int z);
 };
 }
-void _ZN8dActor_c10EarthquakeERK7Vector35Fix12IiE(void *self, const void *v, int f);
+void d_a_btnEarthquakeHold(void *self, const void *v, int f);
 void _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs(void *self, const void *pos, u32 n, int fix, s16 s);
 void _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_S5_j(
     void *self, void *sm, void *mtx, int a, int b, int c, unsigned int g);
@@ -826,7 +826,7 @@ void daBtn_c::func_ov079_02125504()
             v[1].x = mPosX;
             v[1].y = mPosY;
             v[1].z = mPosZ;
-            _ZN8dActor_c10EarthquakeERK7Vector35Fix12IiE(this, &v[1], 0x320000);
+            Earthquake(v[1], 0x320000);
         }
 
         {
@@ -932,7 +932,7 @@ void daBtn_c::func_ov079_02125240(){
   v.x = mPosX;
   v.y = mPosY;
   v.z = mPosZ;
-  _ZN8dActor_c10EarthquakeERK7Vector35Fix12IiE(this, &v, 0x7d0000);
+  Earthquake(v, 0x7d0000);
   mState = 6;
   func_020393c4(&mMovingMeshCollider, (int)func_ov079_0212522c);
   if(mIsKing != 0){

@@ -186,7 +186,7 @@ extern "C" void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
     void *self, void *actor, void *pos, s32 fx, s32 fy, u32 a, u32 b);
 extern "C" void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(
     void *self, void *actor, s32 fa, s32 fb, void *v0, void *v1);
-extern "C" void _ZN8dActor_c10EarthquakeERK7Vector35Fix12IiE(void *thiz, void *v, int f);
+extern "C" void d_a_kuri_kingEarthquakeHold(void *thiz, void *v, int f);
 extern "C" void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
     void *self, void *shadow, void *mat, int rad, int hgt, u32 flags);
 extern "C" int data_ov074_02122e24[];
@@ -1678,7 +1678,7 @@ int daKuriKing_c::Behavior()
                 v.x = mCylClsnPos[2].x;
                 v.y = mCylClsnPos[2].y;
                 v.z = mCylClsnPos[2].z;
-                _ZN8dActor_c10EarthquakeERK7Vector35Fix12IiE(this, &v, quake);
+                Earthquake(v, quake);
             }
         }
 
@@ -1702,7 +1702,7 @@ int daKuriKing_c::Behavior()
                 v.x = mCylClsnPos[1].x;
                 v.y = mCylClsnPos[1].y;
                 v.z = mCylClsnPos[1].z;
-                _ZN8dActor_c10EarthquakeERK7Vector35Fix12IiE(this, &v, quake);
+                Earthquake(v, quake);
             }
         }
     }

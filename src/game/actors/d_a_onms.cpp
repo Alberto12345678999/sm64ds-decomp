@@ -106,7 +106,7 @@ extern "C" daOnms_cStateEntry data_ov092_02132568[9];
 extern "C" {
 int func_ov002_020de328(void *player);
 void dBgCh_Actr_UpdateContinuous_Veneer(void *self);
-void _ZN8dActor_c10EarthquakeERK7Vector35Fix12IiE(void *v, int f);
+void d_a_onmsEarthquakeHold(void *v, int f);
 /* Sound::Play(3, id, pos). The overlay calls this wrapper, not Sound::Play. */
 void func_02012694(unsigned int id, const Vector3 *v);
 /* Stores mRadius: p[6] = value, the word at dBgCh_Actr + 0x18. */
@@ -199,8 +199,7 @@ int daOnms_c::StateBounce()
     eq.x = mPosX;
     eq.y = mPosY;
     eq.z = mPosZ;
-    ((void (*)(void *, const Vector3 *, int))_ZN8dActor_c10EarthquakeERK7Vector35Fix12IiE)(
-        this, &eq, 0x5dc000);
+    Earthquake(eq, 0x5dc000);
     func_02012694(0x46, CamPos(this));
 
     /* tmp is a dead copy the ROM keeps; building dust directly differs. */
@@ -269,8 +268,7 @@ void daOnms_c::StateKnocked()
         v1.x = p[0];
         v1.y = p[1];
         v1.z = p[2];
-        ((void (*)(void *, const Vector3 *, int))_ZN8dActor_c10EarthquakeERK7Vector35Fix12IiE)(
-            this, &v1, 0xff8000);
+        Earthquake(v1, 0xff8000);
         mPosX = saved.x;
         mPosY = saved.y;
         mPosZ = saved.z;
@@ -286,8 +284,7 @@ void daOnms_c::StateKnocked()
         v2.x = p[0];
         v2.y = p[1];
         v2.z = p[2];
-        ((void (*)(void *, const Vector3 *, int))_ZN8dActor_c10EarthquakeERK7Vector35Fix12IiE)(
-            this, &v2, 0xff8000);
+        Earthquake(v2, 0xff8000);
         Sound::PlayBank3(0x41, *CamPos(this));
     }
     mPlayerActor = 0;
@@ -355,8 +352,7 @@ void daOnms_c::StateLand()
     if (!mStateTimer) {
         Vector3 v;
         v.x = mPosX; v.y = mPosY; v.z = mPosZ;
-        ((void (*)(void *, const Vector3 *, int))_ZN8dActor_c10EarthquakeERK7Vector35Fix12IiE)(
-            this, &v, 0x860000);
+        Earthquake(v, 0x860000);
         func_02012694(0x46, CamPos(this));
     }
     mPosY = mRestPos.y + 0x3000;

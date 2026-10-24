@@ -42,7 +42,6 @@ extern "C" {
 /* Forward: UpdateKillByMegaChar calls down to it (reverse layout). */
 void func_ov002_020ee5d0(dBgActor_c *self, int pivotY);
 
-void _ZN8dActor_c10EarthquakeERK7Vector35Fix12IiE(dBgActor_c *self, Vector3 *pos, int magnitude);
 s16 Vec3_HorzAngle(const Vector3 *a, const Vector3 *b);
 namespace Particle {
 struct System {
@@ -603,7 +602,7 @@ void dBgActor_c::KillByMegaChar(Player &player)
     v.x = mPosX;
     v.y = mPosY;
     v.z = mPosZ;
-    _ZN8dActor_c10EarthquakeERK7Vector35Fix12IiE(this, &v, 0x5dc000);
+    Earthquake(v, 0x5dc000);
     mMegaKnockback = 1;
     mVertAccel = -0x2000;
     mTerminalVelocity = -0x3c000;

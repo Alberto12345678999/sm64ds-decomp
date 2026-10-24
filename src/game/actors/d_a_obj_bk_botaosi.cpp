@@ -102,8 +102,7 @@ void func_ov015_02111414(daObjBk_Botaosi_c *plank, dActor_c *other);
 void func_ov015_021114f0(daObjBk_Botaosi_c *plank);
 void func_ov015_0211166c(daObjBk_Botaosi_c *plank);
 
-void _ZN8dActor_c10EarthquakeERK7Vector35Fix12IiE(dActor_c *self, const Vector3 *pos,
-                                                  Fix12i strength);
+void d_a_obj_bk_botaosiEarthquakeHold(dActor_c *self, const Vector3 *pos, Fix12i strength);
 void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
     void *self, void *file, void *mat, int scale, s16 angle, void *clps);
 void *_ZN9dBgCh_GndC1Ev(dBgCh_Gnd *self);
@@ -305,8 +304,7 @@ int daObjBk_Botaosi_c::Behavior()
                 pos.x = mPosX;
                 pos.y = mPosY;
                 pos.z = mPosZ;
-                _ZN8dActor_c10EarthquakeERK7Vector35Fix12IiE(
-                    this, &pos, 0x2000000);
+                Earthquake(pos, 0x2000000);
                 Sound::PlayBank3(0x44, mCamSpacePos);
             }
         } else {
@@ -325,8 +323,7 @@ int daObjBk_Botaosi_c::Behavior()
                 pos.x = mPosX;
                 pos.y = mPosY;
                 pos.z = mPosZ;
-                _ZN8dActor_c10EarthquakeERK7Vector35Fix12IiE(
-                    this, &pos, 0x2000000);
+                Earthquake(pos, 0x2000000);
                 Sound::PlayBank3(0x44, mCamSpacePos);
             }
         }

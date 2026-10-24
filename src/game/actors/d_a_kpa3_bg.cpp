@@ -65,7 +65,8 @@ void Vec3_AsrInPlace(Vec3 *v, int n);
 void MulVec3Mat4x3(Vec3 *in, void *m, void *out);
 void func_02012694(int a, void *p);
 void CopyTexPalFromLevelModel(void *p);
-void _ZN8dActor_c10EarthquakeERK7Vector35Fix12IiE(void *self, Vec3 *v, int fix);
+/* local extern: func_ov060_02117db8 is parsed as C and cannot call the member. */
+void _ZN8dActor_c10EarthquakeERK7Vector3i(void *self, Vec3 *v, int fix);
 // local extern: func_ov060_02117db8 is parsed as C and cannot call the member.
 void _ZN8dActor_c10PoofDustAtERK7Vector3(void *self, Vec3 *v);
 // local extern: the C body of func_ov060_02117db8 calls it, as above.
@@ -307,7 +308,7 @@ void _ZN10daKpa3Bg_c19func_ov060_02117db8Ev(struct daKpa3Bg_c *self) {
         eq.x = self->mPosX;
         eq.y = self->mPosY;
         eq.z = self->mPosZ;
-        _ZN8dActor_c10EarthquakeERK7Vector35Fix12IiE(self, &eq, 0x7d0000);
+        _ZN8dActor_c10EarthquakeERK7Vector3i(self, &eq, 0x7d0000);
         self->mVertSpeed = 0x8000;
         self->mVertAccel = 0;
     }
