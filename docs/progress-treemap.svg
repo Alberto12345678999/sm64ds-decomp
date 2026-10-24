@@ -3485,7 +3485,7 @@ matched: yes</title></rect><rect x="91.34" y="259.77" width="1.28" height="10.47
 module: arm9
 addr: 0x02020980
 size: 20 bytes
-matched: yes</title></rect><rect x="92.63" y="259.77" width="107.61" height="10.47" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii
+matched: yes</title></rect><rect x="92.63" y="259.77" width="107.61" height="10.47" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN3OAM6RenderEbP7OamAttriiiiiiii
 module: arm9
 addr: 0x02020994
 size: 1680 bytes
