@@ -1,5 +1,7 @@
 //cpp
-namespace Particle { struct Callback; }
+namespace Particle {
+struct Callback;
+}
 struct Vector3_16f;
 /* The snowman's breath. Fifty SnowmanBreathParticle members sit in this
  * file because their functions sit between the actor's destructor and its
@@ -45,7 +47,8 @@ namespace Particle {
 struct System {
     static void NewSimple(u32, s32, s32, s32);
 
-    static int New(unsigned, unsigned, int, int, int, const ::Vector3_16f *, Callback *);};
+    static int New(unsigned, unsigned, int, int, int, const ::Vector3_16f *, Callback *);
+};
 }
 s16 Vec3_HorzAngle(const Vector3 *, const Vector3 *);
 s32 Vec3_Dist(const Vector3 *, const Vector3 *);
@@ -183,9 +186,7 @@ void SnowmanBreathParticle::Render()
 {
     if (mTimer == 0)
         return;
-    mParticleID =
-        Particle::System::New(
-            mParticleID, 0x111, mPos.x, mPos.y, mPos.z, 0, 0);
+    mParticleID = Particle::System::New(mParticleID, 0x111, mPos.x, mPos.y, mPos.z, 0, 0);
 }
 
 // @symbol _ZN21SnowmanBreathParticle8BehaviorEv

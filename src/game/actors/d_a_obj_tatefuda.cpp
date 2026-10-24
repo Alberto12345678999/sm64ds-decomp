@@ -1,5 +1,7 @@
 //cpp
-namespace Particle { struct Callback; }
+namespace Particle {
+struct Callback;
+}
 /* daObjTatefuda_c: the wooden signpost (TATEFUDA profile, ov002).
  *
  * The whole unit, ov002 .text 0x020badd0..0x020bc414, 29 functions: the
@@ -162,7 +164,8 @@ namespace Particle {
 struct System {
     static void NewSimple(u32 id, Fix12i x, Fix12i y, Fix12i z);
 
-    static int New(unsigned, unsigned, int, int, int, const ::Vector3_16f *, Callback *);};
+    static int New(unsigned, unsigned, int, int, int, const ::Vector3_16f *, Callback *);
+};
 }
 
 extern s16 Vec3_HorzAngle(const struct Vector3* v0, const struct Vector3* v1);
@@ -182,7 +185,8 @@ extern "C" unsigned int data_0209b454;
 extern "C" void AttachToHolder(struct daObjTatefuda_c *self);
 extern "C" u8 DecIfAbove0_Byte(u8 *p);
 extern "C" int _ZN10dBgActor_c20UpdateKillByMegaCharEsss5Fix12IiE(void *self, short a, short b, short c, int fix);
-extern "C" void *d_a_obj_tatefudaNewHold(u32 a, u32 b, int c, int d, int e, const void *v, void *cb);
+extern "C" void *d_a_obj_tatefudaNewHold(u32 a, u32 b, int c, int d, int e, const void *v,
+                                         void *cb);
 extern "C" u32 _ZN8Particle6System17NewUnkCallback818Ejj5Fix12IiES2_S2_PK11Vector3_16f(u32 a, u32 b, int c, int d, int e, const Vector3_16f *v);
 extern "C" void _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_S5_j(
     void *self, void *sm, void *m, int a, int b, int c, u32 j);
@@ -385,8 +389,8 @@ int daObjTatefuda_c::Behavior()
         ((int *)&v)[1] = y;
         ((int *)&v)[2] = z;
         if (DecIfAbove0_Byte(&mBreakTimer) != 0) {
-            *(void **)&mParticleHandle1 = (void *)Particle::System::New(
-                mParticleHandle1, 0x13a, v.x, v.y, v.z, 0, 0);
+            *(void **)&mParticleHandle1 =
+                (void *)Particle::System::New(mParticleHandle1, 0x13a, v.x, v.y, v.z, 0, 0);
             mParticleHandle2 = _ZN8Particle6System17NewUnkCallback818Ejj5Fix12IiES2_S2_PK11Vector3_16f(
                 mParticleHandle2, 0x13b, v.x, v.y, v.z, 0);
         } else {

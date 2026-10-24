@@ -119,9 +119,7 @@ void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(dCcAc_c *self, dActor_c *actor,
     int radius, int height, u32 flags, u32 vulnFlags);
 void _ZN8dActor_c10EarthquakeERK7Vector35Fix12IiE(dActor_c *self,
     const Vector3 *pos, int magnitude);
-int d_a_cnnNewHold(
-    u32 slot, u32 id, int x, int y, int z, const Vector3_16 *rot, void *cb);
-
+int d_a_cnnNewHold(u32 slot, u32 id, int x, int y, int z, const Vector3_16 *rot, void *cb);
 }
 
 /* The cannon's file-scope SharedFilePtr object, spelled through the same
@@ -384,10 +382,10 @@ void daCnn_c::func_ov098_0213ade8()
         rot.x = (u16)data_02082214[((u16)mPrevAngleY >> 4) * 2];
         rot.z = (u16)data_02082214[((u16)mPrevAngleY >> 4) * 2 + 1];
 
-        Particle::System::New(
-            0, 7, mMuzzlePosX, mMuzzlePosY, mMuzzlePosZ, (const Vector3_16f *)(&rot), 0);
-        Particle::System::New(
-            0, 8, mMuzzlePosX, mMuzzlePosY, mMuzzlePosZ, (const Vector3_16f *)(&rot), 0);
+        Particle::System::New(0, 7, mMuzzlePosX, mMuzzlePosY, mMuzzlePosZ,
+                              (const Vector3_16f *)(&rot), 0);
+        Particle::System::New(0, 8, mMuzzlePosX, mMuzzlePosY, mMuzzlePosZ,
+                              (const Vector3_16f *)(&rot), 0);
 
         Sound::PlayBank3(0xd4, mCamSpacePos);
         mRecoilSpeed = -0x1800;

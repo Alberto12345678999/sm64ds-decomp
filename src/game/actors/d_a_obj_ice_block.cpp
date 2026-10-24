@@ -87,10 +87,8 @@ void func_02012694(u32 soundID, const Vector3 *pos);
 int _ZN4cstd4fdivEii(int num, int den);
 
 void *d_a_obj_ice_blockNewSimpleHold(u32 effectID, int x, int y, int z);
-int d_a_obj_ice_blockNewHold(u32 handle, u32 effectID,
-                                                                           int x, int y, int z,
-                                                                           const Vector3_16f *dir,
-                                                                           void *callback);
+int d_a_obj_ice_blockNewHold(u32 handle, u32 effectID, int x, int y, int z, const Vector3_16f *dir,
+                             void *callback);
 void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(
     dCcAc_c *self, dActor_c *owner, int radius, int height, u32 flags,
     u32 vulnFlags);
@@ -151,10 +149,10 @@ s32 daObjIceBlock_c::Behavior()
             pos.z = mPosZ;
             pos.y += FX_MUL(mScale, kShardHeight);
 
-            mParticleHandle1 = Particle::System::New(
-                mParticleHandle1, 0x77, pos.x, pos.y, pos.z, 0, 0);
-            mParticleHandle2 = Particle::System::New(
-                mParticleHandle2, 0x78, pos.x, pos.y, pos.z, 0, 0);
+            mParticleHandle1 =
+                Particle::System::New(mParticleHandle1, 0x77, pos.x, pos.y, pos.z, 0, 0);
+            mParticleHandle2 =
+                Particle::System::New(mParticleHandle2, 0x78, pos.x, pos.y, pos.z, 0, 0);
 
             u32 handle = mParticleHandle1;
             if (handle != 0) {

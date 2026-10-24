@@ -1,5 +1,7 @@
 //cpp
-namespace Particle { struct Callback; }
+namespace Particle {
+struct Callback;
+}
 struct Vector3_16f;
 /* Production translation unit for ov002/daObjAbuku_c (bubbles).
  *
@@ -64,7 +66,8 @@ namespace Particle {
 struct System {
     static void NewSimple(unsigned, int, int, int);
 
-    static int New(unsigned, unsigned, int, int, int, const ::Vector3_16f *, Callback *);};
+    static int New(unsigned, unsigned, int, int, int, const ::Vector3_16f *, Callback *);
+};
 }
 }
 
@@ -123,8 +126,7 @@ int daObjAbuku_c::Behavior()
     if (DecIfAbove0_Short((unsigned short*)(&mLifeTimer)) == 0 || func_ov002_020b3344(this)) {
         func_ov002_020b330c(this);
     }
-    mParticle = (int)Particle::System::New(
-        mParticle, 1, mPosX, mPosY, mPosZ, 0, 0);
+    mParticle = (int)Particle::System::New(mParticle, 1, mPosX, mPosY, mPosZ, 0, 0);
     mdCcAc_c.Clear();
     mdCcAc_c.Update();
     return 1;

@@ -78,8 +78,8 @@ void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
     s16 angleY, CLPS_Block *clps);
 void _ZN8dCcPos_c4InitERK7Vector35Fix12IiES4_jj(
     dCcPos_c *self, const Vector3 *pos, int radius, int height, u32 flags, u32 vuln);
-u32 d_a_obj_fl_koma_uNewHold(
-    u32 handle, u32 effect, int x, int y, int z, const void *direction, void *callback);
+u32 d_a_obj_fl_koma_uNewHold(u32 handle, u32 effect, int x, int y, int z, const void *direction,
+                             void *callback);
 }
 
 // @symbol _ZN15daObjFl_KomaU_cD1Ev
@@ -170,10 +170,10 @@ s32 daObjFl_KomaU_c::Behavior()
         }
 
         out.y = out.y + 0x64000;
-        mParticleID[0][i] = Particle::System::New(
-            mParticleID[0][i], 0x4b, out.x, out.y, out.z, 0, 0);
-        mParticleID[1][i] = Particle::System::New(
-            mParticleID[1][i], 0x4c, out.x, out.y, out.z, 0, 0);
+        mParticleID[0][i] =
+            Particle::System::New(mParticleID[0][i], 0x4b, out.x, out.y, out.z, 0, 0);
+        mParticleID[1][i] =
+            Particle::System::New(mParticleID[1][i], 0x4c, out.x, out.y, out.z, 0, 0);
 
         cyl->Clear();
         cyl->Update();

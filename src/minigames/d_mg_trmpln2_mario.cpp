@@ -234,9 +234,8 @@ extern "C" void Trmp2Mario_Update(char *o) {
     if (MARIO2(o)->mVel.y > v) {
         if (MARIO2(o)->mModelAnim.file == sTrmpAnimBounce) {
             MARIO2(o)->mParticleId =
-                (int)Particle::System::New(
-                    MARIO2(o)->mParticleId, 0xf5, MARIO2(o)->mPos.x << 3, MARIO2(o)->mPos.y << 3,
-                    MARIO2(o)->mPos.z << 3, 0, 0);
+                (int)Particle::System::New(MARIO2(o)->mParticleId, 0xf5, MARIO2(o)->mPos.x << 3,
+                                           MARIO2(o)->mPos.y << 3, MARIO2(o)->mPos.z << 3, 0, 0);
         }
     }
     Trmp2Mario_UpdateMatrix(o);
@@ -464,8 +463,8 @@ void Vec3_MulScalar(Vector3 *out, const Vector3 *in, int scale);
 void SubVec3(Vector3 *a, Vector3 *b, Vector3 *c);
 void AddVec3(Vector3 *a, Vector3 *b, Vector3 *c);
 int _ZN4cstd4fdivEii(int a, int b);
-void *d_mg_trmpln2_marioNewHold(
-    unsigned int a, unsigned int b, int fx1, int fx2, int fx3, const void *vec, void *cb);
+void *d_mg_trmpln2_marioNewHold(unsigned int a, unsigned int b, int fx1, int fx2, int fx3,
+                                const void *vec, void *cb);
 void Sound_PlayBank1Panned(int a0, int a1, int a2);
 int D3D_PlaySeAtX(int a, int b);
 void Trmp2Mario_StateBounce(char *c);
@@ -531,16 +530,13 @@ extern "C" void Trmp2Mario_BounceOffLineA(char *c) {
         int *q = pmf_Trmp2Mario_StateAppearWait_2;
         if (s[0] != q[0] || (s[1] != q[1] && MARIO2(c)->mState[0] != 0)) {
 
-            Particle::System::New(
-                0, 0xf3, (MARIO2(c)->mPos.x) << 3, (MARIO2(c)->mPos.y) << 3,
-                (MARIO2(c)->mPos.z) << 3, (const Vector3_16f *)(&vec16), 0);
-            Particle::System::New(
-                0, 0xf4, (MARIO2(c)->mPos.x) << 3, (MARIO2(c)->mPos.y) << 3,
-                (MARIO2(c)->mPos.z) << 3, (const Vector3_16f *)(&vec16), 0);
-            MARIO2(c)->mParticleId =
-                (int)Particle::System::New(
-                    MARIO2(c)->mParticleId, 0xf5, (MARIO2(c)->mPos.x) << 3,
-                    (MARIO2(c)->mPos.y) << 3, (MARIO2(c)->mPos.z) << 3, 0, 0);
+            Particle::System::New(0, 0xf3, (MARIO2(c)->mPos.x) << 3, (MARIO2(c)->mPos.y) << 3,
+                                  (MARIO2(c)->mPos.z) << 3, (const Vector3_16f *)(&vec16), 0);
+            Particle::System::New(0, 0xf4, (MARIO2(c)->mPos.x) << 3, (MARIO2(c)->mPos.y) << 3,
+                                  (MARIO2(c)->mPos.z) << 3, (const Vector3_16f *)(&vec16), 0);
+            MARIO2(c)->mParticleId = (int)Particle::System::New(
+                MARIO2(c)->mParticleId, 0xf5, (MARIO2(c)->mPos.x) << 3, (MARIO2(c)->mPos.y) << 3,
+                (MARIO2(c)->mPos.z) << 3, 0, 0);
         }
     }
 
@@ -1702,9 +1698,8 @@ extern "C" void Trmp3DMario_Update(char *o) {
     if (MARIO3D(o)->mVel.y > v) {
         if (MARIO3D(o)->mModelAnim.file == sTrmpAnimBounce) {
             MARIO3D(o)->mParticleId =
-                (int)Particle::System::New(
-                    MARIO3D(o)->mParticleId, 0xf5, MARIO3D(o)->mPos.x << 3, MARIO3D(o)->mPos.y << 3,
-                    MARIO3D(o)->mPos.z << 3, 0, 0);
+                (int)Particle::System::New(MARIO3D(o)->mParticleId, 0xf5, MARIO3D(o)->mPos.x << 3,
+                                           MARIO3D(o)->mPos.y << 3, MARIO3D(o)->mPos.z << 3, 0, 0);
         }
     }
     Trmp3DMario_UpdateMatrix(o);
@@ -2170,8 +2165,8 @@ void Vec3_MulScalar(Vector3 *out, const Vector3 *in, int scale);
 void SubVec3(Vector3 *a, Vector3 *b, Vector3 *c);
 void AddVec3(Vector3 *a, Vector3 *b, Vector3 *c);
 int _ZN4cstd4fdivEii(int a, int b);
-void *d_mg_trmpln2_marioNewHold2(
-    unsigned int a, unsigned int b, int c, int d, int e, const void *f, void *g);
+void *d_mg_trmpln2_marioNewHold2(unsigned int a, unsigned int b, int c, int d, int e, const void *f,
+                                 void *g);
 void Sound_PlayBank1Panned(int a0, int a1, int a2);
 int D3D_PlaySeAtX(int a, int b);
 void Trmp3DMario_StateHardBounce(char *c);
@@ -2214,18 +2209,15 @@ extern "C" void Trmp3DMario_BounceOffLineA(char *c) {
         v.y = (s16)tmp.y;
         v.z = (s16)tmp.z;
 
-        Particle::System::New(
-            0, 0xf3, MARIO3D(c)->mPos.x << 3, MARIO3D(c)->mPos.y << 3, MARIO3D(c)->mPos.z << 3, (const Vector3_16f *)(&v),
-            0);
-        Particle::System::New(
-            0, 0xf4, MARIO3D(c)->mPos.x << 3, MARIO3D(c)->mPos.y << 3, MARIO3D(c)->mPos.z << 3, (const Vector3_16f *)(&v),
-            0);
+        Particle::System::New(0, 0xf3, MARIO3D(c)->mPos.x << 3, MARIO3D(c)->mPos.y << 3,
+                              MARIO3D(c)->mPos.z << 3, (const Vector3_16f *)(&v), 0);
+        Particle::System::New(0, 0xf4, MARIO3D(c)->mPos.x << 3, MARIO3D(c)->mPos.y << 3,
+                              MARIO3D(c)->mPos.z << 3, (const Vector3_16f *)(&v), 0);
     }
 
     MARIO3D(c)->mParticleId =
-        (int)Particle::System::New(
-            MARIO3D(c)->mParticleId, 0xf5, MARIO3D(c)->mPos.x << 3, MARIO3D(c)->mPos.y << 3,
-            MARIO3D(c)->mPos.z << 3, 0, 0);
+        (int)Particle::System::New(MARIO3D(c)->mParticleId, 0xf5, MARIO3D(c)->mPos.x << 3,
+                                   MARIO3D(c)->mPos.y << 3, MARIO3D(c)->mPos.z << 3, 0, 0);
 
     scale = FX_MUL(sTrmp3DHardBounceScale, fdivr);
     Vec3_MulScalar(&tmp4, &tmp, scale);

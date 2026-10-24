@@ -1,5 +1,7 @@
 //cpp
-namespace Particle { struct Callback; }
+namespace Particle {
+struct Callback;
+}
 struct Vector3_16f;
 /* daYegg_c -- the Yoshi egg (registry profile YOSHI_EGG).
  *
@@ -173,7 +175,8 @@ namespace Particle {
 struct System {
     static void NewSimple(u32 a, int b, int c, int d);
 
-    static int New(unsigned, unsigned, int, int, int, const ::Vector3_16f *, Callback *);};
+    static int New(unsigned, unsigned, int, int, int, const ::Vector3_16f *, Callback *);
+};
 }
 extern void _ZN8Particle20RunningSlidingDustAtE5Fix12IiES1_S1_(s32 x, s32 y, s32 z);
 extern void d_a_yeggPlayLongHold(u32 a, u32 b, u32 c, void *v, u32 d);
@@ -566,8 +569,8 @@ void daYegg_c::func_ov002_020ecb0c()
                 ang = *(u16 *)&mAngleY;
                 rz = data_02082214[(ang >> 4) * 2 + 1];
                 sp.rot.z = rz;
-                mParticleHandle = Particle::System::New(
-                    mParticleHandle, 0x2c, sp.pos.x, sp.pos.y, pz, (const Vector3_16f *)(pr), 0);
+                mParticleHandle = Particle::System::New(mParticleHandle, 0x2c, sp.pos.x, sp.pos.y,
+                                                        pz, (const Vector3_16f *)(pr), 0);
                 mSoundHandle =
                     Sound::PlayLong(mSoundHandle, 3, 0x93, *(Vector3 *)&mCamSpacePosX, 0);
                 flag = 1;

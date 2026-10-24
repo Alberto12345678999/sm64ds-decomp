@@ -127,8 +127,8 @@ extern void KillPlayer(void);
 /* Scratch matrix. The helpers below write it; the model copy reads it back. */
 extern Matrix4x3 data_020a0e68;
 /* Fix12<int> by value. The int parameter is the matching call. */
-extern int d_a_water_tatumakiNewHold(
-    unsigned int uniqueID, unsigned int effectID, int x, int y, int z, void *dir, void *callback);
+extern int d_a_water_tatumakiNewHold(unsigned int uniqueID, unsigned int effectID, int x, int y,
+                                     int z, void *dir, void *callback);
 extern int _Z14ApproachLinearR7Vector3RKS_5Fix12IiE(Vector3 &value, const Vector3 &target, int step);
 extern void _ZN18TextureTransformer7SetFileER8BTA_Filei5Fix12IiEj(TextureTransformer *self,
                                                                   BTA_File &file, int flags,

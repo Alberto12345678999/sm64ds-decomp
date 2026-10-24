@@ -252,8 +252,8 @@ void da1up_c::func_ov002_020aeee4() {
     pos.z = mPosZ;
     pos.y += 0x1e000;
     volatile Vector3* vp = &pos;
-    mParticleID = Particle::System::New(
-        *(volatile unsigned int*)&mParticleID, effectID, vp->x, vp->y, pos.z, 0, 0);
+    mParticleID = Particle::System::New(*(volatile unsigned int *)&mParticleID, effectID, vp->x,
+                                        vp->y, pos.z, 0, 0);
 }
 
 /* -------------------------------------------------------------------------- */

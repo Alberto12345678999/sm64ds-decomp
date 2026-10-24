@@ -1,5 +1,7 @@
 //cpp
-namespace Particle { struct Callback; }
+namespace Particle {
+struct Callback;
+}
 struct Vector3_16f;
 /* daPkn_c (PAKUN / PIRANHA_PLANT 250), ov084 0x0212eaf0..0x02130174.
  *
@@ -108,7 +110,8 @@ namespace Particle {
 struct System {
     static void NewSimple(u32 id, int x, int y, int z);
 
-    static int New(unsigned, unsigned, int, int, int, const ::Vector3_16f *, Callback *);};
+    static int New(unsigned, unsigned, int, int, int, const ::Vector3_16f *, Callback *);
+};
 }
 int   _ZN5Sound7PlaySubEjjj5Fix12IiEb(u32 a, u32 b, u32 c, int t, int flag);
 
@@ -516,8 +519,8 @@ void daPkn_c::StateDie()
         pos.x += data_ov084_0213030c[(u16)mStateTimer] * data_02082214[((u16)mAngleY >> 4) * 2];
         pos.z += data_ov084_0213030c[(u16)mStateTimer] * data_02082214[((u16)mAngleY >> 4) * 2 + 1];
         pos.y += data_ov084_02130334[(u16)mStateTimer] << 12;
-        mParticleHandle = (s32)Particle::System::New(
-            mParticleHandle, 0xfb, pos.x, pos.y, pos.z, 0, 0);
+        mParticleHandle =
+            (s32)Particle::System::New(mParticleHandle, 0xfb, pos.x, pos.y, pos.z, 0, 0);
     }
     if (mModelAnim.Finished() == 0)
         return;
@@ -539,12 +542,10 @@ void daPkn_c::StateShrink()
         scale = 0x1000;
     }
 
-    mParticleHandle = (s32)Particle::System::New(
-        mParticleHandle, 0xfc, mPosX,
-        mPosY + 0x1e000, mPosZ, 0, 0);
-    mParticleHandle2 = (s32)Particle::System::New(
-        mParticleHandle2, 0xfd, mPosX,
-        mPosY + 0x1e000, mPosZ, 0, 0);
+    mParticleHandle =
+        (s32)Particle::System::New(mParticleHandle, 0xfc, mPosX, mPosY + 0x1e000, mPosZ, 0, 0);
+    mParticleHandle2 =
+        (s32)Particle::System::New(mParticleHandle2, 0xfd, mPosX, mPosY + 0x1e000, mPosZ, 0, 0);
 
     if (scale > 0) {
         scale = scale - 0xa3;

@@ -128,8 +128,7 @@ extern SharedFilePtr *data_ov034_02113838[];
 extern SharedFilePtr *data_ov034_0211384c[];
 extern void **data_ov034_02113874[];
 extern void _ZN8Particle20RunningSlidingDustAtE5Fix12IiES1_S1_(s32 x, s32 y, s32 z);
-extern void *d_a_hanachanNewHold(
-u32 a, u32 b, s32 x, s32 y, s32 z, const void *v, void *cb);
+extern void *d_a_hanachanNewHold(u32 a, u32 b, s32 x, s32 y, s32 z, const void *v, void *cb);
 extern int func_ov002_020c51d0(void *, void *);
 extern unsigned char data_ov034_0211433c[];
 extern s32 data_ov034_021138d8[];
@@ -1090,8 +1089,8 @@ int daHanachan_c::Behavior()
             else
                 part.y += 0xb9000;
             if (mIntroDone != 0) {
-                mParticle = (void *)Particle::System::New(
-                    (u32)mParticle, data_ov034_02113828[n], part.x, part.y, part.z, 0, 0);
+                mParticle = (void *)Particle::System::New((u32)mParticle, data_ov034_02113828[n],
+                                                          part.x, part.y, part.z, 0, 0);
             }
         }
     }

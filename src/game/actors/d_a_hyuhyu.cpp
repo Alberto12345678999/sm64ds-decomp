@@ -96,8 +96,7 @@ void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(
 void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(dBgCh_Actr *self, dActor_c *actor,
                                                                  int radius, int height,
                                                                  Vector3_16 *a, Vector3_16 *b);
-int d_a_hyuhyuNewHold(
-    u32 slot, u32 effect, int x, int y, int z, const Vector3_16 *rot, void *cb);
+int d_a_hyuhyuNewHold(u32 slot, u32 effect, int x, int y, int z, const Vector3_16 *rot, void *cb);
 }
 
 /* File-scope resource handles: the ctor/dtor are the ROM's SharedFilePtr
@@ -372,10 +371,10 @@ int daHyuhyu_c::func_ov091_02133d30()
 
         pos.y = pos.y + 0x28000;
 
-        this->mGustParticle = Particle::System::New(
-            this->mGustParticle, 0x72, pos.x, pos.y, pos.z, (const Vector3_16f *)(&rot), 0);
-        this->mGustParticle2 = Particle::System::New(
-            this->mGustParticle2, 0x73, pos.x, pos.y, pos.z, (const Vector3_16f *)(&rot), 0);
+        this->mGustParticle = Particle::System::New(this->mGustParticle, 0x72, pos.x, pos.y, pos.z,
+                                                    (const Vector3_16f *)(&rot), 0);
+        this->mGustParticle2 = Particle::System::New(this->mGustParticle2, 0x73, pos.x, pos.y,
+                                                     pos.z, (const Vector3_16f *)(&rot), 0);
 
         if (!((u16)(this->mModelAnim.currFrame >> 12) & 1)) {
             gust = dActor_c::Spawn(0xe7, 1, this->mPos, 0, this->mAreaId, -1);

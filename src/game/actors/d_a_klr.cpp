@@ -1,5 +1,7 @@
 //cpp
-namespace Particle { struct Callback; }
+namespace Particle {
+struct Callback;
+}
 struct Vector3_16f;
 /**
  * Bullet Bill (profile KILLER), fired by daObjBkKillerdai_c.
@@ -60,8 +62,7 @@ struct System {
     static int New(unsigned, unsigned, int, int, int, const ::Vector3_16f *, Callback *);
 };
 }
-int d_a_klrNewHold(
-    u32 uniqueID, u32 effectID, int x, int y, int z, void *dir, void *callback);
+int d_a_klrNewHold(u32 uniqueID, u32 effectID, int x, int y, int z, void *dir, void *callback);
 void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
     dActor_c *self, dExtShadowModel_c *shadow, Matrix4x3 *mtx, int radius, int depth,
     u8 opacity);
@@ -234,8 +235,8 @@ void daKlr_c::func_ov079_0212682c()
     this->mHorzSpeed = -0x1e000;
     this->UpdatePosWithHorzSpeedAndAng();
     Vec3_Add(&nose, &this->mPos, (Vector3 *)&this->mSpeedX);
-    this->mSmokeTrailID = Particle::System::New(
-        this->mSmokeTrailID, kSmokeParticle, nose.x, nose.y, nose.z, 0, 0);
+    this->mSmokeTrailID =
+        Particle::System::New(this->mSmokeTrailID, kSmokeParticle, nose.x, nose.y, nose.z, 0, 0);
     this->mHorzSpeed = 0x1e000;
     if (this->DistToCPlayer() > 0x12c000)
         ApproachLinear(this->mPrevAngleY, this->HorzAngleToCPlayer(), 0x200);

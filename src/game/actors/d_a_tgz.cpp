@@ -1,5 +1,7 @@
 //cpp
-namespace Particle { struct Callback; }
+namespace Particle {
+struct Callback;
+}
 struct Vector3_16f;
 /* daTgz_c -- the Spiny on the castle roof, ov077.
  *
@@ -110,8 +112,8 @@ extern s16 data_02082214[];
 void func_02035684(int *p, int v);
 int RandomIntInternal(int *seed);
 extern int data_0209e650;
-unsigned int d_a_tgzNewHold(
-    unsigned int uniqueID, unsigned int effectID, int x, int y, int z, const void *dir, void *callback);
+unsigned int d_a_tgzNewHold(unsigned int uniqueID, unsigned int effectID, int x, int y, int z,
+                            const void *dir, void *callback);
 extern int data_0209f32c;
 void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *self, dActor_c *actor, int radius, int height, unsigned int flags, unsigned int vulnFlags);
 void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(void *self, dActor_c *actor, int radius, int height, Vector3_16 *a, Vector3_16 *b);
@@ -693,11 +695,8 @@ extern "C" int func_ov077_02125bb4(daTgz_c *self)
             func_02012694(0xe2, &self->mCamSpacePos);
             _ZN8Particle6System12NewBigSplashE5Fix12IiES2_S2_(
                 self->mPosX, data_0209f32c, self->mPosZ);
-            self->mRippleId =
-                Particle::System::New(
-                    self->mRippleId, 0x109,
-                    self->mPosX, data_0209f32c, self->mPosZ,
-                    0, 0);
+            self->mRippleId = Particle::System::New(self->mRippleId, 0x109, self->mPosX,
+                                                    data_0209f32c, self->mPosZ, 0, 0);
         }
         self->mVertAccel = -0x400;
         self->mTerminalVelocity = -0x5000;

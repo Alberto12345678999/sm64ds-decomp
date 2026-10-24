@@ -78,8 +78,7 @@ extern void Matrix4x3_FromRotationY(void *m, s16 angle);
 extern void Matrix4x3_ApplyInPlaceToRotationX(void *m, s16 angX);
 extern void MulVec3Mat4x3(struct Vec3 *in, void *m, struct Vec3 *out);
 /* local extern: retain the matched scalar ABI; native Fix12<int> call reconstruction remains pending. */
-extern int d_a_water_hakidasiNewHold(
-    int a, int b, int x, int y, int z, int f, int cb);
+extern int d_a_water_hakidasiNewHold(int a, int b, int x, int y, int z, int f, int cb);
 extern void func_02012790(int a);
 extern int data_020a0e68;
 extern int SublevelToLevel(int);
@@ -177,8 +176,7 @@ int daWater_Hakidasi_c::func_ov064_021193b4()
     }
 
     if (mNoRings == 0) {
-        mParticle = Particle::System::New(
-            mParticle, 0x138, mPosX, mPosY, mPosZ, 0, 0);
+        mParticle = Particle::System::New(mParticle, 0x138, mPosX, mPosY, mPosZ, 0, 0);
         if (mRingsPassed < 5) {
             if (*(u16 *)&mStateTimer == 0) {
                 ax = *(volatile u16 *)&mAngleX;
@@ -267,8 +265,7 @@ int daWater_Hakidasi_c::func_ov064_021193b4()
             }
         }
     } else {
-        mParticle = Particle::System::New(
-            mParticle, 0x7b, mPosX, mPosY, mPosZ, 0, 0);
+        mParticle = Particle::System::New(mParticle, 0x7b, mPosX, mPosY, mPosZ, 0, 0);
     }
 
     if (mRingsPassed == 5) {

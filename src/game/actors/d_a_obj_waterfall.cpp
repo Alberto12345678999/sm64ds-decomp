@@ -36,8 +36,8 @@ struct Callback;
    the reconstructed 5Fix12IiE symbol so the call spells
    Particle::System::New. See leftover. */
 struct System {
-    static int New(unsigned handle, unsigned effectID,
-                   int x, int y, int z, const ::Vector3_16f *dir, Callback *cb);
+    static int New(unsigned handle, unsigned effectID, int x, int y, int z,
+                   const ::Vector3_16f *dir, Callback *cb);
 };
 }
 

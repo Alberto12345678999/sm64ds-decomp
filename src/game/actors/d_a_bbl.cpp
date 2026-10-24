@@ -38,9 +38,7 @@ u16 DecIfAbove0_Short(u16 *timer);
  * because its real declaration passes three Fix12<int> by value; the trailing
  * two parameters are spelt as its definition spells them. */
 struct Vec3;
-int d_a_bblNewHold(
-    u32 handle, u32 effectID, int x, int y, int z, const Vec3 *rot,
-    void *callback);
+int d_a_bblNewHold(u32 handle, u32 effectID, int x, int y, int z, const Vec3 *rot, void *callback);
 
 /* True while the player is further than `dist` away. Fix12<int> by value
  * again. */
@@ -291,10 +289,9 @@ int daBbl_c::func_ov064_02118644()
             mVertSpeed = mVertSpeed * -7 / 10;
         }
     }
-    mFireParticle = Particle::System::New(
-        mFireParticle, 0x4d, mPosX, mPosY + 0x37000, mPosZ, 0, 0);
-    mSmokeParticle = Particle::System::New(
-        mSmokeParticle, 0x4e, mPosX, mPosY + 0x37000, mPosZ, 0, 0);
+    mFireParticle = Particle::System::New(mFireParticle, 0x4d, mPosX, mPosY + 0x37000, mPosZ, 0, 0);
+    mSmokeParticle =
+        Particle::System::New(mSmokeParticle, 0x4e, mPosX, mPosY + 0x37000, mPosZ, 0, 0);
     if ((u16)mStateTimer == 0)
         MarkForDestruction();
     return 1;

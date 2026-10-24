@@ -381,8 +381,8 @@ void dMg3DEspModel_c::Behavior()
 
     if (mShowSparks == 0) return;
 
-    mParticleSys = (u32)Particle::System::New(
-        mParticleSys, 0xec, 0x48c000, 0x140000, 0x200000, 0, 0);
+    mParticleSys =
+        (u32)Particle::System::New(mParticleSys, 0xec, 0x48c000, 0x140000, 0x200000, 0, 0);
 }
 
 // @symbol _ZN15dMg3DEspModel_c3HitEv

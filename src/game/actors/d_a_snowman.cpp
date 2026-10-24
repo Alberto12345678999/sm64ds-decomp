@@ -104,8 +104,8 @@ extern unsigned char data_0209f21c[];
 extern void *data_0209f394[];
 extern int _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs(
     void *a, Vector3 *v, unsigned n, Fix12i f, short s);
-extern unsigned d_a_snowmanNewHold(
-    unsigned a, unsigned b, int c, int d, int e, const void *f, void *g);
+extern unsigned d_a_snowmanNewHold(unsigned a, unsigned b, int c, int d, int e, const void *f,
+                                   void *g);
 extern void Vec3_Sub(struct Vector3 *out, struct Vector3 *a, struct Vector3 *b);
 extern int LenVec3(struct Vector3 *v);
 extern Fix12i Vec3_Dist(const struct Vector3 *a, const struct Vector3 *b);
@@ -491,12 +491,10 @@ int daSnowman_c::func_ov081_021249f4()
 
     pos = this->mHomePos;
     this->mParticleID1 =
-        Particle::System::New(
-            this->mParticleID1, 0x11d, pos.x, pos.y, pos.z, 0, 0);
+        Particle::System::New(this->mParticleID1, 0x11d, pos.x, pos.y, pos.z, 0, 0);
     pos.y = pos.y + 0x1e000;
     this->mParticleID2 =
-        Particle::System::New(
-            this->mParticleID2, 0x11e, pos.x, pos.y, pos.z, 0, 0);
+        Particle::System::New(this->mParticleID2, 0x11e, pos.x, pos.y, pos.z, 0, 0);
 
     if (this->mHomePos.y > this->mPosY) {
         ApproachAngle(&this->mAngleX, this->mInitAngleY, 1, 0x1000, 0x1000);
@@ -679,14 +677,10 @@ int daSnowman_c::func_ov081_02124f7c()
     pos.y = this->mHomePos.y;
     pos.z = this->mHomePos.z;
     this->mParticleID1 =
-        Particle::System::New(
-            this->mParticleID1, 0x11a, pos.x, pos.y, pos.z, 0,
-            0);
+        Particle::System::New(this->mParticleID1, 0x11a, pos.x, pos.y, pos.z, 0, 0);
     pos.y = pos.y + 0x1e000;
     this->mParticleID2 =
-        Particle::System::New(
-            this->mParticleID2, 0x11b, pos.x, pos.y, pos.z, 0,
-            0);
+        Particle::System::New(this->mParticleID2, 0x11b, pos.x, pos.y, pos.z, 0, 0);
     return 1;
 }
 

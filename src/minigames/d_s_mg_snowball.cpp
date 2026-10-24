@@ -149,8 +149,8 @@ extern void func_0203d388(int *p, int angle);
 extern int func_0203d434(int *p);
 extern int Vec2_Len(int *p);
 extern void func_0203d630(int *p, int m);
-extern u32 d_s_mg_snowballNewHold(
-    u32 uniqueID, u32 effectID, int x, int y, int z, const void *dir, void *callback);
+extern u32 d_s_mg_snowballNewHold(u32 uniqueID, u32 effectID, int x, int y, int z, const void *dir,
+                                  void *callback);
 extern void func_02012718(int a, int b);
 extern int _ZN4cstd5atan2E5Fix12IiES1_(int y, int x);
 extern s16 data_02082214[];
@@ -671,10 +671,8 @@ void dScMgSnowball_c::UpdateSnowball() {
             part.x = px;
             part.y = py;
             part.z = pz;
-            id1 = Particle::System::New(
-                0, 0xf1, part.x * 8, part.y * 8, part.z * 8, 0, 0);
-            id2 = Particle::System::New(
-                0, 0xf2, part.x * 8, part.y * 8, part.z * 8, 0, 0);
+            id1 = Particle::System::New(0, 0xf1, part.x * 8, part.y * 8, part.z * 8, 0, 0);
+            id2 = Particle::System::New(0, 0xf2, part.x * 8, part.y * 8, part.z * 8, 0, 0);
             sys = Particle::System::FromUniqueID(id1);
             if (sys != 0) {
                 /* 0x44 lies in Particle::System's unnamed pad_042. */

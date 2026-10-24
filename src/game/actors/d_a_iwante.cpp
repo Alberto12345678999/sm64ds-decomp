@@ -1,5 +1,7 @@
 //cpp
-namespace Particle { struct Callback; }
+namespace Particle {
+struct Callback;
+}
 struct Vector3_16f;
 /* Eyerok, the two-handed pyramid boss (.text 0x02115ee0..0x0211a418,
  * 64 functions). ROM RTTI daIwante_c (_ZTS10daIwante_c ov066:0x0211ad30);
@@ -382,7 +384,8 @@ namespace Particle {
 struct System {
     static void NewSimple(unsigned int a, int x, int y, int z);
 
-    static int New(unsigned, unsigned, int, int, int, const ::Vector3_16f *, Callback *);};
+    static int New(unsigned, unsigned, int, int, int, const ::Vector3_16f *, Callback *);
+};
 }
 extern u32 d_a_iwanteNewHold(u32 a, u32 b, int x, int y, int z, const void *v, void *cb);
 extern void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(void *self, void *sm, void *m, int rad, int h, unsigned int u);
@@ -2566,16 +2569,14 @@ int Eyerok::Behavior()
             for (; i < 0x14; i++) {
                 if (((Eyerok *)cur)->mDustPos[0].x != 0 || ((Eyerok *)cur)->mDustPos[0].y != 0 ||
                     ((Eyerok *)cur)->mDustPos[0].z != 0) {
-                    mDustParticle1[i] =
-                        Particle::System::New(
-                            mDustParticle1[i], id0, ((Eyerok *)cur)->mDustPos[0].x,
-                            ((Eyerok *)cur)->mDustPos[0].y, ((Eyerok *)cur)->mDustPos[0].z,
-                            (const Vector3_16f *)((void *)z0), (Particle::Callback *)((void *)z0));
-                    mDustParticle2[i] =
-                        Particle::System::New(
-                            mDustParticle2[i], id1, ((Eyerok *)cur)->mDustPos[0].x,
-                            ((Eyerok *)cur)->mDustPos[0].y, ((Eyerok *)cur)->mDustPos[0].z,
-                            (const Vector3_16f *)((void *)z0), (Particle::Callback *)((void *)z0));
+                    mDustParticle1[i] = Particle::System::New(
+                        mDustParticle1[i], id0, ((Eyerok *)cur)->mDustPos[0].x,
+                        ((Eyerok *)cur)->mDustPos[0].y, ((Eyerok *)cur)->mDustPos[0].z,
+                        (const Vector3_16f *)((void *)z0), (Particle::Callback *)((void *)z0));
+                    mDustParticle2[i] = Particle::System::New(
+                        mDustParticle2[i], id1, ((Eyerok *)cur)->mDustPos[0].x,
+                        ((Eyerok *)cur)->mDustPos[0].y, ((Eyerok *)cur)->mDustPos[0].z,
+                        (const Vector3_16f *)((void *)z0), (Particle::Callback *)((void *)z0));
                 }
                 cur += 0xc;
             }

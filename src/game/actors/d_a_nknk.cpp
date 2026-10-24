@@ -91,7 +91,8 @@ typedef struct { s32 x, y, z; } Vec3;
 struct V3 { int x, y, z; };
 
 extern "C" {
-extern int d_a_nknkNewHold(u32 uniqueID, u32 effectID, s32 x, s32 y, s32 z, const void *dir, void *callback);
+extern int d_a_nknkNewHold(u32 uniqueID, u32 effectID, s32 x, s32 y, s32 z, const void *dir,
+                           void *callback);
 extern void _ZN8Particle19SetSelfDestructFlagEj(u32 id);
 extern void func_0201267c(unsigned int id, const Vector3 *pos);
 extern s16 data_02082214[];         /* SINE_TABLE: sin, cos pairs */
@@ -1139,8 +1140,9 @@ void daNknk_c::func_ov062_021175c0()
             pos.y = pos.y + 0xa000;
         }
 
-        spawned = Particle::System::New(
-            0, 0xb2, pos.x, pos.y, zArg, (const Vector3_16f *)((void *)0), (Particle::Callback *)((void *)0));
+        spawned =
+            Particle::System::New(0, 0xb2, pos.x, pos.y, zArg, (const Vector3_16f *)((void *)0),
+                                  (Particle::Callback *)((void *)0));
     }
 
     _ZN8Particle19SetSelfDestructFlagEj(0xb2);

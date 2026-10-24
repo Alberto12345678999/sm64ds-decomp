@@ -952,7 +952,8 @@ extern "C" int func_ov070_0211f0a4(daPropeller_Heyho_c *c);
 typedef int Fix12i;
 
 struct Vector3_16f;
-extern "C" unsigned d_a_propeller_heyhoNewHold(unsigned a, unsigned b, Fix12i c, Fix12i d, Fix12i e, void* f, void* g);
+extern "C" unsigned d_a_propeller_heyhoNewHold(unsigned a, unsigned b, Fix12i c, Fix12i d, Fix12i e,
+                                               void *f, void *g);
 extern "C" u32 _ZN8Particle6System17NewUnkCallback818Ejj5Fix12IiES2_S2_PK11Vector3_16f(u32 a, u32 b, Fix12i c, Fix12i d, Fix12i e, const Vector3_16f* f);
 extern "C" void ApproachAngle(short* v, short a, int b, int c, int d);
 
@@ -972,8 +973,7 @@ extern "C" int func_ov070_0211f368(daPropeller_Heyho_c* c)
         ((int*)&v)[0] = x;
         ((int*)&v)[1] = y;
         ((int*)&v)[2] = z;
-        c->mParticle0 = Particle::System::New(
-            c->mParticle0, 0x13a, v.x, v.y, v.z, 0, 0);
+        c->mParticle0 = Particle::System::New(c->mParticle0, 0x13a, v.x, v.y, v.z, 0, 0);
         c->mParticle1 = _ZN8Particle6System17NewUnkCallback818Ejj5Fix12IiES2_S2_PK11Vector3_16f(
             c->mParticle1, 0x13b, v.x, v.y, v.z, 0);
     }

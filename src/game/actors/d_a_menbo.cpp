@@ -107,10 +107,7 @@ u16   DecIfAbove0_Short(u16 *p);
 int   RandomIntInternal(int *seed);
 void  func_02012694(int id, const Vector3 *pos);
 
-int d_a_menboNewHold(unsigned int a0,
-                                                                           unsigned int a1, int a2,
-                                                                           int a3, int a4, int a5,
-                                                                           int a6);
+int d_a_menboNewHold(unsigned int a0, unsigned int a1, int a2, int a3, int a4, int a5, int a6);
 
 void  _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(void *self, dActor_c *a, const Vector3 *v, LocFix12 r, LocFix12 h, unsigned int e, unsigned int g);
 /* Not dBgCh_Actr::Init: the header method mangles with int, the ROM symbol with Fix12<int>. */
@@ -216,8 +213,8 @@ extern "C" void func_ov090_02130f94(daMenbo_c *c_)
         v.z = r.z;
         v.y = c->mSurfaceY;
         c->mRippleParticles[i] =
-            Particle::System::New(
-                c->mRippleParticles[i], id, v.x, v.y, r.z, (const Vector3_16f *)(zero), (Particle::Callback *)(zero));
+            Particle::System::New(c->mRippleParticles[i], id, v.x, v.y, r.z,
+                                  (const Vector3_16f *)(zero), (Particle::Callback *)(zero));
         idx += 3;
     }
 }
