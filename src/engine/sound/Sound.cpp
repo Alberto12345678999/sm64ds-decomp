@@ -370,6 +370,7 @@ bool PlaySub(unsigned int a, unsigned int b, unsigned int c, int d, bool e)
 {
     int x;
     if (c == 0) {
+        /* e is bool. A plain test compiles to ldrb; retail loads the whole word. */
         if (!*(int *)&e) {
             x = data_0208e430;
             if ((x >= 0 && x != (int)a) ||
@@ -378,7 +379,7 @@ bool PlaySub(unsigned int a, unsigned int b, unsigned int c, int d, bool e)
         }
     } else {
         x = data_0208e430;
-        if (x < 0 || *(int *)&e) {
+        if (x < 0 || *(int *)&e) { /* same full-word load as above */
             if (x != (int)a) {
                 data_0208e430 = a;
                 if (a != 0x35 && a != 0x36) {

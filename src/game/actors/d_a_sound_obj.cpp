@@ -21,11 +21,10 @@
  * daSoundObj_c_classInit is reconstructed (RTTI daSoundObj_c, SOUND_OBJ
  * registry). Retail does not store that spelling.
  *
- * deslop
- * Leftover: Sound::PlaySub stays mangled -- Fix12<int> by value (wall
- *   6az); the namespace spelling homes an 8-byte stack slot (measured
- *   in d_a_sld_mng.cpp). loop stays int: the row byte passes through
- *   unconverted.
+ * Leftover: func_ov002_020f9468 still calls PlaySub through the C
+ *   identifier. mLoop is a u8; a bool parameter converts it and that
+ *   function grows from 0x94 to 0xac. The last parameter stays int so
+ *   the row byte passes through unconverted.
  * Leftover: SoundObjectCallbackOwner stays a shadow: entries 0-2 of
  *   the callback table are arm9 Sound:: starters, not daSoundObj_c
  *   members, and the sinit fills the table as non-polymorphic {ptr,0}
@@ -70,7 +69,9 @@ bool PlaySub(u32, u32, u32, int, bool);
 }
 
 extern "C" {
-extern int _ZN5Sound7PlaySubEjjj5Fix12IiEb(u32 soundID, u32 volume, u32 pan, Fix12i distance, int loop);
+/* Same function as Sound::PlaySub. The C identifier is the linker symbol.
+   Last parameter stays int: bool would convert mLoop. */
+extern int _ZN5Sound7PlaySubEjjjib(u32 soundID, u32 volume, u32 pan, Fix12i distance, int loop);
 extern SoundObjectCallback data_ov002_0211110c[];
 extern SoundObjRow data_ov002_0210c080[];  /* 7 rows; row 7 is the _ZTV12daSoundObj_c header */
 extern int data_0208e430;                 /* current sub-sound ID, owned by Sound::PlaySub */
@@ -159,9 +160,9 @@ extern "C" int func_ov002_020f9468(daSoundObj_c *self, u16 *counter)
        steady-state branch falls through to the one `return 0`. */
     if (*counter < self->mCounterLimit - 0xf) {
         int vol = self->mVolume;
-        _ZN5Sound7PlaySubEjjj5Fix12IiEb(self->mSoundID, vol, 0x7f, (0x7f - vol) << 0xc, self->mLoop);
+        _ZN5Sound7PlaySubEjjjib(self->mSoundID, vol, 0x7f, (0x7f - vol) << 0xc, self->mLoop);
         *counter += 1;
-    } else if (_ZN5Sound7PlaySubEjjj5Fix12IiEb(self->mSoundID, 0x7f, 0, kPoolDist, self->mLoop)) {
+    } else if (_ZN5Sound7PlaySubEjjjib(self->mSoundID, 0x7f, 0, kPoolDist, self->mLoop)) {
         return 1;
     }
     return 0;
