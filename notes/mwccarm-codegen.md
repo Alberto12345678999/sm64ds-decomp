@@ -234,6 +234,7 @@ Three things this batch adds to the recipe:
 Also worth knowing: `tools/name_roundtrip.py --symbol X` prints a SUMMARY, so
 the word MISMATCH appears in its output even when the count is 0. Read the
 `ROUND-TRIPS n 100.0%` line, not a grep for the word.
+
 ### THE COMPILER'S NUMBERED LOCAL LABELS COUNT *NAMED* PARAMETERS (2026-10-23)
 
 AGENTS.md says a FILE RENAME moves compiler-numbered local symbols
@@ -259,23 +260,35 @@ names; put the names on the definition, where they document the code and cost
 nothing. Do this FIRST and the 227-TU blast radius never exists.
 
 **2. Deleting a local `extern` that HAD named parameters frees numbers in that
-TU.** Unavoidable, but bounded by the files actually edited. Those manifests'
-`defined_symbol_renames[].from` are remapped ascending-to-ascending against the
-labels the object now emits (68 of them in #4296).
+TU.** Unavoidable, but bounded by the files actually edited (plus any TU that
+reaches a changed local header: `d_a_obj_km2_ami_bou.cpp` via
+`daObjKm2_Ami_Bou_c.h`). Re-key those manifests against objects compiled at the
+PR's real base and at the head:
 
-**Ten TUs could not be remapped, and removing the cause was correct.** Four
-report `rename destination @N already exists in object` -- the block shifted
-onto itself, so a per-label map collides -- and six report only the FIRST stale
-source, because isolate stops there, so one run never yields a complete list.
-`defined_symbol_renames` has no regenerator: it is written by hand against
-private fixtures (`tools/test_canonical_duplicates.py` reads a `proof.json`
-absent from the tree) and encodes measured boundary evidence, so a guessed map
-corrupts that silently -- deriving the subset from the object's symbol table
-picked up `@0`/`@2`/`@5` and proposed `@1393 -> @6`. Instead those ten sources
-keep their scalar `extern` and take only the SYMBOL RENAME: the named
-parameters stay, the labels do not move, and the manifest stays correct
-untouched. **A TU that records `defined_symbol_renames` should keep its
-named-parameter externs.**
+- Pair the bare `@NNN` DEFINED symbols as a WHOLE BLOCK: sort each side by
+  number, require the same count and the same section/size sequence, and map
+  position to position. Pair `$NNN` mangled names (`Bundle$NNN...`) by shape.
+- Rewrite every `defined_symbol_renames[].from` (and compiler-only `Bundle$NNN`
+  rows) in ONE pass from that map. Leave `to`, `.bss`/`.data`, relocations and
+  binding rewrites alone: they carry ROM-side names.
+
+#4296 landed this way: every converted TU dropped its extern and took the
+member call, and 79 manifests were re-keyed (full rombuild: intact TU gates
+clean, 0 mismatching; PR validation green). A per-label remap applied one
+rename at a time collides when
+the block shifts onto itself (`rename destination @N already exists in
+object`); the simultaneous block map does not. Apply it exactly ONCE -- a
+second pass double-shifts and reports `duplicate defined symbol rename`.
+
+One case the map cannot see: a label that USED to coincide with its ROM name
+has no rename row at all (`daLinelift2_c` `@508`). Once it moves, the
+`symbol_binding_rewrites`/relocation rows naming it fail with `binding rewrite
+symbol @508 has 0 entries`; add the rename (`@505 -> @508`) rather than
+editing the ROM-side rows.
+
+Also note `tools/rombuild.py` prints at most ten isolate failures
+(`failures[:10]`), and isolate reports only the FIRST stale source per TU, so
+one run never yields the complete list -- raise the cap locally while sweeping.
 
 **How to check any of this.** `tubuild verify <tu>`'s verdict is NOT the signal:
 `ov002/da1up_c` reports `38/38 MATCH ... TEXT-VERIFIED` with every label wrong,
