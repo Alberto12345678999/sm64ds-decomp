@@ -817,8 +817,8 @@ void dMeter_c::RenderVsTimer() {
         } else {
             int ones = t % 10;
             if (ones > 3) {
-                OAM::Render(0, _ZN3OAM17VS_YELLOW_NUMBERSE[ones], 0x7c,
-                                                        mVsTimerY, -1, -1, 0x1000, 0);
+                OAM::Render(0, _ZN3OAM17VS_YELLOW_NUMBERSE[ones], 0x7c, mVsTimerY, -1, -1, 0x1000,
+                            0);
             } else {
                 OAM::Render(false, data_ov002_0210ca0c[3 - ones], 0x84, mVsTimerY, -1, -1, 0);
             }

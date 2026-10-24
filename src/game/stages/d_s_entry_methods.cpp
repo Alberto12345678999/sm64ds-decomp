@@ -158,8 +158,6 @@ extern u8 data_0209fc5c[];
 extern u8 data_0209fc5d[];
 extern dScEntry_c::StepSet data_ov075_0211d8a0;
 extern dScEntry_c::StepSet data_ov075_0211d8d0;
-
-
 }
 
 /* Course-select and match-loading steps, directly below the player-select

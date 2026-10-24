@@ -826,9 +826,11 @@ s32 dScMiniGm_c::Render()
             else
                 scale = (((0x12 - t) << 12) / 16) + 0x1000;
             if (mArrowBobPhase < 0x20)
-                OAM::Render(1, (OamAttr *)sMiniGmPageArrows[0], 0x50 - mArrowBobPhase / 2, 0x60, -1, 0, scale, 0);
+                OAM::Render(1, (OamAttr *)sMiniGmPageArrows[0], 0x50 - mArrowBobPhase / 2, 0x60, -1,
+                            0, scale, 0);
             else
-                OAM::Render(1, (OamAttr *)sMiniGmPageArrows[0], 0x50 - (0x40 - mArrowBobPhase) / 2, 0x60, -1, 0, scale, 0);
+                OAM::Render(1, (OamAttr *)sMiniGmPageArrows[0], 0x50 - (0x40 - mArrowBobPhase) / 2,
+                            0x60, -1, 0, scale, 0);
         } else if (MiniGm_HasSecondPage(this) != 0) {
             t = mNextPageTimer;
             if (t < 0xa)
@@ -838,9 +840,11 @@ s32 dScMiniGm_c::Render()
             else
                 scale = (((0x12 - t) << 12) / 16) + 0x1000;
             if (mArrowBobPhase < 0x20)
-                OAM::Render(1, (OamAttr *)sMiniGmPageArrows[1], mArrowBobPhase / 2 + 0xe0, 0x60, -1, 0, scale, 0);
+                OAM::Render(1, (OamAttr *)sMiniGmPageArrows[1], mArrowBobPhase / 2 + 0xe0, 0x60, -1,
+                            0, scale, 0);
             else
-                OAM::Render(1, (OamAttr *)sMiniGmPageArrows[1], (0x40 - mArrowBobPhase) / 2 + 0xe0, 0x60, -1, 0, scale, 0);
+                OAM::Render(1, (OamAttr *)sMiniGmPageArrows[1], (0x40 - mArrowBobPhase) / 2 + 0xe0,
+                            0x60, -1, 0, scale, 0);
         }
     }
 

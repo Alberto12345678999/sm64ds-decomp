@@ -90,8 +90,8 @@ struct OamAttr;
 extern int sCupFxScales[];
 extern unsigned char sCupFxFrameSprites[];
 extern OamAttr *sCupFxSprites[];
-extern int OamRender8_d_s_mg_cup(int show, struct OamAttr *attr, int a, int b,
-                                 int c, int d, int e, int f);
+extern int OamRender8_d_s_mg_cup(int show, struct OamAttr *attr, int a, int b, int c, int d, int e,
+                                 int f);
 extern unsigned char DecIfAbove0_Byte(unsigned char *counter);
 extern int func_02053200(int x);
 extern int Mg_RenderSubSpriteScaled(int a0, int a1, int a2, int a3, int a4, int a5,
@@ -234,8 +234,7 @@ extern "C" void CupFx_Move(char *sprite, int dx, int dy) {
 extern "C" void CupFx_Draw(char *sprite) {
     CupFx *fx = (CupFx *)sprite;
     int frameIndex = fx->frame + fx->row * 6;
-    OAM::Render(1, sCupFxSprites[sCupFxFrameSprites[frameIndex]],
-                fx->x >> 12, fx->y >> 12, -1, -1,
+    OAM::Render(1, sCupFxSprites[sCupFxFrameSprites[frameIndex]], fx->x >> 12, fx->y >> 12, -1, -1,
                 sCupFxScales[frameIndex], 0);
 }
 

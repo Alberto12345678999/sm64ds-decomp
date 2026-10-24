@@ -1027,9 +1027,7 @@ void func_ov002_020f26e0(void *thiz)
             s = 7;
         if (s == 0)
             continue;
-        OAM::Render(
-            1, data_ov002_0210b6a8[idx], e->x, e->y,
-            -1, 1, ((7 - s) << 10) + 0x1000, 0);
+        OAM::Render(1, data_ov002_0210b6a8[idx], e->x, e->y, -1, 1, ((7 - s) << 10) + 0x1000, 0);
     }
 }
 }

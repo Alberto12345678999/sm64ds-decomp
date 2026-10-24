@@ -21,8 +21,8 @@ typedef unsigned short u16;
 namespace OAM { void Reset(); }
 extern "C" {
 /* 8-arg Render(draw, attr, x, y, palette, priority, scale, rot). Scale is an int. */
-void *_ZN3OAM6RenderEbP7OamAttriiiiii(int draw, void *attr, int x, int y,
-                                      int pal, int prio, int scale, int rot);
+void *_ZN3OAM6RenderEbP7OamAttriiiiii(int draw, void *attr, int x, int y, int pal, int prio,
+                                      int scale, int rot);
 void _ZN3OAM4LoadEv(void);
 extern unsigned char data_0209e660;
 extern int data_0209e664;

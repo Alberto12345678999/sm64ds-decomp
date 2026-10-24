@@ -431,8 +431,8 @@ void OAM::Render(bool sub, struct OamAttr *attr_, int xOff, int yOff, int palett
 // @symbol _ZN3OAM6RenderEbP7OamAttriiiiii
 /* 0x02021024  size 0x480. One object, one scale, one rotation.
  * Scale and rotation are ints. `OamAttrTpl` is this body's view of the template entry. */
-OamAttr *OAM::Render(bool draw, OamAttr *obj_, int px, int py, int pal, int prio, int scale0, int rot0)
-{
+OamAttr *OAM::Render(bool draw, OamAttr *obj_, int px, int py, int pal, int prio, int scale0,
+                     int rot0) {
     OamAttrTpl *obj = (OamAttrTpl *)obj_;
     int *counter;
     int *affctr;

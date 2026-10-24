@@ -60,15 +60,15 @@ void func_ov075_02117fe4(char *c)
             tens = n / 10;
             if (tens != 0) {
                 p = (int *)_ZN3OAM6RenderEbP7OamAttriiiiii(zT, data_ov075_0211c8b0, xTens,
-                                                            yBase + yOff, eight, minus1, sz, zT);
+                                                           yBase + yOff, eight, minus1, sz, zT);
                 if (p != 0) {
                     int *q = (int *)(int)(p + 1);
                     int val = *q;
                     *q = (val & ~0x3ff) | ((tens + ((u32)(val << 22) >> 22)) & 0x3ff);
                 }
             }
-            p = (int *)_ZN3OAM6RenderEbP7OamAttriiiiii(zO, data_ov075_0211c8b0, xOnes,
-                                                        yBase + yOff, eight, minus1, sz, zO);
+            p = (int *)_ZN3OAM6RenderEbP7OamAttriiiiii(zO, data_ov075_0211c8b0, xOnes, yBase + yOff,
+                                                       eight, minus1, sz, zO);
             if (p != 0) {
                 int *q = (int *)(int)(p + 1);
                 int val = *q;

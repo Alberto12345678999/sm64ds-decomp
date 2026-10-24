@@ -418,8 +418,8 @@ int dMap_c::Render()
                 this->mArrowMatrixB = (s16)FX_MUL(cn, this->mArrowScale);
                 this->mArrowMatrixC = -this->mArrowMatrixB;
                 this->mArrowMatrixD = this->mArrowMatrixA;
-                OAM::Render(1, (OamAttr *)_ZN3OAM8MM_ARROWE,
-                    this->mPlayerIconX[idx], this->mPlayerIconY[idx], -1, 2, this->mArrowScale, ang);
+                OAM::Render(1, (OamAttr *)_ZN3OAM8MM_ARROWE, this->mPlayerIconX[idx],
+                            this->mPlayerIconY[idx], -1, 2, this->mArrowScale, ang);
             }
             {
                 for (i = 0, j = 0; i < 4; i++, j += 4) {
@@ -468,8 +468,8 @@ int dMap_c::Render()
                             this->mArrowMatrixB = (s16)FX_MUL(cn, this->mArrowScale);
                             this->mArrowMatrixC = -this->mArrowMatrixB;
                             this->mArrowMatrixD = this->mArrowMatrixA;
-                            OAM::Render(1, (OamAttr *)_ZN3OAM8MM_ARROWE,
-                                this->mPlayerIconX[idx], this->mPlayerIconY[idx], -1, 2, this->mArrowScale, ang);
+                            OAM::Render(1, (OamAttr *)_ZN3OAM8MM_ARROWE, this->mPlayerIconX[idx],
+                                        this->mPlayerIconY[idx], -1, 2, this->mArrowScale, ang);
                         }
                     }
                 }

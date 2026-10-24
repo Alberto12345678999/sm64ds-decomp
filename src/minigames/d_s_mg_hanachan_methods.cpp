@@ -215,8 +215,7 @@ extern short data_02082214[];
 extern void *sWigglerSprites[];
 extern void *sHanaWigglerTargetSprites[];
 extern void *sHanaWigglerFieldSprites[];
-extern void OamRender8_d_s_mg_hanachan(int b, void *attr, int x, int y, int a, int c,
-                                       int f, int g);
+extern void OamRender8_d_s_mg_hanachan(int b, void *attr, int x, int y, int a, int c, int f, int g);
 
 extern int func_02012468(int a, int b, int c, int d, int e, int f, int g, int h);
 extern short sHanaPickedCount;
@@ -642,8 +641,7 @@ extern "C" void Wiggler_DrawTarget(void *self_) {
         px = pos.y >> 12;
         py = pos.x >> 12;
         a2i = Wiggler_GetFlag((char *)self, i);
-        OAM::Render(0, (OamAttr *)sWigglerSprites[a2i], py, px, res, -1, 0x1000,
-                    (u16)rot);
+        OAM::Render(0, (OamAttr *)sWigglerSprites[a2i], py, px, res, -1, 0x1000, (u16)rot);
         if (i == 0) {
             if (self->bloom != 0) {
                 if (Wiggler_IsStarVisible((char *)self) != 0) {
@@ -722,10 +720,10 @@ void Wiggler_DrawField(void *arg) {
         t.res = Wiggler_GetFrame(raw, i);
         px = s.pos.y >> 12;
         py = s.pos.x >> 12;
-        OAM::Render(
-            1,
-            (OamAttr *)sWigglerSprites[(a2i = Wiggler_GetFlag(raw, i), (t.urot = (unsigned short)rot), a2i)],
-            py, px, t.res, -1, 0x1000, t.urot);
+        OAM::Render(1,
+                    (OamAttr *)sWigglerSprites[(a2i = Wiggler_GetFlag(raw, i),
+                                                (t.urot = (unsigned short)rot), a2i)],
+                    py, px, t.res, -1, 0x1000, t.urot);
 
         if (i == 0) {
             if (((Wiggler *)raw)->bloom != 0 && ((Wiggler *)raw)->flower > 0) {
@@ -742,9 +740,8 @@ void Wiggler_DrawField(void *arg) {
                 else
                     scale =
                         func_02053200((data_02082214[((unsigned short)ang >> 4) * 2] >> 2) + 0xc00);
-                OAM::Render(1, (OamAttr *)sHanaWigglerTargetSprites[fp2],
-                                                        s.vb.x >> 12, s.vb.y >> 12, -1, -1, scale,
-                                                        t.urot);
+                OAM::Render(1, (OamAttr *)sHanaWigglerTargetSprites[fp2], s.vb.x >> 12,
+                            s.vb.y >> 12, -1, -1, scale, t.urot);
             } else if (((Wiggler *)raw)->state == &Wiggler::StateWait) {
                 if (((Wiggler *)raw)->hold > 0x1a && ((Wiggler *)raw)->hold < 0x30) {
                     int idx = s3.vc0.x;
@@ -758,9 +755,9 @@ void Wiggler_DrawField(void *arg) {
                     func_0203d388(&s.vc.x, rot);
                     s.vc.x += s.pos.x;
                     s.vc.y += s.pos.y;
-                    OAM::Render(
-                        1, (OamAttr *)sHanaWigglerFieldSprites[idx], s.vc.x >> 12, s.vc.y >> 12, -1, -1,
-                        0x1000, (unsigned short)(short)(rot & 0xf800));
+                    OAM::Render(1, (OamAttr *)sHanaWigglerFieldSprites[idx], s.vc.x >> 12,
+                                s.vc.y >> 12, -1, -1, 0x1000,
+                                (unsigned short)(short)(rot & 0xf800));
                 }
             }
         }
