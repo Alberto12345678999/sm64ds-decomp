@@ -66,7 +66,7 @@ struct dExtAnmTexPat_c : dExtFrameCtrl_c {
     /* --- vtable: the destructor pair only. --- */
     virtual ~dExtAnmTexPat_c();                       /* slots 0 (D1), 1 (D0) */
 
-    /* DECLARED, never defined as a method here -- src/engine/model/dExtAnmTexPat_c.cpp
+    /* DECLARED, never defined as a method here -- src/engine/model/d_ext_anm_tex_pat.cpp
        owns C1 (notes/ctor-migration.md section 2). */
     dExtAnmTexPat_c();
 

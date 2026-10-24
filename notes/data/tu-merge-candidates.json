@@ -12907,7 +12907,7 @@
     "src/func_02046564.c",
     "src/unnamed/arm9/0204/func_02046590.c",
     "src/_ZN17dExtSimpleModel_c17UpdateFileOffsetsER8BMD_File.cpp",
-    "src/engine/model/TextureSequence_UpdateFileOffsets.cpp",
+    "src/engine/model/dExtAnmTexPat_c_UpdateFileOffsets.cpp",
     "src/_ZN9Animation17UpdateFileOffsetsER8BCA_File.cpp",
     "src/unnamed/arm9/0204/func_020469e0.c",
     "src/unnamed/arm9/0204/func_020469e8.c",

@@ -1,8 +1,8 @@
 {
   "id": "arm9/dExtAnmTexSRT_c",
   "module": "arm9",
-  "source": "src/engine/model/dExtAnmTexSRT_c.cpp",
-  "promoted_source": "src/engine/model/dExtAnmTexSRT_c.cpp",
+  "source": "src/engine/model/d_ext_anm_tex_srt.cpp",
+  "promoted_source": "src/engine/model/d_ext_anm_tex_srt.cpp",
   "status": "promoted",
   "boundary_confidence": "high",
   "boundary_evidence": [
@@ -106,7 +106,7 @@
       "functions_occur_in_expected_order": "PASS",
       "relocation_destinations_verified": "PASS"
     },
-    "object": "build/tu/arm9-dExtAnmTexSRT_c/dExtAnmTexSRT_c.o (gitignored)",
+    "object": "build/tu/arm9-dExtAnmTexSRT_c/d_ext_anm_tex_srt.o (gitignored)",
     "compilerOnlyOutput": {
       "requested": [
         "_ZN15dExtAnmTexSRT_cD2Ev",
