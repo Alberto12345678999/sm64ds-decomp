@@ -2033,7 +2033,7 @@ matched: yes</title></rect><rect x="171.83" y="162.45" width="2.72" height="8.88
 module: arm9
 addr: 0x02015988
 size: 36 bytes
-matched: yes</title></rect><rect x="174.55" y="162.45" width="6.35" height="8.88" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj
+matched: yes</title></rect><rect x="174.55" y="162.45" width="6.35" height="8.88" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit
 module: arm9
 addr: 0x020159ac
 size: 84 bytes
@@ -18113,7 +18113,7 @@ matched: yes</title></rect><rect x="568.82" y="778.63" width="5.38" height="9.90
 module: ov002
 addr: 0x020f6a00
 size: 80 bytes
-matched: yes</title></rect><rect x="574.20" y="778.63" width="5.11" height="9.90" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8daDemo_c7param_c19func_ov002_020f6a50Ev
+matched: yes</title></rect><rect x="574.20" y="778.63" width="5.11" height="9.90" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8daDemo_c7param_cC2Ev
 module: ov002
 addr: 0x020f6a50
 size: 76 bytes
