@@ -177,8 +177,9 @@ extern "C" struct Matrix4x3 data_020a0e68;
 extern "C" struct Matrix4x3 IDENTITY_MATRIX4X3;
 extern "C" void _ZN15dExtAnmTexSRT_c7SetFileER8BTA_Filei5Fix12IiEj(void *tt, void *file, int a,
                                                                    int b, unsigned int u);
-extern "C" void _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj(void *self, void *f, int a,
-                                                                   s32 fix, u32 c);
+/* local extern: the matched free-function spelling of SetFile; a member call is pending. */
+extern "C" void _ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit(void *self, void *f, int a, s32 fix,
+                                                           u32 c);
 extern "C" void _ZN17dExtAnmMaterial_c7SetFileER8BMA_Filei5Fix12IiEj(void *self, void *f, int a,
                                                                      s32 fix, u32 c);
 extern "C" void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
@@ -1783,7 +1784,7 @@ int daKuriKing_c::InitResources()
         i++;
     } while (i < 7);
 
-    _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj(
+    _ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit(
         &mTextureSequence, gKurikingAngerTextureSequenceFile.filePtr, 0, 0x1000, 0);
     _ZN17dExtAnmMaterial_c7SetFileER8BMA_Filei5Fix12IiEj(&mMaterialChanger, &data_ov010_021123f4,
                                                          0x40000000, 0x1000, 0);

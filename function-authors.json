@@ -2103,7 +2103,7 @@
     },
     "arm9:0x020159ac": {
       "author": "tangosdev",
-      "name": "_ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj"
+      "name": "_ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit"
     },
     "arm9:0x02015a00": {
       "author": "tangosdev",
@@ -18211,7 +18211,7 @@
     },
     "ov002:0x020f6a50": {
       "author": "tangosdev",
-      "name": "_ZN8daDemo_c7param_c19func_ov002_020f6a50Ev"
+      "name": "_ZN8daDemo_c7param_cC2Ev"
     },
     "ov002:0x020f6a9c": {
       "author": "tangosdev",

@@ -119,8 +119,9 @@ void Matrix4x3_ApplyInPlaceToRotationY(Matrix4x3 *m, short angY);
 void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
     dActor_c *self, dExtShadowModel_c *shadow, Matrix4x3 *mat, int radius, int depth,
     unsigned char opacity);
-void _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj(dExtAnmTexPat_c *seq, BTP_File *file,
-                                                        int flags, int speed, unsigned short start);
+/* local extern: the matched free-function spelling of SetFile; a member call is pending. */
+void _ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit(dExtAnmTexPat_c *seq, BTP_File *file, int flags,
+                                                int speed, unsigned short start);
 }
 
 /* Reconstructed source-style name: SM64DS proves daLuigi_c through RTTI,
@@ -148,11 +149,11 @@ int daLuigi_c::InitResources()
 
     dExtAnmTexPat_c::Prepare(*(BMD_File *)data_ov002_0210ebb8.filePtr,
                              *(BTP_File *)data_ov002_0210e8d0.filePtr);
-    _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj(
+    _ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit(
         &mTextureSequences[0], (BTP_File *)data_ov002_0210e8d0.filePtr, 0, kFxOne, 0);
     dExtAnmTexPat_c::Prepare(*(BMD_File *)data_ov002_0210eb20.filePtr,
                              *(BTP_File *)data_ov002_0210ebd8.filePtr);
-    _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj(
+    _ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit(
         &mTextureSequences[1], (BTP_File *)data_ov002_0210ebd8.filePtr, 0, kFxOne, 0);
 
     mShadowModel.InitCylinder();

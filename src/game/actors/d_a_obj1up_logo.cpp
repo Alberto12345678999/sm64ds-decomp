@@ -61,8 +61,9 @@ extern OneUpLogoTexSeqFilePtr data_ov002_02110a9c; /* BTP */
 
 extern "C" {
 void Matrix4x3_FromTranslation(Matrix4x3 *matrix, s32 x, s32 y, s32 z);
-void _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj(void *self, void *btp, int flags, int speed,
-                                                        unsigned int startFrame);
+/* local extern: the matched free-function spelling of SetFile; a member call is pending. */
+void _ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit(void *self, void *btp, int flags, int speed,
+                                                unsigned int startFrame);
 namespace Particle {
 struct System {
     static void NewSimple(u32 id, s32 x, s32 y, s32 z);
@@ -176,8 +177,8 @@ s32 daObj1UpLogo_c::InitResources()
                              *(BTP_File *)data_ov002_02110a9c.filePtr);
     /* InitResources: SetFile's Fix12<int> parameter. A braced method call
        does not compile, so this stays the scalar extern. */
-    _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj(
-        &mTextureSequence, data_ov002_02110a9c.filePtr, kBtpFlags, 0, frame);
+    _ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit(&mTextureSequence, data_ov002_02110a9c.filePtr,
+                                               kBtpFlags, 0, frame);
     mState = 0;
     mStartPos.x = mPosX;
     mStartPos.y = mPosY;

@@ -40,7 +40,7 @@ struct daDemo_c : dActor_c {
     struct param_c {
         Vector3 mScale[1];
 
-        void *func_ov002_020f6a50();
+        param_c();
     };
 
     struct anmModel_c : param_c, dExtAnmModel_c {
@@ -61,6 +61,12 @@ struct daDemo_c : dActor_c {
            back onto it when it has sunk below. */
         u8 mSnapToFloor; /* 0x83 */
 
+        /* No declared constructor: InitResources inlines the implicit one at
+           every new (param_c's constructor on the tail base, dExtAnmModel_c's
+           C2, then both vptr stores). Declaring an empty anmModel_c() moves
+           this class's destructor variants out of ROM order (tubuild verify
+           fails at ordinals 112/113), so both nested classes keep theirs
+           implicit. */
         void func_ov002_020f64ac(char *r4);
         void func_ov002_020f6514(void *tbl, unsigned char arg);
         void func_ov002_020f65b8();
