@@ -269,7 +269,8 @@ s32 daObjSm_Lift_c::InitResources()
     func_ov018_02111278();
     UpdateClsnPosAndRot();
     void *kf = dBgW_Kc::LoadFile(gSmLiftCollisionFile);
-    ((dBgW_KcMbg *)(c + 0x124))->dBgW_KcMbg::SetFile((KCL_File *)(kf), *(const Matrix4x3 *)(c + 0x2ec), 0x1000, mAngleY, *(CLPS_Block *)(data_ov018_02112f48));
+    mMeshCollider.SetFile((KCL_File *)kf, mClsnMat, 0x1000, mAngleY,
+                          *(CLPS_Block *)data_ov018_02112f48);
     func_020393d4((int *)(c + 0x124), (int)dBgW::UpdatePosWithTransform);
     func_020393c4((int *)(c + 0x124), (int)func_ov018_02111804);
     unk_331 = 0x3c;
