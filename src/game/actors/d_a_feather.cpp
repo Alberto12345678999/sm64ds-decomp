@@ -63,7 +63,7 @@ void _Z14ApproachLinearRiii(int* ref, int target, int rate);
 u8 DecIfAbove0_Byte(u8* p);
 namespace Particle {
 struct System {
-    static void * NewSimple(u32 kind, int x, int y, int z);
+    static void *NewSimple(u32 kind, int x, int y, int z);
 };
 }
 void Vec3_Asr(struct Vector3 *d, struct Vector3 *s, int sh);

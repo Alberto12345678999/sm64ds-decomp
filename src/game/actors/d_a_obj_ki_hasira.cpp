@@ -100,7 +100,7 @@ s16 Vec3_HorzAngle(const Vector3 *a, const Vector3 *b);
 u8 DecIfAbove0_Byte(u8 *p);
 namespace Particle {
 struct System {
-    static void * NewSimple(unsigned int id, int x, int y, int z);
+    static void *NewSimple(unsigned int id, int x, int y, int z);
 };
 }
 /* The camera-shake request and the camera it goes to (arm9). */

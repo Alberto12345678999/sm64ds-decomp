@@ -100,7 +100,7 @@ void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES
 unsigned char DecIfAbove0_Byte(unsigned char *p);
 namespace Particle {
 struct System {
-    static void * NewSimple(unsigned int id, int x, int y, int z);
+    static void *NewSimple(unsigned int id, int x, int y, int z);
 };
 }
 extern s16 data_02082214[];

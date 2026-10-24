@@ -97,7 +97,7 @@ void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
     CLPS_Block *clps);
 namespace Particle {
 struct System {
-    static void * NewSimple(u32 id, s32 x, s32 y, s32 z);
+    static void *NewSimple(u32 id, s32 x, s32 y, s32 z);
 };
 }
 }

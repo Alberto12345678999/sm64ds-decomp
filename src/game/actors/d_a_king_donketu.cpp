@@ -401,9 +401,9 @@ void daKing_Donketu_c::func_ov073_0211f2c0(int strength)
   }
 
   spawn:
-  Particle::System::NewSimple(0x88, pv.x, pv.y, pv.z);
+      Particle::System::NewSimple(0x88, pv.x, pv.y, pv.z);
 
-  Particle::System::NewSimple(0x89, pv.x, pv.y, pv.z);
+      Particle::System::NewSimple(0x89, pv.x, pv.y, pv.z);
 }
 
 /* Particles 0x84 and 0x85 on the surface of a's collision sphere,

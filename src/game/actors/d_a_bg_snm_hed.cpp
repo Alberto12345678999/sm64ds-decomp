@@ -141,10 +141,8 @@ int daBgSnmHed_c::State2()
             _ZN8dActor_c10EarthquakeERK7Vector35Fix12IiE(
                 this, &pos, 0x5dc000);
             func_0201267c(0x115, &mCamSpacePosX);
-            Particle::System::NewSimple(
-                0x10f, mPosX, mPosY, mPosZ);
-            Particle::System::NewSimple(
-                0x110, mPosX, mPosY, mPosZ);
+            Particle::System::NewSimple(0x10f, mPosX, mPosY, mPosZ);
+            Particle::System::NewSimple(0x110, mPosX, mPosY, mPosZ);
             _ZN5Sound7PlaySubEjjj5Fix12IiEb(
                 0x20, 0x14, 0x7f, 0x15666, 0);
             mSubstate++;

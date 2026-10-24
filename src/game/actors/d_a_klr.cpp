@@ -54,7 +54,7 @@ void Vec3_Add(Vector3 *out, const Vector3 *a, const Vector3 *b);
 
 namespace Particle {
 struct System {
-    static void * NewSimple(u32 id, int x, int y, int z);
+    static void *NewSimple(u32 id, int x, int y, int z);
 };
 }
 int _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(

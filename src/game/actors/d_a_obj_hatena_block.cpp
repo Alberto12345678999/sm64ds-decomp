@@ -853,11 +853,14 @@ void daObjHatenaBlock_c::func_ov102_021498e0()
     typ = actorID;
     switch (typ - ACTOR_HATENA_BLOCK) {
     case 1: case 2:   /* ITEM_BLOCK, VS_ITEM_BLOCK */
-        Particle::System::NewSimple(0x10, pos.x, pos.y, pos.z); break;
+        Particle::System::NewSimple(0x10, pos.x, pos.y, pos.z);
+        break;
     case 0:           /* HATENA_BLOCK */
-        Particle::System::NewSimple(0xc, pos.x, pos.y, pos.z); break;
+        Particle::System::NewSimple(0xc, pos.x, pos.y, pos.z);
+        break;
     case 3: case 4: case 5:   /* CAP_BLOCK_M, W, L */
-        Particle::System::NewSimple(9, pos.x, pos.y, pos.z); break;
+        Particle::System::NewSimple(9, pos.x, pos.y, pos.z);
+        break;
     }
     ch = (int)mHitterParam;
     if (ch < 0) ch = 0; else if (ch > 3) ch = 3;

@@ -161,7 +161,8 @@ extern "C" void func_ov081_02125fb8(daSnowball_c *self)
             Player *player = static_cast<Player *>(other);
             if (player->mIsVanish != 0) return;
             if (player->mIsMetal == 1) {
-                Particle::System::NewSimple(PTCL_SNOWBALL_BURST, self->mPosX, self->mPosY, self->mPosZ);
+                Particle::System::NewSimple(PTCL_SNOWBALL_BURST, self->mPosX, self->mPosY,
+                                            self->mPosZ);
                 self->MarkForDestruction();
                 return;
             }
@@ -175,7 +176,8 @@ extern "C" void func_ov081_02125fb8(daSnowball_c *self)
                 pos.z = self->mPosZ;
                 _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(player, &pos, 1, 0xc000, 1, 0, 1);
                 func_02012694(SND3_SNOWBALL_BURST, &self->mCamSpacePosX);
-                Particle::System::NewSimple(PTCL_SNOWBALL_BURST, self->mPosX, self->mPosY, self->mPosZ);
+                Particle::System::NewSimple(PTCL_SNOWBALL_BURST, self->mPosX, self->mPosY,
+                                            self->mPosZ);
                 self->MarkForDestruction();
                 return;
             }
@@ -209,8 +211,7 @@ int daSnowball_c::func_ov081_021260fc()
     if ((unsigned short)this->mStateTimer == 0 ||
         mWithMeshClsn.IsOnGround() != 0) {
         func_02012694(SND3_SNOWBALL_BURST, &this->mCamSpacePosX);
-        Particle::System::NewSimple(
-            PTCL_SNOWBALL_BURST, this->mPosX, this->mPosY, this->mPosZ);
+        Particle::System::NewSimple(PTCL_SNOWBALL_BURST, this->mPosX, this->mPosY, this->mPosZ);
         MarkForDestruction();
     }
     if (this->mSpeedX != 0 || this->mSpeedZ != 0) {
