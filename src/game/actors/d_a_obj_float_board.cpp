@@ -36,7 +36,9 @@
 #include "common.h"
 #include "dBgCh_Gnd.h"
 #include "SharedFilePtr.h"
-namespace cstd { s16 atan2(s32, s32); }
+namespace cstd {
+s16 atan2(s32, s32);
+}
 
 /* ApproachLinear's two overloads mangle back to the ROM's own
  * _Z14ApproachLinearRiii and _Z14ApproachLinearRsss, so they are declared as

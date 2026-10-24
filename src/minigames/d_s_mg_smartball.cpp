@@ -72,7 +72,9 @@ enum dScMgSmartball_c_AssetId { ASSET_D_2D_MG_BG_OPTION_NSC_BIN = 0x005b };
 #include "Memory.h"
 #include "nitro/fx/fx.h"
 
-namespace cstd { s16 atan2(s32, s32); }
+namespace cstd {
+s16 atan2(s32, s32);
+}
 
 namespace G2 {
 void *GetBG2CharPtr(void);

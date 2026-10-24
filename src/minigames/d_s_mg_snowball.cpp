@@ -722,8 +722,8 @@ void dScMgSnowball_c::UpdateSnowball() {
         normalVelocity = FX_MUL(normalVelocity, 0x1800);
         self->mVelX -= FX_MUL(normalVelocity, push[0]);
         self->mVelY -= FX_MUL(normalVelocity, push[1]);
-        headingComponent = data_02082214
-            [((unsigned short)cstd::atan2(self->mVelY, self->mVelX) >> 4) * 2];
+        headingComponent =
+            data_02082214[((unsigned short)cstd::atan2(self->mVelY, self->mVelX) >> 4) * 2];
         vx = self->mVelX;
         self->mVelX = vx / 8 + FX_MUL(vx, headingComponent) / 4;
         vy = self->mVelY;

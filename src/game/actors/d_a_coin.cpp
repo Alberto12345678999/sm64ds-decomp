@@ -42,7 +42,9 @@
 #include "dExtModel_c.h"
 #include "dBgCh_Actr.h"
 #include "Sound.h"
-namespace cstd { s16 atan2(s32, s32); }
+namespace cstd {
+s16 atan2(s32, s32);
+}
 
 /* Views of daObjBC_Switch_c.h and daObjFl_Coin_c.h, same member names and
    offsets: including either header renumbers this TU's @NNN labels. */

@@ -44,7 +44,9 @@
 #include "dCc_c.h"
 #include "Sound.h"
 #include "dBgCh_Actr.h"
-namespace cstd { s16 atan2(s32, s32); }
+namespace cstd {
+s16 atan2(s32, s32);
+}
 
 int ApproachLinear(int &value, int target, int step);
 int ApproachLinear(short &value, short target, short step);

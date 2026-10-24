@@ -165,7 +165,7 @@ namespace G2S {
 
 namespace cstd {
 s16 atan2(s32, s32);
-    int sqrt(unsigned long long val);
+int sqrt(unsigned long long val);
 }
 
 namespace Sound {
@@ -199,7 +199,7 @@ extern void Mg_InitBrush(char *a, char b, int c, int d);
 extern void func_020126ac(int a0, int a1, int a2, int a3, int s0);
 extern void func_02012718(int a, int b);
 extern int  Sound_PlayIfNotActive(int handle, int player, int id, int unused);
-extern s16  atan2_hold_d_s_mg_pachinko_1(int y, int x);
+extern s16 atan2_hold_d_s_mg_pachinko_1(int y, int x);
 extern void FreeGfxSlotsById(int arg);
 extern int  LoadFile(int handle);
 extern void DecompressLZ16(void *src, void *dst);
@@ -2469,8 +2469,8 @@ void PachinkoBobOmb_StateFlying(char *c, int idx) {
     if (*(int *)(c + SHOT_OFF(velY) + n) >= 0x8000)
         *(int *)(c + SHOT_OFF(velY) + n) = 0x8000;
 
-    *(s16 *)(c + SHOT_OFF(angle) + n) = cstd::atan2(
-        *(int *)(c + SHOT_OFF(velY) + n) >> 12, *(int *)(c + SHOT_OFF(velX) + n) >> 12);
+    *(s16 *)(c + SHOT_OFF(angle) + n) =
+        cstd::atan2(*(int *)(c + SHOT_OFF(velY) + n) >> 12, *(int *)(c + SHOT_OFF(velX) + n) >> 12);
 
     if (old < 0) {
         if (*(int *)(c + SHOT_OFF(velY) + n) >= 0)

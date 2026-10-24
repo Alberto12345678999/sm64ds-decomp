@@ -130,7 +130,9 @@ enum daKing_Donketu_c_AssetId {
 #include "dCamera_c.h"
 #include "dBgCh_Lin.h"
 #include "nitro/fx/fx.h"
-namespace cstd { s16 atan2(s32, s32); }
+namespace cstd {
+s16 atan2(s32, s32);
+}
 
 bool ApproachLinear(short &value, short target, short step);
 

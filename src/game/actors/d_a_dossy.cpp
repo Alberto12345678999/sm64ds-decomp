@@ -67,7 +67,9 @@ enum daDossy_c_AssetId {
 #include "Player.h"
 #include "Vector3s.h"
 #include "nitro/fx/fx.h"
-namespace cstd { s16 atan2(s32, s32); }
+namespace cstd {
+s16 atan2(s32, s32);
+}
 
 typedef enum { FALSE = 0, TRUE = 1 } BOOL;
 

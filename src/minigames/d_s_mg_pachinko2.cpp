@@ -47,7 +47,9 @@ enum dScMgPachinko2_c_AssetId {
 #include "dScMgPachinko2_c.h"
 #include "PlayerInput.h"
 #include "nitro/fx/fx.h"
-namespace cstd { s16 atan2(s32, s32); }
+namespace cstd {
+s16 atan2(s32, s32);
+}
 
 namespace G2S {
 unsigned GetBG2CharPtr(void);

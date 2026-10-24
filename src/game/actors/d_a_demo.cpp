@@ -128,7 +128,9 @@ enum daDemo_c_AssetId {
 #include "SaveData.h"
 #include "dExtAnmTexPat_c.h"
 #include "dCamera_c.h"
-namespace cstd { s16 atan2(s32, s32); }
+namespace cstd {
+s16 atan2(s32, s32);
+}
 
 struct OamAttr;
 

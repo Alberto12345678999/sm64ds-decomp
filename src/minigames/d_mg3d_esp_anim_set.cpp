@@ -60,7 +60,9 @@ struct System {
 #include "Sound.h"
 #include "PlayerInput.h"
 #include "dExtSimpleModel_c.h"
-namespace cstd { s16 atan2(s32, s32); }
+namespace cstd {
+s16 atan2(s32, s32);
+}
 
 struct BMD_File;
 struct BTP_File;

@@ -44,7 +44,9 @@ enum daObjFl_Amilift_c_AssetId {
 #include "daObjFl_Amilift_c.h"
 #include "common.h"
 #include "SharedFilePtr.h"
-namespace cstd { s16 atan2(s32, s32); }
+namespace cstd {
+s16 atan2(s32, s32);
+}
 
 /* The resource handles as the ROM lays them out: {id, loaded file}. The
  * model handle constructs through func_02017acc and destroys through

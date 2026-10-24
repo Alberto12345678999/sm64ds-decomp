@@ -562,8 +562,8 @@ int daSnowman_c::func_ov081_02124b98()
                     v[0].z = v[1].z - this->mHandPos.z;
                     angle = cstd::atan2(v[0].x, v[0].z);
                     Matrix4x3_FromRotationY(&data_020a0e68, angle);
-                    Matrix4x3_ApplyInPlaceToRotationX(&data_020a0e68,
-                        (short)(-cstd::atan2(v[0].y, Vec3_HorzLen(&v[0]))));
+                    Matrix4x3_ApplyInPlaceToRotationX(
+                        &data_020a0e68, (short)(-cstd::atan2(v[0].y, Vec3_HorzLen(&v[0]))));
                     MulVec3Mat4x3(&in, &data_020a0e68, &out);
                 }
                 out.y += 0x14000;

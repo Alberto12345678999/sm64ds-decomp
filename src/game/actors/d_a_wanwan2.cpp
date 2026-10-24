@@ -82,7 +82,9 @@
 #include "daStar_c.h"
 #include "dActor_c.h"
 #include "dCc_c.h"
-namespace cstd { s16 atan2(s32, s32); }
+namespace cstd {
+s16 atan2(s32, s32);
+}
 
 /* Actor IDs from symbols/actor_debug_names.tsv. */
 enum {

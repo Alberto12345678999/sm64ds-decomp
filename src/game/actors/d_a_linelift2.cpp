@@ -52,7 +52,9 @@ enum d_a_linelift2_AssetId {
 #include "SharedFilePtr.h"
 #include "dBgW.h"
 #include "nitro/fx/fx.h"
-namespace cstd { short atan2(int, int); }
+namespace cstd {
+short atan2(int, int);
+}
 
 struct KCL_File;
 struct CLPS_Block;

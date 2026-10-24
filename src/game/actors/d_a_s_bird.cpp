@@ -46,7 +46,9 @@
 #include "daSBird_c.h"
 #include "common.h"
 #include "SharedFilePtr.h"
-namespace cstd { s16 atan2(s32, s32); }
+namespace cstd {
+s16 atan2(s32, s32);
+}
 
 /* Resource handles this TU's static initializer constructs. The wrapper
  * spellings are reconstructed; constructor and destructor addresses, file

@@ -1578,9 +1578,9 @@ void dScMgHanachan_c::Wiggler::MoveBounce() {
                   0x3c);
         randomX = RandomIntInternal(&data_0209e650);
         randomY = RandomIntInternal(&data_0209e650);
-        targetAngle = cstd::atan2(
-            ((int)((unsigned int)(randomX & 0x7fffffff) >> 19) * 0x100) - seg[1].x,
-            -(((int)((unsigned int)(randomY & 0x7fffffff) >> 19) * 0xc0) - seg[1].y));
+        targetAngle =
+            cstd::atan2(((int)((unsigned int)(randomX & 0x7fffffff) >> 19) * 0x100) - seg[1].x,
+                        -(((int)((unsigned int)(randomY & 0x7fffffff) >> 19) * 0xc0) - seg[1].y));
         angleDifference = (s16)(targetAngle - ang[0]);
         if (angleDifference > 0x2000)
             angleDifference = 0x2000;

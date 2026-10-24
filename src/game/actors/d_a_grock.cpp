@@ -65,7 +65,9 @@ enum daGrock_c_AssetId {
 #include "Sound.h"
 #include "dBgPi.h"
 #include "dBgCh_Actr.h"
-namespace cstd { s16 atan2(s32, s32); }
+namespace cstd {
+s16 atan2(s32, s32);
+}
 
 /* Kind in param1's low nibble. */
 enum {

@@ -33,7 +33,9 @@ enum d_s_mg_memory_AssetId {
 #include "Sound.h"
 #include "SpawnInfo.h"
 #include "nitro/fx/fx.h"
-namespace cstd { s16 atan2(s32, s32); }
+namespace cstd {
+s16 atan2(s32, s32);
+}
 
 /* State numbers follow the card PMF table initialized by
  * __sinit_ov006_021311c8. These descriptive names are reconstructed. */

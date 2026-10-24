@@ -87,7 +87,9 @@ enum daObjBlockS_c_AssetId {
 #include "SurfaceInfo.h"
 #include "dCc_c.h"
 #include "Sound.h"
-namespace cstd { s16 atan2(s32, s32); }
+namespace cstd {
+s16 atan2(s32, s32);
+}
 
 struct Vector3_16f;
 

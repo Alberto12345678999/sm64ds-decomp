@@ -8,7 +8,9 @@
 #include "dBgCh_Lin.h"
 #include "PlayerInput.h"
 #include "nitro/fx/fx.h"
-namespace cstd { short atan2(int, int); }
+namespace cstd {
+short atan2(int, int);
+}
 
 extern "C" {
 struct CamMode {

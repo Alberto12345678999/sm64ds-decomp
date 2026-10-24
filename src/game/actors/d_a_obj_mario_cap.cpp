@@ -139,7 +139,9 @@ enum daObjMarioCap_c_AssetId {
 #include "SurfaceInfo.h"
 #include "dBgCh_Gnd.h"
 #include "dBgCh_Actr.h"
-namespace cstd { s16 atan2(s32, s32); }
+namespace cstd {
+s16 atan2(s32, s32);
+}
 
 /* --------------------------------------------------------------------------
  * Local shapes the merged members need.

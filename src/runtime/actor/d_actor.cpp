@@ -90,7 +90,9 @@
 #include "daObjNumber_c.h"
 #include "daCoin_c.h"
 #include "daFPknBall_c.h"
-namespace cstd { s16 atan2(s32, s32); }
+namespace cstd {
+s16 atan2(s32, s32);
+}
 
 /* Spawn globals the constructor reads. The s16* spellings are the ones
    func_02010e78 already uses; a second void* declaration in this TU is
@@ -744,8 +746,7 @@ extern "C" s32 func_02010844(void *actor, Vector3 *v, s16 angle) {
     dir = cstd::atan2(v->x, v->z);
     angle = (s16)(dir - angle);
     horzLen = Vec3_HorzLen(v);
-    return cstd::atan2(FX_MUL(horzLen, data_02082214[((u16)angle >> 4) * 2 + 1]),
-                                       v->y);
+    return cstd::atan2(FX_MUL(horzLen, data_02082214[((u16)angle >> 4) * 2 + 1]), v->y);
 }
 
 /* -------------------------------------------------------------------------- */

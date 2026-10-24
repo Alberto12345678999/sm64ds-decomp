@@ -134,8 +134,8 @@ int func_02008cb4(char* c)
                     u32 f = cam->mFlags;
                     if ((f & 0x40000) && cam->mTurningToTarget != 0 && !(f & 0x80100)) {
                         int a = _ZN4cstd5atan2Eii(n1.x, n1.z);
-                        if (AngleDiff(a, _ZN4cstd5atan2Eii(
-                                             cam->mWallNormal.x, cam->mWallNormal.z)) > 0x6000) {
+                        if (AngleDiff(a, _ZN4cstd5atan2Eii(cam->mWallNormal.x,
+                                                           cam->mWallNormal.z)) > 0x6000) {
                             cam->mTargetAngleY += 0x8000;
                             cam->mFlags |= 0x80000;
                         }

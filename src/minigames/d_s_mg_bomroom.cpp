@@ -94,7 +94,9 @@ extern u8 data_0209d454;
 }
 
 namespace cstd {
-s16 atan2(s32, s32); int sqrt(u64 value); }
+s16 atan2(s32, s32);
+int sqrt(u64 value);
+}
 
 #pragma defer_codegen off
 
@@ -1236,8 +1238,7 @@ void dScMgBomroom_c::BombMarch_ToGate(int index) {
     tx -= mBombs[index].x >> 12;
     ty -= mBombs[index].y >> 12;
 
-    mBombs[index].angle =
-        cstd::atan2(ty, tx);
+    mBombs[index].angle = cstd::atan2(ty, tx);
 
     {
         s16 sine = data_02082214[

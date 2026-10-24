@@ -31,7 +31,9 @@ enum dScMgMemory2_c_AssetId { ASSET_D_2D_MG_CARD_NCL_BIN = 0x00bb };
 #include "common.h"
 #include "decl_common.h"
 #include "PlayerInput.h"
-namespace cstd { s16 atan2(s32, s32); }
+namespace cstd {
+s16 atan2(s32, s32);
+}
 
 /* CardFlyAway, ResultWait and RoundDealHard retain the partial views below.
  * Their array extents span unrelated fields to retain specific address

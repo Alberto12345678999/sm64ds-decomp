@@ -49,7 +49,9 @@
 #include "dCamera_c.h"
 #include "Message.h"
 #include "nitro/fx/fx.h"
-namespace cstd { s16 atan2(s32, s32); }
+namespace cstd {
+s16 atan2(s32, s32);
+}
 
 bool ApproachLinear(short &value, short target, short step);
 
@@ -1073,10 +1075,9 @@ int daBombking_c::func_ov078_021250f8()
                     v[0].x = v[1].x - this->mThrowPosX;
                     v[0].y = v[1].y - this->mThrowPosY;
                     v[0].z = v[1].z - this->mThrowPosZ;
-                    Matrix4x3_FromRotationY(&data_020a0e68,
-                        cstd::atan2(v[0].x, v[0].z));
-                    Matrix4x3_ApplyInPlaceToRotationX(&data_020a0e68,
-                        (short)(-cstd::atan2(v[0].y, Vec3_HorzLen(&v[0]))));
+                    Matrix4x3_FromRotationY(&data_020a0e68, cstd::atan2(v[0].x, v[0].z));
+                    Matrix4x3_ApplyInPlaceToRotationX(
+                        &data_020a0e68, (short)(-cstd::atan2(v[0].y, Vec3_HorzLen(&v[0]))));
                     out.y += 0x14000;
                     func_ov102_0214ad14(target);
                     target->mSpeedX = out.x;

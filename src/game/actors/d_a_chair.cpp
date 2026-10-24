@@ -43,7 +43,9 @@ enum daChair_c_AssetId {
 #include "SurfaceInfo.h"
 #include "Player.h"
 #include "dBgCh_Actr.h"
-namespace cstd { s16 atan2(s32, s32); }
+namespace cstd {
+s16 atan2(s32, s32);
+}
 
 #pragma opt_common_subs off
 
@@ -372,8 +374,7 @@ void daChair_c::State2()
                 playerPos.z = pp->z;
                 Vec3_Sub(&diff, &playerPos, (Vec3 *)&mPosX);
                 mPrevAngleY = cstd::atan2(diff.x, diff.z);
-                mPrevAngleX = cstd::atan2(
-                                  diff.y, Vec3_HorzLen((const Vector3 *)&diff)) * -1;
+                mPrevAngleX = cstd::atan2(diff.y, Vec3_HorzLen((const Vector3 *)&diff)) * -1;
                 /* mSpeedX / mSpeedZ: lateral velocity beside mVertSpeed. */
                 reach = FX_MUL(data_02082214[SINCOS_INDEX(mPrevAngleX) + 1], 0x32000);
                 mSpeedX = FX_MUL(reach, data_02082214[SINCOS_INDEX(mPrevAngleY)]);
@@ -392,9 +393,7 @@ void daChair_c::State2()
                 void *wall = mWithMeshClsn.GetWallResult();
                 Vec3 normal;
                 ((SurfaceInfo *)((char *)wall + 4))->CopyNormalTo((Vector3 &)normal);
-                if (GetSubtraction(mPrevAngleY,
-                        cstd::atan2(normal.x, normal.z))
-                    > 0x4000)
+                if (GetSubtraction(mPrevAngleY, cstd::atan2(normal.x, normal.z)) > 0x4000)
                     Break();
             }
         }

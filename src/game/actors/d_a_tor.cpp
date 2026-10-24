@@ -43,7 +43,9 @@ enum daTor_c_AssetId {
 #include "Sound.h"
 #include "SurfaceInfo.h"
 #include "nitro/fx/fx.h"
-namespace cstd { s16 atan2(s32, s32); }
+namespace cstd {
+s16 atan2(s32, s32);
+}
 
 extern "C" {
 /* The texture animation InitResources hands to mTextureTransformer lives in
