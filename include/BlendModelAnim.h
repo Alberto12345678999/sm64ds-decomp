@@ -29,9 +29,6 @@
  * carries no mangled names at all -- and under the honest scalar `Fix12i` the
  * method reproduces 0x020163e0/0x9c exactly. See notes/mwccarm-codegen.md
  * section 6az, MEASURED 2026-10-22.
- *
- * One caller could not follow: unit020bfec0.cpp has no real BlendModelAnim to
- * call through, so only the symbol name changed there.
  */
 
 #ifdef __cplusplus
