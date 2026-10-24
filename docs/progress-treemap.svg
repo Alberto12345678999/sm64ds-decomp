@@ -2177,7 +2177,7 @@ matched: yes</title></rect><rect x="45.65" y="171.33" width="3.70" height="5.81"
 module: arm9
 addr: 0x020162a4
 size: 32 bytes
-matched: yes</title></rect><rect x="49.35" y="171.33" width="10.62" height="5.81" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10ModelAnim213Func_020162C4Eji5Fix12IiEt
+matched: yes</title></rect><rect x="49.35" y="171.33" width="10.62" height="5.81" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10ModelAnim213Func_020162C4Ejiit
 module: arm9
 addr: 0x020162c4
 size: 92 bytes
