@@ -957,17 +957,17 @@ int daDemo_c::func_ov002_020f23f0()
 // @symbol func_ov002_020f2630
 extern "C" {  /* .c-derived member: C linkage for the whole block */
 int func_ov002_020f2630(daDemo_c *self){
-  self->mScroll = (daDemo_c::ScrollState *)::operator new(0x36);
-  self->mScroll->bg0X = 0x30;
-  self->mScroll->bg0Y = 0x20;
-  self->mScroll->bg1X = 0;
-  self->mScroll->bg1Y = 0;
-  self->mScroll->centerSpriteY[0] = 0xfff8;
-  self->mScroll->centerSpriteY[1] = 0xc8;
-  self->mScroll->fadeLevel = 0x10;
-  SetSubBg0Offset(self->mScroll->bg0X, self->mScroll->bg0Y);
-  SetSubBg1Offset(self->mScroll->bg1X, self->mScroll->bg1Y);
-  return 1;
+    self->mScroll = (daDemo_c::ScrollState *)::operator new(0x36);
+    self->mScroll->bg0X = 0x30;
+    self->mScroll->bg0Y = 0x20;
+    self->mScroll->bg1X = 0;
+    self->mScroll->bg1Y = 0;
+    self->mScroll->centerSpriteY[0] = 0xfff8;
+    self->mScroll->centerSpriteY[1] = 0xc8;
+    self->mScroll->fadeLevel = 0x10;
+    SetSubBg0Offset(self->mScroll->bg0X, self->mScroll->bg0Y);
+    SetSubBg1Offset(self->mScroll->bg1X, self->mScroll->bg1Y);
+    return 1;
 }
 }
 

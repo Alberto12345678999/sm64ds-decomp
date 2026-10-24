@@ -1234,7 +1234,7 @@ s32 daDoor_c::InitResources()
     *(M48 *)&mModel.mat4x3 = data_020a0e68;
 
     if (e->keyFile != 0) {
-        m = ::operator new(0x50);                     /* sizeof(Model) */
+        m = ::operator new(0x50); /* sizeof(Model) */
         if (m != 0)
             m = _ZN5ModelC1Ev(m);
         mKeyModel = (Model *)m;
