@@ -855,16 +855,15 @@ void Player::func_ov002_020bdd2c() {
 // @symbol _ZN6Player19func_ov002_020bdd9cEv
 extern "C" {
 void Player::func_ov002_020bdd9c(){
-    extern void _ZN10ModelAnim24CopyERKS_Pcj(void*, void*, void*, unsigned int n);
-    extern char* data_ov002_020ff480[];
-  if(mIsMetal != 1) return;
-  mIsMetal = 0;
-  unsigned int v = this->param1;
-  int id = this->GetBodyModelID(v & 0xff, 0);
-  char* t = data_ov002_020ff480[mCharFileBase + v];
-  _ZN10ModelAnim24CopyERKS_Pcj(mBodyModels[id], mBodyModels[4],
-                               (char *)((SharedFilePtr *)t)->filePtr, 0);
-  EndPowerupMusic(0x34);
+    extern SharedFilePtr *data_ov002_020ff480[];
+    if (mIsMetal != 1)
+        return;
+    mIsMetal = 0;
+    unsigned int v = this->param1;
+    int id = this->GetBodyModelID(v & 0xff, 0);
+    SharedFilePtr *t = data_ov002_020ff480[mCharFileBase + v];
+    mBodyModels[id]->Copy(*mBodyModels[4], (char *)t->filePtr, 0);
+    EndPowerupMusic(0x34);
 }
 }
 
@@ -874,9 +873,8 @@ void Player::func_ov002_020bdd9c(){
 extern "C" {
 void Player::InitMetalWario()
 {
-    extern char *data_ov002_020ff480[];
+    extern SharedFilePtr *data_ov002_020ff480[];
     extern void _ZN6Player18TurnOffToonShadingEj(void*, u32);
-    extern void _ZN10ModelAnim24CopyERKS_Pcj(void*, void*, void*, u32);
     u32 v;
     u32 id;
 
@@ -896,9 +894,8 @@ void Player::InitMetalWario()
 
     v = param1;
     id = this->GetBodyModelID(v & 0xff, 0);
-    _ZN10ModelAnim24CopyERKS_Pcj(
-        mBodyModels[id], mBodyModels[v],
-        (char *)((SharedFilePtr *)data_ov002_020ff480[mCharFileBase + v])->filePtr, 0);
+    mBodyModels[id]->Copy(*mBodyModels[v], (char *)data_ov002_020ff480[mCharFileBase + v]->filePtr,
+                          0);
 
     mPowerupTimer = 0x258;
     StartPowerupMusic(0x34);
@@ -1038,8 +1035,6 @@ void Player::SetRealCharacter(unsigned int chr_)
     extern u8 data_02092128[];
     extern u8 data_0209caa0[];
     extern void func_ov002_020e6330(void*);
-    extern void _ZN10ModelAnim24CopyERKS_Pcj(void*, void*, void*, u32);
-    extern void _ZN10ModelAnim213Func_020162C4Eji5Fix12IiEt(void*, u32, int, int, unsigned short);
     u32 chr = (u32)chr_;
 
     u32 cur = param1;
@@ -1059,13 +1054,10 @@ void Player::SetRealCharacter(unsigned int chr_)
 
     m1 = this->GetBodyModelID(chr, 0);
     m2 = this->GetBodyModelID(param1 & 0xff, 0);
-    _ZN10ModelAnim24CopyERKS_Pcj(
-        mBodyModels[m1], mBodyModels[m2],
-        (char *)((SharedFilePtr *)data_ov002_020ff480[mCharFileBase + chr])->filePtr, 0);
+    mBodyModels[m1]->Copy(*mBodyModels[m2],
+                          (char *)data_ov002_020ff480[mCharFileBase + chr]->filePtr, 0);
     m1 = this->GetBodyModelID(chr, 0);
-    _ZN10ModelAnim213Func_020162C4Eji5Fix12IiEt(
-        mBodyModels[m1], (int)((SharedFilePtr *)data_ov002_020ff480[chr + 0xc4])->filePtr, 0,
-        0x1000, 0);
+    mBodyModels[m1]->Func_020162C4((u32)data_ov002_020ff480[chr + 0xc4]->filePtr, 0, 0x1000, 0);
 }
 }
 
@@ -1100,13 +1092,11 @@ void Player::func_ov002_020be3b0()
     extern void func_ov002_020d80d0(void*);
     extern void _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(void*);
     extern void _ZN13SharedFilePtr7ReleaseEv(void*);
-    extern void* data_ov002_020ff480[];
+    extern SharedFilePtr *data_ov002_020ff480[];
     extern u8 data_02092128[];
     extern Player::State data_ov002_021104b4;
     extern u8 data_ov002_020ff14c[];
     extern void func_ov002_020e6b3c(void*);
-    extern void _ZN10ModelAnim24CopyERKS_Pcj(void*, void*, void*, u32);
-    extern void _ZN10ModelAnim213Func_020162C4Eji5Fix12IiEt(void*, u32, int, int, unsigned short);
     extern void*data_ov002_020ff790[];
     extern int __aeabi_idiv(int, int);
     extern void _ZN6Player18TurnOffToonShadingEj(void*, u32);
@@ -1192,9 +1182,9 @@ void Player::func_ov002_020be3b0()
             _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(data_ov002_020ff480[mCharFileBase + mHatCharacter]);
             {
                 u32 mm1 = this->GetBodyModelID(mHatCharacter, 0);
-                _ZN10ModelAnim24CopyERKS_Pcj(
-                    mBodyModels[mm1], mBodyModels[this->GetBodyModelID(mPrevCharacter, 0)],
-                    *(char **)((char *)data_ov002_020ff480[mCharFileBase + mHatCharacter] + 4), 0);
+                mBodyModels[mm1]->Copy(
+                    *mBodyModels[this->GetBodyModelID(mPrevCharacter, 0)],
+                    (char *)data_ov002_020ff480[mCharFileBase + mHatCharacter]->filePtr, 0);
             }
             mLoadedResourceFlags |= 0x40;
         }
@@ -1231,9 +1221,8 @@ void Player::func_ov002_020be3b0()
                 func_ov002_020e6b74(mHeadModels[h2], (int *)mHeadTexParams[h2]);
             }
             mm = this->param1;
-            _ZN10ModelAnim213Func_020162C4Eji5Fix12IiEt(
-                mBodyModels[this->GetBodyModelID((u8)mm, 0)],
-                *(u32 *)((char *)data_ov002_020ff790[mm] + 4), 0, 0x1000, 0);
+            mBodyModels[this->GetBodyModelID((u8)mm, 0)]->Func_020162C4(
+                (u32)((SharedFilePtr *)data_ov002_020ff790[mm])->filePtr, 0, 0x1000, 0);
             _ZN13SharedFilePtr7ReleaseEv(data_ov002_020ff480[mCharFileBase + mPrevCharacter]);
             mLoadedResourceFlags &= ~0x40;
             func_ov002_020bdb50(0);
@@ -1248,9 +1237,8 @@ void Player::func_ov002_020be3b0()
                 b = mHatCharacter;
             }
             idxA = this->GetBodyModelID(a, 0);
-            _ZN10ModelAnim24CopyERKS_Pcj(
-                mBodyModels[idxA], mBodyModels[this->GetBodyModelID(b, 0)],
-                *(char **)((char *)data_ov002_020ff480[mCharFileBase + a] + 4), 0);
+            mBodyModels[idxA]->Copy(*mBodyModels[this->GetBodyModelID(b, 0)],
+                                    (char *)data_ov002_020ff480[mCharFileBase + a]->filePtr, 0);
         }
         break;
     case 5:
@@ -18066,13 +18054,12 @@ int func_ov002_020dacb4(char *p, char *actor)
     extern int _ZN6Player7IsStateERNS_5StateE(void *p, void *st);
     extern int _ZN6Player11ChangeStateERNS_5StateE(void *p, void *st);
     extern int _ZNK6Player14GetBodyModelIDEjb(void *p, unsigned int a, unsigned char b);
-    extern int _ZN10ModelAnim213Func_020162C4Eji5Fix12IiEt(void *self, unsigned int a, int b, int c, unsigned short d);
     extern int func_ov002_020cd28c(void *c);
     extern char data_ov002_021105ec;
     extern char data_ov002_021105bc;
     extern char data_ov002_02110394;
     extern char data_ov002_02110364;
-    extern int data_ov002_020ff480[];
+    extern SharedFilePtr *data_ov002_020ff480[];
     int t;
 
     ((Player *)p)->mHeldObj = (s32)actor;
@@ -18128,9 +18115,9 @@ int func_ov002_020dacb4(char *p, char *actor)
         {
             int player_var = ((Player *)p)->param1;
             int model_idx = _ZNK6Player14GetBodyModelIDEjb(p, player_var & 0xff, 0);
-            void *self = ((Player *)p)->mBodyModels[model_idx];
-            int j = (int)((SharedFilePtr *)data_ov002_020ff480[offset + player_var])->filePtr;
-            _ZN10ModelAnim213Func_020162C4Eji5Fix12IiEt(self, j, 0, 0x1000, 0);
+            ModelAnim2 *model = ((Player *)p)->mBodyModels[model_idx];
+            int j = (int)data_ov002_020ff480[offset + player_var]->filePtr;
+            model->Func_020162C4(j, 0, 0x1000, 0);
         }
     }
     return 1;
@@ -24125,12 +24112,11 @@ void func_ov002_020e4bb8(char* self)
 {
     extern void _ZN6Player19func_ov002_020be3b0Ev(char* c);
     extern u32 _ZNK6Player14GetBodyModelIDEjb(char* c, u32 a, char b);
-    extern void _ZN10ModelAnim24CopyERKS_Pcj(void* self, void* src, char* p, u32 n);
     extern void func_ov002_020e444c(char* c);
     extern int func_ov002_020e4990(char* c);
     extern void func_ov002_020e4768(char* c);
     extern u32 _ZN6Player8HasNoCapEv(char* c);
-    extern void* data_ov002_020ff480[];
+    extern SharedFilePtr *data_ov002_020ff480[];
     Player *player = (Player *)self;
     u8 save_6fd;
     u8 save_6f9;
@@ -24155,9 +24141,9 @@ void func_ov002_020e4bb8(char* self)
             if (player->mIsMetal != 0) {
                 u32 v;
                 u32 id;
-                void* dst;
-                void* src;
-                void* poolEntry;
+                ModelAnim2 *dst;
+                ModelAnim2 *src;
+                SharedFilePtr *poolEntry;
                 char* p;
 
                 player->mIsMetal = 0;
@@ -24166,8 +24152,8 @@ void func_ov002_020e4bb8(char* self)
                 dst = player->mBodyModels[id];
                 src = player->mBodyModels[4];
                 poolEntry = data_ov002_020ff480[player->mCharFileBase + v];
-                p = (char *)((SharedFilePtr *)poolEntry)->filePtr;
-                _ZN10ModelAnim24CopyERKS_Pcj(dst, src, p, 0);
+                p = (char *)poolEntry->filePtr;
+                dst->Copy(*src, p, 0);
             }
         }
     }
@@ -24690,7 +24676,6 @@ void func_ov002_020e5948(void* arg0)
     extern void LoadSilverStarAndNumber(void);
     extern int _ZN9ModelBase7SetFileEP8BMD_Fileii(void* thiz, void* bmd, s32 a, s32 b);
     extern void func_ov002_020bec2c(void* p);
-    extern void _ZN10ModelAnim213Func_020162C4Eji5Fix12IiEt(void* thiz, u32 a, s32 b, Fix12i c, u16 d);
     extern s32 func_ov002_020e6bb0(void* p);
     extern void func_ov002_020e6780(void* p);
     extern void _ZN17dExtShadowModel_c12InitCylinderEv(void* thiz);
@@ -24784,7 +24769,7 @@ void func_ov002_020e5948(void* arg0)
     extern int data_ov002_0210ec10[];
     extern int data_ov002_0210ec00[];
     extern int data_ov002_0210e728[];
-    extern void* data_ov002_020ff480[];
+    extern SharedFilePtr *data_ov002_020ff480[];
     extern void* data_ov002_0210a68c[];
     extern void* data_ov002_0210a69c[];
     extern void* data_ov002_0210a6ac[];
@@ -24947,9 +24932,8 @@ void func_ov002_020e5948(void* arg0)
         _ZN9ModelBase7SetFileEP8BMD_Fileii(
             player->mBodyModels[i], _ZN5Model8LoadFileER13SharedFilePtr(data_ov002_0210a68c[i]), 1,
             1);
-        _ZN10ModelAnim213Func_020162C4Eji5Fix12IiEt(
-            player->mBodyModels[i], (s32)((SharedFilePtr *)data_ov002_020ff480[i + 0xC4])->filePtr,
-            0, 0x1000, 0);
+        player->mBodyModels[i]->Func_020162C4((u32)data_ov002_020ff480[i + 0xC4]->filePtr, 0,
+                                              0x1000, 0);
         player->mBodyTexParams[i] = func_ov002_020e6bb0(player->mBodyModels[i]);
         i++;
     } while (i < 4);
@@ -25005,9 +24989,8 @@ void func_ov002_020e5948(void* arg0)
                 _ZN9ModelBase7SetFileEP8BMD_Fileii(
                     player->mBodyModels[4],
                     _ZN5Model8LoadFileER13SharedFilePtr(data_ov002_0210e780), 1, -1);
-                _ZN10ModelAnim213Func_020162C4Eji5Fix12IiEt(
-                    player->mBodyModels[4],
-                    (s32)((SharedFilePtr *)data_ov002_020ff480[0xC6])->filePtr, 0, 0x1000, 0);
+                player->mBodyModels[4]->Func_020162C4((u32)data_ov002_020ff480[0xC6]->filePtr, 0,
+                                                      0x1000, 0);
                 _ZN9ModelBase7SetFileEP8BMD_Fileii(
                     &player->mModelAnim3, _ZN5Model8LoadFileER13SharedFilePtr(data_ov002_0210e6f8),
                     1, 1);

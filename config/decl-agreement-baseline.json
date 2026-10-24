@@ -4839,26 +4839,6 @@
         "param:#3 signed char"
       ]
     },
-    "_ZN10ModelAnim213Func_020162C4Eji5Fix12IiEt": {
-      "include/decl_ModelAnim2.h": [
-        "param:#2 unsigned int"
-      ],
-      "src/unnamed/ov002/func_ov002_020dacb4.c": [
-        "param:#2 unsigned int",
-        "return:int"
-      ],
-      "src/unnamed/ov002/func_ov002_020e5948.c": [
-        "param:#2 unsigned int"
-      ]
-    },
-    "_ZN10ModelAnim24CopyERKS_Pcj": {
-      "include/decl_ModelAnim2.h": [
-        "param:#2 void *"
-      ],
-      "src/unnamed/ov002/func_ov002_020e4bb8.c": [
-        "param:#2 void *"
-      ]
-    },
     "_ZN10dBgActor_c14KillByMegaCharER6Player": {
       "include/decl_Platform.h": [
         "param:#2 void *"
@@ -10500,11 +10480,6 @@
     "_ZN8dM3dGLinD2Ev": {
       "include/decl_common.h": [
         "return:void"
-      ]
-    },
-    "_ZN9ModelAnim4CopyERKS_Pc": {
-      "include/decl_ModelAnim.h": [
-        "param:#2 const void *"
       ]
     },
     "_ZN9ModelAnim7SetAnimEP8BCA_Fileiit": {
