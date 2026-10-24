@@ -17,9 +17,6 @@
  *   Prepare, differs by 34 words (size stays 0x1ec).
  * - InitResources: dExtAnmModel_c::SetAnim with a Fix12<int> local differs
  *   (size stays 0x1ec, 10 relocation destinations wrong).
- * - InitResources: dExtAnmTexPat_c::SetFile with a Fix12<int> local differs
- *   (size stays 0x1ec, 11 relocation destinations wrong; the call is not
- *   the int-parameter symbol the ROM uses).
  * - InitResources: assigning Matrix4x3 onto both models differs (size stays
  *   0x1ec, 5 relocation destinations wrong). The twelve-word Mtx copy stays.
  * - Behavior: DropShadowRadHeight with Fix12<int> locals differs (size stays
@@ -119,9 +116,6 @@ void Matrix4x3_ApplyInPlaceToRotationY(Matrix4x3 *m, short angY);
 void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
     dActor_c *self, dExtShadowModel_c *shadow, Matrix4x3 *mat, int radius, int depth,
     unsigned char opacity);
-/* local extern: the matched free-function spelling of SetFile; a member call is pending. */
-void _ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit(dExtAnmTexPat_c *seq, BTP_File *file, int flags,
-                                                int speed, unsigned short start);
 }
 
 /* Reconstructed source-style name: SM64DS proves daLuigi_c through RTTI,
@@ -149,12 +143,10 @@ int daLuigi_c::InitResources()
 
     dExtAnmTexPat_c::Prepare(*(BMD_File *)data_ov002_0210ebb8.filePtr,
                              *(BTP_File *)data_ov002_0210e8d0.filePtr);
-    _ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit(
-        &mTextureSequences[0], (BTP_File *)data_ov002_0210e8d0.filePtr, 0, kFxOne, 0);
+    mTextureSequences[0].SetFile(*(BTP_File *)data_ov002_0210e8d0.filePtr, 0, kFxOne, 0);
     dExtAnmTexPat_c::Prepare(*(BMD_File *)data_ov002_0210eb20.filePtr,
                              *(BTP_File *)data_ov002_0210ebd8.filePtr);
-    _ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit(
-        &mTextureSequences[1], (BTP_File *)data_ov002_0210ebd8.filePtr, 0, kFxOne, 0);
+    mTextureSequences[1].SetFile(*(BTP_File *)data_ov002_0210ebd8.filePtr, 0, kFxOne, 0);
 
     mShadowModel.InitCylinder();
 

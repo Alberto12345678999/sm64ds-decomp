@@ -2055,7 +2055,7 @@
     },
     "arm9:0x020157ac": {
       "author": "tangosdev",
-      "name": "_ZN17dExtAnmMaterial_c7SetFileER8BMA_Filei5Fix12IiEj"
+      "name": "_ZN17dExtAnmMaterial_c7SetFileER8BMA_Fileiit"
     },
     "arm9:0x02015800": {
       "author": "tangosdev",
@@ -2079,7 +2079,7 @@
     },
     "arm9:0x020158ac": {
       "author": "tangosdev",
-      "name": "_ZN15dExtAnmTexSRT_c7SetFileER8BTA_Filei5Fix12IiEj"
+      "name": "_ZN15dExtAnmTexSRT_c7SetFileER8BTA_Fileiit"
     },
     "arm9:0x02015900": {
       "author": "tangosdev",

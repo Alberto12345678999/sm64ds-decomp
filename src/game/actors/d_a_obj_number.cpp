@@ -11,8 +11,6 @@
  * InitResources is the key function and this TU owns the RTTI/vtable.
  *
  * deslop leftovers:
- * - dExtAnmTexPat_c::SetFile 6az: InitResources passes Fix12<int> by
- *   value (notes/mwccarm-codegen.md 6az).
  * - Particle::System::NewSimple 6az: Behavior's particle 0xd2; the
  *   header has no NewSimple and the mangled name carries Fix12<int>.
  * - data_ov002_0210d9a8 / 0210d9e8 / 0210da08 / 0210da28: this TU
@@ -54,9 +52,6 @@ extern SharedFilePtr data_ov002_0210d9a8;
 extern "C" {
 extern int data_0209b454;
 extern void Matrix4x3_FromTranslation(void *m, int x, int y, int z);
-/* local extern: the matched free-function spelling of SetFile; a member call is pending. */
-void _ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit(void *self, void *btp, int a, int b,
-                                                unsigned int c);
 namespace Particle {
 struct System {
     static void NewSimple(unsigned int id, int x, int y, int z);
@@ -96,8 +91,7 @@ s32 daObjNumber_c::InitResources()
             return 0;
         dExtAnmTexPat_c::Prepare(*(BMD_File *)data_ov002_0210da28.filePtr,
                                  *(BTP_File *)data_ov002_0210da08.filePtr);
-        _ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit(&mTextureSequence, data_ov002_0210da08.filePtr,
-                                                   0x40000000, 0, 0);
+        mTextureSequence.SetFile(*(BTP_File *)data_ov002_0210da08.filePtr, 0x40000000, 0, 0);
         mTextureSequence.currFrame =
             (int)((((unsigned int)(param1 & 0xf) % 10) << 16) >> 4);
     } else {
@@ -107,8 +101,7 @@ s32 daObjNumber_c::InitResources()
             return 0;
         dExtAnmTexPat_c::Prepare(*(BMD_File *)data_ov002_0210d9a8.filePtr,
                                  *(BTP_File *)data_ov002_0210d9e8.filePtr);
-        _ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit(&mTextureSequence, data_ov002_0210d9e8.filePtr,
-                                                   0x40000000, 0, 0);
+        mTextureSequence.SetFile(*(BTP_File *)data_ov002_0210d9e8.filePtr, 0x40000000, 0, 0);
         mTextureSequence.currFrame =
             (int)((((unsigned int)(param1 & 0xf) % 10) << 16) >> 4);
     }

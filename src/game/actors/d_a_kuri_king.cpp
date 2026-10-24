@@ -57,7 +57,7 @@
  *   daKuriKing_c has virtuals, so its own member pointers are wider than the
  *   8-byte records the sinit copies in.
  * - The remaining mangled calls that carry Fix12<int> (Particle::System::
- *   NewSimple, Player::Hurt, dExtAnmModel_c::SetAnim, the SetFile/Init family,
+ *   NewSimple, Player::Hurt, the Init family,
  *   Earthquake, DropShadowRadHeight, cstd::atan2, Sound::ChangeMusicVolume)
  *   pass it as a raw int. The header form with Fix12<int> locals builds a
  *   stack temporary and changes size (021223bc goes 0x278 -> 0x288 through
@@ -175,13 +175,6 @@ extern "C" void MulMat4x3Mat4x3(void* out, void* a, void* b);
 extern "C" void Vec3_LslInPlace(void* v, int n);
 extern "C" struct Matrix4x3 data_020a0e68;
 extern "C" struct Matrix4x3 IDENTITY_MATRIX4X3;
-extern "C" void _ZN15dExtAnmTexSRT_c7SetFileER8BTA_Filei5Fix12IiEj(void *tt, void *file, int a,
-                                                                   int b, unsigned int u);
-/* local extern: the matched free-function spelling of SetFile; a member call is pending. */
-extern "C" void _ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit(void *self, void *f, int a, s32 fix,
-                                                           u32 c);
-extern "C" void _ZN17dExtAnmMaterial_c7SetFileER8BMA_Filei5Fix12IiEj(void *self, void *f, int a,
-                                                                     s32 fix, u32 c);
 extern "C" void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
     void *self, void *actor, void *pos, s32 fx, s32 fy, u32 a, u32 b);
 extern "C" void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(
@@ -1580,9 +1573,8 @@ extern "C" void func_ov074_02121a4c(char* c, int idx)
     int arg2 = *(int*)(data_ov074_02122f3c + off);
     ((dExtAnmModel_c *)&((daKuriKing_c *)c)->mModelAnim)
         ->SetAnim((BCA_File *)file1, arg2, 0x1000, 0);
-    _ZN15dExtAnmTexSRT_c7SetFileER8BTA_Filei5Fix12IiEj(&((daKuriKing_c *)c)->mTextureTransformer,
-                                                       *(void **)(data_ov074_02122f38 + off), 0,
-                                                       0x1000, 0);
+    ((daKuriKing_c *)c)
+        ->mTextureTransformer.SetFile(**(BTA_File **)(data_ov074_02122f38 + off), 0, 0x1000, 0);
 }
 
 // @symbol _ZN12daKuriKing_c16CleanupResourcesEv
@@ -1784,12 +1776,9 @@ int daKuriKing_c::InitResources()
         i++;
     } while (i < 7);
 
-    _ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit(
-        &mTextureSequence, gKurikingAngerTextureSequenceFile.filePtr, 0, 0x1000, 0);
-    _ZN17dExtAnmMaterial_c7SetFileER8BMA_Filei5Fix12IiEj(&mMaterialChanger, &data_ov010_021123f4,
-                                                         0x40000000, 0x1000, 0);
-    _ZN15dExtAnmTexSRT_c7SetFileER8BTA_Filei5Fix12IiEj(&mTextureTransformer, &data_ov010_021124ac,
-                                                       0, 0x1000, 0);
+    mTextureSequence.SetFile(*(BTP_File *)gKurikingAngerTextureSequenceFile.filePtr, 0, 0x1000, 0);
+    mMaterialChanger.SetFile(data_ov010_021123f4, 0x40000000, 0x1000, 0);
+    mTextureTransformer.SetFile(data_ov010_021124ac, 0, 0x1000, 0);
 
     mTextureSequence.speed = 0;
     mMaterialChanger.currFrame = (s32)(data_ov074_02122e04[mSizeIndex] << 0xc);
@@ -1970,8 +1959,7 @@ int daKuriKing_c::func_ov074_02122634()
     dExtAnmMaterial_c::Prepare(*(BMD_File *)data_ov084_02130cf8.filePtr,
                                *(BMA_File *)&data_ov084_0213089c);
 
-    _ZN17dExtAnmMaterial_c7SetFileER8BMA_Filei5Fix12IiEj(
-        &this->mMaterialChanger, (void *)&data_ov084_0213089c, 0x40000000, 0x1000, 0);
+    this->mMaterialChanger.SetFile(*(BMA_File *)&data_ov084_0213089c, 0x40000000, 0x1000, 0);
 
     this->mModelAnim.SetAnim((BCA_File *)data_ov084_02130cc8.filePtr, 0, 0x1000, 0);
 

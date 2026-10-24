@@ -5836,24 +5836,6 @@
         "param:#2 void *"
       ]
     },
-    "_ZN17dExtAnmMaterial_c7SetFileER8BMA_Filei5Fix12IiEj": {
-      "include/decl_MaterialChanger.h": [
-        "param:#5 unsigned int"
-      ],
-      "src/game/actors/d_a_f_ring.cpp": [
-        "param:#5 unsigned int"
-      ],
-      "src/game/actors/d_a_krb.cpp": [
-        "param:#5 unsigned int"
-      ],
-      "src/game/actors/d_a_kuri_king.cpp": [
-        "param:#5 unsigned int"
-      ],
-      "src/minigames/d_mg3d_esp_anim_set.cpp": [
-        "param:#1 char *",
-        "param:#5 unsigned int"
-      ]
-    },
     "_ZN17dExtAnmMaterial_cD1Ev": {
       "src/_ZN6PlayerC1Ev.cpp": [
         "return:void"
@@ -5889,91 +5871,6 @@
       "src/unnamed/ov002/func_ov002_020e5948.c": [
         "param:#1 void *",
         "param:#2 void *"
-      ]
-    },
-    "_ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit": {
-      "src/game/actors/d_a_bg_snm_hed.cpp": [
-        "param:#2 void *",
-        "param:#5 unsigned int"
-      ],
-      "src/game/actors/d_a_bg_snwmn.cpp": [
-        "param:#2 void *",
-        "param:#5 unsigned int"
-      ],
-      "src/game/actors/d_a_brq.cpp": [
-        "param:#5 unsigned int",
-        "return:unsigned int"
-      ],
-      "src/game/actors/d_a_btn.cpp": [
-        "param:#2 void *",
-        "param:#5 unsigned int"
-      ],
-      "src/game/actors/d_a_c_jugem.cpp": [
-        "param:#5 unsigned int"
-      ],
-      "src/game/actors/d_a_dsn_base.cpp": [
-        "param:#2 BTP_File *",
-        "param:#5 unsigned int"
-      ],
-      "src/game/actors/d_a_eykn.cpp": [
-        "param:#2 void *",
-        "param:#5 unsigned int"
-      ],
-      "src/game/actors/d_a_f_ring.cpp": [
-        "param:#2 BTP_File *",
-        "param:#5 unsigned int"
-      ],
-      "src/game/actors/d_a_hanachan.cpp": [
-        "param:#2 void *",
-        "param:#5 unsigned int"
-      ],
-      "src/game/actors/d_a_iwante.cpp": [
-        "param:#2 void *",
-        "param:#5 unsigned int"
-      ],
-      "src/game/actors/d_a_jgm.cpp": [
-        "param:#2 void *",
-        "param:#5 unsigned int"
-      ],
-      "src/game/actors/d_a_kpa.cpp": [
-        "param:#2 void *",
-        "param:#5 unsigned int"
-      ],
-      "src/game/actors/d_a_kuri_king.cpp": [
-        "param:#2 void *",
-        "param:#5 unsigned int"
-      ],
-      "src/game/actors/d_a_luigi.cpp": [
-        "param:#2 BTP_File *"
-      ],
-      "src/game/actors/d_a_obj1up_logo.cpp": [
-        "param:#2 void *",
-        "param:#5 unsigned int"
-      ],
-      "src/game/actors/d_a_obj_number.cpp": [
-        "param:#2 void *",
-        "param:#5 unsigned int"
-      ],
-      "src/game/actors/d_a_pg_dfdr.cpp": [
-        "param:#2 void *",
-        "param:#5 unsigned int"
-      ],
-      "src/game/actors/d_a_pg_mthr.cpp": [
-        "param:#5 unsigned int"
-      ],
-      "src/game/actors/d_a_pg_rcer.cpp": [
-        "param:#2 void *",
-        "param:#5 unsigned int"
-      ],
-      "src/game/stages/d_ent_obj.cpp": [
-        "param:#2 void *"
-      ],
-      "src/minigames/d_mg3d_esp_anim_set.cpp": [
-        "param:#2 void *"
-      ],
-      "src/minigames/unit020bfec0.cpp": [
-        "param:#2 void *",
-        "param:#5 unsigned int"
       ]
     },
     "_ZN15dExtAnmTexPat_c8LoadFileER13SharedFilePtr": {
@@ -6171,59 +6068,6 @@
       "src/minigames/unit020bfec0.cpp": [
         "param:#1 void *",
         "param:#2 void *"
-      ]
-    },
-    "_ZN15dExtAnmTexSRT_c7SetFileER8BTA_Filei5Fix12IiEj": {
-      "src/game/stages/d_s_stage_methods.cpp": [
-        "param:#5 unsigned int"
-      ],
-      "src/game/actors/d_a_brq.cpp": [
-        "param:#2 BTA_File &",
-        "param:#5 unsigned int",
-        "return:unsigned int"
-      ],
-      "src/game/actors/d_a_f_ring.cpp": [
-        "param:#5 unsigned int"
-      ],
-      "src/game/actors/d_a_kuri_king.cpp": [
-        "param:#5 unsigned int"
-      ],
-      "src/game/actors/d_a_obj_c0_water.cpp": [
-        "param:#5 unsigned int"
-      ],
-      "src/game/actors/d_a_obj_ct_mecha04.cpp": [
-        "param:#2 BTA_File &",
-        "param:#5 unsigned int"
-      ],
-      "src/game/actors/d_a_obj_ks_water.cpp": [
-        "param:#5 unsigned int"
-      ],
-      "src/game/actors/d_a_obj_mc_water.cpp": [
-        "param:#5 unsigned int"
-      ],
-      "src/game/actors/d_a_obj_td_water.cpp": [
-        "param:#2 BTA_File &",
-        "param:#5 unsigned int"
-      ],
-      "src/game/actors/d_a_obj_tt_water.cpp": [
-        "param:#5 unsigned int"
-      ],
-      "src/game/actors/d_a_obj_wc_mizu.cpp": [
-        "param:#5 unsigned int"
-      ],
-      "src/game/actors/d_a_tor.cpp": [
-        "param:#5 unsigned int"
-      ],
-      "src/game/actors/d_a_water_tatumaki.cpp": [
-        "param:#2 BTA_File &",
-        "param:#5 unsigned int"
-      ],
-      "src/minigames/unit020bfec0.cpp": [
-        "param:#5 unsigned int"
-      ],
-      "src/minigames/unit020cd744.cpp": [
-        "param:#2 BTA_File &",
-        "param:#5 unsigned int"
       ]
     },
     "_ZN15dExtAnmTexSRT_cD1Ev": {

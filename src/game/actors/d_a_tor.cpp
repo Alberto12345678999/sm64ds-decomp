@@ -17,8 +17,8 @@ struct System {
  * appended last.
  *
  * deslop leftovers:
- * - cstd::atan2, Particle::System::New, dExtAnmModel_c::SetAnim,
- *   dExtAnmTexSRT_c::SetFile, dCcAc_c::Init and dBgCh_Actr::Init take
+ * - cstd::atan2, Particle::System::New, dCcAc_c::Init and
+ *   dBgCh_Actr::Init take
  *   Fix12<int> by value and stay mangled extern "C" calls.
  * - dBgCh_Actr_UpdateContinuous_Veneer is the ROM's own tail-call thunk, not
  *   UpdateContinuous itself: the reloc points at the veneer symbol.
@@ -59,8 +59,6 @@ void dBgCh_Actr_UpdateContinuous_Veneer(void *collision);
 s16 _ZN4cstd5atan2E5Fix12IiES1_(s32 y, s32 x);
 u32 d_a_torNewHold(u32 handle, u32 effect, s32 x, s32 y, s32 z, const void *direction,
                    void *callback);
-void _ZN15dExtAnmTexSRT_c7SetFileER8BTA_Filei5Fix12IiEj(void *self, void *file, int flags,
-                                                        int speed, unsigned int start);
 void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(
     void *self, void *actor, int radius, int height, unsigned int flags, unsigned int vuln);
 void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(
@@ -298,16 +296,14 @@ int daTor_c::Behavior()
 // @symbol _ZN7daTor_c13InitResourcesEv
 int daTor_c::InitResources()
 {
-    /* The three Fix12-by-value calls below stay mangled (file header leftovers);
-       member calls grow this function from 0x158 to 0x18c. */
+    /* The dCcAc_c::Init call below stays mangled (file header leftovers). */
     mModelAnim.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(gSandTornadoModelFile), 1, 0x15);
     dExtFrameCtrl_c::LoadFile(gSandTornadoAnimationFile);
     func_02016aac(&mModelAnim, 0x16, 1);
     mModelAnim.SetAnim((BCA_File *)((void *)gSandTornadoAnimationFile.filePtr), 0, 0x1000, 0);
     dExtAnmTexSRT_c::Prepare(*(BMD_File *)gSandTornadoModelFile.filePtr,
                              *(BTA_File *)data_ov024_02112968);
-    _ZN15dExtAnmTexSRT_c7SetFileER8BTA_Filei5Fix12IiEj(&mTextureTransformer, data_ov024_02112968, 0,
-                                                       0x1000, 0);
+    mTextureTransformer.SetFile(*(BTA_File *)data_ov024_02112968, 0, 0x1000, 0);
     _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, this, 0, 0, 0x200002, 0);
     _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(
         &mWithMeshClsn, this, 0x50000, 0x50000, 0, 0);

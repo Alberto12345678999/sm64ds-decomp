@@ -376,9 +376,6 @@ extern void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Bloc
 extern void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(void *self, void *actor,
                                                                     Vector3 *v, s32 f1, s32 f2,
                                                                     u32 a, u32 b);
-/* local extern: the matched free-function spelling of SetFile; a member call is pending. */
-extern void _ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit(void *self, void *btp, int a, int fix,
-                                                       unsigned int b);
 extern void _ZN5Sound17ChangeMusicVolumeEj5Fix12IiE(unsigned int a, int b);
 extern void _ZN5Sound22LoadAndSetMusic_Layer3Ej(unsigned int a);
 extern void _ZN5Sound22StopLoadedMusic_Layer3Ev(void);
@@ -517,13 +514,13 @@ int Eyerok::func_ov066_0211603c()
                 if (mPartIdx == PART_HAND_2) {
                     mBlendModelAnim.SetAnim(*(BCA_File *)data_ov066_0211ae5c.filePtr, 4, 0x40000000,
                                             0x1000, 0);
-                    _ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit(
-                        &mTextureSequence, data_ov066_0211ae3c.filePtr, 0x40000000, 0x1000, 0);
+                    mTextureSequence.SetFile(*(BTP_File *)data_ov066_0211ae3c.filePtr, 0x40000000,
+                                             0x1000, 0);
                 } else {
                     mBlendModelAnim.SetAnim(*(BCA_File *)data_ov066_0211ae84.filePtr, 4, 0x40000000,
                                             0x1000, 0);
-                    _ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit(
-                        &mTextureSequence, data_ov066_0211aebc.filePtr, 0x40000000, 0x1000, 0);
+                    mTextureSequence.SetFile(*(BTP_File *)data_ov066_0211aebc.filePtr, 0x40000000,
+                                             0x1000, 0);
                 }
                 func_02012694(SE_HAND_HIT, &mCamSpacePosX);
                 return 1;
@@ -591,19 +588,19 @@ void Eyerok::func_ov066_02116390()
         return;
     if (mTexPhase == 0) {
         if (mPartIdx == PART_HAND_2)
-            _ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit(
-                &mTextureSequence, data_ov066_0211ae2c.filePtr, 0x40000000, 0x1000, 0);
+            mTextureSequence.SetFile(*(BTP_File *)data_ov066_0211ae2c.filePtr, 0x40000000, 0x1000,
+                                     0);
         else
-            _ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit(
-                &mTextureSequence, data_ov066_0211ae9c.filePtr, 0x40000000, 0x1000, 0);
+            mTextureSequence.SetFile(*(BTP_File *)data_ov066_0211ae9c.filePtr, 0x40000000, 0x1000,
+                                     0);
         mTexTimer = (((unsigned int)RandomIntInternal(&data_0209e650) >> 8) & 0xf) * 2 + 0x32;
     } else {
         if (mPartIdx == PART_HAND_2)
-            _ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit(
-                &mTextureSequence, data_ov066_0211ae3c.filePtr, 0x40000000, 0x1000, 0);
+            mTextureSequence.SetFile(*(BTP_File *)data_ov066_0211ae3c.filePtr, 0x40000000, 0x1000,
+                                     0);
         else
-            _ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit(
-                &mTextureSequence, data_ov066_0211aebc.filePtr, 0x40000000, 0x1000, 0);
+            mTextureSequence.SetFile(*(BTP_File *)data_ov066_0211aebc.filePtr, 0x40000000, 0x1000,
+                                     0);
         mTexTimer = 8;
     }
     mTexPhase ^= 1;
@@ -643,12 +640,10 @@ void Eyerok::func_ov066_021165cc()
 {
     if (mPartIdx == PART_HAND_2) {
         mBlendModelAnim.SetAnim(*(BCA_File *)data_ov066_0211ae54.filePtr, 4, 0x40000000, 0x1000, 0);
-        _ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit(&mTextureSequence, data_ov066_0211ae3c.filePtr,
-                                                   0x40000000, 0x1000, 0);
+        mTextureSequence.SetFile(*(BTP_File *)data_ov066_0211ae3c.filePtr, 0x40000000, 0x1000, 0);
     } else {
         mBlendModelAnim.SetAnim(*(BCA_File *)data_ov066_0211ae94.filePtr, 4, 0x40000000, 0x1000, 0);
-        _ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit(&mTextureSequence, data_ov066_0211aebc.filePtr,
-                                                   0x40000000, 0x1000, 0);
+        mTextureSequence.SetFile(*(BTP_File *)data_ov066_0211aebc.filePtr, 0x40000000, 0x1000, 0);
     }
     mBlendModelAnim.speed = 0x1000;
     {
@@ -671,12 +666,10 @@ void Eyerok::func_ov066_021166c8()
 
     if (mPartIdx == PART_HAND_2) {
         mBlendModelAnim.SetAnim(*(BCA_File *)data_ov066_0211ae54.filePtr, 4, 0x40000000, 0x1000, 0);
-        _ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit(&mTextureSequence, data_ov066_0211ae2c.filePtr,
-                                                   0x40000000, 0x1000, 0);
+        mTextureSequence.SetFile(*(BTP_File *)data_ov066_0211ae2c.filePtr, 0x40000000, 0x1000, 0);
     } else {
         mBlendModelAnim.SetAnim(*(BCA_File *)data_ov066_0211ae94.filePtr, 4, 0x40000000, 0x1000, 0);
-        _ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit(&mTextureSequence, data_ov066_0211ae9c.filePtr,
-                                                   0x40000000, 0x1000, 0);
+        mTextureSequence.SetFile(*(BTP_File *)data_ov066_0211ae9c.filePtr, 0x40000000, 0x1000, 0);
     }
 
     if (mMeshCollider2.IsEnabled() != 0)
@@ -1855,12 +1848,10 @@ int Eyerok::func_ov066_021187c8()
 {
     if (mPartIdx == PART_HAND_2) {
         mBlendModelAnim.SetAnim(*(BCA_File *)data_ov066_0211ae74.filePtr, 4, 0x40000000, 0x1000, 0);
-        _ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit(&mTextureSequence, data_ov066_0211ae3c.filePtr,
-                                                   0x40000000, 0x1000, 0);
+        mTextureSequence.SetFile(*(BTP_File *)data_ov066_0211ae3c.filePtr, 0x40000000, 0x1000, 0);
     } else {
         mBlendModelAnim.SetAnim(*(BCA_File *)data_ov066_0211ae7c.filePtr, 4, 0x40000000, 0x1000, 0);
-        _ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit(&mTextureSequence, data_ov066_0211aebc.filePtr,
-                                                   0x40000000, 0x1000, 0);
+        mTextureSequence.SetFile(*(BTP_File *)data_ov066_0211aebc.filePtr, 0x40000000, 0x1000, 0);
     }
     mBlendModelAnim.speed = 0;
     mStateWork0 = 0;
