@@ -907,11 +907,10 @@ void Player::InitMetalWario()
 // @symbol _ZN6Player19func_ov002_020bdef0Ev
 extern "C" {
 void Player::func_ov002_020bdef0(){
-    extern int _ZN15dExtAnmTexPat_c6UpdateER15ModelComponents(void *, void *);
     if (mIsVanish == 0)
         return;
-    _ZN15dExtAnmTexPat_c6UpdateER15ModelComponents(&mTexSeqPlayer[0], &mBodyModels[1]->data);
-    _ZN15dExtAnmTexPat_c6UpdateER15ModelComponents(&mTexSeqPlayer[1], &mHeadModels[1]->data);
+    mTexSeqPlayer[0].Update(mBodyModels[1]->data);
+    mTexSeqPlayer[1].Update(mHeadModels[1]->data);
     mTexSeqPlayer[0].currFrame = 0;
     mTexSeqPlayer[1].currFrame = 0;
     mIsVanish = 0;
@@ -1032,7 +1031,6 @@ extern "C" {
 void Player::SetRealCharacter(unsigned int chr_)
 {
     extern void _ZN6Player18SetNewHatCharacterEjjb(void*, u32 a, u32 b, bool c);
-    extern void _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(SharedFilePtr &f);
     extern SharedFilePtr *data_ov002_020ff480[];
     extern u8 data_02092128[];
     extern u8 data_0209caa0[];
@@ -1049,7 +1047,7 @@ void Player::SetRealCharacter(unsigned int chr_)
     mCharacter = (u8)chr;
     data_02092128[mPlayerNo] = (u8)param1;
     data_0209caa0[0x41] = (u8)param1;
-    _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(*data_ov002_020ff480[mCharFileBase + (param1 & 3)]);
+    dExtFrameCtrl_c::LoadFile(*data_ov002_020ff480[mCharFileBase + (param1 & 3)]);
     func_ov002_020e6330(((char *)this));
     this->Heal(0x880);
     mCapFlags = 0;
@@ -1068,18 +1066,17 @@ void Player::SetRealCharacter(unsigned int chr_)
 extern "C" {
 void Player::TurnOffToonShading(unsigned int j)
 {
-    extern int _ZN17dExtSimpleModel_c14SetPolygonModeEi(void *, int);
     extern int func_ov002_020e6b74(void*, int);
-  void* m;
-  m = mBodyModels[this->GetBodyModelID(j, 0)];
-  _ZN17dExtSimpleModel_c14SetPolygonModeEi(m, 0);
-  func_ov002_020e6b74(m, mBodyTexParams[j]);
-  m = mHeadModels[j];
-  _ZN17dExtSimpleModel_c14SetPolygonModeEi(m, 0);
-  func_ov002_020e6b74(m, mHeadTexParams[j]);
-  m = mHeadModels[j + 4];
-  _ZN17dExtSimpleModel_c14SetPolygonModeEi(m, 0);
-  func_ov002_020e6b74(m, mHeadTexParams[j + 4]);
+    dExtSimpleModel_c *m;
+    m = mBodyModels[this->GetBodyModelID(j, 0)];
+    m->SetPolygonMode(0);
+    func_ov002_020e6b74(m, mBodyTexParams[j]);
+    m = mHeadModels[j];
+    m->SetPolygonMode(0);
+    func_ov002_020e6b74(m, mHeadTexParams[j]);
+    m = mHeadModels[j + 4];
+    m->SetPolygonMode(0);
+    func_ov002_020e6b74(m, mHeadTexParams[j + 4]);
 }
 }
 
@@ -1089,10 +1086,8 @@ void Player::TurnOffToonShading(unsigned int j)
 extern "C" {
 void Player::func_ov002_020be3b0()
 {
-    extern void _ZN17dExtSimpleModel_c14SetPolygonModeEi(void *, int mode);
     extern void func_ov002_020e6b74(void*, void*);
     extern void func_ov002_020d80d0(void*);
-    extern void _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(void*);
     extern void _ZN13SharedFilePtr7ReleaseEv(void*);
     extern SharedFilePtr *data_ov002_020ff480[];
     extern u8 data_02092128[];
@@ -1125,11 +1120,11 @@ void Player::func_ov002_020be3b0()
     case 0:
         return;
     case 1: {
-        void *m1 = mBodyModels[this->GetBodyModelID((u8)(this->param1), 0)];
-        _ZN17dExtSimpleModel_c14SetPolygonModeEi(m1, 2);
+        dExtSimpleModel_c *m1 = mBodyModels[this->GetBodyModelID((u8)(this->param1), 0)];
+        m1->SetPolygonMode(2);
         {
-            void *m2 = mHeadModels[func_ov002_020becf4((u8)(this->param1), 0)];
-            _ZN17dExtSimpleModel_c14SetPolygonModeEi(m2, 2);
+            dExtSimpleModel_c *m2 = mHeadModels[func_ov002_020becf4((u8)(this->param1), 0)];
+            m2->SetPolygonMode(2);
         }
         mCapPaletteBlend = 0;
         mCapTimer = data_ov002_020ff14c[var_r4];
@@ -1162,17 +1157,17 @@ void Player::func_ov002_020be3b0()
             }
         }
         if (mCapTimer == 0) {
-            void* t1;
-            void* t2;
+            dExtSimpleModel_c *t1;
+            dExtSimpleModel_c *t2;
             func_ov002_020e6b3c(case3_m1);
             func_ov002_020e6b3c(case3_m2);
             mCapFlags++;
             mCapTimer = data_ov002_020ff14c[var_r4 + 2];
             t1 = mBodyModels[this->GetBodyModelID(mHatCharacter, 0)];
-            _ZN17dExtSimpleModel_c14SetPolygonModeEi(t1, 2);
+            t1->SetPolygonMode(2);
             func_ov002_020e6b3c(t1);
             t2 = mHeadModels[func_ov002_020becf4(mHatCharacter, 0)];
-            _ZN17dExtSimpleModel_c14SetPolygonModeEi(t2, 2);
+            t2->SetPolygonMode(2);
             func_ov002_020e6b3c(t2);
             mQuicksandRunFlags = 0;
             mWaterRunLatch = mQuicksandRunFlags;
@@ -1181,7 +1176,7 @@ void Player::func_ov002_020be3b0()
             func_ov002_020d80d0(this);
             mFireBreaths = 0;
             mUseAltBodyModel = 0;
-            _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(data_ov002_020ff480[mCharFileBase + mHatCharacter]);
+            dExtFrameCtrl_c::LoadFile(*data_ov002_020ff480[mCharFileBase + mHatCharacter]);
             {
                 u32 mm1 = this->GetBodyModelID(mHatCharacter, 0);
                 mBodyModels[mm1]->Copy(
@@ -1348,15 +1343,14 @@ void func_ov002_020bebd4(void){
 // @symbol func_ov002_020bec2c
 extern "C" {
 void func_ov002_020bec2c(void){
-    extern int data_ov002_020ff480[];
-    extern int _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(void*);
-  int i;
-  for(i=0x44;i<0x1c8;i+=4){
-    _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr((void*)data_ov002_020ff480[i]);
-    _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr((void*)data_ov002_020ff480[i+1]);
-    _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr((void*)data_ov002_020ff480[i+2]);
-    _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr((void*)data_ov002_020ff480[i+3]);
-  }
+    extern SharedFilePtr *data_ov002_020ff480[];
+    int i;
+    for (i = 0x44; i < 0x1c8; i += 4) {
+        dExtFrameCtrl_c::LoadFile(*data_ov002_020ff480[i]);
+        dExtFrameCtrl_c::LoadFile(*data_ov002_020ff480[i + 1]);
+        dExtFrameCtrl_c::LoadFile(*data_ov002_020ff480[i + 2]);
+        dExtFrameCtrl_c::LoadFile(*data_ov002_020ff480[i + 3]);
+    }
 }
 }
 
@@ -1482,16 +1476,14 @@ int Player::IsAnim(unsigned int a)
 extern "C" {
 #pragma opt_propagation off
 void Player::SetAnim(u32 animId, int flags, Fix12i speed, u16 startFrame) {
-    extern void _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(void*);
     extern int _ZNK6Player14GetBodyModelIDEjb(void *, u32 a, int b);
-    extern void _ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit(void *, void *, int b, Fix12i c, u32 d);
     extern u8 data_0209f2d8;
-    extern void *data_ov002_020ff480[];
-    extern void *data_ov002_020ff2f0[];
+    extern SharedFilePtr *data_ov002_020ff480[];
+    extern SharedFilePtr *data_ov002_020ff2f0[];
     char *self = (char *)this;
     Player *player = (Player *)self;
     u32 charId;
-    void *sfp;
+    SharedFilePtr *sfp;
     u32 sl;
     int field8;
     u32 newVal;
@@ -1511,10 +1503,8 @@ void Player::SetAnim(u32 animId, int flags, Fix12i speed, u16 startFrame) {
 
     newVal = animId << 2;
     if (newVal != player->mCharFileBase) {
-        ((SharedFilePtr *)(data_ov002_020ff480[player->mCharFileBase + (player->param1 & 3)]))
-            ->Release();
-        _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(
-            data_ov002_020ff480[newVal + (player->param1 & 3)]);
+        data_ov002_020ff480[player->mCharFileBase + (player->param1 & 3)]->Release();
+        dExtFrameCtrl_c::LoadFile(*data_ov002_020ff480[newVal + (player->param1 & 3)]);
 
         id = _ZNK6Player14GetBodyModelIDEjb(self, player->param1 & 0xff, 0);
         modelPtr = player->mBodyModels[id];
@@ -1525,13 +1515,12 @@ void Player::SetAnim(u32 animId, int flags, Fix12i speed, u16 startFrame) {
             if (charId == player->param1)
                 charId = player->mPrevCharacter;
 
-            ((SharedFilePtr *)(data_ov002_020ff480[player->mCharFileBase + charId]))->Release();
+            data_ov002_020ff480[player->mCharFileBase + charId]->Release();
             sfp = data_ov002_020ff480[newVal + charId];
-            _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(sfp);
+            dExtFrameCtrl_c::LoadFile(*sfp);
 
             id = _ZNK6Player14GetBodyModelIDEjb(self, charId & 0xff, 0);
-            player->mBodyModels[id]->SetAnim((BCA_File *)(((SharedFilePtr *)sfp)->filePtr), flags,
-                                             speed, startFrame);
+            player->mBodyModels[id]->SetAnim((BCA_File *)sfp->filePtr, flags, speed, startFrame);
             {
                 u16 *g = LAUNDER16(&player->mCapTimer);
                 *g = (u16)(*g + 1);
@@ -1543,17 +1532,16 @@ void Player::SetAnim(u32 animId, int flags, Fix12i speed, u16 startFrame) {
     sl = animId * 4;
     id = _ZNK6Player14GetBodyModelIDEjb(self, (u32)(field8 & 0xff), 0);
     player->mBodyModels[id]->SetAnim(
-        (BCA_File *)(((SharedFilePtr *)data_ov002_020ff480[(field8 & 3) + (animId * 4)])->filePtr),
-        flags, speed, startFrame);
+        (BCA_File *)data_ov002_020ff480[(field8 & 3) + (animId * 4)]->filePtr, flags, speed,
+        startFrame);
 
     field8 = player->param1;
     if ((int)sl >= 0x60) sl = 0x60;
     sl += (field8 & 3);
     param2 = 0;
     if (((int)sl >> 2) == 1) param2 = 0x40000000;
-    _ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit(&player->mTexSeqBody[field8],
-                                               ((SharedFilePtr *)data_ov002_020ff2f0[sl])->filePtr,
-                                               param2, 0x1000, 0);
+    player->mTexSeqBody[field8].SetFile(*(BTP_File *)data_ov002_020ff2f0[sl]->filePtr, param2,
+                                        0x1000, 0);
 
     player->mCharFileBase = newVal;
 }
@@ -20285,7 +20273,6 @@ s32 Player::St_Balloon_Main()
     extern s32 func_ov002_020bf224(void *, s32, s32);
     extern void _Z15ApproachLinear2Rsss(s16 &, s16, s16);
     extern void func_ov002_020de3d0(void *, s16 *, s16 *);
-    extern void _ZN15dExtFrameCtrl_c7AdvanceEv(void *);
     extern s16 data_0209f49e[];
     extern s16 data_0209f4a0[];
     extern s16 data_02082214[];
@@ -23558,10 +23545,6 @@ int Player::Render()
         virtual void m18(void* a, void* b);
     };
     typedef struct M34 { int m[12]; } M34;
-    extern void _ZN11dExtModel_c12ApplyOpacityEjj(void *self, unsigned int opacity,
-                                                  unsigned int unused);
-    extern void _ZN17dExtSimpleModel_c6RenderEPK7Vector3(void *self, void *pos);
-    extern void _ZN15dExtAnmTexPat_c6UpdateER15ModelComponents(void *self, void *mc);
     extern void Matrix4x3_FromTranslation(void* m, int x, int y, int z);
     extern void Matrix4x3_ApplyInPlaceToRotationZ(void* m, int ang);
     extern void MulMat4x3Mat4x3(void* a, void* b, void* c);
@@ -23586,11 +23569,11 @@ int Player::Render()
     if (mOpacity == 0)
         return 1;
     if (!(mFlags & 0x10)) {
-        char* bodyMdl;
+        dExtAnm2Model_c *bodyMdl;
         int i;
-        bodyMdl = (char*)mBodyModels[this->GetBodyModelID(mBodyModelId, 1)];
+        bodyMdl = mBodyModels[this->GetBodyModelID(mBodyModelId, 1)];
         if (mIsBalloon == 0) {
-            _ZN11dExtModel_c12ApplyOpacityEjj(bodyMdl, mOpacity, 0);
+            bodyMdl->ApplyOpacity(mOpacity, 0);
             {
                 int t2 = (data_0209f2d8 == 1);
                 if (t2 != false) {
@@ -23606,36 +23589,32 @@ int Player::Render()
                     }
                 }
             }
-            _ZN17dExtSimpleModel_c6RenderEPK7Vector3(bodyMdl, &mScale);
+            bodyMdl->dExtSimpleModel_c::Render(&mScale);
             if (param1 == 1) {
-                _ZN15dExtAnmTexPat_c6UpdateER15ModelComponents(&mTexSeqPlayer[0],
-                                                               &mBodyModels[1]->data);
+                mTexSeqPlayer[0].Update(mBodyModels[1]->data);
                 mTexSeqPlayer[0].currFrame = mPlayerTexFrame << 12;
             }
             func_ov002_020e3e00(bodyMdl, &mScale, mOpacity);
             if (mDrawnHasWings != 0) {
-                _ZN11dExtModel_c12ApplyOpacityEjj(&mModelAnim4, mOpacity, 0);
+                mModelAnim4.ApplyOpacity(mOpacity, 0);
                 if (mBodyModelId == 3) {
                     Matrix4x3_FromTranslation(&data_020a0e68, -0x1b33, -0x666, 0);
                     Matrix4x3_ApplyInPlaceToRotationZ(&data_020a0e68, 0x4000);
-                    MulMat4x3Mat4x3(&data_020a0e68,
-                                    &((dExtAnmModel_c *)bodyMdl)->data.transforms[8],
-                                    &data_020a0e68);
+                    MulMat4x3Mat4x3(&data_020a0e68, &bodyMdl->data.transforms[8], &data_020a0e68);
                     ((VObj *)((char *)&mModelAnim4))->m18(&data_020a0e68, &mScale);
                 } else {
-                    ((VObj *)((char *)&mModelAnim4))
-                        ->m18(&((dExtAnmModel_c *)bodyMdl)->data.transforms[15], &mScale);
+                    ((VObj *)((char *)&mModelAnim4))->m18(&bodyMdl->data.transforms[15], &mScale);
                 }
             }
         } else {
-            _ZN11dExtModel_c12ApplyOpacityEjj(&mModelAnim3, mOpacity, 0);
+            mModelAnim3.ApplyOpacity(mOpacity, 0);
             ((VObj*)((char*)&mModelAnim3))->m14((char*)&mScaleX);
         }
         i = func_ov002_020becf4(mBodyModelId, 1);
         {
-            char *mdl4 = (char *)mHeadModels[i];
+            dExtSimpleModel_c *mdl4 = mHeadModels[i];
             if (mdl4 != 0 && i != 9 && i != 8) {
-                _ZN11dExtModel_c12ApplyOpacityEjj(mdl4, mOpacity, 0);
+                mdl4->ApplyOpacity(mOpacity, 0);
                 {
                     int t3 = (data_0209f2d8 == 1);
                     if (t3 != false) {
@@ -23652,21 +23631,19 @@ int Player::Render()
                     }
                 }
                 if (i == 3) {
-                    _ZN17dExtSimpleModel_c6RenderEPK7Vector3((char *)mHeadModels[i], &mScale);
+                    mHeadModels[i]->dExtSimpleModel_c::Render(&mScale);
                 } else {
                     Matrix4x3 *dst = mHeadModels[i]->data.transforms;
-                    Matrix4x3 *src = &((dExtAnmModel_c *)bodyMdl)->data.transforms[15];
+                    Matrix4x3 *src = &bodyMdl->data.transforms[15];
                     *(M34*)dst = *(M34*)src;
                     ((VObj *)(char *)mHeadModels[i])->m14((char *)&mScaleX);
                 }
                 if (param1 == 1) {
-                    _ZN15dExtAnmTexPat_c6UpdateER15ModelComponents(&mTexSeqPlayer[1],
-                                                                   &mHeadModels[1]->data);
+                    mTexSeqPlayer[1].Update(mHeadModels[1]->data);
                     mTexSeqPlayer[1].currFrame = mPlayerTexFrame << 12;
                 }
                 if (func_ov002_020bea7c() == 0) {
-                    _ZN15dExtAnmTexPat_c6UpdateER15ModelComponents(&mTexSeqBody[mBodyModelId],
-                                                                   &mHeadModels[i]->data);
+                    mTexSeqBody[mBodyModelId].Update(mHeadModels[i]->data);
                 }
                 func_ov002_020e3e00((char *)mHeadModels[i], &mScale, mOpacity);
                 if (func_ov002_020d225c(((char*)this))) {
@@ -23713,8 +23690,6 @@ extern "C" void func_ov002_020e3e00(dExtSimpleModel_c *obj, Vector3 *vec, unsign
     void MulMat3x3Mat3x3(int *dst, const int *a, const int *b);
     void func_02016acc(void *obj, unsigned int mask);
     void func_02016b24(void *obj, unsigned int mask);
-    extern void _ZN17dExtSimpleModel_c6RenderEPK7Vector3(dExtSimpleModel_c * self,
-                                                         const Vector3 *v);
     int ip = (data_0209f2f8 == 0x2f) ? 1 : 0;
 
     if (!ip) {
@@ -23750,7 +23725,7 @@ extern "C" void func_ov002_020e3e00(dExtSimpleModel_c *obj, Vector3 *vec, unsign
 
     func_02016acc(obj, 0x80);
     func_02016b24(obj, 0x40);
-    _ZN17dExtSimpleModel_c6RenderEPK7Vector3(obj, vec);
+    obj->dExtSimpleModel_c::Render(vec);
     obj->ApplyOpacity(opacity, 0);
     func_02016b24(obj, 0x80);
     func_02016acc(obj, 0x40);
@@ -24005,12 +23980,11 @@ extern "C" void func_ov002_020e4768(char* self)
     extern unsigned int _ZNK6Player14GetBodyModelIDEjb(void* self, unsigned int idx, int flag);
     extern void func_020167a4(void* p);
     extern void func_ov002_020e640c(void* self);
-    extern void _ZN15ModelComponents21UpdateVertsUsingBonesEv(void* self);
     extern int _ZN6Player19func_ov002_020becf4Eii(void* self, unsigned int idx, int flag);
     extern void MulMat4x3Mat4x3(void* dst, void* a, void* b);
     extern int data_020a0e68[12];
     unsigned int mid;
-    void* comp;
+    dExtAnm2Model_c *comp;
     int idx;
 
     mid = _ZNK6Player14GetBodyModelIDEjb(self, player->param1 & 0xff, 0);
@@ -24021,7 +23995,7 @@ extern "C" void func_ov002_020e4768(char* self)
 
     mid = _ZNK6Player14GetBodyModelIDEjb(self, player->param1 & 0xff, 0);
     comp = player->mBodyModels[mid];
-    _ZN15ModelComponents21UpdateVertsUsingBonesEv(&((dExtAnmModel_c *)comp)->data);
+    comp->data.UpdateVertsUsingBones();
 
     idx = _ZN6Player19func_ov002_020becf4Eii(self, player->param1 & 0xff, 0);
 
@@ -24037,12 +24011,11 @@ extern "C" void func_ov002_020e4768(char* self)
         if (hasFlag) {
             mid = _ZNK6Player14GetBodyModelIDEjb(self, player->param1 & 0xff, 0);
             comp = player->mBodyModels[mid];
-            *(Mat43 *)data_020a0e68 = *(Mat43 *)&((dExtAnmModel_c *)comp)->mat4x3;
+            *(Mat43 *)data_020a0e68 = *(Mat43 *)&comp->mat4x3;
 
             mid = _ZNK6Player14GetBodyModelIDEjb(self, player->param1 & 0xff, 0);
             comp = player->mBodyModels[mid];
-            MulMat4x3Mat4x3(&((dExtAnmModel_c *)comp)->data.transforms[14], data_020a0e68,
-                            data_020a0e68);
+            MulMat4x3Mat4x3(&comp->data.transforms[14], data_020a0e68, data_020a0e68);
 
             *(Mat43 *)player->pad_58c = *(Mat43 *)data_020a0e68;
             player->mCarryMatrix = (Matrix4x3 *)player->pad_58c;
@@ -24051,11 +24024,11 @@ extern "C" void func_ov002_020e4768(char* self)
 
     mid = _ZNK6Player14GetBodyModelIDEjb(self, player->param1 & 0xff, 0);
     comp = player->mBodyModels[mid];
-    *(Mat43 *)data_020a0e68 = *(Mat43 *)&((dExtAnmModel_c *)comp)->mat4x3;
+    *(Mat43 *)data_020a0e68 = *(Mat43 *)&comp->mat4x3;
 
     mid = _ZNK6Player14GetBodyModelIDEjb(self, player->param1 & 0xff, 0);
     comp = player->mBodyModels[mid];
-    MulMat4x3Mat4x3(&((dExtAnmModel_c *)comp)->data.transforms[15], data_020a0e68, data_020a0e68);
+    MulMat4x3Mat4x3(&comp->data.transforms[15], data_020a0e68, data_020a0e68);
 
     *(Mat43*)(self + 0x5ec) = *(Mat43*)data_020a0e68;
 }
@@ -24205,7 +24178,6 @@ int Player::Behavior()
     extern u16 DecIfAbove0_Short(u16 *p);
     extern s16 GetAngleToCamera(u8 playerID);
     extern void _ZN10dCcAcPos_c21SetPosRelativeToActorERK7Vector3(void *self, const Vector3 *v);
-    extern void _ZN15dExtFrameCtrl_c7AdvanceEv(void *self);
     extern void func_02035684(void *p, s32 v);
     extern void func_0203568c(void *p, s32 v);
     extern void func_ov002_020ce8bc(void *self, s32 arg);
@@ -24669,118 +24641,109 @@ Ld0:
 extern "C" {
 void func_ov002_020e5948(void* arg0)
 {
-    typedef struct OneUpLogoModelFile OneUpLogoModelFile;
-    extern void _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(void* sfp);
-    extern void *_ZN17dExtSimpleModel_c8LoadFileER13SharedFilePtr(void *sfp);
-    extern void _ZN15dExtAnmTexPat_c8LoadFileER13SharedFilePtr(void *sfp);
     extern void LoadSilverStarAndNumber(void);
-    extern int _ZN11dExtModel_c7SetFileEP8BMD_Fileii(void *thiz, void *bmd, s32 a, s32 b);
     extern void func_ov002_020bec2c(void* p);
     extern s32 func_ov002_020e6bb0(void* p);
     extern void func_ov002_020e6780(void* p);
-    extern void _ZN17dExtShadowModel_c12InitCylinderEv(void* thiz);
     extern s32 _ZNK6Player14GetBodyModelIDEjb(void* thiz, u32 a, s32 b);
-    extern void _ZN15dExtAnmTexPat_c7PrepareER8BMD_FileR8BTP_File(void *bmd, void *btp);
-    extern void _ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit(void *thiz, void *f, s32 i, Fix12i fx,
-                                                           u32 j);
     extern s8 data_0209f310[];
     extern u8 data_0209f2d8;
     extern s8 data_0209f2f8;
-    extern int data_ov002_0210e798[];
-    extern int data_ov002_0210e4f0[];
-    extern int data_ov002_0210e3d8[];
-    extern int data_ov002_0210e6c0[];
-    extern int data_ov002_0210eb98[];
-    extern int data_ov002_0210eb88[];
-    extern int data_ov002_0210e4c0[];
-    extern int data_ov002_0210da40[];
-    extern int data_ov002_0210d9a0[];
-    extern int data_ov002_0210d9c0[];
-    extern int data_ov002_0210e500[];
-    extern int data_ov002_0210e1c8[];
-    extern int data_ov002_0210e770[];
-    extern int data_ov002_0210e230[];
-    extern int data_ov002_0210e288[];
-    extern int data_ov002_0210e478[];
-    extern int data_ov002_0210e9d0[];
-    extern int data_ov002_0210ea10[];
-    extern int data_ov002_0210e538[];
-    extern int data_ov002_0210eac8[];
-    extern int data_ov002_0210e898[];
-    extern int data_ov002_0210e9e8[];
-    extern int data_ov002_0210eba8[];
-    extern int data_ov002_0210eb70[];
-    extern int data_ov002_0210eaf0[];
-    extern int data_ov002_0210e640[];
-    extern int data_ov002_0210e670[];
-    extern int data_ov002_0210e680[];
-    extern int data_ov002_0210e438[];
-    extern int data_ov002_0210e3b0[];
-    extern int data_ov002_0210e3c8[];
-    extern int data_ov002_0210e408[];
-    extern int data_ov002_0210e400[];
-    extern int data_ov002_0210ecb8[];
-    extern int data_ov002_0210e8d0[];
-    extern int data_ov002_0210ebd8[];
-    extern int data_ov002_0210e750[];
-    extern int data_ov002_0210d9a8[];
-    extern OneUpLogoModelFile data_ov002_02110aa4;
-    extern int data_ov002_0210e588[];
-    extern int data_ov002_0210e7e8[];
-    extern int data_ov002_0210e450[];
-    extern int data_ov002_0210e788[];
-    extern int data_ov002_0210e1e8[];
-    extern int data_ov002_0210e1e0[];
-    extern int data_ov002_0210e4d0[];
-    extern int data_ov002_0210e4e8[];
-    extern int data_ov002_0210e1d0[];
-    extern int data_ov002_0210e800[];
-    extern int data_ov002_0210e4b8[];
-    extern int data_ov002_0210e270[];
-    extern int data_ov002_0210e458[];
-    extern int data_ov002_0210ea70[];
-    extern int data_ov002_0210e540[];
-    extern int data_ov002_0210e8e8[];
-    extern int data_ov002_0210eca8[];
-    extern int data_ov002_0210ec98[];
-    extern int data_ov002_0210e600[];
-    extern int data_ov002_0210ea88[];
-    extern int data_ov002_0210e910[];
-    extern int data_ov002_0210e460[];
-    extern int data_ov002_0210e2f0[];
-    extern int data_ov002_0210e958[];
-    extern int data_ov002_0210eb38[];
-    extern int data_ov002_0210e660[];
-    extern int data_ov002_0210ea30[];
-    extern int data_ov002_0210e3e8[];
-    extern int data_ov002_0210eb90[];
-    extern int data_ov002_0210e6b8[];
-    extern int data_ov002_0210e620[];
-    extern int data_ov002_0210e6a0[];
-    extern int data_ov002_0210eb58[];
-    extern int data_ov002_0210e3e0[];
-    extern int data_ov002_0210eb10[];
-    extern int data_ov002_0210e708[];
-    extern int data_ov002_0210ebc8[];
-    extern int data_ov002_0210e6e0[];
-    extern int data_ov002_0210e430[];
-    extern int data_ov002_0210ec40[];
-    extern int data_ov002_0210e738[];
-    extern int data_ov002_0210e250[];
-    extern int data_ov002_0210ec10[];
-    extern int data_ov002_0210ec00[];
-    extern int data_ov002_0210e728[];
+    extern SharedFilePtr data_ov002_0210e798;
+    extern SharedFilePtr data_ov002_0210e4f0;
+    extern SharedFilePtr data_ov002_0210e3d8;
+    extern SharedFilePtr data_ov002_0210e6c0;
+    extern SharedFilePtr data_ov002_0210eb98;
+    extern SharedFilePtr data_ov002_0210eb88;
+    extern SharedFilePtr data_ov002_0210e4c0;
+    extern SharedFilePtr data_ov002_0210da40;
+    extern SharedFilePtr data_ov002_0210d9a0;
+    extern SharedFilePtr data_ov002_0210d9c0;
+    extern SharedFilePtr data_ov002_0210e500;
+    extern SharedFilePtr data_ov002_0210e1c8;
+    extern SharedFilePtr data_ov002_0210e770;
+    extern SharedFilePtr data_ov002_0210e230;
+    extern SharedFilePtr data_ov002_0210e288;
+    extern SharedFilePtr data_ov002_0210e478;
+    extern SharedFilePtr data_ov002_0210e9d0;
+    extern SharedFilePtr data_ov002_0210ea10;
+    extern SharedFilePtr data_ov002_0210e538;
+    extern SharedFilePtr data_ov002_0210eac8;
+    extern SharedFilePtr data_ov002_0210e898;
+    extern SharedFilePtr data_ov002_0210e9e8;
+    extern SharedFilePtr data_ov002_0210eba8;
+    extern SharedFilePtr data_ov002_0210eb70;
+    extern SharedFilePtr data_ov002_0210eaf0;
+    extern SharedFilePtr data_ov002_0210e640;
+    extern SharedFilePtr data_ov002_0210e670;
+    extern SharedFilePtr data_ov002_0210e680;
+    extern SharedFilePtr data_ov002_0210e438;
+    extern SharedFilePtr data_ov002_0210e3b0;
+    extern SharedFilePtr data_ov002_0210e3c8;
+    extern SharedFilePtr data_ov002_0210e408;
+    extern SharedFilePtr data_ov002_0210e400;
+    extern SharedFilePtr data_ov002_0210ecb8;
+    extern SharedFilePtr data_ov002_0210e8d0;
+    extern SharedFilePtr data_ov002_0210ebd8;
+    extern SharedFilePtr data_ov002_0210e750;
+    extern SharedFilePtr data_ov002_0210d9a8;
+    extern SharedFilePtr data_ov002_02110aa4;
+    extern SharedFilePtr data_ov002_0210e588;
+    extern SharedFilePtr data_ov002_0210e7e8;
+    extern SharedFilePtr data_ov002_0210e450;
+    extern SharedFilePtr data_ov002_0210e788;
+    extern SharedFilePtr data_ov002_0210e1e8;
+    extern SharedFilePtr data_ov002_0210e1e0;
+    extern SharedFilePtr data_ov002_0210e4d0;
+    extern SharedFilePtr data_ov002_0210e4e8;
+    extern SharedFilePtr data_ov002_0210e1d0;
+    extern SharedFilePtr data_ov002_0210e800;
+    extern SharedFilePtr data_ov002_0210e4b8;
+    extern SharedFilePtr data_ov002_0210e270;
+    extern SharedFilePtr data_ov002_0210e458;
+    extern SharedFilePtr data_ov002_0210ea70;
+    extern SharedFilePtr data_ov002_0210e540;
+    extern SharedFilePtr data_ov002_0210e8e8;
+    extern SharedFilePtr data_ov002_0210eca8;
+    extern SharedFilePtr data_ov002_0210ec98;
+    extern SharedFilePtr data_ov002_0210e600;
+    extern SharedFilePtr data_ov002_0210ea88;
+    extern SharedFilePtr data_ov002_0210e910;
+    extern SharedFilePtr data_ov002_0210e460;
+    extern SharedFilePtr data_ov002_0210e2f0;
+    extern SharedFilePtr data_ov002_0210e958;
+    extern SharedFilePtr data_ov002_0210eb38;
+    extern SharedFilePtr data_ov002_0210e660;
+    extern SharedFilePtr data_ov002_0210ea30;
+    extern SharedFilePtr data_ov002_0210e3e8;
+    extern SharedFilePtr data_ov002_0210eb90;
+    extern SharedFilePtr data_ov002_0210e6b8;
+    extern SharedFilePtr data_ov002_0210e620;
+    extern SharedFilePtr data_ov002_0210e6a0;
+    extern SharedFilePtr data_ov002_0210eb58;
+    extern SharedFilePtr data_ov002_0210e3e0;
+    extern SharedFilePtr data_ov002_0210eb10;
+    extern SharedFilePtr data_ov002_0210e708;
+    extern SharedFilePtr data_ov002_0210ebc8;
+    extern SharedFilePtr data_ov002_0210e6e0;
+    extern SharedFilePtr data_ov002_0210e430;
+    extern SharedFilePtr data_ov002_0210ec40;
+    extern SharedFilePtr data_ov002_0210e738;
+    extern SharedFilePtr data_ov002_0210e250;
+    extern SharedFilePtr data_ov002_0210ec10;
+    extern SharedFilePtr data_ov002_0210ec00;
+    extern SharedFilePtr data_ov002_0210e728;
     extern SharedFilePtr *data_ov002_020ff480[];
-    extern void* data_ov002_0210a68c[];
-    extern void* data_ov002_0210a69c[];
-    extern void* data_ov002_0210a6ac[];
-    extern void* data_ov002_020ff2f0[];
-    extern int data_ov002_0210da38[];
-    extern int data_ov002_0210e780[];
-    extern int data_ov002_0210e6f8[];
-    extern int data_ov002_0210e7b0[];
-    extern int data_ov002_0210ebb8[];
-    extern int data_ov002_0210eb20[];
+    extern SharedFilePtr *data_ov002_0210a68c[];
+    extern SharedFilePtr *data_ov002_0210a69c[];
+    extern SharedFilePtr *data_ov002_0210a6ac[];
+    extern SharedFilePtr *data_ov002_020ff2f0[];
+    extern SharedFilePtr data_ov002_0210da38;
+    extern SharedFilePtr data_ov002_0210e780;
+    extern SharedFilePtr data_ov002_0210e6f8;
+    extern SharedFilePtr data_ov002_0210e7b0;
+    extern SharedFilePtr data_ov002_0210ebb8;
+    extern SharedFilePtr data_ov002_0210eb20;
     char* c = (char*)arg0;
     Player *player = (Player *)c;
     s32 i;
@@ -24793,16 +24756,16 @@ void func_ov002_020e5948(void* arg0)
     s32 n;
     s32 k;
     s32 outer;
-    void* texseq;
-    void* entry;
+    dExtAnmTexPat_c *texseq;
+    SharedFilePtr *entry;
 
-    _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(data_ov002_0210e798);
-    _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(data_ov002_0210e4f0);
-    _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(data_ov002_0210e3d8);
-    _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(data_ov002_0210e6c0);
-    _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(data_ov002_0210eb98);
-    _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(data_ov002_0210eb88);
-    _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(data_ov002_0210e4c0);
+    dExtFrameCtrl_c::LoadFile(data_ov002_0210e798);
+    dExtFrameCtrl_c::LoadFile(data_ov002_0210e4f0);
+    dExtFrameCtrl_c::LoadFile(data_ov002_0210e3d8);
+    dExtFrameCtrl_c::LoadFile(data_ov002_0210e6c0);
+    dExtFrameCtrl_c::LoadFile(data_ov002_0210eb98);
+    dExtFrameCtrl_c::LoadFile(data_ov002_0210eb88);
+    dExtFrameCtrl_c::LoadFile(data_ov002_0210e4c0);
 
     if (data_0209f310[player->mPlayerNo] != 0) {
         LoadSilverStarAndNumber();
@@ -24815,101 +24778,101 @@ void func_ov002_020e5948(void* arg0)
         if (a != b) {
         switch (b) {
         case 0:
-            _ZN17dExtSimpleModel_c8LoadFileER13SharedFilePtr(data_ov002_0210da40);
+            dExtSimpleModel_c::LoadFile(data_ov002_0210da40);
             player->mLoadedResourceFlags |= 2;
             break;
         case 1:
-            _ZN17dExtSimpleModel_c8LoadFileER13SharedFilePtr(data_ov002_0210d9a0);
+            dExtSimpleModel_c::LoadFile(data_ov002_0210d9a0);
             player->mLoadedResourceFlags |= 4;
             break;
         case 2:
-            _ZN17dExtSimpleModel_c8LoadFileER13SharedFilePtr(data_ov002_0210d9c0);
+            dExtSimpleModel_c::LoadFile(data_ov002_0210d9c0);
             player->mLoadedResourceFlags |= 8;
             break;
         }
     }
     }
 
-    _ZN15dExtAnmTexPat_c8LoadFileER13SharedFilePtr(data_ov002_0210e500);
-    _ZN15dExtAnmTexPat_c8LoadFileER13SharedFilePtr(data_ov002_0210e1c8);
-    _ZN15dExtAnmTexPat_c8LoadFileER13SharedFilePtr(data_ov002_0210e770);
-    _ZN15dExtAnmTexPat_c8LoadFileER13SharedFilePtr(data_ov002_0210e230);
-    _ZN15dExtAnmTexPat_c8LoadFileER13SharedFilePtr(data_ov002_0210e288);
-    _ZN15dExtAnmTexPat_c8LoadFileER13SharedFilePtr(data_ov002_0210e478);
-    _ZN15dExtAnmTexPat_c8LoadFileER13SharedFilePtr(data_ov002_0210e9d0);
-    _ZN15dExtAnmTexPat_c8LoadFileER13SharedFilePtr(data_ov002_0210ea10);
-    _ZN15dExtAnmTexPat_c8LoadFileER13SharedFilePtr(data_ov002_0210e538);
-    _ZN15dExtAnmTexPat_c8LoadFileER13SharedFilePtr(data_ov002_0210eac8);
-    _ZN15dExtAnmTexPat_c8LoadFileER13SharedFilePtr(data_ov002_0210e898);
-    _ZN15dExtAnmTexPat_c8LoadFileER13SharedFilePtr(data_ov002_0210e9e8);
-    _ZN15dExtAnmTexPat_c8LoadFileER13SharedFilePtr(data_ov002_0210eba8);
-    _ZN15dExtAnmTexPat_c8LoadFileER13SharedFilePtr(data_ov002_0210eb70);
-    _ZN15dExtAnmTexPat_c8LoadFileER13SharedFilePtr(data_ov002_0210eaf0);
-    _ZN15dExtAnmTexPat_c8LoadFileER13SharedFilePtr(data_ov002_0210e640);
-    _ZN15dExtAnmTexPat_c8LoadFileER13SharedFilePtr(data_ov002_0210e670);
-    _ZN15dExtAnmTexPat_c8LoadFileER13SharedFilePtr(data_ov002_0210e680);
-    _ZN15dExtAnmTexPat_c8LoadFileER13SharedFilePtr(data_ov002_0210e438);
-    _ZN15dExtAnmTexPat_c8LoadFileER13SharedFilePtr(data_ov002_0210e3b0);
-    _ZN15dExtAnmTexPat_c8LoadFileER13SharedFilePtr(data_ov002_0210e3c8);
-    _ZN15dExtAnmTexPat_c8LoadFileER13SharedFilePtr(data_ov002_0210e408);
-    _ZN15dExtAnmTexPat_c8LoadFileER13SharedFilePtr(data_ov002_0210e400);
-    _ZN15dExtAnmTexPat_c8LoadFileER13SharedFilePtr(data_ov002_0210ecb8);
-    _ZN15dExtAnmTexPat_c8LoadFileER13SharedFilePtr(data_ov002_0210e8d0);
-    _ZN15dExtAnmTexPat_c8LoadFileER13SharedFilePtr(data_ov002_0210ebd8);
+    dExtAnmTexPat_c::LoadFile(data_ov002_0210e500);
+    dExtAnmTexPat_c::LoadFile(data_ov002_0210e1c8);
+    dExtAnmTexPat_c::LoadFile(data_ov002_0210e770);
+    dExtAnmTexPat_c::LoadFile(data_ov002_0210e230);
+    dExtAnmTexPat_c::LoadFile(data_ov002_0210e288);
+    dExtAnmTexPat_c::LoadFile(data_ov002_0210e478);
+    dExtAnmTexPat_c::LoadFile(data_ov002_0210e9d0);
+    dExtAnmTexPat_c::LoadFile(data_ov002_0210ea10);
+    dExtAnmTexPat_c::LoadFile(data_ov002_0210e538);
+    dExtAnmTexPat_c::LoadFile(data_ov002_0210eac8);
+    dExtAnmTexPat_c::LoadFile(data_ov002_0210e898);
+    dExtAnmTexPat_c::LoadFile(data_ov002_0210e9e8);
+    dExtAnmTexPat_c::LoadFile(data_ov002_0210eba8);
+    dExtAnmTexPat_c::LoadFile(data_ov002_0210eb70);
+    dExtAnmTexPat_c::LoadFile(data_ov002_0210eaf0);
+    dExtAnmTexPat_c::LoadFile(data_ov002_0210e640);
+    dExtAnmTexPat_c::LoadFile(data_ov002_0210e670);
+    dExtAnmTexPat_c::LoadFile(data_ov002_0210e680);
+    dExtAnmTexPat_c::LoadFile(data_ov002_0210e438);
+    dExtAnmTexPat_c::LoadFile(data_ov002_0210e3b0);
+    dExtAnmTexPat_c::LoadFile(data_ov002_0210e3c8);
+    dExtAnmTexPat_c::LoadFile(data_ov002_0210e408);
+    dExtAnmTexPat_c::LoadFile(data_ov002_0210e400);
+    dExtAnmTexPat_c::LoadFile(data_ov002_0210ecb8);
+    dExtAnmTexPat_c::LoadFile(data_ov002_0210e8d0);
+    dExtAnmTexPat_c::LoadFile(data_ov002_0210ebd8);
 
     {
         s32 mode;
         mode = data_0209f2d8;
         mode = (mode == 1);
         if (mode == 0) {
-            _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(data_ov002_0210e750);
-            _ZN17dExtSimpleModel_c8LoadFileER13SharedFilePtr(data_ov002_0210d9a8);
-            _ZN17dExtSimpleModel_c8LoadFileER13SharedFilePtr(&data_ov002_02110aa4);
-            _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(data_ov002_0210e588);
-            _ZN15dExtAnmTexPat_c8LoadFileER13SharedFilePtr(data_ov002_0210e7e8);
-            _ZN15dExtAnmTexPat_c8LoadFileER13SharedFilePtr(data_ov002_0210e450);
-            _ZN15dExtAnmTexPat_c8LoadFileER13SharedFilePtr(data_ov002_0210e788);
-            _ZN15dExtAnmTexPat_c8LoadFileER13SharedFilePtr(data_ov002_0210e1e8);
-            _ZN15dExtAnmTexPat_c8LoadFileER13SharedFilePtr(data_ov002_0210e1e0);
-            _ZN15dExtAnmTexPat_c8LoadFileER13SharedFilePtr(data_ov002_0210e4d0);
-            _ZN15dExtAnmTexPat_c8LoadFileER13SharedFilePtr(data_ov002_0210e4e8);
-            _ZN15dExtAnmTexPat_c8LoadFileER13SharedFilePtr(data_ov002_0210e1d0);
-            _ZN15dExtAnmTexPat_c8LoadFileER13SharedFilePtr(data_ov002_0210e800);
-            _ZN15dExtAnmTexPat_c8LoadFileER13SharedFilePtr(data_ov002_0210e4b8);
-            _ZN15dExtAnmTexPat_c8LoadFileER13SharedFilePtr(data_ov002_0210e270);
-            _ZN15dExtAnmTexPat_c8LoadFileER13SharedFilePtr(data_ov002_0210e458);
-            _ZN15dExtAnmTexPat_c8LoadFileER13SharedFilePtr(data_ov002_0210ea70);
-            _ZN15dExtAnmTexPat_c8LoadFileER13SharedFilePtr(data_ov002_0210e540);
-            _ZN15dExtAnmTexPat_c8LoadFileER13SharedFilePtr(data_ov002_0210e8e8);
-            _ZN15dExtAnmTexPat_c8LoadFileER13SharedFilePtr(data_ov002_0210eca8);
-            _ZN15dExtAnmTexPat_c8LoadFileER13SharedFilePtr(data_ov002_0210ec98);
-            _ZN15dExtAnmTexPat_c8LoadFileER13SharedFilePtr(data_ov002_0210e600);
-            _ZN15dExtAnmTexPat_c8LoadFileER13SharedFilePtr(data_ov002_0210ea88);
-            _ZN15dExtAnmTexPat_c8LoadFileER13SharedFilePtr(data_ov002_0210e910);
-            _ZN15dExtAnmTexPat_c8LoadFileER13SharedFilePtr(data_ov002_0210e460);
-            _ZN15dExtAnmTexPat_c8LoadFileER13SharedFilePtr(data_ov002_0210e2f0);
-            _ZN15dExtAnmTexPat_c8LoadFileER13SharedFilePtr(data_ov002_0210e958);
-            _ZN15dExtAnmTexPat_c8LoadFileER13SharedFilePtr(data_ov002_0210eb38);
-            _ZN15dExtAnmTexPat_c8LoadFileER13SharedFilePtr(data_ov002_0210e660);
-            _ZN15dExtAnmTexPat_c8LoadFileER13SharedFilePtr(data_ov002_0210ea30);
-            _ZN15dExtAnmTexPat_c8LoadFileER13SharedFilePtr(data_ov002_0210e3e8);
-            _ZN15dExtAnmTexPat_c8LoadFileER13SharedFilePtr(data_ov002_0210eb90);
-            _ZN15dExtAnmTexPat_c8LoadFileER13SharedFilePtr(data_ov002_0210e6b8);
-            _ZN15dExtAnmTexPat_c8LoadFileER13SharedFilePtr(data_ov002_0210e620);
-            _ZN15dExtAnmTexPat_c8LoadFileER13SharedFilePtr(data_ov002_0210e6a0);
-            _ZN15dExtAnmTexPat_c8LoadFileER13SharedFilePtr(data_ov002_0210eb58);
-            _ZN15dExtAnmTexPat_c8LoadFileER13SharedFilePtr(data_ov002_0210e3e0);
-            _ZN15dExtAnmTexPat_c8LoadFileER13SharedFilePtr(data_ov002_0210eb10);
-            _ZN15dExtAnmTexPat_c8LoadFileER13SharedFilePtr(data_ov002_0210e708);
-            _ZN15dExtAnmTexPat_c8LoadFileER13SharedFilePtr(data_ov002_0210ebc8);
-            _ZN15dExtAnmTexPat_c8LoadFileER13SharedFilePtr(data_ov002_0210e6e0);
-            _ZN15dExtAnmTexPat_c8LoadFileER13SharedFilePtr(data_ov002_0210e430);
-            _ZN15dExtAnmTexPat_c8LoadFileER13SharedFilePtr(data_ov002_0210ec40);
-            _ZN15dExtAnmTexPat_c8LoadFileER13SharedFilePtr(data_ov002_0210e738);
-            _ZN15dExtAnmTexPat_c8LoadFileER13SharedFilePtr(data_ov002_0210e250);
-            _ZN15dExtAnmTexPat_c8LoadFileER13SharedFilePtr(data_ov002_0210ec10);
-            _ZN15dExtAnmTexPat_c8LoadFileER13SharedFilePtr(data_ov002_0210ec00);
-            _ZN15dExtAnmTexPat_c8LoadFileER13SharedFilePtr(data_ov002_0210e728);
+            dExtFrameCtrl_c::LoadFile(data_ov002_0210e750);
+            dExtSimpleModel_c::LoadFile(data_ov002_0210d9a8);
+            dExtSimpleModel_c::LoadFile(data_ov002_02110aa4);
+            dExtFrameCtrl_c::LoadFile(data_ov002_0210e588);
+            dExtAnmTexPat_c::LoadFile(data_ov002_0210e7e8);
+            dExtAnmTexPat_c::LoadFile(data_ov002_0210e450);
+            dExtAnmTexPat_c::LoadFile(data_ov002_0210e788);
+            dExtAnmTexPat_c::LoadFile(data_ov002_0210e1e8);
+            dExtAnmTexPat_c::LoadFile(data_ov002_0210e1e0);
+            dExtAnmTexPat_c::LoadFile(data_ov002_0210e4d0);
+            dExtAnmTexPat_c::LoadFile(data_ov002_0210e4e8);
+            dExtAnmTexPat_c::LoadFile(data_ov002_0210e1d0);
+            dExtAnmTexPat_c::LoadFile(data_ov002_0210e800);
+            dExtAnmTexPat_c::LoadFile(data_ov002_0210e4b8);
+            dExtAnmTexPat_c::LoadFile(data_ov002_0210e270);
+            dExtAnmTexPat_c::LoadFile(data_ov002_0210e458);
+            dExtAnmTexPat_c::LoadFile(data_ov002_0210ea70);
+            dExtAnmTexPat_c::LoadFile(data_ov002_0210e540);
+            dExtAnmTexPat_c::LoadFile(data_ov002_0210e8e8);
+            dExtAnmTexPat_c::LoadFile(data_ov002_0210eca8);
+            dExtAnmTexPat_c::LoadFile(data_ov002_0210ec98);
+            dExtAnmTexPat_c::LoadFile(data_ov002_0210e600);
+            dExtAnmTexPat_c::LoadFile(data_ov002_0210ea88);
+            dExtAnmTexPat_c::LoadFile(data_ov002_0210e910);
+            dExtAnmTexPat_c::LoadFile(data_ov002_0210e460);
+            dExtAnmTexPat_c::LoadFile(data_ov002_0210e2f0);
+            dExtAnmTexPat_c::LoadFile(data_ov002_0210e958);
+            dExtAnmTexPat_c::LoadFile(data_ov002_0210eb38);
+            dExtAnmTexPat_c::LoadFile(data_ov002_0210e660);
+            dExtAnmTexPat_c::LoadFile(data_ov002_0210ea30);
+            dExtAnmTexPat_c::LoadFile(data_ov002_0210e3e8);
+            dExtAnmTexPat_c::LoadFile(data_ov002_0210eb90);
+            dExtAnmTexPat_c::LoadFile(data_ov002_0210e6b8);
+            dExtAnmTexPat_c::LoadFile(data_ov002_0210e620);
+            dExtAnmTexPat_c::LoadFile(data_ov002_0210e6a0);
+            dExtAnmTexPat_c::LoadFile(data_ov002_0210eb58);
+            dExtAnmTexPat_c::LoadFile(data_ov002_0210e3e0);
+            dExtAnmTexPat_c::LoadFile(data_ov002_0210eb10);
+            dExtAnmTexPat_c::LoadFile(data_ov002_0210e708);
+            dExtAnmTexPat_c::LoadFile(data_ov002_0210ebc8);
+            dExtAnmTexPat_c::LoadFile(data_ov002_0210e6e0);
+            dExtAnmTexPat_c::LoadFile(data_ov002_0210e430);
+            dExtAnmTexPat_c::LoadFile(data_ov002_0210ec40);
+            dExtAnmTexPat_c::LoadFile(data_ov002_0210e738);
+            dExtAnmTexPat_c::LoadFile(data_ov002_0210e250);
+            dExtAnmTexPat_c::LoadFile(data_ov002_0210ec10);
+            dExtAnmTexPat_c::LoadFile(data_ov002_0210ec00);
+            dExtAnmTexPat_c::LoadFile(data_ov002_0210e728);
         }
     }
 
@@ -24925,14 +24888,13 @@ void func_ov002_020e5948(void* arg0)
         }
     }
 
-    _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(data_ov002_020ff480[(s32)player->mCharFileBase]);
+    dExtFrameCtrl_c::LoadFile(*data_ov002_020ff480[(s32)player->mCharFileBase]);
 
     i = 0;
     do {
         player->mBodyModels[i] = new dExtAnm2Model_c;
-        _ZN11dExtModel_c7SetFileEP8BMD_Fileii(
-            player->mBodyModels[i],
-            _ZN17dExtSimpleModel_c8LoadFileER13SharedFilePtr(data_ov002_0210a68c[i]), 1, 1);
+        player->mBodyModels[i]->SetFile(
+            (BMD_File *)dExtSimpleModel_c::LoadFile(*data_ov002_0210a68c[i]), 1, 1);
         player->mBodyModels[i]->Func_020162C4((u32)data_ov002_020ff480[i + 0xC4]->filePtr, 0,
                                               0x1000, 0);
         player->mBodyTexParams[i] = func_ov002_020e6bb0(player->mBodyModels[i]);
@@ -24945,16 +24907,14 @@ void func_ov002_020e5948(void* arg0)
     do {
         if (i == 3) {
             player->mHeadModels[i] = new dExtAnmModel_c;
-            _ZN11dExtModel_c7SetFileEP8BMD_Fileii(
-                player->mHeadModels[i],
-                _ZN17dExtSimpleModel_c8LoadFileER13SharedFilePtr(data_ov002_0210a69c[i]), 1, 1);
+            player->mHeadModels[i]->SetFile(
+                (BMD_File *)dExtSimpleModel_c::LoadFile(*data_ov002_0210a69c[i]), 1, 1);
             ((dExtAnmModel_c *)player->mHeadModels[i])
-                ->SetAnim((BCA_File *)((void *)data_ov002_0210eb88[1]), 0, 0x1000, 0);
+                ->SetAnim((BCA_File *)data_ov002_0210eb88.filePtr, 0, 0x1000, 0);
         } else {
             player->mHeadModels[i] = new dExtSimpleModel_c;
-            _ZN11dExtModel_c7SetFileEP8BMD_Fileii(
-                player->mHeadModels[i],
-                _ZN17dExtSimpleModel_c8LoadFileER13SharedFilePtr(data_ov002_0210a69c[i]), 1, 1);
+            player->mHeadModels[i]->SetFile(
+                (BMD_File *)dExtSimpleModel_c::LoadFile(*data_ov002_0210a69c[i]), 1, 1);
         }
         player->mHeadTexParams[i] = func_ov002_020e6bb0(player->mHeadModels[i]);
         i++;
@@ -24966,9 +24926,8 @@ void func_ov002_020e5948(void* arg0)
         {
             s32 idx = j + 4;
             player->mHeadModels[idx] = (dExtSimpleModel_c *)p;
-            _ZN11dExtModel_c7SetFileEP8BMD_Fileii(
-                player->mHeadModels[idx],
-                _ZN17dExtSimpleModel_c8LoadFileER13SharedFilePtr(data_ov002_0210a6ac[j]), 1, 1);
+            player->mHeadModels[idx]->SetFile(
+                (BMD_File *)dExtSimpleModel_c::LoadFile(*data_ov002_0210a6ac[j]), 1, 1);
             player->mHeadTexParams[idx] = func_ov002_020e6bb0(player->mHeadModels[idx]);
         }
         j++;
@@ -24980,38 +24939,31 @@ void func_ov002_020e5948(void* arg0)
         mode = (mode == 1);
         if (mode == 0) {
             player->mSleepBubbleModel = new dExtSimpleModel_c;
-            _ZN11dExtModel_c7SetFileEP8BMD_Fileii(
-                player->mSleepBubbleModel,
-                _ZN17dExtSimpleModel_c8LoadFileER13SharedFilePtr(data_ov002_0210da38), 1, -1);
+            player->mSleepBubbleModel->SetFile(
+                (BMD_File *)dExtSimpleModel_c::LoadFile(data_ov002_0210da38), 1, -1);
 
             if (data_0209f2f8 != 2 && data_0209f2f8 != 5 && data_0209f2f8 != 4) {
                 player->mLoadedResourceFlags |= 0x20;
                 player->mBodyModels[4] = new dExtAnm2Model_c;
-                _ZN11dExtModel_c7SetFileEP8BMD_Fileii(
-                    player->mBodyModels[4],
-                    _ZN17dExtSimpleModel_c8LoadFileER13SharedFilePtr(data_ov002_0210e780), 1, -1);
+                player->mBodyModels[4]->SetFile(
+                    (BMD_File *)dExtSimpleModel_c::LoadFile(data_ov002_0210e780), 1, -1);
                 player->mBodyModels[4]->Func_020162C4((u32)data_ov002_020ff480[0xC6]->filePtr, 0,
                                                       0x1000, 0);
-                _ZN11dExtModel_c7SetFileEP8BMD_Fileii(
-                    &player->mModelAnim3,
-                    _ZN17dExtSimpleModel_c8LoadFileER13SharedFilePtr(data_ov002_0210e6f8), 1, 1);
-                player->mModelAnim3.SetAnim((BCA_File *)((void *)data_ov002_0210e750[1]), 0, 0x1000,
-                                            0);
-                _ZN11dExtModel_c7SetFileEP8BMD_Fileii(
-                    &player->mModelAnim4,
-                    _ZN17dExtSimpleModel_c8LoadFileER13SharedFilePtr(data_ov002_0210e7b0), 1, 1);
-                player->mModelAnim4.SetAnim((BCA_File *)((void *)data_ov002_0210e4c0[1]), 0, 0x1000,
-                                            0);
+                player->mModelAnim3.SetFile(
+                    (BMD_File *)dExtSimpleModel_c::LoadFile(data_ov002_0210e6f8), 1, 1);
+                player->mModelAnim3.SetAnim((BCA_File *)data_ov002_0210e750.filePtr, 0, 0x1000, 0);
+                player->mModelAnim4.SetFile(
+                    (BMD_File *)dExtSimpleModel_c::LoadFile(data_ov002_0210e7b0), 1, 1);
+                player->mModelAnim4.SetAnim((BCA_File *)data_ov002_0210e4c0.filePtr, 0, 0x1000, 0);
             }
         } else {
-            _ZN11dExtModel_c7SetFileEP8BMD_Fileii(
-                &player->mModelAnim4,
-                _ZN17dExtSimpleModel_c8LoadFileER13SharedFilePtr(data_ov002_0210e7b0), 1, 1);
-            player->mModelAnim4.SetAnim((BCA_File *)((void *)data_ov002_0210e4c0[1]), 0, 0x1000, 0);
+            player->mModelAnim4.SetFile(
+                (BMD_File *)dExtSimpleModel_c::LoadFile(data_ov002_0210e7b0), 1, 1);
+            player->mModelAnim4.SetAnim((BCA_File *)data_ov002_0210e4c0.filePtr, 0, 0x1000, 0);
         }
     }
 
-    _ZN17dExtShadowModel_c12InitCylinderEv(&player->mShadowModel);
+    player->mShadowModel.InitCylinder();
 
     bodyId = _ZNK6Player14GetBodyModelIDEjb(c, 3, 0);
     ma = player->mBodyModels[bodyId];
@@ -25038,29 +24990,25 @@ void func_ov002_020e5948(void* arg0)
             texseq = player->mTexSeqBody;
             do {
                 entry = data_ov002_020ff2f0[outer + k];
-                _ZN15dExtAnmTexPat_c7PrepareER8BMD_FileR8BTP_File(
-                    ((SharedFilePtr *)data_ov002_0210a69c[k])->filePtr,
-                    ((SharedFilePtr *)entry)->filePtr);
+                dExtAnmTexPat_c::Prepare(*(BMD_File *)data_ov002_0210a69c[k]->filePtr,
+                                         *(BTP_File *)entry->filePtr);
                 if (n == 0x18) {
-                    _ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit(
-                        texseq, ((SharedFilePtr *)entry)->filePtr, 0, 0x1000, 0);
+                    texseq->SetFile(*(BTP_File *)entry->filePtr, 0, 0x1000, 0);
                 }
                 k++;
-                texseq = (dExtAnmTexPat_c *)texseq + 1;
+                texseq++;
             } while (k < 4);
             n++;
             outer += 4;
         } while (n < 0x19);
     }
 
-    _ZN15dExtAnmTexPat_c7PrepareER8BMD_FileR8BTP_File((void *)data_ov002_0210ebb8[1],
-                                                      (void *)data_ov002_0210e8d0[1]);
-    _ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit(player->mTexSeqPlayer,
-                                               (void *)data_ov002_0210e8d0[1], 0, 0x1000, 0);
-    _ZN15dExtAnmTexPat_c7PrepareER8BMD_FileR8BTP_File((void *)data_ov002_0210eb20[1],
-                                                      (void *)data_ov002_0210ebd8[1]);
-    _ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit(&player->mTexSeqPlayer[1],
-                                               (void *)data_ov002_0210ebd8[1], 0, 0x1000, 0);
+    dExtAnmTexPat_c::Prepare(*(BMD_File *)data_ov002_0210ebb8.filePtr,
+                             *(BTP_File *)data_ov002_0210e8d0.filePtr);
+    player->mTexSeqPlayer[0].SetFile(*(BTP_File *)data_ov002_0210e8d0.filePtr, 0, 0x1000, 0);
+    dExtAnmTexPat_c::Prepare(*(BMD_File *)data_ov002_0210eb20.filePtr,
+                             *(BTP_File *)data_ov002_0210ebd8.filePtr);
+    player->mTexSeqPlayer[1].SetFile(*(BTP_File *)data_ov002_0210ebd8.filePtr, 0, 0x1000, 0);
 }
 }
 #pragma pop
