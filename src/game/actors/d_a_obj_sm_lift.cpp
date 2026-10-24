@@ -75,7 +75,7 @@ void Vec3_MulScalar(void *out, void *v, int scalar);
 void SubVec3(void *a, void *b, void *c);
 }
 
-/* Model handles construct through func_02017acc and destroy through
+/* dExtSimpleModel_c handles construct through func_02017acc and destroy through
  * func_02017ab4; collision handles construct through func_02017b4c and destroy
  * through SharedFilePtr_Destruct_Clsn. The manifest aliases those undefined
  * member spellings onto the real ROM functions; each handle is the base plus
@@ -265,8 +265,8 @@ s32 daObjSm_Lift_c::InitResources()
     mPathId = *(int *)(c + 8) & 0xff;
     if (mPathId == 0xff)
         return 0;
-    void *f = Model::LoadFile(gSmLiftModelFile);
-    ((ModelBase *)(c + 0xd4))->SetFile((BMD_File *)f, 1, -1);
+    void *f = dExtSimpleModel_c::LoadFile(gSmLiftModelFile);
+    ((dExtModel_c *)(c + 0xd4))->SetFile((BMD_File *)f, 1, -1);
     func_ov018_02111278();
     UpdateClsnPosAndRot();
     void *kf = dBgW_Kc::LoadFile(gSmLiftCollisionFile);

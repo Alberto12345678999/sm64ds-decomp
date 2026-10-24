@@ -6,7 +6,7 @@
  * daObjWc_Obj03_c (WATER_DIAMOND), not daObjWc_Obj04_c
  * (SWITCH_ACTIVATED_PLANK), and not daObjWc_Mizu_c (WDW_WATER).
  *
- * common.h FIRST: dBgActor_c.h / Model.h otherwise win with math/Matrix.h's
+ * common.h FIRST: dBgActor_c.h / dExtSimpleModel_c.h otherwise win with math/Matrix.h's
  * nested Matrix4x3, and InitResources' SetFile matrix argument scalarizes.
  *
  * FUNCTION ORDER IS THE REVERSE OF THE ROM'S. Highest-address first.
@@ -119,7 +119,7 @@ extern "C" void func_ov029_02111e40(char *a, char *b)
 // @symbol _ZN15daObjWc_Obj05_c13InitResourcesEv
 s32 daObjWc_Obj05_c::InitResources()
 {
-    BMD_File *f = (BMD_File *)Model::LoadFile(gWcObj05ModelFile);
+    BMD_File *f = (BMD_File *)dExtSimpleModel_c::LoadFile(gWcObj05ModelFile);
     mModel.SetFile(f, 1, -1);
     UpdateModelPosAndRotY();
     UpdateClsnPosAndRot();

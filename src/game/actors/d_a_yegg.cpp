@@ -54,7 +54,7 @@ struct Vector3_16f;
  * names are reconstructed; this slice does not recover original method names.
  *
  * deslop leftovers:
- * - the callees with Fix12<int> parameters (ModelAnim::SetAnim,
+ * - the callees with Fix12<int> parameters (dExtAnmModel_c::SetAnim,
  *   dCcAc_c::Init, dBgCh_Actr::Init, the shadow drops, Particle::System::New)
  *   stay spelled as mangled extern-C free functions. A real method call homes
  *   a class-typed by-value argument and size-DIFFs the caller

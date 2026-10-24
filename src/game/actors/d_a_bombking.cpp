@@ -7,7 +7,7 @@
  * and opt_common_subs are off around func_ov078_02125448. InitResources
  * has opt_strength_reduction off. Each pragma is push/pop on that member.
  */
-/* leftovers: BlendModelAnim::SetAnim, dCcAcPos_c::Init and
+/* leftovers: dExtBlendAnmModel_c::SetAnim, dCcAcPos_c::Init and
  * DropShadowRadHeight stay scalar externs. func_ov078_02124060 cannot pass
  * a scalar speed to SetAnim, and Fix12<int>(0x1000) is the same illegal
  * conversion. InitResources keeps
@@ -32,7 +32,7 @@
  * Sound::ChangeMusicVolume keeps its mangled decl (Fix12<int> by value, S13 wall); the Layer3 pair stays on decl_common.h / the local mangled decl because Sound.h declares only Layer1/Layer2.
  */
 
-/* common.h FIRST: daBombking_c.h reaches math/Matrix.h through BlendModelAnim.h,
+/* common.h FIRST: daBombking_c.h reaches math/Matrix.h through dExtBlendAnmModel_c.h,
  * and that header spells Matrix4x3 as {Matrix3x3 r; Vector3 t;} where common.h
  * spells it flat as s32 m[12]. Helpers whole-struct-assign the shadow/hold
  * matrices through M12; only the flat spelling reproduces the block move. */
@@ -54,7 +54,7 @@ bool ApproachLinear(short &value, short target, short step);
 
 /* Remaining reconstruction views. Reconciled by hand against include/: every type
  * the real headers already define (Vector3, Matrix4x3, Fix12<int>, u8/u16/s16,
- * dActor_c, fBase_c, Player, BMD_File, BlendModelAnim) was DROPPED here -- the
+ * dActor_c, fBase_c, Player, BMD_File, dExtBlendAnmModel_c) was DROPPED here -- the
  * generated preamble redefined all of them. The shapes below are surviving
  * views from the legacy shards, not evidence of original local classes. */
 
@@ -1569,7 +1569,7 @@ int daBombking_c::Render()
             }
         }
     }
-    mBlendModelAnim.Model::Render(0);
+    mBlendModelAnim.dExtSimpleModel_c::Render(0);
     return 1;
 }
 
@@ -1670,7 +1670,7 @@ int daBombking_c::InitResources()
     Vector3 v0;
     Vector3 v1;
     int i;
-    f = (BMD_File *)Model::LoadFile(*(SharedFilePtr *)&gBombkingModelFile);
+    f = (BMD_File *)dExtSimpleModel_c::LoadFile(*(SharedFilePtr *)&gBombkingModelFile);
     mBlendModelAnim.SetFile(f, 1, 1);
     mShadowModel.InitCylinder();
     dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)&gBombkingGetupAnimationFile);

@@ -7,7 +7,7 @@
  * under defer_codegen off. daFRing_c_classInit is last. Was BowserShockwaves.
  */
 /* leftovers:
- * - ModelAnim::SetAnim, TextureSequence::SetFile, MaterialChanger::SetFile
+ * - dExtAnmModel_c::SetAnim, TextureSequence::SetFile, MaterialChanger::SetFile
  *   and TextureTransformer::SetFile stay mangled. Each takes Fix12<int> by
  *   value; the member spelling spills the 0x1000 and InitResources stops
  *   matching.
@@ -137,7 +137,8 @@ s32 daFRing_c::Behavior()
 // @symbol _ZN9daFRing_c13InitResourcesEv
 s32 daFRing_c::InitResources()
 {
-    mModelAnim1.SetFile((BMD_File *)Model::LoadFile(*(SharedFilePtr *)&data_ov060_0211b208), 1, 0x13);
+    mModelAnim1.SetFile(
+        (BMD_File *)dExtSimpleModel_c::LoadFile(*(SharedFilePtr *)&data_ov060_0211b208), 1, 0x13);
     mModelAnim2.SetFile((BMD_File *)data_ov060_0211b208.filePtr, 1, 0x13);
 
     dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)&data_ov060_0211b1f8);

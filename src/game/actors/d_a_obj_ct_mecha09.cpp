@@ -169,7 +169,7 @@ int daObjCtMecha09_c::InitResources()
     KCL_File *kcl;
     Vector3 pos;
 
-    bmd = (BMD_File *)Model::LoadFile(data_ov065_0211d9d4);
+    bmd = (BMD_File *)dExtSimpleModel_c::LoadFile(data_ov065_0211d9d4);
     mModel.SetFile(bmd, 1, -1);
     mShadowModel.InitCuboid();
     UpdateModelPosAndRotY();

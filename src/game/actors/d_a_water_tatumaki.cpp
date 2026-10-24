@@ -38,7 +38,7 @@ struct System {
  *   copies twelve words with one three-pass ldm/stm.
  * - InitResources: TextureTransformer::SetFile with a Fix12<int> temporary
  *   is 0xd8 against ROM 0xd0 and adds a 4-byte .rodata word.
- *   ModelAnim::SetAnim the same way is 0xdc against ROM 0xd0, also with
+ *   dExtAnmModel_c::SetAnim the same way is 0xdc against ROM 0xd0, also with
  *   a 4-byte .rodata word. The int spellings of the mangled symbols match.
  * - Behavior: Particle::System::New(mParticleID, 0x139, mPosX,
  *   mPosY + 0x384000, mPosZ, 0, 0) is 0xc8 against ROM 0xe0. The ROM
@@ -381,7 +381,7 @@ int daWater_Tatumaki_c::Behavior()
 // @symbol _ZN18daWater_Tatumaki_c13InitResourcesEv
 int daWater_Tatumaki_c::InitResources()
 {
-    BMD_File *model = (BMD_File *)Model::LoadFile(gWaterTatumakiModelFile);
+    BMD_File *model = (BMD_File *)dExtSimpleModel_c::LoadFile(gWaterTatumakiModelFile);
     mModelAnim.SetFile(model, 1, -1);
 
     dExtFrameCtrl_c::LoadFile(gWaterTatumakiAnimationFile);

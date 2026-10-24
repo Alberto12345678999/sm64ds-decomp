@@ -22,7 +22,7 @@
  *   int[12] -- a Matrix4x3 assignment scalarizes. Vector3 overlays on
  *   mCamSpacePosX / mScaleX / mPosX stand in where no member exists at
  *   those addresses. SetRanges, dCcAcPos_c::Init, dBgCh_Actr::Init,
- *   ModelAnim::SetAnim, TextureSequence::SetFile,
+ *   dExtAnmModel_c::SetAnim, TextureSequence::SetFile,
  *   TextureTransformer::SetFile and DropShadowRadHeight stay mangled
  *   extern "C" spellings -- they take Fix12<int> by value
  *   (notes/mwccarm-codegen.md 6az).
@@ -126,9 +126,9 @@ struct BrqMatrixWords { int words[12]; };
 int daBrq_c::InitResources()
 {
     BMD_File *bmd;
-    bmd = (BMD_File *)Model::LoadFile(data_ov070_021235fc);
+    bmd = (BMD_File *)dExtSimpleModel_c::LoadFile(data_ov070_021235fc);
     mModelAnim.SetFile(bmd, 1, 1);
-    bmd = (BMD_File *)Model::LoadFile(data_ov070_02123604);
+    bmd = (BMD_File *)dExtSimpleModel_c::LoadFile(data_ov070_02123604);
     mModel.SetFile(bmd, 1, 1);
 
     int i;
@@ -261,7 +261,7 @@ s32 daBrq_c::UpdateCooldownState()
 
 typedef int Fix12i;
 struct BCA_File; struct BTP_File; struct BTA_File;
-/* (ModelAnim/TextureSequence/TextureTransformer: real header types in scope) */
+/* (dExtAnmModel_c/TextureSequence/TextureTransformer: real header types in scope) */
 
 extern "C" unsigned int _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(
     TextureSequence*, BTP_File&, int, Fix12i, unsigned int);

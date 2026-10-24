@@ -37,7 +37,7 @@ struct System {
  * records mState points at.
  *
  * leftovers:
- * - dCcAc_c::Init, dBgCh_Actr::Init, ModelAnim::SetAnim and
+ * - dCcAc_c::Init, dBgCh_Actr::Init, dExtAnmModel_c::SetAnim and
  *   Particle::System::New stay mangled: each takes Fix12<int> by value
  *   (notes/mwccarm-codegen.md 6az).
  * - data_ov091_02135674 / 0213567c / 02135684 are this overlay's BMD and
@@ -150,7 +150,7 @@ daHyuhyu_c_State data_ov091_021356c0 = { data_ov091_02135344, data_ov091_0213533
 
 // @symbol daHyuhyu_c_classInit
 /* The dEnemyBase_c C2, the vptr store and the dCcAc_c / dBgCh_Actr /
-   ModelAnim C1s at 0x110 / 0x144 / 0x300 all fall out of the one `new`. */
+   dExtAnmModel_c C1s at 0x110 / 0x144 / 0x300 all fall out of the one `new`. */
 extern "C" daHyuhyu_c *daHyuhyu_c_classInit()
 {
     return new daHyuhyu_c();
@@ -190,10 +190,10 @@ int daHyuhyu_c::InitResources()
     }
     _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, this, 0x64000, 0x64000, 0x200002, 0x4a010);
     mFlags = 0x10000000;
-    Model::LoadFile(data_ov002_0210da40);
-    Model::LoadFile(data_ov002_0210d9a0);
-    Model::LoadFile(data_ov002_0210d9c0);
-    mModelAnim.SetFile((BMD_File *)Model::LoadFile(data_ov091_02135674), 1, -1);
+    dExtSimpleModel_c::LoadFile(data_ov002_0210da40);
+    dExtSimpleModel_c::LoadFile(data_ov002_0210d9a0);
+    dExtSimpleModel_c::LoadFile(data_ov002_0210d9c0);
+    mModelAnim.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(data_ov091_02135674), 1, -1);
     dExtFrameCtrl_c::LoadFile(data_ov091_0213567c);
     dExtFrameCtrl_c::LoadFile(data_ov091_02135684);
     mModelAnim.speed = 0x1000;

@@ -48,7 +48,7 @@
  */
 
 /* daObjC0_Switch_c.h FIRST: it pulls in dBgActor_c.h, which must reach
-   common.h ahead of Model.h or the wrong Matrix4x3 spelling wins. */
+   common.h ahead of dExtSimpleModel_c.h or the wrong Matrix4x3 spelling wins. */
 /* Runtime asset handles resolved through the overlay 0 file table. */
 enum d_a_obj_c0_switch_AssetId {
     ASSET_C0_SWITCH_BMD = 0x05a9,
@@ -113,7 +113,7 @@ extern "C" daObjC0_Switch_c *daObjC0_Switch_c_classInit()
 /* daObjC0_Switch_c::InitResources -- vtable slot 0, ov012 0x02111370.
  *
  * mModel/mMeshCollider/mClsnMat/mAngleY are dBgActor_c's/dActor_c's own named
- * fields. Model::LoadFile, ModelBase::SetFile, dBgW_Kc::LoadFile,
+ * fields. dExtSimpleModel_c::LoadFile, dExtModel_c::SetFile, dBgW_Kc::LoadFile,
  * UpdateModelPosAndRotY and UpdateClsnPosAndRot are real method calls.
  * dBgW_KcMbg::SetFile stays mangled -- it takes Fix12<int> BY VALUE
  * (mwccarm-codegen.md 6az).
@@ -123,7 +123,7 @@ extern "C" daObjC0_Switch_c *daObjC0_Switch_c_classInit()
  * OnGroundPounded), so this one starts sunk and pre-flagged. */
 int daObjC0_Switch_c::InitResources()
 {
-    void *mdl = Model::LoadFile(data_ov012_021124a8);
+    void *mdl = dExtSimpleModel_c::LoadFile(data_ov012_021124a8);
     mModel.SetFile((BMD_File *)mdl, 1, -1);
     if (data_0209caa0[2] & 0x80000) {
         mPosY -= 0x64000;

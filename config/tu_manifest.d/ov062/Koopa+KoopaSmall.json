@@ -337,14 +337,14 @@
       "address": "0x0211df40",
       "size": "0x8",
       "binding": "STB_GLOBAL",
-      "evidence": "model resource handle constructed with file ID 0x3ba; Model::LoadFile reaches it through the data_ov062_0211ced8 pointer table"
+      "evidence": "model resource handle constructed with file ID 0x3ba; dExtSimpleModel_c::LoadFile reaches it through the data_ov062_0211ced8 pointer table"
     },
     {
       "symbol": "gNokonokoRedModelFile",
       "address": "0x0211df48",
       "size": "0x8",
       "binding": "STB_GLOBAL",
-      "evidence": "model resource handle constructed with file ID 0x3c0; Model::LoadFile reaches it through the data_ov062_0211ced8 pointer table"
+      "evidence": "model resource handle constructed with file ID 0x3c0; dExtSimpleModel_c::LoadFile reaches it through the data_ov062_0211ced8 pointer table"
     },
     {
       "symbol": "gNokonokoWalkEdAnimationFile",

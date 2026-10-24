@@ -14,7 +14,7 @@
  * ledge check, collision, and the stuck check.
  *
  * leftovers:
- * - ModelAnim::SetAnim, MaterialChanger::SetFile, dCcAc_c::Init,
+ * - dExtAnmModel_c::SetAnim, MaterialChanger::SetFile, dCcAc_c::Init,
  *   DropShadowRadHeight and KillByInvincibleChar take Fix12<int> by
  *   value. The header calls size-DIFF 0212a6f8, 02129a00, 0212a580,
  *   02129ed4 and InitResources. The bridges pass those bits as
@@ -103,7 +103,7 @@ typedef struct {
 } Flags;
 
 /* Resource handles: the files the Goombas load are read through filePtr.
-   Model handles construct through
+   dExtSimpleModel_c handles construct through
    func_02017acc and destroy through func_02017ab4. Animation handles
    construct through SharedFilePtr::Construct and destroy through
    SharedFilePtr_Destruct_Anim. The manifest aliases those undefined members
@@ -1914,7 +1914,7 @@ int daKrb_c::InitResources() {
         LoadSilverStarAndNumber();
     }
 
-    Model::LoadFile(data_ov084_02130cf8);
+    dExtSimpleModel_c::LoadFile(data_ov084_02130cf8);
     for (i = 0; i < 7; i++)
         dExtFrameCtrl_c::LoadFile(*sKuriboAnimationFiles[i]);
 
@@ -1929,7 +1929,8 @@ int daKrb_c::InitResources() {
     if (DestroyIfCapNotNeeded() == 0)
         return 0;
 
-    if (((ModelBase *)&mModelAnim)->SetFile((BMD_File *)(data_ov084_02130cf8.filePtr), 1, -1) == 0)
+    if (((dExtModel_c *)&mModelAnim)->SetFile((BMD_File *)(data_ov084_02130cf8.filePtr), 1, -1) ==
+        0)
         return 0;
 
     if (mShadowModel.InitCylinder() == 0)

@@ -383,7 +383,7 @@ s32 daDsnBase_c::Init()
     SharedFilePtr *texAnim;
 
     files = (DsnBaseFileTable *)mFileTable;
-    bmd = (BMD_File *)Model::LoadFile(*files->model);
+    bmd = (BMD_File *)dExtSimpleModel_c::LoadFile(*files->model);
     mModel.SetFile(bmd, 1, -1);
     UpdateModelPosAndRotY();
     UpdateClsnPosAndRot();

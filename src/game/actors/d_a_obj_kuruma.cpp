@@ -101,14 +101,14 @@ s32 daObjKuruma_c::Behavior()
 }
 
 /* ROM ordinal 5 -- func_ov002_020b6958, 0x020b6958, size 0x8c.
- * Shared resource setup both leaves call. Slot 0 is Model::LoadFile, slot 1
+ * Shared resource setup both leaves call. Slot 0 is dExtSimpleModel_c::LoadFile, slot 1
  * is dBgW_Kc::LoadFile, slot 2 is CLPS into SetFile; then bind the mesh
  * to dBgW::UpdatePosWithVelocity. No field of this class is seeded. */
 // @symbol func_ov002_020b6958
 extern "C" {
 int func_ov002_020b6958(daObjKuruma_c *self, ResourceDescriptor *descriptor)
 {
-    self->mModel.SetFile((BMD_File *)Model::LoadFile(*descriptor->model), 1, -1);
+    self->mModel.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(*descriptor->model), 1, -1);
     self->UpdateModelPosAndRotY();
     self->UpdateClsnPosAndRot();
     _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(

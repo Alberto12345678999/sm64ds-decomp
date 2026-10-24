@@ -126,7 +126,7 @@ extern "C" daObjKi_Hasira_c *daObjKi_Hasira_c_classInit()
 // @symbol _ZN16daObjKi_Hasira_c13InitResourcesEv
 s32 daObjKi_Hasira_c::InitResources()
 {
-    void *f = Model::LoadFile(RockPillar_ModelFile);
+    void *f = dExtSimpleModel_c::LoadFile(RockPillar_ModelFile);
     mModel.SetFile((BMD_File *)f, 1, -1);
     func_ov016_02112a9c();
     UpdateClsnPosAndRot();

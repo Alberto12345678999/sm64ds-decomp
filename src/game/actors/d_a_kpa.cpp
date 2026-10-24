@@ -75,7 +75,7 @@ struct Vector3_16f;
 /* common.h must come first. It carries Matrix4x3 behind a guard, and both
  * spellings are 0x30 bytes and both are real -- Matrix4x3_ApplyInPlace* wants
  * `m[i]` while the model headers want `.r`/`.t`. Whichever is seen first in a TU
- * stands. The class headers reach Model.h, so including them ahead of common.h
+ * stands. The class headers reach dExtSimpleModel_c.h, so including them ahead of common.h
  * hands the TU the `.r`/`.t` form and the helpers below stop compiling. Same
  * ordering constraint daKpa2Bg_c documents. */
 /* Runtime asset handles resolved through the overlay 0 file table. */
@@ -590,7 +590,7 @@ daKpaTail_c::~daKpaTail_c()
  *
  * `new daKpa_c` is the whole sequence the loose factory spelled by hand:
  * fBase_c::operator new(0x454), dActor_c's base constructor, the vptr store,
- * then the ModelAnim, TextureSequence, dBgCh_Actr, dExtShadowModel_c and
+ * then the dExtAnmModel_c, TextureSequence, dBgCh_Actr, dExtShadowModel_c and
  * dCcAcPos_c member constructors in declaration order. */
 extern "C" daKpa_c *daKpa_c_classInit(void)
 {
@@ -627,9 +627,9 @@ int daKpaTail_c::InitResources()
 
 // @symbol _ZN7daKpa_c13InitResourcesEv
 /*
-Bowser's setup, in order: load the model file and hand it to ModelBase::SetFile,
+Bowser's setup, in order: load the model file and hand it to dExtModel_c::SetFile,
 load the 0x1c Animation files and the six TextureSequence files, then two more
-Model files (CleanupResources releases the same set); shadow cylinder; start the
+dExtSimpleModel_c files (CleanupResources releases the same set); shadow cylinder; start the
 idle animation (0x10) and its texture pattern; body collider (cylinder, radius 0x78000 = 120 units, height
 0x118000 = 280, flags 0x200004); remember the spawn position in mHomePos; gravity
 -0x2000 (-2.0) and terminal velocity -0x3c000 (-60.0); floor collider (0x50000 =
@@ -655,7 +655,7 @@ int daKpa_c::InitResources()
     daKpaFire_c *fire;
     daKpaTail_c *tail;
 
-    this->mModelAnim.SetFile((BMD_File *)Model::LoadFile(data_ov060_0211ac78), 1, 0x16);
+    this->mModelAnim.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(data_ov060_0211ac78), 1, 0x16);
 
     for (i = 0; i < 0x1c; i++)
         dExtFrameCtrl_c::LoadFile(*data_ov060_021192dc[i]);
@@ -663,8 +663,8 @@ int daKpa_c::InitResources()
     for (i = 0; i < 6; i++)
         TextureSequence::LoadFile(*data_ov060_0211927c[i]);
 
-    Model::LoadFile(*(SharedFilePtr *)data_ov060_0211b208);
-    Model::LoadFile(data_ov089_02132c50);
+    dExtSimpleModel_c::LoadFile(*(SharedFilePtr *)data_ov060_0211b208);
+    dExtSimpleModel_c::LoadFile(data_ov089_02132c50);
 
     if (this->mShadowModel.InitCylinder() == 0)
         return 0;
@@ -839,7 +839,7 @@ int daKpa_c::Render()
     if (mOpacity < 8) return 1;
     mTextureSequence.Advance();
     mTextureSequence.Update(mModelAnim.data);
-    /* ModelAnim's slot-5 Render(const Vector3 *) takes the scale vector;
+    /* dExtAnmModel_c's slot-5 Render(const Vector3 *) takes the scale vector;
      * daKpa2Bg_c::Render makes the same call on its mModel2. */
     mModelAnim.Render(&mScale);
     return 1;
@@ -864,7 +864,7 @@ int daKpaTail_c::CleanupResources()
 // @symbol _ZN7daKpa_c16CleanupResourcesEv
 /*
 Release every handle InitResources loaded (the model, the 0x1c animations, the six
-texture patterns, then two more Model files), call func_02011cfc (no arguments;
+texture patterns, then two more dExtSimpleModel_c files), call func_02011cfc (no arguments;
 its purpose is not established here) and return 1. */
 /*
  * daKpa_c frees the whole fight. One single, then a 0x1c-entry table and a
@@ -3534,7 +3534,7 @@ int daKpa_c::func_ov060_02111f08(){
 /*
 Switch the model to animation idx (entries 0..0x1b of the table at
 data_ov060_021192dc; each handle's filePtr is the file) and pick the texture
-pattern that goes with it. The third parameter reaches ModelAnim::SetAnim
+pattern that goes with it. The third parameter reaches dExtAnmModel_c::SetAnim
 unchanged as its flags word: the local `a` below is never assigned, and the ROM
 passes the caller's third argument (still in r2) straight through. Callers pass
 0 or 0x40000000; the top two bits of an Animation's flag word choose between wrapping and clamping at the end (see

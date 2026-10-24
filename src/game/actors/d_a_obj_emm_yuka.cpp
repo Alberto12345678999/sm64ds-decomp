@@ -154,7 +154,7 @@ int daObjEmmYuka_c::Behavior()
 // @symbol _ZN14daObjEmmYuka_c13InitResourcesEv
 int daObjEmmYuka_c::InitResources()
 {
-    mModel.SetFile((BMD_File *)Model::LoadFile(*data_ov052_021125a0.model), 1, -1);
+    mModel.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(*data_ov052_021125a0.model), 1, -1);
     UpdateModelPosAndRotY();
     UpdateClsnPosAndRot();
     _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(

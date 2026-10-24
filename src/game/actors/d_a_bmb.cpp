@@ -16,7 +16,7 @@ struct System {
  * math/Matrix.h's nested Matrix4x3 scalarizes that copy (Vector3 is non-POD).
  *
  * Leftovers, remeasured in this file:
- * - ModelAnim::SetAnim, dCcAc_c::Init and DropShadowRadHeight: the header
+ * - dExtAnmModel_c::SetAnim, dCcAc_c::Init and DropShadowRadHeight: the header
  *   methods take Fix12<int> by value and the call grows. dBgCh_Actr::Init's
  *   header is Fix12i (mangles as i); this TU's call is Fix12<int>.
  *   The 4-arg KillByInvincibleChar stays a scalar extern; Behavior already
@@ -25,7 +25,7 @@ struct System {
  *   and tests CLPS bit 0x20 (water).
  * - States 0, 1 and 3 advance the dExtFrameCtrl_c base of mModelAnim
  *   explicitly. The qualified base call preserves the ROM entry point
- *   without a byte-offset pointer or a ModelAnim forwarding call.
+ *   without a byte-offset pointer or a dExtAnmModel_c forwarding call.
  * - dActor_c::mCarryMatrix (0xc8) is the matrix 0214b53c copies into the
  *   model while mVariant is 2; on the carrier it is only tested nonzero.
  * - func_ov102_0214bf64 keeps its existing free-function label over daBmb_c.
@@ -183,7 +183,7 @@ int daBmb_c::InitResources()
 
     dExtFrameCtrl_c::LoadFile(data_ov102_0214e9c0);
     dExtFrameCtrl_c::LoadFile(data_ov102_0214e9c8);
-    bmd = (BMD_File*)Model::LoadFile(data_ov002_0210d9e0);
+    bmd = (BMD_File *)dExtSimpleModel_c::LoadFile(data_ov002_0210d9e0);
     if (mModelAnim.SetFile(bmd, 1, -1) == 0)
         return 0;
     if (mShadowModel.InitCylinder() == 0)
@@ -400,7 +400,7 @@ void func_ov102_0214c0b8(void *cv) {
 }
 
 /* State 0: the dispatch passes this Bob-omb. Use its actual fields and
- * the ModelAnim frame-controller base. Scalar position members remain
+ * the dExtAnmModel_c frame-controller base. Scalar position members remain
  * borrowed Vector3 views; no owning Vector3 temporaries are introduced.
  * The existing external free-function label is retained. */
 
@@ -819,7 +819,7 @@ void func_ov102_0214b53c(char *c) {
                 idx = 1;
             }
             if ((self->mCarrier->LostGrabbedObject() != 0) &&
-                (((u32)(((u32)(((ModelAnim *)ret)->currFrame << 4)) >> 0x10)) < 0xe)) {
+                (((u32)(((u32)(((dExtAnmModel_c *)ret)->currFrame << 4)) >> 0x10)) < 0xe)) {
                 idx = 1;
             }
             if (self->mCarrier->param1 == 2) {

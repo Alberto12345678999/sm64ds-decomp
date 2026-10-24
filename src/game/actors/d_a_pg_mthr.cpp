@@ -139,7 +139,7 @@ extern "C" daPgMthr_c *daPgMthr_c_classInit()
 // @symbol _ZN10daPgMthr_c13InitResourcesEv
 int daPgMthr_c::InitResources()
 {
-    void *m = Model::LoadFile(data_ov018_02113c00);
+    void *m = dExtSimpleModel_c::LoadFile(data_ov018_02113c00);
     mModelAnim.SetFile((BMD_File *)m, 1, 1);
     for (int i = 0; i < 2; i++)
         dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)data_ov018_02112c0c[i]);
@@ -196,8 +196,8 @@ int daPgMthr_c::Behavior()
 int daPgMthr_c::Render()
 {
     mTextureSequence.Update(mModelAnim.data);
-    /* ModelAnim overrides Render. Qualifying it is the direct bl. */
-    mModelAnim.Model::Render(0);
+    /* dExtAnmModel_c overrides Render. Qualifying it is the direct bl. */
+    mModelAnim.dExtSimpleModel_c::Render(0);
     return 1;
 }
 

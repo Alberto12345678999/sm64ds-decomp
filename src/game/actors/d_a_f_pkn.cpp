@@ -20,7 +20,7 @@
  * and RTTI.
  */
 /* leftovers:
- * - ModelAnim::SetAnim, dCcAc_c::Init, dCcAcPos_c::Init,
+ * - dExtAnmModel_c::SetAnim, dCcAc_c::Init, dCcAcPos_c::Init,
  *   Particle::System::New, dActor_c::SpawnFireball / SpawnCoins and
  *   Player::Hurt / Bounce stay mangled. Each takes Fix12<int> by value
  *   and the member spelling of those calls stops matching.
@@ -763,12 +763,12 @@ int daFPkn_c::InitResources()
     int type;
     int cmp;
 
-    mModelAnim.SetFile((BMD_File *)Model::LoadFile(data_ov084_02130dfc), 1, -1);
+    mModelAnim.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(data_ov084_02130dfc), 1, -1);
 
     for (i = 0; i < 6; i++)
         dExtFrameCtrl_c::LoadFile(*data_ov084_021302f4[i]);
 
-    Model::LoadFile(data_ov002_0210da38);
+    dExtSimpleModel_c::LoadFile(data_ov002_0210da38);
     LoadBlueCoinModel(this);
 
     /* A real SetAnim call with a Fix12<int> speed DIFFs; see the file header. */

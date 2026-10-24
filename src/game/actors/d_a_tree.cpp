@@ -2,10 +2,10 @@
 /* TREE (actor 286) -- ov002/daTree_c.
  *
  * The course trees. Spawn-param bits 4-6 select one of five variants; the
- * first tree of a variant loads that variant's Model, and every tree
+ * first tree of a variant loads that variant's dExtSimpleModel_c, and every tree
  * appends a heap node {render pos, dCcPos_c, next} to its variant's list.
  * Behavior ticks every list's collision, Render billboards each variant's
- * Model at every node with distance-faded opacity, and CleanupResources
+ * dExtSimpleModel_c at every node with distance-faded opacity, and CleanupResources
  * frees the lists of the variants that loaded.
  *
  * mwccarm emits ordinary function sections in reverse source order, so the
@@ -103,7 +103,7 @@ extern "C" daTree_c *daTree_c_classInit()
 }
 
 // @symbol _ZN8daTree_c13InitResourcesEv
-/* First tree of a variant loads that variant's Model; every tree appends
+/* First tree of a variant loads that variant's dExtSimpleModel_c; every tree appends
  * a node to its variant's list. Returns 1 when this tree was first. */
 int daTree_c::InitResources()
 {
@@ -158,7 +158,7 @@ int daTree_c::Render()
 {
     dCamera_c *cam = data_0209f318;
     TreeNode **slot = data_ov002_02110a48;
-    Model *model = mModel;
+    dExtSimpleModel_c *model = mModel;
     int i;
 
     for (i = 0; i < kNumVariants; i++) {
@@ -198,7 +198,7 @@ void daTree_c::OnPendingDestroy()
 // @symbol _ZN8daTree_c16CleanupResourcesEv
 int daTree_c::CleanupResources()
 {
-    Model *model = mModel;
+    dExtSimpleModel_c *model = mModel;
     TreeNode **slot = data_ov002_02110a48;
     int i;
 

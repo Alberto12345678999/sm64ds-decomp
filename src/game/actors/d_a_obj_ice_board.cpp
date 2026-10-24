@@ -89,7 +89,7 @@ extern "C" daObjIceBoard_c *daObjIceBoard_c_classInit()
 // @symbol _ZN15daObjIceBoard_c13InitResourcesEv
 int daObjIceBoard_c::InitResources()
 {
-    void *modelFile = Model::LoadFile(daObjIceBoard_c_ModelFile);
+    void *modelFile = dExtSimpleModel_c::LoadFile(daObjIceBoard_c_ModelFile);
     mModel.SetFile((BMD_File *)modelFile, 1, -1);
     UpdateModelPosAndRotY();
     UpdateClsnPosAndRot();
@@ -192,7 +192,7 @@ void daObjIceBoard_c::OnHitByMegaChar(Player &player)
  *
  * Both bodies are short because the chain is short and this class adds no
  * member of its own: this class's vptr store, then dBgActor_c's -- inlined,
- * its destructor is defined in its class body -- then dBgActor_c's Model and
+ * its destructor is defined in its class body -- then dBgActor_c's dExtSimpleModel_c and
  * dBgW_KcMbg, then dActor_c. D0's trailing deallocation is the inherited
  * inline operator delete, which is why nothing here names a heap.
  */

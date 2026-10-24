@@ -15,7 +15,7 @@ struct System {
  */
 /* leftovers: dCcAc_c::Init and dBgCh_Actr::Init stay mangled.
  * InitResources calls them, and each takes Fix12<int> by value; the
- * header spells Fix12i. ModelAnim::SetAnim, DropShadowRadHeight,
+ * header spells Fix12i. dExtAnmModel_c::SetAnim, DropShadowRadHeight,
  * SpawnCoins, SpawnFireball, Particle::System::New, NewUnkCallback818,
  * Player::SpinBounce and Player::Hurt stay mangled for the same reason.
  * Finished and WillHitFrame stay qualified through mModelAnim; a char*
@@ -215,7 +215,7 @@ extern int FlyGuy_ChangeState(daPropeller_Heyho_c* c, daPropeller_Heyho_c::State
  * position = the spawn position, then enters the wander state. */
 int daPropeller_Heyho_c::InitResources()
 {
-    mModelAnim.SetFile((BMD_File *)Model::LoadFile(data_ov070_02123530), 1, -1);
+    mModelAnim.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(data_ov070_02123530), 1, -1);
     mShadowModel.InitCylinder();
     dExtFrameCtrl_c::LoadFile(data_ov070_02123520);
     dExtFrameCtrl_c::LoadFile(data_ov070_02123518);
@@ -854,7 +854,7 @@ int daPropeller_Heyho_c::func_ov070_0211f62c()
 /* -------------------------------------------------------------------------- */
 // @symbol func_ov070_0211f5f0
 struct BCA_File;
-/* (ModelAnim: real header type in scope) */
+/* (dExtAnmModel_c: real header type in scope) */
 /* SetAnim takes Fix12<int> by value, so this call stays the mangled extern. */
 
 /* (data_ov070_02123500: SharedFilePtr view declared earlier in this TU) */

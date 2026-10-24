@@ -103,8 +103,8 @@ extern "C" daKlr_c *daKlr_c_classInit()
 // @symbol _ZN7daKlr_c13InitResourcesEv
 s32 daKlr_c::InitResources()
 {
-    Model::LoadFile(data_ov079_02128300);
-    Model::LoadFile(data_ov079_021282f0);
+    dExtSimpleModel_c::LoadFile(data_ov079_02128300);
+    dExtSimpleModel_c::LoadFile(data_ov079_021282f0);
     if (mModel.SetFile((BMD_File *)data_ov079_02128300.filePtr, 1, -1) == 0)
         return 0;
     if (mModel2.SetFile((BMD_File *)data_ov079_021282f0.filePtr, 1, -1) == 0)

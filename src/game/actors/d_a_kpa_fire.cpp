@@ -37,7 +37,7 @@
  *   Fix12<int> by value; the header spelling of dBgCh_Actr::Init is
  *   Fix12i, which mangles as int.
  * - GetFrameCount stays the void* extern. The argument is
- *   static_cast<dExtFrameCtrl_c *>(&o->mModelAnim), ModelAnim's
+ *   static_cast<dExtFrameCtrl_c *>(&o->mModelAnim), dExtAnmModel_c's
  *   second base, which is Bowser + 0x124. The header method is not
  *   that symbol's spelling at this site.
  * - Particle::System::callbackScale and callbackVelocity are named.

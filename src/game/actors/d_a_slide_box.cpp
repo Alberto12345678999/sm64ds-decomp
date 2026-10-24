@@ -257,7 +257,7 @@ int daSlide_Box_c::Behavior()
 // @symbol _ZN13daSlide_Box_c13InitResourcesEv
 int daSlide_Box_c::InitResources()
 {
-    BMD_File *modelFile = (BMD_File *)Model::LoadFile(ModelFile);
+    BMD_File *modelFile = (BMD_File *)dExtSimpleModel_c::LoadFile(ModelFile);
     mModel.SetFile(modelFile, 1, -1);
     UpdateModel();
     UpdateClsnPosAndRot();

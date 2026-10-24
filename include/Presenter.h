@@ -2,7 +2,7 @@
 #define PRESENTER_H
 
 #include "types.h"
-#include "BlendModelAnim.h"
+#include "dExtBlendAnmModel_c.h"
 
 /* Presenter, the Mario face that reacts in the card and sound games: the
  * 0x1ac-byte record Presenter_Construct builds and the Presenter_* helpers in
@@ -34,8 +34,8 @@ struct Presenter {
     /* 0x70 bytes. UpdateMatrix sets its mat4x3; Draw hands its data to mTexSeq
        and mTexAnim and nudges two of its materials; IsAnimDone tests its
        dExtFrameCtrl_c base and ResetPose rewinds its currFrame. */
-    BlendModelAnim mFace; /* 0x008 */
-    Model mBack;          /* 0x078 -- 0x50 bytes; Load sets its mat4x3 */
+    dExtBlendAnmModel_c mFace; /* 0x008 */
+    dExtSimpleModel_c mBack;   /* 0x078 -- 0x50 bytes; Load sets its mat4x3 */
     /* A TextureSequence and a TextureTransformer: each starts with its
        dExtFrameCtrl_c ([2] is the current frame ResetPose rewinds). */
     s32 mTexSeq[5];           /* 0x0c8 */

@@ -44,7 +44,7 @@
 #include "types.h"
 #include "common.h"
 #include "Player.h"
-#include "ModelAnim2.h"
+#include "dExtAnm2Model_c.h"
 #include "PlayerInput.h"
 #include "SharedFilePtr.h"
 #include "PathPtr.h"
@@ -1067,17 +1067,17 @@ void Player::SetRealCharacter(unsigned int chr_)
 extern "C" {
 void Player::TurnOffToonShading(unsigned int j)
 {
-    extern int _ZN5Model14SetPolygonModeEi(void*, int);
+    extern int _ZN17dExtSimpleModel_c14SetPolygonModeEi(void *, int);
     extern int func_ov002_020e6b74(void*, int);
   void* m;
   m = mBodyModels[this->GetBodyModelID(j, 0)];
-  _ZN5Model14SetPolygonModeEi(m, 0);
+  _ZN17dExtSimpleModel_c14SetPolygonModeEi(m, 0);
   func_ov002_020e6b74(m, mBodyTexParams[j]);
   m = mHeadModels[j];
-  _ZN5Model14SetPolygonModeEi(m, 0);
+  _ZN17dExtSimpleModel_c14SetPolygonModeEi(m, 0);
   func_ov002_020e6b74(m, mHeadTexParams[j]);
   m = mHeadModels[j + 4];
-  _ZN5Model14SetPolygonModeEi(m, 0);
+  _ZN17dExtSimpleModel_c14SetPolygonModeEi(m, 0);
   func_ov002_020e6b74(m, mHeadTexParams[j + 4]);
 }
 }
@@ -1088,7 +1088,7 @@ void Player::TurnOffToonShading(unsigned int j)
 extern "C" {
 void Player::func_ov002_020be3b0()
 {
-    extern void _ZN5Model14SetPolygonModeEi(void*, int mode);
+    extern void _ZN17dExtSimpleModel_c14SetPolygonModeEi(void *, int mode);
     extern void func_ov002_020e6b74(void*, void*);
     extern void func_ov002_020d80d0(void*);
     extern void _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(void*);
@@ -1125,10 +1125,10 @@ void Player::func_ov002_020be3b0()
         return;
     case 1: {
         void *m1 = mBodyModels[this->GetBodyModelID((u8)(this->param1), 0)];
-        _ZN5Model14SetPolygonModeEi(m1, 2);
+        _ZN17dExtSimpleModel_c14SetPolygonModeEi(m1, 2);
         {
             void *m2 = mHeadModels[func_ov002_020becf4((u8)(this->param1), 0)];
-            _ZN5Model14SetPolygonModeEi(m2, 2);
+            _ZN17dExtSimpleModel_c14SetPolygonModeEi(m2, 2);
         }
         mCapPaletteBlend = 0;
         mCapTimer = data_ov002_020ff14c[var_r4];
@@ -1168,10 +1168,10 @@ void Player::func_ov002_020be3b0()
             mCapFlags++;
             mCapTimer = data_ov002_020ff14c[var_r4 + 2];
             t1 = mBodyModels[this->GetBodyModelID(mHatCharacter, 0)];
-            _ZN5Model14SetPolygonModeEi(t1, 2);
+            _ZN17dExtSimpleModel_c14SetPolygonModeEi(t1, 2);
             func_ov002_020e6b3c(t1);
             t2 = mHeadModels[func_ov002_020becf4(mHatCharacter, 0)];
-            _ZN5Model14SetPolygonModeEi(t2, 2);
+            _ZN17dExtSimpleModel_c14SetPolygonModeEi(t2, 2);
             func_ov002_020e6b3c(t2);
             mQuicksandRunFlags = 0;
             mWaterRunLatch = mQuicksandRunFlags;
@@ -1431,7 +1431,7 @@ int Player::FinishedAnim()
 {
     unsigned int modelID = GetBodyModelID(param1 & 0xff, 0);
     // GetBodyModelID can return 4; the shared array currently declares four slots.
-    ModelAnim *model = mBodyModels[modelID];
+    dExtAnmModel_c *model = mBodyModels[modelID];
     return model->Finished() != 0;
 }
 
@@ -1441,7 +1441,7 @@ void Player_AdvanceAnims(char *self)
 {
     Player *player = reinterpret_cast<Player *>(self);
     unsigned int modelID = player->GetBodyModelID(player->param1 & 0xff, 0);
-    ModelAnim *model = player->mBodyModels[modelID];
+    dExtAnmModel_c *model = player->mBodyModels[modelID];
     model->Advance();
 
     if (player->IsAnim(0x9a) || player->IsAnim(0x19) ||
@@ -1464,7 +1464,7 @@ int Player::IsAnim(unsigned int a)
   int* p = (int*)data_ov002_020ff480[ip + a*4];
   int v = p[1];
   unsigned int id = this->GetBodyModelID(ip&0xff, 0);
-  ModelAnim *model = mBodyModels[id];
+  dExtAnmModel_c *model = mBodyModels[id];
   int matches = ((int)model->file == v);
   return matches ? 1 : 0;
 }
@@ -1517,7 +1517,7 @@ void Player::SetAnim(u32 animId, int flags, Fix12i speed, u16 startFrame) {
 
         id = _ZNK6Player14GetBodyModelIDEjb(self, player->param1 & 0xff, 0);
         modelPtr = player->mBodyModels[id];
-        ((ModelAnim *)modelPtr)->file = 0;
+        ((dExtAnmModel_c *)modelPtr)->file = 0;
 
         if ((player->mCapFlags & 7) == 4) {
             charId = player->mHatCharacter;
@@ -5085,7 +5085,7 @@ int Player::St_StuckInGround_Main()
         mStateWork++;
         break;
     case 2: {
-        ModelAnim *anim = mBodyModels[this->GetBodyModelID(param1 & 0xff, 0)];
+        dExtAnmModel_c *anim = mBodyModels[this->GetBodyModelID(param1 & 0xff, 0)];
         if (anim->WillHitFrame(data_ov002_020ff0ec[mStateStep])) {
             func_ov002_020c5444();
             Sound::PlayBank0(0xb4, mCamSpacePos);
@@ -7172,7 +7172,7 @@ int Player::func_ov002_020c8b78() {
     _ZN5Sound17ChangeMusicVolumeEj5Fix12IiE(0x14, 0x15666);
     {
         int id = GetBodyModelID(param1 & 0xff, false);
-        ModelAnim *model = mBodyModels[id];
+        dExtAnmModel_c *model = mBodyModels[id];
         dExtFrameCtrl_c *a = &static_cast<dExtFrameCtrl_c &>(*model);
         if (a->WillHitFrame(0x40))
             func_02012790(0x3a);
@@ -8555,7 +8555,7 @@ int Player::St_CameraZoom_Main()
             id = GetBodyModelID(param1 & 0xff, 0);
             /* currFrame of the body model's frame controller, kept split: the ROM adds
                +0x50 and stores at +8, and ->currFrame folds that to one +0x58. */
-            int q = (int)((*(ModelAnim *volatile *)&mBodyModels[id])) + 0x50;
+            int q = (int)((*(dExtAnmModel_c *volatile *)&mBodyModels[id])) + 0x50;
             ((dExtFrameCtrl_c *)q)->currFrame = 0;
             mPrevAngleY = mAngleY;
             return 1;
@@ -8778,7 +8778,7 @@ int func_ov002_020cb354(void* thisptr)
     int a = _ZN6Player6IsAnimEj(thisptr, 0x24);
     if (a == 0) return a;
     int idx = _ZNK6Player14GetBodyModelIDEjb(thisptr, player->param1 & 0xff, 0);
-    ModelAnim *m = player->mBodyModels[idx];
+    dExtAnmModel_c *m = player->mBodyModels[idx];
     /* q is the frame controller (+0x50); m->currFrame would fold +0x50 and +8. */
     int* q = (int*)(((int)m + 0x50));
     if ((int)((unsigned int)((((dExtFrameCtrl_c *)q)->currFrame) << 4) >> 0x10) < 8) {
@@ -10502,10 +10502,10 @@ int func_ov002_020ce5f8(char* c) {
 
     {
         u32 idx = self->GetBodyModelID(self->param1 & 0xff, 0);
-        ModelAnim *m1 = self->mBodyModels[idx];
+        dExtAnmModel_c *m1 = self->mBodyModels[idx];
         Matrix4x3 *base;
         u32 idx2;
-        ModelAnim *m2;
+        dExtAnmModel_c *m2;
         base = &m1->data.transforms[15];
         idx2 = self->GetBodyModelID(self->param1 & 0xff, 0);
         m2 = self->mBodyModels[idx2];
@@ -11734,7 +11734,7 @@ int Player::St_LedgeGrab_Main()
     this->ChangeState(data_ov002_0211013c);
   if(this->IsAnim(0x20)){
     int id=this->GetBodyModelID(param1&0xff, 0);
-    ModelAnim *anim = mBodyModels[id];
+    dExtAnmModel_c *anim = mBodyModels[id];
     if (anim->WillHitFrame(0x1e))
         Sound::PlayBank0(mGroundSoundType + 0x40, mCamSpacePos);
   }
@@ -12039,7 +12039,7 @@ int Player::St_Crawl_Main()
         s16 val1 = *(s16*)((char*)data_0209f4a0 + off);
         if (val1 >= 0x200 && ((*(u16*)((char*)data_0209f49c + off) & 0x400) != 0 || func_ov002_020d1164(((char*)this)) != 0)) {
             int id = this->GetBodyModelID(param1 & 0xff, 0);
-            ModelAnim *anim = mBodyModels[id];
+            dExtAnmModel_c *anim = mBodyModels[id];
             if (anim->WillHitFrame(0xe) ||
                 mBodyModels[this->GetBodyModelID(param1 & 0xff, 0)]->WillHitFrame(0x1c)) {
                 Sound::PlayBank0(mGroundSoundType + 0xc0, mCamSpacePos);
@@ -12937,7 +12937,7 @@ int Player::St_Wait_Main()
             break;
         case 0: {
             int idA = this->GetBodyModelID(x1&0xff, 0);
-            ModelAnim *animA = mBodyModels[idA];
+            dExtAnmModel_c *animA = mBodyModels[idA];
             if (animA->WillHitFrame(0x5a)) {
                 Sound::PlayCharVoice(mCharacter, 0x2d, mCamSpacePos);
             } else if (mBodyModels[this->GetBodyModelID(param1 & 0xff, 0)]->WillHitFrame(0x3a) ||
@@ -12948,12 +12948,12 @@ int Player::St_Wait_Main()
         }
         case 1: {
             int idD = this->GetBodyModelID(x1&0xff, 0);
-            ModelAnim *animD = mBodyModels[idD];
+            dExtAnmModel_c *animD = mBodyModels[idD];
             if (animD->WillHitFrame(0x6e)) {
                 Sound::PlayCharVoice(mCharacter, 0x2d, mCamSpacePos);
             } else {
                 int idE = this->GetBodyModelID(param1&0xff, 0);
-                ModelAnim *animE = mBodyModels[idE];
+                dExtAnmModel_c *animE = mBodyModels[idE];
                 if (animE->WillHitFrame(0x32)) {
                     Sound::PlayBank0(0xb1, mCamSpacePos);
                 }
@@ -12962,7 +12962,7 @@ int Player::St_Wait_Main()
         }
         case 2: {
             int idF = this->GetBodyModelID(x1&0xff, 0);
-            ModelAnim *animF = mBodyModels[idF];
+            dExtAnmModel_c *animF = mBodyModels[idF];
             if (animF->WillHitFrame(0x20)) {
                 Sound::PlayBank0(2, mCamSpacePos);
             } else if (mBodyModels[this->GetBodyModelID(param1 & 0xff, 0)]->WillHitFrame(0x47) ||
@@ -12973,7 +12973,7 @@ int Player::St_Wait_Main()
         }
         case 3: {
             int idI = this->GetBodyModelID(x1&0xff, 0);
-            ModelAnim *animI = mBodyModels[idI];
+            dExtAnmModel_c *animI = mBodyModels[idI];
             if (animI->WillHitFrame(0xad)) {
                 Sound::PlayBank0(0x50, mCamSpacePos);
             }
@@ -15607,7 +15607,7 @@ int func_ov002_020d6dac(char *self)
         void *a0, *a1, *a2;
         a1 = player->mBodyModels[model2];
         a0 = &m2i->m[9];
-        a1 = &((ModelAnim *)a1)->mat4x3;
+        a1 = &((dExtAnmModel_c *)a1)->mat4x3;
         a2 = &p2;
         MulVec3Mat4x3(a0, a1, a2);
         Vec3_MulScalarInPlace((int *)&p2, 0x8000);
@@ -15732,7 +15732,7 @@ void Player::func_ov002_020d71a0() {
     extern struct G data_ov002_0210eb88;
     char *p = (char*)this;
     this->mUseAltBodyModel = 0;
-    ((ModelAnim *)mHeadModels[3])
+    ((dExtAnmModel_c *)mHeadModels[3])
         ->SetAnim((BCA_File *)((void *)data_ov002_0210eb88.w[1]), 0x40000000, 0x1000, 0);
     *(int *)((char *)mHeadModels[3] + 0x58) = 0;
 }
@@ -15769,7 +15769,7 @@ void func_ov002_020d71ec(char* p, int arg1)
         ((Player *)p)->SetAnim(arr[arg1], 0x40000000, 0x1000, 0);
 
         if (player->mUseAltBodyModel == 0) {
-            ((ModelAnim *)player->mHeadModels[3])
+            ((dExtAnmModel_c *)player->mHeadModels[3])
                 ->SetAnim((BCA_File *)(*(void **)((char *)(&arr[2])[arg1] + 4)), 0x40000000, 0x1000,
                           0);
         }
@@ -15780,7 +15780,7 @@ void func_ov002_020d71ec(char* p, int arg1)
                 *player->mBodyModels[_ZNK6Player14GetBodyModelIDEjb(p, player->param1 & 0xff, 0)];
             val = ((u32)val << 0x10) >> 4;
             body.currFrame = val;
-            ((ModelAnim *)player->mHeadModels[3])->currFrame = val;
+            ((dExtAnmModel_c *)player->mHeadModels[3])->currFrame = val;
         }
 
         player->mStateStep = 1;
@@ -15788,7 +15788,7 @@ void func_ov002_020d71ec(char* p, int arg1)
     }
 
     ((Player *)p)->SetAnim(0x6c, 0x40000000, -0x1000, 0);
-    ((ModelAnim *)player->mHeadModels[3])
+    ((dExtAnmModel_c *)player->mHeadModels[3])
         ->SetAnim((BCA_File *)(*(void **)((char *)&data_ov002_0210eb88 + 4)), 0x40000000, -0x1000,
                   0);
     player->mStateStep = 2;
@@ -15885,11 +15885,11 @@ extern "C" {
 int Player::St_YoshiPower_Main()
 {
     /* local extern: this body is the only caller that passes a NON-CONSTANT
-       startFrame. ModelAnim::SetAnim's real parameter is u16, and narrowing
+       startFrame. dExtAnmModel_c::SetAnim's real parameter is u16, and narrowing
        `(currFrame << 4) >> 0x10` to it costs +0x10 here, so this body keeps the
        scalar unsigned-int spelling the ROM call uses -- the per-body declaration
        policy this file's header states. */
-    extern void _ZN9ModelAnim7SetAnimEP8BCA_Fileiit(void *, void *, int, int, unsigned int);
+    extern void _ZN14dExtAnmModel_c7SetAnimEP8BCA_Fileiit(void *, void *, int, int, unsigned int);
     extern void _Z14ApproachLinearRiii(int*, int, int);
     extern void func_ov002_020d71ec(char*, int);
     extern void _Z15ApproachLinear2Rsss(short*, short, short);
@@ -15928,11 +15928,11 @@ int Player::St_YoshiPower_Main()
     switch (mStateStep) {
     case 0: {
         if (mStateArg == 0) {
-            int t4 = (((ModelAnim *)mHeadModels[3])->currFrame >> 0xc) << 0x10;
+            int t4 = (((dExtAnmModel_c *)mHeadModels[3])->currFrame >> 0xc) << 0x10;
             int id0 = this->GetBodyModelID(this->param1 & 0xff, 0);
             /* Split: a plain ->currFrame folds +0x50 and +8 into one +0x58 and moves bytes. */
             dp = (char *)mBodyModels[id0];
-            dp = (char *)&(dExtFrameCtrl_c &)*(ModelAnim *)dp;
+            dp = (char *)&(dExtFrameCtrl_c &)*(dExtAnmModel_c *)dp;
             ((dExtFrameCtrl_c *)dp)->currFrame = (unsigned int)t4 >> 4;
             mStateArg = 1;
         }
@@ -16078,7 +16078,7 @@ int Player::St_YoshiPower_Main()
                 int id6 = this->GetBodyModelID(this->param1 & 0xff, z);
                 int *a50c =
                     (int *)((long long)(int)((char *)&(dExtFrameCtrl_c &)*mBodyModels[id6]));
-                _ZN9ModelAnim7SetAnimEP8BCA_Fileiit(
+                _ZN14dExtAnmModel_c7SetAnimEP8BCA_Fileiit(
                     mHeadModels[3], (void *)data_ov002_0210e3d8[1], 0x40000000, 0x1000,
                     (unsigned int)(((dExtFrameCtrl_c *)a50c)->currFrame << 4) >> 0x10);
             }
@@ -16134,7 +16134,7 @@ int Player::St_YoshiPower_Main()
                     int id9 = this->GetBodyModelID(this->param1 & 0xff, z2);
                     int *a50e =
                         (int *)((long long)(int)((char *)&(dExtFrameCtrl_c &)*mBodyModels[id9]));
-                    _ZN9ModelAnim7SetAnimEP8BCA_Fileiit(
+                    _ZN14dExtAnmModel_c7SetAnimEP8BCA_Fileiit(
                         mHeadModels[3], (void *)data_ov002_0210e3d8[1], 0x40000000, 0x1000,
                         (unsigned int)(((dExtFrameCtrl_c *)a50e)->currFrame << 4) >> 0x10);
                 }
@@ -16171,7 +16171,7 @@ int Player::St_YoshiPower_Main()
     common_tail:
         Player_AdvanceAnims(c);
         if (mUseAltBodyModel == 0 && mStateStep != 6) {
-            ((ModelAnim *)mHeadModels[3])->Advance();
+            ((dExtAnmModel_c *)mHeadModels[3])->Advance();
         }
         return 1;
     }
@@ -16480,7 +16480,7 @@ int func_ov002_020d853c(char *c, char *o) {
     if (((Player *)c)->IsState(data_ov002_02110574)) {
         int j = (player->mPunchKickStep << 1) & 0xff;
         unsigned idx = _ZNK6Player14GetBodyModelIDEjb(c, player->param1 & 0xff, 0);
-        ModelAnim *mp = player->mBodyModels[idx];
+        dExtAnmModel_c *mp = player->mBodyModels[idx];
         int v = ((dExtFrameCtrl_c *)((long long)(int)&(dExtFrameCtrl_c &)*mp))->currFrame;
         int k = (unsigned short)(v >> 12);
         if (k < data_ov002_0210a5dc[j] || k > data_ov002_0210a5dc[j + 1])
@@ -16702,7 +16702,7 @@ void func_ov002_020d8a50(char* self, int which)
     extern int func_ov002_020ef070(void*, char*);
     int flag = 1;
     u32 i2 = (u8)(which << 1);
-    ModelAnim *model;
+    dExtAnmModel_c *model;
     dExtFrameCtrl_c *anim;
     int frame;
 
@@ -17354,7 +17354,7 @@ void func_ov002_020d9a4c(char *c) {
     extern u8 data_ov002_02109dc4[];
     Player *player = (Player *)c;
     int idx = _ZNK6Player14GetBodyModelIDEjb(c, player->param1 & 0xff, 0);
-    ModelAnim *anim = player->mBodyModels[idx];
+    dExtAnmModel_c *anim = player->mBodyModels[idx];
     if (anim->WillHitFrame(data_ov002_02109dc4[player->mStateStep & 7]) != 0)
         player->mStateWork |= 1;
 }
@@ -17408,7 +17408,7 @@ int Player::St_Hurt_Init()
     this->SetAnim(data_ov002_0210a6d4[mStateStep & 7], 0x40000000, 0x1000, 0);
     mid = this->GetBodyModelID(param1 & 0xff, 0);
     m = (char *)mBodyModels[mid];
-    m = (char *)((unsigned int)&(dExtFrameCtrl_c &)*(ModelAnim *)m & 0xFFFFFFFFU);
+    m = (char *)((unsigned int)&(dExtFrameCtrl_c &)*(dExtAnmModel_c *)m & 0xFFFFFFFFU);
     ((dExtFrameCtrl_c *)m)->currFrame = 0;
     mStatePhase = 0;
     old = mStateWork;
@@ -18111,7 +18111,7 @@ int func_ov002_020dacb4(char *p, char *actor)
         {
             int player_var = ((Player *)p)->param1;
             int model_idx = _ZNK6Player14GetBodyModelIDEjb(p, player_var & 0xff, 0);
-            ModelAnim2 *model = ((Player *)p)->mBodyModels[model_idx];
+            dExtAnm2Model_c *model = ((Player *)p)->mBodyModels[model_idx];
             int j = (int)data_ov002_020ff480[offset + player_var]->filePtr;
             model->Func_020162C4(j, 0, 0x1000, 0);
         }
@@ -18136,7 +18136,7 @@ int Player::St_Throw_Main() {
     if (*(char **)((char *)&mHeldObj)) {
         int r4 = 5;
         int id = this->GetBodyModelID(param1 & 0xff, 0);
-        ModelAnim *anim = mBodyModels[id];
+        dExtAnmModel_c *anim = mBodyModels[id];
         if (anim->WillHitFrame(0)) {
             if (func_ov002_020c19d0(0x40, 0x32))
                 r4 = 0;
@@ -18158,7 +18158,7 @@ int Player::St_Throw_Main() {
     }
     Ld0:
         int id2 = this->GetBodyModelID(param1 & 0xff, 0);
-        ModelAnim *anim2 = mBodyModels[id2];
+        dExtAnmModel_c *anim2 = mBodyModels[id2];
         if (anim2->WillHitFrame(r4)) {
             int b2 = (((dActor_c *)mHeldObj)->mFlags & 0x200) ? 1 : 0;
             if (b2 == 0)
@@ -18383,13 +18383,13 @@ int Player::St_Grabbed_Main()
     if (mStateTimer != 0) {
         id = this->GetBodyModelID(param1 & 0xff, 0);
         model = (char *)mBodyModels[id];
-        pRate = (int *)&(dExtFrameCtrl_c &)*(ModelAnim *)model;
+        pRate = (int *)&(dExtFrameCtrl_c &)*(dExtAnmModel_c *)model;
         pRate = (int *)&((dExtFrameCtrl_c *)pRate)->speed;
         *pRate = 0x4000;
     } else {
         id = this->GetBodyModelID(param1 & 0xff, 0);
         model = (char *)mBodyModels[id];
-        pRate = (int *)&(dExtFrameCtrl_c &)*(ModelAnim *)model;
+        pRate = (int *)&(dExtFrameCtrl_c &)*(dExtAnmModel_c *)model;
         pRate = (int *)&((dExtFrameCtrl_c *)pRate)->speed;
         *pRate = 0x1000;
     }
@@ -19038,7 +19038,7 @@ L14c:
 L18c:
     {
         int id = this->GetBodyModelID(param1 & 0xff, 0);
-        ModelAnim *anim = mBodyModels[id];
+        dExtAnmModel_c *anim = mBodyModels[id];
         u32 w = ((dExtFrameCtrl_c *)((long long)(int)&(dExtFrameCtrl_c &)*anim))->currFrame;
         if ((u16)(w >> 12) < 4)
             goto L1d8;
@@ -19733,7 +19733,7 @@ void func_ov002_020dd5ec(char *c) {
     model = _ZNK6Player14GetBodyModelIDEjb(c, player->param1 & 0xff, 0);
     new_var2 = -0x4000;
     new_var = (int *)&player->mBodyModels[model];
-    new_var3 = (int *)&(dExtFrameCtrl_c &)*(ModelAnim *)*new_var;
+    new_var3 = (int *)&(dExtFrameCtrl_c &)*(dExtAnmModel_c *)*new_var;
     if ((c && c) && c) {
     }
     p = new_var3;
@@ -20406,7 +20406,7 @@ int Player::St_Balloon_Init() {
     mAngleYSpeed = 0x100;
     mAngleXSpeed = 0x100;
     mPrevVertSpeed = mVertSpeed;
-    ((ModelAnim *)((char *)&mModelAnim3))
+    ((dExtAnmModel_c *)((char *)&mModelAnim3))
         ->SetAnim((BCA_File *)((void *)data_ov002_0210e750[1]), 0x40000000, 0x1000, 0);
     mModelAnim3.currFrame = 0;
     return 1;
@@ -21248,7 +21248,7 @@ skip:
             {
                 Matrix4x3 *bone =
                     &mBodyModels[this->GetBodyModelID(this->param1 & 0xff, 0)]->data.transforms[14];
-                ModelAnim *m2 = mBodyModels[this->GetBodyModelID(this->param1 & 0xff, 0)];
+                dExtAnmModel_c *m2 = mBodyModels[this->GetBodyModelID(this->param1 & 0xff, 0)];
                 MulVec3Mat4x3(&bone->m[9], &m2->mat4x3, &vec32);
                 Vec3_MulScalarInPlace(&vec32.x, 0x8000);
                 mParticle2 = Particle::System::New(mParticle2, 0xd0, sp14, sp18, sp1C,
@@ -21257,7 +21257,7 @@ skip:
             {
                 Matrix4x3 *bone =
                     &mBodyModels[this->GetBodyModelID(this->param1 & 0xff, 0)]->data.transforms[11];
-                ModelAnim *m2 = mBodyModels[this->GetBodyModelID(this->param1 & 0xff, 0)];
+                dExtAnmModel_c *m2 = mBodyModels[this->GetBodyModelID(this->param1 & 0xff, 0)];
                 MulVec3Mat4x3(&bone->m[9], &m2->mat4x3, &vec32);
                 Vec3_MulScalarInPlace(&vec32.x, 0x8000);
                 mParticle3 = Particle::System::New(mParticle3, 0xd0, sp14, sp18, sp1C,
@@ -22057,7 +22057,7 @@ int Player::St_SideFlip_Main()
 
         if (IsState(*(Player::State *)data_ov002_021101e4)) {
             int id = this->GetBodyModelID(param1 & 0xff, 0);
-            ModelAnim *anim = mBodyModels[id];
+            dExtAnmModel_c *anim = mBodyModels[id];
             u32 w = ((dExtFrameCtrl_c *)((long long)(int)&(dExtFrameCtrl_c &)*anim))->currFrame;
             if ((u16)(w >> 12) == 0x10) {
                 Sound::PlayBank0(0xf, mCamSpacePos);
@@ -22504,7 +22504,7 @@ int Player::St_Jump_Main()
 
             {
                 u32 id = this->GetBodyModelID(*(u32 *)((char *)&param1) & 0xff, 0);
-                ModelAnim *anim = mBodyModels[id];
+                dExtAnmModel_c *anim = mBodyModels[id];
                 u32 w = ((dExtFrameCtrl_c *)((long long)(int)&(dExtFrameCtrl_c &)*anim))->currFrame;
                 u16 t = (u16)(w >> 12);
                 if (t == 4 || t == 0x18 || t == 0x2c) {
@@ -23557,8 +23557,9 @@ int Player::Render()
         virtual void m18(void* a, void* b);
     };
     typedef struct M34 { int m[12]; } M34;
-    extern void _ZN9ModelBase12ApplyOpacityEjj(void* self, unsigned int opacity, unsigned int unused);
-    extern void _ZN5Model6RenderEPK7Vector3(void* self, void* pos);
+    extern void _ZN11dExtModel_c12ApplyOpacityEjj(void *self, unsigned int opacity,
+                                                  unsigned int unused);
+    extern void _ZN17dExtSimpleModel_c6RenderEPK7Vector3(void *self, void *pos);
     extern void _ZN15TextureSequence6UpdateER15ModelComponents(void* self, void* mc);
     extern void Matrix4x3_FromTranslation(void* m, int x, int y, int z);
     extern void Matrix4x3_ApplyInPlaceToRotationZ(void* m, int ang);
@@ -23588,7 +23589,7 @@ int Player::Render()
         int i;
         bodyMdl = (char*)mBodyModels[this->GetBodyModelID(mBodyModelId, 1)];
         if (mIsBalloon == 0) {
-            _ZN9ModelBase12ApplyOpacityEjj(bodyMdl, mOpacity, 0);
+            _ZN11dExtModel_c12ApplyOpacityEjj(bodyMdl, mOpacity, 0);
             {
                 int t2 = (data_0209f2d8 == 1);
                 if (t2 != false) {
@@ -23604,7 +23605,7 @@ int Player::Render()
                     }
                 }
             }
-            _ZN5Model6RenderEPK7Vector3(bodyMdl, &mScale);
+            _ZN17dExtSimpleModel_c6RenderEPK7Vector3(bodyMdl, &mScale);
             if (param1 == 1) {
                 _ZN15TextureSequence6UpdateER15ModelComponents(&mTexSeqPlayer[0],
                                                                &mBodyModels[1]->data);
@@ -23612,27 +23613,28 @@ int Player::Render()
             }
             func_ov002_020e3e00(bodyMdl, &mScale, mOpacity);
             if (mDrawnHasWings != 0) {
-                _ZN9ModelBase12ApplyOpacityEjj(&mModelAnim4, mOpacity, 0);
+                _ZN11dExtModel_c12ApplyOpacityEjj(&mModelAnim4, mOpacity, 0);
                 if (mBodyModelId == 3) {
                     Matrix4x3_FromTranslation(&data_020a0e68, -0x1b33, -0x666, 0);
                     Matrix4x3_ApplyInPlaceToRotationZ(&data_020a0e68, 0x4000);
-                    MulMat4x3Mat4x3(&data_020a0e68, &((ModelAnim *)bodyMdl)->data.transforms[8],
+                    MulMat4x3Mat4x3(&data_020a0e68,
+                                    &((dExtAnmModel_c *)bodyMdl)->data.transforms[8],
                                     &data_020a0e68);
                     ((VObj *)((char *)&mModelAnim4))->m18(&data_020a0e68, &mScale);
                 } else {
                     ((VObj *)((char *)&mModelAnim4))
-                        ->m18(&((ModelAnim *)bodyMdl)->data.transforms[15], &mScale);
+                        ->m18(&((dExtAnmModel_c *)bodyMdl)->data.transforms[15], &mScale);
                 }
             }
         } else {
-            _ZN9ModelBase12ApplyOpacityEjj(&mModelAnim3, mOpacity, 0);
+            _ZN11dExtModel_c12ApplyOpacityEjj(&mModelAnim3, mOpacity, 0);
             ((VObj*)((char*)&mModelAnim3))->m14((char*)&mScaleX);
         }
         i = func_ov002_020becf4(mBodyModelId, 1);
         {
             char *mdl4 = (char *)mHeadModels[i];
             if (mdl4 != 0 && i != 9 && i != 8) {
-                _ZN9ModelBase12ApplyOpacityEjj(mdl4, mOpacity, 0);
+                _ZN11dExtModel_c12ApplyOpacityEjj(mdl4, mOpacity, 0);
                 {
                     int t3 = (data_0209f2d8 == 1);
                     if (t3 != false) {
@@ -23649,10 +23651,10 @@ int Player::Render()
                     }
                 }
                 if (i == 3) {
-                    _ZN5Model6RenderEPK7Vector3((char *)mHeadModels[i], &mScale);
+                    _ZN17dExtSimpleModel_c6RenderEPK7Vector3((char *)mHeadModels[i], &mScale);
                 } else {
                     Matrix4x3 *dst = mHeadModels[i]->data.transforms;
-                    Matrix4x3 *src = &((ModelAnim *)bodyMdl)->data.transforms[15];
+                    Matrix4x3 *src = &((dExtAnmModel_c *)bodyMdl)->data.transforms[15];
                     *(M34*)dst = *(M34*)src;
                     ((VObj *)(char *)mHeadModels[i])->m14((char *)&mScaleX);
                 }
@@ -23682,7 +23684,7 @@ int Player::Render()
 /* recovered: shared common types */
 //
 /* decl_common.h is deliberately NOT included. This file declares its callees
-   concretely -- `const int *`, `unsigned int`, `Model *` -- while the header
+   concretely -- `const int *`, `unsigned int`, `dExtSimpleModel_c *` -- while the header
    declares the same symbols with generic `void*`/`int`. Under `extern "C"`
    those are not compatible redeclarations but illegal overloads, so the file
    did not compile AT ALL (errors on the MulMat3x3Mat3x3, func_02016acc and
@@ -23699,7 +23701,7 @@ int Player::Render()
        unambiguous `kind:bss`. ov017 and ov033 are clean at 0x02111b6c but
        ambiguous at 0x02111b64; every other candidate is ambiguous at both. */
 extern "C" {
-extern "C" void func_ov002_020e3e00(Model *obj, Vector3 *vec, unsigned int opacity) {
+extern "C" void func_ov002_020e3e00(dExtSimpleModel_c *obj, Vector3 *vec, unsigned int opacity) {
     typedef struct { int m[12]; } Mat;
     extern signed char data_0209f2f8;
     extern signed char data_02092120;
@@ -23710,7 +23712,8 @@ extern "C" void func_ov002_020e3e00(Model *obj, Vector3 *vec, unsigned int opaci
     void MulMat3x3Mat3x3(int *dst, const int *a, const int *b);
     void func_02016acc(void *obj, unsigned int mask);
     void func_02016b24(void *obj, unsigned int mask);
-    extern void _ZN5Model6RenderEPK7Vector3(Model *self, const Vector3 *v);
+    extern void _ZN17dExtSimpleModel_c6RenderEPK7Vector3(dExtSimpleModel_c * self,
+                                                         const Vector3 *v);
     int ip = (data_0209f2f8 == 0x2f) ? 1 : 0;
 
     if (!ip) {
@@ -23746,7 +23749,7 @@ extern "C" void func_ov002_020e3e00(Model *obj, Vector3 *vec, unsigned int opaci
 
     func_02016acc(obj, 0x80);
     func_02016b24(obj, 0x40);
-    _ZN5Model6RenderEPK7Vector3(obj, vec);
+    _ZN17dExtSimpleModel_c6RenderEPK7Vector3(obj, vec);
     obj->ApplyOpacity(opacity, 0);
     func_02016b24(obj, 0x80);
     func_02016acc(obj, 0x40);
@@ -23849,13 +23852,13 @@ int func_ov002_020e3f90(char* self) {
     player->mPrevAngleY = ((dActor_c *)player->mGrabbedByActor)->mAngleY;
     n = _ZNK6Player14GetBodyModelIDEjb(self, player->param1 & 0xff, 0);
     m = (char *)player->mBodyModels[n];
-    *(struct M48 *)&((Model *)m)->mat4x3 = data_020a0e68;
+    *(struct M48 *)&((dExtSimpleModel_c *)m)->mat4x3 = data_020a0e68;
     *(struct M48 *)&player->mModelAnim4.mat4x3 = data_020a0e68;
     n = _ZN6Player19func_ov002_020becf4Eii(self, player->param1 & 0xff, 0);
     if (n != 9 && n != 8) {
         m = (char *)player->mHeadModels[n];
         if (m != 0) {
-            *(struct M48 *)&((Model *)m)->mat4x3 = data_020a0e68;
+            *(struct M48 *)&((dExtSimpleModel_c *)m)->mat4x3 = data_020a0e68;
         }
     }
     return 1;
@@ -23944,7 +23947,7 @@ void func_ov002_020e444c(char *c)
         {
             int r0 = _ZN6Player19func_ov002_020becf4Eii(c, player->param1 & 0xff, 0);
             if (r0 != 9 && r0 != 8) {
-                Model *q = player->mHeadModels[r0];
+                dExtSimpleModel_c *q = player->mHeadModels[r0];
                 if (q != 0) {
                     q->mat4x3 = data_020a0e68;
                 }
@@ -24017,7 +24020,7 @@ extern "C" void func_ov002_020e4768(char* self)
 
     mid = _ZNK6Player14GetBodyModelIDEjb(self, player->param1 & 0xff, 0);
     comp = player->mBodyModels[mid];
-    _ZN15ModelComponents21UpdateVertsUsingBonesEv(&((ModelAnim *)comp)->data);
+    _ZN15ModelComponents21UpdateVertsUsingBonesEv(&((dExtAnmModel_c *)comp)->data);
 
     idx = _ZN6Player19func_ov002_020becf4Eii(self, player->param1 & 0xff, 0);
 
@@ -24033,11 +24036,11 @@ extern "C" void func_ov002_020e4768(char* self)
         if (hasFlag) {
             mid = _ZNK6Player14GetBodyModelIDEjb(self, player->param1 & 0xff, 0);
             comp = player->mBodyModels[mid];
-            *(Mat43 *)data_020a0e68 = *(Mat43 *)&((ModelAnim *)comp)->mat4x3;
+            *(Mat43 *)data_020a0e68 = *(Mat43 *)&((dExtAnmModel_c *)comp)->mat4x3;
 
             mid = _ZNK6Player14GetBodyModelIDEjb(self, player->param1 & 0xff, 0);
             comp = player->mBodyModels[mid];
-            MulMat4x3Mat4x3(&((ModelAnim *)comp)->data.transforms[14], data_020a0e68,
+            MulMat4x3Mat4x3(&((dExtAnmModel_c *)comp)->data.transforms[14], data_020a0e68,
                             data_020a0e68);
 
             *(Mat43 *)player->pad_58c = *(Mat43 *)data_020a0e68;
@@ -24047,11 +24050,11 @@ extern "C" void func_ov002_020e4768(char* self)
 
     mid = _ZNK6Player14GetBodyModelIDEjb(self, player->param1 & 0xff, 0);
     comp = player->mBodyModels[mid];
-    *(Mat43 *)data_020a0e68 = *(Mat43 *)&((ModelAnim *)comp)->mat4x3;
+    *(Mat43 *)data_020a0e68 = *(Mat43 *)&((dExtAnmModel_c *)comp)->mat4x3;
 
     mid = _ZNK6Player14GetBodyModelIDEjb(self, player->param1 & 0xff, 0);
     comp = player->mBodyModels[mid];
-    MulMat4x3Mat4x3(&((ModelAnim *)comp)->data.transforms[15], data_020a0e68, data_020a0e68);
+    MulMat4x3Mat4x3(&((dExtAnmModel_c *)comp)->data.transforms[15], data_020a0e68, data_020a0e68);
 
     *(Mat43*)(self + 0x5ec) = *(Mat43*)data_020a0e68;
 }
@@ -24137,8 +24140,8 @@ void func_ov002_020e4bb8(char* self)
             if (player->mIsMetal != 0) {
                 u32 v;
                 u32 id;
-                ModelAnim2 *dst;
-                ModelAnim2 *src;
+                dExtAnm2Model_c *dst;
+                dExtAnm2Model_c *src;
                 SharedFilePtr *poolEntry;
                 char* p;
 
@@ -24667,10 +24670,10 @@ void func_ov002_020e5948(void* arg0)
 {
     typedef struct OneUpLogoModelFile OneUpLogoModelFile;
     extern void _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(void* sfp);
-    extern void* _ZN5Model8LoadFileER13SharedFilePtr(void* sfp);
+    extern void *_ZN17dExtSimpleModel_c8LoadFileER13SharedFilePtr(void *sfp);
     extern void _ZN15TextureSequence8LoadFileER13SharedFilePtr(void* sfp);
     extern void LoadSilverStarAndNumber(void);
-    extern int _ZN9ModelBase7SetFileEP8BMD_Fileii(void* thiz, void* bmd, s32 a, s32 b);
+    extern int _ZN11dExtModel_c7SetFileEP8BMD_Fileii(void *thiz, void *bmd, s32 a, s32 b);
     extern void func_ov002_020bec2c(void* p);
     extern s32 func_ov002_020e6bb0(void* p);
     extern void func_ov002_020e6780(void* p);
@@ -24810,15 +24813,15 @@ void func_ov002_020e5948(void* arg0)
         if (a != b) {
         switch (b) {
         case 0:
-            _ZN5Model8LoadFileER13SharedFilePtr(data_ov002_0210da40);
+            _ZN17dExtSimpleModel_c8LoadFileER13SharedFilePtr(data_ov002_0210da40);
             player->mLoadedResourceFlags |= 2;
             break;
         case 1:
-            _ZN5Model8LoadFileER13SharedFilePtr(data_ov002_0210d9a0);
+            _ZN17dExtSimpleModel_c8LoadFileER13SharedFilePtr(data_ov002_0210d9a0);
             player->mLoadedResourceFlags |= 4;
             break;
         case 2:
-            _ZN5Model8LoadFileER13SharedFilePtr(data_ov002_0210d9c0);
+            _ZN17dExtSimpleModel_c8LoadFileER13SharedFilePtr(data_ov002_0210d9c0);
             player->mLoadedResourceFlags |= 8;
             break;
         }
@@ -24858,8 +24861,8 @@ void func_ov002_020e5948(void* arg0)
         mode = (mode == 1);
         if (mode == 0) {
             _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(data_ov002_0210e750);
-            _ZN5Model8LoadFileER13SharedFilePtr(data_ov002_0210d9a8);
-            _ZN5Model8LoadFileER13SharedFilePtr(&data_ov002_02110aa4);
+            _ZN17dExtSimpleModel_c8LoadFileER13SharedFilePtr(data_ov002_0210d9a8);
+            _ZN17dExtSimpleModel_c8LoadFileER13SharedFilePtr(&data_ov002_02110aa4);
             _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(data_ov002_0210e588);
             _ZN15TextureSequence8LoadFileER13SharedFilePtr(data_ov002_0210e7e8);
             _ZN15TextureSequence8LoadFileER13SharedFilePtr(data_ov002_0210e450);
@@ -24924,10 +24927,10 @@ void func_ov002_020e5948(void* arg0)
 
     i = 0;
     do {
-        player->mBodyModels[i] = new ModelAnim2;
-        _ZN9ModelBase7SetFileEP8BMD_Fileii(
-            player->mBodyModels[i], _ZN5Model8LoadFileER13SharedFilePtr(data_ov002_0210a68c[i]), 1,
-            1);
+        player->mBodyModels[i] = new dExtAnm2Model_c;
+        _ZN11dExtModel_c7SetFileEP8BMD_Fileii(
+            player->mBodyModels[i],
+            _ZN17dExtSimpleModel_c8LoadFileER13SharedFilePtr(data_ov002_0210a68c[i]), 1, 1);
         player->mBodyModels[i]->Func_020162C4((u32)data_ov002_020ff480[i + 0xC4]->filePtr, 0,
                                               0x1000, 0);
         player->mBodyTexParams[i] = func_ov002_020e6bb0(player->mBodyModels[i]);
@@ -24939,17 +24942,17 @@ void func_ov002_020e5948(void* arg0)
     i = 0;
     do {
         if (i == 3) {
-            player->mHeadModels[i] = new ModelAnim;
-            _ZN9ModelBase7SetFileEP8BMD_Fileii(
-                player->mHeadModels[i], _ZN5Model8LoadFileER13SharedFilePtr(data_ov002_0210a69c[i]),
-                1, 1);
-            ((ModelAnim *)player->mHeadModels[i])
+            player->mHeadModels[i] = new dExtAnmModel_c;
+            _ZN11dExtModel_c7SetFileEP8BMD_Fileii(
+                player->mHeadModels[i],
+                _ZN17dExtSimpleModel_c8LoadFileER13SharedFilePtr(data_ov002_0210a69c[i]), 1, 1);
+            ((dExtAnmModel_c *)player->mHeadModels[i])
                 ->SetAnim((BCA_File *)((void *)data_ov002_0210eb88[1]), 0, 0x1000, 0);
         } else {
-            player->mHeadModels[i] = new Model;
-            _ZN9ModelBase7SetFileEP8BMD_Fileii(
-                player->mHeadModels[i], _ZN5Model8LoadFileER13SharedFilePtr(data_ov002_0210a69c[i]),
-                1, 1);
+            player->mHeadModels[i] = new dExtSimpleModel_c;
+            _ZN11dExtModel_c7SetFileEP8BMD_Fileii(
+                player->mHeadModels[i],
+                _ZN17dExtSimpleModel_c8LoadFileER13SharedFilePtr(data_ov002_0210a69c[i]), 1, 1);
         }
         player->mHeadTexParams[i] = func_ov002_020e6bb0(player->mHeadModels[i]);
         i++;
@@ -24957,13 +24960,13 @@ void func_ov002_020e5948(void* arg0)
 
     j = 0;
     do {
-        p = new Model;
+        p = new dExtSimpleModel_c;
         {
             s32 idx = j + 4;
-            player->mHeadModels[idx] = (Model *)p;
-            _ZN9ModelBase7SetFileEP8BMD_Fileii(
+            player->mHeadModels[idx] = (dExtSimpleModel_c *)p;
+            _ZN11dExtModel_c7SetFileEP8BMD_Fileii(
                 player->mHeadModels[idx],
-                _ZN5Model8LoadFileER13SharedFilePtr(data_ov002_0210a6ac[j]), 1, 1);
+                _ZN17dExtSimpleModel_c8LoadFileER13SharedFilePtr(data_ov002_0210a6ac[j]), 1, 1);
             player->mHeadTexParams[idx] = func_ov002_020e6bb0(player->mHeadModels[idx]);
         }
         j++;
@@ -24974,34 +24977,34 @@ void func_ov002_020e5948(void* arg0)
         mode = data_0209f2d8;
         mode = (mode == 1);
         if (mode == 0) {
-            player->mSleepBubbleModel = new Model;
-            _ZN9ModelBase7SetFileEP8BMD_Fileii(
-                player->mSleepBubbleModel, _ZN5Model8LoadFileER13SharedFilePtr(data_ov002_0210da38),
-                1, -1);
+            player->mSleepBubbleModel = new dExtSimpleModel_c;
+            _ZN11dExtModel_c7SetFileEP8BMD_Fileii(
+                player->mSleepBubbleModel,
+                _ZN17dExtSimpleModel_c8LoadFileER13SharedFilePtr(data_ov002_0210da38), 1, -1);
 
             if (data_0209f2f8 != 2 && data_0209f2f8 != 5 && data_0209f2f8 != 4) {
                 player->mLoadedResourceFlags |= 0x20;
-                player->mBodyModels[4] = new ModelAnim2;
-                _ZN9ModelBase7SetFileEP8BMD_Fileii(
+                player->mBodyModels[4] = new dExtAnm2Model_c;
+                _ZN11dExtModel_c7SetFileEP8BMD_Fileii(
                     player->mBodyModels[4],
-                    _ZN5Model8LoadFileER13SharedFilePtr(data_ov002_0210e780), 1, -1);
+                    _ZN17dExtSimpleModel_c8LoadFileER13SharedFilePtr(data_ov002_0210e780), 1, -1);
                 player->mBodyModels[4]->Func_020162C4((u32)data_ov002_020ff480[0xC6]->filePtr, 0,
                                                       0x1000, 0);
-                _ZN9ModelBase7SetFileEP8BMD_Fileii(
-                    &player->mModelAnim3, _ZN5Model8LoadFileER13SharedFilePtr(data_ov002_0210e6f8),
-                    1, 1);
+                _ZN11dExtModel_c7SetFileEP8BMD_Fileii(
+                    &player->mModelAnim3,
+                    _ZN17dExtSimpleModel_c8LoadFileER13SharedFilePtr(data_ov002_0210e6f8), 1, 1);
                 player->mModelAnim3.SetAnim((BCA_File *)((void *)data_ov002_0210e750[1]), 0, 0x1000,
                                             0);
-                _ZN9ModelBase7SetFileEP8BMD_Fileii(
-                    &player->mModelAnim4, _ZN5Model8LoadFileER13SharedFilePtr(data_ov002_0210e7b0),
-                    1, 1);
+                _ZN11dExtModel_c7SetFileEP8BMD_Fileii(
+                    &player->mModelAnim4,
+                    _ZN17dExtSimpleModel_c8LoadFileER13SharedFilePtr(data_ov002_0210e7b0), 1, 1);
                 player->mModelAnim4.SetAnim((BCA_File *)((void *)data_ov002_0210e4c0[1]), 0, 0x1000,
                                             0);
             }
         } else {
-            _ZN9ModelBase7SetFileEP8BMD_Fileii(
-                &player->mModelAnim4, _ZN5Model8LoadFileER13SharedFilePtr(data_ov002_0210e7b0), 1,
-                1);
+            _ZN11dExtModel_c7SetFileEP8BMD_Fileii(
+                &player->mModelAnim4,
+                _ZN17dExtSimpleModel_c8LoadFileER13SharedFilePtr(data_ov002_0210e7b0), 1, 1);
             player->mModelAnim4.SetAnim((BCA_File *)((void *)data_ov002_0210e4c0[1]), 0, 0x1000, 0);
         }
     }
@@ -25012,7 +25015,7 @@ void func_ov002_020e5948(void* arg0)
     ma = player->mBodyModels[bodyId];
     {
         u8 pid = player->mPlayerNo;
-        t = ((ModelAnim *)ma)->data.materials;
+        t = ((dExtAnmModel_c *)ma)->data.materials;
         t2 = *(s32*)((char*)t + 0x20);
         player->mVsYoshiMaterialParam = t2 + (pid << 1);
     }
@@ -25277,7 +25280,7 @@ Player::~Player()
 extern "C"  {
 extern int data_ov002_0210a83c[];
 void *_ZN8dActor_cC2Ev(void*);
-void *_ZN9ModelAnimC1Ev(void*);
+void *_ZN14dExtAnmModel_cC1Ev(void *);
 void __cxa_vec_ctor(void*,int,int,void*,void*);
 void *_ZN15TextureSequenceC1Ev(void*);
 void _ZN15TextureSequenceD1Ev(void*);
@@ -25293,8 +25296,8 @@ void* _ZN6PlayerC1Ev(void* c){
      &p->member drops the anchoring add and the constructor comes out 4 bytes short. */
     char *r4 = (char *)p->mBodyModels;
     *(int *)p = (int)data_ov002_0210a83c;
-    _ZN9ModelAnimC1Ev(r4 + 0x14);
-    _ZN9ModelAnimC1Ev(r4 + 0x98);
+    _ZN14dExtAnmModel_cC1Ev(r4 + 0x14);
+    _ZN14dExtAnmModel_cC1Ev(r4 + 0x98);
     __cxa_vec_ctor(r4 + 0x100, 4, 0x14, (void *)_ZN15TextureSequenceC1Ev,
                    (void *)_ZN15TextureSequenceD1Ev);
     __cxa_vec_ctor(r4 + 0x150, 2, 0x14, (void *)_ZN15MaterialChangerC1Ev,

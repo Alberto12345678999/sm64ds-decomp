@@ -1353,7 +1353,7 @@ extern unsigned int ReadUnalignedInt(unsigned char*);
 extern unsigned int VTable_Animation_ModelAnimThunk[];
 extern unsigned int _ZTV15MaterialChanger[];
 extern unsigned int _ZTV18TextureTransformer[];
-extern unsigned int _ZTV9ModelAnim[];
+extern unsigned int _ZTV14dExtAnmModel_c[];
 extern unsigned int _ZTV9dBgCh_Gnd[];
 extern unsigned int VTable_dBgPi_dBgCh_GndThunk[];
 extern unsigned int data_0209f5b8;

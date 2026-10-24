@@ -125,7 +125,7 @@ int daObjKm2_Nobiru_c::Behavior()
 // @symbol _ZN17daObjKm2_Nobiru_c13InitResourcesEv
 int daObjKm2_Nobiru_c::InitResources()
 {
-    mModel.SetFile((BMD_File *)Model::LoadFile(PoleLift_ModelFile), 1, -1);
+    mModel.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(PoleLift_ModelFile), 1, -1);
     UpdateModelTransform();
     UpdateColliderTransform();
 

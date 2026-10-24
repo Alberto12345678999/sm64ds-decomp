@@ -193,7 +193,7 @@ s32 daObjFl_KomaU_c::InitResources()
 {
     int i;
 
-    mModel.SetFile((BMD_File *)Model::LoadFile(*data_ov064_0211adbc.model), 1, -1);
+    mModel.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(*data_ov064_0211adbc.model), 1, -1);
     for (i = 0; i < 8; i++)
         _ZN8dCcPos_c4InitERK7Vector35Fix12IiES4_jj(&mColliders[i], &mPos, 0x4b000, 0x96000,
                                                    0x200002, 0);

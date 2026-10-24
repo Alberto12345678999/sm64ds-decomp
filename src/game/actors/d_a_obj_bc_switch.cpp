@@ -103,7 +103,7 @@
  */
 
 /* daObjBC_Switch_c.h FIRST: it pulls in dBgActor_c.h, which must reach
-   common.h ahead of Model.h or the wrong Matrix4x3 spelling wins. */
+   common.h ahead of dExtSimpleModel_c.h or the wrong Matrix4x3 spelling wins. */
 /* Runtime asset handles resolved through the overlay 0 file table. */
 enum d_a_obj_bc_switch_AssetId {
     ASSET_B_COIN_SWITCH_BMD = 0x043c,
@@ -228,7 +228,7 @@ int daObjBC_Switch_c::InitResources()
     unsigned short val;
     unsigned short* p;
 
-    bmd = Model::LoadFile(daObjBC_Switch_c_ModelFile);
+    bmd = dExtSimpleModel_c::LoadFile(daObjBC_Switch_c_ModelFile);
     mModel.SetFile((BMD_File *)bmd, 1, -1);
 
     mEventBit = (int)param1 & 0xf;
@@ -405,7 +405,7 @@ int daObjBC_Switch_c::CleanupResources()
  * Two vtable stores and three destructor calls, every one a consequence of
  * `struct daObjBC_Switch_c : dBgActor_c`: its own vptr, then dBgActor_c's -- inlined,
  * because dBgActor_c's destructor is defined in its class body -- then
- * dBgActor_c's Model and dBgW_KcMbg, then dActor_c. This class adds no
+ * dBgActor_c's dExtSimpleModel_c and dBgW_KcMbg, then dActor_c. This class adds no
  * member with a destructor of its own.
  */
 /* The destructor body lives in the class declaration in

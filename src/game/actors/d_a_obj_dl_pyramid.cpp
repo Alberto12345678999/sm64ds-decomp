@@ -30,7 +30,7 @@ struct Vector3_16f;
  * Leftover: the four helpers keep their unmangled ROM-only names
  *   (func_ov024_021112c0, 02111350, 02111480, 021114c4). They are this TU's
  *   own statics/helpers, not vtable slots, and no header names them.
- * Leftover: dBgW_KcMbg::SetFile, Model::LoadFile and dCcAc_c::Init keep
+ * Leftover: dBgW_KcMbg::SetFile, dExtSimpleModel_c::LoadFile and dCcAc_c::Init keep
  *   their mangled extern-C spellings. SetFile takes Fix12<int> by value
  *   (Fix12 wall, notes/mwccarm-codegen.md 6az).
  * The two resource handles below (model gDlPyramidModelFile, collision
@@ -89,7 +89,7 @@ void func_ov024_021114c4(daObjDlPyramid_c *self);
 /* The retail static initializer constructs these two 8-byte resource handles
  * in source order (model 1501, then collision 1502) and lets the C++ runtime
  * register their destructors. InitResources loads the model through the first
- * (Model::LoadFile) and the collision through the second (dBgW_Kc::LoadFile);
+ * (dExtSimpleModel_c::LoadFile) and the collision through the second (dBgW_Kc::LoadFile);
  * CleanupResources releases both (S19/S31: typed from this TU's callees).
  * The family spellings are reconstructed; the constructor/destructor
  * addresses, file IDs, object widths, BSS order, and registration topology
@@ -282,7 +282,7 @@ s32 daObjDlPyramidDummy_c::Behavior()
 // @symbol _ZN16daObjDlPyramid_c13InitResourcesEv
 int daObjDlPyramid_c::InitResources()
 {
-    BMD_File *bmd = (BMD_File *)Model::LoadFile(gDlPyramidModelFile);
+    BMD_File *bmd = (BMD_File *)dExtSimpleModel_c::LoadFile(gDlPyramidModelFile);
     mTopModel.SetFile(bmd, 1, -1);
     func_ov024_021114c4(this);
     func_ov024_02111480(this);

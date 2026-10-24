@@ -37,8 +37,8 @@ struct System {
  * - Ent_8e10 stands in for a card sprite's part record; RenderCards walks
  *   the list until f6 is 0xffff.
  * - Obj_777c is a vtable shim so AnimSet::Render can virtual-call the
- *   ModelAnim method that takes a void* argument; naming the real slot
- *   needs the ModelAnim vtable recovered.
+ *   dExtAnmModel_c method that takes a void* argument; naming the real slot
+ *   needs the dExtAnmModel_c vtable recovered.
  * - dMg3DEspModel_c's unk_000..unk_008 are set by its constructor
  *   (0x8c000, 0x8c000, 0) and read nowhere in this unit, so they stay
  *   unnamed.
@@ -59,7 +59,7 @@ struct System {
 #include "G3X.h"
 #include "Sound.h"
 #include "PlayerInput.h"
-#include "Model.h"
+#include "dExtSimpleModel_c.h"
 
 struct BMD_File;
 struct BTP_File;
@@ -174,8 +174,8 @@ dScMg3DEsp_c::~dScMg3DEsp_c()
 {
     ((TextureTransformer *)mTextureTransformer)->TextureTransformer::~TextureTransformer();
     ((dMg3DEspModel_c *)mEspModel)->~dMg3DEspModel_c();
-    ((Model *)mModel2)->Model::~Model();
-    ((Model *)mModel1)->Model::~Model();
+    ((dExtSimpleModel_c *)mModel2)->dExtSimpleModel_c::~dExtSimpleModel_c();
+    ((dExtSimpleModel_c *)mModel1)->dExtSimpleModel_c::~dExtSimpleModel_c();
 }
 
 /* ---- dMg3DEspAnimSet_c ------------------------------------------------- */
@@ -205,7 +205,7 @@ void dMg3DEspAnimSet_c::Render()
     zero = (void*)i;
     do {
         if (mActive[i] != 0) {
-            ((ModelAnim *)r5)->mat4x3 = data_020a0e68;
+            ((dExtAnmModel_c *)r5)->mat4x3 = data_020a0e68;
             ((MaterialChanger*)r4)->Update(*(ModelComponents*)(r5 + 8));
             ((Obj_777c*)r5)->m(zero);
         }
@@ -246,7 +246,7 @@ void dMg3DEspAnimSet_c::Behavior() {
             } else {
                 if (sb == 1) {
                     mActive[i] = 1;
-                    ((ModelAnim *)a)->currFrame = zero;
+                    ((dExtAnmModel_c *)a)->currFrame = zero;
                     sb = zero;
                     ((dMg3DEspAnimSet_c *)cc)->mMaterialChangers[0].currFrame = zero;
                 }
@@ -298,17 +298,17 @@ void dMg3DEspAnimSet_c::InitResources()
     char *w;
     char *w2;
     mSpeed = 0x800;
-    bmd = (int)Model::LoadFile(gEspHamonModelFile);
+    bmd = (int)dExtSimpleModel_c::LoadFile(gEspHamonModelFile);
     bca = (int)dExtFrameCtrl_c::LoadFile(gEspHamonAnimFile);
     MaterialChanger::Prepare(*(BMD_File *)bmd, *(BMA_File *)&sEsp3DMaterialAnim);
     w = o;
     w2 = (char *)mMaterialChangers;
     for (i = 0; i < 3; i++) {
-        ((ModelBase *)w)->SetFile((BMD_File *)bmd, 1, m1);
-        ((ModelAnim *)w)->SetAnim((BCA_File *)bca, 0x40000000, mSpeed, z1);
+        ((dExtModel_c *)w)->SetFile((BMD_File *)bmd, 1, m1);
+        ((dExtAnmModel_c *)w)->SetAnim((BCA_File *)bca, 0x40000000, mSpeed, z1);
         _ZN15MaterialChanger7SetFileER8BMA_Filei5Fix12IiEj(w2, &sEsp3DMaterialAnim, 0x40000000,
                                                            mSpeed, z2);
-        ((Model *)w)->SetPolygonID((i + 1) & 0xff);
+        ((dExtSimpleModel_c *)w)->SetPolygonID((i + 1) & 0xff);
         mActive[i] = 0;
         w += 0x64;
         w2 += 0x14;
@@ -1488,11 +1488,11 @@ s32 dScMg3DEsp_c::Render()
     mCameraTargetZ = 0x40000;
     mCameraAngle = 0xc00;
     Camera_UpdateMatrices(pad_4660);
-    /* Model::data, at +8. Naming the member makes mwcc add the 8 in a separate instruction. */
+    /* dExtSimpleModel_c::data, at +8. Naming the member makes mwcc add the 8 in a separate instruction. */
     ((TextureTransformer *)mTextureTransformer)->Update(*(ModelComponents *)(mModel1 + 8));
-    ((Model *)mModel1)->Render(0);
+    ((dExtSimpleModel_c *)mModel1)->Render(0);
     ((dMg3DEspModel_c *)mEspModel)->Render();
-    ((Model *)mModel2)->Render(0);
+    ((dExtSimpleModel_c *)mModel2)->Render(0);
     return 1;
 }
 
@@ -1553,8 +1553,8 @@ s32 dScMg3DEsp_c::InitResources()
         return 0;
 
     tmp = (Matrix4x3 &)sEsp3DIdentityMtx;
-    ((Model *)mModel1)->mat4x3 = (Matrix4x3 &)sEsp3DIdentityMtx;
-    ((Model*)mModel2)->mat4x3 = tmp;
+    ((dExtSimpleModel_c *)mModel1)->mat4x3 = (Matrix4x3 &)sEsp3DIdentityMtx;
+    ((dExtSimpleModel_c *)mModel2)->mat4x3 = tmp;
 
     data_0209d454 |= 4;
     /* sub BG2CNT, then the sub BG2 scroll offsets */
@@ -1609,7 +1609,7 @@ s32 dScMg3DEsp_c::InitResources()
 extern "C" {
 extern void *_ZN11dScMgBase_cC2Ev(void *p);
 extern void _ZN8Particle10SysTrackerC1Ev(void *);
-extern void *_ZN5ModelC1Ev(void *);
+extern void *_ZN17dExtSimpleModel_cC1Ev(void *);
 extern void *_ZN15dMg3DEspModel_cC1Ev(void *);
 extern void *_ZN18TextureTransformerC1Ev(void *);
 extern int _ZTV19dScMgSingle3DBase_c[];
@@ -1627,8 +1627,8 @@ void *dScMg3DEsp_c_classInit(void){
         *(int *)o = (int)_ZTV19dScMgSingle3DBase_c;
         _ZN8Particle10SysTrackerC1Ev(&((dScMg3DEsp_c *)o)->mSysTracker);
         *(int *)o = (int)&_ZTV12dScMg3DEsp_c[2];
-        _ZN5ModelC1Ev(((dScMg3DEsp_c *)o)->mModel1);
-        _ZN5ModelC1Ev(((dScMg3DEsp_c *)o)->mModel2);
+        _ZN17dExtSimpleModel_cC1Ev(((dScMg3DEsp_c *)o)->mModel1);
+        _ZN17dExtSimpleModel_cC1Ev(((dScMg3DEsp_c *)o)->mModel2);
         _ZN15dMg3DEspModel_cC1Ev(((dScMg3DEsp_c *)o)->mEspModel);
         _ZN18TextureTransformerC1Ev(((dScMg3DEsp_c *)o)->mTextureTransformer);
     }

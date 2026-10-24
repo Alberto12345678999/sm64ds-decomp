@@ -9,7 +9,7 @@ struct System {
 /**
  * Koopa shell (profile SHELL) -- ov102/daShl_c.
  *
- * Idle until the player touches it. Model 0 can be jumped on and ridden
+ * Idle until the player touches it. dExtSimpleModel_c 0 can be jumped on and ridden
  * (it follows the rider and gets a per-frame surface splash/trail pass and
  * a looping surface sound); model 1 is kicked away by an attack. The
  * variant (param1 bit 4) is picked up and held instead. Yoshi can eat any
@@ -175,7 +175,7 @@ s32 daShl_c::InitResources()
 {
     mModelIndex = param1 & 1;
     mVariant = (param1 >> 4) & 1;
-    BMD_File *bmd = (BMD_File *)Model::LoadFile(*data_ov102_0214d70c[mModelIndex]);
+    BMD_File *bmd = (BMD_File *)dExtSimpleModel_c::LoadFile(*data_ov102_0214d70c[mModelIndex]);
     if (mModel.SetFile(bmd, 1, 1) == 0)
         return 0;
     if (mShadowModel.InitCylinder() == 0)
@@ -451,7 +451,7 @@ int daShl_c::func_ov102_0214cf4c(dActor_c *kicker)
 }
 
 // @symbol _ZN7daShl_c19func_ov102_0214ce60Ev
-/* Model matrix and drop shadow. While carried (flag 0x4000) the model
+/* dExtSimpleModel_c matrix and drop shadow. While carried (flag 0x4000) the model
    follows the carrier's hands; otherwise it sits at mPos turned by
    mAngleY. Flag 0x40000 (hidden) skips the shadow. */
 void daShl_c::func_ov102_0214ce60()
@@ -561,7 +561,7 @@ void daShl_c::func_ov102_0214cbec()
 }
 
 // @symbol _ZN7daShl_c19func_ov102_0214c84cEv
-/* Model 0 only (Behavior gates it). While ridden, probe the ground from
+/* dExtSimpleModel_c 0 only (Behavior gates it). While ridden, probe the ground from
    50.0 above the shell and pick the trail particles and the looping
    surface sound from what it finds; otherwise just the idle trail. Water
    detection is on, so ground.clsnY is the hit height of a water surface

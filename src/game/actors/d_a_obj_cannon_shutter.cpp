@@ -28,7 +28,7 @@
  */
 
 /* daObjCannonShutter_c.h FIRST: it pulls in dBgActor_c.h, which must reach
-   common.h ahead of Model.h or the wrong Matrix4x3 spelling wins. */
+   common.h ahead of dExtSimpleModel_c.h or the wrong Matrix4x3 spelling wins. */
 /* Runtime asset handles resolved through the overlay 0 file table. */
 enum d_a_obj_cannon_shutter_AssetId {
     ASSET_CANNON_SHUTTER_BMD = 0x045f,
@@ -117,7 +117,7 @@ extern "C" SpawnInfo<daObjCannonShutter_c> g_profile_CANNON_SHUTTER = {
 // @symbol _ZN20daObjCannonShutter_c13InitResourcesEv
 int daObjCannonShutter_c::InitResources()
 {
-    mModel.SetFile((BMD_File *)Model::LoadFile(data_ov002_0210e12c), 1, -1);
+    mModel.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(data_ov002_0210e12c), 1, -1);
     UpdateModelPosAndRotY();
     UpdateClsnPosAndRot();
     {

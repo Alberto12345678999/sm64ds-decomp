@@ -11,7 +11,7 @@
  * common.h stays first: the pose reads Matrix4x3 words m[9], m[10], m[11].
  *
  * leftovers:
- * - BlendModelAnim::SetAnim, dCcAcPos_c::Init, ApproachLinear and
+ * - dExtBlendAnmModel_c::SetAnim, dCcAcPos_c::Init, ApproachLinear and
  *   dActor_c::SetRanges stay scalar Fix12 externs. The member forms
  *   grow the callers (02111718, InitResources, 02111758).
  * - currFrame >> 12 instead of the << 4 >> 16 shift shrinks 02111758
@@ -45,7 +45,7 @@ enum daMoray_c_AssetId {
 #include "SharedFilePtr.h"
 #include "PathPtr.h"
 #include "dExtFrameCtrl_c.h"
-#include "Model.h"
+#include "dExtSimpleModel_c.h"
 #include "Player.h"
 
 #pragma defer_codegen off
@@ -103,7 +103,7 @@ u16 DecIfAbove0_Short(u16 *p);
 void func_02012694(unsigned int id, const Vector3 *pos);
 /* UpdateBones(model.data, model.file, frame). Inlining that grows Render
    0x8c -> 0x9c. */
-void func_020167a4(BlendModelAnim *model);
+void func_020167a4(dExtBlendAnmModel_c *model);
 /* Blend the posed bones by blendWeight. No named method. */
 void func_0204531c(ModelComponents *data, s32 weight);
 
@@ -697,7 +697,7 @@ s32 daMoray_c::Render()
         bone++;
     }
     func_0204531c(&mBlendModelAnim.data, mBlendModelAnim.blendWeight);
-    mBlendModelAnim.Model::Render(0);
+    mBlendModelAnim.dExtSimpleModel_c::Render(0);
     return 1;
 }
 #pragma pop
@@ -762,7 +762,7 @@ s32 daMoray_c::InitResources()
     void *file;
     dActor_c *spawned;
 
-    file = Model::LoadFile(data_ov016_02114d38);
+    file = dExtSimpleModel_c::LoadFile(data_ov016_02114d38);
     mBlendModelAnim.SetFile((BMD_File *)file, 1, -1);
     dExtFrameCtrl_c::LoadFile(data_ov016_02114d20);
     dExtFrameCtrl_c::LoadFile(data_ov016_02114d30);

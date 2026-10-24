@@ -171,7 +171,7 @@ s32 daBakubaku_c::InitResources()
     Vector3 headOffset;
     void *f;
 
-    f = Model::LoadFile(*(SharedFilePtr *)&gBakubakuModelFile);
+    f = dExtSimpleModel_c::LoadFile(*(SharedFilePtr *)&gBakubakuModelFile);
     mModelAnim.SetFile((BMD_File *)f, 1, -1);
     mShadowModel.InitCylinder();
     dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)&data_ov032_02113a50);
@@ -269,7 +269,7 @@ s32 daBakubaku_c::CleanupResources()
     return 1;
 }
 
-/* Model matrix, shadow matrix, drop shadow. */
+/* dExtSimpleModel_c matrix, shadow matrix, drop shadow. */
 // @symbol _ZN12daBakubaku_c19func_ov032_02112044Ev
 void daBakubaku_c::func_ov032_02112044()
 {

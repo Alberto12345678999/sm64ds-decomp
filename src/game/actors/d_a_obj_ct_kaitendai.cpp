@@ -141,9 +141,8 @@ int daObjCtKaitendai_c::InitResources()
         mVariant = 0;
     }
 
-    mModel.SetFile(
-        (BMD_File *)Model::LoadFile(*data_ov065_0211d35c[mVariant].model),
-        1, -1);
+    mModel.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(*data_ov065_0211d35c[mVariant].model), 1,
+                   -1);
 
     mShadowModel.InitCylinder();
     UpdateModelPosAndRotY();

@@ -9,7 +9,7 @@
  * Highest address first.
  */
 // leftovers:
-// - ModelAnim::SetAnim and dCcAc_c::Init stay C ABI spellings in
+// - dExtAnmModel_c::SetAnim and dCcAc_c::Init stay C ABI spellings in
 //   InitResources. Fix12<int> by value lowers differently as a member call.
 // - func_02012790 and func_02012694 stay linker names. State0 calls them
 //   with a sound id, and the second also takes a position.
@@ -76,10 +76,9 @@ extern "C" daObjTbox_c *daObjTbox_c_classInit()
 // @symbol _ZN11daObjTbox_c13InitResourcesEv
 int daObjTbox_c::InitResources()
 {
-    Model::LoadFile(data_ov002_0210d9a8);
-    Model::LoadFile(data_ov002_0210da38);
-    mModelAnim.SetFile(
-        (BMD_File *)Model::LoadFile(data_ov064_0211c96c), 1, -1);
+    dExtSimpleModel_c::LoadFile(data_ov002_0210d9a8);
+    dExtSimpleModel_c::LoadFile(data_ov002_0210da38);
+    mModelAnim.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(data_ov064_0211c96c), 1, -1);
     mModelAnim.SetAnim((BCA_File *)dExtFrameCtrl_c::LoadFile(data_ov064_0211c964), 0x40000000,
                        0x1000, 0);
     _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(
@@ -105,7 +104,7 @@ int daObjTbox_c::Behavior()
 // @symbol _ZN11daObjTbox_c6RenderEv
 int daObjTbox_c::Render()
 {
-    Model *model = &mModelAnim;
+    dExtSimpleModel_c *model = &mModelAnim;
     model->Render(0);
     return 1;
 }

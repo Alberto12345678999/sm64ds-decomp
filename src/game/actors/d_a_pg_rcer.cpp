@@ -94,7 +94,7 @@ int daPgRcer_c::InitResources()
 {
     int i;
 
-    mModelAnim.SetFile((BMD_File *)Model::LoadFile(data_ov019_02113498), 1, 1);
+    mModelAnim.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(data_ov019_02113498), 1, 1);
 
     for (i = 0; i < 7; i++)
         dExtFrameCtrl_c::LoadFile(*data_ov019_02112788[i]);

@@ -228,7 +228,7 @@ extern "C" BlockSW4 data_ov098_0213c4f0;
 // @symbol _ZN13daObjBlockS_cD0Ev
 /* Destroys dCcAcPos_c x2, dExtShadowModel_c and dBgCh_Actr in reverse declaration
  * order, then dBgActor_c's inline destructor stores its own vptr and destroys
- * its dBgW_KcMbg and Model before chaining to dActor_c. D0 then returns the
+ * its dBgW_KcMbg and dExtSimpleModel_c before chaining to dActor_c. D0 then returns the
  * object through the inline operator delete. */
 daObjBlockS_c::~daObjBlockS_c()
 {
@@ -1161,7 +1161,7 @@ void daObjBlockS_c::func_ov098_021397c8()
 }
 
 // @symbol _ZN13daObjBlockS_c19func_ov098_02139850Ev
-/* Model matrix. When mHoldingPlayer is set, mFlags bit 0x4000 is set and the
+/* dExtSimpleModel_c matrix. When mHoldingPlayer is set, mFlags bit 0x4000 is set and the
  * player's mCarryMatrix is nonzero, the
  * crate follows the player's hand: it picks a row r5 of the carry-offset
  * table (data_ov098_0213bf60 / 64 / 68 are its x / y / z columns, stride 12
@@ -1247,7 +1247,7 @@ int daObjBlockS_c::CleanupResources()
 }
 
 // @symbol _ZN13daObjBlockS_c6RenderEv
-/* Draws the model through Model's vtable slot 5 (Render) unless the crate is
+/* Draws the model through dExtSimpleModel_c's vtable slot 5 (Render) unless the crate is
  * in STATE_BROKEN or mFlags 0x40000 (a yoshi-mouth bit) is set. The call goes
  * through the local `Sub` shadow so it stays a virtual dispatch on the member
  * object. Always returns 1. */
@@ -1369,7 +1369,7 @@ int daObjBlockS_c::InitResources()
     mHomeAngleX = mAngleX;
     mHomeAngleY = mAngleY;
     mHomeAngleZ = mAngleZ;
-    mModel.SetFile((BMD_File *)Model::LoadFile(**(SharedFilePtr **)(f)), 1, -1);
+    mModel.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(**(SharedFilePtr **)(f)), 1, -1);
     mShadowModel.InitCuboid();
     _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
         (char *)&mMeshCollider, (int)dBgW_Kc::LoadFile(**(SharedFilePtr **)(f + 4)),

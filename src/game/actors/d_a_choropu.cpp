@@ -20,7 +20,7 @@ struct Vector3_16f;
 // leftovers:
 // - func_ov080_02124418 stays free. Its first argument is a daChoro_Rock_c,
 //   so it is not a daChoropu_c method.
-// - ModelAnim::SetAnim, dCcAc_c::Init, dBgCh_Actr::Init, Player::Hurt,
+// - dExtAnmModel_c::SetAnim, dCcAc_c::Init, dBgCh_Actr::Init, Player::Hurt,
 //   Particle::System::New/NewSimple retain scalar mangled declarations for
 //   their by-value Fix12 parameters. Throw's spawn id stays
 //   `py ? 0x137 : 0x137`.
@@ -692,7 +692,7 @@ s32 daChoro_Rock_c::CleanupResources()
 /* Draws the mole's model (mModelAnim) with no scale argument. */
 s32 daChoropu_c::Render()
 {
-    Model *m = &mModelAnim;
+    dExtSimpleModel_c *m = &mModelAnim;
     m->Render(0);
     return 1;
 }
@@ -701,7 +701,7 @@ s32 daChoropu_c::Render()
 /* Draws the rock's model, scaled by (mScaleX, mScaleY, mScaleZ). */
 s32 daChoro_Rock_c::Render()
 {
-    Model *m = &mModel;
+    dExtSimpleModel_c *m = &mModel;
     m->Render(&mScale);
     return 1;
 }
@@ -810,9 +810,9 @@ s32 daChoropu_c::InitResources()
 {
     int i;
     for (i = 0; i < 4; i++) dExtFrameCtrl_c::LoadFile(*data_ov080_0212766c[i]);
-    Model::LoadFile(data_ov002_0210d9d8);
-    Model::LoadFile(data_ov080_021283c8);
-    mModelAnim.SetFile((BMD_File *)Model::LoadFile(data_ov080_021283c0), 1, -1);
+    dExtSimpleModel_c::LoadFile(data_ov002_0210d9d8);
+    dExtSimpleModel_c::LoadFile(data_ov080_021283c8);
+    mModelAnim.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(data_ov080_021283c0), 1, -1);
     mModelAnim.SetAnim((BCA_File *)data_ov080_021283d8.filePtr, 0, 0x1000, 0);
     _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, this, 0x50000, 0x64000, 0x200000, 0x66fe0);
     mGroupMode = param1 & 0xf;
@@ -836,7 +836,8 @@ s32 daChoropu_c::InitResources()
  * 0.5 (0x800) for a small one. */
 s32 daChoro_Rock_c::InitResources()
 {
-    if (!mModel.SetFile((BMD_File *)Model::LoadFile(data_ov080_021283c8), 1, -1)) return 0;
+    if (!mModel.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(data_ov080_021283c8), 1, -1))
+        return 0;
     _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, this, 0x1e000, 0x1e000, 0x200004, 0);
     mIsSmall = param1 & 1;
     _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(&mWithMeshClsn, this, 0x1e000, 0x1e000, 0, 0);

@@ -91,7 +91,7 @@
       "address": "0x02112680",
       "size": "0x8",
       "binding": "STB_GLOBAL",
-      "evidence": "model resource handle constructed with file ID 1507; Model::LoadFile reaches it through data_ov052_021124d4.model"
+      "evidence": "model resource handle constructed with file ID 1507; dExtSimpleModel_c::LoadFile reaches it through data_ov052_021124d4.model"
     },
     {
       "symbol": "gEmmLogCollisionFile",

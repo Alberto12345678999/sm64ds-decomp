@@ -420,7 +420,7 @@ int daObjPowerUpItem_c::DropShadow()
     return _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j((char*)this, &mShadowModel, &mShadowMat, r3, 0x3c000, 0xf);
 }
 
-/* Model matrices: rotates mOpenModel's matrix by mAngleY, sets its translation
+/* dExtSimpleModel_c matrices: rotates mOpenModel's matrix by mAngleY, sets its translation
  * to the position >> 3 and copies it to mCloseModel. */
 // @symbol _ZN18daObjPowerUpItem_c14UpdateMatricesEv
 void daObjPowerUpItem_c::UpdateMatrices(){
@@ -487,8 +487,8 @@ int daObjPowerUpItem_c::InitResources()
 {
     struct Vector3 pos;
 
-    Model::LoadFile(*(SharedFilePtr *)gPFlowerCloseModelFile);
-    Model::LoadFile(*(SharedFilePtr *)gPFlowerOpenModelFile);
+    dExtSimpleModel_c::LoadFile(*(SharedFilePtr *)gPFlowerCloseModelFile);
+    dExtSimpleModel_c::LoadFile(*(SharedFilePtr *)gPFlowerOpenModelFile);
     if (mOpenModel.SetFile((BMD_File*)gPFlowerOpenModelFile[1], 1, -1) == 0)
         return 0;
     if (mCloseModel.SetFile((BMD_File*)gPFlowerCloseModelFile[1], 1, -1) == 0)

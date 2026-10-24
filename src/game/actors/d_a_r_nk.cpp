@@ -130,7 +130,7 @@ struct RNkAnimationFileHandle : SharedFilePtr {
 #define ANIM_LAND      (data_ov062_0211e004.filePtr)   /* on landing, or when the path ends; then ANIM_RUN */
 #define ANIM_BRAKE     (gdaRNkNokonokoWalkEdAnimationFile.filePtr)   /* STATE_PULL_UP's last frame to a stop */
 
-/* Play a BCA on Koopa's ModelAnim at normal speed (0x1000 = 1.0), from frame 0. */
+/* Play a BCA on Koopa's dExtAnmModel_c at normal speed (0x1000 = 1.0), from frame 0. */
 #define SET_ANIM(this, bca, flags) \
     (this)->mModelAnim.SetAnim((BCA_File *)(bca), (flags), 0x1000, 0)
 
@@ -172,7 +172,7 @@ struct System {
 }
 extern short data_02082214[];   /* SINE_TABLE: {sin, cos} pairs in fix12, indexed by angle >> 4 */
 /* This scalar entry follows its C definition, including u16 startFrame.
-   ModelAnim.h instead declares u32; that shared contract is still unresolved. */
+   dExtAnmModel_c.h instead declares u32; that shared contract is still unresolved. */
 extern s16 Vec3_HorzAngle(const Vector3 *v0, const Vector3 *v1);
 extern s32 Vec3_Dist(const Vector3 *a, const Vector3 *b);
 /* Play2D(3, id): a sound with no position. */
@@ -221,7 +221,7 @@ int daRNk_c::InitResources()
     unsigned char b;
     int zero;
 
-    Model::LoadFile(*(SharedFilePtr *)&gdaRNkNokonokoModelFile);
+    dExtSimpleModel_c::LoadFile(*(SharedFilePtr *)&gdaRNkNokonokoModelFile);
     dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)&data_ov062_0211e014);
     dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)&data_ov062_0211e024);
     dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)&gdaRNkNokonokoWalkEdAnimationFile);
@@ -312,8 +312,8 @@ int daRNk_c::Behavior()
 }
 
 // @symbol _ZN7daRNk_c6RenderEv
-/* Model is the real class now, through daRNk_c.h: HideMaterial is its own
-   non-virtual and the slot-5 virtual is Render, which ModelAnim overrides. */
+/* dExtSimpleModel_c is the real class now, through daRNk_c.h: HideMaterial is its own
+   non-virtual and the slot-5 virtual is Render, which dExtAnmModel_c overrides. */
 int daRNk_c::Render()
 {
   mModelAnim.HideMaterial(0, 1);

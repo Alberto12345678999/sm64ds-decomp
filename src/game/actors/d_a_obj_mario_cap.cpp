@@ -68,7 +68,7 @@
  *   emits one .text section per function in the reverse of source order.
  *
  *   common.h comes first so Matrix4x3 is the flat s32[12] spelling; math/
- *   Matrix.h through ModelAnim.h would scalarize the copies in
+ *   Matrix.h through dExtAnmModel_c.h would scalarize the copies in
  *   UpdateMatrix.
  *
  *   The PMF stand-ins (CapStateSelf / CapStateRec / CapEnterSelf). A PMF on
@@ -88,7 +88,7 @@
  *
  * WHY SOME CALLS ARE SPELLED AS MANGLED SYMBOLS:
  *   dActor_c::SetRanges is not on the header (notes/mwccarm-codegen.md 6az).
- *   ModelAnim::SetAnim / DropShadowRadHeight / ReflectAngle take Fix12<int>
+ *   dExtAnmModel_c::SetAnim / DropShadowRadHeight / ReflectAngle take Fix12<int>
  *   by value, which has no implicit int conversion (notes/mwccarm-codegen.md
  *   6az). dBgCh_Actr::GetFloorResult / GetWallResult are not declared.
  *
@@ -369,9 +369,9 @@ int daObjMarioCap_c::InitResources()
         break;
     }
 
-    if (mModelAnim.SetFile(
-            (BMD_File *)Model::LoadFile(*(SharedFilePtr *)data_ov002_020ff0ac[mModelIndex]),
-            1, -1) == 0)
+    if (mModelAnim.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(
+                               *(SharedFilePtr *)data_ov002_020ff0ac[mModelIndex]),
+                           1, -1) == 0)
         return 0;
 
     mShadowModel.InitCylinder();
@@ -612,10 +612,10 @@ int daObjMarioCap_c::Render()
     int t = mType;
     if (t == 4 || t == 17 || t == 5 || t == 18 || t == 16 || t == 11 || (unsigned)(t - 6) <= 3) {
         if (!(mBlinkHidden & 1) || mStateEntry == (int)&data_ov002_0210df54) {
-            mModelAnim.Model::Render(&mScale);
+            mModelAnim.dExtSimpleModel_c::Render(&mScale);
         }
     } else {
-        mModelAnim.Model::Render(&mScale);
+        mModelAnim.dExtSimpleModel_c::Render(&mScale);
     }
     return 1;
 }

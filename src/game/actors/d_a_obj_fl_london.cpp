@@ -19,7 +19,7 @@
  * Leftover: func_020393d4 stores &dBgW::UpdatePosWithTransform (no setter).
  * Leftover: data_ov022_02114580 / data_ov022_02114578 SharedFilePtr handles
  *   and data_ov064_0211bb2c CLPS; symbols.txt has no recovered names.
- * Leftover: common.h first (dBgActor_c.h already pulls it; Model.h's nested
+ * Leftover: common.h first (dBgActor_c.h already pulls it; dExtSimpleModel_c.h's nested
  *   Matrix4x3 would scalarize a 12-word copy).
  * Leftover: Behavior writes mPrevAngleZ through a short* (member
  *   assignment size-DIFFs).
@@ -89,7 +89,7 @@ extern "C" SpawnInfo<daObjFl_London_c> g_profile_FL_LONDON = {
 // @symbol _ZN16daObjFl_London_c13InitResourcesEv
 s32 daObjFl_London_c::InitResources()
 {
-    void *f = Model::LoadFile(data_ov022_02114580);
+    void *f = dExtSimpleModel_c::LoadFile(data_ov022_02114580);
     mModel.SetFile((BMD_File *)f, 1, -1);
     func_ov022_02111a1c(this);
     UpdateClsnPosAndRot();

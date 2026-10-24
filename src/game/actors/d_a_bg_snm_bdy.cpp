@@ -191,7 +191,7 @@ SpawnInfo<daBgSnmBdy_c> g_profile_BIG_SNOWMAN_BODY = {
 int daBgSnmBdy_c::InitResources()
 {
     Vector3 pos;
-    void *file = Model::LoadFile(data_ov072_02122b20);
+    void *file = dExtSimpleModel_c::LoadFile(data_ov072_02122b20);
     mModel.SetFile((BMD_File *)file, 1, 1);
     if (mShadowModel.InitCylinder() == 0)
         return 0;

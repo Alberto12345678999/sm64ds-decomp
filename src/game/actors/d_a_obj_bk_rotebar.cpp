@@ -83,7 +83,7 @@ extern "C" daObjBk_Rotebar_c *daObjBk_Rotebar_c_classInit()
 // @symbol _ZN17daObjBk_Rotebar_c13InitResourcesEv
 s32 daObjBk_Rotebar_c::InitResources()
 {
-    mModel.SetFile((BMD_File *)Model::LoadFile(data_ov015_02114a8c), 1, -1);
+    mModel.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(data_ov015_02114a8c), 1, -1);
     UpdateModelPosAndRotY();
     UpdateClsnPosAndRot();
 

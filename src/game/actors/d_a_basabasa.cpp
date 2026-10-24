@@ -5,7 +5,7 @@
  * off emits D1, D0, then a D2 with no ROM home, in source order. The factory
  * (was Swoop_Spawn) is `new daBasabasa_c()`.
  */
-/* leftovers: ModelAnim::SetAnim, dCcAc_c::Init, dBgCh_Actr::Init,
+/* leftovers: dExtAnmModel_c::SetAnim, dCcAc_c::Init, dBgCh_Actr::Init,
  * dEnemyBase_c::KillByInvincibleChar, dActor_c::SpawnCoins,
  * dActor_c::DropShadowRadHeight, Player::Hurt and Player::Bounce stay
  * mangled. This file calls them, and each symbol takes Fix12<int> by value.
@@ -480,8 +480,8 @@ int daBasabasa_c::Behavior()
  * and 0x364 are two members. */
 int daBasabasa_c::InitResources()
 {
-    mModelAnim1.SetFile((BMD_File *)Model::LoadFile(data_ov065_0211d698), 1, -1);
-    mModelAnim2.SetFile((BMD_File *)Model::LoadFile(data_ov065_0211d6a8), 1, -1);
+    mModelAnim1.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(data_ov065_0211d698), 1, -1);
+    mModelAnim2.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(data_ov065_0211d6a8), 1, -1);
     mShadowModel.InitCylinder();
     dExtFrameCtrl_c::LoadFile(data_ov065_0211d690);
     dExtFrameCtrl_c::LoadFile(data_ov065_0211d6a0);

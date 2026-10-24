@@ -12,7 +12,7 @@
  * the same pragma lays .text down in source order, so this file is ROM-ascending.
  *
  * leftovers:
- * - ModelAnim::SetAnim and dCcAc_c::Init take Fix12<int> by value, so their
+ * - dExtAnmModel_c::SetAnim and dCcAc_c::Init take Fix12<int> by value, so their
  *   calls stay mangled spellings inside InitResources.
  * - func_ov002_020bc664 keeps its address name as a member; the cartridge
  *   records no name for it.
@@ -134,7 +134,7 @@ s32 daObjHeart_c::Behavior()
 // @symbol _ZN12daObjHeart_c13InitResourcesEv
 s32 daObjHeart_c::InitResources()
 {
-    mModelAnim.SetFile((BMD_File *)Model::LoadFile(data_ov002_0210e104), 1, -1);
+    mModelAnim.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(data_ov002_0210e104), 1, -1);
     mModelAnim.SetAnim((BCA_File *)dExtFrameCtrl_c::LoadFile(data_ov002_0210e0fc), 0, 0x1000, 0);
     _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(
         &mdCcAc_c, this, 0x3c000, 0x78000, 0x100002, 0x8000);

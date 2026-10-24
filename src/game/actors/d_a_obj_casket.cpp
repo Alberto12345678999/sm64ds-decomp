@@ -128,7 +128,7 @@ extern "C" daObjCasket_c *daObjCasket_c_classInit()
 // @symbol _ZN13daObjCasket_c13InitResourcesEv
 int daObjCasket_c::InitResources()
 {
-    mModel.SetFile((BMD_File *)Model::LoadFile(data_ov071_021230d0), 1, -1);
+    mModel.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(data_ov071_021230d0), 1, -1);
     mVertAccel = -0x2000;
     mTerminalVelocity = -0x3c000;
 

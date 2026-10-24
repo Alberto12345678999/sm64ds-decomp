@@ -426,10 +426,10 @@ static inline int IsOffScreen(dActor_c *actor) {
  *
  * Own vptr, then the members in reverse declaration order (the class-owned
  * dBgW_KcMbg at 0x674, the Vector3 span at 0x4dc via __cxa_vec_cleanup,
- * TextureSequence, dExtShadowModel_c, Model, BlendModelAnim,
+ * TextureSequence, dExtShadowModel_c, dExtSimpleModel_c, dExtBlendAnmModel_c,
  * dCcAcPos_c), then dBgActor_c's vptr -- inlined, because
  * dBgActor_c's destructor is defined in its class body -- then dBgActor_c's
- * own dBgW_Kc and Model, then dActor_c. See include/Eyerok.h for why
+ * own dBgW_Kc and dExtSimpleModel_c, then dActor_c. See include/Eyerok.h for why
  * this is a direct dBgActor_c child, not three levels deep.
  *
  * Out-of-line ~Eyerok is the key function, so this TU also emits the vtable
@@ -2667,9 +2667,9 @@ int Eyerok::InitResources()
 
     switch (mPartIdx) {
     case 0:
-        mModel2.SetFile((BMD_File *)Model::LoadFile(data_ov066_0211ae6c), 1, -1);
-        Model::LoadFile(data_ov066_0211ae4c);
-        Model::LoadFile(data_ov066_0211aeb4);
+        mModel2.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(data_ov066_0211ae6c), 1, -1);
+        dExtSimpleModel_c::LoadFile(data_ov066_0211ae4c);
+        dExtSimpleModel_c::LoadFile(data_ov066_0211aeb4);
         TextureSequence::LoadFile(data_ov066_0211aebc);
         TextureSequence::LoadFile(data_ov066_0211ae9c);
         TextureSequence::LoadFile(data_ov066_0211ae3c);

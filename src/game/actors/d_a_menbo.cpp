@@ -33,7 +33,7 @@ struct System {
  * deslop leftovers:
  * - func_ov090_02131ac4: `mStateTimer == 0` is ldrsh. The ROM is ldrh, one
  *   word. `*(unsigned short *)&mStateTimer` matches.
- * - func_ov090_02131608: ModelAnim::SetAnim with a Fix12<int> rate is 0x4c
+ * - func_ov090_02131608: dExtAnmModel_c::SetAnim with a Fix12<int> rate is 0x4c
  *   against 0x40 and emits 4 bytes of .rodata. The scalar SetAnim call
  *   matches. The patrol, water-rest and water-chase entries keep it.
  * - func_ov090_021310b4: dActor_c::SpawnCoins with a Fix12<int> spread is
@@ -668,7 +668,7 @@ int func_ov090_02131e00(MenboState *c, MenboStateFn *p)
 }
 
 // @symbol func_ov090_02131e50
-/* Model matrix from position (shifted down 3, the renderer's scale) and
+/* dExtSimpleModel_c matrix from position (shifted down 3, the renderer's scale) and
  * the three rotation halfwords. */
 void func_ov090_02131e50(daMenbo_c *c)
 {
@@ -824,7 +824,7 @@ int daMenbo_c::Behavior()
 #pragma opt_common_subs off
 
 // @symbol _ZN9daMenbo_c13InitResourcesEv
-/* Model, four anims, both collision volumes, then the water line.
+/* dExtSimpleModel_c, four anims, both collision volumes, then the water line.
  * Mode 2 on course 0x12 skips the raycast and starts at water chase with
  * the line equal to the spawn height. A surface whose 0x20 flag is set
  * records the hit as the line only and also starts at water chase. Anything
@@ -836,7 +836,7 @@ int daMenbo_c::InitResources()
     Vector3 pos;
     Vector3 v;
 
-    f = (BMD_File *)Model::LoadFile(data_ov090_021344a0);
+    f = (BMD_File *)dExtSimpleModel_c::LoadFile(data_ov090_021344a0);
     mModelAnim.SetFile(f, 1, -1);
     dExtFrameCtrl_c::LoadFile(data_ov090_02134488);
     dExtFrameCtrl_c::LoadFile(data_ov090_02134480);
@@ -972,7 +972,7 @@ MenboStateFn data_ov090_021344e4[2] = {
  *
  * `new daMenbo_c` is the whole sequence the loose factory spelled by hand:
  * fBase_c::operator new(0x3b0), dEnemyBase_c's base constructor, the vptr
- * store, then the dCcAcPos_c, dBgCh_Actr and ModelAnim member constructors. */
+ * store, then the dCcAcPos_c, dBgCh_Actr and dExtAnmModel_c member constructors. */
 // @symbol daMenbo_c_classInit
 extern "C" daMenbo_c *daMenbo_c_classInit(void)
 {

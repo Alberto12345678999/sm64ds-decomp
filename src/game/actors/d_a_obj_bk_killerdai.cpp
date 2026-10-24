@@ -165,9 +165,9 @@ s32 daObjBkKillerdai_c::InitResources()
     void *file;
     s8 course;
 
-    Model::LoadFile(data_ov079_02128300);
-    Model::LoadFile(data_ov079_021282f0);
-    file = Model::LoadFile(*(SharedFilePtr *)data_ov079_02127f64[0]);
+    dExtSimpleModel_c::LoadFile(data_ov079_02128300);
+    dExtSimpleModel_c::LoadFile(data_ov079_021282f0);
+    file = dExtSimpleModel_c::LoadFile(*(SharedFilePtr *)data_ov079_02127f64[0]);
     mModel.SetFile((BMD_File *)file, 1, -1);
     UpdateModelPosAndRotY();
     UpdateClsnPosAndRot();

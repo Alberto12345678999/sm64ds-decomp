@@ -115,7 +115,7 @@ extern "C" daObjIceBlock_c *daObjIceBlock_c_classInit()
 // @symbol _ZN15daObjIceBlock_c13InitResourcesEv
 s32 daObjIceBlock_c::InitResources()
 {
-    mModel.SetFile((BMD_File *)Model::LoadFile(data_ov081_02128fd8), 1, 0x17);
+    mModel.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(data_ov081_02128fd8), 1, 0x17);
     _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(
         &mCollider, this, 0xc8000, 0x12c000, 0x800002, 0x44000);
     UpdateModelPosAndRotY();

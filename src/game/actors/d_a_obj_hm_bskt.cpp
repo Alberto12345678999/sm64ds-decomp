@@ -88,7 +88,7 @@ extern "C" daObjHmBskt_c *daObjHmBskt_c_classInit()
 // @symbol _ZN13daObjHmBskt_c13InitResourcesEv
 s32 daObjHmBskt_c::InitResources()
 {
-    BMD_File *modelFile = (BMD_File *)Model::LoadFile(data_ov030_02115c88);
+    BMD_File *modelFile = (BMD_File *)dExtSimpleModel_c::LoadFile(data_ov030_02115c88);
     mModel.SetFile(modelFile, 1, -1);
 
     mVertAccel = 0;

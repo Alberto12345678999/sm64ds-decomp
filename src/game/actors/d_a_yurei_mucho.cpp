@@ -16,7 +16,7 @@
  * - The Mtx43 / V3A overlays on mModelAnim.mat4x3, mShadowMat and the
  *   player position copies. Plain Matrix4x3 / Vector3 assignment
  *   scalarizes.
- * - ModelAnim::SetAnim, dCcAc_c::Init, dBgCh_Actr::Init,
+ * - dExtAnmModel_c::SetAnim, dCcAc_c::Init, dBgCh_Actr::Init,
  *   DropShadowRadHeight, KillByInvincibleChar, SpawnCoins, Player::Hurt
  *   and Player::Bounce retain scalar ABI declarations. Native fixed-point
  *   call reconstruction remains separate work; the handoff records the
@@ -160,8 +160,8 @@ s32 daYurei_Mucho_c::OnAimedAtWithEgg()
    absent from symbols.txt. Retain these ABI calls pending interface repair. */
 int daYurei_Mucho_c::InitResources()
 {
-    mModelAnim.SetFile((BMD_File *)Model::LoadFile(data_ov065_0211d618), 1, -1);
-    Model::LoadFile(data_ov065_0211d610);
+    mModelAnim.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(data_ov065_0211d618), 1, -1);
+    dExtSimpleModel_c::LoadFile(data_ov065_0211d610);
     mShadowModel.InitCylinder();
     dExtFrameCtrl_c::LoadFile(data_ov065_0211d600);
     dExtFrameCtrl_c::LoadFile(data_ov065_0211d608);
@@ -691,7 +691,7 @@ int daYurei_Mucho_c::func_ov065_02115f84()
  * included class header makes mwccarm emit retail's D1 then D0 pair without
  * the otherwise homeless D2 variant an out-of-line definition produces.
  *
- * D1 stores the vptr, then destroys the dExtShadowModel_c at 0x364, the ModelAnim at
+ * D1 stores the vptr, then destroys the dExtShadowModel_c at 0x364, the dExtAnmModel_c at
  * 0x300, the dBgCh_Actr at 0x144 and the dCcAc_c at 0x110 in reverse
  * declaration order, and tails into ov002 _ZN12dEnemyBase_cD2Ev. D0 repeats
  * that body verbatim -- it does NOT call D1 -- and then hands the object back

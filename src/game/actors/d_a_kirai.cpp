@@ -330,7 +330,7 @@ int daKirai_c::InitResources()
     Vector3 v;
     Vector3 z;
 
-    mModel.SetFile((BMD_File *)Model::LoadFile(data_ov060_0211b1c4), 1, -1);
+    mModel.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(data_ov060_0211b1c4), 1, -1);
     v.x = 0;
     v.y = -0x96000;
     v.z = 0;
@@ -369,7 +369,7 @@ KiraiState data_ov060_0211b1d8[4] = {
 
 /* `new daKirai_c` is the whole sequence the loose factory spelled by hand:
  * fBase_c::operator new(0x1b0), dActor_c's base constructor, the vptr store,
- * then the Model and dCcAcPos_c member constructors. */
+ * then the dExtSimpleModel_c and dCcAcPos_c member constructors. */
 // @symbol daKirai_c_classInit
 extern "C" daKirai_c *daKirai_c_classInit(void)
 {

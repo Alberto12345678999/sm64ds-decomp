@@ -12,19 +12,19 @@ struct Player;
 struct player_;
 #ifdef __cplusplus
 
-/* MEASURED -- MUST STAY FIRST, ahead of Model.h. Matrix4x3 has two guarded
+/* MEASURED -- MUST STAY FIRST, ahead of dExtSimpleModel_c.h. Matrix4x3 has two guarded
    spellings sharing the same 0x30 bytes; whichever a TU sees first stands, and
-   Model.h pulls in the wrong one. UpdateClsnPosAndRot then compiles to 0x74
+   dExtSimpleModel_c.h pulls in the wrong one. UpdateClsnPosAndRot then compiles to 0x74
    against the ROM's 0x64. notes/platform-provenance.md. */
 #include "common.h"
 
 #include "dActor_c.h"
-#include "Model.h"
+#include "dExtSimpleModel_c.h"
 #include "dBgW_KcMbg.h"
 
 struct dBgActor_c : dActor_c {
     u8  pad_0d0[0x4];
-    Model mModel;                           /* 0x0d4 */
+    dExtSimpleModel_c mModel;       /* 0x0d4 */
     dBgW_KcMbg mMeshCollider;       /* 0x124 */
     /* Where the collider sits: mModel's matrix with the actor's position
        written over the translation row. See UpdateClsnPosAndRot. */

@@ -26,7 +26,7 @@ struct Vector3_16f;
  * daGrock_c_classInit (historical alias RollingRock_Spawn, folded in from
  * fold-lane-c-0929) is now the last function in the file, appended after
  * InitResources in ROM order; it hand-called fBase_c::operator new(968),
- * dEnemyBase_c::dEnemyBase_c(), stored _ZTV9daGrock_c, then Model, then
+ * dEnemyBase_c::dEnemyBase_c(), stored _ZTV9daGrock_c, then dExtSimpleModel_c, then
  * dExtShadowModel_c, then dCcAcPos_c, then dBgCh_Actr in field order. daGrock_c
  * declares no constructor of its own, so the compiler-synthesized default
  * constructor emits exactly that sequence, and the factory is now
@@ -450,7 +450,7 @@ int daGrock_c::InitResources()
     mTrackStarID = -1;
     mSpawnCount = 0;
 
-    Model::LoadFile(data_ov021_02114a50);
+    dExtSimpleModel_c::LoadFile(data_ov021_02114a50);
 
     if (mType >= kGrockRolling) {
         if (mModel.SetFile((BMD_File *)data_ov021_02114a50.filePtr, 1, 1) == 0)

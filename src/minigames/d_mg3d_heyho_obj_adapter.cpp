@@ -16,13 +16,13 @@ struct System {
      record they operate on (0xf0 stride) is laid out in include/Heyho.h and read
      through the HEYHO() cast; the per-file typedef/extern universes disagree, so
      the helpers keep their char* parameters rather than a shared typed one.
-   - Heyho::mModelAnim is a real ModelAnim, so its SetFile/SetAnim/Render/
+   - Heyho::mModelAnim is a real dExtAnmModel_c, so its SetFile/SetAnim/Render/
      Advance calls, its mat4x3 store and Heyho_Destruct's destructor call are
      member calls (the helpers that used to reach the matrix and the frame
      controller as separate byte views were reading inside that one object).
-   - Heyho_Construct still calls _ZN9ModelAnimC1Ev by name. C++ has no way to
+   - Heyho_Construct still calls _ZN14dExtAnmModel_cC1Ev by name. C++ has no way to
      run a constructor on existing storage short of placement new, and
-     `new (&HEYHO(t)->mModelAnim) ModelAnim` adds the null check placement new
+     `new (&HEYHO(t)->mModelAnim) dExtAnmModel_c` adds the null check placement new
      requires (adds/beq): 0x20 against the ROM's 0x1c (MEASURED 2026-10-23).
      The real shape is a Heyho constructor, which waits on the record getting
      a class.
@@ -66,11 +66,11 @@ struct HeyhoAdapterAnimationFileHandle : SharedFilePtr {
 /* ---- Heyho_Construct ---- */
 namespace n020c6f70 {
 extern "C" {
-extern void *_ZN9ModelAnimC1Ev(void *object);
+extern void *_ZN14dExtAnmModel_cC1Ev(void *object);
 
 int Heyho_Construct(char *t)
 {
-    _ZN9ModelAnimC1Ev(&HEYHO(t)->mModelAnim);
+    _ZN14dExtAnmModel_cC1Ev(&HEYHO(t)->mModelAnim);
     return (int)t;
 }
 
@@ -85,7 +85,7 @@ extern HeyhoAdapterAnimationFileHandle gMgPHeyhoWaitAnimFile;
 int Heyho_Destruct(int *c) {
     gMgPHeyhoMiniModelFile.Release();
     gMgPHeyhoWaitAnimFile.Release();
-    HEYHO(c)->mModelAnim.ModelAnim::~ModelAnim();
+    HEYHO(c)->mModelAnim.dExtAnmModel_c::~dExtAnmModel_c();
     return (int)c;
 }
 }
@@ -104,7 +104,7 @@ struct fBaseView {
     u16 actorID; /* 0x0c */
 };
 namespace n020c6e4c {
-extern "C" void func_02016acc(Model *m, unsigned int a);
+extern "C" void func_02016acc(dExtSimpleModel_c *m, unsigned int a);
 extern "C" void func_02016b24(char *m, int a);
 extern "C" void func_02016a14(char *m, int a);
 extern "C" void func_02016a04(char *m, int a);
@@ -112,7 +112,7 @@ extern "C" void Heyho_UpdateMatrix(char *c);
 extern "C" void Heyho_SetIdle(char *p);
 
 extern "C" int Heyho_LoadResources(char *c) {
-    BMD_File *m = (BMD_File *)Model::LoadFile(gMgPHeyhoMiniModelFile);
+    BMD_File *m = (BMD_File *)dExtSimpleModel_c::LoadFile(gMgPHeyhoMiniModelFile);
     BCA_File *a = (BCA_File *)dExtFrameCtrl_c::LoadFile(gMgPHeyhoWaitAnimFile);
     if (HEYHO(c)->mModelAnim.SetFile(m, 1, -1) == 0) {
         return 0;

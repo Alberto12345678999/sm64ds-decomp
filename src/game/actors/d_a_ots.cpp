@@ -10,7 +10,7 @@
  *
  * One translation unit, twenty-four functions, the way the cartridge's own build
  * had it. This replaces twenty-four one-function shards; their content is
- * unchanged except where several of them carried stand-in `ModelAnim` and
+ * unchanged except where several of them carried stand-in `dExtAnmModel_c` and
  * `dActor_c` structs that cannot coexist with include/daOts_c.h in a single TU,
  * and where four different spellings of the same two ROM symbols had to be
  * collapsed into one (see the extern block below). InitResourcesCommon and
@@ -98,7 +98,7 @@
  *   knockback) is unexplained, as is hit flag 0x40000's identity.
  * - Surface types 1, 4, 5 and 0x13 (func_ov064_02116220) are unnamed.
  */
-/* daOts_c.h FIRST: it pulls math/Matrix.h ahead of common.h through ModelAnim,
+/* daOts_c.h FIRST: it pulls math/Matrix.h ahead of common.h through dExtAnmModel_c,
  * which is the nested Matrix4x3 spelling 02116bac needs for .t. */
 #include "daOts_c.h"
 #include "common.h"
@@ -224,7 +224,7 @@ extern void Matrix4x3_FromRotationY(void* m, short angle);
 short Vec3_HorzAngle(const Vector3 *a, const Vector3 *b);
 
 /* ONE SPELLING FOR ONE SYMBOL, with one exception. The shards carried four
- * declarations of ModelAnim::SetAnim that differed only in parameter spelling
+ * declarations of dExtAnmModel_c::SetAnim that differed only in parameter spelling
  * and return type; the old name's by-value Fix12<int> was ours, not the ROM's,
  * so five of the six call sites now call the real method (which returns void).
  * See notes/mwccarm-codegen.md 6az, MEASURED 2026-10-22.
@@ -236,7 +236,8 @@ short Vec3_HorzAngle(const Vector3 *a, const Vector3 *b);
  * declaration and not without it. The return-type disagreement against the
  * void definition is deliberate and banked. */
 /* local extern: func_ov064_02116560 tail-forwards SetAnim r0 as its own int result, so the int-returning spelling is load-bearing; byte-proved */
-extern "C" int _ZN9ModelAnim7SetAnimEP8BCA_Fileiit(ModelAnim *, BCA_File *, int, Fix12i, u16);
+extern "C" int _ZN14dExtAnmModel_c7SetAnimEP8BCA_Fileiit(dExtAnmModel_c *, BCA_File *, int, Fix12i,
+                                                         u16);
 int _Z14ApproachLinearRiii(int *dst, int target, int rate);
 
 void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(void* a, void* sm, void* mtx, int rad, int h, unsigned int x);
@@ -254,7 +255,7 @@ void func_ov064_021163c0(daOts_c *c);
  *
  * Shared InitResources body. daOts_c leaves slot 0 pure virtual; all three
  * children set mFileTable and call this. Loads the five SharedFilePtrs, inits
- * ModelAnim / dExtShadowModel_c / dCcAc_c / dBgCh_Actr, and seeds the Tail words
+ * dExtAnmModel_c / dExtShadowModel_c / dCcAc_c / dBgCh_Actr, and seeds the Tail words
  * (position snapshot, home position, config copies) from the config block and
  * the spawn position. Returns 0 if the model or shadow cannot be set up, else 1.
  *
@@ -269,7 +270,7 @@ int daOts_c::InitResourcesCommon()
     dExtFrameCtrl_c::LoadFile(*CONFIG(this)->files[kAnimHit]);
     dExtFrameCtrl_c::LoadFile(*CONFIG(this)->files[kAnimLedgeTurn]);
     dExtFrameCtrl_c::LoadFile(*CONFIG(this)->files[kAnimWalk]);
-    bmd = (BMD_File *)Model::LoadFile(*CONFIG(this)->files[kFileModel]);
+    bmd = (BMD_File *)dExtSimpleModel_c::LoadFile(*CONFIG(this)->files[kFileModel]);
     if (mModelAnim.SetFile(bmd, 1, 1) == 0)
         return 0;
     if (mShadowModel.InitCylinder() == 0)
@@ -676,7 +677,7 @@ int daOts_c::func_ov064_02116560(){
   int r = IsPlayerInRange(tail().mHomePosX, this->mPosY, tail().mHomePosZ, kKeepChaseRange);
   if(r) return r;
   tail().mState=STATE_RETURN_HOME;
-  return _ZN9ModelAnim7SetAnimEP8BCA_Fileiit(
+  return _ZN14dExtAnmModel_c7SetAnimEP8BCA_Fileiit(
       &this->mModelAnim, (BCA_File *)(CONFIG_BCA(this, kAnimWalk)), 0, kAnimSpeedNormal, 0);
 }
 
@@ -973,7 +974,7 @@ int daOts_c::OnAimedAtWithEgg()
  *
  * The body the key function forces out is the class's own layout evidence: the
  * ROM destroys a dExtShadowModel_c at 0x370, a dCcAc_c at 0x33c, a dBgCh_Actr at
- * 0x174 and a ModelAnim at 0x110, then chains to _ZN12dEnemyBase_cD2Ev, and
+ * 0x174 and a dExtAnmModel_c at 0x110, then chains to _ZN12dEnemyBase_cD2Ev, and
  * every one of those offsets is where the members' asserted sizes put them.
  * Nothing forces D1 here either -- see the D0 note above.
  */
