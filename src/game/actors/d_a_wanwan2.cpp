@@ -48,7 +48,7 @@
  *   compares the two. func_ov100_02143aa4 and func_ov100_02143ae0 are the
  *   state pair's members, called through ChompPmfSelf rather than as methods.
  * - The callees with Fix12<int> parameters (dActor_c's shadow drop,
- *   Player::Hurt, dExtAnmModel_c::SetAnim, dCcAcPos_c::Init, cstd::atan2) stay
+ *   Player::Hurt, dCcAcPos_c::Init, cstd::atan2) stay
  *   spelled as mangled extern-C free functions.
  * - func_ov100_02143b68 reaches the link positions and the link models'
  *   translations through two raw char pointers that start at the chomp,
@@ -164,8 +164,6 @@ void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
     s32 radius, s32 height, u32 flags, u32 vulnFlags);
 void _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void *p, const void *pos, u32 a, int b, u32 c, u32 d, u32 e);
 int func_02012694(int, void *);
-/* local extern: the call passes an untyped this, so it cannot use the header method. */
-void _ZN15dExtFrameCtrl_c7AdvanceEv(void *anim);
 void *_ZN7PathPtrC1Ev(void *thiz);
 void Matrix4x3_FromRotationXYZExt(void *m, int x, int y, int z);
 void Matrix4x3_FromRotationY(void *m, int angle);
@@ -496,7 +494,7 @@ extern "C" void func_ov100_021437d4(daWanwan2_c *thisx)
 extern "C" int func_ov100_02143aa4(daWanwan2_c *c)
 {
     c->mModelAnim.speed = 4096;     /* 1.0 */
-    _ZN15dExtFrameCtrl_c7AdvanceEv((dExtFrameCtrl_c *)&c->mModelAnim);
+    c->mModelAnim.Advance();
     func_ov100_021437d4(c);
     func_ov100_0214344c(c);
     func_ov100_021435e8(c);

@@ -95,6 +95,7 @@ extern "C" daObjWlPolelift_c *daObjWlPolelift_c_classInit()
     if (actor) {
         _ZN8dActor_cC2Ev(actor);
         *(int *)actor = (int)&_ZTV17daObjWlPolelift_c[2];
+        /* daObjWlPolelift_c declares no constructor yet, so this factory constructs its members by name. */
         _ZN17dExtSimpleModel_cC1Ev(&actor->model);
         _ZN10dCcAcPos_cC1Ev(&actor->clsn);
         _ZN7PathPtrC1Ev(&actor->path);

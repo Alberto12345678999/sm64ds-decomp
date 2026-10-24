@@ -1082,6 +1082,7 @@ extern "C" dEntObj_c *dEntObj_c_classInit(void) {
         *(void **)p = &data_0208e4b8;
         *(void **)p = _ZTV9dEntObj_c + 2;
         _ZN8Particle10SysTrackerC1Ev(&p->mParticles);
+        /* dEntObj_c declares no constructor yet, so this factory constructs its members by name. */
         _ZN17dExtSimpleModel_cC1Ev(&p->mModel);
         _ZN14dExtAnmModel_cC1Ev(&p->mModelAnim);
         __cxa_vec_ctor(p->mPlayers, 4, sizeof(UnknownVsPlayer),

@@ -943,11 +943,10 @@ extern "C" void TrmpItem_UpdateMatrix(char *self) {
     Matrix4x3_FromTranslation(&data_020a0e68, TRMPITEM(self)->mPos.x, TRMPITEM(self)->mPos.y,
                               TRMPITEM(self)->mPos.z);
     MulMat4x3Mat4x3(&rotation, &data_020a0e68, &data_020a0e68);
-    ((dExtSimpleModel_c *)TRMPITEM(self)->mModel)->mat4x3 = data_020a0e68;
-    ((dExtAnmTexSRT_c *)TRMPITEM(self)->mTexAnim)
-        ->Update(((dExtSimpleModel_c *)TRMPITEM(self)->mModel)->data);
-    ((dExtSimpleModel_c *)TRMPITEM(self)->mModel)->ApplyOpacity(TRMPITEM(self)->mAlpha, 0);
-    ((dExtSimpleModel_c *)TRMPITEM(self)->mModel)->Render(&TRMPITEM(self)->mScale);
+    TRMPITEM(self)->mModel->mat4x3 = data_020a0e68;
+    TRMPITEM(self)->mTexAnim.Update(TRMPITEM(self)->mModel->data);
+    TRMPITEM(self)->mModel->ApplyOpacity(TRMPITEM(self)->mAlpha, 0);
+    TRMPITEM(self)->mModel->Render(&TRMPITEM(self)->mScale);
 }
 }
 
@@ -963,7 +962,7 @@ extern "C" void TrmpItem_Update(char *item) {
     PMF *state = (PMF *)item;
     (((C *)item)->**state)();
     AddVec3(&TRMPITEM(item)->mPos, &TRMPITEM(item)->mVel, &TRMPITEM(item)->mPos);
-    ((dExtAnmTexSRT_c *)TRMPITEM(item)->mTexAnim)->Advance();
+    TRMPITEM(item)->mTexAnim.Advance();
     TRMPITEM(item)->mPrevPos.x = TRMPITEM(item)->mPos.x;
     TRMPITEM(item)->mPrevPos.y = TRMPITEM(item)->mPos.y;
     TRMPITEM(item)->mPrevPos.z = TRMPITEM(item)->mPos.z;
@@ -1050,14 +1049,14 @@ extern "C" void TrmpItem_Init(char *self, int *position, int *normal, int itemTy
     TRMPITEM(self)->mActive = 1;
     switch (TRMPITEM(self)->mSizeIdx) {
     case 0:
-        TRMPITEM(self)->mModel = TRMPITEM(self)->mModels[0];
+        TRMPITEM(self)->mModel = &TRMPITEM(self)->mModels[0];
         break;
     case 1:
-        TRMPITEM(self)->mModel = TRMPITEM(self)->mModels[1];
+        TRMPITEM(self)->mModel = &TRMPITEM(self)->mModels[1];
         break;
     case 2:
     default:
-        TRMPITEM(self)->mModel = TRMPITEM(self)->mModels[2];
+        TRMPITEM(self)->mModel = &TRMPITEM(self)->mModels[2];
         break;
     }
     TRMPITEM(self)->mScale.x = data_020a0ebc[0];
@@ -1093,17 +1092,14 @@ extern BTA_File sTrmpItemTextureAnim;
 }
 
 extern "C" void TrmpItem_Load(char *c) {
-    ((dExtSimpleModel_c *)TRMPITEM(c)->mModels[0])
-        ->SetFile((BMD_File *)sTrmpItemRingAModelFile.filePtr, 1, -1);
-    ((dExtSimpleModel_c *)TRMPITEM(c)->mModels[1])
-        ->SetFile((BMD_File *)sTrmpItemRingBModelFile.filePtr, 1, -1);
-    ((dExtSimpleModel_c *)TRMPITEM(c)->mModels[2])
-        ->SetFile((BMD_File *)sTrmpItemRingCModelFile.filePtr, 1, -1);
-    ((dExtSimpleModel_c *)TRMPITEM(c)->mModels[0])->SetPolygonID(1);
-    ((dExtSimpleModel_c *)TRMPITEM(c)->mModels[1])->SetPolygonID(2);
-    ((dExtSimpleModel_c *)TRMPITEM(c)->mModels[2])->SetPolygonID(3);
+    TRMPITEM(c)->mModels[0].SetFile((BMD_File *)sTrmpItemRingAModelFile.filePtr, 1, -1);
+    TRMPITEM(c)->mModels[1].SetFile((BMD_File *)sTrmpItemRingBModelFile.filePtr, 1, -1);
+    TRMPITEM(c)->mModels[2].SetFile((BMD_File *)sTrmpItemRingCModelFile.filePtr, 1, -1);
+    TRMPITEM(c)->mModels[0].SetPolygonID(1);
+    TRMPITEM(c)->mModels[1].SetPolygonID(2);
+    TRMPITEM(c)->mModels[2].SetPolygonID(3);
     dExtAnmTexSRT_c::Prepare(*(BMD_File *)sTrmpItemRingAModelFile.filePtr, sTrmpItemTextureAnim);
-    ((dExtAnmTexSRT_c *)TRMPITEM(c)->mTexAnim)->SetFile(sTrmpItemTextureAnim, 0, 0x1000, 0);
+    TRMPITEM(c)->mTexAnim.SetFile(sTrmpItemTextureAnim, 0, 0x1000, 0);
     TrmpItem_Hide((int *)c);
 }
 }

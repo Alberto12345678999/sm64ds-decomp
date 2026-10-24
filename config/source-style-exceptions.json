@@ -124,14 +124,6 @@
     {
       "path": "src/game/stages/d_s_stage_methods.cpp",
       "rule": "handspelled-member",
-      "match": "_ZN15dExtAnmTexSRT_cC1Ev",
-      "count": 2,
-      "reason": "LoadTextureTransformers spells the allocation as an explicit operator new call plus a null-guarded constructor call, a form from before the allocator was named _Znwm; the constructor is called by its mangled name.",
-      "evidence": "LoadTextureTransformers; arm9/dScStage_c 123/123 TEXT-VERIFIED (tubuild verify); carried from the standalone shards this fold absorbs (0x02029408..0x0202e118)"
-    },
-    {
-      "path": "src/game/stages/d_s_stage_methods.cpp",
-      "rule": "handspelled-member",
       "match": "_ZN9dFdWipe_cD1Ev",
       "count": 3,
       "reason": "The fader-array helpers pass dFdWipe_c's destructor by address to the array new/delete helpers (func_02073244/func_02073470); C++ cannot take a destructor's address, so the symbol is declared by its mangled name (local extern).",
@@ -794,22 +786,6 @@
       "evidence": "origin/main:include/dScMgRoulette_c.h 3x _ZN5ModelD1Ev; head 3x _ZN17dExtSimpleModel_cD1Ev; tools/source_style.py --base origin/main"
     },
     {
-      "path": "include/decl_BlendModelAnim.h",
-      "rule": "handspelled-member",
-      "match": "_ZN19dExtBlendAnmModel_cC1Ev",
-      "count": 1,
-      "reason": "Respelled by the Model-family RTTI rename: include/decl_BlendModelAnim.h on main carries the same 1 occurrence(s) as _ZN14BlendModelAnimC1Ev. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings.",
-      "evidence": "origin/main:include/decl_BlendModelAnim.h 1x _ZN14BlendModelAnimC1Ev; head 1x _ZN19dExtBlendAnmModel_cC1Ev; tools/source_style.py --base origin/main"
-    },
-    {
-      "path": "include/decl_BlendModelAnim.h",
-      "rule": "handspelled-member",
-      "match": "_ZN19dExtBlendAnmModel_cD1Ev",
-      "count": 1,
-      "reason": "Respelled by the Model-family RTTI rename: include/decl_BlendModelAnim.h on main carries the same 1 occurrence(s) as _ZN14BlendModelAnimD1Ev. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings.",
-      "evidence": "origin/main:include/decl_BlendModelAnim.h 1x _ZN14BlendModelAnimD1Ev; head 1x _ZN19dExtBlendAnmModel_cD1Ev; tools/source_style.py --base origin/main"
-    },
-    {
       "path": "include/decl_Model.h",
       "rule": "handspelled-member",
       "match": "_ZN17dExtSimpleModel_c12HideMaterialEii",
@@ -1066,6 +1042,14 @@
       "evidence": "origin/main:src/minigames/d_mg3d_esp_anim_set.cpp 3x _ZN5ModelC1Ev; head 3x _ZN17dExtSimpleModel_cC1Ev; tools/source_style.py --base origin/main"
     },
     {
+      "path": "src/minigames/d_mg3d_esp_anim_set.cpp",
+      "rule": "raw-offset",
+      "match": "(dExtFrameCtrl_c*)(c+0x5034",
+      "count": 1,
+      "reason": "FlashSync reads mEspModel's mModelAnim frame control (0x4fd8 + 0xc + 0x50). The ROM pool-loads 0x5034 as one constant, and spelling it as that member grows FlashSync from 0xb4 to 0xb8 bytes (the comment at the call says so). The offset was already the untyped this of a hand-spelled _ZNK15dExtFrameCtrl_c12WillHitFrameEi call; this change only turns that call into a member call. Follow-up: drop the offset if a member spelling that keeps the single pooled constant is found.",
+      "evidence": "ov006/dMg3DEspAnimSet_c 68/68 TEXT-VERIFIED (tubuild verify --no-write); the base spelling was _ZNK15dExtFrameCtrl_c12WillHitFrameEi(c + 0x5034, 0)"
+    },
+    {
       "path": "src/minigames/d_mg3d_heyho_obj_adapter.cpp",
       "rule": "handspelled-member",
       "match": "_ZN14dExtAnmModel_cC1Ev",
@@ -1122,14 +1106,6 @@
       "evidence": "origin/main:src/minigames/d_s_mg_trampoline2.cpp 5x _ZN5ModelC1Ev; head 5x _ZN17dExtSimpleModel_cC1Ev; tools/source_style.py --base origin/main"
     },
     {
-      "path": "src/minigames/d_s_mg_trampoline2.cpp",
-      "rule": "handspelled-member",
-      "match": "_ZN17dExtSimpleModel_cD1Ev",
-      "count": 6,
-      "reason": "Respelled by the Model-family RTTI rename: src/minigames/d_s_mg_trampoline2.cpp on main carries the same 6 occurrence(s) as _ZN5ModelD1Ev. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings.",
-      "evidence": "origin/main:src/minigames/d_s_mg_trampoline2.cpp 6x _ZN5ModelD1Ev; head 6x _ZN17dExtSimpleModel_cD1Ev; tools/source_style.py --base origin/main"
-    },
-    {
       "path": "src/minigames/unit020bfec0.cpp",
       "rule": "handspelled-member",
       "match": "_ZN14dExtAnmModel_cC1Ev",
@@ -1154,14 +1130,6 @@
       "evidence": "origin/main:src/minigames/unit020bfec0.cpp 5x _ZN14BlendModelAnimC1Ev; head 5x _ZN19dExtBlendAnmModel_cC1Ev; tools/source_style.py --base origin/main"
     },
     {
-      "path": "src/runtime/actor/d_cap_enemy.cpp",
-      "rule": "handspelled-member",
-      "match": "_ZN17dExtSimpleModel_cD1Ev",
-      "count": 2,
-      "reason": "Respelled by the Model-family RTTI rename: src/runtime/actor/d_cap_enemy.cpp on main carries the same 2 occurrence(s) as _ZN5ModelD1Ev. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings.",
-      "evidence": "origin/main:src/runtime/actor/d_cap_enemy.cpp 2x _ZN5ModelD1Ev; head 2x _ZN17dExtSimpleModel_cD1Ev; tools/source_style.py --base origin/main"
-    },
-    {
       "path": "src/unnamed/ov007/func_ov007_020b3f20.c",
       "rule": "handspelled-member",
       "match": "_ZN17dExtSimpleModel_c17UpdateFileOffsetsER8BMD_File",
@@ -1176,46 +1144,6 @@
       "count": 2,
       "reason": "Respelled by the Model-family RTTI rename: src/unnamed/ov075/func_ov075_0211aa94.c on main carries the same 2 occurrence(s) as _ZN5Model27LoadCompressedTextureToVramEPcjS0_. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings.",
       "evidence": "origin/main:src/unnamed/ov075/func_ov075_0211aa94.c 2x _ZN5Model27LoadCompressedTextureToVramEPcjS0_; head 2x _ZN17dExtSimpleModel_c27LoadCompressedTextureToVramEPcjS0_; tools/source_style.py --base origin/main"
-    },
-    {
-      "path": "include/decl_MaterialChanger.h",
-      "rule": "handspelled-member",
-      "match": "_ZN17dExtAnmMaterial_c7PrepareER8BMD_FileR8BMA_File",
-      "count": 1,
-      "reason": "Respelled by the texture-animation RTTI rename: include/decl_MaterialChanger.h on cpp/model-family-rom-names carries the same 1 occurrence(s) as _ZN15MaterialChanger7PrepareER8BMD_FileR8BMA_File. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings.",
-      "evidence": "origin/cpp/model-family-rom-names:include/decl_MaterialChanger.h 1x _ZN15MaterialChanger7PrepareER8BMD_FileR8BMA_File; head 1x _ZN17dExtAnmMaterial_c7PrepareER8BMD_FileR8BMA_File; tools/source_style.py --base origin/cpp/model-family-rom-names"
-    },
-    {
-      "path": "include/decl_MaterialChanger.h",
-      "rule": "handspelled-member",
-      "match": "_ZN17dExtAnmMaterial_cC1Ev",
-      "count": 1,
-      "reason": "Respelled by the texture-animation RTTI rename: include/decl_MaterialChanger.h on cpp/model-family-rom-names carries the same 1 occurrence(s) as _ZN15MaterialChangerC1Ev. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings.",
-      "evidence": "origin/cpp/model-family-rom-names:include/decl_MaterialChanger.h 1x _ZN15MaterialChangerC1Ev; head 1x _ZN17dExtAnmMaterial_cC1Ev; tools/source_style.py --base origin/cpp/model-family-rom-names"
-    },
-    {
-      "path": "include/decl_TextureSequence.h",
-      "rule": "handspelled-member",
-      "match": "_ZN15dExtAnmTexPat_cC1Ev",
-      "count": 1,
-      "reason": "Respelled by the texture-animation RTTI rename: include/decl_TextureSequence.h on cpp/model-family-rom-names carries the same 1 occurrence(s) as _ZN15TextureSequenceC1Ev. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings.",
-      "evidence": "origin/cpp/model-family-rom-names:include/decl_TextureSequence.h 1x _ZN15TextureSequenceC1Ev; head 1x _ZN15dExtAnmTexPat_cC1Ev; tools/source_style.py --base origin/cpp/model-family-rom-names"
-    },
-    {
-      "path": "include/decl_TextureTransformer.h",
-      "rule": "handspelled-member",
-      "match": "_ZN15dExtAnmTexSRT_cC1Ev",
-      "count": 1,
-      "reason": "Respelled by the texture-animation RTTI rename: include/decl_TextureTransformer.h on cpp/model-family-rom-names carries the same 1 occurrence(s) as _ZN18TextureTransformerC1Ev. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings.",
-      "evidence": "origin/cpp/model-family-rom-names:include/decl_TextureTransformer.h 1x _ZN18TextureTransformerC1Ev; head 1x _ZN15dExtAnmTexSRT_cC1Ev; tools/source_style.py --base origin/cpp/model-family-rom-names"
-    },
-    {
-      "path": "include/decl_TextureTransformer.h",
-      "rule": "handspelled-member",
-      "match": "_ZN15dExtAnmTexSRT_cD1Ev",
-      "count": 1,
-      "reason": "Respelled by the texture-animation RTTI rename: include/decl_TextureTransformer.h on cpp/model-family-rom-names carries the same 1 occurrence(s) as _ZN18TextureTransformerD1Ev. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings.",
-      "evidence": "origin/cpp/model-family-rom-names:include/decl_TextureTransformer.h 1x _ZN18TextureTransformerD1Ev; head 1x _ZN15dExtAnmTexSRT_cD1Ev; tools/source_style.py --base origin/cpp/model-family-rom-names"
     },
     {
       "path": "src/game/player/Player.cpp",
@@ -1266,30 +1194,6 @@
       "evidence": "origin/cpp/model-family-rom-names:src/minigames/d_s_mg_trampoline2.cpp 2x _ZN18TextureTransformerC1Ev; head 2x _ZN15dExtAnmTexSRT_cC1Ev; tools/source_style.py --base origin/cpp/model-family-rom-names"
     },
     {
-      "path": "src/minigames/d_s_mg_trampoline2.cpp",
-      "rule": "handspelled-member",
-      "match": "_ZN15dExtAnmTexSRT_cD1Ev",
-      "count": 2,
-      "reason": "Respelled by the texture-animation RTTI rename: src/minigames/d_s_mg_trampoline2.cpp on cpp/model-family-rom-names carries the same 2 occurrence(s) as _ZN18TextureTransformerD1Ev. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings.",
-      "evidence": "origin/cpp/model-family-rom-names:src/minigames/d_s_mg_trampoline2.cpp 2x _ZN18TextureTransformerD1Ev; head 2x _ZN15dExtAnmTexSRT_cD1Ev; tools/source_style.py --base origin/cpp/model-family-rom-names"
-    },
-    {
-      "path": "src/minigames/unit020bfec0.cpp",
-      "rule": "handspelled-member",
-      "match": "_ZN15dExtAnmTexPat_c6UpdateER15ModelComponents",
-      "count": 2,
-      "reason": "Respelled by the texture-animation RTTI rename: src/minigames/unit020bfec0.cpp on cpp/model-family-rom-names carries the same 2 occurrence(s) as _ZN15TextureSequence6UpdateER15ModelComponents. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings.",
-      "evidence": "origin/cpp/model-family-rom-names:src/minigames/unit020bfec0.cpp 2x _ZN15TextureSequence6UpdateER15ModelComponents; head 2x _ZN15dExtAnmTexPat_c6UpdateER15ModelComponents; tools/source_style.py --base origin/cpp/model-family-rom-names"
-    },
-    {
-      "path": "src/minigames/unit020bfec0.cpp",
-      "rule": "handspelled-member",
-      "match": "_ZN15dExtAnmTexPat_c7PrepareER8BMD_FileR8BTP_File",
-      "count": 9,
-      "reason": "Respelled by the texture-animation RTTI rename: src/minigames/unit020bfec0.cpp on cpp/model-family-rom-names carries the same 9 occurrence(s) as _ZN15TextureSequence7PrepareER8BMD_FileR8BTP_File. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings.",
-      "evidence": "origin/cpp/model-family-rom-names:src/minigames/unit020bfec0.cpp 9x _ZN15TextureSequence7PrepareER8BMD_FileR8BTP_File; head 9x _ZN15dExtAnmTexPat_c7PrepareER8BMD_FileR8BTP_File; tools/source_style.py --base origin/cpp/model-family-rom-names"
-    },
-    {
       "path": "src/minigames/unit020bfec0.cpp",
       "rule": "handspelled-member",
       "match": "_ZN15dExtAnmTexPat_cC1Ev",
@@ -1300,42 +1204,10 @@
     {
       "path": "src/minigames/unit020bfec0.cpp",
       "rule": "handspelled-member",
-      "match": "_ZN15dExtAnmTexPat_cD1Ev",
-      "count": 2,
-      "reason": "Respelled by the texture-animation RTTI rename: src/minigames/unit020bfec0.cpp on cpp/model-family-rom-names carries the same 2 occurrence(s) as _ZN15TextureSequenceD1Ev. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings.",
-      "evidence": "origin/cpp/model-family-rom-names:src/minigames/unit020bfec0.cpp 2x _ZN15TextureSequenceD1Ev; head 2x _ZN15dExtAnmTexPat_cD1Ev; tools/source_style.py --base origin/cpp/model-family-rom-names"
-    },
-    {
-      "path": "src/minigames/unit020bfec0.cpp",
-      "rule": "handspelled-member",
-      "match": "_ZN15dExtAnmTexSRT_c6UpdateER15ModelComponents",
-      "count": 2,
-      "reason": "Respelled by the texture-animation RTTI rename: src/minigames/unit020bfec0.cpp on cpp/model-family-rom-names carries the same 2 occurrence(s) as _ZN18TextureTransformer6UpdateER15ModelComponents. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings.",
-      "evidence": "origin/cpp/model-family-rom-names:src/minigames/unit020bfec0.cpp 2x _ZN18TextureTransformer6UpdateER15ModelComponents; head 2x _ZN15dExtAnmTexSRT_c6UpdateER15ModelComponents; tools/source_style.py --base origin/cpp/model-family-rom-names"
-    },
-    {
-      "path": "src/minigames/unit020bfec0.cpp",
-      "rule": "handspelled-member",
-      "match": "_ZN15dExtAnmTexSRT_c7PrepareER8BMD_FileR8BTA_File",
-      "count": 9,
-      "reason": "Respelled by the texture-animation RTTI rename: src/minigames/unit020bfec0.cpp on cpp/model-family-rom-names carries the same 9 occurrence(s) as _ZN18TextureTransformer7PrepareER8BMD_FileR8BTA_File. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings.",
-      "evidence": "origin/cpp/model-family-rom-names:src/minigames/unit020bfec0.cpp 9x _ZN18TextureTransformer7PrepareER8BMD_FileR8BTA_File; head 9x _ZN15dExtAnmTexSRT_c7PrepareER8BMD_FileR8BTA_File; tools/source_style.py --base origin/cpp/model-family-rom-names"
-    },
-    {
-      "path": "src/minigames/unit020bfec0.cpp",
-      "rule": "handspelled-member",
       "match": "_ZN15dExtAnmTexSRT_cC1Ev",
       "count": 2,
       "reason": "Respelled by the texture-animation RTTI rename: src/minigames/unit020bfec0.cpp on cpp/model-family-rom-names carries the same 2 occurrence(s) as _ZN18TextureTransformerC1Ev. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings.",
       "evidence": "origin/cpp/model-family-rom-names:src/minigames/unit020bfec0.cpp 2x _ZN18TextureTransformerC1Ev; head 2x _ZN15dExtAnmTexSRT_cC1Ev; tools/source_style.py --base origin/cpp/model-family-rom-names"
-    },
-    {
-      "path": "src/minigames/unit020bfec0.cpp",
-      "rule": "handspelled-member",
-      "match": "_ZN15dExtAnmTexSRT_cD1Ev",
-      "count": 2,
-      "reason": "Respelled by the texture-animation RTTI rename: src/minigames/unit020bfec0.cpp on cpp/model-family-rom-names carries the same 2 occurrence(s) as _ZN18TextureTransformerD1Ev. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings.",
-      "evidence": "origin/cpp/model-family-rom-names:src/minigames/unit020bfec0.cpp 2x _ZN18TextureTransformerD1Ev; head 2x _ZN15dExtAnmTexSRT_cD1Ev; tools/source_style.py --base origin/cpp/model-family-rom-names"
     },
     {
       "path": "src/unnamed/ov007/func_ov007_020b3f20.c",
