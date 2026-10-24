@@ -137,7 +137,7 @@ s32 daObjBk_Dossunbar_c::InitResources()
         mVariant = 0;
 
     int j0 = mVariant * 0xc;
-    void *modelFile = Model::LoadFile(
+    void *modelFile = dExtSimpleModel_c::LoadFile(
         **(SharedFilePtr **)((char *)&data_ov015_02114534 + j0));
     mModel.SetFile((BMD_File *)modelFile, 1, -1);
     UpdateModelPosAndRotY();

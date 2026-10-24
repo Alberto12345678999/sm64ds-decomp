@@ -16,7 +16,7 @@
  *
  *     dCcAcPos_c         0x320 + 0x40 = 0x360
  *     BlendModelAnim     0x360 + 0x70 = 0x3d0
- *     Model              0x3d0 + 0x50 = 0x420
+ *     dExtSimpleModel_c              0x3d0 + 0x50 = 0x420
  *     dExtShadowModel_c  0x420 + 0x28 = 0x448
  *     TextureSequence    0x448 + 0x14 = 0x45c
  *
@@ -45,7 +45,7 @@
 #ifndef EYEROK_H
 #define EYEROK_H
 #include "types.h"
-#include "Model.h"
+#include "dExtSimpleModel_c.h"
 #include "dBgW_KcMbg.h"
 #include "dBgActor_c.h"
 #include "dCcAcPos_c.h"
@@ -59,7 +59,7 @@ struct EyerokState;
 struct Eyerok : dBgActor_c {
     dCcAcPos_c mdCcAcPos_c;                                 /* 0x320 */
     BlendModelAnim mBlendModelAnim;                         /* 0x360 */
-    Model mModel2;                                          /* 0x3d0 */
+    dExtSimpleModel_c mModel2;                                          /* 0x3d0 */
     dExtShadowModel_c mShadowModel;                         /* 0x420 */
     TextureSequence mTextureSequence;                       /* 0x448 */
     /* Drop-shadow matrix, flat words. A Matrix4x3 member would run another

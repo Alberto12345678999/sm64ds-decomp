@@ -17,7 +17,7 @@
  * Leftover: func_ov002_020bad10 / func_ov002_020baba8 / func_ov002_020bac18
  *   are still the linker names of daObjSwdoor_c setup / teardown / step
  *   (the base leaves those slots pure virtual). Naming belongs in ov002.
- *   The setup helper loads data_ov014_021145c4 slot 0 with Model::LoadFile,
+ *   The setup helper loads data_ov014_021145c4 slot 0 with dExtSimpleModel_c::LoadFile,
  *   slot 1 with dBgW_Kc::LoadFile, slot 2 as CLPS into SetFile, and writes
  *   daObjSwdoor_c's four byte fields from param1.
  * Leftover: data_ov014_021145c4 is overlay data; this TU is text-only so

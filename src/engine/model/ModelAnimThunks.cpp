@@ -1,11 +1,11 @@
 //cpp
 #pragma RTTI off
-#include "ModelAnim.h"
+#include "dExtAnmModel_c.h"
 #include "BlendModelAnim.h"
 #include "ModelAnim2.h"
 
 /* The six _ZThn80_ destructor thunks are one run, 0x02017168..0x020171c8,
- * immediately after ModelBase's constructor. Each is the adjustor from the
+ * immediately after dExtModel_c's constructor. Each is the adjustor from the
  * dExtFrameCtrl_c base at +0x50 back to the complete object. They are not
  * contiguous with the class translation units, so those files discard their
  * own copies and this file is the enrolled home.
@@ -17,7 +17,7 @@
 
 extern "C" void func_0203cbc0(void *ptr);
 
-ModelAnim::~ModelAnim() {}
+dExtAnmModel_c::~dExtAnmModel_c() {}
 
 BlendModelAnim::~BlendModelAnim() {
     if (mBlendBuffer)

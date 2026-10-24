@@ -31,7 +31,7 @@ struct Vector3_16f;
  *
  * deslop leftovers:
  * - DropShadowRadHeight, dCcAcPos_c::Init, dCcAc_c::Init, dBgCh_Actr::Init,
- *   UpdateCapPos, ModelAnim::SetAnim, SpawnFireball, Player::
+ *   UpdateCapPos, dExtAnmModel_c::SetAnim, SpawnFireball, Player::
  *   Bounce/Hurt, KillByInvincibleChar and the Sound/Particle/dCamera_c calls
  *   retain scalar or opaque boundaries. UpdateCapPos has a shared reference
  *   declaration, but the direct call currently changes two argument-address
@@ -3052,7 +3052,7 @@ int daTrs_c::Render()
          mState == 3 ||
          mState == 3 ||
          mState == 3)) {
-        mModelAnim.Model::Render(&mScale);
+        mModelAnim.dExtSimpleModel_c::Render(&mScale);
     } else {
         mModelAnim.Render(&mScale);
     }
@@ -3426,7 +3426,7 @@ int daTrs_c::InitResources()
             mFoundActor = 0;
         }
         dExtFrameCtrl_c::LoadFile(data_ov063_0211ede4);
-        mModelAnim.SetFile((BMD_File *)Model::LoadFile(data_ov063_0211edf4), 1, 1);
+        mModelAnim.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(data_ov063_0211edf4), 1, 1);
         mModelAnim.SetAnim((BCA_File *)data_ov063_0211ede4.filePtr, 0, 0x1000, 0);
         mHitPoints = 3;
         mClsnRadius = 0xc8;
@@ -3445,7 +3445,7 @@ int daTrs_c::InitResources()
     } else {
         mVariant = param1 & 0xf;
         dExtFrameCtrl_c::LoadFile(data_ov063_0211eddc);
-        mModelAnim.SetFile((BMD_File *)Model::LoadFile(data_ov063_0211edc4), 1, 0x16);
+        mModelAnim.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(data_ov063_0211edc4), 1, 0x16);
         mModelAnim.SetAnim((BCA_File *)data_ov063_0211eddc.filePtr, 0, 0x1000, 0);
         mHitPoints = 1;
         if (mVariant == 5) {
@@ -3476,7 +3476,7 @@ int daTrs_c::InitResources()
     if (mVariant == 5) {
         mBooFlags.carrying = 1;
         mCarriedID = TRS_ID_T_BASKET;
-        Model::LoadFile(data_ov063_0211edec);
+        dExtSimpleModel_c::LoadFile(data_ov063_0211edec);
     } else if (mVariant == 0 || mVariant == 1 || mVariant == 2 || mVariant == 6 || (unsigned)(unsigned char)(mVariant + 0xf8) <= 3) {
         mdCcAcPos_c.vulnFlags |= 0x8000;
         mBooFlags.carrying = 1;
@@ -3639,7 +3639,7 @@ int daTrs_c::InitResources()
 // @symbol _ZN11daTBasket_c13InitResourcesEv
 int daTBasket_c::InitResources()
 {
-    BMD_File *bmd = (BMD_File *)Model::LoadFile(data_ov063_0211edec);
+    BMD_File *bmd = (BMD_File *)dExtSimpleModel_c::LoadFile(data_ov063_0211edec);
     if (mModel.SetFile(bmd, 1, -1) == 0)
         return 0;
     if (mShadowModel.InitCylinder() == 0)

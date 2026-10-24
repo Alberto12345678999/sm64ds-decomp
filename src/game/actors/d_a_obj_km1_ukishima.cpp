@@ -97,7 +97,7 @@ extern "C" daObjKm1_Ukishima_c *daObjKm1_Ukishima_c_classInit()
  * so this one call deliberately retains the measured register-level view. */
 s32 daObjKm1_Ukishima_c::InitResources()
 {
-    mModel.SetFile((BMD_File *)Model::LoadFile(data_ov043_021125e8), 1, -1);
+    mModel.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(data_ov043_021125e8), 1, -1);
     UpdateModelPosAndRotY();
     UpdateClsnPosAndRot();
 

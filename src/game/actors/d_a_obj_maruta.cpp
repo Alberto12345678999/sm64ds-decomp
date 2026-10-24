@@ -158,8 +158,8 @@ extern "C" int func_ov080_021270dc(daObjMaruta_c *self, ResourceDescriptor *arg)
 }
 
 // @symbol _ZN13daObjMaruta_c6RenderEv
-/* Dispatches through the Model at 0xd4 (dBgActor_c's mModel, inherited) --
-   Model::Render(const Vector3 *) with a null scale, matching the ROM's
+/* Dispatches through the dExtSimpleModel_c at 0xd4 (dBgActor_c's mModel, inherited) --
+   dExtSimpleModel_c::Render(const Vector3 *) with a null scale, matching the ROM's
    literal-0 argument. */
 s32 daObjMaruta_c::Render()
 {
@@ -290,7 +290,7 @@ extern "C" int func_ov080_021274ac(daObjMaruta_c *self, ResourceDescriptor *arg)
 {
     struct Vector3 d;
     self->mModel.SetFile(
-        (BMD_File *)Model::LoadFile(*arg->model), 1, -1);
+        (BMD_File *)dExtSimpleModel_c::LoadFile(*arg->model), 1, -1);
     self->func_ov080_02127094();
     self->UpdateClsnPosAndRot();
     _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(

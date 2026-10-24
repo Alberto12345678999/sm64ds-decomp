@@ -26,7 +26,7 @@
  *
  * Source order is the reverse of the ROM. The factory is written first.
  */
-/* leftovers: ModelAnim::SetAnim, dCcAc_c::Init and
+/* leftovers: dExtAnmModel_c::SetAnim, dCcAc_c::Init and
  * dActor_c::DropShadowRadHeight stay mangled. This file calls them, and
  * each takes Fix12<int> by value. Player::ShowMessage stays a local
  * extern: the member re-masks the flag bytes and func_ov084_0212c9f0
@@ -158,7 +158,7 @@ s32 daRedBombhei_c::InitResources()
 {
     Vector3 pos;
 
-    BMD_File *modelFile = (BMD_File *)Model::LoadFile(data_ov084_02130da4);
+    BMD_File *modelFile = (BMD_File *)dExtSimpleModel_c::LoadFile(data_ov084_02130da4);
     mModelAnim.SetFile(modelFile, 1, -1);
     mShadowModel.InitCylinder();
     dExtFrameCtrl_c::LoadFile(data_ov084_02130d9c);

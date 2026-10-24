@@ -42,7 +42,7 @@ struct System {
 #include "SharedFilePtr.h"
 #include "Player.h"
 #include "daWater_Ring_c.h"
-#include "Model.h"
+#include "dExtSimpleModel_c.h"
 
 #pragma defer_codegen off
 
@@ -358,8 +358,8 @@ s32 daWater_Hakidasi_c::Behavior()
    when the parameter is spelled as the real type. See notes/mwccarm-codegen.md 6az. */
 s32 daWater_Hakidasi_c::InitResources()
 {
-    Model::LoadFile(data_ov002_0210da10);
-    Model::LoadFile(data_ov002_0210d9a8);
+    dExtSimpleModel_c::LoadFile(data_ov002_0210da10);
+    dExtSimpleModel_c::LoadFile(data_ov002_0210d9a8);
     mStarID = (param1 >> 0xc) & 0xf;
     mNoRings = param1 & 1;
     if ((param1 & 0xf) > 1)

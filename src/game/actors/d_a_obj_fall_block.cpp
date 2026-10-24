@@ -5,7 +5,7 @@
  * share this body. No factory and no g_profile: slots 0 and 3 are pure,
  * and the leaves construct the object.
  *
- * common.h stays first. ApplyModelXyz writes Model::mat4x3 as a flat
+ * common.h stays first. ApplyModelXyz writes dExtSimpleModel_c::mat4x3 as a flat
  * s32 m[12]; math/Matrix.h's {Matrix3x3 r; Vector3 t;} is the other
  * spelling of the same 0x30 bytes, and this TU needs the word stores.
  * The file is in ROM order under `#pragma defer_codegen off`, with the two
@@ -465,7 +465,7 @@ s32 daObjFallBlock_c::Behavior() {
 }
 
 // @symbol daObjFallBlock_c_InitResources
-/* Shared InitResources body for the four leaves. Slot 0 is Model::LoadFile,
+/* Shared InitResources body for the four leaves. Slot 0 is dExtSimpleModel_c::LoadFile,
    slot 1 is dBgW_Kc::LoadFile, slot 2 is CLPS into SetFile. Ground-raycasts
    mKillY, copies mRestPos, and arms the OnStoodOn mesh callback. */
 extern "C" {
@@ -475,7 +475,7 @@ int daObjFallBlock_c_InitResources(daObjFallBlock_c *self, ResourceDescriptor *f
     int on;
     int y;
 
-    self->mModel.SetFile((BMD_File *)Model::LoadFile(*fp->model), 1, -1);
+    self->mModel.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(*fp->model), 1, -1);
     self->UpdateModelPosAndRotY();
     self->UpdateClsnPosAndRot();
     dBgW_KcMbg_SetFile(

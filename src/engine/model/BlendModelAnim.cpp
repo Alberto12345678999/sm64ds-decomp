@@ -1,5 +1,5 @@
 //cpp
-/* BlendModelAnim -- ModelAnim child that cross-fades from the old pose into
+/* BlendModelAnim -- dExtAnmModel_c child that cross-fades from the old pose into
    the new animation. Cartridge class: _ZTV14BlendModelAnim at 0x0208e94c
    plus its Animation-side thunk vtable at 0x0208e970; the cartridge RTTI
    names it dExtBlendAnmModel_c. TU claims 0x020163e0..0x02016714 -- the
@@ -71,7 +71,7 @@ BlendModelAnim::~BlendModelAnim() {
 int BlendModelAnim::DoSetFile(char *file, int a, int b)
 {
     char *f = file;
-    int r = Model::DoSetFile(file, a, b);
+    int r = dExtSimpleModel_c::DoSetFile(file, a, b);
     if (r == 0)
         return 0;
     return func_020165c4(this, f);
@@ -110,7 +110,7 @@ void BlendModelAnim::Virtual10(Matrix4x3 &mat)
     if (blendWeight < 0x1000) {
         func_0204531c(&data, blendWeight);
     } else {
-        Model::Virtual10(mat);
+        dExtSimpleModel_c::Virtual10(mat);
     }
 }
 
@@ -118,14 +118,14 @@ void BlendModelAnim::Virtual10(Matrix4x3 &mat)
 void BlendModelAnim::Render(const Vector3 *scale)
 {
     UpdateVerts();
-    Model::Render(scale);
+    dExtSimpleModel_c::Render(scale);
 }
 
 // @symbol _ZN14BlendModelAnim9Virtual18EjPK7Vector3
 void BlendModelAnim::Virtual18(u32 mat, const Vector3 *scale)
 {
     Virtual10(*(Matrix4x3 *)mat);
-    Model::Render(scale);
+    dExtSimpleModel_c::Render(scale);
 }
 
 // @symbol _ZN14BlendModelAnim7AdvanceEv

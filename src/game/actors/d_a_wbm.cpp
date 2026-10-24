@@ -74,7 +74,7 @@ s32 fdiv(s32 numerator, s32 denominator);
 }
 
 extern "C" {
-/* Model files: the fragment's, which the other variants load too. */
+/* dExtSimpleModel_c files: the fragment's, which the other variants load too. */
 extern SharedFilePtr data_ov002_0210da38;
 /* The five fragments' launch angles. */
 extern u16 data_ov098_0213bf90[];
@@ -158,14 +158,14 @@ int daWbm_c::InitResources()
 
     if (mVariant == 2)
     {
-        bmd = (BMD_File *)Model::LoadFile(data_ov002_0210da38);
+        bmd = (BMD_File *)dExtSimpleModel_c::LoadFile(data_ov002_0210da38);
         if (mModel.SetFile(bmd, 1, 0x16) == 0)
             return 0;
     }
     else
     {
-        Model::LoadFile(data_ov002_0210da38);
-        bmd = (BMD_File *)Model::LoadFile(data_ov098_0213c91c);
+        dExtSimpleModel_c::LoadFile(data_ov002_0210da38);
+        bmd = (BMD_File *)dExtSimpleModel_c::LoadFile(data_ov098_0213c91c);
         if (mModel.SetFile(bmd, 1, 0x16) == 0)
             return 0;
     }

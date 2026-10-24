@@ -147,7 +147,7 @@ extern "C" void func_ov022_02111558(daObjFl_Ring_c *self, dActor_c *other)
  * so that one call deliberately keeps the measured register-level spelling. */
 s32 daObjFl_Ring_c::InitResources()
 {
-    void *f = Model::LoadFile(*data_ov022_02113cc8.mModelFile);
+    void *f = dExtSimpleModel_c::LoadFile(*data_ov022_02113cc8.mModelFile);
     mModel.SetFile((BMD_File *)f, 1, -1);
     UpdateModelPosAndRotY();
     UpdateClsnPosAndRot();

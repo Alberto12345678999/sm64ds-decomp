@@ -123,7 +123,7 @@ independent.
 
 **vmi base order is not offset order.** `dExtAnmModel_c` lists `dExtFrameCtrl_c` (offset 80)
 before `dExtSimpleModel_c` (offset 0). Keying "primary base" on list position put that row
-in plain `agree` while the tree in fact names only `Model` and omits an entire base. The
+in plain `agree` while the tree in fact names only `dExtSimpleModel_c` and omits an entire base. The
 test now keys on offset 0, and the row shows up where it belongs.
 
 ## 3. The 18 flattened classes, and the 10 layers they hide
@@ -329,7 +329,7 @@ answer:
 
 **Multiple inheritance fed two rank-0 edges to one class.** `hierarchy` holds one base
 per class, so emitting all of a vmi class's bases made the picker take the sorted-first:
-`ModelAnim` flipped from `Model` (offset 0) to `Animation` (offset 0x50) and its
+`dExtAnmModel_c` flipped from `dExtSimpleModel_c` (offset 0) to `Animation` (offset 0x50) and its
 confidence dropped to low, reporting a manufactured conflict. Only the offset-0 base is
 emitted now; the 8 secondary bases are counted, not represented.
 
@@ -495,7 +495,7 @@ only what was observed.
     };
 ```
 Each also states the padding below its first field is **unobserved, not inherited** --
-`daObjDorifu_c`'s own destructor destroys a `Model[5]` at `0x320` and a `MeshCollider[5]`
+`daObjDorifu_c`'s own destructor destroys a `dExtSimpleModel_c[5]` at `0x320` and a `MeshCollider[5]`
 at `0x4b0`, both its own, well below its first named field at `0xdc8`. An earlier draft
 said that space "is the base's", which its own provenance list disproves.
 

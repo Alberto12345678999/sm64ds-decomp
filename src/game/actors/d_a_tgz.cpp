@@ -32,7 +32,7 @@ struct Vector3_16f;
  * - func_ov077_02124eb0 and func_ov077_021253a4: dActor_c::SpawnCoins is
  *   +12 (0x1f8->0x204, 0xdc->0xe8). Scalar extern kept.
  * - func_ov077_02125304: dActor_c::DropShadowRadHeight is +16 (0xa0->0xb0).
- * - func_ov077_02125480 and func_ov077_02125b1c: ModelAnim::SetAnim is +12
+ * - func_ov077_02125480 and func_ov077_02125b1c: dExtAnmModel_c::SetAnim is +12
  *   (0xd0->0xdc, 0x98->0xa4). Scalar extern passes the u16 start frame.
  * - InitResources: SetAnim + dCcAc_c::Init + dBgCh_Actr::Init together are
  *   +36 (0x13c->0x160). dBgCh_Actr::Init's header mangles
@@ -835,9 +835,9 @@ done:
 int daTgz_c::InitResources()
 {
     BMD_File *bmd;
-    bmd = (BMD_File *)Model::LoadFile(data_ov077_02127b48);
+    bmd = (BMD_File *)dExtSimpleModel_c::LoadFile(data_ov077_02127b48);
     mModel.SetFile(bmd, 1, -1);
-    bmd = (BMD_File *)Model::LoadFile(data_ov077_02127b38);
+    bmd = (BMD_File *)dExtSimpleModel_c::LoadFile(data_ov077_02127b38);
     mModelAnim.SetFile(bmd, 1, -1);
     dExtFrameCtrl_c::LoadFile(data_ov077_02127c14);
     mModelAnim.SetAnim((BCA_File *)TGZ_BCA, 0, 0x1000, 0);

@@ -2,7 +2,7 @@
 #define DMGTRMPLN2MARIO_C_H
 
 #include "types.h"
-#include "ModelAnim.h"
+#include "dExtAnmModel_c.h"
 
 /* dMgTrmpln2Mario_c, the Mario of Trampoline2 (ROM RTTI _ZTI17dMgTrmpln2Mario_c;
  * constructor 0x020ca78c, D1 0x020ca604; 0xdc bytes, the stride of the array at
@@ -41,7 +41,7 @@ struct dMgTrmpln2Mario_c {
     s16 mTimer;             /* 0x6c -- state countdown */
     s16 mVisible;           /* 0x6e -- Render draws only while set */
     s32 mState[2];          /* 0x70 -- the current state's member-pointer record */
-    ModelAnim mModelAnim;   /* 0x78 -- 0x64 bytes: UpdateMatrix sets its mat4x3, the
+    dExtAnmModel_c mModelAnim;   /* 0x78 -- 0x64 bytes: UpdateMatrix sets its mat4x3, the
                              * states drive its dExtFrameCtrl_c base and read its file */
 };
 

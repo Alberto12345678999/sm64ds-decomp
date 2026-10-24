@@ -86,7 +86,7 @@ extern "C" void func_ov045_021114a8(daObjKm2_Agaru_c *self, dActor_c *other)
 // @symbol _ZN16daObjKm2_Agaru_c13InitResourcesEv
 s32 daObjKm2_Agaru_c::InitResources()
 {
-    mModel.SetFile((BMD_File *)Model::LoadFile(data_ov045_02113188), 1, -1);
+    mModel.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(data_ov045_02113188), 1, -1);
     UpdateModelPosAndRotY();
     UpdateClsnPosAndRot();
 

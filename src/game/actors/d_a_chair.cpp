@@ -130,7 +130,7 @@ extern "C" daChair_c *daChair_c_classInit(void)
 // @symbol _ZN9daChair_c13InitResourcesEv
 s32 daChair_c::InitResources()
 {
-    BMD_File *file = (BMD_File *)Model::LoadFile(data_ov020_02114af0);
+    BMD_File *file = (BMD_File *)dExtSimpleModel_c::LoadFile(data_ov020_02114af0);
     mModel.SetFile(file, 1, -1);
     mShadowModel.InitCylinder();
     _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(

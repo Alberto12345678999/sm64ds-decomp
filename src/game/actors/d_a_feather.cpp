@@ -124,7 +124,7 @@ int daFeather_c::InitResources()
     BMD_File *bmd;
     int b;
 
-    bmd = (BMD_File*)Model::LoadFile(data_ov002_0210da58);
+    bmd = (BMD_File*)dExtSimpleModel_c::LoadFile(data_ov002_0210da58);
     if (!mModel.SetFile(bmd, 1, 1))
         return 0;
     if (!mShadowModel.InitCylinder())

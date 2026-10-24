@@ -27,7 +27,7 @@
  * `opt_common_subs off` as a push/pop bracket.
  *
  * leftovers:
- * - ModelAnim::SetAnim takes Fix12<int> by value; its real spelling makes
+ * - dExtAnmModel_c::SetAnim takes Fix12<int> by value; its real spelling makes
  *   the compiler home the argument and the size changes. It stays mangled.
  * - The helper functions and data_ov006_ tables have no header or name yet.
  * - The five gTouch-lane and gActivePlayerSlot externs keep the file-local record
@@ -76,7 +76,7 @@ void func_02012718(int a, int b);
 int  func_02053200(int x);
 void func_02016a14(void *self, int a);
 void func_02016a04(void *self, int a);
-int  func_020179b4(SharedFilePtr *f, ModelBase *m, int extra);
+int  func_020179b4(SharedFilePtr *f, dExtModel_c *m, int extra);
 void Camera_ProjectToScreen16(void *cam, Jump3DVec *pos, short *out);
 void D3D_PlaySeAtX(int a, int b);
 void Puff_Spawn(int a, int b);
@@ -966,7 +966,7 @@ dMgJump3DMario_c::~dMgJump3DMario_c()
 
 
 // @symbol _ZN16dMgJump3DMario_cC1Ev
-/* Empty: the base constructor, the vptr store and the ModelAnim member
+/* Empty: the base constructor, the vptr store and the dExtAnmModel_c member
  * construction are all generated. */
 dMgJump3DMario_c::dMgJump3DMario_c()
 {

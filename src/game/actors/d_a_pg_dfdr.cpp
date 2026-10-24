@@ -15,7 +15,7 @@
  * RTTI names this class daPgDfdr_c; the debug table names PENGUIN_DEFENDER.
  *
  * deslop leftovers:
- * - ModelAnim::SetAnim as a method homes Fix12<int> (str, add, ldm; +12
+ * - dExtAnmModel_c::SetAnim as a method homes Fix12<int> (str, add, ldm; +12
  *   bytes per call). func_ov027_02111ca8 0x54 -> 0x60. func_ov027_02111b2c
  *   0x11c -> 0x134 (+24, two calls). The scalar extern "C" stays.
  * - TextureSequence::SetFile and dBgW_KcMbg::SetFile home one Fix12<int>
@@ -154,7 +154,7 @@ s32 daPgDfdr_c::InitResources()
     void *file;
     Vector3 pos;
 
-    file = Model::LoadFile(*(SharedFilePtr *)&data_ov027_02113c7c);
+    file = dExtSimpleModel_c::LoadFile(*(SharedFilePtr *)&data_ov027_02113c7c);
     mModelAnim.SetFile((BMD_File *)file, 1, -1);
 
     for (i = 0; i < 3; i++)
@@ -364,8 +364,8 @@ int daPgDfdr_c::func_ov027_02111a28()
 }
 
 // @symbol func_ov027_02111994
-/* Model matrix from mAngleY plus position >> 3; collider copy keeps the
-   full position. Flat Matrix4x3 (common.h before Model.h) is the 12-word copy. */
+/* dExtSimpleModel_c matrix from mAngleY plus position >> 3; collider copy keeps the
+   full position. Flat Matrix4x3 (common.h before dExtSimpleModel_c.h) is the 12-word copy. */
 extern "C" void func_ov027_02111994(daPgDfdr_c *self)
 {
     Matrix4x3_FromRotationY(&self->mModelAnim.mat4x3, self->mAngleY);
@@ -388,8 +388,8 @@ extern "C" void func_ov027_02111994(daPgDfdr_c *self)
 /* this file's header for why. One vtable store and three member teardowns     */
 /* come out of that one empty body: its own vptr, then -- in reverse           */
 /* declaration order -- dCcAc_c at +0x398, TextureSequence at +0x384 and       */
-/* ModelAnim at +0x320, then dBgActor_c's own teardown inlined (its destructor */
-/* is defined in its class body too), which is dBgW_KcMbg at +0x124 and Model  */
+/* dExtAnmModel_c at +0x320, then dBgActor_c's own teardown inlined (its destructor */
+/* is defined in its class body too), which is dBgW_KcMbg at +0x124 and dExtSimpleModel_c  */
 /* at +0x0d4, then dActor_c. D0 is that plus the inherited inline `operator    */
 /* delete` found by ordinary lookup on dActor_c two levels up; slot 17 is the  */
 /* deleting variant.                                                          */

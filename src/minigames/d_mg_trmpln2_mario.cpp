@@ -15,7 +15,7 @@ struct System {
  * ROM evidence: D1 0x020ca604 and constructor 0x020ca78c of
  * dMgTrmpln2Mario_c (Trmp2Mario_Construct, which was misfiled as
  * _ZN6Player29TryExitCharacterDoorWithIntroEv: it stores vptr sTrmp2MarioOps
- * and constructs a ModelAnim at +0x78);
+ * and constructs a dExtAnmModel_c at +0x78);
  * D1 0x020ccfc8 and constructor 0x020cd12c of dMgTrmpln3DMario_c;
  * _ZTI17dMgTrmpln2Mario_c 0x0213b250, _ZTI18dMgTrmpln3DMario_c 0x0213b244,
  * beside dMgTrmpObjAdapter_c / dMgTrmpRingObjAdapter_c. No call runs from
@@ -35,12 +35,12 @@ struct System {
 // trivial D1 is compiler-only output). The per-shard namespaces stay
 // (independent decl shapes would collide). The records are read through the
 // partial layout views dMgTrmpln2Mario_c.h / dMgTrmpln3DMario_c.h (MARIO2 /
-// MARIO3D). Each embeds a real ModelAnim at the constructor-proven +0x78/+0x6c,
+// MARIO3D). Each embeds a real dExtAnmModel_c at the constructor-proven +0x78/+0x6c,
 // so the model, frame-controller and anim-file reaches are member calls on
 // mModelAnim (SetFile, SetAnim, Render, Advance, WillHitFrame, Finished, file,
 // mat4x3, currFrame); the old matrix and frame-controller byte views were that
 // object's own fields. The thirteen anim-file globals are BCA_File *, declared
-// once below. The constructors still call _ZN9ModelAnimC1Ev by name: placement
+// once below. The constructors still call _ZN14dExtAnmModel_cC1Ev by name: placement
 // new is the only C++ spelling for it on existing storage, and it adds the null
 // check (Trmp2Mario_Construct no longer matches, MEASURED 2026-10-23); a real
 // constructor waits on the classes becoming real methods. Shared resource,
@@ -58,7 +58,7 @@ struct System {
 #include "decl_common.h"
 #include "decl_ModelAnim.h"
 #include "SharedFilePtr.h"
-#include "ModelAnim.h"
+#include "dExtAnmModel_c.h"
 #include "dExtFrameCtrl_c.h"
 #include "Sound.h"
 // Partial callback interface only. ROM vtables at 0x0213b2c4/0x0213b2e0
@@ -171,7 +171,7 @@ extern int sTrmp2MarioScale[];
 void Trmp2Mario_Render(char *self) {
     if (MARIO2(self)->mVisible == 0)
         return;
-    ModelAnim *model = &MARIO2(self)->mModelAnim;
+    dExtAnmModel_c *model = &MARIO2(self)->mModelAnim;
     model->Render((const Vector3 *)sTrmp2MarioScale);
 }
 }
@@ -1154,7 +1154,7 @@ int Trmp2Mario_Load(char *c) {
     BMD_File *f;
     int ret;
 
-    f = (BMD_File *)Model::LoadFile(sTrmpMarioModelFile);
+    f = (BMD_File *)dExtSimpleModel_c::LoadFile(sTrmpMarioModelFile);
     sTrmpAnimJump = (BCA_File *)dExtFrameCtrl_c::LoadFile(sTrmpMarioJumpAnimFile);
     sTrmpAnimDoubleJump1 = (BCA_File *)dExtFrameCtrl_c::LoadFile(sTrmpMarioDoubleJump1AnimFile);
     sTrmpAnimWallJump = (BCA_File *)dExtFrameCtrl_c::LoadFile(sTrmpMarioWallJumpAnimFile);
@@ -1222,7 +1222,7 @@ extern "C" void *Trmp2Mario_Destruct(int *c) {
     sTrmpAnimStruggle = 0;
     sTrmpAnimSdown = 0;
     // Destroy the embedded member directly, without virtual dispatch.
-    MARIO2(c)->mModelAnim.ModelAnim::~ModelAnim();
+    MARIO2(c)->mModelAnim.dExtAnmModel_c::~dExtAnmModel_c();
     *c = (int)&data_ov006_0213b3e0;
     *c = (int)&data_ov006_0213b3c4;
     return c;
@@ -1256,7 +1256,7 @@ extern "C" int sTrmp2MarioOps[];
 extern "C" int *Trmp2Mario_Construct(int *self) {
     TrmpRingObjAdapter_Construct(self);
     self[0] = (int)sTrmp2MarioOps;
-    _ZN9ModelAnimC1Ev(&MARIO2(self)->mModelAnim);
+    _ZN14dExtAnmModel_cC1Ev(&MARIO2(self)->mModelAnim);
     return self;
 }
 }
@@ -1632,7 +1632,7 @@ extern "C" {
 extern int sTrmp3DMarioScale[];
 // @symbol Trmp3DMario_Render
 void Trmp3DMario_Render(char *self) {
-    ModelAnim *model = &MARIO3D(self)->mModelAnim;
+    dExtAnmModel_c *model = &MARIO3D(self)->mModelAnim;
     model->Render((const Vector3 *)sTrmp3DMarioScale);
 }
 }
@@ -3046,7 +3046,7 @@ int Trmp3DMario_Load(char *c) {
     BMD_File *f;
     int ret;
 
-    f = (BMD_File *)Model::LoadFile(sTrmpMarioModelFile);
+    f = (BMD_File *)dExtSimpleModel_c::LoadFile(sTrmpMarioModelFile);
     sTrmpAnimJump = (BCA_File *)dExtFrameCtrl_c::LoadFile(sTrmpMarioJumpAnimFile);
     sTrmpAnimDoubleJump1 = (BCA_File *)dExtFrameCtrl_c::LoadFile(sTrmpMarioDoubleJump1AnimFile);
     sTrmpAnimWallJump = (BCA_File *)dExtFrameCtrl_c::LoadFile(sTrmpMarioWallJumpAnimFile);
@@ -3110,7 +3110,7 @@ extern "C" void *Trmp3DMario_Destruct(int *c) {
     sTrmpAnimBounce = 0;
     sTrmpAnimStruggle = 0;
     // Destroy the embedded member directly, without virtual dispatch.
-    MARIO3D(c)->mModelAnim.ModelAnim::~ModelAnim();
+    MARIO3D(c)->mModelAnim.dExtAnmModel_c::~dExtAnmModel_c();
     *c = (int)&data_ov006_0213b3c4;
     return c;
 }
@@ -3127,7 +3127,7 @@ extern void TrmpObjAdapter_Construct(int *c);
 int *Trmp3DMario_Construct(int *t) {
     TrmpObjAdapter_Construct(t);
     t[0] = (int)sTrmp3DMarioOps;
-    _ZN9ModelAnimC1Ev(&MARIO3D(t)->mModelAnim);
+    _ZN14dExtAnmModel_cC1Ev(&MARIO3D(t)->mModelAnim);
     return t;
 }
 }

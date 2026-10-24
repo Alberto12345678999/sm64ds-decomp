@@ -326,7 +326,7 @@ int daSnowball_c::Behavior()
  * Returns 0 if the model file could not be bound, else 1. */
 int daSnowball_c::InitResources()
 {
-    void *file = Model::LoadFile(data_ov081_02128d90);
+    void *file = dExtSimpleModel_c::LoadFile(data_ov081_02128d90);
     if (mModel.SetFile((BMD_File *)file, 1, -1) == 0)
         return 0;
 

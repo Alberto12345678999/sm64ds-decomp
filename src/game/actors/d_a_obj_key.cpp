@@ -25,7 +25,7 @@ struct System {
  *   does not declare New, and a bare int does not convert to Fix12<int>.
  * - UpdateModelTransform: dActor_c::DropShadowRadHeight with Fix12<int>
  *   radius/depth size 0x130 -> 0x140 (+0x10). A bare int does not compile.
- * - InitResources: ModelAnim::SetAnim, both calls, Fix12<int> speed, size
+ * - InitResources: dExtAnmModel_c::SetAnim, both calls, Fix12<int> speed, size
  *   0x32c -> 0x344 (+0x18). dCcAcPos_c::Init, both calls, Fix12<int>
  *   radius/height, size 0x32c -> 0x34c (+0x20).
  * - InitResources: mWithMeshClsn.Init(...) links to the undefined
@@ -196,7 +196,7 @@ struct ObjKeyStateTable {
 extern ObjKeyStateTable data_ov089_02132cec;
 
 /* local extern: dCamera_c.h has no SetFlag_3. Particle::System::New,
- * DropShadowRadHeight, ModelAnim::SetAnim and dCcAcPos_c::Init take
+ * DropShadowRadHeight, dExtAnmModel_c::SetAnim and dCcAcPos_c::Init take
  * Fix12<int> by value; the scalar call does not compile and the Fix12
  * temporary size-DIFFs (see the file comment). The ROM calls the
  * UpdateContinuous veneer, not the method. */
@@ -318,11 +318,11 @@ extern "C" void LoadKeyModels(int kind)
     SharedFilePtr *extra;
     if (kind >= 8)
         return;
-    Model::LoadFile(*(SharedFilePtr *)data_ov089_02132894[kind]);
+    dExtSimpleModel_c::LoadFile(*(SharedFilePtr *)data_ov089_02132894[kind]);
     extra = (SharedFilePtr *)data_ov089_021328b4[kind];
     if (extra == 0)
         return;
-    Model::LoadFile(*extra);
+    dExtSimpleModel_c::LoadFile(*extra);
 }
 
 // @symbol _ZN10daObjKey_c19func_ov089_0213115cEi

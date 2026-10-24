@@ -62,7 +62,7 @@ enum dScStage_c_AssetId { ASSET_D_2D_UPR_COURSE_CLEAR_MESSAGE_NCL_BIN = 0x025a }
 #include "nitro/hw/registers.h"
 #include "dScene_c.h"
 #include "Event.h"
-#include "Model.h"
+#include "dExtSimpleModel_c.h"
 #include "dCamera_c.h"
 #include "Particle__SysTracker.h"
 #include "Fog.h"
@@ -544,7 +544,7 @@ void SetMusic(u32 player, u32 music);
 #pragma defer_codegen off
 
 // @symbol _ZN10dScStage_cD1Ev, _ZN10dScStage_cD0Ev
-/* Destroy through dScStage_c's own three fields -- dBgW_Kc at 0x91c, Model at
+/* Destroy through dScStage_c's own three fields -- dBgW_Kc at 0x91c, dExtSimpleModel_c at
  * 0x86c, Particle::SysTracker at 0x50 -- in reverse declaration order, then
  * dScene_c (now inline-defined in dScene_c.h, so its vptr store and dBase_c's
  * inline in turn), then fBase_c's subobject destructor, called rather than
@@ -3721,7 +3721,7 @@ extern "C" void func_0202b0e0(int a, int b) {
 
 // @symbol _ZN10dScStage_c10LoadSkyboxEv
 /* Ask the level record which skybox to use and, if there is one, allocate a
- * Model, construct it and load the file for that ID. mSkyboxModel is typed in
+ * dExtSimpleModel_c, construct it and load the file for that ID. mSkyboxModel is typed in
  * include/dScStage_c.h because of this store and the virtual destroy in
  * CleanupResources.
  */
@@ -3729,15 +3729,15 @@ void dScStage_c::LoadSkybox() {
     u32 skyboxID = GetSkyboxID();
     if (!skyboxID)
         return;
-    mSkyboxModel = new Model;
+    mSkyboxModel = new dExtSimpleModel_c;
     u16 fileID = data_02075620[skyboxID - 1];
     mSkyboxModel->LoadAndSetFile(fileID, 0, 2);
 }
 
 // @symbol _ZN10dScStage_c22RenderModelTransparentEv
-/* Model's own vtable shape as far as the two RenderModel passes need it (six
+/* dExtSimpleModel_c's own vtable shape as far as the two RenderModel passes need it (six
    slots: D1, D0, DoSetFile, UpdateVerts, Virtual10, Render), named to avoid
-   colliding with the real ModelBase (which has only three). */
+   colliding with the real dExtModel_c (which has only three). */
 struct LocalModelVtableShape {
     virtual void vf0();
     virtual void vf1();
@@ -3760,7 +3760,7 @@ struct Component {
     char pad28[0x8];
 };
 
-/* Local view of the real ModelComponents (include/ModelBase.h): `sub` is that
+/* Local view of the real ModelComponents (include/dExtModel_c.h): `sub` is that
    type's `modelFile` (offset 0x0); `components` is its `materials` (offset
    0x4, 0x30-byte records). */
 struct LocalModelComponents {
@@ -3788,7 +3788,7 @@ void dScStage_c::RenderModelTransparent() {
             }
         }
     }
-    Model *model = &mModel;
+    dExtSimpleModel_c *model = &mModel;
     model->Render((const Vector3 *)&data_020755d4);
 }
 
@@ -3834,7 +3834,7 @@ void dScStage_c::RenderModel() {
         bone++;
     }
 
-    Model *model = &mModel;
+    dExtSimpleModel_c *model = &mModel;
     model->Render((const Vector3 *)&data_020755d4);
 }
 
@@ -4074,7 +4074,7 @@ int dScStage_c::Render() {
     func_020391f0();
     RenderFog();
     {
-        Model *skybox = mSkyboxModel;
+        dExtSimpleModel_c *skybox = mSkyboxModel;
         if (skybox != 0) {
             Matrix4x3 *transform = &skybox->mat4x3;
             Vector3 *cameraPosition = &((dCamera_c *)data_0209f318)->pos;
@@ -4571,7 +4571,7 @@ int dScStage_c::CleanupResources() {
     data_0209d4a8 = 0;
 
     {
-        Model *skybox = mSkyboxModel;
+        dExtSimpleModel_c *skybox = mSkyboxModel;
         if (skybox)
             delete skybox;
     }
@@ -4894,7 +4894,7 @@ int dScStage_c::InitResources() {
         {
             u32 i;
             for (i = 0; i < 0xC; i++) {
-                Model::LoadFile(*(SharedFilePtr *)data_020756f0[i]);
+                dExtSimpleModel_c::LoadFile(*(SharedFilePtr *)data_020756f0[i]);
             }
         }
 

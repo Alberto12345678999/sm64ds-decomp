@@ -25,7 +25,7 @@ struct System {
  *
  * leftovers:
  *  - The Fix12-by-value member calls (BlendModelAnim::SetAnim,
- *    ModelAnim::SetAnim, TextureSequence::SetFile,
+ *    dExtAnmModel_c::SetAnim, TextureSequence::SetFile,
  *    dExtShadowModel_c::InitModel, Particle::System::New,
  *    G3i::PerspectiveW_) keep measured scalar-extern spellings: spelled as
  *    the real member types, mwccarm homes the register arguments and the
@@ -180,8 +180,8 @@ extern const int sVsPlayerExitX[16] = {0,       1843200, 1843200, 1843200, -2048
 extern void *_ZN7fBase_cnwEj(unsigned int size);
 extern void *_ZN7fBase_cC2Ev(void *p);
 extern void _ZN8Particle10SysTrackerC1Ev(void *p);
-extern void *_ZN5ModelC1Ev(void *p);
-extern void *_ZN9ModelAnimC1Ev(void *p);
+extern void *_ZN17dExtSimpleModel_cC1Ev(void *p);
+extern void *_ZN14dExtAnmModel_cC1Ev(void *p);
 extern void __cxa_vec_ctor(void *base, unsigned int count, unsigned int stride,
                            void (*ctor)(void *), void (*dtor)(void *));
 extern void *data_0208e4b8;
@@ -634,8 +634,8 @@ void UnknownVsPlayer::func_ov075_02114be4() {
             *(int *)(mat + 0x20) = mMaterialColor;
             mat += sizeof(BMD_Material);
         }
-        mModel.Model::Render(0);
-        ModelAnim *animation = &mAnimation;
+        mModel.dExtSimpleModel_c::Render(0);
+        dExtAnmModel_c *animation = &mAnimation;
         animation->Virtual10(components->transforms[15]);
     }
 
@@ -652,7 +652,7 @@ void UnknownVsPlayer::func_ov075_02114be4() {
         }
     }
 
-    mAnimation.Model::Render(0);
+    mAnimation.dExtSimpleModel_c::Render(0);
     mTextureSequence.Update(mAnimation.data);
 }
 
@@ -984,13 +984,13 @@ int dEntObj_c::InitResources() {
     UnknownVsPlayer *player;
 
     InitialiseVramGlobals();
-    Model::LoadFile(data_ov075_0211d3fc);
+    dExtSimpleModel_c::LoadFile(data_ov075_0211d3fc);
     if (param1 != 1) {
-        Model::LoadFile(data_ov075_0211d3bc);
+        dExtSimpleModel_c::LoadFile(data_ov075_0211d3bc);
         dExtFrameCtrl_c::LoadFile(data_ov075_0211d3e4);
     }
-    Model::LoadFile(data_ov075_0211d404);
-    Model::LoadFile(data_ov075_0211d3c4);
+    dExtSimpleModel_c::LoadFile(data_ov075_0211d404);
+    dExtSimpleModel_c::LoadFile(data_ov075_0211d3c4);
     dExtFrameCtrl_c::LoadFile(data_ov075_0211d414);
 
     if (param1 != 1) {
@@ -1020,7 +1020,7 @@ int dEntObj_c::InitResources() {
     mModel.SetFile((BMD_File *)data_ov075_0211d3fc.filePtr, 1, -1);
 
     func_0203c178(&data_020a0e68, 0x7d000, 0x7d000, 0x7d000);
-    /* 0x888 is +0x1c inside the Model at 0x86c -- its mat4x3. The cartridge's own
+    /* 0x888 is +0x1c inside the dExtSimpleModel_c at 0x86c -- its mat4x3. The cartridge's own
        ~dEntObj_c proves the extent; see tools/dtor_members.py. */
     *(MatrixCopyWords *)((char *)&mModel.mat4x3) = *(MatrixCopyWords *)&data_020a0e68;
 
@@ -1087,8 +1087,8 @@ extern "C" dEntObj_c *dEntObj_c_classInit(void) {
         *(void **)p = &data_0208e4b8;
         *(void **)p = _ZTV9dEntObj_c + 2;
         _ZN8Particle10SysTrackerC1Ev(&p->mParticles);
-        _ZN5ModelC1Ev(&p->mModel);
-        _ZN9ModelAnimC1Ev(&p->mModelAnim);
+        _ZN17dExtSimpleModel_cC1Ev(&p->mModel);
+        _ZN14dExtAnmModel_cC1Ev(&p->mModelAnim);
         __cxa_vec_ctor(p->mPlayers, 4, sizeof(UnknownVsPlayer),
                        (void (*)(void *))_ZN15UnknownVsPlayerC1Ev,
                        (void (*)(void *))_ZN15UnknownVsPlayerD1Ev);

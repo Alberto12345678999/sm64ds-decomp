@@ -16,7 +16,7 @@ struct Vector3_16f;
  * D1 and D0 pair; `new` odr-uses the class so that pair is emitted here.
  *
  * deslop leftovers:
- * - ModelAnim::SetAnim, dCcAc_c::Init, dCcAcPos_c::Init, dBgCh_Actr::Init,
+ * - dExtAnmModel_c::SetAnim, dCcAc_c::Init, dCcAcPos_c::Init, dBgCh_Actr::Init,
  *   Particle::System::New and NewSimple, Sound::PlaySub, Player::Hurt and
  *   Player::Bounce stay mangled extern "C" calls: each takes a Fix12<int>
  *   by value (the measured alternatives are noted at their declarations).
@@ -147,8 +147,8 @@ int daPkn_c::InitResources()
     for (i = 0; i < 6; i++)
         dExtFrameCtrl_c::LoadFile(*data_ov084_021302f4[i]);
     LoadBlueCoinModel(this);
-    Model::LoadFile(data_ov084_02130dfc);
-    Model::LoadFile(data_ov002_0210da38);
+    dExtSimpleModel_c::LoadFile(data_ov084_02130dfc);
+    dExtSimpleModel_c::LoadFile(data_ov002_0210da38);
     if (mModelAnim.SetFile((BMD_File *)data_ov084_02130dfc.filePtr, 1, -1) == 0)
         return 0;
     if (mModel.SetFile((BMD_File *)data_ov002_0210da38.filePtr, 1, -1) == 0)

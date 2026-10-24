@@ -8,7 +8,7 @@
  * - common.h stays before daGmch_c.h. InitResources assigns
  *   IDENTITY_MATRIX4X3 into mMatrix; the .r/.t Matrix4x3 spelling is
  *   0x1f0 against the ROM's 0x1d4. decl_common.h is not included.
- * - ModelAnim::SetAnim, dCcAc_c::Init, dBgCh_Actr::Init,
+ * - dExtAnmModel_c::SetAnim, dCcAc_c::Init, dBgCh_Actr::Init,
  *   Particle::System::NewSimple, dActor_c::SpawnCoins,
  *   DropShadowRadHeight, Player::Bounce and Player::Hurt stay mangled
  *   (Fix12<int> by value). SpawnCoins as a member stopped
@@ -51,7 +51,7 @@ enum daGmch_c_AssetId {
 #include "dBgCh_Gnd.h"
 #include "Player.h"
 #include "Sound.h"
-#include "Model.h"
+#include "dExtSimpleModel_c.h"
 #include "dExtFrameCtrl_c.h"
 #include "SharedFilePtr.h"
 #include "SpawnInfo.h"
@@ -121,7 +121,7 @@ struct GmchDrawReg { GmchDrawReg(Vector3 &v) { v.x = 0; v.y = 0x2000; v.z = 0; }
  *
  * Of the original 54 declarations, exactly NINE had more than one type spelling
  * across the 36 shards: Vec3_Dist, dActor_c::DistToCPlayer, func_02038414,
- * ModelAnim::SetAnim, Vec3_HorzAngle, DecIfAbove0_Byte, Sound::PlayBank0,
+ * dExtAnmModel_c::SetAnim, Vec3_HorzAngle, DecIfAbove0_Byte, Sound::PlayBank0,
  * ApproachLinear and RandomIntInternal.  Collapsing each onto ONE spelling was
  * measured, not assumed, and eight of the nine cost nothing:
  *
@@ -131,8 +131,8 @@ struct GmchDrawReg { GmchDrawReg(Vector3 &v) { v.x = 0; v.y = 0x2000; v.z = 0; }
  *
  *   FIVE disagreed only about something no call site can see: a return value
  *   that every caller discards or compares against zero (func_02038414,
- *   ModelAnim::SetAnim, DecIfAbove0_Byte) or which pointer type spells the same
- *   address (Vec3_HorzAngle, ModelAnim::SetAnim, and ApproachLinear, which
+ *   dExtAnmModel_c::SetAnim, DecIfAbove0_Byte) or which pointer type spells the same
+ *   address (Vec3_HorzAngle, dExtAnmModel_c::SetAnim, and ApproachLinear, which
  *   takes the short & its mangled name encodes).
  *
  *   ONE needed a call site adapted rather than a declaration chosen.
@@ -821,7 +821,7 @@ void daGmch_c::OnPendingDestroy()
 }
 
 // @symbol _ZN8daGmch_c6RenderEv
-/* Vtable slot 9.  Draws the ModelAnim only above mState 1 and the Model only at
+/* Vtable slot 9.  Draws the dExtAnmModel_c only above mState 1 and the dExtSimpleModel_c only at
    or below 0x1f, so the two overlap for 2..0x1f.  Both draws go through the
    models' own slot-5 Render, virtually, as the ROM dispatches them. */
 int daGmch_c::Render()
@@ -864,7 +864,7 @@ int daGmch_c::InitResources()
     extern Matrix4x3 IDENTITY_MATRIX4X3;
 
     Vector3 pos;
-    void *modelFile = Model::LoadFile(*(SharedFilePtr *)&data_ov081_02128ed4);
+    void *modelFile = dExtSimpleModel_c::LoadFile(*(SharedFilePtr *)&data_ov081_02128ed4);
     mModelAnim.SetFile((BMD_File *)modelFile, 1, 1);
     if (mModel.SetFile((BMD_File *)data_ov002_0210d9b8.filePtr, 1, 1) == 0)
         return 0;

@@ -26,7 +26,7 @@
 // - data_ov025_02113814 is the file-table handle. g_profile_DONKAKU stays
 //   overlay data.
 
-/* daDkk_c.h pulls common.h before Model.h, so Matrix4x3 is the flat
+/* daDkk_c.h pulls common.h before dExtSimpleModel_c.h, so Matrix4x3 is the flat
  * s32 m[12]. Keep dBgCh_Lin.h below that include. */
 /* Runtime asset handles resolved through the overlay 0 file table. */
 enum daDkk_c_AssetId {

@@ -864,8 +864,8 @@ extern void Matrix4x3_ApplyInPlaceToRotationZXYExt(void *m, int x, int y, int z)
 extern char data_020a0e68;
 }
 
-// @symbol _ZN12dEnemyBase_c26UpdateKillByInvincibleCharER10dBgCh_ActrR9ModelAnimj
-int dEnemyBase_c::UpdateKillByInvincibleChar(dBgCh_Actr &clsn, ModelAnim &anim,
+// @symbol _ZN12dEnemyBase_c26UpdateKillByInvincibleCharER10dBgCh_ActrR14dExtAnmModel_cj
+int dEnemyBase_c::UpdateKillByInvincibleChar(dBgCh_Actr &clsn, dExtAnmModel_c &anim,
                                              unsigned int flags) {
     int v[3];
 
@@ -909,7 +909,7 @@ int dEnemyBase_c::UpdateKillByInvincibleChar(dBgCh_Actr &clsn, ModelAnim &anim,
 
 /* The death-state-8 sibling of UpdateKillByInvincibleChar above: the same
    vtable-slot-29 spin over data_020a0e68, but reached as a free helper taking
-   the enemy, its collision and its Model as raw pointers plus the
+   the enemy, its collision and its dExtSimpleModel_c as raw pointers plus the
    coin/death-table flags, and running the wall-reflect variant of the
    collision update. Lowest address in the TU, so it is defined last: this
    file runs highest ROM address first. */
@@ -921,7 +921,7 @@ int dEnemyBase_c::UpdateKillByInvincibleChar(dBgCh_Actr &clsn, ModelAnim &anim,
 extern "C" int func_ov002_020ad660(void *enemy, void *clsnArg, void *modelArg, int flags) {
     dEnemyBase_c *c = (dEnemyBase_c *)enemy;
     dBgCh_Actr *clsn = (dBgCh_Actr *)clsnArg;
-    Model *model = (Model *)modelArg;
+    dExtSimpleModel_c *model = (dExtSimpleModel_c *)modelArg;
     int v[3];
 
     if (c->mDeathState != 8)

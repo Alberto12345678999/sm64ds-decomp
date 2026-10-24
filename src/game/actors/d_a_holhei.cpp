@@ -10,7 +10,7 @@
  * math/Matrix.h spelling scalarizes a twelve-word copy.
  *
  * Known limits, measured in this TU:
- * - dCcAc_c::Init, dBgCh_Actr::Init, ModelAnim::SetAnim,
+ * - dCcAc_c::Init, dBgCh_Actr::Init, dExtAnmModel_c::SetAnim,
  *   dActor_c::DropShadowRadHeight, dActor_c::SpawnCoins and
  *   dEnemyBase_c::KillByInvincibleChar stay mangled. Each carries
  *   Fix12<int> by value (notes/mwccarm-codegen.md, wall 6az).
@@ -152,7 +152,7 @@ s32 daHolhei_c::OnAimedAtWithEgg() {
    home and previous positions, then the starting state. */
 int daHolhei_c::InitResources()
 {
-    mModel.SetFile((BMD_File *)Model::LoadFile(*(SharedFilePtr *)data_ov062_0211ddf0), 1, -1);
+    mModel.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(*(SharedFilePtr *)data_ov062_0211ddf0), 1, -1);
     mShadowModel.InitCylinder();
     dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)data_ov062_0211dde8);
     dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)&gHoruheiLiftLoopAnimationFile);
@@ -259,8 +259,8 @@ int daHolhei_c::Render()
     dActor_c *held = mHeld;
     if (held != 0 && IsFlagSet(this, 0x4000) && held->mCarryMatrix != 0)
         func_ov062_02116edc(this);
-    /* ModelAnim overrides Render; the ROM calls Model::Render on this member. */
-    mModel.Model::Render((const Vector3 *)0);
+    /* dExtAnmModel_c overrides Render; the ROM calls dExtSimpleModel_c::Render on this member. */
+    mModel.dExtSimpleModel_c::Render((const Vector3 *)0);
     return 1;
 }
 

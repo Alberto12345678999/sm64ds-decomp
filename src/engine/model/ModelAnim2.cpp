@@ -1,8 +1,8 @@
 //cpp
-/* ModelAnim2 -- a ModelAnim that carries a second dExtFrameCtrl_c (otherAnim)
+/* ModelAnim2 -- a dExtAnmModel_c that carries a second dExtFrameCtrl_c (otherAnim)
    and the BCA file it plays (otherFile). The cartridge RTTI names the class
    dExtAnm2Model_c (_ZTI15dExtAnm2Model_c at 0x0208e788, single inheritance
-   from dExtAnmModel_c, the tree's ModelAnim); its vtable _ZTV10ModelAnim2 at
+   from dExtAnmModel_c, the tree's dExtAnmModel_c); its vtable _ZTV10ModelAnim2 at
    0x0208e9b4 overrides only the destructor pair.
    TU claims 0x02016254..0x020163e0 -- the method run, then D0, D1 and C1.
    ~ModelAnim2() is the key function, so this object also emits the MI vtable
@@ -56,7 +56,7 @@ ModelAnim2::ModelAnim2() : otherFile(0) {}
 ModelAnim2::~ModelAnim2() {}
 
 /* The second animation's SetAnim, fast path and all: the same body as
-   ModelAnim::SetAnim, run on otherFile and otherAnim. */
+   dExtAnmModel_c::SetAnim, run on otherFile and otherAnim. */
 // @symbol _ZN10ModelAnim213Func_020162C4Ejiit
 void ModelAnim2::Func_020162C4(u32 animFile, int flags, Fix12i speed, u16 startFrame) {
     if (animFile == otherFile) {
@@ -89,7 +89,7 @@ extern "C" void func_0201628c(int self, int bone) {
    second animation is seeded from the first one's state. */
 // @symbol _ZN10ModelAnim24CopyERKS_Pcj
 void ModelAnim2::Copy(const ModelAnim2 &src, char *newFile, u32 newOtherFile) {
-    ModelAnim::Copy(src, newFile);
+    dExtAnmModel_c::Copy(src, newFile);
     otherAnim.Copy(src);
     if (newOtherFile)
         otherFile = newOtherFile;

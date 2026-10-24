@@ -528,7 +528,7 @@ int daTrsTrap_c::InitResources()
     mSoundTimer = 0;
 
     dBgW_Kc::LoadFile(*data_ov063_0211e28c[mIndex]);
-    if (mModel.SetFile((BMD_File *)Model::LoadFile(
+    if (mModel.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(
             *data_ov063_0211e27c[mIndex]), 1, -1) == 0)
         return 0;
 

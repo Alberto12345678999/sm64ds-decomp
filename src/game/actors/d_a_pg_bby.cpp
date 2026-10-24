@@ -29,7 +29,7 @@ struct PgBbyMtx {
 };
 
 /* Descriptive local types and object names, not recovered source spellings.
- * Model and animation handles use different veneers. */
+ * dExtSimpleModel_c and animation handles use different veneers. */
 struct PgBbyModelFile : SharedFilePtr {
     PgBbyModelFile(u32 fileID);
     ~PgBbyModelFile();
@@ -93,7 +93,7 @@ void daPgBby_c::OnTurnIntoEgg(Player &player)
 // @symbol _ZN9daPgBby_c13InitResourcesEv
 s32 daPgBby_c::InitResources()
 {
-    BMD_File *f = (BMD_File *)Model::LoadFile(gPenguinBabyModelFile);
+    BMD_File *f = (BMD_File *)dExtSimpleModel_c::LoadFile(gPenguinBabyModelFile);
     mModelAnim.SetFile(f, 1, -1);
     int i;
     for (i = 0; i < 5; i++) {

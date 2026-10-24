@@ -106,7 +106,7 @@ int   _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void *player, void *pos,
                                               unsigned int d);
 
 void *_ZN8dActor_cC2Ev(void *actor);
-void *_ZN9ModelAnimC1Ev(void *p);
+void *_ZN14dExtAnmModel_cC1Ev(void *p);
 void *_ZN17dExtShadowModel_cC1Ev(void *p);
 void *_ZN7dCcAc_cC1Ev(void *p);
 void *_ZN10dBgCh_ActrC1Ev(void *p);
@@ -153,7 +153,7 @@ struct ScuttlebugAnimFileHandle : SharedFilePtr {
  * member pointers (nine {enter, run} rows), in static-initializer order:
  * the initializer constructs each handle, registers its destructor, then
  * copies the pointers from .data. InitResources feeds the model to
- * Model::LoadFile and the animation to dExtFrameCtrl_c::LoadFile.
+ * dExtSimpleModel_c::LoadFile and the animation to dExtFrameCtrl_c::LoadFile.
  * ------------------------------------------------------------------------ */
 // @symbol __sinit_d_a_spd.cpp
 ScuttlebugModelFilePtr   data_ov071_02122f80(ASSET_SPIDER_BMD);   /* model */
@@ -200,7 +200,7 @@ extern "C" int *daSpd_c_classInit(void)
     if (p) {
         _ZN8dActor_cC2Ev(p);
         p[0] = (int)&_ZTV10Scuttlebug[2];
-        _ZN9ModelAnimC1Ev(&((Scuttlebug *)p)->mModelAnim);
+        _ZN14dExtAnmModel_cC1Ev(&((Scuttlebug *)p)->mModelAnim);
         _ZN17dExtShadowModel_cC1Ev(&((Scuttlebug *)p)->mShadowModel);
         _ZN7dCcAc_cC1Ev(&((Scuttlebug *)p)->mdCcAc_c);
         _ZN10dBgCh_ActrC1Ev(&((Scuttlebug *)p)->mWithMeshClsn);
@@ -237,8 +237,8 @@ void Scuttlebug::OnTurnIntoEgg(Player &player)
 // @symbol _ZN10Scuttlebug13InitResourcesEv
 int Scuttlebug::InitResources()
 {
-    void *mf = Model::LoadFile(data_ov071_02122f80);
-    ((ModelBase *)(&mModelAnim))->SetFile((BMD_File *)mf, 1, -1);
+    void *mf = dExtSimpleModel_c::LoadFile(data_ov071_02122f80);
+    ((dExtModel_c *)(&mModelAnim))->SetFile((BMD_File *)mf, 1, -1);
     dExtFrameCtrl_c::LoadFile(gSpiderWalkAnimationFile);
     if (((dExtShadowModel_c *)(&mShadowModel))->InitCylinder() == 0)
         return 0;
@@ -295,7 +295,7 @@ int Scuttlebug::Render()
 ret:
     return 1;
 call:
-    /* ModelAnim slot 5. The call stays virtual. */
+    /* dExtAnmModel_c slot 5. The call stays virtual. */
     mModelAnim.Render(0);
     return 1;
 }

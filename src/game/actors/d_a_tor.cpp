@@ -17,7 +17,7 @@ struct System {
  * appended last.
  *
  * deslop leftovers:
- * - cstd::atan2, Particle::System::New, ModelAnim::SetAnim,
+ * - cstd::atan2, Particle::System::New, dExtAnmModel_c::SetAnim,
  *   TextureTransformer::SetFile, dCcAc_c::Init and dBgCh_Actr::Init take
  *   Fix12<int> by value and stay mangled extern "C" calls.
  * - dBgCh_Actr_UpdateContinuous_Veneer is the ROM's own tail-call thunk, not
@@ -86,7 +86,7 @@ struct TorAnimationFileHandle : SharedFilePtr {
 /* ------------------------------------------------------------------------
  * The model handle and the animation handle, in static-initializer order:
  * the initializer constructs each handle and registers its destructor.
- * InitResources feeds the model to Model::LoadFile and the animation to
+ * InitResources feeds the model to dExtSimpleModel_c::LoadFile and the animation to
  * dExtFrameCtrl_c::LoadFile.
  * ------------------------------------------------------------------------ */
 // @symbol __sinit_d_a_tor.cpp
@@ -300,7 +300,7 @@ int daTor_c::InitResources()
 {
     /* The three Fix12-by-value calls below stay mangled (file header leftovers);
        member calls grow this function from 0x158 to 0x18c. */
-    mModelAnim.SetFile((BMD_File *)Model::LoadFile(gSandTornadoModelFile),
+    mModelAnim.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(gSandTornadoModelFile),
                        1, 0x15);
     dExtFrameCtrl_c::LoadFile(gSandTornadoAnimationFile);
     func_02016aac(&mModelAnim, 0x16, 1);

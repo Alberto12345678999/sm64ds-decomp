@@ -267,7 +267,7 @@ s32 daObjFl_Amilift_c::InitResources() {
     Vector3 nodeB;
     unsigned char b;
 
-    bmd = (BMD_File *)Model::LoadFile(data_ov064_0211c730);
+    bmd = (BMD_File *)dExtSimpleModel_c::LoadFile(data_ov064_0211c730);
     mModel.SetFile(bmd, 1, -1);
 
     b = (param1 >> 8) & 1;

@@ -696,11 +696,11 @@ src/engine/model/BlendModelAnim.cpp:
     complete
     .text start:0x020163e0 end:0x02016714
 
-src/engine/model/ModelAnim.cpp:
+src/engine/model/dExtAnmModel_c.cpp:
     complete
     .text start:0x02016714 end:0x020169d8
 
-src/engine/model/Model.cpp:
+src/engine/model/dExtSimpleModel_c.cpp:
     complete
     .text start:0x020169d8 end:0x02017168
 

@@ -83,7 +83,7 @@
 #include "daFPknBall_c.h"
 #include "daObjNumber_c.h"
 #include "daCoin_c.h"
-#include "Model.h"
+#include "dExtSimpleModel_c.h"
 #include "SharedFilePtr.h"
 #include "dClipper.h"
 #include "nitro/fx/fx.h"
@@ -1054,7 +1054,7 @@ Matrix4x3 *dActor_c::UpdateCarry(Player &player, const Vector3 &vec)
     t.z = 0;
     /* Bone 14 of the body model, carried into world space by the model's
        own matrix; only its translation survives. */
-    Model *body = (Model *)func_ov002_020e496c(&player);
+    dExtSimpleModel_c *body = (dExtSimpleModel_c *)func_ov002_020e496c(&player);
     Matrix4x3 *bones = body->data.transforms;
     data_020a0e68 = body->mat4x3;
     MulMat4x3Mat4x3(&bones[14], &data_020a0e68, &data_020a0e68);
@@ -1327,8 +1327,8 @@ extern SharedFilePtr data_ov002_0210d9c8; /* 0x0210d9c8 */
 }
 extern "C" void LoadBlueCoinModel(void)
 {
-    Model::LoadFile(data_ov002_0210da00);
-    Model::LoadFile(data_ov002_0210d9c8);
+    dExtSimpleModel_c::LoadFile(data_ov002_0210da00);
+    dExtSimpleModel_c::LoadFile(data_ov002_0210d9c8);
 }
 
 /* -------------------------------------------------------------------------- */

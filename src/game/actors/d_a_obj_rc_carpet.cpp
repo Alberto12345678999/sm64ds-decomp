@@ -12,7 +12,7 @@
  *   linkcheck NO-REPOs classInit: dPathLiftActor_c has no out-of-line
  *   ctor, so the inlined vptr store is `_ZTV16dPathLiftActor_c[2]`
  *   (addend 8) against the ROM's `data_ov002_0210af70` address point.
- * Leftover: ModelAnim::SetAnim and dBgW_KcMbg::SetFile stay mangled
+ * Leftover: dExtAnmModel_c::SetAnim and dBgW_KcMbg::SetFile stay mangled
  *   -- both take Fix12<int> by value (wall 6az); a method call homes
  *   the argument and size-DIFFs InitResources.
  * Leftover: dBgActor_c::IsClsnInRange stays mangled -- header method
@@ -81,12 +81,12 @@ FlyingCarpetResources data_ov036_02113f58 = {
 };
 
 extern void *_ZN10dBgActor_cC2Ev(dBgActor_c *actor);
-extern void *_ZN5ModelC1Ev(Model *model);
-extern void _ZN5ModelD1Ev(Model *model);
+extern void *_ZN17dExtSimpleModel_cC1Ev(dExtSimpleModel_c *model);
+extern void _ZN17dExtSimpleModel_cD1Ev(dExtSimpleModel_c *model);
 extern void *_ZN7PathPtrC1Ev(PathPtr *path);
-extern void *_ZN9ModelAnimC1Ev(ModelAnim *model);
+extern void *_ZN14dExtAnmModel_cC1Ev(dExtAnmModel_c *model);
 extern void __cxa_vec_ctor(
-    Model *models, int count, int size, void *ctor, void *dtor);
+    dExtSimpleModel_c *models, int count, int size, void *ctor, void *dtor);
 extern int _ZTV15daObjRcCarpet_c[];
 extern int data_ov002_0210af70[];
 
@@ -112,11 +112,11 @@ extern "C" daObjRcCarpet_c *daObjRcCarpet_c_classInit()
         _ZN10dBgActor_cC2Ev(actor);
         *(int *)actor = (int)data_ov002_0210af70;
         __cxa_vec_ctor(
-            actor->mModels, 3, sizeof(Model),
-            (void *)_ZN5ModelC1Ev, (void *)_ZN5ModelD1Ev);
+            actor->mModels, 3, sizeof(dExtSimpleModel_c),
+            (void *)_ZN17dExtSimpleModel_cC1Ev, (void *)_ZN17dExtSimpleModel_cD1Ev);
         _ZN7PathPtrC1Ev(&actor->mPath);
         *(int *)actor = (int)&_ZTV15daObjRcCarpet_c[2];
-        _ZN9ModelAnimC1Ev(&actor->mModelAnim);
+        _ZN14dExtAnmModel_cC1Ev(&actor->mModelAnim);
     }
     return actor;
 }
@@ -135,8 +135,8 @@ extern "C" SpawnInfo<daObjRcCarpet_c> g_profile_RC_CARPET = {
 // @symbol _ZN15daObjRcCarpet_c13InitResourcesEv
 int daObjRcCarpet_c::InitResources()
 {
-    Model::LoadFile(data_ov002_0210d9f0);
-    void *modelFile = Model::LoadFile(*data_ov036_02113f58.model);
+    dExtSimpleModel_c::LoadFile(data_ov002_0210d9f0);
+    void *modelFile = dExtSimpleModel_c::LoadFile(*data_ov036_02113f58.model);
     mModelAnim.SetFile((BMD_File *)modelFile, 1, -1);
     dExtFrameCtrl_c::LoadFile(gRcCarpetWaitAnimationFile);
     mModelAnim.SetAnim((BCA_File *)gRcCarpetWaitAnimationFile.filePtr, 0, 0x1000, 0);

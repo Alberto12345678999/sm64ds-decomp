@@ -117,7 +117,7 @@ extern "C" void func_ov022_0211191c(daObjFl_Block_c *self, dActor_c *other)
 // @symbol _ZN15daObjFl_Block_c13InitResourcesEv
 s32 daObjFl_Block_c::InitResources()
 {
-    mModel.SetFile((BMD_File *)Model::LoadFile(data_ov022_02114558), 1, -1);
+    mModel.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(data_ov022_02114558), 1, -1);
     UpdateModelPosAndRotY();
     UpdateClsnPosAndRot();
 

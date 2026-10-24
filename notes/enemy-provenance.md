@@ -126,7 +126,7 @@ Left `unk_`:
   clearly a state, but three values with no name attached is not enough to pick one.
 
 Byte-neutral source cleanups: `mType`, `mCapUniqueID`, `&mHomePos` and
-`mModelAnim.speed = 0x1000` (offset 0x30c + 0x5c = 0x368, `ModelAnim::speed`) replaced the
+`mModelAnim.speed = 0x1000` (offset 0x30c + 0x5c = 0x368, `dExtAnmModel_c::speed`) replaced the
 corresponding raw `c + 0xNNN` pokes in `Behavior`.
 
 ---

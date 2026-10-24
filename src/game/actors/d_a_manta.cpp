@@ -18,7 +18,7 @@
  *   ring's uniqueID in cartridge order (cmp r0, r1). Swapping the
  *   operands DIFFs. The 0x3ac/+4 dance stays; uniqueID is the word
  *   at +4 of that ring.
- * - ModelAnim::SetAnim and dCcAcPos_c::Init stay the scalar
+ * - dExtAnmModel_c::SetAnim and dCcAcPos_c::Init stay the scalar
  *   Fix12<int> externs. The member calls grow those functions and
  *   move InitResources' reloc off data_ov090_02134524.
  * - Behavior keeps the mSpeedZ copy after the terminal clamp.
@@ -353,9 +353,9 @@ int daManta_c::Behavior()
 // @symbol _ZN9daManta_c13InitResourcesEv
 int daManta_c::InitResources()
 {
-    mModelAnim.SetFile((BMD_File *)Model::LoadFile(data_ov090_02134524), 1, -1);
-    Model::LoadFile(data_ov002_0210da10);
-    Model::LoadFile(data_ov002_0210d9a8);
+    mModelAnim.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(data_ov090_02134524), 1, -1);
+    dExtSimpleModel_c::LoadFile(data_ov002_0210da10);
+    dExtSimpleModel_c::LoadFile(data_ov002_0210d9a8);
     dExtFrameCtrl_c::LoadFile(data_ov090_0213452c);
 
     mPathID = param1 & 0xff;
@@ -413,7 +413,7 @@ extern "C" daManta_c *daManta_c_classInit()
     return new daManta_c();
 }
 
-/* Model, anim, then the state record. The record's pointer-to-member
+/* dExtSimpleModel_c, anim, then the state record. The record's pointer-to-member
  * descriptors stay anonymous. This is what emits __sinit_d_a_manta.cpp. */
 MantaModelFilePtr data_ov090_02134524(MANTA_MODEL_FILE);
 MantaAnimationFilePtr data_ov090_0213452c(MANTA_SWIM_ANIMATION_FILE);

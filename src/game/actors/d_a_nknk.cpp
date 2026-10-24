@@ -11,7 +11,7 @@
  */
 
 // leftovers:
-// - Particle::System::New / SetSelfDestructFlag, ModelAnim::SetAnim,
+// - Particle::System::New / SetSelfDestructFlag, dExtAnmModel_c::SetAnim,
 //   dCcAc_c::Init, dBgCh_Actr::Init, dActor_c::ReflectAngle /
 //   DropShadowRadHeight / IsTooFarAwayFromPlayer,
 //   dEnemyBase_c::KillByInvincibleChar, Player::Bounce / Hurt and
@@ -98,7 +98,7 @@ extern void func_0201267c(unsigned int id, const Vector3 *pos);
 extern s16 data_02082214[];         /* SINE_TABLE: sin, cos pairs */
 extern NknkAnimationFileHandle *data_ov062_0211cee8[];
 extern int data_ov062_0211cf0c[];
-/* The called scalar definition takes u16 startFrame. The unused ModelAnim
+/* The called scalar definition takes u16 startFrame. The unused dExtAnmModel_c
  * member declaration takes Fix12<int>/u32; its measured form grew this helper. */
 extern int Vec3_Dist(void* a, void* b);
 /* Reconstructed receiver/attacker/nullable collision interface; the original
@@ -197,7 +197,7 @@ int daNknk_c::InitResources()
     for (i = 0; i < 9; i++)
         dExtFrameCtrl_c::LoadFile(*data_ov062_0211cee8[i]);
 
-    f = (BMD_File*)Model::LoadFile(*data_ov062_0211ced8[mModelIndex]);
+    f = (BMD_File*)dExtSimpleModel_c::LoadFile(*data_ov062_0211ced8[mModelIndex]);
     if (mModelAnim.SetFile(f, 1, -1) == 0)
         return 0;
 
@@ -224,7 +224,7 @@ int daNknk_c::InitResources()
         mScaleZ = 0xa66;
         r = 0x3c000;
         h = 0x64000;
-        Model::LoadFile(*data_ov062_0211cee0[mModelIndex]);
+        dExtSimpleModel_c::LoadFile(*data_ov062_0211cee0[mModelIndex]);
     }
 
     _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCc_c, this, r, h, 0x200000, 0xb6efe0);

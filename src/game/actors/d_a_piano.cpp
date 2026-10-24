@@ -99,7 +99,7 @@ int daPiano_c::InitResources()
     dCcAcPos_c *cylinder;
     void *f;
 
-    f = Model::LoadFile(gPianoModelFile);
+    f = dExtSimpleModel_c::LoadFile(gPianoModelFile);
     mModelAnim.SetFile((BMD_File *)f, 1, -1);
     mShadowModel1.InitCuboid();
     mShadowModel2.InitCuboid();
@@ -158,7 +158,7 @@ int daPiano_c::Behavior()
     return 1;
 }
 
-/* ModelAnim's real virtual API expresses the same slot-5 dispatch as the ROM. */
+/* dExtAnmModel_c's real virtual API expresses the same slot-5 dispatch as the ROM. */
 // @symbol _ZN9daPiano_c6RenderEv
 int daPiano_c::Render()
 {

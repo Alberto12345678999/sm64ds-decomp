@@ -73,7 +73,7 @@ void daObjKurumajiku_c_EmitDestructor(daObjKurumajiku_c *p)
 }
 
 // @symbol func_ov002_020b6a80
-/* Build the model transform. Model translation uses 1/8 of the world position.
+/* Build the model transform. dExtSimpleModel_c translation uses 1/8 of the world position.
    The char* entry contract is shared with the existing setup helper. */
 extern "C" int func_ov002_020b6a80(char *self)
 {
@@ -158,7 +158,7 @@ extern "C" int func_ov002_020b6c54(void *actor, void *descriptor, unsigned int r
         static_cast<daObjKurumajiku_c::Resources *>(descriptor);
     void *file;
 
-    file = Model::LoadFile(*resources->model);
+    file = dExtSimpleModel_c::LoadFile(*resources->model);
     self->mModel.SetFile(static_cast<BMD_File *>(file), 1, -1);
     func_ov002_020b6a80(reinterpret_cast<char *>(self));
     self->UpdateClsnPosAndRot();

@@ -263,7 +263,7 @@ s32 daObjPile_c::Behavior()
 // @symbol _ZN11daObjPile_c13InitResourcesEv
 s32 daObjPile_c::InitResources()
 {
-    void *m = Model::LoadFile(gPileModelFile);
+    void *m = dExtSimpleModel_c::LoadFile(gPileModelFile);
     mModel.SetFile((BMD_File *)m, 1, -1);
     UpdateModelPosAndRotY();
     UpdateClsnPosAndRot();

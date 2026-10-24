@@ -119,7 +119,7 @@ extern "C" daObjCtMecha05_c *daObjCtMecha05_c_classInit()
 // @symbol _ZN16daObjCtMecha05_c13InitResourcesEv
 int daObjCtMecha05_c::InitResources()
 {
-    void *modelFile = Model::LoadFile(TTC_MovingBar_ModelFile);
+    void *modelFile = dExtSimpleModel_c::LoadFile(TTC_MovingBar_ModelFile);
     mModel.SetFile((BMD_File *)modelFile, 1, -1);
     mShadowModel.InitCuboid();
     UpdateModelPosAndRotY();

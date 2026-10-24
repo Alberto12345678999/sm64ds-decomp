@@ -28,7 +28,7 @@
 #include "dExtShadowModel_c.h"
 #include "dCcAcPos_c.h"
 #include "dBgCh_Actr.h"
-#include "ModelAnim.h"
+#include "dExtAnmModel_c.h"
 #include "TextureSequence.h"
 #include "MaterialChanger.h"
 
@@ -117,28 +117,28 @@ struct Player : dActor_c {
        walks this run as `*(this + i * 4 + 0xdc)` for `i < 4` and calls each
        element's deleting destructor; Player::Render indexes it with
        GetBodyModelID(mBodyModelId, 1) and TurnOffToonShading with
-       GetBodyModelID(j, 0). The element type is ModelAnim2, not ModelAnim:
+       GetBodyModelID(j, 0). The element type is ModelAnim2, not dExtAnmModel_c:
        func_ov002_020e5948 allocates every slot with operator new(0x78), which
        is sizeof(ModelAnim2), and builds it with _ZN10ModelAnim2C1Ev, and the
        only methods called on the elements by their own class are ModelAnim2's
        (Func_020162C4, Copy). The matched bodies' other accesses all land in
-       the ModelAnim base: +0x08 (Model's ModelComponents), +0x14
-       (Model::mat4x3), +0x50 (the dExtFrameCtrl_c base) and +0x58 (its
+       the dExtAnmModel_c base: +0x08 (dExtSimpleModel_c's ModelComponents), +0x14
+       (dExtSimpleModel_c::mat4x3), +0x50 (the dExtFrameCtrl_c base) and +0x58 (its
        currFrame), and vtable slots 5 (Render) and 6 (Virtual18).
        FIVE slots: GetBodyModelID returns 4 while mIsMetal is set, and
        func_ov002_020e5948 builds [4] from wario_metal_model.bmd (arc0 0x54c).
        CleanupResources deletes [4] on its own after the `i < 4` loop. */
     ModelAnim2 *mBodyModels[5]; /* 0x0dc */
-    /* ~Player calls _ZN9ModelAnimD1Ev on this LAST of the two, and ModelAnim
+    /* ~Player calls _ZN14dExtAnmModel_cD1Ev on this LAST of the two, and dExtAnmModel_c
        asserts 0x64 -- 0x0f0..0x154, closing exactly at mHeadModels. The markers
        this replaces are its own sub-objects: mAnimation1 at 0x140 was the
        dExtFrameCtrl_c base (+0x50) and unk_148 at 0x148 was that base's currFrame
        (+0x58). Both are reachable through the member now. */
-    ModelAnim mModelAnim3;            /* 0x0f0 */
+    dExtAnmModel_c mModelAnim3;            /* 0x0f0 */
     /* EIGHT more models, but Models, not ModelAnims: func_ov002_020e5948 news
-       [0..2] and [4..7] as 0x50 bytes + _ZN5ModelC1Ev and only [3] as 0x64 +
-       _ZN9ModelAnimC1Ev (it alone gets SetAnim, and the Yoshi sites that drive
-       its frame downcast it). Every other access is Model-level: data,
+       [0..2] and [4..7] as 0x50 bytes + _ZN17dExtSimpleModel_cC1Ev and only [3] as 0x64 +
+       _ZN14dExtAnmModel_cC1Ev (it alone gets SetAnim, and the Yoshi sites that drive
+       its frame downcast it). Every other access is dExtSimpleModel_c-level: data,
        mat4x3, SetPolygonMode, Render. CleanupResources
        destroys `i < 4` and then `i + 4` over this one base, TurnOffToonShading
        indexes it at `j` and `j + 4`, and Render indexes it with
@@ -150,16 +150,16 @@ struct Player : dActor_c {
        (Yoshi: yoshi_head) from data_ov002_0210a69c, [4..7] the head_nocap ones
        (Yoshi: yoshi_head_fill) from data_ov002_0210a6ac; Render pins each to body
        bone 15 (face_1). */
-    Model *mHeadModels[8]; /* 0x154 */
-    /* The other ModelAnim, destroyed FIRST of the two. 0x174..0x1d8, closing
+    dExtSimpleModel_c *mHeadModels[8]; /* 0x154 */
+    /* The other dExtAnmModel_c, destroyed FIRST of the two. 0x174..0x1d8, closing
        exactly at mSleepBubbleModel; mAnimation2 at 0x1c4 was its dExtFrameCtrl_c base. */
-    ModelAnim mModelAnim4;            /* 0x174 */
-    /* func_ov002_020e5948 news a 0x50-byte Model here (_ZN5ModelC1Ev) and SetFiles it
+    dExtAnmModel_c mModelAnim4;            /* 0x174 */
+    /* func_ov002_020e5948 news a 0x50-byte dExtSimpleModel_c here (_ZN17dExtSimpleModel_cC1Ev) and SetFiles it
        from data_ov002_0210da38 (file 0x8004, the bubble d_a_pkn also sleeps
        with); func_ov002_020e444c places it in front of the face, Render draws
        it at mSleepBubbleScale while func_ov002_020d225c (Yoshi, sleep stage 2)
        holds, and CleanupResources deletes it. */
-    Model *mSleepBubbleModel; /* 0x1d8 */
+    dExtSimpleModel_c *mSleepBubbleModel; /* 0x1d8 */
     /* The three __cxa_vec_cleanup calls in ~Player, in the order it makes them
        (last array first). Both element types assert 0x14, which is exactly
        the stride the destructor passes. unk_25c and unk_270 were the

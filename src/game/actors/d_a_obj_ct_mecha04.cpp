@@ -173,7 +173,7 @@ int daObjCtMecha04_c::InitResources()
     }
 
     variant = mVariant;
-    modelFile = Model::LoadFile(*data_ov065_0211d194[variant][0]);
+    modelFile = dExtSimpleModel_c::LoadFile(*data_ov065_0211d194[variant][0]);
     mModel.SetFile(
         (BMD_File *)modelFile, 1, -1);
 

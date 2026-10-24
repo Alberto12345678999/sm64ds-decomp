@@ -19,7 +19,7 @@ struct System {
  *   InitResources walk segment rows through char* bases. Indexing
  *   mSegmentPos[seg] / &mModelAnims[i].mat4x3 changes those sizes, and
  *   UpdateSegments' NormalizeVec3IfNonZero relocation moves with them.
- * - func_ov002_020c51d0 is ov002's. ModelAnim::SetAnim, TextureSequence::SetFile,
+ * - func_ov002_020c51d0 is ov002's. dExtAnmModel_c::SetAnim, TextureSequence::SetFile,
  *   dCcAcPos_c::Init, dBgCh_Actr::Init, Player::Hurt and Particle::System::New
  *   stay mangled (Fix12<int> by value).
  */
@@ -155,13 +155,13 @@ void daHanachan_c::StateDamageStartMain()
 {
     int i;
     int k;
-    ModelAnim *anim;
+    dExtAnmModel_c *anim;
 
     anim = &mModelAnims[0];
     anim = anim + 2;
     for (i = 2, k = 6; i < 5; i++, k += 3, anim++) {
         if (mStateTimer == k - 3)
-            ((ModelAnim *)anim)
+            ((dExtAnmModel_c *)anim)
                 ->SetAnim((BCA_File *)(((SharedFilePtr *)data_ov034_02113888[i])->filePtr),
                           0x40000000, 0x1000, 0);
     }
@@ -223,7 +223,7 @@ void daHanachan_c::StateDamageStopMain()
 {
     int i;
     int k;
-    ModelAnim *anim;
+    dExtAnmModel_c *anim;
 
     ApproachLinear(mHorzSpeed, 0, 0x1000);
 
@@ -231,7 +231,7 @@ void daHanachan_c::StateDamageStopMain()
     anim = anim + 2;
     for (i = 2, k = 6; i < 5; i++, k += 3, anim++) {
         if (mStateTimer == k - 3)
-            ((ModelAnim *)anim)
+            ((dExtAnmModel_c *)anim)
                 ->SetAnim((BCA_File *)(((SharedFilePtr *)data_ov034_0211389c[i])->filePtr),
                           0x40000000, 0x1000, 0);
     }
@@ -407,10 +407,10 @@ void daHanachan_c::StateDamageMain()
 void daHanachan_c::StateDamageInit()
 {
     int i;
-    ModelAnim *anim = &mModelAnims[0];
+    dExtAnmModel_c *anim = &mModelAnims[0];
     mParticle = 0;
     for (i = 0; i < 5; i++) {
-        ((ModelAnim *)anim)
+        ((dExtAnmModel_c *)anim)
             ->SetAnim((BCA_File *)(((SharedFilePtr *)data_ov034_021138b0[i])->filePtr), 0x40000000,
                       0x1000, 0);
         mdCc_cs1[i].flags |= 4;
@@ -495,7 +495,7 @@ void daHanachan_c::StateMoveStartMain()
 {
     int i;
     int k;
-    ModelAnim *anim;
+    dExtAnmModel_c *anim;
     unsigned health;
     Player *player;
 
@@ -503,7 +503,7 @@ void daHanachan_c::StateMoveStartMain()
     anim = anim + 2;
     for (i = 2, k = 6; i < 5; i++, k += 3, anim++) {
         if (mStateTimer == k - 3)
-            ((ModelAnim *)anim)
+            ((dExtAnmModel_c *)anim)
                 ->SetAnim((BCA_File *)(((SharedFilePtr *)data_ov034_02113888[i])->filePtr),
                           0x40000000, 0x1000, 0);
     }
@@ -569,7 +569,7 @@ void daHanachan_c::StateMoveStartInit()
 void daHanachan_c::StateMoveStopMain()
 {
     int i, k;
-    ModelAnim *anim;
+    dExtAnmModel_c *anim;
     Player *player;
 
     ApproachLinear(mHorzSpeed, 0, 0x1000);
@@ -585,7 +585,7 @@ void daHanachan_c::StateMoveStopMain()
     anim = anim + 2;
     for (i = 2, k = 6; i < 5; i++, k += 3, anim++) {
         if (mStateTimer == k - 3)
-            ((ModelAnim *)anim)
+            ((dExtAnmModel_c *)anim)
                 ->SetAnim((BCA_File *)(((SharedFilePtr *)data_ov034_0211389c[i])->filePtr),
                           0x40000000, 0x1000, 0);
     }
@@ -921,19 +921,19 @@ void daHanachan_c::UpdateSegments()
 void daHanachan_c::UpdateSegmentModels()
 {
     /* rot steps by one Vector3s from this, so the y load keeps add #0x400.
-       model steps by one ModelAnim. &mModelAnims[i].mat4x3 folds +0x1c into
-       the base and drops that add; a Model* walk keeps it. */
+       model steps by one dExtAnmModel_c. &mModelAnims[i].mat4x3 folds +0x1c into
+       the base and drops that add; a dExtSimpleModel_c* walk keeps it. */
     int i;
     char *rot = (char *)this;
     char *model = (char *)&mModelAnims[0];
     for (i = 0; i < 5; i++) {
-        Matrix4x3_FromRotationY(&((Model *)model)->mat4x3,
+        Matrix4x3_FromRotationY(&((dExtSimpleModel_c *)model)->mat4x3,
             ((daHanachan_c *)rot)->mSegmentRot[0].y);
         mModelAnims[i].mat4x3.t.x = mSegmentPos[i].x >> 3;
         mModelAnims[i].mat4x3.t.y = mSegmentPos[i].y >> 3;
         mModelAnims[i].mat4x3.t.z = mSegmentPos[i].z >> 3;
         rot += sizeof(Vector3s);
-        model += sizeof(ModelAnim);
+        model += sizeof(dExtAnmModel_c);
     }
 }
 
@@ -959,7 +959,7 @@ int daHanachan_c::CleanupResources()
 int daHanachan_c::Render()
 {
     int i = 0;
-    ModelAnim *model = &mModelAnims[0];
+    dExtAnmModel_c *model = &mModelAnims[0];
     TextureSequence *tex = &mTextureSequences[0];
     Vector3 *scale = &mSegmentScale[0];
     for (; i < 5; i++) {
@@ -1132,7 +1132,7 @@ int daHanachan_c::InitResources()
 {
     char *c = (char *)this;
     s32 i;
-    ModelAnim *animRow;
+    dExtAnmModel_c *animRow;
     TextureSequence *texSeq;
     char *posRow;
     char *rotRow;
@@ -1157,7 +1157,7 @@ int daHanachan_c::InitResources()
     s32 vb[3];
     s32 out[3];
     s32 j;
-    ModelAnim *anim;
+    dExtAnmModel_c *anim;
 
     mStarID = (u8)param1;
     if (mStarID == 0xFF) {
@@ -1187,7 +1187,7 @@ int daHanachan_c::InitResources()
     do {
         mSegmentSpacing[i] = data_ov034_021138c4[i];
         modelFile = data_ov034_02113838[i];
-        Model::LoadFile(*modelFile);
+        dExtSimpleModel_c::LoadFile(*modelFile);
         texFile = data_ov034_0211384c[i];
         TextureSequence::LoadFile(*texFile);
         animFile = (SharedFilePtr *)data_ov034_02113860[i];
@@ -1197,7 +1197,7 @@ int daHanachan_c::InitResources()
         dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)data_ov034_0211389c[i]);
         dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)data_ov034_021138b0[i]);
         animRow->SetFile((BMD_File *)modelFile->filePtr, one, minusOne);
-        ((ModelAnim *)animRow)->SetAnim((BCA_File *)animFile->filePtr, zeroA, 0x1000, zeroA);
+        ((dExtAnmModel_c *)animRow)->SetAnim((BCA_File *)animFile->filePtr, zeroA, 0x1000, zeroA);
         TextureSequence::Prepare(*(BMD_File *)modelFile->filePtr, *(BTP_File *)texFile->filePtr);
         _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(texSeq, texFile->filePtr, zeroB, 0x1000,
                                                            zeroB);
@@ -1251,7 +1251,7 @@ int daHanachan_c::InitResources()
     anim = anim + 1;
     j = 1;
     do {
-        ((ModelAnim *)anim)
+        ((dExtAnmModel_c *)anim)
             ->SetAnim((BCA_File *)(((SharedFilePtr *)data_ov034_02113874[j])->filePtr), 0, 0x1000,
                       (u16)(s16)((5 - j) * 3));
         j += 1;

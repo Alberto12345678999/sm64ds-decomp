@@ -116,7 +116,7 @@ void _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5
 // @symbol _ZN17daObjBk_Botaosi_cD1Ev
 // @symbol _ZN17daObjBk_Botaosi_cD0Ev
 /* Empty on purpose. mwccarm destroys the dExtShadowModel_c member, then runs
-   ~dBgActor_c inline (its Model and dBgW_KcMbg, then ~dActor_c), and emits
+   ~dBgActor_c inline (its dExtSimpleModel_c and dBgW_KcMbg, then ~dActor_c), and emits
    retail D1 followed by D0. D0's deallocation is an inline operator delete,
    which is why nothing here mentions a heap. */
 daObjBk_Botaosi_c::~daObjBk_Botaosi_c()
@@ -360,7 +360,7 @@ int daObjBk_Botaosi_c::InitResources()
     Vector3 a, b, c, d;
     int zero, one;
 
-    mModel.SetFile((BMD_File *)Model::LoadFile(data_ov015_0211497c), 1, -1);
+    mModel.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(data_ov015_0211497c), 1, -1);
     mShadowModel.InitCuboid();
     func_ov015_0211166c(this);
     UpdateClsnPosAndRot();

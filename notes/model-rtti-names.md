@@ -9,7 +9,7 @@ Every row below is derived by following pointers, never by reading a string that
 next to a vtable. **Adjacency is not ownership**: the name strings live in their own pool at
 0x0208e7ac-0x0208e8ff, physically interleaved with the vtables, so a string immediately after a
 vtable usually belongs to some *other* class. `_ZTV15MaterialChanger` is followed by
-`"14dExtAnmModel_c"`, which is **ModelAnim's** name, not MaterialChanger's.
+`"14dExtAnmModel_c"`, which is **dExtAnmModel_c's** name, not MaterialChanger's.
 
 ## How to read a record
 
@@ -31,25 +31,25 @@ Three `type_info` vtables appear, and the one a record points at tells you its s
 | class in tree | vtable | typeinfo | original name |
 |---|---|---|---|
 | *(unnamed base)* | — | `0x0208e73c` | `dExtModel_c` |
-| `Model` | `_ZTV5Model` @0x0208e90c | `0x0208e794` | `dExtSimpleModel_c` |
+| `dExtSimpleModel_c` | `_ZTV17dExtSimpleModel_c` @0x0208e90c | `0x0208e794` | `dExtSimpleModel_c` |
 | `ShadowModel` | `_ZTV11ShadowModel` @0x0208e868 | `0x0208e770` | `dExtShadowModel_c` |
 | `CommonModel` | `_ZTV11CommonModel` @0x0208e8a4 | `0x0208e7a0` | `dExtCommonModel_c` |
 | `Animation` | `_ZTV9Animation` @0x0208e7e4 | `0x0208e744` | `dExtFrameCtrl_c` |
 | `TextureTransformer` | `_ZTV18TextureTransformer` @0x0208e7c4 | `0x0208e74c` | `dExtAnmTexSRT_c` |
 | `TextureSequence` | `_ZTV15TextureSequence` @0x0208e7d4 | `0x0208e758` | `dExtAnmTexPat_c` |
 | `MaterialChanger` | `_ZTV15MaterialChanger` @0x0208e7f4 | `0x0208e764` | `dExtAnmMaterial_c` |
-| `ModelAnim` | `_ZTV9ModelAnim` @0x0208e980 | `0x0208e924` | `dExtAnmModel_c` |
+| `dExtAnmModel_c` | `_ZTV14dExtAnmModel_c` @0x0208e980 | `0x0208e924` | `dExtAnmModel_c` |
 | `ModelAnim2` | `_ZTV10ModelAnim2` @0x0208e9b4 | `0x0208e788` | `dExtAnm2Model_c` |
 | `BlendModelAnim` | `_ZTV14BlendModelAnim` @0x0208e94c | `0x0208e77c` | `dExtBlendAnmModel_c` |
 
 `dExtModel_c` has a root record of its own and three children, but no vtable is attributed to it
-in `symbols.txt` yet — it is the shared model base that `Model`, `ShadowModel` and `CommonModel`
+in `symbols.txt` yet — it is the shared model base that `dExtSimpleModel_c`, `ShadowModel` and `CommonModel`
 all descend from, still un-promoted in the tree.
 
 ## The hierarchy, as the ROM states it
 
     dExtModel_c                                    (root, __class_type_info)
-    |-- dExtSimpleModel_c      Model
+    |-- dExtSimpleModel_c      dExtSimpleModel_c
     |-- dExtShadowModel_c      ShadowModel
     `-- dExtCommonModel_c      CommonModel
 
@@ -58,7 +58,7 @@ all descend from, still un-promoted in the tree.
     |-- dExtAnmTexPat_c        TextureSequence
     `-- dExtAnmMaterial_c      MaterialChanger
 
-    dExtAnmModel_c             ModelAnim           (__vmi_class_type_info, 2 bases)
+    dExtAnmModel_c             dExtAnmModel_c           (__vmi_class_type_info, 2 bases)
     |   base[0] dExtSimpleModel_c  offset 0x00
     |   base[1] dExtFrameCtrl_c    offset 0x50
     |-- dExtBlendAnmModel_c    BlendModelAnim
@@ -69,8 +69,8 @@ Two things fall out of this that the source already relies on:
 * `Animation` is a **root** — its record is the 8-byte `__class_type_info` kind, so it has no base
   class. The three controllers are `__si_class_type_info` with base `dExtFrameCtrl_c`, which is the
   ROM's own statement that they derive from `Animation`.
-* `ModelAnim`'s second base sits at **offset 0x50**, matching the `_ZThn80_` thunks exactly
-  (80 = 0x50). That is why `ModelAnim`, `ModelAnim2` and `BlendModelAnim` reach `Animation`
+* `dExtAnmModel_c`'s second base sits at **offset 0x50**, matching the `_ZThn80_` thunks exactly
+  (80 = 0x50). That is why `dExtAnmModel_c`, `ModelAnim2` and `BlendModelAnim` reach `Animation`
   through thunk vtables rather than inheriting its slots directly.
 
 ## Why this pins Animation's vtable at two slots

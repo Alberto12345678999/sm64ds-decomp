@@ -5,7 +5,7 @@
  * sits 60 units above the actor. defer_codegen off: D1 then D0, no D2.
  */
 // leftovers:
-// - ModelAnim::SetAnim and dCcAc_c::Init stay mangled. Spelling them as
+// - dExtAnmModel_c::SetAnim and dCcAc_c::Init stay mangled. Spelling them as
 //   methods changed InitResources (Fix12<int> by value).
 // - The player test stays `b = (actorID == 0xbf)` as an int. A bool does
 //   not match Behavior.
@@ -56,7 +56,7 @@ extern RFlagAnimResFileHandle data_ov062_0211e0dc;
 // @symbol _ZN9daRFlag_cD1Ev
 // @symbol _ZN9daRFlag_cD0Ev
 /* Empty body: the vptr store and the member destructors (dCcAc_c at 0xd4,
- * ModelAnim at 0x108, then dActor_c) are consequences of the class. D0's
+ * dExtAnmModel_c at 0x108, then dActor_c) are consequences of the class. D0's
  * deallocation is the inline operator delete on dActor_c. */
 daRFlag_c::~daRFlag_c()
 {
@@ -64,7 +64,7 @@ daRFlag_c::~daRFlag_c()
 
 // @symbol func_ov062_0211afbc
 /* Builds the model matrix from the actor's facing and position.
- * The flag graphic sits 60.0 (0x3c000) above mPosY. Model-matrix
+ * The flag graphic sits 60.0 (0x3c000) above mPosY. dExtSimpleModel_c-matrix
  * translation is in 1/8 world units, so the position is shifted down by 3. */
 extern "C" void func_ov062_0211afbc(char *raw)
 {
@@ -136,7 +136,7 @@ int daRFlag_c::Behavior()
 int daRFlag_c::InitResources()
 {
     mModelAnim.SetFile(
-        (BMD_File *)Model::LoadFile(data_ov062_0211e0d4), 1, -1);
+        (BMD_File *)dExtSimpleModel_c::LoadFile(data_ov062_0211e0d4), 1, -1);
     mModelAnim.SetAnim((BCA_File *)dExtFrameCtrl_c::LoadFile(data_ov062_0211e0dc), 0, 0x1000, 0);
     _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(
         &mdCcAc_c, this, 0x35555, 0x294000, 0x280000c, 0);

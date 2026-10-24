@@ -58,7 +58,7 @@ extern void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Bloc
 // @symbol _ZN18daObjWlSubmarine_cD0Ev
 /* One out-of-line definition; mwccarm emits D1 and D0 from it, in that
  * order: its own vptr, then dBgActor_c's inlined, then dBgActor_c's
- * Model and dBgW_KcMbg, then dActor_c. */
+ * dExtSimpleModel_c and dBgW_KcMbg, then dActor_c. */
 daObjWlSubmarine_c::~daObjWlSubmarine_c()
 {
 }
@@ -81,7 +81,7 @@ s32 daObjWlSubmarine_c::Render() {
 
 // @symbol _ZN18daObjWlSubmarine_c13InitResourcesEv
 s32 daObjWlSubmarine_c::InitResources() {
-  void *m = Model::LoadFile(Submarine_ModelFile);
+  void *m = dExtSimpleModel_c::LoadFile(Submarine_ModelFile);
   mModel.SetFile((BMD_File *)m, 1, -1);
   UpdateModelPosAndRotY();
   UpdateClsnPosAndRot();

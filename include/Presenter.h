@@ -35,7 +35,7 @@ struct Presenter {
        and mTexAnim and nudges two of its materials; IsAnimDone tests its
        dExtFrameCtrl_c base and ResetPose rewinds its currFrame. */
     BlendModelAnim mFace; /* 0x008 */
-    Model mBack;          /* 0x078 -- 0x50 bytes; Load sets its mat4x3 */
+    dExtSimpleModel_c mBack;          /* 0x078 -- 0x50 bytes; Load sets its mat4x3 */
     /* A TextureSequence and a TextureTransformer: each starts with its
        dExtFrameCtrl_c ([2] is the current frame ResetPose rewinds). */
     s32 mTexSeq[5];           /* 0x0c8 */

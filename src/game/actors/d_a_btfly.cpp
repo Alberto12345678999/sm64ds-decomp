@@ -21,7 +21,7 @@
  * `return new daBtfly_c();` to the same _ZN7fBase_cnwEj(1012) allocator the
  * loose factory called by hand, and daBtfly_c has no user-declared
  * constructor, so the inherited dActor_c ctor plus the vtable store plus the
- * six member subobjects in field order (ModelAnim, Model, dExtShadowModel_c x2,
+ * six member subobjects in field order (dExtAnmModel_c, dExtSimpleModel_c, dExtShadowModel_c x2,
  * dBgCh_Actr, dCcAcPos_c) come from the implicit default constructor with
  * zero mangled calls.
  *
@@ -40,7 +40,7 @@
  * - Behavior scratch matrix: Matrix4x3 assignment is 0x264 vs 0x22c.
  *   Flat Mtx copy is the ROM ldm/stm; the real type's translation is a
  *   Vector3 and runs ~Vector3.
- * - InitResources ModelAnim::SetAnim: method form is 0x244 vs 0x238
+ * - InitResources dExtAnmModel_c::SetAnim: method form is 0x244 vs 0x238
  *   (+0xc). Fix12<int> speed.
  * - InitResources dBgCh_Actr::Init: header Fix12i mangles as cii. ROM
  *   symbol is 5Fix12IiES3_.
@@ -544,10 +544,10 @@ int daBtfly_c::Behavior()
 // @symbol _ZN9daBtfly_c13InitResourcesEv
 int daBtfly_c::InitResources()
 {
-    Model::LoadFile(data_ov002_0210d9d8);
+    dExtSimpleModel_c::LoadFile(data_ov002_0210d9d8);
     dExtFrameCtrl_c::LoadFile(gButterflyFlyAnimationFile);
-    Model::LoadFile(data_ov100_02148668);
-    void *bmd = Model::LoadFile(gButterflyModelFile);
+    dExtSimpleModel_c::LoadFile(data_ov100_02148668);
+    void *bmd = dExtSimpleModel_c::LoadFile(gButterflyModelFile);
 
     if (mModelAnim.SetFile((BMD_File *)bmd, 1, 1) == 0)
         return 0;

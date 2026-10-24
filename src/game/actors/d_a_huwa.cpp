@@ -27,7 +27,7 @@
  *   inlines. A direct `!=` or bit test is 16 / 12 / 12 bytes short.
  * - Behavior copying player->mPosX/Y/Z instead of int* at player+0x5c: 0x264 -> 0x260
  *   (-4).
- * - InitResources ModelAnim::SetAnim: 0x108 -> 0x114 (+12). dCcAc_c::Init:
+ * - InitResources dExtAnmModel_c::SetAnim: 0x108 -> 0x114 (+12). dCcAc_c::Init:
  *   0x108 -> 0x120 (+24). dBgCh_Actr::Init stays 0x108 but the header's Fix12i
  *   parameters mangle to _ZN10dBgCh_Actr4InitEP8dActor_ciiP10Vector3_16S3_,
  *   not the ROM's 5Fix12IiE symbol.
@@ -62,7 +62,7 @@ struct HuwaAnimationFileHandle : SharedFilePtr {
     ~HuwaAnimationFileHandle();
 };
 
-/* Model file (sinit id 813) and animation (sinit id 814). */
+/* dExtSimpleModel_c file (sinit id 813) and animation (sinit id 814). */
 extern HuwaModelFilePtr gHuwahuwaModelModelFile;
 extern HuwaAnimationFileHandle gHuwahuwaMoveAnimationFile;
 
@@ -369,8 +369,8 @@ int daHuwa_c::Behavior()
 // @symbol _ZN8daHuwa_c13InitResourcesEv
 int daHuwa_c::InitResources()
 {
-    void *modelFile = Model::LoadFile(gHuwahuwaModelModelFile);
-    mModelAnim.ModelBase::SetFile((BMD_File *)modelFile, 1, -1);
+    void *modelFile = dExtSimpleModel_c::LoadFile(gHuwahuwaModelModelFile);
+    mModelAnim.dExtModel_c::SetFile((BMD_File *)modelFile, 1, -1);
     dExtFrameCtrl_c::LoadFile(gHuwahuwaMoveAnimationFile);
     mModelAnim.SetAnim((BCA_File *)gHuwahuwaMoveAnimationFile.filePtr, 0, 0x1000, 0);
     if (mShadowModel.InitCylinder() == 0)

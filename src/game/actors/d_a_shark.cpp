@@ -15,7 +15,7 @@
  * (daShark_c_classInit, 0x02133ca0..0x02133ce8, historical alias
  * Shark_Spawn) hand-called fBase_c::operator new(0x3a0) + the inherited
  * dEnemyBase_c ctor + this class's vtable store + three member subobjects
- * in field order (dCcAcPos_c, dBgCh_Actr, ModelAnim). daShark_c has no
+ * in field order (dCcAcPos_c, dBgCh_Actr, dExtAnmModel_c). daShark_c has no
  * user-declared constructor, so `new daShark_c()` reproduces the identical
  * sequence; the factory now appends after InitResources, at the end of
  * source order, matching its ROM placement. g_profile_SHARK is not this TU.
@@ -29,7 +29,7 @@
  * deslop leftovers:
  * - func_ov090_02133710: `if (hit->actorID != 0xbf)` is size 0x120 to
  *   0x114. The int temporary stays.
- * - func_ov090_0213387c: ModelAnim::SetAnim with a Fix12<int> speed is
+ * - func_ov090_0213387c: dExtAnmModel_c::SetAnim with a Fix12<int> speed is
  *   size 0x38 to 0x44. The int-parameter call stays.
  * - InitResources: dCcAcPos_c::Init with Fix12<int> radius and height is
  *   size 0x108 to 0x118. The int-parameter call stays.
@@ -299,7 +299,7 @@ int daShark_c::InitResources()
     /* Each PathPtr constructs at its declaration. The first call is
      * before the cylinder init and the second is after it. */
     mModelAnim.SetFile(
-        (BMD_File *)Model::LoadFile(*(SharedFilePtr *)&data_ov090_021345a4),
+        (BMD_File *)dExtSimpleModel_c::LoadFile(*(SharedFilePtr *)&data_ov090_021345a4),
         1, -1);
     dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)&data_ov090_021345ac);
     mPathID = (*(s32 *)&param1) & 0xff;

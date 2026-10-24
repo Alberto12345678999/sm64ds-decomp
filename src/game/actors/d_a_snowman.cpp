@@ -29,7 +29,7 @@ struct System {
  *   KillByInvincibleChar as the method is 0x21c -> 0x228.
  * - func_ov081_021246a0: SpawnCoins as the method is 0xfc -> 0x104.
  * - func_ov081_02124894: SpawnCoins as the method is 0xf8 -> 0x100.
- * - ModelAnim::SetAnim as the method is +8. func_ov081_02124b08
+ * - dExtAnmModel_c::SetAnim as the method is +8. func_ov081_02124b08
  *   0x90 -> 0x98, 02124d14 0x3c -> 0x44, 02124ec0 0x60 -> 0x68,
  *   02125068 0x60 -> 0x68, 021250c8 0x138 -> 0x140, 02125208
  *   0x184 -> 0x18c, 0212538c 0xfc -> 0x104.
@@ -932,7 +932,7 @@ int daSnowman_c::Render()
         else
             mModelAnim.ShowMaterial(0, 2);
     }
-    mModelAnim.Model::Render(&mScale);
+    mModelAnim.dExtSimpleModel_c::Render(&mScale);
     return 1;
 }
 
@@ -1018,8 +1018,8 @@ int daSnowman_c::InitResources()
 {
     Vector3 v;
 
-    mModelAnim.SetFile((BMD_File *)Model::LoadFile(data_ov081_02128db0), 1, -1);
-    Model::LoadFile(data_ov081_02128d90);
+    mModelAnim.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(data_ov081_02128db0), 1, -1);
+    dExtSimpleModel_c::LoadFile(data_ov081_02128d90);
     mShadowModel.InitCylinder();
     dExtFrameCtrl_c::LoadFile(gSnowmanWaitAnimationFile);
     dExtFrameCtrl_c::LoadFile(data_ov081_02128db8);

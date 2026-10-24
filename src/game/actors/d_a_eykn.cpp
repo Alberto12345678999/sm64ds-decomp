@@ -8,7 +8,7 @@
  * deslop leftovers:
  * - TextureSequence::SetFile as a member (Fix12<int> by value):
  *   ResetEyeAnim 0x58->0x64, UpdateEyeAnim 0x168->0x178.
- *   ModelAnim::SetAnim as a member: St_Die_Init 0xd4->0xe0.
+ *   dExtAnmModel_c::SetAnim as a member: St_Die_Init 0xd4->0xe0.
  *   InitResources' SetAnim and SetFile together 0x298->0x2ac.
  * - DropShadowRadHeight as a member: UpdateModelTransform 0xa0->0xb0.
  * - dCcAcPos_c::Init as a member, both call sites: InitResources
@@ -56,7 +56,7 @@
  * profiles); retail does not store them. Historical aliases: BigMrI_Spawn
  * and MrI_Spawn. Each hand-called fBase_c::operator new(536) + the inherited
  * dActor_c ctor + this class's vtable store + the four member subobjects in
- * field order (ModelAnim, TextureSequence, dExtShadowModel_c, dCcAcPos_c).
+ * field order (dExtAnmModel_c, TextureSequence, dExtShadowModel_c, dCcAcPos_c).
  * daEykn_c has no user-declared constructor, so both factories are now
  * `new daEykn_c()`. This TU keeps `#pragma defer_codegen off`, so emission
  * follows source order (ROM-ascending); the two factories append after
@@ -783,9 +783,9 @@ s32 daEykn_c::InitResources()
     BMD_File *bmd;
     LoadBlueCoinModel(this);
 
-    Model::LoadFile(data_ov002_0210da38);
-    bmd = (BMD_File *)Model::LoadFile(gEyknModelFile);
-    ((ModelBase *)&mModelAnim)->SetFile(bmd, 1, 1);
+    dExtSimpleModel_c::LoadFile(data_ov002_0210da38);
+    bmd = (BMD_File *)dExtSimpleModel_c::LoadFile(gEyknModelFile);
+    ((dExtModel_c *)&mModelAnim)->SetFile(bmd, 1, 1);
 
     int i;
     for (i = 0; i < 2; i++) {

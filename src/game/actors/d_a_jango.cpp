@@ -345,15 +345,15 @@ int daJango_c::InitResources()
     char path1[8];
     char path2[8];
 
-    bmd = Model::LoadFile(data_ov062_0211e0fc);                 /* jango.bmd */
+    bmd = dExtSimpleModel_c::LoadFile(data_ov062_0211e0fc);                 /* jango.bmd */
     mBlendModelAnim.SetFile((BMD_File *)bmd, 1, -1);
     mShadowModel.InitCylinder();
     dExtFrameCtrl_c::LoadFile(data_ov062_0211e114);                   /* jango_attack.bca */
     dExtFrameCtrl_c::LoadFile(data_ov062_0211e10c);                   /* jango_damage.bca */
     dExtFrameCtrl_c::LoadFile(data_ov062_0211e104);                   /* jango_fly.bca */
-    Model::LoadFile(data_ov002_0210da40);
-    Model::LoadFile(data_ov002_0210d9a0);
-    Model::LoadFile(data_ov002_0210d9c0);
+    dExtSimpleModel_c::LoadFile(data_ov002_0210da40);
+    dExtSimpleModel_c::LoadFile(data_ov002_0210d9a0);
+    dExtSimpleModel_c::LoadFile(data_ov002_0210d9c0);
 
     mPathId = param1 & 0xff;
     mCarriedItem = (param1 >> 8) & 0xf;
@@ -573,7 +573,7 @@ int daJango_c::CleanupResources()
 
 // @symbol _ZN9daJango_c19func_ov062_0211c6a8Ev
 /* Per-frame matrices (called from Behavior).
-   1. Model matrix: translation = mPos >> 3, rotation = mAngle X/Y/Z
+   1. dExtSimpleModel_c matrix: translation = mPos >> 3, rotation = mAngle X/Y/Z
       (Matrix4x3_ApplyInPlaceToRotationZXYExt), stored in mBlendModelAnim.mat4x3.
    2. If something is held: multiply bone 6 of the model by the model matrix into
       mHeldMat, set mHeldPos to the translation row of data_020a0e68 shifted

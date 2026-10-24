@@ -19,7 +19,7 @@ extern "C" void NullDestructor_0203d47c(void);
 struct CupModelParts {
     u8 pmf[8];                   /* +0x00 -- Presenter_Update calls this */
     u8 blendModelAnim[0x70];     /* +0x08 -- BlendModelAnim */
-    u8 model[0x50];              /* +0x78 -- Model */
+    u8 model[0x50];              /* +0x78 -- dExtSimpleModel_c */
     u8 textureSequence[0x14];    /* +0xc8 -- TextureSequence */
     u8 textureTransformer[0x14]; /* +0xdc -- TextureTransformer */
     u8 filePtr[0x90];            /* +0xf0 -- 18 SharedFilePtr, through +0x178 */

@@ -142,7 +142,7 @@ void daLinelift2_c::func_ov091_02132360(dActor_c *other)
 int daLinelift2_c::InitResources()
 {
     mVariant = param1 >> 8;
-    mModel.SetFile((BMD_File *)Model::LoadFile(*data_ov091_021344fc[mVariant]), 1, -1);
+    mModel.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(*data_ov091_021344fc[mVariant]), 1, -1);
 
     _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
         &mMeshCollider,

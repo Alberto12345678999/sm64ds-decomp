@@ -169,14 +169,14 @@ s32 daObjGuragura_c::Behavior()
 }
 
 /* ROM ordinal 6 -- func_ov002_020b6244, 0x020b6244, size 0x88.
- * Shared resource setup both leaves call. Slot 0 is Model::LoadFile, slot 1
+ * Shared resource setup both leaves call. Slot 0 is dExtSimpleModel_c::LoadFile, slot 1
  * is dBgW_Kc::LoadFile, slot 2 is CLPS into SetFile; then install 020b6374
  * as the collider callback. */
 // @symbol func_ov002_020b6244
 extern "C" {
 int func_ov002_020b6244(daObjGuragura_c *self, ResourceDescriptor *descriptor)
 {
-    self->mModel.SetFile((BMD_File *)Model::LoadFile(*descriptor->model), 1, -1);
+    self->mModel.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(*descriptor->model), 1, -1);
     self->UpdateModelPosAndRotY();
     self->UpdateClsnPosAndRot();
     _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(

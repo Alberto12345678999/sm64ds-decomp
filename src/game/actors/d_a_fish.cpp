@@ -27,7 +27,7 @@
  * Behavior calls through.
  *
  * leftovers:
- * - ModelAnim::SetAnim stays mangled: it takes Fix12<int> by value
+ * - dExtAnmModel_c::SetAnim stays mangled: it takes Fix12<int> by value
  *   (notes/mwccarm-codegen.md 6az).
  * - SharedFilePtr::filePtr is a void *, so LoadedBCA casts it to the
  *   BCA_File * SetAnim takes.
@@ -155,7 +155,7 @@ s32 daFish_c::InitResources()
         mModelIndex = 0;
     }
     mModelAnim.SetFile(
-        (BMD_File *)Model::LoadFile(*data_ov100_021473a4[mModelIndex]), 1, -1);
+        (BMD_File *)dExtSimpleModel_c::LoadFile(*data_ov100_021473a4[mModelIndex]), 1, -1);
     mModelAnim.SetAnim((BCA_File *)dExtFrameCtrl_c::LoadFile(*data_ov100_021473b0[mModelIndex]), 0,
                        0x1000, 0);
     mIsSpawner = 1;

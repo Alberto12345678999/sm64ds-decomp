@@ -170,7 +170,7 @@ s32 daObj1UpLogo_c::InitResources()
     unsigned int count = param1;
     unsigned short frame = (unsigned short)(count > kFrameCountCap ? kLastFrame : (count - 1));
     TextureSequence::LoadFile(data_ov002_02110a9c);
-    if (mModel.SetFile((BMD_File *)Model::LoadFile(data_ov002_02110aa4), 1, -1) == 0)
+    if (mModel.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(data_ov002_02110aa4), 1, -1) == 0)
         return 0;
     TextureSequence::Prepare(*(BMD_File *)data_ov002_02110aa4.filePtr,
                              *(BTP_File *)data_ov002_02110a9c.filePtr);

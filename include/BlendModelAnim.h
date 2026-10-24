@@ -2,20 +2,20 @@
 #define BLENDMODELANIM_H
 
 #include "types.h"
-#include "ModelAnim.h"
+#include "dExtAnmModel_c.h"
 
-/* ModelAnim child that cross-fades between the previous pose and the new
+/* dExtAnmModel_c child that cross-fades between the previous pose and the new
  * animation, vtable _ZTV14BlendModelAnim at 0x0208e94c (same seven-slot
- * shape as ModelAnim, every slot overridden) plus its own
+ * shape as dExtAnmModel_c, every slot overridden) plus its own
  * VTable_Animation_BlendModelAnimThunk secondary.
  *
- * THE DESTRUCTOR IS DECLARED FIRST -- see include/ModelAnim.h; the D1
- * additionally frees mBlendBuffer before chaining to ModelAnim::D2. Defined
+ * THE DESTRUCTOR IS DECLARED FIRST -- see include/dExtAnmModel_c.h; the D1
+ * additionally frees mBlendBuffer before chaining to dExtAnmModel_c::D2. Defined
  * out of line in src/engine/model/BlendModelAnim.cpp. That definition is
  * the key function, so the TU also emits the MI vtable group; RTTI is off
  * and the retail table stays externalized (see the TU manifest).
  *
- * LAYOUT: ModelAnim 0x00..0x64, then the blend state. blendWeight ramps
+ * LAYOUT: dExtAnmModel_c 0x00..0x64, then the blend state. blendWeight ramps
  * 0 -> 0x1000 (1.0) by blendStep per Advance; below 1.0 UpdateVerts and
  * Virtual10 route through the blending func_0204531c instead of
  * UpdateVertsUsingBones. mBlendBuffer is a buffer the destructor frees and
@@ -35,7 +35,7 @@
 
 extern "C" void _ZN6Memory16operator_delete2EPv(void *);
 
-struct BlendModelAnim : ModelAnim {
+struct BlendModelAnim : dExtAnmModel_c {
     Fix12i blendWeight;        /* 0x64 - 0x1000 is 1.0 */
     Fix12i blendStep;          /* 0x68 - per-frame increment */
     void *mBlendBuffer; /* 0x6c - pose blend buffer; DoSetFile tail allocates it, D1 frees it */
@@ -43,8 +43,8 @@ struct BlendModelAnim : ModelAnim {
     /* --- vtable order. Do not reorder. --- */
     /* The destructor pair spelled as two plain virtuals on the host, plus the
        non-virtual destructor declaration the src/ definitions need; the whole
-       ruling is in include/ModelBase.h. Overrides take their base's slots, so
-       these carry the SAME TWO NAMES ModelAnim declares. */
+       ruling is in include/dExtModel_c.h. Overrides take their base's slots, so
+       these carry the SAME TWO NAMES dExtAnmModel_c declares. */
 #ifdef _MSC_VER
     virtual void Destructor1();                           /* slot 0 (D1) */
     virtual void Destructor0();                           /* slot 1 (D0) */
@@ -69,10 +69,10 @@ struct BlendModelAnim : ModelAnim {
     void Advance();
     void SetAnim(BCA_File &animFile, int numBlendFrames, int flags, Fix12i speed, u16 startFrame);
 
-    /* ITS OWN, TO RESOLVE AN AMBIGUITY MULTIPLE INHERITANCE CREATES. ModelAnim
-       derives from Model (so ModelBase) and from dExtFrameCtrl_c, and both bases
+    /* ITS OWN, TO RESOLVE AN AMBIGUITY MULTIPLE INHERITANCE CREATES. dExtAnmModel_c
+       derives from dExtSimpleModel_c (so dExtModel_c) and from dExtFrameCtrl_c, and both bases
        declare operator delete, so an inherited one is "ambiguous access to
-       name found: ModelBase::operator delete and dExtFrameCtrl_c::operator delete".
+       name found: dExtModel_c::operator delete and dExtFrameCtrl_c::operator delete".
        Declaring it here picks the same deallocator both bases name, and also
        satisfies the rule in include/dActor_c.h that mwcc only inlines the member
        when it is in the class or its immediate base. */
@@ -88,7 +88,7 @@ typedef char BlendModelAnim_size_must_be_0x70[sizeof(BlendModelAnim) == 0x70 ? 1
 #else
 
 /* The same object for C translation units, both vptrs written out -- the same shape
- * ModelAnim.h gives its own C fallback, with the blend state appended. */
+ * dExtAnmModel_c.h gives its own C fallback, with the blend state appended. */
 struct BlendModelAnim {
     void **vtable;                     /* 0x00 */
     struct BMD_File *modelFile;        /* 0x04 */

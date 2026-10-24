@@ -18,7 +18,7 @@
  *
 comment leftovers:
  *   - Calls whose real signatures take Fix12<int> BY VALUE stay mangled:
- *     Sound::PlaySub, ModelAnim::SetAnim, TextureSequence::SetFile and
+ *     Sound::PlaySub, dExtAnmModel_c::SetAnim, TextureSequence::SetFile and
  *     dActor_c::DropShadowRadHeight. mwccarm passes those differently at
  *     the call site than the loose scalar spelling; this file's externs
  *     are the spelling that matches.
@@ -952,7 +952,7 @@ int daC_Jugem_c::Behavior()
 // @symbol _ZN11daC_Jugem_c13InitResourcesEv
 int daC_Jugem_c::InitResources()
 {
-  BMD_File* bmd = (BMD_File*)Model::LoadFile(data_ov085_0213074c);
+  BMD_File* bmd = (BMD_File*)dExtSimpleModel_c::LoadFile(data_ov085_0213074c);
   mModelAnim1.SetFile(bmd, 1, -1);
   dExtFrameCtrl_c::LoadFile(data_ov085_02130744);
   TextureSequence::LoadFile(data_ov085_0213073c);

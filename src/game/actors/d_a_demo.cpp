@@ -87,7 +87,7 @@ struct System {
  *   and C2dd4 remain as the tables' receiver types. Indexed entry fields
  *   are spelled with STAR_OFF and its siblings where the ROM adds the
  *   field offset before the index.
- *   common.h must precede daDemo_c.h: ModelAnim.h's nested Matrix4x3
+ *   common.h must precede daDemo_c.h: dExtAnmModel_c.h's nested Matrix4x3
  *   otherwise wins and scalarizes Behavior's 12-word matrix copy.
  */
 
@@ -114,8 +114,8 @@ enum daDemo_c_AssetId {
 #include "types.h"
 #include "nitro/fx/fx.h"
 #include "common.h"
-#include "Model.h"
-#include "ModelAnim.h"
+#include "dExtSimpleModel_c.h"
+#include "dExtAnmModel_c.h"
 #include "daDemo_c.h"
 #include "SharedFilePtr.h"
 #include "decl_common.h"
@@ -3652,7 +3652,7 @@ void daDemo_c::anmModel_c::func_ov002_020f6514(void *tbl, unsigned char arg)
     mAnimEntry = arg;
     e = (u8 *)tbl + mAnimEntry * 4;
     v = (e[2] == 0) ? 0x40000000 : 0;
-    ((ModelAnim *)this)->SetAnim((BCA_File *)(mAnimFiles[e[0]]->filePtr), v, 0x1000, 0);
+    ((dExtAnmModel_c *)this)->SetAnim((BCA_File *)(mAnimFiles[e[0]]->filePtr), v, 0x1000, 0);
     {
         void *ts = mTexSeq;
         s8 idx;
@@ -3706,14 +3706,14 @@ int daDemo_c::anmModel_c::func_ov002_020f6618(SharedFilePtr *mdl, int nAnims, Sh
     int i;
     void* ts;
     mModelFile = mdl;
-    if (((ModelBase *)self)->SetFile((BMD_File *)Model::LoadFile(*mModelFile), 1, tsData) == 0)
+    if (((dExtModel_c *)self)->SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(*mModelFile), 1, tsData) == 0)
         return 0;
     mNumAnimFiles = (u8)nAnims;
     mAnimFiles = anims;
     for (i = 0; i < mNumAnimFiles; i++) {
         dExtFrameCtrl_c::LoadFile(*mAnimFiles[i]);
     }
-    ((ModelAnim *)self)->SetAnim((BCA_File *)(mAnimFiles[0]->filePtr), 0, 0x1000, 0);
+    ((dExtAnmModel_c *)self)->SetAnim((BCA_File *)(mAnimFiles[0]->filePtr), 0, 0x1000, 0);
     if (texByte) {
         ts = ::operator new(0x14);
         if (ts) ts = _ZN15TextureSequenceC1Ev(ts);
@@ -3745,8 +3745,8 @@ int daDemo_c::anmModel_c::func_ov002_020f6618(SharedFilePtr *mdl, int nAnims, Sh
 // @symbol _ZN8daDemo_c10anmModel_cD1Ev
 /* D1, the complete-object destructor.
  *
- * The shape here is the whole finding. The cartridge destroys the ModelAnim /
- * Model BASE before the Vector3 array at the class's own tail -- a normal
+ * The shape here is the whole finding. The cartridge destroys the dExtAnmModel_c /
+ * dExtSimpleModel_c BASE before the Vector3 array at the class's own tail -- a normal
  * C++ destructor destroys members first and never reaches it. param_c is a
  * real base declared FIRST, so bases destroy in reverse declaration order:
  * the model base runs before the Vector3 array, and param_c lands at the
@@ -3788,8 +3788,8 @@ daDemo_c::anmModel_c::~anmModel_c()
 int daDemo_c::simpleModel_c::func_ov002_020f6960(SharedFilePtr *fp, int n)
 {
     mFile = fp;
-    BMD_File *f = (BMD_File *)Model::LoadFile(*mFile);
-    return ((ModelBase *)this)->SetFile(f, 1, n) != 0 ? 1 : 0;
+    BMD_File *f = (BMD_File *)dExtSimpleModel_c::LoadFile(*mFile);
+    return ((dExtModel_c *)this)->SetFile(f, 1, n) != 0 ? 1 : 0;
 }
 
 // @symbol _ZN8daDemo_c13simpleModel_cD0Ev
@@ -3803,8 +3803,8 @@ int daDemo_c::simpleModel_c::func_ov002_020f6960(SharedFilePtr *fp, int n)
 // @symbol _ZN8daDemo_c13simpleModel_cD1Ev
 /* D1, the complete-object destructor.
  *
- * The shape here is the whole finding. The cartridge destroys the ModelAnim /
- * Model BASE before the Vector3 array at the class's own tail -- a normal
+ * The shape here is the whole finding. The cartridge destroys the dExtAnmModel_c /
+ * dExtSimpleModel_c BASE before the Vector3 array at the class's own tail -- a normal
  * C++ destructor destroys members first and never reaches it. param_c is a
  * real base declared FIRST, so bases destroy in reverse declaration order:
  * the model base runs before the Vector3 array, and param_c lands at the
@@ -4739,22 +4739,22 @@ int daDemo_c::InitResources()
         p = ::operator new(0x84);
         if (p) {
             ((param_c &)*(anmModel_c *)p).func_ov002_020f6a50();
-            _ZN9ModelAnimC2Ev(p);
+            _ZN14dExtAnmModel_cC2Ev(p);
             *(void **)p = &data_ov002_0210bcc4;
             *(void **)&(dExtFrameCtrl_c &)*(anmModel_c *)p = &data_ov002_0210bce8;
         }
-        this->mModelAnim = (ModelAnim *)p;
+        this->mModelAnim = (dExtAnmModel_c *)p;
         if (this->mModelAnim == 0) return 0;
         if (((anmModel_c*)this->mModelAnim)->func_ov002_020f6618((SharedFilePtr*)&data_ov085_0213074c, 1, (SharedFilePtr**)&data_ov002_0210b60c, 1, 1, (SharedFilePtr**)&data_ov002_0210b608, -1) == 0) return 0;
     } else if (param1 == 0x13) {
         p = ::operator new(0x84);
         if (p) {
             ((param_c &)*(anmModel_c *)p).func_ov002_020f6a50();
-            _ZN9ModelAnimC2Ev(p);
+            _ZN14dExtAnmModel_cC2Ev(p);
             *(void **)p = &data_ov002_0210bcc4;
             *(void **)&(dExtFrameCtrl_c &)*(anmModel_c *)p = &data_ov002_0210bce8;
         }
-        this->mModelAnim = (ModelAnim *)p;
+        this->mModelAnim = (dExtAnmModel_c *)p;
         if (this->mModelAnim == 0) return 0;
         t = (*(volatile unsigned char *)&data_0209f2d8 == 2);
         if (t == 0) {
@@ -4766,51 +4766,51 @@ int daDemo_c::InitResources()
         p = ::operator new(0x60);
         if (p) {
             ((param_c &)*(simpleModel_c *)p).func_ov002_020f6a50();
-            _ZN5ModelC2Ev(p);
+            _ZN17dExtSimpleModel_cC2Ev(p);
             *(void **)p = &data_ov002_0210bae4;
         }
-        this->mModel = (Model *)p;
+        this->mModel = (dExtSimpleModel_c *)p;
         if (this->mModel == 0) return 0;
         if (((simpleModel_c*)this->mModel)->func_ov002_020f6960((SharedFilePtr*)&data_ov002_02110b70, -1) == 0) return 0;
     } else if (param1 == 0x17) {
         p = ::operator new(0x60);
         if (p) {
             ((param_c &)*(simpleModel_c *)p).func_ov002_020f6a50();
-            _ZN5ModelC2Ev(p);
+            _ZN17dExtSimpleModel_cC2Ev(p);
             *(void **)p = &data_ov002_0210bae4;
         }
-        this->mModel = (Model *)p;
+        this->mModel = (dExtSimpleModel_c *)p;
         if (this->mModel == 0) return 0;
         if (((simpleModel_c*)this->mModel)->func_ov002_020f6960((SharedFilePtr*)&data_ov002_02110b50, 0x19) == 0) return 0;
     } else if (param1 == 0x18) {
         p = ::operator new(0x60);
         if (p) {
             ((param_c &)*(simpleModel_c *)p).func_ov002_020f6a50();
-            _ZN5ModelC2Ev(p);
+            _ZN17dExtSimpleModel_cC2Ev(p);
             *(void **)p = &data_ov002_0210bae4;
         }
-        this->mModel = (Model *)p;
+        this->mModel = (dExtSimpleModel_c *)p;
         if (this->mModel == 0) return 0;
         if (((simpleModel_c*)this->mModel)->func_ov002_020f6960((SharedFilePtr*)&data_ov002_0211094c, -1) == 0) return 0;
     } else if (param1 == 0x19) {
         p = ::operator new(0x60);
         if (p) {
             ((param_c &)*(simpleModel_c *)p).func_ov002_020f6a50();
-            _ZN5ModelC2Ev(p);
+            _ZN17dExtSimpleModel_cC2Ev(p);
             *(void **)p = &data_ov002_0210bae4;
         }
-        this->mModel = (Model *)p;
+        this->mModel = (dExtSimpleModel_c *)p;
         if (this->mModel == 0) return 0;
         if (((simpleModel_c*)this->mModel)->func_ov002_020f6960((SharedFilePtr*)&data_ov002_02110b78, 0x13) == 0) return 0;
     } else if (param1 >= 0x1A && param1 <= 0x2D) {
         p = ::operator new(0x84);
         if (p) {
             ((param_c &)*(anmModel_c *)p).func_ov002_020f6a50();
-            _ZN9ModelAnimC2Ev(p);
+            _ZN14dExtAnmModel_cC2Ev(p);
             *(void **)p = &data_ov002_0210bcc4;
             *(void **)&(dExtFrameCtrl_c &)*(anmModel_c *)p = &data_ov002_0210bce8;
         }
-        this->mModelAnim = (ModelAnim *)p;
+        this->mModelAnim = (dExtAnmModel_c *)p;
         if (this->mModelAnim == 0) return 0;
         if (((anmModel_c*)this->mModelAnim)->func_ov002_020f6618((SharedFilePtr*)data_ov009_02113c20, 1, (SharedFilePtr**)&data_ov002_0210b604, 0, 0, 0, -1) == 0) return 0;
     }

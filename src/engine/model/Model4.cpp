@@ -1,16 +1,16 @@
 //cpp
 /* Model4 -- VRAM upload for a BMD model, 0x020458e0..0x020468a0.
  *
- * Not part of src/engine/model/Model.cpp: func_020458a8 sits between that TU
+ * Not part of src/engine/model/dExtSimpleModel_c.cpp: func_020458a8 sits between that TU
  * and this run. TextureSequence::UpdateFileOffsets begins at 0x020468a0.
- * The name is the tree's Model class plus the numeric suffix already used
+ * The name is the tree's dExtSimpleModel_c class plus the numeric suffix already used
  * for a second translation unit (Juan 2026-10-11).
  *
  * mwccarm's default deferred codegen emits .text in reverse source order, so
  * the definitions are highest address first. Do not reorder.
  */
 
-#include "Model.h"
+#include "dExtSimpleModel_c.h"
 #include "G3X.h"
 
 namespace CP15 {
@@ -31,9 +31,9 @@ int func_02053e34(void);
 int func_02053e1c(void);
 }
 
-// @symbol _ZN5Model17UpdateFileOffsetsER8BMD_File
+// @symbol _ZN17dExtSimpleModel_c17UpdateFileOffsetsER8BMD_File
 #define REBASE(p) ((char *)(p) + base)
-void Model::UpdateFileOffsets(BMD_File &file)
+void dExtSimpleModel_c::UpdateFileOffsets(BMD_File &file)
 {
     u32 i;
     int k;
@@ -556,8 +556,8 @@ struct GX {
     static void EndLoadTex();
 };
 
-// @symbol _ZN5Model13GetVramOffsetEj
-u32 Model::GetVramOffset(u32 size)
+// @symbol _ZN17dExtSimpleModel_c13GetVramOffsetEj
+u32 dExtSimpleModel_c::GetVramOffset(u32 size)
 {
     u32 *p;
     u32 b = data_020a4be8 - data_020a4bc8;
@@ -573,8 +573,8 @@ u32 Model::GetVramOffset(u32 size)
     return *p;
 }
 
-// @symbol _ZN5Model17LoadTextureToVramEPcj
-u32 Model::LoadTextureToVram(char *texData, u32 size)
+// @symbol _ZN17dExtSimpleModel_c17LoadTextureToVramEPcj
+u32 dExtSimpleModel_c::LoadTextureToVram(char *texData, u32 size)
 {
     u32 vramOffset = GetVramOffset(size);
     GX::BeginLoadTex();
@@ -584,11 +584,11 @@ u32 Model::LoadTextureToVram(char *texData, u32 size)
     return vramOffset;
 }
 
-// @symbol _ZN5Model27LoadCompressedTextureToVramEPcjS0_
+// @symbol _ZN17dExtSimpleModel_c27LoadCompressedTextureToVramEPcjS0_
 /* Stays off through the rest of the file. Restoring it before deferred
    codegen emits this function reorders five words. */
 #pragma opt_common_subs off
-u32 Model::LoadCompressedTextureToVram(char *src, u32 size, char *dst)
+u32 dExtSimpleModel_c::LoadCompressedTextureToVram(char *src, u32 size, char *dst)
 {
     u32 vramOffset;
 
@@ -652,8 +652,8 @@ extern "C" u32 func_02045a50(const void *src, u32 size)
 }
 
 // 0x020458e0 (0x170)
-// @symbol _ZN5Model13LoadTexAndPalER8BMD_File
-void Model::LoadTexAndPal(BMD_File &file)
+// @symbol _ZN17dExtSimpleModel_c13LoadTexAndPalER8BMD_File
+void dExtSimpleModel_c::LoadTexAndPal(BMD_File &file)
 {
     u32 i;
     u32 ret;

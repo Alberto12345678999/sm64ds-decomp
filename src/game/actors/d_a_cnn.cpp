@@ -136,7 +136,7 @@ struct CnnModelFilePtr : SharedFilePtr {
  * The model handle and the state table's four member pointers, in
  * static-initializer order: the initializer constructs the handle, registers
  * its destructor, then copies the pointers from .data. InitResources feeds
- * the model to Model::LoadFile.
+ * the model to dExtSimpleModel_c::LoadFile.
  * ------------------------------------------------------------------------ */
 // @symbol __sinit_d_a_cnn.cpp
 CnnModelFilePtr data_ov098_0213c8e8(ASSET_HOUDAI_BMD);
@@ -173,7 +173,7 @@ extern "C" daCnn_c *daCnn_c_classInit()
 // @symbol _ZN7daCnn_c13InitResourcesEv
 int daCnn_c::InitResources()
 {
-    BMD_File *file = (BMD_File *)Model::LoadFile(data_ov098_0213c8e8);
+    BMD_File *file = (BMD_File *)dExtSimpleModel_c::LoadFile(data_ov098_0213c8e8);
     mModel.SetFile(file, 1, -1);
     mBarrelRestY = ((CnnBone *)mModel.data.bones)[1].transY;
     mVariant = param1 & 3;
@@ -204,8 +204,8 @@ int daCnn_c::InitResources()
             &mdCcAc_c, this, 0x50000, 0x12c000, 0x800004, 0);
     }
 
-    Model::LoadFile(data_ov098_0213c91c);
-    Model::LoadFile(data_ov002_0210da38);
+    dExtSimpleModel_c::LoadFile(data_ov098_0213c91c);
+    dExtSimpleModel_c::LoadFile(data_ov002_0210da38);
     return 1;
 }
 

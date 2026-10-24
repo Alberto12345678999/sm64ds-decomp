@@ -109,7 +109,7 @@ s32 daObjKaitendai_c::Behavior()
 }
 
 /* ROM ordinal 5 -- func_ov002_020b676c, 0x020b676c, size 0xa8.
- * Shared resource setup the five leaves call. Slot 0 is Model::LoadFile,
+ * Shared resource setup the five leaves call. Slot 0 is dExtSimpleModel_c::LoadFile,
  * slot 1 is dBgW_Kc::LoadFile, slot 2 is CLPS into SetFile; then bind
  * UpdatePosAndAngs and seed mPrevAngleZ. */
 // @symbol func_ov002_020b676c
@@ -118,7 +118,7 @@ int func_ov002_020b676c(daObjKaitendai_c *self, ResourceDescriptor *descriptor, 
 {
     s16 y;
 
-    self->mModel.SetFile((BMD_File *)Model::LoadFile(*descriptor->model), 1, -1);
+    self->mModel.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(*descriptor->model), 1, -1);
     self->UpdateModelPosAndRotY();
     self->UpdateClsnPosAndRot();
     _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(

@@ -36,7 +36,7 @@
  * - InitResources dCcAcPos_c::Init: a Fix12<int> temporary grows the
  *   function 0x104 -> 0x114. A bare int does not compile (no conversion
  *   to Fix12<int>). The scalar extern keeps the ROM symbol.
- * - InitResources ModelAnim::SetAnim: a Fix12<int> speed temporary grows
+ * - InitResources dExtAnmModel_c::SetAnim: a Fix12<int> speed temporary grows
  *   it 0x104 -> 0x110. Same symbol, bigger body.
  * - InitResources dBgCh_Actr::Init: the header method (Fix12i) relocates
  *   to _ZN10dBgCh_Actr4InitEP8dActor_ciiP10Vector3_16S3_. The ROM symbol
@@ -133,7 +133,7 @@ int daPukupuku_c::InitResources()
     struct BMD_File *bmd;
     struct Vector3 v;
 
-    bmd = (struct BMD_File *)Model::LoadFile(*(SharedFilePtr *)&data_ov090_02134564);
+    bmd = (struct BMD_File *)dExtSimpleModel_c::LoadFile(*(SharedFilePtr *)&data_ov090_02134564);
     mModelAnim.SetFile(bmd, 1, -1);
 
     dExtFrameCtrl_c::LoadFile(*(struct SharedFilePtr *)&data_ov090_0213455c);

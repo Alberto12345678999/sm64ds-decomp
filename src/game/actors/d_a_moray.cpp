@@ -45,7 +45,7 @@ enum daMoray_c_AssetId {
 #include "SharedFilePtr.h"
 #include "PathPtr.h"
 #include "dExtFrameCtrl_c.h"
-#include "Model.h"
+#include "dExtSimpleModel_c.h"
 #include "Player.h"
 
 #pragma defer_codegen off
@@ -697,7 +697,7 @@ s32 daMoray_c::Render()
         bone++;
     }
     func_0204531c(&mBlendModelAnim.data, mBlendModelAnim.blendWeight);
-    mBlendModelAnim.Model::Render(0);
+    mBlendModelAnim.dExtSimpleModel_c::Render(0);
     return 1;
 }
 #pragma pop
@@ -762,7 +762,7 @@ s32 daMoray_c::InitResources()
     void *file;
     dActor_c *spawned;
 
-    file = Model::LoadFile(data_ov016_02114d38);
+    file = dExtSimpleModel_c::LoadFile(data_ov016_02114d38);
     mBlendModelAnim.SetFile((BMD_File *)file, 1, -1);
     dExtFrameCtrl_c::LoadFile(data_ov016_02114d20);
     dExtFrameCtrl_c::LoadFile(data_ov016_02114d30);

@@ -1395,7 +1395,7 @@
       "disposition": "deadstrip-data",
       "canonical_module": "ov002",
       "canonical_address": "0x0210babc",
-      "reason": "vmi_class typeinfo for anmModel_c (bases ModelAnim + virtual param_c). Cartridge copy at ov002:0x0210babc."
+      "reason": "vmi_class typeinfo for anmModel_c (bases dExtAnmModel_c + virtual param_c). Cartridge copy at ov002:0x0210babc."
     },
     {
       "symbol": "_ZTSN8daDemo_c10anmModel_cE",
@@ -1409,7 +1409,7 @@
       "disposition": "deadstrip-data",
       "canonical_module": "ov002",
       "canonical_address": "0x0210bafc",
-      "reason": "vmi_class typeinfo for simpleModel_c (bases Model + virtual param_c). Cartridge copy at ov002:0x0210bafc."
+      "reason": "vmi_class typeinfo for simpleModel_c (bases dExtSimpleModel_c + virtual param_c). Cartridge copy at ov002:0x0210bafc."
     },
     {
       "symbol": "_ZTSN8daDemo_c13simpleModel_cE",
@@ -1763,70 +1763,70 @@
     },
     {
       "symbol": "_ZN14dExtAnmModel_cD2Ev",
-      "canonical_symbol": "_ZN9ModelAnimD2Ev",
+      "canonical_symbol": "_ZN14dExtAnmModel_cD2Ev",
       "canonical_module": "arm9",
       "canonical_address": "0x201689c",
       "evidence": "daDemo_c.h declares the nested classes' bases under the cartridge RTTI spelling (notes/model-rtti-names.md); the emitted member name resolves to the same function the project spelling configures."
     },
     {
       "symbol": "_ZN17dExtSimpleModel_cD2Ev",
-      "canonical_symbol": "_ZN5ModelD2Ev",
+      "canonical_symbol": "_ZN17dExtSimpleModel_cD2Ev",
       "canonical_module": "arm9",
       "canonical_address": "0x2016ca8",
       "evidence": "daDemo_c.h declares the nested classes' bases under the cartridge RTTI spelling (notes/model-rtti-names.md); the emitted member name resolves to the same function the project spelling configures."
     },
     {
       "symbol": "_ZN14dExtAnmModel_c11UpdateVertsEv",
-      "canonical_symbol": "_ZN9ModelAnim11UpdateVertsEv",
+      "canonical_symbol": "_ZN14dExtAnmModel_c11UpdateVertsEv",
       "canonical_module": "arm9",
       "canonical_address": "0x201686c",
       "evidence": "daDemo_c.h declares the nested classes' bases under the cartridge RTTI spelling (notes/model-rtti-names.md); the emitted member name resolves to the same function the project spelling configures."
     },
     {
       "symbol": "_ZN14dExtAnmModel_c9Virtual10ER9Matrix4x3",
-      "canonical_symbol": "_ZN9ModelAnim9Virtual10ER9Matrix4x3",
+      "canonical_symbol": "_ZN14dExtAnmModel_c9Virtual10ER9Matrix4x3",
       "canonical_module": "arm9",
       "canonical_address": "0x201682c",
       "evidence": "daDemo_c.h declares the nested classes' bases under the cartridge RTTI spelling (notes/model-rtti-names.md); the emitted member name resolves to the same function the project spelling configures."
     },
     {
       "symbol": "_ZN14dExtAnmModel_c6RenderEPK7Vector3",
-      "canonical_symbol": "_ZN9ModelAnim6RenderEPK7Vector3",
+      "canonical_symbol": "_ZN14dExtAnmModel_c6RenderEPK7Vector3",
       "canonical_module": "arm9",
       "canonical_address": "0x20167f8",
       "evidence": "daDemo_c.h declares the nested classes' bases under the cartridge RTTI spelling (notes/model-rtti-names.md); the emitted member name resolves to the same function the project spelling configures."
     },
     {
       "symbol": "_ZN14dExtAnmModel_c9Virtual18EjPK7Vector3",
-      "canonical_symbol": "_ZN9ModelAnim9Virtual18EjPK7Vector3",
+      "canonical_symbol": "_ZN14dExtAnmModel_c9Virtual18EjPK7Vector3",
       "canonical_module": "arm9",
       "canonical_address": "0x20167c4",
       "evidence": "daDemo_c.h declares the nested classes' bases under the cartridge RTTI spelling (notes/model-rtti-names.md); the emitted member name resolves to the same function the project spelling configures."
     },
     {
       "symbol": "_ZN17dExtSimpleModel_c9DoSetFileEPcii",
-      "canonical_symbol": "_ZN5Model9DoSetFileEPcii",
+      "canonical_symbol": "_ZN17dExtSimpleModel_c9DoSetFileEPcii",
       "canonical_module": "arm9",
       "canonical_address": "0x2016bf8",
       "evidence": "daDemo_c.h declares the nested classes' bases under the cartridge RTTI spelling (notes/model-rtti-names.md); the emitted member name resolves to the same function the project spelling configures."
     },
     {
       "symbol": "_ZN17dExtSimpleModel_c11UpdateVertsEv",
-      "canonical_symbol": "_ZN5Model11UpdateVertsEv",
+      "canonical_symbol": "_ZN17dExtSimpleModel_c11UpdateVertsEv",
       "canonical_module": "arm9",
       "canonical_address": "0x2016c98",
       "evidence": "daDemo_c.h declares the nested classes' bases under the cartridge RTTI spelling (notes/model-rtti-names.md); the emitted member name resolves to the same function the project spelling configures."
     },
     {
       "symbol": "_ZN17dExtSimpleModel_c9Virtual10ER9Matrix4x3",
-      "canonical_symbol": "_ZN5Model9Virtual10ER9Matrix4x3",
+      "canonical_symbol": "_ZN17dExtSimpleModel_c9Virtual10ER9Matrix4x3",
       "canonical_module": "arm9",
       "canonical_address": "0x2016bb8",
       "evidence": "daDemo_c.h declares the nested classes' bases under the cartridge RTTI spelling (notes/model-rtti-names.md); the emitted member name resolves to the same function the project spelling configures."
     },
     {
       "symbol": "_ZN17dExtSimpleModel_c6RenderEPK7Vector3",
-      "canonical_symbol": "_ZN5Model6RenderEPK7Vector3",
+      "canonical_symbol": "_ZN17dExtSimpleModel_c6RenderEPK7Vector3",
       "canonical_module": "arm9",
       "canonical_address": "0x2016b78",
       "evidence": "daDemo_c.h declares the nested classes' bases under the cartridge RTTI spelling (notes/model-rtti-names.md); the emitted member name resolves to the same function the project spelling configures."

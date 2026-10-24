@@ -29,7 +29,7 @@ struct Vector3_16f;
 #include "decl_Player.h"
 #include "SharedFilePtr.h"
 #include "types.h"
-#include "Model.h"
+#include "dExtSimpleModel_c.h"
 #include "Player.h"
 #include "SaveData.h"
 #include "SpawnInfo.h"
@@ -364,9 +364,9 @@ int daSnmBth_c::Behavior()
 // @symbol _ZN10daSnmBth_c13InitResourcesEv
 int daSnmBth_c::InitResources()
 {
-    Model::LoadFile(data_ov002_0210da40);
-    Model::LoadFile(data_ov002_0210d9a0);
-    Model::LoadFile(data_ov002_0210d9c0);
+    dExtSimpleModel_c::LoadFile(data_ov002_0210da40);
+    dExtSimpleModel_c::LoadFile(data_ov002_0210d9a0);
+    dExtSimpleModel_c::LoadFile(data_ov002_0210d9c0);
     mPosX = 0x3fa770;
     mPosY = 0xcb2000;
     mPosZ = 0x46988e;

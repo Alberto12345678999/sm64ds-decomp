@@ -539,7 +539,7 @@ int daObjRotateUpdownLift_c::InitResources()
     mPosZ = placed.z;
 
     variant = mVariant;
-    bmd = Model::LoadFile(*data_ov091_02134c30[variant].file);
+    bmd = dExtSimpleModel_c::LoadFile(*data_ov091_02134c30[variant].file);
     mModel.SetFile((BMD_File *)bmd, 1, -1);
 
     func_ov091_02131340();

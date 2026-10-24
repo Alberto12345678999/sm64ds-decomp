@@ -25,7 +25,7 @@
  *   UpdateDiscreteNoLava method is WRONG-DEST (ROM 0x02038420).
  * - Fix12<int>-by-value callees stay mangled (6az): dCcAcPos_c::Init,
  *   dBgCh_Actr::Init (whose header mangles Fix12i as `i`, not the ROM's
- *   5Fix12IiE), ModelAnim::SetAnim, TextureSequence::SetFile,
+ *   5Fix12IiE), dExtAnmModel_c::SetAnim, TextureSequence::SetFile,
  *   DropShadowRadHeight, SpawnCoins, Player::Bounce / Hurt and
  *   Particle::System::NewSimple (Particle__System.h lacks it).
  * - dActor_c::IsTooFarAwayFromPlayer, ApproachLinear and cstd::fdiv have
@@ -233,10 +233,10 @@ void daJgm_c::OnTurnIntoEgg(Player &player)
 // @symbol _ZN7daJgm_c13InitResourcesEv
 s32 daJgm_c::InitResources()
 {
-    Model::LoadFile(data_ov077_02127b38);
-    BMD_File *bodyFile = (BMD_File *)Model::LoadFile(data_ov077_02127b50);
+    dExtSimpleModel_c::LoadFile(data_ov077_02127b38);
+    BMD_File *bodyFile = (BMD_File *)dExtSimpleModel_c::LoadFile(data_ov077_02127b50);
     mModelAnim.SetFile(bodyFile, 1, 1);
-    BMD_File *heldFile = (BMD_File *)Model::LoadFile(data_ov077_02127b48);
+    BMD_File *heldFile = (BMD_File *)dExtSimpleModel_c::LoadFile(data_ov077_02127b48);
     mModel.SetFile(heldFile, 1, 1);
     for (int i = 0; i < 2; i++)
         dExtFrameCtrl_c::LoadFile(*data_ov077_02127238[i]);

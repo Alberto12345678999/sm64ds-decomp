@@ -138,7 +138,7 @@ static inline int IsPlayingAnim(daMky_c *mky, int *animFile) {
  * deadstripped.
  *
  * The body is empty on purpose.  The compiler writes the whole of both
- * variants from the class definition: the vptr store, then ModelAnim,
+ * variants from the class definition: the vptr store, then dExtAnmModel_c,
  * dExtShadowModel_c, dCcAc_c and dBgCh_Actr destroyed in reverse declaration order
  * (PathPtr is trivial and skipped), then ~dActor_c; D0 additionally inlines
  * all of that and tail-calls Memory::Deallocate. */
@@ -1509,7 +1509,7 @@ s32 daMky_c::Render()
 {
     if (IsInYoshiMouth(this))
         return 1;
-    mModelAnim.Model::Render(0);
+    mModelAnim.dExtSimpleModel_c::Render(0);
     return 1;
 }
 
@@ -1545,10 +1545,10 @@ s32 daMky_c::InitResources()
 {
     int i;
 
-    Model::LoadFile(data_ov002_0210da40);
-    Model::LoadFile(data_ov002_0210d9a0);
-    Model::LoadFile(data_ov002_0210d9c0);
-    mModelAnim.SetFile((BMD_File *)Model::LoadFile(data_ov030_02115d00), 1, 1);
+    dExtSimpleModel_c::LoadFile(data_ov002_0210da40);
+    dExtSimpleModel_c::LoadFile(data_ov002_0210d9a0);
+    dExtSimpleModel_c::LoadFile(data_ov002_0210d9c0);
+    mModelAnim.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(data_ov030_02115d00), 1, 1);
     for (i = 0; i < 10; i++)
         dExtFrameCtrl_c::LoadFile(*data_ov030_02114824[i]);
     if (mShadowModel.InitCylinder() == 0)

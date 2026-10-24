@@ -43,7 +43,7 @@
 #include "types.h"
 #include "Heap.h"
 #include "decl_common.h"
-#include "Model.h"
+#include "dExtSimpleModel_c.h"
 #include "Particle__SysTracker.h"
 #include "Particle__Texture.h"
 #include "Particle__Manager.h"
@@ -123,7 +123,7 @@ u32 Texture::AllocTexVram(u32 size, bool isTexel4x4)
         return address;
     }
 
-    return Model::GetVramOffset(size);
+    return dExtSimpleModel_c::GetVramOffset(size);
 }
 
 // @symbol _ZN8Particle7Texture12AllocPalVramEjb

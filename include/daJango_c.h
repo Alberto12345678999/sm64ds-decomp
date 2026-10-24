@@ -31,7 +31,7 @@
 
 #include "dEnemyBase_c.h"
 #include "BlendModelAnim.h"
-#include "ModelAnim.h"
+#include "dExtAnmModel_c.h"
 #include "dCcAc_c.h"
 #include "PathPtr.h"
 #include "dExtShadowModel_c.h"

@@ -127,7 +127,7 @@
       "address": "0x02113bc8",
       "size": "0x8",
       "binding": "STB_GLOBAL",
-      "evidence": "model resource handle constructed with file ID 1715; Model::LoadFile consumes it in InitResources"
+      "evidence": "model resource handle constructed with file ID 1715; dExtSimpleModel_c::LoadFile consumes it in InitResources"
     },
     {
       "symbol": "@773",

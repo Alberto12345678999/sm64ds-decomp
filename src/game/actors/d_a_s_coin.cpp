@@ -23,7 +23,7 @@
 #include "daSCoin_c.h"
 #include "SpawnInfo.h"
 #include "SharedFilePtr.h"
-#include "Model.h"
+#include "dExtSimpleModel_c.h"
 #include "daStar_c.h"
 #include "daStarBase_c.h"
 #include "daObjHatenaBlock_c.h"
@@ -69,7 +69,7 @@ s32 daSCoin_c::InitResources()
     mLeaderUniqueID = 0;
     mCollectedCount = 0;
     mDeathTimer = 0;
-    Model::LoadFile(data_ov002_0210d9a8);
+    dExtSimpleModel_c::LoadFile(data_ov002_0210d9a8);
     return 1;
 }
 

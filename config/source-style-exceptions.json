@@ -28,17 +28,17 @@
     {
       "path": "src/game/stages/d_s_star_sel_methods.cpp",
       "rule": "handspelled-member",
-      "match": "_ZN5ModelC1Ev",
+      "match": "_ZN17dExtSimpleModel_cC1Ev",
       "count": 2,
-      "reason": "dScStarSel_c_classInit is the profile factory, moved verbatim from the retired src/game/stages/d_s_star_sel.cpp, which spells these names on main. Model's C1/D1 are passed by address to __cxa_vec_ctor, and C++ cannot take a constructor's or destructor's address. fBase_c's operator new and C2 are the inlined steps of a `new dScStarSel_c` expression. Follow-up: rewrite the factory as `new dScStarSel_c` once dScStarSel_c's constructor is reconstructed, which retires all four.",
+      "reason": "dScStarSel_c_classInit is the profile factory, moved verbatim from the retired src/game/stages/d_s_star_sel.cpp, which spells these names on main. dExtSimpleModel_c's C1/D1 are passed by address to __cxa_vec_ctor, and C++ cannot take a constructor's or destructor's address. fBase_c's operator new and C2 are the inlined steps of a `new dScStarSel_c` expression. Follow-up: rewrite the factory as `new dScStarSel_c` once dScStarSel_c's constructor is reconstructed, which retires all four.",
       "evidence": "src/game/stages/d_s_star_sel.cpp on main (7 occurrences of these four names); ROM ov003 0x020b04f0 size 0x90; ov003/dScStarSel_c 15/15 TEXT-VERIFIED"
     },
     {
       "path": "src/game/stages/d_s_star_sel_methods.cpp",
       "rule": "handspelled-member",
-      "match": "_ZN5ModelD1Ev",
+      "match": "_ZN17dExtSimpleModel_cD1Ev",
       "count": 2,
-      "reason": "dScStarSel_c_classInit is the profile factory, moved verbatim from the retired src/game/stages/d_s_star_sel.cpp, which spells these names on main. Model's C1/D1 are passed by address to __cxa_vec_ctor, and C++ cannot take a constructor's or destructor's address. fBase_c's operator new and C2 are the inlined steps of a `new dScStarSel_c` expression. Follow-up: rewrite the factory as `new dScStarSel_c` once dScStarSel_c's constructor is reconstructed, which retires all four.",
+      "reason": "dScStarSel_c_classInit is the profile factory, moved verbatim from the retired src/game/stages/d_s_star_sel.cpp, which spells these names on main. dExtSimpleModel_c's C1/D1 are passed by address to __cxa_vec_ctor, and C++ cannot take a constructor's or destructor's address. fBase_c's operator new and C2 are the inlined steps of a `new dScStarSel_c` expression. Follow-up: rewrite the factory as `new dScStarSel_c` once dScStarSel_c's constructor is reconstructed, which retires all four.",
       "evidence": "src/game/stages/d_s_star_sel.cpp on main (7 occurrences of these four names); ROM ov003 0x020b04f0 size 0x90; ov003/dScStarSel_c 15/15 TEXT-VERIFIED"
     },
     {
@@ -46,7 +46,7 @@
       "rule": "handspelled-member",
       "match": "_ZN7fBase_cC2Ev",
       "count": 2,
-      "reason": "dScStarSel_c_classInit is the profile factory, moved verbatim from the retired src/game/stages/d_s_star_sel.cpp, which spells these names on main. Model's C1/D1 are passed by address to __cxa_vec_ctor, and C++ cannot take a constructor's or destructor's address. fBase_c's operator new and C2 are the inlined steps of a `new dScStarSel_c` expression. Follow-up: rewrite the factory as `new dScStarSel_c` once dScStarSel_c's constructor is reconstructed, which retires all four.",
+      "reason": "dScStarSel_c_classInit is the profile factory, moved verbatim from the retired src/game/stages/d_s_star_sel.cpp, which spells these names on main. dExtSimpleModel_c's C1/D1 are passed by address to __cxa_vec_ctor, and C++ cannot take a constructor's or destructor's address. fBase_c's operator new and C2 are the inlined steps of a `new dScStarSel_c` expression. Follow-up: rewrite the factory as `new dScStarSel_c` once dScStarSel_c's constructor is reconstructed, which retires all four.",
       "evidence": "src/game/stages/d_s_star_sel.cpp on main (7 occurrences of these four names); ROM ov003 0x020b04f0 size 0x90; ov003/dScStarSel_c 15/15 TEXT-VERIFIED"
     },
     {
@@ -54,7 +54,7 @@
       "rule": "handspelled-member",
       "match": "_ZN7fBase_cnwEj",
       "count": 2,
-      "reason": "dScStarSel_c_classInit is the profile factory, moved verbatim from the retired src/game/stages/d_s_star_sel.cpp, which spells these names on main. Model's C1/D1 are passed by address to __cxa_vec_ctor, and C++ cannot take a constructor's or destructor's address. fBase_c's operator new and C2 are the inlined steps of a `new dScStarSel_c` expression. Follow-up: rewrite the factory as `new dScStarSel_c` once dScStarSel_c's constructor is reconstructed, which retires all four.",
+      "reason": "dScStarSel_c_classInit is the profile factory, moved verbatim from the retired src/game/stages/d_s_star_sel.cpp, which spells these names on main. dExtSimpleModel_c's C1/D1 are passed by address to __cxa_vec_ctor, and C++ cannot take a constructor's or destructor's address. fBase_c's operator new and C2 are the inlined steps of a `new dScStarSel_c` expression. Follow-up: rewrite the factory as `new dScStarSel_c` once dScStarSel_c's constructor is reconstructed, which retires all four.",
       "evidence": "src/game/stages/d_s_star_sel.cpp on main (7 occurrences of these four names); ROM ov003 0x020b04f0 size 0x90; ov003/dScStarSel_c 15/15 TEXT-VERIFIED"
     },
     {
@@ -380,18 +380,18 @@
     {
       "path": "src/minigames/d_s_mg_roulette_methods.cpp",
       "rule": "raw-offset",
-      "match": "(Model*)(slider+0x10",
+      "match": "(dExtSimpleModel_c*)(slider+0x10",
       "count": 1,
-      "reason": "Use real Model calls for the embedded model at slider+0x10; main already used ModelBase/Sub views at the same address. The containing slider remains partial; name the model member only once lifecycle and complete layout are established.",
-      "evidence": "df88a655 Roulette slider render ModelBase/Sub at+0x10; notes/experiments/scene-physics3955-review.md; full106/106 ROM proof at005807df4f and independent prepared-object verification."
+      "reason": "Use real dExtSimpleModel_c calls for the embedded model at slider+0x10; main already used dExtModel_c/Sub views at the same address. The containing slider remains partial; name the model member only once lifecycle and complete layout are established.",
+      "evidence": "df88a655 Roulette slider render dExtModel_c/Sub at+0x10; notes/experiments/scene-physics3955-review.md; full106/106 ROM proof at005807df4f and independent prepared-object verification."
     },
     {
       "path": "src/minigames/d_s_mg_roulette_methods.cpp",
       "rule": "raw-offset",
-      "match": "(Model*)(slider+0x60",
+      "match": "(dExtSimpleModel_c*)(slider+0x60",
       "count": 1,
-      "reason": "Use real Model calls for the embedded model at slider+0x60; main already used ModelBase/Sub views at the same address. The containing slider remains partial; name the model member only once lifecycle and complete layout are established.",
-      "evidence": "df88a655 Roulette slider render ModelBase/Sub at+0x60; notes/experiments/scene-physics3955-review.md; full106/106 ROM proof at005807df4f and independent prepared-object verification."
+      "reason": "Use real dExtSimpleModel_c calls for the embedded model at slider+0x60; main already used dExtModel_c/Sub views at the same address. The containing slider remains partial; name the model member only once lifecycle and complete layout are established.",
+      "evidence": "df88a655 Roulette slider render dExtModel_c/Sub at+0x60; notes/experiments/scene-physics3955-review.md; full106/106 ROM proof at005807df4f and independent prepared-object verification."
     },
     {
       "path": "include/cMgSmartball_wing_c.h",
@@ -436,9 +436,9 @@
     {
       "path": "src/game/player/Player.cpp",
       "rule": "handspelled-member",
-      "match": "_ZN9ModelAnimC1Ev",
+      "match": "_ZN14dExtAnmModel_cC1Ev",
       "count": 5,
-      "reason": "C1 passes constructor and destructor addresses to __cxa_vec_ctor, and C++ cannot take a constructor's or destructor's address. Two earlier members already spelled ModelAnim's C1; the three new occurrences are this constructor. Follow-up: retire these with the C1 rewrite.",
+      "reason": "C1 passes constructor and destructor addresses to __cxa_vec_ctor, and C++ cannot take a constructor's or destructor's address. Two earlier members already spelled dExtAnmModel_c's C1; the three new occurrences are this constructor. Follow-up: retire these with the C1 rewrite.",
       "evidence": "Retired src/_ZN6PlayerC1Ev.cpp, ROM 0x020e68f4 size 0xc4; ov002/Player C1 relocations identical to the enrolled object"
     },
     {
@@ -764,18 +764,18 @@
     {
       "path": "src/game/actors/d_a_ots.cpp",
       "rule": "handspelled-member",
-      "match": "_ZN9ModelAnim7SetAnimEP8BCA_Fileiit",
+      "match": "_ZN14dExtAnmModel_c7SetAnimEP8BCA_Fileiit",
       "count": 2,
       "reason": "func_ov064_02116560 tail-forwards SetAnim's r0 as its own int result. A return on the void member does not compile, and splitting it into call-then-return loses the tail call. The two occurrences are the int-returning local extern and its single call.",
-      "evidence": "src/engine/model/ModelAnim.cpp: void ModelAnim::SetAnim(BCA_File *, int, Fix12i, u16) at 0x02016748 size 0x5c MATCH under 2004/b56; func_ov064_02116560 byte-matched with the int-returning spelling; the local extern carries a 'local extern:' reason at d_a_ots.cpp:230."
+      "evidence": "src/engine/model/dExtAnmModel_c.cpp: void dExtAnmModel_c::SetAnim(BCA_File *, int, Fix12i, u16) at 0x02016748 size 0x5c MATCH under 2004/b56; func_ov064_02116560 byte-matched with the int-returning spelling; the local extern carries a 'local extern:' reason at d_a_ots.cpp:230."
     },
     {
       "path": "src/game/player/Player.cpp",
       "rule": "handspelled-member",
-      "match": "_ZN9ModelAnim7SetAnimEP8BCA_Fileiit",
+      "match": "_ZN14dExtAnmModel_c7SetAnimEP8BCA_Fileiit",
       "count": 3,
       "reason": "St_YoshiPower_Main is the only caller that passes a non-constant startFrame ((currFrame << 4) >> 0x10). Narrowing it to the member's real u16 costs +0x10, so this body keeps the scalar unsigned int spelling, per this file's per-body declaration policy. The three occurrences are the block-scope declaration and its two calls.",
-      "evidence": "src/engine/model/ModelAnim.cpp: void ModelAnim::SetAnim(BCA_File *, int, Fix12i, u16) at 0x02016748 size 0x5c MATCH under 2004/b56; St_YoshiPower_Main MATCH with the scalar unsigned int startFrame, +0x10 with the u16 member call (PR #4290 measurement)."
+      "evidence": "src/engine/model/dExtAnmModel_c.cpp: void dExtAnmModel_c::SetAnim(BCA_File *, int, Fix12i, u16) at 0x02016748 size 0x5c MATCH under 2004/b56; St_YoshiPower_Main MATCH with the scalar unsigned int startFrame, +0x10 with the u16 member call (PR #4290 measurement)."
     },
     {
       "path": "src/InvMat4x3.c",

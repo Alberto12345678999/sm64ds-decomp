@@ -88,12 +88,12 @@ extern PathLiftCollisionFilePtr data_ov100_02148a5c;
 
 extern "C" {
 extern void *_ZN10dBgActor_cC2Ev(dBgActor_c *actor);
-extern void *_ZN5ModelC1Ev(Model *model);
-extern Model *_ZN5ModelD1Ev(Model *model);
+extern void *_ZN17dExtSimpleModel_cC1Ev(dExtSimpleModel_c *model);
+extern dExtSimpleModel_c *_ZN17dExtSimpleModel_cD1Ev(dExtSimpleModel_c *model);
 extern void *_ZN7PathPtrC1Ev(PathPtr *path);
 extern void *_ZN17dExtShadowModel_cC1Ev(dExtShadowModel_c *model);
 extern void __cxa_vec_ctor(
-    Model *models, unsigned int count, unsigned int size,
+    dExtSimpleModel_c *models, unsigned int count, unsigned int size,
     void (*ctor)(void *), void (*dtor)(void *));
 }
 
@@ -109,9 +109,9 @@ extern "C" daObjPathLift_c *daObjPathLift_c_classInit()
         _ZN10dBgActor_cC2Ev(actor);
         *(int *)actor = (int)data_ov002_0210af70;
         __cxa_vec_ctor(
-            actor->mModels, 3, sizeof(Model),
-            (void (*)(void *))_ZN5ModelC1Ev,
-            (void (*)(void *))_ZN5ModelD1Ev);
+            actor->mModels, 3, sizeof(dExtSimpleModel_c),
+            (void (*)(void *))_ZN17dExtSimpleModel_cC1Ev,
+            (void (*)(void *))_ZN17dExtSimpleModel_cD1Ev);
         _ZN7PathPtrC1Ev(&actor->mPath);
         *(int *)actor = (int)&_ZTV15daObjPathLift_c[2];
         _ZN17dExtShadowModel_cC1Ev(&actor->mShadowModel);
@@ -123,8 +123,8 @@ extern "C" daObjPathLift_c *daObjPathLift_c_classInit()
 int daObjPathLift_c::InitResources()
 {
     Vector3 pos;
-    Model::LoadFile(data_ov002_0210d9f0);
-    mModel.SetFile((BMD_File *)Model::LoadFile(data_ov100_02148a54), 1, -1);
+    dExtSimpleModel_c::LoadFile(data_ov002_0210d9f0);
+    mModel.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(data_ov100_02148a54), 1, -1);
     mShadowModel.InitCuboid();
     func_ov100_0214700c(this);
     UpdateClsnPosAndRot();

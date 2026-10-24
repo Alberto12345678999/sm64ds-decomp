@@ -11,7 +11,7 @@
  * does not bind.
  */
 // leftovers:
-// - ModelAnim::SetAnim and the other Fix12<int>-by-value calls stay
+// - dExtAnmModel_c::SetAnim and the other Fix12<int>-by-value calls stay
 //   mangled. A member SetAnim with Fix12<int> speed in func_ov065_021182e4
 //   changes that function.
 // - func_ov065_021180d4, func_ov065_02118c4c and func_ov065_02119210 take
@@ -249,9 +249,9 @@ int daDossyCap_c::InitResources()
 int daDossy_c::InitResources()
 {
     int i;
-    void* f = Model::LoadFile(data_ov065_0211d720);
+    void* f = dExtSimpleModel_c::LoadFile(data_ov065_0211d720);
     mModelAnim.SetFile((BMD_File *)f, 1, -1);
-    Model::LoadFile(data_ov002_0210d9c0);
+    dExtSimpleModel_c::LoadFile(data_ov002_0210d9c0);
     for (i = 0; i < 3; i++)
         dExtFrameCtrl_c::LoadFile(*data_ov065_0211c080[i]);
     mModelAnim.SetAnim((BCA_File *)data_ov065_0211d770.filePtr, 0, 0x1000, 0);

@@ -83,7 +83,7 @@ extern "C" daObjBk_Rotebar_c *daObjBk_Rotebar_c_classInit()
 // @symbol _ZN17daObjBk_Rotebar_c13InitResourcesEv
 s32 daObjBk_Rotebar_c::InitResources()
 {
-    mModel.SetFile((BMD_File *)Model::LoadFile(data_ov015_02114a8c), 1, -1);
+    mModel.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(data_ov015_02114a8c), 1, -1);
     UpdateModelPosAndRotY();
     UpdateClsnPosAndRot();
 
@@ -148,7 +148,7 @@ s32 daObjBk_Rotebar_c::CleanupResources()
  *
  * Both bodies are short because the chain is short: this class's vptr store,
  * then dBgActor_c's -- inlined, its destructor is defined in its class body --
- * then dBgActor_c's Model and dBgW_KcMbg, then dActor_c. This class adds no
+ * then dBgActor_c's dExtSimpleModel_c and dBgW_KcMbg, then dActor_c. This class adds no
  * member with a destructor of its own. D0's trailing deallocation is the
  * inherited inline operator delete, which is why nothing here names a heap.
  */}

@@ -110,7 +110,7 @@ s32 daDgr_c::InitResources()
     func_ov025_02111344();
     func_ov025_021112e0();
     {
-        BMD_File *bmd = (BMD_File *)Model::LoadFile(data_ov025_02113a68);
+        BMD_File *bmd = (BMD_File *)dExtSimpleModel_c::LoadFile(data_ov025_02113a68);
         mModel.SetFile(bmd, 1, -1);
     }
     {
@@ -270,7 +270,7 @@ s32 daDgr_c::CleanupResources()
 }
 
 // @symbol _ZN7daDgr_c19func_ov025_02111344Ev
-/* Model matrix: X rotation, then translation at 1/8 of the actor position. */
+/* dExtSimpleModel_c matrix: X rotation, then translation at 1/8 of the actor position. */
 void daDgr_c::func_ov025_02111344()
 {
     Matrix4x3_FromRotationX(&mModel.mat4x3, mAngleX);

@@ -15,7 +15,7 @@
  * alias QuestionSwitch_Spawn.
  *
  * deslop
- * Leftover: ModelAnim::SetAnim and dBgW_KcMbg::SetFile stay mangled in this
+ * Leftover: dExtAnmModel_c::SetAnim and dBgW_KcMbg::SetFile stay mangled in this
  *   TU -- both take Fix12<int> by value (wall 6az); a method call homes the
  *   argument and size-DIFFs InitResources.
  * Leftover: Sound::PlaySub and Particle::System::NewSimple stay mangled --
@@ -167,7 +167,7 @@ s32 daObjHatenaSwitch_c::InitResources()
 {
     void *file;
 
-    file = Model::LoadFile(data_ov002_0210dd60);
+    file = dExtSimpleModel_c::LoadFile(data_ov002_0210dd60);
     mModelAnim.SetFile((BMD_File *)file, 1, -1);
 
     file = dExtFrameCtrl_c::LoadFile(data_ov002_0210dd68);

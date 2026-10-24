@@ -134,15 +134,15 @@ int daSanbo_c::InitResources()
 
     t = (actorID == SANBO_HEAD);
     if (t != false) {
-        void* m = Model::LoadFile(gSanboHeadModelFile);
+        void* m = dExtSimpleModel_c::LoadFile(gSanboHeadModelFile);
         mModel.SetFile((BMD_File *)m, 1, 1);
-        Model::LoadFile(gSanboBodyModelFile);
+        dExtSimpleModel_c::LoadFile(gSanboBodyModelFile);
         LoadBlueCoinModel(this);
         mInstantSprout = 1;
     } else {
         t = (actorID == SANBO_BODY);
         if (t != false) {
-            void* m = Model::LoadFile(gSanboBodyModelFile);
+            void* m = dExtSimpleModel_c::LoadFile(gSanboBodyModelFile);
             if (mModel.SetFile((BMD_File *)m, 1, 1) == 0)
                 return 0;
         }
@@ -211,7 +211,7 @@ int daSanbo_c::Render()
     unsigned int f = mFlags;
     int b = ((f & 0x40000) != 0);
     if(b) return 1;
-    Model *model = &mModel;
+    dExtSimpleModel_c *model = &mModel;
     model->Render(&mScale);
     return 1;
 }

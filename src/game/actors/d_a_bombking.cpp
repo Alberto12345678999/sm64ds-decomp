@@ -1569,7 +1569,7 @@ int daBombking_c::Render()
             }
         }
     }
-    mBlendModelAnim.Model::Render(0);
+    mBlendModelAnim.dExtSimpleModel_c::Render(0);
     return 1;
 }
 
@@ -1670,7 +1670,7 @@ int daBombking_c::InitResources()
     Vector3 v0;
     Vector3 v1;
     int i;
-    f = (BMD_File *)Model::LoadFile(*(SharedFilePtr *)&gBombkingModelFile);
+    f = (BMD_File *)dExtSimpleModel_c::LoadFile(*(SharedFilePtr *)&gBombkingModelFile);
     mBlendModelAnim.SetFile(f, 1, 1);
     mShadowModel.InitCylinder();
     dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)&gBombkingGetupAnimationFile);
