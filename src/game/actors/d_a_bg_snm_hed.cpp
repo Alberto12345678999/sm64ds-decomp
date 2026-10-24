@@ -28,6 +28,10 @@ extern "C" daBgSnmHed_c::StateEntry data_ov072_02122c00[];
 extern int gBigSnowmanSmileTextureSequenceFile[];
 extern int gBigSnowmanCryTextureSequenceFile[];
 
+namespace Sound {
+bool PlaySub(u32, u32, u32, int, bool);
+}
+
 extern "C" {
 void Matrix4x3_FromRotationY(void *matrix, int angle);
 /* local extern: the matched free-function spelling of SetFile; a member call is pending. */
@@ -41,9 +45,8 @@ struct System {
     static void NewSimple(unsigned int id, int x, int y, int z);
 };
 }
-int _ZN5Sound7PlaySubEjjj5Fix12IiEb(
-    unsigned int soundID, unsigned int volume, unsigned int pan,
-    int distance, int loop);
+int d_a_bg_snm_hedPlaySubHold(unsigned int soundID, unsigned int volume, unsigned int pan,
+                              int distance, int loop);
 unsigned char DecIfAbove0_Byte(unsigned char *value);
 int Vec3_HorzDist(const void *a, const void *b);
 short Vec3_HorzAngle(const void *a, const void *b);
@@ -144,15 +147,13 @@ int daBgSnmHed_c::State2()
             func_0201267c(0x115, &mCamSpacePosX);
             Particle::System::NewSimple(0x10f, mPosX, mPosY, mPosZ);
             Particle::System::NewSimple(0x110, mPosX, mPosY, mPosZ);
-            _ZN5Sound7PlaySubEjjj5Fix12IiEb(
-                0x20, 0x14, 0x7f, 0x15666, 0);
+            Sound::PlaySub(0x20, 0x14, 0x7f, 0x15666, 0);
             mSubstate++;
         }
         break;
     case 1:
         if (DecIfAbove0_Byte(&mStateTimer) == 0) {
-            _ZN5Sound7PlaySubEjjj5Fix12IiEb(
-                0x20, 0x7f, 0, 0x15666, 0);
+            Sound::PlaySub(0x20, 0x7f, 0, 0x15666, 0);
             SetState(3);
         }
         break;

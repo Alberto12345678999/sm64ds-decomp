@@ -2721,7 +2721,6 @@ int Player::func_ov002_020c0fb4() {
    types breaks the byte match. See notes/mwccarm-codegen.md 6az. */
 extern "C" {
 void Player::func_ov002_020c1234() {
-    extern int _ZN5Sound7PlaySubEjjj5Fix12IiEb(unsigned int, unsigned int, unsigned int, int, bool);
     extern signed char data_0209f2f8;
     extern int data_0209b49c;
     unsigned int a1, a2;
@@ -2748,7 +2747,8 @@ void Player::func_ov002_020c1234() {
     }
     if (mGroundSubSoundActive == 0)
         return;
-    if (_ZN5Sound7PlaySubEjjj5Fix12IiEb(0x35, a1, a2, fx, 0) == 0) return;
+    if (Sound::PlaySub(0x35, a1, a2, fx, 0) == 0)
+        return;
     if (mGroundSoundType == 0xa) return;
     if (mGroundSoundType != 0xb)
         mGroundSubSoundActive = 0;

@@ -31,6 +31,10 @@
 #include "decl_common.h"
 #include "nitro/fx/fx.h"
 
+namespace Sound {
+bool PlaySub(u32, u32, u32, int, bool);
+}
+
 extern "C" {
 extern signed char data_ov002_02110af0;
 extern signed char data_02092120;
@@ -41,7 +45,7 @@ u32 NumStars(void);
 int AngleDiff(int a, int b);
 void _ZN3Fog4InitEt5Fix12IiES1_(void* thiz, unsigned short a, int b, int d);
 int func_ov100_02144f84(void);
-int _ZN5Sound7PlaySubEjjj5Fix12IiEb(u32 a, u32 b, u32 c, int d, int e);
+int d_a_mugen_bgmPlaySubHold(u32 a, u32 b, u32 c, int d, int e);
 extern u8 data_0209f250;
 extern char* data_0209f394[];
 extern int data_020a0ebc[];
@@ -150,7 +154,7 @@ int daMugenBGM_c::Behavior()
         mHorzSpeed = 1;
     }
 
-    if (_ZN5Sound7PlaySubEjjj5Fix12IiEb(0x2e, vol, flag, 0x1451, 0) != 0) {
+    if (Sound::PlaySub(0x2e, vol, flag, 0x1451, 0) != 0) {
         if (flag == 0)
             mHorzSpeed = 0;
     }

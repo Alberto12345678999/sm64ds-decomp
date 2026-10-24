@@ -180,7 +180,7 @@ void Matrix4x3_ApplyInPlaceToRotationY(void *m, s16 angY);
 int RandomIntInternal(int *seed);
 void Vec3_Asr(void *d, const void *s, int sh);
 void _Z14ApproachLinearRiii(int *p, int target, int step);
-int _ZN5Sound7PlaySubEjjj5Fix12IiEb(unsigned int a, unsigned int b, unsigned int c, s32 d, int e);
+int d_a_trsPlaySubHold(unsigned int a, unsigned int b, unsigned int c, s32 d, int e);
 void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(void *self, void *sm, void *m, int rad, int h, u32 a);
 int func_020092c4(void *cam, void *out, void *target);
 int func_02012694(int a, void *p, ...);
@@ -1604,10 +1604,10 @@ void daTrs_c::func_ov063_021189f4() {
     if (this->mSoundCount != 0) {
         if (this->mVariant == 0xd) {
             if (this->mSoundCount < 0x4b) {
-                _ZN5Sound7PlaySubEjjj5Fix12IiEb(0x20, 0x14, 0x7f, 0x6b000, 1);
+                Sound::PlaySub(0x20, 0x14, 0x7f, 0x6b000, 1);
                 this->mSoundCount += 1;
             } else {
-                int r = _ZN5Sound7PlaySubEjjj5Fix12IiEb(0x20, this->mSavedMusicVolume >> 0xc, 0, 0x7f000, 1);
+                int r = Sound::PlaySub(0x20, this->mSavedMusicVolume >> 0xc, 0, 0x7f000, 1);
                 if (r != 0)
                     this->mSoundCount = 0;
             }
@@ -1916,8 +1916,7 @@ void daTrs_c::func_ov063_02119074() {
             this->mSavedMusicVolume = data_0209b490[0];
 
             if (!this->mBooFlags.soundStarted) {
-                _ZN5Sound7PlaySubEjjj5Fix12IiEb(0x20, 0x14, 0x7f,
-                                                 0x6b000, 1);
+                Sound::PlaySub(0x20, 0x14, 0x7f, 0x6b000, 1);
                 this->mSoundCount = 1;
                 this->mBooFlags.soundStarted = 1;
             }
