@@ -416,7 +416,7 @@ extern u8 data_ov002_02111144;
 extern u32 data_020a0db0;
 extern int func_ov002_020f2630(daDemo_c *self);
 extern struct OamAttr *data_ov002_0210b6a8[];
-extern void _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiEi( int a, struct OamAttr *b, int c, int d, int e, int f, int g, int h);
+
 extern u32 d_a_demoNewHold(u32 slot, u32 unk, Fix12i x, Fix12i y, Fix12i z, void *rot,
                            struct ParticleCallback *callback);
 extern int data_ov002_02100140[];
@@ -1027,9 +1027,7 @@ void func_ov002_020f26e0(void *thiz)
             s = 7;
         if (s == 0)
             continue;
-        _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiEi(
-            1, data_ov002_0210b6a8[idx], e->x, e->y,
-            -1, 1, ((7 - s) << 10) + 0x1000, 0);
+        OAM::Render(1, data_ov002_0210b6a8[idx], e->x, e->y, -1, 1, ((7 - s) << 10) + 0x1000, 0);
     }
 }
 }

@@ -1611,19 +1611,18 @@ void dActor_c::SpawnSoundObj(u32 soundObjParam)
 /* ROM ordinal 6 -- _ZN5Sound15PlaySecretSoundEP8dActor_cPt
  * 0x0200f8f8  size 0x84 */
 extern "C" {
-/* local extern: Sound::PlaySub takes Fix12<int> by value, so it is called by
-   its symbol (the Fix12 wall). */
-int _ZN5Sound7PlaySubEjjj5Fix12IiEb(unsigned int soundID, unsigned int vol, unsigned int pan,
-                                    Fix12i dist, int loop);
+/* local extern: its five named parameters hold this TU's @NNN count. */
+int d_actorPlaySubHold(unsigned int soundID, unsigned int vol, unsigned int pan, Fix12i dist,
+                       int loop);
 static const int kPoolDist = 0x8777;
 }
 namespace Sound {
 
 int PlaySecretSound(dActor_c *actor, u16 *counter) {
     if (*counter < 0x4b) {
-        _ZN5Sound7PlaySubEjjj5Fix12IiEb(0x20, 0x14, 0x7f, 0x6b000, 0);
+        Sound::PlaySub(0x20, 0x14, 0x7f, 0x6b000, 0);
         *counter += 1;
-    } else if (_ZN5Sound7PlaySubEjjj5Fix12IiEb(0x20, 0x7f, 0, kPoolDist, 0)) {
+    } else if (Sound::PlaySub(0x20, 0x7f, 0, kPoolDist, 0)) {
         return 1;
     }
     return 0;
@@ -1638,9 +1637,9 @@ namespace Sound {
 
 int PlaySmallSecretSound(dActor_c *actor, u16 *counter) {
     if (*counter < 0x19) {
-        _ZN5Sound7PlaySubEjjj5Fix12IiEb(0x29, 0x14, 0x7f, 0x6b000, 0);
+        Sound::PlaySub(0x29, 0x14, 0x7f, 0x6b000, 0);
         *counter += 1;
-    } else if (_ZN5Sound7PlaySubEjjj5Fix12IiEb(0x29, 0x7f, 0, kPoolDist, 0)) {
+    } else if (Sound::PlaySub(0x29, 0x7f, 0, kPoolDist, 0)) {
         return 1;
     }
     return 0;
@@ -1653,9 +1652,9 @@ int PlaySmallSecretSound(dActor_c *actor, u16 *counter) {
  * 0x0200f7f0  size 0x84 */
 extern "C" int func_0200f7f0(dActor_c *actor, u16 *counter) {
     if (*counter < 0x69) {
-        _ZN5Sound7PlaySubEjjj5Fix12IiEb(0x21, 0x14, 0x7f, 0x6b000, 0);
+        Sound::PlaySub(0x21, 0x14, 0x7f, 0x6b000, 0);
         *counter += 1;
-    } else if (_ZN5Sound7PlaySubEjjj5Fix12IiEb(0x21, 0x7f, 0, kPoolDist, 0)) {
+    } else if (Sound::PlaySub(0x21, 0x7f, 0, kPoolDist, 0)) {
         return 1;
     }
     return 0;

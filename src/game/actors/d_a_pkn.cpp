@@ -113,8 +113,7 @@ struct System {
     static int New(unsigned, unsigned, int, int, int, const ::Vector3_16f *, Callback *);
 };
 }
-int   _ZN5Sound7PlaySubEjjj5Fix12IiEb(u32 a, u32 b, u32 c, int t, int flag);
-
+int d_a_pknPlaySubHold(u32 a, u32 b, u32 c, int t, int flag);
 }
 
 /* ==========================================================================
@@ -327,10 +326,10 @@ void daPkn_c::StateSleep()
     }
     mLoopSoundHandle = Sound::PlayLong(mLoopSoundHandle, 3, 0x174, mCamSpacePos, 0);
     if (mPlayerDist < 0x352000) {
-        _ZN5Sound7PlaySubEjjj5Fix12IiEb(0x36, 0, 0x7f, 0x1451, 0);
+        Sound::PlaySub(0x36, 0, 0x7f, 0x1451, 0);
         mSubSoundFadedOut = 0;
     } else if (mSubSoundFadedOut == 0) {
-        if (_ZN5Sound7PlaySubEjjj5Fix12IiEb(0x36, 0x7f, 0, 0x1451, 0))
+        if (Sound::PlaySub(0x36, 0x7f, 0, 0x1451, 0))
             mSubSoundFadedOut = 1;
     }
     CheckHits();
@@ -475,7 +474,7 @@ void daPkn_c::StateBite()
 // @symbol _ZN7daPkn_c9StateWakeEv
 void daPkn_c::StateWake()
 {
-    _ZN5Sound7PlaySubEjjj5Fix12IiEb(0x36, 0x7f, 0, 0xcb33, 0);
+    Sound::PlaySub(0x36, 0x7f, 0, 0xcb33, 0);
     if (CheckHits() != 0) return;
     /* mStateTimer is s16; the ROM compares it as a u16 (ldrh). */
     if ((u16)mStateTimer <= 0xb) return;
@@ -510,7 +509,7 @@ void daPkn_c::StateDie()
 {
     Vector3 pos;
 
-    _ZN5Sound7PlaySubEjjj5Fix12IiEb(0x36, 0x7f, 0, 0xcb33, 0);
+    Sound::PlaySub(0x36, 0x7f, 0, 0xcb33, 0);
     mClsnEnabled = 0;
     if ((u16)mStateTimer < 0xa) {
         pos.x = mPosX;

@@ -4,8 +4,8 @@
 #include "OamAttr.h"
 struct OAM {
     static void Render(bool, OamAttr *, int, int, int, int, int, int, int, int);
+    static OamAttr *Render(bool, OamAttr *, int, int, int, int, int, int);
 };
-extern "C" int _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiEi(int, OamAttr*, int, int, int, int, int, int);
 extern "C" int func_0203da9c(void);
 extern "C" void func_ov075_0211621c(char *sl);
 extern "C" int func_0200f0bc(void);
@@ -35,7 +35,7 @@ extern "C" void func_ov075_021184b0(char *sl)
         int y = 0x60;
         do {
             int fix = (i == scene->mStepWork[1]) ? 0xe00 : 0x1000;
-            _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiEi(true, sb, x, y, -1, -1, fix, 0);
+            OAM::Render(true, sb, x, y, -1, -1, fix, 0);
             if (sb->attr3 == 0xffff)
                 break;
             sb++;

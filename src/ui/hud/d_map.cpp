@@ -98,7 +98,7 @@ extern u8 data_0209f220;
 extern u32 data_0209caa0[];
 int SublevelToLevel(int i);
 int IsStarCollected(int level, int star);
-extern void _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiEi(int on, void *oam, int x, int y, int a, int pal, int scale, int ang);
+
 extern u8 data_0209f20c;
 extern u8 data_0209f2c4;
 extern u8 data_0209f294;
@@ -418,8 +418,8 @@ int dMap_c::Render()
                 this->mArrowMatrixB = (s16)FX_MUL(cn, this->mArrowScale);
                 this->mArrowMatrixC = -this->mArrowMatrixB;
                 this->mArrowMatrixD = this->mArrowMatrixA;
-                _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiEi(1, _ZN3OAM8MM_ARROWE,
-                    this->mPlayerIconX[idx], this->mPlayerIconY[idx], -1, 2, this->mArrowScale, ang);
+                OAM::Render(1, (OamAttr *)_ZN3OAM8MM_ARROWE, this->mPlayerIconX[idx],
+                            this->mPlayerIconY[idx], -1, 2, this->mArrowScale, ang);
             }
             {
                 for (i = 0, j = 0; i < 4; i++, j += 4) {
@@ -468,8 +468,8 @@ int dMap_c::Render()
                             this->mArrowMatrixB = (s16)FX_MUL(cn, this->mArrowScale);
                             this->mArrowMatrixC = -this->mArrowMatrixB;
                             this->mArrowMatrixD = this->mArrowMatrixA;
-                            _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiEi(1, _ZN3OAM8MM_ARROWE,
-                                this->mPlayerIconX[idx], this->mPlayerIconY[idx], -1, 2, this->mArrowScale, ang);
+                            OAM::Render(1, (OamAttr *)_ZN3OAM8MM_ARROWE, this->mPlayerIconX[idx],
+                                        this->mPlayerIconY[idx], -1, 2, this->mArrowScale, ang);
                         }
                     }
                 }

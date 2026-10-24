@@ -71,7 +71,7 @@ extern void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(void *cl
 extern void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
     void *self, void *shadow, void *mtx, int rad, int height, unsigned int opacity);
 
-extern void _ZN5Sound7PlaySubEjjj5Fix12IiEb(unsigned int a, unsigned int b, unsigned int c, int d, int e);
+extern void d_a_pg_rcerPlaySubHold(unsigned int a, unsigned int b, unsigned int c, int d, int e);
 extern void *d_a_pg_rcerNewHold(u32 handle, u32 effect, int x, int y, int z, void *dir, void *cb);
 
 int func_ov019_02111254(void *unused, int playerLead);
@@ -294,7 +294,7 @@ int func_ov019_02111f54(daPgRcer_c *self)
     self->mTerminalVelocity = -0x3c000;
     self->mVertSpeed = 0x16000;
     self->mActionStep = 0;
-    _ZN5Sound7PlaySubEjjj5Fix12IiEb(0x1f, 0x14, 0x7f, 0x15666, 0);
+    Sound::PlaySub(0x1f, 0x14, 0x7f, 0x15666, 0);
     func_0201267c(0x138, &self->mCamSpacePosX);
     self->mAction = 2;
     return 1;
@@ -326,7 +326,7 @@ int func_ov019_02111dec(daPgRcer_c *self)
                                      0);
         }
         if (self->mTalkPlayer->GetTalkState() == -1) {
-            _ZN5Sound7PlaySubEjjj5Fix12IiEb(0x1f, 0x7f, 0, 0x15666, 0);
+            Sound::PlaySub(0x1f, 0x7f, 0, 0x15666, 0);
             func_0201267c(0x4d, &self->mCamSpacePosX);
             self->func_ov019_021122dc(3);
         }

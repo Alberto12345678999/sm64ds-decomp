@@ -161,8 +161,7 @@ void _ZN7Message7DisplayEj(int m);
 void _ZN7Message11DisplayTextEt(int m);
 // local extern: Message.h's u16 parameter changes the sign-extended (s16) argument codegen (PS_Update differs).
 void _ZN7Message22DisplayOptionsMenuTextEt(int m);
-bool _ZN5Sound7PlaySubEjjj5Fix12IiEb(unsigned int a, unsigned int b, unsigned int c, int fix,
-                                     int e);
+bool d_s_stage_methodsPlaySubHold(unsigned int a, unsigned int b, unsigned int c, int fix, int e);
 unsigned int _ZN5Sound12PlayBank3_2DEj(unsigned int a);
 void _ZN5Sound22StopLoadedMusic_Layer1Ej(unsigned int a);
 // local extern: SaveData.h's (s8, u8) parameters re-narrow both arguments (LC_Update differs).
@@ -796,7 +795,7 @@ void dScStage_c::LC_Update() {
         if (data_0209f358[0] != 0)
             return;
         if (data_0209f2ac != 0) {
-            _ZN5Sound7PlaySubEjjj5Fix12IiEb(0x23, 0x14, 0x7f, 0x15666, 0);
+            Sound::PlaySub(0x23, 0x14, 0x7f, 0x15666, 0);
             data_0209f280 = 1;
         }
         data_0209f22c = 0x1e;
@@ -811,7 +810,7 @@ void dScStage_c::LC_Update() {
             }
             if (data_0209f358[0] == data_0209f260) {
                 if (data_0209f2ac != 0) {
-                    _ZN5Sound7PlaySubEjjj5Fix12IiEb(0x23, 0x14, 0x7f, 0x15666, 0);
+                    Sound::PlaySub(0x23, 0x14, 0x7f, 0x15666, 0);
                     data_0209f280 = 1;
                 }
                 data_0209f22c = 0x1e;
@@ -829,7 +828,7 @@ void dScStage_c::LC_Update() {
                 if (level >= 0x15)
                     return;
                 func_02012790(0x22);
-                _ZN5Sound7PlaySubEjjj5Fix12IiEb(0x23, 0x14, 0x7f, 0x15666, 0);
+                Sound::PlaySub(0x23, 0x14, 0x7f, 0x15666, 0);
                 data_0209f280 = 1;
                 return;
             }
@@ -837,7 +836,7 @@ void dScStage_c::LC_Update() {
             return;
         }
         if (data_0209f260 == 0 && level >= 0xf && level < 0x15) {
-            _ZN5Sound7PlaySubEjjj5Fix12IiEb(0x23, 0x14, 0x7f, 0x15666, 0);
+            Sound::PlaySub(0x23, 0x14, 0x7f, 0x15666, 0);
             data_0209f280 = 1;
         }
         data_0209f22c = 0x3c;
@@ -949,7 +948,7 @@ void dScStage_c::LC_Update() {
         return;
     case 6:
         if (data_0209f280 != 0) {
-            _ZN5Sound7PlaySubEjjj5Fix12IiEb(0x23, 0x7f, 0, 0x15666, 0);
+            Sound::PlaySub(0x23, 0x7f, 0, 0x15666, 0);
             data_0209f280 = 0;
         }
         data_0209d45c &= ~0xc;
