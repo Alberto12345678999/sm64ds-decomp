@@ -157,11 +157,11 @@ void Heap::_Destroy() { Heap_Destroy(this); }
 extern "C" {
 void *_ZN5Model23AddToCommonModelDataArrER8BMD_File(void *file)
 { return Model::AddToCommonModelDataArr(*(BMD_File *)file); }
-void *func_0203cc0c(unsigned size);
-void _ZN6Memory10DeallocateEPv(void *p);
-/* the DS global operator new/delete route through the Memory layer */
-void *_Znwj(unsigned size) { return func_0203cc0c(size); }
-/* _ZN6Memory16operator_delete2EPv now lives in hal/ctor_bridge.cpp:
+/* The DS global operator new is spelled `operator new(size_t)` (_Znwm) in
+   src/engine/heap/Heap.cpp and stays the CRT's on the host; the one
+   host-compiled allocation that must come from the DS heap
+   (src/engine/model/Model.cpp) calls func_0203cc0c directly.
+   _ZN6Memory16operator_delete2EPv now lives in hal/ctor_bridge.cpp:
    every target that builds a migrated model-family constructor needs
    it, not just the ones that link this file. */
 }

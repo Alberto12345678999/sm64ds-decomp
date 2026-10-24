@@ -140,17 +140,9 @@
     {
       "path": "src/game/stages/d_s_stage_methods.cpp",
       "rule": "handspelled-member",
-      "match": "_ZN5ModelC1Ev",
-      "count": 2,
-      "reason": "LoadSkybox spells the allocation as _Znwj plus a null-guarded constructor call, which a new-expression does not emit in this shape; the constructor is called by its mangled name.",
-      "evidence": "LoadSkybox; arm9/dScStage_c 123/123 TEXT-VERIFIED (tubuild verify); carried from the standalone shards this fold absorbs (0x02029408..0x0202e118)"
-    },
-    {
-      "path": "src/game/stages/d_s_stage_methods.cpp",
-      "rule": "handspelled-member",
       "match": "_ZN18TextureTransformerC1Ev",
       "count": 2,
-      "reason": "LoadTextureTransformers spells the allocation as _Znwj plus a null-guarded constructor call, which a new-expression does not emit in this shape; the constructor is called by its mangled name.",
+      "reason": "LoadTextureTransformers spells the allocation as an explicit operator new call plus a null-guarded constructor call, a form from before the allocator was named _Znwm; the constructor is called by its mangled name.",
       "evidence": "LoadTextureTransformers; arm9/dScStage_c 123/123 TEXT-VERIFIED (tubuild verify); carried from the standalone shards this fold absorbs (0x02029408..0x0202e118)"
     },
     {

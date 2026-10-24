@@ -848,7 +848,7 @@
 0x0203cb04	_ZN5mHeap6Heap_t13SetupRootHeapEv	function
 0x0203cbcc	_ZN6Memory16operator_delete2EPv	function
 0x0203cbd8	_ZN6Memory13operator_new2Ej	function
-0x0203cbe4	_Znwj	function
+0x0203cbe4	_Znwm	function
 0x0203cbf0	_ZdlPv	function
 0x0203cc0c	_Znwj	function
 0x0203ce2c	NormalizeVec3IfNonZero	function

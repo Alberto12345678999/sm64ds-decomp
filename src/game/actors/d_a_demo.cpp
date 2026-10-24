@@ -407,7 +407,6 @@ extern void SetSubBg1Offset(int a, int b);
 extern void* data_0209f5bc;
 extern u8 data_ov002_02111144;
 extern u32 data_020a0db0;
-extern void* _Znwj(unsigned int);
 extern int func_ov002_020f2630(daDemo_c *self);
 extern struct OamAttr *data_ov002_0210b6a8[];
 extern void _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiEi( int a, struct OamAttr *b, int c, int d, int e, int f, int g, int h);
@@ -621,7 +620,6 @@ extern JugemModelFile data_ov085_0213074c;
 /* TUBUILD CONFLICT -- alternate declaration of _ZN6Memory16operator_delete2EPv, from the legacy file for func_ov002_020f5f60, NOT applied: extern void _ZN6Memory16operator_delete2EPv(void *p); */
 /* TUBUILD CONFLICT -- alternate declaration of data_0209d454, from the legacy file for func_ov002_020f5fe4, NOT applied: extern u8 data_0209d454; */
 /* TUBUILD CONFLICT -- alternate declaration of _ZN6Memory16operator_delete2EPv, from the legacy file for func_ov002_020f63a0, NOT applied: extern void _ZN6Memory16operator_delete2EPv(void *p); */
-/* TUBUILD CONFLICT -- alternate declaration of _Znwj, from the legacy file for func_ov002_020f6448, NOT applied: extern void* _Znwj(unsigned int sz); */
 /* TUBUILD CONFLICT -- alternate declaration of _ZN15dExtFrameCtrl_c7AdvanceEv, from the legacy file for func_ov002_020f65ec, NOT applied: extern int _ZN15dExtFrameCtrl_c7AdvanceEv(void *p); */
 /* TUBUILD CONFLICT -- alternate declaration of ReadUnalignedShort, from the legacy file for func_ov002_020f6bc0, NOT applied: extern s16 ReadUnalignedShort(unsigned char *p); */
 /* TUBUILD CONFLICT -- alternate declaration of func_ov002_020f6514, from the legacy file for func_ov002_020f6c34, NOT applied: extern void func_ov002_020f6514(void *p, void *tbl, unsigned char v); */
@@ -655,7 +653,6 @@ extern JugemModelFile data_ov085_0213074c;
 /* TUBUILD CONFLICT -- alternate declaration of Vec3_HorzAngle, from the legacy file for func_ov002_020f7bb8, NOT applied: extern s16 Vec3_HorzAngle(const Vector3 *v0, const Vector3 *v1); */
 /* TUBUILD CONFLICT -- alternate declaration of _ZN4cstd5atan2E5Fix12IiES1_, from the legacy file for func_ov002_020f7bb8, NOT applied: extern s16 _ZN4cstd5atan2E5Fix12IiES1_(Fix12i y, Fix12i x); */
 /* TUBUILD CONFLICT -- alternate declaration of data_0209b41c, from the legacy file for _ZN8daDemo_c6RenderEv, NOT applied: extern M48 data_0209b41c; */
-/* TUBUILD CONFLICT -- alternate declaration of _Znwj, from the legacy file for _ZN8daDemo_c13InitResourcesEv, NOT applied: extern "C" void *_Znwj(int sz); */
 }
 
 // @symbol _ZN8daDemo_cD1Ev
@@ -960,17 +957,17 @@ int daDemo_c::func_ov002_020f23f0()
 // @symbol func_ov002_020f2630
 extern "C" {  /* .c-derived member: C linkage for the whole block */
 int func_ov002_020f2630(daDemo_c *self){
-  self->mScroll = (daDemo_c::ScrollState *)_Znwj(0x36);
-  self->mScroll->bg0X = 0x30;
-  self->mScroll->bg0Y = 0x20;
-  self->mScroll->bg1X = 0;
-  self->mScroll->bg1Y = 0;
-  self->mScroll->centerSpriteY[0] = 0xfff8;
-  self->mScroll->centerSpriteY[1] = 0xc8;
-  self->mScroll->fadeLevel = 0x10;
-  SetSubBg0Offset(self->mScroll->bg0X, self->mScroll->bg0Y);
-  SetSubBg1Offset(self->mScroll->bg1X, self->mScroll->bg1Y);
-  return 1;
+    self->mScroll = (daDemo_c::ScrollState *)::operator new(0x36);
+    self->mScroll->bg0X = 0x30;
+    self->mScroll->bg0Y = 0x20;
+    self->mScroll->bg1X = 0;
+    self->mScroll->bg1Y = 0;
+    self->mScroll->centerSpriteY[0] = 0xfff8;
+    self->mScroll->centerSpriteY[1] = 0xc8;
+    self->mScroll->fadeLevel = 0x10;
+    SetSubBg0Offset(self->mScroll->bg0X, self->mScroll->bg0Y);
+    SetSubBg1Offset(self->mScroll->bg1X, self->mScroll->bg1Y);
+    return 1;
 }
 }
 
@@ -3610,7 +3607,7 @@ int daDemo_c::func_ov002_020f6448(unsigned char *arg1)
 {
     StaffRoll *p;
     this->mCue = *arg1;
-    p = (StaffRoll *)_Znwj(sizeof(StaffRoll));
+    p = (StaffRoll *)::operator new(sizeof(StaffRoll));
     if (p)
         _ZN5dPa_c7level_c20edStarKiraCallback_cC1Ev((char *)&p->kira);
     this->mStaffRoll = p;
@@ -3691,7 +3688,6 @@ int daDemo_c::anmModel_c::func_ov002_020f65ec()
 // @symbol _ZN8daDemo_c10anmModel_c19func_ov002_020f6618EP13SharedFilePtriPS2_ihS3_i
 struct BTP_File;
 extern "C" {
-void* _Znwj(unsigned int sz);
 void* _ZN15TextureSequenceC1Ev(void* self);
 void _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(void* self, void* btp, int a, int fx, unsigned int e);
 }
@@ -3712,7 +3708,7 @@ int daDemo_c::anmModel_c::func_ov002_020f6618(SharedFilePtr *mdl, int nAnims, Sh
     }
     ((ModelAnim *)self)->SetAnim((BCA_File *)(mAnimFiles[0]->filePtr), 0, 0x1000, 0);
     if (texByte) {
-        ts = _Znwj(0x14);
+        ts = ::operator new(0x14);
         if (ts) ts = _ZN15TextureSequenceC1Ev(ts);
         mTexSeq = (TextureSequence *)ts;
         if (mTexSeq == 0)
@@ -4736,7 +4732,7 @@ int daDemo_c::InitResources()
     int t;
 
     if (param1 == 0x12) {
-        p = _Znwj(0x84);
+        p = ::operator new(0x84);
         if (p) {
             ((param_c &)*(anmModel_c *)p).func_ov002_020f6a50();
             _ZN9ModelAnimC2Ev(p);
@@ -4747,7 +4743,7 @@ int daDemo_c::InitResources()
         if (this->mModelAnim == 0) return 0;
         if (((anmModel_c*)this->mModelAnim)->func_ov002_020f6618((SharedFilePtr*)&data_ov085_0213074c, 1, (SharedFilePtr**)&data_ov002_0210b60c, 1, 1, (SharedFilePtr**)&data_ov002_0210b608, -1) == 0) return 0;
     } else if (param1 == 0x13) {
-        p = _Znwj(0x84);
+        p = ::operator new(0x84);
         if (p) {
             ((param_c &)*(anmModel_c *)p).func_ov002_020f6a50();
             _ZN9ModelAnimC2Ev(p);
@@ -4763,7 +4759,7 @@ int daDemo_c::InitResources()
             if (((anmModel_c*)this->mModelAnim)->func_ov002_020f6618((SharedFilePtr*)&data_ov002_02110c18, 0xD, (SharedFilePtr**)&data_ov002_0210bcf0, 1, 0xD, (SharedFilePtr**)&data_ov002_0210bd24, 0x16) == 0) return 0;
         }
     } else if (param1 >= 0x14 && param1 <= 0x16) {
-        p = _Znwj(0x60);
+        p = ::operator new(0x60);
         if (p) {
             ((param_c &)*(simpleModel_c *)p).func_ov002_020f6a50();
             _ZN5ModelC2Ev(p);
@@ -4773,7 +4769,7 @@ int daDemo_c::InitResources()
         if (this->mModel == 0) return 0;
         if (((simpleModel_c*)this->mModel)->func_ov002_020f6960((SharedFilePtr*)&data_ov002_02110b70, -1) == 0) return 0;
     } else if (param1 == 0x17) {
-        p = _Znwj(0x60);
+        p = ::operator new(0x60);
         if (p) {
             ((param_c &)*(simpleModel_c *)p).func_ov002_020f6a50();
             _ZN5ModelC2Ev(p);
@@ -4783,7 +4779,7 @@ int daDemo_c::InitResources()
         if (this->mModel == 0) return 0;
         if (((simpleModel_c*)this->mModel)->func_ov002_020f6960((SharedFilePtr*)&data_ov002_02110b50, 0x19) == 0) return 0;
     } else if (param1 == 0x18) {
-        p = _Znwj(0x60);
+        p = ::operator new(0x60);
         if (p) {
             ((param_c &)*(simpleModel_c *)p).func_ov002_020f6a50();
             _ZN5ModelC2Ev(p);
@@ -4793,7 +4789,7 @@ int daDemo_c::InitResources()
         if (this->mModel == 0) return 0;
         if (((simpleModel_c*)this->mModel)->func_ov002_020f6960((SharedFilePtr*)&data_ov002_0211094c, -1) == 0) return 0;
     } else if (param1 == 0x19) {
-        p = _Znwj(0x60);
+        p = ::operator new(0x60);
         if (p) {
             ((param_c &)*(simpleModel_c *)p).func_ov002_020f6a50();
             _ZN5ModelC2Ev(p);
@@ -4803,7 +4799,7 @@ int daDemo_c::InitResources()
         if (this->mModel == 0) return 0;
         if (((simpleModel_c*)this->mModel)->func_ov002_020f6960((SharedFilePtr*)&data_ov002_02110b78, 0x13) == 0) return 0;
     } else if (param1 >= 0x1A && param1 <= 0x2D) {
-        p = _Znwj(0x84);
+        p = ::operator new(0x84);
         if (p) {
             ((param_c &)*(anmModel_c *)p).func_ov002_020f6a50();
             _ZN9ModelAnimC2Ev(p);

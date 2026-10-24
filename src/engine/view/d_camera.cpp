@@ -135,7 +135,6 @@ extern void _ZN9dBgCh_Gnd12SetObjAndPosERK7Vector3P8dActor_c(void *self, const v
 extern int _ZN9dCamera_c11ChangeStateEPNS_5StateE(void *thiz, void *state);
 
 extern void *_ZN7fBase_cC2Ev(void *self);
-extern void *_Znwj(u32 sz);
 /* _ZTV7dBase_c/_ZTV7dView_c/_ZTV9dCamera_c come from decl_common.h (int[]/u32
    spellings); the stores below take their addresses explicitly. */
 
@@ -257,7 +256,7 @@ int dCamera_c::InitResources()
         if (v->type == 7) {
             s32 *p;
             s16 x, y, z;
-            thiz->mFixedViewPos = _Znwj(0xc);
+            thiz->mFixedViewPos = ::operator new(0xc);
             x = v->x; z = v->z; y = v->y;
             p = (s32 *)thiz->mFixedViewPos;
             p[0] = x << 0xc;
