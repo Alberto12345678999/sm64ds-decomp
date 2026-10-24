@@ -428,11 +428,10 @@ void OAM::Render(bool sub, struct OamAttr *attr_, int xOff, int yOff, int palett
 #pragma opt_loop_invariants on
 
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiEi
+// @symbol _ZN3OAM6RenderEbP7OamAttriiiiii
 /* ROM ordinal 5 -- _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiEi
  * 0x02021024  size 0x480 */
-extern "C"
-OamAttr *_ZN3OAM6RenderEbP7OamAttriiii5Fix12IiEi(int draw, OamAttr *obj_, int px, int py, int pal, int prio, int scale0, int rot0)
+OamAttr *OAM::Render(bool draw, OamAttr *obj_, int px, int py, int pal, int prio, int scale0, int rot0)
 {
     /* The 7-parameter form: one object, one scale, one rotation. scale is a
      * Fix12<int> and rot is the hardware angle -- both by-value in the real

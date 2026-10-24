@@ -15,8 +15,9 @@ extern char data_0209ee90[];
 extern char data_ov075_0211c8b0[];
 
 extern int func_02030958(int idx);
-extern int *_ZN3OAM6RenderEbP7OamAttriiii5Fix12IiEi(int a, void *attr, int x, int y, int c4, int c5,
-                                                    int c6, int c7);
+struct OamAttr;
+extern struct OamAttr *_ZN3OAM6RenderEbP7OamAttriiiiii(bool a, void *attr, int x, int y, int c4,
+                                                       int c5, int c6, int c7);
 extern void func_ov075_02116128(char *c, int idx, int flag);
 
 /* C view of include/dScEntry_c.h's dScEntry_c (a C++ class this C file
@@ -58,7 +59,7 @@ void func_ov075_02117fe4(char *c)
             n = n % 100;
             tens = n / 10;
             if (tens != 0) {
-                p = _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiEi(zT, data_ov075_0211c8b0, xTens,
+                p = (int *)_ZN3OAM6RenderEbP7OamAttriiiiii(zT, data_ov075_0211c8b0, xTens,
                                                             yBase + yOff, eight, minus1, sz, zT);
                 if (p != 0) {
                     int *q = (int *)(int)(p + 1);
@@ -66,7 +67,7 @@ void func_ov075_02117fe4(char *c)
                     *q = (val & ~0x3ff) | ((tens + ((u32)(val << 22) >> 22)) & 0x3ff);
                 }
             }
-            p = _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiEi(zO, data_ov075_0211c8b0, xOnes,
+            p = (int *)_ZN3OAM6RenderEbP7OamAttriiiiii(zO, data_ov075_0211c8b0, xOnes,
                                                         yBase + yOff, eight, minus1, sz, zO);
             if (p != 0) {
                 int *q = (int *)(int)(p + 1);

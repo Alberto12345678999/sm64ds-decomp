@@ -117,6 +117,7 @@ public:
     static void RenderSub(OamAttr *attr, int x, int y, int a, int b);
     static void Render(bool vis, OamAttr *attr, int x, int y, int a, int b, Matrix2x2 *m);
     static void Render(bool, OamAttr *, int, int, int, int, int, int, int, int);
+    static OamAttr *Render(bool, OamAttr *, int, int, int, int, int, int);
 };
 
 namespace GX {
@@ -185,8 +186,7 @@ extern struct OamAttr data_ov002_0210d308;
 extern struct OamAttr data_ov002_0210d348;
 extern struct OamAttr _ZN3OAM10VS_TIME_UPE;
 extern int GetOwnerLanguage(void);
-extern void _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiEi(int sub, struct OamAttr *attr, int x, int y,
-                                                    int a, int b, int s, int c);
+
 extern unsigned char data_0209f2bc;
 extern unsigned short data_ov002_02111188;
 extern unsigned char data_0209d454;
@@ -817,7 +817,7 @@ void dMeter_c::RenderVsTimer() {
         } else {
             int ones = t % 10;
             if (ones > 3) {
-                _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiEi(0, _ZN3OAM17VS_YELLOW_NUMBERSE[ones], 0x7c,
+                OAM::Render(0, _ZN3OAM17VS_YELLOW_NUMBERSE[ones], 0x7c,
                                                         mVsTimerY, -1, -1, 0x1000, 0);
             } else {
                 OAM::Render(false, data_ov002_0210ca0c[3 - ones], 0x84, mVsTimerY, -1, -1, 0);

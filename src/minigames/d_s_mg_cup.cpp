@@ -75,6 +75,11 @@ void LoadBGPltt(const void *data, unsigned int offset, unsigned int size);
 void LoadOBJPltt(const void *data, unsigned int offset, unsigned int size);
 }
 
+struct OamAttr;
+struct OAM {
+    static OamAttr *Render(bool, OamAttr *, int, int, int, int, int, int);
+};
+
 extern "C" {
 extern void CupFx_Move(char *p, int a, int b);
 extern int CupFx_FindFree(char *p, int a, int b, int c);
@@ -85,8 +90,8 @@ struct OamAttr;
 extern int sCupFxScales[];
 extern unsigned char sCupFxFrameSprites[];
 extern OamAttr *sCupFxSprites[];
-extern int _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiEi(int show, struct OamAttr *attr, int a, int b,
-                                                   int c, int d, int e, int f);
+extern int OamRender8_d_s_mg_cup(int show, struct OamAttr *attr, int a, int b,
+                                 int c, int d, int e, int f);
 extern unsigned char DecIfAbove0_Byte(unsigned char *counter);
 extern int func_02053200(int x);
 extern int Mg_RenderSubSpriteScaled(int a0, int a1, int a2, int a3, int a4, int a5,
@@ -229,11 +234,9 @@ extern "C" void CupFx_Move(char *sprite, int dx, int dy) {
 extern "C" void CupFx_Draw(char *sprite) {
     CupFx *fx = (CupFx *)sprite;
     int frameIndex = fx->frame + fx->row * 6;
-    /* Fix12 overload. OAM.h does not declare it: a by-value Fix12 homes
-       r0-r3 on the stack. */
-    _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiEi(1, sCupFxSprites[sCupFxFrameSprites[frameIndex]],
-                                            fx->x >> 12, fx->y >> 12, -1, -1,
-                                            sCupFxScales[frameIndex], 0);
+    OAM::Render(1, sCupFxSprites[sCupFxFrameSprites[frameIndex]],
+                fx->x >> 12, fx->y >> 12, -1, -1,
+                sCupFxScales[frameIndex], 0);
 }
 
 extern "C" void CupFx_Update(int sprite) {

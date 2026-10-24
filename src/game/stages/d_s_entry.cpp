@@ -431,9 +431,7 @@ extern OamAttr data_ov075_0211c870[];
 extern s8 data_0209f310[];
 extern s16 data_0209f358[];
 extern char data_0209ee90[];
-// local extern: OAM::Render takes Fix12<int> by value (measured wall 6az).
-extern OamAttr *_ZN3OAM6RenderEbP7OamAttriiii5Fix12IiEi(int a, OamAttr *attr, int x, int y, int pal,
-                                                        int prio, int scale, int rot);
+
 }
 
 static inline int EntryPlayerIndex(int arg0) {
@@ -479,7 +477,7 @@ extern "C" void func_ov075_0211621c(char *c) {
                 int pid = EntryPlayerIndex(i);
                 OAM::Render(zA, data_ov075_0211c7c0, xbase + i * stride, yIcon, minus1, minus1,
                             scale, scale, zA, minus1);
-                p = (int *)_ZN3OAM6RenderEbP7OamAttriiii5Fix12IiEi(
+                p = (int *)OAM::Render(
                     zC, (OamAttr *)data_ov075_0211c8b0, xbase + 0x1c + i * stride, yIcon, minus1,
                     minus1, scale, zC);
                 if (p != 0) {
@@ -499,7 +497,7 @@ extern "C" void func_ov075_0211621c(char *c) {
                     rem = n % 100;
                     tens = rem / 10;
                     if (hundreds != 0) {
-                        p = (int *)_ZN3OAM6RenderEbP7OamAttriiii5Fix12IiEi(
+                        p = (int *)OAM::Render(
                             zD, (OamAttr *)data_ov075_0211c8b0, xbase + 0x14 + i * stride, yNum,
                             minus1, minus1, scale, zD);
                         if (p != 0) {
@@ -513,7 +511,7 @@ extern "C" void func_ov075_0211621c(char *c) {
                         dx = dx + 4;
                     }
                     if ((tens != 0) || (hundreds != 0)) {
-                        p = (int *)_ZN3OAM6RenderEbP7OamAttriiii5Fix12IiEi(
+                        p = (int *)OAM::Render(
                             zE, (OamAttr *)data_ov075_0211c8b0, xbase + dx + i * stride, yNum,
                             minus1, minus1, scale, zE);
                         if (p != 0) {
@@ -525,7 +523,7 @@ extern "C" void func_ov075_0211621c(char *c) {
                     } else {
                         dx = dx + 4;
                     }
-                    p = (int *)_ZN3OAM6RenderEbP7OamAttriiii5Fix12IiEi(
+                    p = (int *)OAM::Render(
                         zF, (OamAttr *)data_ov075_0211c8b0, xbase + dx + i * stride, yNum, minus1,
                         minus1, scale, zF);
                     if (p != 0) {

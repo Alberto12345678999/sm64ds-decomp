@@ -185,7 +185,6 @@ extern void MultiStore16(u16 val, void *dst, int nbytes);
 
 extern void OamRender10_d_s_mini_gm(int sub, OamAttr *attr, int x, int y, int pal, int prio, int sx,
                                     int sy, int c, int d);
-extern void _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiEi(int sub, OamAttr *attr, int x, int y, int pal, int prio, int s, int c);
 extern void *_ZN2G212GetBG2ScrPtrEv(void);
 extern void *_ZN2G213GetBG2CharPtrEv(void);
 
@@ -827,9 +826,9 @@ s32 dScMiniGm_c::Render()
             else
                 scale = (((0x12 - t) << 12) / 16) + 0x1000;
             if (mArrowBobPhase < 0x20)
-                _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiEi(1, (OamAttr *)sMiniGmPageArrows[0], 0x50 - mArrowBobPhase / 2, 0x60, -1, 0, scale, 0);
+                OAM::Render(1, (OamAttr *)sMiniGmPageArrows[0], 0x50 - mArrowBobPhase / 2, 0x60, -1, 0, scale, 0);
             else
-                _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiEi(1, (OamAttr *)sMiniGmPageArrows[0], 0x50 - (0x40 - mArrowBobPhase) / 2, 0x60, -1, 0, scale, 0);
+                OAM::Render(1, (OamAttr *)sMiniGmPageArrows[0], 0x50 - (0x40 - mArrowBobPhase) / 2, 0x60, -1, 0, scale, 0);
         } else if (MiniGm_HasSecondPage(this) != 0) {
             t = mNextPageTimer;
             if (t < 0xa)
@@ -839,9 +838,9 @@ s32 dScMiniGm_c::Render()
             else
                 scale = (((0x12 - t) << 12) / 16) + 0x1000;
             if (mArrowBobPhase < 0x20)
-                _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiEi(1, (OamAttr *)sMiniGmPageArrows[1], mArrowBobPhase / 2 + 0xe0, 0x60, -1, 0, scale, 0);
+                OAM::Render(1, (OamAttr *)sMiniGmPageArrows[1], mArrowBobPhase / 2 + 0xe0, 0x60, -1, 0, scale, 0);
             else
-                _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiEi(1, (OamAttr *)sMiniGmPageArrows[1], (0x40 - mArrowBobPhase) / 2 + 0xe0, 0x60, -1, 0, scale, 0);
+                OAM::Render(1, (OamAttr *)sMiniGmPageArrows[1], (0x40 - mArrowBobPhase) / 2 + 0xe0, 0x60, -1, 0, scale, 0);
         }
     }
 
@@ -855,7 +854,7 @@ s32 dScMiniGm_c::Render()
         scale = (((t - 0x14) << 12) / 16) + 0x1000;
     else
         scale = (((0x1c - t) << 12) / 16) + 0x1000;
-    _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiEi(1, (OamAttr *)sMiniGmExitButton, 0xe8, 0xa0, -1, 0, scale, 0);
+    OAM::Render(1, (OamAttr *)sMiniGmExitButton, 0xe8, 0xa0, -1, 0, scale, 0);
     return 1;
 }
 

@@ -1934,6 +1934,7 @@ struct OamAttr; struct Matrix2x2;
 namespace OAM {
 void Render(bool draw, OamAttr *obj, int px, int py, int pal, int prio, Matrix2x2 *mtx);
 void Render(bool, OamAttr *, int, int, int, int, int, int, int, int);
+int Render(bool, OamAttr *, int, int, int, int, int, int);
 void RenderSub(OamAttr *data, s32 x, s32 y, s32 palette, s32 priority);
 }
 
@@ -1986,7 +1987,7 @@ extern "C" {
 struct OamAttr;
 }
 typedef int Fix12i;
-extern "C" int _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiEi(
+extern "C" int OamRender8_d_s_mg_base(
     int show, struct OamAttr* attr, int a, int b, int c, int d, Fix12i e, int f);
 
 extern "C" int Mg_RenderSubSpriteScaled(int a0, int a1, int a2, int a3, int a4, int a5,
@@ -1998,11 +1999,11 @@ extern "C" int Mg_RenderSubSpriteScaled(int a0, int a1, int a2, int a3, int a4, 
         if (scene->GetDisplayMode() == 2) {
             if (((D3DBaseView *)gMgScene)->mDrawSubScreen != 0)
                 return 0;
-            return _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiEi(0, (struct OamAttr *)a0, a1, a2, a3, a4,
+            return OAM::Render(0, (::OamAttr *)a0, a1, a2, a3, a4,
                                                            a5, a6);
         }
     }
-    return _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiEi(1, (struct OamAttr *)a0, a1, a2, a3, a4, a5, a6);
+    return OAM::Render(1, (::OamAttr *)a0, a1, a2, a3, a4, a5, a6);
 }
 }
 }
@@ -2078,7 +2079,7 @@ extern "C" {
 struct OamAttr;
 }
 typedef int Fix12i;
-extern "C" int _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiEi(
+extern "C" int OamRender8_d_s_mg_base(
     int show, struct OamAttr* attr, int a, int b, int c, int d, Fix12i e, int f);
 
 extern "C" int Mg_RenderMainSpriteScaled(int a0, int a1, int a2, int a3, int a4, int a5,
@@ -2090,11 +2091,11 @@ extern "C" int Mg_RenderMainSpriteScaled(int a0, int a1, int a2, int a3, int a4,
         if (scene->GetDisplayMode() == 2) {
             if (((D3DBaseView *)gMgScene)->mDrawSubScreen != 1)
                 return 0;
-            return _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiEi(0, (struct OamAttr *)a0, a1, a2, a3, a4,
+            return OAM::Render(0, (::OamAttr *)a0, a1, a2, a3, a4,
                                                            a5, a6);
         }
     }
-    return _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiEi(0, (struct OamAttr *)a0, a1, a2, a3, a4, a5, a6);
+    return OAM::Render(0, (::OamAttr *)a0, a1, a2, a3, a4, a5, a6);
 }
 }
 }
@@ -2174,7 +2175,7 @@ struct OamAttr;
 extern int sMgTopScreenYOffset;
 }
 typedef int Fix12i;
-extern "C" int _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiEi(
+extern "C" int OamRender8_d_s_mg_base(
     int show, struct OamAttr* attr, int a, int b, int c, int d, Fix12i e, int f);
 
 extern "C" int Mg_RenderSpriteBothScaled(struct OamAttr *a0, int a1, int a2, int a3, int a4,
@@ -2186,21 +2187,21 @@ extern "C" int Mg_RenderSpriteBothScaled(struct OamAttr *a0, int a1, int a2, int
         if (((D3DBaseView *)gMgScene)->mDrawSubScreen == 1) {
             int hp = sMgTopScreenYOffset;
             if (a2 >= -0x100 - hp && a2 < -hp) {
-                return _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiEi(0, a0, a1, a2 + 0xc0 + hp, a3, a4,
+                return OAM::Render(0, (::OamAttr *)a0, a1, a2 + 0xc0 + hp, a3, a4,
                                                                a5, a6);
             }
             if (a2 >= -0x40 && a2 < 0xc0) {
-                return _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiEi(0, a0, a1, a2, a3, a4, a5, a6);
+                return OAM::Render(0, (::OamAttr *)a0, a1, a2, a3, a4, a5, a6);
             }
         }
     } else {
         int hp = sMgTopScreenYOffset;
         if (a2 >= -0x100 - hp && a2 < -hp) {
-            return _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiEi(0, a0, a1, a2 + 0xc0 + hp, a3, a4, a5,
+            return OAM::Render(0, (::OamAttr *)a0, a1, a2 + 0xc0 + hp, a3, a4, a5,
                                                            a6);
         }
         if (a2 >= -0x40 && a2 < 0xc0) {
-            return _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiEi(1, a0, a1, a2, a3, a4, a5, a6);
+            return OAM::Render(1, (::OamAttr *)a0, a1, a2, a3, a4, a5, a6);
         }
     }
     return 0;

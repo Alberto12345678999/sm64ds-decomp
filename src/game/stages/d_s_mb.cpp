@@ -50,8 +50,6 @@ extern void *data_020a0c5c;
 extern int OVERLAY_100_ID;
 extern int OVERLAY_102_ID;
 
-void _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiEi(int sub, void *attr, int x, int y, int a, int cc,
-                                             int fx, int mode);
 void OamRender10_d_s_mb(int sub, void *attr, int x, int y, int a, int cc, int fx0, int fy0, int rot,
                         int mode);
 extern struct OamAttr *data_0208a0f8[];
@@ -120,10 +118,10 @@ int dScMB_c::graphCallback_c::GraphCallback3() {
                     y = x;
                 }
 
-                _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiEi(drawFlags[1], sprite, x, y, -1, -1, 0x1000,
-                                                        drawFlags[1]);
-                _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiEi(one, sprite, x, y, -1, -1, 0x1000,
-                                                        drawFlags[2]);
+                OAM::Render(drawFlags[1], (OamAttr *)sprite, x, y, -1, -1, 0x1000,
+                            drawFlags[1]);
+                OAM::Render(one, (OamAttr *)sprite, x, y, -1, -1, 0x1000,
+                            drawFlags[2]);
 
                 if (*(u16 *)((char *)sprite + 6) == 0xffff)
                     break;

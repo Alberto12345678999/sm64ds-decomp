@@ -159,8 +159,7 @@ extern u8 data_0209fc5d[];
 extern dScEntry_c::StepSet data_ov075_0211d8a0;
 extern dScEntry_c::StepSet data_ov075_0211d8d0;
 
-/* local extern: OAM.h excludes this Fix12-by-value overload. */
-OamAttr *_ZN3OAM6RenderEbP7OamAttriiii5Fix12IiEi(int, OamAttr *, int, int, int, int, int, int);
+
 }
 
 /* Course-select and match-loading steps, directly below the player-select
@@ -522,7 +521,7 @@ void dScEntry_c::RenderWaitingText() {
             } else {
                 y = 96;
             }
-            _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiEi(true, glyph, 128, y, -1, -1, 0x1000, 0);
+            OAM::Render(true, glyph, 128, y, -1, -1, 0x1000, 0);
             if (glyph->attr3 == 0xffff)
                 break;
             ++glyph;
@@ -671,7 +670,7 @@ extern "C" void func_ov075_021199d8(dScEntry_c *self) {
                 y = fallback;
             }
 
-            _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiEi(one, attr, x, y, minus, minus, fx, zero);
+            OAM::Render(one, attr, x, y, minus, minus, fx, zero);
 
             if (attr->attr3 == 0xffff)
                 break;
