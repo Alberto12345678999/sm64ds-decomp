@@ -113,67 +113,82 @@ struct Player : dActor_c {
 
     s32 mEatingPlayer;            /* 0x0d0 */
     u8  pad_0d4[0x8];
-    /* FOUR body models, not one pointer plus padding. Player::CleanupResources
-       walks this run as `*(this + i * 4 + 0xdc)` for `i < 4` and calls each
-       element's deleting destructor; Player::Render indexes it with
-       GetBodyModelID(mBodyModelId, 1) and TurnOffToonShading with
-       GetBodyModelID(j, 0). The element type is dExtAnm2Model_c, not dExtAnmModel_c:
-       func_ov002_020e5948 allocates every slot with operator new(0x78), which
-       is sizeof(dExtAnm2Model_c), and builds it with _ZN15dExtAnm2Model_cC1Ev, and the
-       only methods called on the elements by their own class are dExtAnm2Model_c's
-       (Func_020162C4, Copy). The matched bodies' other accesses all land in
-       the dExtAnmModel_c base: +0x08 (dExtSimpleModel_c's ModelComponents), +0x14
-       (dExtSimpleModel_c::mat4x3), +0x50 (the dExtFrameCtrl_c base) and +0x58 (its
-       currFrame), and vtable slots 5 (Render) and 6 (Virtual18).
-       FIVE slots: GetBodyModelID returns 4 while mIsMetal is set, and
-       func_ov002_020e5948 builds [4] from wario_metal_model.bmd (arc0 0x54c).
-       CleanupResources deletes [4] on its own after the `i < 4` loop. */
-    dExtAnm2Model_c *mBodyModels[5]; /* 0x0dc */
-    /* ~Player calls _ZN14dExtAnmModel_cD1Ev on this LAST of the two, and dExtAnmModel_c
-       asserts 0x64 -- 0x0f0..0x154, closing exactly at mHeadModels. The markers
-       this replaces are its own sub-objects: mAnimation1 at 0x140 was the
-       dExtFrameCtrl_c base (+0x50) and unk_148 at 0x148 was that base's currFrame
-       (+0x58). Both are reachable through the member now. */
-    dExtAnmModel_c mModelAnim3; /* 0x0f0 */
-    /* EIGHT more models, but Models, not ModelAnims: func_ov002_020e5948 news
-       [0..2] and [4..7] as 0x50 bytes + _ZN17dExtSimpleModel_cC1Ev and only [3] as 0x64 +
-       _ZN14dExtAnmModel_cC1Ev (it alone gets SetAnim, and the Yoshi sites that drive
-       its frame downcast it). Every other access is dExtSimpleModel_c-level: data,
-       mat4x3, SetPolygonMode, Render. CleanupResources
-       destroys `i < 4` and then `i + 4` over this one base, TurnOffToonShading
-       indexes it at `j` and `j + 4`, and Render indexes it with
-       func_ov002_020becf4(mBodyModelId, 1). That helper can also return 8 or 9,
-       which are "no model" sentinels -- Render loads the slot FIRST and only then
-       tests `i != 9 && i != 8`, so the ROM itself reads one word past this run in
-       those two cases. Kept as written; the read lands in mModelAnim4 below and
-       its result is discarded. [0..3] are the per-character head_cap models
-       (Yoshi: yoshi_head) from data_ov002_0210a69c, [4..7] the head_nocap ones
-       (Yoshi: yoshi_head_fill) from data_ov002_0210a6ac; Render pins each to body
-       bone 15 (face_1). */
-    dExtSimpleModel_c *mHeadModels[8]; /* 0x154 */
-    /* The other dExtAnmModel_c, destroyed FIRST of the two. 0x174..0x1d8, closing
-       exactly at mSleepBubbleModel; mAnimation2 at 0x1c4 was its dExtFrameCtrl_c base. */
-    dExtAnmModel_c mModelAnim4; /* 0x174 */
-    /* func_ov002_020e5948 news a 0x50-byte dExtSimpleModel_c here (_ZN17dExtSimpleModel_cC1Ev) and SetFiles it
-       from data_ov002_0210da38 (file 0x8004, the bubble d_a_pkn also sleeps
-       with); func_ov002_020e444c places it in front of the face, Render draws
-       it at mSleepBubbleScale while func_ov002_020d225c (Yoshi, sleep stage 2)
-       holds, and CleanupResources deletes it. */
-    dExtSimpleModel_c *mSleepBubbleModel; /* 0x1d8 */
-    /* The three __cxa_vec_cleanup calls in ~Player, in the order it makes them
-       (last array first). Both element types assert 0x14, which is exactly
-       the stride the destructor passes. unk_25c and unk_270 were the
-       currFrame of mTexSeqPlayer[0] and [1] -- +0x08 into each element. */
-    dExtAnmTexPat_c mTexSeqBody[4];   /* 0x1dc */
-    dExtAnmMaterial_c mMatChanger[2]; /* 0x22c */
-    dExtAnmTexPat_c mTexSeqPlayer[2]; /* 0x254 */
-    /* One saved word per material, per model: func_ov002_020e6bb0 allocates
-       numMaterials words and copies each runtime material's +0x1c
-       (TEXIMAGE_PARAM) into them. func_ov002_020e6b74 writes them back
-       (TurnOffToonShading, cap-change phases 3/4) after func_ov002_020e6b3c
-       zeroed them for the untextured flash. Element type kept as stored. */
-    s32 mBodyTexParams[4]; /* 0x27c */
-    s32 mHeadTexParams[8]; /* 0x28c */
+    /* 0x0dc..0x2ac: the models and the texture/material animations drawn on
+       them, grouped as one embedded sub-object. The grouping is what the
+       constructor proves: retail Player::Player() (0x020e68f4) keeps `this` in
+       r5 and `this + 0xdc` in r4, and builds the two dExtAnmModel_c and the
+       three animation arrays off r4 (+0x14, +0x98, +0x100, +0x150, +0x178)
+       while everything after 0x2ac is built off r5. That second base is the
+       inlined implicit constructor of a member whose `this` is Player + 0xdc;
+       with these fields flat in Player the constructor comes out one
+       instruction short. The bytes require 0x0dc..0x27c inside; the two
+       saved-texparam arrays at 0x27c..0x2ac match either way and are kept
+       with the models they save state for. The type name is not recovered:
+       its constructor and destructor are only ever inlined. Offsets in the
+       field comments are Player offsets. */
+    struct Models {
+        /* FOUR body models, not one pointer plus padding. Player::CleanupResources
+           walks this run as `*(this + i * 4 + 0xdc)` for `i < 4` and calls each
+           element's deleting destructor; Player::Render indexes it with
+           GetBodyModelID(mBodyModelId, 1) and TurnOffToonShading with
+           GetBodyModelID(j, 0). The element type is dExtAnm2Model_c, not dExtAnmModel_c:
+           func_ov002_020e5948 allocates every slot with operator new(0x78), which
+           is sizeof(dExtAnm2Model_c), and builds it with _ZN15dExtAnm2Model_cC1Ev, and the
+           only methods called on the elements by their own class are dExtAnm2Model_c's
+           (Func_020162C4, Copy). The matched bodies' other accesses all land in
+           the dExtAnmModel_c base: +0x08 (dExtSimpleModel_c's ModelComponents), +0x14
+           (dExtSimpleModel_c::mat4x3), +0x50 (the dExtFrameCtrl_c base) and +0x58 (its
+           currFrame), and vtable slots 5 (Render) and 6 (Virtual18).
+           FIVE slots: GetBodyModelID returns 4 while mIsMetal is set, and
+           func_ov002_020e5948 builds [4] from wario_metal_model.bmd (arc0 0x54c).
+           CleanupResources deletes [4] on its own after the `i < 4` loop. */
+        dExtAnm2Model_c *mBodyModels[5]; /* 0x0dc */
+        /* ~Player calls _ZN14dExtAnmModel_cD1Ev on this LAST of the two, and dExtAnmModel_c
+           asserts 0x64 -- 0x0f0..0x154, closing exactly at mHeadModels. The markers
+           this replaces are its own sub-objects: mAnimation1 at 0x140 was the
+           dExtFrameCtrl_c base (+0x50) and unk_148 at 0x148 was that base's currFrame
+           (+0x58). Both are reachable through the member now. */
+        dExtAnmModel_c mModelAnim3; /* 0x0f0 */
+        /* EIGHT more models, but Models, not ModelAnims: func_ov002_020e5948 news
+           [0..2] and [4..7] as 0x50 bytes + _ZN17dExtSimpleModel_cC1Ev and only [3] as 0x64 +
+           _ZN14dExtAnmModel_cC1Ev (it alone gets SetAnim, and the Yoshi sites that drive
+           its frame downcast it). Every other access is dExtSimpleModel_c-level: data,
+           mat4x3, SetPolygonMode, Render. CleanupResources
+           destroys `i < 4` and then `i + 4` over this one base, TurnOffToonShading
+           indexes it at `j` and `j + 4`, and Render indexes it with
+           func_ov002_020becf4(mBodyModelId, 1). That helper can also return 8 or 9,
+           which are "no model" sentinels -- Render loads the slot FIRST and only then
+           tests `i != 9 && i != 8`, so the ROM itself reads one word past this run in
+           those two cases. Kept as written; the read lands in mModelAnim4 below and
+           its result is discarded. [0..3] are the per-character head_cap models
+           (Yoshi: yoshi_head) from data_ov002_0210a69c, [4..7] the head_nocap ones
+           (Yoshi: yoshi_head_fill) from data_ov002_0210a6ac; Render pins each to body
+           bone 15 (face_1). */
+        dExtSimpleModel_c *mHeadModels[8]; /* 0x154 */
+        /* The other dExtAnmModel_c, destroyed FIRST of the two. 0x174..0x1d8, closing
+           exactly at mSleepBubbleModel; mAnimation2 at 0x1c4 was its dExtFrameCtrl_c base. */
+        dExtAnmModel_c mModelAnim4; /* 0x174 */
+        /* func_ov002_020e5948 news a 0x50-byte dExtSimpleModel_c here (_ZN17dExtSimpleModel_cC1Ev) and SetFiles it
+           from data_ov002_0210da38 (file 0x8004, the bubble d_a_pkn also sleeps
+           with); func_ov002_020e444c places it in front of the face, Render draws
+           it at mSleepBubbleScale while func_ov002_020d225c (Yoshi, sleep stage 2)
+           holds, and CleanupResources deletes it. */
+        dExtSimpleModel_c *mSleepBubbleModel; /* 0x1d8 */
+        /* The three __cxa_vec_cleanup calls in ~Player, in the order it makes them
+           (last array first). Both element types assert 0x14, which is exactly
+           the stride the destructor passes. unk_25c and unk_270 were the
+           currFrame of mTexSeqPlayer[0] and [1] -- +0x08 into each element. */
+        dExtAnmTexPat_c mTexSeqBody[4];   /* 0x1dc */
+        dExtAnmMaterial_c mMatChanger[2]; /* 0x22c */
+        dExtAnmTexPat_c mTexSeqPlayer[2]; /* 0x254 */
+        /* One saved word per material, per model: func_ov002_020e6bb0 allocates
+           numMaterials words and copies each runtime material's +0x1c
+           (TEXIMAGE_PARAM) into them. func_ov002_020e6b74 writes them back
+           (TurnOffToonShading, cap-change phases 3/4) after func_ov002_020e6b3c
+           zeroed them for the untextured flash. Element type kept as stored. */
+        s32 mBodyTexParams[4]; /* 0x27c */
+        s32 mHeadTexParams[8]; /* 0x28c */
+    } mModels;                 /* 0x0dc */
     /* ~Player calls _ZN17dExtShadowModel_cD1Ev on this, and dExtShadowModel_c asserts
        0x28 -- which closes exactly at mdCcAcPos_c. */
     dExtShadowModel_c mShadowModel;            /* 0x2ac */
@@ -741,12 +756,13 @@ struct Player : dActor_c {
            the module's gap object supplies from ROM data. Because Player only
            overrides, an override takes its base's slot wherever it is declared,
            so putting ~Player first costs nothing and pins the key function to
-           the destructor, which is only ever defined as an extern "C" free
-           function in D0Ev/D2Ev, never as Player::~Player.
-
-           So: ~Player must never be defined ANYWHERE, including inline. An
-           inline definition would shift key-function status to Behavior, which
-           IS a real method, and emit a duplicate vtable. --- */
+           the destructor. src/game/player/Player.cpp defines it out of line,
+           so that TU alone emits _ZTV6Player, and ov002/Player.json
+           externalizes the copy to the ROM table. Never define ~Player inline:
+           key-function status would pass to InitResources, and the retail D0/D1
+           order comes from the out-of-line definition (see its comment there).
+           Player() is defined in the same file; the ROM homes only its C1. --- */
+    Player();
     virtual ~Player();                  /* slots 16, 17 */
     virtual s32  InitResources();       /* slot  0 */
     virtual s32  CleanupResources();    /* slot  3 */
@@ -1193,6 +1209,7 @@ struct Player : dActor_c {
 #ifndef SM64DS_PLATFORM_PC
 /* ROM layout under mwccarm; host ABI divergence is tracked separately. */
 typedef char Player_size_must_be_0x768[sizeof(struct Player) == 0x768 ? 1 : -1];
+typedef char Player_Models_size_must_be_0x1d0[sizeof(Player::Models) == 0x1d0 ? 1 : -1];
 typedef char Player_State_size_must_be_0x18[sizeof(Player::State) == 0x18 ? 1 : -1];
 #endif
 

@@ -27,9 +27,8 @@
  *   return type or argument order hides.
  * - func_020731dc is __register_global_object. The relocation rows name the
  *   retail symbol.
- * - The constructor is still the free _ZN6PlayerC1Ev, walking members from
- *   this + 0xdc. The static initializer is compiled as C, so
- *   SharedFilePtr::Construct stays that C call.
+ * - The static initializer is compiled as C, so SharedFilePtr::Construct
+ *   stays that C call.
  * - Helpers that take the player as char * or void * and cast it stay free
  *   functions, including func_ov002_020e6780 (decl_common.h spells the
  *   parameter char *) and func_ov002_020bcdf0. func_ov002_020e69c0 rotates
@@ -197,18 +196,18 @@ void func_ov002_020bcdf0(char *self)
 
     if (cur.w[0] == 0xbd) {
         id = player->GetBodyModelID(player->param1 & 0xff, 0);
-        anim = &static_cast<dExtFrameCtrl_c &>(*player->mBodyModels[id]);
+        anim = &static_cast<dExtFrameCtrl_c &>(*player->mModels.mBodyModels[id]);
         if (anim->WillHitFrame(0xc)) {
             player->mHasNoCap = 1;
         }
     } else if (cur.w[0] == 1) {
         id = player->GetBodyModelID(player->param1 & 0xff, 0);
-        anim = &static_cast<dExtFrameCtrl_c &>(*player->mBodyModels[id]);
+        anim = &static_cast<dExtFrameCtrl_c &>(*player->mModels.mBodyModels[id]);
         if (anim->WillHitFrame(0x5d)) {
             player->mHasNoCap = 0;
         } else {
             id = player->GetBodyModelID(player->param1 & 0xff, 0);
-            anim = &static_cast<dExtFrameCtrl_c &>(*player->mBodyModels[id]);
+            anim = &static_cast<dExtFrameCtrl_c &>(*player->mModels.mBodyModels[id]);
             if (anim->WillHitFrame(0x45)) {
                 x0 = player->mPosX;
                 y0 = player->mPosY + 0x50000;
@@ -226,7 +225,8 @@ void func_ov002_020bcdf0(char *self)
     if (player->param1 == 0) {
         if (cur.w[0] == 0xbb) {
             id = player->GetBodyModelID(player->param1 & 0xff, 0);
-            anim = reinterpret_cast<dExtFrameCtrl_c *>((long long)(int)&static_cast<dExtFrameCtrl_c &>(*player->mBodyModels[id]));
+            anim = reinterpret_cast<dExtFrameCtrl_c *>(
+                (long long)(int)&static_cast<dExtFrameCtrl_c &>(*player->mModels.mBodyModels[id]));
             frame = (unsigned int)(anim->currFrame << 4) >> 0x10;
             if (frame >= 0x1e)
                 goto particle;
@@ -863,7 +863,7 @@ void Player::func_ov002_020bdd9c(){
     unsigned int v = this->param1;
     int id = this->GetBodyModelID(v & 0xff, 0);
     SharedFilePtr *t = data_ov002_020ff480[mCharFileBase + v];
-    mBodyModels[id]->Copy(*mBodyModels[4], (char *)t->filePtr, 0);
+    mModels.mBodyModels[id]->Copy(*mModels.mBodyModels[4], (char *)t->filePtr, 0);
     EndPowerupMusic(0x34);
 }
 }
@@ -895,8 +895,8 @@ void Player::InitMetalWario()
 
     v = param1;
     id = this->GetBodyModelID(v & 0xff, 0);
-    mBodyModels[id]->Copy(*mBodyModels[v], (char *)data_ov002_020ff480[mCharFileBase + v]->filePtr,
-                          0);
+    mModels.mBodyModels[id]->Copy(*mModels.mBodyModels[v],
+                                  (char *)data_ov002_020ff480[mCharFileBase + v]->filePtr, 0);
 
     mPowerupTimer = 0x258;
     StartPowerupMusic(0x34);
@@ -909,10 +909,10 @@ extern "C" {
 void Player::func_ov002_020bdef0(){
     if (mIsVanish == 0)
         return;
-    mTexSeqPlayer[0].Update(mBodyModels[1]->data);
-    mTexSeqPlayer[1].Update(mHeadModels[1]->data);
-    mTexSeqPlayer[0].currFrame = 0;
-    mTexSeqPlayer[1].currFrame = 0;
+    mModels.mTexSeqPlayer[0].Update(mModels.mBodyModels[1]->data);
+    mModels.mTexSeqPlayer[1].Update(mModels.mHeadModels[1]->data);
+    mModels.mTexSeqPlayer[0].currFrame = 0;
+    mModels.mTexSeqPlayer[1].currFrame = 0;
     mIsVanish = 0;
     EndPowerupMusic(0x33);
 }
@@ -1054,10 +1054,11 @@ void Player::SetRealCharacter(unsigned int chr_)
 
     m1 = this->GetBodyModelID(chr, 0);
     m2 = this->GetBodyModelID(param1 & 0xff, 0);
-    mBodyModels[m1]->Copy(*mBodyModels[m2],
-                          (char *)data_ov002_020ff480[mCharFileBase + chr]->filePtr, 0);
+    mModels.mBodyModels[m1]->Copy(*mModels.mBodyModels[m2],
+                                  (char *)data_ov002_020ff480[mCharFileBase + chr]->filePtr, 0);
     m1 = this->GetBodyModelID(chr, 0);
-    mBodyModels[m1]->Func_020162C4((u32)data_ov002_020ff480[chr + 0xc4]->filePtr, 0, 0x1000, 0);
+    mModels.mBodyModels[m1]->Func_020162C4((u32)data_ov002_020ff480[chr + 0xc4]->filePtr, 0, 0x1000,
+                                           0);
 }
 }
 
@@ -1068,15 +1069,15 @@ void Player::TurnOffToonShading(unsigned int j)
 {
     extern int func_ov002_020e6b74(void*, int);
     dExtSimpleModel_c *m;
-    m = mBodyModels[this->GetBodyModelID(j, 0)];
+    m = mModels.mBodyModels[this->GetBodyModelID(j, 0)];
     m->SetPolygonMode(0);
-    func_ov002_020e6b74(m, mBodyTexParams[j]);
-    m = mHeadModels[j];
+    func_ov002_020e6b74(m, mModels.mBodyTexParams[j]);
+    m = mModels.mHeadModels[j];
     m->SetPolygonMode(0);
-    func_ov002_020e6b74(m, mHeadTexParams[j]);
-    m = mHeadModels[j + 4];
+    func_ov002_020e6b74(m, mModels.mHeadTexParams[j]);
+    m = mModels.mHeadModels[j + 4];
     m->SetPolygonMode(0);
-    func_ov002_020e6b74(m, mHeadTexParams[j + 4]);
+    func_ov002_020e6b74(m, mModels.mHeadTexParams[j + 4]);
 }
 }
 
@@ -1120,10 +1121,10 @@ void Player::func_ov002_020be3b0()
     case 0:
         return;
     case 1: {
-        dExtSimpleModel_c *m1 = mBodyModels[this->GetBodyModelID((u8)(this->param1), 0)];
+        dExtSimpleModel_c *m1 = mModels.mBodyModels[this->GetBodyModelID((u8)(this->param1), 0)];
         m1->SetPolygonMode(2);
         {
-            dExtSimpleModel_c *m2 = mHeadModels[func_ov002_020becf4((u8)(this->param1), 0)];
+            dExtSimpleModel_c *m2 = mModels.mHeadModels[func_ov002_020becf4((u8)(this->param1), 0)];
             m2->SetPolygonMode(2);
         }
         mCapPaletteBlend = 0;
@@ -1145,12 +1146,13 @@ void Player::func_ov002_020be3b0()
         break;
     case 3: {
         if ((mCapTimer % var_r5) == 0) {
-            case3_m1 = mBodyModels[this->GetBodyModelID((u8)(this->param1), 0)];
-            case3_m2 = mHeadModels[func_ov002_020becf4((u8)(this->param1), 0)];
+            case3_m1 = mModels.mBodyModels[this->GetBodyModelID((u8)(this->param1), 0)];
+            case3_m2 = mModels.mHeadModels[func_ov002_020becf4((u8)(this->param1), 0)];
             if ((mCapTimer % (var_r5 * 2)) == 0) {
-                func_ov002_020e6b74(case3_m1, (int *)mBodyTexParams[this->param1]);
+                func_ov002_020e6b74(case3_m1, (int *)mModels.mBodyTexParams[this->param1]);
                 func_ov002_020e6b74(
-                    case3_m2, (int *)mHeadTexParams[func_ov002_020becf4((u8)(this->param1), 0)]);
+                    case3_m2,
+                    (int *)mModels.mHeadTexParams[func_ov002_020becf4((u8)(this->param1), 0)]);
             } else {
                 func_ov002_020e6b3c(case3_m1);
                 func_ov002_020e6b3c(case3_m2);
@@ -1163,10 +1165,10 @@ void Player::func_ov002_020be3b0()
             func_ov002_020e6b3c(case3_m2);
             mCapFlags++;
             mCapTimer = data_ov002_020ff14c[var_r4 + 2];
-            t1 = mBodyModels[this->GetBodyModelID(mHatCharacter, 0)];
+            t1 = mModels.mBodyModels[this->GetBodyModelID(mHatCharacter, 0)];
             t1->SetPolygonMode(2);
             func_ov002_020e6b3c(t1);
-            t2 = mHeadModels[func_ov002_020becf4(mHatCharacter, 0)];
+            t2 = mModels.mHeadModels[func_ov002_020becf4(mHatCharacter, 0)];
             t2->SetPolygonMode(2);
             func_ov002_020e6b3c(t2);
             mQuicksandRunFlags = 0;
@@ -1179,8 +1181,8 @@ void Player::func_ov002_020be3b0()
             dExtFrameCtrl_c::LoadFile(*data_ov002_020ff480[mCharFileBase + mHatCharacter]);
             {
                 u32 mm1 = this->GetBodyModelID(mHatCharacter, 0);
-                mBodyModels[mm1]->Copy(
-                    *mBodyModels[this->GetBodyModelID(mPrevCharacter, 0)],
+                mModels.mBodyModels[mm1]->Copy(
+                    *mModels.mBodyModels[this->GetBodyModelID(mPrevCharacter, 0)],
                     (char *)data_ov002_020ff480[mCharFileBase + mHatCharacter]->filePtr, 0);
             }
             mLoadedResourceFlags |= 0x40;
@@ -1205,20 +1207,22 @@ void Player::func_ov002_020be3b0()
             if (mHatCharacter == mCharacter) {
                 mHasNoCap = 0;
             }
-            func_ov002_020e6b74(mBodyModels[this->GetBodyModelID(mHatCharacter, 0)],
-                                (int *)mBodyTexParams[*(volatile u8 *)&this->mHatCharacter]);
-            func_ov002_020e6b74(mBodyModels[this->GetBodyModelID(mPrevCharacter, 0)],
-                                (int *)mBodyTexParams[*(volatile u8 *)&this->mPrevCharacter]);
+            func_ov002_020e6b74(
+                mModels.mBodyModels[this->GetBodyModelID(mHatCharacter, 0)],
+                (int *)mModels.mBodyTexParams[*(volatile u8 *)&this->mHatCharacter]);
+            func_ov002_020e6b74(
+                mModels.mBodyModels[this->GetBodyModelID(mPrevCharacter, 0)],
+                (int *)mModels.mBodyTexParams[*(volatile u8 *)&this->mPrevCharacter]);
             {
                 int h1 = func_ov002_020becf4(mHatCharacter, 0);
-                func_ov002_020e6b74(mHeadModels[h1], (int *)mHeadTexParams[h1]);
+                func_ov002_020e6b74(mModels.mHeadModels[h1], (int *)mModels.mHeadTexParams[h1]);
             }
             {
                 int h2 = func_ov002_020becf4(mPrevCharacter, 0);
-                func_ov002_020e6b74(mHeadModels[h2], (int *)mHeadTexParams[h2]);
+                func_ov002_020e6b74(mModels.mHeadModels[h2], (int *)mModels.mHeadTexParams[h2]);
             }
             mm = this->param1;
-            mBodyModels[this->GetBodyModelID((u8)mm, 0)]->Func_020162C4(
+            mModels.mBodyModels[this->GetBodyModelID((u8)mm, 0)]->Func_020162C4(
                 (u32)((SharedFilePtr *)data_ov002_020ff790[mm])->filePtr, 0, 0x1000, 0);
             _ZN13SharedFilePtr7ReleaseEv(data_ov002_020ff480[mCharFileBase + mPrevCharacter]);
             mLoadedResourceFlags &= ~0x40;
@@ -1234,8 +1238,9 @@ void Player::func_ov002_020be3b0()
                 b = mHatCharacter;
             }
             idxA = this->GetBodyModelID(a, 0);
-            mBodyModels[idxA]->Copy(*mBodyModels[this->GetBodyModelID(b, 0)],
-                                    (char *)data_ov002_020ff480[mCharFileBase + a]->filePtr, 0);
+            mModels.mBodyModels[idxA]->Copy(*mModels.mBodyModels[this->GetBodyModelID(b, 0)],
+                                            (char *)data_ov002_020ff480[mCharFileBase + a]->filePtr,
+                                            0);
         }
         break;
     case 5:
@@ -1302,9 +1307,9 @@ void Player::func_ov002_020beabc()
     this->mPrevCharacter = this->mCharacter;
     this->mHatCharacter = this->mPrevCharacter;
     unsigned int id = GetBodyModelID(this->mCharacter, 0);
-    mBodyModels[id]->SetPolygonMode(2);
+    mModels.mBodyModels[id]->SetPolygonMode(2);
     unsigned int id2 = func_ov002_020becf4(param1 & 0xff, 0);
-    mHeadModels[id2]->SetPolygonMode(2);
+    mModels.mHeadModels[id2]->SetPolygonMode(2);
 }
 
 // @symbol _ZN6Player19func_ov002_020beb38Ev
@@ -1426,7 +1431,7 @@ int Player::FinishedAnim()
 {
     unsigned int modelID = GetBodyModelID(param1 & 0xff, 0);
     // GetBodyModelID can return 4; the shared array currently declares four slots.
-    dExtAnmModel_c *model = mBodyModels[modelID];
+    dExtAnmModel_c *model = mModels.mBodyModels[modelID];
     return model->Finished() != 0;
 }
 
@@ -1436,16 +1441,16 @@ void Player_AdvanceAnims(char *self)
 {
     Player *player = reinterpret_cast<Player *>(self);
     unsigned int modelID = player->GetBodyModelID(player->param1 & 0xff, 0);
-    dExtAnmModel_c *model = player->mBodyModels[modelID];
+    dExtAnmModel_c *model = player->mModels.mBodyModels[modelID];
     model->Advance();
 
     if (player->IsAnim(0x9a) || player->IsAnim(0x19) ||
         player->IsAnim(0xac) || player->IsAnim(0x6b) ||
         player->IsAnim(0x85) || player->IsAnim(0x94) ||
         player->IsAnim(0x98) || player->IsAnim(0x99)) {
-        player->mTexSeqBody[player->param1].currFrame = 0;
+        player->mModels.mTexSeqBody[player->param1].currFrame = 0;
     }
-    player->mTexSeqBody[player->param1].Advance();
+    player->mModels.mTexSeqBody[player->param1].Advance();
 }
 }
 
@@ -1459,7 +1464,7 @@ int Player::IsAnim(unsigned int a)
   int* p = (int*)data_ov002_020ff480[ip + a*4];
   int v = p[1];
   unsigned int id = this->GetBodyModelID(ip&0xff, 0);
-  dExtAnmModel_c *model = mBodyModels[id];
+  dExtAnmModel_c *model = mModels.mBodyModels[id];
   int matches = ((int)model->file == v);
   return matches ? 1 : 0;
 }
@@ -1507,7 +1512,7 @@ void Player::SetAnim(u32 animId, int flags, Fix12i speed, u16 startFrame) {
         dExtFrameCtrl_c::LoadFile(*data_ov002_020ff480[newVal + (player->param1 & 3)]);
 
         id = _ZNK6Player14GetBodyModelIDEjb(self, player->param1 & 0xff, 0);
-        modelPtr = player->mBodyModels[id];
+        modelPtr = player->mModels.mBodyModels[id];
         ((dExtAnmModel_c *)modelPtr)->file = 0;
 
         if ((player->mCapFlags & 7) == 4) {
@@ -1520,7 +1525,8 @@ void Player::SetAnim(u32 animId, int flags, Fix12i speed, u16 startFrame) {
             dExtFrameCtrl_c::LoadFile(*sfp);
 
             id = _ZNK6Player14GetBodyModelIDEjb(self, charId & 0xff, 0);
-            player->mBodyModels[id]->SetAnim((BCA_File *)sfp->filePtr, flags, speed, startFrame);
+            player->mModels.mBodyModels[id]->SetAnim((BCA_File *)sfp->filePtr, flags, speed,
+                                                     startFrame);
             {
                 u16 *g = LAUNDER16(&player->mCapTimer);
                 *g = (u16)(*g + 1);
@@ -1531,7 +1537,7 @@ void Player::SetAnim(u32 animId, int flags, Fix12i speed, u16 startFrame) {
     field8 = player->param1;
     sl = animId * 4;
     id = _ZNK6Player14GetBodyModelIDEjb(self, (u32)(field8 & 0xff), 0);
-    player->mBodyModels[id]->SetAnim(
+    player->mModels.mBodyModels[id]->SetAnim(
         (BCA_File *)data_ov002_020ff480[(field8 & 3) + (animId * 4)]->filePtr, flags, speed,
         startFrame);
 
@@ -1540,8 +1546,8 @@ void Player::SetAnim(u32 animId, int flags, Fix12i speed, u16 startFrame) {
     sl += (field8 & 3);
     param2 = 0;
     if (((int)sl >> 2) == 1) param2 = 0x40000000;
-    player->mTexSeqBody[field8].SetFile(*(BTP_File *)data_ov002_020ff2f0[sl]->filePtr, param2,
-                                        0x1000, 0);
+    player->mModels.mTexSeqBody[field8].SetFile(*(BTP_File *)data_ov002_020ff2f0[sl]->filePtr,
+                                                param2, 0x1000, 0);
 
     player->mCharFileBase = newVal;
 }
@@ -1811,10 +1817,10 @@ void Player::func_ov002_020bf5e0()
     flag = 0;
     if (this->IsAnim(0x9e) || this->IsAnim(0xa4)) {
         id = this->GetBodyModelID(param1 & 0xff, 0);
-        if (mBodyModels[id]->WillHitFrame(0xe))
+        if (mModels.mBodyModels[id]->WillHitFrame(0xe))
             goto set_flag;
         id = this->GetBodyModelID(param1 & 0xff, 0);
-        if (!mBodyModels[id]->WillHitFrame(0x1c))
+        if (!mModels.mBodyModels[id]->WillHitFrame(0x1c))
             goto flag_done;
 set_flag:
         flag = 1;
@@ -1824,7 +1830,7 @@ flag_done:
         return;
 
     id = this->GetBodyModelID(param1 & 0xff, 0);
-    if (mBodyModels[id]->WillHitFrame(0x1c)) {
+    if (mModels.mBodyModels[id]->WillHitFrame(0x1c)) {
         src.x = 0x40000;
     } else {
         src.x = -0x40000;
@@ -3947,11 +3953,11 @@ void Player::func_ov002_020c37a4(char *arg) {
     extern u32 PlayerNewHold4(u32 handle, u32 kind, Fix12i x, Fix12i y, Fix12i z, const void *dir,
                               void *callback);
     unsigned int id = this->GetBodyModelID(param1 & 0xff, 0);
-    Matrix4x3 *bone = &mBodyModels[id]->data.transforms[8];
+    Matrix4x3 *bone = &mModels.mBodyModels[id]->data.transforms[8];
     unsigned int id2 = this->GetBodyModelID(param1 & 0xff, 0);
     Vector3 v;
     Vector3 s;
-    MulVec3Mat4x3(&bone->m[9], &mBodyModels[id2]->mat4x3, &v);
+    MulVec3Mat4x3(&bone->m[9], &mModels.mBodyModels[id2]->mat4x3, &v);
     Vec3_MulScalar(&s, &v, 0x8000);
     v = s;
     Vec3_RotateYAndTranslate(&v, &v, this->mAngleY, arg);
@@ -4031,7 +4037,7 @@ int Player::func_ov002_020c3a48()
     if (mStateWork == 0) {
         mAttachOffsetY = 0;
         id = this->GetBodyModelID(param1 & 0xff, 0);
-        if (mBodyModels[id]->WillHitFrame(0x5a)) {
+        if (mModels.mBodyModels[id]->WillHitFrame(0x5a)) {
             _ZN8Particle20RunningSlidingDustAtE5Fix12IiES1_S1_(this->mPosX, this->mPosY, this->mPosZ);
             Sound::PlayCharVoice(mCharacter, 0, mCamSpacePos);
             mStateWork += 1;
@@ -4047,7 +4053,7 @@ int Player::func_ov002_020c3a48()
         func_ov002_020c37a4((char *)(buf + 3));
         id = this->GetBodyModelID(param1 & 0xff, 0);
         /* Launder kept: reading mBodyModels[id]->currFrame directly moves bytes. */
-        anim = (char *)((long long)(int)&(dExtFrameCtrl_c &)*mBodyModels[id]);
+        anim = (char *)((long long)(int)&(dExtFrameCtrl_c &)*mModels.mBodyModels[id]);
         r5 = (unsigned int)(((dExtFrameCtrl_c *)anim)->currFrame << 4) >> 0x10;
         if (r5 == 0x6d || r5 == 0x8d) {
             _ZN8Particle20RunningSlidingDustAtE5Fix12IiES1_S1_(this->mPosX, this->mPosY, this->mPosZ);
@@ -5074,7 +5080,7 @@ int Player::St_StuckInGround_Main()
         mStateWork++;
         break;
     case 2: {
-        dExtAnmModel_c *anim = mBodyModels[this->GetBodyModelID(param1 & 0xff, 0)];
+        dExtAnmModel_c *anim = mModels.mBodyModels[this->GetBodyModelID(param1 & 0xff, 0)];
         if (anim->WillHitFrame(data_ov002_020ff0ec[mStateStep])) {
             func_ov002_020c5444();
             Sound::PlayBank0(0xb4, mCamSpacePos);
@@ -5514,7 +5520,7 @@ int Player::St_DeadHit_Main()
 
     switch (mStateWork) {
     case 0:
-        if (mBodyModels[this->GetBodyModelID(param1 & 0xff, 0)]->WillHitFrame(
+        if (mModels.mBodyModels[this->GetBodyModelID(param1 & 0xff, 0)]->WillHitFrame(
                 data_ov002_02109db8[mStateStep & 1]) != 0)
             mStateWork = 1;
         break;
@@ -6160,11 +6166,11 @@ void Player::func_ov002_020c6fe4()
     int id;
 
     id = this->GetBodyModelID(this->param1 & 0xff, 0);
-    if (mBodyModels[id]->WillHitFrame(0x58))
+    if (mModels.mBodyModels[id]->WillHitFrame(0x58))
         Sound::PlayCharVoice(mCharacter, 0x35, mCamSpacePos);
 
     id = this->GetBodyModelID(this->param1 & 0xff, 0);
-    if (mBodyModels[id]->WillHitFrame(0x75))
+    if (mModels.mBodyModels[id]->WillHitFrame(0x75))
         data_0209f20c = 1;
 
     if (this->FinishedAnim()) {
@@ -6304,27 +6310,27 @@ void Player::func_ov002_020c7350()
 
     if (this->IsAnim(0x10)) {
         id = this->GetBodyModelID(param1 & 0xff, 0);
-        if (mBodyModels[id]->WillHitFrame(0x52)) {
+        if (mModels.mBodyModels[id]->WillHitFrame(0x52)) {
             Sound::PlayCharVoice(mCharacter, 0x27, mCamSpacePos);
         }
     }
 
     if (this->IsAnim(0x85)) {
         id = this->GetBodyModelID(param1 & 0xff, 0);
-        if (mBodyModels[id]->WillHitFrame(0x20)) {
+        if (mModels.mBodyModels[id]->WillHitFrame(0x20)) {
             Sound::PlayCharVoice(mCharacter, 0x35, mCamSpacePos);
         }
     }
 
     if (this->IsAnim(0xa5)) {
         id = this->GetBodyModelID(param1 & 0xff, 0);
-        if (mBodyModels[id]->WillHitFrame(0x23)) {
+        if (mModels.mBodyModels[id]->WillHitFrame(0x23)) {
             Sound::PlayCharVoice(mCharacter, 0x37, mCamSpacePos);
         }
     }
 
     id = this->GetBodyModelID(param1 & 0xff, 0);
-    if (mBodyModels[id]->WillHitFrame(0x8e)) {
+    if (mModels.mBodyModels[id]->WillHitFrame(0x8e)) {
         if (this->IsAnim(0xa5)) {
             data_0209f20c = 1;
         }
@@ -6385,7 +6391,7 @@ void Player::func_ov002_020c75f0()
     if (this->IsAnim(0x56))
     {
         int model = this->GetBodyModelID(param1 & 0xff, 0);
-        if (mBodyModels[model]->WillHitFrame(0)) {
+        if (mModels.mBodyModels[model]->WillHitFrame(0)) {
             Sound::PlayBank0(6, mCamSpacePos);
         }
     }
@@ -6489,10 +6495,10 @@ int Player::St_LevelEnter_Init()
 
     u8 st = mStateStep;
     if (st != 3 && st != 0xa && st != 0) {
-        mBodyModels[this->GetBodyModelID((u8)param1, 0)]->SetFlags(0x40000000);
+        mModels.mBodyModels[this->GetBodyModelID((u8)param1, 0)]->SetFlags(0x40000000);
         if (mStateStep == 2) {
             dExtFrameCtrl_c *p =
-                &(dExtFrameCtrl_c &)*mBodyModels[this->GetBodyModelID((u8)param1, 0)];
+                &(dExtFrameCtrl_c &)*mModels.mBodyModels[this->GetBodyModelID((u8)param1, 0)];
             p->currFrame = 0x14000;
         }
     }
@@ -6879,7 +6885,7 @@ int Player::St_NoControl_Main()
         break;
     case 23: {
         int id = this->GetBodyModelID(param1 & 0xff, 0);
-        if (mBodyModels[id]->WillHitFrame(0x1c))
+        if (mModels.mBodyModels[id]->WillHitFrame(0x1c))
             mHasNoCap = 0;
         if (this->FinishedAnim())
             this->ChangeState(data_ov002_0211013c);
@@ -6947,19 +6953,19 @@ int Player::func_ov002_020c8540()
     s8 = this->param1;
     if (s8 <= 1) {
         id = this->GetBodyModelID(s8 & 0xff, 0);
-        if (mBodyModels[id]->WillHitFrame(data_ov002_020ff138[s8])) {
+        if (mModels.mBodyModels[id]->WillHitFrame(data_ov002_020ff138[s8])) {
             mHasNoCap = 1;
         }
         s8 = this->param1;
         id = this->GetBodyModelID(s8 & 0xff, 0);
-        if (mBodyModels[id]->WillHitFrame(data_ov002_020ff13c[s8])) {
+        if (mModels.mBodyModels[id]->WillHitFrame(data_ov002_020ff13c[s8])) {
             mHasNoCap = 0;
         }
     }
     if (mStateArg == 0) {
         s8 = this->param1;
         id = this->GetBodyModelID(s8 & 0xff, 0);
-        if (mBodyModels[id]->WillHitFrame(data_ov002_020ff110[s8])) {
+        if (mModels.mBodyModels[id]->WillHitFrame(data_ov002_020ff110[s8])) {
             char* o;
             mFlags |= 0x800000;
             o = (char *)mTalkActor;
@@ -7077,11 +7083,11 @@ int Player::func_ov002_020c897c()
     int id;
 
     id = this->GetBodyModelID(this->param1 & 0xff, 0);
-    if (mBodyModels[id]->WillHitFrame(0x5f)) {
+    if (mModels.mBodyModels[id]->WillHitFrame(0x5f)) {
         func_02012694(0x3b, &mCamSpacePos);
     } else {
         id = this->GetBodyModelID(this->param1 & 0xff, 0);
-        if (mBodyModels[id]->WillHitFrame(0x3c)) {
+        if (mModels.mBodyModels[id]->WillHitFrame(0x3c)) {
             func_02012694(0x42, &mCamSpacePos);
         } else if (this->FinishedAnim()) {
             func_ov002_020ca108();
@@ -7161,7 +7167,7 @@ int Player::func_ov002_020c8b78() {
     _ZN5Sound17ChangeMusicVolumeEj5Fix12IiE(0x14, 0x15666);
     {
         int id = GetBodyModelID(param1 & 0xff, false);
-        dExtAnmModel_c *model = mBodyModels[id];
+        dExtAnmModel_c *model = mModels.mBodyModels[id];
         dExtFrameCtrl_c *a = &static_cast<dExtFrameCtrl_c &>(*model);
         if (a->WillHitFrame(0x40))
             func_02012790(0x3a);
@@ -7235,24 +7241,24 @@ int Player::func_ov002_020c8d14()
     v.y = this->mPosY + FX_MUL(this->mScaleY, 0x50000);
 
     id = this->GetBodyModelID(param1 & 0xff, 0);
-    if (mBodyModels[id]->WillHitFrame(4)) {
+    if (mModels.mBodyModels[id]->WillHitFrame(4)) {
         Particle::System::NewSimple(0x5d, v.x, v.y, v.z);
     } else {
         id = this->GetBodyModelID(param1 & 0xff, 0);
-        if (mBodyModels[id]->WillHitFrame(2)) {
+        if (mModels.mBodyModels[id]->WillHitFrame(2)) {
             Particle::System::NewSimple(0x5e, v.x, v.y, *(volatile int *)&v.z);
         }
     }
 
     id = this->GetBodyModelID(param1 & 0xff, 0);
-    if (mBodyModels[id]->WillHitFrame(0x2f)) {
+    if (mModels.mBodyModels[id]->WillHitFrame(0x2f)) {
         func_ov002_020c9e18();
         mMegaTimer = 0x258;
     }
 
     id = this->GetBodyModelID(param1 & 0xff, 0);
     /* Launder kept: reading mBodyModels[id]->currFrame directly moves bytes. */
-    anim = (char *)((long long)(int)&(dExtFrameCtrl_c &)*mBodyModels[id]);
+    anim = (char *)((long long)(int)&(dExtFrameCtrl_c &)*mModels.mBodyModels[id]);
     if ((unsigned int)(((dExtFrameCtrl_c *)anim)->currFrame << 4) >> 0x10 >= 0x2f) {
         if (mIsUnderwater == 0) {
             if (func_ov002_020d22ec(this, 0))
@@ -7310,7 +7316,7 @@ int Player::func_ov002_020c8f80()
     this->mScaleZ -= 0x80;
 
     unsigned int id = GetBodyModelID(param1 & 0xff, false);
-    if (mBodyModels[id]->WillHitFrame(1)) {
+    if (mModels.mBodyModels[id]->WillHitFrame(1)) {
         if (this->mStateArg == 0) {
             this->mStateArg = 1;
         } else {
@@ -7345,7 +7351,7 @@ int Player::func_ov002_020c904c() {
     }
     if (this->IsAnim(0x56) != 0) {
         mid = this->GetBodyModelID((param1) & 0xff, 0);
-        if (mBodyModels[mid]->WillHitFrame(0) != 0) {
+        if (mModels.mBodyModels[mid]->WillHitFrame(0) != 0) {
             Sound::PlayBank0(6, mCamSpacePos);
         }
     }
@@ -7447,7 +7453,7 @@ int Player::func_ov002_020c92fc()
     if (mAttachOffsetY != -1) {
         if (mIsUnderwater == 0) {
             int id = this->GetBodyModelID(param1 & 0xff, flag);
-            if (mBodyModels[id]->WillHitFrame(0x20))
+            if (mModels.mBodyModels[id]->WillHitFrame(0x20))
                 flag = 1;
         } else {
             if (this->FinishedAnim()) flag = 1;
@@ -7544,7 +7550,7 @@ int Player::func_ov002_020c94a4()
 
     {
         int id = this->GetBodyModelID(param1 & 0xff, 0);
-        if (mBodyModels[id]->WillHitFrame(0x20))
+        if (mModels.mBodyModels[id]->WillHitFrame(0x20))
             mStateTimer = 0x3c;
     }
     return 0;
@@ -8544,7 +8550,7 @@ int Player::St_CameraZoom_Main()
             id = GetBodyModelID(param1 & 0xff, 0);
             /* currFrame of the body model's frame controller, kept split: the ROM adds
                +0x50 and stores at +8, and ->currFrame folds that to one +0x58. */
-            int q = (int)((*(dExtAnmModel_c *volatile *)&mBodyModels[id])) + 0x50;
+            int q = (int)((*(dExtAnmModel_c *volatile *)&mModels.mBodyModels[id])) + 0x50;
             ((dExtFrameCtrl_c *)q)->currFrame = 0;
             mPrevAngleY = mAngleY;
             return 1;
@@ -8767,7 +8773,7 @@ int func_ov002_020cb354(void* thisptr)
     int a = _ZN6Player6IsAnimEj(thisptr, 0x24);
     if (a == 0) return a;
     int idx = _ZNK6Player14GetBodyModelIDEjb(thisptr, player->param1 & 0xff, 0);
-    dExtAnmModel_c *m = player->mBodyModels[idx];
+    dExtAnmModel_c *m = player->mModels.mBodyModels[idx];
     /* q is the frame controller (+0x50); m->currFrame would fold +0x50 and +8. */
     int* q = (int*)(((int)m + 0x50));
     if ((int)((unsigned int)((((dExtFrameCtrl_c *)q)->currFrame) << 4) >> 0x10) < 8) {
@@ -8991,8 +8997,8 @@ int Player::St_Climb_Main() {
                     if (fx2 >= 0x4000) fx2 = 0x4000;
                     {
                         s32 modelIdx = GetBodyModelID((u8)param1, 0);
-                        char *p2 =
-                            (char *)((long long)(int)&(dExtFrameCtrl_c &)*mBodyModels[modelIdx]);
+                        char *p2 = (char *)((long long)(int)&(
+                                                dExtFrameCtrl_c &)*mModels.mBodyModels[modelIdx]);
                         ((dExtFrameCtrl_c *)p2)->speed = fx2;
                     }
                     mStateWork = 0;
@@ -9756,10 +9762,13 @@ int Player::St_MetalWaterGround_Main()
         this->SetAnim(0x48, 0, 0x1000, 0);
         int r5 = (int)((((long long)mHorzSpeed << 9) + 0x800) >> 12);
         if(r5 < 0x400) r5 = 0x400;
-        dExtFrameCtrl_c &anim = *mBodyModels[this->GetBodyModelID((unsigned char)param1, 0)];
+        dExtFrameCtrl_c &anim =
+            *mModels.mBodyModels[this->GetBodyModelID((unsigned char)param1, 0)];
         anim.speed = r5;
-        if (mBodyModels[this->GetBodyModelID((unsigned char)param1, 0)]->WillHitFrame(4) != 0 ||
-            mBodyModels[this->GetBodyModelID((unsigned char)param1, 0)]->WillHitFrame(0x13) != 0) {
+        if (mModels.mBodyModels[this->GetBodyModelID((unsigned char)param1, 0)]->WillHitFrame(4) !=
+                0 ||
+            mModels.mBodyModels[this->GetBodyModelID((unsigned char)param1, 0)]->WillHitFrame(
+                0x13) != 0) {
             func_0201251c(0, 0xaa, (void*)((char*)&mCamSpacePosX), mHorzSpeed);
         }
     }
@@ -10174,24 +10183,27 @@ int Player::St_Swim_Main()
                 this->SetAnim(0xa8, 0, 0x1000, 0);
             }
         } else if (mAngleX >= 0x1000) {
-            dExtFrameCtrl_c &anim = *mBodyModels[this->GetBodyModelID((unsigned char)param1, 0)];
+            dExtFrameCtrl_c &anim =
+                *mModels.mBodyModels[this->GetBodyModelID((unsigned char)param1, 0)];
             if (anim.speed != 0x3000) {
                 dExtFrameCtrl_c &again =
-                    *mBodyModels[this->GetBodyModelID((unsigned char)param1, 0)];
+                    *mModels.mBodyModels[this->GetBodyModelID((unsigned char)param1, 0)];
                 again.speed = 0x3000;
             }
         } else if (mAngleYSpeed != 0) {
-            dExtFrameCtrl_c &anim = *mBodyModels[this->GetBodyModelID((unsigned char)param1, 0)];
+            dExtFrameCtrl_c &anim =
+                *mModels.mBodyModels[this->GetBodyModelID((unsigned char)param1, 0)];
             if (anim.speed != 0x2000) {
                 dExtFrameCtrl_c &again =
-                    *mBodyModels[this->GetBodyModelID((unsigned char)param1, 0)];
+                    *mModels.mBodyModels[this->GetBodyModelID((unsigned char)param1, 0)];
                 again.speed = 0x2000;
             }
         } else {
-            dExtFrameCtrl_c &anim = *mBodyModels[this->GetBodyModelID((unsigned char)param1, 0)];
+            dExtFrameCtrl_c &anim =
+                *mModels.mBodyModels[this->GetBodyModelID((unsigned char)param1, 0)];
             if (anim.speed != 0x1000) {
                 dExtFrameCtrl_c &again =
-                    *mBodyModels[this->GetBodyModelID((unsigned char)param1, 0)];
+                    *mModels.mBodyModels[this->GetBodyModelID((unsigned char)param1, 0)];
                 again.speed = 0x1000;
             }
         }
@@ -10224,7 +10236,8 @@ int Player::St_Swim_Main()
         if (func_ov002_020ce324(this) != 0) return 1;
         if (t4 != 0) {
             this->SetAnim(0xa6, 0, 0x1000, 0);
-            if (mBodyModels[this->GetBodyModelID((unsigned char)param1, 0)]->WillHitFrame(0) != 0) {
+            if (mModels.mBodyModels[this->GetBodyModelID((unsigned char)param1, 0)]->WillHitFrame(
+                    0) != 0) {
                 Sound::PlayBank0(0x15, mCamSpacePos);
             }
         } else {
@@ -10268,7 +10281,8 @@ int Player::St_Swim_Main()
         }
         mAttackClsn.Clear();
         {
-            dExtFrameCtrl_c &anim = *mBodyModels[this->GetBodyModelID((unsigned char)param1, 0)];
+            dExtFrameCtrl_c &anim =
+                *mModels.mBodyModels[this->GetBodyModelID((unsigned char)param1, 0)];
             t5 = ((unsigned int)anim.currFrame << 4) >> 0x10;
         }
         if ((int)t5 >= 5 && (int)t5 <= 7) {
@@ -10303,12 +10317,14 @@ int Player::St_Swim_Main()
             EndStateMusic(0x33);
             mSwimMusicPushed = 0;
         }
-        if (mBodyModels[this->GetBodyModelID((unsigned char)param1, 0)]->WillHitFrame(0) != 0) {
+        if (mModels.mBodyModels[this->GetBodyModelID((unsigned char)param1, 0)]->WillHitFrame(0) !=
+            0) {
             Sound::PlayBank0(0x15, mCamSpacePos);
         }
         break;
     case 9:
-        if (mBodyModels[this->GetBodyModelID((unsigned char)param1, 0)]->WillHitFrame(0xd) != 0) {
+        if (mModels.mBodyModels[this->GetBodyModelID((unsigned char)param1, 0)]->WillHitFrame(
+                0xd) != 0) {
             func_ov002_020daa74();
         }
         if (this->FinishedAnim() != 0) {
@@ -10491,13 +10507,13 @@ int func_ov002_020ce5f8(char* c) {
 
     {
         u32 idx = self->GetBodyModelID(self->param1 & 0xff, 0);
-        dExtAnmModel_c *m1 = self->mBodyModels[idx];
+        dExtAnmModel_c *m1 = self->mModels.mBodyModels[idx];
         Matrix4x3 *base;
         u32 idx2;
         dExtAnmModel_c *m2;
         base = &m1->data.transforms[15];
         idx2 = self->GetBodyModelID(self->param1 & 0xff, 0);
-        m2 = self->mBodyModels[idx2];
+        m2 = self->mModels.mBodyModels[idx2];
         MulVec3Mat4x3(&base->m[9], &m2->mat4x3, &pos);
     }
     Vec3_LslInPlace(&pos, 3);
@@ -11039,7 +11055,7 @@ int Player::St_CeilingGrate_Main()
             this->SetAnim(data_ov002_0210a60c[mStateWork & 1], 0, 0x1000, 0);
         }
         {
-            dExtFrameCtrl_c &anim = *mBodyModels[this->GetBodyModelID(param1 & 0xff, 0)];
+            dExtFrameCtrl_c &anim = *mModels.mBodyModels[this->GetBodyModelID(param1 & 0xff, 0)];
             if ((u32)(anim.currFrame << 4) >> 0x10 < 0x21)
                 break;
         }
@@ -11060,7 +11076,7 @@ int Player::St_CeilingGrate_Main()
         if (spd < 0x800)
             spd = 0x800;
         {
-            dExtFrameCtrl_c &anim = *mBodyModels[this->GetBodyModelID(param1 & 0xff, 0)];
+            dExtFrameCtrl_c &anim = *mModels.mBodyModels[this->GetBodyModelID(param1 & 0xff, 0)];
             anim.speed = spd;
         }
         if (this->FinishedAnim() != 0) {
@@ -11723,7 +11739,7 @@ int Player::St_LedgeGrab_Main()
     this->ChangeState(data_ov002_0211013c);
   if(this->IsAnim(0x20)){
     int id=this->GetBodyModelID(param1&0xff, 0);
-    dExtAnmModel_c *anim = mBodyModels[id];
+    dExtAnmModel_c *anim = mModels.mBodyModels[id];
     if (anim->WillHitFrame(0x1e))
         Sound::PlayBank0(mGroundSoundType + 0x40, mCamSpacePos);
   }
@@ -12028,16 +12044,16 @@ int Player::St_Crawl_Main()
         s16 val1 = *(s16*)((char*)data_0209f4a0 + off);
         if (val1 >= 0x200 && ((*(u16*)((char*)data_0209f49c + off) & 0x400) != 0 || func_ov002_020d1164(((char*)this)) != 0)) {
             int id = this->GetBodyModelID(param1 & 0xff, 0);
-            dExtAnmModel_c *anim = mBodyModels[id];
+            dExtAnmModel_c *anim = mModels.mBodyModels[id];
             if (anim->WillHitFrame(0xe) ||
-                mBodyModels[this->GetBodyModelID(param1 & 0xff, 0)]->WillHitFrame(0x1c)) {
+                mModels.mBodyModels[this->GetBodyModelID(param1 & 0xff, 0)]->WillHitFrame(0x1c)) {
                 Sound::PlayBank0(mGroundSoundType + 0xc0, mCamSpacePos);
             }
             int shifted = mHorzSpeed >> 2;
             int id3 = this->GetBodyModelID(param1 & 0xff, 0);
             /* Launder kept: storing through mBodyModels[id3] directly moves bytes. */
             dExtFrameCtrl_c *anim3 = reinterpret_cast<dExtFrameCtrl_c *>(
-                (long long)(int)&static_cast<dExtFrameCtrl_c &>(*mBodyModels[id3]));
+                (long long)(int)&static_cast<dExtFrameCtrl_c &>(*mModels.mBodyModels[id3]));
             anim3->speed = shifted;
             if (func_ov002_020d36d8(((char*)this), 1))
                 return 1;
@@ -12309,7 +12325,7 @@ int Player::St_HoldHeavy_Main()
             } else {
                 u32 arg = (u8)param1;
                 int modelIdx = this->GetBodyModelID(arg, 0);
-                if (mBodyModels[modelIdx]->WillHitFrame(6)) {
+                if (mModels.mBodyModels[modelIdx]->WillHitFrame(6)) {
                     dActor_c *heavy = *(dActor_c **)((char *)&mHeldObj);
                     if (heavy != 0) {
                         heavy->mFlags |= 0x4000;
@@ -12366,7 +12382,8 @@ int Player::St_HoldHeavy_Main()
     }
 
     if (mHorzSpeed == 0) {
-        if (this->FinishedAnim() || !mBodyModels[this->GetBodyModelID((u8)param1, 0)]->GetFlags()) {
+        if (this->FinishedAnim() ||
+            !mModels.mBodyModels[this->GetBodyModelID((u8)param1, 0)]->GetFlags()) {
             this->SetAnim(data_ov002_020ff254[mStateWork + 2], 0, 0x1000, 0);
         }
     } else {
@@ -12454,7 +12471,7 @@ int Player::St_HoldLight_Main()
             } else {
                 u32 arg = (u8)param1;
                 int modelIdx = this->GetBodyModelID(arg, 0);
-                if (mBodyModels[modelIdx]->WillHitFrame(6)) {
+                if (mModels.mBodyModels[modelIdx]->WillHitFrame(6)) {
                     dActor_c *light = *(dActor_c **)((char *)&mHeldObj);
                     if (light != 0) {
                         u32 *p = &light->mFlags;
@@ -12533,7 +12550,8 @@ int Player::St_HoldLight_Main()
     }
 
     if (mHorzSpeed == 0) {
-        if (this->FinishedAnim() || !mBodyModels[this->GetBodyModelID((u8)param1, 0)]->GetFlags()) {
+        if (this->FinishedAnim() ||
+            !mModels.mBodyModels[this->GetBodyModelID((u8)param1, 0)]->GetFlags()) {
             dActor_c *light = *(dActor_c **)((char *)&mHeldObj);
             u32 animId = 0x33;
             if (light != 0) {
@@ -12631,7 +12649,7 @@ void func_ov002_020d1f78(void *selfPtr, u32 param)
 
     if (p->param1 == 2 && flag == 0) {
         id = _ZNK6Player14GetBodyModelIDEjb(self, p->param1 & 0xff, 0);
-        anim = (char *)((long long)(int)&(dExtFrameCtrl_c &)*p->mBodyModels[id]);
+        anim = (char *)((long long)(int)&(dExtFrameCtrl_c &)*p->mModels.mBodyModels[id]);
         w = ((dExtFrameCtrl_c *)anim)->currFrame;
         _ZN6Player7SetAnimEjiit(self, 0x3f, 0, 0x2800, (w << 4) >> 16);
     } else {
@@ -12643,9 +12661,9 @@ void func_ov002_020d1f78(void *selfPtr, u32 param)
     }
 
     id = _ZNK6Player14GetBodyModelIDEjb(self, p->param1 & 0xff, 0);
-    if (!p->mBodyModels[id]->WillHitFrame(4)) {
+    if (!p->mModels.mBodyModels[id]->WillHitFrame(4)) {
         id = _ZNK6Player14GetBodyModelIDEjb(self, p->param1 & 0xff, 0);
-        if (!p->mBodyModels[id]->WillHitFrame(0x13))
+        if (!p->mModels.mBodyModels[id]->WillHitFrame(0x13))
             return;
     }
 
@@ -12851,7 +12869,7 @@ int Player::St_Wait_Main()
 
     case 8: {
         if (!(*(unsigned short *)(data_0209f49c + gActivePlayerSlot * 0x18) & 0x800) &&
-            mBodyModels[this->GetBodyModelID(param1 & 0xff, 0)]->WillHitFrame(0)) {
+            mModels.mBodyModels[this->GetBodyModelID(param1 & 0xff, 0)]->WillHitFrame(0)) {
             Sound::PlayCharVoice(mCharacter, 0x2c, mCamSpacePos);
         }
     }
@@ -12926,23 +12944,25 @@ int Player::St_Wait_Main()
             break;
         case 0: {
             int idA = this->GetBodyModelID(x1&0xff, 0);
-            dExtAnmModel_c *animA = mBodyModels[idA];
+            dExtAnmModel_c *animA = mModels.mBodyModels[idA];
             if (animA->WillHitFrame(0x5a)) {
                 Sound::PlayCharVoice(mCharacter, 0x2d, mCamSpacePos);
-            } else if (mBodyModels[this->GetBodyModelID(param1 & 0xff, 0)]->WillHitFrame(0x3a) ||
-                       mBodyModels[this->GetBodyModelID(param1 & 0xff, 0)]->WillHitFrame(0x44)) {
+            } else if (mModels.mBodyModels[this->GetBodyModelID(param1 & 0xff, 0)]->WillHitFrame(
+                           0x3a) ||
+                       mModels.mBodyModels[this->GetBodyModelID(param1 & 0xff, 0)]->WillHitFrame(
+                           0x44)) {
                 Sound::PlayBank0(4, mCamSpacePos);
             }
             break;
         }
         case 1: {
             int idD = this->GetBodyModelID(x1&0xff, 0);
-            dExtAnmModel_c *animD = mBodyModels[idD];
+            dExtAnmModel_c *animD = mModels.mBodyModels[idD];
             if (animD->WillHitFrame(0x6e)) {
                 Sound::PlayCharVoice(mCharacter, 0x2d, mCamSpacePos);
             } else {
                 int idE = this->GetBodyModelID(param1&0xff, 0);
-                dExtAnmModel_c *animE = mBodyModels[idE];
+                dExtAnmModel_c *animE = mModels.mBodyModels[idE];
                 if (animE->WillHitFrame(0x32)) {
                     Sound::PlayBank0(0xb1, mCamSpacePos);
                 }
@@ -12951,18 +12971,20 @@ int Player::St_Wait_Main()
         }
         case 2: {
             int idF = this->GetBodyModelID(x1&0xff, 0);
-            dExtAnmModel_c *animF = mBodyModels[idF];
+            dExtAnmModel_c *animF = mModels.mBodyModels[idF];
             if (animF->WillHitFrame(0x20)) {
                 Sound::PlayBank0(2, mCamSpacePos);
-            } else if (mBodyModels[this->GetBodyModelID(param1 & 0xff, 0)]->WillHitFrame(0x47) ||
-                       mBodyModels[this->GetBodyModelID(param1 & 0xff, 0)]->WillHitFrame(0x60)) {
+            } else if (mModels.mBodyModels[this->GetBodyModelID(param1 & 0xff, 0)]->WillHitFrame(
+                           0x47) ||
+                       mModels.mBodyModels[this->GetBodyModelID(param1 & 0xff, 0)]->WillHitFrame(
+                           0x60)) {
                 Sound::PlayBank0(3, mCamSpacePos);
             }
             break;
         }
         case 3: {
             int idI = this->GetBodyModelID(x1&0xff, 0);
-            dExtAnmModel_c *animI = mBodyModels[idI];
+            dExtAnmModel_c *animI = mModels.mBodyModels[idI];
             if (animI->WillHitFrame(0xad)) {
                 Sound::PlayBank0(0x50, mCamSpacePos);
             }
@@ -12979,7 +13001,7 @@ int Player::St_Wait_Main()
 
     case 2: {
         if (mMuteSleepVoice == 0 &&
-            mBodyModels[this->GetBodyModelID(param1 & 0xff, 0)]->WillHitFrame(1)) {
+            mModels.mBodyModels[this->GetBodyModelID(param1 & 0xff, 0)]->WillHitFrame(1)) {
             Sound::PlayCharVoice(mCharacter, 0x2a, mCamSpacePos);
         }
         {
@@ -13040,7 +13062,7 @@ int Player::St_Wait_Main()
         if (mStatePhase == 0) {
             func_ov002_020d2f24(((char*)this));
             if (mMuteSleepVoice == 0 &&
-                mBodyModels[this->GetBodyModelID(param1 & 0xff, 0)]->WillHitFrame(0xd)) {
+                mModels.mBodyModels[this->GetBodyModelID(param1 & 0xff, 0)]->WillHitFrame(0xd)) {
                 Sound::PlayCharVoice(mCharacter, 0x2b, mCamSpacePos);
             }
         }
@@ -13169,7 +13191,7 @@ void func_ov002_020d2f24(char* thiz)
     id = _ZNK6Player14GetBodyModelIDEjb(thiz, id & 0xff, 0);
     {
         /* q is the frame controller; m->currFrame would fold the split +0x50. */
-        int *q = (int *)((int)player->mBodyModels[id] + 0x50);
+        int *q = (int *)((int)player->mModels.mBodyModels[id] + 0x50);
         v = (u32)(((dExtFrameCtrl_c *)q)->currFrame << 4) >> 0x10;
     }
 
@@ -13239,9 +13261,9 @@ int func_ov002_020d2fdc(char *self)
         ((Player *)self)->SetAnim(0x3f, 0, r5, 0);
 
         id = _ZNK6Player14GetBodyModelIDEjb(self, p->param1 & 0xff, 0);
-        if (p->mBodyModels[id]->WillHitFrame(4) ||
+        if (p->mModels.mBodyModels[id]->WillHitFrame(4) ||
             (id = _ZNK6Player14GetBodyModelIDEjb(self, p->param1 & 0xff, 0),
-             p->mBodyModels[id]->WillHitFrame(0x13))) {
+             p->mModels.mBodyModels[id]->WillHitFrame(0x13))) {
             func_ov002_020d4c30(self);
         }
         return 0;
@@ -13576,7 +13598,7 @@ label_1f0:
     {
         u32 arg = (u8)param1;
         int modelIdx = this->GetBodyModelID(arg, 0);
-        if (mBodyModels[modelIdx]->GetFlags())
+        if (mModels.mBodyModels[modelIdx]->GetFlags())
             goto end;
     }
 
@@ -14009,7 +14031,7 @@ static inline int* GetAnim(char* c)
 {
     int _ZNK6Player14GetBodyModelIDEjb(void*, unsigned int, int);
     Player *player = (Player *)c;
-    return (int *)((char *)player->mBodyModels[_ZNK6Player14GetBodyModelIDEjb(
+    return (int *)((char *)player->mModels.mBodyModels[_ZNK6Player14GetBodyModelIDEjb(
                        c, (unsigned char)player->param1, 0)] +
                    0x50);
 }
@@ -14259,7 +14281,7 @@ willhit:
     {
         u32 arg = (u8)param1;
         int modelIdx = this->GetBodyModelID(arg, 0);
-        if (mBodyModels[modelIdx]->WillHitFrame(0x2e) != 0) {
+        if (mModels.mBodyModels[modelIdx]->WillHitFrame(0x2e) != 0) {
             mStateWork = 1;
         }
     }
@@ -14539,7 +14561,7 @@ int Player::St_BurnFire_Main()
         if (mIsAirborne == 0) {
             mStateStep = 1;
             this->SetAnim(0x3f, 0, 0x1000, 0);
-            dExtFrameCtrl_c &anim = *mBodyModels[this->GetBodyModelID(param1 & 0xff, 0)];
+            dExtFrameCtrl_c &anim = *mModels.mBodyModels[this->GetBodyModelID(param1 & 0xff, 0)];
             anim.speed = 0x4000;
         }
         break;
@@ -14564,7 +14586,7 @@ int Player::St_BurnFire_Main()
         }
         this->SetAnim(0x3f, 0, 0x1000, 0);
         {
-            dExtFrameCtrl_c &anim = *mBodyModels[this->GetBodyModelID(param1 & 0xff, 0)];
+            dExtFrameCtrl_c &anim = *mModels.mBodyModels[this->GetBodyModelID(param1 & 0xff, 0)];
             anim.speed = 0x4000;
         }
         {
@@ -15189,11 +15211,11 @@ int Player::St_Swallow_Main()
     extern void func_ov002_020d6368(char*);
     dActor_c *p360;
 
-    if (mBodyModels[this->GetBodyModelID(param1 & 0xff, 0)]->WillHitFrame(3)) {
+    if (mModels.mBodyModels[this->GetBodyModelID(param1 & 0xff, 0)]->WillHitFrame(3)) {
         func_ov002_020d71a0();
         goto L65ec;
     }
-    if (mBodyModels[this->GetBodyModelID(param1 & 0xff, 0)]->WillHitFrame(7) == 0) {
+    if (mModels.mBodyModels[this->GetBodyModelID(param1 & 0xff, 0)]->WillHitFrame(7) == 0) {
         goto L65ec;
     }
 
@@ -15583,18 +15605,18 @@ int func_ov002_020d6dac(char *self)
     {
         u8 b = player->mUseAltBodyModel;
         int model;
-        Matrix4x3 *m1 = player->mHeadModels[(b << 2) + 3]->data.transforms;
+        Matrix4x3 *m1 = player->mModels.mHeadModels[(b << 2) + 3]->data.transforms;
         model = _ZNK6Player14GetBodyModelIDEjb(self, player->param1 & 0xff, 0);
-        MulVec3Mat4x3(&m1->m[9], &player->mBodyModels[model]->mat4x3, &p1);
+        MulVec3Mat4x3(&m1->m[9], &player->mModels.mBodyModels[model]->mat4x3, &p1);
         Vec3_MulScalarInPlace((int *)&p1, 0x8000);
     }
 
     {
         u8 b2 = player->mUseAltBodyModel;
-        Matrix4x3 *m2i = &player->mHeadModels[(b2 << 2) + 3]->data.transforms[3];
+        Matrix4x3 *m2i = &player->mModels.mHeadModels[(b2 << 2) + 3]->data.transforms[3];
         int model2 = _ZNK6Player14GetBodyModelIDEjb(self, player->param1 & 0xff, 0);
         void *a0, *a1, *a2;
-        a1 = player->mBodyModels[model2];
+        a1 = player->mModels.mBodyModels[model2];
         a0 = &m2i->m[9];
         a1 = &((dExtAnmModel_c *)a1)->mat4x3;
         a2 = &p2;
@@ -15721,9 +15743,9 @@ void Player::func_ov002_020d71a0() {
     extern struct G data_ov002_0210eb88;
     char *p = (char*)this;
     this->mUseAltBodyModel = 0;
-    ((dExtAnmModel_c *)mHeadModels[3])
+    ((dExtAnmModel_c *)mModels.mHeadModels[3])
         ->SetAnim((BCA_File *)((void *)data_ov002_0210eb88.w[1]), 0x40000000, 0x1000, 0);
-    *(int *)((char *)mHeadModels[3] + 0x58) = 0;
+    *(int *)((char *)mModels.mHeadModels[3] + 0x58) = 0;
 }
 }
 
@@ -15751,14 +15773,15 @@ void func_ov002_020d71ec(char* p, int arg1)
 
     if (arg1 != 2) {
         dExtFrameCtrl_c &anim =
-            *player->mBodyModels[_ZNK6Player14GetBodyModelIDEjb(p, player->param1 & 0xff, 0)];
+            *player->mModels
+                 .mBodyModels[_ZNK6Player14GetBodyModelIDEjb(p, player->param1 & 0xff, 0)];
         shifted = ((u32)anim.currFrame << 4) >> 0x10;
         *(struct P2*)&arr[0] = data_ov002_0210a34c;
         *(struct P2*)&arr[2] = data_ov002_0210a084;
         ((Player *)p)->SetAnim(arr[arg1], 0x40000000, 0x1000, 0);
 
         if (player->mUseAltBodyModel == 0) {
-            ((dExtAnmModel_c *)player->mHeadModels[3])
+            ((dExtAnmModel_c *)player->mModels.mHeadModels[3])
                 ->SetAnim((BCA_File *)(*(void **)((char *)(&arr[2])[arg1] + 4)), 0x40000000, 0x1000,
                           0);
         }
@@ -15766,10 +15789,11 @@ void func_ov002_020d71ec(char* p, int arg1)
         if (arg1 == 1) {
             val = data_ov002_020ff0f8[shifted];
             dExtFrameCtrl_c &body =
-                *player->mBodyModels[_ZNK6Player14GetBodyModelIDEjb(p, player->param1 & 0xff, 0)];
+                *player->mModels
+                     .mBodyModels[_ZNK6Player14GetBodyModelIDEjb(p, player->param1 & 0xff, 0)];
             val = ((u32)val << 0x10) >> 4;
             body.currFrame = val;
-            ((dExtAnmModel_c *)player->mHeadModels[3])->currFrame = val;
+            ((dExtAnmModel_c *)player->mModels.mHeadModels[3])->currFrame = val;
         }
 
         player->mStateStep = 1;
@@ -15777,7 +15801,7 @@ void func_ov002_020d71ec(char* p, int arg1)
     }
 
     ((Player *)p)->SetAnim(0x6c, 0x40000000, -0x1000, 0);
-    ((dExtAnmModel_c *)player->mHeadModels[3])
+    ((dExtAnmModel_c *)player->mModels.mHeadModels[3])
         ->SetAnim((BCA_File *)(*(void **)((char *)&data_ov002_0210eb88 + 4)), 0x40000000, -0x1000,
                   0);
     player->mStateStep = 2;
@@ -15917,10 +15941,10 @@ int Player::St_YoshiPower_Main()
     switch (mStateStep) {
     case 0: {
         if (mStateArg == 0) {
-            int t4 = (((dExtAnmModel_c *)mHeadModels[3])->currFrame >> 0xc) << 0x10;
+            int t4 = (((dExtAnmModel_c *)mModels.mHeadModels[3])->currFrame >> 0xc) << 0x10;
             int id0 = this->GetBodyModelID(this->param1 & 0xff, 0);
             /* Split: a plain ->currFrame folds +0x50 and +8 into one +0x58 and moves bytes. */
-            dp = (char *)mBodyModels[id0];
+            dp = (char *)mModels.mBodyModels[id0];
             dp = (char *)&(dExtFrameCtrl_c &)*(dExtAnmModel_c *)dp;
             ((dExtFrameCtrl_c *)dp)->currFrame = (unsigned int)t4 >> 4;
             mStateArg = 1;
@@ -15941,13 +15965,13 @@ int Player::St_YoshiPower_Main()
         mHeadRotMode = flag;
         if (*(void**)(&mObjInMouth) != 0) {
             int b = mUseAltBodyModel;
-            Matrix4x3 *t4 = &mHeadModels[(b << 2) + 3]->data.transforms[3];
+            Matrix4x3 *t4 = &mModels.mHeadModels[(b << 2) + 3]->data.transforms[3];
             if (*(void**)(&mObjInMouth) != 0) {
                 if (!(((dActor_c *)*(void **)&mObjInMouth)->mFlags & 0x20000))
                     flag = 0;
                 if (flag != 0) {
                     int id1 = this->GetBodyModelID(this->param1 & 0xff, 0);
-                    MulVec3Mat4x3(&t4->m[9], &mBodyModels[id1]->mat4x3, &tmp);
+                    MulVec3Mat4x3(&t4->m[9], &mModels.mBodyModels[id1]->mat4x3, &tmp);
                     Vec3_MulScalarInPlace(&tmp, 0x8000);
                     dp = (char*)*(void**)(&mObjInMouth);
                     ((dActor_c *)dp)->mPosX = tmp.x;
@@ -15956,7 +15980,7 @@ int Player::St_YoshiPower_Main()
                 }
             }
             int id2 = this->GetBodyModelID(this->param1 & 0xff, 0);
-            if (mBodyModels[id2]->WillHitFrame(0xa) != 0) {
+            if (mModels.mBodyModels[id2]->WillHitFrame(0xa) != 0) {
                 Vector3 *src = &mPos;
                 dp = (char*)*(void**)(&mObjInMouth);
                 ((dActor_c *)dp)->mPosX = src->x;
@@ -15987,7 +16011,7 @@ int Player::St_YoshiPower_Main()
                 }
             } else {
                 int id3 = this->GetBodyModelID(this->param1 & 0xff, 0);
-                if (mBodyModels[id3]->WillHitFrame(0xc) != 0) {
+                if (mModels.mBodyModels[id3]->WillHitFrame(0xc) != 0) {
                     mUseAltBodyModel = 1;
                     if ((*(dActor_c **)(&mObjInMouth))->OnYoshiTryEat() == 5) {
                         int cond2 = (((dActor_c *)mObjInMouth)->actorID == 0x132);
@@ -16031,7 +16055,8 @@ int Player::St_YoshiPower_Main()
             return 1;
         }
         int id4 = this->GetBodyModelID(this->param1 & 0xff, 0);
-        int *a50b = (int *)((long long)(int)((char *)&(dExtFrameCtrl_c &)*mBodyModels[id4]));
+        int *a50b =
+            (int *)((long long)(int)((char *)&(dExtFrameCtrl_c &)*mModels.mBodyModels[id4]));
         if ((unsigned short)(((dExtFrameCtrl_c *)a50b)->currFrame >> 0xc) == 0) {
             if (mIsAirborne != 0) {
                 this->ChangeState(data_ov002_021101b4);
@@ -16060,20 +16085,20 @@ int Player::St_YoshiPower_Main()
 
     case 4: {
         int id5 = this->GetBodyModelID(this->param1 & 0xff, 0);
-        if (mBodyModels[id5]->WillHitFrame(3) != 0) {
+        if (mModels.mBodyModels[id5]->WillHitFrame(3) != 0) {
             int z = 0;
             mUseAltBodyModel = z;
             if (mUseAltBodyModel == 0) {
                 int id6 = this->GetBodyModelID(this->param1 & 0xff, z);
-                int *a50c =
-                    (int *)((long long)(int)((char *)&(dExtFrameCtrl_c &)*mBodyModels[id6]));
+                int *a50c = (int *)((
+                    long long)(int)((char *)&(dExtFrameCtrl_c &)*mModels.mBodyModels[id6]));
                 _ZN14dExtAnmModel_c7SetAnimEP8BCA_Fileiit(
-                    mHeadModels[3], (void *)data_ov002_0210e3d8[1], 0x40000000, 0x1000,
+                    mModels.mHeadModels[3], (void *)data_ov002_0210e3d8[1], 0x40000000, 0x1000,
                     (unsigned int)(((dExtFrameCtrl_c *)a50c)->currFrame << 4) >> 0x10);
             }
         }
         int id7 = this->GetBodyModelID(this->param1 & 0xff, 0);
-        if (mBodyModels[id7]->WillHitFrame(4) != 0) {
+        if (mModels.mBodyModels[id7]->WillHitFrame(4) != 0) {
             obj0 = *(dActor_c **)(&mObjInMouth);
             if (obj0 != 0) {
                 int cond3 = (obj0->actorID == 0xbf);
@@ -16098,7 +16123,8 @@ int Player::St_YoshiPower_Main()
     case 5: {
         if (mStateTimer != 0) {
             int id8 = this->GetBodyModelID(this->param1 & 0xff, 0);
-            int *a50d = (int *)((long long)(int)((char *)&(dExtFrameCtrl_c &)*mBodyModels[id8]));
+            int *a50d =
+                (int *)((long long)(int)((char *)&(dExtFrameCtrl_c &)*mModels.mBodyModels[id8]));
             if (((unsigned int)(((dExtFrameCtrl_c *)a50d)->currFrame << 4) >> 0x10) >= 4) {
                 int i2 = (*(unsigned short*)&mAngleY >> 4) * 2;
                 short* tbl = data_02082214;
@@ -16121,10 +16147,10 @@ int Player::St_YoshiPower_Main()
                     int z2 = 0;
                     mUseAltBodyModel = z2;
                     int id9 = this->GetBodyModelID(this->param1 & 0xff, z2);
-                    int *a50e =
-                        (int *)((long long)(int)((char *)&(dExtFrameCtrl_c &)*mBodyModels[id9]));
+                    int *a50e = (int *)((
+                        long long)(int)((char *)&(dExtFrameCtrl_c &)*mModels.mBodyModels[id9]));
                     _ZN14dExtAnmModel_c7SetAnimEP8BCA_Fileiit(
-                        mHeadModels[3], (void *)data_ov002_0210e3d8[1], 0x40000000, 0x1000,
+                        mModels.mHeadModels[3], (void *)data_ov002_0210e3d8[1], 0x40000000, 0x1000,
                         (unsigned int)(((dExtFrameCtrl_c *)a50e)->currFrame << 4) >> 0x10);
                 }
                 return 1;
@@ -16144,7 +16170,7 @@ int Player::St_YoshiPower_Main()
         }
         mPrevAngleY = mAngleY;
         int id10 = this->GetBodyModelID(this->param1 & 0xff, 0);
-        if (mBodyModels[id10]->WillHitFrame(6) != 0) {
+        if (mModels.mBodyModels[id10]->WillHitFrame(6) != 0) {
             this->func_ov002_020daa74();
             Sound::PlayCharVoice(0, 0x102, mCamSpacePos);
             goto common_tail;
@@ -16160,7 +16186,7 @@ int Player::St_YoshiPower_Main()
     common_tail:
         Player_AdvanceAnims(c);
         if (mUseAltBodyModel == 0 && mStateStep != 6) {
-            ((dExtAnmModel_c *)mHeadModels[3])->Advance();
+            ((dExtAnmModel_c *)mModels.mHeadModels[3])->Advance();
         }
         return 1;
     }
@@ -16469,7 +16495,7 @@ int func_ov002_020d853c(char *c, char *o) {
     if (((Player *)c)->IsState(data_ov002_02110574)) {
         int j = (player->mPunchKickStep << 1) & 0xff;
         unsigned idx = _ZNK6Player14GetBodyModelIDEjb(c, player->param1 & 0xff, 0);
-        dExtAnmModel_c *mp = player->mBodyModels[idx];
+        dExtAnmModel_c *mp = player->mModels.mBodyModels[idx];
         int v = ((dExtFrameCtrl_c *)((long long)(int)&(dExtFrameCtrl_c &)*mp))->currFrame;
         int k = (unsigned short)(v >> 12);
         if (k < data_ov002_0210a5dc[j] || k > data_ov002_0210a5dc[j + 1])
@@ -16695,7 +16721,8 @@ void func_ov002_020d8a50(char* self, int which)
     dExtFrameCtrl_c *anim;
     int frame;
 
-    model = player->mBodyModels[_ZNK6Player14GetBodyModelIDEjb(self, player->param1 & 0xff, 0)];
+    model =
+        player->mModels.mBodyModels[_ZNK6Player14GetBodyModelIDEjb(self, player->param1 & 0xff, 0)];
     /* Launder kept: reading model->currFrame directly moves bytes. */
     anim = reinterpret_cast<dExtFrameCtrl_c *>(
         (long long)(int)&static_cast<dExtFrameCtrl_c &>(*model));
@@ -16725,7 +16752,8 @@ void func_ov002_020d8a50(char* self, int which)
     if (flag == 1)
         player->mAttackClsn.Update();
 
-    model = player->mBodyModels[_ZNK6Player14GetBodyModelIDEjb(self, player->param1 & 0xff, 0)];
+    model =
+        player->mModels.mBodyModels[_ZNK6Player14GetBodyModelIDEjb(self, player->param1 & 0xff, 0)];
     if (!model->WillHitFrame(data_ov002_0210a5cc[i2]))
         return;
 
@@ -17303,11 +17331,11 @@ void Player::func_ov002_020d98b4() {
     }
     {
         unsigned int id = this->GetBodyModelID(param1 & 0xff, 0);
-        Matrix4x3 *bone = &mBodyModels[id]->data.transforms[15];
+        Matrix4x3 *bone = &mModels.mBodyModels[id]->data.transforms[15];
         unsigned int id2 = this->GetBodyModelID(param1 & 0xff, 0);
         Vector3 v;
         Vector3 s;
-        MulVec3Mat4x3(&bone->m[9], &mBodyModels[id2]->mat4x3, &v);
+        MulVec3Mat4x3(&bone->m[9], &mModels.mBodyModels[id2]->mat4x3, &v);
         Vec3_MulScalar(&s, &v, 0x8000);
         s.y += 0x50000;
         mParticle1 = (s32)Particle::System::New((u32)mParticle1, 0xd6, s.x, s.y, s.z, 0, 0);
@@ -17343,7 +17371,7 @@ void func_ov002_020d9a4c(char *c) {
     extern u8 data_ov002_02109dc4[];
     Player *player = (Player *)c;
     int idx = _ZNK6Player14GetBodyModelIDEjb(c, player->param1 & 0xff, 0);
-    dExtAnmModel_c *anim = player->mBodyModels[idx];
+    dExtAnmModel_c *anim = player->mModels.mBodyModels[idx];
     if (anim->WillHitFrame(data_ov002_02109dc4[player->mStateStep & 7]) != 0)
         player->mStateWork |= 1;
 }
@@ -17396,7 +17424,7 @@ int Player::St_Hurt_Init()
     u8 old;
     this->SetAnim(data_ov002_0210a6d4[mStateStep & 7], 0x40000000, 0x1000, 0);
     mid = this->GetBodyModelID(param1 & 0xff, 0);
-    m = (char *)mBodyModels[mid];
+    m = (char *)mModels.mBodyModels[mid];
     m = (char *)((unsigned int)&(dExtFrameCtrl_c &)*(dExtAnmModel_c *)m & 0xFFFFFFFFU);
     ((dExtFrameCtrl_c *)m)->currFrame = 0;
     mStatePhase = 0;
@@ -18100,7 +18128,7 @@ int func_ov002_020dacb4(char *p, char *actor)
         {
             int player_var = ((Player *)p)->param1;
             int model_idx = _ZNK6Player14GetBodyModelIDEjb(p, player_var & 0xff, 0);
-            dExtAnm2Model_c *model = ((Player *)p)->mBodyModels[model_idx];
+            dExtAnm2Model_c *model = ((Player *)p)->mModels.mBodyModels[model_idx];
             int j = (int)data_ov002_020ff480[offset + player_var]->filePtr;
             model->Func_020162C4(j, 0, 0x1000, 0);
         }
@@ -18125,7 +18153,7 @@ int Player::St_Throw_Main() {
     if (*(char **)((char *)&mHeldObj)) {
         int r4 = 5;
         int id = this->GetBodyModelID(param1 & 0xff, 0);
-        dExtAnmModel_c *anim = mBodyModels[id];
+        dExtAnmModel_c *anim = mModels.mBodyModels[id];
         if (anim->WillHitFrame(0)) {
             if (func_ov002_020c19d0(0x40, 0x32))
                 r4 = 0;
@@ -18147,7 +18175,7 @@ int Player::St_Throw_Main() {
     }
     Ld0:
         int id2 = this->GetBodyModelID(param1 & 0xff, 0);
-        dExtAnmModel_c *anim2 = mBodyModels[id2];
+        dExtAnmModel_c *anim2 = mModels.mBodyModels[id2];
         if (anim2->WillHitFrame(r4)) {
             int b2 = (((dActor_c *)mHeldObj)->mFlags & 0x200) ? 1 : 0;
             if (b2 == 0)
@@ -18371,13 +18399,13 @@ int Player::St_Grabbed_Main()
 
     if (mStateTimer != 0) {
         id = this->GetBodyModelID(param1 & 0xff, 0);
-        model = (char *)mBodyModels[id];
+        model = (char *)mModels.mBodyModels[id];
         pRate = (int *)&(dExtFrameCtrl_c &)*(dExtAnmModel_c *)model;
         pRate = (int *)&((dExtFrameCtrl_c *)pRate)->speed;
         *pRate = 0x4000;
     } else {
         id = this->GetBodyModelID(param1 & 0xff, 0);
-        model = (char *)mBodyModels[id];
+        model = (char *)mModels.mBodyModels[id];
         pRate = (int *)&(dExtFrameCtrl_c &)*(dExtAnmModel_c *)model;
         pRate = (int *)&((dExtFrameCtrl_c *)pRate)->speed;
         *pRate = 0x1000;
@@ -18581,9 +18609,9 @@ void Player::func_ov002_020db8d8()
     backup.y = this->mPosY;
     backup.z = this->mPosZ;
     b = this->mUseAltBodyModel;
-    m = &mHeadModels[(b << 2) + 3]->data.transforms[3];
+    m = &mModels.mHeadModels[(b << 2) + 3]->data.transforms[3];
     model = this->GetBodyModelID(param1 & 0xff, 0);
-    MulVec3Mat4x3(&m->m[9], &mBodyModels[model]->mat4x3, &tmp);
+    MulVec3Mat4x3(&m->m[9], &mModels.mBodyModels[model]->mat4x3, &tmp);
     Vec3_MulScalar(&scaled, &tmp, 0x8000);
     this->mPosX = scaled.x;
     this->mPosY = scaled.y;
@@ -19027,7 +19055,7 @@ L14c:
 L18c:
     {
         int id = this->GetBodyModelID(param1 & 0xff, 0);
-        dExtAnmModel_c *anim = mBodyModels[id];
+        dExtAnmModel_c *anim = mModels.mBodyModels[id];
         u32 w = ((dExtFrameCtrl_c *)((long long)(int)&(dExtFrameCtrl_c &)*anim))->currFrame;
         if ((u16)(w >> 12) < 4)
             goto L1d8;
@@ -19721,7 +19749,7 @@ void func_ov002_020dd5ec(char *c) {
     ((Player *)c)->SetAnim(data_ov002_0210a5c0[player->mPunchKickStep], 0x40000000, 0x1000, 0);
     model = _ZNK6Player14GetBodyModelIDEjb(c, player->param1 & 0xff, 0);
     new_var2 = -0x4000;
-    new_var = (int *)&player->mBodyModels[model];
+    new_var = (int *)&player->mModels.mBodyModels[model];
     new_var3 = (int *)&(dExtFrameCtrl_c &)*(dExtAnmModel_c *)*new_var;
     if ((c && c) && c) {
     }
@@ -20367,7 +20395,7 @@ s32 Player::St_Balloon_Main()
     func_ov002_020de3d0(this, &mAngleZ, &mAngleYSpeed);
     func_ov002_020de3d0(this, &mAngleX, &mAngleXSpeed);
     mPrevVertSpeed = mVertSpeed;
-    mModelAnim3.Advance();
+    mModels.mModelAnim3.Advance();
     return 1;
 }
 }
@@ -20394,9 +20422,9 @@ int Player::St_Balloon_Init() {
     mAngleYSpeed = 0x100;
     mAngleXSpeed = 0x100;
     mPrevVertSpeed = mVertSpeed;
-    ((dExtAnmModel_c *)((char *)&mModelAnim3))
+    ((dExtAnmModel_c *)((char *)&mModels.mModelAnim3))
         ->SetAnim((BCA_File *)((void *)data_ov002_0210e750[1]), 0x40000000, 0x1000, 0);
-    mModelAnim3.currFrame = 0;
+    mModels.mModelAnim3.currFrame = 0;
     return 1;
 }
 }
@@ -21235,8 +21263,10 @@ skip:
             }
             {
                 Matrix4x3 *bone =
-                    &mBodyModels[this->GetBodyModelID(this->param1 & 0xff, 0)]->data.transforms[14];
-                dExtAnmModel_c *m2 = mBodyModels[this->GetBodyModelID(this->param1 & 0xff, 0)];
+                    &mModels.mBodyModels[this->GetBodyModelID(this->param1 & 0xff, 0)]
+                         ->data.transforms[14];
+                dExtAnmModel_c *m2 =
+                    mModels.mBodyModels[this->GetBodyModelID(this->param1 & 0xff, 0)];
                 MulVec3Mat4x3(&bone->m[9], &m2->mat4x3, &vec32);
                 Vec3_MulScalarInPlace(&vec32.x, 0x8000);
                 mParticle2 = Particle::System::New(mParticle2, 0xd0, sp14, sp18, sp1C,
@@ -21244,8 +21274,10 @@ skip:
             }
             {
                 Matrix4x3 *bone =
-                    &mBodyModels[this->GetBodyModelID(this->param1 & 0xff, 0)]->data.transforms[11];
-                dExtAnmModel_c *m2 = mBodyModels[this->GetBodyModelID(this->param1 & 0xff, 0)];
+                    &mModels.mBodyModels[this->GetBodyModelID(this->param1 & 0xff, 0)]
+                         ->data.transforms[11];
+                dExtAnmModel_c *m2 =
+                    mModels.mBodyModels[this->GetBodyModelID(this->param1 & 0xff, 0)];
                 MulVec3Mat4x3(&bone->m[9], &m2->mat4x3, &vec32);
                 Vec3_MulScalarInPlace(&vec32.x, 0x8000);
                 mParticle3 = Particle::System::New(mParticle3, 0xd0, sp14, sp18, sp1C,
@@ -22045,7 +22077,7 @@ int Player::St_SideFlip_Main()
 
         if (IsState(*(Player::State *)data_ov002_021101e4)) {
             int id = this->GetBodyModelID(param1 & 0xff, 0);
-            dExtAnmModel_c *anim = mBodyModels[id];
+            dExtAnmModel_c *anim = mModels.mBodyModels[id];
             u32 w = ((dExtFrameCtrl_c *)((long long)(int)&(dExtFrameCtrl_c &)*anim))->currFrame;
             if ((u16)(w >> 12) == 0x10) {
                 Sound::PlayBank0(0xf, mCamSpacePos);
@@ -22371,7 +22403,8 @@ void func_ov002_020e1c20(char *c) {
             player->mVertAccel = 0;
             ((Player *)c)->SetAnim(0x3f, 0, 0x1000, 0);
             dExtFrameCtrl_c &anim =
-                *player->mBodyModels[_ZNK6Player14GetBodyModelIDEjb(c, player->param1 & 0xff, 0)];
+                *player->mModels
+                     .mBodyModels[_ZNK6Player14GetBodyModelIDEjb(c, player->param1 & 0xff, 0)];
             anim.speed = 0x4000;
         }
     }
@@ -22402,7 +22435,8 @@ void func_ov002_020e1e70(char *c) {
     if ((*((unsigned short *)(&data_0209f49c[gActivePlayerSlot * 0x18]))) & 2) {
         ((Player *)c)->SetAnim(0x3f, 0, 0x1000, 0);
         dExtFrameCtrl_c &anim =
-            *player->mBodyModels[_ZNK6Player14GetBodyModelIDEjb(c, player->param1 & 0xff, 0)];
+            *player->mModels
+                 .mBodyModels[_ZNK6Player14GetBodyModelIDEjb(c, player->param1 & 0xff, 0)];
         anim.speed = 0x4000;
         player->mLoopingSoundHandle =
             func_02012120(player->mLoopingSoundHandle, player->mCharacter, 0x18,
@@ -22492,7 +22526,7 @@ int Player::St_Jump_Main()
 
             {
                 u32 id = this->GetBodyModelID(*(u32 *)((char *)&param1) & 0xff, 0);
-                dExtAnmModel_c *anim = mBodyModels[id];
+                dExtAnmModel_c *anim = mModels.mBodyModels[id];
                 u32 w = ((dExtFrameCtrl_c *)((long long)(int)&(dExtFrameCtrl_c &)*anim))->currFrame;
                 u16 t = (u16)(w >> 12);
                 if (t == 4 || t == 0x18 || t == 0x2c) {
@@ -23329,41 +23363,41 @@ int Player::CleanupResources()
     func_ov002_020e032c(((char *)this));
     for (i = 0; i < 4; i++) {
         int j;
-        VB *p = (VB *)mBodyModels[i];
+        VB *p = (VB *)mModels.mBodyModels[i];
         if (p != 0) {
             if (p != 0)
                 p->v1();
         }
-        p = (VB *)mHeadModels[i];
+        p = (VB *)mModels.mHeadModels[i];
         if (p != 0) {
             if (p != 0)
                 p->v1();
         }
         j = i + 4;
-        p = (VB *)mHeadModels[j];
+        p = (VB *)mModels.mHeadModels[j];
         if (p != 0) {
             if (p != 0)
                 p->v1();
         }
         {
-            int q = mBodyTexParams[i];
+            int q = mModels.mBodyTexParams[i];
             if (q != 0)
                 func_0203cbc0((void *)q);
-            q = mHeadTexParams[i];
+            q = mModels.mHeadTexParams[i];
             if (q != 0)
                 func_0203cbc0((void *)q);
-            q = mHeadTexParams[j];
+            q = mModels.mHeadTexParams[j];
             if (q != 0)
                 func_0203cbc0((void *)q);
         }
     }
     {
-        VB *p = (VB *)mBodyModels[4];
+        VB *p = (VB *)mModels.mBodyModels[4];
         if (p != 0) {
             if (p != 0)
                 p->v1();
         }
-        p = (VB *)mSleepBubbleModel;
+        p = (VB *)mModels.mSleepBubbleModel;
         if (p != 0) {
             if (p != 0)
                 p->v1();
@@ -23571,7 +23605,7 @@ int Player::Render()
     if (!(mFlags & 0x10)) {
         dExtAnm2Model_c *bodyMdl;
         int i;
-        bodyMdl = mBodyModels[this->GetBodyModelID(mBodyModelId, 1)];
+        bodyMdl = mModels.mBodyModels[this->GetBodyModelID(mBodyModelId, 1)];
         if (mIsBalloon == 0) {
             bodyMdl->ApplyOpacity(mOpacity, 0);
             {
@@ -23591,35 +23625,36 @@ int Player::Render()
             }
             bodyMdl->dExtSimpleModel_c::Render(&mScale);
             if (param1 == 1) {
-                mTexSeqPlayer[0].Update(mBodyModels[1]->data);
-                mTexSeqPlayer[0].currFrame = mPlayerTexFrame << 12;
+                mModels.mTexSeqPlayer[0].Update(mModels.mBodyModels[1]->data);
+                mModels.mTexSeqPlayer[0].currFrame = mPlayerTexFrame << 12;
             }
             func_ov002_020e3e00(bodyMdl, &mScale, mOpacity);
             if (mDrawnHasWings != 0) {
-                mModelAnim4.ApplyOpacity(mOpacity, 0);
+                mModels.mModelAnim4.ApplyOpacity(mOpacity, 0);
                 if (mBodyModelId == 3) {
                     Matrix4x3_FromTranslation(&data_020a0e68, -0x1b33, -0x666, 0);
                     Matrix4x3_ApplyInPlaceToRotationZ(&data_020a0e68, 0x4000);
                     MulMat4x3Mat4x3(&data_020a0e68, &bodyMdl->data.transforms[8], &data_020a0e68);
-                    ((VObj *)((char *)&mModelAnim4))->m18(&data_020a0e68, &mScale);
+                    ((VObj *)((char *)&mModels.mModelAnim4))->m18(&data_020a0e68, &mScale);
                 } else {
-                    ((VObj *)((char *)&mModelAnim4))->m18(&bodyMdl->data.transforms[15], &mScale);
+                    ((VObj *)((char *)&mModels.mModelAnim4))
+                        ->m18(&bodyMdl->data.transforms[15], &mScale);
                 }
             }
         } else {
-            mModelAnim3.ApplyOpacity(mOpacity, 0);
-            ((VObj*)((char*)&mModelAnim3))->m14((char*)&mScaleX);
+            mModels.mModelAnim3.ApplyOpacity(mOpacity, 0);
+            ((VObj *)((char *)&mModels.mModelAnim3))->m14((char *)&mScaleX);
         }
         i = func_ov002_020becf4(mBodyModelId, 1);
         {
-            dExtSimpleModel_c *mdl4 = mHeadModels[i];
+            dExtSimpleModel_c *mdl4 = mModels.mHeadModels[i];
             if (mdl4 != 0 && i != 9 && i != 8) {
                 mdl4->ApplyOpacity(mOpacity, 0);
                 {
                     int t3 = (data_0209f2d8 == 1);
                     if (t3 != false) {
                         if (param1 == 3) {
-                            int *p = (int *)AT((char *)mHeadModels[i], 8);
+                            int *p = (int *)AT((char *)mModels.mHeadModels[i], 8);
                             BMD_File *hdr = (BMD_File *)p[0];
                             char* rec = (char*)p[1];
                             u32 i2;
@@ -23631,23 +23666,23 @@ int Player::Render()
                     }
                 }
                 if (i == 3) {
-                    mHeadModels[i]->dExtSimpleModel_c::Render(&mScale);
+                    mModels.mHeadModels[i]->dExtSimpleModel_c::Render(&mScale);
                 } else {
-                    Matrix4x3 *dst = mHeadModels[i]->data.transforms;
+                    Matrix4x3 *dst = mModels.mHeadModels[i]->data.transforms;
                     Matrix4x3 *src = &bodyMdl->data.transforms[15];
                     *(M34*)dst = *(M34*)src;
-                    ((VObj *)(char *)mHeadModels[i])->m14((char *)&mScaleX);
+                    ((VObj *)(char *)mModels.mHeadModels[i])->m14((char *)&mScaleX);
                 }
                 if (param1 == 1) {
-                    mTexSeqPlayer[1].Update(mHeadModels[1]->data);
-                    mTexSeqPlayer[1].currFrame = mPlayerTexFrame << 12;
+                    mModels.mTexSeqPlayer[1].Update(mModels.mHeadModels[1]->data);
+                    mModels.mTexSeqPlayer[1].currFrame = mPlayerTexFrame << 12;
                 }
                 if (func_ov002_020bea7c() == 0) {
-                    mTexSeqBody[mBodyModelId].Update(mHeadModels[i]->data);
+                    mModels.mTexSeqBody[mBodyModelId].Update(mModels.mHeadModels[i]->data);
                 }
-                func_ov002_020e3e00((char *)mHeadModels[i], &mScale, mOpacity);
+                func_ov002_020e3e00((char *)mModels.mHeadModels[i], &mScale, mOpacity);
                 if (func_ov002_020d225c(((char*)this))) {
-                    ((VObj *)mSleepBubbleModel)->m14((char *)&mSleepBubbleScaleX);
+                    ((VObj *)mModels.mSleepBubbleModel)->m14((char *)&mSleepBubbleScaleX);
                 }
             }
         }
@@ -23827,12 +23862,12 @@ int func_ov002_020e3f90(char* self) {
     player->mPosZ = s.v[2] << 3;
     player->mPrevAngleY = ((dActor_c *)player->mGrabbedByActor)->mAngleY;
     n = _ZNK6Player14GetBodyModelIDEjb(self, player->param1 & 0xff, 0);
-    m = (char *)player->mBodyModels[n];
+    m = (char *)player->mModels.mBodyModels[n];
     *(struct M48 *)&((dExtSimpleModel_c *)m)->mat4x3 = data_020a0e68;
-    *(struct M48 *)&player->mModelAnim4.mat4x3 = data_020a0e68;
+    *(struct M48 *)&player->mModels.mModelAnim4.mat4x3 = data_020a0e68;
     n = _ZN6Player19func_ov002_020becf4Eii(self, player->param1 & 0xff, 0);
     if (n != 9 && n != 8) {
-        m = (char *)player->mHeadModels[n];
+        m = (char *)player->mModels.mHeadModels[n];
         if (m != 0) {
             *(struct M48 *)&((dExtSimpleModel_c *)m)->mat4x3 = data_020a0e68;
         }
@@ -23914,16 +23949,16 @@ void func_ov002_020e444c(char *c)
 
         if (player->mIsBalloon == 0) {
             int bodyID = _ZNK6Player14GetBodyModelIDEjb(c, player->param1 & 0xff, 0);
-            player->mBodyModels[bodyID]->mat4x3 = data_020a0e68;
-            player->mModelAnim4.mat4x3 = data_020a0e68;
+            player->mModels.mBodyModels[bodyID]->mat4x3 = data_020a0e68;
+            player->mModels.mModelAnim4.mat4x3 = data_020a0e68;
         } else {
-            player->mModelAnim3.mat4x3 = data_020a0e68;
+            player->mModels.mModelAnim3.mat4x3 = data_020a0e68;
         }
 
         {
             int r0 = _ZN6Player19func_ov002_020becf4Eii(c, player->param1 & 0xff, 0);
             if (r0 != 9 && r0 != 8) {
-                dExtSimpleModel_c *q = player->mHeadModels[r0];
+                dExtSimpleModel_c *q = player->mModels.mHeadModels[r0];
                 if (q != 0) {
                     q->mat4x3 = data_020a0e68;
                 }
@@ -23933,7 +23968,7 @@ void func_ov002_020e444c(char *c)
         if (func_ov002_020d225c(c) != 0) {
             int z = FX_MUL(player->mSleepBubbleScaleZ, 0x2400) + 0xc000;
             Matrix4x3_ApplyInPlaceToTranslation(&data_020a0e68, 0, 0x7000, z);
-            player->mSleepBubbleModel->mat4x3 = data_020a0e68;
+            player->mModels.mSleepBubbleModel->mat4x3 = data_020a0e68;
         }
     }
 
@@ -23988,33 +24023,33 @@ extern "C" void func_ov002_020e4768(char* self)
     int idx;
 
     mid = _ZNK6Player14GetBodyModelIDEjb(self, player->param1 & 0xff, 0);
-    comp = player->mBodyModels[mid];
+    comp = player->mModels.mBodyModels[mid];
     func_020167a4(comp);
 
     func_ov002_020e640c(self);
 
     mid = _ZNK6Player14GetBodyModelIDEjb(self, player->param1 & 0xff, 0);
-    comp = player->mBodyModels[mid];
+    comp = player->mModels.mBodyModels[mid];
     comp->data.UpdateVertsUsingBones();
 
     idx = _ZN6Player19func_ov002_020becf4Eii(self, player->param1 & 0xff, 0);
 
     if (idx == 3) {
         unsigned int m2 = _ZNK6Player14GetBodyModelIDEjb(self, player->param1 & 0xff, 0);
-        int a1 = (int)&player->mBodyModels[m2]->data.transforms[15];
+        int a1 = (int)&player->mModels.mBodyModels[m2]->data.transforms[15];
         a1 = idx ? a1 : a1;
-        ((VTable4 **)player->mHeadModels)[idx]->DoThing(a1);
+        ((VTable4 **)player->mModels.mHeadModels)[idx]->DoThing(a1);
     }
 
     {
         int hasFlag = (player->mHeldObj != 0);
         if (hasFlag) {
             mid = _ZNK6Player14GetBodyModelIDEjb(self, player->param1 & 0xff, 0);
-            comp = player->mBodyModels[mid];
+            comp = player->mModels.mBodyModels[mid];
             *(Mat43 *)data_020a0e68 = *(Mat43 *)&comp->mat4x3;
 
             mid = _ZNK6Player14GetBodyModelIDEjb(self, player->param1 & 0xff, 0);
-            comp = player->mBodyModels[mid];
+            comp = player->mModels.mBodyModels[mid];
             MulMat4x3Mat4x3(&comp->data.transforms[14], data_020a0e68, data_020a0e68);
 
             *(Mat43 *)player->pad_58c = *(Mat43 *)data_020a0e68;
@@ -24023,11 +24058,11 @@ extern "C" void func_ov002_020e4768(char* self)
     }
 
     mid = _ZNK6Player14GetBodyModelIDEjb(self, player->param1 & 0xff, 0);
-    comp = player->mBodyModels[mid];
+    comp = player->mModels.mBodyModels[mid];
     *(Mat43 *)data_020a0e68 = *(Mat43 *)&comp->mat4x3;
 
     mid = _ZNK6Player14GetBodyModelIDEjb(self, player->param1 & 0xff, 0);
-    comp = player->mBodyModels[mid];
+    comp = player->mModels.mBodyModels[mid];
     MulMat4x3Mat4x3(&comp->data.transforms[15], data_020a0e68, data_020a0e68);
 
     *(Mat43*)(self + 0x5ec) = *(Mat43*)data_020a0e68;
@@ -24041,7 +24076,7 @@ int func_ov002_020e496c(char* c)
     extern int _ZNK6Player14GetBodyModelIDEjb(void* thiz, unsigned int a, int b);
     Player *player = (Player *)c;
     int id = _ZNK6Player14GetBodyModelIDEjb(c, player->mBodyModelId, 1);
-    return ((int *)player->mBodyModels)[id];
+    return ((int *)player->mModels.mBodyModels)[id];
 }
 }
 
@@ -24057,7 +24092,7 @@ int func_ov002_020e4990(char* c)
     int id;
     int b;
     id = _ZNK6Player14GetBodyModelIDEjb(c, player->param1 & 0xff, 0);
-    func_0201628c(((int *)player->mBodyModels)[id], 8);
+    func_0201628c(((int *)player->mModels.mBodyModels)[id], 8);
     b = player->mHeldObj ? 1 : 0;
     if (b == 0)
         return 0;
@@ -24074,7 +24109,7 @@ int func_ov002_020e4990(char* c)
         _ZN6Player6IsAnimEj(c, 0xb0))
         return 0;
     id = _ZNK6Player14GetBodyModelIDEjb(c, player->param1 & 0xff, 0);
-    func_020162a4(((int *)player->mBodyModels)[id], 8);
+    func_020162a4(((int *)player->mModels.mBodyModels)[id], 8);
     return 1;
 }
 }
@@ -24122,8 +24157,8 @@ void func_ov002_020e4bb8(char* self)
                 player->mIsMetal = 0;
                 v = player->param1;
                 id = _ZNK6Player14GetBodyModelIDEjb(self, (u8)v, 0);
-                dst = player->mBodyModels[id];
-                src = player->mBodyModels[4];
+                dst = player->mModels.mBodyModels[id];
+                src = player->mModels.mBodyModels[4];
                 poolEntry = data_ov002_020ff480[player->mCharFileBase + v];
                 p = (char *)poolEntry->filePtr;
                 dst->Copy(*src, p, 0);
@@ -24373,7 +24408,7 @@ after_player_slot:
     *(u16 *)LAU((char *)&mStateFlags) &= ~0x440;
 
     if (mHasWings != 0)
-        mModelAnim4.Advance();
+        mModels.mModelAnim4.Advance();
 
     mPreClsnPosX = mPosX;
     mPreClsnPosY = mPosY;
@@ -24446,7 +24481,7 @@ after_player_slot:
         s32 r2 = mTongueHitDist;
         if (r2 != 0) {
             u8 ch = mUseAltBodyModel;
-            Matrix4x3 *t4 = &mHeadModels[(ch << 2) + 3]->data.transforms[3];
+            Matrix4x3 *t4 = &mModels.mHeadModels[(ch << 2) + 3]->data.transforms[3];
             if (r2 < 0)
                 r2 = -r2;
             t4->m[11] = r2 >> 3;
@@ -24892,12 +24927,12 @@ void func_ov002_020e5948(void* arg0)
 
     i = 0;
     do {
-        player->mBodyModels[i] = new dExtAnm2Model_c;
-        player->mBodyModels[i]->SetFile(
+        player->mModels.mBodyModels[i] = new dExtAnm2Model_c;
+        player->mModels.mBodyModels[i]->SetFile(
             (BMD_File *)dExtSimpleModel_c::LoadFile(*data_ov002_0210a68c[i]), 1, 1);
-        player->mBodyModels[i]->Func_020162C4((u32)data_ov002_020ff480[i + 0xC4]->filePtr, 0,
-                                              0x1000, 0);
-        player->mBodyTexParams[i] = func_ov002_020e6bb0(player->mBodyModels[i]);
+        player->mModels.mBodyModels[i]->Func_020162C4((u32)data_ov002_020ff480[i + 0xC4]->filePtr,
+                                                      0, 0x1000, 0);
+        player->mModels.mBodyTexParams[i] = func_ov002_020e6bb0(player->mModels.mBodyModels[i]);
         i++;
     } while (i < 4);
 
@@ -24906,17 +24941,17 @@ void func_ov002_020e5948(void* arg0)
     i = 0;
     do {
         if (i == 3) {
-            player->mHeadModels[i] = new dExtAnmModel_c;
-            player->mHeadModels[i]->SetFile(
+            player->mModels.mHeadModels[i] = new dExtAnmModel_c;
+            player->mModels.mHeadModels[i]->SetFile(
                 (BMD_File *)dExtSimpleModel_c::LoadFile(*data_ov002_0210a69c[i]), 1, 1);
-            ((dExtAnmModel_c *)player->mHeadModels[i])
+            ((dExtAnmModel_c *)player->mModels.mHeadModels[i])
                 ->SetAnim((BCA_File *)data_ov002_0210eb88.filePtr, 0, 0x1000, 0);
         } else {
-            player->mHeadModels[i] = new dExtSimpleModel_c;
-            player->mHeadModels[i]->SetFile(
+            player->mModels.mHeadModels[i] = new dExtSimpleModel_c;
+            player->mModels.mHeadModels[i]->SetFile(
                 (BMD_File *)dExtSimpleModel_c::LoadFile(*data_ov002_0210a69c[i]), 1, 1);
         }
-        player->mHeadTexParams[i] = func_ov002_020e6bb0(player->mHeadModels[i]);
+        player->mModels.mHeadTexParams[i] = func_ov002_020e6bb0(player->mModels.mHeadModels[i]);
         i++;
     } while (i < 4);
 
@@ -24925,10 +24960,11 @@ void func_ov002_020e5948(void* arg0)
         p = new dExtSimpleModel_c;
         {
             s32 idx = j + 4;
-            player->mHeadModels[idx] = (dExtSimpleModel_c *)p;
-            player->mHeadModels[idx]->SetFile(
+            player->mModels.mHeadModels[idx] = (dExtSimpleModel_c *)p;
+            player->mModels.mHeadModels[idx]->SetFile(
                 (BMD_File *)dExtSimpleModel_c::LoadFile(*data_ov002_0210a6ac[j]), 1, 1);
-            player->mHeadTexParams[idx] = func_ov002_020e6bb0(player->mHeadModels[idx]);
+            player->mModels.mHeadTexParams[idx] =
+                func_ov002_020e6bb0(player->mModels.mHeadModels[idx]);
         }
         j++;
     } while (j < 4);
@@ -24938,35 +24974,38 @@ void func_ov002_020e5948(void* arg0)
         mode = data_0209f2d8;
         mode = (mode == 1);
         if (mode == 0) {
-            player->mSleepBubbleModel = new dExtSimpleModel_c;
-            player->mSleepBubbleModel->SetFile(
+            player->mModels.mSleepBubbleModel = new dExtSimpleModel_c;
+            player->mModels.mSleepBubbleModel->SetFile(
                 (BMD_File *)dExtSimpleModel_c::LoadFile(data_ov002_0210da38), 1, -1);
 
             if (data_0209f2f8 != 2 && data_0209f2f8 != 5 && data_0209f2f8 != 4) {
                 player->mLoadedResourceFlags |= 0x20;
-                player->mBodyModels[4] = new dExtAnm2Model_c;
-                player->mBodyModels[4]->SetFile(
+                player->mModels.mBodyModels[4] = new dExtAnm2Model_c;
+                player->mModels.mBodyModels[4]->SetFile(
                     (BMD_File *)dExtSimpleModel_c::LoadFile(data_ov002_0210e780), 1, -1);
-                player->mBodyModels[4]->Func_020162C4((u32)data_ov002_020ff480[0xC6]->filePtr, 0,
-                                                      0x1000, 0);
-                player->mModelAnim3.SetFile(
+                player->mModels.mBodyModels[4]->Func_020162C4(
+                    (u32)data_ov002_020ff480[0xC6]->filePtr, 0, 0x1000, 0);
+                player->mModels.mModelAnim3.SetFile(
                     (BMD_File *)dExtSimpleModel_c::LoadFile(data_ov002_0210e6f8), 1, 1);
-                player->mModelAnim3.SetAnim((BCA_File *)data_ov002_0210e750.filePtr, 0, 0x1000, 0);
-                player->mModelAnim4.SetFile(
+                player->mModels.mModelAnim3.SetAnim((BCA_File *)data_ov002_0210e750.filePtr, 0,
+                                                    0x1000, 0);
+                player->mModels.mModelAnim4.SetFile(
                     (BMD_File *)dExtSimpleModel_c::LoadFile(data_ov002_0210e7b0), 1, 1);
-                player->mModelAnim4.SetAnim((BCA_File *)data_ov002_0210e4c0.filePtr, 0, 0x1000, 0);
+                player->mModels.mModelAnim4.SetAnim((BCA_File *)data_ov002_0210e4c0.filePtr, 0,
+                                                    0x1000, 0);
             }
         } else {
-            player->mModelAnim4.SetFile(
+            player->mModels.mModelAnim4.SetFile(
                 (BMD_File *)dExtSimpleModel_c::LoadFile(data_ov002_0210e7b0), 1, 1);
-            player->mModelAnim4.SetAnim((BCA_File *)data_ov002_0210e4c0.filePtr, 0, 0x1000, 0);
+            player->mModels.mModelAnim4.SetAnim((BCA_File *)data_ov002_0210e4c0.filePtr, 0, 0x1000,
+                                                0);
         }
     }
 
     player->mShadowModel.InitCylinder();
 
     bodyId = _ZNK6Player14GetBodyModelIDEjb(c, 3, 0);
-    ma = player->mBodyModels[bodyId];
+    ma = player->mModels.mBodyModels[bodyId];
     {
         u8 pid = player->mPlayerNo;
         t = ((dExtAnmModel_c *)ma)->data.materials;
@@ -24987,7 +25026,7 @@ void func_ov002_020e5948(void* arg0)
         outer = n * 4;
         do {
             k = 0;
-            texseq = player->mTexSeqBody;
+            texseq = player->mModels.mTexSeqBody;
             do {
                 entry = data_ov002_020ff2f0[outer + k];
                 dExtAnmTexPat_c::Prepare(*(BMD_File *)data_ov002_0210a69c[k]->filePtr,
@@ -25005,10 +25044,12 @@ void func_ov002_020e5948(void* arg0)
 
     dExtAnmTexPat_c::Prepare(*(BMD_File *)data_ov002_0210ebb8.filePtr,
                              *(BTP_File *)data_ov002_0210e8d0.filePtr);
-    player->mTexSeqPlayer[0].SetFile(*(BTP_File *)data_ov002_0210e8d0.filePtr, 0, 0x1000, 0);
+    player->mModels.mTexSeqPlayer[0].SetFile(*(BTP_File *)data_ov002_0210e8d0.filePtr, 0, 0x1000,
+                                             0);
     dExtAnmTexPat_c::Prepare(*(BMD_File *)data_ov002_0210eb20.filePtr,
                              *(BTP_File *)data_ov002_0210ebd8.filePtr);
-    player->mTexSeqPlayer[1].SetFile(*(BTP_File *)data_ov002_0210ebd8.filePtr, 0, 0x1000, 0);
+    player->mModels.mTexSeqPlayer[1].SetFile(*(BTP_File *)data_ov002_0210ebd8.filePtr, 0, 0x1000,
+                                             0);
 }
 }
 #pragma pop
@@ -25098,7 +25139,7 @@ void func_ov002_020e640c(char *c)
 
     id = _ZNK6Player14GetBodyModelIDEjb(c, player->param1 & 0xff, 0);
     {
-        int *p = (int *)(int)&player->mBodyModels[id]->data;
+        int *p = (int *)(int)&player->mModels.mBodyModels[id]->data;
         md = (char *)p[2];
         mp = (char *)p[0];
     }
@@ -25229,40 +25270,11 @@ Player::~Player()
 
 #pragma defer_codegen off
 
-extern "C"  {
-extern int data_ov002_0210a83c[];
-void *_ZN8dActor_cC2Ev(void*);
-void *_ZN14dExtAnmModel_cC1Ev(void *);
-void __cxa_vec_ctor(void*,int,int,void*,void*);
-void *_ZN15dExtAnmTexPat_cC1Ev(void *);
-void _ZN15dExtAnmTexPat_cD1Ev(void *);
-void *_ZN17dExtAnmMaterial_cC1Ev(void *);
-void _ZN17dExtAnmMaterial_cD1Ev(void *);
-void *_ZN17dExtShadowModel_cC1Ev(void*);
-void *_ZN10dCcAcPos_cC1Ev(void*);
-void *_ZN10dBgCh_ActrC1Ev(void*);
-void* _ZN6PlayerC1Ev(void* c){
-    Player *p = (Player *)c;
-    _ZN8dActor_cC2Ev(c);
-    /* r4 anchors the model/texture block at 0xdc: spelling these five as
-     &p->member drops the anchoring add and the constructor comes out 4 bytes short. */
-    char *r4 = (char *)p->mBodyModels;
-    *(int *)p = (int)data_ov002_0210a83c;
-    _ZN14dExtAnmModel_cC1Ev(r4 + 0x14);
-    _ZN14dExtAnmModel_cC1Ev(r4 + 0x98);
-    __cxa_vec_ctor(r4 + 0x100, 4, 0x14, (void *)_ZN15dExtAnmTexPat_cC1Ev,
-                   (void *)_ZN15dExtAnmTexPat_cD1Ev);
-    __cxa_vec_ctor(r4 + 0x150, 2, 0x14, (void *)_ZN17dExtAnmMaterial_cC1Ev,
-                   (void *)_ZN17dExtAnmMaterial_cD1Ev);
-    __cxa_vec_ctor(r4 + 0x178, 2, 0x14, (void *)_ZN15dExtAnmTexPat_cC1Ev,
-                   (void *)_ZN15dExtAnmTexPat_cD1Ev);
-    _ZN17dExtShadowModel_cC1Ev(&p->mShadowModel);
-    _ZN10dCcAcPos_cC1Ev(&p->mdCcAcPos_c);
-    _ZN10dCcAcPos_cC1Ev(&p->mAttackClsn);
-    _ZN10dBgCh_ActrC1Ev(&p->mMeshClsn);
-    return c;
-}
-}
+/* Every member is built by the compiler. mModels' implicit constructor is
+ * inlined with its own `this` (Player + 0xdc), which is the second base
+ * register the retail body carries. C2 is not in the cartridge. */
+// @symbol _ZN6PlayerC1Ev
+Player::Player() {}
 
 // @symbol _ZN6Player13OnYoshiTryEatEv
 int Player::OnYoshiTryEat()
