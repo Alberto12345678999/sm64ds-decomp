@@ -44,6 +44,9 @@ enum daObjFl_Amilift_c_AssetId {
 #include "daObjFl_Amilift_c.h"
 #include "common.h"
 #include "SharedFilePtr.h"
+namespace cstd {
+s16 atan2(s32, s32);
+}
 
 /* The resource handles as the ROM lays them out: {id, loaded file}. The
  * model handle constructs through func_02017acc and destroys through
@@ -82,7 +85,7 @@ extern AmiliftModelFilePtr data_ov064_0211c730;
 extern AmiliftClsnFilePtr data_ov064_0211c728;
 extern CLPS_Block data_ov064_0211bb6c;
 extern void Vec3_Sub(Vector3* dst, Vector3* a, Vector3* b);
-extern int _ZN4cstd5atan2E5Fix12IiES1_(int y, int x);
+extern int atan2_hold_d_a_obj_fl_amilift_1(int y, int x);
 /* The collision callback this TU installs; defined at the end of the file. */
 void func_ov064_02117fd4(void *collider, daObjFl_Amilift_c *self, dActor_c *other);
 }
@@ -101,7 +104,7 @@ daObjFl_Amilift_c::~daObjFl_Amilift_c()
 void daObjFl_Amilift_c::func_ov064_02117a14(Vector3* a, Vector3* b){
   Vector3 v;
   Vec3_Sub(&v, a, b);
-  mPrevAngleY = (short)_ZN4cstd5atan2E5Fix12IiES1_(v.x, v.z);
+  mPrevAngleY = (short)cstd::atan2(v.x, v.z);
 }
 
 // @symbol func_ov064_02117a44

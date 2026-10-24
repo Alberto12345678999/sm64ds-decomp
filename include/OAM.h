@@ -11,10 +11,9 @@
  * freely. They are STATIC: the ROM bodies take no `this` and drive the hardware
  * OAM buffers through file globals.
  *
- * The three Render overloads taking a by-value Fix12<int> are NOT declared here and
- * must not be: mwccarm homes r0-r3 to the stack for a by-value class parameter
- * (+0x14) on all 25 sweep versions at every optimisation level. Those stay
- * extern "C" free functions -- runbook section 7.
+ * Render's int overloads are declared below with no parameter names: a named
+ * parameter renumbers @NNN in every includer. A by-value Fix12<int> still must
+ * not be declared here -- mwccarm homes r0-r3 to the stack for it.
  *
  * OamAttr now lives in include/OamAttr.h -- eleven files that each carried their own
  * copy of the 4 x u16 layout share it, and the `OamAttri` misspelling is retired. See
@@ -66,6 +65,8 @@ struct OAM {
     static void Render(bool draw, OamAttr* obj, int x, int y, int palette, int priority, Matrix2x2* mtx);
     /* 10-arg form. Scales are ints (0x1000), not Fix12. Unnamed: a named parameter renumbers @NNN in every includer. */
     static void Render(bool, OamAttr *, int, int, int, int, int, int, int, int);
+    /* 8-arg form. Scale and rotation are ints, not Fix12. Unnamed: a named parameter renumbers @NNN in every includer. */
+    static OamAttr *Render(bool, OamAttr *, int, int, int, int, int, int);
     static void RenderSub(OamAttr* data, s32 x, s32 y);
     static void RenderSub(OamAttr* data, s32 x, s32 y, s32 palette, s32 priority);
 #endif

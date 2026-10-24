@@ -106,6 +106,9 @@
 #include "SharedFilePtr.h"
 #include "Player.h"
 #include "nitro/fx/fx.h"
+namespace cstd {
+s16 atan2(s32, s32);
+}
 
 bool ApproachLinear(short &value, short target, short step);
 
@@ -208,7 +211,7 @@ extern "C" {
 extern s16 data_02082214[];
 extern void Vec3_Sub(int* out, int* a, int* b);
 extern int Vec3_HorzLen(int* v);
-extern int _ZN4cstd5atan2E5Fix12IiES1_(int a, int b);
+extern int atan2_hold_d_a_ots_1(int a, int b);
 namespace Particle {
 struct Callback;
 struct System {
@@ -912,10 +915,10 @@ void daOts_c::func_ov064_02115f98(char* a1)
     scratch[0] = diff[0];
     scratch[1] = diff[1];
     scratch[2] = diff[2];
-    angH = _ZN4cstd5atan2E5Fix12IiES1_(scratch[0], scratch[2]);
+    angH = cstd::atan2(scratch[0], scratch[2]);
     {
         int hl = Vec3_HorzLen(scratch);
-        angV = _ZN4cstd5atan2E5Fix12IiES1_(scratch[1], hl);
+        angV = cstd::atan2(scratch[1], hl);
     }
 
     idxV = (int)((u16)angV >> 4);

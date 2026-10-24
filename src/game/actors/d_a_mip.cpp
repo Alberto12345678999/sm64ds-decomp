@@ -60,6 +60,10 @@ enum daMip_c_AssetId {
 
 bool ApproachLinear(short &value, short target, short step);
 
+namespace Sound {
+bool PlaySub(u32, u32, u32, int, bool);
+}
+
 extern "C" {
 
 /* ground probe / collision */
@@ -82,7 +86,6 @@ void  _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiE
 /* Player / Message / Sound / SaveData */
 /* The return type is load-bearing: StateTalkMain tests it in an `if`, so the
    `void` spelling three of the four legacy files used cannot be the one. */
-bool  _ZN5Sound7PlaySubEjjj5Fix12IiEb(u32, u32, u32, s32, int);
 
 /* model / animation / shadow */
 
@@ -413,7 +416,7 @@ int daMip_c::StateTalkMain()
             id = 0x13a;
         }
         if (ApproachLinear(mPrevAngleY, angle, 0x800)) {
-            if (_ZN5Sound7PlaySubEjjj5Fix12IiEb(0x26, 0x12, 0x7f, 0x15ccc, 0)) {
+            if (Sound::PlaySub(0x26, 0x12, 0x7f, 0x15ccc, 0)) {
                 Message::PrepareTalk();
                 player->ShowMessage(*this, id, (Vector3 *)&pos, 0, 0);
             }
@@ -422,7 +425,7 @@ int daMip_c::StateTalkMain()
     case 1:
         break;
     default:
-        if (_ZN5Sound7PlaySubEjjj5Fix12IiEb(0x26, 0x7f, 0, 0x7444, 0)) {
+        if (Sound::PlaySub(0x26, 0x7f, 0, 0x7444, 0)) {
             Message::EndTalk();
             SetState(&data_ov085_021306bc);
         }
@@ -571,7 +574,7 @@ int daMip_c::StateCaughtMain()
                         Message::PrepareTalk();
                         {
                             int z = soundId;
-                            _ZN5Sound7PlaySubEjjj5Fix12IiEb(0x27, 0x12, 0x7f, 0x15ccc, z);
+                            Sound::PlaySub(0x27, 0x12, 0x7f, 0x15ccc, z);
                         }
                         if (mRabbitId != 6) {
                             msg = (s16)((s32)pl->param1 + 0x11b);
@@ -592,7 +595,7 @@ int daMip_c::StateCaughtMain()
                         if (mIsGlowing == 0) {
                             {
                                 int z = soundId;
-                                _ZN5Sound7PlaySubEjjj5Fix12IiEb(0x26, 0x12, 0x7f, 0x15ccc, z);
+                                Sound::PlaySub(0x26, 0x12, 0x7f, 0x15ccc, z);
                             }
                             if (mRabbitId != 6) {
                                 msg = (s16)((s32)pl->param1 + 0x11f);
@@ -602,7 +605,7 @@ int daMip_c::StateCaughtMain()
                                 soundId = 0x161;
                             }
                         } else {
-                            _ZN5Sound7PlaySubEjjj5Fix12IiEb(0x27, 0x12, 0x7f, 0x15ccc, soundId);
+                            Sound::PlaySub(0x27, 0x12, 0x7f, 0x15ccc, soundId);
                             if (SaveData::NumGlowingRabbitsFound() == 7) {
                                 msg = 0x143;
                                 soundId = 0x160;
@@ -651,7 +654,7 @@ int daMip_c::StateCaughtMain()
         if (data_0209d660 != 0 && data_0209d6bc == 9 &&
             (mRabbitId == 7 || func_02013890(mRabbitId, (s32)pl->param1) == 0 || mIsGlowing != 0)) {
             int z = 0;
-            _ZN5Sound7PlaySubEjjj5Fix12IiEb(0x27, 0x12, z, 0x8777, z);
+            Sound::PlaySub(0x27, 0x12, z, 0x8777, z);
         }
         return 1;
     }
@@ -715,7 +718,7 @@ int daMip_c::StateCaughtMain()
             mTalkState = 0;
         }
         if (mIsGlowing == 0) {
-            _ZN5Sound7PlaySubEjjj5Fix12IiEb(0x26, 0x7f, 0, 0x7444, 0);
+            Sound::PlaySub(0x26, 0x7f, 0, 0x7444, 0);
             Message::EndTalk();
         }
     }
@@ -1369,20 +1372,20 @@ int daMip_c::Behavior()
                         t = mRabbitId;
                         if (t != 7) {
                             if (func_02013890(t, (s32)((Player *)talker)->param1) == 0) {
-                                _ZN5Sound7PlaySubEjjj5Fix12IiEb(0x27, 0x12, 0x7f, 0x15ccc, 0);
+                                Sound::PlaySub(0x27, 0x12, 0x7f, 0x15ccc, 0);
                                 if (mRabbitId != 6) { soundId = 0x162; messageId = 0x11e; }
                                 else { soundId = 0x160; messageId = 0x126; }
                             } else if (mIsGlowing == 0) {
-                                _ZN5Sound7PlaySubEjjj5Fix12IiEb(0x26, 0x12, 0x7f, 0x15ccc, 0);
+                                Sound::PlaySub(0x26, 0x12, 0x7f, 0x15ccc, 0);
                                 if (mRabbitId != 6) { soundId = 0x162; messageId = 0x122; }
                                 else { soundId = 0x160; messageId = 0x12a; }
                             } else {
-                                _ZN5Sound7PlaySubEjjj5Fix12IiEb(0x27, 0x12, 0x7f, 0x15ccc, 0);
+                                Sound::PlaySub(0x27, 0x12, 0x7f, 0x15ccc, 0);
                                 if (SaveData::NumGlowingRabbitsFound() == 7) { messageId = 0x145; soundId = 0x160; }
                                 else { soundId = 0x162; messageId = 0x144; }
                             }
                         } else {
-                            _ZN5Sound7PlaySubEjjj5Fix12IiEb(0x27, 0x12, 0x7f, 0x15ccc, 0);
+                            Sound::PlaySub(0x27, 0x12, 0x7f, 0x15ccc, 0);
                             messageId = 0x13b; soundId = 0x160;
                         }
                         pos.y += 0x64000;
