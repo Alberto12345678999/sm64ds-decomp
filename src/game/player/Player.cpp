@@ -1540,8 +1540,8 @@ void Player::SetAnim(u32 animId, int flags, Fix12i speed, u16 startFrame) {
             _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(sfp);
 
             id = _ZNK6Player14GetBodyModelIDEjb(self, charId & 0xff, 0);
-            ((ModelAnim *)player->mBodyModels[id])
-                ->SetAnim((BCA_File *)(((SharedFilePtr *)sfp)->filePtr), flags, speed, startFrame);
+            player->mBodyModels[id]->SetAnim((BCA_File *)(((SharedFilePtr *)sfp)->filePtr), flags,
+                                             speed, startFrame);
             {
                 u16 *g = LAUNDER16(&player->mCapTimer);
                 *g = (u16)(*g + 1);
@@ -1552,10 +1552,9 @@ void Player::SetAnim(u32 animId, int flags, Fix12i speed, u16 startFrame) {
     field8 = player->param1;
     sl = animId * 4;
     id = _ZNK6Player14GetBodyModelIDEjb(self, (u32)(field8 & 0xff), 0);
-    ((ModelAnim *)player->mBodyModels[id])
-        ->SetAnim((BCA_File *)(((SharedFilePtr *)data_ov002_020ff480[(field8 & 3) + (animId * 4)])
-                                   ->filePtr),
-                  flags, speed, startFrame);
+    player->mBodyModels[id]->SetAnim(
+        (BCA_File *)(((SharedFilePtr *)data_ov002_020ff480[(field8 & 3) + (animId * 4)])->filePtr),
+        flags, speed, startFrame);
 
     field8 = player->param1;
     if ((int)sl >= 0x60) sl = 0x60;
@@ -15791,7 +15790,7 @@ void func_ov002_020d71ec(char* p, int arg1)
                 *player->mBodyModels[_ZNK6Player14GetBodyModelIDEjb(p, player->param1 & 0xff, 0)];
             val = ((u32)val << 0x10) >> 4;
             body.currFrame = val;
-            player->mHeadModels[3]->currFrame = val;
+            ((ModelAnim *)player->mHeadModels[3])->currFrame = val;
         }
 
         player->mStateStep = 1;
@@ -15939,7 +15938,7 @@ int Player::St_YoshiPower_Main()
     switch (mStateStep) {
     case 0: {
         if (mStateArg == 0) {
-            int t4 = (mHeadModels[3]->currFrame >> 0xc) << 0x10;
+            int t4 = (((ModelAnim *)mHeadModels[3])->currFrame >> 0xc) << 0x10;
             int id0 = this->GetBodyModelID(this->param1 & 0xff, 0);
             /* Split: a plain ->currFrame folds +0x50 and +8 into one +0x58 and moves bytes. */
             dp = (char *)mBodyModels[id0];
@@ -16182,7 +16181,7 @@ int Player::St_YoshiPower_Main()
     common_tail:
         Player_AdvanceAnims(c);
         if (mUseAltBodyModel == 0 && mStateStep != 6) {
-            mHeadModels[3]->Advance();
+            ((ModelAnim *)mHeadModels[3])->Advance();
         }
         return 1;
     }
@@ -23393,7 +23392,7 @@ int Player::CleanupResources()
             if (p != 0)
                 p->v1();
         }
-        p = *(VB **)((char *)&mSleepBubbleModel);
+        p = (VB *)mSleepBubbleModel;
         if (p != 0) {
             if (p != 0)
                 p->v1();
@@ -23685,8 +23684,7 @@ int Player::Render()
                 }
                 func_ov002_020e3e00((char *)mHeadModels[i], &mScale, mOpacity);
                 if (func_ov002_020d225c(((char*)this))) {
-                    ((VObj *)*(char **)((char *)&mSleepBubbleModel))
-                        ->m14((char *)&mSleepBubbleScaleX);
+                    ((VObj *)mSleepBubbleModel)->m14((char *)&mSleepBubbleScaleX);
                 }
             }
         }
@@ -23963,7 +23961,7 @@ void func_ov002_020e444c(char *c)
         {
             int r0 = _ZN6Player19func_ov002_020becf4Eii(c, player->param1 & 0xff, 0);
             if (r0 != 9 && r0 != 8) {
-                ModelAnim *q = player->mHeadModels[r0];
+                Model *q = player->mHeadModels[r0];
                 if (q != 0) {
                     q->mat4x3 = data_020a0e68;
                 }
@@ -23973,8 +23971,7 @@ void func_ov002_020e444c(char *c)
         if (func_ov002_020d225c(c) != 0) {
             int z = FX_MUL(player->mSleepBubbleScaleZ, 0x2400) + 0xc000;
             Matrix4x3_ApplyInPlaceToTranslation(&data_020a0e68, 0, 0x7000, z);
-            char *p = *(char **)&player->mSleepBubbleModel;
-            ((Model *)p)->mat4x3 = data_020a0e68;
+            player->mSleepBubbleModel->mat4x3 = data_020a0e68;
         }
     }
 
@@ -24969,7 +24966,7 @@ void func_ov002_020e5948(void* arg0)
             ((ModelAnim *)player->mHeadModels[i])
                 ->SetAnim((BCA_File *)((void *)data_ov002_0210eb88[1]), 0, 0x1000, 0);
         } else {
-            player->mHeadModels[i] = (ModelAnim *)new Model;
+            player->mHeadModels[i] = new Model;
             _ZN9ModelBase7SetFileEP8BMD_Fileii(
                 player->mHeadModels[i], _ZN5Model8LoadFileER13SharedFilePtr(data_ov002_0210a69c[i]),
                 1, 1);
@@ -24983,7 +24980,7 @@ void func_ov002_020e5948(void* arg0)
         p = new Model;
         {
             s32 idx = j + 4;
-            player->mHeadModels[idx] = (ModelAnim *)p;
+            player->mHeadModels[idx] = (Model *)p;
             _ZN9ModelBase7SetFileEP8BMD_Fileii(
                 player->mHeadModels[idx],
                 _ZN5Model8LoadFileER13SharedFilePtr(data_ov002_0210a6ac[j]), 1, 1);
@@ -24997,10 +24994,10 @@ void func_ov002_020e5948(void* arg0)
         mode = data_0209f2d8;
         mode = (mode == 1);
         if (mode == 0) {
-            *(Model **)&player->mSleepBubbleModel = new Model;
+            player->mSleepBubbleModel = new Model;
             _ZN9ModelBase7SetFileEP8BMD_Fileii(
-                *(void **)&player->mSleepBubbleModel,
-                _ZN5Model8LoadFileER13SharedFilePtr(data_ov002_0210da38), 1, -1);
+                player->mSleepBubbleModel, _ZN5Model8LoadFileER13SharedFilePtr(data_ov002_0210da38),
+                1, -1);
 
             if (data_0209f2f8 != 2 && data_0209f2f8 != 5 && data_0209f2f8 != 4) {
                 player->mLoadedResourceFlags |= 0x20;
