@@ -24693,12 +24693,9 @@ void func_ov002_020e5948(void* arg0)
     extern void LoadSilverStarAndNumber(void);
     extern int _ZN9ModelBase7SetFileEP8BMD_Fileii(void* thiz, void* bmd, s32 a, s32 b);
     extern void func_ov002_020bec2c(void* p);
-    extern void* _ZN10ModelAnim2C1Ev(void* thiz);
     extern void _ZN10ModelAnim213Func_020162C4Eji5Fix12IiEt(void* thiz, u32 a, s32 b, Fix12i c, u16 d);
     extern s32 func_ov002_020e6bb0(void* p);
     extern void func_ov002_020e6780(void* p);
-    extern void *_ZN9ModelAnimC1Ev(void *thiz);
-    extern void* _ZN5ModelC1Ev(void* thiz);
     extern void _ZN17dExtShadowModel_c12InitCylinderEv(void* thiz);
     extern s32 _ZNK6Player14GetBodyModelIDEjb(void* thiz, u32 a, s32 b);
     extern void _ZN15TextureSequence7PrepareER8BMD_FileR8BTP_File(void* bmd, void* btp);
@@ -24949,11 +24946,7 @@ void func_ov002_020e5948(void* arg0)
 
     i = 0;
     do {
-        p = ::operator new(0x78);
-        if (p != 0) {
-            p = _ZN10ModelAnim2C1Ev(p);
-        }
-        player->mBodyModels[i] = (ModelAnim2 *)p;
+        player->mBodyModels[i] = new ModelAnim2;
         _ZN9ModelBase7SetFileEP8BMD_Fileii(
             player->mBodyModels[i], _ZN5Model8LoadFileER13SharedFilePtr(data_ov002_0210a68c[i]), 1,
             1);
@@ -24969,22 +24962,14 @@ void func_ov002_020e5948(void* arg0)
     i = 0;
     do {
         if (i == 3) {
-            p = ::operator new(0x64);
-            if (p != 0) {
-                p = _ZN9ModelAnimC1Ev(p);
-            }
-            player->mHeadModels[i] = (ModelAnim *)p;
+            player->mHeadModels[i] = new ModelAnim;
             _ZN9ModelBase7SetFileEP8BMD_Fileii(
                 player->mHeadModels[i], _ZN5Model8LoadFileER13SharedFilePtr(data_ov002_0210a69c[i]),
                 1, 1);
             ((ModelAnim *)player->mHeadModels[i])
                 ->SetAnim((BCA_File *)((void *)data_ov002_0210eb88[1]), 0, 0x1000, 0);
         } else {
-            p = ::operator new(0x50);
-            if (p != 0) {
-                p = _ZN5ModelC1Ev(p);
-            }
-            player->mHeadModels[i] = (ModelAnim *)p;
+            player->mHeadModels[i] = (ModelAnim *)new Model;
             _ZN9ModelBase7SetFileEP8BMD_Fileii(
                 player->mHeadModels[i], _ZN5Model8LoadFileER13SharedFilePtr(data_ov002_0210a69c[i]),
                 1, 1);
@@ -24995,10 +24980,7 @@ void func_ov002_020e5948(void* arg0)
 
     j = 0;
     do {
-        p = ::operator new(0x50);
-        if (p != 0) {
-            p = _ZN5ModelC1Ev(p);
-        }
+        p = new Model;
         {
             s32 idx = j + 4;
             player->mHeadModels[idx] = (ModelAnim *)p;
@@ -25015,22 +24997,14 @@ void func_ov002_020e5948(void* arg0)
         mode = data_0209f2d8;
         mode = (mode == 1);
         if (mode == 0) {
-            p = ::operator new(0x50);
-            if (p != 0) {
-                p = _ZN5ModelC1Ev(p);
-            }
-            *(void **)&player->mSleepBubbleModel = p;
+            *(Model **)&player->mSleepBubbleModel = new Model;
             _ZN9ModelBase7SetFileEP8BMD_Fileii(
                 *(void **)&player->mSleepBubbleModel,
                 _ZN5Model8LoadFileER13SharedFilePtr(data_ov002_0210da38), 1, -1);
 
             if (data_0209f2f8 != 2 && data_0209f2f8 != 5 && data_0209f2f8 != 4) {
                 player->mLoadedResourceFlags |= 0x20;
-                p = ::operator new(0x78);
-                if (p != 0) {
-                    p = _ZN10ModelAnim2C1Ev(p);
-                }
-                player->mBodyModels[4] = (ModelAnim2 *)p;
+                player->mBodyModels[4] = new ModelAnim2;
                 _ZN9ModelBase7SetFileEP8BMD_Fileii(
                     player->mBodyModels[4],
                     _ZN5Model8LoadFileER13SharedFilePtr(data_ov002_0210e780), 1, -1);

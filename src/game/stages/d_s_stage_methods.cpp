@@ -32,10 +32,9 @@
 //   dScStage_c::LoadGraphics2D stay mangled where the ROM passes a raw int
 //   the header's u16/bool parameter would narrow. G2:: stays mangled
 //   (decl_common.h's `extern int G2[]` hides the namespace).
-// - LoadSkybox and LoadTextureTransformers spell `new` as an explicit
-//   operator new call plus a null-guarded constructor call, a form from before
-//   the allocator was named _Znwm, when a new-expression could not link; the
-//   fader array passes dFdWipe_c's constructor and destructor by address.
+// - LoadTextureTransformers spells `new` as an explicit operator new call
+//   plus a null-guarded constructor call, a form from before the allocator
+//   was named _Znwm, when a new-expression could not link; the fader array passes dFdWipe_c's constructor and destructor by address.
 // - CheckCameraInput keeps `#pragma opt_strength_reduction off` and a local
 //   CamInput overlay of the camera input array; PS_Update and Behavior keep
 //   `#pragma opt_common_subs off` (switched back on after each), the
@@ -3733,24 +3732,12 @@ extern "C" void func_0202b0e0(int a, int b) {
  * Model, construct it and load the file for that ID. mSkyboxModel is typed in
  * include/dScStage_c.h because of this store and the virtual destroy in
  * CleanupResources.
- *
- * The `new` is spelled as an explicit operator new call and a null-guarded
- * constructor call, a form from before the allocator was named _Znwm, when
- * `new Model` could not link.
  */
-extern "C" {
-extern void *_ZN5ModelC1Ev(void *thiz);
-}
-
 void dScStage_c::LoadSkybox() {
     u32 skyboxID = GetSkyboxID();
     if (!skyboxID)
         return;
-    Model *model = (Model *)::operator new(0x50);
-    if (model != 0) {
-        model = (Model *)_ZN5ModelC1Ev(model);
-    }
-    mSkyboxModel = model;
+    mSkyboxModel = new Model;
     u16 fileID = data_02075620[skyboxID - 1];
     mSkyboxModel->LoadAndSetFile(fileID, 0, 2);
 }
