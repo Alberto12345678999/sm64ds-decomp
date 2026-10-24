@@ -410,22 +410,6 @@
       "evidence": "df88a655 RenderModel/RenderModelTransparent local Inner::count; include/BMD_File.h BMD_Bone pad_08 spans0x08..0x33; notes/experiments/scene-physics3955-review.md; full106/106 ROM proof at005807df4f and independent prepared-object verification."
     },
     {
-      "path": "src/minigames/d_mg_trmpln2_mario.cpp",
-      "rule": "raw-offset",
-      "match": "(ModelAnim*)(self+0x78",
-      "count": 2,
-      "reason": "The real ModelAnim API replaces shadow calls for the embedded model at +0x78. The address and model storage are inherited from Trmp2Mario; the enclosing record remains partial. Retire this cast when its model member is represented without changing lifecycle codegen.",
-      "evidence": "df88a655 Trmp2Mario_Draw and Trmp2Mario_UpdateMatrix model at+0x78; notes/experiments/scene-physics3955-review.md; full106/106 ROM proof at005807df4f and independent prepared-object verification."
-    },
-    {
-      "path": "src/minigames/d_mg_trmpln2_mario.cpp",
-      "rule": "raw-offset",
-      "match": "(ModelAnim*)(self+0x6c",
-      "count": 2,
-      "reason": "The real ModelAnim API replaces shadow calls for the embedded model at +0x6c. The address and model storage are inherited from Trmp3DMario; the enclosing record remains partial. Retire this cast when its model member is represented without changing lifecycle codegen.",
-      "evidence": "df88a655 Trmp3DMario_Draw and Trmp3DMario_UpdateMatrix model at+0x6c; notes/experiments/scene-physics3955-review.md; full106/106 ROM proof at005807df4f and independent prepared-object verification."
-    },
-    {
       "path": "src/minigames/d_s_mg_roulette_methods.cpp",
       "rule": "raw-offset",
       "match": "(RouletteSliderView*)(c+0x530c",
@@ -848,14 +832,6 @@
       "count": 3,
       "reason": "St_YoshiPower_Main is the only caller that passes a non-constant startFrame ((currFrame << 4) >> 0x10). Narrowing it to the member's real u16 costs +0x10, so this body keeps the scalar unsigned int spelling, per this file's per-body declaration policy. The three occurrences are the block-scope declaration and its two calls.",
       "evidence": "src/engine/model/ModelAnim.cpp: void ModelAnim::SetAnim(BCA_File *, int, Fix12i, u16) at 0x02016748 size 0x5c MATCH under 2004/b56; St_YoshiPower_Main MATCH with the scalar unsigned int startFrame, +0x10 with the u16 member call (PR #4290 measurement)."
-    },
-    {
-      "path": "src/minigames/d_mg_trmpln2_mario.cpp",
-      "rule": "handspelled-member",
-      "match": "_ZN9ModelAnim7SetAnimEP8BCA_Fileiit",
-      "count": 61,
-      "reason": "Every ns_* namespace in this file declares its own never-defined struct ModelAnim scaffold, so mModelAnim is not the real class and the header member cannot bind. This is a rename of the 61 pre-existing occurrences of the retired _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj spelling, not new debt. Follow-up: deslop the scaffolds onto the real ModelAnim, then convert to member calls.",
-      "evidence": "src/engine/model/ModelAnim.cpp: void ModelAnim::SetAnim(BCA_File *, int, Fix12i, u16) at 0x02016748 size 0x5c MATCH under 2004/b56; the 61 occurrences replace 61 of the old Fix12<int> spelling one-for-one (PR #4290); every function in the file still matches."
     },
     {
       "path": "src/minigames/unit020bfec0.cpp",
