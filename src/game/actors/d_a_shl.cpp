@@ -1,4 +1,11 @@
 //cpp
+struct Vector3_16f;
+namespace Particle {
+struct Callback;
+struct System {
+    static int New(unsigned, unsigned, int, int, int, const ::Vector3_16f *, Callback *);
+};
+}
 /**
  * Koopa shell (profile SHELL) -- ov102/daShl_c.
  *
@@ -115,7 +122,7 @@ int  _ZN6Player7TryGrabER8dActor_c(void *player, dActor_c &actor);  /* local ext
 int  _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void *player, const Vector3 *v,
                                             u32 a, Fix12i f, u8 b, u8 c,
                                             u8 d);
-int  _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
+int  d_a_shlNewHold(
          u32 uniqueID, u32 effectID, Fix12i x, Fix12i y, Fix12i z, void *dir,
          void *cb);
 /* local extern: including Sound.h renumbers the pinned @NNN statics by 15. */
@@ -588,7 +595,7 @@ void daShl_c::func_ov102_0214c84c()
                 mParticleHandle_3d4 = 0;
                 mParticleHandle_3c8 = mParticleHandle_3d4;
                 mParticleHandle_3cc = func_02022d00(mParticleHandle_3cc, 0xe2, pos.trail.x, pos.trail.y, pos.trail.z, 0);
-                mParticleHandle_3d0 = _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
+                mParticleHandle_3d0 = Particle::System::New(
                     mParticleHandle_3d0, 0xe3, pos.trail.x, pos.trail.y, pos.trail.z, 0, 0);
                 if (mSoundID != ground.surface.clps.func_02037e84() + 0xf2)
                     mSoundHandle = 0;
@@ -603,7 +610,7 @@ void daShl_c::func_ov102_0214c84c()
                     mParticleHandle_3d4 = 0;
                     mParticleHandle_3c8 = mParticleHandle_3d4;
                     mParticleHandle_3cc = func_02022d00(mParticleHandle_3cc, 0xe2, pos.trail.x, pos.trail.y, pos.trail.z, 0);
-                    mParticleHandle_3d0 = _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
+                    mParticleHandle_3d0 = Particle::System::New(
                         mParticleHandle_3d0, 0xe3, pos.trail.x, pos.trail.y, pos.trail.z, 0, 0);
                     if (mSoundID != ground.surface.clps.func_02037e84() + 0xf2)
                         mSoundHandle = 0;
@@ -615,7 +622,7 @@ void daShl_c::func_ov102_0214c84c()
                     mParticleHandle_3d0 = 0;
                     mParticleHandle_3cc = mParticleHandle_3d0;
                     mParticleHandle_3d4 = mParticleHandle_3cc;
-                    mParticleHandle_3c8 = _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
+                    mParticleHandle_3c8 = Particle::System::New(
                         mParticleHandle_3c8, 0xe1, pos.trail.x, pos.trail.y, pos.trail.z, 0, 0);
                     if (mSoundID != 0x102)
                         mSoundHandle = 0;
@@ -642,7 +649,7 @@ void daShl_c::func_ov102_0214c84c()
     mParticleHandle_3cc = mParticleHandle_3d0;
     mParticleHandle_3c8 = mParticleHandle_3cc;
     pos.trail.y = pos.trail.y + 0x1e000;
-    mParticleHandle_3d4 = _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
+    mParticleHandle_3d4 = Particle::System::New(
         mParticleHandle_3d4, 0xe0, pos.trail.x, pos.trail.y, pos.trail.z, 0, 0);
 }
 

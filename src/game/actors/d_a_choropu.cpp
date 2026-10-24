@@ -1,4 +1,6 @@
 //cpp
+namespace Particle { struct Callback; }
+struct Vector3_16f;
 /* Monty Mole (daChoropu_c) and the rock it throws (daChoro_Rock_c), ov080.
  * The mole stays underground until the nearest Player is 250..1500 units
  * away and it holds the turn, then emerges, throws, leaps, and dives,
@@ -89,9 +91,10 @@ extern "C" {
 namespace Particle {
 struct System {
     static void NewSimple(unsigned int id, int x, int y, int z);
-};
+
+    static int New(unsigned, unsigned, int, int, int, const ::Vector3_16f *, Callback *);};
 }
-unsigned int _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
+unsigned int d_a_choropuNewHold(
     unsigned int a, unsigned int b, int x, int y, int z, void *vel, void *cb);
 void  _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void *player, void *pos, unsigned int a, int b,
     unsigned int d, unsigned int e, unsigned int f);
@@ -326,7 +329,7 @@ void daChoropu_c::func_ov080_02123c24()
             amt = 0x50000;
         } else {
             amt = data_ov080_021276c4[state - 6] << 12;
-            mEmergeSystemID = _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
+            mEmergeSystemID = Particle::System::New(
                 mEmergeSystemID, 0x29,
                 mPosX, mPosY, mPosZ,
                 0, 0);

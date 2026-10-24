@@ -228,7 +228,6 @@ extern struct BCA_File *data_ov002_0210da30[2];
 extern short Vec3_HorzAngle(const Vector3* a, const Vector3* b);
 extern void Matrix4x3_FromRotationY(void* m, short ang);
 extern void MulVec3Mat4x3(const void* in, void* m, void* out);
-extern unsigned int _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(unsigned int, unsigned int, Fix12i, Fix12i, Fix12i, const void*, void*);
 extern void func_0200d8c8(void *cam, void *v, int strength);
 extern void MulMat4x3Mat4x3(void *dst, void *a, void *b);
 extern void Vec3_Lsl(void *d, void *s, int sh);
@@ -289,8 +288,8 @@ void daKing_Donketu_c::func_ov073_0211f144() {
     MulVec3Mat4x3(&in, &data_020a0e68, &out);
     pos.x = pos.x + out.x;
     pos.z = pos.z + out.z;
-    c->mParticleId0 = _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(c->mParticleId0, 0x77, pos.x, pos.y, pos.z, 0, 0);
-    c->mParticleId1 = _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(c->mParticleId1, 0x78, pos.x, pos.y, pos.z, 0, 0);
+    c->mParticleId0 = Particle::System::New(c->mParticleId0, 0x77, pos.x, pos.y, pos.z, 0, 0);
+    c->mParticleId1 = Particle::System::New(c->mParticleId1, 0x78, pos.x, pos.y, pos.z, 0, 0);
     if (c->mParticleId0 != 0) {
         void* sys = Particle::System::FromUniqueID(c->mParticleId0);
         if (sys != 0) *(int*)((char*)sys + 0x44) = c->mScaleX * 0x14;

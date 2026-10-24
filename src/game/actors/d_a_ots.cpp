@@ -210,11 +210,13 @@ extern void Vec3_Sub(int* out, int* a, int* b);
 extern int Vec3_HorzLen(int* v);
 extern int _ZN4cstd5atan2E5Fix12IiES1_(int a, int b);
 namespace Particle {
+struct Callback;
 struct System {
     static void NewSimple(unsigned effect, int x, int y, int z);
-};
+
+    static int New(unsigned, unsigned, int, int, int, const ::Vector3_16f *, Callback *);};
 }
-extern void* _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(u32 id, u32 param, Fix12i x, Fix12i y, Fix12i z, const Vector3_16f* pos, struct Callback* cb);
+extern void* d_a_otsNewHold(u32 id, u32 param, Fix12i x, Fix12i y, Fix12i z, const Vector3_16f* pos, struct Callback* cb);
 extern void func_0201267c(u32 soundID, const Vector3 *pos);
 extern void Matrix4x3_FromRotationY(void* m, short angle);
 short Vec3_HorzAngle(const Vector3 *a, const Vector3 *b);
@@ -837,22 +839,22 @@ int daOts_c::func_ov064_0211616c() {
         return 1;
     }
     this->mPosY = this->mPosY - 0x5000;
-    this->mParticle0 = (u32)_ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
+    this->mParticle0 = (u32)Particle::System::New(
         this->mParticle0,
         CONFIG(this)->particleId,
         tail().mHomePosX,
         tail().mHomePosY,
         tail().mHomePosZ,
         (const Vector3_16f*)0,
-        (struct Callback*)0);
-    this->mParticle1 = (u32)_ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
+        (Particle::Callback *)((struct Callback*)0));
+    this->mParticle1 = (u32)Particle::System::New(
         this->mParticle1,
         CONFIG(this)->particleId + 1,
         tail().mHomePosX,
         tail().mHomePosY,
         tail().mHomePosZ,
         (const Vector3_16f*)0,
-        (struct Callback*)0);
+        (Particle::Callback *)((struct Callback*)0));
     return 0;
 }
 

@@ -1,4 +1,11 @@
 //cpp
+struct Vector3_16f;
+namespace Particle {
+struct Callback;
+struct System {
+    static int New(unsigned, unsigned, int, int, int, const ::Vector3_16f *, Callback *);
+};
+}
 /* daHanachan_c: the Wiggler (HANACHAN), ov034. Was coined Wiggler.
  *
  * _ZTS12daHanachan_c at 0x02114478, _ZTI at 0x0211445c (base
@@ -121,7 +128,7 @@ extern SharedFilePtr *data_ov034_02113838[];
 extern SharedFilePtr *data_ov034_0211384c[];
 extern void **data_ov034_02113874[];
 extern void _ZN8Particle20RunningSlidingDustAtE5Fix12IiES1_S1_(s32 x, s32 y, s32 z);
-extern void *_ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
+extern void *d_a_hanachanNewHold(
 u32 a, u32 b, s32 x, s32 y, s32 z, const void *v, void *cb);
 extern int func_ov002_020c51d0(void *, void *);
 extern unsigned char data_ov034_0211433c[];
@@ -1083,7 +1090,7 @@ int daHanachan_c::Behavior()
             else
                 part.y += 0xb9000;
             if (mIntroDone != 0) {
-                mParticle = _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
+                mParticle = (void *)Particle::System::New(
                     (u32)mParticle, data_ov034_02113828[n], part.x, part.y, part.z, 0, 0);
             }
         }

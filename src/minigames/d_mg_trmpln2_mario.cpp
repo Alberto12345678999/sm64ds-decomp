@@ -1,4 +1,11 @@
 //cpp
+struct Vector3_16f;
+namespace Particle {
+struct Callback;
+struct System {
+    static int New(unsigned, unsigned, int, int, int, const ::Vector3_16f *, Callback *);
+};
+}
 /*
  * The two player-controlled Mario classes of the trampoline minigames,
  * dMgTrmpln2Mario_c and dMgTrmpln3DMario_c, with their helpers and the
@@ -194,12 +201,6 @@ typedef int Fix12;
 struct System {
     static System *New(unsigned, unsigned, Fix12, Fix12, Fix12, const Vector3_16f *, Callback *);
 };
-/* Signature deliberately copied from the local declaration above: the
-   ROM name carries by-value class parameters (e.g. Fix12<int>), which
-   mwccarm passes differently at the call site, so declaring the true
-   types breaks the byte match. See notes/mwccarm-codegen.md 6az. */
-extern "C" System *_ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
-    unsigned, unsigned, Fix12, Fix12, Fix12, const Vector3_16f *, Callback *);
 
 extern "C" {
 extern void Trmp2Mario_ApplyGravity(char *o);
@@ -233,7 +234,7 @@ extern "C" void Trmp2Mario_Update(char *o) {
     if (MARIO2(o)->mVel.y > v) {
         if (MARIO2(o)->mModelAnim.file == sTrmpAnimBounce) {
             MARIO2(o)->mParticleId =
-                (int)_ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
+                (int)Particle::System::New(
                     MARIO2(o)->mParticleId, 0xf5, MARIO2(o)->mPos.x << 3, MARIO2(o)->mPos.y << 3,
                     MARIO2(o)->mPos.z << 3, 0, 0);
         }
@@ -463,7 +464,7 @@ void Vec3_MulScalar(Vector3 *out, const Vector3 *in, int scale);
 void SubVec3(Vector3 *a, Vector3 *b, Vector3 *c);
 void AddVec3(Vector3 *a, Vector3 *b, Vector3 *c);
 int _ZN4cstd4fdivEii(int a, int b);
-void *_ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
+void *d_mg_trmpln2_marioNewHold(
     unsigned int a, unsigned int b, int fx1, int fx2, int fx3, const void *vec, void *cb);
 void Sound_PlayBank1Panned(int a0, int a1, int a2);
 int D3D_PlaySeAtX(int a, int b);
@@ -530,14 +531,14 @@ extern "C" void Trmp2Mario_BounceOffLineA(char *c) {
         int *q = pmf_Trmp2Mario_StateAppearWait_2;
         if (s[0] != q[0] || (s[1] != q[1] && MARIO2(c)->mState[0] != 0)) {
 
-            _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
+            Particle::System::New(
                 0, 0xf3, (MARIO2(c)->mPos.x) << 3, (MARIO2(c)->mPos.y) << 3,
-                (MARIO2(c)->mPos.z) << 3, &vec16, 0);
-            _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
+                (MARIO2(c)->mPos.z) << 3, (const Vector3_16f *)(&vec16), 0);
+            Particle::System::New(
                 0, 0xf4, (MARIO2(c)->mPos.x) << 3, (MARIO2(c)->mPos.y) << 3,
-                (MARIO2(c)->mPos.z) << 3, &vec16, 0);
+                (MARIO2(c)->mPos.z) << 3, (const Vector3_16f *)(&vec16), 0);
             MARIO2(c)->mParticleId =
-                (int)_ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
+                (int)Particle::System::New(
                     MARIO2(c)->mParticleId, 0xf5, (MARIO2(c)->mPos.x) << 3,
                     (MARIO2(c)->mPos.y) << 3, (MARIO2(c)->mPos.z) << 3, 0, 0);
         }
@@ -1665,12 +1666,6 @@ typedef int Fix12;
 struct System {
     static System *New(unsigned, unsigned, Fix12, Fix12, Fix12, const Vector3_16f *, Callback *);
 };
-/* Signature deliberately copied from the local declaration above: the
-   ROM name carries by-value class parameters (e.g. Fix12<int>), which
-   mwccarm passes differently at the call site, so declaring the true
-   types breaks the byte match. See notes/mwccarm-codegen.md 6az. */
-extern "C" System *_ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
-    unsigned, unsigned, Fix12, Fix12, Fix12, const Vector3_16f *, Callback *);
 
 extern "C" {
 /* The ROM's relocation at 0x020cb088 targets 0x020cb134, not 0x020c9024.
@@ -1707,7 +1702,7 @@ extern "C" void Trmp3DMario_Update(char *o) {
     if (MARIO3D(o)->mVel.y > v) {
         if (MARIO3D(o)->mModelAnim.file == sTrmpAnimBounce) {
             MARIO3D(o)->mParticleId =
-                (int)_ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
+                (int)Particle::System::New(
                     MARIO3D(o)->mParticleId, 0xf5, MARIO3D(o)->mPos.x << 3, MARIO3D(o)->mPos.y << 3,
                     MARIO3D(o)->mPos.z << 3, 0, 0);
         }
@@ -2175,7 +2170,7 @@ void Vec3_MulScalar(Vector3 *out, const Vector3 *in, int scale);
 void SubVec3(Vector3 *a, Vector3 *b, Vector3 *c);
 void AddVec3(Vector3 *a, Vector3 *b, Vector3 *c);
 int _ZN4cstd4fdivEii(int a, int b);
-void *_ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
+void *d_mg_trmpln2_marioNewHold2(
     unsigned int a, unsigned int b, int c, int d, int e, const void *f, void *g);
 void Sound_PlayBank1Panned(int a0, int a1, int a2);
 int D3D_PlaySeAtX(int a, int b);
@@ -2219,16 +2214,16 @@ extern "C" void Trmp3DMario_BounceOffLineA(char *c) {
         v.y = (s16)tmp.y;
         v.z = (s16)tmp.z;
 
-        _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
-            0, 0xf3, MARIO3D(c)->mPos.x << 3, MARIO3D(c)->mPos.y << 3, MARIO3D(c)->mPos.z << 3, &v,
+        Particle::System::New(
+            0, 0xf3, MARIO3D(c)->mPos.x << 3, MARIO3D(c)->mPos.y << 3, MARIO3D(c)->mPos.z << 3, (const Vector3_16f *)(&v),
             0);
-        _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
-            0, 0xf4, MARIO3D(c)->mPos.x << 3, MARIO3D(c)->mPos.y << 3, MARIO3D(c)->mPos.z << 3, &v,
+        Particle::System::New(
+            0, 0xf4, MARIO3D(c)->mPos.x << 3, MARIO3D(c)->mPos.y << 3, MARIO3D(c)->mPos.z << 3, (const Vector3_16f *)(&v),
             0);
     }
 
     MARIO3D(c)->mParticleId =
-        (int)_ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
+        (int)Particle::System::New(
             MARIO3D(c)->mParticleId, 0xf5, MARIO3D(c)->mPos.x << 3, MARIO3D(c)->mPos.y << 3,
             MARIO3D(c)->mPos.z << 3, 0, 0);
 

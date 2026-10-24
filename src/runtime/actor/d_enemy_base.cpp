@@ -1,4 +1,12 @@
 //cpp
+struct Vector3_16f;
+namespace Particle {
+struct Callback;
+struct System {
+    static int New(unsigned, unsigned, int, int, int, const ::Vector3_16f *, Callback *);
+    static void NewSimple(unsigned int, int, int, int);
+};
+}
 /**
  * Shared base for enemies and other actors that use the enemy collision,
  * death and Yoshi-eat handling.
@@ -450,7 +458,7 @@ extern "C" int func_ov002_020ae5c8(dEnemyBase_c *c, int x) {
 
 struct Vector3_16f;
 extern "C" {
-extern void* _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
+extern void* d_enemy_baseNewHold(
   unsigned int a, unsigned int b, int c, int d, int e, const void* f, void* g);
 extern u32 _ZN8Particle6System17NewUnkCallback818Ejj5Fix12IiES2_S2_PK11Vector3_16f(
   u32 uniqueID, u32 effectID, Fix12i x, Fix12i y, Fix12i z, const Vector3_16f* dir);
@@ -481,7 +489,7 @@ int EnemyDeathC::func_ov002_020ae4cc(dBgCh_Actr &clsn) {
         mDeathState = 0;
         return 1;
     }
-    mDeathParticleID0 = (u32)_ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
+    mDeathParticleID0 = (u32)Particle::System::New(
         mDeathParticleID0, 0x13a, *(int *)((char *)v + 0), *(int *)((char *)v + 4),
         *(int *)((char *)v + 8), 0, 0);
     mDeathParticleID1 = _ZN8Particle6System17NewUnkCallback818Ejj5Fix12IiES2_S2_PK11Vector3_16f(
@@ -789,13 +797,13 @@ void dEnemyBase_c::SpawnMegaCharParticles(dActor_c &other, char *p) {
         dst.y += 0x46000;
     }
 
-    _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
+    Particle::System::New(
         0, 0x43, dst.x, dst.y, dst.z, 0, 0);
-    _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
+    Particle::System::New(
         0, 0x44, dst.x, dst.y, dst.z, 0, 0);
-    _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
-        0, 0xbf, dst.x, dst.y, dst.z, dirvec, 0);
-    _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
+    Particle::System::New(
+        0, 0xbf, dst.x, dst.y, dst.z, (const Vector3_16f *)(dirvec), 0);
+    Particle::System::New(
         0, 0xc0, dst.x, dst.y, dst.z, 0, 0);
 }
 
@@ -811,7 +819,7 @@ void dEnemyBase_c::SpawnMegaCharParticles(dActor_c &other, char *p) {
    function at the same address. */
 extern "C" {
 namespace Particle {
-struct System {
+struct SystemHold {
     static void NewSimple(unsigned int a, int x, int y, int z);
 };
 }

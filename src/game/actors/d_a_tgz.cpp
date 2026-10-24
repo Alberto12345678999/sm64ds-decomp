@@ -1,4 +1,6 @@
 //cpp
+namespace Particle { struct Callback; }
+struct Vector3_16f;
 /* daTgz_c -- the Spiny on the castle roof, ov077.
  *
  * Six PMF state records (func_ov077_02125e94 picks one). State 0 is the
@@ -101,13 +103,14 @@ unsigned char DecIfAbove0_Byte(unsigned char *p);
 namespace Particle {
 struct System {
     static void * NewSimple(unsigned int id, int x, int y, int z);
-};
+
+    static int New(unsigned, unsigned, int, int, int, const ::Vector3_16f *, Callback *);};
 }
 extern s16 data_02082214[];
 void func_02035684(int *p, int v);
 int RandomIntInternal(int *seed);
 extern int data_0209e650;
-unsigned int _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
+unsigned int d_a_tgzNewHold(
     unsigned int uniqueID, unsigned int effectID, int x, int y, int z, const void *dir, void *callback);
 extern int data_0209f32c;
 void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *self, dActor_c *actor, int radius, int height, unsigned int flags, unsigned int vulnFlags);
@@ -691,7 +694,7 @@ extern "C" int func_ov077_02125bb4(daTgz_c *self)
             _ZN8Particle6System12NewBigSplashE5Fix12IiES2_S2_(
                 self->mPosX, data_0209f32c, self->mPosZ);
             self->mRippleId =
-                _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
+                Particle::System::New(
                     self->mRippleId, 0x109,
                     self->mPosX, data_0209f32c, self->mPosZ,
                     0, 0);

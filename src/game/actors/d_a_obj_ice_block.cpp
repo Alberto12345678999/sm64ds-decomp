@@ -88,7 +88,7 @@ int _ZN4cstd4fdivEii(int num, int den);
 
 void *d_a_obj_ice_blockNewSimpleHold(
     u32 effectID, int x, int y, int z);
-int _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(u32 handle, u32 effectID,
+int d_a_obj_ice_blockNewHold(u32 handle, u32 effectID,
                                                                            int x, int y, int z,
                                                                            const Vector3_16f *dir,
                                                                            void *callback);
@@ -152,9 +152,9 @@ s32 daObjIceBlock_c::Behavior()
             pos.z = mPosZ;
             pos.y += FX_MUL(mScale, kShardHeight);
 
-            mParticleHandle1 = _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
+            mParticleHandle1 = Particle::System::New(
                 mParticleHandle1, 0x77, pos.x, pos.y, pos.z, 0, 0);
-            mParticleHandle2 = _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
+            mParticleHandle2 = Particle::System::New(
                 mParticleHandle2, 0x78, pos.x, pos.y, pos.z, 0, 0);
 
             u32 handle = mParticleHandle1;

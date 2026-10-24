@@ -1,4 +1,11 @@
 //cpp
+struct Vector3_16f;
+namespace Particle {
+struct Callback;
+struct System {
+    static int New(unsigned, unsigned, int, int, int, const ::Vector3_16f *, Callback *);
+};
+}
 /* daMip_c -- MIPS the rabbit (MIP). ov085.
  *
  * defer_codegen off lays .text down in source order. The destructor
@@ -81,7 +88,6 @@ bool  _ZN5Sound7PlaySubEjjj5Fix12IiEb(u32, u32, u32, s32, int);
 
 /* path, particle, construction */
 void *_ZN7PathPtrC1Ev(void *);
-int   _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(u32, u32, s32, s32, s32, void *, void *);
 
 /* maths and the still-unnamed helpers */
 s16   Vec3_HorzAngle(const void *, const void *);
@@ -1341,7 +1347,7 @@ int daMip_c::Behavior()
         pv.y = mPosY;
         pv.z = mPosZ;
         pv.y = mPosY + 0x3c000;
-        mGlowParticle = _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
+        mGlowParticle = Particle::System::New(
             *(volatile u32*)&mGlowParticle, 0x10d, pv.x, pv.y, mPosZ, 0, 0);
     }
 

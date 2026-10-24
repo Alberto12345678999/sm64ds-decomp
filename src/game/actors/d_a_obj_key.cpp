@@ -1,4 +1,11 @@
 //cpp
+struct Vector3_16f;
+namespace Particle {
+struct Callback;
+struct System {
+    static int New(unsigned, unsigned, int, int, int, const ::Vector3_16f *, Callback *);
+};
+}
 /* daObjKey_c (ov089): OBJ_KEY is actor 0x11a (282) and LAST_STAR is 0x11b
  * (283); both factories install this vtable. param1 & 7 picks the kind: 7 uses
  * the power-star model (data_ov002_0211094c, file 0x8015) and StateStarJump; 3
@@ -197,7 +204,7 @@ extern "C" {
 extern void dBgCh_Actr_UpdateContinuous_Veneer(char *p);
 extern void *data_0209f318;
 extern int data_0209b454;
-extern void *_ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
+extern void *d_a_obj_keyNewHold(
     u32 a, u32 b, int c, int d, int e, void *f, void *g);
 extern void func_02012694(unsigned int id, const Vector3 *pos);
 extern void func_ov002_020c3dbc(void *player);
@@ -455,11 +462,11 @@ void daObjKey_c::StateFlyToCenter()
     Vec3_LslInPlace(&v, 3);
     AddVec3(&v, &mPosX, &v);
     v.y = mScaleX * 13 + v.y;
-    mParticleID[0] = (u32)_ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
+    mParticleID[0] = (u32)Particle::System::New(
         mParticleID[0], FX_TRAIL_A, v.x, v.y, v.z, 0, 0);
-    mParticleID[1] = (u32)_ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
+    mParticleID[1] = (u32)Particle::System::New(
         mParticleID[1], FX_TRAIL_B, v.x, v.y, v.z, 0, 0);
-    mParticleID[2] = (u32)_ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
+    mParticleID[2] = (u32)Particle::System::New(
         mParticleID[2], FX_TRAIL_C, v.x, v.y, v.z, 0, 0);
 }
 
@@ -478,7 +485,7 @@ void daObjKey_c::StateStarJump()
         v.y = mPosY;
         v.z = mPosZ;
         v.y = v.y + Y_SPARK;
-        mParticleID[0] = (u32)_ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
+        mParticleID[0] = (u32)Particle::System::New(
             mParticleID[0], FX_FALL, v.x, v.y, v.z, 0, 0);
     }
     if (mStep >= 2)
@@ -660,7 +667,7 @@ void daObjKey_c::StateDrop()
         v.y = mPosY;
         v.z = mPosZ;
         v.y = v.y + Y_SPARK;
-        mParticleID[0] = (u32)_ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
+        mParticleID[0] = (u32)Particle::System::New(
             mParticleID[0], FX_FALL, v.x, v.y, v.z, 0, 0);
         if (mWithMeshClsn.JustHitGround()) {
             mVertSpeed = -mVertSpeed >> 1;
@@ -843,9 +850,9 @@ int daObjKey_c::Behavior()
                 /* First bone, word at +0xc. BMD_Bone has no field there. */
                 vec.y = *(int *)((char *)mModelAnim.data.bones + 0xc) * BONE_Y_MUL + vec.y;
                 vec.y = vec.y - Y_BONE;
-                mParticleID[0] = (u32)_ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
+                mParticleID[0] = (u32)Particle::System::New(
                     mParticleID[0], FX_BURST_A, vec.x, vec.y, vec.z, 0, 0);
-                mParticleID[1] = (u32)_ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
+                mParticleID[1] = (u32)Particle::System::New(
                     mParticleID[1], FX_BURST_B, vec.x, vec.y, vec.z, 0, 0);
             }
         }

@@ -1,4 +1,5 @@
 //cpp
+namespace Particle { struct Callback; }
 /* daObjBlockS_c -- small breakable crate (BLOCK_S, ov098).
  * 37 functions, .text 0x02138040..0x02139f70, ending with classInit.
  * (registry profile BLOCK_S): it sits where it is placed, can be picked up
@@ -129,14 +130,15 @@ extern int data_ov098_0213c4c8[];
 extern s16 data_02082214[];
 extern int Vec3_HorzDist(const struct Vector3 *a, const struct Vector3 *b);
 extern u8 DecIfAbove0_Byte(u8 *p);
-extern void *_ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
+extern void *d_a_obj_block_sNewHold(
     u32 a, u32 b, int c, int d, int e, const void *v, void *cb);
 extern u32 _ZN8Particle6System17NewUnkCallback818Ejj5Fix12IiES2_S2_PK11Vector3_16f(
     u32 a, u32 b, int c, int d, int e, const Vector3_16f *v);
 namespace Particle {
 struct System {
     static void NewSimple(unsigned int id, int x, int y, int z);
-};
+
+    static int New(unsigned, unsigned, int, int, int, const ::Vector3_16f *, Callback *);};
 }
 extern void _ZN8Particle20RunningSlidingDustAtE5Fix12IiES1_S1_(s32 x, s32 y, s32 z);
 extern void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
@@ -1306,7 +1308,7 @@ int daObjBlockS_c::Behavior()
         ((int *)&v)[1] = y;
         ((int *)&v)[2] = z;
         if (DecIfAbove0_Byte(&mBreakTimer)) {
-            mParticleHandle1 = (u32)_ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
+            mParticleHandle1 = (u32)Particle::System::New(
                 mParticleHandle1, 0x13a, v.x, v.y, v.z, 0, 0);
             mParticleHandle2 = _ZN8Particle6System17NewUnkCallback818Ejj5Fix12IiES2_S2_PK11Vector3_16f(
                 mParticleHandle2, 0x13b, v.x, v.y, v.z, 0);

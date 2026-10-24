@@ -1,4 +1,11 @@
 //cpp
+struct Vector3_16f;
+namespace Particle {
+struct Callback;
+struct System {
+    static int New(unsigned, unsigned, int, int, int, const ::Vector3_16f *, Callback *);
+};
+}
 /* The MG_3DESP minigame scene (scene 0x185): dScMg3DEsp_c and
  * the two helper classes it embeds, dMg3DEspModel_c and dMg3DEspAnimSet_c.
  *
@@ -104,7 +111,6 @@ int _ZNK15dExtFrameCtrl_c12WillHitFrameEi(void* anim, int frame);
 void _ZN15MaterialChanger7SetFileER8BMA_Filei5Fix12IiEj(char *t, void *f, int a, int b, unsigned u);
 void _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(void* self, void* btp, int a, int b, u16 d);
 void _ZN18TextureTransformer7SetFileER8BTA_Filei5Fix12IiEj(void* self, void* bta, int a, int b, u16 d);
-void* _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(unsigned int, unsigned int, int, int, int, const void*, void*);
 void func_02046208(char* a, int b, int c);
 int func_020179b4(void* r0, void* r1, int r2);
 /* The last four parameters are unsigned short in the real signature;
@@ -375,7 +381,7 @@ void dMg3DEspModel_c::Behavior()
 
     if (mShowSparks == 0) return;
 
-    mParticleSys = (u32)_ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
+    mParticleSys = (u32)Particle::System::New(
         mParticleSys, 0xec, 0x48c000, 0x140000, 0x200000, 0, 0);
 }
 

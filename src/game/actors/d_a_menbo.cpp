@@ -1,4 +1,11 @@
 //cpp
+struct Vector3_16f;
+namespace Particle {
+struct Callback;
+struct System {
+    static int New(unsigned, unsigned, int, int, int, const ::Vector3_16f *, Callback *);
+};
+}
 /* daMenbo_c -- Skeeter, the water strider on the lake.
  *
  * ov090 0x02130f00..0x0213269c, twenty-five functions, the last being the
@@ -100,7 +107,7 @@ u16   DecIfAbove0_Short(u16 *p);
 int   RandomIntInternal(int *seed);
 void  func_02012694(int id, const Vector3 *pos);
 
-int _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(unsigned int a0,
+int d_a_menboNewHold(unsigned int a0,
                                                                            unsigned int a1, int a2,
                                                                            int a3, int a4, int a5,
                                                                            int a6);
@@ -209,8 +216,8 @@ extern "C" void func_ov090_02130f94(daMenbo_c *c_)
         v.z = r.z;
         v.y = c->mSurfaceY;
         c->mRippleParticles[i] =
-            _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
-                c->mRippleParticles[i], id, v.x, v.y, r.z, zero, zero);
+            Particle::System::New(
+                c->mRippleParticles[i], id, v.x, v.y, r.z, (const Vector3_16f *)(zero), (Particle::Callback *)(zero));
         idx += 3;
     }
 }

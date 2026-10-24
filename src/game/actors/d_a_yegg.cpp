@@ -1,4 +1,6 @@
 //cpp
+namespace Particle { struct Callback; }
+struct Vector3_16f;
 /* daYegg_c -- the Yoshi egg (registry profile YOSHI_EGG).
  *
  * The egg a Yoshi carries and throws. The state table at 0x02110a5c holds
@@ -161,11 +163,12 @@ extern int func_ov002_020d5f98(void *c, unsigned char *a, unsigned char *b);
 extern int func_ov002_020d6048(void *c);
 extern void dBgCh_Actr_UpdateContinuous_Veneer(void *p);
 extern void dBgCh_Actr_UpdateDiscreteNoLava_veneer(void *self);
-extern s32 _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(u32 a, u32 b, s32 x, s32 y, s32 z, struct Vec3_16f *rot, void *cb);
+extern s32 d_a_yeggNewHold(u32 a, u32 b, s32 x, s32 y, s32 z, struct Vec3_16f *rot, void *cb);
 namespace Particle {
 struct System {
     static void NewSimple(u32 a, int b, int c, int d);
-};
+
+    static int New(unsigned, unsigned, int, int, int, const ::Vector3_16f *, Callback *);};
 }
 extern void _ZN8Particle20RunningSlidingDustAtE5Fix12IiES1_S1_(s32 x, s32 y, s32 z);
 extern s32 _ZN5Sound8PlayLongEjjjRK7Vector3s(u32 a, u32 b, u32 c, void *v, u32 d);
@@ -558,8 +561,8 @@ void daYegg_c::func_ov002_020ecb0c()
                 ang = *(u16 *)&mAngleY;
                 rz = data_02082214[(ang >> 4) * 2 + 1];
                 sp.rot.z = rz;
-                mParticleHandle = _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
-                    mParticleHandle, 0x2c, sp.pos.x, sp.pos.y, pz, pr, 0);
+                mParticleHandle = Particle::System::New(
+                    mParticleHandle, 0x2c, sp.pos.x, sp.pos.y, pz, (const Vector3_16f *)(pr), 0);
                 mSoundHandle = _ZN5Sound8PlayLongEjjjRK7Vector3s(
                     mSoundHandle, 3, 0x93, &mCamSpacePosX, 0);
                 flag = 1;

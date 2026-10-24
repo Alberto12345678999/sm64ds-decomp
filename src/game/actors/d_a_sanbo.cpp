@@ -283,7 +283,7 @@ bool ApproachLinear(short &value, short target, short step);
 
 extern "C" {
 void _ZN8Particle20RunningSlidingDustAtE5Fix12IiES1_S1_(int x, int y, int z);
-unsigned _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
+unsigned d_a_sanboNewHold(
     unsigned a, unsigned b, int x, int y, int z, const void *dir, void *cb);
 unsigned _ZN8Particle6System17NewUnkCallback818Ejj5Fix12IiES2_S2_PK11Vector3_16f(
     unsigned a, unsigned b, int x, int y, int z, const Vector3_16f *dir);
@@ -443,7 +443,7 @@ int daSanbo_c::func_ov096_02136434()
         ((int *)&pos)[0] = x;
         ((int *)&pos)[1] = y;
         ((int *)&pos)[2] = z;
-        mParticle0 = _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
+        mParticle0 = Particle::System::New(
             mParticle0, 0x13a, pos.x, pos.y, pos.z, 0, 0);
         mParticle1 = _ZN8Particle6System17NewUnkCallback818Ejj5Fix12IiES2_S2_PK11Vector3_16f(
             mParticle1, 0x13b, pos.x, pos.y, pos.z, 0);
@@ -726,7 +726,7 @@ void daSanbo_c::func_ov096_02135948()
             ((int *)&pos)[0] = x;
             ((int *)&pos)[1] = y;
             ((int *)&pos)[2] = z;
-            mParticle0 = _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
+            mParticle0 = Particle::System::New(
                 mParticle0, 0x13a, pos.x, pos.y, pos.z, 0, 0);
             mParticle1 = _ZN8Particle6System17NewUnkCallback818Ejj5Fix12IiES2_S2_PK11Vector3_16f(
                 mParticle1, 0x13b, pos.x, pos.y, pos.z, 0);

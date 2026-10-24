@@ -1,8 +1,11 @@
 //cpp
+namespace Particle { struct Callback; }
+struct Vector3_16f;
 namespace Particle {
 struct System {
     static void *NewSimple(unsigned, int, int, int);
-};
+
+    static int New(unsigned, unsigned, int, int, int, const ::Vector3_16f *, Callback *);};
 }
 /* Bob-omb (BOB_OMB 206 / BOMBHEI) -- ov102/daBmb_c.
  *
@@ -781,7 +784,7 @@ void func_ov102_0214b53c(char *c) {
     extern void MulMat4x3Mat4x3(void *a, void *b, void *out);
     extern void Vec3_Lsl(Vector3 * d, Vector3 * s, int sh);
     extern void Vec3_LslInPlace(Vector3 * v, int sh);
-    extern int _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
+    extern int d_a_bmbNewHold(
         int sys, unsigned int kind, int fx, int a1, int a2, const void *v, void *cb);
     extern void func_ov102_0214b444(void *c);
     extern int data_ov102_0214ea18[];
@@ -872,7 +875,7 @@ void func_ov102_0214b53c(char *c) {
         int haveMtx3 = (int)((self->mFlags & 0x4000) != 0);
         if (haveMtx3 != 0) {
             self->mCarryParticle =
-                _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
+                Particle::System::New(
                     self->mCarryParticle, 0x13, p.x, p.y, p.z, 0, 0);
         }
         if (self->mFuse != 0) {
@@ -931,7 +934,7 @@ void func_ov102_0214b53c(char *c) {
                 }
             }
             self->mFuseParticle =
-                _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
+                Particle::System::New(
                     self->mFuseParticle, 0x19, p.x, p.y, p.z, 0, 0);
         }
     }
