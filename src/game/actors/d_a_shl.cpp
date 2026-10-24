@@ -88,6 +88,11 @@ struct ShlCarrierView {
 typedef char ShlCarrierView_size_must_be_0x6df[sizeof(ShlCarrierView) == 0x6df ? 1 : -1];
 #endif
 
+namespace Sound {
+/* local extern: including Sound.h renumbers @NNN. */
+int PlayLong(u32, u32, u32, const Vector3 &, s16);
+}
+
 extern "C" {
 
 
@@ -118,9 +123,8 @@ int  _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void *player, const Vector3 *v,
 int  _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
          u32 uniqueID, u32 effectID, Fix12i x, Fix12i y, Fix12i z, void *dir,
          void *cb);
-/* local extern: including Sound.h renumbers the pinned @NNN statics by 15. */
-int  _ZN5Sound8PlayLongEjjjRK7Vector3s(u32 handle, u32 a, u32 soundID,
-                                       const Vector3 &pos, s16 e);
+/* local extern: these five names hold the @NNN count. Sound::PlayLong is the call. */
+void d_a_shlPlayLongHold(u32 handle, u32 a, u32 soundID, const Vector3 &pos, s16 e);
 
 void _ZN12dEnemyBase_c20KillByInvincibleCharERK10Vector3_16R6Player5Fix12IiE(
          void *self, const Vector3_16 &dir, Player &player, s32 speed);
@@ -593,8 +597,7 @@ void daShl_c::func_ov102_0214c84c()
                 if (mSoundID != ground.surface.clps.func_02037e84() + 0xf2)
                     mSoundHandle = 0;
                 mSoundID = ground.surface.clps.func_02037e84() + 0xf2;
-                mSoundHandle =
-                    _ZN5Sound8PlayLongEjjjRK7Vector3s(mSoundHandle, 0, mSoundID, mCamSpacePos, 0);
+                mSoundHandle = Sound::PlayLong(mSoundHandle, 0, mSoundID, mCamSpacePos, 0);
                 return;
             }
             if (ground.surface.clps.GetSurfaceType() == 1) {
@@ -608,8 +611,7 @@ void daShl_c::func_ov102_0214c84c()
                     if (mSoundID != ground.surface.clps.func_02037e84() + 0xf2)
                         mSoundHandle = 0;
                     mSoundID = ground.surface.clps.func_02037e84() + 0xf2;
-                    mSoundHandle = _ZN5Sound8PlayLongEjjjRK7Vector3s(mSoundHandle, 0, mSoundID,
-                                                                     mCamSpacePos, 0);
+                    mSoundHandle = Sound::PlayLong(mSoundHandle, 0, mSoundID, mCamSpacePos, 0);
                 } else {
                     pos.trail.y = ground.clsnY + 0xa000;
                     mParticleHandle_3d0 = 0;
@@ -620,16 +622,14 @@ void daShl_c::func_ov102_0214c84c()
                     if (mSoundID != 0x102)
                         mSoundHandle = 0;
                     mSoundID = 0x102;
-                    mSoundHandle = _ZN5Sound8PlayLongEjjjRK7Vector3s(mSoundHandle, 0, mSoundID,
-                                                                     mCamSpacePos, 0);
+                    mSoundHandle = Sound::PlayLong(mSoundHandle, 0, mSoundID, mCamSpacePos, 0);
                 }
                 return;
             }
             if (mSoundID != ground.surface.clps.func_02037e84() + 0xf2)
                 mSoundHandle = 0;
             mSoundID = ground.surface.clps.func_02037e84() + 0xf2;
-            mSoundHandle =
-                _ZN5Sound8PlayLongEjjjRK7Vector3s(mSoundHandle, 0, mSoundID, mCamSpacePos, 0);
+            mSoundHandle = Sound::PlayLong(mSoundHandle, 0, mSoundID, mCamSpacePos, 0);
         }
         else
         {

@@ -8,7 +8,7 @@
  * defer_codegen off: D1 0x021120c4, D0 0x02112104, D2 deadstripped.
  */
 // leftovers:
-// - Particle::System::New and NewSimple, Sound::PlayLong, dCcPos_c::Init,
+// - Particle::System::New and NewSimple, dCcPos_c::Init,
 //   Player::BlowAway and HasFinishedTalking stay mangled. This TU passes
 //   Fix12<int> by value.
 // - SnowmanBreathParticle is a coined name. ov027 has no type string for
@@ -32,6 +32,11 @@
 
 /* This scene owns the position used by the breath effect. */
 extern Vector3 data_ov027_02113d10;
+
+namespace Sound {
+/* local extern: including Sound.h renumbers @NNN. */
+int PlayLong(u32, u32, u32, const Vector3 &, s16);
+}
 
 extern "C" {
 namespace Particle {
@@ -59,14 +64,8 @@ void Vec3_LslInPlace(Vector3 *, int);
 void Matrix4x3_FromTranslation(Matrix4x3 *m, int x, int y, int z);
 void Matrix4x3_ApplyInPlaceToRotationY(Matrix4x3 *m, short angY);
 void InvMat4x3(Matrix4x3 *dst, const Matrix4x3 *src);
-/* The Sound call below stays a mangled name inside this block: it takes
- * its position as void*, and a bare `extern` on a mangled name in a C++ file
- * is mangled a second time (ShowMessage once reached the linker as
- * _Z48_ZN6Player11ShowMessage...). Byte gates cannot see that, because
- * relocations compare as wildcards; only the link does. */
-int _ZN5Sound8PlayLongEjjjRK7Vector3s(int handle, unsigned int a,
-                                     unsigned int b, void *pos,
-                                     unsigned int c);
+/* local extern: these five names hold the @NNN count. */
+void d_a_snm_bthPlayLongHold(int handle, unsigned int a, unsigned int b, void *pos, unsigned int c);
 extern Matrix4x3 data_020a0e68;
 extern s32 data_0209e650;
 extern u8 data_0209f2d8[];
@@ -345,9 +344,7 @@ int daSnmBth_c::Behavior()
                     *idx = *idx % 0x32;
                 } while (b == 0);
             }
-            mSoundHandle =
-                _ZN5Sound8PlayLongEjjjRK7Vector3s(mSoundHandle, 3, 0x184,
-                                                  &mCamSpacePosX, 0);
+            mSoundHandle = Sound::PlayLong(mSoundHandle, 3, 0x184, *(Vector3 *)&mCamSpacePosX, 0);
         }
     }
 

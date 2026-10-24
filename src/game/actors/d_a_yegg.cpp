@@ -71,7 +71,7 @@
  *   egg it takes from the held-object queue); who sets 0x400 and 0x2000 is not
  *   recovered. The "idle" and "moving" animation names say when the code
  *   picks each file, not recovered names.
- * - Sound::PlayLong keeps its u32-last-param local decl (Sound.h declares s16) and PlayCharVoice keeps its void-returning one (Sound.h declares u32): width/return walls, do not convert.
+ * - PlayCharVoice keeps its void-returning local decl (Sound.h declares u32): a return-width wall, do not convert.
  */
 
 #pragma defer_codegen off
@@ -119,6 +119,11 @@ enum {
 typedef void (daYegg_c::*PMF)();
 struct Entry { PMF pmf[2]; };
 extern Entry data_ov002_02110a5c[];
+
+namespace Sound {
+/* local extern: including Sound.h renumbers @NNN. */
+int PlayLong(u32, u32, u32, const Vector3 &, s16);
+}
 
 extern "C" {
 /* Defined below. */
@@ -168,7 +173,7 @@ struct System {
 };
 }
 extern void _ZN8Particle20RunningSlidingDustAtE5Fix12IiES1_S1_(s32 x, s32 y, s32 z);
-extern s32 _ZN5Sound8PlayLongEjjjRK7Vector3s(u32 a, u32 b, u32 c, void *v, u32 d);
+extern void d_a_yeggPlayLongHold(u32 a, u32 b, u32 c, void *v, u32 d);
 extern void _ZN5Sound13PlayCharVoiceEjjRK7Vector3(u32 a, u32 b, const void *pos);
 extern s32 _Z14ApproachLinearR7Vector3RKS_5Fix12IiE(void *dst, const void *src, s32 step);
 extern s16 Vec3_HorzAngle(const void *a, const void *b);
@@ -560,8 +565,8 @@ void daYegg_c::func_ov002_020ecb0c()
                 sp.rot.z = rz;
                 mParticleHandle = _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
                     mParticleHandle, 0x2c, sp.pos.x, sp.pos.y, pz, pr, 0);
-                mSoundHandle = _ZN5Sound8PlayLongEjjjRK7Vector3s(
-                    mSoundHandle, 3, 0x93, &mCamSpacePosX, 0);
+                mSoundHandle =
+                    Sound::PlayLong(mSoundHandle, 3, 0x93, *(Vector3 *)&mCamSpacePosX, 0);
                 flag = 1;
                 func_ov002_020ed738();
                 if (func_ov002_020eddc4() != 0)

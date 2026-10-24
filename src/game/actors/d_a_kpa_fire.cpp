@@ -114,6 +114,11 @@ enum {
 /* Sound id variant 0 plays through its mSoundHandle; named by use site, not decoded. */
 enum { SOUND_ID_MOUTH = 0x180 };
 
+namespace Sound {
+/* local extern: including Sound.h renumbers @NNN. */
+int PlayLong(u32, u32, u32, const Vector3 &, s16);
+}
+
 extern "C" {
 /* This file's own helpers, defined further down. */
 extern Entry data_ov060_0211afb4[];
@@ -125,7 +130,7 @@ extern u32 _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8Callback
 void d_a_kpa_fireNewSimpleHold(u32 id, Fix12i x, Fix12i y, Fix12i z);
 /* local extern: the header method is not this symbol's spelling here. */
 extern int _ZNK15dExtFrameCtrl_c13GetFrameCountEv(void *anim);
-extern u32 _ZN5Sound8PlayLongEjjjRK7Vector3s(u32 a, u32 b, u32 c, void *pos, u32 d);
+extern void d_a_kpa_firePlayLongHold(u32 a, u32 b, u32 c, void *pos, u32 d);
 extern void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *self, void *actor, int a, int b, unsigned int c, unsigned int d);
 extern void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(void *self, void *actor, int a, int b, void *v, int c);
 void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(void *thisp, void *sm, void *mtx, int rad, int t, unsigned int j);
@@ -348,8 +353,8 @@ void daKpaFire_c::func_ov060_0211747c() {
     if (this->mSoundID != SOUND_ID_MOUTH)
         this->mSoundHandle = 0;
     this->mSoundID = SOUND_ID_MOUTH;
-    this->mSoundHandle = _ZN5Sound8PlayLongEjjjRK7Vector3s(this->mSoundHandle, 3, this->mSoundID,
-                                                           &this->mCamSpacePosX, 0);
+    this->mSoundHandle =
+        Sound::PlayLong(this->mSoundHandle, 3, this->mSoundID, *(Vector3 *)&this->mCamSpacePosX, 0);
 
     side = t[0];
     fwd = t[2] + 0x14;
