@@ -1,4 +1,11 @@
 //cpp
+struct Vector3_16f;
+namespace Particle {
+struct Callback;
+struct System {
+    static int New(unsigned, unsigned, int, int, int, const ::Vector3_16f *, Callback *);
+};
+}
 /* daTor_c -- the sand tornado (registry profile TORNADO).
  * 11 function(s), .text 0x02136db0..0x021376bc.
  *
@@ -50,10 +57,8 @@ s32 Vec3_Dist(const Vector3 *a, const Vector3 *b);
 void Matrix4x3_FromTranslation(Matrix4x3 *m, int x, int y, int z);
 void dBgCh_Actr_UpdateContinuous_Veneer(void *collision);
 s16 _ZN4cstd5atan2E5Fix12IiES1_(s32 y, s32 x);
-u32 _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(u32 handle, u32 effect,
-                                                                           s32 x, s32 y, s32 z,
-                                                                           const void *direction,
-                                                                           void *callback);
+u32 d_a_torNewHold(u32 handle, u32 effect, s32 x, s32 y, s32 z, const void *direction,
+                   void *callback);
 void _ZN18TextureTransformer7SetFileER8BTA_Filei5Fix12IiEj(
     void *self, void *file, int flags, int speed, unsigned int start);
 void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(
@@ -206,10 +211,8 @@ cont:
 
     UpdateSpin(0x1000);
 
-    mParticleHandle0 = _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
-        mParticleHandle0, 0x11f, mPosX, mPosY, mPosZ, 0, 0);
-    mParticleHandle1 = _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
-        mParticleHandle1, 0x120, mPosX, mPosY, mPosZ, 0, 0);
+    mParticleHandle0 = Particle::System::New(mParticleHandle0, 0x11f, mPosX, mPosY, mPosZ, 0, 0);
+    mParticleHandle1 = Particle::System::New(mParticleHandle1, 0x120, mPosX, mPosY, mPosZ, 0, 0);
 }
 
 // @symbol _ZN7daTor_c6State0Ev

@@ -1,4 +1,11 @@
 //cpp
+struct Vector3_16f;
+namespace Particle {
+struct Callback;
+struct System {
+    static int New(unsigned, unsigned, int, int, int, const ::Vector3_16f *, Callback *);
+};
+}
 /* dEntObj_c and UnknownVsPlayer. ov075 0x02113ee0..0x02115ab8, 43 functions.
  *
  * The versus-mode entry scene's stage object: four player figures on the
@@ -96,8 +103,8 @@ void _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(void *seq, void *file, i
 void _ZN17dExtShadowModel_c9InitModelEP9Matrix4x35Fix12IiES3_S3_j(void *shadow, Matrix4x3 *mat,
                                                                   int radius, int height, int depth,
                                                                   unsigned char flags);
-int _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
-    unsigned handle, unsigned id, int x, int y, int z, const Vector3_16 *dir, void *callback);
+int d_ent_objNewHold(unsigned handle, unsigned id, int x, int y, int z, const Vector3_16 *dir,
+                     void *callback);
 void _ZN3G3i13PerspectiveW_E5Fix12IiES1_S1_S1_S1_S1_bP9Matrix4x3(int sinFov, int cosFov, int aspect,
                                                                  int nearZ, int farZ, int scaleW,
                                                                  bool load, Matrix4x3 *m);
@@ -315,8 +322,9 @@ void UnknownVsPlayer::func_ov075_02114300() {
     MulVec3Mat4x3(&bone->t, &mModel.mat4x3, &pos);
     Vec3_MulScalarInPlace(&pos, 0x8000);
     pos.y += 0x28000;
-    mParticleHandle = _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
-        mParticleHandle, 0x140, pos.x, pos.y, pos.z, (Vector3_16 *)0, (void *)0);
+    mParticleHandle = Particle::System::New(mParticleHandle, 0x140, pos.x, pos.y, pos.z,
+                                            (const Vector3_16f *)((Vector3_16 *)0),
+                                            (Particle::Callback *)((void *)0));
 }
 
 /* Movement state 8: frame 0x14 of the animation comes round twice; the

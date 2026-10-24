@@ -1,4 +1,11 @@
 //cpp
+struct Vector3_16f;
+namespace Particle {
+struct Callback;
+struct System {
+    static int New(unsigned, unsigned, int, int, int, const ::Vector3_16f *, Callback *);
+};
+}
 /* daDemo_c -- the KuppaScript cutscene actor, registry profile 352 (0x160),
  * debug name DEMO.
  *
@@ -410,7 +417,8 @@ extern u32 data_020a0db0;
 extern int func_ov002_020f2630(daDemo_c *self);
 extern struct OamAttr *data_ov002_0210b6a8[];
 extern void _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiEi( int a, struct OamAttr *b, int c, int d, int e, int f, int g, int h);
-extern u32 _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE( u32 slot, u32 unk, Fix12i x, Fix12i y, Fix12i z, void* rot, struct ParticleCallback* callback);
+extern u32 d_a_demoNewHold(u32 slot, u32 unk, Fix12i x, Fix12i y, Fix12i z, void *rot,
+                           struct ParticleCallback *callback);
 extern int data_ov002_02100140[];
 extern void func_ov002_020f2790(char *c, int p1, int p2, int p3, short p4);
 extern int func_ov002_020f2984(char *p);
@@ -1037,10 +1045,9 @@ void func_ov002_020f2790(char* c, int p1, int p2, int p3, s16 p4)
 {
     ((StaffRoll *)c)->kira.unk308 = p3;
     ((StaffRoll *)c)->kira.unk30c = p4;
-    ((StaffRoll *)c)->kiraParticle =
-        _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
-            ((StaffRoll *)c)->kiraParticle, 0x3e, p1 << 12, p2 << 12, 0, 0,
-            (struct ParticleCallback *)&((StaffRoll *)c)->kira);
+    ((StaffRoll *)c)->kiraParticle = Particle::System::New(
+        ((StaffRoll *)c)->kiraParticle, 0x3e, p1 << 12, p2 << 12, 0, 0,
+        (Particle::Callback *)((struct ParticleCallback *)&((StaffRoll *)c)->kira));
 }
 }
 
@@ -4129,12 +4136,9 @@ int daDemo_c::func_ov002_020f7038(int a, int arg)
         pos.x = x;
         pos.y = y;
         pos.z = z;
-        mParticleID[0] = _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
-            mParticleID[0], 0x3b, pos.x, pos.y, pos.z, 0, 0);
-        mParticleID[1] = _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
-            mParticleID[1], 0x3c, pos.x, pos.y, pos.z, 0, 0);
-        mParticleID[2] = _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
-            mParticleID[2], 0x3d, pos.x, pos.y, pos.z, 0, 0);
+        mParticleID[0] = Particle::System::New(mParticleID[0], 0x3b, pos.x, pos.y, pos.z, 0, 0);
+        mParticleID[1] = Particle::System::New(mParticleID[1], 0x3c, pos.x, pos.y, pos.z, 0, 0);
+        mParticleID[2] = Particle::System::New(mParticleID[2], 0x3d, pos.x, pos.y, pos.z, 0, 0);
     }
     return 1;
 }
@@ -4161,12 +4165,9 @@ int daDemo_c::func_ov002_020f71c4(int a, int arg)
         pos.x = x;
         pos.y = y;
         pos.z = z;
-        mParticleID[0] = _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
-            mParticleID[0], 0x38, pos.x, pos.y, pos.z, 0, 0);
-        mParticleID[1] = _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
-            mParticleID[1], 0x39, pos.x, pos.y, pos.z, 0, 0);
-        mParticleID[2] = _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
-            mParticleID[2], 0x3a, pos.x, pos.y, pos.z, 0, 0);
+        mParticleID[0] = Particle::System::New(mParticleID[0], 0x38, pos.x, pos.y, pos.z, 0, 0);
+        mParticleID[1] = Particle::System::New(mParticleID[1], 0x39, pos.x, pos.y, pos.z, 0, 0);
+        mParticleID[2] = Particle::System::New(mParticleID[2], 0x3a, pos.x, pos.y, pos.z, 0, 0);
     }
     return 1;
 }
@@ -4187,12 +4188,15 @@ int daDemo_c::func_ov002_020f72bc()
     }
     this->mOpacity = 0x1f;
 
-    mParticleID[0] = _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
-        mParticleID[0], 0x31, *((Fix12i*)&this->mPosX), *((Fix12i*)&this->mPosY), *((Fix12i*)&this->mPosZ), 0, 0);
-    mParticleID[1] = _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
-        mParticleID[1], 0x32, *(Fix12i*)(&this->mPosX), *(Fix12i*)(&this->mPosY), *(Fix12i*)(&this->mPosZ), 0, 0);
-    mParticleID[2] = _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
-        mParticleID[2], 0x33, *(Fix12i*)(&this->mPosX), *(Fix12i*)(&this->mPosY), *((Fix12i*)&this->mPosZ), 0, 0);
+    mParticleID[0] =
+        Particle::System::New(mParticleID[0], 0x31, *((Fix12i *)&this->mPosX),
+                              *((Fix12i *)&this->mPosY), *((Fix12i *)&this->mPosZ), 0, 0);
+    mParticleID[1] =
+        Particle::System::New(mParticleID[1], 0x32, *(Fix12i *)(&this->mPosX),
+                              *(Fix12i *)(&this->mPosY), *(Fix12i *)(&this->mPosZ), 0, 0);
+    mParticleID[2] =
+        Particle::System::New(mParticleID[2], 0x33, *(Fix12i *)(&this->mPosX),
+                              *(Fix12i *)(&this->mPosY), *((Fix12i *)&this->mPosZ), 0, 0);
     return 1;
 }
 

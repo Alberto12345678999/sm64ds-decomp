@@ -1,4 +1,11 @@
 //cpp
+struct Vector3_16f;
+namespace Particle {
+struct Callback;
+struct System {
+    static int New(unsigned, unsigned, int, int, int, const ::Vector3_16f *, Callback *);
+};
+}
 /* Dire, Dire Docks whirlpool (WATER_TATUMAKI). A player who comes within
  * 300 of the centre is caught and swung down the funnel; once they pass the
  * centre, KillPlayer runs once. Anyone merely inside 1100 is pulled inward,
@@ -120,15 +127,15 @@ extern void KillPlayer(void);
 /* Scratch matrix. The helpers below write it; the model copy reads it back. */
 extern Matrix4x3 data_020a0e68;
 /* Fix12<int> by value. The int parameter is the matching call. */
-extern int _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
-    unsigned int uniqueID, unsigned int effectID, int x, int y, int z, void *dir, void *callback);
+extern int d_a_water_tatumakiNewHold(unsigned int uniqueID, unsigned int effectID, int x, int y,
+                                     int z, void *dir, void *callback);
 extern int _Z14ApproachLinearR7Vector3RKS_5Fix12IiE(Vector3 &value, const Vector3 &target, int step);
 extern void _ZN18TextureTransformer7SetFileER8BTA_Filei5Fix12IiEj(TextureTransformer *self,
                                                                   BTA_File &file, int flags,
                                                                   int speed, u32 startFrame);
 }
 
-#define Particle_System_New _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE
+#define Particle_System_New Particle::System::New
 #define ApproachLinearVec _Z14ApproachLinearR7Vector3RKS_5Fix12IiE
 #define TextureTransformer_SetFile _ZN18TextureTransformer7SetFileER8BTA_Filei5Fix12IiEj
 

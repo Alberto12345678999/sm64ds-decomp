@@ -1,4 +1,11 @@
 //cpp
+struct Vector3_16f;
+namespace Particle {
+struct Callback;
+struct System {
+    static int New(unsigned, unsigned, int, int, int, const ::Vector3_16f *, Callback *);
+};
+}
 /* daPgRcer_c -- the Cool Cool Mountain racing penguin (PENGUIN_RACER).
  * The path comes from param1. A fall past 0x7d0000 or the cheat volume
  * sets mPlayerCheated; NumStars() == 0x96 selects the big penguin.
@@ -66,7 +73,7 @@ extern void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fi
 extern void _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(void *seq, void *btp, int flags, int speed, unsigned int start);
 
 extern void _ZN5Sound7PlaySubEjjj5Fix12IiEb(unsigned int a, unsigned int b, unsigned int c, int d, int e);
-extern void *_ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(u32 handle, u32 effect, int x, int y, int z, void *dir, void *cb);
+extern void *d_a_pg_rcerNewHold(u32 handle, u32 effect, int x, int y, int z, void *dir, void *cb);
 
 int func_ov019_02111254(void *unused, int playerLead);
 int func_ov019_0211140c(daPgRcer_c *self, dBgCh_Actr *clsn);
@@ -436,8 +443,8 @@ int func_ov019_0211197c(daPgRcer_c *self)
             self->mPenguinFinished = 1;
         }
         self->mSlideSound = Sound::PlayLong(self->mSlideSound, 3, 0x185, self->mCamSpacePos, 0);
-        self->mDustParticle = (u32)_ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
-            self->mDustParticle, 0x101, self->mPosX, self->mPosY + 0x32000, self->mPosZ, 0, 0);
+        self->mDustParticle = (u32)Particle::System::New(self->mDustParticle, 0x101, self->mPosX,
+                                                         self->mPosY + 0x32000, self->mPosZ, 0, 0);
         break;
 
     case 2:

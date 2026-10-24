@@ -1,4 +1,8 @@
 //cpp
+namespace Particle {
+struct Callback;
+}
+struct Vector3_16f;
 /* daStar_c / daStarBase_c -- the Power Star, the silver star, and the marker
  * that spawns one.
  *
@@ -183,6 +187,8 @@ extern void func_02012694(int a, void* p);
 namespace Particle {
 struct System {
     static void NewSimple(unsigned int id, int a, int b, int d);
+
+    static int New(unsigned, unsigned, int, int, int, const ::Vector3_16f *, Callback *);
 };
 }
 /* local extern: the call passes an untyped this, so it cannot use the header method. */
@@ -2604,15 +2610,17 @@ void func_ov002_020e8244(void *out, daStar_c *b)
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN8daStar_c19func_ov002_020e81e0Ev
 /* Keeps trail effect 0x113 (mParticle[0]) 13.0 above the star. */
-extern "C" void *_ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
-    int a0, unsigned int a1, int a2, int a3, int a4, void *a5, void *a6);
+extern "C" void *d_a_starNewHold(int a0, unsigned int a1, int a2, int a3, int a4, void *a5,
+                                 void *a6);
 void daStar_c::func_ov002_020e81e0() {
     Vector3 v;
     v.x = mPosX;
     v.y = mPosY;
     v.z = mPosZ;
     v.y += 0xd000;
-    *(void **)&mParticle[0] = _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(*(volatile unsigned int *)&mParticle[0], 0x113, *(volatile int *)&v.x, *(volatile int *)&v.y, v.z, 0, 0);
+    *(void **)&mParticle[0] =
+        (void *)Particle::System::New(*(volatile unsigned int *)&mParticle[0], 0x113,
+                                      *(volatile int *)&v.x, *(volatile int *)&v.y, v.z, 0, 0);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -2638,10 +2646,10 @@ void daStar_c::func_ov002_020e8098() {
     vc.y = FX_MUL(vc.y, mScaleY);
     vc.z = FX_MUL(vc.z, mScaleZ);
     AddVec3(&vc, &mPos, &vc);
-    *(void**)&mParticle[0] = _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
-        mParticle[0], 0x115, vc.x, vc.y, vc.z, 0, 0);
-    *(void**)&mParticle[1] = _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
-        mParticle[1], 0x116, vc.x, vc.y, vc.z, 0, 0);
+    *(void **)&mParticle[0] =
+        (void *)Particle::System::New(mParticle[0], 0x115, vc.x, vc.y, vc.z, 0, 0);
+    *(void **)&mParticle[1] =
+        (void *)Particle::System::New(mParticle[1], 0x116, vc.x, vc.y, vc.z, 0, 0);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -2662,8 +2670,7 @@ void daStar_c::func_ov002_020e7fcc() {
         && (u32)((*(u32*)&mModelAnim1.currFrame << 4) >> 0x10) >= 2
         && *(int*)((char*)obj + 0xc) != 0) {
         func_ov002_020e8244(&v1, this);
-        mParticle[0] = (u32)_ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
-            mParticle[0], 0x2f, v1.x, v1.y, v1.z, 0, 0);
+        mParticle[0] = (u32)Particle::System::New(mParticle[0], 0x2f, v1.x, v1.y, v1.z, 0, 0);
         return;
     }
 
@@ -2697,8 +2704,7 @@ void daStar_c::func_ov002_020e7f2c() {
         zvar = zraw;
         y = yadj;
     }
-    mParticle[2] = (u32)_ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
-        *(volatile u32 *)&mParticle[2], 0x114, x, y, z, 0, 0);
+    mParticle[2] = (u32)Particle::System::New(*(volatile u32 *)&mParticle[2], 0x114, x, y, z, 0, 0);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -2711,8 +2717,7 @@ void daStar_c::func_ov002_020e7eb8() {
     int b = (actorID == ACTOR_SILVER_STAR);
     if (b == 0) return;
     func_ov002_020e8244(&v, this);
-    mParticle[3] = (int)_ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
-        mParticle[3], 0x10e, v.x, v.y, v.z, 0, 0);
+    mParticle[3] = (int)Particle::System::New(mParticle[3], 0x10e, v.x, v.y, v.z, 0, 0);
 }
 
 /* -------------------------------------------------------------------------- */

@@ -133,8 +133,8 @@ void func_0200f760(void *actor, void *clsn);
 
 /* Fix12<int> by value. Scalar parameters: the member form size-DIFFs.
    See the leftover list. */
-int _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
-    u32 uniqueID, u32 effectID, int x, int y, int z, const void *dir, void *callback);
+int d_a_eyknNewHold(u32 uniqueID, u32 effectID, int x, int y, int z, const void *dir,
+                    void *callback);
 u32 _ZN8Particle6System17NewUnkCallback818Ejj5Fix12IiES2_S2_PK11Vector3_16f(
     u32 uniqueID, u32 effectID, int x, int y, int z, const Vector3_16f *dir);
 void d_a_eyknNewSimpleHold(u32 effectID, int x, int y, int z);
@@ -362,7 +362,8 @@ idCheck:
     if (!isPlayer) return;
 
     if (mdCcAcPos_c.hitFlags & kKillHit) {
-        mParticleID0 = (u32)_ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(mParticleID0, kDeathPtcl0, mPosX, mPosY, mPosZ, 0, 0);
+        mParticleID0 =
+            (u32)Particle::System::New(mParticleID0, kDeathPtcl0, mPosX, mPosY, mPosZ, 0, 0);
         mParticleID1 = _ZN8Particle6System17NewUnkCallback818Ejj5Fix12IiES2_S2_PK11Vector3_16f(mParticleID1, kDeathPtcl1, mPosX, mPosY, mPosZ, 0);
         SetState(2);
         return;
@@ -410,8 +411,7 @@ int daEykn_c::St_Die_Main()
     if (id0 != 0 && mParticleID1 != 0) {
         Particle::System *p0;
         Particle::System *p1;
-        mParticleID0 = (u32)_ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
-            id0, kDeathPtcl0, mPosX, mPosY, mPosZ, 0, 0);
+        mParticleID0 = (u32)Particle::System::New(id0, kDeathPtcl0, mPosX, mPosY, mPosZ, 0, 0);
         mParticleID1 = _ZN8Particle6System17NewUnkCallback818Ejj5Fix12IiES2_S2_PK11Vector3_16f(
             mParticleID1, kDeathPtcl1, mPosX, mPosY, mPosZ, 0);
         p0 = Particle::System::FromUniqueID(mParticleID0);

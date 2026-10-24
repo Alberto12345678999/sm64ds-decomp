@@ -1,4 +1,11 @@
 //cpp
+struct Vector3_16f;
+namespace Particle {
+struct Callback;
+struct System {
+    static int New(unsigned, unsigned, int, int, int, const ::Vector3_16f *, Callback *);
+};
+}
 /* daDgr_c -- Spindel (actor 163, DONGURU), ov025.
  *
  * Rolls along Z while turning about X. mRollStage counts 0..20 and the
@@ -83,8 +90,7 @@ extern CLPS_Block data_ov025_02112c28;
 
 void func_02012694(s32 soundId, void *pos);
 void _ZN8dActor_c10EarthquakeERK7Vector35Fix12IiE(daDgr_c *self, Vec3 *pos, s32 magnitude);
-u32 _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
-    u32 slot, u32 effect, s32 x, s32 y, s32 z, const void *dir, void *callback);
+u32 d_a_dgrNewHold(u32 slot, u32 effect, s32 x, s32 y, s32 z, const void *dir, void *callback);
 void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
     dBgW_KcMbg *self, KCL_File *kcl, const Matrix4x3 &mat, Fix12i scale,
     short angY, CLPS_Block &clps);
@@ -221,8 +227,9 @@ s32 daDgr_c::Behavior()
             loc[1] = mBasePosY - kDustDrop;
             along = data_02082214[((u16)mAngleY >> 4) * 2];
             loc[2] = along * kDustReach + mPosZ;
-            mDustParticle1 = _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
-                mDustParticle1, kDustEffect, loc[0], loc[1], loc[2], (void *)0, (void *)0);
+            mDustParticle1 = Particle::System::New(mDustParticle1, kDustEffect, loc[0], loc[1],
+                                                   loc[2], (const Vector3_16f *)((void *)0),
+                                                   (Particle::Callback *)((void *)0));
         }
         {
             s32 along;
@@ -231,8 +238,9 @@ s32 daDgr_c::Behavior()
             loc[0] = mPosX - across * kDustReach;
             along = data_02082214[((u16)mAngleY >> 4) * 2];
             loc[2] = mPosZ - along * kDustReach;
-            mDustParticle2 = _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
-                mDustParticle2, kDustEffect, loc[0], loc[1], loc[2], (void *)0, (void *)0);
+            mDustParticle2 = Particle::System::New(mDustParticle2, kDustEffect, loc[0], loc[1],
+                                                   loc[2], (const Vector3_16f *)((void *)0),
+                                                   (Particle::Callback *)((void *)0));
         }
     }
 

@@ -1,4 +1,8 @@
 //cpp
+namespace Particle {
+struct Callback;
+}
+struct Vector3_16f;
 /* daPkn_c (PAKUN / PIRANHA_PLANT 250), ov084 0x0212eaf0..0x02130174.
  *
  * RTTI names daPkn_c. Typeinfo at 0x02130bf8 points to the string at
@@ -101,10 +105,12 @@ void  Matrix4x3_FromTranslation(PknMtx43 *m, int x, int y, int z);
 void  Matrix4x3_ApplyInPlaceToRotationY(PknMtx43 *m, s16 ang);
 void  MulMat4x3Mat4x3(void *a, void *b, void *c);
 
-void *_ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(u32 handle, u32 id, int x, int y, int z, const void *f, void *cb);
+void *d_a_pknNewHold(u32 handle, u32 id, int x, int y, int z, const void *f, void *cb);
 namespace Particle {
 struct System {
     static void NewSimple(u32 id, int x, int y, int z);
+
+    static int New(unsigned, unsigned, int, int, int, const ::Vector3_16f *, Callback *);
 };
 }
 int   _ZN5Sound7PlaySubEjjj5Fix12IiEb(u32 a, u32 b, u32 c, int t, int flag);
@@ -513,8 +519,8 @@ void daPkn_c::StateDie()
         pos.x += data_ov084_0213030c[(u16)mStateTimer] * data_02082214[((u16)mAngleY >> 4) * 2];
         pos.z += data_ov084_0213030c[(u16)mStateTimer] * data_02082214[((u16)mAngleY >> 4) * 2 + 1];
         pos.y += data_ov084_02130334[(u16)mStateTimer] << 12;
-        mParticleHandle = (s32)_ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
-            mParticleHandle, 0xfb, pos.x, pos.y, pos.z, 0, 0);
+        mParticleHandle =
+            (s32)Particle::System::New(mParticleHandle, 0xfb, pos.x, pos.y, pos.z, 0, 0);
     }
     if (mModelAnim.Finished() == 0)
         return;
@@ -536,12 +542,10 @@ void daPkn_c::StateShrink()
         scale = 0x1000;
     }
 
-    mParticleHandle = (s32)_ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
-        mParticleHandle, 0xfc, mPosX,
-        mPosY + 0x1e000, mPosZ, 0, 0);
-    mParticleHandle2 = (s32)_ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
-        mParticleHandle2, 0xfd, mPosX,
-        mPosY + 0x1e000, mPosZ, 0, 0);
+    mParticleHandle =
+        (s32)Particle::System::New(mParticleHandle, 0xfc, mPosX, mPosY + 0x1e000, mPosZ, 0, 0);
+    mParticleHandle2 =
+        (s32)Particle::System::New(mParticleHandle2, 0xfd, mPosX, mPosY + 0x1e000, mPosZ, 0, 0);
 
     if (scale > 0) {
         scale = scale - 0xa3;

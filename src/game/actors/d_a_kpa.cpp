@@ -1,4 +1,8 @@
 //cpp
+namespace Particle {
+struct Callback;
+}
+struct Vector3_16f;
 /* daKpa_c + daKpaTail_c -- Bowser and his tail, the ov060 boss-fight actors.
  * ROM span 0x02111900..0x02116484, 81 functions: both destructor pairs,
  * the shared fight helpers, both classes' resource/load/behavior/render
@@ -349,14 +353,15 @@ int _ZN4cstd4fdivEii(int a, int b);
 extern PmfEnt data_ov060_0211aed4[];
 
 extern unsigned char NumStars(void);
-extern void *_ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
-unsigned a, unsigned b, int x, int y, int z, void *v, void *cb);
+extern void *d_a_kpaNewHold(unsigned a, unsigned b, int x, int y, int z, void *v, void *cb);
 extern void _ZN5Sound17ChangeMusicVolumeEj5Fix12IiE(unsigned int a, int b);
 extern KpaAnimationFileHandle data_ov060_0211ac88;
 extern KpaAnimationFileHandle data_ov060_0211ac60;
 namespace Particle {
 struct System {
     static void NewSimple(unsigned int kind, int x, int y, int z);
+
+    static int New(unsigned, unsigned, int, int, int, const ::Vector3_16f *, Callback *);
 };
 }
 extern int Vec3_HorzLen(const Vector3* v);
@@ -2299,7 +2304,7 @@ void daKpa_c::func_ov060_02113d8c(){
     case 3:
         this->mStepCounter = 0;
         func_ov060_02111cc0(0x1a, 0x40000000);
-        this->mParticleHandle = (unsigned int)_ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
+        this->mParticleHandle = (unsigned int)Particle::System::New(
             this->mParticleHandle, 0x101, this->mPosX, this->mPosY + 0x32000, this->mPosZ, 0, 0);
         if (ApproachLinear(this->mHorzSpeed, 0, 0x1000) != 0)
             this->mStep = 2;
@@ -2758,8 +2763,8 @@ int daKpa_c::func_ov060_021132a4(){
     pos.z = z;
     pos.y = ytmp + 0x32000;
 
-    this->mParticleHandle = (int)_ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
-        *(volatile int *)&this->mParticleHandle, 0x99, pos.x, pos.y, z, 0, 0);
+    this->mParticleHandle = (int)Particle::System::New(*(volatile int *)&this->mParticleHandle,
+                                                       0x99, pos.x, pos.y, z, 0, 0);
 
     if (this->mScaleX < 0xccc) {
         this->mSpinSpeed += 0x80;
@@ -2939,10 +2944,8 @@ int daKpa_c::func_ov060_02112ee0(){
             v[2] = z = this->mPosZ;
             v[1] = y + 0x32000;
 
-            *(void **)(&this->mParticleHandle) =
-                _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
-                    *(volatile unsigned *)&this->mParticleHandle, 0x99,
-                    v[0], v[1], z, 0, 0);
+            *(void **)(&this->mParticleHandle) = (void *)Particle::System::New(
+                *(volatile unsigned *)&this->mParticleHandle, 0x99, v[0], v[1], z, 0, 0);
         } else {
             func_ov060_02113260();
             ret = 1;

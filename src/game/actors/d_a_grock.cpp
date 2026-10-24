@@ -1,4 +1,8 @@
 //cpp
+namespace Particle {
+struct Callback;
+}
+struct Vector3_16f;
 /* daGrock_c -- Hazy Maze Cave rolling rock (GORO_ROCK 221), ov021.
  *
  * param1's low nibble is the kind. 0 and 1 are invisible spawners: a rock
@@ -122,12 +126,14 @@ extern void func_02012694(int id, void *pos);
 namespace Particle {
 struct System {
     static void NewSimple(u32 id, int x, int y, int z);
+
+    static int New(unsigned, unsigned, int, int, int, const ::Vector3_16f *, Callback *);
 };
 }
 extern void dBgCh_Actr_UpdateContinuous_Veneer(void *clsn);
 extern void func_0201267c(int id, void *pos);
-extern void *_ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
-    unsigned int prev, unsigned int effect, int x, int y, int z, void *dir, void *cb);
+extern void *d_a_grockNewHold(unsigned int prev, unsigned int effect, int x, int y, int z,
+                              void *dir, void *cb);
 extern int Vec3_HorzLen(void *v);
 extern int _ZN4cstd5atan2E5Fix12IiES1_(int y, int x);
 /* dActor_c.h types GetSubtraction(short, short). The wall angle is an int
@@ -283,8 +289,7 @@ extern "C" void func_ov021_02112544(char *raw)
             func_0201267c(0x48, &rock->mCamSpacePosX);
         } else {
             rock->mDustParticleID =
-                (int)_ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
-                    rock->mDustParticleID, 0x69, pos.x, pos.y, pos.z, 0, 0);
+                (int)Particle::System::New(rock->mDustParticleID, 0x69, pos.x, pos.y, pos.z, 0, 0);
             rock->mRollSoundID =
                 Sound::PlayLong(rock->mRollSoundID, 3, 0x8a, rock->mCamSpacePos, 0);
         }
