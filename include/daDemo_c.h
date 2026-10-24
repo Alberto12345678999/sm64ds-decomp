@@ -7,7 +7,7 @@
 #include "dExtAnmModel_c.h"
 #include "dPa_c.h"
 
-struct TextureSequence;
+struct dExtAnmTexPat_c;
 
 /* The nested model helpers below derive from the real model classes, which
  * carry the cartridge's RTTI spellings: dExtSimpleModel_c (_ZTI at
@@ -47,8 +47,8 @@ struct daDemo_c : dActor_c {
         /* Stored by func_ov002_020f6618, released by the destructor. */
         SharedFilePtr *mModelFile;    /* 0x70 - BMD handed to SetFile */
         SharedFilePtr **mAnimFiles;   /* 0x74 - BCA files for SetAnim */
-        SharedFilePtr **mTexSeqFiles; /* 0x78 - BTP files for the TextureSequence */
-        TextureSequence *mTexSeq;     /* 0x7c - allocated only when BTP files are given */
+        SharedFilePtr **mTexSeqFiles; /* 0x78 - BTP files for the dExtAnmTexPat_c */
+        dExtAnmTexPat_c *mTexSeq;     /* 0x7c - allocated only when BTP files are given */
         u8 mNumAnimFiles;             /* 0x80 */
         u8 mNumTexSeqFiles;           /* 0x81 */
         /* Entry of the 4-byte animation table (anim file, BTP file, loop
