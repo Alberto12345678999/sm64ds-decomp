@@ -125,7 +125,7 @@ void  MulVec3Mat4x3(const void *v, const void *m, void *out);
    which mwccarm passes differently at the call site than the loose scalar
    spelling -- the mangled spelling is the one that matches. Sound.h covers
    PlayLong, so only PlaySub stays. */
-int _ZN5Sound7PlaySubEjjj5Fix12IiEb(u32 a, u32 b, u32 c, Fix12i d, bool loop);
+int d_a_c_jugemPlaySubHold(u32 a, u32 b, u32 c, Fix12i d, bool loop);
 /* local extern: the matched free-function spelling of SetFile; a member call is pending. */
 void _ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit(void *thiz, BTP_File &f, int a, Fix12i b, u32 c);
 void  _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
@@ -235,7 +235,7 @@ int daC_Jugem_c::StateIntroMain()
   Vec3_Dist(&mCamLookX, &r);
   mTimer++;
   if (mTimer > 0x64) {
-    if (_ZN5Sound7PlaySubEjjj5Fix12IiEb(0x4b, 0x7f, 0, 0x7222, false) != 0) {
+    if (Sound::PlaySub(0x4b, 0x7f, 0, 0x7222, false) != 0) {
       *(int *)&cam->mFlags &= ~8;
       mHorzSpeed = 0;
       mTimer = 0;
@@ -519,7 +519,7 @@ int daC_Jugem_c::StateArriveMain()
     mAngleX = 0x1000;
     mAngleZ = 0x800;
     mTimer += 1;
-    _ZN5Sound7PlaySubEjjj5Fix12IiEb(0x4b, 0x14, 0x7f, 0x15666, false);
+    Sound::PlaySub(0x4b, 0x14, 0x7f, 0x15666, false);
     switch (mTimer) {
     case 1:
         p->mMuteSleepVoice = 1;
@@ -588,7 +588,7 @@ int daC_Jugem_c::StateLeaveMain()
         _Z14ApproachLinearRiii(&mPosY, mTargetY, 0x1e000);
     }
     if (*(unsigned short *)&mStateTimer == 0) {
-        if (_ZN5Sound7PlaySubEjjj5Fix12IiEb(0x4a, 0x7f, 0, 0x7222, 0) != 0) {
+        if (Sound::PlaySub(0x4a, 0x7f, 0, 0x7222, 0) != 0) {
             if (mTalkPlayer->HasFinishedTalking() == 1) {
                 MarkForDestruction();
                 data_0209f284 = 0;
@@ -672,7 +672,7 @@ int daC_Jugem_c::StateFlyToPlayerMain()
     p->mStateTargetZ = mPosZ;
 
     if (*(unsigned short *)&mStateTimer == 0) {
-        _ZN5Sound7PlaySubEjjj5Fix12IiEb(0x4a, 0x14, 0x7f, 0x15666, 0);
+        Sound::PlaySub(0x4a, 0x14, 0x7f, 0x15666, 0);
     }
 
     mSfxHandle = Sound::PlayLong(mSfxHandle, 3, 0x182, mCamSpacePos, 0);

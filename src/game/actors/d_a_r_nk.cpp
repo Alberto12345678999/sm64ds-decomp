@@ -179,7 +179,7 @@ extern s32 Vec3_Dist(const Vector3 *a, const Vector3 *b);
 extern unsigned int func_0201277c(unsigned int id);
 extern signed char data_0209f2f8;   /* LEVEL_ID */
 extern s8 data_ov002_02111184;      /* DISPLAY_TIMER: nonzero shows the course timer */
-extern bool _ZN5Sound7PlaySubEjjj5Fix12IiEb(u32 a, u32 b, u32 c, int d, int e);
+extern bool d_a_r_nkPlaySubHold(u32 a, u32 b, u32 c, int d, int e);
 extern void func_02012694(u32 a, void *b);
 unsigned int func_02012790(unsigned int id);
 extern u8 data_0209d684;            /* MESSAGE_RESULT: which answer the player picked (1 or 2) */
@@ -500,10 +500,10 @@ void daRNk_c::func_ov062_0211a1f4()
             this->mStep++;
         return;
     case 1:
-        _ZN5Sound7PlaySubEjjj5Fix12IiEb(0x1f, 0x14, 0x7f, 0x6b000, 0);
+        Sound::PlaySub(0x1f, 0x14, 0x7f, 0x6b000, 0);
         if (this->mPlayer->GetTalkState() != -1)
             return;
-        _ZN5Sound7PlaySubEjjj5Fix12IiEb(0x1f, 0x7f, 0, 0x7f000, 0);
+        Sound::PlaySub(0x1f, 0x7f, 0, 0x7f000, 0);
         func_02012694(kSfx4D, &this->mCamSpacePosX);
         _ZN5Sound22LoadAndSetMusic_Layer2Ej(kMusicRace);
         this->mIsRacing = 1;

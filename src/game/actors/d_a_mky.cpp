@@ -65,13 +65,17 @@
  * rejects two extern "C" declarations of one name that disagree, so one
  * spelling has to serve every call site. Data objects stay in the bodies:
  * a variable's name does not mangle. */
+namespace Sound {
+bool PlaySub(u32, u32, u32, int, bool);
+}
+
 extern "C" {
 
 short Vec3_HorzAngle(const void *a, const void *b);
 int   Vec3_Dist(const void *a, const void *b);
 void  func_0201267c(unsigned int id, const Vector3 *pos);
 void  func_020383f0(void *p);
-bool  _ZN5Sound7PlaySubEjjj5Fix12IiEb(unsigned int a, unsigned int b, unsigned int c, int speed, int e);
+bool  d_a_mkyPlaySubHold(unsigned int a, unsigned int b, unsigned int c, int speed, int e);
 unsigned char DecIfAbove0_Byte(unsigned char *p);
 void  Vec3_Asr(void *d, void *s, int sh);
 int   Vec3_HorzDist(const Vector3 *a, const Vector3 *b);
@@ -639,7 +643,7 @@ int daMky_c::func_ov030_02112578()
             this->mModelAnim.SetAnim((BCA_File *)gMonkeyWait2AnimationFile[1], 0, 0x1000, 0);
             this->mModelAnim.speed = 0x1000;
             cage->mHorzSpeed = 0x400;
-            _ZN5Sound7PlaySubEjjj5Fix12IiEb(0x20, 0x14, 0x7f, 0x15666, 0);
+            Sound::PlaySub(0x20, 0x14, 0x7f, 0x15666, 0);
             this->mActionTimer = 0x78;
             {
                 u8 *p = &this->mSubState;
@@ -660,7 +664,7 @@ int daMky_c::func_ov030_02112578()
         /* fallthrough */
     case 8:
         if (DecIfAbove0_Byte(&this->mActionTimer) == 0) {
-            _ZN5Sound7PlaySubEjjj5Fix12IiEb(0x20, 0x7f, 0, 0x15666, 0);
+            Sound::PlaySub(0x20, 0x7f, 0, 0x15666, 0);
             {
                 u8 *p = &this->mSubState;
                 *p = *p + 1;

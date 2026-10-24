@@ -65,6 +65,10 @@ struct SoundObjectCallbackOwner;
 
 typedef int (SoundObjectCallbackOwner::*SoundObjectCallback)(u16 *);
 
+namespace Sound {
+bool PlaySub(u32, u32, u32, int, bool);
+}
+
 extern "C" {
 extern int _ZN5Sound7PlaySubEjjj5Fix12IiEb(u32 soundID, u32 volume, u32 pan, Fix12i distance, int loop);
 extern SoundObjectCallback data_ov002_0211110c[];
@@ -113,7 +117,7 @@ int daSoundObj_c::InitResources()
             break;
         if (actor != this) {
             actor->MarkForDestruction();
-            _ZN5Sound7PlaySubEjjj5Fix12IiEb(current, 0x7f, 0, 0x7f000, 0);
+            Sound::PlaySub(current, 0x7f, 0, 0x7f000, 0);
         }
     }
 
@@ -131,7 +135,7 @@ int daSoundObj_c::Behavior()
         || (mCounter > 0xa && data_0209b49c <= 0x7f)) {
         MarkForDestruction();
         if (data_0208e430 != 0x22) {
-            _ZN5Sound7PlaySubEjjj5Fix12IiEb(data_0208e430, 0x7f, 0, 0x7f000, 0);
+            Sound::PlaySub(data_0208e430, 0x7f, 0, 0x7f000, 0);
         }
     }
     if (param1 != 6) {
@@ -168,11 +172,11 @@ extern "C" int func_ov002_020f93a8(daSoundObj_c *self, u16 *counter)
 {
     if (counter[0] < self->mCounterLimit) {
         int vol = self->mVolume;
-        if (_ZN5Sound7PlaySubEjjj5Fix12IiEb(self->mSoundID, vol, 0x7f, ((0x7f - vol) << 12) / 5, 1) != 0)
+        if (Sound::PlaySub(self->mSoundID, vol, 0x7f, ((0x7f - vol) << 12) / 5, 1) != 0)
             self->mCounterLimit = 1;
         counter[0]++;
     } else if (self->mCounterLimit == 0) {
-        if (_ZN5Sound7PlaySubEjjj5Fix12IiEb(self->mSoundID, 0x7f, 0, 0xcb33, 1) != 0)
+        if (Sound::PlaySub(self->mSoundID, 0x7f, 0, 0xcb33, 1) != 0)
             return 1;
     }
     return 0;

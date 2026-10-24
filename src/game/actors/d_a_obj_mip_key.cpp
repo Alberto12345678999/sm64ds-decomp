@@ -20,6 +20,10 @@
 #include "dCamera_c.h"
 #include "Message.h"
 
+namespace Sound {
+bool PlaySub(u32, u32, u32, int, bool);
+}
+
 extern "C" {
 
 void func_ov085_0212cd0c(daObj_Mip_Key_c *self);
@@ -40,7 +44,7 @@ void  MulVec3Mat4x3(Vector3 *v, Matrix4x3 *m, Vector3 *out);
 void  _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
           dActor_c *thiz, dExtShadowModel_c *sm, Matrix4x3 *mtx, int rad, int height, u8 flags);
 
-bool  _ZN5Sound7PlaySubEjjj5Fix12IiEb(u32 a, u32 b, u32 c, Fix12i d, int loop);
+bool  d_a_obj_mip_keyPlaySubHold(u32 a, u32 b, u32 c, Fix12i d, int loop);
 
 unsigned int func_02012790(unsigned int a);
 void  func_02013868(int t, int x);
@@ -86,7 +90,7 @@ daObj_Mip_Key_c::~daObj_Mip_Key_c()
 
 extern "C" void func_ov085_0212cd0c(daObj_Mip_Key_c *c)
 {
-    _ZN5Sound7PlaySubEjjj5Fix12IiEb(0x28, 0x7f, 0, 0x7444, 0);
+    Sound::PlaySub(0x28, 0x7f, 0, 0x7444, 0);
     Message::EndTalk();
     data_0209f318->mFlags &= ~8;
     c->mPlayer->mStateFlags &= ~0x800;
@@ -116,7 +120,7 @@ extern "C" int func_ov085_0212cd80(daObj_Mip_Key_c *self)
 
     switch (self->mTalkState) {
     case 0:
-        if (!_ZN5Sound7PlaySubEjjj5Fix12IiEb(0x28, 0x12, 0x7f, 0x15ccc, 0))
+        if (!Sound::PlaySub(0x28, 0x12, 0x7f, 0x15ccc, 0))
             break;
         self->mTalkState = 1;
     case 1:
@@ -150,7 +154,7 @@ extern "C" int func_ov085_0212cd80(daObj_Mip_Key_c *self)
         break;
     case 3:
         if (data_0209d660 == 0) {
-            _ZN5Sound7PlaySubEjjj5Fix12IiEb(0x28, 0x7f, 0, 0x7444, 0);
+            Sound::PlaySub(0x28, 0x7f, 0, 0x7444, 0);
             StartMinigameMenu(1);
             Message::EndTalk();
             self->MarkForDestruction();
@@ -167,7 +171,7 @@ extern "C" int func_ov085_0212cd80(daObj_Mip_Key_c *self)
         }
         break;
     case 6:
-        if (_ZN5Sound7PlaySubEjjj5Fix12IiEb(0x28, 0x12, 0x7f, 0x15ccc, 0)) {
+        if (Sound::PlaySub(0x28, 0x12, 0x7f, 0x15ccc, 0)) {
             if (data_0209d660 == 0) {
                 if (mode == 1) {
                     func_02012790(0x5e);

@@ -908,19 +908,17 @@ int Mg_GetMusicTrack(void) {
 // @symbol Mg_RestoreMusic
 namespace s20ae20c {
 extern "C" {
-extern void _ZN5Sound7PlaySubEjjj5Fix12IiEb(unsigned int a, unsigned int b, unsigned int c, int d, int e);
+extern void d_s_mg_basePlaySubHold(unsigned int a, unsigned int b, unsigned int c, int d, int e);
 extern int Mg_GetMusicMode(void);
 extern int Mg_GetMusicTrack(void);
 /* Sound::PlaySub with third argument 0 and its flag set starts nothing:
    it only sets the music volume target (data_0208e42c, which
    ChangeMusicVolume and PauseMusic also write) back to 0x7f, with step
    0x7f000, and zeroes data_0209b470. Then, while a scene exists and in
-   music mode 1, this loads the scene's track. PlaySub stays mangled:
-   nothing in the tree mangles to its Fix12<int> parameter (see
-   include/Sound.h). */
+   music mode 1, this loads the scene's track. */
 void Mg_RestoreMusic(void)
 {
-    _ZN5Sound7PlaySubEjjj5Fix12IiEb(0, 0x7f, 0, 0x7f000, 1);
+    Sound::PlaySub(0, 0x7f, 0, 0x7f000, 1);
     if (gMgScene == 0) return;
     if (Mg_GetMusicMode() != 1) return;
     Sound::LoadAndSetMusic_Layer1(Mg_GetMusicTrack());
@@ -932,7 +930,6 @@ void Mg_RestoreMusic(void)
 namespace s20ae274 {
 extern "C" {
 extern int Mg_GetMusicMode(void);
-extern void _ZN5Sound7PlaySubEjjj5Fix12IiEb(unsigned int, unsigned int, unsigned int, int, int);
 
 /* While a scene exists, starts sequence `id` on Sound::PlaySub's own
    player (data_0209b4b0) unless it is already the current one, and sets
@@ -941,7 +938,7 @@ extern void _ZN5Sound7PlaySubEjjj5Fix12IiEb(unsigned int, unsigned int, unsigned
 void Mg_PlayJingle(void* id) {
     if (gMgScene == 0) return;
     Mg_GetMusicMode();
-    _ZN5Sound7PlaySubEjjj5Fix12IiEb((unsigned int)id, 0x40, 0x7f, 0x7f000, 1);
+    Sound::PlaySub((unsigned int)id, 0x40, 0x7f, 0x7f000, 1);
 }
 }
 }
