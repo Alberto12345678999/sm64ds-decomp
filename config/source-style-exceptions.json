@@ -738,6 +738,14 @@
       "evidence": "src/game/stages/d_s_entry_methods.cpp owns ov075 0x021190a4..0x0211a854. 30/30 functions byte-match the ROM under mwccarm 2004/b56 with relocation destinations checked, including the nine functions the file already owned."
     },
     {
+      "path": "src/unnamed/ov075/func_ov075_02117fe4.c",
+      "rule": "handspelled-member",
+      "match": "_ZN3OAM6RenderEbP7OamAttriiiiii",
+      "count": 3,
+      "reason": "func_ov075_02117fe4 is a C translation unit, so it cannot name the C++ member OAM::Render; it declares the 8-argument overload under its linker spelling and calls it twice (the tens and ones digits).",
+      "evidence": "The call spelled _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiEi before the OAM::Render rename (#4327); include/OAM.h declares the scalar overload. Same shape as src/unnamed/arm9/0203/func_0203083c.c's row for the 10-argument overload."
+    },
+    {
       "path": "src/game/stages/d_s_entry_methods.cpp",
       "rule": "raw-offset",
       "match": "(unsignedchar*)(c+0x282",
