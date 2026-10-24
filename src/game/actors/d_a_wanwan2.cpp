@@ -48,12 +48,12 @@
  *   compares the two. func_ov100_02143aa4 and func_ov100_02143ae0 are the
  *   state pair's members, called through ChompPmfSelf rather than as methods.
  * - The callees with Fix12<int> parameters (dActor_c's shadow drop,
- *   Player::Hurt, ModelAnim::SetAnim, dCcAcPos_c::Init, cstd::atan2) stay
+ *   Player::Hurt, dExtAnmModel_c::SetAnim, dCcAcPos_c::Init, cstd::atan2) stay
  *   spelled as mangled extern-C free functions.
  * - func_ov100_02143b68 reaches the link positions and the link models'
  *   translations through two raw char pointers that start at the chomp,
  *   and InitResources' link seeding loop does the same. Written as
- *   Vector3 * / Model * walking the member arrays, both forms measure
+ *   Vector3 * / dExtSimpleModel_c * walking the member arrays, both forms measure
  *   different from the ROM here, so those reads keep their offsets,
  *   commented.
  * - data_0209f2d8 is the game-mode byte (CURRENT_GAMEMODE in
@@ -537,7 +537,7 @@ extern "C" void func_ov100_02143b68(char *self)
     daWanwan2_c *c = (daWanwan2_c *)self;
     M48 tmp;
     int i;
-    Model *mdst;
+    dExtSimpleModel_c *mdst;
     char *rd;
     char *st;
     dExtShadowModel_c *sm;
@@ -550,7 +550,7 @@ extern "C" void func_ov100_02143b68(char *self)
     i = 0;
     mdst = c->mModels;
     /* rd and st both start at the chomp itself and are stepped by one link
-       (rd: 0xc, st: 0x50, a Model), so the offsets below are from the chomp:
+       (rd: 0xc, st: 0x50, a dExtSimpleModel_c), so the offsets below are from the chomp:
        rd + 0x6d8 is mLinkPos[i] and st + 0x3b0 is mModels[i].mat4x3.t. */
     rd = (char *)c;
     st = (char *)c;
@@ -740,16 +740,16 @@ int daWanwan2_c::Behavior()
    enters the walking state. */
 int daWanwan2_c::InitResources()
 {
-    Model::LoadFile(data_ov002_0211092c);
-    mModelAnim.SetFile((BMD_File *)Model::LoadFile(data_ov100_021486bc), 1, -1);
-    Model::LoadFile(data_ov100_021486a4);
+    dExtSimpleModel_c::LoadFile(data_ov002_0211092c);
+    mModelAnim.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(data_ov100_021486bc), 1, -1);
+    dExtSimpleModel_c::LoadFile(data_ov100_021486a4);
     dExtFrameCtrl_c::LoadFile(data_ov100_021486ac);
     dExtFrameCtrl_c::LoadFile(data_ov100_021486b4);
     LoadSilverStarAndNumber();
 
     {
         int i = 0;
-        Model *model = mModels;
+        dExtSimpleModel_c *model = mModels;
         do {
             model->SetFile((BMD_File *)data_ov100_021486a4.filePtr, 1, -1);
             i++;

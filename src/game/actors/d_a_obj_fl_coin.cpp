@@ -36,7 +36,7 @@
 //   spelling it as a plain member changes the bytes.
 // - Behavior's IsClsnInRange call keeps its mangled free-function form
 //   (Fix12 by value).
-// - Model::LoadFile and dBgW_KcMbg::SetFile stay ABI-exact free
+// - dExtSimpleModel_c::LoadFile and dBgW_KcMbg::SetFile stay ABI-exact free
 //   declarations; SetFile's by-value Fix12<int> grows the call when spelled
 //   as the real method.
 // - unk_32c is only zeroed in this file.
@@ -72,7 +72,7 @@ enum daObjFl_Coin_c_AssetId {
 #include "SharedFilePtr.h"
 #include "dBgW.h"
 #include "daCoin_c.h"
-#include "Model.h"
+#include "dExtSimpleModel_c.h"
 #include "Sound.h"
 
 /* State table at 0x0211c904. Each entry is a pointer-to-member that Behavior
@@ -189,7 +189,7 @@ s32 daObjFl_Coin_c::InitResources() {
 int daObjFl_Puzzle_c::InitResources()
 {
     mType = param1 & 0xf;
-    mModel.SetFile((BMD_File *)Model::LoadFile(*data_ov064_0211adc8[mType]), 1, -1);
+    mModel.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(*data_ov064_0211adc8[mType]), 1, -1);
     func_ov064_02119010();
     func_ov064_02118fa4();
     _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
@@ -271,7 +271,7 @@ int daObjFl_Puzzle_c::CleanupResources()
 }
 
 // @symbol _ZN16daObjFl_Puzzle_c19func_ov064_02119010Ev
-/* Model matrix translation: the position (plus the shake offset on Y), each
+/* dExtSimpleModel_c matrix translation: the position (plus the shake offset on Y), each
  * axis shifted right by 3. */
 void daObjFl_Puzzle_c::func_ov064_02119010() {
     int x = mPosX >> 3;

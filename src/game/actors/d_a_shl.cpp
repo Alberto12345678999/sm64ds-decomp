@@ -1,8 +1,15 @@
 //cpp
+struct Vector3_16f;
+namespace Particle {
+struct Callback;
+struct System {
+    static int New(unsigned, unsigned, int, int, int, const ::Vector3_16f *, Callback *);
+};
+}
 /**
  * Koopa shell (profile SHELL) -- ov102/daShl_c.
  *
- * Idle until the player touches it. Model 0 can be jumped on and ridden
+ * Idle until the player touches it. dExtSimpleModel_c 0 can be jumped on and ridden
  * (it follows the rider and gets a per-frame surface splash/trail pass and
  * a looping surface sound); model 1 is kicked away by an attack. The
  * variant (param1 bit 4) is picked up and held instead. Yoshi can eat any
@@ -120,9 +127,7 @@ int  _ZN6Player7TryGrabER8dActor_c(void *player, dActor_c &actor);  /* local ext
 int  _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void *player, const Vector3 *v,
                                             u32 a, Fix12i f, u8 b, u8 c,
                                             u8 d);
-int  _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
-         u32 uniqueID, u32 effectID, Fix12i x, Fix12i y, Fix12i z, void *dir,
-         void *cb);
+int d_a_shlNewHold(u32 uniqueID, u32 effectID, Fix12i x, Fix12i y, Fix12i z, void *dir, void *cb);
 /* local extern: these five names hold the @NNN count. Sound::PlayLong is the call. */
 void d_a_shlPlayLongHold(u32 handle, u32 a, u32 soundID, const Vector3 &pos, s16 e);
 
@@ -170,7 +175,7 @@ s32 daShl_c::InitResources()
 {
     mModelIndex = param1 & 1;
     mVariant = (param1 >> 4) & 1;
-    BMD_File *bmd = (BMD_File *)Model::LoadFile(*data_ov102_0214d70c[mModelIndex]);
+    BMD_File *bmd = (BMD_File *)dExtSimpleModel_c::LoadFile(*data_ov102_0214d70c[mModelIndex]);
     if (mModel.SetFile(bmd, 1, 1) == 0)
         return 0;
     if (mShadowModel.InitCylinder() == 0)
@@ -446,7 +451,7 @@ int daShl_c::func_ov102_0214cf4c(dActor_c *kicker)
 }
 
 // @symbol _ZN7daShl_c19func_ov102_0214ce60Ev
-/* Model matrix and drop shadow. While carried (flag 0x4000) the model
+/* dExtSimpleModel_c matrix and drop shadow. While carried (flag 0x4000) the model
    follows the carrier's hands; otherwise it sits at mPos turned by
    mAngleY. Flag 0x40000 (hidden) skips the shadow. */
 void daShl_c::func_ov102_0214ce60()
@@ -556,7 +561,7 @@ void daShl_c::func_ov102_0214cbec()
 }
 
 // @symbol _ZN7daShl_c19func_ov102_0214c84cEv
-/* Model 0 only (Behavior gates it). While ridden, probe the ground from
+/* dExtSimpleModel_c 0 only (Behavior gates it). While ridden, probe the ground from
    50.0 above the shell and pick the trail particles and the looping
    surface sound from what it finds; otherwise just the idle trail. Water
    detection is on, so ground.clsnY is the hit height of a water surface
@@ -592,8 +597,8 @@ void daShl_c::func_ov102_0214c84c()
                 mParticleHandle_3d4 = 0;
                 mParticleHandle_3c8 = mParticleHandle_3d4;
                 mParticleHandle_3cc = func_02022d00(mParticleHandle_3cc, 0xe2, pos.trail.x, pos.trail.y, pos.trail.z, 0);
-                mParticleHandle_3d0 = _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
-                    mParticleHandle_3d0, 0xe3, pos.trail.x, pos.trail.y, pos.trail.z, 0, 0);
+                mParticleHandle_3d0 = Particle::System::New(mParticleHandle_3d0, 0xe3, pos.trail.x,
+                                                            pos.trail.y, pos.trail.z, 0, 0);
                 if (mSoundID != ground.surface.clps.func_02037e84() + 0xf2)
                     mSoundHandle = 0;
                 mSoundID = ground.surface.clps.func_02037e84() + 0xf2;
@@ -606,7 +611,7 @@ void daShl_c::func_ov102_0214c84c()
                     mParticleHandle_3d4 = 0;
                     mParticleHandle_3c8 = mParticleHandle_3d4;
                     mParticleHandle_3cc = func_02022d00(mParticleHandle_3cc, 0xe2, pos.trail.x, pos.trail.y, pos.trail.z, 0);
-                    mParticleHandle_3d0 = _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
+                    mParticleHandle_3d0 = Particle::System::New(
                         mParticleHandle_3d0, 0xe3, pos.trail.x, pos.trail.y, pos.trail.z, 0, 0);
                     if (mSoundID != ground.surface.clps.func_02037e84() + 0xf2)
                         mSoundHandle = 0;
@@ -617,7 +622,7 @@ void daShl_c::func_ov102_0214c84c()
                     mParticleHandle_3d0 = 0;
                     mParticleHandle_3cc = mParticleHandle_3d0;
                     mParticleHandle_3d4 = mParticleHandle_3cc;
-                    mParticleHandle_3c8 = _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
+                    mParticleHandle_3c8 = Particle::System::New(
                         mParticleHandle_3c8, 0xe1, pos.trail.x, pos.trail.y, pos.trail.z, 0, 0);
                     if (mSoundID != 0x102)
                         mSoundHandle = 0;
@@ -642,8 +647,8 @@ void daShl_c::func_ov102_0214c84c()
     mParticleHandle_3cc = mParticleHandle_3d0;
     mParticleHandle_3c8 = mParticleHandle_3cc;
     pos.trail.y = pos.trail.y + 0x1e000;
-    mParticleHandle_3d4 = _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
-        mParticleHandle_3d4, 0xe0, pos.trail.x, pos.trail.y, pos.trail.z, 0, 0);
+    mParticleHandle_3d4 = Particle::System::New(mParticleHandle_3d4, 0xe0, pos.trail.x, pos.trail.y,
+                                                pos.trail.z, 0, 0);
 }
 
 // @symbol _ZN7daShl_c19func_ov102_0214c7fcEv

@@ -91,7 +91,7 @@ void _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5
     void *self, void *shadow, void *mtx, int sy, int sx, int sz, unsigned int flags);
 void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
     void *self, void *kcl, void *mtx, int scale, short angle, void *clps);
-/* Model, KCL and CLPS. Each column is its own symbol so the relocations
+/* dExtSimpleModel_c, KCL and CLPS. Each column is its own symbol so the relocations
  * stay on 0x0213c380 / 0x0213c384 / 0x0213c388. */
 extern ArrowSignFileColumn data_ov098_0213c380[];
 extern ArrowSignFileColumn data_ov098_0213c384[];
@@ -133,8 +133,9 @@ int daObjYajirusi_c::InitResources()
     }
 
     u32 modelIndex = mVariant;
-    void *model = Model::LoadFile(*(SharedFilePtr *)data_ov098_0213c380[modelIndex].value);
-    mModel.ModelBase::SetFile((BMD_File *)model, 1, -1);
+    void *model =
+        dExtSimpleModel_c::LoadFile(*(SharedFilePtr *)data_ov098_0213c380[modelIndex].value);
+    mModel.dExtModel_c::SetFile((BMD_File *)model, 1, -1);
     mShadowModel.InitCuboid();
     UpdateModelPosAndRotY();
     UpdateClsnPosAndRot();

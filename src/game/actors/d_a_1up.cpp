@@ -1,4 +1,12 @@
 //cpp
+struct Vector3_16f;
+namespace Particle {
+struct Callback;
+struct System {
+    static int New(unsigned, unsigned, int, int, int, const ::Vector3_16f *, Callback *);
+    static void NewSimple(unsigned int, int, int, int);
+};
+}
 /* da1up_c -- the mushroom, in all fourteen of the ways it can behave.
  *
  * One class covers the 1-Up and the Mega Mushroom and the ways they are placed:
@@ -200,13 +208,12 @@ short _ZN4cstd5atan2E5Fix12IiES1_(int, int);
 int _ZN4cstd4fdivEii(int, int);
 short _ZN8dActor_c12ReflectAngleE5Fix12IiES1_s(void*, int, int, short);
 void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(void*, void*, void*, int, int, unsigned char);
-int _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(unsigned int, unsigned int, int, int, int, const struct Vec3*, void*);
 }
 // @symbol _ZN7da1up_cD1Ev
 // @symbol _ZN7da1up_cD0Ev
 /* ONE definition, both variants. The complete-object destructor (D1) tears the
    four members down in exact reverse of the factories' construction order --
-   dExtShadowModel_c at 0x350, Model at 0x300, dBgCh_Actr at 0x144, dCcAc_c at 0x110,
+   dExtShadowModel_c at 0x350, dExtSimpleModel_c at 0x300, dBgCh_Actr at 0x144, dCcAc_c at 0x110,
    then ~dEnemyBase_c -- and every one of those is a typed member of this class,
    so the body is empty and the compiler writes the chain. The deleting
    destructor (D0) inlines that same teardown and then calls
@@ -245,8 +252,8 @@ void da1up_c::func_ov002_020aeee4() {
     pos.z = mPosZ;
     pos.y += 0x1e000;
     volatile Vector3* vp = &pos;
-    mParticleID = _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
-        *(volatile unsigned int*)&mParticleID, effectID, vp->x, vp->y, pos.z, 0, 0);
+    mParticleID = Particle::System::New(*(volatile unsigned int *)&mParticleID, effectID, vp->x,
+                                        vp->y, pos.z, 0, 0);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -1051,7 +1058,7 @@ void da1up_c::func_ov002_020aff10() {
    any of them, so nothing here overrides a recovered view. */
 extern "C" {
 namespace Particle {
-struct System {
+struct SystemHold {
     static void NewSimple(unsigned int id, int x, int y, int z);
 };
 }
@@ -1193,7 +1200,7 @@ int da1up_c::InitResources()
             if (mModel.SetFile((BMD_File *)data_ov002_0210d9b8.filePtr, 1, 1) == 0)
                 return 0;
         } else {
-            f = (BMD_File*)Model::LoadFile(data_ov002_0210d9d8);
+            f = (BMD_File *)dExtSimpleModel_c::LoadFile(data_ov002_0210d9d8);
             if (mModel.SetFile(f, 1, 1) == 0)
                 return 0;
         }
@@ -1202,7 +1209,7 @@ int da1up_c::InitResources()
             if (mModel.SetFile((BMD_File *)data_ov002_0210d9b8.filePtr, 1, 1) == 0)
                 return 0;
         } else {
-            f = (BMD_File*)Model::LoadFile(data_ov002_0210da30);
+            f = (BMD_File *)dExtSimpleModel_c::LoadFile(data_ov002_0210da30);
             if (mModel.SetFile(f, 1, 1) == 0)
                 return 0;
         }

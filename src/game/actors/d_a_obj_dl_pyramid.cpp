@@ -1,4 +1,8 @@
 //cpp
+namespace Particle {
+struct Callback;
+}
+struct Vector3_16f;
 /* daObjDlPyramid_c and daObjDlPyramidDummy_c. ov024 0x021111a0..0x021118ac,
  * 16 functions.
  *
@@ -26,7 +30,7 @@
  * Leftover: the four helpers keep their unmangled ROM-only names
  *   (func_ov024_021112c0, 02111350, 02111480, 021114c4). They are this TU's
  *   own statics/helpers, not vtable slots, and no header names them.
- * Leftover: dBgW_KcMbg::SetFile, Model::LoadFile and dCcAc_c::Init keep
+ * Leftover: dBgW_KcMbg::SetFile, dExtSimpleModel_c::LoadFile and dCcAc_c::Init keep
  *   their mangled extern-C spellings. SetFile takes Fix12<int> by value
  *   (Fix12 wall, notes/mwccarm-codegen.md 6az).
  * The two resource handles below (model gDlPyramidModelFile, collision
@@ -62,10 +66,10 @@ extern "C" {
 namespace Particle {
 struct System {
     static void *NewSimple(u32 id, int x, int y, int z);
+    static int New(unsigned, unsigned, int, int, int, const ::Vector3_16f *, Callback *);
 };
 }
-int _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
-    u32 handle, u32 id, int x, int y, int z, void *dir, void *callback);
+int d_a_obj_dl_pyramidNewHold(u32 handle, u32 id, int x, int y, int z, void *dir, void *callback);
 void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(
     void *cylinder, dActor_c *owner, Fix12i radius, Fix12i height, u32 flags, u32 hitFlags);
 void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
@@ -85,7 +89,7 @@ void func_ov024_021114c4(daObjDlPyramid_c *self);
 /* The retail static initializer constructs these two 8-byte resource handles
  * in source order (model 1501, then collision 1502) and lets the C++ runtime
  * register their destructors. InitResources loads the model through the first
- * (Model::LoadFile) and the collision through the second (dBgW_Kc::LoadFile);
+ * (dExtSimpleModel_c::LoadFile) and the collision through the second (dBgW_Kc::LoadFile);
  * CleanupResources releases both (S19/S31: typed from this TU's callees).
  * The family spellings are reconstructed; the constructor/destructor
  * addresses, file IDs, object widths, BSS order, and registration topology
@@ -174,8 +178,8 @@ extern "C" void func_ov024_02111350(daObjDlPyramid_c *self)
         self->mAngleY += self->mAngVelY;
         self->mPosY += self->mVertSpeed;
     }
-    self->mSpinParticleID = _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
-        self->mSpinParticleID, 0x23, self->mPosX, self->mPosY, self->mPosZ, 0, 0);
+    self->mSpinParticleID = Particle::System::New(self->mSpinParticleID, 0x23, self->mPosX,
+                                                  self->mPosY, self->mPosZ, 0, 0);
     if (self->mStateTimer == 150)
         self->mState = 2;
 }
@@ -278,7 +282,7 @@ s32 daObjDlPyramidDummy_c::Behavior()
 // @symbol _ZN16daObjDlPyramid_c13InitResourcesEv
 int daObjDlPyramid_c::InitResources()
 {
-    BMD_File *bmd = (BMD_File *)Model::LoadFile(gDlPyramidModelFile);
+    BMD_File *bmd = (BMD_File *)dExtSimpleModel_c::LoadFile(gDlPyramidModelFile);
     mTopModel.SetFile(bmd, 1, -1);
     func_ov024_021114c4(this);
     func_ov024_02111480(this);

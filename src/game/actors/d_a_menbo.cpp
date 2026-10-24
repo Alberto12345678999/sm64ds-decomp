@@ -1,4 +1,11 @@
 //cpp
+struct Vector3_16f;
+namespace Particle {
+struct Callback;
+struct System {
+    static int New(unsigned, unsigned, int, int, int, const ::Vector3_16f *, Callback *);
+};
+}
 /* daMenbo_c -- Skeeter, the water strider on the lake.
  *
  * ov090 0x02130f00..0x0213269c, twenty-five functions, the last being the
@@ -26,7 +33,7 @@
  * deslop leftovers:
  * - func_ov090_02131ac4: `mStateTimer == 0` is ldrsh. The ROM is ldrh, one
  *   word. `*(unsigned short *)&mStateTimer` matches.
- * - func_ov090_02131608: ModelAnim::SetAnim with a Fix12<int> rate is 0x4c
+ * - func_ov090_02131608: dExtAnmModel_c::SetAnim with a Fix12<int> rate is 0x4c
  *   against 0x40 and emits 4 bytes of .rodata. The scalar SetAnim call
  *   matches. The patrol, water-rest and water-chase entries keep it.
  * - func_ov090_021310b4: dActor_c::SpawnCoins with a Fix12<int> spread is
@@ -100,10 +107,7 @@ u16   DecIfAbove0_Short(u16 *p);
 int   RandomIntInternal(int *seed);
 void  func_02012694(int id, const Vector3 *pos);
 
-int _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(unsigned int a0,
-                                                                           unsigned int a1, int a2,
-                                                                           int a3, int a4, int a5,
-                                                                           int a6);
+int d_a_menboNewHold(unsigned int a0, unsigned int a1, int a2, int a3, int a4, int a5, int a6);
 
 void  _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(void *self, dActor_c *a, const Vector3 *v, LocFix12 r, LocFix12 h, unsigned int e, unsigned int g);
 /* Not dBgCh_Actr::Init: the header method mangles with int, the ROM symbol with Fix12<int>. */
@@ -209,8 +213,8 @@ extern "C" void func_ov090_02130f94(daMenbo_c *c_)
         v.z = r.z;
         v.y = c->mSurfaceY;
         c->mRippleParticles[i] =
-            _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
-                c->mRippleParticles[i], id, v.x, v.y, r.z, zero, zero);
+            Particle::System::New(c->mRippleParticles[i], id, v.x, v.y, r.z,
+                                  (const Vector3_16f *)(zero), (Particle::Callback *)(zero));
         idx += 3;
     }
 }
@@ -664,7 +668,7 @@ int func_ov090_02131e00(MenboState *c, MenboStateFn *p)
 }
 
 // @symbol func_ov090_02131e50
-/* Model matrix from position (shifted down 3, the renderer's scale) and
+/* dExtSimpleModel_c matrix from position (shifted down 3, the renderer's scale) and
  * the three rotation halfwords. */
 void func_ov090_02131e50(daMenbo_c *c)
 {
@@ -820,7 +824,7 @@ int daMenbo_c::Behavior()
 #pragma opt_common_subs off
 
 // @symbol _ZN9daMenbo_c13InitResourcesEv
-/* Model, four anims, both collision volumes, then the water line.
+/* dExtSimpleModel_c, four anims, both collision volumes, then the water line.
  * Mode 2 on course 0x12 skips the raycast and starts at water chase with
  * the line equal to the spawn height. A surface whose 0x20 flag is set
  * records the hit as the line only and also starts at water chase. Anything
@@ -832,7 +836,7 @@ int daMenbo_c::InitResources()
     Vector3 pos;
     Vector3 v;
 
-    f = (BMD_File *)Model::LoadFile(data_ov090_021344a0);
+    f = (BMD_File *)dExtSimpleModel_c::LoadFile(data_ov090_021344a0);
     mModelAnim.SetFile(f, 1, -1);
     dExtFrameCtrl_c::LoadFile(data_ov090_02134488);
     dExtFrameCtrl_c::LoadFile(data_ov090_02134480);
@@ -968,7 +972,7 @@ MenboStateFn data_ov090_021344e4[2] = {
  *
  * `new daMenbo_c` is the whole sequence the loose factory spelled by hand:
  * fBase_c::operator new(0x3b0), dEnemyBase_c's base constructor, the vptr
- * store, then the dCcAcPos_c, dBgCh_Actr and ModelAnim member constructors. */
+ * store, then the dCcAcPos_c, dBgCh_Actr and dExtAnmModel_c member constructors. */
 // @symbol daMenbo_c_classInit
 extern "C" daMenbo_c *daMenbo_c_classInit(void)
 {

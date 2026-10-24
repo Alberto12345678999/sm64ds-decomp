@@ -12,7 +12,7 @@
  * scaleY.
  *
  * THE DESTRUCTOR IS DECLARED FIRST AND D1 IS A REAL METHOD -- see
- * include/ModelBase.h for the key-function rule and the objisolate exemption
+ * include/dExtModel_c.h for the key-function rule and the objisolate exemption
  * to it. D0 stays a C file.
  *
  * SetScaleY's mangled name carries Fix12<int>, and SetFile's does too (wall

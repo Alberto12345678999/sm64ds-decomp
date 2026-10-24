@@ -1,4 +1,8 @@
 //cpp
+namespace Particle {
+struct Callback;
+}
+struct Vector3_16f;
 /* daStar_c / daStarBase_c -- the Power Star, the silver star, and the marker
  * that spawns one.
  *
@@ -72,7 +76,7 @@ enum daStar_c_AssetId {
 #include "dCamera_c.h"
 #include "fBase_c.h"
 #include "daSoundObj_c.h"
-#include "Model.h"
+#include "dExtSimpleModel_c.h"
 
 /* Plain-data stand-ins. Vector3 and Matrix4x3 carry declared destructors, so
  * a local or a struct copy of either one adds cleanup code the cartridge does
@@ -86,7 +90,7 @@ typedef struct Mtx { int m[12]; } Mtx; /* IDENTITY_MATRIX4X3 */
    daStar_c::State. */
 typedef void (daStar_c::*StateHandler)();
 
-/* Model handles construct through func_02017acc and destroy through
+/* dExtSimpleModel_c handles construct through func_02017acc and destroy through
    func_02017ab4. Animation handles construct through SharedFilePtr::Construct
    and destroy through SharedFilePtr_Destruct_Anim. The manifest aliases those
    undefined members onto the ROM symbols. */
@@ -156,7 +160,7 @@ enum {
 enum { CUTSCENE_FLAG = 0x4000000 };
 
 extern "C" {
-/* ModelAnim::SetAnim, called with a scalar speed. */
+/* dExtAnmModel_c::SetAnim, called with a scalar speed. */
 extern char data_02082714[];
 extern int func_0203d024(struct Vector3*, struct Vector3*);
 extern void DeathTable_ClearBit(int);
@@ -183,6 +187,8 @@ extern void func_02012694(int a, void* p);
 namespace Particle {
 struct System {
     static void NewSimple(unsigned int id, int a, int b, int d);
+
+    static int New(unsigned, unsigned, int, int, int, const ::Vector3_16f *, Callback *);
 };
 }
 /* local extern: the call passes an untyped this, so it cannot use the header method. */
@@ -368,7 +374,7 @@ extern s32 IsStarCollected(s32 level, s32 idx);
 /* TUBUILD CONFLICT -- alternate declaration of data_0209b454, from the legacy file for _ZN8daStar_c8BehaviorEv, NOT applied: extern int data_0209b454; */
 /* TUBUILD CONFLICT -- alternate declaration of _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj, from the legacy file for _ZN12daStarBase_c13InitResourcesEv, NOT applied: extern void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(void *self, void *actor, const void *v, int d, int e, u32 f, u32 g); */
 /* TUBUILD CONFLICT -- alternate declaration of _ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as, from the legacy file for _ZN12daStarBase_c13InitResourcesEv, NOT applied: extern void *_ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as(u32 a, u32 b, const void *v, const void *v16, int e, int f); */
-/* TUBUILD CONFLICT -- alternate declaration of _ZN5Model8LoadFileER13SharedFilePtr, from the legacy file for _ZN12daStarBase_c13InitResourcesEv, NOT applied: extern void *_ZN5Model8LoadFileER13SharedFilePtr(void *fp); */
+/* TUBUILD CONFLICT -- alternate declaration of _ZN17dExtSimpleModel_c8LoadFileER13SharedFilePtr, from the legacy file for _ZN12daStarBase_c13InitResourcesEv, NOT applied: extern void *_ZN17dExtSimpleModel_c8LoadFileER13SharedFilePtr(void *fp); */
 /* TUBUILD CONFLICT -- alternate declaration of IsStarCollectedInCurLevel, from the legacy file for _ZN12daStarBase_c13InitResourcesEv, NOT applied: extern int IsStarCollectedInCurLevel(u8 x); */
 /* TUBUILD CONFLICT -- alternate declaration of _ZN7fBase_c18MarkForDestructionEv, from the legacy file for _ZN12daStarBase_c13InitResourcesEv, NOT applied: extern void _ZN7fBase_c18MarkForDestructionEv(void *self); */
 /* TUBUILD CONFLICT -- alternate declaration of data_ov002_0210d9a8, from the legacy file for _ZN12daStarBase_c13InitResourcesEv, NOT applied: extern char data_ov002_0210d9a8; */
@@ -382,7 +388,7 @@ extern s32 IsStarCollected(s32 level, s32 idx);
 /* TUBUILD CONFLICT -- alternate declaration of data_ov002_02110934, from the legacy file for _ZN8daStar_c13InitResourcesEv, NOT applied: extern struct SharedFilePtr data_ov002_02110934; */
 /* TUBUILD CONFLICT -- alternate declaration of data_ov002_02110944, from the legacy file for _ZN8daStar_c13InitResourcesEv, NOT applied: extern struct SharedFilePtr data_ov002_02110944; */
 /* TUBUILD CONFLICT -- alternate declaration of data_ov002_02110964, from the legacy file for _ZN8daStar_c13InitResourcesEv, NOT applied: extern struct SharedFilePtr data_ov002_02110964; */
-/* TUBUILD CONFLICT -- alternate declaration of _ZN9ModelBase7SetFileEP8BMD_Fileii, from the legacy file for _ZN8daStar_c13InitResourcesEv, NOT applied: extern s32 _ZN9ModelBase7SetFileEP8BMD_Fileii(void *self, void *f, s32 a, s32 b); */
+/* TUBUILD CONFLICT -- alternate declaration of _ZN11dExtModel_c7SetFileEP8BMD_Fileii, from the legacy file for _ZN8daStar_c13InitResourcesEv, NOT applied: extern s32 _ZN11dExtModel_c7SetFileEP8BMD_Fileii(void *self, void *f, s32 a, s32 b); */
 /* TUBUILD CONFLICT -- alternate declaration of SublevelToLevel, from the legacy file for _ZN8daStar_c13InitResourcesEv, NOT applied: extern s32 SublevelToLevel(s32 sub); */
 /* TUBUILD CONFLICT -- alternate declaration of _ZN17dExtShadowModel_c12InitCylinderEv, from the legacy file for _ZN8daStar_c13InitResourcesEv, NOT applied: extern s32 _ZN17dExtShadowModel_c12InitCylinderEv(void *self); */
 /* TUBUILD CONFLICT -- alternate declaration of _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj, from the legacy file for _ZN8daStar_c13InitResourcesEv, NOT applied: extern void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj( */
@@ -415,7 +421,7 @@ extern s32 IsStarCollected(s32 level, s32 idx);
  *
  * One vtable store and 6 destructor calls, every one a consequence of
  * `struct daStar_c : dEnemyBase_c` and the members that declaration now types:
- * its own vptr, then dExtShadowModel_c (0x3d4), ModelAnim (0x370), ModelAnim (0x30c),
+ * its own vptr, then dExtShadowModel_c (0x3d4), dExtAnmModel_c (0x370), dExtAnmModel_c (0x30c),
  * dBgCh_Actr (0x150),
  * dCcAcPos_c (0x110)
  * in reverse declaration order, then dEnemyBase_c::~dEnemyBase_c.
@@ -724,7 +730,7 @@ int daStarBase_c::InitResources()
         if (sp != 0) {
             ((daStar_c *)sp)->mBits.switchStar = 1;
         }
-        mModel.SetFile((BMD_File *)Model::LoadFile(data_ov002_0211093c), 1, 0x18);
+        mModel.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(data_ov002_0211093c), 1, 0x18);
         return 0;
     }
 
@@ -753,12 +759,14 @@ int daStarBase_c::InitResources()
     }
 
     if (mState != 0) {
-        Model::LoadFile(data_ov002_0210d9a8);
-        if (mModel.SetFile((BMD_File *)Model::LoadFile(data_ov002_0211092c), 1, 0x19) == 0) {
+        dExtSimpleModel_c::LoadFile(data_ov002_0210d9a8);
+        if (mModel.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(data_ov002_0211092c), 1, 0x19) ==
+            0) {
             return 0;
         }
     } else {
-        if (mModel.SetFile((BMD_File *)Model::LoadFile(data_ov002_0211093c), 1, 0x18) == 0) {
+        if (mModel.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(data_ov002_0211093c), 1, 0x18) ==
+            0) {
             return 0;
         }
     }
@@ -2604,15 +2612,17 @@ void func_ov002_020e8244(void *out, daStar_c *b)
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN8daStar_c19func_ov002_020e81e0Ev
 /* Keeps trail effect 0x113 (mParticle[0]) 13.0 above the star. */
-extern "C" void *_ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
-    int a0, unsigned int a1, int a2, int a3, int a4, void *a5, void *a6);
+extern "C" void *d_a_starNewHold(int a0, unsigned int a1, int a2, int a3, int a4, void *a5,
+                                 void *a6);
 void daStar_c::func_ov002_020e81e0() {
     Vector3 v;
     v.x = mPosX;
     v.y = mPosY;
     v.z = mPosZ;
     v.y += 0xd000;
-    *(void **)&mParticle[0] = _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(*(volatile unsigned int *)&mParticle[0], 0x113, *(volatile int *)&v.x, *(volatile int *)&v.y, v.z, 0, 0);
+    *(void **)&mParticle[0] =
+        (void *)Particle::System::New(*(volatile unsigned int *)&mParticle[0], 0x113,
+                                      *(volatile int *)&v.x, *(volatile int *)&v.y, v.z, 0, 0);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -2638,10 +2648,10 @@ void daStar_c::func_ov002_020e8098() {
     vc.y = FX_MUL(vc.y, mScaleY);
     vc.z = FX_MUL(vc.z, mScaleZ);
     AddVec3(&vc, &mPos, &vc);
-    *(void**)&mParticle[0] = _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
-        mParticle[0], 0x115, vc.x, vc.y, vc.z, 0, 0);
-    *(void**)&mParticle[1] = _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
-        mParticle[1], 0x116, vc.x, vc.y, vc.z, 0, 0);
+    *(void **)&mParticle[0] =
+        (void *)Particle::System::New(mParticle[0], 0x115, vc.x, vc.y, vc.z, 0, 0);
+    *(void **)&mParticle[1] =
+        (void *)Particle::System::New(mParticle[1], 0x116, vc.x, vc.y, vc.z, 0, 0);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -2662,8 +2672,7 @@ void daStar_c::func_ov002_020e7fcc() {
         && (u32)((*(u32*)&mModelAnim1.currFrame << 4) >> 0x10) >= 2
         && *(int*)((char*)obj + 0xc) != 0) {
         func_ov002_020e8244(&v1, this);
-        mParticle[0] = (u32)_ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
-            mParticle[0], 0x2f, v1.x, v1.y, v1.z, 0, 0);
+        mParticle[0] = (u32)Particle::System::New(mParticle[0], 0x2f, v1.x, v1.y, v1.z, 0, 0);
         return;
     }
 
@@ -2697,8 +2706,7 @@ void daStar_c::func_ov002_020e7f2c() {
         zvar = zraw;
         y = yadj;
     }
-    mParticle[2] = (u32)_ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
-        *(volatile u32 *)&mParticle[2], 0x114, x, y, z, 0, 0);
+    mParticle[2] = (u32)Particle::System::New(*(volatile u32 *)&mParticle[2], 0x114, x, y, z, 0, 0);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -2711,8 +2719,7 @@ void daStar_c::func_ov002_020e7eb8() {
     int b = (actorID == ACTOR_SILVER_STAR);
     if (b == 0) return;
     func_ov002_020e8244(&v, this);
-    mParticle[3] = (int)_ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
-        mParticle[3], 0x10e, v.x, v.y, v.z, 0, 0);
+    mParticle[3] = (int)Particle::System::New(mParticle[3], 0x10e, v.x, v.y, v.z, 0, 0);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -3183,8 +3190,8 @@ void daStarBase_c::LinkSilverStarAndStarMarker(char* b) {
 extern "C" {  /* C linkage: the ROM symbol is a bare name, not a mangled member */
 void LoadSilverStarAndNumber(void)
 {
-    Model::LoadFile(*(SharedFilePtr *)data_ov002_0210da28);
-    Model::LoadFile(data_ov002_02110954);
+    dExtSimpleModel_c::LoadFile(*(SharedFilePtr *)data_ov002_0210da28);
+    dExtSimpleModel_c::LoadFile(data_ov002_02110954);
 }
 }
 

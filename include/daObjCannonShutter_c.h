@@ -18,7 +18,7 @@
  * pad_31e reuses that tail padding so mHomePosX lands at 0x320. pad_31e is
  * not live -- it is alignment, not unk_31e.
  *
- * dBgActor_c.h FIRST so common.h beats Model.h on Matrix4x3.
+ * dBgActor_c.h FIRST so common.h beats dExtSimpleModel_c.h on Matrix4x3.
  */
 
 #ifdef __cplusplus

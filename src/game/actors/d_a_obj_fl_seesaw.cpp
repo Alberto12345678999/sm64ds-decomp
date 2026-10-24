@@ -128,7 +128,7 @@ s32 daObjFl_Seesaw_c::Behavior()
 // @symbol _ZN16daObjFl_Seesaw_c13InitResourcesEv
 s32 daObjFl_Seesaw_c::InitResources()
 {
-    mModel.SetFile((BMD_File *)Model::LoadFile(data_ov022_021145a8), 1, -1);
+    mModel.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(data_ov022_021145a8), 1, -1);
     func_ov022_02111d48();
     UpdateClsnPosAndRot();
     char *kcl = dBgW_Kc::LoadFile(data_ov022_021145a0);

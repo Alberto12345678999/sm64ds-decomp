@@ -24,17 +24,17 @@
  * deslop leftovers:
  *   - The state records and the four file homes keep decl_common.h's char
  *     spelling, so each install site casts to daPopoi_StateRecord *.
- *   - ModelAnim::SetAnim and the three collision Init calls stay spelled-out
+ *   - dExtAnmModel_c::SetAnim and the three collision Init calls stay spelled-out
  *     _ZN identifiers (Fix12<int> by value; the real headers can't express the
  *     call-site mangling). Sound::PlayLong and dBgCh_Actr::GetFloorResult are
  *     real calls.
  *   - func_ov077_021269a8 calls AngleDiff through an (int(*)(short,short))
  *     pointer cast: decl_common declares (int,int), and the short call-site
  *     typing is byte-load-bearing.
- *   - Render reaches ModelAnim::Render through the ModelAnimDraw slot window:
+ *   - Render reaches dExtAnmModel_c::Render through the ModelAnimDraw slot window:
  *     the real class is multiply derived, so declaring it changes codegen.
  *   - unk_41c is only ever zeroed here, and nothing reads it in this file.
- *   - the Grab enter handler passes flags 0x40000000 to ModelAnim::SetAnim
+ *   - the Grab enter handler passes flags 0x40000000 to dExtAnmModel_c::SetAnim
  *     where every other state passes 0; what that bit does is not recovered.
  *   - the flag words passed to dCcAc_c::Init / dCcAcPos_c::Init
  *     (0x800004 and 0x200004) are not decoded here.
@@ -52,7 +52,7 @@ enum daPopoi_c_AssetId {
 #include "common.h"
 #include "types.h"
 #include "daPopoi_c.h"
-#include "Model.h"
+#include "dExtSimpleModel_c.h"
 #include "Player.h"
 #include "dExtFrameCtrl_c.h"
 #include "SurfaceInfo.h"
@@ -162,7 +162,7 @@ extern "C" int *daPopoi_c_classInit(void)
 int daPopoi_c::InitResources()
 {
   Vector3 v;
-  mModelAnim.SetFile((BMD_File *)Model::LoadFile(data_ov077_02127c88), 1, -1);
+  mModelAnim.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(data_ov077_02127c88), 1, -1);
   dExtFrameCtrl_c::LoadFile(data_ov077_02127ca0);
   dExtFrameCtrl_c::LoadFile(data_ov077_02127c90);
   dExtFrameCtrl_c::LoadFile(data_ov077_02127c98);
@@ -271,9 +271,9 @@ int daPopoi_c::Behavior()
 
 // @symbol _ZN9daPopoi_c6RenderEv
 
-/* Just enough of ModelAnim's vtable to reach ModelAnim::Render at slot 5
+/* Just enough of dExtAnmModel_c's vtable to reach dExtAnmModel_c::Render at slot 5
  * (offset 0x14). The five leading virtuals exist only to place that slot;
- * declaring the real class here would drag in its bases, and ModelAnim is
+ * declaring the real class here would drag in its bases, and dExtAnmModel_c is
  * multiply derived. */
 struct ModelAnimDraw {
     virtual void slot0();

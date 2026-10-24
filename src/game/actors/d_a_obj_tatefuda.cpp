@@ -1,4 +1,7 @@
 //cpp
+namespace Particle {
+struct Callback;
+}
 /* daObjTatefuda_c: the wooden signpost (TATEFUDA profile, ov002).
  *
  * The whole unit, ov002 .text 0x020badd0..0x020bc414, 29 functions: the
@@ -74,7 +77,7 @@ enum daObjTatefuda_c_AssetId {
 #include "dBgW.h"
 #include "SharedFilePtr.h"
 #include "dBgCh_Gnd.h"
-#include "Model.h"
+#include "dExtSimpleModel_c.h"
 #include "dBgCh_Actr.h"
 #include "dCc_c.h"
 
@@ -130,7 +133,7 @@ struct SignPostCollisionFilePtr : SharedFilePtr {
     ~SignPostCollisionFilePtr();
 };
 
-/* BMD (Model::LoadFile) and KCL (dBgW_Kc::LoadFile). Cleanup releases both. */
+/* BMD (dExtSimpleModel_c::LoadFile) and KCL (dBgW_Kc::LoadFile). Cleanup releases both. */
 extern "C" SignPostModelFilePtr SignPost_ModelFile;
 extern "C" SignPostCollisionFilePtr SignPost_ClsnFile;
 
@@ -160,6 +163,8 @@ extern "C" void func_02012694(int a, void *b);
 namespace Particle {
 struct System {
     static void NewSimple(u32 id, Fix12i x, Fix12i y, Fix12i z);
+
+    static int New(unsigned, unsigned, int, int, int, const ::Vector3_16f *, Callback *);
 };
 }
 
@@ -180,7 +185,8 @@ extern "C" unsigned int data_0209b454;
 extern "C" void AttachToHolder(struct daObjTatefuda_c *self);
 extern "C" u8 DecIfAbove0_Byte(u8 *p);
 extern "C" int _ZN10dBgActor_c20UpdateKillByMegaCharEsss5Fix12IiE(void *self, short a, short b, short c, int fix);
-extern "C" void *_ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(u32 a, u32 b, int c, int d, int e, const void *v, void *cb);
+extern "C" void *d_a_obj_tatefudaNewHold(u32 a, u32 b, int c, int d, int e, const void *v,
+                                         void *cb);
 extern "C" u32 _ZN8Particle6System17NewUnkCallback818Ejj5Fix12IiES2_S2_PK11Vector3_16f(u32 a, u32 b, int c, int d, int e, const Vector3_16f *v);
 extern "C" void _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_S5_j(
     void *self, void *sm, void *m, int a, int b, int c, u32 j);
@@ -212,17 +218,17 @@ extern "C" daObjTatefuda_c *daObjTatefuda_c_classInit(void)
 // @symbol _ZN15daObjTatefuda_c13InitResourcesEv
 /* recovered: named members + shared header, real C++ method, declarations from a shared header */
 /* recovered: named members + shared header, real C++ method */
-/* Model::LoadFile and dBgW_Kc::LoadFile by their real ROM symbols, carried
+/* dExtSimpleModel_c::LoadFile and dBgW_Kc::LoadFile by their real ROM symbols, carried
    forward from #1554. decl_common.h's ModelLoadFile / MeshColliderLoadFile are
    phantoms -- names no module defines -- and match.py compares relocated words as
    wildcards, so the byte gate never saw it. */
 /* THREE OF THE SHADOWS ARE GONE, because daObjTatefuda_c.h now says `daObjTatefuda_c :
-   dBgActor_c` and dBgActor_c.h brings in the real dBgActor_c, Model/ModelBase and
+   dBgActor_c` and dBgActor_c.h brings in the real dBgActor_c, dExtSimpleModel_c/dExtModel_c and
    dBgW_KcMbg. Each one is replaced by the thing it was standing in for:
 
-     ModelBase          -> mModel.SetFile, whose real declaration in
-                           include/ModelBase.h mangles identically
-                           (_ZN9ModelBase7SetFileEP8BMD_Fileii) -- only the
+     dExtModel_c          -> mModel.SetFile, whose real declaration in
+                           include/dExtModel_c.h mangles identically
+                           (_ZN11dExtModel_c7SetFileEP8BMD_Fileii) -- only the
                            return type differed, and that is not mangled.
      dBgActor_c           -> the two calls are unqualified members now.
      dBgW_KcMbg -> its real SetFile takes Fix12<int> BY VALUE, so it
@@ -242,7 +248,7 @@ extern "C" daObjTatefuda_c *daObjTatefuda_c_classInit(void)
    declares StartDetectingWater itself. */
 int daObjTatefuda_c::InitResources()
 {
-    void *mf = Model::LoadFile(SignPost_ModelFile);
+    void *mf = dExtSimpleModel_c::LoadFile(SignPost_ModelFile);
     mModel.SetFile((BMD_File*)mf, 1, -1);
     mShadowModel.InitCuboid();
 
@@ -383,8 +389,8 @@ int daObjTatefuda_c::Behavior()
         ((int *)&v)[1] = y;
         ((int *)&v)[2] = z;
         if (DecIfAbove0_Byte(&mBreakTimer) != 0) {
-            *(void **)&mParticleHandle1 = _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
-                mParticleHandle1, 0x13a, v.x, v.y, v.z, 0, 0);
+            *(void **)&mParticleHandle1 =
+                (void *)Particle::System::New(mParticleHandle1, 0x13a, v.x, v.y, v.z, 0, 0);
             mParticleHandle2 = _ZN8Particle6System17NewUnkCallback818Ejj5Fix12IiES2_S2_PK11Vector3_16f(
                 mParticleHandle2, 0x13b, v.x, v.y, v.z, 0);
         } else {
@@ -429,7 +435,7 @@ int daObjTatefuda_c::Behavior()
 /* Draws the sign: nothing while hidden. If a player holds it (same test as
    Behavior's step 2) the sign is put on the holder first, so the model is drawn
    where the holder has it this frame. The draw itself is a call through slot 5
-   of the Model (via the local Sub041 view). */
+   of the dExtSimpleModel_c (via the local Sub041 view). */
 int daObjTatefuda_c::Render() {
     if (mHidden != 0)
         return 1;
@@ -1049,7 +1055,7 @@ int daObjTatefuda_c::OnAttacked1(dActor_c &other)
 /* -------------------------------------------------------------------------- */
 // @symbol AttachToHolder
 /* Put the sign on its holder (Behavior's step 2 and Render both call this).
- * `body` is the holder's current body ModelAnim, from the shared helper
+ * `body` is the holder's current body dExtAnmModel_c, from the shared helper
  * func_ov002_020e496c; its mat4x3 is copied out and the matrix of bone 14
  * (data.transforms[14]) is multiplied in. r4 picks a pose, 0 or 1: 1 when
  * the holder is front-sliding, or has lost its grabbed object while the body
@@ -1065,7 +1071,7 @@ void AttachToHolder(struct daObjTatefuda_c *self)
 {
     struct Vec3 v;
     struct Vec3 lo;
-    ModelAnim *body = (ModelAnim *)func_ov002_020e496c(self->mHoldingPlayer);
+    dExtAnmModel_c *body = (dExtAnmModel_c *)func_ov002_020e496c(self->mHoldingPlayer);
     Matrix4x3 *bones = body->data.transforms;
     int r4 = 0;
 

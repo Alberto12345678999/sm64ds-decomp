@@ -1,4 +1,11 @@
 //cpp
+struct Vector3_16f;
+namespace Particle {
+struct Callback;
+struct System {
+    static int New(unsigned, unsigned, int, int, int, const ::Vector3_16f *, Callback *);
+};
+}
 /*
  * The two player-controlled Mario classes of the trampoline minigames,
  * dMgTrmpln2Mario_c and dMgTrmpln3DMario_c, with their helpers and the
@@ -8,7 +15,7 @@
  * ROM evidence: D1 0x020ca604 and constructor 0x020ca78c of
  * dMgTrmpln2Mario_c (Trmp2Mario_Construct, which was misfiled as
  * _ZN6Player29TryExitCharacterDoorWithIntroEv: it stores vptr sTrmp2MarioOps
- * and constructs a ModelAnim at +0x78);
+ * and constructs a dExtAnmModel_c at +0x78);
  * D1 0x020ccfc8 and constructor 0x020cd12c of dMgTrmpln3DMario_c;
  * _ZTI17dMgTrmpln2Mario_c 0x0213b250, _ZTI18dMgTrmpln3DMario_c 0x0213b244,
  * beside dMgTrmpObjAdapter_c / dMgTrmpRingObjAdapter_c. No call runs from
@@ -28,12 +35,12 @@
 // trivial D1 is compiler-only output). The per-shard namespaces stay
 // (independent decl shapes would collide). The records are read through the
 // partial layout views dMgTrmpln2Mario_c.h / dMgTrmpln3DMario_c.h (MARIO2 /
-// MARIO3D). Each embeds a real ModelAnim at the constructor-proven +0x78/+0x6c,
+// MARIO3D). Each embeds a real dExtAnmModel_c at the constructor-proven +0x78/+0x6c,
 // so the model, frame-controller and anim-file reaches are member calls on
 // mModelAnim (SetFile, SetAnim, Render, Advance, WillHitFrame, Finished, file,
 // mat4x3, currFrame); the old matrix and frame-controller byte views were that
 // object's own fields. The thirteen anim-file globals are BCA_File *, declared
-// once below. The constructors still call _ZN9ModelAnimC1Ev by name: placement
+// once below. The constructors still call _ZN14dExtAnmModel_cC1Ev by name: placement
 // new is the only C++ spelling for it on existing storage, and it adds the null
 // check (Trmp2Mario_Construct no longer matches, MEASURED 2026-10-23); a real
 // constructor waits on the classes becoming real methods. Shared resource,
@@ -51,7 +58,7 @@
 #include "decl_common.h"
 #include "decl_ModelAnim.h"
 #include "SharedFilePtr.h"
-#include "ModelAnim.h"
+#include "dExtAnmModel_c.h"
 #include "dExtFrameCtrl_c.h"
 #include "Sound.h"
 // Partial callback interface only. ROM vtables at 0x0213b2c4/0x0213b2e0
@@ -164,7 +171,7 @@ extern int sTrmp2MarioScale[];
 void Trmp2Mario_Render(char *self) {
     if (MARIO2(self)->mVisible == 0)
         return;
-    ModelAnim *model = &MARIO2(self)->mModelAnim;
+    dExtAnmModel_c *model = &MARIO2(self)->mModelAnim;
     model->Render((const Vector3 *)sTrmp2MarioScale);
 }
 }
@@ -194,12 +201,6 @@ typedef int Fix12;
 struct System {
     static System *New(unsigned, unsigned, Fix12, Fix12, Fix12, const Vector3_16f *, Callback *);
 };
-/* Signature deliberately copied from the local declaration above: the
-   ROM name carries by-value class parameters (e.g. Fix12<int>), which
-   mwccarm passes differently at the call site, so declaring the true
-   types breaks the byte match. See notes/mwccarm-codegen.md 6az. */
-extern "C" System *_ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
-    unsigned, unsigned, Fix12, Fix12, Fix12, const Vector3_16f *, Callback *);
 
 extern "C" {
 extern void Trmp2Mario_ApplyGravity(char *o);
@@ -233,9 +234,8 @@ extern "C" void Trmp2Mario_Update(char *o) {
     if (MARIO2(o)->mVel.y > v) {
         if (MARIO2(o)->mModelAnim.file == sTrmpAnimBounce) {
             MARIO2(o)->mParticleId =
-                (int)_ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
-                    MARIO2(o)->mParticleId, 0xf5, MARIO2(o)->mPos.x << 3, MARIO2(o)->mPos.y << 3,
-                    MARIO2(o)->mPos.z << 3, 0, 0);
+                (int)Particle::System::New(MARIO2(o)->mParticleId, 0xf5, MARIO2(o)->mPos.x << 3,
+                                           MARIO2(o)->mPos.y << 3, MARIO2(o)->mPos.z << 3, 0, 0);
         }
     }
     Trmp2Mario_UpdateMatrix(o);
@@ -463,8 +463,8 @@ void Vec3_MulScalar(Vector3 *out, const Vector3 *in, int scale);
 void SubVec3(Vector3 *a, Vector3 *b, Vector3 *c);
 void AddVec3(Vector3 *a, Vector3 *b, Vector3 *c);
 int _ZN4cstd4fdivEii(int a, int b);
-void *_ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
-    unsigned int a, unsigned int b, int fx1, int fx2, int fx3, const void *vec, void *cb);
+void *d_mg_trmpln2_marioNewHold(unsigned int a, unsigned int b, int fx1, int fx2, int fx3,
+                                const void *vec, void *cb);
 void Sound_PlayBank1Panned(int a0, int a1, int a2);
 int D3D_PlaySeAtX(int a, int b);
 void Trmp2Mario_StateBounce(char *c);
@@ -530,16 +530,13 @@ extern "C" void Trmp2Mario_BounceOffLineA(char *c) {
         int *q = pmf_Trmp2Mario_StateAppearWait_2;
         if (s[0] != q[0] || (s[1] != q[1] && MARIO2(c)->mState[0] != 0)) {
 
-            _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
-                0, 0xf3, (MARIO2(c)->mPos.x) << 3, (MARIO2(c)->mPos.y) << 3,
-                (MARIO2(c)->mPos.z) << 3, &vec16, 0);
-            _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
-                0, 0xf4, (MARIO2(c)->mPos.x) << 3, (MARIO2(c)->mPos.y) << 3,
-                (MARIO2(c)->mPos.z) << 3, &vec16, 0);
-            MARIO2(c)->mParticleId =
-                (int)_ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
-                    MARIO2(c)->mParticleId, 0xf5, (MARIO2(c)->mPos.x) << 3,
-                    (MARIO2(c)->mPos.y) << 3, (MARIO2(c)->mPos.z) << 3, 0, 0);
+            Particle::System::New(0, 0xf3, (MARIO2(c)->mPos.x) << 3, (MARIO2(c)->mPos.y) << 3,
+                                  (MARIO2(c)->mPos.z) << 3, (const Vector3_16f *)(&vec16), 0);
+            Particle::System::New(0, 0xf4, (MARIO2(c)->mPos.x) << 3, (MARIO2(c)->mPos.y) << 3,
+                                  (MARIO2(c)->mPos.z) << 3, (const Vector3_16f *)(&vec16), 0);
+            MARIO2(c)->mParticleId = (int)Particle::System::New(
+                MARIO2(c)->mParticleId, 0xf5, (MARIO2(c)->mPos.x) << 3, (MARIO2(c)->mPos.y) << 3,
+                (MARIO2(c)->mPos.z) << 3, 0, 0);
         }
     }
 
@@ -1157,7 +1154,7 @@ int Trmp2Mario_Load(char *c) {
     BMD_File *f;
     int ret;
 
-    f = (BMD_File *)Model::LoadFile(sTrmpMarioModelFile);
+    f = (BMD_File *)dExtSimpleModel_c::LoadFile(sTrmpMarioModelFile);
     sTrmpAnimJump = (BCA_File *)dExtFrameCtrl_c::LoadFile(sTrmpMarioJumpAnimFile);
     sTrmpAnimDoubleJump1 = (BCA_File *)dExtFrameCtrl_c::LoadFile(sTrmpMarioDoubleJump1AnimFile);
     sTrmpAnimWallJump = (BCA_File *)dExtFrameCtrl_c::LoadFile(sTrmpMarioWallJumpAnimFile);
@@ -1225,7 +1222,7 @@ extern "C" void *Trmp2Mario_Destruct(int *c) {
     sTrmpAnimStruggle = 0;
     sTrmpAnimSdown = 0;
     // Destroy the embedded member directly, without virtual dispatch.
-    MARIO2(c)->mModelAnim.ModelAnim::~ModelAnim();
+    MARIO2(c)->mModelAnim.dExtAnmModel_c::~dExtAnmModel_c();
     *c = (int)&data_ov006_0213b3e0;
     *c = (int)&data_ov006_0213b3c4;
     return c;
@@ -1259,7 +1256,7 @@ extern "C" int sTrmp2MarioOps[];
 extern "C" int *Trmp2Mario_Construct(int *self) {
     TrmpRingObjAdapter_Construct(self);
     self[0] = (int)sTrmp2MarioOps;
-    _ZN9ModelAnimC1Ev(&MARIO2(self)->mModelAnim);
+    _ZN14dExtAnmModel_cC1Ev(&MARIO2(self)->mModelAnim);
     return self;
 }
 }
@@ -1635,7 +1632,7 @@ extern "C" {
 extern int sTrmp3DMarioScale[];
 // @symbol Trmp3DMario_Render
 void Trmp3DMario_Render(char *self) {
-    ModelAnim *model = &MARIO3D(self)->mModelAnim;
+    dExtAnmModel_c *model = &MARIO3D(self)->mModelAnim;
     model->Render((const Vector3 *)sTrmp3DMarioScale);
 }
 }
@@ -1665,12 +1662,6 @@ typedef int Fix12;
 struct System {
     static System *New(unsigned, unsigned, Fix12, Fix12, Fix12, const Vector3_16f *, Callback *);
 };
-/* Signature deliberately copied from the local declaration above: the
-   ROM name carries by-value class parameters (e.g. Fix12<int>), which
-   mwccarm passes differently at the call site, so declaring the true
-   types breaks the byte match. See notes/mwccarm-codegen.md 6az. */
-extern "C" System *_ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
-    unsigned, unsigned, Fix12, Fix12, Fix12, const Vector3_16f *, Callback *);
 
 extern "C" {
 /* The ROM's relocation at 0x020cb088 targets 0x020cb134, not 0x020c9024.
@@ -1707,9 +1698,8 @@ extern "C" void Trmp3DMario_Update(char *o) {
     if (MARIO3D(o)->mVel.y > v) {
         if (MARIO3D(o)->mModelAnim.file == sTrmpAnimBounce) {
             MARIO3D(o)->mParticleId =
-                (int)_ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
-                    MARIO3D(o)->mParticleId, 0xf5, MARIO3D(o)->mPos.x << 3, MARIO3D(o)->mPos.y << 3,
-                    MARIO3D(o)->mPos.z << 3, 0, 0);
+                (int)Particle::System::New(MARIO3D(o)->mParticleId, 0xf5, MARIO3D(o)->mPos.x << 3,
+                                           MARIO3D(o)->mPos.y << 3, MARIO3D(o)->mPos.z << 3, 0, 0);
         }
     }
     Trmp3DMario_UpdateMatrix(o);
@@ -2175,8 +2165,8 @@ void Vec3_MulScalar(Vector3 *out, const Vector3 *in, int scale);
 void SubVec3(Vector3 *a, Vector3 *b, Vector3 *c);
 void AddVec3(Vector3 *a, Vector3 *b, Vector3 *c);
 int _ZN4cstd4fdivEii(int a, int b);
-void *_ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
-    unsigned int a, unsigned int b, int c, int d, int e, const void *f, void *g);
+void *d_mg_trmpln2_marioNewHold2(unsigned int a, unsigned int b, int c, int d, int e, const void *f,
+                                 void *g);
 void Sound_PlayBank1Panned(int a0, int a1, int a2);
 int D3D_PlaySeAtX(int a, int b);
 void Trmp3DMario_StateHardBounce(char *c);
@@ -2219,18 +2209,15 @@ extern "C" void Trmp3DMario_BounceOffLineA(char *c) {
         v.y = (s16)tmp.y;
         v.z = (s16)tmp.z;
 
-        _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
-            0, 0xf3, MARIO3D(c)->mPos.x << 3, MARIO3D(c)->mPos.y << 3, MARIO3D(c)->mPos.z << 3, &v,
-            0);
-        _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
-            0, 0xf4, MARIO3D(c)->mPos.x << 3, MARIO3D(c)->mPos.y << 3, MARIO3D(c)->mPos.z << 3, &v,
-            0);
+        Particle::System::New(0, 0xf3, MARIO3D(c)->mPos.x << 3, MARIO3D(c)->mPos.y << 3,
+                              MARIO3D(c)->mPos.z << 3, (const Vector3_16f *)(&v), 0);
+        Particle::System::New(0, 0xf4, MARIO3D(c)->mPos.x << 3, MARIO3D(c)->mPos.y << 3,
+                              MARIO3D(c)->mPos.z << 3, (const Vector3_16f *)(&v), 0);
     }
 
     MARIO3D(c)->mParticleId =
-        (int)_ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
-            MARIO3D(c)->mParticleId, 0xf5, MARIO3D(c)->mPos.x << 3, MARIO3D(c)->mPos.y << 3,
-            MARIO3D(c)->mPos.z << 3, 0, 0);
+        (int)Particle::System::New(MARIO3D(c)->mParticleId, 0xf5, MARIO3D(c)->mPos.x << 3,
+                                   MARIO3D(c)->mPos.y << 3, MARIO3D(c)->mPos.z << 3, 0, 0);
 
     scale = FX_MUL(sTrmp3DHardBounceScale, fdivr);
     Vec3_MulScalar(&tmp4, &tmp, scale);
@@ -3059,7 +3046,7 @@ int Trmp3DMario_Load(char *c) {
     BMD_File *f;
     int ret;
 
-    f = (BMD_File *)Model::LoadFile(sTrmpMarioModelFile);
+    f = (BMD_File *)dExtSimpleModel_c::LoadFile(sTrmpMarioModelFile);
     sTrmpAnimJump = (BCA_File *)dExtFrameCtrl_c::LoadFile(sTrmpMarioJumpAnimFile);
     sTrmpAnimDoubleJump1 = (BCA_File *)dExtFrameCtrl_c::LoadFile(sTrmpMarioDoubleJump1AnimFile);
     sTrmpAnimWallJump = (BCA_File *)dExtFrameCtrl_c::LoadFile(sTrmpMarioWallJumpAnimFile);
@@ -3123,7 +3110,7 @@ extern "C" void *Trmp3DMario_Destruct(int *c) {
     sTrmpAnimBounce = 0;
     sTrmpAnimStruggle = 0;
     // Destroy the embedded member directly, without virtual dispatch.
-    MARIO3D(c)->mModelAnim.ModelAnim::~ModelAnim();
+    MARIO3D(c)->mModelAnim.dExtAnmModel_c::~dExtAnmModel_c();
     *c = (int)&data_ov006_0213b3c4;
     return c;
 }
@@ -3140,7 +3127,7 @@ extern void TrmpObjAdapter_Construct(int *c);
 int *Trmp3DMario_Construct(int *t) {
     TrmpObjAdapter_Construct(t);
     t[0] = (int)sTrmp3DMarioOps;
-    _ZN9ModelAnimC1Ev(&MARIO3D(t)->mModelAnim);
+    _ZN14dExtAnmModel_cC1Ev(&MARIO3D(t)->mModelAnim);
     return t;
 }
 }

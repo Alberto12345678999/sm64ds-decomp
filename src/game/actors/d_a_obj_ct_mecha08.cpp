@@ -108,7 +108,7 @@ extern "C" daObjCtMecha08_c *daObjCtMecha08_c_classInit_CT_MECHA08B()
    setting. */
 int daObjCtMecha08_c::InitResources()
 {
-    mModel.SetFile((BMD_File *)Model::LoadFile(TtcRotatingGear_ModelFile), 1, -1);
+    mModel.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(TtcRotatingGear_ModelFile), 1, -1);
     UpdateModelPosAndRotY();
     UpdateClsnPosAndRot();
     _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(

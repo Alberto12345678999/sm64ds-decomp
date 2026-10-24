@@ -142,19 +142,19 @@ still costs nothing.
 
 ### MEASURED 2026-10-22: both `SetAnim` symbols are NOT walled -- the name was the wall
 
-`ModelAnim::SetAnim` and `BlendModelAnim::SetAnim` were the two standing in-tree
-citations of this wall. Their sources said so in four places (`include/ModelAnim.h`,
-`src/engine/model/ModelAnim.cpp`, `include/BlendModelAnim.h`,
-`src/engine/model/BlendModelAnim.cpp`): "SetAnim's definition stays a mangled free
+`dExtAnmModel_c::SetAnim` and `dExtBlendAnmModel_c::SetAnim` were the two standing in-tree
+citations of this wall. Their sources said so in four places (`include/dExtAnmModel_c.h`,
+`src/engine/model/d_ext_anm_model.cpp`, `include/dExtBlendAnmModel_c.h`,
+`src/engine/model/d_ext_blend_anm_model.cpp`): "SetAnim's definition stays a mangled free
 function (wall 6az)". Measured on 605184f87d, that is wrong. Both reproduce as real
 C++ methods once the symbol is renamed to its scalar mangling, exactly as
 `IsGoingOffCliff` above:
 
 | symbol | form | result |
 |---|---|---|
-| `_ZN9ModelAnim7SetAnimEP8BCA_Fileiit` | `void ModelAnim::SetAnim(BCA_File *, int, Fix12i, u16)` | **2004/b56, 0x5c** |
-| `_ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj` | same body, method, `Fix12<int>` + `u32` | 0x74 vs 0x5c (+0x18) |
-| `_ZN14BlendModelAnim7SetAnimER8BCA_Fileiiit` | `void BlendModelAnim::SetAnim(BCA_File &, int, int, Fix12i, u16)` | **2004/b56, 0x9c** |
+| `_ZN14dExtAnmModel_c7SetAnimEP8BCA_Fileiit` | `void dExtAnmModel_c::SetAnim(BCA_File *, int, Fix12i, u16)` | **2004/b56, 0x5c** |
+| `_ZN14dExtAnmModel_c7SetAnimEP8BCA_Filei5Fix12IiEj` | same body, method, `Fix12<int>` + `u32` | 0x74 vs 0x5c (+0x18) |
+| `_ZN19dExtBlendAnmModel_c7SetAnimER8BCA_Fileiiit` | `void dExtBlendAnmModel_c::SetAnim(BCA_File &, int, int, Fix12i, u16)` | **2004/b56, 0x9c** |
 
 Both matches are `--module arm9` (strict relocs), 0x02016748/0x5c and
 0x020163e0/0x9c. The class-typed row is the wall doing what this section says: the
@@ -166,7 +166,7 @@ Two things follow, and both are general, not specific to these two symbols:
 
 - **`extern "C"` and `thiz` are symptoms of the name, not of the compiler.** The
   `extern "C"` exists only to stop mwccarm re-mangling a hand-spelled mangled
-  identifier, and the explicit `ModelAnim *thiz` exists only because an
+  identifier, and the explicit `dExtAnmModel_c *thiz` exists only because an
   `extern "C"` function has no implicit `this`. A real method's natural mangling
   IS the symbol, so all three disappear together. The tree carries 1111 `thiz`
   across 164 files and 54 distinct `5Fix12IiE` symbols, 207 files defining one as
@@ -355,15 +355,15 @@ assuming it is yours.
 
 ### DONE for both SetAnim symbols (2026-10-22/23)
 
-`_ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj` is now
-`_ZN9ModelAnim7SetAnimEP8BCA_Fileiit`, a real method, and the 612 references
+`_ZN14dExtAnmModel_c7SetAnimEP8BCA_Filei5Fix12IiEj` is now
+`_ZN14dExtAnmModel_c7SetAnimEP8BCA_Fileiit`, a real method, and the 612 references
 across 79 files were converted: 394 call sites became `obj.SetAnim(...)` and 120
 local `extern` declarations were deleted outright. What the campaign actually
 cost, for whoever does the other 53 symbols:
 
 - **Four sites could not follow, and each needs a scalar `local extern:`.**
   `d_mg_trmpln2_mario.cpp` (61 refs) and `unit020bfec0.cpp` (5) never see the
-  real class -- trmpln2 declares a never-defined `struct ModelAnim` scaffold in
+  real class -- trmpln2 declares a never-defined `struct dExtAnmModel_c` scaffold in
   every `ns_*` namespace, and unit020bfec0 reaches its anim through raw record
   offsets -- so a method call cannot bind and only the symbol name changed there.
   `d_a_ots.cpp` tail-forwards SetAnim's r0 as `func_ov064_02116560`'s own `int`
@@ -389,11 +389,11 @@ cost, for whoever does the other 53 symbols:
   symbol the count went 612 -> 71, and the 71 are the same occurrences in the
   four files above (61 -> 61 and 5 -> 5 unchanged; 15 -> 2 and 18 -> 3).
 
-`_ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt` followed as
-`_ZN14BlendModelAnim7SetAnimER8BCA_Fileiiit`: 191 references across 8 files, 68
+`_ZN19dExtBlendAnmModel_c7SetAnimER8BCA_Fileii5Fix12IiEt` followed as
+`_ZN19dExtBlendAnmModel_c7SetAnimER8BCA_Fileiiit`: 191 references across 8 files, 68
 call sites converted and 11 local declarations deleted. Only
 `unit020bfec0.cpp` (37 refs) could not follow, for the same reason as above.
-Two things that differ from the ModelAnim pass, both from parameter 2 being
+Two things that differ from the dExtAnmModel_c pass, both from parameter 2 being
 `BCA_File &` rather than a pointer:
 
 - **A reference parameter needs an lvalue, so call sites gain a dereference**
@@ -1988,7 +1988,7 @@ Rules, each verified by a div->0 crack (full write-ups in the opus batch journal
   re-folds. Where you put the launder in the address TREE is itself the lever.
 - **Taking &arr[i] escapes the WHOLE stack array** (RaycastGround::DetectClsn). Every
   unrelated scalar living in that array joins the alias set, its stores become ordered
-  memory ops, and LICM/outgoing-arg scheduling pin around them. Model separate concepts
+  memory ops, and LICM/outgoing-arg scheduling pin around them. dExtSimpleModel_c separate concepts
   as separate locals unless the ROM shows the pinning.
 - **Callee-saved rank classes** (ExpandingHeapAllocator::Reallocate): locals whose
   defining RHS is param-only address arithmetic, taken as a maximal DECL PREFIX, promote
@@ -3096,7 +3096,7 @@ A three-web rotation over r5-r7 that survived decl order, scope depth, the 6y/6a
 family at every placement, the 6h launder, C-vs-C++ TU, and a type sweep. Measuring the
 classes rather than permuting the source produced a model that predicts the coloring.
 
-**Model.** mwccarm assigns the callee-saved band in TWO passes, not one:
+**dExtSimpleModel_c.** mwccarm assigns the callee-saved band in TWO passes, not one:
 
 1. **NORMAL-class** webs, in first-definition order, ascending from r5.
 2. **ADDRESS-CONSTANT-class** webs (rematerializable pointer constants, i.e. a pooled
@@ -7097,7 +7097,7 @@ AND IT IS HIDING NOTHING ELSE. All 29 NONMATCHING-bannered committed rows were r
 same way. Eighteen are already byte-exact and always were -- the HAND-ASM PRIMITIVE files,
 which carry the banner as a policy marker under the 09-09 ruling -- and the remaining eleven
 keep their residue exactly (func_02009e70 96, `dScStarSel_c::Behavior` 11,
-func_ov015_021114f0 8, func_ov007_020bfd70 7, `Model::LoadCompressedTextureToVram` 5,
+func_ov015_021114f0 8, func_ov007_020bfd70 7, `dExtSimpleModel_c::LoadCompressedTextureToVram` 5,
 `dScStage_c::InitResources` 4, func_ov075_0211afb0 4, `daEykn_c::InitResources` 3, `OAM::Render` 2,
 func_0202ffec 2). Do not go looking for a second free match here; there is one, and this
 was it.
@@ -7935,7 +7935,7 @@ MATCHED (3 -> 0); the two-regime coupling on func_ov006_020fdaf0 (7 -> 6); two A
 scheduling floors named.**
 
 `_ZN8daEykn_c13InitResourcesEv` (ov071 0x02121734, 0x298) sat at three words for a month: the slot
-of `mov r2,#1` in the ModelBase::SetFile argument setup at +0x20 (ROM `mov r2,#1 / mov r1,r0 /
+of `mov r2,#1` in the dExtModel_c::SetFile argument setup at +0x20 (ROM `mov r2,#1 / mov r1,r0 /
 add r0,r4,#0xd4 / mov r3,r2`, every draft `mov r1,r0 / add r0,r4,#0xd4 / mov r2,#1 / mov r3,r2`).
 CRK-O's micro-lab had reduced it to "a third call ahead of the site in the block loses the
 constant-first order", which is true and was still not the lever. The draft declared the first

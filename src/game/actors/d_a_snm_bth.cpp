@@ -1,4 +1,8 @@
 //cpp
+namespace Particle {
+struct Callback;
+}
+struct Vector3_16f;
 /* The snowman's breath. Fifty SnowmanBreathParticle members sit in this
  * file because their functions sit between the actor's destructor and its
  * other methods. .text 0x021120c4..0x02112b14.
@@ -25,7 +29,7 @@
 #include "decl_Player.h"
 #include "SharedFilePtr.h"
 #include "types.h"
-#include "Model.h"
+#include "dExtSimpleModel_c.h"
 #include "Player.h"
 #include "SaveData.h"
 #include "SpawnInfo.h"
@@ -42,10 +46,10 @@ extern "C" {
 namespace Particle {
 struct System {
     static void NewSimple(u32, s32, s32, s32);
+
+    static int New(unsigned, unsigned, int, int, int, const ::Vector3_16f *, Callback *);
 };
 }
-u32 _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
-    u32, u32, s32, s32, s32, const void *, void *);
 s16 Vec3_HorzAngle(const Vector3 *, const Vector3 *);
 s32 Vec3_Dist(const Vector3 *, const Vector3 *);
 void Matrix4x3_FromRotationY(Matrix4x3 *, s16);
@@ -182,9 +186,7 @@ void SnowmanBreathParticle::Render()
 {
     if (mTimer == 0)
         return;
-    mParticleID =
-        _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
-            mParticleID, 0x111, mPos.x, mPos.y, mPos.z, 0, 0);
+    mParticleID = Particle::System::New(mParticleID, 0x111, mPos.x, mPos.y, mPos.z, 0, 0);
 }
 
 // @symbol _ZN21SnowmanBreathParticle8BehaviorEv
@@ -362,9 +364,9 @@ int daSnmBth_c::Behavior()
 // @symbol _ZN10daSnmBth_c13InitResourcesEv
 int daSnmBth_c::InitResources()
 {
-    Model::LoadFile(data_ov002_0210da40);
-    Model::LoadFile(data_ov002_0210d9a0);
-    Model::LoadFile(data_ov002_0210d9c0);
+    dExtSimpleModel_c::LoadFile(data_ov002_0210da40);
+    dExtSimpleModel_c::LoadFile(data_ov002_0210d9a0);
+    dExtSimpleModel_c::LoadFile(data_ov002_0210d9c0);
     mPosX = 0x3fa770;
     mPosY = 0xcb2000;
     mPosZ = 0x46988e;

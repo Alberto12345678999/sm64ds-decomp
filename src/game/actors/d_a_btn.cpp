@@ -29,7 +29,7 @@
  *
  * Known limits:
  * - dActor_c::SpawnCoins/Earthquake, DropShadowScaleXYZ,
- *   ModelAnim::SetAnim, TextureSequence::SetFile, dBgW_KcMbg::SetFile and
+ *   dExtAnmModel_c::SetAnim, TextureSequence::SetFile, dBgW_KcMbg::SetFile and
  *   dBgCh_Actr::Init take Fix12<int> by value, so they stay mangled
  *   (notes/mwccarm-codegen.md 6az).
  * - func_ov079_02123804 reacts to a hit but nothing in the cartridge's
@@ -278,7 +278,7 @@ int daBtn_c::InitResources()
     int b = (id == 0xa5);
     if (b) {
         mIsKing = 1;
-        bmd = Model::LoadFile(data_ov079_02128168);
+        bmd = dExtSimpleModel_c::LoadFile(data_ov079_02128168);
         mModelAnim.SetFile((BMD_File *)bmd, 1, -1);
         animIdx = 0;
         do {
@@ -289,7 +289,7 @@ int daBtn_c::InitResources()
         TextureSequence::LoadFile(data_ov079_02128178);
     } else {
         mIsKing = 0;
-        bmd = Model::LoadFile(data_ov079_02128170);
+        bmd = dExtSimpleModel_c::LoadFile(data_ov079_02128170);
         mModelAnim.SetFile((BMD_File *)bmd, 1, -1);
         animIdx = 0;
         do {
@@ -755,7 +755,7 @@ void daBtn_c::func_ov079_021256d4()
         void *anim;
         int five;
         void **tab;
-        ModelAnim *ma;
+        dExtAnmModel_c *ma;
 
         Sound::StopLoadedMusic_Layer3();
         func_02011cfc();
@@ -781,7 +781,7 @@ void daBtn_c::func_ov079_021256d4()
         mTextureSequence.currFrame = 0;
         mHorzSpeed = 0;
         anim = ((SharedFilePtr *)tab[mIsKing * five + 3])->filePtr;
-        ((ModelAnim *)ma)->SetAnim((BCA_File *)anim, 0, 0x1000, 0);
+        ((dExtAnmModel_c *)ma)->SetAnim((BCA_File *)anim, 0, 0x1000, 0);
     }
 }
 

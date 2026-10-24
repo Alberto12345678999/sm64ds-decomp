@@ -10,13 +10,13 @@
  *   externs disagree, and one shared view changes codegen.
  * - A char* or void* parameter stays where the typed header form
  *   changes the call.
- * - The records' models are real Model / ModelAnim / BlendModelAnim
+ * - The records' models are real dExtSimpleModel_c / dExtAnmModel_c / dExtBlendAnmModel_c
  *   members, so their SetFile/SetAnim/Advance/Render calls, frame tests,
  *   matrix stores and destructor calls are member calls. The constructors
- *   are still called by name (_ZN5ModelC1Ev and kin): C++ runs a
+ *   are still called by name (_ZN17dExtSimpleModel_cC1Ev and kin): C++ runs a
  *   constructor on existing storage only through placement new, which
  *   adds a null check -- FallingPetal_Construct no longer matches with
- *   `new (&PETAL(t)->mModel) Model` (MEASURED 2026-10-23). The real shape
+ *   `new (&PETAL(t)->mModel) dExtSimpleModel_c` (MEASURED 2026-10-23). The real shape
  *   is a constructor on each record, which waits on the records getting
  *   classes.
  */
@@ -101,7 +101,7 @@ void _ZN17dExtShadowModel_c9InitModelEP9Matrix4x35Fix12IiES3_S3_j(void *, void *
                                                                   unsigned int);
 void *_ZN17dExtShadowModel_cC1Ev(void *);
 void _ZN17dExtShadowModel_cD1Ev(void *);
-void *_ZN14BlendModelAnimC1Ev(void *);
+void *_ZN19dExtBlendAnmModel_cC1Ev(void *);
 void _ZN15TextureSequence6UpdateER15ModelComponents(void *, void *);
 void _ZN15TextureSequence7PrepareER8BMD_FileR8BTP_File(void *, void *);
 void _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(void *, void *, int, int, unsigned int);
@@ -114,14 +114,14 @@ void *_ZN18TextureTransformerC1Ev(void *);
 void _ZN18TextureTransformerD1Ev(void *);
 int _ZN3G3i13PerspectiveW_E5Fix12IiES1_S1_S1_S1_S1_bP9Matrix4x3(int, int, int, int, int, int, int,
                                                                 void *);
-void *_ZN5ModelC1Ev(void *);
+void *_ZN17dExtSimpleModel_cC1Ev(void *);
 void _ZN5Sound12PlayBank2_2DEj(unsigned int);
 /* local extern: dClipper::Func_020156DC takes a by-value Fix12<int> (the Fix12 wall), so it stays spelled out with scalar arguments. */
 void _ZN8dClipper13Func_020156DCEitii(void *, int, int, int, int);
 void *_ZN7Vector3D1Ev(void *);
 /* local extern: the call passes an untyped this, so it cannot use the header method. */
 int _ZN15dExtFrameCtrl_c7AdvanceEv(void *);
-void *_ZN9ModelAnimC1Ev(void *);
+void *_ZN14dExtAnmModel_cC1Ev(void *);
 void *__cxa_vec_ctor(void *, int, int, void *, void *);
 void func_02012174(int, int);
 void func_02016a04(void *, int);
@@ -241,7 +241,7 @@ int FallingPetal_Construct(char *t);
 namespace s020c402c {
 extern "C" {
 int FallingPetal_Construct(char *t) {
-    _ZN5ModelC1Ev(&PETAL(t)->mModel);
+    _ZN17dExtSimpleModel_cC1Ev(&PETAL(t)->mModel);
     return (int)t;
 }
 }
@@ -253,7 +253,7 @@ extern "C" {}
 extern "C" void *FlowerFace_Construct(char *c) {
     __cxa_vec_ctor(FLOWERFACE(c)->mPetals, 0x16, 0x98, (void *)FallingPetal_Construct,
                    (void *)FallingPetal_Destruct);
-    _ZN9ModelAnimC1Ev(&FLOWERFACE(c)->mModel);
+    _ZN14dExtAnmModel_cC1Ev(&FLOWERFACE(c)->mModel);
     func_02017acc(&FLOWERFACE(c)->mModelFile, 0x222);
     func_02017acc(&FLOWERFACE(c)->mPetalFile, 0x201);
     ((SharedFilePtr *)&FLOWERFACE(c)->mWaitAnim)->Construct(0x224);
@@ -279,7 +279,7 @@ extern "C" void *FlowerFace_Destruct(char *c) {
     SharedFilePtr_Destruct_Anim(&FLOWERFACE(c)->mWaitAnim);
     func_02017ab4(&FLOWERFACE(c)->mPetalFile);
     func_02017ab4(&FLOWERFACE(c)->mModelFile);
-    FLOWERFACE(c)->mModel.ModelAnim::~ModelAnim();
+    FLOWERFACE(c)->mModel.dExtAnmModel_c::~dExtAnmModel_c();
     __cxa_vec_cleanup(FLOWERFACE(c)->mPetals, 0x16, 0x98, (void *)FallingPetal_Destruct);
     return c;
 }
@@ -288,7 +288,7 @@ extern "C" void *FlowerFace_Destruct(char *c) {
 namespace s020c3e54 {
 extern "C" {
 int FallingPetal_Destruct(char *t) {
-    PETAL(t)->mModel.Model::~Model();
+    PETAL(t)->mModel.dExtSimpleModel_c::~dExtSimpleModel_c();
     return (int)t;
 }
 }
@@ -297,7 +297,7 @@ int FallingPetal_Destruct(char *t) {
 namespace s020c3d88 {
 extern "C" int FlowerFace_Load(char *c) {
     {
-        void *bmd = Model::LoadFile(*(::SharedFilePtr *)&FLOWERFACE(c)->mModelFile);
+        void *bmd = dExtSimpleModel_c::LoadFile(*(::SharedFilePtr *)&FLOWERFACE(c)->mModelFile);
         FLOWERFACE(c)->mModel.SetFile((BMD_File *)bmd, 1, -1);
     }
     dExtFrameCtrl_c::LoadFile(*(::SharedFilePtr *)&FLOWERFACE(c)->mWaitAnim);
@@ -305,7 +305,7 @@ extern "C" int FlowerFace_Load(char *c) {
     dExtFrameCtrl_c::LoadFile(*(::SharedFilePtr *)&FLOWERFACE(c)->mLikeAnim);
     dExtFrameCtrl_c::LoadFile(*(::SharedFilePtr *)&FLOWERFACE(c)->mHateAnim);
     FlowerFace_PlayIdle(c);
-    int m = (int)Model::LoadFile(*(::SharedFilePtr *)&FLOWERFACE(c)->mPetalFile);
+    int m = (int)dExtSimpleModel_c::LoadFile(*(::SharedFilePtr *)&FLOWERFACE(c)->mPetalFile);
     int i = 0;
     int z = i;
     char *p = (char *)FLOWERFACE(c)->mPetals;
@@ -755,8 +755,8 @@ void FallingPetal_UpdateMatrix(char *c) {
 namespace s020c33dc {
 extern "C" {
 int Presenter_Construct(char *t) {
-    _ZN14BlendModelAnimC1Ev(&PRESENTER(t)->mFace);
-    _ZN5ModelC1Ev(&PRESENTER(t)->mBack);
+    _ZN19dExtBlendAnmModel_cC1Ev(&PRESENTER(t)->mFace);
+    _ZN17dExtSimpleModel_cC1Ev(&PRESENTER(t)->mBack);
     _ZN15TextureSequenceC1Ev(PRESENTER(t)->mTexSeq);
     _ZN18TextureTransformerC1Ev(PRESENTER(t)->mTexAnim);
     func_02017acc(&PRESENTER(t)->mFaceModel, 0x286);
@@ -825,8 +825,8 @@ int Presenter_Destruct(char *t) {
     func_02017ab4(&PRESENTER(t)->mFaceModel);
     _ZN18TextureTransformerD1Ev(PRESENTER(t)->mTexAnim);
     _ZN15TextureSequenceD1Ev(PRESENTER(t)->mTexSeq);
-    PRESENTER(t)->mBack.Model::~Model();
-    PRESENTER(t)->mFace.BlendModelAnim::~BlendModelAnim();
+    PRESENTER(t)->mBack.dExtSimpleModel_c::~dExtSimpleModel_c();
+    PRESENTER(t)->mFace.dExtBlendAnmModel_c::~dExtBlendAnmModel_c();
     return (int)t;
 }
 }
@@ -853,8 +853,8 @@ int Presenter_Load(char *c) {
     void *r5;
     void *r4;
 
-    r5 = Model::LoadFile(*(::SharedFilePtr *)&PRESENTER(c)->mFaceModel);
-    r4 = Model::LoadFile(*(::SharedFilePtr *)&PRESENTER(c)->mBackModel);
+    r5 = dExtSimpleModel_c::LoadFile(*(::SharedFilePtr *)&PRESENTER(c)->mFaceModel);
+    r4 = dExtSimpleModel_c::LoadFile(*(::SharedFilePtr *)&PRESENTER(c)->mBackModel);
     dExtFrameCtrl_c::LoadFile(*(::SharedFilePtr *)&PRESENTER(c)->mAnims[0]);
     dExtFrameCtrl_c::LoadFile(*(::SharedFilePtr *)&PRESENTER(c)->mAnims[1]);
     dExtFrameCtrl_c::LoadFile(*(::SharedFilePtr *)&PRESENTER(c)->mAnims[2]);
@@ -1400,7 +1400,7 @@ extern "C" {
 int Mascot_Construct(char *t) {
     func_02017acc(MASCOT(t)->mModelFile, 0x205);
     ((SharedFilePtr *)MASCOT(t)->mWaitAnimFile)->Construct(0x206);
-    _ZN14BlendModelAnimC1Ev(&MASCOT(t)->mModel);
+    _ZN19dExtBlendAnmModel_cC1Ev(&MASCOT(t)->mModel);
     MASCOT(t)->mLooking = 0;
     return (int)t;
 }
@@ -1412,7 +1412,7 @@ extern "C" {
 int Mascot_Destruct(char *t) {
     ((SharedFilePtr *)MASCOT(t)->mModelFile)->Release();
     ((SharedFilePtr *)MASCOT(t)->mWaitAnimFile)->Release();
-    MASCOT(t)->mModel.BlendModelAnim::~BlendModelAnim();
+    MASCOT(t)->mModel.dExtBlendAnmModel_c::~dExtBlendAnmModel_c();
     SharedFilePtr_Destruct_Anim(MASCOT(t)->mWaitAnimFile);
     func_02017ab4(MASCOT(t)->mModelFile);
     return (int)t;
@@ -1424,7 +1424,7 @@ namespace s020c2154 {
 extern "C" {
 void Mascot_Load(char *c) {
     void *f;
-    f = Model::LoadFile(*(::SharedFilePtr *)MASCOT(c)->mModelFile);
+    f = dExtSimpleModel_c::LoadFile(*(::SharedFilePtr *)MASCOT(c)->mModelFile);
     MASCOT(c)->mModel.SetFile((BMD_File *)f, 1, -1);
     dExtFrameCtrl_c::LoadFile(*(::SharedFilePtr *)MASCOT(c)->mWaitAnimFile);
     MASCOT(c)->mModel.SetAnim(*(BCA_File *)MASCOT(c)->mWaitAnimFile[1], 0, 0, 0x800, 0);
@@ -1441,7 +1441,7 @@ void Mascot_Load(char *c) {
 
 namespace s020c2144 {
 extern "C" {
-/* Mascot_Update @ 0x20c2144 (ov006) -- veneer: add r0,r0,#0x10; b BlendModelAnim::Advance(). */
+/* Mascot_Update @ 0x20c2144 (ov006) -- veneer: add r0,r0,#0x10; b dExtBlendAnmModel_c::Advance(). */
 
 void Mascot_Update(void *a) {
     MASCOT(a)->mModel.Advance();
@@ -1452,7 +1452,7 @@ void Mascot_Update(void *a) {
 namespace s020c201c {
 typedef short s16;
 
-/* The render is Model's own, called directly: 0x02016b78, not BlendModelAnim's
+/* The render is dExtSimpleModel_c's own, called directly: 0x02016b78, not dExtBlendAnmModel_c's
    slot 5. */
 extern "C" void Mascot_Draw(Mascot *c) {
     if (c->mLooking != 0) {
@@ -1477,7 +1477,7 @@ extern "C" void Mascot_Draw(Mascot *c) {
         UpdateAngle(c->mRot[1], -0x1400, 8, 0x200);
     }
     Mascot_UpdateMatrix((char *)c);
-    c->mModel.Model::Render(0);
+    c->mModel.dExtSimpleModel_c::Render(0);
 }
 }
 
@@ -1570,8 +1570,8 @@ namespace s020c1d80 {
 extern "C" {
 int Dealer_Construct(char *t) {
     DEALER(t)->mHand = 0;
-    _ZN14BlendModelAnimC1Ev(&DEALER(t)->mModel);
-    _ZN5ModelC1Ev(&DEALER(t)->mTable);
+    _ZN19dExtBlendAnmModel_cC1Ev(&DEALER(t)->mModel);
+    _ZN17dExtSimpleModel_cC1Ev(&DEALER(t)->mTable);
     MascotWalker_Construct((char *)&DEALER(t)->mWalker);
     DEALER(t)->mShuffleRound = 0;
     DEALER(t)->mReserved = 0;
@@ -1633,8 +1633,8 @@ int Dealer_Destruct(char *t) {
     func_02017ab4(&DEALER(t)->mTableFile);
     func_02017ab4(&DEALER(t)->mModelFile);
     MascotWalker_Destruct((char *)&DEALER(t)->mWalker);
-    DEALER(t)->mTable.Model::~Model();
-    DEALER(t)->mModel.BlendModelAnim::~BlendModelAnim();
+    DEALER(t)->mTable.dExtSimpleModel_c::~dExtSimpleModel_c();
+    DEALER(t)->mModel.dExtBlendAnmModel_c::~dExtBlendAnmModel_c();
     return (int)t;
 }
 }
@@ -1655,8 +1655,10 @@ int Dealer_Load(char *c) {
     void *ip;
 
     _ZN17dExtShadowModel_c8CleanAllEv();
-    DEALER(c)->mModelData = (int)Model::LoadFile(*(::SharedFilePtr *)&DEALER(c)->mModelFile);
-    DEALER(c)->mTableData = (int)Model::LoadFile(*(::SharedFilePtr *)&DEALER(c)->mTableFile);
+    DEALER(c)->mModelData =
+        (int)dExtSimpleModel_c::LoadFile(*(::SharedFilePtr *)&DEALER(c)->mModelFile);
+    DEALER(c)->mTableData =
+        (int)dExtSimpleModel_c::LoadFile(*(::SharedFilePtr *)&DEALER(c)->mTableFile);
     f = ((void *)DEALER(c)->mModelData);
     if (f == 0 || DEALER(c)->mModel.SetFile((BMD_File *)f, 1, -1) == 0) {
         return 0;
@@ -2340,7 +2342,7 @@ int MascotWalker_Construct(char *t) {
     func_02017acc(WALKER(t)->mModelFile, 0x205);
     ((SharedFilePtr *)WALKER(t)->mPauseAnimFile)->Construct(0x206);
     ((SharedFilePtr *)WALKER(t)->mWalkAnimFile)->Construct(0x207);
-    _ZN14BlendModelAnimC1Ev(&WALKER(t)->mModel);
+    _ZN19dExtBlendAnmModel_cC1Ev(&WALKER(t)->mModel);
     _ZN17dExtShadowModel_cC1Ev(WALKER(t)->mShadow);
     WALKER(t)->mPathIndex = 0;
     WALKER(t)->mHeadAngle = 0;
@@ -2357,7 +2359,7 @@ int MascotWalker_Destruct(char *t) {
     ((SharedFilePtr *)WALKER(t)->mWalkAnimFile)->Release();
     ((SharedFilePtr *)WALKER(t)->mPauseAnimFile)->Release();
     _ZN17dExtShadowModel_cD1Ev(WALKER(t)->mShadow);
-    WALKER(t)->mModel.BlendModelAnim::~BlendModelAnim();
+    WALKER(t)->mModel.dExtBlendAnmModel_c::~dExtBlendAnmModel_c();
     SharedFilePtr_Destruct_Anim(WALKER(t)->mWalkAnimFile);
     SharedFilePtr_Destruct_Anim(WALKER(t)->mPauseAnimFile);
     func_02017ab4(WALKER(t)->mModelFile);
@@ -2379,7 +2381,7 @@ extern Vector3_16 data_020a0edc;
 extern "C" void MascotWalker_Load(char *thiz) {
     char *c = thiz;
     {
-        void *bmd = Model::LoadFile(*(::SharedFilePtr *)WALKER(c)->mModelFile);
+        void *bmd = dExtSimpleModel_c::LoadFile(*(::SharedFilePtr *)WALKER(c)->mModelFile);
         WALKER(c)->mModel.SetFile((BMD_File *)bmd, 1, -1);
     }
     dExtFrameCtrl_c::LoadFile(*(::SharedFilePtr *)WALKER(c)->mWalkAnimFile);
@@ -2473,8 +2475,8 @@ void MascotWalker_Draw(char *t) {
     MascotWalker_UpdateMatrix(t);
     _ZN17dExtShadowModel_c9InitModelEP9Matrix4x35Fix12IiES3_S3_j(
         WALKER(t)->mShadow, &WALKER(t)->mModel.mat4x3, 0x3c000, 0x14000, 0x3c000, 0xc);
-    /* Model's own render, called directly (0x02016b78), as Mascot_Draw does. */
-    WALKER(t)->mModel.Model::Render(0);
+    /* dExtSimpleModel_c's own render, called directly (0x02016b78), as Mascot_Draw does. */
+    WALKER(t)->mModel.dExtSimpleModel_c::Render(0);
 }
 }
 }

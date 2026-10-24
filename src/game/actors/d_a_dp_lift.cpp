@@ -186,8 +186,8 @@ s32 daDpLift_c::Behavior()
 #pragma opt_strength_reduction off
 s32 daDpLift_c::InitResources()
 {
-    mModel.SetFile((BMD_File *)Model::LoadFile(data_ov025_02113ae0), 1, -1);
-    mModel2.SetFile((BMD_File *)Model::LoadFile(data_ov002_0210d9f0), 1, -1);
+    mModel.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(data_ov025_02113ae0), 1, -1);
+    mModel2.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(data_ov002_0210d9f0), 1, -1);
     UpdateClsnPosAndRot();
 
     KCL_File *kcl = (KCL_File *)dBgW_Kc::LoadFile(data_ov025_02113ad8);
@@ -249,7 +249,7 @@ extern "C" void func_ov025_021125dc(void *collider, daDpLift_c *self, dActor_c *
 extern "C" {
 void *_ZN7fBase_cnwEj(unsigned int size);
 dBgActor_c *_ZN10dBgActor_cC2Ev(dBgActor_c *object);
-Model *_ZN5ModelC1Ev(Model *object);
+dExtSimpleModel_c *_ZN17dExtSimpleModel_cC1Ev(dExtSimpleModel_c *object);
 void __cxa_vec_ctor(void *base, unsigned int count, unsigned int stride,
     void (*ctor)(void *), void (*dtor)(void *));
 extern void *_ZTV10daDpLift_c[];
@@ -276,7 +276,7 @@ extern "C" daDpLift_c *daDpLift_c_classInit(void)
     if (actor) {
         _ZN10dBgActor_cC2Ev(actor);
         *(void **)actor = &_ZTV10daDpLift_c[2];
-        _ZN5ModelC1Ev(&actor->mModel2);
+        _ZN17dExtSimpleModel_cC1Ev(&actor->mModel2);
         __cxa_vec_ctor(actor->mMarkerPositions, 10, sizeof(Vector3),
             (void (*)(void *))func_0203d384, (void (*)(void *))_ZN7Vector3D1Ev);
     }

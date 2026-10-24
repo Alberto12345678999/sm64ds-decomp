@@ -1,4 +1,8 @@
 //cpp
+namespace Particle {
+struct Callback;
+}
+struct Vector3_16f;
 /* Production translation unit for ov002/daObjAbuku_c (bubbles).
  *
  * RTTI ov002:0x02108924 names daObjAbuku_c; overlay_actors.md maps profile
@@ -58,11 +62,11 @@ int SurfaceInfo_TestFlag0x20(int* p);
 extern short data_02082214[];
 void _Z14ApproachLinearRiii(int *p, int b, int c);
 unsigned short DecIfAbove0_Short(unsigned short *p);
-unsigned int _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
-    unsigned int, unsigned int, Fix12i, Fix12i, Fix12i, const Vector3_16 *, void *);
 namespace Particle {
 struct System {
     static void NewSimple(unsigned, int, int, int);
+
+    static int New(unsigned, unsigned, int, int, int, const ::Vector3_16f *, Callback *);
 };
 }
 }
@@ -122,8 +126,7 @@ int daObjAbuku_c::Behavior()
     if (DecIfAbove0_Short((unsigned short*)(&mLifeTimer)) == 0 || func_ov002_020b3344(this)) {
         func_ov002_020b330c(this);
     }
-    mParticle = (int)_ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
-        mParticle, 1, mPosX, mPosY, mPosZ, 0, 0);
+    mParticle = (int)Particle::System::New(mParticle, 1, mPosX, mPosY, mPosZ, 0, 0);
     mdCcAc_c.Clear();
     mdCcAc_c.Update();
     return 1;

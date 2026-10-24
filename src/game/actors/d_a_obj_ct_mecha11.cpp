@@ -175,7 +175,7 @@ int daObjCtMecha11_c::Behavior()
 // @symbol _ZN16daObjCtMecha11_c13InitResourcesEv
 int daObjCtMecha11_c::InitResources()
 {
-    void *mf = Model::LoadFile(RotatingClockHand_ModelFile);
+    void *mf = dExtSimpleModel_c::LoadFile(RotatingClockHand_ModelFile);
     mModel.SetFile((BMD_File *)mf, 1, -1);
     mShadowModel.InitCuboid();
     UpdateModel();

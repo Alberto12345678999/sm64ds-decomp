@@ -2,7 +2,7 @@
 #define DEALER_H
 
 #include "types.h"
-#include "BlendModelAnim.h"
+#include "dExtBlendAnmModel_c.h"
 #include "MascotWalker.h"
 
 /* Dealer, Luigi dealing in the card games: the 0x270-byte record
@@ -43,10 +43,10 @@ struct Dealer {
     /* 0x70 bytes. ResetMatrices sets its mat4x3; the state functions test its
        dExtFrameCtrl_c base with Finished and WillHitFrame and compare its file
        with mAnims. */
-    BlendModelAnim mModel; /* 0x01c */
+    dExtBlendAnmModel_c mModel; /* 0x01c */
     /* 0x50 bytes. ResetMatrices sets its mat4x3; Load clears and sets flags on
        materials 0, 4 and 5 of its data.materials. */
-    Model mTable;         /* 0x08c */
+    dExtSimpleModel_c mTable; /* 0x08c */
     MascotWalker mWalker; /* 0x0dc */
     s32 mDealtCount;   /* 0x1d4 -- a short the deal loop bumps once per card, or 0 */
     s16 mShuffleLeft;  /* 0x1d8 -- shuffle repeats left */

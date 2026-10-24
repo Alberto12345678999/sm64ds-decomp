@@ -2,7 +2,7 @@
 #define MASCOTWALKER_H
 
 #include "types.h"
-#include "BlendModelAnim.h"
+#include "dExtBlendAnmModel_c.h"
 
 /* MascotWalker, the small figure that walks the card table's paths in the card
  * games (the dealer embeds one at +0xdc, which fixes the 0xf8 size): a Toad,
@@ -20,7 +20,7 @@ struct MascotWalker {
     /* 0x70 bytes. UpdateMatrix sets its mat4x3 and turns bone 6 of its
        data.transforms by mHeadAngle; StateWalk pauses when its dExtFrameCtrl_c
        base hits frame 0. */
-    BlendModelAnim mModel; /* 0x18 */
+    dExtBlendAnmModel_c mModel; /* 0x18 */
     /* Built by Construct, InitCylinder'd by Load and InitModel'd on mModel.mat4x3 by Draw. */
     u8 mShadow[0x28]; /* 0x88 -- a dExtShadowModel_c */
     s32 mPath;        /* 0xb0 -- the path walked: a point count, then the points */

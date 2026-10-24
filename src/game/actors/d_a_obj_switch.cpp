@@ -44,7 +44,7 @@ namespace cstd { Fix12i fdiv(Fix12i numerator, Fix12i denominator); }
 
 namespace Event { int ClearBit(unsigned int bit); void SetBit(unsigned int bit); }
 
-/* Model handles construct through func_02017acc and destroy through
+/* dExtSimpleModel_c handles construct through func_02017acc and destroy through
  * func_02017ab4; collision handles construct through func_02017b4c and destroy
  * through SharedFilePtr_Destruct_Clsn. The manifest aliases those undefined
  * members onto the ROM symbols. */
@@ -167,7 +167,7 @@ int daObjSwitch_c::InitResources()
                 mStarID = 0;
             mTimeLimit = (param1 >> 8) & 0xff;
             LoadSilverStarAndNumber();
-            Model::LoadFile(data_ov002_0211092c);
+            dExtSimpleModel_c::LoadFile(data_ov002_0211092c);
             mResourceIdx = 1;
         } else {
             mSwitchType = param1 & 3;
@@ -179,7 +179,7 @@ int daObjSwitch_c::InitResources()
     }
 
     idx = mResourceIdx;
-    f = Model::LoadFile(*data_ov002_021098e8[idx].model);
+    f = dExtSimpleModel_c::LoadFile(*data_ov002_021098e8[idx].model);
     mModel.SetFile((BMD_File *)f, 1, -1);
     UpdateModelPosAndRotY();
     func_ov002_020b9f80();

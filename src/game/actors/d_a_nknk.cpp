@@ -11,7 +11,7 @@
  */
 
 // leftovers:
-// - Particle::System::New / SetSelfDestructFlag, ModelAnim::SetAnim,
+// - Particle::System::New / SetSelfDestructFlag, dExtAnmModel_c::SetAnim,
 //   dCcAc_c::Init, dBgCh_Actr::Init, dActor_c::ReflectAngle /
 //   DropShadowRadHeight / IsTooFarAwayFromPlayer,
 //   dEnemyBase_c::KillByInvincibleChar, Player::Bounce / Hurt and
@@ -91,13 +91,14 @@ typedef struct { s32 x, y, z; } Vec3;
 struct V3 { int x, y, z; };
 
 extern "C" {
-extern int _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(u32 uniqueID, u32 effectID, s32 x, s32 y, s32 z, const void *dir, void *callback);
+extern int d_a_nknkNewHold(u32 uniqueID, u32 effectID, s32 x, s32 y, s32 z, const void *dir,
+                           void *callback);
 extern void _ZN8Particle19SetSelfDestructFlagEj(u32 id);
 extern void func_0201267c(unsigned int id, const Vector3 *pos);
 extern s16 data_02082214[];         /* SINE_TABLE: sin, cos pairs */
 extern NknkAnimationFileHandle *data_ov062_0211cee8[];
 extern int data_ov062_0211cf0c[];
-/* The called scalar definition takes u16 startFrame. The unused ModelAnim
+/* The called scalar definition takes u16 startFrame. The unused dExtAnmModel_c
  * member declaration takes Fix12<int>/u32; its measured form grew this helper. */
 extern int Vec3_Dist(void* a, void* b);
 /* Reconstructed receiver/attacker/nullable collision interface; the original
@@ -196,7 +197,7 @@ int daNknk_c::InitResources()
     for (i = 0; i < 9; i++)
         dExtFrameCtrl_c::LoadFile(*data_ov062_0211cee8[i]);
 
-    f = (BMD_File*)Model::LoadFile(*data_ov062_0211ced8[mModelIndex]);
+    f = (BMD_File *)dExtSimpleModel_c::LoadFile(*data_ov062_0211ced8[mModelIndex]);
     if (mModelAnim.SetFile(f, 1, -1) == 0)
         return 0;
 
@@ -223,7 +224,7 @@ int daNknk_c::InitResources()
         mScaleZ = 0xa66;
         r = 0x3c000;
         h = 0x64000;
-        Model::LoadFile(*data_ov062_0211cee0[mModelIndex]);
+        dExtSimpleModel_c::LoadFile(*data_ov062_0211cee0[mModelIndex]);
     }
 
     _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCc_c, this, r, h, 0x200000, 0xb6efe0);
@@ -1100,7 +1101,7 @@ void daNknk_c::func_ov062_02117724(unsigned int a1, unsigned int a2, unsigned in
             pos.x = k * *(short *)((char *)data_02082214 + i2) + pos.x;
             pos.z = k * *(short *)((char *)data_02082214 + i1) + pos.z;
         }
-        uid = _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(0, 0xf9, pos.x, pos.y, pos.z, 0, 0);
+        uid = Particle::System::New(0, 0xf9, pos.x, pos.y, pos.z, 0, 0);
         _ZN8Particle19SetSelfDestructFlagEj(0xf9);
         if (uid == 0) return;
         ps = Particle::System::FromUniqueID(uid);
@@ -1139,8 +1140,9 @@ void daNknk_c::func_ov062_021175c0()
             pos.y = pos.y + 0xa000;
         }
 
-        spawned = _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
-            0, 0xb2, pos.x, pos.y, zArg, (void *)0, (void *)0);
+        spawned =
+            Particle::System::New(0, 0xb2, pos.x, pos.y, zArg, (const Vector3_16f *)((void *)0),
+                                  (Particle::Callback *)((void *)0));
     }
 
     _ZN8Particle19SetSelfDestructFlagEj(0xb2);

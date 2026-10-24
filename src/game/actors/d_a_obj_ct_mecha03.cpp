@@ -111,7 +111,7 @@ int daObjCtMecha03_c::InitResources()
     void *bmd;
     void *kcl;
 
-    bmd = Model::LoadFile(data_ov065_0211d88c);
+    bmd = dExtSimpleModel_c::LoadFile(data_ov065_0211d88c);
     mModel.SetFile((BMD_File *)bmd, 1, -1);
     mShadowModel.InitCuboid();
 

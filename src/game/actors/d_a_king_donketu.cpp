@@ -70,13 +70,13 @@
 /* leftovers:
  * - defer_codegen off stays file-global: deferred codegen emits D2, D0, D1
  *   and the cartridge has D1 then D0. opt_loop_invariants off stays
- *   file-global for func_ov073_0211f61c. common.h stays first; BlendModelAnim's
+ *   file-global for func_ov073_0211f61c. common.h stays first; dExtBlendAnmModel_c's
  *   Matrix4x3 makes the twelve-word copies change size.
  * - struct C is a complete PMF shadow on purpose (mwccarm picks the
  *   pointer-to-member shape from completeness). ChiefChilly_ChangeState
  *   takes C*. The sixteen state labels are descriptions; the sinit owns
  *   the records. The header's 0x504 size wrap stays.
- * - BlendModelAnim::SetAnim, Particle::System::New / NewSimple,
+ * - dExtBlendAnmModel_c::SetAnim, Particle::System::New / NewSimple,
  *   RunningSlidingDustAt, Player::Hurt, Sound::ChangeMusicVolume,
  *   DropShadowRadHeight and cstd::atan2 stay mangled (Fix12<int> by value).
  *   NewSimple and the layer-3 sound calls retain their local declarations.
@@ -233,7 +233,6 @@ extern struct BCA_File *data_ov002_0210da30[2];
 extern short Vec3_HorzAngle(const Vector3* a, const Vector3* b);
 extern void Matrix4x3_FromRotationY(void* m, short ang);
 extern void MulVec3Mat4x3(const void* in, void* m, void* out);
-extern unsigned int _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(unsigned int, unsigned int, Fix12i, Fix12i, Fix12i, const void*, void*);
 extern void func_0200d8c8(void *cam, void *v, int strength);
 extern void MulMat4x3Mat4x3(void *dst, void *a, void *b);
 extern void Vec3_Lsl(void *d, void *s, int sh);
@@ -295,8 +294,8 @@ void daKing_Donketu_c::func_ov073_0211f144() {
     MulVec3Mat4x3(&in, &data_020a0e68, &out);
     pos.x = pos.x + out.x;
     pos.z = pos.z + out.z;
-    c->mParticleId0 = _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(c->mParticleId0, 0x77, pos.x, pos.y, pos.z, 0, 0);
-    c->mParticleId1 = _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(c->mParticleId1, 0x78, pos.x, pos.y, pos.z, 0, 0);
+    c->mParticleId0 = Particle::System::New(c->mParticleId0, 0x77, pos.x, pos.y, pos.z, 0, 0);
+    c->mParticleId1 = Particle::System::New(c->mParticleId1, 0x78, pos.x, pos.y, pos.z, 0, 0);
     if (c->mParticleId0 != 0) {
         void* sys = Particle::System::FromUniqueID(c->mParticleId0);
         if (sys != 0) *(int*)((char*)sys + 0x44) = c->mScaleX * 0x14;
@@ -2007,8 +2006,8 @@ int daKing_Donketu_c::InitResources()
     dExtFrameCtrl_c::LoadFile(gKingIceDonketuJumpEdAnimationFile);
     dExtFrameCtrl_c::LoadFile(gKingIceDonketuJumpStAnimationFile);
     dExtFrameCtrl_c::LoadFile(gKingIceDonketuWaitAnimationFile);
-    Model::LoadFile(*(SharedFilePtr *)data_ov002_0210da30);
-    f = (BMD_File *)Model::LoadFile(gKingIceDonketuModelModelFile);
+    dExtSimpleModel_c::LoadFile(*(SharedFilePtr *)data_ov002_0210da30);
+    f = (BMD_File *)dExtSimpleModel_c::LoadFile(gKingIceDonketuModelModelFile);
     mBlendModelAnim.SetFile(f, 1, -1);
     mShadowModel.InitCylinder();
     mVertAccel = -0x3000;

@@ -58,7 +58,7 @@ extern void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Bloc
 // @symbol _ZN13daObjTtFuta_cD0Ev
 /* One out-of-line definition; mwccarm emits D1 and D0 from it, in that
  * order: its own vptr, then dBgActor_c's inlined, then dBgActor_c's
- * Model and dBgW_KcMbg, then dActor_c. */
+ * dExtSimpleModel_c and dBgW_KcMbg, then dActor_c. */
 daObjTtFuta_c::~daObjTtFuta_c()
 {
 }
@@ -101,13 +101,14 @@ s32 daObjTtFuta_c::Behavior() {
 
 // @symbol _ZN13daObjTtFuta_c13InitResourcesEv
 s32 daObjTtFuta_c::InitResources() {
-  void *f = Model::LoadFile(data_ov033_021124c8);
-  mModel.SetFile((BMD_File *)f, 1, -1);
-  UpdateModelPosAndRotY();
-  UpdateClsnPosAndRot();
-  void *k = dBgW_Kc::LoadFile(data_ov033_021124c0);
-  _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(&mMeshCollider, k, &mClsnMat, 0x199, mAngleY, data_ov033_02111bfc);
-  return _ZN5Event6GetBitEj(0xe) == 0;
+    void *f = dExtSimpleModel_c::LoadFile(data_ov033_021124c8);
+    mModel.SetFile((BMD_File *)f, 1, -1);
+    UpdateModelPosAndRotY();
+    UpdateClsnPosAndRot();
+    void *k = dBgW_Kc::LoadFile(data_ov033_021124c0);
+    _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
+        &mMeshCollider, k, &mClsnMat, 0x199, mAngleY, data_ov033_02111bfc);
+    return _ZN5Event6GetBitEj(0xe) == 0;
 }
 
 /* TT_FUTA factory. */

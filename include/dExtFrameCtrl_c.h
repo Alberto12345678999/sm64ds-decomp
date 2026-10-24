@@ -34,7 +34,7 @@
  * The body reads it straight from a register (notes/mwccarm-codegen.md
  * 6az, MEASURED 2026-10-22; the caller does not pay either, 2026-10-23).
  *
- * ModelAnim and its children carry an dExtFrameCtrl_c as a SECOND base at
+ * dExtAnmModel_c and its children carry an dExtFrameCtrl_c as a SECOND base at
  * +0x50, reached through the ROM's _ZThn80_ thunks; that is the next
  * phase, not this header's problem.
  */
@@ -58,7 +58,7 @@ struct dExtFrameCtrl_c {
     /* DECLARED, never defined here -- src/engine/animation/d_ext_frame_ctrl.cpp
        defines it out of line and emits both C1 and the base-subobject C2
        (notes/ctor-migration.md section 2). Declaring it is what makes
-       MaterialChanger/TextureTransformer/TextureSequence (and ModelAnim's
+       MaterialChanger/TextureTransformer/TextureSequence (and dExtAnmModel_c's
        base step) emit `bl _ZN15dExtFrameCtrl_cC2Ev' instead of synthesising inline. */
     dExtFrameCtrl_c();
 

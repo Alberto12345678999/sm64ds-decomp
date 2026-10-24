@@ -1,4 +1,11 @@
 //cpp
+struct Vector3_16f;
+namespace Particle {
+struct Callback;
+struct System {
+    static int New(unsigned, unsigned, int, int, int, const ::Vector3_16f *, Callback *);
+};
+}
 /* The rotating fire bar (registry profile FL_KOMA_U),
  * .text 0x02118138..0x021185c0. The out-of-line destructor is the key
  * function, so this TU emits _ZTV/_ZTI/_ZTS15daObjFl_KomaU_c: _ZTS is
@@ -71,8 +78,8 @@ void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
     s16 angleY, CLPS_Block *clps);
 void _ZN8dCcPos_c4InitERK7Vector35Fix12IiES4_jj(
     dCcPos_c *self, const Vector3 *pos, int radius, int height, u32 flags, u32 vuln);
-u32 _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
-    u32 handle, u32 effect, int x, int y, int z, const void *direction, void *callback);
+u32 d_a_obj_fl_koma_uNewHold(u32 handle, u32 effect, int x, int y, int z, const void *direction,
+                             void *callback);
 }
 
 // @symbol _ZN15daObjFl_KomaU_cD1Ev
@@ -163,10 +170,10 @@ s32 daObjFl_KomaU_c::Behavior()
         }
 
         out.y = out.y + 0x64000;
-        mParticleID[0][i] = _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
-            mParticleID[0][i], 0x4b, out.x, out.y, out.z, 0, 0);
-        mParticleID[1][i] = _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
-            mParticleID[1][i], 0x4c, out.x, out.y, out.z, 0, 0);
+        mParticleID[0][i] =
+            Particle::System::New(mParticleID[0][i], 0x4b, out.x, out.y, out.z, 0, 0);
+        mParticleID[1][i] =
+            Particle::System::New(mParticleID[1][i], 0x4c, out.x, out.y, out.z, 0, 0);
 
         cyl->Clear();
         cyl->Update();
@@ -186,7 +193,7 @@ s32 daObjFl_KomaU_c::InitResources()
 {
     int i;
 
-    mModel.SetFile((BMD_File *)Model::LoadFile(*data_ov064_0211adbc.model), 1, -1);
+    mModel.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(*data_ov064_0211adbc.model), 1, -1);
     for (i = 0; i < 8; i++)
         _ZN8dCcPos_c4InitERK7Vector35Fix12IiES4_jj(&mColliders[i], &mPos, 0x4b000, 0x96000,
                                                    0x200002, 0);

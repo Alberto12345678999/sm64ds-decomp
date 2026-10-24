@@ -22,14 +22,14 @@
  *   order; the inline destructor group comes out retail D1 then D0, no D2.
  *   M48, the array wrapper for InitResources' IDENTITY_MATRIX4X3 copy. This
  *   TU uses the nested Matrix4x3 (.t) that math/Matrix.h brings in via
- *   ModelAnim.h; putting common.h first would drop .t.
+ *   dExtAnmModel_c.h; putting common.h first would drop .t.
  *   func_ov070_021213cc calls dBgCh_Actr_UpdateDiscreteNoLava_veneer: the
  *   veneer is the retail call destination.
  *
  * WHY SOME CALLS ARE SPELLED AS MANGLED SYMBOLS (Fix12<int> by value, see
  * notes/mwccarm-codegen.md 6az):
  *   dCcAcPos_c::Init, dBgCh_Actr::Init (its header Fix12i also mangles as
- *   int), ModelAnim::SetAnim, DropShadowRadHeight and
+ *   int), dExtAnmModel_c::SetAnim, DropShadowRadHeight and
  *   Particle::System::NewSimple.
  */
 
@@ -121,7 +121,7 @@ extern void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(
 int daKrpa_c::InitResources()
 {
     Vector3 offset;
-    void *bmd = Model::LoadFile(gKeronpaModelFile);
+    void *bmd = dExtSimpleModel_c::LoadFile(gKeronpaModelFile);
     int groundDistance;
     mModelAnim.SetFile((BMD_File *)bmd, 1, 1);
     if (!mShadowModel.InitCylinder())

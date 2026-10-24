@@ -30,7 +30,7 @@
 #include "Sound.h"
 #include "SharedFilePtr.h"
 #include "daObjSwitch_c.h"
-#include "Model.h"
+#include "dExtSimpleModel_c.h"
 #include "Event.h"
 #include "daObjBlockItemTag_c.h"
 
@@ -53,7 +53,7 @@ struct RawVector3 {
     int x, y, z;
 };
 
-/* Model handles construct through func_02017acc and destroy through
+/* dExtSimpleModel_c handles construct through func_02017acc and destroy through
  * func_02017ab4. Collision handles construct through func_02017b4c and
  * destroy through SharedFilePtr_Destruct_Clsn. The manifest aliases those
  * undefined members onto the ROM symbols. */
@@ -106,7 +106,7 @@ static inline int IsActorID(dActor_c *actor, int id) {
 /* ONE definition, TWO ROM functions. Two vtable stores and three destructor
  * calls, every one a consequence of `struct daObjBlockL_c : dBgActor_c`: its
  * own vptr, then dBgActor_c's -- inlined, because dBgActor_c's destructor is
- * defined in its class body -- then dBgActor_c's Model and dBgW_KcMbg, then
+ * defined in its class body -- then dBgActor_c's dExtSimpleModel_c and dBgW_KcMbg, then
  * dActor_c. This class adds no member with a destructor of its own. D0
  * additionally returns the object to the actor heap through the inline
  * operator delete, which is why nothing below mentions a heap. With deferred
@@ -438,7 +438,8 @@ int daObjBlockL_c::InitResources()
     case 0x2e: mVariant = 2; break;
     }
 
-    mModel.SetFile((BMD_File *)Model::LoadFile(*data_ov002_02108ab0[mVariant].file), 1, -1);
+    mModel.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(*data_ov002_02108ab0[mVariant].file), 1,
+                   -1);
     UpdateModelPosAndRotY();
     UpdateClsnPosAndRot();
 

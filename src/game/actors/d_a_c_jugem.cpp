@@ -18,7 +18,7 @@
  *
 comment leftovers:
  *   - Calls whose real signatures take Fix12<int> BY VALUE stay mangled:
- *     Sound::PlaySub, ModelAnim::SetAnim, TextureSequence::SetFile and
+ *     Sound::PlaySub, dExtAnmModel_c::SetAnim, TextureSequence::SetFile and
  *     dActor_c::DropShadowRadHeight. mwccarm passes those differently at
  *     the call site than the loose scalar spelling; this file's externs
  *     are the spelling that matches.
@@ -952,37 +952,36 @@ int daC_Jugem_c::Behavior()
 // @symbol _ZN11daC_Jugem_c13InitResourcesEv
 int daC_Jugem_c::InitResources()
 {
-  BMD_File* bmd = (BMD_File*)Model::LoadFile(data_ov085_0213074c);
-  mModelAnim1.SetFile(bmd, 1, -1);
-  dExtFrameCtrl_c::LoadFile(data_ov085_02130744);
-  TextureSequence::LoadFile(data_ov085_0213073c);
-  mShadowModel1.InitCylinder();
-  mShadowModel2.InitCylinder();
-  TextureSequence::Prepare(
-      **(BMD_File**)((char*)&data_ov085_0213074c + 4), **(BTP_File**)((char*)&data_ov085_0213073c + 4));
-  mModelAnim1.SetAnim(*(BCA_File **)((char *)&data_ov085_02130744 + 4), 0, 0x1000, 0);
-  _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(
-      &mTextureSequence, **(BTP_File**)((char*)&data_ov085_0213073c + 4), 0, 0x1000, 0);
-  mModelAnim1.speed = 0x1000;
-  mVariant = param1 & 0xff;
-  if (mVariant == 0xff)
-    mVariant = 0;
-  switch (mVariant) {
-  case 0:
-    SetState(data_ov085_021307d0);
-    break;
-  case 1:
-    {
-      int v = data_0209caa0[2];
-      if (v & 0x20000)
-        return 0;
-      if (v & 0x10000)
-        data_0209caa0[2] = v & ~0x10000;
-      mHidden = 1;
-      if (!(data_0209caa0[2] & 0x80))
-        SetState(data_ov085_02130790);
-      else
-        SetState(data_ov085_021307e0);
+    BMD_File *bmd = (BMD_File *)dExtSimpleModel_c::LoadFile(data_ov085_0213074c);
+    mModelAnim1.SetFile(bmd, 1, -1);
+    dExtFrameCtrl_c::LoadFile(data_ov085_02130744);
+    TextureSequence::LoadFile(data_ov085_0213073c);
+    mShadowModel1.InitCylinder();
+    mShadowModel2.InitCylinder();
+    TextureSequence::Prepare(**(BMD_File **)((char *)&data_ov085_0213074c + 4),
+                             **(BTP_File **)((char *)&data_ov085_0213073c + 4));
+    mModelAnim1.SetAnim(*(BCA_File **)((char *)&data_ov085_02130744 + 4), 0, 0x1000, 0);
+    _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(
+        &mTextureSequence, **(BTP_File **)((char *)&data_ov085_0213073c + 4), 0, 0x1000, 0);
+    mModelAnim1.speed = 0x1000;
+    mVariant = param1 & 0xff;
+    if (mVariant == 0xff)
+        mVariant = 0;
+    switch (mVariant) {
+    case 0:
+        SetState(data_ov085_021307d0);
+        break;
+    case 1: {
+        int v = data_0209caa0[2];
+        if (v & 0x20000)
+            return 0;
+        if (v & 0x10000)
+            data_0209caa0[2] = v & ~0x10000;
+        mHidden = 1;
+        if (!(data_0209caa0[2] & 0x80))
+            SetState(data_ov085_02130790);
+        else
+            SetState(data_ov085_021307e0);
     }
     break;
   }

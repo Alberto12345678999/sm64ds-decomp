@@ -197,7 +197,7 @@ int daUdlift_c::InitResources()
         return 0;
     }
 
-    mModel.SetFile((BMD_File *)Model::LoadFile(*data_ov095_02136f68[mVariant]), 1, -1);
+    mModel.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(*data_ov095_02136f68[mVariant]), 1, -1);
     UpdateClsnPosAndRot();
     _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
         &mMeshCollider, (KCL_File *)dBgW_Kc::LoadFile(*data_ov095_02136f74[mVariant]),

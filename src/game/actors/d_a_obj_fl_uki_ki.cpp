@@ -85,7 +85,7 @@ extern "C" daObjFl_UkiKi_c *daObjFl_UkiKi_c_classInit()
  * so that one call deliberately keeps the measured register-level spelling. */
 s32 daObjFl_UkiKi_c::InitResources()
 {
-    mModel.SetFile((BMD_File *)Model::LoadFile(FloatingFloorLllBig_ModelFile), 1, -1);
+    mModel.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(FloatingFloorLllBig_ModelFile), 1, -1);
     UpdateModelPosAndRotY();
     UpdateClsnPosAndRot();
 

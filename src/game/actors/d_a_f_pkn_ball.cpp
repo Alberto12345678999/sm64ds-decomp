@@ -1,4 +1,7 @@
 //cpp
+namespace Particle {
+struct Callback;
+}
 /* daFPknBall_c (FPAKUN_BALL, actor 254): the fireball the fire piranha plant
  * spits. daFPkn_c hands it to dActor_c::SpawnFireball with param1 = 3. It
  * flies along its heading until it has covered mMaxDistance (1500 units),
@@ -91,7 +94,8 @@ extern "C" {
 extern int RandomIntInternal(int* seed);
 extern int data_0209e650;
 extern u32 _ZN8Particle6System17NewUnkCallback818Ejj5Fix12IiES2_S2_PK11Vector3_16f(u32 a, u32 b, Fix12i c, Fix12i d, Fix12i e, const struct Vector3_16f* f);
-extern void* _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(u32 a, u32 b, Fix12i c, Fix12i d, Fix12i e, const void* f, void* g);
+extern void *d_a_f_pkn_ballNewHold(u32 a, u32 b, Fix12i c, Fix12i d, Fix12i e, const void *f,
+                                   void *g);
 extern void Vec3_Asr(Vec3* d, Vec3* s, int sh);
 extern void Matrix4x3_FromTranslation(Matrix4x3* m, s32 x, s32 y, s32 z);
 extern void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(void* thiz, void* sm, void* mtx, Fix12i f, Fix12i a, u32 b);
@@ -104,6 +108,8 @@ s16 Vec3_HorzAngle(const void* a, const void* b);
 namespace Particle {
 struct System {
     static void NewSimple(u32 id, s32 x, s32 y, s32 z);
+
+    static int New(unsigned, unsigned, int, int, int, const ::Vector3_16f *, Callback *);
 };
 }
 void func_02012694(u32 id, const void* v);
@@ -206,8 +212,8 @@ void daFPknBall_c::func_ov002_020f8b24()
     mTrailEffect = _ZN8Particle6System17NewUnkCallback818Ejj5Fix12IiES2_S2_PK11Vector3_16f(
         mTrailEffect, data_ov002_02100334[mVariant], pos.x, pos.y, pos.z, 0);
 
-    mSparkEffect = _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
-        (u32)mSparkEffect, data_ov002_02100348[mVariant], pos.x, pos.y, pos.z, 0, 0);
+    mSparkEffect = (void *)Particle::System::New((u32)mSparkEffect, data_ov002_02100348[mVariant],
+                                                 pos.x, pos.y, pos.z, 0, 0);
 
     {
         s32 x = mPosX;

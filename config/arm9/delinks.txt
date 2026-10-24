@@ -688,19 +688,19 @@ src/engine/model/d_ext_common_model.cpp:
     complete
     .text start:0x0201609c end:0x02016254
 
-src/engine/model/ModelAnim2.cpp:
+src/engine/model/d_ext_anm2_model.cpp:
     complete
     .text start:0x02016254 end:0x020163e0
 
-src/engine/model/BlendModelAnim.cpp:
+src/engine/model/d_ext_blend_anm_model.cpp:
     complete
     .text start:0x020163e0 end:0x02016714
 
-src/engine/model/ModelAnim.cpp:
+src/engine/model/d_ext_anm_model.cpp:
     complete
     .text start:0x02016714 end:0x020169d8
 
-src/engine/model/Model.cpp:
+src/engine/model/d_ext_simple_model.cpp:
     complete
     .text start:0x020169d8 end:0x02017168
 

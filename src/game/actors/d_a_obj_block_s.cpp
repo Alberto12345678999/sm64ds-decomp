@@ -1,4 +1,7 @@
 //cpp
+namespace Particle {
+struct Callback;
+}
 /* daObjBlockS_c -- small breakable crate (BLOCK_S, ov098).
  * 37 functions, .text 0x02138040..0x02139f70, ending with classInit.
  * (registry profile BLOCK_S): it sits where it is placed, can be picked up
@@ -129,13 +132,14 @@ extern int data_ov098_0213c4c8[];
 extern s16 data_02082214[];
 extern int Vec3_HorzDist(const struct Vector3 *a, const struct Vector3 *b);
 extern u8 DecIfAbove0_Byte(u8 *p);
-extern void *_ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
-    u32 a, u32 b, int c, int d, int e, const void *v, void *cb);
+extern void *d_a_obj_block_sNewHold(u32 a, u32 b, int c, int d, int e, const void *v, void *cb);
 extern u32 _ZN8Particle6System17NewUnkCallback818Ejj5Fix12IiES2_S2_PK11Vector3_16f(
     u32 a, u32 b, int c, int d, int e, const Vector3_16f *v);
 namespace Particle {
 struct System {
     static void NewSimple(unsigned int id, int x, int y, int z);
+
+    static int New(unsigned, unsigned, int, int, int, const ::Vector3_16f *, Callback *);
 };
 }
 extern void _ZN8Particle20RunningSlidingDustAtE5Fix12IiES1_S1_(s32 x, s32 y, s32 z);
@@ -224,7 +228,7 @@ extern "C" BlockSW4 data_ov098_0213c4f0;
 // @symbol _ZN13daObjBlockS_cD0Ev
 /* Destroys dCcAcPos_c x2, dExtShadowModel_c and dBgCh_Actr in reverse declaration
  * order, then dBgActor_c's inline destructor stores its own vptr and destroys
- * its dBgW_KcMbg and Model before chaining to dActor_c. D0 then returns the
+ * its dBgW_KcMbg and dExtSimpleModel_c before chaining to dActor_c. D0 then returns the
  * object through the inline operator delete. */
 daObjBlockS_c::~daObjBlockS_c()
 {
@@ -1157,7 +1161,7 @@ void daObjBlockS_c::func_ov098_021397c8()
 }
 
 // @symbol _ZN13daObjBlockS_c19func_ov098_02139850Ev
-/* Model matrix. When mHoldingPlayer is set, mFlags bit 0x4000 is set and the
+/* dExtSimpleModel_c matrix. When mHoldingPlayer is set, mFlags bit 0x4000 is set and the
  * player's mCarryMatrix is nonzero, the
  * crate follows the player's hand: it picks a row r5 of the carry-offset
  * table (data_ov098_0213bf60 / 64 / 68 are its x / y / z columns, stride 12
@@ -1243,7 +1247,7 @@ int daObjBlockS_c::CleanupResources()
 }
 
 // @symbol _ZN13daObjBlockS_c6RenderEv
-/* Draws the model through Model's vtable slot 5 (Render) unless the crate is
+/* Draws the model through dExtSimpleModel_c's vtable slot 5 (Render) unless the crate is
  * in STATE_BROKEN or mFlags 0x40000 (a yoshi-mouth bit) is set. The call goes
  * through the local `Sub` shadow so it stays a virtual dispatch on the member
  * object. Always returns 1. */
@@ -1306,8 +1310,8 @@ int daObjBlockS_c::Behavior()
         ((int *)&v)[1] = y;
         ((int *)&v)[2] = z;
         if (DecIfAbove0_Byte(&mBreakTimer)) {
-            mParticleHandle1 = (u32)_ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
-                mParticleHandle1, 0x13a, v.x, v.y, v.z, 0, 0);
+            mParticleHandle1 =
+                (u32)Particle::System::New(mParticleHandle1, 0x13a, v.x, v.y, v.z, 0, 0);
             mParticleHandle2 = _ZN8Particle6System17NewUnkCallback818Ejj5Fix12IiES2_S2_PK11Vector3_16f(
                 mParticleHandle2, 0x13b, v.x, v.y, v.z, 0);
             goto done;
@@ -1365,7 +1369,7 @@ int daObjBlockS_c::InitResources()
     mHomeAngleX = mAngleX;
     mHomeAngleY = mAngleY;
     mHomeAngleZ = mAngleZ;
-    mModel.SetFile((BMD_File *)Model::LoadFile(**(SharedFilePtr **)(f)), 1, -1);
+    mModel.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(**(SharedFilePtr **)(f)), 1, -1);
     mShadowModel.InitCuboid();
     _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
         (char *)&mMeshCollider, (int)dBgW_Kc::LoadFile(**(SharedFilePtr **)(f + 4)),

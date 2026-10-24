@@ -63,9 +63,9 @@
  *   func_ov100_02145014 / func_ov100_02145070 stay free -- the shared
  *   countdown helpers, which Player.cpp, daMugenBGM_c and d_a_star_gate.cpp
  *   also call and which take no door.
- * - the callees with Fix12<int> parameters (Sound, ModelAnim::SetAnim),
+ * - the callees with Fix12<int> parameters (Sound, dExtAnmModel_c::SetAnim),
  *   the SaveData, Sound::PlayCharVoice and dExtFrameCtrl_c::LoadFile calls, and the
- *   Model loaders InitResources calls stay spelled as mangled extern-C free
+ *   dExtSimpleModel_c loaders InitResources calls stay spelled as mangled extern-C free
  *   functions.
  * - dActor_c's mScaleX/Y/Z and mAngleX/Z carry other things for a door
  *   (the player's position in the door's frame, and two area ids), and
@@ -107,7 +107,7 @@ enum daDoor_c_AssetId {
 #include "SharedFilePtr.h"
 #include "dCamera_c.h"
 #include "daObjKey_c.h"
-#include "Model.h"
+#include "dExtSimpleModel_c.h"
 #include "dExtFrameCtrl_c.h"
 #include "dActor_c.h"
 
@@ -1052,13 +1052,13 @@ int daDoor_c::func_ov100_021453d8(void *p, int a2)
 
 // @symbol _ZN8daDoor_c16CleanupResourcesEv
 /* vtable slot 3. `delete key` IS the ROM's `ldr r1,[r0]; ldr r1,[r1,#4];
- * blx r1` -- vtable slot 1, Model's deleting destructor -- and it is also
+ * blx r1` -- vtable slot 1, dExtSimpleModel_c's deleting destructor -- and it is also
  * where the doubled null check comes from: the explicit `if` emits one and
  * `delete` emits its own. */
 s32 daDoor_c::CleanupResources()
 {
     DoorEntry *e = &data_ov100_02148204[param1];
-    Model *key;
+    dExtSimpleModel_c *key;
     e->file->Release();
     data_ov100_02148744.Release();
     key = mKeyModel;
@@ -1092,10 +1092,10 @@ void daDoor_c::OnPendingDestroy()
  *                   width before IsAreaShowing sees it). Only mAngleY is a
  *                   real angle for this class.
  *   0x0e8           mModel.data.transforms, the door's own bone transform
- *                   array (ModelBase::data at +0x08, ModelComponents::
+ *                   array (dExtModel_c::data at +0x08, ModelComponents::
  *                   transforms at +0x0c).
  *
- * The two virtual calls are Model's slot 4 Virtual10(Matrix4x3&) and slot
+ * The two virtual calls are dExtSimpleModel_c's slot 4 Virtual10(Matrix4x3&) and slot
  * 5 Render(const Vector3*), exactly what the ROM dispatches. */
 s32 daDoor_c::Render()
 {
@@ -1106,8 +1106,8 @@ s32 daDoor_c::Render()
         /* &mModel is taken HERE and not at the top of the function: hoisting
            it costs a callee-saved register and a stack adjust the ROM does
            not have. The ROM computes it lazily, so this does too. */
-        ModelAnim *body = &mModel;
-        Model *key;
+        dExtAnmModel_c *body = &mModel;
+        dExtSimpleModel_c *key;
         body->Render(0);
         key = mKeyModel;
         if (key == 0) goto done;
@@ -1197,7 +1197,7 @@ s32 daDoor_c::InitResources()
 
     idx = param1;
     e = &data_ov100_02148204[idx];
-    f = Model::LoadFile(*e->file);
+    f = dExtSimpleModel_c::LoadFile(*e->file);
     mModel.SetFile((BMD_File *)f, 1, 1);
 
     /* Only in game mode 0: pick the key-model file (mKeyFile) and load it. */
@@ -1219,7 +1219,7 @@ s32 daDoor_c::InitResources()
             }
         }
         if (mKeyFile != 0)
-            Model::LoadFile(*(SharedFilePtr *)mKeyFile);
+            dExtSimpleModel_c::LoadFile(*(SharedFilePtr *)mKeyFile);
     }
 
     an = dExtFrameCtrl_c::LoadFile(data_ov100_02148744);
@@ -1232,8 +1232,8 @@ s32 daDoor_c::InitResources()
     *(M48 *)&mModel.mat4x3 = data_020a0e68;
 
     if (e->keyFile != 0) {
-        mKeyModel = new Model;
-        f = Model::LoadFile(*e->keyFile);
+        mKeyModel = new dExtSimpleModel_c;
+        f = dExtSimpleModel_c::LoadFile(*e->keyFile);
         mKeyModel->SetFile((BMD_File *)f, 1, -1);
         *(M48 *)&mKeyModel->mat4x3 = data_020a0e68;
     }

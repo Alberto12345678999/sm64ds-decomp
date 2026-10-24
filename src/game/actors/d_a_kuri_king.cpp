@@ -57,7 +57,7 @@
  *   daKuriKing_c has virtuals, so its own member pointers are wider than the
  *   8-byte records the sinit copies in.
  * - The remaining mangled calls that carry Fix12<int> (Particle::System::
- *   NewSimple, Player::Hurt, ModelAnim::SetAnim, the SetFile/Init family,
+ *   NewSimple, Player::Hurt, dExtAnmModel_c::SetAnim, the SetFile/Init family,
  *   Earthquake, DropShadowRadHeight, cstd::atan2, Sound::ChangeMusicVolume)
  *   pass it as a raw int. The header form with Fix12<int> locals builds a
  *   stack temporary and changes size (021223bc goes 0x278 -> 0x288 through
@@ -1561,7 +1561,7 @@ extern KuriKingAnimEntry data_ov074_02122f34[];
 
 // @symbol _ZN12daKuriKing_c19func_ov074_02121a20Ei
 /* Is clip `idx` the one currently playing: compare its file pointer with the
- * ModelAnim's. */
+ * dExtAnmModel_c's. */
 int daKuriKing_c::func_ov074_02121a20(int idx)
 {
     KuriKingAnimFile *anim = data_ov074_02122f34[idx].anim;
@@ -1574,7 +1574,8 @@ extern "C" void func_ov074_02121a4c(char* c, int idx)
     int off = idx * 0xc;
     void* file1 = data_ov074_02122f34[idx].anim->filePtr;
     int arg2 = *(int*)(data_ov074_02122f3c + off);
-    ((ModelAnim *)&((daKuriKing_c *)c)->mModelAnim)->SetAnim((BCA_File *)file1, arg2, 0x1000, 0);
+    ((dExtAnmModel_c *)&((daKuriKing_c *)c)->mModelAnim)
+        ->SetAnim((BCA_File *)file1, arg2, 0x1000, 0);
     _ZN18TextureTransformer7SetFileER8BTA_Filei5Fix12IiEj(
         &((daKuriKing_c *)c)->mTextureTransformer, *(void**)(data_ov074_02122f38 + off), 0, 0x1000, 0);
 }
@@ -1720,9 +1721,9 @@ int daKuriKing_c::InitResources()
         return func_ov074_02122634();
     }
 
-    Model::LoadFile(data_ov002_0210da30);
+    dExtSimpleModel_c::LoadFile(data_ov002_0210da30);
     LoadKeyModels(2);
-    Model::LoadFile(data_ov084_02130cf8);
+    dExtSimpleModel_c::LoadFile(data_ov084_02130cf8);
 
     i = 0;
     do {
@@ -1737,7 +1738,7 @@ int daKuriKing_c::InitResources()
     } while (i < 0xc);
 
     TextureSequence::LoadFile(gKurikingAngerTextureSequenceFile);
-    p = Model::LoadFile(gKurikingModelModelFile);
+    p = dExtSimpleModel_c::LoadFile(gKurikingModelModelFile);
     mModelAnim.SetFile((BMD_File *)p, 1, -1);
 
     j = 0;
@@ -1949,7 +1950,7 @@ int daKuriKing_c::func_ov074_02122634()
 {
     int i;
 
-    Model::LoadFile(data_ov084_02130cf8);
+    dExtSimpleModel_c::LoadFile(data_ov084_02130cf8);
     for (i = 0; i < 7; i++)
         dExtFrameCtrl_c::LoadFile(*sKurikingMinionAnimationFiles[i]);
 

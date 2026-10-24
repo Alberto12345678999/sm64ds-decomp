@@ -11,7 +11,7 @@
  * required D1/D0 pair; `new` odr-uses the class so that pair is emitted here.
  *
  * deslop leftovers:
- * - ModelAnim::SetAnim stays mangled (Fix12<int> by value, wall 6az)
+ * - dExtAnmModel_c::SetAnim stays mangled (Fix12<int> by value, wall 6az)
  */
 
 /* Runtime asset handles resolved through the overlay 0 file table. */
@@ -57,7 +57,7 @@ extern "C" daMcFlag_c *daMcFlag_c_classInit()
 // @symbol _ZN10daMcFlag_c13InitResourcesEv
 s32 daMcFlag_c::InitResources()
 {
-    mModelAnim.SetFile((BMD_File *)Model::LoadFile(data_ov009_02113eb8), 1, -1);
+    mModelAnim.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(data_ov009_02113eb8), 1, -1);
     mModelAnim.SetAnim((BCA_File *)dExtFrameCtrl_c::LoadFile(data_ov009_02113eb0), 0, 0x1000, 0);
     return 1;
 }

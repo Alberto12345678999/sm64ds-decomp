@@ -148,7 +148,7 @@ int daObjBk_Lift_c::func_ov015_021128e8(void *unused)
 // @symbol _ZN14daObjBk_Lift_c13InitResourcesEv
 int daObjBk_Lift_c::InitResources()
 {
-    mModel.SetFile((BMD_File *)Model::LoadFile(data_ov015_02114a64), 1, -1);
+    mModel.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(data_ov015_02114a64), 1, -1);
     mShadowModel.InitCuboid();
     UpdateModelPosAndRotY();
     UpdateClsnPosAndRot();

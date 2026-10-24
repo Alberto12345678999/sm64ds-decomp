@@ -269,7 +269,7 @@ int daObjFloatBoard_c::func_ov002_020b5e58(daObjFloatBoard_c_Resources *fp)
     KCL_File *kcl;
     int vy, vz, vx;
 
-    bmd = (BMD_File *)Model::LoadFile(*fp->model);
+    bmd = (BMD_File *)dExtSimpleModel_c::LoadFile(*fp->model);
     mModel.SetFile(bmd, 1, -1);
     mFileTable = fp;
     func_ov002_020b5b98();

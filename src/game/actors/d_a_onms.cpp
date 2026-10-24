@@ -98,7 +98,7 @@ struct OnmsCollisionFilePtr : SharedFilePtr {
     ~OnmsCollisionFilePtr();
 };
 
-/* BMD (Model::LoadFile) and KCL (dBgW_Kc::LoadFile). Cleanup releases both. */
+/* BMD (dExtSimpleModel_c::LoadFile) and KCL (dBgW_Kc::LoadFile). Cleanup releases both. */
 extern "C" OnmsModelFilePtr gOnimasuModelFile;
 extern "C" OnmsCollisionFilePtr gOnimasuCollisionFile;
 extern "C" daOnms_cStateEntry data_ov092_02132568[9];
@@ -589,7 +589,7 @@ int daOnms_c::InitResources()
     void *f;
     Vec3 tmp;
 
-    f = Model::LoadFile(gOnimasuModelFile);
+    f = dExtSimpleModel_c::LoadFile(gOnimasuModelFile);
     mModel.SetFile((BMD_File *)f, 1, -1);
 
     _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(

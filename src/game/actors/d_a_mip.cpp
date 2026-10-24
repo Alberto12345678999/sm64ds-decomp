@@ -1,11 +1,18 @@
 //cpp
+struct Vector3_16f;
+namespace Particle {
+struct Callback;
+struct System {
+    static int New(unsigned, unsigned, int, int, int, const ::Vector3_16f *, Callback *);
+};
+}
 /* daMip_c -- MIPS the rabbit (MIP). ov085.
  *
  * defer_codegen off lays .text down in source order. The destructor
  * is the key function: the cartridge has D1 below D0 and no D2.
  *
  * leftovers:
- * - ModelAnim::SetAnim, dCcAc_c::Init, dBgCh_Actr::Init,
+ * - dExtAnmModel_c::SetAnim, dCcAc_c::Init, dBgCh_Actr::Init,
  *   DropShadowRadHeight, Sound::PlaySub and Particle::System::New
  *   stay mangled. They take Fix12 by value. dBgCh_Actr::Init's
  *   header spells Fix12i, which mangles as int.
@@ -81,7 +88,6 @@ bool  _ZN5Sound7PlaySubEjjj5Fix12IiEb(u32, u32, u32, s32, int);
 
 /* path, particle, construction */
 void *_ZN7PathPtrC1Ev(void *);
-int   _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(u32, u32, s32, s32, s32, void *, void *);
 
 /* maths and the still-unnamed helpers */
 s16   Vec3_HorzAngle(const void *, const void *);
@@ -1259,7 +1265,7 @@ void daMip_c::RenderMirrorImage()
     MulMat3x3Mat3x3(&mModelAnim.mat4x3, &data_020a0e68, &mModelAnim.mat4x3);
     func_02016acc(&mModelAnim, 0x80);
     func_02016b24(&mModelAnim, 0x40);
-    mModelAnim.ModelAnim::Render(&mScale);
+    mModelAnim.dExtAnmModel_c::Render(&mScale);
     mModelAnim.ApplyOpacity(0xff, 0);
     func_02016b24(&mModelAnim, 0x80);
     func_02016acc(&mModelAnim, 0x40);
@@ -1341,8 +1347,8 @@ int daMip_c::Behavior()
         pv.y = mPosY;
         pv.z = mPosZ;
         pv.y = mPosY + 0x3c000;
-        mGlowParticle = _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
-            *(volatile u32*)&mGlowParticle, 0x10d, pv.x, pv.y, mPosZ, 0, 0);
+        mGlowParticle =
+            Particle::System::New(*(volatile u32 *)&mGlowParticle, 0x10d, pv.x, pv.y, mPosZ, 0, 0);
     }
 
     {
@@ -1501,8 +1507,9 @@ int daMip_c::InitResources()
     dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)&data_ov085_021305b0);
     dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)&data_ov085_021305c8);
     dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)&data_ov085_021305c0);
-    Model::LoadFile(*(SharedFilePtr *)&data_ov085_021305d8);
-    mModelAnim.SetFile((BMD_File *)Model::LoadFile(*(SharedFilePtr *)&data_ov085_021305e0), 1, -1);
+    dExtSimpleModel_c::LoadFile(*(SharedFilePtr *)&data_ov085_021305d8);
+    mModelAnim.SetFile(
+        (BMD_File *)dExtSimpleModel_c::LoadFile(*(SharedFilePtr *)&data_ov085_021305e0), 1, -1);
     mShadowModel1.InitCylinder();
     mShadowModel2.InitCylinder();
 

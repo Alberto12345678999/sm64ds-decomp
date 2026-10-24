@@ -76,7 +76,7 @@ extern int _ZTV13daObjNumber_c[];
  *
  * Every instruction the cartridge has here falls out of the one `new`.
  * 0x020f0d94 loads 336 = 0x150 -- the class's own size -- into
- * fBase_c::operator new; dActor_c's C2, this class's vptr, Model C1 at
+ * fBase_c::operator new; dActor_c's C2, this class's vptr, dExtSimpleModel_c C1 at
  * +0xd4 and TextureSequence C1 at +0x124 are the implicit constructor. */
 extern "C" daObjNumber_c *daObjNumber_c_classInit(void)
 {
@@ -90,7 +90,7 @@ s32 daObjNumber_c::InitResources()
 {
     if (param1 & 0x10) {
         TextureSequence::LoadFile(data_ov002_0210da08);
-        void *m = Model::LoadFile(data_ov002_0210da28);
+        void *m = dExtSimpleModel_c::LoadFile(data_ov002_0210da28);
         if (mModel.SetFile((BMD_File *)m, 1, 1) == 0)
             return 0;
         TextureSequence::Prepare(*(BMD_File *)data_ov002_0210da28.filePtr,
@@ -101,7 +101,7 @@ s32 daObjNumber_c::InitResources()
             (int)((((unsigned int)(param1 & 0xf) % 10) << 16) >> 4);
     } else {
         TextureSequence::LoadFile(data_ov002_0210d9e8);
-        void *m = Model::LoadFile(data_ov002_0210d9a8);
+        void *m = dExtSimpleModel_c::LoadFile(data_ov002_0210d9a8);
         if (mModel.SetFile((BMD_File *)m, 1, 1) == 0)
             return 0;
         TextureSequence::Prepare(*(BMD_File *)data_ov002_0210d9a8.filePtr,

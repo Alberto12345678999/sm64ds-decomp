@@ -1,7 +1,13 @@
 //cpp
 namespace Particle {
+struct Callback;
+}
+struct Vector3_16f;
+namespace Particle {
 struct System {
     static void *NewSimple(unsigned, int, int, int);
+
+    static int New(unsigned, unsigned, int, int, int, const ::Vector3_16f *, Callback *);
 };
 }
 /* Bob-omb (BOB_OMB 206 / BOMBHEI) -- ov102/daBmb_c.
@@ -10,7 +16,7 @@ struct System {
  * math/Matrix.h's nested Matrix4x3 scalarizes that copy (Vector3 is non-POD).
  *
  * Leftovers, remeasured in this file:
- * - ModelAnim::SetAnim, dCcAc_c::Init and DropShadowRadHeight: the header
+ * - dExtAnmModel_c::SetAnim, dCcAc_c::Init and DropShadowRadHeight: the header
  *   methods take Fix12<int> by value and the call grows. dBgCh_Actr::Init's
  *   header is Fix12i (mangles as i); this TU's call is Fix12<int>.
  *   The 4-arg KillByInvincibleChar stays a scalar extern; Behavior already
@@ -19,7 +25,7 @@ struct System {
  *   and tests CLPS bit 0x20 (water).
  * - States 0, 1 and 3 advance the dExtFrameCtrl_c base of mModelAnim
  *   explicitly. The qualified base call preserves the ROM entry point
- *   without a byte-offset pointer or a ModelAnim forwarding call.
+ *   without a byte-offset pointer or a dExtAnmModel_c forwarding call.
  * - dActor_c::mCarryMatrix (0xc8) is the matrix 0214b53c copies into the
  *   model while mVariant is 2; on the carrier it is only tested nonzero.
  * - func_ov102_0214bf64 keeps its existing free-function label over daBmb_c.
@@ -177,7 +183,7 @@ int daBmb_c::InitResources()
 
     dExtFrameCtrl_c::LoadFile(data_ov102_0214e9c0);
     dExtFrameCtrl_c::LoadFile(data_ov102_0214e9c8);
-    bmd = (BMD_File*)Model::LoadFile(data_ov002_0210d9e0);
+    bmd = (BMD_File *)dExtSimpleModel_c::LoadFile(data_ov002_0210d9e0);
     if (mModelAnim.SetFile(bmd, 1, -1) == 0)
         return 0;
     if (mShadowModel.InitCylinder() == 0)
@@ -394,7 +400,7 @@ void func_ov102_0214c0b8(void *cv) {
 }
 
 /* State 0: the dispatch passes this Bob-omb. Use its actual fields and
- * the ModelAnim frame-controller base. Scalar position members remain
+ * the dExtAnmModel_c frame-controller base. Scalar position members remain
  * borrowed Vector3 views; no owning Vector3 temporaries are introduced.
  * The existing external free-function label is retained. */
 
@@ -781,8 +787,8 @@ void func_ov102_0214b53c(char *c) {
     extern void MulMat4x3Mat4x3(void *a, void *b, void *out);
     extern void Vec3_Lsl(Vector3 * d, Vector3 * s, int sh);
     extern void Vec3_LslInPlace(Vector3 * v, int sh);
-    extern int _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
-        int sys, unsigned int kind, int fx, int a1, int a2, const void *v, void *cb);
+    extern int d_a_bmbNewHold(int sys, unsigned int kind, int fx, int a1, int a2, const void *v,
+                              void *cb);
     extern void func_ov102_0214b444(void *c);
     extern int data_ov102_0214ea18[];
     extern int data_ov102_0214ea1c[];
@@ -813,7 +819,7 @@ void func_ov102_0214b53c(char *c) {
                 idx = 1;
             }
             if ((self->mCarrier->LostGrabbedObject() != 0) &&
-                (((u32)(((u32)(((ModelAnim *)ret)->currFrame << 4)) >> 0x10)) < 0xe)) {
+                (((u32)(((u32)(((dExtAnmModel_c *)ret)->currFrame << 4)) >> 0x10)) < 0xe)) {
                 idx = 1;
             }
             if (self->mCarrier->param1 == 2) {
@@ -872,8 +878,7 @@ void func_ov102_0214b53c(char *c) {
         int haveMtx3 = (int)((self->mFlags & 0x4000) != 0);
         if (haveMtx3 != 0) {
             self->mCarryParticle =
-                _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
-                    self->mCarryParticle, 0x13, p.x, p.y, p.z, 0, 0);
+                Particle::System::New(self->mCarryParticle, 0x13, p.x, p.y, p.z, 0, 0);
         }
         if (self->mFuse != 0) {
             int haveShadow = (int)((self->mFlags & 0x40000) != 0);
@@ -931,8 +936,7 @@ void func_ov102_0214b53c(char *c) {
                 }
             }
             self->mFuseParticle =
-                _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
-                    self->mFuseParticle, 0x19, p.x, p.y, p.z, 0, 0);
+                Particle::System::New(self->mFuseParticle, 0x19, p.x, p.y, p.z, 0, 0);
         }
     }
     func_ov102_0214b444(c);

@@ -66,7 +66,7 @@ void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(void *self, voi
 extern Mtx43 data_020a0e68;
 extern s16 data_02082214[];
 
-/* Model-file handle. The derived constructor and destructor are the retail
+/* dExtSimpleModel_c-file handle. The derived constructor and destructor are the retail
  * SharedFilePtr pair; this TU does not define them. */
 struct BttBkModelFilePtr : SharedFilePtr {
     BttBkModelFilePtr(u32 fileID);
@@ -137,7 +137,7 @@ void daBttBk_c::func_ov080_02124acc()
     MarkForDestruction();
 }
 
-/* Model and shadow matrices: follows the carrier's matrix while carried,
+/* dExtSimpleModel_c and shadow matrices: follows the carrier's matrix while carried,
  * then rebuilds the model matrix (mModel.mat4x3) and the drop shadow
  * matrix (mShadowMtx). */
 // @symbol _ZN9daBttBk_c19func_ov080_02124c3cEv
@@ -374,7 +374,7 @@ int daBttBk_c::Behavior()
 int daBttBk_c::InitResources()
 {
     Vector3 pos;
-    void *file = Model::LoadFile(*(SharedFilePtr *)&gBattaBlockModelFile);
+    void *file = dExtSimpleModel_c::LoadFile(*(SharedFilePtr *)&gBattaBlockModelFile);
     mModel.SetFile((BMD_File *)file, 1, 1);
     mShadowModel.InitCuboid();
     _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, this, 0x64000, 0x78000, 0x800004, 0x9010);

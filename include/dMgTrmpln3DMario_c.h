@@ -2,7 +2,7 @@
 #define DMGTRMPLN3DMARIO_C_H
 
 #include "types.h"
-#include "ModelAnim.h"
+#include "dExtAnmModel_c.h"
 
 /* dMgTrmpln3DMario_c, the Mario of Trampoline (ROM RTTI _ZTI18dMgTrmpln3DMario_c;
  * constructor 0x020cd12c, D1 0x020ccfc8; 0xd0 bytes, the stride the trampoline
@@ -35,7 +35,7 @@ struct dMgTrmpln3DMario_c {
     s16 mTimer;             /* 0x60 -- state countdown */
     u8 pad_62[0x2];         /* 0x62 */
     s32 mState[2];          /* 0x64 -- the current state's member-pointer record */
-    ModelAnim mModelAnim;   /* 0x6c -- 0x64 bytes: UpdateMatrix sets its mat4x3, the
+    dExtAnmModel_c mModelAnim; /* 0x6c -- 0x64 bytes: UpdateMatrix sets its mat4x3, the
                              * states drive its dExtFrameCtrl_c base and read its file */
 };
 

@@ -33,13 +33,13 @@
 #include "daCoin_c.h"
 #include "SpawnInfo.h"
 #include "SharedFilePtr.h"
-#include "Model.h"
+#include "dExtSimpleModel_c.h"
 #include "Player.h"
 #include "daStar_c.h"
 #include "daStarBase_c.h"
 #include "daObjBlockL_c.h"
 #include "SurfaceInfo.h"
-#include "ModelBase.h"
+#include "dExtModel_c.h"
 #include "dBgCh_Actr.h"
 #include "Sound.h"
 
@@ -992,7 +992,7 @@ common:;
         isRed = (isRed == 0x121);
         if (isRed) {
             mSpawnFilter = (u8)((param1 >> 4) & 7);
-            Model::LoadFile(*(SharedFilePtr *)&data_ov002_0210d9a8);
+            dExtSimpleModel_c::LoadFile(*(SharedFilePtr *)&data_ov002_0210d9a8);
             mCoinType = COIN_RED;
             if (SublevelToLevel(data_0209f2f8) == 0x13 ||
                 mSpawnFilter == data_0209f220) {
@@ -1028,8 +1028,8 @@ common:;
             return 0;
         }
     } else {
-        Model::LoadFile(*(SharedFilePtr *)data_ov002_020ff06c[type]);
-        Model::LoadFile(*(SharedFilePtr *)data_ov002_020ff060[mCoinType]);
+        dExtSimpleModel_c::LoadFile(*(SharedFilePtr *)data_ov002_020ff06c[type]);
+        dExtSimpleModel_c::LoadFile(*(SharedFilePtr *)data_ov002_020ff060[mCoinType]);
         if (mCommonModel1.SetFile((BMD_File *)data_ov002_020ff06c[mCoinType]->bmd, 1, 1) == 0) {
             return 0;
         }
