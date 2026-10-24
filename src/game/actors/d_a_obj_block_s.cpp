@@ -143,8 +143,7 @@ struct System {
 };
 }
 extern void _ZN8Particle20RunningSlidingDustAtE5Fix12IiES1_S1_(s32 x, s32 y, s32 z);
-extern void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-    char *thiz, int f, char *m, int fix, short s, int blk);
+extern void hold_d_a_obj_block_s(char *thiz, int f, char *m, int fix, short s, int blk);
 extern void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(
     char *thiz, char *actor, int b, int d, void *v, int f);
 
@@ -1371,9 +1370,7 @@ int daObjBlockS_c::InitResources()
     mHomeAngleZ = mAngleZ;
     mModel.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(**(SharedFilePtr **)(f)), 1, -1);
     mShadowModel.InitCuboid();
-    _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-        (char *)&mMeshCollider, (int)dBgW_Kc::LoadFile(**(SharedFilePtr **)(f + 4)),
-        (char *)&mClsnMat, 0x199, mAngleY, *(int *)(f + 8));
+    ((dBgW_KcMbg *)((char *)&mMeshCollider))->dBgW_KcMbg::SetFile((KCL_File *)((int)dBgW_Kc::LoadFile(**(SharedFilePtr **)(f + 4))), *(const Matrix4x3 *)((char *)&mClsnMat), 0x199, mAngleY, *(CLPS_Block *)(*(int *)(f + 8)));
     _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(
         (char *)&mWithMeshClsn, ((char *)this), 0x28000, 0x28000, 0, 0);
     mWithMeshClsn.StartDetectingWater();

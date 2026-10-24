@@ -51,8 +51,7 @@ struct EmmYukaCollisionFilePtr : SharedFilePtr {
 extern "C" {
 extern EmmYukaFiles data_ov052_021125a0;
 void func_020393d4(int *bg, int cb);
-void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-    dBgW_KcMbg *self, KCL_File *kcl, const Matrix4x3 *mtx, int scale,
+extern void hold_d_a_obj_emm_yuka(dBgW_KcMbg *self, KCL_File *kcl, const Matrix4x3 *mtx, int scale,
     s16 angleY, CLPS_Block *clps);
 void Vec3_Sub(void *out, void *a, void *b);
 int LenVec3(void *v);
@@ -157,10 +156,7 @@ int daObjEmmYuka_c::InitResources()
     mModel.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(*data_ov052_021125a0.model), 1, -1);
     UpdateModelPosAndRotY();
     UpdateClsnPosAndRot();
-    _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-        &mMeshCollider,
-        (KCL_File *)dBgW_Kc::LoadFile(*data_ov052_021125a0.collision),
-        &mClsnMat, 0x199, mAngleY, data_ov052_021125a0.clps);
+    ((dBgW_KcMbg *)(&mMeshCollider))->dBgW_KcMbg::SetFile((KCL_File *)dBgW_Kc::LoadFile(*data_ov052_021125a0.collision), *(&mClsnMat), 0x199, mAngleY, *(data_ov052_021125a0.clps));
     func_020393d4((int *)&mMeshCollider, (int)&dBgW::UpdatePosWithTransform);
     mPath.FromID(param1 & 0xff);
     mPathDir = 1;

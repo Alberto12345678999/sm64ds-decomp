@@ -85,8 +85,7 @@ void daObjFallBlock_c_PollLinkedStar(daObjFallBlock_c *c);
 void daObjFallBlock_c_FindLinkedStar(daObjFallBlock_c *c);
 void daObjFallBlock_c_ResetMotion(daObjFallBlock_c *c);
 void daObjFallBlock_c_ApplyModelXyz(daObjFallBlock_c *c);
-void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-    void *self, void *kcl, const Matrix4x3 *mat, int scale, short angle, void *clps);
+
 void func_020393c4(int *p, int v);
 int daObjFallBlock_c_RequestShake(daObjFallBlock_c *block, void *unused);
 int daObjFallBlock_c_OnStoodOn(void *collider, daObjFallBlock_c *block, void *unused);
@@ -97,7 +96,6 @@ extern signed char data_0209f2f8; /* current level id */
 
 /* Free definitions take ints. SetFile's header method takes Fix12<int>
    by value; IsClsnInRange has no int method. */
-#define dBgW_KcMbg_SetFile _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block
 #define Particle_System_NewSimple Particle::System::NewSimple
 
 // @symbol _ZN16daObjFallBlock_cD0Ev
@@ -478,13 +476,7 @@ int daObjFallBlock_c_InitResources(daObjFallBlock_c *self, ResourceDescriptor *f
     self->mModel.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(*fp->model), 1, -1);
     self->UpdateModelPosAndRotY();
     self->UpdateClsnPosAndRot();
-    dBgW_KcMbg_SetFile(
-        &self->mMeshCollider,
-        dBgW_Kc::LoadFile(*fp->collision),
-        &self->mClsnMat,
-        0x199,
-        self->mAngleY,
-        fp->clps);
+    ((dBgW_KcMbg *)(&self->mMeshCollider))->dBgW_KcMbg::SetFile((KCL_File *)(dBgW_Kc::LoadFile(*fp->collision)), *(&self->mClsnMat), 0x199, self->mAngleY, *(CLPS_Block *)(fp->clps));
     func_020393c4((int *)&self->mMeshCollider, (int)&daObjFallBlock_c_OnStoodOn);
     v.x = self->mPosX;
     y = self->mPosY;

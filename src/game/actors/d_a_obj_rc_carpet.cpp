@@ -90,8 +90,7 @@ extern void __cxa_vec_ctor(dExtSimpleModel_c *models, int count, int size, void 
 extern int _ZTV15daObjRcCarpet_c[];
 extern int data_ov002_0210af70[];
 
-extern int _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-    dBgW_KcMbg *collider, KCL_File *file, const Matrix4x3 *matrix,
+extern void hold_d_a_obj_rc_carpet(dBgW_KcMbg *collider, KCL_File *file, const Matrix4x3 *matrix,
     Fix12i scale, s16 angle, CLPS_Block *clps);
 extern void func_020393d4(dBgW *collider, void *callback);
 extern void Matrix4x3_FromRotationXYZExt(
@@ -143,9 +142,7 @@ int daObjRcCarpet_c::InitResources()
     UpdateClsnPosAndRot();
     KCL_File *collisionFile =
         (KCL_File *)dBgW_Kc::LoadFile(*data_ov036_02113f58.collision);
-    _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-        &mMeshCollider, collisionFile, &mClsnMat,
-        0x199, mAngleY, data_ov036_02113f58.clps);
+    ((dBgW_KcMbg *)(&mMeshCollider))->dBgW_KcMbg::SetFile(collisionFile, *(&mClsnMat), 0x199, mAngleY, *(data_ov036_02113f58.clps));
     func_020393d4(&mMeshCollider, (void *)&dBgW::UpdatePosAndAngs);
     mPathSpeed = 0xa000;
     mHorzSpeed = mPathSpeed;

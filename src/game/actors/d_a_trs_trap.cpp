@@ -139,8 +139,7 @@ void func_020393d4(int *p, int v);
 void func_020393c4(int *p, int v);
 /* dBgW_KcMbg::SetFile, mangled (wall 6az, see above). Spelled exactly as the
    free definition declares it; only the TU-local linkage differs. */
-void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-    void *self, void *f, const Matrix4x3 *m, int fx, short s, void *b);
+extern void hold_d_a_trs_trap(void *self, void *f, const Matrix4x3 *m, int fx, short s, void *b);
 
 extern Matrix4x3 data_020a0e68;             /* the shared scratch matrix */
 /* Staircase settle offsets, one signed byte per frame 0..3. */
@@ -537,13 +536,9 @@ int daTrsTrap_c::InitResources()
     {
         int m = mIndex;
         if (m == 3) {
-            _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-                &mMovingMeshCollider, data_ov063_0211e28c[m]->filePtr, &mClsnMat, 0x1000, mAngleY,
-                data_ov063_0211e9e8[m]);
+            ((dBgW_KcMbg *)(&mMovingMeshCollider))->dBgW_KcMbg::SetFile((KCL_File *)(data_ov063_0211e28c[m]->filePtr), *(&mClsnMat), 0x1000, mAngleY, *(CLPS_Block *)(data_ov063_0211e9e8[m]));
         } else {
-            _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-                &mMovingMeshCollider, data_ov063_0211e28c[m]->filePtr, &mClsnMat, 0x199, mAngleY,
-                data_ov063_0211e9e8[m]);
+            ((dBgW_KcMbg *)(&mMovingMeshCollider))->dBgW_KcMbg::SetFile((KCL_File *)(data_ov063_0211e28c[m]->filePtr), *(&mClsnMat), 0x199, mAngleY, *(CLPS_Block *)(data_ov063_0211e9e8[m]));
         }
     }
 

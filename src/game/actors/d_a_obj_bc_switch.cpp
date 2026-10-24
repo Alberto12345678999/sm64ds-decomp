@@ -138,8 +138,7 @@ extern void _ZN5Event6SetBitEj(u32 bit);
 extern u16 DecIfAbove0_Short(u16 *p);
 /* dBgActor_c::IsClsnInRange(Fix12<int>, Fix12<int>) -- wall 6az on Behavior. */
 /* dBgW_KcMbg::SetFile -- wall 6az on InitResources. */
-void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-    dBgW_KcMbg *self, KCL_File *file, Matrix4x3 *mat, int scale,
+extern void hold_d_a_obj_bc_switch(dBgW_KcMbg *self, KCL_File *file, Matrix4x3 *mat, int scale,
     short angY, void *clps);
 extern "C" void func_020393c4(void* p, void* v);
 extern int func_ov002_020dd8b8(void* c);
@@ -240,9 +239,7 @@ int daObjBC_Switch_c::InitResources()
        to keep the mangled spelling. Its third parameter is a by-value
        Fix12<int> -- wall 6az -- and materialising one costs stack traffic
        the ROM does not have. */
-    _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-        &mMeshCollider, (KCL_File *)kcl, &mClsnMat, 0x199, mAngleY,
-        &data_ov002_0210d6f4);
+    ((dBgW_KcMbg *)(&mMeshCollider))->dBgW_KcMbg::SetFile((KCL_File *)kcl, *(&mClsnMat), 0x199, mAngleY, *(CLPS_Block *)(&data_ov002_0210d6f4));
 
     func_020393c4(&mMeshCollider, (void*)&func_ov002_020f15b8);
 

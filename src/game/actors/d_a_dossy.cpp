@@ -148,7 +148,7 @@ void AddVec3(const Vector3 *a, const Vector3 *b, Vector3 *o);
 void Vec3_LslInPlace(Vector3 *v, s32 sh);
 extern void Vec3_Asr(void* d, void* s, int sh);
 extern void Matrix4x3_FromRotationY(void *m, int angle);
-extern void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(void* self, void* kcl, void* mtx, Fix12i r, short s, void* clps);
+extern void hold_d_a_dossy(void* self, void* kcl, void* mtx, Fix12i r, short s, void* clps);
 extern void func_020393d4(void* p, void* v);
 extern void func_020393c4(void* p, void* v);
 extern void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(void* self, void* a, Fix12i r, Fix12i h, void* p, void* q);
@@ -264,8 +264,7 @@ int daDossy_c::InitResources()
         char* mmc = (char *)&mPlatforms[0].mClsn;
         for (j = 0; j < 7; j++) {
             KCL_File *kcl = (KCL_File *)dBgW_Kc::LoadFile(*data_ov065_0211c08c[j]);
-            _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-                mmc, kcl, mtx, 0x1000, mAngleY, data_ov065_0211cd68[j]);
+            ((dBgW_KcMbg *)(mmc))->dBgW_KcMbg::SetFile((KCL_File *)(kcl), *(const Matrix4x3 *)(mtx), 0x1000, mAngleY, *(CLPS_Block *)(data_ov065_0211cd68[j]));
             if ((unsigned)j <= 2) {
                 func_020393d4(mmc, (void *)&dBgW::UpdatePosAndAngs);
                 if (j == 2)

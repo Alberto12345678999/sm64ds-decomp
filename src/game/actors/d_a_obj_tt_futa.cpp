@@ -47,7 +47,7 @@ struct System {
 extern int data_ov033_02111bfc[];
 extern int _ZN5Event6GetBitEj(unsigned int);
 extern void _ZN5Event6SetBitEj(unsigned int b);
-extern void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(void*, void*, void*, int, short, void*);
+
 }
 
 /* Emission order is ROM order: the destructor pair must stay first.
@@ -106,8 +106,7 @@ s32 daObjTtFuta_c::InitResources() {
     UpdateModelPosAndRotY();
     UpdateClsnPosAndRot();
     void *k = dBgW_Kc::LoadFile(data_ov033_021124c0);
-    _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-        &mMeshCollider, k, &mClsnMat, 0x199, mAngleY, data_ov033_02111bfc);
+    ((dBgW_KcMbg *)(&mMeshCollider))->dBgW_KcMbg::SetFile((KCL_File *)(k), *(const Matrix4x3 *)(&mClsnMat), 0x199, mAngleY, *(CLPS_Block *)(data_ov033_02111bfc));
     return _ZN5Event6GetBitEj(0xe) == 0;
 }
 

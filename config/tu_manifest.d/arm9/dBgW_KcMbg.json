@@ -126,7 +126,7 @@
       "ordinal": 14
     },
     {
-      "symbol": "_ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block",
+      "symbol": "_ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x3isR10CLPS_Block",
       "address": "0x0203a1e0",
       "size": "0x00000240",
       "legacy_source": "src/_ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block.c",

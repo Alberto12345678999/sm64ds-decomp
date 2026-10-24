@@ -69,8 +69,7 @@ unsigned char DecIfAbove0_Byte(unsigned char *p);
 void func_020393a4(dBgW *bgw, int range);
 void func_020393d4(dBgW *bgw, void *fn);
 
-void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-    dBgW_KcMbg *self, KCL_File *kcl, const Matrix4x3 *mtx, int scale,
+extern void hold_d_a_obj_bk_rotebar(dBgW_KcMbg *self, KCL_File *kcl, const Matrix4x3 *mtx, int scale,
     s16 angleY, CLPS_Block *clps);
 }
 
@@ -88,8 +87,7 @@ s32 daObjBk_Rotebar_c::InitResources()
     UpdateClsnPosAndRot();
 
     KCL_File *kcl = (KCL_File *)dBgW_Kc::LoadFile(data_ov015_02114a84);
-    _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-        &mMeshCollider, kcl, &mClsnMat, 0x199, mAngleY, &data_ov015_02113654);
+    ((dBgW_KcMbg *)(&mMeshCollider))->dBgW_KcMbg::SetFile(kcl, *(&mClsnMat), 0x199, mAngleY, *(&data_ov015_02113654));
 
     func_020393d4(&mMeshCollider, (void *)&dBgW::UpdatePosAndAngs);
 

@@ -92,8 +92,7 @@ void func_ov036_0211123c(daObjRcBuranko_c *self);
 void func_020393d4(dBgW *bgw, void *fn);
 void Matrix4x3_FromRotationXYZExt(void *mtx, int x, int y, int z);
 
-void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-    dBgW_KcMbg *self, KCL_File *kcl, const Matrix4x3 *mtx, int scale,
+extern void hold_d_a_obj_rc_buranko(dBgW_KcMbg *self, KCL_File *kcl, const Matrix4x3 *mtx, int scale,
     s16 angleY, CLPS_Block *clps);
 }
 
@@ -123,8 +122,7 @@ int daObjRcBuranko_c::InitResources()
     UpdateClsnPosAndRot();
 
     KCL_File *kcl = (KCL_File *)dBgW_Kc::LoadFile(data_ov036_02114020);
-    _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-        &mMeshCollider, kcl, &mClsnMat, 0x1000, mAngleY, &data_ov036_02112b68);
+    ((dBgW_KcMbg *)(&mMeshCollider))->dBgW_KcMbg::SetFile(kcl, *(&mClsnMat), 0x1000, mAngleY, *(&data_ov036_02112b68));
 
     /* A rider is carried by the collider's whole transform, not by a position
        and a pair of angles: the platform tilts underfoot as it swings. */

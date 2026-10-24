@@ -104,8 +104,7 @@ void func_ov015_0211166c(daObjBk_Botaosi_c *plank);
 
 void _ZN8dActor_c10EarthquakeERK7Vector35Fix12IiE(dActor_c *self, const Vector3 *pos,
                                                   Fix12i strength);
-void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-    void *self, void *file, void *mat, int scale, s16 angle, void *clps);
+extern void hold_d_a_obj_bk_botaosi(void *self, void *file, void *mat, int scale, s16 angle, void *clps);
 void *_ZN9dBgCh_GndC1Ev(dBgCh_Gnd *self);
 void _ZN9dBgCh_GndD1Ev(dBgCh_Gnd *self);
 void _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_S5_j(
@@ -364,13 +363,7 @@ int daObjBk_Botaosi_c::InitResources()
     mShadowModel.InitCuboid();
     func_ov015_0211166c(this);
     UpdateClsnPosAndRot();
-    _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-        &mMeshCollider,
-        dBgW_Kc::LoadFile(data_ov015_02114974),
-        &mClsnMat,
-        0x1000,
-        mAngleY,
-        &data_ov015_02113574);
+    ((dBgW_KcMbg *)(&mMeshCollider))->dBgW_KcMbg::SetFile((KCL_File *)(dBgW_Kc::LoadFile(data_ov015_02114974)), *(const Matrix4x3 *)(&mClsnMat), 0x1000, mAngleY, *(CLPS_Block *)(&data_ov015_02113574));
 
     mAngleY += 0x8000;
     zero = 0;

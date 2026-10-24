@@ -84,8 +84,7 @@ extern int RandomIntInternal(int *seed);
 extern void _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_S5_j(
     dActor_c *actor, dExtShadowModel_c *shadow, Matrix4x3 *matrix, int scaleX, int scaleY,
     int scaleZ, u32 opacity);
-extern void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-    dBgW_KcMbg *thisp, KCL_File *kcl, const Matrix4x3 &mtx, int fix, short s,
+extern void hold_d_a_obj_ct_mecha03(dBgW_KcMbg *thisp, KCL_File *kcl, const Matrix4x3 &mtx, int fix, short s,
     CLPS_Block &clps);
 extern void func_02039394(void *p, int v);
 extern void func_020393a4(void *p, int v);
@@ -124,9 +123,7 @@ int daObjCtMecha03_c::InitResources()
     UpdateClsnPosAndRot();
 
     kcl = dBgW_Kc::LoadFile(data_ov065_0211d894);
-    _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-        &mMeshCollider, (KCL_File *)kcl, mClsnMat, 0x1000,
-        mAngleY, *(CLPS_Block *)&data_ov035_02112198);
+    ((dBgW_KcMbg *)(&mMeshCollider))->dBgW_KcMbg::SetFile((KCL_File *)kcl, mClsnMat, 0x1000, mAngleY, *(CLPS_Block *)&data_ov035_02112198);
 
     func_020393a4(&mMeshCollider, 0x300000);
     func_02039394(&mMeshCollider, -0x200000);

@@ -47,7 +47,7 @@ extern KoopaShutterCollisionFilePtr BowserShutter_ClsnFile;
 extern "C" {
 extern char data_ov026_02112f74[];
 extern char data_0209caa0[];
-extern void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(void *, int, void *, int, int, void *);
+
 }
 
 /* Emission order is ROM order: the destructor pair must stay first.
@@ -92,8 +92,7 @@ s32 daObjWlKoopaShutter_c::InitResources() {
     UpdateClsnPosAndRot();
     {
         void *k = dBgW_Kc::LoadFile(BowserShutter_ClsnFile);
-        _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-            &mMeshCollider, (int)k, &mClsnMat, 0x199, mAngleY, (void *)data_ov026_02112f74);
+        ((dBgW_KcMbg *)(&mMeshCollider))->dBgW_KcMbg::SetFile((KCL_File *)((int)k), *(const Matrix4x3 *)(&mClsnMat), 0x199, mAngleY, *(CLPS_Block *)((void *)data_ov026_02112f74));
     }
     if (*(int *)(data_0209caa0 + 4) & 0x204)
         return 0;

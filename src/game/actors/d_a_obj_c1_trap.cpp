@@ -73,8 +73,7 @@ struct TrapCollisionFilePtr : SharedFilePtr {
  * The remaining declarations are genuine free functions or ROM-address
  * globals. */
 extern "C" {
-extern void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-    dBgW_KcMbg *collider, void *file, const Matrix4x3 *matrix,
+extern void hold_d_a_obj_c1_trap(dBgW_KcMbg *collider, void *file, const Matrix4x3 *matrix,
     int scale, s16 angleY, CLPS_Block *clps);
 extern void func_020393c4(dBgW *collider, void *callback);
 
@@ -235,9 +234,7 @@ int daObjC1_Trap_c::InitResources()
     mDoorModel.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(data_ov010_02112d08), 1, -1);
     UpdateModelTransform();
     UpdateCollisionTransform();
-    _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-        &mMeshCollider, dBgW_Kc::LoadFile(data_ov010_02112d00),
-        &mDoorMat, 0x1000, mAngleY, &data_ov010_021122f8);
+    ((dBgW_KcMbg *)(&mMeshCollider))->dBgW_KcMbg::SetFile((KCL_File *)(dBgW_Kc::LoadFile(data_ov010_02112d00)), *(&mDoorMat), 0x1000, mAngleY, *(&data_ov010_021122f8));
     func_020393c4(&mMeshCollider, (void *)func_ov010_02111984);
     mMeshCollider.Enable(this);
     mOpenSpeed = 0;

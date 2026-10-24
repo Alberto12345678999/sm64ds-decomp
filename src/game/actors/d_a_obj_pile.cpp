@@ -82,8 +82,7 @@ struct PileCollisionFilePtr : SharedFilePtr {
 extern "C" {
 extern unsigned char DecIfAbove0_Byte(unsigned char *p);
 extern void _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs(void *c, V3 v, unsigned int n, int f, short s);
-extern void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-    void *self, void *kcl, void *mtx, int fix, short s, void *clps);
+extern void hold_d_a_obj_pile(void *self, void *kcl, void *mtx, int fix, short s, void *clps);
 extern int func_02012694(int a, void *b);
 
 /* This TU's two file handles: the pile model and its collision file.
@@ -268,8 +267,7 @@ s32 daObjPile_c::InitResources()
     UpdateModelPosAndRotY();
     UpdateClsnPosAndRot();
     void *k = dBgW_Kc::LoadFile(gPileCollisionFile);
-    _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-        &mMeshCollider, k, &mClsnMat, 0x199, mAngleY, data_ov002_0210d874);
+    ((dBgW_KcMbg *)(&mMeshCollider))->dBgW_KcMbg::SetFile((KCL_File *)(k), *(const Matrix4x3 *)(&mClsnMat), 0x199, mAngleY, *(CLPS_Block *)(data_ov002_0210d874));
     mStepsLeft = 3;
     return 1;
 }

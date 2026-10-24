@@ -78,9 +78,7 @@ s32 Vec3_Equal(const Vector3 *a, const Vector3 *b);
 u16 DecIfAbove0_Short(u16 *p);
 u8 DecIfAbove0_Byte(u8 *p);
 /* Scalar SetFile. The method form size-DIFFs InitResources; see leftovers. */
-void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-    dBgW_KcMbg *self, KCL_File *file, const Matrix4x3 *mat,
-    Fix12i scale, s16 angle, CLPS_Block *clps);
+
 void func_020393d4(dBgW *collider, void *callback);
 void func_020393c4(dBgW *collider, void *callback);
 
@@ -215,17 +213,13 @@ s32 daObjCvNewsLift_c::InitResources()
     UpdateModelTransforms();
     UpdateClsnTransforms();
 
-    _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-        &mMeshCollider, (KCL_File *)((SharedFilePtr *)data_ov021_021149a8)->filePtr, &mClsnMat,
-        0x199, mAngleY, &data_ov021_02113a60);
+    ((dBgW_KcMbg *)(&mMeshCollider))->dBgW_KcMbg::SetFile((KCL_File *)((SharedFilePtr *)data_ov021_021149a8)->filePtr, *(&mClsnMat), 0x199, mAngleY, *(&data_ov021_02113a60));
     func_020393d4(&mMeshCollider, (void *)&dBgW::UpdatePosWithTransform);
     func_020393c4(&mMeshCollider, (void *)&MainMeshCallback);
     mMeshCollider.Enable(this);
 
     for (int i = 0; i < 4; i++) {
-        _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-            &mPlatformColliders[i], (KCL_File *)((SharedFilePtr *)data_ov021_021149b8)->filePtr,
-            &mPlatformMats[i], 0x199, mAngleY, &data_ov021_02113a80);
+        ((dBgW_KcMbg *)(&mPlatformColliders[i]))->dBgW_KcMbg::SetFile((KCL_File *)((SharedFilePtr *)data_ov021_021149b8)->filePtr, *(&mPlatformMats[i]), 0x199, mAngleY, *(&data_ov021_02113a80));
         func_020393d4(&mPlatformColliders[i], (void *)&dBgW::UpdatePosWithTransform);
     }
 

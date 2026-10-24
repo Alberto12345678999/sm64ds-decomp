@@ -41,8 +41,7 @@ int func_ov002_020b6ac8(void *actor, void *descriptor);
    does not establish a by-value class parameter; see dBgActor_c.h. */
 // local extern: the actual free definition accepts a scalar scale; the
 // member call takes Fix12<int> by value (wall 6az).
-void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-    void *self, void *file, const Matrix4x3 *matrix, int scale, s16 angle, void *clps);
+
 }
 
 // @symbol _ZN17daObjKurumajiku_cD0Ev
@@ -163,9 +162,7 @@ extern "C" int func_ov002_020b6c54(void *actor, void *descriptor, unsigned int r
     func_ov002_020b6a80(reinterpret_cast<char *>(self));
     self->UpdateClsnPosAndRot();
     file = dBgW_Kc::LoadFile(*resources->collision);
-    _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-        &self->mMeshCollider, file, &self->mClsnMat, 0x199, self->mAngleY,
-        resources->clps);
+    ((dBgW_KcMbg *)(&self->mMeshCollider))->dBgW_KcMbg::SetFile((KCL_File *)(file), *(&self->mClsnMat), 0x199, self->mAngleY, *(CLPS_Block *)(resources->clps));
     for (i = 0; i < 4; i++) {
         self->mMountedActorIds[i] = 0;
         dActor_c *rider = dActor_c::Spawn(riderActorID, 0, self->mPos, 0, self->mAreaId, -1);

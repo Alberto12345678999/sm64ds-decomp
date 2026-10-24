@@ -41,8 +41,7 @@ extern "C" {
 extern int DecIfAbove0_Short(void*);
 extern int DecIfAbove0_Byte(void*);
 extern int _Z14ApproachLinearRiii(int*, int, int);
-void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-void *, int, void *, int, int, void *);
+
 void func_020393d4(int *p, int v);
 extern char data_ov027_02113108[];
 }
@@ -156,9 +155,7 @@ int daObjSlIceBlock_c::InitResources()
             return 0;
         UpdateModelPosAndRotY();
         UpdateClsnPosAndRot();
-        _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-            &mMeshCollider, *(int *)&data_ov027_02113be0.filePtr, &mClsnMat, 0x1000, mAngleY,
-            data_ov027_02113108);
+        ((dBgW_KcMbg *)(&mMeshCollider))->dBgW_KcMbg::SetFile((KCL_File *)(*(int *)&data_ov027_02113be0.filePtr), *(const Matrix4x3 *)(&mClsnMat), 0x1000, mAngleY, *(CLPS_Block *)(data_ov027_02113108));
         func_020393d4((int *)&mMeshCollider,
             (int)&dBgW::UpdatePosWithVelocity);
         mMeshCollider.edgeContacts = false;

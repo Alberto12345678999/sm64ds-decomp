@@ -58,8 +58,7 @@ struct EmmLogCollisionFilePtr : SharedFilePtr {
 
 extern "C" {
 void func_020393a4(dBgW *bgw, int range);
-void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-    dBgW_KcMbg *self, KCL_File *kcl, const Matrix4x3 *mtx, int scale,
+extern void hold_d_a_obj_emm_log(dBgW_KcMbg *self, KCL_File *kcl, const Matrix4x3 *mtx, int scale,
     s16 angleY, CLPS_Block *clps);
 extern short data_02082214[];
 extern daObjEmmLog_c_Resources data_ov052_021124d4;
@@ -80,10 +79,7 @@ s32 daObjEmmLog_c::InitResources()
     UpdateModelPosAndRotY();
     UpdateClsnPosAndRot();
 
-    _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-        &mMeshCollider,
-        (KCL_File *)dBgW_Kc::LoadFile(*data_ov052_021124d4.collision),
-        &mClsnMat, 0x1000, mAngleY, data_ov052_021124d4.clps);
+    ((dBgW_KcMbg *)(&mMeshCollider))->dBgW_KcMbg::SetFile((KCL_File *)dBgW_Kc::LoadFile(*data_ov052_021124d4.collision), *(&mClsnMat), 0x1000, mAngleY, *(data_ov052_021124d4.clps));
 
     mBasePosY = mPosY;
     u8 amplitude = param1 & 0xff;

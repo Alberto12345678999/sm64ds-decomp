@@ -77,9 +77,7 @@ int LenVec3(void *v);
 u16 DecIfAbove0_Short(u16 *p);
 int _ZN10dBgActor_c20UpdateKillByMegaCharEsss5Fix12IiE(dBgActor_c *self, s16 a, s16 b, s16 c,
                                                        int d);
-void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-    dBgW_KcMbg *self, KCL_File *kcl, const Matrix4x3 *mtx, int scale,
-    s16 angleY, CLPS_Block *clps);
+
 void func_020393d4(int *p, int v);
 void func_020393c4(int *p, int v);
 extern s16 data_02082214[];
@@ -292,10 +290,7 @@ extern "C" int func_ov080_021274ac(daObjMaruta_c *self, ResourceDescriptor *arg)
     self->mModel.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(*arg->model), 1, -1);
     self->func_ov080_02127094();
     self->UpdateClsnPosAndRot();
-    _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-        &self->mMeshCollider,
-        (KCL_File *)dBgW_Kc::LoadFile(*arg->collision),
-        &self->mClsnMat, 0x1000, self->mAngleY, arg->clps);
+    ((dBgW_KcMbg *)(&self->mMeshCollider))->dBgW_KcMbg::SetFile((KCL_File *)dBgW_Kc::LoadFile(*arg->collision), *(&self->mClsnMat), 0x1000, self->mAngleY, *(arg->clps));
     func_020393d4((int *)&self->mMeshCollider,
         (int)&dBgW::UpdatePosWithVelocity);
     func_020393c4((int *)&self->mMeshCollider, (int)&func_ov080_02127658);

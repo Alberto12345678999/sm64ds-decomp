@@ -137,8 +137,7 @@ int func_ov002_020dd8b8(void *c);
 
 void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(
     void *self, void *actor, int a, int b, void *c, void *d);
-void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-    void *mc, void *kcl, void *mtx, int fix, s16 s, void *clps);
+extern void hold_d_a_btn(void *mc, void *kcl, void *mtx, int fix, s16 s, void *clps);
 /* local extern: the matched free-function spelling of SetFile; a member call is pending. */
 void _ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit(void *self, void *btp, int a, int fix,
                                                 unsigned int b);
@@ -329,13 +328,9 @@ int daBtn_c::InitResources()
 
     idx = mIsKing;
     if (idx == 0) {
-        _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-            &mMovingMeshCollider, ((SharedFilePtr *)data_ov079_02127bf0[idx])->filePtr, mMeshMatrix,
-            0x199, mAngleY, &data_ov079_02127ba0);
+        ((dBgW_KcMbg *)(&mMovingMeshCollider))->dBgW_KcMbg::SetFile((KCL_File *)(((SharedFilePtr *)data_ov079_02127bf0[idx])->filePtr), *(const Matrix4x3 *)(mMeshMatrix), 0x199, mAngleY, *(CLPS_Block *)(&data_ov079_02127ba0));
     } else {
-        _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-            &mMovingMeshCollider, ((SharedFilePtr *)data_ov079_02127bf0[idx])->filePtr, mMeshMatrix,
-            0x1000, mAngleY, &data_ov015_021135d4);
+        ((dBgW_KcMbg *)(&mMovingMeshCollider))->dBgW_KcMbg::SetFile((KCL_File *)(((SharedFilePtr *)data_ov079_02127bf0[idx])->filePtr), *(const Matrix4x3 *)(mMeshMatrix), 0x1000, mAngleY, *(CLPS_Block *)(&data_ov015_021135d4));
     }
 
     func_01ffb0bc(&mMovingMeshCollider);

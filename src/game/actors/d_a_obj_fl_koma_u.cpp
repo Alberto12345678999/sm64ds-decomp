@@ -73,8 +73,7 @@ void Matrix4x3_FromRotationY(Matrix4x3 *mat, int angle);
 void MulVec3Mat4x3(const Vector3 *v, const Matrix4x3 *m, Vector3 *dst);
 void AddVec3(const Vector3 *a, const Vector3 *b, Vector3 *dst);
 void func_020393d4(dBgW *bgw, void *fn);
-void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-    dBgW_KcMbg *self, KCL_File *kcl, const Matrix4x3 *mtx, int scale,
+extern void hold_d_a_obj_fl_koma_u(dBgW_KcMbg *self, KCL_File *kcl, const Matrix4x3 *mtx, int scale,
     s16 angleY, CLPS_Block *clps);
 void _ZN8dCcPos_c4InitERK7Vector35Fix12IiES4_jj(
     dCcPos_c *self, const Vector3 *pos, int radius, int height, u32 flags, u32 vuln);
@@ -199,10 +198,7 @@ s32 daObjFl_KomaU_c::InitResources()
                                                    0x200002, 0);
     UpdateModelPosAndRotY();
     UpdateClsnPosAndRot();
-    _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-        &mMeshCollider,
-        (KCL_File *)dBgW_Kc::LoadFile(*data_ov064_0211adbc.collision),
-        &mClsnMat, 0x199, mAngleY, data_ov064_0211adbc.clps);
+    ((dBgW_KcMbg *)(&mMeshCollider))->dBgW_KcMbg::SetFile((KCL_File *)dBgW_Kc::LoadFile(*data_ov064_0211adbc.collision), *(&mClsnMat), 0x199, mAngleY, *(data_ov064_0211adbc.clps));
     func_020393d4(&mMeshCollider, (void *)&dBgW::UpdatePosAndAngs);
     return 1;
 }

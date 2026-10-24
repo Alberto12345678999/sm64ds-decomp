@@ -92,8 +92,7 @@ void func_020393a4(int *mesh, int range);
 
 /* Scalar ABI. These members take Fix12<int> by value, and that spelling
  * does not compile against the ints this file actually passes. */
-void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-    dBgW_KcMbg *self, KCL_File *kcl, const Matrix4x3 *mtx, int scale, short angY,
+extern void hold_d_a_obj_bk_kabe(dBgW_KcMbg *self, KCL_File *kcl, const Matrix4x3 *mtx, int scale, short angY,
     CLPS_Block *clps);
 namespace Particle {
 struct System {
@@ -203,9 +202,7 @@ int daObjBk_Kabe_c::InitResources()
     UpdateClsnPosAndRot();
     int idx2 = mVariant;
     KCL_File *kcl = (KCL_File *)dBgW_Kc::LoadFile(*data_ov079_02128058[idx2].kcl);
-    _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-        &mMeshCollider, kcl, &mClsnMat, kMeshScale, mAngleY,
-        data_ov079_02128058[idx2].clps);
+    ((dBgW_KcMbg *)(&mMeshCollider))->dBgW_KcMbg::SetFile(kcl, *(&mClsnMat), kMeshScale, mAngleY, *(data_ov079_02128058[idx2].clps));
     return 1;
 }
 

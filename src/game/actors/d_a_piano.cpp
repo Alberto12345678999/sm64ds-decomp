@@ -61,7 +61,7 @@ struct Vec3;
 extern "C" {
 extern void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(dBgCh_Actr *, dActor_c *, Fix12i, Fix12i, Vector3_16 *, Vector3_16 *);
 extern void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(dCcAcPos_c *, dActor_c *, const Vector3 *, Fix12i, Fix12i, unsigned int, unsigned int);
-extern void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(void *, void *, const Matrix4x3 *, int, short, void *);
+
 extern void func_ov063_0211d88c(daPiano_c *self);
 extern void func_ov063_0211d828(daPiano_c *self);
 extern void func_ov063_0211d5f4(daPiano_c *self);
@@ -121,8 +121,7 @@ int daPiano_c::InitResources()
         cylinder++;
     }
     f = dBgW_Kc::LoadFile(gPianoCollisionFile);
-    _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-        &mMeshCollider, f, &mClsnMat, 0x199, mAngleY, &data_ov063_0211ecb8);
+    ((dBgW_KcMbg *)(&mMeshCollider))->dBgW_KcMbg::SetFile((KCL_File *)(f), *(&mClsnMat), 0x199, mAngleY, *(CLPS_Block *)(&data_ov063_0211ecb8));
     func_ov063_0211d88c(this);
     func_ov063_0211d828(this);
     func_ov063_0211d5f4(this);

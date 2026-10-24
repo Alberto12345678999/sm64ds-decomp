@@ -87,8 +87,7 @@ struct SimpleLiftClsnFileHandle : SharedFilePtr {
 extern "C" {
 unsigned char DecIfAbove0_Byte(unsigned char *p);
 unsigned short DecIfAbove0_Short(unsigned short *p);
-void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-    void *mc, void *kcl, void *mtx, int scale, s16 angY, void *clps);
+extern void hold_d_a_obj_simple_lift(void *mc, void *kcl, void *mtx, int scale, s16 angY, void *clps);
 void func_020393d4(void *collider, void *callback);
 extern char data_ov091_0213502c[];
 
@@ -190,16 +189,12 @@ int daObjSimpleLift_c::InitResources()
         int tableOffset = mVariant * 0xc;
         void *kcl = dBgW_Kc::LoadFile(
             **(SharedFilePtr **)(data_ov091_02135028 + tableOffset));
-        _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-            &mMeshCollider, kcl, &mClsnMat, 0x1000, mAngleY,
-            *(void **)(data_ov091_0213502c + tableOffset));
+        ((dBgW_KcMbg *)(&mMeshCollider))->dBgW_KcMbg::SetFile((KCL_File *)(kcl), *(const Matrix4x3 *)(&mClsnMat), 0x1000, mAngleY, *(CLPS_Block *)(*(void **)(data_ov091_0213502c + tableOffset)));
     } else {
         int tableOffset = mVariant * 0xc;
         void *kcl = dBgW_Kc::LoadFile(
             **(SharedFilePtr **)(data_ov091_02135028 + tableOffset));
-        _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-            &mMeshCollider, kcl, &mClsnMat, 0x199, mAngleY,
-            *(void **)(data_ov091_0213502c + tableOffset));
+        ((dBgW_KcMbg *)(&mMeshCollider))->dBgW_KcMbg::SetFile((KCL_File *)(kcl), *(const Matrix4x3 *)(&mClsnMat), 0x199, mAngleY, *(CLPS_Block *)(*(void **)(data_ov091_0213502c + tableOffset)));
     }
     func_020393d4(&mMeshCollider, (void *)dBgW::UpdatePosWithTransform);
     return 1;

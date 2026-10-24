@@ -68,8 +68,7 @@ struct System {
 
 /* dBgW_KcMbg::SetFile likewise takes Fix12<int> by value. A real member
  * call on this TU's InitResources emits different code there. */
-void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-    dBgW_KcMbg *self, KCL_File *file, const Matrix4x3 *mat, int scale,
+extern void hold_d_a_obj_ice_board(dBgW_KcMbg *self, KCL_File *file, const Matrix4x3 *mat, int scale,
     s16 angY, CLPS_Block *clps);
 }
 
@@ -95,9 +94,7 @@ int daObjIceBoard_c::InitResources()
     UpdateClsnPosAndRot();
 
     KCL_File *clsnFile = (KCL_File *)dBgW_Kc::LoadFile(daObjIceBoard_c_ClsnFile);
-    _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-        &mMeshCollider, clsnFile, &mClsnMat, 0x199, mAngleY,
-        &data_ov002_0210d754);
+    ((dBgW_KcMbg *)(&mMeshCollider))->dBgW_KcMbg::SetFile(clsnFile, *(&mClsnMat), 0x199, mAngleY, *(&data_ov002_0210d754));
     return 1;
 }
 

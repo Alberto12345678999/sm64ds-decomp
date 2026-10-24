@@ -84,8 +84,7 @@ void Matrix4x3_FromTranslation(void *m, int x, int y, int z);
 int IsAreaShowing(int idx);
 void _ZN15dExtAnmTexSRT_c7SetFileER8BTA_Filei5Fix12IiEj(void *tt, void *bta, int a, int fix,
                                                         unsigned b);
-void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-    void *mc, void *kcl, void *mtx, int fix, short s, void *clps);
+extern void hold_d_a_obj_wc_mizu(void *mc, void *kcl, void *mtx, int fix, short s, void *clps);
 
 extern WcMizuModelFilePtr daObjWc_Obj07_c_ModelFile;
 extern WcMizuCollisionFilePtr daObjWc_Obj07_c_ClsnFile;
@@ -136,8 +135,7 @@ int daObjWc_Mizu_c::InitResources()
 
     k = dBgW_Kc::LoadFile(daObjWc_Obj07_c_ClsnFile);
     /* 6az: header SetFile takes Fix12<int> by value. */
-    _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-        &mMeshCollider, k, &mClsnMat, 0x1000, mAngleY, &data_ov029_02112fec);
+    ((dBgW_KcMbg *)(&mMeshCollider))->dBgW_KcMbg::SetFile((KCL_File *)(k), *(const Matrix4x3 *)(&mClsnMat), 0x1000, mAngleY, *(CLPS_Block *)(&data_ov029_02112fec));
     mMeshCollider.Enable(this);
 
     mTrueAreaID = mAreaId;

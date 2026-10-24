@@ -36,9 +36,7 @@ typedef char ResourceDescriptor_size_must_be_0x0c[
 
 extern "C" {
 void func_020393d4(dBgW_KcMbg *clsn, void *fn);
-void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-    dBgW_KcMbg *self, KCL_File *kcl, const Matrix4x3 *mtx, int scale,
-    s16 angleY, CLPS_Block *clps);
+
 
 int func_ov002_020b676c(daObjKaitendai_c *self, ResourceDescriptor *descriptor, s16 angle);
 int func_ov002_020b66a8(daObjKaitendai_c *self, ResourceDescriptor *descriptor);
@@ -121,10 +119,7 @@ int func_ov002_020b676c(daObjKaitendai_c *self, ResourceDescriptor *descriptor, 
     self->mModel.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(*descriptor->model), 1, -1);
     self->UpdateModelPosAndRotY();
     self->UpdateClsnPosAndRot();
-    _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-        &self->mMeshCollider,
-        (KCL_File *)dBgW_Kc::LoadFile(*descriptor->collision),
-        &self->mClsnMat, 0x199, self->mAngleY, descriptor->clps);
+    ((dBgW_KcMbg *)(&self->mMeshCollider))->dBgW_KcMbg::SetFile((KCL_File *)dBgW_Kc::LoadFile(*descriptor->collision), *(&self->mClsnMat), 0x199, self->mAngleY, *(descriptor->clps));
     func_020393d4(&self->mMeshCollider, (void *)&dBgW::UpdatePosAndAngs);
     self->mPrevAngleZ = angle;
     y = self->mAngleZ;

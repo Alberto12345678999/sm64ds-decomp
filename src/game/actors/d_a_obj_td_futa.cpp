@@ -55,8 +55,7 @@ extern CLPS_Block data_ov032_02112f98;
 
 /* dBgW_KcMbg::SetFile likewise takes Fix12<int> by value. A real member
  * call on this TU's InitResources DIFFs. */
-void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-    dBgW_KcMbg *self, KCL_File *file, const Matrix4x3 *mat, int scale,
+extern void hold_d_a_obj_td_futa(dBgW_KcMbg *self, KCL_File *file, const Matrix4x3 *mat, int scale,
     s16 angY, CLPS_Block *clps);
 }
 
@@ -81,9 +80,7 @@ s32 daObjTdFuta_c::InitResources()
     UpdateClsnPosAndRot();
 
     KCL_File *kcl = (KCL_File *)dBgW_Kc::LoadFile(data_ov032_02113acc);
-    _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-        &mMeshCollider, kcl, &mClsnMat, 0x199, mAngleY,
-        &data_ov032_02112f98);
+    ((dBgW_KcMbg *)(&mMeshCollider))->dBgW_KcMbg::SetFile(kcl, *(&mClsnMat), 0x199, mAngleY, *(&data_ov032_02112f98));
 
     return Event::GetBit(0xe) == 0;
 }

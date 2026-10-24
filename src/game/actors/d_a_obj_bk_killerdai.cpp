@@ -60,8 +60,7 @@ struct System {
 }
 extern int _ZN10dBgActor_c20UpdateKillByMegaCharEsss5Fix12IiE(void *self, short a, short b, short c,
                                                               int d);
-extern void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-    void *self, void *kcl, const void *mtx, int scale, short angY, void *clps);
+
 extern int IsStarCollectedInCurLevel(int starID);
 extern s8 data_0209f2f8;
 extern int data_0209caa0[];
@@ -172,8 +171,7 @@ s32 daObjBkKillerdai_c::InitResources()
     UpdateModelPosAndRotY();
     UpdateClsnPosAndRot();
     file = dBgW_Kc::LoadFile(*(SharedFilePtr *)data_ov079_02127f64[1]);
-    _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-        &mMeshCollider, file, &mClsnMat, 0x199, mAngleY, data_ov079_02127f64[2]);
+    ((dBgW_KcMbg *)(&mMeshCollider))->dBgW_KcMbg::SetFile((KCL_File *)(file), *(const Matrix4x3 *)(&mClsnMat), 0x199, mAngleY, *(CLPS_Block *)(data_ov079_02127f64[2]));
 
     mSpawnedUniqueID = 0;
 

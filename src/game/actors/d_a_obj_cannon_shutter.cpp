@@ -52,8 +52,7 @@ extern Matrix4x3 data_020a0e68;
 /* dBgActor_c::IsClsnInRangeOnScreen(Fix12<int>, Fix12<int>) -- wall 6az. */
 
 /* dBgW_KcMbg::SetFile -- wall 6az. See the call site in InitResources. */
-void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-    dBgW_KcMbg *self, KCL_File *kcl, const Matrix4x3 &mat, int scale, s16 angY,
+extern void hold_d_a_obj_cannon_shutter(dBgW_KcMbg *self, KCL_File *kcl, const Matrix4x3 &mat, int scale, s16 angY,
     CLPS_Block &clps);
 
 extern signed char   data_0209f2f8;
@@ -123,8 +122,7 @@ int daObjCannonShutter_c::InitResources()
     {
         KCL_File *kcl = (KCL_File *)dBgW_Kc::LoadFile(data_ov002_0210e124);
         /* 0x199 is 409/4096, i.e. a collider scale of 0.1. Mangled: wall 6az. */
-        _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-            &mMeshCollider, kcl, mClsnMat, 0x199, mAngleY, data_ov002_0210d7f4);
+        ((dBgW_KcMbg *)(&mMeshCollider))->dBgW_KcMbg::SetFile(kcl, mClsnMat, 0x199, mAngleY, data_ov002_0210d7f4);
     }
     mHomePosX = mPosX;
     mHomePosY = mPosY;

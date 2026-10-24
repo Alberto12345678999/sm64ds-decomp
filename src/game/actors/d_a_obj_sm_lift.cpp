@@ -53,8 +53,7 @@ extern Matrix4x3 data_020a0e68;
 extern s16 data_02082214[];
 
 int _ZN10dBgActor_c20UpdateKillByMegaCharEsss5Fix12IiE(void *self, s16 a, s16 b, s16 c, int d);
-void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-    void *th, void *kf, void *mtx, int fx, short s, void *clps);
+extern void hold_d_a_obj_sm_lift(void *th, void *kf, void *mtx, int fx, short s, void *clps);
 void func_020393d4(int *p, int v);
 void func_020393c4(int *p, int v);
 void func_ov018_02111804(void *collider, daObjSm_Lift_c *self, dActor_c *other);
@@ -270,8 +269,7 @@ s32 daObjSm_Lift_c::InitResources()
     func_ov018_02111278();
     UpdateClsnPosAndRot();
     void *kf = dBgW_Kc::LoadFile(gSmLiftCollisionFile);
-    _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-        c + 0x124, kf, c + 0x2ec, 0x1000, mAngleY, data_ov018_02112f48);
+    ((dBgW_KcMbg *)(c + 0x124))->dBgW_KcMbg::SetFile((KCL_File *)(kf), *(const Matrix4x3 *)(c + 0x2ec), 0x1000, mAngleY, *(CLPS_Block *)(data_ov018_02112f48));
     func_020393d4((int *)(c + 0x124), (int)dBgW::UpdatePosWithTransform);
     func_020393c4((int *)(c + 0x124), (int)func_ov018_02111804);
     unk_331 = 0x3c;

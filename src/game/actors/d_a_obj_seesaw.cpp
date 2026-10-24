@@ -110,8 +110,7 @@ extern int data_ov095_02136f58[];
 extern s16 data_02082214[];
 int Vec3_Dist(void *a, void *b);
 s16 Vec3_HorzAngle(void *a, void *b);
-void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-    void *thiz, void *file, const Matrix4x3 *mat, int scale, short angY, void *clps);
+extern void hold_d_a_obj_seesaw(void *thiz, void *file, const Matrix4x3 *mat, int scale, short angY, void *clps);
 void func_020393d4(void *clsn, void *callback);
 void func_020393c4(void *clsn, void *callback);
 void func_ov095_02135e90(void *collider, daObjSeesaw_c *self, dActor_c *other);
@@ -293,9 +292,7 @@ int daObjSeesaw_c::InitResources()
     {
         unsigned char i = mVariant;
         f = (int)dBgW_Kc::LoadFile(**(SharedFilePtr **)(data_ov095_021374a4 + i * kFileStride));
-        _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-            &mMeshCollider, (void *)f, &mClsnMat, 0x1000, mAngleY,
-            *(void **)(data_ov095_021374a8 + i * kFileStride));
+        ((dBgW_KcMbg *)(&mMeshCollider))->dBgW_KcMbg::SetFile((KCL_File *)((void *)f), *(&mClsnMat), 0x1000, mAngleY, *(CLPS_Block *)(*(void **)(data_ov095_021374a8 + i * kFileStride)));
     }
     /* func_020393d4 stores dBgW+0x18 (beforeClsnCallback). func_020393c4
      * stores dBgW+0x1c, the stood-on callback: func_ov095_02135e90, the

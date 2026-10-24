@@ -139,9 +139,7 @@ extern void _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix
 
 /* Same 6az tail: both take Fix12<int> BY VALUE, so the header member form
  * would home the argument. */
-extern void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-    dBgW_KcMbg *self, KCL_File *file, const Matrix4x3 *mat, int scale, s16 angY,
-    CLPS_Block *clps);
+
 /* local extern: the matched free-function spelling of SetFile; a member call is pending. */
 extern void _ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit(dExtAnmTexPat_c *self, BTP_File *file,
                                                        int flags, int speed, unsigned startFrame);
@@ -391,8 +389,7 @@ s32 daDsnBase_c::Init()
     files = (DsnBaseFileTable *)mFileTable;
     kcl = (KCL_File *)dBgW_Kc::LoadFile(*files->collision);
     clps = files->clps;
-    _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-        &mMeshCollider, kcl, &mClsnMat, 0x199, mAngleY, clps);
+    ((dBgW_KcMbg *)(&mMeshCollider))->dBgW_KcMbg::SetFile(kcl, *(&mClsnMat), 0x199, mAngleY, *(clps));
     func_020393d4((int *)&mMeshCollider, (int)&dBgW::UpdatePosAndAngs);
     mMeshCollider.Enable(this);
 
