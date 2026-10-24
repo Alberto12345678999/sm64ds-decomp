@@ -9,7 +9,7 @@
     "NOT FROM tu_map. tools/tu_map.py reports the arm9 `main` module as UNDER-SEGMENTED, so there is no tu_map boundary or `tubuild.py create` candidate id here; every line below is hand-derived and independently checkable.",
     "contiguous linker run 0x0201587c..0x0201597c: the six delinks entries tile the span exactly with no hole (config/arm9/delinks.txt, config/arm9/symbols.txt).",
     "class-label homogeneity: every symbol in the run is a member of dExtAnmTexSRT_c (the Animation child driving BTA-file playback in include/dExtAnmTexSRT_c.h; _ZTV15dExtAnmTexSRT_c at 0x0208e7c4 names the class, and the cartridge RTTI spells it _ZTI15dExtAnmTexSRT_c at 0x0208e74c with base _ZTI15dExtFrameCtrl_c at 0x0208e744 -- the Animation of this tree).",
-    "neighbour below: _ZN15MaterialChangerC1Ev ends at 0x0201587c (the sibling class's own run). Neighbour above: _ZN15TextureSequence7PrepareER8BMD_FileR8BTP_File at 0x0201597c, the first member of the next sibling class's run."
+    "neighbour below: _ZN15MaterialChangerC1Ev ends at 0x0201587c (the sibling class's own run). Neighbour above: _ZN15dExtAnmTexPat_c7PrepareER8BMD_FileR8BTP_File at 0x0201597c, the first member of the next sibling class's run."
   ],
   "sections": [
     {

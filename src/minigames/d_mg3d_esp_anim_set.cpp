@@ -54,7 +54,7 @@ struct System {
 #include "dMg3DEspModel_c.h"
 #include "dMg3DEspAnimSet_c.h"
 #include "dExtAnmTexSRT_c.h"
-#include "TextureSequence.h"
+#include "dExtAnmTexPat_c.h"
 #include "MaterialChanger.h"
 #include "G3X.h"
 #include "Sound.h"
@@ -109,7 +109,7 @@ int _ZN15dExtFrameCtrl_c8FinishedEv(void* a);
 /* local extern: the call passes an untyped this, so it cannot use the header method. */
 int _ZNK15dExtFrameCtrl_c12WillHitFrameEi(void* anim, int frame);
 void _ZN15MaterialChanger7SetFileER8BMA_Filei5Fix12IiEj(char *t, void *f, int a, int b, unsigned u);
-void _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(void* self, void* btp, int a, int b, u16 d);
+void _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj(void* self, void* btp, int a, int b, u16 d);
 void _ZN15dExtAnmTexSRT_c7SetFileER8BTA_Filei5Fix12IiEj(void* self, void* bta, int a, int b, u16 d);
 void func_02046208(char* a, int b, int c);
 int func_020179b4(void* r0, void* r1, int r2);
@@ -478,14 +478,14 @@ int dMg3DEspModel_c::InitResources()
     char* c = (char*)this;
     if (func_020179b4(&gEspCardModelFile, (char *)&mModelAnim, 1) == 0)
         return 0;
-    TextureSequence::LoadFile(gEspCardTexSeqFile);
+    dExtAnmTexPat_c::LoadFile(gEspCardTexSeqFile);
     dExtFrameCtrl_c::LoadFile(gEspCardStartAnimFile);
     dExtFrameCtrl_c::LoadFile(gEspCardWaitAnimFile);
     dExtFrameCtrl_c::LoadFile(gEspCardOpenAnimFile);
     dExtFrameCtrl_c::LoadFile(gEspCardOpenWaitAnimFile);
-    TextureSequence::Prepare(**(BMD_File **)((void **)&gEspCardModelFile + 1),
+    dExtAnmTexPat_c::Prepare(**(BMD_File **)((void **)&gEspCardModelFile + 1),
                              **(BTP_File **)((void **)&gEspCardTexSeqFile + 1));
-    _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(
+    _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj(
         (char *)&mTextureSequence, *((void **)&gEspCardTexSeqFile + 1), 0, 0x1000, 0);
     mModelAnim.SetAnim(*((BCA_File **)&gEspCardStartAnimFile + 1), 0x40000000, 0x800, 0);
     mAnimSet.InitResources();

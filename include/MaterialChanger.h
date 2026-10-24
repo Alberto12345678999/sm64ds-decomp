@@ -14,7 +14,7 @@
  * to it. One ~MaterialChanger() emits D0 and D1 together; the whole class
  * folds into src/engine/model/MaterialChanger.cpp.
  *
- * PREPARE IS STATIC, on exactly the evidence set out in TextureSequence.h for
+ * PREPARE IS STATIC, on exactly the evidence set out in dExtAnmTexPat_c.h for
  * the sibling veneer. Its ROM body is a 0xc long-call veneer (ldr ip, [pc];
  * bx ip; .word func_020470e8) that shuffles no arguments, and func_020470e8
  * reads only r0 and r1:

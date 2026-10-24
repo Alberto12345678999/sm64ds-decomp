@@ -466,7 +466,7 @@ asm transcription, or absent.
    and `dBgPiC1/C2Ev` 0x0203816c/9c — the pair §5f walls until its +0x04
    base is probed.
 4. ~~**Leaf singles, config module**: Clipper, MaterialChanger,
-   dExtAnmTexSRT_c, TextureSequence, Animation C1/C2~~ DONE (§8).
+   dExtAnmTexSRT_c, dExtAnmTexPat_c, Animation C1/C2~~ DONE (§8).
    `dPa_c::level_c::simpleCallback_c` C1/C2 DONE: RTTI class/base names,
    call-site variant choice, and compiler-emitted vptr stores. Remaining:
    `Particle10SysTrackerC1Ev` 0x02023204 (0x1d0 — the biggest body on the
@@ -508,7 +508,7 @@ Eleven more constructors landed after this note was written, taking the tree
 from nine to twenty: **dBgW C2, dBgW_Kc C1, dBgW_KcMbg C1,
 dBgW_KcMbgSclY C1** (the Kc trio inherits through dBgW/dBgCh exactly like
 Gnd); the five config-module leaves **Animation C1/C2, MaterialChanger,
-dExtAnmTexSRT_c, TextureSequence**; **Clipper**; and **dBgCh_Actr**,
+dExtAnmTexSRT_c, dExtAnmTexPat_c**; **Clipper**; and **dBgCh_Actr**,
 the first constructor whose class holds typed sub-objects. Three lessons
 from those waves that §1–7 do not already carry:
 

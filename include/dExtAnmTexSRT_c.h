@@ -20,7 +20,7 @@
  * object whose name entries it resolves against it. Every matched
  * caller (daTor_c, daWater_Tatumaki_c, the ov006 users, daObjMcWater_c) passes
  * exactly those two, and the sibling veneers at 0x0201577c
- * (MaterialChanger) and 0x0201597c (TextureSequence) are called the
+ * (MaterialChanger) and 0x0201597c (dExtAnmTexPat_c) are called the
  * same way. Declared static below: a static member mangles identically,
  * and the earlier "(this, &model, &file)" reading of this comment cost
  * the PC port a wrong-register hunt.

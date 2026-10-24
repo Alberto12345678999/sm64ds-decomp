@@ -13,8 +13,8 @@
  *     dExtAnmModel_c                    0x210 +   0x64 = 0x274  -> the shadows
  *     dExtShadowModel_c[3]               0x274 + 3*0x28 = 0x2ec
  *     Vector3[3]                   0x3ac + 3*0x0c = 0x3d0  -> MaterialChanger
- *     MaterialChanger              0x3d0 +   0x14 = 0x3e4  -> TextureSequence
- *     TextureSequence              0x3e4 +   0x14 = 0x3f8  -> dExtAnmTexSRT_c
+ *     MaterialChanger              0x3d0 +   0x14 = 0x3e4  -> dExtAnmTexPat_c
+ *     dExtAnmTexPat_c              0x3e4 +   0x14 = 0x3f8  -> dExtAnmTexSRT_c
  *     dExtAnmTexSRT_c           0x3f8 +   0x14 = 0x40c  -> dBgCh_Actr
  *     dBgCh_Actr                 0x40c +  0x1bc = 0x5c8
  *
@@ -23,7 +23,7 @@
  * them (elements 1 and 2). Both branches spell the array now. Two more former
  * unknowns sat inside embedded animations rather than in daKuriKing_c at all --
  * 0x3d8 is the MaterialChanger's dExtFrameCtrl_c cursor (+0x08) and 0x3f0 is the
- * TextureSequence's playback speed (+0x0c); see include/dExtFrameCtrl_c.h.
+ * dExtAnmTexPat_c's playback speed (+0x0c); see include/dExtFrameCtrl_c.h.
  *
  * Field provenance: notes/enemy-leaf-provenance.md.
  *
@@ -41,7 +41,7 @@
 #include "dExtAnmModel_c.h"
 #include "dExtShadowModel_c.h"
 #include "MaterialChanger.h"
-#include "TextureSequence.h"
+#include "dExtAnmTexPat_c.h"
 #include "dExtAnmTexSRT_c.h"
 #include "dBgCh_Actr.h"
 #include "dCcAcPos_c.h"
@@ -61,7 +61,7 @@ struct daKuriKing_c : dEnemyBase_c {
     s32 mBodyMatrix[12];                          /* 0x37c */
     Vector3 mCylClsnPos[3];                       /* 0x3ac */
     MaterialChanger mMaterialChanger;             /* 0x3d0 */
-    TextureSequence mTextureSequence;             /* 0x3e4 */
+    dExtAnmTexPat_c mTextureSequence;             /* 0x3e4 */
     dExtAnmTexSRT_c mTextureTransformer;       /* 0x3f8 */
     dBgCh_Actr mWithMeshClsn;                   /* 0x40c */
     /* ClosestPlayer, kept for StartTalk / ShowMessage / GetTalkState. */

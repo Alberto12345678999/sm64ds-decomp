@@ -49,7 +49,7 @@
 struct Sound {
     static void PlayBank2_2D(unsigned int);
 };
-struct TextureSequence {
+struct dExtAnmTexPat_c {
     static void *LoadFile(SharedFilePtr &ptr);
 };
 namespace dExtShadowModel_c {
@@ -102,11 +102,11 @@ void _ZN17dExtShadowModel_c9InitModelEP9Matrix4x35Fix12IiES3_S3_j(void *, void *
 void *_ZN17dExtShadowModel_cC1Ev(void *);
 void _ZN17dExtShadowModel_cD1Ev(void *);
 void *_ZN19dExtBlendAnmModel_cC1Ev(void *);
-void _ZN15TextureSequence6UpdateER15ModelComponents(void *, void *);
-void _ZN15TextureSequence7PrepareER8BMD_FileR8BTP_File(void *, void *);
-void _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(void *, void *, int, int, unsigned int);
-void *_ZN15TextureSequenceC1Ev(void *);
-void _ZN15TextureSequenceD1Ev(void *);
+void _ZN15dExtAnmTexPat_c6UpdateER15ModelComponents(void *, void *);
+void _ZN15dExtAnmTexPat_c7PrepareER8BMD_FileR8BTP_File(void *, void *);
+void _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj(void *, void *, int, int, unsigned int);
+void *_ZN15dExtAnmTexPat_cC1Ev(void *);
+void _ZN15dExtAnmTexPat_cD1Ev(void *);
 void _ZN15dExtAnmTexSRT_c6UpdateER15ModelComponents(void *, void *);
 void _ZN15dExtAnmTexSRT_c7PrepareER8BMD_FileR8BTA_File(void *, void *);
 void _ZN15dExtAnmTexSRT_c7SetFileER8BTA_Filei5Fix12IiEj(void *, void *, int, int, unsigned int);
@@ -757,7 +757,7 @@ extern "C" {
 int Presenter_Construct(char *t) {
     _ZN19dExtBlendAnmModel_cC1Ev(&PRESENTER(t)->mFace);
     _ZN17dExtSimpleModel_cC1Ev(&PRESENTER(t)->mBack);
-    _ZN15TextureSequenceC1Ev(PRESENTER(t)->mTexSeq);
+    _ZN15dExtAnmTexPat_cC1Ev(PRESENTER(t)->mTexSeq);
     _ZN15dExtAnmTexSRT_cC1Ev(PRESENTER(t)->mTexAnim);
     func_02017acc(&PRESENTER(t)->mFaceModel, 0x286);
     func_02017acc(&PRESENTER(t)->mBackModel, 0x200);
@@ -824,7 +824,7 @@ int Presenter_Destruct(char *t) {
     func_02017ab4(&PRESENTER(t)->mBackModel);
     func_02017ab4(&PRESENTER(t)->mFaceModel);
     _ZN15dExtAnmTexSRT_cD1Ev(PRESENTER(t)->mTexAnim);
-    _ZN15TextureSequenceD1Ev(PRESENTER(t)->mTexSeq);
+    _ZN15dExtAnmTexPat_cD1Ev(PRESENTER(t)->mTexSeq);
     PRESENTER(t)->mBack.dExtSimpleModel_c::~dExtSimpleModel_c();
     PRESENTER(t)->mFace.dExtBlendAnmModel_c::~dExtBlendAnmModel_c();
     return (int)t;
@@ -863,28 +863,28 @@ int Presenter_Load(char *c) {
     dExtFrameCtrl_c::LoadFile(*(::SharedFilePtr *)&PRESENTER(c)->mAnims[5]);
     dExtFrameCtrl_c::LoadFile(*(::SharedFilePtr *)&PRESENTER(c)->mAnims[6]);
     dExtFrameCtrl_c::LoadFile(*(::SharedFilePtr *)&PRESENTER(c)->mAnims[7]);
-    TextureSequence::LoadFile(*(::SharedFilePtr *)&PRESENTER(c)->mTexSeqs[0]);
-    TextureSequence::LoadFile(*(::SharedFilePtr *)&PRESENTER(c)->mTexSeqs[1]);
-    TextureSequence::LoadFile(*(::SharedFilePtr *)&PRESENTER(c)->mTexSeqs[2]);
-    TextureSequence::LoadFile(*(::SharedFilePtr *)&PRESENTER(c)->mTexSeqs[3]);
-    TextureSequence::LoadFile(*(::SharedFilePtr *)&PRESENTER(c)->mTexSeqs[4]);
-    TextureSequence::LoadFile(*(::SharedFilePtr *)&PRESENTER(c)->mTexSeqs[5]);
-    TextureSequence::LoadFile(*(::SharedFilePtr *)&PRESENTER(c)->mTexSeqs[6]);
-    TextureSequence::LoadFile(*(::SharedFilePtr *)&PRESENTER(c)->mTexSeqs[7]);
+    dExtAnmTexPat_c::LoadFile(*(::SharedFilePtr *)&PRESENTER(c)->mTexSeqs[0]);
+    dExtAnmTexPat_c::LoadFile(*(::SharedFilePtr *)&PRESENTER(c)->mTexSeqs[1]);
+    dExtAnmTexPat_c::LoadFile(*(::SharedFilePtr *)&PRESENTER(c)->mTexSeqs[2]);
+    dExtAnmTexPat_c::LoadFile(*(::SharedFilePtr *)&PRESENTER(c)->mTexSeqs[3]);
+    dExtAnmTexPat_c::LoadFile(*(::SharedFilePtr *)&PRESENTER(c)->mTexSeqs[4]);
+    dExtAnmTexPat_c::LoadFile(*(::SharedFilePtr *)&PRESENTER(c)->mTexSeqs[5]);
+    dExtAnmTexPat_c::LoadFile(*(::SharedFilePtr *)&PRESENTER(c)->mTexSeqs[6]);
+    dExtAnmTexPat_c::LoadFile(*(::SharedFilePtr *)&PRESENTER(c)->mTexSeqs[7]);
 
     if (!PRESENTER(c)->mFace.SetFile((BMD_File *)r5, 1, -1))
         return 0;
 
     func_02016b24(&PRESENTER(c)->mFace, 2);
 
-    _ZN15TextureSequence7PrepareER8BMD_FileR8BTP_File(r5, ((void *)PRESENTER(c)->mTexSeqs[0].file));
-    _ZN15TextureSequence7PrepareER8BMD_FileR8BTP_File(r5, ((void *)PRESENTER(c)->mTexSeqs[1].file));
-    _ZN15TextureSequence7PrepareER8BMD_FileR8BTP_File(r5, ((void *)PRESENTER(c)->mTexSeqs[2].file));
-    _ZN15TextureSequence7PrepareER8BMD_FileR8BTP_File(r5, ((void *)PRESENTER(c)->mTexSeqs[3].file));
-    _ZN15TextureSequence7PrepareER8BMD_FileR8BTP_File(r5, ((void *)PRESENTER(c)->mTexSeqs[4].file));
-    _ZN15TextureSequence7PrepareER8BMD_FileR8BTP_File(r5, ((void *)PRESENTER(c)->mTexSeqs[5].file));
-    _ZN15TextureSequence7PrepareER8BMD_FileR8BTP_File(r5, ((void *)PRESENTER(c)->mTexSeqs[6].file));
-    _ZN15TextureSequence7PrepareER8BMD_FileR8BTP_File(r5, ((void *)PRESENTER(c)->mTexSeqs[7].file));
+    _ZN15dExtAnmTexPat_c7PrepareER8BMD_FileR8BTP_File(r5, ((void *)PRESENTER(c)->mTexSeqs[0].file));
+    _ZN15dExtAnmTexPat_c7PrepareER8BMD_FileR8BTP_File(r5, ((void *)PRESENTER(c)->mTexSeqs[1].file));
+    _ZN15dExtAnmTexPat_c7PrepareER8BMD_FileR8BTP_File(r5, ((void *)PRESENTER(c)->mTexSeqs[2].file));
+    _ZN15dExtAnmTexPat_c7PrepareER8BMD_FileR8BTP_File(r5, ((void *)PRESENTER(c)->mTexSeqs[3].file));
+    _ZN15dExtAnmTexPat_c7PrepareER8BMD_FileR8BTP_File(r5, ((void *)PRESENTER(c)->mTexSeqs[4].file));
+    _ZN15dExtAnmTexPat_c7PrepareER8BMD_FileR8BTP_File(r5, ((void *)PRESENTER(c)->mTexSeqs[5].file));
+    _ZN15dExtAnmTexPat_c7PrepareER8BMD_FileR8BTP_File(r5, ((void *)PRESENTER(c)->mTexSeqs[6].file));
+    _ZN15dExtAnmTexPat_c7PrepareER8BMD_FileR8BTP_File(r5, ((void *)PRESENTER(c)->mTexSeqs[7].file));
 
     _ZN15dExtAnmTexSRT_c7PrepareER8BMD_FileR8BTA_File(r5, sPresenterIdleTexAnim);
     _ZN15dExtAnmTexSRT_c7PrepareER8BMD_FileR8BTA_File(r5, sPresenterMissTexAnim);
@@ -1027,7 +1027,7 @@ extern "C" void Presenter_Draw(char *c) {
        0x104..0x138 are +0x14/+0x18 of materials 5 and 6, which BMD_Material
        leaves in its unnamed pad_0c, so they stay offsets. */
     p = *(int **)(mc + 4);
-    _ZN15TextureSequence6UpdateER15ModelComponents(PRESENTER(c)->mTexSeq, mc);
+    _ZN15dExtAnmTexPat_c6UpdateER15ModelComponents(PRESENTER(c)->mTexSeq, mc);
     _ZN15dExtAnmTexSRT_c6UpdateER15ModelComponents(PRESENTER(c)->mTexAnim, mc);
     *(int *)(((int)p + 0x104)) -= PRESENTER(c)->mSway[2];
     *(int *)(((int)p + 0x108)) += PRESENTER(c)->mSway[3];
@@ -1119,7 +1119,7 @@ extern "C" void Presenter_PlayIdle(char *c) {
         }
         PRESENTER(c)->mFace.SetAnim(*(BCA_File *)PRESENTER(c)->mAnims[0].file, blendFrames, 0,
                                     0x800, 0);
-        _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(
+        _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj(
             PRESENTER(c)->mTexSeq, ((void *)PRESENTER(c)->mTexSeqs[0].file), 0, 0x800, 0);
         _ZN15dExtAnmTexSRT_c7SetFileER8BTA_Filei5Fix12IiEj(
             PRESENTER(c)->mTexAnim, (void *)&sPresenterIdleTexAnim, 0, 0x800, 0);
@@ -1142,7 +1142,7 @@ void Presenter_StateIdle(char *c) {
     if (!PRESENTER(c)->mFace.Finished())
         return;
     PRESENTER(c)->mFace.SetAnim(*(BCA_File *)PRESENTER(c)->mAnims[0].file, 0, 0, 0x800, 0);
-    _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(
+    _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj(
         PRESENTER(c)->mTexSeq, ((void *)PRESENTER(c)->mTexSeqs[0].file), 0, 0x800, 0);
     _ZN15dExtAnmTexSRT_c7SetFileER8BTA_Filei5Fix12IiEj(
         PRESENTER(c)->mTexAnim, (void *)&sPresenterIdleTexAnim, 0, 0x800, 0);
@@ -1168,7 +1168,7 @@ void Presenter_PlayMatch(void *c) {
     PRESENTER(r4)->mFace.SetAnim(*(BCA_File *)PRESENTER(r4)->mAnims[2].file, 4, 0x40000000, 0x800,
                                  0);
     new_var2 = (long long *)r4;
-    _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(
+    _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj(
         r4 + 0xc8, ((void *)PRESENTER(r4)->mTexSeqs[2].file), 0x40000000, 0x800, 0);
     _ZN15dExtAnmTexSRT_c7SetFileER8BTA_Filei5Fix12IiEj(r4 + 0xdc, &sPresenterMatchTexAnim,
                                                           0x40000000, 0x800, 0);
@@ -1200,7 +1200,7 @@ struct W2 {
 
 void Presenter_PlayMiss(char *c) {
     PRESENTER(c)->mFace.SetAnim(*(BCA_File *)PRESENTER(c)->mAnims[1].file, 4, 0x40000000, 0x800, 0);
-    _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(
+    _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj(
         PRESENTER(c)->mTexSeq, ((void *)PRESENTER(c)->mTexSeqs[1].file), 0x40000000, 0x800, 0);
     _ZN15dExtAnmTexSRT_c7SetFileER8BTA_Filei5Fix12IiEj(
         PRESENTER(c)->mTexAnim, sPresenterMissTexAnim, 0x40000000, 0x800, 0);
@@ -1235,7 +1235,7 @@ void Presenter_PlayCheer(void *c) {
     }
     PRESENTER(r4)->mFace.SetAnim(*(BCA_File *)PRESENTER(r4)->mAnims[7].file, 8, 0x40000000, 0x800,
                                  0);
-    _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(
+    _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj(
         r4 + 0xc8, ((void *)PRESENTER(r4)->mTexSeqs[7].file), 0x40000000, 0x800, 0);
     _ZN15dExtAnmTexSRT_c7SetFileER8BTA_Filei5Fix12IiEj(r4 + 0xdc, &sPresenterCheerTexAnim,
                                                           0x40000000, 0x800, 0);
@@ -1258,7 +1258,7 @@ void Presenter_StateSurprisedThenSmile(void *c) {
     if (PRESENTER(r4)->mQuiet == 0)
         _ZN5Sound12PlayBank2_2DEj(0x1d1);
     PRESENTER(r4)->mFace.SetAnim(*(BCA_File *)PRESENTER(r4)->mAnims[6].file, 8, 0, 0x800, 0);
-    _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(
+    _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj(
         r4 + 0xc8, ((void *)PRESENTER(r4)->mTexSeqs[6].file), 0, 0x800, 0);
     _ZN15dExtAnmTexSRT_c7SetFileER8BTA_Filei5Fix12IiEj(r4 + 0xdc, &sPresenterSmileTexAnim, 0,
                                                           0x800, 0);
@@ -1281,7 +1281,7 @@ void Presenter_PlayLose(char *c) {
     if (PRESENTER(c)->mQuiet == 0)
         _ZN5Sound12PlayBank2_2DEj(0x1c9);
     PRESENTER(c)->mFace.SetAnim(*(BCA_File *)PRESENTER(c)->mAnims[4].file, 0, 0x40000000, 0x800, 0);
-    _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(
+    _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj(
         PRESENTER(c)->mTexSeq, ((void *)PRESENTER(c)->mTexSeqs[4].file), 0x40000000, 0x800, 0);
     _ZN15dExtAnmTexSRT_c7SetFileER8BTA_Filei5Fix12IiEj(
         PRESENTER(c)->mTexAnim, (void *)&sPresenterLoseTexAnim, 0x40000000, 0x800, 0);
@@ -1302,7 +1302,7 @@ void Presenter_StateLoseStart(void *c) {
     if (PRESENTER(r4)->mFace.file != (BCA_File *)PRESENTER(r4)->mAnims[4].file)
         return;
     PRESENTER(r4)->mFace.SetAnim(*(BCA_File *)PRESENTER(r4)->mAnims[3].file, 0, 0, 0x800, 0);
-    _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(
+    _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj(
         r4 + 0xc8, ((void *)PRESENTER(r4)->mTexSeqs[3].file), 0, 0x800, 0);
     _ZN15dExtAnmTexSRT_c7SetFileER8BTA_Filei5Fix12IiEj(r4 + 0xdc, &sPresenterLoseLoopTexAnim, 0,
                                                           0x800, 0);
@@ -1326,7 +1326,7 @@ void Presenter_PlayCheerLoop(void *c) {
     }
     PRESENTER(r4)->mFace.SetAnim(*(BCA_File *)PRESENTER(r4)->mAnims[7].file, 8, 0x40000000, 0x800,
                                  0);
-    _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(
+    _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj(
         r4 + 0xc8, ((void *)PRESENTER(r4)->mTexSeqs[7].file), 0x40000000, 0x800, 0);
     _ZN15dExtAnmTexSRT_c7SetFileER8BTA_Filei5Fix12IiEj(r4 + 0xdc, &sPresenterCheerTexAnim,
                                                           0x40000000, 0x800, 0);

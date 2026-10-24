@@ -23,7 +23,7 @@ typedef struct Ov007Model {
     void *texSrtAnims;  /* 0x20: BTA_File table (func_020469e8, dExtAnmTexSRT_c) */
     void *texSrtAnim;   /* 0x24 */
     int numTexSeqAnims; /* 0x28 */
-    void *texSeqAnims;  /* 0x2c: BTP_File table (func_02046bbc, TextureSequence) */
+    void *texSeqAnims;  /* 0x2c: BTP_File table (func_02046bbc, dExtAnmTexPat_c) */
     void *texSeqAnim;   /* 0x30 */
     char pad_34[0x50];
     /* 0x84, medium confidence: one word per BMD material, allocated here;

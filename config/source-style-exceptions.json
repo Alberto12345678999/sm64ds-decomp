@@ -444,17 +444,17 @@
     {
       "path": "src/game/player/Player.cpp",
       "rule": "handspelled-member",
-      "match": "_ZN15TextureSequenceC1Ev",
+      "match": "_ZN15dExtAnmTexPat_cC1Ev",
       "count": 3,
-      "reason": "C1 passes TextureSequence's constructor and destructor by address to __cxa_vec_ctor, and C++ cannot take those addresses. Follow-up: retire these with the C1 rewrite.",
+      "reason": "C1 passes dExtAnmTexPat_c's constructor and destructor by address to __cxa_vec_ctor, and C++ cannot take those addresses. Follow-up: retire these with the C1 rewrite.",
       "evidence": "Retired src/_ZN6PlayerC1Ev.cpp, ROM 0x020e68f4 size 0xc4; ov002/Player C1 relocations identical to the enrolled object"
     },
     {
       "path": "src/game/player/Player.cpp",
       "rule": "handspelled-member",
-      "match": "_ZN15TextureSequenceD1Ev",
+      "match": "_ZN15dExtAnmTexPat_cD1Ev",
       "count": 3,
-      "reason": "C1 passes TextureSequence's constructor and destructor by address to __cxa_vec_ctor, and C++ cannot take those addresses. Follow-up: retire these with the C1 rewrite.",
+      "reason": "C1 passes dExtAnmTexPat_c's constructor and destructor by address to __cxa_vec_ctor, and C++ cannot take those addresses. Follow-up: retire these with the C1 rewrite.",
       "evidence": "Retired src/_ZN6PlayerC1Ev.cpp, ROM 0x020e68f4 size 0xc4; ov002/Player C1 relocations identical to the enrolled object"
     },
     {

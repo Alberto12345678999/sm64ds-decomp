@@ -36,7 +36,7 @@ Three `type_info` vtables appear, and the one a record points at tells you its s
 | `dExtCommonModel_c` | `_ZTV17dExtCommonModel_c` @0x0208e8a4 | `0x0208e7a0` | `dExtCommonModel_c` |
 | `dExtFrameCtrl_c` | `_ZTV15dExtFrameCtrl_c` @0x0208e7e4 | `0x0208e744` | `dExtFrameCtrl_c` |
 | `dExtAnmTexSRT_c` | `_ZTV15dExtAnmTexSRT_c` @0x0208e7c4 | `0x0208e74c` | `dExtAnmTexSRT_c` |
-| `TextureSequence` | `_ZTV15TextureSequence` @0x0208e7d4 | `0x0208e758` | `dExtAnmTexPat_c` |
+| `dExtAnmTexPat_c` | `_ZTV15dExtAnmTexPat_c` @0x0208e7d4 | `0x0208e758` | `dExtAnmTexPat_c` |
 | `MaterialChanger` | `_ZTV15MaterialChanger` @0x0208e7f4 | `0x0208e764` | `dExtAnmMaterial_c` |
 | `dExtAnmModel_c` | `_ZTV14dExtAnmModel_c` @0x0208e980 | `0x0208e924` | `dExtAnmModel_c` |
 | `dExtAnm2Model_c` | `_ZTV15dExtAnm2Model_c` @0x0208e9b4 | `0x0208e788` | `dExtAnm2Model_c` |
@@ -58,7 +58,7 @@ in the same row; every offset-to-top word is 0.
 
     dExtFrameCtrl_c                                (root, __class_type_info)
     |-- dExtAnmTexSRT_c        dExtAnmTexSRT_c
-    |-- dExtAnmTexPat_c        TextureSequence
+    |-- dExtAnmTexPat_c        dExtAnmTexPat_c
     `-- dExtAnmMaterial_c      MaterialChanger
 
     dExtAnmModel_c                                 (__vmi_class_type_info, 2 bases)
