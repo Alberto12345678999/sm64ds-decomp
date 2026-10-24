@@ -1,5 +1,5 @@
 //cpp
-/* _ZN4cstd5atan2E5Fix12IiES1_ at 0x0203b4dc
+/* cstd::atan2 at 0x0203b4dc, symbol _ZN4cstd5atan2Eii.
  *
  * Matched byte-for-byte with mwccarm 1.2/sp2p3 (arm9 main).
  */

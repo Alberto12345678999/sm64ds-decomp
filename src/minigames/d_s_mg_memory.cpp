@@ -68,8 +68,7 @@ void LoadOBJPltt(void const *, unsigned int, unsigned int);
 extern "C" {
 extern void Mg_DrawScoreTally(void *c, int a, int b, int d);
 extern void Mg_DrawBlinkSprite(void *c, int arg1, int arg2);
-/* cstd::atan2 takes Fix12<int> by value, which mwccarm passes differently
- * from these plain ints, so it keeps its mangled name. */
+/* Unused. Deleting this named prototype renumbers @NNN later in the file. */
 extern short atan2_hold_d_s_mg_memory_1(int y, int x);
 extern short data_02082214[];
 void func_02012790(int a);

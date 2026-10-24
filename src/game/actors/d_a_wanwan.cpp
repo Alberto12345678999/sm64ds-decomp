@@ -417,7 +417,6 @@ void func_ov014_0211250c(daWanwan_c *c)
             dvec.y = t - prev->y;
         }
 
-        /* cstd::atan2 takes Fix12<int> by value. */
         angY = cstd::atan2(dvec.x, dvec.z);
         angX = (short)(-cstd::atan2(dvec.y, Vec3_HorzLen(&dvec)));
         Matrix4x3_FromRotationY(&data_020a0e68, angY);
@@ -503,7 +502,6 @@ void func_ov014_0211236c(daWanwan_c *c)
         tmp.x = diff.x;
         tmp.y = diff.y;
         tmp.z = diff.z;
-        /* cstd::atan2 takes Fix12<int> by value. */
         angY = cstd::atan2(tmp.x, tmp.z);
         angX = (short)(-cstd::atan2(tmp.y, Vec3_HorzLen(&tmp)));
         Matrix4x3_FromRotationY(&data_020a0e68, angY);

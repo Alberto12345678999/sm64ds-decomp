@@ -51,9 +51,9 @@ struct System {
  *     its unused second argument; the one-argument form comes out 0x50
  *     against the ROM's 0x5c (measured note in place).
  *   - Computed-spelling externs stay where a member form changes codegen:
- *     _ZN8dActor_c12ReflectAngleE5Fix12IiES1_s, cstd::atan2 and the
- *     Particle::System wrappers all take Fix12<int> by value (runbook
- *     section 7).
+ *     _ZN8dActor_c12ReflectAngleE5Fix12IiES1_s and the Particle::System
+ *     wrappers take Fix12<int> by value (runbook section 7).
+ *     cstd::atan2 is the scalar call.
  *   - func_ov002_020ae4cc passes its particle position as
  *     `*(int *)((char *)v + N)`; indexing v[] directly comes out 0xd4 against
  *     the ROM's 0xfc (measured). SpawnParticlesIfHitOtherObj keeps its

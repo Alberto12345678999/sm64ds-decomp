@@ -38,8 +38,7 @@ struct Vector3_16f;
  * - func_ov021_02112544: GetSubtraction(short, short) size-DIFFs (999
  *   words). The wall angle is an int; _ZN8dActor_c14GetSubtractionEss
  *   passes it through. ReflectAngle(Fix12<int>, Fix12<int>, s16)
- *   size-DIFFs the same function. cstd::atan2(Fix12<int>, Fix12<int>)
- *   size-DIFFs it and mis-aims IsOnWall. The scalar externs match.
+ *   size-DIFFs the same function. The angle calls are cstd::atan2(s32, s32).
  * - func_ov021_021122fc: DropShadowRadHeight is void in dActor_c.h and
  *   takes Fix12<int> by value. This function returns the scalar call;
  *   the method form does not compile.

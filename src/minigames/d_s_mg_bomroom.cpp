@@ -15,8 +15,7 @@
  * round states, StartRound, Render, Behavior and InitResources, and it
  * closes with the registry factory dScMgBomroom_c_classInit. Functions run
  * in ROM order under
- * `#pragma defer_codegen off`; do not reorder. cstd::atan2 takes Fix12 by
- * value, so its call stays mangled.
+ * `#pragma defer_codegen off`; do not reorder.
  *
  * Each pragma bracket below carries the file-global pragma of the shard
  * that function came from; every bracket moves bytes, and they bind only

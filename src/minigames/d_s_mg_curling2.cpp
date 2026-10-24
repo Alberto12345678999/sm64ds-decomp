@@ -3,8 +3,6 @@
  * once y passes 0xc8. mValue is the number SpawnValue drops between two
  * stones when they collide.
  *
- * Leftover: DragUpdate and SeparateStones call
- *   _ZN4cstd5atan2E5Fix12IiES1_. cstd::atan2 takes Fix12 by value.
  * Leftover: StoneSlide's speed decay keeps the ROM's `this + field +
  *   stoneOffset` order (`&mStone[0].speed + stoneOffset`), and Play keeps
  *   the stone timer and state dispatch raw; every member spelling of those
@@ -24,10 +22,8 @@
  * -- dispatched through the same pointer-to-member table shape.
  */
 
-// leftovers: DragUpdate and SeparateStones call
-// _ZN4cstd5atan2E5Fix12IiES1_ -- cstd::atan2 takes Fix12 by value, and no
-// header declares the scalar overload. The drag controls are declared in
-// dScMgCurling2_c.h; this consolidated TU is their sole consumer.
+// The drag controls are declared in dScMgCurling2_c.h; this consolidated
+// TU is their sole consumer.
 
 /* Required: ROM order, and the brackets on AgeMarks and DragUpdate. */
 /* Runtime asset handles resolved through the overlay 0 file table. */
