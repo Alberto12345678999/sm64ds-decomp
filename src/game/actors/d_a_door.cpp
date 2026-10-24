@@ -212,7 +212,9 @@ int func_ov100_02144fcc(void);
 int func_ov100_02145014(void);
 void func_ov100_02145070(int v);
 
-void _ZN5Sound17ChangeMusicVolumeEj5Fix12IiE(unsigned int a, int b);
+}
+namespace Sound { void ChangeMusicVolume(unsigned int a, int b); }
+extern "C" {
 void _ZN5Sound13PlayCharVoiceEjjRK7Vector3(unsigned int a, unsigned int b, void *pos);
 /* local extern: include/Player.h declares Player::Unk_020ca488 void, and
    func_ov100_021449c8 tests the value it leaves in r0. */
@@ -420,7 +422,7 @@ int daDoor_c::func_ov100_02144468(int p)
         if (param1 != DOOR_LAST_KEY_MODEL) {
             SaveData::SetCharacterIntro(mKeyModelIdx - 1);
         } else {
-            _ZN5Sound17ChangeMusicVolumeEj5Fix12IiE(0x7f, 0xcb33);
+            Sound::ChangeMusicVolume(0x7f, 0xcb33);
         }
         func_ov100_021453d8(&data_ov100_021488b4, p);
     }
@@ -476,7 +478,7 @@ int daDoor_c::func_ov100_02144528(Player *pl)
                     pl->mHasNoCap = 1;
                     func_0201277c(0x7e);
                     mTimer = 0x40;
-                    _ZN5Sound17ChangeMusicVolumeEj5Fix12IiE(0, 0x19666);  /* 25.4 as Fix12 */
+                    Sound::ChangeMusicVolume(0, 0x19666);  /* 25.4 as Fix12 */
                 } else {
                     func_0201277c(0x7f);
                 }
@@ -486,7 +488,7 @@ int daDoor_c::func_ov100_02144528(Player *pl)
                     func_02012790(0xa1);
                 else
                     func_02012790(0xa2);
-                _ZN5Sound17ChangeMusicVolumeEj5Fix12IiE(0, 0x19666);
+                Sound::ChangeMusicVolume(0, 0x19666);
             }
             func_02012694(param1 == DOOR_ALT_SOUND ? SND_SWING_END_ALT : SND_SWING_END, &mCamSpacePosX);
         }
@@ -502,7 +504,7 @@ int daDoor_c::func_ov100_02144528(Player *pl)
             if (data_ov100_02148704 == 0
                 && mTimer == 0xa
                 && param1 == DOOR_LAST_KEY_MODEL) {
-                _ZN5Sound17ChangeMusicVolumeEj5Fix12IiE(0x7f, 0xcb33);
+                Sound::ChangeMusicVolume(0x7f, 0xcb33);
             }
         }
     }

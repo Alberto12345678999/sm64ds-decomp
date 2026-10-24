@@ -4658,7 +4658,7 @@ ret0:
 extern "C" {
 int Player::St_Talk_Main()
 {
-    extern int _ZN5Sound17ChangeMusicVolumeEj5Fix12IiE(u32 vol, int t);
+    extern int PlayerChangeMusicVolumeHold(u32 vol, int t);
     extern void func_0201f32c(s16 a);
     extern void func_0200d3f8(void*, u8 playerID, void*);
     extern int _Z15ApproachLinear2Rsss(void*, s16 target, s16 step);
@@ -4674,7 +4674,7 @@ int Player::St_Talk_Main()
     extern void func_0200d7a4(void*, u8);
     extern int func_ov100_02144fcc(void);
     if (mRestoreMusicVolume != 0) {
-        if (_ZN5Sound17ChangeMusicVolumeEj5Fix12IiE(0x7f, 0x7222) != 0)
+        if (Sound::ChangeMusicVolume(0x7f, 0x7222) != 0)
             mRestoreMusicVolume = 0;
     }
 
@@ -7001,7 +7001,7 @@ int Player::func_ov002_020c8540()
 extern "C" {
 int Player::func_ov002_020c8714()
 {
-    extern void _ZN5Sound17ChangeMusicVolumeEj5Fix12IiE(int, int);
+    extern void PlayerChangeMusicVolumeHold2(int, int);
     extern u32 PlayerNewHold5(u32 handle, u32 kind, Fix12i x, Fix12i y, Fix12i z, const void *dir,
                               void *callback);
     extern int _ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as(int, int, void*, int, int, int);
@@ -7009,7 +7009,7 @@ int Player::func_ov002_020c8714()
     volatile int v[3];
 
     if (mStateArg == 0) {
-        _ZN5Sound17ChangeMusicVolumeEj5Fix12IiE(0x14, 0x15666);
+        Sound::ChangeMusicVolume(0x14, 0x15666);
         if (mStateTimer == 0) {
             this->mHorzSpeed = FX_MUL(this->mHorzSpeed, 0xf60);
             if (mIsAirborne == 0) {
@@ -7149,7 +7149,7 @@ int Player::func_ov002_020c8b54()
 /* recovered: shared common types */
 extern "C" {
 int Player::func_ov002_020c8b78() {
-    extern void _ZN5Sound17ChangeMusicVolumeEj5Fix12IiE(unsigned int, int);
+    extern void PlayerChangeMusicVolumeHold3(unsigned int, int);
     extern void func_02012790(int);
     extern void func_020731dc(void*, void*, void*);
     extern void *_ZN7Vector3D1Ev(void *object);
@@ -7158,7 +7158,7 @@ int Player::func_ov002_020c8b78() {
     extern int data_ov002_0210f824[];
     extern char data_ov002_0210f7f4[];
     Vector3 v;
-    _ZN5Sound17ChangeMusicVolumeEj5Fix12IiE(0x14, 0x15666);
+    Sound::ChangeMusicVolume(0x14, 0x15666);
     {
         int id = GetBodyModelID(param1 & 0xff, false);
         dExtAnmModel_c *model = mBodyModels[id];

@@ -354,7 +354,7 @@ extern PmfEnt data_ov060_0211aed4[];
 
 extern unsigned char NumStars(void);
 extern void *d_a_kpaNewHold(unsigned a, unsigned b, int x, int y, int z, void *v, void *cb);
-extern void _ZN5Sound17ChangeMusicVolumeEj5Fix12IiE(unsigned int a, int b);
+extern void d_a_kpaChangeMusicVolumeHold(unsigned int a, int b);
 extern KpaAnimationFileHandle data_ov060_0211ac88;
 extern KpaAnimationFileHandle data_ov060_0211ac60;
 namespace Particle {
@@ -2853,7 +2853,7 @@ int daKpa_c::func_ov060_021130c0(){
         switch (inner) {
         case 0:
             if (static_cast<Player*>(this->mTargetPlayer)->StartTalk(*this, 1)) {
-                _ZN5Sound17ChangeMusicVolumeEj5Fix12IiE(0x14, 0x15666);
+                Sound::ChangeMusicVolume(0x14, 0x15666);
                 this->mTalkStep++;
             }
             break;
@@ -2872,7 +2872,7 @@ int daKpa_c::func_ov060_021130c0(){
                 this->mTalkStep++;
                 func_ov060_02111cc0(4, 0x40000000);
                 Sound::StopLoadedMusic_Layer1(0x3c);
-                _ZN5Sound17ChangeMusicVolumeEj5Fix12IiE(0x7f, 0x7222);
+                Sound::ChangeMusicVolume(0x7f, 0x7222);
             }
             break;
         }

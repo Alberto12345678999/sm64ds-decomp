@@ -68,9 +68,8 @@ extern "C" {
     extern SwitchClsnFileHandle data_ov002_0210dfc4;
     extern SwitchModelFilePtr data_ov002_0210dfcc;
     extern SwitchClsnFileHandle data_ov002_0210dfbc;
-    // local extern: Sound.h/dBgActor_c.h declare the members, but Fix12<int>
-    // by value through the member call changes codegen under 2004/b56.
-    int _ZN5Sound17ChangeMusicVolumeEj5Fix12IiE(unsigned int id, int volume);
+    // Names stay on this unused prototype so this file's @NNN numbers do not move.
+    int d_a_obj_switchChangeMusicVolumeHold(unsigned int id, int volume);
     // local extern: the actual free definition accepts a scalar scale. The
     // genuine member call changes InitResources under 2004/b56; see the
     // committed experiment.
@@ -268,11 +267,11 @@ int daObjSwitch_c::Behavior()
             if (v != 0x40) {
                 if (v == 0x7f) {
                     if ((data_0209b454 & 0x4000000) == 0) {
-                        mMusicFadeDone = _ZN5Sound17ChangeMusicVolumeEj5Fix12IiE(v, 0x64cc);
+                        mMusicFadeDone = Sound::ChangeMusicVolume(v, 0x64cc);
                     }
                 }
             } else {
-                mMusicFadeDone = _ZN5Sound17ChangeMusicVolumeEj5Fix12IiE(v, 0xc999);
+                mMusicFadeDone = Sound::ChangeMusicVolume(v, 0xc999);
             }
         }
     }
