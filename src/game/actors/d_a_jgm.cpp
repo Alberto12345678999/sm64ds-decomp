@@ -31,9 +31,8 @@
  * - dActor_c::IsTooFarAwayFromPlayer, ApproachLinear and cstd::fdiv have
  *   no header decl, so they are declared locally;
  *   ApproachLinear2 keeps C++ linkage (_Z15ApproachLinear2Rsss).
- * - Sound::PlayLong stays a mangled extern, kept as a count holder: its
- *   five named parameters hold the @NNN count. Unnaming them gives -5;
- *   the Sound.h call emits the same bytes.
+ * - Sound::PlayLong is the Sound.h call. d_a_jgmPlayLongHold keeps the five
+ *   named parameters that hold the @NNN count. Unnaming them gives -5.
  * - The manifest pins eight @NNN statics, so every named local, named
  *   parameter and goto label ahead of __sinit counts (each advances the
  *   counter by one, measured). Control-flow shape moves the counter too:
@@ -196,7 +195,7 @@ extern void _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(
     unsigned int b, unsigned int c, unsigned int d);
 /* local extern: kept as a count holder: its five named parameters hold
  * the @NNN count. Sound.h's PlayLong emits the same bytes. */
-extern unsigned int _ZN5Sound8PlayLongEjjjRK7Vector3s(
+extern void d_a_jgmPlayLongHold(
     unsigned int handle, unsigned int a, unsigned int id,
     const Vector3 *pos, unsigned int e);
 extern void d_a_jgmNewSimpleHold(
@@ -387,7 +386,7 @@ s32 daJgm_c::UpdateHoverState()
     }
     mdCcAcPos_c.Clear();
     mdCcAcPos_c.Update();
-    mSoundHandle = _ZN5Sound8PlayLongEjjjRK7Vector3s(mSoundHandle, 3, 0x182, &mCamSpacePos, 0);
+    mSoundHandle = Sound::PlayLong(mSoundHandle, 3, 0x182, *(Vector3 *)&mCamSpacePos, 0);
     return 1;
 }
 
@@ -432,7 +431,7 @@ s32 daJgm_c::UpdateThrowState()
     }
     mdCcAcPos_c.Clear();
     mdCcAcPos_c.Update();
-    mSoundHandle = _ZN5Sound8PlayLongEjjjRK7Vector3s(mSoundHandle, 3, 0x182, &mCamSpacePos, 0);
+    mSoundHandle = Sound::PlayLong(mSoundHandle, 3, 0x182, *(Vector3 *)&mCamSpacePos, 0);
     return 1;
 }
 

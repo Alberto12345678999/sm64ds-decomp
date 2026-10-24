@@ -161,7 +161,7 @@ extern s16 func_02010844(void *unused, Vector3 *v, s16 angle);
 
 extern void _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void *p, struct Vector3 *pos, u32 a, int b, u32 d, u32 e, u32 f);
 
-extern u32 _ZN5Sound8PlayLongEjjjRK7Vector3s(u32 a, u32 b, u32 c, const Vector3 *pos, u32 e);
+extern void d_a_obj_block_sPlayLongHold(u32 a, u32 b, u32 c, const Vector3 *pos, u32 e);
 
 extern int _Z14ApproachLinearRiii(int *a, int b, int c);
 extern void _Z11UpdateAngleRssis(s16 *a, s16 b, int c, s16 d);
@@ -1084,7 +1084,7 @@ int daObjBlockS_c::func_ov098_02139228()
         && mHorzSpeed > 0xa000) {
         _ZN8Particle20RunningSlidingDustAtE5Fix12IiES1_S1_(mPosX, mPosY, mPosZ);
         mSlideSoundHandle =
-            _ZN5Sound8PlayLongEjjjRK7Vector3s(mSlideSoundHandle, 3, 0x93, &mCamSpacePos, 0);
+            Sound::PlayLong(mSlideSoundHandle, 3, 0x93, *(Vector3 *)&mCamSpacePos, 0);
     }
 
     {

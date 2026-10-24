@@ -46,7 +46,7 @@
  *   0x12c to object 0x114. The stores stay.
  * Leftover: ModelAnim::SetAnim, dCcAcPos_c::Init, dBgCh_Actr::Init and
  *   dActor_c::DropShadowRadHeight take Fix12<int> by value, so they stay
- *   mangled calls. Sound::PlayLong and dBgCh_Actr::Unk_0203589c have no member
+ *   mangled calls. dBgCh_Actr::Unk_0203589c has no member
  *   declaration in a shared header.
  * Leftover: unk_3e8 is scratch that each state uses differently (fade phase,
  *   sound latch, bobbing phase). It stays unnamed.
@@ -147,6 +147,11 @@ enum {
 /* Whole animation frame of the ModelAnim, as the ROM extracts it. */
 #define OWL_FRAME(o)        ((u16)((o)->mModelAnim.currFrame >> 12))
 
+namespace Sound {
+/* local extern: including Sound.h renumbers @NNN. */
+int PlayLong(u32, u32, u32, const Vector3 &, s16);
+}
+
 extern "C" {
 extern signed char data_0209f2f8;
 extern unsigned char data_0209f220;
@@ -156,7 +161,7 @@ extern Matrix4x3 data_020a0e68;
 
 int func_ov002_020df840(void *a, void *b, void *d);
 void _Z14ApproachLinearR7Vector3RKS_5Fix12IiE(Vector3 *a, const Vector3 *b, Fix12i f);
-int _ZN5Sound8PlayLongEjjjRK7Vector3s(unsigned int a, unsigned int b, unsigned int cc, void *pos, unsigned int d);
+void d_a_owlPlayLongHold(unsigned int a, unsigned int b, unsigned int cc, void *pos, unsigned int d);
 int func_ov002_020df7f4(void *c);
 int func_ov002_020df7ac(void *thiz);
 void _ZN10dBgCh_Actr12Unk_0203589cEv(void *self);
@@ -300,7 +305,7 @@ int daOwl_c::func_ov094_021359d8()
     }
 
     if (OWL_TIMER(this) == 0) {
-        mSoundHandle = _ZN5Sound8PlayLongEjjjRK7Vector3s(mSoundHandle, 3, 0x18c, &mCamSpacePosX, 0);
+        mSoundHandle = Sound::PlayLong(mSoundHandle, 3, 0x18c, *(Vector3 *)&mCamSpacePosX, 0);
     }
 
     if (OWL_TIMER(this) != 0) {
