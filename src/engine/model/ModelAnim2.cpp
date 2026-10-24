@@ -27,10 +27,6 @@
 #pragma RTTI off
 
 extern "C" {
-/* local extern: Fix12 by-value speed (wall 6az, notes/mwccarm-codegen.md);
-   the declaration in dExtFrameCtrl_c.h is the real one. */
-void _ZN15dExtFrameCtrl_c12SetAnimationEti5Fix12IiEt(dExtFrameCtrl_c *self, u16 numFrames,
-                                                     s32 flags, s32 speed, u16 startFrame);
 /* local extern: defined in src/engine/model/Model4.cpp, which types the frame
    `short`; no header declares it. Stores (file, frame) into bone slot i of the
    components' animation array. The frame stays `int` here: the ROM passes
@@ -59,18 +55,16 @@ ModelAnim2::ModelAnim2() : otherFile(0) {}
 // @symbol _ZN10ModelAnim2D1Ev
 ModelAnim2::~ModelAnim2() {}
 
-/* The second animation's SetAnim, fast path and all; keeps the mangled free
-   spelling for the same Fix12<int> reason as ModelAnim::SetAnim. */
-// @symbol _ZN10ModelAnim213Func_020162C4Eji5Fix12IiEt
-extern "C" void _ZN10ModelAnim213Func_020162C4Eji5Fix12IiEt(ModelAnim2 *thiz, u32 animFile,
-                                                            s32 flags, s32 speed, u16 startFrame) {
-    if (animFile == thiz->otherFile) {
-        thiz->otherAnim.SetFlags(flags);
-        thiz->otherAnim.speed = speed;
+/* The second animation's SetAnim, fast path and all: the same body as
+   ModelAnim::SetAnim, run on otherFile and otherAnim. */
+// @symbol _ZN10ModelAnim213Func_020162C4Ejiit
+void ModelAnim2::Func_020162C4(u32 animFile, int flags, Fix12i speed, u16 startFrame) {
+    if (animFile == otherFile) {
+        otherAnim.SetFlags(flags);
+        otherAnim.speed = speed;
     } else {
-        thiz->otherFile = animFile;
-        _ZN15dExtFrameCtrl_c12SetAnimationEti5Fix12IiEt(
-            &thiz->otherAnim, ((BCA_File *)animFile)->numFrames, flags, speed, startFrame);
+        otherFile = animFile;
+        otherAnim.SetAnimation(((BCA_File *)animFile)->numFrames, flags, speed, startFrame);
     }
 }
 

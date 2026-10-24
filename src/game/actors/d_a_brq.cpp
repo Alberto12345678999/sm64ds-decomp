@@ -23,9 +23,9 @@
  *   mCamSpacePosX / mScaleX / mPosX stand in where no member exists at
  *   those addresses. SetRanges, dCcAcPos_c::Init, dBgCh_Actr::Init,
  *   ModelAnim::SetAnim, TextureSequence::SetFile,
- *   TextureTransformer::SetFile, DropShadowRadHeight and
- *   Particle::System::NewSimple stay mangled extern "C" spellings -- they
- *   take Fix12<int> by value (notes/mwccarm-codegen.md 6az).
+ *   TextureTransformer::SetFile and DropShadowRadHeight stay mangled
+ *   extern "C" spellings -- they take Fix12<int> by value
+ *   (notes/mwccarm-codegen.md 6az).
  *   UpdateDefeatedState calls the interworking veneer
  *   dBgCh_Actr_UpdateDiscreteNoLava_veneer (0x02038420), not the method
  *   body at 0x02037024. The data_ov070_* resource handles and the PMF
@@ -113,7 +113,6 @@ struct dActor_c;
 struct Vector3;
 struct Vector3_16;
 
-extern "C" void _ZN8dActor_c9SetRangesE5Fix12IiES1_S1_S1_(dActor_c *self, int a, int b, int c, int d);
 extern "C" void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(void *self, dActor_c *a, Vector3 const &b, int c, int d, unsigned int e, unsigned int f);
 extern "C" void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(void *self, dActor_c *a, int b, int c, Vector3_16 *d, Vector3_16 *e);
 
@@ -148,9 +147,9 @@ int daBrq_c::InitResources()
         return 0;
 
     if ((unsigned char)((param1 >> 1) & 1)) {
-        _ZN8dActor_c9SetRangesE5Fix12IiES1_S1_S1_(this, 0, 0x20d000, 0x1000000, 0xa28000);
+        SetRanges(0, 0x20d000, 0x1000000, 0xa28000);
     } else {
-        _ZN8dActor_c9SetRangesE5Fix12IiES1_S1_S1_(this, 0, 0x2c1000, 0x1000000, 0xa28000);
+        SetRanges(0, 0x2c1000, 0x1000000, 0xa28000);
     }
 
     _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(&mdCcAcPos_c, this, data_ov070_0212365c, 0x2d000, 0x50000, 0x200002, 0x8000);
@@ -365,8 +364,11 @@ s32 daBrq_c::UpdateActiveState()
 namespace Sound {
 void PlayBank0(u32 soundId, const Vector3 &pos);
 }
-extern "C" void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(
-    u32 effectId, s32 x, s32 y, s32 z);
+namespace Particle {
+struct System {
+    static void NewSimple(u32 effectId, s32 x, s32 y, s32 z);
+};
+}
 
 // @symbol _ZN7daBrq_c18EnterDefeatedStateEv
 s32 daBrq_c::EnterDefeatedState()
@@ -382,10 +384,8 @@ s32 daBrq_c::EnterDefeatedState()
     mVertSpeed = 0x28000;
     mStateTimer = 0x2d;
     mModelAnim.SetAnim((BCA_File *)data_ov070_0212360c.filePtr, 0x40000000, 0x1000, 0);
-    _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(
-        0x43, mPosX, mPosY, mPosZ);
-    _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(
-        0x44, mPosX, mPosY, mPosZ);
+    Particle::System::NewSimple(0x43, mPosX, mPosY, mPosZ);
+    Particle::System::NewSimple(0x44, mPosX, mPosY, mPosZ);
     mState = 2;
     return 1;
 }

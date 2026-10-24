@@ -68,6 +68,7 @@ enum daStar_c_AssetId {
 #include "Message.h"
 #include "SaveData.h"
 #include "SharedFilePtr.h"
+#include "dExtFrameCtrl_c.h"
 #include "dCamera_c.h"
 #include "fBase_c.h"
 #include "daSoundObj_c.h"
@@ -179,7 +180,11 @@ extern unsigned char IsAreaShowing(int idx);
 extern short Vec3_HorzAngle(const Vector3* a, const Vector3* b);
 extern short data_02082214[];
 extern void func_02012694(int a, void* p);
-extern void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(unsigned int id, int a, int b, int d);
+namespace Particle {
+struct System {
+    static void NewSimple(unsigned int id, int a, int b, int d);
+};
+}
 /* local extern: the call passes an untyped this, so it cannot use the header method. */
 extern int _ZN15dExtFrameCtrl_c8FinishedEv(void* anim);
 extern void func_ov002_020e8244(void *out, daStar_c *b);
@@ -254,8 +259,6 @@ extern s32 data_02092138;
 extern StarModelFilePtr data_ov002_0211094c;
 extern StarModelFilePtr data_ov002_02110954;
 extern StarModelFilePtr data_ov002_0211095c;
-/* local extern: the call passes an untyped this, so it cannot use the header method. */
-extern void _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(void *f);
 extern void LoadSilverStarAndNumber(void);
 extern void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(
 void *self, void *actor, s32 a, s32 b, void *p1, void *p2);
@@ -267,7 +270,7 @@ extern s32 IsStarCollected(s32 level, s32 idx);
 /* TUBUILD CONFLICT -- alternate declaration of _ZN9dCamera_c6SetPosERK7Vector3, from the legacy file for func_ov002_020e7934, NOT applied: extern void _ZN9dCamera_c6SetPosERK7Vector3(void* cam, const Vector3* v); */
 /* TUBUILD CONFLICT -- alternate declaration of Vec3_Dist, from the legacy file for func_ov002_020e7934, NOT applied: extern int Vec3_Dist(const Vector3* a, const Vector3* b); */
 /* TUBUILD CONFLICT -- alternate declaration of _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE, from the legacy file for func_ov002_020e7fcc, NOT applied: extern u32 _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE( u32 slot, u32 effect, Fix12i x, Fix12i y, Fix12i z, const void* rot, struct Callback* cb); */
-/* TUBUILD CONFLICT -- alternate declaration of _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_, from the legacy file for func_ov002_020e7fcc, NOT applied: extern void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(u32 effect, Fix12i x, Fix12i y, Fix12i z); */
+/* TUBUILD CONFLICT -- alternate declaration of Particle::System::NewSimple, from the legacy file for func_ov002_020e7fcc, NOT applied: extern void Particle::System::NewSimple(u32 effect, Fix12i x, Fix12i y, Fix12i z); */
 /* TUBUILD CONFLICT -- alternate declaration of _ZN15dExtFrameCtrl_c8FinishedEv, from the legacy file for func_ov002_020e8098, NOT applied: extern "C" int _ZN15dExtFrameCtrl_c8FinishedEv(void* anim); */
 /* TUBUILD CONFLICT -- alternate declaration of func_ov002_020e8244, from the legacy file for func_ov002_020e8098, NOT applied: extern "C" void func_ov002_020e8244(Vector3* out, char* self); */
 /* TUBUILD CONFLICT -- alternate declaration of _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE, from the legacy file for func_ov002_020e8098, NOT applied: extern "C" void* _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE( unsigned int a, unsigned int b, int c, int d, int e, const void* f, void* g); */
@@ -497,10 +500,10 @@ s32 daStar_c::InitResources()
     mInitPosY = mPosY;
     mInitPosZ = mPosZ;
     mMusicTimer = 0;
-    _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(&data_ov002_02110944);
-    _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(&data_ov002_02110924);
-    _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(&data_ov002_02110964);
-    _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(&data_ov002_02110934);
+    dExtFrameCtrl_c::LoadFile(data_ov002_02110944);
+    dExtFrameCtrl_c::LoadFile(data_ov002_02110924);
+    dExtFrameCtrl_c::LoadFile(data_ov002_02110964);
+    dExtFrameCtrl_c::LoadFile(data_ov002_02110934);
 
     b = (s32)(actorID == ACTOR_STAR);
     if (b != 0) {
@@ -2666,7 +2669,7 @@ void daStar_c::func_ov002_020e7fcc() {
 
     if (!mModelAnim1.WillHitFrame(0x75)) return;
     func_ov002_020e8244(&v2, this);
-    _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0x30, v2.x, v2.y, v2.z);
+    Particle::System::NewSimple(0x30, v2.x, v2.y, v2.z);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -2773,9 +2776,9 @@ void daStarBase_c::Collect()
         mBits.visible = 0;
     }
     mdCcAcPos_c.Clear();
-    _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0x12c, mPosX, mPosY, mPosZ);
-    _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0x12d, mPosX, mPosY, mPosZ);
-    _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0x12e, mPosX, mPosY, mPosZ);
+    Particle::System::NewSimple(0x12c, mPosX, mPosY, mPosZ);
+    Particle::System::NewSimple(0x12d, mPosX, mPosY, mPosZ);
+    Particle::System::NewSimple(0x12e, mPosX, mPosY, mPosZ);
 }
 
 /* -------------------------------------------------------------------------- */

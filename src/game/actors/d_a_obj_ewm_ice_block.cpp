@@ -40,7 +40,6 @@ extern void Vec3_Sub(Vector3 *out, Vector3 *a, Vector3 *b);
 extern int LenVec3(Vector3 *v);
 extern void Vec3_MulScalar(Vector3 *out, Vector3 *v, int s);
 extern void SubVec3(Vector3 *a, Vector3 *b, Vector3 *c);
-extern int _ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_(void *self, int a, int b);
 extern void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
     dBgW_KcMbg *self, void *kcl, const Matrix4x3 *mtx, int scale, short angle,
     void *clps);
@@ -143,7 +142,7 @@ int daObjEwmIceBlock_c::Behavior()
 
     UpdateModelPosAndRotY();
     UpdateClsnPosAndRot();
-    _ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_(this, 0x5dc000, 0);
+    IsClsnInRange(0x5dc000, 0);
     return 1;
 }
 

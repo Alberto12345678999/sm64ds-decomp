@@ -111,6 +111,5 @@ ModelBase::~ModelBase()
 // _ZdlPv is the DS global operator delete. Its delete veneer, func_0203cbc0,
 // which Model's destructor calls, now comes from src/engine/heap/Heap.cpp with
 // a host body over the default heap; this keeps the _ZdlPv spelling itself
-// routed through the Memory layer -- matching how _Znwj is handled in
-// hal/cxxname_bridge.cpp.
+// routed through the Memory layer.
 extern "C" void _ZdlPv(void *p) { _ZN6Memory10DeallocateEPv(p); }

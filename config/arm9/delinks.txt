@@ -38,6 +38,10 @@ src/unnamed/arm9/0200/func_020048d8.c:
     complete
     .text start:0x020048d8 end:0x0200497c
 
+src/unnamed/arm9/0200/func_0200497c.c:
+    complete
+    .text start:0x0200497c end:0x020049ec
+
 src/AutoloadCallback.c:
     complete
     .text start:0x020049ec end:0x020049f0
@@ -2818,9 +2822,21 @@ src/Matrix3x3_LoadIdentity.c:
     complete
     .text start:0x020524f0 end:0x02052514
 
+src/unnamed/arm9/0205/func_02052514.c:
+    complete
+    .text start:0x02052514 end:0x02052550
+
 src/unnamed/arm9/0205/func_02052550.c:
     complete
     .text start:0x02052550 end:0x0205256c
+
+src/unnamed/arm9/0205/func_0205256c.c:
+    complete
+    .text start:0x0205256c end:0x02052588
+
+src/Matrix3x3_SetRotationZ.c:
+    complete
+    .text start:0x02052588 end:0x020525a0
 
 src/MulVec3Mat3x3.c:
     complete
@@ -2845,6 +2861,10 @@ src/MulMat4x3Mat4x3.c:
 src/InvMat4x3.c:
     complete
     .text start:0x02052b34 end:0x02052ec8
+
+src/unnamed/arm9/0205/func_02052ec8.c:
+    complete
+    .text start:0x02052ec8 end:0x02052ef4
 
 src/cstd.cpp:
     complete
@@ -2935,6 +2955,10 @@ src/unnamed/arm9/0205/func_020553a4.c:
     complete
     .text start:0x020553a4 end:0x020553c0
 
+src/unnamed/arm9/0205/func_020553c0.c:
+    complete
+    .text start:0x020553c0 end:0x02055454
+
 src/unnamed/arm9/0205/func_02055454.c:
     complete
     .text start:0x02055454 end:0x02055464
@@ -2986,6 +3010,18 @@ src/Copy48BytesFixed.c:
 src/IRQ.cpp:
     complete
     .text start:0x02056c40 end:0x02057014
+
+src/unnamed/arm9/0205/func_02057014.c:
+    complete
+    .text start:0x02057014 end:0x02057020
+
+src/unnamed/arm9/0205/func_02057020.c:
+    complete
+    .text start:0x02057020 end:0x02057078
+
+src/unnamed/arm9/0205/func_02057078.c:
+    complete
+    .text start:0x02057078 end:0x020570a8
 
 src/unnamed/arm9/0205/func_020570a8.c:
     complete
@@ -3151,6 +3187,10 @@ src/unnamed/arm9/0205/func_02058538.c:
     complete
     .text start:0x02058538 end:0x02058568
 
+src/unnamed/arm9/0205/func_02058568.c:
+    complete
+    .text start:0x02058568 end:0x020585cc
+
 src/ARMSaveContext.c:
     complete
     .text start:0x020585cc end:0x02058618
@@ -3303,6 +3343,10 @@ src/unnamed/arm9/0205/func_020593f4.c:
     complete
     .text start:0x020593f4 end:0x02059468
 
+src/unnamed/arm9/0205/func_02059468.c:
+    complete
+    .text start:0x02059468 end:0x0205947c
+
 src/unnamed/arm9/0205/func_0205947c.c:
     complete
     .text start:0x0205947c end:0x0205950c
@@ -3338,6 +3382,10 @@ src/unnamed/arm9/0205/func_02059700.c:
 src/unnamed/arm9/0205/func_02059788.c:
     complete
     .text start:0x02059788 end:0x02059824
+
+src/unnamed/arm9/0205/func_02059824.c:
+    complete
+    .text start:0x02059824 end:0x02059834
 
 src/unnamed/arm9/0205/func_02059834.c:
     complete
@@ -3378,6 +3426,14 @@ src/unnamed/arm9/0205/func_02059cb4.cpp:
 src/IRQ3.cpp:
     .text start:0x02059d08 end:0x02059d8c
     complete
+
+src/unnamed/arm9/0205/func_02059d8c.c:
+    complete
+    .text start:0x02059d8c end:0x02059d98
+
+src/unnamed/arm9/0205/func_02059d98.c:
+    complete
+    .text start:0x02059d98 end:0x02059dd4
 
 src/unnamed/arm9/0205/func_02059dd4.c:
     complete
@@ -3478,6 +3534,14 @@ src/Copy36Bytes.c:
 src/Copy48Bytes.c:
     complete
     .text start:0x0205a564 end:0x0205a588
+
+src/unnamed/arm9/0205/func_0205a588.c:
+    complete
+    .text start:0x0205a588 end:0x0205a61c
+
+src/CpuCopy8.c:
+    complete
+    .text start:0x0205a61c end:0x0205a74c
 
 src/unnamed/arm9/0205/func_0205a74c.c:
     complete
@@ -5286,6 +5350,14 @@ src/unnamed/arm9/0207/func_02071708.c:
 src/unnamed/arm9/0207/func_02071784.c:
     complete
     .text start:0x02071784 end:0x02071790
+
+src/unnamed/arm9/0207/func_02071790.c:
+    complete
+    .text start:0x02071790 end:0x020717c0
+
+src/__rethrow.c:
+    complete
+    .text start:0x020717c0 end:0x0207180c
 
 src/unnamed/arm9/0207/func_0207180c.c:
     complete

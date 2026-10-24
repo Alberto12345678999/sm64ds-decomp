@@ -77,14 +77,13 @@ extern void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fi
 extern struct Matrix4x3 data_020a0e68;
 extern short Vec3_HorzAngle(const void* a, const void* b);
 extern int RandomIntInternal(void*);
-extern void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(unsigned int, int, int, int);
+extern void d_a_sanboNewSimpleHold(unsigned int, int, int, int);
 extern int data_0209e650[];
 extern s16 data_02082214[];
 extern int Vec3_HorzDist(const void* a, const void* b);
 extern unsigned char DecIfAbove0_Byte(unsigned char* p);
 extern void func_02038414(void *p);
 void UnloadBlueCoinModel(void *);
-extern int _ZN8dActor_c22IsTooFarAwayFromPlayerE5Fix12IiE(void *c, int d);
 void LoadBlueCoinModel(void* actor);
 void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void* self, void* actor, int r, int h, unsigned int d, unsigned int e);
 void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(void* self, void* actor, int b, int c, void* v, int e);
@@ -197,7 +196,8 @@ int daSanbo_c::Behavior()
 {
     int s = mState;
     if (s != 2 && s != 5) {
-        if (_ZN8dActor_c22IsTooFarAwayFromPlayerE5Fix12IiE(this, 0x5dc000)) return 1;
+        if (IsTooFarAwayFromPlayer(0x5dc000))
+            return 1;
     }
     func_ov096_021368b4();
     MakeVanishLuigiWork(mdCcAc_c);
@@ -554,10 +554,8 @@ int daSanbo_c::func_ov096_02136134()
     mVertSpeed = 0x28000;
     mHorzSpeed = 0xa000;
     mTimer = 0x2d;
-    _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0x43, mPosX,
-        mPosY + OnAimedAtWithEgg(), mPosZ);
-    _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0x44, mPosX,
-        mPosY + OnAimedAtWithEgg(), mPosZ);
+    Particle::System::NewSimple(0x43, mPosX, mPosY + OnAimedAtWithEgg(), mPosZ);
+    Particle::System::NewSimple(0x44, mPosX, mPosY + OnAimedAtWithEgg(), mPosZ);
     mState = 5;
     return 1;
 }

@@ -60,7 +60,11 @@ void _Z14ApproachLinearRiii(int *p, int b, int c);
 unsigned short DecIfAbove0_Short(unsigned short *p);
 unsigned int _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
     unsigned int, unsigned int, Fix12i, Fix12i, Fix12i, const Vector3_16 *, void *);
-void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(unsigned, int, int, int);
+namespace Particle {
+struct System {
+    static void NewSimple(unsigned, int, int, int);
+};
+}
 }
 
 /* -------------------------------------------------------------------------- */
@@ -156,7 +160,7 @@ int func_ov002_020b3344(daObjAbuku_c *c){
 extern "C" {
 void func_ov002_020b330c(daObjAbuku_c *c){
   Sound::PlayBank3(0xb, *reinterpret_cast<const Vector3 *>(&c->mCamSpacePosX));
-  _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(2, c->mPosX, c->mPosY, c->mPosZ);
+  Particle::System::NewSimple(2, c->mPosX, c->mPosY, c->mPosZ);
   c->MarkForDestruction();
 }
 }

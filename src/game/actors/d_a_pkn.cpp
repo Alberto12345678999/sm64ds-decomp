@@ -102,7 +102,11 @@ void  Matrix4x3_ApplyInPlaceToRotationY(PknMtx43 *m, s16 ang);
 void  MulMat4x3Mat4x3(void *a, void *b, void *c);
 
 void *_ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(u32 handle, u32 id, int x, int y, int z, const void *f, void *cb);
-void  _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(u32 id, int x, int y, int z);
+namespace Particle {
+struct System {
+    static void NewSimple(u32 id, int x, int y, int z);
+};
+}
 int   _ZN5Sound7PlaySubEjjj5Fix12IiEb(u32 a, u32 b, u32 c, int t, int flag);
 
 }
@@ -311,8 +315,8 @@ void daPkn_c::StateSleep()
                            0x40000000, 0x1000, 0);
         mState = 3;
         func_02012694(0x175, &mCamSpacePosX);
-        _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0xfe, mBubblePos.x, mBubblePos.y, mBubblePos.z);
-        _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0xff, mBubblePos.x, mBubblePos.y, mBubblePos.z);
+        Particle::System::NewSimple(0xfe, mBubblePos.x, mBubblePos.y, mBubblePos.z);
+        Particle::System::NewSimple(0xff, mBubblePos.x, mBubblePos.y, mBubblePos.z);
         return;
     }
     mLoopSoundHandle = Sound::PlayLong(mLoopSoundHandle, 3, 0x174, mCamSpacePos, 0);

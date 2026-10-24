@@ -837,7 +837,7 @@ matched: yes</title></rect><rect x="76.21" y="112.25" width="25.84" height="4.67
 module: arm9
 addr: 0x0200f658
 size: 180 bytes
-matched: yes</title></rect><rect x="102.05" y="112.25" width="12.06" height="4.67" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8dActor_c22IsTooFarAwayFromPlayerE5Fix12IiE
+matched: yes</title></rect><rect x="102.05" y="112.25" width="12.06" height="4.67" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8dActor_c22IsTooFarAwayFromPlayerEi
 module: arm9
 addr: 0x0200f70c
 size: 84 bytes
@@ -1141,7 +1141,7 @@ matched: yes</title></rect><rect x="229.90" y="123.03" width="16.34" height="4.1
 module: arm9
 addr: 0x02010da4
 size: 100 bytes
-matched: yes</title></rect><rect x="246.24" y="123.03" width="5.88" height="4.10" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8dActor_c9SetRangesE5Fix12IiES1_S1_S1_
+matched: yes</title></rect><rect x="246.24" y="123.03" width="5.88" height="4.10" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8dActor_c9SetRangesEiiii
 module: arm9
 addr: 0x02010e08
 size: 36 bytes
@@ -2073,7 +2073,7 @@ matched: yes</title></rect><rect x="220.48" y="162.45" width="1.51" height="8.88
 module: arm9
 addr: 0x02015c0c
 size: 20 bytes
-matched: yes</title></rect><rect x="221.99" y="162.45" width="2.12" height="8.88" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN15dExtFrameCtrl_c12SetAnimationEti5Fix12IiEt
+matched: yes</title></rect><rect x="221.99" y="162.45" width="2.12" height="8.88" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN15dExtFrameCtrl_c12SetAnimationEtiit
 module: arm9
 addr: 0x02015c20
 size: 28 bytes
@@ -2177,7 +2177,7 @@ matched: yes</title></rect><rect x="45.65" y="171.33" width="3.70" height="5.81"
 module: arm9
 addr: 0x020162a4
 size: 32 bytes
-matched: yes</title></rect><rect x="49.35" y="171.33" width="10.62" height="5.81" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10ModelAnim213Func_020162C4Eji5Fix12IiEt
+matched: yes</title></rect><rect x="49.35" y="171.33" width="10.62" height="5.81" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10ModelAnim213Func_020162C4Ejiit
 module: arm9
 addr: 0x020162c4
 size: 92 bytes
@@ -3485,7 +3485,7 @@ matched: yes</title></rect><rect x="91.34" y="259.77" width="1.28" height="10.47
 module: arm9
 addr: 0x02020980
 size: 20 bytes
-matched: yes</title></rect><rect x="92.63" y="259.77" width="107.61" height="10.47" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii
+matched: yes</title></rect><rect x="92.63" y="259.77" width="107.61" height="10.47" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN3OAM6RenderEbP7OamAttriiiiiiii
 module: arm9
 addr: 0x02020994
 size: 1680 bytes
@@ -3737,7 +3737,7 @@ matched: yes</title></rect><rect x="42.32" y="282.04" width="6.13" height="5.25"
 module: arm9
 addr: 0x02022e68
 size: 48 bytes
-matched: yes</title></rect><rect x="48.45" y="282.04" width="9.20" height="5.25" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_
+matched: yes</title></rect><rect x="48.45" y="282.04" width="9.20" height="5.25" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8Particle6System9NewSimpleEjiii
 module: arm9
 addr: 0x02022e98
 size: 72 bytes
@@ -6445,7 +6445,7 @@ matched: yes</title></rect><rect x="131.95" y="504.75" width="1.41" height="5.71
 module: arm9
 addr: 0x0203cbd8
 size: 12 bytes
-matched: yes</title></rect><rect x="133.36" y="504.75" width="1.41" height="5.71" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_Znwj
+matched: yes</title></rect><rect x="133.36" y="504.75" width="1.41" height="5.71" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_Znwm
 module: arm9
 addr: 0x0203cbe4
 size: 12 bytes
@@ -14405,7 +14405,7 @@ matched: yes</title></rect><rect x="556.67" y="207.57" width="5.49" height="11.6
 module: ov002
 addr: 0x020beecc
 size: 96 bytes
-matched: yes</title></rect><rect x="562.16" y="207.57" width="30.21" height="11.63" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN6Player7SetAnimEji5Fix12IiEj
+matched: yes</title></rect><rect x="562.16" y="207.57" width="30.21" height="11.63" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN6Player7SetAnimEjiit
 module: ov002
 addr: 0x020bef2c
 size: 528 bytes
@@ -17241,11 +17241,11 @@ matched: yes</title></rect><rect x="541.13" y="723.88" width="3.61" height="11.8
 module: ov002
 addr: 0x020ee830
 size: 64 bytes
-matched: yes</title></rect><rect x="544.74" y="723.88" width="11.05" height="11.80" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_
+matched: yes</title></rect><rect x="544.74" y="723.88" width="11.05" height="11.80" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10dBgActor_c13IsClsnInRangeEii
 module: ov002
 addr: 0x020ee870
 size: 196 bytes
-matched: yes</title></rect><rect x="555.79" y="723.88" width="16.02" height="11.80" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10dBgActor_c21IsClsnInRangeOnScreenE5Fix12IiES1_
+matched: yes</title></rect><rect x="555.79" y="723.88" width="16.02" height="11.80" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10dBgActor_c21IsClsnInRangeOnScreenEii
 module: ov002
 addr: 0x020ee934
 size: 284 bytes

@@ -209,7 +209,11 @@ extern s16 data_02082214[];
 extern void Vec3_Sub(int* out, int* a, int* b);
 extern int Vec3_HorzLen(int* v);
 extern int _ZN4cstd5atan2E5Fix12IiES1_(int a, int b);
-extern void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(unsigned effect, int x, int y, int z);
+namespace Particle {
+struct System {
+    static void NewSimple(unsigned effect, int x, int y, int z);
+};
+}
 extern void* _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(u32 id, u32 param, Fix12i x, Fix12i y, Fix12i z, const Vector3_16f* pos, struct Callback* cb);
 extern void func_0201267c(u32 soundID, const Vector3 *pos);
 extern void Matrix4x3_FromRotationY(void* m, short angle);
@@ -231,7 +235,6 @@ short Vec3_HorzAngle(const Vector3 *a, const Vector3 *b);
 extern "C" int _ZN9ModelAnim7SetAnimEP8BCA_Fileiit(ModelAnim *, BCA_File *, int, Fix12i, u16);
 int _Z14ApproachLinearRiii(int *dst, int target, int rate);
 
-int _ZN8dActor_c22IsTooFarAwayFromPlayerE5Fix12IiE(void *self, int fix12);
 void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(void* a, void* sm, void* mtx, int rad, int h, unsigned int x);
 int _ZN12dEnemyBase_c20KillByInvincibleCharERK10Vector3_16R6Player5Fix12IiE(void* c, void* v, void* player, s32 flag);
 int _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void* p, const Vector3* v, u32 a, s32 f, u32 b, u32 c, u32 d);
@@ -315,7 +318,7 @@ int daOts_c::InitResourcesCommon()
 int daOts_c::BehaviorCommon()
 {
     if (mWithMeshClsn.IsOnGround() != 0) {
-        if (_ZN8dActor_c22IsTooFarAwayFromPlayerE5Fix12IiE(this, kFarFromPlayer) != 0)
+        if (IsTooFarAwayFromPlayer(kFarFromPlayer) != 0)
             return 1;
     }
 
@@ -640,8 +643,7 @@ void daOts_c::func_ov064_021165d8()
 
     this->UpdateWMClsn(this->mWithMeshClsn, 0);
 
-    if (this->mWithMeshClsn.IsOnGround() != 0
-        && _ZN8dActor_c22IsTooFarAwayFromPlayerE5Fix12IiE(this, kFarFromPlayer) != 0) {
+    if (this->mWithMeshClsn.IsOnGround() != 0 && IsTooFarAwayFromPlayer(kFarFromPlayer) != 0) {
         this->mFlags |= 1;
     } else {
         this->mFlags &= ~1;
@@ -938,7 +940,7 @@ void daOts_c::func_ov064_02115f98(char* a1)
     pos0[1] = pos0[1] + ycomp;
     pos0[2] = pos0[2] + t1;
 
-    _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(kParticleHit, pos0[0], pos0[1], pos0[2]);
+    Particle::System::NewSimple(kParticleHit, pos0[0], pos0[1], pos0[2]);
 }
 
 /* -------------------------------------------------------------------------- */

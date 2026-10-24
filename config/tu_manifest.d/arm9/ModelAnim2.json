@@ -41,7 +41,7 @@
       "ordinal": 2
     },
     {
-      "symbol": "_ZN10ModelAnim213Func_020162C4Eji5Fix12IiEt",
+      "symbol": "_ZN10ModelAnim213Func_020162C4Ejiit",
       "address": "0x020162c4",
       "size": "0x0000005c",
       "legacy_source": "src/_ZN10ModelAnim213Func_020162C4Eji5Fix12IiEt.c",
@@ -109,7 +109,7 @@
     "ModelAnim2 is the tree's coined name for the cartridge's dExtAnm2Model_c (_ZTI15dExtAnm2Model_c at 0x0208e788, single inheritance from dExtAnmModel_c, the tree's ModelAnim). Its vtable _ZTV10ModelAnim2 at 0x0208e9b4 overrides only D1/D0; renaming the class is separate work, so the file keeps the class name (AGENTS.md file-name rule) beside ModelAnim.cpp.",
     "The fold takes the method run and the lifecycle tail D0, D1, C1 (0x02016320..0x020163e0). ~ModelAnim2() is the key function. RTTI is off so the coined dExtAnm2Model_c records are not emitted. D2 and C2 are homeless and deadstripped. The _ZThn80_ thunks at 0x02017168..0x020171c8 are enrolled in src/engine/model/ModelAnimThunks.cpp; this TU's copies are deadstrip-duplicates. _ZTV10ModelAnim2 is deadstrip-data: the secondary preamble's RTTI-off zeros are masked, the slots match, and the retail vtable is unchanged. The mask is the same rule as arm9/BlendModelAnim.",
     "func_0201628c and func_020162a4 keep their address names and int parameters: Player calls both through an extern (int, int) declaration on a body model with bone 8, so a typed ModelAnim2* parameter would add a declaration disagreement. func_02045e2c is declared with an int frame, matching the ROM's unextended lsr #16 argument; Model4.cpp defines it with short, the same banked disagreement the absorbed source carried.",
-    "Func_020162C4 keeps the mangled extern \"C\" definition for the Fix12<int> by-value wall (6az), as ModelAnim::SetAnim does; ModelAnim2.h's member declaration is the real one. The file is written ROM-descending because mwccarm emits .text in reverse source order under default deferred codegen. The constructor and destructor are first in the source so their clusters land after the methods."
+    "Func_020162C4 is a real member under its scalar mangling _ZN10ModelAnim213Func_020162C4Ejiit (speed is the scalar Fix12i), as ModelAnim::SetAnim is; it was an extern \"C\" definition under the invented Fix12<int> spelling _ZN10ModelAnim213Func_020162C4Eji5Fix12IiEt until that symbol was renamed. The file is written ROM-descending because mwccarm emits .text in reverse source order under default deferred codegen. The constructor and destructor are first in the source so their clusters land after the methods."
   ],
   "verification": {
     "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",

@@ -59,6 +59,11 @@ aggregate a `union` rather than a `struct`, or copying each parameter to a local
 before use -- re-measured on Actor::SetRanges (0x02010e08, target 0x24), where every
 aggregate form costs the same +0x14 and only a scalar parameter reproduces.
 
+**That last example is no longer a wall, and it was the flagship one.**
+`dActor_c::SetRanges` is a real method as of 2026-10-23 -- see BATCH 4 below.
+Everything in this paragraph is still true of a CLASS-TYPED parameter; what it
+was taken to prove, that the symbol could not be a method, does not follow.
+
 ### CORRECTED 2026-08-27: the cost is per USE, and the wall was partly self-inflicted
 
 The paragraph above used to end "The cost is in the parameter passing, not in how
@@ -229,6 +234,124 @@ Three things this batch adds to the recipe:
 Also worth knowing: `tools/name_roundtrip.py --symbol X` prints a SUMMARY, so
 the word MISMATCH appears in its output even when the count is 0. Read the
 `ROUND-TRIPS n 100.0%` line, not a grep for the word.
+
+### THE COMPILER'S NUMBERED LOCAL LABELS COUNT *NAMED* PARAMETERS (2026-10-23)
+
+AGENTS.md says a FILE RENAME moves compiler-numbered local symbols
+(`Bundle$902d_a_mky_cpp`, the `@NNN` .bss/.data labels, `__sinit_<file>`). It is
+broader than that, and the mechanism is specific: **the counter advances per
+NAMED PARAMETER the TU has seen before the local class or label.** That gives a
+rename two separate ways to break the ROM build, both of which show up as
+
+    isolate: defined symbol rename refused: defined rename source @N has 0 symbols
+
+**1. A shared header gaining a declaration renumbers labels in EVERY consumer,
+including files the branch never edited.** Declaring `dActor_c::SetRanges` (four
+`Fix12i`) and `dActor_c::IsTooFarAwayFromPlayer` (one) moved `d_a_mky.cpp`'s
+`Bundle$976` to `$981` -- an untouched file -- and shifted every other
+consumer's `@NNN` labels by the same five. 227 TU manifests record such labels,
+so this is a ~200-file failure from a two-line header edit.
+
+**THE LEVER: dropping the parameter NAMES costs nothing.** Declared types-only,
+`void SetRanges(Fix12i, Fix12i, Fix12i, Fix12i);`, every counter stays put --
+`d_a_mky.cpp` is back to `Bundle$976` and `ov002/da1up_c` reports no EXTRA
+labels. A header declaration added for a rename should omit its parameter
+names; put the names on the definition, where they document the code and cost
+nothing. Do this FIRST and the 227-TU blast radius never exists.
+
+**2. Deleting a local `extern` that HAD named parameters frees numbers in that
+TU.** Unavoidable, but bounded by the files actually edited (plus any TU that
+reaches a changed local header: `d_a_obj_km2_ami_bou.cpp` via
+`daObjKm2_Ami_Bou_c.h`). Re-key those manifests against objects compiled at the
+PR's real base and at the head:
+
+- Pair the bare `@NNN` DEFINED symbols as a WHOLE BLOCK: sort each side by
+  number, require the same count and the same section/size sequence, and map
+  position to position. Pair `$NNN` mangled names (`Bundle$NNN...`) by shape.
+- Rewrite every `defined_symbol_renames[].from` (and compiler-only `Bundle$NNN`
+  rows) in ONE pass from that map. Leave `to`, `.bss`/`.data`, relocations and
+  binding rewrites alone: they carry ROM-side names.
+
+#4296 landed this way: every converted TU dropped its extern and took the
+member call, and 79 manifests were re-keyed (full rombuild: intact TU gates
+clean, 0 mismatching; PR validation green). A per-label remap applied one
+rename at a time collides when
+the block shifts onto itself (`rename destination @N already exists in
+object`); the simultaneous block map does not. Apply it exactly ONCE -- a
+second pass double-shifts and reports `duplicate defined symbol rename`.
+
+One case the map cannot see: a label that USED to coincide with its ROM name
+has no rename row at all (`daLinelift2_c` `@508`). Once it moves, the
+`symbol_binding_rewrites`/relocation rows naming it fail with `binding rewrite
+symbol @508 has 0 entries`; add the rename (`@505 -> @508`) rather than
+editing the ROM-side rows.
+
+Also note `tools/rombuild.py` prints at most ten isolate failures
+(`failures[:10]`), and isolate reports only the FIRST stale source per TU, so
+one run never yields the complete list -- raise the cap locally while sweeping.
+
+**How to check any of this.** `tubuild verify <tu>`'s verdict is NOT the signal:
+`ov002/da1up_c` reports `38/38 MATCH ... TEXT-VERIFIED` with every label wrong,
+because the verdict covers function bytes. The signal is the `EXTRA .data/.bss
+@NNN` lines in the same output -- once a rename source matches what the object
+emits, isolate renames it and it stops being EXTRA. **A TU is clean when EXTRA
+is empty.** Sweep every manifest carrying an `@NNN` rename source, not just the
+TUs whose sources changed, because cause 1 hits files the branch never touched.
+And when `PR validation` shows a wall of "N blocking relocation verdict(s)" that
+all read `validation error (not verified)` with `Slots checked: 1`, the check
+never ran -- find the single real failure in the full-ROM build output instead.
+
+### BATCH 4: the range-check family, and the wall's own flagship example (2026-10-23)
+
+| old symbol | new symbol | addr/size |
+|---|---|---|
+| `_ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_` | `_ZN10dBgActor_c13IsClsnInRangeEii` | ov002 0x020ee870/0xc4 |
+| `_ZN10dBgActor_c21IsClsnInRangeOnScreenE5Fix12IiES1_` | `_ZN10dBgActor_c21IsClsnInRangeOnScreenEii` | ov002 0x020ee934/0x11c |
+| `_ZN8dActor_c9SetRangesE5Fix12IiES1_S1_S1_` | `_ZN8dActor_c9SetRangesEiiii` | 0x02010e08/0x24 |
+| `_ZN8dActor_c22IsTooFarAwayFromPlayerE5Fix12IiE` | `_ZN8dActor_c22IsTooFarAwayFromPlayerEi` | 0x0200f70c/0x54 |
+
+237 references across 101 files: 120 call sites became method calls and 102 local
+`extern` declarations were deleted. **Zero residual handspelled debt** -- no file
+keeps a mangled extern for any of the four, and `source_style` reports 0 findings.
+
+- **`SetRanges` was this section's own headline example** ("only a scalar
+  parameter reproduces"), and the conclusion drawn from it -- that the symbol
+  therefore stays mangled -- was the error. The measurement was right; it
+  measured the parameter, not the name.
+- **`include/dBgActor_c.h` had already written down the answer** for the two
+  `IsClsnInRange*` symbols: "The two IsClsnInRange* symbols make the same claim
+  and their bytes refuse it". Nobody had acted on it. Grep the headers for that
+  kind of sentence before re-deriving anything.
+- **`UpdateKillByMegaChar` is a GENUINE wall and is left alone.** Its header
+  says the by-value `Fix12<int>` "is confirmed by the body at ov002 0x020ee674,
+  not inferred from the mangled name". That is the distinction that matters: a
+  claim measured FROM THE BYTES stands; a claim inferred from a name we wrote
+  does not.
+- **Batch 3's `S1_` theory does NOT generalise.** #4293 suggested symbols with
+  repeated `5Fix12IiE` parameters likely carried `fdiv_async`'s Itanium
+  substitution defect. These four all spell `S1_` correctly and none was in
+  `config/name-roundtrip-baseline.json`. The defect was specific to that one
+  hand-derived name.
+- **`SetRanges` and `IsTooFarAwayFromPlayer` were not declared in
+  `include/dActor_c.h` at all**, so this adds two declarations to a 295-consumer
+  header. Adding a NON-VIRTUAL member declaration changes no layout and no
+  vtable, but it does mean the whole consumer set is in `validate`'s scope.
+- **A `char *` receiver still needs a cast.** `d_a_obj_sm_lift.cpp` holds its
+  actor as `char *self` and does arithmetic on it (`*(int *)(self + 0x320)`), so
+  `self->IsClsnInRange(...)` does not compile -- `expression syntax error`, which
+  names the line but not the cause. It became
+  `((dBgActor_c *)self)->IsClsnInRange(...)`.
+- **A `config/source-style-exceptions.json` entry had to go.** It banked three
+  `handspelled-member` occurrences for `SetRanges` with the reason "defining the
+  body as a method homes each [argument]" -- the thing this branch disproves.
+  Exceptions files carry stale reasoning the same way comments do.
+
+Verification shape for a change this wide: every `@symbol` in all 101 changed
+sources, 1,492 functions, not just the call-site holders. 1,486 match; the other
+6 are `__sinit_*` glue that reports WRONG-DEST reloc destinations IDENTICALLY on
+`origin/main`, checked one by one by swapping each file for its base copy. Expect
+that noise on any wide actor-file change and check it against base rather than
+assuming it is yours.
 
 ### DONE for both SetAnim symbols (2026-10-22/23)
 

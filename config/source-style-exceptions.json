@@ -60,14 +60,6 @@
     {
       "path": "src/game/stages/d_s_stage_methods.cpp",
       "rule": "handspelled-member",
-      "match": "_ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii",
-      "count": 47,
-      "reason": "OAM::Render (scaled overload): it takes Fix12<int> by value, which this tree cannot declare without changing the call ABI (the Fix12 wall); the C++ name is spelled as the mangled symbol so the by-value word is passed as a plain int, exactly as the absorbed shard did.",
-      "evidence": "include/OAM.h:14 (the three Fix12 Render overloads are deliberately not declared there); arm9/dScStage_c 123/123 TEXT-VERIFIED (tubuild verify); carried from the standalone shards this fold absorbs (0x02029408..0x0202e118)"
-    },
-    {
-      "path": "src/game/stages/d_s_stage_methods.cpp",
-      "rule": "handspelled-member",
       "match": "_ZN3OAM20VS_NEW_STAR_APPEAREDE",
       "count": 2,
       "reason": "OAM::VS_NEW_STAR_APPEARED: OAM.h declares no static sprite-record data, so the OamAttr record keeps its mangled data name as an extern. Follow-up: declare the OAM sprite records as static members in OAM.h (one shared header change, every consumer).",
@@ -140,17 +132,9 @@
     {
       "path": "src/game/stages/d_s_stage_methods.cpp",
       "rule": "handspelled-member",
-      "match": "_ZN5ModelC1Ev",
-      "count": 2,
-      "reason": "LoadSkybox spells the allocation as _Znwj plus a null-guarded constructor call, which a new-expression does not emit in this shape; the constructor is called by its mangled name.",
-      "evidence": "LoadSkybox; arm9/dScStage_c 123/123 TEXT-VERIFIED (tubuild verify); carried from the standalone shards this fold absorbs (0x02029408..0x0202e118)"
-    },
-    {
-      "path": "src/game/stages/d_s_stage_methods.cpp",
-      "rule": "handspelled-member",
       "match": "_ZN18TextureTransformerC1Ev",
       "count": 2,
-      "reason": "LoadTextureTransformers spells the allocation as _Znwj plus a null-guarded constructor call, which a new-expression does not emit in this shape; the constructor is called by its mangled name.",
+      "reason": "LoadTextureTransformers spells the allocation as an explicit operator new call plus a null-guarded constructor call, a form from before the allocator was named _Znwm; the constructor is called by its mangled name.",
       "evidence": "LoadTextureTransformers; arm9/dScStage_c 123/123 TEXT-VERIFIED (tubuild verify); carried from the standalone shards this fold absorbs (0x02029408..0x0202e118)"
     },
     {
@@ -250,22 +234,6 @@
       "evidence": "src/_ZN10dScEntry_c13InitResourcesEv.cpp on main line 95; include/dScEntry_c.h line 33 (`u8 unk_287; /* 0x287 */`); ROM ov075 dScEntry_c::InitResources TEXT-VERIFIED in ov075/d_s_entry_methods"
     },
     {
-      "path": "src/game/stages/d_s_entry_methods.cpp",
-      "rule": "handspelled-member",
-      "match": "_ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii",
-      "count": 2,
-      "reason": "OAM::Render's scaled overload takes two Fix12<int> by value, and include/OAM.h deliberately leaves the by-value Fix12 overloads out (the Fix12 wall). dScEntry_c::RenderCourseSelectTitle calls it once; the other occurrence is its extern \"C\" declaration. Both are carried verbatim from src/_ZN10dScEntry_c23RenderCourseSelectTitleEv.cpp, which this fold retires. Follow-up: retire it together with the other Fix12-by-value walls once a Fix12 spelling that passes in registers exists.",
-      "evidence": "include/OAM.h (by-value Fix12 overloads not declared); src/_ZN10dScEntry_c23RenderCourseSelectTitleEv.cpp on main (2 occurrences); ov075/d_s_entry_methods prepush linkcheck 36/36 verified"
-    },
-    {
-      "path": "src/Message2.cpp",
-      "rule": "handspelled-member",
-      "match": "_ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii",
-      "count": 9,
-      "reason": "OAM::Render's scaled overload takes two Fix12<int> by value, and include/OAM.h deliberately leaves the by-value Fix12 overloads out: a method with that parameter homes r0-r3 to the stack, which the ROM callers do not. Message::Update calls it eight times to draw the choice cursor and the next-page arrow; the ninth occurrence is the extern \"C\" declaration. Follow-up: retire it together with the other Fix12-by-value walls once a Fix12 spelling that passes in registers exists.",
-      "evidence": "include/OAM.h header comment (by-value Fix12 overloads not declared); carried verbatim from src/_ZN7Message6UpdateEv.cpp on main (9 occurrences), which this PR folds; arm9/Message2 13/13 TEXT-VERIFIED"
-    },
-    {
       "path": "src/Message.cpp",
       "rule": "handspelled-member",
       "match": "_ZN3G2S13GetBG0CharPtrEv",
@@ -299,35 +267,11 @@
     },
     {
       "path": "src/game/stages/d_s_entry.cpp",
-      "rule": "handspelled-member",
-      "match": "_ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii",
-      "count": 4,
-      "reason": "Existing and absorbed OAM scaled Render calls retain the measured Fix12-by-value ABI bridge (OAM.h, wall 6az). Follow-up: resolve that ABI across consumers before replacing the integer arguments.",
-      "evidence": "Original helpers at main 67bf07b, ov075 02116128..021165b0; retained 15-function entry TU strictly verified in 6f196502, full 106/106 module proof. Formatting preserves complete raw ELF; follow-up scope recorded in overlay-functions1016 handoff."
-    },
-    {
-      "path": "src/game/stages/d_s_entry.cpp",
       "rule": "raw-offset",
       "match": "(int*)(data_0209ee90+0x1d4",
       "count": 1,
       "reason": "Inherited score field access in absorbed helper 0211621c; ROM loads the base score at offset 0x1d4 then adds the per-player delta. The cross-overlay global layout is not yet reconstructed. Follow-up: recover its owning arm9 type and verify all consumers before substituting a shared field.",
       "evidence": "Original helpers at main 67bf07b, ov075 02116128..021165b0; retained 15-function entry TU strictly verified in 6f196502, full 106/106 module proof. Formatting preserves complete raw ELF; follow-up scope recorded in overlay-functions1016 handoff."
-    },
-    {
-      "path": "src/engine/model/ModelAnim2.cpp",
-      "rule": "handspelled-member",
-      "match": "_ZN15dExtFrameCtrl_c12SetAnimationEti5Fix12IiEt",
-      "count": 2,
-      "reason": "Func_020162C4 calls dExtFrameCtrl_c::SetAnimation, which takes Fix12<int> speed by value; a by-value Fix12 argument costs the caller too (wall 6az, notes/mwccarm-codegen.md, CORRECTED 2026-09-23). One occurrence is the local extern \"C\" declaration, one the call. The same bridge is already used by ModelAnim.cpp and BlendModelAnim.cpp. Follow-up: rename SetAnimation to its scalar mangling across its callers, or retire it with the other Fix12-by-value walls.",
-      "evidence": "Measured on 2004/b56 at arm9 0x020162c4 (target 0x5c): calling otherAnim.SetAnimation(..., *(Fix12<int> *)&speed, ...) through dExtFrameCtrl_c.h gives 0x70; the extern \"C\" scalar call reproduces 0x5c. arm9/ModelAnim2 4/4 TEXT-VERIFIED and LINK-VERIFIED."
-    },
-    {
-      "path": "src/engine/model/ModelAnim2.cpp",
-      "rule": "handspelled-member",
-      "match": "_ZN10ModelAnim213Func_020162C4Eji5Fix12IiEt",
-      "count": 1,
-      "reason": "Definition of ModelAnim2::Func_020162C4 under its existing Fix12<int> mangling, as an extern \"C\" function with a scalar speed (wall 6az): the body reads speed twice, and a class-typed parameter is homed per use. include/ModelAnim2.h carries the real member declaration. Follow-up: rename the symbol to its scalar mangling _ZN10ModelAnim213Func_020162C4Ejiit, which matches as a real member, once Player.cpp's four extern call sites move to the member call.",
-      "evidence": "Measured on 2004/b56 at arm9 0x020162c4 (target 0x5c): a real member with Fix12<int> speed gives 0x6c; a real member with Fix12i speed (mangles _ZN10ModelAnim213Func_020162C4Ejiit) reproduces 0x5c exactly; the extern \"C\" definition reproduces 0x5c. Carried from the absorbed one-function source."
     },
     {
       "path": "src/game/actors/d_a_krb.cpp",
@@ -410,22 +354,6 @@
       "evidence": "df88a655 RenderModel/RenderModelTransparent local Inner::count; include/BMD_File.h BMD_Bone pad_08 spans0x08..0x33; notes/experiments/scene-physics3955-review.md; full106/106 ROM proof at005807df4f and independent prepared-object verification."
     },
     {
-      "path": "src/minigames/d_mg_trmpln2_mario.cpp",
-      "rule": "raw-offset",
-      "match": "(ModelAnim*)(self+0x78",
-      "count": 2,
-      "reason": "The real ModelAnim API replaces shadow calls for the embedded model at +0x78. The address and model storage are inherited from Trmp2Mario; the enclosing record remains partial. Retire this cast when its model member is represented without changing lifecycle codegen.",
-      "evidence": "df88a655 Trmp2Mario_Draw and Trmp2Mario_UpdateMatrix model at+0x78; notes/experiments/scene-physics3955-review.md; full106/106 ROM proof at005807df4f and independent prepared-object verification."
-    },
-    {
-      "path": "src/minigames/d_mg_trmpln2_mario.cpp",
-      "rule": "raw-offset",
-      "match": "(ModelAnim*)(self+0x6c",
-      "count": 2,
-      "reason": "The real ModelAnim API replaces shadow calls for the embedded model at +0x6c. The address and model storage are inherited from Trmp3DMario; the enclosing record remains partial. Retire this cast when its model member is represented without changing lifecycle codegen.",
-      "evidence": "df88a655 Trmp3DMario_Draw and Trmp3DMario_UpdateMatrix model at+0x6c; notes/experiments/scene-physics3955-review.md; full106/106 ROM proof at005807df4f and independent prepared-object verification."
-    },
-    {
       "path": "src/minigames/d_s_mg_roulette_methods.cpp",
       "rule": "raw-offset",
       "match": "(RouletteSliderView*)(c+0x530c",
@@ -480,6 +408,14 @@
       "count": 295,
       "reason": "__sinit_ov002_021019d0 is the enrolled C initializer under #pragma cplusplus off, so SharedFilePtr::Construct cannot be spelled as a member call. Follow-up: keep this initializer in C until a C++ spelling reproduces the same .init bytes.",
       "evidence": "Retired src/unnamed/ov002/__sinit_ov002_021019d0.c, folded into src/game/player/Player.cpp; ov002/Player .init 0x021019d0 size 0x5470 TEXT-VERIFIED"
+    },
+    {
+      "path": "src/game/player/Player.cpp",
+      "rule": "handspelled-member",
+      "match": "_ZN6Player7SetAnimEjiit",
+      "count": 9,
+      "reason": "Six call sites stay on the scalar symbol. func_ov002_020bec9c tail-forwards the callee's r0 as its own int result, so the call cannot be a void method return. func_ov002_020d1f78 passes (w << 4) >> 16, and narrowing that to u16 grew the function by 8 bytes. func_ov002_020d4748 passes AnimSpeed() three times and s5 once; each narrowing cost 8 bytes (0x4e8 to 0x508). The other three occurrences are the local externs those calls need. The definition itself is Player::SetAnim.",
+      "evidence": "ov002/Player 618/618 TEXT-VERIFIED on cpp/player-setanim-1023; SetAnim remains 0x020bef2c size 0x210"
     },
     {
       "path": "src/game/player/Player.cpp",
@@ -584,6 +520,14 @@
       "count": 2,
       "reason": "func_0200897c is a C translation unit (its enum-typed Bool local is the measured -enum int lever), so it cannot name the dBgCh member that sets the vanish-surface pass-through bit; it spells the mangled name once in the extern declaration and once at the call. Follow-up: retire with the C++ migration of this dCamera_c-cluster helper.",
       "evidence": "The callee was func_02035414/func_02035428 before the dBgCh member rename; arm9 0x0200897c still byte-matches (rombuild 106/106 exact) and prepush_linkcheck resolves the call to the renamed symbol."
+    },
+    {
+      "path": "src/unnamed/arm9/0203/func_0203083c.c",
+      "rule": "handspelled-member",
+      "match": "_ZN3OAM6RenderEbP7OamAttriiiiiiii",
+      "count": 2,
+      "reason": "func_0203083c is a C translation unit, so it cannot name the C++ member OAM::Render; it spells the 10-argument overload's mangled name once in the extern declaration and once at the call. Follow-up: retire with this helper's C++ migration.",
+      "evidence": "The call spelled _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii before the OAM::Render rename (#4317); include/OAM.h declares the scalar overload."
     },
     {
       "path": "src/engine/particle/Particle_Manager.cpp",
@@ -818,22 +762,6 @@
       "evidence": "src/game/stages/d_s_entry_methods.cpp owns ov075 0x021190a4..0x0211a854. 30/30 functions byte-match the ROM under mwccarm 2004/b56 with relocation destinations checked, including the nine functions the file already owned."
     },
     {
-      "path": "src/runtime/actor/d_actor.cpp",
-      "rule": "handspelled-member",
-      "match": "_ZN8dActor_c9SetRangesE5Fix12IiES1_S1_S1_",
-      "count": 3,
-      "reason": "SetRanges takes four Fix12<int> by value. A decl-only member does not accept the constructor's scalar words (mwcc rejects the call as not matching SetRanges(Fix12<int>, Fix12<int>, Fix12<int>, Fix12<int>)), and defining the body as a method homes each used parameter. The extern \"C\" spelling passes them as ints. These three occurrences are the local declaration, the constructor call, and the definition.",
-      "evidence": "include/dActor_c.h does not declare SetRanges; notes/mwccarm-codegen.md 6az measured +0x14 on this function at 0x02010e08; _ZN8dActor_cC2Ev 0x0201150c size 0x148 MATCH under 2004/b56 with the scalar call."
-    },
-    {
-      "path": "src/_ZN10dScEntry_c23RenderCourseSelectTitleEv.cpp",
-      "rule": "handspelled-member",
-      "match": "_ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii",
-      "count": 2,
-      "reason": "Retained scalar ABI bridge from the former course-title renderer. OAM.h deliberately excludes this Fix12-by-value overload, and its enrolled definition still uses the scalar extern C interface. Follow-up: replace the bridge when the Fix12 interface is reconstructed with matching caller and callee ABI.",
-      "evidence": "include/OAM.h; src/engine/oam/OAM.cpp; notes/mwccarm-codegen.md section 6az; former func_ov075_02118cd0.c at ov075 0x02118cd0 size 0x4c. The declaration and single call are inherited, not newly introduced interfaces."
-    },
-    {
       "path": "src/game/actors/d_a_ots.cpp",
       "rule": "handspelled-member",
       "match": "_ZN9ModelAnim7SetAnimEP8BCA_Fileiit",
@@ -848,30 +776,6 @@
       "count": 3,
       "reason": "St_YoshiPower_Main is the only caller that passes a non-constant startFrame ((currFrame << 4) >> 0x10). Narrowing it to the member's real u16 costs +0x10, so this body keeps the scalar unsigned int spelling, per this file's per-body declaration policy. The three occurrences are the block-scope declaration and its two calls.",
       "evidence": "src/engine/model/ModelAnim.cpp: void ModelAnim::SetAnim(BCA_File *, int, Fix12i, u16) at 0x02016748 size 0x5c MATCH under 2004/b56; St_YoshiPower_Main MATCH with the scalar unsigned int startFrame, +0x10 with the u16 member call (PR #4290 measurement)."
-    },
-    {
-      "path": "src/minigames/d_mg_trmpln2_mario.cpp",
-      "rule": "handspelled-member",
-      "match": "_ZN9ModelAnim7SetAnimEP8BCA_Fileiit",
-      "count": 61,
-      "reason": "Every ns_* namespace in this file declares its own never-defined struct ModelAnim scaffold, so mModelAnim is not the real class and the header member cannot bind. This is a rename of the 61 pre-existing occurrences of the retired _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj spelling, not new debt. Follow-up: deslop the scaffolds onto the real ModelAnim, then convert to member calls.",
-      "evidence": "src/engine/model/ModelAnim.cpp: void ModelAnim::SetAnim(BCA_File *, int, Fix12i, u16) at 0x02016748 size 0x5c MATCH under 2004/b56; the 61 occurrences replace 61 of the old Fix12<int> spelling one-for-one (PR #4290); every function in the file still matches."
-    },
-    {
-      "path": "src/minigames/unit020bfec0.cpp",
-      "rule": "handspelled-member",
-      "match": "_ZN9ModelAnim7SetAnimEP8BCA_Fileiit",
-      "count": 5,
-      "reason": "This TU never sees the ModelAnim class. It reaches its animation through raw record offsets (*(void **)(c + 0x104)), so the header member cannot bind. This is a rename of the 5 pre-existing occurrences of the retired _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj spelling, not new debt. Follow-up: type the record, then convert to member calls.",
-      "evidence": "src/engine/model/ModelAnim.cpp: void ModelAnim::SetAnim(BCA_File *, int, Fix12i, u16) at 0x02016748 size 0x5c MATCH under 2004/b56; the 5 occurrences replace 5 of the old Fix12<int> spelling one-for-one (PR #4290)."
-    },
-    {
-      "path": "src/minigames/unit020bfec0.cpp",
-      "rule": "handspelled-member",
-      "match": "_ZN14BlendModelAnim7SetAnimER8BCA_Fileiiit",
-      "count": 37,
-      "reason": "This TU never sees the BlendModelAnim class. It reaches its animation through raw record offsets (*(void **)(c + 0x104)), so the header member cannot bind. This is a rename of the 37 pre-existing occurrences of the retired _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt spelling, not new debt. Follow-up: type the record, then convert to member calls.",
-      "evidence": "src/engine/model/BlendModelAnim.cpp: void BlendModelAnim::SetAnim(BCA_File &, int, int, Fix12i, u16) at 0x020163e0 size 0x9c MATCH under 2004/b56; the 37 occurrences replace 37 of the old Fix12<int> spelling one-for-one (PR #4292)."
     },
     {
       "path": "src/InvMat4x3.c",

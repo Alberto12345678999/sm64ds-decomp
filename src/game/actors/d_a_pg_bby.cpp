@@ -45,7 +45,6 @@ typedef char PgBbyAnimationFile_size_must_be_0x08[sizeof(PgBbyAnimationFile) == 
 
 extern "C" {
 /* Fix12<int> by-value walls (notes/mwccarm-codegen.md 6az). */
-int _ZN8dActor_c22IsTooFarAwayFromPlayerE5Fix12IiE(void *self, int dist);
 void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *thiz, void *actor, int r, int h, unsigned int a, unsigned int b);
 void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(void *thiz, void *actor, int r,
                                                                  int h, void *v, int b);
@@ -121,7 +120,7 @@ s32 daPgBby_c::InitResources()
 // @symbol _ZN9daPgBby_c8BehaviorEv
 s32 daPgBby_c::Behavior()
 {
-    if (_ZN8dActor_c22IsTooFarAwayFromPlayerE5Fix12IiE(this, 0x7d0000) && mWithMeshClsn.IsOnGround()) {
+    if (IsTooFarAwayFromPlayer(0x7d0000) && mWithMeshClsn.IsOnGround()) {
         func_ov072_02120d04();
     } else {
         if (mMother == 0)

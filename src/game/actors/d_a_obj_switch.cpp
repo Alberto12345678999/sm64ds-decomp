@@ -71,7 +71,6 @@ extern "C" {
     // local extern: Sound.h/dBgActor_c.h declare the members, but Fix12<int>
     // by value through the member call changes codegen under 2004/b56.
     int _ZN5Sound17ChangeMusicVolumeEj5Fix12IiE(unsigned int id, int volume);
-    int _ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_(dBgActor_c *self, int a, int b);
     // local extern: the actual free definition accepts a scalar scale. The
     // genuine member call changes InitResources under 2004/b56; see the
     // committed experiment.
@@ -242,7 +241,7 @@ int daObjSwitch_c::Behavior()
         if (id344 == 0) {
             func_ov002_020ba01c(2, 3, 0x333, 0x1000);
             UpdateModelPosAndRotY();
-            if (_ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_(this, 0, 0) != 0) {
+            if (IsClsnInRange(0, 0) != 0) {
                 func_ov002_020b9f80();
             }
             return 1;
@@ -259,7 +258,7 @@ int daObjSwitch_c::Behavior()
     }
     func_ov002_020ba520();
     UpdateModelPosAndRotY();
-    if (_ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_(this, 0, 0) != 0) {
+    if (IsClsnInRange(0, 0) != 0) {
         func_ov002_020b9f80();
     }
 

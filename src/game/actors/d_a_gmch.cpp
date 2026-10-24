@@ -166,7 +166,11 @@ extern void   Matrix4x3_ApplyInPlaceToRotationX(void *m, s16 angX);
 extern void   Matrix4x3_ApplyInPlaceToRotationY(void *m, s16 angY);
 extern void   _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(void *self, void *shadow, void *mtx, int rad, int height, u32 flags);
 extern int DecIfAbove0_Byte(void *p);
-extern void   _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(unsigned int n, int a, int b, int c);
+namespace Particle {
+struct System {
+    static void NewSimple(unsigned int n, int a, int b, int c);
+};
+}
 extern int    _Z15ApproachLinear2Riii(int *p, int target, int step);
 extern void   func_0201267c(int id, void *pos);
 extern void   _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *self, void *actor, int a, int b, unsigned int c, unsigned int d);
@@ -423,9 +427,9 @@ int daGmch_c::EnterState8()
     mModelAnim.SetAnim((BCA_File *)data_ov081_02128edc.filePtr, 0, 0x1000, 0);
     mModelAnim.speed = 0x4000;
     int yOffset1 = OnAimedAtWithEgg();
-    _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0x43, mPosX, mPosY + yOffset1, mPosZ);
+    Particle::System::NewSimple(0x43, mPosX, mPosY + yOffset1, mPosZ);
     int yOffset2 = OnAimedAtWithEgg();
-    _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0x44, mPosX, mPosY + yOffset2, mPosZ);
+    Particle::System::NewSimple(0x44, mPosX, mPosY + yOffset2, mPosZ);
     mStateIndex = 8;
     return 1;
 }

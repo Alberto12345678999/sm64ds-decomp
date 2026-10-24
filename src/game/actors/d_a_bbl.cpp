@@ -37,7 +37,6 @@ int _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
 
 /* True while the player is further than `dist` away. Fix12<int> by value
  * again. */
-int _ZN8dActor_c22IsTooFarAwayFromPlayerE5Fix12IiE(dActor_c *self, int dist);
 
 /* The actor-collision cylinder's own initialiser; two more Fix12<int> by
  * value, so it stays at its C ABI spelling too. */
@@ -147,7 +146,7 @@ int daBbl_c::Behavior()
             return 1;
     }
 
-    if (_ZN8dActor_c22IsTooFarAwayFromPlayerE5Fix12IiE(this, 0x5dc000)) {
+    if (IsTooFarAwayFromPlayer(0x5dc000)) {
         if (mJumps != 0)
             MarkForDestruction();
         return 1;

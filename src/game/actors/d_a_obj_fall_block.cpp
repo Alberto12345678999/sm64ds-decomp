@@ -23,8 +23,6 @@
 //   value and changes the caller, so the call stays the mangled symbol.
 // - dBgActor_c::IsClsnInRange's definition takes two ints (Behavior
 //   passes 0, 0). There is no int method on the class.
-// - Particle::System::NewSimple's definition takes three s32 positions
-//   (Kill). A Fix12<int> declaration changes the caller.
 // - func_020393c4 is `p[7] = v`, the store of OnStoodOn into dBgW::stoodOnCallback.
 //   The ROM calls it; an inlined store would drop the bl. Naming belongs
 //   on dBgW.
@@ -74,12 +72,15 @@ s16 Vec3_HorzAngle(const Vector3 *v0, const Vector3 *v1);
 int Vec3_Dist(const Vector3 *a, const Vector3 *b);
 int AngleDiff(int a, int b);
 void daObjFallBlock_c_LinkGroup(daObjFallBlock_c *c);
-void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(u32 id, Fix12i x, Fix12i y, Fix12i z);
+namespace Particle {
+struct System {
+    static void NewSimple(u32 id, Fix12i x, Fix12i y, Fix12i z);
+};
+}
 void Matrix4x3_FromRotationXYZExt(void *, int, int, int);
 int DecIfAbove0_Byte(u8 *p);
 int DecIfAbove0_Short(u16 *p);
 int Vec3_HorzDist(void *a, void *b);
-int _ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_(void *self, int radius, int yOffset);
 void daObjFallBlock_c_PollLinkedStar(daObjFallBlock_c *c);
 void daObjFallBlock_c_FindLinkedStar(daObjFallBlock_c *c);
 void daObjFallBlock_c_ResetMotion(daObjFallBlock_c *c);
@@ -95,10 +96,9 @@ extern signed char data_0209f2f8; /* current level id */
 }
 
 /* Free definitions take ints. SetFile's header method takes Fix12<int>
-   by value; IsClsnInRange and NewSimple have no int method. */
+   by value; IsClsnInRange has no int method. */
 #define dBgW_KcMbg_SetFile _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block
-#define dBgActor_c_IsClsnInRange _ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_
-#define Particle_System_NewSimple _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_
+#define Particle_System_NewSimple Particle::System::NewSimple
 
 // @symbol _ZN16daObjFallBlock_cD0Ev
 // @symbol _ZN16daObjFallBlock_cD1Ev
@@ -216,8 +216,7 @@ void daObjFallBlock_c_ResetMotion(daObjFallBlock_c *c)
  *
  * The second Vector3 is memberwise on purpose: Vector3 declares a destructor
  * (types.h), so a whole-object assignment compiles to an ldm/stm pair, four
- * instructions where the ROM has six. Particle::System::NewSimple stays
- * mangled -- notes/mwccarm-codegen.md 6az. */
+ * instructions where the ROM has six. */
 void daObjFallBlock_c::Kill()
 {
     Vector3 pos;
@@ -458,7 +457,7 @@ s32 daObjFallBlock_c::Behavior() {
 
     daObjFallBlock_c_ApplyModelXyz(this);
     if (mState <= 1) {
-        if (dBgActor_c_IsClsnInRange(this, 0, 0) != 0)
+        if (IsClsnInRange(0, 0) != 0)
             UpdateClsnPosAndRot();
     }
     mShakeRequested = 0;

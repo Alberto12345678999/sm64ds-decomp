@@ -101,7 +101,11 @@ void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES
     s32 depth, u8 opacity);
 int _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(Player *self, const Vector3 *from,
     u32 a, s32 b, u8 c, u8 d, u8 e);
-void *_ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(u32 id, s32 x, s32 y, s32 z);
+namespace Particle {
+struct System {
+    static void *NewSimple(u32 id, s32 x, s32 y, s32 z);
+};
+}
 }
 
 /* The bomb's file-scope SharedFilePtr object, spelled through the same
@@ -416,8 +420,8 @@ int daWbm_c::func_ov098_0213b6e0()
                 pos.z = mPosZ;
                 _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj((Player *)other, &pos, 1, 0xc000, 1, 0, 1);
                 if (mVariant == 1) {
-                    _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0x1c, mPosX, mPosY, mPosZ);
-                    _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0x1d, mPosX, mPosY, mPosZ);
+                    Particle::System::NewSimple(0x1c, mPosX, mPosY, mPosZ);
+                    Particle::System::NewSimple(0x1d, mPosX, mPosY, mPosZ);
                     Burst();
                     return 1;
                 }

@@ -17,8 +17,9 @@
  * externalized. See include/ModelAnim.h for why the declaration stays first.
  *
  * Func_020162C4 keeps its placeholder name, but its body is SetAnim for
- * the second animation, fast path and all; its definition stays a
- * mangled free function (wall 6az, Fix12<int> in the signature).
+ * the second animation, fast path and all. It is a real member: speed is
+ * the scalar Fix12i, so the symbol is _ZN10ModelAnim213Func_020162C4Ejiit,
+ * as ModelAnim::SetAnim's is.
  */
 
 #ifdef __cplusplus
@@ -54,8 +55,7 @@ struct ModelAnim2 : ModelAnim {
 
     /* --- non-virtual --- */
     void Copy(const ModelAnim2 &src, char *newFile, u32 newOtherFile);
-    void Func_020162C4(u32 animFile, int flags, Fix12<int> speed,
-                       u16 startFrame);        /* free function, wall 6az */
+    void Func_020162C4(u32 animFile, int flags, Fix12i speed, u16 startFrame);
 
     /* ITS OWN, TO RESOLVE AN AMBIGUITY MULTIPLE INHERITANCE CREATES. ModelAnim
        derives from Model (so ModelBase) and from dExtFrameCtrl_c, and both bases

@@ -98,7 +98,11 @@ void Matrix4x3_FromRotationZXYExt(void *m, int x, int y, int z);
 extern Matrix4x3 data_020a0e68;
 void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(void *self, void *shadow, void *mtx, int rad, int depth, u8 opacity);
 unsigned char DecIfAbove0_Byte(unsigned char *p);
-void * _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(unsigned int id, int x, int y, int z);
+namespace Particle {
+struct System {
+    static void *NewSimple(unsigned int id, int x, int y, int z);
+};
+}
 extern s16 data_02082214[];
 void func_02035684(int *p, int v);
 int RandomIntInternal(int *seed);
@@ -109,7 +113,6 @@ extern int data_0209f32c;
 void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *self, dActor_c *actor, int radius, int height, unsigned int flags, unsigned int vulnFlags);
 void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(void *self, dActor_c *actor, int radius, int height, Vector3_16 *a, Vector3_16 *b);
 extern char IDENTITY_MATRIX4X3;
-int _ZN8dActor_c22IsTooFarAwayFromPlayerE5Fix12IiE(void *self, int dist);
 extern signed char data_0209f2f8;
 }
 
@@ -425,9 +428,9 @@ extern "C" int func_ov077_02125480(daTgz_c *self)
     self->mModelAnim.SetAnim((BCA_File *)TGZ_BCA, 0, 0x1000, 0);
     self->mModelAnim.speed = 0x4000;
     int aimHeight = self->OnAimedAtWithEgg();
-    _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0x43, self->mPosX, self->mPosY + aimHeight, self->mPosZ);
+    Particle::System::NewSimple(0x43, self->mPosX, self->mPosY + aimHeight, self->mPosZ);
     int aimHeightAgain = self->OnAimedAtWithEgg();
-    _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0x44, self->mPosX, self->mPosY + aimHeightAgain, self->mPosZ);
+    Particle::System::NewSimple(0x44, self->mPosX, self->mPosY + aimHeightAgain, self->mPosZ);
     self->mState = 5;
     return 1;
 }
@@ -456,7 +459,7 @@ extern "C" int func_ov077_02125550(daTgz_c *self)
             ((int *)&vec)[0] = x;
             ((int *)&vec)[1] = y;
             ((int *)&vec)[2] = z;
-            _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0xb2, vec.x, vec.y, vec.z);
+            Particle::System::NewSimple(0xb2, vec.x, vec.y, vec.z);
             func_0201267c(0x109, &self->mCamSpacePos);
         } else {
             self->mVertSpeed = 0;
@@ -725,7 +728,7 @@ extern "C" int func_ov077_02125bb4(daTgz_c *self)
             ((int *)&vec)[0] = x;
             ((int *)&vec)[1] = y;
             ((int *)&vec)[2] = z;
-            _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0xb2, vec.x, vec.y, vec.z);
+            Particle::System::NewSimple(0xb2, vec.x, vec.y, vec.z);
             func_0201267c(0x109, &self->mCamSpacePos);
         }
     }
@@ -805,7 +808,7 @@ int daTgz_c::Behavior()
     int s = mState;
     if (s != 1 || mWithMeshClsn.IsOnGround()) {
         s = mState;
-        if (s != 4 && s != 5 && _ZN8dActor_c22IsTooFarAwayFromPlayerE5Fix12IiE(this, 0x5dc000)) {
+        if (s != 4 && s != 5 && IsTooFarAwayFromPlayer(0x5dc000)) {
             if (DecIfAbove0_Byte(&mDespawnTimer) == 0) {
                 MarkForDestruction();
                 return 1;

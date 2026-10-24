@@ -10,10 +10,10 @@
  * pointer-to-member constants at 0x0212812c..0x02128158.
  */
 // leftovers:
-// - SpawnCoins, Particle::System::NewSimple, DropShadowScaleXYZ, dCcAc_c::Init
-//   and dBgCh_Actr::Init stay mangled extern "C". SpawnCoins as a member, with
-//   Fix12<int> by value, grew func_ov080_02124acc (0x170 to 0x17c) and
-//   func_ov080_02124edc (0x110 to 0x11c). NewSimple has no header method.
+// - SpawnCoins, DropShadowScaleXYZ, dCcAc_c::Init and dBgCh_Actr::Init stay
+//   mangled extern "C". SpawnCoins as a member, with Fix12<int> by value,
+//   grew func_ov080_02124acc (0x170 to 0x17c) and func_ov080_02124edc
+//   (0x110 to 0x11c).
 // - mShadowMtx stays u8[0x30] and is cast to Matrix4x3. The header names the
 //   array, not a Matrix4x3.
 // - func_ov080_02124e60 stores 0 through *(int *)pad_0d0, the pad in front of
@@ -25,7 +25,6 @@
 // - func_02010304, Matrix4x3_ApplyInPlaceToTranslation, Vec3_LslInPlace,
 //   Matrix4x3_FromRotationY and dBgCh_Actr_UpdateDiscreteNoLava_veneer stay
 //   free calls defined outside this TU.
-
 
 /* Runtime asset handles resolved through the overlay 0 file table. */
 enum daBttBk_c_AssetId {
@@ -48,7 +47,11 @@ typedef void (daBttBk_c::*PMF)();
 
 extern "C" {
 void *func_02010304(void *a, void *b);
-void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(unsigned int id, int x, int y, int z);
+namespace Particle {
+struct System {
+    static void NewSimple(unsigned int id, int x, int y, int z);
+};
+}
 void _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs(void *self, const Vector3 &v, unsigned int n, int vel, short unk);
 void Matrix4x3_ApplyInPlaceToTranslation(Mtx43 *m, int x, int y, int z);
 void Vec3_LslInPlace(Vector3 *v, int sh);
@@ -119,7 +122,7 @@ void daBttBk_c::func_ov080_02124acc()
     int x = mPosX;
     int y = y0 + 0x32000;
     v.x = x; v.y = y; v.z = z;
-    _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(6, v.x, v.y, v.z);
+    Particle::System::NewSimple(6, v.x, v.y, v.z);
     v2.x = v.x;
     v2.y = v.y;
     v2.z = v.z;
@@ -247,7 +250,7 @@ int daBttBk_c::func_ov080_02124edc()
             vec2.y = vec.y;
             vec2.z = vec.z;
             PoofDustAt(vec2);
-            _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(6, vec.x, vec.y, vec.z);
+            Particle::System::NewSimple(6, vec.x, vec.y, vec.z);
 
             {
                 int ybase = mPosY;
@@ -419,7 +422,7 @@ void daBttBk_c::OnTurnIntoEgg(Player &player)
     vec2.y = vec.y;
     vec2.z = vec.z;
     PoofDustAt(vec2);
-    _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(6, vec.x, vec.y, vec.z);
+    Particle::System::NewSimple(6, vec.x, vec.y, vec.z);
     Sound::PlayBank3(0x41, mCamSpacePos);
     MarkForDestruction();
 }

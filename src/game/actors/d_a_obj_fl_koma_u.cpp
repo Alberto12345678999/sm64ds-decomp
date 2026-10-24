@@ -66,7 +66,6 @@ void Matrix4x3_FromRotationY(Matrix4x3 *mat, int angle);
 void MulVec3Mat4x3(const Vector3 *v, const Matrix4x3 *m, Vector3 *dst);
 void AddVec3(const Vector3 *a, const Vector3 *b, Vector3 *dst);
 void func_020393d4(dBgW *bgw, void *fn);
-int _ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_(dBgActor_c *self, int a, int b);
 void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
     dBgW_KcMbg *self, KCL_File *kcl, const Matrix4x3 *mtx, int scale,
     s16 angleY, CLPS_Block *clps);
@@ -177,7 +176,7 @@ s32 daObjFl_KomaU_c::Behavior()
         i += 1;
     } while (i < 8);
 
-    if (_ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_(this, 0, 0) != 0)
+    if (IsClsnInRange(0, 0) != 0)
         UpdateClsnPosAndRot();
     return 1;
 }

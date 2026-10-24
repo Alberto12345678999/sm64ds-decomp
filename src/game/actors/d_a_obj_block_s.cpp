@@ -133,7 +133,11 @@ extern void *_ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8Callba
     u32 a, u32 b, int c, int d, int e, const void *v, void *cb);
 extern u32 _ZN8Particle6System17NewUnkCallback818Ejj5Fix12IiES2_S2_PK11Vector3_16f(
     u32 a, u32 b, int c, int d, int e, const Vector3_16f *v);
-extern void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(unsigned int id, int x, int y, int z);
+namespace Particle {
+struct System {
+    static void NewSimple(unsigned int id, int x, int y, int z);
+};
+}
 extern void _ZN8Particle20RunningSlidingDustAtE5Fix12IiES1_S1_(s32 x, s32 y, s32 z);
 extern void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
     char *thiz, int f, char *m, int fix, short s, int blk);
@@ -144,7 +148,6 @@ extern void _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs(void *self, void *pos
 extern short _ZN8dActor_c12ReflectAngleE5Fix12IiES1_s(void *self, int a, int b, short c);
 extern void _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_S5_j(
     void *self, void *shadow, void *mtx, int fix, int t1, int t2, unsigned int n);
-extern int _ZN10dBgActor_c21IsClsnInRangeOnScreenE5Fix12IiES1_(void *self, int a, int b);
 extern void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
     void *thiz, void *actor, void *vec, int fix, int t, unsigned u1, unsigned u2);
 
@@ -158,7 +161,7 @@ extern s16 func_02010844(void *unused, Vector3 *v, s16 angle);
 
 extern void _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void *p, struct Vector3 *pos, u32 a, int b, u32 d, u32 e, u32 f);
 
-extern u32 _ZN5Sound8PlayLongEjjjRK7Vector3s(u32 a, u32 b, u32 c, const Vector3 *pos, u32 e);
+extern void d_a_obj_block_sPlayLongHold(u32 a, u32 b, u32 c, const Vector3 *pos, u32 e);
 
 extern int _Z14ApproachLinearRiii(int *a, int b, int c);
 extern void _Z11UpdateAngleRssis(s16 *a, s16 b, int c, s16 d);
@@ -363,7 +366,7 @@ void daObjBlockS_c::func_ov098_02138344()
     if (mWithMeshClsn.IsOnGround() == 0) {
         func_ov098_021396a4();
     }
-    if (_ZN10dBgActor_c21IsClsnInRangeOnScreenE5Fix12IiES1_(this, 0, 0) != 0) {
+    if (IsClsnInRangeOnScreen(0, 0) != 0) {
         func_ov098_021397c8();
     }
 }
@@ -632,7 +635,7 @@ void daObjBlockS_c::func_ov098_021389f8()
     if (!mWithMeshClsn.IsOnGround()) {
         func_ov098_021396a4();
     }
-    if (!_ZN10dBgActor_c21IsClsnInRangeOnScreenE5Fix12IiES1_(this, 0x600000, 0)) {
+    if (!IsClsnInRangeOnScreen(0x600000, 0)) {
         return;
     }
     func_ov098_021397c8();
@@ -876,7 +879,7 @@ void daObjBlockS_c::Kill()
     vec.x = x;
     vec.y = y;
     vec.z = z;
-    _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0xe, vec.x, vec.y, vec.z);
+    Particle::System::NewSimple(0xe, vec.x, vec.y, vec.z);
     ((int *)&vec2)[0] = ((int *)&vec)[0];
     ((int *)&vec2)[1] = ((int *)&vec)[1];
     ((int *)&vec2)[2] = ((int *)&vec)[2];
@@ -1081,7 +1084,7 @@ int daObjBlockS_c::func_ov098_02139228()
         && mHorzSpeed > 0xa000) {
         _ZN8Particle20RunningSlidingDustAtE5Fix12IiES1_S1_(mPosX, mPosY, mPosZ);
         mSlideSoundHandle =
-            _ZN5Sound8PlayLongEjjjRK7Vector3s(mSlideSoundHandle, 3, 0x93, &mCamSpacePos, 0);
+            Sound::PlayLong(mSlideSoundHandle, 3, 0x93, *(Vector3 *)&mCamSpacePos, 0);
     }
 
     {

@@ -28,10 +28,10 @@
  * king's face texture 02128178, the collision meshes data_ov079_02127bf0[2].
  *
  * Known limits:
- * - Particle::System::NewSimple, dActor_c::SpawnCoins/Earthquake/
- *   DropShadowScaleXYZ, ModelAnim::SetAnim, TextureSequence::SetFile,
- *   dBgW_KcMbg::SetFile and dBgCh_Actr::Init take Fix12<int> by value, so
- *   they stay mangled (notes/mwccarm-codegen.md 6az).
+ * - dActor_c::SpawnCoins/Earthquake, DropShadowScaleXYZ,
+ *   ModelAnim::SetAnim, TextureSequence::SetFile, dBgW_KcMbg::SetFile and
+ *   dBgCh_Actr::Init take Fix12<int> by value, so they stay mangled
+ *   (notes/mwccarm-codegen.md 6az).
  * - func_ov079_02123804 reacts to a hit but nothing in the cartridge's
  *   relocations calls it.
  * - func_ov079_02123d4c is really a Vector3-by-value member of daBtn_c, but
@@ -140,7 +140,11 @@ void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(
 void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
     void *mc, void *kcl, void *mtx, int fix, s16 s, void *clps);
 void _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(void *self, void *btp, int a, int fix, unsigned int b);
-void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(unsigned int id, int x, int y, int z);
+namespace Particle {
+struct System {
+    static void NewSimple(unsigned int id, int x, int y, int z);
+};
+}
 void _ZN8dActor_c10EarthquakeERK7Vector35Fix12IiE(void *self, const void *v, int f);
 void _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs(void *self, const void *pos, u32 n, int fix, s16 s);
 void _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_S5_j(
@@ -850,7 +854,7 @@ void daBtn_c::func_ov079_02125504()
             v[0].x = px + sn * 0xaa;
             v[0].z = pz + cs * 0xaa;
         }
-        _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0xb2, v[0].x, v[0].y, v[0].z);
+        Particle::System::NewSimple(0xb2, v[0].x, v[0].y, v[0].z);
     } else {
         mStepPlayed = 0;
     }
@@ -1024,7 +1028,7 @@ void daBtn_c::func_ov079_02124ed4()
             func_02012694(0x134, &mCamSpacePosX);
             {
                 s32 *p = &mPounder->mPosX;
-                _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(3, p[0], p[1], p[2]);
+                Particle::System::NewSimple(3, p[0], p[1], p[2]);
             }
             if (mHitPoints == 0) {
                 mModelAnim.SetAnim((BCA_File *)data_ov079_021281b0.filePtr, 0x40000000, 0x1000, 0);
@@ -1295,7 +1299,7 @@ void daBtn_c::func_ov079_021246dc()
             dp.y = v.y;
             dp.z = v.z;
             TriplePoofDustAt(*(Vector3 *)&dp);
-            _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(4, v.x, v.y, v.z);
+            Particle::System::NewSimple(4, v.x, v.y, v.z);
             mShouldRender = 0;
             UntrackAndSpawnStar(mTrackStarID, mStarID, *(Vector3 *)&starPos, 4);
             if (mMovingMeshCollider.IsEnabled() != 0)
@@ -1311,7 +1315,7 @@ void daBtn_c::func_ov079_021246dc()
         dp2.y = v2.y;
         dp2.z = v2.z;
         PoofDustAt(*(Vector3 *)&dp2);
-        _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(5, v2.x, v2.y, v2.z);
+        Particle::System::NewSimple(5, v2.x, v2.y, v2.z);
         MarkForDestruction();
     }
 }
@@ -1589,7 +1593,7 @@ void daBtn_c::OnHitByMegaChar(Player &player)
     dust.y = pos.y;
     dust.z = pos.z;
     PoofDustAt(dust);
-    _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(5, pos.x, pos.y, pos.z);
+    Particle::System::NewSimple(5, pos.x, pos.y, pos.z);
     MarkForDestruction();
     if (mMovingMeshCollider.IsEnabled() != 0)
         mMovingMeshCollider.Disable();

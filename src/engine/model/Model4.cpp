@@ -13,6 +13,10 @@
 #include "Model.h"
 #include "G3X.h"
 
+namespace CP15 {
+void EnableDTCM(void);
+}
+
 extern "C" {
 extern u32 data_020a4bc8;
 extern u32 data_020a4bcc;
@@ -22,9 +26,7 @@ extern u32 data_020a4be0;
 extern u32 data_020a4be4;
 extern u32 data_020a4be8;
 void Crash();
-void _ZN2GX16BeginLoadTexPlttEv(void);
-void _ZN2GX11LoadTexPlttEPKvjj(const void *src, u32 slot, u32 size);
-void _ZN2GX14EndLoadTexPlttEv(void);
+
 int func_02053e34(void);
 int func_02053e1c(void);
 }
@@ -494,14 +496,13 @@ extern "C" void func_02045e2c(int obj, int i, int a, short b)
     e->b = b;
 }
 
-extern "C" void _ZN4CP1510EnableDTCMEv(void);
 extern "C" u16 func_02053ed0(void);
 extern "C" u16 func_02053ec0(void);
 
 // @symbol func_02045d9c
 extern "C" void func_02045d9c(void)
 {
-    _ZN4CP1510EnableDTCMEv();
+    CP15::EnableDTCM();
     u16 r3 = *(volatile u16 *)0x4000060;
     u16 r1 = (u16)0x4000340;
     int r2 = 0x7fff;
@@ -618,9 +619,9 @@ extern "C" u32 func_02045ad8(const void *src, u32 size)
     if (slot + size > end)
         Crash();
 
-    _ZN2GX16BeginLoadTexPlttEv();
-    _ZN2GX11LoadTexPlttEPKvjj(src, data_020a4bcc, size);
-    _ZN2GX14EndLoadTexPlttEv();
+    GX::BeginLoadTexPltt();
+    GX::LoadTexPltt(src, data_020a4bcc, size);
+    GX::EndLoadTexPltt();
 
     slot = data_020a4bcc;
     data_020a4bcc = slot + ((size + 0xf) & 0xfff0);
@@ -643,9 +644,9 @@ extern "C" u32 func_02045a50(const void *src, u32 size)
 
     data_020a4bd8 -= (size + 0xf) & 0xfff0;
 
-    _ZN2GX16BeginLoadTexPlttEv();
-    _ZN2GX11LoadTexPlttEPKvjj(src, data_020a4bd8, size);
-    _ZN2GX14EndLoadTexPlttEv();
+    GX::BeginLoadTexPltt();
+    GX::LoadTexPltt(src, data_020a4bd8, size);
+    GX::EndLoadTexPltt();
 
     return data_020a4bd8;
 }

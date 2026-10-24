@@ -90,7 +90,7 @@
  *   `int (*)(void *)` cast of its name (folds to the same `bl`).
  * - dBgCh_Actr::Init / dCcAc_c::Init / DropShadowRadHeight / ReflectAngle 6az
  *   (Fix12i mangles as i; ROM is Fix12<int> -- method form Undefined)
- * - Particle::System::New / NewSimple: no method declaration in include/
+ * - Particle::System::New: no method declaration in include/
  * - Behavior 0x100: named ++mStateTimer size-DIFF vs unsigned-short launder
  *   (the u16 casts of dEnemyBase_c::mStateTimer at 0x100 stay everywhere they
  *   appear. The u16 at 0x38c is a distinct field, mStateFrames.)
@@ -1050,7 +1050,11 @@ void da1up_c::func_ov002_020aff10() {
    is spelt as the shard that uses it recovered it; nothing above declares
    any of them, so nothing here overrides a recovered view. */
 extern "C" {
-void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(unsigned int id, int x, int y, int z);
+namespace Particle {
+struct System {
+    static void NewSimple(unsigned int id, int x, int y, int z);
+};
+}
 void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void* thiz, dActor_c* a, int r, int h, unsigned int e, unsigned int g);
 void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(void* thiz, dActor_c* a, int r, int h, Vector3_16* p, int q);
 int IsStarCollectedInCurLevel(int a);
@@ -1084,7 +1088,7 @@ int da1up_c::CleanupResources()
     else data_ov002_0210da30.Release();
   }
   if ((unsigned int)(mMushroomType - 0xb) <= 1)
-    _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(PTCL_TYPE_11_12_CLEANUP, mPosX, mPosY + 0x28000, mPosZ);
+      Particle::System::NewSimple(PTCL_TYPE_11_12_CLEANUP, mPosX, mPosY + 0x28000, mPosZ);
   return 1;
 }
 

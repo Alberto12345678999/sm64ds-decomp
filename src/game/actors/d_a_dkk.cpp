@@ -63,9 +63,12 @@ bool ApproachLinear(short &value, short target, short step);
  * spells (int, void *). */
 extern "C" {
 extern void func_0201267c(int a, void *b);
-extern int _ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_(void *p, Fix12i a, Fix12i b);
 extern void _ZN8dActor_c10EarthquakeERK7Vector35Fix12IiE(void *thiz, const Vector3 &v, int f);
-extern void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(unsigned int n, int x, int y, int z);
+namespace Particle {
+struct System {
+    static void NewSimple(unsigned int n, int x, int y, int z);
+};
+}
 }
 
 // @symbol daDkk_c_classInit
@@ -127,8 +130,7 @@ int daDkk_c::Behavior()
     }
     UpdateModelPosAndRotY();
     func_ov091_02133098();
-    if (_ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_(this, 0, 0) != 0 ||
-        func_ov091_02132dc0() != 0) {
+    if (IsClsnInRange(0, 0) != 0 || func_ov091_02132dc0() != 0) {
         UpdateClsnPosAndRot();
     }
     return 1;
@@ -160,7 +162,7 @@ void daDkk_c::func_ov025_02111a84()
     v[0].y = mPosY;
     v[0].z = mPosZ;
     v[0].y = v[0].y + 0x3c000;
-    _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0x2e, v[0].x, v[0].y, v[0].z);
+    Particle::System::NewSimple(0x2e, v[0].x, v[0].y, v[0].z);
     func_0201267c(0xc7, &mCamSpacePosX);
 }
 

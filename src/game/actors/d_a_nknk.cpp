@@ -110,7 +110,6 @@ extern int RandomIntInternal(int *seed);
 extern int data_0209e650;
 extern short Vec3_HorzAngle(const Vector3* a, const Vector3* b);
 extern s16 _ZN8dActor_c12ReflectAngleE5Fix12IiES1_s(void *self, int a, int b, s16 ang);
-extern int _ZN8dActor_c22IsTooFarAwayFromPlayerE5Fix12IiE(void *self, int d);
 
 extern SharedFilePtr* data_ov062_0211ced8[2];
 extern SharedFilePtr* data_ov062_0211cee0[2];
@@ -289,7 +288,7 @@ int daNknk_c::Behavior()
     }
 
     if (mDeathState == 0) {
-        if (_ZN8dActor_c22IsTooFarAwayFromPlayerE5Fix12IiE(this, 0x5dc000) != 0)
+        if (IsTooFarAwayFromPlayer(0x5dc000) != 0)
             return 1;
 
         {

@@ -241,7 +241,6 @@ extern unsigned short DecIfAbove0_Short(void *p);
 extern int Math_Function_0203b14c(int *v, int target, int a, int b, int c);
 extern void UnloadBlueCoinModel(void* p);
 extern s8 data_0209f2f8;
-extern int _ZN8dActor_c22IsTooFarAwayFromPlayerE5Fix12IiE(char* c, int f);
 void LoadSilverStarAndNumber(void);
 void LoadBlueCoinModel(void* c);
 void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void* self, void* a, Fix12i r, Fix12i h, unsigned int e, unsigned int g);
@@ -1744,9 +1743,9 @@ int daKrb_c::Behavior()
         *(u32*)((char*)&mFlags) |= 0x10000000;
         PoofDust();
     }
-    if (mGoombaType != GOOMBA_KING_MINION && mState != STATE_TUMBLE &&
-        mEatenByYoshi == 0 && mDeathState == DEATH_NONE &&
-        _ZN8dActor_c22IsTooFarAwayFromPlayerE5Fix12IiE(((char*)this), 0x5dc000) != 0)     /* 1500.0 */
+    if (mGoombaType != GOOMBA_KING_MINION && mState != STATE_TUMBLE && mEatenByYoshi == 0 &&
+        mDeathState == DEATH_NONE &&
+        ((dActor_c *)(char *)this)->IsTooFarAwayFromPlayer(0x5dc000) != 0) /* 1500.0 */
     {
         Unk_02005d94();
         return 1;

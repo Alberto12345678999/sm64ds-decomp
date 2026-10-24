@@ -165,7 +165,11 @@ extern "C" s16 _ZN4cstd5atan2E5Fix12IiES1_(int y, int x);
 extern "C" {
 /* Positional sound at the actor's camera-space position (Sound::Play(3, id, pos)). */
 extern void func_0201267c(unsigned int id, void *p);
-extern void *_ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(unsigned int id, int x, int y, int z);
+namespace Particle {
+struct System {
+    static void *NewSimple(unsigned int id, int x, int y, int z);
+};
+}
 extern short data_02082214[];   /* SINE_TABLE: {sin, cos} pairs in fix12, indexed by angle >> 4 */
 /* This scalar entry follows its C definition, including u16 startFrame.
    ModelAnim.h instead declares u32; that shared contract is still unresolved. */
@@ -613,8 +617,8 @@ void daRNk_c::func_ov062_0211a1f4()
         tmp[1] = this->mPosY;
         tmp[2] = this->mPosZ;
         tmp[1] = this->mPosY + kDustHeight;
-        _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(kPtclLandingDust, this->mPosX,
-            this->mPosY + kDustHeight, this->mPosZ);
+        Particle::System::NewSimple(kPtclLandingDust, this->mPosX, this->mPosY + kDustHeight,
+                                    this->mPosZ);
         return;
     default:
         return;
@@ -1006,7 +1010,7 @@ add_path:
         stack[2] = (int)(cosA * k) + z;
     }
 do_new:
-    _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(kPtclFootstepDust, (int)stack[0], (int)stack[1], (int)stack[2]);
+    Particle::System::NewSimple(kPtclFootstepDust, (int)stack[0], (int)stack[1], (int)stack[2]);
     return;
 
 reset:

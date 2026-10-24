@@ -17,16 +17,6 @@
    lifecycle emits after them, D2 D0 D1 then C1 C2. */
 #include "ModelAnim.h"
 
-extern "C" {
-/* SetAnimation keeps its mangled spelling: its symbol really does carry a
-   by-value Fix12<int>, and this body reads the argument, so wall 6az applies
-   here even though it did NOT apply to SetAnim below (see ModelAnim.h and
-   notes/mwccarm-codegen.md 6az, MEASURED 2026-10-22).
-   local extern: Fix12 by-value speed. */
-void _ZN15dExtFrameCtrl_c12SetAnimationEti5Fix12IiEt(dExtFrameCtrl_c *self, u16 numFrames,
-                                                     s32 flags, s32 speed, u16 startFrame);
-}
-
 /* Only the header word SetAnim reads; Animation::UpdateFileOffsets' shard
    spells the pointer fields instead. */
 struct BCA_File {
@@ -91,8 +81,8 @@ void ModelAnim::SetAnim(BCA_File *animFile, int flags, Fix12i speed, u16 startFr
         this->speed = speed;
     } else {
         file = animFile;
-        _ZN15dExtFrameCtrl_c12SetAnimationEti5Fix12IiEt(
-            &static_cast<dExtFrameCtrl_c &>(*this), animFile->numFrames, flags, speed, startFrame);
+        static_cast<dExtFrameCtrl_c &>(*this).SetAnimation(animFile->numFrames, flags, speed,
+                                                           startFrame);
     }
 }
 

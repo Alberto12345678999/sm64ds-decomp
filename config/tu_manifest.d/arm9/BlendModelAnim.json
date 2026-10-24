@@ -22,7 +22,7 @@
   ],
   "functions": [
     {
-      "symbol": "_ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt",
+      "symbol": "_ZN14BlendModelAnim7SetAnimER8BCA_Fileiiit",
       "address": "0x020163e0",
       "size": "0x0000009c",
       "legacy_source": "src/_ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt.cpp",

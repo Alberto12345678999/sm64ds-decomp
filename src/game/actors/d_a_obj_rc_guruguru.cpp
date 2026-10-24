@@ -47,7 +47,6 @@ extern void *data_ov036_02113d78[];
 
 void func_020393d4(void *bgw, void *fn);
 
-bool _ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_(void *self, int a, int b);
 void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
     void *self, void *kcl, void *mtx, int scale, short angleY, void *clps);
 }
@@ -127,7 +126,7 @@ s32 daObjRc_Guruguru_c::Behavior()
     }
 
     UpdateModelPosAndRotY();
-    if (_ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_(this, 0, 0))
+    if (IsClsnInRange(0, 0))
         UpdateClsnPosAndRot();
     return 1;
 }

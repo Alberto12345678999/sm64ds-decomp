@@ -28,8 +28,7 @@
  *
  * leftovers:
  * - ModelAnim::SetAnim takes Fix12<int> by value; its real spelling makes
- *   the compiler home the argument and the size changes. NewSimple takes
- *   Fix12<int> the same way and has no header. Both stay mangled.
+ *   the compiler home the argument and the size changes. It stays mangled.
  * - The helper functions and data_ov006_ tables have no header or name yet.
  * - The five gTouch-lane and gActivePlayerSlot externs keep the file-local record
  *   spellings (u8 [][4] lanes) because the ROM scales the slot in the
@@ -63,7 +62,11 @@ struct Mtx { int a, b, c, d; };
 extern "C" {
 
 /* Fix12<int> by value in the real signatures; see the banner. */
-void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(unsigned int id, int x, int y, int z);
+namespace Particle {
+struct System {
+    static void NewSimple(unsigned int id, int x, int y, int z);
+};
+}
 void Sound_PlayBank1Panned(int a, int b, int c);
 void Vec3_Sub(Jump3DVec *out, Jump3DVec *a, Jump3DVec *b);
 void AddVec3(Jump3DVec *a, Jump3DVec *b, Jump3DVec *c);
@@ -652,9 +655,9 @@ void dMgJump3DMario_c::StateMove()
                     mModelAnim.SetAnim((BCA_File *)(*sJump3DAnimTable[mAnimIdx]), 0x40000000,
                                        kAnimSpeed, 0);
                     mModelAnim.dExtFrameCtrl_c::currFrame = 0;
-                    _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0xed, mPos.x << 3, mPos.y << 3, mPos.z << 3);
-                    _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0xee, v[0] << 3, v[1] << 3, v[2] << 3);
-                    _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0xef, v[0] << 3, v[1] << 3, v[2] << 3);
+                    Particle::System::NewSimple(0xed, mPos.x << 3, mPos.y << 3, mPos.z << 3);
+                    Particle::System::NewSimple(0xee, v[0] << 3, v[1] << 3, v[2] << 3);
+                    Particle::System::NewSimple(0xef, v[0] << 3, v[1] << 3, v[2] << 3);
                     Sound_PlayBank1Panned(0, mAnimIdx, mPos.x);
                     func_02012718(0x1c6, mScreenX << 12);
                     EnterBounce();

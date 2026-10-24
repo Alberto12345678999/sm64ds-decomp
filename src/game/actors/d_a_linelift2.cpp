@@ -89,8 +89,6 @@ void _Z14ApproachLinearRiii(int *value, int target, int step);
 void func_02010da4(void *actor);
 void func_020393d4(int *collider, int callback);
 void func_020393c4(int *collider, int callback);
-int _ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_(
-    dBgActor_c *self, int a, int b);
 void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
     dBgW_KcMbg *self, KCL_File *kcl, const Matrix4x3 *mtx, int scale,
     s16 angleY, CLPS_Block *clps);
@@ -196,7 +194,7 @@ int daLinelift2_c::Behavior()
         mPosY = saved;
     }
     UpdateModelPosAndRotY();
-    if (_ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_(this, 0, 0) != 0)
+    if (IsClsnInRange(0, 0) != 0)
         UpdateClsnPosAndRot();
     mIsPressed = 0;
     return 1;

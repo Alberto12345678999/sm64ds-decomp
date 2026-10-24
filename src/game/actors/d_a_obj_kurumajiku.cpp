@@ -39,7 +39,6 @@ int func_ov002_020b6ac8(void *actor, void *descriptor);
 
 /* Matches the scalar definition in d_bg_actor.cpp. Its encoded Fix12 name
    does not establish a by-value class parameter; see dBgActor_c.h. */
-int _ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_(dBgActor_c *self, int radius, int yOffset);
 // local extern: the actual free definition accepts a scalar scale; the
 // member call takes Fix12<int> by value (wall 6az).
 void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
@@ -138,7 +137,7 @@ s32 daObjKurumajiku_c::Behavior()
         }
     }
     func_ov002_020b6a80((char *)this);
-    if (_ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_(this, 0, 0))
+    if (IsClsnInRange(0, 0))
         UpdateClsnPosAndRot();
     return 1;
 }

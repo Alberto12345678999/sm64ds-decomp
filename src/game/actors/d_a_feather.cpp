@@ -61,7 +61,11 @@ void dBgCh_Actr_UpdateContinuous_Veneer(void* p);
 int _Z15ApproachLinear2Rsss(short* ref, short target, short rate);
 void _Z14ApproachLinearRiii(int* ref, int target, int rate);
 u8 DecIfAbove0_Byte(u8* p);
-void *_ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(u32 kind, int x, int y, int z);
+namespace Particle {
+struct System {
+    static void *NewSimple(u32 kind, int x, int y, int z);
+};
+}
 void Vec3_Asr(struct Vector3 *d, struct Vector3 *s, int sh);
 void Matrix4x3_FromTranslation(Matrix4x3 *m, Fix12i x, Fix12i y, Fix12i z);
 void Matrix4x3_ApplyInPlaceToRotationY(Matrix4x3 *m, s16 ang);
@@ -168,7 +172,7 @@ int daFeather_c::Behavior()
         _Z15ApproachLinear2Rsss((short*)&mSwayAngle, 0, 0x50);
         _Z14ApproachLinearRiii(&mHorzSpeed, 0, 0x555);
         if (DecIfAbove0_Byte(&mLifeTimer) == 0) {
-            _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0xd2, mPosX, mPosY, mPosZ);
+            Particle::System::NewSimple(0xd2, mPosX, mPosY, mPosZ);
             MarkForDestruction();
         }
     } else {
@@ -205,7 +209,7 @@ int daFeather_c::Behavior()
             int eq = (a->actorID == 0xbf);
             if (eq) {
                 ((Player *)a)->InitWingFeathers(true);
-                _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0xd2, mPosX, mPosY, mPosZ);
+                Particle::System::NewSimple(0xd2, mPosX, mPosY, mPosZ);
                 MarkForDestruction();
                 return 1;
             }
