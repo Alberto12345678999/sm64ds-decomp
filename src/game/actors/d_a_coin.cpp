@@ -780,7 +780,7 @@ void daCoin_c::func_ov002_020b2150()
 
 namespace Particle {
 struct System {
-    static void * NewSimple(unsigned int id, Fix12i x, Fix12i y, Fix12i z);
+    static void *NewSimple(unsigned int id, Fix12i x, Fix12i y, Fix12i z);
 };
 }
 

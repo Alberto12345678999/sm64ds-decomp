@@ -154,7 +154,7 @@ void func_020393d4(int *collider, void *callback);
 
 namespace Particle {
 struct System {
-    static void * NewSimple(unsigned int id, int x, int y, int z);
+    static void *NewSimple(unsigned int id, int x, int y, int z);
 };
 }
 int _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_S5_j(

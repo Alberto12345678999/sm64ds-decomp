@@ -1522,7 +1522,7 @@ void Heyho_MotionHitSpin(char *c) {
 namespace n020c4d3c {
 extern "C" {
 typedef int Fix12;
-extern void* d_mg3d_heyho_obj_adapterNewSimpleHold(unsigned int id, Fix12 x, Fix12 y, Fix12 z);
+extern void *d_mg3d_heyho_obj_adapterNewSimpleHold(unsigned int id, Fix12 x, Fix12 y, Fix12 z);
 extern void _Z14ApproachLinearRiii(int* p, int a, int b);
 extern void Camera_ProjectToScreen(void* a, void* b, int* c, int* d);
 extern int Mg_GetTopScreenYOffset(void);
@@ -1550,10 +1550,10 @@ void Heyho_Settle(char* c)
     int v0, v1;
     int t;
 
-    a = Particle::System::NewSimple(
-        0x122, HEYHO(c)->mPos.x << 3, HEYHO(c)->mPos.y << 3, HEYHO(c)->mPos.z << 3);
-    b = Particle::System::NewSimple(
-        0x123, HEYHO(c)->mPos.x << 3, HEYHO(c)->mPos.y << 3, HEYHO(c)->mPos.z << 3);
+    a = Particle::System::NewSimple(0x122, HEYHO(c)->mPos.x << 3, HEYHO(c)->mPos.y << 3,
+                                    HEYHO(c)->mPos.z << 3);
+    b = Particle::System::NewSimple(0x123, HEYHO(c)->mPos.x << 3, HEYHO(c)->mPos.y << 3,
+                                    HEYHO(c)->mPos.z << 3);
     t = (int)(HEYHO(c)->mSize << 0x1c) >> 0x10;
     /* Both stores go through a; the cartridge never sets b's scale. */
     if (a)

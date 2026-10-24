@@ -101,8 +101,7 @@ unsigned _ZN5Sound8PlayLongEjjjRK7Vector3s(unsigned handle, unsigned a,
                                            unsigned id, void *pos, s16 f);
 namespace Particle {
 struct System {
-    static void NewSimple(u32 id, Fix12i x, Fix12i y,
-                                                    Fix12i z);
+    static void NewSimple(u32 id, Fix12i x, Fix12i y, Fix12i z);
 };
 }
 void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(

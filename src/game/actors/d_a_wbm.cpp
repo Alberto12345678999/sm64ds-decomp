@@ -103,7 +103,7 @@ int _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(Player *self, const Vector3 *from,
     u32 a, s32 b, u8 c, u8 d, u8 e);
 namespace Particle {
 struct System {
-    static void * NewSimple(u32 id, s32 x, s32 y, s32 z);
+    static void *NewSimple(u32 id, s32 x, s32 y, s32 z);
 };
 }
 }
