@@ -39,10 +39,10 @@
 struct dActor_c;
 struct fBase_c;
 struct Vector3;
-/* Declared, not included: ModelAnim2.h carries an inline operator delete, and
+/* Declared, not included: dExtAnm2Model_c.h carries an inline operator delete, and
    any function body in a header this widely consumed renumbers every
    consumer's compiler temporaries. mBodyModels only needs the name. */
-struct ModelAnim2;
+struct dExtAnm2Model_c;
 
 struct Player : dActor_c {
     /* 0x000..0x0cf is dActor_c's, inherited rather than duplicated. It used to be
@@ -117,10 +117,10 @@ struct Player : dActor_c {
        walks this run as `*(this + i * 4 + 0xdc)` for `i < 4` and calls each
        element's deleting destructor; Player::Render indexes it with
        GetBodyModelID(mBodyModelId, 1) and TurnOffToonShading with
-       GetBodyModelID(j, 0). The element type is ModelAnim2, not dExtAnmModel_c:
+       GetBodyModelID(j, 0). The element type is dExtAnm2Model_c, not dExtAnmModel_c:
        func_ov002_020e5948 allocates every slot with operator new(0x78), which
-       is sizeof(ModelAnim2), and builds it with _ZN10ModelAnim2C1Ev, and the
-       only methods called on the elements by their own class are ModelAnim2's
+       is sizeof(dExtAnm2Model_c), and builds it with _ZN15dExtAnm2Model_cC1Ev, and the
+       only methods called on the elements by their own class are dExtAnm2Model_c's
        (Func_020162C4, Copy). The matched bodies' other accesses all land in
        the dExtAnmModel_c base: +0x08 (dExtSimpleModel_c's ModelComponents), +0x14
        (dExtSimpleModel_c::mat4x3), +0x50 (the dExtFrameCtrl_c base) and +0x58 (its
@@ -128,7 +128,7 @@ struct Player : dActor_c {
        FIVE slots: GetBodyModelID returns 4 while mIsMetal is set, and
        func_ov002_020e5948 builds [4] from wario_metal_model.bmd (arc0 0x54c).
        CleanupResources deletes [4] on its own after the `i < 4` loop. */
-    ModelAnim2 *mBodyModels[5]; /* 0x0dc */
+    dExtAnm2Model_c *mBodyModels[5]; /* 0x0dc */
     /* ~Player calls _ZN14dExtAnmModel_cD1Ev on this LAST of the two, and dExtAnmModel_c
        asserts 0x64 -- 0x0f0..0x154, closing exactly at mHeadModels. The markers
        this replaces are its own sub-objects: mAnimation1 at 0x140 was the

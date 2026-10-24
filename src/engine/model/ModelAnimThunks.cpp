@@ -2,7 +2,7 @@
 #pragma RTTI off
 #include "dExtAnmModel_c.h"
 #include "BlendModelAnim.h"
-#include "ModelAnim2.h"
+#include "dExtAnm2Model_c.h"
 
 /* The six _ZThn80_ destructor thunks are one run, 0x02017168..0x020171c8,
  * immediately after dExtModel_c's constructor. Each is the adjustor from the
@@ -24,4 +24,4 @@ BlendModelAnim::~BlendModelAnim() {
         func_0203cbc0(mBlendBuffer);
 }
 
-ModelAnim2::~ModelAnim2() {}
+dExtAnm2Model_c::~dExtAnm2Model_c() {}

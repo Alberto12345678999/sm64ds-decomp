@@ -564,7 +564,7 @@ check_destinations/gate_wrong_dests, because the two forms carry different
 addends and no local test can tell them apart. Branch relocs keep name-only
 resolution (their −8 is PC bias, not addressing). Measured on all four shapes
 in-tree: three-block SphCrr, two-block Lin, single-inheritance Clipper,
-no-base Animation, plus ModelAnim2 D0 (the documented 44-addend case) — all
+no-base Animation, plus dExtAnm2Model_c D0 (the documented 44-addend case) — all
 MATCH under strict relocs now, where the MI ones could never pass before.
 
 **Deleting destructors need the original deallocation surface.** The

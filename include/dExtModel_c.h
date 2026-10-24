@@ -101,7 +101,7 @@ struct dExtModel_c {
        at slots 0 and 1 -- and MSVC folds them into ONE. Spelt as a destructor
        the declaration indexes correctly on the ARM and ONE SLOT EARLY on the
        host, for every virtual declared after it and all the way down the
-       hierarchy: dExtModel_c -> dExtSimpleModel_c -> dExtAnmModel_c -> {ModelAnim2,
+       hierarchy: dExtModel_c -> dExtSimpleModel_c -> dExtAnmModel_c -> {dExtAnm2Model_c,
        BlendModelAnim}, plus the dExtCommonModel_c and dExtShadowModel_c siblings.
 
        MEASURED, not reasoned: the ROM's _ZTV14dExtAnmModel_c at 0x0208e980 reads

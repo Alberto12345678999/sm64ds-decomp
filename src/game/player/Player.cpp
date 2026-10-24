@@ -44,7 +44,7 @@
 #include "types.h"
 #include "common.h"
 #include "Player.h"
-#include "ModelAnim2.h"
+#include "dExtAnm2Model_c.h"
 #include "PlayerInput.h"
 #include "SharedFilePtr.h"
 #include "PathPtr.h"
@@ -18111,7 +18111,7 @@ int func_ov002_020dacb4(char *p, char *actor)
         {
             int player_var = ((Player *)p)->param1;
             int model_idx = _ZNK6Player14GetBodyModelIDEjb(p, player_var & 0xff, 0);
-            ModelAnim2 *model = ((Player *)p)->mBodyModels[model_idx];
+            dExtAnm2Model_c *model = ((Player *)p)->mBodyModels[model_idx];
             int j = (int)data_ov002_020ff480[offset + player_var]->filePtr;
             model->Func_020162C4(j, 0, 0x1000, 0);
         }
@@ -24137,8 +24137,8 @@ void func_ov002_020e4bb8(char* self)
             if (player->mIsMetal != 0) {
                 u32 v;
                 u32 id;
-                ModelAnim2 *dst;
-                ModelAnim2 *src;
+                dExtAnm2Model_c *dst;
+                dExtAnm2Model_c *src;
                 SharedFilePtr *poolEntry;
                 char* p;
 
@@ -24924,7 +24924,7 @@ void func_ov002_020e5948(void* arg0)
 
     i = 0;
     do {
-        player->mBodyModels[i] = new ModelAnim2;
+        player->mBodyModels[i] = new dExtAnm2Model_c;
         _ZN11dExtModel_c7SetFileEP8BMD_Fileii(
             player->mBodyModels[i], _ZN17dExtSimpleModel_c8LoadFileER13SharedFilePtr(data_ov002_0210a68c[i]), 1,
             1);
@@ -24981,7 +24981,7 @@ void func_ov002_020e5948(void* arg0)
 
             if (data_0209f2f8 != 2 && data_0209f2f8 != 5 && data_0209f2f8 != 4) {
                 player->mLoadedResourceFlags |= 0x20;
-                player->mBodyModels[4] = new ModelAnim2;
+                player->mBodyModels[4] = new dExtAnm2Model_c;
                 _ZN11dExtModel_c7SetFileEP8BMD_Fileii(
                     player->mBodyModels[4],
                     _ZN17dExtSimpleModel_c8LoadFileER13SharedFilePtr(data_ov002_0210e780), 1, -1);

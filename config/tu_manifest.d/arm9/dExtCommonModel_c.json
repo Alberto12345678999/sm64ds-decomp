@@ -10,7 +10,7 @@
     "contiguous linker run 0x0201609c..0x02016254: the seven delinks entries tile it exactly once -- SetPolygonIDEj 0x0201609c, Func_020160ACEj 0x020160ac, Render 0x02016104, DoSetFile 0x02016144, D0 0x020161b4, D1 0x020161e0, C1 0x02016204 -- with no interior hole.",
     "class-label homogeneity: every named symbol in the run is a member of dExtCommonModel_c (the dExtModel_c sibling whose components live in the shared pool, include/dExtCommonModel_c.h). Func_020160AC keeps its placeholder name pending a human-approved rename; it is the material-flag OR pass called from DoSetFile.",
     "ROM evidence says one object: the emitted vtable lands at 0x0208e8a4 (_ZTV17dExtCommonModel_c) whose slots read [D1 0x020161e0, D0 0x020161b4, DoSetFile 0x02016144] -- all inside this run; the cartridge's _ZTI17dExtCommonModel_c (0x0208e7a0) and _ZTS17dExtCommonModel_c (0x0208e8b0) name this same class, and the vtable preamble's typeinfo word points at it; those records sit in data this TU does not own.",
-    "neighbour below: _ZN17dExtShadowModel_cC1Ev at 0x02016068..0x0201609c (dExtShadowModel_c, the sibling class folded in #3493). Neighbour above: _ZN10ModelAnim24CopyERKS_Pcj at 0x02016254 (ModelAnim2). The run is bracketed rather than cut out of a uniform stretch."
+    "neighbour below: _ZN17dExtShadowModel_cC1Ev at 0x02016068..0x0201609c (dExtShadowModel_c, the sibling class folded in #3493). Neighbour above: _ZN15dExtAnm2Model_c4CopyERKS_Pcj at 0x02016254 (dExtAnm2Model_c). The run is bracketed rather than cut out of a uniform stretch."
   ],
   "sections": [
     {

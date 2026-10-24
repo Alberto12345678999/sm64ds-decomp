@@ -9,7 +9,7 @@
     "NOT FROM tu_map. tools/tu_map.py reports the arm9 main module as UNDER-SEGMENTED, so there is no tu_map boundary or tubuild.py create candidate id here; every line below is hand-derived and independently checkable.",
     "contiguous linker run 0x020169d8..0x02017168: the former per-function delinks entries tile the span exactly with no hole (config/arm9/delinks.txt, config/arm9/symbols.txt). The run starts at the first function after dExtAnmModel_c C2 (0x02016998..0x020169d8).",
     "class-family homogeneity: every named symbol is a member of dExtSimpleModel_c (cartridge dExtSimpleModel_c, _ZTV17dExtSimpleModel_c at 0x0208e90c) or its root dExtModel_c (_ZTV11dExtModel_c at 0x0208e87c), or an unnamed helper those members call. notes/model-rtti-names.md records the cartridge class name.",
-    "neighbour above: the six _ZThn80_ destructor-thunk shards at 0x02017168..0x020171c8. A member destructor of dExtAnmModel_c, BlendModelAnim or ModelAnim2 is what emits them, and that definition also emits those classes D-variants, which already have homes below 0x020169d8. Defining them here also emitted .exceptix for the whole TU, so the thunks stay enrolled on their own shards."
+    "neighbour above: the six _ZThn80_ destructor-thunk shards at 0x02017168..0x020171c8. A member destructor of dExtAnmModel_c, BlendModelAnim or dExtAnm2Model_c is what emits them, and that definition also emits those classes D-variants, which already have homes below 0x020169d8. Defining them here also emitted .exceptix for the whole TU, so the thunks stay enrolled on their own shards."
   ],
   "sections": [
     {

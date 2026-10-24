@@ -86,7 +86,7 @@ dPa_c::level_c::edStarKiraCallback_c	DONE	include\dPa_c.h  [alias: header uses p
 dPa_c::level_c::fitWaterSimpleCallback_c	DONE	include\dPa_c.h  [alias: header uses pre-rename name]	dPa_c::level_c::simpleCallback_c	0	arm9	0
 dPa_c::level_c::scaleCallback_c	DONE	include\dPa_c.h  [alias: header uses pre-rename name]	dPa_c::level_c::simpleCallback_c	0	arm9	0
 dPa_c::level_c::splashCallback_c	DONE	include\dPa_c.h  [alias: header uses pre-rename name]	dPa_c::level_c::simpleCallback_c	0		0
-dExtAnm2Model_c	DONE	include\ModelAnim2.h  [alias: header uses pre-rename name]	dExtAnmModel_c	0	arm9	5
+dExtAnm2Model_c	DONE	include\dExtAnm2Model_c.h  [alias: header uses pre-rename name]	dExtAnmModel_c	0	arm9	5
 dExtBlendAnmModel_c	DONE	include\BlendModelAnim.h  [alias: header uses pre-rename name]	dExtAnmModel_c	0	arm9	10
 dFdColor_c	DONE	include\dFdColor_c.h  [alias: header uses pre-rename name]	dFdBrightness_c	3	arm9	4
 dBgW_KcMbg	DONE	include\dBgW_KcMbg.h	dBgW_Kc	1	arm9	16

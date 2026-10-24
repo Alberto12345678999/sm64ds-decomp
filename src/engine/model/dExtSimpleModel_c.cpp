@@ -14,7 +14,7 @@
 
    The six _ZThn80_ destructor thunks at 0x02017168..0x020171c8 stay in
    their shards. Only a member destructor of dExtAnmModel_c / BlendModelAnim /
-   ModelAnim2 emits them, and that definition also emits those classes'
+   dExtAnm2Model_c emits them, and that definition also emits those classes'
    D-variants, which already have homes in the neighbouring TUs. */
 
 /* common.h comes first so this TU sees the flat Matrix4x3 { s32 m[12]; }
