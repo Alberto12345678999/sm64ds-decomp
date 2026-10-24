@@ -7,7 +7,7 @@
  * under defer_codegen off. daFRing_c_classInit is last. Was BowserShockwaves.
  */
 /* leftovers:
- * - dExtAnmModel_c::SetAnim, dExtAnmTexPat_c::SetFile, MaterialChanger::SetFile
+ * - dExtAnmModel_c::SetAnim, dExtAnmTexPat_c::SetFile, dExtAnmMaterial_c::SetFile
  *   and dExtAnmTexSRT_c::SetFile stay mangled. Each takes Fix12<int> by
  *   value; the member spelling spills the 0x1000 and InitResources stops
  *   matching.
@@ -15,7 +15,7 @@
  *   texture-sequence handles. LoadFile takes the handle and SetAnim /
  *   Prepare read its filePtr.
  * - data_ov048_021115e4 / 021115f4 are the BMA and BTA this TU's
- *   MaterialChanger::Prepare and dExtAnmTexSRT_c::Prepare load. They sit
+ *   dExtAnmMaterial_c::Prepare and dExtAnmTexSRT_c::Prepare load. They sit
  *   in the level overlay; only ov048 has an animation record at both words.
  * - func_02016b24 is the unnamed model-mask call in InitResources.
  */
@@ -66,7 +66,7 @@ void Matrix4x3_FromTranslation(void *m, int x, int y, int z);
 /* Leftover: these four take Fix12<int> by value, so they stay mangled; the
  * member spelling spills the 0x1000 and InitResources stops matching. */
 void _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj(dExtAnmTexPat_c *self, BTP_File *file, int flags, int speed, unsigned int start);
-void _ZN15MaterialChanger7SetFileER8BMA_Filei5Fix12IiEj(MaterialChanger *self, BMA_File *file, int flags, int speed, unsigned int start);
+void _ZN17dExtAnmMaterial_c7SetFileER8BMA_Filei5Fix12IiEj(dExtAnmMaterial_c *self, BMA_File *file, int flags, int speed, unsigned int start);
 void _ZN15dExtAnmTexSRT_c7SetFileER8BTA_Filei5Fix12IiEj(dExtAnmTexSRT_c *self, BTA_File *file, int flags, int speed, unsigned int start);
 }
 
@@ -159,10 +159,10 @@ s32 daFRing_c::InitResources()
     _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj(
         &mTextureSequence2, (BTP_File *)data_ov060_0211b200.filePtr, 0x40000000, 0x1000, 0);
 
-    MaterialChanger::Prepare(*(BMD_File *)data_ov060_0211b208.filePtr, data_ov048_021115e4);
-    MaterialChanger::Prepare(*(BMD_File *)data_ov060_0211b208.filePtr, data_ov048_021115e4);
-    _ZN15MaterialChanger7SetFileER8BMA_Filei5Fix12IiEj(&mMaterialChanger1, &data_ov048_021115e4, 0x40000000, 0x1000, 0);
-    _ZN15MaterialChanger7SetFileER8BMA_Filei5Fix12IiEj(&mMaterialChanger2, &data_ov048_021115e4, 0x40000000, 0x1000, 0);
+    dExtAnmMaterial_c::Prepare(*(BMD_File *)data_ov060_0211b208.filePtr, data_ov048_021115e4);
+    dExtAnmMaterial_c::Prepare(*(BMD_File *)data_ov060_0211b208.filePtr, data_ov048_021115e4);
+    _ZN17dExtAnmMaterial_c7SetFileER8BMA_Filei5Fix12IiEj(&mMaterialChanger1, &data_ov048_021115e4, 0x40000000, 0x1000, 0);
+    _ZN17dExtAnmMaterial_c7SetFileER8BMA_Filei5Fix12IiEj(&mMaterialChanger2, &data_ov048_021115e4, 0x40000000, 0x1000, 0);
 
     dExtAnmTexSRT_c::Prepare(*(BMD_File *)data_ov060_0211b208.filePtr, data_ov048_021115f4);
     dExtAnmTexSRT_c::Prepare(*(BMD_File *)data_ov060_0211b208.filePtr, data_ov048_021115f4);

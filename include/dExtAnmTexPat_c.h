@@ -30,7 +30,7 @@
  *
  * A static member mangles identically, so the symbol is unchanged. This is the
  * same correction already applied to the sibling dExtAnmTexSRT_c, whose
- * header names this veneer and MaterialChanger's as called the same way.
+ * header names this veneer and dExtAnmMaterial_c's as called the same way.
  * SetFile's definition stays a mangled free function (wall 6az,
  * Fix12<int> in the signature); the declaration below is the real one.
  */

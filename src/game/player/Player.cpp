@@ -25284,8 +25284,8 @@ void *_ZN14dExtAnmModel_cC1Ev(void *);
 void __cxa_vec_ctor(void*,int,int,void*,void*);
 void *_ZN15dExtAnmTexPat_cC1Ev(void*);
 void _ZN15dExtAnmTexPat_cD1Ev(void*);
-void *_ZN15MaterialChangerC1Ev(void*);
-void _ZN15MaterialChangerD1Ev(void*);
+void *_ZN17dExtAnmMaterial_cC1Ev(void*);
+void _ZN17dExtAnmMaterial_cD1Ev(void*);
 void *_ZN17dExtShadowModel_cC1Ev(void*);
 void *_ZN10dCcAcPos_cC1Ev(void*);
 void *_ZN10dBgCh_ActrC1Ev(void*);
@@ -25300,8 +25300,8 @@ void* _ZN6PlayerC1Ev(void* c){
     _ZN14dExtAnmModel_cC1Ev(r4 + 0x98);
     __cxa_vec_ctor(r4 + 0x100, 4, 0x14, (void *)_ZN15dExtAnmTexPat_cC1Ev,
                    (void *)_ZN15dExtAnmTexPat_cD1Ev);
-    __cxa_vec_ctor(r4 + 0x150, 2, 0x14, (void *)_ZN15MaterialChangerC1Ev,
-                   (void *)_ZN15MaterialChangerD1Ev);
+    __cxa_vec_ctor(r4 + 0x150, 2, 0x14, (void *)_ZN17dExtAnmMaterial_cC1Ev,
+                   (void *)_ZN17dExtAnmMaterial_cD1Ev);
     __cxa_vec_ctor(r4 + 0x178, 2, 0x14, (void *)_ZN15dExtAnmTexPat_cC1Ev,
                    (void *)_ZN15dExtAnmTexPat_cD1Ev);
     _ZN17dExtShadowModel_cC1Ev(&p->mShadowModel);

@@ -1351,7 +1351,7 @@ extern unsigned char data_ov073_02123424[];
 extern unsigned char StarPopup_Clear(void);
 extern unsigned int ReadUnalignedInt(unsigned char*);
 extern unsigned int VTable_Animation_ModelAnimThunk[];
-extern unsigned int _ZTV15MaterialChanger[];
+extern unsigned int _ZTV17dExtAnmMaterial_c[];
 extern unsigned int _ZTV15dExtAnmTexSRT_c[];
 extern unsigned int _ZTV14dExtAnmModel_c[];
 extern unsigned int _ZTV9dBgCh_Gnd[];

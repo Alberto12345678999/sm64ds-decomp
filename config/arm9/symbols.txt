@@ -512,12 +512,12 @@ _ZN8dClipper13Func_020156DCEitii kind:function(arm,size=0x20) addr:0x020156dc
 _ZN8dClipperD0Ev kind:function(arm,size=0x24) addr:0x020156fc
 _ZN8dClipperD1Ev kind:function(arm,size=0x10) addr:0x02015720
 _ZN8dClipperC1Ev kind:function(arm,size=0x4c) addr:0x02015730
-_ZN15MaterialChanger7PrepareER8BMD_FileR8BMA_File kind:function(arm,size=0xc) addr:0x0201577c
-_ZN15MaterialChanger6UpdateER15ModelComponents kind:function(arm,size=0x24) addr:0x02015788
-_ZN15MaterialChanger7SetFileER8BMA_Filei5Fix12IiEj kind:function(arm,size=0x54) addr:0x020157ac
-_ZN15MaterialChangerD0Ev kind:function(arm,size=0x2c) addr:0x02015800
-_ZN15MaterialChangerD1Ev kind:function(arm,size=0x24) addr:0x0201582c
-_ZN15MaterialChangerC1Ev kind:function(arm,size=0x2c) addr:0x02015850
+_ZN17dExtAnmMaterial_c7PrepareER8BMD_FileR8BMA_File kind:function(arm,size=0xc) addr:0x0201577c
+_ZN17dExtAnmMaterial_c6UpdateER15ModelComponents kind:function(arm,size=0x24) addr:0x02015788
+_ZN17dExtAnmMaterial_c7SetFileER8BMA_Filei5Fix12IiEj kind:function(arm,size=0x54) addr:0x020157ac
+_ZN17dExtAnmMaterial_cD0Ev kind:function(arm,size=0x2c) addr:0x02015800
+_ZN17dExtAnmMaterial_cD1Ev kind:function(arm,size=0x24) addr:0x0201582c
+_ZN17dExtAnmMaterial_cC1Ev kind:function(arm,size=0x2c) addr:0x02015850
 _ZN15dExtAnmTexSRT_c7PrepareER8BMD_FileR8BTA_File kind:function(arm,size=0xc) addr:0x0201587c
 _ZN15dExtAnmTexSRT_c6UpdateER15ModelComponents kind:function(arm,size=0x24) addr:0x02015888
 _ZN15dExtAnmTexSRT_c7SetFileER8BTA_Filei5Fix12IiEj kind:function(arm,size=0x54) addr:0x020158ac
@@ -3603,7 +3603,7 @@ _ZTV15dExtAnmTexSRT_c kind:data(any) addr:0x0208e7c4
 _ZTV15dExtAnmTexPat_c kind:data(any) addr:0x0208e7d4
 _ZTV15dExtFrameCtrl_c kind:data(any) addr:0x0208e7e4
 data_0208e7e4 kind:data(any) addr:0x0208e7e4
-_ZTV15MaterialChanger kind:data(any) addr:0x0208e7f4
+_ZTV17dExtAnmMaterial_c kind:data(any) addr:0x0208e7f4
 _ZTS14dExtAnmModel_c kind:data(any) addr:0x0208e7fc
 _ZTS15dExtAnmTexSRT_c kind:data(any) addr:0x0208e810
 _ZTS15dExtAnmTexPat_c kind:data(any) addr:0x0208e824

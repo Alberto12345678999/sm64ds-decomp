@@ -55,7 +55,7 @@ struct System {
 #include "dMg3DEspAnimSet_c.h"
 #include "dExtAnmTexSRT_c.h"
 #include "dExtAnmTexPat_c.h"
-#include "MaterialChanger.h"
+#include "dExtAnmMaterial_c.h"
 #include "G3X.h"
 #include "Sound.h"
 #include "PlayerInput.h"
@@ -108,7 +108,7 @@ void _ZN15dExtFrameCtrl_c7AdvanceEv(void* a);
 int _ZN15dExtFrameCtrl_c8FinishedEv(void* a);
 /* local extern: the call passes an untyped this, so it cannot use the header method. */
 int _ZNK15dExtFrameCtrl_c12WillHitFrameEi(void* anim, int frame);
-void _ZN15MaterialChanger7SetFileER8BMA_Filei5Fix12IiEj(char *t, void *f, int a, int b, unsigned u);
+void _ZN17dExtAnmMaterial_c7SetFileER8BMA_Filei5Fix12IiEj(char *t, void *f, int a, int b, unsigned u);
 void _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj(void* self, void* btp, int a, int b, u16 d);
 void _ZN15dExtAnmTexSRT_c7SetFileER8BTA_Filei5Fix12IiEj(void* self, void* bta, int a, int b, u16 d);
 void func_02046208(char* a, int b, int c);
@@ -206,7 +206,7 @@ void dMg3DEspAnimSet_c::Render()
     do {
         if (mActive[i] != 0) {
             ((dExtAnmModel_c *)r5)->mat4x3 = data_020a0e68;
-            ((MaterialChanger*)r4)->Update(*(ModelComponents*)(r5 + 8));
+            ((dExtAnmMaterial_c*)r4)->Update(*(ModelComponents*)(r5 + 8));
             ((Obj_777c*)r5)->m(zero);
         }
         i++;
@@ -233,7 +233,7 @@ void dMg3DEspAnimSet_c::Behavior() {
         int i;
         char *a = self;
         char *b = (char *)mMaterialChangers;
-        /* cc steps by one MaterialChanger: mMaterialChangers[i] grows
+        /* cc steps by one dExtAnmMaterial_c: mMaterialChangers[i] grows
            Behavior from 0xf8 to 0xfc bytes. */
         char *cc = self;
         for (i = 0; i < 3; i++) {
@@ -300,13 +300,13 @@ void dMg3DEspAnimSet_c::InitResources()
     mSpeed = 0x800;
     bmd = (int)dExtSimpleModel_c::LoadFile(gEspHamonModelFile);
     bca = (int)dExtFrameCtrl_c::LoadFile(gEspHamonAnimFile);
-    MaterialChanger::Prepare(*(BMD_File *)bmd, *(BMA_File *)&sEsp3DMaterialAnim);
+    dExtAnmMaterial_c::Prepare(*(BMD_File *)bmd, *(BMA_File *)&sEsp3DMaterialAnim);
     w = o;
     w2 = (char *)mMaterialChangers;
     for (i = 0; i < 3; i++) {
         ((dExtModel_c *)w)->SetFile((BMD_File *)bmd, 1, m1);
         ((dExtAnmModel_c *)w)->SetAnim((BCA_File *)bca, 0x40000000, mSpeed, z1);
-        _ZN15MaterialChanger7SetFileER8BMA_Filei5Fix12IiEj(w2, &sEsp3DMaterialAnim, 0x40000000,
+        _ZN17dExtAnmMaterial_c7SetFileER8BMA_Filei5Fix12IiEj(w2, &sEsp3DMaterialAnim, 0x40000000,
                                                            mSpeed, z2);
         ((dExtSimpleModel_c *)w)->SetPolygonID((i + 1) & 0xff);
         mActive[i] = 0;

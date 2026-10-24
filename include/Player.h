@@ -30,7 +30,7 @@
 #include "dBgCh_Actr.h"
 #include "dExtAnmModel_c.h"
 #include "dExtAnmTexPat_c.h"
-#include "MaterialChanger.h"
+#include "dExtAnmMaterial_c.h"
 
 /* fwd. Only these three are types. gen_header.py used to emit a `struct X;`
    for every parameter NAME it could not resolve as well -- 26 of them, `struct
@@ -165,7 +165,7 @@ struct Player : dActor_c {
        the stride the destructor passes. unk_25c and unk_270 were the
        currFrame of mTexSeqPlayer[0] and [1] -- +0x08 into each element. */
     dExtAnmTexPat_c mTexSeqBody[4];            /* 0x1dc */
-    MaterialChanger mMatChanger[2];            /* 0x22c */
+    dExtAnmMaterial_c mMatChanger[2];            /* 0x22c */
     dExtAnmTexPat_c mTexSeqPlayer[2];            /* 0x254 */
     /* One saved word per material, per model: func_ov002_020e6bb0 allocates
        numMaterials words and copies each runtime material's +0x1c

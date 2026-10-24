@@ -5826,7 +5826,7 @@
         "return:void"
       ]
     },
-    "_ZN15MaterialChanger7PrepareER8BMD_FileR8BMA_File": {
+    "_ZN17dExtAnmMaterial_c7PrepareER8BMD_FileR8BMA_File": {
       "include/decl_MaterialChanger.h": [
         "param:#1 void *",
         "param:#2 void *"
@@ -5836,7 +5836,7 @@
         "param:#2 void *"
       ]
     },
-    "_ZN15MaterialChanger7SetFileER8BMA_Filei5Fix12IiEj": {
+    "_ZN17dExtAnmMaterial_c7SetFileER8BMA_Filei5Fix12IiEj": {
       "include/decl_MaterialChanger.h": [
         "param:#5 unsigned int"
       ],
@@ -5854,7 +5854,7 @@
         "param:#5 unsigned int"
       ]
     },
-    "_ZN15MaterialChangerD1Ev": {
+    "_ZN17dExtAnmMaterial_cD1Ev": {
       "src/_ZN6PlayerC1Ev.cpp": [
         "return:void"
       ],
@@ -23362,14 +23362,14 @@
       ]
     },
     "func_02046e28": {
-      "src/engine/model/MaterialChanger.cpp": [
+      "src/engine/model/dExtAnmMaterial_c.cpp": [
         "param:#1 ModelComponents *",
         "param:#2 BMA_File *",
         "param:#3 int"
       ]
     },
     "func_020470e8": {
-      "src/engine/model/MaterialChanger.cpp": [
+      "src/engine/model/dExtAnmMaterial_c.cpp": [
         "param:#1 BMD_File *",
         "param:#2 BMA_File *"
       ]

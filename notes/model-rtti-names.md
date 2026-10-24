@@ -8,8 +8,8 @@ edges between them.
 Every row below is derived by following pointers, never by reading a string that happens to sit
 next to a vtable. **Adjacency is not ownership**: the name strings live in their own pool at
 0x0208e7ac-0x0208e8ff, physically interleaved with the vtables, so a string immediately after a
-vtable usually belongs to some *other* class. `_ZTV15MaterialChanger` is followed by
-`"14dExtAnmModel_c"`, which is **dExtAnmModel_c's** name, not MaterialChanger's.
+vtable usually belongs to some *other* class. `_ZTV17dExtAnmMaterial_c` is followed by
+`"14dExtAnmModel_c"`, which is **dExtAnmModel_c's** name, not dExtAnmMaterial_c's.
 
 ## How to read a record
 
@@ -37,7 +37,7 @@ Three `type_info` vtables appear, and the one a record points at tells you its s
 | `dExtFrameCtrl_c` | `_ZTV15dExtFrameCtrl_c` @0x0208e7e4 | `0x0208e744` | `dExtFrameCtrl_c` |
 | `dExtAnmTexSRT_c` | `_ZTV15dExtAnmTexSRT_c` @0x0208e7c4 | `0x0208e74c` | `dExtAnmTexSRT_c` |
 | `dExtAnmTexPat_c` | `_ZTV15dExtAnmTexPat_c` @0x0208e7d4 | `0x0208e758` | `dExtAnmTexPat_c` |
-| `MaterialChanger` | `_ZTV15MaterialChanger` @0x0208e7f4 | `0x0208e764` | `dExtAnmMaterial_c` |
+| `dExtAnmMaterial_c` | `_ZTV17dExtAnmMaterial_c` @0x0208e7f4 | `0x0208e764` | `dExtAnmMaterial_c` |
 | `dExtAnmModel_c` | `_ZTV14dExtAnmModel_c` @0x0208e980 | `0x0208e924` | `dExtAnmModel_c` |
 | `dExtAnm2Model_c` | `_ZTV15dExtAnm2Model_c` @0x0208e9b4 | `0x0208e788` | `dExtAnm2Model_c` |
 | `dExtBlendAnmModel_c` | `_ZTV19dExtBlendAnmModel_c` @0x0208e94c | `0x0208e77c` | `dExtBlendAnmModel_c` |
@@ -59,7 +59,7 @@ in the same row; every offset-to-top word is 0.
     dExtFrameCtrl_c                                (root, __class_type_info)
     |-- dExtAnmTexSRT_c        dExtAnmTexSRT_c
     |-- dExtAnmTexPat_c        dExtAnmTexPat_c
-    `-- dExtAnmMaterial_c      MaterialChanger
+    `-- dExtAnmMaterial_c      dExtAnmMaterial_c
 
     dExtAnmModel_c                                 (__vmi_class_type_info, 2 bases)
     |   base[0] dExtSimpleModel_c  offset 0x00
@@ -82,9 +82,9 @@ Two things fall out of this that the source already relies on:
 structural rather than a judgement call:
 
     _ZTV15dExtFrameCtrl_c @0x0208e7e4  [~dExtFrameCtrl_c D1, ~dExtFrameCtrl_c D0]
-                          @0x0208e7ec  0x00000000  <- MaterialChanger's offset-to-top
-                          @0x0208e7f0  0x0208e764  <- MaterialChanger's typeinfo
-    _ZTV15MaterialChanger @0x0208e7f4  [D1, D0]
+                          @0x0208e7ec  0x00000000  <- dExtAnmMaterial_c's offset-to-top
+                          @0x0208e7f0  0x0208e764  <- dExtAnmMaterial_c's typeinfo
+    _ZTV17dExtAnmMaterial_c @0x0208e7f4  [D1, D0]
 
 The zero after dExtFrameCtrl_c's destructor pair is not an empty slot; it is the `offset-to-top` word of
 the vtable that follows. Reading it as a pure-virtual slot is the mistake this layout invites.
