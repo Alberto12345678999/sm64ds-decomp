@@ -8,7 +8,7 @@
   "boundary_evidence": [
     "NOT FROM tu_map. tools/tu_map.py reports the arm9 `main` module as UNDER-SEGMENTED, so there is no tu_map boundary or `tubuild.py create` candidate id here; every line below is hand-derived and independently checkable.",
     "contiguous linker run 0x0201597c..0x02015a7c: the six delinks entries tile the span exactly with no hole (config/arm9/delinks.txt, config/arm9/symbols.txt).",
-    "class-label homogeneity: every symbol in the run is a member of dExtAnmTexPat_c (the Animation child driving BTP-file playback in include/dExtAnmTexPat_c.h; _ZTV15dExtAnmTexPat_c at 0x0208e7d4 names the class, and the cartridge RTTI spells it _ZTI15dExtAnmTexPat_c at 0x0208e758 with base _ZTI15dExtFrameCtrl_c at 0x0208e744 -- the Animation of this tree).",
+    "class-label homogeneity: every symbol in the run is a member of dExtAnmTexPat_c (the dExtFrameCtrl_c child driving BTP-file playback in include/dExtAnmTexPat_c.h; _ZTV15dExtAnmTexPat_c at 0x0208e7d4 carries the cartridge RTTI record _ZTI15dExtAnmTexPat_c at 0x0208e758, __si_class_type_info with base _ZTI15dExtFrameCtrl_c at 0x0208e744).",
     "neighbour below: _ZN15dExtAnmTexSRT_cC1Ev ends at 0x0201597c (the sibling class's own run). Neighbour above: _ZN15dExtFrameCtrl_c4CopyERKS_ starts at 0x02015a7c, the base class's own run."
   ],
   "sections": [
@@ -80,7 +80,7 @@
       "disposition": "deadstrip-data",
       "canonical_module": "arm9",
       "canonical_address": "0x0208e7d4",
-      "reason": "compiler-emitted vtable (two-word ABI preamble + slots D1 D0), produced because this TU defines the key function ~dExtAnmTexPat_c(); this TU compiles with RTTI off because the class's cartridge _ZTS/_ZTI records spell the coined name dExtAnmTexPat_c and would be homeless under the project spelling, so no ZTI/ZTS records accompany it; canonical bytes verified, contribution is gap data"
+      "reason": "compiler-emitted vtable (two-word ABI preamble + slots D1 D0), produced because this TU defines the key function ~dExtAnmTexPat_c(); this TU compiles with RTTI off (see notes), so no ZTI/ZTS records accompany it; canonical bytes verified, contribution is gap data"
     }
   ],
   "notes": [
@@ -89,7 +89,7 @@
     "The whole class folds, lifecycle variants included: the cartridge's D0,D1,C1 order is the order one ~dExtAnmTexPat_c() plus one dExtAnmTexPat_c() emits under deferred codegen (the emitted D2 and C2 siblings have no cartridge home and deadstrip unenrolled), so no per-variant shards remain.",
     "SetFile stays a mangled extern \"C\" definition (wall 6az, notes/mwccarm-codegen.md): the Fix12<int> by-value parameter keeps the free spelling, and its call to dExtFrameCtrl_c::SetAnimation keeps the mangled spelling too because passing the real declaration's Fix12<int> by value homes the argument to the caller's stack. SetFlags, by contrast, takes a plain int and is spelled as the member call it is.",
     "The file is written ROM-descending because mwccarm emits .text in reverse source order under default deferred codegen; the emitted object carries the six functions ascending 0x0201597c..0x02015a7c.",
-    "The cartridge spells this class dExtAnmTexPat_c and its base dExtFrameCtrl_c (config/arm9/symbols.txt), so _ZTS/_ZTI records emitted under the project's dExtAnmTexPat_c/Animation spellings would have no configured ROM home. This TU therefore compiles with #pragma RTTI off, the same lever the dExtAnmTexSRT_c and dExtAnmMaterial_c folds use for the identical dExt* coined-name situation: no RTTI records are emitted, and the vtable preamble's typeinfo word deadstrips with the rest of the .data output."
+    "RTTI is off: this TU compiles with #pragma RTTI off. It was turned off while the class carried a coined name whose _ZTS/_ZTI records had no configured ROM home. Under the cartridge spelling they would have one (_ZTI15dExtAnmTexPat_c at 0x0208e758, _ZTS15dExtAnmTexPat_c at 0x0208e824, base _ZTI15dExtFrameCtrl_c at 0x0208e744), so RTTI on is open as a follow-up. Off, no RTTI records are emitted, and the vtable preamble's typeinfo word deadstrips with the rest of the .data output."
   ],
   "relocations": [],
   "verification": {

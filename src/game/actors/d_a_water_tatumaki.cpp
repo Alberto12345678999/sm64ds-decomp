@@ -137,7 +137,7 @@ extern void _ZN15dExtAnmTexSRT_c7SetFileER8BTA_Filei5Fix12IiEj(dExtAnmTexSRT_c *
 
 #define Particle_System_New Particle::System::New
 #define ApproachLinearVec _Z14ApproachLinearR7Vector3RKS_5Fix12IiE
-#define TextureTransformer_SetFile _ZN15dExtAnmTexSRT_c7SetFileER8BTA_Filei5Fix12IiEj
+#define dExtAnmTexSRT_c_SetFile _ZN15dExtAnmTexSRT_c7SetFileER8BTA_Filei5Fix12IiEj
 
 void ApproachLinear2(s16 &value, s16 target, s16 step);
 void ApproachLinear(int &value, int target, int step);
@@ -387,7 +387,7 @@ int daWater_Tatumaki_c::InitResources()
     dExtFrameCtrl_c::LoadFile(gWaterTatumakiAnimationFile);
 
     dExtAnmTexSRT_c::Prepare(*(BMD_File *)gWaterTatumakiModelFile.filePtr, WHIRLPOOL_BTA);
-    TextureTransformer_SetFile(&mTextureTransformer, WHIRLPOOL_BTA, 0, kAnimSpeed, 0);
+    dExtAnmTexSRT_c_SetFile(&mTextureTransformer, WHIRLPOOL_BTA, 0, kAnimSpeed, 0);
 
     mTextureTransformer.speed = kAnimSpeed;
     mModelAnim.speed = kAnimSpeed;

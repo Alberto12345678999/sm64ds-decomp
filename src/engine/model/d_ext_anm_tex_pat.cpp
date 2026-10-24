@@ -1,7 +1,7 @@
 //cpp
-/* dExtAnmTexPat_c -- Animation child driving BTP-file playback. Cartridge
+/* dExtAnmTexPat_c -- dExtFrameCtrl_c child driving BTP-file playback. Cartridge
    class: _ZTV15dExtAnmTexPat_c at 0x0208e7d4 (two slots, the destructor
-   pair); the cartridge RTTI names it dExtAnmTexPat_c. TU claims
+   pair), RTTI record _ZTI15dExtAnmTexPat_c at 0x0208e758. TU claims
    0x0201597c..0x02015a7c, the whole class run in delinks order. Written
    back-to-front: mwccarm emits .text in reverse source order under default
    deferred codegen.
@@ -15,15 +15,15 @@
    - file->unk_00 is the frame count handed to SetAnimation (the sibling
      BTA names it numFrames); BTP_File names only the words UpdateFileOffsets
      touches.
-   - RTTI stays off: the cartridge names the class dExtAnmTexPat_c, so the
-     emitted _ZTS/_ZTI records would have no configured home. */
+   - RTTI stays off; see the note above the pragma. */
 #include "dExtAnmTexPat_c.h"
 
-/* The cartridge spells this class dExtAnmTexPat_c, so the compiler-emitted
-   _ZTS15dExtAnmTexPat_c / _ZTI15dExtAnmTexPat_c / _ZTS9Animation /
-   _ZTI9Animation records would be homeless under either spelling. Compiling
-   with RTTI off emits no records at all; the vtable preamble's typeinfo word
-   deadstrips with the rest of the data sections. */
+/* Compiling with RTTI off emits no _ZTI/_ZTS records at all; the vtable
+   preamble's typeinfo word deadstrips with the rest of the data sections.
+   The pragma dates from when this class and its base carried coined names
+   whose records had no cartridge home; under the cartridge spelling they
+   would (_ZTI15dExtAnmTexPat_c at 0x0208e758, _ZTS15dExtAnmTexPat_c at 0x0208e824),
+   so RTTI on is open as a manifest change (notes/model-rtti-names.md). */
 #pragma RTTI off
 
 extern "C" void func_02046d50(BMD_File *model, BTP_File *file);

@@ -42,12 +42,13 @@ Three `type_info` vtables appear, and the one a record points at tells you its s
 | `dExtAnm2Model_c` | `_ZTV15dExtAnm2Model_c` @0x0208e9b4 | `0x0208e788` | `dExtAnm2Model_c` |
 | `dExtBlendAnmModel_c` | `_ZTV19dExtBlendAnmModel_c` @0x0208e94c | `0x0208e77c` | `dExtBlendAnmModel_c` |
 
-Every model class and the frame controller now carry their cartridge names. The tree's earlier
+Every class in the table now carries its cartridge name. The tree's earlier
 coined spellings were `ModelBase` (`dExtModel_c`), `Model` (`dExtSimpleModel_c`), `ModelAnim`
 (`dExtAnmModel_c`), `ModelAnim2` (`dExtAnm2Model_c`), `BlendModelAnim` (`dExtBlendAnmModel_c`),
-`ShadowModel`, `CommonModel` and `Animation` (`dExtFrameCtrl_c`). The three texture/material
-controllers still use their coined names. Each vtable's typeinfo word (V-4) points at the record
-in the same row; every offset-to-top word is 0.
+`ShadowModel`, `CommonModel`, `Animation` (`dExtFrameCtrl_c`), `TextureTransformer`
+(`dExtAnmTexSRT_c`), `TextureSequence` (`dExtAnmTexPat_c`) and `MaterialChanger`
+(`dExtAnmMaterial_c`). Each vtable's typeinfo word (V-4) points at the record in the same row;
+every offset-to-top word is 0.
 
 ## The hierarchy, as the ROM states it
 
@@ -57,9 +58,9 @@ in the same row; every offset-to-top word is 0.
     `-- dExtCommonModel_c
 
     dExtFrameCtrl_c                                (root, __class_type_info)
-    |-- dExtAnmTexSRT_c        dExtAnmTexSRT_c
-    |-- dExtAnmTexPat_c        dExtAnmTexPat_c
-    `-- dExtAnmMaterial_c      dExtAnmMaterial_c
+    |-- dExtAnmTexSRT_c                            (__si_class_type_info)
+    |-- dExtAnmTexPat_c                            (__si_class_type_info)
+    `-- dExtAnmMaterial_c                          (__si_class_type_info)
 
     dExtAnmModel_c                                 (__vmi_class_type_info, 2 bases)
     |   base[0] dExtSimpleModel_c  offset 0x00

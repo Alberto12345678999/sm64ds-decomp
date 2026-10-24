@@ -1,7 +1,7 @@
 //cpp
-/* dExtAnmMaterial_c -- Animation child driving BMA-file playback. Cartridge
+/* dExtAnmMaterial_c -- dExtFrameCtrl_c child driving BMA-file playback. Cartridge
    class: _ZTV17dExtAnmMaterial_c at 0x0208e7f4 (two slots, the destructor
-   pair); the cartridge RTTI names it dExtAnmMaterial_c. TU claims
+   pair), RTTI record _ZTI17dExtAnmMaterial_c at 0x0208e764. TU claims
    0x0201577c..0x0201587c, the whole class run in delinks order. Written
    back-to-front: mwccarm emits .text in reverse source order under default
    deferred codegen.
@@ -12,16 +12,15 @@
    - func_02046e28 and func_020470e8 stay extern "C" helpers with no
      declaring header; Prepare's ROM body is a 0xc long-call veneer, so it
      calls func_020470e8 with that function's own two-argument signature.
-   - RTTI stays off: the cartridge names the class dExtAnmMaterial_c, so
-     the emitted _ZTS/_ZTI records would have no configured home. */
+   - RTTI stays off; see the note above the pragma. */
 #include "dExtAnmMaterial_c.h"
 
-/* The cartridge spells this class dExtAnmMaterial_c and its base
-   dExtFrameCtrl_c, so the compiler-emitted _ZTS17dExtAnmMaterial_c /
-   _ZTI17dExtAnmMaterial_c / _ZTS9Animation / _ZTI9Animation records would be
-   homeless under either spelling. Compiling with RTTI off emits no
-   records at all; the vtable preamble's typeinfo word deadstrips with the
-   rest of the data sections. */
+/* Compiling with RTTI off emits no _ZTI/_ZTS records at all; the vtable
+   preamble's typeinfo word deadstrips with the rest of the data sections.
+   The pragma dates from when this class and its base carried coined names
+   whose records had no cartridge home; under the cartridge spelling they
+   would (_ZTI17dExtAnmMaterial_c at 0x0208e764, _ZTS17dExtAnmMaterial_c at 0x0208e8d8),
+   so RTTI on is open as a manifest change (notes/model-rtti-names.md). */
 #pragma RTTI off
 
 extern "C" void func_020470e8(BMD_File *model, BMA_File *file);
