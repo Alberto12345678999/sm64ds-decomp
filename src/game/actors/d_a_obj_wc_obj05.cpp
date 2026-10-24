@@ -176,8 +176,8 @@ s32 daObjWc_Obj05_c::Behavior()
     }
     case 2: {
         if ((u16)mDwellTimer >= 0x6e) {
-            int snd = Sound::PlayLong((unsigned)mSoundHandle, 3, 0x8d,
-                                       *(Vector3 *)&mCamSpacePosX, 0);
+            int snd =
+                Sound::PlayLong((unsigned)mSoundHandle, 3, 0x8d, *(Vector3 *)&mCamSpacePosX, 0);
             mSoundHandle = snd;
             {
                 s32 *p60 = &mPosY;

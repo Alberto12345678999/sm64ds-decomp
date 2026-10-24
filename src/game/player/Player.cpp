@@ -2026,7 +2026,8 @@ int Player::func_ov002_020bfa74()
         dir.x = FX_MUL(COS(vert), SIN(horz));
         dir.z = FX_MUL(COS(vert), COS(horz));
         func_ov002_020bf800(this, dir);
-        mSurfaceSoundHandle = Sound::PlayLong(mSurfaceSoundHandle, 3, 0x90, *(Vector3 *)&mCamSpacePosX, 0);
+        mSurfaceSoundHandle =
+            Sound::PlayLong(mSurfaceSoundHandle, 3, 0x90, *(Vector3 *)&mCamSpacePosX, 0);
         if (mIsMetal != 0 || mIsNoControl != 0 || func_ov002_020e0478(this) != 0) return 0;
         if (mIsAirborne == 0) {
             if (this->IsState(data_ov002_0211013c) || this->IsState(Player::ST_WAIT) || this->IsState(data_ov002_02110574) || this->IsState(data_ov002_02110184) || this->IsState(data_ov002_02110514) || this->IsState(data_ov002_021104e4) || this->IsState(data_ov002_02110364) || this->IsState(data_ov002_0211064c)) {
@@ -2770,8 +2771,8 @@ void Player::func_ov002_020c133c()
 {
     typedef unsigned char u8;
     extern int func_ov002_020d82f0(void*);
-    extern void PlayerPlayLongHold_c133c(
-        unsigned int a, unsigned int b, unsigned int c, Vector3 const *v, unsigned int d);
+    extern void PlayerPlayLongHold_c133c(unsigned int a, unsigned int b, unsigned int c,
+                                         Vector3 const *v, unsigned int d);
     extern int _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void *, Vector3 const *v, unsigned int b,
                                                        int c, unsigned int d, unsigned int e,
                                                        unsigned int f);
@@ -5236,7 +5237,7 @@ int func_ov002_020c56f0(unsigned char* c, unsigned char arg)
 extern "C" {
 int Player::St_DeadPit_Main()
 {
-    extern void PlayerPlayLongHold_deadpit(u32 a, u32 b, u32 c, void*, u32 d);
+    extern void PlayerPlayLongHold_deadpit(u32 a, u32 b, u32 c, void *, u32 d);
     extern void Vec3_RotateYAndTranslate(void*, void*, s16 angle, void*);
     extern void Player_AdvanceAnims(void*);
     extern u8 data_0209f2d8;
@@ -10708,8 +10709,8 @@ void func_ov002_020ceb7c(struct CameraRaw *c)
 extern "C" {
 int func_ov002_020cec2c(char *self)
 {
-    extern void PlayerPlayLongHold_cec2c(
-        unsigned int a, unsigned int b, unsigned int c, const Vector3 *v, unsigned int d);
+    extern void PlayerPlayLongHold_cec2c(unsigned int a, unsigned int b, unsigned int c,
+                                         const Vector3 *v, unsigned int d);
     extern int func_ov002_020d91e0(void*, int damage, int doPre);
     extern void func_ov002_020da9d4(void*);
     extern s8 data_0209f2f8;
@@ -10739,8 +10740,8 @@ int func_ov002_020cec2c(char *self)
     if (flag != 0) thresh = 0x50;
 
     if (((Player *)self)->GetHealth() <= 2) {
-        player->mSurfaceSoundHandle = Sound::PlayLong(
-            (unsigned int)player->mSurfaceSoundHandle, 2, 0x27, *(Vector3 *)&player->mCamSpacePos, 0);
+        player->mSurfaceSoundHandle = Sound::PlayLong((unsigned int)player->mSurfaceSoundHandle, 2,
+                                                      0x27, *(Vector3 *)&player->mCamSpacePos, 0);
     }
 
     {
@@ -14384,8 +14385,8 @@ int Player::St_BurnLava_Main()
                 mParticle1, 0xbd, info.pos[0], info.pos[1], info.pos[2], info.vec, 0);
             mParticle2 = _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
                 mParticle2, 0xbe, info.pos[0], info.pos[1], info.pos[2], info.vec, 0);
-            mLoopingSoundHandle = Sound::PlayLong(
-                mLoopingSoundHandle, 0, 0x106, *(Vector3 *)&mCamSpacePosX, 0);
+            mLoopingSoundHandle =
+                Sound::PlayLong(mLoopingSoundHandle, 0, 0x106, *(Vector3 *)&mCamSpacePosX, 0);
         }
     }
 
@@ -14489,7 +14490,8 @@ int Player::St_BurnFire_Main()
     extern int func_ov002_020d91e0(void *thiz, int damage, int doPre);
     extern u32 _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
         u32 handle, u32 kind, Fix12i x, Fix12i y, Fix12i z, const void *dir, void *callback);
-    extern void PlayerPlayLongHold_burnfire(unsigned int handle, unsigned int id, unsigned int vol, const void *vec, unsigned int flags);
+    extern void PlayerPlayLongHold_burnfire(unsigned int handle, unsigned int id, unsigned int vol,
+                                            const void *vec, unsigned int flags);
     extern void ApproachAngle(short *cur, short target, int divisor, int band, int maxStep);
     extern void _Z14ApproachLinearRiii(int *cur, int target, int step);
     extern void Player_AdvanceAnims(void *c);
@@ -14538,8 +14540,8 @@ int Player::St_BurnFire_Main()
             mParticle1, 0xbd, info.pos[0], info.pos[1], info.pos[2], info.vec, 0);
         mParticle2 = _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
             mParticle2, 0xbe, info.pos[0], info.pos[1], info.pos[2], info.vec, 0);
-        mLoopingSoundHandle = Sound::PlayLong(
-            mLoopingSoundHandle, 0, 0x106, *(Vector3 *)&mCamSpacePosX, 0);
+        mLoopingSoundHandle =
+            Sound::PlayLong(mLoopingSoundHandle, 0, 0x106, *(Vector3 *)&mCamSpacePosX, 0);
     }
 
     switch (mStateStep) {
@@ -14657,7 +14659,7 @@ int Player::Burn()
 extern "C" {
 int Player::St_Electrocute_Main()
 {
-    extern void PlayerPlayLongHold_electro(u32 a, u32 b, u32 c, Vector3* v, u32 d);
+    extern void PlayerPlayLongHold_electro(u32 a, u32 b, u32 c, Vector3 * v, u32 d);
     extern u32 _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
         u32 handle, u32 kind, Fix12i x, Fix12i y, Fix12i z, const void *dir, void *callback);
     extern void Player_AdvanceAnims(void* self);
@@ -17609,7 +17611,7 @@ int Player::St_SwingPlayer_Main()
     extern int _Z15ApproachLinear2Rsss(s16* ref, s16 target, s16 step);
     extern u32 _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
         u32 handle, u32 kind, Fix12i x, Fix12i y, Fix12i z, const void *dir, void *callback);
-    extern void PlayerPlayLongHold_swing(u32 h, u32 a, u32 b, void* v, u32 d);
+    extern void PlayerPlayLongHold_swing(u32 h, u32 a, u32 b, void *v, u32 d);
     extern void func_ov002_020dc174(char *c, const Vector3 *pos, Fix12i reach, Fix12i height,
                                     u32 flags, u32 a6);
     extern void Player_AdvanceAnims(char* c);
@@ -17672,8 +17674,8 @@ int Player::St_SwingPlayer_Main()
                     id = 0x133;
                 mParticle1 = _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
                     (u32)mParticle1, id, *(int *)&v.x, *(int *)&v.y, *(int *)&v.z, 0, 0);
-                mLoopingSoundHandle = Sound::PlayLong((u32)mLoopingSoundHandle, 0,
-                                                      0x1c, *(Vector3 *)&mCamSpacePosX, 0);
+                mLoopingSoundHandle = Sound::PlayLong((u32)mLoopingSoundHandle, 0, 0x1c,
+                                                      *(Vector3 *)&mCamSpacePosX, 0);
             }
             if (this->mAngleYSpeed != 0)
                 this->mStateTimer = 0xa;
@@ -20548,7 +20550,7 @@ extern "C" int func_ov002_020dec70(char *c)
 {
     Player *p = (Player *)c;
     void func_ov002_020bf800(char *c, Vector3_16f v);
-    void PlayerPlayLongHold_dec70(u32 a, u32 b, u32 c, Vector3 *v, u32 d);
+    void PlayerPlayLongHold_dec70(u32 a, u32 b, u32 c, Vector3 * v, u32 d);
     int _ZN6Player7IsStateERNS_5StateE(char *c, void *st);
     int func_ov002_020e0478(void *c);
     void _ZN6Player11ChangeStateERNS_5StateE(char *c, void *st);
@@ -20564,8 +20566,8 @@ extern "C" int func_ov002_020dec70(char *c)
         v.x = v.z;
         func_ov002_020bf800(c, v);
     }
-    p->mSurfaceSoundHandle = Sound::PlayLong((u32)p->mSurfaceSoundHandle, 3, 0x90,
-                                              *(Vector3 *)&p->mCamSpacePos, 0);
+    p->mSurfaceSoundHandle =
+        Sound::PlayLong((u32)p->mSurfaceSoundHandle, 3, 0x90, *(Vector3 *)&p->mCamSpacePos, 0);
     if (_ZN6Player7IsStateERNS_5StateE(c, &data_ov002_02110274) ||
         _ZN6Player7IsStateERNS_5StateE(c, &data_ov002_021102d4) ||
         _ZN6Player7IsStateERNS_5StateE(c, &data_ov002_02110244) || p->mIsMetal || p->mIsMega ||

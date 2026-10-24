@@ -195,9 +195,8 @@ extern void _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(
     unsigned int b, unsigned int c, unsigned int d);
 /* local extern: kept as a count holder: its five named parameters hold
  * the @NNN count. Sound.h's PlayLong emits the same bytes. */
-extern void d_a_jgmPlayLongHold(
-    unsigned int handle, unsigned int a, unsigned int id,
-    const Vector3 *pos, unsigned int e);
+extern void d_a_jgmPlayLongHold(unsigned int handle, unsigned int a, unsigned int id,
+                                const Vector3 *pos, unsigned int e);
 extern void d_a_jgmNewSimpleHold(unsigned int n, int x, int y, int z);
 }
 

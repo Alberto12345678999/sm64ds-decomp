@@ -65,7 +65,8 @@ void *_ZN7PathPtrC1Ev(void *self);
 u8 DecIfAbove0_Byte(u8 *p);
 int Vec3_HorzDist(const void *a, const void *b);
 s16 Vec3_HorzAngle(const void *a, const void *b);
-void d_a_obj_sm_liftPlayLongHold(unsigned int a, unsigned int b, unsigned int c, void *pos, unsigned int d);
+void d_a_obj_sm_liftPlayLongHold(unsigned int a, unsigned int b, unsigned int c, void *pos,
+                                 unsigned int d);
 void Math_Function_0203b14c(void *p, int a, int b, int c, int d);
 void Vec3_Sub(void *out, void *a, void *b);
 int LenVec3(void *v);

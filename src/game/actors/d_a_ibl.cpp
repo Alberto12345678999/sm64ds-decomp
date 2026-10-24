@@ -470,8 +470,8 @@ int daIbl_c::func_ov100_021424c0()
                     mVertSpeed = (int)(-vy + ((u32)-vy >> 31)) >> 1;
                 mRollSoundHandle = 0;
             } else {
-                mRollSoundHandle = Sound::PlayLong(mRollSoundHandle,
-                                                     3, daIbl_SND_ROLL, *(Vector3 *)&mCamSpacePosX, 0);
+                mRollSoundHandle = Sound::PlayLong(mRollSoundHandle, 3, daIbl_SND_ROLL,
+                                                   *(Vector3 *)&mCamSpacePosX, 0);
             }
             if (mHorzSpeed >= 0x23000) {
                 mHorzSpeed = 0x23000;
@@ -553,8 +553,7 @@ ground:
                 mVertSpeed = mVertSpeed * -3 / 2;
         } else {
             mRollSoundHandle =
-                Sound::PlayLong(
-                    mRollSoundHandle, 3, daIbl_SND_ROLL, *(Vector3 *)&mCamSpacePosX, 0);
+                Sound::PlayLong(mRollSoundHandle, 3, daIbl_SND_ROLL, *(Vector3 *)&mCamSpacePosX, 0);
         }
     }
 
@@ -647,7 +646,8 @@ void daIbl_c::func_ov100_02142918()
         goto Lend;
     }
 
-    mRollSoundHandle = Sound::PlayLong(mRollSoundHandle, 3, daIbl_SND_ROLL, *(Vector3 *)&mCamSpacePosX, 0);
+    mRollSoundHandle =
+        Sound::PlayLong(mRollSoundHandle, 3, daIbl_SND_ROLL, *(Vector3 *)&mCamSpacePosX, 0);
 
 Lend: {
     int nv = mVertSpeed + mVertAccel;

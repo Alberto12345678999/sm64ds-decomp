@@ -565,8 +565,8 @@ void daYegg_c::func_ov002_020ecb0c()
                 sp.rot.z = rz;
                 mParticleHandle = _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
                     mParticleHandle, 0x2c, sp.pos.x, sp.pos.y, pz, pr, 0);
-                mSoundHandle = Sound::PlayLong(
-                    mSoundHandle, 3, 0x93, *(Vector3 *)&mCamSpacePosX, 0);
+                mSoundHandle =
+                    Sound::PlayLong(mSoundHandle, 3, 0x93, *(Vector3 *)&mCamSpacePosX, 0);
                 flag = 1;
                 func_ov002_020ed738();
                 if (func_ov002_020eddc4() != 0)

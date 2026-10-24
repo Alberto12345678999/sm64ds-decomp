@@ -252,7 +252,8 @@ extern int _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void *p, const Vector3 *v, u3
                                                    u32 b, u32 c, u32 d);
 extern void _Z14ApproachLinearRiii(int* p, int t, int s);
 extern void _ZN5Sound17ChangeMusicVolumeEj5Fix12IiE(unsigned int a, int b);
-extern void d_a_king_donketuPlayLongHold(unsigned int a, unsigned int b, unsigned int c, struct Vector3* v, unsigned int d);
+extern void d_a_king_donketuPlayLongHold(unsigned int a, unsigned int b, unsigned int c,
+                                         struct Vector3 *v, unsigned int d);
 extern s16 Vec3_VertAngle(const void* a, const void* b);
 extern void Matrix4x3_ApplyInPlaceToRotationX(void *m, int angX);
 extern void _ZN8Particle20RunningSlidingDustAtE5Fix12IiES1_S1_(int a, int b, int c);
@@ -716,8 +717,7 @@ int daKing_Donketu_c::func_ov073_0211fbec()
 int daKing_Donketu_c::func_ov073_0211fbf4() {
     daKing_Donketu_c *c = this;
     Player *pl = c->mTalkPlayer;
-    c->mSoundHandle =
-        Sound::PlayLong(c->mSoundHandle, 3, 0x170, *(Vector3 *)&c->mCamSpacePos, 0);
+    c->mSoundHandle = Sound::PlayLong(c->mSoundHandle, 3, 0x170, *(Vector3 *)&c->mCamSpacePos, 0);
     ((dCamera_c *)data_0209f318)->SetFlag_3();
     c->func_ov073_0211f144();
     if (pl->GetTalkState() == -1) {
@@ -748,8 +748,7 @@ int daKing_Donketu_c::func_ov073_0211fc78() {
     dCamera_c* cam;
 
     player = c->ClosestPlayer();
-    c->mSoundHandle =
-        Sound::PlayLong(c->mSoundHandle, 3, 0x170, *(Vector3 *)&c->mCamSpacePos, 0);
+    c->mSoundHandle = Sound::PlayLong(c->mSoundHandle, 3, 0x170, *(Vector3 *)&c->mCamSpacePos, 0);
     if (player == 0) return 1;
 
     c->func_ov073_0211f144();
@@ -827,8 +826,7 @@ int daKing_Donketu_c::func_ov073_0211fe8c() {
     Player* player;
     dCamera_c* cam;
 
-    c->mSoundHandle =
-        Sound::PlayLong(c->mSoundHandle, 3, 0x170, *(Vector3 *)&c->mCamSpacePos, 0);
+    c->mSoundHandle = Sound::PlayLong(c->mSoundHandle, 3, 0x170, *(Vector3 *)&c->mCamSpacePos, 0);
 
     player = c->ClosestPlayer();
     if (player != 0 && player->mIsAirborne == 0) {
@@ -1211,8 +1209,7 @@ int daKing_Donketu_c::func_ov073_02120844()
 {
     daKing_Donketu_c *t = this;
     ApproachLinear(t->mAngleX, -0x4000, 0x400);
-    t->mSoundHandle =
-        Sound::PlayLong(t->mSoundHandle, 3, 0x170, *(Vector3 *)&t->mCamSpacePos, 0);
+    t->mSoundHandle = Sound::PlayLong(t->mSoundHandle, 3, 0x170, *(Vector3 *)&t->mCamSpacePos, 0);
     if (t->mSpawnPosY > t->mPosY && t->mWithMeshClsn.IsOnGround()) {
         t->func_ov073_0211f2c0(0x7d0000);
         func_02012694(SND_BIG_LANDING, &t->mCamSpacePosX);
@@ -1265,8 +1262,7 @@ int daKing_Donketu_c::func_ov073_02120910()
         return 1;
     }
 
-    c->mSoundHandle =
-        Sound::PlayLong(c->mSoundHandle, 3, 0x16e, *(Vector3 *)&c->mCamSpacePos, 0);
+    c->mSoundHandle = Sound::PlayLong(c->mSoundHandle, 3, 0x16e, *(Vector3 *)&c->mCamSpacePos, 0);
 
     in.z = 0;
     in.z = 0x78000;

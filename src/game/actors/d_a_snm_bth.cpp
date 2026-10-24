@@ -65,9 +65,7 @@ void Matrix4x3_FromTranslation(Matrix4x3 *m, int x, int y, int z);
 void Matrix4x3_ApplyInPlaceToRotationY(Matrix4x3 *m, short angY);
 void InvMat4x3(Matrix4x3 *dst, const Matrix4x3 *src);
 /* local extern: these five names hold the @NNN count. */
-void d_a_snm_bthPlayLongHold(int handle, unsigned int a,
-                             unsigned int b, void *pos,
-                             unsigned int c);
+void d_a_snm_bthPlayLongHold(int handle, unsigned int a, unsigned int b, void *pos, unsigned int c);
 extern Matrix4x3 data_020a0e68;
 extern s32 data_0209e650;
 extern u8 data_0209f2d8[];
@@ -346,9 +344,7 @@ int daSnmBth_c::Behavior()
                     *idx = *idx % 0x32;
                 } while (b == 0);
             }
-            mSoundHandle =
-                Sound::PlayLong(mSoundHandle, 3, 0x184,
-                                *(Vector3 *)&mCamSpacePosX, 0);
+            mSoundHandle = Sound::PlayLong(mSoundHandle, 3, 0x184, *(Vector3 *)&mCamSpacePosX, 0);
         }
     }
 

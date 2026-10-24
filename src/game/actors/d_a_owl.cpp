@@ -161,7 +161,8 @@ extern Matrix4x3 data_020a0e68;
 
 int func_ov002_020df840(void *a, void *b, void *d);
 void _Z14ApproachLinearR7Vector3RKS_5Fix12IiE(Vector3 *a, const Vector3 *b, Fix12i f);
-void d_a_owlPlayLongHold(unsigned int a, unsigned int b, unsigned int cc, void *pos, unsigned int d);
+void d_a_owlPlayLongHold(unsigned int a, unsigned int b, unsigned int cc, void *pos,
+                         unsigned int d);
 int func_ov002_020df7f4(void *c);
 int func_ov002_020df7ac(void *thiz);
 void _ZN10dBgCh_Actr12Unk_0203589cEv(void *self);

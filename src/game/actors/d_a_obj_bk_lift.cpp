@@ -97,8 +97,7 @@ void func_020393c4(dBgW *collider, void *callback);
 void func_020393d4(dBgW *collider, void *callback);
 int  func_ov015_021128f8(void *collider, daObjBk_Lift_c *lift, void *unused);
 
-void d_a_obj_bk_liftPlayLongHold(unsigned handle, unsigned a,
-                                 unsigned id, void *pos, s16 f);
+void d_a_obj_bk_liftPlayLongHold(unsigned handle, unsigned a, unsigned id, void *pos, s16 f);
 namespace Particle {
 struct System {
     static void NewSimple(u32 id, Fix12i x, Fix12i y, Fix12i z);
@@ -256,8 +255,8 @@ int daObjBk_Lift_c::Behavior()
             UpdateClsnPosAndRot();
         if (Vec3_Dist(&mPosX, &mPrevPosX) != 0) {
             unsigned z = 0;
-            unsigned r = Sound::PlayLong(
-                (unsigned)mSoundID, 3, 0x82, *(Vector3 *)&mCamSpacePosX, (s16)z);
+            unsigned r =
+                Sound::PlayLong((unsigned)mSoundID, 3, 0x82, *(Vector3 *)&mCamSpacePosX, (s16)z);
             mSoundID = (s32)r;
         }
         mJustSteppedOn = 0;

@@ -83,9 +83,8 @@ extern void func_020393c4(dBgW *collider, void *callback);
 extern int func_020393bc(dBgW *collider);
 extern u16 DecIfAbove0_Short(u16 *p);
 extern int RandomIntInternal(int *seed);
-extern void d_a_obj_ct_mecha04PlayLongHold(
-    unsigned int handle, unsigned int bank, unsigned int sound,
-    void *pos, unsigned int flags);
+extern void d_a_obj_ct_mecha04PlayLongHold(unsigned int handle, unsigned int bank,
+                                           unsigned int sound, void *pos, unsigned int flags);
 extern u8 data_0209f2c0;
 extern int data_0209e650;
 extern int data_ov065_0211c0b8[]; /* per-clock-setting belt speeds */
@@ -258,8 +257,8 @@ int daObjCtMecha04_c::Behavior()
             mTextureTransformer.speed = mBeltSpeed;
             mTextureTransformer.Advance();
             if (mBeltSpeed != 0) {
-                mSoundHandle = Sound::PlayLong(
-                    mSoundHandle, 3, 0x88, *(Vector3 *)&mCamSpacePosX, 0);
+                mSoundHandle =
+                    Sound::PlayLong(mSoundHandle, 3, 0x88, *(Vector3 *)&mCamSpacePosX, 0);
             }
         }
 
