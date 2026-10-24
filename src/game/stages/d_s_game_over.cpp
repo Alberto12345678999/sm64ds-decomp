@@ -56,7 +56,7 @@ enum dScGameOver_c_AssetId {
 #include "dScStage_c.h"
 #include "OamAttr.h"
 struct OAM {
-    static void Render(bool, OamAttr*, int, int, int, int, int, int, int, int);
+    static void Render(bool, OamAttr *, int, int, int, int, int, int, int, int);
 };
 #include "SpawnInfo.h"
 #include "decl_common.h"
@@ -148,9 +148,8 @@ void *_ZN2G213GetBG2CharPtrEv(void);
 void *_ZN2G212GetBG2ScrPtrEv(void);
 void *_ZN2G212GetBG0ScrPtrEv(void);
 
-void OamRender10_d_s_game_over(s32 sub, OamAttr *data, s32 x, s32 y, s32 palette,
-                               s32 priority, Fix12i scaleX, Fix12i scaleY,
-                               s32 rotation, s32 mode);
+void OamRender10_d_s_game_over(s32 sub, OamAttr *data, s32 x, s32 y, s32 palette, s32 priority,
+                               Fix12i scaleX, Fix12i scaleY, s32 rotation, s32 mode);
 void _ZN5Sound22StopLoadedMusic_Layer1Ej(unsigned int);
 int LoadFile(int handle);
 void DecompressLZ16(int src, void *dst);
@@ -415,8 +414,8 @@ s32 dScGameOver_c::Behavior() {
 s32 dScGameOver_c::Render() {
     int i;
     for (i = 0; i < 8; i++) {
-        OAM::Render(0, sGameOverGlyphTemplates[i], mGlyphX[i],
-                                                    mGlyphY[i], -1, -1, 0x1000, 0x1000, 0, -1);
+        OAM::Render(0, sGameOverGlyphTemplates[i], mGlyphX[i], mGlyphY[i], -1, -1, 0x1000, 0x1000,
+                    0, -1);
     }
     if (mIntroPhase >= 2)
         dScStage_c::RenderBouncingArrows();

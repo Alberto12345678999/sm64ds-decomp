@@ -415,7 +415,8 @@ extern int data_ov002_02100140[];
 extern void func_ov002_020f2790(char *c, int p1, int p2, int p3, short p4);
 extern int func_ov002_020f2984(char *p);
 extern int GetOwnerLanguage(void);
-extern void OamRender10_d_a_demo( int a, struct OamAttr* attr, int x, int y, int e, int f, int g, int h, int i, int j);
+extern void OamRender10_d_a_demo(int a, struct OamAttr *attr, int x, int y, int e, int f, int g,
+                                 int h, int i, int j);
 extern struct OamAttr* data_ov002_0210b988[];
 extern void func_0201ef50(unsigned char v);
 extern void func_0201f108(void);
@@ -1136,8 +1137,7 @@ int func_ov002_020f2990(char* c)
     else if (GetOwnerLanguage() == 2 || GetOwnerLanguage() == 5) idx = 2;
     else if (GetOwnerLanguage() == 4) idx = 3;
 
-    OAM::Render(
-        0, data_ov002_0210b988[idx], x, y, -1, 1, 0x1000, 0x1000, 0, -1);
+    OAM::Render(0, data_ov002_0210b988[idx], x, y, -1, 1, 0x1000, 0x1000, 0, -1);
 }
 }
 

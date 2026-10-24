@@ -3,7 +3,7 @@
 #include "dScEntry_c.h"
 #include "OamAttr.h"
 struct OAM {
-    static void Render(bool, OamAttr*, int, int, int, int, int, int, int, int);
+    static void Render(bool, OamAttr *, int, int, int, int, int, int, int, int);
 };
 extern "C" int _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiEi(int, OamAttr*, int, int, int, int, int, int);
 extern "C" int func_0203da9c(void);

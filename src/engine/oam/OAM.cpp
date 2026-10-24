@@ -211,8 +211,7 @@ extern int _ZN4cstd4fdivEii(int num, int den);
 #pragma cplusplus on
 
 void OAM::Render(bool sub, struct OamAttr *attr_, int xOff, int yOff, int palette, int priority,
-                 int scaleX, int scaleY, int rotation, int mode)
-{
+                 int scaleX, int scaleY, int rotation, int mode) {
     /* The 10-parameter form: walks a chain of template entries (terminated by
      * a3 == 0xffff) and writes each into whichever OAM buffer is being filled
      * this frame, clipping against the screen; a non-unit scale or a rotation
@@ -803,11 +802,7 @@ void OAM::RenderSub(OamAttr *data, s32 x, s32 y)
      * in 20.12; -1 in palette/priority/mode means "leave the attribute word
      * alone". The type is `OamAttr`, NOT `OamAttri` -- the extra `i` in
      * `P7OamAttrii` belongs to the parameter list. */
-    OAM::Render(
-        1, data, x, y,
-        -1, -1,
-        0x1000, 0x1000,
-        0, -1);
+    OAM::Render(1, data, x, y, -1, -1, 0x1000, 0x1000, 0, -1);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -820,11 +815,7 @@ void OAM::RenderSub(OamAttr *data, s32 x, s32 y, s32 palette, s32 priority)
      * priority given explicitly rather than left as -1. Everything else is
      * still the identity transform -- 0x1000 scale in both axes (1.0 in
      * 20.12), no rotation, mode -1. */
-    OAM::Render(
-        1, data, x, y,
-        palette, priority,
-        0x1000, 0x1000,
-        0, -1);
+    OAM::Render(1, data, x, y, palette, priority, 0x1000, 0x1000, 0, -1);
 }
 
 /* -------------------------------------------------------------------------- */

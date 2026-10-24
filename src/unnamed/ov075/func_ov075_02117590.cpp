@@ -3,7 +3,7 @@
 typedef int Fix12;
 struct OamAttr;
 struct OAM {
-    static void Render(bool, OamAttr*, int, int, int, int, int, int, int, int);
+    static void Render(bool, OamAttr *, int, int, int, int, int, int, int, int);
     static void RenderSub(OamAttr*, int, int);
 };
 /* Signature deliberately copied from the local declaration above: the

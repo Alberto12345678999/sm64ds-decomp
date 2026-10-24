@@ -188,7 +188,7 @@ extern void MultiStore16(unsigned short val, char *dst, int nbytes);
 extern int  RandomIntInternal(int *seed);
 struct OamAttr;
 struct OAM {
-    static void Render(bool, OamAttr*, int, int, int, int, int, int, int, int);
+    static void Render(bool, OamAttr *, int, int, int, int, int, int, int, int);
 };
 extern void Mg_RenderSpriteBothPalMtx(void *sprite, int x, int y, int a3, void *m);
 extern int  Mg_RenderSpriteBothScaled(OamAttr *a, int b, int c, int d, int e, int f, int g);
@@ -374,10 +374,9 @@ void PachinkoDeco_DrawAll(char* row)
 {
     for (int i = 0; i < 3; i++) {
         if (PACHINKO(row)->mRow[0].visible != 0) {
-            OAM::Render(
-                false, (OamAttr *)sPachinkoDecoSprite, PACHINKO(row)->mRow[0].x >> 12,
-                PACHINKO(row)->mRow[0].y >> 12, -1, -1, 0x1000, 0x1000,
-                (unsigned short)PACHINKO(row)->mRow[0].angle, -1);
+            OAM::Render(false, (OamAttr *)sPachinkoDecoSprite, PACHINKO(row)->mRow[0].x >> 12,
+                        PACHINKO(row)->mRow[0].y >> 12, -1, -1, 0x1000, 0x1000,
+                        (unsigned short)PACHINKO(row)->mRow[0].angle, -1);
         }
         row += 0x18;
     }

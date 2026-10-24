@@ -147,8 +147,7 @@ extern int data_0208ee44;
 extern unsigned short data_020a0e5a[][2];
 extern u16 data_020a0e58[];
 int IsStarCollectedInLevel(s8 levelID, s32 starID);
-void OamRender10_d_s_star_sel_methods(int, void *, int, int, int, int, int, int, int,
-                                           int);
+void OamRender10_d_s_star_sel_methods(int, void *, int, int, int, int, int, int, int, int);
 void _ZN3G3i13PerspectiveW_E5Fix12IiES1_S1_S1_S1_S1_bP9Matrix4x3(int, int, int, int, int, int, int,
                                                                  void *);
 void _Z13CopyToViewMatPK9Matrix4x3(const Matrix4x3 *);
@@ -337,8 +336,8 @@ void dScStarSel_c::func_ov003_020ae238() {
         x = 0x10;
         y = 0xac;
     }
-    OAM::Render(0, (OamAttr *)_ZN3OAM10LIFE_ICONSE[LIFE_ICON(this)], x, y + 8,
-                                                -1, -1, 0x1000, 0x1000, 0, -1);
+    OAM::Render(0, (OamAttr *)_ZN3OAM10LIFE_ICONSE[LIFE_ICON(this)], x, y + 8, -1, -1, 0x1000,
+                0x1000, 0, -1);
     OAM::Render(0, (OamAttr *)&_ZN3OAM5TIMESE, x + 0x10, y + 8, -1, -1, 0);
     func_ov003_020ae1a4((unsigned short)data_0209f2f4[0]);
     {
@@ -616,24 +615,20 @@ s32 dScStarSel_c::Render() {
 
         switch (data_0209caa0[0x41]) {
         case 0:
-            OAM::Render(1, (OamAttr *)&data_ov001_020abb34, 0x80,
-                                                        PANEL_Y(this), -1, -1, SCALE_X(this),
-                                                        SCALE_Y(this), (u16)SPIN_ANGLE(this), -1);
+            OAM::Render(1, (OamAttr *)&data_ov001_020abb34, 0x80, PANEL_Y(this), -1, -1,
+                        SCALE_X(this), SCALE_Y(this), (u16)SPIN_ANGLE(this), -1);
             break;
         case 1:
-            OAM::Render(1, (OamAttr *)&data_ov001_020abb54, 0x80,
-                                                        PANEL_Y(this), -1, -1, SCALE_X(this),
-                                                        SCALE_Y(this), (u16)SPIN_ANGLE(this), -1);
+            OAM::Render(1, (OamAttr *)&data_ov001_020abb54, 0x80, PANEL_Y(this), -1, -1,
+                        SCALE_X(this), SCALE_Y(this), (u16)SPIN_ANGLE(this), -1);
             break;
         case 2:
-            OAM::Render(1, (OamAttr *)&data_ov001_020abb74, 0x80,
-                                                        PANEL_Y(this), -1, -1, SCALE_X(this),
-                                                        SCALE_Y(this), (u16)SPIN_ANGLE(this), -1);
+            OAM::Render(1, (OamAttr *)&data_ov001_020abb74, 0x80, PANEL_Y(this), -1, -1,
+                        SCALE_X(this), SCALE_Y(this), (u16)SPIN_ANGLE(this), -1);
             break;
         case 3:
-            OAM::Render(1, (OamAttr *)&data_ov001_020abb94, 0x80,
-                                                        PANEL_Y(this), -1, -1, SCALE_X(this),
-                                                        SCALE_Y(this), (u16)SPIN_ANGLE(this), -1);
+            OAM::Render(1, (OamAttr *)&data_ov001_020abb94, 0x80, PANEL_Y(this), -1, -1,
+                        SCALE_X(this), SCALE_Y(this), (u16)SPIN_ANGLE(this), -1);
             for (i = 0; i < 3; i++) {
                 pressY = 0;
                 if (PICKED_CHAR(this) == i && PICK_PRESS_TIMER(this) != 0) {
@@ -643,28 +638,26 @@ s32 dScStarSel_c::Render() {
                     if (ANIM_MODE(this) == 2) {
                         if (i == func_ov003_020adf50()) {
                             if (ANIM_FLIP(this) == 0) {
-                                OAM::Render(
-                                    1, (OamAttr *)data_ov001_020abcb4[i + 3], CHAR_X(this, i), CHAR_Y(this, i),
-                                    -1, -1, ICON_SCALE_X(this), ICON_SCALE_Y(this), 0, -1);
-                                OAM::Render(
-                                    1, (OamAttr *)data_ov001_020abcb4[CHAR_SPRITE(this, i)], CHAR_X(this, i),
-                                    CHAR_Y(this, i), -1, -1, ICON_SCALE_X(this), ICON_SCALE_Y(this),
-                                    0, -1);
+                                OAM::Render(1, (OamAttr *)data_ov001_020abcb4[i + 3],
+                                            CHAR_X(this, i), CHAR_Y(this, i), -1, -1,
+                                            ICON_SCALE_X(this), ICON_SCALE_Y(this), 0, -1);
+                                OAM::Render(1, (OamAttr *)data_ov001_020abcb4[CHAR_SPRITE(this, i)],
+                                            CHAR_X(this, i), CHAR_Y(this, i), -1, -1,
+                                            ICON_SCALE_X(this), ICON_SCALE_Y(this), 0, -1);
                             } else {
-                                OAM::Render(
-                                    1,
-                                    (OamAttr *)data_ov001_020abcb4[CHAR_SPRITE(this, i ^ ((i != 0) ? 3 : 0))],
-                                    CHAR_X(this, i), CHAR_Y(this, i), -1, -1, ICON_SCALE_X(this),
-                                    ICON_SCALE_Y(this), 0, -1);
+                                OAM::Render(1,
+                                            (OamAttr *)data_ov001_020abcb4[CHAR_SPRITE(
+                                                this, i ^ ((i != 0) ? 3 : 0))],
+                                            CHAR_X(this, i), CHAR_Y(this, i), -1, -1,
+                                            ICON_SCALE_X(this), ICON_SCALE_Y(this), 0, -1);
                             }
                         } else if (IDLE_ICON_SCALE(this) != 0) {
-                            OAM::Render(
-                                1, (OamAttr *)data_ov001_020abcb4[i + 3], CHAR_X(this, i), CHAR_Y(this, i), -1,
-                                -1, IDLE_ICON_SCALE(this), IDLE_ICON_SCALE(this), 0, -1);
-                            OAM::Render(
-                                1, (OamAttr *)data_ov001_020abcb4[CHAR_SPRITE(this, i)], CHAR_X(this, i),
-                                CHAR_Y(this, i), -1, -1, IDLE_ICON_SCALE(this),
-                                IDLE_ICON_SCALE(this), 0, -1);
+                            OAM::Render(1, (OamAttr *)data_ov001_020abcb4[i + 3], CHAR_X(this, i),
+                                        CHAR_Y(this, i), -1, -1, IDLE_ICON_SCALE(this),
+                                        IDLE_ICON_SCALE(this), 0, -1);
+                            OAM::Render(1, (OamAttr *)data_ov001_020abcb4[CHAR_SPRITE(this, i)],
+                                        CHAR_X(this, i), CHAR_Y(this, i), -1, -1,
+                                        IDLE_ICON_SCALE(this), IDLE_ICON_SCALE(this), 0, -1);
                         }
                     } else {
                         OAM::RenderSub((OamAttr *)data_ov001_020abcb4[i + 3], CHAR_X(this, i),

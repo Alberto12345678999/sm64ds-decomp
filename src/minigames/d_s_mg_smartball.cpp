@@ -196,12 +196,11 @@ extern long long func_0203d5bc(int *p);
 extern "C" void Mg_RenderSpriteBoth(void *a0, int a1, int a2, int a3, int a4);
 extern "C" struct OamAttr *sSmartballWingSprites[];
 struct OAM {
-    static void Render(bool, OamAttr*, int, int, int, int, int, int, int, int);
+    static void Render(bool, OamAttr *, int, int, int, int, int, int, int, int);
 };
-extern "C" void OamRender10_d_s_mg_smartball(int sub, struct OamAttr *data, s32 x,
-                                                            s32 y, s32 palette, s32 priority,
-                                                            Fix12i scaleX, Fix12i scaleY,
-                                                            s32 rotation, s32 mode);
+extern "C" void OamRender10_d_s_mg_smartball(int sub, struct OamAttr *data, s32 x, s32 y,
+                                             s32 palette, s32 priority, Fix12i scaleX,
+                                             Fix12i scaleY, s32 rotation, s32 mode);
 extern int Vec2_Len(Vec2 *v);
 /* Five of this helper's six recorded views spell the first and last arguments
    pointers and one spells them ints; the pointer view is kept. */
@@ -573,18 +572,14 @@ void cMgSmartball_wing_c::Update() {
         Mg_RenderSpriteBoth(sSmartballWingBodySprites[1], mCurrent0 >> 12, (mCurrent1 >> 12) + 5,
                             -1, 2);
     }
-    OAM::Render(
-        0, sSmartballWingSprites[0], (mCurrent0 >> 12) - 0x10, (mCurrent1 >> 12) + 0x118, -1, 1,
-        0x1000, 0x1000, (unsigned short)(short)(-0x4000 - GetAngle()), -1);
-    OAM::Render(
-        0, sSmartballWingSprites[0], (mCurrent0 >> 12) + 0x10, (mCurrent1 >> 12) + 0x118, -1, 1,
-        0x1000, 0x1000, (unsigned short)(short)(GetAngle() - 0x4000), -1);
-    OAM::Render(
-        0, sSmartballWingSprites[1], (mCurrent0 >> 12) - 0x10, (mCurrent1 >> 12) + 0x11d, -1, 2,
-        0x1000, 0x1000, (unsigned short)(short)(-0x4000 - GetAngle()), -1);
-    OAM::Render(
-        0, sSmartballWingSprites[1], (mCurrent0 >> 12) + 0x10, (mCurrent1 >> 12) + 0x11d, -1, 2,
-        0x1000, 0x1000, (unsigned short)(short)(GetAngle() - 0x4000), -1);
+    OAM::Render(0, sSmartballWingSprites[0], (mCurrent0 >> 12) - 0x10, (mCurrent1 >> 12) + 0x118,
+                -1, 1, 0x1000, 0x1000, (unsigned short)(short)(-0x4000 - GetAngle()), -1);
+    OAM::Render(0, sSmartballWingSprites[0], (mCurrent0 >> 12) + 0x10, (mCurrent1 >> 12) + 0x118,
+                -1, 1, 0x1000, 0x1000, (unsigned short)(short)(GetAngle() - 0x4000), -1);
+    OAM::Render(0, sSmartballWingSprites[1], (mCurrent0 >> 12) - 0x10, (mCurrent1 >> 12) + 0x11d,
+                -1, 2, 0x1000, 0x1000, (unsigned short)(short)(-0x4000 - GetAngle()), -1);
+    OAM::Render(0, sSmartballWingSprites[1], (mCurrent0 >> 12) + 0x10, (mCurrent1 >> 12) + 0x11d,
+                -1, 2, 0x1000, 0x1000, (unsigned short)(short)(GetAngle() - 0x4000), -1);
 }
 
 // @symbol _ZN19cMgSmartball_wing_c12SaveSnapshotEv
