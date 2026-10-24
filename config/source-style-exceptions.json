@@ -810,22 +810,6 @@
       "evidence": "src/engine/model/ModelAnim.cpp: void ModelAnim::SetAnim(BCA_File *, int, Fix12i, u16) at 0x02016748 size 0x5c MATCH under 2004/b56; St_YoshiPower_Main MATCH with the scalar unsigned int startFrame, +0x10 with the u16 member call (PR #4290 measurement)."
     },
     {
-      "path": "src/minigames/unit020bfec0.cpp",
-      "rule": "handspelled-member",
-      "match": "_ZN9ModelAnim7SetAnimEP8BCA_Fileiit",
-      "count": 5,
-      "reason": "This TU never sees the ModelAnim class. It reaches its animation through raw record offsets (*(void **)(c + 0x104)), so the header member cannot bind. This is a rename of the 5 pre-existing occurrences of the retired _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj spelling, not new debt. Follow-up: type the record, then convert to member calls.",
-      "evidence": "src/engine/model/ModelAnim.cpp: void ModelAnim::SetAnim(BCA_File *, int, Fix12i, u16) at 0x02016748 size 0x5c MATCH under 2004/b56; the 5 occurrences replace 5 of the old Fix12<int> spelling one-for-one (PR #4290)."
-    },
-    {
-      "path": "src/minigames/unit020bfec0.cpp",
-      "rule": "handspelled-member",
-      "match": "_ZN14BlendModelAnim7SetAnimER8BCA_Fileiiit",
-      "count": 37,
-      "reason": "This TU never sees the BlendModelAnim class. It reaches its animation through raw record offsets (*(void **)(c + 0x104)), so the header member cannot bind. This is a rename of the 37 pre-existing occurrences of the retired _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt spelling, not new debt. Follow-up: type the record, then convert to member calls.",
-      "evidence": "src/engine/model/BlendModelAnim.cpp: void BlendModelAnim::SetAnim(BCA_File &, int, int, Fix12i, u16) at 0x020163e0 size 0x9c MATCH under 2004/b56; the 37 occurrences replace 37 of the old Fix12<int> spelling one-for-one (PR #4292)."
-    },
-    {
       "path": "src/InvMat4x3.c",
       "rule": "handspelled-member",
       "match": "_ZN4cstd16reciprocal_asyncEi",

@@ -70,10 +70,9 @@
  * reproduces 0x02016748/0x5c exactly. See notes/mwccarm-codegen.md section 6az,
  * MEASURED 2026-10-22.
  *
- * Three call sites could not follow: unit020bfec0.cpp has no real ModelAnim to
- * call through, d_a_ots.cpp tail-forwards the result as an int, and one
- * Player.cpp body passes a non-constant startFrame. Each keeps a scalar
- * `local extern:` with its reason.
+ * Two call sites could not follow: d_a_ots.cpp tail-forwards the result as an
+ * int, and one Player.cpp body passes a non-constant startFrame. Each keeps a
+ * scalar `local extern:` with its reason.
  */
 
 #ifdef __cplusplus
