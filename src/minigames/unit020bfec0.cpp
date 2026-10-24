@@ -102,12 +102,16 @@ void _ZN17dExtShadowModel_c9InitModelEP9Matrix4x35Fix12IiES3_S3_j(void *, void *
 void *_ZN17dExtShadowModel_cC1Ev(void *);
 void _ZN17dExtShadowModel_cD1Ev(void *);
 void *_ZN19dExtBlendAnmModel_cC1Ev(void *);
+/* local extern: Presenter.h keeps this controller as an s32[5], so it is passed as void * */
 void _ZN15dExtAnmTexPat_c6UpdateER15ModelComponents(void *, void *);
+/* local extern: Presenter.h keeps this controller as an s32[5], so it is passed as void * */
 void _ZN15dExtAnmTexPat_c7PrepareER8BMD_FileR8BTP_File(void *, void *);
 void _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj(void *, void *, int, int, unsigned int);
 void *_ZN15dExtAnmTexPat_cC1Ev(void *);
 void _ZN15dExtAnmTexPat_cD1Ev(void *);
+/* local extern: Presenter.h keeps this controller as an s32[5], so it is passed as void * */
 void _ZN15dExtAnmTexSRT_c6UpdateER15ModelComponents(void *, void *);
+/* local extern: Presenter.h keeps this controller as an s32[5], so it is passed as void * */
 void _ZN15dExtAnmTexSRT_c7PrepareER8BMD_FileR8BTA_File(void *, void *);
 void _ZN15dExtAnmTexSRT_c7SetFileER8BTA_Filei5Fix12IiEj(void *, void *, int, int, unsigned int);
 void *_ZN15dExtAnmTexSRT_cC1Ev(void *);
@@ -1144,8 +1148,8 @@ void Presenter_StateIdle(char *c) {
     PRESENTER(c)->mFace.SetAnim(*(BCA_File *)PRESENTER(c)->mAnims[0].file, 0, 0, 0x800, 0);
     _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj(
         PRESENTER(c)->mTexSeq, ((void *)PRESENTER(c)->mTexSeqs[0].file), 0, 0x800, 0);
-    _ZN15dExtAnmTexSRT_c7SetFileER8BTA_Filei5Fix12IiEj(
-        PRESENTER(c)->mTexAnim, (void *)&sPresenterIdleTexAnim, 0, 0x800, 0);
+    _ZN15dExtAnmTexSRT_c7SetFileER8BTA_Filei5Fix12IiEj(PRESENTER(c)->mTexAnim,
+                                                       (void *)&sPresenterIdleTexAnim, 0, 0x800, 0);
 }
 }
 }
@@ -1171,7 +1175,7 @@ void Presenter_PlayMatch(void *c) {
     _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj(
         r4 + 0xc8, ((void *)PRESENTER(r4)->mTexSeqs[2].file), 0x40000000, 0x800, 0);
     _ZN15dExtAnmTexSRT_c7SetFileER8BTA_Filei5Fix12IiEj(r4 + 0xdc, &sPresenterMatchTexAnim,
-                                                          0x40000000, 0x800, 0);
+                                                       0x40000000, 0x800, 0);
     new_var = pmf_Presenter_StateWin;
     *new_var2 = new_var;
 }
@@ -1202,8 +1206,8 @@ void Presenter_PlayMiss(char *c) {
     PRESENTER(c)->mFace.SetAnim(*(BCA_File *)PRESENTER(c)->mAnims[1].file, 4, 0x40000000, 0x800, 0);
     _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj(
         PRESENTER(c)->mTexSeq, ((void *)PRESENTER(c)->mTexSeqs[1].file), 0x40000000, 0x800, 0);
-    _ZN15dExtAnmTexSRT_c7SetFileER8BTA_Filei5Fix12IiEj(
-        PRESENTER(c)->mTexAnim, sPresenterMissTexAnim, 0x40000000, 0x800, 0);
+    _ZN15dExtAnmTexSRT_c7SetFileER8BTA_Filei5Fix12IiEj(PRESENTER(c)->mTexAnim,
+                                                       sPresenterMissTexAnim, 0x40000000, 0x800, 0);
     *(struct W2 *)c = *(struct W2 *)pmf_Presenter_StateMistake;
 }
 }
@@ -1238,7 +1242,7 @@ void Presenter_PlayCheer(void *c) {
     _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj(
         r4 + 0xc8, ((void *)PRESENTER(r4)->mTexSeqs[7].file), 0x40000000, 0x800, 0);
     _ZN15dExtAnmTexSRT_c7SetFileER8BTA_Filei5Fix12IiEj(r4 + 0xdc, &sPresenterCheerTexAnim,
-                                                          0x40000000, 0x800, 0);
+                                                       0x40000000, 0x800, 0);
     *((long long *)r4) = pmf_Presenter_StateSurprisedThenSmile;
 }
 }
@@ -1260,8 +1264,8 @@ void Presenter_StateSurprisedThenSmile(void *c) {
     PRESENTER(r4)->mFace.SetAnim(*(BCA_File *)PRESENTER(r4)->mAnims[6].file, 8, 0, 0x800, 0);
     _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj(
         r4 + 0xc8, ((void *)PRESENTER(r4)->mTexSeqs[6].file), 0, 0x800, 0);
-    _ZN15dExtAnmTexSRT_c7SetFileER8BTA_Filei5Fix12IiEj(r4 + 0xdc, &sPresenterSmileTexAnim, 0,
-                                                          0x800, 0);
+    _ZN15dExtAnmTexSRT_c7SetFileER8BTA_Filei5Fix12IiEj(r4 + 0xdc, &sPresenterSmileTexAnim, 0, 0x800,
+                                                       0);
 }
 }
 }
@@ -1305,7 +1309,7 @@ void Presenter_StateLoseStart(void *c) {
     _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj(
         r4 + 0xc8, ((void *)PRESENTER(r4)->mTexSeqs[3].file), 0, 0x800, 0);
     _ZN15dExtAnmTexSRT_c7SetFileER8BTA_Filei5Fix12IiEj(r4 + 0xdc, &sPresenterLoseLoopTexAnim, 0,
-                                                          0x800, 0);
+                                                       0x800, 0);
 }
 }
 }
@@ -1329,7 +1333,7 @@ void Presenter_PlayCheerLoop(void *c) {
     _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj(
         r4 + 0xc8, ((void *)PRESENTER(r4)->mTexSeqs[7].file), 0x40000000, 0x800, 0);
     _ZN15dExtAnmTexSRT_c7SetFileER8BTA_Filei5Fix12IiEj(r4 + 0xdc, &sPresenterCheerTexAnim,
-                                                          0x40000000, 0x800, 0);
+                                                       0x40000000, 0x800, 0);
     *((long long *)r4) = (new_var = pmf_Presenter_StateSurprisedThenIdle & 0xFFFFFFFFFFFFFFFF);
 }
 }

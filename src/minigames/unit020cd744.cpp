@@ -1084,7 +1084,7 @@ void TrmpItem_Hide(int *p);
    mwccarm passes differently at the call site, so declaring the true
    types breaks the byte match. See notes/mwccarm-codegen.md 6az. */
 extern "C" void _ZN15dExtAnmTexSRT_c7SetFileER8BTA_Filei5Fix12IiEj(void *, BTA_File &, int, int,
-                                                                      unsigned int);
+                                                                   unsigned int);
 
 extern "C" {
 extern SharedFilePtr sTrmpItemRingAModelFile;
@@ -1110,8 +1110,8 @@ extern "C" void TrmpItem_Load(char *c) {
     ((dExtSimpleModel_c *)TRMPITEM(c)->mModels[1])->SetPolygonID(2);
     ((dExtSimpleModel_c *)TRMPITEM(c)->mModels[2])->SetPolygonID(3);
     dExtAnmTexSRT_c::Prepare(*(BMD_File *)sTrmpItemRingAModelFile.filePtr, sTrmpItemTextureAnim);
-    _ZN15dExtAnmTexSRT_c7SetFileER8BTA_Filei5Fix12IiEj(
-        (dExtAnmTexSRT_c *)TRMPITEM(c)->mTexAnim, sTrmpItemTextureAnim, 0, 0x1000, 0);
+    _ZN15dExtAnmTexSRT_c7SetFileER8BTA_Filei5Fix12IiEj((dExtAnmTexSRT_c *)TRMPITEM(c)->mTexAnim,
+                                                       sTrmpItemTextureAnim, 0, 0x1000, 0);
     TrmpItem_Hide((int *)c);
 }
 }

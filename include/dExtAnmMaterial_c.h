@@ -39,7 +39,7 @@ struct dExtAnmMaterial_c : dExtFrameCtrl_c {
     BMA_File *file;           /* 0x10 */
 
     /* --- vtable: the destructor pair only. --- */
-    virtual ~dExtAnmMaterial_c();                       /* slots 0 (D1), 1 (D0) */
+    virtual ~dExtAnmMaterial_c(); /* slots 0 (D1), 1 (D0) */
 
     /* DEFINED in the promoted TU -- one dExtAnmMaterial_c() emits C1 (and a
        deadstripped C2 sibling); see notes/ctor-migration.md section 2. */

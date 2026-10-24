@@ -82,7 +82,8 @@ void func_ov029_02112250(daObjWc_Mizu_c *self);
 void func_ov029_021122b4(daObjWc_Mizu_c *self);
 void Matrix4x3_FromTranslation(void *m, int x, int y, int z);
 int IsAreaShowing(int idx);
-void _ZN15dExtAnmTexSRT_c7SetFileER8BTA_Filei5Fix12IiEj(void *tt, void *bta, int a, int fix, unsigned b);
+void _ZN15dExtAnmTexSRT_c7SetFileER8BTA_Filei5Fix12IiEj(void *tt, void *bta, int a, int fix,
+                                                        unsigned b);
 void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
     void *mc, void *kcl, void *mtx, int fix, short s, void *clps);
 
@@ -116,11 +117,10 @@ int daObjWc_Mizu_c::InitResources()
 
     m = dExtSimpleModel_c::LoadFile(daObjWc_Obj07_c_ModelFile);
     mModel.SetFile((BMD_File *)m, 1, -1);
-    dExtAnmTexSRT_c::Prepare(*(BMD_File *)daObjWc_Obj07_c_ModelFile.filePtr,
-                                data_ov029_02112fb8);
+    dExtAnmTexSRT_c::Prepare(*(BMD_File *)daObjWc_Obj07_c_ModelFile.filePtr, data_ov029_02112fb8);
     /* 6az: header SetFile takes Fix12<int> by value. */
-    _ZN15dExtAnmTexSRT_c7SetFileER8BTA_Filei5Fix12IiEj(
-        &mTextureTransformer, &data_ov029_02112fb8, 0, 0x1000, 0);
+    _ZN15dExtAnmTexSRT_c7SetFileER8BTA_Filei5Fix12IiEj(&mTextureTransformer, &data_ov029_02112fb8,
+                                                       0, 0x1000, 0);
 
     mUseSpawnPosY = (u8)(param1 & 1);
     if (mUseSpawnPosY == 0) {

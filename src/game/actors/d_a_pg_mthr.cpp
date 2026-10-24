@@ -111,7 +111,8 @@ extern void Matrix4x3_FromRotationY(void *m, int angle);
 extern void Matrix4x3_ApplyInPlaceToRotationY(Matrix4x3 *mf, short angY);
 extern void Matrix4x3_ApplyInPlaceToRotationX(Matrix4x3 *mf, short angX);
 extern Matrix4x3 data_020a0e68;
-extern void _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj(void *, BTP_File &f, int a, int b, unsigned int c);
+extern void _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj(void *, BTP_File &f, int a, int b,
+                                                               unsigned int c);
 extern PgMthrAnimFileResHandle gPenguinWalkAnimationFile;
 extern PgMthrTexSeqFileHandle gPenguinAngryTextureSequenceFile;
 extern void Matrix4x3_FromTranslation(void *m, int x, int y, int z);

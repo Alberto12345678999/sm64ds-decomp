@@ -28,7 +28,7 @@ struct daEykn_c : dActor_c {
     /* dExtAnmTexPat_c member. The cartridge's own ~daEykn_c calls _ZN15dExtAnmTexPat_cD1Ev
        at +0x138 (D0/D1), a relocation the ROM build checks; recovered by
        tools/dtor_members.py. D1 and not D2, so it is this type and not an inlined base. */
-    dExtAnmTexPat_c mTextureSequence;            /* 0x138 */
+    dExtAnmTexPat_c mTextureSequence; /* 0x138 */
     /* dExtShadowModel_c member. The cartridge's own ~daEykn_c calls _ZN17dExtShadowModel_cD1Ev at +0x14c
        (D0/D1), a relocation the ROM build checks; recovered by tools/dtor_members.py.
        D1 and not D2, so it is this type and not an inlined base. */

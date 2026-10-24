@@ -48,7 +48,7 @@ struct daHanachan_c : dEnemyBase_c {
     };
 
     dExtAnmModel_c mModelAnims[5];                   /* 0x110 */
-    dExtAnmMaterial_c mMaterialChangers[5];            /* 0x304 */
+    dExtAnmMaterial_c mMaterialChangers[5];          /* 0x304 */
     dExtAnmTexPat_c mTextureSequences[5];            /* 0x368 */
     /* One entry per body segment, head first; these segment names are coined. */
     Vector3 mSegmentPos[5];                          /* 0x3cc -- [0] follows mPos */

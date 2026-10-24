@@ -54,8 +54,8 @@ extern SharedFilePtr data_ov002_0210d9a8;
 extern "C" {
 extern int data_0209b454;
 extern void Matrix4x3_FromTranslation(void *m, int x, int y, int z);
-void _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj(
-    void *self, void *btp, int a, int b, unsigned int c);
+void _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj(void *self, void *btp, int a, int b,
+                                                        unsigned int c);
 namespace Particle {
 struct System {
     static void NewSimple(unsigned int id, int x, int y, int z);

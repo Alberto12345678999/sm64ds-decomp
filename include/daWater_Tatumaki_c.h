@@ -51,7 +51,7 @@ struct daWater_Tatumaki_c : dEnemyBase_c {
 
     const State                 *mState;                /* 0x110 */
     dExtAnmModel_c mModelAnim;                          /* 0x114 */
-    dExtAnmTexSRT_c           mTextureTransformer;   /* 0x178 */
+    dExtAnmTexSRT_c mTextureTransformer;                /* 0x178 */
     /* Set once the player has been dragged under the whirlpool's centre and
        KillPlayer has run, so it runs once. */
     s32                          mPlayerKilled;         /* 0x18c */

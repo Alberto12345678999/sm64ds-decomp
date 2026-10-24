@@ -76,9 +76,8 @@ extern BTA_File      data_ov032_02112f64;   /* the scrolling texture animation *
 extern CLPS_Block    data_ov032_02112fb8;
 
 /* 6az: both SetFile calls take Fix12<int> by value. */
-void _ZN15dExtAnmTexSRT_c7SetFileER8BTA_Filei5Fix12IiEj(
-    dExtAnmTexSRT_c *self, BTA_File &animFile, int flags, int speed,
-    u32 startFrame);
+void _ZN15dExtAnmTexSRT_c7SetFileER8BTA_Filei5Fix12IiEj(dExtAnmTexSRT_c *self, BTA_File &animFile,
+                                                        int flags, int speed, u32 startFrame);
 void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
     dBgW_KcMbg *self, KCL_File *kcl, const Matrix4x3 &mat, int scale,
     s16 angleY, CLPS_Block &clps);
@@ -112,8 +111,8 @@ s32 daObjTdWater_c::InitResources()
        descriptor rather than reusing LoadFile's return value. */
     dExtAnmTexSRT_c::Prepare(*(BMD_File *)data_ov032_02113afc.filePtr, data_ov032_02112f64);
     /* 6az: header SetFile takes Fix12<int> by value. */
-    _ZN15dExtAnmTexSRT_c7SetFileER8BTA_Filei5Fix12IiEj(
-        &mTextureTransformer, data_ov032_02112f64, 0, 0x1000, 0);
+    _ZN15dExtAnmTexSRT_c7SetFileER8BTA_Filei5Fix12IiEj(&mTextureTransformer, data_ov032_02112f64, 0,
+                                                       0x1000, 0);
 
     UpdateModelPosAndRotY();
     UpdateClsnPosAndRot();

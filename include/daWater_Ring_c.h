@@ -49,7 +49,7 @@ struct daWater_Ring_c : dEnemyBase_c {
     dCcAcPos_c    mdCcAcPos_c; /* 0x110 */
     dBgCh_Actr                 mWithMeshClsn;         /* 0x150 */
     dExtSimpleModel_c mModel;                         /* 0x30c */
-    dExtAnmTexSRT_c           mTextureTransformer;   /* 0x35c */
+    dExtAnmTexSRT_c mTextureTransformer;              /* 0x35c */
     const State                 *mState;                /* 0x370 */
     /* Phase accumulators: each frame adds 0x1000 / 0x800, and the high bits
        index the sine table for the scale wobble / the spin. */

@@ -35,8 +35,8 @@ enum daBgSnwmn_c_AssetId {
 extern "C" {
 extern int IsStarCollectedInLevel(s8 levelID, int starID);
 void Matrix4x3_FromRotationY(void *, short);
-void _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj(
-    void *self, void *textureFile, int animation, int speed, u32 flags);
+void _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj(void *self, void *textureFile,
+                                                        int animation, int speed, u32 flags);
 void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
     void *self, void *actor, const void *offset, int radius, int height,
     u32 flags, u32 unk);

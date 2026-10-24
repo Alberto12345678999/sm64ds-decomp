@@ -49,7 +49,8 @@ extern "C" {
 int _ZN5Event6GetBitEj(u32 bit);
 extern int data_ov033_02111bc8[];
 extern int data_ov033_02111c1c[];
-extern void _ZN15dExtAnmTexSRT_c7SetFileER8BTA_Filei5Fix12IiEj(void* thiz, void* bta, int a, int b, unsigned int e);
+extern void _ZN15dExtAnmTexSRT_c7SetFileER8BTA_Filei5Fix12IiEj(void *thiz, void *bta, int a, int b,
+                                                               unsigned int e);
 extern void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(void* thiz, void* kcl, void* mtx, int fix, short s, void* clps);
 }
 
@@ -115,8 +116,10 @@ int daObjTtWater_c::InitResources()
 {
     void *m = dExtSimpleModel_c::LoadFile(data_ov033_021124f0);
     mModel.SetFile((BMD_File*)m, 1, 0x14);
-    dExtAnmTexSRT_c::Prepare(**(BMD_File**)((char*)&data_ov033_021124f0 + 4), *(BTA_File*)data_ov033_02111bc8);
-    _ZN15dExtAnmTexSRT_c7SetFileER8BTA_Filei5Fix12IiEj(&mTextureTransformer, data_ov033_02111bc8, 0, 0x1000, 0);
+    dExtAnmTexSRT_c::Prepare(**(BMD_File **)((char *)&data_ov033_021124f0 + 4),
+                             *(BTA_File *)data_ov033_02111bc8);
+    _ZN15dExtAnmTexSRT_c7SetFileER8BTA_Filei5Fix12IiEj(&mTextureTransformer, data_ov033_02111bc8, 0,
+                                                       0x1000, 0);
     UpdateModelPosAndRotY();
     UpdateClsnPosAndRot();
     void* mc = dBgW_Kc::LoadFile(data_ov033_021124e8);

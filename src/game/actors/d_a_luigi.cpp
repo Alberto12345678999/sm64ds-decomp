@@ -119,7 +119,8 @@ void Matrix4x3_ApplyInPlaceToRotationY(Matrix4x3 *m, short angY);
 void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
     dActor_c *self, dExtShadowModel_c *shadow, Matrix4x3 *mat, int radius, int depth,
     unsigned char opacity);
-void _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj(dExtAnmTexPat_c *seq, BTP_File *file, int flags, int speed, unsigned short start);
+void _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj(dExtAnmTexPat_c *seq, BTP_File *file,
+                                                        int flags, int speed, unsigned short start);
 }
 
 /* Reconstructed source-style name: SM64DS proves daLuigi_c through RTTI,

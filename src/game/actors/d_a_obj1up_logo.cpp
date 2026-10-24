@@ -61,8 +61,8 @@ extern OneUpLogoTexSeqFilePtr data_ov002_02110a9c; /* BTP */
 
 extern "C" {
 void Matrix4x3_FromTranslation(Matrix4x3 *matrix, s32 x, s32 y, s32 z);
-void _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj(
-    void *self, void *btp, int flags, int speed, unsigned int startFrame);
+void _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj(void *self, void *btp, int flags, int speed,
+                                                        unsigned int startFrame);
 namespace Particle {
 struct System {
     static void NewSimple(u32 id, s32 x, s32 y, s32 z);

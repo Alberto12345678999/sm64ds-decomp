@@ -101,8 +101,8 @@ void *func_ov007_020b3f20(int idx)
       case 0x14:
 
       case 0x15:
-        _ZN15dExtAnmTexPat_c17UpdateFileOffsetsER8BTP_File(obj);
-        break;
+          _ZN15dExtAnmTexPat_c17UpdateFileOffsetsER8BTP_File(obj);
+          break;
 
       default:
         break;

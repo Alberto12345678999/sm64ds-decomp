@@ -113,7 +113,7 @@ struct daPgMthr_c {
     /* dExtAnmTexPat_c member, named by the class's own destructor calling
        dExtAnmTexPat_c's D1 at +0x138 -- a relocation the ROM build
        checks. Was a u8 marker. [_ZN10daPgMthr_cD0Ev, now in src/game/actors/d_a_pg_mthr.cpp] */
-    dExtAnmTexPat_c mTextureSequence;            /* 0x138 */
+    dExtAnmTexPat_c mTextureSequence; /* 0x138 */
     /* dExtShadowModel_c member, named by the class's own destructor calling
        dExtShadowModel_c's D1 at +0x14c -- a relocation the ROM build
        checks. Was a u8 marker. [_ZN10daPgMthr_cD0Ev, now in src/game/actors/d_a_pg_mthr.cpp] */

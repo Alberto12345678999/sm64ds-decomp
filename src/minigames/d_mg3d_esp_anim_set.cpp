@@ -108,9 +108,10 @@ void _ZN15dExtFrameCtrl_c7AdvanceEv(void* a);
 int _ZN15dExtFrameCtrl_c8FinishedEv(void* a);
 /* local extern: the call passes an untyped this, so it cannot use the header method. */
 int _ZNK15dExtFrameCtrl_c12WillHitFrameEi(void* anim, int frame);
-void _ZN17dExtAnmMaterial_c7SetFileER8BMA_Filei5Fix12IiEj(char *t, void *f, int a, int b, unsigned u);
-void _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj(void* self, void* btp, int a, int b, u16 d);
-void _ZN15dExtAnmTexSRT_c7SetFileER8BTA_Filei5Fix12IiEj(void* self, void* bta, int a, int b, u16 d);
+void _ZN17dExtAnmMaterial_c7SetFileER8BMA_Filei5Fix12IiEj(char *t, void *f, int a, int b,
+                                                          unsigned u);
+void _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj(void *self, void *btp, int a, int b, u16 d);
+void _ZN15dExtAnmTexSRT_c7SetFileER8BTA_Filei5Fix12IiEj(void *self, void *bta, int a, int b, u16 d);
 void func_02046208(char* a, int b, int c);
 int func_020179b4(void* r0, void* r1, int r2);
 /* The last four parameters are unsigned short in the real signature;
@@ -206,7 +207,7 @@ void dMg3DEspAnimSet_c::Render()
     do {
         if (mActive[i] != 0) {
             ((dExtAnmModel_c *)r5)->mat4x3 = data_020a0e68;
-            ((dExtAnmMaterial_c*)r4)->Update(*(ModelComponents*)(r5 + 8));
+            ((dExtAnmMaterial_c *)r4)->Update(*(ModelComponents *)(r5 + 8));
             ((Obj_777c*)r5)->m(zero);
         }
         i++;
@@ -307,7 +308,7 @@ void dMg3DEspAnimSet_c::InitResources()
         ((dExtModel_c *)w)->SetFile((BMD_File *)bmd, 1, m1);
         ((dExtAnmModel_c *)w)->SetAnim((BCA_File *)bca, 0x40000000, mSpeed, z1);
         _ZN17dExtAnmMaterial_c7SetFileER8BMA_Filei5Fix12IiEj(w2, &sEsp3DMaterialAnim, 0x40000000,
-                                                           mSpeed, z2);
+                                                             mSpeed, z2);
         ((dExtSimpleModel_c *)w)->SetPolygonID((i + 1) & 0xff);
         mActive[i] = 0;
         w += 0x64;
@@ -1542,9 +1543,9 @@ s32 dScMg3DEsp_c::InitResources()
         return 0;
 
     dExtAnmTexSRT_c::Prepare(**(BMD_File **)((void **)&gEspIrieModelFile + 1),
-                                *(BTA_File *)&sEsp3DTextureAnim);
-    _ZN15dExtAnmTexSRT_c7SetFileER8BTA_Filei5Fix12IiEj(mTextureTransformer, &sEsp3DTextureAnim,
-                                                          0, 0x1000, 0);
+                             *(BTA_File *)&sEsp3DTextureAnim);
+    _ZN15dExtAnmTexSRT_c7SetFileER8BTA_Filei5Fix12IiEj(mTextureTransformer, &sEsp3DTextureAnim, 0,
+                                                       0x1000, 0);
 
     if (((dMg3DEspModel_c *)mEspModel)->InitResources() == 0)
         return 0;

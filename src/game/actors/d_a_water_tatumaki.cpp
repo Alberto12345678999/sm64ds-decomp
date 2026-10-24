@@ -131,8 +131,8 @@ extern int d_a_water_tatumakiNewHold(unsigned int uniqueID, unsigned int effectI
                                      int z, void *dir, void *callback);
 extern int _Z14ApproachLinearR7Vector3RKS_5Fix12IiE(Vector3 &value, const Vector3 &target, int step);
 extern void _ZN15dExtAnmTexSRT_c7SetFileER8BTA_Filei5Fix12IiEj(dExtAnmTexSRT_c *self,
-                                                                  BTA_File &file, int flags,
-                                                                  int speed, u32 startFrame);
+                                                               BTA_File &file, int flags, int speed,
+                                                               u32 startFrame);
 }
 
 #define Particle_System_New Particle::System::New

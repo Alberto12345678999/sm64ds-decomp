@@ -29,7 +29,7 @@ extern "C" void *_ZN7fBase_cnwEj(unsigned size);
 
 struct daObjMcWater_c : dBgActor_c {
     u8 unk_31e[0x2];
-    dExtAnmTexSRT_c mTexTransformer; /* 0x320 -- Behavior re-forces
+    dExtAnmTexSRT_c mTexTransformer;    /* 0x320 -- Behavior re-forces
                                            speed to 0x1000 every frame */
     u8 unk_334[0x4];                    /* 0x334 -- allocation tail; nothing
                                            in the eight matched bodies reads

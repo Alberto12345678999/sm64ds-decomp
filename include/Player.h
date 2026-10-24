@@ -164,9 +164,9 @@ struct Player : dActor_c {
        (last array first). Both element types assert 0x14, which is exactly
        the stride the destructor passes. unk_25c and unk_270 were the
        currFrame of mTexSeqPlayer[0] and [1] -- +0x08 into each element. */
-    dExtAnmTexPat_c mTexSeqBody[4];            /* 0x1dc */
-    dExtAnmMaterial_c mMatChanger[2];            /* 0x22c */
-    dExtAnmTexPat_c mTexSeqPlayer[2];            /* 0x254 */
+    dExtAnmTexPat_c mTexSeqBody[4];   /* 0x1dc */
+    dExtAnmMaterial_c mMatChanger[2]; /* 0x22c */
+    dExtAnmTexPat_c mTexSeqPlayer[2]; /* 0x254 */
     /* One saved word per material, per model: func_ov002_020e6bb0 allocates
        numMaterials words and copies each runtime material's +0x1c
        (TEXIMAGE_PARAM) into them. func_ov002_020e6b74 writes them back

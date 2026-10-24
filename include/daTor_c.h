@@ -60,7 +60,7 @@ struct daTor_c : dActor_c {
     /* dExtAnmTexSRT_c member, named by the class's own destructor calling
        dExtAnmTexSRT_c's D1 at +0x328 -- a relocation the ROM build
        checks. Was a u8 marker. */
-    dExtAnmTexSRT_c mTextureTransformer;            /* 0x328 */
+    dExtAnmTexSRT_c mTextureTransformer; /* 0x328 */
     /* The actor that hit this tornado. Set from mdCcAc_c.otherOwner once
        func_ov002_020de33c approves it; daTor_c::State2 clears it as
        the tornado winds down. */

@@ -53,7 +53,9 @@ void Matrix4x3_ApplyInPlaceToRotationXYZExt(void *m, int x, int y, int z);
 /* local extern: the header spellings take Fix12<int> by value, and Fix12
    has no int constructor, so a call through them cannot be written with
    these literals. */
-void _ZN15dExtAnmTexSRT_c7SetFileER8BTA_Filei5Fix12IiEj(dExtAnmTexSRT_c *self, BTA_File *animFile, int flags, int speed, unsigned short startFrame);
+void _ZN15dExtAnmTexSRT_c7SetFileER8BTA_Filei5Fix12IiEj(dExtAnmTexSRT_c *self, BTA_File *animFile,
+                                                        int flags, int speed,
+                                                        unsigned short startFrame);
 void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(dCcAcPos_c *self, dActor_c *actor, const Vector3 *offset, int radius, int height, u32 flags, u32 vulnFlags);
 }
 
@@ -256,8 +258,9 @@ int daWater_Ring_c::InitResources()
     }
 
     dExtAnmTexSRT_c::Prepare(*(BMD_File *)data_ov002_0210da10.filePtr,
-                                *(BTA_File *)data_ov002_0210d6dc);
-    _ZN15dExtAnmTexSRT_c7SetFileER8BTA_Filei5Fix12IiEj(&mTextureTransformer, (BTA_File *)data_ov002_0210d6dc, 0, 0x1000, 0);
+                             *(BTA_File *)data_ov002_0210d6dc);
+    _ZN15dExtAnmTexSRT_c7SetFileER8BTA_Filei5Fix12IiEj(
+        &mTextureTransformer, (BTA_File *)data_ov002_0210d6dc, 0, 0x1000, 0);
 
     mTextureTransformer.speed = 0x1000;
     mScaleX = 0x1000;

@@ -126,7 +126,8 @@ void  MulVec3Mat4x3(const void *v, const void *m, void *out);
    spelling -- the mangled spelling is the one that matches. Sound.h covers
    PlayLong, so only PlaySub stays. */
 int _ZN5Sound7PlaySubEjjj5Fix12IiEb(u32 a, u32 b, u32 c, Fix12i d, bool loop);
-void  _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj(void *thiz, BTP_File &f, int a, Fix12i b, u32 c);
+void _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj(void *thiz, BTP_File &f, int a, Fix12i b,
+                                                        u32 c);
 void  _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
          void *thiz, void *sm, void *mtx, int rad, int height, u32 flags);
 

@@ -21,7 +21,7 @@
 
 struct daObjTtWater_c : dBgActor_c {
     u8  pad_31e[0x2];
-    dExtAnmTexSRT_c mTextureTransformer;/* 0x320 */
+    dExtAnmTexSRT_c mTextureTransformer; /* 0x320 */
     s32 mMinPosY;                      /* 0x334 */
     /* Named out of the padding by this class's own Behavior, which stores
        Sound::PlayLong's handle here and passes it back as that call's first
@@ -69,7 +69,7 @@ struct daObjTtWater_c {
     /* dExtAnmTexSRT_c member, named by the class's own destructor calling
        dExtAnmTexSRT_c's D1 at +0x320 -- a relocation the ROM build
        checks. Was a u8 marker. [_ZN14daObjTtWater_cD1Ev, now in src/game/actors/d_a_obj_tt_water.cpp] */
-    dExtAnmTexSRT_c mTextureTransformer;            /* 0x320 */
+    dExtAnmTexSRT_c mTextureTransformer; /* 0x320 */
     s32 mMinPosY;            /* 0x334 */
     s32 mSoundID;            /* 0x338 */
     u16 mSoundTimer;              /* 0x33c */

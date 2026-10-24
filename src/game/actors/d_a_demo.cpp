@@ -514,7 +514,8 @@ extern void func_ov002_020f5fe4(char *c);
 extern int _ZN15dExtFrameCtrl_c7AdvanceEv(char*); /* local extern: untyped this. */
 extern int _ZN15dExtFrameCtrl_c8FinishedEv(char*); /* local extern: untyped this. */
 /* local extern dropped: decl_common.h declares func_ov002_020f6514(unsigned char*, void*, unsigned char) */
-extern void _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj(void *self, void *f, int b, int c, unsigned int d);
+extern void _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj(void *self, void *f, int b, int c,
+                                                               unsigned int d);
 extern void __cxa_vec_ctor(void* obj, int a, int b, void* cb1, void* cb2);
 extern void *_ZN7Vector3D1Ev(void *object);
 extern void func_0203d384(void);
@@ -3695,8 +3696,9 @@ int daDemo_c::anmModel_c::func_ov002_020f65ec()
 // @symbol _ZN8daDemo_c10anmModel_c19func_ov002_020f6618EP13SharedFilePtriPS2_ihS3_i
 struct BTP_File;
 extern "C" {
-void* _ZN15dExtAnmTexPat_cC1Ev(void* self);
-void _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj(void* self, void* btp, int a, int fx, unsigned int e);
+void *_ZN15dExtAnmTexPat_cC1Ev(void *self);
+void _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj(void *self, void *btp, int a, int fx,
+                                                        unsigned int e);
 }
 
 int daDemo_c::anmModel_c::func_ov002_020f6618(SharedFilePtr *mdl, int nAnims, SharedFilePtr **anims,
@@ -3717,7 +3719,8 @@ int daDemo_c::anmModel_c::func_ov002_020f6618(SharedFilePtr *mdl, int nAnims, Sh
     ((dExtAnmModel_c *)self)->SetAnim((BCA_File *)(mAnimFiles[0]->filePtr), 0, 0x1000, 0);
     if (texByte) {
         ts = ::operator new(0x14);
-        if (ts) ts = _ZN15dExtAnmTexPat_cC1Ev(ts);
+        if (ts)
+            ts = _ZN15dExtAnmTexPat_cC1Ev(ts);
         mTexSeq = (dExtAnmTexPat_c *)ts;
         if (mTexSeq == 0)
             return 0;
@@ -3726,7 +3729,7 @@ int daDemo_c::anmModel_c::func_ov002_020f6618(SharedFilePtr *mdl, int nAnims, Sh
         for (i = 0; i < mNumTexSeqFiles; i++) {
             void *bmd = mModelFile->filePtr;
             void *btp = dExtAnmTexPat_c::LoadFile(*mTexSeqFiles[i]);
-            dExtAnmTexPat_c::Prepare(*(BMD_File*)bmd, *(BTP_File*)btp);
+            dExtAnmTexPat_c::Prepare(*(BMD_File *)bmd, *(BTP_File *)btp);
         }
         _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj(mTexSeq, mTexSeqFiles[0]->filePtr, 0,
                                                            0x1000, 0);

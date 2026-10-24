@@ -88,8 +88,8 @@ extern void d_a_obj_ct_mecha04PlayLongHold(unsigned int handle, unsigned int ban
 extern u8 data_0209f2c0;
 extern int data_0209e650;
 extern int data_ov065_0211c0b8[]; /* per-clock-setting belt speeds */
-extern void _ZN15dExtAnmTexSRT_c7SetFileER8BTA_Filei5Fix12IiEj(
-    dExtAnmTexSRT_c *self, BTA_File &f, int a, int fix, unsigned int u);
+extern void _ZN15dExtAnmTexSRT_c7SetFileER8BTA_Filei5Fix12IiEj(dExtAnmTexSRT_c *self, BTA_File &f,
+                                                               int a, int fix, unsigned int u);
 extern void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
     dBgW_KcMbg *self, KCL_File *f, const Matrix4x3 &m, int fix, short sh,
     CLPS_Block &b);
@@ -180,13 +180,11 @@ int daObjCtMecha04_c::InitResources()
     mShadowModel.InitCuboid();
 
     variant = mVariant;
-    dExtAnmTexSRT_c::Prepare(
-        *(BMD_File *)((void **)data_ov065_0211d194[variant][0])[1],
-        *animationFiles[variant]);
+    dExtAnmTexSRT_c::Prepare(*(BMD_File *)((void **)data_ov065_0211d194[variant][0])[1],
+                             *animationFiles[variant]);
 
-    _ZN15dExtAnmTexSRT_c7SetFileER8BTA_Filei5Fix12IiEj(
-        &mTextureTransformer,
-        *animationFiles[mVariant], 0, 0x1000, 0);
+    _ZN15dExtAnmTexSRT_c7SetFileER8BTA_Filei5Fix12IiEj(&mTextureTransformer,
+                                                       *animationFiles[mVariant], 0, 0x1000, 0);
 
     UpdateModelPosAndRotY();
     UpdateClsnPosAndRot();

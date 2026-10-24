@@ -79,7 +79,7 @@ struct dScMg3DEsp_c : dScMgSingle3DBase_c {
     u8 mModel1[0x50];              /* 0x4f38, a dExtSimpleModel_c */
     u8 mModel2[0x50];              /* 0x4f88, a dExtSimpleModel_c */
     u8 mEspModel[0x21c];           /* 0x4fd8, a dMg3DEspModel_c */
-    u8  mTextureTransformer[0x14]; /* 0x51f4, a dExtAnmTexSRT_c */
+    u8 mTextureTransformer[0x14];  /* 0x51f4, a dExtAnmTexSRT_c */
     Card mCards[5];                /* 0x5208 */
     Row mRows[3];                  /* 0x5280 */
     Slot mSlots[20];               /* 0x52bc */

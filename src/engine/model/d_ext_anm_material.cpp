@@ -27,19 +27,17 @@ extern "C" void func_020470e8(BMD_File *model, BMA_File *file);
 extern "C" void func_02046e28(ModelComponents *model, BMA_File *file, int frame);
 
 // @symbol _ZN17dExtAnmMaterial_cC1Ev
-dExtAnmMaterial_c::dExtAnmMaterial_c()
-{
+dExtAnmMaterial_c::dExtAnmMaterial_c() {
     file = 0;
 }
 
 // @symbol _ZN17dExtAnmMaterial_cD1Ev
-dExtAnmMaterial_c::~dExtAnmMaterial_c()
-{
-}
+dExtAnmMaterial_c::~dExtAnmMaterial_c() {}
 
 // @symbol _ZN17dExtAnmMaterial_c7SetFileER8BMA_Filei5Fix12IiEj
-extern "C" void _ZN17dExtAnmMaterial_c7SetFileER8BMA_Filei5Fix12IiEj(dExtAnmMaterial_c *self, BMA_File *file, s32 flags, s32 speed, u16 startFrame)
-{
+extern "C" void _ZN17dExtAnmMaterial_c7SetFileER8BMA_Filei5Fix12IiEj(dExtAnmMaterial_c *self,
+                                                                     BMA_File *file, s32 flags,
+                                                                     s32 speed, u16 startFrame) {
     if (file == self->file) {
         self->SetFlags(flags);
         self->speed = speed;
@@ -50,8 +48,7 @@ extern "C" void _ZN17dExtAnmMaterial_c7SetFileER8BMA_Filei5Fix12IiEj(dExtAnmMate
 }
 
 // @symbol _ZN17dExtAnmMaterial_c6UpdateER15ModelComponents
-void dExtAnmMaterial_c::Update(ModelComponents &model)
-{
+void dExtAnmMaterial_c::Update(ModelComponents &model) {
     func_02046e28(&model, file, (u16)((u32)currFrame >> 12));
 }
 
@@ -60,7 +57,6 @@ void dExtAnmMaterial_c::Update(ModelComponents &model)
    own two-argument signature is the call surface. Prepare is static:
    no this. */
 // @symbol _ZN17dExtAnmMaterial_c7PrepareER8BMD_FileR8BMA_File
-void dExtAnmMaterial_c::Prepare(BMD_File &model, BMA_File &animFile)
-{
+void dExtAnmMaterial_c::Prepare(BMD_File &model, BMA_File &animFile) {
     func_020470e8(&model, &animFile);
 }

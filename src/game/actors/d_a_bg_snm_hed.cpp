@@ -30,8 +30,8 @@ extern int gBigSnowmanCryTextureSequenceFile[];
 
 extern "C" {
 void Matrix4x3_FromRotationY(void *matrix, int angle);
-void _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj(
-    void *self, void *file, int flags, int speed, unsigned int startFrame);
+void _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj(void *self, void *file, int flags,
+                                                        int speed, unsigned int startFrame);
 void _ZN8dActor_c10EarthquakeERK7Vector35Fix12IiE(
     void *self, const void *pos, int magnitude);
 int func_0201267c(int id, void *pos);

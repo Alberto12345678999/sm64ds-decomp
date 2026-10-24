@@ -63,8 +63,8 @@ struct KsWaterClsnFileHandle : SharedFilePtr {
 };
 
 extern "C" {
-void _ZN15dExtAnmTexSRT_c7SetFileER8BTA_Filei5Fix12IiEj(
-    dExtAnmTexSRT_c *self, BTA_File *file, int flags, int speed, u32 startFrame);
+void _ZN15dExtAnmTexSRT_c7SetFileER8BTA_Filei5Fix12IiEj(dExtAnmTexSRT_c *self, BTA_File *file,
+                                                        int flags, int speed, u32 startFrame);
 void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
     dBgW_KcMbg *self, KCL_File *file, const Matrix4x3 *mat, int scale, s16 angY,
     CLPS_Block *clps);
@@ -101,8 +101,8 @@ int daObjKsWater_c::InitResources()
     mModel.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(data_ov017_02111c88), 1, -1);
     dExtAnmTexSRT_c::Prepare(*(BMD_File *)data_ov017_02111c88.filePtr, data_ov017_02111a60);
     /* 6az: header SetFile takes Fix12<int> by value. */
-    _ZN15dExtAnmTexSRT_c7SetFileER8BTA_Filei5Fix12IiEj(
-        &mTextureTransformer, &data_ov017_02111a60, 0, 0x1000, 0);
+    _ZN15dExtAnmTexSRT_c7SetFileER8BTA_Filei5Fix12IiEj(&mTextureTransformer, &data_ov017_02111a60,
+                                                       0, 0x1000, 0);
     UpdateModelPosAndRotY();
     UpdateClsnPosAndRot();
     /* 6az: header SetFile takes Fix12<int> by value. */

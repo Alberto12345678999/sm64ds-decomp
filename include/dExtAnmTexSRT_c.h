@@ -37,7 +37,7 @@ struct dExtAnmTexSRT_c : dExtFrameCtrl_c {
     BTA_File *file;           /* 0x10 */
 
     /* --- vtable: the destructor pair only. --- */
-    virtual ~dExtAnmTexSRT_c();                       /* slots 0 (D1), 1 (D0) */
+    virtual ~dExtAnmTexSRT_c(); /* slots 0 (D1), 1 (D0) */
 
     dExtAnmTexSRT_c();
 
@@ -46,7 +46,6 @@ struct dExtAnmTexSRT_c : dExtFrameCtrl_c {
     void Update(ModelComponents &model);
     void SetFile(BTA_File &animFile, int flags, Fix12<int> speed,
                  u32 startFrame);        /* free function, wall 6az */
-
 };
 
 #ifndef SM64DS_PLATFORM_PC

@@ -41,7 +41,7 @@ struct daC_Jugem_c : dEnemyBase_c {
 
     dExtAnmModel_c mModelAnim1;                         /* 0x110 */
     dExtAnmModel_c mModelAnim2;                         /* 0x174 */
-    dExtAnmTexPat_c              mTextureSequence;      /* 0x1d8 */
+    dExtAnmTexPat_c mTextureSequence;                   /* 0x1d8 */
     StateFn                     *mState;                /* 0x1ec */
     dExtShadowModel_c            mShadowModel1;         /* 0x1f0 */
     dExtShadowModel_c            mShadowModel2;         /* 0x218 */

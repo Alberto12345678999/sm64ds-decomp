@@ -3913,8 +3913,8 @@ extern "C" int CopyTexPalFromLevelModel(void *p) {
 // @symbol _ZN10dScStage_c23LoadTextureTransformersEv
 extern "C" {
 extern void *_ZN15dExtAnmTexSRT_cC1Ev(void *);
-extern void _ZN15dExtAnmTexSRT_c7SetFileER8BTA_Filei5Fix12IiEj(void *self, void *bta, int a,
-                                                                  int b, u32 c);
+extern void _ZN15dExtAnmTexSRT_c7SetFileER8BTA_Filei5Fix12IiEj(void *self, void *bta, int a, int b,
+                                                               u32 c);
 }
 
 void dScStage_c::LoadTextureTransformers() {
@@ -3930,7 +3930,7 @@ void dScStage_c::LoadTextureTransformers() {
                 transformer = _ZN15dExtAnmTexSRT_cC1Ev(transformer);
             slot->mTransformer = transformer;
             _ZN15dExtAnmTexSRT_c7SetFileER8BTA_Filei5Fix12IiEj(slot->mTransformer, entry->bta, 0,
-                                                                  0x1000, 0);
+                                                               0x1000, 0);
         }
         entry++;
         slot++;

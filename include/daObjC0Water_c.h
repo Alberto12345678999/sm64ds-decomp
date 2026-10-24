@@ -44,7 +44,7 @@ struct daObjC0Water_c : dBgActor_c {
     virtual int Render();                         /* slot 9 */
 
     u8  pad_31e[0x2];
-    dExtAnmTexSRT_c mTextureTransformer;       /* 0x320 -- scrolls the water's
+    dExtAnmTexSRT_c mTextureTransformer;          /* 0x320 -- scrolls the water's
                                                      surface texture every frame */
     s32 mLoweredY;                                /* 0x334 -- drain target:
                                                      InitResources stores

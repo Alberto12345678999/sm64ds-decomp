@@ -60,9 +60,9 @@ struct daKuriKing_c : dEnemyBase_c {
        that bone's world position. */
     s32 mBodyMatrix[12];                          /* 0x37c */
     Vector3 mCylClsnPos[3];                       /* 0x3ac */
-    dExtAnmMaterial_c mMaterialChanger;             /* 0x3d0 */
+    dExtAnmMaterial_c mMaterialChanger;           /* 0x3d0 */
     dExtAnmTexPat_c mTextureSequence;             /* 0x3e4 */
-    dExtAnmTexSRT_c mTextureTransformer;       /* 0x3f8 */
+    dExtAnmTexSRT_c mTextureTransformer;          /* 0x3f8 */
     dBgCh_Actr mWithMeshClsn;                   /* 0x40c */
     /* ClosestPlayer, kept for StartTalk / ShowMessage / GetTalkState. */
     Player *mTalkPlayer;                          /* 0x5c8 */

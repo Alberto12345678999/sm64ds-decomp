@@ -907,14 +907,15 @@ void Player::InitMetalWario()
 // @symbol _ZN6Player19func_ov002_020bdef0Ev
 extern "C" {
 void Player::func_ov002_020bdef0(){
-    extern int _ZN15dExtAnmTexPat_c6UpdateER15ModelComponents(void*, void*);
-  if(mIsVanish==0) return;
-  _ZN15dExtAnmTexPat_c6UpdateER15ModelComponents(&mTexSeqPlayer[0], &mBodyModels[1]->data);
-  _ZN15dExtAnmTexPat_c6UpdateER15ModelComponents(&mTexSeqPlayer[1], &mHeadModels[1]->data);
-  mTexSeqPlayer[0].currFrame = 0;
-  mTexSeqPlayer[1].currFrame = 0;
-  mIsVanish=0;
-  EndPowerupMusic(0x33);
+    extern int _ZN15dExtAnmTexPat_c6UpdateER15ModelComponents(void *, void *);
+    if (mIsVanish == 0)
+        return;
+    _ZN15dExtAnmTexPat_c6UpdateER15ModelComponents(&mTexSeqPlayer[0], &mBodyModels[1]->data);
+    _ZN15dExtAnmTexPat_c6UpdateER15ModelComponents(&mTexSeqPlayer[1], &mHeadModels[1]->data);
+    mTexSeqPlayer[0].currFrame = 0;
+    mTexSeqPlayer[1].currFrame = 0;
+    mIsVanish = 0;
+    EndPowerupMusic(0x33);
 }
 }
 
@@ -1483,7 +1484,8 @@ extern "C" {
 void Player::SetAnim(u32 animId, int flags, Fix12i speed, u16 startFrame) {
     extern void _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(void*);
     extern int _ZNK6Player14GetBodyModelIDEjb(void *, u32 a, int b);
-    extern void _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj(void*, void*, int b, Fix12i c, u32 d);
+    extern void _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj(void *, void *, int b, Fix12i c,
+                                                                   u32 d);
     extern u8 data_0209f2d8;
     extern void *data_ov002_020ff480[];
     extern void *data_ov002_020ff2f0[];
@@ -23560,7 +23562,7 @@ int Player::Render()
     extern void _ZN11dExtModel_c12ApplyOpacityEjj(void *self, unsigned int opacity,
                                                   unsigned int unused);
     extern void _ZN17dExtSimpleModel_c6RenderEPK7Vector3(void *self, void *pos);
-    extern void _ZN15dExtAnmTexPat_c6UpdateER15ModelComponents(void* self, void* mc);
+    extern void _ZN15dExtAnmTexPat_c6UpdateER15ModelComponents(void *self, void *mc);
     extern void Matrix4x3_FromTranslation(void* m, int x, int y, int z);
     extern void Matrix4x3_ApplyInPlaceToRotationZ(void* m, int ang);
     extern void MulMat4x3Mat4x3(void* a, void* b, void* c);
@@ -24671,7 +24673,7 @@ void func_ov002_020e5948(void* arg0)
     typedef struct OneUpLogoModelFile OneUpLogoModelFile;
     extern void _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(void* sfp);
     extern void *_ZN17dExtSimpleModel_c8LoadFileER13SharedFilePtr(void *sfp);
-    extern void _ZN15dExtAnmTexPat_c8LoadFileER13SharedFilePtr(void* sfp);
+    extern void _ZN15dExtAnmTexPat_c8LoadFileER13SharedFilePtr(void *sfp);
     extern void LoadSilverStarAndNumber(void);
     extern int _ZN11dExtModel_c7SetFileEP8BMD_Fileii(void *thiz, void *bmd, s32 a, s32 b);
     extern void func_ov002_020bec2c(void* p);
@@ -24679,8 +24681,9 @@ void func_ov002_020e5948(void* arg0)
     extern void func_ov002_020e6780(void* p);
     extern void _ZN17dExtShadowModel_c12InitCylinderEv(void* thiz);
     extern s32 _ZNK6Player14GetBodyModelIDEjb(void* thiz, u32 a, s32 b);
-    extern void _ZN15dExtAnmTexPat_c7PrepareER8BMD_FileR8BTP_File(void* bmd, void* btp);
-    extern void _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj(void* thiz, void* f, s32 i, Fix12i fx, u32 j);
+    extern void _ZN15dExtAnmTexPat_c7PrepareER8BMD_FileR8BTP_File(void *bmd, void *btp);
+    extern void _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj(void *thiz, void *f, s32 i,
+                                                                   Fix12i fx, u32 j);
     extern s8 data_0209f310[];
     extern u8 data_0209f2d8;
     extern s8 data_0209f2f8;
@@ -25051,10 +25054,12 @@ void func_ov002_020e5948(void* arg0)
         } while (n < 0x19);
     }
 
-    _ZN15dExtAnmTexPat_c7PrepareER8BMD_FileR8BTP_File((void*)data_ov002_0210ebb8[1], (void*)data_ov002_0210e8d0[1]);
+    _ZN15dExtAnmTexPat_c7PrepareER8BMD_FileR8BTP_File((void *)data_ov002_0210ebb8[1],
+                                                      (void *)data_ov002_0210e8d0[1]);
     _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj(
         player->mTexSeqPlayer, (void *)data_ov002_0210e8d0[1], 0, 0x1000, 0);
-    _ZN15dExtAnmTexPat_c7PrepareER8BMD_FileR8BTP_File((void*)data_ov002_0210eb20[1], (void*)data_ov002_0210ebd8[1]);
+    _ZN15dExtAnmTexPat_c7PrepareER8BMD_FileR8BTP_File((void *)data_ov002_0210eb20[1],
+                                                      (void *)data_ov002_0210ebd8[1]);
     _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj(
         &player->mTexSeqPlayer[1], (void *)data_ov002_0210ebd8[1], 0, 0x1000, 0);
 }
@@ -25282,10 +25287,10 @@ extern int data_ov002_0210a83c[];
 void *_ZN8dActor_cC2Ev(void*);
 void *_ZN14dExtAnmModel_cC1Ev(void *);
 void __cxa_vec_ctor(void*,int,int,void*,void*);
-void *_ZN15dExtAnmTexPat_cC1Ev(void*);
-void _ZN15dExtAnmTexPat_cD1Ev(void*);
-void *_ZN17dExtAnmMaterial_cC1Ev(void*);
-void _ZN17dExtAnmMaterial_cD1Ev(void*);
+void *_ZN15dExtAnmTexPat_cC1Ev(void *);
+void _ZN15dExtAnmTexPat_cD1Ev(void *);
+void *_ZN17dExtAnmMaterial_cC1Ev(void *);
+void _ZN17dExtAnmMaterial_cD1Ev(void *);
 void *_ZN17dExtShadowModel_cC1Ev(void*);
 void *_ZN10dCcAcPos_cC1Ev(void*);
 void *_ZN10dBgCh_ActrC1Ev(void*);

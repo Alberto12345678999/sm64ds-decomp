@@ -142,9 +142,9 @@ extern void _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix
 extern void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
     dBgW_KcMbg *self, KCL_File *file, const Matrix4x3 *mat, int scale, s16 angY,
     CLPS_Block *clps);
-extern void _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj(
-    dExtAnmTexPat_c *self, BTP_File *file, int flags, int speed,
-    unsigned startFrame);
+extern void _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj(dExtAnmTexPat_c *self,
+                                                               BTP_File *file, int flags, int speed,
+                                                               unsigned startFrame);
 /* 8-byte store into dBgW+0x18 (beforeClsnCallback). No SetCallback member.
  * Spelling matches src/engine/collision/d_bg_w.cpp -- (int *, int). */
 extern void func_020393d4(int *collider, int callback);

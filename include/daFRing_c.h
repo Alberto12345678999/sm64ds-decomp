@@ -53,12 +53,12 @@ struct daFRing_c : dActor_c {
     u8 pad_0d0[0x4];
     dExtAnmModel_c mModelAnim1;                /* 0x0d4 */
     dExtAnmTexPat_c mTextureSequence1;         /* 0x138 */
-    dExtAnmMaterial_c mMaterialChanger1;         /* 0x14c */
-    dExtAnmTexSRT_c mTextureTransformer1;   /* 0x160 */
+    dExtAnmMaterial_c mMaterialChanger1;       /* 0x14c */
+    dExtAnmTexSRT_c mTextureTransformer1;      /* 0x160 */
     dExtAnmModel_c mModelAnim2;                /* 0x174 */
     dExtAnmTexPat_c mTextureSequence2;         /* 0x1d8 */
-    dExtAnmMaterial_c mMaterialChanger2;         /* 0x1ec */
-    dExtAnmTexSRT_c mTextureTransformer2;   /* 0x200 */
+    dExtAnmMaterial_c mMaterialChanger2;       /* 0x1ec */
+    dExtAnmTexSRT_c mTextureTransformer2;      /* 0x200 */
     u16 mFrame;                                /* 0x214 */
     u8 pad_216[0x2];
 
@@ -90,12 +90,12 @@ struct daFRing_c {
     u8 pad_068[0x6c];
     dExtAnmModel_c mModelAnim1;                /* 0x0d4 */
     dExtAnmTexPat_c mTextureSequence1;         /* 0x138 */
-    dExtAnmMaterial_c mMaterialChanger1;         /* 0x14c */
-    dExtAnmTexSRT_c mTextureTransformer1;   /* 0x160 */
+    dExtAnmMaterial_c mMaterialChanger1;       /* 0x14c */
+    dExtAnmTexSRT_c mTextureTransformer1;      /* 0x160 */
     dExtAnmModel_c mModelAnim2;                /* 0x174 */
     dExtAnmTexPat_c mTextureSequence2;         /* 0x1d8 */
-    dExtAnmMaterial_c mMaterialChanger2;         /* 0x1ec */
-    dExtAnmTexSRT_c mTextureTransformer2;   /* 0x200 */
+    dExtAnmMaterial_c mMaterialChanger2;       /* 0x1ec */
+    dExtAnmTexSRT_c mTextureTransformer2;      /* 0x200 */
     u16 mFrame;                                /* 0x214 */
     u8 pad_216[0x2];
 };

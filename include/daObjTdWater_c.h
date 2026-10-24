@@ -37,7 +37,7 @@ struct daObjTdWater_c : dBgActor_c {
     /* THIS CLASS'S OWN. InitResources hands it the BTA at ov032 0x02112f64 and
        Behavior sets its rate to 0x1000 and advances it every frame -- that is
        the whole scroll. */
-    dExtAnmTexSRT_c mTextureTransformer;    /* 0x320 */
+    dExtAnmTexSRT_c mTextureTransformer; /* 0x320 */
 
     /* MEASURED -- INLINE ON PURPOSE. The class TU is the only place these
        two are emitted; with the body out of line mwcc emits D0 ahead of D1

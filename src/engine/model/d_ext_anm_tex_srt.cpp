@@ -27,19 +27,17 @@ extern "C" void func_02046b64(BMD_File *model, BTA_File *file);
 extern "C" void func_020469e8(ModelComponents *model, BTA_File *file, int frame);
 
 // @symbol _ZN15dExtAnmTexSRT_cC1Ev
-dExtAnmTexSRT_c::dExtAnmTexSRT_c()
-{
+dExtAnmTexSRT_c::dExtAnmTexSRT_c() {
     file = 0;
 }
 
 // @symbol _ZN15dExtAnmTexSRT_cD1Ev
-dExtAnmTexSRT_c::~dExtAnmTexSRT_c()
-{
-}
+dExtAnmTexSRT_c::~dExtAnmTexSRT_c() {}
 
 // @symbol _ZN15dExtAnmTexSRT_c7SetFileER8BTA_Filei5Fix12IiEj
-extern "C" void _ZN15dExtAnmTexSRT_c7SetFileER8BTA_Filei5Fix12IiEj(dExtAnmTexSRT_c *self, BTA_File *file, s32 flags, s32 speed, u16 startFrame)
-{
+extern "C" void _ZN15dExtAnmTexSRT_c7SetFileER8BTA_Filei5Fix12IiEj(dExtAnmTexSRT_c *self,
+                                                                   BTA_File *file, s32 flags,
+                                                                   s32 speed, u16 startFrame) {
     if (file == self->file) {
         self->SetFlags(flags);
         self->speed = speed;
@@ -50,8 +48,7 @@ extern "C" void _ZN15dExtAnmTexSRT_c7SetFileER8BTA_Filei5Fix12IiEj(dExtAnmTexSRT
 }
 
 // @symbol _ZN15dExtAnmTexSRT_c6UpdateER15ModelComponents
-void dExtAnmTexSRT_c::Update(ModelComponents &model)
-{
+void dExtAnmTexSRT_c::Update(ModelComponents &model) {
     func_020469e8(&model, file, (u16)((u32)currFrame >> 12));
 }
 
@@ -60,7 +57,6 @@ void dExtAnmTexSRT_c::Update(ModelComponents &model)
    own two-argument signature is the call surface. Prepare is static:
    no this. */
 // @symbol _ZN15dExtAnmTexSRT_c7PrepareER8BMD_FileR8BTA_File
-void dExtAnmTexSRT_c::Prepare(BMD_File &model, BTA_File &animFile)
-{
+void dExtAnmTexSRT_c::Prepare(BMD_File &model, BTA_File &animFile) {
     func_02046b64(&model, &animFile);
 }
