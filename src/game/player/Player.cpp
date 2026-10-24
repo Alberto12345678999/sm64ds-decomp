@@ -1484,8 +1484,7 @@ extern "C" {
 void Player::SetAnim(u32 animId, int flags, Fix12i speed, u16 startFrame) {
     extern void _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(void*);
     extern int _ZNK6Player14GetBodyModelIDEjb(void *, u32 a, int b);
-    extern void _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj(void *, void *, int b, Fix12i c,
-                                                                   u32 d);
+    extern void _ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit(void *, void *, int b, Fix12i c, u32 d);
     extern u8 data_0209f2d8;
     extern void *data_ov002_020ff480[];
     extern void *data_ov002_020ff2f0[];
@@ -1552,9 +1551,9 @@ void Player::SetAnim(u32 animId, int flags, Fix12i speed, u16 startFrame) {
     sl += (field8 & 3);
     param2 = 0;
     if (((int)sl >> 2) == 1) param2 = 0x40000000;
-    _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj(
-        &player->mTexSeqBody[field8], ((SharedFilePtr *)data_ov002_020ff2f0[sl])->filePtr, param2,
-        0x1000, 0);
+    _ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit(&player->mTexSeqBody[field8],
+                                               ((SharedFilePtr *)data_ov002_020ff2f0[sl])->filePtr,
+                                               param2, 0x1000, 0);
 
     player->mCharFileBase = newVal;
 }
@@ -24682,8 +24681,8 @@ void func_ov002_020e5948(void* arg0)
     extern void _ZN17dExtShadowModel_c12InitCylinderEv(void* thiz);
     extern s32 _ZNK6Player14GetBodyModelIDEjb(void* thiz, u32 a, s32 b);
     extern void _ZN15dExtAnmTexPat_c7PrepareER8BMD_FileR8BTP_File(void *bmd, void *btp);
-    extern void _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj(void *thiz, void *f, s32 i,
-                                                                   Fix12i fx, u32 j);
+    extern void _ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit(void *thiz, void *f, s32 i, Fix12i fx,
+                                                           u32 j);
     extern s8 data_0209f310[];
     extern u8 data_0209f2d8;
     extern s8 data_0209f2f8;
@@ -25043,7 +25042,7 @@ void func_ov002_020e5948(void* arg0)
                     ((SharedFilePtr *)data_ov002_0210a69c[k])->filePtr,
                     ((SharedFilePtr *)entry)->filePtr);
                 if (n == 0x18) {
-                    _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj(
+                    _ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit(
                         texseq, ((SharedFilePtr *)entry)->filePtr, 0, 0x1000, 0);
                 }
                 k++;
@@ -25056,12 +25055,12 @@ void func_ov002_020e5948(void* arg0)
 
     _ZN15dExtAnmTexPat_c7PrepareER8BMD_FileR8BTP_File((void *)data_ov002_0210ebb8[1],
                                                       (void *)data_ov002_0210e8d0[1]);
-    _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj(
-        player->mTexSeqPlayer, (void *)data_ov002_0210e8d0[1], 0, 0x1000, 0);
+    _ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit(player->mTexSeqPlayer,
+                                               (void *)data_ov002_0210e8d0[1], 0, 0x1000, 0);
     _ZN15dExtAnmTexPat_c7PrepareER8BMD_FileR8BTP_File((void *)data_ov002_0210eb20[1],
                                                       (void *)data_ov002_0210ebd8[1]);
-    _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj(
-        &player->mTexSeqPlayer[1], (void *)data_ov002_0210ebd8[1], 0, 0x1000, 0);
+    _ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit(&player->mTexSeqPlayer[1],
+                                               (void *)data_ov002_0210ebd8[1], 0, 0x1000, 0);
 }
 }
 #pragma pop

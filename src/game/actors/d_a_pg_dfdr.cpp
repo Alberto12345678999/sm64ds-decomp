@@ -76,8 +76,9 @@ int DecIfAbove0_Byte(void *p);
 void func_0201267c(int id, char *pos);
 /* Stores dBgW::beforeClsnCallback (p[6]). dBgW.h has no setter. */
 void func_020393d4(int *collider, int callback);
-void _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj(void *self, void *file, int flags,
-                                                        int speed, unsigned startFrame);
+/* local extern: the matched free-function spelling of SetFile; a member call is pending. */
+void _ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit(void *self, void *file, int flags, int speed,
+                                                unsigned startFrame);
 void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(void *self, void *kcl, void *mat, int scale, short angY, void *clps);
 void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *self, void *actor, int radius, int height,
                                                unsigned flags, unsigned vuln);
@@ -164,8 +165,8 @@ s32 daPgDfdr_c::InitResources()
     dExtAnmTexPat_c::LoadFile(*(SharedFilePtr *)&data_ov027_02113c94);
     dExtAnmTexPat_c::Prepare(*(BMD_File *)data_ov027_02113c7c.filePtr,
                              *(BTP_File *)data_ov027_02113c94.filePtr);
-    _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj(&mTextureSequence,
-                                                       data_ov027_02113c94.filePtr, 0, 0x1000, 0);
+    _ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit(&mTextureSequence, data_ov027_02113c94.filePtr, 0,
+                                               0x1000, 0);
 
     mAngleY = (short)0xdd30;
     mPrevAngleY = mAngleY;

@@ -98,8 +98,9 @@ struct EntObjTextureSequenceFileHandle : SharedFilePtr {
  * class type, mwccarm homes the register arguments and the callers grow, so
  * the measured scalar views stay. */
 extern "C" {
-void _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj(void *seq, void *file, int flags, int speed,
-                                                        unsigned short startFrame);
+/* local extern: the matched free-function spelling of SetFile; a member call is pending. */
+void _ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit(void *seq, void *file, int flags, int speed,
+                                                unsigned short startFrame);
 void _ZN17dExtShadowModel_c9InitModelEP9Matrix4x35Fix12IiES3_S3_j(void *shadow, Matrix4x3 *mat,
                                                                   int radius, int height, int depth,
                                                                   unsigned char flags);
@@ -366,8 +367,7 @@ void UnknownVsPlayer::func_ov075_021143e4() {
         data_ov075_0211d380 >>= 2;
     }
     dExtAnmTexPat_c::Prepare(*(BMD_File *)data_ov075_0211d3c4.filePtr, *(BTP_File *)textureFile);
-    _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj(&mTextureSequence, textureFile, 0, 0x1000,
-                                                       0);
+    _ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit(&mTextureSequence, textureFile, 0, 0x1000, 0);
     {
         unsigned int randomValue = (unsigned int)RandomIntInternal(&data_0209e650);
         int frameCount = mModel.GetFrameCount();
@@ -697,8 +697,7 @@ int UnknownVsPlayer::func_ov075_02114ddc(unsigned char kind, unsigned char playe
     }
 
     dExtAnmTexPat_c::Prepare(*(BMD_File *)data_ov075_0211d3c4.filePtr, *(BTP_File *)textureFile);
-    _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj(&mTextureSequence, textureFile, 0, 0x1000,
-                                                       0);
+    _ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit(&mTextureSequence, textureFile, 0, 0x1000, 0);
 
     {
         unsigned randomValue = (unsigned)RandomIntInternal(&data_0209e650);

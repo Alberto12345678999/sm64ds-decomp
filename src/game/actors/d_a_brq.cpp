@@ -263,9 +263,9 @@ typedef int Fix12i;
 struct BCA_File; struct BTP_File; struct BTA_File;
 /* (dExtAnmModel_c/dExtAnmTexPat_c/dExtAnmTexSRT_c: real header types in scope) */
 
-extern "C" unsigned int _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj(dExtAnmTexPat_c *,
-                                                                           BTP_File &, int, Fix12i,
-                                                                           unsigned int);
+/* local extern: the matched free-function spelling of SetFile; a member call is pending. */
+extern "C" unsigned int _ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit(dExtAnmTexPat_c *, BTP_File &,
+                                                                   int, Fix12i, unsigned int);
 extern "C" unsigned int _ZN15dExtAnmTexSRT_c7SetFileER8BTA_Filei5Fix12IiEj(dExtAnmTexSRT_c *,
                                                                            BTA_File &, int, Fix12i,
                                                                            unsigned int);
@@ -277,7 +277,7 @@ s32 daBrq_c::EnterActiveState()
 {
     mModelAnim.SetAnim((BCA_File *)data_ov070_021235f4.filePtr, 0, 0x1000, 0);
     mModelAnim.speed = 0x1000;
-    _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj(
+    _ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit(
         &mTextureSequence, *(BTP_File *)data_ov070_021235ec.filePtr, 0, 0x1000, 0);
     mTextureSequence.speed = 0x1000;
     _ZN15dExtAnmTexSRT_c7SetFileER8BTA_Filei5Fix12IiEj(&mTextureTransformer, data_ov070_021231f4, 0,

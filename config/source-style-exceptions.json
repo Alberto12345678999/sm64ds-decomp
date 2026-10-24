@@ -914,22 +914,6 @@
       "evidence": "origin/main:src/engine/model/ModelAnim.cpp 1x unk_00; head 1x unk_00; tools/source_style.py --base origin/main"
     },
     {
-      "path": "src/game/actors/d_a_demo.cpp",
-      "rule": "handspelled-member",
-      "match": "_ZN14dExtAnmModel_cC2Ev",
-      "count": 3,
-      "reason": "Respelled by the Model-family RTTI rename: src/game/actors/d_a_demo.cpp on main carries the same 3 occurrence(s) as _ZN9ModelAnimC2Ev. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings.",
-      "evidence": "origin/main:src/game/actors/d_a_demo.cpp 3x _ZN9ModelAnimC2Ev; head 3x _ZN14dExtAnmModel_cC2Ev; tools/source_style.py --base origin/main"
-    },
-    {
-      "path": "src/game/actors/d_a_demo.cpp",
-      "rule": "handspelled-member",
-      "match": "_ZN17dExtSimpleModel_cC2Ev",
-      "count": 4,
-      "reason": "Respelled by the Model-family RTTI rename: src/game/actors/d_a_demo.cpp on main carries the same 4 occurrence(s) as _ZN5ModelC2Ev. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings.",
-      "evidence": "origin/main:src/game/actors/d_a_demo.cpp 4x _ZN5ModelC2Ev; head 4x _ZN17dExtSimpleModel_cC2Ev; tools/source_style.py --base origin/main"
-    },
-    {
       "path": "src/game/actors/d_a_dp_lift.cpp",
       "rule": "handspelled-member",
       "match": "_ZN17dExtSimpleModel_cC1Ev",
@@ -1258,14 +1242,6 @@
       "evidence": "origin/cpp/model-family-rom-names:src/engine/model/MaterialChanger.cpp 1x _ZN15MaterialChanger7SetFileER8BMA_Filei5Fix12IiEj; head 1x _ZN17dExtAnmMaterial_c7SetFileER8BMA_Filei5Fix12IiEj; tools/source_style.py --base origin/cpp/model-family-rom-names"
     },
     {
-      "path": "src/engine/model/d_ext_anm_tex_pat.cpp",
-      "rule": "handspelled-member",
-      "match": "_ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj",
-      "count": 1,
-      "reason": "Respelled by the texture-animation RTTI rename: src/engine/model/d_ext_anm_tex_pat.cpp (src/engine/model/TextureSequence.cpp on that base) on cpp/model-family-rom-names carries the same 1 occurrence(s) as _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings.",
-      "evidence": "origin/cpp/model-family-rom-names:src/engine/model/TextureSequence.cpp 1x _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj; head 1x _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj; tools/source_style.py --base origin/cpp/model-family-rom-names"
-    },
-    {
       "path": "src/engine/model/d_ext_anm_tex_srt.cpp",
       "rule": "handspelled-member",
       "match": "_ZN15dExtAnmTexSRT_c7SetFileER8BTA_Filei5Fix12IiEj",
@@ -1276,26 +1252,26 @@
     {
       "path": "src/game/actors/d_a_bg_snm_hed.cpp",
       "rule": "handspelled-member",
-      "match": "_ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj",
+      "match": "_ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit",
       "count": 3,
-      "reason": "Respelled by the texture-animation RTTI rename: src/game/actors/d_a_bg_snm_hed.cpp on cpp/model-family-rom-names carries the same 3 occurrence(s) as _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings.",
-      "evidence": "origin/cpp/model-family-rom-names:src/game/actors/d_a_bg_snm_hed.cpp 3x _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj; head 3x _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj; tools/source_style.py --base origin/cpp/model-family-rom-names"
+      "reason": "Respelled by the texture-animation RTTI rename: src/game/actors/d_a_bg_snm_hed.cpp on cpp/model-family-rom-names carries the same 3 occurrence(s) as _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings. SetFile then took the scalar mangling as a real member (Fix12i speed, u16 startFrame), so the extern respells to _ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit with its count unchanged.",
+      "evidence": "origin/cpp/model-family-rom-names:src/game/actors/d_a_bg_snm_hed.cpp 3x _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj; head 3x _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj; tools/source_style.py --base origin/cpp/model-family-rom-names; daDemo_c nested-model PR: src/game/actors/d_a_bg_snm_hed.cpp 3x _ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit, tools/source_style.py --base cpp/texanim-rom-names"
     },
     {
       "path": "src/game/actors/d_a_bg_snwmn.cpp",
       "rule": "handspelled-member",
-      "match": "_ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj",
+      "match": "_ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit",
       "count": 2,
-      "reason": "Respelled by the texture-animation RTTI rename: src/game/actors/d_a_bg_snwmn.cpp on cpp/model-family-rom-names carries the same 2 occurrence(s) as _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings.",
-      "evidence": "origin/cpp/model-family-rom-names:src/game/actors/d_a_bg_snwmn.cpp 2x _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj; head 2x _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj; tools/source_style.py --base origin/cpp/model-family-rom-names"
+      "reason": "Respelled by the texture-animation RTTI rename: src/game/actors/d_a_bg_snwmn.cpp on cpp/model-family-rom-names carries the same 2 occurrence(s) as _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings. SetFile then took the scalar mangling as a real member (Fix12i speed, u16 startFrame), so the extern respells to _ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit with its count unchanged.",
+      "evidence": "origin/cpp/model-family-rom-names:src/game/actors/d_a_bg_snwmn.cpp 2x _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj; head 2x _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj; tools/source_style.py --base origin/cpp/model-family-rom-names; daDemo_c nested-model PR: src/game/actors/d_a_bg_snwmn.cpp 2x _ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit, tools/source_style.py --base cpp/texanim-rom-names"
     },
     {
       "path": "src/game/actors/d_a_brq.cpp",
       "rule": "handspelled-member",
-      "match": "_ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj",
+      "match": "_ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit",
       "count": 2,
-      "reason": "Respelled by the texture-animation RTTI rename: src/game/actors/d_a_brq.cpp on cpp/model-family-rom-names carries the same 2 occurrence(s) as _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings.",
-      "evidence": "origin/cpp/model-family-rom-names:src/game/actors/d_a_brq.cpp 2x _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj; head 2x _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj; tools/source_style.py --base origin/cpp/model-family-rom-names"
+      "reason": "Respelled by the texture-animation RTTI rename: src/game/actors/d_a_brq.cpp on cpp/model-family-rom-names carries the same 2 occurrence(s) as _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings. SetFile then took the scalar mangling as a real member (Fix12i speed, u16 startFrame), so the extern respells to _ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit with its count unchanged.",
+      "evidence": "origin/cpp/model-family-rom-names:src/game/actors/d_a_brq.cpp 2x _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj; head 2x _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj; tools/source_style.py --base origin/cpp/model-family-rom-names; daDemo_c nested-model PR: src/game/actors/d_a_brq.cpp 2x _ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit, tools/source_style.py --base cpp/texanim-rom-names"
     },
     {
       "path": "src/game/actors/d_a_brq.cpp",
@@ -1308,58 +1284,42 @@
     {
       "path": "src/game/actors/d_a_btn.cpp",
       "rule": "handspelled-member",
-      "match": "_ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj",
+      "match": "_ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit",
       "count": 2,
-      "reason": "Respelled by the texture-animation RTTI rename: src/game/actors/d_a_btn.cpp on cpp/model-family-rom-names carries the same 2 occurrence(s) as _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings.",
-      "evidence": "origin/cpp/model-family-rom-names:src/game/actors/d_a_btn.cpp 2x _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj; head 2x _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj; tools/source_style.py --base origin/cpp/model-family-rom-names"
+      "reason": "Respelled by the texture-animation RTTI rename: src/game/actors/d_a_btn.cpp on cpp/model-family-rom-names carries the same 2 occurrence(s) as _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings. SetFile then took the scalar mangling as a real member (Fix12i speed, u16 startFrame), so the extern respells to _ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit with its count unchanged.",
+      "evidence": "origin/cpp/model-family-rom-names:src/game/actors/d_a_btn.cpp 2x _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj; head 2x _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj; tools/source_style.py --base origin/cpp/model-family-rom-names; daDemo_c nested-model PR: src/game/actors/d_a_btn.cpp 2x _ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit, tools/source_style.py --base cpp/texanim-rom-names"
     },
     {
       "path": "src/game/actors/d_a_c_jugem.cpp",
       "rule": "handspelled-member",
-      "match": "_ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj",
+      "match": "_ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit",
       "count": 2,
-      "reason": "Respelled by the texture-animation RTTI rename: src/game/actors/d_a_c_jugem.cpp on cpp/model-family-rom-names carries the same 2 occurrence(s) as _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings.",
-      "evidence": "origin/cpp/model-family-rom-names:src/game/actors/d_a_c_jugem.cpp 2x _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj; head 2x _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj; tools/source_style.py --base origin/cpp/model-family-rom-names"
-    },
-    {
-      "path": "src/game/actors/d_a_demo.cpp",
-      "rule": "handspelled-member",
-      "match": "_ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj",
-      "count": 4,
-      "reason": "Respelled by the texture-animation RTTI rename: src/game/actors/d_a_demo.cpp on cpp/model-family-rom-names carries the same 4 occurrence(s) as _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings.",
-      "evidence": "origin/cpp/model-family-rom-names:src/game/actors/d_a_demo.cpp 4x _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj; head 4x _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj; tools/source_style.py --base origin/cpp/model-family-rom-names"
-    },
-    {
-      "path": "src/game/actors/d_a_demo.cpp",
-      "rule": "handspelled-member",
-      "match": "_ZN15dExtAnmTexPat_cC1Ev",
-      "count": 2,
-      "reason": "Respelled by the texture-animation RTTI rename: src/game/actors/d_a_demo.cpp on cpp/model-family-rom-names carries the same 2 occurrence(s) as _ZN15TextureSequenceC1Ev. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings.",
-      "evidence": "origin/cpp/model-family-rom-names:src/game/actors/d_a_demo.cpp 2x _ZN15TextureSequenceC1Ev; head 2x _ZN15dExtAnmTexPat_cC1Ev; tools/source_style.py --base origin/cpp/model-family-rom-names"
+      "reason": "Respelled by the texture-animation RTTI rename: src/game/actors/d_a_c_jugem.cpp on cpp/model-family-rom-names carries the same 2 occurrence(s) as _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings. SetFile then took the scalar mangling as a real member (Fix12i speed, u16 startFrame), so the extern respells to _ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit with its count unchanged.",
+      "evidence": "origin/cpp/model-family-rom-names:src/game/actors/d_a_c_jugem.cpp 2x _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj; head 2x _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj; tools/source_style.py --base origin/cpp/model-family-rom-names; daDemo_c nested-model PR: src/game/actors/d_a_c_jugem.cpp 2x _ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit, tools/source_style.py --base cpp/texanim-rom-names"
     },
     {
       "path": "src/game/actors/d_a_dsn_base.cpp",
       "rule": "handspelled-member",
-      "match": "_ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj",
+      "match": "_ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit",
       "count": 2,
-      "reason": "Respelled by the texture-animation RTTI rename: src/game/actors/d_a_dsn_base.cpp on cpp/model-family-rom-names carries the same 2 occurrence(s) as _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings.",
-      "evidence": "origin/cpp/model-family-rom-names:src/game/actors/d_a_dsn_base.cpp 2x _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj; head 2x _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj; tools/source_style.py --base origin/cpp/model-family-rom-names"
+      "reason": "Respelled by the texture-animation RTTI rename: src/game/actors/d_a_dsn_base.cpp on cpp/model-family-rom-names carries the same 2 occurrence(s) as _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings. SetFile then took the scalar mangling as a real member (Fix12i speed, u16 startFrame), so the extern respells to _ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit with its count unchanged.",
+      "evidence": "origin/cpp/model-family-rom-names:src/game/actors/d_a_dsn_base.cpp 2x _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj; head 2x _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj; tools/source_style.py --base origin/cpp/model-family-rom-names; daDemo_c nested-model PR: src/game/actors/d_a_dsn_base.cpp 2x _ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit, tools/source_style.py --base cpp/texanim-rom-names"
     },
     {
       "path": "src/game/actors/d_a_eykn.cpp",
       "rule": "handspelled-member",
-      "match": "_ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj",
+      "match": "_ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit",
       "count": 5,
-      "reason": "Respelled by the texture-animation RTTI rename: src/game/actors/d_a_eykn.cpp on cpp/model-family-rom-names carries the same 5 occurrence(s) as _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings.",
-      "evidence": "origin/cpp/model-family-rom-names:src/game/actors/d_a_eykn.cpp 5x _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj; head 5x _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj; tools/source_style.py --base origin/cpp/model-family-rom-names"
+      "reason": "Respelled by the texture-animation RTTI rename: src/game/actors/d_a_eykn.cpp on cpp/model-family-rom-names carries the same 5 occurrence(s) as _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings. SetFile then took the scalar mangling as a real member (Fix12i speed, u16 startFrame), so the extern respells to _ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit with its count unchanged.",
+      "evidence": "origin/cpp/model-family-rom-names:src/game/actors/d_a_eykn.cpp 5x _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj; head 5x _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj; tools/source_style.py --base origin/cpp/model-family-rom-names; daDemo_c nested-model PR: src/game/actors/d_a_eykn.cpp 5x _ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit, tools/source_style.py --base cpp/texanim-rom-names"
     },
     {
       "path": "src/game/actors/d_a_f_ring.cpp",
       "rule": "handspelled-member",
-      "match": "_ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj",
+      "match": "_ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit",
       "count": 3,
-      "reason": "Respelled by the texture-animation RTTI rename: src/game/actors/d_a_f_ring.cpp on cpp/model-family-rom-names carries the same 3 occurrence(s) as _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings.",
-      "evidence": "origin/cpp/model-family-rom-names:src/game/actors/d_a_f_ring.cpp 3x _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj; head 3x _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj; tools/source_style.py --base origin/cpp/model-family-rom-names"
+      "reason": "Respelled by the texture-animation RTTI rename: src/game/actors/d_a_f_ring.cpp on cpp/model-family-rom-names carries the same 3 occurrence(s) as _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings. SetFile then took the scalar mangling as a real member (Fix12i speed, u16 startFrame), so the extern respells to _ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit with its count unchanged.",
+      "evidence": "origin/cpp/model-family-rom-names:src/game/actors/d_a_f_ring.cpp 3x _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj; head 3x _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj; tools/source_style.py --base origin/cpp/model-family-rom-names; daDemo_c nested-model PR: src/game/actors/d_a_f_ring.cpp 3x _ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit, tools/source_style.py --base cpp/texanim-rom-names"
     },
     {
       "path": "src/game/actors/d_a_f_ring.cpp",
@@ -1380,34 +1340,34 @@
     {
       "path": "src/game/actors/d_a_hanachan.cpp",
       "rule": "handspelled-member",
-      "match": "_ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj",
+      "match": "_ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit",
       "count": 2,
-      "reason": "Respelled by the texture-animation RTTI rename: src/game/actors/d_a_hanachan.cpp on cpp/model-family-rom-names carries the same 2 occurrence(s) as _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings.",
-      "evidence": "origin/cpp/model-family-rom-names:src/game/actors/d_a_hanachan.cpp 2x _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj; head 2x _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj; tools/source_style.py --base origin/cpp/model-family-rom-names"
+      "reason": "Respelled by the texture-animation RTTI rename: src/game/actors/d_a_hanachan.cpp on cpp/model-family-rom-names carries the same 2 occurrence(s) as _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings. SetFile then took the scalar mangling as a real member (Fix12i speed, u16 startFrame), so the extern respells to _ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit with its count unchanged.",
+      "evidence": "origin/cpp/model-family-rom-names:src/game/actors/d_a_hanachan.cpp 2x _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj; head 2x _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj; tools/source_style.py --base origin/cpp/model-family-rom-names; daDemo_c nested-model PR: src/game/actors/d_a_hanachan.cpp 2x _ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit, tools/source_style.py --base cpp/texanim-rom-names"
     },
     {
       "path": "src/game/actors/d_a_iwante.cpp",
       "rule": "handspelled-member",
-      "match": "_ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj",
+      "match": "_ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit",
       "count": 13,
-      "reason": "Respelled by the texture-animation RTTI rename: src/game/actors/d_a_iwante.cpp on cpp/model-family-rom-names carries the same 13 occurrence(s) as _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings.",
-      "evidence": "origin/cpp/model-family-rom-names:src/game/actors/d_a_iwante.cpp 13x _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj; head 13x _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj; tools/source_style.py --base origin/cpp/model-family-rom-names"
+      "reason": "Respelled by the texture-animation RTTI rename: src/game/actors/d_a_iwante.cpp on cpp/model-family-rom-names carries the same 13 occurrence(s) as _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings. SetFile then took the scalar mangling as a real member (Fix12i speed, u16 startFrame), so the extern respells to _ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit with its count unchanged.",
+      "evidence": "origin/cpp/model-family-rom-names:src/game/actors/d_a_iwante.cpp 13x _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj; head 13x _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj; tools/source_style.py --base origin/cpp/model-family-rom-names; daDemo_c nested-model PR: src/game/actors/d_a_iwante.cpp 13x _ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit, tools/source_style.py --base cpp/texanim-rom-names"
     },
     {
       "path": "src/game/actors/d_a_jgm.cpp",
       "rule": "handspelled-member",
-      "match": "_ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj",
+      "match": "_ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit",
       "count": 3,
-      "reason": "Respelled by the texture-animation RTTI rename: src/game/actors/d_a_jgm.cpp on cpp/model-family-rom-names carries the same 3 occurrence(s) as _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings.",
-      "evidence": "origin/cpp/model-family-rom-names:src/game/actors/d_a_jgm.cpp 3x _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj; head 3x _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj; tools/source_style.py --base origin/cpp/model-family-rom-names"
+      "reason": "Respelled by the texture-animation RTTI rename: src/game/actors/d_a_jgm.cpp on cpp/model-family-rom-names carries the same 3 occurrence(s) as _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings. SetFile then took the scalar mangling as a real member (Fix12i speed, u16 startFrame), so the extern respells to _ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit with its count unchanged.",
+      "evidence": "origin/cpp/model-family-rom-names:src/game/actors/d_a_jgm.cpp 3x _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj; head 3x _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj; tools/source_style.py --base origin/cpp/model-family-rom-names; daDemo_c nested-model PR: src/game/actors/d_a_jgm.cpp 3x _ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit, tools/source_style.py --base cpp/texanim-rom-names"
     },
     {
       "path": "src/game/actors/d_a_kpa.cpp",
       "rule": "handspelled-member",
-      "match": "_ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj",
+      "match": "_ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit",
       "count": 8,
-      "reason": "Respelled by the texture-animation RTTI rename: src/game/actors/d_a_kpa.cpp on cpp/model-family-rom-names carries the same 8 occurrence(s) as _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings.",
-      "evidence": "origin/cpp/model-family-rom-names:src/game/actors/d_a_kpa.cpp 8x _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj; head 8x _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj; tools/source_style.py --base origin/cpp/model-family-rom-names"
+      "reason": "Respelled by the texture-animation RTTI rename: src/game/actors/d_a_kpa.cpp on cpp/model-family-rom-names carries the same 8 occurrence(s) as _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings. SetFile then took the scalar mangling as a real member (Fix12i speed, u16 startFrame), so the extern respells to _ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit with its count unchanged.",
+      "evidence": "origin/cpp/model-family-rom-names:src/game/actors/d_a_kpa.cpp 8x _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj; head 8x _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj; tools/source_style.py --base origin/cpp/model-family-rom-names; daDemo_c nested-model PR: src/game/actors/d_a_kpa.cpp 8x _ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit, tools/source_style.py --base cpp/texanim-rom-names"
     },
     {
       "path": "src/game/actors/d_a_krb.cpp",
@@ -1420,10 +1380,10 @@
     {
       "path": "src/game/actors/d_a_kuri_king.cpp",
       "rule": "handspelled-member",
-      "match": "_ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj",
+      "match": "_ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit",
       "count": 2,
-      "reason": "Respelled by the texture-animation RTTI rename: src/game/actors/d_a_kuri_king.cpp on cpp/model-family-rom-names carries the same 2 occurrence(s) as _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings.",
-      "evidence": "origin/cpp/model-family-rom-names:src/game/actors/d_a_kuri_king.cpp 2x _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj; head 2x _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj; tools/source_style.py --base origin/cpp/model-family-rom-names"
+      "reason": "Respelled by the texture-animation RTTI rename: src/game/actors/d_a_kuri_king.cpp on cpp/model-family-rom-names carries the same 2 occurrence(s) as _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings. SetFile then took the scalar mangling as a real member (Fix12i speed, u16 startFrame), so the extern respells to _ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit with its count unchanged.",
+      "evidence": "origin/cpp/model-family-rom-names:src/game/actors/d_a_kuri_king.cpp 2x _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj; head 2x _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj; tools/source_style.py --base origin/cpp/model-family-rom-names; daDemo_c nested-model PR: src/game/actors/d_a_kuri_king.cpp 2x _ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit, tools/source_style.py --base cpp/texanim-rom-names"
     },
     {
       "path": "src/game/actors/d_a_kuri_king.cpp",
@@ -1444,18 +1404,18 @@
     {
       "path": "src/game/actors/d_a_luigi.cpp",
       "rule": "handspelled-member",
-      "match": "_ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj",
+      "match": "_ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit",
       "count": 3,
-      "reason": "Respelled by the texture-animation RTTI rename: src/game/actors/d_a_luigi.cpp on cpp/model-family-rom-names carries the same 3 occurrence(s) as _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings.",
-      "evidence": "origin/cpp/model-family-rom-names:src/game/actors/d_a_luigi.cpp 3x _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj; head 3x _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj; tools/source_style.py --base origin/cpp/model-family-rom-names"
+      "reason": "Respelled by the texture-animation RTTI rename: src/game/actors/d_a_luigi.cpp on cpp/model-family-rom-names carries the same 3 occurrence(s) as _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings. SetFile then took the scalar mangling as a real member (Fix12i speed, u16 startFrame), so the extern respells to _ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit with its count unchanged.",
+      "evidence": "origin/cpp/model-family-rom-names:src/game/actors/d_a_luigi.cpp 3x _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj; head 3x _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj; tools/source_style.py --base origin/cpp/model-family-rom-names; daDemo_c nested-model PR: src/game/actors/d_a_luigi.cpp 3x _ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit, tools/source_style.py --base cpp/texanim-rom-names"
     },
     {
       "path": "src/game/actors/d_a_obj1up_logo.cpp",
       "rule": "handspelled-member",
-      "match": "_ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj",
+      "match": "_ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit",
       "count": 2,
-      "reason": "Respelled by the texture-animation RTTI rename: src/game/actors/d_a_obj1up_logo.cpp on cpp/model-family-rom-names carries the same 2 occurrence(s) as _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings.",
-      "evidence": "origin/cpp/model-family-rom-names:src/game/actors/d_a_obj1up_logo.cpp 2x _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj; head 2x _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj; tools/source_style.py --base origin/cpp/model-family-rom-names"
+      "reason": "Respelled by the texture-animation RTTI rename: src/game/actors/d_a_obj1up_logo.cpp on cpp/model-family-rom-names carries the same 2 occurrence(s) as _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings. SetFile then took the scalar mangling as a real member (Fix12i speed, u16 startFrame), so the extern respells to _ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit with its count unchanged.",
+      "evidence": "origin/cpp/model-family-rom-names:src/game/actors/d_a_obj1up_logo.cpp 2x _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj; head 2x _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj; tools/source_style.py --base origin/cpp/model-family-rom-names; daDemo_c nested-model PR: src/game/actors/d_a_obj1up_logo.cpp 2x _ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit, tools/source_style.py --base cpp/texanim-rom-names"
     },
     {
       "path": "src/game/actors/d_a_obj_c0_water.cpp",
@@ -1492,10 +1452,10 @@
     {
       "path": "src/game/actors/d_a_obj_number.cpp",
       "rule": "handspelled-member",
-      "match": "_ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj",
+      "match": "_ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit",
       "count": 3,
-      "reason": "Respelled by the texture-animation RTTI rename: src/game/actors/d_a_obj_number.cpp on cpp/model-family-rom-names carries the same 3 occurrence(s) as _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings.",
-      "evidence": "origin/cpp/model-family-rom-names:src/game/actors/d_a_obj_number.cpp 3x _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj; head 3x _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj; tools/source_style.py --base origin/cpp/model-family-rom-names"
+      "reason": "Respelled by the texture-animation RTTI rename: src/game/actors/d_a_obj_number.cpp on cpp/model-family-rom-names carries the same 3 occurrence(s) as _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings. SetFile then took the scalar mangling as a real member (Fix12i speed, u16 startFrame), so the extern respells to _ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit with its count unchanged.",
+      "evidence": "origin/cpp/model-family-rom-names:src/game/actors/d_a_obj_number.cpp 3x _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj; head 3x _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj; tools/source_style.py --base origin/cpp/model-family-rom-names; daDemo_c nested-model PR: src/game/actors/d_a_obj_number.cpp 3x _ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit, tools/source_style.py --base cpp/texanim-rom-names"
     },
     {
       "path": "src/game/actors/d_a_obj_td_water.cpp",
@@ -1524,26 +1484,26 @@
     {
       "path": "src/game/actors/d_a_pg_dfdr.cpp",
       "rule": "handspelled-member",
-      "match": "_ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj",
+      "match": "_ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit",
       "count": 2,
-      "reason": "Respelled by the texture-animation RTTI rename: src/game/actors/d_a_pg_dfdr.cpp on cpp/model-family-rom-names carries the same 2 occurrence(s) as _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings.",
-      "evidence": "origin/cpp/model-family-rom-names:src/game/actors/d_a_pg_dfdr.cpp 2x _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj; head 2x _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj; tools/source_style.py --base origin/cpp/model-family-rom-names"
+      "reason": "Respelled by the texture-animation RTTI rename: src/game/actors/d_a_pg_dfdr.cpp on cpp/model-family-rom-names carries the same 2 occurrence(s) as _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings. SetFile then took the scalar mangling as a real member (Fix12i speed, u16 startFrame), so the extern respells to _ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit with its count unchanged.",
+      "evidence": "origin/cpp/model-family-rom-names:src/game/actors/d_a_pg_dfdr.cpp 2x _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj; head 2x _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj; tools/source_style.py --base origin/cpp/model-family-rom-names; daDemo_c nested-model PR: src/game/actors/d_a_pg_dfdr.cpp 2x _ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit, tools/source_style.py --base cpp/texanim-rom-names"
     },
     {
       "path": "src/game/actors/d_a_pg_mthr.cpp",
       "rule": "handspelled-member",
-      "match": "_ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj",
+      "match": "_ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit",
       "count": 3,
-      "reason": "Respelled by the texture-animation RTTI rename: src/game/actors/d_a_pg_mthr.cpp on cpp/model-family-rom-names carries the same 3 occurrence(s) as _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings.",
-      "evidence": "origin/cpp/model-family-rom-names:src/game/actors/d_a_pg_mthr.cpp 3x _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj; head 3x _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj; tools/source_style.py --base origin/cpp/model-family-rom-names"
+      "reason": "Respelled by the texture-animation RTTI rename: src/game/actors/d_a_pg_mthr.cpp on cpp/model-family-rom-names carries the same 3 occurrence(s) as _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings. SetFile then took the scalar mangling as a real member (Fix12i speed, u16 startFrame), so the extern respells to _ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit with its count unchanged.",
+      "evidence": "origin/cpp/model-family-rom-names:src/game/actors/d_a_pg_mthr.cpp 3x _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj; head 3x _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj; tools/source_style.py --base origin/cpp/model-family-rom-names; daDemo_c nested-model PR: src/game/actors/d_a_pg_mthr.cpp 3x _ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit, tools/source_style.py --base cpp/texanim-rom-names"
     },
     {
       "path": "src/game/actors/d_a_pg_rcer.cpp",
       "rule": "handspelled-member",
-      "match": "_ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj",
+      "match": "_ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit",
       "count": 6,
-      "reason": "Respelled by the texture-animation RTTI rename: src/game/actors/d_a_pg_rcer.cpp on cpp/model-family-rom-names carries the same 6 occurrence(s) as _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings.",
-      "evidence": "origin/cpp/model-family-rom-names:src/game/actors/d_a_pg_rcer.cpp 6x _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj; head 6x _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj; tools/source_style.py --base origin/cpp/model-family-rom-names"
+      "reason": "Respelled by the texture-animation RTTI rename: src/game/actors/d_a_pg_rcer.cpp on cpp/model-family-rom-names carries the same 6 occurrence(s) as _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings. SetFile then took the scalar mangling as a real member (Fix12i speed, u16 startFrame), so the extern respells to _ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit with its count unchanged.",
+      "evidence": "origin/cpp/model-family-rom-names:src/game/actors/d_a_pg_rcer.cpp 6x _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj; head 6x _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj; tools/source_style.py --base origin/cpp/model-family-rom-names; daDemo_c nested-model PR: src/game/actors/d_a_pg_rcer.cpp 6x _ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit, tools/source_style.py --base cpp/texanim-rom-names"
     },
     {
       "path": "src/game/actors/d_a_tor.cpp",
@@ -1588,10 +1548,10 @@
     {
       "path": "src/game/player/Player.cpp",
       "rule": "handspelled-member",
-      "match": "_ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj",
+      "match": "_ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit",
       "count": 6,
-      "reason": "Respelled by the texture-animation RTTI rename: src/game/player/Player.cpp on cpp/model-family-rom-names carries the same 6 occurrence(s) as _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings.",
-      "evidence": "origin/cpp/model-family-rom-names:src/game/player/Player.cpp 6x _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj; head 6x _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj; tools/source_style.py --base origin/cpp/model-family-rom-names"
+      "reason": "Respelled by the texture-animation RTTI rename: src/game/player/Player.cpp on cpp/model-family-rom-names carries the same 6 occurrence(s) as _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings. SetFile then took the scalar mangling as a real member (Fix12i speed, u16 startFrame), so the extern respells to _ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit with its count unchanged.",
+      "evidence": "origin/cpp/model-family-rom-names:src/game/player/Player.cpp 6x _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj; head 6x _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj; tools/source_style.py --base origin/cpp/model-family-rom-names; daDemo_c nested-model PR: src/game/player/Player.cpp 6x _ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit, tools/source_style.py --base cpp/texanim-rom-names"
     },
     {
       "path": "src/game/player/Player.cpp",
@@ -1604,18 +1564,18 @@
     {
       "path": "src/game/stages/d_ent_obj.cpp",
       "rule": "handspelled-member",
-      "match": "_ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj",
+      "match": "_ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit",
       "count": 3,
-      "reason": "Respelled by the texture-animation RTTI rename: src/game/stages/d_ent_obj.cpp on cpp/model-family-rom-names carries the same 3 occurrence(s) as _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings.",
-      "evidence": "origin/cpp/model-family-rom-names:src/game/stages/d_ent_obj.cpp 3x _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj; head 3x _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj; tools/source_style.py --base origin/cpp/model-family-rom-names"
+      "reason": "Respelled by the texture-animation RTTI rename: src/game/stages/d_ent_obj.cpp on cpp/model-family-rom-names carries the same 3 occurrence(s) as _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings. SetFile then took the scalar mangling as a real member (Fix12i speed, u16 startFrame), so the extern respells to _ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit with its count unchanged.",
+      "evidence": "origin/cpp/model-family-rom-names:src/game/stages/d_ent_obj.cpp 3x _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj; head 3x _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj; tools/source_style.py --base origin/cpp/model-family-rom-names; daDemo_c nested-model PR: src/game/stages/d_ent_obj.cpp 3x _ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit, tools/source_style.py --base cpp/texanim-rom-names"
     },
     {
       "path": "src/minigames/d_mg3d_esp_anim_set.cpp",
       "rule": "handspelled-member",
-      "match": "_ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj",
+      "match": "_ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit",
       "count": 2,
-      "reason": "Respelled by the texture-animation RTTI rename: src/minigames/d_mg3d_esp_anim_set.cpp on cpp/model-family-rom-names carries the same 2 occurrence(s) as _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings.",
-      "evidence": "origin/cpp/model-family-rom-names:src/minigames/d_mg3d_esp_anim_set.cpp 2x _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj; head 2x _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj; tools/source_style.py --base origin/cpp/model-family-rom-names"
+      "reason": "Respelled by the texture-animation RTTI rename: src/minigames/d_mg3d_esp_anim_set.cpp on cpp/model-family-rom-names carries the same 2 occurrence(s) as _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings. SetFile then took the scalar mangling as a real member (Fix12i speed, u16 startFrame), so the extern respells to _ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit with its count unchanged.",
+      "evidence": "origin/cpp/model-family-rom-names:src/minigames/d_mg3d_esp_anim_set.cpp 2x _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj; head 2x _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj; tools/source_style.py --base origin/cpp/model-family-rom-names; daDemo_c nested-model PR: src/minigames/d_mg3d_esp_anim_set.cpp 2x _ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit, tools/source_style.py --base cpp/texanim-rom-names"
     },
     {
       "path": "src/minigames/d_mg3d_esp_anim_set.cpp",
@@ -1676,10 +1636,10 @@
     {
       "path": "src/minigames/unit020bfec0.cpp",
       "rule": "handspelled-member",
-      "match": "_ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj",
+      "match": "_ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit",
       "count": 10,
-      "reason": "Respelled by the texture-animation RTTI rename: src/minigames/unit020bfec0.cpp on cpp/model-family-rom-names carries the same 10 occurrence(s) as _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings.",
-      "evidence": "origin/cpp/model-family-rom-names:src/minigames/unit020bfec0.cpp 10x _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj; head 10x _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj; tools/source_style.py --base origin/cpp/model-family-rom-names"
+      "reason": "Respelled by the texture-animation RTTI rename: src/minigames/unit020bfec0.cpp on cpp/model-family-rom-names carries the same 10 occurrence(s) as _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings. SetFile then took the scalar mangling as a real member (Fix12i speed, u16 startFrame), so the extern respells to _ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit with its count unchanged.",
+      "evidence": "origin/cpp/model-family-rom-names:src/minigames/unit020bfec0.cpp 10x _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj; head 10x _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj; tools/source_style.py --base origin/cpp/model-family-rom-names; daDemo_c nested-model PR: src/minigames/unit020bfec0.cpp 10x _ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit, tools/source_style.py --base cpp/texanim-rom-names"
     },
     {
       "path": "src/minigames/unit020bfec0.cpp",

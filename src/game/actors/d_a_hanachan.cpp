@@ -136,8 +136,8 @@ extern void func_020092c4(void *arg0, void *out, void *target);
 extern u32 data_ov034_02113828[];
 extern s16 data_02082214[];
 extern void *data_0209f318;
-extern void _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj(void *ts, void *btp, int i, int fix,
-                                                               u32 j);
+/* local extern: the matched free-function spelling of SetFile; a member call is pending. */
+extern void _ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit(void *ts, void *btp, int i, int fix, u32 j);
 extern void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(void *self, void *actor, void *pos, int fix, u32 a, u32 b, u32 cc);
 extern void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(void *self, void *actor, int fix1, int fix2, void *v, int t);
 }
@@ -1200,8 +1200,7 @@ int daHanachan_c::InitResources()
         animRow->SetFile((BMD_File *)modelFile->filePtr, one, minusOne);
         ((dExtAnmModel_c *)animRow)->SetAnim((BCA_File *)animFile->filePtr, zeroA, 0x1000, zeroA);
         dExtAnmTexPat_c::Prepare(*(BMD_File *)modelFile->filePtr, *(BTP_File *)texFile->filePtr);
-        _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj(texSeq, texFile->filePtr, zeroB, 0x1000,
-                                                           zeroB);
+        _ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit(texSeq, texFile->filePtr, zeroB, 0x1000, zeroB);
         ((daHanachan_c *)texRow)->mTextureSequences[0].speed = zeroC;
         if (i == 0) {
             ((daHanachan_c *)posRow)->mSegmentPos[0].x = mPosX;

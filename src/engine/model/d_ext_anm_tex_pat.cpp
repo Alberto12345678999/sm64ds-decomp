@@ -7,8 +7,9 @@
    deferred codegen.
 
    leftovers:
-   - SetFile keeps its mangled spelling (Fix12<int> by value, wall 6az).
-     SetAnimation is the scalar method. The member declarations are real.
+   - SetFile is defined under the scalar mangling (Fix12i speed, u16
+     startFrame) rather than Fix12<int> by value (wall 6az), like
+     SetAnimation. The member declarations are real.
    - func_02046d50 and func_02046bbc stay extern "C" helpers with no
      declaring header; Prepare's ROM body is a 0xc long-call veneer, so it
      calls func_02046d50 with that function's own two-argument signature.
@@ -37,16 +38,14 @@ dExtAnmTexPat_c::dExtAnmTexPat_c() {
 // @symbol _ZN15dExtAnmTexPat_cD1Ev
 dExtAnmTexPat_c::~dExtAnmTexPat_c() {}
 
-// @symbol _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj
-extern "C" void _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj(dExtAnmTexPat_c *self,
-                                                                   BTP_File *file, s32 flags,
-                                                                   s32 speed, u16 startFrame) {
-    if (file == self->file) {
-        self->SetFlags(flags);
-        self->speed = speed;
+// @symbol _ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit
+void dExtAnmTexPat_c::SetFile(BTP_File &animFile, int flags, Fix12i speed, u16 startFrame) {
+    if (&animFile == file) {
+        SetFlags(flags);
+        this->speed = speed;
     } else {
-        self->file = file;
-        self->SetAnimation(file->unk_00, flags, speed, startFrame);
+        file = &animFile;
+        SetAnimation(animFile.unk_00, flags, speed, startFrame);
     }
 }
 

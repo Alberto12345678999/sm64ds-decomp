@@ -110,7 +110,8 @@ int _ZN15dExtFrameCtrl_c8FinishedEv(void* a);
 int _ZNK15dExtFrameCtrl_c12WillHitFrameEi(void* anim, int frame);
 void _ZN17dExtAnmMaterial_c7SetFileER8BMA_Filei5Fix12IiEj(char *t, void *f, int a, int b,
                                                           unsigned u);
-void _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj(void *self, void *btp, int a, int b, u16 d);
+/* local extern: the matched free-function spelling of SetFile; a member call is pending. */
+void _ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit(void *self, void *btp, int a, int b, u16 d);
 void _ZN15dExtAnmTexSRT_c7SetFileER8BTA_Filei5Fix12IiEj(void *self, void *bta, int a, int b, u16 d);
 void func_02046208(char* a, int b, int c);
 int func_020179b4(void* r0, void* r1, int r2);
@@ -486,8 +487,8 @@ int dMg3DEspModel_c::InitResources()
     dExtFrameCtrl_c::LoadFile(gEspCardOpenWaitAnimFile);
     dExtAnmTexPat_c::Prepare(**(BMD_File **)((void **)&gEspCardModelFile + 1),
                              **(BTP_File **)((void **)&gEspCardTexSeqFile + 1));
-    _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj(
-        (char *)&mTextureSequence, *((void **)&gEspCardTexSeqFile + 1), 0, 0x1000, 0);
+    _ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit((char *)&mTextureSequence,
+                                               *((void **)&gEspCardTexSeqFile + 1), 0, 0x1000, 0);
     mModelAnim.SetAnim(*((BCA_File **)&gEspCardStartAnimFile + 1), 0x40000000, 0x800, 0);
     mAnimSet.InitResources();
     ResetTransform();

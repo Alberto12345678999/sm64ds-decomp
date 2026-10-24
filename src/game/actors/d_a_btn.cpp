@@ -139,8 +139,9 @@ void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(
     void *self, void *actor, int a, int b, void *c, void *d);
 void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
     void *mc, void *kcl, void *mtx, int fix, s16 s, void *clps);
-void _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj(void *self, void *btp, int a, int fix,
-                                                        unsigned int b);
+/* local extern: the matched free-function spelling of SetFile; a member call is pending. */
+void _ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit(void *self, void *btp, int a, int fix,
+                                                unsigned int b);
 namespace Particle {
 struct System {
     static void NewSimple(unsigned int id, int x, int y, int z);
@@ -312,8 +313,8 @@ int daBtn_c::InitResources()
         mHitPoints = 3;
         dExtAnmTexPat_c::Prepare(*(BMD_File *)data_ov079_02128168.filePtr,
                                  *(BTP_File *)data_ov079_02128178.filePtr);
-        _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj(
-            &mTextureSequence, data_ov079_02128178.filePtr, 0, 0x1000, 0);
+        _ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit(&mTextureSequence, data_ov079_02128178.filePtr,
+                                                   0, 0x1000, 0);
         mTextureSequence.SetFlags(0x40000000);
         mTextureSequence.speed = 0x1000;
         mTextureSequence.currFrame = 0;

@@ -175,9 +175,9 @@ extern void MulMat4x3Mat4x3(void *a, void *b, void *out);
 extern void Vec3_LslInPlace(void *v, int sh);
 extern void Vec3_Asr(void *d, void *s, int sh);
 
-extern void _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj(dExtAnmTexPat_c *seq, void *file,
-                                                               int flags, int speed,
-                                                               unsigned int startFrame);
+/* local extern: the matched free-function spelling of SetFile; a member call is pending. */
+extern void _ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit(dExtAnmTexPat_c *seq, void *file, int flags,
+                                                       int speed, unsigned int startFrame);
 extern int _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
     dCcAcPos_c *collision, dActor_c *actor, const Vector3 *offset,
     Fix12i radius, Fix12i height, u32 flags, u32 vulnFlags);
@@ -346,8 +346,8 @@ s32 daJgm_c::EnterHoverState()
     mHorzSpeed = 0xc000;
     mModelAnim.SetAnim((BCA_File *)data_ov077_02127b28.filePtr, 0, 0x1000, 0);
     mModelAnim.speed = 0x1000;
-    _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj(&mTextureSequence,
-                                                       data_ov077_02127b20.filePtr, 0, 0x1000, 0);
+    _ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit(&mTextureSequence, data_ov077_02127b20.filePtr, 0,
+                                               0x1000, 0);
     mTextureSequence.speed = 0x1000;
     mTimer = 0x96;
     mState = 0;
@@ -396,8 +396,8 @@ s32 daJgm_c::EnterThrowState()
     mModelAnim.SetFlags(0x40000000);
     mModelAnim.speed = 0x1000;
     mModelAnim.currFrame = 0;
-    _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj(&mTextureSequence,
-                                                       data_ov077_02127b30.filePtr, 0, 0x1000, 0);
+    _ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit(&mTextureSequence, data_ov077_02127b30.filePtr, 0,
+                                               0x1000, 0);
     mTextureSequence.SetFlags(0x40000000);
     mTextureSequence.speed = 0x1000;
     mTextureSequence.currFrame = 0;

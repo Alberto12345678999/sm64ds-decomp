@@ -140,8 +140,9 @@ u32 _ZN8Particle6System17NewUnkCallback818Ejj5Fix12IiES2_S2_PK11Vector3_16f(
 void d_a_eyknNewSimpleHold(u32 effectID, int x, int y, int z);
 int _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(Player *player, void *source, u32 damage, int speed,
                                             u8 a, u8 b, u8 c);
-void _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj(dExtAnmTexPat_c *seq, void *file, int flags,
-                                                        int speed, u32 startFrame);
+/* local extern: the matched free-function spelling of SetFile; a member call is pending. */
+void _ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit(dExtAnmTexPat_c *seq, void *file, int flags,
+                                                int speed, u32 startFrame);
 void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
     dCcAcPos_c *clsn, dActor_c *actor, const Vector3 *offset, int radius, int height, u32 flags, u32 vulnFlags);
 void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
@@ -245,7 +246,7 @@ int daEykn_c::UpdateEyeAnim()
         return 0;
     case 1:
     case 4:
-        _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj(
+        _ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit(
             &mTextureSequence, gEyknCloseTextureSequenceFile.filePtr, 0, 0x1000, 0);
         mTextureSequence.SetFlags(0x40000000);
         mTextureSequence.speed = 0x1000;
@@ -255,7 +256,7 @@ int daEykn_c::UpdateEyeAnim()
     case 2:
     case 5:
         if (mTextureSequence.Finished() != 0) {
-            _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj(
+            _ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit(
                 &mTextureSequence, gEyknOpenTextureSequenceFile.filePtr, 0, 0x1000, 0);
             mTextureSequence.SetFlags(0x40000000);
             mTextureSequence.speed = 0x1000;
@@ -282,8 +283,8 @@ int daEykn_c::UpdateEyeAnim()
 // @symbol _ZN8daEykn_c12ResetEyeAnimEv
 void daEykn_c::ResetEyeAnim()
 {
-    _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj(
-        &mTextureSequence, gEyknCloseTextureSequenceFile.filePtr, 0, 0x1000, 0);
+    _ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit(&mTextureSequence,
+                                               gEyknCloseTextureSequenceFile.filePtr, 0, 0x1000, 0);
     mTextureSequence.SetFlags(0x40000000);
     mTextureSequence.speed = 0x1000;
     mTextureSequence.currFrame = 0;
@@ -839,8 +840,8 @@ s32 daEykn_c::InitResources()
     mModelAnim.SetAnim((BCA_File *)gEyknDeathAnimationFile.filePtr, 0, 0x1000, 0);
 
     mModelAnim.speed = 0x1000;
-    _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj(
-        &mTextureSequence, gEyknCloseTextureSequenceFile.filePtr, 0, 0x1000, 0);
+    _ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit(&mTextureSequence,
+                                               gEyknCloseTextureSequenceFile.filePtr, 0, 0x1000, 0);
 
     mTextureSequence.speed = 0x1000;
     mTarget = 0;
