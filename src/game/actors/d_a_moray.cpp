@@ -11,7 +11,7 @@
  * common.h stays first: the pose reads Matrix4x3 words m[9], m[10], m[11].
  *
  * leftovers:
- * - BlendModelAnim::SetAnim, dCcAcPos_c::Init, ApproachLinear and
+ * - dExtBlendAnmModel_c::SetAnim, dCcAcPos_c::Init, ApproachLinear and
  *   dActor_c::SetRanges stay scalar Fix12 externs. The member forms
  *   grow the callers (02111718, InitResources, 02111758).
  * - currFrame >> 12 instead of the << 4 >> 16 shift shrinks 02111758
@@ -103,7 +103,7 @@ u16 DecIfAbove0_Short(u16 *p);
 void func_02012694(unsigned int id, const Vector3 *pos);
 /* UpdateBones(model.data, model.file, frame). Inlining that grows Render
    0x8c -> 0x9c. */
-void func_020167a4(BlendModelAnim *model);
+void func_020167a4(dExtBlendAnmModel_c *model);
 /* Blend the posed bones by blendWeight. No named method. */
 void func_0204531c(ModelComponents *data, s32 weight);
 

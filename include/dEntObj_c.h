@@ -19,7 +19,7 @@
 #include "Particle__SysTracker.h"
 #include "dExtSimpleModel_c.h"
 #include "dExtAnmModel_c.h"
-#include "BlendModelAnim.h"
+#include "dExtBlendAnmModel_c.h"
 #include "TextureSequence.h"
 #include "dExtShadowModel_c.h"
 
@@ -49,7 +49,7 @@ struct UnknownVsPlayer {
         ANIM_FAST_GAIT
     };
 
-    BlendModelAnim mModel;            /* 0x000 */
+    dExtBlendAnmModel_c mModel;            /* 0x000 */
     dExtAnmModel_c mAnimation;             /* 0x070 */
     TextureSequence mTextureSequence; /* 0x0d4 */
     dExtShadowModel_c mShadow;        /* 0x0e8 */

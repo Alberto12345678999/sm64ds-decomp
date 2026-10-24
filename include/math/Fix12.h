@@ -18,7 +18,7 @@
  * one read it straight out of that register. Where a class-typed parameter
  * contradicts those bytes, the bytes win and the honest spelling is the scalar
  * Fix12i -- see wall 6az, MEASURED 2026-10-22, where both dExtAnmModel_c::SetAnim
- * and BlendModelAnim::SetAnim turned out to be real methods once the name
+ * and dExtBlendAnmModel_c::SetAnim turned out to be real methods once the name
  * stopped claiming Fix12<int>.
  *
  * include/types.h reserves this name for exactly this reconstruction; the

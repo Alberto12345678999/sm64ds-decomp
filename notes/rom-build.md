@@ -555,7 +555,7 @@ by construction.
 **Three remain. All three of the original six that took the cast-and-call shape were
 retired by the C++ class migration; see the struck-through bullet below.**
 
-- three (`_ZN17dExtSimpleModel_cD1Ev`, `_ZN17dExtSimpleModel_cD2Ev`, `_ZN14BlendModelAnimD1Ev`) call `_ZdlPv`
+- three (`_ZN17dExtSimpleModel_cD1Ev`, `_ZN17dExtSimpleModel_cD2Ev`, `_ZN19dExtBlendAnmModel_cD1Ev`) call `_ZdlPv`
   where the ROM goes through the 12-byte veneer at `0x0203cbc0`. That trampoline is the
   standard `LDR ip,[pc]; BX ip; .word target` shape, and its target word is
   **`0x0203cbf0` = `_ZdlPv`** —

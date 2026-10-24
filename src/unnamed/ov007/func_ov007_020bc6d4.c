@@ -15,7 +15,7 @@ typedef struct Ov007Model {
     struct ModelComponents *model; /* 0x00 */
     void *transforms;              /* 0x04: func_02046564-sized, as dExtSimpleModel_c's transformsBuf */
     void *nextTransforms;          /* 0x08: flags & 2 only */
-    void *blendBuffer;  /* 0x0c: flags & 4 only; func_020462bc-sized, as BlendModelAnim's */
+    void *blendBuffer;  /* 0x0c: flags & 4 only; func_020462bc-sized, as dExtBlendAnmModel_c's */
     int numBoneAnims;   /* 0x10 */
     void *boneAnims;    /* 0x14: BCA_File table (UpdateBones) */
     void *boneAnim;     /* 0x18 */

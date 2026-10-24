@@ -40,7 +40,7 @@ Three `type_info` vtables appear, and the one a record points at tells you its s
 | `MaterialChanger` | `_ZTV15MaterialChanger` @0x0208e7f4 | `0x0208e764` | `dExtAnmMaterial_c` |
 | `dExtAnmModel_c` | `_ZTV14dExtAnmModel_c` @0x0208e980 | `0x0208e924` | `dExtAnmModel_c` |
 | `dExtAnm2Model_c` | `_ZTV15dExtAnm2Model_c` @0x0208e9b4 | `0x0208e788` | `dExtAnm2Model_c` |
-| `BlendModelAnim` | `_ZTV14BlendModelAnim` @0x0208e94c | `0x0208e77c` | `dExtBlendAnmModel_c` |
+| `dExtBlendAnmModel_c` | `_ZTV19dExtBlendAnmModel_c` @0x0208e94c | `0x0208e77c` | `dExtBlendAnmModel_c` |
 
 `dExtModel_c` has a root record of its own and three children, but no vtable is attributed to it
 in `symbols.txt` yet — it is the shared model base that `dExtSimpleModel_c`, `ShadowModel` and `CommonModel`
@@ -61,7 +61,7 @@ all descend from, still un-promoted in the tree.
     dExtAnmModel_c             dExtAnmModel_c           (__vmi_class_type_info, 2 bases)
     |   base[0] dExtSimpleModel_c  offset 0x00
     |   base[1] dExtFrameCtrl_c    offset 0x50
-    |-- dExtBlendAnmModel_c    BlendModelAnim
+    |-- dExtBlendAnmModel_c    dExtBlendAnmModel_c
     `-- dExtAnm2Model_c        dExtAnm2Model_c
 
 Two things fall out of this that the source already relies on:
@@ -70,7 +70,7 @@ Two things fall out of this that the source already relies on:
   class. The three controllers are `__si_class_type_info` with base `dExtFrameCtrl_c`, which is the
   ROM's own statement that they derive from `Animation`.
 * `dExtAnmModel_c`'s second base sits at **offset 0x50**, matching the `_ZThn80_` thunks exactly
-  (80 = 0x50). That is why `dExtAnmModel_c`, `dExtAnm2Model_c` and `BlendModelAnim` reach `Animation`
+  (80 = 0x50). That is why `dExtAnmModel_c`, `dExtAnm2Model_c` and `dExtBlendAnmModel_c` reach `Animation`
   through thunk vtables rather than inheriting its slots directly.
 
 ## Why this pins Animation's vtable at two slots

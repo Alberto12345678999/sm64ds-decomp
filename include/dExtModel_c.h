@@ -102,7 +102,7 @@ struct dExtModel_c {
        the declaration indexes correctly on the ARM and ONE SLOT EARLY on the
        host, for every virtual declared after it and all the way down the
        hierarchy: dExtModel_c -> dExtSimpleModel_c -> dExtAnmModel_c -> {dExtAnm2Model_c,
-       BlendModelAnim}, plus the dExtCommonModel_c and dExtShadowModel_c siblings.
+       dExtBlendAnmModel_c}, plus the dExtCommonModel_c and dExtShadowModel_c siblings.
 
        MEASURED, not reasoned: the ROM's _ZTV14dExtAnmModel_c at 0x0208e980 reads
        [0] D1, [1] D0, [2] dExtSimpleModel_c::DoSetFile, [3] UpdateVerts, [4] Virtual10,

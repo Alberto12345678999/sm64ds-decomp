@@ -1,17 +1,17 @@
-#ifndef BLENDMODELANIM_H
-#define BLENDMODELANIM_H
+#ifndef DEXTBLENDANMMODEL_C_H
+#define DEXTBLENDANMMODEL_C_H
 
 #include "types.h"
 #include "dExtAnmModel_c.h"
 
 /* dExtAnmModel_c child that cross-fades between the previous pose and the new
- * animation, vtable _ZTV14BlendModelAnim at 0x0208e94c (same seven-slot
+ * animation, vtable _ZTV19dExtBlendAnmModel_c at 0x0208e94c (same seven-slot
  * shape as dExtAnmModel_c, every slot overridden) plus its own
  * VTable_Animation_BlendModelAnimThunk secondary.
  *
  * THE DESTRUCTOR IS DECLARED FIRST -- see include/dExtAnmModel_c.h; the D1
  * additionally frees mBlendBuffer before chaining to dExtAnmModel_c::D2. Defined
- * out of line in src/engine/model/BlendModelAnim.cpp. That definition is
+ * out of line in src/engine/model/dExtBlendAnmModel_c.cpp. That definition is
  * the key function, so the TU also emits the MI vtable group; RTTI is off
  * and the retail table stays externalized (see the TU manifest).
  *
@@ -22,7 +22,7 @@
  * func_020165c4 (DoSetFile's tail) sets up.
  *
  * SetAnim IS A REAL METHOD, and its symbol is
- * _ZN14BlendModelAnim7SetAnimER8BCA_Fileiiit. It used to be a mangled
+ * _ZN19dExtBlendAnmModel_c7SetAnimER8BCA_Fileiiit. It used to be a mangled
  * extern "C" free function taking an explicit `thiz`, on the grounds that wall
  * 6az forbade the method form. That was wrong: the wall was the NAME. The old
  * symbol spelled a by-value `Fix12<int>` that we invented -- the cartridge
@@ -35,7 +35,7 @@
 
 extern "C" void _ZN6Memory16operator_delete2EPv(void *);
 
-struct BlendModelAnim : dExtAnmModel_c {
+struct dExtBlendAnmModel_c : dExtAnmModel_c {
     Fix12i blendWeight;        /* 0x64 - 0x1000 is 1.0 */
     Fix12i blendStep;          /* 0x68 - per-frame increment */
     void *mBlendBuffer; /* 0x6c - pose blend buffer; DoSetFile tail allocates it, D1 frees it */
@@ -48,9 +48,9 @@ struct BlendModelAnim : dExtAnmModel_c {
 #ifdef _MSC_VER
     virtual void Destructor1();                           /* slot 0 (D1) */
     virtual void Destructor0();                           /* slot 1 (D0) */
-    ~BlendModelAnim();                                    /* no slot */
+    ~dExtBlendAnmModel_c();                                    /* no slot */
 #else
-    virtual ~BlendModelAnim();                            /* slots 0 (D1), 1 (D0) */
+    virtual ~dExtBlendAnmModel_c();                            /* slots 0 (D1), 1 (D0) */
 #endif
     virtual int DoSetFile(char *file, int a, int b);      /* slot 2 */
     virtual void UpdateVerts();                           /* slot 3 */
@@ -58,14 +58,14 @@ struct BlendModelAnim : dExtAnmModel_c {
     virtual void Render(const Vector3 *scale);            /* slot 5 */
     virtual void Virtual18(u32 mat, const Vector3 *scale);/* slot 6 */
 
-    /* DECLARED, defined out of line in src/engine/model/BlendModelAnim.cpp
+    /* DECLARED, defined out of line in src/engine/model/dExtBlendAnmModel_c.cpp
      * as real C++ -- complete-object context for every ROM caller (it is a
      * member subobject in daKing_Donketu_c/Eyerok/daJango_c/daMoray_c...), hence C1.
      * Body is empty; blendWeight and mBlendBuffer are initialised through the init
      * list so their stores land where the ROM has them. */
 
     /* --- non-virtual --- */
-    BlendModelAnim();
+    dExtBlendAnmModel_c();
     void Advance();
     void SetAnim(BCA_File &animFile, int numBlendFrames, int flags, Fix12i speed, u16 startFrame);
 
@@ -82,14 +82,14 @@ struct BlendModelAnim : dExtAnmModel_c {
 
 #ifndef SM64DS_PLATFORM_PC
 /* ROM layout under mwccarm; host ABI divergence is tracked separately. */
-typedef char BlendModelAnim_size_must_be_0x70[sizeof(BlendModelAnim) == 0x70 ? 1 : -1];
+typedef char BlendModelAnim_size_must_be_0x70[sizeof(dExtBlendAnmModel_c) == 0x70 ? 1 : -1];
 #endif
 
 #else
 
 /* The same object for C translation units, both vptrs written out -- the same shape
  * dExtAnmModel_c.h gives its own C fallback, with the blend state appended. */
-struct BlendModelAnim {
+struct dExtBlendAnmModel_c {
     void **vtable;                     /* 0x00 */
     struct BMD_File *modelFile;        /* 0x04 */
     struct ModelComponents data;       /* 0x08 */
@@ -105,10 +105,10 @@ struct BlendModelAnim {
     void *mBlendBuffer; /* 0x6c - pose blend buffer; DoSetFile tail allocates it, D1 frees it */
 };
 
-/* So an object header declaring a BlendModelAnim member reads the same in both modes:
+/* So an object header declaring a dExtBlendAnmModel_c member reads the same in both modes:
  * C++ gets the class, C gets the flat stand-in above, and neither needs `struct`. */
-typedef struct BlendModelAnim BlendModelAnim;
+typedef struct dExtBlendAnmModel_c dExtBlendAnmModel_c;
 
 #endif /* __cplusplus */
 
-#endif /* BLENDMODELANIM_H */
+#endif /* DEXTBLENDANMMODEL_C_H */

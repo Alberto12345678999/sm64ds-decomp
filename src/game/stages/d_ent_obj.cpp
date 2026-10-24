@@ -24,7 +24,7 @@ struct System {
  * the classInit factory, then UnknownVsPlayer's constructor.
  *
  * leftovers:
- *  - The Fix12-by-value member calls (BlendModelAnim::SetAnim,
+ *  - The Fix12-by-value member calls (dExtBlendAnmModel_c::SetAnim,
  *    dExtAnmModel_c::SetAnim, TextureSequence::SetFile,
  *    dExtShadowModel_c::InitModel, Particle::System::New,
  *    G3i::PerspectiveW_) keep measured scalar-extern spellings: spelled as

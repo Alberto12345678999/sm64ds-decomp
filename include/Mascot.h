@@ -2,7 +2,7 @@
 #define MASCOT_H
 
 #include "types.h"
-#include "BlendModelAnim.h"
+#include "dExtBlendAnmModel_c.h"
 
 /* Mascot, Toad standing at the table in the slot and card games: the 0xac-byte
  * record Mascot_Construct builds and the Mascot_* helpers in
@@ -15,7 +15,7 @@ struct Mascot {
     s32 mWaitAnimFile[2]; /* 0x08 -- kino_wait.bca: handle, then the loaded file */
     /* 0x70 bytes. UpdateMatrix sets its mat4x3 and turns bone 6 of its
        data.transforms, the head. */
-    BlendModelAnim mModel; /* 0x10 */
+    dExtBlendAnmModel_c mModel; /* 0x10 */
     Vector3 mLookTarget;  /* 0x80 -- what Mascot_LookAt turns the head toward */
     Vector3 mPos;         /* 0x8c */
     s16 mRot[3];          /* 0x98 -- [1] is the body's yaw, eased toward the target */

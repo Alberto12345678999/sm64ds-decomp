@@ -5808,12 +5808,12 @@
         "return:void"
       ]
     },
-    "_ZN14BlendModelAnim7SetAnimER8BCA_Fileiiit": {
+    "_ZN19dExtBlendAnmModel_c7SetAnimER8BCA_Fileiiit": {
       "src/minigames/unit020bfec0.cpp": [
         "param:#2 void *"
       ]
     },
-    "_ZN14BlendModelAnimD1Ev": {
+    "_ZN19dExtBlendAnmModel_cD1Ev": {
       "include/decl_BlendModelAnim.h": [
         "return:void"
       ],
@@ -20102,7 +20102,7 @@
     },
     "func_020167a4": {
       "src/game/actors/d_a_moray.cpp": [
-        "param:#1 BlendModelAnim *"
+        "param:#1 dExtBlendAnmModel_c *"
       ]
     },
     "func_020169f4": {
@@ -23201,7 +23201,7 @@
       "include/decl_common.h": [
         "return:int"
       ],
-      "src/engine/model/BlendModelAnim.cpp": [
+      "src/engine/model/dExtBlendAnmModel_c.cpp": [
         "param:#1 ModelComponents *"
       ],
       "src/game/actors/d_a_moray.cpp": [
@@ -23288,7 +23288,7 @@
       ]
     },
     "func_020462bc": {
-      "src/engine/model/BlendModelAnim.cpp": [
+      "src/engine/model/dExtBlendAnmModel_c.cpp": [
         "return:unsigned int"
       ],
       "src/unnamed/ov007/func_ov007_020bc6d4.c": [

@@ -70,13 +70,13 @@
 /* leftovers:
  * - defer_codegen off stays file-global: deferred codegen emits D2, D0, D1
  *   and the cartridge has D1 then D0. opt_loop_invariants off stays
- *   file-global for func_ov073_0211f61c. common.h stays first; BlendModelAnim's
+ *   file-global for func_ov073_0211f61c. common.h stays first; dExtBlendAnmModel_c's
  *   Matrix4x3 makes the twelve-word copies change size.
  * - struct C is a complete PMF shadow on purpose (mwccarm picks the
  *   pointer-to-member shape from completeness). ChiefChilly_ChangeState
  *   takes C*. The sixteen state labels are descriptions; the sinit owns
  *   the records. The header's 0x504 size wrap stays.
- * - BlendModelAnim::SetAnim, Particle::System::New / NewSimple,
+ * - dExtBlendAnmModel_c::SetAnim, Particle::System::New / NewSimple,
  *   RunningSlidingDustAt, Player::Hurt, Sound::ChangeMusicVolume,
  *   DropShadowRadHeight and cstd::atan2 stay mangled (Fix12<int> by value).
  *   NewSimple and the layer-3 sound calls retain their local declarations.

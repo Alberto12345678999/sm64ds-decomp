@@ -142,10 +142,10 @@ still costs nothing.
 
 ### MEASURED 2026-10-22: both `SetAnim` symbols are NOT walled -- the name was the wall
 
-`dExtAnmModel_c::SetAnim` and `BlendModelAnim::SetAnim` were the two standing in-tree
+`dExtAnmModel_c::SetAnim` and `dExtBlendAnmModel_c::SetAnim` were the two standing in-tree
 citations of this wall. Their sources said so in four places (`include/dExtAnmModel_c.h`,
-`src/engine/model/dExtAnmModel_c.cpp`, `include/BlendModelAnim.h`,
-`src/engine/model/BlendModelAnim.cpp`): "SetAnim's definition stays a mangled free
+`src/engine/model/dExtAnmModel_c.cpp`, `include/dExtBlendAnmModel_c.h`,
+`src/engine/model/dExtBlendAnmModel_c.cpp`): "SetAnim's definition stays a mangled free
 function (wall 6az)". Measured on 605184f87d, that is wrong. Both reproduce as real
 C++ methods once the symbol is renamed to its scalar mangling, exactly as
 `IsGoingOffCliff` above:
@@ -154,7 +154,7 @@ C++ methods once the symbol is renamed to its scalar mangling, exactly as
 |---|---|---|
 | `_ZN14dExtAnmModel_c7SetAnimEP8BCA_Fileiit` | `void dExtAnmModel_c::SetAnim(BCA_File *, int, Fix12i, u16)` | **2004/b56, 0x5c** |
 | `_ZN14dExtAnmModel_c7SetAnimEP8BCA_Filei5Fix12IiEj` | same body, method, `Fix12<int>` + `u32` | 0x74 vs 0x5c (+0x18) |
-| `_ZN14BlendModelAnim7SetAnimER8BCA_Fileiiit` | `void BlendModelAnim::SetAnim(BCA_File &, int, int, Fix12i, u16)` | **2004/b56, 0x9c** |
+| `_ZN19dExtBlendAnmModel_c7SetAnimER8BCA_Fileiiit` | `void dExtBlendAnmModel_c::SetAnim(BCA_File &, int, int, Fix12i, u16)` | **2004/b56, 0x9c** |
 
 Both matches are `--module arm9` (strict relocs), 0x02016748/0x5c and
 0x020163e0/0x9c. The class-typed row is the wall doing what this section says: the
@@ -389,8 +389,8 @@ cost, for whoever does the other 53 symbols:
   symbol the count went 612 -> 71, and the 71 are the same occurrences in the
   four files above (61 -> 61 and 5 -> 5 unchanged; 15 -> 2 and 18 -> 3).
 
-`_ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt` followed as
-`_ZN14BlendModelAnim7SetAnimER8BCA_Fileiiit`: 191 references across 8 files, 68
+`_ZN19dExtBlendAnmModel_c7SetAnimER8BCA_Fileii5Fix12IiEt` followed as
+`_ZN19dExtBlendAnmModel_c7SetAnimER8BCA_Fileiiit`: 191 references across 8 files, 68
 call sites converted and 11 local declarations deleted. Only
 `unit020bfec0.cpp` (37 refs) could not follow, for the same reason as above.
 Two things that differ from the dExtAnmModel_c pass, both from parameter 2 being

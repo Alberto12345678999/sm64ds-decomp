@@ -7,7 +7,7 @@
  * registry profile); retail does not store it. It hand-called
  * fBase_c::operator new(1168) + the inherited dEnemyBase_c ctor + this
  * class's vtable store + the five member subobjects in field order
- * (two dCcAc_c at +0x110/+0x144, dBgCh_Actr at +0x178, BlendModelAnim at
+ * (two dCcAc_c at +0x110/+0x144, dBgCh_Actr at +0x178, dExtBlendAnmModel_c at
  * +0x334, dExtShadowModel_c at +0x3a4). daJango_c has no user-declared
  * constructor, so `new daJango_c()` reproduces the identical sequence.
  *
@@ -67,7 +67,7 @@ extern "C" int AngleDiff(int a, int b);
 #include "decl_SaveData.h"
 #include "SaveData.h"
 #include "Player.h"
-#include "BlendModelAnim.h"
+#include "dExtBlendAnmModel_c.h"
 #include "dExtFrameCtrl_c.h"
 #include "daObjMarioCap_c.h"
 
@@ -159,14 +159,14 @@ struct Base { virtual void v0(); virtual void v1(); virtual void v2(); virtual v
 typedef struct { int x, y, z; } Vector3;
 */
 
-/* TUBUILD CONFLICT -- alternate body of struct 'BlendModelAnim', from the legacy file for func_ov062_0211b930, NOT applied:
-struct BlendModelAnim {
+/* TUBUILD CONFLICT -- alternate body of struct 'dExtBlendAnmModel_c', from the legacy file for func_ov062_0211b930, NOT applied:
+struct dExtBlendAnmModel_c {
     int SetAnim(BCA_File& f, int a, int b, Fix12 spd, unsigned short t);
 };
 */
 
-/* TUBUILD CONFLICT -- alternate body of struct 'BlendModelAnim', from the legacy file for func_ov062_0211bc54, NOT applied:
-struct BlendModelAnim {
+/* TUBUILD CONFLICT -- alternate body of struct 'dExtBlendAnmModel_c', from the legacy file for func_ov062_0211bc54, NOT applied:
+struct dExtBlendAnmModel_c {
     void SetAnim(BCA_File &a, int b, int c, int d, unsigned short e);
 };
 */
@@ -533,7 +533,7 @@ int daJango_c::Behavior()
 }
 
 // @symbol _ZN9daJango_c6RenderEv
-/* Draws the model through slot 5 of BlendModelAnim's vtable (Render, with a null
+/* Draws the model through slot 5 of dExtBlendAnmModel_c's vtable (Render, with a null
    scale). The call goes through a vtable-shaped view so it dispatches
    through the table instead of being resolved at compile time. */
 int daJango_c::Render()
@@ -1075,7 +1075,7 @@ int func_ov062_0211ba84(char *c)
 int daJango_c::func_ov062_0211b930()
 {
     dActor_c* found;
-    ((BlendModelAnim *)&(mBlendModelAnim))
+    ((dExtBlendAnmModel_c *)&(mBlendModelAnim))
         ->SetAnim(*(BCA_File *)data_ov062_0211e10c.filePtr, 4, 0x40000000, 0x1000, 0);
     mStateParam = 1;
     if (mHeldActorID != 0 && (found = dActor_c::FindWithID(mHeldActorID)) != 0) {

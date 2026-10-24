@@ -178,7 +178,7 @@ bytes high across 76 functions and 34 modules, caught by nothing but the byte co
 The generalisation (`_ZTV<C> + (addend - 8)`) is the same arithmetic the primary already
 uses and is verifiable the same way, but it belongs in its own PR with its own evidence.
 
-Until then `dExtAnmModel_c`, `dExtAnm2Model_c` and `BlendModelAnim` byte-match as real destructors
+Until then `dExtAnmModel_c`, `dExtAnm2Model_c` and `dExtBlendAnmModel_c` byte-match as real destructors
 and **cannot be enrolled** -- migrating them makes them ineligible, which is a
 regression, so they are deliberately left as C files.
 

@@ -22,7 +22,7 @@
  */
 
 #include "dEnemyBase_c.h"
-#include "BlendModelAnim.h"
+#include "dExtBlendAnmModel_c.h"
 #include "dExtAnmModel_c.h"
 #include "dCcAc_c.h"
 #include "PathPtr.h"

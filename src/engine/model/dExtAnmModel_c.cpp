@@ -67,7 +67,7 @@ void dExtAnmModel_c::Virtual18(u32 mat, const Vector3 *scale) {
 }
 
 /* Refresh bones without touching verts -- UpdateVerts' first half kept
-   file-local; daMoray_c calls it on a BlendModelAnim*. */
+   file-local; daMoray_c calls it on a dExtBlendAnmModel_c*. */
 // @symbol func_020167a4
 extern "C" void func_020167a4(dExtAnmModel_c *self) {
     s32 frame = self->currFrame;

@@ -15,7 +15,7 @@
  * destroy each in this order):
  *
  *     dCcAcPos_c         0x320 + 0x40 = 0x360
- *     BlendModelAnim     0x360 + 0x70 = 0x3d0
+ *     dExtBlendAnmModel_c     0x360 + 0x70 = 0x3d0
  *     dExtSimpleModel_c              0x3d0 + 0x50 = 0x420
  *     dExtShadowModel_c  0x420 + 0x28 = 0x448
  *     TextureSequence    0x448 + 0x14 = 0x45c
@@ -49,7 +49,7 @@
 #include "dBgW_KcMbg.h"
 #include "dBgActor_c.h"
 #include "dCcAcPos_c.h"
-#include "BlendModelAnim.h"
+#include "dExtBlendAnmModel_c.h"
 #include "dExtShadowModel_c.h"
 #include "TextureSequence.h"
 
@@ -58,7 +58,7 @@ struct EyerokState;
 
 struct Eyerok : dBgActor_c {
     dCcAcPos_c mdCcAcPos_c;                                 /* 0x320 */
-    BlendModelAnim mBlendModelAnim;                         /* 0x360 */
+    dExtBlendAnmModel_c mBlendModelAnim;                         /* 0x360 */
     dExtSimpleModel_c mModel2;                                          /* 0x3d0 */
     dExtShadowModel_c mShadowModel;                         /* 0x420 */
     TextureSequence mTextureSequence;                       /* 0x448 */

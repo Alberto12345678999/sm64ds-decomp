@@ -1,7 +1,7 @@
 //cpp
 #pragma RTTI off
 #include "dExtAnmModel_c.h"
-#include "BlendModelAnim.h"
+#include "dExtBlendAnmModel_c.h"
 #include "dExtAnm2Model_c.h"
 
 /* The six _ZThn80_ destructor thunks are one run, 0x02017168..0x020171c8,
@@ -19,7 +19,7 @@ extern "C" void func_0203cbc0(void *ptr);
 
 dExtAnmModel_c::~dExtAnmModel_c() {}
 
-BlendModelAnim::~BlendModelAnim() {
+dExtBlendAnmModel_c::~dExtBlendAnmModel_c() {
     if (mBlendBuffer)
         func_0203cbc0(mBlendBuffer);
 }

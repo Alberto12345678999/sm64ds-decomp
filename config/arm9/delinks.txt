@@ -692,7 +692,7 @@ src/engine/model/dExtAnm2Model_c.cpp:
     complete
     .text start:0x02016254 end:0x020163e0
 
-src/engine/model/BlendModelAnim.cpp:
+src/engine/model/dExtBlendAnmModel_c.cpp:
     complete
     .text start:0x020163e0 end:0x02016714
 
