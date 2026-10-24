@@ -90,6 +90,7 @@
 #include "daObjNumber_c.h"
 #include "daCoin_c.h"
 #include "daFPknBall_c.h"
+namespace cstd { s16 atan2(s32, s32); }
 
 /* Spawn globals the constructor reads. The s16* spellings are the ones
    func_02010e78 already uses; a second void* declaration in this TU is
@@ -731,7 +732,7 @@ dActor_c *dActor_c::ClosestWithActorID(u32 actorID)
 /* ROM ordinal 62 -- func_02010844
  * 0x02010844  size 0x80 */
 extern "C" {
-extern s16 _ZN4cstd5atan2E5Fix12IiES1_(Fix12i y, Fix12i x);
+extern s16 atan2_hold_d_actor_1(Fix12i y, Fix12i x);
 extern s32 Vec3_HorzLen(Vector3 *v);
 }
 /* atan2 of v's horizontal length, projected onto heading `angle`, against
@@ -740,10 +741,10 @@ extern "C" s32 func_02010844(void *actor, Vector3 *v, s16 angle) {
     s32 dir;
     s32 horzLen;
 
-    dir = _ZN4cstd5atan2E5Fix12IiES1_(v->x, v->z);
+    dir = cstd::atan2(v->x, v->z);
     angle = (s16)(dir - angle);
     horzLen = Vec3_HorzLen(v);
-    return _ZN4cstd5atan2E5Fix12IiES1_(FX_MUL(horzLen, data_02082214[((u16)angle >> 4) * 2 + 1]),
+    return cstd::atan2(FX_MUL(horzLen, data_02082214[((u16)angle >> 4) * 2 + 1]),
                                        v->y);
 }
 
@@ -943,7 +944,7 @@ bool dActor_c::IsPlayerInRange(const Vector3 &pos, s32 maxDist)
    around, about the normal's heading. */
 extern "C" s16 _ZN8dActor_c12ReflectAngleE5Fix12IiES1_s(dActor_c *self, Fix12i normalX,
                                                         Fix12i normalZ, s16 angToReflect) {
-    s16 normalAngle = _ZN4cstd5atan2E5Fix12IiES1_(normalX, normalZ);
+    s16 normalAngle = cstd::atan2(normalX, normalZ);
     s16 delta = (s16)((angToReflect + 0x8000) - normalAngle);
     return (s16)(normalAngle - delta);
 }

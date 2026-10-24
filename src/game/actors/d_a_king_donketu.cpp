@@ -130,6 +130,7 @@ enum daKing_Donketu_c_AssetId {
 #include "dCamera_c.h"
 #include "dBgCh_Lin.h"
 #include "nitro/fx/fx.h"
+namespace cstd { s16 atan2(s32, s32); }
 
 bool ApproachLinear(short &value, short target, short step);
 
@@ -240,7 +241,7 @@ extern void d_a_king_donketuNewSimpleHold(unsigned int id, int x, int y, int z);
 extern void *data_0209f318;
 extern struct Matrix4x3 data_020a0e68;
 extern void Vec3_Sub(Vec3 *out, Vec3 *a, Vec3 *b);
-extern int _ZN4cstd5atan2E5Fix12IiES1_(Fix12i y, Fix12i x);
+extern int atan2_hold_d_a_king_donketu_1(Fix12i y, Fix12i x);
 extern Fix12i Vec3_HorzLen(Vec3 *v);
 extern short data_02082214[];
 extern u16 data_0209e650;
@@ -444,8 +445,8 @@ void daKing_Donketu_c::func_ov073_0211f494(void *pb)
         }
     }
     t.x = d.x; t.y = d.y; t.z = d.z;
-    ay = _ZN4cstd5atan2E5Fix12IiES1_(t.x, t.z);
-    ax = _ZN4cstd5atan2E5Fix12IiES1_(t.y, Vec3_HorzLen(&t));
+    ay = cstd::atan2(t.x, t.z);
+    ax = cstd::atan2(t.y, Vec3_HorzLen(&t));
     ax = (int)((unsigned short)ax >> 4);
     ay = (int)((unsigned short)ay >> 4);
     cos_ax = data_02082214[ax * 2 + 1];

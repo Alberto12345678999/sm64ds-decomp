@@ -82,6 +82,7 @@
 #include "daStar_c.h"
 #include "dActor_c.h"
 #include "dCc_c.h"
+namespace cstd { s16 atan2(s32, s32); }
 
 /* Actor IDs from symbols/actor_debug_names.tsv. */
 enum {
@@ -178,7 +179,7 @@ int Vec3_HorzLen(void *v);
 int LenVec3(Vector3 *v);
 short Vec3_HorzAngle(const Vector3 *a, const Vector3 *b);
 void ApproachAngle(short *cur, short target, int step, int a, int b);
-int _ZN4cstd5atan2E5Fix12IiES1_(int y, int x);
+int atan2_hold_d_a_wanwan2_1(int y, int x);
 void LoadSilverStarAndNumber();
 void UnloadSilverStarAndNumber();
 
@@ -463,9 +464,9 @@ extern "C" void func_ov100_021437d4(daWanwan2_c *thisx)
               + FX_MUL(data_02082214[idx * 2], -0xa000);
         if (val <= *heights) val = *heights;
         delta.y = val - src->y;
-        ang = _ZN4cstd5atan2E5Fix12IiES1_(delta.x, delta.z);
+        ang = cstd::atan2(delta.x, delta.z);
         hlen = Vec3_HorzLen(&delta);
-        angz = (s16)(-_ZN4cstd5atan2E5Fix12IiES1_(delta.y, hlen));
+        angz = (s16)(-cstd::atan2(delta.y, hlen));
         Matrix4x3_FromRotationY(data_020a0e68, ang);
         Matrix4x3_ApplyInPlaceToRotationX(data_020a0e68, angz);
         MulVec3Mat4x3(&in, data_020a0e68, &out);

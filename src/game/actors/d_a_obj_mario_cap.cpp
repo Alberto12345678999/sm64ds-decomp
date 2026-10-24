@@ -139,6 +139,7 @@ enum daObjMarioCap_c_AssetId {
 #include "SurfaceInfo.h"
 #include "dBgCh_Gnd.h"
 #include "dBgCh_Actr.h"
+namespace cstd { s16 atan2(s32, s32); }
 
 /* --------------------------------------------------------------------------
  * Local shapes the merged members need.
@@ -244,7 +245,7 @@ void  Matrix4x3_FromRotationY(void *m, int angle);
 void  _Z11UpdateAngleRssis(void *p, short target, int step, short limit);
 void  _Z14ApproachLinearRiii(int *x, int target, int step);
 
-short _ZN4cstd5atan2E5Fix12IiES1_(int y, int x);
+short atan2_hold_d_a_obj_mario_cap_1(int y, int x);
 int   _ZN4cstd4fdivEii(int a, int b);
 
 
@@ -1047,7 +1048,7 @@ int daObjMarioCap_c::Slide()
     fr = (char *)mWithMeshClsn.GetFloorResult();
     ((SurfaceInfo *)(fr + 4))->CopyNormalTo(*(Vector3 *)&mFloorNormalX);
     surface = ((SurfaceInfo *)(fr + 4))->clps.GetFloorClass();
-    mSlopeAngle = _ZN4cstd5atan2E5Fix12IiES1_(mFloorNormalX, mFloorNormalZ);
+    mSlopeAngle = cstd::atan2(mFloorNormalX, mFloorNormalZ);
     slopePush = func_ov002_020f02c8(surface);
     func_ov002_020f030c(surface);
     spd = mHorzSpeed;
@@ -1068,7 +1069,7 @@ int daObjMarioCap_c::Slide()
     slopeVel.z = FX_MUL(slopePush, co);
     Vec3_MulScalarInPlace(&slopeVel, Vec3_HorzLen(&mFloorNormalX));
     Vec3_Add(&out, &ownVel, &slopeVel);
-    ang = _ZN4cstd5atan2E5Fix12IiES1_(out.x, out.z);
+    ang = cstd::atan2(out.x, out.z);
     mHorzSpeed = Vec3_HorzLen(&out);
     if (mHorzSpeed > 0xf000)
         mHorzSpeed = 0xf000;

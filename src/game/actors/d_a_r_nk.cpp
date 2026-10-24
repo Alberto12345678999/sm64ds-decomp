@@ -40,6 +40,7 @@ enum daRNk_c_AssetId {
 #include "SharedFilePtr.h"
 #include "nitro/fx/fx.h"
 #include "Sound.h"
+namespace cstd { s16 atan2(s32, s32); }
 
 /* Actor IDs (symbols/actor_debug_names.tsv). */
 enum {
@@ -160,7 +161,7 @@ void _ZN5Sound22LoadAndSetMusic_Layer2Ej(u32 id);
 
 /* Scalar fixed-point ABI entry; the class-valued form still needs
    caller reconstruction under the pinned compiler. */
-extern "C" s16 _ZN4cstd5atan2E5Fix12IiES1_(int y, int x);
+extern "C" s16 atan2_hold_d_a_r_nk_1(int y, int x);
 
 extern "C" {
 /* Positional sound at the actor's camera-space position (Sound::Play(3, id, pos)). */
@@ -537,7 +538,7 @@ void daRNk_c::func_ov062_0211a1f4()
            (135 degrees), scale by normalY * 7 - 6 (1.0 on level ground, less
            on a slope); otherwise full speed (1.0). */
         if (this->GetSubtraction(this->mPrevAngleY,
-                _ZN4cstd5atan2E5Fix12IiES1_(this->mFloorNormalX, this->mFloorNormalZ)) >= 0x6000)
+                cstd::atan2(this->mFloorNormalX, this->mFloorNormalZ)) >= 0x6000)
             speedScale = this->mFloorNormalY * 7 - 0x6000;
         else
             speedScale = 0x1000;
@@ -848,7 +849,7 @@ int daRNk_c::func_ov062_02119af0() {
     prevZ = p->mPrevPathPt.z;
     dz = targetZ - posZ;
     dzc = targetZ - prevZ;
-    p->mTargetAngleY = (short)_ZN4cstd5atan2E5Fix12IiES1_(dx, dz);
+    p->mTargetAngleY = (short)cstd::atan2(dx, dz);
     int dot = (dxc >> 0xc) * (dx >> 0xc) + (dzc >> 0xc) * (dz >> 0xc);
     if (dot <= 0 || Vec3_Dist(&p->mPos, (Vector3 *)&p->mPathTarget) < (p->mHorzSpeed >> 1)) {
         int v = p->mPathTarget.x;

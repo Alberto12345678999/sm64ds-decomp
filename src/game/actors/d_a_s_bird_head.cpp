@@ -27,6 +27,7 @@
 #include "daSBird_c.h"
 #include "common.h"
 #include "nitro/fx/fx.h"
+namespace cstd { s16 atan2(s32, s32); }
 
 bool ApproachLinear(short &value, short target, short step);
 
@@ -35,7 +36,7 @@ extern s16 data_02082214[];
 extern void Vec3_Sub(void *out, void *a, void *b);
 extern s32 Vec3_HorzLen(void *v);
 extern s32 LenVec3(void *v);
-extern s16 _ZN4cstd5atan2E5Fix12IiES1_(s32 y, s32 x);
+extern s16 atan2_hold_d_a_s_bird_head_1(s32 y, s32 x);
 }
 
 /* Empty body: mShadowModel then mModelAnim teardown, the vptr store and
@@ -74,8 +75,8 @@ void daSBird_c::func_ov009_02111234()
         diff.y = d1.y;
         diff.z = d1.z;
         s32 hl = Vec3_HorzLen(&diff);
-        mTargetPitch = _ZN4cstd5atan2E5Fix12IiES1_(hl, mPosY + 0xfd8f0000);
-        mTargetYaw = _ZN4cstd5atan2E5Fix12IiES1_(diff.z, diff.x);
+        mTargetPitch = cstd::atan2(hl, mPosY + 0xfd8f0000);
+        mTargetYaw = cstd::atan2(diff.z, diff.x);
     } else {
         Vector3 d2;
         Vec3_Sub(&d2, &f->mPos, &mPos);
@@ -83,8 +84,8 @@ void daSBird_c::func_ov009_02111234()
         diff.y = d2.y;
         diff.z = d2.z;
         s32 hl = Vec3_HorzLen(&diff);
-        mTargetPitch = _ZN4cstd5atan2E5Fix12IiES1_(hl, -diff.y);
-        mTargetYaw = _ZN4cstd5atan2E5Fix12IiES1_(diff.z, diff.x);
+        mTargetPitch = cstd::atan2(hl, -diff.y);
+        mTargetYaw = cstd::atan2(diff.z, diff.x);
         mFlySpeed = LenVec3(&diff) / 25 + 0x14000;
     }
 

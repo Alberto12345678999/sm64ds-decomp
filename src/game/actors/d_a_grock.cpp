@@ -66,6 +66,7 @@ enum daGrock_c_AssetId {
 #include "Sound.h"
 #include "dBgPi.h"
 #include "dBgCh_Actr.h"
+namespace cstd { s16 atan2(s32, s32); }
 
 /* Kind in param1's low nibble. */
 enum {
@@ -135,7 +136,7 @@ extern void func_0201267c(int id, void *pos);
 extern void *d_a_grockNewHold(unsigned int prev, unsigned int effect, int x, int y, int z,
                               void *dir, void *cb);
 extern int Vec3_HorzLen(void *v);
-extern int _ZN4cstd5atan2E5Fix12IiES1_(int y, int x);
+extern int atan2_hold_d_a_grock_1(int y, int x);
 /* dActor_c.h types GetSubtraction(short, short). The wall angle is an int
  * passed straight through; the short spelling adds lsl/asr #16. */
 extern int _ZN8dActor_c14GetSubtractionEss(void *a, s16 x, int y);
@@ -300,7 +301,7 @@ extern "C" void func_ov021_02112544(char *raw)
             *vz = *vz + normal.z * 5;
         }
         rock->mHorzSpeed = Vec3_HorzLen(&rock->mSpeedX);
-        rock->mPrevAngleY = (s16)_ZN4cstd5atan2E5Fix12IiES1_(rock->mSpeedX, rock->mSpeedZ);
+        rock->mPrevAngleY = (s16)cstd::atan2(rock->mSpeedX, rock->mSpeedZ);
         if (rock->mHorzSpeed >= 0x22000) {
             rock->mHorzSpeed = 0x22000;
             rock->mSpeedX = data_02082214[((*(u16 *)&rock->mPrevAngleY >> 4) << 1)] * 0x22;
@@ -314,7 +315,7 @@ extern "C" void func_ov021_02112544(char *raw)
     hit = (dBgPi *)rock->mWithMeshClsn.GetWallResult();
     hit->surface.CopyNormalTo(*(Vector3 *)&wallNormal);
     {
-        int wallAngle = _ZN4cstd5atan2E5Fix12IiES1_(wallNormal.x, wallNormal.z);
+        int wallAngle = cstd::atan2(wallNormal.x, wallNormal.z);
         if (_ZN8dActor_c14GetSubtractionEss(rock, rock->mPrevAngleY, wallAngle) <= 0x1000)
             return;
         rock->mPrevAngleY = _ZN8dActor_c12ReflectAngleE5Fix12IiES1_s(

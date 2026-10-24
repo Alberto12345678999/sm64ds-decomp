@@ -98,7 +98,7 @@ extern void func_02012718(int a, int b);
 extern void DrawOamSprite(int a, int b, int c, int d);
 extern void RenderOamBothScreens(void *a0, int a1, int a2, int a3, int a4, void *a5);
 extern int RandomIntInternal(int *seed);
-extern int _ZN4cstd5atan2E5Fix12IiES1_(int y, int x);
+extern int atan2_hold_d_s_mg_curling_1(int y, int x);
 extern int func_020126e8(int a);
 extern void func_020126ac(int a0, int a1, int a2, int a3, int s0);
 extern int func_02012468(int a, int b, int c, int d, int e, int f, int g, short h);
@@ -180,6 +180,7 @@ extern PMF pmf_dScMgCurling_c_Bit_StateFallSlowDown;
 } /* extern "C" */
 
 namespace cstd {
+s16 atan2(s32, s32);
 int sqrt(u64 value);
 }
 namespace Sound {
@@ -801,7 +802,7 @@ void dScMgCurling_c::Aim_Swing() {
         }
 
         ang = mSwingAng;
-        mSwingAng = _ZN4cstd5atan2E5Fix12IiES1_(dy, dx >> 1);
+        mSwingAng = cstd::atan2(dy, dx >> 1);
         {
             u16 a = mSwingAng;
             if (a <= 0x8000) {
@@ -939,7 +940,7 @@ void dScMgCurling_c::SeparateStones(int stoneIndex) {
         dx = (mStone[hitIndex].x - mStone[stoneIndex].x) >> 12;
         dy = (mStone[hitIndex].y - mStone[stoneIndex].y) >> 12;
         distance = cstd::sqrt((u64)(dx * dx + dy * dy));
-        contactAngle = _ZN4cstd5atan2E5Fix12IiES1_(dy, dx);
+        contactAngle = cstd::atan2(dy, dx);
         if (distance > 0x18)
             continue;
         {
@@ -968,7 +969,7 @@ void dScMgCurling_c::SeparateStones(int stoneIndex) {
                 dx2 = (mStone[nextIndex].x - mStone[hitIndex].x) >> 12;
                 dy2 = (mStone[nextIndex].y - mStone[hitIndex].y) >> 12;
                 nextDistance = cstd::sqrt((u64)(dx2 * dx2 + dy2 * dy2));
-                nextContactAngle = _ZN4cstd5atan2E5Fix12IiES1_(dy2, dx2);
+                nextContactAngle = cstd::atan2(dy2, dx2);
                 if (nextDistance > 0x18)
                     continue;
                 {
@@ -1053,7 +1054,7 @@ void dScMgCurling_c::ResolveStoneCollision(int stoneIndex) {
             /* Contact line, from the hit stone to the moving one. */
             dx = mStone[stoneIndex].x - mStone[hitIndex].x;
             dy = mStone[stoneIndex].y - mStone[hitIndex].y;
-            contactAngle = _ZN4cstd5atan2E5Fix12IiES1_(dy, dx);
+            contactAngle = cstd::atan2(dy, dx);
             relativeAngle = -contactAngle;
             /* Both velocities as x/y. If the hit stone has zero y velocity,
              * it takes half the moving stone's y velocity before the exchange. */
@@ -1093,7 +1094,7 @@ void dScMgCurling_c::ResolveStoneCollision(int stoneIndex) {
             movingResultY = FX_MUL(contactSin, hitNormal) + FX_MUL(contactCos, movingTangent);
             hitResultX = FX_MUL(contactCos, movingNormal) - FX_MUL(contactSin, hitTangent);
             hitResultY = FX_MUL(contactSin, movingNormal) + FX_MUL(contactCos, hitTangent);
-            *pAngle = _ZN4cstd5atan2E5Fix12IiES1_(movingResultY, dx);
+            *pAngle = cstd::atan2(movingResultY, dx);
             *pSpeed =
                 cstd ::sqrt((u64)((long long)dx * dx + (long long)movingResultY * movingResultY));
 
@@ -1117,7 +1118,7 @@ void dScMgCurling_c::ResolveStoneCollision(int stoneIndex) {
                 mStone[stoneIndex].y = -0xd4000;
             }
 
-            *pHitAngle = _ZN4cstd5atan2E5Fix12IiES1_(hitResultY, hitResultX);
+            *pHitAngle = cstd::atan2(hitResultY, hitResultX);
             mStone[hitIndex].speed = cstd::sqrt(
                 (u64)((long long)hitResultX * hitResultX + (long long)hitResultY * hitResultY));
             mStone[stoneIndex].state = 1;

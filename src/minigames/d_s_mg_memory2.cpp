@@ -31,6 +31,7 @@ enum dScMgMemory2_c_AssetId { ASSET_D_2D_MG_CARD_NCL_BIN = 0x00bb };
 #include "common.h"
 #include "decl_common.h"
 #include "PlayerInput.h"
+namespace cstd { s16 atan2(s32, s32); }
 
 /* CardFlyAway, ResultWait and RoundDealHard retain the partial views below.
  * Their array extents span unrelated fields to retain specific address
@@ -99,7 +100,7 @@ void LoadOBJPltt(void const *, unsigned int, unsigned int);
 extern "C" {
 extern void Mg_DrawScoreTally(void *thiz, int a, int b, int c);
 extern void Mg_DrawBlinkSprite(void *c, int arg1, int arg2);
-extern s16 _ZN4cstd5atan2E5Fix12IiES1_(int y, int x);
+extern s16 atan2_hold_d_s_mg_memory2_1(int y, int x);
 extern s16 data_02082214[];
 extern "C" unsigned int func_02012790(unsigned int x);
 extern "C" void MgCoins_StartLoseOneMore(void);
@@ -223,7 +224,7 @@ void dScMgMemory2_c::PlayerMove(int player) {
     int dy;
     dx = targetX - (mPlayers[player].x >> 12);
     dy = targetY - (mPlayers[player].y >> 12);
-    mPlayers[player].angle = _ZN4cstd5atan2E5Fix12IiES1_(dy, dx);
+    mPlayers[player].angle = cstd::atan2(dy, dx);
     mPlayers[player].speed = mPlayers[player].speed + 0x200;
     angle = (u16 *)&mPlayers[player].angle;
     mPlayers[player].x = mPlayers[player].x +
@@ -519,7 +520,7 @@ void dScMgMemory2_c::CardMove(int cardIndex) {
     targetY = positions[coordinateIndex + 1];
     dy = targetY - (mCards[cardIndex].y >> 12);
 
-    mCards[cardIndex].angle = _ZN4cstd5atan2E5Fix12IiES1_(dy, dx);
+    mCards[cardIndex].angle = cstd::atan2(dy, dx);
 
     {
         s16 tv = data_02082214[((static_cast<u16>(mCards[cardIndex].angle) >> 4) << 1) + 1];

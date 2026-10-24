@@ -91,7 +91,7 @@ void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES
 /* local extern: Fix12<int> by value; this scalar bridge follows the definition. */
 int _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(
     Player *player, void *pos, unsigned kind, int power, u8 a, u8 b, u8 c);
-short _ZN4cstd5atan2E5Fix12IiES1_(int y, int x);
+short atan2_hold_d_a_wanwan_1(int y, int x);
 
 void MulVec3Mat4x3(void *v, void *m, void *dst);
 void Vec3_Add(void *out, void *a, void *b);
@@ -116,6 +116,7 @@ int ApproachLinear(int &value, int target, int step);
 bool ApproachLinear(short &value, short target, short step);
 
 namespace cstd {
+s16 atan2(s32, s32);
 int fdiv(int a, int b);
 }
 
@@ -417,8 +418,8 @@ void func_ov014_0211250c(daWanwan_c *c)
         }
 
         /* cstd::atan2 takes Fix12<int> by value. */
-        angY = _ZN4cstd5atan2E5Fix12IiES1_(dvec.x, dvec.z);
-        angX = (short)(-_ZN4cstd5atan2E5Fix12IiES1_(dvec.y, Vec3_HorzLen(&dvec)));
+        angY = cstd::atan2(dvec.x, dvec.z);
+        angX = (short)(-cstd::atan2(dvec.y, Vec3_HorzLen(&dvec)));
         Matrix4x3_FromRotationY(&data_020a0e68, angY);
         Matrix4x3_ApplyInPlaceToRotationX(&data_020a0e68, angX);
         MulVec3Mat4x3(&head, &data_020a0e68, &rotated);
@@ -503,8 +504,8 @@ void func_ov014_0211236c(daWanwan_c *c)
         tmp.y = diff.y;
         tmp.z = diff.z;
         /* cstd::atan2 takes Fix12<int> by value. */
-        angY = _ZN4cstd5atan2E5Fix12IiES1_(tmp.x, tmp.z);
-        angX = (short)(-_ZN4cstd5atan2E5Fix12IiES1_(tmp.y, Vec3_HorzLen(&tmp)));
+        angY = cstd::atan2(tmp.x, tmp.z);
+        angX = (short)(-cstd::atan2(tmp.y, Vec3_HorzLen(&tmp)));
         Matrix4x3_FromRotationY(&data_020a0e68, angY);
         Matrix4x3_ApplyInPlaceToRotationX(&data_020a0e68, angX);
         MulVec3Mat4x3(&head, &data_020a0e68, &rotated);

@@ -49,6 +49,7 @@
 #include "dCamera_c.h"
 #include "Message.h"
 #include "nitro/fx/fx.h"
+namespace cstd { s16 atan2(s32, s32); }
 
 bool ApproachLinear(short &value, short target, short step);
 
@@ -151,7 +152,7 @@ extern short Vec3_VertAngle(const void *a, const void *b);
 extern void Matrix4x3_ApplyInPlaceToRotationX(void *m, int angle);
 extern void func_0200fa8c(void *c, int a);
 extern void func_ov102_0214b384(void* a, int b);
-extern int _ZN4cstd5atan2E5Fix12IiES1_(int a, int b);
+extern int atan2_hold_d_a_bombking_1(int a, int b);
 extern int Vec3_HorzLen(void* v);
 extern int func_ov002_020db5f4(char* c, char* arg);
 extern void func_0200d8c8(void* cam, void* v, int strength);
@@ -1073,9 +1074,9 @@ int daBombking_c::func_ov078_021250f8()
                     v[0].y = v[1].y - this->mThrowPosY;
                     v[0].z = v[1].z - this->mThrowPosZ;
                     Matrix4x3_FromRotationY(&data_020a0e68,
-                        _ZN4cstd5atan2E5Fix12IiES1_(v[0].x, v[0].z));
+                        cstd::atan2(v[0].x, v[0].z));
                     Matrix4x3_ApplyInPlaceToRotationX(&data_020a0e68,
-                        (short)(-_ZN4cstd5atan2E5Fix12IiES1_(v[0].y, Vec3_HorzLen(&v[0]))));
+                        (short)(-cstd::atan2(v[0].y, Vec3_HorzLen(&v[0]))));
                     out.y += 0x14000;
                     func_ov102_0214ad14(target);
                     target->mSpeedX = out.x;

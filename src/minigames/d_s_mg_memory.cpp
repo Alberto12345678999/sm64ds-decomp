@@ -33,6 +33,7 @@ enum d_s_mg_memory_AssetId {
 #include "Sound.h"
 #include "SpawnInfo.h"
 #include "nitro/fx/fx.h"
+namespace cstd { s16 atan2(s32, s32); }
 
 /* State numbers follow the card PMF table initialized by
  * __sinit_ov006_021311c8. These descriptive names are reconstructed. */
@@ -69,7 +70,7 @@ extern void Mg_DrawScoreTally(void *c, int a, int b, int d);
 extern void Mg_DrawBlinkSprite(void *c, int arg1, int arg2);
 /* cstd::atan2 takes Fix12<int> by value, which mwccarm passes differently
  * from these plain ints, so it keeps its mangled name. */
-extern short _ZN4cstd5atan2E5Fix12IiES1_(int y, int x);
+extern short atan2_hold_d_s_mg_memory_1(int y, int x);
 extern short data_02082214[];
 void func_02012790(int a);
 void MgCoins_StartLoseOneMore(void);
@@ -182,7 +183,7 @@ void dScMgMemory_c::PlayerMove(int player) {
     dx = targetX - (mPlayers[player].x >> 12);
     dy = -44 - (mPlayers[player].y >> 12);
 
-    mPlayers[player].angle = _ZN4cstd5atan2E5Fix12IiES1_(dy, dx);
+    mPlayers[player].angle = cstd::atan2(dy, dx);
 
     mPlayers[player].speed += 0x200;
 
@@ -484,7 +485,7 @@ void dScMgMemory_c::CardMove(int card) {
     targetY = positions[positionIndex + 1];
     dy = targetY - (mCards[card].y >> 12);
 
-    mCards[card].angle = (u16)_ZN4cstd5atan2E5Fix12IiES1_(dy, dx);
+    mCards[card].angle = (u16)cstd::atan2(dy, dx);
 
     {
         s16 trigValue = data_02082214[(((u16)mCards[card].angle >> 4) << 1) + 1];

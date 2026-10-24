@@ -44,6 +44,7 @@
 #include "dCc_c.h"
 #include "Sound.h"
 #include "dBgCh_Actr.h"
+namespace cstd { s16 atan2(s32, s32); }
 
 int ApproachLinear(int &value, int target, int step);
 int ApproachLinear(short &value, short target, short step);
@@ -90,7 +91,7 @@ typedef struct { int x, y, z; } Vec3;
 #define SINCOS_INDEX(angle) ((*(u16 *)&(angle) >> 4) * 2)
 
 extern "C" {
-short _ZN4cstd5atan2E5Fix12IiES1_(int, int);
+short atan2_hold_d_a_book_1(int, int);
 void Vec3_Sub(Vector3 *d, Vector3 *a, Vector3 *b);
 int  Vec3_HorzLen(const Vector3 *);
 Fix12i Vec3_Dist(const Vector3 *a, const Vector3 *b);
@@ -204,8 +205,8 @@ void daBook_c::func_ov020_021112b0()
     tmp.z = playerPos->z;
     Vector3 toPlayer;
     Vec3_Sub(&toPlayer, &tmp, &mPos);
-    mAimYaw = _ZN4cstd5atan2E5Fix12IiES1_(toPlayer.x, toPlayer.z);
-    mAimPitch = _ZN4cstd5atan2E5Fix12IiES1_(toPlayer.y, Vec3_HorzLen(&toPlayer));
+    mAimYaw = cstd::atan2(toPlayer.x, toPlayer.z);
+    mAimPitch = cstd::atan2(toPlayer.y, Vec3_HorzLen(&toPlayer));
     mAimRoll = 0x4000;
 }
 
@@ -545,7 +546,7 @@ void daBook_c::func_ov020_02111b28() {
         Vector3 normal;
         void *w = mWithMeshClsn.GetWallResult();
         ((SurfaceInfo *)((char *)w + 4))->CopyNormalTo(normal);
-        short angle = _ZN4cstd5atan2E5Fix12IiES1_(normal.x, normal.z);
+        short angle = cstd::atan2(normal.x, normal.z);
         if (GetSubtraction(mPrevAngleY, angle) <= 0x4000)
             return;
     }
