@@ -111,7 +111,11 @@ void _ZN8dActor_c10EarthquakeERK7Vector35Fix12IiE(void *v, int f);
 void func_02012694(unsigned int id, const Vector3 *v);
 /* Stores mRadius: p[6] = value, the word at dBgCh_Actr + 0x18. */
 void func_0203568c(void *p, int v);
-void *_ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(unsigned int a, int b, int cc, int d);
+namespace Particle {
+struct System {
+    static void *NewSimple(unsigned int a, int b, int cc, int d);
+};
+}
 s16 Vec3_HorzAngle(const struct Vector3 *v0, const struct Vector3 *v1);
 int Vec3_HorzDist(const Vector3 *a, const Vector3 *b);
 s16 data_02082214[];
@@ -275,7 +279,7 @@ void daOnms_c::StateKnocked()
         dActor_c *o;
         int *p;
         TriplePoofDust();
-        _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0xfa, mPosX, mPosY, mPosZ);
+        Particle::System::NewSimple(0xfa, mPosX, mPosY, mPosZ);
         MarkForDestruction();
         o = mPlayerActor;
         p = &o->mPosX;

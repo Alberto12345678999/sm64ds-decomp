@@ -59,7 +59,11 @@ namespace Event { void SetBit(unsigned int bit); int ClearBit(unsigned int bit);
  * class type, mwccarm homes the register arguments and the callers grow, so
  * the measured scalar views stay. */
 extern "C" {
-void *_ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(u32 id, int x, int y, int z);
+namespace Particle {
+struct System {
+    static void *NewSimple(u32 id, int x, int y, int z);
+};
+}
 int _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
     u32 handle, u32 id, int x, int y, int z, void *dir, void *callback);
 void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(
@@ -135,10 +139,13 @@ extern "C" void func_ov024_021112c0(daObjDlPyramid_c *self)
     v.y = self->mPosY;
     v.z = self->mPosZ;
     v.y += 0xfa000;
-    _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0x1f, v.x, v.y, v.z);
-    _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0x20, *(volatile int *)&v.x, *(volatile int *)&v.y, *(volatile int *)&v.z);
-    _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0x21, *(volatile int *)&v.x, *(volatile int *)&v.y, *(volatile int *)&v.z);
-    _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0x22, *(volatile int *)&v.x, *(volatile int *)&v.y, *(volatile int *)&v.z);
+    Particle::System::NewSimple(0x1f, v.x, v.y, v.z);
+    Particle::System::NewSimple(0x20, *(volatile int *)&v.x, *(volatile int *)&v.y,
+                                *(volatile int *)&v.z);
+    Particle::System::NewSimple(0x21, *(volatile int *)&v.x, *(volatile int *)&v.y,
+                                *(volatile int *)&v.z);
+    Particle::System::NewSimple(0x22, *(volatile int *)&v.x, *(volatile int *)&v.y,
+                                *(volatile int *)&v.z);
     self->MarkForDestruction();
     Event::SetBit(0xe);
     dMap_c::UpdateLevelSpecific();

@@ -162,7 +162,11 @@ extern int func_ov002_020d6048(void *c);
 extern void dBgCh_Actr_UpdateContinuous_Veneer(void *p);
 extern void dBgCh_Actr_UpdateDiscreteNoLava_veneer(void *self);
 extern s32 _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(u32 a, u32 b, s32 x, s32 y, s32 z, struct Vec3_16f *rot, void *cb);
-extern void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(u32 a, int b, int c, int d);
+namespace Particle {
+struct System {
+    static void NewSimple(u32 a, int b, int c, int d);
+};
+}
 extern void _ZN8Particle20RunningSlidingDustAtE5Fix12IiES1_S1_(s32 x, s32 y, s32 z);
 extern s32 _ZN5Sound8PlayLongEjjjRK7Vector3s(u32 a, u32 b, u32 c, void *v, u32 d);
 extern void _ZN5Sound13PlayCharVoiceEjjRK7Vector3(u32 a, u32 b, const void *pos);
@@ -1240,10 +1244,10 @@ void func_ov002_020edca4(daYegg_c* self)
         }
     }
 
-    _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0x3f, self->mPosX, self->mPosY, self->mPosZ);
-    _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0x40, self->mPosX, self->mPosY, self->mPosZ);
-    _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0x41, self->mPosX, self->mPosY, self->mPosZ);
-    _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0x42, self->mPosX, self->mPosY, self->mPosZ);
+    Particle::System::NewSimple(0x3f, self->mPosX, self->mPosY, self->mPosZ);
+    Particle::System::NewSimple(0x40, self->mPosX, self->mPosY, self->mPosZ);
+    Particle::System::NewSimple(0x41, self->mPosX, self->mPosY, self->mPosZ);
+    Particle::System::NewSimple(0x42, self->mPosX, self->mPosY, self->mPosZ);
     self->MarkForDestruction();
     _ZN5Sound13PlayCharVoiceEjjRK7Vector3(0, 0x103, &self->mCamSpacePos);
 

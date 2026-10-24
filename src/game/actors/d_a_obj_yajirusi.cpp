@@ -78,7 +78,11 @@ struct ArrowSignFileColumn {
 
 extern "C" {
 extern void Matrix4x3_FromRotationY(void *mtx, int angle);
-void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(u32 id, Fix12i x, Fix12i y, Fix12i z);
+namespace Particle {
+struct System {
+    static void NewSimple(u32 id, Fix12i x, Fix12i y, Fix12i z);
+};
+}
 int func_02012694(int id, void *pos);
 int _ZN10dBgActor_c20UpdateKillByMegaCharEsss5Fix12IiE(void *self, short a, short b, short c, int d);
 void func_02039394(int *collider, int v);
@@ -225,7 +229,7 @@ void daObjYajirusi_c::Kill()
     pos.x = x;
     pos.y = y;
     pos.z = z;
-    _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0xe, pos.x, pos.y, pos.z);
+    Particle::System::NewSimple(0xe, pos.x, pos.y, pos.z);
     dustPos.x = pos.x;
     dustPos.y = pos.y;
     dustPos.z = pos.z;

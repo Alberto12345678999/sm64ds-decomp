@@ -102,7 +102,11 @@ extern u8 DecIfAbove0_Byte(u8* p);
 extern void* _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
     u32 id, u32 a, int x, int y, int z, const struct Vector3_16f* rot, struct Callback* cb);
 extern signed short data_02082214[];
-extern void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(unsigned int, int, int, int);
+namespace Particle {
+struct System {
+    static void NewSimple(unsigned int, int, int, int);
+};
+}
 extern void func_02012694(unsigned int id, const Vector3 *v);
 extern void *data_0209f318;
 extern void func_0203568c(int *p, int v);
@@ -216,8 +220,7 @@ void daObjPowerUpItem_c::BeginOpening()
     ((int *)&pos)[0] = x;
     ((int *)&pos)[1] = y;
     ((int *)&pos)[2] = z;
-    _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(
-        0x102, ((int *)&pos)[0], ((int *)&pos)[1], ((int *)&pos)[2]);
+    Particle::System::NewSimple(0x102, ((int *)&pos)[0], ((int *)&pos)[1], ((int *)&pos)[2]);
     func_02012694(0x7d, &mCamSpacePos);
     mEffectHandle = 0;
     mAngleY = *(short *)((char *)data_0209f318 + 0x17c);

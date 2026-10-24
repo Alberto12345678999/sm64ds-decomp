@@ -91,7 +91,11 @@ extern int data_ov091_02135138[];
 void func_ov091_02132ff4(char *self); /* hover */
 void func_ov091_02132e98(char *self); /* rest */
 void func_ov091_02132e64(char *self); /* recover */
-void *_ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(unsigned int id, int x, int y, int z);
+namespace Particle {
+struct System {
+    static void *NewSimple(unsigned int id, int x, int y, int z);
+};
+}
 void func_02012694(unsigned int id, const Vector3 *pos);
 }
 
@@ -218,7 +222,7 @@ void daDsn_c::OnHitByMegaChar(Player &player)
     poofPos.y = mPosY;
     poofPos.z = mPosZ;
     poofPos.y += OnAimedAtWithEgg();
-    _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0x48, poofPos.x, poofPos.y, poofPos.z);
+    Particle::System::NewSimple(0x48, poofPos.x, poofPos.y, poofPos.z);
     Vector3 poofPosCopy;
     poofPosCopy.x = poofPos.x;
     poofPosCopy.y = poofPos.y;

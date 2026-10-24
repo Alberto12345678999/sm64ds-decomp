@@ -52,7 +52,11 @@ void func_02012694(u32 id, const Vector3 *pos);
 void func_0201267c(u32 id, const Vector3 *pos);
 void Vec3_Add(Vector3 *out, const Vector3 *a, const Vector3 *b);
 
-void *_ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(u32 id, int x, int y, int z);
+namespace Particle {
+struct System {
+    static void *NewSimple(u32 id, int x, int y, int z);
+};
+}
 int _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
     u32 uniqueID, u32 effectID, int x, int y, int z, void *dir, void *callback);
 void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
@@ -137,7 +141,7 @@ s32 daKlr_c::Behavior()
         flags = mCylClsn.hitFlags;
         if (flags & 0x10) {
             ((Player *)FindWithID(id))->IncMegaKillCount();
-            _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(kBurstParticle, mPosX, mPosY, mPosZ);
+            Particle::System::NewSimple(kBurstParticle, mPosX, mPosY, mPosZ);
             MarkForDestruction();
             func_02012694(0x78, &mCamSpacePos);
         } else if (flags & 0x3c0) {
@@ -258,7 +262,7 @@ void daKlr_c::func_ov079_0212682c()
         this->PoofDust();
     } else {
         func_02012694(0x78, &this->mCamSpacePos);
-        _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(kBurstParticle, nose.x, nose.y, nose.z);
+        Particle::System::NewSimple(kBurstParticle, nose.x, nose.y, nose.z);
     }
     this->MarkForDestruction();
 }
@@ -275,7 +279,7 @@ void daKlr_c::func_ov079_02126794()
     this->mPosY += 0x14000;
     if ((u16)this->mStateTimer <= 90)
         return;
-    _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(kBurstParticle, this->mPosX, this->mPosY, this->mPosZ);
+    Particle::System::NewSimple(kBurstParticle, this->mPosX, this->mPosY, this->mPosZ);
     func_02012694(0x78, &this->mCamSpacePos);
     this->MarkForDestruction();
 }

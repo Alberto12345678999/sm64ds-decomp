@@ -209,7 +209,11 @@ extern s16 data_02082214[];
 extern void Vec3_Sub(int* out, int* a, int* b);
 extern int Vec3_HorzLen(int* v);
 extern int _ZN4cstd5atan2E5Fix12IiES1_(int a, int b);
-extern void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(unsigned effect, int x, int y, int z);
+namespace Particle {
+struct System {
+    static void NewSimple(unsigned effect, int x, int y, int z);
+};
+}
 extern void* _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(u32 id, u32 param, Fix12i x, Fix12i y, Fix12i z, const Vector3_16f* pos, struct Callback* cb);
 extern void func_0201267c(u32 soundID, const Vector3 *pos);
 extern void Matrix4x3_FromRotationY(void* m, short angle);
@@ -936,7 +940,7 @@ void daOts_c::func_ov064_02115f98(char* a1)
     pos0[1] = pos0[1] + ycomp;
     pos0[2] = pos0[2] + t1;
 
-    _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(kParticleHit, pos0[0], pos0[1], pos0[2]);
+    Particle::System::NewSimple(kParticleHit, pos0[0], pos0[1], pos0[2]);
 }
 
 /* -------------------------------------------------------------------------- */

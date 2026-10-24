@@ -152,7 +152,11 @@ void func_020393a4(int *collider, int range);
 void func_02039394(int *collider, int range);
 void func_020393d4(int *collider, void *callback);
 
-void *_ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(unsigned int id, int x, int y, int z);
+namespace Particle {
+struct System {
+    static void *NewSimple(unsigned int id, int x, int y, int z);
+};
+}
 int _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_S5_j(
     void *self, void *shadow, void *mat, int sx, int sy, int sz, unsigned int opacity);
 void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
@@ -204,7 +208,7 @@ void daObjRotateUpdownLift_c::func_ov091_02130fac()
 // @symbol _ZN23daObjRotateUpdownLift_c4KillEv
 void daObjRotateUpdownLift_c::Kill()
 {
-    _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0xbb, mPosX, mPosY, mPosZ);
+    Particle::System::NewSimple(0xbb, mPosX, mPosY, mPosZ);
     /* memberwise stores: the (x,y,z) ctor form batches the loads */
     Vector3 v;
     v.x = mPosX;

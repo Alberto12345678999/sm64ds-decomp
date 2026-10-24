@@ -176,7 +176,7 @@ void func_ov002_020bcdf0(char *self)
 {
     Player *player = reinterpret_cast<Player *>(self);
     extern AnimEntry27 *data_ov002_0210a7a0[];
-    extern void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(unsigned int id, int x, int y, int z);
+    extern void PlayerNewSimpleHold(unsigned int id, int x, int y, int z);
     extern u32 _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
         u32 handle, u32 kind, Fix12i x, Fix12i y, Fix12i z, const void *dir, void *callback);
     AnimEntry27 *base;
@@ -216,7 +216,7 @@ void func_ov002_020bcdf0(char *self)
                 vv[0].x = x0;
                 vv[0].y = y0;
                 vv[0].z = z0;
-                _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0x37, vv[0].x, vv[0].y, vv[0].z);
+                Particle::System::NewSimple(0x37, vv[0].x, vv[0].y, vv[0].z);
 
                 Sound::PlayCharVoice(player->mCharacter, 0x33, player->mCamSpacePos);
             }
@@ -376,7 +376,7 @@ int Player::func_ov002_020bd250(unsigned char *params, int beginFrame, int endFr
        call site, so declaring the true types breaks the byte match. See
        notes/mwccarm-codegen.md 6az. */
     extern void _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void *, const Vector3&, unsigned int, int, unsigned int, unsigned int, unsigned int);
-    extern void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(unsigned int, int, int, int);
+    extern void PlayerNewSimpleHold1(unsigned int, int, int, int);
     extern short ReadUnalignedShort(unsigned char* p);
     extern void Vec3_RotateYAndTranslate(Vector3* out, const Vector3* base, int angle, const Vector3* off);
     char *self = (char *)this;
@@ -399,8 +399,8 @@ int Player::func_ov002_020bd250(unsigned char *params, int beginFrame, int endFr
         off2.y = 0x64000;
         off2.z = 0x32000;
         Vec3_RotateYAndTranslate(&out2, &mPos, this->mAngleY, &off2);
-        _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0x43, out2.x, out2.y, out2.z);
-        _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0x44, out2.x, out2.y, out2.z);
+        Particle::System::NewSimple(0x43, out2.x, out2.y, out2.z);
+        Particle::System::NewSimple(0x44, out2.x, out2.y, out2.z);
     }
     return 1;
 }
@@ -1804,7 +1804,7 @@ extern "C" {
 void Player::func_ov002_020bf5e0()
 {
     extern void Vec3_RotateYAndTranslate(void*, void*, short angle, void*);
-    extern void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(unsigned int id, int x, int y, int z);
+    extern void PlayerNewSimpleHold2(unsigned int id, int x, int y, int z);
     extern u32 func_02022d00(u32 uniqueID, u32 effectID, int x, int y, int z, void*);
     extern int data_0209f32c;
     int flag;
@@ -1845,9 +1845,9 @@ flag_done:
     Vec3_RotateYAndTranslate(&out.x, &this->mPosX, this->mAngleY, &src.x);
 
     if (mIsInShallowWater != 0 || mIsUnderwater != 0) {
-        _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0x64, out.x, out.y, out.z);
+        Particle::System::NewSimple(0x64, out.x, out.y, out.z);
     } else {
-        _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0x63, out.x, out.y, out.z);
+        Particle::System::NewSimple(0x63, out.x, out.y, out.z);
     }
 
     Sound::PlayBank0(0xd0, mCamSpacePos);
@@ -1879,7 +1879,7 @@ state_merge:
         return;
 
     src.y = 0;
-    _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(target, out.x, out.y, out.z);
+    Particle::System::NewSimple(target, out.x, out.y, out.z);
 }
 }
 
@@ -1947,7 +1947,7 @@ void Player::func_ov002_020bf90c()
 extern "C" {
 void Player::func_ov002_020bf9d4(){
     extern int func_0200fccc(void*, int r1);
-    extern void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(unsigned int, int, int, int);
+    extern void PlayerNewSimpleHold3(unsigned int, int, int, int);
     extern int data_0208e430;
   Vector3 v;
   if (data_0208e430 == 0x2e) return;
@@ -1960,10 +1960,10 @@ void Player::func_ov002_020bf9d4(){
   ((int*)&v)[2] = this->mPosZ;
   if (mIsInShallowWater != 0){
     v.y += 0x19000;
-    _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0x5c, v.x, v.y, v.z);
+    Particle::System::NewSimple(0x5c, v.x, v.y, v.z);
   } else {
     v.y += 0x23000;
-    _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0x5b, v.x, v.y, v.z);
+    Particle::System::NewSimple(0x5b, v.x, v.y, v.z);
   }
 }
 }
@@ -5107,25 +5107,25 @@ int Player::St_StuckInGround_Main()
 // @symbol _ZN6Player19func_ov002_020c5444Ev
 /* recovered: shared common types */
 extern "C" {
-void Player::func_ov002_020c5444(){
-    extern void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(unsigned int, int, int, int);
-  Vector3 v;
-  ((int*)&v)[0] = this->mPosX;
-  ((int*)&v)[1] = this->mPosY;
-  ((int*)&v)[2] = this->mPosZ;
-  ((int*)&v)[1] = this->mPosY + 0x14000;
-  unsigned char b = mStateArg;
-  if (b == 0) {
-    _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0xdb, v.x, v.y, v.z);
-    _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0xdc, v.x, v.y, v.z);
-    return;
-  }
-  if (b == 1) {
-    _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0xd8, v.x, v.y, v.z);
-    _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0xd9, v.x, v.y, v.z);
-    return;
-  }
-  _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0xc7, v.x, v.y, v.z);
+void Player::func_ov002_020c5444() {
+    extern void PlayerNewSimpleHold4(unsigned int, int, int, int);
+    Vector3 v;
+    ((int *)&v)[0] = this->mPosX;
+    ((int *)&v)[1] = this->mPosY;
+    ((int *)&v)[2] = this->mPosZ;
+    ((int *)&v)[1] = this->mPosY + 0x14000;
+    unsigned char b = mStateArg;
+    if (b == 0) {
+        Particle::System::NewSimple(0xdb, v.x, v.y, v.z);
+        Particle::System::NewSimple(0xdc, v.x, v.y, v.z);
+        return;
+    }
+    if (b == 1) {
+        Particle::System::NewSimple(0xd8, v.x, v.y, v.z);
+        Particle::System::NewSimple(0xd9, v.x, v.y, v.z);
+        return;
+    }
+    Particle::System::NewSimple(0xc7, v.x, v.y, v.z);
 }
 }
 
@@ -7226,7 +7226,7 @@ int Player::func_ov002_020c8cb0(){
 extern "C" {
 int Player::func_ov002_020c8d14()
 {
-    extern void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(unsigned int id, int x, int y, int z);
+    extern void PlayerNewSimpleHold5(unsigned int id, int x, int y, int z);
     extern int func_ov002_020d22ec(void*, int arg);
     extern Player::State data_ov002_021106ac;
     extern Player::State data_ov002_0211013c;
@@ -7248,11 +7248,11 @@ int Player::func_ov002_020c8d14()
 
     id = this->GetBodyModelID(param1 & 0xff, 0);
     if (mBodyModels[id]->WillHitFrame(4)) {
-        _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0x5d, v.x, v.y, v.z);
+        Particle::System::NewSimple(0x5d, v.x, v.y, v.z);
     } else {
         id = this->GetBodyModelID(param1 & 0xff, 0);
         if (mBodyModels[id]->WillHitFrame(2)) {
-            _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0x5e, v.x, v.y, *(volatile int *)&v.z);
+            Particle::System::NewSimple(0x5e, v.x, v.y, *(volatile int *)&v.z);
         }
     }
 
@@ -7726,7 +7726,7 @@ void func_ov002_020c9998(void* c) {
 extern "C" {
 void Player::func_ov002_020c9a04()
 {
-    extern void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(unsigned int id, int x, int y, int z);
+    extern void PlayerNewSimpleHold6(unsigned int id, int x, int y, int z);
     Vector3 v;
 
     mStateStep = 0x11;
@@ -7739,10 +7739,10 @@ void Player::func_ov002_020c9a04()
     v.y = this->mPosY;
     v.z = this->mPosZ;
     v.y = this->mPosY + 0x28000;
-    _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0x5f, v.x, v.y, v.z);
+    Particle::System::NewSimple(0x5f, v.x, v.y, v.z);
 
     v.y = this->mPosY + FX_MUL(this->mScaleY, 0x50000);
-    _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0x60, v.x, v.y, *(volatile int *)&v.z);
+    Particle::System::NewSimple(0x60, v.x, v.y, *(volatile int *)&v.z);
 }
 }
 
@@ -9595,7 +9595,7 @@ int Player::St_MetalWaterWater_Main()
     extern int func_ov002_020bf224(void*, int a, int b);
     extern void ApproachAngle(void*, int target, int a, int b, int d);
     extern void _Z14ApproachLinearRiii(void*, int a, int b);
-    extern void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(u32 id, int x, int y, int z);
+    extern void PlayerNewSimpleHold7(u32 id, int x, int y, int z);
     extern void Player_AdvanceAnims(void*);
     extern struct S18b2 data_0209f4a0[];
     extern int data_0209f32c;
@@ -9646,11 +9646,11 @@ int Player::St_MetalWaterWater_Main()
             if (mIsMega != 0) {
                 py2 += 0x19000;
                 pos.y = py2;
-                _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0x5c, px, py2, pz);
+                Particle::System::NewSimple(0x5c, px, py2, pz);
             } else {
                 py2 += 0x32000;
                 pos.y = py2;
-                _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0xd7, px, py2, pz);
+                Particle::System::NewSimple(0xd7, px, py2, pz);
             }
             if (data_0209f4a0[gActivePlayerSlot].a != 0) {
                 this->ChangeState(data_ov002_021106ac);
@@ -12619,7 +12619,7 @@ void func_ov002_020d1f78(void *selfPtr, u32 param)
                                         unsigned int d);
     extern u32 func_02022d00(u32 uniqueID, u32 effectID, Fix12i x, Fix12i y, Fix12i z, void *dir);
     extern void func_0201251c(int a, int b, int c, int d);
-    extern void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(unsigned int id, Fix12i a, Fix12i b, Fix12i c);
+    extern void PlayerNewSimpleHold8(unsigned int id, Fix12i a, Fix12i b, Fix12i c);
 
     char *self = (char *)selfPtr;
     Player *p = (Player *)self;
@@ -12688,7 +12688,7 @@ state_merge:
     if (target == -1)
         return;
 
-    _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(target, p->mPosX, p->mPosY, p->mPosZ);
+    Particle::System::NewSimple(target, p->mPosX, p->mPosY, p->mPosZ);
 }
 }
 
@@ -13144,7 +13144,7 @@ extern "C" {
 void func_ov002_020d2e74(Player *p) {
     extern void Vec3_RotateYAndTranslate(Vector3 * out, const Vector3 *base, s16 ang,
                                          const Vector3 *off);
-    extern void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(u32 a, int b, int c, int d);
+    extern void PlayerNewSimpleHold9(u32 a, int b, int c, int d);
 
     Vector3 v;
     Vector3 off;
@@ -13158,8 +13158,8 @@ void func_ov002_020d2e74(Player *p) {
     off.y = 0x1e000;
     off.z = 0x64000;
     Vec3_RotateYAndTranslate(&v, &p->mPos, p->mAngleY, &off);
-    _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0xfe, v.x, v.y, v.z);
-    _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0xff, v.x, v.y, v.z);
+    Particle::System::NewSimple(0xfe, v.x, v.y, v.z);
+    Particle::System::NewSimple(0xff, v.x, v.y, v.z);
 }
 }
 
@@ -14157,7 +14157,7 @@ extern "C" {
 extern "C" void func_ov002_020d4c30(Player *self) {
     extern void func_0201251c(int a, int b, int c, int d);
     extern int data_0209f32c;
-    extern void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(unsigned int id, Fix12i a, Fix12i b, Fix12i c);
+    extern void PlayerNewSimpleHold10(unsigned int id, Fix12i a, Fix12i b, Fix12i c);
     extern int data_0208e430;
     extern unsigned int func_02022d00(unsigned int, unsigned int, Fix12i, Fix12i, Fix12i, void*);
     int id;
@@ -14192,7 +14192,7 @@ extern "C" void func_ov002_020d4c30(Player *self) {
     } else
         id = 0xe5;
     if (id == -1) return;
-    _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(id, self->mPosX, self->mPosY, self->mPosZ);
+    Particle::System::NewSimple(id, self->mPosX, self->mPosY, self->mPosZ);
 }
 }
 
@@ -16522,7 +16522,7 @@ extern "C" int func_ov002_020d869c(char *c)
     extern int _ZN6Player7IsInAirEv(char *p);
     extern int func_ov002_020d9298(char *c);
     extern void func_ov002_020db8bc(u8 *p, u8 val);
-    extern void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(u32 id, Fix12i x, Fix12i y, Fix12i z);
+    extern void PlayerNewSimpleHold11(u32 id, Fix12i x, Fix12i y, Fix12i z);
     Player *pl = (Player *)c;
     char *r6;
     u32 flags;
@@ -16565,7 +16565,7 @@ extern "C" int func_ov002_020d869c(char *c)
                 p.x = x;
                 p.y = y;
                 p.z = z;
-                _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0xb2, p.x, p.y, p.z);
+                Particle::System::NewSimple(0xb2, p.x, p.y, p.z);
                 Sound::PlayBank0(0x12, pl->mCamSpacePos);
                 Sound::PlayCharVoice(pl->mCharacter, 0x19, pl->mCamSpacePos);
             }
@@ -16639,7 +16639,7 @@ int func_ov002_020d8944(void *self, char *enemy, char *v1) {
     int AngleDiff(int a, int b);
     void Vec3_Add(Vector3 * out, Vector3 * a, Vector3 * b);
     void Vec3_Asr(Vector3 * d, Vector3 * s, int sh);
-    void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(unsigned int id, int x, int y, int z);
+    void PlayerNewSimpleHold12(unsigned int id, int x, int y, int z);
     extern int func_ov002_020d8944(void *self, char *enemy, char *v1);
     PVec8944 p;
     Vector3 sum;
@@ -16663,8 +16663,8 @@ int func_ov002_020d8944(void *self, char *enemy, char *v1) {
         p.y = asr.y;
         p.z = asr.z;
         p.y += 0x50000;
-        _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0x12a, p.x, p.y, p.z);
-        _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0x12b, p.x, p.y, p.z);
+        Particle::System::NewSimple(0x12a, p.x, p.y, p.z);
+        Particle::System::NewSimple(0x12b, p.x, p.y, p.z);
         ((Player *)enemy)->mAttackClashed = 1;
         ((Player *)v1)->mAttackClashed = 1;
         return 1;
@@ -16835,7 +16835,7 @@ extern "C" int _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(struct Player *self, void
     extern int _ZN6Player8HasNoCapEv(char* c);
     extern void func_ov002_020d5cec(char* c);
     extern s16 Vec3_HorzAngle(const void* v0, const void* v1);
-    extern void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(u32 id, int a, int b, int cc);
+    extern void PlayerNewSimpleHold13(u32 id, int a, int b, int cc);
     extern void _ZN6Player11ChangeStateERNS_5StateE(char* c, void* st);
     extern int func_ov002_020d91e0(char* thiz, int damage, int doPre);
     extern int data_ov002_02110094;
@@ -16954,11 +16954,11 @@ L9c:
                 v.y = y;
                 v.z = z;
                 if (*(volatile int*)((char*)&self->mHurtDamage) == 1) {
-                    _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0xcb, x, y, z);
-                    _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0xcc, v.x, v.y, v.z);
+                    Particle::System::NewSimple(0xcb, x, y, z);
+                    Particle::System::NewSimple(0xcc, v.x, v.y, v.z);
                 } else {
-                    _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0xc9, x, y, z);
-                    _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0xca, v.x, v.y, v.z);
+                    Particle::System::NewSimple(0xc9, x, y, z);
+                    Particle::System::NewSimple(0xca, v.x, v.y, v.z);
                 }
             }
         }
@@ -19900,7 +19900,7 @@ int Player::St_GroundPound_Main()
     void func_ov002_020ef2a4(void* c, void* arg);
     int func_ov002_020e2c84(void* self);
     void func_ov002_020dd908(void* sb);
-    void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(unsigned int id, int x, int y, int z);
+    void PlayerNewSimpleHold14(unsigned int id, int x, int y, int z);
     void func_0200d8c8(void* cam, const void* v, int strength);
     void func_ov002_020dbc94(void* c);
     void _ZN6Player11ChangeStateERNS_5StateE(void* self, void* state);
@@ -19967,40 +19967,40 @@ int Player::St_GroundPound_Main()
                     if (mIsMega != 0) {
                         int yy = mPosY + 0x14000;
                         v.y = yy;
-                        _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0x57, x, yy, z);
-                        _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0x58, v.x, v.y, v.z);
+                        Particle::System::NewSimple(0x57, x, yy, z);
+                        Particle::System::NewSimple(0x58, v.x, v.y, v.z);
                         if (mIsInShallowWater == 0) {
-                            _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0x5a, v.x, v.y, v.z);
+                            Particle::System::NewSimple(0x5a, v.x, v.y, v.z);
                             int y2 = mPosY + 0x3c000;
                             int xx = v.x;
                             int zz = v.z;
                             *(volatile int*)&v.y = y2;
-                            _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0x59, xx, y2, zz);
+                            Particle::System::NewSimple(0x59, xx, y2, zz);
                         }
                     } else if (param1 != 2) {
                         int yy = mPosY + 0xa000;
                         v.y = yy;
-                        _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0xd3, x, yy, z);
+                        Particle::System::NewSimple(0xd3, x, yy, z);
                         if (mIsInShallowWater == 0) {
                             int y2 = mPosY + 0x3c000;
                             int xx = v.x;
                             int zz = v.z;
                             v.y = y2;
-                            _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0xd4, xx, y2, zz);
-                            _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0xd5, v.x, v.y, v.z);
+                            Particle::System::NewSimple(0xd4, xx, y2, zz);
+                            Particle::System::NewSimple(0xd5, v.x, v.y, v.z);
                         }
                     } else {
                         int yy = mPosY + 0xa000;
                         v.y = yy;
-                        _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0x134, x, yy, z);
-                        _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0x135, v.x, v.y, v.z);
+                        Particle::System::NewSimple(0x134, x, yy, z);
+                        Particle::System::NewSimple(0x135, v.x, v.y, v.z);
                         if (mIsInShallowWater == 0) {
                             int y2 = mPosY + 0x32000;
                             int xx = v.x;
                             int zz = v.z;
                             v.y = y2;
-                            _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0x136, xx, y2, zz);
-                            _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0x137, v.x, v.y, v.z);
+                            Particle::System::NewSimple(0x136, xx, y2, zz);
+                            Particle::System::NewSimple(0x137, v.x, v.y, v.z);
                         }
                     }
                 }
@@ -20424,7 +20424,7 @@ struct Vector3e968 { int x, y, z; ~Vector3e968(){} };
 }
 extern "C" {
 void func_ov002_020de968(char* c){
-    extern void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(unsigned int id, Fix12i a, Fix12i b, Fix12i d);
+    extern void PlayerNewSimpleHold15(unsigned int id, Fix12i a, Fix12i b, Fix12i d);
     Player *p = (Player *)c;
     p->mBalloonTimer = 0;
     if (p->mIsBalloon != 1)
@@ -20437,8 +20437,8 @@ void func_ov002_020de968(char* c){
     v.y = p->mPosY;
     v.z = p->mPosZ;
     v.y = p->mPosY + 0x50000;
-    _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0xc5, v.x, v.y, v.z);
-    _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0xc6, v.x, v.y, v.z);
+    Particle::System::NewSimple(0xc5, v.x, v.y, v.z);
+    Particle::System::NewSimple(0xc6, v.x, v.y, v.z);
     Sound::PlayBank0(0xd8, p->mCamSpacePos);
 }
 }
@@ -20448,7 +20448,7 @@ void func_ov002_020de968(char* c){
 extern "C" {
 void Player::InitBalloonMario()
 {
-    extern void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(unsigned int id, int x, int y, int z);
+    extern void PlayerNewSimpleHold16(unsigned int id, int x, int y, int z);
     extern Player::State data_ov002_0211028c;
     Vector3 v;
 
@@ -20465,8 +20465,8 @@ void Player::InitBalloonMario()
     v.y = mPosY;
     v.z = mPosZ;
     v.y = mPosY + 0x50000;
-    _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0xc5, v.x, v.y, v.z);
-    _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0xc6, v.x, v.y, *(volatile int *)&v.z);
+    Particle::System::NewSimple(0xc5, v.x, v.y, v.z);
+    Particle::System::NewSimple(0xc6, v.x, v.y, *(volatile int *)&v.z);
 
     Sound::PlayBank0(0xd7, mCamSpacePos);
 }

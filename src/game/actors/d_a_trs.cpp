@@ -191,7 +191,11 @@ extern void func_020167a4(void *p);
 void Matrix4x3_FromRotationY(Matrix4x3 *m, s16 angle);
 extern int data_0209e650;
 extern int Vec3_Dist(const void* a, const void* b);
-extern void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(unsigned int id, int x, int y, int z);
+namespace Particle {
+struct System {
+    static void NewSimple(unsigned int id, int x, int y, int z);
+};
+}
 extern void _ZN5Sound17ChangeMusicVolumeEj5Fix12IiE(unsigned a, int fx);
 extern void _ZN5Sound22StopLoadedMusic_Layer3Ev(void);
 extern void func_02011cfc(void);
@@ -1085,8 +1089,8 @@ void daTrs_c::func_ov063_021177b0() {
                     int m = ~0;
                     pos.x = px * (volatile int)m;
                 }
-                _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0x93, pos.x, yarg, pos.z);
-                _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0x94, pos.x, pos.y, pos.z);
+                Particle::System::NewSimple(0x93, pos.x, yarg, pos.z);
+                Particle::System::NewSimple(0x94, pos.x, pos.y, pos.z);
             }
         }
         return;

@@ -199,8 +199,7 @@ extern void _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(
 extern unsigned int _ZN5Sound8PlayLongEjjjRK7Vector3s(
     unsigned int handle, unsigned int a, unsigned int id,
     const Vector3 *pos, unsigned int e);
-extern void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(
-    unsigned int n, int x, int y, int z);
+extern void d_a_jgmNewSimpleHold(unsigned int n, int x, int y, int z);
 }
 
 /* C++ linkage on purpose: mangles as _Z15ApproachLinear2Rsss. */
@@ -539,11 +538,9 @@ s32 daJgm_c::EnterFallState()
     mModelAnim.speed = 0x4000;
     {
         int aimHeight = OnAimedAtWithEgg();
-        _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(
-            0x43, mPosX, mPosY + aimHeight, mPosZ);
+        Particle::System::NewSimple(0x43, mPosX, mPosY + aimHeight, mPosZ);
         int aimHeightAgain = OnAimedAtWithEgg();
-        _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(
-            0x44, mPosX, mPosY + aimHeightAgain, mPosZ);
+        Particle::System::NewSimple(0x44, mPosX, mPosY + aimHeightAgain, mPosZ);
     }
     mState = 4;
     return 1;

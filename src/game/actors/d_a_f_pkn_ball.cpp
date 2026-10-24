@@ -101,7 +101,11 @@ extern s32 data_ov002_02100348[];
 extern Matrix4x3 data_020a0e68;
 int func_ov002_020ad660(void* cc, void* pp, void* r5p, int flags);
 s16 Vec3_HorzAngle(const void* a, const void* b);
-void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(u32 id, s32 x, s32 y, s32 z);
+namespace Particle {
+struct System {
+    static void NewSimple(u32 id, s32 x, s32 y, s32 z);
+};
+}
 void func_02012694(u32 id, const void* v);
 void dBgCh_Actr_UpdateContinuous_Veneer(void* p);
 extern s16 data_02082214[];
@@ -322,9 +326,9 @@ int daFPknBall_c::Behavior() {
                         py = py + slot29;
                         pz = sparkPos.z;
                         sparkPos.y = py;
-                        _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0x43, px, py, pz);
+                        Particle::System::NewSimple(0x43, px, py, pz);
                     }
-                    _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0x44, sparkPos.x, sparkPos.y, sparkPos.z);
+                    Particle::System::NewSimple(0x44, sparkPos.x, sparkPos.y, sparkPos.z);
                     func_ov002_020f8b24();
                     mdCcAc_c.Clear();
                     return 1;

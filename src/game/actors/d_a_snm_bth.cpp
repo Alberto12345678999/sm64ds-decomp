@@ -34,7 +34,11 @@
 extern Vector3 data_ov027_02113d10;
 
 extern "C" {
-void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(u32, s32, s32, s32);
+namespace Particle {
+struct System {
+    static void NewSimple(u32, s32, s32, s32);
+};
+}
 u32 _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
     u32, u32, s32, s32, s32, const void *, void *);
 s16 Vec3_HorzAngle(const Vector3 *, const Vector3 *);
@@ -102,8 +106,7 @@ void SnowmanBreathParticle::HitPlayer()
         return;
     if (!IsPlayerActor(actor))
         return;
-    _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(
-        0x100, mPos.x, mPos.y, mPos.z);
+    Particle::System::NewSimple(0x100, mPos.x, mPos.y, mPos.z);
 
     Player *player = (Player *)actor;
     if (player->mIsMetal)
@@ -160,8 +163,7 @@ void SnowmanBreathParticle::CheckSnowman()
     s32 distance = Vec3_Dist(&mPos, &snowman->mPos);
     if (distance >= threshold)
         return;
-    _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(
-        0x100, mPos.x, mPos.y, mPos.z);
+    Particle::System::NewSimple(0x100, mPos.x, mPos.y, mPos.z);
     mTimer = 0;
 }
 

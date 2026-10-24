@@ -86,8 +86,7 @@ u8 DecIfAbove0_Byte(u8 *counter);
 void func_02012694(u32 soundID, const Vector3 *pos);
 int _ZN4cstd4fdivEii(int num, int den);
 
-void *_ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(
-    u32 effectID, int x, int y, int z);
+void *d_a_obj_ice_blockNewSimpleHold(u32 effectID, int x, int y, int z);
 int _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(u32 handle, u32 effectID,
                                                                            int x, int y, int z,
                                                                            const Vector3_16f *dir,
@@ -228,9 +227,9 @@ void daObjIceBlock_c::Kill()
     pos.x = x;
     pos.y = y;
     pos.z = z;
-    _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0x74, pos.x, pos.y, pos.z);
-    _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0x75, pos.x, pos.y, pos.z);
-    _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0x76, pos.x, pos.y, pos.z);
+    Particle::System::NewSimple(0x74, pos.x, pos.y, pos.z);
+    Particle::System::NewSimple(0x75, pos.x, pos.y, pos.z);
+    Particle::System::NewSimple(0x76, pos.x, pos.y, pos.z);
     dustPos.x = pos.x;
     dustPos.y = pos.y;
     dustPos.z = pos.z;

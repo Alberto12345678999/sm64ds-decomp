@@ -1,4 +1,9 @@
 //cpp
+namespace Particle {
+struct System {
+    static void *NewSimple(unsigned, int, int, int);
+};
+}
 /* Bob-omb (BOB_OMB 206 / BOMBHEI) -- ov102/daBmb_c.
  *
  * common.h FIRST. InitResources and the carry update copy twelve matrix words.
@@ -1184,7 +1189,7 @@ extern "C" {
 void func_ov102_0214ae1c(void *cv) {
     typedef struct Bmb_Ae1cVec3 { int x, y, z; } Vec3;
     extern void func_0201267c(int a, void *b);
-    extern void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(unsigned int id, int x, int y, int z);
+    extern void d_a_bmbNewSimpleHold(unsigned int id, int x, int y, int z);
     extern void func_ov002_020ef228(void *a, void *b);
     extern void _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void *self, Vec3 *v, unsigned int a, int fix, unsigned int b, unsigned int d, unsigned int e);
 
@@ -1204,11 +1209,11 @@ void func_ov102_0214ae1c(void *cv) {
     }
     func_0201267c(0x10c, &self->mCamSpacePosX);
     v.y = self->mPosY + 0x64000;
-    _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0x14, v.x, v.y, v.z);
-    _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0x15, v.x, v.y, v.z);
-    _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0x16, v.x, v.y, v.z);
-    _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0x17, v.x, v.y, v.z);
-    _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0x18, v.x, v.y, v.z);
+    Particle::System::NewSimple(0x14, v.x, v.y, v.z);
+    Particle::System::NewSimple(0x15, v.x, v.y, v.z);
+    Particle::System::NewSimple(0x16, v.x, v.y, v.z);
+    Particle::System::NewSimple(0x17, v.x, v.y, v.z);
+    Particle::System::NewSimple(0x18, v.x, v.y, v.z);
     func_ov002_020ef228(&self->mWithMeshClsn, self);
     if (self->mCarrier) {
         Vec3 w;

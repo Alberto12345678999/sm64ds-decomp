@@ -1,4 +1,9 @@
 //cpp
+namespace Particle {
+struct System {
+    static void *NewSimple(unsigned, int, int, int);
+};
+}
 /* dMg3DHeyhoObjAdapter_c translation unit, ov006 0x020c4048..0x020c6f8c, text only: the class's
    base constructor (its vtable and RTTI stay at their ROM homes in the module's unowned .data)
    plus 49 Heyho-minigame helper functions (see config/tu_manifest.d/ov006/dMg3DHeyhoObjAdapter_c.json).
@@ -1517,7 +1522,7 @@ void Heyho_MotionHitSpin(char *c) {
 namespace n020c4d3c {
 extern "C" {
 typedef int Fix12;
-extern void* _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(unsigned int id, Fix12 x, Fix12 y, Fix12 z);
+extern void *d_mg3d_heyho_obj_adapterNewSimpleHold(unsigned int id, Fix12 x, Fix12 y, Fix12 z);
 extern void _Z14ApproachLinearRiii(int* p, int a, int b);
 extern void Camera_ProjectToScreen(void* a, void* b, int* c, int* d);
 extern int Mg_GetTopScreenYOffset(void);
@@ -1545,10 +1550,10 @@ void Heyho_Settle(char* c)
     int v0, v1;
     int t;
 
-    a = _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(
-        0x122, HEYHO(c)->mPos.x << 3, HEYHO(c)->mPos.y << 3, HEYHO(c)->mPos.z << 3);
-    b = _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(
-        0x123, HEYHO(c)->mPos.x << 3, HEYHO(c)->mPos.y << 3, HEYHO(c)->mPos.z << 3);
+    a = Particle::System::NewSimple(0x122, HEYHO(c)->mPos.x << 3, HEYHO(c)->mPos.y << 3,
+                                    HEYHO(c)->mPos.z << 3);
+    b = Particle::System::NewSimple(0x123, HEYHO(c)->mPos.x << 3, HEYHO(c)->mPos.y << 3,
+                                    HEYHO(c)->mPos.z << 3);
     t = (int)(HEYHO(c)->mSize << 0x1c) >> 0x10;
     /* Both stores go through a; the cartridge never sets b's scale. */
     if (a)

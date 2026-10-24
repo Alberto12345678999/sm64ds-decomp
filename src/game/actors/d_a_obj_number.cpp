@@ -56,8 +56,11 @@ extern int data_0209b454;
 extern void Matrix4x3_FromTranslation(void *m, int x, int y, int z);
 void _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(
     void *self, void *btp, int a, int b, unsigned int c);
-void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(
-    unsigned int id, int x, int y, int z);
+namespace Particle {
+struct System {
+    static void NewSimple(unsigned int id, int x, int y, int z);
+};
+}
 void func_ov002_020f0918(daObjNumber_c *self, dActor_c *owner);
 }
 
@@ -148,8 +151,7 @@ s32 daObjNumber_c::Behavior()
     case 1:
         if (mPosY < mStartPosY) {
             /* volatile mPosY: a plain field read CSE's with the add above. */
-            _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0xd2, mPosX, *(volatile int *)&mPosY,
-                                                           mPosZ);
+            Particle::System::NewSimple(0xd2, mPosX, *(volatile int *)&mPosY, mPosZ);
             MarkForDestruction();
         }
         break;

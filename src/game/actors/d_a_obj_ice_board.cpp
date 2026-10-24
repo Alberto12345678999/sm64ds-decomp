@@ -60,7 +60,11 @@ extern CLPS_Block data_ov002_0210d754;
  * Declaring that on this TU's Kill does not compile: mPosX/Y/Z are s32 and
  * mwccarm refuses the implicit conversion. The scalar ABI spelling is the
  * measured form (notes/mwccarm-codegen.md 6az). */
-void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(u32 id, Fix12i x, Fix12i y, Fix12i z);
+namespace Particle {
+struct System {
+    static void NewSimple(u32 id, Fix12i x, Fix12i y, Fix12i z);
+};
+}
 
 /* dBgW_KcMbg::SetFile likewise takes Fix12<int> by value. A real member
  * call on this TU's InitResources emits different code there. */
@@ -157,9 +161,9 @@ void daObjIceBoard_c::OnGroundPounded(dActor_c &other)
 void daObjIceBoard_c::Kill()
 {
     Sound::PlayBank3(0x41, mCamSpacePos);
-    _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0x74, mPosX, mPosY, mPosZ);
-    _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0x75, mPosX, mPosY, mPosZ);
-    _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0x76, mPosX, mPosY, mPosZ);
+    Particle::System::NewSimple(0x74, mPosX, mPosY, mPosZ);
+    Particle::System::NewSimple(0x75, mPosX, mPosY, mPosZ);
+    Particle::System::NewSimple(0x76, mPosX, mPosY, mPosZ);
     MarkForDestruction();
 }
 
