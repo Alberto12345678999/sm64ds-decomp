@@ -126,7 +126,7 @@ enum daDemo_c_AssetId {
 #include "decl_ModelAnim.h"
 #include "OAM.h"
 #include "SaveData.h"
-#include "TextureSequence.h"
+#include "dExtAnmTexPat_c.h"
 #include "dCamera_c.h"
 
 struct OamAttr;
@@ -514,7 +514,8 @@ extern void func_ov002_020f5fe4(char *c);
 extern int _ZN15dExtFrameCtrl_c7AdvanceEv(char*); /* local extern: untyped this. */
 extern int _ZN15dExtFrameCtrl_c8FinishedEv(char*); /* local extern: untyped this. */
 /* local extern dropped: decl_common.h declares func_ov002_020f6514(unsigned char*, void*, unsigned char) */
-extern void _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(void *self, void *f, int b, int c, unsigned int d);
+extern void _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj(void *self, void *f, int b, int c,
+                                                               unsigned int d);
 extern void __cxa_vec_ctor(void* obj, int a, int b, void* cb1, void* cb2);
 extern void *_ZN7Vector3D1Ev(void *object);
 extern void func_0203d384(void);
@@ -3659,7 +3660,7 @@ void daDemo_c::anmModel_c::func_ov002_020f6514(void *tbl, unsigned char arg)
         if (ts == 0) return;
         idx = (s8)e[1];
         if (idx < 0) return;
-        _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(ts, mTexSeqFiles[idx]->filePtr, v,
+        _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj(ts, mTexSeqFiles[idx]->filePtr, v,
                                                            0x1000, 0);
     }
 }
@@ -3695,8 +3696,9 @@ int daDemo_c::anmModel_c::func_ov002_020f65ec()
 // @symbol _ZN8daDemo_c10anmModel_c19func_ov002_020f6618EP13SharedFilePtriPS2_ihS3_i
 struct BTP_File;
 extern "C" {
-void* _ZN15TextureSequenceC1Ev(void* self);
-void _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(void* self, void* btp, int a, int fx, unsigned int e);
+void *_ZN15dExtAnmTexPat_cC1Ev(void *self);
+void _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj(void *self, void *btp, int a, int fx,
+                                                        unsigned int e);
 }
 
 int daDemo_c::anmModel_c::func_ov002_020f6618(SharedFilePtr *mdl, int nAnims, SharedFilePtr **anims,
@@ -3717,18 +3719,19 @@ int daDemo_c::anmModel_c::func_ov002_020f6618(SharedFilePtr *mdl, int nAnims, Sh
     ((dExtAnmModel_c *)self)->SetAnim((BCA_File *)(mAnimFiles[0]->filePtr), 0, 0x1000, 0);
     if (texByte) {
         ts = ::operator new(0x14);
-        if (ts) ts = _ZN15TextureSequenceC1Ev(ts);
-        mTexSeq = (TextureSequence *)ts;
+        if (ts)
+            ts = _ZN15dExtAnmTexPat_cC1Ev(ts);
+        mTexSeq = (dExtAnmTexPat_c *)ts;
         if (mTexSeq == 0)
             return 0;
         mNumTexSeqFiles = texByte;
         mTexSeqFiles = texs;
         for (i = 0; i < mNumTexSeqFiles; i++) {
             void *bmd = mModelFile->filePtr;
-            void *btp = TextureSequence::LoadFile(*mTexSeqFiles[i]);
-            TextureSequence::Prepare(*(BMD_File*)bmd, *(BTP_File*)btp);
+            void *btp = dExtAnmTexPat_c::LoadFile(*mTexSeqFiles[i]);
+            dExtAnmTexPat_c::Prepare(*(BMD_File *)bmd, *(BTP_File *)btp);
         }
-        _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(mTexSeq, mTexSeqFiles[0]->filePtr, 0,
+        _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj(mTexSeq, mTexSeqFiles[0]->filePtr, 0,
                                                            0x1000, 0);
     }
     mSnapToFloor = (u8)arg5;
@@ -3756,7 +3759,7 @@ int daDemo_c::anmModel_c::func_ov002_020f6618(SharedFilePtr *mdl, int nAnims, Sh
  *
  * The base holds only the array. The class's own members come after both
  * bases (0x70..0x83), so declaring them leaves the array at 0x64; deleting
- * mTexSeq is the TextureSequence's own virtual D0, which is the slot-1 call
+ * mTexSeq is the dExtAnmTexPat_c's own virtual D0, which is the slot-1 call
  * the ROM makes. */
 daDemo_c::anmModel_c::~anmModel_c()
 {

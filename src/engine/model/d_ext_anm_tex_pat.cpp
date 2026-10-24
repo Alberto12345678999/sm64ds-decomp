@@ -1,7 +1,7 @@
 //cpp
-/* TextureSequence -- Animation child driving BTP-file playback. Cartridge
-   class: _ZTV15TextureSequence at 0x0208e7d4 (two slots, the destructor
-   pair); the cartridge RTTI names it dExtAnmTexPat_c. TU claims
+/* dExtAnmTexPat_c -- dExtFrameCtrl_c child driving BTP-file playback. Cartridge
+   class: _ZTV15dExtAnmTexPat_c at 0x0208e7d4 (two slots, the destructor
+   pair), RTTI record _ZTI15dExtAnmTexPat_c at 0x0208e758. TU claims
    0x0201597c..0x02015a7c, the whole class run in delinks order. Written
    back-to-front: mwccarm emits .text in reverse source order under default
    deferred codegen.
@@ -15,30 +15,30 @@
    - file->unk_00 is the frame count handed to SetAnimation (the sibling
      BTA names it numFrames); BTP_File names only the words UpdateFileOffsets
      touches.
-   - RTTI stays off: the cartridge names the class dExtAnmTexPat_c, so the
-     emitted _ZTS/_ZTI records would have no configured home. */
-#include "TextureSequence.h"
+   - RTTI stays off; see the note above the pragma. */
+#include "dExtAnmTexPat_c.h"
 
-/* The cartridge spells this class dExtAnmTexPat_c, so the compiler-emitted
-   _ZTS15TextureSequence / _ZTI15TextureSequence / _ZTS9Animation /
-   _ZTI9Animation records would be homeless under either spelling. Compiling
-   with RTTI off emits no records at all; the vtable preamble's typeinfo word
-   deadstrips with the rest of the data sections. */
+/* Compiling with RTTI off emits no _ZTI/_ZTS records at all; the vtable
+   preamble's typeinfo word deadstrips with the rest of the data sections.
+   The pragma dates from when this class and its base carried coined names
+   whose records had no cartridge home; under the cartridge spelling they
+   would (_ZTI15dExtAnmTexPat_c at 0x0208e758, _ZTS15dExtAnmTexPat_c at 0x0208e824),
+   so RTTI on is open as a manifest change (notes/model-rtti-names.md). */
 #pragma RTTI off
 
 extern "C" void func_02046d50(BMD_File *model, BTP_File *file);
 extern "C" void func_02046bbc(ModelComponents *model, BTP_File *file, int frame);
 
-// @symbol _ZN15TextureSequenceC1Ev
-TextureSequence::TextureSequence() {
+// @symbol _ZN15dExtAnmTexPat_cC1Ev
+dExtAnmTexPat_c::dExtAnmTexPat_c() {
     file = 0;
 }
 
-// @symbol _ZN15TextureSequenceD1Ev
-TextureSequence::~TextureSequence() {}
+// @symbol _ZN15dExtAnmTexPat_cD1Ev
+dExtAnmTexPat_c::~dExtAnmTexPat_c() {}
 
-// @symbol _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj
-extern "C" void _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(TextureSequence *self,
+// @symbol _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj
+extern "C" void _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj(dExtAnmTexPat_c *self,
                                                                    BTP_File *file, s32 flags,
                                                                    s32 speed, u16 startFrame) {
     if (file == self->file) {
@@ -50,8 +50,8 @@ extern "C" void _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(TextureSequen
     }
 }
 
-// @symbol _ZN15TextureSequence6UpdateER15ModelComponents
-void TextureSequence::Update(ModelComponents &model) {
+// @symbol _ZN15dExtAnmTexPat_c6UpdateER15ModelComponents
+void dExtAnmTexPat_c::Update(ModelComponents &model) {
     func_02046bbc(&model, file, (u16)((u32)currFrame >> 12));
 }
 
@@ -59,7 +59,7 @@ void TextureSequence::Update(ModelComponents &model) {
    registers pass through untouched, so the matched func_02046d50.c's
    own two-argument signature is the call surface. Prepare is static:
    no this. */
-// @symbol _ZN15TextureSequence7PrepareER8BMD_FileR8BTP_File
-void TextureSequence::Prepare(BMD_File &model, BTP_File &animFile) {
+// @symbol _ZN15dExtAnmTexPat_c7PrepareER8BMD_FileR8BTP_File
+void dExtAnmTexPat_c::Prepare(BMD_File &model, BTP_File &animFile) {
     func_02046d50(&model, &animFile);
 }
