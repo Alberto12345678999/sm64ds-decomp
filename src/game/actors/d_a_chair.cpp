@@ -111,7 +111,7 @@ void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES
     void *self, void *shadow, void *matrix, int radius, int height, u32 flags);
 namespace Particle {
 struct System {
-    static void * NewSimple(unsigned id, int x, int y, int z);
+    static void *NewSimple(unsigned id, int x, int y, int z);
 };
 }
 int _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(

@@ -13,7 +13,7 @@
  *
  * leftovers:
  * - dBgW_KcMbg::SetFile, dBgActor_c::IsClsnInRange, dActor_c::UpdatePos,
- *   Sound::PlayLong, Particle::System::NewSimple and
+ *   Particle::System::NewSimple and
  *   dActor_c::DropShadowScaleXYZ stay mangled extern-C free functions:
  *   each takes Fix12<int> by value, and a real method call homes the
  *   argument and size-DIFFs the caller (notes/mwccarm-codegen.md 6az).
@@ -97,12 +97,10 @@ void func_020393c4(dBgW *collider, void *callback);
 void func_020393d4(dBgW *collider, void *callback);
 int  func_ov015_021128f8(void *collider, daObjBk_Lift_c *lift, void *unused);
 
-unsigned _ZN5Sound8PlayLongEjjjRK7Vector3s(unsigned handle, unsigned a,
-                                           unsigned id, void *pos, s16 f);
+void d_a_obj_bk_liftPlayLongHold(unsigned handle, unsigned a, unsigned id, void *pos, s16 f);
 namespace Particle {
 struct System {
-    static void NewSimple(u32 id, Fix12i x, Fix12i y,
-                                                    Fix12i z);
+    static void NewSimple(u32 id, Fix12i x, Fix12i y, Fix12i z);
 };
 }
 void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
@@ -257,8 +255,8 @@ int daObjBk_Lift_c::Behavior()
             UpdateClsnPosAndRot();
         if (Vec3_Dist(&mPosX, &mPrevPosX) != 0) {
             unsigned z = 0;
-            unsigned r = _ZN5Sound8PlayLongEjjjRK7Vector3s(
-                (unsigned)mSoundID, 3, 0x82, &mCamSpacePosX, (s16)z);
+            unsigned r =
+                Sound::PlayLong((unsigned)mSoundID, 3, 0x82, *(Vector3 *)&mCamSpacePosX, (s16)z);
             mSoundID = (s32)r;
         }
         mJustSteppedOn = 0;

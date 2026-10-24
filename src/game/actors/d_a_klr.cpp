@@ -56,9 +56,9 @@ void Vec3_Add(Vector3 *out, const Vector3 *a, const Vector3 *b);
 
 namespace Particle {
 struct System {
-    static void * NewSimple(u32 id, int x, int y, int z);
-
-    static int New(unsigned, unsigned, int, int, int, const ::Vector3_16f *, Callback *);};
+    static void *NewSimple(u32 id, int x, int y, int z);
+    static int New(unsigned, unsigned, int, int, int, const ::Vector3_16f *, Callback *);
+};
 }
 int d_a_klrNewHold(
     u32 uniqueID, u32 effectID, int x, int y, int z, void *dir, void *callback);

@@ -60,14 +60,6 @@
     {
       "path": "src/game/stages/d_s_stage_methods.cpp",
       "rule": "handspelled-member",
-      "match": "_ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii",
-      "count": 47,
-      "reason": "OAM::Render (scaled overload): it takes Fix12<int> by value, which this tree cannot declare without changing the call ABI (the Fix12 wall); the C++ name is spelled as the mangled symbol so the by-value word is passed as a plain int, exactly as the absorbed shard did.",
-      "evidence": "include/OAM.h:14 (the three Fix12 Render overloads are deliberately not declared there); arm9/dScStage_c 123/123 TEXT-VERIFIED (tubuild verify); carried from the standalone shards this fold absorbs (0x02029408..0x0202e118)"
-    },
-    {
-      "path": "src/game/stages/d_s_stage_methods.cpp",
-      "rule": "handspelled-member",
       "match": "_ZN3OAM20VS_NEW_STAR_APPEAREDE",
       "count": 2,
       "reason": "OAM::VS_NEW_STAR_APPEARED: OAM.h declares no static sprite-record data, so the OamAttr record keeps its mangled data name as an extern. Follow-up: declare the OAM sprite records as static members in OAM.h (one shared header change, every consumer).",
@@ -242,22 +234,6 @@
       "evidence": "src/_ZN10dScEntry_c13InitResourcesEv.cpp on main line 95; include/dScEntry_c.h line 33 (`u8 unk_287; /* 0x287 */`); ROM ov075 dScEntry_c::InitResources TEXT-VERIFIED in ov075/d_s_entry_methods"
     },
     {
-      "path": "src/game/stages/d_s_entry_methods.cpp",
-      "rule": "handspelled-member",
-      "match": "_ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii",
-      "count": 2,
-      "reason": "OAM::Render's scaled overload takes two Fix12<int> by value, and include/OAM.h deliberately leaves the by-value Fix12 overloads out (the Fix12 wall). dScEntry_c::RenderCourseSelectTitle calls it once; the other occurrence is its extern \"C\" declaration. Both are carried verbatim from src/_ZN10dScEntry_c23RenderCourseSelectTitleEv.cpp, which this fold retires. Follow-up: retire it together with the other Fix12-by-value walls once a Fix12 spelling that passes in registers exists.",
-      "evidence": "include/OAM.h (by-value Fix12 overloads not declared); src/_ZN10dScEntry_c23RenderCourseSelectTitleEv.cpp on main (2 occurrences); ov075/d_s_entry_methods prepush linkcheck 36/36 verified"
-    },
-    {
-      "path": "src/Message2.cpp",
-      "rule": "handspelled-member",
-      "match": "_ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii",
-      "count": 9,
-      "reason": "OAM::Render's scaled overload takes two Fix12<int> by value, and include/OAM.h deliberately leaves the by-value Fix12 overloads out: a method with that parameter homes r0-r3 to the stack, which the ROM callers do not. Message::Update calls it eight times to draw the choice cursor and the next-page arrow; the ninth occurrence is the extern \"C\" declaration. Follow-up: retire it together with the other Fix12-by-value walls once a Fix12 spelling that passes in registers exists.",
-      "evidence": "include/OAM.h header comment (by-value Fix12 overloads not declared); carried verbatim from src/_ZN7Message6UpdateEv.cpp on main (9 occurrences), which this PR folds; arm9/Message2 13/13 TEXT-VERIFIED"
-    },
-    {
       "path": "src/Message.cpp",
       "rule": "handspelled-member",
       "match": "_ZN3G2S13GetBG0CharPtrEv",
@@ -287,14 +263,6 @@
       "match": "_ZN3OAM6RenderEbP7OamAttriiii5Fix12IiEi",
       "count": 5,
       "reason": "Inherited OAM Render binding from absorbed helper 0211621c. The Fix12-by-value overload is intentionally absent from OAM.h because its class ABI changes calls (wall 6az). Follow-up: resolve that ABI with consumer byte proof before replacing the word arguments.",
-      "evidence": "Original helpers at main 67bf07b, ov075 02116128..021165b0; retained 15-function entry TU strictly verified in 6f196502, full 106/106 module proof. Formatting preserves complete raw ELF; follow-up scope recorded in overlay-functions1016 handoff."
-    },
-    {
-      "path": "src/game/stages/d_s_entry.cpp",
-      "rule": "handspelled-member",
-      "match": "_ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii",
-      "count": 4,
-      "reason": "Existing and absorbed OAM scaled Render calls retain the measured Fix12-by-value ABI bridge (OAM.h, wall 6az). Follow-up: resolve that ABI across consumers before replacing the integer arguments.",
       "evidence": "Original helpers at main 67bf07b, ov075 02116128..021165b0; retained 15-function entry TU strictly verified in 6f196502, full 106/106 module proof. Formatting preserves complete raw ELF; follow-up scope recorded in overlay-functions1016 handoff."
     },
     {
@@ -554,6 +522,14 @@
       "evidence": "The callee was func_02035414/func_02035428 before the dBgCh member rename; arm9 0x0200897c still byte-matches (rombuild 106/106 exact) and prepush_linkcheck resolves the call to the renamed symbol."
     },
     {
+      "path": "src/unnamed/arm9/0203/func_0203083c.c",
+      "rule": "handspelled-member",
+      "match": "_ZN3OAM6RenderEbP7OamAttriiiiiiii",
+      "count": 2,
+      "reason": "func_0203083c is a C translation unit, so it cannot name the C++ member OAM::Render; it spells the 10-argument overload's mangled name once in the extern declaration and once at the call. Follow-up: retire with this helper's C++ migration.",
+      "evidence": "The call spelled _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii before the OAM::Render rename (#4317); include/OAM.h declares the scalar overload."
+    },
+    {
       "path": "src/engine/particle/Particle_Manager.cpp",
       "rule": "unknown-field",
       "match": "unk_000",
@@ -784,14 +760,6 @@
       "count": 2,
       "reason": "These helpers still address the scene through the offset casts their shards matched. include/dScEntry_c.h names most of the bytes, but retyping the casts changes instruction selection; this fold measured that on the step-word save and the data_02086b58 copy. Follow-up: name the accesses when the remaining hole 0x021165b0..0x021190a4 is folded.",
       "evidence": "src/game/stages/d_s_entry_methods.cpp owns ov075 0x021190a4..0x0211a854. 30/30 functions byte-match the ROM under mwccarm 2004/b56 with relocation destinations checked, including the nine functions the file already owned."
-    },
-    {
-      "path": "src/_ZN10dScEntry_c23RenderCourseSelectTitleEv.cpp",
-      "rule": "handspelled-member",
-      "match": "_ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii",
-      "count": 2,
-      "reason": "Retained scalar ABI bridge from the former course-title renderer. OAM.h deliberately excludes this Fix12-by-value overload, and its enrolled definition still uses the scalar extern C interface. Follow-up: replace the bridge when the Fix12 interface is reconstructed with matching caller and callee ABI.",
-      "evidence": "include/OAM.h; src/engine/oam/OAM.cpp; notes/mwccarm-codegen.md section 6az; former func_ov075_02118cd0.c at ov075 0x02118cd0 size 0x4c. The declaration and single call are inherited, not newly introduced interfaces."
     },
     {
       "path": "src/game/actors/d_a_ots.cpp",

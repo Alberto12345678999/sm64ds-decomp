@@ -167,7 +167,7 @@ extern "C" {
 extern void func_0201267c(unsigned int id, void *p);
 namespace Particle {
 struct System {
-    static void * NewSimple(unsigned int id, int x, int y, int z);
+    static void *NewSimple(unsigned int id, int x, int y, int z);
 };
 }
 extern short data_02082214[];   /* SINE_TABLE: {sin, cos} pairs in fix12, indexed by angle >> 4 */
@@ -617,8 +617,8 @@ void daRNk_c::func_ov062_0211a1f4()
         tmp[1] = this->mPosY;
         tmp[2] = this->mPosZ;
         tmp[1] = this->mPosY + kDustHeight;
-        Particle::System::NewSimple(kPtclLandingDust, this->mPosX,
-            this->mPosY + kDustHeight, this->mPosZ);
+        Particle::System::NewSimple(kPtclLandingDust, this->mPosX, this->mPosY + kDustHeight,
+                                    this->mPosZ);
         return;
     default:
         return;

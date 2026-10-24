@@ -137,8 +137,7 @@ s32 daObj1UpLogo_c::Behavior()
     case 1:
         if (mPosY < mStartPos.y) {
             /* Volatile: a plain mPosY read is folded into the add above. */
-            Particle::System::NewSimple(
-                kPopParticle, mPosX, *(volatile s32 *)&mPosY, mPosZ);
+            Particle::System::NewSimple(kPopParticle, mPosX, *(volatile s32 *)&mPosY, mPosZ);
             MarkForDestruction();
         }
         break;

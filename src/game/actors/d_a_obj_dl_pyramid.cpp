@@ -63,9 +63,9 @@ namespace Event { void SetBit(unsigned int bit); int ClearBit(unsigned int bit);
 extern "C" {
 namespace Particle {
 struct System {
-    static void * NewSimple(u32 id, int x, int y, int z);
-
-    static int New(unsigned, unsigned, int, int, int, const ::Vector3_16f *, Callback *);};
+    static void *NewSimple(u32 id, int x, int y, int z);
+    static int New(unsigned, unsigned, int, int, int, const ::Vector3_16f *, Callback *);
+};
 }
 int d_a_obj_dl_pyramidNewHold(
     u32 handle, u32 id, int x, int y, int z, void *dir, void *callback);
@@ -143,9 +143,12 @@ extern "C" void func_ov024_021112c0(daObjDlPyramid_c *self)
     v.z = self->mPosZ;
     v.y += 0xfa000;
     Particle::System::NewSimple(0x1f, v.x, v.y, v.z);
-    Particle::System::NewSimple(0x20, *(volatile int *)&v.x, *(volatile int *)&v.y, *(volatile int *)&v.z);
-    Particle::System::NewSimple(0x21, *(volatile int *)&v.x, *(volatile int *)&v.y, *(volatile int *)&v.z);
-    Particle::System::NewSimple(0x22, *(volatile int *)&v.x, *(volatile int *)&v.y, *(volatile int *)&v.z);
+    Particle::System::NewSimple(0x20, *(volatile int *)&v.x, *(volatile int *)&v.y,
+                                *(volatile int *)&v.z);
+    Particle::System::NewSimple(0x21, *(volatile int *)&v.x, *(volatile int *)&v.y,
+                                *(volatile int *)&v.z);
+    Particle::System::NewSimple(0x22, *(volatile int *)&v.x, *(volatile int *)&v.y,
+                                *(volatile int *)&v.z);
     self->MarkForDestruction();
     Event::SetBit(0xe);
     dMap_c::UpdateLevelSpecific();

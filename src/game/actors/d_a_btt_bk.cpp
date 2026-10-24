@@ -26,7 +26,6 @@
 //   Matrix4x3_FromRotationY and dBgCh_Actr_UpdateDiscreteNoLava_veneer stay
 //   free calls defined outside this TU.
 
-
 /* Runtime asset handles resolved through the overlay 0 file table. */
 enum daBttBk_c_AssetId {
     ASSET_BATTA_BLOCK_BMD = 0x02ac

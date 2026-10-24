@@ -554,10 +554,8 @@ int daSanbo_c::func_ov096_02136134()
     mVertSpeed = 0x28000;
     mHorzSpeed = 0xa000;
     mTimer = 0x2d;
-    Particle::System::NewSimple(0x43, mPosX,
-        mPosY + OnAimedAtWithEgg(), mPosZ);
-    Particle::System::NewSimple(0x44, mPosX,
-        mPosY + OnAimedAtWithEgg(), mPosZ);
+    Particle::System::NewSimple(0x43, mPosX, mPosY + OnAimedAtWithEgg(), mPosZ);
+    Particle::System::NewSimple(0x44, mPosX, mPosY + OnAimedAtWithEgg(), mPosZ);
     mState = 5;
     return 1;
 }

@@ -333,10 +333,8 @@ int daKrpa_c::func_ov070_02121438()
     this->mScaleZ = 0x1000;
     this->mStateTimer = 0x2d;
     this->mModelAnim.SetAnim((BCA_File *)data_ov070_021234c4, 0, 0x1000, 0);
-    Particle::System::NewSimple(
-        0x43, this->mPosX, this->mPosY, this->mPosZ);
-    Particle::System::NewSimple(
-        0x44, this->mPosX, this->mPosY, this->mPosZ);
+    Particle::System::NewSimple(0x43, this->mPosX, this->mPosY, this->mPosZ);
+    Particle::System::NewSimple(0x44, this->mPosX, this->mPosY, this->mPosZ);
     this->mStateIndex = 3;
     return 1;
 }

@@ -16,10 +16,8 @@
  * - dBgW_KcMbg::SetFile, dBgActor_c::UpdateKillByMegaChar and
  *   dBgActor_c::IsClsnInRange take Fix12<int> by value, so they stay mangled;
  *   a member call homes the argument and changes the ROM ABI.
- * - The Sound::PlayLong extern is the shards' own spelling.
- *   Retyping it is declaration-changing matching work, so its banked
- *   decl-agreement entry moved to this file unchanged. The path handles
- *   are still 8-byte local views of PathPtr, constructed explicitly.
+ * - The path handles are still 8-byte local views of PathPtr, constructed
+ *   explicitly.
  * - InitResources keeps the param1 mask, the yaw adjust, and the
  *   node-index add as offset writes. Naming them changed the function size.
  * The file ends with the mesh-collider callback func_ov018_021117e8, the
@@ -40,6 +38,11 @@ enum daObjSm_Lift_c_AssetId {
 #include "nitro/fx/fx.h"
 
 bool ApproachLinear(short &value, short target, short step);
+
+namespace Sound {
+/* local extern: including Sound.h renumbers @NNN. */
+int PlayLong(u32, u32, u32, const Vector3 &, s16);
+}
 
 extern "C" {
 void Vec3_Asr(Vector3 *d, Vector3 *s, int n);
@@ -62,7 +65,8 @@ void *_ZN7PathPtrC1Ev(void *self);
 u8 DecIfAbove0_Byte(u8 *p);
 int Vec3_HorzDist(const void *a, const void *b);
 s16 Vec3_HorzAngle(const void *a, const void *b);
-unsigned int _ZN5Sound8PlayLongEjjjRK7Vector3s(unsigned int a, unsigned int b, unsigned int c, void *pos, unsigned int d);
+void d_a_obj_sm_liftPlayLongHold(unsigned int a, unsigned int b, unsigned int c, void *pos,
+                                 unsigned int d);
 void Math_Function_0203b14c(void *p, int a, int b, int c, int d);
 void Vec3_Sub(void *out, void *a, void *b);
 int LenVec3(void *v);
@@ -179,7 +183,7 @@ int daObjSm_Lift_c::Behavior()
         int idx2;
         int reached;
 
-        unk_350 = _ZN5Sound8PlayLongEjjjRK7Vector3s(unk_350, 3, 0x8c, &mCamSpacePosX, 0);
+        unk_350 = Sound::PlayLong(unk_350, 3, 0x8c, *(Vector3 *)&mCamSpacePosX, 0);
 
         _ZN7PathPtrC1Ev(&path);
         ((PathPtr *)&path)->FromID(mPathId);
