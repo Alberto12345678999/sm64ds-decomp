@@ -128,6 +128,9 @@ enum daDemo_c_AssetId {
 #include "SaveData.h"
 #include "dExtAnmTexPat_c.h"
 #include "dCamera_c.h"
+namespace cstd {
+s16 atan2(s32, s32);
+}
 
 struct OamAttr;
 
@@ -439,7 +442,7 @@ extern void func_ov002_020f3828(int *c);
 extern void MultiCopyHalf(void *src, void *dst, unsigned int count);
 extern int data_ov002_021002a0[];
 extern s16 data_02082214[];
-extern short _ZN4cstd5atan2E5Fix12IiES1_(int y, int x);
+extern short atan2_hold_d_a_demo_1(int y, int x);
 extern short data_02082214[];
 extern PMF data_ov002_02110e34[];
 extern unsigned short data_ov002_021000c0[];
@@ -1916,7 +1919,7 @@ void func_ov002_020f3ba0(char *c, int i)
         return;
     }
 
-    target = _ZN4cstd5atan2E5Fix12IiES1_(dy, dx);
+    target = cstd::atan2(dy, dx);
     ang = *(unsigned short *)(c + STAR_OFF(heading) + off);
     if (target > ang) {
         *(unsigned short *)(c + STAR_OFF(heading) + off) += 0x80;
@@ -2012,7 +2015,7 @@ void func_ov002_020f3de4(char *c, int i)
             return;
         }
 
-        target = _ZN4cstd5atan2E5Fix12IiES1_(dy, dx);
+        target = cstd::atan2(dy, dx);
         ang = *(unsigned short *)(c + STAR_OFF(heading) + off);
         if (target > ang) {
             *(unsigned short *)(c + STAR_OFF(heading) + off) += 0x100;
@@ -2220,7 +2223,7 @@ void func_ov002_020f43cc(char *c, int i) {
                 return;
             }
             {
-                unsigned short a = (unsigned short)_ZN4cstd5atan2E5Fix12IiES1_(dy, dx);
+                unsigned short a = (unsigned short)cstd::atan2(dy, dx);
                 unsigned short cur = *(unsigned short *)(c + STAR_OFF(heading) + off);
                 if (a > cur) {
                     unsigned short nv;
@@ -2435,7 +2438,7 @@ void func_ov002_020f4a2c(char *c, int i)
         }
 
         {
-            int raw = _ZN4cstd5atan2E5Fix12IiES1_(dy, dx);
+            int raw = cstd::atan2(dy, dx);
             ang = *(unsigned short *)(c + STAR_OFF(heading) + off);
             target = (unsigned short)raw;
         }
@@ -2650,7 +2653,7 @@ void func_ov002_020f5010(char *c, int i)
         }
 
         {
-            int raw = _ZN4cstd5atan2E5Fix12IiES1_(dy, dx);
+            int raw = cstd::atan2(dy, dx);
             ang = *(unsigned short *)(c + STAR_OFF(heading) + off);
             target = (unsigned short)raw;
         }
@@ -4442,7 +4445,7 @@ int daDemo_c::func_ov002_020f79c0(void *unused, int mode)
         }
         Math_Function_0203b0fc(&this->mMagnitude, 0x64000, 0x7a, 0x7fffffff);
 
-        this->mAngleX = _ZN4cstd5atan2E5Fix12IiES1_(this->mPosY - 0x190000, 0xc8000);
+        this->mAngleX = cstd::atan2(this->mPosY - 0x190000, 0xc8000);
 
         ApproachAngle(&this->mAngleY, (short)(this->mPrevAngleY + 0x8000), 4, 0x4000, 0);
 
@@ -4531,8 +4534,8 @@ int daDemo_c::func_ov002_020f7bb8(unsigned char *p, u16 id)
 
     Vec3_RotateYAndTranslate((int *)(&this->mPosX), (int *)&cam->pos, heading, src);
 
-    this->mAngleX = _ZN4cstd5atan2E5Fix12IiES1_(v1.y, Vec3_HorzLen(&v1));
-    this->mAngleY = _ZN4cstd5atan2E5Fix12IiES1_(v1.x, v1.z);
+    this->mAngleX = cstd::atan2(v1.y, Vec3_HorzLen(&v1));
+    this->mAngleY = cstd::atan2(v1.x, v1.z);
 
     return 1;
 }

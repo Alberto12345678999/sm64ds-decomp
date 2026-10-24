@@ -72,6 +72,10 @@ enum dScMgSmartball_c_AssetId { ASSET_D_2D_MG_BG_OPTION_NSC_BIN = 0x005b };
 #include "Memory.h"
 #include "nitro/fx/fx.h"
 
+namespace cstd {
+s16 atan2(s32, s32);
+}
+
 namespace G2 {
 void *GetBG2CharPtr(void);
 u16 *GetBG2ScrPtr(void);
@@ -250,7 +254,7 @@ extern void Mg_ShowBanner(int c, int a1, int a2, int a3, int arg5, short arg6);
 extern void Mg_PlayJingle(void *c);
 extern "C" int Mg_GetSubmittedScore(void);
 extern "C" void Mg_SubmitScore(int self);
-extern s16 _ZN4cstd5atan2E5Fix12IiES1_(int y, int x);
+extern s16 atan2_hold_d_s_mg_smartball_1(int y, int x);
 extern void Mg_SetTopScreenYOffset(int a);
 extern void func_02057d00(void *dst, void *src, int flag);
 extern void *Ov004_LoadFileByPath(void *p);
@@ -4617,7 +4621,7 @@ void dScMgSmartball_c::ResolveBallPair(int firstIndex, int secondIndex, u8 *firs
     Vec2_Sub((int *)&positionDelta, (int *)&firstPos, (int *)&secondPos);
     delta.x = positionDelta.x;
     delta.y = positionDelta.y;
-    collisionAngle = _ZN4cstd5atan2E5Fix12IiES1_(delta.y, delta.x);
+    collisionAngle = cstd::atan2(delta.y, delta.x);
     if (((cMgSmartball_ball_c *)firstObject)->HasHit() != 0) {
         firstVelocity.x = 0;
         firstVelocity.y = 0;

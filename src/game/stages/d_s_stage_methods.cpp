@@ -506,6 +506,7 @@ void RenderAll();
 }
 // And to _ZN4cstd6strcmpEPKcS1_.
 namespace cstd {
+s16 atan2(s32, s32);
 int strcmp(const char *a, const char *b);
 int sqrt(unsigned long long v);
 int fdiv(int a, int b);
@@ -4310,7 +4311,7 @@ int dScStage_c::Behavior() {
 
 extern "C" {
 u8 DecIfAbove0_Byte(u8 *p);
-s16 _ZN4cstd5atan2E5Fix12IiES1_(int y, int x);
+s16 atan2_hold_d_s_stage_methods_1(int y, int x);
 }
 
 void dScStage_c::CheckInput() {
@@ -4417,7 +4418,7 @@ void dScStage_c::CheckInput() {
                 control->mag = (distance << 12) / maxDistance;
                 control->nx = (deltaX << 12) / maxDistance;
                 control->ny = (deltaY << 12) / maxDistance;
-                control->ang = _ZN4cstd5atan2E5Fix12IiES1_(deltaX, deltaY);
+                control->ang = cstd::atan2(deltaX, deltaY);
             }
         } else {
             int touchEnded;

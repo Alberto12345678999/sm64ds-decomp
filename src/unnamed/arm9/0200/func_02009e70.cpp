@@ -8,6 +8,9 @@
 #include "dBgCh_Lin.h"
 #include "PlayerInput.h"
 #include "nitro/fx/fx.h"
+namespace cstd {
+short atan2(int, int);
+}
 
 extern "C" {
 struct CamMode {
@@ -37,7 +40,7 @@ extern void Vec3_RotateYAndTranslate(s32 *out, s32 *in, s16 angle, s32 *src);
 extern s32 Math_Function_0203b14c(s32 *p, s32 tgt, s32 rate, s32 lim, s32 step);
 extern s32 ApproachAngle(s16 *cur, s32 target, s32 div, s32 band, s32 step);
 extern s32 AngleDiff(s32 a, s32 b);
-extern s16 _ZN4cstd5atan2E5Fix12IiES1_(s32 y, s32 x);
+extern s16 atan2_hold_func_02009e70_1(s32 y, s32 x);
 extern s32 _ZN4cstd4fdivEii(s32 a, s32 b);
 extern s32 _ZN4cstd4sqrtEy(u64 v);
 extern u32 func_020093f4(void *p, s32 x);
@@ -348,7 +351,7 @@ s32 func_02009e70(char *self)
                                         cam->mFlags |= 0x80200;
                                     } else {
                                         Vector3 sp70 = line.GetClsnPos();
-                                        sba = _ZN4cstd5atan2E5Fix12IiES1_(sp64.x, sp64.z) + 0x8000;
+                                        sba = cstd::atan2(sp64.x, sp64.z) + 0x8000;
                                         diff = sba - cam->mAngleY;
                                         sba += (diff < 0) ? 0x4000 : -0x4000;
                                         if (cam->mTurningToTarget != 0) {
@@ -438,13 +441,13 @@ s32 func_02009e70(char *self)
                             sp14 = sp28;
                             if (sp28 > r4) {
                                 if (r7 != 0 && sp1c == &data_02086fcc) {
-                                    sb = _ZN4cstd5atan2E5Fix12IiES1_(sp34.y, Vec3_HorzLen(&sp34));
+                                    sb = cstd::atan2(sp34.y, Vec3_HorzLen(&sp34));
                                     if (sb < -0x3f80)
                                         sb = -0x3f80;
                                     else if (sb > 0x3f80)
                                         sb = 0x3f80;
                                     fp = Vec3_HorzLen(&sp40);
-                                    sp18 = _ZN4cstd5atan2E5Fix12IiES1_(-sp40.y, fp);
+                                    sp18 = cstd::atan2(-sp40.y, fp);
                                     ApproachAngle((s16 *)&sp18, sb, 0x20, 0x800, 0);
                                     t0 = (sp18 >> 4) * 2;
                                     sp40.y = FX_MUL(sp28, -data_02082214[t0]);

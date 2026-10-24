@@ -42,6 +42,9 @@
 #include "dExtModel_c.h"
 #include "dBgCh_Actr.h"
 #include "Sound.h"
+namespace cstd {
+s16 atan2(s32, s32);
+}
 
 /* Views of daObjBC_Switch_c.h and daObjFl_Coin_c.h, same member names and
    offsets: including either header renumbers this TU's @NNN labels. */
@@ -113,7 +116,7 @@ extern void _ZN5dBgPiD1Ev(void* self);
 extern void dBgCh_Actr_UpdateDiscreteNoLava_veneer(void* p);
 extern void dBgCh_Actr_UpdateContinuous_Veneer(void* p);
 extern void Matrix4x3_FromRotationY(void *m, int angle);
-extern short _ZN4cstd5atan2E5Fix12IiES1_(int a, int b);
+extern short atan2_hold_d_a_coin_1(int a, int b);
 extern int _ZN4cstd4fdivEii(int a, int b);
 }
 
@@ -701,7 +704,7 @@ void daCoin_c::func_ov002_020b1cc0()
             mHorzSpeed = 0x1c000;
             UpdatePosWithHorzSpeedAndAng();
         }
-        mPrevAngleY = _ZN4cstd5atan2E5Fix12IiES1_(mSpeedX, mSpeedZ);
+        mPrevAngleY = cstd::atan2(mSpeedX, mSpeedZ);
     }
 
     if (mWithMeshClsn.JustHitGround() != 0)
