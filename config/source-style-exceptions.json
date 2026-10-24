@@ -1002,46 +1002,6 @@
       "evidence": "origin/main:src/game/actors/d_a_star_star.c 2x _ZN9ModelAnimC1Ev; head 2x _ZN14dExtAnmModel_cC1Ev; tools/source_style.py --base origin/main"
     },
     {
-      "path": "src/game/player/Player.cpp",
-      "rule": "handspelled-member",
-      "match": "_ZN11dExtModel_c12ApplyOpacityEjj",
-      "count": 5,
-      "reason": "Respelled by the Model-family RTTI rename: src/game/player/Player.cpp on main carries the same 5 occurrence(s) as _ZN9ModelBase12ApplyOpacityEjj. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings.",
-      "evidence": "origin/main:src/game/player/Player.cpp 5x _ZN9ModelBase12ApplyOpacityEjj; head 5x _ZN11dExtModel_c12ApplyOpacityEjj; tools/source_style.py --base origin/main"
-    },
-    {
-      "path": "src/game/player/Player.cpp",
-      "rule": "handspelled-member",
-      "match": "_ZN11dExtModel_c7SetFileEP8BMD_Fileii",
-      "count": 10,
-      "reason": "Respelled by the Model-family RTTI rename: src/game/player/Player.cpp on main carries the same 10 occurrence(s) as _ZN9ModelBase7SetFileEP8BMD_Fileii. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings.",
-      "evidence": "origin/main:src/game/player/Player.cpp 10x _ZN9ModelBase7SetFileEP8BMD_Fileii; head 10x _ZN11dExtModel_c7SetFileEP8BMD_Fileii; tools/source_style.py --base origin/main"
-    },
-    {
-      "path": "src/game/player/Player.cpp",
-      "rule": "handspelled-member",
-      "match": "_ZN17dExtSimpleModel_c14SetPolygonModeEi",
-      "count": 9,
-      "reason": "Respelled by the Model-family RTTI rename: src/game/player/Player.cpp on main carries the same 9 occurrence(s) as _ZN5Model14SetPolygonModeEi. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings.",
-      "evidence": "origin/main:src/game/player/Player.cpp 9x _ZN5Model14SetPolygonModeEi; head 9x _ZN17dExtSimpleModel_c14SetPolygonModeEi; tools/source_style.py --base origin/main"
-    },
-    {
-      "path": "src/game/player/Player.cpp",
-      "rule": "handspelled-member",
-      "match": "_ZN17dExtSimpleModel_c6RenderEPK7Vector3",
-      "count": 5,
-      "reason": "Respelled by the Model-family RTTI rename: src/game/player/Player.cpp on main carries the same 5 occurrence(s) as _ZN5Model6RenderEPK7Vector3. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings.",
-      "evidence": "origin/main:src/game/player/Player.cpp 5x _ZN5Model6RenderEPK7Vector3; head 5x _ZN17dExtSimpleModel_c6RenderEPK7Vector3; tools/source_style.py --base origin/main"
-    },
-    {
-      "path": "src/game/player/Player.cpp",
-      "rule": "handspelled-member",
-      "match": "_ZN17dExtSimpleModel_c8LoadFileER13SharedFilePtr",
-      "count": 15,
-      "reason": "Respelled by the Model-family RTTI rename: src/game/player/Player.cpp on main carries the same 15 occurrence(s) as _ZN5Model8LoadFileER13SharedFilePtr. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings.",
-      "evidence": "origin/main:src/game/player/Player.cpp 15x _ZN5Model8LoadFileER13SharedFilePtr; head 15x _ZN17dExtSimpleModel_c8LoadFileER13SharedFilePtr; tools/source_style.py --base origin/main"
-    },
-    {
       "path": "src/game/stages/d_ent_obj.cpp",
       "rule": "handspelled-member",
       "match": "_ZN14dExtAnmModel_cC1Ev",
@@ -1216,38 +1176,6 @@
       "count": 1,
       "reason": "Respelled by the texture-animation RTTI rename: include/decl_TextureTransformer.h on cpp/model-family-rom-names carries the same 1 occurrence(s) as _ZN18TextureTransformerD1Ev. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings.",
       "evidence": "origin/cpp/model-family-rom-names:include/decl_TextureTransformer.h 1x _ZN18TextureTransformerD1Ev; head 1x _ZN15dExtAnmTexSRT_cD1Ev; tools/source_style.py --base origin/cpp/model-family-rom-names"
-    },
-    {
-      "path": "src/game/player/Player.cpp",
-      "rule": "handspelled-member",
-      "match": "_ZN15dExtAnmTexPat_c6UpdateER15ModelComponents",
-      "count": 7,
-      "reason": "Respelled by the texture-animation RTTI rename: src/game/player/Player.cpp on cpp/model-family-rom-names carries the same 7 occurrence(s) as _ZN15TextureSequence6UpdateER15ModelComponents. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings.",
-      "evidence": "origin/cpp/model-family-rom-names:src/game/player/Player.cpp 7x _ZN15TextureSequence6UpdateER15ModelComponents; head 7x _ZN15dExtAnmTexPat_c6UpdateER15ModelComponents; tools/source_style.py --base origin/cpp/model-family-rom-names"
-    },
-    {
-      "path": "src/game/player/Player.cpp",
-      "rule": "handspelled-member",
-      "match": "_ZN15dExtAnmTexPat_c7PrepareER8BMD_FileR8BTP_File",
-      "count": 4,
-      "reason": "Respelled by the texture-animation RTTI rename: src/game/player/Player.cpp on cpp/model-family-rom-names carries the same 4 occurrence(s) as _ZN15TextureSequence7PrepareER8BMD_FileR8BTP_File. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings.",
-      "evidence": "origin/cpp/model-family-rom-names:src/game/player/Player.cpp 4x _ZN15TextureSequence7PrepareER8BMD_FileR8BTP_File; head 4x _ZN15dExtAnmTexPat_c7PrepareER8BMD_FileR8BTP_File; tools/source_style.py --base origin/cpp/model-family-rom-names"
-    },
-    {
-      "path": "src/game/player/Player.cpp",
-      "rule": "handspelled-member",
-      "match": "_ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit",
-      "count": 6,
-      "reason": "Respelled by the texture-animation RTTI rename: src/game/player/Player.cpp on cpp/model-family-rom-names carries the same 6 occurrence(s) as _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings. SetFile then took the scalar mangling as a real member (Fix12i speed, u16 startFrame), so the extern respells to _ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit with its count unchanged.",
-      "evidence": "origin/cpp/model-family-rom-names:src/game/player/Player.cpp 6x _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj; head 6x _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj; tools/source_style.py --base origin/cpp/model-family-rom-names; daDemo_c nested-model PR: src/game/player/Player.cpp 6x _ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit, tools/source_style.py --base cpp/texanim-rom-names"
-    },
-    {
-      "path": "src/game/player/Player.cpp",
-      "rule": "handspelled-member",
-      "match": "_ZN15dExtAnmTexPat_c8LoadFileER13SharedFilePtr",
-      "count": 71,
-      "reason": "Respelled by the texture-animation RTTI rename: src/game/player/Player.cpp on cpp/model-family-rom-names carries the same 71 occurrence(s) as _ZN15TextureSequence8LoadFileER13SharedFilePtr. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings.",
-      "evidence": "origin/cpp/model-family-rom-names:src/game/player/Player.cpp 71x _ZN15TextureSequence8LoadFileER13SharedFilePtr; head 71x _ZN15dExtAnmTexPat_c8LoadFileER13SharedFilePtr; tools/source_style.py --base origin/cpp/model-family-rom-names"
     },
     {
       "path": "src/minigames/d_mg3d_esp_anim_set.cpp",
