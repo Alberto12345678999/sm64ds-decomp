@@ -28,7 +28,7 @@ struct daObjDpBrock_c : dBgActor_c {
     u8  pad_31e[0x2];
     /* The class's own model. NOT "mModel": dBgActor_c's inherited
        dExtSimpleModel_c at 0xd4 already owns that name. */
-    dExtSimpleModel_c mStepModel;                 /* 0x320 */
+    dExtSimpleModel_c mStepModel;     /* 0x320 */
     u16 mStateTimer;                  /* 0x370 - frames in the current state */
     u8  mState;                       /* 0x372 - 0 sinking, 1 rising */
     u8  pad_373[0x1];

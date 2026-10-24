@@ -24,7 +24,7 @@ struct daEykn_c : dActor_c {
     u8 pad_0d0[0x4];
     /* dExtAnmModel_c member, named by _ZN14dExtAnmModel_cD1Ev at +0xd4 -- a relocation the ROM build
        checks. D1 and not D2, so it is this type and not an inlined base. */
-    dExtAnmModel_c mModelAnim;            /* 0x0d4 */
+    dExtAnmModel_c mModelAnim; /* 0x0d4 */
     /* TextureSequence member. The cartridge's own ~daEykn_c calls _ZN15TextureSequenceD1Ev
        at +0x138 (D0/D1), a relocation the ROM build checks; recovered by
        tools/dtor_members.py. D1 and not D2, so it is this type and not an inlined base. */

@@ -76,7 +76,7 @@ void func_02012718(int a, int b);
 int  func_02053200(int x);
 void func_02016a14(void *self, int a);
 void func_02016a04(void *self, int a);
-int  func_020179b4(SharedFilePtr *f, dExtModel_c *m, int extra);
+int func_020179b4(SharedFilePtr *f, dExtModel_c *m, int extra);
 void Camera_ProjectToScreen16(void *cam, Jump3DVec *pos, short *out);
 void D3D_PlaySeAtX(int a, int b);
 void Puff_Spawn(int a, int b);

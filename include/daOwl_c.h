@@ -58,7 +58,7 @@ struct daOwl_c : dEnemyBase_c {
 
     dCcAcPos_c mdCcAcPos_c;           /* 0x110 */
     dBgCh_Actr mWithMeshClsn;         /* 0x150 */
-    dExtAnmModel_c mModelAnim;             /* 0x30c */
+    dExtAnmModel_c mModelAnim;        /* 0x30c */
     dExtShadowModel_c mShadowModel;         /* 0x370 */
     Matrix4x3 mShadowMat;             /* 0x398 -- fed to DropShadowRadHeight */
     State *mCurrentState;             /* 0x3c8 */

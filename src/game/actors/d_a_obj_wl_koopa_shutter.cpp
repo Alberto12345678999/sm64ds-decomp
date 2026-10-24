@@ -86,18 +86,19 @@ s32 daObjWlKoopaShutter_c::Behavior() {
 
 // @symbol _ZN21daObjWlKoopaShutter_c13InitResourcesEv
 s32 daObjWlKoopaShutter_c::InitResources() {
-  void *m = dExtSimpleModel_c::LoadFile(BowserShutter_ModelFile);
-  mModel.SetFile((BMD_File *)m, 1, -1);
-  UpdateModelPosAndRotY();
-  UpdateClsnPosAndRot();
-  {
-    void *k = dBgW_Kc::LoadFile(BowserShutter_ClsnFile);
-    _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-        &mMeshCollider,(int)k,&mClsnMat,0x199,mAngleY,(void*)data_ov026_02112f74);
-  }
-  if(*(int*)(data_0209caa0+4) & 0x204) return 0;
-  mMeshCollider.Enable(this);
-  return 1;
+    void *m = dExtSimpleModel_c::LoadFile(BowserShutter_ModelFile);
+    mModel.SetFile((BMD_File *)m, 1, -1);
+    UpdateModelPosAndRotY();
+    UpdateClsnPosAndRot();
+    {
+        void *k = dBgW_Kc::LoadFile(BowserShutter_ClsnFile);
+        _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
+            &mMeshCollider, (int)k, &mClsnMat, 0x199, mAngleY, (void *)data_ov026_02112f74);
+    }
+    if (*(int *)(data_0209caa0 + 4) & 0x204)
+        return 0;
+    mMeshCollider.Enable(this);
+    return 1;
 }
 
 /* Reconstructed source-style name: SM64DS proves daObjWlKoopaShutter_c through

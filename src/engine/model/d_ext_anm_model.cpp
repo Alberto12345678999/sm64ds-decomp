@@ -1,17 +1,16 @@
 //cpp
 /* dExtAnmModel_c -- dExtSimpleModel_c + Animation multiple inheritance: the animated-model
    base the scene objects embed. Cartridge class: _ZTV14dExtAnmModel_c at
-   0x0208e980 plus its Animation-side thunk vtable; the cartridge RTTI
-   names it dExtAnmModel_c (_ZTI14dExtAnmModel_c at 0x0208e924,
-   base dExtSimpleModel_c at 0x00 and dExtFrameCtrl_c at 0x50).
+   0x0208e980 plus its Animation-side thunk vtable; _ZTI14dExtAnmModel_c
+   at 0x0208e924 records bases dExtSimpleModel_c at 0x00 and
+   dExtFrameCtrl_c at 0x50.
    TU claims 0x02016714..0x020169d8: the method run, then D2, D0, D1, C1
    and C2. The two _ZThn80_ destructor thunks stay in their own block.
    Defining ~dExtAnmModel_c() emits the MI vtable group. Its secondary preamble
    sits inside _ZTV14dExtAnmModel_c's compared extent, so RTTI stays on: the
-   -0x50 word is a literal, and the manifest retargets the coined
-   _ZTI/_ZTS records onto dExtAnmModel_c, dExtSimpleModel_c and
-   dExtModel_c for that compare. The coined type strings are not the
-   cartridge's and are discarded, not linked. Written back-to-front:
+   -0x50 word is a literal, and the _ZTI/_ZTS records emitted for
+   dExtAnmModel_c, dExtSimpleModel_c and dExtModel_c compare against
+   their cartridge homes before they are discarded. Written back-to-front:
    mwccarm emits .text in reverse source order under default deferred
    codegen. The constructor and destructor stand above the methods so the
    lifecycle emits after them, D2 D0 D1 then C1 C2. */

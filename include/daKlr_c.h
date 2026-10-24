@@ -31,8 +31,8 @@
 struct daKlr_c : dEnemyBase_c {
     dCcAcPos_c  mCylClsn;          /* 0x110 */
     dBgCh_Actr  mWallClsn;         /* 0x150 */
-    dExtSimpleModel_c       mModel;            /* 0x30c */
-    dExtSimpleModel_c       mModel2;           /* 0x35c -- same matrix, second file */
+    dExtSimpleModel_c mModel;      /* 0x30c */
+    dExtSimpleModel_c mModel2;     /* 0x35c -- same matrix, second file */
     dExtShadowModel_c mShadow;           /* 0x3ac */
     s32         mState;            /* 0x3d4 -- 0 flying, 1 shot down */
     u32         mSmokeTrailID;     /* 0x3d8 -- Particle::System unique ID */

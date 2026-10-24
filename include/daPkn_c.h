@@ -38,13 +38,13 @@
 #include "dBgCh_Actr.h"
 
 struct daPkn_c : dEnemyBase_c {
-    dExtAnmModel_c       mModelAnim;         /* 0x110 */
-    dExtSimpleModel_c           mModel;             /* 0x174 -- sleep bubble */
+    dExtAnmModel_c mModelAnim;          /* 0x110 */
+    dExtSimpleModel_c mModel;           /* 0x174 -- sleep bubble */
     dBgCh_Actr      mWithMeshClsn;      /* 0x1c4 */
     dCcAc_c         mdCcAc_c1;          /* 0x380 */
     dCcAc_c         mdCcAc_c2;          /* 0x3b4 */
     dCcAcPos_c      mdCcAcPos_c;        /* 0x3e8 -- head, live only in state 2 */
-    Vector3         mBubbleScale;       /* 0x428 -- sleep-bubble dExtSimpleModel_c */
+    Vector3 mBubbleScale;               /* 0x428 -- sleep-bubble dExtSimpleModel_c */
     Vector3         mBubblePos;         /* 0x434 -- sleep-bubble world pos */
     Vector3         mHeadClsnOffset;    /* 0x440 -- head cylinder; rewritten every frame */
     Vector3         mHomePos;           /* 0x44c -- spawn point; InitResources copies 0x440 once */

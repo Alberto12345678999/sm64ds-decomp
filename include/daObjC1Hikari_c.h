@@ -17,7 +17,7 @@
  */
 struct daObjC1Hikari_c : dActor_c {
     u8 pad_0d0[4];                    /* 0x0d0 */
-    dExtSimpleModel_c mModel;                     /* 0x0d4 */
+    dExtSimpleModel_c mModel;         /* 0x0d4 */
     dCcAcPos_c mCylinder;             /* 0x124 */
     dActor_c *mTalkPlayer;            /* 0x164 */
     u16 mSoundTimers[2];              /* 0x168 */

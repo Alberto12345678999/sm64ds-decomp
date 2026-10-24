@@ -17,7 +17,7 @@
  * those six registry IDs). Retail does not store those spellings. */
 struct daObjHatenaBlock_c : dBgActor_c {
     u8  pad_31e[0x2];
-    dExtAnmModel_c mModelAnim;             /* 0x320 -- only HATENA_BLOCK (20) loads and draws it */
+    dExtAnmModel_c mModelAnim;              /* 0x320 -- only HATENA_BLOCK (20) loads and draws it */
     dExtShadowModel_c mShadowModel;         /* 0x384 */
     /* Seeded from mModel.mat4x3 by InitResources, then rebuilt every frame
        by func_ov102_02149ea4. DropShadowScaleXYZ takes this pairing. 0x3ac + 0x30 = 0x3dc. */

@@ -438,7 +438,8 @@ int daObjBlockL_c::InitResources()
     case 0x2e: mVariant = 2; break;
     }
 
-    mModel.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(*data_ov002_02108ab0[mVariant].file), 1, -1);
+    mModel.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(*data_ov002_02108ab0[mVariant].file), 1,
+                   -1);
     UpdateModelPosAndRotY();
     UpdateClsnPosAndRot();
 

@@ -44,8 +44,8 @@ struct daBasabasa_c : dEnemyBase_c {
 
     dCcAc_c mdCcAc_c;                 /* 0x110 */
     dBgCh_Actr mWithMeshClsn;         /* 0x144 */
-    dExtAnmModel_c mModelAnim1;            /* 0x300 -- flying model */
-    dExtAnmModel_c mModelAnim2;            /* 0x364 -- hanging model */
+    dExtAnmModel_c mModelAnim1;       /* 0x300 -- flying model */
+    dExtAnmModel_c mModelAnim2;       /* 0x364 -- hanging model */
     dExtShadowModel_c mShadowModel;         /* 0x3c8 */
     Matrix4x3 mShadowMatrix;          /* 0x3f0 -- coined */
     State *mCurrentState;             /* 0x420 */

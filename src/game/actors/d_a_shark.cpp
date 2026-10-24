@@ -299,8 +299,7 @@ int daShark_c::InitResources()
     /* Each PathPtr constructs at its declaration. The first call is
      * before the cylinder init and the second is after it. */
     mModelAnim.SetFile(
-        (BMD_File *)dExtSimpleModel_c::LoadFile(*(SharedFilePtr *)&data_ov090_021345a4),
-        1, -1);
+        (BMD_File *)dExtSimpleModel_c::LoadFile(*(SharedFilePtr *)&data_ov090_021345a4), 1, -1);
     dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)&data_ov090_021345ac);
     mPathID = (*(s32 *)&param1) & 0xff;
     if (mPathID < 0)

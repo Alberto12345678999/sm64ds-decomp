@@ -225,7 +225,7 @@ struct daObjTatefuda_c {
     /* dExtSimpleModel_c member. The cartridge's own ~daObjTatefuda_c calls _ZN17dExtSimpleModel_cD1Ev at +0x0d4
        (D0/D1), a relocation the ROM build checks; recovered by tools/dtor_members.py.
        D1 and not D2, so it is this type and not an inlined base. */
-    dExtSimpleModel_c mModel;                    /* 0x0d4 */
+    dExtSimpleModel_c mModel; /* 0x0d4 */
     /* dBgW_KcMbg member. The cartridge's own ~daObjTatefuda_c calls _ZN10dBgW_KcMbgD1Ev at
        +0x124 (D0/D1), a relocation the ROM build checks; recovered by
        tools/dtor_members.py. D1 and not D2, so it is this type and not an inlined base. */

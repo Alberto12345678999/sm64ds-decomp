@@ -123,8 +123,8 @@ struct daStar_c : dEnemyBase_c {
 
     dCcAcPos_c    mdCc_c;         /* 0x110 -- the touch volume: radius 100.0, height 150.0 */
     dBgCh_Actr                 mWithMeshClsn;         /* 0x150 */
-    dExtAnmModel_c                    mModelAnim1;           /* 0x30c -- the normal star */
-    dExtAnmModel_c                    mModelAnim2;           /* 0x370 -- the translucent "already collected" star */
+    dExtAnmModel_c mModelAnim1;                       /* 0x30c -- the normal star */
+    dExtAnmModel_c mModelAnim2; /* 0x370 -- the translucent "already collected" star */
     dExtShadowModel_c                  mShadowModel;          /* 0x3d4 */
 
     daStarShadowMtx              mShadowMtx;            /* 0x3fc */

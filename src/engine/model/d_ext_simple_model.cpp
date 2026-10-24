@@ -1,6 +1,6 @@
 //cpp
-/* dExtSimpleModel_c -- the concrete model class; the cartridge calls it dExtSimpleModel_c
-   (_ZTI17dExtSimpleModel_c at 0x0208e794, _ZTV17dExtSimpleModel_c at 0x0208e90c). TU claims
+/* dExtSimpleModel_c -- the concrete model class (_ZTI17dExtSimpleModel_c at
+   0x0208e794, _ZTV17dExtSimpleModel_c at 0x0208e90c). TU claims
    0x020169d8..0x02017168: the dExtSimpleModel_c run, the dExtModel_c edge interleaved with
    it, and the unnamed helpers between them. Written back-to-front: mwccarm
    emits .text in reverse source order under default deferred codegen.
@@ -26,11 +26,12 @@
 #include "Memory.h"
 #include "Heap.h"
 
-/* The cartridge homes this class's RTTI under the dExtSimpleModel_c spelling, so
-   _ZTS17dExtSimpleModel_c/_ZTI17dExtSimpleModel_c records emitted under the project spelling would
-   have no configured home. Compiling with RTTI off emits no records at
-   all; the vtable preamble's typeinfo word deadstrips with the rest of the
-   data sections. dExtModel_c's vtable is the same shape. */
+/* Compiling with RTTI off emits no _ZTI/_ZTS records at all; the vtable
+   preamble's typeinfo word deadstrips with the rest of the data sections.
+   dExtModel_c's vtable is the same shape. The pragma dates from when the
+   class carried a coined name whose records had no cartridge home; under
+   the cartridge spelling they would, so RTTI on is open as a manifest
+   change (notes/model-rtti-names.md). */
 #pragma RTTI off
 
 extern Matrix4x3 IDENTITY_MATRIX4X3;
@@ -233,8 +234,7 @@ extern "C" void CleanCommonModelDataArr(void) {
    transformsBuf zero. The cartridge keeps both variants. */
 // @symbol _ZN17dExtSimpleModel_cC2Ev
 // @symbol _ZN17dExtSimpleModel_cC1Ev
-dExtSimpleModel_c::dExtSimpleModel_c() : transformsBuf(0)
-{
+dExtSimpleModel_c::dExtSimpleModel_c() : transformsBuf(0) {
     mat4x3 = IDENTITY_MATRIX4X3;
 }
 
@@ -243,21 +243,18 @@ dExtSimpleModel_c::dExtSimpleModel_c() : transformsBuf(0)
    obligation -- handing transformsBuf back through the delete veneer. D0
    follows with the dExtModel_c operator delete (Memory::operator_delete2). */
 // @symbol _ZN17dExtSimpleModel_cD1Ev
-dExtSimpleModel_c::~dExtSimpleModel_c()
-{
+dExtSimpleModel_c::~dExtSimpleModel_c() {
     if (transformsBuf)
         func_0203cbc0(transformsBuf);
 }
 
 // @symbol _ZN17dExtSimpleModel_c11UpdateVertsEv
-void dExtSimpleModel_c::UpdateVerts()
-{
+void dExtSimpleModel_c::UpdateVerts() {
     data.UpdateVertsUsingBones();
 }
 
 // @symbol _ZN17dExtSimpleModel_c9DoSetFileEPcii
-int dExtSimpleModel_c::DoSetFile(char *file_, int a, int b)
-{
+int dExtSimpleModel_c::DoSetFile(char *file_, int a, int b) {
     BMD_File *file = (BMD_File *)file_;
     void *buffer;
     AddToCommonModelDataArr(*file);
@@ -273,8 +270,7 @@ int dExtSimpleModel_c::DoSetFile(char *file_, int a, int b)
 }
 
 // @symbol _ZN17dExtSimpleModel_c9Virtual10ER9Matrix4x3
-void dExtSimpleModel_c::Virtual10(Matrix4x3 &mat)
-{
+void dExtSimpleModel_c::Virtual10(Matrix4x3 &mat) {
     /* The copy is one flat 12-word ldm/stm run in the ROM. CW copies the
        nested Matrix4x3 (Matrix3x3 + Vector3) memberwise, which is bigger,
        so it goes through a flat 12-word view instead. */
@@ -284,8 +280,7 @@ void dExtSimpleModel_c::Virtual10(Matrix4x3 &mat)
 }
 
 // @symbol _ZN17dExtSimpleModel_c6RenderEPK7Vector3
-void dExtSimpleModel_c::Render(const Vector3 *scale)
-{
+void dExtSimpleModel_c::Render(const Vector3 *scale) {
     Matrix4x3 temp;
     MulMat4x3Mat4x3(&mat4x3, &data_0209b3ec, &temp);
     data.Render(&temp, (Vector3 *)scale);

@@ -133,7 +133,8 @@ int daObjYajirusi_c::InitResources()
     }
 
     u32 modelIndex = mVariant;
-    void *model = dExtSimpleModel_c::LoadFile(*(SharedFilePtr *)data_ov098_0213c380[modelIndex].value);
+    void *model =
+        dExtSimpleModel_c::LoadFile(*(SharedFilePtr *)data_ov098_0213c380[modelIndex].value);
     mModel.dExtModel_c::SetFile((BMD_File *)model, 1, -1);
     mShadowModel.InitCuboid();
     UpdateModelPosAndRotY();

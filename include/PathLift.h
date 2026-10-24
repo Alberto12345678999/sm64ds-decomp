@@ -25,7 +25,7 @@
 
 struct dPathLiftActor_c : dBgActor_c {
     u8  pad_31e[0x2];
-    dExtSimpleModel_c mModels[3];                     /* 0x320 */
+    dExtSimpleModel_c mModels[3];         /* 0x320 */
     Vector3 mInitialPos;                  /* 0x410 */
     Vector3_16 mInitialAngle;             /* 0x41c */
     Vector3_16 mPrevPathAngle;            /* 0x422 */
@@ -104,7 +104,7 @@ struct dPathLiftActor_c {
     /* dExtSimpleModel_c member. The cartridge's own base destructor calls _ZN17dExtSimpleModel_cD1Ev at +0x0d4
        (D0/D1), a relocation the ROM build checks; recovered by tools/dtor_members.py.
        D1 and not D2, so it is this type and not an inlined base. */
-    dExtSimpleModel_c mModel;            /* 0x0d4 */
+    dExtSimpleModel_c mModel; /* 0x0d4 */
     /* dBgW_KcMbg member. The cartridge's base destructor calls _ZN10dBgW_KcMbgD1Ev at
        +0x124 (D0/D1), a relocation the ROM build checks; recovered by
        tools/dtor_members.py. D1 and not D2, so it is this type and not an inlined base. */

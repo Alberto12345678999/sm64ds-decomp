@@ -29,8 +29,8 @@ struct daBrq_c : dActor_c {
     };
 
     u8                        pad_0d0[0x4];
-    dExtAnmModel_c                 mModelAnim;                    /* 0x0d4 */
-    dExtSimpleModel_c                     mModel;                        /* 0x138 */
+    dExtAnmModel_c mModelAnim;                               /* 0x0d4 */
+    dExtSimpleModel_c mModel;                                /* 0x138 */
     TextureSequence           mTextureSequence;              /* 0x188 */
     TextureTransformer        mTextureTransformer;           /* 0x19c */
     dExtShadowModel_c               mShadowModel;                  /* 0x1b0 */

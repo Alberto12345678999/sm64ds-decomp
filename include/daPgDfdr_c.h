@@ -36,7 +36,7 @@ extern "C" void *_ZN7fBase_cnwEj(unsigned size);
  */
 
 struct daPgDfdr_c : dBgActor_c {
-    dExtAnmModel_c mModelAnim;                  /* 0x320 */
+    dExtAnmModel_c mModelAnim;             /* 0x320 */
     TextureSequence mTextureSequence;      /* 0x384 */
     dCcAc_c mdCcAc_c;                      /* 0x398 */
     void *mStateTable;                     /* 0x3cc */

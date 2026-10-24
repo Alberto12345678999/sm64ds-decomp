@@ -63,9 +63,9 @@ struct dExtSimpleModel_c : dExtModel_c {
 #ifdef _MSC_VER
     virtual void Destructor1();                       /* slot 0 (D1) */
     virtual void Destructor0();                       /* slot 1 (D0) */
-    ~dExtSimpleModel_c();                                         /* no slot */
+    ~dExtSimpleModel_c();                             /* no slot */
 #else
-    virtual ~dExtSimpleModel_c();                                 /* slots 0 (D1), 1 (D0) */
+    virtual ~dExtSimpleModel_c(); /* slots 0 (D1), 1 (D0) */
 #endif
     virtual int DoSetFile(char *file, int a, int b);  /* slot 2 */
     virtual void UpdateVerts();                       /* slot 3 */
@@ -91,7 +91,7 @@ struct dExtSimpleModel_c : dExtModel_c {
 
 #ifndef SM64DS_PLATFORM_PC
 /* ROM layout under mwccarm; host ABI divergence is tracked separately. */
-typedef char Model_size_must_be_0x50[sizeof(dExtSimpleModel_c) == 0x50 ? 1 : -1];
+typedef char dExtSimpleModel_c_size_must_be_0x50[sizeof(dExtSimpleModel_c) == 0x50 ? 1 : -1];
 #endif
 
 #else

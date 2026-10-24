@@ -48,9 +48,9 @@ struct dExtBlendAnmModel_c : dExtAnmModel_c {
 #ifdef _MSC_VER
     virtual void Destructor1();                           /* slot 0 (D1) */
     virtual void Destructor0();                           /* slot 1 (D0) */
-    ~dExtBlendAnmModel_c();                                    /* no slot */
+    ~dExtBlendAnmModel_c();                               /* no slot */
 #else
-    virtual ~dExtBlendAnmModel_c();                            /* slots 0 (D1), 1 (D0) */
+    virtual ~dExtBlendAnmModel_c(); /* slots 0 (D1), 1 (D0) */
 #endif
     virtual int DoSetFile(char *file, int a, int b);      /* slot 2 */
     virtual void UpdateVerts();                           /* slot 3 */
@@ -77,12 +77,11 @@ struct dExtBlendAnmModel_c : dExtAnmModel_c {
        satisfies the rule in include/dActor_c.h that mwcc only inlines the member
        when it is in the class or its immediate base. */
     void operator delete(void *ptr) { _ZN6Memory16operator_delete2EPv(ptr); }
-
 };
 
 #ifndef SM64DS_PLATFORM_PC
 /* ROM layout under mwccarm; host ABI divergence is tracked separately. */
-typedef char BlendModelAnim_size_must_be_0x70[sizeof(dExtBlendAnmModel_c) == 0x70 ? 1 : -1];
+typedef char dExtBlendAnmModel_c_size_must_be_0x70[sizeof(dExtBlendAnmModel_c) == 0x70 ? 1 : -1];
 #endif
 
 #else

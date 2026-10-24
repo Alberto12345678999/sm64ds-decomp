@@ -49,7 +49,7 @@ struct dCapEnemy_c : dEnemyBase_c {
        Bit 3 and bit 7 are set by ReleaseCap as release markers, which is why
        the reads mask and the writes OR. */
     u8  mCapId;                   /* 0x113 */
-    dExtSimpleModel_c   mModel;               /* 0x114 */
+    dExtSimpleModel_c mModel;     /* 0x114 */
     dCapIcon_c mCapIcon;          /* 0x164 */
 
     dCapEnemy_c();

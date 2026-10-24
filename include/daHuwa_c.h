@@ -41,7 +41,7 @@
 #include "dBgCh_Actr.h"
 
 struct daHuwa_c : dEnemyBase_c {
-    dExtAnmModel_c                    mModelAnim;            /* 0x110 */
+    dExtAnmModel_c mModelAnim;                                /* 0x110 */
     dExtShadowModel_c                  mShadowModel;          /* 0x174 */
     dCcAc_c                      mdCcAc_c;              /* 0x19c */
     dBgCh_Actr                   mWithMeshClsn;         /* 0x1d0 */

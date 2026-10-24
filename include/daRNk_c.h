@@ -42,7 +42,7 @@ struct Player;
 struct daRNk_c : dEnemyBase_c {
     dCcAc_c         mdCcAc_c;                        /* 0x110 */
     dBgCh_Actr      mWithMeshClsn;                   /* 0x144 */
-    dExtAnmModel_c       mModelAnim;                      /* 0x300 */
+    dExtAnmModel_c mModelAnim;                       /* 0x300 */
     dExtShadowModel_c     mShadowModel;                    /* 0x364 */
     s32             mState;                          /* 0x38c -- State */
     /* Step within the current state. OFFER_RACE, RACE and POST_RACE_TALK

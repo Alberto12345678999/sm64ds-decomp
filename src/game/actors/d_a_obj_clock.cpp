@@ -115,7 +115,8 @@ int daObjClock_c::InitResources()
         mHandIndex = 0;
     else
         mHandIndex = 1;
-    mModel.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(*data_ov013_021116b0[mHandIndex]), 1, -1);
+    mModel.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(*data_ov013_021116b0[mHandIndex]), 1,
+                   -1);
     func_ov013_02111430();
     return 1;
 }

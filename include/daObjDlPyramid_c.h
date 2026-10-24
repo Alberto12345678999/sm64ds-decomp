@@ -23,7 +23,7 @@ struct daObjDlPyramid_c : dBgActor_c {
     u8  pad_31e[0x2];
     /* The class's own model. NOT "mModel": dBgActor_c's inherited
        dExtSimpleModel_c at 0xd4 already owns that name. */
-    dExtSimpleModel_c mTopModel;                 /* 0x320 */
+    dExtSimpleModel_c mTopModel; /* 0x320 */
     /* The collider's own matrix: InitResources passes it as the
        `const Matrix4x3 &' argument of dBgW_KcMbg::SetFile, and the per-frame
        collider update rebuilds it from the yaw and the actor position.

@@ -61,7 +61,7 @@ struct daDossy_c : dActor_c {
     u16 mRideCooldown;          /* 0x0e6 */
     u8  mHasCap;                /* 0x0e8 */
     u8  pad_0e9[0x3];
-    dExtAnmModel_c mModelAnim;       /* 0x0ec */
+    dExtAnmModel_c mModelAnim;    /* 0x0ec */
     DorriePlatform mPlatforms[7]; /* 0x150 */
     dBgCh_Actr mWithMeshClsn;   /* 0xf50 */
     dCcAc_c mCylClsn1;          /* 0x110c */

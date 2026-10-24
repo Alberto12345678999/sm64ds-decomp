@@ -40,9 +40,9 @@ struct dExtAnm2Model_c : dExtAnmModel_c {
 #ifdef _MSC_VER
     virtual void Destructor1();                /* slot 0 (D1) */
     virtual void Destructor0();                /* slot 1 (D0) */
-    ~dExtAnm2Model_c();                             /* no slot */
+    ~dExtAnm2Model_c();                        /* no slot */
 #else
-    virtual ~dExtAnm2Model_c();                     /* slots 0 (D1), 1 (D0) */
+    virtual ~dExtAnm2Model_c(); /* slots 0 (D1), 1 (D0) */
 #endif
 
     /* DECLARED, defined out of line in src/engine/model/d_ext_anm2_model.cpp as real
@@ -65,12 +65,11 @@ struct dExtAnm2Model_c : dExtAnmModel_c {
        satisfies the rule in include/dActor_c.h that mwcc only inlines the member
        when it is in the class or its immediate base. */
     void operator delete(void *ptr) { _ZN6Memory16operator_delete2EPv(ptr); }
-
 };
 
 #ifndef SM64DS_PLATFORM_PC
 /* ROM layout under mwccarm; host ABI divergence is tracked separately. */
-typedef char ModelAnim2_size_must_be_0x78[sizeof(dExtAnm2Model_c) == 0x78 ? 1 : -1];
+typedef char dExtAnm2Model_c_size_must_be_0x78[sizeof(dExtAnm2Model_c) == 0x78 ? 1 : -1];
 #endif
 
 #endif /* __cplusplus */

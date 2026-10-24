@@ -22,7 +22,7 @@
  */
 
 struct daObjRcCarpet_c : dPathLiftActor_c {
-    dExtAnmModel_c mModelAnim;      /* 0x450 */
+    dExtAnmModel_c mModelAnim; /* 0x450 */
     u8  pad_4b4[0x8];
     /* How far the carpet sags under a rider: Behavior eases it toward
        -0x14000 (20 units down) at 0x5000 a frame while mAfterClsnRan is

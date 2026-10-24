@@ -22,7 +22,7 @@ extern "C" void *_ZN7fBase_cnwEj(unsigned size);
  */
 struct daMcFlag_c : dActor_c {
     u8        pad_0d0[0x4];
-    dExtAnmModel_c mModelAnim;       /* 0x0d4 */
+    dExtAnmModel_c mModelAnim; /* 0x0d4 */
 
     /* INLINE IS LOAD-BEARING. Out of line, mwccarm emits D0 before D1
        (cartridge is 0x02112078 D1 then 0x021120a8 D0) plus a D2 with no

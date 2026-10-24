@@ -183,7 +183,7 @@ int daBmb_c::InitResources()
 
     dExtFrameCtrl_c::LoadFile(data_ov102_0214e9c0);
     dExtFrameCtrl_c::LoadFile(data_ov102_0214e9c8);
-    bmd = (BMD_File*)dExtSimpleModel_c::LoadFile(data_ov002_0210d9e0);
+    bmd = (BMD_File *)dExtSimpleModel_c::LoadFile(data_ov002_0210d9e0);
     if (mModelAnim.SetFile(bmd, 1, -1) == 0)
         return 0;
     if (mShadowModel.InitCylinder() == 0)

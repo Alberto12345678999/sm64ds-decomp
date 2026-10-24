@@ -236,7 +236,8 @@ short Vec3_HorzAngle(const Vector3 *a, const Vector3 *b);
  * declaration and not without it. The return-type disagreement against the
  * void definition is deliberate and banked. */
 /* local extern: func_ov064_02116560 tail-forwards SetAnim r0 as its own int result, so the int-returning spelling is load-bearing; byte-proved */
-extern "C" int _ZN14dExtAnmModel_c7SetAnimEP8BCA_Fileiit(dExtAnmModel_c *, BCA_File *, int, Fix12i, u16);
+extern "C" int _ZN14dExtAnmModel_c7SetAnimEP8BCA_Fileiit(dExtAnmModel_c *, BCA_File *, int, Fix12i,
+                                                         u16);
 int _Z14ApproachLinearRiii(int *dst, int target, int rate);
 
 void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(void* a, void* sm, void* mtx, int rad, int h, unsigned int x);

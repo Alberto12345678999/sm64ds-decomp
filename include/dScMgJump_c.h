@@ -111,7 +111,7 @@ struct dScMgJump_c : dScMgD3DBase_c {
     s32   mAccumStep;      /* 0x5010 -- Fix12 */
     s16   mStateTimer;     /* 0x5014 -- countdown to the state change */
     u8    pad_5016[0x6];   /* 0x5016 */
-    dExtSimpleModel_c mModel;          /* 0x501c -- 0x50, destroyed last, see banner */
+    dExtSimpleModel_c mModel;     /* 0x501c -- 0x50, destroyed last, see banner */
     dMgJump3DMario_c mPlayers[3]; /* 0x506c -- RTTI-proven element type */
     u8    mArray2[0x5a0];  /* 0x5294 -- 6 * 0xf0, elem dtor Heyho_Destruct */
 };

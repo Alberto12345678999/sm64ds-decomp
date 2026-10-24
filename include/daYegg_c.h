@@ -58,7 +58,7 @@ enum daYegg_Flag {
 struct daYegg_c : dEnemyBase_c {
     dCcAc_c             mdCcAc_c;               /* 0x110 */
     dBgCh_Actr          mWithMeshClsn;          /* 0x144 */
-    dExtAnmModel_c           mModelAnim;             /* 0x300 */
+    dExtAnmModel_c mModelAnim;                  /* 0x300 */
     dExtShadowModel_c         mShadowModel;           /* 0x364 */
     /* The ROM loads this WORD and passes it to _ZN6Player16IsInsideOfCannonEv as that
        function's `this`, which is an object address -- so the word is a Player *.

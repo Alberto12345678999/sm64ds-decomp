@@ -48,7 +48,7 @@
 
 struct daKuriKing_c : dEnemyBase_c {
     dCcAcPos_c mdCc_cs[4];  /* 0x110 */
-    dExtAnmModel_c mModelAnim;                         /* 0x210 */
+    dExtAnmModel_c mModelAnim;                    /* 0x210 */
     dExtShadowModel_c mShadowModels[3];           /* 0x274 */
     /* One drop-shadow matrix per foot. func_ov074_02121800 sets each to the
        identity with that foot's mCylClsnPos x/z and mPosY (>> 3) as translation

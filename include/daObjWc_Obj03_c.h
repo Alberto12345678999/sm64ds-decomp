@@ -31,7 +31,7 @@ extern "C" void *_ZN7fBase_cnwEj(unsigned size);
  */
 struct daObjWc_Obj03_c : dActor_c {
     u8      pad_0d0[0x4];
-    dExtSimpleModel_c   mModel;             /* 0x0d4 */
+    dExtSimpleModel_c mModel;   /* 0x0d4 */
     dCcAc_c mCylinder;          /* 0x0124 */
     u32     mWaterID;           /* 0x0158 -- unique ID of actor 0x65 */
     u8      mWaterParam;        /* 0x015c -- selects the matching WDW water */

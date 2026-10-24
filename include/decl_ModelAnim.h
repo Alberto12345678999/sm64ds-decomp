@@ -20,11 +20,10 @@
 extern "C" {
 #endif
 
-extern void _ZN14dExtAnmModel_c6RenderEPK7Vector3(void*, void*);
-extern void *_ZN14dExtAnmModel_cC1Ev(void*);
-extern void *_ZN14dExtAnmModel_cC2Ev(void*);
-extern void _ZN14dExtAnmModel_cD1Ev(void*);
-
+extern void _ZN14dExtAnmModel_c6RenderEPK7Vector3(void *, void *);
+extern void *_ZN14dExtAnmModel_cC1Ev(void *);
+extern void *_ZN14dExtAnmModel_cC2Ev(void *);
+extern void _ZN14dExtAnmModel_cD1Ev(void *);
 
 #ifdef __cplusplus
 }

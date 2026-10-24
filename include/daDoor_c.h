@@ -93,7 +93,7 @@ struct daDoor_c : dActor_c {
     /* Named by daDoor_c_classInit's own _ZN14dExtAnmModel_cC1Ev call at +0xd4 -- a
        relocation the ROM build checks, same idiom as include/dBgActor_c.h's
        mModel. */
-    dExtAnmModel_c mModel;        /* 0x0d4 */
+    dExtAnmModel_c mModel; /* 0x0d4 */
 
     /* This class's own storage, 0x138..0x147 -- see SIZE above.
        The decoration group. A door variant may hang a second model off itself. Only
@@ -118,7 +118,7 @@ struct daDoor_c : dActor_c {
                        0xc; mKeyModelIdx + 1 (taken before that re-zero, so
                        param1 - 7) indexes LoadKeyModels/data_ov089_02132894.
        [src/game/actors/d_a_door.cpp] */
-    dExtSimpleModel_c *mKeyModel;          /* 0x138 -- owned, see SIZE above */
+    dExtSimpleModel_c *mKeyModel; /* 0x138 -- owned, see SIZE above */
     void *mKeyFile;           /* 0x13c -- released through SharedFilePtr */
     /* The current state: a 16-byte {enter, execute} pair of
        pointers-to-member, one of the nine tables data_ov100_021488a4 ..
@@ -207,7 +207,7 @@ struct daDoor_c {
     struct dActor_c base;    /* 0x000..0x0cf */
     u8  pad_0d0[0x4];
     dExtAnmModel_c mModel;        /* 0x0d4..0x137 */
-    dExtSimpleModel_c *mKeyModel;          /* 0x138 -- owned, see SIZE above */
+    dExtSimpleModel_c *mKeyModel; /* 0x138 -- owned, see SIZE above */
     void *mKeyFile;           /* 0x13c -- released through SharedFilePtr */
     void *mState;                 /* 0x140 -- the state pair, see SIZE above */
     s8   mKeyModelIdx;            /* 0x144 -- key-model index */

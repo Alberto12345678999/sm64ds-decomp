@@ -784,6 +784,422 @@
       "count": 2,
       "reason": "InvMat4x3.c is C and cannot name the C++ namespaced cstd::reciprocal_async, so it declares and calls the mangled symbol directly. This renames the file's two pre-existing occurrences of the retired _ZN4cstd16reciprocal_asyncE5Fix12IiE spelling and is not new debt. The two occurrences are the local extern and its single call.",
       "evidence": "src/cstd.cpp: cstd::reciprocal_async(int) at 0x02053090 size 0x3c MATCH under 2004/b56; InvMat4x3 MATCH with the renamed extern (PR #4293); the local extern carries a 'local extern:' reason at InvMat4x3.c:4."
+    },
+    {
+      "path": "include/dScMgJump2_c.h",
+      "rule": "handspelled-member",
+      "match": "_ZN17dExtSimpleModel_cD1Ev",
+      "count": 2,
+      "reason": "Respelled by the Model-family RTTI rename: include/dScMgJump2_c.h on main carries the same 2 occurrence(s) as _ZN5ModelD1Ev. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings.",
+      "evidence": "origin/main:include/dScMgJump2_c.h 2x _ZN5ModelD1Ev; head 2x _ZN17dExtSimpleModel_cD1Ev; tools/source_style.py --base origin/main"
+    },
+    {
+      "path": "include/dScMgRoulette_c.h",
+      "rule": "handspelled-member",
+      "match": "_ZN17dExtSimpleModel_cD1Ev",
+      "count": 3,
+      "reason": "Respelled by the Model-family RTTI rename: include/dScMgRoulette_c.h on main carries the same 3 occurrence(s) as _ZN5ModelD1Ev. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings.",
+      "evidence": "origin/main:include/dScMgRoulette_c.h 3x _ZN5ModelD1Ev; head 3x _ZN17dExtSimpleModel_cD1Ev; tools/source_style.py --base origin/main"
+    },
+    {
+      "path": "include/decl_BlendModelAnim.h",
+      "rule": "handspelled-member",
+      "match": "_ZN19dExtBlendAnmModel_cC1Ev",
+      "count": 1,
+      "reason": "Respelled by the Model-family RTTI rename: include/decl_BlendModelAnim.h on main carries the same 1 occurrence(s) as _ZN14BlendModelAnimC1Ev. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings.",
+      "evidence": "origin/main:include/decl_BlendModelAnim.h 1x _ZN14BlendModelAnimC1Ev; head 1x _ZN19dExtBlendAnmModel_cC1Ev; tools/source_style.py --base origin/main"
+    },
+    {
+      "path": "include/decl_BlendModelAnim.h",
+      "rule": "handspelled-member",
+      "match": "_ZN19dExtBlendAnmModel_cD1Ev",
+      "count": 1,
+      "reason": "Respelled by the Model-family RTTI rename: include/decl_BlendModelAnim.h on main carries the same 1 occurrence(s) as _ZN14BlendModelAnimD1Ev. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings.",
+      "evidence": "origin/main:include/decl_BlendModelAnim.h 1x _ZN14BlendModelAnimD1Ev; head 1x _ZN19dExtBlendAnmModel_cD1Ev; tools/source_style.py --base origin/main"
+    },
+    {
+      "path": "include/decl_Model.h",
+      "rule": "handspelled-member",
+      "match": "_ZN17dExtSimpleModel_c12HideMaterialEii",
+      "count": 1,
+      "reason": "Respelled by the Model-family RTTI rename: include/decl_Model.h on main carries the same 1 occurrence(s) as _ZN5Model12HideMaterialEii. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings.",
+      "evidence": "origin/main:include/decl_Model.h 1x _ZN5Model12HideMaterialEii; head 1x _ZN17dExtSimpleModel_c12HideMaterialEii; tools/source_style.py --base origin/main"
+    },
+    {
+      "path": "include/decl_Model.h",
+      "rule": "handspelled-member",
+      "match": "_ZN17dExtSimpleModel_c12ShowMaterialEii",
+      "count": 1,
+      "reason": "Respelled by the Model-family RTTI rename: include/decl_Model.h on main carries the same 1 occurrence(s) as _ZN5Model12ShowMaterialEii. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings.",
+      "evidence": "origin/main:include/decl_Model.h 1x _ZN5Model12ShowMaterialEii; head 1x _ZN17dExtSimpleModel_c12ShowMaterialEii; tools/source_style.py --base origin/main"
+    },
+    {
+      "path": "include/decl_Model.h",
+      "rule": "handspelled-member",
+      "match": "_ZN17dExtSimpleModel_c13GetVramOffsetEj",
+      "count": 1,
+      "reason": "Respelled by the Model-family RTTI rename: include/decl_Model.h on main carries the same 1 occurrence(s) as _ZN5Model13GetVramOffsetEj. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings.",
+      "evidence": "origin/main:include/decl_Model.h 1x _ZN5Model13GetVramOffsetEj; head 1x _ZN17dExtSimpleModel_c13GetVramOffsetEj; tools/source_style.py --base origin/main"
+    },
+    {
+      "path": "include/decl_Model.h",
+      "rule": "handspelled-member",
+      "match": "_ZN17dExtSimpleModel_c13LoadTexAndPalER8BMD_File",
+      "count": 1,
+      "reason": "Respelled by the Model-family RTTI rename: include/decl_Model.h on main carries the same 1 occurrence(s) as _ZN5Model13LoadTexAndPalER8BMD_File. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings.",
+      "evidence": "origin/main:include/decl_Model.h 1x _ZN5Model13LoadTexAndPalER8BMD_File; head 1x _ZN17dExtSimpleModel_c13LoadTexAndPalER8BMD_File; tools/source_style.py --base origin/main"
+    },
+    {
+      "path": "include/decl_Model.h",
+      "rule": "handspelled-member",
+      "match": "_ZN17dExtSimpleModel_cC1Ev",
+      "count": 1,
+      "reason": "Respelled by the Model-family RTTI rename: include/decl_Model.h on main carries the same 1 occurrence(s) as _ZN5ModelC1Ev. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings.",
+      "evidence": "origin/main:include/decl_Model.h 1x _ZN5ModelC1Ev; head 1x _ZN17dExtSimpleModel_cC1Ev; tools/source_style.py --base origin/main"
+    },
+    {
+      "path": "include/decl_Model.h",
+      "rule": "handspelled-member",
+      "match": "_ZN17dExtSimpleModel_cC2Ev",
+      "count": 1,
+      "reason": "Respelled by the Model-family RTTI rename: include/decl_Model.h on main carries the same 1 occurrence(s) as _ZN5ModelC2Ev. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings.",
+      "evidence": "origin/main:include/decl_Model.h 1x _ZN5ModelC2Ev; head 1x _ZN17dExtSimpleModel_cC2Ev; tools/source_style.py --base origin/main"
+    },
+    {
+      "path": "include/decl_Model.h",
+      "rule": "handspelled-member",
+      "match": "_ZN17dExtSimpleModel_cD1Ev",
+      "count": 1,
+      "reason": "Respelled by the Model-family RTTI rename: include/decl_Model.h on main carries the same 1 occurrence(s) as _ZN5ModelD1Ev. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings.",
+      "evidence": "origin/main:include/decl_Model.h 1x _ZN5ModelD1Ev; head 1x _ZN17dExtSimpleModel_cD1Ev; tools/source_style.py --base origin/main"
+    },
+    {
+      "path": "include/decl_ModelAnim.h",
+      "rule": "handspelled-member",
+      "match": "_ZN14dExtAnmModel_c6RenderEPK7Vector3",
+      "count": 1,
+      "reason": "Respelled by the Model-family RTTI rename: include/decl_ModelAnim.h on main carries the same 1 occurrence(s) as _ZN9ModelAnim6RenderEPK7Vector3. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings.",
+      "evidence": "origin/main:include/decl_ModelAnim.h 1x _ZN9ModelAnim6RenderEPK7Vector3; head 1x _ZN14dExtAnmModel_c6RenderEPK7Vector3; tools/source_style.py --base origin/main"
+    },
+    {
+      "path": "include/decl_ModelAnim.h",
+      "rule": "handspelled-member",
+      "match": "_ZN14dExtAnmModel_cC1Ev",
+      "count": 1,
+      "reason": "Respelled by the Model-family RTTI rename: include/decl_ModelAnim.h on main carries the same 1 occurrence(s) as _ZN9ModelAnimC1Ev. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings.",
+      "evidence": "origin/main:include/decl_ModelAnim.h 1x _ZN9ModelAnimC1Ev; head 1x _ZN14dExtAnmModel_cC1Ev; tools/source_style.py --base origin/main"
+    },
+    {
+      "path": "include/decl_ModelAnim.h",
+      "rule": "handspelled-member",
+      "match": "_ZN14dExtAnmModel_cC2Ev",
+      "count": 1,
+      "reason": "Respelled by the Model-family RTTI rename: include/decl_ModelAnim.h on main carries the same 1 occurrence(s) as _ZN9ModelAnimC2Ev. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings.",
+      "evidence": "origin/main:include/decl_ModelAnim.h 1x _ZN9ModelAnimC2Ev; head 1x _ZN14dExtAnmModel_cC2Ev; tools/source_style.py --base origin/main"
+    },
+    {
+      "path": "include/decl_ModelAnim.h",
+      "rule": "handspelled-member",
+      "match": "_ZN14dExtAnmModel_cD1Ev",
+      "count": 1,
+      "reason": "Respelled by the Model-family RTTI rename: include/decl_ModelAnim.h on main carries the same 1 occurrence(s) as _ZN9ModelAnimD1Ev. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings.",
+      "evidence": "origin/main:include/decl_ModelAnim.h 1x _ZN9ModelAnimD1Ev; head 1x _ZN14dExtAnmModel_cD1Ev; tools/source_style.py --base origin/main"
+    },
+    {
+      "path": "src/engine/model/d_ext_anm_model.cpp",
+      "rule": "unknown-field",
+      "match": "unk_00",
+      "count": 1,
+      "reason": "Carried unchanged from src/engine/model/ModelAnim.cpp, which this PR moves to src/engine/model/d_ext_anm_model.cpp (the Model-family RTTI rename rewrites enough of the file that git no longer pairs the two).",
+      "evidence": "origin/main:src/engine/model/ModelAnim.cpp 1x unk_00; head 1x unk_00; tools/source_style.py --base origin/main"
+    },
+    {
+      "path": "src/game/actors/d_a_demo.cpp",
+      "rule": "handspelled-member",
+      "match": "_ZN14dExtAnmModel_cC2Ev",
+      "count": 3,
+      "reason": "Respelled by the Model-family RTTI rename: src/game/actors/d_a_demo.cpp on main carries the same 3 occurrence(s) as _ZN9ModelAnimC2Ev. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings.",
+      "evidence": "origin/main:src/game/actors/d_a_demo.cpp 3x _ZN9ModelAnimC2Ev; head 3x _ZN14dExtAnmModel_cC2Ev; tools/source_style.py --base origin/main"
+    },
+    {
+      "path": "src/game/actors/d_a_demo.cpp",
+      "rule": "handspelled-member",
+      "match": "_ZN17dExtSimpleModel_cC2Ev",
+      "count": 4,
+      "reason": "Respelled by the Model-family RTTI rename: src/game/actors/d_a_demo.cpp on main carries the same 4 occurrence(s) as _ZN5ModelC2Ev. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings.",
+      "evidence": "origin/main:src/game/actors/d_a_demo.cpp 4x _ZN5ModelC2Ev; head 4x _ZN17dExtSimpleModel_cC2Ev; tools/source_style.py --base origin/main"
+    },
+    {
+      "path": "src/game/actors/d_a_dp_lift.cpp",
+      "rule": "handspelled-member",
+      "match": "_ZN17dExtSimpleModel_cC1Ev",
+      "count": 2,
+      "reason": "Respelled by the Model-family RTTI rename: src/game/actors/d_a_dp_lift.cpp on main carries the same 2 occurrence(s) as _ZN5ModelC1Ev. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings.",
+      "evidence": "origin/main:src/game/actors/d_a_dp_lift.cpp 2x _ZN5ModelC1Ev; head 2x _ZN17dExtSimpleModel_cC1Ev; tools/source_style.py --base origin/main"
+    },
+    {
+      "path": "src/game/actors/d_a_obj_path_lift.cpp",
+      "rule": "handspelled-member",
+      "match": "_ZN17dExtSimpleModel_cC1Ev",
+      "count": 2,
+      "reason": "Respelled by the Model-family RTTI rename: src/game/actors/d_a_obj_path_lift.cpp on main carries the same 2 occurrence(s) as _ZN5ModelC1Ev. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings.",
+      "evidence": "origin/main:src/game/actors/d_a_obj_path_lift.cpp 2x _ZN5ModelC1Ev; head 2x _ZN17dExtSimpleModel_cC1Ev; tools/source_style.py --base origin/main"
+    },
+    {
+      "path": "src/game/actors/d_a_obj_path_lift.cpp",
+      "rule": "handspelled-member",
+      "match": "_ZN17dExtSimpleModel_cD1Ev",
+      "count": 2,
+      "reason": "Respelled by the Model-family RTTI rename: src/game/actors/d_a_obj_path_lift.cpp on main carries the same 2 occurrence(s) as _ZN5ModelD1Ev. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings.",
+      "evidence": "origin/main:src/game/actors/d_a_obj_path_lift.cpp 2x _ZN5ModelD1Ev; head 2x _ZN17dExtSimpleModel_cD1Ev; tools/source_style.py --base origin/main"
+    },
+    {
+      "path": "src/game/actors/d_a_obj_rc_carpet.cpp",
+      "rule": "handspelled-member",
+      "match": "_ZN14dExtAnmModel_cC1Ev",
+      "count": 2,
+      "reason": "Respelled by the Model-family RTTI rename: src/game/actors/d_a_obj_rc_carpet.cpp on main carries the same 2 occurrence(s) as _ZN9ModelAnimC1Ev. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings.",
+      "evidence": "origin/main:src/game/actors/d_a_obj_rc_carpet.cpp 2x _ZN9ModelAnimC1Ev; head 2x _ZN14dExtAnmModel_cC1Ev; tools/source_style.py --base origin/main"
+    },
+    {
+      "path": "src/game/actors/d_a_obj_rc_carpet.cpp",
+      "rule": "handspelled-member",
+      "match": "_ZN17dExtSimpleModel_cC1Ev",
+      "count": 2,
+      "reason": "Respelled by the Model-family RTTI rename: src/game/actors/d_a_obj_rc_carpet.cpp on main carries the same 2 occurrence(s) as _ZN5ModelC1Ev. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings.",
+      "evidence": "origin/main:src/game/actors/d_a_obj_rc_carpet.cpp 2x _ZN5ModelC1Ev; head 2x _ZN17dExtSimpleModel_cC1Ev; tools/source_style.py --base origin/main"
+    },
+    {
+      "path": "src/game/actors/d_a_obj_rc_carpet.cpp",
+      "rule": "handspelled-member",
+      "match": "_ZN17dExtSimpleModel_cD1Ev",
+      "count": 2,
+      "reason": "Respelled by the Model-family RTTI rename: src/game/actors/d_a_obj_rc_carpet.cpp on main carries the same 2 occurrence(s) as _ZN5ModelD1Ev. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings.",
+      "evidence": "origin/main:src/game/actors/d_a_obj_rc_carpet.cpp 2x _ZN5ModelD1Ev; head 2x _ZN17dExtSimpleModel_cD1Ev; tools/source_style.py --base origin/main"
+    },
+    {
+      "path": "src/game/actors/d_a_obj_sm_lift.cpp",
+      "rule": "raw-offset",
+      "match": "(dExtModel_c*)(c+0xd4",
+      "count": 1,
+      "reason": "Respelled by the Model-family RTTI rename: src/game/actors/d_a_obj_sm_lift.cpp on main carries the same 1 occurrence(s) as (ModelBase*)(c+0xd4. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings.",
+      "evidence": "origin/main:src/game/actors/d_a_obj_sm_lift.cpp 1x (ModelBase*)(c+0xd4; head 1x (dExtModel_c*)(c+0xd4; tools/source_style.py --base origin/main"
+    },
+    {
+      "path": "src/game/actors/d_a_obj_wl_polelift.cpp",
+      "rule": "handspelled-member",
+      "match": "_ZN17dExtSimpleModel_cC1Ev",
+      "count": 2,
+      "reason": "Respelled by the Model-family RTTI rename: src/game/actors/d_a_obj_wl_polelift.cpp on main carries the same 2 occurrence(s) as _ZN5ModelC1Ev. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings.",
+      "evidence": "origin/main:src/game/actors/d_a_obj_wl_polelift.cpp 2x _ZN5ModelC1Ev; head 2x _ZN17dExtSimpleModel_cC1Ev; tools/source_style.py --base origin/main"
+    },
+    {
+      "path": "src/game/actors/d_a_spd.cpp",
+      "rule": "handspelled-member",
+      "match": "_ZN14dExtAnmModel_cC1Ev",
+      "count": 2,
+      "reason": "Respelled by the Model-family RTTI rename: src/game/actors/d_a_spd.cpp on main carries the same 2 occurrence(s) as _ZN9ModelAnimC1Ev. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings.",
+      "evidence": "origin/main:src/game/actors/d_a_spd.cpp 2x _ZN9ModelAnimC1Ev; head 2x _ZN14dExtAnmModel_cC1Ev; tools/source_style.py --base origin/main"
+    },
+    {
+      "path": "src/game/actors/d_a_star_base.c",
+      "rule": "handspelled-member",
+      "match": "_ZN17dExtSimpleModel_cC1Ev",
+      "count": 1,
+      "reason": "Respelled by the Model-family RTTI rename: src/game/actors/d_a_star_base.c on main carries the same 1 occurrence(s) as _ZN5ModelC1Ev. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings.",
+      "evidence": "origin/main:src/game/actors/d_a_star_base.c 1x _ZN5ModelC1Ev; head 1x _ZN17dExtSimpleModel_cC1Ev; tools/source_style.py --base origin/main"
+    },
+    {
+      "path": "src/game/actors/d_a_star_silver_star.c",
+      "rule": "handspelled-member",
+      "match": "_ZN14dExtAnmModel_cC1Ev",
+      "count": 2,
+      "reason": "Respelled by the Model-family RTTI rename: src/game/actors/d_a_star_silver_star.c on main carries the same 2 occurrence(s) as _ZN9ModelAnimC1Ev. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings.",
+      "evidence": "origin/main:src/game/actors/d_a_star_silver_star.c 2x _ZN9ModelAnimC1Ev; head 2x _ZN14dExtAnmModel_cC1Ev; tools/source_style.py --base origin/main"
+    },
+    {
+      "path": "src/game/actors/d_a_star_star.c",
+      "rule": "handspelled-member",
+      "match": "_ZN14dExtAnmModel_cC1Ev",
+      "count": 2,
+      "reason": "Respelled by the Model-family RTTI rename: src/game/actors/d_a_star_star.c on main carries the same 2 occurrence(s) as _ZN9ModelAnimC1Ev. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings.",
+      "evidence": "origin/main:src/game/actors/d_a_star_star.c 2x _ZN9ModelAnimC1Ev; head 2x _ZN14dExtAnmModel_cC1Ev; tools/source_style.py --base origin/main"
+    },
+    {
+      "path": "src/game/player/Player.cpp",
+      "rule": "handspelled-member",
+      "match": "_ZN11dExtModel_c12ApplyOpacityEjj",
+      "count": 5,
+      "reason": "Respelled by the Model-family RTTI rename: src/game/player/Player.cpp on main carries the same 5 occurrence(s) as _ZN9ModelBase12ApplyOpacityEjj. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings.",
+      "evidence": "origin/main:src/game/player/Player.cpp 5x _ZN9ModelBase12ApplyOpacityEjj; head 5x _ZN11dExtModel_c12ApplyOpacityEjj; tools/source_style.py --base origin/main"
+    },
+    {
+      "path": "src/game/player/Player.cpp",
+      "rule": "handspelled-member",
+      "match": "_ZN11dExtModel_c7SetFileEP8BMD_Fileii",
+      "count": 10,
+      "reason": "Respelled by the Model-family RTTI rename: src/game/player/Player.cpp on main carries the same 10 occurrence(s) as _ZN9ModelBase7SetFileEP8BMD_Fileii. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings.",
+      "evidence": "origin/main:src/game/player/Player.cpp 10x _ZN9ModelBase7SetFileEP8BMD_Fileii; head 10x _ZN11dExtModel_c7SetFileEP8BMD_Fileii; tools/source_style.py --base origin/main"
+    },
+    {
+      "path": "src/game/player/Player.cpp",
+      "rule": "handspelled-member",
+      "match": "_ZN17dExtSimpleModel_c14SetPolygonModeEi",
+      "count": 9,
+      "reason": "Respelled by the Model-family RTTI rename: src/game/player/Player.cpp on main carries the same 9 occurrence(s) as _ZN5Model14SetPolygonModeEi. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings.",
+      "evidence": "origin/main:src/game/player/Player.cpp 9x _ZN5Model14SetPolygonModeEi; head 9x _ZN17dExtSimpleModel_c14SetPolygonModeEi; tools/source_style.py --base origin/main"
+    },
+    {
+      "path": "src/game/player/Player.cpp",
+      "rule": "handspelled-member",
+      "match": "_ZN17dExtSimpleModel_c6RenderEPK7Vector3",
+      "count": 5,
+      "reason": "Respelled by the Model-family RTTI rename: src/game/player/Player.cpp on main carries the same 5 occurrence(s) as _ZN5Model6RenderEPK7Vector3. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings.",
+      "evidence": "origin/main:src/game/player/Player.cpp 5x _ZN5Model6RenderEPK7Vector3; head 5x _ZN17dExtSimpleModel_c6RenderEPK7Vector3; tools/source_style.py --base origin/main"
+    },
+    {
+      "path": "src/game/player/Player.cpp",
+      "rule": "handspelled-member",
+      "match": "_ZN17dExtSimpleModel_c8LoadFileER13SharedFilePtr",
+      "count": 15,
+      "reason": "Respelled by the Model-family RTTI rename: src/game/player/Player.cpp on main carries the same 15 occurrence(s) as _ZN5Model8LoadFileER13SharedFilePtr. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings.",
+      "evidence": "origin/main:src/game/player/Player.cpp 15x _ZN5Model8LoadFileER13SharedFilePtr; head 15x _ZN17dExtSimpleModel_c8LoadFileER13SharedFilePtr; tools/source_style.py --base origin/main"
+    },
+    {
+      "path": "src/game/stages/d_ent_obj.cpp",
+      "rule": "handspelled-member",
+      "match": "_ZN14dExtAnmModel_cC1Ev",
+      "count": 2,
+      "reason": "Respelled by the Model-family RTTI rename: src/game/stages/d_ent_obj.cpp on main carries the same 2 occurrence(s) as _ZN9ModelAnimC1Ev. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings.",
+      "evidence": "origin/main:src/game/stages/d_ent_obj.cpp 2x _ZN9ModelAnimC1Ev; head 2x _ZN14dExtAnmModel_cC1Ev; tools/source_style.py --base origin/main"
+    },
+    {
+      "path": "src/game/stages/d_ent_obj.cpp",
+      "rule": "handspelled-member",
+      "match": "_ZN17dExtSimpleModel_cC1Ev",
+      "count": 2,
+      "reason": "Respelled by the Model-family RTTI rename: src/game/stages/d_ent_obj.cpp on main carries the same 2 occurrence(s) as _ZN5ModelC1Ev. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings.",
+      "evidence": "origin/main:src/game/stages/d_ent_obj.cpp 2x _ZN5ModelC1Ev; head 2x _ZN17dExtSimpleModel_cC1Ev; tools/source_style.py --base origin/main"
+    },
+    {
+      "path": "src/minigames/d_mg3d_esp_anim_set.cpp",
+      "rule": "handspelled-member",
+      "match": "_ZN17dExtSimpleModel_cC1Ev",
+      "count": 3,
+      "reason": "Respelled by the Model-family RTTI rename: src/minigames/d_mg3d_esp_anim_set.cpp on main carries the same 3 occurrence(s) as _ZN5ModelC1Ev. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings.",
+      "evidence": "origin/main:src/minigames/d_mg3d_esp_anim_set.cpp 3x _ZN5ModelC1Ev; head 3x _ZN17dExtSimpleModel_cC1Ev; tools/source_style.py --base origin/main"
+    },
+    {
+      "path": "src/minigames/d_mg3d_heyho_obj_adapter.cpp",
+      "rule": "handspelled-member",
+      "match": "_ZN14dExtAnmModel_cC1Ev",
+      "count": 2,
+      "reason": "Respelled by the Model-family RTTI rename: src/minigames/d_mg3d_heyho_obj_adapter.cpp on main carries the same 2 occurrence(s) as _ZN9ModelAnimC1Ev. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings.",
+      "evidence": "origin/main:src/minigames/d_mg3d_heyho_obj_adapter.cpp 2x _ZN9ModelAnimC1Ev; head 2x _ZN14dExtAnmModel_cC1Ev; tools/source_style.py --base origin/main"
+    },
+    {
+      "path": "src/minigames/d_mg_trmpln2_mario.cpp",
+      "rule": "handspelled-member",
+      "match": "_ZN14dExtAnmModel_cC1Ev",
+      "count": 2,
+      "reason": "Respelled by the Model-family RTTI rename: src/minigames/d_mg_trmpln2_mario.cpp on main carries the same 2 occurrence(s) as _ZN9ModelAnimC1Ev. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings.",
+      "evidence": "origin/main:src/minigames/d_mg_trmpln2_mario.cpp 2x _ZN9ModelAnimC1Ev; head 2x _ZN14dExtAnmModel_cC1Ev; tools/source_style.py --base origin/main"
+    },
+    {
+      "path": "src/minigames/d_s_mg_jump.cpp",
+      "rule": "handspelled-member",
+      "match": "_ZN17dExtSimpleModel_cC1Ev",
+      "count": 2,
+      "reason": "Respelled by the Model-family RTTI rename: src/minigames/d_s_mg_jump.cpp on main carries the same 2 occurrence(s) as _ZN5ModelC1Ev. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings.",
+      "evidence": "origin/main:src/minigames/d_s_mg_jump.cpp 2x _ZN5ModelC1Ev; head 2x _ZN17dExtSimpleModel_cC1Ev; tools/source_style.py --base origin/main"
+    },
+    {
+      "path": "src/minigames/d_s_mg_jump2.cpp",
+      "rule": "handspelled-member",
+      "match": "_ZN17dExtSimpleModel_cC1Ev",
+      "count": 2,
+      "reason": "Respelled by the Model-family RTTI rename: src/minigames/d_s_mg_jump2.cpp on main carries the same 2 occurrence(s) as _ZN5ModelC1Ev. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings.",
+      "evidence": "origin/main:src/minigames/d_s_mg_jump2.cpp 2x _ZN5ModelC1Ev; head 2x _ZN17dExtSimpleModel_cC1Ev; tools/source_style.py --base origin/main"
+    },
+    {
+      "path": "src/minigames/d_s_mg_roulette.cpp",
+      "rule": "handspelled-member",
+      "match": "_ZN17dExtSimpleModel_cC1Ev",
+      "count": 3,
+      "reason": "Respelled by the Model-family RTTI rename: src/minigames/d_s_mg_roulette.cpp on main carries the same 3 occurrence(s) as _ZN5ModelC1Ev. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings.",
+      "evidence": "origin/main:src/minigames/d_s_mg_roulette.cpp 3x _ZN5ModelC1Ev; head 3x _ZN17dExtSimpleModel_cC1Ev; tools/source_style.py --base origin/main"
+    },
+    {
+      "path": "src/minigames/d_s_mg_snowball.cpp",
+      "rule": "handspelled-member",
+      "match": "_ZN17dExtSimpleModel_cC1Ev",
+      "count": 2,
+      "reason": "Respelled by the Model-family RTTI rename: src/minigames/d_s_mg_snowball.cpp on main carries the same 2 occurrence(s) as _ZN5ModelC1Ev. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings.",
+      "evidence": "origin/main:src/minigames/d_s_mg_snowball.cpp 2x _ZN5ModelC1Ev; head 2x _ZN17dExtSimpleModel_cC1Ev; tools/source_style.py --base origin/main"
+    },
+    {
+      "path": "src/minigames/d_s_mg_trampoline2.cpp",
+      "rule": "handspelled-member",
+      "match": "_ZN17dExtSimpleModel_cC1Ev",
+      "count": 5,
+      "reason": "Respelled by the Model-family RTTI rename: src/minigames/d_s_mg_trampoline2.cpp on main carries the same 5 occurrence(s) as _ZN5ModelC1Ev. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings.",
+      "evidence": "origin/main:src/minigames/d_s_mg_trampoline2.cpp 5x _ZN5ModelC1Ev; head 5x _ZN17dExtSimpleModel_cC1Ev; tools/source_style.py --base origin/main"
+    },
+    {
+      "path": "src/minigames/d_s_mg_trampoline2.cpp",
+      "rule": "handspelled-member",
+      "match": "_ZN17dExtSimpleModel_cD1Ev",
+      "count": 6,
+      "reason": "Respelled by the Model-family RTTI rename: src/minigames/d_s_mg_trampoline2.cpp on main carries the same 6 occurrence(s) as _ZN5ModelD1Ev. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings.",
+      "evidence": "origin/main:src/minigames/d_s_mg_trampoline2.cpp 6x _ZN5ModelD1Ev; head 6x _ZN17dExtSimpleModel_cD1Ev; tools/source_style.py --base origin/main"
+    },
+    {
+      "path": "src/minigames/unit020bfec0.cpp",
+      "rule": "handspelled-member",
+      "match": "_ZN14dExtAnmModel_cC1Ev",
+      "count": 2,
+      "reason": "Respelled by the Model-family RTTI rename: src/minigames/unit020bfec0.cpp on main carries the same 2 occurrence(s) as _ZN9ModelAnimC1Ev. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings.",
+      "evidence": "origin/main:src/minigames/unit020bfec0.cpp 2x _ZN9ModelAnimC1Ev; head 2x _ZN14dExtAnmModel_cC1Ev; tools/source_style.py --base origin/main"
+    },
+    {
+      "path": "src/minigames/unit020bfec0.cpp",
+      "rule": "handspelled-member",
+      "match": "_ZN17dExtSimpleModel_cC1Ev",
+      "count": 4,
+      "reason": "Respelled by the Model-family RTTI rename: src/minigames/unit020bfec0.cpp on main carries the same 4 occurrence(s) as _ZN5ModelC1Ev. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings.",
+      "evidence": "origin/main:src/minigames/unit020bfec0.cpp 4x _ZN5ModelC1Ev; head 4x _ZN17dExtSimpleModel_cC1Ev; tools/source_style.py --base origin/main"
+    },
+    {
+      "path": "src/minigames/unit020bfec0.cpp",
+      "rule": "handspelled-member",
+      "match": "_ZN19dExtBlendAnmModel_cC1Ev",
+      "count": 5,
+      "reason": "Respelled by the Model-family RTTI rename: src/minigames/unit020bfec0.cpp on main carries the same 5 occurrence(s) as _ZN14BlendModelAnimC1Ev. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings.",
+      "evidence": "origin/main:src/minigames/unit020bfec0.cpp 5x _ZN14BlendModelAnimC1Ev; head 5x _ZN19dExtBlendAnmModel_cC1Ev; tools/source_style.py --base origin/main"
+    },
+    {
+      "path": "src/runtime/actor/d_cap_enemy.cpp",
+      "rule": "handspelled-member",
+      "match": "_ZN17dExtSimpleModel_cD1Ev",
+      "count": 2,
+      "reason": "Respelled by the Model-family RTTI rename: src/runtime/actor/d_cap_enemy.cpp on main carries the same 2 occurrence(s) as _ZN5ModelD1Ev. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings.",
+      "evidence": "origin/main:src/runtime/actor/d_cap_enemy.cpp 2x _ZN5ModelD1Ev; head 2x _ZN17dExtSimpleModel_cD1Ev; tools/source_style.py --base origin/main"
+    },
+    {
+      "path": "src/unnamed/ov007/func_ov007_020b3f20.c",
+      "rule": "handspelled-member",
+      "match": "_ZN17dExtSimpleModel_c17UpdateFileOffsetsER8BMD_File",
+      "count": 2,
+      "reason": "Respelled by the Model-family RTTI rename: src/unnamed/ov007/func_ov007_020b3f20.c on main carries the same 2 occurrence(s) as _ZN5Model17UpdateFileOffsetsER8BMD_File. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings.",
+      "evidence": "origin/main:src/unnamed/ov007/func_ov007_020b3f20.c 2x _ZN5Model17UpdateFileOffsetsER8BMD_File; head 2x _ZN17dExtSimpleModel_c17UpdateFileOffsetsER8BMD_File; tools/source_style.py --base origin/main"
+    },
+    {
+      "path": "src/unnamed/ov075/func_ov075_0211aa94.c",
+      "rule": "handspelled-member",
+      "match": "_ZN17dExtSimpleModel_c27LoadCompressedTextureToVramEPcjS0_",
+      "count": 2,
+      "reason": "Respelled by the Model-family RTTI rename: src/unnamed/ov075/func_ov075_0211aa94.c on main carries the same 2 occurrence(s) as _ZN5Model27LoadCompressedTextureToVramEPcjS0_. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings.",
+      "evidence": "origin/main:src/unnamed/ov075/func_ov075_0211aa94.c 2x _ZN5Model27LoadCompressedTextureToVramEPcjS0_; head 2x _ZN17dExtSimpleModel_c27LoadCompressedTextureToVramEPcjS0_; tools/source_style.py --base origin/main"
     }
   ]
 }

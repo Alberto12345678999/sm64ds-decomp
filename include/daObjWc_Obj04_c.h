@@ -38,7 +38,7 @@ extern "C" void *_ZN7fBase_cnwEj(unsigned size);
  */
 
 struct daObjWc_Obj04_c : dBgActor_c {
-    dExtSimpleModel_c mModel2;            /* 0x320 */
+    dExtSimpleModel_c mModel2; /* 0x320 */
     Matrix4x3 mClsnMat2;      /* 0x370 */
     u16 mStateTimer;          /* 0x3a0 */
     u8  mState;               /* 0x3a2 */

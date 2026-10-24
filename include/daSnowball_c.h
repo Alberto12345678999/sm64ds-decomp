@@ -58,7 +58,7 @@ struct daSnowball_StateRec {
 struct daSnowball_c : dEnemyBase_c {
     dCcAc_c           mdCcAc_c;   /* 0x110 */
     dBgCh_Actr                 mWithMeshClsn;         /* 0x144 */
-    dExtSimpleModel_c                        mModel;                /* 0x300 */
+    dExtSimpleModel_c mModel;                         /* 0x300 */
     dExtShadowModel_c                  mShadowModel;          /* 0x350 */
     daSnowball_StateRec         *mStateRec;             /* 0x378 -- installed by func_ov081_021261d4 */
     /* Where the actor was placed: InitResources copies mPosX/Y/Z here before

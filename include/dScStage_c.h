@@ -48,7 +48,7 @@ typedef char StageTexAnimSlot_size_must_be_0xc[sizeof(struct StageTexAnimSlot) =
  */
 struct dScStage_c : dScene_c {
     Particle::SysTracker mSysTracker;  /* 0x050 */
-    dExtSimpleModel_c mModel;                      /* 0x86c */
+    dExtSimpleModel_c mModel;          /* 0x86c */
     StageTexAnimSlot mTexAnimSlots[8]; /* 0x8bc - dExtSimpleModel_c ends here, and dBgW_Kc
                                            does not start until 0x91c */
     dBgW_Kc mMeshCollider;             /* 0x91c */

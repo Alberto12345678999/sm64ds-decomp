@@ -230,7 +230,8 @@ int daObjCtRotateBlock_c::InitResources()
 
     u8 idx = mVariant;
     {
-        void *bmd = dExtSimpleModel_c::LoadFile(*(SharedFilePtr *)*(void **)(data_ov065_0211cfd0 + idx * 0xc));
+        void *bmd = dExtSimpleModel_c::LoadFile(
+            *(SharedFilePtr *)*(void **)(data_ov065_0211cfd0 + idx * 0xc));
         mModel.SetFile((BMD_File *)bmd, 1, -1);
     }
 

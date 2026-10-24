@@ -34,7 +34,7 @@ extern "C" void *_ZN7fBase_cnwEj(unsigned size);
  */
 struct daObjKumo_c : dActor_c {
     u8    pad_0d0[0x4];
-    dExtSimpleModel_c mModel;            /* 0x0d4 */
+    dExtSimpleModel_c mModel; /* 0x0d4 */
 
     /* MEASURED -- INLINE ON PURPOSE. The class TU is the only place these
        two are emitted; with the body out of line mwcc emits D0 ahead of D1

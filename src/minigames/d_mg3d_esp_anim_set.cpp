@@ -1554,7 +1554,7 @@ s32 dScMg3DEsp_c::InitResources()
 
     tmp = (Matrix4x3 &)sEsp3DIdentityMtx;
     ((dExtSimpleModel_c *)mModel1)->mat4x3 = (Matrix4x3 &)sEsp3DIdentityMtx;
-    ((dExtSimpleModel_c*)mModel2)->mat4x3 = tmp;
+    ((dExtSimpleModel_c *)mModel2)->mat4x3 = tmp;
 
     data_0209d454 |= 4;
     /* sub BG2CNT, then the sub BG2 scroll offsets */

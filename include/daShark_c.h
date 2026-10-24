@@ -38,7 +38,7 @@
 struct daShark_c : dEnemyBase_c {
     dCcAcPos_c mdCcAcPos_c;/* 0x110 */
     dBgCh_Actr mWithMeshClsn;       /* 0x150 */
-    dExtAnmModel_c mModelAnim;             /* 0x30c */
+    dExtAnmModel_c mModelAnim;      /* 0x30c */
     /* The state pointer. func_ov090_021338b4 sets it (InitResources passes
        data_ov090_021345cc) and Behavior calls the pointer-to-member-function
        at +8 through it. */
@@ -122,7 +122,7 @@ struct daShark_c {
     dBgCh_Actr mWithMeshClsn;            /* 0x150 */
     /* dExtAnmModel_c member, named by _ZN14dExtAnmModel_cD1Ev at +0x30c -- a relocation the ROM build checks.
        D1 and not D2, so it is this type and not an inlined base. Was a u8 marker. */
-    dExtAnmModel_c mModelAnim;            /* 0x30c */
+    dExtAnmModel_c mModelAnim; /* 0x30c */
     s32 mState;            /* 0x370 */
     s32 mClsnOffsetX;            /* 0x374 */
     s32 mClsnOffsetY;            /* 0x378 */

@@ -19,7 +19,7 @@ struct FallingPetal {
     Vector3 mAxis;   /* 0x24 -- the petal's up axis, tipped toward its motion */
     s32 mRot[4];     /* 0x30 -- a quaternion */
     s32 mActive;     /* 0x40 */
-    dExtSimpleModel_c mModel;    /* 0x44 -- 0x50 bytes: UpdateMatrix sets its mat4x3 */
+    dExtSimpleModel_c mModel; /* 0x44 -- 0x50 bytes: UpdateMatrix sets its mat4x3 */
     s16 mLife;       /* 0x94 -- frames left; 0 clears mActive */
     u8 pad_96[0x2];  /* 0x96 */
 };
@@ -34,7 +34,7 @@ struct FlowerFace {
     FallingPetal mPetals[22];  /* 0x008 */
     /* 0x64 bytes. Draw sets its mat4x3; Update advances its dExtFrameCtrl_c
        base, StatePick tests it and PlayPetalPulled rewinds its currFrame. */
-    dExtAnmModel_c mModel;          /* 0xd18 */
+    dExtAnmModel_c mModel;     /* 0xd18 */
     FlowerFaceFile mModelFile; /* 0xd7c -- yoshi_model.bmd */
     FlowerFaceFile mPetalFile; /* 0xd84 -- f_parts.bmd */
     FlowerFaceFile mWaitAnim;  /* 0xd8c -- yoshi_wait.bca */

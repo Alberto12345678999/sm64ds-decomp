@@ -33,7 +33,7 @@
  */
 #ifdef __cplusplus
 struct dFdWipe_c : dFdColor_c {
-    dExtSimpleModel_c model;                    /* 0x10 -- constructed last by dFdWipe_c::dFdWipe_c */
+    dExtSimpleModel_c model; /* 0x10 -- constructed last by dFdWipe_c::dFdWipe_c */
 
     /* Out of line -- the ROM keeps it as a real call at 0x02017480, and its
        body is empty: every store it makes belongs to a base sub-object
@@ -57,7 +57,7 @@ struct dFdWipe_c {
     Fix12i speed;       /* 0x08 (from dFader_c) */
     u16    color;       /* 0x0c (from dFdColor_c) */
     u8     pad_00e[0x2];
-    dExtSimpleModel_c model;              /* 0x010 */
+    dExtSimpleModel_c model; /* 0x010 */
 };
 #endif
 

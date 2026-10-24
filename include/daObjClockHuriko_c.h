@@ -96,7 +96,7 @@ struct daObjClockHuriko_c : dActor_c {
     u8  pad_0d0[0x4];
     /* Named by the implicit constructor's _ZN17dExtSimpleModel_cC1Ev call at +0xd4 -- a
        relocation the ROM build checks. */
-    dExtSimpleModel_c mModel;             /* 0x0d4 */
+    dExtSimpleModel_c mModel; /* 0x0d4 */
 
     s16 mAngSpeed;               /* 0x124 -- swing speed, see SIZE above */
     u8  pad_126[0x2];

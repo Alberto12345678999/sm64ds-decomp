@@ -54,7 +54,7 @@ struct dScMgRoulette_c : dScMgSingle3DBase_c {
        helpers in d_s_mg_roulette_methods.cpp take mBoard and reach all of
        it through their RouletteBoardView. */
     u8 mBoard[0x10];       /* 0x530c -- PMF state and the two model files */
-    u8 mModel1[0x50];      /* 0x531c -- raw dExtSimpleModel_c, the wheel; the destructor calls it explicitly */
+    u8 mModel1[0x50];      /* 0x531c -- raw dExtSimpleModel_c, the wheel; destroyed explicitly */
     u8 mModel2[0x50];      /* 0x536c -- the ball */
     s32 mBallRadius;       /* 0x53bc -- Fix12; 0x4200 when the spin starts */
     s32 mBallRadiusVel;    /* 0x53c0 -- added to mBallRadius each frame */

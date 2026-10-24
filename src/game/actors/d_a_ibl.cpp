@@ -794,7 +794,8 @@ int daIbl_c::InitResources()
     int kind;
     int d;
 
-    mModel.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(*(SharedFilePtr *)&data_ov100_02148668), 1, -1);
+    mModel.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(*(SharedFilePtr *)&data_ov100_02148668),
+                   1, -1);
     if (mShadowModel.InitCylinder() == 0)
         return 0;
     mVertAccel = -0x4000;

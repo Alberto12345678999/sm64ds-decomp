@@ -128,9 +128,9 @@ struct dExtModel_c {
 #ifdef _MSC_VER
     virtual void Destructor1();                      /* slot 0 (D1) */
     virtual void Destructor0();                      /* slot 1 (D0) */
-    ~dExtModel_c();                                    /* no slot: see above */
+    ~dExtModel_c();                                  /* no slot: see above */
 #else
-    virtual ~dExtModel_c();                            /* slots 0 (D1), 1 (D0) */
+    virtual ~dExtModel_c(); /* slots 0 (D1), 1 (D0) */
 #endif
     virtual int DoSetFile(char *file, int a, int b) = 0;  /* slot 2, null here */
 
@@ -161,13 +161,12 @@ struct dExtModel_c {
        in the class or one level up, as include/dActor_c.h records. No layout
        effect: a non-virtual inline member adds no field and no vtable slot. */
     void operator delete(void *ptr) { _ZN6Memory16operator_delete2EPv(ptr); }
-
 };
 
 #ifndef SM64DS_PLATFORM_PC
 /* ROM layout under mwccarm; host ABI divergence is tracked separately. */
 typedef char ModelComponents_size_must_be_0x14[sizeof(ModelComponents) == 0x14 ? 1 : -1];
-typedef char ModelBase_size_must_be_0x8[sizeof(dExtModel_c) == 0x8 ? 1 : -1];
+typedef char dExtModel_c_size_must_be_0x8[sizeof(dExtModel_c) == 0x8 ? 1 : -1];
 #endif
 
 #else

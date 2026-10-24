@@ -48,7 +48,7 @@ struct daDossyCap_c : dActor_c {
        header had it; the pointer reads go through explicit casts. */
     s32                mEatingPlayer;           /* 0x0d0 */
     dCapIcon_c         mCapIcon;                /* 0x0d4 */
-    dExtSimpleModel_c              mModel;                  /* 0x0f0 */
+    dExtSimpleModel_c mModel;                   /* 0x0f0 */
     dCcAc_c mdCcAc_c;     /* 0x140 */
     /* The actor this cap is riding, a pointer spelt s32. Behavior bails out
        when it is null, and otherwise copies the cap position out of that actor

@@ -33,8 +33,7 @@ int func_02053e1c(void);
 
 // @symbol _ZN17dExtSimpleModel_c17UpdateFileOffsetsER8BMD_File
 #define REBASE(p) ((char *)(p) + base)
-void dExtSimpleModel_c::UpdateFileOffsets(BMD_File &file)
-{
+void dExtSimpleModel_c::UpdateFileOffsets(BMD_File &file) {
     u32 i;
     int k;
     int base = (int)&file;
@@ -557,8 +556,7 @@ struct GX {
 };
 
 // @symbol _ZN17dExtSimpleModel_c13GetVramOffsetEj
-u32 dExtSimpleModel_c::GetVramOffset(u32 size)
-{
+u32 dExtSimpleModel_c::GetVramOffset(u32 size) {
     u32 *p;
     u32 b = data_020a4be8 - data_020a4bc8;
     u32 a = data_020a4bdc - data_020a4be0;
@@ -574,8 +572,7 @@ u32 dExtSimpleModel_c::GetVramOffset(u32 size)
 }
 
 // @symbol _ZN17dExtSimpleModel_c17LoadTextureToVramEPcj
-u32 dExtSimpleModel_c::LoadTextureToVram(char *texData, u32 size)
-{
+u32 dExtSimpleModel_c::LoadTextureToVram(char *texData, u32 size) {
     u32 vramOffset = GetVramOffset(size);
     GX::BeginLoadTex();
     GX::LoadTex(texData, vramOffset, size);
@@ -588,8 +585,7 @@ u32 dExtSimpleModel_c::LoadTextureToVram(char *texData, u32 size)
 /* Stays off through the rest of the file. Restoring it before deferred
    codegen emits this function reorders five words. */
 #pragma opt_common_subs off
-u32 dExtSimpleModel_c::LoadCompressedTextureToVram(char *src, u32 size, char *dst)
-{
+u32 dExtSimpleModel_c::LoadCompressedTextureToVram(char *src, u32 size, char *dst) {
     u32 vramOffset;
 
     if ((data_020a4be8 - data_020a4bc8) < size)
@@ -653,8 +649,7 @@ extern "C" u32 func_02045a50(const void *src, u32 size)
 
 // 0x020458e0 (0x170)
 // @symbol _ZN17dExtSimpleModel_c13LoadTexAndPalER8BMD_File
-void dExtSimpleModel_c::LoadTexAndPal(BMD_File &file)
-{
+void dExtSimpleModel_c::LoadTexAndPal(BMD_File &file) {
     u32 i;
     u32 ret;
     u32 sz;

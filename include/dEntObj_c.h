@@ -49,8 +49,8 @@ struct UnknownVsPlayer {
         ANIM_FAST_GAIT
     };
 
-    dExtBlendAnmModel_c mModel;            /* 0x000 */
-    dExtAnmModel_c mAnimation;             /* 0x070 */
+    dExtBlendAnmModel_c mModel;       /* 0x000 */
+    dExtAnmModel_c mAnimation;        /* 0x070 */
     TextureSequence mTextureSequence; /* 0x0d4 */
     dExtShadowModel_c mShadow;        /* 0x0e8 */
     s32 mMoveState;                   /* 0x110 */
@@ -124,8 +124,8 @@ struct dEntObj_c : dBase_c {
     enum SceneState { STATE_IDLE = 0, STATE_WAIT_FOR_EXIT, STATE_RUN_OFF_STAGE };
 
     Particle::SysTracker mParticles; /* 0x050 */
-    dExtSimpleModel_c mModel;                    /* 0x86c */
-    dExtAnmModel_c mModelAnim;            /* 0x8bc */
+    dExtSimpleModel_c mModel;        /* 0x86c */
+    dExtAnmModel_c mModelAnim;       /* 0x8bc */
     UnknownVsPlayer mPlayers[4];     /* 0x920 */
     /* 0xe80 -- the 0xa8-byte entry-menu grid mesh (EntryMesh,
        include/private/ov075_entry_mesh.h), spelled as its first byte plus

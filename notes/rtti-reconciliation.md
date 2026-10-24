@@ -121,10 +121,13 @@ it, so a real header/ROM disagreement could not be detected at all. Such entries
 treated as `no_belief`, which restores the table above and keeps the two passes
 independent.
 
-**vmi base order is not offset order.** `dExtAnmModel_c` lists `dExtFrameCtrl_c` (offset 80)
-before `dExtSimpleModel_c` (offset 0). Keying "primary base" on list position put that row
-in plain `agree` while the tree in fact names only `dExtSimpleModel_c` and omits an entire base. The
-test now keys on offset 0, and the row shows up where it belongs.
+**Edge-list order is not offset order.** The ROM's vmi record for `dExtAnmModel_c`
+(arm9:0x0208e924) lists `dExtSimpleModel_c` at offset 0 first and `dExtFrameCtrl_c` at
+offset 80 second, but `build/rtti.json` sorts edges by `(derived_key, base_key)`
+(`tools/rtti_extract.py`), which puts `dExtFrameCtrl_c` first. Keying "primary base" on
+list position put that row in plain `agree` while the tree at the time named only one of
+the two bases and omitted the other. The test now keys on offset 0, and the row shows up
+where it belongs.
 
 ## 3. The 18 flattened classes, and the 10 layers they hide
 

@@ -52,7 +52,7 @@ extern "C" void *_ZN7fBase_cnwEj(unsigned size);
 struct daBmb_c : dEnemyBase_c {
     dCcAc_c           mdCc_c;         /* 0x110 */
     dBgCh_Actr                 mWithMeshClsn;         /* 0x144 */
-    dExtAnmModel_c                    mModelAnim;            /* 0x300 */
+    dExtAnmModel_c mModelAnim;                        /* 0x300 */
     dExtShadowModel_c                  mShadowModel;          /* 0x364 */
     /* 0214b988 stores ClosestPlayer here after the notice-angle test;
        0214ad14 stores it unconditionally. Arm 0 chases this pointer. */

@@ -33,7 +33,7 @@ struct Player;
  */
 struct daCnn_c : dActor_c {
     u8 pad_0d0[0x4];          /* 0x0d0 */
-    dExtSimpleModel_c mModel;             /* 0x0d4 */
+    dExtSimpleModel_c mModel; /* 0x0d4 */
     dCcAc_c mdCcAc_c;         /* 0x124 */
     Player *mPlayer;          /* 0x158 -- the player riding the load sequence */
     s32 mSpawnPosX;           /* 0x15c */

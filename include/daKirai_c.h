@@ -28,7 +28,7 @@ struct daKirai_c : dActor_c {
     u8  pad_0d0[0x4];
     /* Named by the class's own destructor calling dExtSimpleModel_c's D1 at +0x0d4 -- a
        relocation the ROM build checks. */
-    dExtSimpleModel_c mModel;                                               /* 0x0d4 */
+    dExtSimpleModel_c mModel;     /* 0x0d4 */
     dCcAcPos_c mdCcAcPos_c;       /* 0x124 */
     u8  pad_164[0xc];
     s32 mStateIndex;            /* 0x170 */

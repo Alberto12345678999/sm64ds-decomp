@@ -89,12 +89,12 @@ extern PathLiftCollisionFilePtr data_ov100_02148a5c;
 extern "C" {
 extern void *_ZN10dBgActor_cC2Ev(dBgActor_c *actor);
 extern void *_ZN17dExtSimpleModel_cC1Ev(dExtSimpleModel_c *model);
+/* local extern: __cxa_vec_ctor needs D1 by address; only two scene headers declare it */
 extern dExtSimpleModel_c *_ZN17dExtSimpleModel_cD1Ev(dExtSimpleModel_c *model);
 extern void *_ZN7PathPtrC1Ev(PathPtr *path);
 extern void *_ZN17dExtShadowModel_cC1Ev(dExtShadowModel_c *model);
-extern void __cxa_vec_ctor(
-    dExtSimpleModel_c *models, unsigned int count, unsigned int size,
-    void (*ctor)(void *), void (*dtor)(void *));
+extern void __cxa_vec_ctor(dExtSimpleModel_c *models, unsigned int count, unsigned int size,
+                           void (*ctor)(void *), void (*dtor)(void *));
 }
 
 extern int data_ov002_0210af70[];
@@ -108,10 +108,9 @@ extern "C" daObjPathLift_c *daObjPathLift_c_classInit()
     if (actor) {
         _ZN10dBgActor_cC2Ev(actor);
         *(int *)actor = (int)data_ov002_0210af70;
-        __cxa_vec_ctor(
-            actor->mModels, 3, sizeof(dExtSimpleModel_c),
-            (void (*)(void *))_ZN17dExtSimpleModel_cC1Ev,
-            (void (*)(void *))_ZN17dExtSimpleModel_cD1Ev);
+        __cxa_vec_ctor(actor->mModels, 3, sizeof(dExtSimpleModel_c),
+                       (void (*)(void *))_ZN17dExtSimpleModel_cC1Ev,
+                       (void (*)(void *))_ZN17dExtSimpleModel_cD1Ev);
         _ZN7PathPtrC1Ev(&actor->mPath);
         *(int *)actor = (int)&_ZTV15daObjPathLift_c[2];
         _ZN17dExtShadowModel_cC1Ev(&actor->mShadowModel);

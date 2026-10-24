@@ -48,7 +48,7 @@
 struct daWbm_c : dEnemyBase_c {
     dCcAc_c                      mdCcAc_c;              /* 0x110 */
     dBgCh_Actr                   mWithMeshClsn;         /* 0x144 */
-    dExtSimpleModel_c                        mModel;                /* 0x300 */
+    dExtSimpleModel_c mModel;                           /* 0x300 */
     dExtShadowModel_c                  mShadowModel;          /* 0x350 */
     Matrix4x3                    mShadowMat;            /* 0x378 */
     /* Where it was placed. InitResources writes these and nothing in the

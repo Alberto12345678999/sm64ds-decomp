@@ -33,7 +33,7 @@ struct dMg3DEspModel_c {
     s32 unk_000;                      /* 0x000 */
     s32 unk_004;                      /* 0x004 */
     s32 unk_008;                      /* 0x008 */
-    dExtAnmModel_c mModelAnim;             /* 0x00c */
+    dExtAnmModel_c mModelAnim;        /* 0x00c */
     TextureSequence mTextureSequence; /* 0x070 */
     dMg3DEspAnimSet_c mAnimSet;       /* 0x084 */
     u32 mParticleSys;                 /* 0x204 */

@@ -1100,9 +1100,12 @@ extern BTA_File sTrmpItemTextureAnim;
 }
 
 extern "C" void TrmpItem_Load(char *c) {
-    ((dExtSimpleModel_c *)TRMPITEM(c)->mModels[0])->SetFile((BMD_File *)sTrmpItemRingAModelFile.filePtr, 1, -1);
-    ((dExtSimpleModel_c *)TRMPITEM(c)->mModels[1])->SetFile((BMD_File *)sTrmpItemRingBModelFile.filePtr, 1, -1);
-    ((dExtSimpleModel_c *)TRMPITEM(c)->mModels[2])->SetFile((BMD_File *)sTrmpItemRingCModelFile.filePtr, 1, -1);
+    ((dExtSimpleModel_c *)TRMPITEM(c)->mModels[0])
+        ->SetFile((BMD_File *)sTrmpItemRingAModelFile.filePtr, 1, -1);
+    ((dExtSimpleModel_c *)TRMPITEM(c)->mModels[1])
+        ->SetFile((BMD_File *)sTrmpItemRingBModelFile.filePtr, 1, -1);
+    ((dExtSimpleModel_c *)TRMPITEM(c)->mModels[2])
+        ->SetFile((BMD_File *)sTrmpItemRingCModelFile.filePtr, 1, -1);
     ((dExtSimpleModel_c *)TRMPITEM(c)->mModels[0])->SetPolygonID(1);
     ((dExtSimpleModel_c *)TRMPITEM(c)->mModels[1])->SetPolygonID(2);
     ((dExtSimpleModel_c *)TRMPITEM(c)->mModels[2])->SetPolygonID(3);

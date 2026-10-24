@@ -1372,6 +1372,7 @@ s32 dScStarSel_c::InitResources() {
 // @symbol dScStarSel_c_classInit
 extern "C" {
 extern void *_ZN7fBase_cC2Ev(void *);
+/* local extern: __cxa_vec_ctor needs D1 by address; only two scene headers declare it */
 extern void _ZN17dExtSimpleModel_cD1Ev(void *);
 extern void *_ZN17dExtSimpleModel_cC1Ev(void *);
 /* The array runtime discards the constructor's receiver result. */

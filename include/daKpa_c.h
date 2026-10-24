@@ -48,7 +48,7 @@
 
 struct daKpa_c : dActor_c {
     u8  pad_0d0[0x4];
-    dExtAnmModel_c mModelAnim;                                   /* 0x0d4 */
+    dExtAnmModel_c mModelAnim;                              /* 0x0d4 */
     TextureSequence mTextureSequence;                       /* 0x138 */
     dBgCh_Actr mWithMeshClsn;                             /* 0x14c */
     dExtShadowModel_c mShadowModel;                               /* 0x308 */
@@ -103,7 +103,7 @@ struct daKpa_c : dActor_c {
        speed. */
     s32 mSwingSpeed;          /* 0x3f0 */
     s32 mDistToCenter;        /* 0x3f4 -- horizontal distance from the world origin (the arena centre) */
-    s32 mAnimSpeed;            /* 0x3f8 -- written to the dExtAnmModel_c's playback speed each frame; 0x1000 = 1.0 */
+    s32 mAnimSpeed; /* 0x3f8 -- written to the dExtAnmModel_c's playback speed each frame; 0x1000 = 1.0 */
     u16 mTimer;            /* 0x3fc -- frames in the current state; reset on every state change */
     u16 mStepCounter;         /* 0x3fe -- general per-state counter; its meaning depends on mState */
     u16 mFireTimer;           /* 0x400 -- frames of fire breath so far */
@@ -257,7 +257,7 @@ struct daKpa_c {
     u8  pad_0a4[0x28];
     s8  mAreaId;            /* 0x0cc */
     u8  pad_0cd[0x7];
-    dExtAnmModel_c mModelAnim;                                   /* 0x0d4 */
+    dExtAnmModel_c mModelAnim;                              /* 0x0d4 */
     TextureSequence mTextureSequence;                       /* 0x138 */
     dBgCh_Actr mWithMeshClsn;                             /* 0x14c */
     dExtShadowModel_c mShadowModel;                               /* 0x308 */
@@ -308,7 +308,7 @@ struct daKpa_c {
        speed. */
     s32 mSwingSpeed;          /* 0x3f0 */
     s32 mDistToCenter;        /* 0x3f4 -- horizontal distance from the world origin (the arena centre) */
-    s32 mAnimSpeed;            /* 0x3f8 -- written to the dExtAnmModel_c's playback speed each frame; 0x1000 = 1.0 */
+    s32 mAnimSpeed; /* 0x3f8 -- written to the dExtAnmModel_c's playback speed each frame; 0x1000 = 1.0 */
     u16 mTimer;            /* 0x3fc -- frames in the current state; reset on every state change */
     u16 mStepCounter;         /* 0x3fe -- general per-state counter; its meaning depends on mState */
     u16 mFireTimer;           /* 0x400 -- frames of fire breath so far */

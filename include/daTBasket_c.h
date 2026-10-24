@@ -57,7 +57,7 @@ extern "C" void *_ZN7fBase_cnwEj(unsigned size);
 struct daTBasket_c : dEnemyBase_c {
     dCcAc_c           mdCcAc_c;   /* 0x110 */
     dBgCh_Actr                 mWithMeshClsn;         /* 0x144 */
-    dExtSimpleModel_c                        mModel;                /* 0x300 */
+    dExtSimpleModel_c mModel;                         /* 0x300 */
     dExtShadowModel_c                  mShadowModel;          /* 0x350 */
     s32                          mParticleID;               /* 0x378 */
     s16                          mSoundTimer;               /* 0x37c */

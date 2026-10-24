@@ -16,7 +16,7 @@ extern "C" void *_ZN7fBase_cnwEj(unsigned size);
  */
 struct daObjKb1Billboard_c : dActor_c {
     u8    pad_0d0[0x4];
-    dExtSimpleModel_c mModel;          /* 0x0d4 */
+    dExtSimpleModel_c mModel; /* 0x0d4 */
 
     /* InitResources is the first out-of-line virtual/key function. The inline
      * destructor lets mwccarm emit the retail D1/D0 pair and class RTTI/vtable. */

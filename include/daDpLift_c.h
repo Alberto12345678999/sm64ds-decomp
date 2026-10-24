@@ -28,7 +28,7 @@
 #include "dBgActor_c.h"
 
 struct daDpLift_c : dBgActor_c {
-    dExtSimpleModel_c mModel2;                    /* 0x320 */
+    dExtSimpleModel_c mModel2;        /* 0x320 */
     s32 mBasePosX;                    /* 0x370 */
     s32 mBasePosY;                    /* 0x374 */
     s32 mBasePosZ;                    /* 0x378 */

@@ -168,8 +168,8 @@ int daObjSimpleLift_c::InitResources()
         case 0x92: mVariant = 5; break; /* KM2_RIFUT02 */
     }
 
-    void *bmd = dExtSimpleModel_c::LoadFile(
-        **(SharedFilePtr **)(data_ov091_02135024 + mVariant * 0xc));
+    void *bmd =
+        dExtSimpleModel_c::LoadFile(**(SharedFilePtr **)(data_ov091_02135024 + mVariant * 0xc));
     mModel.SetFile((BMD_File *)bmd, 1, -1);
 
     mPrevAngleY = mAngleY + data_ov091_02134514[mVariant];

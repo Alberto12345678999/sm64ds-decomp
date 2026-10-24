@@ -33,7 +33,7 @@ extern "C" void *_ZN7fBase_cnwEj(unsigned size);
 
 struct daObjClock_c : dActor_c {
     u8    pad_0d0[0x4];    /* 0x0d0 */
-    dExtSimpleModel_c mModel;          /* 0x0d4 */
+    dExtSimpleModel_c mModel; /* 0x0d4 */
     u8    mHandIndex;      /* 0x124 -- 0 = long hand, 1 = short hand */
     u8    pad_125[0x3];    /* 0x125 */
 

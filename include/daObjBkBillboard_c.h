@@ -16,7 +16,7 @@ extern "C" void *_ZN7fBase_cnwEj(unsigned size);
  */
 struct daObjBkBillboard_c : dActor_c {
     u8    pad_0d0[0x4];
-    dExtSimpleModel_c mModel;            /* 0x0d4 */
+    dExtSimpleModel_c mModel; /* 0x0d4 */
 
     /* Inline empty dtor: mwccarm emits D1 then D0, no D2. */
     virtual ~daObjBkBillboard_c() {}     /* slots 16 (D1), 17 (D0) */

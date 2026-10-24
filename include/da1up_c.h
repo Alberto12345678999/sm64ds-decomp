@@ -82,7 +82,7 @@ enum da1up_MushroomType {
 struct da1up_c : dEnemyBase_c {
     dCcAc_c           mdCcAc_c;   /* 0x110 */
     dBgCh_Actr                 mWithMeshClsn;         /* 0x144 */
-    dExtSimpleModel_c                        mModel;                /* 0x300 */
+    dExtSimpleModel_c mModel;                         /* 0x300 */
     dExtShadowModel_c                  mShadowModel;          /* 0x350 */
     /* mPos as InitResources found it (the three words are copied from
        mPosX/Y/Z). Type 10 rises to 100 units above mSpawnPosY; type 9 spawns

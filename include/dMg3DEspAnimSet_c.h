@@ -25,7 +25,7 @@ struct dMg3DEspAnimSet_c {
     void SetPeriod(s16 period);
     void SetSpeed(s32 speed);
 
-    dExtAnmModel_c mModels[3];                 /* 0x000 */
+    dExtAnmModel_c mModels[3];            /* 0x000 */
     MaterialChanger mMaterialChangers[3]; /* 0x12c */
     s32 mActive[3];                       /* 0x168 */
     s32 mSpeed;                           /* 0x174 */

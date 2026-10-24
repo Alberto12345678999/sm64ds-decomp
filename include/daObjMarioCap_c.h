@@ -45,7 +45,7 @@ extern "C" void *_ZN7fBase_cnwEj(unsigned size);
 struct daObjMarioCap_c : dEnemyBase_c {
     dCcAc_c  mdCcAc_c;    /* 0x110 */
     dBgCh_Actr        mWithMeshClsn;          /* 0x144 */
-    dExtAnmModel_c           mModelAnim;             /* 0x300 */
+    dExtAnmModel_c mModelAnim;                /* 0x300 */
     dExtShadowModel_c         mShadowModel;           /* 0x364 */
     /* Drop-shadow matrix: UpdateMatrix rebuilds it on the frames the shadow is drawn (rotation
        about Y, translation = position / 8) for DropShadowRadHeight. */

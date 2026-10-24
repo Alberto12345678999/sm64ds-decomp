@@ -1,13 +1,12 @@
 //cpp
 /* dExtAnm2Model_c -- a dExtAnmModel_c that carries a second dExtFrameCtrl_c (otherAnim)
-   and the BCA file it plays (otherFile). The cartridge RTTI names the class
-   dExtAnm2Model_c (_ZTI15dExtAnm2Model_c at 0x0208e788, single inheritance
-   from dExtAnmModel_c, the tree's dExtAnmModel_c); its vtable _ZTV15dExtAnm2Model_c at
-   0x0208e9b4 overrides only the destructor pair.
+   and the BCA file it plays (otherFile). _ZTI15dExtAnm2Model_c at 0x0208e788
+   records single inheritance from dExtAnmModel_c; the vtable
+   _ZTV15dExtAnm2Model_c at 0x0208e9b4 overrides only the destructor pair.
    TU claims 0x02016254..0x020163e0 -- the method run, then D0, D1 and C1.
    ~dExtAnm2Model_c() is the key function, so this object also emits the MI vtable
    group, D2, C2 and the two _ZThn80_ thunks. RTTI stays off across that
-   definition: the coined name would emit homeless _ZTI/_ZTS records, and the
+   definition, so no _ZTI/_ZTS records are emitted, and the
    secondary preamble (inside the primary _ZTV, ahead of
    VTable_Animation_ModelAnim2Thunk) comes out as zeros. Those two cartridge
    words are a real preamble, not slots; the retail table is externalized
@@ -19,8 +18,8 @@
 
 /* RTTI stays off for the whole TU. Deferred codegen emits the key function
    at the end of the file, so a later `#pragma RTTI on` would turn the records
-   back on. On, the TU would emit _ZTI/_ZTS for dExtAnm2Model_c and every coined
-   base. Off, the secondary preamble's offset-to-top and typeinfo words are
+   back on. On, the TU would emit _ZTI/_ZTS for dExtAnm2Model_c and each of
+   its bases. Off, the secondary preamble's offset-to-top and typeinfo words are
    zeros; romdata_check masks that pair when the cartridge has a negative
    offset-to-top and a _ZTI pointer. The method bodies do not use RTTI and
    match either way. */

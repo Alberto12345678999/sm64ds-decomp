@@ -109,13 +109,13 @@ struct daTrs_c : dCapEnemy_c {
     s32 mBooDefeatCount;           /* 0x180 */
     dCcAcPos_c mdCcAcPos_c;  /* 0x184 */
     dBgCh_Actr               mWithMeshClsn;               /* 0x1c4 */
-    dExtAnmModel_c                  mModelAnim;                  /* 0x380 */
+    dExtAnmModel_c mModelAnim;                            /* 0x380 */
     /* Not "mModel": dCapEnemy_c's own dExtSimpleModel_c at 0x114 is inherited, and calling
        this one mModel shadows it. This is the item the Boo carries, not its
        body (that is mModelAnim): InitResources loads the Boo cage (T_BASKET) or a
        coin model chosen by mCarriedID. Render draws it at mCarriedScaleX
        while `carrying` is set. */
-    dExtSimpleModel_c                      mCarriedModel;               /* 0x3e4 */
+    dExtSimpleModel_c mCarriedModel;                              /* 0x3e4 */
     dExtShadowModel_c                mShadowModel1;               /* 0x434 */
     dExtShadowModel_c                mShadowModel2;               /* 0x45c */
     /* Refreshed from ClosestPlayer every Behavior; the angle/distance below

@@ -137,7 +137,7 @@ struct daObjBlockL_c {
     /* dExtSimpleModel_c member, named by the class's own destructor calling
        dExtSimpleModel_c's D1 at +0x0d4 -- a relocation the ROM build
        checks. Was a u8 marker. [_ZN13daObjBlockL_cD1Ev, now in src/game/actors/d_a_obj_block_l.cpp] */
-    dExtSimpleModel_c mModel;            /* 0x0d4 */
+    dExtSimpleModel_c mModel; /* 0x0d4 */
     /* dBgW_KcMbg member. The cartridge's own ~daObjBlockL_c calls _ZN10dBgW_KcMbgD1Ev
        at +0x124 (D0/D1), a relocation the ROM build checks; recovered by
        tools/dtor_members.py. D1 and not D2, so it is this type and not an inlined base. */

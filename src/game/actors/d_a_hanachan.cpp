@@ -928,7 +928,7 @@ void daHanachan_c::UpdateSegmentModels()
     char *model = (char *)&mModelAnims[0];
     for (i = 0; i < 5; i++) {
         Matrix4x3_FromRotationY(&((dExtSimpleModel_c *)model)->mat4x3,
-            ((daHanachan_c *)rot)->mSegmentRot[0].y);
+                                ((daHanachan_c *)rot)->mSegmentRot[0].y);
         mModelAnims[i].mat4x3.t.x = mSegmentPos[i].x >> 3;
         mModelAnims[i].mat4x3.t.y = mSegmentPos[i].y >> 3;
         mModelAnims[i].mat4x3.t.z = mSegmentPos[i].z >> 3;

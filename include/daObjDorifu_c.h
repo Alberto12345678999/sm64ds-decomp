@@ -74,7 +74,7 @@ struct daObjDorifuResources {
 
 struct daObjDorifu_c : dBgActor_c {
     /* Field NAMES are placeholders. Offsets, widths and types are observed. */
-    dExtSimpleModel_c mPlankModels[5];                  /* 0x320 */
+    dExtSimpleModel_c mPlankModels[5]; /* 0x320 */
     dBgW_KcMbg mPlankClsn[5];       /* 0x4b0 */
     Matrix4x3 mPlatformMat;                 /* 0xd98 */
     u8  mActivePlank;       /* 0xdc8 - 0..4, which collider is enabled */

@@ -39,7 +39,7 @@ struct daStarBase_c : dActor_c {
        short of the object, so the member also takes over unk_154 (+0x40 = mat4x3.t.x),
        unk_158 (+0x44 = mat4x3.t.y), unk_15c (+0x48 = mat4x3.t.z), which the header
        declared separately inside it. */
-    dExtSimpleModel_c mModel;            /* 0x114 */
+    dExtSimpleModel_c mModel; /* 0x114 */
     /* dExtShadowModel_c member, named by the class's own destructor calling
        dExtShadowModel_c's D1 at +0x164 -- a relocation the ROM build
        checks. Was a u8 marker. [_ZN12daStarBase_cD0Ev, now in src/game/actors/d_a_star.cpp] */

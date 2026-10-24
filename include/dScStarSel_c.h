@@ -53,7 +53,7 @@ struct dScStarSel_c : dScene_c {
                                         (Behavior/Render access as 32-bit
                                         fixed-point values at 0x50/0x54/0x58/
                                         0x5c/0x60) */
-    dExtSimpleModel_c models[2];                 /* 0x064 -- dExtSimpleModel_c::LoadAndSetFile'd pair,
+    dExtSimpleModel_c models[2]; /* 0x064 -- dExtSimpleModel_c::LoadAndSetFile'd pair,
                                         see CONSTRUCTION above */
     u8    unk_104[0x38];  /* 0x104 -- opaque; cursor state, per-
                                         character UI positions and timers */

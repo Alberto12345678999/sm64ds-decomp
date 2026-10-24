@@ -37,8 +37,8 @@ struct daLuigiState;
 
 struct daLuigi_c : dActor_c {
     u8 pad_0d0[0x4];
-    dExtAnmModel_c mModelAnim;                     /* 0x0d4 */
-    dExtSimpleModel_c mModel;                             /* 0x138 */
+    dExtAnmModel_c mModelAnim;                      /* 0x0d4 */
+    dExtSimpleModel_c mModel;                       /* 0x138 */
     dExtShadowModel_c mShadowModel;                 /* 0x188 */
     TextureSequence mTextureSequences[2];     /* 0x1b0 */
     daLuigiState *mState;                     /* 0x1d8 */

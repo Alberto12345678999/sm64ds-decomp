@@ -20,14 +20,13 @@
 extern "C" {
 #endif
 
-extern int _ZN17dExtSimpleModel_c13LoadTexAndPalER8BMD_File(void*);
+extern int _ZN17dExtSimpleModel_c13LoadTexAndPalER8BMD_File(void *);
 extern u32 _ZN17dExtSimpleModel_c13GetVramOffsetEj(u32);
-extern void _ZN17dExtSimpleModel_c12HideMaterialEii(void*, int, int);
-extern void _ZN17dExtSimpleModel_c12ShowMaterialEii(void*, int, int);
-extern void *_ZN17dExtSimpleModel_cC1Ev(void*);
-extern void *_ZN17dExtSimpleModel_cC2Ev(void*);
-extern void _ZN17dExtSimpleModel_cD1Ev(void*);
-
+extern void _ZN17dExtSimpleModel_c12HideMaterialEii(void *, int, int);
+extern void _ZN17dExtSimpleModel_c12ShowMaterialEii(void *, int, int);
+extern void *_ZN17dExtSimpleModel_cC1Ev(void *);
+extern void *_ZN17dExtSimpleModel_cC2Ev(void *);
+extern void _ZN17dExtSimpleModel_cD1Ev(void *);
 
 #ifdef __cplusplus
 }

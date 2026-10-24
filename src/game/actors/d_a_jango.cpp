@@ -345,7 +345,7 @@ int daJango_c::InitResources()
     char path1[8];
     char path2[8];
 
-    bmd = dExtSimpleModel_c::LoadFile(data_ov062_0211e0fc);                 /* jango.bmd */
+    bmd = dExtSimpleModel_c::LoadFile(data_ov062_0211e0fc); /* jango.bmd */
     mBlendModelAnim.SetFile((BMD_File *)bmd, 1, -1);
     mShadowModel.InitCylinder();
     dExtFrameCtrl_c::LoadFile(data_ov062_0211e114);                   /* jango_attack.bca */

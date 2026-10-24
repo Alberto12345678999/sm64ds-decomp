@@ -40,7 +40,7 @@
 #pragma RTTI off
 
 extern "C" {
-extern Matrix4x3 data_0209b3ec;      /* the camera-space matrix dExtSimpleModel_c::Render uses */
+extern Matrix4x3 data_0209b3ec; /* the camera-space matrix dExtSimpleModel_c::Render uses */
 ModelComponents *func_02016e70(BMD_File *file);
 void func_02046008(ModelComponents *data, u32 id);
 void MulMat4x3Mat4x3(const Matrix4x3 *m1, const Matrix4x3 *m0, Matrix4x3 *mF);

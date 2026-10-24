@@ -61,8 +61,8 @@ void *func_ov007_020b3f20(int idx)
       case 0x23:
 
       case 0x24:
-        _ZN17dExtSimpleModel_c17UpdateFileOffsetsER8BMD_File(obj);
-        break;
+          _ZN17dExtSimpleModel_c17UpdateFileOffsetsER8BMD_File(obj);
+          break;
 
       case 4:
 

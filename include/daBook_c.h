@@ -39,8 +39,8 @@
 #include "dBgCh_Actr.h"
 
 struct daBook_c : dEnemyBase_c {
-    dExtAnmModel_c                    mModelAnim;            /* 0x110 */
-    dExtSimpleModel_c                        mModel;                /* 0x174 */
+    dExtAnmModel_c mModelAnim;                                /* 0x110 */
+    dExtSimpleModel_c mModel;                                 /* 0x174 */
     dExtShadowModel_c                  mShadowModel;          /* 0x1c4 */
     /* Drop-shadow matrix: InitResources copies IDENTITY_MATRIX4X3 here and
        func_ov020_0211216c writes the position, divided by 8, into its

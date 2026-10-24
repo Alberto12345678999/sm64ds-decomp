@@ -285,7 +285,8 @@ int daObjSeesaw_c::InitResources()
         case ACTOR_RC_SEESAW: mVariant = 6; break;
     }
     idx = mVariant;
-    f = (int)dExtSimpleModel_c::LoadFile(**(SharedFilePtr **)(data_ov095_021374a0 + idx * kFileStride));
+    f = (int)dExtSimpleModel_c::LoadFile(
+        **(SharedFilePtr **)(data_ov095_021374a0 + idx * kFileStride));
     mModel.SetFile((BMD_File *)f, 1, -1);
     func_ov095_0213597c((char *)this);
     UpdateClsnPosAndRot();

@@ -32,7 +32,7 @@
  * slots 0, 3, 6, 9, 16 and 17 differ, exactly the overrides declared here.
  */
 struct daObjCtRotateBlock_c : dBgActor_c {
-    dExtSimpleModel_c mRotatingModel;      /* 0x320 the part that turns */
+    dExtSimpleModel_c mRotatingModel; /* 0x320 the part that turns */
     s32 mOffsetY;              /* 0x370 hop added to mPosY */
     u16 mWaitTimer;            /* 0x374 DecIfAbove0_Short countdown */
     u8 mState;                 /* 0x376 0 wait, 1 hop, 2 turn */

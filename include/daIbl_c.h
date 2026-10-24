@@ -78,7 +78,7 @@ enum daIbl_Kind {
 
 struct daIbl_c : dEnemyBase_c {
     dBgCh_Actr                 mWithMeshClsn;         /* 0x110 */
-    dExtSimpleModel_c                        mModel;                /* 0x2cc -- mModel.mat4x3 is the model matrix */
+    dExtSimpleModel_c mModel; /* 0x2cc -- mModel.mat4x3 is the model matrix */
     dExtShadowModel_c                  mShadowModel;          /* 0x31c */
     /* The shadow's Matrix4x3, as twelve words (words 9..11 are the
        translation). func_ov100_02142264 copies the model matrix into it and then

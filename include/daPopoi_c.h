@@ -75,7 +75,7 @@ struct daPopoi_c : dEnemyBase_c {
     dCcAc_c           mdCcAc_c;   /* 0x110 */
     dCcAcPos_c    mdCcAcPos_c; /* 0x144 */
     dBgCh_Actr                 mWithMeshClsn;         /* 0x184 */
-    dExtAnmModel_c                    mModelAnim;            /* 0x340 */
+    dExtAnmModel_c mModelAnim;                        /* 0x340 */
     dExtShadowModel_c                  mShadowModel;          /* 0x3a4 */
     u8  pad_3cc[0x30];                                   /* 0x3cc -- no function here touches it */
     /* The current state's record; see the table above. Installed by

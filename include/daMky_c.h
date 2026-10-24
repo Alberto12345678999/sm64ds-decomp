@@ -54,7 +54,7 @@ struct daMky_c : dActor_c {
     Player *mEatingPlayer; /* 0x0d0 -- player holding this actor in its mouth */
     /* dExtAnmModel_c member, named by _ZN14dExtAnmModel_cD1Ev at +0xd4 -- a relocation the ROM build
        checks. */
-    dExtAnmModel_c mModelAnim;            /* 0x0d4 */
+    dExtAnmModel_c mModelAnim; /* 0x0d4 */
     /* dExtShadowModel_c member, named by the class's own destructor calling
        dExtShadowModel_c's D1 at +0x138.
        [src/game/actors/d_a_mky.cpp: daMky_c::~daMky_c] */

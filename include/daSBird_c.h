@@ -27,7 +27,7 @@
  */
 struct daSBird_c : dActor_c {
     u8          pad_0d0[0x4];
-    dExtAnmModel_c   mModelAnim;      /* 0x0d4 */
+    dExtAnmModel_c mModelAnim;         /* 0x0d4 */
     dExtShadowModel_c mShadowModel;    /* 0x138 */
     Vector3     mTargetPos;      /* 0x160 */
     s16         mTargetPitch;    /* 0x16c */

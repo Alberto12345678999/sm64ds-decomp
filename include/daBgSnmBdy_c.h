@@ -47,7 +47,7 @@ extern "C" void *_ZN7fBase_cnwEj(unsigned size);
  */
 struct daBgSnmBdy_c : dActor_c {
     u8 mPad0d0[0x4];                    /* 0x0d0 */
-    dExtSimpleModel_c mModel;                       /* 0x0d4 */
+    dExtSimpleModel_c mModel;           /* 0x0d4 */
     dExtShadowModel_c mShadowModel;           /* 0x124 */
     dCcAc_c mCylinder;                  /* 0x14c */
     dBgCh_Actr mWithMeshClsn;           /* 0x180 */

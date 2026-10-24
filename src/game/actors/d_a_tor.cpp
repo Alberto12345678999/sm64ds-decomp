@@ -300,8 +300,7 @@ int daTor_c::InitResources()
 {
     /* The three Fix12-by-value calls below stay mangled (file header leftovers);
        member calls grow this function from 0x158 to 0x18c. */
-    mModelAnim.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(gSandTornadoModelFile),
-                       1, 0x15);
+    mModelAnim.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(gSandTornadoModelFile), 1, 0x15);
     dExtFrameCtrl_c::LoadFile(gSandTornadoAnimationFile);
     func_02016aac(&mModelAnim, 0x16, 1);
     mModelAnim.SetAnim((BCA_File *)((void *)gSandTornadoAnimationFile.filePtr), 0, 0x1000, 0);

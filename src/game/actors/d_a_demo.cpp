@@ -61,8 +61,8 @@ struct System {
  * emits them with the vtables, after this factory, at
  * ov002:0x020f8838 (D0) and 0x020f8848 (D1).
  *
- * The model bases are declared in daDemo_c.h under the cartridge's RTTI
- * spellings, so the vague-linkage typeinfo copies this object emits are
+ * The nested classes derive from the arm9 model classes, so the
+ * vague-linkage typeinfo copies this object emits are
  * _ZTI14dExtAnmModel_c, _ZTI17dExtSimpleModel_c, _ZTI11dExtModel_c and
  * _ZTI15dExtFrameCtrl_c. Each is a canonical import of the arm9 record
  * (notes/model-rtti-names.md); this TU does not emit a homeless _ZTI.
@@ -3706,7 +3706,8 @@ int daDemo_c::anmModel_c::func_ov002_020f6618(SharedFilePtr *mdl, int nAnims, Sh
     int i;
     void* ts;
     mModelFile = mdl;
-    if (((dExtModel_c *)self)->SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(*mModelFile), 1, tsData) == 0)
+    if (((dExtModel_c *)self)
+            ->SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(*mModelFile), 1, tsData) == 0)
         return 0;
     mNumAnimFiles = (u8)nAnims;
     mAnimFiles = anims;

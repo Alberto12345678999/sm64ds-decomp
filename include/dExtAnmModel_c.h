@@ -83,7 +83,7 @@ struct dExtAnmModel_c : dExtSimpleModel_c, dExtFrameCtrl_c {
     BCA_File *file;            /* 0x60 */
 
     /* --- primary vtable order. Do not reorder. --- */
-    virtual ~dExtAnmModel_c();                                 /* slots 0 (D1), 1 (D0) */
+    virtual ~dExtAnmModel_c();                            /* slots 0 (D1), 1 (D0) */
     virtual void UpdateVerts();                           /* slot 3 */
     virtual void Virtual10(Matrix4x3 &mat);               /* slot 4 */
     virtual void Render(const Vector3 *scale);            /* slot 5 */
@@ -109,12 +109,11 @@ struct dExtAnmModel_c : dExtSimpleModel_c, dExtFrameCtrl_c {
        satisfies the rule in include/dActor_c.h that mwcc only inlines the member
        when it is in the class or its immediate base. */
     void operator delete(void *ptr) { _ZN6Memory16operator_delete2EPv(ptr); }
-
 };
 
 #ifndef SM64DS_PLATFORM_PC
 /* ROM layout under mwccarm; host ABI divergence is tracked separately. */
-typedef char ModelAnim_size_must_be_0x64[sizeof(dExtAnmModel_c) == 0x64 ? 1 : -1];
+typedef char dExtAnmModel_c_size_must_be_0x64[sizeof(dExtAnmModel_c) == 0x64 ? 1 : -1];
 #endif
 
 #else

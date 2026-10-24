@@ -1574,7 +1574,8 @@ extern "C" void func_ov074_02121a4c(char* c, int idx)
     int off = idx * 0xc;
     void* file1 = data_ov074_02122f34[idx].anim->filePtr;
     int arg2 = *(int*)(data_ov074_02122f3c + off);
-    ((dExtAnmModel_c *)&((daKuriKing_c *)c)->mModelAnim)->SetAnim((BCA_File *)file1, arg2, 0x1000, 0);
+    ((dExtAnmModel_c *)&((daKuriKing_c *)c)->mModelAnim)
+        ->SetAnim((BCA_File *)file1, arg2, 0x1000, 0);
     _ZN18TextureTransformer7SetFileER8BTA_Filei5Fix12IiEj(
         &((daKuriKing_c *)c)->mTextureTransformer, *(void**)(data_ov074_02122f38 + off), 0, 0x1000, 0);
 }

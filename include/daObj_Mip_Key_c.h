@@ -21,7 +21,7 @@ struct MipKeyState {
 };
 
 struct daObj_Mip_Key_c : dEnemyBase_c {
-    dExtSimpleModel_c mModel;                         /* 0x110 */
+    dExtSimpleModel_c mModel;                   /* 0x110 */
     dExtShadowModel_c mShadowModel;             /* 0x160 */
     MipKeyState * mState;                 /* 0x188 */
     Player * mPlayer;                     /* 0x18c */

@@ -35,7 +35,7 @@ struct dMgTrmpln3DMario_c {
     s16 mTimer;             /* 0x60 -- state countdown */
     u8 pad_62[0x2];         /* 0x62 */
     s32 mState[2];          /* 0x64 -- the current state's member-pointer record */
-    dExtAnmModel_c mModelAnim;   /* 0x6c -- 0x64 bytes: UpdateMatrix sets its mat4x3, the
+    dExtAnmModel_c mModelAnim; /* 0x6c -- 0x64 bytes: UpdateMatrix sets its mat4x3, the
                              * states drive its dExtFrameCtrl_c base and read its file */
 };
 

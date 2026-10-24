@@ -45,7 +45,7 @@ struct daMoray_c : dEnemyBase_c {
     dCcAcPos_c mdCcAcPos_c2;  /* 0x150 */
     dBgCh_Actr mWithMeshClsn;                             /* 0x190 */
     const State *mState;                                    /* 0x34c */
-    dExtBlendAnmModel_c mBlendModelAnim;                         /* 0x350 */
+    dExtBlendAnmModel_c mBlendModelAnim;                    /* 0x350 */
     /* Where the carried star sits: the jaw bone's transform (bone 4) moved
        0x28000 along it. The star actor keeps a pointer to this matrix. */
     Matrix4x3 mStarMtx;                                     /* 0x3c0 */

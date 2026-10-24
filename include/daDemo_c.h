@@ -241,8 +241,8 @@ struct daDemo_c : dActor_c {
     u8 pad_0d0[4];          /* 0x0d0 */
     ScrollState *mScroll;   /* 0x0d4 - param1 0x2f only */
     StaffRoll *mStaffRoll;  /* 0x0d8 - param1 0x2e only */
-    dExtSimpleModel_c *mModel;          /* 0x0dc */
-    dExtAnmModel_c *mModelAnim;  /* 0x0e0 */
+    dExtSimpleModel_c *mModel;  /* 0x0dc */
+    dExtAnmModel_c *mModelAnim; /* 0x0e0 */
     u32 mSoundHandle;       /* 0x0e4 - Sound::PlayLong handle, passed back on every call */
     u32 mParticleID[3];     /* 0x0e8 - Particle::System::New handles, passed back likewise */
     /* A fix12 magnitude each script handler sets or eases, then scales by:

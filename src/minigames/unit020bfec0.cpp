@@ -1655,8 +1655,10 @@ int Dealer_Load(char *c) {
     void *ip;
 
     _ZN17dExtShadowModel_c8CleanAllEv();
-    DEALER(c)->mModelData = (int)dExtSimpleModel_c::LoadFile(*(::SharedFilePtr *)&DEALER(c)->mModelFile);
-    DEALER(c)->mTableData = (int)dExtSimpleModel_c::LoadFile(*(::SharedFilePtr *)&DEALER(c)->mTableFile);
+    DEALER(c)->mModelData =
+        (int)dExtSimpleModel_c::LoadFile(*(::SharedFilePtr *)&DEALER(c)->mModelFile);
+    DEALER(c)->mTableData =
+        (int)dExtSimpleModel_c::LoadFile(*(::SharedFilePtr *)&DEALER(c)->mTableFile);
     f = ((void *)DEALER(c)->mModelData);
     if (f == 0 || DEALER(c)->mModel.SetFile((BMD_File *)f, 1, -1) == 0) {
         return 0;

@@ -41,7 +41,7 @@ typedef char daPgRcerState_size_must_be_0x10[
 
 struct daPgRcer_c : dActor_c {
     u8 pad_0d0[0x4];
-    dExtAnmModel_c mModelAnim;             /* 0x0d4 */
+    dExtAnmModel_c mModelAnim;        /* 0x0d4 */
     TextureSequence mTextureSequence; /* 0x138 */
     dExtShadowModel_c mShadowModel;         /* 0x14c */
     dCcAc_c mdCcAc_c;                 /* 0x174 */

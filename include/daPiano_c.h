@@ -14,7 +14,7 @@
  * 0x320, exactly where the factory constructs it. */
 struct daPiano_c : dBgActor_c {
     /* Named by _ZN14dExtAnmModel_cD1Ev at +0x320, a relocation the ROM build checks. */
-    dExtAnmModel_c mModelAnim;            /* 0x320 */
+    dExtAnmModel_c mModelAnim; /* 0x320 */
     /* Named by _ZN17dExtShadowModel_cD1Ev at +0x384 (D0/D1), a ROM-checked relocation. */
     dExtShadowModel_c mShadowModel1;            /* 0x384 */
     /* Named by _ZN17dExtShadowModel_cD1Ev at +0x3ac (D0/D1), a ROM-checked relocation. */

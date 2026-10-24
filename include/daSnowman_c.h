@@ -43,7 +43,7 @@ struct daSnowman_c : dEnemyBase_c {
 
     dCcAcPos_c mdCcAcPos_c;           /* 0x110 */
     dBgCh_Actr mWithMeshClsn;         /* 0x150 */
-    dExtAnmModel_c mModelAnim;             /* 0x30c */
+    dExtAnmModel_c mModelAnim;        /* 0x30c */
     dExtShadowModel_c mShadowModel;         /* 0x370 */
     Matrix4x3 mShadowMatrix;          /* 0x398 -- coined; handed to DropShadowRadHeight */
     /* Coined. The render step builds it from bone 5 of mModelAnim and hands

@@ -91,7 +91,7 @@ struct daObjEwbIce_c {
     s16 mAngleY;            /* 0x08e */
     s16 mAngleZ;            /* 0x090 */
     u8  pad_092[0x42];
-    dExtSimpleModel_c mModel;            /* 0x0d4 */
+    dExtSimpleModel_c mModel; /* 0x0d4 */
     /* dBgW_KcMbg member. The cartridge's own ~daObjEwbIce_c calls _ZN10dBgW_KcMbgD1Ev at
        +0x124 (D0/D1), a relocation the ROM build checks; recovered by
        tools/dtor_members.py. D1 and not D2, so it is this type and not an inlined base. */

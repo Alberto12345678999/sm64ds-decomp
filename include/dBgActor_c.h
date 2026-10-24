@@ -24,7 +24,7 @@ struct player_;
 
 struct dBgActor_c : dActor_c {
     u8  pad_0d0[0x4];
-    dExtSimpleModel_c mModel;                           /* 0x0d4 */
+    dExtSimpleModel_c mModel;       /* 0x0d4 */
     dBgW_KcMbg mMeshCollider;       /* 0x124 */
     /* Where the collider sits: mModel's matrix with the actor's position
        written over the translation row. See UpdateClsnPosAndRot. */

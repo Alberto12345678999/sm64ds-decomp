@@ -1200,7 +1200,7 @@ int da1up_c::InitResources()
             if (mModel.SetFile((BMD_File *)data_ov002_0210d9b8.filePtr, 1, 1) == 0)
                 return 0;
         } else {
-            f = (BMD_File*)dExtSimpleModel_c::LoadFile(data_ov002_0210d9d8);
+            f = (BMD_File *)dExtSimpleModel_c::LoadFile(data_ov002_0210d9d8);
             if (mModel.SetFile(f, 1, 1) == 0)
                 return 0;
         }
@@ -1209,7 +1209,7 @@ int da1up_c::InitResources()
             if (mModel.SetFile((BMD_File *)data_ov002_0210d9b8.filePtr, 1, 1) == 0)
                 return 0;
         } else {
-            f = (BMD_File*)dExtSimpleModel_c::LoadFile(data_ov002_0210da30);
+            f = (BMD_File *)dExtSimpleModel_c::LoadFile(data_ov002_0210da30);
             if (mModel.SetFile(f, 1, 1) == 0)
                 return 0;
         }

@@ -86,8 +86,8 @@ struct RouletteBoardView {
     PMF pmf;              /* 0x00, RouletteBoard_StateSpin, then StateSlow */
     BMD_File *firstFile;  /* 0x08, file 0x21d, the wheel */
     BMD_File *secondFile; /* 0x0c, file 0x21e, the ball */
-    dExtSimpleModel_c model;          /* 0x10, the wheel; turned by boardAngle */
-    dExtSimpleModel_c ball;           /* 0x60, placed each frame from radius and orbitAngle */
+    dExtSimpleModel_c model; /* 0x10, the wheel; turned by boardAngle */
+    dExtSimpleModel_c ball;  /* 0x60, placed each frame from radius and orbitAngle */
     s32 radius;           /* 0xb0, Fix12 ball distance; 0x4200 at the spin */
     s32 radiusVel;        /* 0xb4, added to radius each frame */
     s32 spinSpeed;        /* 0xb8, Fix12 ball speed; 0 once the ball rests */

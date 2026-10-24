@@ -51,11 +51,11 @@
 
 struct daFRing_c : dActor_c {
     u8 pad_0d0[0x4];
-    dExtAnmModel_c mModelAnim1;                     /* 0x0d4 */
+    dExtAnmModel_c mModelAnim1;                /* 0x0d4 */
     TextureSequence mTextureSequence1;         /* 0x138 */
     MaterialChanger mMaterialChanger1;         /* 0x14c */
     TextureTransformer mTextureTransformer1;   /* 0x160 */
-    dExtAnmModel_c mModelAnim2;                     /* 0x174 */
+    dExtAnmModel_c mModelAnim2;                /* 0x174 */
     TextureSequence mTextureSequence2;         /* 0x1d8 */
     MaterialChanger mMaterialChanger2;         /* 0x1ec */
     TextureTransformer mTextureTransformer2;   /* 0x200 */
@@ -88,11 +88,11 @@ struct daFRing_c {
     s32 mPosY;                                 /* 0x060 */
     s32 mPosZ;                                 /* 0x064 */
     u8 pad_068[0x6c];
-    dExtAnmModel_c mModelAnim1;                     /* 0x0d4 */
+    dExtAnmModel_c mModelAnim1;                /* 0x0d4 */
     TextureSequence mTextureSequence1;         /* 0x138 */
     MaterialChanger mMaterialChanger1;         /* 0x14c */
     TextureTransformer mTextureTransformer1;   /* 0x160 */
-    dExtAnmModel_c mModelAnim2;                     /* 0x174 */
+    dExtAnmModel_c mModelAnim2;                /* 0x174 */
     TextureSequence mTextureSequence2;         /* 0x1d8 */
     MaterialChanger mMaterialChanger2;         /* 0x1ec */
     TextureTransformer mTextureTransformer2;   /* 0x200 */

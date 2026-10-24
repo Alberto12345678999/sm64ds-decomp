@@ -242,7 +242,7 @@ struct dScMgSnowball_c : dScMgSingle3DBase_c {
     s32 mBallSize;          /* 0xaba0 -- grows with downhill (-Y) travel (see
                                 mUphillDebt), capped 0x37000, shrinks by
                                 0x1000 a tick while melting */
-    dExtSimpleModel_c mModel;           /* 0xaba4 -- 0x50, see file banner */
+    dExtSimpleModel_c mModel; /* 0xaba4 -- 0x50, see file banner */
     BMD_File *mBallBmd;     /* 0xabf4 -- the snowball BMD; InitResources loads it,
                                 slot 3 frees it */
     u8    mProbeHit[0x20];  /* 0xabf8 -- one flag per 32-step angle probe: set when that probe hit solid or breakable */

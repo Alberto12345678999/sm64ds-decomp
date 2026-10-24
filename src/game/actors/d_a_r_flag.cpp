@@ -135,8 +135,7 @@ int daRFlag_c::Behavior()
  * sites were matched under. The mangled names pass Fix12 by value. */
 int daRFlag_c::InitResources()
 {
-    mModelAnim.SetFile(
-        (BMD_File *)dExtSimpleModel_c::LoadFile(data_ov062_0211e0d4), 1, -1);
+    mModelAnim.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(data_ov062_0211e0d4), 1, -1);
     mModelAnim.SetAnim((BCA_File *)dExtFrameCtrl_c::LoadFile(data_ov062_0211e0dc), 0, 0x1000, 0);
     _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(
         &mdCcAc_c, this, 0x35555, 0x294000, 0x280000c, 0);

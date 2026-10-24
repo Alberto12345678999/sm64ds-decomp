@@ -1929,7 +1929,8 @@ int daKrb_c::InitResources() {
     if (DestroyIfCapNotNeeded() == 0)
         return 0;
 
-    if (((dExtModel_c *)&mModelAnim)->SetFile((BMD_File *)(data_ov084_02130cf8.filePtr), 1, -1) == 0)
+    if (((dExtModel_c *)&mModelAnim)->SetFile((BMD_File *)(data_ov084_02130cf8.filePtr), 1, -1) ==
+        0)
         return 0;
 
     if (mShadowModel.InitCylinder() == 0)

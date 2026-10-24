@@ -23,7 +23,7 @@ struct daObj1UpLogo_c : dActor_c {
     u8 pad_0d0[0x4];
     /* dExtSimpleModel_c member, named by _ZN17dExtSimpleModel_cD1Ev at +0xd4 in the cartridge's own
        ~daObj1UpLogo_c (D1/D0), a relocation the ROM build checks. */
-    dExtSimpleModel_c mModel;                     /* 0x0d4 */
+    dExtSimpleModel_c mModel; /* 0x0d4 */
     /* TextureSequence member, named by _ZN15TextureSequenceD1Ev at +0x124 in
        the same destructor, called before the dExtSimpleModel_c's (reverse order). */
     TextureSequence mTextureSequence; /* 0x124 */

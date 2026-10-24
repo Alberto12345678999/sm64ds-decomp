@@ -39,7 +39,7 @@
 #include "dBgCh_Actr.h"
 
 struct daGrock_c : dEnemyBase_c {
-    dExtSimpleModel_c                        mModel;                /* 0x110 */
+    dExtSimpleModel_c mModel;                                 /* 0x110 */
     dExtShadowModel_c                  mShadowModel;          /* 0x160 */
     u8  pad_188[0x30];
     dCcAcPos_c    mdCcAcPos_c; /* 0x1b8 */

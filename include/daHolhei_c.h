@@ -20,7 +20,7 @@ struct HolheiState;  /* enter / update PMF pair, defined in d_a_holhei.cpp */
 struct daHolhei_c : dEnemyBase_c {
     dCcAc_c     mdCc_c;        /* 0x110 */
     dBgCh_Actr  mMeshClsn;     /* 0x144 */
-    dExtAnmModel_c   mModel;        /* 0x300 */
+    dExtAnmModel_c mModel;     /* 0x300 */
     /* Current state record. Behavior calls its update PMF, when non-null,
        unless UpdateKillByInvincibleChar has already ended the frame.
        InitResources enters data_ov062_0211dee0 through

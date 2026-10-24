@@ -36,7 +36,7 @@ struct ShlState;
 struct daShl_c : dEnemyBase_c {
     dCcAc_c mdCc_c;            /* 0x110 */
     dBgCh_Actr mMeshClsn;      /* 0x144 */
-    dExtSimpleModel_c mModel;              /* 0x300 */
+    dExtSimpleModel_c mModel;  /* 0x300 */
     dExtShadowModel_c mShadowModel;  /* 0x350 */
     dCcAc_c mdCc_c2;           /* 0x378 */
     /* Current state record: {enter, tick}, two pointers-to-member. Behavior

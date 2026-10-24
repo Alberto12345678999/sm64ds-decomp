@@ -289,8 +289,7 @@ extern "C" int func_ov080_0212714c(daObjMaruta_c *self, int *maxDist)
 extern "C" int func_ov080_021274ac(daObjMaruta_c *self, ResourceDescriptor *arg)
 {
     struct Vector3 d;
-    self->mModel.SetFile(
-        (BMD_File *)dExtSimpleModel_c::LoadFile(*arg->model), 1, -1);
+    self->mModel.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(*arg->model), 1, -1);
     self->func_ov080_02127094();
     self->UpdateClsnPosAndRot();
     _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(

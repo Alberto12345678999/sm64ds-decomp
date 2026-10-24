@@ -1067,7 +1067,7 @@ void Player::SetRealCharacter(unsigned int chr_)
 extern "C" {
 void Player::TurnOffToonShading(unsigned int j)
 {
-    extern int _ZN17dExtSimpleModel_c14SetPolygonModeEi(void*, int);
+    extern int _ZN17dExtSimpleModel_c14SetPolygonModeEi(void *, int);
     extern int func_ov002_020e6b74(void*, int);
   void* m;
   m = mBodyModels[this->GetBodyModelID(j, 0)];
@@ -1088,7 +1088,7 @@ void Player::TurnOffToonShading(unsigned int j)
 extern "C" {
 void Player::func_ov002_020be3b0()
 {
-    extern void _ZN17dExtSimpleModel_c14SetPolygonModeEi(void*, int mode);
+    extern void _ZN17dExtSimpleModel_c14SetPolygonModeEi(void *, int mode);
     extern void func_ov002_020e6b74(void*, void*);
     extern void func_ov002_020d80d0(void*);
     extern void _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(void*);
@@ -23557,8 +23557,9 @@ int Player::Render()
         virtual void m18(void* a, void* b);
     };
     typedef struct M34 { int m[12]; } M34;
-    extern void _ZN11dExtModel_c12ApplyOpacityEjj(void* self, unsigned int opacity, unsigned int unused);
-    extern void _ZN17dExtSimpleModel_c6RenderEPK7Vector3(void* self, void* pos);
+    extern void _ZN11dExtModel_c12ApplyOpacityEjj(void *self, unsigned int opacity,
+                                                  unsigned int unused);
+    extern void _ZN17dExtSimpleModel_c6RenderEPK7Vector3(void *self, void *pos);
     extern void _ZN15TextureSequence6UpdateER15ModelComponents(void* self, void* mc);
     extern void Matrix4x3_FromTranslation(void* m, int x, int y, int z);
     extern void Matrix4x3_ApplyInPlaceToRotationZ(void* m, int ang);
@@ -23616,7 +23617,8 @@ int Player::Render()
                 if (mBodyModelId == 3) {
                     Matrix4x3_FromTranslation(&data_020a0e68, -0x1b33, -0x666, 0);
                     Matrix4x3_ApplyInPlaceToRotationZ(&data_020a0e68, 0x4000);
-                    MulMat4x3Mat4x3(&data_020a0e68, &((dExtAnmModel_c *)bodyMdl)->data.transforms[8],
+                    MulMat4x3Mat4x3(&data_020a0e68,
+                                    &((dExtAnmModel_c *)bodyMdl)->data.transforms[8],
                                     &data_020a0e68);
                     ((VObj *)((char *)&mModelAnim4))->m18(&data_020a0e68, &mScale);
                 } else {
@@ -23710,7 +23712,8 @@ extern "C" void func_ov002_020e3e00(dExtSimpleModel_c *obj, Vector3 *vec, unsign
     void MulMat3x3Mat3x3(int *dst, const int *a, const int *b);
     void func_02016acc(void *obj, unsigned int mask);
     void func_02016b24(void *obj, unsigned int mask);
-    extern void _ZN17dExtSimpleModel_c6RenderEPK7Vector3(dExtSimpleModel_c *self, const Vector3 *v);
+    extern void _ZN17dExtSimpleModel_c6RenderEPK7Vector3(dExtSimpleModel_c * self,
+                                                         const Vector3 *v);
     int ip = (data_0209f2f8 == 0x2f) ? 1 : 0;
 
     if (!ip) {
@@ -24667,10 +24670,10 @@ void func_ov002_020e5948(void* arg0)
 {
     typedef struct OneUpLogoModelFile OneUpLogoModelFile;
     extern void _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(void* sfp);
-    extern void* _ZN17dExtSimpleModel_c8LoadFileER13SharedFilePtr(void* sfp);
+    extern void *_ZN17dExtSimpleModel_c8LoadFileER13SharedFilePtr(void *sfp);
     extern void _ZN15TextureSequence8LoadFileER13SharedFilePtr(void* sfp);
     extern void LoadSilverStarAndNumber(void);
-    extern int _ZN11dExtModel_c7SetFileEP8BMD_Fileii(void* thiz, void* bmd, s32 a, s32 b);
+    extern int _ZN11dExtModel_c7SetFileEP8BMD_Fileii(void *thiz, void *bmd, s32 a, s32 b);
     extern void func_ov002_020bec2c(void* p);
     extern s32 func_ov002_020e6bb0(void* p);
     extern void func_ov002_020e6780(void* p);
@@ -24926,8 +24929,8 @@ void func_ov002_020e5948(void* arg0)
     do {
         player->mBodyModels[i] = new dExtAnm2Model_c;
         _ZN11dExtModel_c7SetFileEP8BMD_Fileii(
-            player->mBodyModels[i], _ZN17dExtSimpleModel_c8LoadFileER13SharedFilePtr(data_ov002_0210a68c[i]), 1,
-            1);
+            player->mBodyModels[i],
+            _ZN17dExtSimpleModel_c8LoadFileER13SharedFilePtr(data_ov002_0210a68c[i]), 1, 1);
         player->mBodyModels[i]->Func_020162C4((u32)data_ov002_020ff480[i + 0xC4]->filePtr, 0,
                                               0x1000, 0);
         player->mBodyTexParams[i] = func_ov002_020e6bb0(player->mBodyModels[i]);
@@ -24941,15 +24944,15 @@ void func_ov002_020e5948(void* arg0)
         if (i == 3) {
             player->mHeadModels[i] = new dExtAnmModel_c;
             _ZN11dExtModel_c7SetFileEP8BMD_Fileii(
-                player->mHeadModels[i], _ZN17dExtSimpleModel_c8LoadFileER13SharedFilePtr(data_ov002_0210a69c[i]),
-                1, 1);
+                player->mHeadModels[i],
+                _ZN17dExtSimpleModel_c8LoadFileER13SharedFilePtr(data_ov002_0210a69c[i]), 1, 1);
             ((dExtAnmModel_c *)player->mHeadModels[i])
                 ->SetAnim((BCA_File *)((void *)data_ov002_0210eb88[1]), 0, 0x1000, 0);
         } else {
             player->mHeadModels[i] = new dExtSimpleModel_c;
             _ZN11dExtModel_c7SetFileEP8BMD_Fileii(
-                player->mHeadModels[i], _ZN17dExtSimpleModel_c8LoadFileER13SharedFilePtr(data_ov002_0210a69c[i]),
-                1, 1);
+                player->mHeadModels[i],
+                _ZN17dExtSimpleModel_c8LoadFileER13SharedFilePtr(data_ov002_0210a69c[i]), 1, 1);
         }
         player->mHeadTexParams[i] = func_ov002_020e6bb0(player->mHeadModels[i]);
         i++;
@@ -24976,8 +24979,8 @@ void func_ov002_020e5948(void* arg0)
         if (mode == 0) {
             player->mSleepBubbleModel = new dExtSimpleModel_c;
             _ZN11dExtModel_c7SetFileEP8BMD_Fileii(
-                player->mSleepBubbleModel, _ZN17dExtSimpleModel_c8LoadFileER13SharedFilePtr(data_ov002_0210da38),
-                1, -1);
+                player->mSleepBubbleModel,
+                _ZN17dExtSimpleModel_c8LoadFileER13SharedFilePtr(data_ov002_0210da38), 1, -1);
 
             if (data_0209f2f8 != 2 && data_0209f2f8 != 5 && data_0209f2f8 != 4) {
                 player->mLoadedResourceFlags |= 0x20;
@@ -24988,20 +24991,20 @@ void func_ov002_020e5948(void* arg0)
                 player->mBodyModels[4]->Func_020162C4((u32)data_ov002_020ff480[0xC6]->filePtr, 0,
                                                       0x1000, 0);
                 _ZN11dExtModel_c7SetFileEP8BMD_Fileii(
-                    &player->mModelAnim3, _ZN17dExtSimpleModel_c8LoadFileER13SharedFilePtr(data_ov002_0210e6f8),
-                    1, 1);
+                    &player->mModelAnim3,
+                    _ZN17dExtSimpleModel_c8LoadFileER13SharedFilePtr(data_ov002_0210e6f8), 1, 1);
                 player->mModelAnim3.SetAnim((BCA_File *)((void *)data_ov002_0210e750[1]), 0, 0x1000,
                                             0);
                 _ZN11dExtModel_c7SetFileEP8BMD_Fileii(
-                    &player->mModelAnim4, _ZN17dExtSimpleModel_c8LoadFileER13SharedFilePtr(data_ov002_0210e7b0),
-                    1, 1);
+                    &player->mModelAnim4,
+                    _ZN17dExtSimpleModel_c8LoadFileER13SharedFilePtr(data_ov002_0210e7b0), 1, 1);
                 player->mModelAnim4.SetAnim((BCA_File *)((void *)data_ov002_0210e4c0[1]), 0, 0x1000,
                                             0);
             }
         } else {
             _ZN11dExtModel_c7SetFileEP8BMD_Fileii(
-                &player->mModelAnim4, _ZN17dExtSimpleModel_c8LoadFileER13SharedFilePtr(data_ov002_0210e7b0), 1,
-                1);
+                &player->mModelAnim4,
+                _ZN17dExtSimpleModel_c8LoadFileER13SharedFilePtr(data_ov002_0210e7b0), 1, 1);
             player->mModelAnim4.SetAnim((BCA_File *)((void *)data_ov002_0210e4c0[1]), 0, 0x1000, 0);
         }
     }
@@ -25277,7 +25280,7 @@ Player::~Player()
 extern "C"  {
 extern int data_ov002_0210a83c[];
 void *_ZN8dActor_cC2Ev(void*);
-void *_ZN14dExtAnmModel_cC1Ev(void*);
+void *_ZN14dExtAnmModel_cC1Ev(void *);
 void __cxa_vec_ctor(void*,int,int,void*,void*);
 void *_ZN15TextureSequenceC1Ev(void*);
 void _ZN15TextureSequenceD1Ev(void*);

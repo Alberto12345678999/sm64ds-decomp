@@ -43,8 +43,8 @@ extern "C" void *_ZN7fBase_cnwEj(unsigned size);
  */
 struct daBgSnwmn_c : dActor_c {
     u8  unk_0d0[0x4];              /* 0x0d0 -- opaque; see the note above */
-    dExtSimpleModel_c mModel1;                 /* 0x0d4 */
-    dExtSimpleModel_c mModel2;                 /* 0x124 */
+    dExtSimpleModel_c mModel1;     /* 0x0d4 */
+    dExtSimpleModel_c mModel2;     /* 0x124 */
     TextureSequence mTexSeq;       /* 0x174 */
     dExtShadowModel_c mShadow;           /* 0x188 */
     dCcAcPos_c mCylClsn;           /* 0x1b0 */

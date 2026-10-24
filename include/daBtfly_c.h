@@ -43,12 +43,12 @@ struct daBtfly_c : dActor_c {
        stopped short of the object, so the member also takes over unk_0f0 (+0x1c = mat4x3),
        mAnimation (+0x50 = the dExtFrameCtrl_c base), which the header declared separately inside
        it. */
-    dExtAnmModel_c mModelAnim;            /* 0x0d4 */
+    dExtAnmModel_c mModelAnim; /* 0x0d4 */
     /* dExtSimpleModel_c member, named by _ZN17dExtSimpleModel_cD1Ev at +0x138 -- a relocation the ROM build checks.
        D1 and not D2, so it is this type and not an inlined base. The marker's pad stopped
        short of the object, so the member also takes over unk_154 (+0x1c = mat4x3), which
        the header declared separately inside it. */
-    dExtSimpleModel_c mModel;            /* 0x138 */
+    dExtSimpleModel_c mModel; /* 0x138 */
     /* dExtShadowModel_c member, named by the class's own destructor calling
        dExtShadowModel_c's D1 at +0x188 -- a relocation the ROM build
        checks. Was a u8 marker. [_ZN9daBtfly_cD0Ev, now in src/game/actors/d_a_btfly.cpp] */

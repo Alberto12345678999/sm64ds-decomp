@@ -23,8 +23,8 @@ struct daGmch_c : dActor_c {
        fact the player is not asserted here.
        [UpdateState6, EnterState7] */
     dActor_c *mHolder;                       /* 0x0d0 */
-    dExtAnmModel_c mModelAnim;                    /* 0x0d4 */
-    dExtSimpleModel_c mModel;                            /* 0x138 */
+    dExtAnmModel_c mModelAnim;               /* 0x0d4 */
+    dExtSimpleModel_c mModel;                /* 0x138 */
     dExtShadowModel_c mShadowModel;                /* 0x188 */
     dCcAc_c mdCcAc_c;  /* 0x1b0 */
     dBgCh_Actr mWithMeshClsn;              /* 0x1e4 */

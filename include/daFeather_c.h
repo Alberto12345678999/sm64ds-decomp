@@ -32,7 +32,7 @@ extern "C" void *_ZN7fBase_cnwEj(unsigned size);
  */
 struct daFeather_c : dActor_c {
     u8 pad_0d0[0x4];
-    dExtSimpleModel_c mModel;                 /* 0x0d4 */
+    dExtSimpleModel_c mModel;      /* 0x0d4 */
     dCcAc_c mdCcAc_c;              /* 0x124 */
     dBgCh_Actr mWithMeshClsn;      /* 0x158 */
     dExtShadowModel_c mShadowModel;      /* 0x314 */

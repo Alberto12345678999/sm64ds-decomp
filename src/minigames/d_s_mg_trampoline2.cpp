@@ -135,6 +135,7 @@ extern void Trmp2Spinner_Update(char *obj);
 extern void Trmp2Spinner_Init(void *obj, void *kind);
 extern void Trmp2Spinner_SetModel(void *self);
 extern void *_ZN17dExtSimpleModel_cC1Ev(void *model);
+/* local extern: D1 is called by entry name; only two scene headers declare it */
 extern void _ZN17dExtSimpleModel_cD1Ev(void *model);
 extern int sTrmp2BrushWord[];
 extern void *func_02054efc(void);
@@ -1380,6 +1381,7 @@ extern "C" {
 /* local extern: no header declares it (the include/ hits are comments) */
 extern void __cxa_vec_cleanup(void *a, int b, int c, void *d);
 extern void _ZN18TextureTransformerD1Ev(void *);
+/* local extern: D1 is called by entry name; only two scene headers declare it */
 extern void _ZN17dExtSimpleModel_cD1Ev(void *);
 // @symbol Trmp2_DestructJumperModels
 int Trmp2_DestructJumperModels(char *raw) {

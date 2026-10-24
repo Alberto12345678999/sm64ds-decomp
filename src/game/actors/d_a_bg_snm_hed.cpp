@@ -303,8 +303,7 @@ int daBgSnmHed_c::InitResources()
     struct Vector3 pos;
     int i;
 
-    mModel.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(
-                       *(SharedFilePtr *)&data_ov072_02122bc4),
+    mModel.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(*(SharedFilePtr *)&data_ov072_02122bc4),
                    1, -1);
 
     for (i = 0; i < 2; i++) {

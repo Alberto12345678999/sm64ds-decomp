@@ -46,7 +46,7 @@
 #include "dBgCh_Actr.h"
 
 struct daFPkn_c : dEnemyBase_c {
-    dExtAnmModel_c                    mModelAnim;            /* 0x110 */
+    dExtAnmModel_c mModelAnim;    /* 0x110 */
     dCcAc_c           mdCcAc_c;   /* 0x174 */
     dCcAcPos_c    mdCcAcPos_c; /* 0x1a8 */
     s32                          mRespawnMode;          /* 0x1e8 */

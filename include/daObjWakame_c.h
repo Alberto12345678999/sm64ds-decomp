@@ -57,7 +57,7 @@ extern "C" void *_ZN7fBase_cnwEj(unsigned size);
  */
 struct daObjWakame_c : dActor_c {
     u32       unk_0d0;                  /* 0x0d0 -- not accessed by this TU */
-    dExtAnmModel_c mModelAnim;               /* 0x0d4 -- model and its animation */
+    dExtAnmModel_c mModelAnim;          /* 0x0d4 -- model and its animation */
 
     /* All four are overrides of fBase_c/dActor_c, not new members -- see the
        vtable diff above. `virtual` is redundant to the compiler and costs no

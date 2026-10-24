@@ -58,8 +58,8 @@ struct EyerokState;
 
 struct Eyerok : dBgActor_c {
     dCcAcPos_c mdCcAcPos_c;                                 /* 0x320 */
-    dExtBlendAnmModel_c mBlendModelAnim;                         /* 0x360 */
-    dExtSimpleModel_c mModel2;                                          /* 0x3d0 */
+    dExtBlendAnmModel_c mBlendModelAnim;                    /* 0x360 */
+    dExtSimpleModel_c mModel2;                              /* 0x3d0 */
     dExtShadowModel_c mShadowModel;                         /* 0x420 */
     TextureSequence mTextureSequence;                       /* 0x448 */
     /* Drop-shadow matrix, flat words. A Matrix4x3 member would run another
