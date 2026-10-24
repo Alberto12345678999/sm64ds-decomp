@@ -87,8 +87,8 @@ void Deallocate(void *);
 int _Z15ApproachLinear2Rsss(short *, short, short);
 extern unsigned char data_0209b2e4;
 
-extern void _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(int a, void *oam, int b, int c, int d,
-                                                        int e, int f, int g, int h, int i);
+extern void OamRender10_d_s_entry(int a, void *oam, int b, int c, int d, int e, int f, int g, int h,
+                                  int i);
 extern int func_0203d974(void);
 
 int func_0200f0bc(void);
@@ -167,8 +167,7 @@ void dScEntry_c::icon_c::Render() {
             scale = ((8 - scale) << 8) + 0x1000;
         }
 
-        _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(1, spriteData, xy[0], xy[1], -1, -1, scale,
-                                                    scale, 0, -1);
+        OAM::Render(1, (OamAttr *)spriteData, xy[0], xy[1], -1, -1, scale, scale, 0, -1);
         return;
     }
 
@@ -478,9 +477,8 @@ extern "C" void func_ov075_0211621c(char *c) {
             do {
                 int *p;
                 int pid = EntryPlayerIndex(i);
-                _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(zA, data_ov075_0211c7c0,
-                                                            xbase + i * stride, yIcon, minus1,
-                                                            minus1, scale, scale, zA, minus1);
+                OAM::Render(zA, data_ov075_0211c7c0, xbase + i * stride, yIcon, minus1, minus1,
+                            scale, scale, zA, minus1);
                 p = (int *)_ZN3OAM6RenderEbP7OamAttriiii5Fix12IiEi(
                     zC, (OamAttr *)data_ov075_0211c8b0, xbase + 0x1c + i * stride, yIcon, minus1,
                     minus1, scale, zC);
@@ -490,9 +488,8 @@ extern "C" void func_ov075_0211621c(char *c) {
                     *q = (val & (~0x3ff)) |
                          ((data_0209f310[pid] + (((u32)(val << 22)) >> 22)) & 0x3ff);
                 }
-                _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(zB, data_ov075_0211c870,
-                                                            xbase + i * stride, yNum, minus1,
-                                                            minus1, scale, scale, zB, minus1);
+                OAM::Render(zB, data_ov075_0211c870, xbase + i * stride, yNum, minus1, minus1,
+                            scale, scale, zB, minus1);
                 {
                     int n;
                     int dx = off14;

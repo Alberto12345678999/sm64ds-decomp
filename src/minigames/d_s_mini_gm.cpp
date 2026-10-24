@@ -183,7 +183,8 @@ extern char *LoadFile(int id);
 extern void DecompressLZ16(void *src, void *dst);
 extern void MultiStore16(u16 val, void *dst, int nbytes);
 
-extern void _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(int sub, OamAttr *attr, int x, int y, int pal, int prio, int sx, int sy, int c, int d);
+extern void OamRender10_d_s_mini_gm(int sub, OamAttr *attr, int x, int y, int pal, int prio, int sx,
+                                    int sy, int c, int d);
 extern void _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiEi(int sub, OamAttr *attr, int x, int y, int pal, int prio, int s, int c);
 extern void *_ZN2G212GetBG2ScrPtrEv(void);
 extern void *_ZN2G213GetBG2CharPtrEv(void);
@@ -789,9 +790,9 @@ s32 dScMiniGm_c::Render()
     int scale;
 
     if (gMgSaveDirty == 1) {
-        _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(0, (OamAttr *)sMiniGmSavingCaption, 0x80, 0xa4, -1, 0, 0x1000, 0x1000, 0, -1);
+        OAM::Render(0, (OamAttr *)sMiniGmSavingCaption, 0x80, 0xa4, -1, 0, 0x1000, 0x1000, 0, -1);
     } else {
-        _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(0, (OamAttr *)sMiniGmCaption, 0x80, 0xa4, -1, 0, 0x1000, 0x1000, 0, -1);
+        OAM::Render(0, (OamAttr *)sMiniGmCaption, 0x80, 0xa4, -1, 0, 0x1000, 0x1000, 0, -1);
     }
 
     y0 = 0x18;
