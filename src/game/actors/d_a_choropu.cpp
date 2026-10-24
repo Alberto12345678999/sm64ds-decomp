@@ -86,7 +86,11 @@ extern ChoropuStateRow data_ov080_02128438[6];
 #define LAUND(p) ((void*)((((long long)(int)(p)))))
 
 extern "C" {
-void  _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(unsigned int id, int x, int y, int z);
+namespace Particle {
+struct System {
+    static void NewSimple(unsigned int id, int x, int y, int z);
+};
+}
 unsigned int _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
     unsigned int a, unsigned int b, int x, int y, int z, void *vel, void *cb);
 void  _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void *player, void *pos, unsigned int a, int b,
@@ -154,8 +158,8 @@ void daChoropu_c::func_ov080_02123860()
         mdCcAc_c.flags |= daChoropu_CC_DISABLED;
         mFlags &= ~daChoropu_FLAG_EMERGED;
         if (idx == 0xf) {
-            _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0x2a, mPosX, mPosY, mPosZ);
-            _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0x2b, mPosX, mPosY + 0x1e000, mPosZ);
+            Particle::System::NewSimple(0x2a, mPosX, mPosY, mPosZ);
+            Particle::System::NewSimple(0x2b, mPosX, mPosY + 0x1e000, mPosZ);
         }
     }
     {

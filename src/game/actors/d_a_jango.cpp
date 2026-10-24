@@ -137,11 +137,11 @@ enum Bool { FALSE, TRUE };
 /* shadow struct 'BCA_File' */
 struct BCA_File;
 
-/* Scalar-ABI spelling of Particle::System::NewSimple: the ROM name
-   carries by-value class parameters (e.g. Fix12<int>), which mwccarm
-   passes differently at the call site, so declaring the true types
-   breaks the byte match. See notes/mwccarm-codegen.md 6az. */
-extern "C" void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(unsigned int id, int x, int y, int z);
+namespace Particle {
+struct System {
+    static void NewSimple(unsigned int id, int x, int y, int z);
+};
+}
 
 /* shadow typedef 'M48' */
 typedef struct { int w[12]; } M48;
@@ -1098,7 +1098,7 @@ int daJango_c::func_ov062_0211b930()
         mTimer = 0x1e;
     }
     func_02012694(SND_AT_HURT_ENTER, &mCamSpacePosX);
-    _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(PARTICLE_AT_HURT_ENTER, mPosX, mPosY, mPosZ);
+    Particle::System::NewSimple(PARTICLE_AT_HURT_ENTER, mPosX, mPosY, mPosZ);
     mSpeedX = 0;
     mVertSpeed = 0;
     mSpeedZ = 0;

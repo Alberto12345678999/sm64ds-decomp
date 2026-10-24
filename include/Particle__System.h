@@ -70,6 +70,8 @@ struct System {
     Flags flags;                   /* 0x74 */
 
     static System *FromUniqueID(u32 uniqueID);
+    /* Unnamed parameters: a name here numbers @NNN in every includer. */
+    static void *NewSimple(u32, Fix12i, Fix12i, Fix12i);
 };
 
 #ifndef SM64DS_PLATFORM_PC

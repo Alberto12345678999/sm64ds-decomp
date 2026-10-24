@@ -83,7 +83,11 @@ short Vec3_HorzAngle(const Vector3 *a, const Vector3 *b);
 /* Scalar stand-ins for Fix12<int> by-value callees. The header methods
  * mangle to these same symbols and home the argument. */
 int _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs(void *self, Vector3 *pos, unsigned int count, int spread, short angle);
-void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(unsigned int id, int x, int y, int z);
+namespace Particle {
+struct System {
+    static void NewSimple(unsigned int id, int x, int y, int z);
+};
+}
 void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
     void *self, dExtShadowModel_c &shadow, Matrix4x3 &mtx, int radius, int height,
     unsigned int opacity);
@@ -173,7 +177,7 @@ extern "C" void func_ov081_021237ec(daHuwa_c *self)
     Vec3_LslInPlace(&dust, 3);
     AddVec3(&dust, &self->mPos, &dust);
 
-    _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0x53, dust.x, dust.y, dust.z);
+    Particle::System::NewSimple(0x53, dust.x, dust.y, dust.z);
     func_0201267c(0xd5, &self->mCamSpacePos);
     self->KillAndTrackInDeathTable();
 }

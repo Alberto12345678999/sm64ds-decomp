@@ -19,7 +19,6 @@
  *   header method form size-DIFFs.
  * - func_020228dc / func_0202293c: blue/red flame particle wrappers
  *   (effects 0x117 / 0x118). No recovered names.
- * - Particle::System::NewSimple stays mangled (Fix12i by value, 6az).
  */
 
 #include "daObjFire_c.h"
@@ -30,8 +29,11 @@ extern "C" {
 u8 DecIfAbove0_Byte(u8 *value);
 u32 func_020228dc(Fix12i x, Fix12i y, Fix12i z);
 u32 func_0202293c(Fix12i x, Fix12i y, Fix12i z);
-void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(
-    u32 id, Fix12i x, Fix12i y, Fix12i z);
+namespace Particle {
+struct System {
+    static void NewSimple(u32 id, Fix12i x, Fix12i y, Fix12i z);
+};
+}
 void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(
     void *self, dActor_c *actor, Fix12i radius, Fix12i height,
     u32 flags, u32 vulnFlags);
@@ -150,7 +152,7 @@ int daObjFire_c::Behavior()
         particlePos.y = mFlamePos.y;
         particlePos.z = mFlamePos.z;
         particlePos.y -= 0x1b000;
-        _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(
+        Particle::System::NewSimple(
             0x9f, particlePos.x, particlePos.y, particlePos.z);
     }
 

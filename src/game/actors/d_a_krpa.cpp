@@ -314,8 +314,11 @@ int daKrpa_c::func_ov070_021214f8()
 /* Particle::System::NewSimple is not yet declared by its shared header; retain
  * this typed ABI import without guessing the unresolved state's source name. */
 namespace Sound { void PlayBank0(u32 soundID, const Vector3 &pos); }
-extern "C" u32 _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(
-    u32 effectID, Fix12i x, Fix12i y, Fix12i z);
+namespace Particle {
+struct System {
+    static u32 NewSimple(u32 effectID, Fix12i x, Fix12i y, Fix12i z);
+};
+}
 
 int daKrpa_c::func_ov070_02121438()
 {
@@ -330,9 +333,9 @@ int daKrpa_c::func_ov070_02121438()
     this->mScaleZ = 0x1000;
     this->mStateTimer = 0x2d;
     this->mModelAnim.SetAnim((BCA_File *)data_ov070_021234c4, 0, 0x1000, 0);
-    _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(
+    Particle::System::NewSimple(
         0x43, this->mPosX, this->mPosY, this->mPosZ);
-    _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(
+    Particle::System::NewSimple(
         0x44, this->mPosX, this->mPosY, this->mPosZ);
     this->mStateIndex = 3;
     return 1;

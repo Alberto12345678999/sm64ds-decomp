@@ -79,8 +79,11 @@ extern u16 DecIfAbove0_Short(u16 *value);
 extern u8 DecIfAbove0_Byte(u8 *value);
 extern void _ZN5Sound7PlaySubEjjj5Fix12IiEb(
     u32 bank, u32 soundID, u32 param, Fix12i volume, bool loop);
-extern void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(
-    u32 effectID, Fix12i x, Fix12i y, Fix12i z);
+namespace Particle {
+struct System {
+    static void NewSimple(u32 effectID, Fix12i x, Fix12i y, Fix12i z);
+};
+}
 
 extern void Vec3_Asr(void *destination, const void *source, s32 shift);
 extern void Matrix4x3_FromTranslation(
@@ -270,14 +273,14 @@ s32 daObjHatenaSwitch_c::Behavior()
                     position.x = x;
                     position.y = y;
                     position.z = z;
-                    _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(
+                    Particle::System::NewSimple(
                         0x6d, x, y, z);
-                    _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(
+                    Particle::System::NewSimple(
                         0x6e, position.x, position.y, position.z);
-                    _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(
+                    Particle::System::NewSimple(
                         0x6f, position.x, position.y, position.z);
                 }
-                _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(
+                Particle::System::NewSimple(
                     0x70, mPosX, mPosY, mPosZ);
                 mTalking = 1;
             }

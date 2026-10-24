@@ -119,7 +119,11 @@ extern int _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix
 extern struct Matrix4x3 data_020a0e68;
 /* Same body as Sound::PlayBank3 (0x02012664). The ROM calls these copies. */
 extern void func_02012694(int id, void *pos);
-extern void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(u32 id, int x, int y, int z);
+namespace Particle {
+struct System {
+    static void NewSimple(u32 id, int x, int y, int z);
+};
+}
 extern void dBgCh_Actr_UpdateContinuous_Veneer(void *clsn);
 extern void func_0201267c(int id, void *pos);
 extern void *_ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
@@ -214,7 +218,7 @@ extern "C" void func_ov021_021123b0(char *raw)
         func_02012694(0x17a, &rock->mCamSpacePosX);
         ((Player *)other)->IncMegaKillCount();
         rock->TriplePoofDust();
-        _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(
+        Particle::System::NewSimple(
             0x67, rock->mPosX, rock->mPosY, rock->mPosZ);
         func_ov021_02112294(rock);
         rock->MarkForDestruction();
@@ -232,7 +236,7 @@ extern "C" void func_ov021_021123b0(char *raw)
             func_02012694(0x17a, &rock->mCamSpacePosX);
             rock->MarkForDestruction();
             rock->TriplePoofDust();
-            _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(
+            Particle::System::NewSimple(
                 0x67, rock->mPosX, rock->mPosY, rock->mPosZ);
             func_ov021_02112294(rock);
             return;
@@ -277,7 +281,7 @@ extern "C" void func_ov021_02112544(char *raw)
             if (rock->mVertSpeed < (rock->mVertAccel << 1) && normal.y >= 0xc00)
                 rock->mVertSpeed = -rock->mVertSpeed * 6 / 10;
             pos.y += 0x3c000;
-            _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0x68, pos.x, pos.y, pos.z);
+            Particle::System::NewSimple(0x68, pos.x, pos.y, pos.z);
             func_0201267c(0x48, &rock->mCamSpacePosX);
         } else {
             rock->mDustParticleID =
@@ -393,7 +397,7 @@ int daGrock_c::Behavior()
                 }
                 UntrackStar(mTrackStarID);
                 TriplePoofDust();
-                _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0x67, mPosX, mPosY, mPosZ);
+                Particle::System::NewSimple(0x67, mPosX, mPosY, mPosZ);
                 func_02012694(0x17a, &mCamSpacePosX);
             }
         }

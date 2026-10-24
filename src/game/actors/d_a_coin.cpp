@@ -778,11 +778,11 @@ void daCoin_c::func_ov002_020b2150()
     }
 }
 
-/* Particle::System::NewSimple takes its coordinates as Fix12<int>, which this
- * tree still spells as a plain s32, so the call is reached through its mangled
- * name. The declaration must carry C linkage: a C++-linkage prototype of that
- * identifier mangles a second time and names a symbol nothing defines. */
-extern "C" void *_ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(unsigned int id, Fix12i x, Fix12i y, Fix12i z);
+namespace Particle {
+struct System {
+    static void * NewSimple(unsigned int id, Fix12i x, Fix12i y, Fix12i z);
+};
+}
 
 // @symbol _ZN8daCoin_c16CleanupResourcesEv
 s32 daCoin_c::CleanupResources()
@@ -814,7 +814,7 @@ s32 daCoin_c::CleanupResources()
         }
     }
     if (mDisappearTimer != 0) return 1;
-    _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0xd2, mPosX, mPosY + 0x28000, mPosZ);
+    Particle::System::NewSimple(0xd2, mPosX, mPosY + 0x28000, mPosZ);
     return 1;
 }
 

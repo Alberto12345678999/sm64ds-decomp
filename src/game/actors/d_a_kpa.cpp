@@ -354,7 +354,11 @@ unsigned a, unsigned b, int x, int y, int z, void *v, void *cb);
 extern void _ZN5Sound17ChangeMusicVolumeEj5Fix12IiE(unsigned int a, int b);
 extern KpaAnimationFileHandle data_ov060_0211ac88;
 extern KpaAnimationFileHandle data_ov060_0211ac60;
-extern void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(unsigned int kind, int x, int y, int z);
+namespace Particle {
+struct System {
+    static void NewSimple(unsigned int kind, int x, int y, int z);
+};
+}
 extern int Vec3_HorzLen(const Vector3* v);
 extern void _ZN8dActor_c13SpawnFireballERK7Vector3PK10Vector3_165Fix12IiES7_j( void* self, const void* pos, const void* rot, int speed, int gravity, u32 flags);
 extern int RandomIntInternal(int* seed);
@@ -2633,8 +2637,8 @@ void daKpa_c::func_ov060_021135fc(){
         pos.y = pos.y + 0xa0000;
         dActor_c::Spawn(BOWSER_ACTOR_LAST_STAR, 7, pos, 0, this->mAreaId, -1);
     } else {
-        _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0xad, base.x, base.y, base.z);
-        _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0xae, base.x, base.y, base.z);
+        Particle::System::NewSimple(0xad, base.x, base.y, base.z);
+        Particle::System::NewSimple(0xae, base.x, base.y, base.z);
         void *spawned = dActor_c::Spawn(BOWSER_ACTOR_OBJ_KEY, this->mVariantID, *((Vector3*)(&this->mPosX)), 0, this->mAreaId, -1);
         ((daObjKey_c *)spawned)->mSpinSpeed = this->mSpinSpeed;
         func_02012694(BOWSER_SND_DEFEATED, (Vector3*)(&this->mCamSpacePosX));

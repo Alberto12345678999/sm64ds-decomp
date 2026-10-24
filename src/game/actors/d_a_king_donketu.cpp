@@ -232,7 +232,7 @@ extern unsigned int _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_
 extern void func_0200d8c8(void *cam, void *v, int strength);
 extern void MulMat4x3Mat4x3(void *dst, void *a, void *b);
 extern void Vec3_Lsl(void *d, void *s, int sh);
-extern void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(unsigned int id, int x, int y, int z);
+extern void d_a_king_donketuNewSimpleHold(unsigned int id, int x, int y, int z);
 extern void *data_0209f318;
 extern struct Matrix4x3 data_020a0e68;
 extern void Vec3_Sub(Vec3 *out, Vec3 *a, Vec3 *b);
@@ -396,9 +396,9 @@ void daKing_Donketu_c::func_ov073_0211f2c0(int strength)
   }
 
   spawn:
-  _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0x88, pv.x, pv.y, pv.z);
+  Particle::System::NewSimple(0x88, pv.x, pv.y, pv.z);
 
-  _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0x89, pv.x, pv.y, pv.z);
+  Particle::System::NewSimple(0x89, pv.x, pv.y, pv.z);
 }
 
 /* Particles 0x84 and 0x85 on the surface of a's collision sphere,
@@ -452,8 +452,8 @@ void daKing_Donketu_c::func_ov073_0211f494(void *pb)
     rx = FX_MUL(tmp, sin_ay);
     rz = FX_MUL(tmp, cos_ay);
     p.x += rx; p.y += ry; p.z += rz;
-    _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0x84, p.x, p.y, p.z);
-    _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0x85, p.x, p.y, p.z);
+    Particle::System::NewSimple(0x84, p.x, p.y, p.z);
+    Particle::System::NewSimple(0x85, p.x, p.y, p.z);
 }
 
 /* Collision step, called from Behavior in the chase states (..3360, ..3390)
@@ -614,7 +614,7 @@ s32 daKing_Donketu_c::func_ov073_0211f61c()
     }
     {
         s32* pv = &target->mPosX;
-        _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0x8a, pv[0], pv[1], pv[2]);
+        Particle::System::NewSimple(0x8a, pv[0], pv[1], pv[2]);
     }
     if (c->mState == &data_ov073_021233d0) {
         func_02012694(SND_HIT_REGISTERED, &c->mCamSpacePosX);

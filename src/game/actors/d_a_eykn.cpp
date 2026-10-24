@@ -137,7 +137,7 @@ int _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
     u32 uniqueID, u32 effectID, int x, int y, int z, const void *dir, void *callback);
 u32 _ZN8Particle6System17NewUnkCallback818Ejj5Fix12IiES2_S2_PK11Vector3_16f(
     u32 uniqueID, u32 effectID, int x, int y, int z, const Vector3_16f *dir);
-void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(u32 effectID, int x, int y, int z);
+void d_a_eyknNewSimpleHold(u32 effectID, int x, int y, int z);
 int _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(Player *player, void *source, u32 damage, int speed,
                                             u8 a, u8 b, u8 c);
 void _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(
@@ -487,9 +487,9 @@ int daEykn_c::St_Die_Main()
             if (isBig != 0) {
                 unsigned char star = (unsigned char)(param1 & 0xf);
                 UntrackAndSpawnStar(mStarTrackID, star, mPos, 4);
-                _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0x124, mPosX, mPosY, mPosZ);
-                _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0x125, mPosX, mPosY, mPosZ);
-                _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0x126, mPosX, mPosY, mPosZ);
+                Particle::System::NewSimple(0x124, mPosX, mPosY, mPosZ);
+                Particle::System::NewSimple(0x125, mPosX, mPosY, mPosZ);
+                Particle::System::NewSimple(0x126, mPosX, mPosY, mPosZ);
             }
         }
         func_0201267c(0xc4, &mCamSpacePosX);

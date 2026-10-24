@@ -21,7 +21,7 @@
 // @symbol func_02022d44
 // @symbol _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE
 // @symbol _ZN8Particle6System12FromUniqueIDEj
-// @symbol _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_
+// @symbol _ZN8Particle6System9NewSimpleEjiii
 // @symbol _ZN8Particle9RenderAllEv
 // @symbol _ZN8Particle10SysTracker6UpdateEv
 // @symbol _ZN8Particle10SysTracker10InitialiseEv
@@ -220,10 +220,10 @@ void RenderAll()
 
 }
 
-extern "C" {
+namespace Particle {
 
-// @symbol _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_
-void* _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(u32 uniqueID, s32 x, s32 y, s32 z) {
+// @symbol _ZN8Particle6System9NewSimpleEjiii
+void *System::NewSimple(u32 uniqueID, Fix12i x, Fix12i y, Fix12i z) {
     Vector3 pos;
     s32 xv = x >> 3;
     s32 yv = y >> 3;

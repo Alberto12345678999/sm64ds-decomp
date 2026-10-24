@@ -68,7 +68,11 @@ struct daObjBlockLClsnFile : SharedFilePtr {
 };
 
 extern "C" {
-void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_( u32 id, Fix12i x, Fix12i y, Fix12i z);
+namespace Particle {
+struct System {
+    static void NewSimple(u32 id, Fix12i x, Fix12i y, Fix12i z);
+};
+}
 void _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs( void *self, const Vector3 &pos, u32 count, s32 speed, s16 delay);
 extern BigBrickBlockFileRow data_ov002_02108ab0[];
 extern BigBrickBlockFileRow data_ov002_02108ab4[];
@@ -303,7 +307,7 @@ void daObjBlockL_c::Kill()
     if (IsActorID(this, 0x2e)) {
         kind = 0x48;
     }
-    _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(kind, pos.x, pos.y, pos.z);
+    Particle::System::NewSimple(kind, pos.x, pos.y, pos.z);
 
     dustPos.x = pos.x;
     dustPos.y = pos.y;

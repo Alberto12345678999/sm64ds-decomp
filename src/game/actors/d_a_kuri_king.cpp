@@ -135,7 +135,11 @@ extern "C" u16 DecIfAbove0_Short(u16* p);
 extern "C" s16 Vec3_VertAngle(const struct Vector3* v1, const struct Vector3* v0);
 extern "C" s16 data_02082214[];
 extern "C" void func_02012694(u32 a, void* b);
-extern "C" void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(u32 id, int x, int y, int z);
+namespace Particle {
+struct System {
+    static void NewSimple(u32 id, int x, int y, int z);
+};
+}
 /* local extern: include/Sound.h does not declare the layer-3 pair yet. */
 namespace Sound {
 void StopLoadedMusic_Layer3();
@@ -514,8 +518,8 @@ void daKuriKing_c::func_ov074_0211f5b8()
         vzero.y = this->mPosY;
         vzero.z = this->mPosZ;
         vzero.y = vzero.y + 0x190000;
-        _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0x91, vzero.x, vzero.y, vzero.z);
-        _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0x92, vzero.x, vzero.y, vzero.z);
+        Particle::System::NewSimple(0x91, vzero.x, vzero.y, vzero.z);
+        Particle::System::NewSimple(0x92, vzero.x, vzero.y, vzero.z);
         func_02012694(0x15f, &this->mCamSpacePosX);
         func_ov074_0211f344(1);
         func_ov074_0211f244();
@@ -950,7 +954,7 @@ int daKuriKing_c::func_ov074_021204c0() {
             v.y = this->mPosY;
             v.z = this->mPosZ;
             v.y += FX_MUL(this->mCurrentScale, (long long)0x190000);
-            _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0xb1, ((int*)&v)[0], ((int*)&v)[1], ((int*)&v)[2]);
+            Particle::System::NewSimple(0xb1, ((int*)&v)[0], ((int*)&v)[1], ((int*)&v)[2]);
         }
     }
     k = ((u16)this->mScalePhase >> 4) * 2;
@@ -1162,11 +1166,11 @@ void daKuriKing_c::func_ov074_02120bb8(dActor_c *other, dCcAcPos_c *clsn, int mo
 
     switch (mode) {
     case 0:
-        _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0xf6, dst.x, dst.y, dst.z);
+        Particle::System::NewSimple(0xf6, dst.x, dst.y, dst.z);
         break;
     case 1:
-        _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0x43, dst.x, dst.y, dst.z);
-        _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0x44, dst.x, dst.y, dst.z);
+        Particle::System::NewSimple(0x43, dst.x, dst.y, dst.z);
+        Particle::System::NewSimple(0x44, dst.x, dst.y, dst.z);
         break;
     }
 }

@@ -157,7 +157,11 @@ extern int data_ov002_020ff0d4[];
 extern int data_ov002_020ff0d8[];
 extern int data_ov002_020ff0dc[];
 extern "C" void func_02012694(int a, void *b);
-extern "C" void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_( u32 id, Fix12i x, Fix12i y, Fix12i z);
+namespace Particle {
+struct System {
+    static void NewSimple(u32 id, Fix12i x, Fix12i y, Fix12i z);
+};
+}
 
 extern s16 Vec3_HorzAngle(const struct Vector3* v0, const struct Vector3* v1);
 extern s16 data_02082214[];
@@ -940,9 +944,7 @@ void daObjTatefuda_c::CheckGrabOrBreak() {
  *
  * The second Vector3 is memberwise on purpose: Vector3 declares a destructor
  * (types.h), so a whole-object assignment compiles to an ldm/stm pair, four
- * instructions where the ROM has six. Particle::System::NewSimple stays spelled
- * as its mangled name -- its parameters are Fix12<int> BY VALUE and declaring
- * the true types changes how the caller passes them. */
+ * instructions where the ROM has six. */
 /* Reset returns void now; Kill drops the value regardless. */
 void daObjTatefuda_c::Kill()
 {
@@ -954,7 +956,7 @@ void daObjTatefuda_c::Kill()
     pos.x = x;
     pos.y = y;
     pos.z = z;
-    _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0xe, pos.x, pos.y, pos.z);
+    Particle::System::NewSimple(0xe, pos.x, pos.y, pos.z);
     dustPos.x = pos.x;
     dustPos.y = pos.y;
     dustPos.z = pos.z;

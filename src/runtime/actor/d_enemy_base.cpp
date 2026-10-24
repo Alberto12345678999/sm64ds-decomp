@@ -810,7 +810,11 @@ void dEnemyBase_c::SpawnMegaCharParticles(dActor_c &other, char *p) {
    func_ov002_020ada40 because the mangled name was sitting on ov004's unrelated
    function at the same address. */
 extern "C" {
-extern void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(unsigned int a, int x, int y, int z);
+namespace Particle {
+struct System {
+    static void NewSimple(unsigned int a, int x, int y, int z);
+};
+}
 }
 
 // @symbol _ZN12dEnemyBase_c20KillByInvincibleCharERK10Vector3_16R6Player5Fix12IiE
@@ -836,8 +840,8 @@ void dEnemyBase_c::KillByInvincibleChar(const Vector3_16 &spin, Player &player, 
     int vx = v[0];
     vy = vy + ret;
     v[1] = vy;
-    _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0x43, vx, vy, v[2]);
-    _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0x44, v[0], v[1], v[2]);
+    Particle::System::NewSimple(0x43, vx, vy, v[2]);
+    Particle::System::NewSimple(0x44, v[0], v[1], v[2]);
     player.IncMegaKillCount();
 }
 

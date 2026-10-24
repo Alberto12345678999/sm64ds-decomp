@@ -99,8 +99,12 @@ int  func_ov015_021128f8(void *collider, daObjBk_Lift_c *lift, void *unused);
 
 unsigned _ZN5Sound8PlayLongEjjjRK7Vector3s(unsigned handle, unsigned a,
                                            unsigned id, void *pos, s16 f);
-void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(u32 id, Fix12i x, Fix12i y,
+namespace Particle {
+struct System {
+    static void NewSimple(u32 id, Fix12i x, Fix12i y,
                                                     Fix12i z);
+};
+}
 void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
     dBgW_KcMbg *self, KCL_File *file, const Matrix4x3 *mat,
     Fix12i scale, s16 angle, CLPS_Block *clps);
@@ -321,7 +325,7 @@ void daObjBk_Lift_c::OnHitByMegaChar(Player &player)
 void daObjBk_Lift_c::Kill()
 {
     Vector3 dustPos;
-    _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0x48, mPosX, mPosY, mPosZ);
+    Particle::System::NewSimple(0x48, mPosX, mPosY, mPosZ);
     dustPos.x = mPosX;
     dustPos.y = mPosY;
     dustPos.z = mPosZ;

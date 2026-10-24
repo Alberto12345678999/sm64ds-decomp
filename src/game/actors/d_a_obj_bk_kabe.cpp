@@ -95,7 +95,11 @@ void func_020393a4(int *mesh, int range);
 void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
     dBgW_KcMbg *self, KCL_File *kcl, const Matrix4x3 *mtx, int scale, short angY,
     CLPS_Block *clps);
-void *_ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(u32 id, s32 x, s32 y, s32 z);
+namespace Particle {
+struct System {
+    static void * NewSimple(u32 id, s32 x, s32 y, s32 z);
+};
+}
 }
 
 enum {
@@ -122,7 +126,7 @@ daObjBk_Kabe_c::~daObjBk_Kabe_c()
 void daObjBk_Kabe_c::Kill()
 {
     Sound::PlayBank3(kBreakSound, mCamSpacePos);
-    _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(kBreakParticle, mPosX, mPosY, mPosZ);
+    Particle::System::NewSimple(kBreakParticle, mPosX, mPosY, mPosZ);
     int isBreakable = (actorID == kBreakableActor);
     if (isBreakable) {
         mBroken = 1;

@@ -376,7 +376,11 @@ extern void _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(void *self, void 
 extern void _ZN5Sound17ChangeMusicVolumeEj5Fix12IiE(unsigned int a, int b);
 extern void _ZN5Sound22LoadAndSetMusic_Layer3Ej(unsigned int a);
 extern void _ZN5Sound22StopLoadedMusic_Layer3Ev(void);
-extern void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(unsigned int a, int x, int y, int z);
+namespace Particle {
+struct System {
+    static void NewSimple(unsigned int a, int x, int y, int z);
+};
+}
 extern u32 _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(u32 a, u32 b, int x, int y, int z, const void *v, void *cb);
 extern void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(void *self, void *sm, void *m, int rad, int h, unsigned int u);
 
@@ -844,8 +848,8 @@ int Eyerok::func_ov066_02116c6c()
         mHorzSpeed = 0;
     }
     if (mBlendModelAnim.Finished() != 0) {
-        _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0x7c, mPosX, mPosY, mPosZ);
-        _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0x7d, mPosX, mPosY, mPosZ);
+        Particle::System::NewSimple(0x7c, mPosX, mPosY, mPosZ);
+        Particle::System::NewSimple(0x7d, mPosX, mPosY, mPosZ);
         {
             EVec3 v;
             v.x = mPosX;

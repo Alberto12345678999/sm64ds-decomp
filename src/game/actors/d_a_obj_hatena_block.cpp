@@ -221,7 +221,11 @@ extern void _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix
     void *self, void *shadow, void *mtx, int fix, int t1, int t2, unsigned int n);
 extern void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(void *thiz, void *kcl, void *mtx, int fix, short s, void *clps);
 extern void func_ov102_0214ad14(void *actor);
-extern void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(unsigned id, int x, int y, int z);
+namespace Particle {
+struct System {
+    static void NewSimple(unsigned id, int x, int y, int z);
+};
+}
 
 /* Free: the block is its second argument (dst, src), so member form would
    swap the register operands. */
@@ -844,16 +848,16 @@ void daObjHatenaBlock_c::func_ov102_021498e0()
         mHeldActor = 0;
     }
     Sound::PlayBank3(0, mCamSpacePos);
-    _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0xb, pos.x, pos.y, pos.z);
-    _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0xd, pos.x, pos.y, pos.z);
+    Particle::System::NewSimple(0xb, pos.x, pos.y, pos.z);
+    Particle::System::NewSimple(0xd, pos.x, pos.y, pos.z);
     typ = actorID;
     switch (typ - ACTOR_HATENA_BLOCK) {
     case 1: case 2:   /* ITEM_BLOCK, VS_ITEM_BLOCK */
-        _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0x10, pos.x, pos.y, pos.z); break;
+        Particle::System::NewSimple(0x10, pos.x, pos.y, pos.z); break;
     case 0:           /* HATENA_BLOCK */
-        _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0xc, pos.x, pos.y, pos.z); break;
+        Particle::System::NewSimple(0xc, pos.x, pos.y, pos.z); break;
     case 3: case 4: case 5:   /* CAP_BLOCK_M, W, L */
-        _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(9, pos.x, pos.y, pos.z); break;
+        Particle::System::NewSimple(9, pos.x, pos.y, pos.z); break;
     }
     ch = (int)mHitterParam;
     if (ch < 0) ch = 0; else if (ch > 3) ch = 3;

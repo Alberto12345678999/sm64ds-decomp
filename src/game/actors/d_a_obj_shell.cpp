@@ -83,7 +83,11 @@ extern "C" {
 void Matrix4x3_FromRotationY(Matrix4x3 *, s32);
 /* The positional-sound entry point; takes the actor's camera-space position. */
 void func_0201267c(int soundId, Fix12i *camSpacePos);
-int _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(unsigned id, int x, int y, int z);
+namespace Particle {
+struct System {
+    static int NewSimple(unsigned id, int x, int y, int z);
+};
+}
 void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(
     dCcAc_c *self, dActor_c *actor, int radius, int height,
     u32 flags, u32 vulnFlags);
@@ -189,7 +193,7 @@ int daObjShell_c::Behavior()
             u.shutPuff[1] = mPosY;
             u.shutPuff[2] = mPosZ;
             u.shutPuff[1] = u.shutPuff[1] + 0x32000;
-            _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0x10c,
+            Particle::System::NewSimple(0x10c,
                 u.shutPuff[0], u.shutPuff[1], u.shutPuff[2]);
             mShutTimer = 0xa;
             mStateTimer = 0;
@@ -202,7 +206,7 @@ int daObjShell_c::Behavior()
                 u.lungePuff[1] = mPosY;
                 u.lungePuff[2] = mPosZ;
                 u.lungePuff[1] = u.lungePuff[1] + 0x32000;
-                _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0x10b,
+                Particle::System::NewSimple(0x10b,
                     u.lungePuff[0], u.lungePuff[1], u.lungePuff[2]);
                 mStateTimer = 0;
                 mState = STATE_LUNGE;

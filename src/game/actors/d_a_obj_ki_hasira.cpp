@@ -98,7 +98,11 @@ void Matrix4x3_FromRotationXYZExt(void *m, int x, int y, int z);
 int Vec3_Dist(const Vector3 *a, const Vector3 *b);
 s16 Vec3_HorzAngle(const Vector3 *a, const Vector3 *b);
 u8 DecIfAbove0_Byte(u8 *p);
-void *_ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(unsigned int id, int x, int y, int z);
+namespace Particle {
+struct System {
+    static void * NewSimple(unsigned int id, int x, int y, int z);
+};
+}
 /* The camera-shake request and the camera it goes to (arm9). */
 void func_0200d8c8(dCamera_c *cam, const Vector3 *pos, int strength);
 extern void *data_0209f318;
@@ -208,7 +212,7 @@ s32 daObjKi_Hasira_c::Behavior()
             z = z + (int)(((s64)cos * (s64)reach + round) >> 12);
             crashPos.y = y;
             crashPos.z = z;
-            _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(particleID, x, y, z);
+            Particle::System::NewSimple(particleID, x, y, z);
             dustPos.x = crashPos.x; dustPos.y = crashPos.y; dustPos.z = crashPos.z;
             LandingDustAt(dustPos, true);
             func_0200d8c8((dCamera_c *)data_0209f318, &mPos, 0x5dc000);

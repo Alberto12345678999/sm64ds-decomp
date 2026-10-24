@@ -93,8 +93,12 @@ void  _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiE
           void *self, void *shadow, void *mtx, int radius, int height, u32 flags);
 
 void  _ZN5Sound9PlayBank0EjRK7Vector3(unsigned int id, const void *pos);
-void  _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(unsigned int id, int x,
+namespace Particle {
+struct System {
+    static void NewSimple(unsigned int id, int x,
                                                      int y, int z);
+};
+}
 
 void  _ZN6Player6BounceE5Fix12IiE(void *player, int speed);
 int   _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void *player, void *pos,
@@ -403,7 +407,7 @@ int Scuttlebug::func_ov071_02120028()
         y += 0x28000;
         *(volatile int *)&v.z = z;
         *(volatile int *)&v.y = y;
-        _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0xb2, x, y, z);
+        Particle::System::NewSimple(0xb2, x, y, z);
         mVertSpeed = mVertSpeed * -0x28 / 100;
     } else if (mWithMeshClsn.IsOnGround()) {
         mVertSpeed = 0;
@@ -719,9 +723,9 @@ int Scuttlebug::func_ov071_0211f6f8()
     mModelAnim.SetAnim((BCA_File *)gSpiderWalkAnimationFile.filePtr, 0, 0x1000, 0);
     mModelAnim.speed = 0x4000;
     int yOffset1 = OnAimedAtWithEgg();
-    _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0x43, mPosX, mPosY + yOffset1, mPosZ);
+    Particle::System::NewSimple(0x43, mPosX, mPosY + yOffset1, mPosZ);
     int yOffset2 = OnAimedAtWithEgg();
-    _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0x44, mPosX, mPosY + yOffset2, mPosZ);
+    Particle::System::NewSimple(0x44, mPosX, mPosY + yOffset2, mPosZ);
     mState = 8;
     return 1;
 }

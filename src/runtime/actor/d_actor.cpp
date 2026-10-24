@@ -1361,12 +1361,16 @@ void dActor_c::PoofDust()
 extern "C" {
 /* local extern: Particle::System::NewSimple takes Fix12<int> by value, so it
    is called by its symbol (the Fix12 wall). */
-extern int _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(unsigned int id, int x, int y, int z);
+namespace Particle {
+struct System {
+    static int NewSimple(unsigned int id, int x, int y, int z);
+};
+}
 }
 void dActor_c::PoofDustAt(const Vector3 &pos)
 {
-    _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0x122, pos.x, pos.y, pos.z);
-    _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0x123, pos.x, pos.y, pos.z);
+    Particle::System::NewSimple(0x122, pos.x, pos.y, pos.z);
+    Particle::System::NewSimple(0x123, pos.x, pos.y, pos.z);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -1388,9 +1392,9 @@ void dActor_c::TriplePoofDust()
  * 0x0200fd74  size 0x54 */
 void dActor_c::TriplePoofDustAt(const Vector3 &pos)
 {
-    _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0x124, pos.x, pos.y, pos.z);
-    _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0x125, pos.x, pos.y, pos.z);
-    _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0x126, pos.x, pos.y, pos.z);
+    Particle::System::NewSimple(0x124, pos.x, pos.y, pos.z);
+    Particle::System::NewSimple(0x125, pos.x, pos.y, pos.z);
+    Particle::System::NewSimple(0x126, pos.x, pos.y, pos.z);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -1412,8 +1416,8 @@ void dActor_c::SmallPoofDust()
  * 0x0200fd04  size 0x3c */
 void dActor_c::DisappearPoofDustAt(const Vector3 &pos)
 {
-    _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0x127, pos.x, pos.y, pos.z);
-    _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0x128, pos.x, pos.y, pos.z);
+    Particle::System::NewSimple(0x127, pos.x, pos.y, pos.z);
+    Particle::System::NewSimple(0x128, pos.x, pos.y, pos.z);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -1449,7 +1453,7 @@ extern "C" int func_0200fc44(int actor, Vector3 *pos, int doRaycast) {
             pos->y = rc.clsnY;
     }
     pos->y += 0x19000;
-    return _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0xb3, pos->x, pos->y, pos->z);
+    return Particle::System::NewSimple(0xb3, pos->x, pos->y, pos->z);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -1480,7 +1484,7 @@ void dActor_c::HugeLandingDustAt(Vector3 &pos, bool doRaycast) {
             pos.y = rc.clsnY;
     }
     pos.y += 0x28000;
-    _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0xb2, pos.x, pos.y, pos.z);
+    Particle::System::NewSimple(0xb2, pos.x, pos.y, pos.z);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -1510,7 +1514,7 @@ void dActor_c::LandingDustAt(Vector3 &pos, bool doRaycast) {
             pos.y = rc.clsnY;
     }
     pos.y += 0x5a000;
-    _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0xb1, pos.x, pos.y, pos.z);
+    Particle::System::NewSimple(0xb1, pos.x, pos.y, pos.z);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -1544,7 +1548,7 @@ extern "C" int func_0200fa04(int actor, Vector3 *pos, int doRaycast) {
             pos->y = rc.clsnY;
     }
     pos->y += 0x78000;
-    return _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0x1b, pos->x, pos->y, pos->z);
+    return Particle::System::NewSimple(0x1b, pos->x, pos->y, pos->z);
 }
 
 /* -------------------------------------------------------------------------- */

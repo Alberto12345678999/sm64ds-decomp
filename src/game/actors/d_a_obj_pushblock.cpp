@@ -72,7 +72,11 @@ extern "C" PushblockClsnFilePtr data_ov002_0210df94;
  * respelled as C++ calls, and UpdateContinuous must retain the retail veneer.
  * The remaining declarations are untyped engine free functions and globals. */
 extern "C" {
-void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(u32 id, Fix12i x, Fix12i y, Fix12i z);
+namespace Particle {
+struct System {
+    static void NewSimple(u32 id, Fix12i x, Fix12i y, Fix12i z);
+};
+}
 extern Matrix4x3 data_020a0e68;
 extern void Matrix4x3_FromRotationY(Matrix4x3 *m, int angle);
 extern void MulVec3Mat4x3(Vector3 *v, Matrix4x3 *m, Vector3 *dst);
@@ -331,11 +335,7 @@ void daObjPushblock_c::OnHitByMegaChar(Player &player)
  *
  * Same shape as dBgActor_c::Kill (its base's slot 31): spawn a poof particle
  * above the block, poof-dust at that point, play the break sound at
- * mCamSpacePos, then mark for destruction. Particle::System::NewSimple stays
- * spelled as its mangled name because its coordinates are Fix12<int> BY VALUE;
- * declaring the true types changes how the caller passes them and breaks the
- * bytes (notes/mwccarm-codegen.md 6az, and
- * src/runtime/actor/d_actor.cpp (dActor_c::PoofDustAt)). */
+ * mCamSpacePos, then mark for destruction. */
 void daObjPushblock_c::Kill()
 {
     Vector3 vec;
@@ -344,7 +344,7 @@ void daObjPushblock_c::Kill()
     vec.y = mPosY;
     vec.z = mPosZ;
     vec.y += 0x96000;
-    _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0x48, vec.x, vec.y, vec.z);
+    Particle::System::NewSimple(0x48, vec.x, vec.y, vec.z);
     vec2.x = vec.x;
     vec2.y = vec.y;
     vec2.z = vec.z;
