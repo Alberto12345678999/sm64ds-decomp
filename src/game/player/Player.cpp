@@ -1552,10 +1552,9 @@ void Player::SetAnim(u32 animId, int flags, Fix12i speed, u16 startFrame) {
     field8 = player->param1;
     sl = animId * 4;
     id = _ZNK6Player14GetBodyModelIDEjb(self, (u32)(field8 & 0xff), 0);
-    player->mBodyModels[id]
-        ->SetAnim((BCA_File *)(((SharedFilePtr *)data_ov002_020ff480[(field8 & 3) + (animId * 4)])
-                                   ->filePtr),
-                  flags, speed, startFrame);
+    player->mBodyModels[id]->SetAnim(
+        (BCA_File *)(((SharedFilePtr *)data_ov002_020ff480[(field8 & 3) + (animId * 4)])->filePtr),
+        flags, speed, startFrame);
 
     field8 = player->param1;
     if ((int)sl >= 0x60) sl = 0x60;
@@ -23685,8 +23684,7 @@ int Player::Render()
                 }
                 func_ov002_020e3e00((char *)mHeadModels[i], &mScale, mOpacity);
                 if (func_ov002_020d225c(((char*)this))) {
-                    ((VObj *)mSleepBubbleModel)
-                        ->m14((char *)&mSleepBubbleScaleX);
+                    ((VObj *)mSleepBubbleModel)->m14((char *)&mSleepBubbleScaleX);
                 }
             }
         }
@@ -25021,8 +25019,8 @@ void func_ov002_020e5948(void* arg0)
             }
             player->mSleepBubbleModel = (Model *)p;
             _ZN9ModelBase7SetFileEP8BMD_Fileii(
-                player->mSleepBubbleModel,
-                _ZN5Model8LoadFileER13SharedFilePtr(data_ov002_0210da38), 1, -1);
+                player->mSleepBubbleModel, _ZN5Model8LoadFileER13SharedFilePtr(data_ov002_0210da38),
+                1, -1);
 
             if (data_0209f2f8 != 2 && data_0209f2f8 != 5 && data_0209f2f8 != 4) {
                 player->mLoadedResourceFlags |= 0x20;
