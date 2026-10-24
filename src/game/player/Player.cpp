@@ -5107,25 +5107,25 @@ int Player::St_StuckInGround_Main()
 // @symbol _ZN6Player19func_ov002_020c5444Ev
 /* recovered: shared common types */
 extern "C" {
-void Player::func_ov002_020c5444(){
+void Player::func_ov002_020c5444() {
     extern void PlayerNewSimpleHold4(unsigned int, int, int, int);
-  Vector3 v;
-  ((int*)&v)[0] = this->mPosX;
-  ((int*)&v)[1] = this->mPosY;
-  ((int*)&v)[2] = this->mPosZ;
-  ((int*)&v)[1] = this->mPosY + 0x14000;
-  unsigned char b = mStateArg;
-  if (b == 0) {
-    Particle::System::NewSimple(0xdb, v.x, v.y, v.z);
-    Particle::System::NewSimple(0xdc, v.x, v.y, v.z);
-    return;
-  }
-  if (b == 1) {
-    Particle::System::NewSimple(0xd8, v.x, v.y, v.z);
-    Particle::System::NewSimple(0xd9, v.x, v.y, v.z);
-    return;
-  }
-  Particle::System::NewSimple(0xc7, v.x, v.y, v.z);
+    Vector3 v;
+    ((int *)&v)[0] = this->mPosX;
+    ((int *)&v)[1] = this->mPosY;
+    ((int *)&v)[2] = this->mPosZ;
+    ((int *)&v)[1] = this->mPosY + 0x14000;
+    unsigned char b = mStateArg;
+    if (b == 0) {
+        Particle::System::NewSimple(0xdb, v.x, v.y, v.z);
+        Particle::System::NewSimple(0xdc, v.x, v.y, v.z);
+        return;
+    }
+    if (b == 1) {
+        Particle::System::NewSimple(0xd8, v.x, v.y, v.z);
+        Particle::System::NewSimple(0xd9, v.x, v.y, v.z);
+        return;
+    }
+    Particle::System::NewSimple(0xc7, v.x, v.y, v.z);
 }
 }
 

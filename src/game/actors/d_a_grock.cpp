@@ -218,8 +218,7 @@ extern "C" void func_ov021_021123b0(char *raw)
         func_02012694(0x17a, &rock->mCamSpacePosX);
         ((Player *)other)->IncMegaKillCount();
         rock->TriplePoofDust();
-        Particle::System::NewSimple(
-            0x67, rock->mPosX, rock->mPosY, rock->mPosZ);
+        Particle::System::NewSimple(0x67, rock->mPosX, rock->mPosY, rock->mPosZ);
         func_ov021_02112294(rock);
         rock->MarkForDestruction();
         return;
@@ -236,8 +235,7 @@ extern "C" void func_ov021_021123b0(char *raw)
             func_02012694(0x17a, &rock->mCamSpacePosX);
             rock->MarkForDestruction();
             rock->TriplePoofDust();
-            Particle::System::NewSimple(
-                0x67, rock->mPosX, rock->mPosY, rock->mPosZ);
+            Particle::System::NewSimple(0x67, rock->mPosX, rock->mPosY, rock->mPosZ);
             func_ov021_02112294(rock);
             return;
         }

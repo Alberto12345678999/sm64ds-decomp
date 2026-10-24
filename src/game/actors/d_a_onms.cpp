@@ -113,7 +113,7 @@ void func_02012694(unsigned int id, const Vector3 *v);
 void func_0203568c(void *p, int v);
 namespace Particle {
 struct System {
-    static void * NewSimple(unsigned int a, int b, int cc, int d);
+    static void *NewSimple(unsigned int a, int b, int cc, int d);
 };
 }
 s16 Vec3_HorzAngle(const struct Vector3 *v0, const struct Vector3 *v1);

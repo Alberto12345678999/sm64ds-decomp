@@ -95,8 +95,7 @@ void  _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiE
 void  _ZN5Sound9PlayBank0EjRK7Vector3(unsigned int id, const void *pos);
 namespace Particle {
 struct System {
-    static void NewSimple(unsigned int id, int x,
-                                                     int y, int z);
+    static void NewSimple(unsigned int id, int x, int y, int z);
 };
 }
 

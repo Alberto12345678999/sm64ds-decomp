@@ -106,8 +106,7 @@ void SnowmanBreathParticle::HitPlayer()
         return;
     if (!IsPlayerActor(actor))
         return;
-    Particle::System::NewSimple(
-        0x100, mPos.x, mPos.y, mPos.z);
+    Particle::System::NewSimple(0x100, mPos.x, mPos.y, mPos.z);
 
     Player *player = (Player *)actor;
     if (player->mIsMetal)
@@ -164,8 +163,7 @@ void SnowmanBreathParticle::CheckSnowman()
     s32 distance = Vec3_Dist(&mPos, &snowman->mPos);
     if (distance >= threshold)
         return;
-    Particle::System::NewSimple(
-        0x100, mPos.x, mPos.y, mPos.z);
+    Particle::System::NewSimple(0x100, mPos.x, mPos.y, mPos.z);
     mTimer = 0;
 }
 

@@ -152,8 +152,7 @@ int daObjFire_c::Behavior()
         particlePos.y = mFlamePos.y;
         particlePos.z = mFlamePos.z;
         particlePos.y -= 0x1b000;
-        Particle::System::NewSimple(
-            0x9f, particlePos.x, particlePos.y, particlePos.z);
+        Particle::System::NewSimple(0x9f, particlePos.x, particlePos.y, particlePos.z);
     }
 
     {

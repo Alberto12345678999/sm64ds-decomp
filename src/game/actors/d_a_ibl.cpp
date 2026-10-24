@@ -202,8 +202,7 @@ void daIbl_c::func_ov100_02141fb0()
     }
     if ((fl & daIbl_HIT_ATTACK) != 0) {
         if (a->param1 == 2) {
-            Particle::System::NewSimple(
-                daIbl_PTCL_BREAK, mPosX, mPosY, mPosZ);
+            Particle::System::NewSimple(daIbl_PTCL_BREAK, mPosX, mPosY, mPosZ);
             PoofDust();
             MarkForDestruction();
             func_02012694(daIbl_SND_BREAK, &mCamSpacePosX);
@@ -426,8 +425,7 @@ int daIbl_c::func_ov100_021424c0()
     if (r != 0) {
         if (r != 2)
             return r;
-        Particle::System::NewSimple(daIbl_PTCL_BREAK, mPosX,
-                                                       mPosY, mPosZ);
+        Particle::System::NewSimple(daIbl_PTCL_BREAK, mPosX, mPosY, mPosZ);
         return func_02012694(daIbl_SND_BREAK, &mCamSpacePosX);
     }
 
@@ -509,8 +507,7 @@ void daIbl_c::func_ov100_0214272c()
         if (r != 2)
             return;
 
-        Particle::System::NewSimple(
-            daIbl_PTCL_BREAK, mPosX, mPosY, mPosZ);
+        Particle::System::NewSimple(daIbl_PTCL_BREAK, mPosX, mPosY, mPosZ);
         func_02012694(daIbl_SND_BREAK, &mCamSpacePosX);
         return;
     }
@@ -523,11 +520,7 @@ void daIbl_c::func_ov100_0214272c()
             goto ground;
     }
 
-    Particle::System::NewSimple(
-        daIbl_PTCL_BREAK,
-        mPosX,
-        *(volatile int *)&mPosY,
-        mPosZ);
+    Particle::System::NewSimple(daIbl_PTCL_BREAK, mPosX, *(volatile int *)&mPosY, mPosZ);
     func_02012694(daIbl_SND_BREAK, &mCamSpacePosX);
     TriplePoofDust();
     MarkForDestruction();

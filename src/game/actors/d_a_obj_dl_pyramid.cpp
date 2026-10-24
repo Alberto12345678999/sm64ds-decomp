@@ -61,7 +61,7 @@ namespace Event { void SetBit(unsigned int bit); int ClearBit(unsigned int bit);
 extern "C" {
 namespace Particle {
 struct System {
-    static void * NewSimple(u32 id, int x, int y, int z);
+    static void *NewSimple(u32 id, int x, int y, int z);
 };
 }
 int _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
@@ -140,9 +140,12 @@ extern "C" void func_ov024_021112c0(daObjDlPyramid_c *self)
     v.z = self->mPosZ;
     v.y += 0xfa000;
     Particle::System::NewSimple(0x1f, v.x, v.y, v.z);
-    Particle::System::NewSimple(0x20, *(volatile int *)&v.x, *(volatile int *)&v.y, *(volatile int *)&v.z);
-    Particle::System::NewSimple(0x21, *(volatile int *)&v.x, *(volatile int *)&v.y, *(volatile int *)&v.z);
-    Particle::System::NewSimple(0x22, *(volatile int *)&v.x, *(volatile int *)&v.y, *(volatile int *)&v.z);
+    Particle::System::NewSimple(0x20, *(volatile int *)&v.x, *(volatile int *)&v.y,
+                                *(volatile int *)&v.z);
+    Particle::System::NewSimple(0x21, *(volatile int *)&v.x, *(volatile int *)&v.y,
+                                *(volatile int *)&v.z);
+    Particle::System::NewSimple(0x22, *(volatile int *)&v.x, *(volatile int *)&v.y,
+                                *(volatile int *)&v.z);
     self->MarkForDestruction();
     Event::SetBit(0xe);
     dMap_c::UpdateLevelSpecific();

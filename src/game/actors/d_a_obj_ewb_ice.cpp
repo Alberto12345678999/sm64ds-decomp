@@ -127,7 +127,7 @@ enum {
 extern "C" {
 namespace Particle {
 struct System {
-    static void * NewSimple(unsigned int id, int x, int y, int z);
+    static void *NewSimple(unsigned int id, int x, int y, int z);
 };
 }
 void func_02012694(unsigned int id, const Vector3 *pos);
