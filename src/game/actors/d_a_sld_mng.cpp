@@ -33,8 +33,7 @@ extern u16 DecIfAbove0_Short(u16 *timer);
  * mwccarm home the by-value Fix12 in an 8-byte stack slot, growing Behavior
  * from 0xa4 to 0xb8. The cartridge passes the same raw fixed-point word in
  * r3, so the measured scalar call view is retained. */
-extern int d_a_sld_mngPlaySubHold(
-    u32 soundID, u32 volume, u32 pan, Fix12i distance, bool loop);
+extern int d_a_sld_mngPlaySubHold(u32 soundID, u32 volume, u32 pan, Fix12i distance, bool loop);
 }
 
 /* The spawn position, ov019 0x021135d8. Nothing in the ROM names it.
@@ -75,15 +74,13 @@ int daSldMng_c::Behavior()
     switch (mState) {
     case 0:
         if (DistToCPlayer() < 0x180000) {
-            Sound::PlaySub(
-                0x20, 0x14, 0x7f, 0x15666, false);
+            Sound::PlaySub(0x20, 0x14, 0x7f, 0x15666, false);
             ++mState;
         }
         break;
     case 1:
         if (DecIfAbove0_Short(&mKillTimer) == 0) {
-            Sound::PlaySub(
-                0x20, 0x7f, 0, 0x15666, false);
+            Sound::PlaySub(0x20, 0x7f, 0, 0x15666, false);
             KillAndTrackInDeathTable();
         }
         break;

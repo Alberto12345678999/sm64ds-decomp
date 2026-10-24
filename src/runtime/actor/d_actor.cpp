@@ -1612,8 +1612,8 @@ void dActor_c::SpawnSoundObj(u32 soundObjParam)
  * 0x0200f8f8  size 0x84 */
 extern "C" {
 /* local extern: its five named parameters hold this TU's @NNN count. */
-int d_actorPlaySubHold(unsigned int soundID, unsigned int vol, unsigned int pan,
-                                    Fix12i dist, int loop);
+int d_actorPlaySubHold(unsigned int soundID, unsigned int vol, unsigned int pan, Fix12i dist,
+                       int loop);
 static const int kPoolDist = 0x8777;
 }
 namespace Sound {

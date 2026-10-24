@@ -44,7 +44,7 @@ void  MulVec3Mat4x3(Vector3 *v, Matrix4x3 *m, Vector3 *out);
 void  _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
           dActor_c *thiz, dExtShadowModel_c *sm, Matrix4x3 *mtx, int rad, int height, u8 flags);
 
-bool  d_a_obj_mip_keyPlaySubHold(u32 a, u32 b, u32 c, Fix12i d, int loop);
+bool d_a_obj_mip_keyPlaySubHold(u32 a, u32 b, u32 c, Fix12i d, int loop);
 
 unsigned int func_02012790(unsigned int a);
 void  func_02013868(int t, int x);

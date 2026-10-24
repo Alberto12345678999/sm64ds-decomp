@@ -210,8 +210,7 @@ void daKinopio_c::St_Talk_Main()
             if ((data_0209caa0[1] & 0x40000000) == 0)
                 data_0209caa0[1] |= 0x40000000;
         }
-        if (Sound::PlaySub(
-                0x25, 0x14, 0x7f, 0x15666, 1) == 0)
+        if (Sound::PlaySub(0x25, 0x14, 0x7f, 0x15666, 1) == 0)
             return;
         {
             int y = mPosY;

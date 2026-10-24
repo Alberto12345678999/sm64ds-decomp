@@ -77,8 +77,8 @@ extern void func_020393c4(dBgW *collider, void *callback);
 
 extern u16 DecIfAbove0_Short(u16 *value);
 extern u8 DecIfAbove0_Byte(u8 *value);
-extern void d_a_obj_hatena_switchPlaySubHold(
-    u32 bank, u32 soundID, u32 param, Fix12i volume, bool loop);
+extern void d_a_obj_hatena_switchPlaySubHold(u32 bank, u32 soundID, u32 param, Fix12i volume,
+                                             bool loop);
 namespace Particle {
 struct System {
     static void NewSimple(u32 effectID, Fix12i x, Fix12i y, Fix12i z);
@@ -211,8 +211,7 @@ s32 daObjHatenaSwitch_c::Behavior()
 {
     if (mSoundDelay != 0) {
         if (DecIfAbove0_Short(&mSoundDelay) == 0)
-            Sound::PlaySub(
-                0x20, 0x7f, 0, 0x8777, false);
+            Sound::PlaySub(0x20, 0x7f, 0, 0x8777, false);
     }
 
     if (mTalking != 0) {
@@ -220,8 +219,7 @@ s32 daObjHatenaSwitch_c::Behavior()
         if (player != 0) {
             switch (player->GetTalkState()) {
             case 0:
-                Sound::PlaySub(
-                    0x20, 0x14, 0x7f, 0x6b000, false);
+                Sound::PlaySub(0x20, 0x14, 0x7f, 0x6b000, false);
                 mSoundDelay = 0x4b;
                 if (mModelAnim.Finished() != 0) {
                     Message::PrepareTalk();

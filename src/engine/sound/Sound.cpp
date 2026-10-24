@@ -366,8 +366,7 @@ extern "C" int _ZN5Sound17ChangeMusicVolumeEj5Fix12IiE(unsigned int a, int b)
 
 // @symbol _ZN5Sound7PlaySubEjjjib
 namespace Sound {
-bool PlaySub(unsigned int a, unsigned int b, unsigned int c, int d, bool e)
-{
+bool PlaySub(unsigned int a, unsigned int b, unsigned int c, int d, bool e) {
     int x;
     if (c == 0) {
         /* e is bool. A plain test compiles to ldrb; retail loads the whole word. */

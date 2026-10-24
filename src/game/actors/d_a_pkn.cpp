@@ -113,8 +113,7 @@ struct System {
     static int New(unsigned, unsigned, int, int, int, const ::Vector3_16f *, Callback *);
 };
 }
-int   d_a_pknPlaySubHold(u32 a, u32 b, u32 c, int t, int flag);
-
+int d_a_pknPlaySubHold(u32 a, u32 b, u32 c, int t, int flag);
 }
 
 /* ==========================================================================

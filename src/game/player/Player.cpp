@@ -2759,7 +2759,8 @@ void Player::func_ov002_020c1234() {
     }
     if (mGroundSubSoundActive == 0)
         return;
-    if (Sound::PlaySub(0x35, a1, a2, fx, 0) == 0) return;
+    if (Sound::PlaySub(0x35, a1, a2, fx, 0) == 0)
+        return;
     if (mGroundSoundType == 0xa) return;
     if (mGroundSoundType != 0xb)
         mGroundSubSoundActive = 0;

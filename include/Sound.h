@@ -96,7 +96,6 @@ struct Player {
    ChangeMusicVolume is defined as an `extern "C"` function literally named by
    the mangled symbol, so nothing type-checks across that seam. */
 
-
 void Play(u32, u32, const Vector3 &v);
 void Play2D(u32, u32);
 void PlayBank0(u32 id, const Vector3 &pos);

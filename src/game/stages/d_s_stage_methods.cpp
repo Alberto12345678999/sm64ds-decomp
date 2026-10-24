@@ -161,8 +161,7 @@ void _ZN7Message7DisplayEj(int m);
 void _ZN7Message11DisplayTextEt(int m);
 // local extern: Message.h's u16 parameter changes the sign-extended (s16) argument codegen (PS_Update differs).
 void _ZN7Message22DisplayOptionsMenuTextEt(int m);
-bool d_s_stage_methodsPlaySubHold(unsigned int a, unsigned int b, unsigned int c, int fix,
-                                     int e);
+bool d_s_stage_methodsPlaySubHold(unsigned int a, unsigned int b, unsigned int c, int fix, int e);
 unsigned int _ZN5Sound12PlayBank3_2DEj(unsigned int a);
 void _ZN5Sound22StopLoadedMusic_Layer1Ej(unsigned int a);
 // local extern: SaveData.h's (s8, u8) parameters re-narrow both arguments (LC_Update differs).

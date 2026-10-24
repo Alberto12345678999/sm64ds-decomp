@@ -1916,8 +1916,7 @@ void daTrs_c::func_ov063_02119074() {
             this->mSavedMusicVolume = data_0209b490[0];
 
             if (!this->mBooFlags.soundStarted) {
-                Sound::PlaySub(0x20, 0x14, 0x7f,
-                                                 0x6b000, 1);
+                Sound::PlaySub(0x20, 0x14, 0x7f, 0x6b000, 1);
                 this->mSoundCount = 1;
                 this->mBooFlags.soundStarted = 1;
             }

@@ -330,6 +330,14 @@
       "evidence": "df88a655 func_ov075_02115e8c; include/dThIcon_c.h s32 unk_01c; notes/experiments/scene-physics3955-review.md; full106/106 ROM proof at005807df4f and independent prepared-object verification."
     },
     {
+      "path": "src/game/actors/d_a_sound_obj.cpp",
+      "rule": "handspelled-member",
+      "match": "_ZN5Sound7PlaySubEjjjib",
+      "count": 3,
+      "reason": "func_ov002_020f9468 passes the u8 mLoop as Sound::PlaySub's last argument. Calling the member converts it to bool and grows the function from 0x94 to 0xac, so this one extern \"C\" callback keeps a declaration under the linker spelling with an int last parameter. The three occurrences are that declaration and the two calls in func_ov002_020f9468; InitResources and Behavior call Sound::PlaySub by name.",
+      "evidence": "The file's banner Leftover note and the comment on the declaration (#4326). Before #4326 the same calls spelled _ZN5Sound7PlaySubEjjj5Fix12IiEb, which the Fix12-by-value exemption covered."
+    },
+    {
       "path": "src/game/stages/d_s_entry.cpp",
       "rule": "unknown-field",
       "match": "unk_020",

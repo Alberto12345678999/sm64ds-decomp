@@ -218,41 +218,40 @@ daC_Jugem_c::~daC_Jugem_c()
 /* The intro camera sweep: pull the look-at and eye down toward the player
    while the fanfare plays; on the last frame hand the camera back and go
    wait in StateHidden. */
-int daC_Jugem_c::StateIntroMain()
-{
-  dCamera_c *cam = (dCamera_c *)data_0209f318;
-  CamPose r;
-  cam->SetFlag_3();
-  r.lx = -0x4b0000;
-  r.ly = 0x19f000;
-  r.lz = 0x1a90000;
-  r.px = -0x4b0000;
-  r.py = 0x250000;
-  r.pz = 0x1d4c000;
-  _Z14ApproachLinearR7Vector3RKS_5Fix12IiE(&mCamLookX, &r, 0x70000);
-  cam->SetLookAt(*(Vector3 *)&mCamLookX);
-  cam->SetPos(*(Vector3 *)&mCamPosX);
-  Vec3_Dist(&mCamLookX, &r);
-  mTimer++;
-  if (mTimer > 0x64) {
-    if (Sound::PlaySub(0x4b, 0x7f, 0, 0x7222, false) != 0) {
-      *(int *)&cam->mFlags &= ~8;
-      mHorzSpeed = 0;
-      mTimer = 0;
-      mAuxCounter = 0;
-      mSpeedX = 0;
-      mVertSpeed = 0;
-      mSpeedZ = 0;
-      mAngleX = 0;
-      Player *player = ClosestPlayer();
-      if (player != 0) {
-        func_ov002_020c3e8c(player);
-        data_0209caa0[2] |= 0x80;
-      }
-      SetState(data_ov085_021307e0);
+int daC_Jugem_c::StateIntroMain() {
+    dCamera_c *cam = (dCamera_c *)data_0209f318;
+    CamPose r;
+    cam->SetFlag_3();
+    r.lx = -0x4b0000;
+    r.ly = 0x19f000;
+    r.lz = 0x1a90000;
+    r.px = -0x4b0000;
+    r.py = 0x250000;
+    r.pz = 0x1d4c000;
+    _Z14ApproachLinearR7Vector3RKS_5Fix12IiE(&mCamLookX, &r, 0x70000);
+    cam->SetLookAt(*(Vector3 *)&mCamLookX);
+    cam->SetPos(*(Vector3 *)&mCamPosX);
+    Vec3_Dist(&mCamLookX, &r);
+    mTimer++;
+    if (mTimer > 0x64) {
+        if (Sound::PlaySub(0x4b, 0x7f, 0, 0x7222, false) != 0) {
+            *(int *)&cam->mFlags &= ~8;
+            mHorzSpeed = 0;
+            mTimer = 0;
+            mAuxCounter = 0;
+            mSpeedX = 0;
+            mVertSpeed = 0;
+            mSpeedZ = 0;
+            mAngleX = 0;
+            Player *player = ClosestPlayer();
+            if (player != 0) {
+                func_ov002_020c3e8c(player);
+                data_0209caa0[2] |= 0x80;
+            }
+            SetState(data_ov085_021307e0);
+        }
     }
-  }
-  return 1;
+    return 1;
 }
 
 // @symbol _ZN11daC_Jugem_c14StateIntroInitEv

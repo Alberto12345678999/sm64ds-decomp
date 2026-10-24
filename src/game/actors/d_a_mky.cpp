@@ -75,7 +75,7 @@ short Vec3_HorzAngle(const void *a, const void *b);
 int   Vec3_Dist(const void *a, const void *b);
 void  func_0201267c(unsigned int id, const Vector3 *pos);
 void  func_020383f0(void *p);
-bool  d_a_mkyPlaySubHold(unsigned int a, unsigned int b, unsigned int c, int speed, int e);
+bool d_a_mkyPlaySubHold(unsigned int a, unsigned int b, unsigned int c, int speed, int e);
 unsigned char DecIfAbove0_Byte(unsigned char *p);
 void  Vec3_Asr(void *d, void *s, int sh);
 int   Vec3_HorzDist(const Vector3 *a, const Vector3 *b);
