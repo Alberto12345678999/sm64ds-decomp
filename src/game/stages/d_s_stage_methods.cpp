@@ -32,8 +32,9 @@
 //   dScStage_c::LoadGraphics2D stay mangled where the ROM passes a raw int
 //   the header's u16/bool parameter would narrow. G2:: stays mangled
 //   (decl_common.h's `extern int G2[]` hides the namespace).
-// - LoadSkybox and LoadTextureTransformers spell `new` as _Znwj plus a
-//   null-guarded constructor call, which a new-expression does not emit; the
+// - LoadSkybox and LoadTextureTransformers spell `new` as an explicit
+//   operator new call plus a null-guarded constructor call, a form from before
+//   the allocator was named _Znwm, when a new-expression could not link; the
 //   fader array passes dFdWipe_c's constructor and destructor by address.
 // - CheckCameraInput keeps `#pragma opt_strength_reduction off` and a local
 //   CamInput overlay of the camera input array; PS_Update and Behavior keep
@@ -3425,13 +3426,8 @@ struct MinimapChangeNode {
     struct MinimapChangeNode *next; /* 0x0c */
 };
 
-/* The cartridge's global operator new is _Znwj, operator new(unsigned int);
-   a new-expression here asks for operator new(unsigned long) (_Znwm), which
-   the cartridge does not carry, so the allocation calls _Znwj by name. */
-extern "C" void *_Znwj(u32 size);
-
 extern "C" void _Z23LoadMinimapChangeObjecti5Fix12IiEh(int idx, Fix12i val, u8 h) {
-    struct MinimapChangeNode *nn = (MinimapChangeNode *)_Znwj(sizeof(MinimapChangeNode));
+    struct MinimapChangeNode *nn = (MinimapChangeNode *)::operator new(sizeof(MinimapChangeNode));
     StageTexAnimSlot *e = &((StageTexAnimSlot *)data_0209f314)[idx];
     struct MinimapChangeNode *cur = (MinimapChangeNode *)e->mBlockList;
     struct MinimapChangeNode *prev = cur;
@@ -3738,9 +3734,9 @@ extern "C" void func_0202b0e0(int a, int b) {
  * include/dScStage_c.h because of this store and the virtual destroy in
  * CleanupResources.
  *
- * The `new` is spelled as the raw _Znwj call rather than as `new Model` because
- * the ROM calls operator new and then guards the constructor on a null return,
- * which the language's own `new` expression does not emit.
+ * The `new` is spelled as an explicit operator new call and a null-guarded
+ * constructor call, a form from before the allocator was named _Znwm, when
+ * `new Model` could not link.
  */
 extern "C" {
 extern void *_ZN5ModelC1Ev(void *thiz);
@@ -3750,7 +3746,7 @@ void dScStage_c::LoadSkybox() {
     u32 skyboxID = GetSkyboxID();
     if (!skyboxID)
         return;
-    Model *model = (Model *)_Znwj(0x50);
+    Model *model = (Model *)::operator new(0x50);
     if (model != 0) {
         model = (Model *)_ZN5ModelC1Ev(model);
     }
@@ -3950,8 +3946,7 @@ void dScStage_c::LoadTextureTransformers() {
     for (slotIndex = 0; slotIndex < (int)((LevelInfo *)data_0209f340)->count; slotIndex++) {
         if (entry->bta) {
             TextureTransformer::Prepare(*modelFile, *(BTA_File *)entry->bta);
-            // The ROM calls _Znwj; a C++ new expression selects _Znwm under this pin.
-            void *transformer = _Znwj(0x14);
+            void *transformer = ::operator new(0x14);
             if (transformer)
                 transformer = _ZN18TextureTransformerC1Ev(transformer);
             slot->mTransformer = transformer;

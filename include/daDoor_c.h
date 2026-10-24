@@ -70,7 +70,7 @@ class Player;
  * dispatches in _ZN8daDoor_c6RenderEv (`ldr r2,[r2,#0x10]`, `ldr r2,[r2,#0x14]`);
  * CleanupResources' third call is slot 1, the deleting destructor. Four
  * independent things agree the object is a Model and not merely Model-shaped:
- * InitResources allocates it `_Znwj(0x50)` and sizeof(Model) is 0x50; it runs
+ * InitResources allocates it `operator new(0x50)` and sizeof(Model) is 0x50; it runs
  * _ZN5ModelC1Ev on the result; it stores a matrix at +0x1c, which is
  * Model::mat4x3; and Render hands it this door's own bone transforms. Typed
  * below, and the shadow structs both consumers carried for it are gone.

@@ -256,7 +256,6 @@ extern void DecompressLZ16(void *src, void *dst);
 extern void Ov004_Deallocate(void *p);
 
 extern void __cxa_vec_ctor(void *p, int a, int b, void *cb1, void *cb2);
-extern void *_Znwj(u32 size);
 extern void SetSubBg0Offset(int x, int y);
 extern void func_0203d738(void);
 extern int sSmartballPathBuf[];
@@ -4687,7 +4686,7 @@ void dScMgSmartball_c::CollideBalls() {
  * (func_02057d00 + DecompressLZ16 to VRAM/tilemaps), per-tile-type scan
  * loops over the two 0x300-entry tilemaps mBg1Map/mBg2Map collecting
  * spawn positions ((i%32)<<15, mapA: ((i/32)*8-0xf0)<<12 /
- * mapB: (i/32)<<15), spawn loops (_Znwj + per-type init, V2 passed via
+ * mapB: (i/32)<<15), spawn loops (operator new + per-type init, V2 passed via
  * pointer to a caller-local copy), a virtual-init pass (vtbl[2](this) on
  * every spawned object), bulk zeroing.
  *
@@ -4698,7 +4697,7 @@ void dScMgSmartball_c::CollideBalls() {
  *  - Spawn callees take V2* + explicit caller-local copy (V2 tmp = pos[j];
  *    f(p,c,j,&tmp)). By-value V2 in C mode splits across r3/[sp] with
  *    dynamic sp adjustment, which pins a frame pointer the ROM lacks.
- *    _Znwj result flows through p into the slot store (no separate r var).
+ *    operator new result flows through p into the slot store (no separate r var).
  *  - u64-mask laundering on the two mpKinokos spawn slot stores -> pooled
  *    0x46bc + str r0,[r1,rK]! writeback (also the 9th live value that pulls
  *    fp into the push set; frame 0x124 with 9 saved regs).
@@ -4955,7 +4954,7 @@ void dScMgSmartball_c::SpawnObjects() {
         int n = mKinokoCount;
         int j;
         for (j = 0; j < n; j++) {
-            void *p = _Znwj(0x40);
+            void *p = ::operator new(0x40);
             if (p != 0) {
                 V2 tmp = pos[j];
                 p = cMgSmartball_kinoko_c_Construct((char *)p, (int)c, (int)j, (int *)&tmp);
@@ -4996,7 +4995,7 @@ void dScMgSmartball_c::SpawnObjects() {
             }
         }
         for (; n < mKinokoCount; n++) {
-            void *p = _Znwj(0x40);
+            void *p = ::operator new(0x40);
             if (p != 0) {
                 V2 tmp;
                 int ty = pos[n].y;
@@ -5046,7 +5045,7 @@ void dScMgSmartball_c::SpawnObjects() {
             int n = mAnaCount;
             int j;
             for (j = 0; j < n; j++) {
-                void *p = _Znwj(0x38);
+                void *p = ::operator new(0x38);
                 if (p != 0) {
                     V2 tmp = pos[j];
                     p = (void *)cMgSmartball_ana_c_Construct((char *)p, (int)c, j, (int *)&tmp);
@@ -5068,7 +5067,7 @@ void dScMgSmartball_c::SpawnObjects() {
             void *p;
             pos[j].x = ((1 - j) << 0x10) + 0xc0000;
             pos[j].y = _ZN4cstd4fdivEii(FX_MUL(pos[j].x, 0xa000), 0xd8000) + 0x90000;
-            p = _Znwj(0x12c);
+            p = ::operator new(0x12c);
             if (p != 0) {
                 V2 tmp = pos[j];
                 p = (void *)cMgSmartball_ball_c_Construct((char *)p, (int)c, j, (int *)&tmp);
@@ -5113,7 +5112,7 @@ void dScMgSmartball_c::SpawnObjects() {
             int n = mDokanCount;
             int j;
             for (j = 0; j < n; j++) {
-                void *p = _Znwj(0x34);
+                void *p = ::operator new(0x34);
                 if (p != 0) {
                     V2 tmp = pos[j];
                     p = (void *)cMgSmartball_dokan_c_Construct((char *)p, (int)c, j, (int *)&tmp);
@@ -5155,7 +5154,7 @@ void dScMgSmartball_c::SpawnObjects() {
             int n = mPakkunCount;
             int j;
             for (j = 0; j < n; j++) {
-                void *p = _Znwj(0x3c);
+                void *p = ::operator new(0x3c);
                 if (p != 0) {
                     V2 tmp = pos[j];
                     p = (void *)cMgSmartball_pakkun_c_Construct((char *)p, (int)c, j, (int *)&tmp);
@@ -5196,7 +5195,7 @@ void dScMgSmartball_c::SpawnObjects() {
             int n = mPropellerCount;
             int j;
             for (j = 0; j < n; j++) {
-                void *p = _Znwj(0x78);
+                void *p = ::operator new(0x78);
                 if (p != 0) {
                     V2 tmp = pos[j];
                     p = (void *)cMgSmartball_propeller_c_Construct((char *)p, (int)c, j,
@@ -5238,7 +5237,7 @@ void dScMgSmartball_c::SpawnObjects() {
             }
         }
         if (k >= 1) {
-            void *p = _Znwj(0x88);
+            void *p = ::operator new(0x88);
             if (p != 0) {
                 V2 tmp = pos[0];
                 p = cMgSmartball_slot_c_Construct((char *)p, (int)c, (int)0, (int *)&tmp);
@@ -5277,7 +5276,7 @@ void dScMgSmartball_c::SpawnObjects() {
             }
         }
         if (k >= 9) {
-            void *p = _Znwj(0x9c);
+            void *p = ::operator new(0x9c);
             if (p != 0) {
                 V2 tmp = pos[4];
                 p = (void *)cMgSmartball_board_c_Construct((char *)p, (int)c, 0, (int *)&tmp);
@@ -5316,7 +5315,7 @@ void dScMgSmartball_c::SpawnObjects() {
             int n = mPushSwitchCount;
             int j;
             for (j = 0; j < n; j++) {
-                void *p = _Znwj(0x38);
+                void *p = ::operator new(0x38);
                 if (p != 0) {
                     V2 tmp = pos[j];
                     p = (void *)cMgSmartball_pushswitch_c_Construct((char *)p, (int)c, j,
@@ -5358,7 +5357,7 @@ void dScMgSmartball_c::SpawnObjects() {
             }
         }
         if (k >= 1) {
-            void *p = _Znwj(0x88);
+            void *p = ::operator new(0x88);
             if (p != 0) {
                 V2 tmp = pos[0];
                 p = cMgSmartball_wing_c_Construct((char *)p, (int)c, (int)0, (int *)&tmp);
@@ -6241,7 +6240,7 @@ s32 dScMgSmartball_c::InitResources() {
         void *o;
         r1.v0 = 0xec000;
         r1.v1 = 0xa0000;
-        o = _Znwj(0x48);
+        o = ::operator new(0x48);
         if (o != 0) {
             cMgSmartballPair r2 = r1;
             o = (void *)cMgSmartball_spring_c_Construct((char *)o, (int)c, 0, &r2.v0);

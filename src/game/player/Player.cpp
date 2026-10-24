@@ -24693,7 +24693,6 @@ void func_ov002_020e5948(void* arg0)
     extern void LoadSilverStarAndNumber(void);
     extern int _ZN9ModelBase7SetFileEP8BMD_Fileii(void* thiz, void* bmd, s32 a, s32 b);
     extern void func_ov002_020bec2c(void* p);
-    extern void* _Znwj(u32 sz);
     extern void* _ZN10ModelAnim2C1Ev(void* thiz);
     extern void _ZN10ModelAnim213Func_020162C4Eji5Fix12IiEt(void* thiz, u32 a, s32 b, Fix12i c, u16 d);
     extern s32 func_ov002_020e6bb0(void* p);
@@ -24950,7 +24949,7 @@ void func_ov002_020e5948(void* arg0)
 
     i = 0;
     do {
-        p = _Znwj(0x78);
+        p = ::operator new(0x78);
         if (p != 0) {
             p = _ZN10ModelAnim2C1Ev(p);
         }
@@ -24970,7 +24969,7 @@ void func_ov002_020e5948(void* arg0)
     i = 0;
     do {
         if (i == 3) {
-            p = _Znwj(0x64);
+            p = ::operator new(0x64);
             if (p != 0) {
                 p = _ZN9ModelAnimC1Ev(p);
             }
@@ -24981,7 +24980,7 @@ void func_ov002_020e5948(void* arg0)
             ((ModelAnim *)player->mHeadModels[i])
                 ->SetAnim((BCA_File *)((void *)data_ov002_0210eb88[1]), 0, 0x1000, 0);
         } else {
-            p = _Znwj(0x50);
+            p = ::operator new(0x50);
             if (p != 0) {
                 p = _ZN5ModelC1Ev(p);
             }
@@ -24996,7 +24995,7 @@ void func_ov002_020e5948(void* arg0)
 
     j = 0;
     do {
-        p = _Znwj(0x50);
+        p = ::operator new(0x50);
         if (p != 0) {
             p = _ZN5ModelC1Ev(p);
         }
@@ -25016,7 +25015,7 @@ void func_ov002_020e5948(void* arg0)
         mode = data_0209f2d8;
         mode = (mode == 1);
         if (mode == 0) {
-            p = _Znwj(0x50);
+            p = ::operator new(0x50);
             if (p != 0) {
                 p = _ZN5ModelC1Ev(p);
             }
@@ -25027,7 +25026,7 @@ void func_ov002_020e5948(void* arg0)
 
             if (data_0209f2f8 != 2 && data_0209f2f8 != 5 && data_0209f2f8 != 4) {
                 player->mLoadedResourceFlags |= 0x20;
-                p = _Znwj(0x78);
+                p = ::operator new(0x78);
                 if (p != 0) {
                     p = _ZN10ModelAnim2C1Ev(p);
                 }
