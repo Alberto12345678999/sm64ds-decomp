@@ -1400,7 +1400,6 @@ extern void MarkForDestruction(char*);
 extern void Math_Function_0203b0fc(int*, int, int, int);
 extern void Matrix4x3_FromRotationXYZExt(void*, int, int, int);
 extern void Matrix4x3_FromRotationZXYExt(void*, int, int, int);
-extern void ModelAnim_SetAnim(void*, void*, int, int, unsigned int);
 extern void MulMat3x3Mat3x3(void*, void*, void*);
 extern void MultiCopy_Int(int*, int*, int);
 extern void OpenCannonInCurLevel(void);
