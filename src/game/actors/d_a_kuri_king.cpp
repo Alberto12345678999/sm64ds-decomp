@@ -175,7 +175,7 @@ extern "C" void MulMat4x3Mat4x3(void* out, void* a, void* b);
 extern "C" void Vec3_LslInPlace(void* v, int n);
 extern "C" struct Matrix4x3 data_020a0e68;
 extern "C" struct Matrix4x3 IDENTITY_MATRIX4X3;
-extern "C" void _ZN18TextureTransformer7SetFileER8BTA_Filei5Fix12IiEj(void* tt, void* file, int a, int b, unsigned int u);
+extern "C" void _ZN15dExtAnmTexSRT_c7SetFileER8BTA_Filei5Fix12IiEj(void* tt, void* file, int a, int b, unsigned int u);
 extern "C" void _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(void *self, void *f, int a, s32 fix, u32 c);
 extern "C" void _ZN15MaterialChanger7SetFileER8BMA_Filei5Fix12IiEj(void *self, void *f, int a, s32 fix, u32 c);
 extern "C" void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
@@ -1576,7 +1576,7 @@ extern "C" void func_ov074_02121a4c(char* c, int idx)
     int arg2 = *(int*)(data_ov074_02122f3c + off);
     ((dExtAnmModel_c *)&((daKuriKing_c *)c)->mModelAnim)
         ->SetAnim((BCA_File *)file1, arg2, 0x1000, 0);
-    _ZN18TextureTransformer7SetFileER8BTA_Filei5Fix12IiEj(
+    _ZN15dExtAnmTexSRT_c7SetFileER8BTA_Filei5Fix12IiEj(
         &((daKuriKing_c *)c)->mTextureTransformer, *(void**)(data_ov074_02122f38 + off), 0, 0x1000, 0);
 }
 
@@ -1774,7 +1774,7 @@ int daKuriKing_c::InitResources()
 
     i = 0;
     do {
-        TextureTransformer::Prepare(*(BMD_File *)gKurikingModelModelFile.filePtr,
+        dExtAnmTexSRT_c::Prepare(*(BMD_File *)gKurikingModelModelFile.filePtr,
                                     *(BTA_File *)data_ov074_02122e5c[i]);
         i++;
     } while (i < 7);
@@ -1782,7 +1782,7 @@ int daKuriKing_c::InitResources()
     _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(
         &mTextureSequence, gKurikingAngerTextureSequenceFile.filePtr, 0, 0x1000, 0);
     _ZN15MaterialChanger7SetFileER8BMA_Filei5Fix12IiEj(&mMaterialChanger, &data_ov010_021123f4, 0x40000000, 0x1000, 0);
-    _ZN18TextureTransformer7SetFileER8BTA_Filei5Fix12IiEj(&mTextureTransformer, &data_ov010_021124ac, 0, 0x1000, 0);
+    _ZN15dExtAnmTexSRT_c7SetFileER8BTA_Filei5Fix12IiEj(&mTextureTransformer, &data_ov010_021124ac, 0, 0x1000, 0);
 
     mTextureSequence.speed = 0;
     mMaterialChanger.currFrame = (s32)(data_ov074_02122e04[mSizeIndex] << 0xc);

@@ -518,12 +518,12 @@ _ZN15MaterialChanger7SetFileER8BMA_Filei5Fix12IiEj kind:function(arm,size=0x54) 
 _ZN15MaterialChangerD0Ev kind:function(arm,size=0x2c) addr:0x02015800
 _ZN15MaterialChangerD1Ev kind:function(arm,size=0x24) addr:0x0201582c
 _ZN15MaterialChangerC1Ev kind:function(arm,size=0x2c) addr:0x02015850
-_ZN18TextureTransformer7PrepareER8BMD_FileR8BTA_File kind:function(arm,size=0xc) addr:0x0201587c
-_ZN18TextureTransformer6UpdateER15ModelComponents kind:function(arm,size=0x24) addr:0x02015888
-_ZN18TextureTransformer7SetFileER8BTA_Filei5Fix12IiEj kind:function(arm,size=0x54) addr:0x020158ac
-_ZN18TextureTransformerD0Ev kind:function(arm,size=0x2c) addr:0x02015900
-_ZN18TextureTransformerD1Ev kind:function(arm,size=0x24) addr:0x0201592c
-_ZN18TextureTransformerC1Ev kind:function(arm,size=0x2c) addr:0x02015950
+_ZN15dExtAnmTexSRT_c7PrepareER8BMD_FileR8BTA_File kind:function(arm,size=0xc) addr:0x0201587c
+_ZN15dExtAnmTexSRT_c6UpdateER15ModelComponents kind:function(arm,size=0x24) addr:0x02015888
+_ZN15dExtAnmTexSRT_c7SetFileER8BTA_Filei5Fix12IiEj kind:function(arm,size=0x54) addr:0x020158ac
+_ZN15dExtAnmTexSRT_cD0Ev kind:function(arm,size=0x2c) addr:0x02015900
+_ZN15dExtAnmTexSRT_cD1Ev kind:function(arm,size=0x24) addr:0x0201592c
+_ZN15dExtAnmTexSRT_cC1Ev kind:function(arm,size=0x2c) addr:0x02015950
 _ZN15TextureSequence7PrepareER8BMD_FileR8BTP_File kind:function(arm,size=0xc) addr:0x0201597c
 _ZN15TextureSequence6UpdateER15ModelComponents kind:function(arm,size=0x24) addr:0x02015988
 _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj kind:function(arm,size=0x54) addr:0x020159ac
@@ -3599,7 +3599,7 @@ _ZTI15dExtAnm2Model_c kind:data(any) addr:0x0208e788
 _ZTI17dExtSimpleModel_c kind:data(any) addr:0x0208e794
 _ZTI17dExtCommonModel_c kind:data(any) addr:0x0208e7a0
 _ZTS11dExtModel_c kind:data(any) addr:0x0208e7ac
-_ZTV18TextureTransformer kind:data(any) addr:0x0208e7c4
+_ZTV15dExtAnmTexSRT_c kind:data(any) addr:0x0208e7c4
 _ZTV15TextureSequence kind:data(any) addr:0x0208e7d4
 _ZTV15dExtFrameCtrl_c kind:data(any) addr:0x0208e7e4
 data_0208e7e4 kind:data(any) addr:0x0208e7e4

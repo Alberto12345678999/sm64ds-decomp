@@ -8,14 +8,14 @@
  */
 /* leftovers:
  * - dExtAnmModel_c::SetAnim, TextureSequence::SetFile, MaterialChanger::SetFile
- *   and TextureTransformer::SetFile stay mangled. Each takes Fix12<int> by
+ *   and dExtAnmTexSRT_c::SetFile stay mangled. Each takes Fix12<int> by
  *   value; the member spelling spills the 0x1000 and InitResources stops
  *   matching.
  * - data_ov060_0211b208 / 0211b1f8 / 0211b200 are the model, animation and
  *   texture-sequence handles. LoadFile takes the handle and SetAnim /
  *   Prepare read its filePtr.
  * - data_ov048_021115e4 / 021115f4 are the BMA and BTA this TU's
- *   MaterialChanger::Prepare and TextureTransformer::Prepare load. They sit
+ *   MaterialChanger::Prepare and dExtAnmTexSRT_c::Prepare load. They sit
  *   in the level overlay; only ov048 has an animation record at both words.
  * - func_02016b24 is the unnamed model-mask call in InitResources.
  */
@@ -67,7 +67,7 @@ void Matrix4x3_FromTranslation(void *m, int x, int y, int z);
  * member spelling spills the 0x1000 and InitResources stops matching. */
 void _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(TextureSequence *self, BTP_File *file, int flags, int speed, unsigned int start);
 void _ZN15MaterialChanger7SetFileER8BMA_Filei5Fix12IiEj(MaterialChanger *self, BMA_File *file, int flags, int speed, unsigned int start);
-void _ZN18TextureTransformer7SetFileER8BTA_Filei5Fix12IiEj(TextureTransformer *self, BTA_File *file, int flags, int speed, unsigned int start);
+void _ZN15dExtAnmTexSRT_c7SetFileER8BTA_Filei5Fix12IiEj(dExtAnmTexSRT_c *self, BTA_File *file, int flags, int speed, unsigned int start);
 }
 
 // @symbol _ZN9daFRing_cD1Ev
@@ -164,10 +164,10 @@ s32 daFRing_c::InitResources()
     _ZN15MaterialChanger7SetFileER8BMA_Filei5Fix12IiEj(&mMaterialChanger1, &data_ov048_021115e4, 0x40000000, 0x1000, 0);
     _ZN15MaterialChanger7SetFileER8BMA_Filei5Fix12IiEj(&mMaterialChanger2, &data_ov048_021115e4, 0x40000000, 0x1000, 0);
 
-    TextureTransformer::Prepare(*(BMD_File *)data_ov060_0211b208.filePtr, data_ov048_021115f4);
-    TextureTransformer::Prepare(*(BMD_File *)data_ov060_0211b208.filePtr, data_ov048_021115f4);
-    _ZN18TextureTransformer7SetFileER8BTA_Filei5Fix12IiEj(&mTextureTransformer1, &data_ov048_021115f4, 0x40000000, 0x1000, 0);
-    _ZN18TextureTransformer7SetFileER8BTA_Filei5Fix12IiEj(&mTextureTransformer2, &data_ov048_021115f4, 0x40000000, 0x1000, 0);
+    dExtAnmTexSRT_c::Prepare(*(BMD_File *)data_ov060_0211b208.filePtr, data_ov048_021115f4);
+    dExtAnmTexSRT_c::Prepare(*(BMD_File *)data_ov060_0211b208.filePtr, data_ov048_021115f4);
+    _ZN15dExtAnmTexSRT_c7SetFileER8BTA_Filei5Fix12IiEj(&mTextureTransformer1, &data_ov048_021115f4, 0x40000000, 0x1000, 0);
+    _ZN15dExtAnmTexSRT_c7SetFileER8BTA_Filei5Fix12IiEj(&mTextureTransformer2, &data_ov048_021115f4, 0x40000000, 0x1000, 0);
 
     mFrame = 0;
     return 1;

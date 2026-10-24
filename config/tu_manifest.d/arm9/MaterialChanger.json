@@ -9,7 +9,7 @@
     "NOT FROM tu_map. tools/tu_map.py reports the arm9 `main` module as UNDER-SEGMENTED, so there is no tu_map boundary or `tubuild.py create` candidate id here; every line below is hand-derived and independently checkable.",
     "contiguous linker run 0x0201577c..0x0201587c: the six delinks entries tile the span exactly with no hole (config/arm9/delinks.txt, config/arm9/symbols.txt).",
     "class-label homogeneity: every symbol in the run is a member of MaterialChanger (the Animation child driving BMA-file playback in include/MaterialChanger.h; _ZTV15MaterialChanger at 0x0208e7f4 names the class, and the cartridge RTTI spells it _ZTI17dExtAnmMaterial_c at 0x0208e764 with base _ZTI15dExtFrameCtrl_c at 0x0208e744 -- the Animation of this tree).",
-    "neighbour below: _ZN7ClipperC1Ev ends at 0x0201577c (the Clipper class's own run). Neighbour above: _ZN18TextureTransformer7PrepareER8BMD_FileR8BTA_File at 0x0201587c, the first member of the sibling class's run."
+    "neighbour below: _ZN7ClipperC1Ev ends at 0x0201577c (the Clipper class's own run). Neighbour above: _ZN15dExtAnmTexSRT_c7PrepareER8BMD_FileR8BTA_File at 0x0201587c, the first member of the sibling class's run."
   ],
   "sections": [
     {

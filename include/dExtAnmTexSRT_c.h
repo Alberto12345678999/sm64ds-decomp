@@ -1,11 +1,11 @@
-#ifndef TEXTURETRANSFORMER_H
-#define TEXTURETRANSFORMER_H
+#ifndef DEXTANMTEXSRT_C_H
+#define DEXTANMTEXSRT_C_H
 
 #include "types.h"
 #include "dExtFrameCtrl_c.h"
 #include "math/Fix12.h"
 
-/* dExtFrameCtrl_c child that drives BTA-file playback, vtable _ZTV18TextureTransformer at 0x0208e7c4:
+/* dExtFrameCtrl_c child that drives BTA-file playback, vtable _ZTV15dExtAnmTexSRT_c at 0x0208e7c4:
  * two slots, the destructor pair, nothing else. Update and Prepare are
  * plain methods.
  *
@@ -33,13 +33,13 @@
 struct ModelComponents;
 struct BMD_File;
 struct BTA_File { u16 numFrames; };
-struct TextureTransformer : dExtFrameCtrl_c {
+struct dExtAnmTexSRT_c : dExtFrameCtrl_c {
     BTA_File *file;           /* 0x10 */
 
     /* --- vtable: the destructor pair only. --- */
-    virtual ~TextureTransformer();                       /* slots 0 (D1), 1 (D0) */
+    virtual ~dExtAnmTexSRT_c();                       /* slots 0 (D1), 1 (D0) */
 
-    TextureTransformer();
+    dExtAnmTexSRT_c();
 
     /* --- non-virtual --- */
     static void Prepare(BMD_File &model, BTA_File &animFile);
@@ -51,7 +51,7 @@ struct TextureTransformer : dExtFrameCtrl_c {
 
 #ifndef SM64DS_PLATFORM_PC
 /* ROM layout under mwccarm; host ABI divergence is tracked separately. */
-typedef char TextureTransformer_size_must_be_0x14[sizeof(TextureTransformer) == 0x14 ? 1 : -1];
+typedef char TextureTransformer_size_must_be_0x14[sizeof(dExtAnmTexSRT_c) == 0x14 ? 1 : -1];
 #endif
 
 #endif /* __cplusplus */

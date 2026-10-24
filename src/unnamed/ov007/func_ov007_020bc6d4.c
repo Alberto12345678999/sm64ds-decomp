@@ -20,7 +20,7 @@ typedef struct Ov007Model {
     void *boneAnims;    /* 0x14: BCA_File table (UpdateBones) */
     void *boneAnim;     /* 0x18 */
     int numTexSrtAnims; /* 0x1c */
-    void *texSrtAnims;  /* 0x20: BTA_File table (func_020469e8, TextureTransformer) */
+    void *texSrtAnims;  /* 0x20: BTA_File table (func_020469e8, dExtAnmTexSRT_c) */
     void *texSrtAnim;   /* 0x24 */
     int numTexSeqAnims; /* 0x28 */
     void *texSeqAnims;  /* 0x2c: BTP_File table (func_02046bbc, TextureSequence) */

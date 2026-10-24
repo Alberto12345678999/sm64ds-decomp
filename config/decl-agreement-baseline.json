@@ -6143,7 +6143,7 @@
         "return:unsigned int"
       ]
     },
-    "_ZN18TextureTransformer6UpdateER15ModelComponents": {
+    "_ZN15dExtAnmTexSRT_c6UpdateER15ModelComponents": {
       "src/minigames/unit020bfec0.cpp": [
         "param:#2 void *"
       ],
@@ -6151,13 +6151,13 @@
         "param:#2 void *"
       ]
     },
-    "_ZN18TextureTransformer7PrepareER8BMD_FileR8BTA_File": {
+    "_ZN15dExtAnmTexSRT_c7PrepareER8BMD_FileR8BTA_File": {
       "src/minigames/unit020bfec0.cpp": [
         "param:#1 void *",
         "param:#2 void *"
       ]
     },
-    "_ZN18TextureTransformer7SetFileER8BTA_Filei5Fix12IiEj": {
+    "_ZN15dExtAnmTexSRT_c7SetFileER8BTA_Filei5Fix12IiEj": {
       "src/game/stages/d_s_stage_methods.cpp": [
         "param:#5 unsigned int"
       ],
@@ -6210,7 +6210,7 @@
         "param:#5 unsigned int"
       ]
     },
-    "_ZN18TextureTransformerD1Ev": {
+    "_ZN15dExtAnmTexSRT_cD1Ev": {
       "include/decl_TextureTransformer.h": [
         "return:void"
       ],
@@ -23328,13 +23328,13 @@
       ]
     },
     "func_020469e8": {
-      "src/engine/model/TextureTransformer.cpp": [
+      "src/engine/model/dExtAnmTexSRT_c.cpp": [
         "param:#1 ModelComponents *",
         "param:#2 BTA_File *"
       ]
     },
     "func_02046b64": {
-      "src/engine/model/TextureTransformer.cpp": [
+      "src/engine/model/dExtAnmTexSRT_c.cpp": [
         "param:#1 BMD_File *",
         "param:#2 BTA_File *"
       ],

@@ -23,7 +23,7 @@
  *   mCamSpacePosX / mScaleX / mPosX stand in where no member exists at
  *   those addresses. SetRanges, dCcAcPos_c::Init, dBgCh_Actr::Init,
  *   dExtAnmModel_c::SetAnim, TextureSequence::SetFile,
- *   TextureTransformer::SetFile and DropShadowRadHeight stay mangled
+ *   dExtAnmTexSRT_c::SetFile and DropShadowRadHeight stay mangled
  *   extern "C" spellings -- they take Fix12<int> by value
  *   (notes/mwccarm-codegen.md 6az).
  *   UpdateDefeatedState calls the interworking veneer
@@ -141,7 +141,7 @@ int daBrq_c::InitResources()
     TextureSequence::Prepare(*bmd2, *btp);
 
     bmd2 = (BMD_File *)data_ov070_02123604.filePtr;
-    TextureTransformer::Prepare(*bmd2, data_ov070_021231f4);
+    dExtAnmTexSRT_c::Prepare(*bmd2, data_ov070_021231f4);
 
     if (!mShadowModel.InitCylinder())
         return 0;
@@ -261,12 +261,12 @@ s32 daBrq_c::UpdateCooldownState()
 
 typedef int Fix12i;
 struct BCA_File; struct BTP_File; struct BTA_File;
-/* (dExtAnmModel_c/TextureSequence/TextureTransformer: real header types in scope) */
+/* (dExtAnmModel_c/TextureSequence/dExtAnmTexSRT_c: real header types in scope) */
 
 extern "C" unsigned int _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(
     TextureSequence*, BTP_File&, int, Fix12i, unsigned int);
-extern "C" unsigned int _ZN18TextureTransformer7SetFileER8BTA_Filei5Fix12IiEj(
-    TextureTransformer*, BTA_File&, int, Fix12i, unsigned int);
+extern "C" unsigned int _ZN15dExtAnmTexSRT_c7SetFileER8BTA_Filei5Fix12IiEj(
+    dExtAnmTexSRT_c*, BTA_File&, int, Fix12i, unsigned int);
 
 extern BTA_File data_ov070_021231f4;
 
@@ -278,7 +278,7 @@ s32 daBrq_c::EnterActiveState()
     _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(
         &mTextureSequence, *(BTP_File *)data_ov070_021235ec.filePtr, 0, 0x1000, 0);
     mTextureSequence.speed = 0x1000;
-    _ZN18TextureTransformer7SetFileER8BTA_Filei5Fix12IiEj(
+    _ZN15dExtAnmTexSRT_c7SetFileER8BTA_Filei5Fix12IiEj(
         &mTextureTransformer, data_ov070_021231f4, 0, 0x1000, 0);
     mTextureTransformer.speed = 0x2000;
     mStateTimer = 0xf;
