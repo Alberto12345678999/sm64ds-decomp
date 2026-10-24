@@ -144,8 +144,8 @@ still costs nothing.
 
 `dExtAnmModel_c::SetAnim` and `dExtBlendAnmModel_c::SetAnim` were the two standing in-tree
 citations of this wall. Their sources said so in four places (`include/dExtAnmModel_c.h`,
-`src/engine/model/dExtAnmModel_c.cpp`, `include/dExtBlendAnmModel_c.h`,
-`src/engine/model/dExtBlendAnmModel_c.cpp`): "SetAnim's definition stays a mangled free
+`src/engine/model/d_ext_anm_model.cpp`, `include/dExtBlendAnmModel_c.h`,
+`src/engine/model/d_ext_blend_anm_model.cpp`): "SetAnim's definition stays a mangled free
 function (wall 6az)". Measured on 605184f87d, that is wrong. Both reproduce as real
 C++ methods once the symbol is renamed to its scalar mangling, exactly as
 `IsGoingOffCliff` above:

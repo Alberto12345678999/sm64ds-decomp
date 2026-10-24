@@ -89,7 +89,7 @@ struct dExtAnmModel_c : dExtSimpleModel_c, dExtFrameCtrl_c {
     virtual void Render(const Vector3 *scale);            /* slot 5 */
     virtual void Virtual18(u32 mat, const Vector3 *scale);/* slot 6 */
 
-    /* DECLARED, defined out of line in src/engine/model/dExtAnmModel_c.cpp as real C++
+    /* DECLARED, defined out of line in src/engine/model/d_ext_anm_model.cpp as real C++
      * -- complete-object context for every ROM caller (103 of them), hence C1.
      * Body is the single store file = 0; both base steps and both vptr stores
      * are synthesised (notes/ctor-migration.md section 6). The C2 sibling each

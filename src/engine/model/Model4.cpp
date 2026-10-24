@@ -1,7 +1,7 @@
 //cpp
 /* Model4 -- VRAM upload for a BMD model, 0x020458e0..0x020468a0.
  *
- * Not part of src/engine/model/dExtSimpleModel_c.cpp: func_020458a8 sits between that TU
+ * Not part of src/engine/model/d_ext_simple_model.cpp: func_020458a8 sits between that TU
  * and this run. TextureSequence::UpdateFileOffsets begins at 0x020468a0.
  * The name is the tree's dExtSimpleModel_c class plus the numeric suffix already used
  * for a second translation unit (Juan 2026-10-11).

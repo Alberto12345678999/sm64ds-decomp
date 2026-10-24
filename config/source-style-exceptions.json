@@ -767,7 +767,7 @@
       "match": "_ZN14dExtAnmModel_c7SetAnimEP8BCA_Fileiit",
       "count": 2,
       "reason": "func_ov064_02116560 tail-forwards SetAnim's r0 as its own int result. A return on the void member does not compile, and splitting it into call-then-return loses the tail call. The two occurrences are the int-returning local extern and its single call.",
-      "evidence": "src/engine/model/dExtAnmModel_c.cpp: void dExtAnmModel_c::SetAnim(BCA_File *, int, Fix12i, u16) at 0x02016748 size 0x5c MATCH under 2004/b56; func_ov064_02116560 byte-matched with the int-returning spelling; the local extern carries a 'local extern:' reason at d_a_ots.cpp:230."
+      "evidence": "src/engine/model/d_ext_anm_model.cpp: void dExtAnmModel_c::SetAnim(BCA_File *, int, Fix12i, u16) at 0x02016748 size 0x5c MATCH under 2004/b56; func_ov064_02116560 byte-matched with the int-returning spelling; the local extern carries a 'local extern:' reason at d_a_ots.cpp:230."
     },
     {
       "path": "src/game/player/Player.cpp",
@@ -775,7 +775,7 @@
       "match": "_ZN14dExtAnmModel_c7SetAnimEP8BCA_Fileiit",
       "count": 3,
       "reason": "St_YoshiPower_Main is the only caller that passes a non-constant startFrame ((currFrame << 4) >> 0x10). Narrowing it to the member's real u16 costs +0x10, so this body keeps the scalar unsigned int spelling, per this file's per-body declaration policy. The three occurrences are the block-scope declaration and its two calls.",
-      "evidence": "src/engine/model/dExtAnmModel_c.cpp: void dExtAnmModel_c::SetAnim(BCA_File *, int, Fix12i, u16) at 0x02016748 size 0x5c MATCH under 2004/b56; St_YoshiPower_Main MATCH with the scalar unsigned int startFrame, +0x10 with the u16 member call (PR #4290 measurement)."
+      "evidence": "src/engine/model/d_ext_anm_model.cpp: void dExtAnmModel_c::SetAnim(BCA_File *, int, Fix12i, u16) at 0x02016748 size 0x5c MATCH under 2004/b56; St_YoshiPower_Main MATCH with the scalar unsigned int startFrame, +0x10 with the u16 member call (PR #4290 measurement)."
     },
     {
       "path": "src/InvMat4x3.c",

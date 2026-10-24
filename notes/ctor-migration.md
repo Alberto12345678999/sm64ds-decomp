@@ -13,7 +13,7 @@ typed-subobject constructor (dBgCh_Actr).
 
 | file | function | ROM |
 |---|---|---|
-| `src/engine/model/dExtSimpleModel_c.cpp` | `dExtModel_c::dExtModel_c()` | 0x02017150, 0x18 |
+| `src/engine/model/d_ext_simple_model.cpp` | `dExtModel_c::dExtModel_c()` | 0x02017150, 0x18 |
 | `src/_ZN17dExtSimpleModel_cC1Ev.cpp` | `dExtSimpleModel_c::dExtSimpleModel_c()` | 0x02016d58, 0x50 |
 | `src/engine/model/d_ext_common_model.cpp` | `dExtCommonModel_c::dExtCommonModel_c()` | 0x02016204, 0x50 |
 | `src/engine/model/d_ext_shadow_model.cpp` | `dExtShadowModel_c::dExtShadowModel_c()` | 0x02016068, 0x34 |

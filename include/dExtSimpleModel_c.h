@@ -18,7 +18,7 @@
  *   slot 5  0x02016b78  Render(Vector3 const *)
  *
  * THE DESTRUCTOR IS DECLARED FIRST. The promoted TU
- * (src/engine/model/dExtSimpleModel_c.cpp) defines it once; mwcc emits D2/D0/D1 together
+ * (src/engine/model/d_ext_simple_model.cpp) defines it once; mwcc emits D2/D0/D1 together
  * and all three stay enrolled. The key-function vtable emitted beside it is
  * stripped and rebound to the ROM's carved-out _ZTV17dExtSimpleModel_c, as described in
  * dExtModel_c.h.

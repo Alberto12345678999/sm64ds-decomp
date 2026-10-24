@@ -67,21 +67,21 @@
       "disposition": "deadstrip-duplicate",
       "canonical_module": "arm9",
       "canonical_address": "0x0201689c",
-      "reason": "The key function emits D2 beside the thunks. src/engine/model/dExtAnmModel_c.cpp owns the cartridge body at 0x0201689c."
+      "reason": "The key function emits D2 beside the thunks. src/engine/model/d_ext_anm_model.cpp owns the cartridge body at 0x0201689c."
     },
     {
       "symbol": "_ZN14dExtAnmModel_cD0Ev",
       "disposition": "deadstrip-duplicate",
       "canonical_module": "arm9",
       "canonical_address": "0x020168d8",
-      "reason": "The key function emits D0 beside the thunks. src/engine/model/dExtAnmModel_c.cpp owns the cartridge body at 0x020168d8."
+      "reason": "The key function emits D0 beside the thunks. src/engine/model/d_ext_anm_model.cpp owns the cartridge body at 0x020168d8."
     },
     {
       "symbol": "_ZN14dExtAnmModel_cD1Ev",
       "disposition": "deadstrip-duplicate",
       "canonical_module": "arm9",
       "canonical_address": "0x0201691c",
-      "reason": "The key function emits D1 beside the thunks. src/engine/model/dExtAnmModel_c.cpp owns the cartridge body at 0x0201691c."
+      "reason": "The key function emits D1 beside the thunks. src/engine/model/d_ext_anm_model.cpp owns the cartridge body at 0x0201691c."
     },
     {
       "symbol": "_ZN19dExtBlendAnmModel_cD2Ev",
@@ -93,14 +93,14 @@
       "disposition": "deadstrip-duplicate",
       "canonical_module": "arm9",
       "canonical_address": "0x02016644",
-      "reason": "The key function emits D0 beside the thunks. src/engine/model/dExtBlendAnmModel_c.cpp owns the cartridge body at 0x02016644."
+      "reason": "The key function emits D0 beside the thunks. src/engine/model/d_ext_blend_anm_model.cpp owns the cartridge body at 0x02016644."
     },
     {
       "symbol": "_ZN19dExtBlendAnmModel_cD1Ev",
       "disposition": "deadstrip-duplicate",
       "canonical_module": "arm9",
       "canonical_address": "0x02016690",
-      "reason": "The key function emits D1 beside the thunks. src/engine/model/dExtBlendAnmModel_c.cpp owns the cartridge body at 0x02016690."
+      "reason": "The key function emits D1 beside the thunks. src/engine/model/d_ext_blend_anm_model.cpp owns the cartridge body at 0x02016690."
     },
     {
       "symbol": "_ZN15dExtAnm2Model_cD2Ev",
@@ -112,14 +112,14 @@
       "disposition": "deadstrip-duplicate",
       "canonical_module": "arm9",
       "canonical_address": "0x02016320",
-      "reason": "The key function emits D0 beside the thunks. src/engine/model/dExtAnm2Model_c.cpp owns the cartridge body at 0x02016320."
+      "reason": "The key function emits D0 beside the thunks. src/engine/model/d_ext_anm2_model.cpp owns the cartridge body at 0x02016320."
     },
     {
       "symbol": "_ZN15dExtAnm2Model_cD1Ev",
       "disposition": "deadstrip-duplicate",
       "canonical_module": "arm9",
       "canonical_address": "0x02016364",
-      "reason": "The key function emits D1 beside the thunks. src/engine/model/dExtAnm2Model_c.cpp owns the cartridge body at 0x02016364."
+      "reason": "The key function emits D1 beside the thunks. src/engine/model/d_ext_anm2_model.cpp owns the cartridge body at 0x02016364."
     },
     {
       "symbol": "_ZTV14dExtAnmModel_c",
