@@ -87,7 +87,10 @@ extern void  _ZN3G2x13SetBlendAlphaEPVttttj(volatile unsigned short *reg, int a,
 /* G2's own name is taken: decl_common.h declares `int G2[]`. */
 extern void *_ZN2G212GetBG2ScrPtrEv(void);
 extern void *_ZN2G213GetBG2CharPtrEv(void);
-extern void  _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(int sub, struct OamAttr *data,
+struct OAM {
+    static void Render(bool, OamAttr*, int, int, int, int, int, int, int, int);
+};
+extern void  OamRender10_d_s_mg_teresa(int sub, struct OamAttr *data,
                                                          s32 x, s32 y, s32 palette,
                                                          s32 priority, s32 scaleX,
                                                          s32 scaleY, s32 rotation,
@@ -546,7 +549,7 @@ void dScMgTeresa_c::Marker_Hide()
 void dScMgTeresa_c::Reveal_Draw()
 {
     if (mReveal[0].visible == 0) return;
-    _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(0, sTeresaRevealSprites[mReveal[0].sprite],
+    OAM::Render(0, sTeresaRevealSprites[mReveal[0].sprite],
                                                 mReveal[0].x >> 12, mReveal[0].y >> 12, -1, 0,
                                                 0x1000, 0x1000, mReveal[0].angle, -1);
 }
@@ -1049,7 +1052,7 @@ void dScMgTeresa_c::DrawBoos()
 
             if (translucent != 0)
                 mode = 1;
-            _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(
+            OAM::Render(
                 1, (struct OamAttr *)frames[idx], x, y, -1, priority, 0x1000, 0x1000, 0, mode);
         }
     }

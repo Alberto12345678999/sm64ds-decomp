@@ -130,7 +130,7 @@ extern void _ZN5Sound12PlayBank2_2DEj(unsigned int id);
 extern int Sound_PlayIfNotActive(int, int, int, int);
 extern int RandomIntInternal(int *seed);
 extern int data_0209e650;
-void _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(int b, void *attr, int a2, int a3, int a4, int a5,
+void OamRender10_d_s_mg_slots(int b, void *attr, int a2, int a3, int a4, int a5,
                                                  int a6, int a7, int a8, int a9);
 void Hud_RenderSprite(void *a0, int a1, int a2, int a3, int a4);
 void Mg_DrawCredits(char *a0, int a1, int a2, int a3);
@@ -714,19 +714,19 @@ s32 dScMgSlot3_c::Render() {
 
     if (self->mReelDrawY > 0) {
         for (i = 0; i < 3; i++) {
-            _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(
-                0, sSlot3FaceSprites[self->mWinSymbol * 3 + i], 0x80, self->mReelDrawY + 0x10, -1,
+            OAM::Render(
+                0, (OamAttr *)sSlot3FaceSprites[self->mWinSymbol * 3 + i], 0x80, self->mReelDrawY + 0x10, -1,
                 2, 0x1000, 0x1000, 0, 1);
         }
         for (i = 0; i < 3; i++) {
-            _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(
-                0, sSlot3FaceSprites[self->mNextWinSymbol * 3 + i], 0x80, self->mReelDrawY + 0x60,
+            OAM::Render(
+                0, (OamAttr *)sSlot3FaceSprites[self->mNextWinSymbol * 3 + i], 0x80, self->mReelDrawY + 0x60,
                 -1, 2, 0x1000, 0x1000, 0, 1);
         }
     } else {
         for (i = 0; i < 3; i++) {
-            _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(0,
-                                                        sSlot3FaceSprites[self->mWinSymbol * 3 + i],
+            OAM::Render(0,
+                                                        (OamAttr *)sSlot3FaceSprites[self->mWinSymbol * 3 + i],
                                                         0x80, 0x60, -1, 2, 0x1000, 0x1000, 0, 1);
         }
     }

@@ -112,7 +112,10 @@ extern void func_020318a4(int a);
 extern void func_020319fc(int n);
 /* local extern: Fix12 wall -- the by-value Fix12<int> form cannot be spelled
    from a header; the literal name keeps the def's own scalar params. */
-extern void _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(int sub, struct OamAttr *attr_, int xOff, int yOff, int palette, int priority, int scaleX, int scaleY, int rotation, int mode);
+extern void OamRender10_Message3(int sub, struct OamAttr *attr_, int xOff, int yOff, int palette, int priority, int scaleX, int scaleY, int rotation, int mode);
+struct OAM {
+    static void Render(bool, OamAttr*, int, int, int, int, int, int, int, int);
+};
 /* local extern: byte-forced spelling -- the definition is
    (volatile u16*, u16, s16); u16/s16 parameters would emit an explicit narrow
    the ROM lacks. */
@@ -497,9 +500,9 @@ extern "C" void func_020326ac(void)
             int r5 = data_0209fcf4[data_0209fcd0] * 9 + data_0209fc6c + 0xC;
             int r4 = data_0209fce0 + (data_0209fc80 * 0x10) + 0xE;
             if (data_020a0db0 & (0x10 / data_0208ee44)) {
-                _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(0, (struct OamAttr *)&data_ov002_0210c3a8, r5, r4, -1, -1, 0x1000, 0x1000, 0, -1);
+                OAM::Render(0, (struct OamAttr *)&data_ov002_0210c3a8, r5, r4, -1, -1, 0x1000, 0x1000, 0, -1);
             } else {
-                _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(0, (struct OamAttr *)&data_ov002_0210c3a0, r5, r4, -1, -1, 0x1000, 0x1000, 0, -1);
+                OAM::Render(0, (struct OamAttr *)&data_ov002_0210c3a0, r5, r4, -1, -1, 0x1000, 0x1000, 0, -1);
             }
             return;
         }
@@ -524,9 +527,9 @@ extern "C" void func_020326ac(void)
             int r5 = data_0209fc6c + 0xC;
             int r4 = data_0209fce0 + (data_0209fcf4[data_0209fcd0] * 0x10) + 0xE;
             if (data_020a0db0 & (0x10 / data_0208ee44)) {
-                _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(0, (struct OamAttr *)&data_ov002_0210c3a8, r5, r4, -1, -1, 0x1000, 0x1000, 0, -1);
+                OAM::Render(0, (struct OamAttr *)&data_ov002_0210c3a8, r5, r4, -1, -1, 0x1000, 0x1000, 0, -1);
             } else {
-                _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(0, (struct OamAttr *)&data_ov002_0210c3a0, r5, r4, -1, -1, 0x1000, 0x1000, 0, -1);
+                OAM::Render(0, (struct OamAttr *)&data_ov002_0210c3a0, r5, r4, -1, -1, 0x1000, 0x1000, 0, -1);
             }
             return;
         }
@@ -599,9 +602,9 @@ extern "C" void func_020326ac(void)
             int r5 = data_0209fc6c + 0xC;
             int r4 = data_0209fce0 + (data_0209fcf4[data_0209fcd0] * 0x10) + 0xE;
             if (data_020a0db0 & (0x10 / data_0208ee44)) {
-                _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(0, (struct OamAttr *)&data_ov002_0210c3a8, r5, r4, -1, -1, 0x1000, 0x1000, 0, -1);
+                OAM::Render(0, (struct OamAttr *)&data_ov002_0210c3a8, r5, r4, -1, -1, 0x1000, 0x1000, 0, -1);
             } else {
-                _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(0, (struct OamAttr *)&data_ov002_0210c3a0, r5, r4, -1, -1, 0x1000, 0x1000, 0, -1);
+                OAM::Render(0, (struct OamAttr *)&data_ov002_0210c3a0, r5, r4, -1, -1, 0x1000, 0x1000, 0, -1);
             }
             return;
         }
@@ -623,9 +626,9 @@ extern "C" void func_020326ac(void)
                 return;
             }
             if (data_0209fcd4 != 0) {
-                _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(0, (struct OamAttr *)&data_ov002_0210c390, r5, r4, -1, -1, 0x1000, 0x1000, 0, -1);
+                OAM::Render(0, (struct OamAttr *)&data_ov002_0210c390, r5, r4, -1, -1, 0x1000, 0x1000, 0, -1);
             } else {
-                _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(0, (struct OamAttr *)&data_ov002_0210c398, r5, r4, -1, -1, 0x1000, 0x1000, 0, -1);
+                OAM::Render(0, (struct OamAttr *)&data_ov002_0210c398, r5, r4, -1, -1, 0x1000, 0x1000, 0, -1);
             }
             return;
         }

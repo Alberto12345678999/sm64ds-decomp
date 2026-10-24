@@ -186,7 +186,10 @@ extern int  func_02012468(int a, int b, int c, int d, int e, int f, int g, short
 extern void SetBg2Offset(int a, int b);
 extern void MultiStore16(unsigned short val, char *dst, int nbytes);
 extern int  RandomIntInternal(int *seed);
-extern int  _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(int, void*, int, int, int, int, int, void*, int, int);
+struct OamAttr;
+struct OAM {
+    static void Render(bool, OamAttr*, int, int, int, int, int, int, int, int);
+};
 extern void Mg_RenderSpriteBothPalMtx(void *sprite, int x, int y, int a3, void *m);
 extern int  Mg_RenderSpriteBothScaled(OamAttr *a, int b, int c, int d, int e, int f, int g);
 extern void Mg_SetSharedState(int a);
@@ -371,9 +374,9 @@ void PachinkoDeco_DrawAll(char* row)
 {
     for (int i = 0; i < 3; i++) {
         if (PACHINKO(row)->mRow[0].visible != 0) {
-            _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(
-                false, sPachinkoDecoSprite, PACHINKO(row)->mRow[0].x >> 12,
-                PACHINKO(row)->mRow[0].y >> 12, -1, -1, 0x1000, (void *)0x1000,
+            OAM::Render(
+                false, (OamAttr *)sPachinkoDecoSprite, PACHINKO(row)->mRow[0].x >> 12,
+                PACHINKO(row)->mRow[0].y >> 12, -1, -1, 0x1000, 0x1000,
                 (unsigned short)PACHINKO(row)->mRow[0].angle, -1);
         }
         row += 0x18;

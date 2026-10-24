@@ -100,12 +100,6 @@ void MultiCopy_Int(int *dst, int *src, int len);
 void MultiCopy32Bytes(int *src, int *dst, int len);
 
 int _ZN4cstd4fdivEii(int num, int den);
-/* Render stays an `extern "C"` free function -- by-value `Fix12<int>` scale
- * parameters (runbook section 7, the note in include/OAM.h). */
-void _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(
-    int sub, OamAttr *data, s32 x, s32 y,
-    s32 palette, s32 priority, s32 scaleX, s32 scaleY,
-    s32 rotation, s32 mode);
 int func_0202043c(int thiz);
 }
 
@@ -202,24 +196,21 @@ u8 OAM::GetObjWidth(int shape, int sizeBits)
 }
 
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii
-/* ROM ordinal 4 -- _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii
+// @symbol _ZN3OAM6RenderEbP7OamAttriiiiiiii
+/* ROM ordinal 4 -- _ZN3OAM6RenderEbP7OamAttriiiiiiii
  * 0x02020994  size 0x690 */
 #pragma opt_common_subs off
 #pragma opt_propagation off
 #pragma opt_loop_invariants off
 #pragma cplusplus off
-/* C region: this function's shard was a `.c` file, and the C front end homes
- * the scalar parameters in a different frame layout (measured: the C++ frame
- * comes out 8 bytes short). `extern "C"` is not C syntax, so the definition
- * below gets C linkage by language alone; the mangled callees keep the shard's
- * literal spellings. */
+/* Callees stay C linkage so their literal mangled names are not mangled again. */
 extern unsigned char _ZN3OAM11GetObjWidthEii(int shape, int size);
 extern unsigned char _ZN3OAM12GetObjHeightEii(int shape, int size);
 extern int _ZN3OAM16LoadAffineParamsEP7OamAttrPiP9Matrix2x2(struct OamAttr *attr, int *affCnt, struct Matrix2x2 *m);
 extern int _ZN4cstd4fdivEii(int num, int den);
+#pragma cplusplus on
 
-void _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(int sub, struct OamAttr *attr_, int xOff, int yOff, int palette, int priority,
+void OAM::Render(bool sub, struct OamAttr *attr_, int xOff, int yOff, int palette, int priority,
                  int scaleX, int scaleY, int rotation, int mode)
 {
     /* The 10-parameter form: walks a chain of template entries (terminated by
@@ -812,7 +803,7 @@ void OAM::RenderSub(OamAttr *data, s32 x, s32 y)
      * in 20.12; -1 in palette/priority/mode means "leave the attribute word
      * alone". The type is `OamAttr`, NOT `OamAttri` -- the extra `i` in
      * `P7OamAttrii` belongs to the parameter list. */
-    _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(
+    OAM::Render(
         1, data, x, y,
         -1, -1,
         0x1000, 0x1000,
@@ -829,7 +820,7 @@ void OAM::RenderSub(OamAttr *data, s32 x, s32 y, s32 palette, s32 priority)
      * priority given explicitly rather than left as -1. Everything else is
      * still the identity transform -- 0x1000 scale in both axes (1.0 in
      * 20.12), no rotation, mode -1. */
-    _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(
+    OAM::Render(
         1, data, x, y,
         palette, priority,
         0x1000, 0x1000,

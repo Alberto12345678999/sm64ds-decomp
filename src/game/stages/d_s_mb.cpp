@@ -52,8 +52,8 @@ extern int OVERLAY_102_ID;
 
 void _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiEi(int sub, void *attr, int x, int y, int a, int cc,
                                              int fx, int mode);
-void _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(int sub, void *attr, int x, int y, int a, int cc,
-                                                 int fx0, int fy0, int rot, int mode);
+void OamRender10_d_s_mb(int sub, void *attr, int x, int y, int a, int cc,
+                        int fx0, int fy0, int rot, int mode);
 extern struct OamAttr *data_0208a0f8[];
 extern s16 data_02082214[];
 
@@ -137,7 +137,7 @@ int dScMB_c::graphCallback_c::GraphCallback3() {
                     mStillTimer = 0x78;
             }
         } else {
-            _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(0, sprite, 0x80, 0x80, -1, -1, 0x1000,
+            OAM::Render(0, (OamAttr *)sprite, 0x80, 0x80, -1, -1, 0x1000,
                                                         0x1000, 0, -1);
             OAM::RenderSub((OamAttr *)sprite, 0x80, 0x80);
             mStillTimer -= data_0208ee44;
