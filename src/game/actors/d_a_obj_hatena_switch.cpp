@@ -71,7 +71,7 @@ static inline int IsOffScreen(dActor_c *actor) {
  * (wall 6az). func_020393c4 is the dBgW+0x1c store; naming belongs with dBgW. */
 extern "C" {
 extern void hold_d_a_obj_hatena_switch(dBgW_KcMbg *collider, KCL_File *file, Matrix4x3 *matrix,
-    Fix12i scale, s16 angleY, CLPS_Block *clps);
+                                       Fix12i scale, s16 angleY, CLPS_Block *clps);
 extern void func_020393c4(dBgW *collider, void *callback);
 
 extern u16 DecIfAbove0_Short(u16 *value);
@@ -176,10 +176,14 @@ s32 daObjHatenaSwitch_c::InitResources()
     UpdateModelTransform();
 
     file = dBgW_Kc::LoadFile(data_ov002_0210dd58);
-    ((dBgW_KcMbg *)(&mStaticMeshCollider))->dBgW_KcMbg::SetFile((KCL_File *)file, *(&mClsnMat), 0x199, mAngleY, *(&data_ov002_0210d8b4));
+    ((dBgW_KcMbg *)(&mStaticMeshCollider))
+        ->dBgW_KcMbg::SetFile((KCL_File *)file, *(&mClsnMat), 0x199, mAngleY,
+                              *(&data_ov002_0210d8b4));
 
     file = dBgW_Kc::LoadFile(data_ov002_0210dd50);
-    ((dBgW_KcMbg *)(&mMovingMeshCollider))->dBgW_KcMbg::SetFile((KCL_File *)file, *(&mClsnMat), 0x199, mAngleY, *(&data_ov002_0210d774));
+    ((dBgW_KcMbg *)(&mMovingMeshCollider))
+        ->dBgW_KcMbg::SetFile((KCL_File *)file, *(&mClsnMat), 0x199, mAngleY,
+                              *(&data_ov002_0210d774));
 
     func_020393c4(
         &mStaticMeshCollider,

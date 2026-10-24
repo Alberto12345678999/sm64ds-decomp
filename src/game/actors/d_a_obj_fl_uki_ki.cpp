@@ -64,8 +64,6 @@ extern CLPS_Block    data_ov064_0211ba6c;   /* the CLPS block SetFile is handed 
 extern s16           data_02082214[];   /* shared sin/cos table, sin at [i*2] */
 
 void func_020393d4(dBgW *bgw, void *fn);
-
-
 }
 
 // @symbol daObjFl_UkiKi_c_classInit
@@ -88,7 +86,8 @@ s32 daObjFl_UkiKi_c::InitResources()
     UpdateClsnPosAndRot();
 
     KCL_File *kcl = (KCL_File *)dBgW_Kc::LoadFile(FloatingFloorLllBig_ClsnFile);
-    ((dBgW_KcMbg *)(&mMeshCollider))->dBgW_KcMbg::SetFile(kcl, *(&mClsnMat), 0x1000, mAngleY, *(&data_ov064_0211ba6c));
+    ((dBgW_KcMbg *)(&mMeshCollider))
+        ->dBgW_KcMbg::SetFile(kcl, *(&mClsnMat), 0x1000, mAngleY, *(&data_ov064_0211ba6c));
 
     /* The platform carries the mesh along by velocity rather than by its
        transform -- it slides straight up and down. */

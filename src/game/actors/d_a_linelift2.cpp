@@ -90,7 +90,7 @@ void func_02010da4(void *actor);
 void func_020393d4(int *collider, int callback);
 void func_020393c4(int *collider, int callback);
 extern void hold_d_a_linelift2(dBgW_KcMbg *self, KCL_File *kcl, const Matrix4x3 *mtx, int scale,
-    s16 angleY, CLPS_Block *clps);
+                               s16 angleY, CLPS_Block *clps);
 
 void func_ov091_02131cb0(dActor_c *self, const Vector3 *to, const Vector3 *from);
 void func_ov091_02132380(void *a, void *b, void *c);
@@ -143,7 +143,9 @@ int daLinelift2_c::InitResources()
     mVariant = param1 >> 8;
     mModel.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(*data_ov091_021344fc[mVariant]), 1, -1);
 
-    ((dBgW_KcMbg *)(&mMeshCollider))->dBgW_KcMbg::SetFile((KCL_File *)dBgW_Kc::LoadFile(*data_ov091_021344f4[mVariant]), *(&mClsnMat), 0x199, mAngleY, *(data_ov091_02134e5c[mVariant]));
+    ((dBgW_KcMbg *)(&mMeshCollider))
+        ->dBgW_KcMbg::SetFile((KCL_File *)dBgW_Kc::LoadFile(*data_ov091_021344f4[mVariant]),
+                              *(&mClsnMat), 0x199, mAngleY, *(data_ov091_02134e5c[mVariant]));
 
     UpdateClsnPosAndRot();
     func_020393d4((int *)&mMeshCollider, (int)&dBgW::UpdatePosWithVelocity);

@@ -41,7 +41,6 @@ extern "C" {
 extern s16 data_02082214[];
 u16 DecIfAbove0_Short(u16 *p);
 
-
 int func_ov002_020b6584(daObjUkiyuka_c *self, ResourceDescriptor *descriptor, int bobAmplitude);
 int func_ov002_020b6424(daObjUkiyuka_c *self, ResourceDescriptor *descriptor);
 }
@@ -136,7 +135,9 @@ int func_ov002_020b6584(daObjUkiyuka_c *self, ResourceDescriptor *descriptor, in
     self->mModel.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(*descriptor->model), 1, -1);
     self->UpdateModelPosAndRotY();
     self->UpdateClsnPosAndRot();
-    ((dBgW_KcMbg *)(&self->mMeshCollider))->dBgW_KcMbg::SetFile((KCL_File *)dBgW_Kc::LoadFile(*descriptor->collision), *(&self->mClsnMat), 0x1000, self->mAngleY, *(descriptor->clps));
+    ((dBgW_KcMbg *)(&self->mMeshCollider))
+        ->dBgW_KcMbg::SetFile((KCL_File *)dBgW_Kc::LoadFile(*descriptor->collision),
+                              *(&self->mClsnMat), 0x1000, self->mAngleY, *(descriptor->clps));
     self->mRestY = self->mPosY;
     self->mBobAmplitude = bobAmplitude;
     return 1;

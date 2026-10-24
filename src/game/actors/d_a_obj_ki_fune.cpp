@@ -89,7 +89,9 @@ int daObjKi_Fune_c::InitResources()
     UpdateClsnPosAndRot();
     idx = mModelIndex;
     file = dBgW_Kc::LoadFile(*(SharedFilePtr *)data_ov016_021136dc[idx]);
-    ((dBgW_KcMbg *)(&mMeshCollider))->dBgW_KcMbg::SetFile((KCL_File *)(file), *(const Matrix4x3 *)(&mClsnMat), 0x1000, mAngleY, *(CLPS_Block *)(clpsBlocks[idx]));
+    ((dBgW_KcMbg *)(&mMeshCollider))
+        ->dBgW_KcMbg::SetFile((KCL_File *)(file), *(const Matrix4x3 *)(&mClsnMat), 0x1000, mAngleY,
+                              *(CLPS_Block *)(clpsBlocks[idx]));
     if (mModelIndex == 0) {
         func_020393d4((int*)&mMeshCollider, (int)&dBgW::UpdatePosWithTransform);
     }

@@ -328,9 +328,17 @@ int daBtn_c::InitResources()
 
     idx = mIsKing;
     if (idx == 0) {
-        ((dBgW_KcMbg *)(&mMovingMeshCollider))->dBgW_KcMbg::SetFile((KCL_File *)(((SharedFilePtr *)data_ov079_02127bf0[idx])->filePtr), *(const Matrix4x3 *)(mMeshMatrix), 0x199, mAngleY, *(CLPS_Block *)(&data_ov079_02127ba0));
+        ((dBgW_KcMbg *)(&mMovingMeshCollider))
+            ->dBgW_KcMbg::SetFile(
+                (KCL_File *)(((SharedFilePtr *)data_ov079_02127bf0[idx])->filePtr),
+                *(const Matrix4x3 *)(mMeshMatrix), 0x199, mAngleY,
+                *(CLPS_Block *)(&data_ov079_02127ba0));
     } else {
-        ((dBgW_KcMbg *)(&mMovingMeshCollider))->dBgW_KcMbg::SetFile((KCL_File *)(((SharedFilePtr *)data_ov079_02127bf0[idx])->filePtr), *(const Matrix4x3 *)(mMeshMatrix), 0x1000, mAngleY, *(CLPS_Block *)(&data_ov015_021135d4));
+        ((dBgW_KcMbg *)(&mMovingMeshCollider))
+            ->dBgW_KcMbg::SetFile(
+                (KCL_File *)(((SharedFilePtr *)data_ov079_02127bf0[idx])->filePtr),
+                *(const Matrix4x3 *)(mMeshMatrix), 0x1000, mAngleY,
+                *(CLPS_Block *)(&data_ov015_021135d4));
     }
 
     func_01ffb0bc(&mMovingMeshCollider);

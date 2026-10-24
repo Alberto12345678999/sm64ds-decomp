@@ -34,7 +34,6 @@ typedef char ResourceDescriptor_size_must_be_0x0c[
 extern "C" {
 void func_020393d4(dBgW_KcMbg *clsn, void *fn);
 
-
 int func_ov002_020b6958(daObjKuruma_c *self, ResourceDescriptor *descriptor);
 int func_ov002_020b68b0(daObjKuruma_c *self, ResourceDescriptor *descriptor);
 }
@@ -109,7 +108,9 @@ int func_ov002_020b6958(daObjKuruma_c *self, ResourceDescriptor *descriptor)
     self->mModel.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(*descriptor->model), 1, -1);
     self->UpdateModelPosAndRotY();
     self->UpdateClsnPosAndRot();
-    ((dBgW_KcMbg *)(&self->mMeshCollider))->dBgW_KcMbg::SetFile((KCL_File *)dBgW_Kc::LoadFile(*descriptor->collision), *(&self->mClsnMat), 0x199, self->mAngleY, *(descriptor->clps));
+    ((dBgW_KcMbg *)(&self->mMeshCollider))
+        ->dBgW_KcMbg::SetFile((KCL_File *)dBgW_Kc::LoadFile(*descriptor->collision),
+                              *(&self->mClsnMat), 0x199, self->mAngleY, *(descriptor->clps));
     func_020393d4(&self->mMeshCollider, (void *)&dBgW::UpdatePosWithVelocity);
     return 1;
 }

@@ -49,8 +49,8 @@ extern "C" {
 /* dBgW_KcMbg::SetFile -- same wall on ov014/daObjWanwanShutter_c::InitResources:
    its by-value Fix12<int> scale makes a member call cost stack the ROM does
    not spend. */
-extern void hold_d_a_obj_wanwan_shutter(dBgW_KcMbg *self, KCL_File *kcl, Matrix4x3 *mat, int scale, s16 angY,
-    void *clps);
+extern void hold_d_a_obj_wanwan_shutter(dBgW_KcMbg *self, KCL_File *kcl, Matrix4x3 *mat, int scale,
+                                        s16 angY, void *clps);
 
 /* Particle::System::NewSimple -- same wall on func_ov014_02112ea8: three
    by-value Fix12<int> coordinates. */
@@ -94,7 +94,9 @@ int daObjWanwanShutter_c::InitResources()
            has to keep the mangled spelling. Its third parameter is a by-value
            Fix12<int> -- wall 6az -- and materialising one costs stack traffic
            the ROM does not have. */
-        ((dBgW_KcMbg *)(&mMeshCollider))->dBgW_KcMbg::SetFile(kcl, *(&mClsnMat), 0x1000, mAngleY, *(CLPS_Block *)(&data_ov014_02114558));
+        ((dBgW_KcMbg *)(&mMeshCollider))
+            ->dBgW_KcMbg::SetFile(kcl, *(&mClsnMat), 0x1000, mAngleY,
+                                  *(CLPS_Block *)(&data_ov014_02114558));
     }
     return 1;
 }

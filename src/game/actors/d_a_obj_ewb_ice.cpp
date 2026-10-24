@@ -134,7 +134,8 @@ void func_02012694(unsigned int id, const Vector3 *pos);
 unsigned short DecIfAbove0_Short(unsigned short *p);
 extern s16 data_02082214[];
 extern int data_02092138;
-extern void hold_d_a_obj_ewb_ice(void *mesh, void *kcl, const Matrix4x3 *mat, int scale, short angY, void *clps);
+extern void hold_d_a_obj_ewb_ice(void *mesh, void *kcl, const Matrix4x3 *mat, int scale, short angY,
+                                 void *clps);
 void func_020393d4(void *mesh, void *callback);
 void func_020393c4(void *mesh, void *callback);
 extern u8 data_ov073_02123420[];
@@ -404,7 +405,10 @@ int daObjEwbIce_c::InitResources()
     {
         u8 variant = mVariant;
         kcl = (KCL_File *)dBgW_Kc::LoadFile(*((EwbIceFileSlot *)data_ov073_021231c0)[variant].file);
-        ((dBgW_KcMbg *)(&mMeshCollider))->dBgW_KcMbg::SetFile((KCL_File *)(kcl), *(&mClsnMat), 0x1000, mAngleY, *(CLPS_Block *)(((EwbIceClpsSlot *)data_ov073_021231c4)[variant].clps));
+        ((dBgW_KcMbg *)(&mMeshCollider))
+            ->dBgW_KcMbg::SetFile(
+                (KCL_File *)(kcl), *(&mClsnMat), 0x1000, mAngleY,
+                *(CLPS_Block *)(((EwbIceClpsSlot *)data_ov073_021231c4)[variant].clps));
     }
     func_020393d4(&mMeshCollider, (void *)&dBgW::UpdatePosWithTransform);
     func_020393c4(&mMeshCollider, (void *)func_ov073_021227d0);

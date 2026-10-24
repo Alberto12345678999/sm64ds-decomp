@@ -47,7 +47,6 @@ extern SubmarineCollisionFilePtr Submarine_ClsnFile;
 extern "C" {
 extern char data_ov026_02112fd4[];
 extern char data_0209caa0[];
-
 }
 
 /* Emission order is ROM order: the destructor pair must stay first.
@@ -87,7 +86,9 @@ s32 daObjWlSubmarine_c::InitResources() {
     UpdateClsnPosAndRot();
     {
         void *k = dBgW_Kc::LoadFile(Submarine_ClsnFile);
-        ((dBgW_KcMbg *)(&mMeshCollider))->dBgW_KcMbg::SetFile((KCL_File *)((int)k), *(const Matrix4x3 *)(&mClsnMat), 0x199, mAngleY, *(CLPS_Block *)((void *)data_ov026_02112fd4));
+        ((dBgW_KcMbg *)(&mMeshCollider))
+            ->dBgW_KcMbg::SetFile((KCL_File *)((int)k), *(const Matrix4x3 *)(&mClsnMat), 0x199,
+                                  mAngleY, *(CLPS_Block *)((void *)data_ov026_02112fd4));
     }
     if (*(int *)(data_0209caa0 + 4) & 0x204)
         return 0;

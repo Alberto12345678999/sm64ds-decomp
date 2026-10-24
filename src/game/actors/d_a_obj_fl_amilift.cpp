@@ -75,7 +75,8 @@ int Vec3_HorzDist(const void* a, const void* b);
 int _Z14ApproachLinearRiii(int* v, int target, int step);
 extern LiftState data_ov064_0211c750[];
 extern short data_02082214[];
-extern void hold_d_a_obj_fl_amilift(void *self, KCL_File *k, Matrix4x3 *m, int fix, short s, CLPS_Block *clps);
+extern void hold_d_a_obj_fl_amilift(void *self, KCL_File *k, Matrix4x3 *m, int fix, short s,
+                                    CLPS_Block *clps);
 void func_020393d4(void *p, void *v);
 void func_020393c4(void *p, void *v);
 extern AmiliftModelFilePtr data_ov064_0211c730;
@@ -282,7 +283,8 @@ s32 daObjFl_Amilift_c::InitResources() {
     UpdateClsnPosAndRot();
 
     kcl = (KCL_File *)dBgW_Kc::LoadFile(data_ov064_0211c728);
-    ((dBgW_KcMbg *)(&mMeshCollider))->dBgW_KcMbg::SetFile(kcl, *(&mClsnMat), 0x199, mAngleY, *(&data_ov064_0211bb6c));
+    ((dBgW_KcMbg *)(&mMeshCollider))
+        ->dBgW_KcMbg::SetFile(kcl, *(&mClsnMat), 0x199, mAngleY, *(&data_ov064_0211bb6c));
 
     func_020393d4(&mMeshCollider, (void *)&dBgW::UpdatePosWithTransform);
     func_020393c4(&mMeshCollider, (void *)&func_ov064_02117fd4);

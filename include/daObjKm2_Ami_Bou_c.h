@@ -13,8 +13,8 @@ struct CLPS_Block;
  * Do not move the mangled names onto dBgW_KcMbg.h / dCcAc_c.h /
  * dBgActor_c.h. */
 extern "C" {
-extern void hold_daObjKm2_Ami_Bou_c(dBgW_KcMbg *self, KCL_File *kcl, const Matrix4x3 *mtx, int scale,
-    s16 angleY, CLPS_Block *clps);
+extern void hold_daObjKm2_Ami_Bou_c(dBgW_KcMbg *self, KCL_File *kcl, const Matrix4x3 *mtx,
+                                    int scale, s16 angleY, CLPS_Block *clps);
 void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(dCcAc_c *self, dActor_c *act, int radius, int height,
                                                unsigned flags, unsigned vulnFlags);
 }
@@ -40,7 +40,8 @@ struct daObjKm2_Ami_Bou_c : dBgActor_c {
     virtual s32 Render();
 
     void SetMeshFile(KCL_File *kcl, int scale, CLPS_Block *clps) {
-        ((dBgW_KcMbg *)(&mMeshCollider))->dBgW_KcMbg::SetFile(kcl, *(&mClsnMat), scale, mAngleY, *(clps));
+        ((dBgW_KcMbg *)(&mMeshCollider))
+            ->dBgW_KcMbg::SetFile(kcl, *(&mClsnMat), scale, mAngleY, *(clps));
     }
     void InitClsn(int radius, int height, unsigned flags, unsigned vulnFlags) {
         _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(

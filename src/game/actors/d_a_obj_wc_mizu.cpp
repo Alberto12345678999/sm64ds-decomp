@@ -135,7 +135,9 @@ int daObjWc_Mizu_c::InitResources()
 
     k = dBgW_Kc::LoadFile(daObjWc_Obj07_c_ClsnFile);
     /* 6az: header SetFile takes Fix12<int> by value. */
-    ((dBgW_KcMbg *)(&mMeshCollider))->dBgW_KcMbg::SetFile((KCL_File *)(k), *(const Matrix4x3 *)(&mClsnMat), 0x1000, mAngleY, *(CLPS_Block *)(&data_ov029_02112fec));
+    ((dBgW_KcMbg *)(&mMeshCollider))
+        ->dBgW_KcMbg::SetFile((KCL_File *)(k), *(const Matrix4x3 *)(&mClsnMat), 0x1000, mAngleY,
+                              *(CLPS_Block *)(&data_ov029_02112fec));
     mMeshCollider.Enable(this);
 
     mTrueAreaID = mAreaId;

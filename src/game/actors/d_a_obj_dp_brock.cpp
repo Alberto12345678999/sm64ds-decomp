@@ -65,11 +65,8 @@ extern BrockCollisionFilePtr data_ov025_02113ab0;
 extern CLPS_Block data_ov025_02112ce8;
 
 void Matrix4x3_FromRotationY(void *m, int angleY);
-extern void hold_d_a_obj_dp_brock(dBgW_KcMbg *self,
-                                                                           KCL_File *file,
-                                                                           const Matrix4x3 *mat,
-                                                                           int scale, s16 angleY,
-                                                                           CLPS_Block *clps);
+extern void hold_d_a_obj_dp_brock(dBgW_KcMbg *self, KCL_File *file, const Matrix4x3 *mat, int scale,
+                                  s16 angleY, CLPS_Block *clps);
 void func_020393d4(int *p, int v);
 }
 
@@ -106,7 +103,9 @@ int daObjDpBrock_c::InitResources()
     mStepModel.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(data_ov025_02113ab8), 1, -1);
     UpdateStepModelPosAndRotY();
     UpdateStepClsnPosAndRot();
-    ((dBgW_KcMbg *)(&mMeshCollider))->dBgW_KcMbg::SetFile((KCL_File *)dBgW_Kc::LoadFile(data_ov025_02113ab0), *(&mClsnMat2), 0x1000, mAngleY, *(&data_ov025_02112ce8));
+    ((dBgW_KcMbg *)(&mMeshCollider))
+        ->dBgW_KcMbg::SetFile((KCL_File *)dBgW_Kc::LoadFile(data_ov025_02113ab0), *(&mClsnMat2),
+                              0x1000, mAngleY, *(&data_ov025_02112ce8));
     func_020393d4((int *)&mMeshCollider, (int)&dBgW::UpdatePosWithTransform);
 
     int phase = param1 & 3;

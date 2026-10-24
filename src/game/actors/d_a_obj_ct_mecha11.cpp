@@ -72,7 +72,8 @@ extern void func_02039394(int *p, int v);
 extern unsigned char data_0209f2c0[];
 extern int data_0209e650[];
 extern short data_ov035_02112b80[];
-extern void hold_d_a_obj_ct_mecha11(void *self, KCL_File *f, const Matrix4x3 &m, int fix, short sh, CLPS_Block &b);
+extern void hold_d_a_obj_ct_mecha11(void *self, KCL_File *f, const Matrix4x3 &m, int fix, short sh,
+                                    CLPS_Block &b);
 extern void func_020393d4(void *p, void *v);
 extern void func_020396c0(void *p, int value);
 extern CLPS_Block data_ov035_02112238;
@@ -180,7 +181,8 @@ int daObjCtMecha11_c::InitResources()
     UpdateModel();
     UpdateClsnPosAndRot();
     KCL_File *kf = (KCL_File *)dBgW_Kc::LoadFile(RotatingClockHand_ClsnFile);
-    ((dBgW_KcMbg *)(&mMeshCollider))->dBgW_KcMbg::SetFile(kf, mClsnMat, 0x1000, mAngleY, data_ov035_02112238);
+    ((dBgW_KcMbg *)(&mMeshCollider))
+        ->dBgW_KcMbg::SetFile(kf, mClsnMat, 0x1000, mAngleY, data_ov035_02112238);
     func_020393d4(&mMeshCollider,
                   (void *)&dBgW::UpdatePosWithTransform);
     func_020396c0(&mMeshCollider, 0);

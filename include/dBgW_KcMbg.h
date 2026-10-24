@@ -66,8 +66,7 @@ struct dBgW_KcMbg : dBgW_Kc {
     dBgW_KcMbg();
 
     /* --- non-virtual --- */
-    void SetFile(KCL_File *file, const Matrix4x3 &mat, Fix12i scale,
-                 s16 angY, CLPS_Block &clps);
+    void SetFile(KCL_File *file, const Matrix4x3 &mat, Fix12i scale, s16 angY, CLPS_Block &clps);
     void Transform(const Matrix4x3 &mat, s16 angY);
 
     /* WHAT LETS A REAL `~Class()` REPRODUCE THE ROM'S DELETING DESTRUCTOR.

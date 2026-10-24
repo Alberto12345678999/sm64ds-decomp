@@ -65,7 +65,6 @@ short _ZN4cstd5atan2E5Fix12IiES1_(int y, int x);
  * mMeshCollider.SetFile member it DIFFs (measured at daObjFl_London_c),
  * so it stays a mangled free call. */
 
-
 /* Stores into the mesh collider's two callback slots (+0x1c / +0x18 of the
    embedded dBgW; the +0x0c store is func_020393a4). */
 void func_020393c4(int *collider, int callback);

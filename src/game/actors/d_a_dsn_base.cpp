@@ -389,7 +389,8 @@ s32 daDsnBase_c::Init()
     files = (DsnBaseFileTable *)mFileTable;
     kcl = (KCL_File *)dBgW_Kc::LoadFile(*files->collision);
     clps = files->clps;
-    ((dBgW_KcMbg *)(&mMeshCollider))->dBgW_KcMbg::SetFile(kcl, *(&mClsnMat), 0x199, mAngleY, *(clps));
+    ((dBgW_KcMbg *)(&mMeshCollider))
+        ->dBgW_KcMbg::SetFile(kcl, *(&mClsnMat), 0x199, mAngleY, *(clps));
     func_020393d4((int *)&mMeshCollider, (int)&dBgW::UpdatePosAndAngs);
     mMeshCollider.Enable(this);
 

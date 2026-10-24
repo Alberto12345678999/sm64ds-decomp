@@ -71,7 +71,8 @@ extern TikuwaModelFilePtr gRcTikuwaModelFile;
 extern TikuwaCollisionFilePtr gRcTikuwaCollisionFile;
 
 void dBgCh_Actr_UpdateContinuous_Veneer(dBgCh_Actr *clsn);
-extern void hold_d_a_obj_rc_tikuwa(dBgW_KcMbg *self, void *kcl, Matrix4x3 *mat, int scale, s16 angY, void *clps);
+extern void hold_d_a_obj_rc_tikuwa(dBgW_KcMbg *self, void *kcl, Matrix4x3 *mat, int scale, s16 angY,
+                                   void *clps);
 void func_020393d4(dBgW *bgw, void *fn);
 void func_020393c4(dBgW *bgw, void *fn);
 void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(
@@ -168,7 +169,9 @@ s32 daObjRc_Tikuwa_c::InitResources()
     /* Leftover: dBgW_KcMbg::SetFile and dBgCh_Actr::Init take Fix12<int> by
      * value, so they stay mangled (the header spellings take Fix12i and would
      * mangle symbols the ROM does not have). */
-    ((dBgW_KcMbg *)(&mMeshCollider))->dBgW_KcMbg::SetFile((KCL_File *)(kcl), *(&mClsnMat), 0x1000, mAngleY, *(CLPS_Block *)(data_ov036_02112b48));
+    ((dBgW_KcMbg *)(&mMeshCollider))
+        ->dBgW_KcMbg::SetFile((KCL_File *)(kcl), *(&mClsnMat), 0x1000, mAngleY,
+                              *(CLPS_Block *)(data_ov036_02112b48));
     func_020393d4(&mMeshCollider, (void *)&dBgW::UpdatePosWithVelocity);
     func_020393c4(&mMeshCollider, (void *)func_ov036_02111cc4);
     _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(

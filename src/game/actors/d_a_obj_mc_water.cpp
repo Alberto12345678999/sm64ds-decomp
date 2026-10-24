@@ -52,7 +52,6 @@ void func_ov009_02111b1c(daObjMcWater_c *self);
 void _ZN15dExtAnmTexSRT_c7SetFileER8BTA_Filei5Fix12IiEj(void *self, void *bta, int a, int fix,
                                                         unsigned b);
 
-
 extern SharedFilePtr data_ov009_02113c68;
 extern SharedFilePtr data_ov009_02113c70;
 extern BTA_File data_ov009_02112bc4;
@@ -99,7 +98,9 @@ int daObjMcWater_c::InitResources()
     {
         KCL_File *kcl = (KCL_File *)dBgW_Kc::LoadFile(data_ov009_02113c70);
         /* 6az: header SetFile takes Fix12<int> by value. */
-        ((dBgW_KcMbg *)(&mMeshCollider))->dBgW_KcMbg::SetFile((KCL_File *)(kcl), *(const Matrix4x3 *)(&mClsnMat), 0x1000, mAngleY, *(CLPS_Block *)(&data_ov009_02112c38));
+        ((dBgW_KcMbg *)(&mMeshCollider))
+            ->dBgW_KcMbg::SetFile((KCL_File *)(kcl), *(const Matrix4x3 *)(&mClsnMat), 0x1000,
+                                  mAngleY, *(CLPS_Block *)(&data_ov009_02112c38));
     }
     mMeshCollider.Enable(this);
     {

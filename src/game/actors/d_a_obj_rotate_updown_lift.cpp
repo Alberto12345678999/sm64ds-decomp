@@ -160,7 +160,7 @@ struct System {
 int _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_S5_j(
     void *self, void *shadow, void *mat, int sx, int sy, int sz, unsigned int opacity);
 extern void hold_d_a_obj_rotate_updown_lift(dBgW_KcMbg *self, KCL_File *file, const Matrix4x3 *mat,
-    int scale, s16 angY, CLPS_Block *clps);
+                                            int scale, s16 angY, CLPS_Block *clps);
 }
 
 // 0x02130f00 (0x4c)
@@ -546,7 +546,9 @@ int daObjRotateUpdownLift_c::InitResources()
 
     variant = mVariant;
     kcl = dBgW_Kc::LoadFile(*data_ov091_02134c34[variant].file);
-    ((dBgW_KcMbg *)(&mMeshCollider))->dBgW_KcMbg::SetFile((KCL_File *)kcl, *(&mClsnMat), 0x199, mAngleY, *(data_ov091_02134c38[variant].clps));
+    ((dBgW_KcMbg *)(&mMeshCollider))
+        ->dBgW_KcMbg::SetFile((KCL_File *)kcl, *(&mClsnMat), 0x199, mAngleY,
+                              *(data_ov091_02134c38[variant].clps));
     func_020393d4((int *)&mMeshCollider, (void *)&dBgW::UpdatePosAndAngs);
 
     {

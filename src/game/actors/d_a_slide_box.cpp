@@ -87,7 +87,8 @@ extern short data_02082214[];
 extern void Matrix4x3_FromRotationXYZExt(void *mtx, int angleX, int angleY, int angleZ);
 
 void dBgCh_Actr_UpdateContinuous_Veneer(void *clsn);
-extern void hold_d_a_slide_box(void *thiz, void *kcl, void *mtx, int scale, short angleY, void *clps);
+extern void hold_d_a_slide_box(void *thiz, void *kcl, void *mtx, int scale, short angleY,
+                               void *clps);
 extern void func_020393d4(void *clsn, void *callback);
 }
 
@@ -261,7 +262,9 @@ int daSlide_Box_c::InitResources()
     UpdateModel();
     UpdateClsnPosAndRot();
     KCL_File *clsnFile = (KCL_File *)dBgW_Kc::LoadFile(ClsnFile);
-    ((dBgW_KcMbg *)(&mMeshCollider))->dBgW_KcMbg::SetFile((KCL_File *)(clsnFile), *(const Matrix4x3 *)(&mClsnMat), kMeshScale, mAngleY, *(CLPS_Block *)(data_ov016_02113bac));
+    ((dBgW_KcMbg *)(&mMeshCollider))
+        ->dBgW_KcMbg::SetFile((KCL_File *)(clsnFile), *(const Matrix4x3 *)(&mClsnMat), kMeshScale,
+                              mAngleY, *(CLPS_Block *)(data_ov016_02113bac));
     func_020393d4(&mMeshCollider, (void *)&dBgW::UpdatePosWithTransform);
     _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(&mWithMeshClsn, (int)this, kClsnRadius, kClsnRadius, 0, 0);
     mVertAccel = kGravity;

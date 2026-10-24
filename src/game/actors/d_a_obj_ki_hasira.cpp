@@ -90,9 +90,8 @@ extern HasiraModelFile RockPillar_ModelFile;
 extern HasiraCollisionFile RockPillar_ClsnFile;
 extern char data_ov016_02113cac[];
 
-extern void hold_d_a_obj_ki_hasira(void *self, void *kcl,
-                                                                           void *mtx, int scale,
-                                                                           s16 angleY, void *clps);
+extern void hold_d_a_obj_ki_hasira(void *self, void *kcl, void *mtx, int scale, s16 angleY,
+                                   void *clps);
 
 void Matrix4x3_FromRotationXYZExt(void *m, int x, int y, int z);
 int Vec3_Dist(const Vector3 *a, const Vector3 *b);
@@ -132,7 +131,9 @@ s32 daObjKi_Hasira_c::InitResources()
     UpdateClsnPosAndRot();
 
     char *k = dBgW_Kc::LoadFile(RockPillar_ClsnFile);
-    ((dBgW_KcMbg *)(&mMeshCollider))->dBgW_KcMbg::SetFile((KCL_File *)(k), *(const Matrix4x3 *)(&mClsnMat), 0x199, mAngleY, *(CLPS_Block *)(data_ov016_02113cac));
+    ((dBgW_KcMbg *)(&mMeshCollider))
+        ->dBgW_KcMbg::SetFile((KCL_File *)(k), *(const Matrix4x3 *)(&mClsnMat), 0x199, mAngleY,
+                              *(CLPS_Block *)(data_ov016_02113cac));
 
     Spawn(0x3b, 0, mPos, 0, mAreaId, -1);
     return 1;

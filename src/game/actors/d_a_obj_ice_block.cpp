@@ -93,7 +93,7 @@ void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(
     dCcAc_c *self, dActor_c *owner, int radius, int height, u32 flags,
     u32 vulnFlags);
 extern void hold_d_a_obj_ice_block(dBgW_KcMbg *self, KCL_File *kcl, const Matrix4x3 *mtx, int scale,
-    s16 angleY, CLPS_Block *clps);
+                                   s16 angleY, CLPS_Block *clps);
 
 void func_ov081_02127be0(daObjIceBlock_c *self);
 }
@@ -121,7 +121,8 @@ s32 daObjIceBlock_c::InitResources()
     UpdateClsnPosAndRot();
 
     KCL_File *kcl = (KCL_File *)dBgW_Kc::LoadFile(data_ov081_02128fd0);
-    ((dBgW_KcMbg *)(&mMeshCollider))->dBgW_KcMbg::SetFile(kcl, *(&mClsnMat), 0x1000, mAngleY, *(&data_ov002_0210d8d4));
+    ((dBgW_KcMbg *)(&mMeshCollider))
+        ->dBgW_KcMbg::SetFile(kcl, *(&mClsnMat), 0x1000, mAngleY, *(&data_ov002_0210d8d4));
     mScale = 0x1000;
     return 1;
 }

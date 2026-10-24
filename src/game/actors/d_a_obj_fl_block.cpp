@@ -68,7 +68,8 @@ extern FlBlockCollisionFilePtr data_ov022_02114550;
 extern char data_ov064_0211bb0c[];
 
 /* Scalar ABI. The real members take Fix12<int> by value. */
-extern void hold_d_a_obj_fl_block(dBgW_KcMbg *self, char *kcl, const Matrix4x3 *mtx, int scale, s16 angleY, char *clps);
+extern void hold_d_a_obj_fl_block(dBgW_KcMbg *self, char *kcl, const Matrix4x3 *mtx, int scale,
+                                  s16 angleY, char *clps);
 
 /* Stores at dBgW+0x0c, +0x18 and +0x1c. Spelling matches the C definitions. */
 void func_020393a4(int *mesh, int range);
@@ -121,7 +122,9 @@ s32 daObjFl_Block_c::InitResources()
     UpdateClsnPosAndRot();
 
     char *kcl = dBgW_Kc::LoadFile(data_ov022_02114550);
-    ((dBgW_KcMbg *)(&mMeshCollider))->dBgW_KcMbg::SetFile((KCL_File *)(kcl), *(&mClsnMat), 0x199, mAngleY, *(CLPS_Block *)(data_ov064_0211bb0c));
+    ((dBgW_KcMbg *)(&mMeshCollider))
+        ->dBgW_KcMbg::SetFile((KCL_File *)(kcl), *(&mClsnMat), 0x199, mAngleY,
+                              *(CLPS_Block *)(data_ov064_0211bb0c));
 
     func_020393d4((int *)&mMeshCollider, (int)&dBgW::UpdatePosWithVelocity);
     func_020393c4((int *)&mMeshCollider, (int)&func_ov022_0211193c);

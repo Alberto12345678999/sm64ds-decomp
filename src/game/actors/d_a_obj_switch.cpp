@@ -74,7 +74,8 @@ extern "C" {
     // local extern: the actual free definition accepts a scalar scale. The
     // genuine member call changes InitResources under 2004/b56; see the
     // committed experiment.
-    extern void hold_d_a_obj_switch(void *self, void *file, const Matrix4x3 *matrix, int scale, s16 angle, void *clps);
+    extern void hold_d_a_obj_switch(void *self, void *file, const Matrix4x3 *matrix, int scale,
+                                    s16 angle, void *clps);
     // The existing setter stores a callback address as a 32-bit word at +0x1c.
     void func_020393c4(int *self, int callback);
     void func_ov002_020baa2c(daObjSwitch_c *self, dActor_c *other);
@@ -185,7 +186,9 @@ int daObjSwitch_c::InitResources()
 
     idx = mResourceIdx;
     f = dBgW_Kc::LoadFile(*data_ov002_021098e8[idx].collision);
-    ((dBgW_KcMbg *)(&mMeshCollider))->dBgW_KcMbg::SetFile((KCL_File *)(f), *(&mClsnMat), 0x199, mAngleY, *(CLPS_Block *)(data_ov002_021098e8[idx].clps));
+    ((dBgW_KcMbg *)(&mMeshCollider))
+        ->dBgW_KcMbg::SetFile((KCL_File *)(f), *(&mClsnMat), 0x199, mAngleY,
+                              *(CLPS_Block *)(data_ov002_021098e8[idx].clps));
 
     func_020393c4(reinterpret_cast<int *>(&mMeshCollider),
                   reinterpret_cast<int>(&func_ov002_020baa98));

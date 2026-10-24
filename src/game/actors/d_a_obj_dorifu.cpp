@@ -52,7 +52,6 @@ void Matrix4x3_FromRotationY(void *mat, s32 angle);
 /* A genuine SetFile call with its by-value Fix12<int> parameter triggers the
  * known mwccarm by-value reload wall and grows InitResources by eight bytes.
  * Keep the ABI-exact declaration until that wall has a source-form solution. */
-
 }
 
 // @symbol _ZN13daObjDorifu_cD0Ev
@@ -224,7 +223,10 @@ s32 daObjDorifu_c::InitResources(daObjDorifuResources *resources)
     clsn = mPlankClsn;
     for (; j < 5; ++j) {
         *(Matrix4x3Copy *)&modelDst->mat4x3 = *(Matrix4x3Copy *)sourceMat;
-        ((dBgW_KcMbg *)(clsn))->dBgW_KcMbg::SetFile((KCL_File *)(dBgW_Kc::LoadFile(*clsnResource->clsnFile)), *(const Matrix4x3 *)(&mPlatformMat), scale, mAngleY, *(CLPS_Block *)(clsnResource->clps));
+        ((dBgW_KcMbg *)(clsn))
+            ->dBgW_KcMbg::SetFile((KCL_File *)(dBgW_Kc::LoadFile(*clsnResource->clsnFile)),
+                                  *(const Matrix4x3 *)(&mPlatformMat), scale, mAngleY,
+                                  *(CLPS_Block *)(clsnResource->clps));
         if (j == mActivePlank)
             clsn->Enable(this);
         modelDst++;

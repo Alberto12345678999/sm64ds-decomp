@@ -93,7 +93,8 @@ extern s8 data_0209f2f8;
 extern u8 data_0209f220;
 extern u8 data_0209f2d8[];
 int IsStarCollectedInCurLevel(int starID);
-extern void hold_d_a_obj_simple_bg(dBgW_KcMbg *self, KCL_File *kcl, const Matrix4x3 *mat, int scale, s16 angY, CLPS_Block *clps);
+extern void hold_d_a_obj_simple_bg(dBgW_KcMbg *self, KCL_File *kcl, const Matrix4x3 *mat, int scale,
+                                   s16 angY, CLPS_Block *clps);
 }
 
 /* Actor ID 0x31 is BK_TOWER; data_0209f2d8[0] is CURRENT_GAMEMODE
@@ -177,10 +178,14 @@ int daObjSimpleBg_c::InitResources()
     idx = mVariant;
     if (idx == 0 || idx == 2) {
         KCL_File *kcl = (KCL_File *)dBgW_Kc::LoadFile(*data_ov102_0214e18c[idx].file);
-        ((dBgW_KcMbg *)(&mMeshCollider))->dBgW_KcMbg::SetFile(kcl, *(&mClsnMat), 0x1000, mAngleY, *(((ClpsRow *)data_ov102_0214e190)[idx].block));
+        ((dBgW_KcMbg *)(&mMeshCollider))
+            ->dBgW_KcMbg::SetFile(kcl, *(&mClsnMat), 0x1000, mAngleY,
+                                  *(((ClpsRow *)data_ov102_0214e190)[idx].block));
     } else {
         KCL_File *kcl = (KCL_File *)dBgW_Kc::LoadFile(*data_ov102_0214e18c[idx].file);
-        ((dBgW_KcMbg *)(&mMeshCollider))->dBgW_KcMbg::SetFile(kcl, *(&mClsnMat), 0x199, mAngleY, *(((ClpsRow *)data_ov102_0214e190)[idx].block));
+        ((dBgW_KcMbg *)(&mMeshCollider))
+            ->dBgW_KcMbg::SetFile(kcl, *(&mClsnMat), 0x199, mAngleY,
+                                  *(((ClpsRow *)data_ov102_0214e190)[idx].block));
     }
 
     if (IsBkTower(this) && data_0209f2f8 == 7) {

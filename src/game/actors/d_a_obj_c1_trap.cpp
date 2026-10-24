@@ -74,7 +74,7 @@ struct TrapCollisionFilePtr : SharedFilePtr {
  * globals. */
 extern "C" {
 extern void hold_d_a_obj_c1_trap(dBgW_KcMbg *collider, void *file, const Matrix4x3 *matrix,
-    int scale, s16 angleY, CLPS_Block *clps);
+                                 int scale, s16 angleY, CLPS_Block *clps);
 extern void func_020393c4(dBgW *collider, void *callback);
 
 extern void Matrix4x3_FromTranslation(
@@ -234,7 +234,9 @@ int daObjC1_Trap_c::InitResources()
     mDoorModel.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(data_ov010_02112d08), 1, -1);
     UpdateModelTransform();
     UpdateCollisionTransform();
-    ((dBgW_KcMbg *)(&mMeshCollider))->dBgW_KcMbg::SetFile((KCL_File *)(dBgW_Kc::LoadFile(data_ov010_02112d00)), *(&mDoorMat), 0x1000, mAngleY, *(&data_ov010_021122f8));
+    ((dBgW_KcMbg *)(&mMeshCollider))
+        ->dBgW_KcMbg::SetFile((KCL_File *)(dBgW_Kc::LoadFile(data_ov010_02112d00)), *(&mDoorMat),
+                              0x1000, mAngleY, *(&data_ov010_021122f8));
     func_020393c4(&mMeshCollider, (void *)func_ov010_02111984);
     mMeshCollider.Enable(this);
     mOpenSpeed = 0;

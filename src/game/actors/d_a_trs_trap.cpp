@@ -536,9 +536,13 @@ int daTrsTrap_c::InitResources()
     {
         int m = mIndex;
         if (m == 3) {
-            ((dBgW_KcMbg *)(&mMovingMeshCollider))->dBgW_KcMbg::SetFile((KCL_File *)(data_ov063_0211e28c[m]->filePtr), *(&mClsnMat), 0x1000, mAngleY, *(CLPS_Block *)(data_ov063_0211e9e8[m]));
+            ((dBgW_KcMbg *)(&mMovingMeshCollider))
+                ->dBgW_KcMbg::SetFile((KCL_File *)(data_ov063_0211e28c[m]->filePtr), *(&mClsnMat),
+                                      0x1000, mAngleY, *(CLPS_Block *)(data_ov063_0211e9e8[m]));
         } else {
-            ((dBgW_KcMbg *)(&mMovingMeshCollider))->dBgW_KcMbg::SetFile((KCL_File *)(data_ov063_0211e28c[m]->filePtr), *(&mClsnMat), 0x199, mAngleY, *(CLPS_Block *)(data_ov063_0211e9e8[m]));
+            ((dBgW_KcMbg *)(&mMovingMeshCollider))
+                ->dBgW_KcMbg::SetFile((KCL_File *)(data_ov063_0211e28c[m]->filePtr), *(&mClsnMat),
+                                      0x199, mAngleY, *(CLPS_Block *)(data_ov063_0211e9e8[m]));
         }
     }
 

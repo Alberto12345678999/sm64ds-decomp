@@ -213,13 +213,17 @@ s32 daObjCvNewsLift_c::InitResources()
     UpdateModelTransforms();
     UpdateClsnTransforms();
 
-    ((dBgW_KcMbg *)(&mMeshCollider))->dBgW_KcMbg::SetFile((KCL_File *)((SharedFilePtr *)data_ov021_021149a8)->filePtr, *(&mClsnMat), 0x199, mAngleY, *(&data_ov021_02113a60));
+    ((dBgW_KcMbg *)(&mMeshCollider))
+        ->dBgW_KcMbg::SetFile((KCL_File *)((SharedFilePtr *)data_ov021_021149a8)->filePtr,
+                              *(&mClsnMat), 0x199, mAngleY, *(&data_ov021_02113a60));
     func_020393d4(&mMeshCollider, (void *)&dBgW::UpdatePosWithTransform);
     func_020393c4(&mMeshCollider, (void *)&MainMeshCallback);
     mMeshCollider.Enable(this);
 
     for (int i = 0; i < 4; i++) {
-        ((dBgW_KcMbg *)(&mPlatformColliders[i]))->dBgW_KcMbg::SetFile((KCL_File *)((SharedFilePtr *)data_ov021_021149b8)->filePtr, *(&mPlatformMats[i]), 0x199, mAngleY, *(&data_ov021_02113a80));
+        ((dBgW_KcMbg *)(&mPlatformColliders[i]))
+            ->dBgW_KcMbg::SetFile((KCL_File *)((SharedFilePtr *)data_ov021_021149b8)->filePtr,
+                                  *(&mPlatformMats[i]), 0x199, mAngleY, *(&data_ov021_02113a80));
         func_020393d4(&mPlatformColliders[i], (void *)&dBgW::UpdatePosWithTransform);
     }
 

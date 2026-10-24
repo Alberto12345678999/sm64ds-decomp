@@ -82,8 +82,8 @@ extern int data_0209caa0[];
 
 /* dBgActor_c::IsClsnInRange(Fix12<int>, Fix12<int>) -- wall 6az on Behavior. */
 /* dBgW_KcMbg::SetFile -- wall 6az on InitResources. */
-extern void hold_d_a_obj_c0_switch(dBgW_KcMbg *self, KCL_File *file, const Matrix4x3 *mat, int scale,
-    s16 angY, void *clps);
+extern void hold_d_a_obj_c0_switch(dBgW_KcMbg *self, KCL_File *file, const Matrix4x3 *mat,
+                                   int scale, s16 angY, void *clps);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -131,7 +131,9 @@ int daObjC0_Switch_c::InitResources()
     UpdateModelPosAndRotY();
     UpdateClsnPosAndRot();
     void *kcl = dBgW_Kc::LoadFile(data_ov012_021124a0);
-    ((dBgW_KcMbg *)(&mMeshCollider))->dBgW_KcMbg::SetFile((KCL_File *)kcl, *(&mClsnMat), 0x199, mAngleY, *(CLPS_Block *)(data_ov012_02111cd0));
+    ((dBgW_KcMbg *)(&mMeshCollider))
+        ->dBgW_KcMbg::SetFile((KCL_File *)kcl, *(&mClsnMat), 0x199, mAngleY,
+                              *(CLPS_Block *)(data_ov012_02111cd0));
     return 1;
 }
 

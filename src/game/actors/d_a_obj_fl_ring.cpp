@@ -89,9 +89,8 @@ u8  DecIfAbove0_Byte(u8 *p);
 int ApproachAngle(s16 *p, int target, int a, int b, int c);
 
 void _ZN5Sound9PlayBank3EjRK7Vector3(u32 id, void *pos);
-extern void hold_d_a_obj_fl_ring(void *self, void *kcl,
-                                                                           void *mtx, int scale,
-                                                                           s16 angleY, void *clps);
+extern void hold_d_a_obj_fl_ring(void *self, void *kcl, void *mtx, int scale, s16 angleY,
+                                 void *clps);
 
 void func_020393a4(void *p, int v);
 void func_02039394(void *p, int v);
@@ -153,7 +152,9 @@ s32 daObjFl_Ring_c::InitResources()
     UpdateClsnPosAndRot();
 
     void *k = dBgW_Kc::LoadFile(*data_ov022_02113cc8.mClsnFile);
-    ((dBgW_KcMbg *)(&mMeshCollider))->dBgW_KcMbg::SetFile((KCL_File *)(k), *(const Matrix4x3 *)(&mClsnMat), 0x199, mAngleY, *(CLPS_Block *)(data_ov022_02113cc8.mClps));
+    ((dBgW_KcMbg *)(&mMeshCollider))
+        ->dBgW_KcMbg::SetFile((KCL_File *)(k), *(const Matrix4x3 *)(&mClsnMat), 0x199, mAngleY,
+                              *(CLPS_Block *)(data_ov022_02113cc8.mClps));
 
     func_020393d4(&mMeshCollider, (void *)dBgW::UpdatePosAndAngs);
     func_020393c4(&mMeshCollider, (void *)func_ov022_02111564);

@@ -89,7 +89,8 @@ void func_02039394(int *collider, int v);
 void func_020393a4(int *collider, int v);
 void _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_S5_j(
     void *self, void *shadow, void *mtx, int sy, int sx, int sz, unsigned int flags);
-extern void hold_d_a_obj_yajirusi(void *self, void *kcl, void *mtx, int scale, short angle, void *clps);
+extern void hold_d_a_obj_yajirusi(void *self, void *kcl, void *mtx, int scale, short angle,
+                                  void *clps);
 /* dExtSimpleModel_c, KCL and CLPS. Each column is its own symbol so the relocations
  * stay on 0x0213c380 / 0x0213c384 / 0x0213c388. */
 extern ArrowSignFileColumn data_ov098_0213c380[];
@@ -142,7 +143,9 @@ int daObjYajirusi_c::InitResources()
 
     u32 collisionIndex = mVariant;
     void *kcl = dBgW_Kc::LoadFile(*(SharedFilePtr *)data_ov098_0213c384[collisionIndex].value);
-    ((dBgW_KcMbg *)(&mMeshCollider))->dBgW_KcMbg::SetFile((KCL_File *)(kcl), *(const Matrix4x3 *)(&mClsnMat), 0x199, mAngleY, *(CLPS_Block *)(data_ov098_0213c388[collisionIndex].value));
+    ((dBgW_KcMbg *)(&mMeshCollider))
+        ->dBgW_KcMbg::SetFile((KCL_File *)(kcl), *(const Matrix4x3 *)(&mClsnMat), 0x199, mAngleY,
+                              *(CLPS_Block *)(data_ov098_0213c388[collisionIndex].value));
     return 1;
 }
 

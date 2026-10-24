@@ -65,7 +65,7 @@ extern CLPS_Block data_ov030_02114ee4;
 int func_ov030_0211124c(char *c, char *mc);
 
 extern void hold_d_a_obj_hm_bskt(dBgW_KcMbg *self, KCL_File *file, const Matrix4x3 *mat,
-    Fix12i scale, s16 angle, CLPS_Block *clps);
+                                 Fix12i scale, s16 angle, CLPS_Block *clps);
 void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(
     dBgCh_Actr *self, dActor_c *actor, Fix12i radius, Fix12i height,
     Vector3_16 *a, Vector3_16 *b);
@@ -103,7 +103,8 @@ s32 daObjHmBskt_c::InitResources()
     UpdateClsnPosAndRot();
 
     KCL_File *clsnFile = (KCL_File *)dBgW_Kc::LoadFile(data_ov030_02115c80);
-    ((dBgW_KcMbg *)(&mMeshCollider))->dBgW_KcMbg::SetFile(clsnFile, *(&mClsnMat), 0x199, mAngleY, *(&data_ov030_02114ee4));
+    ((dBgW_KcMbg *)(&mMeshCollider))
+        ->dBgW_KcMbg::SetFile(clsnFile, *(&mClsnMat), 0x199, mAngleY, *(&data_ov030_02114ee4));
 
     Vector3 starPos;
     starPos.x = mPosX;

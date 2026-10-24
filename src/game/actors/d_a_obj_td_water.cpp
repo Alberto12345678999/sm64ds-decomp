@@ -79,7 +79,7 @@ extern CLPS_Block    data_ov032_02112fb8;
 void _ZN15dExtAnmTexSRT_c7SetFileER8BTA_Filei5Fix12IiEj(dExtAnmTexSRT_c *self, BTA_File &animFile,
                                                         int flags, int speed, u32 startFrame);
 extern void hold_d_a_obj_td_water(dBgW_KcMbg *self, KCL_File *kcl, const Matrix4x3 &mat, int scale,
-    s16 angleY, CLPS_Block &clps);
+                                  s16 angleY, CLPS_Block &clps);
 }
 
 /* Event has no shared header anywhere in the tree -- every caller declares it
@@ -118,7 +118,8 @@ s32 daObjTdWater_c::InitResources()
 
     KCL_File *kcl = (KCL_File *)dBgW_Kc::LoadFile(data_ov032_02113af4);
     /* 6az: header SetFile takes Fix12<int> by value. */
-    ((dBgW_KcMbg *)(&mMeshCollider))->dBgW_KcMbg::SetFile(kcl, mClsnMat, 0x1000, mAngleY, data_ov032_02112fb8);
+    ((dBgW_KcMbg *)(&mMeshCollider))
+        ->dBgW_KcMbg::SetFile(kcl, mClsnMat, 0x1000, mAngleY, data_ov032_02112fb8);
     mMeshCollider.Enable(this);
 
     /* The water only survives the spawn while the level's event bit 0xe is

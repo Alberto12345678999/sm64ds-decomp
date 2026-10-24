@@ -104,7 +104,7 @@ struct System {
 };
 }
 extern void hold_d_a_obj_bk_lift(dBgW_KcMbg *self, KCL_File *file, const Matrix4x3 *mat,
-    Fix12i scale, s16 angle, CLPS_Block *clps);
+                                 Fix12i scale, s16 angle, CLPS_Block *clps);
 void _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_S5_j(
     void *self, void *shadow, void *mat, int a, int b, int c, unsigned flags);
 }
@@ -152,7 +152,9 @@ int daObjBk_Lift_c::InitResources()
     UpdateModelPosAndRotY();
     UpdateClsnPosAndRot();
 
-    ((dBgW_KcMbg *)(&mMeshCollider))->dBgW_KcMbg::SetFile((KCL_File *)dBgW_Kc::LoadFile(data_ov015_02114a5c), *(&mClsnMat), 0x199, mAngleY, *(&data_ov015_02113594));
+    ((dBgW_KcMbg *)(&mMeshCollider))
+        ->dBgW_KcMbg::SetFile((KCL_File *)dBgW_Kc::LoadFile(data_ov015_02114a5c), *(&mClsnMat),
+                              0x199, mAngleY, *(&data_ov015_02113594));
     func_020393d4(&mMeshCollider,
         (void *)&dBgW::UpdatePosWithVelocity);
     func_020393c4(&mMeshCollider, (void *)&func_ov015_021128f8);

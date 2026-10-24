@@ -121,7 +121,9 @@ int daPiano_c::InitResources()
         cylinder++;
     }
     f = dBgW_Kc::LoadFile(gPianoCollisionFile);
-    ((dBgW_KcMbg *)(&mMeshCollider))->dBgW_KcMbg::SetFile((KCL_File *)(f), *(&mClsnMat), 0x199, mAngleY, *(CLPS_Block *)(&data_ov063_0211ecb8));
+    ((dBgW_KcMbg *)(&mMeshCollider))
+        ->dBgW_KcMbg::SetFile((KCL_File *)(f), *(&mClsnMat), 0x199, mAngleY,
+                              *(CLPS_Block *)(&data_ov063_0211ecb8));
     func_ov063_0211d88c(this);
     func_ov063_0211d828(this);
     func_ov063_0211d5f4(this);

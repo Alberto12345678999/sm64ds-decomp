@@ -43,7 +43,6 @@ extern "C" {
 unsigned char DecIfAbove0_Byte(unsigned char *p);
 void func_020393d4(dBgW_KcMbg *clsn, void *fn);
 
-
 int func_ov002_020bad10(daObjSwdoor_c *self, ResourceDescriptor *descriptor);
 int func_ov002_020bac18(daObjSwdoor_c *self);
 int func_ov002_020baba8(daObjSwdoor_c *self, ResourceDescriptor *descriptor);
@@ -170,7 +169,9 @@ int func_ov002_020bad10(daObjSwdoor_c *self, ResourceDescriptor *descriptor)
     self->mModel.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(*descriptor->model), 1, -1);
     self->UpdateModelPosAndRotY();
     self->UpdateClsnPosAndRot();
-    ((dBgW_KcMbg *)(&self->mMeshCollider))->dBgW_KcMbg::SetFile((KCL_File *)dBgW_Kc::LoadFile(*descriptor->collision), *(&self->mClsnMat), 0x1000, self->mAngleY, *(descriptor->clps));
+    ((dBgW_KcMbg *)(&self->mMeshCollider))
+        ->dBgW_KcMbg::SetFile((KCL_File *)dBgW_Kc::LoadFile(*descriptor->collision),
+                              *(&self->mClsnMat), 0x1000, self->mAngleY, *(descriptor->clps));
     func_020393d4(&self->mMeshCollider, (void *)&dBgW::UpdatePosAndAngs);
     self->mMeshCollider.Enable(self);
     self->mTurnDir = self->param1 & 1;

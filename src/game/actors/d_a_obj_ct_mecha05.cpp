@@ -73,7 +73,7 @@ extern void _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix
     dActor_c *actor, dExtShadowModel_c *shadow, Matrix4x3 *matrix, int scaleX, int scaleY,
     int scaleZ, u32 opacity);
 extern void hold_d_a_obj_ct_mecha05(dBgW_KcMbg *collider, KCL_File *file, Matrix4x3 *matrix,
-    int scale, s16 angle, CLPS_Block *clps);
+                                    int scale, s16 angle, CLPS_Block *clps);
 extern void func_020393d4(dBgW *collider, void *callback);
 extern void func_020393a4(dBgW *collider, int value);
 extern void func_02039394(dBgW *collider, int value);
@@ -124,7 +124,9 @@ int daObjCtMecha05_c::InitResources()
     UpdateModelPosAndRotY();
     UpdateClsnPosAndRot();
     void *collisionFile = dBgW_Kc::LoadFile(TTC_MovingBar_ClsnFile);
-    ((dBgW_KcMbg *)(&mMeshCollider))->dBgW_KcMbg::SetFile((KCL_File *)collisionFile, *(&mClsnMat), 0x199, mAngleY, *(&data_ov035_02112258));
+    ((dBgW_KcMbg *)(&mMeshCollider))
+        ->dBgW_KcMbg::SetFile((KCL_File *)collisionFile, *(&mClsnMat), 0x199, mAngleY,
+                              *(&data_ov035_02112258));
     func_020393d4(&mMeshCollider,
         (void *)&dBgW::UpdatePosWithTransform);
     func_020393a4(&mMeshCollider, 0x1c0000);

@@ -476,7 +476,9 @@ int daObjFallBlock_c_InitResources(daObjFallBlock_c *self, ResourceDescriptor *f
     self->mModel.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(*fp->model), 1, -1);
     self->UpdateModelPosAndRotY();
     self->UpdateClsnPosAndRot();
-    ((dBgW_KcMbg *)(&self->mMeshCollider))->dBgW_KcMbg::SetFile((KCL_File *)(dBgW_Kc::LoadFile(*fp->collision)), *(&self->mClsnMat), 0x199, self->mAngleY, *(CLPS_Block *)(fp->clps));
+    ((dBgW_KcMbg *)(&self->mMeshCollider))
+        ->dBgW_KcMbg::SetFile((KCL_File *)(dBgW_Kc::LoadFile(*fp->collision)), *(&self->mClsnMat),
+                              0x199, self->mAngleY, *(CLPS_Block *)(fp->clps));
     func_020393c4((int *)&self->mMeshCollider, (int)&daObjFallBlock_c_OnStoodOn);
     v.x = self->mPosX;
     y = self->mPosY;

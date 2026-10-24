@@ -105,7 +105,8 @@ struct FlCoinCollisionFilePtr : SharedFilePtr {
 extern "C" {
 extern void Matrix4x3_FromTranslation(struct Matrix4x3* m, int x, int y, int z);
 extern Entry data_ov064_0211c904[];
-extern void hold_d_a_obj_fl_coin(void* thiz, KCL_File*, const Matrix4x3&, int fix, short s, CLPS_Block&);
+extern void hold_d_a_obj_fl_coin(void *thiz, KCL_File *, const Matrix4x3 &, int fix, short s,
+                                 CLPS_Block &);
 void func_020393c4(int* p, int v);
 extern SharedFilePtr *data_ov064_0211adc8[];
 extern FlCoinCollisionFilePtr data_ov064_0211c800;
@@ -192,7 +193,9 @@ int daObjFl_Puzzle_c::InitResources()
     mModel.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(*data_ov064_0211adc8[mType]), 1, -1);
     func_ov064_02119010();
     func_ov064_02118fa4();
-    ((dBgW_KcMbg *)(&mMeshCollider))->dBgW_KcMbg::SetFile((KCL_File *)dBgW_Kc::LoadFile(data_ov064_0211c800), mClsnMat, 0x1000, mAngleY, data_ov064_0211baac);
+    ((dBgW_KcMbg *)(&mMeshCollider))
+        ->dBgW_KcMbg::SetFile((KCL_File *)dBgW_Kc::LoadFile(data_ov064_0211c800), mClsnMat, 0x1000,
+                              mAngleY, data_ov064_0211baac);
     func_020393c4((int*)((char*)&mMeshCollider), (int)&func_ov064_021192bc);
     mStepScript = data_ov064_0211c198[mType];
     mStepIndex = 0;

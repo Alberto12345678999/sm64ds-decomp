@@ -47,7 +47,8 @@ extern void *data_ov036_02113d78[];
 
 void func_020393d4(void *bgw, void *fn);
 
-extern void hold_d_a_obj_rc_guruguru(void *self, void *kcl, void *mtx, int scale, short angleY, void *clps);
+extern void hold_d_a_obj_rc_guruguru(void *self, void *kcl, void *mtx, int scale, short angleY,
+                                     void *clps);
 }
 
 /* dActor_c::mFlags bit 0x08 is written by the framework while the actor is
@@ -90,7 +91,9 @@ s32 daObjRc_Guruguru_c::InitResources()
     UpdateClsnPosAndRot();
 
     void *kcl = dBgW_Kc::LoadFile(*(SharedFilePtr *)data_ov036_02113d78[1]);
-    ((dBgW_KcMbg *)(&mMeshCollider))->dBgW_KcMbg::SetFile((KCL_File *)(kcl), *(const Matrix4x3 *)(&mClsnMat), 0x1000, mAngleY, *(CLPS_Block *)(data_ov036_02113d78[2]));
+    ((dBgW_KcMbg *)(&mMeshCollider))
+        ->dBgW_KcMbg::SetFile((KCL_File *)(kcl), *(const Matrix4x3 *)(&mClsnMat), 0x1000, mAngleY,
+                              *(CLPS_Block *)(data_ov036_02113d78[2]));
 
     /* The mesh follows the actor's position AND angles -- this platform turns,
        so the collision has to turn with it. */

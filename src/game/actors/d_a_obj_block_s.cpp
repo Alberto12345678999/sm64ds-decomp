@@ -1370,7 +1370,10 @@ int daObjBlockS_c::InitResources()
     mHomeAngleZ = mAngleZ;
     mModel.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(**(SharedFilePtr **)(f)), 1, -1);
     mShadowModel.InitCuboid();
-    ((dBgW_KcMbg *)((char *)&mMeshCollider))->dBgW_KcMbg::SetFile((KCL_File *)((int)dBgW_Kc::LoadFile(**(SharedFilePtr **)(f + 4))), *(const Matrix4x3 *)((char *)&mClsnMat), 0x199, mAngleY, *(CLPS_Block *)(*(int *)(f + 8)));
+    ((dBgW_KcMbg *)((char *)&mMeshCollider))
+        ->dBgW_KcMbg::SetFile((KCL_File *)((int)dBgW_Kc::LoadFile(**(SharedFilePtr **)(f + 4))),
+                              *(const Matrix4x3 *)((char *)&mClsnMat), 0x199, mAngleY,
+                              *(CLPS_Block *)(*(int *)(f + 8)));
     _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(
         (char *)&mWithMeshClsn, ((char *)this), 0x28000, 0x28000, 0, 0);
     mWithMeshClsn.StartDetectingWater();

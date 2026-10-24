@@ -65,8 +65,8 @@ struct KsWaterClsnFileHandle : SharedFilePtr {
 extern "C" {
 void _ZN15dExtAnmTexSRT_c7SetFileER8BTA_Filei5Fix12IiEj(dExtAnmTexSRT_c *self, BTA_File *file,
                                                         int flags, int speed, u32 startFrame);
-extern void hold_d_a_obj_ks_water(dBgW_KcMbg *self, KCL_File *file, const Matrix4x3 *mat, int scale, s16 angY,
-    CLPS_Block *clps);
+extern void hold_d_a_obj_ks_water(dBgW_KcMbg *self, KCL_File *file, const Matrix4x3 *mat, int scale,
+                                  s16 angY, CLPS_Block *clps);
 
 extern KsWaterClsnFileHandle data_ov017_02111c80;
 extern KsWaterModelFilePtr data_ov017_02111c88;
@@ -105,7 +105,9 @@ int daObjKsWater_c::InitResources()
     UpdateModelPosAndRotY();
     UpdateClsnPosAndRot();
     /* 6az: header SetFile takes Fix12<int> by value. */
-    ((dBgW_KcMbg *)(&mMeshCollider))->dBgW_KcMbg::SetFile((KCL_File *)dBgW_Kc::LoadFile(data_ov017_02111c80), *(&mClsnMat), 0x1000, mAngleY, *(&data_ov017_02111a94));
+    ((dBgW_KcMbg *)(&mMeshCollider))
+        ->dBgW_KcMbg::SetFile((KCL_File *)dBgW_Kc::LoadFile(data_ov017_02111c80), *(&mClsnMat),
+                              0x1000, mAngleY, *(&data_ov017_02111a94));
     mMeshCollider.Enable(this);
     mOriginalPosY = mPosY;
     return 1;

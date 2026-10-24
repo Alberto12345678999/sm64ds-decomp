@@ -154,7 +154,9 @@ int daObjFm_Battan_c::InitResources()
 
     KCL_File *file = (KCL_File *)dBgW_Kc::LoadFile(data_ov023_02112080);
     /* MEASURED: by-value Fix12<int> scale; see notes/mwccarm-codegen.md 6az. */
-    ((dBgW_KcMbg *)(&mMeshCollider))->dBgW_KcMbg::SetFile(file, *(&mClsnMat), 0x1000, mAngleY, *(CLPS_Block *)(data_ov064_0211ba4c));
+    ((dBgW_KcMbg *)(&mMeshCollider))
+        ->dBgW_KcMbg::SetFile(file, *(&mClsnMat), 0x1000, mAngleY,
+                              *(CLPS_Block *)(data_ov064_0211ba4c));
     /* Stores dBgW::UpdatePosWithTransform at mMeshCollider+0x18; dBgW.h has
        no setter, so this stays the 8-byte store helper. */
     func_020393d4(

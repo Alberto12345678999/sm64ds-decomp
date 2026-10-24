@@ -176,7 +176,9 @@ s32 daPgDfdr_c::InitResources()
     func_ov027_02111994(this);
 
     file = dBgW_Kc::LoadFile(*(SharedFilePtr *)&data_ov027_02113c6c);
-    ((dBgW_KcMbg *)(&mMeshCollider))->dBgW_KcMbg::SetFile((KCL_File *)(file), *(const Matrix4x3 *)(&mClsnMat), 0x199, mAngleY, *(CLPS_Block *)(&data_ov027_021130e8));
+    ((dBgW_KcMbg *)(&mMeshCollider))
+        ->dBgW_KcMbg::SetFile((KCL_File *)(file), *(const Matrix4x3 *)(&mClsnMat), 0x199, mAngleY,
+                              *(CLPS_Block *)(&data_ov027_021130e8));
     func_020393d4((int *)&mMeshCollider, (int)&dBgW::UpdatePosAndAngs);
 
     mVertAccel = 0;
