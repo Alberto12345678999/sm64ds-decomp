@@ -10,7 +10,7 @@ src/unnamed/arm9/01ff/func_01ff859c.c:
 
 src/_dmul.c:
     complete
-    .text start:0x01ff8708 end:0x01ff8df8
+    .text start:0x01ff8708 end:0x01ff8e10
 
 src/unnamed/arm9/01ff/func_01ff8e10.c:
     complete
@@ -28,9 +28,13 @@ src/unnamed/arm9/01ff/func_01ffa344.c:
     complete
     .text start:0x01ffa344 end:0x01ffa440
 
+src/unnamed/arm9/01ff/func_01ffa440.c:
+    complete
+    .text start:0x01ffa440 end:0x01ffa4bc
+
 src/unnamed/arm9/01ff/func_01ffa4bc.c:
     complete
-    .text start:0x01ffa4bc end:0x01ffa588
+    .text start:0x01ffa4bc end:0x01ffa594
 
 src/unnamed/arm9/01ff/func_01ffa594.c:
     complete
