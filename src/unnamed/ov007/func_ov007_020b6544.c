@@ -11,8 +11,8 @@ extern void func_ov007_020b4b5c(int a, int b);
 struct S {
     int f0; /* 0x00 */
     char pad_04[0xc];
-    /* 0x10: the choice func_ov007_020b0834 was last given; it replays it
-     * once the state-9 window closes */
+    /* 0x10: the choice func_ov007_020aec94 was last given;
+     * func_ov007_020b0834 replays it once the state-9 window closes */
     int pendingChoice;
     int f14; /* 0x14 */
     /* 0x18: func_ov007_020b6eb4 starts a display capture while it is set */
