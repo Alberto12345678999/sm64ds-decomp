@@ -1628,6 +1628,22 @@
       "symbol": "_ZN14dScMgD3DBase_cD2Ev",
       "disposition": "deadstrip",
       "reason": "Base-object destructor of dScMgD3DBase_c, emitted as vague linkage once the factory's `new dScMgTrampoline2_c` expands the inline constructor chain (the same byproduct ov006/dScMgFlower_c licenses for dScMgSingle3DBase_c). dScMgTrampoline2_c's D1/D0 inline the base destructor rather than chain to it, and no module's symbols.txt gives _ZN14dScMgD3DBase_cD2Ev a home. Homeless and unreferenced, so a plain deadstrip."
+    },
+    {
+      "symbol": "_ZN7Vector2C1Ev",
+      "disposition": "deadstrip-duplicate",
+      "canonical_symbol": "func_0203d738",
+      "canonical_module": "arm9",
+      "canonical_address": "0x0203d738",
+      "reason": "TrmpItem's constructor builds Vector2 mUnusedVec[5] at +0x1a8 (stride 8) through __cxa_vec_ctor with func_0203d738 as the element constructor, as retail does. include/Vector2.h defines the empty Vector2() inline, so this TU emits its own 4-byte vague-linkage copy; that body is the arm9 callback at 0x0203d738, so this copy is discarded (the Vector3 constructor's policy, ov025/daDpLift_c)."
+    },
+    {
+      "symbol": "_ZN7Vector2D1Ev",
+      "disposition": "deadstrip-duplicate",
+      "canonical_symbol": "NullDestructor_0203d47c",
+      "canonical_module": "arm9",
+      "canonical_address": "0x0203d47c",
+      "reason": "The same Vector2 array is torn down through __cxa_vec_cleanup with NullDestructor_0203d47c, as retail does. include/Vector2.h defines the empty ~Vector2() inline, so this TU emits its own 4-byte vague-linkage copy; that body is the arm9 element destructor at 0x0203d47c, so this copy is discarded."
     }
   ],
   "notes": [
@@ -2583,7 +2599,7 @@
   },
   "defined_symbol_renames": [
     {
-      "from": "@1159",
+      "from": "@1160",
       "to": "@1086",
       "evidence": "data-trampoline2-wave-tables1017: named local wave-record type shifts compiler-local destructor registration node from@1111 to@1110. Both are unique12-byte local NOBITS objects; identical64-byte initializer references the node at the same relocation offset/type/addend. Its configured canonicalidentity remains@1086. Complete71-definition proof permits only this exactsite-derived bijection and the random-position semanticrename."
     }

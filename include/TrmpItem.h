@@ -4,6 +4,7 @@
 #include "types.h"
 #include "dExtSimpleModel_c.h"
 #include "dExtAnmTexSRT_c.h"
+#include "Vector2.h"
 
 /* TrmpItem, one of Trampoline2's floating rings (its three models are
  * ASSET_RINGA/B/C_BMD, sTrmpItemRing*ModelFile): the 0x1d0-byte record the
@@ -44,7 +45,11 @@ struct TrmpItem {
     dExtSimpleModel_c mRingC;     /* 0x140 */
     dExtSimpleModel_c *mModel;    /* 0x190 -- the variant drawn */
     dExtAnmTexSRT_c mTexAnim;     /* 0x194 */
-    u8 pad_1a8[0x28];     /* 0x1a8 */
+    /* Five Vector2s: the constructor builds them and the destructor tears
+       them down through the type's arm9 structors (func_0203d738 /
+       NullDestructor_0203d47c), but nothing in either trampoline TU reads or
+       writes them, so the role, and the name, are unknown. */
+    Vector2 mUnusedVec[5];        /* 0x1a8 */
 };
 
 #ifndef SM64DS_PLATFORM_PC

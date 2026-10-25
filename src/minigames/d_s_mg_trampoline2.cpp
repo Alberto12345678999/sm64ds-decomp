@@ -27,10 +27,7 @@ enum d_s_mg_trampoline2_AssetId {
  *   pointer locals (Init's p1..p3, Update's p), StatePlay's level pointer
  *   and its unread raw hold the pinned @1110: folding any of them into a
  *   direct member expression renumbers it (measured).
- * - TrmpItem's +0x1a8 array is TrmpItem.h's pad_1a8; its role is unknown, and
- *   its 8-byte element (func_0203d738 / NullDestructor_0203d47c, shared with
- *   the roulette scenes) has no class, so TrmpItem's constructor and
- *   destructor still build and tear it down with the array helpers by hand.
+ * - TrmpItem's +0x1a8 array (five Vector2s, mUnusedVec) has no known role.
  */
 
 #include "common.h"
@@ -206,12 +203,6 @@ extern int sMgTextSpritesSpanish[];
 extern int sMgTextSpritesFrench[];
 extern int sMgTextSpritesGerman[];
 extern int sMgTextSpritesItalian[];
-extern void __cxa_vec_ctor(void *base, int count, int stride, void *ctor, void *dtor);
-extern void __cxa_vec_cleanup(void *base, int count, int stride, void *dtor);
-/* local extern: only sibling minigame headers (dScMgAmida_c.h and four
-   others) declare it; this TU includes none of them */
-extern void NullDestructor_0203d47c(void);
-extern void func_0203d738(void);
 /* TUBUILD CONFLICT -- alternate declaration of Trmp2Spinner_UpdateMatrix, from the legacy file for Trmp2Spinner_UpdateMatricesAll, NOT applied: extern void Trmp2Spinner_UpdateMatrix(char *obj); */
 /* TUBUILD CONFLICT -- alternate declaration of sTrmp2Spinners, from the legacy file for Trmp2Spinner_HideAll, NOT applied: extern int sTrmp2Spinners; */
 /* TUBUILD CONFLICT -- alternate declaration of sTrmp2Spinners, from the legacy file for Trmp2Spinner_InitAll, NOT applied: extern unsigned char *sTrmp2Spinners; */
@@ -294,12 +285,10 @@ void LoadBGPltt(const void *src, unsigned int offset, unsigned int size);
 void LoadOBJPltt(const void *src, unsigned int offset, unsigned int size);
 }
 
-/* mModels and mTexAnim are constructed before the body. */
+/* The three models, mTexAnim and mUnusedVec are all built before the
+   empty body, in declaration order. */
 // @symbol _ZN8TrmpItemC1Ev
-TrmpItem::TrmpItem() {
-    /* pad_1a8: five 8-byte elements, role unknown. */
-    __cxa_vec_ctor(pad_1a8, 5, 8, (void *)func_0203d738, (void *)NullDestructor_0203d47c);
-}
+TrmpItem::TrmpItem() {}
 
 // @symbol dScMgTrampoline2_c_classInit
 /* `new dScMgTrampoline2_c` reproduces it: the inline dScMgD3DBase_c
@@ -1307,11 +1296,10 @@ extern "C" void Trmp2Spinner_UpdateMatrix(char *raw) {
     SPINNER(raw)->mModel.Render(&SPINNER(raw)->mScale);
 }
 
-/* mTexAnim and mModels are destroyed after the body. */
+/* The body is empty; mUnusedVec, mTexAnim and the models are destroyed
+   after it, in reverse declaration order. */
 // @symbol _ZN8TrmpItemD1Ev
-TrmpItem::~TrmpItem() {
-    __cxa_vec_cleanup(pad_1a8, 5, 8, (void *)NullDestructor_0203d47c);
-}
+TrmpItem::~TrmpItem() {}
 
 /* D1 and D0 come from the inline destructor in dScMgTrampoline2_c.h. */
 
