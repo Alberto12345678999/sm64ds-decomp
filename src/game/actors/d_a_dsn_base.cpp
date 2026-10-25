@@ -122,7 +122,6 @@ extern void func_0201267c(int id, void *pos);
 /* Fix12<int> BY VALUE (6az): the header member form would home the argument
  * and move the caller. Scalar tail is deliberate; the (const Vector3 &)
  * is what the mangled name spells. */
-extern void _ZN8dActor_c10EarthquakeERK7Vector35Fix12IiE(void *self, const Vector3 &pos, int magnitude);
 namespace Particle {
 struct System {
     static void NewSimple(unsigned id, int x, int y, int z);
@@ -256,7 +255,7 @@ void daDsnBase_c::func_ov091_02132f04()
     quakePos.x = mPosX;
     quakePos.y = mPosY;
     quakePos.z = mPosZ;
-    _ZN8dActor_c10EarthquakeERK7Vector35Fix12IiE(this, quakePos, 0x7d0000);
+    Earthquake(quakePos, 0x7d0000);
     func_0201267c(0xc7, &mCamSpacePosX);
 }
 

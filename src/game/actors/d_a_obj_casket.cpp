@@ -109,7 +109,7 @@ void func_020393d4(int *p, int v);
 
 extern void hold_d_a_obj_casket(dBgW_KcMbg *self, KCL_File *file, const Matrix4x3 &mat, int scale,
                                 short angleY, CLPS_Block &clps);
-void _ZN8dActor_c10EarthquakeERK7Vector35Fix12IiE(void *self, Vector3 *pos, int strength);
+void d_a_obj_casketEarthquakeHold(void *self, Vector3 *pos, int strength);
 }
 
 // @symbol daObjCasket_c_classInit
@@ -238,7 +238,7 @@ void daObjCasket_c::St_Wait_Main()
         quakePos.x = mPosX;
         quakePos.y = mPosY;
         quakePos.z = mPosZ;
-        _ZN8dActor_c10EarthquakeERK7Vector35Fix12IiE(this, &quakePos, 0x5dc000);
+        Earthquake(quakePos, 0x5dc000);
 
         landLocal.x = 0;
         landLocal.y = 0;

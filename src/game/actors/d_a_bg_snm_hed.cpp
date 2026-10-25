@@ -6,10 +6,8 @@
  * with no ROM home. Source order is ROM order. The factory was
  * SnowmanHead_Spawn; `new daBgSnmHed_c()` is the same sequence.
  */
-/* leftovers: dActor_c::Earthquake,
- * Particle::System::NewSimple, Sound::PlaySub, dCcAc_c::Init and
- * dBgCh_Actr::Init stay mangled. This file calls each of them, and every
- * one of those definitions takes Fix12<int> by value.
+/* leftovers: dCcAc_c::Init and dBgCh_Actr::Init stay mangled. Both
+ * definitions take Fix12<int> by value.
  */
 
 #pragma defer_codegen off
@@ -34,8 +32,6 @@ bool PlaySub(u32, u32, u32, int, bool);
 
 extern "C" {
 void Matrix4x3_FromRotationY(void *matrix, int angle);
-void _ZN8dActor_c10EarthquakeERK7Vector35Fix12IiE(
-    void *self, const void *pos, int magnitude);
 int func_0201267c(int id, void *pos);
 namespace Particle {
 struct System {
@@ -138,8 +134,7 @@ int daBgSnmHed_c::State2()
             pos.x = mPosX;
             pos.y = mPosY;
             pos.z = mPosZ;
-            _ZN8dActor_c10EarthquakeERK7Vector35Fix12IiE(
-                this, &pos, 0x5dc000);
+            Earthquake(*(const Vector3 *)&pos, 0x5dc000);
             func_0201267c(0x115, &mCamSpacePosX);
             Particle::System::NewSimple(0x10f, mPosX, mPosY, mPosZ);
             Particle::System::NewSimple(0x110, mPosX, mPosY, mPosZ);
