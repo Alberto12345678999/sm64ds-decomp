@@ -8,9 +8,9 @@
  *   - a dMg3DEspModel_c at 0x4fd8, 0x21c bytes (mEspModel)
  *   - a dExtAnmTexSRT_c at 0x51f4, 0x14 bytes
  *   - this class's own fields from 0x5208 to 0x5558
- * The factory constructs the four in declaration order and the destructor
- * tears them down in reverse, so they could become typed members. They stay
- * raw storage until the factory and the destructor change together.
+ * They are typed members: the factory is `return new dScMg3DEsp_c;`, whose
+ * implicit constructor builds them in declaration order, and the destructor
+ * tears them down in reverse.
  *
  * The destructor is the key function, defined out of line in
  * src/minigames/d_mg3d_esp_anim_set.cpp, which emits both D1 and D0.
@@ -19,6 +19,9 @@
 #ifndef DSCMG3DESP_C_H
 #define DSCMG3DESP_C_H
 #include "dScMgSingle3DBase_c.h"
+#include "dExtSimpleModel_c.h"
+#include "dMg3DEspModel_c.h"
+#include "dExtAnmTexSRT_c.h"
 
 struct dScMg3DEsp_c : dScMgSingle3DBase_c {
     /* One of the five cards, 0x18 bytes. DealCards places it and
@@ -76,10 +79,10 @@ struct dScMg3DEsp_c : dScMgSingle3DBase_c {
     virtual void StartRound(int arg);               /* slot 18 */
     virtual void OnNewRecord();                          /* slot 20 */
 
-    u8 mModel1[0x50];              /* 0x4f38, a dExtSimpleModel_c */
-    u8 mModel2[0x50];              /* 0x4f88, a dExtSimpleModel_c */
-    u8 mEspModel[0x21c];           /* 0x4fd8, a dMg3DEspModel_c */
-    u8 mTextureTransformer[0x14];  /* 0x51f4, a dExtAnmTexSRT_c */
+    dExtSimpleModel_c mModel1;           /* 0x4f38 */
+    dExtSimpleModel_c mModel2;           /* 0x4f88 */
+    dMg3DEspModel_c mEspModel;           /* 0x4fd8 */
+    dExtAnmTexSRT_c mTextureTransformer; /* 0x51f4 */
     Card mCards[5];                /* 0x5208 */
     Row mRows[3];                  /* 0x5280 */
     Slot mSlots[20];               /* 0x52bc */

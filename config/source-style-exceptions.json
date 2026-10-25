@@ -1200,6 +1200,30 @@
       "count": 2,
       "reason": "func_0200b990 is a C translation unit, so it cannot name the C++ function cstd::atan2; it declares it under its linker spelling and calls it once.",
       "evidence": "The calls spelled _ZN4cstd5atan2E5Fix12IiES1_ before cstd::atan2 took its scalar mangling (#4328), which the Fix12-by-value exemption covered; the C++ callers in that PR call cstd::atan2 by name."
+    },
+    {
+      "path": "include/dScMgTrampoline2_c.h",
+      "rule": "handspelled-member",
+      "match": "_ZN10Jump2PopupD1Ev",
+      "count": 2,
+      "reason": "dScMgTrampoline2_c's factory and inline destructor are still hand-built over raw element arrays (five of the six element types have no class), so they hand the element constructor and destructor to __cxa_vec_ctor/__cxa_vec_cleanup by address. C++ cannot take a constructor's or destructor's address, so Jump2Popup's C1/D1, renamed from the C-linkage Jump2Popup_ElemCtor/Jump2Popup_ElemDtor when the class got real members in d_s_mg_jump2.cpp, are named by their linker spelling. Follow-up: type mArray1..mArray6 with Trmp2Mario, TrmpLine, TrmpItem and Trmp2Spinner record classes and write the factory as `return new dScMgTrampoline2_c;`, as dScMgJump2_c's now is.",
+      "evidence": "ov006/dScMgTrampoline2_c 42/42 TEXT-VERIFIED with these spellings; the ROM symbols at 0x020efc08 (C1) and 0x020eed64 (D1) are the ones dScMgJump2_c's factory reaches through `new dScMgJump2_c` (ov006/dScMgJump2_c 30/30 TEXT-VERIFIED)."
+    },
+    {
+      "path": "src/minigames/d_s_mg_trampoline2.cpp",
+      "rule": "handspelled-member",
+      "match": "_ZN10Jump2PopupC1Ev",
+      "count": 2,
+      "reason": "dScMgTrampoline2_c's factory and inline destructor are still hand-built over raw element arrays (five of the six element types have no class), so they hand the element constructor and destructor to __cxa_vec_ctor/__cxa_vec_cleanup by address. C++ cannot take a constructor's or destructor's address, so Jump2Popup's C1/D1, renamed from the C-linkage Jump2Popup_ElemCtor/Jump2Popup_ElemDtor when the class got real members in d_s_mg_jump2.cpp, are named by their linker spelling. Follow-up: type mArray1..mArray6 with Trmp2Mario, TrmpLine, TrmpItem and Trmp2Spinner record classes and write the factory as `return new dScMgTrampoline2_c;`, as dScMgJump2_c's now is.",
+      "evidence": "ov006/dScMgTrampoline2_c 42/42 TEXT-VERIFIED with these spellings; the ROM symbols at 0x020efc08 (C1) and 0x020eed64 (D1) are the ones dScMgJump2_c's factory reaches through `new dScMgJump2_c` (ov006/dScMgJump2_c 30/30 TEXT-VERIFIED)."
+    },
+    {
+      "path": "src/minigames/d_s_mg_trampoline2.cpp",
+      "rule": "handspelled-member",
+      "match": "_ZN10Jump2PopupD1Ev",
+      "count": 1,
+      "reason": "dScMgTrampoline2_c's factory and inline destructor are still hand-built over raw element arrays (five of the six element types have no class), so they hand the element constructor and destructor to __cxa_vec_ctor/__cxa_vec_cleanup by address. C++ cannot take a constructor's or destructor's address, so Jump2Popup's C1/D1, renamed from the C-linkage Jump2Popup_ElemCtor/Jump2Popup_ElemDtor when the class got real members in d_s_mg_jump2.cpp, are named by their linker spelling. Follow-up: type mArray1..mArray6 with Trmp2Mario, TrmpLine, TrmpItem and Trmp2Spinner record classes and write the factory as `return new dScMgTrampoline2_c;`, as dScMgJump2_c's now is.",
+      "evidence": "ov006/dScMgTrampoline2_c 42/42 TEXT-VERIFIED with these spellings; the ROM symbols at 0x020efc08 (C1) and 0x020eed64 (D1) are the ones dScMgJump2_c's factory reaches through `new dScMgJump2_c` (ov006/dScMgJump2_c 30/30 TEXT-VERIFIED)."
     }
   ]
 }

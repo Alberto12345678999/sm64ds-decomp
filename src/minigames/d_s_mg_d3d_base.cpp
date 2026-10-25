@@ -222,12 +222,10 @@ int dScMgD3DBase_c::InitSubScreenBg()
 
 // @symbol _ZN14dScMgD3DBase_c11InitEnginesEv
 /* Slot 33: sets up the 3D display and VRAM banks, keeps the loaded
- * buffers for later palette and menu work, and publishes the two camera
- * blocks at 0x466c and 0x4728 (untyped padding in the header, so still by
- * offset). */
+ * buffers for later palette and menu work, and publishes the two
+ * cameras. */
 void dScMgD3DBase_c::InitEngines()
 {
-    char *raw = (char *)this;
     void *file;
 
     *(vu32 *)0x4001000u |= 0x10000u;
@@ -262,10 +260,10 @@ void dScMgD3DBase_c::InitEngines()
     GX::SetGraphicsMode(1, 0, 1);
     GXS::SetGraphicsMode(5);
     *(vu32 *)0x4000000u &= 0xffcfffefu;
-    sMgCurCamera = (int)(raw + 0x466c);
-    sMgMainCamera = raw + 0x466c;
-    sMgSubCamera = raw + 0x4728;
-    sMgGraphCallback[1] = (int)raw;
+    sMgCurCamera = (int)&mCameras[0];
+    sMgMainCamera = &mCameras[0];
+    sMgSubCamera = &mCameras[1];
+    sMgGraphCallback[1] = (int)this;
     data_0209d4a8 = (void *)sMgGraphCallback;
 }
 
@@ -348,8 +346,6 @@ void dScMgD3DBase_c::AfterCleanupResources(unsigned int vfSuccess)
  * compiles differently. */
 int dScMgD3DBase_c::OnGraphCallback2()
 {
-    char *raw = (char *)this;
-
     if (dScMgBase_c::OnGraphCallback2() == 0) return 0;
     if (mMenuOpen == 0) {
         if (data_0209d464 == 0) return 0;
@@ -357,7 +353,7 @@ int dScMgD3DBase_c::OnGraphCallback2()
             mDrawSubScreen = 1;
         else
             mDrawSubScreen = 0;
-        int cameraAddress = (int)(raw + 0x466c + mDrawSubScreen * 0xbc);
+        int cameraAddress = (int)&mCameras[mDrawSubScreen];
         sMgCurCamera = cameraAddress;
         Camera_UpdateMatrices((dCamera_c *)cameraAddress);
         if (mDrawSubScreen == 1) {

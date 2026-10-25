@@ -19,7 +19,10 @@
 extern "C" void __cxa_vec_cleanup(void *base, int count, int stride, void *dtor);
 extern "C" void *Trmp2Mario_Destruct(void);
 extern "C" void TrmpLine_Destroy(void);
-extern "C" void Jump2Popup_ElemDtor(void *object);
+/* local extern: Jump2Popup::~Jump2Popup() (include/Jump2Popup.h) by its mangled
+   name -- C++ cannot take a destructor's address, and mArray4 stays raw until
+   the other five element types have classes (its typed teardown would move). */
+extern "C" void *_ZN10Jump2PopupD1Ev(void *object);
 struct dExtSimpleModel_c;
 extern "C" int Trmp2_DestructJumperModels(char *object);
 extern "C" dExtSimpleModel_c *Trmp2Spinner_Destruct(dExtSimpleModel_c *model);
@@ -31,7 +34,7 @@ struct dScMgTrampoline2_c : dScMgD3DBase_c {
     virtual ~dScMgTrampoline2_c() {
         __cxa_vec_cleanup(mArray6, 5, 0x24, (void *)Trmp_Nothing);
         __cxa_vec_cleanup(mArray5, 0x14, 0x78, (void *)Trmp2Spinner_Destruct);
-        __cxa_vec_cleanup(mArray4, 0xa, 0x24, (void *)Jump2Popup_ElemDtor);
+        __cxa_vec_cleanup(mArray4, 0xa, 0x24, (void *)_ZN10Jump2PopupD1Ev);
         __cxa_vec_cleanup(mArray3, 0xa, 0x1d0, (void *)Trmp2_DestructJumperModels);
         __cxa_vec_cleanup(mArray2, 3, 0x32c, (void *)TrmpLine_Destroy);
         __cxa_vec_cleanup(mArray1, 5, 0xdc, (void *)Trmp2Mario_Destruct);
@@ -68,7 +71,7 @@ struct dScMgTrampoline2_c : dScMgD3DBase_c {
     u8  mArray1[0x44c];       /* 0x500c -- 5 * 0xdc,    elem dtor Trmp2Mario_Destruct */
     u8  mArray2[0x984];       /* 0x5458 -- 3 * 0x32c,   elem dtor TrmpLine_Destroy */
     u8  mArray3[0x1220];      /* 0x5ddc -- 0xa * 0x1d0, elem dtor Trmp2_DestructJumperModels */
-    u8  mArray4[0x168];       /* 0x6ffc -- 0xa * 0x24,  elem dtor Jump2Popup_ElemDtor */
+    u8 mArray4[0x168];        /* 0x6ffc -- 0xa * 0x24,  elem: Jump2Popup */
     u8  mArray5[0x960];       /* 0x7164 -- 0x14 * 0x78, elem dtor Trmp2Spinner_Destruct */
     u32 mParticleID;          /* 0x7ac4 -- Particle::System unique ID */
     int mRamp;                /* 0x7ac8 -- fixed point; rests at 0x14000, eased

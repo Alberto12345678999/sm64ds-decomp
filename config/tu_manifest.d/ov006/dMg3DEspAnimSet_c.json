@@ -1194,6 +1194,11 @@
       "reason": "Ancestor passenger. This TU defines dScMg3DEsp_c's key function -- the destructor, which include/dScMg3DEsp_c.h declares out of line and declares FIRST -- so mwcc emits the whole inheritance chain's typeinfo as vague linkage. The cartridge keeps its canonical copy at arm9:0x02086e60, outside this TU's only licensed range (.text 0x020e7660-0x020ea1f0), so dsd delinks it from the cartridge independently and discarding this object's copy cannot cost the image a byte. romdata_check compares the emitted copy against the cartridge, relocations applied, before production isolation discards it.",
       "canonical_module": "arm9",
       "canonical_address": "0x02086e60"
+    },
+    {
+      "symbol": "_ZN19dScMgSingle3DBase_cD2Ev",
+      "disposition": "deadstrip",
+      "reason": "Base-object destructor of dScMgSingle3DBase_c, emitted as vague linkage once the factory's `new dScMg3DEsp_c` expands the inline constructor chain (the same byproduct ov006/dScMgFlower_c and ov006/dScMgMemory2_c license for theirs). dScMg3DEsp_c's D1/D0 inline the base destructor rather than chain to it, and no module's symbols.txt gives _ZN19dScMgSingle3DBase_cD2Ev a home. Homeless and unreferenced, so a plain deadstrip."
     }
   ],
   "init": [
@@ -2073,52 +2078,52 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@1797",
+      "from": "@1812",
       "to": "@1809",
       "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @1823 now; licensed under the existing pin @1809"
     },
     {
-      "from": "@1788",
+      "from": "@1803",
       "to": "@1800",
       "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @1814 now; licensed under the existing pin @1800"
     },
     {
-      "from": "@1789",
+      "from": "@1804",
       "to": "@1801",
       "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @1815 now; licensed under the existing pin @1801"
     },
     {
-      "from": "@1790",
+      "from": "@1805",
       "to": "@1802",
       "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @1816 now; licensed under the existing pin @1802"
     },
     {
-      "from": "@1791",
+      "from": "@1806",
       "to": "@1803",
       "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @1817 now; licensed under the existing pin @1803"
     },
     {
-      "from": "@1792",
+      "from": "@1807",
       "to": "@1804",
       "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @1818 now; licensed under the existing pin @1804"
     },
     {
-      "from": "@1793",
+      "from": "@1808",
       "to": "@1805",
       "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @1819 now; licensed under the existing pin @1805"
     },
     {
-      "from": "@1794",
+      "from": "@1809",
       "to": "@1806",
       "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @1820 now; licensed under the existing pin @1806"
     },
     {
-      "from": "@1795",
+      "from": "@1810",
       "to": "@1807",
       "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @1821 now; licensed under the existing pin @1807"
     },
     {
-      "from": "@1796",
+      "from": "@1811",
       "to": "@1808",
       "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @1822 now; licensed under the existing pin @1808"
     }

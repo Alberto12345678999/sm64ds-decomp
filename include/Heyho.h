@@ -7,11 +7,17 @@
 /* Heyho, one Shy Guy of the Jump minigames: the 0xf0-byte record the Heyho_*
  * helpers in src/minigames/d_mg3d_heyho_obj_adapter.cpp step and draw. The
  * name is coined (no RTTI names this record; dMg3DHeyhoObjAdapter_c is the
- * separate 0x4c adapter). A layout view only: the helpers are free functions
- * over a char* record and read it through their HEYHO() cast. Fields are named
- * from those helpers; the unnamed regions are written or read in one place at
- * most, or sit inside an embedded object. */
+ * separate 0x4c adapter). The constructor and destructor are the class's own
+ * (src/minigames/d_mg3d_heyho_obj_adapter.cpp), so dScMgJump_c and
+ * dScMgJump2_c hold typed Heyho arrays and the compiler writes their
+ * __cxa_vec_ctor / __cxa_vec_cleanup calls. The other helpers are free
+ * functions over a char* record and read it through their HEYHO() cast.
+ * Fields are named from those helpers; the unnamed regions are written or
+ * read in one place at most, or sit inside an embedded object. */
 struct Heyho {
+    Heyho();
+    ~Heyho();
+
     s32 mBaseSize;       /* 0x00 -- word 0 of the path record a Heyho_StartMotion copies in: 0x1000,
                           * 0x1998 in sHeyhoLayoutFlyInPaths; read only to seed mSize (was mVtable:
                           * no vtable is stored or called through here) */

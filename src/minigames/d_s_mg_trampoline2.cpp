@@ -19,9 +19,6 @@ enum d_s_mg_trampoline2_AssetId {
  *
  * leftovers:
  * - 0x7acc has no matched read.
- * - Camera 0 is passed as dScMgD3DBase_c.h's pad_466c. Camera 1 (0x4728,
- *   mid-pad_4726) and the factory loop's end (0x47e4) stay raw: their
- *   member spellings move bytes (measured).
  * - dExtSimpleModel_c / dExtAnmTexSRT_c / SysTracker C1/D1 stay mangled (built on
  *   raw storage); NewUnkCallback818 takes Fix12 by value, which costs the
  *   caller bytes (notes/mwccarm-codegen.md 6az); the G2 BG getters stay
@@ -220,7 +217,9 @@ extern void __cxa_vec_ctor(void *base, int count, int stride, void *ctor, void *
 extern int _ZTV14dScMgD3DBase_c[];
 extern void Trmp2Mario_Construct(void);
 extern void TrmpLine_Reset(void);
-extern void Jump2Popup_ElemCtor(void *object);
+/* local extern: Jump2Popup::Jump2Popup() by its mangled name; C++ cannot take a
+   constructor's address for the hand-built __cxa_vec_ctor below. */
+extern void *_ZN10Jump2PopupC1Ev(void *object);
 extern void Trmp_Nothing2(void);
 extern void *_ZN15dExtAnmTexSRT_cC1Ev(void *transformer);
 /* local extern: only sibling minigame headers (dScMgAmida_c.h and four
@@ -323,6 +322,11 @@ extern "C" void *TrmpItem_Construct(char *raw) {
 }
 
 // @symbol dScMgTrampoline2_c_classInit
+/* Still built by hand. The base half (dScMgD3DBase_c's constructor and camera
+   loop) is what `new` gives, as dScMgJump_c's factory shows, but five of the
+   six element types have no class yet: Trmp2Mario (0xdc), TrmpLine (0x32c),
+   TrmpItem (0x1d0), Trmp2Spinner (0x78) and the 0x24 element built with
+   Trmp_Nothing2/Trmp_Nothing. Only mArray4's element (Jump2Popup) has one. */
 extern "C" dScMgTrampoline2_c *dScMgTrampoline2_c_classInit(void) {
     char *scene = (char *)fBase_c::operator new(0x7bac);
     if (scene) {
@@ -330,7 +334,7 @@ extern "C" dScMgTrampoline2_c *dScMgTrampoline2_c_classInit(void) {
         _ZN11dScMgBase_cC2Ev(scene);
         *(int *)scene = (int)_ZTV14dScMgD3DBase_c;
         ((dScMgTrampoline2_c *)scene)->mDrawSubScreen = 0;
-        it = (char *)((dScMgTrampoline2_c *)scene)->pad_466c;
+        it = (char *)((dScMgTrampoline2_c *)scene)->mCameras;
         {
             /* 0x47e4 is mSysTracker, two cameras on; `end = (char *)&mSysTracker`
                builds the factory 8 bytes shorter. */
@@ -349,7 +353,7 @@ extern "C" dScMgTrampoline2_c *dScMgTrampoline2_c_classInit(void) {
         __cxa_vec_ctor(((dScMgTrampoline2_c *)scene)->mArray3, 0xa, 0x1d0,
                        (void *)TrmpItem_Construct, (void *)Trmp2_DestructJumperModels);
         __cxa_vec_ctor(((dScMgTrampoline2_c *)scene)->mArray4, 0xa, 0x24,
-                       (void *)Jump2Popup_ElemCtor, (void *)Jump2Popup_ElemDtor);
+                       (void *)_ZN10Jump2PopupC1Ev, (void *)_ZN10Jump2PopupD1Ev);
         __cxa_vec_ctor(((dScMgTrampoline2_c *)scene)->mArray5, 0x14, 0x78,
                        (void *)Trmp2Spinner_Construct, (void *)Trmp2Spinner_Destruct);
         __cxa_vec_ctor(((dScMgTrampoline2_c *)scene)->mArray6, 5, 0x24, (void *)Trmp_Nothing2,
@@ -402,7 +406,6 @@ void dScMgTrampoline2_c::InitDisplay() {
 /* Vtable slot 0 (the name is inferred): load the screens, set up both
  * cameras and the object pools, then start a round through StartRound. */
 s32 dScMgTrampoline2_c::InitResources() {
-    char *raw = (char *)this;
     s32 fov;
 
     InitDisplay();
@@ -412,24 +415,22 @@ s32 dScMgTrampoline2_c::InitResources() {
     InitialiseVramGlobals();
     *(u16 *)0x4000008 = (*(u16 *)0x4000008 & ~3) | 1;
     fov = cstd::fdiv(0xc0000, (s32)data_02082414);
-    this->mCamera0EyeX = 0;
-    this->mCamera0EyeY = -0x64000;
-    this->mCamera0EyeZ = 0;
-    this->mCamera0TargetX = 0;
-    this->mCamera0TargetY = 0;
-    this->mCamera0TargetZ = fov;
-    this->mCamera0Angle = 0x400;
-    Camera_UpdateMatrices((char *)pad_466c);
-    this->mCamera1EyeX = 0;
-    this->mCamera1EyeY = 0x82000;
-    this->mCamera1EyeZ = 0;
-    this->mCamera1TargetX = 0;
-    this->mCamera1TargetY = 0;
-    this->mCamera1TargetZ = fov;
-    this->mCamera1Angle = 0x400;
-    /* Camera 1 starts at 0x4728, pad_466c + 0xbc, mid-pad_4726: both member
-       spellings build InitResources 4 bytes longer. */
-    Camera_UpdateMatrices(raw + 0x4728);
+    this->mCameras[0].mEyeX = 0;
+    this->mCameras[0].mEyeY = -0x64000;
+    this->mCameras[0].mEyeZ = 0;
+    this->mCameras[0].mTargetX = 0;
+    this->mCameras[0].mTargetY = 0;
+    this->mCameras[0].mTargetZ = fov;
+    this->mCameras[0].mAngle = 0x400;
+    Camera_UpdateMatrices(&mCameras[0]);
+    this->mCameras[1].mEyeX = 0;
+    this->mCameras[1].mEyeY = 0x82000;
+    this->mCameras[1].mEyeZ = 0;
+    this->mCameras[1].mTargetX = 0;
+    this->mCameras[1].mTargetY = 0;
+    this->mCameras[1].mTargetZ = fov;
+    this->mCameras[1].mAngle = 0x400;
+    Camera_UpdateMatrices(&mCameras[1]);
     if (Trmp2Mario_InitPool(mArray1, 5) == 0)
         return 0;
     TrmpFx_InitPool(mArray6, 5);

@@ -7,9 +7,14 @@
  * constructor).
  *
  * leftovers:
- * - The factory still builds the object by hand: allocation, the base C2
- *   call and the vptr stores stay explicit because the ROM has no
- *   dScMgRoulette_c C1, so a native `new` expression cannot link.
+ * - The factory still builds the object by hand. A missing C1 is not the
+ *   reason: `new` inlines an implicit constructor (dScMgJump_c's factory is
+ *   one). The members are: mDealer, mArray and mBoard are raw bytes, so
+ *   `new` would construct none of them. It needs a Dealer class whose
+ *   constructor and destructor are Dealer_Construct/Dealer_Destruct (shared
+ *   with the Card, BSC and MCarlo scenes), a racer element class for
+ *   Roulette_ConstructElement/Roulette_Nothing, and a board record holding
+ *   the two models.
  * - mModel1/mModel2 stay addressed off the mBoard base: naming them
  *   directly costs bytes (measured).
  * - The table constructor Dealer_Construct is still unnamed in
