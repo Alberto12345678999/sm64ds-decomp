@@ -43,6 +43,9 @@ enum daTor_c_AssetId {
 #include "Sound.h"
 #include "SurfaceInfo.h"
 #include "nitro/fx/fx.h"
+namespace cstd {
+s16 atan2(s32, s32);
+}
 
 extern "C" {
 /* The texture animation InitResources hands to mTextureTransformer lives in
@@ -56,7 +59,7 @@ s16 Vec3_HorzAngle(const Vector3 *a, const Vector3 *b);
 s32 Vec3_Dist(const Vector3 *a, const Vector3 *b);
 void Matrix4x3_FromTranslation(Matrix4x3 *m, int x, int y, int z);
 void dBgCh_Actr_UpdateContinuous_Veneer(void *collision);
-s16 _ZN4cstd5atan2E5Fix12IiES1_(s32 y, s32 x);
+s16 atan2_hold_d_a_tor_1(s32 y, s32 x);
 u32 d_a_torNewHold(u32 handle, u32 effect, s32 x, s32 y, s32 z, const void *direction,
                    void *callback);
 void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(
@@ -204,7 +207,7 @@ cont:
         Vector3 normal;
         void *wall = mWithMeshClsn.GetWallResult();
         ((SurfaceInfo *)((char *)wall + 4))->CopyNormalTo(normal);
-        mPrevAngleY = _ZN4cstd5atan2E5Fix12IiES1_(normal.x, normal.z);
+        mPrevAngleY = cstd::atan2(normal.x, normal.z);
     }
 
     UpdateSpin(0x1000);

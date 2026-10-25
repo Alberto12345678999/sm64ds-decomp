@@ -62,7 +62,6 @@ void Matrix4x3_ApplyInPlaceToRotationX(Matrix4x3 *m, s16 ang);
 void Matrix4x3_ApplyInPlaceToRotationZ(Matrix4x3 *m, s16 ang);
 void Vec3_Asr(void *dst, void *src, int shift);
 
-int _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(void *, void *, void *, int, short, void *);
 int func_020393d4(void *, void *);
 
 }
@@ -152,10 +151,10 @@ int daKpa2Bg_c::InitResources()
 {
     mModel2.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(daKpa2Bg_c_ModelFile), 1, -1);
     func_ov060_02117a64();
-    _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-        &mMovingMeshCollider2,
-        (KCL_File *)dBgW_Kc::LoadFile(daKpa2Bg_c_ClsnFile), &mClsnMat, 0x1000,
-        mAngleY, &data_ov046_021115bc);
+    ((dBgW_KcMbg *)(&mMovingMeshCollider2))
+        ->dBgW_KcMbg::SetFile((KCL_File *)((KCL_File *)dBgW_Kc::LoadFile(daKpa2Bg_c_ClsnFile)),
+                              *(const Matrix4x3 *)(&mClsnMat), 0x1000, mAngleY,
+                              *(CLPS_Block *)(&data_ov046_021115bc));
     func_020393d4(&mMovingMeshCollider2, (void *)&dBgW::UpdatePosAndAngs);
     mMovingMeshCollider2.Enable(this);
     mAngleXSpeed = 0;

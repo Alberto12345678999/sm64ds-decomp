@@ -114,11 +114,11 @@ struct SPS {
 /* Byte offset of a dScMgSnowball_c member, for the sites that must keep
    `pointer + constant` arithmetic because every member spelling moved bytes. */
 #define SNOW_OFF(m) ((int)&((dScMgSnowball_c *)0)->m)
-#define atan2 _ZN4cstd5atan2E5Fix12IiES1_
 #define pnew Particle::System::New
 #define pfromid(id) ((int *)Particle::System::FromUniqueID(id))
 
 namespace cstd {
+s16 atan2(s32, s32);
 int fdiv(int numerator, int denominator);
 }
 namespace G2S {
@@ -152,7 +152,7 @@ extern void func_0203d630(int *p, int m);
 extern u32 d_s_mg_snowballNewHold(u32 uniqueID, u32 effectID, int x, int y, int z, const void *dir,
                                   void *callback);
 extern void func_02012718(int a, int b);
-extern int _ZN4cstd5atan2E5Fix12IiES1_(int y, int x);
+extern int atan2_hold_d_s_mg_snowball_1(int y, int x);
 extern s16 data_02082214[];
 extern void Camera_UpdateMatrices(void *self);
 extern void Matrix4x3_FromTranslation(void *m, int x, int y, int z);
@@ -722,8 +722,8 @@ void dScMgSnowball_c::UpdateSnowball() {
         normalVelocity = FX_MUL(normalVelocity, 0x1800);
         self->mVelX -= FX_MUL(normalVelocity, push[0]);
         self->mVelY -= FX_MUL(normalVelocity, push[1]);
-        headingComponent = data_02082214
-            [((unsigned short)_ZN4cstd5atan2E5Fix12IiES1_(self->mVelY, self->mVelX) >> 4) * 2];
+        headingComponent =
+            data_02082214[((unsigned short)cstd::atan2(self->mVelY, self->mVelX) >> 4) * 2];
         vx = self->mVelX;
         self->mVelX = vx / 8 + FX_MUL(vx, headingComponent) / 4;
         vy = self->mVelY;
@@ -1640,7 +1640,7 @@ s32 dScMgSnowball_c::Behavior() {
                 s.a[0] = 0;
                 s.a[1] = 0;
             }
-            r7 = atan2(mVelY, mVelX);
+            r7 = cstd::atan2(mVelY, mVelX);
             func_0203d388(s.a, (short)-r7);
             s.a[1] = s.a[1] << 2;
             func_0203d388(s.a, r7);
@@ -1708,7 +1708,7 @@ s32 dScMgSnowball_c::Behavior() {
             hp = (short *)&mRollAngle;
             q = __aeabi_idiv(v * 0x2710, mBallSize);
             *hp = *hp + (unsigned short)q;
-            m = atan2(mVelX, mVelY);
+            m = cstd::atan2(mVelX, mVelY);
             ApproachLinear(*(short *)&mHeadingAngle, (short)m,
                            (short)(Vec2_Len((int *)ATI(SNOW_OFF(mVelX))) / 16));
         }
@@ -1785,7 +1785,7 @@ s32 dScMgSnowball_c::Behavior() {
             hp = (short *)&mRollAngle;
             q = __aeabi_idiv(v * 0x2710, mBallSize);
             *hp = *hp + (unsigned short)q;
-            mHeadingAngle = atan2(mVelX, mVelY);
+            mHeadingAngle = cstd::atan2(mVelX, mVelY);
         }
 
         mScrollY = mPosY - 0x190000;
@@ -1851,7 +1851,7 @@ s32 dScMgSnowball_c::Behavior() {
             hp = (short *)&mRollAngle;
             q = __aeabi_idiv(v * 0x2710, mBallSize);
             *hp = *hp + (unsigned short)q;
-            mHeadingAngle = atan2(mVelX, mVelY);
+            mHeadingAngle = cstd::atan2(mVelX, mVelY);
         }
         break;
 

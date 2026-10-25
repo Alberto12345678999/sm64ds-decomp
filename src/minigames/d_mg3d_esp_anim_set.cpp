@@ -56,6 +56,9 @@ struct System {
 #include "Sound.h"
 #include "PlayerInput.h"
 #include "dExtSimpleModel_c.h"
+namespace cstd {
+s16 atan2(s32, s32);
+}
 
 struct BMD_File;
 struct BTP_File;
@@ -109,7 +112,7 @@ int func_020179b4(void* r0, void* r1, int r2);
 /* The last four parameters are unsigned short in the real signature;
    RowFade passes 0x10 - n, which must not be truncated. */
 void _ZN3G2x13SetBlendAlphaEPVttttj(volatile unsigned short *p, int a, int b, int c, int d);
-s16 _ZN4cstd5atan2E5Fix12IiES1_(s32 y, s32 x);
+s16 atan2_hold_d_mg3d_esp_anim_set_1(s32 y, s32 x);
 int RandomIntInternal(int *seed);
 extern int data_0209d4b8;
 void FreeGfxSlotsById(int a);
@@ -1124,7 +1127,7 @@ void dScMg3DEsp_c::CardTouch(int idx) {
 
     int dy = 0x30 - (mCards[idx].mY >> 12);
     int dx = 0x80 - (mCards[idx].mX >> 12);
-    mCards[idx].mAngle = _ZN4cstd5atan2E5Fix12IiES1_(dy, dx);
+    mCards[idx].mAngle = cstd::atan2(dy, dx);
 
     SpawnRows(idx);
     Sound::PlayBank2_2D(0x190);

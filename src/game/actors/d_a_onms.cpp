@@ -126,9 +126,8 @@ void Matrix4x3_FromTranslation(void *m, int x, int y, int z);
 void Matrix4x3_ApplyInPlaceToRotationX(void *m, short angX);
 void Matrix4x3_ApplyInPlaceToRotationZ(void *m, short angZ);
 void Matrix4x3_ApplyInPlaceToRotationY(void *m, short angY);
-void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-    dBgW_KcMbg *self, KCL_File *file, const Matrix4x3 *mat,
-    int scale, short angY, void *clps);
+extern void hold_d_a_onms(dBgW_KcMbg *self, KCL_File *file, const Matrix4x3 *mat, int scale,
+                          short angY, void *clps);
 /* Stores beforeClsnCallback: p[6] = value, the word at dBgW + 0x18. */
 void func_020393d4(int *p, int v);
 void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
@@ -622,9 +621,9 @@ int daOnms_c::InitResources()
     func_ov092_02131a88((char *)this);
 
     f = dBgW_Kc::LoadFile(gOnimasuCollisionFile);
-    _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-        &mMeshCollider, (KCL_File *)f, &mClsnMat,
-        0x1000, mAngleY, &data_ov092_02132220);
+    ((dBgW_KcMbg *)(&mMeshCollider))
+        ->dBgW_KcMbg::SetFile((KCL_File *)f, *(&mClsnMat), 0x1000, mAngleY,
+                              *(CLPS_Block *)(&data_ov092_02132220));
     func_020393d4((int *)&mMeshCollider, (int)&dBgW::UpdatePosWithTransform);
 
     mOrientBits = (unsigned char)((mAngleX >> 0xe) & 3);

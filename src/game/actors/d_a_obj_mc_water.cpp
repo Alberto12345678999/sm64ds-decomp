@@ -49,8 +49,6 @@ struct CLPS_Block;
 
 extern "C" {
 void func_ov009_02111b1c(daObjMcWater_c *self);
-void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-    void *self, void *kcl, void *mtx, int fix, short s, void *clps);
 
 extern SharedFilePtr data_ov009_02113c68;
 extern SharedFilePtr data_ov009_02113c70;
@@ -96,8 +94,9 @@ int daObjMcWater_c::InitResources()
     {
         KCL_File *kcl = (KCL_File *)dBgW_Kc::LoadFile(data_ov009_02113c70);
         /* 6az: header SetFile takes Fix12<int> by value. */
-        _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-            &mMeshCollider, kcl, &mClsnMat, 0x1000, mAngleY, &data_ov009_02112c38);
+        ((dBgW_KcMbg *)(&mMeshCollider))
+            ->dBgW_KcMbg::SetFile((KCL_File *)(kcl), *(const Matrix4x3 *)(&mClsnMat), 0x1000,
+                                  mAngleY, *(CLPS_Block *)(&data_ov009_02112c38));
     }
     mMeshCollider.Enable(this);
     {

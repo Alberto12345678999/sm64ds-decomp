@@ -56,9 +56,8 @@ struct WcObj04CollisionFilePtr : SharedFilePtr {
 extern "C" {
 void func_020393a4(void *p, int v);
 void func_020393d4(int *p, int v);
-void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-    dBgW_KcMbg *self, KCL_File *file, Matrix4x3 *mat, int scale,
-    short angY, CLPS_Block &clps);
+extern void hold_d_a_obj_wc_obj04(dBgW_KcMbg *self, KCL_File *file, Matrix4x3 *mat, int scale,
+                                  short angY, CLPS_Block &clps);
 void Matrix4x3_FromRotationY(Matrix4x3 *m, int angY);
 void func_ov029_021126dc(daObjWc_Obj04_c *c);
 void func_ov029_02112710(daObjWc_Obj04_c *t);
@@ -98,8 +97,8 @@ int daObjWc_Obj04_c::InitResources()
     func_ov029_021126dc(this);
     {
         KCL_File *kcl = (KCL_File *)dBgW_Kc::LoadFile(data_ov029_02114324);
-        _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-            &mMeshCollider, kcl, &mClsnMat2, 0x199, mAngleY, data_ov029_0211304c);
+        ((dBgW_KcMbg *)(&mMeshCollider))
+            ->dBgW_KcMbg::SetFile(kcl, *(&mClsnMat2), 0x199, mAngleY, data_ov029_0211304c);
     }
     func_020393d4(
         (int *)&mMeshCollider,

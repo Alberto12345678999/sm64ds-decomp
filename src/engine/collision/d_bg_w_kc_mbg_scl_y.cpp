@@ -38,12 +38,6 @@ void _ZN12dBgCh_SphCrr15SetObjAndSphereERK7Vector35Fix12IiEP8dActor_c(dBgCh_SphC
                                                                       const Vector3 *localCentre,
                                                                       Fix12i radius,
                                                                       dActor_c *actor);
-/* local extern: the scale is Fix12 by value, so the call spells the symbol
-   with the scalar signature d_bg_w_kc_mbg.cpp defines. */
-void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(void *thiz, void *file,
-                                                                           const Matrix4x3 *mtx,
-                                                                           int scale, short angY,
-                                                                           void *clps);
 
 /* local extern: no header in include/ declares these three. */
 extern dBgCh_Lin data_020a0d0c; /* the scratch line, in collider space */
@@ -61,8 +55,7 @@ dBgW_KcMbgSclY::~dBgW_KcMbgSclY() {}
 // @symbol _ZN14dBgW_KcMbgSclY7SetFileEP8KCL_FileRK9Matrix4x3isR10CLPS_Block
 void dBgW_KcMbgSclY::SetFile(KCL_File *file, const Matrix4x3 &mat, Fix12i scale, s16 angY,
                              CLPS_Block &clps) {
-    _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(this, file, &mat, scale,
-                                                                          angY, &clps);
+    dBgW_KcMbg::SetFile(file, mat, scale, angY, clps);
     scaleY = 0x1000;
     invScaleY = 0x1000;
 }
