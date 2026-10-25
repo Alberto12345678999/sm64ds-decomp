@@ -2,27 +2,51 @@
 #define MASCOTWALKER_H
 
 #include "types.h"
+#include "SharedFilePtr.h"
 #include "dExtBlendAnmModel_c.h"
+#include "dExtShadowModel_c.h"
+
+/* The walker's file handles. Each constructor takes the file's ID and
+ * each destructor drops the handle; the names are coined.
+ * src/minigames/unit020bfec0.cpp defines them inline over the arm9 veneers
+ * the ROM calls (func_02017acc / func_02017ab4 for the model,
+ * SharedFilePtr::Construct / SharedFilePtr_Destruct_Anim for the
+ * animations). */
+struct MascotWalkerModelFilePtr : SharedFilePtr {
+    MascotWalkerModelFilePtr(u32 fileID);
+    ~MascotWalkerModelFilePtr();
+};
+
+struct MascotWalkerAnimationFileHandle : SharedFilePtr {
+    MascotWalkerAnimationFileHandle(u32 fileID);
+    ~MascotWalkerAnimationFileHandle();
+};
 
 /* MascotWalker, the small figure that walks the card table's paths in the card
  * games (the dealer embeds one at +0xdc, which fixes the 0xf8 size): a Toad,
  * whose files resolve (tools/asset_catalog.py) to MG/kino_d.bmd, kino_wait.bca
- * and kino_walk.bca. The name is coined. A layout view only: the MascotWalker_* helpers in
- * src/minigames/unit020bfec0.cpp are free functions over a char* record and
- * read it through their WALKER() cast. Unnamed regions are touched in one
- * place at most, or sit inside an embedded object. */
+ * and kino_walk.bca. The name is coined. The constructor and destructor are
+ * the class's own (ov006 0x020c0a48 and 0x020c09f8, in
+ * src/minigames/unit020bfec0.cpp), so Dealer's own constructor and destructor
+ * build and tear it down as a member. The other MascotWalker_* helpers there
+ * are free functions over a char* record and read it through their WALKER()
+ * cast. Unnamed regions are touched in one place at most, or sit inside an
+ * embedded object. */
 struct MascotWalker {
-    /* Three SharedFilePtrs, each a handle and then the loaded file. */
-    s32 mModelFile[2]; /* 0x00 -- kino_d.bmd (0x205) */
-    /* kino_wait.bca (0x206): [1] is the BCA Load starts and StartPause restarts. */
-    s32 mPauseAnimFile[2]; /* 0x08 */
-    s32 mWalkAnimFile[2];  /* 0x10 -- kino_walk.bca (0x207): [1] StartNextPath restarts */
+    MascotWalker();
+    ~MascotWalker();
+
+    MascotWalkerModelFilePtr mModelFile; /* 0x00 -- kino_d.bmd (0x205) */
+    /* kino_wait.bca (0x206): its file is the BCA Load starts and StartPause restarts. */
+    MascotWalkerAnimationFileHandle mPauseAnimFile; /* 0x08 */
+    /* kino_walk.bca (0x207): StartNextPath restarts it. */
+    MascotWalkerAnimationFileHandle mWalkAnimFile; /* 0x10 */
     /* 0x70 bytes. UpdateMatrix sets its mat4x3 and turns bone 6 of its
        data.transforms by mHeadAngle; StateWalk pauses when its dExtFrameCtrl_c
        base hits frame 0. */
     dExtBlendAnmModel_c mModel; /* 0x18 */
-    /* Built by Construct, InitCylinder'd by Load and InitModel'd on mModel.mat4x3 by Draw. */
-    u8 mShadow[0x28]; /* 0x88 -- a dExtShadowModel_c */
+    /* InitCylinder'd by Load and InitModel'd on mModel.mat4x3 by Draw. */
+    dExtShadowModel_c mShadow; /* 0x88 */
     s32 mPath;        /* 0xb0 -- the path walked: a point count, then the points */
     s32 mState[2];    /* 0xb4 -- the current state's member-pointer record */
     /* Load sets all three to 0x1000 (1.0), beside mPos and the angles; nothing
@@ -48,6 +72,10 @@ struct MascotWalker {
 };
 
 #ifndef SM64DS_PLATFORM_PC
+typedef char
+    MascotWalkerModelFilePtr_size_must_be_0x8[sizeof(MascotWalkerModelFilePtr) == 0x8 ? 1 : -1];
+typedef char MascotWalkerAnimationFileHandle_size_must_be_0x8
+    [sizeof(MascotWalkerAnimationFileHandle) == 0x8 ? 1 : -1];
 typedef char MascotWalker_size_must_be_0xf8[sizeof(MascotWalker) == 0xf8 ? 1 : -1];
 #endif
 

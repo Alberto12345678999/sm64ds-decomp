@@ -11,8 +11,6 @@
  *     the class. The card walks (DrawCards, RoundWaitDeal, ShuffleCards)
  *     step a `char *` the same way -- mCards[i] does not match there.
  *   - cstd::atan2 stays the mangled symbol (Fix12<int> by value).
- *   - the factory builds the object by hand because the class has no
- *     constructor declared yet.
  */
 
 /* Runtime asset handles resolved through the overlay 0 file table. */
@@ -111,12 +109,6 @@ void Mg_SetTopScreenYOffset(int v);
 void Mg_PlaceBannersOnTopScreen(void);
 extern u8 data_0209d45c;
 extern u8 data_0209d454;
-void *_ZN11dScMgBase_cC2Ev(void *scene);
-void _ZN8Particle10SysTrackerC1Ev(void *tracker);
-/* Only the sibling scene headers (dScMgCard_c.h, dScMgMemory2_c.h) declare
-   it, and this TU includes neither. */
-void Dealer_Construct(void *sharedState); /* local extern: see above */
-extern void *_ZTV19dScMgSingle3DBase_c[];
 }
 
 /* Load-bearing: source order, and the opt pragmas on DrawCards and
@@ -128,7 +120,7 @@ extern void *_ZTV19dScMgSingle3DBase_c[];
 // @symbol _ZN13dScMgMemory_cD0Ev
 /* Both D1 and D0 come from this one definition. */
 dScMgMemory_c::~dScMgMemory_c() {
-    /* mShared is destroyed automatically before the inherited scene. */
+    /* mDealer is destroyed automatically before the inherited scene. */
 }
 
 void dScMgMemory_c::DrawMessage() {
@@ -632,14 +624,14 @@ void dScMgMemory_c::ResultWait() {
                 if (mHudScore > mBestHudScore)
                     mBestHudScore = mHudScore;
                 Mg_SubmitScore(gMgScene ? gMgScene->mHudScore : 0);
-                Dealer_PlayWin(&mShared);
+                Dealer_PlayWin(&mDealer);
             } else {
                 Mg_SetSharedState(MG_STATE_LOSE);
                 if (mHudScore > 0) {
                     int *score = &mHudScore;
                     *score -= 1;
                 }
-                Dealer_PlayLose(&mShared);
+                Dealer_PlayLose(&mDealer);
             }
         }
     } else {
@@ -751,10 +743,10 @@ void dScMgMemory_c::RoundStart() {
     mDealSignals = 0;
     mCardsDealt = 0;
     if (mDifficulty >= 2)
-        Dealer_StartShuffle((char *)&mShared, 4, 3, (int)&mDealSignals);
+        Dealer_StartShuffle((char *)&mDealer, 4, 3, (int)&mDealSignals);
     else
-        Dealer_StartShuffle((char *)&mShared, 4, 2, (int)&mDealSignals);
-    mShared.ready = 1;
+        Dealer_StartShuffle((char *)&mDealer, 4, 2, (int)&mDealSignals);
+    mDealer.mReserved = 1;
     mSubstate = ROUND_DEAL_EASY;
     if (mPromptBlinkCount == 0) {
         mPromptEnabled = 1;
@@ -939,7 +931,7 @@ void dScMgMemory_c::StateSetup() {
     SetupDifficulty();
     ShuffleCards();
     FreeGfxSlotsById(0x1d);
-    Dealer_PlayIdle((char *)&mShared);
+    Dealer_PlayIdle((char *)&mDealer);
     mState = STATE_PLAY;
 }
 
@@ -966,7 +958,7 @@ void dScMgMemory_c::OnDealDone() {
 // @symbol _ZN13dScMgMemory_c11CanEndStateEi
 int dScMgMemory_c::CanEndState(int /* mode */) {
     if (mState == STATE_RESULT && mSubstate == RESULT_WAIT) {
-        if (Dealer_IsIdle((int *)&mShared) == 0)
+        if (Dealer_IsIdle((int *)&mDealer) == 0)
             return 0;
         mSubstate = RESULT_REWARD;
         FreeGfxSlotsById(0x1d);
@@ -1002,7 +994,7 @@ s32 dScMgMemory_c::Render() {
     DrawMessage();
     DrawCursor();
     DrawCards();
-    Dealer_Draw((char *)&mShared);
+    Dealer_Draw((char *)&mDealer);
     return 1;
 }
 
@@ -1011,7 +1003,7 @@ s32 dScMgMemory_c::Render() {
 s32 dScMgMemory_c::Behavior() {
     (this->*sMemoryStateTable[mState])();
     MgCoins_Update();
-    Dealer_Update(&mShared);
+    Dealer_Update(&mDealer);
     return 1;
 }
 
@@ -1034,7 +1026,7 @@ s32 dScMgMemory_c::InitResources() {
     data_0209d454 = 0x18;
     ResetGame();
     Camera_InitDealerView((char *)pad_4660);
-    if (Dealer_Load(&mShared) == 0)
+    if (Dealer_Load(&mDealer) == 0)
         return 0;
     mCredits = Mg_GetSavedRecord0();
     mCreditsShown = mCredits;
@@ -1048,18 +1040,10 @@ s32 dScMgMemory_c::InitResources() {
 }
 
 // @symbol dScMgMemory_c_classInit
-/* Builds the scene by hand (operator new, base constructor, vtables,
- * mShared) because the class has no constructor declared yet. */
+/* `new` inlines the implicit constructor: the base chain, this class's
+   vptr, then mDealer. */
 extern "C" dScMgMemory_c *dScMgMemory_c_classInit() {
-    char *scene = (char *)fBase_c::operator new(sizeof(dScMgMemory_c));
-    if (scene) {
-        _ZN11dScMgBase_cC2Ev(scene);
-        *(void **)scene = _ZTV19dScMgSingle3DBase_c;
-        _ZN8Particle10SysTrackerC1Ev(scene + 0x471c);
-        *(void **)scene = &_ZTV13dScMgMemory_c[2];
-        Dealer_Construct(scene + 0x4f38);
-    }
-    return (dScMgMemory_c *)scene;
+    return new dScMgMemory_c;
 }
 
 /* Static-init globals (was the handwritten __sinit_ov006_021311c8 shard).

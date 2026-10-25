@@ -564,6 +564,11 @@
       "reason": "Ancestor passenger. This TU defines dScMgMCarlo2_c's key function (InitResources, out of line), so mwcc emits the whole dScMgSingle3DBase_c inheritance chain's typeinfo as vague linkage. The cartridge keeps its canonical copy at arm9:0x02086e60, outside this TU's only licensed range (.text 0x020f8ef4-0x020fa75c), so dsd delinks it from the cartridge independently and discarding this object's copy cannot cost the image a byte. romdata_check compares the emitted copy against the cartridge, relocations applied, before production isolation discards it.",
       "canonical_module": "arm9",
       "canonical_address": "0x02086e60"
+    },
+    {
+      "symbol": "_ZN19dScMgSingle3DBase_cD2Ev",
+      "disposition": "deadstrip",
+      "reason": "Base-object destructor of dScMgSingle3DBase_c, emitted as vague linkage once the factory's `new dScMgMCarlo2_c` expands the inline constructor chain (the same byproduct ov006/dScMgFlower_c, ov006/dScMgMemory2_c and ov006/dScMgBSC_c license for theirs). dScMgMCarlo2_c's D1/D0 inline the base destructor rather than chain to it, and no module's symbols.txt gives _ZN19dScMgSingle3DBase_cD2Ev a home. Homeless and unreferenced, so a plain deadstrip."
     }
   ],
   "partial_isolation": {

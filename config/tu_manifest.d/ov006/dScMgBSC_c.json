@@ -488,6 +488,11 @@
       "canonical_module": "ov006",
       "canonical_address": "0x0213fec8",
       "reason": "emitted for this class itself vtable by naming this class's key function; the cartridge's copy lives at ov006:0x0213fec8 and an enrolled source already reaches it, so romdata_check compares this object's bytes against the cartridge before the duplicate is discarded"
+    },
+    {
+      "symbol": "_ZN19dScMgSingle3DBase_cD2Ev",
+      "disposition": "deadstrip",
+      "reason": "Base-object destructor of dScMgSingle3DBase_c, emitted as vague linkage once the factory's `new dScMgBSC_c` expands the inline constructor chain (the same byproduct ov006/dScMgFlower_c, ov006/dScMgMemory2_c and ov006/dMg3DEspAnimSet_c license for theirs). dScMgBSC_c's D1/D0 inline the base destructor rather than chain to it, and no module's symbols.txt gives _ZN19dScMgSingle3DBase_cD2Ev a home. Homeless and unreferenced, so a plain deadstrip."
     }
   ],
   "init": [
@@ -682,6 +687,22 @@
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213fd2c"
+    }
+  ],
+  "undefined_symbol_aliases": [
+    {
+      "symbol": "_ZN10dScMgBSC_c7CardPosC1Ev",
+      "canonical_symbol": "func_0203d738",
+      "canonical_module": "arm9",
+      "canonical_address": "0x0203d738",
+      "evidence": "retail dScMgBSC_c_classInit (ov006) passes 0x0203d738 to __cxa_vec_ctor as the element constructor for the two 8-byte card positions at +0x51a8; the coined CardPos constructor is declared, never defined, so this is its exact relocation target"
+    },
+    {
+      "symbol": "_ZN10dScMgBSC_c7CardPosD1Ev",
+      "canonical_symbol": "NullDestructor_0203d47c",
+      "canonical_module": "arm9",
+      "canonical_address": "0x0203d47c",
+      "evidence": "retail dScMgBSC_c_classInit passes 0x0203d47c to __cxa_vec_ctor, and the retail D1 (0x02124908) passes it to __cxa_vec_cleanup, as the card positions' element destructor; the coined CardPos destructor is declared, never defined, so this is its exact relocation target"
     }
   ]
 }

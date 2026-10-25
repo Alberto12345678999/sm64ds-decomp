@@ -99,14 +99,14 @@
       "ordinal": 10
     },
     {
-      "symbol": "MascotWalker_Destruct",
+      "symbol": "_ZN12MascotWalkerD1Ev",
       "address": "0x020c09f8",
       "size": "0x00000050",
       "legacy_source": "src/func_ov006_020c09f8.c",
       "ordinal": 11
     },
     {
-      "symbol": "MascotWalker_Construct",
+      "symbol": "_ZN12MascotWalkerC1Ev",
       "address": "0x020c0a48",
       "size": "0x00000060",
       "legacy_source": "src/func_ov006_020c0a48.c",
@@ -274,14 +274,14 @@
       "ordinal": 35
     },
     {
-      "symbol": "Dealer_Destruct",
+      "symbol": "_ZN6DealerD1Ev",
       "address": "0x020c1c64",
       "size": "0x0000011c",
       "legacy_source": "src/func_ov006_020c1c64.c",
       "ordinal": 36
     },
     {
-      "symbol": "Dealer_Construct",
+      "symbol": "_ZN6DealerC1Ev",
       "address": "0x020c1d80",
       "size": "0x00000134",
       "legacy_source": "src/func_ov006_020c1d80.c",
@@ -715,6 +715,46 @@
       "canonical_module": "arm9",
       "canonical_address": "0x020072c0",
       "reason": "include/types.h gives Vector3 an empty inline destructor, so this TU re-emits it with vague linkage for the Vector3 temporary in FlowerFace_Draw. The cartridge keeps exactly one copy at arm9:0x020072c0, kind:function(arm,size=0x4), owned by the enrolled `complete` source src/_ZN7Vector3D1Ev.cpp. This object's copy is the identical 4-byte `bx lr` body (1e ff 2f e1) with no relocations; rombuild compares the body against those cartridge bytes before discarding the duplicate."
+    },
+    {
+      "symbol": "_ZN12MascotWalkerC2Ev",
+      "disposition": "deadstrip",
+      "reason": "Base-object constructor emitted beside C1 by the out-of-line MascotWalker::MascotWalker(). The cartridge carries only C1 at 0x020c0a48 (size 0x60), and MascotWalker is only ever constructed as a complete member of Dealer, so C2 has no ROM home. Homeless and unreferenced, so a plain deadstrip."
+    },
+    {
+      "symbol": "_ZN12MascotWalkerD2Ev",
+      "disposition": "deadstrip",
+      "reason": "Base-object destructor emitted beside D1 by the out-of-line MascotWalker::~MascotWalker(). The cartridge carries only D1 at 0x020c09f8 (size 0x50), followed directly by C1 at 0x020c0a48, so the image has no room for a D2. Homeless and unreferenced, so a plain deadstrip."
+    },
+    {
+      "symbol": "_ZN6DealerC2Ev",
+      "disposition": "deadstrip",
+      "reason": "Base-object constructor emitted beside C1 by the out-of-line Dealer::Dealer(). The cartridge carries only C1 at 0x020c1d80 (size 0x134), the scenes construct Dealer only as a complete member, so C2 has no ROM home. Homeless and unreferenced, so a plain deadstrip."
+    },
+    {
+      "symbol": "_ZN6DealerD2Ev",
+      "disposition": "deadstrip",
+      "reason": "Base-object destructor emitted beside D1 by the out-of-line Dealer::~Dealer(). The cartridge carries only D1 at 0x020c1c64 (size 0x11c), followed directly by C1 at 0x020c1d80, so the image has no room for a D2. Homeless and unreferenced, so a plain deadstrip."
+    },
+    {
+      "symbol": "_ZN18DealerModelFilePtrD1Ev",
+      "disposition": "deadstrip",
+      "reason": "Out-of-line vague-linkage copy of the inline DealerModelFilePtr destructor this source defines over func_02017ab4. mwccarm emits it once a member of the type is destroyed, but Dealer's D1 inlines the call (relocation destinations clean) and no relocation in the object names it. The coined class has no ROM home, so a plain deadstrip."
+    },
+    {
+      "symbol": "_ZN25DealerAnimationFileHandleD1Ev",
+      "disposition": "deadstrip",
+      "reason": "Out-of-line vague-linkage copy of the inline DealerAnimationFileHandle destructor this source defines over SharedFilePtr_Destruct_Anim. mwccarm emits it once a member of the type is destroyed, but Dealer's D1 inlines all thirteen calls (relocation destinations clean) and no relocation in the object names it. The coined class has no ROM home, so a plain deadstrip."
+    },
+    {
+      "symbol": "_ZN24MascotWalkerModelFilePtrD1Ev",
+      "disposition": "deadstrip",
+      "reason": "Out-of-line vague-linkage copy of the inline MascotWalkerModelFilePtr destructor this source defines over func_02017ab4. mwccarm emits it once a member of the type is destroyed, but MascotWalker's D1 inlines the call (relocation destinations clean) and no relocation in the object names it. The coined class has no ROM home, so a plain deadstrip."
+    },
+    {
+      "symbol": "_ZN31MascotWalkerAnimationFileHandleD1Ev",
+      "disposition": "deadstrip",
+      "reason": "Out-of-line vague-linkage copy of the inline MascotWalkerAnimationFileHandle destructor this source defines over SharedFilePtr_Destruct_Anim. mwccarm emits it once a member of the type is destroyed, but MascotWalker's D1 inlines both calls (relocation destinations clean) and no relocation in the object names it. The coined class has no ROM home, so a plain deadstrip."
     }
   ]
 }

@@ -9,8 +9,10 @@
  *
  * leftovers:
  *   - the ROM has no dScMgCard_c constructor, so the factory builds the
- *     scene by hand and its base constructor, operator new and vtable
- *     stores stay mangled.
+ *     scene by hand and its base constructor, operator new, vtable stores
+ *     and mDealer's constructor stay mangled. `new dScMgCard_c` needs the
+ *     card element classes to declare their constructors and destructors,
+ *     which the walls in dScMgCard_c.h rule out.
  *   - the ov004 and ov006 helpers are unnamed in symbols.txt.
  */
 
@@ -104,12 +106,13 @@ void _ZN8Particle10SysTrackerC1Ev(void*);
 typedef void (*CardElementCallback)(void *);
 void __cxa_vec_ctor(void *, unsigned int, unsigned int,
                     CardElementCallback, CardElementCallback);
-extern int _ZTV19dScMgSingle3DBase_c;
+extern void *_ZTV19dScMgSingle3DBase_c[];
 extern int _ZTV11dScMgCard_c[];
 extern int _ZTV12dMgCardObj_c[];
 extern int _ZTV17dMgDilarCardObj_c[];
 void _ZN12dMgCardObj_cC1Ev(void*);
 void _ZN17dMgDilarCardObj_cC1Ev(void*);
+Dealer *_ZN6DealerC1Ev(Dealer *dealer);
 }
 
 // @symbol _ZN12dMgCardObj_cC1Ev
@@ -131,10 +134,12 @@ extern "C" void* dScMgCard_c_classInit()
     char* p = (char*)_ZN7fBase_cnwEj(sizeof(dScMgCard_c));
     if (p) {
         _ZN11dScMgBase_cC2Ev(p);
-        *(int*)p = (int)&_ZTV19dScMgSingle3DBase_c;
+        *(void **)p = _ZTV19dScMgSingle3DBase_c;
         _ZN8Particle10SysTrackerC1Ev(p + 0x471c);
         *(int*)p = (int)&_ZTV11dScMgCard_c[2];
-        Dealer_Construct(p + 0x4f38);
+        /* C++ cannot name a constructor on existing storage; placement new
+           adds a null test before the call (measured 36/37). */
+        _ZN6DealerC1Ev(&((dScMgCard_c *)p)->mDealer);
         __cxa_vec_ctor(p + 0x51a8, 5, 0x30,
                      _ZN12dMgCardObj_cC1Ev,
                      _ZN12dMgCardObj_cD1Ev);
@@ -210,7 +215,7 @@ s32 dScMgCard_c::InitResources()
     *(volatile u16 *)0x04000008 = (*(volatile u16 *)0x04000008 & ~3) | 1;
 
     Camera_InitDealerView(pad_4660);
-    if (Dealer_Load((char *)&mShared) == 0)
+    if (Dealer_Load((char *)&mDealer) == 0)
         return 0;
 
     {
@@ -256,10 +261,10 @@ void dScMgCard_c::StartRound(int mode)
     mPlayerHandFace2 = 6;
     mDealerHandFace = 6;
     mDealerHandFace2 = 6;
-    Dealer_StartShuffle((char *)&mShared, 4, 5, (int)&mDealCount);
+    Dealer_StartShuffle((char *)&mDealer, 4, 5, (int)&mDealCount);
 
-    mShared.unk_1e6 = 1;
-    mShared.unk_01a = 2;
+    mDealer.mReserved = 1;
+    mDealer.mHand = 2;
     dScMgCard_c::FillWeights(5);
 
     p1 = (char *)mArray1;
@@ -301,7 +306,7 @@ int dScMgCard_c::CanEndState(int mode)
         break;
     }
     case 0xf:
-        if (Dealer_IsIdle(&mShared) != 0) {
+        if (Dealer_IsIdle(&mDealer) != 0) {
             int r = dScMgCard_c::CompareHands((const dMgCardObj_c *)mArray1, (const dMgCardObj_c *)mArray2);
             if (r == -1) {
                 MgCoins_StartLose();
@@ -424,11 +429,11 @@ void dScMgCard_c::UpdateState()
             mPromptBlinkCount = 1;
             mPromptBlinkTimer = 0;
         }
-        if (Dealer_IsBusy(&mShared) != 0)
+        if (Dealer_IsBusy(&mDealer) != 0)
             mState++;
         break;
     case 2:
-        if (Dealer_IsIdle(&mShared) != 0) {
+        if (Dealer_IsIdle(&mDealer) != 0) {
             mStateTimer = 0x10;
             mState++;
         } else {
@@ -518,14 +523,14 @@ void dScMgCard_c::UpdateState()
     case 5:
         if (sCardSelectLocked != 0 &&
             dScMgCard_c::AllInState((const dMgCardObj_c *)mArray1, 2) != 0 &&
-            Dealer_IsIdle(&mShared) != 0) {
+            Dealer_IsIdle(&mDealer) != 0) {
             mState++;
-        } else if (Dealer_IsIdle(&mShared) != 0) {
+        } else if (Dealer_IsIdle(&mDealer) != 0) {
             r = dScMgCard_c::CountInState((const dMgCardObj_c *)mArray1, 6);
             if (r != 0) {
                 mDealCount = 0;
-                mShared.unk_1e6 = 0;
-                Dealer_StartDeal(&mShared, (s16)r, &mDealCount);
+                mDealer.mReserved = 0;
+                Dealer_StartDeal(&mDealer, (s16)r, &mDealCount);
             }
         } else {
             r = dScMgCard_c::FindInState((const dMgCardObj_c *)mArray1, 6);
@@ -540,7 +545,8 @@ void dScMgCard_c::UpdateState()
         mState++;
         break;
     case 7:
-        if (dScMgCard_c::AllInState((const dMgCardObj_c *)mArray2, 1) != 0 && Dealer_IsIdle(&mShared) != 0) {
+        if (dScMgCard_c::AllInState((const dMgCardObj_c *)mArray2, 1) != 0 &&
+            Dealer_IsIdle(&mDealer) != 0) {
             r = sCardDrawsLeft - 1;
             sCardDrawsLeft = r;
             if (r == 0) {
@@ -551,12 +557,12 @@ void dScMgCard_c::UpdateState()
                 sCardSelectLocked = 0;
                 data_ov006_02141770 = 0;
             }
-        } else if (Dealer_IsIdle(&mShared) != 0) {
+        } else if (Dealer_IsIdle(&mDealer) != 0) {
             r = dScMgCard_c::CountInState((const dMgCardObj_c *)mArray2, 6);
             if (r != 0) {
                 mDealCount = 0;
-                mShared.unk_1e6 = 0;
-                Dealer_StartDeal(&mShared, (s16)r, &mDealCount);
+                mDealer.mReserved = 0;
+                Dealer_StartDeal(&mDealer, (s16)r, &mDealCount);
             }
         } else {
             r = dScMgCard_c::FindInState((const dMgCardObj_c *)mArray2, 6);
@@ -655,7 +661,7 @@ void dScMgCard_c::UpdateState()
         if (mStateTimer == 0) {
             r = dScMgCard_c::CompareHands((const dMgCardObj_c *)mArray1, (const dMgCardObj_c *)mArray2);
             if (r == -1) {
-                Dealer_PlayLose(&mShared);
+                Dealer_PlayLose(&mDealer);
                 g = gMgScene;
                 if (g != 0) {
                     if (g->mHudScore > 0) {
@@ -664,7 +670,7 @@ void dScMgCard_c::UpdateState()
                 }
                 Mg_SetSharedState(MG_STATE_LOSE);
             } else if (r == 1) {
-                Dealer_PlayWin(&mShared);
+                Dealer_PlayWin(&mDealer);
                 g = gMgScene;
                 if (g != 0) {
                     if (g->mHudScore < 0x270f) {
@@ -703,12 +709,12 @@ void dScMgCard_c::UpdateState()
 }
 
 // @symbol _ZN11dScMgCard_c8BehaviorEv
-/* Slot 6. mShared is the 0x270-byte table this family of scenes shares;
+/* Slot 6. mDealer is the 0x270-byte table this family of scenes shares;
  * Dealer_Update steps it. */
 s32 dScMgCard_c::Behavior()
 {
     mFrameCounter += 1;
-    Dealer_Update(&mShared);
+    Dealer_Update(&mDealer);
     UpdateState();
     MgCoins_Update();
     return 1;
@@ -805,7 +811,7 @@ s32 dScMgCard_c::Render()
         }
     }
 
-    Dealer_Draw(&mShared);
+    Dealer_Draw(&mDealer);
     return 1;
 }
 

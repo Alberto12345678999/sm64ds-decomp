@@ -598,6 +598,11 @@
       "canonical_module": "ov006",
       "canonical_address": "0x0213d5ac",
       "reason": "emitted for the element class itself vtable by defining the class and its key function in this TU (the header's typed mArray member); the cartridge's copy lives at ov006:0x0213d5ac and an enrolled source already reaches it, so romdata_check compares this object's bytes against the cartridge before the duplicate is discarded"
+    },
+    {
+      "symbol": "_ZN19dScMgSingle3DBase_cD2Ev",
+      "disposition": "deadstrip",
+      "reason": "Base-object destructor of dScMgSingle3DBase_c, emitted as vague linkage once the factory's `new dScMgMCarlo_c` expands the inline constructor chain (the same byproduct ov006/dScMgFlower_c, ov006/dScMgMemory2_c and ov006/dScMgBSC_c license for theirs). dScMgMCarlo_c's D1/D0 inline the base destructor rather than chain to it, and no module's symbols.txt gives _ZN19dScMgSingle3DBase_cD2Ev a home. Homeless and unreferenced, so a plain deadstrip."
     }
   ],
   "init": [
