@@ -376,7 +376,11 @@ extern void hold_d_a_iwante(void *self, void *kcl, void *mtx, int fix, short s, 
 extern void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(void *self, void *actor,
                                                                     Vector3 *v, s32 f1, s32 f2,
                                                                     u32 a, u32 b);
-extern void _ZN5Sound17ChangeMusicVolumeEj5Fix12IiE(unsigned int a, int b);
+}
+namespace Sound {
+void ChangeMusicVolume(unsigned int a, int b);
+}
+extern "C" {
 extern void _ZN5Sound22LoadAndSetMusic_Layer3Ej(unsigned int a);
 extern void _ZN5Sound22StopLoadedMusic_Layer3Ev(void);
 namespace Particle {
@@ -2247,7 +2251,7 @@ int Eyerok::func_ov066_0211903c() {
             msgid = MSG_BEFORE_FIGHT;
             if (data_ov066_0211abe0 == 0) {
                 msgid = MSG_AFTER_FIGHT;
-                _ZN5Sound17ChangeMusicVolumeEj5Fix12IiE(0x14, 0x15666);
+                Sound::ChangeMusicVolume(0x14, 0x15666);
             }
 
             mTalkPlayer->mStateFlags |= 0x400;
@@ -2267,7 +2271,7 @@ int Eyerok::func_ov066_0211903c() {
                     func_02011d2c();
                     func_ov066_02119454(&data_ov066_0211b0cc);
                 } else {
-                    _ZN5Sound17ChangeMusicVolumeEj5Fix12IiE(0x7f, 0x15666);
+                    Sound::ChangeMusicVolume(0x7f, 0x15666);
                     _ZN5Sound22StopLoadedMusic_Layer3Ev();
                     func_02011cfc();
                     star.x = 0;

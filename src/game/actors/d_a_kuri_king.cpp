@@ -146,7 +146,9 @@ void StopLoadedMusic_Layer3();
 void LoadAndSetMusic_Layer3(unsigned int musicId);
 }
 extern "C" void func_02011cfc();
-extern "C" void _ZN5Sound17ChangeMusicVolumeEj5Fix12IiE(u32 a, int f);
+namespace Sound {
+void ChangeMusicVolume(u32 a, int f);
+}
 extern "C" int func_01ffa344(int f);
 extern "C" unsigned short data_ov074_02122e04[];
 extern "C" int ApproachAngle(void*,int,int,int,int);
@@ -525,7 +527,7 @@ void daKuriKing_c::func_ov074_0211f5b8()
         Message::EndTalk();
         Sound::StopLoadedMusic_Layer3();
         func_02011cfc();
-        _ZN5Sound17ChangeMusicVolumeEj5Fix12IiE(0x7f, 0x15666);
+        Sound::ChangeMusicVolume(0x7f, 0x15666);
         this->mNoShadow = 1;
         this->mTimer = 0xf;
         this->mSubState += 1;

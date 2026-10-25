@@ -201,7 +201,7 @@ struct System {
     static int New(unsigned, unsigned, int, int, int, const ::Vector3_16f *, Callback *);
 };
 }
-extern void _ZN5Sound17ChangeMusicVolumeEj5Fix12IiE(unsigned a, int fx);
+extern void d_a_trsChangeMusicVolumeHold(unsigned a, int fx);
 extern void _ZN5Sound22StopLoadedMusic_Layer3Ev(void);
 extern void func_02011cfc(void);
 extern s16 data_ov063_0211e1c8[];
@@ -1137,7 +1137,7 @@ void daTrs_c::func_ov063_02117b0c() {
             u8 *st = (u8 *)&this->mSubState;
             *st = *st + 1;
         }
-        _ZN5Sound17ChangeMusicVolumeEj5Fix12IiE(0x14, 0x15666);
+        Sound::ChangeMusicVolume(0x14, 0x15666);
         break;
     case 1:
         {
@@ -1175,7 +1175,7 @@ void daTrs_c::func_ov063_02117b0c() {
             return;
         this->mState = 5;
         _ZN5Sound22StopLoadedMusic_Layer3Ev();
-        _ZN5Sound17ChangeMusicVolumeEj5Fix12IiE(0x7f, 0x7222);
+        Sound::ChangeMusicVolume(0x7f, 0x7222);
         func_02011cfc();
         {
             u16 *fl = (u16 *)&this->mBooFlags;

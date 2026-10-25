@@ -253,7 +253,11 @@ extern int RandomIntInternal(u16* seed);
 extern int _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void *p, const Vector3 *v, u32 a, Fix12i f,
                                                    u32 b, u32 c, u32 d);
 extern void _Z14ApproachLinearRiii(int* p, int t, int s);
-extern void _ZN5Sound17ChangeMusicVolumeEj5Fix12IiE(unsigned int a, int b);
+}
+namespace Sound {
+void ChangeMusicVolume(unsigned int a, int b);
+}
+extern "C" {
 extern void d_a_king_donketuPlayLongHold(unsigned int a, unsigned int b, unsigned int c,
                                          struct Vector3 *v, unsigned int d);
 extern s16 Vec3_VertAngle(const void* a, const void* b);
@@ -673,7 +677,7 @@ int daKing_Donketu_c::func_ov073_0211fa74() {
     Message::EndTalk();
     _ZN5Sound22StopLoadedMusic_Layer3Ev();
     func_02011cfc();
-    _ZN5Sound17ChangeMusicVolumeEj5Fix12IiE(0x7f, 0x15666);
+    Sound::ChangeMusicVolume(0x7f, 0x15666);
     pos.y = pos.y + 0x190000;
     func_0200fa8c(c, 1);
 
@@ -795,7 +799,7 @@ int daKing_Donketu_c::func_ov073_0211fc78() {
         int msg;
         c->mTalkPlayer = player;
         msg = (short)(c->mTalkPlayer->param1 + 0xe7);
-        _ZN5Sound17ChangeMusicVolumeEj5Fix12IiE(0x14, 0x15666);
+        Sound::ChangeMusicVolume(0x14, 0x15666);
         _ZN7Message11PrepareTalkEv();
         if (c->mTalkPlayer->StartTalk(*c, 1)) {
             ((dCamera_c *)cam)->SetFlag_3();
