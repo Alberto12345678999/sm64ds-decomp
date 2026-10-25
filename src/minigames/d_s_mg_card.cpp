@@ -106,13 +106,13 @@ void _ZN8Particle10SysTrackerC1Ev(void*);
 typedef void (*CardElementCallback)(void *);
 void __cxa_vec_ctor(void *, unsigned int, unsigned int,
                     CardElementCallback, CardElementCallback);
-extern int _ZTV19dScMgSingle3DBase_c;
+extern void *_ZTV19dScMgSingle3DBase_c[];
 extern int _ZTV11dScMgCard_c[];
 extern int _ZTV12dMgCardObj_c[];
 extern int _ZTV17dMgDilarCardObj_c[];
 void _ZN12dMgCardObj_cC1Ev(void*);
 void _ZN17dMgDilarCardObj_cC1Ev(void*);
-void _ZN6DealerC1Ev(void *dealer);
+Dealer *_ZN6DealerC1Ev(Dealer *dealer);
 }
 
 // @symbol _ZN12dMgCardObj_cC1Ev
@@ -134,10 +134,10 @@ extern "C" void* dScMgCard_c_classInit()
     char* p = (char*)_ZN7fBase_cnwEj(sizeof(dScMgCard_c));
     if (p) {
         _ZN11dScMgBase_cC2Ev(p);
-        *(int*)p = (int)&_ZTV19dScMgSingle3DBase_c;
+        *(void **)p = _ZTV19dScMgSingle3DBase_c;
         _ZN8Particle10SysTrackerC1Ev(p + 0x471c);
         *(int*)p = (int)&_ZTV11dScMgCard_c[2];
-        _ZN6DealerC1Ev(p + 0x4f38);
+        _ZN6DealerC1Ev((Dealer *)(p + 0x4f38));
         __cxa_vec_ctor(p + 0x51a8, 5, 0x30,
                      _ZN12dMgCardObj_cC1Ev,
                      _ZN12dMgCardObj_cD1Ev);
