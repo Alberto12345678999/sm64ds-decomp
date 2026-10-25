@@ -420,14 +420,14 @@
       "ordinal": 56
     },
     {
-      "symbol": "TrmpLine_Destroy",
+      "symbol": "_ZN8TrmpLineD1Ev",
       "address": "0x020d1008",
       "size": "0x00000004",
       "legacy_source": "src/func_ov006_020d1008.c",
       "ordinal": 57
     },
     {
-      "symbol": "TrmpLine_Reset",
+      "symbol": "_ZN8TrmpLineC1Ev",
       "address": "0x020d100c",
       "size": "0x0000000c",
       "legacy_source": "src/func_ov006_020d100c.c",
@@ -484,6 +484,16 @@
       "symbol": "_ZN9s020d01e06Spare4D1Ev",
       "disposition": "deadstrip",
       "reason": "TrmpLine_Build reserves one of its two never-written stack slots through a local four-byte type with a declared empty destructor (Spare4 in its namespace block), so mwccarm emits a 4-byte vague-linkage D1 for it beside the licensed text. The cartridge has no copy and no relocation references it."
+    },
+    {
+      "symbol": "_ZN8TrmpLineC2Ev",
+      "disposition": "deadstrip",
+      "reason": "Base-object constructor emitted beside C1 by the out-of-line TrmpLine::TrmpLine(). The cartridge carries only C1 at 0x020d100c (size 0xc), the last function of the unit, and TrmpLine is only ever constructed as a complete object (sTrmpLines and the Trampoline scenes' line arrays, all through __cxa_vec_ctor), so C2 has no ROM home. Homeless and unreferenced, so a plain deadstrip."
+    },
+    {
+      "symbol": "_ZN8TrmpLineD2Ev",
+      "disposition": "deadstrip",
+      "reason": "Base-object destructor emitted beside D1 by the out-of-line TrmpLine::~TrmpLine(). The cartridge carries only D1 at 0x020d1008 (size 0x4), followed directly by C1 at 0x020d100c, so the image has no room for a D2. Homeless and unreferenced, so a plain deadstrip."
     }
   ]
 }
