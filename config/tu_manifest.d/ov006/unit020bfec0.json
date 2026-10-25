@@ -99,14 +99,14 @@
       "ordinal": 10
     },
     {
-      "symbol": "MascotWalker_Destruct",
+      "symbol": "_ZN12MascotWalkerD1Ev",
       "address": "0x020c09f8",
       "size": "0x00000050",
       "legacy_source": "src/func_ov006_020c09f8.c",
       "ordinal": 11
     },
     {
-      "symbol": "MascotWalker_Construct",
+      "symbol": "_ZN12MascotWalkerC1Ev",
       "address": "0x020c0a48",
       "size": "0x00000060",
       "legacy_source": "src/func_ov006_020c0a48.c",
@@ -274,14 +274,14 @@
       "ordinal": 35
     },
     {
-      "symbol": "Dealer_Destruct",
+      "symbol": "_ZN6DealerD1Ev",
       "address": "0x020c1c64",
       "size": "0x0000011c",
       "legacy_source": "src/func_ov006_020c1c64.c",
       "ordinal": 36
     },
     {
-      "symbol": "Dealer_Construct",
+      "symbol": "_ZN6DealerC1Ev",
       "address": "0x020c1d80",
       "size": "0x00000134",
       "legacy_source": "src/func_ov006_020c1d80.c",
@@ -715,6 +715,84 @@
       "canonical_module": "arm9",
       "canonical_address": "0x020072c0",
       "reason": "include/types.h gives Vector3 an empty inline destructor, so this TU re-emits it with vague linkage for the Vector3 temporary in FlowerFace_Draw. The cartridge keeps exactly one copy at arm9:0x020072c0, kind:function(arm,size=0x4), owned by the enrolled `complete` source src/_ZN7Vector3D1Ev.cpp. This object's copy is the identical 4-byte `bx lr` body (1e ff 2f e1) with no relocations; rombuild compares the body against those cartridge bytes before discarding the duplicate."
+    },
+    {
+      "symbol": "_ZN12MascotWalkerC2Ev",
+      "disposition": "deadstrip",
+      "reason": "Base-object constructor emitted beside C1 by the out-of-line MascotWalker::MascotWalker(). The cartridge carries only C1 at 0x020c0a48 (size 0x60), and MascotWalker is only ever constructed as a complete member of Dealer, so C2 has no ROM home. Homeless and unreferenced, so a plain deadstrip."
+    },
+    {
+      "symbol": "_ZN12MascotWalkerD2Ev",
+      "disposition": "deadstrip",
+      "reason": "Base-object destructor emitted beside D1 by the out-of-line MascotWalker::~MascotWalker(). The cartridge carries only D1 at 0x020c09f8 (size 0x50), followed directly by C1 at 0x020c0a48, so the image has no room for a D2. Homeless and unreferenced, so a plain deadstrip."
+    },
+    {
+      "symbol": "_ZN6DealerC2Ev",
+      "disposition": "deadstrip",
+      "reason": "Base-object constructor emitted beside C1 by the out-of-line Dealer::Dealer(). The cartridge carries only C1 at 0x020c1d80 (size 0x134), the scenes construct Dealer only as a complete member, so C2 has no ROM home. Homeless and unreferenced, so a plain deadstrip."
+    },
+    {
+      "symbol": "_ZN6DealerD2Ev",
+      "disposition": "deadstrip",
+      "reason": "Base-object destructor emitted beside D1 by the out-of-line Dealer::~Dealer(). The cartridge carries only D1 at 0x020c1c64 (size 0x11c), followed directly by C1 at 0x020c1d80, so the image has no room for a D2. Homeless and unreferenced, so a plain deadstrip."
+    }
+  ],
+  "undefined_symbol_aliases": [
+    {
+      "symbol": "_ZN24MascotWalkerModelFilePtrC1Ej",
+      "canonical_symbol": "func_02017acc",
+      "canonical_module": "arm9",
+      "canonical_address": "0x02017acc",
+      "evidence": "retail MascotWalker constructor (ov006 0x020c0a48) calls 0x02017acc with file 0x205 on +0x00; the model wrapper constructor's exact PC24 relocation"
+    },
+    {
+      "symbol": "_ZN24MascotWalkerModelFilePtrD1Ev",
+      "canonical_symbol": "func_02017ab4",
+      "canonical_module": "arm9",
+      "canonical_address": "0x02017ab4",
+      "evidence": "retail MascotWalker destructor (ov006 0x020c09f8) calls 0x02017ab4 on +0x00 last; the model wrapper destructor's exact PC24 relocation"
+    },
+    {
+      "symbol": "_ZN31MascotWalkerAnimationFileHandleC1Ej",
+      "canonical_symbol": "_ZN13SharedFilePtr9ConstructEj",
+      "canonical_module": "arm9",
+      "canonical_address": "0x0201799c",
+      "evidence": "retail MascotWalker constructor calls 0x0201799c with files 0x206/0x207 on +0x08/+0x10; the animation wrapper constructor's exact PC24 relocation"
+    },
+    {
+      "symbol": "_ZN31MascotWalkerAnimationFileHandleD1Ev",
+      "canonical_symbol": "SharedFilePtr_Destruct_Anim",
+      "canonical_module": "arm9",
+      "canonical_address": "0x02017984",
+      "evidence": "retail MascotWalker destructor calls 0x02017984 on +0x10 then +0x08; the animation wrapper destructor's exact PC24 relocation"
+    },
+    {
+      "symbol": "_ZN18DealerModelFilePtrC1Ej",
+      "canonical_symbol": "func_02017acc",
+      "canonical_module": "arm9",
+      "canonical_address": "0x02017acc",
+      "evidence": "retail Dealer constructor (ov006 0x020c1d80) calls 0x02017acc with file 0x208 on +0x1e8 and file 0 on +0x1f0; the model wrapper constructor's exact PC24 relocation"
+    },
+    {
+      "symbol": "_ZN18DealerModelFilePtrD1Ev",
+      "canonical_symbol": "func_02017ab4",
+      "canonical_module": "arm9",
+      "canonical_address": "0x02017ab4",
+      "evidence": "retail Dealer destructor (ov006 0x020c1c64) calls 0x02017ab4 on +0x1f0 then +0x1e8; the model wrapper destructor's exact PC24 relocation"
+    },
+    {
+      "symbol": "_ZN25DealerAnimationFileHandleD1Ev",
+      "canonical_symbol": "SharedFilePtr_Destruct_Anim",
+      "canonical_module": "arm9",
+      "canonical_address": "0x02017984",
+      "evidence": "retail Dealer destructor calls 0x02017984 on the thirteen handles +0x258 down to +0x1f8; the animation wrapper destructor's exact PC24 relocation"
+    },
+    {
+      "symbol": "_ZN25DealerAnimationFileHandleC1Ej",
+      "canonical_symbol": "_ZN13SharedFilePtr9ConstructEj",
+      "canonical_module": "arm9",
+      "canonical_address": "0x0201799c",
+      "evidence": "retail Dealer constructor (ov006 0x020c1d80) calls 0x0201799c on the thirteen handles +0x1f8 up to +0x258 with files 0x212..0x20e; the animation wrapper constructor's exact PC24 relocation"
     }
   ]
 }

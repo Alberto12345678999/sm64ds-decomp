@@ -20191,11 +20191,11 @@
     },
     "ov006:0x020c09f8": {
       "author": "tangosdev",
-      "name": "MascotWalker_Destruct"
+      "name": "_ZN12MascotWalkerD1Ev"
     },
     "ov006:0x020c0a48": {
       "author": "tangosdev",
-      "name": "MascotWalker_Construct"
+      "name": "_ZN12MascotWalkerC1Ev"
     },
     "ov006:0x020c0aa8": {
       "author": "ruspecial",
@@ -20291,11 +20291,11 @@
     },
     "ov006:0x020c1c64": {
       "author": "tangosdev",
-      "name": "Dealer_Destruct"
+      "name": "_ZN6DealerD1Ev"
     },
     "ov006:0x020c1d80": {
       "author": "tangosdev",
-      "name": "Dealer_Construct"
+      "name": "_ZN6DealerC1Ev"
     },
     "ov006:0x020c1eb4": {
       "author": "ruspecial",
