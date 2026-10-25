@@ -22,7 +22,7 @@ struct DealerAnimationFileHandle : SharedFilePtr {
 };
 
 /* Dealer, Luigi dealing in the card games: the 0x270-byte record the card,
- * roulette and memory scenes embed at +0x4f38. The name is coined: the class
+ * roulette, BSC, Monte Carlo and memory scenes embed at +0x4f38. The name is coined: the class
  * has no vtable, so no RTTI names it. Its model is MG/luigi_d.bmd, and the
  * thirteen animation slots resolve (tools/asset_catalog.py) to
  * MG/luigi_d_wait, shuffle_start, shuffle, deal_start, deal, deal_end,
@@ -56,7 +56,9 @@ struct Dealer {
     s16 mLampTimer;    /* 0x1e0 */
     s16 mLampPattern;  /* 0x1e2 -- three lamp bits, cycling 1..7 */
     s16 mLightAngle;   /* 0x1e4 -- turns 0x400 a frame */
-    s16 mReserved;     /* 0x1e6 -- the constructor clears it; nothing in unit020bfec0 reads it */
+    s16 mReserved;     /* 0x1e6 -- the constructor clears it; the card, Monte Carlo and memory
+                          scenes set it to 1 when they start a shuffle and the card and Monte
+                          Carlo scenes clear it again, but nothing reads it */
     DealerModelFilePtr mModelFile;                       /* 0x1e8 -- luigi_d.bmd */
     DealerModelFilePtr mTableFile;                       /* 0x1f0 */
     DealerAnimationFileHandle mWaitAnim;          /* 0x1f8 -- wait.bca */

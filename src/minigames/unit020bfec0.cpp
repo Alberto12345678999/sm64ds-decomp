@@ -17,8 +17,9 @@
  *   constructor on existing storage only through placement new, which
  *   adds a null check -- FallingPetal_Construct no longer matches with
  *   `new (&PETAL(t)->mModel) dExtSimpleModel_c` (MEASURED 2026-10-23). The real shape
- *   is a constructor on each record, which waits on the records getting
- *   classes.
+ *   is a constructor on each record. Dealer and MascotWalker have theirs, so
+ *   the compiler builds their members; FallingPetal, FlowerFace and
+ *   Presenter still wait on getting classes.
  */
 
 #include "types.h"
