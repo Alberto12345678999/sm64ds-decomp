@@ -7,8 +7,8 @@
 #include "MascotWalker.h"
 
 /* The dealer's file handles. Each constructor takes the file's ID and each
- * destructor drops the handle; the spellings are coined here, and
- * unit020bfec0's manifest maps them onto the arm9 bodies they reach
+ * destructor drops the handle; the names are coined. src/minigames/
+ * unit020bfec0.cpp defines them inline over the arm9 veneers the ROM calls
  * (func_02017acc / func_02017ab4 for the two models, SharedFilePtr::Construct
  * / SharedFilePtr_Destruct_Anim for the animations). */
 struct DealerModelFilePtr : SharedFilePtr {

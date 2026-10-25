@@ -212,6 +212,36 @@ void *FlowerFace_Construct(char *c);
 int FallingPetal_Construct(char *t);
 }
 
+/* The file handles' constructors and destructors are the arm9 veneers the
+   ROM calls: func_02017acc / func_02017ab4 for a model file,
+   SharedFilePtr::Construct / SharedFilePtr_Destruct_Anim for an animation.
+   No ov006 body exists for them, so they are inline, and defined only here:
+   each use expands into the veneer call. */
+inline DealerModelFilePtr::DealerModelFilePtr(u32 fileID) {
+    func_02017acc(this, fileID);
+}
+inline DealerModelFilePtr::~DealerModelFilePtr() {
+    func_02017ab4(this);
+}
+inline DealerAnimationFileHandle::DealerAnimationFileHandle(u32 fileID) {
+    Construct(fileID);
+}
+inline DealerAnimationFileHandle::~DealerAnimationFileHandle() {
+    SharedFilePtr_Destruct_Anim(this);
+}
+inline MascotWalkerModelFilePtr::MascotWalkerModelFilePtr(u32 fileID) {
+    func_02017acc(this, fileID);
+}
+inline MascotWalkerModelFilePtr::~MascotWalkerModelFilePtr() {
+    func_02017ab4(this);
+}
+inline MascotWalkerAnimationFileHandle::MascotWalkerAnimationFileHandle(u32 fileID) {
+    Construct(fileID);
+}
+inline MascotWalkerAnimationFileHandle::~MascotWalkerAnimationFileHandle() {
+    SharedFilePtr_Destruct_Anim(this);
+}
+
 namespace s020c402c {
 extern "C" {
 int FallingPetal_Construct(char *t) {

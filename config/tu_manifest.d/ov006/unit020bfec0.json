@@ -735,64 +735,26 @@
       "symbol": "_ZN6DealerD2Ev",
       "disposition": "deadstrip",
       "reason": "Base-object destructor emitted beside D1 by the out-of-line Dealer::~Dealer(). The cartridge carries only D1 at 0x020c1c64 (size 0x11c), followed directly by C1 at 0x020c1d80, so the image has no room for a D2. Homeless and unreferenced, so a plain deadstrip."
-    }
-  ],
-  "undefined_symbol_aliases": [
-    {
-      "symbol": "_ZN24MascotWalkerModelFilePtrC1Ej",
-      "canonical_symbol": "func_02017acc",
-      "canonical_module": "arm9",
-      "canonical_address": "0x02017acc",
-      "evidence": "retail MascotWalker constructor (ov006 0x020c0a48) calls 0x02017acc with file 0x205 on +0x00; the model wrapper constructor's exact PC24 relocation"
-    },
-    {
-      "symbol": "_ZN24MascotWalkerModelFilePtrD1Ev",
-      "canonical_symbol": "func_02017ab4",
-      "canonical_module": "arm9",
-      "canonical_address": "0x02017ab4",
-      "evidence": "retail MascotWalker destructor (ov006 0x020c09f8) calls 0x02017ab4 on +0x00 last; the model wrapper destructor's exact PC24 relocation"
-    },
-    {
-      "symbol": "_ZN31MascotWalkerAnimationFileHandleC1Ej",
-      "canonical_symbol": "_ZN13SharedFilePtr9ConstructEj",
-      "canonical_module": "arm9",
-      "canonical_address": "0x0201799c",
-      "evidence": "retail MascotWalker constructor calls 0x0201799c with files 0x206/0x207 on +0x08/+0x10; the animation wrapper constructor's exact PC24 relocation"
-    },
-    {
-      "symbol": "_ZN31MascotWalkerAnimationFileHandleD1Ev",
-      "canonical_symbol": "SharedFilePtr_Destruct_Anim",
-      "canonical_module": "arm9",
-      "canonical_address": "0x02017984",
-      "evidence": "retail MascotWalker destructor calls 0x02017984 on +0x10 then +0x08; the animation wrapper destructor's exact PC24 relocation"
-    },
-    {
-      "symbol": "_ZN18DealerModelFilePtrC1Ej",
-      "canonical_symbol": "func_02017acc",
-      "canonical_module": "arm9",
-      "canonical_address": "0x02017acc",
-      "evidence": "retail Dealer constructor (ov006 0x020c1d80) calls 0x02017acc with file 0x208 on +0x1e8 and file 0 on +0x1f0; the model wrapper constructor's exact PC24 relocation"
     },
     {
       "symbol": "_ZN18DealerModelFilePtrD1Ev",
-      "canonical_symbol": "func_02017ab4",
-      "canonical_module": "arm9",
-      "canonical_address": "0x02017ab4",
-      "evidence": "retail Dealer destructor (ov006 0x020c1c64) calls 0x02017ab4 on +0x1f0 then +0x1e8; the model wrapper destructor's exact PC24 relocation"
+      "disposition": "deadstrip",
+      "reason": "Out-of-line vague-linkage copy of the inline DealerModelFilePtr destructor this source defines over func_02017ab4. mwccarm emits it once a member of the type is destroyed, but Dealer's D1 inlines the call (relocation destinations clean) and no relocation in the object names it. The coined class has no ROM home, so a plain deadstrip."
     },
     {
       "symbol": "_ZN25DealerAnimationFileHandleD1Ev",
-      "canonical_symbol": "SharedFilePtr_Destruct_Anim",
-      "canonical_module": "arm9",
-      "canonical_address": "0x02017984",
-      "evidence": "retail Dealer destructor calls 0x02017984 on the thirteen handles +0x258 down to +0x1f8; the animation wrapper destructor's exact PC24 relocation"
+      "disposition": "deadstrip",
+      "reason": "Out-of-line vague-linkage copy of the inline DealerAnimationFileHandle destructor this source defines over SharedFilePtr_Destruct_Anim. mwccarm emits it once a member of the type is destroyed, but Dealer's D1 inlines all thirteen calls (relocation destinations clean) and no relocation in the object names it. The coined class has no ROM home, so a plain deadstrip."
     },
     {
-      "symbol": "_ZN25DealerAnimationFileHandleC1Ej",
-      "canonical_symbol": "_ZN13SharedFilePtr9ConstructEj",
-      "canonical_module": "arm9",
-      "canonical_address": "0x0201799c",
-      "evidence": "retail Dealer constructor (ov006 0x020c1d80) calls 0x0201799c on the thirteen handles +0x1f8 up to +0x258 with files 0x212..0x20e; the animation wrapper constructor's exact PC24 relocation"
+      "symbol": "_ZN24MascotWalkerModelFilePtrD1Ev",
+      "disposition": "deadstrip",
+      "reason": "Out-of-line vague-linkage copy of the inline MascotWalkerModelFilePtr destructor this source defines over func_02017ab4. mwccarm emits it once a member of the type is destroyed, but MascotWalker's D1 inlines the call (relocation destinations clean) and no relocation in the object names it. The coined class has no ROM home, so a plain deadstrip."
+    },
+    {
+      "symbol": "_ZN31MascotWalkerAnimationFileHandleD1Ev",
+      "disposition": "deadstrip",
+      "reason": "Out-of-line vague-linkage copy of the inline MascotWalkerAnimationFileHandle destructor this source defines over SharedFilePtr_Destruct_Anim. mwccarm emits it once a member of the type is destroyed, but MascotWalker's D1 inlines both calls (relocation destinations clean) and no relocation in the object names it. The coined class has no ROM home, so a plain deadstrip."
     }
   ]
 }
