@@ -253,7 +253,7 @@ struct dScMgSnowball_c : dScMgSingle3DBase_c {
     u8    mProbePush[0x20]; /* 0xac18 -- same probe hit solid; drives the push-out */
     u8    mProbeWater[0x20];/* 0xac38 -- same probe is inside water */
     u8    mArray1Active[0x80]; /* 0xac58 -- 1 = this mArray1 slot is live */
-    Vector2 mArray1[0x80];  /* 0xacd8 -- Fix12 positions, Render draws them */
+    Vector2 mArray1[0x80];     /* 0xacd8 -- Fix12 positions, Render draws them */
     s32   mArray1Kind[0x80]; /* 0xb0d8 -- 1 picks the 8-frame animated sprite
                                 table, anything else the static one */
     u8    mArray1Hit[0x80]; /* 0xb2d8 -- HitsBreakable sets it on
@@ -261,7 +261,7 @@ struct dScMgSnowball_c : dScMgSingle3DBase_c {
     u8    mArray2Active[0x80]; /* 0xb358 -- 1 = this mArray2 slot is live */
     s32   mArray2Kind[0x80]; /* 0xb3d8 -- Render switches 0..2 against 3 to
                                 pick the sprite */
-    Vector2 mArray2[0x80];  /* 0xb5d8 -- Fix12 positions, as mArray1 */
+    Vector2 mArray2[0x80];   /* 0xb5d8 -- Fix12 positions, as mArray1 */
     s32   mAnimCounter;     /* 0xb9d8 -- Render bumps it, wraps at 0x20; the
                                 obstacle sprite frame is (n / 4) & 7 */
     s32   mTimeLeft;        /* 0xb9dc -- frames; Render draws it as
@@ -291,7 +291,7 @@ struct dScMgSnowball_c : dScMgSingle3DBase_c {
     s32   mScrollLimit;     /* 0xba08 -- mScrollY stops at (n << 16) - 0x1d0000 */
     s32   mCrashTimer;      /* 0xba0c -- counts up through states 2 and 4 */
     s32   mEndDelayTimer;   /* 0xba10 -- 0xb4 frames of state 3 */
-    SnowSpray mSprays[0x20]; /* 0xba14 */
+    SnowSpray mSprays[0x20];     /* 0xba14 */
     dScMgSnowball_bit mBits[50]; /* 0xbe94 -- 50 * 0x24, see file banner */
 };
 

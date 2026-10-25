@@ -49,7 +49,7 @@ struct TrmpItem {
        them down through the type's arm9 structors (func_0203d738 /
        NullDestructor_0203d47c), but nothing in either trampoline TU reads or
        writes them, so the role, and the name, are unknown. */
-    Vector2 mUnusedVec[5];        /* 0x1a8 */
+    Vector2 mUnusedVec[5]; /* 0x1a8 */
 };
 
 #ifndef SM64DS_PLATFORM_PC
