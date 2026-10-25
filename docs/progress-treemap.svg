@@ -1513,7 +1513,7 @@ matched: yes</title></rect><rect x="278.44" y="135.93" width="29.98" height="7.4
 module: arm9
 addr: 0x02012be0
 size: 332 bytes
-matched: yes</title></rect><rect x="308.42" y="135.93" width="5.06" height="7.43" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Sound17ChangeMusicVolumeEj5Fix12IiE
+matched: yes</title></rect><rect x="308.42" y="135.93" width="5.06" height="7.43" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Sound17ChangeMusicVolumeEji
 module: arm9
 addr: 0x02012d2c
 size: 56 bytes
