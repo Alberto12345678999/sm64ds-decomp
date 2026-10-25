@@ -1,20 +1,11 @@
 #include "Ov007Sprite.h"
+#include "Ov007Work.h"
 
 extern short func_ov007_020c3be0(void* a, unsigned short h1, unsigned short h2);
 
 struct S2 { unsigned short a, b; };
 extern struct S2 data_ov007_020ccc50[];
 extern struct S2 data_ov007_020ccc5c[];
-
-/* data_ov007_0210342c: the overlay's manager; only the slots this function
- * touches. */
-typedef struct Ov007Work {
-    char pad_00[0x108];
-    /* 0x108: the three full-screen sprites func_ov007_020b2998 builds;
-     * this function recolours [0] and [1] (names as in
-     * func_ov007_020b2728) */
-    Ov007Sprite *screenSprites[3];
-} Ov007Work;
 
 extern char* data_ov007_0210342c;
 /* The extern keeps the tree's char * spelling (the declaration-agreement

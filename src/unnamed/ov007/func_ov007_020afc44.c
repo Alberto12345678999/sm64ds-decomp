@@ -1,5 +1,6 @@
 #include "Ov007MenuState.h"
 #include "Ov007Tween.h"
+#include "Ov007Work.h"
 
 extern int func_ov007_020c8f98(void* p);
 extern void func_ov007_020c1d78(int i);
@@ -18,35 +19,6 @@ typedef struct Ov007LayerSlot {
     int state; /* 0x00: an Ov007MenuState (func_ov007_020c9388) */
     int layer; /* 0x04: the Ov007BgLayer func_ov007_020c0638 scrolls */
 } Ov007LayerSlot;
-
-/* data_ov007_0210342c: the overlay's manager. No class or header names it;
- * only the slots this file touches are spelled. Left raw: +0x60 (handed to
- * func_ov007_020b8188, cleared by func_ov007_020b0244) and the record the
- * settings' first word points at (a byte per slot from +0xb). */
-typedef struct Ov007Work {
-    char pad_00[4];
-    Ov007MenuState *states[3]; /* 0x04: func_ov007_020c9388 */
-    char pad_10[0x18];
-    /* 0x28: the 0x3c-byte record func_ov007_020b6a84 allocates;
-     * func_ov007_020b8188 draws the record board from it */
-    struct Ov007Settings *settings;
-    char pad_2c[0x2c];
-    /* 0x58/0x5c, medium confidence: func_ov007_020b6134 stores the tapped
-     * slot item (ids 0xe..0x10) in one or the other by menu state;
-     * func_ov007_020af84c indexes data_ov007_020ccc20[selectedSlot][targetSlot];
-     * -1 = none (func_ov007_020b0244) */
-    int selectedSlot;
-    int targetSlot;
-    char pad_60[4];
-    int tweenOut[2];       /* 0x64: bound as tweens[i]->out (func_ov007_020b6a84) */
-    Ov007Tween *tweens[2]; /* 0x6c: func_ov007_020c908c */
-    char pad_74[0x54];
-    /* 0xc8: func_ov007_020b6d40 stores func_ov007_020adc08(i, ...) for
-     * i = 0..7 */
-    Ov007LayerSlot *layerSlots[8];
-} Ov007Work;
-
-typedef char Ov007Work_size_must_be_0xe8[sizeof(Ov007Work) == 0xe8 ? 1 : -1];
 
 extern char *data_ov007_0210342c;
 /* The extern keeps the tree's char * spelling (the declaration-agreement

@@ -1,6 +1,7 @@
 #include "types.h"
 #include "Ov007MenuState.h"
 #include "Ov007Tween.h"
+#include "Ov007Work.h"
 extern u8 data_ov007_0210342c[];
 
 /* The 10-byte layout row an item points at (names as in
@@ -36,16 +37,6 @@ typedef struct Ov007ItemView {
     s16 slideToX;           /* 0x18 */
     s16 slideToY;           /* 0x1a */
 } Ov007ItemView;
-
-/* data_ov007_0210342c: the overlay's manager; names as in
- * func_ov007_020afc44, only the slots this file reads. */
-typedef struct Ov007Work {
-    char pad_00[4];
-    Ov007MenuState *states[3]; /* 0x04: func_ov007_020c9388 */
-    char pad_10[0x48];
-    int selectedSlot; /* 0x58: medium confidence (func_ov007_020afc44) */
-    int targetSlot;   /* 0x5c */
-} Ov007Work;
 
 /* The extern keeps this file's u8[] spelling; the manager pointer is stored there. */
 #define WORK (*(Ov007Work **)data_ov007_0210342c)

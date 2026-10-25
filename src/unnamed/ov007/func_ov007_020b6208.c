@@ -3,24 +3,10 @@
  * func_ov007_020bdeb0 with it.
  */
 #include "Ov007MenuState.h"
+#include "Ov007Work.h"
 
 extern char *data_ov007_0210342c;
 extern int func_ov007_020bdeb0(int a);
-
-/* data_ov007_0210342c: the overlay's manager; names as in
- * func_ov007_020afc44 and func_ov007_020ae070, only the slots this file
- * reads. The settings record's first word (a record with a byte at +9 read
- * here) stays raw, as in func_ov007_020afc44. */
-typedef struct Ov007Work {
-    char pad_00[4];
-    Ov007MenuState *states[3]; /* 0x04: func_ov007_020c9388; [1] is the main one */
-    char pad_10[0x18];
-    struct Ov007Settings *settings; /* 0x28: func_ov007_020b6a84 */
-    char pad_2c[0x2c];
-    int selectedSlot; /* 0x58: -1 = none (func_ov007_020b0244) */
-} Ov007Work;
-
-typedef char Ov007Work_size_must_be_0x5c[sizeof(Ov007Work) == 0x5c ? 1 : -1];
 
 /* The extern keeps the tree's char * spelling; the typed view is reached
  * through a cast macro. */

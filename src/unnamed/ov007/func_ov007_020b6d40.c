@@ -1,4 +1,5 @@
 #include "types.h"
+#include "Ov007Work.h"
 extern char *data_ov007_0210342c;
 extern int data_ov007_020d7e28[];
 extern int data_ov007_020d7e38[];
@@ -46,19 +47,7 @@ typedef struct Ov007Display {
     char **spriteBanks; /* 0x3c: six func_ov007_020c9688 sprite banks */
 } Ov007Display;
 
-/* data_ov007_0210342c: the overlay's manager; names as in
- * func_ov007_020adc08, func_ov007_020ade58 and func_ov007_020b0244, only the
- * slots this function fills. */
-typedef struct Ov007Work {
-    char pad_00[0x74];
-    Ov007Display *display; /* 0x74 */
-    char pad_78[0x2c];
-    void *itemNodes[9];                   /* 0xa4: func_ov007_020ade58 */
-    struct Ov007LayerSlot *layerSlots[8]; /* 0xc8: func_ov007_020adc08 */
-} Ov007Work;
-
 typedef char Ov007Display_size_must_be_0x40[sizeof(Ov007Display) == 0x40 ? 1 : -1];
-typedef char Ov007Work_size_must_be_0xe8[sizeof(Ov007Work) == 0xe8 ? 1 : -1];
 
 /* The extern keeps the tree's char * spelling; the typed view is reached
  * through a cast macro. */

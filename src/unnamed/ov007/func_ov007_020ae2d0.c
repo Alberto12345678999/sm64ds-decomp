@@ -1,5 +1,6 @@
 #include "types.h"
 #include "Ov007MenuState.h"
+#include "Ov007Work.h"
 extern u8 data_ov007_0210342c[];
 extern short data_02082214[];
 extern int _ZN4cstd3modEii(int, int);
@@ -33,16 +34,6 @@ typedef struct Ov007Item {
 typedef struct Ov007ItemView {
     Ov007Item *item; /* 0x00 */
 } Ov007ItemView;
-
-/* data_ov007_0210342c: the overlay's manager; names as in
- * func_ov007_020b1cf0, only the slots this file reads. */
-typedef struct Ov007Work {
-    char pad_00[4];
-    Ov007MenuState *states[3]; /* 0x04: func_ov007_020c9388 */
-    char pad_10[0x104];
-    /* 0x114: func_ov007_020b693c, one per func_ov007_020b4c04 */
-    Ov007ItemView *itemViews[0x18];
-} Ov007Work;
 
 typedef char
     Ov007Work_itemViews_must_be_at_0x114[(int)&((Ov007Work *)0)->itemViews == 0x114 ? 1 : -1];

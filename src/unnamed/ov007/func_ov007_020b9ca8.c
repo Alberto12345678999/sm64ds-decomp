@@ -1,5 +1,6 @@
 #include "types.h"
 #include "Ov007Touch.h"
+#include "Ov007Work.h"
 /* func_ov007_020b9ca8 @ 0x020b9ca8 (ov007, size 0x264)
  * Minigame cursor/pen update: advances the shared pen state, spawns the
  * touch feedback (sound id 0x25..0x28 by rhythm), fades the music with pen
@@ -40,15 +41,6 @@ typedef struct Ov007Camera {
 typedef struct Ov007Pad {
     u16 keys; /* 0x00: held this frame */
 } Ov007Pad;
-
-/* data_ov007_0210342c: the overlay's manager; only its camera and input slots here. */
-typedef struct Ov007Work {
-    char pad_00[0x30];
-    Ov007Camera *cameras[2]; /* 0x30: func_ov007_020c023c */
-    char pad_38[0x18];
-    Ov007Touch *touch; /* 0x50: func_ov007_020c2068 */
-    Ov007Pad *pad;     /* 0x54: func_ov007_020c2304 */
-} Ov007Work;
 
 extern char *data_ov007_0210342c;
 extern char *data_ov007_02104ba0;

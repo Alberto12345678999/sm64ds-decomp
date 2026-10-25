@@ -1,5 +1,6 @@
 #include "types.h"
 #include "dExtModel_c.h"
+#include "Ov007Work.h"
 
 /* Names as in func_ov007_020bc02c and func_ov007_020b257c, only the slots
  * this file reads. */
@@ -45,17 +46,6 @@ typedef struct Ov007SpriteGroup {
     int *layout;        /* 0x00 */
     Ov007OamNode *root; /* 0x04: the items' parent */
 } Ov007SpriteGroup;
-
-/* data_ov007_0210342c: the overlay's manager; names as in
- * func_ov007_020b1fa4, only the slots this file reads. +0xec stays raw. */
-typedef struct Ov007Work {
-    char pad_00[0x24];
-    /* 0x24, medium confidence: the preset func_ov007_020b1fa4 last applied;
-     * this file moves the sprite down 0x14b under preset 4 */
-    int cameraPreset;
-    char pad_28[8];
-    void *cameras[2]; /* 0x30: func_ov007_020c023c */
-} Ov007Work;
 
 extern char **data_ov007_02104bc0;
 extern int data_ov007_02103230;
