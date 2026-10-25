@@ -74,7 +74,7 @@
    (mComboFlag) the hand evaluation sets on the cards forming the pair. */
 
 struct dMgCardObj_c {
-    ~dMgCardObj_c();             /* ov006 0x020d96e0 -- not virtual */
+    ~dMgCardObj_c(); /* ov006 0x020d96e0 -- not virtual */
 
     virtual void Render();       /* slot 0 -- ov006 0x020d9bdc */
     virtual void Update();       /* slot 1 -- ov006 0x020d9c5c */
@@ -108,7 +108,7 @@ struct dMgCardObj_c {
    12-byte single-inheritance form, and the 0x14-byte record at
    0x0213bcec/0x0213bcf4 confirms it adds nothing). */
 struct dMgDilarCardObj_c : dMgCardObj_c {
-    ~dMgDilarCardObj_c();        /* ov006 0x020d96f0 */
+    ~dMgDilarCardObj_c(); /* ov006 0x020d96f0 */
 
     virtual void Render();       /* slot 0 -- ov006 0x020d970c */
     virtual void Update();       /* slot 1 -- ov006 0x020d978c */
@@ -161,7 +161,7 @@ struct dScMgCard_c : dScMgSingle3DBase_c {
     static void FillWeights(int v);                                       /* 0x020da974 */
 
     Dealer mDealer;               /* 0x4f38 */
-    dMgCardObj_c     mArray1[5];  /* 0x51a8 -- the player's hand */
+    dMgCardObj_c mArray1[5];      /* 0x51a8 -- the player's hand */
     dMgDilarCardObj_c mArray2[5]; /* 0x5298 -- the dealer's hand */
     s16 mState;              /* 0x5388 -- the round's step counter; UpdateState
                                 is one long switch on it and mostly just `++`s it */

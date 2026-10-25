@@ -20327,11 +20327,11 @@
     },
     "ov006:0x020c21e4": {
       "author": "tangosdev",
-      "name": "Mascot_Destruct"
+      "name": "_ZN6MascotD1Ev"
     },
     "ov006:0x020c221c": {
       "author": "tangosdev",
-      "name": "Mascot_Construct"
+      "name": "_ZN6MascotC1Ev"
     },
     "ov006:0x020c225c": {
       "author": "ruspecial",
@@ -20419,11 +20419,11 @@
     },
     "ov006:0x020c3288": {
       "author": "tangosdev",
-      "name": "Presenter_Destruct"
+      "name": "_ZN9PresenterD1Ev"
     },
     "ov006:0x020c33dc": {
       "author": "tangosdev",
-      "name": "Presenter_Construct"
+      "name": "_ZN9PresenterC1Ev"
     },
     "ov006:0x020c3528": {
       "author": "tangosdev",
@@ -20503,19 +20503,19 @@
     },
     "ov006:0x020c3e54": {
       "author": "tangosdev",
-      "name": "FallingPetal_Destruct"
+      "name": "_ZN12FallingPetalD1Ev"
     },
     "ov006:0x020c3e70": {
       "author": "tangosdev",
-      "name": "FlowerFace_Destruct"
+      "name": "_ZN10FlowerFaceD1Ev"
     },
     "ov006:0x020c3f54": {
       "author": "tangosdev",
-      "name": "FlowerFace_Construct"
+      "name": "_ZN10FlowerFaceC1Ev"
     },
     "ov006:0x020c402c": {
       "author": "tangosdev",
-      "name": "FallingPetal_Construct"
+      "name": "_ZN12FallingPetalC1Ev"
     },
     "ov006:0x020c4048": {
       "author": "tangosdev",
@@ -27571,7 +27571,7 @@
     },
     "ov006:0x0212a650": {
       "author": "tangosdev",
-      "name": "Petal_ElemDtor"
+      "name": "_ZN13dScMgFlower_c5PetalD1Ev"
     },
     "ov006:0x0212a654": {
       "author": "andrewboudreau",
@@ -27603,7 +27603,7 @@
     },
     "ov006:0x0212b88c": {
       "author": "tangosdev",
-      "name": "Petal_ElemCtor"
+      "name": "_ZN13dScMgFlower_c5PetalC1Ev"
     },
     "ov006:0x0212f4c4": {
       "author": "tangosdev",

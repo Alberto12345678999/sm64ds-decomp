@@ -12,14 +12,13 @@
  *   changes the call.
  * - The records' models are real dExtSimpleModel_c / dExtAnmModel_c / dExtBlendAnmModel_c
  *   members, so their SetFile/SetAnim/Advance/Render calls, frame tests,
- *   matrix stores and destructor calls are member calls. The constructors
- *   are still called by name (_ZN17dExtSimpleModel_cC1Ev and kin): C++ runs a
- *   constructor on existing storage only through placement new, which
- *   adds a null check -- FallingPetal_Construct no longer matches with
- *   `new (&PETAL(t)->mModel) dExtSimpleModel_c` (MEASURED 2026-10-23). The real shape
- *   is a constructor on each record. Dealer and MascotWalker have theirs, so
- *   the compiler builds their members; FallingPetal, FlowerFace and
- *   Presenter still wait on getting classes.
+ *   matrix stores and destructor calls are member calls. Every record here
+ *   (Dealer, MascotWalker, Mascot, FallingPetal, FlowerFace, Presenter) has
+ *   its own constructor and destructor at its ROM address, so the compiler
+ *   builds and tears down their members.
+ * - The other per-record helpers are still free functions over a char*
+ *   record, read through the WALKER() / PRESENTER() / DEALER() / MASCOT() /
+ *   PETAL() casts.
  */
 
 #include "types.h"
@@ -93,17 +92,12 @@ void SharedFilePtr_Destruct_Anim(void *);
 void SharedFilePtr_Destruct_TexSeq(void *);
 void _ZN17dExtShadowModel_c9InitModelEP9Matrix4x35Fix12IiES3_S3_j(void *, void *, int, int, int,
                                                                   unsigned int);
-void *_ZN19dExtBlendAnmModel_cC1Ev(void *);
-void *_ZN15dExtAnmTexPat_cC1Ev(void *);
-void *_ZN15dExtAnmTexSRT_cC1Ev(void *);
 int _ZN3G3i13PerspectiveW_E5Fix12IiES1_S1_S1_S1_S1_bP9Matrix4x3(int, int, int, int, int, int, int,
                                                                 void *);
-void *_ZN17dExtSimpleModel_cC1Ev(void *);
 void _ZN5Sound12PlayBank2_2DEj(unsigned int);
 /* local extern: dClipper::Func_020156DC takes a by-value Fix12<int> (the Fix12 wall), so it stays spelled out with scalar arguments. */
 void _ZN8dClipper13Func_020156DCEitii(void *, int, int, int, int);
 void *_ZN7Vector3D1Ev(void *);
-void *_ZN14dExtAnmModel_cC1Ev(void *);
 void *__cxa_vec_ctor(void *, int, int, void *, void *);
 void func_02012174(int, int);
 void func_02016a04(void *, int);
@@ -156,10 +150,6 @@ void Mascot_UpdateMatrix(char *c);
 void Mascot_Draw(void *c);
 void Mascot_Update(void *a);
 void Mascot_Load(char *c);
-int Mascot_Destruct(
-    char *
-        t); // local extern: raw char*/void* view of the actor memory; the class header declares the typed form and would change call-site codegen
-int Mascot_Construct(char *t);
 void Camera_InitPresenterView(void *self);
 void Presenter_UpdateMatrix(char *c);
 void Presenter_StateSurprisedThenIdle(char *t);
@@ -181,10 +171,6 @@ void Presenter_Draw(char *c);
 void Presenter_Update(void *c);
 void Presenter_TrackStylus(char *c);
 int Presenter_Load(char *c);
-int Presenter_Destruct(
-    char *
-        t); // local extern: raw char*/void* view of the actor memory; the class header declares the typed form and would change call-site codegen
-int Presenter_Construct(char *t);
 void FallingPetal_UpdateMatrix(char *c);
 void FallingPetal_Draw(char *c);
 void FallingPetal_Update(char *self);
@@ -204,12 +190,6 @@ void FlowerFace_Reset(void *a);
 void FlowerFace_Draw(void *self);
 void FlowerFace_Update(char *c);
 int FlowerFace_Load(char *c);
-int FallingPetal_Destruct(char *t);
-void *FlowerFace_Destruct(
-    char *
-        c); // local extern: raw char*/void* view of the actor memory; the class header declares the typed form and would change call-site codegen
-void *FlowerFace_Construct(char *c);
-int FallingPetal_Construct(char *t);
 }
 
 /* The file handles' constructors and destructors are the arm9 veneers the
@@ -241,75 +221,81 @@ inline MascotWalkerAnimationFileHandle::MascotWalkerAnimationFileHandle(u32 file
 inline MascotWalkerAnimationFileHandle::~MascotWalkerAnimationFileHandle() {
     SharedFilePtr_Destruct_Anim(this);
 }
-
-namespace s020c402c {
-extern "C" {
-int FallingPetal_Construct(char *t) {
-    _ZN17dExtSimpleModel_cC1Ev(&PETAL(t)->mModel);
-    return (int)t;
+inline PresenterModelFilePtr::PresenterModelFilePtr(u32 fileID) {
+    func_02017acc(this, fileID);
 }
+inline PresenterModelFilePtr::~PresenterModelFilePtr() {
+    func_02017ab4(this);
 }
+inline PresenterAnimationFileHandle::PresenterAnimationFileHandle(u32 fileID) {
+    Construct(fileID);
 }
-
-namespace s020c3f54 {
-extern "C" {}
-
-extern "C" void *FlowerFace_Construct(char *c) {
-    __cxa_vec_ctor(FLOWERFACE(c)->mPetals, 0x16, 0x98, (void *)FallingPetal_Construct,
-                   (void *)FallingPetal_Destruct);
-    _ZN14dExtAnmModel_cC1Ev(&FLOWERFACE(c)->mModel);
-    func_02017acc(&FLOWERFACE(c)->mModelFile, 0x222);
-    func_02017acc(&FLOWERFACE(c)->mPetalFile, 0x201);
-    ((SharedFilePtr *)&FLOWERFACE(c)->mWaitAnim)->Construct(0x224);
-    ((SharedFilePtr *)&FLOWERFACE(c)->mPickAnim)->Construct(0x223);
-    ((SharedFilePtr *)&FLOWERFACE(c)->mLikeAnim)->Construct(0x221);
-    ((SharedFilePtr *)&FLOWERFACE(c)->mHateAnim)->Construct(0x220);
-    return c;
+inline PresenterAnimationFileHandle::~PresenterAnimationFileHandle() {
+    SharedFilePtr_Destruct_Anim(this);
 }
+inline PresenterTexSeqFileHandle::PresenterTexSeqFileHandle(u32 fileID) {
+    SharedFilePtr_Construct_TexSeq(this, fileID);
 }
-
-namespace s020c3e70 {
-extern "C" {}
-extern "C" void *FlowerFace_Destruct(char *c) {
-    ((SharedFilePtr *)&FLOWERFACE(c)->mModelFile)->Release();
-    ((SharedFilePtr *)&FLOWERFACE(c)->mPetalFile)->Release();
-    ((SharedFilePtr *)&FLOWERFACE(c)->mWaitAnim)->Release();
-    ((SharedFilePtr *)&FLOWERFACE(c)->mPickAnim)->Release();
-    ((SharedFilePtr *)&FLOWERFACE(c)->mLikeAnim)->Release();
-    ((SharedFilePtr *)&FLOWERFACE(c)->mHateAnim)->Release();
-    SharedFilePtr_Destruct_Anim(&FLOWERFACE(c)->mHateAnim);
-    SharedFilePtr_Destruct_Anim(&FLOWERFACE(c)->mLikeAnim);
-    SharedFilePtr_Destruct_Anim(&FLOWERFACE(c)->mPickAnim);
-    SharedFilePtr_Destruct_Anim(&FLOWERFACE(c)->mWaitAnim);
-    func_02017ab4(&FLOWERFACE(c)->mPetalFile);
-    func_02017ab4(&FLOWERFACE(c)->mModelFile);
-    FLOWERFACE(c)->mModel.dExtAnmModel_c::~dExtAnmModel_c();
-    __cxa_vec_cleanup(FLOWERFACE(c)->mPetals, 0x16, 0x98, (void *)FallingPetal_Destruct);
-    return c;
+inline PresenterTexSeqFileHandle::~PresenterTexSeqFileHandle() {
+    SharedFilePtr_Destruct_TexSeq(this);
 }
+inline FlowerFaceModelFilePtr::FlowerFaceModelFilePtr(u32 fileID) {
+    func_02017acc(this, fileID);
+}
+inline FlowerFaceModelFilePtr::~FlowerFaceModelFilePtr() {
+    func_02017ab4(this);
+}
+inline FlowerFaceAnimationFileHandle::FlowerFaceAnimationFileHandle(u32 fileID) {
+    Construct(fileID);
+}
+inline FlowerFaceAnimationFileHandle::~FlowerFaceAnimationFileHandle() {
+    SharedFilePtr_Destruct_Anim(this);
 }
 
-namespace s020c3e54 {
-extern "C" {
-int FallingPetal_Destruct(char *t) {
-    PETAL(t)->mModel.dExtSimpleModel_c::~dExtSimpleModel_c();
-    return (int)t;
+/* ---- FallingPetal::FallingPetal ---- */
+/* mModel is the only member with a constructor. */
+// @symbol _ZN12FallingPetalC1Ev
+FallingPetal::FallingPetal() {}
+
+/* ---- FlowerFace::FlowerFace ---- */
+/* The petals, the model and the six file handles are members, so the
+   compiler builds them in declaration order: the petal array through
+   __cxa_vec_ctor with FallingPetal's own constructor and destructor. */
+// @symbol _ZN10FlowerFaceC1Ev
+FlowerFace::FlowerFace()
+    : mModelFile(0x222), mPetalFile(0x201), mWaitAnim(0x224), mPickAnim(0x223), mLikeAnim(0x221),
+      mHateAnim(0x220) {}
+
+/* ---- FlowerFace::~FlowerFace ---- */
+/* Releases every file; the members' destructors then run in reverse
+   declaration order: the four animations, the two models' files, the
+   model and the petal array. */
+// @symbol _ZN10FlowerFaceD1Ev
+FlowerFace::~FlowerFace() {
+    mModelFile.Release();
+    mPetalFile.Release();
+    mWaitAnim.Release();
+    mPickAnim.Release();
+    mLikeAnim.Release();
+    mHateAnim.Release();
 }
-}
-}
+
+/* ---- FallingPetal::~FallingPetal ---- */
+// @symbol _ZN12FallingPetalD1Ev
+FallingPetal::~FallingPetal() {}
 
 namespace s020c3d88 {
 extern "C" int FlowerFace_Load(char *c) {
     {
-        void *bmd = dExtSimpleModel_c::LoadFile(*(::SharedFilePtr *)&FLOWERFACE(c)->mModelFile);
+        void *bmd = dExtSimpleModel_c::LoadFile(FLOWERFACE(c)->mModelFile);
         FLOWERFACE(c)->mModel.SetFile((BMD_File *)bmd, 1, -1);
     }
-    dExtFrameCtrl_c::LoadFile(*(::SharedFilePtr *)&FLOWERFACE(c)->mWaitAnim);
-    dExtFrameCtrl_c::LoadFile(*(::SharedFilePtr *)&FLOWERFACE(c)->mPickAnim);
-    dExtFrameCtrl_c::LoadFile(*(::SharedFilePtr *)&FLOWERFACE(c)->mLikeAnim);
-    dExtFrameCtrl_c::LoadFile(*(::SharedFilePtr *)&FLOWERFACE(c)->mHateAnim);
+    dExtFrameCtrl_c::LoadFile(FLOWERFACE(c)->mWaitAnim);
+    dExtFrameCtrl_c::LoadFile(FLOWERFACE(c)->mPickAnim);
+    dExtFrameCtrl_c::LoadFile(FLOWERFACE(c)->mLikeAnim);
+    dExtFrameCtrl_c::LoadFile(FLOWERFACE(c)->mHateAnim);
     FlowerFace_PlayIdle(c);
-    int m = (int)dExtSimpleModel_c::LoadFile(*(::SharedFilePtr *)&FLOWERFACE(c)->mPetalFile);
+    int m = (int)dExtSimpleModel_c::LoadFile(FLOWERFACE(c)->mPetalFile);
     int i = 0;
     int z = i;
     char *p = (char *)FLOWERFACE(c)->mPetals;
@@ -475,7 +461,7 @@ extern "C" {
 extern struct S pmf_FlowerFace_StateIdle;
 }
 void FlowerFace_PlayIdle(char *p) {
-    FLOWERFACE(p)->mModel.SetAnim((BCA_File *)FLOWERFACE(p)->mWaitAnim.file, 0, 0x800, 0);
+    FLOWERFACE(p)->mModel.SetAnim((BCA_File *)FLOWERFACE(p)->mWaitAnim.filePtr, 0, 0x800, 0);
     *(struct S *)FLOWERFACE(p)->mState = pmf_FlowerFace_StateIdle;
 }
 }
@@ -510,7 +496,8 @@ void FlowerFace_PlayPetalPulled(char *c) {
         Vec3 pos, vel, pos2, vel2;
     } b;
 
-    FLOWERFACE(c)->mModel.SetAnim((BCA_File *)FLOWERFACE(c)->mPickAnim.file, 0x40000000, 0x800, 0);
+    FLOWERFACE(c)->mModel.SetAnim((BCA_File *)FLOWERFACE(c)->mPickAnim.filePtr, 0x40000000, 0x800,
+                                  0);
 
     FLOWERFACE(c)->mModel.currFrame = 0; /* rewind */
 
@@ -567,7 +554,8 @@ extern "C" {
 extern struct S pmf_FlowerFace_StateLike;
 }
 void FlowerFace_PlayLike(char *p) {
-    FLOWERFACE(p)->mModel.SetAnim((BCA_File *)FLOWERFACE(p)->mLikeAnim.file, 0x40000000, 0x800, 0);
+    FLOWERFACE(p)->mModel.SetAnim((BCA_File *)FLOWERFACE(p)->mLikeAnim.filePtr, 0x40000000, 0x800,
+                                  0);
     *(struct S *)FLOWERFACE(p)->mState = pmf_FlowerFace_StateLike;
 }
 }
@@ -588,7 +576,8 @@ extern "C" {
 extern struct S pmf_FlowerFace_StateHate;
 }
 void FlowerFace_PlayHate(char *p) {
-    FLOWERFACE(p)->mModel.SetAnim((BCA_File *)FLOWERFACE(p)->mHateAnim.file, 0x40000000, 0x800, 0);
+    FLOWERFACE(p)->mModel.SetAnim((BCA_File *)FLOWERFACE(p)->mHateAnim.filePtr, 0x40000000, 0x800,
+                                  0);
     *(struct S *)FLOWERFACE(p)->mState = pmf_FlowerFace_StateHate;
 }
 }
@@ -756,84 +745,44 @@ void FallingPetal_UpdateMatrix(char *c) {
 }
 }
 
-namespace s020c33dc {
-extern "C" {
-int Presenter_Construct(char *t) {
-    _ZN19dExtBlendAnmModel_cC1Ev(&PRESENTER(t)->mFace);
-    _ZN17dExtSimpleModel_cC1Ev(&PRESENTER(t)->mBack);
-    _ZN15dExtAnmTexPat_cC1Ev(&PRESENTER(t)->mTexSeq);
-    _ZN15dExtAnmTexSRT_cC1Ev(&PRESENTER(t)->mTexAnim);
-    func_02017acc(&PRESENTER(t)->mFaceModel, 0x286);
-    func_02017acc(&PRESENTER(t)->mBackModel, 0x200);
-    ((SharedFilePtr *)&PRESENTER(t)->mAnims[0])->Construct(0x1fc);
-    ((SharedFilePtr *)&PRESENTER(t)->mAnims[1])->Construct(0x1f6);
-    ((SharedFilePtr *)&PRESENTER(t)->mAnims[2])->Construct(0x1fe);
-    ((SharedFilePtr *)&PRESENTER(t)->mAnims[3])->Construct(0x1f0);
-    ((SharedFilePtr *)&PRESENTER(t)->mAnims[4])->Construct(0x1f4);
-    ((SharedFilePtr *)&PRESENTER(t)->mAnims[5])->Construct(0x1f2);
-    ((SharedFilePtr *)&PRESENTER(t)->mAnims[6])->Construct(0x1f8);
-    ((SharedFilePtr *)&PRESENTER(t)->mAnims[7])->Construct(0x1fa);
-    SharedFilePtr_Construct_TexSeq(&PRESENTER(t)->mTexSeqs[0], 0x1fd);
-    SharedFilePtr_Construct_TexSeq(&PRESENTER(t)->mTexSeqs[1], 0x1f7);
-    SharedFilePtr_Construct_TexSeq(&PRESENTER(t)->mTexSeqs[2], 0x1ff);
-    SharedFilePtr_Construct_TexSeq(&PRESENTER(t)->mTexSeqs[3], 0x1f1);
-    SharedFilePtr_Construct_TexSeq(&PRESENTER(t)->mTexSeqs[4], 0x1f5);
-    SharedFilePtr_Construct_TexSeq(&PRESENTER(t)->mTexSeqs[5], 0x1f3);
-    SharedFilePtr_Construct_TexSeq(&PRESENTER(t)->mTexSeqs[6], 0x1f9);
-    SharedFilePtr_Construct_TexSeq(&PRESENTER(t)->mTexSeqs[7], 0x1fb);
-    PRESENTER(t)->mTracking = 0;
-    PRESENTER(t)->mQuiet = 0;
-    return (int)t;
-}
-}
+/* ---- Presenter::Presenter ---- */
+/* The four model parts and the eighteen file handles are members, so the
+   compiler builds them in declaration order before the body runs. */
+// @symbol _ZN9PresenterC1Ev
+Presenter::Presenter()
+    : mFaceModel(0x286), mBackModel(0x200), mWaitAnim(0x1fc), mMistakeAnim(0x1f6), mWinAnim(0x1fe),
+      mLoseAnim(0x1f0), mLoseStartAnim(0x1f4), mLoseEndAnim(0x1f2), mSmileAnim(0x1f8),
+      mSurprisedAnim(0x1fa), mWaitTexSeq(0x1fd), mMistakeTexSeq(0x1f7), mWinTexSeq(0x1ff),
+      mLoseTexSeq(0x1f1), mLoseStartTexSeq(0x1f5), mLoseEndTexSeq(0x1f3), mSmileTexSeq(0x1f9),
+      mSurprisedTexSeq(0x1fb) {
+    mTouchLocked = 0;
+    mQuiet = 0;
 }
 
-namespace s020c3288 {
-extern "C" {
-int Presenter_Destruct(char *t) {
-    ((SharedFilePtr *)&PRESENTER(t)->mFaceModel)->Release();
-    ((SharedFilePtr *)&PRESENTER(t)->mBackModel)->Release();
-    ((SharedFilePtr *)&PRESENTER(t)->mAnims[0])->Release();
-    ((SharedFilePtr *)&PRESENTER(t)->mAnims[1])->Release();
-    ((SharedFilePtr *)&PRESENTER(t)->mAnims[2])->Release();
-    ((SharedFilePtr *)&PRESENTER(t)->mAnims[3])->Release();
-    ((SharedFilePtr *)&PRESENTER(t)->mAnims[4])->Release();
-    ((SharedFilePtr *)&PRESENTER(t)->mAnims[5])->Release();
-    ((SharedFilePtr *)&PRESENTER(t)->mAnims[6])->Release();
-    ((SharedFilePtr *)&PRESENTER(t)->mAnims[7])->Release();
-    ((SharedFilePtr *)&PRESENTER(t)->mTexSeqs[0])->Release();
-    ((SharedFilePtr *)&PRESENTER(t)->mTexSeqs[1])->Release();
-    ((SharedFilePtr *)&PRESENTER(t)->mTexSeqs[2])->Release();
-    ((SharedFilePtr *)&PRESENTER(t)->mTexSeqs[3])->Release();
-    ((SharedFilePtr *)&PRESENTER(t)->mTexSeqs[4])->Release();
-    ((SharedFilePtr *)&PRESENTER(t)->mTexSeqs[5])->Release();
-    ((SharedFilePtr *)&PRESENTER(t)->mTexSeqs[6])->Release();
-    ((SharedFilePtr *)&PRESENTER(t)->mTexSeqs[7])->Release();
-    SharedFilePtr_Destruct_TexSeq(&PRESENTER(t)->mTexSeqs[7]);
-    SharedFilePtr_Destruct_TexSeq(&PRESENTER(t)->mTexSeqs[6]);
-    SharedFilePtr_Destruct_TexSeq(&PRESENTER(t)->mTexSeqs[5]);
-    SharedFilePtr_Destruct_TexSeq(&PRESENTER(t)->mTexSeqs[4]);
-    SharedFilePtr_Destruct_TexSeq(&PRESENTER(t)->mTexSeqs[3]);
-    SharedFilePtr_Destruct_TexSeq(&PRESENTER(t)->mTexSeqs[2]);
-    SharedFilePtr_Destruct_TexSeq(&PRESENTER(t)->mTexSeqs[1]);
-    SharedFilePtr_Destruct_TexSeq(&PRESENTER(t)->mTexSeqs[0]);
-    SharedFilePtr_Destruct_Anim(&PRESENTER(t)->mAnims[7]);
-    SharedFilePtr_Destruct_Anim(&PRESENTER(t)->mAnims[6]);
-    SharedFilePtr_Destruct_Anim(&PRESENTER(t)->mAnims[5]);
-    SharedFilePtr_Destruct_Anim(&PRESENTER(t)->mAnims[4]);
-    SharedFilePtr_Destruct_Anim(&PRESENTER(t)->mAnims[3]);
-    SharedFilePtr_Destruct_Anim(&PRESENTER(t)->mAnims[2]);
-    SharedFilePtr_Destruct_Anim(&PRESENTER(t)->mAnims[1]);
-    SharedFilePtr_Destruct_Anim(&PRESENTER(t)->mAnims[0]);
-    func_02017ab4(&PRESENTER(t)->mBackModel);
-    func_02017ab4(&PRESENTER(t)->mFaceModel);
-    PRESENTER(t)->mTexAnim.dExtAnmTexSRT_c::~dExtAnmTexSRT_c();
-    PRESENTER(t)->mTexSeq.dExtAnmTexPat_c::~dExtAnmTexPat_c();
-    PRESENTER(t)->mBack.dExtSimpleModel_c::~dExtSimpleModel_c();
-    PRESENTER(t)->mFace.dExtBlendAnmModel_c::~dExtBlendAnmModel_c();
-    return (int)t;
-}
-}
+/* ---- Presenter::~Presenter ---- */
+/* Releases every file; the members' destructors then run in reverse
+   declaration order: the sixteen animation handles, the two model files,
+   then mTexAnim, mTexSeq, mBack and mFace. */
+// @symbol _ZN9PresenterD1Ev
+Presenter::~Presenter() {
+    mFaceModel.Release();
+    mBackModel.Release();
+    mWaitAnim.Release();
+    mMistakeAnim.Release();
+    mWinAnim.Release();
+    mLoseAnim.Release();
+    mLoseStartAnim.Release();
+    mLoseEndAnim.Release();
+    mSmileAnim.Release();
+    mSurprisedAnim.Release();
+    mWaitTexSeq.Release();
+    mMistakeTexSeq.Release();
+    mWinTexSeq.Release();
+    mLoseTexSeq.Release();
+    mLoseStartTexSeq.Release();
+    mLoseEndTexSeq.Release();
+    mSmileTexSeq.Release();
+    mSurprisedTexSeq.Release();
 }
 
 namespace s020c3050 {
@@ -857,38 +806,38 @@ int Presenter_Load(char *c) {
     void *r5;
     void *r4;
 
-    r5 = dExtSimpleModel_c::LoadFile(*(::SharedFilePtr *)&PRESENTER(c)->mFaceModel);
-    r4 = dExtSimpleModel_c::LoadFile(*(::SharedFilePtr *)&PRESENTER(c)->mBackModel);
-    dExtFrameCtrl_c::LoadFile(*(::SharedFilePtr *)&PRESENTER(c)->mAnims[0]);
-    dExtFrameCtrl_c::LoadFile(*(::SharedFilePtr *)&PRESENTER(c)->mAnims[1]);
-    dExtFrameCtrl_c::LoadFile(*(::SharedFilePtr *)&PRESENTER(c)->mAnims[2]);
-    dExtFrameCtrl_c::LoadFile(*(::SharedFilePtr *)&PRESENTER(c)->mAnims[3]);
-    dExtFrameCtrl_c::LoadFile(*(::SharedFilePtr *)&PRESENTER(c)->mAnims[4]);
-    dExtFrameCtrl_c::LoadFile(*(::SharedFilePtr *)&PRESENTER(c)->mAnims[5]);
-    dExtFrameCtrl_c::LoadFile(*(::SharedFilePtr *)&PRESENTER(c)->mAnims[6]);
-    dExtFrameCtrl_c::LoadFile(*(::SharedFilePtr *)&PRESENTER(c)->mAnims[7]);
-    dExtAnmTexPat_c::LoadFile(*(::SharedFilePtr *)&PRESENTER(c)->mTexSeqs[0]);
-    dExtAnmTexPat_c::LoadFile(*(::SharedFilePtr *)&PRESENTER(c)->mTexSeqs[1]);
-    dExtAnmTexPat_c::LoadFile(*(::SharedFilePtr *)&PRESENTER(c)->mTexSeqs[2]);
-    dExtAnmTexPat_c::LoadFile(*(::SharedFilePtr *)&PRESENTER(c)->mTexSeqs[3]);
-    dExtAnmTexPat_c::LoadFile(*(::SharedFilePtr *)&PRESENTER(c)->mTexSeqs[4]);
-    dExtAnmTexPat_c::LoadFile(*(::SharedFilePtr *)&PRESENTER(c)->mTexSeqs[5]);
-    dExtAnmTexPat_c::LoadFile(*(::SharedFilePtr *)&PRESENTER(c)->mTexSeqs[6]);
-    dExtAnmTexPat_c::LoadFile(*(::SharedFilePtr *)&PRESENTER(c)->mTexSeqs[7]);
+    r5 = dExtSimpleModel_c::LoadFile(PRESENTER(c)->mFaceModel);
+    r4 = dExtSimpleModel_c::LoadFile(PRESENTER(c)->mBackModel);
+    dExtFrameCtrl_c::LoadFile(PRESENTER(c)->mWaitAnim);
+    dExtFrameCtrl_c::LoadFile(PRESENTER(c)->mMistakeAnim);
+    dExtFrameCtrl_c::LoadFile(PRESENTER(c)->mWinAnim);
+    dExtFrameCtrl_c::LoadFile(PRESENTER(c)->mLoseAnim);
+    dExtFrameCtrl_c::LoadFile(PRESENTER(c)->mLoseStartAnim);
+    dExtFrameCtrl_c::LoadFile(PRESENTER(c)->mLoseEndAnim);
+    dExtFrameCtrl_c::LoadFile(PRESENTER(c)->mSmileAnim);
+    dExtFrameCtrl_c::LoadFile(PRESENTER(c)->mSurprisedAnim);
+    dExtAnmTexPat_c::LoadFile(PRESENTER(c)->mWaitTexSeq);
+    dExtAnmTexPat_c::LoadFile(PRESENTER(c)->mMistakeTexSeq);
+    dExtAnmTexPat_c::LoadFile(PRESENTER(c)->mWinTexSeq);
+    dExtAnmTexPat_c::LoadFile(PRESENTER(c)->mLoseTexSeq);
+    dExtAnmTexPat_c::LoadFile(PRESENTER(c)->mLoseStartTexSeq);
+    dExtAnmTexPat_c::LoadFile(PRESENTER(c)->mLoseEndTexSeq);
+    dExtAnmTexPat_c::LoadFile(PRESENTER(c)->mSmileTexSeq);
+    dExtAnmTexPat_c::LoadFile(PRESENTER(c)->mSurprisedTexSeq);
 
     if (!PRESENTER(c)->mFace.SetFile((BMD_File *)r5, 1, -1))
         return 0;
 
     func_02016b24(&PRESENTER(c)->mFace, 2);
 
-    dExtAnmTexPat_c::Prepare(*(BMD_File *)r5, *(BTP_File *)PRESENTER(c)->mTexSeqs[0].file);
-    dExtAnmTexPat_c::Prepare(*(BMD_File *)r5, *(BTP_File *)PRESENTER(c)->mTexSeqs[1].file);
-    dExtAnmTexPat_c::Prepare(*(BMD_File *)r5, *(BTP_File *)PRESENTER(c)->mTexSeqs[2].file);
-    dExtAnmTexPat_c::Prepare(*(BMD_File *)r5, *(BTP_File *)PRESENTER(c)->mTexSeqs[3].file);
-    dExtAnmTexPat_c::Prepare(*(BMD_File *)r5, *(BTP_File *)PRESENTER(c)->mTexSeqs[4].file);
-    dExtAnmTexPat_c::Prepare(*(BMD_File *)r5, *(BTP_File *)PRESENTER(c)->mTexSeqs[5].file);
-    dExtAnmTexPat_c::Prepare(*(BMD_File *)r5, *(BTP_File *)PRESENTER(c)->mTexSeqs[6].file);
-    dExtAnmTexPat_c::Prepare(*(BMD_File *)r5, *(BTP_File *)PRESENTER(c)->mTexSeqs[7].file);
+    dExtAnmTexPat_c::Prepare(*(BMD_File *)r5, *(BTP_File *)PRESENTER(c)->mWaitTexSeq.filePtr);
+    dExtAnmTexPat_c::Prepare(*(BMD_File *)r5, *(BTP_File *)PRESENTER(c)->mMistakeTexSeq.filePtr);
+    dExtAnmTexPat_c::Prepare(*(BMD_File *)r5, *(BTP_File *)PRESENTER(c)->mWinTexSeq.filePtr);
+    dExtAnmTexPat_c::Prepare(*(BMD_File *)r5, *(BTP_File *)PRESENTER(c)->mLoseTexSeq.filePtr);
+    dExtAnmTexPat_c::Prepare(*(BMD_File *)r5, *(BTP_File *)PRESENTER(c)->mLoseStartTexSeq.filePtr);
+    dExtAnmTexPat_c::Prepare(*(BMD_File *)r5, *(BTP_File *)PRESENTER(c)->mLoseEndTexSeq.filePtr);
+    dExtAnmTexPat_c::Prepare(*(BMD_File *)r5, *(BTP_File *)PRESENTER(c)->mSmileTexSeq.filePtr);
+    dExtAnmTexPat_c::Prepare(*(BMD_File *)r5, *(BTP_File *)PRESENTER(c)->mSurprisedTexSeq.filePtr);
 
     dExtAnmTexSRT_c::Prepare(*(BMD_File *)r5, *(BTA_File *)sPresenterIdleTexAnim);
     dExtAnmTexSRT_c::Prepare(*(BMD_File *)r5, *(BTA_File *)sPresenterMissTexAnim);
@@ -951,7 +900,7 @@ extern "C" {
     }
 
 void Presenter_TrackStylus(char *c) {
-    if (PRESENTER(c)->mTracking != 0) {
+    if (PRESENTER(c)->mTouchLocked != 0) {
         int s = PRESENTER(c)->mTouchX;
         int t = PRESENTER(c)->mTouchY;
         COMPUTE(c, s, t);
@@ -1113,17 +1062,17 @@ extern P2 pmf_Presenter_StateIdle_2;
 }
 
 extern "C" void Presenter_PlayIdle(char *c) {
-    if (PRESENTER(c)->mFace.file != (BCA_File *)PRESENTER(c)->mAnims[0].file) {
+    if (PRESENTER(c)->mFace.file != (BCA_File *)PRESENTER(c)->mWaitAnim.filePtr) {
         int blendFrames = 0;
         if (data_0209f5bc->IsAtEnd() == 0) {
             if (PRESENTER(c)->mFace.Finished() == 0 ||
-                PRESENTER(c)->mFace.file == (BCA_File *)PRESENTER(c)->mAnims[7].file) {
+                PRESENTER(c)->mFace.file == (BCA_File *)PRESENTER(c)->mSurprisedAnim.filePtr) {
                 blendFrames = 8;
             }
         }
-        PRESENTER(c)->mFace.SetAnim(*(BCA_File *)PRESENTER(c)->mAnims[0].file, blendFrames, 0,
+        PRESENTER(c)->mFace.SetAnim(*(BCA_File *)PRESENTER(c)->mWaitAnim.filePtr, blendFrames, 0,
                                     0x800, 0);
-        PRESENTER(c)->mTexSeq.SetFile(*(BTP_File *)PRESENTER(c)->mTexSeqs[0].file, 0, 0x800, 0);
+        PRESENTER(c)->mTexSeq.SetFile(*(BTP_File *)PRESENTER(c)->mWaitTexSeq.filePtr, 0, 0x800, 0);
         PRESENTER(c)->mTexAnim.SetFile(*(BTA_File *)&sPresenterIdleTexAnim, 0, 0x800, 0);
     }
     {
@@ -1143,8 +1092,8 @@ extern void *sPresenterIdleTexAnim;
 void Presenter_StateIdle(char *c) {
     if (!PRESENTER(c)->mFace.Finished())
         return;
-    PRESENTER(c)->mFace.SetAnim(*(BCA_File *)PRESENTER(c)->mAnims[0].file, 0, 0, 0x800, 0);
-    PRESENTER(c)->mTexSeq.SetFile(*(BTP_File *)PRESENTER(c)->mTexSeqs[0].file, 0, 0x800, 0);
+    PRESENTER(c)->mFace.SetAnim(*(BCA_File *)PRESENTER(c)->mWaitAnim.filePtr, 0, 0, 0x800, 0);
+    PRESENTER(c)->mTexSeq.SetFile(*(BTP_File *)PRESENTER(c)->mWaitTexSeq.filePtr, 0, 0x800, 0);
     PRESENTER(c)->mTexAnim.SetFile(*(BTA_File *)&sPresenterIdleTexAnim, 0, 0x800, 0);
 }
 }
@@ -1165,11 +1114,11 @@ void Presenter_PlayMatch(void *c) {
     if ((PRESENTER(r4)->mQuiet) == 0) {
         func_02012174(0, 0x1c);
     }
-    PRESENTER(r4)->mFace.SetAnim(*(BCA_File *)PRESENTER(r4)->mAnims[2].file, 4, 0x40000000, 0x800,
+    PRESENTER(r4)->mFace.SetAnim(*(BCA_File *)PRESENTER(r4)->mWinAnim.filePtr, 4, 0x40000000, 0x800,
                                  0);
     new_var2 = (long long *)r4;
-    PRESENTER(r4)->mTexSeq.SetFile(*(BTP_File *)PRESENTER(r4)->mTexSeqs[2].file, 0x40000000, 0x800,
-                                   0);
+    PRESENTER(r4)->mTexSeq.SetFile(*(BTP_File *)PRESENTER(r4)->mWinTexSeq.filePtr, 0x40000000,
+                                   0x800, 0);
     PRESENTER(r4)->mTexAnim.SetFile(*(BTA_File *)&sPresenterMatchTexAnim, 0x40000000, 0x800, 0);
     new_var = pmf_Presenter_StateWin;
     *new_var2 = new_var;
@@ -1198,9 +1147,10 @@ struct W2 {
 };
 
 void Presenter_PlayMiss(char *c) {
-    PRESENTER(c)->mFace.SetAnim(*(BCA_File *)PRESENTER(c)->mAnims[1].file, 4, 0x40000000, 0x800, 0);
-    PRESENTER(c)->mTexSeq.SetFile(*(BTP_File *)PRESENTER(c)->mTexSeqs[1].file, 0x40000000, 0x800,
-                                  0);
+    PRESENTER(c)->mFace.SetAnim(*(BCA_File *)PRESENTER(c)->mMistakeAnim.filePtr, 4, 0x40000000,
+                                0x800, 0);
+    PRESENTER(c)->mTexSeq.SetFile(*(BTP_File *)PRESENTER(c)->mMistakeTexSeq.filePtr, 0x40000000,
+                                  0x800, 0);
     PRESENTER(c)->mTexAnim.SetFile(*(BTA_File *)sPresenterMissTexAnim, 0x40000000, 0x800, 0);
     *(struct W2 *)c = *(struct W2 *)pmf_Presenter_StateMistake;
 }
@@ -1231,10 +1181,10 @@ void Presenter_PlayCheer(void *c) {
     if ((PRESENTER(r4)->mQuiet) == 0) {
         func_02012174(0, 3);
     }
-    PRESENTER(r4)->mFace.SetAnim(*(BCA_File *)PRESENTER(r4)->mAnims[7].file, 8, 0x40000000, 0x800,
-                                 0);
-    PRESENTER(r4)->mTexSeq.SetFile(*(BTP_File *)PRESENTER(r4)->mTexSeqs[7].file, 0x40000000, 0x800,
-                                   0);
+    PRESENTER(r4)->mFace.SetAnim(*(BCA_File *)PRESENTER(r4)->mSurprisedAnim.filePtr, 8, 0x40000000,
+                                 0x800, 0);
+    PRESENTER(r4)->mTexSeq.SetFile(*(BTP_File *)PRESENTER(r4)->mSurprisedTexSeq.filePtr, 0x40000000,
+                                   0x800, 0);
     PRESENTER(r4)->mTexAnim.SetFile(*(BTA_File *)&sPresenterCheerTexAnim, 0x40000000, 0x800, 0);
     *((long long *)r4) = pmf_Presenter_StateSurprisedThenSmile;
 }
@@ -1250,12 +1200,12 @@ void Presenter_StateSurprisedThenSmile(void *c) {
     char *r4 = (char *)c;
     if (!Presenter_IsAnimDone(r4))
         return;
-    if (PRESENTER(r4)->mFace.file != (BCA_File *)PRESENTER(r4)->mAnims[7].file)
+    if (PRESENTER(r4)->mFace.file != (BCA_File *)PRESENTER(r4)->mSurprisedAnim.filePtr)
         return;
     if (PRESENTER(r4)->mQuiet == 0)
         _ZN5Sound12PlayBank2_2DEj(0x1d1);
-    PRESENTER(r4)->mFace.SetAnim(*(BCA_File *)PRESENTER(r4)->mAnims[6].file, 8, 0, 0x800, 0);
-    PRESENTER(r4)->mTexSeq.SetFile(*(BTP_File *)PRESENTER(r4)->mTexSeqs[6].file, 0, 0x800, 0);
+    PRESENTER(r4)->mFace.SetAnim(*(BCA_File *)PRESENTER(r4)->mSmileAnim.filePtr, 8, 0, 0x800, 0);
+    PRESENTER(r4)->mTexSeq.SetFile(*(BTP_File *)PRESENTER(r4)->mSmileTexSeq.filePtr, 0, 0x800, 0);
     PRESENTER(r4)->mTexAnim.SetFile(*(BTA_File *)&sPresenterSmileTexAnim, 0, 0x800, 0);
 }
 }
@@ -1275,9 +1225,10 @@ extern void *sPresenterLoseTexAnim;
 void Presenter_PlayLose(char *c) {
     if (PRESENTER(c)->mQuiet == 0)
         _ZN5Sound12PlayBank2_2DEj(0x1c9);
-    PRESENTER(c)->mFace.SetAnim(*(BCA_File *)PRESENTER(c)->mAnims[4].file, 0, 0x40000000, 0x800, 0);
-    PRESENTER(c)->mTexSeq.SetFile(*(BTP_File *)PRESENTER(c)->mTexSeqs[4].file, 0x40000000, 0x800,
-                                  0);
+    PRESENTER(c)->mFace.SetAnim(*(BCA_File *)PRESENTER(c)->mLoseStartAnim.filePtr, 0, 0x40000000,
+                                0x800, 0);
+    PRESENTER(c)->mTexSeq.SetFile(*(BTP_File *)PRESENTER(c)->mLoseStartTexSeq.filePtr, 0x40000000,
+                                  0x800, 0);
     PRESENTER(c)->mTexAnim.SetFile(*(BTA_File *)&sPresenterLoseTexAnim, 0x40000000, 0x800, 0);
     *(struct G2 *)c = pmf_Presenter_StateLoseStart;
 }
@@ -1293,10 +1244,10 @@ void Presenter_StateLoseStart(void *c) {
     char *r4 = (char *)c;
     if (!Presenter_IsAnimDone(r4))
         return;
-    if (PRESENTER(r4)->mFace.file != (BCA_File *)PRESENTER(r4)->mAnims[4].file)
+    if (PRESENTER(r4)->mFace.file != (BCA_File *)PRESENTER(r4)->mLoseStartAnim.filePtr)
         return;
-    PRESENTER(r4)->mFace.SetAnim(*(BCA_File *)PRESENTER(r4)->mAnims[3].file, 0, 0, 0x800, 0);
-    PRESENTER(r4)->mTexSeq.SetFile(*(BTP_File *)PRESENTER(r4)->mTexSeqs[3].file, 0, 0x800, 0);
+    PRESENTER(r4)->mFace.SetAnim(*(BCA_File *)PRESENTER(r4)->mLoseAnim.filePtr, 0, 0, 0x800, 0);
+    PRESENTER(r4)->mTexSeq.SetFile(*(BTP_File *)PRESENTER(r4)->mLoseTexSeq.filePtr, 0, 0x800, 0);
     PRESENTER(r4)->mTexAnim.SetFile(*(BTA_File *)&sPresenterLoseLoopTexAnim, 0, 0x800, 0);
 }
 }
@@ -1316,10 +1267,10 @@ void Presenter_PlayCheerLoop(void *c) {
     if ((PRESENTER(c)->mQuiet) == 0) {
         func_02012174(0, 3);
     }
-    PRESENTER(r4)->mFace.SetAnim(*(BCA_File *)PRESENTER(r4)->mAnims[7].file, 8, 0x40000000, 0x800,
-                                 0);
-    PRESENTER(r4)->mTexSeq.SetFile(*(BTP_File *)PRESENTER(r4)->mTexSeqs[7].file, 0x40000000, 0x800,
-                                   0);
+    PRESENTER(r4)->mFace.SetAnim(*(BCA_File *)PRESENTER(r4)->mSurprisedAnim.filePtr, 8, 0x40000000,
+                                 0x800, 0);
+    PRESENTER(r4)->mTexSeq.SetFile(*(BTP_File *)PRESENTER(r4)->mSurprisedTexSeq.filePtr, 0x40000000,
+                                   0x800, 0);
     PRESENTER(r4)->mTexAnim.SetFile(*(BTA_File *)&sPresenterCheerTexAnim, 0x40000000, 0x800, 0);
     *((long long *)r4) = (new_var = pmf_Presenter_StateSurprisedThenIdle & 0xFFFFFFFFFFFFFFFF);
 }
@@ -1386,39 +1337,31 @@ void Camera_InitPresenterView(struct dCamera_c *self) {
 }
 }
 
-namespace s020c221c {
-extern "C" {
-int Mascot_Construct(char *t) {
-    func_02017acc(MASCOT(t)->mModelFile, 0x205);
-    ((SharedFilePtr *)MASCOT(t)->mWaitAnimFile)->Construct(0x206);
-    _ZN19dExtBlendAnmModel_cC1Ev(&MASCOT(t)->mModel);
-    MASCOT(t)->mLooking = 0;
-    return (int)t;
-}
-}
+/* ---- Mascot::Mascot ---- */
+/* The two file handles and the model are members, so the compiler builds
+   them in declaration order before the body runs. */
+// @symbol _ZN6MascotC1Ev
+Mascot::Mascot() : mModelFile(0x205), mWaitAnimFile(0x206) {
+    mLooking = 0;
 }
 
-namespace s020c21e4 {
-extern "C" {
-int Mascot_Destruct(char *t) {
-    ((SharedFilePtr *)MASCOT(t)->mModelFile)->Release();
-    ((SharedFilePtr *)MASCOT(t)->mWaitAnimFile)->Release();
-    MASCOT(t)->mModel.dExtBlendAnmModel_c::~dExtBlendAnmModel_c();
-    SharedFilePtr_Destruct_Anim(MASCOT(t)->mWaitAnimFile);
-    func_02017ab4(MASCOT(t)->mModelFile);
-    return (int)t;
-}
-}
+/* ---- Mascot::~Mascot ---- */
+/* Releases both files; the members' destructors then run in reverse
+   declaration order: the model, the animation, the model file. */
+// @symbol _ZN6MascotD1Ev
+Mascot::~Mascot() {
+    mModelFile.Release();
+    mWaitAnimFile.Release();
 }
 
 namespace s020c2154 {
 extern "C" {
 void Mascot_Load(char *c) {
     void *f;
-    f = dExtSimpleModel_c::LoadFile(*(::SharedFilePtr *)MASCOT(c)->mModelFile);
+    f = dExtSimpleModel_c::LoadFile(MASCOT(c)->mModelFile);
     MASCOT(c)->mModel.SetFile((BMD_File *)f, 1, -1);
-    dExtFrameCtrl_c::LoadFile(*(::SharedFilePtr *)MASCOT(c)->mWaitAnimFile);
-    MASCOT(c)->mModel.SetAnim(*(BCA_File *)MASCOT(c)->mWaitAnimFile[1], 0, 0, 0x800, 0);
+    dExtFrameCtrl_c::LoadFile(MASCOT(c)->mWaitAnimFile);
+    MASCOT(c)->mModel.SetAnim(*(BCA_File *)MASCOT(c)->mWaitAnimFile.filePtr, 0, 0, 0x800, 0);
     MASCOT(c)->mModel.HideMaterial(7, 0);
     MASCOT(c)->mPos.x = 0xd000;
     MASCOT(c)->mPos.y = 0;

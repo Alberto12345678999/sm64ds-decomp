@@ -337,14 +337,14 @@
       "ordinal": 44
     },
     {
-      "symbol": "Mascot_Destruct",
+      "symbol": "_ZN6MascotD1Ev",
       "address": "0x020c21e4",
       "size": "0x00000038",
       "legacy_source": "src/func_ov006_020c21e4.c",
       "ordinal": 45
     },
     {
-      "symbol": "Mascot_Construct",
+      "symbol": "_ZN6MascotC1Ev",
       "address": "0x020c221c",
       "size": "0x00000040",
       "legacy_source": "src/func_ov006_020c221c.c",
@@ -498,14 +498,14 @@
       "ordinal": 67
     },
     {
-      "symbol": "Presenter_Destruct",
+      "symbol": "_ZN9PresenterD1Ev",
       "address": "0x020c3288",
       "size": "0x00000154",
       "legacy_source": "src/func_ov006_020c3288.c",
       "ordinal": 68
     },
     {
-      "symbol": "Presenter_Construct",
+      "symbol": "_ZN9PresenterC1Ev",
       "address": "0x020c33dc",
       "size": "0x0000014c",
       "legacy_source": "src/func_ov006_020c33dc.c",
@@ -645,28 +645,28 @@
       "ordinal": 88
     },
     {
-      "symbol": "FallingPetal_Destruct",
+      "symbol": "_ZN12FallingPetalD1Ev",
       "address": "0x020c3e54",
       "size": "0x0000001c",
       "legacy_source": "src/func_ov006_020c3e54.c",
       "ordinal": 89
     },
     {
-      "symbol": "FlowerFace_Destruct",
+      "symbol": "_ZN10FlowerFaceD1Ev",
       "address": "0x020c3e70",
       "size": "0x000000e4",
       "legacy_source": "src/func_ov006_020c3e70.cpp",
       "ordinal": 90
     },
     {
-      "symbol": "FlowerFace_Construct",
+      "symbol": "_ZN10FlowerFaceC1Ev",
       "address": "0x020c3f54",
       "size": "0x000000d8",
       "legacy_source": "src/func_ov006_020c3f54.cpp",
       "ordinal": 91
     },
     {
-      "symbol": "FallingPetal_Construct",
+      "symbol": "_ZN12FallingPetalC1Ev",
       "address": "0x020c402c",
       "size": "0x0000001c",
       "legacy_source": "src/func_ov006_020c402c.c",
@@ -755,6 +755,71 @@
       "symbol": "_ZN31MascotWalkerAnimationFileHandleD1Ev",
       "disposition": "deadstrip",
       "reason": "Out-of-line vague-linkage copy of the inline MascotWalkerAnimationFileHandle destructor this source defines over SharedFilePtr_Destruct_Anim. mwccarm emits it once a member of the type is destroyed, but MascotWalker's D1 inlines both calls (relocation destinations clean) and no relocation in the object names it. The coined class has no ROM home, so a plain deadstrip."
+    },
+    {
+      "symbol": "_ZN12FallingPetalC2Ev",
+      "disposition": "deadstrip",
+      "reason": "Base-object constructor emitted beside C1 by the out-of-line FallingPetal::FallingPetal(). The cartridge carries only C1 at 0x020c402c (size 0x1c), the last function of the unit, and FallingPetal is only ever constructed as an element of FlowerFace::mPetals (through __cxa_vec_ctor, which takes C1), so C2 has no ROM home. Homeless and unreferenced, so a plain deadstrip."
+    },
+    {
+      "symbol": "_ZN12FallingPetalD2Ev",
+      "disposition": "deadstrip",
+      "reason": "Base-object destructor emitted beside D1 by the out-of-line FallingPetal::~FallingPetal(). The cartridge carries only D1 at 0x020c3e54 (size 0x1c), followed directly by FlowerFace's D1 at 0x020c3e70, so the image has no room for a D2. Homeless and unreferenced, so a plain deadstrip."
+    },
+    {
+      "symbol": "_ZN10FlowerFaceC2Ev",
+      "disposition": "deadstrip",
+      "reason": "Base-object constructor emitted beside C1 by the out-of-line FlowerFace::FlowerFace(). The cartridge carries only C1 at 0x020c3f54 (size 0xd8), followed directly by FallingPetal's C1 at 0x020c402c, and the flower scene constructs FlowerFace only as a complete member, so C2 has no ROM home. Homeless and unreferenced, so a plain deadstrip."
+    },
+    {
+      "symbol": "_ZN10FlowerFaceD2Ev",
+      "disposition": "deadstrip",
+      "reason": "Base-object destructor emitted beside D1 by the out-of-line FlowerFace::~FlowerFace(). The cartridge carries only D1 at 0x020c3e70 (size 0xe4), followed directly by C1 at 0x020c3f54, so the image has no room for a D2. Homeless and unreferenced, so a plain deadstrip."
+    },
+    {
+      "symbol": "_ZN22FlowerFaceModelFilePtrD1Ev",
+      "disposition": "deadstrip",
+      "reason": "Out-of-line vague-linkage copy of the inline FlowerFaceModelFilePtr destructor this source defines over func_02017ab4. mwccarm emits it once a member of the type is destroyed, but FlowerFace's D1 inlines both calls (relocation destinations clean) and no relocation in the object names it. The coined class has no ROM home, so a plain deadstrip."
+    },
+    {
+      "symbol": "_ZN29FlowerFaceAnimationFileHandleD1Ev",
+      "disposition": "deadstrip",
+      "reason": "Out-of-line vague-linkage copy of the inline FlowerFaceAnimationFileHandle destructor this source defines over SharedFilePtr_Destruct_Anim. mwccarm emits it once a member of the type is destroyed, but FlowerFace's D1 inlines all four calls (relocation destinations clean) and no relocation in the object names it. The coined class has no ROM home, so a plain deadstrip."
+    },
+    {
+      "symbol": "_ZN9PresenterC2Ev",
+      "disposition": "deadstrip",
+      "reason": "Base-object constructor emitted beside C1 by the out-of-line Presenter::Presenter(). The cartridge carries only C1 at 0x020c33dc (size 0x14c), followed directly by FallingPetal_UpdateMatrix at 0x020c3528, and the cup and sound scenes construct Presenter only as a complete member, so C2 has no ROM home. Homeless and unreferenced, so a plain deadstrip."
+    },
+    {
+      "symbol": "_ZN9PresenterD2Ev",
+      "disposition": "deadstrip",
+      "reason": "Base-object destructor emitted beside D1 by the out-of-line Presenter::~Presenter(). The cartridge carries only D1 at 0x020c3288 (size 0x154), followed directly by C1 at 0x020c33dc, so the image has no room for a D2. Homeless and unreferenced, so a plain deadstrip."
+    },
+    {
+      "symbol": "_ZN21PresenterModelFilePtrD1Ev",
+      "disposition": "deadstrip",
+      "reason": "Out-of-line vague-linkage copy of the inline PresenterModelFilePtr destructor this source defines over func_02017ab4. mwccarm emits it once a member of the type is destroyed, but Presenter's D1 inlines both calls (relocation destinations clean) and no relocation in the object names it. The coined class has no ROM home, so a plain deadstrip."
+    },
+    {
+      "symbol": "_ZN28PresenterAnimationFileHandleD1Ev",
+      "disposition": "deadstrip",
+      "reason": "Out-of-line vague-linkage copy of the inline PresenterAnimationFileHandle destructor this source defines over SharedFilePtr_Destruct_Anim. mwccarm emits it once a member of the type is destroyed, but Presenter's D1 inlines all eight calls (relocation destinations clean) and no relocation in the object names it. The coined class has no ROM home, so a plain deadstrip."
+    },
+    {
+      "symbol": "_ZN25PresenterTexSeqFileHandleD1Ev",
+      "disposition": "deadstrip",
+      "reason": "Out-of-line vague-linkage copy of the inline PresenterTexSeqFileHandle destructor this source defines over SharedFilePtr_Destruct_TexSeq. mwccarm emits it once a member of the type is destroyed, but Presenter's D1 inlines all eight calls (relocation destinations clean) and no relocation in the object names it. The coined class has no ROM home, so a plain deadstrip."
+    },
+    {
+      "symbol": "_ZN6MascotC2Ev",
+      "disposition": "deadstrip",
+      "reason": "Base-object constructor emitted beside C1 by the out-of-line Mascot::Mascot(). The cartridge carries only C1 at 0x020c221c (size 0x40), followed directly by Camera_InitPresenterView at 0x020c225c, and the slot scene constructs Mascot only as a complete member, so C2 has no ROM home. Homeless and unreferenced, so a plain deadstrip."
+    },
+    {
+      "symbol": "_ZN6MascotD2Ev",
+      "disposition": "deadstrip",
+      "reason": "Base-object destructor emitted beside D1 by the out-of-line Mascot::~Mascot(). The cartridge carries only D1 at 0x020c21e4 (size 0x38), followed directly by C1 at 0x020c221c, so the image has no room for a D2. Homeless and unreferenced, so a plain deadstrip."
     }
   ]
 }

@@ -970,30 +970,6 @@
       "evidence": "origin/main:src/minigames/d_s_mg_snowball.cpp 2x _ZN5ModelC1Ev; head 2x _ZN17dExtSimpleModel_cC1Ev; tools/source_style.py --base origin/main"
     },
     {
-      "path": "src/minigames/unit020bfec0.cpp",
-      "rule": "handspelled-member",
-      "match": "_ZN14dExtAnmModel_cC1Ev",
-      "count": 2,
-      "reason": "Respelled by the Model-family RTTI rename: src/minigames/unit020bfec0.cpp on main carries the same 2 occurrence(s) as _ZN9ModelAnimC1Ev. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings.",
-      "evidence": "origin/main:src/minigames/unit020bfec0.cpp 2x _ZN9ModelAnimC1Ev; head 2x _ZN14dExtAnmModel_cC1Ev; tools/source_style.py --base origin/main"
-    },
-    {
-      "path": "src/minigames/unit020bfec0.cpp",
-      "rule": "handspelled-member",
-      "match": "_ZN17dExtSimpleModel_cC1Ev",
-      "count": 4,
-      "reason": "Respelled by the Model-family RTTI rename: src/minigames/unit020bfec0.cpp on main carries the same 4 occurrence(s) as _ZN5ModelC1Ev. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings.",
-      "evidence": "origin/main:src/minigames/unit020bfec0.cpp 4x _ZN5ModelC1Ev; head 4x _ZN17dExtSimpleModel_cC1Ev; tools/source_style.py --base origin/main"
-    },
-    {
-      "path": "src/minigames/unit020bfec0.cpp",
-      "rule": "handspelled-member",
-      "match": "_ZN19dExtBlendAnmModel_cC1Ev",
-      "count": 5,
-      "reason": "Respelled by the Model-family RTTI rename: src/minigames/unit020bfec0.cpp on main carries the same 5 occurrence(s) as _ZN14BlendModelAnimC1Ev. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings.",
-      "evidence": "origin/main:src/minigames/unit020bfec0.cpp 5x _ZN14BlendModelAnimC1Ev; head 5x _ZN19dExtBlendAnmModel_cC1Ev; tools/source_style.py --base origin/main"
-    },
-    {
       "path": "src/unnamed/ov007/func_ov007_020b3f20.c",
       "rule": "handspelled-member",
       "match": "_ZN17dExtSimpleModel_c17UpdateFileOffsetsER8BMD_File",
@@ -1016,22 +992,6 @@
       "count": 2,
       "reason": "Respelled by the texture-animation RTTI rename: src/minigames/d_mg3d_esp_anim_set.cpp on cpp/model-family-rom-names carries the same 2 occurrence(s) as _ZN18TextureTransformerC1Ev. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings.",
       "evidence": "origin/cpp/model-family-rom-names:src/minigames/d_mg3d_esp_anim_set.cpp 2x _ZN18TextureTransformerC1Ev; head 2x _ZN15dExtAnmTexSRT_cC1Ev; tools/source_style.py --base origin/cpp/model-family-rom-names"
-    },
-    {
-      "path": "src/minigames/unit020bfec0.cpp",
-      "rule": "handspelled-member",
-      "match": "_ZN15dExtAnmTexPat_cC1Ev",
-      "count": 2,
-      "reason": "Respelled by the texture-animation RTTI rename: src/minigames/unit020bfec0.cpp on cpp/model-family-rom-names carries the same 2 occurrence(s) as _ZN15TextureSequenceC1Ev. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings.",
-      "evidence": "origin/cpp/model-family-rom-names:src/minigames/unit020bfec0.cpp 2x _ZN15TextureSequenceC1Ev; head 2x _ZN15dExtAnmTexPat_cC1Ev; tools/source_style.py --base origin/cpp/model-family-rom-names"
-    },
-    {
-      "path": "src/minigames/unit020bfec0.cpp",
-      "rule": "handspelled-member",
-      "match": "_ZN15dExtAnmTexSRT_cC1Ev",
-      "count": 2,
-      "reason": "Respelled by the texture-animation RTTI rename: src/minigames/unit020bfec0.cpp on cpp/model-family-rom-names carries the same 2 occurrence(s) as _ZN18TextureTransformerC1Ev. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings.",
-      "evidence": "origin/cpp/model-family-rom-names:src/minigames/unit020bfec0.cpp 2x _ZN18TextureTransformerC1Ev; head 2x _ZN15dExtAnmTexSRT_cC1Ev; tools/source_style.py --base origin/cpp/model-family-rom-names"
     },
     {
       "path": "src/unnamed/ov007/func_ov007_020b3f20.c",
