@@ -1,4 +1,5 @@
 import pathlib
+import shutil
 import struct
 import sys
 import tempfile
@@ -76,7 +77,7 @@ DELINKS = (
     "src/unnamed/arm9/01ff/func_01ffa344.c:\n"
     "    .text start:0x01ffa344 end:0x01ffa440\n"
 )
-LCF = "MEMORY {\n}\nSECTIONS {\n    .text : {}\n}\n"
+LCF = "MEMORY {\n}\nSECTIONS {\n    .itcm : {\n    } > itcm\n}\n"
 
 
 class LcfInteriorTests(unittest.TestCase):
@@ -115,54 +116,73 @@ class LcfInteriorTests(unittest.TestCase):
     def test_patch_defines_an_imported_interior_label(self):
         lcf, objects_txt = self._link(_elf(defined=["func_01ff97d8"]),
                                       _elf(defined=["func_0206cee0"], imported=["_deq_core"]))
-        self.assertEqual(LI.patch(lcf, objects_txt, self.root / "config"),
-                         [("_deq_core", 0x01ff9d50)])
-        self.assertIn("    _deq_core = 0x01ff9d50;", lcf.read_text())
+        self.assertIn(("_deq_core", 0x01ff9d50),
+                      LI.patch(lcf, objects_txt, self.root / "config"))
+        self.assertIn("        _deq_core = 0x01ff9d50;", lcf.read_text())
 
     def test_patch_defines_an_imported_zero_sized_alias(self):
         # func_0206f46c's `double ==` imports the runtime alias _deq, a size-0 row
         # inside func_01ff97d8's complete range; without a definition the link aborts.
         lcf, objects_txt = self._link(_elf(defined=["func_01ff97d8"]),
                                       _elf(defined=["func_0206f46c"], imported=["_deq"]))
-        self.assertEqual(LI.patch(lcf, objects_txt, self.root / "config"),
-                         [("_deq", 0x01ff9d40)])
-        self.assertIn("    _deq = 0x01ff9d40;", lcf.read_text())
+        self.assertIn(("_deq", 0x01ff9d40), LI.patch(lcf, objects_txt, self.root / "config"))
+        self.assertIn("        _deq = 0x01ff9d40;", lcf.read_text())
 
     def test_patch_defines_an_imported_sdk_linker_constant(self):
         # func_02058308 reads SDK_IRQ_STACKSIZE's address as its value (0x600).
         lcf, objects_txt = self._link(_elf(defined=["func_02058308"],
                                            imported=["SDK_IRQ_STACKSIZE"]))
-        self.assertEqual(LI.patch(lcf, objects_txt, self.root / "config"),
-                         [("SDK_IRQ_STACKSIZE", 0x600)])
-        self.assertIn("    SDK_IRQ_STACKSIZE = 0x00000600;", lcf.read_text())
+        added = LI.patch(lcf, objects_txt, self.root / "config")
+        self.assertIn(("SDK_IRQ_STACKSIZE", 0x600), added)
+        self.assertNotIn("SDK_SYS_STACKSIZE", {name for name, _value in added})
+        # A value, not an address in a module: it stays at the top of SECTIONS.
+        self.assertIn("SECTIONS {\n    SDK_IRQ_STACKSIZE = 0x00000600;", lcf.read_text())
 
     def test_patch_leaves_a_linker_constant_nobody_imports(self):
         lcf, objects_txt = self._link(_elf(defined=["func_02058308"]))
-        self.assertEqual(LI.patch(lcf, objects_txt, self.root / "config"), [])
+        LI.patch(lcf, objects_txt, self.root / "config")
+        self.assertNotIn("STACKSIZE", lcf.read_text())
 
-    def test_patch_defines_only_imported_undefined_interior_rows(self):
+    def test_patch_defines_every_undefined_interior_row_imported_or_not(self):
+        # dsd checks every symbols.txt row, and the asm block cannot export one,
+        # so an interior row nothing imports still needs its LCF definition: the
+        # strict stock control links no compiled caller of func_01ff99a4.
+        # The overlay row is not an interior row and stays undefined.
         caller = _elf(defined=["func_ov002_020dc560"],
-                      imported=["func_01ff99a4", "func_01ff98f4", "func_ov002_020dc000"])
-        lcf, objects_txt = self._link(_elf(defined=["func_01ff97d8"]), caller)
+                      imported=["func_01ff98f4", "func_ov002_020dc000"])
+        lcf, objects_txt = self._link(_elf(defined=["func_01ff97d8", "_deq_core"]), caller)
         added = LI.patch(lcf, objects_txt, self.root / "config")
-        self.assertEqual(added, [("func_01ff98f4", 0x01ff98f4), ("func_01ff99a4", 0x01ff99a4)])
+        self.assertEqual(added, [("func_01ff98f4", 0x01ff98f4), ("func_01ff99a4", 0x01ff99a4),
+                                 ("_deq", 0x01ff9d40)])
+        # Inside .itcm, not at the top of SECTIONS: there mwldarm gives the
+        # assignment an arbitrary output section and `dsd check symbols` cannot
+        # find the row in ITCM.
         self.assertEqual(lcf.read_text(),
                          "MEMORY {\n}\nSECTIONS {\n"
-                         "    func_01ff98f4 = 0x01ff98f4;\n"
-                         "    func_01ff99a4 = 0x01ff99a4;\n"
-                         "    .text : {}\n}\n")
+                         "    .itcm : {\n"
+                         "        func_01ff98f4 = 0x01ff98f4;\n"
+                         "        func_01ff99a4 = 0x01ff99a4;\n"
+                         "        _deq = 0x01ff9d40;\n"
+                         "    } > itcm\n}\n")
+
+    def test_patch_refuses_an_lcf_without_the_module_section(self):
+        lcf, objects_txt = self._link(_elf(imported=["func_01ff98f4"]))
+        lcf.write_text("SECTIONS {\n    .text : {}\n}\n")
+        with self.assertRaises(ValueError):
+            LI.patch(lcf, objects_txt, self.root / "config")
 
     def test_patch_leaves_a_resolving_link_untouched(self):
-        lcf, objects_txt = self._link(_elf(defined=["func_01ff98f4"]),
-                                      _elf(imported=["func_01ff98f4"]))
+        lcf, objects_txt = self._link(
+            _elf(defined=["func_01ff98f4", "func_01ff99a4", "_deq", "_deq_core"]),
+            _elf(imported=["func_01ff98f4"]))
         self.assertEqual(LI.patch(lcf, objects_txt, self.root / "config"), [])
         self.assertEqual(lcf.read_text(), LCF)
 
     def test_local_symbol_is_not_a_definition(self):
         lcf, objects_txt = self._link(_elf(local=["func_01ff98f4"]),
                                       _elf(imported=["func_01ff98f4"]))
-        self.assertEqual(LI.patch(lcf, objects_txt, self.root / "config"),
-                         [("func_01ff98f4", 0x01ff98f4)])
+        self.assertIn(("func_01ff98f4", 0x01ff98f4),
+                      LI.patch(lcf, objects_txt, self.root / "config"))
 
     def test_stb_loproc_counts_as_a_definition(self):
         data = bytearray(_elf(defined=["func_01ff98f4"]))
@@ -175,10 +195,10 @@ class LcfInteriorTests(unittest.TestCase):
         lcf, objects_txt = self._link(_elf(imported=["func_01ff98f4"]))
         lcf.write_bytes(LCF.replace("\n", "\r\n").encode())
         LI.patch(lcf, objects_txt, self.root / "config")
-        self.assertIn(b"SECTIONS {\r\n    func_01ff98f4 = 0x01ff98f4;\r\n", lcf.read_bytes())
+        self.assertIn(b".itcm : {\r\n        func_01ff98f4 = 0x01ff98f4;\r\n", lcf.read_bytes())
 
 
-BSS_LCF = LCF.replace("    .text : {}", "    .text : {}\n    .ov006 : {\n    }")
+BSS_LCF = LCF.replace("    } > itcm\n", "    } > itcm\n    .ov006 : {\n    }\n")
 
 
 class BssInteriorTests(unittest.TestCase):
@@ -190,6 +210,8 @@ class BssInteriorTests(unittest.TestCase):
 
     def setUp(self):
         LcfInteriorTests.setUp(self)
+        # ITCM interior rows are defined unconditionally; keep them out of these.
+        shutil.rmtree(self.root / "config" / "itcm")
         self.module = self.root / "config" / "overlays" / "ov006"
         self.module.mkdir(parents=True)
         self.symbols = self.module / "symbols.txt"
