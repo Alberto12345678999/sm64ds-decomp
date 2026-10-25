@@ -252,6 +252,16 @@
       "reason": "Ancestor passenger. This TU defines dScStarSel_c's key function -- the destructor, the first DECLARED non-inline virtual -- so mwcc emits the whole inheritance chain's typeinfo as vague linkage. The cartridge keeps its canonical copy at arm9:0x02086e60, in ARM9 and outside this overlay TU's owned ranges, so dsd delinks it from the cartridge independently and discarding this object's copy cannot cost the image a byte. romdata_check compares the emitted copy against the cartridge, relocations applied, before production isolation discards it.",
       "canonical_module": "arm9",
       "canonical_address": "0x02086e60"
+    },
+    {
+      "symbol": "_ZN8dScene_cD2Ev",
+      "disposition": "deadstrip",
+      "reason": "return new dScStarSel_c instantiates the class, so mwccarm emits the inline dScene_c base-object destructor helper. The cartridge has no dScene_c D2; unreferenced and homeless once the licensed function set is retained (same row as dScBoot_c)."
+    },
+    {
+      "symbol": "_ZN7dBase_cD2Ev",
+      "disposition": "deadstrip",
+      "reason": "return new dScStarSel_c instantiates the class, so mwccarm emits the inline dBase_c base-object destructor helper. symbols.txt has dBase_c D1 at 0x02013e80 and D0 at 0x02013ea4 and no D2; no inbound relocation once the licensed function set is retained."
     }
   ],
   "notes": [

@@ -227,6 +227,16 @@
       "reason": "Defining the destructor out of line is what makes this TU emit daObjPathLift_c's own vtable. Before that, nothing in the build emitted it at all and the cartridge's copy at ov100:0x0214857c had nothing to be compared against. That address is data no delink entry reaches -- this entry claims .text 0x02146d7c-0x021473a4 and nothing else -- so the linked image is identical whether or not this object contributes a copy, while the bytes still reach romdata_check on the way past. Recovering that comparison is the point of the policy.",
       "canonical_module": "ov100",
       "canonical_address": "0x0214857c"
+    },
+    {
+      "symbol": "_ZN10dBgActor_cD2Ev",
+      "disposition": "deadstrip",
+      "reason": "return new daObjPathLift_c() instantiates the class, so mwccarm emits the dBgActor_c base-object destructor helper. The cartridge has dBgActor_c D1/D0 only (ov002 0x020ee42c, 0x020ee464), no D2; no configured ROM symbol and no inbound relocation once the licensed function set is retained (same row as ov002/daObjTatefuda_c)."
+    },
+    {
+      "symbol": "_ZN16dPathLiftActor_cD2Ev",
+      "disposition": "deadstrip",
+      "reason": "return new daObjPathLift_c() instantiates the class, so mwccarm emits the inline dPathLiftActor_c base-object destructor helper. The cartridge has dPathLiftActor_c D0/D1 only (ov002 0x020ef320, 0x020ef390), no D2; no configured ROM symbol and no inbound relocation once the licensed function set is retained."
     }
   ],
   "notes": [
@@ -553,12 +563,12 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@527",
+      "from": "@518",
       "to": "@128",
       "evidence": "mwcc numbers this registration node @516 per TU and the fleet already defines a global @516, so the scratch link would multiply-define it; the first target @109 collides with ov064 daObjFl_Amilift_c's global @109 on main, so it lands on @128"
     },
     {
-      "from": "@528",
+      "from": "@519",
       "to": "@129",
       "evidence": "mwcc numbers this registration node @517 per TU and the fleet already defines a global @517, so the scratch link would multiply-define it; the first target @110 collides with ov102 daObjHatenaBlock_c's global @110 on main, so it lands on @129"
     }
