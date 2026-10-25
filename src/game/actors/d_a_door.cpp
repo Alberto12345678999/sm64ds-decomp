@@ -211,9 +211,10 @@ int func_ov100_02144f84(void);
 int func_ov100_02144fcc(void);
 int func_ov100_02145014(void);
 void func_ov100_02145070(int v);
-
 }
-namespace Sound { void ChangeMusicVolume(unsigned int a, int b); }
+namespace Sound {
+void ChangeMusicVolume(unsigned int a, int b);
+}
 extern "C" {
 void _ZN5Sound13PlayCharVoiceEjjRK7Vector3(unsigned int a, unsigned int b, void *pos);
 /* local extern: include/Player.h declares Player::Unk_020ca488 void, and
@@ -478,7 +479,7 @@ int daDoor_c::func_ov100_02144528(Player *pl)
                     pl->mHasNoCap = 1;
                     func_0201277c(0x7e);
                     mTimer = 0x40;
-                    Sound::ChangeMusicVolume(0, 0x19666);  /* 25.4 as Fix12 */
+                    Sound::ChangeMusicVolume(0, 0x19666); /* 25.4 as Fix12 */
                 } else {
                     func_0201277c(0x7f);
                 }

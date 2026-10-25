@@ -146,7 +146,9 @@ void StopLoadedMusic_Layer3();
 void LoadAndSetMusic_Layer3(unsigned int musicId);
 }
 extern "C" void func_02011cfc();
-namespace Sound { void ChangeMusicVolume(u32 a, int f); }
+namespace Sound {
+void ChangeMusicVolume(u32 a, int f);
+}
 extern "C" int func_01ffa344(int f);
 extern "C" unsigned short data_ov074_02122e04[];
 extern "C" int ApproachAngle(void*,int,int,int,int);

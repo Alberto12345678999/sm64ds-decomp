@@ -251,7 +251,9 @@ extern int _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void *p, const Vector3 *v, u3
                                                    u32 b, u32 c, u32 d);
 extern void _Z14ApproachLinearRiii(int* p, int t, int s);
 }
-namespace Sound { void ChangeMusicVolume(unsigned int a, int b); }
+namespace Sound {
+void ChangeMusicVolume(unsigned int a, int b);
+}
 extern "C" {
 extern void d_a_king_donketuPlayLongHold(unsigned int a, unsigned int b, unsigned int c,
                                          struct Vector3 *v, unsigned int d);

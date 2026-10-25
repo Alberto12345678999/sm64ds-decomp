@@ -380,7 +380,9 @@ extern void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(void *self, 
 extern void _ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit(void *self, void *btp, int a, int fix,
                                                        unsigned int b);
 }
-namespace Sound { void ChangeMusicVolume(unsigned int a, int b); }
+namespace Sound {
+void ChangeMusicVolume(unsigned int a, int b);
+}
 extern "C" {
 extern void _ZN5Sound22LoadAndSetMusic_Layer3Ej(unsigned int a);
 extern void _ZN5Sound22StopLoadedMusic_Layer3Ev(void);

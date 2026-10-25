@@ -128,7 +128,9 @@ struct BcSwitchCollisionFilePtr : SharedFilePtr {
     ~BcSwitchCollisionFilePtr();
 };
 
-namespace Sound { s32 ChangeMusicVolume(u32 a, s32 vol); }
+namespace Sound {
+s32 ChangeMusicVolume(u32 a, s32 vol);
+}
 
 extern "C" {
 extern BcSwitchCollisionFilePtr daObjBC_Switch_c_ClsnFile;

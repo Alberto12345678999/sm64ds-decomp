@@ -130,7 +130,9 @@ extern int SublevelToLevel(int a);
    Message2.cpp spells it the same way. */
 extern void _ZN7Message7AddCharEc(int c);
 }
-namespace Sound { int ChangeMusicVolume(u32 a, s32 b); }
+namespace Sound {
+int ChangeMusicVolume(u32 a, s32 b);
+}
 extern "C" {
 /* local extern: byte-forced spelling -- the definition is
    (volatile u16*, u16, s16); u16/s16 parameters would emit an explicit narrow

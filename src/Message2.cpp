@@ -114,7 +114,9 @@ extern int __aeabi_idiv(int, int);
    spells it the same way. */
 extern void _ZN7Message7AddCharEc(int c);
 }
-namespace Sound { void ChangeMusicVolume(u32 vol, Fix12i speed); }
+namespace Sound {
+void ChangeMusicVolume(u32 vol, Fix12i speed);
+}
 extern "C" {
 void OamRender10_Message2(int a, void *b, int c, int d, int e, int f, int g, int h, int i, int j);
 }

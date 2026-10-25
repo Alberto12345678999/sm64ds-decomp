@@ -137,7 +137,9 @@ struct System {
 extern void _ZN5Sound22StopLoadedMusic_Layer3Ev(void);
 extern void func_02011cfc(void);
 }
-namespace Sound { void ChangeMusicVolume(unsigned int a, int b); }
+namespace Sound {
+void ChangeMusicVolume(unsigned int a, int b);
+}
 extern "C" {
 extern short Vec3_HorzAngle(const void* a, const void* b);
 extern int Vec3_Dist(const void* a, const void* b);
@@ -164,7 +166,6 @@ extern void Matrix4x3_ApplyInPlaceToRotationXYZExt(void *m, int x, int y, int z)
 extern void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(void* self, dActor_c* a, Vector3* v, Fix12i r, Fix12i h, unsigned int e, unsigned int g);
 extern void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(void* self, dActor_c* a, Fix12i r, Fix12i h, Vector3_16* p, Vector3_16* q);
 }
-
 
 /* `opt_strength_reduction`, `opt_common_subs` and `opt_propagation` are
  * file-global last-wins in mwccarm 2004/b56, so the three members that need

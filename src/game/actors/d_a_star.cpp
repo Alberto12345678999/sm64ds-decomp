@@ -239,7 +239,9 @@ extern s16 GetAngleToCamera(int i);
 extern u8 *data_0209f344;
 extern short _ZN8dActor_c12ReflectAngleE5Fix12IiES1_s(void* c, Fix12i a, Fix12i b, short ang);
 }
-namespace Sound { void ChangeMusicVolume(u32, int); }
+namespace Sound {
+void ChangeMusicVolume(u32, int);
+}
 extern "C" {
 extern int func_ov002_020c6e14(void*);
 extern u8 data_0209d660;
