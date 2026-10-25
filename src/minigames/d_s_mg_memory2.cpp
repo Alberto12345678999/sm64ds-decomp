@@ -167,7 +167,7 @@ extern u8 data_0209d454;
 #pragma defer_codegen off
 
 // @symbol _ZN14dScMgMemory2_cD1Ev
-/* Destroys mShared, then the inherited scene. CodeWarrior emits both D1 and
+/* Destroys mDealer, then the inherited scene. CodeWarrior emits both D1 and
  * D0 from this one definition. */
 dScMgMemory2_c::~dScMgMemory2_c() {}
 // @symbol _ZN14dScMgMemory2_cD0Ev
@@ -685,7 +685,7 @@ void dScMgMemory2_c::ResultWait() {
                 scoreView->bestHudScore = scoreView->hudScore;
         }
         Mg_SubmitScore(gMgScene != 0 ? gMgScene->mHudScore : 0);
-        Dealer_PlayWin(&mShared);
+        Dealer_PlayWin(&mDealer);
         return;
     }
 
@@ -695,7 +695,7 @@ void dScMgMemory2_c::ResultWait() {
         if (scoreView->hudScore > 0)
             scoreView->hudScore -= 1;
     }
-    Dealer_PlayLose(&mShared);
+    Dealer_PlayLose(&mDealer);
     return;
 
 zero:
@@ -932,10 +932,10 @@ void dScMgMemory2_c::RoundStart() {
     mDealSignals = 0;
     mCardsDealt = 0;
     if (mDifficulty == 1)
-        Dealer_StartShuffle((char *)&mShared, 4, 3, (int)&mDealSignals);
+        Dealer_StartShuffle((char *)&mDealer, 4, 3, (int)&mDealSignals);
     else
-        Dealer_StartShuffle((char *)&mShared, 4, 4, (int)&mDealSignals);
-    mShared.ready = 1;
+        Dealer_StartShuffle((char *)&mDealer, 4, 4, (int)&mDealSignals);
+    mDealer.mReserved = 1;
     mSubstate = ROUND_DEAL_EASY;
     if (mPromptBlinkCount == 0) {
         mPromptEnabled = 1;
@@ -1171,7 +1171,7 @@ void dScMgMemory2_c::StateSetup() {
     SetupDifficulty();
     ShuffleCards();
     FreeGfxSlotsById(0x1d);
-    Dealer_PlayIdle((char *)&mShared);
+    Dealer_PlayIdle((char *)&mDealer);
     mState = STATE_PLAY;
 }
 
@@ -1198,7 +1198,7 @@ void dScMgMemory2_c::OnDealDone() {
 // @symbol _ZN14dScMgMemory2_c11CanEndStateEi
 int dScMgMemory2_c::CanEndState(int /* mode */) {
     if (mState == STATE_RESULT && mSubstate == RESULT_WAIT) {
-        if (Dealer_IsIdle((int *)&mShared) == 0)
+        if (Dealer_IsIdle((int *)&mDealer) == 0)
             return 0;
         mSubstate = RESULT_REWARD;
         FreeGfxSlotsById(0x1d);
@@ -1235,7 +1235,7 @@ s32 dScMgMemory2_c::Render() {
     DrawMessage();
     DrawCursor();
     DrawCards();
-    Dealer_Draw((char *)&mShared);
+    Dealer_Draw((char *)&mDealer);
     return 1;
 }
 
@@ -1246,7 +1246,7 @@ s32 dScMgMemory2_c::Render() {
 s32 dScMgMemory2_c::Behavior() {
     (this->*sMemory2StateTable[mState])();
     MgCoins_Update();
-    Dealer_Update((char *)&mShared);
+    Dealer_Update((char *)&mDealer);
     return 1;
 }
 
@@ -1273,7 +1273,7 @@ s32 dScMgMemory2_c::InitResources() {
     ResetGame();
     /* 0x4660..0x471c is dScMgSingle3DBase_c's minigame camera. */
     Camera_InitDealerView((char *)pad_4660);
-    if (Dealer_Load(&mShared) == 0)
+    if (Dealer_Load(&mDealer) == 0)
         return 0;
     mCredits = Mg_GetSavedRecord0();
     mCreditsShown = mCredits;
