@@ -153,19 +153,14 @@ extern volatile Matrix4x3 sEsp3DIdentityMtx;
 
 /* ---- dScMg3DEsp_c: the destructor (key function) ---------------------- */
 
-/* The members are raw storage (see dScMg3DEsp_c.h), so each is destroyed by
-   an explicit call, in reverse declaration order. The vtable stores,
-   mSysTracker's destruction and the chain to ~dScMgBase_c are
-   compiler-generated; the deleting variant reaches dScMgBase_c's operator
-   delete. */
+/* The body is empty: the members' destructors (reverse declaration order),
+   the vtable stores, mSysTracker's destruction and the chain to
+   ~dScMgBase_c are all compiler-generated; the deleting variant reaches
+   dScMgBase_c's operator delete. */
 // @symbol _ZN12dScMg3DEsp_cD1Ev
 // @symbol _ZN12dScMg3DEsp_cD0Ev
 dScMg3DEsp_c::~dScMg3DEsp_c()
 {
-    ((dExtAnmTexSRT_c *)mTextureTransformer)->dExtAnmTexSRT_c::~dExtAnmTexSRT_c();
-    ((dMg3DEspModel_c *)mEspModel)->~dMg3DEspModel_c();
-    ((dExtSimpleModel_c *)mModel2)->dExtSimpleModel_c::~dExtSimpleModel_c();
-    ((dExtSimpleModel_c *)mModel1)->dExtSimpleModel_c::~dExtSimpleModel_c();
 }
 
 /* ---- dMg3DEspAnimSet_c ------------------------------------------------- */
@@ -561,7 +556,7 @@ void dScMg3DEsp_c::DrawBanner()
 void dScMg3DEsp_c::FlashQuick() {
     if (mFlashStep)
         return;
-    ((dMg3DEspModel_c *)mEspModel)->mPolygonID = 0x1e;
+    mEspModel.mPolygonID = 0x1e;
     mFlashStep += 1;
 }
 
@@ -572,7 +567,7 @@ void dScMg3DEsp_c::FlashSync()
     u8 state = mFlashStep;
     if (state == 0) {
         u8 *p = &mFlashStep;
-        ((dMg3DEspModel_c *)mEspModel)->mPolygonID = 0x1e;
+        mEspModel.mPolygonID = 0x1e;
         (*p)++;
         return;
     }
@@ -591,7 +586,7 @@ void dScMg3DEsp_c::FlashSync()
         u8 *p = &mFlashStep;
         (*p)++;
     }
-    ((dMg3DEspModel_c *)mEspModel)->mPolygonID = 0x1f;
+    mEspModel.mPolygonID = 0x1f;
 }
 
 // @symbol _ZN12dScMg3DEsp_c9FlashOnceEv
@@ -605,7 +600,7 @@ void dScMg3DEsp_c::FlashOnce() {
     p = &mFlashStep;
     *p = (unsigned char)(*p + 1);
     k = 0x1f;
-    ((dMg3DEspModel_c *)mEspModel)->mPolygonID = k;
+    mEspModel.mPolygonID = k;
 }
 
 // @symbol _ZN12dScMg3DEsp_c11UpdateFlashEv
@@ -1071,7 +1066,7 @@ void dScMg3DEsp_c::CardSeek(int i) {
                 mCorrect = 0;
             } else {
                 mTarget = mCards[i].mFace;
-                ((dMg3DEspModel_c *)mEspModel)->mTextureFrame = mCards[i].mFace;
+                mEspModel.mTextureFrame = mCards[i].mFace;
                 mCorrect = 1;
             }
         }
@@ -1090,7 +1085,7 @@ void dScMg3DEsp_c::CardSeek(int i) {
         mTimer += 0x40;
     }
 
-    ((dMg3DEspModel_c *)mEspModel)->StartHit();
+    mEspModel.StartHit();
 }
 
 // @symbol _ZN12dScMg3DEsp_c9CardTouchEi
@@ -1205,7 +1200,7 @@ void dScMg3DEsp_c::DealCards() {
             l++;
         } while (l < n);
     }
-    ((dMg3DEspModel_c *)mEspModel)->mTextureFrame = mTarget;
+    mEspModel.mTextureFrame = mTarget;
 }
 
 // @symbol _ZN12dScMg3DEsp_c10ClearCardsEv
@@ -1293,7 +1288,7 @@ void dScMg3DEsp_c::Deal() {
         return;
     }
     SetDifficulty();
-    ((dMg3DEspModel_c *)mEspModel)->StartIntro();
+    mEspModel.StartIntro();
     DealCards();
     mPhase = 1;
     FreeGfxSlotsById(0x1d);
@@ -1374,7 +1369,7 @@ void dScMg3DEsp_c::Results() {
             mDone = 0;
             Mg_ShowBanner(8, 0x80, 0xa0, 1, -1, 0xd);
             Mg_SetSharedState(MG_STATE_GAME_OVER);
-            ((dMg3DEspModel_c *)mEspModel)->mMuted = 1;
+            mEspModel.mMuted = 1;
         }
         mPromptEnabled = 0;
         mTimer = 0;
@@ -1445,8 +1440,8 @@ void dScMg3DEsp_c::StartRound(int a)
         mLevel = 0;
         if (mLevel > 9998) mLevel = 9998; /* the ROM keeps this clamp; 16 bytes */
     }
-    ((dMg3DEspModel_c *)mEspModel)->mMuted = 0;
-    ((dMg3DEspModel_c *)mEspModel)->Reset();
+    mEspModel.mMuted = 0;
+    mEspModel.Reset();
     Mg_ShowBanner(0xd, 0x80, 0xa8, 1, -1, 0xd);
 }
 
@@ -1478,10 +1473,10 @@ s32 dScMg3DEsp_c::Render()
     mCameraAngle = 0xc00;
     Camera_UpdateMatrices(pad_4660);
     /* dExtSimpleModel_c::data, at +8. Naming the member makes mwcc add the 8 in a separate instruction. */
-    ((dExtAnmTexSRT_c *)mTextureTransformer)->Update(*(ModelComponents *)(mModel1 + 8));
-    ((dExtSimpleModel_c *)mModel1)->Render(0);
-    ((dMg3DEspModel_c *)mEspModel)->Render();
-    ((dExtSimpleModel_c *)mModel2)->Render(0);
+    mTextureTransformer.Update(mModel1.data);
+    mModel1.Render(0);
+    mEspModel.Render();
+    mModel2.Render(0);
     return 1;
 }
 
@@ -1493,8 +1488,8 @@ s32 dScMg3DEsp_c::Behavior()
 {
     (this->*s3DEspRoundTable[mRoundState])();
     UpdateSlots();
-    ((dExtAnmTexSRT_c *)mTextureTransformer)->Advance();
-    ((dMg3DEspModel_c *)mEspModel)->Behavior();
+    mTextureTransformer.Advance();
+    mEspModel.Behavior();
     return 1;
 }
 
@@ -1527,23 +1522,22 @@ s32 dScMg3DEsp_c::InitResources()
     mCameraAngle = 0xc00;
     Camera_UpdateMatrices(pad_4660); /* the camera block starts at 0x4660 */
 
-    if (func_020179b4(&gEspIrieModelFile, mModel1, 1) == 0)
+    if (func_020179b4(&gEspIrieModelFile, &mModel1, 1) == 0)
         return 0;
 
     dExtAnmTexSRT_c::Prepare(**(BMD_File **)((void **)&gEspIrieModelFile + 1),
                              *(BTA_File *)&sEsp3DTextureAnim);
-    ((dExtAnmTexSRT_c *)mTextureTransformer)
-        ->SetFile(*(BTA_File *)&sEsp3DTextureAnim, 0, 0x1000, 0);
+    mTextureTransformer.SetFile(*(BTA_File *)&sEsp3DTextureAnim, 0, 0x1000, 0);
 
-    if (((dMg3DEspModel_c *)mEspModel)->InitResources() == 0)
+    if (mEspModel.InitResources() == 0)
         return 0;
 
-    if (func_020179b4(&gIrieBackModelFile, mModel2, 1) == 0)
+    if (func_020179b4(&gIrieBackModelFile, &mModel2, 1) == 0)
         return 0;
 
     tmp = (Matrix4x3 &)sEsp3DIdentityMtx;
-    ((dExtSimpleModel_c *)mModel1)->mat4x3 = (Matrix4x3 &)sEsp3DIdentityMtx;
-    ((dExtSimpleModel_c *)mModel2)->mat4x3 = tmp;
+    mModel1.mat4x3 = (Matrix4x3 &)sEsp3DIdentityMtx;
+    mModel2.mat4x3 = tmp;
 
     data_0209d454 |= 4;
     /* sub BG2CNT, then the sub BG2 scroll offsets */
@@ -1595,35 +1589,13 @@ s32 dScMg3DEsp_c::InitResources()
     return 1;
 }
 
-extern "C" {
-extern void *_ZN11dScMgBase_cC2Ev(void *p);
-extern void _ZN8Particle10SysTrackerC1Ev(void *);
-extern void *_ZN17dExtSimpleModel_cC1Ev(void *);
-extern void *_ZN15dMg3DEspModel_cC1Ev(void *);
-extern void *_ZN15dExtAnmTexSRT_cC1Ev(void *);
-extern int _ZTV19dScMgSingle3DBase_c[];
-extern int _ZTV12dScMg3DEsp_c[];
-void *dScMg3DEsp_c_classInit(void);
 /* Reconstructed source-style name: SM64DS proves dScMg3DEsp_c through RTTI,
  * allocation size, vtable identity, and the MG_3DESP registry profile;
  * later EAD lineage supplies classInit. Exact original spelling is not
  * preserved. Historical alias: MgPsycheOut_Spawn. */
 // @symbol dScMg3DEsp_c_classInit
-void *dScMg3DEsp_c_classInit(void){
-    char *o = (char *)_ZN7fBase_cnwEj(0x5558);
-    if(o != 0){
-        _ZN11dScMgBase_cC2Ev(o);
-        *(int *)o = (int)_ZTV19dScMgSingle3DBase_c;
-        _ZN8Particle10SysTrackerC1Ev(&((dScMg3DEsp_c *)o)->mSysTracker);
-        *(int *)o = (int)&_ZTV12dScMg3DEsp_c[2];
-        /* dScMg3DEsp_c declares no constructor yet, so this factory constructs its members by name. */
-        _ZN17dExtSimpleModel_cC1Ev(((dScMg3DEsp_c *)o)->mModel1);
-        _ZN17dExtSimpleModel_cC1Ev(((dScMg3DEsp_c *)o)->mModel2);
-        _ZN15dMg3DEspModel_cC1Ev(((dScMg3DEsp_c *)o)->mEspModel);
-        _ZN15dExtAnmTexSRT_cC1Ev(((dScMg3DEsp_c *)o)->mTextureTransformer);
-    }
-    return o;
-}
+extern "C" dScMg3DEsp_c *dScMg3DEsp_c_classInit(void) {
+    return new dScMg3DEsp_c;
 }
 
 /* Static-init globals (was the handwritten __sinit_ov006_02130a08 shard).
