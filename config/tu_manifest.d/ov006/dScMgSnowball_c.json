@@ -495,7 +495,8 @@
     "tubuild create warning (RESOLVED): CONFLICT: extern declaration 'RedrawCourse' differs between the legacy file that used to hold _ZN15dScMgSnowball_c6RenderEv and the one that held _ZN15dScMgSnowball_c13InitResourcesEv; kept the first, the other is commented out for review -- RESOLVED: kept `void RedrawCourse(char *)`, the typed view; the call sites in OnYoshiTryEat and InitResources, which had declared it `void *`, take an explicit (char *) cast. Verified: 23/23 MATCH.",
     "WIDENED to 0x0212a520: the 19 shards dScMgSnowball_c_Construct through Bit_InitAll are appended to src/minigames/d_s_mg_snowball.cpp in ROM order, each under its `// @symbol` marker. Their file-local struct and pointer-to-member typedefs carry the shard's address as a suffix so they cannot collide. Bit_DrawAll takes `void*` (include/decl_common.h declares it so) and casts to its local object type. The constructor keeps its C name: the ROM does not distinguish C1 from C2, so a rename to _ZN15dScMgSnowball_cC1Ev would be unsupported. Its own-vtable store is spelled `&_ZTV15dScMgSnowball_c[2]`, because this TU defines that symbol and objisolate requires the vptr-store addend to be at least the 8-byte vtable preamble.",
     "Folded __sinit_ov006_021333e0 into this TU. The four PMF tables are file-scope arrays, so mwcc emits __sinit_d_s_mg_snowball.cpp, the same 0x18c-byte initializer and the same eighteen relocations, plus fourteen {function, 0} descriptors and the eight-byte g_profile_MG_SNOWBALL word that sits between them. @2720, @2722, @2724, @2726, @2728, @2730, @2732, @2734 and @2736 are free and kept. @2710, @2712 and @2714 are already ov060's, and @2716 and @2718 are already ov002's, so defined_symbol_renames maps them to the unused same-length @2719, @2721, @2723, @2725 and @2727.",
-    "LOCAL WORKER NOTE: this machine's EU stock dump builds sha256 ddab9300b24aeae254192c2a30d812b07ece3adff83230e75c865ed915c9de40 (per #3691); the recorded rom.sha256 is the fleet-canonical d1506e90...c478e8 that every intact entry shares."
+    "LOCAL WORKER NOTE: this machine's EU stock dump builds sha256 ddab9300b24aeae254192c2a30d812b07ece3adff83230e75c865ed915c9de40 (per #3691); the recorded rom.sha256 is the fleet-canonical d1506e90...c478e8 that every intact entry shares.",
+    "2026-10-25: include/Vector2.h gains Vector2(Fix12i, Fix12i), the inline constructor unit020b2c84's two function-local Vector2 statics need. Its body consumes eight compiler numbers ahead of this TU's first @NNN, so every defined_symbol_renames[].from moved by exactly +8 (base and head objects compared: same @ symbols, each +8, same relocation sites). tubuild verify: TEXT-VERIFIED."
   ],
   "verification": {
     "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",
@@ -970,72 +971,72 @@
   "undefined_symbol_aliases": [],
   "defined_symbol_renames": [
     {
-      "from": "@2742",
+      "from": "@2750",
       "to": "@2723",
       "evidence": "mwcc numbers this PMF descriptor @2714. ov060 already defines @2714, and objisolate cannot grow a name, so this row maps the compiled name to the unused same-length @2723."
     },
     {
-      "from": "@2744",
+      "from": "@2752",
       "to": "@2719",
       "evidence": "mwcc numbers this PMF descriptor @2716. ov002 already defines @2716, and objisolate cannot grow a name, so this row maps the compiled name to the unused same-length @2725."
     },
     {
-      "from": "@2746",
+      "from": "@2754",
       "to": "@2721",
       "evidence": "mwcc numbers this PMF descriptor @2718. ov002 already defines @2718, and objisolate cannot grow a name, so this row maps the compiled name to the unused same-length @2727."
     },
     {
-      "from": "@2758",
+      "from": "@2766",
       "to": "@2730",
       "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @2758 now; licensed under the existing pin @2730"
     },
     {
-      "from": "@2756",
+      "from": "@2764",
       "to": "@2728",
       "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @2756 now; licensed under the existing pin @2728"
     },
     {
-      "from": "@2754",
+      "from": "@2762",
       "to": "@2726",
       "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @2754 now; licensed under the existing pin @2726"
     },
     {
-      "from": "@2750",
+      "from": "@2758",
       "to": "@2722",
       "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @2750 now; licensed under the existing pin @2722"
     },
     {
-      "from": "@2748",
+      "from": "@2756",
       "to": "@2720",
       "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @2748 now; licensed under the existing pin @2720"
     },
     {
-      "from": "@2752",
+      "from": "@2760",
       "to": "@2724",
       "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @2752 now; licensed under the existing pin @2724"
     },
     {
-      "from": "@2762",
+      "from": "@2770",
       "to": "@2734",
       "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @2762 now; licensed under the existing pin @2734"
     },
     {
-      "from": "@2764",
+      "from": "@2772",
       "to": "@2736",
       "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @2764 now; licensed under the existing pin @2736"
     },
     {
-      "from": "@2760",
+      "from": "@2768",
       "to": "@2732",
       "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @2760 now; licensed under the existing pin @2732"
     },
     {
-      "from": "@2738",
+      "from": "@2746",
       "to": "@2725",
       "evidence": "compiler temp; the real constructor's inline Vector2 and SnowSpray structors shift this TU's per-TU @NNN uniquifier by 13, so mwcc emits it as @2738 now; licensed under the existing pin @2725"
     },
     {
-      "from": "@2740",
+      "from": "@2748",
       "to": "@2727",
       "evidence": "compiler temp; the real constructor's inline Vector2 and SnowSpray structors shift this TU's per-TU @NNN uniquifier by 13, so mwcc emits it as @2740 now; licensed under the existing pin @2727"
     }

@@ -6541,7 +6541,9 @@ void dScMgSmartball_c::AfterCleanupResources(u32 vfSuccess) {
 
 #pragma pop
 
-/* The scene factory and its empty particle-element constructor share this unit. */
+/* The scene factory and its empty particle-element constructor share this unit.
+   The factory stays hand-built; include/dScMgSmartball_c.h says why it is not
+   `new dScMgSmartball_c` yet. */
 extern int _ZTV16dScMgSmartball_c[];
 extern "C" void *_ZN11dScMgBase_cC2Ev(void *p);
 extern "C" void SmartballObj_ElemCtor(void);

@@ -43,6 +43,10 @@ typedef struct Vector2 {
     Fix12i x, y;
 #ifdef __cplusplus
     Vector2() {}
+    /* Statics initialised with a value spell it `Vector2(x, y)`, as Vector3's
+       do: the inline member ctor gives the retail shape, two stores and then
+       the ~Vector2() registration (unit020b2c84's banner effect origins). */
+    Vector2(Fix12i x_, Fix12i y_) : x(x_), y(y_) {}
     ~Vector2() {}
 #endif
 } Vector2;
