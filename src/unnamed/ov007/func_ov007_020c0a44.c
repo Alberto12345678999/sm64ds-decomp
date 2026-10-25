@@ -1,7 +1,3 @@
-// Long-branch veneer. #pragma long_calls makes mwccarm emit the pooled
-// `ldr ip,[pc]; bx ip` absolute tail-call the ROM uses to reach the target.
-#pragma long_calls on
-
 extern int *func_ov007_020c3df4(int, int);
 extern void func_ov007_020c0a44(int *);
 extern int func_ov007_020c3d1c(void);
@@ -18,9 +14,13 @@ int *func_ov007_020c0aa8(int a, int b, int c, short d, unsigned short e) {
     return o;
 }
 
+/* Long-branch veneer: long_calls emits the pooled `ldr ip,[pc]; bx ip`
+ * absolute tail-call; bracketed because the pragma is positional. */
+#pragma long_calls on
 int func_ov007_020c0a9c(void) {
     return func_ov007_020c3d1c();
 }
+#pragma long_calls off
 
 /* c: the 0x38-byte record func_ov007_020c0aa8 allocates; no class or header names it, so raw. */
 void func_ov007_020c0a44(int *c) {

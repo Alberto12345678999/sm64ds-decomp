@@ -1,7 +1,3 @@
-// Long-branch veneer. #pragma long_calls makes mwccarm emit the pooled
-// `ldr ip,[pc]; bx ip` absolute tail-call the ROM uses to reach the target.
-#pragma long_calls on
-
 /* The 0x2c-byte texture record this function allocates and
  * func_ov007_020c15ec clears; names as in func_ov007_020c15ec (PR #4237). */
 typedef struct Ov007Texture {
@@ -57,9 +53,13 @@ void *func_ov007_020c162c(void *fmt, int texSrc, int sizeS, int sizeT, int plttS
     return r6;
 }
 
+/* Long-branch veneer: long_calls emits the pooled `ldr ip,[pc]; bx ip`
+ * absolute tail-call; bracketed because the pragma is positional. */
+#pragma long_calls on
 int func_ov007_020c1620(void) {
     return func_ov007_020c3d1c();
 }
+#pragma long_calls off
 
 /* The 0x2c-byte texture record func_ov007_020c162c allocates and fills
  * from a BMD texture/palette pair (func_ov007_020b2308). */
