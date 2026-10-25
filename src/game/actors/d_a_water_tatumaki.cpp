@@ -39,7 +39,8 @@ struct System {
  * - InitResources: dExtAnmTexSRT_c::SetFile with a Fix12<int> temporary
  *   is 0xd8 against ROM 0xd0 and adds a 4-byte .rodata word.
  *   dExtAnmModel_c::SetAnim the same way is 0xdc against ROM 0xd0, also with
- *   a 4-byte .rodata word. The int spellings of the mangled symbols match.
+ *   a 4-byte .rodata word. Both are member calls under their scalar
+ *   spellings, which match.
  * - Behavior: Particle::System::New(mParticleID, 0x139, mPosX,
  *   mPosY + 0x384000, mPosZ, 0, 0) is 0xc8 against ROM 0xe0. The ROM
  *   spills the position, adds the lift into the spill, and reloads x and
@@ -130,14 +131,10 @@ extern Matrix4x3 data_020a0e68;
 extern int d_a_water_tatumakiNewHold(unsigned int uniqueID, unsigned int effectID, int x, int y,
                                      int z, void *dir, void *callback);
 extern int _Z14ApproachLinearR7Vector3RKS_5Fix12IiE(Vector3 &value, const Vector3 &target, int step);
-extern void _ZN15dExtAnmTexSRT_c7SetFileER8BTA_Filei5Fix12IiEj(dExtAnmTexSRT_c *self,
-                                                               BTA_File &file, int flags, int speed,
-                                                               u32 startFrame);
 }
 
 #define Particle_System_New Particle::System::New
 #define ApproachLinearVec _Z14ApproachLinearR7Vector3RKS_5Fix12IiE
-#define dExtAnmTexSRT_c_SetFile _ZN15dExtAnmTexSRT_c7SetFileER8BTA_Filei5Fix12IiEj
 
 void ApproachLinear2(s16 &value, s16 target, s16 step);
 void ApproachLinear(int &value, int target, int step);
@@ -387,7 +384,7 @@ int daWater_Tatumaki_c::InitResources()
     dExtFrameCtrl_c::LoadFile(gWaterTatumakiAnimationFile);
 
     dExtAnmTexSRT_c::Prepare(*(BMD_File *)gWaterTatumakiModelFile.filePtr, WHIRLPOOL_BTA);
-    dExtAnmTexSRT_c_SetFile(&mTextureTransformer, WHIRLPOOL_BTA, 0, kAnimSpeed, 0);
+    mTextureTransformer.SetFile(WHIRLPOOL_BTA, 0, kAnimSpeed, 0);
 
     mTextureTransformer.speed = kAnimSpeed;
     mModelAnim.speed = kAnimSpeed;

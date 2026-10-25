@@ -34,7 +34,7 @@
       "ordinal": 1
     },
     {
-      "symbol": "_ZN17dExtAnmMaterial_c7SetFileER8BMA_Filei5Fix12IiEj",
+      "symbol": "_ZN17dExtAnmMaterial_c7SetFileER8BMA_Fileiit",
       "address": "0x020157ac",
       "size": "0x00000054",
       "legacy_source": "src/_ZN17dExtAnmMaterial_c7SetFileER8BMA_Filei5Fix12IiEj.c",

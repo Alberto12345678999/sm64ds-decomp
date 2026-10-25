@@ -8,8 +8,8 @@
  * lays this file down in ROM order.
  *
  * leftovers:
- * - dExtAnmTexPat_c::SetFile and Particle::System::NewSimple stay
- *   mangled. Both take Fix12<int> by value.
+ * - Particle::System::NewSimple stays mangled. It takes Fix12<int> by
+ *   value.
  * - Behavior keeps a volatile read of mPosY and of pos.z. A plain
  *   read is folded into the add and the stores above it.
  * - The follow target's position is read through &mPos. Naming that
@@ -61,9 +61,6 @@ extern OneUpLogoTexSeqFilePtr data_ov002_02110a9c; /* BTP */
 
 extern "C" {
 void Matrix4x3_FromTranslation(Matrix4x3 *matrix, s32 x, s32 y, s32 z);
-/* local extern: the matched free-function spelling of SetFile; a member call is pending. */
-void _ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit(void *self, void *btp, int flags, int speed,
-                                                unsigned int startFrame);
 namespace Particle {
 struct System {
     static void NewSimple(u32 id, s32 x, s32 y, s32 z);
@@ -175,10 +172,7 @@ s32 daObj1UpLogo_c::InitResources()
         return 0;
     dExtAnmTexPat_c::Prepare(*(BMD_File *)data_ov002_02110aa4.filePtr,
                              *(BTP_File *)data_ov002_02110a9c.filePtr);
-    /* InitResources: SetFile's Fix12<int> parameter. A braced method call
-       does not compile, so this stays the scalar extern. */
-    _ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit(&mTextureSequence, data_ov002_02110a9c.filePtr,
-                                               kBtpFlags, 0, frame);
+    mTextureSequence.SetFile(*(BTP_File *)data_ov002_02110a9c.filePtr, kBtpFlags, 0, frame);
     mState = 0;
     mStartPos.x = mPosX;
     mStartPos.y = mPosY;

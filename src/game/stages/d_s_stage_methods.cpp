@@ -23,8 +23,8 @@
  */
 
 // leftovers:
-// - OAM::Render, OAM::RenderSub, Sound::PlaySub, cstd::atan2, Fog::Init and
-//   dExtAnmTexSRT_c::SetFile stay mangled (Fix12 by value); the OAM
+// - OAM::Render, OAM::RenderSub, Sound::PlaySub, cstd::atan2 and Fog::Init
+//   stay mangled (Fix12 by value); the OAM
 //   sprite records (COIN, TIMES, VS_NEW_STAR_APPEARED, ...) keep their
 //   mangled data names because OAM.h declares no static data. RenderNumber
 //   keeps a local extern spelled over the member's mask-emitting parameter
@@ -3913,8 +3913,6 @@ extern "C" int CopyTexPalFromLevelModel(void *p) {
 // @symbol _ZN10dScStage_c23LoadTextureTransformersEv
 extern "C" {
 extern void *_ZN15dExtAnmTexSRT_cC1Ev(void *);
-extern void _ZN15dExtAnmTexSRT_c7SetFileER8BTA_Filei5Fix12IiEj(void *self, void *bta, int a, int b,
-                                                               u32 c);
 }
 
 void dScStage_c::LoadTextureTransformers() {
@@ -3929,8 +3927,7 @@ void dScStage_c::LoadTextureTransformers() {
             if (transformer)
                 transformer = _ZN15dExtAnmTexSRT_cC1Ev(transformer);
             slot->mTransformer = transformer;
-            _ZN15dExtAnmTexSRT_c7SetFileER8BTA_Filei5Fix12IiEj(slot->mTransformer, entry->bta, 0,
-                                                               0x1000, 0);
+            ((dExtAnmTexSRT_c *)slot->mTransformer)->SetFile(*(BTA_File *)entry->bta, 0, 0x1000, 0);
         }
         entry++;
         slot++;

@@ -21,7 +21,7 @@ enum d_a_obj_ks_water_AssetId {
  * first and emits no D2 body.
  *
  * deslop leftovers:
- * - dExtAnmTexSRT_c::SetFile / dBgW_KcMbg::SetFile 6az: InitResources
+ * - dBgW_KcMbg::SetFile 6az: InitResources
  *   passes Fix12<int> by value; the header method form size-DIFFs.
  * - Sound::PlayLong: Behavior's long water sound; Sound.h has no PlayLong.
  * - data_ov017_02111c80 / 02111c88 / 02111a60 / 02111a94 KCL / BMD / BTA / CLPS
@@ -63,8 +63,6 @@ struct KsWaterClsnFileHandle : SharedFilePtr {
 };
 
 extern "C" {
-void _ZN15dExtAnmTexSRT_c7SetFileER8BTA_Filei5Fix12IiEj(dExtAnmTexSRT_c *self, BTA_File *file,
-                                                        int flags, int speed, u32 startFrame);
 extern void hold_d_a_obj_ks_water(dBgW_KcMbg *self, KCL_File *file, const Matrix4x3 *mat, int scale,
                                   s16 angY, CLPS_Block *clps);
 
@@ -99,9 +97,7 @@ int daObjKsWater_c::InitResources()
 {
     mModel.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(data_ov017_02111c88), 1, -1);
     dExtAnmTexSRT_c::Prepare(*(BMD_File *)data_ov017_02111c88.filePtr, data_ov017_02111a60);
-    /* 6az: header SetFile takes Fix12<int> by value. */
-    _ZN15dExtAnmTexSRT_c7SetFileER8BTA_Filei5Fix12IiEj(&mTextureTransformer, &data_ov017_02111a60,
-                                                       0, 0x1000, 0);
+    mTextureTransformer.SetFile(data_ov017_02111a60, 0, 0x1000, 0);
     UpdateModelPosAndRotY();
     UpdateClsnPosAndRot();
     /* 6az: header SetFile takes Fix12<int> by value. */

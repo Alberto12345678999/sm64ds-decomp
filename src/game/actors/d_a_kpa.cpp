@@ -426,9 +426,6 @@ extern KpaAnimationFileHandle data_ov060_0211ac90;
 extern short data_ov060_02119294[];
 extern short data_ov060_02119296[];
 extern short data_ov060_02119298[];
-/* local extern: the matched free-function spelling of SetFile; a member call is pending. */
-extern void _ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit(void *self, void *btp, int a, int b,
-                                                       unsigned int d);
 extern void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(void *self, void *act, void *pos, int c3, int d, unsigned int e, unsigned int f);
 extern void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(void *self, void *act, int a, int b, void *d1, void *d2);
 extern void func_02011d50(void *a);
@@ -676,8 +673,7 @@ int daKpa_c::InitResources()
     dExtAnmTexPat_c::Prepare(*(BMD_File *)data_ov060_0211ac78.filePtr,
                              *(BTP_File *)data_ov060_0211ac28.filePtr);
 
-    _ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit(&this->mTextureSequence, data_ov060_0211ac28.filePtr,
-                                               0, 0x1000, 0);
+    this->mTextureSequence.SetFile(*(BTP_File *)data_ov060_0211ac28.filePtr, 0, 0x1000, 0);
 
     this->mTextureSequence.SetFlags(0x40000000);
 
@@ -3551,45 +3547,39 @@ void daKpa_c::func_ov060_02111cc0(int idx, int animFlags){
     case 1:
         dExtAnmTexPat_c::Prepare(*(BMD_File *)data_ov060_0211ac78.filePtr,
                                  *(BTP_File *)data_ov060_0211ac40.filePtr);
-        _ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit(&this->mTextureSequence,
-                                                   data_ov060_0211ac40.filePtr, 0, 0x1000, 0);
+        this->mTextureSequence.SetFile(*(BTP_File *)data_ov060_0211ac40.filePtr, 0, 0x1000, 0);
         this->mTextureSequence.SetFlags(0x40000000);
         return;
     case 2:
         dExtAnmTexPat_c::Prepare(*(BMD_File *)data_ov060_0211ac78.filePtr,
                                  *(BTP_File *)data_ov060_0211acb8.filePtr);
-        _ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit(&this->mTextureSequence,
-                                                   data_ov060_0211acb8.filePtr, 0, 0x1000, 0);
+        this->mTextureSequence.SetFile(*(BTP_File *)data_ov060_0211acb8.filePtr, 0, 0x1000, 0);
         this->mTextureSequence.SetFlags(0x40000000);
         return;
     case 3:
     case 5:
         dExtAnmTexPat_c::Prepare(*(BMD_File *)data_ov060_0211ac78.filePtr,
                                  *(BTP_File *)data_ov060_0211ac10.filePtr);
-        _ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit(&this->mTextureSequence,
-                                                   data_ov060_0211ac10.filePtr, 0, 0x1000, 0);
+        this->mTextureSequence.SetFile(*(BTP_File *)data_ov060_0211ac10.filePtr, 0, 0x1000, 0);
         this->mTextureSequence.SetFlags(0);
         return;
     case 14:
         dExtAnmTexPat_c::Prepare(*(BMD_File *)data_ov060_0211ac78.filePtr,
                                  *(BTP_File *)data_ov060_0211abf0.filePtr);
-        _ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit(&this->mTextureSequence,
-                                                   data_ov060_0211abf0.filePtr, 0, 0x1000, 0);
+        this->mTextureSequence.SetFile(*(BTP_File *)data_ov060_0211abf0.filePtr, 0, 0x1000, 0);
         this->mTextureSequence.SetFlags(0);
         return;
     case 10:
         dExtAnmTexPat_c::Prepare(*(BMD_File *)data_ov060_0211ac78.filePtr,
                                  *(BTP_File *)data_ov060_0211ac30.filePtr);
-        _ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit(&this->mTextureSequence,
-                                                   data_ov060_0211ac30.filePtr, 0, 0x1000, 0);
+        this->mTextureSequence.SetFile(*(BTP_File *)data_ov060_0211ac30.filePtr, 0, 0x1000, 0);
         this->mTextureSequence.SetFlags(0x40000000);
         return;
     case 0:
     default:
         dExtAnmTexPat_c::Prepare(*(BMD_File *)data_ov060_0211ac78.filePtr,
                                  *(BTP_File *)data_ov060_0211ac28.filePtr);
-        _ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit(&this->mTextureSequence,
-                                                   data_ov060_0211ac28.filePtr, 0, 0x1000, 0);
+        this->mTextureSequence.SetFile(*(BTP_File *)data_ov060_0211ac28.filePtr, 0, 0x1000, 0);
         this->mTextureSequence.SetFlags(0);
         return;
     }
