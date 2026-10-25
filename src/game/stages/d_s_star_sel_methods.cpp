@@ -12,9 +12,6 @@
  *   Render by 0x18 bytes.
  * - opt_loop_invariants off binds InitResources alone, between a
  *   push and a pop. Without it the star-row loop hoists its +0x23 step.
- * - The factory keeps its hand-built construction: `new dScStarSel_c'
- *   would store the vtable at _ZTV12dScStarSel_c+8, and the cartridge
- *   label is already the address point.
  * - The seven helpers stay func_ov003_*. Every caller is in this
  *   class, and the bodies only touch this object's fields.
  * - data_020a0e5a stays u16[][2]. The flat u16[i*2] form costs
@@ -1370,35 +1367,12 @@ s32 dScStarSel_c::InitResources() {
 #pragma pop
 
 // @symbol dScStarSel_c_classInit
-extern "C" {
-extern void *_ZN7fBase_cC2Ev(void *);
-/* local extern: __cxa_vec_ctor needs D1 by address; only two scene headers declare it */
-extern void _ZN17dExtSimpleModel_cD1Ev(void *);
-extern void *_ZN17dExtSimpleModel_cC1Ev(void *);
-/* The array runtime discards the constructor's receiver result. */
-extern void __cxa_vec_ctor(void *arr, int count, int size, void (*ctor)(void *),
-                           void (*dtor)(void *));
-extern void *data_0208e4b8[];
-
 /* Reconstructed source-style name: SM64DS proves dScStarSel_c through RTTI,
  * allocation size, vtable identity, and the STAR_SELECT registry profile;
  * later EAD lineage supplies classInit. Exact original spelling is not
  * preserved. Historical alias: StarSelect_Spawn. */
-dScStarSel_c *dScStarSel_c_classInit(void) {
-    char *p = (char *)_ZN7fBase_cnwEj(0x13c);
-    if (p) {
-        _ZN7fBase_cC2Ev(p);
-        *(void ***)p = (void **)data_0208e4b8;
-        *(void ***)p = (void **)_ZTV8dScene_c;
-        unsigned char *fl = &((dScStarSel_c *)p)->pauseFlags;
-        *fl |= 1;
-        *fl |= 4;
-        *(void ***)p = (void **)data_ov003_020b1704;
-        __cxa_vec_ctor(((dScStarSel_c *)p)->models, 2, sizeof(dExtSimpleModel_c),
-                       (void (*)(void *))_ZN17dExtSimpleModel_cC1Ev, _ZN17dExtSimpleModel_cD1Ev);
-    }
-    return (dScStarSel_c *)p;
-}
+extern "C" dScStarSel_c *dScStarSel_c_classInit(void) {
+    return new dScStarSel_c;
 }
 
 extern "C" {

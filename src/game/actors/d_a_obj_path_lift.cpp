@@ -13,18 +13,11 @@
  * body.
  *
  * deslop
- * Leftover: classInit stays the typed C-ABI seam daObjRcCarpet_c already
- *   established for this same dPathLiftActor_c base (see
- *   src/game/actors/d_a_obj_rc_carpet.cpp), not `return new
- *   daObjPathLift_c()`. dPathLiftActor_c has no out-of-line ctor, so the
- *   intermediate vptr store stays the raw `data_ov002_0210af70` address
- *   point (no offset -- that symbol already names the address point in
- *   its own ov002 TU). This TU now defines _ZTV15daObjPathLift_c itself
- *   (the out-of-line destructor is the key function), so the compiler's
- *   own `_ZTV15daObjPathLift_c` label names the object start, two words
- *   before the address point; the final vptr store is
- *   `_ZTV15daObjPathLift_c[2]` (addend 8) to reach it instead of the
- *   RTTI header.
+ * classInit is `return new daObjPathLift_c()`. dPathLiftActor_c's implicit
+ *   constructor inlines into it (dBgActor_c C2, the base vptr, mModels,
+ *   mPath), then the leaf vptr and mShadowModel, which is the ROM's
+ *   sequence. The emitted dBgActor_c and dPathLiftActor_c D2 helpers have
+ *   no ROM home and are deadstripped in the manifest.
  * Leftover: data_0209f2f8 == 13 is a level-ID check (the current
  *   level); data_0209f2d8 == 1 is the mode-1 check used tree-wide.
  */
@@ -86,36 +79,10 @@ struct PathLiftCollisionFilePtr : SharedFilePtr {
 extern PathLiftModelFile data_ov100_02148a54;
 extern PathLiftCollisionFilePtr data_ov100_02148a5c;
 
-extern "C" {
-extern void *_ZN10dBgActor_cC2Ev(dBgActor_c *actor);
-extern void *_ZN17dExtSimpleModel_cC1Ev(dExtSimpleModel_c *model);
-/* local extern: __cxa_vec_ctor needs D1 by address; only two scene headers declare it */
-extern dExtSimpleModel_c *_ZN17dExtSimpleModel_cD1Ev(dExtSimpleModel_c *model);
-extern void *_ZN7PathPtrC1Ev(PathPtr *path);
-extern void *_ZN17dExtShadowModel_cC1Ev(dExtShadowModel_c *model);
-extern void __cxa_vec_ctor(dExtSimpleModel_c *models, unsigned int count, unsigned int size,
-                           void (*ctor)(void *), void (*dtor)(void *));
-}
-
-extern int data_ov002_0210af70[];
-extern int _ZTV15daObjPathLift_c[];
-
 // @symbol daObjPathLift_c_classInit
 extern "C" daObjPathLift_c *daObjPathLift_c_classInit()
 {
-    daObjPathLift_c *actor =
-        (daObjPathLift_c *)_ZN7fBase_cnwEj(sizeof(daObjPathLift_c));
-    if (actor) {
-        _ZN10dBgActor_cC2Ev(actor);
-        *(int *)actor = (int)data_ov002_0210af70;
-        __cxa_vec_ctor(actor->mModels, 3, sizeof(dExtSimpleModel_c),
-                       (void (*)(void *))_ZN17dExtSimpleModel_cC1Ev,
-                       (void (*)(void *))_ZN17dExtSimpleModel_cD1Ev);
-        _ZN7PathPtrC1Ev(&actor->mPath);
-        *(int *)actor = (int)&_ZTV15daObjPathLift_c[2];
-        _ZN17dExtShadowModel_cC1Ev(&actor->mShadowModel);
-    }
-    return actor;
+    return new daObjPathLift_c();
 }
 
 // @symbol _ZN15daObjPathLift_c13InitResourcesEv
