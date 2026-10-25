@@ -20711,11 +20711,11 @@
     },
     "ov006:0x020c6f3c": {
       "author": "tangosdev",
-      "name": "Heyho_Destruct"
+      "name": "_ZN5HeyhoD1Ev"
     },
     "ov006:0x020c6f70": {
       "author": "tangosdev",
-      "name": "Heyho_Construct"
+      "name": "_ZN5HeyhoC1Ev"
     },
     "ov006:0x020c6f8c": {
       "author": "tangosdev",
@@ -23583,7 +23583,7 @@
     },
     "ov006:0x020eed64": {
       "author": "github-actions[bot]",
-      "name": "Jump2Popup_ElemDtor"
+      "name": "_ZN10Jump2PopupD1Ev"
     },
     "ov006:0x020eed68": {
       "author": "github-actions[bot]",
@@ -23691,7 +23691,7 @@
     },
     "ov006:0x020efc08": {
       "author": "tangosdev",
-      "name": "Jump2Popup_ElemCtor"
+      "name": "_ZN10Jump2PopupC1Ev"
     },
     "ov006:0x020efc0c": {
       "author": "andrewboudreau",
