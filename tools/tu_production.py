@@ -189,13 +189,7 @@ def prepare_intact_link_verification(entries, jobs=4):
         admitted_module_sets.add(module_set_sha)
     baseline = _current_or_bootstrapped_intact_baseline(entries, jobs)
     current_errors = tuple(baseline["symbolErrors"])
-    # The admitted proofs must agree with each other, and the control may have
-    # fewer errors than they admitted but never one they did not.  Fewer is a
-    # control that improved under them (a tool fix that resolves rows), and it
-    # hides nothing: the final link is judged against this control's inventory,
-    # not the admitted one.  Equality is restored once the proofs are migrated.
-    if len(admitted_errors) != 1 \
-            or not set(current_errors) <= set(next(iter(admitted_errors))):
+    if admitted_errors != {current_errors}:
         # A remote gate reports this exception and nothing else, so name what the
         # control's link was given: which rows lcf_interior defined, which dsd
         # checked them, and which tool and config bytes the control was bound to.
@@ -206,7 +200,7 @@ def prepare_intact_link_verification(entries, jobs=4):
             "baselineEvidence": report.get("baselineEvidence"),
         }
         raise ProductionTuError(
-            "strict post-promotion control symbol errors are not within the admitted "
+            "strict post-promotion control symbol errors do not equal the admitted "
             f"pre-promotion inventory: current={list(current_errors)!r}, "
             f"admitted={[list(rows) for rows in sorted(admitted_errors)]!r}, "
             f"control={json.dumps(diagnostics, sort_keys=True)}")

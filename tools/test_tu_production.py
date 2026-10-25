@@ -515,9 +515,9 @@ class ProductionTuObjects(unittest.TestCase):
                                          "pre-promotion inventory"):
                 TP.prepare_intact_link_verification(entries)
 
-    def test_automatic_intact_link_plan_accepts_a_control_that_lost_errors(self):
-        # A tool fix that resolves a row shrinks the control under every admitted
-        # proof at once; the proofs still bound every error the control has.
+    def test_automatic_intact_link_plan_rejects_a_control_that_lost_errors(self):
+        # The admitted inventory must be the control's own, not a superset: a
+        # stale proof that still admits a resolved row is re-recorded, not kept.
         baseline = {"symbolErrors": ["[ERROR] kept"],
                     "romSha256": "ab" * 32, "matchesStockRom": True,
                     "moduleSetSha256": "ef" * 32}
@@ -528,13 +528,10 @@ class ProductionTuObjects(unittest.TestCase):
                 "moduleSetSha256": "ef" * 32,
                 "rom": {"sha256": "ab" * 32}}},
         }}
-        with mock.patch.object(TP, "_strict_baseline", return_value=baseline), \
-                mock.patch.object(TP.TB, "manifest_section_claims",
-                                  return_value=([], [])), \
-                mock.patch.object(TP.TB, "partition_vtable_rebiases",
-                                  return_value=({}, [])):
-            prepared = TP.prepare_intact_link_verification(entries)
-        self.assertEqual(prepared["baseline"]["symbolErrors"], ["[ERROR] kept"])
+        with mock.patch.object(TP, "_strict_baseline", return_value=baseline):
+            with self.assertRaisesRegex(TP.ProductionTuError,
+                                         "pre-promotion inventory"):
+                TP.prepare_intact_link_verification(entries)
 
     def test_automatic_intact_link_plan_rejects_disagreeing_admitted_inventories(self):
         baseline = {"symbolErrors": [],
