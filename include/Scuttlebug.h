@@ -114,9 +114,8 @@ typedef char Scuttlebug_size_must_be_0x3ac[sizeof(Scuttlebug) == 0x3ac ? 1 : -1]
 
 /* OnYoshiTryEat is the key function once ~Scuttlebug is inline, so d_a_spd.cpp
  * emits _ZTV10Scuttlebug and the manifest externalizes it: RTTI off leaves a
- * zero typeinfo word where retail has _ZTI7daSpd_c. daSpd_c_classInit stores
- * the public address point because the factory calls fBase_c::operator new
- * rather than a natural new. This declaration is that address. */
+ * zero typeinfo word where retail has _ZTI7daSpd_c. This declaration is the
+ * public address point. */
 extern int _ZTV10Scuttlebug[];
 
 #endif /* SCUTTLEBUG_H */

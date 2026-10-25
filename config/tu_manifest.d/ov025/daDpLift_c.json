@@ -437,6 +437,19 @@
       "canonical_module": "arm9",
       "canonical_address": "0x020072c0",
       "reason": "Vector3's four-byte inline destructor, emitted as vague linkage because daDpLift_c has a Vector3 mMarkerPositions[10] member whose destruction the D1/D0 pair runs through __cxa_vec_cleanup. The cartridge owns the body at arm9:0x020072c0 and an enrolled source already reaches it, so this object's copy is a duplicate that production isolation discards."
+    },
+    {
+      "symbol": "_ZN10dBgActor_cD2Ev",
+      "disposition": "deadstrip",
+      "reason": "return new daDpLift_c instantiates the class, so mwccarm emits the dBgActor_c base-object destructor helper. The cartridge has dBgActor_c D1/D0 only (ov002 0x020ee42c, 0x020ee464), no D2; no configured ROM symbol and no inbound relocation once the licensed function set is retained (same row as ov002/daObjTatefuda_c)."
+    },
+    {
+      "symbol": "_ZN7Vector3C1Ev",
+      "disposition": "deadstrip-duplicate",
+      "canonical_symbol": "func_0203d384",
+      "canonical_module": "arm9",
+      "canonical_address": "0x0203d384",
+      "reason": "The retail factory passes func_0203d384 with _ZN7Vector3D1Ev to __cxa_vec_ctor for Vector3 mMarkerPositions[10], stride 0xc. return new daDpLift_c emits that call itself through the inline Vector3 default constructor; its 4-byte body is the arm9 callback at 0x0203d384, so this copy is discarded (same row as ov014/daWanwan_c)."
     }
   ],
   "production_mode": "intact-object",

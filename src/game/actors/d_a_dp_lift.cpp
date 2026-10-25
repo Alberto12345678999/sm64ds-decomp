@@ -242,42 +242,16 @@ extern "C" void func_ov025_021125dc(void *collider, daDpLift_c *self, dActor_c *
     func_ov025_021125bc(self, other);
 }
 
-/* local extern: the factory below spells the constructor chain by hand (see
- * its comment), so it names each constructor and array callback by its
- * mangled symbol rather than through the class headers. */
-extern "C" {
-void *_ZN7fBase_cnwEj(unsigned int size);
-dBgActor_c *_ZN10dBgActor_cC2Ev(dBgActor_c *object);
-dExtSimpleModel_c *_ZN17dExtSimpleModel_cC1Ev(dExtSimpleModel_c *object);
-void __cxa_vec_ctor(void *base, unsigned int count, unsigned int stride,
-    void (*ctor)(void *), void (*dtor)(void *));
-extern void *_ZTV10daDpLift_c[];
-Vector3 *_ZN7Vector3D1Ev(Vector3 *object);
-void func_0203d384(void);
-}
-
 // @symbol daDpLift_c_classInit
 /* Reconstructed source-style name: SM64DS proves daDpLift_c through RTTI,
  * allocation size, vtable identity, and the DP_LIFT registry profile; later
  * EAD lineage supplies classInit. Exact original spelling is not preserved.
  * Historical alias: PyramidLift_Spawn.
  *
- * Spelled by hand rather than `return new daDpLift_c;`, which comes out 0x38
- * bytes for the ROM's 0x64: the ROM constructs mMarkerPositions through
- * __cxa_vec_ctor(..., func_0203d384, _ZN7Vector3D1Ev) with an empty
- * constructor function, and types.h's Vector3 declares no constructor, so the
- * implicit one never emits that call. This TU emits the vtable, whose symbol
- * names the vtable object two words ahead of the slot array, so the vptr
- * store reads &_ZTV10daDpLift_c[2]. */
+ * The inline Vector3 default constructor gives mMarkerPositions the ROM's
+ * __cxa_vec_ctor(..., func_0203d384, _ZN7Vector3D1Ev); the manifest binds
+ * the emitted _ZN7Vector3C1Ev to that arm9 body. */
 extern "C" daDpLift_c *daDpLift_c_classInit(void)
 {
-    daDpLift_c *actor = (daDpLift_c *)_ZN7fBase_cnwEj(sizeof(daDpLift_c));
-    if (actor) {
-        _ZN10dBgActor_cC2Ev(actor);
-        *(void **)actor = &_ZTV10daDpLift_c[2];
-        _ZN17dExtSimpleModel_cC1Ev(&actor->mModel2);
-        __cxa_vec_ctor(actor->mMarkerPositions, 10, sizeof(Vector3),
-            (void (*)(void *))func_0203d384, (void (*)(void *))_ZN7Vector3D1Ev);
-    }
-    return actor;
+    return new daDpLift_c;
 }
