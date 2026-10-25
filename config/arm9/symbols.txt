@@ -1,5 +1,3 @@
-overlay_100 kind:data(any) addr:0x00000064
-overlay_102 kind:data(any) addr:0x00000066
 Div kind:function(thumb,size=0x4) addr:0x0200406a
 IntrWait kind:function(thumb,size=0x4) addr:0x020040f4
 SoftReset kind:function(thumb,size=0x4) addr:0x0200414c
@@ -5282,5 +5280,3 @@ data_020aa3d4 kind:bss addr:0x020aa3d4
 data_020aa3f0 kind:bss addr:0x020aa3f0
 data_020aa3f4 kind:bss addr:0x020aa3f4
 data_020aa3f8 kind:bss addr:0x020aa3f8
-data_020ad524 kind:data(any) addr:0x020ad524
-data_020ad560 kind:data(any) addr:0x020ad560

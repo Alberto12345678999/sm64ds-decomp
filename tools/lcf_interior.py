@@ -15,19 +15,22 @@ range is source-built and no gap object defines the rows inside it any more.
 
 `patch` closes that gap with absolute definitions: for every function row
 of a fixed-address module (arm9, itcm, dtcm) that lies strictly inside a
-`complete` delinks range, that some object handed to the link imports and that
-none defines, it adds `name = 0x<addr>;` to the linker command file. Those
-modules never move, so the address in symbols.txt is the address the linked
-code is at. Overlay code entry points are left alone.
+`complete` delinks range and that no object handed to the link defines, it
+adds `name = 0x<addr>;` to the linker command file, inside that module's
+output section. Those modules never move, so the address in
+symbols.txt is the address the linked code is at. Overlay code entry points are
+left alone.
 
-An absolute assignment satisfies mwldarm and does not satisfy `dsd check
-symbols`. That check reads the linked ELF. The nine symbol errors every intact
-manifest already admits are names that exist only as those assignments
-(`_deq`, `func_01ff98f4`, and the rest). A newly enrolled ITCM block cannot
-add another one: the gap object used to export every symbols.txt row at that
-address, and the asm block exports one. `stamp_linked_aliases` writes the
-other rows into that object before the link, size 0 when symbols.txt says so,
-so the sum of symbol sizes stays inside the section.
+The output section matters to `dsd check symbols`, which reads the linked ELF
+and looks for a row in its own module's section. An assignment at the top of
+`SECTIONS` gets whatever section mwldarm happens to give it (`_deq` and
+`func_01ff98f4` landed in OV007, OV060 and ARM9, never ITCM), so it links and
+then fails the check. Inside `.itcm : {` the same assignment keeps its address
+and lands in ITCM. A newly enrolled ITCM block takes a second route: the gap
+object used to export every symbols.txt row at that address, and the asm block
+exports one, so `stamp_linked_aliases` writes the other rows into that object
+before the link, size 0 when symbols.txt says so, so the sum of symbol sizes
+stays inside the section.
 
 BSS interior labels, including overlay labels, retain configured identities even
 without live imports when one actual source provider proves the complete NOBITS
@@ -312,6 +315,10 @@ def interior_rows(config_root):
     label, not a function, but callers import it by name all the same. A row at
     a range's own start is still skipped (strict `<`): that address is the
     source's own symbol, defined by its object."""
+    return [(name, addr) for name, addr, _module in _interior_rows(config_root)]
+
+
+def _interior_rows(config_root):
     config_root = pathlib.Path(config_root)
     rows = []
     for module in FIXED:
@@ -326,7 +333,7 @@ def interior_rows(config_root):
                 continue
             addr = int(m.group(2), 16)
             if any(lo < addr < hi for lo, hi in ranges):
-                rows.append((m.group(1), addr))
+                rows.append((m.group(1), addr, module))
     return rows
 
 
@@ -337,6 +344,10 @@ def start_alias_rows(config_root):
     address is the other spelling. `patch` defines whichever spelling the
     link imports but no object defines.
     """
+    return [(name, addr) for name, addr, _module in _start_alias_rows(config_root)]
+
+
+def _start_alias_rows(config_root):
     config_root = pathlib.Path(config_root)
     rows = []
     for module in FIXED:
@@ -346,14 +357,14 @@ def start_alias_rows(config_root):
             continue
         ranges = complete_text_ranges(dl)
         starts = {lo for lo, _hi in ranges}
-        by_addr: dict[int, list[tuple[str, int]]] = {}
+        by_addr: dict[int, list[tuple[str, int, str]]] = {}
         for ln in syms.read_text(errors="ignore").splitlines():
             m = _ROW.match(ln)
             if not m:
                 continue
             addr = int(m.group(2), 16)
             if addr in starts:
-                by_addr.setdefault(addr, []).append((m.group(1), addr))
+                by_addr.setdefault(addr, []).append((m.group(1), addr, module))
         for addr in sorted(by_addr):
             if len(by_addr[addr]) >= 2:
                 rows.extend(by_addr[addr])
@@ -412,9 +423,8 @@ def _elf_names(data):
 
 
 # Object basenames whose asm block replaced a gap object that exported every
-# symbols.txt row. Kept off the older complete ITCM files: stamping those would
-# erase the nine admitted symbol-check errors and fail the intact control the
-# other way.
+# symbols.txt row. The older complete ITCM block (func_01ff97d8.c) is not here:
+# `patch` defines its interior rows inside `.itcm`, which satisfies dsd as well.
 _ALIAS_OBJECTS = {
     "_dadd.o": "src/_dadd.c",
     "_dmul.o": "src/_dmul.c",
@@ -635,7 +645,11 @@ def patch(lcf_path, objects_txt, config_root, *, initialized_prefixes=()):
     """Add the missing interior definitions and linker constants to `lcf_path`;
     return [(name, addr)].
 
-    Code labels require an import. Source-proven storage interior labels also
+    An interior code row is defined whenever no object defines it, imported or
+    not: dsd checks every symbols.txt row, and an asm block cannot export it, so
+    the LCF is the only place it can come from (the strict stock control links
+    no compiled caller of func_01ff99a4). Start-alias spellings and linker
+    constants still require an import. Source-proven storage interior labels also
     preserve configured identities checked by dsd, even without an import."""
     stamp_linked_aliases(objects_txt, config_root)
     defined, imported, bss = _link_inventory(objects_txt)
@@ -653,32 +667,48 @@ def patch(lcf_path, objects_txt, config_root, *, initialized_prefixes=()):
     aliases = sorted(set(aliases))
     if len({row[0] for row in aliases}) != len(aliases):
         raise ValueError("conflicting storage alias identities")
-    rows = interior_rows(config_root) + start_alias_rows(config_root) + list(LINKER_CONSTANTS.items())
-    missing = sorted({(n, a) for n, a in rows
-                      if n in imported and n not in defined}, key=lambda r: r[1])
+    interior = _interior_rows(config_root)
+    # A linker constant is a value, not an address in a module: module None.
+    gated = _start_alias_rows(config_root)
+    gated += [(name, value, None) for name, value in LINKER_CONSTANTS.items()]
+    missing = sorted({row for row in interior if row[0] not in defined}
+                     | {row for row in gated
+                        if row[0] in imported and row[0] not in defined},
+                     key=lambda r: r[1])
     if not missing and not aliases:
         return []
     lcf_path = pathlib.Path(lcf_path)
     text = lcf_path.read_bytes().decode("latin-1")    # keep CRLF visible
     nl = "\r\n" if "\r\n" in text else "\n"
-    if missing:
+    constants = [(n, a) for n, a, module in missing if module is None]
+    if constants:
         anchor = "SECTIONS {"
         at = text.index(anchor) + len(anchor)
-        block = "".join(f"{nl}    {n} = 0x{a:08x};" for n, a in missing)
+        block = "".join(f"{nl}    {n} = 0x{a:08x};" for n, a in constants)
         text = text[:at] + block + text[at:]
+    # Each insert goes first in its section, so reversed order reads ascending.
+    for name, address, module in reversed(missing):
+        if module is not None:
+            text = _define_in_section(text, nl, module, name, address, "interior row")
+    missing = [(n, a) for n, a, _module in missing]
     for name, address, _owner, _offset, module in aliases:
         section = pathlib.PurePosixPath(module).name if module != "." else "arm9"
-        pattern = re.compile(r"^([ \t]*\." + re.escape(section) +
-                             r"[ \t]*:[ \t]*\{)", re.MULTILINE)
-        matches = list(pattern.finditer(text))
-        if len(matches) != 1:
-            raise ValueError(f"storage alias {name} requires exactly one .{section} "
-                             "output section")
-        at = matches[0].end()
         # mwldarm evaluates `object + offset` here before relocating the
         # object and would retain only the offset. A canonical value INSIDE
         # the output module preserves both the address and ELF section identity.
-        text = text[:at] + f"{nl}        {name} = 0x{address:08x};" + text[at:]
+        text = _define_in_section(text, nl, section, name, address, "storage alias")
         missing.append((name, address))
     lcf_path.write_bytes(text.encode("latin-1"))
     return sorted(missing, key=lambda row: row[1])
+
+
+def _define_in_section(text, nl, section, name, address, what):
+    """`text` with `name = 0x<address>;` first inside the one `.<section>` block."""
+    pattern = re.compile(r"^([ \t]*\." + re.escape(section) +
+                         r"[ \t]*:[ \t]*\{)", re.MULTILINE)
+    matches = list(pattern.finditer(text))
+    if len(matches) != 1:
+        raise ValueError(f"{what} {name} requires exactly one .{section} "
+                         "output section")
+    at = matches[0].end()
+    return text[:at] + f"{nl}        {name} = 0x{address:08x};" + text[at:]
