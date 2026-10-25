@@ -124,9 +124,6 @@ extern unsigned int func_02012790(unsigned int arg);
 extern void Mg_SubmitScore(int self);
 extern int data_ov006_0213e948[];
 extern void Slot3_ReelDigits(char *c, int i);
-/* S4 WALL (wave-2): kept: local void return disagrees with Sound.h u32
-   (definition returns unsigned int); params match, callers ignore r0. */
-extern void _ZN5Sound12PlayBank2_2DEj(unsigned int id);
 extern int Sound_PlayIfNotActive(int, int, int, int);
 extern int RandomIntInternal(int *seed);
 extern int data_0209e650;
@@ -514,7 +511,7 @@ void Slot3_StateSpin(char *c) {
                     ((dScMgSlot3_c *)(c + reelIndex))->mReelStopped[0] = 1;
                     scene->mStoppedReelCount += one;
                     scene->mFrameCounter = 0;
-                    _ZN5Sound12PlayBank2_2DEj(0x1a9);
+                    Sound::PlayBank2_2D(0x1a9);
                 }
             }
         }
@@ -803,7 +800,7 @@ s32 dScMgSlot3_c::Render() {
                 y += 0x18;
             }
             if ((self->mFrameCounter & 0x3f) == 0x20) {
-                _ZN5Sound12PlayBank2_2DEj(count > 1 ? 0x1ac : 0x1ab);
+                Sound::PlayBank2_2D(count > 1 ? 0x1ac : 0x1ab);
             }
         }
     }
