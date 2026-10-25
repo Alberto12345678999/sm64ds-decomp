@@ -25419,7 +25419,7 @@
     },
     "ov006:0x021079c8": {
       "author": "tangosdev",
-      "name": "Roulette_Nothing"
+      "name": "_ZN13RouletteRacerD1Ev"
     },
     "ov006:0x021079cc": {
       "author": "tangosdev",
@@ -25575,7 +25575,7 @@
     },
     "ov006:0x0210a4ac": {
       "author": "github-actions[bot]",
-      "name": "Roulette_ConstructElement"
+      "name": "_ZN13RouletteRacerC1Ev"
     },
     "ov006:0x0210a4b0": {
       "author": "tangosdev",
