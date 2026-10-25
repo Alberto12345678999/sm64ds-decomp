@@ -14,6 +14,9 @@
  * unnamed regions are written in one place only, or sit inside an embedded
  * object. */
 struct TrmpItem {
+    TrmpItem();
+    ~TrmpItem();
+
     s32 mState[2];        /* 0x000 -- the current motion's member-pointer record */
     Vector3 mPos;         /* 0x008 */
     Vector3 mPrevPos;     /* 0x014 -- mPos before this frame's move */
@@ -33,7 +36,12 @@ struct TrmpItem {
     u16 mPhase;           /* 0x09a -- the sway and hover motions' phase */
     u8 mAlpha;            /* 0x09c -- opacity, applied in TrmpItem_UpdateMatrix */
     u8 pad_09d[0x3];      /* 0x09d */
-    dExtSimpleModel_c mModels[3]; /* 0x0a0 -- rings A, B and C */
+    /* Three members, not an array: the constructor builds them with three
+       calls and the destructor tears them down with three more, where an
+       array member goes through __cxa_vec_cleanup (MEASURED). */
+    dExtSimpleModel_c mRingA;     /* 0x0a0 */
+    dExtSimpleModel_c mRingB;     /* 0x0f0 */
+    dExtSimpleModel_c mRingC;     /* 0x140 */
     dExtSimpleModel_c *mModel;    /* 0x190 -- the variant drawn */
     dExtAnmTexSRT_c mTexAnim;     /* 0x194 */
     u8 pad_1a8[0x28];     /* 0x1a8 */

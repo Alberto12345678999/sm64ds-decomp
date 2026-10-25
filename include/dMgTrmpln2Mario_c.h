@@ -3,27 +3,31 @@
 
 #include "types.h"
 #include "dExtAnmModel_c.h"
+#include "dMgTrmpObjAdapter_c.h"
 
 /* dMgTrmpln2Mario_c, the Mario of Trampoline2 (ROM RTTI _ZTI17dMgTrmpln2Mario_c;
- * constructor 0x020ca78c, D1 0x020ca604; 0xdc bytes, the stride of the array at
- * sTrmp2Marios).
+ * constructor 0x020ca78c, D1 0x020ca604; 0xdc bytes, the stride of
+ * dScMgTrampoline2_c::mMarios).
  *
- * A layout view only: src/minigames/d_mg_trmpln2_mario.cpp is still free
- * functions over a char* record (see that file's leftovers note), and reads this
- * through its MARIO2() cast. The fields are named from those functions; the
- * first five are the jumper fields the drawn line writes (TrmpLine_PushJumper in
- * unit020cd744.cpp, whose `Cannon` view has the same prefix). Unnamed regions are
- * read or written by one site at most, or sit inside an embedded object; pad_68
- * is only ever stored 0 (two sites, no reader). */
-struct dMgTrmpln2Mario_c {
-    void *mVtable;          /* 0x00 */
-    Vector3 mContactNormal; /* 0x04 -- the drawn line's normal */
-    s32 mContactOffset;     /* 0x10 -- signed distance from the line's centre */
-    s32 mContactHalfWidth;  /* 0x14 -- the line's half width */
-    u16 mContact;           /* 0x18 -- 0 none, 1 hit, 2 hard hit, 3 the line's end */
-    u8 pad_1a[0x6];         /* 0x1a */
-    u16 mItemHitCount;      /* 0x20 -- items hit; doubles the score (TrmpItem_UpdateWithJumper) */
-    s16 mItemPushCount;     /* 0x22 -- item-end pushes this frame (TrmpItem_ReflectOffLine) */
+ * Built on dMgTrmpRingObjAdapter_c (its vtable 0x0213b2e0 ends in
+ * dMgTrmpRingObjAdapter_c::Clear), which holds the jumper fields the drawn line writes
+ * (TrmpLine_PushJumper in unit020cd744.cpp, whose `Cannon` view has the same
+ * prefix). The constructor and the non-virtual destructor are the class's own,
+ * out of line in src/minigames/d_mg_trmpln2_mario.cpp; the other helpers there
+ * are still free functions over a char* record (see that file's leftovers note)
+ * and read this through its MARIO2() cast. The four slot overrides are declared
+ * and not defined as methods: the slot functions are those helpers. Unnamed
+ * regions are read or written by one site at most, or sit inside an embedded
+ * object; pad_68 is only ever stored 0 (two sites, no reader). */
+struct dMgTrmpln2Mario_c : dMgTrmpRingObjAdapter_c {
+    dMgTrmpln2Mario_c();
+    ~dMgTrmpln2Mario_c();
+
+    virtual Vector3 *GetPos();      /* Trmp2Mario_GetPos 0x020c8e88 */
+    virtual Vector3 *GetPrevPos();  /* Trmp2Mario_GetPrevPos 0x020c8e80 */
+    virtual Vector3 *GetVelocity(); /* Trmp2Mario_GetVelocity 0x020c8dd4 */
+    virtual int IsActive();         /* Trmp2Mario_Reset 0x020c8ddc */
+
     Vector3 mPos;           /* 0x24 */
     Vector3 mPrevPos;       /* 0x30 -- mPos before this frame's move */
     Vector3 mVel;           /* 0x3c */

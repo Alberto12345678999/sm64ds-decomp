@@ -1049,14 +1049,14 @@ extern "C" void TrmpItem_Init(char *self, int *position, int *normal, int itemTy
     TRMPITEM(self)->mActive = 1;
     switch (TRMPITEM(self)->mSizeIdx) {
     case 0:
-        TRMPITEM(self)->mModel = &TRMPITEM(self)->mModels[0];
+        TRMPITEM(self)->mModel = &TRMPITEM(self)->mRingA;
         break;
     case 1:
-        TRMPITEM(self)->mModel = &TRMPITEM(self)->mModels[1];
+        TRMPITEM(self)->mModel = &TRMPITEM(self)->mRingB;
         break;
     case 2:
     default:
-        TRMPITEM(self)->mModel = &TRMPITEM(self)->mModels[2];
+        TRMPITEM(self)->mModel = &TRMPITEM(self)->mRingC;
         break;
     }
     TRMPITEM(self)->mScale.x = data_020a0ebc[0];
@@ -1092,12 +1092,12 @@ extern BTA_File sTrmpItemTextureAnim;
 }
 
 extern "C" void TrmpItem_Load(char *c) {
-    TRMPITEM(c)->mModels[0].SetFile((BMD_File *)sTrmpItemRingAModelFile.filePtr, 1, -1);
-    TRMPITEM(c)->mModels[1].SetFile((BMD_File *)sTrmpItemRingBModelFile.filePtr, 1, -1);
-    TRMPITEM(c)->mModels[2].SetFile((BMD_File *)sTrmpItemRingCModelFile.filePtr, 1, -1);
-    TRMPITEM(c)->mModels[0].SetPolygonID(1);
-    TRMPITEM(c)->mModels[1].SetPolygonID(2);
-    TRMPITEM(c)->mModels[2].SetPolygonID(3);
+    TRMPITEM(c)->mRingA.SetFile((BMD_File *)sTrmpItemRingAModelFile.filePtr, 1, -1);
+    TRMPITEM(c)->mRingB.SetFile((BMD_File *)sTrmpItemRingBModelFile.filePtr, 1, -1);
+    TRMPITEM(c)->mRingC.SetFile((BMD_File *)sTrmpItemRingCModelFile.filePtr, 1, -1);
+    TRMPITEM(c)->mRingA.SetPolygonID(1);
+    TRMPITEM(c)->mRingB.SetPolygonID(2);
+    TRMPITEM(c)->mRingC.SetPolygonID(3);
     dExtAnmTexSRT_c::Prepare(*(BMD_File *)sTrmpItemRingAModelFile.filePtr, sTrmpItemTextureAnim);
     TRMPITEM(c)->mTexAnim.SetFile(sTrmpItemTextureAnim, 0, 0x1000, 0);
     TrmpItem_Hide((int *)c);
@@ -2039,7 +2039,7 @@ extern "C" void TrmpLine_Build(char *c, short *startPoint, short *endPoint) {
     Fix12i lineLength, rowStep;
     s32 row;
     s32 flag;
-    Vector3 *cell, *mirror;
+    TrmpLine::Vtx *cell, *mirror;
     void *bestObj;
     void *jumper;
     Vector3 *positionPtr, *velocityPtr;
@@ -2626,23 +2626,21 @@ extern "C" extern int __cxa_vec_cleanup(void *dest, int a, int size, void (*func
 extern "C" {
 extern char sTrmpLines;
 }
-extern "C" extern void TrmpLine_Destroy(
-    void); /* local extern: only the two Trampoline scene headers declare it; this unit includes neither */
+/* local extern: TrmpLine::~TrmpLine() by its mangled name -- C++ cannot take a
+   destructor's address, and sTrmpLines stays a raw symbol the .c static
+   initializer builds by hand. */
+extern "C" void *_ZN8TrmpLineD1Ev(void *self);
 
 // @symbol TrmpLine_CleanupAll
 extern "C" void TrmpLine_CleanupAll(void) {
-    __cxa_vec_cleanup(&sTrmpLines, 4, 0x32c, TrmpLine_Destroy);
+    __cxa_vec_cleanup(&sTrmpLines, 4, 0x32c, (void (*)(void))_ZN8TrmpLineD1Ev);
 }
 }
 
-namespace s020d1008 {
-// @symbol TrmpLine_Destroy
-extern "C" void TrmpLine_Destroy(void) {}
-}
+// @symbol _ZN8TrmpLineD1Ev
+TrmpLine::~TrmpLine() {}
 
-namespace s020d100c {
-// @symbol TrmpLine_Reset
-extern "C" void TrmpLine_Reset(char *p) {
-    TRMPLINE(p)->mStatus = 0;
-}
+// @symbol _ZN8TrmpLineC1Ev
+TrmpLine::TrmpLine() {
+    mStatus = 0;
 }

@@ -3,22 +3,28 @@
 
 #include "types.h"
 #include "dExtAnmModel_c.h"
+#include "dMgTrmpObjAdapter_c.h"
 
 /* dMgTrmpln3DMario_c, the Mario of Trampoline (ROM RTTI _ZTI18dMgTrmpln3DMario_c;
  * constructor 0x020cd12c, D1 0x020ccfc8; 0xd0 bytes, the stride the trampoline
  * scene's __cxa_vec_ctor builds four of).
  *
- * A layout view only, read through d_mg_trmpln2_mario.cpp's MARIO3D() cast; the
- * helpers there are still free functions over a char* record. The first five
- * fields are the jumper fields the drawn line writes, the same as
- * dMgTrmpln2Mario_c's (TrmpLine_PushJumper, unit020cd744.cpp). */
-struct dMgTrmpln3DMario_c {
-    void *mVtable;          /* 0x00 */
-    Vector3 mContactNormal; /* 0x04 -- the drawn line's normal */
-    s32 mContactOffset;     /* 0x10 -- signed distance from the line's centre */
-    s32 mContactHalfWidth;  /* 0x14 -- the line's half width */
-    u16 mContact;           /* 0x18 -- 0 none, 1 hit, 2 hard hit, 3 the line's end */
-    u8 pad_1a[0x2];         /* 0x1a */
+ * Built on dMgTrmpObjAdapter_c directly (its vtable 0x0213b2c4 ends in
+ * dMgTrmpObjAdapter_c::Clear), which holds the jumper fields the drawn line writes,
+ * the same as dMgTrmpln2Mario_c's (TrmpLine_PushJumper, unit020cd744.cpp). The
+ * constructor and the non-virtual destructor are the class's own, out of line in
+ * d_mg_trmpln2_mario.cpp; the other helpers there are still free functions over
+ * a char* record, read through its MARIO3D() cast. The four slot overrides are
+ * declared and not defined as methods: the slot functions are those helpers. */
+struct dMgTrmpln3DMario_c : dMgTrmpObjAdapter_c {
+    dMgTrmpln3DMario_c();
+    ~dMgTrmpln3DMario_c();
+
+    virtual Vector3 *GetPos();      /* Trmp3DMario_GetPos 0x020cafac */
+    virtual Vector3 *GetPrevPos();  /* Trmp3DMario_GetPrevPos 0x020cafa4 */
+    virtual Vector3 *GetVelocity(); /* Trmp3DMario_GetVelocity 0x020caf44 */
+    virtual int IsActive();         /* Trmp3DMario_IsMissed 0x020caf4c */
+
     Vector3 mPos;           /* 0x1c */
     Vector3 mPrevPos;       /* 0x28 -- mPos before this frame's move */
     Vector3 mVel;           /* 0x34 */

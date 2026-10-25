@@ -13,12 +13,13 @@ struct System {
  * ov006 .text 0x020c8dd4..0x020cd744.
  *
  * ROM evidence: D1 0x020ca604 and constructor 0x020ca78c of
- * dMgTrmpln2Mario_c (Trmp2Mario_Construct, which was misfiled as
- * _ZN6Player29TryExitCharacterDoorWithIntroEv: it stores vptr sTrmp2MarioOps
- * and constructs a dExtAnmModel_c at +0x78);
+ * dMgTrmpln2Mario_c (the constructor was misfiled as
+ * _ZN6Player29TryExitCharacterDoorWithIntroEv: it stores vptr
+ * _ZTV17dMgTrmpln2Mario_c and constructs a dExtAnmModel_c at +0x78);
  * D1 0x020ccfc8 and constructor 0x020cd12c of dMgTrmpln3DMario_c;
  * _ZTI17dMgTrmpln2Mario_c 0x0213b250, _ZTI18dMgTrmpln3DMario_c 0x0213b244,
- * beside dMgTrmpObjAdapter_c / dMgTrmpRingObjAdapter_c. No call runs from
+ * beside dMgTrmpObjAdapter_c / dMgTrmpRingObjAdapter_c, whose base-object
+ * constructors 0x020cd72c / 0x020cd6f4 close the unit. No call runs from
  * one class's methods into the other's. Functions are written in ROM order
  * under defer_codegen off; do not reorder.
  *
@@ -29,28 +30,25 @@ struct System {
  * order; the two file-global pragmas stay bracketed around their function.
  */
 
-// leftovers: both classes stay address-named free functions over char* --
-// no key function is defined as a real method here, so this TU emits no
-// vtable/typeinfo (cartridge copies stay in the module's .data; only Vector3's
-// trivial D1 is compiler-only output). The per-shard namespaces stay
-// (independent decl shapes would collide). The records are read through the
-// partial layout views dMgTrmpln2Mario_c.h / dMgTrmpln3DMario_c.h (MARIO2 /
-// MARIO3D). Each embeds a real dExtAnmModel_c at the constructor-proven +0x78/+0x6c,
-// so the model, frame-controller and anim-file reaches are member calls on
-// mModelAnim (SetFile, SetAnim, Render, Advance, WillHitFrame, Finished, file,
-// mat4x3, currFrame); the old matrix and frame-controller byte views were that
-// object's own fields. The thirteen anim-file globals are BCA_File *, declared
-// once below. The constructors still call _ZN14dExtAnmModel_cC1Ev by name: placement
-// new is the only C++ spelling for it on existing storage, and it adds the null
-// check (Trmp2Mario_Construct no longer matches, MEASURED 2026-10-23); a real
-// constructor waits on the classes becoming real methods. Shared resource,
-// model, frame-controller and sound calls use their genuine API headers. Every Trmp2Mario_* / Trmp3DMario_* record access
-// spells a MARIO2 / MARIO3D member except Trmp2 +0x68 and Trmp3D +0x5c, which
-// stay raw: each is only ever stored 0 (BounceOffLineA, EnterBounce), and no
-// reader gives it a role. The TrmpRingObjAdapter / TrmpObjAdapter stores at the
-// end have no layout header of their own and go through the Mario views: the
-// ring adapter's +0x20 is dMgTrmpln2Mario_c::mItemHitCount, the base adapter's
-// +0x18 the mContact both Marios share.
+// The hierarchy is real (include/dMgTrmpObjAdapter_c.h): both Marios'
+// constructors and non-virtual destructors, the two adapters' base-object
+// constructors and their Clear slots are methods. The adapters' Clear are their
+// key functions, so this TU emits those two vtables and typeinfos (the manifest
+// discards them against the cartridge's copies); the Mario vtables stay imported.
+//
+// leftovers: the rest of both classes stays address-named free functions over
+// char* -- their four slot functions included, which is why the Marios' slot
+// overrides are declared and not defined. The per-shard namespaces stay
+// (independent decl shapes would collide). The records are read through
+// dMgTrmpln2Mario_c.h / dMgTrmpln3DMario_c.h (MARIO2 / MARIO3D). Each embeds a
+// real dExtAnmModel_c at +0x78/+0x6c, so the model, frame-controller and
+// anim-file reaches are member calls on mModelAnim (SetFile, SetAnim, Render,
+// Advance, WillHitFrame, Finished, file, mat4x3, currFrame). The thirteen
+// anim-file globals are BCA_File *, declared once below. Shared resource,
+// model, frame-controller and sound calls use their genuine API headers. Every
+// Trmp2Mario_* / Trmp3DMario_* record access spells a MARIO2 / MARIO3D member
+// except Trmp2 +0x68 and Trmp3D +0x5c, which stay raw: each is only ever stored
+// 0 (BounceOffLineA, EnterBounce), and no reader gives it a role.
 #pragma defer_codegen off
 #include "types.h"
 #include "nitro/fx/fx.h"
@@ -61,19 +59,6 @@ struct System {
 #include "dExtAnmModel_c.h"
 #include "dExtFrameCtrl_c.h"
 #include "Sound.h"
-// Partial callback interface only. ROM vtables at 0x0213b2c4/0x0213b2e0
-// implement these five slots through dMgTrmpObjAdapter_c and its children.
-// No destructor slots or complete actor layout are implied by this view.
-namespace {
-struct TrampolineObjectCallbacks {
-    virtual Vector3 *GetPos();
-    virtual Vector3 *GetPrevPos();
-    virtual Vector3 *GetVelocity();
-    virtual int IsActive();
-    virtual void Clear();
-};
-}
-
 #include "dMgTrmpln2Mario_c.h"
 #include "dMgTrmpln3DMario_c.h"
 /* Typed access to the Mario records from the char* helpers below. */
@@ -438,7 +423,7 @@ L1a4: {
 
 L230:
     if (MARIO2(c)->mContact == 3) {
-        ((TrampolineObjectCallbacks *)c)->Clear();
+        ((dMgTrmpObjAdapter_c *)c)->Clear();
         MARIO2(c)->mVel.x *= -1;
     }
 
@@ -541,7 +526,7 @@ extern "C" void Trmp2Mario_BounceOffLineA(char *c) {
     }
 
     MARIO2(c)->mBounceVy = MARIO2(c)->mVel.y;
-    ((TrampolineObjectCallbacks *)c)->Clear();
+    ((dMgTrmpObjAdapter_c *)c)->Clear();
     MARIO2(c)->mWallBumpTimer = 0;
     MARIO2(c)->mModelAnim.SetAnim(sTrmpAnimBounce, 0x40000000, 0x800, 0);
     MARIO2(c)->mModelAnim.currFrame = 0;
@@ -668,7 +653,7 @@ L1a4: {
 
 L230:
     if (MARIO2(c)->mContact == 3) {
-        ((TrampolineObjectCallbacks *)c)->Clear();
+        ((dMgTrmpObjAdapter_c *)c)->Clear();
         MARIO2(c)->mVel.x *= -1;
     }
 
@@ -748,7 +733,7 @@ extern "C" void Trmp2Mario_BounceOffLineB(char *c) {
     }
 
     MARIO2(c)->mGravityStep = sTrmp2GravityStep;
-    ((TrampolineObjectCallbacks *)c)->Clear();
+    ((dMgTrmpObjAdapter_c *)c)->Clear();
 
     MARIO2(c)->mWallBumpTimer = 0;
     if (MARIO2(c)->mAnim != 0) {
@@ -789,7 +774,7 @@ extern void Trmp2Mario_StateBounce(char *c);
 
 // @symbol Trmp2Mario_EnterBounce
 extern "C" void Trmp2Mario_EnterBounce(char *c) {
-    TrampolineObjectCallbacks *callbacks = (TrampolineObjectCallbacks *)c;
+    dMgTrmpObjAdapter_c *callbacks = (dMgTrmpObjAdapter_c *)c;
     int a, b;
     MARIO2(c)->mGravityStep = sTrmp2GravityStep;
     MARIO2(c)->mVel.y = FX_MUL(sTrmpSpeedScale, 0xc00);
@@ -886,7 +871,7 @@ extern "C" void Trmp2Mario_StateMissed(char *c) {
         data_ov006_02140598 = data_ov006_02140598 - 1;
         ApproachLinear(sTrmp2Lives, 0, 1);
         Sound::PlayBank2_2D(0x130);
-        ((TrampolineObjectCallbacks *)c)->Clear();
+        ((dMgTrmpObjAdapter_c *)c)->Clear();
         MARIO2(c)->mWallBumpTimer = 0;
         Trmp2Mario_EnterRespawnWait(c);
     } else {
@@ -1021,7 +1006,7 @@ L1a4: {
 
 L230:
     if (MARIO2(c)->mContact == 3) {
-        ((TrampolineObjectCallbacks *)c)->Clear();
+        ((dMgTrmpObjAdapter_c *)c)->Clear();
         MARIO2(c)->mVel.x *= -1;
     }
 
@@ -1187,13 +1172,13 @@ extern "C" SharedFilePtr sTrmpMarioModelFile, sTrmpMarioJumpAnimFile, sTrmpMario
     sTrmpMarioWalkAnimFile, sTrmpMarioDoubleJump2AnimFile, sTrmpMarioJumpEndAnimFile,
     sTrmpMarioTurnAnimFile, sTrmpMarioTurnEndAnimFile, sTrmpMarioRollJumpAnimFile,
     sTrmpMarioStruggleAnimFile, sTrmpMarioSdownAnimFile;
-extern "C" int sTrmp2MarioOps;
-extern "C" int data_ov006_0213b3e0;
-extern "C" int data_ov006_0213b3c4;
+}
 
-// @symbol Trmp2Mario_Destruct
-extern "C" void *Trmp2Mario_Destruct(int *c) {
-    *c = (int)&sTrmp2MarioOps;
+/* mModelAnim's destructor, then the ring and base adapters' (each storing its
+   own vptr back), run after the body. */
+// @symbol _ZN17dMgTrmpln2Mario_cD1Ev
+dMgTrmpln2Mario_c::~dMgTrmpln2Mario_c() {
+    using namespace ns_020ca604;
     sTrmpMarioModelFile.Release();
     sTrmpMarioJumpAnimFile.Release();
     sTrmpMarioDoubleJump1AnimFile.Release();
@@ -1221,12 +1206,6 @@ extern "C" void *Trmp2Mario_Destruct(int *c) {
     sTrmpAnimBounce = 0;
     sTrmpAnimStruggle = 0;
     sTrmpAnimSdown = 0;
-    // Destroy the embedded member directly, without virtual dispatch.
-    MARIO2(c)->mModelAnim.dExtAnmModel_c::~dExtAnmModel_c();
-    *c = (int)&data_ov006_0213b3e0;
-    *c = (int)&data_ov006_0213b3c4;
-    return c;
-}
 }
 // ---- Trmp2Mario_Construct
 namespace ns__ZN6Player29TryExitCharacterDoorWithIntroEv {
@@ -1242,24 +1221,19 @@ namespace ns__ZN6Player29TryExitCharacterDoorWithIntroEv {
  * This file was the only evidence for Player.h's `mModelAnim2` at 0x078, so
  * that field can now be dropped and the offset returned to dActor_c.
  *
- * The vptr it stores, sTrmp2MarioOps (0x0213b2e0), is dMgTrmpln2Mario_c's vtable
- * address point: the two words before it are the offset 0 and
+ * The vptr it stores, 0x0213b2e0, is dMgTrmpln2Mario_c's vtable address point
+ * (_ZTV17dMgTrmpln2Mario_c): the two words before it are the offset 0 and
  * _ZTI17dMgTrmpln2Mario_c, and its slots are Trmp2Mario_GetPos, GetPrevPos,
- * GetVelocity, Reset and TrmpRingObjAdapter_Clear. sTrmp3DMarioOps (0x0213b2c4)
- * is the same for dMgTrmpln3DMario_c.
+ * GetVelocity, Reset and dMgTrmpRingObjAdapter_c::Clear. 0x0213b2c4 is the same
+ * for dMgTrmpln3DMario_c.
  *
  * Detached from Player.h; see SlotB2_Hide.cpp.
  */
-extern "C" int sTrmp2MarioOps[];
+}
 
-// @symbol Trmp2Mario_Construct
-extern "C" int *Trmp2Mario_Construct(int *self) {
-    TrmpRingObjAdapter_Construct(self);
-    self[0] = (int)sTrmp2MarioOps;
-    _ZN14dExtAnmModel_cC1Ev(&MARIO2(self)->mModelAnim);
-    return self;
-}
-}
+/* The ring adapter base and mModelAnim are constructed before the (empty) body. */
+// @symbol _ZN17dMgTrmpln2Mario_cC1Ev
+dMgTrmpln2Mario_c::dMgTrmpln2Mario_c() {}
 // ---- Trmp2Mario_Hide
 namespace ns_020ca7b8 {
 extern "C" {
@@ -2137,7 +2111,7 @@ L134:
 
 L1ac:
     if (MARIO3D(c)->mContact == 3) {
-        ((TrampolineObjectCallbacks *)c)->Clear();
+        ((dMgTrmpObjAdapter_c *)c)->Clear();
         MARIO3D(c)->mVel.x *= -1;
     }
 
@@ -2241,7 +2215,7 @@ extern "C" void Trmp3DMario_BounceOffLineA(char *c) {
     }
 
     MARIO3D(c)->mBounceVy = MARIO3D(c)->mVel.y;
-    ((TrampolineObjectCallbacks *)c)->Clear();
+    ((dMgTrmpObjAdapter_c *)c)->Clear();
 
     if (MARIO3D(c)->mAnim != 0) {
         MARIO3D(c)->mAnim = 0;
@@ -2366,7 +2340,7 @@ L134:
 
 L1ac:
     if (MARIO3D(c)->mContact == 3) {
-        ((TrampolineObjectCallbacks *)c)->Clear();
+        ((dMgTrmpObjAdapter_c *)c)->Clear();
         MARIO3D(c)->mVel.x *= -1;
     }
 
@@ -2448,7 +2422,7 @@ extern "C" void Trmp3DMario_BounceOffLineB(char *c) {
         MARIO3D(c)->mVel.y = half;
     }
 
-    ((TrampolineObjectCallbacks *)c)->Clear();
+    ((dMgTrmpObjAdapter_c *)c)->Clear();
 
     if (MARIO3D(c)->mAnim != 0) {
         MARIO3D(c)->mAnim = 0;
@@ -2503,7 +2477,7 @@ extern "C" void Trmp3DMario_JumpOff(char *c) {
     p38 = &MARIO3D(c)->mVel.y;
     *p38 += (int)((((long long)sTrmp3DBounceScale << 11) + 0x800) >> 12);
 
-    ((TrampolineObjectCallbacks *)c)->Clear();
+    ((dMgTrmpObjAdapter_c *)c)->Clear();
 
     MARIO3D(c)->mAnim = 0;
 
@@ -2679,7 +2653,7 @@ L130:
 
 L150:
     if (MARIO3D(c)->mContact == 3) {
-        ((TrampolineObjectCallbacks *)c)->Clear();
+        ((dMgTrmpObjAdapter_c *)c)->Clear();
         MARIO3D(c)->mVel.x *= -1;
     }
 
@@ -3078,12 +3052,13 @@ extern "C" SharedFilePtr sTrmpMarioModelFile, sTrmpMarioJumpAnimFile, sTrmpMario
     sTrmpMarioWalkAnimFile, sTrmpMarioDoubleJump2AnimFile, sTrmpMarioJumpEndAnimFile,
     sTrmpMarioTurnAnimFile, sTrmpMarioTurnEndAnimFile, sTrmpMarioRollJumpAnimFile,
     sTrmpMarioStruggleAnimFile;
-extern "C" int sTrmp3DMarioOps;
-extern "C" int data_ov006_0213b3c4;
+}
 
-// @symbol Trmp3DMario_Destruct
-extern "C" void *Trmp3DMario_Destruct(int *c) {
-    *c = (int)&sTrmp3DMarioOps;
+/* mModelAnim's destructor, then the base adapter's (storing its vptr back),
+   run after the body. */
+// @symbol _ZN18dMgTrmpln3DMario_cD1Ev
+dMgTrmpln3DMario_c::~dMgTrmpln3DMario_c() {
+    using namespace ns_020ccfc8;
     sTrmpMarioModelFile.Release();
     sTrmpMarioJumpAnimFile.Release();
     sTrmpMarioDoubleJump1AnimFile.Release();
@@ -3109,29 +3084,11 @@ extern "C" void *Trmp3DMario_Destruct(int *c) {
     sTrmpAnimTurnEnd = 0;
     sTrmpAnimBounce = 0;
     sTrmpAnimStruggle = 0;
-    // Destroy the embedded member directly, without virtual dispatch.
-    MARIO3D(c)->mModelAnim.dExtAnmModel_c::~dExtAnmModel_c();
-    *c = (int)&data_ov006_0213b3c4;
-    return c;
-}
 }
 // ---- Trmp3DMario_Construct
-namespace ns_020cd12c {
-extern "C" {
-/* recovered: vtable identified, declarations from a shared header */
-extern "C" int sTrmp3DMarioOps[];
-extern void TrmpObjAdapter_Construct(int *c);
-/* recovered: vtable identified */
-/* vtable identified: VT0 = sTrmp3DMarioOps */
-// @symbol Trmp3DMario_Construct
-int *Trmp3DMario_Construct(int *t) {
-    TrmpObjAdapter_Construct(t);
-    t[0] = (int)sTrmp3DMarioOps;
-    _ZN14dExtAnmModel_cC1Ev(&MARIO3D(t)->mModelAnim);
-    return t;
-}
-}
-}
+/* The base adapter and mModelAnim are constructed before the (empty) body. */
+// @symbol _ZN18dMgTrmpln3DMario_cC1Ev
+dMgTrmpln3DMario_c::dMgTrmpln3DMario_c() {}
 // ---- Trmp3DMario_CountFinished
 namespace ns_020cd158 {
 extern "C" {
@@ -3367,58 +3324,26 @@ int Trmp3DMario_InitPool(unsigned char *a0, int a1) {
 }
 }
 // ---- TrmpRingObjAdapter_Clear
-namespace ns_020cd6d8 {
-extern "C" {
-extern void TrmpObjAdapter_Clear(short *p);
-// @symbol TrmpRingObjAdapter_Clear
-void TrmpRingObjAdapter_Clear(short *c) {
-    TrmpObjAdapter_Clear(c);
-    /* dMgTrmpRingObjAdapter_c has no layout header. dMgTrmpln2Mario_c, the
-       one class built on it (Trmp2Mario_Construct), keeps its item-hit
-       count at +0x20, so the Clear slot each bounce runs restarts the combo
-       TrmpItem_UpdateWithJumper scores from. */
-    MARIO2(c)->mItemHitCount = 0;
-}
-}
+/* The Clear slot each bounce runs also restarts the combo
+   TrmpItem_UpdateWithJumper scores from. */
+// @symbol _ZN23dMgTrmpRingObjAdapter_c5ClearEv
+void dMgTrmpRingObjAdapter_c::Clear() {
+    dMgTrmpObjAdapter_c::Clear();
+    mItemHitCount = 0;
 }
 // ---- TrmpRingObjAdapter_Construct
-namespace ns_020cd6f4 {
-extern "C" {
-extern void TrmpObjAdapter_Construct(int *c);
-extern "C" int data_ov006_0213b3e0[];
-// @symbol TrmpRingObjAdapter_Construct
-int *TrmpRingObjAdapter_Construct(int *c) {
-    TrmpObjAdapter_Construct(c);
-    *c = (int)data_ov006_0213b3e0;
-    /* The item-hit count, through the dMgTrmpln2Mario_c view (see
-       TrmpRingObjAdapter_Clear). */
-    MARIO2(c)->mItemHitCount = 0;
-    return c;
-}
-}
+/* The base adapter is constructed before the body. */
+// @symbol _ZN23dMgTrmpRingObjAdapter_cC2Ev
+dMgTrmpRingObjAdapter_c::dMgTrmpRingObjAdapter_c() {
+    mItemHitCount = 0;
 }
 // ---- TrmpObjAdapter_Clear
-namespace ns_020cd720 {
-extern "C" {
-// @symbol TrmpObjAdapter_Clear
-void TrmpObjAdapter_Clear(short *p) {
-    /* The jumper contact (see TrmpObjAdapter_Construct). */
-    MARIO3D(p)->mContact = 0;
-}
-}
+// @symbol _ZN19dMgTrmpObjAdapter_c5ClearEv
+void dMgTrmpObjAdapter_c::Clear() {
+    mContact = 0;
 }
 // ---- TrmpObjAdapter_Construct
-namespace ns_020cd72c {
-extern "C" {
-extern "C" int data_ov006_0213b3c4[];
-// @symbol TrmpObjAdapter_Construct
-void TrmpObjAdapter_Construct(int *c) {
-    *c = (int)data_ov006_0213b3c4;
-    /* The jumper contact both Mario headers call mContact at +0x18;
-       dMgTrmpObjAdapter_c, the base this constructs, has no layout header of
-       its own, so it goes through the dMgTrmpln3DMario_c view
-       (Trmp3DMario_Construct builds on this adapter directly). */
-    MARIO3D(c)->mContact = 0;
-}
-}
+// @symbol _ZN19dMgTrmpObjAdapter_cC2Ev
+dMgTrmpObjAdapter_c::dMgTrmpObjAdapter_c() {
+    mContact = 0;
 }
