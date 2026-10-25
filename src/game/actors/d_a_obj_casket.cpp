@@ -107,12 +107,9 @@ int Vec3_HorzDist(const Vector3 *a, const Vector3 *b);
 unsigned short DecIfAbove0_Short(unsigned short *p);
 void func_020393d4(int *p, int v);
 
-void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(dBgW_KcMbg *self,
-                                                                           KCL_File *file,
-                                                                           const Matrix4x3 &mat,
-                                                                           int scale, short angleY,
-                                                                           CLPS_Block &clps);
-void _ZN8dActor_c10EarthquakeERK7Vector35Fix12IiE(void *self, Vector3 *pos, int strength);
+extern void hold_d_a_obj_casket(dBgW_KcMbg *self, KCL_File *file, const Matrix4x3 &mat, int scale,
+                                short angleY, CLPS_Block &clps);
+void d_a_obj_casketEarthquakeHold(void *self, Vector3 *pos, int strength);
 }
 
 // @symbol daObjCasket_c_classInit
@@ -153,9 +150,9 @@ int daObjCasket_c::InitResources()
 
     UpdateModelTransform();
     UpdateClsnPosAndRot();
-    _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-        &mMeshCollider, (KCL_File *)dBgW_Kc::LoadFile(data_ov071_021230d8),
-        mClsnMat, 0x199, mAngleY, data_ov063_0211ebd8);
+    ((dBgW_KcMbg *)(&mMeshCollider))
+        ->dBgW_KcMbg::SetFile((KCL_File *)dBgW_Kc::LoadFile(data_ov071_021230d8), mClsnMat, 0x199,
+                              mAngleY, data_ov063_0211ebd8);
     func_020393d4((int *)&mMeshCollider, (int)&dBgW::UpdatePosWithTransform);
     return 1;
 }
@@ -241,7 +238,7 @@ void daObjCasket_c::St_Wait_Main()
         quakePos.x = mPosX;
         quakePos.y = mPosY;
         quakePos.z = mPosZ;
-        _ZN8dActor_c10EarthquakeERK7Vector35Fix12IiE(this, &quakePos, 0x5dc000);
+        Earthquake(quakePos, 0x5dc000);
 
         landLocal.x = 0;
         landLocal.y = 0;

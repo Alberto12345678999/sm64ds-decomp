@@ -426,6 +426,14 @@
       "evidence": "ov002/Player 618/618 TEXT-VERIFIED on cpp/player-setanim-1023; SetAnim remains 0x020bef2c size 0x210"
     },
     {
+      "path": "src/game/actors/d_a_kpa3_bg.cpp",
+      "rule": "handspelled-member",
+      "match": "_ZN8dActor_c10EarthquakeERK7Vector3i",
+      "count": 2,
+      "reason": "func_ov060_02117db8 parses as C (cplusplus off; the same body as C++ DIFFs), so it cannot call dActor_c::Earthquake as a member and keeps the linker spelling, as its PoofDustAt and MarkForDestruction calls already do. Making Earthquake a scalar-Fix12i member respells the existing extern from _ZN8dActor_c10EarthquakeERK7Vector35Fix12IiE (exempt as Fix12-by-value) with its count unchanged. Follow-up: call the member once func_ov060_02117db8 matches as C++.",
+      "evidence": "origin/main:src/game/actors/d_a_kpa3_bg.cpp 2x _ZN8dActor_c10EarthquakeERK7Vector35Fix12IiE; head 2x _ZN8dActor_c10EarthquakeERK7Vector3i; file banner (func_ov060_02117db8 parses as C); tools/source_style.py --base origin/main"
+    },
+    {
       "path": "src/_ZN10dScEntry_c17RenderWaitingTextEv.cpp",
       "rule": "handspelled-member",
       "match": "_ZN3OAM6RenderEbP7OamAttriiii5Fix12IiEi",

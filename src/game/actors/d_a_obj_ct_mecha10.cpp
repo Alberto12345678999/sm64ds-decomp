@@ -104,9 +104,8 @@ void func_020396c0(dBgW *collider, int v);
    Fix12<int>, and a Fix12<int> pair grows Behavior (see the file banner). */
 /* local extern: dBgW_KcMbg::SetFile takes Fix12<int> by value, and a method
    call homes the scale (see the file banner). The scalar 0x1000 stays. */
-void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-    dBgW_KcMbg *self, KCL_File *file, const Matrix4x3 *mat,
-    Fix12i scale, s16 angle, CLPS_Block *clps);
+extern void hold_d_a_obj_ct_mecha10(dBgW_KcMbg *self, KCL_File *file, const Matrix4x3 *mat,
+                                    Fix12i scale, s16 angle, CLPS_Block *clps);
 }
 
 // @symbol daObjCtMecha10_c_classInit_CT_MECHA10
@@ -142,10 +141,9 @@ int daObjCtMecha10_c::InitResources()
         mModel.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(gCtMechaObj10ModelFile), 1, -1);
         UpdateModelPosAndRotY();
         UpdateClsnPosAndRot();
-        _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-            &mMeshCollider,
-            (KCL_File *)dBgW_Kc::LoadFile(gCtMechaObj10CollisionFile),
-            &mClsnMat, 0x1000, mAngleY, &data_ov035_021121d8);
+        ((dBgW_KcMbg *)(&mMeshCollider))
+            ->dBgW_KcMbg::SetFile((KCL_File *)dBgW_Kc::LoadFile(gCtMechaObj10CollisionFile),
+                                  *(&mClsnMat), 0x1000, mAngleY, *(&data_ov035_021121d8));
         func_020396c0(&mMeshCollider, 0);
         func_020393d4(&mMeshCollider,
             (void *)&dBgW::UpdatePosAndAngs);

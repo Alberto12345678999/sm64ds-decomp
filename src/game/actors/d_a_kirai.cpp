@@ -66,7 +66,7 @@ struct System {
     static void NewSimple(unsigned int id, int x, int y, int z);
 };
 }
-extern void _ZN8dActor_c10EarthquakeERK7Vector35Fix12IiE(void *self, Vector3 *v, int f);
+void d_a_kiraiEarthquakeHold(void *self, Vector3 *v, int f);
 extern void _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void *self, Vector3 *v, unsigned int b, int c, unsigned int d, unsigned int e, unsigned int f);
 /* local extern: dCcAcPos_c::Init also takes its radius and height as
    Fix12<int> by value; spelt through the header, the two aggregate
@@ -153,7 +153,7 @@ void daKirai_c::func_ov060_021185c4()
     v.x = mPosX;
     v.y = mPosY;
     v.z = mPosZ;
-    _ZN8dActor_c10EarthquakeERK7Vector35Fix12IiE(this, &v, 0x7d0000);
+    Earthquake(v, 0x7d0000);
     mTimer = 0;
     func_ov060_021184bc();
 }
@@ -285,7 +285,7 @@ void daKirai_c::func_ov060_02118970()
     quakePos.x = mPosX;
     quakePos.y = mPosY;
     quakePos.z = mPosZ;
-    _ZN8dActor_c10EarthquakeERK7Vector35Fix12IiE(this, &quakePos, 0x7d0000);
+    Earthquake(quakePos, 0x7d0000);
     hurtPos.x = mPosX;
     hurtPos.y = mPosY;
     hurtPos.z = mPosZ;

@@ -48,7 +48,7 @@ typedef char KiFuneClsnFileHandle_size_must_be_8[
 extern "C" {
 extern void func_020393a4(int* p, int v);
 extern void func_020393d4(int* p, int v);
-extern void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(void*, void*, void*, int, short, void*);
+
 extern int IsStarCollected(int a, int b);
 extern short data_02082214[];
 extern unsigned char data_0209f220;
@@ -89,7 +89,9 @@ int daObjKi_Fune_c::InitResources()
     UpdateClsnPosAndRot();
     idx = mModelIndex;
     file = dBgW_Kc::LoadFile(*(SharedFilePtr *)data_ov016_021136dc[idx]);
-    _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(&mMeshCollider, file, &mClsnMat, 0x1000, mAngleY, clpsBlocks[idx]);
+    ((dBgW_KcMbg *)(&mMeshCollider))
+        ->dBgW_KcMbg::SetFile((KCL_File *)(file), *(const Matrix4x3 *)(&mClsnMat), 0x1000, mAngleY,
+                              *(CLPS_Block *)(clpsBlocks[idx]));
     if (mModelIndex == 0) {
         func_020393d4((int*)&mMeshCollider, (int)&dBgW::UpdatePosWithTransform);
     }

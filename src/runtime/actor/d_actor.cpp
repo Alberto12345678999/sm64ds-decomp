@@ -1080,20 +1080,16 @@ Matrix4x3 *dActor_c::UpdateCarry(Player &player, const Vector3 &vec)
 }
 
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN8dActor_c10EarthquakeERK7Vector35Fix12IiE
-/* ROM ordinal 46 -- _ZN8dActor_c10EarthquakeERK7Vector35Fix12IiE
+// @symbol _ZN8dActor_c10EarthquakeERK7Vector3i
+/* ROM ordinal 46 -- _ZN8dActor_c10EarthquakeERK7Vector3i
  * 0x02010168  size 0x18 */
 extern "C" {
-extern void func_0200d8c8(void *, int);
+extern void func_0200d8c8(void *, const Vector3 *, int);
 extern void *data_0209f318; /* the camera */
 }
-/* Fix12<int> by value: defined by its symbol. The real shape is
-   (this, const Vector3 &pos, magnitude) tail-calling dCamera_c's
-   func_0200d8c8(camera, pos, strength) with r1/r2 untouched; spelling it so
-   contradicts 15 consumer declarations banked against this two-argument
-   form, so the two-argument spelling stays until those are fixed together. */
-extern "C" void _ZN8dActor_c10EarthquakeERK7Vector35Fix12IiE(void *self, int magnitude) {
-    func_0200d8c8(data_0209f318, magnitude);
+/* r1 is the position and r2 the intensity; both are forwarded untouched. */
+void dActor_c::Earthquake(const Vector3 &pos, Fix12i magnitude) {
+    func_0200d8c8(data_0209f318, &pos, magnitude);
 }
 
 /* -------------------------------------------------------------------------- */

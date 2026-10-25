@@ -96,9 +96,6 @@ void  func_0203568c(int *clsn, int radius);
 void  func_02035684(int *clsn, int height);
 void  dBgCh_Actr_UpdateContinuous_Veneer(void *self);
 
-void      _ZN8dActor_c10EarthquakeERK7Vector35Fix12IiE(void *self,
-                                                       const Vector3 *pos,
-                                                       int strength);
 void      _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
               void *self, void *shadow, void *matrix, int radius, int height,
               u32 flags);
@@ -439,7 +436,7 @@ int daBgSnmBdy_c::State3()
             landPos.x = mPosX;
             landPos.y = mPosY;
             landPos.z = mPosZ;
-            _ZN8dActor_c10EarthquakeERK7Vector35Fix12IiE(this, &landPos, 0x5dc000);
+            Earthquake(landPos, 0x5dc000);
             mPosX = data_ov072_02122b58.x;
             mPosY = data_ov072_02122b58.y;
             mPosZ = data_ov072_02122b58.z;
