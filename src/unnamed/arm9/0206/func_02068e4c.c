@@ -1,15 +1,30 @@
 #include "types.h"
 #include "WmWork.h"
+
+extern void func_02059f2c(void *p);
 extern int _ZN3IRQ7DisableEv(void);
 extern void _ZN3IRQ7RestoreEj(int state);
 extern void MultiStore_Int(int val, int *dst, int len);
 extern void MultiStore16(int val, char *dst, int nbytes);
 extern void CpuCopy8(u16 *a, char *b, int c);
-extern int func_02069038(void);
 extern char *data_020a9db8;
 extern int data_020a9db4;
 extern short data_020a9db0;
 extern u16 *data_0209a084;
+
+int func_02069038(void) {
+    unsigned char buf[12];
+    int i;
+    int sum;
+    func_02059f2c(buf);
+    for (i = 0, sum = 0; i < 6; i++) {
+        sum += buf[i];
+    }
+    {
+        unsigned int n = (sum + *(int *)0x27ffc3c) * 7;
+        return n % 20;
+    }
+}
 
 int func_02068e4c(int a0, u16 *a1, int a2, int a3, u16 a4, int a5) {
     volatile unsigned short fill_s;
