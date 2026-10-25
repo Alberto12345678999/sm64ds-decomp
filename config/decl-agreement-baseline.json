@@ -1932,7 +1932,7 @@
       ]
     },
     "OS_SleepThread": {
-      "src/unnamed/arm9/0201/func_02018e68.c": [
+      "src/unnamed/arm9/0201/func_02018d48.c": [
         "param:#1 int"
       ],
       "src/unnamed/arm9/0205/func_0205cdf4.cpp": [
@@ -2086,10 +2086,8 @@
       "src/unnamed/arm9/0200/func_02007f14.c": [
         "param:#1 const void *"
       ],
-      "src/unnamed/arm9/0200/func_020084b0.c": [
-        "param:#1 const void *"
-      ],
-      "src/unnamed/arm9/0200/func_02008500.c": [
+      "src/unnamed/arm9/0200/func_02008474.c": [
+        "param:#1 const void *",
         "param:#1 const char *"
       ]
     },
@@ -24394,7 +24392,7 @@
       ]
     },
     "func_0205d5e8": {
-      "src/unnamed/arm9/0201/func_02018e00.c": [
+      "src/unnamed/arm9/0201/func_02018d48.c": [
         "param:#1 int"
       ],
       "src/unnamed/arm9/0205/func_0205c9b8.c": [

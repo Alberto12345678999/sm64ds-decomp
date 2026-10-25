@@ -257,16 +257,7 @@ src/unnamed/arm9/0200/func_02008450.c:
 
 src/unnamed/arm9/0200/func_02008474.c:
     complete
-    .text start:0x02008474 end:0x020084b0
-
-src/unnamed/arm9/0200/func_020084b0.c:
-    complete
-    .text start:0x020084b0 end:0x02008500
-
-src/unnamed/arm9/0200/func_02008500.c:
-    complete
-    .text start:0x02008500 end:0x02008550
-
+    .text start:0x02008474 end:0x02008550
 src/unnamed/arm9/0200/func_02008550.cpp:
     complete
     .text start:0x02008550 end:0x0200897c
@@ -855,28 +846,7 @@ src/unnamed/arm9/0201/func_02018c00.c:
     .text start:0x02018c00 end:0x02018d48
 src/unnamed/arm9/0201/func_02018d48.c:
     complete
-    .text start:0x02018d48 end:0x02018d98
-
-src/unnamed/arm9/0201/func_02018d98.c:
-    complete
-    .text start:0x02018d98 end:0x02018dc4
-
-src/unnamed/arm9/0201/func_02018dc4.c:
-    complete
-    .text start:0x02018dc4 end:0x02018e00
-
-src/unnamed/arm9/0201/func_02018e00.c:
-    complete
-    .text start:0x02018e00 end:0x02018e3c
-
-src/unnamed/arm9/0201/func_02018e3c.c:
-    complete
-    .text start:0x02018e3c end:0x02018e68
-
-src/unnamed/arm9/0201/func_02018e68.c:
-    complete
-    .text start:0x02018e68 end:0x02018ea0
-
+    .text start:0x02018d48 end:0x02018ea0
 src/engine/graph/d_graph_c_callback.cpp:
     complete
     .text start:0x02018ea0 end:0x02018ec0
