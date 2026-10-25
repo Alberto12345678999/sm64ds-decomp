@@ -386,7 +386,7 @@ extern void MulMat4x3Mat4x3(void *dst, void *a, void *b);
 extern void Vec3_LslInPlace(void *v, int sh);
 extern void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(void *c, void *sm, void *mtx, int rad, int h, unsigned int flags);
 extern Matrix4x3 data_020a0e68;
-void d_a_kpaEarthquakeHold(void* self, struct Vector3* v, int f);
+void d_a_kpaEarthquakeHold(void *self, struct Vector3 *v, int f);
 extern "C" void func_02011cfc(void);
 /* One declaration per resource handle, typed from how InitResources and
  * CleanupResources use it:

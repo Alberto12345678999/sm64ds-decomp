@@ -36,8 +36,7 @@
  * - func_ov060_02117db8 parses as C (cplusplus off): the same body as
  *   C++ DIFFs. It reaches the members through a struct daKpa3Bg_c *.
  *   dActor_c::Earthquake, PoofDustAt and fBase_c::MarkForDestruction
- *   stay mangled because the body is C (Earthquake also takes
- *   Fix12<int> and is not on dActor_c.h). func_02012694 plays bank-3 sound
+ *   stay mangled because the body is C. func_02012694 plays bank-3 sound
  *   0xbc at a point written into mCamSpacePos, restored afterwards.
  * - dBgW_KcMbg::SetFile is called through its mangled name, with the
  *   Fix12<int> argument passed as a raw int.
@@ -65,7 +64,7 @@ void Vec3_AsrInPlace(Vec3 *v, int n);
 void MulVec3Mat4x3(Vec3 *in, void *m, void *out);
 void func_02012694(int a, void *p);
 void CopyTexPalFromLevelModel(void *p);
-/* local extern: func_ov060_02117db8 is parsed as C and cannot call the member. */
+// local extern: func_ov060_02117db8 is parsed as C and cannot call the member.
 void _ZN8dActor_c10EarthquakeERK7Vector3i(void *self, Vec3 *v, int fix);
 // local extern: func_ov060_02117db8 is parsed as C and cannot call the member.
 void _ZN8dActor_c10PoofDustAtERK7Vector3(void *self, Vec3 *v);
