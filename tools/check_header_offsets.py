@@ -166,8 +166,12 @@ ALLOCATION_METHOD = re.compile(
 # Neighboring named inline methods (for example `const Vector3 &Pos() const {`)
 # need the same body walk. Require a complete signature and a body opener or end
 # of line; do not reinterpret initializers or function-pointer fields as methods.
+# An inline constructor's mem-initializer list (`X() : mFlag(0) {}`) sits between
+# the two; dScMgD3DBase_c.h needs one because a zero written in the body lands
+# after a member's construction instead of before it.
 INLINE_METHOD = re.compile(
-    r"^\s*(?:[A-Za-z_][\w:<>, &*]*|~\w+)\([^();{}]*\)\s*(?:const\s*)?(?:\{|$)")
+    r"^\s*(?:[A-Za-z_][\w:<>, &*]*|~\w+)\([^();{}]*\)\s*(?:const\s*)?"
+    r"(?::\s*\w+\([^;{}]*\)(?:\s*,\s*\w+\([^;{}]*\))*\s*)?(?:\{|$)")
 # lines inside a struct body that are legitimately not declarations
 IGNORABLE = re.compile(r"^\s*($|/\*|\*|//|\}|#)")
 
