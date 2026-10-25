@@ -1,5 +1,9 @@
-/* The 0x2c-byte texture record func_ov007_020c162c allocates and fills
- * from a BMD texture/palette pair (func_ov007_020b2308). */
+// Long-branch veneer. #pragma long_calls makes mwccarm emit the pooled
+// `ldr ip,[pc]; bx ip` absolute tail-call the ROM uses to reach the target.
+#pragma long_calls on
+
+/* The 0x2c-byte texture record this function allocates and
+ * func_ov007_020c15ec clears; names as in func_ov007_020c15ec (PR #4237). */
 typedef struct Ov007Texture {
     /* 0x00: bit 0 = has texels (func_ov007_020c1560 loads them),
      * bit 1 = has a palette (func_ov007_020c14d4 loads it) */
@@ -17,9 +21,48 @@ typedef struct Ov007Texture {
     short plttColorCount;
 } Ov007Texture;
 
+typedef char Ov007Texture_size_must_be_0x2c[sizeof(Ov007Texture) == 0x2c ? 1 : -1];
+
 typedef char Ov007Texture_plttColorCount_must_be_at_0x28
     [(int)&((Ov007Texture *)0)->plttColorCount == 0x28 ? 1 : -1];
 
+extern char *func_ov007_020c3df4(int a, int b);
+extern void func_ov007_020c15ec(char *p);
+extern void func_ov007_020c16dc(void *a, int b, int c, int d, void *e, void *f);
+extern int func_ov007_020c3d1c(void);
+
+/* Allocates and fills a texture record for texels of format fmt at texSrc,
+ * (8 << sizeS) by (8 << sizeT), with an optional palette of plttColorCount
+ * colours at plttSrc; func_ov007_020c16dc works out the texel and palette
+ * byte sizes. The record keeps the void * spelling of the definition; `tex`
+ * is the typed view. */
+void *func_ov007_020c162c(void *fmt, int texSrc, int sizeS, int sizeT, int plttSrc,
+                          unsigned short plttColorCount) {
+    char *r6 = func_ov007_020c3df4(0, 0x2c);
+    Ov007Texture *tex = (Ov007Texture *)r6;
+    int width = 8 << sizeS;
+    int height = 8 << sizeT;
+    func_ov007_020c15ec(r6);
+    tex->fmt = (int)fmt;
+    tex->texSrc = texSrc;
+    tex->sizeS = sizeS;
+    tex->sizeT = sizeT;
+    tex->plttSrc = plttSrc;
+    tex->plttColorCount = plttColorCount;
+    if (texSrc != 0)
+        tex->flags |= 1;
+    if (plttSrc != 0)
+        tex->flags |= 2;
+    func_ov007_020c16dc(fmt, width, height, plttColorCount, &tex->texSize, &tex->plttSize);
+    return r6;
+}
+
+int func_ov007_020c1620(void) {
+    return func_ov007_020c3d1c();
+}
+
+/* The 0x2c-byte texture record func_ov007_020c162c allocates and fills
+ * from a BMD texture/palette pair (func_ov007_020b2308). */
 void func_ov007_020c15ec(char *p) {
     Ov007Texture *tex = (Ov007Texture *)p;
     tex->flags = 0;

@@ -757,12 +757,7 @@ src/LoadFileAt.c:
 
 src/unnamed/arm9/0201/func_020182bc.c:
     complete
-    .text start:0x020182bc end:0x020182ec
-
-src/unnamed/arm9/0201/func_020182ec.c:
-    complete
-    .text start:0x020182ec end:0x0201834c
-
+    .text start:0x020182bc end:0x0201834c
 src/unnamed/arm9/0201/func_0201834c.c:
     complete
     .text start:0x0201834c end:0x02018434
@@ -1037,12 +1032,7 @@ src/unnamed/arm9/0201/func_0201a490.c:
 
 src/unnamed/arm9/0201/func_0201a4bc.c:
     complete
-    .text start:0x0201a4bc end:0x0201a4d0
-
-src/unnamed/arm9/0201/func_0201a4d0.c:
-    complete
-    .text start:0x0201a4d0 end:0x0201a4e4
-
+    .text start:0x0201a4bc end:0x0201a4e4
 src/IRQ2.cpp:
     complete
     .text start:0x0201a4e4 end:0x0201a5cc
@@ -2333,16 +2323,7 @@ src/engine/model/ModelComponents.cpp:
 
 src/func_0204547c.c:
     complete
-    .text start:0x0204547c end:0x020456a0
-
-src/func_020456a0.c:
-    complete
-    .text start:0x020456a0 end:0x020457f0
-
-src/func_020457f0.c:
-    complete
-    .text start:0x020457f0 end:0x020458a8
-
+    .text start:0x0204547c end:0x020458a8
 src/func_020458a8.c:
     complete
     .text start:0x020458a8 end:0x020458e0
@@ -2461,12 +2442,7 @@ src/engine/sound/Sound2.cpp:
 
 src/unnamed/arm9/0204/func_02048f34.c:
     complete
-    .text start:0x02048f34 end:0x02048fd4
-
-src/unnamed/arm9/0204/func_02048fd4.c:
-    complete
-    .text start:0x02048fd4 end:0x02049018
-
+    .text start:0x02048f34 end:0x02049018
 src/func_02049018.c:
     complete
     .text start:0x02049018 end:0x020490b0
