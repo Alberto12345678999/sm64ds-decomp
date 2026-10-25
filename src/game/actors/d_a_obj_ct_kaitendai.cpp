@@ -105,9 +105,8 @@ extern "C" {
 extern void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
     dActor_c *actor, dExtShadowModel_c *shadow, Matrix4x3 *matrix, int radius, int height,
     u32 opacity);
-extern void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-    dBgW_KcMbg *thisp, KCL_File *kcl, const Matrix4x3 &mtx, int fix, short s,
-    CLPS_Block &clps);
+extern void hold_d_a_obj_ct_kaitendai(dBgW_KcMbg *thisp, KCL_File *kcl, const Matrix4x3 &mtx,
+                                      int fix, short s, CLPS_Block &clps);
 extern void func_020393d4(void *p, void *v);
 extern unsigned int RandomIntInternal(int *seed);
 extern u8 data_0209f2c0;              /* clock setting: 0 slow, 1 fast, 2 random, 3 stopped */
@@ -148,11 +147,10 @@ int daObjCtKaitendai_c::InitResources()
     UpdateModelPosAndRotY();
     UpdateClsnPosAndRot();
 
-    _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-        &mMeshCollider,
-        (KCL_File *)dBgW_Kc::LoadFile(*data_ov065_0211d35c[mVariant].collision),
-        mClsnMat, 0x199, mAngleY,
-        *data_ov065_0211d35c[mVariant].clps);
+    ((dBgW_KcMbg *)(&mMeshCollider))
+        ->dBgW_KcMbg::SetFile(
+            (KCL_File *)dBgW_Kc::LoadFile(*data_ov065_0211d35c[mVariant].collision), mClsnMat,
+            0x199, mAngleY, *data_ov065_0211d35c[mVariant].clps);
 
     func_020393d4(&mMeshCollider, (void *)&dBgW::UpdatePosAndAngs);
 

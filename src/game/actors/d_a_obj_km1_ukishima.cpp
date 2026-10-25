@@ -68,9 +68,8 @@ extern CLPS_Block    data_ov043_02111c00;   /* the CLPS block SetFile is handed 
 unsigned char DecIfAbove0_Byte(unsigned char *p);
 void func_020393d4(dBgW *bgw, void *fn);
 
-void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-    dBgW_KcMbg *self, KCL_File *kcl, const Matrix4x3 *mtx, int scale,
-    s16 angleY, CLPS_Block *clps);
+extern void hold_d_a_obj_km1_ukishima(dBgW_KcMbg *self, KCL_File *kcl, const Matrix4x3 *mtx,
+                                      int scale, s16 angleY, CLPS_Block *clps);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -102,9 +101,8 @@ s32 daObjKm1_Ukishima_c::InitResources()
     UpdateClsnPosAndRot();
 
     KCL_File *kcl = (KCL_File *)dBgW_Kc::LoadFile(data_ov043_021125e0);
-    _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-        &mMeshCollider, kcl, &mClsnMat, 0x199, mAngleY,
-        &data_ov043_02111c00);
+    ((dBgW_KcMbg *)(&mMeshCollider))
+        ->dBgW_KcMbg::SetFile(kcl, *(&mClsnMat), 0x199, mAngleY, *(&data_ov043_02111c00));
 
     /* The mesh moves with the actor's velocity rather than its transform --
        the island slides, it does not carry a rotating platform's matrix. */

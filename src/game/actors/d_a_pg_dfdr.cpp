@@ -79,7 +79,7 @@ void func_020393d4(int *collider, int callback);
 /* local extern: the matched free-function spelling of SetFile; a member call is pending. */
 void _ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit(void *self, void *file, int flags, int speed,
                                                 unsigned startFrame);
-void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(void *self, void *kcl, void *mat, int scale, short angY, void *clps);
+extern void hold_d_a_pg_dfdr(void *self, void *kcl, void *mat, int scale, short angY, void *clps);
 void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *self, void *actor, int radius, int height,
                                                unsigned flags, unsigned vuln);
 
@@ -176,8 +176,9 @@ s32 daPgDfdr_c::InitResources()
     func_ov027_02111994(this);
 
     file = dBgW_Kc::LoadFile(*(SharedFilePtr *)&data_ov027_02113c6c);
-    _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-        &mMeshCollider, file, &mClsnMat, 0x199, mAngleY, &data_ov027_021130e8);
+    ((dBgW_KcMbg *)(&mMeshCollider))
+        ->dBgW_KcMbg::SetFile((KCL_File *)(file), *(const Matrix4x3 *)(&mClsnMat), 0x199, mAngleY,
+                              *(CLPS_Block *)(&data_ov027_021130e8));
     func_020393d4((int *)&mMeshCollider, (int)&dBgW::UpdatePosAndAngs);
 
     mVertAccel = 0;

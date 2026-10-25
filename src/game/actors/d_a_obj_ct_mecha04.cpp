@@ -90,9 +90,8 @@ extern int data_0209e650;
 extern int data_ov065_0211c0b8[]; /* per-clock-setting belt speeds */
 extern void _ZN15dExtAnmTexSRT_c7SetFileER8BTA_Filei5Fix12IiEj(dExtAnmTexSRT_c *self, BTA_File &f,
                                                                int a, int fix, unsigned int u);
-extern void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-    dBgW_KcMbg *self, KCL_File *f, const Matrix4x3 &m, int fix, short sh,
-    CLPS_Block &b);
+extern void hold_d_a_obj_ct_mecha04(dBgW_KcMbg *self, KCL_File *f, const Matrix4x3 &m, int fix,
+                                    short sh, CLPS_Block &b);
 extern s16 data_02082214[]; /* sin/cos pair per (angle >> 4) index */
 }
 
@@ -191,10 +190,9 @@ int daObjCtMecha04_c::InitResources()
 
     variant = mVariant;
     collisionFile = dBgW_Kc::LoadFile(*data_ov065_0211d198[variant][0]);
-    _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-        &mMeshCollider, (KCL_File *)collisionFile, mClsnMat,
-        0x199, mAngleY,
-        *data_ov065_0211d19c[variant][0]);
+    ((dBgW_KcMbg *)(&mMeshCollider))
+        ->dBgW_KcMbg::SetFile((KCL_File *)collisionFile, mClsnMat, 0x199, mAngleY,
+                              *data_ov065_0211d19c[variant][0]);
 
     func_020393c4(
         &mMeshCollider,

@@ -56,8 +56,8 @@ extern "C" {
 unsigned char DecIfAbove0_Byte(unsigned char *p);
 void Matrix4x3_FromRotationZXYExt(void *m, int x, int y, int z);
 void func_020393d4(void *p, void *v);
-void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-    dBgW_KcMbg *self, void *kcl, Matrix4x3 *mtx, int fix, short s, void *clps);
+extern void hold_d_a_obj_fl_london(dBgW_KcMbg *self, void *kcl, Matrix4x3 *mtx, int fix, short s,
+                                   void *clps);
 void func_ov022_02111a1c(daObjFl_London_c *t);
 
 extern LondonModelFile data_ov022_02114580;
@@ -95,8 +95,9 @@ s32 daObjFl_London_c::InitResources()
     UpdateClsnPosAndRot();
     void *k = dBgW_Kc::LoadFile(data_ov022_02114578);
     /* MATCH: real mMeshCollider.SetFile DIFFs (Fix12<int> by value, wall 6az). */
-    _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-        &mMeshCollider, k, &mClsnMat, 0x1000, mAngleY, &data_ov064_0211bb2c);
+    ((dBgW_KcMbg *)(&mMeshCollider))
+        ->dBgW_KcMbg::SetFile((KCL_File *)(k), *(&mClsnMat), 0x1000, mAngleY,
+                              *(CLPS_Block *)(&data_ov064_0211bb2c));
     func_020393d4(&mMeshCollider, (void *)&dBgW::UpdatePosWithTransform);
     mFlag = 0;
     mCooldown = 0xf;

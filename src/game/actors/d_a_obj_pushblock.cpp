@@ -86,8 +86,7 @@ extern void func_020393a4(int *p, int v);
 extern void func_02039394(int *p, int v);
 extern int Vec3_Dist(Vector3 *a, Vector3 *b);
 extern int Vec3_HorzDist(Vector3 *a, Vector3 *b);
-void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-    void *self, KCL_File *k, void *m, int fix, short s, void *clps);
+extern void hold_d_a_obj_pushblock(void *self, KCL_File *k, void *m, int fix, short s, void *clps);
 void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(
     void *self, void *a, int b, int c, void *d, int e);
 }
@@ -131,8 +130,9 @@ int daObjPushblock_c::InitResources()
     UpdateModelPosAndRotY();
     UpdateClsnPosAndRot();
     kcl = (KCL_File *)dBgW_Kc::LoadFile(data_ov002_0210df94);
-    _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-        &mMeshCollider, kcl, &mClsnMat, 0x1000, mAngleY, &data_ov002_0210d7b4);
+    ((dBgW_KcMbg *)(&mMeshCollider))
+        ->dBgW_KcMbg::SetFile(kcl, *(const Matrix4x3 *)(&mClsnMat), 0x1000, mAngleY,
+                              *(CLPS_Block *)(&data_ov002_0210d7b4));
 
     mVertAccel = -0x2000;
     mTerminalVelocity = -0x3c000;

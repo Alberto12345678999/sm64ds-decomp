@@ -52,8 +52,8 @@ extern void func_020393d4(dBgW_KcMbg *p, void *v);
 
 /* By-value Fix12<int> is wall 6az: constructing wrapper arguments adds stack
    traffic the ROM does not have. Keep the register-level spelling. */
-void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-    dBgW_KcMbg *self, void *kcl, const Matrix4x3 *mtx, int scale, short angY, CLPS_Block *clps);
+extern void hold_d_a_obj_path_lift(dBgW_KcMbg *self, void *kcl, const Matrix4x3 *mtx, int scale,
+                                   short angY, CLPS_Block *clps);
 void _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_S5_j(
     dActor_c *self, dExtShadowModel_c *sm, Matrix4x3 *mtx, int a, int b, int d,
     unsigned int e);
@@ -127,9 +127,9 @@ int daObjPathLift_c::InitResources()
     mShadowModel.InitCuboid();
     func_ov100_0214700c(this);
     UpdateClsnPosAndRot();
-    _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-        &mMeshCollider, dBgW_Kc::LoadFile(data_ov100_02148a5c),
-        &mClsnMat, 0x1000, mAngleY, &data_ov002_0210d7d4);
+    ((dBgW_KcMbg *)(&mMeshCollider))
+        ->dBgW_KcMbg::SetFile((KCL_File *)(dBgW_Kc::LoadFile(data_ov100_02148a5c)), *(&mClsnMat),
+                              0x1000, mAngleY, *(&data_ov002_0210d7d4));
     func_020393d4(
         &mMeshCollider,
         (void *)&dBgW::UpdatePosAndAngs);
