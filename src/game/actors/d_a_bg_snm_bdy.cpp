@@ -111,7 +111,11 @@ void  _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *self, void *actor,
                                                 int radius, int height,
                                                 u32 flags, u32 vulnFlags);
 
-void _ZN8Particle20RunningSlidingDustAtE5Fix12IiES1_S1_(int x, int y, int z);
+}
+namespace Particle {
+void RunningSlidingDustAt(int x, int y, int z);
+}
+extern "C" {
 
 /* ov072 and arm9 statics this TU reads but does not own. */
 extern SharedFilePtr data_ov072_02122b20;
@@ -384,7 +388,7 @@ int daBgSnmBdy_c::State2()
         else
             SetState(4);
     }
-    _ZN8Particle20RunningSlidingDustAtE5Fix12IiES1_S1_(mPosX, mPosY, mPosZ);
+    Particle::RunningSlidingDustAt(mPosX, mPosY, mPosZ);
     mSoundID = Sound::PlayLong(mSoundID, 3, 0x8a, mCamSpacePos, 0);
     UpdateRollAngle();
     UpdatePos(&mCylinder);
@@ -416,7 +420,7 @@ int daBgSnmBdy_c::State3()
                 Vec3_HorzAngle(&mPosX, &data_ov072_02122b58),
                 2, 0x600);
             mPrevAngleY = mAngleY;
-            _ZN8Particle20RunningSlidingDustAtE5Fix12IiES1_S1_(
+            Particle::RunningSlidingDustAt(
                 mPosX, mPosY, mPosZ);
             mSoundID = Sound::PlayLong(mSoundID, 3, 0x8a, mCamSpacePos, 0);
             if (distToLanding < 0x17c000) {
@@ -470,7 +474,7 @@ int daBgSnmBdy_c::InitState4()
 int daBgSnmBdy_c::State4()
 {
     ApproachLinear(mHorzSpeed, 0x28000, 0x400);
-    _ZN8Particle20RunningSlidingDustAtE5Fix12IiES1_S1_(mPosX, mPosY, mPosZ);
+    Particle::RunningSlidingDustAt(mPosX, mPosY, mPosZ);
     mSoundID = Sound::PlayLong(mSoundID, 3, 0x8a, mCamSpacePos, 0);
     UpdateRollAngle();
     UpdatePos(&mCylinder);

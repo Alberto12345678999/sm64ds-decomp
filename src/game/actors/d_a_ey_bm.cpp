@@ -182,17 +182,17 @@ int daEyBm_c::Behavior()
 }
 
 // @symbol _ZN8daEyBm_c6RenderEv
-extern "C" u32 _ZN8Particle6System17NewUnkCallback818Ejj5Fix12IiES2_S2_PK11Vector3_16f(
+extern "C" u32 d_a_ey_bmNewUnkCallback818Hold(
     u32 handle, u32 effectID, Fix12i x, Fix12i y, Fix12i z,
     const Vector3_16f *rotation);
 
 int daEyBm_c::Render()
 {
     mParticle1 =
-        _ZN8Particle6System17NewUnkCallback818Ejj5Fix12IiES2_S2_PK11Vector3_16f(
+        Particle::System::NewUnkCallback818(
             mParticle1, 0x46, mPosX, mPosY, mPosZ, 0);
     mParticle2 =
-        _ZN8Particle6System17NewUnkCallback818Ejj5Fix12IiES2_S2_PK11Vector3_16f(
+        Particle::System::NewUnkCallback818(
             mParticle2, 0x47, mPosX, mPosY, mPosZ, 0);
     return 1;
 }

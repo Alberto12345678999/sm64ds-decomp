@@ -4,6 +4,7 @@ namespace Particle {
 struct Callback;
 struct System {
     static int New(unsigned, unsigned, int, int, int, const ::Vector3_16f *, Callback *);
+    static unsigned NewUnkCallback818(unsigned, unsigned, int, int, int, const ::Vector3_16f *);
 };
 }
 /* Fly Guy (PROPELLER_HEYHO), ov070. .text 0x0211f000..0x02120570,
@@ -954,7 +955,7 @@ typedef int Fix12i;
 struct Vector3_16f;
 extern "C" unsigned d_a_propeller_heyhoNewHold(unsigned a, unsigned b, Fix12i c, Fix12i d, Fix12i e,
                                                void *f, void *g);
-extern "C" u32 _ZN8Particle6System17NewUnkCallback818Ejj5Fix12IiES2_S2_PK11Vector3_16f(u32 a, u32 b, Fix12i c, Fix12i d, Fix12i e, const Vector3_16f* f);
+extern "C" u32 d_a_propeller_heyhoNewUnkCallback818Hold(u32 a, u32 b, Fix12i c, Fix12i d, Fix12i e, const Vector3_16f* f);
 extern "C" void ApproachAngle(short* v, short a, int b, int c, int d);
 
 /* Knocked main. While mStateStep is non-zero (normally a fire hit; the
@@ -974,7 +975,7 @@ extern "C" int func_ov070_0211f368(daPropeller_Heyho_c* c)
         ((int*)&v)[1] = y;
         ((int*)&v)[2] = z;
         c->mParticle0 = Particle::System::New(c->mParticle0, 0x13a, v.x, v.y, v.z, 0, 0);
-        c->mParticle1 = _ZN8Particle6System17NewUnkCallback818Ejj5Fix12IiES2_S2_PK11Vector3_16f(
+        c->mParticle1 = Particle::System::NewUnkCallback818(
             c->mParticle1, 0x13b, v.x, v.y, v.z, 0);
     }
     ApproachAngle(&c->mAngleX, -0x4000, 0xa, 0x200, 0x100);

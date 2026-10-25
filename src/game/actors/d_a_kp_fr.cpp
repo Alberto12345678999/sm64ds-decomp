@@ -109,19 +109,13 @@ int daKpFr_c::Behavior()
 /* Particle__System.h owns Vector3_16f but does not yet declare this member;
  * retain its typed, exact-spelling ABI import rather than widening that
  * shared header in a class-source lane. */
-extern "C" {
-extern u32 _ZN8Particle6System17NewUnkCallback818Ejj5Fix12IiES2_S2_PK11Vector3_16f(
-    u32 handle, u32 effectID, Fix12i x, Fix12i y, Fix12i z,
-    const Vector3_16f *rotation);
-}
-
 int daKpFr_c::Render()
 {
   int hidden = (mFlags & 0x40000) != 0;
   if (hidden) return 1;
-  mParticle1 = _ZN8Particle6System17NewUnkCallback818Ejj5Fix12IiES2_S2_PK11Vector3_16f(
+  mParticle1 = Particle::System::NewUnkCallback818(
       mParticle1, 0x7f, mPosX, mPosY + 0x4b000, mPosZ, 0);
-  mParticle2 = _ZN8Particle6System17NewUnkCallback818Ejj5Fix12IiES2_S2_PK11Vector3_16f(
+  mParticle2 = Particle::System::NewUnkCallback818(
       mParticle2, 0x80, mPosX, mPosY + 0x4b000, mPosZ, 0);
   return 1;
 }

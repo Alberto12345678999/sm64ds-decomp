@@ -144,7 +144,7 @@ void func_0203cd80(int *m, short angle);
 int GetGameLanguage(void);
 void DrawOamSprite(void *a0, void *a1, int a2, void *a3);
 void RenderOamMainScreen(int a0, int a1, int a2, int a3, int a4);
-unsigned int _ZN8Particle6System17NewUnkCallback818Ejj5Fix12IiES2_S2_PK11Vector3_16f(
+unsigned int d_s_mg_trampoline2NewUnkCallback818Hold(
     unsigned int a, unsigned int b, int c, int d, int e, const Vector3_16f *f);
 void Jump2Popup_UpdateAll(void);
 extern int RandomIntInternal(int *seed);
@@ -868,7 +868,7 @@ s32 dScMgTrampoline2_c::Behavior() {
     TrmpFx_UpdateAll();
     Jump2Popup_UpdateAll();
     Trmp2Spinner_UpdateAll();
-    mParticleID = _ZN8Particle6System17NewUnkCallback818Ejj5Fix12IiES2_S2_PK11Vector3_16f(
+    mParticleID = Particle::System::NewUnkCallback818(
         mParticleID, 0xf0, 0x280000, 0x700000, -0x580000, 0);
     void *p = Particle::System::FromUniqueID(mParticleID);
     if (p != 0) {

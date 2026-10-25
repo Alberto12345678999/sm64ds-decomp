@@ -262,7 +262,7 @@ extern void d_a_king_donketuPlayLongHold(unsigned int a, unsigned int b, unsigne
                                          struct Vector3 *v, unsigned int d);
 extern s16 Vec3_VertAngle(const void* a, const void* b);
 extern void Matrix4x3_ApplyInPlaceToRotationX(void *m, int angX);
-extern void _ZN8Particle20RunningSlidingDustAtE5Fix12IiES1_S1_(int a, int b, int c);
+extern void d_a_king_donketuRunningSlidingDustAtHold(int a, int b, int c);
 extern void Vec3_Asr(Vec3* d, Vec3* s, int sh);
 extern void Matrix4x3_FromTranslation(struct Matrix4x3 *m, int x, int y, int z);
 extern void Matrix4x3_ApplyInPlaceToRotationXYZExt(void* m, int x, int y, int z);
@@ -1376,7 +1376,7 @@ int daKing_Donketu_c::func_ov073_02120c7c()
     if (a > 0xa) {
         int i = 0;
         do {
-            _ZN8Particle20RunningSlidingDustAtE5Fix12IiES1_S1_(c->mFootPos[i].x, c->mFootPos[i].y,
+            Particle::RunningSlidingDustAt(c->mFootPos[i].x, c->mFootPos[i].y,
                                                                c->mFootPos[i].z);
             i++;
         } while (i < 2);
@@ -1537,7 +1537,7 @@ int daKing_Donketu_c::func_ov073_02120ed0() {
         if (d > 0xa) {
             i = 0;
             do {
-                _ZN8Particle20RunningSlidingDustAtE5Fix12IiES1_S1_(
+                Particle::RunningSlidingDustAt(
                     c->mFootPos[i].x, c->mFootPos[i].y, c->mFootPos[i].z);
                 i++;
             } while (i < 2);

@@ -93,7 +93,6 @@ enum {
 extern "C" {
 extern int RandomIntInternal(int* seed);
 extern int data_0209e650;
-extern u32 _ZN8Particle6System17NewUnkCallback818Ejj5Fix12IiES2_S2_PK11Vector3_16f(u32 a, u32 b, Fix12i c, Fix12i d, Fix12i e, const struct Vector3_16f* f);
 extern void *d_a_f_pkn_ballNewHold(u32 a, u32 b, Fix12i c, Fix12i d, Fix12i e, const void *f,
                                    void *g);
 extern void Vec3_Asr(Vec3* d, Vec3* s, int sh);
@@ -110,6 +109,7 @@ struct System {
     static void NewSimple(u32 id, s32 x, s32 y, s32 z);
 
     static int New(unsigned, unsigned, int, int, int, const ::Vector3_16f *, Callback *);
+    static u32 NewUnkCallback818(u32 a, u32 b, Fix12i c, Fix12i d, Fix12i e, const struct Vector3_16f* f);
 };
 }
 void func_02012694(u32 id, const void* v);
@@ -209,7 +209,7 @@ void daFPknBall_c::func_ov002_020f8b24()
     }
     pos.y = pos.y + data_ov002_02100320[mVariant];
 
-    mTrailEffect = _ZN8Particle6System17NewUnkCallback818Ejj5Fix12IiES2_S2_PK11Vector3_16f(
+    mTrailEffect = Particle::System::NewUnkCallback818(
         mTrailEffect, data_ov002_02100334[mVariant], pos.x, pos.y, pos.z, 0);
 
     mSparkEffect = (void *)Particle::System::New((u32)mSparkEffect, data_ov002_02100348[mVariant],
