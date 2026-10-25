@@ -3,6 +3,8 @@
 
 #include "types.h"
 #include "dExtBlendAnmModel_c.h"
+#include "dExtAnmTexPat_c.h"
+#include "dExtAnmTexSRT_c.h"
 
 /* Presenter, the Mario face that reacts in the card and sound games: the
  * 0x1ac-byte record Presenter_Construct builds and the Presenter_* helpers in
@@ -36,10 +38,9 @@ struct Presenter {
        dExtFrameCtrl_c base and ResetPose rewinds its currFrame. */
     dExtBlendAnmModel_c mFace; /* 0x008 */
     dExtSimpleModel_c mBack;   /* 0x078 -- 0x50 bytes; Load sets its mat4x3 */
-    /* A dExtAnmTexPat_c and a dExtAnmTexSRT_c: each starts with its
-       dExtFrameCtrl_c ([2] is the current frame ResetPose rewinds). */
-    s32 mTexSeq[5];           /* 0x0c8 */
-    s32 mTexAnim[5];          /* 0x0dc */
+    /* Draw hands mFace's data to both; ResetPose rewinds their currFrame. */
+    dExtAnmTexPat_c mTexSeq;  /* 0x0c8 */
+    dExtAnmTexSRT_c mTexAnim; /* 0x0dc */
     PresenterFile mFaceModel; /* 0x0f0 -- face_demo_mario.bmd */
     PresenterFile mBackModel; /* 0x0f8 -- f_demo_back.bmd */
     PresenterFile mAnims[PRESENTER_ANIM_COUNT];   /* 0x100 */

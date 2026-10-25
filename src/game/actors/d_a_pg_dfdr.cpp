@@ -18,9 +18,8 @@
  * - dExtAnmModel_c::SetAnim as a method homes Fix12<int> (str, add, ldm; +12
  *   bytes per call). func_ov027_02111ca8 0x54 -> 0x60. func_ov027_02111b2c
  *   0x11c -> 0x134 (+24, two calls). The scalar extern "C" stays.
- * - dExtAnmTexPat_c::SetFile and dBgW_KcMbg::SetFile home one Fix12<int>
- *   each (+12), and dCcAc_c::Init homes two (+24). Together InitResources
- *   0x1c8 -> 0x1f8.
+ * - dBgW_KcMbg::SetFile as a method homes one Fix12<int> (+12), and
+ *   dCcAc_c::Init homes two (+24).
  * - dBgActor_c::IsClsnInRangeOnScreen(Fix12, Fix12) homes both zeros.
  *   Behavior 0x80 -> 0x9c. The scalar extern "C" stays.
  * - Sound::Play(3, 0xf3, pos) is +8 bytes in func_ov027_02111a28
@@ -76,9 +75,6 @@ int DecIfAbove0_Byte(void *p);
 void func_0201267c(int id, char *pos);
 /* Stores dBgW::beforeClsnCallback (p[6]). dBgW.h has no setter. */
 void func_020393d4(int *collider, int callback);
-/* local extern: the matched free-function spelling of SetFile; a member call is pending. */
-void _ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit(void *self, void *file, int flags, int speed,
-                                                unsigned startFrame);
 extern void hold_d_a_pg_dfdr(void *self, void *kcl, void *mat, int scale, short angY, void *clps);
 void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *self, void *actor, int radius, int height,
                                                unsigned flags, unsigned vuln);
@@ -165,8 +161,7 @@ s32 daPgDfdr_c::InitResources()
     dExtAnmTexPat_c::LoadFile(*(SharedFilePtr *)&data_ov027_02113c94);
     dExtAnmTexPat_c::Prepare(*(BMD_File *)data_ov027_02113c7c.filePtr,
                              *(BTP_File *)data_ov027_02113c94.filePtr);
-    _ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit(&mTextureSequence, data_ov027_02113c94.filePtr, 0,
-                                               0x1000, 0);
+    mTextureSequence.SetFile(*(BTP_File *)data_ov027_02113c94.filePtr, 0, 0x1000, 0);
 
     mAngleY = (short)0xdd30;
     mPrevAngleY = mAngleY;

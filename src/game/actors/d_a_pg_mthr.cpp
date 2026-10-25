@@ -1,8 +1,8 @@
 //cpp
 /* leftovers:
- * - SetAnim, SetFile, dCcAc_c::Init and DropShadowRadHeight stay
- *   scalar externs. The Fix12<int> method form grows those bodies
- *   and emits an unlicensed .data word.
+ * - dCcAc_c::Init and DropShadowRadHeight stay scalar externs. The
+ *   Fix12<int> method form grows those bodies and emits an unlicensed
+ *   .data word.
  * - dBgCh_Actr::Init's member call mangles with int. The ROM row is
  *   Fix12<int>. GetFloorResult and GetWallResult are not on the header.
  * - func_0201267c is Sound::Play(3, id, pos). The state helpers stay
@@ -111,9 +111,6 @@ extern void Matrix4x3_FromRotationY(void *m, int angle);
 extern void Matrix4x3_ApplyInPlaceToRotationY(Matrix4x3 *mf, short angY);
 extern void Matrix4x3_ApplyInPlaceToRotationX(Matrix4x3 *mf, short angX);
 extern Matrix4x3 data_020a0e68;
-/* local extern: the matched free-function spelling of SetFile; a member call is pending. */
-extern void _ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit(void *, BTP_File &f, int a, int b,
-                                                       unsigned int c);
 extern PgMthrAnimFileResHandle gPenguinWalkAnimationFile;
 extern PgMthrTexSeqFileHandle gPenguinAngryTextureSequenceFile;
 extern void Matrix4x3_FromTranslation(void *m, int x, int y, int z);
@@ -244,8 +241,7 @@ int daPgMthr_c::func_ov018_021122ec()
 {
     mModelAnim.SetAnim((BCA_File *)gPenguinWait1AnimationFile.filePtr, 0, 0x1000, 0);
     mModelAnim.speed = 0x1000;
-    _ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit(
-        &mTextureSequence, *(BTP_File *)gPenguinWait1TextureSequenceFile.filePtr, 0, 0x1000, 0);
+    mTextureSequence.SetFile(*(BTP_File *)gPenguinWait1TextureSequenceFile.filePtr, 0, 0x1000, 0);
     mHorzSpeed = 0;
     mPlayer = 0;
     unk_37c = 0;
@@ -365,8 +361,7 @@ int daPgMthr_c::func_ov018_02111f1c()
     mHorzSpeed = 0x5000;
     mModelAnim.SetAnim((BCA_File *)gPenguinWalkAnimationFile.filePtr, 0, 0x1000, 0);
     mModelAnim.speed = 0x1000;
-    _ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit(
-        &mTextureSequence, *(BTP_File *)gPenguinAngryTextureSequenceFile.filePtr, 0, 0x1000, 0);
+    mTextureSequence.SetFile(*(BTP_File *)gPenguinAngryTextureSequenceFile.filePtr, 0, 0x1000, 0);
     unk_37c = 2;
     return 1;
 }

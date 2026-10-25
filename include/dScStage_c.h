@@ -8,6 +8,7 @@
 
 struct SceneRelated;
 struct LVL_Overlay;
+struct dExtAnmTexSRT_c;
 
 /* Particle::SysTracker, embedded at dScStage_c+0x50. The one definition lives in
  * include/Particle__SysTracker.h; see notes/scene-provenance.md and
@@ -24,7 +25,7 @@ struct LVL_Overlay;
  * the transformer through its vtable and then walks the list at +0x08, whose
  * next pointer is at +0x0c, freeing every block. */
 struct StageTexAnimSlot {
-    void *mTransformer; /* 0x00 - dExtAnmTexSRT_c, 0x14 bytes, heap */
+    struct dExtAnmTexSRT_c *mTransformer; /* 0x00 - heap */
     u8 mActive;         /* 0x04 */
     u8 pad_05[0x3];
     void *mBlockList; /* 0x08 - singly linked, next pointer at +0x0c */

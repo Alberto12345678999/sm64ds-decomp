@@ -139,7 +139,11 @@ struct System {
 }
 extern void _ZN5Sound22StopLoadedMusic_Layer3Ev(void);
 extern void func_02011cfc(void);
-extern void _ZN5Sound17ChangeMusicVolumeEj5Fix12IiE(unsigned int a, int b);
+}
+namespace Sound {
+void ChangeMusicVolume(unsigned int a, int b);
+}
+extern "C" {
 extern short Vec3_HorzAngle(const void* a, const void* b);
 extern int Vec3_Dist(const void* a, const void* b);
 extern void ApproachAngle(void *p, int target, int a, int b, int c);
@@ -165,7 +169,6 @@ extern void Matrix4x3_ApplyInPlaceToRotationXYZExt(void *m, int x, int y, int z)
 extern void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(void* self, dActor_c* a, Vector3* v, Fix12i r, Fix12i h, unsigned int e, unsigned int g);
 extern void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(void* self, dActor_c* a, Fix12i r, Fix12i h, Vector3_16* p, Vector3_16* q);
 }
-
 
 /* `opt_strength_reduction`, `opt_common_subs` and `opt_propagation` are
  * file-global last-wins in mwccarm 2004/b56, so the three members that need
@@ -252,7 +255,7 @@ int daBombking_c::func_ov078_021238ac()
         this->mMusicLayer3 = 0;
         _ZN5Sound22StopLoadedMusic_Layer3Ev();
         func_02011cfc();
-        _ZN5Sound17ChangeMusicVolumeEj5Fix12IiE(0x7f, 0x15666);
+        Sound::ChangeMusicVolume(0x7f, 0x15666);
     }
     this->fBase_c::MarkForDestruction();
     return 1;
@@ -515,7 +518,7 @@ int func_ov078_021240a0(char* c)
                     } else {
                         msg = 0x95;
                     }
-                    _ZN5Sound17ChangeMusicVolumeEj5Fix12IiE(0x14, 0x15666);
+                    Sound::ChangeMusicVolume(0x14, 0x15666);
                     if (pl->ShowMessage(*(fBase_c *)c, (int)msg, &k->mPos, 0, 0) != 0) {
                         func_02012694(0x12a, &k->mCamSpacePosX);
                         k->KingBobOmb_SetState(&data_ov078_0212705c);
@@ -914,7 +917,7 @@ int daBombking_c::func_ov078_02124cf4()
     if (other->StartTalk(*(fBase_c *)this, 1) == 0) goto done;
 
     short msg = 0;
-    _ZN5Sound17ChangeMusicVolumeEj5Fix12IiE(0x14, 0x15666);
+    Sound::ChangeMusicVolume(0x14, 0x15666);
     if (data_0209f220[0] == 1) {
         msg += (short)(other->param1 + 0x9a);
     } else {

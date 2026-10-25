@@ -24,10 +24,6 @@ struct System {
  * Each pragma bracket below carries the file-global pragma of the file
  * that function came from; the brackets bind only under defer_codegen off.
  *
- * SetFile and SetAnim take Fix12<int> by value in their real signatures;
- * calling them through the headers adds bytes, so their calls stay mangled
- * with a scalar speed.
- *
  * deslop leftovers:
  * - The scene's cards, rows and slots are the header's Card, Row and Slot
  *   arrays. RenderRows and RenderCards still reach theirs through
@@ -105,17 +101,6 @@ extern EspAnimSetModelFilePtr gEspIrieModelFile;
 extern Matrix4x3 data_020a0e68;
 void Matrix4x3_FromTranslation(void* m, int x, int y, int z);
 int _Z15ApproachLinear2Rsss(short* p, short a, short b);
-/* local extern: the call passes an untyped this, so it cannot use the header method. */
-void _ZN15dExtFrameCtrl_c7AdvanceEv(void* a);
-/* local extern: the call passes an untyped this, so it cannot use the header method. */
-int _ZN15dExtFrameCtrl_c8FinishedEv(void* a);
-/* local extern: the call passes an untyped this, so it cannot use the header method. */
-int _ZNK15dExtFrameCtrl_c12WillHitFrameEi(void* anim, int frame);
-void _ZN17dExtAnmMaterial_c7SetFileER8BMA_Filei5Fix12IiEj(char *t, void *f, int a, int b,
-                                                          unsigned u);
-/* local extern: the matched free-function spelling of SetFile; a member call is pending. */
-void _ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit(void *self, void *btp, int a, int b, u16 d);
-void _ZN15dExtAnmTexSRT_c7SetFileER8BTA_Filei5Fix12IiEj(void *self, void *bta, int a, int b, u16 d);
 void func_02046208(char* a, int b, int c);
 int func_020179b4(void* r0, void* r1, int r2);
 /* The last four parameters are unsigned short in the real signature;
@@ -243,9 +228,9 @@ void dMg3DEspAnimSet_c::Behavior() {
         char *cc = self;
         for (i = 0; i < 3; i++) {
             if (mActive[i] != 0) {
-                _ZN15dExtFrameCtrl_c7AdvanceEv(a + 0x50);
-                _ZN15dExtFrameCtrl_c7AdvanceEv(b);
-                if (_ZN15dExtFrameCtrl_c8FinishedEv(a + 0x50)) {
+                ((dExtAnmModel_c *)a)->Advance();
+                ((dExtAnmMaterial_c *)b)->Advance();
+                if (((dExtAnmModel_c *)a)->Finished()) {
                     mActive[i] = 0;
                 }
             } else {
@@ -311,8 +296,8 @@ void dMg3DEspAnimSet_c::InitResources()
     for (i = 0; i < 3; i++) {
         ((dExtModel_c *)w)->SetFile((BMD_File *)bmd, 1, m1);
         ((dExtAnmModel_c *)w)->SetAnim((BCA_File *)bca, 0x40000000, mSpeed, z1);
-        _ZN17dExtAnmMaterial_c7SetFileER8BMA_Filei5Fix12IiEj(w2, &sEsp3DMaterialAnim, 0x40000000,
-                                                             mSpeed, z2);
+        ((dExtAnmMaterial_c *)w2)
+            ->SetFile(*(BMA_File *)&sEsp3DMaterialAnim, 0x40000000, mSpeed, z2);
         ((dExtSimpleModel_c *)w)->SetPolygonID((i + 1) & 0xff);
         mActive[i] = 0;
         w += 0x64;
@@ -490,8 +475,7 @@ int dMg3DEspModel_c::InitResources()
     dExtFrameCtrl_c::LoadFile(gEspCardOpenWaitAnimFile);
     dExtAnmTexPat_c::Prepare(**(BMD_File **)((void **)&gEspCardModelFile + 1),
                              **(BTP_File **)((void **)&gEspCardTexSeqFile + 1));
-    _ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit((char *)&mTextureSequence,
-                                               *((void **)&gEspCardTexSeqFile + 1), 0, 0x1000, 0);
+    mTextureSequence.SetFile(**(BTP_File **)((void **)&gEspCardTexSeqFile + 1), 0, 0x1000, 0);
     mModelAnim.SetAnim(*((BCA_File **)&gEspCardStartAnimFile + 1), 0x40000000, 0x800, 0);
     mAnimSet.InitResources();
     ResetTransform();
@@ -597,7 +581,7 @@ void dScMg3DEsp_c::FlashSync()
     /* c + 0x5034 is mEspModel's mModelAnim frame control
        (0x4fd8 + 0xc + 0x50). The ROM pool-loads 0x5034 as one constant;
        spelling it as that member grows FlashSync from 0xb4 to 0xb8 bytes. */
-    if (_ZNK15dExtFrameCtrl_c12WillHitFrameEi(c + 0x5034, 0)) {
+    if (((dExtFrameCtrl_c *)(c + 0x5034))->WillHitFrame(0)) {
         u8 *p = &mFlashBeats;
         (*p)++;
     }
@@ -1548,8 +1532,8 @@ s32 dScMg3DEsp_c::InitResources()
 
     dExtAnmTexSRT_c::Prepare(**(BMD_File **)((void **)&gEspIrieModelFile + 1),
                              *(BTA_File *)&sEsp3DTextureAnim);
-    _ZN15dExtAnmTexSRT_c7SetFileER8BTA_Filei5Fix12IiEj(mTextureTransformer, &sEsp3DTextureAnim, 0,
-                                                       0x1000, 0);
+    ((dExtAnmTexSRT_c *)mTextureTransformer)
+        ->SetFile(*(BTA_File *)&sEsp3DTextureAnim, 0, 0x1000, 0);
 
     if (((dMg3DEspModel_c *)mEspModel)->InitResources() == 0)
         return 0;
@@ -1632,6 +1616,7 @@ void *dScMg3DEsp_c_classInit(void){
         *(int *)o = (int)_ZTV19dScMgSingle3DBase_c;
         _ZN8Particle10SysTrackerC1Ev(&((dScMg3DEsp_c *)o)->mSysTracker);
         *(int *)o = (int)&_ZTV12dScMg3DEsp_c[2];
+        /* dScMg3DEsp_c declares no constructor yet, so this factory constructs its members by name. */
         _ZN17dExtSimpleModel_cC1Ev(((dScMg3DEsp_c *)o)->mModel1);
         _ZN17dExtSimpleModel_cC1Ev(((dScMg3DEsp_c *)o)->mModel2);
         _ZN15dMg3DEspModel_cC1Ev(((dScMg3DEsp_c *)o)->mEspModel);

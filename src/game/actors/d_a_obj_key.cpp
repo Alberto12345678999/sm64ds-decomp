@@ -241,8 +241,8 @@ extern int Vec3_HorzDist(const Vector3 *a, const Vector3 *b);
 extern short Vec3_HorzAngle(const Vector3 *a, const Vector3 *b);
 /* The collect animations, by mAnimID. */
 extern ObjKeyFile *data_ov089_02132880[];
-/* Fix12<int> by value: called by symbol. */
-extern int _ZN5Sound17ChangeMusicVolumeEj5Fix12IiE(unsigned int id, int vol);
+/* Names stay on this unused prototype so this file's @NNN numbers do not move. */
+extern int d_a_obj_keyChangeMusicVolumeHold(unsigned int id, int vol);
 extern int _Z14ApproachLinearR7Vector3RKS_5Fix12IiE(Vector3 &value, const Vector3 &target, int step);
 /* Level-overlay BSS: ov089 relocs record the store as claimed by fourteen
    overlays, and ov055 is the one that names 0x02111b68 unambiguous kind:bss
@@ -370,7 +370,7 @@ void daObjKey_c::StateFlyToCenter()
             mSavedCamPos.z = pos->z;
             cam->SetFlag_3();
             mStep++;
-            _ZN5Sound17ChangeMusicVolumeEj5Fix12IiE(0, data_0209b490 / 15);
+            Sound::ChangeMusicVolume(0, data_0209b490 / 15);
             break;
         }
 

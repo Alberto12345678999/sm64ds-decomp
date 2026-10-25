@@ -28,8 +28,7 @@
  *   and Earthquake are not header members; the scalar externs stay.
  * - Init keeps the two-step probePos.y (combined form size-DIFFs
  *   0x1a8 -> 0x1a4). dBgW_KcMbg::SetFile with Fix12<int> size-DIFFs
- *   0x1a8 -> 0x1ac. dExtAnmTexPat_c::SetFile with Fix12<int> size-DIFFs
- *   0x1a8 -> 0x1b0. Storing beforeClsnCallback directly size-DIFFs
+ *   0x1a8 -> 0x1ac. Storing beforeClsnCallback directly size-DIFFs
  *   0x1a8 -> 0x1a4; the body calls func_020393d4.
  * - CleanupResources reloads mFileTable around each Release. One pointer
  *   across the three calls is a 20-word DIFF.
@@ -139,9 +138,6 @@ extern void _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix
 /* Same 6az tail: both take Fix12<int> BY VALUE, so the header member form
  * would home the argument. */
 
-/* local extern: the matched free-function spelling of SetFile; a member call is pending. */
-extern void _ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit(dExtAnmTexPat_c *self, BTP_File *file,
-                                                       int flags, int speed, unsigned startFrame);
 /* 8-byte store into dBgW+0x18 (beforeClsnCallback). No SetCallback member.
  * Spelling matches src/engine/collision/d_bg_w.cpp -- (int *, int). */
 extern void func_020393d4(int *collider, int callback);
@@ -401,8 +397,7 @@ s32 daDsnBase_c::Init()
                                  *(BTP_File *)files->texAnim->filePtr);
         files = (DsnBaseFileTable *)mFileTable;
         texAnim = files->texAnim;
-        _ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit(&mTextureSequence, (BTP_File *)texAnim->filePtr,
-                                                   0x40000000, 0x1000, 0);
+        mTextureSequence.SetFile(*(BTP_File *)texAnim->filePtr, 0x40000000, 0x1000, 0);
     }
 
     if (!mShadowModel.InitCuboid())

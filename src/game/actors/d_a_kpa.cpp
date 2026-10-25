@@ -354,7 +354,7 @@ extern PmfEnt data_ov060_0211aed4[];
 
 extern unsigned char NumStars(void);
 extern void *d_a_kpaNewHold(unsigned a, unsigned b, int x, int y, int z, void *v, void *cb);
-extern void _ZN5Sound17ChangeMusicVolumeEj5Fix12IiE(unsigned int a, int b);
+extern void d_a_kpaChangeMusicVolumeHold(unsigned int a, int b);
 extern KpaAnimationFileHandle data_ov060_0211ac88;
 extern KpaAnimationFileHandle data_ov060_0211ac60;
 namespace Particle {
@@ -426,9 +426,6 @@ extern KpaAnimationFileHandle data_ov060_0211ac90;
 extern short data_ov060_02119294[];
 extern short data_ov060_02119296[];
 extern short data_ov060_02119298[];
-/* local extern: the matched free-function spelling of SetFile; a member call is pending. */
-extern void _ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit(void *self, void *btp, int a, int b,
-                                                       unsigned int d);
 extern void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(void *self, void *act, void *pos, int c3, int d, unsigned int e, unsigned int f);
 extern void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(void *self, void *act, int a, int b, void *d1, void *d2);
 extern void func_02011d50(void *a);
@@ -499,7 +496,6 @@ int _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *self, void *actor, int fix, 
 /* TUBUILD CONFLICT -- alternate declaration of func_02012694, from the legacy file for func_ov060_02114e9c, NOT applied: extern "C" int func_02012694(int a, int* b); */
 /* TUBUILD CONFLICT -- alternate declaration of Bowser_IsAnimAtLastFrame, from the legacy file for func_ov060_02114e9c, NOT applied: extern "C" int Bowser_IsAnimAtLastFrame(void* o); */
 /* TUBUILD CONFLICT -- alternate declaration of func_ov060_02111cc0, from the legacy file for func_ov060_02114e9c, NOT applied: extern "C" void func_ov060_02111cc0(void* o, int a, int b); */
-/* TUBUILD CONFLICT -- alternate declaration of _ZNK15dExtFrameCtrl_c12WillHitFrameEi, from the legacy file for func_ov060_02114e9c, NOT applied: extern "C" int _ZNK15dExtFrameCtrl_c12WillHitFrameEi(void* self, int frame); */
 /* TUBUILD CONFLICT -- alternate declaration of Bowser_IsAnimAtLastFrame, from the legacy file for func_ov060_02114ff8, NOT applied: extern int Bowser_IsAnimAtLastFrame(void *); */
 /* TUBUILD CONFLICT -- alternate declaration of RandomIntInternal, from the legacy file for func_ov060_021151d4, NOT applied: extern int RandomIntInternal(int *seed); */
 /* TUBUILD CONFLICT -- alternate declaration of func_ov060_02115744, from the legacy file for func_ov060_021153f8, NOT applied: extern int func_ov060_02115744(void *c); */
@@ -676,8 +672,7 @@ int daKpa_c::InitResources()
     dExtAnmTexPat_c::Prepare(*(BMD_File *)data_ov060_0211ac78.filePtr,
                              *(BTP_File *)data_ov060_0211ac28.filePtr);
 
-    _ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit(&this->mTextureSequence, data_ov060_0211ac28.filePtr,
-                                               0, 0x1000, 0);
+    this->mTextureSequence.SetFile(*(BTP_File *)data_ov060_0211ac28.filePtr, 0, 0x1000, 0);
 
     this->mTextureSequence.SetFlags(0x40000000);
 
@@ -2853,7 +2848,7 @@ int daKpa_c::func_ov060_021130c0(){
         switch (inner) {
         case 0:
             if (static_cast<Player*>(this->mTargetPlayer)->StartTalk(*this, 1)) {
-                _ZN5Sound17ChangeMusicVolumeEj5Fix12IiE(0x14, 0x15666);
+                Sound::ChangeMusicVolume(0x14, 0x15666);
                 this->mTalkStep++;
             }
             break;
@@ -2872,7 +2867,7 @@ int daKpa_c::func_ov060_021130c0(){
                 this->mTalkStep++;
                 func_ov060_02111cc0(4, 0x40000000);
                 Sound::StopLoadedMusic_Layer1(0x3c);
-                _ZN5Sound17ChangeMusicVolumeEj5Fix12IiE(0x7f, 0x7222);
+                Sound::ChangeMusicVolume(0x7f, 0x7222);
             }
             break;
         }
@@ -3551,45 +3546,39 @@ void daKpa_c::func_ov060_02111cc0(int idx, int animFlags){
     case 1:
         dExtAnmTexPat_c::Prepare(*(BMD_File *)data_ov060_0211ac78.filePtr,
                                  *(BTP_File *)data_ov060_0211ac40.filePtr);
-        _ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit(&this->mTextureSequence,
-                                                   data_ov060_0211ac40.filePtr, 0, 0x1000, 0);
+        this->mTextureSequence.SetFile(*(BTP_File *)data_ov060_0211ac40.filePtr, 0, 0x1000, 0);
         this->mTextureSequence.SetFlags(0x40000000);
         return;
     case 2:
         dExtAnmTexPat_c::Prepare(*(BMD_File *)data_ov060_0211ac78.filePtr,
                                  *(BTP_File *)data_ov060_0211acb8.filePtr);
-        _ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit(&this->mTextureSequence,
-                                                   data_ov060_0211acb8.filePtr, 0, 0x1000, 0);
+        this->mTextureSequence.SetFile(*(BTP_File *)data_ov060_0211acb8.filePtr, 0, 0x1000, 0);
         this->mTextureSequence.SetFlags(0x40000000);
         return;
     case 3:
     case 5:
         dExtAnmTexPat_c::Prepare(*(BMD_File *)data_ov060_0211ac78.filePtr,
                                  *(BTP_File *)data_ov060_0211ac10.filePtr);
-        _ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit(&this->mTextureSequence,
-                                                   data_ov060_0211ac10.filePtr, 0, 0x1000, 0);
+        this->mTextureSequence.SetFile(*(BTP_File *)data_ov060_0211ac10.filePtr, 0, 0x1000, 0);
         this->mTextureSequence.SetFlags(0);
         return;
     case 14:
         dExtAnmTexPat_c::Prepare(*(BMD_File *)data_ov060_0211ac78.filePtr,
                                  *(BTP_File *)data_ov060_0211abf0.filePtr);
-        _ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit(&this->mTextureSequence,
-                                                   data_ov060_0211abf0.filePtr, 0, 0x1000, 0);
+        this->mTextureSequence.SetFile(*(BTP_File *)data_ov060_0211abf0.filePtr, 0, 0x1000, 0);
         this->mTextureSequence.SetFlags(0);
         return;
     case 10:
         dExtAnmTexPat_c::Prepare(*(BMD_File *)data_ov060_0211ac78.filePtr,
                                  *(BTP_File *)data_ov060_0211ac30.filePtr);
-        _ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit(&this->mTextureSequence,
-                                                   data_ov060_0211ac30.filePtr, 0, 0x1000, 0);
+        this->mTextureSequence.SetFile(*(BTP_File *)data_ov060_0211ac30.filePtr, 0, 0x1000, 0);
         this->mTextureSequence.SetFlags(0x40000000);
         return;
     case 0:
     default:
         dExtAnmTexPat_c::Prepare(*(BMD_File *)data_ov060_0211ac78.filePtr,
                                  *(BTP_File *)data_ov060_0211ac28.filePtr);
-        _ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit(&this->mTextureSequence,
-                                                   data_ov060_0211ac28.filePtr, 0, 0x1000, 0);
+        this->mTextureSequence.SetFile(*(BTP_File *)data_ov060_0211ac28.filePtr, 0, 0x1000, 0);
         this->mTextureSequence.SetFlags(0);
         return;
     }

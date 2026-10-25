@@ -18,7 +18,6 @@
  *
 comment leftovers:
  *   - Calls whose real signatures take Fix12<int> BY VALUE stay mangled:
- *     Sound::PlaySub, dExtAnmModel_c::SetAnim, dExtAnmTexPat_c::SetFile and
  *     dActor_c::DropShadowRadHeight. mwccarm passes those differently at
  *     the call site than the loose scalar spelling; this file's externs
  *     are the spelling that matches.
@@ -126,8 +125,6 @@ void  MulVec3Mat4x3(const void *v, const void *m, void *out);
    spelling -- the mangled spelling is the one that matches. Sound.h covers
    PlayLong, so only PlaySub stays. */
 int d_a_c_jugemPlaySubHold(u32 a, u32 b, u32 c, Fix12i d, bool loop);
-/* local extern: the matched free-function spelling of SetFile; a member call is pending. */
-void _ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit(void *thiz, BTP_File &f, int a, Fix12i b, u32 c);
 void  _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
          void *thiz, void *sm, void *mtx, int rad, int height, u32 flags);
 
@@ -961,8 +958,7 @@ int daC_Jugem_c::InitResources()
     dExtAnmTexPat_c::Prepare(**(BMD_File **)((char *)&data_ov085_0213074c + 4),
                              **(BTP_File **)((char *)&data_ov085_0213073c + 4));
     mModelAnim1.SetAnim(*(BCA_File **)((char *)&data_ov085_02130744 + 4), 0, 0x1000, 0);
-    _ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit(
-        &mTextureSequence, **(BTP_File **)((char *)&data_ov085_0213073c + 4), 0, 0x1000, 0);
+    mTextureSequence.SetFile(**(BTP_File **)((char *)&data_ov085_0213073c + 4), 0, 0x1000, 0);
     mModelAnim1.speed = 0x1000;
     mVariant = param1 & 0xff;
     if (mVariant == 0xff)

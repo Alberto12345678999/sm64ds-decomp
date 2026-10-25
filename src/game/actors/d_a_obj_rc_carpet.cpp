@@ -110,6 +110,7 @@ extern "C" daObjRcCarpet_c *daObjRcCarpet_c_classInit()
     if (actor) {
         _ZN10dBgActor_cC2Ev(actor);
         *(int *)actor = (int)data_ov002_0210af70;
+        /* daObjRcCarpet_c declares no constructor yet, so this factory constructs its members by name. */
         __cxa_vec_ctor(actor->mModels, 3, sizeof(dExtSimpleModel_c),
                        (void *)_ZN17dExtSimpleModel_cC1Ev, (void *)_ZN17dExtSimpleModel_cD1Ev);
         _ZN7PathPtrC1Ev(&actor->mPath);

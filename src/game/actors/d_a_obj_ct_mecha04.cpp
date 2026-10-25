@@ -11,7 +11,7 @@
  */
 
 // leftovers (each measured; simplifying changes the emitted bytes):
-// dExtAnmTexSRT_c::SetFile / dBgW_KcMbg::SetFile / DropShadowScaleXYZ /
+// dBgW_KcMbg::SetFile / DropShadowScaleXYZ /
 // dBgActor_c::IsClsnInRange stay mangled (Fix12-by-value, 6az -- this TU's
 // InitResources/Behavior/UpdateShadow calls). func_020393c4 / func_020393bc
 // store/load dBgW+0x1c -- the ROM's own call, not an inlineable assignment
@@ -88,8 +88,6 @@ extern void d_a_obj_ct_mecha04PlayLongHold(unsigned int handle, unsigned int ban
 extern u8 data_0209f2c0;
 extern int data_0209e650;
 extern int data_ov065_0211c0b8[]; /* per-clock-setting belt speeds */
-extern void _ZN15dExtAnmTexSRT_c7SetFileER8BTA_Filei5Fix12IiEj(dExtAnmTexSRT_c *self, BTA_File &f,
-                                                               int a, int fix, unsigned int u);
 extern void hold_d_a_obj_ct_mecha04(dBgW_KcMbg *self, KCL_File *f, const Matrix4x3 &m, int fix,
                                     short sh, CLPS_Block &b);
 extern s16 data_02082214[]; /* sin/cos pair per (angle >> 4) index */
@@ -182,8 +180,7 @@ int daObjCtMecha04_c::InitResources()
     dExtAnmTexSRT_c::Prepare(*(BMD_File *)((void **)data_ov065_0211d194[variant][0])[1],
                              *animationFiles[variant]);
 
-    _ZN15dExtAnmTexSRT_c7SetFileER8BTA_Filei5Fix12IiEj(&mTextureTransformer,
-                                                       *animationFiles[mVariant], 0, 0x1000, 0);
+    mTextureTransformer.SetFile(*animationFiles[mVariant], 0, 0x1000, 0);
 
     UpdateModelPosAndRotY();
     UpdateClsnPosAndRot();
