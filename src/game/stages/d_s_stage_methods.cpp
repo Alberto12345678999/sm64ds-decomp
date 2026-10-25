@@ -3819,7 +3819,7 @@ void dScStage_c::RenderModel() {
                 }
             }
             if (slot->mTransformer != 0)
-                ((dExtAnmTexSRT_c *)slot->mTransformer)->Update(mModel.data);
+                slot->mTransformer->Update(mModel.data);
         } else {
             u16 materialIndex;
             for (materialIndex = 0; materialIndex < bone->numMaterials; materialIndex++) {
@@ -3911,10 +3911,6 @@ extern "C" int CopyTexPalFromLevelModel(void *p) {
 }
 
 // @symbol _ZN10dScStage_c23LoadTextureTransformersEv
-extern "C" {
-extern void *_ZN15dExtAnmTexSRT_cC1Ev(void *);
-}
-
 void dScStage_c::LoadTextureTransformers() {
     struct LevelTexAnim *entry = ((LevelInfo *)data_0209f340)->entries;
     StageTexAnimSlot *slot = mTexAnimSlots;
@@ -3923,11 +3919,8 @@ void dScStage_c::LoadTextureTransformers() {
     for (slotIndex = 0; slotIndex < (int)((LevelInfo *)data_0209f340)->count; slotIndex++) {
         if (entry->bta) {
             dExtAnmTexSRT_c::Prepare(*modelFile, *(BTA_File *)entry->bta);
-            void *transformer = ::operator new(0x14);
-            if (transformer)
-                transformer = _ZN15dExtAnmTexSRT_cC1Ev(transformer);
-            slot->mTransformer = transformer;
-            ((dExtAnmTexSRT_c *)slot->mTransformer)->SetFile(*(BTA_File *)entry->bta, 0, 0x1000, 0);
+            slot->mTransformer = new dExtAnmTexSRT_c;
+            slot->mTransformer->SetFile(*(BTA_File *)entry->bta, 0, 0x1000, 0);
         }
         entry++;
         slot++;
@@ -4064,7 +4057,7 @@ int dScStage_c::Render() {
         int slotIndex;
         for (slotIndex = 0; slotIndex < ((LevelInfo *)data_0209f340)->count; slotIndex++, slot++) {
             if (slot->mActive != 0 && slot->mTransformer != 0)
-                ((dExtFrameCtrl_c *)slot->mTransformer)->Advance();
+                slot->mTransformer->Advance();
         }
         mSysTracker.Update();
     }
@@ -4577,7 +4570,7 @@ int dScStage_c::CleanupResources() {
         StageTexAnimSlot *slot = mTexAnimSlots;
         int slotIndex;
         for (slotIndex = 0; slotIndex < ((LevelInfo *)data_0209f340)->count; slotIndex++, slot++) {
-            dExtAnmTexSRT_c *transformer = (dExtAnmTexSRT_c *)slot->mTransformer;
+            dExtAnmTexSRT_c *transformer = slot->mTransformer;
             if (transformer)
                 delete transformer;
             {

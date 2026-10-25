@@ -50,6 +50,7 @@ extern "C" void *dScMgJump_c_classInit(void)
         }
         _ZN8Particle10SysTrackerC1Ev(&((dScMgJump_c *)p)->mSysTracker);
         *(int *)p = (int)_ZTV11dScMgJump_c;
+        /* dScMgJump_c declares no constructor yet, so this factory constructs its members by name. */
         _ZN17dExtSimpleModel_cC1Ev(&((dScMgJump_c *)p)->mModel);
         __cxa_vec_ctor(((dScMgJump_c *)p)->mPlayers, 3, 0xb8,
                        (void (*)(void *))_ZN16dMgJump3DMario_cC1Ev,

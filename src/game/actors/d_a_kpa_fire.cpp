@@ -36,10 +36,6 @@
  *   SaveData::IsCharacterUnlocked stay mangled. Those calls pass
  *   Fix12<int> by value; the header spelling of dBgCh_Actr::Init is
  *   Fix12i, which mangles as int.
- * - GetFrameCount stays the void* extern. The argument is
- *   static_cast<dExtFrameCtrl_c *>(&o->mModelAnim), dExtAnmModel_c's
- *   second base, which is Bowser + 0x124. The header method is not
- *   that symbol's spelling at this site.
  * - Particle::System::callbackScale and callbackVelocity are named.
  *   The word at +0x44 sits in pad_042 and stays a raw store.
  * - DropShadowRadHeight's matrix is `mShadowMat`, raw `u8[0x30]` storage.
@@ -128,8 +124,6 @@ extern PMF data_ov060_0211af74[];
 extern u32 _ZN8Particle6System17NewUnkCallback818Ejj5Fix12IiES2_S2_PK11Vector3_16f( u32 a, u32 b, Fix12i c, Fix12i d, Fix12i e, const struct Vector3_16f* f);
 extern u32 d_a_kpa_fireNewHold(u32 a, u32 b, Fix12i c, Fix12i d, Fix12i e, const void *f, void *g);
 void d_a_kpa_fireNewSimpleHold(u32 id, Fix12i x, Fix12i y, Fix12i z);
-/* local extern: the header method is not this symbol's spelling here. */
-extern int _ZNK15dExtFrameCtrl_c13GetFrameCountEv(void *anim);
 extern void d_a_kpa_firePlayLongHold(u32 a, u32 b, u32 c, void *pos, u32 d);
 extern void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *self, void *actor, int a, int b, unsigned int c, unsigned int d);
 extern void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(void *self, void *actor, int a, int b, void *v, int c);
@@ -344,8 +338,7 @@ void daKpaFire_c::func_ov060_0211747c() {
     v[2] = kpaPos[2];
     t = data_ov060_02119364;
 
-    if (n == _ZNK15dExtFrameCtrl_c13GetFrameCountEv(
-            static_cast<dExtFrameCtrl_c *>(&koopa->mModelAnim)))
+    if (n == koopa->mModelAnim.GetFrameCount())
         n = 0;
 
     t += n * 5;

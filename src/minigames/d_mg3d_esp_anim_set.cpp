@@ -101,12 +101,6 @@ extern EspAnimSetModelFilePtr gEspIrieModelFile;
 extern Matrix4x3 data_020a0e68;
 void Matrix4x3_FromTranslation(void* m, int x, int y, int z);
 int _Z15ApproachLinear2Rsss(short* p, short a, short b);
-/* local extern: the call passes an untyped this, so it cannot use the header method. */
-void _ZN15dExtFrameCtrl_c7AdvanceEv(void* a);
-/* local extern: the call passes an untyped this, so it cannot use the header method. */
-int _ZN15dExtFrameCtrl_c8FinishedEv(void* a);
-/* local extern: the call passes an untyped this, so it cannot use the header method. */
-int _ZNK15dExtFrameCtrl_c12WillHitFrameEi(void* anim, int frame);
 void func_02046208(char* a, int b, int c);
 int func_020179b4(void* r0, void* r1, int r2);
 /* The last four parameters are unsigned short in the real signature;
@@ -234,9 +228,9 @@ void dMg3DEspAnimSet_c::Behavior() {
         char *cc = self;
         for (i = 0; i < 3; i++) {
             if (mActive[i] != 0) {
-                _ZN15dExtFrameCtrl_c7AdvanceEv(a + 0x50);
-                _ZN15dExtFrameCtrl_c7AdvanceEv(b);
-                if (_ZN15dExtFrameCtrl_c8FinishedEv(a + 0x50)) {
+                ((dExtAnmModel_c *)a)->Advance();
+                ((dExtAnmMaterial_c *)b)->Advance();
+                if (((dExtAnmModel_c *)a)->Finished()) {
                     mActive[i] = 0;
                 }
             } else {
@@ -587,7 +581,7 @@ void dScMg3DEsp_c::FlashSync()
     /* c + 0x5034 is mEspModel's mModelAnim frame control
        (0x4fd8 + 0xc + 0x50). The ROM pool-loads 0x5034 as one constant;
        spelling it as that member grows FlashSync from 0xb4 to 0xb8 bytes. */
-    if (_ZNK15dExtFrameCtrl_c12WillHitFrameEi(c + 0x5034, 0)) {
+    if (((dExtFrameCtrl_c *)(c + 0x5034))->WillHitFrame(0)) {
         u8 *p = &mFlashBeats;
         (*p)++;
     }
@@ -1622,6 +1616,7 @@ void *dScMg3DEsp_c_classInit(void){
         *(int *)o = (int)_ZTV19dScMgSingle3DBase_c;
         _ZN8Particle10SysTrackerC1Ev(&((dScMg3DEsp_c *)o)->mSysTracker);
         *(int *)o = (int)&_ZTV12dScMg3DEsp_c[2];
+        /* dScMg3DEsp_c declares no constructor yet, so this factory constructs its members by name. */
         _ZN17dExtSimpleModel_cC1Ev(((dScMg3DEsp_c *)o)->mModel1);
         _ZN17dExtSimpleModel_cC1Ev(((dScMg3DEsp_c *)o)->mModel2);
         _ZN15dMg3DEspModel_cC1Ev(((dScMg3DEsp_c *)o)->mEspModel);

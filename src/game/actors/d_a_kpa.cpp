@@ -496,7 +496,6 @@ int _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *self, void *actor, int fix, 
 /* TUBUILD CONFLICT -- alternate declaration of func_02012694, from the legacy file for func_ov060_02114e9c, NOT applied: extern "C" int func_02012694(int a, int* b); */
 /* TUBUILD CONFLICT -- alternate declaration of Bowser_IsAnimAtLastFrame, from the legacy file for func_ov060_02114e9c, NOT applied: extern "C" int Bowser_IsAnimAtLastFrame(void* o); */
 /* TUBUILD CONFLICT -- alternate declaration of func_ov060_02111cc0, from the legacy file for func_ov060_02114e9c, NOT applied: extern "C" void func_ov060_02111cc0(void* o, int a, int b); */
-/* TUBUILD CONFLICT -- alternate declaration of _ZNK15dExtFrameCtrl_c12WillHitFrameEi, from the legacy file for func_ov060_02114e9c, NOT applied: extern "C" int _ZNK15dExtFrameCtrl_c12WillHitFrameEi(void* self, int frame); */
 /* TUBUILD CONFLICT -- alternate declaration of Bowser_IsAnimAtLastFrame, from the legacy file for func_ov060_02114ff8, NOT applied: extern int Bowser_IsAnimAtLastFrame(void *); */
 /* TUBUILD CONFLICT -- alternate declaration of RandomIntInternal, from the legacy file for func_ov060_021151d4, NOT applied: extern int RandomIntInternal(int *seed); */
 /* TUBUILD CONFLICT -- alternate declaration of func_ov060_02115744, from the legacy file for func_ov060_021153f8, NOT applied: extern int func_ov060_02115744(void *c); */

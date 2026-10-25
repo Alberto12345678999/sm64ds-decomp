@@ -2,6 +2,8 @@
 #define TRMPITEM_H
 
 #include "types.h"
+#include "dExtSimpleModel_c.h"
+#include "dExtAnmTexSRT_c.h"
 
 /* TrmpItem, one of Trampoline2's floating rings (its three models are
  * ASSET_RINGA/B/C_BMD, sTrmpItemRing*ModelFile): the 0x1d0-byte record the
@@ -31,9 +33,9 @@ struct TrmpItem {
     u16 mPhase;           /* 0x09a -- the sway and hover motions' phase */
     u8 mAlpha;            /* 0x09c -- opacity, applied in TrmpItem_UpdateMatrix */
     u8 pad_09d[0x3];      /* 0x09d */
-    u8 mModels[3][0x50];  /* 0x0a0 -- three Models: rings A, B and C */
-    void *mModel;         /* 0x190 -- the variant drawn */
-    u8 mTexAnim[0x14];    /* 0x194 -- a dExtAnmTexSRT_c */
+    dExtSimpleModel_c mModels[3]; /* 0x0a0 -- rings A, B and C */
+    dExtSimpleModel_c *mModel;    /* 0x190 -- the variant drawn */
+    dExtAnmTexSRT_c mTexAnim;     /* 0x194 */
     u8 pad_1a8[0x28];     /* 0x1a8 */
 };
 

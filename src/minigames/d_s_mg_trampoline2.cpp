@@ -135,8 +135,6 @@ extern void Trmp2Spinner_Update(char *obj);
 extern void Trmp2Spinner_Init(void *obj, void *kind);
 extern void Trmp2Spinner_SetModel(void *self);
 extern void *_ZN17dExtSimpleModel_cC1Ev(void *model);
-/* local extern: D1 is called by entry name; only two scene headers declare it */
-extern void _ZN17dExtSimpleModel_cD1Ev(void *model);
 extern int sTrmp2BrushWord[];
 extern void *func_02054efc(void);
 extern void *func_02054ea8(void);
@@ -314,10 +312,10 @@ void LoadOBJPltt(const void *src, unsigned int offset, unsigned int size);
 
 // @symbol TrmpItem_Construct
 extern "C" void *TrmpItem_Construct(char *raw) {
-    _ZN17dExtSimpleModel_cC1Ev(((TrmpItem *)raw)->mModels[0]);
-    _ZN17dExtSimpleModel_cC1Ev(((TrmpItem *)raw)->mModels[1]);
-    _ZN17dExtSimpleModel_cC1Ev(((TrmpItem *)raw)->mModels[2]);
-    _ZN15dExtAnmTexSRT_cC1Ev(((TrmpItem *)raw)->mTexAnim);
+    _ZN17dExtSimpleModel_cC1Ev(&((TrmpItem *)raw)->mModels[0]);
+    _ZN17dExtSimpleModel_cC1Ev(&((TrmpItem *)raw)->mModels[1]);
+    _ZN17dExtSimpleModel_cC1Ev(&((TrmpItem *)raw)->mModels[2]);
+    _ZN15dExtAnmTexSRT_cC1Ev(&((TrmpItem *)raw)->mTexAnim);
     /* TrmpItem.h's pad_1a8: five 8-byte elements, role unknown. */
     __cxa_vec_ctor(((TrmpItem *)raw)->pad_1a8, 5, 8, (void *)func_0203d738,
                    (void *)NullDestructor_0203d47c);
@@ -1216,7 +1214,7 @@ int Trmp2Spinner_Construct(char *raw) {
 // @symbol Trmp2Spinner_Destruct
 extern "C" dExtSimpleModel_c *Trmp2Spinner_Destruct(dExtSimpleModel_c *m) {
     sTrmp2StarModelFile.Release();
-    _ZN17dExtSimpleModel_cD1Ev(m);
+    m->dExtSimpleModel_c::~dExtSimpleModel_c();
     return m;
 }
 
@@ -1380,16 +1378,13 @@ extern "C" void Trmp2Spinner_UpdateMatrix(char *raw) {
 extern "C" {
 /* local extern: no header declares it (the include/ hits are comments) */
 extern void __cxa_vec_cleanup(void *a, int b, int c, void *d);
-extern void _ZN15dExtAnmTexSRT_cD1Ev(void *);
-/* local extern: D1 is called by entry name; only two scene headers declare it */
-extern void _ZN17dExtSimpleModel_cD1Ev(void *);
 // @symbol Trmp2_DestructJumperModels
 int Trmp2_DestructJumperModels(char *raw) {
     __cxa_vec_cleanup(((TrmpItem *)raw)->pad_1a8, 5, 8, (void *)NullDestructor_0203d47c);
-    _ZN15dExtAnmTexSRT_cD1Ev(((TrmpItem *)raw)->mTexAnim);
-    _ZN17dExtSimpleModel_cD1Ev(((TrmpItem *)raw)->mModels[2]);
-    _ZN17dExtSimpleModel_cD1Ev(((TrmpItem *)raw)->mModels[1]);
-    _ZN17dExtSimpleModel_cD1Ev(((TrmpItem *)raw)->mModels[0]);
+    ((TrmpItem *)raw)->mTexAnim.dExtAnmTexSRT_c::~dExtAnmTexSRT_c();
+    ((TrmpItem *)raw)->mModels[2].dExtSimpleModel_c::~dExtSimpleModel_c();
+    ((TrmpItem *)raw)->mModels[1].dExtSimpleModel_c::~dExtSimpleModel_c();
+    ((TrmpItem *)raw)->mModels[0].dExtSimpleModel_c::~dExtSimpleModel_c();
     return (int)raw;
 }
 }

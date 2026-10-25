@@ -5814,9 +5814,6 @@
       ]
     },
     "_ZN19dExtBlendAnmModel_cD1Ev": {
-      "include/decl_BlendModelAnim.h": [
-        "return:void"
-      ],
       "src/minigames/unit020bfec0.cpp": [
         "return:void"
       ]
@@ -5827,10 +5824,6 @@
       ]
     },
     "_ZN17dExtAnmMaterial_c7PrepareER8BMD_FileR8BMA_File": {
-      "include/decl_MaterialChanger.h": [
-        "param:#1 void *",
-        "param:#2 void *"
-      ],
       "src/minigames/d_mg3d_esp_anim_set.cpp": [
         "param:#1 int",
         "param:#2 void *"
@@ -5858,16 +5851,9 @@
       ],
       "src/game/actors/d_a_kpa.cpp": [
         "param:#2 void *"
-      ],
-      "src/minigames/unit020bfec0.cpp": [
-        "param:#2 void *"
       ]
     },
     "_ZN15dExtAnmTexPat_c7PrepareER8BMD_FileR8BTP_File": {
-      "src/minigames/unit020bfec0.cpp": [
-        "param:#1 void *",
-        "param:#2 void *"
-      ],
       "src/unnamed/ov002/func_ov002_020e5948.c": [
         "param:#1 void *",
         "param:#2 void *"
@@ -5900,9 +5886,6 @@
       ],
       "src/game/player/Player.cpp": [
         "return:void"
-      ],
-      "src/minigames/unit020bfec0.cpp": [
-        "return:void"
       ]
     },
     "_ZN15dExtFrameCtrl_c17UpdateFileOffsetsER8BCA_File": {
@@ -5920,9 +5903,6 @@
     },
     "_ZN15dExtFrameCtrl_c7AdvanceEv": {
       "src/game/actors/d_a_demo.cpp": [
-        "return:int"
-      ],
-      "src/minigames/unit020bfec0.cpp": [
         "return:int"
       ]
     },
@@ -6057,28 +6037,8 @@
       ]
     },
     "_ZN15dExtAnmTexSRT_c6UpdateER15ModelComponents": {
-      "src/minigames/unit020bfec0.cpp": [
-        "param:#2 void *"
-      ],
       "src/minigames/unit020cd744.cpp": [
         "param:#2 void *"
-      ]
-    },
-    "_ZN15dExtAnmTexSRT_c7PrepareER8BMD_FileR8BTA_File": {
-      "src/minigames/unit020bfec0.cpp": [
-        "param:#1 void *",
-        "param:#2 void *"
-      ]
-    },
-    "_ZN15dExtAnmTexSRT_cD1Ev": {
-      "include/decl_TextureTransformer.h": [
-        "return:void"
-      ],
-      "src/minigames/d_s_mg_trampoline2.cpp": [
-        "return:void"
-      ],
-      "src/minigames/unit020bfec0.cpp": [
-        "return:void"
       ]
     },
     "_ZN18dMgMCarloCardObj_cD1Ev": {
@@ -7372,9 +7332,6 @@
         "return:void"
       ],
       "src/game/stages/d_s_star_sel_methods.cpp": [
-        "return:void"
-      ],
-      "src/minigames/d_s_mg_trampoline2.cpp": [
         "return:void"
       ],
       "src/minigames/unit020bfec0.cpp": [
@@ -10593,9 +10550,6 @@
       "include/decl_Animation.h": [
         "return:int"
       ],
-      "src/minigames/d_mg3d_esp_anim_set.cpp": [
-        "return:int"
-      ],
       "src/minigames/d_mg_trmpln2_mario.cpp": [
         "return:int"
       ],
@@ -10605,9 +10559,6 @@
     },
     "_ZNK15dExtFrameCtrl_c13GetFrameCountEv": {
       "include/decl_Animation.h": [
-        "return:int"
-      ],
-      "src/game/actors/d_a_kpa_fire.cpp": [
         "return:int"
       ]
     },
