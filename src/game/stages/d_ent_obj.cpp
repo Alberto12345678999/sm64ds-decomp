@@ -24,20 +24,14 @@ struct System {
  * the classInit factory, then UnknownVsPlayer's constructor.
  *
  * leftovers:
- *  - The Fix12-by-value member calls (dExtBlendAnmModel_c::SetAnim,
- *    dExtAnmModel_c::SetAnim, dExtAnmTexPat_c::SetFile,
- *    dExtShadowModel_c::InitModel, Particle::System::New,
+ *  - The Fix12-by-value member calls (dExtShadowModel_c::InitModel,
+ *    Particle::System::New,
  *    G3i::PerspectiveW_) keep measured scalar-extern spellings: spelled as
  *    the real member types, mwccarm homes the register arguments and the
  *    callers grow.
  *  - LAUNDER((char*)) stays on the mModel.data / mAnimation.data /
  *    mModel.mat4x3 alias reads in func_ov075_02114be4 -- the plain member
  *    read changes which value-numbering class mwcc folds them into.
- *  - dEntObj_c_classInit keeps its hand-written ABI construction
- *    (fBase_c C2, explicit _ZTV9dEntObj_c + 2 store, __cxa_vec_ctor over
- *    the four UnknownVsPlayer elements): the natural `new dEntObj_c`
- *    emits the base steps inline instead of the C2 branch and no vec
- *    ctor call.
  *  - VsBoneFile/VsBoneComponents/MatrixCopyWords stay file-layout shadows: the bone
  *    record offsets are measured, not the BMD/ModelComponents layouts.
  *  - Behavior's mFellOffThisFrame probe keeps the second `walk` induction variable
@@ -98,8 +92,6 @@ struct EntObjTextureSequenceFileHandle : SharedFilePtr {
  * class type, mwccarm homes the register arguments and the callers grow, so
  * the measured scalar views stay. */
 extern "C" {
-void _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj(void *seq, void *file, int flags, int speed,
-                                                        unsigned short startFrame);
 void _ZN17dExtShadowModel_c9InitModelEP9Matrix4x35Fix12IiES3_S3_j(void *shadow, Matrix4x3 *mat,
                                                                   int radius, int height, int depth,
                                                                   unsigned char flags);
@@ -177,16 +169,6 @@ extern const int sVsPlayerExitX[16] = {0,       1843200, 1843200, 1843200, -2048
                                        1843200, 1843200, -368640, 0,       368640,  1843200,
                                        -491520, -163840, 163840,  491520};
 
-extern void *_ZN7fBase_cnwEj(unsigned int size);
-extern void *_ZN7fBase_cC2Ev(void *p);
-extern void _ZN8Particle10SysTrackerC1Ev(void *p);
-extern void *_ZN17dExtSimpleModel_cC1Ev(void *p);
-extern void *_ZN14dExtAnmModel_cC1Ev(void *p);
-extern void __cxa_vec_ctor(void *base, unsigned int count, unsigned int stride,
-                           void (*ctor)(void *), void (*dtor)(void *));
-extern void *data_0208e4b8;
-extern UnknownVsPlayer *_ZN15UnknownVsPlayerD1Ev(UnknownVsPlayer *object);
-extern UnknownVsPlayer *_ZN15UnknownVsPlayerC1Ev(UnknownVsPlayer *object);
 }
 
 /* A pointer-to-member row: the two per-figure state tables are arrays of
@@ -366,8 +348,7 @@ void UnknownVsPlayer::func_ov075_021143e4() {
         data_ov075_0211d380 >>= 2;
     }
     dExtAnmTexPat_c::Prepare(*(BMD_File *)data_ov075_0211d3c4.filePtr, *(BTP_File *)textureFile);
-    _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj(&mTextureSequence, textureFile, 0, 0x1000,
-                                                       0);
+    mTextureSequence.SetFile(*(BTP_File *)textureFile, 0, 0x1000, 0);
     {
         unsigned int randomValue = (unsigned int)RandomIntInternal(&data_0209e650);
         int frameCount = mModel.GetFrameCount();
@@ -697,8 +678,7 @@ int UnknownVsPlayer::func_ov075_02114ddc(unsigned char kind, unsigned char playe
     }
 
     dExtAnmTexPat_c::Prepare(*(BMD_File *)data_ov075_0211d3c4.filePtr, *(BTP_File *)textureFile);
-    _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj(&mTextureSequence, textureFile, 0, 0x1000,
-                                                       0);
+    mTextureSequence.SetFile(*(BTP_File *)textureFile, 0, 0x1000, 0);
 
     {
         unsigned randomValue = (unsigned)RandomIntInternal(&data_0209e650);
@@ -1081,19 +1061,7 @@ int dEntObj_c::InitResources() {
  * boundary. */
 // @symbol dEntObj_c_classInit
 extern "C" dEntObj_c *dEntObj_c_classInit(void) {
-    dEntObj_c *p = (dEntObj_c *)_ZN7fBase_cnwEj(sizeof(dEntObj_c));
-    if (p) {
-        _ZN7fBase_cC2Ev(p);
-        *(void **)p = &data_0208e4b8;
-        *(void **)p = _ZTV9dEntObj_c + 2;
-        _ZN8Particle10SysTrackerC1Ev(&p->mParticles);
-        _ZN17dExtSimpleModel_cC1Ev(&p->mModel);
-        _ZN14dExtAnmModel_cC1Ev(&p->mModelAnim);
-        __cxa_vec_ctor(p->mPlayers, 4, sizeof(UnknownVsPlayer),
-                       (void (*)(void *))_ZN15UnknownVsPlayerC1Ev,
-                       (void (*)(void *))_ZN15UnknownVsPlayerD1Ev);
-    }
-    return p;
+    return new dEntObj_c;
 }
 
 /* -------------------------------------------------------------------------- */

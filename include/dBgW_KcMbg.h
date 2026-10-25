@@ -15,9 +15,8 @@
  * key-function rule. src/engine/collision/d_bg_w_kc_mbg.cpp defines it once
  * and the TU keeps all five structor variants.
  *
- * SetFile keeps an extern-C free definition: its mangled name carries
- * Fix12<int> by value (wall 6az). Its declaration here is the real
- * signature. SetFile and Transform copy matrices through a flat 12-word
+ * SetFile takes the scale as Fix12i (a scalar; it mangles as i).
+ * SetFile and Transform copy matrices through a flat 12-word
  * view (the dExtSimpleModel_c::Virtual10 lesson).
  */
 
@@ -67,8 +66,7 @@ struct dBgW_KcMbg : dBgW_Kc {
     dBgW_KcMbg();
 
     /* --- non-virtual --- */
-    void SetFile(KCL_File *file, const Matrix4x3 &mat, Fix12<int> scale,
-                 s16 angY, CLPS_Block &clps);             /* free def, wall 6az */
+    void SetFile(KCL_File *file, const Matrix4x3 &mat, Fix12i scale, s16 angY, CLPS_Block &clps);
     void Transform(const Matrix4x3 &mat, s16 angY);
 
     /* WHAT LETS A REAL `~Class()` REPRODUCE THE ROM'S DELETING DESTRUCTOR.

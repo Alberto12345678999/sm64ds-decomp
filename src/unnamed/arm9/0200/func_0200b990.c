@@ -9,7 +9,7 @@ extern void _ZN9dBgCh_Lin13SetObjAndLineERK7Vector3S2_P8dActor_c(dBgCh_Lin *rc, 
                                                                  Vector3 *b, void *actor);
 extern int _ZN9dBgCh_Lin10DetectClsnEv(dBgCh_Lin *rc);
 extern void _ZNK11SurfaceInfo12CopyNormalToER7Vector3(void *surf, Vector3 *out);
-extern s16 _ZN4cstd5atan2E5Fix12IiES1_(int a, int b);
+extern s16 _ZN4cstd5atan2Eii(int a, int b);
 extern int AngleDiff(int a, int b);
 extern void _ZN9dBgCh_LinD1Ev(dBgCh_Lin *rc);
 extern int _Z14ApproachLinearRsss(short *value, short target, short step);
@@ -70,7 +70,7 @@ void func_0200b990(char *self, char *arg1, int arg2)
                     Vector3 normal;
                     s16 a2;
                     _ZNK11SurfaceInfo12CopyNormalToER7Vector3(rc.surf, &normal);
-                    a2 = _ZN4cstd5atan2E5Fix12IiES1_(normal.x, normal.z);
+                    a2 = _ZN4cstd5atan2Eii(normal.x, normal.z);
                     if (AngleDiff(a2, angle) < 0x1800) angle = a2;
                 }
                 _ZN9dBgCh_LinD1Ev(&rc);

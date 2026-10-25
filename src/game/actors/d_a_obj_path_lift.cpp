@@ -13,18 +13,11 @@
  * body.
  *
  * deslop
- * Leftover: classInit stays the typed C-ABI seam daObjRcCarpet_c already
- *   established for this same dPathLiftActor_c base (see
- *   src/game/actors/d_a_obj_rc_carpet.cpp), not `return new
- *   daObjPathLift_c()`. dPathLiftActor_c has no out-of-line ctor, so the
- *   intermediate vptr store stays the raw `data_ov002_0210af70` address
- *   point (no offset -- that symbol already names the address point in
- *   its own ov002 TU). This TU now defines _ZTV15daObjPathLift_c itself
- *   (the out-of-line destructor is the key function), so the compiler's
- *   own `_ZTV15daObjPathLift_c` label names the object start, two words
- *   before the address point; the final vptr store is
- *   `_ZTV15daObjPathLift_c[2]` (addend 8) to reach it instead of the
- *   RTTI header.
+ * classInit is `return new daObjPathLift_c()`. dPathLiftActor_c's implicit
+ *   constructor inlines into it (dBgActor_c C2, the base vptr, mModels,
+ *   mPath), then the leaf vptr and mShadowModel, which is the ROM's
+ *   sequence. The emitted dBgActor_c and dPathLiftActor_c D2 helpers have
+ *   no ROM home and are deadstripped in the manifest.
  * Leftover: data_0209f2f8 == 13 is a level-ID check (the current
  *   level); data_0209f2d8 == 1 is the mode-1 check used tree-wide.
  */
@@ -52,8 +45,8 @@ extern void func_020393d4(dBgW_KcMbg *p, void *v);
 
 /* By-value Fix12<int> is wall 6az: constructing wrapper arguments adds stack
    traffic the ROM does not have. Keep the register-level spelling. */
-void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-    dBgW_KcMbg *self, void *kcl, const Matrix4x3 *mtx, int scale, short angY, CLPS_Block *clps);
+extern void hold_d_a_obj_path_lift(dBgW_KcMbg *self, void *kcl, const Matrix4x3 *mtx, int scale,
+                                   short angY, CLPS_Block *clps);
 void _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_S5_j(
     dActor_c *self, dExtShadowModel_c *sm, Matrix4x3 *mtx, int a, int b, int d,
     unsigned int e);
@@ -86,36 +79,10 @@ struct PathLiftCollisionFilePtr : SharedFilePtr {
 extern PathLiftModelFile data_ov100_02148a54;
 extern PathLiftCollisionFilePtr data_ov100_02148a5c;
 
-extern "C" {
-extern void *_ZN10dBgActor_cC2Ev(dBgActor_c *actor);
-extern void *_ZN17dExtSimpleModel_cC1Ev(dExtSimpleModel_c *model);
-/* local extern: __cxa_vec_ctor needs D1 by address; only two scene headers declare it */
-extern dExtSimpleModel_c *_ZN17dExtSimpleModel_cD1Ev(dExtSimpleModel_c *model);
-extern void *_ZN7PathPtrC1Ev(PathPtr *path);
-extern void *_ZN17dExtShadowModel_cC1Ev(dExtShadowModel_c *model);
-extern void __cxa_vec_ctor(dExtSimpleModel_c *models, unsigned int count, unsigned int size,
-                           void (*ctor)(void *), void (*dtor)(void *));
-}
-
-extern int data_ov002_0210af70[];
-extern int _ZTV15daObjPathLift_c[];
-
 // @symbol daObjPathLift_c_classInit
 extern "C" daObjPathLift_c *daObjPathLift_c_classInit()
 {
-    daObjPathLift_c *actor =
-        (daObjPathLift_c *)_ZN7fBase_cnwEj(sizeof(daObjPathLift_c));
-    if (actor) {
-        _ZN10dBgActor_cC2Ev(actor);
-        *(int *)actor = (int)data_ov002_0210af70;
-        __cxa_vec_ctor(actor->mModels, 3, sizeof(dExtSimpleModel_c),
-                       (void (*)(void *))_ZN17dExtSimpleModel_cC1Ev,
-                       (void (*)(void *))_ZN17dExtSimpleModel_cD1Ev);
-        _ZN7PathPtrC1Ev(&actor->mPath);
-        *(int *)actor = (int)&_ZTV15daObjPathLift_c[2];
-        _ZN17dExtShadowModel_cC1Ev(&actor->mShadowModel);
-    }
-    return actor;
+    return new daObjPathLift_c();
 }
 
 // @symbol _ZN15daObjPathLift_c13InitResourcesEv
@@ -127,9 +94,9 @@ int daObjPathLift_c::InitResources()
     mShadowModel.InitCuboid();
     func_ov100_0214700c(this);
     UpdateClsnPosAndRot();
-    _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-        &mMeshCollider, dBgW_Kc::LoadFile(data_ov100_02148a5c),
-        &mClsnMat, 0x1000, mAngleY, &data_ov002_0210d7d4);
+    ((dBgW_KcMbg *)(&mMeshCollider))
+        ->dBgW_KcMbg::SetFile((KCL_File *)(dBgW_Kc::LoadFile(data_ov100_02148a5c)), *(&mClsnMat),
+                              0x1000, mAngleY, *(&data_ov002_0210d7d4));
     func_020393d4(
         &mMeshCollider,
         (void *)&dBgW::UpdatePosAndAngs);

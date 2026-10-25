@@ -24,10 +24,6 @@ struct System {
  * Each pragma bracket below carries the file-global pragma of the file
  * that function came from; the brackets bind only under defer_codegen off.
  *
- * SetFile and SetAnim take Fix12<int> by value in their real signatures;
- * calling them through the headers adds bytes, so their calls stay mangled
- * with a scalar speed.
- *
  * deslop leftovers:
  * - The scene's cards, rows and slots are the header's Card, Row and Slot
  *   arrays. RenderRows and RenderCards still reach theirs through
@@ -60,6 +56,9 @@ struct System {
 #include "Sound.h"
 #include "PlayerInput.h"
 #include "dExtSimpleModel_c.h"
+namespace cstd {
+s16 atan2(s32, s32);
+}
 
 struct BMD_File;
 struct BTP_File;
@@ -102,22 +101,12 @@ extern EspAnimSetModelFilePtr gEspIrieModelFile;
 extern Matrix4x3 data_020a0e68;
 void Matrix4x3_FromTranslation(void* m, int x, int y, int z);
 int _Z15ApproachLinear2Rsss(short* p, short a, short b);
-/* local extern: the call passes an untyped this, so it cannot use the header method. */
-void _ZN15dExtFrameCtrl_c7AdvanceEv(void* a);
-/* local extern: the call passes an untyped this, so it cannot use the header method. */
-int _ZN15dExtFrameCtrl_c8FinishedEv(void* a);
-/* local extern: the call passes an untyped this, so it cannot use the header method. */
-int _ZNK15dExtFrameCtrl_c12WillHitFrameEi(void* anim, int frame);
-void _ZN17dExtAnmMaterial_c7SetFileER8BMA_Filei5Fix12IiEj(char *t, void *f, int a, int b,
-                                                          unsigned u);
-void _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj(void *self, void *btp, int a, int b, u16 d);
-void _ZN15dExtAnmTexSRT_c7SetFileER8BTA_Filei5Fix12IiEj(void *self, void *bta, int a, int b, u16 d);
 void func_02046208(char* a, int b, int c);
 int func_020179b4(void* r0, void* r1, int r2);
 /* The last four parameters are unsigned short in the real signature;
    RowFade passes 0x10 - n, which must not be truncated. */
 void _ZN3G2x13SetBlendAlphaEPVttttj(volatile unsigned short *p, int a, int b, int c, int d);
-s16 _ZN4cstd5atan2E5Fix12IiES1_(s32 y, s32 x);
+s16 atan2_hold_d_mg3d_esp_anim_set_1(s32 y, s32 x);
 int RandomIntInternal(int *seed);
 extern int data_0209d4b8;
 void FreeGfxSlotsById(int a);
@@ -164,19 +153,14 @@ extern volatile Matrix4x3 sEsp3DIdentityMtx;
 
 /* ---- dScMg3DEsp_c: the destructor (key function) ---------------------- */
 
-/* The members are raw storage (see dScMg3DEsp_c.h), so each is destroyed by
-   an explicit call, in reverse declaration order. The vtable stores,
-   mSysTracker's destruction and the chain to ~dScMgBase_c are
-   compiler-generated; the deleting variant reaches dScMgBase_c's operator
-   delete. */
+/* The body is empty: the members' destructors (reverse declaration order),
+   the vtable stores, mSysTracker's destruction and the chain to
+   ~dScMgBase_c are all compiler-generated; the deleting variant reaches
+   dScMgBase_c's operator delete. */
 // @symbol _ZN12dScMg3DEsp_cD1Ev
 // @symbol _ZN12dScMg3DEsp_cD0Ev
 dScMg3DEsp_c::~dScMg3DEsp_c()
 {
-    ((dExtAnmTexSRT_c *)mTextureTransformer)->dExtAnmTexSRT_c::~dExtAnmTexSRT_c();
-    ((dMg3DEspModel_c *)mEspModel)->~dMg3DEspModel_c();
-    ((dExtSimpleModel_c *)mModel2)->dExtSimpleModel_c::~dExtSimpleModel_c();
-    ((dExtSimpleModel_c *)mModel1)->dExtSimpleModel_c::~dExtSimpleModel_c();
 }
 
 /* ---- dMg3DEspAnimSet_c ------------------------------------------------- */
@@ -239,9 +223,9 @@ void dMg3DEspAnimSet_c::Behavior() {
         char *cc = self;
         for (i = 0; i < 3; i++) {
             if (mActive[i] != 0) {
-                _ZN15dExtFrameCtrl_c7AdvanceEv(a + 0x50);
-                _ZN15dExtFrameCtrl_c7AdvanceEv(b);
-                if (_ZN15dExtFrameCtrl_c8FinishedEv(a + 0x50)) {
+                ((dExtAnmModel_c *)a)->Advance();
+                ((dExtAnmMaterial_c *)b)->Advance();
+                if (((dExtAnmModel_c *)a)->Finished()) {
                     mActive[i] = 0;
                 }
             } else {
@@ -307,8 +291,8 @@ void dMg3DEspAnimSet_c::InitResources()
     for (i = 0; i < 3; i++) {
         ((dExtModel_c *)w)->SetFile((BMD_File *)bmd, 1, m1);
         ((dExtAnmModel_c *)w)->SetAnim((BCA_File *)bca, 0x40000000, mSpeed, z1);
-        _ZN17dExtAnmMaterial_c7SetFileER8BMA_Filei5Fix12IiEj(w2, &sEsp3DMaterialAnim, 0x40000000,
-                                                             mSpeed, z2);
+        ((dExtAnmMaterial_c *)w2)
+            ->SetFile(*(BMA_File *)&sEsp3DMaterialAnim, 0x40000000, mSpeed, z2);
         ((dExtSimpleModel_c *)w)->SetPolygonID((i + 1) & 0xff);
         mActive[i] = 0;
         w += 0x64;
@@ -486,8 +470,7 @@ int dMg3DEspModel_c::InitResources()
     dExtFrameCtrl_c::LoadFile(gEspCardOpenWaitAnimFile);
     dExtAnmTexPat_c::Prepare(**(BMD_File **)((void **)&gEspCardModelFile + 1),
                              **(BTP_File **)((void **)&gEspCardTexSeqFile + 1));
-    _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj(
-        (char *)&mTextureSequence, *((void **)&gEspCardTexSeqFile + 1), 0, 0x1000, 0);
+    mTextureSequence.SetFile(**(BTP_File **)((void **)&gEspCardTexSeqFile + 1), 0, 0x1000, 0);
     mModelAnim.SetAnim(*((BCA_File **)&gEspCardStartAnimFile + 1), 0x40000000, 0x800, 0);
     mAnimSet.InitResources();
     ResetTransform();
@@ -573,7 +556,7 @@ void dScMg3DEsp_c::DrawBanner()
 void dScMg3DEsp_c::FlashQuick() {
     if (mFlashStep)
         return;
-    ((dMg3DEspModel_c *)mEspModel)->mPolygonID = 0x1e;
+    mEspModel.mPolygonID = 0x1e;
     mFlashStep += 1;
 }
 
@@ -584,7 +567,7 @@ void dScMg3DEsp_c::FlashSync()
     u8 state = mFlashStep;
     if (state == 0) {
         u8 *p = &mFlashStep;
-        ((dMg3DEspModel_c *)mEspModel)->mPolygonID = 0x1e;
+        mEspModel.mPolygonID = 0x1e;
         (*p)++;
         return;
     }
@@ -593,7 +576,7 @@ void dScMg3DEsp_c::FlashSync()
     /* c + 0x5034 is mEspModel's mModelAnim frame control
        (0x4fd8 + 0xc + 0x50). The ROM pool-loads 0x5034 as one constant;
        spelling it as that member grows FlashSync from 0xb4 to 0xb8 bytes. */
-    if (_ZNK15dExtFrameCtrl_c12WillHitFrameEi(c + 0x5034, 0)) {
+    if (((dExtFrameCtrl_c *)(c + 0x5034))->WillHitFrame(0)) {
         u8 *p = &mFlashBeats;
         (*p)++;
     }
@@ -603,7 +586,7 @@ void dScMg3DEsp_c::FlashSync()
         u8 *p = &mFlashStep;
         (*p)++;
     }
-    ((dMg3DEspModel_c *)mEspModel)->mPolygonID = 0x1f;
+    mEspModel.mPolygonID = 0x1f;
 }
 
 // @symbol _ZN12dScMg3DEsp_c9FlashOnceEv
@@ -617,7 +600,7 @@ void dScMg3DEsp_c::FlashOnce() {
     p = &mFlashStep;
     *p = (unsigned char)(*p + 1);
     k = 0x1f;
-    ((dMg3DEspModel_c *)mEspModel)->mPolygonID = k;
+    mEspModel.mPolygonID = k;
 }
 
 // @symbol _ZN12dScMg3DEsp_c11UpdateFlashEv
@@ -1083,7 +1066,7 @@ void dScMg3DEsp_c::CardSeek(int i) {
                 mCorrect = 0;
             } else {
                 mTarget = mCards[i].mFace;
-                ((dMg3DEspModel_c *)mEspModel)->mTextureFrame = mCards[i].mFace;
+                mEspModel.mTextureFrame = mCards[i].mFace;
                 mCorrect = 1;
             }
         }
@@ -1102,7 +1085,7 @@ void dScMg3DEsp_c::CardSeek(int i) {
         mTimer += 0x40;
     }
 
-    ((dMg3DEspModel_c *)mEspModel)->StartHit();
+    mEspModel.StartHit();
 }
 
 // @symbol _ZN12dScMg3DEsp_c9CardTouchEi
@@ -1133,7 +1116,7 @@ void dScMg3DEsp_c::CardTouch(int idx) {
 
     int dy = 0x30 - (mCards[idx].mY >> 12);
     int dx = 0x80 - (mCards[idx].mX >> 12);
-    mCards[idx].mAngle = _ZN4cstd5atan2E5Fix12IiES1_(dy, dx);
+    mCards[idx].mAngle = cstd::atan2(dy, dx);
 
     SpawnRows(idx);
     Sound::PlayBank2_2D(0x190);
@@ -1217,7 +1200,7 @@ void dScMg3DEsp_c::DealCards() {
             l++;
         } while (l < n);
     }
-    ((dMg3DEspModel_c *)mEspModel)->mTextureFrame = mTarget;
+    mEspModel.mTextureFrame = mTarget;
 }
 
 // @symbol _ZN12dScMg3DEsp_c10ClearCardsEv
@@ -1305,7 +1288,7 @@ void dScMg3DEsp_c::Deal() {
         return;
     }
     SetDifficulty();
-    ((dMg3DEspModel_c *)mEspModel)->StartIntro();
+    mEspModel.StartIntro();
     DealCards();
     mPhase = 1;
     FreeGfxSlotsById(0x1d);
@@ -1386,7 +1369,7 @@ void dScMg3DEsp_c::Results() {
             mDone = 0;
             Mg_ShowBanner(8, 0x80, 0xa0, 1, -1, 0xd);
             Mg_SetSharedState(MG_STATE_GAME_OVER);
-            ((dMg3DEspModel_c *)mEspModel)->mMuted = 1;
+            mEspModel.mMuted = 1;
         }
         mPromptEnabled = 0;
         mTimer = 0;
@@ -1457,8 +1440,8 @@ void dScMg3DEsp_c::StartRound(int a)
         mLevel = 0;
         if (mLevel > 9998) mLevel = 9998; /* the ROM keeps this clamp; 16 bytes */
     }
-    ((dMg3DEspModel_c *)mEspModel)->mMuted = 0;
-    ((dMg3DEspModel_c *)mEspModel)->Reset();
+    mEspModel.mMuted = 0;
+    mEspModel.Reset();
     Mg_ShowBanner(0xd, 0x80, 0xa8, 1, -1, 0xd);
 }
 
@@ -1490,10 +1473,10 @@ s32 dScMg3DEsp_c::Render()
     mCameraAngle = 0xc00;
     Camera_UpdateMatrices(pad_4660);
     /* dExtSimpleModel_c::data, at +8. Naming the member makes mwcc add the 8 in a separate instruction. */
-    ((dExtAnmTexSRT_c *)mTextureTransformer)->Update(*(ModelComponents *)(mModel1 + 8));
-    ((dExtSimpleModel_c *)mModel1)->Render(0);
-    ((dMg3DEspModel_c *)mEspModel)->Render();
-    ((dExtSimpleModel_c *)mModel2)->Render(0);
+    mTextureTransformer.Update(mModel1.data);
+    mModel1.Render(0);
+    mEspModel.Render();
+    mModel2.Render(0);
     return 1;
 }
 
@@ -1505,8 +1488,8 @@ s32 dScMg3DEsp_c::Behavior()
 {
     (this->*s3DEspRoundTable[mRoundState])();
     UpdateSlots();
-    ((dExtAnmTexSRT_c *)mTextureTransformer)->Advance();
-    ((dMg3DEspModel_c *)mEspModel)->Behavior();
+    mTextureTransformer.Advance();
+    mEspModel.Behavior();
     return 1;
 }
 
@@ -1539,23 +1522,22 @@ s32 dScMg3DEsp_c::InitResources()
     mCameraAngle = 0xc00;
     Camera_UpdateMatrices(pad_4660); /* the camera block starts at 0x4660 */
 
-    if (func_020179b4(&gEspIrieModelFile, mModel1, 1) == 0)
+    if (func_020179b4(&gEspIrieModelFile, &mModel1, 1) == 0)
         return 0;
 
     dExtAnmTexSRT_c::Prepare(**(BMD_File **)((void **)&gEspIrieModelFile + 1),
                              *(BTA_File *)&sEsp3DTextureAnim);
-    _ZN15dExtAnmTexSRT_c7SetFileER8BTA_Filei5Fix12IiEj(mTextureTransformer, &sEsp3DTextureAnim, 0,
-                                                       0x1000, 0);
+    mTextureTransformer.SetFile(*(BTA_File *)&sEsp3DTextureAnim, 0, 0x1000, 0);
 
-    if (((dMg3DEspModel_c *)mEspModel)->InitResources() == 0)
+    if (mEspModel.InitResources() == 0)
         return 0;
 
-    if (func_020179b4(&gIrieBackModelFile, mModel2, 1) == 0)
+    if (func_020179b4(&gIrieBackModelFile, &mModel2, 1) == 0)
         return 0;
 
     tmp = (Matrix4x3 &)sEsp3DIdentityMtx;
-    ((dExtSimpleModel_c *)mModel1)->mat4x3 = (Matrix4x3 &)sEsp3DIdentityMtx;
-    ((dExtSimpleModel_c *)mModel2)->mat4x3 = tmp;
+    mModel1.mat4x3 = (Matrix4x3 &)sEsp3DIdentityMtx;
+    mModel2.mat4x3 = tmp;
 
     data_0209d454 |= 4;
     /* sub BG2CNT, then the sub BG2 scroll offsets */
@@ -1607,34 +1589,13 @@ s32 dScMg3DEsp_c::InitResources()
     return 1;
 }
 
-extern "C" {
-extern void *_ZN11dScMgBase_cC2Ev(void *p);
-extern void _ZN8Particle10SysTrackerC1Ev(void *);
-extern void *_ZN17dExtSimpleModel_cC1Ev(void *);
-extern void *_ZN15dMg3DEspModel_cC1Ev(void *);
-extern void *_ZN15dExtAnmTexSRT_cC1Ev(void *);
-extern int _ZTV19dScMgSingle3DBase_c[];
-extern int _ZTV12dScMg3DEsp_c[];
-void *dScMg3DEsp_c_classInit(void);
 /* Reconstructed source-style name: SM64DS proves dScMg3DEsp_c through RTTI,
  * allocation size, vtable identity, and the MG_3DESP registry profile;
  * later EAD lineage supplies classInit. Exact original spelling is not
  * preserved. Historical alias: MgPsycheOut_Spawn. */
 // @symbol dScMg3DEsp_c_classInit
-void *dScMg3DEsp_c_classInit(void){
-    char *o = (char *)_ZN7fBase_cnwEj(0x5558);
-    if(o != 0){
-        _ZN11dScMgBase_cC2Ev(o);
-        *(int *)o = (int)_ZTV19dScMgSingle3DBase_c;
-        _ZN8Particle10SysTrackerC1Ev(&((dScMg3DEsp_c *)o)->mSysTracker);
-        *(int *)o = (int)&_ZTV12dScMg3DEsp_c[2];
-        _ZN17dExtSimpleModel_cC1Ev(((dScMg3DEsp_c *)o)->mModel1);
-        _ZN17dExtSimpleModel_cC1Ev(((dScMg3DEsp_c *)o)->mModel2);
-        _ZN15dMg3DEspModel_cC1Ev(((dScMg3DEsp_c *)o)->mEspModel);
-        _ZN15dExtAnmTexSRT_cC1Ev(((dScMg3DEsp_c *)o)->mTextureTransformer);
-    }
-    return o;
-}
+extern "C" dScMg3DEsp_c *dScMg3DEsp_c_classInit(void) {
+    return new dScMg3DEsp_c;
 }
 
 /* Static-init globals (was the handwritten __sinit_ov006_02130a08 shard).

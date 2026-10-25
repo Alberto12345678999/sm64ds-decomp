@@ -1,5 +1,3 @@
-overlay_100 kind:data(any) addr:0x00000064
-overlay_102 kind:data(any) addr:0x00000066
 Div kind:function(thumb,size=0x4) addr:0x0200406a
 IntrWait kind:function(thumb,size=0x4) addr:0x020040f4
 SoftReset kind:function(thumb,size=0x4) addr:0x0200414c
@@ -272,7 +270,7 @@ _ZN8dActor_c15OnGroundPoundedERS_ kind:function(arm,size=0x4) addr:0x02010148
 _ZN8dActor_c9Virtual50Ev kind:function(arm,size=0x8) addr:0x0201014c
 _ZN8dActor_c13OnTurnIntoEggER6Player kind:function(arm,size=0xc) addr:0x02010154
 _ZN8dActor_c13OnYoshiTryEatEv kind:function(arm,size=0x8) addr:0x02010160
-_ZN8dActor_c10EarthquakeERK7Vector35Fix12IiE kind:function(arm,size=0x18) addr:0x02010168
+_ZN8dActor_c10EarthquakeERK7Vector3i kind:function(arm,size=0x18) addr:0x02010168
 _ZN8dActor_c11UpdateCarryER6PlayerRK7Vector3 kind:function(arm,size=0x130) addr:0x02010180
 _ZN8dActor_c13SpawnFireballERK7Vector3PK10Vector3_165Fix12IiES7_j kind:function(arm,size=0x54) addr:0x020102b0
 func_02010304 kind:function(arm,size=0x70) addr:0x02010304
@@ -395,8 +393,8 @@ _ZN5Sound8EndMusicEj kind:function(arm,size=0xd0) addr:0x02012998
 _ZN5Sound8SetMusicEjj kind:function(arm,size=0x90) addr:0x02012a68
 _ZN5Sound22StopLoadedMusic_Layer3Ev kind:function(arm,size=0xc4) addr:0x02012af8
 _ZN5Sound22LoadAndSetMusic_Layer3Ej kind:function(arm,size=0x24) addr:0x02012bbc
-_ZN5Sound7PlaySubEjjj5Fix12IiEb kind:function(arm,size=0x14c) addr:0x02012be0
-_ZN5Sound17ChangeMusicVolumeEj5Fix12IiE kind:function(arm,size=0x38) addr:0x02012d2c
+_ZN5Sound7PlaySubEjjjib kind:function(arm,size=0x14c) addr:0x02012be0
+_ZN5Sound17ChangeMusicVolumeEji kind:function(arm,size=0x38) addr:0x02012d2c
 func_02012d64 kind:function(arm,size=0x58) addr:0x02012d64
 func_02012dbc kind:function(arm,size=0x14) addr:0x02012dbc
 func_02012dd0 kind:function(arm,size=0x4c) addr:0x02012dd0
@@ -514,19 +512,19 @@ _ZN8dClipperD1Ev kind:function(arm,size=0x10) addr:0x02015720
 _ZN8dClipperC1Ev kind:function(arm,size=0x4c) addr:0x02015730
 _ZN17dExtAnmMaterial_c7PrepareER8BMD_FileR8BMA_File kind:function(arm,size=0xc) addr:0x0201577c
 _ZN17dExtAnmMaterial_c6UpdateER15ModelComponents kind:function(arm,size=0x24) addr:0x02015788
-_ZN17dExtAnmMaterial_c7SetFileER8BMA_Filei5Fix12IiEj kind:function(arm,size=0x54) addr:0x020157ac
+_ZN17dExtAnmMaterial_c7SetFileER8BMA_Fileiit kind:function(arm,size=0x54) addr:0x020157ac
 _ZN17dExtAnmMaterial_cD0Ev kind:function(arm,size=0x2c) addr:0x02015800
 _ZN17dExtAnmMaterial_cD1Ev kind:function(arm,size=0x24) addr:0x0201582c
 _ZN17dExtAnmMaterial_cC1Ev kind:function(arm,size=0x2c) addr:0x02015850
 _ZN15dExtAnmTexSRT_c7PrepareER8BMD_FileR8BTA_File kind:function(arm,size=0xc) addr:0x0201587c
 _ZN15dExtAnmTexSRT_c6UpdateER15ModelComponents kind:function(arm,size=0x24) addr:0x02015888
-_ZN15dExtAnmTexSRT_c7SetFileER8BTA_Filei5Fix12IiEj kind:function(arm,size=0x54) addr:0x020158ac
+_ZN15dExtAnmTexSRT_c7SetFileER8BTA_Fileiit kind:function(arm,size=0x54) addr:0x020158ac
 _ZN15dExtAnmTexSRT_cD0Ev kind:function(arm,size=0x2c) addr:0x02015900
 _ZN15dExtAnmTexSRT_cD1Ev kind:function(arm,size=0x24) addr:0x0201592c
 _ZN15dExtAnmTexSRT_cC1Ev kind:function(arm,size=0x2c) addr:0x02015950
 _ZN15dExtAnmTexPat_c7PrepareER8BMD_FileR8BTP_File kind:function(arm,size=0xc) addr:0x0201597c
 _ZN15dExtAnmTexPat_c6UpdateER15ModelComponents kind:function(arm,size=0x24) addr:0x02015988
-_ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj kind:function(arm,size=0x54) addr:0x020159ac
+_ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit kind:function(arm,size=0x54) addr:0x020159ac
 _ZN15dExtAnmTexPat_cD0Ev kind:function(arm,size=0x2c) addr:0x02015a00
 _ZN15dExtAnmTexPat_cD1Ev kind:function(arm,size=0x24) addr:0x02015a2c
 _ZN15dExtAnmTexPat_cC1Ev kind:function(arm,size=0x2c) addr:0x02015a50
@@ -890,7 +888,7 @@ _ZN3OAM16LoadAffineParamsEP7OamAttrPiP9Matrix2x2 kind:function(arm,size=0xe8) ad
 _ZN3OAM12GetObjHeightEii kind:function(arm,size=0x14) addr:0x0202096c
 _ZN3OAM11GetObjWidthEii kind:function(arm,size=0x14) addr:0x02020980
 _ZN3OAM6RenderEbP7OamAttriiiiiiii kind:function(arm,size=0x690) addr:0x02020994
-_ZN3OAM6RenderEbP7OamAttriiii5Fix12IiEi kind:function(arm,size=0x480) addr:0x02021024
+_ZN3OAM6RenderEbP7OamAttriiiiii kind:function(arm,size=0x480) addr:0x02021024
 _ZN3OAM6RenderEbP7OamAttriiiiP9Matrix2x2 kind:function(arm,size=0x2e4) addr:0x020214a4
 _ZN3OAM5ResetEv kind:function(arm,size=0xdc) addr:0x02021788
 _ZN3OAM5FlushEv kind:function(arm,size=0x34) addr:0x02021864
@@ -1464,7 +1462,7 @@ _ZN10dBgW_KcMbg17GetTriangleOriginEsR7Vector3 kind:function(arm,size=0x60) addr:
 _ZN10dBgW_KcMbg9GetNormalEsR7Vector3 kind:function(arm,size=0x60) addr:0x02039ec0
 _ZN10dBgW_KcMbg9TransformERK9Matrix4x3s kind:function(arm,size=0x2bc) addr:0x02039f20
 _ZN10dBgW_KcMbg9Virtual08Ev kind:function(arm,size=0x4) addr:0x0203a1dc
-_ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block kind:function(arm,size=0x240) addr:0x0203a1e0
+_ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x3isR10CLPS_Block kind:function(arm,size=0x240) addr:0x0203a1e0
 _ZN10dBgW_KcMbgD2Ev kind:function(arm,size=0x24) addr:0x0203a420
 _ZN10dBgW_KcMbgD0Ev kind:function(arm,size=0x2c) addr:0x0203a444
 _ZN10dBgW_KcMbgD1Ev kind:function(arm,size=0x24) addr:0x0203a470
@@ -1525,7 +1523,7 @@ func_0203b3c0 kind:function(arm,size=0x78) addr:0x0203b3c0
 func_0203b438 kind:function(arm,size=0x74) addr:0x0203b438
 _ZN7fBase_c9SceneNode5ResetEv kind:function(arm,size=0x18) addr:0x0203b4ac
 _ZN7fBase_c9SceneNodeC1Ev kind:function(arm,size=0x18) addr:0x0203b4c4
-_ZN4cstd5atan2E5Fix12IiES1_ kind:function(arm,size=0x1a8) addr:0x0203b4dc
+_ZN4cstd5atan2Eii kind:function(arm,size=0x1a8) addr:0x0203b4dc
 func_0203b684 kind:function(arm,size=0x20) addr:0x0203b684
 Vec3_RotateYAndTranslate kind:function(arm,size=0xcc) addr:0x0203b6a4
 Vec3_VertAngle kind:function(arm,size=0x3c) addr:0x0203b770
@@ -5282,5 +5280,3 @@ data_020aa3d4 kind:bss addr:0x020aa3d4
 data_020aa3f0 kind:bss addr:0x020aa3f0
 data_020aa3f4 kind:bss addr:0x020aa3f4
 data_020aa3f8 kind:bss addr:0x020aa3f8
-data_020ad524 kind:data(any) addr:0x020ad524
-data_020ad560 kind:data(any) addr:0x020ad560

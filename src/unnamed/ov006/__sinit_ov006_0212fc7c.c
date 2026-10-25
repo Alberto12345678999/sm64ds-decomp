@@ -8,8 +8,10 @@ enum sinit_ov006_0212fc7c_AssetId {
 extern void __cxa_vec_ctor(void *a, int b, int c, void *d, void *e);
 extern void func_020731dc(void *object, void *b, void *node);
 extern int func_02017acc(void *a, int b);
-extern int TrmpLine_Destroy(void);
-extern int TrmpLine_Reset(void);
+/* TrmpLine::~TrmpLine() and TrmpLine::TrmpLine() (include/TrmpLine.h), by
+   their linker names: this is a C file. */
+extern void *_ZN8TrmpLineD1Ev(void *self);
+extern void *_ZN8TrmpLineC1Ev(void *self);
 extern int TrmpLine_CleanupAll(void);
 extern int func_02017ab4(void);
 struct SharedFilePtr;
@@ -24,7 +26,7 @@ extern struct SharedFilePtr sTrmpItemRingCModelFile;
 extern int sTrmpItemRingCModelFileDtorRec[];
 
 void __sinit_ov006_0212fc7c(void) {
-    __cxa_vec_ctor(sTrmpLines, 4, 0x32c, (void *)TrmpLine_Reset, (void *)TrmpLine_Destroy);
+    __cxa_vec_ctor(sTrmpLines, 4, 0x32c, (void *)_ZN8TrmpLineC1Ev, (void *)_ZN8TrmpLineD1Ev);
     func_020731dc(0, (void *)TrmpLine_CleanupAll, data_ov006_021408cc);
     func_02017acc(&sTrmpItemRingAModelFile, ASSET_RINGA_BMD);
     func_020731dc(&sTrmpItemRingAModelFile, (void *)func_02017ab4, sTrmpItemRingAModelFileDtorRec);

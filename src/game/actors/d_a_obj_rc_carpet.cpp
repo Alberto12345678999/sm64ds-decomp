@@ -7,11 +7,8 @@
  * guruguru (siblings in this overlay).
  *
  * deslop
- * Leftover: factory stays the typed C-ABI seam, not
- *   `return new daObjRcCarpet_c()`. `new` MATCH-wildcards but
- *   linkcheck NO-REPOs classInit: dPathLiftActor_c has no out-of-line
- *   ctor, so the inlined vptr store is `_ZTV16dPathLiftActor_c[2]`
- *   (addend 8) against the ROM's `data_ov002_0210af70` address point.
+ * classInit is `return new daObjRcCarpet_c()`; dPathLiftActor_c's
+ *   implicit constructor inlines into it, as in d_a_obj_path_lift.cpp.
  * Leftover: dExtAnmModel_c::SetAnim and dBgW_KcMbg::SetFile stay mangled
  *   -- both take Fix12<int> by value (wall 6az); a method call homes
  *   the argument and size-DIFFs InitResources.
@@ -80,19 +77,9 @@ FlyingCarpetResources data_ov036_02113f58 = {
     &data_ov036_02112b28
 };
 
-extern void *_ZN10dBgActor_cC2Ev(dBgActor_c *actor);
-extern void *_ZN17dExtSimpleModel_cC1Ev(dExtSimpleModel_c *model);
-/* local extern: __cxa_vec_ctor needs D1 by address; only two scene headers declare it */
-extern void _ZN17dExtSimpleModel_cD1Ev(dExtSimpleModel_c *model);
-extern void *_ZN7PathPtrC1Ev(PathPtr *path);
-extern void *_ZN14dExtAnmModel_cC1Ev(dExtAnmModel_c *model);
-extern void __cxa_vec_ctor(dExtSimpleModel_c *models, int count, int size, void *ctor, void *dtor);
-extern int _ZTV15daObjRcCarpet_c[];
-extern int data_ov002_0210af70[];
 
-extern int _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-    dBgW_KcMbg *collider, KCL_File *file, const Matrix4x3 *matrix,
-    Fix12i scale, s16 angle, CLPS_Block *clps);
+extern void hold_d_a_obj_rc_carpet(dBgW_KcMbg *collider, KCL_File *file, const Matrix4x3 *matrix,
+                                   Fix12i scale, s16 angle, CLPS_Block *clps);
 extern void func_020393d4(dBgW *collider, void *callback);
 extern void Matrix4x3_FromRotationXYZExt(
     Matrix4x3 *matrix, s16 x, s16 y, s16 z);
@@ -106,18 +93,7 @@ extern "C" void func_ov036_0211224c(daObjRcCarpet_c *self);
 // @symbol daObjRcCarpet_c_classInit
 extern "C" daObjRcCarpet_c *daObjRcCarpet_c_classInit()
 {
-    daObjRcCarpet_c *actor =
-        (daObjRcCarpet_c *)_ZN7fBase_cnwEj(sizeof(daObjRcCarpet_c));
-    if (actor) {
-        _ZN10dBgActor_cC2Ev(actor);
-        *(int *)actor = (int)data_ov002_0210af70;
-        __cxa_vec_ctor(actor->mModels, 3, sizeof(dExtSimpleModel_c),
-                       (void *)_ZN17dExtSimpleModel_cC1Ev, (void *)_ZN17dExtSimpleModel_cD1Ev);
-        _ZN7PathPtrC1Ev(&actor->mPath);
-        *(int *)actor = (int)&_ZTV15daObjRcCarpet_c[2];
-        _ZN14dExtAnmModel_cC1Ev(&actor->mModelAnim);
-    }
-    return actor;
+    return new daObjRcCarpet_c();
 }
 
 extern "C" SpawnInfo<daObjRcCarpet_c> g_profile_RC_CARPET = {
@@ -143,9 +119,9 @@ int daObjRcCarpet_c::InitResources()
     UpdateClsnPosAndRot();
     KCL_File *collisionFile =
         (KCL_File *)dBgW_Kc::LoadFile(*data_ov036_02113f58.collision);
-    _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-        &mMeshCollider, collisionFile, &mClsnMat,
-        0x199, mAngleY, data_ov036_02113f58.clps);
+    ((dBgW_KcMbg *)(&mMeshCollider))
+        ->dBgW_KcMbg::SetFile(collisionFile, *(&mClsnMat), 0x199, mAngleY,
+                              *(data_ov036_02113f58.clps));
     func_020393d4(&mMeshCollider, (void *)&dBgW::UpdatePosAndAngs);
     mPathSpeed = 0xa000;
     mHorzSpeed = mPathSpeed;

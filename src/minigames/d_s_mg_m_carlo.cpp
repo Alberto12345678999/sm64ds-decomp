@@ -8,11 +8,8 @@
  *
  * leftovers:
  *   - the func_ov004_ helpers and the data_ov006_ board globals are
- *     unnamed in symbols.txt; the shared dealer fields keep their existing
- *     partial names. The card methods and the static board helpers have coined
- *     names; the ROM has only addresses for them.
- *   - the factory writes the allocation and vptr stores out by hand
- *     because the ROM has no dScMgMCarlo_c C1.
+ *     unnamed in symbols.txt. The card methods and the static board
+ *     helpers have coined names; the ROM has only addresses for them.
  */
 
 /* Runtime asset handles resolved through the overlay 0 file table. */
@@ -94,36 +91,22 @@ extern void DecompressLZ16(void *src, void *dst);
 extern int Dealer_Load(char *p);
 extern unsigned char data_0209d45c;
 extern unsigned char data_0209d454;
-void *_ZN11dScMgBase_cC2Ev(void *);
-void _ZN8Particle10SysTrackerC1Ev(void *);
-void __cxa_vec_ctor(void *, int, int, void *, void *);
-extern int _ZTV19dScMgSingle3DBase_c;
-extern int _ZTV13dScMgMCarlo_c[];
-void *_ZN18dMgMCarloCardObj_cC1Ev(void *);
 }
 
 // @symbol _ZN18dMgMCarloCardObj_cC1Ev
 dMgMCarloCardObj_c::dMgMCarloCardObj_c() : mPrev(0), mNext(0) {}
 
 // @symbol dScMgMCarlo_c_classInit
+/* `new` inlines the implicit constructor: the base chain, this class's
+   vptr, then mDealer and the card array in declaration order. */
 extern "C" void *dScMgMCarlo_c_classInit() {
-    char *raw = (char *)_ZN7fBase_cnwEj(0x60b0);
-    if (raw) {
-        _ZN11dScMgBase_cC2Ev(raw);
-        *(int *)raw = (int)&_ZTV19dScMgSingle3DBase_c;
-        _ZN8Particle10SysTrackerC1Ev(raw + 0x471c);
-        *(int *)raw = (int)&_ZTV13dScMgMCarlo_c[2];
-        Dealer_Construct(raw + 0x4f38);
-        __cxa_vec_ctor(raw + 0x51a8, 0x50, 0x30, (void *)_ZN18dMgMCarloCardObj_cC1Ev,
-                       (void *)_ZN18dMgMCarloCardObj_cD1Ev);
-    }
-    return raw;
+    return new dScMgMCarlo_c;
 }
 
 // @symbol _ZN13dScMgMCarlo_c13InitResourcesEv
 /* Slot 0. Loads the language's board graphics and the shared palette
  * (0xbb), sets the engine mode bytes, parks the 3D matrix at the family
- * camera and arms mShared. The round starts with the virtual
+ * camera and arms mDealer. The round starts with the virtual
  * StartRound(-1), which deals the first board. */
 s32 dScMgMCarlo_c::InitResources() {
     void *tileData;
@@ -143,7 +126,7 @@ s32 dScMgMCarlo_c::InitResources() {
     *(unsigned short *)0x4000008 = (*(unsigned short *)0x4000008 & ~3) | 1;
     *(unsigned short *)0x400100a = *(unsigned short *)0x400100a & ~3;
     Camera_InitDealerView(pad_4660);
-    if (Dealer_Load((char *)&mShared) == 0)
+    if (Dealer_Load((char *)&mDealer) == 0)
         return 0;
 
     Mg_PlaceBannersOnTopScreen();
@@ -170,9 +153,9 @@ void dScMgMCarlo_c::StartRound(int arg) {
     SetupBoard(mArray);
     sMCarloPickAllowed = 0;
     mRoundProgress = 0;
-    mShared.unk_1e6 = 1;
-    Dealer_StartShuffle((char *)&mShared, 4, 4, (int)&mRoundProgress);
-    mShared.unk_01a = 1;
+    mDealer.mReserved = 1;
+    Dealer_StartShuffle((char *)&mDealer, 4, 4, (int)&mRoundProgress);
+    mDealer.mHand = 1;
     mRoundTimer = 0;
     mRoundState = STATE_START_PROMPT;
     MgCoins_Reset((char *)&mArray[76].mTargetY);
@@ -193,7 +176,7 @@ int dScMgMCarlo_c::CanEndState(int mode) {
         mRoundState += 1;
         break;
     case STATE_WAIT_DEALER:
-        if (Dealer_IsIdle(&mShared) != 0) {
+        if (Dealer_IsIdle(&mDealer) != 0) {
             int dealt = sMCarloCardTotal;
             if (dealt != 0) {
                 MgCoins_StartSpend(dealt);
@@ -278,12 +261,12 @@ s32 dScMgMCarlo_c::Behavior() {
                 sMCarloPickAllowed = 0;
             visibleCards = sMCarloDealProgress >> 12;
             if (sMCarloDeckSize != 0 && visibleCards > 10 && visibleCards <= 18 &&
-                Dealer_IsIdle(&mShared) != 0) {
+                Dealer_IsIdle(&mDealer) != 0) {
                 mRoundProgress = 0;
-                mShared.unk_1e6 = 0;
-                Dealer_StartReveal(&mShared, 2, &mRoundProgress);
+                mDealer.mReserved = 0;
+                Dealer_StartReveal(&mDealer, 2, &mRoundProgress);
                 if (sMCarloDeckSize == 2)
-                    mShared.unk_01a = 0;
+                    mDealer.mHand = 0;
             } else {
                 int revealLimit = mRoundProgress + 18;
                 if (visibleCards >= revealLimit) {
@@ -298,9 +281,9 @@ s32 dScMgMCarlo_c::Behavior() {
                     sMCarloPickAllowed = 1;
                 } else {
                     if (sMCarloCardTotal != 0) {
-                        if (mShared.unk_01a == 1) {
-                            mShared.unk_01a = 0;
-                        } else if (Dealer_IsIdleAtRest(&mShared) != 0) {
+                        if (mDealer.mHand == 1) {
+                            mDealer.mHand = 0;
+                        } else if (Dealer_IsIdleAtRest(&mDealer) != 0) {
                             {
                                 dScMgBase_c *active = (dScMgBase_c *)gMgScene;
                                 if (active != 0) {
@@ -308,7 +291,7 @@ s32 dScMgMCarlo_c::Behavior() {
                                         active->mHudScore = active->mHudScore - 1;
                                 }
                             }
-                            Dealer_PlayLose(&mShared);
+                            Dealer_PlayLose(&mDealer);
                             Mg_SetSharedState(MG_STATE_LOSE);
                             {
                                 int dealt = sMCarloCardTotal;
@@ -331,7 +314,7 @@ s32 dScMgMCarlo_c::Behavior() {
                             }
                         }
                         Mg_SubmitScore(mHudScore);
-                        Dealer_PlayWin(&mShared);
+                        Dealer_PlayWin(&mDealer);
                         Mg_SetSharedState(MG_STATE_WIN);
                         {
                             dScMgBase_c *active = (dScMgBase_c *)gMgScene;
@@ -350,7 +333,7 @@ s32 dScMgMCarlo_c::Behavior() {
     }
 
     MgCoins_Update();
-    Dealer_Update(&mShared);
+    Dealer_Update(&mDealer);
     dScMgMCarlo_c::UpdateBoard();
     return 1;
 }
@@ -394,7 +377,7 @@ s32 dScMgMCarlo_c::Render() {
         }
     }
     RenderHud();
-    Dealer_Draw(&mShared);
+    Dealer_Draw(&mDealer);
     return 1;
 }
 

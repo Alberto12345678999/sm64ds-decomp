@@ -5,10 +5,10 @@
  * that table to this class rather than to a neighbour.
  *
  * SIZE 0xc59c, and the allocation is NOT in this class's own constructor.
- * dScMgSnowball_c_Construct takes an already-allocated `char*` -- it is a C2,
- * not a factory. Its one caller, dScMgSnowball_c_classInit, is where
- * the 0xc59c allocation (fBase_c::operator new) lives. Deriving a size from the field span
- * would have stopped at 0xbe94 and been 0x708 short.
+ * The constructor (_ZN15dScMgSnowball_cC1Ev) works on storage its one
+ * caller, dScMgSnowball_c_classInit, allocates with `new` (fBase_c::operator
+ * new). Deriving a size from the field span would have stopped at 0xbe94 and
+ * been 0x708 short.
  *
  * CONSTRUCTOR AND DESTRUCTOR AGREE MEMBER FOR MEMBER, in exact reverse
  * order: mModel at 0xaba4, then mArray1 at 0xacd8 (0x80 elements of 8),
@@ -27,12 +27,13 @@
  * its destructor call last, which is exactly where the ROM has it.
  *
  * mArray1 and mArray2 share an element ctor/dtor pair (func_0203d738 /
- * NullDestructor_0203d47c), so they are the same element type as each
- * other; mSprays has its own (SnowSpray_ElemCtor / SnowSpray_ElemDtor),
- * and its element fields are read back from the three SnowSpray_*
- * helpers (dScMgSnowball_spray, below). Both element structors are empty,
- * so the element types declare none and the destructor names them in its
- * __cxa_vec_cleanup calls instead.
+ * NullDestructor_0203d47c), the arm9 Vector2 structors (include/Vector2.h),
+ * and both hold Fix12 {x, y} pairs, so they are Vector2[0x80]. mSprays has
+ * its own pair (_ZN9SnowSprayC1Ev / _ZN9SnowSprayD1Ev), and its element
+ * fields are read back from the three SnowSpray_* helpers (SnowSpray,
+ * below). Every element structor is empty and inline, so the constructor and
+ * destructor are compiler-generated around the __cxa_vec_ctor and
+ * __cxa_vec_cleanup calls.
  *
  * THE 0xb0d8..0xb5d8 REGION IS FOUR PARALLEL ARRAYS, not padding, and they
  * tile the 0x500 exactly: Snowball's own Render (src/minigames/d_s_mg_snowball.cpp)
@@ -71,16 +72,18 @@
 #define DSCMGSNOWBALL_C_H
 #include "dScMgSingle3DBase_c.h"
 #include "dExtSimpleModel_c.h"
-
-extern "C" void __cxa_vec_cleanup(void *base, int count, int stride, void *dtor);
-extern "C" void SnowSpray_ElemDtor(void);
-extern "C" void NullDestructor_0203d47c(void);
+#include "Vector2.h"
 
 /* One of the 0x20 snow-chunk records at 0xba14 (mSprays), named from
-   SnowSpray_DrawAll/_UpdateAll/_ClearAll. Its structors are the empty
-   SnowSpray_ElemCtor/_ElemDtor pair, passed to __cxa_vec_ctor/_cleanup by
-   hand, so the struct itself declares none. */
-struct dScMgSnowball_spray {
+   SnowSpray_DrawAll/_UpdateAll/_ClearAll. The name is coined. Its empty
+   inline structors are the ROM's own: this TU is the only user, so their
+   single vague-linkage copies sit in its .text, the destructor right after
+   ~dScMgSnowball_c's D0 (0x02125800) and the constructor right after
+   dScMgSnowball_c's C1 (0x0212968c). */
+struct SnowSpray {
+    SnowSpray() {}
+    ~SnowSpray() {}
+
     s32 x;      /* 0x00 position, AddVec3'd with vx..vz each tick; drawn at x >> 12 */
     s32 y;      /* 0x04 drawn at (y - z - mScrollY) >> 12 */
     s32 z;      /* 0x08 height above the course; the chunk dies once it is
@@ -96,7 +99,7 @@ struct dScMgSnowball_spray {
 
 #ifndef SM64DS_PLATFORM_PC
 /* ROM layout under mwccarm; host ABI divergence is tracked separately. */
-typedef char dScMgSnowball_spray_size_must_be_0x24[sizeof(dScMgSnowball_spray) == 0x24 ? 1 : -1];
+typedef char SnowSpray_size_must_be_0x24[sizeof(SnowSpray) == 0x24 ? 1 : -1];
 #endif
 
 /* One of the 50 snow bits at 0xbe94 (mBits). Trivial: neither structor
@@ -152,6 +155,7 @@ struct dScMgSnowball_c : dScMgSingle3DBase_c {
         ~Vec2() {}
     };
 
+    dScMgSnowball_c();
     virtual ~dScMgSnowball_c();
 
     /* --- this class's own vtable slots, named from the table ---
@@ -249,9 +253,7 @@ struct dScMgSnowball_c : dScMgSingle3DBase_c {
     u8    mProbePush[0x20]; /* 0xac18 -- same probe hit solid; drives the push-out */
     u8    mProbeWater[0x20];/* 0xac38 -- same probe is inside water */
     u8    mArray1Active[0x80]; /* 0xac58 -- 1 = this mArray1 slot is live */
-    s32   mArray1[0x80][2]; /* 0xacd8 -- 0x80 * 8, elem dtor NullDestructor_0203d47c;
-                               each element is a Fix12 {x,y} the ROM's own
-                               Render indexes as i*8 + 0 / i*8 + 4 */
+    Vector2 mArray1[0x80];     /* 0xacd8 -- Fix12 positions, Render draws them */
     s32   mArray1Kind[0x80]; /* 0xb0d8 -- 1 picks the 8-frame animated sprite
                                 table, anything else the static one */
     u8    mArray1Hit[0x80]; /* 0xb2d8 -- HitsBreakable sets it on
@@ -259,8 +261,7 @@ struct dScMgSnowball_c : dScMgSingle3DBase_c {
     u8    mArray2Active[0x80]; /* 0xb358 -- 1 = this mArray2 slot is live */
     s32   mArray2Kind[0x80]; /* 0xb3d8 -- Render switches 0..2 against 3 to
                                 pick the sprite */
-    s32   mArray2[0x80][2]; /* 0xb5d8 -- 0x80 * 8, elem dtor NullDestructor_0203d47c;
-                               same Fix12 {x,y} element shape as mArray1 */
+    Vector2 mArray2[0x80];   /* 0xb5d8 -- Fix12 positions, as mArray1 */
     s32   mAnimCounter;     /* 0xb9d8 -- Render bumps it, wraps at 0x20; the
                                 obstacle sprite frame is (n / 4) & 7 */
     s32   mTimeLeft;        /* 0xb9dc -- frames; Render draws it as
@@ -290,7 +291,7 @@ struct dScMgSnowball_c : dScMgSingle3DBase_c {
     s32   mScrollLimit;     /* 0xba08 -- mScrollY stops at (n << 16) - 0x1d0000 */
     s32   mCrashTimer;      /* 0xba0c -- counts up through states 2 and 4 */
     s32   mEndDelayTimer;   /* 0xba10 -- 0xb4 frames of state 3 */
-    dScMgSnowball_spray mSprays[0x20]; /* 0xba14 -- elem dtor SnowSpray_ElemDtor */
+    SnowSpray mSprays[0x20];     /* 0xba14 */
     dScMgSnowball_bit mBits[50]; /* 0xbe94 -- 50 * 0x24, see file banner */
 };
 

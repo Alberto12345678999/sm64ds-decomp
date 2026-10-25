@@ -29,7 +29,7 @@
  *
  * Known limits:
  * - dActor_c::SpawnCoins/Earthquake, DropShadowScaleXYZ,
- *   dExtAnmModel_c::SetAnim, dExtAnmTexPat_c::SetFile, dBgW_KcMbg::SetFile and
+ *   dBgW_KcMbg::SetFile and
  *   dBgCh_Actr::Init take Fix12<int> by value, so they stay mangled
  *   (notes/mwccarm-codegen.md 6az).
  * - func_ov079_02123804 reacts to a hit but nothing in the cartridge's
@@ -137,16 +137,13 @@ int func_ov002_020dd8b8(void *c);
 
 void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(
     void *self, void *actor, int a, int b, void *c, void *d);
-void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-    void *mc, void *kcl, void *mtx, int fix, s16 s, void *clps);
-void _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj(void *self, void *btp, int a, int fix,
-                                                        unsigned int b);
+extern void hold_d_a_btn(void *mc, void *kcl, void *mtx, int fix, s16 s, void *clps);
 namespace Particle {
 struct System {
     static void NewSimple(unsigned int id, int x, int y, int z);
 };
 }
-void _ZN8dActor_c10EarthquakeERK7Vector35Fix12IiE(void *self, const void *v, int f);
+void d_a_btnEarthquakeHold(void *self, const void *v, int f);
 void _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs(void *self, const void *pos, u32 n, int fix, s16 s);
 void _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_S5_j(
     void *self, void *sm, void *mtx, int a, int b, int c, unsigned int g);
@@ -312,8 +309,7 @@ int daBtn_c::InitResources()
         mHitPoints = 3;
         dExtAnmTexPat_c::Prepare(*(BMD_File *)data_ov079_02128168.filePtr,
                                  *(BTP_File *)data_ov079_02128178.filePtr);
-        _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj(
-            &mTextureSequence, data_ov079_02128178.filePtr, 0, 0x1000, 0);
+        mTextureSequence.SetFile(*(BTP_File *)data_ov079_02128178.filePtr, 0, 0x1000, 0);
         mTextureSequence.SetFlags(0x40000000);
         mTextureSequence.speed = 0x1000;
         mTextureSequence.currFrame = 0;
@@ -328,13 +324,17 @@ int daBtn_c::InitResources()
 
     idx = mIsKing;
     if (idx == 0) {
-        _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-            &mMovingMeshCollider, ((SharedFilePtr *)data_ov079_02127bf0[idx])->filePtr, mMeshMatrix,
-            0x199, mAngleY, &data_ov079_02127ba0);
+        ((dBgW_KcMbg *)(&mMovingMeshCollider))
+            ->dBgW_KcMbg::SetFile(
+                (KCL_File *)(((SharedFilePtr *)data_ov079_02127bf0[idx])->filePtr),
+                *(const Matrix4x3 *)(mMeshMatrix), 0x199, mAngleY,
+                *(CLPS_Block *)(&data_ov079_02127ba0));
     } else {
-        _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-            &mMovingMeshCollider, ((SharedFilePtr *)data_ov079_02127bf0[idx])->filePtr, mMeshMatrix,
-            0x1000, mAngleY, &data_ov015_021135d4);
+        ((dBgW_KcMbg *)(&mMovingMeshCollider))
+            ->dBgW_KcMbg::SetFile(
+                (KCL_File *)(((SharedFilePtr *)data_ov079_02127bf0[idx])->filePtr),
+                *(const Matrix4x3 *)(mMeshMatrix), 0x1000, mAngleY,
+                *(CLPS_Block *)(&data_ov015_021135d4));
     }
 
     func_01ffb0bc(&mMovingMeshCollider);
@@ -825,7 +825,7 @@ void daBtn_c::func_ov079_02125504()
             v[1].x = mPosX;
             v[1].y = mPosY;
             v[1].z = mPosZ;
-            _ZN8dActor_c10EarthquakeERK7Vector35Fix12IiE(this, &v[1], 0x320000);
+            Earthquake(v[1], 0x320000);
         }
 
         {
@@ -931,7 +931,7 @@ void daBtn_c::func_ov079_02125240(){
   v.x = mPosX;
   v.y = mPosY;
   v.z = mPosZ;
-  _ZN8dActor_c10EarthquakeERK7Vector35Fix12IiE(this, &v, 0x7d0000);
+  Earthquake(v, 0x7d0000);
   mState = 6;
   func_020393c4(&mMovingMeshCollider, (int)func_ov079_0212522c);
   if(mIsKing != 0){

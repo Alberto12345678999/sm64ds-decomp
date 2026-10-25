@@ -15,8 +15,7 @@
  * round states, StartRound, Render, Behavior and InitResources, and it
  * closes with the registry factory dScMgBomroom_c_classInit. Functions run
  * in ROM order under
- * `#pragma defer_codegen off`; do not reorder. cstd::atan2 takes Fix12 by
- * value, so its call stays mangled.
+ * `#pragma defer_codegen off`; do not reorder.
  *
  * Each pragma bracket below carries the file-global pragma of the shard
  * that function came from; every bracket moves bytes, and they bind only
@@ -65,7 +64,7 @@ extern int func_02012468(int a, int b, int c, int d, int e, int f, int g, short 
 extern unsigned char *sBomroomBombFrameTimes[];
 extern unsigned char sBomroomBombFrameCounts[];
 extern s16 data_02082214[];
-extern s16 _ZN4cstd5atan2E5Fix12IiES1_(int y, int x);
+extern s16 atan2_hold_d_s_mg_bomroom_1(int y, int x);
 extern void Mg_RenderSpriteBoth(void* a0, int a1, int a2, int a3, int a4);
 extern unsigned char *sBomroomBombSprites[];
 extern unsigned char *sBomroomBombLitSprites[];
@@ -94,7 +93,10 @@ extern u8 data_0209d45c;
 extern u8 data_0209d454;
 }
 
-namespace cstd { int sqrt(u64 value); }
+namespace cstd {
+s16 atan2(s32, s32);
+int sqrt(u64 value);
+}
 
 #pragma defer_codegen off
 
@@ -950,7 +952,7 @@ void dScMgBomroom_c::Bomb_PushApart(int index) {
                 sy = 0xC0 - px;
             }
             cstd::sqrt((s64)(sy * sy + dy2 * dy2));
-            ang = (u16)_ZN4cstd5atan2E5Fix12IiES1_(dy2, sy);
+            ang = (u16)cstd::atan2(dy2, sy);
             i2 = (ang >> 4) * 2;
             mBombs[index].x = (0xC0 - FX_MUL(data_02082214[i2 + 1], 0xF)) << 12;
             if (py >= 0x60) {
@@ -1014,7 +1016,7 @@ void dScMgBomroom_c::Bomb_PushApart(int index) {
         sy = 0x40 - py;
     }
     cstd::sqrt((s64)(dy2 * dy2 + sy * sy));
-    ang = (u16)_ZN4cstd5atan2E5Fix12IiES1_(sy, dy2);
+    ang = (u16)cstd::atan2(sy, dy2);
     i2 = (ang >> 4) * 2;
     mBombs[index].x = (0x40 - FX_MUL(data_02082214[i2 + 1], 0xF)) << 12;
     if (py >= 0x60) {
@@ -1236,8 +1238,7 @@ void dScMgBomroom_c::BombMarch_ToGate(int index) {
     tx -= mBombs[index].x >> 12;
     ty -= mBombs[index].y >> 12;
 
-    mBombs[index].angle =
-        _ZN4cstd5atan2E5Fix12IiES1_(ty, tx);
+    mBombs[index].angle = cstd::atan2(ty, tx);
 
     {
         s16 sine = data_02082214[

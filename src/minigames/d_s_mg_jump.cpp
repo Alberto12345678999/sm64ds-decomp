@@ -1,61 +1,17 @@
 //cpp
-/* STILL MACHINE-SHAPED (audit 2026-09-18) -- byte-exact; what blocks each part:
- *  2 func_ov006_*                unnamed in config symbols.txt; each needs a
- *                                coined, behaviour-justified name.
- *  6 ctor/dtor/op-new call(s)    C1/C2/D0/D1/D2 is not expressible
- *                                in C++ source; only a real ctor emits it.
- *  2 _ZTV vptr store(s)          stands in for the ctor that would emit it.
- * The members it builds are spelled through dScMgJump_c.h; the empty loop
- * steps over the two 0xbc-byte cameras at 0x466c, which have no constructor.
- * Its end stays `p + 0x47e4`: &mSysTracker builds 8 bytes shorter.
+/* dScMgJump_c's factory. `new dScMgJump_c` reproduces it: the inline
+ * dScMgD3DBase_c constructor (dScMgBase_c's C2, its vtable, mDrawSubScreen,
+ * the empty loop over the two cameras, mSysTracker), then this class's
+ * vtable, mModel, the mPlayers array and the mHeyhos array.
  */
 
 #include "fBase_c.h"
 #include "dScMgJump_c.h"
 
-/* The array runtime passes each element address and ignores callback results.
- * The casts below adapt the existing lifecycle entries at that ABI boundary. */
-extern "C" {
-extern void *_ZN11dScMgBase_cC2Ev(void *p);
-extern void _ZN8Particle10SysTrackerC1Ev(void *);
-extern void *_ZN17dExtSimpleModel_cC1Ev(void *);
-extern void __cxa_vec_ctor(void *base, unsigned int count, unsigned int stride,
-                    void (*ctor)(void *), void (*dtor)(void *));
-extern int _ZTV14dScMgD3DBase_c[];
-extern int _ZTV11dScMgJump_c[];
-extern dMgJump3DMario_c *_ZN16dMgJump3DMario_cD1Ev(dMgJump3DMario_c *object);
-extern dMgJump3DMario_c *_ZN16dMgJump3DMario_cC1Ev(dMgJump3DMario_c *object);
-extern int Heyho_Construct(char *object); /* local extern: no header declares it */
-}
-
 /* Reconstructed source-style name: SM64DS proves dScMgJump_c through RTTI,
  * allocation size, vtable identity, and the MG_JUMP registry profile;
  * later EAD lineage supplies classInit. Exact original spelling is not
  * preserved. Historical alias: MgBounceAndPounce_Spawn. */
-extern "C" void *dScMgJump_c_classInit(void)
-{
-    char *p = (char *)_ZN7fBase_cnwEj(0x5834);
-    if (p) {
-        char *it;
-        _ZN11dScMgBase_cC2Ev(p);
-        *(int *)p = (int)_ZTV14dScMgD3DBase_c;
-        ((dScMgJump_c *)p)->mDrawSubScreen = 0;
-        it = p + 0x466c;
-        {
-            char *end = p;
-            end += 0x47e4;
-            do {
-                it += 0xbc;
-            } while (it != end);
-        }
-        _ZN8Particle10SysTrackerC1Ev(&((dScMgJump_c *)p)->mSysTracker);
-        *(int *)p = (int)_ZTV11dScMgJump_c;
-        _ZN17dExtSimpleModel_cC1Ev(&((dScMgJump_c *)p)->mModel);
-        __cxa_vec_ctor(((dScMgJump_c *)p)->mPlayers, 3, 0xb8,
-                       (void (*)(void *))_ZN16dMgJump3DMario_cC1Ev,
-                       (void (*)(void *))_ZN16dMgJump3DMario_cD1Ev);
-        __cxa_vec_ctor(((dScMgJump_c *)p)->mArray2, 6, 0xf0, (void (*)(void *))Heyho_Construct,
-                       (void (*)(void *))Heyho_Destruct);
-    }
-    return p;
+extern "C" dScMgJump_c *dScMgJump_c_classInit(void) {
+    return new dScMgJump_c;
 }

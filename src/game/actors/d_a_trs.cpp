@@ -180,7 +180,7 @@ void Matrix4x3_ApplyInPlaceToRotationY(void *m, s16 angY);
 int RandomIntInternal(int *seed);
 void Vec3_Asr(void *d, const void *s, int sh);
 void _Z14ApproachLinearRiii(int *p, int target, int step);
-int _ZN5Sound7PlaySubEjjj5Fix12IiEb(unsigned int a, unsigned int b, unsigned int c, s32 d, int e);
+int d_a_trsPlaySubHold(unsigned int a, unsigned int b, unsigned int c, s32 d, int e);
 void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(void *self, void *sm, void *m, int rad, int h, u32 a);
 int func_020092c4(void *cam, void *out, void *target);
 int func_02012694(int a, void *p, ...);
@@ -201,7 +201,7 @@ struct System {
     static int New(unsigned, unsigned, int, int, int, const ::Vector3_16f *, Callback *);
 };
 }
-extern void _ZN5Sound17ChangeMusicVolumeEj5Fix12IiE(unsigned a, int fx);
+extern void d_a_trsChangeMusicVolumeHold(unsigned a, int fx);
 extern void _ZN5Sound22StopLoadedMusic_Layer3Ev(void);
 extern void func_02011cfc(void);
 extern s16 data_ov063_0211e1c8[];
@@ -1137,7 +1137,7 @@ void daTrs_c::func_ov063_02117b0c() {
             u8 *st = (u8 *)&this->mSubState;
             *st = *st + 1;
         }
-        _ZN5Sound17ChangeMusicVolumeEj5Fix12IiE(0x14, 0x15666);
+        Sound::ChangeMusicVolume(0x14, 0x15666);
         break;
     case 1:
         {
@@ -1175,7 +1175,7 @@ void daTrs_c::func_ov063_02117b0c() {
             return;
         this->mState = 5;
         _ZN5Sound22StopLoadedMusic_Layer3Ev();
-        _ZN5Sound17ChangeMusicVolumeEj5Fix12IiE(0x7f, 0x7222);
+        Sound::ChangeMusicVolume(0x7f, 0x7222);
         func_02011cfc();
         {
             u16 *fl = (u16 *)&this->mBooFlags;
@@ -1604,10 +1604,10 @@ void daTrs_c::func_ov063_021189f4() {
     if (this->mSoundCount != 0) {
         if (this->mVariant == 0xd) {
             if (this->mSoundCount < 0x4b) {
-                _ZN5Sound7PlaySubEjjj5Fix12IiEb(0x20, 0x14, 0x7f, 0x6b000, 1);
+                Sound::PlaySub(0x20, 0x14, 0x7f, 0x6b000, 1);
                 this->mSoundCount += 1;
             } else {
-                int r = _ZN5Sound7PlaySubEjjj5Fix12IiEb(0x20, this->mSavedMusicVolume >> 0xc, 0, 0x7f000, 1);
+                int r = Sound::PlaySub(0x20, this->mSavedMusicVolume >> 0xc, 0, 0x7f000, 1);
                 if (r != 0)
                     this->mSoundCount = 0;
             }
@@ -1916,8 +1916,7 @@ void daTrs_c::func_ov063_02119074() {
             this->mSavedMusicVolume = data_0209b490[0];
 
             if (!this->mBooFlags.soundStarted) {
-                _ZN5Sound7PlaySubEjjj5Fix12IiEb(0x20, 0x14, 0x7f,
-                                                 0x6b000, 1);
+                Sound::PlaySub(0x20, 0x14, 0x7f, 0x6b000, 1);
                 this->mSoundCount = 1;
                 this->mBooFlags.soundStarted = 1;
             }

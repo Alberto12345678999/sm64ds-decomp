@@ -113,7 +113,11 @@ extern int __aeabi_idiv(int, int);
    byte it passes, and the ROM callers pass it untruncated. Message.cpp
    spells it the same way. */
 extern void _ZN7Message7AddCharEc(int c);
-void _ZN5Sound17ChangeMusicVolumeEj5Fix12IiE(u32 vol, Fix12i speed);
+}
+namespace Sound {
+void ChangeMusicVolume(u32 vol, Fix12i speed);
+}
+extern "C" {
 void OamRender10_Message2(int a, void *b, int c, int d, int e, int f, int g, int h, int i, int j);
 }
 
@@ -144,14 +148,14 @@ static inline int IsCastleFallCutsceneRunning(void) {
 // @symbol _ZN7Message7EndTalkEv
 void Message::EndTalk() {
     /* Restore music to 0x7f. Slower ramp than PrepareTalk. */
-    _ZN5Sound17ChangeMusicVolumeEj5Fix12IiE(0x7f, 0x000064cc);
+    Sound::ChangeMusicVolume(0x7f, 0x000064cc);
     data_0209d664 = 0;
 }
 
 // @symbol _ZN7Message11PrepareTalkEv
 void Message::PrepareTalk() {
     /* Duck the music to 0x40 before dialogue. EndTalk is the inverse. */
-    _ZN5Sound17ChangeMusicVolumeEj5Fix12IiE(0x40, 0x0000c999);
+    Sound::ChangeMusicVolume(0x40, 0x0000c999);
     data_0209d664 = 1;
 }
 
@@ -749,7 +753,7 @@ int Message::UpdateWindow() {
 
     data_0209b454 &= ~0x80000000;
     if (func_0201fb4c() != 0) {
-        _ZN5Sound17ChangeMusicVolumeEj5Fix12IiE(0x7f, 0x000064cc);
+        Sound::ChangeMusicVolume(0x7f, 0x000064cc);
     }
     data_0209d660 = 0;
     data_0209d670 = 0;

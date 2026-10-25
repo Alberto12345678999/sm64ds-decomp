@@ -89,11 +89,10 @@ extern s16 data_02082214[];
 extern CLPS_Block data_ov025_02112c28;
 
 void func_02012694(s32 soundId, void *pos);
-void _ZN8dActor_c10EarthquakeERK7Vector35Fix12IiE(daDgr_c *self, Vec3 *pos, s32 magnitude);
+void d_a_dgrEarthquakeHold(daDgr_c *self, Vec3 *pos, s32 magnitude);
 u32 d_a_dgrNewHold(u32 slot, u32 effect, s32 x, s32 y, s32 z, const void *dir, void *callback);
-void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-    dBgW_KcMbg *self, KCL_File *kcl, const Matrix4x3 &mat, Fix12i scale,
-    short angY, CLPS_Block &clps);
+extern void hold_d_a_dgr(dBgW_KcMbg *self, KCL_File *kcl, const Matrix4x3 &mat, Fix12i scale,
+                         short angY, CLPS_Block &clps);
 void func_020393d4(int *collider, int callback);
 int Vec3_Dist(void *a, void *b);
 }
@@ -115,8 +114,8 @@ s32 daDgr_c::InitResources()
     }
     {
         KCL_File *kcl = (KCL_File *)dBgW_Kc::LoadFile(data_ov025_02113a60);
-        _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-            &mMeshCollider, kcl, mClsnMat, 0x1000, mAngleY, data_ov025_02112c28);
+        ((dBgW_KcMbg *)(&mMeshCollider))
+            ->dBgW_KcMbg::SetFile(kcl, mClsnMat, 0x1000, mAngleY, data_ov025_02112c28);
     }
     func_020393d4((int *)&mMeshCollider, (int)&dBgW::UpdatePosAndAngs);
     mAngleY = 0;
@@ -213,7 +212,7 @@ s32 daDgr_c::Behavior()
             loc[3] = mPosX;
             loc[4] = mPosY;
             loc[5] = mPosZ;
-            _ZN8dActor_c10EarthquakeERK7Vector35Fix12IiE(this, (Vec3 *)&loc[3], kQuakeMagnitude);
+            Earthquake(*(const Vector3 *)&loc[3], kQuakeMagnitude);
         }
 
         loc[0] = mPosX;

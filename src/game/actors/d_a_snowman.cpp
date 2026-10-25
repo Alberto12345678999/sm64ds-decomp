@@ -64,6 +64,7 @@ enum daSnowman_c_AssetId {
 int ApproachLinear(int &ref, int target, int step);
 
 namespace cstd {
+s16 atan2(s32, s32);
 int fdiv(int numerator, int denominator);
 }
 
@@ -124,7 +125,7 @@ extern void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
     void *self, void *actor, const void *v, int d, int e, u32 f, u32 g);
 extern void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(
     void *self, void *actor, int b, int c, void *v16, int e);
-extern int _ZN4cstd5atan2E5Fix12IiES1_(int a, int b);
+extern int atan2_hold_d_a_snowman_1(int a, int b);
 extern void Matrix4x3_FromRotationY(void *m, int ang);
 extern int Vec3_HorzLen(void *v);
 extern void Matrix4x3_ApplyInPlaceToRotationX(void *m, short ang);
@@ -559,10 +560,10 @@ int daSnowman_c::func_ov081_02124b98()
                     v[0].x = v[1].x - this->mHandPos.x;
                     v[0].y = v[1].y - this->mHandPos.y;
                     v[0].z = v[1].z - this->mHandPos.z;
-                    angle = _ZN4cstd5atan2E5Fix12IiES1_(v[0].x, v[0].z);
+                    angle = cstd::atan2(v[0].x, v[0].z);
                     Matrix4x3_FromRotationY(&data_020a0e68, angle);
-                    Matrix4x3_ApplyInPlaceToRotationX(&data_020a0e68,
-                        (short)(-_ZN4cstd5atan2E5Fix12IiES1_(v[0].y, Vec3_HorzLen(&v[0]))));
+                    Matrix4x3_ApplyInPlaceToRotationX(
+                        &data_020a0e68, (short)(-cstd::atan2(v[0].y, Vec3_HorzLen(&v[0]))));
                     MulVec3Mat4x3(&in, &data_020a0e68, &out);
                 }
                 out.y += 0x14000;

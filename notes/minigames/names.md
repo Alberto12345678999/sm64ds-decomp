@@ -468,7 +468,7 @@ High confidence:
 - **The ball:** `UpdateSnowball`, which runs 32 probes per frame through `HitsWall`, `HitsBreakable` and `IsInWater`.
 - **The course:** `BuildCourse`, `DrawCourseColumn`, `RedrawCourse`.
 - **Camera and reset:** `Snowball_UpdateCamera`, `ResetScene`.
-- `dScMgSnowball_c_Construct`: the out-of-line constructor themes.md describes (it is not yet a real C1).
+- `dScMgSnowball_c::dScMgSnowball_c()`: the out-of-line constructor themes.md describes, now the real C1 (`_ZN15dScMgSnowball_cC1Ev`).
 
 Medium confidence:
 - `SnowSpray_*`: the 32 moving records at +0xba14.

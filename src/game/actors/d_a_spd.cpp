@@ -105,12 +105,6 @@ int   _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void *player, void *pos,
                                               unsigned int b, unsigned int c,
                                               unsigned int d);
 
-void *_ZN8dActor_cC2Ev(void *actor);
-void *_ZN14dExtAnmModel_cC1Ev(void *p);
-void *_ZN17dExtShadowModel_cC1Ev(void *p);
-void *_ZN7dCcAc_cC1Ev(void *p);
-void *_ZN10dBgCh_ActrC1Ev(void *p);
-
 
 /* Declared by final name rather than as members: both take Fix12<int> where
  * these call sites pass int literals, and dBgCh_Actr::Init's last two
@@ -190,22 +184,9 @@ PMF data_ov071_02122fa8[18] = {
     data_ov071_02122ba8, data_ov071_02122ba0, data_ov071_02122b98,
 };
 
-/* Natural `new` selects the wrong allocator, so the measured actor
- * construction seam is retained verbatim. */
-
 // @symbol daSpd_c_classInit
-extern "C" int *daSpd_c_classInit(void)
-{
-    int *p = (int *)_ZN7fBase_cnwEj(940);
-    if (p) {
-        _ZN8dActor_cC2Ev(p);
-        p[0] = (int)&_ZTV10Scuttlebug[2];
-        _ZN14dExtAnmModel_cC1Ev(&((Scuttlebug *)p)->mModelAnim);
-        _ZN17dExtShadowModel_cC1Ev(&((Scuttlebug *)p)->mShadowModel);
-        _ZN7dCcAc_cC1Ev(&((Scuttlebug *)p)->mdCcAc_c);
-        _ZN10dBgCh_ActrC1Ev(&((Scuttlebug *)p)->mWithMeshClsn);
-    }
-    return p;
+extern "C" Scuttlebug *daSpd_c_classInit(void) {
+    return new Scuttlebug();
 }
 
 /* Pays the player mCoinCount coins (a cap coin if Yoshi is wearing the cap,

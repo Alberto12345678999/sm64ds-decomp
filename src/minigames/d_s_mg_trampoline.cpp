@@ -17,8 +17,6 @@
  * - The score pool (TrmpFx_Unlink..TrmpFx_InitPool) stays free:
  *   it works on the file-scope live-list globals, not one object, and
  *   TrmpFx_Spawn is the entry dMgTrmpln2Mario_c calls.
- * - Trmp_Nothing2 / Trmp_Nothing stay free: the shared empty
- *   ctor/dtor pair for the TrmpScorePopup pool, used by d_s_mg_trampoline2.cpp too.
  * - ov004 helpers and most data symbols are unnamed.
  */
 
@@ -31,6 +29,7 @@ enum d_s_mg_trampoline_AssetId {
 };
 
 #include "dScMgTrampoline_c.h"
+#include "TrmpScorePopup.h"
 #include "SpawnInfo.h"
 #include "types.h"
 #include "G2x.h"
@@ -65,29 +64,6 @@ typedef short s16;
 
 struct Node {
     struct Node *next;
-};
-
-/* One floating score. Five of these are mArray3. Spawned when a Mario
-   lands: x starts at the right edge and drifts left, y eases toward
-   targetY, and number is the score drawn by Mg_DrawBigNumber.
-   Same 0x24 shape as dScMgJump2_c's Elem. targetX is written and not
-   read by this TU's step. */
-struct TrmpScorePopup {
-    Node *next;  /* +0x00 -- the live list */
-    int x;       /* +0x04 -- 20.12 */
-    int y;       /* +0x08 */
-    int targetX; /* +0x0c */
-    int targetY; /* +0x10 */
-    int speedX;  /* +0x14 */
-    int speedY;  /* +0x18 -- func_0203d630 damps it with speedX (it
-                       scales both words); not applied here */
-    u16 life;    /* +0x1c */
-    u16 number;  /* +0x1e */
-    u16 active;  /* +0x20 */
-
-    void Spawn(int y, int number); /* fills a slot and links it live */
-    void Update();                 /* ticks life, eases toward targetY */
-    void Render();                 /* draws the number when active */
 };
 
 /* Shadow of the scene's +0x68/+0x6c, which sit in dScMgBase_c padding.
@@ -235,14 +211,6 @@ extern void *sTrmpDoorSignSprites[];
 extern void *sTrmpArrowSprite;
 extern void Trmp3DMario_DrawAll(void);
 extern void TrmpLine_DrawAll(void);
-extern void *_ZN11dScMgBase_cC2Ev(void *self);
-extern void _ZN8Particle10SysTrackerC1Ev(void *self);
-extern void __cxa_vec_ctor(void *base, int count, int stride, void *ctor, void *dtor);
-extern int _ZTV14dScMgD3DBase_c[];
-extern int _ZTV17dScMgTrampoline_c[];
-extern void Trmp3DMario_Construct(void);
-extern void TrmpLine_Reset(void);
-extern void Trmp_Nothing2(void);
 
 dScMgTrampoline_c *dScMgTrampoline_c_classInit(void);
 /* Literal aliases used only to make the five ROM PMF relocations static data.
@@ -320,35 +288,15 @@ int sTrmpPuffXByLanguage[] = {(int)sTrmpPuffEnglish, (int)sTrmpPuffSpanish, (int
 /* TUBUILD CONFLICT -- alternate declaration of _ZN2GX10LoadBGPlttEPKvjj, from the legacy file for func_ov006_0212231c, NOT applied: extern void _ZN2GX10LoadBGPlttEPKvjj(const void *p, u32 a, u32 b); */
 }
 
-// @symbol Trmp_Nothing2
-extern "C" void Trmp_Nothing2(void) {}
+// @symbol _ZN14TrmpScorePopupC1Ev
+TrmpScorePopup::TrmpScorePopup() {}
 
 // @symbol dScMgTrampoline_c_classInit
+/* `new dScMgTrampoline_c` reproduces it: the inline dScMgD3DBase_c
+   constructor, then this class's vtable, the three element arrays and the
+   door mark's clear. */
 extern "C" dScMgTrampoline_c *dScMgTrampoline_c_classInit(void) {
-    char *scene = (char *)_ZN7fBase_cnwEj(0x5dc8);
-    if (scene) {
-        char *it;
-        _ZN11dScMgBase_cC2Ev(scene);
-        *(int *)scene = (int)_ZTV14dScMgD3DBase_c;
-        *(short *)(scene + 0x4664) = 0;
-        it = scene + 0x466c;
-        {
-            char *end = scene;
-            end += 0x47e4;
-            do {
-                it += 0xbc;
-            } while (it != end);
-        }
-        _ZN8Particle10SysTrackerC1Ev(scene + 0x47e4);
-        // This TU owns the vtable object; +2 selects its ABI address point.
-        *(int *)scene = (int)(_ZTV17dScMgTrampoline_c + 2);
-        __cxa_vec_ctor(scene + 0x500c, 4, 0xd0, (void *)Trmp3DMario_Construct,
-                       (void *)Trmp3DMario_Destruct);
-        __cxa_vec_ctor(scene + 0x534c, 3, 0x32c, (void *)TrmpLine_Reset, (void *)TrmpLine_Destroy);
-        __cxa_vec_ctor(scene + 0x5cd0, 5, 0x24, (void *)Trmp_Nothing2, (void *)Trmp_Nothing);
-        ((dScMgTrampoline_DoorMark *)(scene + 0x5d84))->Init();
-    }
-    return (dScMgTrampoline_c *)scene;
+    return new dScMgTrampoline_c;
 }
 
 // @symbol _ZN17dScMgTrampoline_c11InitDisplayEv
@@ -407,22 +355,22 @@ s32 dScMgTrampoline_c::InitResources() {
     InitialiseVramGlobals();
     *(u16 *)0x4000008 = (*(u16 *)0x4000008 & ~3) | 1;
     fov = cstd::fdiv(0xc0000, (s32)data_02082414);
-    this->mCamera0EyeX = 0;
-    this->mCamera0EyeY = -0x64000;
-    this->mCamera0EyeZ = 0;
-    this->mCamera0TargetX = 0;
-    this->mCamera0TargetY = 0;
-    this->mCamera0TargetZ = fov;
-    this->mCamera0Angle = 0x400;
-    Camera_UpdateMatrices(base + 0x466c);
-    this->mCamera1EyeX = 0;
-    this->mCamera1EyeY = 0x82000;
-    this->mCamera1EyeZ = 0;
-    this->mCamera1TargetX = 0;
-    this->mCamera1TargetY = 0;
-    this->mCamera1TargetZ = fov;
-    this->mCamera1Angle = 0x400;
-    Camera_UpdateMatrices(base + 0x4728);
+    this->mCameras[0].mEyeX = 0;
+    this->mCameras[0].mEyeY = -0x64000;
+    this->mCameras[0].mEyeZ = 0;
+    this->mCameras[0].mTargetX = 0;
+    this->mCameras[0].mTargetY = 0;
+    this->mCameras[0].mTargetZ = fov;
+    this->mCameras[0].mAngle = 0x400;
+    Camera_UpdateMatrices(&mCameras[0]);
+    this->mCameras[1].mEyeX = 0;
+    this->mCameras[1].mEyeY = 0x82000;
+    this->mCameras[1].mEyeZ = 0;
+    this->mCameras[1].mTargetX = 0;
+    this->mCameras[1].mTargetY = 0;
+    this->mCameras[1].mTargetZ = fov;
+    this->mCameras[1].mAngle = 0x400;
+    Camera_UpdateMatrices(&mCameras[1]);
     if (Trmp3DMario_InitPool((unsigned char *)(base + 0x500c), 4) == 0)
         return 0;
     TrmpFx_InitPool(base + 0x5cd0, 5);
@@ -625,10 +573,10 @@ void dScMgTrampoline_c::StatePlay() {
         if (_Z14ApproachLinearRiii(&mTimer, 0, 1)) {
             if (sTrmpComboCount >= 5 || sTrmpMariosInPlay < 3) {
                 int i;
-                char *p = (char *)mArray1;
+                char *p = (char *)mMarios;
                 for (i = 0; i < 4; i++) {
                     if (Trmp3DMario_IsOffstage((int *)p)) {
-                        Trmp3DMario_EnterWalkIn((char *)mArray1 + i * 0xd0);
+                        Trmp3DMario_EnterWalkIn((char *)mMarios + i * 0xd0);
                         break;
                     }
                     p += 0xd0;
@@ -1243,7 +1191,5 @@ void dScMgTrampoline_DoorMark::Render(int scrollY) {
                         -1);
 }
 
-// @symbol Trmp_Nothing
-extern "C" { /* .c-derived member: C linkage for the whole block */
-void Trmp_Nothing(void) {}
-}
+// @symbol _ZN14TrmpScorePopupD1Ev
+TrmpScorePopup::~TrmpScorePopup() {}

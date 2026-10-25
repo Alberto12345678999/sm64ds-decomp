@@ -18,7 +18,6 @@
  *
 comment leftovers:
  *   - Calls whose real signatures take Fix12<int> BY VALUE stay mangled:
- *     Sound::PlaySub, dExtAnmModel_c::SetAnim, dExtAnmTexPat_c::SetFile and
  *     dActor_c::DropShadowRadHeight. mwccarm passes those differently at
  *     the call site than the loose scalar spelling; this file's externs
  *     are the spelling that matches.
@@ -125,9 +124,7 @@ void  MulVec3Mat4x3(const void *v, const void *m, void *out);
    which mwccarm passes differently at the call site than the loose scalar
    spelling -- the mangled spelling is the one that matches. Sound.h covers
    PlayLong, so only PlaySub stays. */
-int _ZN5Sound7PlaySubEjjj5Fix12IiEb(u32 a, u32 b, u32 c, Fix12i d, bool loop);
-void _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj(void *thiz, BTP_File &f, int a, Fix12i b,
-                                                        u32 c);
+int d_a_c_jugemPlaySubHold(u32 a, u32 b, u32 c, Fix12i d, bool loop);
 void  _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
          void *thiz, void *sm, void *mtx, int rad, int height, u32 flags);
 
@@ -218,41 +215,40 @@ daC_Jugem_c::~daC_Jugem_c()
 /* The intro camera sweep: pull the look-at and eye down toward the player
    while the fanfare plays; on the last frame hand the camera back and go
    wait in StateHidden. */
-int daC_Jugem_c::StateIntroMain()
-{
-  dCamera_c *cam = (dCamera_c *)data_0209f318;
-  CamPose r;
-  cam->SetFlag_3();
-  r.lx = -0x4b0000;
-  r.ly = 0x19f000;
-  r.lz = 0x1a90000;
-  r.px = -0x4b0000;
-  r.py = 0x250000;
-  r.pz = 0x1d4c000;
-  _Z14ApproachLinearR7Vector3RKS_5Fix12IiE(&mCamLookX, &r, 0x70000);
-  cam->SetLookAt(*(Vector3 *)&mCamLookX);
-  cam->SetPos(*(Vector3 *)&mCamPosX);
-  Vec3_Dist(&mCamLookX, &r);
-  mTimer++;
-  if (mTimer > 0x64) {
-    if (_ZN5Sound7PlaySubEjjj5Fix12IiEb(0x4b, 0x7f, 0, 0x7222, false) != 0) {
-      *(int *)&cam->mFlags &= ~8;
-      mHorzSpeed = 0;
-      mTimer = 0;
-      mAuxCounter = 0;
-      mSpeedX = 0;
-      mVertSpeed = 0;
-      mSpeedZ = 0;
-      mAngleX = 0;
-      Player *player = ClosestPlayer();
-      if (player != 0) {
-        func_ov002_020c3e8c(player);
-        data_0209caa0[2] |= 0x80;
-      }
-      SetState(data_ov085_021307e0);
+int daC_Jugem_c::StateIntroMain() {
+    dCamera_c *cam = (dCamera_c *)data_0209f318;
+    CamPose r;
+    cam->SetFlag_3();
+    r.lx = -0x4b0000;
+    r.ly = 0x19f000;
+    r.lz = 0x1a90000;
+    r.px = -0x4b0000;
+    r.py = 0x250000;
+    r.pz = 0x1d4c000;
+    _Z14ApproachLinearR7Vector3RKS_5Fix12IiE(&mCamLookX, &r, 0x70000);
+    cam->SetLookAt(*(Vector3 *)&mCamLookX);
+    cam->SetPos(*(Vector3 *)&mCamPosX);
+    Vec3_Dist(&mCamLookX, &r);
+    mTimer++;
+    if (mTimer > 0x64) {
+        if (Sound::PlaySub(0x4b, 0x7f, 0, 0x7222, false) != 0) {
+            *(int *)&cam->mFlags &= ~8;
+            mHorzSpeed = 0;
+            mTimer = 0;
+            mAuxCounter = 0;
+            mSpeedX = 0;
+            mVertSpeed = 0;
+            mSpeedZ = 0;
+            mAngleX = 0;
+            Player *player = ClosestPlayer();
+            if (player != 0) {
+                func_ov002_020c3e8c(player);
+                data_0209caa0[2] |= 0x80;
+            }
+            SetState(data_ov085_021307e0);
+        }
     }
-  }
-  return 1;
+    return 1;
 }
 
 // @symbol _ZN11daC_Jugem_c14StateIntroInitEv
@@ -519,7 +515,7 @@ int daC_Jugem_c::StateArriveMain()
     mAngleX = 0x1000;
     mAngleZ = 0x800;
     mTimer += 1;
-    _ZN5Sound7PlaySubEjjj5Fix12IiEb(0x4b, 0x14, 0x7f, 0x15666, false);
+    Sound::PlaySub(0x4b, 0x14, 0x7f, 0x15666, false);
     switch (mTimer) {
     case 1:
         p->mMuteSleepVoice = 1;
@@ -588,7 +584,7 @@ int daC_Jugem_c::StateLeaveMain()
         _Z14ApproachLinearRiii(&mPosY, mTargetY, 0x1e000);
     }
     if (*(unsigned short *)&mStateTimer == 0) {
-        if (_ZN5Sound7PlaySubEjjj5Fix12IiEb(0x4a, 0x7f, 0, 0x7222, 0) != 0) {
+        if (Sound::PlaySub(0x4a, 0x7f, 0, 0x7222, 0) != 0) {
             if (mTalkPlayer->HasFinishedTalking() == 1) {
                 MarkForDestruction();
                 data_0209f284 = 0;
@@ -672,7 +668,7 @@ int daC_Jugem_c::StateFlyToPlayerMain()
     p->mStateTargetZ = mPosZ;
 
     if (*(unsigned short *)&mStateTimer == 0) {
-        _ZN5Sound7PlaySubEjjj5Fix12IiEb(0x4a, 0x14, 0x7f, 0x15666, 0);
+        Sound::PlaySub(0x4a, 0x14, 0x7f, 0x15666, 0);
     }
 
     mSfxHandle = Sound::PlayLong(mSfxHandle, 3, 0x182, mCamSpacePos, 0);
@@ -962,8 +958,7 @@ int daC_Jugem_c::InitResources()
     dExtAnmTexPat_c::Prepare(**(BMD_File **)((char *)&data_ov085_0213074c + 4),
                              **(BTP_File **)((char *)&data_ov085_0213073c + 4));
     mModelAnim1.SetAnim(*(BCA_File **)((char *)&data_ov085_02130744 + 4), 0, 0x1000, 0);
-    _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj(
-        &mTextureSequence, **(BTP_File **)((char *)&data_ov085_0213073c + 4), 0, 0x1000, 0);
+    mTextureSequence.SetFile(**(BTP_File **)((char *)&data_ov085_0213073c + 4), 0, 0x1000, 0);
     mModelAnim1.speed = 0x1000;
     mVariant = param1 & 0xff;
     if (mVariant == 0xff)

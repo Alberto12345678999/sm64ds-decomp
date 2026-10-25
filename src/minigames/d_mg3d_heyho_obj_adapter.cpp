@@ -17,15 +17,10 @@ struct System {
      through the HEYHO() cast; the per-file typedef/extern universes disagree, so
      the helpers keep their char* parameters rather than a shared typed one.
    - Heyho::mModelAnim is a real dExtAnmModel_c, so its SetFile/SetAnim/Render/
-     Advance calls, its mat4x3 store and Heyho_Destruct's destructor call are
-     member calls (the helpers that used to reach the matrix and the frame
-     controller as separate byte views were reading inside that one object).
-   - Heyho_Construct still calls _ZN14dExtAnmModel_cC1Ev by name. C++ has no way to
-     run a constructor on existing storage short of placement new, and
-     `new (&HEYHO(t)->mModelAnim) dExtAnmModel_c` adds the null check placement new
-     requires (adds/beq): 0x20 against the ROM's 0x1c (MEASURED 2026-10-23).
-     The real shape is a Heyho constructor, which waits on the record getting
-     a class.
+     Advance calls and its mat4x3 store are member calls (the helpers that
+     used to reach the matrix and the frame controller as separate byte views
+     were reading inside that one object). Heyho's own constructor and
+     destructor (ROM 0x020c6f70 and 0x020c6f3c) construct and destroy it.
    - _ZN7Vector3D1Ev and __register_global_object are dtor/atexit ABI calls,
      spelled as free functions because the bodies are the compiler's own sinit
      glue.
@@ -63,32 +58,20 @@ struct HeyhoAdapterAnimationFileHandle : SharedFilePtr {
     ~HeyhoAdapterAnimationFileHandle();
 };
 
-/* ---- Heyho_Construct ---- */
-namespace n020c6f70 {
-extern "C" {
-extern void *_ZN14dExtAnmModel_cC1Ev(void *object);
-
-int Heyho_Construct(char *t)
-{
-    _ZN14dExtAnmModel_cC1Ev(&HEYHO(t)->mModelAnim);
-    return (int)t;
-}
-
-}
-}
-
-/* ---- Heyho_Destruct ---- */
-namespace n020c6f3c {
-extern "C" {
 extern HeyhoAdapterModelFilePtr gMgPHeyhoMiniModelFile;
 extern HeyhoAdapterAnimationFileHandle gMgPHeyhoWaitAnimFile;
-int Heyho_Destruct(int *c) {
+
+/* ---- Heyho::Heyho ---- */
+// @symbol _ZN5HeyhoC1Ev
+Heyho::Heyho() {}
+
+/* ---- Heyho::~Heyho ---- */
+/* Each Heyho releases both shared resource handles; mModelAnim's destructor
+   runs after the body. */
+// @symbol _ZN5HeyhoD1Ev
+Heyho::~Heyho() {
     gMgPHeyhoMiniModelFile.Release();
     gMgPHeyhoWaitAnimFile.Release();
-    HEYHO(c)->mModelAnim.dExtAnmModel_c::~dExtAnmModel_c();
-    return (int)c;
-}
-}
 }
 
 /* ---- Heyho_LoadResources ---- */

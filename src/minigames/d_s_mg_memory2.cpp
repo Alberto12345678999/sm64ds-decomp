@@ -31,6 +31,9 @@ enum dScMgMemory2_c_AssetId { ASSET_D_2D_MG_CARD_NCL_BIN = 0x00bb };
 #include "common.h"
 #include "decl_common.h"
 #include "PlayerInput.h"
+namespace cstd {
+s16 atan2(s32, s32);
+}
 
 /* CardFlyAway, ResultWait and RoundDealHard retain the partial views below.
  * Their array extents span unrelated fields to retain specific address
@@ -99,7 +102,7 @@ void LoadOBJPltt(void const *, unsigned int, unsigned int);
 extern "C" {
 extern void Mg_DrawScoreTally(void *thiz, int a, int b, int c);
 extern void Mg_DrawBlinkSprite(void *c, int arg1, int arg2);
-extern s16 _ZN4cstd5atan2E5Fix12IiES1_(int y, int x);
+extern s16 atan2_hold_d_s_mg_memory2_1(int y, int x);
 extern s16 data_02082214[];
 extern "C" unsigned int func_02012790(unsigned int x);
 extern "C" void MgCoins_StartLoseOneMore(void);
@@ -164,7 +167,7 @@ extern u8 data_0209d454;
 #pragma defer_codegen off
 
 // @symbol _ZN14dScMgMemory2_cD1Ev
-/* Destroys mShared, then the inherited scene. CodeWarrior emits both D1 and
+/* Destroys mDealer, then the inherited scene. CodeWarrior emits both D1 and
  * D0 from this one definition. */
 dScMgMemory2_c::~dScMgMemory2_c() {}
 // @symbol _ZN14dScMgMemory2_cD0Ev
@@ -223,7 +226,7 @@ void dScMgMemory2_c::PlayerMove(int player) {
     int dy;
     dx = targetX - (mPlayers[player].x >> 12);
     dy = targetY - (mPlayers[player].y >> 12);
-    mPlayers[player].angle = _ZN4cstd5atan2E5Fix12IiES1_(dy, dx);
+    mPlayers[player].angle = cstd::atan2(dy, dx);
     mPlayers[player].speed = mPlayers[player].speed + 0x200;
     angle = (u16 *)&mPlayers[player].angle;
     mPlayers[player].x = mPlayers[player].x +
@@ -519,7 +522,7 @@ void dScMgMemory2_c::CardMove(int cardIndex) {
     targetY = positions[coordinateIndex + 1];
     dy = targetY - (mCards[cardIndex].y >> 12);
 
-    mCards[cardIndex].angle = _ZN4cstd5atan2E5Fix12IiES1_(dy, dx);
+    mCards[cardIndex].angle = cstd::atan2(dy, dx);
 
     {
         s16 tv = data_02082214[((static_cast<u16>(mCards[cardIndex].angle) >> 4) << 1) + 1];
@@ -682,7 +685,7 @@ void dScMgMemory2_c::ResultWait() {
                 scoreView->bestHudScore = scoreView->hudScore;
         }
         Mg_SubmitScore(gMgScene != 0 ? gMgScene->mHudScore : 0);
-        Dealer_PlayWin(&mShared);
+        Dealer_PlayWin(&mDealer);
         return;
     }
 
@@ -692,7 +695,7 @@ void dScMgMemory2_c::ResultWait() {
         if (scoreView->hudScore > 0)
             scoreView->hudScore -= 1;
     }
-    Dealer_PlayLose(&mShared);
+    Dealer_PlayLose(&mDealer);
     return;
 
 zero:
@@ -929,10 +932,10 @@ void dScMgMemory2_c::RoundStart() {
     mDealSignals = 0;
     mCardsDealt = 0;
     if (mDifficulty == 1)
-        Dealer_StartShuffle((char *)&mShared, 4, 3, (int)&mDealSignals);
+        Dealer_StartShuffle((char *)&mDealer, 4, 3, (int)&mDealSignals);
     else
-        Dealer_StartShuffle((char *)&mShared, 4, 4, (int)&mDealSignals);
-    mShared.ready = 1;
+        Dealer_StartShuffle((char *)&mDealer, 4, 4, (int)&mDealSignals);
+    mDealer.mReserved = 1;
     mSubstate = ROUND_DEAL_EASY;
     if (mPromptBlinkCount == 0) {
         mPromptEnabled = 1;
@@ -1168,7 +1171,7 @@ void dScMgMemory2_c::StateSetup() {
     SetupDifficulty();
     ShuffleCards();
     FreeGfxSlotsById(0x1d);
-    Dealer_PlayIdle((char *)&mShared);
+    Dealer_PlayIdle((char *)&mDealer);
     mState = STATE_PLAY;
 }
 
@@ -1195,7 +1198,7 @@ void dScMgMemory2_c::OnDealDone() {
 // @symbol _ZN14dScMgMemory2_c11CanEndStateEi
 int dScMgMemory2_c::CanEndState(int /* mode */) {
     if (mState == STATE_RESULT && mSubstate == RESULT_WAIT) {
-        if (Dealer_IsIdle((int *)&mShared) == 0)
+        if (Dealer_IsIdle((int *)&mDealer) == 0)
             return 0;
         mSubstate = RESULT_REWARD;
         FreeGfxSlotsById(0x1d);
@@ -1232,7 +1235,7 @@ s32 dScMgMemory2_c::Render() {
     DrawMessage();
     DrawCursor();
     DrawCards();
-    Dealer_Draw((char *)&mShared);
+    Dealer_Draw((char *)&mDealer);
     return 1;
 }
 
@@ -1243,7 +1246,7 @@ s32 dScMgMemory2_c::Render() {
 s32 dScMgMemory2_c::Behavior() {
     (this->*sMemory2StateTable[mState])();
     MgCoins_Update();
-    Dealer_Update((char *)&mShared);
+    Dealer_Update((char *)&mDealer);
     return 1;
 }
 
@@ -1270,7 +1273,7 @@ s32 dScMgMemory2_c::InitResources() {
     ResetGame();
     /* 0x4660..0x471c is dScMgSingle3DBase_c's minigame camera. */
     Camera_InitDealerView((char *)pad_4660);
-    if (Dealer_Load(&mShared) == 0)
+    if (Dealer_Load(&mDealer) == 0)
         return 0;
     mCredits = Mg_GetSavedRecord0();
     mCreditsShown = mCredits;

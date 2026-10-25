@@ -128,6 +128,9 @@ enum daDemo_c_AssetId {
 #include "SaveData.h"
 #include "dExtAnmTexPat_c.h"
 #include "dCamera_c.h"
+namespace cstd {
+s16 atan2(s32, s32);
+}
 
 struct OamAttr;
 
@@ -416,7 +419,7 @@ extern u8 data_ov002_02111144;
 extern u32 data_020a0db0;
 extern int func_ov002_020f2630(daDemo_c *self);
 extern struct OamAttr *data_ov002_0210b6a8[];
-extern void _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiEi( int a, struct OamAttr *b, int c, int d, int e, int f, int g, int h);
+
 extern u32 d_a_demoNewHold(u32 slot, u32 unk, Fix12i x, Fix12i y, Fix12i z, void *rot,
                            struct ParticleCallback *callback);
 extern int data_ov002_02100140[];
@@ -439,7 +442,7 @@ extern void func_ov002_020f3828(int *c);
 extern void MultiCopyHalf(void *src, void *dst, unsigned int count);
 extern int data_ov002_021002a0[];
 extern s16 data_02082214[];
-extern short _ZN4cstd5atan2E5Fix12IiES1_(int y, int x);
+extern short atan2_hold_d_a_demo_1(int y, int x);
 extern short data_02082214[];
 extern PMF data_ov002_02110e34[];
 extern unsigned short data_ov002_021000c0[];
@@ -514,11 +517,8 @@ extern void func_ov002_020f5fe4(char *c);
 extern int _ZN15dExtFrameCtrl_c7AdvanceEv(char*); /* local extern: untyped this. */
 extern int _ZN15dExtFrameCtrl_c8FinishedEv(char*); /* local extern: untyped this. */
 /* local extern dropped: decl_common.h declares func_ov002_020f6514(unsigned char*, void*, unsigned char) */
-extern void _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj(void *self, void *f, int b, int c,
-                                                               unsigned int d);
-extern void __cxa_vec_ctor(void* obj, int a, int b, void* cb1, void* cb2);
+/* local extern: the D1 address handed to func_020731dc; ~Vector3 is inline in types.h. */
 extern void *_ZN7Vector3D1Ev(void *object);
-extern void func_0203d384(void);
 extern unsigned int ReadUnalignedInt(unsigned char *p);
 extern void func_02012694(unsigned int, void*);
 extern short ReadUnalignedShort(unsigned char *p);
@@ -1030,9 +1030,7 @@ void func_ov002_020f26e0(void *thiz)
             s = 7;
         if (s == 0)
             continue;
-        _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiEi(
-            1, data_ov002_0210b6a8[idx], e->x, e->y,
-            -1, 1, ((7 - s) << 10) + 0x1000, 0);
+        OAM::Render(1, data_ov002_0210b6a8[idx], e->x, e->y, -1, 1, ((7 - s) << 10) + 0x1000, 0);
     }
 }
 }
@@ -1921,7 +1919,7 @@ void func_ov002_020f3ba0(char *c, int i)
         return;
     }
 
-    target = _ZN4cstd5atan2E5Fix12IiES1_(dy, dx);
+    target = cstd::atan2(dy, dx);
     ang = *(unsigned short *)(c + STAR_OFF(heading) + off);
     if (target > ang) {
         *(unsigned short *)(c + STAR_OFF(heading) + off) += 0x80;
@@ -2017,7 +2015,7 @@ void func_ov002_020f3de4(char *c, int i)
             return;
         }
 
-        target = _ZN4cstd5atan2E5Fix12IiES1_(dy, dx);
+        target = cstd::atan2(dy, dx);
         ang = *(unsigned short *)(c + STAR_OFF(heading) + off);
         if (target > ang) {
             *(unsigned short *)(c + STAR_OFF(heading) + off) += 0x100;
@@ -2225,7 +2223,7 @@ void func_ov002_020f43cc(char *c, int i) {
                 return;
             }
             {
-                unsigned short a = (unsigned short)_ZN4cstd5atan2E5Fix12IiES1_(dy, dx);
+                unsigned short a = (unsigned short)cstd::atan2(dy, dx);
                 unsigned short cur = *(unsigned short *)(c + STAR_OFF(heading) + off);
                 if (a > cur) {
                     unsigned short nv;
@@ -2440,7 +2438,7 @@ void func_ov002_020f4a2c(char *c, int i)
         }
 
         {
-            int raw = _ZN4cstd5atan2E5Fix12IiES1_(dy, dx);
+            int raw = cstd::atan2(dy, dx);
             ang = *(unsigned short *)(c + STAR_OFF(heading) + off);
             target = (unsigned short)raw;
         }
@@ -2655,7 +2653,7 @@ void func_ov002_020f5010(char *c, int i)
         }
 
         {
-            int raw = _ZN4cstd5atan2E5Fix12IiES1_(dy, dx);
+            int raw = cstd::atan2(dy, dx);
             ang = *(unsigned short *)(c + STAR_OFF(heading) + off);
             target = (unsigned short)raw;
         }
@@ -3655,13 +3653,12 @@ void daDemo_c::anmModel_c::func_ov002_020f6514(void *tbl, unsigned char arg)
     v = (e[2] == 0) ? 0x40000000 : 0;
     ((dExtAnmModel_c *)this)->SetAnim((BCA_File *)(mAnimFiles[e[0]]->filePtr), v, 0x1000, 0);
     {
-        void *ts = mTexSeq;
+        dExtAnmTexPat_c *ts = mTexSeq;
         s8 idx;
         if (ts == 0) return;
         idx = (s8)e[1];
         if (idx < 0) return;
-        _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj(ts, mTexSeqFiles[idx]->filePtr, v,
-                                                           0x1000, 0);
+        ts->SetFile(*(BTP_File *)mTexSeqFiles[idx]->filePtr, v, 0x1000, 0);
     }
 }
 
@@ -3694,19 +3691,11 @@ int daDemo_c::anmModel_c::func_ov002_020f65ec()
 /* ROM ordinal 111 -- func_ov002_020f6618, 0x020f6618, size 0x160 */
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN8daDemo_c10anmModel_c19func_ov002_020f6618EP13SharedFilePtriPS2_ihS3_i
-struct BTP_File;
-extern "C" {
-void *_ZN15dExtAnmTexPat_cC1Ev(void *self);
-void _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj(void *self, void *btp, int a, int fx,
-                                                        unsigned int e);
-}
-
 int daDemo_c::anmModel_c::func_ov002_020f6618(SharedFilePtr *mdl, int nAnims, SharedFilePtr **anims,
                         int arg5, unsigned char texByte, SharedFilePtr **texs, int tsData)
 {
     char *self = (char *)this;
     int i;
-    void* ts;
     mModelFile = mdl;
     if (((dExtModel_c *)self)
             ->SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(*mModelFile), 1, tsData) == 0)
@@ -3718,10 +3707,7 @@ int daDemo_c::anmModel_c::func_ov002_020f6618(SharedFilePtr *mdl, int nAnims, Sh
     }
     ((dExtAnmModel_c *)self)->SetAnim((BCA_File *)(mAnimFiles[0]->filePtr), 0, 0x1000, 0);
     if (texByte) {
-        ts = ::operator new(0x14);
-        if (ts)
-            ts = _ZN15dExtAnmTexPat_cC1Ev(ts);
-        mTexSeq = (dExtAnmTexPat_c *)ts;
+        mTexSeq = new dExtAnmTexPat_c;
         if (mTexSeq == 0)
             return 0;
         mNumTexSeqFiles = texByte;
@@ -3731,8 +3717,7 @@ int daDemo_c::anmModel_c::func_ov002_020f6618(SharedFilePtr *mdl, int nAnims, Sh
             void *btp = dExtAnmTexPat_c::LoadFile(*mTexSeqFiles[i]);
             dExtAnmTexPat_c::Prepare(*(BMD_File *)bmd, *(BTP_File *)btp);
         }
-        _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj(mTexSeq, mTexSeqFiles[0]->filePtr, 0,
-                                                           0x1000, 0);
+        mTexSeq->SetFile(*(BTP_File *)mTexSeqFiles[0]->filePtr, 0, 0x1000, 0);
     }
     mSnapToFloor = (u8)arg5;
     return 1;
@@ -3834,16 +3819,12 @@ daDemo_c::simpleModel_c::~simpleModel_c()
 /* -------------------------------------------------------------------------- */
 /* ROM ordinal 117 -- func_ov002_020f6a50, 0x020f6a50, size 0x4c */
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN8daDemo_c7param_c19func_ov002_020f6a50Ev
+// @symbol _ZN8daDemo_c7param_cC2Ev
 
-void* daDemo_c::param_c::func_ov002_020f6a50()
-{
-    char *c = (char *)this;
-    __cxa_vec_ctor(c, 1, 0xc, (void*)func_0203d384, (void*)_ZN7Vector3D1Ev);
+daDemo_c::param_c::param_c() {
     mScale[0].x = 0;
     mScale[0].y = 0;
     mScale[0].z = 0;
-    return c;
 }
 
 /* -------------------------------------------------------------------------- */
@@ -4464,7 +4445,7 @@ int daDemo_c::func_ov002_020f79c0(void *unused, int mode)
         }
         Math_Function_0203b0fc(&this->mMagnitude, 0x64000, 0x7a, 0x7fffffff);
 
-        this->mAngleX = _ZN4cstd5atan2E5Fix12IiES1_(this->mPosY - 0x190000, 0xc8000);
+        this->mAngleX = cstd::atan2(this->mPosY - 0x190000, 0xc8000);
 
         ApproachAngle(&this->mAngleY, (short)(this->mPrevAngleY + 0x8000), 4, 0x4000, 0);
 
@@ -4553,8 +4534,8 @@ int daDemo_c::func_ov002_020f7bb8(unsigned char *p, u16 id)
 
     Vec3_RotateYAndTranslate((int *)(&this->mPosX), (int *)&cam->pos, heading, src);
 
-    this->mAngleX = _ZN4cstd5atan2E5Fix12IiES1_(v1.y, Vec3_HorzLen(&v1));
-    this->mAngleY = _ZN4cstd5atan2E5Fix12IiES1_(v1.x, v1.z);
+    this->mAngleX = cstd::atan2(v1.y, Vec3_HorzLen(&v1));
+    this->mAngleY = cstd::atan2(v1.x, v1.z);
 
     return 1;
 }
@@ -4729,36 +4710,21 @@ int daDemo_c::Behavior()
 }
 
 // @symbol _ZN8daDemo_c13InitResourcesEv
-/* Each model branch spells the nested class's construction out: param_c's
- * constructor on the tail base, the model base's C2, then the class vptr
- * and, for anmModel_c, the dExtFrameCtrl_c base's secondary vptr at +0x50.
- * The base conversions go through references: a pointer conversion adds a
- * null test the ROM does not have. */
+/* Each new-expression inlines the nested class's implicit construction:
+ * param_c's constructor on the tail base, the model base's C2, then the
+ * class vptr and, for anmModel_c, the dExtFrameCtrl_c base's secondary vptr
+ * at +0x50. The model base sits at offset 0, so storing the result in
+ * mModel/mModelAnim needs no null test. */
 int daDemo_c::InitResources()
 {
-    void *p;
     int t;
 
     if (param1 == 0x12) {
-        p = ::operator new(0x84);
-        if (p) {
-            ((param_c &)*(anmModel_c *)p).func_ov002_020f6a50();
-            _ZN14dExtAnmModel_cC2Ev(p);
-            *(void **)p = &data_ov002_0210bcc4;
-            *(void **)&(dExtFrameCtrl_c &)*(anmModel_c *)p = &data_ov002_0210bce8;
-        }
-        this->mModelAnim = (dExtAnmModel_c *)p;
+        this->mModelAnim = new anmModel_c;
         if (this->mModelAnim == 0) return 0;
         if (((anmModel_c*)this->mModelAnim)->func_ov002_020f6618((SharedFilePtr*)&data_ov085_0213074c, 1, (SharedFilePtr**)&data_ov002_0210b60c, 1, 1, (SharedFilePtr**)&data_ov002_0210b608, -1) == 0) return 0;
     } else if (param1 == 0x13) {
-        p = ::operator new(0x84);
-        if (p) {
-            ((param_c &)*(anmModel_c *)p).func_ov002_020f6a50();
-            _ZN14dExtAnmModel_cC2Ev(p);
-            *(void **)p = &data_ov002_0210bcc4;
-            *(void **)&(dExtFrameCtrl_c &)*(anmModel_c *)p = &data_ov002_0210bce8;
-        }
-        this->mModelAnim = (dExtAnmModel_c *)p;
+        this->mModelAnim = new anmModel_c;
         if (this->mModelAnim == 0) return 0;
         t = (*(volatile unsigned char *)&data_0209f2d8 == 2);
         if (t == 0) {
@@ -4767,54 +4733,23 @@ int daDemo_c::InitResources()
             if (((anmModel_c*)this->mModelAnim)->func_ov002_020f6618((SharedFilePtr*)&data_ov002_02110c18, 0xD, (SharedFilePtr**)&data_ov002_0210bcf0, 1, 0xD, (SharedFilePtr**)&data_ov002_0210bd24, 0x16) == 0) return 0;
         }
     } else if (param1 >= 0x14 && param1 <= 0x16) {
-        p = ::operator new(0x60);
-        if (p) {
-            ((param_c &)*(simpleModel_c *)p).func_ov002_020f6a50();
-            _ZN17dExtSimpleModel_cC2Ev(p);
-            *(void **)p = &data_ov002_0210bae4;
-        }
-        this->mModel = (dExtSimpleModel_c *)p;
+        this->mModel = new simpleModel_c;
         if (this->mModel == 0) return 0;
         if (((simpleModel_c*)this->mModel)->func_ov002_020f6960((SharedFilePtr*)&data_ov002_02110b70, -1) == 0) return 0;
     } else if (param1 == 0x17) {
-        p = ::operator new(0x60);
-        if (p) {
-            ((param_c &)*(simpleModel_c *)p).func_ov002_020f6a50();
-            _ZN17dExtSimpleModel_cC2Ev(p);
-            *(void **)p = &data_ov002_0210bae4;
-        }
-        this->mModel = (dExtSimpleModel_c *)p;
+        this->mModel = new simpleModel_c;
         if (this->mModel == 0) return 0;
         if (((simpleModel_c*)this->mModel)->func_ov002_020f6960((SharedFilePtr*)&data_ov002_02110b50, 0x19) == 0) return 0;
     } else if (param1 == 0x18) {
-        p = ::operator new(0x60);
-        if (p) {
-            ((param_c &)*(simpleModel_c *)p).func_ov002_020f6a50();
-            _ZN17dExtSimpleModel_cC2Ev(p);
-            *(void **)p = &data_ov002_0210bae4;
-        }
-        this->mModel = (dExtSimpleModel_c *)p;
+        this->mModel = new simpleModel_c;
         if (this->mModel == 0) return 0;
         if (((simpleModel_c*)this->mModel)->func_ov002_020f6960((SharedFilePtr*)&data_ov002_0211094c, -1) == 0) return 0;
     } else if (param1 == 0x19) {
-        p = ::operator new(0x60);
-        if (p) {
-            ((param_c &)*(simpleModel_c *)p).func_ov002_020f6a50();
-            _ZN17dExtSimpleModel_cC2Ev(p);
-            *(void **)p = &data_ov002_0210bae4;
-        }
-        this->mModel = (dExtSimpleModel_c *)p;
+        this->mModel = new simpleModel_c;
         if (this->mModel == 0) return 0;
         if (((simpleModel_c*)this->mModel)->func_ov002_020f6960((SharedFilePtr*)&data_ov002_02110b78, 0x13) == 0) return 0;
     } else if (param1 >= 0x1A && param1 <= 0x2D) {
-        p = ::operator new(0x84);
-        if (p) {
-            ((param_c &)*(anmModel_c *)p).func_ov002_020f6a50();
-            _ZN14dExtAnmModel_cC2Ev(p);
-            *(void **)p = &data_ov002_0210bcc4;
-            *(void **)&(dExtFrameCtrl_c &)*(anmModel_c *)p = &data_ov002_0210bce8;
-        }
-        this->mModelAnim = (dExtAnmModel_c *)p;
+        this->mModelAnim = new anmModel_c;
         if (this->mModelAnim == 0) return 0;
         if (((anmModel_c*)this->mModelAnim)->func_ov002_020f6618((SharedFilePtr*)data_ov009_02113c20, 1, (SharedFilePtr**)&data_ov002_0210b604, 0, 0, 0, -1) == 0) return 0;
     }

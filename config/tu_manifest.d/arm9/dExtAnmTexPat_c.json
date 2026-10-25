@@ -34,7 +34,7 @@
       "ordinal": 1
     },
     {
-      "symbol": "_ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj",
+      "symbol": "_ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit",
       "address": "0x020159ac",
       "size": "0x00000054",
       "legacy_source": "src/_ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj.c",

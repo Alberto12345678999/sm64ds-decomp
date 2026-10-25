@@ -21,7 +21,7 @@
  * first and emits no D2 body.
  *
  * deslop leftovers:
- * - dExtAnmTexSRT_c::SetFile / dBgW_KcMbg::SetFile 6az: InitResources
+ * - dBgW_KcMbg::SetFile 6az: InitResources
  *   passes Fix12<int> by value; the header method form size-DIFFs.
  * - data_ov032_02113afc / 02113af4 / 02112f64 / 02112fb8 BMD / KCL / BTA /
  *   CLPS handles; this TU consumes them, overlay .data owns them.
@@ -76,11 +76,8 @@ extern BTA_File      data_ov032_02112f64;   /* the scrolling texture animation *
 extern CLPS_Block    data_ov032_02112fb8;
 
 /* 6az: both SetFile calls take Fix12<int> by value. */
-void _ZN15dExtAnmTexSRT_c7SetFileER8BTA_Filei5Fix12IiEj(dExtAnmTexSRT_c *self, BTA_File &animFile,
-                                                        int flags, int speed, u32 startFrame);
-void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-    dBgW_KcMbg *self, KCL_File *kcl, const Matrix4x3 &mat, int scale,
-    s16 angleY, CLPS_Block &clps);
+extern void hold_d_a_obj_td_water(dBgW_KcMbg *self, KCL_File *kcl, const Matrix4x3 &mat, int scale,
+                                  s16 angleY, CLPS_Block &clps);
 }
 
 /* Event has no shared header anywhere in the tree -- every caller declares it
@@ -110,17 +107,15 @@ s32 daObjTdWater_c::InitResources()
     /* The BMD the SharedFilePtr is holding: the ROM re-reads it out of the
        descriptor rather than reusing LoadFile's return value. */
     dExtAnmTexSRT_c::Prepare(*(BMD_File *)data_ov032_02113afc.filePtr, data_ov032_02112f64);
-    /* 6az: header SetFile takes Fix12<int> by value. */
-    _ZN15dExtAnmTexSRT_c7SetFileER8BTA_Filei5Fix12IiEj(&mTextureTransformer, data_ov032_02112f64, 0,
-                                                       0x1000, 0);
+    mTextureTransformer.SetFile(data_ov032_02112f64, 0, 0x1000, 0);
 
     UpdateModelPosAndRotY();
     UpdateClsnPosAndRot();
 
     KCL_File *kcl = (KCL_File *)dBgW_Kc::LoadFile(data_ov032_02113af4);
     /* 6az: header SetFile takes Fix12<int> by value. */
-    _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-        &mMeshCollider, kcl, mClsnMat, 0x1000, mAngleY, data_ov032_02112fb8);
+    ((dBgW_KcMbg *)(&mMeshCollider))
+        ->dBgW_KcMbg::SetFile(kcl, mClsnMat, 0x1000, mAngleY, data_ov032_02112fb8);
     mMeshCollider.Enable(this);
 
     /* The water only survives the spawn while the level's event bit 0xe is

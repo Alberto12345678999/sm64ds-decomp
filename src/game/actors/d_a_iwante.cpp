@@ -372,13 +372,15 @@ extern void func_020398fc(void *p);
 
 /* ---- arm9 / ov002 methods, mangled ROM spelling ---- */
 extern void _Z14ApproachLinearR7Vector3RKS_5Fix12IiE(void *out, void *tgt, int step);
-extern void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(void *self, void *kcl, void *mtx, int fix, short s, void *clps);
+extern void hold_d_a_iwante(void *self, void *kcl, void *mtx, int fix, short s, void *clps);
 extern void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(void *self, void *actor,
                                                                     Vector3 *v, s32 f1, s32 f2,
                                                                     u32 a, u32 b);
-extern void _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj(void *self, void *btp, int a,
-                                                               int fix, unsigned int b);
-extern void _ZN5Sound17ChangeMusicVolumeEj5Fix12IiE(unsigned int a, int b);
+}
+namespace Sound {
+void ChangeMusicVolume(unsigned int a, int b);
+}
+extern "C" {
 extern void _ZN5Sound22LoadAndSetMusic_Layer3Ej(unsigned int a);
 extern void _ZN5Sound22StopLoadedMusic_Layer3Ev(void);
 namespace Particle {
@@ -516,13 +518,13 @@ int Eyerok::func_ov066_0211603c()
                 if (mPartIdx == PART_HAND_2) {
                     mBlendModelAnim.SetAnim(*(BCA_File *)data_ov066_0211ae5c.filePtr, 4, 0x40000000,
                                             0x1000, 0);
-                    _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj(
-                        &mTextureSequence, data_ov066_0211ae3c.filePtr, 0x40000000, 0x1000, 0);
+                    mTextureSequence.SetFile(*(BTP_File *)data_ov066_0211ae3c.filePtr, 0x40000000,
+                                             0x1000, 0);
                 } else {
                     mBlendModelAnim.SetAnim(*(BCA_File *)data_ov066_0211ae84.filePtr, 4, 0x40000000,
                                             0x1000, 0);
-                    _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj(
-                        &mTextureSequence, data_ov066_0211aebc.filePtr, 0x40000000, 0x1000, 0);
+                    mTextureSequence.SetFile(*(BTP_File *)data_ov066_0211aebc.filePtr, 0x40000000,
+                                             0x1000, 0);
                 }
                 func_02012694(SE_HAND_HIT, &mCamSpacePosX);
                 return 1;
@@ -590,19 +592,19 @@ void Eyerok::func_ov066_02116390()
         return;
     if (mTexPhase == 0) {
         if (mPartIdx == PART_HAND_2)
-            _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj(
-                &mTextureSequence, data_ov066_0211ae2c.filePtr, 0x40000000, 0x1000, 0);
+            mTextureSequence.SetFile(*(BTP_File *)data_ov066_0211ae2c.filePtr, 0x40000000, 0x1000,
+                                     0);
         else
-            _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj(
-                &mTextureSequence, data_ov066_0211ae9c.filePtr, 0x40000000, 0x1000, 0);
+            mTextureSequence.SetFile(*(BTP_File *)data_ov066_0211ae9c.filePtr, 0x40000000, 0x1000,
+                                     0);
         mTexTimer = (((unsigned int)RandomIntInternal(&data_0209e650) >> 8) & 0xf) * 2 + 0x32;
     } else {
         if (mPartIdx == PART_HAND_2)
-            _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj(
-                &mTextureSequence, data_ov066_0211ae3c.filePtr, 0x40000000, 0x1000, 0);
+            mTextureSequence.SetFile(*(BTP_File *)data_ov066_0211ae3c.filePtr, 0x40000000, 0x1000,
+                                     0);
         else
-            _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj(
-                &mTextureSequence, data_ov066_0211aebc.filePtr, 0x40000000, 0x1000, 0);
+            mTextureSequence.SetFile(*(BTP_File *)data_ov066_0211aebc.filePtr, 0x40000000, 0x1000,
+                                     0);
         mTexTimer = 8;
     }
     mTexPhase ^= 1;
@@ -642,12 +644,10 @@ void Eyerok::func_ov066_021165cc()
 {
     if (mPartIdx == PART_HAND_2) {
         mBlendModelAnim.SetAnim(*(BCA_File *)data_ov066_0211ae54.filePtr, 4, 0x40000000, 0x1000, 0);
-        _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj(
-            &mTextureSequence, data_ov066_0211ae3c.filePtr, 0x40000000, 0x1000, 0);
+        mTextureSequence.SetFile(*(BTP_File *)data_ov066_0211ae3c.filePtr, 0x40000000, 0x1000, 0);
     } else {
         mBlendModelAnim.SetAnim(*(BCA_File *)data_ov066_0211ae94.filePtr, 4, 0x40000000, 0x1000, 0);
-        _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj(
-            &mTextureSequence, data_ov066_0211aebc.filePtr, 0x40000000, 0x1000, 0);
+        mTextureSequence.SetFile(*(BTP_File *)data_ov066_0211aebc.filePtr, 0x40000000, 0x1000, 0);
     }
     mBlendModelAnim.speed = 0x1000;
     {
@@ -670,25 +670,25 @@ void Eyerok::func_ov066_021166c8()
 
     if (mPartIdx == PART_HAND_2) {
         mBlendModelAnim.SetAnim(*(BCA_File *)data_ov066_0211ae54.filePtr, 4, 0x40000000, 0x1000, 0);
-        _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj(
-            &mTextureSequence, data_ov066_0211ae2c.filePtr, 0x40000000, 0x1000, 0);
+        mTextureSequence.SetFile(*(BTP_File *)data_ov066_0211ae2c.filePtr, 0x40000000, 0x1000, 0);
     } else {
         mBlendModelAnim.SetAnim(*(BCA_File *)data_ov066_0211ae94.filePtr, 4, 0x40000000, 0x1000, 0);
-        _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj(
-            &mTextureSequence, data_ov066_0211ae9c.filePtr, 0x40000000, 0x1000, 0);
+        mTextureSequence.SetFile(*(BTP_File *)data_ov066_0211ae9c.filePtr, 0x40000000, 0x1000, 0);
     }
 
     if (mMeshCollider2.IsEnabled() != 0)
         mMeshCollider2.Disable();
 
     if (mPartIdx == PART_HAND_1) {
-        _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-            &mMeshCollider2, data_ov066_0211ae34.filePtr, &mClsnMat2, 0x199, mAngleY,
-            &data_ov025_02112cc8);
+        ((dBgW_KcMbg *)(&mMeshCollider2))
+            ->dBgW_KcMbg::SetFile((KCL_File *)(data_ov066_0211ae34.filePtr),
+                                  *(const Matrix4x3 *)(&mClsnMat2), 0x199, mAngleY,
+                                  *(CLPS_Block *)(&data_ov025_02112cc8));
     } else {
-        _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-            &mMeshCollider2, data_ov066_0211ae1c.filePtr, &mClsnMat2, 0x199, mAngleY,
-            &data_ov025_02112c88);
+        ((dBgW_KcMbg *)(&mMeshCollider2))
+            ->dBgW_KcMbg::SetFile((KCL_File *)(data_ov066_0211ae1c.filePtr),
+                                  *(const Matrix4x3 *)(&mClsnMat2), 0x199, mAngleY,
+                                  *(CLPS_Block *)(&data_ov025_02112c88));
     }
 
     func_020393d4(&mMeshCollider2, (void *)&dBgW::UpdatePosWithTransform);
@@ -977,13 +977,15 @@ int Eyerok::func_ov066_02116db0()
             if (mMeshCollider2.IsEnabled() != 0)
                 mMeshCollider2.Disable();
             if (mPartIdx == PART_HAND_1)
-                _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-                    &mMeshCollider2, data_ov066_0211ae14.filePtr, &mClsnMat2, 0x199, mAngleY,
-                    &data_ov025_02112c08);
+                ((dBgW_KcMbg *)(&mMeshCollider2))
+                    ->dBgW_KcMbg::SetFile((KCL_File *)(data_ov066_0211ae14.filePtr),
+                                          *(const Matrix4x3 *)(&mClsnMat2), 0x199, mAngleY,
+                                          *(CLPS_Block *)(&data_ov025_02112c08));
             else
-                _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-                    &mMeshCollider2, data_ov066_0211aeac.filePtr, &mClsnMat2, 0x199, mAngleY,
-                    &data_ov025_02112d48);
+                ((dBgW_KcMbg *)(&mMeshCollider2))
+                    ->dBgW_KcMbg::SetFile((KCL_File *)(data_ov066_0211aeac.filePtr),
+                                          *(const Matrix4x3 *)(&mClsnMat2), 0x199, mAngleY,
+                                          *(CLPS_Block *)(&data_ov025_02112d48));
             func_020393d4(&mMeshCollider2, (void *)&dBgW::UpdatePosWithTransform);
             func_020393c4(&mMeshCollider2, (void *)func_ov066_0211a35c);
             func_020398fc(&mMeshCollider2);
@@ -1344,13 +1346,15 @@ int Eyerok::func_ov066_021175e8()
             if (mMeshCollider2.IsEnabled() != 0)
                 mMeshCollider2.Disable();
             if (mPartIdx == PART_HAND_1)
-                _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-                    &mMeshCollider2, data_ov066_0211ae14.filePtr, &mClsnMat2, 0x199, mAngleY,
-                    &data_ov025_02112c08);
+                ((dBgW_KcMbg *)(&mMeshCollider2))
+                    ->dBgW_KcMbg::SetFile((KCL_File *)(data_ov066_0211ae14.filePtr),
+                                          *(const Matrix4x3 *)(&mClsnMat2), 0x199, mAngleY,
+                                          *(CLPS_Block *)(&data_ov025_02112c08));
             else
-                _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-                    &mMeshCollider2, data_ov066_0211aeac.filePtr, &mClsnMat2, 0x199, mAngleY,
-                    &data_ov025_02112d48);
+                ((dBgW_KcMbg *)(&mMeshCollider2))
+                    ->dBgW_KcMbg::SetFile((KCL_File *)(data_ov066_0211aeac.filePtr),
+                                          *(const Matrix4x3 *)(&mClsnMat2), 0x199, mAngleY,
+                                          *(CLPS_Block *)(&data_ov025_02112d48));
             func_020393d4(&mMeshCollider2, (void *)&dBgW::UpdatePosWithTransform);
             func_020393c4(&mMeshCollider2, (void *)func_ov066_0211a35c);
             func_020398fc(&mMeshCollider2);
@@ -1526,13 +1530,15 @@ int Eyerok::func_ov066_02117bf0()
             if (mMeshCollider2.IsEnabled() != 0)
                 mMeshCollider2.Disable();
             if (mPartIdx == PART_HAND_1)
-                _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-                    &mMeshCollider2, data_ov066_0211ae14.filePtr, &mClsnMat2, 0x199, mAngleY,
-                    &data_ov025_02112c08);
+                ((dBgW_KcMbg *)(&mMeshCollider2))
+                    ->dBgW_KcMbg::SetFile((KCL_File *)(data_ov066_0211ae14.filePtr),
+                                          *(const Matrix4x3 *)(&mClsnMat2), 0x199, mAngleY,
+                                          *(CLPS_Block *)(&data_ov025_02112c08));
             else
-                _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-                    &mMeshCollider2, data_ov066_0211aeac.filePtr, &mClsnMat2, 0x199, mAngleY,
-                    &data_ov025_02112d48);
+                ((dBgW_KcMbg *)(&mMeshCollider2))
+                    ->dBgW_KcMbg::SetFile((KCL_File *)(data_ov066_0211aeac.filePtr),
+                                          *(const Matrix4x3 *)(&mClsnMat2), 0x199, mAngleY,
+                                          *(CLPS_Block *)(&data_ov025_02112d48));
             func_020393d4(&mMeshCollider2, (void *)&dBgW::UpdatePosWithTransform);
             func_020393c4(&mMeshCollider2, (void *)func_ov066_0211a35c);
             func_020398fc(&mMeshCollider2);
@@ -1670,13 +1676,15 @@ int Eyerok::func_ov066_02118188()
             mMeshCollider2.Disable();
 
         if (mPartIdx == PART_HAND_1) {
-            _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-                &mMeshCollider2, data_ov066_0211ae14.filePtr, &mClsnMat2, 0x199, mAngleY,
-                &data_ov025_02112c08);
+            ((dBgW_KcMbg *)(&mMeshCollider2))
+                ->dBgW_KcMbg::SetFile((KCL_File *)(data_ov066_0211ae14.filePtr),
+                                      *(const Matrix4x3 *)(&mClsnMat2), 0x199, mAngleY,
+                                      *(CLPS_Block *)(&data_ov025_02112c08));
         } else {
-            _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-                &mMeshCollider2, data_ov066_0211aeac.filePtr, &mClsnMat2, 0x199, mAngleY,
-                &data_ov025_02112d48);
+            ((dBgW_KcMbg *)(&mMeshCollider2))
+                ->dBgW_KcMbg::SetFile((KCL_File *)(data_ov066_0211aeac.filePtr),
+                                      *(const Matrix4x3 *)(&mClsnMat2), 0x199, mAngleY,
+                                      *(CLPS_Block *)(&data_ov025_02112d48));
         }
 
         func_020393d4(&mMeshCollider2, (void *)&dBgW::UpdatePosWithTransform);
@@ -1854,12 +1862,10 @@ int Eyerok::func_ov066_021187c8()
 {
     if (mPartIdx == PART_HAND_2) {
         mBlendModelAnim.SetAnim(*(BCA_File *)data_ov066_0211ae74.filePtr, 4, 0x40000000, 0x1000, 0);
-        _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj(
-            &mTextureSequence, data_ov066_0211ae3c.filePtr, 0x40000000, 0x1000, 0);
+        mTextureSequence.SetFile(*(BTP_File *)data_ov066_0211ae3c.filePtr, 0x40000000, 0x1000, 0);
     } else {
         mBlendModelAnim.SetAnim(*(BCA_File *)data_ov066_0211ae7c.filePtr, 4, 0x40000000, 0x1000, 0);
-        _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj(
-            &mTextureSequence, data_ov066_0211aebc.filePtr, 0x40000000, 0x1000, 0);
+        mTextureSequence.SetFile(*(BTP_File *)data_ov066_0211aebc.filePtr, 0x40000000, 0x1000, 0);
     }
     mBlendModelAnim.speed = 0;
     mStateWork0 = 0;
@@ -2245,7 +2251,7 @@ int Eyerok::func_ov066_0211903c() {
             msgid = MSG_BEFORE_FIGHT;
             if (data_ov066_0211abe0 == 0) {
                 msgid = MSG_AFTER_FIGHT;
-                _ZN5Sound17ChangeMusicVolumeEj5Fix12IiE(0x14, 0x15666);
+                Sound::ChangeMusicVolume(0x14, 0x15666);
             }
 
             mTalkPlayer->mStateFlags |= 0x400;
@@ -2265,7 +2271,7 @@ int Eyerok::func_ov066_0211903c() {
                     func_02011d2c();
                     func_ov066_02119454(&data_ov066_0211b0cc);
                 } else {
-                    _ZN5Sound17ChangeMusicVolumeEj5Fix12IiE(0x7f, 0x15666);
+                    Sound::ChangeMusicVolume(0x7f, 0x15666);
                     _ZN5Sound22StopLoadedMusic_Layer3Ev();
                     func_02011cfc();
                     star.x = 0;
@@ -2760,9 +2766,10 @@ int Eyerok::InitResources()
         data_ov066_0211abe4 = 1;
         data_ov066_0211ae04 = PHASE_DORMANT;
         data_ov066_0211abe0 = HANDS_BOTH;
-        _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-            &mMeshCollider2, data_ov066_0211ae24.filePtr, &mClsnMat2, 0x199, mAngleY,
-            &data_ov025_02112ca8);
+        ((dBgW_KcMbg *)(&mMeshCollider2))
+            ->dBgW_KcMbg::SetFile((KCL_File *)(data_ov066_0211ae24.filePtr),
+                                  *(const Matrix4x3 *)(&mClsnMat2), 0x199, mAngleY,
+                                  *(CLPS_Block *)(&data_ov025_02112ca8));
         func_020393d4(&mMeshCollider2, (void *)&dBgW::UpdatePosWithTransform);
         func_020393c4(&mMeshCollider2, (void *)func_ov066_0211a35c);
         mMeshCollider2.Enable(this);
@@ -2776,14 +2783,16 @@ int Eyerok::InitResources()
         mSpawnPosY = mPosY;
         mSpawnPosZ = mPosZ;
         if (mPartIdx == PART_HAND_1) {
-            _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-                &mMeshCollider2, data_ov066_0211ae14.filePtr, &mClsnMat2, 0x199, mAngleY,
-                &data_ov025_02112c08);
+            ((dBgW_KcMbg *)(&mMeshCollider2))
+                ->dBgW_KcMbg::SetFile((KCL_File *)(data_ov066_0211ae14.filePtr),
+                                      *(const Matrix4x3 *)(&mClsnMat2), 0x199, mAngleY,
+                                      *(CLPS_Block *)(&data_ov025_02112c08));
             mRestPosX -= 0x31F000;
         } else {
-            _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-                &mMeshCollider2, data_ov066_0211aeac.filePtr, &mClsnMat2, 0x199, mAngleY,
-                &data_ov025_02112d48);
+            ((dBgW_KcMbg *)(&mMeshCollider2))
+                ->dBgW_KcMbg::SetFile((KCL_File *)(data_ov066_0211aeac.filePtr),
+                                      *(const Matrix4x3 *)(&mClsnMat2), 0x199, mAngleY,
+                                      *(CLPS_Block *)(&data_ov025_02112d48));
             mRestPosX += 0x31F000;
         }
         func_020393d4(&mMeshCollider2, (void *)&dBgW::UpdatePosWithTransform);

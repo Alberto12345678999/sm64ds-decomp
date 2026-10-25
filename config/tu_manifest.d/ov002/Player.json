@@ -4379,13 +4379,24 @@
     "WIDENED to ordinals 0..343 (43 members, 0x020cfea4..0x020d3b9c) by the same member format as the first 301: per-member block-scope declarations inside the extern \"C\" body, ROM-ascending, `#pragma defer_codegen off` unchanged. Three members (func_ov002_020d0580, func_ov002_020d06c0, func_ov002_020d2e74) had declared a LOCAL shadow `struct Player`; with the real Player.h type in scope that clashes with their `Player *` parameter, so the shadow was dropped (calls resolve to Player::GetHealth/IsInAir, which mangle to the same ROM symbols) and func_ov002_020d2e74 reads its fields through a file-local `PlayerView` cast. Ten members needed ROM-symbol declarations that their shards took from include/decl_common.h; decl_common.h is NOT included here (it redeclares dozens of symbols this file already declares with other types: 'redeclared' / 'illegal function overloading'), so each member declares what it uses, copied verbatim from the header row. decl_Animation.h and Sound.h are included; they conflict with nothing. func_ov002_020d12b0 takes u8*, so its two callers cast to u8* instead of char*.",
     "WIDENED to ordinals 0..611 (251 members, 0x020d3b9c..0x020e67a8) in the same member format: per-member block-scope declarations inside the extern \"C\" body, ROM-ascending, `#pragma defer_codegen off` unchanged. tools/tubuild.py verify: 612/612 MATCH, objisolate clean, relocation destinations clean, emission ROM-ascending. The fold landed in two steps, ordinals 361..486 first and 487..611 once the ITCM interior entry points func_ov002_020dc560 calls became linkable (boundary_evidence, TAIL FOLD). Source changes the fold forced, each measured: (a) func_ov002_020d6dac, func_ov002_020d71ec and func_ov002_020d9dcc first went in as C under `#pragma cplusplus off`, the precedent being func_ov002_020bcdf0, because as C++ they differed by 10, 5 and 29 words. All three now compile as C++ inside extern \"C\" { }: the two-int struct copies in 020d6dac and 020d71ec go through a single-array wrapper (`struct P2 { int w[2]; }`, as in func_ov002_020c14b8), which restores C's load/load/store/store block copy, and 020d9dcc spells its state test `(int)(x == 0xbf) == 0`, because widening the bool to long long (the C shard's spelling) hoists the early return's 0 ahead of the branch. func_ov002_020bcdf0 is the one C body left. (b) Local shadow types that stood in for the real class were dropped where Player.h is in scope: the `struct State` / `typedef struct State State` stand-ins resolve to Player::State; func_ov002_020df34c and func_ov002_020e2ea0 lose a shadow Player whose IsState/ChangeState calls now bind the real members (same ROM symbols); Player::St_CrazedCrate_Cleanup loses its field-view Player, and its write of the byte at 0x6e1 is spelled mJumpComboStage. Block-scope declarations of names that Player.h already declares as class members are dropped from Player:: member bodies; func_ov002_020d85fc calls Player::TryGrab as a member, and func_ov002_020d06c0, Player::St_SideFlip_Main and Player::Behavior call Player::IsState as a member (byte-identical; once IsState is defined in this file, a mangled call that opens a source line reads as a hand-spelled definition to tools/langmode_audit.py). (c) include/Player.h gains the missing declaration `int St_CrazedCrate_Cleanup();`, which the shard had supplied through its shadow class; adding a non-virtual member declaration changes no consumer's layout. (d) C spellings C++ rejects: a parameter named `this` (func_ov002_020d4d88) became `self`; two `char *c = self;` gained a cast (func_ov002_020d8360); func_ov002_020d4c30 drops its shadow `struct Sound` (Sound.h is included) and an unused shadow `Particle::System`, and its extern \"C\" NewSimple declaration leaves the `Particle` namespace it sat in, so the call names the ROM symbol directly; func_ov002_020e2c84 gained the prototype its shard used implicitly; Player::St_Fly_Main's extern prototypes lost parameter names its body's `#define c` would rewrite; the `enum { false, true };` stand-ins were dropped. (e) Types with a user destructor are hoisted to file scope with TU-unique names (PVec, PVec869c, PVec8944, Vector3e968) so their vague-linkage D1s are licensed by compiler_only_output rows; the remaining local shadow structs keep C linkage under unique tags. Player::InitResources keeps the inline asm block its shard carried. Baselines: the member definitions sit inside `extern \"C\" { }`, which tools/check_decl_agreement.py does not index, so retiring a shard removes its declarations from that gate's plurality vote; the resulting flips are banked in config/decl-agreement-baseline.json. Converted identities of retired shards are rewritten onto src/game/player/Player.cpp#symbol.",
     "DESTRUCTOR TAIL: ordinals 612..616 (0x020e67a8..0x020e6a08) and __sinit_ov002_021019d0 (.init 0x021019d0..0x02106e40). ~Player() is the key function, with defer_codegen on for that definition only so the variants emit D2, D0, D1, and with RTTI off so no Player RTTI record is emitted. D2 is deadstripped. _ZTV6Player is deadstrip-data at ov002:0x0210a83c. No header edit.",
-    "LOCAL WORKER NOTE: this machine's stock dump is the EU image (gamecode ASMP), so the scratch link built ROM sha256 ddab9300b24aeae254192c2a30d812b07ece3adff83230e75c865ed915c9de40, byte-identical to this tree's stock build and to the strict control, while the recorded rom.sha256 carries the fleet-canonical stock SHA-256 that every other intact entry shares (d1506e90efae5e2d2cf119926a4ac2a291bd5ca78349d09d5024e1a918c478e8). The divergent bytes are NDS container fields outside every module range. The content proof is the same either way: moduleSetSha256 f9852ffaf80ef19662ab5535df4b13b935188ac3087b5b1d4561c089e4dd802b, 106/106 modules, and the owned .text and .init ranges identical."
+    "LOCAL WORKER NOTE: this machine's stock dump is the EU image (gamecode ASMP), so the scratch link built ROM sha256 ddab9300b24aeae254192c2a30d812b07ece3adff83230e75c865ed915c9de40, byte-identical to this tree's stock build and to the strict control, while the recorded rom.sha256 carries the fleet-canonical stock SHA-256 that every other intact entry shares (d1506e90efae5e2d2cf119926a4ac2a291bd5ca78349d09d5024e1a918c478e8). The divergent bytes are NDS container fields outside every module range. The content proof is the same either way: moduleSetSha256 f9852ffaf80ef19662ab5535df4b13b935188ac3087b5b1d4561c089e4dd802b, 106/106 modules, and the owned .text and .init ranges identical.",
+    "REAL CONSTRUCTOR: _ZN6PlayerC1Ev (ordinal 614) is Player::Player() {}, compiled from embedded members instead of a hand-spelled free function. The retail body keeps this in r5 and this + 0xdc in r4 across the five model/animation member constructors (r4 + 0x14, + 0x98, + 0x100, + 0x150, + 0x178) while the shadow model, both dCcAcPos_c and the dBgCh_Actr are built off r5. That second anchor is the inlined implicit constructor of a nested sub-object whose `this` is Player + 0xdc, so include/Player.h groups 0x0dc..0x2ac as `struct Models { ... } mModels;`. Measured on 2004/b56: with the members flat the definition comes out 0xc0 (one anchor, 32 of 49 words differ); with the sub-object it is 0xc4 and byte-identical, and D0/D1 still match because the inlined Models destructor folds into this-relative offsets. An anonymous `struct { ... };` instead constructs the members twice. The sub-object must cover 0x0dc..0x27c; whether the two saved-texparam arrays (0x27c..0x2ac) belong to it is not settled by the bytes (both extents match); they are grouped with the models they save state for. C2 and the out-of-line Models D1 are deadstripped (compiler_only_output)."
   ],
   "compiler_only_output": [
     {
       "symbol": "_ZN6PlayerD2Ev",
       "disposition": "deadstrip",
       "reason": "Out-of-line ~Player under a deferred-codegen bracket emits D2, then D0, then D1. The cartridge has D0 at 0x020e67a8 and D1 at 0x020e6858 and no Player D2. D2 is homeless and is deadstripped; D0 and D1 stay in retail order."
+    },
+    {
+      "symbol": "_ZN6PlayerC2Ev",
+      "disposition": "deadstrip",
+      "reason": "Base-subobject constructor emitted beside C1 by the one out-of-line Player::Player(). Nothing derives from Player, so the one retail caller, daPly_c_classInit (0x020e6c0c), calls C1 at 0x020e68f4; the cartridge has no C2 and nothing in this object references it. Discarded."
+    },
+    {
+      "symbol": "_ZN6Player6ModelsD1Ev",
+      "disposition": "deadstrip",
+      "reason": "The implicit destructor of the nested Player::Models sub-object (0x0dc..0x2ac). ~Player destroys those members inline, as the retail D0 and D1 do, but the TU also emits this vague-linkage copy out of line (0x68, STB_LOPROC). No relocation in this object names it, no symbols.txt has a home for it, and the licensed bodies reproduce the cartridge without it."
     },
     {
       "symbol": "_ZTV6Player",
@@ -4542,28 +4553,8 @@
       },
       "linkedStorageAliases": null,
       "symbolCheckNewVsBaseline": [],
-      "symbolCheckErrors": [
-        "[ERROR] Symbol '_deq' in ITCM at 0x01ff9d40 not found in linked binary",
-        "[ERROR] Symbol 'data_020ad524' in ARM9 main at 0x020ad524 not found in linked binary",
-        "[ERROR] Symbol 'data_020ad560' in ARM9 main at 0x020ad560 not found in linked binary",
-        "[ERROR] Symbol 'func_01ff98f4' in ITCM at 0x01ff98f4 not found in linked binary",
-        "[ERROR] Symbol 'func_01ff99a4' in ITCM at 0x01ff99a4 not found in linked binary",
-        "[ERROR] Symbol 'func_01ff9d40' in ITCM at 0x01ff9d40 not found in linked binary",
-        "[ERROR] Symbol 'func_01ff9e2c' in ITCM at 0x01ff9e2c not found in linked binary",
-        "[ERROR] Symbol 'overlay_100' in ARM9 main at 0x00000064 not found in linked binary",
-        "[ERROR] Symbol 'overlay_102' in ARM9 main at 0x00000066 not found in linked binary"
-      ],
-      "symbolCheckBaselineErrors": [
-        "[ERROR] Symbol '_deq' in ITCM at 0x01ff9d40 not found in linked binary",
-        "[ERROR] Symbol 'data_020ad524' in ARM9 main at 0x020ad524 not found in linked binary",
-        "[ERROR] Symbol 'data_020ad560' in ARM9 main at 0x020ad560 not found in linked binary",
-        "[ERROR] Symbol 'func_01ff98f4' in ITCM at 0x01ff98f4 not found in linked binary",
-        "[ERROR] Symbol 'func_01ff99a4' in ITCM at 0x01ff99a4 not found in linked binary",
-        "[ERROR] Symbol 'func_01ff9d40' in ITCM at 0x01ff9d40 not found in linked binary",
-        "[ERROR] Symbol 'func_01ff9e2c' in ITCM at 0x01ff9e2c not found in linked binary",
-        "[ERROR] Symbol 'overlay_100' in ARM9 main at 0x00000064 not found in linked binary",
-        "[ERROR] Symbol 'overlay_102' in ARM9 main at 0x00000066 not found in linked binary"
-      ],
+      "symbolCheckErrors": [],
+      "symbolCheckBaselineErrors": [],
       "moduleSetSha256": "f9852ffaf80ef19662ab5535df4b13b935188ac3087b5b1d4561c089e4dd802b",
       "rom": {
         "bytes": 16777216,

@@ -76,9 +76,8 @@ extern int data_0209e650;                   /* arm9 RNG state */
 u16 DecIfAbove0_Short(u16 *p);
 int RandomIntInternal(int *state);
 
-void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-    dBgW_KcMbg *self, KCL_File *file, const Matrix4x3 *mat,
-    Fix12i scale, s16 angle, CLPS_Block *clps);
+extern void hold_d_a_obj_ct_mecha08(dBgW_KcMbg *self, KCL_File *file, const Matrix4x3 *mat,
+                                    Fix12i scale, s16 angle, CLPS_Block *clps);
 }
 
 /* int-returning, so the ROM materializes the 0/1 before testing it. */
@@ -111,10 +110,9 @@ int daObjCtMecha08_c::InitResources()
     mModel.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(TtcRotatingGear_ModelFile), 1, -1);
     UpdateModelPosAndRotY();
     UpdateClsnPosAndRot();
-    _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-        &mMeshCollider,
-        (KCL_File *)dBgW_Kc::LoadFile(TtcRotatingGear_ClsnFile),
-        &mClsnMat, 0x199, mAngleY, &data_ov035_021121b8);
+    ((dBgW_KcMbg *)(&mMeshCollider))
+        ->dBgW_KcMbg::SetFile((KCL_File *)dBgW_Kc::LoadFile(TtcRotatingGear_ClsnFile), *(&mClsnMat),
+                              0x199, mAngleY, *(&data_ov035_021121b8));
 
     mHomePosX = mPosX;
     mHomePosY = mPosY;

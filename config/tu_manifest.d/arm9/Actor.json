@@ -345,7 +345,7 @@
       "ordinal": 45
     },
     {
-      "symbol": "_ZN8dActor_c10EarthquakeERK7Vector35Fix12IiE",
+      "symbol": "_ZN8dActor_c10EarthquakeERK7Vector3i",
       "address": "0x02010168",
       "size": "0x00000018",
       "legacy_source": "src/_ZN8dActor_c10EarthquakeERK7Vector35Fix12IiE.cpp",

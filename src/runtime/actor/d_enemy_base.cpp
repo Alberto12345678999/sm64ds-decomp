@@ -51,9 +51,9 @@ struct System {
  *     its unused second argument; the one-argument form comes out 0x50
  *     against the ROM's 0x5c (measured note in place).
  *   - Computed-spelling externs stay where a member form changes codegen:
- *     _ZN8dActor_c12ReflectAngleE5Fix12IiES1_s, cstd::atan2 and the
- *     Particle::System wrappers all take Fix12<int> by value (runbook
- *     section 7).
+ *     _ZN8dActor_c12ReflectAngleE5Fix12IiES1_s and the Particle::System
+ *     wrappers take Fix12<int> by value (runbook section 7).
+ *     cstd::atan2 is the scalar call.
  *   - func_ov002_020ae4cc passes its particle position as
  *     `*(int *)((char *)v + N)`; indexing v[] directly comes out 0xd4 against
  *     the ROM's 0xfc (measured). SpawnParticlesIfHitOtherObj keeps its
@@ -127,6 +127,7 @@ extern void dBgCh_Actr_UpdateContinuous_Veneer(dBgCh_Actr *);
 
 /* local extern: no header declares the cstd division routines. */
 namespace cstd {
+s16 atan2(s32, s32);
 int fdiv(int, int);
 }
 
@@ -735,7 +736,7 @@ int dEnemyBase_c::SpawnParticlesIfHitOtherObj(dCc_c &clsn) {
 // @symbol _ZN12dEnemyBase_c22SpawnMegaCharParticlesER8dActor_cPc
 extern "C" {
 extern void Vec3_Sub(Vector3 *out, const Vector3 *a, const Vector3 *b);
-extern s16 _ZN4cstd5atan2E5Fix12IiES1_(s32 y, s32 x);
+extern s16 atan2_hold_d_enemy_base_1(s32 y, s32 x);
 extern s32 *Vec3_AsrInPlace(s32 *v, s32 sh);
 }
 
@@ -775,8 +776,8 @@ void dEnemyBase_c::SpawnMegaCharParticles(dActor_c &other, char *p) {
         v.y = delta.y;
         v.z = delta.z;
 
-        aX = _ZN4cstd5atan2E5Fix12IiES1_(v.x, v.z);
-        aY = _ZN4cstd5atan2E5Fix12IiES1_(v.y, Vec3_HorzLen(&v));
+        aX = cstd::atan2(v.x, v.z);
+        aY = cstd::atan2(v.y, Vec3_HorzLen(&v));
 
         iX = (u16)aX >> 4;
         iY = (u16)aY >> 4;

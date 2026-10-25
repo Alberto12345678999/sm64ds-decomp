@@ -79,8 +79,8 @@ extern u16 DecIfAbove0_Short(u16 *p);
 extern int RandomIntInternal(int *seed);
 extern int _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_S5_j(
     void *self, void *sm, void *mtx, int a, int b, int d, unsigned int e);
-extern void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-    void *mc, void *kcl, void *mtx, int fix, s16 s, void *clps);
+extern void hold_d_a_obj_ct_rotate_block(void *mc, void *kcl, void *mtx, int fix, s16 s,
+                                         void *clps);
 extern void func_020393d4(void *p, void *v);
 extern short data_02082214[];
 extern u8 data_0209f2c0;
@@ -251,15 +251,17 @@ int daObjCtRotateBlock_c::InitResources()
     if (idx == 0) {
         s32 oi = idx * 0xc;
         void *kcl = dBgW_Kc::LoadFile(*(SharedFilePtr *)*(void **)(data_ov065_0211cfd4 + oi));
-        _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-            &mMeshCollider, kcl, &mClsnMat, 0x1000, mAngleY,
-            *(void **)((char *)data_ov065_0211cfd8 + oi));
+        ((dBgW_KcMbg *)(&mMeshCollider))
+            ->dBgW_KcMbg::SetFile((KCL_File *)(kcl), *(const Matrix4x3 *)(&mClsnMat), 0x1000,
+                                  mAngleY,
+                                  *(CLPS_Block *)(*(void **)((char *)data_ov065_0211cfd8 + oi)));
     } else {
         s32 oi = idx * 0xc;
         void *kcl = dBgW_Kc::LoadFile(*(SharedFilePtr *)*(void **)(data_ov065_0211cfd4 + oi));
-        _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-            &mMeshCollider, kcl, &mClsnMat, 0x199, mAngleY,
-            *(void **)((char *)data_ov065_0211cfd8 + oi));
+        ((dBgW_KcMbg *)(&mMeshCollider))
+            ->dBgW_KcMbg::SetFile((KCL_File *)(kcl), *(const Matrix4x3 *)(&mClsnMat), 0x199,
+                                  mAngleY,
+                                  *(CLPS_Block *)(*(void **)((char *)data_ov065_0211cfd8 + oi)));
     }
 
     func_020393d4(&mMeshCollider, (void *)&dBgW::UpdatePosWithTransform);

@@ -525,14 +525,14 @@
       "ordinal": 71
     },
     {
-      "symbol": "_ZN5Sound7PlaySubEjjj5Fix12IiEb",
+      "symbol": "_ZN5Sound7PlaySubEjjjib",
       "address": "0x02012be0",
       "legacy_source": "src/_ZN5Sound7PlaySubEjjj5Fix12IiEb.cpp",
       "size": "0x0000014c",
       "ordinal": 72
     },
     {
-      "symbol": "_ZN5Sound17ChangeMusicVolumeEj5Fix12IiE",
+      "symbol": "_ZN5Sound17ChangeMusicVolumeEji",
       "address": "0x02012d2c",
       "legacy_source": "src/_ZN5Sound17ChangeMusicVolumeEj5Fix12IiE.c",
       "size": "0x00000038",

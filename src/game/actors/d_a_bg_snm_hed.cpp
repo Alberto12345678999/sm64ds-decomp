@@ -6,10 +6,8 @@
  * with no ROM home. Source order is ROM order. The factory was
  * SnowmanHead_Spawn; `new daBgSnmHed_c()` is the same sequence.
  */
-/* leftovers: dExtAnmTexPat_c::SetFile, dActor_c::Earthquake,
- * Particle::System::NewSimple, Sound::PlaySub, dCcAc_c::Init and
- * dBgCh_Actr::Init stay mangled. This file calls each of them, and every
- * one of those definitions takes Fix12<int> by value.
+/* leftovers: dCcAc_c::Init and dBgCh_Actr::Init stay mangled. Both
+ * definitions take Fix12<int> by value.
  */
 
 #pragma defer_codegen off
@@ -28,21 +26,20 @@ extern "C" daBgSnmHed_c::StateEntry data_ov072_02122c00[];
 extern int gBigSnowmanSmileTextureSequenceFile[];
 extern int gBigSnowmanCryTextureSequenceFile[];
 
+namespace Sound {
+bool PlaySub(u32, u32, u32, int, bool);
+}
+
 extern "C" {
 void Matrix4x3_FromRotationY(void *matrix, int angle);
-void _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj(void *self, void *file, int flags,
-                                                        int speed, unsigned int startFrame);
-void _ZN8dActor_c10EarthquakeERK7Vector35Fix12IiE(
-    void *self, const void *pos, int magnitude);
 int func_0201267c(int id, void *pos);
 namespace Particle {
 struct System {
     static void NewSimple(unsigned int id, int x, int y, int z);
 };
 }
-int _ZN5Sound7PlaySubEjjj5Fix12IiEb(
-    unsigned int soundID, unsigned int volume, unsigned int pan,
-    int distance, int loop);
+int d_a_bg_snm_hedPlaySubHold(unsigned int soundID, unsigned int volume, unsigned int pan,
+                              int distance, int loop);
 unsigned char DecIfAbove0_Byte(unsigned char *value);
 int Vec3_HorzDist(const void *a, const void *b);
 short Vec3_HorzAngle(const void *a, const void *b);
@@ -114,8 +111,7 @@ int daBgSnmHed_c::State3()
 // @symbol _ZN12daBgSnmHed_c10InitState3Ev
 int daBgSnmHed_c::InitState3()
 {
-    _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj(
-        &mTextureSequence, (void *)gBigSnowmanSmileTextureSequenceFile[1], 0, 0x1000, 0);
+    mTextureSequence.SetFile(*(BTP_File *)gBigSnowmanSmileTextureSequenceFile[1], 0, 0x1000, 0);
     mVertAccel = 0;
     mTerminalVelocity = 0;
     mSubstate = 0;
@@ -138,20 +134,17 @@ int daBgSnmHed_c::State2()
             pos.x = mPosX;
             pos.y = mPosY;
             pos.z = mPosZ;
-            _ZN8dActor_c10EarthquakeERK7Vector35Fix12IiE(
-                this, &pos, 0x5dc000);
+            Earthquake(*(const Vector3 *)&pos, 0x5dc000);
             func_0201267c(0x115, &mCamSpacePosX);
             Particle::System::NewSimple(0x10f, mPosX, mPosY, mPosZ);
             Particle::System::NewSimple(0x110, mPosX, mPosY, mPosZ);
-            _ZN5Sound7PlaySubEjjj5Fix12IiEb(
-                0x20, 0x14, 0x7f, 0x15666, 0);
+            Sound::PlaySub(0x20, 0x14, 0x7f, 0x15666, 0);
             mSubstate++;
         }
         break;
     case 1:
         if (DecIfAbove0_Byte(&mStateTimer) == 0) {
-            _ZN5Sound7PlaySubEjjj5Fix12IiEb(
-                0x20, 0x7f, 0, 0x15666, 0);
+            Sound::PlaySub(0x20, 0x7f, 0, 0x15666, 0);
             SetState(3);
         }
         break;
@@ -235,8 +228,7 @@ int daBgSnmHed_c::State0()
 // @symbol _ZN12daBgSnmHed_c10InitState0Ev
 int daBgSnmHed_c::InitState0()
 {
-    _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj(
-        &mTextureSequence, (void *)gBigSnowmanCryTextureSequenceFile[1], 0, 0x1000, 0);
+    mTextureSequence.SetFile(*(BTP_File *)gBigSnowmanCryTextureSequenceFile[1], 0, 0x1000, 0);
     mVertAccel = 0;
     mTerminalVelocity = 0;
     mStateValue = 0;

@@ -10,8 +10,8 @@
  * leftovers:
  * - Sound::Play and Sound::Play2D are defined void; callers that harvest r0
  *   keep the mangled spelling (the same return-split the shards carried).
- * - PlaySub and ChangeMusicVolume keep their literal mangled names:
- *   `5Fix12IiE' is unproducible (the Fix12 wall, see include/Sound.h).
+ * - ChangeMusicVolume is Sound::ChangeMusicVolume(unsigned int, int). The
+ *   second value is a 0x1000-scaled volume, spelled Fix12i in the header.
  * - Sound_PlayIfNotActive calls func_0201186c through an int-arity pointer:
  *   the def takes short #4 and the site passes d untruncated.
  * - `int dd = (int)(((long long)d))' in func_02012468 is a no-op tower of
@@ -356,20 +356,22 @@ extern "C" void func_02012d64(void)
                   0);
 }
 
-// @symbol _ZN5Sound17ChangeMusicVolumeEj5Fix12IiE
-extern "C" int _ZN5Sound17ChangeMusicVolumeEj5Fix12IiE(unsigned int a, int b)
-{
+// @symbol _ZN5Sound17ChangeMusicVolumeEji
+namespace Sound {
+int ChangeMusicVolume(unsigned int a, int b) {
     data_0208e42c = a;
     data_0209b494 = b;
     return data_0209b490 == (data_0208e42c << 12);
 }
+}
 
-// @symbol _ZN5Sound7PlaySubEjjj5Fix12IiEb
-extern "C" bool _ZN5Sound7PlaySubEjjj5Fix12IiEb(unsigned int a, unsigned int b, unsigned int c, int d, int e)
-{
+// @symbol _ZN5Sound7PlaySubEjjjib
+namespace Sound {
+bool PlaySub(unsigned int a, unsigned int b, unsigned int c, int d, bool e) {
     int x;
     if (c == 0) {
-        if (!e) {
+        /* e is bool. A plain test compiles to ldrb; retail loads the whole word. */
+        if (!*(int *)&e) {
             x = data_0208e430;
             if ((x >= 0 && x != (int)a) ||
                 (data_0209b49c == 0 && data_0208e42c == (int)b && data_0209b490 == (int)(b << 12)))
@@ -377,7 +379,7 @@ extern "C" bool _ZN5Sound7PlaySubEjjj5Fix12IiEb(unsigned int a, unsigned int b, 
         }
     } else {
         x = data_0208e430;
-        if (x < 0 || e) {
+        if (x < 0 || *(int *)&e) { /* same full-word load as above */
             if (x != (int)a) {
                 data_0208e430 = a;
                 if (a != 0x35 && a != 0x36) {
@@ -394,6 +396,7 @@ extern "C" bool _ZN5Sound7PlaySubEjjj5Fix12IiEb(unsigned int a, unsigned int b, 
     data_0209b470 = (signed char)c;
     data_0209b494 = d;
     return data_0209b490 == (int)(b << 12) && data_0209b49c == (int)(c << 12);
+}
 }
 
 namespace Sound {

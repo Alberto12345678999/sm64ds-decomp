@@ -48,7 +48,7 @@
  *   compares the two. func_ov100_02143aa4 and func_ov100_02143ae0 are the
  *   state pair's members, called through ChompPmfSelf rather than as methods.
  * - The callees with Fix12<int> parameters (dActor_c's shadow drop,
- *   Player::Hurt, dExtAnmModel_c::SetAnim, dCcAcPos_c::Init, cstd::atan2) stay
+ *   Player::Hurt, dCcAcPos_c::Init, cstd::atan2) stay
  *   spelled as mangled extern-C free functions.
  * - func_ov100_02143b68 reaches the link positions and the link models'
  *   translations through two raw char pointers that start at the chomp,
@@ -82,6 +82,9 @@
 #include "daStar_c.h"
 #include "dActor_c.h"
 #include "dCc_c.h"
+namespace cstd {
+s16 atan2(s32, s32);
+}
 
 /* Actor IDs from symbols/actor_debug_names.tsv. */
 enum {
@@ -164,8 +167,6 @@ void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
     s32 radius, s32 height, u32 flags, u32 vulnFlags);
 void _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void *p, const void *pos, u32 a, int b, u32 c, u32 d, u32 e);
 int func_02012694(int, void *);
-/* local extern: the call passes an untyped this, so it cannot use the header method. */
-void _ZN15dExtFrameCtrl_c7AdvanceEv(void *anim);
 void *_ZN7PathPtrC1Ev(void *thiz);
 void Matrix4x3_FromRotationXYZExt(void *m, int x, int y, int z);
 void Matrix4x3_FromRotationY(void *m, int angle);
@@ -178,7 +179,7 @@ int Vec3_HorzLen(void *v);
 int LenVec3(Vector3 *v);
 short Vec3_HorzAngle(const Vector3 *a, const Vector3 *b);
 void ApproachAngle(short *cur, short target, int step, int a, int b);
-int _ZN4cstd5atan2E5Fix12IiES1_(int y, int x);
+int atan2_hold_d_a_wanwan2_1(int y, int x);
 void LoadSilverStarAndNumber();
 void UnloadSilverStarAndNumber();
 
@@ -463,9 +464,9 @@ extern "C" void func_ov100_021437d4(daWanwan2_c *thisx)
               + FX_MUL(data_02082214[idx * 2], -0xa000);
         if (val <= *heights) val = *heights;
         delta.y = val - src->y;
-        ang = _ZN4cstd5atan2E5Fix12IiES1_(delta.x, delta.z);
+        ang = cstd::atan2(delta.x, delta.z);
         hlen = Vec3_HorzLen(&delta);
-        angz = (s16)(-_ZN4cstd5atan2E5Fix12IiES1_(delta.y, hlen));
+        angz = (s16)(-cstd::atan2(delta.y, hlen));
         Matrix4x3_FromRotationY(data_020a0e68, ang);
         Matrix4x3_ApplyInPlaceToRotationX(data_020a0e68, angz);
         MulVec3Mat4x3(&in, data_020a0e68, &out);
@@ -496,7 +497,7 @@ extern "C" void func_ov100_021437d4(daWanwan2_c *thisx)
 extern "C" int func_ov100_02143aa4(daWanwan2_c *c)
 {
     c->mModelAnim.speed = 4096;     /* 1.0 */
-    _ZN15dExtFrameCtrl_c7AdvanceEv((dExtFrameCtrl_c *)&c->mModelAnim);
+    c->mModelAnim.Advance();
     func_ov100_021437d4(c);
     func_ov100_0214344c(c);
     func_ov100_021435e8(c);

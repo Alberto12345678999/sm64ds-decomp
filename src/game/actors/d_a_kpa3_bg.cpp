@@ -36,8 +36,7 @@
  * - func_ov060_02117db8 parses as C (cplusplus off): the same body as
  *   C++ DIFFs. It reaches the members through a struct daKpa3Bg_c *.
  *   dActor_c::Earthquake, PoofDustAt and fBase_c::MarkForDestruction
- *   stay mangled because the body is C (Earthquake also takes
- *   Fix12<int> and is not on dActor_c.h). func_02012694 plays bank-3 sound
+ *   stay mangled because the body is C. func_02012694 plays bank-3 sound
  *   0xbc at a point written into mCamSpacePos, restored afterwards.
  * - dBgW_KcMbg::SetFile is called through its mangled name, with the
  *   Fix12<int> argument passed as a raw int.
@@ -65,7 +64,8 @@ void Vec3_AsrInPlace(Vec3 *v, int n);
 void MulVec3Mat4x3(Vec3 *in, void *m, void *out);
 void func_02012694(int a, void *p);
 void CopyTexPalFromLevelModel(void *p);
-void _ZN8dActor_c10EarthquakeERK7Vector35Fix12IiE(void *self, Vec3 *v, int fix);
+// local extern: func_ov060_02117db8 is parsed as C and cannot call the member.
+void _ZN8dActor_c10EarthquakeERK7Vector3i(void *self, Vec3 *v, int fix);
 // local extern: func_ov060_02117db8 is parsed as C and cannot call the member.
 void _ZN8dActor_c10PoofDustAtERK7Vector3(void *self, Vec3 *v);
 // local extern: the C body of func_ov060_02117db8 calls it, as above.
@@ -82,8 +82,8 @@ extern SharedFilePtr *data_ov060_0211953c[];
 extern CLPS_Block *data_ov060_0211a980[];
 extern int data_0208e738;
 
-void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-    void *self, KCL_File *f, const Matrix4x3 &m, int fix, short sh, CLPS_Block &b);
+extern void hold_d_a_kpa3_bg(void *self, KCL_File *f, const Matrix4x3 &m, int fix, short sh,
+                             CLPS_Block &b);
 void func_020393d4(void *p, void *v);
 void func_020393c4(void *p, void *v);
 void func_ov060_021183f4(void *collider, daKpa3Bg_c *self, dActor_c *other);
@@ -152,11 +152,9 @@ s32 daKpa3Bg_c::InitResources()
     CopyTexPalFromLevelModel(&mModel.data);
     data_0208e738 = 1;
     UpdateClsnPosAndRot();
-    _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-        &mMeshCollider,
-        (KCL_File *)dBgW_Kc::LoadFile(*data_ov060_0211953c[mVariant]),
-        mClsnMat, 0x1000, mAngleY,
-        *data_ov060_0211a980[mVariant]);
+    ((dBgW_KcMbg *)(&mMeshCollider))
+        ->dBgW_KcMbg::SetFile((KCL_File *)dBgW_Kc::LoadFile(*data_ov060_0211953c[mVariant]),
+                              mClsnMat, 0x1000, mAngleY, *data_ov060_0211a980[mVariant]);
     func_020393d4(&mMeshCollider,
                   (void *)&dBgW::UpdatePosWithTransform);
     func_020393c4(&mMeshCollider, (void *)&func_ov060_021183f4);
@@ -307,7 +305,7 @@ void _ZN10daKpa3Bg_c19func_ov060_02117db8Ev(struct daKpa3Bg_c *self) {
         eq.x = self->mPosX;
         eq.y = self->mPosY;
         eq.z = self->mPosZ;
-        _ZN8dActor_c10EarthquakeERK7Vector35Fix12IiE(self, &eq, 0x7d0000);
+        _ZN8dActor_c10EarthquakeERK7Vector3i(self, &eq, 0x7d0000);
         self->mVertSpeed = 0x8000;
         self->mVertAccel = 0;
     }

@@ -249,6 +249,8 @@ struct dActor_c : dBase_c {
        IsTooFarAwayFromPlayer(threshold). */
     void SetRanges(Fix12i, Fix12i, Fix12i, Fix12i);
     int IsTooFarAwayFromPlayer(Fix12i);
+    /* Intensity is a 0x1000-scaled Fix12i, not a by-value Fix12<int>. */
+    void Earthquake(const Vector3 &, Fix12i);
 
     bool IsPlayerInRange(s32 maxDist);
     bool IsPlayerInRange(const Vector3 &pos, s32 maxDist);

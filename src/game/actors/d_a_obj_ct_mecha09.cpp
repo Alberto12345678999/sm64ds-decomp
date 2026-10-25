@@ -65,9 +65,8 @@ extern int RandomIntInternal(int *seed);
 extern u8 data_0209f2c0;
 extern s32 data_ov065_0211d520[];
 extern s32 data_0209e650[];
-extern void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-    dBgW_KcMbg *self, KCL_File *file, const Matrix4x3 *mat, int scale,
-    s16 angleY, CLPS_Block *clps);
+extern void hold_d_a_obj_ct_mecha09(dBgW_KcMbg *self, KCL_File *file, const Matrix4x3 *mat,
+                                    int scale, s16 angleY, CLPS_Block *clps);
 }
 
 extern CLPS_Block data_ov035_02112118;
@@ -175,8 +174,8 @@ int daObjCtMecha09_c::InitResources()
     UpdateModelPosAndRotY();
     UpdateClsnPosAndRot();
     kcl = (KCL_File *)dBgW_Kc::LoadFile(data_ov065_0211d9cc);
-    _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-        &mMeshCollider, kcl, &mClsnMat, 0x1000, mAngleY, &data_ov035_02112118);
+    ((dBgW_KcMbg *)(&mMeshCollider))
+        ->dBgW_KcMbg::SetFile(kcl, *(&mClsnMat), 0x1000, mAngleY, *(&data_ov035_02112118));
 
     mStartPosY = mPosY;
     {

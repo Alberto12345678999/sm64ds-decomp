@@ -58,6 +58,10 @@ struct BMD_File;
    variable's name unmangled in C++, so this names the ROM symbol as spelled. */
 extern daKinopio_c::State data_ov085_0212fe88[];
 
+namespace Sound {
+bool PlaySub(u32, u32, u32, int, bool);
+}
+
 extern "C" {
 
 /* ov085 statics */
@@ -103,7 +107,7 @@ u8 NumStars(void);
    The mangled spellings are kept wherever the real declaration takes a
    Fix12<int> BY VALUE, because mwccarm passes those differently at
    the call site than a loose spelling would. */
-int _ZN5Sound7PlaySubEjjj5Fix12IiEb(u32 a, u32 b, u32 c, int d, int e);
+int d_a_kinopioPlaySubHold(u32 a, u32 b, u32 c, int d, int e);
 void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
     void *thiz, void *sm, void *mtx, int rad, int height, u32 flags);
 
@@ -206,8 +210,7 @@ void daKinopio_c::St_Talk_Main()
             if ((data_0209caa0[1] & 0x40000000) == 0)
                 data_0209caa0[1] |= 0x40000000;
         }
-        if (_ZN5Sound7PlaySubEjjj5Fix12IiEb(
-                0x25, 0x14, 0x7f, 0x15666, 1) == 0)
+        if (Sound::PlaySub(0x25, 0x14, 0x7f, 0x15666, 1) == 0)
             return;
         {
             int y = mPosY;
@@ -263,7 +266,7 @@ void daKinopio_c::St_Talk_Main()
         }
     }
 
-    if (_ZN5Sound7PlaySubEjjj5Fix12IiEb(0x25, 0x7f, 0, 0x7222, 0) == 0)
+    if (Sound::PlaySub(0x25, 0x7f, 0, 0x7222, 0) == 0)
         return;
     Message::EndTalk();
     SetState(0);

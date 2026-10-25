@@ -46,25 +46,11 @@ struct PoleliftModelFile : SharedFilePtr {
     ~PoleliftModelFile();
 };
 
-/* The class vtable. mwccarm's own emitted _ZTV symbol addresses the vtable
- * object; the address recorded in ov026/symbols.txt is the public address
- * point eight bytes later, which is exactly what &_ZTV[2] on an int[]
- * computes. */
-extern int _ZTV17daObjWlPolelift_c[];
-
 namespace cstd {
 int fdiv(int a, int b);
 }
 
 extern "C" {
-/* Factory ABI: the allocation goes through fBase_c::operator new by name, but
- * the base/subobject construction sequence stays explicit here. */
-void *_ZN8dActor_cC2Ev(void *self);
-void *_ZN17dExtSimpleModel_cC1Ev(void *self);
-void *_ZN10dCcAcPos_cC1Ev(void *self);
-void *_ZN7PathPtrC1Ev(void *self);
-void *_ZN17dExtShadowModel_cC1Ev(void *self);
-
 /* ABI seams: both take Fix12<int> by value. */
 void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
     dCcAcPos_c *self, dActor_c *actor, const Vector3 *offset,
@@ -90,17 +76,7 @@ extern PoleliftModelFile data_ov026_02113ea0;
 // @symbol daObjWlPolelift_c_classInit
 extern "C" daObjWlPolelift_c *daObjWlPolelift_c_classInit()
 {
-    daObjWlPolelift_c *actor =
-        (daObjWlPolelift_c *)fBase_c::operator new(sizeof(daObjWlPolelift_c));
-    if (actor) {
-        _ZN8dActor_cC2Ev(actor);
-        *(int *)actor = (int)&_ZTV17daObjWlPolelift_c[2];
-        _ZN17dExtSimpleModel_cC1Ev(&actor->model);
-        _ZN10dCcAcPos_cC1Ev(&actor->clsn);
-        _ZN7PathPtrC1Ev(&actor->path);
-        _ZN17dExtShadowModel_cC1Ev(&actor->shadow);
-    }
-    return actor;
+    return new daObjWlPolelift_c();
 }
 
 // @symbol _ZN17daObjWlPolelift_c13InitResourcesEv

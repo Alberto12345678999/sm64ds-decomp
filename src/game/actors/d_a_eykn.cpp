@@ -6,18 +6,13 @@
  * gEyknStates.
  *
  * deslop leftovers:
- * - dExtAnmTexPat_c::SetFile as a member (Fix12<int> by value):
- *   ResetEyeAnim 0x58->0x64, UpdateEyeAnim 0x168->0x178.
- *   dExtAnmModel_c::SetAnim as a member: St_Die_Init 0xd4->0xe0.
- *   InitResources' SetAnim and SetFile together 0x298->0x2ac.
  * - DropShadowRadHeight as a member: UpdateModelTransform 0xa0->0xb0.
  * - dCcAcPos_c::Init as a member, both call sites: InitResources
  *   0x298->0x2b8.
  * - Particle::System::New, NewUnkCallback818, and NewSimple, and
  *   Player::Hurt, stay scalar externs. System does not declare the
  *   three New* calls, and Player.h does not declare Hurt. A Fix12<int>
- *   parameter is the caller cost measured on SetFile, SetAnim,
- *   DropShadow, and Init above.
+ *   parameter is the caller cost measured on DropShadow and Init above.
  * - func_0201267c is the bank-3 veneer around Sound::Play. Sound::Play(3,
  *   id, Vector3 &) is +4 a call: St_Die_Init 0xd4->0xd8, St_Attack_Main
  *   0x314->0x318, St_Die_Main (two calls) 0x3dc->0x3e4. &mCamSpacePosX
@@ -140,8 +135,6 @@ u32 _ZN8Particle6System17NewUnkCallback818Ejj5Fix12IiES2_S2_PK11Vector3_16f(
 void d_a_eyknNewSimpleHold(u32 effectID, int x, int y, int z);
 int _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(Player *player, void *source, u32 damage, int speed,
                                             u8 a, u8 b, u8 c);
-void _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj(dExtAnmTexPat_c *seq, void *file, int flags,
-                                                        int speed, u32 startFrame);
 void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
     dCcAcPos_c *clsn, dActor_c *actor, const Vector3 *offset, int radius, int height, u32 flags, u32 vulnFlags);
 void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
@@ -245,8 +238,7 @@ int daEykn_c::UpdateEyeAnim()
         return 0;
     case 1:
     case 4:
-        _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj(
-            &mTextureSequence, gEyknCloseTextureSequenceFile.filePtr, 0, 0x1000, 0);
+        mTextureSequence.SetFile(*(BTP_File *)gEyknCloseTextureSequenceFile.filePtr, 0, 0x1000, 0);
         mTextureSequence.SetFlags(0x40000000);
         mTextureSequence.speed = 0x1000;
         mTextureSequence.currFrame = 0;
@@ -255,8 +247,8 @@ int daEykn_c::UpdateEyeAnim()
     case 2:
     case 5:
         if (mTextureSequence.Finished() != 0) {
-            _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj(
-                &mTextureSequence, gEyknOpenTextureSequenceFile.filePtr, 0, 0x1000, 0);
+            mTextureSequence.SetFile(*(BTP_File *)gEyknOpenTextureSequenceFile.filePtr, 0, 0x1000,
+                                     0);
             mTextureSequence.SetFlags(0x40000000);
             mTextureSequence.speed = 0x1000;
             mTextureSequence.currFrame = 0;
@@ -282,8 +274,7 @@ int daEykn_c::UpdateEyeAnim()
 // @symbol _ZN8daEykn_c12ResetEyeAnimEv
 void daEykn_c::ResetEyeAnim()
 {
-    _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj(
-        &mTextureSequence, gEyknCloseTextureSequenceFile.filePtr, 0, 0x1000, 0);
+    mTextureSequence.SetFile(*(BTP_File *)gEyknCloseTextureSequenceFile.filePtr, 0, 0x1000, 0);
     mTextureSequence.SetFlags(0x40000000);
     mTextureSequence.speed = 0x1000;
     mTextureSequence.currFrame = 0;
@@ -839,8 +830,7 @@ s32 daEykn_c::InitResources()
     mModelAnim.SetAnim((BCA_File *)gEyknDeathAnimationFile.filePtr, 0, 0x1000, 0);
 
     mModelAnim.speed = 0x1000;
-    _ZN15dExtAnmTexPat_c7SetFileER8BTP_Filei5Fix12IiEj(
-        &mTextureSequence, gEyknCloseTextureSequenceFile.filePtr, 0, 0x1000, 0);
+    mTextureSequence.SetFile(*(BTP_File *)gEyknCloseTextureSequenceFile.filePtr, 0, 0x1000, 0);
 
     mTextureSequence.speed = 0x1000;
     mTarget = 0;

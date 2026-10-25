@@ -10,8 +10,8 @@
  *
  * deslop
  * Leftover: Event::GetBit stays mangled (no Event header in this tree).
- * Leftover: dBgW_KcMbg::SetFile and dExtAnmTexSRT_c::SetFile keep
- *   mangled spellings (by-value Fix12<int> parameters, wall 6az).
+ * Leftover: dBgW_KcMbg::SetFile keeps its mangled spelling (by-value
+ *   Fix12<int> parameter, wall 6az).
  * Leftover: data_ov033_02111bc8 (BTA) and data_ov033_02111c1c
  *   (CLPS) are unnamed homes this TU feeds Prepare/SetFile.
  */
@@ -49,9 +49,7 @@ extern "C" {
 int _ZN5Event6GetBitEj(u32 bit);
 extern int data_ov033_02111bc8[];
 extern int data_ov033_02111c1c[];
-extern void _ZN15dExtAnmTexSRT_c7SetFileER8BTA_Filei5Fix12IiEj(void *thiz, void *bta, int a, int b,
-                                                               unsigned int e);
-extern void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(void* thiz, void* kcl, void* mtx, int fix, short s, void* clps);
+extern void hold_d_a_obj_tt_water(void *thiz, void *kcl, void *mtx, int fix, short s, void *clps);
 }
 
 /* Emission order is ROM order: the destructor pair must stay first.
@@ -118,13 +116,13 @@ int daObjTtWater_c::InitResources()
     mModel.SetFile((BMD_File*)m, 1, 0x14);
     dExtAnmTexSRT_c::Prepare(**(BMD_File **)((char *)&data_ov033_021124f0 + 4),
                              *(BTA_File *)data_ov033_02111bc8);
-    _ZN15dExtAnmTexSRT_c7SetFileER8BTA_Filei5Fix12IiEj(&mTextureTransformer, data_ov033_02111bc8, 0,
-                                                       0x1000, 0);
+    mTextureTransformer.SetFile(*(BTA_File *)data_ov033_02111bc8, 0, 0x1000, 0);
     UpdateModelPosAndRotY();
     UpdateClsnPosAndRot();
     void* mc = dBgW_Kc::LoadFile(data_ov033_021124e8);
-    _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-        &mMeshCollider, mc, &mClsnMat, 0x1000, mAngleY, data_ov033_02111c1c);
+    ((dBgW_KcMbg *)(&mMeshCollider))
+        ->dBgW_KcMbg::SetFile((KCL_File *)(mc), *(const Matrix4x3 *)(&mClsnMat), 0x1000, mAngleY,
+                              *(CLPS_Block *)(data_ov033_02111c1c));
     mMeshCollider.Enable(this);
     mMinPosY = mPosY - 0x3c000;
     return _ZN5Event6GetBitEj(0xe) == 0;

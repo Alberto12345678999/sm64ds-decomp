@@ -6,14 +6,9 @@
  *
  * SIZE 0x539c, from dScMgCard_c_classInit's `_ZN7fBase_cnwEj(0x539c)`.
  *
- * SHARED TABLE at 0x4f38, size 0x270 (Dealer_Construct/020c1c64), same
- * as five siblings -- see include/dScMgMemory_c.h's own note. TWO fields
- * fall WITHIN it and are real matched access:
- * mShared.unk_01a and mShared.unk_1e6 are literally the ctor's own
- * `*(short*)(t+0x1a)=0`
- * and `*(short*)(t+0x1e6)=0` writes (Dealer_Construct's own
- * body), same as dScMgMCarlo2_c's own instance of these two fields -- named
- * here instead of folded into the opaque table, everything else stays pad.
+ * THE DEALER at 0x4f38: a Dealer (include/Dealer.h, 0x270 bytes), the
+ * same record the roulette, BSC, Monte Carlo and memory scenes embed there.
+ * This scene writes its mHand and mReserved directly.
  *
  * THE TWO CARD HANDS, 0x51a8 and 0x5298: five 0x30-byte card objects each.
  * The element types are recovered below -- dMgCardObj_c for the hand at
@@ -41,16 +36,15 @@
  * compiler emits the pair for us in cartridge order. It also removes the
  * homeless D2 entirely -- a base-object variant byte-identical to D1, with no
  * ROM address to claim and no inbound relocation. The two __cxa_vec_cleanup calls
- * preserve the cartridge's callback ABI and reverse member order; the third
- * releases the typed shared state. No separate operator delete is needed --
- * dScMgBase_c, two levels up, already provides one.
+ * preserve the cartridge's callback ABI and reverse member order; mDealer's
+ * own destructor then runs as a member. No separate operator delete is
+ * needed -- dScMgBase_c, two levels up, already provides one.
  * Same recipe as include/dScMgMCarlo2_c.h, and for the same reason. */
 #ifndef DSCMGCARD_C_H
 #define DSCMGCARD_C_H
 #include "dScMgSingle3DBase_c.h"
+#include "Dealer.h"
 
-extern "C" int  Dealer_Destruct(char *t); /* decl_common.h's own signature */
-extern "C" void Dealer_Construct(void *t);
 extern "C" void __cxa_vec_cleanup(void *base, int count, int stride, void *dtor);
 extern "C" void _ZN12dMgCardObj_cD1Ev(void *elem);
 extern "C" void _ZN17dMgDilarCardObj_cD1Ev(void *elem);
@@ -88,19 +82,6 @@ extern "C" void _ZN17dMgDilarCardObj_cD1Ev(void *elem);
    declares Render -- each class's key function -- non-inline, and
    src/minigames/d_s_mg_card.cpp defines it, so the key-function TU keeps
    emitting _ZTV/_ZTI/_ZTS for both classes either way. */
-struct dMgCardSharedState_c {
-    u8  pad_000[0x1a];
-    s16 unk_01a;
-    u8  pad_01c[0x1ca];
-    s16 unk_1e6;
-    u8  pad_1e8[0x88];
-};
-
-#ifndef SM64DS_PLATFORM_PC
-/* ROM layout under mwccarm; host ABI divergence is tracked separately. */
-typedef char dMgCardSharedState_c_size_must_be_0x270[sizeof(dMgCardSharedState_c) == 0x270 ? 1 : -1];
-#endif
-
 /* --- the card element classes ---------------------------------------------
    Both names are RTTI-confirmed (build/rtti.json: _ZTS12dMgCardObj_c and
    _ZTS17dMgDilarCardObj_c at 0x0213bc8c / 0x0213bc9c). Both are polymorphic
@@ -179,7 +160,6 @@ struct dScMgCard_c : dScMgSingle3DBase_c {
     virtual ~dScMgCard_c() {
         __cxa_vec_cleanup(mArray2, 5, 0x30, (void *)_ZN17dMgDilarCardObj_cD1Ev);
         __cxa_vec_cleanup(mArray1, 5, 0x30, (void *)_ZN12dMgCardObj_cD1Ev);
-        Dealer_Destruct((char *)&mShared);
     }
 
     /* --- this class's own vtable slots, named from the table ---
@@ -218,7 +198,7 @@ struct dScMgCard_c : dScMgSingle3DBase_c {
     static int  DrawCardValue();                                           /* 0x020da8e4 */
     static void FillWeights(int v);                                       /* 0x020da974 */
 
-    dMgCardSharedState_c mShared; /* 0x4f38..0x51a8 */
+    Dealer mDealer;               /* 0x4f38 */
     dMgCardObj_c     mArray1[5];  /* 0x51a8 -- dtor _ZN12dMgCardObj_cD1Ev (hand stub) */
     dMgDilarCardObj_c mArray2[5]; /* 0x5298 -- dtor _ZN17dMgDilarCardObj_cD1Ev (hand stub) */
     s16 mState;              /* 0x5388 -- the round's step counter; UpdateState
