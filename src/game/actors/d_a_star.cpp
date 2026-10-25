@@ -238,7 +238,11 @@ extern int Vec3_HorzDist(const Vec3* a, const Vec3* b);
 extern s16 GetAngleToCamera(int i);
 extern u8 *data_0209f344;
 extern short _ZN8dActor_c12ReflectAngleE5Fix12IiES1_s(void* c, Fix12i a, Fix12i b, short ang);
-extern void _ZN5Sound17ChangeMusicVolumeEj5Fix12IiE(u32, int);
+}
+namespace Sound {
+void ChangeMusicVolume(u32, int);
+}
+extern "C" {
 extern int func_ov002_020c6e14(void*);
 extern u8 data_0209d660;
 extern void EndKuppaScript(void);
@@ -1430,7 +1434,7 @@ void daStar_c::func_ov002_020ea100() {
         }
 
         if (mKind == KIND_9) {
-            _ZN5Sound17ChangeMusicVolumeEj5Fix12IiE(0, 0x7f000);
+            Sound::ChangeMusicVolume(0, 0x7f000);
         }
     } else {
         if (func_ov002_020ca0f4(common) != 0) {
@@ -1478,7 +1482,7 @@ void daStar_c::func_ov002_020ea06c() {
     mModelAnim1.Advance();
     func_ov002_020e8098();
     if (mKind == KIND_9) {
-        _ZN5Sound17ChangeMusicVolumeEj5Fix12IiE(0, 0x7f000);
+        Sound::ChangeMusicVolume(0, 0x7f000);
     }
     ++mMusicTimer;
 }
@@ -1515,10 +1519,10 @@ void daStar_c::func_ov002_020e9d18() {
     mPrevAngleY = mPlayer->mAngleY;
     if (mKind == KIND_9) {
         if (mMusicTimer < 0x78) {
-            _ZN5Sound17ChangeMusicVolumeEj5Fix12IiE(0, 0x7f000);
+            Sound::ChangeMusicVolume(0, 0x7f000);
             mMusicTimer++;
         } else {
-            _ZN5Sound17ChangeMusicVolumeEj5Fix12IiE(0x40, 0xcb33);
+            Sound::ChangeMusicVolume(0x40, 0xcb33);
         }
     }
     if (mModelAnim1.Finished() != 0) {
@@ -1624,10 +1628,10 @@ end:
 void daStar_c::func_ov002_020e9af4() {
     if (mKind == KIND_9) {
         if (mMusicTimer < 0x78) {
-            _ZN5Sound17ChangeMusicVolumeEj5Fix12IiE(0, 0x7f000);
+            Sound::ChangeMusicVolume(0, 0x7f000);
             mMusicTimer++;
         } else {
-            _ZN5Sound17ChangeMusicVolumeEj5Fix12IiE(0x40, 0xcb33);
+            Sound::ChangeMusicVolume(0x40, 0xcb33);
         }
     }
     mPrevAngleY = mPlayer->mAngleY;

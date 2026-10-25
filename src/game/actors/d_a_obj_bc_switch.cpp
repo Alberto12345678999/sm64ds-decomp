@@ -128,12 +128,14 @@ struct BcSwitchCollisionFilePtr : SharedFilePtr {
     ~BcSwitchCollisionFilePtr();
 };
 
+namespace Sound {
+s32 ChangeMusicVolume(u32 a, s32 vol);
+}
+
 extern "C" {
 extern BcSwitchCollisionFilePtr daObjBC_Switch_c_ClsnFile;
 extern BcSwitchModelFilePtr daObjBC_Switch_c_ModelFile;
 extern u8 IsAreaShowing(s32 idx);
-/* Sound::ChangeMusicVolume(u32, Fix12<int>) -- wall 6az on Behavior. */
-extern s32 _ZN5Sound17ChangeMusicVolumeEj5Fix12IiE(u32 a, s32 vol);
 extern void _ZN5Event6SetBitEj(u32 bit);
 extern u16 DecIfAbove0_Short(u16 *p);
 /* dBgActor_c::IsClsnInRange(Fix12<int>, Fix12<int>) -- wall 6az on Behavior. */
@@ -300,7 +302,7 @@ s32 daObjBC_Switch_c::Behavior()
     if (mPressed == 1) {
         mAreaId = -1;
         if (IsAreaShowing((s8)mHomeAreaId) == 0)
-            _ZN5Sound17ChangeMusicVolumeEj5Fix12IiE(0x7f, 0x3f000);
+            Sound::ChangeMusicVolume(0x7f, 0x3f000);
     }
     if (mPressed == 1) {
         if (mPosY > mStopPosY) {
@@ -316,7 +318,7 @@ s32 daObjBC_Switch_c::Behavior()
         if (mCoinTimer != 0) {
             if (DecIfAbove0_Short(&mCoinTimer) == 0) {
                 mCoinTimer = 1;
-                if (_ZN5Sound17ChangeMusicVolumeEj5Fix12IiE(0x7f, 0x64cc) != 0)
+                if (Sound::ChangeMusicVolume(0x7f, 0x64cc) != 0)
                     KillAndTrackInDeathTable();
             } else {
                 t = mCoinTimer;
@@ -326,7 +328,7 @@ s32 daObjBC_Switch_c::Behavior()
                     mTickSound = func_02012310(mTickSound, 0x39, 0);
                 else
                     mTickSound = func_02012310(mTickSound, 0x38, 0);
-                _ZN5Sound17ChangeMusicVolumeEj5Fix12IiE(0x40, 0xc999);
+                Sound::ChangeMusicVolume(0x40, 0xc999);
                 if (dActor_c::FindWithActorID(0x122, 0) == 0)
                     mCoinTimer = 1;
             }

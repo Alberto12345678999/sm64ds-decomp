@@ -80,21 +80,13 @@ struct Player {
      bytes win -- so `5Fix12IiE` is declared Fix12i, the plain s32 the callers
      actually pass, not the template the name implies.
 
-     Sound::ChangeMusicVolume is deliberately NOT here. Its definition is a
-     mangled-name C symbol carrying `5Fix12IiE`, and no type this tree defines
-     mangles to that (types.h refuses to make Fix12 a template), so a
-     namespace-qualified call cannot reach it. Callers keep the extern spelling.
-
      RETURN TYPES come from each DEFINITION in src/, never from a caller. A
      return type is not part of an Itanium mangled name, so the symbol is
      silent on it and a caller that ignores the result evidences nothing.
 
    Parameter NAMES are mostly not recoverable -- the definitions carry
    placeholders -- so only the ones a definition actually names are named here.
-   PlaySub's parameters stay unnamed: a name here takes an @NNN in every includer.
-
-   ChangeMusicVolume is defined as an `extern "C"` function literally named by
-   the mangled symbol, so nothing type-checks across that seam. */
+   PlaySub's parameters stay unnamed: a name here takes an @NNN in every includer. */
 
 void Play(u32, u32, const Vector3 &v);
 void Play2D(u32, u32);
@@ -103,6 +95,8 @@ u32  PlayBank2_2D(u32);
 u32  PlayCharVoice(u32, u32, const Vector3 &v);
 int  PlayLong(u32 handle, u32, u32, const Vector3 &pos, s16);
 bool PlaySub(u32, u32, u32, Fix12i, bool);
+/* A named parameter here numbers @NNN in every includer. */
+int ChangeMusicVolume(u32, Fix12i);
 int  PlaySecretSound(dActor_c *actor, u16 *counter);
 
 void PauseMusic();

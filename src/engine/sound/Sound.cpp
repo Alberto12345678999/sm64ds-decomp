@@ -10,8 +10,8 @@
  * leftovers:
  * - Sound::Play and Sound::Play2D are defined void; callers that harvest r0
  *   keep the mangled spelling (the same return-split the shards carried).
- * - ChangeMusicVolume keeps its literal mangled name:
- *   `5Fix12IiE' is unproducible (the Fix12 wall, see include/Sound.h).
+ * - ChangeMusicVolume is Sound::ChangeMusicVolume(unsigned int, int). The
+ *   second value is a 0x1000-scaled volume, spelled Fix12i in the header.
  * - Sound_PlayIfNotActive calls func_0201186c through an int-arity pointer:
  *   the def takes short #4 and the site passes d untruncated.
  * - `int dd = (int)(((long long)d))' in func_02012468 is a no-op tower of
@@ -356,12 +356,13 @@ extern "C" void func_02012d64(void)
                   0);
 }
 
-// @symbol _ZN5Sound17ChangeMusicVolumeEj5Fix12IiE
-extern "C" int _ZN5Sound17ChangeMusicVolumeEj5Fix12IiE(unsigned int a, int b)
-{
+// @symbol _ZN5Sound17ChangeMusicVolumeEji
+namespace Sound {
+int ChangeMusicVolume(unsigned int a, int b) {
     data_0208e42c = a;
     data_0209b494 = b;
     return data_0209b490 == (data_0208e42c << 12);
+}
 }
 
 // @symbol _ZN5Sound7PlaySubEjjjib
