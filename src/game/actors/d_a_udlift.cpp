@@ -129,7 +129,7 @@ extern State data_ov095_0213759c;
 /* Fix12<int> by value. The member call grows InitResources; see leftovers. */
 extern void hold_d_a_udlift(dBgW_KcMbg *self, KCL_File *file, const Matrix4x3 *mat, int scale,
                             s16 angleY, CLPS_Block *clps);
-void _ZN8dActor_c10EarthquakeERK7Vector35Fix12IiE(void *self, Vector3 *pos, int strength);
+void d_a_udliftEarthquakeHold(void *self, Vector3 *pos, int strength);
 /* dBgW+0x18 and dBgW+0x1c. A direct store shrinks InitResources. */
 void func_020393d4(void *collider, void *callback);
 void func_020393c4(void *collider, void *callback);
@@ -394,7 +394,7 @@ void daUdlift_c::StateStopAtBottom()
         pos.x = mPosX;
         pos.y = mPosY;
         pos.z = mPosZ;
-        _ZN8dActor_c10EarthquakeERK7Vector35Fix12IiE(this, &pos, (800 << 12));
+        Earthquake(pos, (800 << 12));
     }
     if (mIsArmed == 1)
         mState = 1;
@@ -413,7 +413,7 @@ void daUdlift_c::StateStop()
         pos.x = mPosX;
         pos.y = mPosY;
         pos.z = mPosZ;
-        _ZN8dActor_c10EarthquakeERK7Vector35Fix12IiE(this, &pos, (800 << 12));
+        Earthquake(pos, (800 << 12));
     }
     if (mIsArmed == 1)
         mState = 0;

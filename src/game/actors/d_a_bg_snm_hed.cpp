@@ -37,8 +37,6 @@ void Matrix4x3_FromRotationY(void *matrix, int angle);
 /* local extern: the matched free-function spelling of SetFile; a member call is pending. */
 void _ZN15dExtAnmTexPat_c7SetFileER8BTP_Fileiit(void *self, void *file, int flags, int speed,
                                                 unsigned int startFrame);
-void _ZN8dActor_c10EarthquakeERK7Vector35Fix12IiE(
-    void *self, const void *pos, int magnitude);
 int func_0201267c(int id, void *pos);
 namespace Particle {
 struct System {
@@ -142,8 +140,7 @@ int daBgSnmHed_c::State2()
             pos.x = mPosX;
             pos.y = mPosY;
             pos.z = mPosZ;
-            _ZN8dActor_c10EarthquakeERK7Vector35Fix12IiE(
-                this, &pos, 0x5dc000);
+            Earthquake(*(const Vector3 *)&pos, 0x5dc000);
             func_0201267c(0x115, &mCamSpacePosX);
             Particle::System::NewSimple(0x10f, mPosX, mPosY, mPosZ);
             Particle::System::NewSimple(0x110, mPosX, mPosY, mPosZ);

@@ -386,7 +386,7 @@ extern void MulMat4x3Mat4x3(void *dst, void *a, void *b);
 extern void Vec3_LslInPlace(void *v, int sh);
 extern void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(void *c, void *sm, void *mtx, int rad, int h, unsigned int flags);
 extern Matrix4x3 data_020a0e68;
-extern void _ZN8dActor_c10EarthquakeERK7Vector35Fix12IiE(void* self, struct Vector3* v, int f);
+void d_a_kpaEarthquakeHold(void *self, struct Vector3 *v, int f);
 extern "C" void func_02011cfc(void);
 /* One declaration per resource handle, typed from how InitResources and
  * CleanupResources use it:
@@ -1058,7 +1058,7 @@ void daKpa_c::func_ov060_02115b0c(){
     v.x = this->mPosX;
     v.y = this->mPosY;
     v.z = this->mPosZ;
-    _ZN8dActor_c10EarthquakeERK7Vector35Fix12IiE(this, &v, 0x7d0000);
+    Earthquake(v, 0x7d0000);
     dActor_c::Spawn(BOWSER_ACTOR_FIRERING, 0, *((struct Vector3*)(&this->mPosX)), 0, this->mAreaId, -1);
 }
 
@@ -3697,7 +3697,7 @@ void daKpa_c::func_ov060_02111a28(){
         quake.x = this->mPosX;
         quake.y = this->mPosY;
         quake.z = this->mPosZ;
-        _ZN8dActor_c10EarthquakeERK7Vector35Fix12IiE(this, &quake, 0x320000);
+        Earthquake(quake, 0x320000);
     }
 }
 

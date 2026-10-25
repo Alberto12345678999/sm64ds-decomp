@@ -89,7 +89,7 @@ extern s16 data_02082214[];
 extern CLPS_Block data_ov025_02112c28;
 
 void func_02012694(s32 soundId, void *pos);
-void _ZN8dActor_c10EarthquakeERK7Vector35Fix12IiE(daDgr_c *self, Vec3 *pos, s32 magnitude);
+void d_a_dgrEarthquakeHold(daDgr_c *self, Vec3 *pos, s32 magnitude);
 u32 d_a_dgrNewHold(u32 slot, u32 effect, s32 x, s32 y, s32 z, const void *dir, void *callback);
 extern void hold_d_a_dgr(dBgW_KcMbg *self, KCL_File *kcl, const Matrix4x3 &mat, Fix12i scale,
                          short angY, CLPS_Block &clps);
@@ -212,7 +212,7 @@ s32 daDgr_c::Behavior()
             loc[3] = mPosX;
             loc[4] = mPosY;
             loc[5] = mPosZ;
-            _ZN8dActor_c10EarthquakeERK7Vector35Fix12IiE(this, (Vec3 *)&loc[3], kQuakeMagnitude);
+            Earthquake(*(const Vector3 *)&loc[3], kQuakeMagnitude);
         }
 
         loc[0] = mPosX;
