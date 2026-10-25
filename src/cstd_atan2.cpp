@@ -1,17 +1,22 @@
-/* _ZN4cstd5atan2E5Fix12IiES1_ at 0x0203b4dc
+//cpp
+/* cstd::atan2 at 0x0203b4dc, symbol _ZN4cstd5atan2Eii.
  *
  * Matched byte-for-byte with mwccarm 1.2/sp2p3 (arm9 main).
  */
 typedef int s32;
 typedef short s16;
 
-extern s32 _ZN4cstd4fdivEii(s32 num, s32 den);
-extern s32 func_01ffa4bc(s32 a);
-extern s32 func_01ff98f4(s32 a, s32 b);
+extern "C" {
+s32 _ZN4cstd4fdivEii(s32 num, s32 den);
+s32 func_01ffa4bc(s32 a);
+s32 func_01ff98f4(s32 a, s32 b);
 extern unsigned short data_020994e0[];
+}
 
-s16 _ZN4cstd5atan2E5Fix12IiES1_(s32 y, s32 x)
-{
+namespace cstd {
+
+// @symbol _ZN4cstd5atan2Eii
+s16 atan2(s32 y, s32 x) {
     s32 r;
     if (y == 0) {
         if (x >= 0)
@@ -47,4 +52,6 @@ s16 _ZN4cstd5atan2E5Fix12IiES1_(s32 y, s32 x)
             r = -data_020994e0[_ZN4cstd4fdivEii(-y, x) >> 2];
     }
     return (s16)r;
+}
+
 }

@@ -122,7 +122,6 @@ extern void func_0201267c(int id, void *pos);
 /* Fix12<int> BY VALUE (6az): the header member form would home the argument
  * and move the caller. Scalar tail is deliberate; the (const Vector3 &)
  * is what the mangled name spells. */
-extern void _ZN8dActor_c10EarthquakeERK7Vector35Fix12IiE(void *self, const Vector3 &pos, int magnitude);
 namespace Particle {
 struct System {
     static void NewSimple(unsigned id, int x, int y, int z);
@@ -138,9 +137,7 @@ extern void _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix
 
 /* Same 6az tail: both take Fix12<int> BY VALUE, so the header member form
  * would home the argument. */
-extern void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-    dBgW_KcMbg *self, KCL_File *file, const Matrix4x3 *mat, int scale, s16 angY,
-    CLPS_Block *clps);
+
 /* 8-byte store into dBgW+0x18 (beforeClsnCallback). No SetCallback member.
  * Spelling matches src/engine/collision/d_bg_w.cpp -- (int *, int). */
 extern void func_020393d4(int *collider, int callback);
@@ -258,7 +255,7 @@ void daDsnBase_c::func_ov091_02132f04()
     quakePos.x = mPosX;
     quakePos.y = mPosY;
     quakePos.z = mPosZ;
-    _ZN8dActor_c10EarthquakeERK7Vector35Fix12IiE(this, quakePos, 0x7d0000);
+    Earthquake(quakePos, 0x7d0000);
     func_0201267c(0xc7, &mCamSpacePosX);
 }
 
@@ -387,8 +384,8 @@ s32 daDsnBase_c::Init()
     files = (DsnBaseFileTable *)mFileTable;
     kcl = (KCL_File *)dBgW_Kc::LoadFile(*files->collision);
     clps = files->clps;
-    _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-        &mMeshCollider, kcl, &mClsnMat, 0x199, mAngleY, clps);
+    ((dBgW_KcMbg *)(&mMeshCollider))
+        ->dBgW_KcMbg::SetFile(kcl, *(&mClsnMat), 0x199, mAngleY, *(clps));
     func_020393d4((int *)&mMeshCollider, (int)&dBgW::UpdatePosAndAngs);
     mMeshCollider.Enable(this);
 

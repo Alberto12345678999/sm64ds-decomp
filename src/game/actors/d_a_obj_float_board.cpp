@@ -36,6 +36,9 @@
 #include "common.h"
 #include "dBgCh_Gnd.h"
 #include "SharedFilePtr.h"
+namespace cstd {
+s16 atan2(s32, s32);
+}
 
 /* ApproachLinear's two overloads mangle back to the ROM's own
  * _Z14ApproachLinearRiii and _Z14ApproachLinearRsss, so they are declared as
@@ -59,14 +62,11 @@ void func_020393a4(dBgW_KcMbg *clsn, int range);
 int  Vec3_HorzDist(const void *a, const void *b);
 unsigned short DecIfAbove0_Short(unsigned short *p);
 
-short _ZN4cstd5atan2E5Fix12IiES1_(int y, int x);
+short atan2_hold_d_a_obj_float_board_1(int y, int x);
 
 /* Same Fix12<int>-by-value wall as the two above: spelled as the real
  * mMeshCollider.SetFile member it DIFFs (measured at daObjFl_London_c),
  * so it stays a mangled free call. */
-void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-    dBgW_KcMbg *self, KCL_File *kcl, const Matrix4x3 &mat, Fix12i scale,
-    short angY, CLPS_Block &clps);
 
 /* Stores into the mesh collider's two callback slots (+0x1c / +0x18 of the
    embedded dBgW; the +0x0c store is func_020393a4). */
@@ -227,7 +227,7 @@ int daObjFloatBoard_c::Behavior()
             tpos.y = riderPos->y;
             tpos.z = riderPos->z;
             dist = Vec3_HorzDist(&mPosX, &tpos) >> 0xc;
-            atanRes = _ZN4cstd5atan2E5Fix12IiES1_(mPosX - tpos.x, mPosZ - tpos.z);
+            atanRes = cstd::atan2(mPosX - tpos.x, mPosZ - tpos.z);
             angleDiff = atanRes - mAngleY;
             j = ((u16)angleDiff >> 4) * 2;
             s = data_02082214[j];
@@ -275,8 +275,7 @@ int daObjFloatBoard_c::func_ov002_020b5e58(daObjFloatBoard_c_Resources *fp)
     func_ov002_020b5b98();
     UpdateClsnPosAndRot();
     kcl = (KCL_File *)dBgW_Kc::LoadFile(*fp->collision);
-    _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-        &mMeshCollider, kcl, mClsnMat, 0x199, mAngleY, *fp->clps);
+    ((dBgW_KcMbg *)(&mMeshCollider))->dBgW_KcMbg::SetFile(kcl, mClsnMat, 0x199, mAngleY, *fp->clps);
     func_020393c4((int *)&mMeshCollider, (int)&func_ov002_020b5fc4);
     func_020393d4((int *)&mMeshCollider, (int)&dBgW::UpdatePosAndAngs);
 

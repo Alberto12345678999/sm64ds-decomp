@@ -1144,6 +1144,62 @@
       "count": 2,
       "reason": "Respelled by the texture-animation RTTI rename: src/unnamed/ov007/func_ov007_020b3f20.c on cpp/model-family-rom-names carries the same 2 occurrence(s) as _ZN15TextureSequence17UpdateFileOffsetsER8BTP_File. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings.",
       "evidence": "origin/cpp/model-family-rom-names:src/unnamed/ov007/func_ov007_020b3f20.c 2x _ZN15TextureSequence17UpdateFileOffsetsER8BTP_File; head 2x _ZN15dExtAnmTexPat_c17UpdateFileOffsetsER8BTP_File; tools/source_style.py --base origin/cpp/model-family-rom-names"
+    },
+    {
+      "path": "src/game/actors/d_a_sound_obj.cpp",
+      "rule": "handspelled-member",
+      "match": "_ZN5Sound7PlaySubEjjjib",
+      "count": 3,
+      "reason": "func_ov002_020f9468 passes the u8 mLoop as Sound::PlaySub's last argument. Calling the member converts it to bool and grows the function from 0x94 to 0xac, so this one extern \"C\" callback keeps a declaration under the linker spelling with an int last parameter. The three occurrences are that declaration and the two calls in func_ov002_020f9468; InitResources and Behavior call Sound::PlaySub by name.",
+      "evidence": "The file's banner Leftover note and the comment on the declaration (#4326). Before #4326 the same calls spelled _ZN5Sound7PlaySubEjjj5Fix12IiEb, which the Fix12-by-value exemption covered."
+    },
+    {
+      "path": "src/game/actors/d_a_kpa3_bg.cpp",
+      "rule": "handspelled-member",
+      "match": "_ZN8dActor_c10EarthquakeERK7Vector3i",
+      "count": 2,
+      "reason": "func_ov060_02117db8 parses as C (cplusplus off; the same body as C++ DIFFs), so it cannot call dActor_c::Earthquake as a member and keeps the linker spelling, as its PoofDustAt and MarkForDestruction calls already do. Making Earthquake a scalar-Fix12i member respells the existing extern from _ZN8dActor_c10EarthquakeERK7Vector35Fix12IiE (exempt as Fix12-by-value) with its count unchanged. Follow-up: call the member once func_ov060_02117db8 matches as C++.",
+      "evidence": "origin/main:src/game/actors/d_a_kpa3_bg.cpp 2x _ZN8dActor_c10EarthquakeERK7Vector35Fix12IiE; head 2x _ZN8dActor_c10EarthquakeERK7Vector3i; file banner (func_ov060_02117db8 parses as C); tools/source_style.py --base origin/main"
+    },
+    {
+      "path": "src/unnamed/ov075/func_ov075_02117fe4.c",
+      "rule": "handspelled-member",
+      "match": "_ZN3OAM6RenderEbP7OamAttriiiiii",
+      "count": 3,
+      "reason": "func_ov075_02117fe4 is a C translation unit, so it cannot name the C++ member OAM::Render; it declares the 8-argument overload under its linker spelling and calls it twice (the tens and ones digits).",
+      "evidence": "The call spelled _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiEi before the OAM::Render rename (#4327); include/OAM.h declares the scalar overload. Same shape as src/unnamed/arm9/0203/func_0203083c.c's row for the 10-argument overload."
+    },
+    {
+      "path": "src/Vec3_HorzAngle.c",
+      "rule": "handspelled-member",
+      "match": "_ZN4cstd5atan2Eii",
+      "count": 2,
+      "reason": "Vec3_HorzAngle is a C translation unit, so it cannot name the C++ function cstd::atan2; it declares it under its linker spelling and calls it once.",
+      "evidence": "The calls spelled _ZN4cstd5atan2E5Fix12IiES1_ before cstd::atan2 took its scalar mangling (#4328), which the Fix12-by-value exemption covered; the C++ callers in that PR call cstd::atan2 by name."
+    },
+    {
+      "path": "src/Vec3_VertAngle.c",
+      "rule": "handspelled-member",
+      "match": "_ZN4cstd5atan2Eii",
+      "count": 2,
+      "reason": "Vec3_VertAngle is a C translation unit, so it cannot name the C++ function cstd::atan2; it declares it under its linker spelling and calls it once.",
+      "evidence": "The calls spelled _ZN4cstd5atan2E5Fix12IiES1_ before cstd::atan2 took its scalar mangling (#4328), which the Fix12-by-value exemption covered; the C++ callers in that PR call cstd::atan2 by name."
+    },
+    {
+      "path": "src/unnamed/arm9/0200/func_02008cb4.c",
+      "rule": "handspelled-member",
+      "match": "_ZN4cstd5atan2Eii",
+      "count": 3,
+      "reason": "func_02008cb4 is a C translation unit, so it cannot name the C++ function cstd::atan2; it declares it under its linker spelling and calls it twice.",
+      "evidence": "The calls spelled _ZN4cstd5atan2E5Fix12IiES1_ before cstd::atan2 took its scalar mangling (#4328), which the Fix12-by-value exemption covered; the C++ callers in that PR call cstd::atan2 by name."
+    },
+    {
+      "path": "src/unnamed/arm9/0200/func_0200b990.c",
+      "rule": "handspelled-member",
+      "match": "_ZN4cstd5atan2Eii",
+      "count": 2,
+      "reason": "func_0200b990 is a C translation unit, so it cannot name the C++ function cstd::atan2; it declares it under its linker spelling and calls it once.",
+      "evidence": "The calls spelled _ZN4cstd5atan2E5Fix12IiES1_ before cstd::atan2 took its scalar mangling (#4328), which the Fix12-by-value exemption covered; the C++ callers in that PR call cstd::atan2 by name."
     }
   ]
 }

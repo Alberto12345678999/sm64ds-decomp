@@ -199,6 +199,10 @@ struct daDoor_StateRecord {
 
 struct Vector3_16;
 
+namespace Sound {
+bool PlaySub(u32, u32, u32, int, bool);
+}
+
 extern "C" {
 /* Defined below, called before their definitions. These four are the shared
    countdown helpers -- free functions, not members: Player.cpp, daMugenBGM_c
@@ -207,9 +211,11 @@ int func_ov100_02144f84(void);
 int func_ov100_02144fcc(void);
 int func_ov100_02145014(void);
 void func_ov100_02145070(int v);
-
-void _ZN5Sound17ChangeMusicVolumeEj5Fix12IiE(unsigned int a, int b);
-int _ZN5Sound7PlaySubEjjj5Fix12IiEb(unsigned int, unsigned int, unsigned int, int, int);
+}
+namespace Sound {
+void ChangeMusicVolume(unsigned int a, int b);
+}
+extern "C" {
 void _ZN5Sound13PlayCharVoiceEjjRK7Vector3(unsigned int a, unsigned int b, void *pos);
 /* local extern: include/Player.h declares Player::Unk_020ca488 void, and
    func_ov100_021449c8 tests the value it leaves in r0. */
@@ -417,7 +423,7 @@ int daDoor_c::func_ov100_02144468(int p)
         if (param1 != DOOR_LAST_KEY_MODEL) {
             SaveData::SetCharacterIntro(mKeyModelIdx - 1);
         } else {
-            _ZN5Sound17ChangeMusicVolumeEj5Fix12IiE(0x7f, 0xcb33);
+            Sound::ChangeMusicVolume(0x7f, 0xcb33);
         }
         func_ov100_021453d8(&data_ov100_021488b4, p);
     }
@@ -473,7 +479,7 @@ int daDoor_c::func_ov100_02144528(Player *pl)
                     pl->mHasNoCap = 1;
                     func_0201277c(0x7e);
                     mTimer = 0x40;
-                    _ZN5Sound17ChangeMusicVolumeEj5Fix12IiE(0, 0x19666);  /* 25.4 as Fix12 */
+                    Sound::ChangeMusicVolume(0, 0x19666); /* 25.4 as Fix12 */
                 } else {
                     func_0201277c(0x7f);
                 }
@@ -483,7 +489,7 @@ int daDoor_c::func_ov100_02144528(Player *pl)
                     func_02012790(0xa1);
                 else
                     func_02012790(0xa2);
-                _ZN5Sound17ChangeMusicVolumeEj5Fix12IiE(0, 0x19666);
+                Sound::ChangeMusicVolume(0, 0x19666);
             }
             func_02012694(param1 == DOOR_ALT_SOUND ? SND_SWING_END_ALT : SND_SWING_END, &mCamSpacePosX);
         }
@@ -499,7 +505,7 @@ int daDoor_c::func_ov100_02144528(Player *pl)
             if (data_ov100_02148704 == 0
                 && mTimer == 0xa
                 && param1 == DOOR_LAST_KEY_MODEL) {
-                _ZN5Sound17ChangeMusicVolumeEj5Fix12IiE(0x7f, 0xcb33);
+                Sound::ChangeMusicVolume(0x7f, 0xcb33);
             }
         }
     }
@@ -868,7 +874,7 @@ extern "C" int func_ov100_02144fcc(void)
 {
     int r = func_ov100_02145014();
     if (r == 0) return 0;
-    return _ZN5Sound7PlaySubEjjj5Fix12IiEb(0x24, 0x7f, 0, 0x7222, 0);
+    return Sound::PlaySub(0x24, 0x7f, 0, 0x7222, 0);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -883,7 +889,7 @@ extern "C" int func_ov100_02145014(void)
 {
     int r = DecIfAbove0_Short(data_ov100_02148708);
     if (r) {
-        _ZN5Sound7PlaySubEjjj5Fix12IiEb(0x24, 0x14, 0x7f, 0x15666, 0);
+        Sound::PlaySub(0x24, 0x14, 0x7f, 0x15666, 0);
     }
     return data_ov100_02148708[0] == 0 ? 1 : 0;
 }
@@ -916,13 +922,13 @@ int daDoor_c::func_ov100_02145080(Player *arg1)
         if (mTimer == 0) {
             if (func_ov002_020ca78c(arg1) == 0)
                 goto ret1;
-            _ZN5Sound7PlaySubEjjj5Fix12IiEb(0x2b, 0, 0x7f, 0x15666, 0);
+            Sound::PlaySub(0x2b, 0, 0x7f, 0x15666, 0);
             mTimer = 0x78;
             goto ret1;
         }
         if (DecIfAbove0_Byte(&mTimer) != 0)
             goto ret1;
-        _ZN5Sound7PlaySubEjjj5Fix12IiEb(0x2b, 0x7f, 0, 0x7222, 0);
+        Sound::PlaySub(0x2b, 0x7f, 0, 0x7222, 0);
         mTimer += 1;
         return 0;
     }

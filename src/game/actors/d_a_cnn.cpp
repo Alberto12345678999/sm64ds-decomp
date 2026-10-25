@@ -117,8 +117,7 @@ void func_ov102_0214ae1c(dActor_c *bomb);
 
 void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(dCcAc_c *self, dActor_c *actor,
     int radius, int height, u32 flags, u32 vulnFlags);
-void _ZN8dActor_c10EarthquakeERK7Vector35Fix12IiE(dActor_c *self,
-    const Vector3 *pos, int magnitude);
+void d_a_cnnEarthquakeHold(dActor_c *self, const Vector3 *pos, int magnitude);
 int d_a_cnnNewHold(u32 slot, u32 id, int x, int y, int z, const Vector3_16 *rot, void *cb);
 }
 
@@ -489,7 +488,7 @@ void daCnn_c::func_ov098_0213aa28()
         quakePos.x = mPosX;
         quakePos.y = mPosY;
         quakePos.z = mPosZ;
-        _ZN8dActor_c10EarthquakeERK7Vector35Fix12IiE(this, &quakePos, 0x1f4000);
+        Earthquake(quakePos, 0x1f4000);
         Sound::PlayBank3(0x14c, mCamSpacePos);
         break;
 

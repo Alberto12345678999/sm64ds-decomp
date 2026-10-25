@@ -106,7 +106,7 @@ extern "C" daOnms_cStateEntry data_ov092_02132568[9];
 extern "C" {
 int func_ov002_020de328(void *player);
 void dBgCh_Actr_UpdateContinuous_Veneer(void *self);
-void _ZN8dActor_c10EarthquakeERK7Vector35Fix12IiE(void *v, int f);
+void d_a_onmsEarthquakeHold(void *v, int f);
 /* Sound::Play(3, id, pos). The overlay calls this wrapper, not Sound::Play. */
 void func_02012694(unsigned int id, const Vector3 *v);
 /* Stores mRadius: p[6] = value, the word at dBgCh_Actr + 0x18. */
@@ -126,9 +126,8 @@ void Matrix4x3_FromTranslation(void *m, int x, int y, int z);
 void Matrix4x3_ApplyInPlaceToRotationX(void *m, short angX);
 void Matrix4x3_ApplyInPlaceToRotationZ(void *m, short angZ);
 void Matrix4x3_ApplyInPlaceToRotationY(void *m, short angY);
-void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-    dBgW_KcMbg *self, KCL_File *file, const Matrix4x3 *mat,
-    int scale, short angY, void *clps);
+extern void hold_d_a_onms(dBgW_KcMbg *self, KCL_File *file, const Matrix4x3 *mat, int scale,
+                          short angY, void *clps);
 /* Stores beforeClsnCallback: p[6] = value, the word at dBgW + 0x18. */
 void func_020393d4(int *p, int v);
 void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
@@ -199,8 +198,7 @@ int daOnms_c::StateBounce()
     eq.x = mPosX;
     eq.y = mPosY;
     eq.z = mPosZ;
-    ((void (*)(void *, const Vector3 *, int))_ZN8dActor_c10EarthquakeERK7Vector35Fix12IiE)(
-        this, &eq, 0x5dc000);
+    Earthquake(eq, 0x5dc000);
     func_02012694(0x46, CamPos(this));
 
     /* tmp is a dead copy the ROM keeps; building dust directly differs. */
@@ -269,8 +267,7 @@ void daOnms_c::StateKnocked()
         v1.x = p[0];
         v1.y = p[1];
         v1.z = p[2];
-        ((void (*)(void *, const Vector3 *, int))_ZN8dActor_c10EarthquakeERK7Vector35Fix12IiE)(
-            this, &v1, 0xff8000);
+        Earthquake(v1, 0xff8000);
         mPosX = saved.x;
         mPosY = saved.y;
         mPosZ = saved.z;
@@ -286,8 +283,7 @@ void daOnms_c::StateKnocked()
         v2.x = p[0];
         v2.y = p[1];
         v2.z = p[2];
-        ((void (*)(void *, const Vector3 *, int))_ZN8dActor_c10EarthquakeERK7Vector35Fix12IiE)(
-            this, &v2, 0xff8000);
+        Earthquake(v2, 0xff8000);
         Sound::PlayBank3(0x41, *CamPos(this));
     }
     mPlayerActor = 0;
@@ -355,8 +351,7 @@ void daOnms_c::StateLand()
     if (!mStateTimer) {
         Vector3 v;
         v.x = mPosX; v.y = mPosY; v.z = mPosZ;
-        ((void (*)(void *, const Vector3 *, int))_ZN8dActor_c10EarthquakeERK7Vector35Fix12IiE)(
-            this, &v, 0x860000);
+        Earthquake(v, 0x860000);
         func_02012694(0x46, CamPos(this));
     }
     mPosY = mRestPos.y + 0x3000;
@@ -622,9 +617,9 @@ int daOnms_c::InitResources()
     func_ov092_02131a88((char *)this);
 
     f = dBgW_Kc::LoadFile(gOnimasuCollisionFile);
-    _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-        &mMeshCollider, (KCL_File *)f, &mClsnMat,
-        0x1000, mAngleY, &data_ov092_02132220);
+    ((dBgW_KcMbg *)(&mMeshCollider))
+        ->dBgW_KcMbg::SetFile((KCL_File *)f, *(&mClsnMat), 0x1000, mAngleY,
+                              *(CLPS_Block *)(&data_ov092_02132220));
     func_020393d4((int *)&mMeshCollider, (int)&dBgW::UpdatePosWithTransform);
 
     mOrientBits = (unsigned char)((mAngleX >> 0xe) & 3);

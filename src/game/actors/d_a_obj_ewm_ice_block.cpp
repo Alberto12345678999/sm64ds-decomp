@@ -40,9 +40,8 @@ extern void Vec3_Sub(Vector3 *out, Vector3 *a, Vector3 *b);
 extern int LenVec3(Vector3 *v);
 extern void Vec3_MulScalar(Vector3 *out, Vector3 *v, int s);
 extern void SubVec3(Vector3 *a, Vector3 *b, Vector3 *c);
-extern void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-    dBgW_KcMbg *self, void *kcl, const Matrix4x3 *mtx, int scale, short angle,
-    void *clps);
+extern void hold_d_a_obj_ewm_ice_block(dBgW_KcMbg *self, void *kcl, const Matrix4x3 *mtx, int scale,
+                                       short angle, void *clps);
 extern void func_020393d4(void *p, void *cb);
 }
 
@@ -152,13 +151,10 @@ int daObjEwmIceBlock_c::InitResources()
     mModel.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(*data_ov056_02113314[0]), 1, -1);
     UpdateModelPosAndRotY();
     UpdateClsnPosAndRot();
-    _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-        &mMeshCollider,
-        dBgW_Kc::LoadFile(*data_ov056_02113314[1]),
-        &mClsnMat,
-        0x199,
-        mAngleY,
-        data_ov056_02113314[2]);
+    ((dBgW_KcMbg *)(&mMeshCollider))
+        ->dBgW_KcMbg::SetFile((KCL_File *)(dBgW_Kc::LoadFile(*data_ov056_02113314[1])),
+                              *(&mClsnMat), 0x199, mAngleY,
+                              *(CLPS_Block *)(data_ov056_02113314[2]));
     func_020393d4(&mMeshCollider, (void *)&dBgW::UpdatePosWithTransform);
     mPath.FromID(param1 & 0xff);
     mPathDir = 1;

@@ -908,19 +908,17 @@ int Mg_GetMusicTrack(void) {
 // @symbol Mg_RestoreMusic
 namespace s20ae20c {
 extern "C" {
-extern void _ZN5Sound7PlaySubEjjj5Fix12IiEb(unsigned int a, unsigned int b, unsigned int c, int d, int e);
+extern void d_s_mg_basePlaySubHold(unsigned int a, unsigned int b, unsigned int c, int d, int e);
 extern int Mg_GetMusicMode(void);
 extern int Mg_GetMusicTrack(void);
 /* Sound::PlaySub with third argument 0 and its flag set starts nothing:
    it only sets the music volume target (data_0208e42c, which
    ChangeMusicVolume and PauseMusic also write) back to 0x7f, with step
    0x7f000, and zeroes data_0209b470. Then, while a scene exists and in
-   music mode 1, this loads the scene's track. PlaySub stays mangled:
-   nothing in the tree mangles to its Fix12<int> parameter (see
-   include/Sound.h). */
+   music mode 1, this loads the scene's track. */
 void Mg_RestoreMusic(void)
 {
-    _ZN5Sound7PlaySubEjjj5Fix12IiEb(0, 0x7f, 0, 0x7f000, 1);
+    Sound::PlaySub(0, 0x7f, 0, 0x7f000, 1);
     if (gMgScene == 0) return;
     if (Mg_GetMusicMode() != 1) return;
     Sound::LoadAndSetMusic_Layer1(Mg_GetMusicTrack());
@@ -932,7 +930,6 @@ void Mg_RestoreMusic(void)
 namespace s20ae274 {
 extern "C" {
 extern int Mg_GetMusicMode(void);
-extern void _ZN5Sound7PlaySubEjjj5Fix12IiEb(unsigned int, unsigned int, unsigned int, int, int);
 
 /* While a scene exists, starts sequence `id` on Sound::PlaySub's own
    player (data_0209b4b0) unless it is already the current one, and sets
@@ -941,7 +938,7 @@ extern void _ZN5Sound7PlaySubEjjj5Fix12IiEb(unsigned int, unsigned int, unsigned
 void Mg_PlayJingle(void* id) {
     if (gMgScene == 0) return;
     Mg_GetMusicMode();
-    _ZN5Sound7PlaySubEjjj5Fix12IiEb((unsigned int)id, 0x40, 0x7f, 0x7f000, 1);
+    Sound::PlaySub((unsigned int)id, 0x40, 0x7f, 0x7f000, 1);
 }
 }
 }
@@ -1934,6 +1931,7 @@ struct OamAttr; struct Matrix2x2;
 namespace OAM {
 void Render(bool draw, OamAttr *obj, int px, int py, int pal, int prio, Matrix2x2 *mtx);
 void Render(bool, OamAttr *, int, int, int, int, int, int, int, int);
+int Render(bool, OamAttr *, int, int, int, int, int, int);
 void RenderSub(OamAttr *data, s32 x, s32 y, s32 palette, s32 priority);
 }
 
@@ -1986,8 +1984,8 @@ extern "C" {
 struct OamAttr;
 }
 typedef int Fix12i;
-extern "C" int _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiEi(
-    int show, struct OamAttr* attr, int a, int b, int c, int d, Fix12i e, int f);
+extern "C" int OamRender8_d_s_mg_base(int show, struct OamAttr *attr, int a, int b, int c, int d,
+                                      Fix12i e, int f);
 
 extern "C" int Mg_RenderSubSpriteScaled(int a0, int a1, int a2, int a3, int a4, int a5,
                                         unsigned short a6) {
@@ -1998,11 +1996,10 @@ extern "C" int Mg_RenderSubSpriteScaled(int a0, int a1, int a2, int a3, int a4, 
         if (scene->GetDisplayMode() == 2) {
             if (((D3DBaseView *)gMgScene)->mDrawSubScreen != 0)
                 return 0;
-            return _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiEi(0, (struct OamAttr *)a0, a1, a2, a3, a4,
-                                                           a5, a6);
+            return OAM::Render(0, (::OamAttr *)a0, a1, a2, a3, a4, a5, a6);
         }
     }
-    return _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiEi(1, (struct OamAttr *)a0, a1, a2, a3, a4, a5, a6);
+    return OAM::Render(1, (::OamAttr *)a0, a1, a2, a3, a4, a5, a6);
 }
 }
 }
@@ -2078,8 +2075,8 @@ extern "C" {
 struct OamAttr;
 }
 typedef int Fix12i;
-extern "C" int _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiEi(
-    int show, struct OamAttr* attr, int a, int b, int c, int d, Fix12i e, int f);
+extern "C" int OamRender8_d_s_mg_base(int show, struct OamAttr *attr, int a, int b, int c, int d,
+                                      Fix12i e, int f);
 
 extern "C" int Mg_RenderMainSpriteScaled(int a0, int a1, int a2, int a3, int a4, int a5,
                                          unsigned short a6) {
@@ -2090,11 +2087,10 @@ extern "C" int Mg_RenderMainSpriteScaled(int a0, int a1, int a2, int a3, int a4,
         if (scene->GetDisplayMode() == 2) {
             if (((D3DBaseView *)gMgScene)->mDrawSubScreen != 1)
                 return 0;
-            return _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiEi(0, (struct OamAttr *)a0, a1, a2, a3, a4,
-                                                           a5, a6);
+            return OAM::Render(0, (::OamAttr *)a0, a1, a2, a3, a4, a5, a6);
         }
     }
-    return _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiEi(0, (struct OamAttr *)a0, a1, a2, a3, a4, a5, a6);
+    return OAM::Render(0, (::OamAttr *)a0, a1, a2, a3, a4, a5, a6);
 }
 }
 }
@@ -2174,8 +2170,8 @@ struct OamAttr;
 extern int sMgTopScreenYOffset;
 }
 typedef int Fix12i;
-extern "C" int _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiEi(
-    int show, struct OamAttr* attr, int a, int b, int c, int d, Fix12i e, int f);
+extern "C" int OamRender8_d_s_mg_base(int show, struct OamAttr *attr, int a, int b, int c, int d,
+                                      Fix12i e, int f);
 
 extern "C" int Mg_RenderSpriteBothScaled(struct OamAttr *a0, int a1, int a2, int a3, int a4,
                                          Fix12i a5, int a6) {
@@ -2186,21 +2182,19 @@ extern "C" int Mg_RenderSpriteBothScaled(struct OamAttr *a0, int a1, int a2, int
         if (((D3DBaseView *)gMgScene)->mDrawSubScreen == 1) {
             int hp = sMgTopScreenYOffset;
             if (a2 >= -0x100 - hp && a2 < -hp) {
-                return _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiEi(0, a0, a1, a2 + 0xc0 + hp, a3, a4,
-                                                               a5, a6);
+                return OAM::Render(0, (::OamAttr *)a0, a1, a2 + 0xc0 + hp, a3, a4, a5, a6);
             }
             if (a2 >= -0x40 && a2 < 0xc0) {
-                return _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiEi(0, a0, a1, a2, a3, a4, a5, a6);
+                return OAM::Render(0, (::OamAttr *)a0, a1, a2, a3, a4, a5, a6);
             }
         }
     } else {
         int hp = sMgTopScreenYOffset;
         if (a2 >= -0x100 - hp && a2 < -hp) {
-            return _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiEi(0, a0, a1, a2 + 0xc0 + hp, a3, a4, a5,
-                                                           a6);
+            return OAM::Render(0, (::OamAttr *)a0, a1, a2 + 0xc0 + hp, a3, a4, a5, a6);
         }
         if (a2 >= -0x40 && a2 < 0xc0) {
-            return _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiEi(1, a0, a1, a2, a3, a4, a5, a6);
+            return OAM::Render(1, (::OamAttr *)a0, a1, a2, a3, a4, a5, a6);
         }
     }
     return 0;

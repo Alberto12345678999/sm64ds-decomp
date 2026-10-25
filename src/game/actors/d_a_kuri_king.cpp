@@ -146,7 +146,9 @@ void StopLoadedMusic_Layer3();
 void LoadAndSetMusic_Layer3(unsigned int musicId);
 }
 extern "C" void func_02011cfc();
-extern "C" void _ZN5Sound17ChangeMusicVolumeEj5Fix12IiE(u32 a, int f);
+namespace Sound {
+void ChangeMusicVolume(u32 a, int f);
+}
 extern "C" int func_01ffa344(int f);
 extern "C" unsigned short data_ov074_02122e04[];
 extern "C" int ApproachAngle(void*,int,int,int,int);
@@ -158,6 +160,7 @@ extern "C" int func_01ffa4bc(int a);
 extern "C" int func_01ff9378(int a, int b);
 /* local extern: no header declares cstd::fdiv (daBgSnmBdy_c spells it the same way). */
 namespace cstd {
+s16 atan2(s32, s32);
 int fdiv(int numerator, int denominator);
 }
 extern "C" int Math_Function_0203b14c(int* p, int a, int b, int d, int e);
@@ -167,7 +170,7 @@ extern "C" int data_ov074_0212290c[];
 extern "C" void *data_ov074_02122e4c[];
 extern "C" void Vec3_Sub(Vector3 *out, const Vector3 *a, const Vector3 *b);
 extern "C" s32 Vec3_HorzLen(const Vector3 *v);
-extern "C" s16 _ZN4cstd5atan2E5Fix12IiES1_(s32 y, s32 x);
+extern "C" s16 atan2_hold_d_a_kuri_king_1(s32 y, s32 x);
 extern "C" unsigned char DecIfAbove0_Byte(unsigned char *p);
 extern "C" void _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(char *p, const struct Vector3 *v, unsigned int a, int b, unsigned int c, unsigned int d, unsigned int e);
 extern "C" s16 Vec3_HorzAngle(const struct Vector3 *v0, const struct Vector3 *v1);
@@ -179,7 +182,7 @@ extern "C" void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
     void *self, void *actor, void *pos, s32 fx, s32 fy, u32 a, u32 b);
 extern "C" void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(
     void *self, void *actor, s32 fa, s32 fb, void *v0, void *v1);
-extern "C" void _ZN8dActor_c10EarthquakeERK7Vector35Fix12IiE(void *thiz, void *v, int f);
+extern "C" void d_a_kuri_kingEarthquakeHold(void *thiz, void *v, int f);
 extern "C" void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
     void *self, void *shadow, void *mat, int rad, int hgt, u32 flags);
 extern "C" int data_ov074_02122e24[];
@@ -524,7 +527,7 @@ void daKuriKing_c::func_ov074_0211f5b8()
         Message::EndTalk();
         Sound::StopLoadedMusic_Layer3();
         func_02011cfc();
-        _ZN5Sound17ChangeMusicVolumeEj5Fix12IiE(0x7f, 0x15666);
+        Sound::ChangeMusicVolume(0x7f, 0x15666);
         this->mNoShadow = 1;
         this->mTimer = 0xf;
         this->mSubState += 1;
@@ -1150,8 +1153,8 @@ void daKuriKing_c::func_ov074_02120bb8(dActor_c *other, dCcAcPos_c *clsn, int mo
     v.x = delta.x;
     v.y = delta.y;
     v.z = delta.z;
-    aX = _ZN4cstd5atan2E5Fix12IiES1_(v.x, v.z);
-    aY = _ZN4cstd5atan2E5Fix12IiES1_(v.y, Vec3_HorzLen(&v));
+    aX = cstd::atan2(v.x, v.z);
+    aY = cstd::atan2(v.y, Vec3_HorzLen(&v));
 
     iY = (u16)aY >> 4;
     iX = (u16)aX >> 4;
@@ -1670,7 +1673,7 @@ int daKuriKing_c::Behavior()
                 v.x = mCylClsnPos[2].x;
                 v.y = mCylClsnPos[2].y;
                 v.z = mCylClsnPos[2].z;
-                _ZN8dActor_c10EarthquakeERK7Vector35Fix12IiE(this, &v, quake);
+                Earthquake(v, quake);
             }
         }
 
@@ -1694,7 +1697,7 @@ int daKuriKing_c::Behavior()
                 v.x = mCylClsnPos[1].x;
                 v.y = mCylClsnPos[1].y;
                 v.z = mCylClsnPos[1].z;
-                _ZN8dActor_c10EarthquakeERK7Vector35Fix12IiE(this, &v, quake);
+                Earthquake(v, quake);
             }
         }
     }

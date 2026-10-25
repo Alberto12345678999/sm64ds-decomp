@@ -90,6 +90,9 @@
 #include "daObjNumber_c.h"
 #include "daCoin_c.h"
 #include "daFPknBall_c.h"
+namespace cstd {
+s16 atan2(s32, s32);
+}
 
 /* Spawn globals the constructor reads. The s16* spellings are the ones
    func_02010e78 already uses; a second void* declaration in this TU is
@@ -731,7 +734,7 @@ dActor_c *dActor_c::ClosestWithActorID(u32 actorID)
 /* ROM ordinal 62 -- func_02010844
  * 0x02010844  size 0x80 */
 extern "C" {
-extern s16 _ZN4cstd5atan2E5Fix12IiES1_(Fix12i y, Fix12i x);
+extern s16 atan2_hold_d_actor_1(Fix12i y, Fix12i x);
 extern s32 Vec3_HorzLen(Vector3 *v);
 }
 /* atan2 of v's horizontal length, projected onto heading `angle`, against
@@ -740,11 +743,10 @@ extern "C" s32 func_02010844(void *actor, Vector3 *v, s16 angle) {
     s32 dir;
     s32 horzLen;
 
-    dir = _ZN4cstd5atan2E5Fix12IiES1_(v->x, v->z);
+    dir = cstd::atan2(v->x, v->z);
     angle = (s16)(dir - angle);
     horzLen = Vec3_HorzLen(v);
-    return _ZN4cstd5atan2E5Fix12IiES1_(FX_MUL(horzLen, data_02082214[((u16)angle >> 4) * 2 + 1]),
-                                       v->y);
+    return cstd::atan2(FX_MUL(horzLen, data_02082214[((u16)angle >> 4) * 2 + 1]), v->y);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -943,7 +945,7 @@ bool dActor_c::IsPlayerInRange(const Vector3 &pos, s32 maxDist)
    around, about the normal's heading. */
 extern "C" s16 _ZN8dActor_c12ReflectAngleE5Fix12IiES1_s(dActor_c *self, Fix12i normalX,
                                                         Fix12i normalZ, s16 angToReflect) {
-    s16 normalAngle = _ZN4cstd5atan2E5Fix12IiES1_(normalX, normalZ);
+    s16 normalAngle = cstd::atan2(normalX, normalZ);
     s16 delta = (s16)((angToReflect + 0x8000) - normalAngle);
     return (s16)(normalAngle - delta);
 }
@@ -1078,20 +1080,16 @@ Matrix4x3 *dActor_c::UpdateCarry(Player &player, const Vector3 &vec)
 }
 
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN8dActor_c10EarthquakeERK7Vector35Fix12IiE
-/* ROM ordinal 46 -- _ZN8dActor_c10EarthquakeERK7Vector35Fix12IiE
+// @symbol _ZN8dActor_c10EarthquakeERK7Vector3i
+/* ROM ordinal 46 -- _ZN8dActor_c10EarthquakeERK7Vector3i
  * 0x02010168  size 0x18 */
 extern "C" {
-extern void func_0200d8c8(void *, int);
+extern void func_0200d8c8(void *, const Vector3 *, int);
 extern void *data_0209f318; /* the camera */
 }
-/* Fix12<int> by value: defined by its symbol. The real shape is
-   (this, const Vector3 &pos, magnitude) tail-calling dCamera_c's
-   func_0200d8c8(camera, pos, strength) with r1/r2 untouched; spelling it so
-   contradicts 15 consumer declarations banked against this two-argument
-   form, so the two-argument spelling stays until those are fixed together. */
-extern "C" void _ZN8dActor_c10EarthquakeERK7Vector35Fix12IiE(void *self, int magnitude) {
-    func_0200d8c8(data_0209f318, magnitude);
+/* r1 is the position and r2 the intensity; both are forwarded untouched. */
+void dActor_c::Earthquake(const Vector3 &pos, Fix12i magnitude) {
+    func_0200d8c8(data_0209f318, &pos, magnitude);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -1611,19 +1609,18 @@ void dActor_c::SpawnSoundObj(u32 soundObjParam)
 /* ROM ordinal 6 -- _ZN5Sound15PlaySecretSoundEP8dActor_cPt
  * 0x0200f8f8  size 0x84 */
 extern "C" {
-/* local extern: Sound::PlaySub takes Fix12<int> by value, so it is called by
-   its symbol (the Fix12 wall). */
-int _ZN5Sound7PlaySubEjjj5Fix12IiEb(unsigned int soundID, unsigned int vol, unsigned int pan,
-                                    Fix12i dist, int loop);
+/* local extern: its five named parameters hold this TU's @NNN count. */
+int d_actorPlaySubHold(unsigned int soundID, unsigned int vol, unsigned int pan, Fix12i dist,
+                       int loop);
 static const int kPoolDist = 0x8777;
 }
 namespace Sound {
 
 int PlaySecretSound(dActor_c *actor, u16 *counter) {
     if (*counter < 0x4b) {
-        _ZN5Sound7PlaySubEjjj5Fix12IiEb(0x20, 0x14, 0x7f, 0x6b000, 0);
+        Sound::PlaySub(0x20, 0x14, 0x7f, 0x6b000, 0);
         *counter += 1;
-    } else if (_ZN5Sound7PlaySubEjjj5Fix12IiEb(0x20, 0x7f, 0, kPoolDist, 0)) {
+    } else if (Sound::PlaySub(0x20, 0x7f, 0, kPoolDist, 0)) {
         return 1;
     }
     return 0;
@@ -1638,9 +1635,9 @@ namespace Sound {
 
 int PlaySmallSecretSound(dActor_c *actor, u16 *counter) {
     if (*counter < 0x19) {
-        _ZN5Sound7PlaySubEjjj5Fix12IiEb(0x29, 0x14, 0x7f, 0x6b000, 0);
+        Sound::PlaySub(0x29, 0x14, 0x7f, 0x6b000, 0);
         *counter += 1;
-    } else if (_ZN5Sound7PlaySubEjjj5Fix12IiEb(0x29, 0x7f, 0, kPoolDist, 0)) {
+    } else if (Sound::PlaySub(0x29, 0x7f, 0, kPoolDist, 0)) {
         return 1;
     }
     return 0;
@@ -1653,9 +1650,9 @@ int PlaySmallSecretSound(dActor_c *actor, u16 *counter) {
  * 0x0200f7f0  size 0x84 */
 extern "C" int func_0200f7f0(dActor_c *actor, u16 *counter) {
     if (*counter < 0x69) {
-        _ZN5Sound7PlaySubEjjj5Fix12IiEb(0x21, 0x14, 0x7f, 0x6b000, 0);
+        Sound::PlaySub(0x21, 0x14, 0x7f, 0x6b000, 0);
         *counter += 1;
-    } else if (_ZN5Sound7PlaySubEjjj5Fix12IiEb(0x21, 0x7f, 0, kPoolDist, 0)) {
+    } else if (Sound::PlaySub(0x21, 0x7f, 0, kPoolDist, 0)) {
         return 1;
     }
     return 0;

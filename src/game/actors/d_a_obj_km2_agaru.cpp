@@ -45,9 +45,8 @@ extern CLPS_Block data_ov045_021125d0;
 
 void func_020393d4(int *collider, int callback);
 void func_020393c4(int *collider, int callback);
-void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-    dBgW_KcMbg *self, KCL_File *kcl, const Matrix4x3 *mtx, int scale,
-    s16 angleY, CLPS_Block *clps);
+extern void hold_d_a_obj_km2_agaru(dBgW_KcMbg *self, KCL_File *kcl, const Matrix4x3 *mtx, int scale,
+                                   s16 angleY, CLPS_Block *clps);
 
 void func_ov045_021114a8(daObjKm2_Agaru_c *self, dActor_c *other);
 void func_ov045_021114c8(void *collider, daObjKm2_Agaru_c *self,
@@ -91,9 +90,8 @@ s32 daObjKm2_Agaru_c::InitResources()
     UpdateClsnPosAndRot();
 
     KCL_File *kcl = (KCL_File *)dBgW_Kc::LoadFile(data_ov045_02113180);
-    _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-        &mMeshCollider, kcl, &mClsnMat, 0x199, mAngleY,
-        &data_ov045_021125d0);
+    ((dBgW_KcMbg *)(&mMeshCollider))
+        ->dBgW_KcMbg::SetFile(kcl, *(&mClsnMat), 0x199, mAngleY, *(&data_ov045_021125d0));
     func_020393d4((int *)&mMeshCollider, (int)&dBgW::UpdatePosWithTransform);
     func_020393c4((int *)&mMeshCollider, (int)&func_ov045_021114c8);
 

@@ -1,8 +1,8 @@
 //cpp
 /* The constructor/destructor order retains all five lifecycle variants used
  * by dBgW_KcMbgSclY. The func_02039* transform workers retain C linkage.
- * SetFile and SetObjAndSphere retain scalar ABI boundaries for the shared
- * Fix12<int>-by-value signatures. Flat matrix copies use RawMatrix4x3;
+ * SetFile is the scalar method. SetObjAndSphere retains the
+ * Fix12<int>-by-value symbol. Flat matrix copies use RawMatrix4x3;
  * the shared Matrix4x3 copy changes the retail instruction sequence.
  */
 /* dBgW_KcMbg: KCL mesh under a Matrix4x3, with a uniform scale.
@@ -79,30 +79,30 @@ dBgW_KcMbg::dBgW_KcMbg() {}
 // @symbol _ZN10dBgW_KcMbgD1Ev
 dBgW_KcMbg::~dBgW_KcMbg() {}
 
-// @symbol _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block
-/* Scalar ABI boundary: the shared SetFile declaration takes Fix12<int> by
- * value. This C++ body retains its existing scalar entry and C symbol.
- * The scratch aggregate holds two complete matrices and the local up axis.
+// @symbol _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x3isR10CLPS_Block
+/* The scratch aggregate holds two complete matrices and the local up axis.
+ * Matrix words are copied through RawMatrix4x3; a Matrix4x3 assignment
+ * scalarizes.
  */
-extern "C" void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-    void *collider, void *file, const Matrix4x3 *mtx, int scale, short angY, void *clps) {
-    dBgW_KcMbg *self = (dBgW_KcMbg *)collider;
+void dBgW_KcMbg::SetFile(KCL_File *file, const Matrix4x3 &mtx, Fix12i scale, s16 angY,
+                         CLPS_Block &clps) {
+    dBgW_KcMbg *self = this;
     struct Scratch {
         RawMatrix4x3 rotation;
         RawMatrix4x3 scaled;
         RawVector3 up;
     } scratch;
-    self->dBgW_Kc::SetFile((KCL_File *)file, *(CLPS_Block *)clps);
-    func_02039624((char *)collider);
+    self->dBgW_Kc::SetFile(file, clps);
+    func_02039624((char *)self);
     self->scale = scale;
-    *(RawMatrix4x3 *)&self->mat = *(RawMatrix4x3 *)mtx;
+    *(RawMatrix4x3 *)&self->mat = *(RawMatrix4x3 *)&mtx;
     *(RawMatrix4x3 *)&self->invMat = *(RawMatrix4x3 *)&self->mat;
     InvMat4x3(&self->invMat, &self->invMat);
     self->angY = angY;
     self->angVelY = 0;
-    self->pos.x = mtx->t.x;
-    self->pos.y = mtx->t.y;
-    self->pos.z = mtx->t.z;
+    self->pos.x = mtx.t.x;
+    self->pos.y = mtx.t.y;
+    self->pos.z = mtx.t.z;
     self->velocity.x = self->velocity.y = self->velocity.z = 0;
     scratch.rotation = *(RawMatrix4x3 *)&self->mat;
     scratch.rotation.m[9] = 0;
@@ -111,7 +111,7 @@ extern "C" void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_
     *(RawMatrix4x3 *)&self->invRotMat = scratch.rotation;
     InvMat4x3(&self->invRotMat, &self->invRotMat);
     self->invScale = func_02053200(scale);
-    *(RawMatrix4x3 *)&data_020a0e68 = *(RawMatrix4x3 *)mtx;
+    *(RawMatrix4x3 *)&data_020a0e68 = *(RawMatrix4x3 *)&mtx;
     Matrix4x3_ApplyInPlaceToScale(&data_020a0e68, self->scale, self->scale, self->scale);
     scratch.scaled = *(RawMatrix4x3 *)&data_020a0e68;
     *(RawMatrix4x3 *)&self->newScaledMat = *(RawMatrix4x3 *)&data_020a0e68;

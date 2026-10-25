@@ -63,6 +63,9 @@
 #include "daTor_c.h"
 #include "daYegg_c.h"
 #include "nitro/fx/fx.h"
+namespace cstd {
+s16 atan2(s32, s32);
+}
 
 bool ApproachLinear(short &value, short target, short step);
 
@@ -1974,7 +1977,7 @@ int Player::func_ov002_020bfa74()
     extern s16 Vec3_HorzAngle(const Vector3 *v0, const Vector3 *v1);
     extern s16 Vec3_VertAngle(const Vector3 *v0, const Vector3 *v1);
     extern s32 Vec3_HorzLen(const Vector3 *v);
-    extern s16 _ZN4cstd5atan2E5Fix12IiES1_(s32 y, s32 x);
+    extern s16 atan2_hold_Player_19(s32 y, s32 x);
     extern void PlayerPlayLongHold_bfa74(u32 handle, u32 bank, u32 id, const void *pos, s16 e);
     extern void func_ov002_020bf800(void*, Vector3_16f v);
     extern int func_ov002_020e0478(void*);
@@ -2036,7 +2039,7 @@ int Player::func_ov002_020bfa74()
             vel.x += FX_MUL(dir.x, 0x2800);
             vel.z = FX_MUL(mHorzSpeed, COS(mPrevAngleY));
             vel.z += FX_MUL(dir.z, 0x2800);
-            mPrevAngleY = _ZN4cstd5atan2E5Fix12IiES1_(vel.x, vel.z);
+            mPrevAngleY = cstd::atan2(vel.x, vel.z);
             mHorzSpeed = Vec3_HorzLen(&vel);
         }
         return 1;
@@ -2379,7 +2382,7 @@ int Player::func_ov002_020c06fc(int arg)
     extern int func_ov002_020f02c8(unsigned int sel);
     extern int func_ov002_020f035c(unsigned int sel, int r1);
     extern int Vec3_HorzLen(void*);
-    extern int _ZN4cstd5atan2E5Fix12IiES1_(int x, int z);
+    extern int atan2_hold_Player_18(int x, int z);
     extern int AngleDiff(int a, int b);
     extern void *_ZN9dBgCh_LinC1Ev(void*);
     extern void _ZN9dBgCh_Lin13SetObjAndLineERK7Vector3S2_P8dActor_c(void*, void*, void*, void*);
@@ -2461,7 +2464,7 @@ int Player::func_ov002_020c06fc(int arg)
     }
 
     if ((this->mClsnFlags & 2) != 0 && (u16)(this->mStateFlags & 1) == 0 && this->mHorzSpeed <= 0x10000) {
-        int r6b = _ZN4cstd5atan2E5Fix12IiES1_(f.v0.x, f.v0.z);
+        int r6b = cstd::atan2(f.v0.x, f.v0.z);
         _ZN9dBgCh_LinC1Ev(f.ray);
         {
             int tz, ty, tx;
@@ -2492,7 +2495,7 @@ int Player::func_ov002_020c06fc(int arg)
         int fz = FX_MUL(s2, t);
         f.v3.x = fx;
         f.v3.z = fz;
-        ang = _ZN4cstd5atan2E5Fix12IiES1_(fx, fz);
+        ang = cstd::atan2(fx, fz);
     }
     this->mHorzSpeed = Vec3_HorzLen(&f.v3);
     if (this->mHorzSpeed > 0x64000)
@@ -2721,7 +2724,6 @@ int Player::func_ov002_020c0fb4() {
    types breaks the byte match. See notes/mwccarm-codegen.md 6az. */
 extern "C" {
 void Player::func_ov002_020c1234() {
-    extern int _ZN5Sound7PlaySubEjjj5Fix12IiEb(unsigned int, unsigned int, unsigned int, int, bool);
     extern signed char data_0209f2f8;
     extern int data_0209b49c;
     unsigned int a1, a2;
@@ -2748,7 +2750,8 @@ void Player::func_ov002_020c1234() {
     }
     if (mGroundSubSoundActive == 0)
         return;
-    if (_ZN5Sound7PlaySubEjjj5Fix12IiEb(0x35, a1, a2, fx, 0) == 0) return;
+    if (Sound::PlaySub(0x35, a1, a2, fx, 0) == 0)
+        return;
     if (mGroundSoundType == 0xa) return;
     if (mGroundSoundType != 0xb)
         mGroundSubSoundActive = 0;
@@ -2897,7 +2900,7 @@ void Player::func_ov002_020c14b8()
 // @symbol _ZN6Player19SetFloorSurfaceInfoERK5dBgPi
 extern "C" {
 void Player::SetFloorSurfaceInfo(const dBgPi &hit) {
-    extern int _ZN4cstd5atan2E5Fix12IiES1_(int y, int x);
+    extern int atan2_hold_Player_17(int y, int x);
     Vector3 v;
     mClpsWord1Lo = hit.surface.clps.func_02037e90();
     mSurfaceType = hit.surface.clps.GetSurfaceType();
@@ -2911,7 +2914,7 @@ void Player::SetFloorSurfaceInfo(const dBgPi &hit) {
     mFloorNormalX = v.x;
     mFloorNormalY = v.y;
     mFloorNormalZ = v.z;
-    mFloorAngle = _ZN4cstd5atan2E5Fix12IiES1_(mFloorNormalX, mFloorNormalZ);
+    mFloorAngle = cstd::atan2(mFloorNormalX, mFloorNormalZ);
 }
 }
 
@@ -2921,7 +2924,7 @@ void Player::SetFloorSurfaceInfo(const dBgPi &hit) {
 // Matched byte-for-byte with mwccarm 1.2/sp2p3 (ov002).
 extern "C" {
 int func_ov002_020c179c(char* self, int angle) {
-    extern int _ZN4cstd5atan2E5Fix12IiES1_(int y, int x);
+    extern int atan2_hold_Player_16(int y, int x);
     extern short data_02082214[];
     Player *p = (Player *)self;
     Vector3 v1;
@@ -2956,7 +2959,7 @@ int func_ov002_020c179c(char* self, int angle) {
     rg.SetObjAndPos(v2, (dActor_c*)self);
     if (rg.DetectClsn()) y2 = rg.clsnY;
     {
-        int r = _ZN4cstd5atan2E5Fix12IiES1_(y1 - y2, 0xa000);
+        int r = cstd::atan2(y1 - y2, 0xa000);
         return r;
     }
 }
@@ -3227,14 +3230,14 @@ extern "C" {
 int Player::func_ov002_020c2138(){
     char* self = (char*)this;
     typedef int Fix12i;
-    extern int _ZN4cstd5atan2E5Fix12IiES1_(Fix12i, Fix12i);
+    extern int atan2_hold_Player_15(Fix12i, Fix12i);
     extern int AngleDiff(int a, int b);
 int ang;
 if (this->mIsUnderwater || this->mIsBalloon) return 0;
 if (this->mWallNormalY) return 0;
 if ((int)mClimbClsn || mIsTakingDamage)
     return 0;
-ang = _ZN4cstd5atan2E5Fix12IiES1_(this->mWallNormalX, this->mWallNormalZ);
+ang = cstd::atan2(this->mWallNormalX, this->mWallNormalZ);
 if (AngleDiff(ang, this->mPrevAngleY) < 0x6000) return 0;
 if (this->func_ov002_020c200c(ang)) return 1;
 if ((this->mHeldObj ? 1 : 0) || (this->mRidingShell ? 1 : 0)) return 0;
@@ -3968,7 +3971,7 @@ extern "C" {
 void Player::func_ov002_020c38a0()
 {
     extern int Vec3_HorzLen(void*);
-    extern int _ZN4cstd5atan2E5Fix12IiES1_(int a, int b);
+    extern int atan2_hold_Player_14(int a, int b);
     extern void _Z15ApproachLinear2Rsss(void*, short a, short b);
     V3Quad s;
     int hlen;
@@ -3998,7 +4001,7 @@ void Player::func_ov002_020c38a0()
         s.e.y = s.d.y - this->mPosY;
         s.e.z = s.d.z - this->mPosZ;
         hlen = Vec3_HorzLen(&s.e);
-        ang = _ZN4cstd5atan2E5Fix12IiES1_(s.e.x, s.e.z);
+        ang = cstd::atan2(s.e.x, s.e.z);
         this->mPosX = s.d.x;
         this->mPosY = s.d.y;
         this->mPosZ = s.d.z;
@@ -4007,7 +4010,7 @@ void Player::func_ov002_020c38a0()
             this->mAngleY = 0x7fff;
             return;
         }
-        this->mAngleX = -_ZN4cstd5atan2E5Fix12IiES1_(s.e.y, hlen);
+        this->mAngleX = -cstd::atan2(s.e.y, hlen);
         _Z15ApproachLinear2Rsss(&this->mAngleZ, 0x2000, 0x10);
         this->mAngleY = ang;
         break;
@@ -4658,7 +4661,7 @@ ret0:
 extern "C" {
 int Player::St_Talk_Main()
 {
-    extern int _ZN5Sound17ChangeMusicVolumeEj5Fix12IiE(u32 vol, int t);
+    extern int PlayerChangeMusicVolumeHold(u32 vol, int t);
     extern void func_0201f32c(s16 a);
     extern void func_0200d3f8(void*, u8 playerID, void*);
     extern int _Z15ApproachLinear2Rsss(void*, s16 target, s16 step);
@@ -4674,7 +4677,7 @@ int Player::St_Talk_Main()
     extern void func_0200d7a4(void*, u8);
     extern int func_ov100_02144fcc(void);
     if (mRestoreMusicVolume != 0) {
-        if (_ZN5Sound17ChangeMusicVolumeEj5Fix12IiE(0x7f, 0x7222) != 0)
+        if (Sound::ChangeMusicVolume(0x7f, 0x7222) != 0)
             mRestoreMusicVolume = 0;
     }
 
@@ -7001,7 +7004,7 @@ int Player::func_ov002_020c8540()
 extern "C" {
 int Player::func_ov002_020c8714()
 {
-    extern void _ZN5Sound17ChangeMusicVolumeEj5Fix12IiE(int, int);
+    extern void PlayerChangeMusicVolumeHold2(int, int);
     extern u32 PlayerNewHold5(u32 handle, u32 kind, Fix12i x, Fix12i y, Fix12i z, const void *dir,
                               void *callback);
     extern int _ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as(int, int, void*, int, int, int);
@@ -7009,7 +7012,7 @@ int Player::func_ov002_020c8714()
     volatile int v[3];
 
     if (mStateArg == 0) {
-        _ZN5Sound17ChangeMusicVolumeEj5Fix12IiE(0x14, 0x15666);
+        Sound::ChangeMusicVolume(0x14, 0x15666);
         if (mStateTimer == 0) {
             this->mHorzSpeed = FX_MUL(this->mHorzSpeed, 0xf60);
             if (mIsAirborne == 0) {
@@ -7149,7 +7152,7 @@ int Player::func_ov002_020c8b54()
 /* recovered: shared common types */
 extern "C" {
 int Player::func_ov002_020c8b78() {
-    extern void _ZN5Sound17ChangeMusicVolumeEj5Fix12IiE(unsigned int, int);
+    extern void PlayerChangeMusicVolumeHold3(unsigned int, int);
     extern void func_02012790(int);
     extern void func_020731dc(void*, void*, void*);
     extern void *_ZN7Vector3D1Ev(void *object);
@@ -7158,7 +7161,7 @@ int Player::func_ov002_020c8b78() {
     extern int data_ov002_0210f824[];
     extern char data_ov002_0210f7f4[];
     Vector3 v;
-    _ZN5Sound17ChangeMusicVolumeEj5Fix12IiE(0x14, 0x15666);
+    Sound::ChangeMusicVolume(0x14, 0x15666);
     {
         int id = GetBodyModelID(param1 & 0xff, false);
         dExtAnmModel_c *model = mBodyModels[id];
@@ -9315,7 +9318,7 @@ int Player::St_Shell_Main()
 {
     extern void func_ov002_020eeca8(void*, int arg);
     extern int _ZNK10dBgCh_Actr8IsOnWallEv(void*);
-    extern int _ZN4cstd5atan2E5Fix12IiES1_(int a, int b);
+    extern int atan2_hold_Player_13(int a, int b);
     extern void ApproachAngle(void*, short target, int divisor, int band, int maxStep);
     extern void _Z14ApproachLinearRiii(void*, int b, int c);
     extern void func_ov002_020e25f0(void*, int a);
@@ -9352,7 +9355,7 @@ int Player::St_Shell_Main()
     }
 
     if (_ZNK10dBgCh_Actr8IsOnWallEv((void*)((char*)&mMeshClsn))) {
-        int ang = _ZN4cstd5atan2E5Fix12IiES1_(mWallNormalX, mWallNormalZ);
+        int ang = cstd::atan2(mWallNormalX, mWallNormalZ);
         if (AngleDiff(ang, mPrevAngleY) > 0x6000) {
             if (((dBgPi *)_ZNK10dBgCh_Actr13GetWallResultEv((void *)((char *)&mMeshClsn)))
                     ->surface.clps.GetFloorClass() != 1) {
@@ -10058,7 +10061,7 @@ int Player::St_Swim_Main()
     extern unsigned int func_02022d44(unsigned int, unsigned int, int, int, int, void*);
     extern void* _ZNK10dBgCh_Actr14GetFloorResultEv(void*);
     extern void* func_02037dc4(void*);
-    extern int _ZN4cstd5atan2E5Fix12IiES1_(int, int);
+    extern int atan2_hold_Player_12(int, int);
     extern void Vec3_RotateYAndTranslate(void*, void*, short, void*);
     extern void _Z14ApproachLinearRiii(void*, int, int);
     extern int func_ov002_020ce324(void*);
@@ -10135,7 +10138,7 @@ int Player::St_Swim_Main()
         if (ang < 0x720 && ang > 0x400 && mPosY >= mWaterSurfaceY - 0xc8000) {
             int at;
             mPosY = mPreClsnPosY - 0x8000;
-            at = _ZN4cstd5atan2E5Fix12IiES1_(fr[0], fr[2]);
+            at = cstd::atan2(fr[0], fr[2]);
             vec[0] = 0;
             vec[1] = 0;
             at = at + 0x8000;
@@ -10347,7 +10350,7 @@ int func_ov002_020ce324(char* c)
                                                                      const Vector3 *b, void *);
     extern int _ZN9dBgCh_Lin10DetectClsnEv(void*);
     extern void _ZNK11SurfaceInfo12CopyNormalToER7Vector3(const void* self, void*);
-    extern int _ZN4cstd5atan2E5Fix12IiES1_(int a, int b);
+    extern int atan2_hold_Player_11(int a, int b);
     extern int AngleDiff(int a, int b);
     extern int func_ov002_020ce324(void*);
     Vector3 a1, a2, b1, b2, nrm;
@@ -10397,7 +10400,7 @@ int func_ov002_020ce324(char* c)
         if (_ZN9dBgCh_Lin10DetectClsnEv(rl2)) {
             _ZNK11SurfaceInfo12CopyNormalToER7Vector3(rl2 + 0x14, &nrm);
             if (nrm.y == 0) {
-                if (AngleDiff(_ZN4cstd5atan2E5Fix12IiES1_(nrm.x, nrm.z), player->mAngleY) >= 0x5000)
+                if (AngleDiff(cstd::atan2(nrm.x, nrm.z), player->mAngleY) >= 0x5000)
                     ok = 1;
             }
         }
@@ -11115,7 +11118,7 @@ int Player::St_OnWall_Main()
     extern void func_ov002_020cabe0(void*);
     extern int func_ov002_020c5244();
     extern int func_ov002_020d36d8(void*, int a);
-    extern int _ZN4cstd5atan2E5Fix12IiES1_(Fix12i a, int b);
+    extern int atan2_hold_Player_10(Fix12i a, int b);
     extern int func_ov002_020bf224(void*, int a, int b);
     extern int func_ov002_020d4d88(void*, int a, int b);
     extern void Player_AdvanceAnims(void*);
@@ -11150,7 +11153,7 @@ int Player::St_OnWall_Main()
             this->ChangeState(data_ov002_0211013c);
             return 1;
         }
-        int a = _ZN4cstd5atan2E5Fix12IiES1_(mWallNormalX, mWallNormalZ) + 0x8000;
+        int a = cstd::atan2(mWallNormalX, mWallNormalZ) + 0x8000;
         int d = AngleDiff((s16)a, mDesiredAngleY);
         if (d >= 0x4000) {
             this->ChangeState(data_ov002_0211013c);
@@ -11169,7 +11172,7 @@ int Player::St_OnWall_Main()
         func_ov002_020eee3c(&mMeshClsn, ((char *)this));
     } else {
         if (*(s16*)((char*)data_0209f4a0 + gActivePlayerSlot * 0x18) != 0) {
-            int ang = _ZN4cstd5atan2E5Fix12IiES1_(mWallNormalX, mWallNormalZ);
+            int ang = cstd::atan2(mWallNormalX, mWallNormalZ);
             int d = AngleDiff((s16)(ang + 0x8000), mDesiredAngleY);
             if (d >= 0x4000) {
                 this->ChangeState(data_ov002_0211013c);
@@ -11496,7 +11499,7 @@ int func_ov002_020d0178(char* c, int arg1, int flag)
                                                                      Vector3 *b, void *actor);
     extern int _ZN9dBgCh_Lin10DetectClsnEv(void* self);
     extern void _ZNK11SurfaceInfo12CopyNormalToER7Vector3(void *self, Vector3 *out);
-    extern int _ZN4cstd5atan2E5Fix12IiES1_(int x, int z);
+    extern int atan2_hold_Player_9(int x, int z);
     extern int AngleDiff(int a, int b);
     extern s16 data_02082214[];
     Player *p = (Player *)c;
@@ -11578,7 +11581,7 @@ int func_ov002_020d0178(char* c, int arg1, int flag)
     if (normal.y >= 0x2c7) {
         return 0;
     }
-    res = _ZN4cstd5atan2E5Fix12IiES1_(normal.x, normal.z);
+    res = cstd::atan2(normal.x, normal.z);
     {
         int diff = AngleDiff(res, p->mAngleY);
         if (flag != 0) {
@@ -15564,7 +15567,7 @@ int func_ov002_020d6dac(char *self)
     extern void _ZN5dBgPiD1Ev(void *r);
     extern int func_02053274(int *a, int *b);
     extern void _ZNK11SurfaceInfo12CopyNormalToER7Vector3(void *thiz, void *out);
-    extern short _ZN4cstd5atan2E5Fix12IiES1_(int a, int b);
+    extern short atan2_hold_Player_8(int a, int b);
     extern u32 PlayerNewHold11(u32 handle, u32 kind, Fix12i x, Fix12i y, Fix12i z, const void *dir,
                                void *callback);
     extern short data_02082214[];
@@ -15630,7 +15633,7 @@ int func_ov002_020d6dac(char *self)
     player->mTongueHitDist = func_02053274((int *)&p1, (int *)&clsnPos);
     Vector3 normal;
     _ZNK11SurfaceInfo12CopyNormalToER7Vector3(&rl.surface, &normal);
-    ang = _ZN4cstd5atan2E5Fix12IiES1_(normal.x, normal.z);
+    ang = cstd::atan2(normal.x, normal.z);
     idx = (u16)ang >> 4;
     dir.x = data_02082214[idx * 2];
     dir.y = 0;
@@ -18212,7 +18215,7 @@ int Player::St_Thrown_Cleanup()
 extern "C" {
 int Player::St_Thrown_Main()
 {
-    extern int _ZN4cstd5atan2E5Fix12IiES1_(Fix12i a, int b);
+    extern int atan2_hold_Player_7(Fix12i a, int b);
     extern void _Z15ApproachLinear2Rsss(s16* v, s16 target, s16 step);
     extern void Player_AdvanceAnims(char* c);
     extern Player::State data_ov002_0211031c;
@@ -18255,7 +18258,7 @@ int Player::St_Thrown_Main()
         mAngleY = mPrevAngleY;
         mHorzSpeed = FX_MUL(mHorzSpeed, 0xfae);
         if (mIsAirborne != 0) {
-            int a = _ZN4cstd5atan2E5Fix12IiES1_(mHorzSpeed, mVertSpeed);
+            int a = cstd::atan2(mHorzSpeed, mVertSpeed);
             s16 b = a - 0x4000;
             if (b > 0x3000) b = 0x3000;
             mAngleX = b;
@@ -19340,7 +19343,7 @@ int Player::St_StomachSlide_Main()
     extern void func_ov002_020e25f0(void* c, int a);
     extern void func_ov002_020dc560(void* c);
     extern int func_ov002_020e0ccc(void* c, short* st);
-    extern Fix12i _ZN4cstd5atan2E5Fix12IiES1_(Fix12i a, Fix12i b);
+    extern Fix12i atan2_hold_Player_6(Fix12i a, Fix12i b);
     extern void _Z15ApproachLinear2Rsss(short* cur, short target, short step);
     extern void Player_AdvanceAnims(void* c);
     extern u16 data_0209f49e[];
@@ -19494,7 +19497,7 @@ int Player::St_StomachSlide_Main()
 
 end:
     if (mIsAirborne != 0) {
-        s16 v = _ZN4cstd5atan2E5Fix12IiES1_(mHorzSpeed >> 8, mVertSpeed >> 8) - 0x4000;
+        s16 v = cstd::atan2(mHorzSpeed >> 8, mVertSpeed >> 8) - 0x4000;
         if (v < 0) v = 0;
         if (v >= 0x2aaa) v = 0x2aaa;
         _Z15ApproachLinear2Rsss((short*)((char*)&mAngleX), v, 0x200);
@@ -19585,7 +19588,7 @@ int Player::IsFrontSliding()
 extern "C" {
 int func_ov002_020dd2f4(char* c)
 {
-    extern int _ZN4cstd5atan2E5Fix12IiES1_(Fix12i y, Fix12i x);
+    extern int atan2_hold_Player_5(Fix12i y, Fix12i x);
     extern int AngleDiff(int a, int b);
     extern int _ZN6Player19func_ov002_020c0cbcEv(void* c);
     Player *p = (Player *)c;
@@ -19594,7 +19597,7 @@ int func_ov002_020dd2f4(char* c)
     if (!(p->mClsnFlags & 2))
         return 0;
 
-    atan = _ZN4cstd5atan2E5Fix12IiES1_(p->mWallNormalX, p->mWallNormalZ);
+    atan = cstd::atan2(p->mWallNormalX, p->mWallNormalZ);
     if (AngleDiff(atan, p->mPrevAngleY) < 0x6000)
         return 0;
 
@@ -20266,7 +20269,7 @@ s32 Player::St_Balloon_Main()
 {
     extern void _Z14ApproachLinearRiii(s32 &, s32, s32);
     extern void func_ov002_020de968(void *);
-    extern s16 _ZN4cstd5atan2E5Fix12IiES1_(s32, s32);
+    extern s16 atan2_hold_Player_4(s32, s32);
     extern int AngleDiff(s32, s16);
     extern void func_ov002_020de428(void *);
     extern void ApproachAngle(void *, s16, s16, s16, s32);
@@ -20318,7 +20321,7 @@ s32 Player::St_Balloon_Main()
     }
 
     if (mClsnFlags & 2) {
-        s16 ang = _ZN4cstd5atan2E5Fix12IiES1_(mWallNormalX, mWallNormalZ);
+        s16 ang = cstd::atan2(mWallNormalX, mWallNormalZ);
         s16 diff = AngleDiff(ang, mPrevAngleY);
         if ((s32)diff > 0x4000) {
             func_ov002_020de428(this);
@@ -20623,7 +20626,7 @@ int Player::St_Cannon_Main()
     extern void func_0200d6f0(void* thiz, u8 pid);
     extern void func_02012694(u32 id, void* v);
     extern void _ZN8Particle20RunningSlidingDustAtE5Fix12IiES1_S1_(int a, int b, int cc);
-    extern int _ZN4cstd5atan2E5Fix12IiES1_(int a, int b);
+    extern int atan2_hold_Player_3(int a, int b);
     extern void Player_AdvanceAnims(void* c);
     extern u16 data_0209f49e[];
     extern char* data_0209f318;
@@ -20685,7 +20688,7 @@ int Player::St_Cannon_Main()
         if (mVertSpeed >= 0)
             _ZN8Particle20RunningSlidingDustAtE5Fix12IiES1_S1_(mPosX, mPosY, mPosZ);
         if (mStateWork == 0)
-            mAngleX = _ZN4cstd5atan2E5Fix12IiES1_(mHorzSpeed >> 8, mVertSpeed >> 8) - 0x4000;
+            mAngleX = cstd::atan2(mHorzSpeed >> 8, mVertSpeed >> 8) - 0x4000;
         Player_AdvanceAnims(((char*)this));
         // fall through
     case 3:
@@ -21698,7 +21701,7 @@ int Player::St_CrazedCrate_Main() {
     typedef long long s64;
     extern short data_02082214[];
     extern void func_ov002_020e28d4(void*, int, int);
-    extern int _ZN4cstd5atan2E5Fix12IiES1_(int, int);
+    extern int atan2_hold_Player_2(int, int);
     extern int AngleDiff(int, int);
     extern void func_ov002_020e0f38(void*, int);
     extern void _ZN7fBase_c18MarkForDestructionEv(void*);
@@ -21709,7 +21712,7 @@ int Player::St_CrazedCrate_Main() {
     func_ov002_020e28d4(self, 0x1000, 0x1800);
 
     if (mClsnFlags & 2) {
-        int atan = _ZN4cstd5atan2E5Fix12IiES1_(mWallNormalX, this->mWallNormalZ);
+        int atan = cstd::atan2(mWallNormalX, this->mWallNormalZ);
         int diff = AngleDiff(atan, this->mAngleY);
         if (diff >= 0x6000) {
             int t = (s16)(2 * atan - this->mAngleY);
@@ -21757,7 +21760,7 @@ int Player::St_CrazedCrate_Main() {
 
     int v98 = mHorzSpeed;
     int va8 = mVertSpeed;
-    int atan2 = _ZN4cstd5atan2E5Fix12IiES1_(v98 >> 8, va8 >> 8);
+    int atan2 = cstd::atan2(v98 >> 8, va8 >> 8);
     mAngleX = (s16)(atan2 - 0x4000);
 
     return 1;
@@ -22750,7 +22753,7 @@ ret0:
 extern "C" {
 void func_ov002_020e28d4(char* c, int a, int b)
 {
-    extern int _ZN4cstd5atan2E5Fix12IiES1_(Fix12i a, int b);
+    extern int atan2_hold_Player_1(Fix12i a, int b);
     extern int AngleDiff(int a, int b);
     extern void ApproachAngle(s16* cur, s16 target, int divisor, int band, int maxStep);
     extern void _Z14ApproachLinearRiii(int* a, int b, int c);
@@ -22767,7 +22770,7 @@ void func_ov002_020e28d4(char* c, int a, int b)
 
     if (*(s16*)((char*)data_0209f4a0 + gActivePlayerSlot * 0x18) != 0) {
         if (p->mClsnFlags & 2) {
-            int t = _ZN4cstd5atan2E5Fix12IiES1_(p->mWallNormalX, p->mWallNormalZ);
+            int t = cstd::atan2(p->mWallNormalX, p->mWallNormalZ);
             if (AngleDiff((s16)(t + 0x8000), p->mPrevAngleY) < 0x2000) {
                 if (p->mHorzSpeed >= 0x3000)
                     p->mHorzSpeed = 0x3000;

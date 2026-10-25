@@ -129,7 +129,11 @@ extern int SublevelToLevel(int a);
    func_0201d850 narrow its arguments (4 words differ from the ROM).
    Message2.cpp spells it the same way. */
 extern void _ZN7Message7AddCharEc(int c);
-extern int _ZN5Sound17ChangeMusicVolumeEj5Fix12IiE(u32 a, s32 b);
+}
+namespace Sound {
+int ChangeMusicVolume(u32 a, s32 b);
+}
+extern "C" {
 /* local extern: byte-forced spelling -- the definition is
    (volatile u16*, u16, s16); u16/s16 parameters would emit an explicit narrow
    the ROM lacks. Every caller already casts the pointer and the value args. */
@@ -1419,7 +1423,7 @@ extern "C" void func_0201f32c(int arg0)
                 data_0209d658 = 0x7f;
                 data_0209d64c = 0x63;
                 if (func_0201fb4c() != 0) {
-                    _ZN5Sound17ChangeMusicVolumeEj5Fix12IiE(0x40, 0xc999);
+                    Sound::ChangeMusicVolume(0x40, 0xc999);
                 }
             }
         }

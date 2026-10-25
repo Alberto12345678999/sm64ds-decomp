@@ -43,6 +43,9 @@ enum daChair_c_AssetId {
 #include "SurfaceInfo.h"
 #include "Player.h"
 #include "dBgCh_Actr.h"
+namespace cstd {
+s16 atan2(s32, s32);
+}
 
 #pragma opt_common_subs off
 
@@ -93,7 +96,7 @@ void func_0200f760(void *self, void *cyl);
 void func_0201267c(unsigned int id, void *pos);
 void dBgCh_Actr_UpdateContinuous_Veneer(void *clsn);
 void Vec3_Sub(Vec3 *res, Vec3 *v0, Vec3 *v1);
-s16 _ZN4cstd5atan2E5Fix12IiES1_(s32 y, s32 x);
+s16 atan2_hold_d_a_chair_1(s32 y, s32 x);
 s32 Vec3_HorzLen(const Vector3 *v);
 void AddVec3(Vec3 *dst, Vec3 *add, Vec3 *src);
 int Vec3_Dist(const Vector3 *a, const Vector3 *b);
@@ -370,9 +373,8 @@ void daChair_c::State2()
                 playerPos.y = pp->y;
                 playerPos.z = pp->z;
                 Vec3_Sub(&diff, &playerPos, (Vec3 *)&mPosX);
-                mPrevAngleY = _ZN4cstd5atan2E5Fix12IiES1_(diff.x, diff.z);
-                mPrevAngleX = _ZN4cstd5atan2E5Fix12IiES1_(
-                                  diff.y, Vec3_HorzLen((const Vector3 *)&diff)) * -1;
+                mPrevAngleY = cstd::atan2(diff.x, diff.z);
+                mPrevAngleX = cstd::atan2(diff.y, Vec3_HorzLen((const Vector3 *)&diff)) * -1;
                 /* mSpeedX / mSpeedZ: lateral velocity beside mVertSpeed. */
                 reach = FX_MUL(data_02082214[SINCOS_INDEX(mPrevAngleX) + 1], 0x32000);
                 mSpeedX = FX_MUL(reach, data_02082214[SINCOS_INDEX(mPrevAngleY)]);
@@ -391,9 +393,7 @@ void daChair_c::State2()
                 void *wall = mWithMeshClsn.GetWallResult();
                 Vec3 normal;
                 ((SurfaceInfo *)((char *)wall + 4))->CopyNormalTo((Vector3 &)normal);
-                if (GetSubtraction(mPrevAngleY,
-                        _ZN4cstd5atan2E5Fix12IiES1_(normal.x, normal.z))
-                    > 0x4000)
+                if (GetSubtraction(mPrevAngleY, cstd::atan2(normal.x, normal.z)) > 0x4000)
                     Break();
             }
         }

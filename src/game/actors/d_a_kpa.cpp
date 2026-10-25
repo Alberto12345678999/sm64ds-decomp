@@ -354,7 +354,7 @@ extern PmfEnt data_ov060_0211aed4[];
 
 extern unsigned char NumStars(void);
 extern void *d_a_kpaNewHold(unsigned a, unsigned b, int x, int y, int z, void *v, void *cb);
-extern void _ZN5Sound17ChangeMusicVolumeEj5Fix12IiE(unsigned int a, int b);
+extern void d_a_kpaChangeMusicVolumeHold(unsigned int a, int b);
 extern KpaAnimationFileHandle data_ov060_0211ac88;
 extern KpaAnimationFileHandle data_ov060_0211ac60;
 namespace Particle {
@@ -386,7 +386,7 @@ extern void MulMat4x3Mat4x3(void *dst, void *a, void *b);
 extern void Vec3_LslInPlace(void *v, int sh);
 extern void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(void *c, void *sm, void *mtx, int rad, int h, unsigned int flags);
 extern Matrix4x3 data_020a0e68;
-extern void _ZN8dActor_c10EarthquakeERK7Vector35Fix12IiE(void* self, struct Vector3* v, int f);
+void d_a_kpaEarthquakeHold(void *self, struct Vector3 *v, int f);
 extern "C" void func_02011cfc(void);
 /* One declaration per resource handle, typed from how InitResources and
  * CleanupResources use it:
@@ -1053,7 +1053,7 @@ void daKpa_c::func_ov060_02115b0c(){
     v.x = this->mPosX;
     v.y = this->mPosY;
     v.z = this->mPosZ;
-    _ZN8dActor_c10EarthquakeERK7Vector35Fix12IiE(this, &v, 0x7d0000);
+    Earthquake(v, 0x7d0000);
     dActor_c::Spawn(BOWSER_ACTOR_FIRERING, 0, *((struct Vector3*)(&this->mPosX)), 0, this->mAreaId, -1);
 }
 
@@ -2848,7 +2848,7 @@ int daKpa_c::func_ov060_021130c0(){
         switch (inner) {
         case 0:
             if (static_cast<Player*>(this->mTargetPlayer)->StartTalk(*this, 1)) {
-                _ZN5Sound17ChangeMusicVolumeEj5Fix12IiE(0x14, 0x15666);
+                Sound::ChangeMusicVolume(0x14, 0x15666);
                 this->mTalkStep++;
             }
             break;
@@ -2867,7 +2867,7 @@ int daKpa_c::func_ov060_021130c0(){
                 this->mTalkStep++;
                 func_ov060_02111cc0(4, 0x40000000);
                 Sound::StopLoadedMusic_Layer1(0x3c);
-                _ZN5Sound17ChangeMusicVolumeEj5Fix12IiE(0x7f, 0x7222);
+                Sound::ChangeMusicVolume(0x7f, 0x7222);
             }
             break;
         }
@@ -3686,7 +3686,7 @@ void daKpa_c::func_ov060_02111a28(){
         quake.x = this->mPosX;
         quake.y = this->mPosY;
         quake.z = this->mPosZ;
-        _ZN8dActor_c10EarthquakeERK7Vector35Fix12IiE(this, &quake, 0x320000);
+        Earthquake(quake, 0x320000);
     }
 }
 

@@ -19086,7 +19086,7 @@
       ]
     },
     "func_01ffa4bc": {
-      "src/cstd_atan2.c": [
+      "src/cstd_atan2.cpp": [
         "return:int"
       ],
       "src/game/actors/d_a_kuri_king.cpp": [

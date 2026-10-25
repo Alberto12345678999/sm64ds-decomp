@@ -26,9 +26,12 @@ enum daRFlag_c_AssetId {
 struct BMD_File;
 struct BCA_File;
 
+namespace Sound {
+bool PlaySub(u32, u32, u32, int, bool);
+}
+
 extern "C" {
 
-int _ZN5Sound7PlaySubEjjj5Fix12IiEb(unsigned int, unsigned int, unsigned int, int, int);
 void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *, dActor_c *, int, int, unsigned int, unsigned int);
 void Matrix4x3_FromRotationY(void *, int);
 extern Timer data_0209d4c8;
@@ -108,7 +111,7 @@ int daRFlag_c::Behavior()
                     mHasTouchedFlag = 1;
                     data_0209d4c8.StopTimer();
                     mVictoryTimer = 1;
-                    _ZN5Sound7PlaySubEjjj5Fix12IiEb(0x1F, 0x14, 0x7F, 0x6B000, 0);
+                    Sound::PlaySub(0x1F, 0x14, 0x7F, 0x6B000, 0);
                 }
             }
         }
@@ -117,7 +120,7 @@ int daRFlag_c::Behavior()
     if (mVictoryTimer != 0) {
         mVictoryTimer += 1;
         if (mVictoryTimer >= 0x5A) {
-            if (_ZN5Sound7PlaySubEjjj5Fix12IiEb(0x1F, 0x7F, 0, 0x8777, 0) != 0) {
+            if (Sound::PlaySub(0x1F, 0x7F, 0, 0x8777, 0) != 0) {
                 mVictoryTimer = 0;
             }
         }

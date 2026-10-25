@@ -128,19 +128,20 @@ struct BcSwitchCollisionFilePtr : SharedFilePtr {
     ~BcSwitchCollisionFilePtr();
 };
 
+namespace Sound {
+s32 ChangeMusicVolume(u32 a, s32 vol);
+}
+
 extern "C" {
 extern BcSwitchCollisionFilePtr daObjBC_Switch_c_ClsnFile;
 extern BcSwitchModelFilePtr daObjBC_Switch_c_ModelFile;
 extern u8 IsAreaShowing(s32 idx);
-/* Sound::ChangeMusicVolume(u32, Fix12<int>) -- wall 6az on Behavior. */
-extern s32 _ZN5Sound17ChangeMusicVolumeEj5Fix12IiE(u32 a, s32 vol);
 extern void _ZN5Event6SetBitEj(u32 bit);
 extern u16 DecIfAbove0_Short(u16 *p);
 /* dBgActor_c::IsClsnInRange(Fix12<int>, Fix12<int>) -- wall 6az on Behavior. */
 /* dBgW_KcMbg::SetFile -- wall 6az on InitResources. */
-void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-    dBgW_KcMbg *self, KCL_File *file, Matrix4x3 *mat, int scale,
-    short angY, void *clps);
+extern void hold_d_a_obj_bc_switch(dBgW_KcMbg *self, KCL_File *file, Matrix4x3 *mat, int scale,
+                                   short angY, void *clps);
 extern "C" void func_020393c4(void* p, void* v);
 extern int func_ov002_020dd8b8(void* c);
 extern void func_ov002_020f1578(daObjBC_Switch_c *c, char *arg);
@@ -240,9 +241,9 @@ int daObjBC_Switch_c::InitResources()
        to keep the mangled spelling. Its third parameter is a by-value
        Fix12<int> -- wall 6az -- and materialising one costs stack traffic
        the ROM does not have. */
-    _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-        &mMeshCollider, (KCL_File *)kcl, &mClsnMat, 0x199, mAngleY,
-        &data_ov002_0210d6f4);
+    ((dBgW_KcMbg *)(&mMeshCollider))
+        ->dBgW_KcMbg::SetFile((KCL_File *)kcl, *(&mClsnMat), 0x199, mAngleY,
+                              *(CLPS_Block *)(&data_ov002_0210d6f4));
 
     func_020393c4(&mMeshCollider, (void*)&func_ov002_020f15b8);
 
@@ -301,7 +302,7 @@ s32 daObjBC_Switch_c::Behavior()
     if (mPressed == 1) {
         mAreaId = -1;
         if (IsAreaShowing((s8)mHomeAreaId) == 0)
-            _ZN5Sound17ChangeMusicVolumeEj5Fix12IiE(0x7f, 0x3f000);
+            Sound::ChangeMusicVolume(0x7f, 0x3f000);
     }
     if (mPressed == 1) {
         if (mPosY > mStopPosY) {
@@ -317,7 +318,7 @@ s32 daObjBC_Switch_c::Behavior()
         if (mCoinTimer != 0) {
             if (DecIfAbove0_Short(&mCoinTimer) == 0) {
                 mCoinTimer = 1;
-                if (_ZN5Sound17ChangeMusicVolumeEj5Fix12IiE(0x7f, 0x64cc) != 0)
+                if (Sound::ChangeMusicVolume(0x7f, 0x64cc) != 0)
                     KillAndTrackInDeathTable();
             } else {
                 t = mCoinTimer;
@@ -327,7 +328,7 @@ s32 daObjBC_Switch_c::Behavior()
                     mTickSound = func_02012310(mTickSound, 0x39, 0);
                 else
                     mTickSound = func_02012310(mTickSound, 0x38, 0);
-                _ZN5Sound17ChangeMusicVolumeEj5Fix12IiE(0x40, 0xc999);
+                Sound::ChangeMusicVolume(0x40, 0xc999);
                 if (dActor_c::FindWithActorID(0x122, 0) == 0)
                     mCoinTimer = 1;
             }

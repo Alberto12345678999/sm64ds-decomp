@@ -63,7 +63,7 @@ bool ApproachLinear(short &value, short target, short step);
  * spells (int, void *). */
 extern "C" {
 extern void func_0201267c(int a, void *b);
-extern void _ZN8dActor_c10EarthquakeERK7Vector35Fix12IiE(void *thiz, const Vector3 &v, int f);
+void d_a_dkkEarthquakeHold(void *thiz, const Vector3 &v, int f);
 namespace Particle {
 struct System {
     static void NewSimple(unsigned int n, int x, int y, int z);
@@ -154,7 +154,7 @@ void daDkk_c::func_ov025_02111a84()
     v[1].x = mPosX;
     v[1].y = mPosY;
     v[1].z = mPosZ;
-    _ZN8dActor_c10EarthquakeERK7Vector35Fix12IiE(this, v[1], 0x7d0000);
+    Earthquake(v[1], 0x7d0000);
     mTimer = 0x3c;
     mLandCount++;
     mState = 6;
