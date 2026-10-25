@@ -39,7 +39,8 @@ struct MascotWalker {
     MascotWalkerModelFilePtr mModelFile; /* 0x00 -- kino_d.bmd (0x205) */
     /* kino_wait.bca (0x206): its file is the BCA Load starts and StartPause restarts. */
     MascotWalkerAnimationFileHandle mPauseAnimFile; /* 0x08 */
-    MascotWalkerAnimationFileHandle mWalkAnimFile;  /* 0x10 -- kino_walk.bca (0x207): StartNextPath restarts it */
+    /* kino_walk.bca (0x207): StartNextPath restarts it. */
+    MascotWalkerAnimationFileHandle mWalkAnimFile; /* 0x10 */
     /* 0x70 bytes. UpdateMatrix sets its mat4x3 and turns bone 6 of its
        data.transforms by mHeadAngle; StateWalk pauses when its dExtFrameCtrl_c
        base hits frame 0. */

@@ -137,7 +137,9 @@ extern "C" void* dScMgCard_c_classInit()
         *(void **)p = _ZTV19dScMgSingle3DBase_c;
         _ZN8Particle10SysTrackerC1Ev(p + 0x471c);
         *(int*)p = (int)&_ZTV11dScMgCard_c[2];
-        _ZN6DealerC1Ev((Dealer *)(p + 0x4f38));
+        /* C++ cannot name a constructor on existing storage; placement new
+           adds a null test before the call (measured 36/37). */
+        _ZN6DealerC1Ev(&((dScMgCard_c *)p)->mDealer);
         __cxa_vec_ctor(p + 0x51a8, 5, 0x30,
                      _ZN12dMgCardObj_cC1Ev,
                      _ZN12dMgCardObj_cD1Ev);
@@ -543,7 +545,8 @@ void dScMgCard_c::UpdateState()
         mState++;
         break;
     case 7:
-        if (dScMgCard_c::AllInState((const dMgCardObj_c *)mArray2, 1) != 0 && Dealer_IsIdle(&mDealer) != 0) {
+        if (dScMgCard_c::AllInState((const dMgCardObj_c *)mArray2, 1) != 0 &&
+            Dealer_IsIdle(&mDealer) != 0) {
             r = sCardDrawsLeft - 1;
             sCardDrawsLeft = r;
             if (r == 0) {

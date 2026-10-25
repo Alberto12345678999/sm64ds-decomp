@@ -59,25 +59,25 @@ struct Dealer {
     s16 mReserved;     /* 0x1e6 -- the constructor clears it; the card, Monte Carlo and memory
                           scenes set it to 1 when they start a shuffle and the card and Monte
                           Carlo scenes clear it again, but nothing reads it */
-    DealerModelFilePtr mModelFile;                       /* 0x1e8 -- luigi_d.bmd */
-    DealerModelFilePtr mTableFile;                       /* 0x1f0 */
-    DealerAnimationFileHandle mWaitAnim;          /* 0x1f8 -- wait.bca */
-    DealerAnimationFileHandle mShuffleStartAnim;  /* 0x200 -- shuffle_start.bca */
-    DealerAnimationFileHandle mShuffleAnim;       /* 0x208 -- shuffle.bca */
-    DealerAnimationFileHandle mDealStartAnim;     /* 0x210 -- deal_start.bca */
-    DealerAnimationFileHandle mDealAnim;          /* 0x218 -- deal.bca */
-    DealerAnimationFileHandle mDealEndAnim;       /* 0x220 -- deal_end.bca */
-    DealerAnimationFileHandle mDealEnd2Anim;      /* 0x228 -- deal_end2.bca */
-    DealerAnimationFileHandle mDealWaitAnim;      /* 0x230 -- deal_wait.bca */
-    DealerAnimationFileHandle mThrowAnim;         /* 0x238 -- throw.bca */
-    DealerAnimationFileHandle mWinStartAnim;      /* 0x240 -- win_start.bca */
-    DealerAnimationFileHandle mWinAnim;           /* 0x248 -- win.bca */
-    DealerAnimationFileHandle mWinEndAnim;        /* 0x250 -- win_end.bca */
-    DealerAnimationFileHandle mLoseAnim;          /* 0x258 -- lose.bca */
-    s32 mModelData;                                      /* 0x260 -- the loaded luigi_d.bmd */
-    s32 mTableData;                                      /* 0x264 */
-    s32 mShuffleSoundPlayed;                             /* 0x268 -- sound 0x139, once per shuffle */
-    s32 mDealSoundPlayed;                                /* 0x26c -- sound 0x13a, once per deal */
+    DealerModelFilePtr mModelFile;               /* 0x1e8 -- luigi_d.bmd */
+    DealerModelFilePtr mTableFile;               /* 0x1f0 */
+    DealerAnimationFileHandle mWaitAnim;         /* 0x1f8 -- wait.bca */
+    DealerAnimationFileHandle mShuffleStartAnim; /* 0x200 -- shuffle_start.bca */
+    DealerAnimationFileHandle mShuffleAnim;      /* 0x208 -- shuffle.bca */
+    DealerAnimationFileHandle mDealStartAnim;    /* 0x210 -- deal_start.bca */
+    DealerAnimationFileHandle mDealAnim;         /* 0x218 -- deal.bca */
+    DealerAnimationFileHandle mDealEndAnim;      /* 0x220 -- deal_end.bca */
+    DealerAnimationFileHandle mDealEnd2Anim;     /* 0x228 -- deal_end2.bca */
+    DealerAnimationFileHandle mDealWaitAnim;     /* 0x230 -- deal_wait.bca */
+    DealerAnimationFileHandle mThrowAnim;        /* 0x238 -- throw.bca */
+    DealerAnimationFileHandle mWinStartAnim;     /* 0x240 -- win_start.bca */
+    DealerAnimationFileHandle mWinAnim;          /* 0x248 -- win.bca */
+    DealerAnimationFileHandle mWinEndAnim;       /* 0x250 -- win_end.bca */
+    DealerAnimationFileHandle mLoseAnim;         /* 0x258 -- lose.bca */
+    s32 mModelData;                              /* 0x260 -- the loaded luigi_d.bmd */
+    s32 mTableData;                              /* 0x264 */
+    s32 mShuffleSoundPlayed;                     /* 0x268 -- sound 0x139, once per shuffle */
+    s32 mDealSoundPlayed;                        /* 0x26c -- sound 0x13a, once per deal */
 };
 
 #ifndef SM64DS_PLATFORM_PC

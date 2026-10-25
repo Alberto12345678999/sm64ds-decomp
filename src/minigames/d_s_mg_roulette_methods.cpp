@@ -1342,10 +1342,11 @@ void RouletteBoard_StateSlow(RouletteBoard *board) {
     spinAbs = board->mSpinSpeed - 0x140;
     if (spinAbs < 0)
         spinAbs = -spinAbs;
-    pull = cstd::fdiv((int)((((long long)spinAbs * spinAbs) + 0x800) >> 12), board->mBallRadius) - 0xc00;
+    pull = cstd::fdiv((int)((((long long)spinAbs * spinAbs) + 0x800) >> 12), board->mBallRadius) -
+           0xc00;
 
-    board->mAngleStep =
-        cstd::fdiv((int)((((long long)board->mSpinSpeed * 0x500) + 0x800) >> 12), board->mBallRadius);
+    board->mAngleStep = cstd::fdiv((int)((((long long)board->mSpinSpeed * 0x500) + 0x800) >> 12),
+                                   board->mBallRadius);
 
     board->mOrbitAngle += board->mAngleStep;
 

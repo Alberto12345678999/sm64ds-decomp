@@ -114,10 +114,10 @@ struct dScMgRoulette_c : dScMgSingle3DBase_c {
     virtual void StartRound(int arg);               /* slot 18 */
     virtual int  CanEndState(int mode);              /* slot 19 */
 
-    Dealer mDealer;            /* 0x4f38 */
-    RouletteRacer mRacers[5];  /* 0x51a8 */
-    u8    mMeter[4][0x18];     /* 0x52ac -- strips for payouts 12, 6, 3, 2 */
-    RouletteBoard mBoard;      /* 0x530c */
+    Dealer mDealer;           /* 0x4f38 */
+    RouletteRacer mRacers[5]; /* 0x51a8 */
+    u8 mMeter[4][0x18];       /* 0x52ac -- strips for payouts 12, 6, 3, 2 */
+    RouletteBoard mBoard;     /* 0x530c */
     s32   unk_53e0;        /* 0x53e0 -- reset to 0x100; not read in this TU */
     s16   mCameraPreset;     /* 0x53e4 -- Render copies row n of the camera
                                 tables (data_ov006_0213e34c / _0213e370 at stride

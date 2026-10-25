@@ -1563,20 +1563,10 @@ void Camera_InitSlotsView(struct dCamera_c *self) {
    animation handles take their files in the body. */
 // @symbol _ZN6DealerC1Ev
 Dealer::Dealer()
-    : mHand(0), mShuffleRound(0), mReserved(0), mModelFile(0x208), mTableFile(0),
-      mWaitAnim(0x212),
-      mShuffleStartAnim(0x210),
-      mShuffleAnim(0x20f),
-      mDealStartAnim(0x20c),
-      mDealAnim(0x209),
-      mDealEndAnim(0x20a),
-      mDealEnd2Anim(0x20b),
-      mDealWaitAnim(0x20d),
-      mThrowAnim(0x211),
-      mWinStartAnim(0x215),
-      mWinAnim(0x213),
-      mWinEndAnim(0x214),
-      mLoseAnim(0x20e) {
+    : mHand(0), mShuffleRound(0), mReserved(0), mModelFile(0x208), mTableFile(0), mWaitAnim(0x212),
+      mShuffleStartAnim(0x210), mShuffleAnim(0x20f), mDealStartAnim(0x20c), mDealAnim(0x209),
+      mDealEndAnim(0x20a), mDealEnd2Anim(0x20b), mDealWaitAnim(0x20d), mThrowAnim(0x211),
+      mWinStartAnim(0x215), mWinAnim(0x213), mWinEndAnim(0x214), mLoseAnim(0x20e) {
     mModelData = 0;
     mTableData = 0;
     mShuffleSoundPlayed = 0;
@@ -1621,10 +1611,8 @@ int Dealer_Load(char *c) {
     void *ip;
 
     _ZN17dExtShadowModel_c8CleanAllEv();
-    DEALER(c)->mModelData =
-        (int)dExtSimpleModel_c::LoadFile(DEALER(c)->mModelFile);
-    DEALER(c)->mTableData =
-        (int)dExtSimpleModel_c::LoadFile(DEALER(c)->mTableFile);
+    DEALER(c)->mModelData = (int)dExtSimpleModel_c::LoadFile(DEALER(c)->mModelFile);
+    DEALER(c)->mTableData = (int)dExtSimpleModel_c::LoadFile(DEALER(c)->mTableFile);
     f = ((void *)DEALER(c)->mModelData);
     if (f == 0 || DEALER(c)->mModel.SetFile((BMD_File *)f, 1, -1) == 0) {
         return 0;
@@ -1844,7 +1832,8 @@ void Dealer_StartShuffle(char *c, int unused, short a2, int a3) {
     DEALER(c)->mDealSoundPlayed = 0;
     DEALER(c)->mDealLeft = a2;
     DEALER(c)->mDealtCount = a3;
-    DEALER(c)->mModel.SetAnim(*(BCA_File *)DEALER(c)->mShuffleStartAnim.filePtr, 0, 0x40000000, 0x800, 0);
+    DEALER(c)->mModel.SetAnim(*(BCA_File *)DEALER(c)->mShuffleStartAnim.filePtr, 0, 0x40000000,
+                              0x800, 0);
     *(struct M8 *)c = *(struct M8 *)pmf_Dealer_StateShuffle;
 }
 }
@@ -1931,9 +1920,11 @@ extern "C" void Dealer_StartDeal(char *c, short arg1, int arg2) {
     DEALER(c)->mDealtCount = arg2;
     if (Dealer_IsIdle((int *)c) &&
         DEALER(c)->mModel.file != (BCA_File *)DEALER(c)->mDealWaitAnim.filePtr) {
-        DEALER(c)->mModel.SetAnim(*(BCA_File *)DEALER(c)->mShuffleStartAnim.filePtr, 0, 0x40000000, 0x800, 0);
+        DEALER(c)->mModel.SetAnim(*(BCA_File *)DEALER(c)->mShuffleStartAnim.filePtr, 0, 0x40000000,
+                                  0x800, 0);
     } else {
-        DEALER(c)->mModel.SetAnim(*(BCA_File *)DEALER(c)->mDealStartAnim.filePtr, 0, 0x40000000, 0x800, 0);
+        DEALER(c)->mModel.SetAnim(*(BCA_File *)DEALER(c)->mDealStartAnim.filePtr, 0, 0x40000000,
+                                  0x800, 0);
     }
     *(P2 *)c = pmf_Dealer_StateDeal;
 }
@@ -1952,7 +1943,8 @@ void Dealer_StateDeal(char *c) {
     }
 
     f7c = DEALER(c)->mModel.file;
-    if (f7c == ((void *)DEALER(c)->mDealEndAnim.filePtr) || f7c == ((void *)DEALER(c)->mDealEnd2Anim.filePtr)) {
+    if (f7c == ((void *)DEALER(c)->mDealEndAnim.filePtr) ||
+        f7c == ((void *)DEALER(c)->mDealEnd2Anim.filePtr)) {
         if (DEALER(c)->mModel.Finished()) {
             DEALER(c)->mDealtCount = 0;
             Dealer_PlayIdle(c);
@@ -1969,16 +1961,16 @@ void Dealer_StateDeal(char *c) {
             if (cv <= 0) {
                 short state = DEALER(c)->mHand;
                 if (state == 0) {
-                    DEALER(c)->mModel.SetAnim(*(BCA_File *)DEALER(c)->mDealEndAnim.filePtr, 0, 0x40000000,
-                                              0x800, 0);
+                    DEALER(c)->mModel.SetAnim(*(BCA_File *)DEALER(c)->mDealEndAnim.filePtr, 0,
+                                              0x40000000, 0x800, 0);
                     if (DEALER(c)->mDealSoundPlayed != 0)
                         return;
                     _ZN5Sound12PlayBank2_2DEj(0x13a);
                     DEALER(c)->mDealSoundPlayed = 1;
                     return;
                 } else if (state == 2) {
-                    DEALER(c)->mModel.SetAnim(*(BCA_File *)DEALER(c)->mDealEnd2Anim.filePtr, 0, 0x40000000,
-                                              0x800, 0);
+                    DEALER(c)->mModel.SetAnim(*(BCA_File *)DEALER(c)->mDealEnd2Anim.filePtr, 0,
+                                              0x40000000, 0x800, 0);
                     if (DEALER(c)->mDealSoundPlayed != 0)
                         return;
                     _ZN5Sound12PlayBank2_2DEj(0x13a);
@@ -2005,8 +1997,8 @@ void Dealer_StateDeal(char *c) {
 
     if (f7c == ((void *)DEALER(c)->mShuffleStartAnim.filePtr)) {
         if (DEALER(c)->mModel.Finished()) {
-            DEALER(c)->mModel.SetAnim(*(BCA_File *)DEALER(c)->mDealStartAnim.filePtr, 0, 0x40000000, 0x800,
-                                      0);
+            DEALER(c)->mModel.SetAnim(*(BCA_File *)DEALER(c)->mDealStartAnim.filePtr, 0, 0x40000000,
+                                      0x800, 0);
         }
     }
 }
@@ -2025,8 +2017,7 @@ extern P2 pmf_Dealer_StateReveal_2;
 void Dealer_StartReveal(int *t, int a1, int a2) {
     DEALER(t)->mDealLeft = a1;
     DEALER(t)->mDealtCount = a2;
-    DEALER(t)->mModel.SetAnim(*(BCA_File *)DEALER(t)->mDealAnim.filePtr, 8, 0, 0x800,
-                              0);
+    DEALER(t)->mModel.SetAnim(*(BCA_File *)DEALER(t)->mDealAnim.filePtr, 8, 0, 0x800, 0);
     *(P2 *)t = pmf_Dealer_StateReveal_2;
 }
 }
@@ -2051,16 +2042,16 @@ extern "C" void Dealer_StateReveal(void *cc) {
             DEALER(c)->mDealtCount = 0;
             a = DEALER(c)->mHand;
             if (a == 0) {
-                DEALER(c)->mModel.SetAnim(*(BCA_File *)DEALER(c)->mDealEndAnim.filePtr, 0, 0x40000000,
-                                          0x800, 0);
+                DEALER(c)->mModel.SetAnim(*(BCA_File *)DEALER(c)->mDealEndAnim.filePtr, 0,
+                                          0x40000000, 0x800, 0);
                 if (DEALER(c)->mDealSoundPlayed != 0)
                     return;
                 _ZN5Sound12PlayBank2_2DEj(0x13a);
                 DEALER(c)->mDealSoundPlayed = 1;
                 return;
             } else if (a == 2) {
-                DEALER(c)->mModel.SetAnim(*(BCA_File *)DEALER(c)->mDealEnd2Anim.filePtr, 0, 0x40000000,
-                                          0x800, 0);
+                DEALER(c)->mModel.SetAnim(*(BCA_File *)DEALER(c)->mDealEnd2Anim.filePtr, 0,
+                                          0x40000000, 0x800, 0);
                 if (DEALER(c)->mDealSoundPlayed != 0)
                     return;
                 _ZN5Sound12PlayBank2_2DEj(0x13a);
@@ -2143,8 +2134,7 @@ extern P2 pmf_Dealer_StateSwap;
 }
 
 void Dealer_StartSwap(int *t) {
-    DEALER(t)->mModel.SetAnim(*(BCA_File *)DEALER(t)->mThrowAnim.filePtr, 0, 0x40000000,
-                              0x800, 0);
+    DEALER(t)->mModel.SetAnim(*(BCA_File *)DEALER(t)->mThrowAnim.filePtr, 0, 0x40000000, 0x800, 0);
     DEALER(t)->mModel.HideMaterial(2, 0);
     DEALER(t)->mModel.ShowMaterial(1, 0);
     *(P2 *)t = pmf_Dealer_StateSwap;
@@ -2178,10 +2168,12 @@ extern double pmf_Dealer_StateLose;
 
 extern "C" void Dealer_PlayLose(char *c) {
     if (DEALER(c)->mHand == 1) {
-        DEALER(c)->mModel.SetAnim(*(BCA_File *)DEALER(c)->mDealEndAnim.filePtr, 0, 0x40000000, 0x800, 0);
+        DEALER(c)->mModel.SetAnim(*(BCA_File *)DEALER(c)->mDealEndAnim.filePtr, 0, 0x40000000,
+                                  0x800, 0);
     } else {
         Sound::PlayBank2_2D(0x13c);
-        DEALER(c)->mModel.SetAnim(*(BCA_File *)DEALER(c)->mLoseAnim.filePtr, 0, 0x40000000, 0x800, 0);
+        DEALER(c)->mModel.SetAnim(*(BCA_File *)DEALER(c)->mLoseAnim.filePtr, 0, 0x40000000, 0x800,
+                                  0);
     }
     *(double *)c = pmf_Dealer_StateLose;
 }
@@ -2214,7 +2206,8 @@ extern struct G2 pmf_Dealer_StateWin;
 void Dealer_PlayWin(void *c) {
     char *r4 = (char *)c;
     _ZN5Sound12PlayBank2_2DEj(0x13b);
-    DEALER(r4)->mModel.SetAnim(*(BCA_File *)DEALER(r4)->mWinStartAnim.filePtr, 0, 0x40000000, 0x800, 0);
+    DEALER(r4)->mModel.SetAnim(*(BCA_File *)DEALER(r4)->mWinStartAnim.filePtr, 0, 0x40000000, 0x800,
+                               0);
     DEALER(r4)->mShuffleLeft = 5;
     *(struct G2 *)r4 = pmf_Dealer_StateWin;
 }
@@ -2238,8 +2231,8 @@ void Dealer_StateWin(char *p) {
         DEALER(p)->mModel.WillHitFrame(0)) {
         DEALER(p)->mShuffleLeft -= 1;
         if (((Obj *)p)->field_1d8 == 0) {
-            DEALER(p)->mModel.SetAnim(*(BCA_File *)DEALER(p)->mWinEndAnim.filePtr, 0, 0x40000000, 0x800,
-                                      0);
+            DEALER(p)->mModel.SetAnim(*(BCA_File *)DEALER(p)->mWinEndAnim.filePtr, 0, 0x40000000,
+                                      0x800, 0);
             return;
         }
     }
@@ -2306,8 +2299,7 @@ void Camera_InitDealerView(struct dCamera_c *self) {
 /* The file handles, the model and the shadow are members, so the compiler
    constructs them in declaration order before the body runs. */
 // @symbol _ZN12MascotWalkerC1Ev
-MascotWalker::MascotWalker()
-    : mModelFile(0x205), mPauseAnimFile(0x206), mWalkAnimFile(0x207) {
+MascotWalker::MascotWalker() : mModelFile(0x205), mPauseAnimFile(0x206), mWalkAnimFile(0x207) {
     mPathIndex = 0;
     mHeadAngle = 0;
     mPaused = 0;
