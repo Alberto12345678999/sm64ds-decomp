@@ -72,6 +72,8 @@ struct MascotWalker {
 };
 
 #ifndef SM64DS_PLATFORM_PC
+typedef char MascotWalkerModelFilePtr_size_must_be_0x8[sizeof(MascotWalkerModelFilePtr) == 0x8 ? 1 : -1];
+typedef char MascotWalkerAnimationFileHandle_size_must_be_0x8[sizeof(MascotWalkerAnimationFileHandle) == 0x8 ? 1 : -1];
 typedef char MascotWalker_size_must_be_0xf8[sizeof(MascotWalker) == 0xf8 ? 1 : -1];
 #endif
 
