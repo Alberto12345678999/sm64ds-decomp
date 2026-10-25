@@ -2,8 +2,6 @@
 /* recovered: shared common types */
 #include "common.h"
 
-typedef int Fix12i;
-
 extern void CrossVec3(Vector3 *a, Vector3 *b, Vector3 *result);
 extern void NormalizeVec3(const struct Vector3 *src, struct Vector3 *dst);
 

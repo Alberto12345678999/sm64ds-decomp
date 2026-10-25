@@ -4,8 +4,6 @@ typedef int Fix12i;
 
 typedef short s16;
 
-typedef long long s64;
-
 extern void func_0203d480(Fix12i *out, Fix12i *in);
 extern s16 data_02082214[];
 

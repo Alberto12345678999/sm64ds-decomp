@@ -1,9 +1,5 @@
 #include "nitro/fx/fx.h"
 
-typedef short s16;
-
-typedef long long s64;
-
 extern short data_02082214[];
 
 void func_0203cd80(int *m, short angle) {

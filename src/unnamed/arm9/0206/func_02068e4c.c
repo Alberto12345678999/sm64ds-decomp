@@ -51,7 +51,7 @@ int func_02068e4c(int a0, u16 *a1, int a2, int a3, u16 a4, int a5) {
     MultiStore_Int(fill_i, (int *)base1, sizeof(WmWork));
     fill_s = 0;
     MultiStore16(fill_s, base2, 0x1340);
-    /* 0x1e30 and 0x1e38 sit in WmWork.pad_1e2e: nothing else in these files
+    /* 0x1e30 and 0x1e38 sit in WmWork.pad_1e2e: nothing else in this file
      reads them back (and the two copies overlap), so they stay raw */
     {
         int i = 0;

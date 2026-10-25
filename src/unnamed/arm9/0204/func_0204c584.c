@@ -11,10 +11,6 @@ typedef struct {
     Vector3s basisV; /* 0x62 */
 } ParticleSystemView;
 
-typedef short s16;
-
-typedef long long s64;
-
 typedef struct Node {
     struct Node *next;
     struct Node *prev;
