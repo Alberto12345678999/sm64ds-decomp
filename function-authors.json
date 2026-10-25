@@ -27399,7 +27399,7 @@
     },
     "ov006:0x02125800": {
       "author": "tangosdev",
-      "name": "SnowSpray_ElemDtor"
+      "name": "_ZN9SnowSprayD1Ev"
     },
     "ov006:0x02125804": {
       "author": "tangosdev",
@@ -27483,11 +27483,11 @@
     },
     "ov006:0x021295ac": {
       "author": "tangosdev",
-      "name": "dScMgSnowball_c_Construct"
+      "name": "_ZN15dScMgSnowball_cC1Ev"
     },
     "ov006:0x0212968c": {
       "author": "tangosdev",
-      "name": "SnowSpray_ElemCtor"
+      "name": "_ZN9SnowSprayC1Ev"
     },
     "ov006:0x02129690": {
       "author": "andrewboudreau",

@@ -471,7 +471,7 @@ void dScMgBSC_c::StateWaitTable() {
 void dScMgBSC_c::StateReturnCards() {
     int cardsReturned;
     int cardIndex;
-    CardPos *cardPos;
+    Vector2 *cardPos;
 
     if (gMgCoinsStatus != 1) {
         return;
