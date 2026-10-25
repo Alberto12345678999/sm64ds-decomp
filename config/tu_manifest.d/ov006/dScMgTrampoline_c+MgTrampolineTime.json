@@ -40,7 +40,7 @@
       "ordinal": 1
     },
     {
-      "symbol": "Trmp_Nothing",
+      "symbol": "_ZN14TrmpScorePopupD1Ev",
       "address": "0x02120938",
       "size": "0x00000004",
       "legacy_source": "src/actors/d_sc_mg_trampoline.cpp",
@@ -327,7 +327,7 @@
       "ordinal": 42
     },
     {
-      "symbol": "Trmp_Nothing2",
+      "symbol": "_ZN14TrmpScorePopupC1Ev",
       "address": "0x021225a8",
       "size": "0x00000004",
       "legacy_source": "src/func_ov006_021225a8.c",
@@ -1303,6 +1303,21 @@
       "canonical_module": "arm9",
       "canonical_address": "0x02086e60",
       "reason": "ancestor RTTI name passenger; the canonical cartridge copy is independently enrolled"
+    },
+    {
+      "symbol": "_ZN14TrmpScorePopupC2Ev",
+      "disposition": "deadstrip",
+      "reason": "Base-object constructor emitted beside C1 by the out-of-line TrmpScorePopup::TrmpScorePopup(). The cartridge carries only C1 at 0x021225a8 (size 0x4), and TrmpScorePopup is only ever constructed as a complete object (the two Trampoline scenes' five-slot pools, through __cxa_vec_ctor), so C2 has no ROM home. Homeless and unreferenced, so a plain deadstrip."
+    },
+    {
+      "symbol": "_ZN14TrmpScorePopupD2Ev",
+      "disposition": "deadstrip",
+      "reason": "Base-object destructor emitted beside D1 by the out-of-line TrmpScorePopup::~TrmpScorePopup(). The cartridge carries only D1 at 0x02120938 (size 0x4), which both Trampoline scenes' factories and destructors hand to the array helpers; no module's symbols.txt gives D2 a home. Homeless and unreferenced, so a plain deadstrip."
+    },
+    {
+      "symbol": "_ZN14dScMgD3DBase_cD2Ev",
+      "disposition": "deadstrip",
+      "reason": "Base-object destructor of dScMgD3DBase_c, emitted as vague linkage once the factory's `new dScMgTrampoline_c` expands the inline constructor chain (the same byproduct ov006/dScMgFlower_c licenses for dScMgSingle3DBase_c). dScMgTrampoline_c's D1/D0 inline the base destructor rather than chain to it, and no module's symbols.txt gives _ZN14dScMgD3DBase_cD2Ev a home. Homeless and unreferenced, so a plain deadstrip."
     }
   ]
 }

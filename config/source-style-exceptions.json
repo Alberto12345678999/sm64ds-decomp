@@ -938,14 +938,6 @@
       "evidence": "origin/main:src/minigames/d_mg3d_heyho_obj_adapter.cpp 2x _ZN9ModelAnimC1Ev; head 2x _ZN14dExtAnmModel_cC1Ev; tools/source_style.py --base origin/main"
     },
     {
-      "path": "src/minigames/d_mg_trmpln2_mario.cpp",
-      "rule": "handspelled-member",
-      "match": "_ZN14dExtAnmModel_cC1Ev",
-      "count": 2,
-      "reason": "Respelled by the Model-family RTTI rename: src/minigames/d_mg_trmpln2_mario.cpp on main carries the same 2 occurrence(s) as _ZN9ModelAnimC1Ev. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings.",
-      "evidence": "origin/main:src/minigames/d_mg_trmpln2_mario.cpp 2x _ZN9ModelAnimC1Ev; head 2x _ZN14dExtAnmModel_cC1Ev; tools/source_style.py --base origin/main"
-    },
-    {
       "path": "src/minigames/d_s_mg_jump.cpp",
       "rule": "handspelled-member",
       "match": "_ZN17dExtSimpleModel_cC1Ev",
@@ -976,14 +968,6 @@
       "count": 2,
       "reason": "Respelled by the Model-family RTTI rename: src/minigames/d_s_mg_snowball.cpp on main carries the same 2 occurrence(s) as _ZN5ModelC1Ev. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings.",
       "evidence": "origin/main:src/minigames/d_s_mg_snowball.cpp 2x _ZN5ModelC1Ev; head 2x _ZN17dExtSimpleModel_cC1Ev; tools/source_style.py --base origin/main"
-    },
-    {
-      "path": "src/minigames/d_s_mg_trampoline2.cpp",
-      "rule": "handspelled-member",
-      "match": "_ZN17dExtSimpleModel_cC1Ev",
-      "count": 5,
-      "reason": "Respelled by the Model-family RTTI rename: src/minigames/d_s_mg_trampoline2.cpp on main carries the same 5 occurrence(s) as _ZN5ModelC1Ev. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings.",
-      "evidence": "origin/main:src/minigames/d_s_mg_trampoline2.cpp 5x _ZN5ModelC1Ev; head 5x _ZN17dExtSimpleModel_cC1Ev; tools/source_style.py --base origin/main"
     },
     {
       "path": "src/minigames/unit020bfec0.cpp",
@@ -1032,14 +1016,6 @@
       "count": 2,
       "reason": "Respelled by the texture-animation RTTI rename: src/minigames/d_mg3d_esp_anim_set.cpp on cpp/model-family-rom-names carries the same 2 occurrence(s) as _ZN18TextureTransformerC1Ev. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings.",
       "evidence": "origin/cpp/model-family-rom-names:src/minigames/d_mg3d_esp_anim_set.cpp 2x _ZN18TextureTransformerC1Ev; head 2x _ZN15dExtAnmTexSRT_cC1Ev; tools/source_style.py --base origin/cpp/model-family-rom-names"
-    },
-    {
-      "path": "src/minigames/d_s_mg_trampoline2.cpp",
-      "rule": "handspelled-member",
-      "match": "_ZN15dExtAnmTexSRT_cC1Ev",
-      "count": 2,
-      "reason": "Respelled by the texture-animation RTTI rename: src/minigames/d_s_mg_trampoline2.cpp on cpp/model-family-rom-names carries the same 2 occurrence(s) as _ZN18TextureTransformerC1Ev. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings.",
-      "evidence": "origin/cpp/model-family-rom-names:src/minigames/d_s_mg_trampoline2.cpp 2x _ZN18TextureTransformerC1Ev; head 2x _ZN15dExtAnmTexSRT_cC1Ev; tools/source_style.py --base origin/cpp/model-family-rom-names"
     },
     {
       "path": "src/minigames/unit020bfec0.cpp",
@@ -1122,28 +1098,28 @@
       "evidence": "The calls spelled _ZN4cstd5atan2E5Fix12IiES1_ before cstd::atan2 took its scalar mangling (#4328), which the Fix12-by-value exemption covered; the C++ callers in that PR call cstd::atan2 by name."
     },
     {
-      "path": "include/dScMgTrampoline2_c.h",
+      "path": "src/minigames/unit020cd744.cpp",
       "rule": "handspelled-member",
-      "match": "_ZN10Jump2PopupD1Ev",
+      "match": "_ZN8TrmpLineD1Ev",
       "count": 2,
-      "reason": "dScMgTrampoline2_c's factory and inline destructor are still hand-built over raw element arrays (five of the six element types have no class), so they hand the element constructor and destructor to __cxa_vec_ctor/__cxa_vec_cleanup by address. C++ cannot take a constructor's or destructor's address, so Jump2Popup's C1/D1, renamed from the C-linkage Jump2Popup_ElemCtor/Jump2Popup_ElemDtor when the class got real members in d_s_mg_jump2.cpp, are named by their linker spelling. Follow-up: type mArray1..mArray6 with Trmp2Mario, TrmpLine, TrmpItem and Trmp2Spinner record classes and write the factory as `return new dScMgTrampoline2_c;`, as dScMgJump2_c's now is.",
-      "evidence": "ov006/dScMgTrampoline2_c 42/42 TEXT-VERIFIED with these spellings; the ROM symbols at 0x020efc08 (C1) and 0x020eed64 (D1) are the ones dScMgJump2_c's factory reaches through `new dScMgJump2_c` (ov006/dScMgJump2_c 30/30 TEXT-VERIFIED)."
+      "reason": "sTrmpLines is a four-element TrmpLine array that the C static initializer __sinit_ov006_0212fc7c builds with __cxa_vec_ctor and registers TrmpLine_CleanupAll to tear down; neither function is a C++ array definition yet, so both hand TrmpLine's constructor and destructor to the array helpers by address. C++ cannot take a constructor's or destructor's address, so the C1/D1 renamed from TrmpLine_Reset/TrmpLine_Destroy when the class got its real constructor and destructor in unit020cd744.cpp are named by their linker spelling. Follow-up: define sTrmpLines as a real `TrmpLine sTrmpLines[4]` in the TU whose __sinit this is, which retires both hand-built helpers.",
+      "evidence": "ov006 0x020d100c (_ZN8TrmpLineC1Ev) and 0x020d1008 (_ZN8TrmpLineD1Ev) in config/arm9/overlays/ov006/symbols.txt; ov006/unit020cd744 59/59 TEXT-VERIFIED; __sinit_ov006_0212fc7c match.py MATCH at 0x0212fc7c size 0xcc."
     },
     {
-      "path": "src/minigames/d_s_mg_trampoline2.cpp",
+      "path": "src/unnamed/ov006/__sinit_ov006_0212fc7c.c",
       "rule": "handspelled-member",
-      "match": "_ZN10Jump2PopupC1Ev",
+      "match": "_ZN8TrmpLineD1Ev",
       "count": 2,
-      "reason": "dScMgTrampoline2_c's factory and inline destructor are still hand-built over raw element arrays (five of the six element types have no class), so they hand the element constructor and destructor to __cxa_vec_ctor/__cxa_vec_cleanup by address. C++ cannot take a constructor's or destructor's address, so Jump2Popup's C1/D1, renamed from the C-linkage Jump2Popup_ElemCtor/Jump2Popup_ElemDtor when the class got real members in d_s_mg_jump2.cpp, are named by their linker spelling. Follow-up: type mArray1..mArray6 with Trmp2Mario, TrmpLine, TrmpItem and Trmp2Spinner record classes and write the factory as `return new dScMgTrampoline2_c;`, as dScMgJump2_c's now is.",
-      "evidence": "ov006/dScMgTrampoline2_c 42/42 TEXT-VERIFIED with these spellings; the ROM symbols at 0x020efc08 (C1) and 0x020eed64 (D1) are the ones dScMgJump2_c's factory reaches through `new dScMgJump2_c` (ov006/dScMgJump2_c 30/30 TEXT-VERIFIED)."
+      "reason": "sTrmpLines is a four-element TrmpLine array that the C static initializer __sinit_ov006_0212fc7c builds with __cxa_vec_ctor and registers TrmpLine_CleanupAll to tear down; neither function is a C++ array definition yet, so both hand TrmpLine's constructor and destructor to the array helpers by address. C++ cannot take a constructor's or destructor's address, so the C1/D1 renamed from TrmpLine_Reset/TrmpLine_Destroy when the class got its real constructor and destructor in unit020cd744.cpp are named by their linker spelling. Follow-up: define sTrmpLines as a real `TrmpLine sTrmpLines[4]` in the TU whose __sinit this is, which retires both hand-built helpers. This file is C, so a mangled linker name is its only spelling.",
+      "evidence": "ov006 0x020d100c (_ZN8TrmpLineC1Ev) and 0x020d1008 (_ZN8TrmpLineD1Ev) in config/arm9/overlays/ov006/symbols.txt; ov006/unit020cd744 59/59 TEXT-VERIFIED; __sinit_ov006_0212fc7c match.py MATCH at 0x0212fc7c size 0xcc."
     },
     {
-      "path": "src/minigames/d_s_mg_trampoline2.cpp",
+      "path": "src/unnamed/ov006/__sinit_ov006_0212fc7c.c",
       "rule": "handspelled-member",
-      "match": "_ZN10Jump2PopupD1Ev",
-      "count": 1,
-      "reason": "dScMgTrampoline2_c's factory and inline destructor are still hand-built over raw element arrays (five of the six element types have no class), so they hand the element constructor and destructor to __cxa_vec_ctor/__cxa_vec_cleanup by address. C++ cannot take a constructor's or destructor's address, so Jump2Popup's C1/D1, renamed from the C-linkage Jump2Popup_ElemCtor/Jump2Popup_ElemDtor when the class got real members in d_s_mg_jump2.cpp, are named by their linker spelling. Follow-up: type mArray1..mArray6 with Trmp2Mario, TrmpLine, TrmpItem and Trmp2Spinner record classes and write the factory as `return new dScMgTrampoline2_c;`, as dScMgJump2_c's now is.",
-      "evidence": "ov006/dScMgTrampoline2_c 42/42 TEXT-VERIFIED with these spellings; the ROM symbols at 0x020efc08 (C1) and 0x020eed64 (D1) are the ones dScMgJump2_c's factory reaches through `new dScMgJump2_c` (ov006/dScMgJump2_c 30/30 TEXT-VERIFIED)."
+      "match": "_ZN8TrmpLineC1Ev",
+      "count": 2,
+      "reason": "sTrmpLines is a four-element TrmpLine array that the C static initializer __sinit_ov006_0212fc7c builds with __cxa_vec_ctor and registers TrmpLine_CleanupAll to tear down; neither function is a C++ array definition yet, so both hand TrmpLine's constructor and destructor to the array helpers by address. C++ cannot take a constructor's or destructor's address, so the C1/D1 renamed from TrmpLine_Reset/TrmpLine_Destroy when the class got its real constructor and destructor in unit020cd744.cpp are named by their linker spelling. Follow-up: define sTrmpLines as a real `TrmpLine sTrmpLines[4]` in the TU whose __sinit this is, which retires both hand-built helpers. This file is C, so a mangled linker name is its only spelling.",
+      "evidence": "ov006 0x020d100c (_ZN8TrmpLineC1Ev) and 0x020d1008 (_ZN8TrmpLineD1Ev) in config/arm9/overlays/ov006/symbols.txt; ov006/unit020cd744 59/59 TEXT-VERIFIED; __sinit_ov006_0212fc7c match.py MATCH at 0x0212fc7c size 0xcc."
     }
   ]
 }
