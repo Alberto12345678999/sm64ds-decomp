@@ -1017,7 +1017,7 @@ matched: yes</title></rect><rect x="70.45" y="118.31" width="1.14" height="4.71"
 module: arm9
 addr: 0x02010160
 size: 8 bytes
-matched: yes</title></rect><rect x="71.59" y="118.31" width="3.41" height="4.71" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8dActor_c10EarthquakeERK7Vector35Fix12IiE
+matched: yes</title></rect><rect x="71.59" y="118.31" width="3.41" height="4.71" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8dActor_c10EarthquakeERK7Vector3i
 module: arm9
 addr: 0x02010168
 size: 24 bytes
