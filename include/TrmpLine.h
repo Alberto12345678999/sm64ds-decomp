@@ -56,6 +56,7 @@ struct TrmpLine {
 };
 
 #ifndef SM64DS_PLATFORM_PC
+typedef char TrmpLine_Vtx_size_must_be_0xc[sizeof(TrmpLine::Vtx) == 0xc ? 1 : -1];
 typedef char TrmpLine_size_must_be_0x32c[sizeof(TrmpLine) == 0x32c ? 1 : -1];
 #endif
 
