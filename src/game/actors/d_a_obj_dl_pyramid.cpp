@@ -72,8 +72,8 @@ struct System {
 int d_a_obj_dl_pyramidNewHold(u32 handle, u32 id, int x, int y, int z, void *dir, void *callback);
 void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(
     void *cylinder, dActor_c *owner, Fix12i radius, Fix12i height, u32 flags, u32 hitFlags);
-void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-    void *collider, void *kcl, void *mat, int scale, short angY, void *clps);
+extern void hold_d_a_obj_dl_pyramid(void *collider, void *kcl, void *mat, int scale, short angY,
+                                    void *clps);
 void Matrix4x3_FromRotationY(void *m, int angleY);
 void func_020393d4(int *collider, int callback);
 
@@ -287,8 +287,9 @@ int daObjDlPyramid_c::InitResources()
     func_ov024_021114c4(this);
     func_ov024_02111480(this);
     void *kcl = dBgW_Kc::LoadFile(gDlPyramidCollisionFile);
-    _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-        &mMeshCollider, kcl, &mClsnMat2, 0x199, mAngleY, data_ov024_021129f0);
+    ((dBgW_KcMbg *)(&mMeshCollider))
+        ->dBgW_KcMbg::SetFile((KCL_File *)(kcl), *(const Matrix4x3 *)(&mClsnMat2), 0x199, mAngleY,
+                              *(CLPS_Block *)(data_ov024_021129f0));
     func_020393d4((int *)&mMeshCollider, (int)&dBgW::UpdatePosAndAngs);
     mMeshCollider.Enable(this);
     mHomePosX = mPosX;

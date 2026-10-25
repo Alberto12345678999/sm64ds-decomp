@@ -44,6 +44,9 @@ enum daObjFl_Amilift_c_AssetId {
 #include "daObjFl_Amilift_c.h"
 #include "common.h"
 #include "SharedFilePtr.h"
+namespace cstd {
+s16 atan2(s32, s32);
+}
 
 /* The resource handles as the ROM lays them out: {id, loaded file}. The
  * model handle constructs through func_02017acc and destroys through
@@ -75,14 +78,15 @@ int Vec3_HorzDist(const void* a, const void* b);
 int _Z14ApproachLinearRiii(int* v, int target, int step);
 extern LiftState data_ov064_0211c750[];
 extern short data_02082214[];
-void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block( void *self, KCL_File *k, Matrix4x3 *m, int fix, short s, CLPS_Block *clps);
+extern void hold_d_a_obj_fl_amilift(void *self, KCL_File *k, Matrix4x3 *m, int fix, short s,
+                                    CLPS_Block *clps);
 void func_020393d4(void *p, void *v);
 void func_020393c4(void *p, void *v);
 extern AmiliftModelFilePtr data_ov064_0211c730;
 extern AmiliftClsnFilePtr data_ov064_0211c728;
 extern CLPS_Block data_ov064_0211bb6c;
 extern void Vec3_Sub(Vector3* dst, Vector3* a, Vector3* b);
-extern int _ZN4cstd5atan2E5Fix12IiES1_(int y, int x);
+extern int atan2_hold_d_a_obj_fl_amilift_1(int y, int x);
 /* The collision callback this TU installs; defined at the end of the file. */
 void func_ov064_02117fd4(void *collider, daObjFl_Amilift_c *self, dActor_c *other);
 }
@@ -101,7 +105,7 @@ daObjFl_Amilift_c::~daObjFl_Amilift_c()
 void daObjFl_Amilift_c::func_ov064_02117a14(Vector3* a, Vector3* b){
   Vector3 v;
   Vec3_Sub(&v, a, b);
-  mPrevAngleY = (short)_ZN4cstd5atan2E5Fix12IiES1_(v.x, v.z);
+  mPrevAngleY = (short)cstd::atan2(v.x, v.z);
 }
 
 // @symbol func_ov064_02117a44
@@ -282,8 +286,8 @@ s32 daObjFl_Amilift_c::InitResources() {
     UpdateClsnPosAndRot();
 
     kcl = (KCL_File *)dBgW_Kc::LoadFile(data_ov064_0211c728);
-    _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-        &mMeshCollider, kcl, &mClsnMat, 0x199, mAngleY, &data_ov064_0211bb6c);
+    ((dBgW_KcMbg *)(&mMeshCollider))
+        ->dBgW_KcMbg::SetFile(kcl, *(&mClsnMat), 0x199, mAngleY, *(&data_ov064_0211bb6c));
 
     func_020393d4(&mMeshCollider, (void *)&dBgW::UpdatePosWithTransform);
     func_020393c4(&mMeshCollider, (void *)&func_ov064_02117fd4);

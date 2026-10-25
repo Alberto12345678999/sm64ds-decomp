@@ -57,8 +57,8 @@ void Matrix4x3_FromRotationXYZExt(void *m, int x, int y, int z);
 unsigned char DecIfAbove0_Byte(unsigned char *p);
 
 /* Scalar ABI. The real members take Fix12<int> by value. */
-void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-    dBgW_KcMbg *self, char *kcl, const Matrix4x3 *mtx, int scale, s16 angleY, char *clps);
+extern void hold_d_a_obj_fl_seesaw(dBgW_KcMbg *self, char *kcl, const Matrix4x3 *mtx, int scale,
+                                   s16 angleY, char *clps);
 
 /* Stores at dBgW+0x0c and +0x1c. Spellings match the C definitions. */
 void func_020393a4(int *mesh, int range);
@@ -132,8 +132,9 @@ s32 daObjFl_Seesaw_c::InitResources()
     func_ov022_02111d48();
     UpdateClsnPosAndRot();
     char *kcl = dBgW_Kc::LoadFile(data_ov022_021145a0);
-    _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-        &mMeshCollider, kcl, &mClsnMat, 0x1000, mAngleY, data_ov064_0211bacc);
+    ((dBgW_KcMbg *)(&mMeshCollider))
+        ->dBgW_KcMbg::SetFile((KCL_File *)(kcl), *(&mClsnMat), 0x1000, mAngleY,
+                              *(CLPS_Block *)(data_ov064_0211bacc));
     func_020393d4((int *)&mMeshCollider, (int)&dBgW::UpdatePosWithTransform);
     mSwingStep = -0x10;
     return 1;

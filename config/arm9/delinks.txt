@@ -1633,7 +1633,7 @@ src/runtime/actor/ActorBase_SceneNode.cpp:
     complete
     .text start:0x0203b3c0 end:0x0203b4dc
 
-src/cstd_atan2.c:
+src/cstd_atan2.cpp:
     complete
     .text start:0x0203b4dc end:0x0203b684
 

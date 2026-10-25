@@ -91,8 +91,7 @@ extern void func_0200fa04(dActor_c *, BattanVector3 *, int);
 
 /* Known by-value Fix12 compiler wall: the typed declaration is present in
  * dBgW_KcMbg.h, but this narrow caller seam preserves retail's register ABI. */
-extern void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-    dBgW_KcMbg *, KCL_File *, Matrix4x3 *, Fix12i, s16, void *);
+
 extern void func_020393d4(int *, int);
 }
 
@@ -153,9 +152,9 @@ int daObjFm_Battan_c::InitResources()
 
     KCL_File *file = (KCL_File *)dBgW_Kc::LoadFile(data_ov023_02112080);
     /* MEASURED: by-value Fix12<int> scale; see notes/mwccarm-codegen.md 6az. */
-    _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-        &mMeshCollider, file, &mClsnMat, 0x1000, mAngleY,
-        data_ov064_0211ba4c);
+    ((dBgW_KcMbg *)(&mMeshCollider))
+        ->dBgW_KcMbg::SetFile(file, *(&mClsnMat), 0x1000, mAngleY,
+                              *(CLPS_Block *)(data_ov064_0211ba4c));
     /* Stores dBgW::UpdatePosWithTransform at mMeshCollider+0x18; dBgW.h has
        no setter, so this stays the 8-byte store helper. */
     func_020393d4(

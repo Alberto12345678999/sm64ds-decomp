@@ -67,6 +67,9 @@ enum daDossy_c_AssetId {
 #include "Player.h"
 #include "Vector3s.h"
 #include "nitro/fx/fx.h"
+namespace cstd {
+s16 atan2(s32, s32);
+}
 
 typedef enum { FALSE = 0, TRUE = 1 } BOOL;
 
@@ -137,7 +140,7 @@ extern SharedFilePtr *data_ov065_0211c080[];
 extern SharedFilePtr *data_ov065_0211c08c[];
 
 extern void func_0201267c(u32 id, char* p);
-extern int _ZN4cstd5atan2E5Fix12IiES1_(int a, int b);
+extern int atan2_hold_d_a_dossy_1(int a, int b);
 void Matrix4x3_FromTranslation(Matrix4x3 *m, s32 x, s32 y, s32 z);
 void Matrix4x3_ApplyInPlaceToRotationX(Matrix4x3 *m, s16 a);
 void Matrix4x3_ApplyInPlaceToRotationY(Matrix4x3 *m, s16 a);
@@ -148,7 +151,7 @@ void AddVec3(const Vector3 *a, const Vector3 *b, Vector3 *o);
 void Vec3_LslInPlace(Vector3 *v, s32 sh);
 extern void Vec3_Asr(void* d, void* s, int sh);
 extern void Matrix4x3_FromRotationY(void *m, int angle);
-extern void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(void* self, void* kcl, void* mtx, Fix12i r, short s, void* clps);
+extern void hold_d_a_dossy(void *self, void *kcl, void *mtx, Fix12i r, short s, void *clps);
 extern void func_020393d4(void* p, void* v);
 extern void func_020393c4(void* p, void* v);
 extern void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(void* self, void* a, Fix12i r, Fix12i h, void* p, void* q);
@@ -264,8 +267,9 @@ int daDossy_c::InitResources()
         char* mmc = (char *)&mPlatforms[0].mClsn;
         for (j = 0; j < 7; j++) {
             KCL_File *kcl = (KCL_File *)dBgW_Kc::LoadFile(*data_ov065_0211c08c[j]);
-            _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-                mmc, kcl, mtx, 0x1000, mAngleY, data_ov065_0211cd68[j]);
+            ((dBgW_KcMbg *)(mmc))
+                ->dBgW_KcMbg::SetFile((KCL_File *)(kcl), *(const Matrix4x3 *)(mtx), 0x1000, mAngleY,
+                                      *(CLPS_Block *)(data_ov065_0211cd68[j]));
             if ((unsigned)j <= 2) {
                 func_020393d4(mmc, (void *)&dBgW::UpdatePosAndAngs);
                 if (j == 2)
@@ -620,7 +624,7 @@ void daDossy_c::func_ov065_02118634()
             target = player->mAngleY;
             speed = 0x7000;
         } else {
-            int a = _ZN4cstd5atan2E5Fix12IiES1_(0x7d0000, mDistToCenter - 0x7d0000);
+            int a = cstd::atan2(0x7d0000, mDistToCenter - 0x7d0000);
             s16 base = mAngToCenter;
             s16 diff = (s16)(mAngleY - base);
             if (diff < 0) a = (s16)(-a);

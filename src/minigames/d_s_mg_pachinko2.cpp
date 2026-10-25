@@ -47,6 +47,9 @@ enum dScMgPachinko2_c_AssetId {
 #include "dScMgPachinko2_c.h"
 #include "PlayerInput.h"
 #include "nitro/fx/fx.h"
+namespace cstd {
+s16 atan2(s32, s32);
+}
 
 namespace G2S {
 unsigned GetBG2CharPtr(void);
@@ -102,7 +105,7 @@ extern int func_020126e8(int a);
 extern int func_02012468(int a, int b, int c, int d, int e, int f, int g, short h);
 extern void func_02012718(int, int);
 extern int _ZN4cstd4sqrtEy(u64 x);
-extern s16 _ZN4cstd5atan2E5Fix12IiES1_(s32 y, s32 x);
+extern s16 atan2_hold_d_s_mg_pachinko2_1(s32 y, s32 x);
 extern int LoadFile(int handle);
 extern void Deallocate(void *);
 extern void DecompressLZ16(int src, void *dst);
@@ -948,7 +951,7 @@ void dScMgPachinko2_c ::Paddle_StateGather(int i) {
 
         /* This expression preserves the pinned compiler's instruction order. */
         currentY = deltaX ? currentY : currentY;
-        mPaddles[i].angle = (s16)_ZN4cstd5atan2E5Fix12IiES1_(targetY - (currentY >> 12), deltaX);
+        mPaddles[i].angle = (s16)cstd::atan2(targetY - (currentY >> 12), deltaX);
 
         {
             s16 cosine = data_02082214[(((u16)mPaddles[i].angle >> 4) << 1) + 1];
@@ -2116,7 +2119,7 @@ void dScMgPachinko2_c::Ball_StateAim(int i) {
         dist = dy * dy + dx * dx;
         sq = _ZN4cstd4sqrtEy(dist);
         if (sq >= 0x10) {
-            this->mBalls[i].angle = _ZN4cstd5atan2E5Fix12IiES1_(dx, dy);
+            this->mBalls[i].angle = cstd::atan2(dx, dy);
             this->mBalls[i].speed = _ZN4cstd4sqrtEy(dist) << 8;
             this->mBalls[i].speed += this->mBalls[i].speed >> 3;
             this->mBalls[i].speed += 0x1800;

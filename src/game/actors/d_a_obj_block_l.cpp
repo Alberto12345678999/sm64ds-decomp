@@ -83,9 +83,8 @@ extern ClpsRow data_ov002_02108ab8[];         /* CLPS blocks,       0xc stride *
 extern s8 data_0209f2f8;              /* current level */
 extern u8 data_0209f220;
 int IsStarCollectedInCurLevel(int star);
-void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-dBgW_KcMbg *self, KCL_File *kcl, const Matrix4x3 *mat, int scale, s16 angY,
-CLPS_Block *clps);
+extern void hold_d_a_obj_block_l(dBgW_KcMbg *self, KCL_File *kcl, const Matrix4x3 *mat, int scale,
+                                 s16 angY, CLPS_Block *clps);
 }
 
 /* One class, six actor IDs (see the banner), so most members branch on
@@ -457,20 +456,20 @@ int daObjBlockL_c::InitResources()
     if (idx <= 1) {
         if (IsActorID(this, 0x10)) {
             KCL_File *kcl = (KCL_File *)dBgW_Kc::LoadFile(*data_ov002_02108ab4[idx].file);
-            _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-                &mMeshCollider, kcl, &mClsnMat, 0x1800, mAngleY,
-                data_ov002_02108ab8[idx].block);
+            ((dBgW_KcMbg *)(&mMeshCollider))
+                ->dBgW_KcMbg::SetFile(kcl, *(&mClsnMat), 0x1800, mAngleY,
+                                      *(data_ov002_02108ab8[idx].block));
         } else {
             KCL_File *kcl = (KCL_File *)dBgW_Kc::LoadFile(*data_ov002_02108ab4[idx].file);
-            _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-                &mMeshCollider, kcl, &mClsnMat, 0x1000, mAngleY,
-                data_ov002_02108ab8[idx].block);
+            ((dBgW_KcMbg *)(&mMeshCollider))
+                ->dBgW_KcMbg::SetFile(kcl, *(&mClsnMat), 0x1000, mAngleY,
+                                      *(data_ov002_02108ab8[idx].block));
         }
     } else {
         KCL_File *kcl = (KCL_File *)dBgW_Kc::LoadFile(*data_ov002_02108ab4[idx].file);
-        _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-            &mMeshCollider, kcl, &mClsnMat, 0x199, mAngleY,
-            data_ov002_02108ab8[idx].block);
+        ((dBgW_KcMbg *)(&mMeshCollider))
+            ->dBgW_KcMbg::SetFile(kcl, *(&mClsnMat), 0x199, mAngleY,
+                                  *(data_ov002_02108ab8[idx].block));
     }
 
     if (IsActorID(this, 0x13))

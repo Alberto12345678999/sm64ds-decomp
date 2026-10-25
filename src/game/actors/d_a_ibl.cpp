@@ -46,6 +46,9 @@
 #include "dActor_c.h"
 #include "dBgCh_Actr.h"
 #include "dCc_c.h"
+namespace cstd {
+s16 atan2(s32, s32);
+}
 
 /* Actor IDs from symbols/actor_debug_names.tsv. */
 enum {
@@ -111,7 +114,7 @@ void d_a_iblPlayLongHold(u32 a, u32 b, u32 c, void *v, u32 d);
 int _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(Player *p, void *pos, u32 a, int b, u8 d, u8 e, u8 f);
 void func_020383f0(void *p);
 void func_02038414(void *p);
-int _ZN4cstd5atan2E5Fix12IiES1_(int y, int x);
+int atan2_hold_d_a_ibl_1(int y, int x);
 int _ZN4cstd4fdivEii(int a, int b);
 int _ZN8dActor_c14GetSubtractionEss(void *a, short s1, int s2);
 int _ZN8dActor_c12ReflectAngleE5Fix12IiES1_s(void *self, int a, int b, int ang);
@@ -244,7 +247,7 @@ void daIbl_c::func_ov100_02142130()
     if (mWithMeshClsn.IsOnWall() != 0) {
         ((SurfaceInfo *)((char *)_ZNK10dBgCh_Actr13GetWallResultEv(&mWithMeshClsn) + 4))
             ->CopyNormalTo(*(Vector3 *)&mWallNormalX);
-        int a = _ZN4cstd5atan2E5Fix12IiES1_(mWallNormalX, mWallNormalZ);
+        int a = cstd::atan2(mWallNormalX, mWallNormalZ);
         if (_ZN8dActor_c14GetSubtractionEss(this, mPrevAngleY, a) > 0x4000)
             mHitWall = 1;
     }
@@ -327,7 +330,7 @@ int daIbl_c::func_ov100_0214233c()
     int sA, sB, s8, s7, s6, ssl;
     int dot;
 
-    mHeadingToNode = _ZN4cstd5atan2E5Fix12IiES1_(C6, Csl);
+    mHeadingToNode = cstd::atan2(C6, Csl);
 
     /* s6/s8 dest names swapped vs the values they store (free-reg coloring). */
     if (A != 0) {
@@ -543,7 +546,7 @@ ground:
         *pac = *pac + mFloorNormalZ * 3;
         mHorzSpeed = Vec3_HorzLen(pa4);
 
-        mPrevAngleY = _ZN4cstd5atan2E5Fix12IiES1_(mSpeedX, mSpeedZ);
+        mPrevAngleY = cstd::atan2(mSpeedX, mSpeedZ);
 
         if (mWithMeshClsn.JustHitGround()) {
             func_02012694(daIbl_SND_LAND, &mCamSpacePosX);
@@ -636,7 +639,7 @@ void daIbl_c::func_ov100_02142918()
     }
     if (mFloorNormalY == 0x1000 && mHorzSpeed > 0x1c000) {
         mHorzSpeed = 0x1c000;
-        mPrevAngleY = _ZN4cstd5atan2E5Fix12IiES1_(mSpeedX, mSpeedZ);
+        mPrevAngleY = cstd::atan2(mSpeedX, mSpeedZ);
         UpdatePosWithHorzSpeedAndAng();
     }
 

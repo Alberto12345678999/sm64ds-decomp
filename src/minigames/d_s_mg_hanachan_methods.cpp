@@ -181,6 +181,7 @@ void LoadBGPltt(const void *src, u32 offset, u32 size);
 void LoadOBJPltt(const void *src, u32 offset, u32 size);
 }
 namespace cstd {
+s16 atan2(s32, s32);
 int fdiv(int numerator, int denominator);
 }
 
@@ -221,7 +222,7 @@ extern int func_02012468(int a, int b, int c, int d, int e, int f, int g, int h)
 extern short sHanaPickedCount;
 extern unsigned short sHanaPickedIds[];
 extern unsigned short sHanaUsedIds[];
-extern s16 _ZN4cstd5atan2E5Fix12IiES1_(int y, int x);
+extern s16 atan2_hold_d_s_mg_hanachan_methods_1(int y, int x);
 extern void Mg_CommitRecords(void *);
 extern void Mg_DrawScoreTally(void *a, int b, int c, int d);
 extern int GetGameLanguage(void);
@@ -1318,7 +1319,7 @@ void Wiggler_StepSegmentsA(Wiggler *wiggler) {
             s16 offsetAngle, previousAngle, angleDifference;
             func_0203d630((int *)&segmentOffset,
                           wiggler->stretch[segmentIndex] + segmentIndex * 0x2000);
-            offsetAngle = _ZN4cstd5atan2E5Fix12IiES1_(segmentOffset.x, segmentOffset.y);
+            offsetAngle = cstd::atan2(segmentOffset.x, segmentOffset.y);
             previousAngle = wiggler->ang[previousIndex];
             bendExcess = zero;
             targetAngle = (s16)(-offsetAngle);
@@ -1376,7 +1377,7 @@ void Wiggler_StepSegmentsB(Wiggler *wiggler) {
                 int extraSpacing = wiggler->stretch[segmentIndex];
                 func_0203d630((int *)&segmentOffset, extraSpacing + baseSpacing);
             }
-            offsetAngle = _ZN4cstd5atan2E5Fix12IiES1_(segmentOffset.x, segmentOffset.y);
+            offsetAngle = cstd::atan2(segmentOffset.x, segmentOffset.y);
             previousAngle = wiggler->ang[previousIndex];
             bendExcess = zero;
             targetAngle = (s16)(-offsetAngle);
@@ -1423,7 +1424,7 @@ void Wiggler_StepSegmentsC(Wiggler *wiggler) {
         if (func_0203d434((int *)&segmentOffset) != 0) {
             s16 offsetAngle, previousAngle, targetAngle, bendExcess, angleDifference, currentAngle;
             func_0203d630((int *)&segmentOffset, (segmentIndex * 2 + 0x10) << 12);
-            offsetAngle = _ZN4cstd5atan2E5Fix12IiES1_(segmentOffset.x, segmentOffset.y);
+            offsetAngle = cstd::atan2(segmentOffset.x, segmentOffset.y);
             previousAngle = wiggler->ang[previousIndex];
             bendExcess = 0;
             targetAngle = (s16)(-offsetAngle);
@@ -1556,7 +1557,7 @@ void dScMgHanachan_c::Wiggler::MoveBounce() {
             targetX = 0x80000;
         if (boundaryMask | 0xc)
             targetY = 0x60000;
-        targetAngle = _ZN4cstd5atan2E5Fix12IiES1_(targetX - x, -(targetY - y));
+        targetAngle = cstd::atan2(targetX - x, -(targetY - y));
         angleDifference = (s16)(targetAngle - ang[0]);
         if (angleDifference > 0x2000)
             angleDifference = 0x2000;
@@ -1580,9 +1581,9 @@ void dScMgHanachan_c::Wiggler::MoveBounce() {
                   0x3c);
         randomX = RandomIntInternal(&data_0209e650);
         randomY = RandomIntInternal(&data_0209e650);
-        targetAngle = _ZN4cstd5atan2E5Fix12IiES1_(
-            ((int)((unsigned int)(randomX & 0x7fffffff) >> 19) * 0x100) - seg[1].x,
-            -(((int)((unsigned int)(randomY & 0x7fffffff) >> 19) * 0xc0) - seg[1].y));
+        targetAngle =
+            cstd::atan2(((int)((unsigned int)(randomX & 0x7fffffff) >> 19) * 0x100) - seg[1].x,
+                        -(((int)((unsigned int)(randomY & 0x7fffffff) >> 19) * 0xc0) - seg[1].y));
         angleDifference = (s16)(targetAngle - ang[0]);
         if (angleDifference > 0x2000)
             angleDifference = 0x2000;

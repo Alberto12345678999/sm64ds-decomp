@@ -20,7 +20,7 @@ extern void _ZN9dBgCh_LinD1Ev(dBgCh_Lin* rc);
 /* local extern: C99 cannot name the canonical C++ member; actual Vector3 aggregate return preserves its hidden-result ABI. */
 extern Vector3 _ZN9dBgCh_Lin10GetClsnPosEv(dBgCh_Lin* rc);
 extern int Vec3_Dist(Vec3* a, Vec3* b);
-extern int _ZN4cstd5atan2E5Fix12IiES1_(int a, int b);
+extern short _ZN4cstd5atan2Eii(int a, int b);
 extern int AngleDiff(int a, int b);
 
 /* File-local view of dCamera_c (include/dCamera_c.h is C++): the fields this
@@ -133,9 +133,9 @@ int func_02008cb4(char* c)
                 {
                     u32 f = cam->mFlags;
                     if ((f & 0x40000) && cam->mTurningToTarget != 0 && !(f & 0x80100)) {
-                        int a = _ZN4cstd5atan2E5Fix12IiES1_(n1.x, n1.z);
-                        if (AngleDiff(a, _ZN4cstd5atan2E5Fix12IiES1_(
-                                             cam->mWallNormal.x, cam->mWallNormal.z)) > 0x6000) {
+                        int a = _ZN4cstd5atan2Eii(n1.x, n1.z);
+                        if (AngleDiff(a, _ZN4cstd5atan2Eii(cam->mWallNormal.x,
+                                                           cam->mWallNormal.z)) > 0x6000) {
                             cam->mTargetAngleY += 0x8000;
                             cam->mFlags |= 0x80000;
                         }

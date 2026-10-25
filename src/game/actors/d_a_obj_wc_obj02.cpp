@@ -55,8 +55,8 @@ struct WcObj02CollisionFilePtr : SharedFilePtr {
 
 extern "C" {
 void func_02012694(int a, void *p);
-void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-    dBgW_KcMbg *self, KCL_File *file, Matrix4x3 *mat, int scale, short angY, CLPS_Block &clps);
+extern void hold_d_a_obj_wc_obj02(dBgW_KcMbg *self, KCL_File *file, Matrix4x3 *mat, int scale,
+                                  short angY, CLPS_Block &clps);
 void func_020393d4(int *p, int v);
 void func_020393c4(int *p, int v);
 extern WcObj02ModelFilePtr data_ov029_02114250;
@@ -123,8 +123,8 @@ int daObjWc_Obj02_c::InitResources()
     UpdateClsnPosAndRot();
     {
         KCL_File *kcl = (KCL_File *)dBgW_Kc::LoadFile(data_ov029_02114248);
-        _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-            &mMeshCollider, kcl, &mClsnMat, 0x199, mAngleY, data_ov029_0211302c);
+        ((dBgW_KcMbg *)(&mMeshCollider))
+            ->dBgW_KcMbg::SetFile(kcl, *(&mClsnMat), 0x199, mAngleY, data_ov029_0211302c);
     }
     {
         mPrevAngleY += 0x4000;

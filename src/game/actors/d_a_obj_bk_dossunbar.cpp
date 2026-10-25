@@ -102,8 +102,6 @@ struct System {
     static void NewSimple(u32 id, Fix12i x, Fix12i y, Fix12i z);
 };
 }
-int _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-    void *, int, void *, int, int, void *);
 
 void Math_Function_0203b0fc(int *p, int target, int scale, int max);
 void Math_Function_0203b14c(int *p, int target, int scale, int max, int extra);
@@ -146,9 +144,10 @@ s32 daObjBk_Dossunbar_c::InitResources()
     int j = mVariant * 0xc;
     void *kclFile = dBgW_Kc::LoadFile(
         **(SharedFilePtr **)((char *)&data_ov015_02114538 + j));
-    _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-        &mMeshCollider, (int)kclFile, &mClsnMat, 0x1000, mAngleY,
-        *(void **)((char *)&data_ov015_0211453c + j));
+    ((dBgW_KcMbg *)(&mMeshCollider))
+        ->dBgW_KcMbg::SetFile((KCL_File *)((int)kclFile), *(const Matrix4x3 *)(&mClsnMat), 0x1000,
+                              mAngleY,
+                              *(CLPS_Block *)(*(void **)((char *)&data_ov015_0211453c + j)));
     func_020393d4(
         &mMeshCollider,
         (void *)&dBgW::UpdatePosWithVelocity);

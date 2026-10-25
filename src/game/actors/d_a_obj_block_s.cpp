@@ -87,6 +87,9 @@ enum daObjBlockS_c_AssetId {
 #include "SurfaceInfo.h"
 #include "dCc_c.h"
 #include "Sound.h"
+namespace cstd {
+s16 atan2(s32, s32);
+}
 
 struct Vector3_16f;
 
@@ -143,8 +146,7 @@ struct System {
 };
 }
 extern void _ZN8Particle20RunningSlidingDustAtE5Fix12IiES1_S1_(s32 x, s32 y, s32 z);
-extern void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-    char *thiz, int f, char *m, int fix, short s, int blk);
+extern void hold_d_a_obj_block_s(char *thiz, int f, char *m, int fix, short s, int blk);
 extern void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(
     char *thiz, char *actor, int b, int d, void *v, int f);
 
@@ -169,7 +171,7 @@ extern void d_a_obj_block_sPlayLongHold(u32 a, u32 b, u32 c, const Vector3 *pos,
 
 extern int _Z14ApproachLinearRiii(int *a, int b, int c);
 extern void _Z11UpdateAngleRssis(s16 *a, s16 b, int c, s16 d);
-extern s16 _ZN4cstd5atan2E5Fix12IiES1_(s32 y, s32 x);
+extern s16 atan2_hold_d_a_obj_block_s_1(s32 y, s32 x);
 extern int _ZN4cstd4fdivEii(int a, int b);
 extern s32 Vec3_HorzLen(const Vector3 *v0);
 extern void Vec3_MulScalarInPlace(int *v, int s);
@@ -1023,7 +1025,7 @@ int daObjBlockS_c::func_ov098_02139228()
 
     ((SurfaceInfo *)((char *)fr + 4))->CopyNormalTo(*(Vector3 *)&mFloorNormalX);
     n = ((SurfaceInfo *)((char *)fr + 4))->clps.GetFloorClass();
-    ang = _ZN4cstd5atan2E5Fix12IiES1_(mFloorNormalX, mFloorNormalZ);
+    ang = cstd::atan2(mFloorNormalX, mFloorNormalZ);
     hl = func_ov002_020f02c8(n);
     func_ov002_020f030c(n);
 
@@ -1050,7 +1052,7 @@ int daObjBlockS_c::func_ov098_02139228()
     }
     Vec3_MulScalarInPlace(&a2.x, Vec3_HorzLen((Vector3 *)&mFloorNormalX));
     Vec3_Add(&sum, &a1, &a2);
-    newAng = _ZN4cstd5atan2E5Fix12IiES1_(sum.x, sum.z);
+    newAng = cstd::atan2(sum.x, sum.z);
     mHorzSpeed = Vec3_HorzLen(&sum);
     if (mHorzSpeed > 0x64000)
         mHorzSpeed = 0x64000;
@@ -1371,9 +1373,10 @@ int daObjBlockS_c::InitResources()
     mHomeAngleZ = mAngleZ;
     mModel.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(**(SharedFilePtr **)(f)), 1, -1);
     mShadowModel.InitCuboid();
-    _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-        (char *)&mMeshCollider, (int)dBgW_Kc::LoadFile(**(SharedFilePtr **)(f + 4)),
-        (char *)&mClsnMat, 0x199, mAngleY, *(int *)(f + 8));
+    ((dBgW_KcMbg *)((char *)&mMeshCollider))
+        ->dBgW_KcMbg::SetFile((KCL_File *)((int)dBgW_Kc::LoadFile(**(SharedFilePtr **)(f + 4))),
+                              *(const Matrix4x3 *)((char *)&mClsnMat), 0x199, mAngleY,
+                              *(CLPS_Block *)(*(int *)(f + 8)));
     _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(
         (char *)&mWithMeshClsn, ((char *)this), 0x28000, 0x28000, 0, 0);
     mWithMeshClsn.StartDetectingWater();

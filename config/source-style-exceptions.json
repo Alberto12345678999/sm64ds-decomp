@@ -1114,6 +1114,38 @@
       "evidence": "origin/main:src/minigames/d_s_mg_trampoline2.cpp 5x _ZN5ModelC1Ev; head 5x _ZN17dExtSimpleModel_cC1Ev; tools/source_style.py --base origin/main"
     },
     {
+      "path": "src/Vec3_HorzAngle.c",
+      "rule": "handspelled-member",
+      "match": "_ZN4cstd5atan2Eii",
+      "count": 2,
+      "reason": "Vec3_HorzAngle is a C translation unit, so it cannot name the C++ function cstd::atan2; it declares it under its linker spelling and calls it once.",
+      "evidence": "The calls spelled _ZN4cstd5atan2E5Fix12IiES1_ before cstd::atan2 took its scalar mangling (#4328), which the Fix12-by-value exemption covered; the C++ callers in that PR call cstd::atan2 by name."
+    },
+    {
+      "path": "src/Vec3_VertAngle.c",
+      "rule": "handspelled-member",
+      "match": "_ZN4cstd5atan2Eii",
+      "count": 2,
+      "reason": "Vec3_VertAngle is a C translation unit, so it cannot name the C++ function cstd::atan2; it declares it under its linker spelling and calls it once.",
+      "evidence": "The calls spelled _ZN4cstd5atan2E5Fix12IiES1_ before cstd::atan2 took its scalar mangling (#4328), which the Fix12-by-value exemption covered; the C++ callers in that PR call cstd::atan2 by name."
+    },
+    {
+      "path": "src/unnamed/arm9/0200/func_02008cb4.c",
+      "rule": "handspelled-member",
+      "match": "_ZN4cstd5atan2Eii",
+      "count": 3,
+      "reason": "func_02008cb4 is a C translation unit, so it cannot name the C++ function cstd::atan2; it declares it under its linker spelling and calls it twice.",
+      "evidence": "The calls spelled _ZN4cstd5atan2E5Fix12IiES1_ before cstd::atan2 took its scalar mangling (#4328), which the Fix12-by-value exemption covered; the C++ callers in that PR call cstd::atan2 by name."
+    },
+    {
+      "path": "src/unnamed/arm9/0200/func_0200b990.c",
+      "rule": "handspelled-member",
+      "match": "_ZN4cstd5atan2Eii",
+      "count": 2,
+      "reason": "func_0200b990 is a C translation unit, so it cannot name the C++ function cstd::atan2; it declares it under its linker spelling and calls it once.",
+      "evidence": "The calls spelled _ZN4cstd5atan2E5Fix12IiES1_ before cstd::atan2 took its scalar mangling (#4328), which the Fix12-by-value exemption covered; the C++ callers in that PR call cstd::atan2 by name."
+    },
+    {
       "path": "src/minigames/d_s_mg_trampoline2.cpp",
       "rule": "handspelled-member",
       "match": "_ZN17dExtSimpleModel_cD1Ev",
