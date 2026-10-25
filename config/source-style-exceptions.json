@@ -1120,14 +1120,6 @@
       "count": 2,
       "reason": "sTrmpLines is a four-element TrmpLine array that the C static initializer __sinit_ov006_0212fc7c builds with __cxa_vec_ctor and registers TrmpLine_CleanupAll to tear down; neither function is a C++ array definition yet, so both hand TrmpLine's constructor and destructor to the array helpers by address. C++ cannot take a constructor's or destructor's address, so the C1/D1 renamed from TrmpLine_Reset/TrmpLine_Destroy when the class got its real constructor and destructor in unit020cd744.cpp are named by their linker spelling. Follow-up: define sTrmpLines as a real `TrmpLine sTrmpLines[4]` in the TU whose __sinit this is, which retires both hand-built helpers. This file is C, so a mangled linker name is its only spelling.",
       "evidence": "ov006 0x020d100c (_ZN8TrmpLineC1Ev) and 0x020d1008 (_ZN8TrmpLineD1Ev) in config/arm9/overlays/ov006/symbols.txt; ov006/unit020cd744 59/59 TEXT-VERIFIED; __sinit_ov006_0212fc7c match.py MATCH at 0x0212fc7c size 0xcc."
-    },
-    {
-      "path": "src/minigames/d_s_mg_card.cpp",
-      "rule": "handspelled-member",
-      "match": "_ZN6DealerC1Ev",
-      "count": 2,
-      "reason": "The ROM has no dScMgCard_c constructor: dScMgCard_c_classInit builds the scene by hand and calls Dealer's out-of-line C1 on the embedded mDealer. C++ cannot name a constructor on storage that already exists, and placement new adds a null test before the call. `new dScMgCard_c` would need dMgCardObj_c/dMgDilarCardObj_c to declare their constructors and destructors, which the walls recorded in include/dScMgCard_c.h rule out. The second occurrence is the extern \"C\" declaration. Follow-up: write the factory as `return new dScMgCard_c;` once the card element classes can declare their ctor/dtor pair.",
-      "evidence": "ov006/dScMgCard_c 37/37 TEXT-VERIFIED with this spelling; `new (&((dScMgCard_c *)p)->mDealer) Dealer` measured 36/37 (dScMgCard_c_classInit DIFF, 3 reloc destinations wrong); _ZN6DealerC1Ev sits at the former Dealer_Construct address 0x020c1d80 in config/arm9/overlays/ov006/symbols.txt."
     }
   ]
 }
