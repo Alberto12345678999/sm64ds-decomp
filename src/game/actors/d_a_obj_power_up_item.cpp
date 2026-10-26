@@ -51,7 +51,6 @@ struct Callback;
 #include "SaveData.h"
 #include "fBase_c.h"
 #include "dCc_c.h"
-#include "decl_SaveData.h"
 #include "decl_common.h"
 #include "dBgCh_Gnd.h"
 #include "Player.h"
@@ -519,7 +518,7 @@ int daObjPowerUpItem_c::InitResources()
     mLifeTimer = 0xb4;
 
     if (param1 == FLOWER_PARAM_PERSISTENT) {
-        if (ClosestPlayer()->param1 == CHARACTER_LUIGI && _ZN8SaveData16HasPlayerLostCapEv() == 0) {
+        if (ClosestPlayer()->param1 == CHARACTER_LUIGI && SaveData::HasPlayerLostCap() == 0) {
             SetState(FLOWER_STATE_RESTING);
         } else {
             return 0;

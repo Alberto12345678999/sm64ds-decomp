@@ -405,6 +405,9 @@ extern void MultiStore_Int(int val, int *dst, int len);
 extern struct NestedHeapIterator;
 extern struct Obj;
 extern struct Obj1;
+/* local extern: these callers run the constructor over storage that already
+   exists (and func_02051064 returns its r0), which C++ cannot spell without a
+   placement new the tree does not have. */
 extern int _ZN18NestedHeapIteratorC1Ej(int a, int b);
 
 extern int __aeabi_idiv(int a, int b);

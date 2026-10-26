@@ -10,8 +10,6 @@
  * retail D1/D0 pair first and emits no D2 body.
  *
  * deslop
- * Leftover: Sound::PlaySub stays mangled (Fix12<int> by value, wall 6az;
- *   this TU's Behavior measured 0xa4 -> 0xb4 in method form).
  * Leftover: data_ov019_021135d8 keeps its ROM-address name (the Vector3
  *   spawn position; nothing in the ROM names it).
  * Leftover: g_profile_SLIDER_MANAGER (ov019 0x021133a8) stays outside this
@@ -22,18 +20,10 @@
  */
 
 #include "daSldMng_c.h"
-
-namespace Sound {
-bool PlaySub(u32, u32, u32, int, bool);
-}
+#include "Sound.h"
 
 extern "C" {
 extern u16 DecIfAbove0_Short(u16 *timer);
-/* ABI wall: spelling this as Sound::PlaySub(..., Fix12<int>, bool) makes
- * mwccarm home the by-value Fix12 in an 8-byte stack slot, growing Behavior
- * from 0xa4 to 0xb8. The cartridge passes the same raw fixed-point word in
- * r3, so the measured scalar call view is retained. */
-extern int d_a_sld_mngPlaySubHold(u32 soundID, u32 volume, u32 pan, Fix12i distance, bool loop);
 }
 
 /* The spawn position, ov019 0x021135d8. Nothing in the ROM names it.

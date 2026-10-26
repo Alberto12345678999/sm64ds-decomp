@@ -14,7 +14,6 @@
 
 #include "dScMgD3DBase_c.h"
 #include "decl_common.h"
-#include "decl_Particle.h"
 #include "types.h"
 
 /* An OAM entry, with attributes 0 and 1 stored as one word the way this
@@ -286,7 +285,7 @@ bool dScMgD3DBase_c::BeforeInitResources()
 void dScMgD3DBase_c::AfterInitResources(unsigned int vfSuccess)
 {
     dScMgBase_c::AfterInitResources(vfSuccess);
-    _ZN8Particle10SysTracker10InitialiseEv(&mSysTracker);
+    mSysTracker.Initialise();
 }
 
 // @symbol _ZN14dScMgD3DBase_c14BeforeBehaviorEv

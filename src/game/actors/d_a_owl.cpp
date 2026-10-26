@@ -163,7 +163,6 @@ void d_a_owlPlayLongHold(unsigned int a, unsigned int b, unsigned int cc, void *
                          unsigned int d);
 int func_ov002_020df7f4(void *c);
 int func_ov002_020df7ac(void *thiz);
-void _ZN10dBgCh_Actr12Unk_0203589cEv(void *self);
 int func_02012694(int a, void *pos);
 int ApproachAngle(short *p, int target, int a, int b, int c);
 int Vec3_Dist(const void *a, const void *b);
@@ -322,7 +321,7 @@ int daOwl_c::func_ov094_021359d8()
     if (mWithMeshClsn.IsOnWall() != 0 || func_02035638((u8 *)&mWithMeshClsn) != 0) {
         rider = mRider;
         if (rider != 0 && func_ov002_020df7ac(rider) != 0) {
-            _ZN10dBgCh_Actr12Unk_0203589cEv(&mWithMeshClsn);
+            mWithMeshClsn.Unk_0203589c();
             mRider = 0;
             unk_3e8 = 0;
             mStateTimer = 0;

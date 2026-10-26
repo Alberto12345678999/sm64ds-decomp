@@ -105,8 +105,10 @@ void func_ov015_0211166c(daObjBk_Botaosi_c *plank);
 void d_a_obj_bk_botaosiEarthquakeHold(dActor_c *self, const Vector3 *pos, Fix12i strength);
 extern void hold_d_a_obj_bk_botaosi(void *self, void *file, void *mat, int scale, s16 angle,
                                     void *clps);
+/* local extern: a real dBgCh_Gnd local keeps InitResources' return value live
+   across the scope-exit destructor (r4 instead of r0, 520 -> 528 bytes), and
+   the tree has no placement new, so the constructor is called by name. */
 void *_ZN9dBgCh_GndC1Ev(dBgCh_Gnd *self);
-void _ZN9dBgCh_GndD1Ev(dBgCh_Gnd *self);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -394,10 +396,10 @@ int daObjBk_Botaosi_c::InitResources()
     if (data_0209f2f8 == 7 && (data_0209f220 == 1 || IsStarCollectedInCurLevel(one) == 0)
         && mPosY >= 0xdac000)
     {
-        _ZN9dBgCh_GndD1Ev((dBgCh_Gnd *)rg);
+        ((dBgCh_Gnd *)rg)->dBgCh_Gnd::~dBgCh_Gnd();
         return 0;
     }
-    _ZN9dBgCh_GndD1Ev((dBgCh_Gnd *)rg);
+    ((dBgCh_Gnd *)rg)->dBgCh_Gnd::~dBgCh_Gnd();
     return 1;
 }
 #pragma pop

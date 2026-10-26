@@ -200,7 +200,6 @@ extern StateHandler data_ov084_02130d74[];
 int func_02037e20(int* p);
 extern void func_02012694(unsigned int id, const Vector3 *pos);
 extern int SurfaceInfo_TestFlag0x20(int* p);
-extern void _ZN5dBgPiD1Ev(void*);
 extern int data_02099368[];
 /* local extern: daStarBase_c::LinkSilverStarAndStarMarker. This TU does not include daStarBase_c.h. */
 extern void _ZN12daStarBase_c27LinkSilverStarAndStarMarkerEPc(char *a, char *b);
@@ -534,7 +533,7 @@ action:
         goomba->RespawnIfHasCap();
     }
 dtor:
-    _ZN5dBgPiD1Ev(obj);
+    ((dBgPi *)obj)->dBgPi::~dBgPi();
 }
 
 // @symbol func_ov084_021296b0

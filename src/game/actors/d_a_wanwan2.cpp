@@ -162,7 +162,6 @@ void _Z14ApproachLinearRiii(int &x, int target, int step);
 int __aeabi_idiv(int, int);
 void _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void *p, const void *pos, u32 a, int b, u32 c, u32 d, u32 e);
 int func_02012694(int, void *);
-void *_ZN7PathPtrC1Ev(void *thiz);
 void Matrix4x3_FromRotationXYZExt(void *m, int x, int y, int z);
 void Matrix4x3_FromRotationY(void *m, int angle);
 void Matrix4x3_ApplyInPlaceToRotationX(void *m, int angX);
@@ -689,12 +688,11 @@ int daWanwan2_c::Behavior()
     }
 
     {
-        char path[8];
         Vector3 node;
         Vector3 diff;
-        _ZN7PathPtrC1Ev(path);
-        ((PathPtr *)path)->FromID(mPathID);
-        ((PathPtr *)path)->GetNode(node, mPathNodeIndex);
+        PathPtr path;
+        path.FromID(mPathID);
+        path.GetNode(node, mPathNodeIndex);
 
         Vec3_Sub(&diff, &mPos, &node);
 
@@ -703,7 +701,7 @@ int daWanwan2_c::Behavior()
             if (mPathNodeIndex >= mNumPathNodes) {
                 mPathNodeIndex = 0;
             }
-            ((PathPtr *)path)->GetNode(node, mPathNodeIndex);
+            path.GetNode(node, mPathNodeIndex);
         }
 
         short ang = Vec3_HorzAngle(&mPos, &node);

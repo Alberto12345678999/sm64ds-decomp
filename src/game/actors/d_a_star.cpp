@@ -31,14 +31,11 @@ struct Vector3_16f;
  * numbers; the sound calls are func_02012694 (positional, bank 3) and
  * func_02012790 (2D, bank 2).
  *
- * Leftover. The first four items were tried in their clean form and moved
+ * Leftover. The first three items were tried in their clean form and moved
  * the bytes; the rest are names or types the evidence does not give:
  * - func_ov002_020e9d18 keeps the masked `(((int)&mStarFlags) & ~0ULL)`
  *   halfword stores and the LA label; a plain mBits.answer store loses the
  *   address rematerialization.
- * - func_ov002_020e86ec keeps the raw `rc` buffer and its `rc + 0x14`
- *   surface: a real dBgCh_Gnd local, or the member spelling of the surface,
- *   adds code.
  * - Render keeps its gotos, and mStateTimer keeps its (u16) casts.
  * - func_ov002_020e8244 stays a free function; its first parameter is the
  *   output vector, not the star.
@@ -65,7 +62,6 @@ enum daStar_c_AssetId {
 #include "common.h"
 #include "dBgCh_Lin.h"
 #include "dBgCh_Gnd.h"
-#include "decl_dBgCh_Actr.h"
 #include "decl_Actor.h"
 #include "Player.h"
 #include "Message.h"
@@ -78,6 +74,7 @@ enum daStar_c_AssetId {
 #include "dExtSimpleModel_c.h"
 #include "Sound.h"
 #include "cstd.h"
+#include "Event.h"
 
 /* Plain-data stand-ins. Vector3 and Matrix4x3 carry declared destructors, so
  * a local or a struct copy of either one adds cleanup code the cartridge does
@@ -200,9 +197,6 @@ extern struct M48 data_020a0e68;
 extern Mtx IDENTITY_MATRIX4X3;
 extern void Vec3_Asr(struct Vector3* d, struct Vector3* s, int sh);
 extern void Matrix4x3_FromRotationY(void* m, int angle);
-extern void _ZN5Event8ClearBitEj(unsigned int b);
-extern void *_ZN9dBgCh_GndC1Ev(void* r);
-extern void _ZN9dBgCh_GndD1Ev(void* r);
 extern int SurfaceInfo_TestFlag0x20(void* p);
 extern int data_0209f32c;
 extern signed char data_0209f2f8;
@@ -213,18 +207,17 @@ extern u8 data_0209f208;
 extern unsigned char data_0209f264;
 // local extern: Player.h's u8 parameters re-narrow the arguments (func_ov002_020e8ef0 differs).
 int _ZN6Player17SetNoControlStateEhih(void* p, int a, int b, int d);
-void _ZN5Event6SetBitEj(u32 a);
 void GiveVsStars(int idx, int delta);
 void CollectStarInCurLevel(int i);
 int SublevelToLevel(int i);
 s16 NumCoins(void);
-// local extern: SaveData.h's s8 level parameter re-narrows the argument (the caller differs).
+// local extern: SaveData.h's s8 level parameter re-narrows the argument
+// (func_ov002_020e8ef0 grows from 0x41c to 0x420).
 void _ZN8SaveData21SetCoinRecordIfHigherEah(int a, u8 b);
 extern u8 data_0209f228;
 extern u8 data_0209f2ac;
 extern s16 data_0209f358[];
 extern u8 data_0209d684;
-extern int _ZN5Event6GetBitEj(unsigned int bit);
 /* local extern: ROM calls the mangled name with no arg, reusing r0 as `this`. */
 extern void _ZN12daStarBase_c7CollectEv(void);
 extern int Vec3_HorzDist(const Vec3* a, const Vec3* b);
@@ -365,7 +358,7 @@ extern s32 IsStarCollected(s32 level, s32 idx);
 /* TUBUILD CONFLICT -- alternate declaration of _ZN7fBase_c18MarkForDestructionEv, from the legacy file for _ZN8daStar_c13InitResourcesEv, NOT applied: extern void _ZN7fBase_c18MarkForDestructionEv(void *self); */
 /* TUBUILD CONFLICT -- alternate declaration of func_ov002_020e8dd8, from the legacy file for _ZN8daStar_c13InitResourcesEv, NOT applied: extern void func_ov002_020e8dd8(void *self); */
 /* TUBUILD CONFLICT -- alternate declaration of func_ov002_020e7d08, from the legacy file for _ZN8daStar_c13InitResourcesEv, NOT applied: extern void func_ov002_020e7d08(void *self); */
-/* TUBUILD CONFLICT -- alternate declaration of _ZN5Event8ClearBitEj, from the legacy file for _ZN8daStar_c13InitResourcesEv, NOT applied: extern void _ZN5Event8ClearBitEj(u32 bit); */
+/* TUBUILD CONFLICT -- alternate declaration of _ZN5Event8ClearBitEj, from the legacy file for _ZN8daStar_c13InitResourcesEv, NOT applied: extern void Event::ClearBit(u32 bit); */
 /* TUBUILD CONFLICT -- alternate declaration of LinkSilverStarAndStarMarker, from the legacy file for _ZN8daStar_c13InitResourcesEv, NOT applied: extern void LinkSilverStarAndStarMarker(void *a, void *b); */
 }
 
@@ -602,8 +595,8 @@ s32 daStar_c::InitResources()
         func_ov002_020e8dd8();
     func_ov002_020e7d08();
     if (data_0209cef0 == 0) {
-        _ZN5Event8ClearBitEj(0x1e);
-        _ZN5Event8ClearBitEj(0x1d);
+        Event::ClearBit(0x1e);
+        Event::ClearBit(0x1d);
         if (mKind != KIND_3) {
             if ((s32)(data_0209f2d8 == 1) != 0 || (s32)(actorID == ACTOR_SILVER_STAR) != 0) {
                 sp = (char *)dActor_c::Spawn(ACTOR_STAR_MARKER, 0x50, mPos, 0, mSavedAreaId, -1);
@@ -1911,7 +1904,8 @@ void daStar_c::func_ov002_020e930c() {
     flags = mdCc_c.hitFlags;
     if (flags & 0x400000) {
         if (b->mIsNoControl != 0) return;
-        if (_ZN5Event6GetBitEj(0x1e) != 0) return;
+        if (Event::GetBit(0x1e) != 0)
+            return;
         if (func_ov002_020e8ef0(o) == 0) return;
         if (mKind != KIND_6) return;
         if (dActor_c::FindWithID(mMarkerID) == 0)
@@ -1920,7 +1914,8 @@ void daStar_c::func_ov002_020e930c() {
     } else {
         if (flags & 0x8000) {
             if (b->mIsNoControl != 0) return;
-            if (_ZN5Event6GetBitEj(0x1e) != 0) return;
+            if (Event::GetBit(0x1e) != 0)
+                return;
             if (mKind != KIND_6) return;
             if (dActor_c::FindWithID(mMarkerID) == 0)
                 return;
@@ -2007,13 +2002,13 @@ int daStar_c::func_ov002_020e8ef0(void* p) {
         {
             int b1 = (data_0209f2d8 == 1);
             if (!b1) {
-                _ZN5Event6SetBitEj(0x1e);
+                Event::SetBit(0x1e);
             } else {
                 GiveVsStars(((Player *)p)->mPlayerNo, 1);
             }
         }
         if (r4 == 0) {
-            _ZN5Event6SetBitEj(0x1d);
+            Event::SetBit(0x1d);
         }
 
         {
@@ -2361,7 +2356,6 @@ void daStar_c::func_ov002_020e88a8() {
  * surface (data_0209f32c) is less than 60.0 above the star. */
 void daStar_c::func_ov002_020e86ec() {
     struct Vector3 v;
-    char rc[0x54];
     int tx, ty, tz, ta;
 
     if (mBits.water < WATER_IN) {
@@ -2372,12 +2366,12 @@ void daStar_c::func_ov002_020e86ec() {
         if (mBits.water == WATER_NONE) {
             mBits.water = WATER_TOUCH;
             mPosY = mPrevPosY;
-            _ZN10dBgCh_Actr15ClearGroundFlagEv(&mWithMeshClsn);
-            _ZN10dBgCh_Actr22ClearJustHitGroundFlagEv(&mWithMeshClsn);
-            _ZN10dBgCh_Actr18StopDetectingWaterEv(&mWithMeshClsn);
+            mWithMeshClsn.ClearGroundFlag();
+            mWithMeshClsn.ClearJustHitGroundFlag();
+            mWithMeshClsn.StopDetectingWater();
         }
-        _ZN9dBgCh_GndC1Ev(rc);
-        ((dBgCh *)rc)->StartDetectingWater();
+        dBgCh_Gnd rc;
+        rc.StartDetectingWater();
         ty = mPosY;
         tz = mPosZ;
         tx = mPosX;
@@ -2385,12 +2379,10 @@ void daStar_c::func_ov002_020e86ec() {
         v.x = tx;
         v.y = ta;
         v.z = tz;
-        ((dBgCh_Gnd *)rc)->SetObjAndPos(*(Vector3 *)&v, this);
-        if (((dBgCh_Gnd *)rc)->DetectClsn() != 0) {
-            /* rc + 0x14 is the probe's dBgPi surface; spelling it as
-               &((dBgCh_Gnd *)rc)->surface builds 4 bytes long. */
-            if (SurfaceInfo_TestFlag0x20(rc + 0x14) != 0) {
-                mWaterHeight = ((dBgCh_Gnd *)rc)->clsnY;
+        rc.SetObjAndPos(*(Vector3 *)&v, this);
+        if (rc.DetectClsn() != 0) {
+            if (SurfaceInfo_TestFlag0x20(&rc.surface) != 0) {
+                mWaterHeight = rc.clsnY;
                 data_0209f32c = mWaterHeight;
                 if (mWaterHeight >= mPosY + 0x3c000) {
                     mBits.water = WATER_IN;
@@ -2401,7 +2393,6 @@ void daStar_c::func_ov002_020e86ec() {
                 }
             }
         }
-        _ZN9dBgCh_GndD1Ev(rc);
     } else {
         if (data_0209f32c < mPosY + 0x3c000) {
             mBits.water = WATER_NONE;
@@ -2433,8 +2424,8 @@ void daStar_c::func_ov002_020e8618() {
     mPlayer->mFlags &= ~CUTSCENE_FLAG;
     mFlags &= ~CUTSCENE_FLAG;
     data_0209b454 &= ~CUTSCENE_FLAG;
-    _ZN5Event8ClearBitEj(0x1e);
-    _ZN5Event8ClearBitEj(0x1d);
+    Event::ClearBit(0x1e);
+    Event::ClearBit(0x1d);
 }
 
 /* -------------------------------------------------------------------------- */

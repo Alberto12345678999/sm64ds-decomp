@@ -86,6 +86,7 @@ enum dMeter_c_AssetId {
 #include "dScStage_c.h"
 #include "PlayerInput.h"
 #include "Sound.h"
+#include "Event.h"
 
 /* The declarations below are the union of what the nineteen shards declared
  * locally, minus everything a shared header already supplies. What is left is
@@ -198,7 +199,6 @@ extern struct OamAttr *data_ov002_0210c230[];
 extern struct OamAttr data_ov002_0210d5d0;
 extern struct OamAttr data_ov002_0210d4f0;
 extern struct OamAttr data_ov002_0210c690;
-extern int _ZN5Event6GetBitEj(unsigned int bit);
 extern int data_0209caa0[];
 extern unsigned char data_0209f284;
 extern dFdBrightness_c *data_0209f5bc;
@@ -540,7 +540,7 @@ int dMeter_c::Render() {
         unsigned char v = data_0209f20c;
         if (((data_0209f2c4 | v | data_0209f294) & 0xff) == 0) {
             RenderHealthMeter();
-            if (_ZN5Event6GetBitEj(0x1d) == 0) {
+            if (Event::GetBit(0x1d) == 0) {
                 RenderCoinCount();
                 RenderRedCoins();
                 RenderSilverStars();
@@ -597,7 +597,7 @@ void dMeter_c::UpdateHealthMeter() {
         mHealthMeterHoldTimer -= data_0208ee44;
     if (mHealthTickTimer != 0)
         mHealthTickTimer -= data_0208ee44;
-    if (_ZN5Event6GetBitEj(0x1d)) {
+    if (Event::GetBit(0x1d)) {
         unsigned char s = mHealthMeterState;
         if (s != 0) {
             if (s < 5)
@@ -702,7 +702,7 @@ void dMeter_c::UpdateHealthMeter() {
             mHealthMeterState = 6;
         return;
     case 6:
-        if (_ZN5Event6GetBitEj(0x1d) == 0)
+        if (Event::GetBit(0x1d) == 0)
             mHealthMeterState = 1;
         return;
     }

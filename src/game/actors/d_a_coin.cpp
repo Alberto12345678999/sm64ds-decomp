@@ -108,10 +108,6 @@ struct System {
 };
 }
 extern "C" {
-extern void *_ZN9dBgCh_LinC1Ev(dBgCh_Lin* self);
-extern dBgCh_Lin *_ZN9dBgCh_LinD1Ev(void* self);
-extern void *_ZN5dBgPiC1Ev(void* self);
-extern void _ZN5dBgPiD1Ev(void* self);
 extern void Matrix4x3_FromRotationY(void *m, int angle);
 extern short atan2_hold_d_a_coin_1(int a, int b);
 }
@@ -197,11 +193,9 @@ void daCoin_c::func_ov002_020b10e4()
     }
 
     {
-        char ray[0x78];
-        char hit[0x28];
+        dBgCh_Lin ray;
+        dBgPi hit;
         Vector3 rayTop, rayBottom;
-        _ZN9dBgCh_LinC1Ev((dBgCh_Lin*)ray);
-        _ZN5dBgPiC1Ev(hit);
         rayBottom.x = mPosX;
         rayBottom.y = mPosY;
         rayBottom.z = mPosZ;
@@ -210,20 +204,17 @@ void daCoin_c::func_ov002_020b10e4()
         rayTop.z = rayBottom.z;
         rayTop.y += 0x14000;
         rayBottom.y -= 0x1f4000;
-        ((dBgCh_Lin*)ray)->SetObjAndLine(rayTop, rayBottom, this);
-        if (((dBgCh_Lin*)ray)->DetectClsn()) {
-            ((dBgPi*)(ray + 0x10))->CopyTo(*(dBgPi*)hit);
-            if (((dBgPi*)hit)->GetClsnID() != (u32)-1 &&
-                dActor_c::FindWithID(((dBgPi*)hit)->GetClsnID()) != 0) {
+        ray.SetObjAndLine(rayTop, rayBottom, this);
+        if (ray.DetectClsn()) {
+            ray.CopyTo(hit);
+            if (hit.GetClsnID() != (u32)-1 && dActor_c::FindWithID(hit.GetClsnID()) != 0) {
                 ((CoinFlagBits*)((long long)&mCoinFlags))->floorState = FLOOR_DYNAMIC;
             } else {
-                Vector3 pos = ((dBgCh_Lin*)ray)->GetClsnPos();
+                Vector3 pos = ray.GetClsnPos();
                 mFloorPosY = pos.y;
                 ((CoinFlagBits*)((long long)&mCoinFlags))->floorState = FLOOR_FIXED;
             }
         }
-        _ZN5dBgPiD1Ev(hit);
-        _ZN9dBgCh_LinD1Ev(ray);
     }
 }
 

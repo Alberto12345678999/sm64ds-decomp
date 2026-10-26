@@ -182,7 +182,6 @@ extern void Matrix4x3_FromRotationY(void* m, int angle);
 extern void Matrix4x3_ApplyInPlaceToRotationX(void* m, short angX);
 extern void MulVec3Mat4x3(const Vector3* v, const void* m, Vector3* res);
 extern int data_020a0e68[];
-extern "C" void *_ZN7PathPtrC1Ev(void *self);
 extern "C" int Vec3_HorzDist(const Vector3* a, const Vector3* b);
 extern signed char data_0209f2f8;
 extern int _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void *pl, Vector3 *v, unsigned int a, int b,
@@ -338,8 +337,6 @@ int daJango_c::InitResources()
     void *bmd;
     dActor_c *spawned;
     Player *pl;
-    char path1[8];
-    char path2[8];
 
     bmd = dExtSimpleModel_c::LoadFile(data_ov062_0211e0fc); /* jango.bmd */
     mBlendAnmModel.SetFile((BMD_File *)bmd, 1, -1);
@@ -363,8 +360,8 @@ int daJango_c::InitResources()
         mCarriedItem = CARRIES_STAR;
     }
 
-    _ZN7PathPtrC1Ev(path1);
-    ((PathPtr *)path1)->FromID(mPathId);
+    PathPtr path1;
+    path1.FromID(mPathId);
     mPathNodeCount = 4;
     mTerminalVelocity = -0x1e000;               /* fall speed capped at 30 units/frame */
     mSpawnPosX = mPosX;
@@ -375,9 +372,9 @@ int daJango_c::InitResources()
     mdCcAc_c2.Init(this, 0x3c000, 0xa0000, 0x200000, 0);
     mWithMeshClsn.Init(this, 0x1e000, 0x1e000, 0, 0);
 
-    _ZN7PathPtrC1Ev(path2);
-    ((PathPtr *)path2)->FromID(mPathId);
-    ((PathPtr *)path2)->GetNode(*(Vector3 *)&mPathNodePosX, mPathNodeIndex);
+    PathPtr path2;
+    path2.FromID(mPathId);
+    path2.GetNode(*(Vector3 *)&mPathNodePosX, mPathNodeIndex);
     mBlendAnmModel.speed = 0x1000; /* 1.0x */
     mHeldActorID = 0;
 
@@ -820,7 +817,6 @@ int daJango_c::func_ov062_0211bd10()
     Player *player;
     int ppos[3];
     Vector3 node;
-    char path[8];
     int thr;
     s8 stage;
     int *p43c;
@@ -939,9 +935,9 @@ int daJango_c::func_ov062_0211bd10()
     func_ov062_0211b2fc();
 
     if (*(u16 *)&mStateTimer == 0 && mLeaveDelay == 0) {
-        _ZN7PathPtrC1Ev(path);
-        ((PathPtr *)path)->FromID(mPathId);
-        ((PathPtr *)path)->GetNode(node, mPathNodeIndex);
+        PathPtr path;
+        path.FromID(mPathId);
+        path.GetNode(node, mPathNodeIndex);
         if (AngleDiff(Vec3_HorzAngle(&mPos, &node), mAngleY) < 0x2000) {
             func_ov062_0211c658(JANGO_STATE_FLY_PATH);
         }
@@ -1298,8 +1294,6 @@ int daJango_c::func_ov062_0211b51c()
 int daJango_c::func_ov062_0211b3ac()
 {
     Player* player;
-    /* Byte buffer (see c2f4 section above for why: no implicit ctor). */
-    char path[8];
     Vector3 node;
     Vector3 best;
     Vector3 ppos;
@@ -1316,8 +1310,8 @@ int daJango_c::func_ov062_0211b3ac()
         return 0;
 
     player = ClosestPlayer();
-    _ZN7PathPtrC1Ev(&path);
-    ((PathPtr *)&path)->FromID(mPathId);
+    PathPtr path;
+    path.FromID(mPathId);
 
     bestIdx = 0;
     node.x = bestIdx; node.y = bestIdx; node.z = bestIdx;
@@ -1331,7 +1325,7 @@ int daJango_c::func_ov062_0211b3ac()
         bestDist = 0x10000000;
         ppos.z = pp[2];
         while (i < 4) {
-            ((PathPtr *)path)->GetNode(node, (u32)i);
+            path.GetNode(node, (u32)i);
             if (bestDist > Vec3_HorzDist(&node, &ppos)) {
                 bestIdx = i;
                 bestDist = Vec3_HorzDist(&node, &ppos);

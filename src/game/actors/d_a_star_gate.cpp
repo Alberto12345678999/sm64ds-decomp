@@ -16,8 +16,6 @@
  * compiler-ordered.
  *
  * deslop
- * Leftover: dCamera_c::GoBehindPlayer / SetFlag_3 stay mangled (dCamera_c.h shifts
- *   this TU's @452 uniquifier). This TU's St_OpenClose_Init / Main.
  * Leftover: func_ov100_02144fcc / 02145014 / 02145070 / 02144f84 stay those
  *   ROM labels. 02144fcc keeps the ellipsis: St_StayClosed_Main passes
  *   (this, player); the body is 0-arg.
@@ -42,6 +40,7 @@ enum d_a_star_gate_AssetId {
 #include "Player.h"
 #include "SharedFilePtr.h"
 #include "dExtSimpleModel_c.h"
+#include "dCamera_c.h"
 
 struct dCamera_c;
 
@@ -49,13 +48,9 @@ extern "C" {
 int func_ov100_02144fcc(...);
 unsigned char DecIfAbove0_Byte(unsigned char *p);
 void func_02012694(int soundID, void *position, ...);
-/* local extern: including dCamera_c.h shifts this TU's @452 uniquifier; the TU binding policy refuses it */
-void _ZN9dCamera_c14GoBehindPlayerEj(dCamera_c *self, unsigned int a);
 void Vec3_RotateYAndTranslate(Vector3 *out, void *m, short angle, Vector3 *in);
 void ChangeArea(int areaID);
 int ShowArea(int areaID);
-/* local extern: including dCamera_c.h shifts this TU's @452 uniquifier; the TU binding policy refuses it */
-int _ZN9dCamera_c9SetFlag_3Ev(void *camera);
 int func_ov100_02145014(void);
 void func_ov100_02145070(int value);
 unsigned char NumStars(void);
@@ -380,7 +375,7 @@ bool daStarGate_c::St_OpenClose_Init(Player *)
 {
     ShowArea((s8)mAngleX);
     ShowArea((s8)mAngleZ);
-    _ZN9dCamera_c9SetFlag_3Ev((void *)data_0209f318);
+    data_0209f318->SetFlag_3();
     mTerminalVelocity = -0x8a000;
     func_02012694(0x4e, &mCamSpacePosX);
     return true;
@@ -404,7 +399,7 @@ bool daStarGate_c::St_OpenClose_Main(Player *player)
                 mTerminalVelocity = 0;
                 func_02012694(0x4f, &mCamSpacePosX, 0);
             } else if (mCloseDoorTimer == 8) {
-                _ZN9dCamera_c14GoBehindPlayerEj(data_0209f318, data_0209f250);
+                data_0209f318->GoBehindPlayer(data_0209f250);
             }
         } else if (ready != 0) {
             ChangeState(&ST_WAIT, player);

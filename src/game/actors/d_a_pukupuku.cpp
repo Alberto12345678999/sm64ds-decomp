@@ -35,10 +35,6 @@
  *   `*(unsigned short *)&mStateTimer`. One word in 02133190.
  * - InitResources dExtAnmModel_c::SetAnim: a Fix12<int> speed temporary grows
  *   it 0x104 -> 0x110. Same symbol, bigger body.
- * - InitResources dBgCh_Actr::Init: the header method (Fix12i) relocates
- *   to _ZN10dBgCh_Actr4InitEP8dActor_ciiP10Vector3_16S3_. The ROM symbol
- *   is _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_. The
- *   instruction bytes stay 0x104; the destination does not.
  */
 
 

@@ -92,6 +92,8 @@ void StartMinigameMenu(u8 returnToRecRoom);
 void SetSoundMode(int mode);
 void TurnBacklightOn(void);
 void TurnBacklightOff(void);
+/* local extern: the factory runs the base constructor over fresh operator new
+   storage and stores the vptrs itself; C++ has no call spelling for a C2. */
 void *_ZN7fBase_cC2Ev(void *p);
 struct dFdDummy_c *_ZN10dFdDummy_cC1Ev(struct dFdDummy_c *p);
 }

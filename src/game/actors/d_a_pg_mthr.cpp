@@ -421,7 +421,6 @@ struct dBgPiRaw {
     void *vt;
     struct dBgPiRawBody info;
 };
-void _ZN5dBgPiD1Ev(struct dBgPiRaw *r);
 extern int data_02099368[];
 
 void func_ov018_02111bf0(void *cv, void *wv)
@@ -463,7 +462,7 @@ void func_ov018_02111bf0(void *cv, void *wv)
         cr.info.owner = src->info.owner;
         cr.info.collider = src->info.collider;
         ((SurfaceInfo *)dst)->CopyNormalTo(wn);
-        _ZN5dBgPiD1Ev(&cr);
+        ((dBgPi *)&cr)->dBgPi::~dBgPi();
     }
 }
 }
