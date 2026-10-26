@@ -34,13 +34,11 @@ extern void func_02033390(int a);
 extern void func_02032f9c(int a);
 extern int func_02030958(int val);
 extern void func_02033464(unsigned short a, signed char b, int c);
-extern struct fBase_c *_ZN7dBase_c5SpawnEjP7fBase_cii(u32 a, void *b, int c, int d);
-
 extern u8 data_0209fc50;
 extern int data_ov075_0211c990[];
 extern int data_ov075_0211c97c[];
 extern u8 data_0209b2f0[];
-extern void *data_0209f5c0;
+extern fBase_c *data_0209f5c0;
 
 int func_ov075_02116818(char *c)
 {
@@ -139,7 +137,7 @@ int func_ov075_02116818(char *c)
     }
 
     scene->SetSteps(&data_ov075_0211d7e0);
-    scene->mEntObj = (dEntObj_c *)_ZN7dBase_c5SpawnEjP7fBase_cii(0x15a, data_0209f5c0, 1, 0);
+    scene->mEntObj = (dEntObj_c *)dBase_c::Spawn(0x15a, data_0209f5c0, 1, 0);
     return 1;
 }
 }
