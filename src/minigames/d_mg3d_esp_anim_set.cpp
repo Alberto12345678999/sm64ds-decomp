@@ -85,6 +85,11 @@ struct EspAnimSetTexSequenceFilePtr : SharedFilePtr {
     ~EspAnimSetTexSequenceFilePtr();
 };
 
+struct G2x {
+    static void SetBlendBrightness(volatile unsigned short *, unsigned short, short);
+    static void SetBlendAlpha(volatile unsigned short *, unsigned short, unsigned short,
+                              unsigned short, unsigned int);
+};
 extern "C" {
 /* The file handles: word 1 of a SharedFilePtr is its loaded file. */
 extern EspAnimSetModelFilePtr gEspCardModelFile;
@@ -103,8 +108,8 @@ void Matrix4x3_FromTranslation(void* m, int x, int y, int z);
 int _Z15ApproachLinear2Rsss(short* p, short a, short b);
 void func_02046208(char* a, int b, int c);
 int func_020179b4(void* r0, void* r1, int r2);
-/* The last four parameters are unsigned short in the real signature;
-   RowFade passes 0x10 - n, which must not be truncated. */
+/* RowFade passes 0x10 - n, which the real unsigned short parameter would
+   truncate. That call stays on the spelled name. */
 void _ZN3G2x13SetBlendAlphaEPVttttj(volatile unsigned short *p, int a, int b, int c, int d);
 s16 atan2_hold_d_mg3d_esp_anim_set_1(s32 y, s32 x);
 int RandomIntInternal(int *seed);
@@ -1267,8 +1272,7 @@ void dScMg3DEsp_c::Fade()
     if (mFadeTick >= 4) {
         mFadeTick = 0;
         mFade += 1;
-        _ZN3G2x13SetBlendAlphaEPVttttj((volatile unsigned short *)0x4001050, 0, 4, mFade,
-                                       0x10 - mFade);
+        G2x::SetBlendAlpha((volatile unsigned short *)0x4001050, 0, 4, mFade, 0x10 - mFade);
     }
     UpdateCards();
     if (mFade < 0x10)
