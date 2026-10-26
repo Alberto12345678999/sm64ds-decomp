@@ -74,6 +74,7 @@ enum dScMgSmartball_c_AssetId { ASSET_D_2D_MG_BG_OPTION_NSC_BIN = 0x005b };
 
 namespace cstd {
 s16 atan2(s32, s32);
+int fdiv(s32, s32);
 }
 
 namespace G2 {
@@ -206,7 +207,6 @@ extern int Vec2_Len(Vec2 *v);
    pointers and one spells them ints; the pointer view is kept. */
 extern "C" void RenderOamBothScreens(void *a0, int a1, int a2, int a3, int a4, void *a5);
 extern "C" int GetOwnerLanguage(void);
-extern "C" int _ZN4cstd4fdivEii(int a, int b);
 extern OamAttr *sSmartballLineSpritesItalian[];
 extern OamAttr *sSmartballLineSpritesSpanish[];
 extern OamAttr *sSmartballLineSpritesGerman[];
@@ -896,9 +896,9 @@ void cMgSmartball_board_c::Update() {
 
             if (ang < 0x4000)
                 vec[0] =
-                    -_ZN4cstd4fdivEii(0x1000, data_02082214[((u16)(ang + 0x8000) >> 4) * 2 + 1]);
+                    -cstd::fdiv(0x1000, data_02082214[((u16)(ang + 0x8000) >> 4) * 2 + 1]);
             else
-                vec[0] = -_ZN4cstd4fdivEii(0x1000, data_02082214[((u16)ang >> 4) * 2 + 1]);
+                vec[0] = -cstd::fdiv(0x1000, data_02082214[((u16)ang >> 4) * 2 + 1]);
             vec[1] = 0;
             vec[2] = 0;
             vec[3] = 0x1000;
@@ -1757,7 +1757,7 @@ void cMgSmartball_pakkun_c::Update() {
                 int _00, _01, _10, _11;
             } vec;
             if (f38 < 0x20) {
-                scale = _ZN4cstd4fdivEii(0x20000, f38 << 12);
+                scale = cstd::fdiv(0x20000, f38 << 12);
             } else {
                 scale = 0x1000;
                 if ((f38 - 0x20) % 16 < 4)
@@ -2426,7 +2426,7 @@ void cMgSmartball_kinoko_c::Update() {
         int vec[4];
         if (mRadius < 0x1000)
             return;
-        d = _ZN4cstd4fdivEii(0x7000, mRadius);
+        d = cstd::fdiv(0x7000, mRadius);
         b = FX_MUL(data_02082214[1], d);
         a = FX_MUL(data_02082214[0], d);
         vec[0] = b;
@@ -3035,7 +3035,7 @@ block1:
     mVel0 = 0;
     mVel1 = 0;
 
-    mCurrent1 = _ZN4cstd4fdivEii(FX_MUL(mCurrent0, 0xa000), 0xd8000) + 0x90000;
+    mCurrent1 = cstd::fdiv(FX_MUL(mCurrent0, 0xa000), 0xd8000) + 0x90000;
 
     if (mIndex > ((dScMgSmartball_c *)mpManager)->mServeIndex) {
         mQueueGap = (mIndex - ((dScMgSmartball_c *)mpManager)->mServeIndex) * 0xf;
@@ -3049,7 +3049,7 @@ block2:
     mVel0 = 0;
     mVel1 = 0;
 
-    mCurrent1 = _ZN4cstd4fdivEii(FX_MUL(mCurrent0, 0xa000), 0xd8000) + 0x90000;
+    mCurrent1 = cstd::fdiv(FX_MUL(mCurrent0, 0xa000), 0xd8000) + 0x90000;
 
     if (mIndex > ((dScMgSmartball_c *)mpManager)->mServeIndex) {
         mQueueGap = (mIndex - ((dScMgSmartball_c *)mpManager)->mServeIndex) * 0xf;
@@ -5064,7 +5064,7 @@ void dScMgSmartball_c::SpawnObjects() {
         for (j = 0; j < mBallCount; j++) {
             void *p;
             pos[j].x = ((1 - j) << 0x10) + 0xc0000;
-            pos[j].y = _ZN4cstd4fdivEii(FX_MUL(pos[j].x, 0xa000), 0xd8000) + 0x90000;
+            pos[j].y = cstd::fdiv(FX_MUL(pos[j].x, 0xa000), 0xd8000) + 0x90000;
             p = ::operator new(0x12c);
             if (p != 0) {
                 V2 tmp = pos[j];

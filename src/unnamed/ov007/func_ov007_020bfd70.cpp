@@ -38,9 +38,10 @@ struct Ov007Camera {
 
 typedef char Ov007Camera_fovy_must_be_at_0xd4[(int)&((Ov007Camera *)0)->fovy == 0xd4 ? 1 : -1];
 
+namespace cstd { int fdiv(int, int); }
+
 extern "C" {
 void MulVec3Mat4x3(void* v, void* m, void* out);
-int _ZN4cstd4fdivEii(int a, int b);
 extern short data_02082214[];
 
 void func_ov007_020bfd70(char *actor, void *pos, int *outX, int *outY) {
@@ -57,7 +58,7 @@ void func_ov007_020bfd70(char *actor, void *pos, int *outX, int *outY) {
     int cosv = base[i];
     int sinv = base[j];
     int r = FX_MUL(cosv, z);
-    int f = _ZN4cstd4fdivEii(sinv, r);
+    int f = cstd::fdiv(sinv, r);
     int a = FX_MUL(f, out[1]);
     int b = FX_MUL(f, out[0]);
     outX[0] = ((b * 0x60) >> 0xc) + 0x80;
