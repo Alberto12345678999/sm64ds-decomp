@@ -87,6 +87,10 @@ struct B4 {
 
 /* Everything this file calls or reads. Class members cannot go inside an
  * `extern "C"` block, so the C-linkage names are collected here in one. */
+struct G2x {
+    static void SetBlendBrightness(volatile unsigned short *, unsigned short, short);
+    static void SetBlendAlpha(volatile unsigned short *, unsigned short, unsigned short, unsigned short, unsigned int);
+};
 extern "C" {
 
 extern int Mg_GetSubmittedScore(void);
@@ -116,8 +120,6 @@ extern void Deallocate(void *ptr);
 extern void Ov004_Deallocate(void *p);
 extern void func_020563d4(const void *src, u32 offset, u32 count);
 extern void func_02056374(const void *src, u32 offset, u32 count);
-
-extern void _ZN3G2x13SetBlendAlphaEPVttttj(volatile u16 *p, u16 a, u16 b, u16 c, u16 d);
 
 extern int data_0209d4b8;
 extern s16 data_02082214[];
@@ -1622,8 +1624,8 @@ void dScMgCurling_c::StartRound(int /* arg */) {
     mState = 0;
     ClearStones();
     PickHouse();
-    _ZN3G2x13SetBlendAlphaEPVttttj((volatile u16 *)0x4000050, 0, 0xd, 2, 0x10);
-    _ZN3G2x13SetBlendAlphaEPVttttj((volatile u16 *)0x4001050, 0, 4, 2, 0x10);
+    G2x::SetBlendAlpha((volatile u16 *)0x4000050, 0, 0xd, 2, 0x10);
+    G2x::SetBlendAlpha((volatile u16 *)0x4001050, 0, 4, 2, 0x10);
     mTopRecord = Mg_GetTopRecord();
 }
 
@@ -1713,8 +1715,8 @@ s32 dScMgCurling_c::InitResources() {
     Mg_SetTopScreenYOffset(0x20);
     mStateDelay = 0x40;
     mRunDuringFade = 1;
-    _ZN3G2x13SetBlendAlphaEPVttttj((volatile u16 *)0x4000050, 0, 0xd, 2, 0x10);
-    _ZN3G2x13SetBlendAlphaEPVttttj((volatile u16 *)0x4001050, 0, 4, 2, 0x10);
+    G2x::SetBlendAlpha((volatile u16 *)0x4000050, 0, 0xd, 2, 0x10);
+    G2x::SetBlendAlpha((volatile u16 *)0x4001050, 0, 4, 2, 0x10);
     mTopRecord = Mg_GetTopRecord();
     return 1;
 }

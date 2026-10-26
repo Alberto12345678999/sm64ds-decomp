@@ -15,8 +15,9 @@
  * port/hal/shims.cpp already arrange.
  *
  * leftovers:
- * - G2x::SetBlendBrightness keeps its measured wide-argument bridge; see
- *   the declaration below. The original parameter width remains unresolved.
+ * - Runtime blend amounts stay on the wide-argument bridge below: a short
+ *   parameter sign-extends them (+8 bytes in each AdvanceFade). The constant
+ *   -0x10 call is G2x::SetBlendBrightness and does not grow.
  * - The 0x400xxxx MMIO addresses stay literal; no shared register-name
  *   header owns them.
  */
@@ -42,11 +43,14 @@ void LoadBGPltt(const void *src, u32 offset, u32 len);
 }
 int ApproachLinear(Fix12i &value, Fix12i target, Fix12i step);
 
+struct G2x {
+    static void SetBlendBrightness(volatile unsigned short *, unsigned short, short);
+    static void SetBlendAlpha(volatile unsigned short *, unsigned short, unsigned short, unsigned short, unsigned int);
+};
 extern "C" {
 void func_02053a90(u16 *reg, int value);
-// local extern: G2x.h's short parameter adds sign-extension before these calls
-// under 2004/b56 (+8 bytes in each AdvanceFade). The reconstructed signature
-// still needs a callee/caller audit; keep this boundary explicit meanwhile.
+// local extern: a short amount sign-extends the runtime value under 2004/b56
+// (+8 bytes in each AdvanceFade). The constant -0x10 call does not.
 void _ZN3G2x18SetBlendBrightnessEPVtts(volatile u16 *p, u16 a, int b);
 void Matrix4x3_FromTranslation(Matrix4x3 *m, int x, int y, int z);
 void Matrix4x3_ApplyInPlaceToScale(Matrix4x3 *m, Fix12i x, Fix12i y, Fix12i z);
@@ -225,7 +229,7 @@ void dFdWipe_c::AdvanceFade()
     cur = currInterp;
     if (cur == 0 && cur == old) return;
     if (cur == 0x1000) {
-        _ZN3G2x18SetBlendBrightnessEPVtts((volatile u16*)0x4000050, 0x3f, -0x10);
+        G2x::SetBlendBrightness((volatile u16*)0x4000050, 0x3f, -0x10);
     } else {
         if (speed != 0) {
             if (old != 0x1000) *(u16*)0x4000050 = 0;
