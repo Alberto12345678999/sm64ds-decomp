@@ -208,7 +208,7 @@
       "ordinal": 18
     },
     {
-      "symbol": "_ZN12dBgCh_SphCrr15SetObjAndSphereERK7Vector35Fix12IiEP8dActor_c",
+      "symbol": "_ZN12dBgCh_SphCrr15SetObjAndSphereERK7Vector3iP8dActor_c",
       "address": "0x02037c00",
       "size": "0x00000040",
       "legacy_source": "src/_ZN12dBgCh_SphCrr15SetObjAndSphereERK7Vector35Fix12IiEP8dActor_c.cpp",
