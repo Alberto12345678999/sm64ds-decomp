@@ -28,9 +28,8 @@
  * - GetMinimapID's extern keeps GetMinimapID.c's own `struct Obj` slice
  *   spelling; the Obj tag is only a forward here so the declaration agrees.
  * - struct Vec3 stays the launder for the two projection helpers.
- *   GetPosFromMinimapPos keeps its measured scalar extern "C" spelling.
- *   GetPosOnMinimap is the static Fix12i method; the third parameter is
- *   the scalar, not Fix12<int>.
+ *   GetPosFromMinimapPos and GetPosOnMinimap are static Fix12i methods;
+ *   the third parameter is the scalar, not Fix12<int>.
  * - The OAM, G2x and Vec3 helpers stay on C-linkage or hand-mangled
  *   externs for the same reason.
  */
@@ -125,7 +124,6 @@ extern int data_0209f40c[];
 extern int data_0209f3e8[];
 extern int data_0209f3a4[];
 extern void SetSubBg2Offset(s32 a, s32 b);
-extern void _ZN6dMap_c20GetPosFromMinimapPosER7Vector3S1_5Fix12IiEsS1_(Vector3 *a, Vector3 *b, int c, s16 d, Vector3 *e);
 extern void AddVec3(Vector3 *a, Vector3 *b, Vector3 *c);
 extern s32  GetMinimapID(struct Obj *obj, s32 arg);
 extern s32  GetMinimapScale(s32 idx);
@@ -750,7 +748,8 @@ L6f0:
         else if (this->mPlayerIconY[p] > 0x9c) { miniPos.z = 0x9c000; }
     }
 L738:
-    _ZN6dMap_c20GetPosFromMinimapPosER7Vector3S1_5Fix12IiEsS1_(&miniPos, (Vector3*)&this->mMapCenterWorldX, this->mCurrentScale, this->mAngle, &clampedWorld);
+    GetPosFromMinimapPos(miniPos, *(Vector3 *)&this->mMapCenterWorldX, this->mCurrentScale,
+                         this->mAngle, clampedWorld);
     Vec3_Sub(&scrollDelta, &focusPos, &clampedWorld);
     AddVec3((Vector3*)&this->mMapCenterWorldX, &scrollDelta, (Vector3*)&this->mMapCenterWorldX);
     this->mMapCenterX =
@@ -1022,14 +1021,12 @@ int dMap_c::InitResources()
 
 #pragma opt_strength_reduction on
 
-// @symbol _ZN6dMap_c20GetPosFromMinimapPosER7Vector3S1_5Fix12IiEsS1_
-extern "C" void _ZN6dMap_c20GetPosFromMinimapPosER7Vector3S1_5Fix12IiEsS1_(
-    Vector3* a, Vector3* b, int c, short d, Vector3* e)
-{
+// @symbol _ZN6dMap_c20GetPosFromMinimapPosER7Vector3S1_isS1_
+void dMap_c::GetPosFromMinimapPos(Vector3 &a, Vector3 &b, Fix12i c, short d, Vector3 &e) {
     struct Vec3 local;
-    Vec3_Sub((Vector3*)&local, a, (Vector3*)&data_ov002_0211116c);
+    Vec3_Sub((Vector3 *)&local, &a, (Vector3 *)&data_ov002_0211116c);
     Vec3_DivScalarInPlace(&local, c);
-    Vec3_RotateYAndTranslate((struct Vec3*)e, (struct Vec3*)b, d, &local);
+    Vec3_RotateYAndTranslate((struct Vec3 *)&e, (struct Vec3 *)&b, d, &local);
 }
 
 // @symbol _ZN6dMap_c15GetPosOnMinimapEP7Vector3S1_isS1_

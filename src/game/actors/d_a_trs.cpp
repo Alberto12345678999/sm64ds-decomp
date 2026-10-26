@@ -212,6 +212,8 @@ extern void d_a_trsChangeMusicVolumeHold(unsigned a, int fx);
 extern void func_02011cfc(void);
 extern s16 data_ov063_0211e1c8[];
 extern int LenVec3(int *v);
+/* local extern: the ROM call sets up no receiver -- r0 is whatever the
+   preceding code left -- so there is no object to call the member on. */
 extern void _ZN17daObjSlIceBlock_c16CleanupResourcesEv(void);
 extern int func_ov002_020c51d0(void *c, int *st);
 extern u16 func_02011d14(void);

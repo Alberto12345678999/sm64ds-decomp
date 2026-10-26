@@ -6504,6 +6504,9 @@ void dScMgSmartball_c::AfterCleanupResources(u32 vfSuccess) {
    The factory stays hand-built; include/dScMgSmartball_c.h says why it is not
    `new dScMgSmartball_c` yet. */
 extern int _ZTV16dScMgSmartball_c[];
+/* local extern: the hand-built factory runs dScMgBase_c's base-object
+   constructor on raw storage, which C++ spells only inside a derived
+   class's own constructor. */
 extern "C" void *_ZN11dScMgBase_cC2Ev(void *p);
 extern "C" void SmartballObj_ElemCtor(void);
 

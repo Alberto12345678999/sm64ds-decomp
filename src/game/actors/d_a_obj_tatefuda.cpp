@@ -380,8 +380,8 @@ int daObjTatefuda_c::Behavior()
 
     if (mBreakTimer != 0) {
         int x, y, z;
-        if (_ZN4dBgW9IsEnabledEv(&mMeshCollider))
-            _ZN4dBgW7DisableEv(&mMeshCollider);
+        if (((dBgW *)&mMeshCollider)->IsEnabled())
+            ((dBgW *)&mMeshCollider)->Disable();
         x = mPosX;
         z = mPosZ;
         y = mPosY + 0x50000;
@@ -1171,9 +1171,8 @@ void daObjTatefuda_c::Reset()
   SetState(STATE_IDLE);
   mMegaKnockback = 0;
   _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, this, 0x64000, 0x64000, 0x4800002, 0x41000);
-  if (_ZN4dBgW9IsEnabledEv(&mMeshCollider))
-  {
-    _ZN4dBgW7DisableEv(&mMeshCollider);
+  if (((dBgW *)&mMeshCollider)->IsEnabled()) {
+      ((dBgW *)&mMeshCollider)->Disable();
   }
   mdCcAc_c.Clear();
 }

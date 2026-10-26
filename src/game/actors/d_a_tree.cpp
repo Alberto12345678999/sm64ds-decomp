@@ -16,10 +16,9 @@
  * deslop leftovers:
  * - dCcPos_c::Init takes scalar Fix12i. By-value Fix12<int> homes those
  *   parameters on the stack and size-DIFFs.
- * - dCcPos_c::C1 stays a mangled extern: a language limit, not a codegen
- *   one. C++ has no syntax for a qualified constructor call on storage that
- *   already exists, and the alternative -- placement new -- needs a leaf
- *   `operator new(size_t, void *)` this tree has no precedent for.
+ * - InitResources allocates each node with a plain `new TreeNode`: the
+ *   null test and dCcPos_c's C1 call the ROM makes are that expression's
+ *   own, so the node's collision cylinder needs no explicit construction.
  * - data_ov002_02110a48 / data_ov002_0210abb8 / g_profile_TREE: overlay
  *   bss/data owns them (S14); this TU's delinks span is .text-only.
  * - data_0209f43c / data_0209b3ec: arm9 bss, the dClipper singleton and the
@@ -67,7 +66,6 @@ enum {
 /* Shared ABI seams, kept above the first `// @symbol` marker so no member
  * is charged with their mangled spellings. */
 extern "C" {
-void *_ZN8dCcPos_cC1Ev(void *clsn);
 void Matrix4x3_FromRotationY(Matrix4x3 *m, short ang);
 /* Spelled Vector3 * for the object actually passed. The definition in
  * src/Vec3_AsrInPlace.c says int *, and the tree also carries s32 * and a
@@ -112,9 +110,7 @@ int daTree_c::InitResources()
     slot = &data_ov002_02110a48[variant];
     if (*slot == 0)
         mModel[variant].LoadAndSetFile(data_ov002_0210abb8[variant], 1, 1);
-    node = (TreeNode *)::operator new(sizeof(TreeNode));
-    if (node != 0)
-        _ZN8dCcPos_cC1Ev(&node->clsn);
+    node = new TreeNode;
     node->pos.x = mPosX;
     node->pos.y = mPosY;
     node->pos.z = mPosZ;

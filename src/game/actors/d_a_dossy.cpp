@@ -33,9 +33,8 @@
 // - data_ov065_* keep their address names, including the state table
 //   data_ov065_0211d7fc.
 // - func_ov065_021195bc and func_ov065_021195d0 are veneers. The first
-//   argument is not the actor. An explicit cast of &daDossy_c::method to
-//   a function pointer is rejected, so each veneer calls the method
-//   through its mangled name with the second and third arguments.
+//   argument is not the actor: each veneer calls the method on its second
+//   argument, passing the third.
 // - The BOOL/TRUE/FALSE spelling in func_ov065_02119594 and
 //   func_ov065_0211956c stays. `bool isPlayer = other->actorID == 0xbf`
 //   shrinks each function 0x28 to 0x1c: the ROM keeps the ternary 0/1
@@ -166,11 +165,8 @@ extern u16 DecIfAbove0_Short(void *counter);
 int func_ov065_021180d4(char* self);
 void func_ov065_02118c4c(char* c);
 int func_ov065_02119210(unsigned char* c);
-int func_ov065_021195bc(void *a, void *b, void *c);
-int func_ov065_021195d0(void *a, void *b, void *c);
-/* local extern: mwcc rejects an explicit cast of &daDossy_c::method to a function pointer. */
-extern void _ZN9daDossy_c19func_ov065_0211956cEP8dActor_c(void *self, void *other); /* local extern: veneer calls this method by its mangled name. */
-extern void _ZN9daDossy_c19func_ov065_02119594EP8dActor_c(void *self, void *other); /* local extern: veneer calls this method by its mangled name. */
+void func_ov065_021195bc(void *a, void *b, void *c);
+void func_ov065_021195d0(void *a, void *b, void *c);
 }
 
 int ApproachLinear(int &value, int target, int step);
@@ -204,17 +200,15 @@ int daDossyCap_c::OnYoshiTryEat()
 
 #pragma long_calls on
 // @symbol func_ov065_021195d0
-extern "C" int func_ov065_021195d0(void *a, void *b, void *c)
-{
-    return ((int (*)(void *, void *))_ZN9daDossy_c19func_ov065_02119594EP8dActor_c)(b, c);
+extern "C" void func_ov065_021195d0(void *a, void *b, void *c) {
+    static_cast<daDossy_c *>(b)->func_ov065_02119594(static_cast<dActor_c *>(c));
 }
 #pragma long_calls off
 
 #pragma long_calls on
 // @symbol func_ov065_021195bc
-extern "C" int func_ov065_021195bc(void *a, void *b, void *c)
-{
-    return ((int (*)(void *, void *))_ZN9daDossy_c19func_ov065_0211956cEP8dActor_c)(b, c);
+extern "C" void func_ov065_021195bc(void *a, void *b, void *c) {
+    static_cast<daDossy_c *>(b)->func_ov065_0211956c(static_cast<dActor_c *>(c));
 }
 #pragma long_calls off
 
