@@ -13,10 +13,10 @@ typed-subobject constructor (dBgCh_Actr).
 
 | file | function | ROM |
 |---|---|---|
-| `src/engine/model/d_ext_simple_model.cpp` | `dExtModel_c::dExtModel_c()` | 0x02017150, 0x18 |
+| `src/engine/model/d_ext_model.cpp` | `dExtModel_c::dExtModel_c()` | 0x02017150, 0x18 |
 | `src/_ZN17dExtSimpleModel_cC1Ev.cpp` | `dExtSimpleModel_c::dExtSimpleModel_c()` | 0x02016d58, 0x50 |
-| `src/engine/model/d_ext_common_model.cpp` | `dExtCommonModel_c::dExtCommonModel_c()` | 0x02016204, 0x50 |
-| `src/engine/model/d_ext_shadow_model.cpp` | `dExtShadowModel_c::dExtShadowModel_c()` | 0x02016068, 0x34 |
+| `src/engine/model/d_ext_model.cpp` | `dExtCommonModel_c::dExtCommonModel_c()` | 0x02016204, 0x50 |
+| `src/engine/model/d_ext_model.cpp` | `dExtShadowModel_c::dExtShadowModel_c()` | 0x02016068, 0x34 |
 | `src/engine/path/PathPtr.cpp` | `PathPtr::PathPtr()` | 0x0203ad74, 0x10 |
 | `src/engine/collision/d_m3d_g_sph.cpp` | `dM3dGSph::dM3dGSph()` | 0x0203ac60, 0x10 |
 | `src/engine/collision/d_bg_ch_lin.cpp` | `dBgCh_Lin::dBgCh_Lin()` | 0x020377b0, 0x5c |

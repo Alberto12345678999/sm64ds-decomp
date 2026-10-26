@@ -4,15 +4,15 @@
 /* Texture-pattern (BTP) step: for each sequence of the BTP file, find the
  * last key whose frame is <= the requested frame, then point the material
  * the sequence drives at that key's texture and palette. dExtAnmTexPat_c
- * (src/engine/model/d_ext_anm_tex_pat.cpp) calls it with the model's
+ * (src/engine/model/d_ext_model.cpp) calls it with the model's
  * ModelComponents, its BTP_File and the integer frame.
  *
  * ModelComponents and the BMD views come from dExtModel_c.h and BMD_File.h.
  * BTP_File is a view of dExtAnmTexPat_c.h's (which a C file can't include)
  * with the same names where that header has them, extended with what this
  * function shows:
- *   - BTP_File +0x00 (unk_ in the header) is numFrames, the frame count
- *     d_ext_anm_tex_pat.cpp hands to SetAnimation; a frame past it crashes.
+ *   - BTP_File +0x00 is numFrames, the frame count dExtAnmTexPat_c::SetFile
+ *     hands to SetAnimation; a frame past it crashes.
  *   - BTP_File +0x10/+0x14/+0x18 (unk_ in the header) are three parallel
  *     u16 key tables: keyFrames (searched for the last frame <= frame),
  *     keyTexIndices (into texRecords) and keyPalIndices (into palRecords).

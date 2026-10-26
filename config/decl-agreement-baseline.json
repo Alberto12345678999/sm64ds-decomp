@@ -1161,7 +1161,7 @@
       "src/game/stages/d_s_star_sel_methods.cpp": [
         "return:void *"
       ],
-      "src/engine/model/d_ext_simple_model.cpp": [
+      "src/engine/model/d_ext_model.cpp": [
         "param:#1 unsigned short",
         "return:void *"
       ],
@@ -1567,17 +1567,7 @@
         "param:#2 const Matrix4x3 *",
         "param:#3 Matrix4x3 *"
       ],
-      "src/engine/model/d_ext_simple_model.cpp": [
-        "param:#1 const Matrix4x3 *",
-        "param:#2 const Matrix4x3 *",
-        "param:#3 Matrix4x3 *"
-      ],
-      "src/engine/model/d_ext_common_model.cpp": [
-        "param:#1 const Matrix4x3 *",
-        "param:#2 const Matrix4x3 *",
-        "param:#3 Matrix4x3 *"
-      ],
-      "src/engine/model/d_ext_shadow_model.cpp": [
+      "src/engine/model/d_ext_model.cpp": [
         "param:#1 const Matrix4x3 *",
         "param:#2 const Matrix4x3 *",
         "param:#3 Matrix4x3 *"
@@ -11465,7 +11455,7 @@
       ]
     },
     "data_0209ceec": {
-      "src/engine/model/d_ext_shadow_model.cpp": [
+      "src/engine/model/d_ext_model.cpp": [
         "return:unsigned char"
       ]
     },
@@ -11475,7 +11465,7 @@
       ]
     },
     "data_0209cef4": {
-      "src/engine/model/d_ext_shadow_model.cpp": [
+      "src/engine/model/d_ext_model.cpp": [
         "return:dExtShadowModel_c *"
       ]
     },
@@ -19970,24 +19960,12 @@
       ]
     },
     "func_02016b24": {
-      "src/engine/model/d_ext_simple_model.cpp": [
-        "param:#1 dExtSimpleModel_c *",
-        "param:#2 int"
-      ],
       "src/game/actors/d_a_mip.cpp": [
         "param:#2 int"
       ],
       "src/minigames/d_mg3d_heyho_obj_adapter.cpp": [
         "param:#1 char *",
         "param:#2 int"
-      ]
-    },
-    "func_02016e70": {
-      "src/engine/model/d_ext_common_model.cpp": [
-        "return:ModelComponents *"
-      ],
-      "src/engine/model/d_ext_shadow_model.cpp": [
-        "return:ModelComponents *"
       ]
     },
     "func_02016ff4": {
@@ -22557,7 +22535,7 @@
       "include/decl_common.h": [
         "arity:4"
       ],
-      "src/engine/model/d_ext_shadow_model.cpp": [
+      "src/engine/model/d_ext_model.cpp": [
         "arity:4"
       ],
       "src/game/actors/d_a_luigi.cpp": [
@@ -23001,7 +22979,7 @@
         "param:#1 ModelComponents *",
         "param:#2 BMD_Bone *"
       ],
-      "src/engine/model/d_ext_simple_model.cpp": [
+      "src/engine/model/d_ext_model.cpp": [
         "param:#1 ModelComponents *",
         "param:#2 BMD_Bone *"
       ]
@@ -23010,7 +22988,7 @@
       "include/decl_common.h": [
         "return:int"
       ],
-      "src/engine/model/d_ext_blend_anm_model.cpp": [
+      "src/engine/model/d_ext_model.cpp": [
         "param:#1 ModelComponents *"
       ],
       "src/game/actors/d_a_moray.cpp": [
@@ -23036,7 +23014,7 @@
       ]
     },
     "func_02045e2c": {
-      "src/engine/model/d_ext_anm2_model.cpp": [
+      "src/engine/model/d_ext_model.cpp": [
         "param:#4 int"
       ]
     },
@@ -23046,37 +23024,32 @@
       ]
     },
     "func_02045e70": {
-      "src/engine/model/d_ext_simple_model.cpp": [
+      "src/engine/model/d_ext_model.cpp": [
         "arity:1"
       ]
     },
     "func_02045ef8": {
-      "src/engine/model/d_ext_simple_model.cpp": [
+      "src/engine/model/d_ext_model.cpp": [
         "arity:1"
       ]
     },
     "func_02045f80": {
-      "src/engine/model/d_ext_simple_model.cpp": [
+      "src/engine/model/d_ext_model.cpp": [
         "arity:1"
       ]
     },
     "func_02046008": {
-      "src/engine/model/d_ext_simple_model.cpp": [
+      "src/engine/model/d_ext_model.cpp": [
         "param:#2 int"
-      ],
-      "src/engine/model/d_ext_common_model.cpp": [
-        "param:#2 unsigned int"
       ]
     },
     "func_02046088": {
-      "src/engine/model/d_ext_shadow_model.cpp": [
-        "param:#1 ModelComponents *",
+      "src/engine/model/d_ext_model.cpp": [
         "param:#2 unsigned int"
       ]
     },
     "func_02046120": {
-      "src/engine/model/d_ext_shadow_model.cpp": [
-        "param:#1 ModelComponents *",
+      "src/engine/model/d_ext_model.cpp": [
         "param:#2 unsigned int"
       ]
     },
@@ -23087,17 +23060,17 @@
       ]
     },
     "func_0204605c": {
-      "src/engine/model/d_ext_simple_model.cpp": [
+      "src/engine/model/d_ext_model.cpp": [
         "arity:1"
       ]
     },
     "func_02046234": {
-      "src/engine/model/d_ext_simple_model.cpp": [
+      "src/engine/model/d_ext_model.cpp": [
         "param:#2 int"
       ]
     },
     "func_020462bc": {
-      "src/engine/model/d_ext_blend_anm_model.cpp": [
+      "src/engine/model/d_ext_model.cpp": [
         "return:unsigned int"
       ],
       "src/unnamed/ov007/func_ov007_020bc6d4.c": [
@@ -23105,7 +23078,7 @@
       ]
     },
     "func_020462d0": {
-      "src/engine/model/d_ext_simple_model.cpp": [
+      "src/engine/model/d_ext_model.cpp": [
         "param:#1 ModelComponents *",
         "param:#2 BMD_File *"
       ],
@@ -23114,8 +23087,7 @@
       ]
     },
     "func_02046564": {
-      "src/engine/model/d_ext_simple_model.cpp": [
-        "param:#1 BMD_File *",
+      "src/engine/model/d_ext_model.cpp": [
         "return:unsigned int"
       ],
       "src/unnamed/arm9/0201/func_02016e70.c": [
@@ -23132,18 +23104,18 @@
       ]
     },
     "func_020469e0": {
-      "src/engine/model/d_ext_simple_model.cpp": [
+      "src/engine/model/d_ext_model.cpp": [
         "return:unsigned int"
       ]
     },
     "func_020469e8": {
-      "src/engine/model/d_ext_anm_tex_srt.cpp": [
+      "src/engine/model/d_ext_model.cpp": [
         "param:#1 ModelComponents *",
         "param:#2 BTA_File *"
       ]
     },
     "func_02046b64": {
-      "src/engine/model/d_ext_anm_tex_srt.cpp": [
+      "src/engine/model/d_ext_model.cpp": [
         "param:#1 BMD_File *",
         "param:#2 BTA_File *"
       ],
@@ -23153,9 +23125,7 @@
       ]
     },
     "func_02046bbc": {
-      "src/engine/model/d_ext_anm_tex_pat.cpp": [
-        "param:#1 ModelComponents *",
-        "param:#2 BTP_File *",
+      "src/engine/model/d_ext_model.cpp": [
         "param:#3 int"
       ],
       "src/unnamed/ov007/func_ov007_020bc894.cpp": [
@@ -23163,7 +23133,7 @@
       ]
     },
     "func_02046d50": {
-      "src/engine/model/d_ext_anm_tex_pat.cpp": [
+      "src/engine/model/d_ext_model.cpp": [
         "param:#2 BTP_File *"
       ],
       "src/unnamed/ov007/func_ov007_020bc5fc.c": [
@@ -23171,14 +23141,14 @@
       ]
     },
     "func_02046e28": {
-      "src/engine/model/d_ext_anm_material.cpp": [
+      "src/engine/model/d_ext_model.cpp": [
         "param:#1 ModelComponents *",
         "param:#2 BMA_File *",
         "param:#3 int"
       ]
     },
     "func_020470e8": {
-      "src/engine/model/d_ext_anm_material.cpp": [
+      "src/engine/model/d_ext_model.cpp": [
         "param:#1 BMD_File *",
         "param:#2 BMA_File *"
       ]

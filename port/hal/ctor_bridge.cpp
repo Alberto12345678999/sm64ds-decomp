@@ -25,7 +25,7 @@
 // `Matrix3x3 r; Vector3 t;`), and whichever a TU sees first stands. dExtSimpleModel_c
 // embeds one, so a TU that saw the other spelling could disagree about
 // sizeof(dExtSimpleModel_c) -- and placement new here would construct against the wrong
-// layout. src/engine/model/d_ext_simple_model.cpp orders its includes the same way, for
+// layout. src/engine/model/d_ext_model.cpp orders its includes the same way, for
 // the same reason.
 #include "common.h"
 
@@ -69,7 +69,7 @@ extern "C" {
 // reads off the end of it and calls null. So the constructor runs for its
 // member initialization and the vptr is put back to the table the port
 // dispatches through, which is exactly what dExtSimpleModel_c::dExtSimpleModel_c() in
-// src/engine/model/d_ext_simple_model.cpp does on the line after its own base-constructor
+// src/engine/model/d_ext_model.cpp does on the line after its own base-constructor
 // call.
 extern "C" void *_ZTV17dExtSimpleModel_c[8];
 void _ZN17dExtSimpleModel_cC1Ev(void *self)
@@ -89,7 +89,7 @@ void _ZN6Memory16operator_delete2EPv(void *p) { _ZN6Memory10DeallocateEPv(p); }
 
 }
 
-// dExtSimpleModel_c::~dExtSimpleModel_c() is NOT bridged here: src/engine/model/d_ext_simple_model.cpp defines a
+// dExtSimpleModel_c::~dExtSimpleModel_c() is NOT bridged here: src/engine/model/d_ext_model.cpp defines a
 // real C++ destructor and the gate-4b slice compiles it, so MSVC takes
 // slot 0 from src/ directly. Defining it here as well would be a duplicate
 // definition.

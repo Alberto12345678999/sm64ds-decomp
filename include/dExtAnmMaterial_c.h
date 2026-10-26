@@ -12,7 +12,7 @@
  * THE DESTRUCTOR IS DECLARED FIRST AND D1 IS A REAL METHOD -- see
  * include/dExtModel_c.h for the key-function rule and the objisolate exemption
  * to it. One ~dExtAnmMaterial_c() emits D0 and D1 together; the whole class
- * folds into src/engine/model/d_ext_anm_material.cpp.
+ * folds into src/engine/model/d_ext_model.cpp.
  *
  * PREPARE IS STATIC, on exactly the evidence set out in dExtAnmTexPat_c.h for
  * the sibling veneer. Its ROM body is a 0xc long-call veneer (ldr ip, [pc];

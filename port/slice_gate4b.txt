@@ -3,11 +3,15 @@
 # gate-4a pump. MMIO-touching files build via hostgen (see CMakeLists);
 # everything here compiles as-is.
 
-# dExtSimpleModel_c
-src/engine/model/d_ext_simple_model.cpp
+# The dExt model family -- dExtModel_c, dExtSimpleModel_c, dExtAnmModel_c,
+# dExtBlendAnmModel_c, dExtAnm2Model_c, dExtCommonModel_c, dExtShadowModel_c,
+# dExtFrameCtrl_c and the three texture animators -- is one production
+# translation unit. Every slice that needs any of those classes links this
+# one, so the file is listed here and nowhere else.
+src/engine/model/d_ext_model.cpp
 # dExtSimpleModel_c::LoadFile lives in src/SharedFilePtr.cpp (slice 3b), compiled
 # under SM64DS_PORT_GATE4B. AddToCommonModelDataArr and SetPolygonID live
-# in d_ext_simple_model.cpp with the rest of the class.
+# in d_ext_model.cpp with the rest of the class.
 src/engine/model/Model4.cpp
 # ModelComponents::Render: HOST copy in port/unmatched -- the matched TU
 # passes the material index by leaving it in r1 (see the file header there).
@@ -28,7 +32,7 @@ src/MulMat4x3Mat4x3.c
 src/func_020458a8.c
 src/func_02048234.c
 src/MulMat3x3Mat3x3.c
-# func_02016b24 and dExtModel_c::C2 live in src/engine/model/d_ext_simple_model.cpp above.
+# func_02016b24 and dExtModel_c::C2 live in src/engine/model/d_ext_model.cpp above.
 src/DMASyncWordTransfer.c
 src/func_02059fd0.c
 
@@ -46,7 +50,7 @@ src/engine/animation/dExtFrameCtrl_c_UpdateFileOffsets.cpp
 # becomes the vtable's key function on MSVC as well, and the host emits the
 # vtable there -- which needs EVERY virtual defined, not the subset a gate
 # happens to exercise. A migrated class can no longer be sliced method by
-# method; it comes across whole. src/engine/model/d_ext_simple_model.cpp (above) is that
+# method; it comes across whole. src/engine/model/d_ext_model.cpp (above) is that
 # TU for this class. Its destructor calls the delete veneer func_0203cbc0,
 # which src/engine/heap/Heap.cpp (slice 3a) now defines for the host, along
 # with the allocator func_0203cc0c this slice used to list as well.

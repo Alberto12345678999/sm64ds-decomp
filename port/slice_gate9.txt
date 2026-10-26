@@ -20,9 +20,8 @@ src/runtime/actor/ActorBase_SceneNode.cpp
 # hook virtuals and the helper at 0x02043810 this slice used to name
 # separately all live in it.
 src/runtime/actor/ActorBase.cpp
-# dExtShadowModel_c is one production translation unit; the constructor this slice
-# used to name separately lives in it with the rest of the class.
-src/engine/model/d_ext_shadow_model.cpp
+# dExtShadowModel_c lives in src/engine/model/d_ext_model.cpp, the dExt model
+# family's one production translation unit, which slice 4b already compiles.
 # dBgW_KcMbg is one production translation unit; the constructor, SetFile,
 # the func_02039e* transform helpers and Transform this slice used to name
 # separately all live in it.
@@ -31,7 +30,7 @@ src/engine/collision/d_bg_w_kc_mbg.cpp
 # Enable/Disable/IsEnabled, the slot-registry helpers and the func_020393*
 # accessors this slice used to name separately all live in it.
 src/engine/collision/d_bg_w.cpp
-# dExtModel_c::SetFile lives in src/engine/model/d_ext_simple_model.cpp, which slice 4b
+# dExtModel_c::SetFile lives in src/engine/model/d_ext_model.cpp, which slice 4b
 # already compiles; smoke_actor links that slice, so listing it again
 # would define the class twice.
 src/InvMat4x3.c

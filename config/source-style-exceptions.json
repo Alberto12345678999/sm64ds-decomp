@@ -778,12 +778,12 @@
       "evidence": "origin/main:include/decl_ModelAnim.h 1x _ZN9ModelAnimD1Ev; head 1x _ZN14dExtAnmModel_cD1Ev; tools/source_style.py --base origin/main"
     },
     {
-      "path": "src/engine/model/d_ext_anm_model.cpp",
-      "rule": "unknown-field",
-      "match": "unk_00",
+      "path": "src/engine/model/d_ext_model.cpp",
+      "rule": "handspelled-member",
+      "match": "_ZN17dExtShadowModel_c9InitModelEP9Matrix4x35Fix12IiES3_S3_j",
       "count": 1,
-      "reason": "Carried unchanged from src/engine/model/ModelAnim.cpp, which this PR moves to src/engine/model/d_ext_anm_model.cpp (the Model-family RTTI rename rewrites enough of the file that git no longer pairs the two).",
-      "evidence": "origin/main:src/engine/model/ModelAnim.cpp 1x unk_00; head 1x unk_00; tools/source_style.py --base origin/main"
+      "reason": "dExtShadowModel_c::InitModel takes three Fix12<int> by value. Its definition stays in the C front end (#pragma cplusplus off) because a real method body with that signature homes the class-typed parameters to the stack and comes out 0x14 bytes larger than the ROM (wall 6az), so the definition keeps the linker spelling. include/dExtShadowModel_c.h declares the true member for callers. Follow-up: write it as a member once a Fix12 spelling that passes in registers exists.",
+      "evidence": "carried verbatim from src/engine/model/d_ext_shadow_model.cpp at c6430d512f, which this PR folds into d_ext_model.cpp; notes/mwccarm-codegen.md wall 6az; arm9/dExtModel_c 115/115 TEXT-VERIFIED"
     },
     {
       "path": "src/game/actors/d_a_dp_lift.cpp",

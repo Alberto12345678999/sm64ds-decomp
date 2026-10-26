@@ -25,7 +25,7 @@ void _ZN15dExtFrameCtrl_cC2Ev(void *self) { ::new (self) dExtFrameCtrl_c(); }
 
 // dExtAnmModel_c, same shape as dExtSimpleModel_c in hal/ctor_bridge.cpp: the port dispatches
 // it through the synthetic _ZTV14dExtAnmModel_c that hal/model_host.cpp provides and
-// dExtAnmModel_c::dExtAnmModel_c() in src/engine/model/d_ext_anm_model.cpp installs, so the
+// dExtAnmModel_c::dExtAnmModel_c() in src/engine/model/d_ext_model.cpp installs, so the
 // constructor runs for its member initialization and the vptr goes back to
 // the table the port dispatches through rather than the one placement new
 // leaves.
