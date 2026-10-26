@@ -122,8 +122,6 @@ enum daDemo_c_AssetId {
 #include "dBgCh_Gnd.h"
 #include "Sound.h"
 #include "dFdBrightness_c.h"
-#include "decl_Model.h"
-#include "decl_ModelAnim.h"
 #include "OAM.h"
 #include "SaveData.h"
 #include "dExtAnmTexPat_c.h"

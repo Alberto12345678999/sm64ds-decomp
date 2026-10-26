@@ -2,10 +2,13 @@
 /* recovered: vtable identified, globals resolved, declarations from a shared header */
 #include "decl_Actor.h"
 #include "decl_ActorBase.h"
-#include "decl_Model.h"
 #include "decl_dCcAcPos_c.h"
 #include "decl_ShadowModel.h"
 #include "decl_common.h"
+
+/* local extern: this is a C file, so it cannot include the dExtSimpleModel_c.h
+   class header; the factory only needs the member constructor by ROM name. */
+extern void *_ZN17dExtSimpleModel_cC1Ev(void *);
 /* recovered: vtable identified, globals resolved */
 /* resolved: VT0 = _ZTV12daStarBase_c */
 

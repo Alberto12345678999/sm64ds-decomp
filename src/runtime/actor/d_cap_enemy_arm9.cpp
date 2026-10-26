@@ -32,7 +32,6 @@
 #include "Player.h"
 #include "SharedFilePtr.h"
 #include "decl_Enemy.h"
-#include "decl_Model.h"
 /* _ZTV11dCapEnemy_c is already declared here. A local extern would be a new
  * extern-vtable site; the ov002 half includes this header for the same store. */
 #include "decl_common.h"
