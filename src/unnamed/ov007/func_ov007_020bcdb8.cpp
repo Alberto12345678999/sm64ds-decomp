@@ -1,4 +1,6 @@
 //cpp
+#include "Ov007Work.h"
+
 extern "C" void func_ov007_020c33d0(void* a, int b, int c);
 extern "C" void func_ov007_020c32e8(void* c, int sel, unsigned int n, int off);
 extern "C" void func_ov007_020b3f20(void* p);
@@ -24,14 +26,6 @@ struct Ov007Display {
     void **characters;
     char pad_28[4];
     void **palettes; /* 0x2c: six func_ov007_020c9988 palettes */
-};
-
-/* data_ov007_0210342c: the overlay's manager; only the slots read here. */
-struct Ov007Work {
-    char pad_00[0x28];
-    Ov007Settings *settings; /* 0x28: func_ov007_020b6a84 */
-    char pad_2c[0x48];
-    Ov007Display *display; /* 0x74: func_ov007_020b6d40 */
 };
 
 typedef char Ov007Work_display_must_be_at_0x74[(int)&((Ov007Work *)0)->display == 0x74 ? 1 : -1];

@@ -1,6 +1,7 @@
 #include "types.h"
 #include "nitro/fx/fx.h"
 #include "Ov007Sprite.h"
+#include "Ov007Work.h"
 extern u8 data_ov007_02104ba0[];
 extern u8 data_ov007_02104b9c[];
 extern s16 data_ov007_02104b98[];
@@ -64,12 +65,6 @@ typedef struct Ov007Camera {
     char pad_00[0x2c];
     int distance; /* 0x2c: func_ov007_020bffb8 places the eye this far from the target */
 } Ov007Camera;
-
-/* data_ov007_0210342c: the overlay's manager; only its cameras here. */
-typedef struct Ov007Work {
-    char pad_00[0x30];
-    Ov007Camera *cameras[2]; /* 0x30: func_ov007_020c023c */
-} Ov007Work;
 
 /* The externs keep the tree's array spelling (the declaration-agreement
  * gate); the typed views are reached through cast macros. */

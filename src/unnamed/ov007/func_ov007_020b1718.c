@@ -2,6 +2,7 @@
 #include "nitro/fx/fx.h"
 #include "Ov007MenuState.h"
 #include "Ov007Tween.h"
+#include "Ov007Work.h"
 // @symbol func_ov007_020b1718
 /* recovered: per-frame update of a two-mode screen transition driven by the
  * manager at data_ov007_0210342c. Mode 1 eases a scale toward 0x1000 over
@@ -67,31 +68,6 @@ typedef struct Ov007Light {
     char pad_00[0x22];
     u16 color; /* 0x22 */
 } Ov007Light;
-
-/* data_ov007_0210342c: the overlay's manager. No class or header names it;
- * only the slots this file touches are spelled. */
-typedef struct Ov007Work {
-    char pad_00[4];
-    Ov007MenuState *states[3]; /* 0x04: func_ov007_020c9388; func_ov007_020b65e0
-                                * frees them with func_ov007_020c937c */
-    char pad_10[0xc];
-    int pendingBgMode;  /* 0x1c: func_ov007_020b6eb4 hands it to
-                         * func_ov007_020bd648 and clears it */
-    int transitionMode; /* 0x20: func_ov007_020b1cf0 sets 1 for a stylus
-                         * tap, 0 for a button */
-    char pad_24[0xc];
-    Ov007Camera *cameras[2];      /* 0x30: func_ov007_020c023c */
-    Ov007Light *lights[2];        /* 0x38: func_ov007_020c241c(0/1) */
-    Ov007MenuState *paletteState; /* 0x40: func_ov007_020bce70 requests palette n on
-                                   * it and blends over its stateTicks */
-    char pad_44[0xb0];
-    Ov007Model *model; /* 0xf4: func_ov007_020b2bd4 builds it */
-    /* 0xf8: Q12; func_ov007_020b2370 scales the model from 1/16 (0) up to 1
-     * (0x1000) by it; func_ov007_020b1b74 and this file ease it */
-    int modelGrowth;
-} Ov007Work;
-
-typedef char Ov007Work_size_must_be_0xfc[sizeof(Ov007Work) == 0xfc ? 1 : -1];
 
 extern int _ZN4cstd3divEii(int a, int b);
 extern void func_ov007_020bdeb0(int a);

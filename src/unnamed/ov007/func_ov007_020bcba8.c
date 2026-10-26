@@ -1,3 +1,5 @@
+#include "Ov007Work.h"
+
 /* func_ov007_020bcba8 at 0x020bcba8
  *
  * Matched byte-for-byte with mwccarm 1.2/sp2p3 (ov007).
@@ -46,18 +48,7 @@ typedef struct Ov007Settings {
     unsigned char language; /* 0x3a: func_ov007_020b6a84 seeds it from the owner-info language */
 } Ov007Settings;
 
-/* data_ov007_0210342c: the overlay's manager; names as in
- * func_ov007_020aec94 and func_ov007_020adc08, only the slots this file
- * reads. */
-typedef struct Ov007Work {
-    char pad_00[0x28];
-    Ov007Settings *settings; /* 0x28: func_ov007_020b6a84 */
-    char pad_2c[0x48];
-    Ov007Display *display; /* 0x74: func_ov007_020b6d40 stores func_ov007_020b7594's record */
-} Ov007Work;
-
 typedef char Ov007Display_size_must_be_0x30[sizeof(Ov007Display) == 0x30 ? 1 : -1];
-typedef char Ov007Work_size_must_be_0x78[sizeof(Ov007Work) == 0x78 ? 1 : -1];
 
 void func_ov007_020bcba8(int idx)
 {

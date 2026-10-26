@@ -1,5 +1,6 @@
 #include "types.h"
 #include "Ov007MenuState.h"
+#include "Ov007Work.h"
 extern void func_ov007_020b3c54(void);
 extern int func_ov007_020b3708(void);
 extern void func_ov007_020c2090(char* c);
@@ -42,17 +43,6 @@ typedef struct Ov007Item {
 typedef struct Ov007ItemView {
     Ov007Item *item; /* 0x00 */
 } Ov007ItemView;
-
-/* data_ov007_0210342c: the overlay's manager; names as in
- * func_ov007_020b1cf0, only the slots this file reads. */
-typedef struct Ov007Work {
-    char pad_00[4];
-    Ov007MenuState *states[3]; /* 0x04: func_ov007_020c9388 */
-    char pad_10[0x44];
-    Ov007Pad *pad; /* 0x54: func_ov007_020c2304 */
-    char pad_58[0xbc];
-    Ov007ItemView *itemViews[0x18]; /* 0x114: func_ov007_020b693c, one per func_ov007_020b4c04 */
-} Ov007Work;
 
 /* The externs keep the tree's char * spelling (the declaration-agreement
  * gate); the typed views are reached through cast macros. */

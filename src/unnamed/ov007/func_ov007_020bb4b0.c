@@ -1,4 +1,5 @@
 #include "nitro/fx/fx.h"
+#include "Ov007Work.h"
 typedef short s16;
 typedef unsigned short u16;
 typedef unsigned char u8;
@@ -29,12 +30,6 @@ typedef struct Ov007Pad {
      * it is up (func_ov007_020c20b8) */
     u32 heldFrames[12];
 } Ov007Pad;
-
-/* data_ov007_0210342c: the overlay's manager; only its pad slot here. */
-typedef struct Ov007Work {
-    char pad_00[0x54];
-    Ov007Pad *pad; /* 0x54: func_ov007_020c2304 */
-} Ov007Work;
 
 /* The 0xd0-byte touch picker func_ov007_020c690c builds; only its group
  * count here. */
