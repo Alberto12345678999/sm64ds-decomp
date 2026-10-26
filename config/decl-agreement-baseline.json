@@ -9072,6 +9072,11 @@
         "param:#4 PMF"
       ]
     },
+    "_ZN7fBase_cnwEm": {
+      "include/decl_ActorBase.h": [
+        "return:void *"
+      ]
+    },
     "_ZN8Particle10SysTracker8Contents6CreateEjR7Vector3PK11Vector3_16fPN5dPa_c7level_c10callback_cE": {
       "src/engine/particle/Particle.cpp": [
         "param:#3 void *",

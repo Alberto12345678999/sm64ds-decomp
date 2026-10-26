@@ -630,8 +630,7 @@ bool fBase_c::OnHeapCreated()
 /* Actor-heap allocation, cleared before construction. Every `new` of a
  * process class lands here. */
 // @symbol _ZN7fBase_cnwEm
-void *fBase_c::operator new(size_t size)
-{
+void *fBase_c::operator new(size_t size) {
     void *p = _ZN6Memory8AllocateEjiPN5mHeap6Heap_tE(size, -4, data_020a0eac);
     if (!p)
         return 0;
