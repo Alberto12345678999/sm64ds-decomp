@@ -91,6 +91,7 @@ struct Vector3_16f;
 #include "dActor_c.h"
 #include "dBgCh_Actr.h"
 #include "dCc_c.h"
+#include "Sound.h"
 
 struct dBgPi;
 
@@ -178,7 +179,6 @@ struct System {
 }
 extern void d_a_yeggRunningSlidingDustAtHold(s32 x, s32 y, s32 z);
 extern void d_a_yeggPlayLongHold(u32 a, u32 b, u32 c, void *v, u32 d);
-extern void _ZN5Sound13PlayCharVoiceEjjRK7Vector3(u32 a, u32 b, const void *pos);
 extern s32 _Z14ApproachLinearR7Vector3RKS_5Fix12IiE(void *dst, const void *src, s32 step);
 extern s16 Vec3_HorzAngle(const void *a, const void *b);
 extern int Vec3_HorzDist(const void *a, const void *b);
@@ -1258,7 +1258,7 @@ void func_ov002_020edca4(daYegg_c* self)
     Particle::System::NewSimple(0x41, self->mPosX, self->mPosY, self->mPosZ);
     Particle::System::NewSimple(0x42, self->mPosX, self->mPosY, self->mPosZ);
     self->MarkForDestruction();
-    _ZN5Sound13PlayCharVoiceEjjRK7Vector3(0, 0x103, &self->mCamSpacePos);
+    Sound::PlayCharVoice(0, 0x103, self->mCamSpacePos);
 
     self->mBurstDone = 1;
 }

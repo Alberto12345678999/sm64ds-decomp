@@ -90,7 +90,6 @@ void  _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs(void *self, const void *pos
 void  _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
           void *self, void *shadow, void *mtx, int radius, int height, u32 flags);
 
-void  _ZN5Sound9PlayBank0EjRK7Vector3(unsigned int id, const void *pos);
 namespace Particle {
 struct System {
     static void NewSimple(unsigned int id, int x, int y, int z);
@@ -692,7 +691,7 @@ int Scuttlebug::func_ov071_0211f7d4()
 // @symbol _ZN10Scuttlebug19func_ov071_0211f6f8Ev
 int Scuttlebug::func_ov071_0211f6f8()
 {
-    _ZN5Sound9PlayBank0EjRK7Vector3(9, (const void *)(&mCamSpacePosX));
+    Sound::PlayBank0(9, mCamSpacePos);
     mFlags &= ~1;
     mHorzSpeed = 0xa000;
     mVertSpeed = 0x28000;
@@ -777,7 +776,7 @@ void Scuttlebug::func_ov071_0211f29c()
     int b;
 
     if (FindEgg(mdCcAc_c) != 0) {
-        _ZN5Sound9PlayBank0EjRK7Vector3(9, &mCamSpacePosX);
+        Sound::PlayBank0(9, mCamSpacePos);
         func_ov071_0211f498();
         return;
     }
@@ -804,7 +803,7 @@ void Scuttlebug::func_ov071_0211f29c()
     if ((mdCcAc_c.hitFlags & 0x66fe0)
         || hitPlayer->IsOnShell() != 0
         || hitPlayer->mIsMetal != 0) {
-        _ZN5Sound9PlayBank0EjRK7Vector3(9, &mCamSpacePosX);
+        Sound::PlayBank0(9, mCamSpacePos);
         func_ov071_0211f498();
         return;
     }

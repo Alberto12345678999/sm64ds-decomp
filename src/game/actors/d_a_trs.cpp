@@ -209,13 +209,11 @@ struct System {
 };
 }
 extern void d_a_trsChangeMusicVolumeHold(unsigned a, int fx);
-extern void _ZN5Sound22StopLoadedMusic_Layer3Ev(void);
 extern void func_02011cfc(void);
 extern s16 data_ov063_0211e1c8[];
 extern int LenVec3(int *v);
 extern void _ZN17daObjSlIceBlock_c16CleanupResourcesEv(void);
 extern int func_ov002_020c51d0(void *c, int *st);
-extern void _ZN5Sound22LoadAndSetMusic_Layer3Ej(u32 x);
 extern u16 func_02011d14(void);
 extern int data_ov008_02111b6c;
 extern int data_0209caa0[];
@@ -1181,7 +1179,7 @@ void daTrs_c::func_ov063_02117b0c() {
         if (this->mTalkPlayer->GetTalkState() != -1)
             return;
         this->mState = 5;
-        _ZN5Sound22StopLoadedMusic_Layer3Ev();
+        Sound::StopLoadedMusic_Layer3();
         Sound::ChangeMusicVolume(0x7f, 0x7222);
         func_02011cfc();
         {
@@ -1416,7 +1414,7 @@ void daTrs_c::func_ov063_02117cdc() {
         if (this->mClosestPlayer->ShowMessage(*(fBase_c *)(this), (u32)msg, (const Vector3 *)(w), 0, 2) == 0) {
             return;
         }
-        _ZN5Sound22LoadAndSetMusic_Layer3Ej(0x2c);
+        Sound::LoadAndSetMusic_Layer3(0x2c);
         {
             u8 *st = (u8 *)&this->mSubState;
             int n = *st + 1;
@@ -1436,7 +1434,7 @@ void daTrs_c::func_ov063_02117cdc() {
         cam->mFlags &= ~8;
         rr = RandomIntInternal(&data_0209e650);
         this->mNextRelocateTimer = ((rr >> 0x10) % 0x96) + 0x12c;
-        _ZN5Sound22LoadAndSetMusic_Layer3Ej(0x2d);
+        Sound::LoadAndSetMusic_Layer3(0x2d);
         func_02011d14();
         return;
     }

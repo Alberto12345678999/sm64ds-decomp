@@ -21151,7 +21151,6 @@ int Player::St_Fly_Main()
     extern void func_ov002_020df8f0(void *);
     extern u32 PlayerNewHold16(u32 handle, u32 kind, Fix12i x, Fix12i y, Fix12i z, const void *dir,
                                void *callback);
-    extern void _ZN5Sound9PlayBank0EjRK7Vector3(u32, void *);
     extern void func_ov002_020e25f0(char *, int a);
     extern void MulVec3Mat4x3(void *dst, void *src, void *out);
     extern void Vec3_MulScalarInPlace(s32 *v, s32 s);
@@ -21240,7 +21239,7 @@ skip:
     if (mPrevVertSpeed >= 0x30000) {
         if (mPrevAngleX > 0x800) {
             if (mStateArg == 0) {
-                _ZN5Sound9PlayBank0EjRK7Vector3(0xb9, &mCamSpacePos);
+                Sound::PlayBank0(0xb9, mCamSpacePos);
                 func_ov002_020e25f0(c, 2);
                 mStateArg++;
             }

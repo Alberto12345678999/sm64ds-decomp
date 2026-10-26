@@ -157,7 +157,6 @@ void *_ZN2G212GetBG0ScrPtrEv(void);
 
 void OamRender10_d_s_game_over(s32 sub, OamAttr *data, s32 x, s32 y, s32 palette, s32 priority,
                                Fix12i scaleX, Fix12i scaleY, s32 rotation, s32 mode);
-void _ZN5Sound22StopLoadedMusic_Layer1Ej(unsigned int);
 int LoadFile(int handle);
 void DecompressLZ16(int src, void *dst);
 }
@@ -333,8 +332,8 @@ s32 dScGameOver_c::InitResources() {
     *(volatile u32 *)0x4000000 = (*(volatile u32 *)0x4000000 & ~0x1f00) | (data_0209d45c << 8);
     *(volatile u32 *)0x4001000 = (*(volatile u32 *)0x4001000 & ~0x1f00) | 0x1400;
     data_0209f204 = 1;
-    _ZN5Sound16LoadInitialGroupEi(2);
-    _ZN5Sound22LoadAndSetMusic_Layer1Ei(0x15);
+    Sound::LoadInitialGroup(2);
+    Sound::LoadAndSetMusic_Layer1(0x15);
     data_0208ee44 = 1;
     return 1;
 }
@@ -404,7 +403,7 @@ s32 dScGameOver_c::Behavior() {
                         func_0202ae74();
                     else
                         dScene_c::StartSceneFade(1, 0, 0);
-                    _ZN5Sound22StopLoadedMusic_Layer1Ej(0x3c);
+                    Sound::StopLoadedMusic_Layer1(0x3c);
                 }
             }
             break;
