@@ -893,7 +893,7 @@ void daObjBlockS_c::Kill()
     ((int *)&vec2)[0] = ((int *)&vec)[0];
     ((int *)&vec2)[1] = ((int *)&vec)[1];
     ((int *)&vec2)[2] = ((int *)&vec)[2];
-    _ZN8dActor_c19DisappearPoofDustAtERK7Vector3((char *)this, &vec2);
+    DisappearPoofDustAt(vec2);
     Sound::PlayBank3(0x41, mCamSpacePos);
     Crate_SetState(this, STATE_BROKEN);
 }
@@ -1332,7 +1332,7 @@ int daObjBlockS_c::Behavior()
         ((int *)&vec2)[0] = ((int *)&vec)[0];
         ((int *)&vec2)[1] = ((int *)&vec)[1];
         ((int *)&vec2)[2] = ((int *)&vec)[2];
-        _ZN8dActor_c19DisappearPoofDustAtERK7Vector3(((char *)this), &vec2);
+        DisappearPoofDustAt(vec2);
         Crate_SetState(this, STATE_BROKEN);
         return 1;
     }
