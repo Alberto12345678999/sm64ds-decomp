@@ -27,6 +27,7 @@
 #include "dWipe_c.h"
 #include "IRQ.h"
 #include "decl_common.h"
+#include "cstd.h"
 
 namespace CP15 {
 void FlushAndInvalidateDataCache(u32 addr, u32 len);
@@ -512,7 +513,7 @@ void dWipe_c::func_0202ee94()
     for (i = 0; i < 0x60; i++) {
         if (r8 <= i) {
             int a = i - 0x60 + sl;
-            int s = _ZN4cstd4sqrtEy((u64)(long long)(a * (r7 - a)));
+            int s = cstd::sqrt((u64)(long long)(a * (r7 - a)));
             int lo = 0x80 - s;
             int hi = s + 0x80;
             if (lo < 0) lo = r5;

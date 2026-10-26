@@ -92,6 +92,7 @@ struct Vector3_16f;
 #include "dBgCh_Actr.h"
 #include "dCc_c.h"
 #include "Sound.h"
+#include "cstd.h"
 
 struct dBgPi;
 
@@ -190,7 +191,6 @@ extern void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *mc, void *a, Fix12i 
 /* Parameter names keep this TU's @NNN. */
 typedef void BgchInitAt_(void *self, void *actor, int radius, int height, void *a, void *b);
 extern unsigned char DecIfAbove0_Byte(unsigned char *p);
-extern int _ZN4cstd4fdivEii(int a, int b);
 extern void Math_Function_0203b14c(void *ptr, int target, int rate, int limit, int step);
 extern void ApproachAngle(void *cur, short target, int divisor, int band, int maxStep);
 extern void _Z11UpdateAngleRssis(short *a, int b, int c, short d);
@@ -855,7 +855,7 @@ void daYegg_c::func_ov002_020ed0d4()
 
     {
         /* 0x1000 / 0x3000 as Fix12: a third. */
-        int fd = _ZN4cstd4fdivEii(0x1000, 0x3000);
+        int fd = cstd::fdiv(0x1000, 0x3000);
         Math_Function_0203b14c(&mPosX, mHoldTargetX, fd, 0x3e8000, 4);
         Math_Function_0203b14c(&mPosY, mHoldTargetY, fd, 0x3e8000, 4);
         Math_Function_0203b14c(&mPosZ, mHoldTargetZ, fd, 0x3e8000, 4);
@@ -898,7 +898,7 @@ void daYegg_c::func_ov002_020ed0d4()
         }
         a4 = mSpeedX;
         {
-            int fd1 = _ZN4cstd4fdivEii(a4, 0x20000);
+            int fd1 = cstd::fdiv(a4, 0x20000);
             int r1 = FX_MUL(fd1, 0xe39);
             short a4ang = (short)(-r1);
             ac = mSpeedZ;
@@ -908,7 +908,7 @@ void daYegg_c::func_ov002_020ed0d4()
             }
             ac = mSpeedZ;
             {
-                int fd2 = _ZN4cstd4fdivEii(ac, 0x20000);
+                int fd2 = cstd::fdiv(ac, 0x20000);
                 int r2 = FX_MUL(fd2, 0xe39);
                 mAngleX = a4ang;
                 mAngleZ = (short)r2;

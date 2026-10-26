@@ -61,9 +61,7 @@
 #include "daTor_c.h"
 #include "daYegg_c.h"
 #include "nitro/fx/fx.h"
-namespace cstd {
-s16 atan2(s32, s32);
-}
+#include "cstd.h"
 
 bool ApproachLinear(short &value, short target, short step);
 
@@ -3387,7 +3385,6 @@ int Player::func_ov002_020c25a8(int arg1)
     extern void func_020371fc(void *);
     extern void _ZN5dBgPiD1Ev(void*);
     extern void _ZNK11SurfaceInfo12CopyNormalToER7Vector3(void*, void*);
-    extern int _ZN4cstd4fdivEii(int a, int b);
     extern int func_020356c8(void*);
     extern void func_ov002_020cef84(void*);
     extern void *_ZNK10dBgCh_Actr13GetWallResultEv(void*);
@@ -3499,7 +3496,7 @@ int Player::func_ov002_020c25a8(int arg1)
         if (mIsUnderwater == 0 && ret != 1) {
             _ZNK11SurfaceInfo12CopyNormalToER7Vector3(&fr->surface, &v);
             if (v.y != 0) {
-                int t = _ZN4cstd4fdivEii(FX_MUL(v.x, mSpeedX) + FX_MUL(v.z, mSpeedZ), v.y);
+                int t = cstd::fdiv(FX_MUL(v.x, mSpeedX) + FX_MUL(v.z, mSpeedZ), v.y);
                 t = -(t + 0x8000);
                 if (t < 0)
                     mVertSpeed = t;
@@ -20966,7 +20963,6 @@ extern "C" {
 void func_ov002_020df8f0(char* c)
 {
     typedef unsigned long long u64;
-    extern int _ZN4cstd4sqrtEy(u64 v);
     extern void _Z15ApproachLinear2Rsss(s16* p, s16 target, s16 step);
     extern s16 data_0209f4a2[];
     extern s16 data_0209f4a4[];
@@ -20978,7 +20974,7 @@ void func_ov002_020df8f0(char* c)
     int sq = b * b;
     int a = va >> 8;
     sq += a * a;
-    player->mPrevVertSpeed = _ZN4cstd4sqrtEy((u64)sq) << 8;
+    player->mPrevVertSpeed = cstd::sqrt((u64)sq) << 8;
 
     {
         int idx = gActivePlayerSlot * 0x18;

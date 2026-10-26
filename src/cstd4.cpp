@@ -13,6 +13,7 @@
  * function asm is emitted in source order; compiled bodies are too, under a
  * per-function defer_codegen off. */
 #include "types.h"
+#include "cstd.h"
 
 extern "C" {
 // HAND-ASM PRIMITIVE: `swp` atomic swap has no C equivalent under mwccarm, so asm is the source.
@@ -401,7 +402,6 @@ int func_0206e06c(S6e06c *p)
 #pragma push
 #pragma defer_codegen off
 int func_0206e218(int a, int b);
-extern void _ZN4cstd7strncpyEPcPKcj(char *d, const char *s, u32 n);
 
 // @symbol func_0206e184
 u32 func_0206e184(char *dst, u16 *src, u32 max)
@@ -423,7 +423,7 @@ u32 func_0206e184(char *dst, u16 *src, u32 max)
         len = func_0206e218((int)bp, code);
         if (total + len > max)
             break;
-        _ZN4cstd7strncpyEPcPKcj(dst + total, bp, len);
+        cstd::strncpy(dst + total, bp, len);
         total += len;
         if (total > max)
             break;
@@ -555,8 +555,6 @@ enum {
 #define MAX_BUFF 512
 
 extern unsigned char *func_0206fd6c(unsigned char *format_string, char **arg, print_format *format); /* parse_format */
-extern char *_ZN4cstd6strchrEPKcc(const char *s, char c);
-extern unsigned int _ZN4cstd6strlenEPKc(const char *s);
 
 extern int func_0206e450(char *obj, const void *src, unsigned int n);
 extern int func_0206e4a4(int (*WriteProc)(void *, const char *, size_t), void *WriteProcArg,
@@ -703,10 +701,10 @@ int func_0206e4a4(int (*WriteProc)(void *, const char *, size_t), void *WritePro
     num_chars = 0;
 
     while (*format_str) {
-        curr_format = (unsigned char *)_ZN4cstd6strchrEPKcc((const char *)format_str, '%');
+        curr_format = (unsigned char *)cstd::strchr((const char *)format_str, '%');
 
         if (curr_format == 0) {
-            num_chars += (n = _ZN4cstd6strlenEPKc((const char *)format_str));
+            num_chars += (n = cstd::strlen((const char *)format_str));
             if (n && !(*WriteProc)(WriteProcArg, (const char *)format_str, n))
                 return -1;
             break;
@@ -830,7 +828,7 @@ int func_0206e4a4(int (*WriteProc)(void *, const char *, size_t), void *WritePro
                 if ((e = (unsigned char *)func_0206e2cc((u8 *)buff_ptr, 0, n)) != 0)
                     n = e - buff_ptr;
             } else {
-                n = _ZN4cstd6strlenEPKc((const char *)buff_ptr);
+                n = cstd::strlen((const char *)buff_ptr);
             }
             break;
 
@@ -870,7 +868,7 @@ int func_0206e4a4(int (*WriteProc)(void *, const char *, size_t), void *WritePro
         /* invalid_conversion gotos kept, as in MSL's __pformatter: a failed-conversion
            test after the switch instead grows it (0x848) */
         invalid_conversion:
-            num_chars += (n = _ZN4cstd6strlenEPKc((const char *)curr_format));
+            num_chars += (n = cstd::strlen((const char *)curr_format));
             if (n && !(*WriteProc)(WriteProcArg, (const char *)curr_format, n))
                 return -1;
             return num_chars;

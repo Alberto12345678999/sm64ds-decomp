@@ -59,6 +59,7 @@ enum daJango_c_AssetId {
 #include "daJango_c.h"
 #include "types.h"
 #include "common.h"
+#include "cstd.h"
 /* decl_common.h deliberately NOT included; the three names this TU needs
    from it are declared locally instead. */
 extern "C" int AngleDiff(int a, int b);
@@ -195,7 +196,6 @@ extern int Vec3_Dist(const void *a, const void *b);
 extern int ApproachAngle(s16 *cur, s16 target, int div, int band, int maxStep);
 extern void Vec3_Sub(Vector3 *out, Vector3 *a, Vector3 *b);
 extern int LenVec3(Vector3 *v);
-extern int _ZN4cstd4fdivEii(int a, int b);
 extern void Vec3_MulScalar(void *out, Vector3 *in, int s);
 extern void SubVec3(void *a, void *b, void *c);
 extern void Vec3_Asr(void* d, void* s, int sh);
@@ -742,7 +742,7 @@ int daJango_c::func_ov062_0211c2f4() {
     if (AngleDiff(Vec3_HorzAngle(&mPos, &node), mAngleY) < 0x2000) {
         int s;
         zero[1] = mPosY;
-        s = _ZN4cstd4fdivEii(0x14000, len);
+        s = cstd::fdiv(0x14000, len);
         Vec3_MulScalar(&scaled, &diff, s);
         SubVec3(&mPosX, &scaled, &mPosX);
         if (mRiseToFarNode == 1) {
