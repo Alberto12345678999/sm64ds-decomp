@@ -404,8 +404,8 @@ extern "C" int func_0203842c(char *self)
 // @symbol dBgCh_Actr_UpdateDiscreteNoLava_veneer
 /* dBgCh_Actr_UpdateDiscreteNoLava_veneer @ 0x2038420 (arm9) -- tail-call veneer to dBgCh_Actr::UpdateDiscreteNoLava (0x2037024).
  * r0 (the dBgCh_Actr) passes straight through to the member. */
-extern "C" void dBgCh_Actr_UpdateDiscreteNoLava_veneer(void *self) {
-    ((dBgCh_Actr *)self)->UpdateDiscreteNoLava();
+extern "C" void dBgCh_Actr_UpdateDiscreteNoLava_veneer(dBgCh_Actr *self) {
+    self->UpdateDiscreteNoLava();
 }
 
 // @symbol func_02038414
@@ -424,22 +424,22 @@ extern "C" void func_02038408(void) {
 // @symbol dBgCh_Actr_UpdateContinuous_Veneer
 /* dBgCh_Actr_UpdateContinuous_Veneer @ 0x20383fc (arm9) -- tail-call veneer to dBgCh_Actr::UpdateContinuous (0x20366b4).
  * r0 (the dBgCh_Actr) passes straight through to the member. */
-extern "C" void dBgCh_Actr_UpdateContinuous_Veneer(void *self) {
-    ((dBgCh_Actr *)self)->UpdateContinuous();
+extern "C" void dBgCh_Actr_UpdateContinuous_Veneer(dBgCh_Actr *self) {
+    self->UpdateContinuous();
 }
 
 // @symbol func_020383f0
 /* func_020383f0 @ 0x20383f0 (arm9) -- tail-call veneer to dBgCh_Actr::UpdateContinuousNoLava (0x2036318).
  * r0 (the dBgCh_Actr) passes straight through to the member. */
-extern "C" void func_020383f0(void *self) {
-    ((dBgCh_Actr *)self)->UpdateContinuousNoLava();
+extern "C" void func_020383f0(dBgCh_Actr *self) {
+    self->UpdateContinuousNoLava();
 }
 
 // @symbol func_020383e4
 /* func_020383e4 @ 0x20383e4 (arm9) -- tail-call veneer to dBgCh_Actr::UpdateExtraContinous (0x20358ac).
  * r0 (the dBgCh_Actr) passes straight through to the member. */
-extern "C" void func_020383e4(void *self) {
-    ((dBgCh_Actr *)self)->UpdateExtraContinous();
+extern "C" void func_020383e4(dBgCh_Actr *self) {
+    self->UpdateExtraContinous();
 }
 
 // @symbol func_02038324

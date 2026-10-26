@@ -85,8 +85,6 @@ void func_ov077_02125e94(daTgz_c *self, int state);
  * extern "C" prototype with daTgz_c* is illegal overloading. */
 
 int SurfaceInfo_TestFlag0x20(int *p);
-void dBgCh_Actr_UpdateDiscreteNoLava_veneer(void *p);
-void dBgCh_Actr_UpdateContinuous_Veneer(void *p);
 void func_02012694(unsigned int id, const Vector3 *pos);
 void func_0201267c(unsigned int id, const Vector3 *pos);
 int _ZN4cstd4fdivEii(int a, int b);

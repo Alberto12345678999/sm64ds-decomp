@@ -84,8 +84,6 @@ void  Matrix4x3_ApplyInPlaceToRotationX(void *m, s16 angX);
 void  func_0201267c(int id, void *pos);
 void  func_02012694(int id, void *pos);
 
-void  dBgCh_Actr_UpdateDiscreteNoLava_veneer(void *p);
-
 void  _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs(void *self, const void *pos,
                                                      unsigned int count,
                                                      int value, short s);

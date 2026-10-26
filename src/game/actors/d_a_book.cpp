@@ -106,7 +106,6 @@ void _ZN6Player6BounceE5Fix12IiE(Player *self, int fix);
 void func_ov063_0211cae8(void *found, unsigned int mask);
 void func_0203568c(int *p, int v);
 void func_0201267c(unsigned int id, const Vector3 *pos);
-void dBgCh_Actr_UpdateContinuous_Veneer(void *c_);
 void Matrix4x3_FromRotationZXYExt(void *m, int x, int y, int z);
 void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(dActor_c *thiz, dExtShadowModel_c *sm, Matrix4x3 *mtx, int radius, int depth, u8 opacity);
 void UnloadBlueCoinModel(void *);

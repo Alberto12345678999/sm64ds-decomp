@@ -118,10 +118,6 @@ extern void *_ZN9dBgCh_LinC1Ev(dBgCh_Lin* self);
 extern dBgCh_Lin *_ZN9dBgCh_LinD1Ev(void* self);
 extern void *_ZN5dBgPiC1Ev(void* self);
 extern void _ZN5dBgPiD1Ev(void* self);
-/* local extern: no header declares the veneer. It forwards r0 (the
- * dBgCh_Actr) to UpdateDiscreteNoLava. */
-extern void dBgCh_Actr_UpdateDiscreteNoLava_veneer(void* p);
-extern void dBgCh_Actr_UpdateContinuous_Veneer(void* p);
 extern void Matrix4x3_FromRotationY(void *m, int angle);
 extern short atan2_hold_d_a_coin_1(int a, int b);
 extern int _ZN4cstd4fdivEii(int a, int b);

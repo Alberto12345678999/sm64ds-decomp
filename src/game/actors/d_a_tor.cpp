@@ -58,7 +58,6 @@ s32 Vec3_HorzDist(const Vector3 *a, const Vector3 *b);
 s16 Vec3_HorzAngle(const Vector3 *a, const Vector3 *b);
 s32 Vec3_Dist(const Vector3 *a, const Vector3 *b);
 void Matrix4x3_FromTranslation(Matrix4x3 *m, int x, int y, int z);
-void dBgCh_Actr_UpdateContinuous_Veneer(void *collision);
 s16 atan2_hold_d_a_tor_1(s32 y, s32 x);
 u32 d_a_torNewHold(u32 handle, u32 effect, s32 x, s32 y, s32 z, const void *direction,
                    void *callback);

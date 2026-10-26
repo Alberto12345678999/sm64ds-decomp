@@ -72,10 +72,8 @@
 extern "C" {
 
 void  func_0201267c(unsigned int id, const Vector3 *pos);
-void  func_020383f0(void *p);
 void  Vec3_Asr(void *d, void *s, int sh);
 void  _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(void *self, void *shadow, void *mtx, int rad, int height, unsigned char flags);
-void  dBgCh_Actr_UpdateContinuous_Veneer(void *self);
 int   func_0203567c(int self);
 int   func_02037f44(void *result);
 unsigned int func_02012790(unsigned int arg);

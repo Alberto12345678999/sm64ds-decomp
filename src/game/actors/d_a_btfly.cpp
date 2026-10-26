@@ -109,7 +109,6 @@ int Vec3_HorzLen(Vector3 *v);
 void Vec3_Asr(void *d, void *s, int sh);
 void Matrix4x3_FromTranslation(void *m, int x, int y, int z);
 void Matrix4x3_ApplyInPlaceToRotationY(void *m, s16 ang);
-void dBgCh_Actr_UpdateContinuous_Veneer(void *c);
 int RandomIntInternal(int *seed);
 extern int data_0209e650;
 extern s16 data_02082214[]; /* sin/cos; index (u16 angle >> 4) * 2 */

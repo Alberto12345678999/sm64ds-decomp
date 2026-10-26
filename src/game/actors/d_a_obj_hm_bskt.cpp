@@ -70,7 +70,6 @@ extern void hold_d_a_obj_hm_bskt(dBgW_KcMbg *self, KCL_File *file, const Matrix4
 typedef void BgchInitAt_(dBgCh_Actr *self, dActor_c *actor, Fix12i radius, Fix12i height,
                          Vector3_16 *a, Vector3_16 *b);
 
-void dBgCh_Actr_UpdateContinuous_Veneer(void *);
 namespace Particle {
 struct System {
     static void NewSimple(unsigned int, int, int, int);
@@ -166,7 +165,7 @@ s32 daObjHmBskt_c::CleanupResources()
 extern "C" int func_ov030_0211124c(char *c, char *mc)
 {
     daObjHmBskt_c *self = (daObjHmBskt_c *)c;
-    dBgCh_Actr_UpdateContinuous_Veneer(mc);
+    dBgCh_Actr_UpdateContinuous_Veneer((dBgCh_Actr *)mc);
     int g = ((dBgCh_Actr *)mc)->IsOnGround();
     if (!g) return g;
     self->mStarActor->MarkForDestruction();

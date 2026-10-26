@@ -161,7 +161,6 @@ extern void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(void* self, 
 extern int Vec3_HorzDist(void* a, void* b);
 extern short Vec3_HorzAngle(void* a, void* b);
 extern int AngleDiff(int a, int b);
-extern void dBgCh_Actr_UpdateContinuous_Veneer(void* p);
 extern u16 DecIfAbove0_Short(void *counter);
 
 int func_ov065_021180d4(char* self);

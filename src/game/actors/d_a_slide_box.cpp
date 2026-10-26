@@ -82,7 +82,6 @@ extern int data_ov016_02113bac[];
 extern short data_02082214[];
 extern void Matrix4x3_FromRotationXYZExt(void *mtx, int angleX, int angleY, int angleZ);
 
-void dBgCh_Actr_UpdateContinuous_Veneer(void *clsn);
 extern void hold_d_a_slide_box(void *thiz, void *kcl, void *mtx, int scale, short angleY,
                                void *clps);
 extern void func_020393d4(void *clsn, void *callback);

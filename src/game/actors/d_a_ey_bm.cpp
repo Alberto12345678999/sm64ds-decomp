@@ -261,8 +261,6 @@ void daEyBm_c::HurtPlayer()
  * would generate identical ARM. The retail caller passes the owned
  * collision subobject explicitly in r1. */
 // @symbol _ZN8daEyBm_c15UpdateCollisionER10dBgCh_Actr
-extern "C" void dBgCh_Actr_UpdateDiscreteNoLava_veneer(dBgCh_Actr *collision);
-
 void daEyBm_c::UpdateCollision(dBgCh_Actr &collision)
 {
     dBgCh_Actr_UpdateDiscreteNoLava_veneer(&collision);

@@ -128,7 +128,6 @@ struct System {
     static int New(unsigned, unsigned, int, int, int, const ::Vector3_16f *, Callback *);
 };
 }
-extern void dBgCh_Actr_UpdateContinuous_Veneer(void *clsn);
 extern void func_0201267c(int id, void *pos);
 extern void *d_a_grockNewHold(unsigned int prev, unsigned int effect, int x, int y, int z,
                               void *dir, void *cb);

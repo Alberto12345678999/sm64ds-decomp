@@ -163,7 +163,6 @@ extern void _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix
 extern void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
     void *thiz, void *actor, void *vec, int fix, int t, unsigned u1, unsigned u2);
 
-extern void dBgCh_Actr_UpdateContinuous_Veneer(void *p);
 extern int SurfaceInfo_TestFlag0x20(int *p);
 extern int func_0203567c(int p);
 extern int func_ov002_020ef228(void *c, int arg);
