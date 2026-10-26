@@ -1,5 +1,9 @@
 //cpp
 #include "dFdBrightness_c.h"
+#include "G2.h"
+#include "G2x.h"
+#include "GX.h"
+#include "cstd.h"
 /* Runtime asset handles resolved through the overlay 0 file table. */
 enum d_s_mg_trampoline2_AssetId {
     ASSET_D_2D_MG_BG_TRAMPOLINE_HARD_NCG_BIN = 0x00a2,
@@ -19,9 +23,8 @@ enum d_s_mg_trampoline2_AssetId {
  *
  * leftovers:
  * - 0x7acc has no matched read.
- * - NewUnkCallback818 takes Fix12 by value, which costs the caller bytes (notes/mwccarm-codegen.md 6az); the G2 BG getters stay
- *   mangled because decl_common.h's global G2 hides the namespace;
- *   SetBlendAlpha keeps a local declaration.
+ * - NewUnkCallback818 takes Fix12 by value, which costs the caller bytes
+ *   (notes/mwccarm-codegen.md 6az).
  * - The 0x78-element pool helpers stay free functions over char *; they
  *   read the record through Trmp2Spinner.h's view. Their
  *   pointer locals (Init's p1..p3, Update's p), StatePlay's level pointer
@@ -128,12 +131,8 @@ extern void Trmp2Spinner_SetModel(void *self);
 extern int sTrmp2BrushWord[];
 extern void *func_02054efc(void);
 extern void *func_02054ea8(void);
-extern char *_ZN2G213GetBG2CharPtrEv(void);
 extern int func_02054d88(void);
 extern void MultiCopy_Int(int *src, int *dst, int len);
-extern char *_ZN2G212GetBG0ScrPtrEv(void);
-extern char *_ZN2G212GetBG2ScrPtrEv(void);
-extern char *_ZN2G212GetBG3ScrPtrEv(void);
 extern void MultiStore16(unsigned short val, char *dst, int nbytes);
 extern const u16 sTrmp2BrushPltt[];
 extern dFdBrightness_c *data_0209f5bc;
@@ -184,7 +183,6 @@ extern s16 sTrmp2IntroToX;
 extern s16 sTrmpStartTouchY;
 extern short sTrmpStartTouchX;
 extern struct P2 pmf_dScMgTrampoline2_c_StateIntro;
-extern "C" void _ZN3G2x13SetBlendAlphaEPVttttj(volatile void *p, u16 a, u16 b, u16 c, u16 d);
 extern "C" void TrmpLine_ClearAll(u32 a);
 extern volatile s16 data_020a0dbc[];
 extern void Camera_UpdateMatrices(void *cam);
@@ -277,13 +275,6 @@ short ApproachLinear2(short &value, short target, short step);
 namespace G3X {
 void SetFog(bool enable, int mode, int slope, int offset);
 }
-namespace cstd {
-int fdiv(int numer, int denom);
-}
-namespace GX {
-void LoadBGPltt(const void *src, unsigned int offset, unsigned int size);
-void LoadOBJPltt(const void *src, unsigned int offset, unsigned int size);
-}
 
 /* The three models, mTexAnim and mUnusedVec are all built before the
    empty body, in declaration order. */
@@ -315,12 +306,12 @@ void dScMgTrampoline2_c::InitDisplay() {
     *(volatile u16 *)0x400000c &= ~0x40;
 
     {
-        char *dst = _ZN2G213GetBG2CharPtrEv();
+        char *dst = (char *)G2::GetBG2CharPtr();
         sp0 = 0;
         MultiStore16(sp0, dst, 0x4000);
     }
-    DecompressLZ16(bgChar, (void *)(_ZN2G213GetBG2CharPtrEv() + 0x4000));
-    DecompressLZ16(bgScr, _ZN2G212GetBG2ScrPtrEv());
+    DecompressLZ16(bgChar, (void *)((char *)G2::GetBG2CharPtr() + 0x4000));
+    DecompressLZ16(bgScr, G2::GetBG2ScrPtr());
     GX::LoadBGPltt((const void *)bgPltt, 0x1a0, 0x60);
 
     *(volatile u16 *)0x400000e = (*(volatile u16 *)0x400000e & ~3) | 1;
@@ -384,7 +375,7 @@ s32 dScMgTrampoline2_c::InitResources() {
 // @symbol _ZN18dScMgTrampoline2_c10StartRoundEi
 /* Vtable slot 18: reset the round. */
 void dScMgTrampoline2_c::StartRound(int /* arg */) {
-    _ZN3G2x13SetBlendAlphaEPVttttj((volatile void *)0x4000050, 1, 0x2e, 0x10, 0x10);
+    G2x::SetBlendAlpha((volatile u16 *)0x4000050, 1, 0x2e, 0x10, 0x10);
 
     mTouchStartX = data_020a0dbc[0];
     mTouchStartY = data_020a0dbc[1];
@@ -1034,19 +1025,19 @@ void dScMgTrampoline2_c::InitBrush(int layer) {
 
     switch (self->mBrushLayer) {
     case 0:
-        scrPtr = _ZN2G212GetBG0ScrPtrEv();
+        scrPtr = (char *)G2::GetBG0ScrPtr();
         charPtr = (char *)func_02054efc();
         break;
     case 1:
-        scrPtr = (char *)_ZN2G212GetBG1ScrPtrEv();
+        scrPtr = (char *)G2::GetBG1ScrPtr();
         charPtr = (char *)func_02054ea8();
         break;
     case 2:
-        scrPtr = _ZN2G212GetBG2ScrPtrEv();
-        charPtr = _ZN2G213GetBG2CharPtrEv();
+        scrPtr = (char *)G2::GetBG2ScrPtr();
+        charPtr = (char *)G2::GetBG2CharPtr();
         break;
     case 3:
-        scrPtr = _ZN2G212GetBG3ScrPtrEv();
+        scrPtr = (char *)G2::GetBG3ScrPtr();
         charPtr = (char *)func_02054d88();
         break;
     default:
@@ -1102,7 +1093,7 @@ void dScMgTrampoline2_c::PaintSquare(int x_base, int y, int val, int n) {
                             ret = func_02054ea8();
                             break;
                         case 2:
-                            ret = _ZN2G213GetBG2CharPtrEv();
+                            ret = (char *)G2::GetBG2CharPtr();
                             break;
                         case 3:
                             ret = (void *)func_02054d88();

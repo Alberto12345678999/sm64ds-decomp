@@ -61,6 +61,8 @@
 #include "daTor_c.h"
 #include "daYegg_c.h"
 #include "nitro/fx/fx.h"
+#include "G2x.h"
+#include "Memory.h"
 #include "cstd.h"
 
 bool ApproachLinear(short &value, short target, short step);
@@ -1080,7 +1082,6 @@ void Player::func_ov002_020be3b0()
 {
     extern void func_ov002_020e6b74(void*, void*);
     extern void func_ov002_020d80d0(void*);
-    extern void _ZN13SharedFilePtr7ReleaseEv(void*);
     extern SharedFilePtr *data_ov002_020ff480[];
     extern u8 data_02092128[];
     extern Player::State data_ov002_021104b4;
@@ -1215,7 +1216,7 @@ void Player::func_ov002_020be3b0()
             mm = this->param1;
             mModels.mBodyModels[this->GetBodyModelID((u8)mm, 0)]->Func_020162C4(
                 (u32)((SharedFilePtr *)data_ov002_020ff790[mm])->filePtr, 0, 0x1000, 0);
-            _ZN13SharedFilePtr7ReleaseEv(data_ov002_020ff480[mCharFileBase + mPrevCharacter]);
+            data_ov002_020ff480[mCharFileBase + mPrevCharacter]->Release();
             mLoadedResourceFlags &= ~0x40;
             func_ov002_020bdb50(0);
         } else {
@@ -5956,7 +5957,6 @@ int Player::St_Teleport_Main()
     extern void _ZN9dBgCh_Gnd12SetObjAndPosERK7Vector3P8dActor_c(void*, void*, void*);
     extern int _ZN9dBgCh_Gnd10DetectClsnEv(void*);
     extern void _ZN9dBgCh_GndD1Ev(void*);
-    extern void _ZN3G2x18SetBlendBrightnessEPVtts(volatile u16* p, u16 a, s16 b);
     extern void Player_AdvanceAnims(void*);
     extern char* data_0209f318;
     extern int data_0209f32c;
@@ -6034,7 +6034,7 @@ int Player::St_Teleport_Main()
         }
         break;
     }
-    _ZN3G2x18SetBlendBrightnessEPVtts((volatile u16*)0x4000050, 0x3f, mStateWork);
+    G2x::SetBlendBrightness((volatile u16 *)0x4000050, 0x3f, mStateWork);
     Player_AdvanceAnims(((char*)this));
     return 1;
 }
@@ -24454,7 +24454,6 @@ s32 Player::InitResources()
     void func_ov002_020e6350(void* p);
     void func_ov002_020e5948(void* p);
     void* func_02073470(int a, int b, int c, void* d, void* e);
-    void* _ZN6Memory13operator_new2Ej(unsigned int sz);
     void func_ov002_020e63a4(void* p);
     void func_02035644(void* p, int a);
     void func_ov002_020d6368(void* p);
@@ -24540,8 +24539,8 @@ Ld0:
     if (changed != 0) ((Player *)(c))->func_ov002_020beabc();
     mTrailPos =
         (Vector3 *)func_02073470(0x32, 0xc, 8, (void *)func_0203d384, (void *)_ZN7Vector3D1Ev);
-    mTrailFlags = (u8 *)_ZN6Memory13operator_new2Ej(0x32);
-    *(void**)(&mHeldObjQueue) = _ZN6Memory13operator_new2Ej(0x14);
+    mTrailFlags = (u8 *)Memory::operator_new2(0x32);
+    *(void **)(&mHeldObjQueue) = Memory::operator_new2(0x14);
     __builtin__clear((void*)mHeldObjQueue, 0x14);
     mScaleX = 0x1000;
     mScaleY = 0x1000;

@@ -1683,32 +1683,32 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@322",
+      "from": "@324",
       "to": "@315",
       "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
     },
     {
-      "from": "@324",
+      "from": "@326",
       "to": "@317",
       "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
     },
     {
-      "from": "@326",
+      "from": "@328",
       "to": "@319",
       "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
     },
     {
-      "from": "@328",
+      "from": "@330",
       "to": "@321",
       "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
     },
     {
-      "from": "@330",
+      "from": "@332",
       "to": "@323",
       "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
     },
     {
-      "from": "__arraydtor$321",
+      "from": "__arraydtor$323",
       "to": "__arraydtor$328",
       "owned_function": {
         "module": "ov004",

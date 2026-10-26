@@ -21,12 +21,7 @@
 #include "SolidHeapAllocator.h"
 #include "Heap.h"
 #include "cstd.h"
-
-namespace CP15 {
-void FlushAndInvalidateDataCache(unsigned int a, unsigned int b);
-void FlushDataCache(unsigned int a, unsigned int b);
-void InvalidateDataCache(unsigned int addr, unsigned int n);
-}
+#include "CP15.h"
 
 namespace IRQ {
     /* Defined at 0x02059d1c/0x02059d30 (the IRQ TU); namespace-scope externs
@@ -1707,8 +1702,8 @@ extern "C" int func_020503a4(int a, int b, int c, int d, int p5, int p6, int p7,
 
     handle = -1;
     g = ((G_20503a4*)&data_020a5634);
-    ((void (*)(int a, int b))CP15::FlushAndInvalidateDataCache)(b, dd);
-    ((void (*)(int a, int b))CP15::FlushAndInvalidateDataCache)(c, dd);
+    CP15::FlushAndInvalidateDataCache(b, dd);
+    CP15::FlushAndInvalidateDataCache(c, dd);
     stereo = (p5 == 1) ? 1 : 0;
     align = 0xffb0ff / p9;
     if (p14 != 0) {

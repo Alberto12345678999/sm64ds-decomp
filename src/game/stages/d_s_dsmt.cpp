@@ -40,6 +40,8 @@
 #include "SaveData.h"
 #include "Heap.h"
 #include "decl_common.h"
+#include "Memory.h"
+#include "GX.h"
 
 /* One save file, the 0x44-byte unit SaveData::ReadFileData and
  * SaveData::EraseSaveFile move; include/SaveData.h only forward-declares
@@ -96,14 +98,6 @@ void TurnBacklightOff(void);
    storage and stores the vptrs itself; C++ has no call spelling for a C2. */
 void *_ZN7fBase_cC2Ev(void *p);
 struct dFdDummy_c *_ZN10dFdDummy_cC1Ev(struct dFdDummy_c *p);
-}
-
-/* The two GX entry points this scene uses have no header of their own.
- * decl_common.h carries them under their mangled spellings; the namespace
- * form below emits the same two symbols. */
-namespace GX {
-void DispOn();
-void DisableAllBanks();
 }
 
 /* Factory: literal construction bridge (fBase chain, vtable aliasing, spawn-flag
@@ -216,7 +210,7 @@ extern "C" u8 func_ov007_020cc600(s32 command) {
     } else if (command == 18) {
         func_ov007_020cc118(0x38, 8);
     } else if (command == 20) {
-        u8 *fileBytes = (u8 *)_ZN6Memory13operator_new2Ej(0xcc);
+        u8 *fileBytes = (u8 *)Memory::operator_new2(0xcc);
         u32 saveSlot;
         func_ov007_020cc0e4((FileSaveData *)fileBytes);
         for (saveSlot = 0; (s32)saveSlot < 3; saveSlot++, fileBytes += 0x44) {

@@ -854,149 +854,149 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@639",
+      "from": "@637",
       "to": "@661",
-      "evidence": "Shared actual Krb animation-handle declaration shifts this compiler temporary. Mapping from the unchanged initializer relocation sites is bijective and preserves every existing object payload, type, binding, size, section and canonical relocation; canonical destination unchanged. | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
+      "evidence": "Shared actual Krb animation-handle declaration shifts this compiler temporary. Mapping from the unchanged initializer relocation sites is bijective and preserves every existing object payload, type, binding, size, section and canonical relocation; canonical destination unchanged."
+    },
+    {
+      "from": "@638",
+      "to": "@662",
+      "evidence": "Shared actual Krb animation-handle declaration shifts this compiler temporary. Mapping from the unchanged initializer relocation sites is bijective and preserves every existing object payload, type, binding, size, section and canonical relocation; canonical destination unchanged."
+    },
+    {
+      "from": "@639",
+      "to": "@663",
+      "evidence": "Shared actual Krb animation-handle declaration shifts this compiler temporary. Mapping from the unchanged initializer relocation sites is bijective and preserves every existing object payload, type, binding, size, section and canonical relocation; canonical destination unchanged."
     },
     {
       "from": "@640",
-      "to": "@662",
-      "evidence": "Shared actual Krb animation-handle declaration shifts this compiler temporary. Mapping from the unchanged initializer relocation sites is bijective and preserves every existing object payload, type, binding, size, section and canonical relocation; canonical destination unchanged. | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
+      "to": "@664",
+      "evidence": "Shared actual Krb animation-handle declaration shifts this compiler temporary. Mapping from the unchanged initializer relocation sites is bijective and preserves every existing object payload, type, binding, size, section and canonical relocation; canonical destination unchanged."
     },
     {
       "from": "@641",
-      "to": "@663",
-      "evidence": "Shared actual Krb animation-handle declaration shifts this compiler temporary. Mapping from the unchanged initializer relocation sites is bijective and preserves every existing object payload, type, binding, size, section and canonical relocation; canonical destination unchanged. | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
+      "to": "@665",
+      "evidence": "Shared actual Krb animation-handle declaration shifts this compiler temporary. Mapping from the unchanged initializer relocation sites is bijective and preserves every existing object payload, type, binding, size, section and canonical relocation; canonical destination unchanged."
     },
     {
       "from": "@642",
-      "to": "@664",
-      "evidence": "Shared actual Krb animation-handle declaration shifts this compiler temporary. Mapping from the unchanged initializer relocation sites is bijective and preserves every existing object payload, type, binding, size, section and canonical relocation; canonical destination unchanged. | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
+      "to": "@666",
+      "evidence": "Shared actual Krb animation-handle declaration shifts this compiler temporary. Mapping from the unchanged initializer relocation sites is bijective and preserves every existing object payload, type, binding, size, section and canonical relocation; canonical destination unchanged."
     },
     {
       "from": "@643",
-      "to": "@665",
-      "evidence": "Shared actual Krb animation-handle declaration shifts this compiler temporary. Mapping from the unchanged initializer relocation sites is bijective and preserves every existing object payload, type, binding, size, section and canonical relocation; canonical destination unchanged. | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
+      "to": "@667",
+      "evidence": "Shared actual Krb animation-handle declaration shifts this compiler temporary. Mapping from the unchanged initializer relocation sites is bijective and preserves every existing object payload, type, binding, size, section and canonical relocation; canonical destination unchanged."
     },
     {
       "from": "@644",
-      "to": "@666",
-      "evidence": "Shared actual Krb animation-handle declaration shifts this compiler temporary. Mapping from the unchanged initializer relocation sites is bijective and preserves every existing object payload, type, binding, size, section and canonical relocation; canonical destination unchanged. | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
+      "to": "@668",
+      "evidence": "Shared actual Krb animation-handle declaration shifts this compiler temporary. Mapping from the unchanged initializer relocation sites is bijective and preserves every existing object payload, type, binding, size, section and canonical relocation; canonical destination unchanged."
     },
     {
       "from": "@645",
-      "to": "@667",
-      "evidence": "Shared actual Krb animation-handle declaration shifts this compiler temporary. Mapping from the unchanged initializer relocation sites is bijective and preserves every existing object payload, type, binding, size, section and canonical relocation; canonical destination unchanged. | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
+      "to": "@669",
+      "evidence": "Shared actual Krb animation-handle declaration shifts this compiler temporary. Mapping from the unchanged initializer relocation sites is bijective and preserves every existing object payload, type, binding, size, section and canonical relocation; canonical destination unchanged."
     },
     {
       "from": "@646",
-      "to": "@668",
-      "evidence": "Shared actual Krb animation-handle declaration shifts this compiler temporary. Mapping from the unchanged initializer relocation sites is bijective and preserves every existing object payload, type, binding, size, section and canonical relocation; canonical destination unchanged. | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
-    },
-    {
-      "from": "@647",
-      "to": "@669",
-      "evidence": "Shared actual Krb animation-handle declaration shifts this compiler temporary. Mapping from the unchanged initializer relocation sites is bijective and preserves every existing object payload, type, binding, size, section and canonical relocation; canonical destination unchanged. | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
-    },
-    {
-      "from": "@648",
       "to": "@670",
-      "evidence": "Shared actual Krb animation-handle declaration shifts this compiler temporary. Mapping from the unchanged initializer relocation sites is bijective and preserves every existing object payload, type, binding, size, section and canonical relocation; canonical destination unchanged. | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
-    },
-    {
-      "from": "@651",
-      "to": "@673",
-      "evidence": "Shared actual Krb animation-handle declaration shifts this compiler temporary. Mapping from the unchanged initializer relocation sites is bijective and preserves every existing object payload, type, binding, size, section and canonical relocation; canonical destination unchanged. | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
-    },
-    {
-      "from": "@652",
-      "to": "@674",
-      "evidence": "Shared actual Krb animation-handle declaration shifts this compiler temporary. Mapping from the unchanged initializer relocation sites is bijective and preserves every existing object payload, type, binding, size, section and canonical relocation; canonical destination unchanged. | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
-    },
-    {
-      "from": "@653",
-      "to": "@79",
-      "evidence": "Shared actual Krb animation-handle declaration shifts this compiler temporary. Mapping from the unchanged initializer relocation sites is bijective and preserves every existing object payload, type, binding, size, section and canonical relocation; canonical destination unchanged. | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
+      "evidence": "Shared actual Krb animation-handle declaration shifts this compiler temporary. Mapping from the unchanged initializer relocation sites is bijective and preserves every existing object payload, type, binding, size, section and canonical relocation; canonical destination unchanged."
     },
     {
       "from": "@649",
-      "to": "@988",
-      "evidence": "Shared actual Krb animation-handle declaration shifts this compiler temporary. Mapping from the unchanged initializer relocation sites is bijective and preserves every existing object payload, type, binding, size, section and canonical relocation; canonical destination unchanged. | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
+      "to": "@673",
+      "evidence": "Shared actual Krb animation-handle declaration shifts this compiler temporary. Mapping from the unchanged initializer relocation sites is bijective and preserves every existing object payload, type, binding, size, section and canonical relocation; canonical destination unchanged."
     },
     {
       "from": "@650",
+      "to": "@674",
+      "evidence": "Shared actual Krb animation-handle declaration shifts this compiler temporary. Mapping from the unchanged initializer relocation sites is bijective and preserves every existing object payload, type, binding, size, section and canonical relocation; canonical destination unchanged."
+    },
+    {
+      "from": "@651",
+      "to": "@79",
+      "evidence": "Shared actual Krb animation-handle declaration shifts this compiler temporary. Mapping from the unchanged initializer relocation sites is bijective and preserves every existing object payload, type, binding, size, section and canonical relocation; canonical destination unchanged."
+    },
+    {
+      "from": "@647",
+      "to": "@988",
+      "evidence": "Shared actual Krb animation-handle declaration shifts this compiler temporary. Mapping from the unchanged initializer relocation sites is bijective and preserves every existing object payload, type, binding, size, section and canonical relocation; canonical destination unchanged."
+    },
+    {
+      "from": "@648",
       "to": "@989",
-      "evidence": "Shared actual Krb animation-handle declaration shifts this compiler temporary. Mapping from the unchanged initializer relocation sites is bijective and preserves every existing object payload, type, binding, size, section and canonical relocation; canonical destination unchanged. | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
+      "evidence": "Shared actual Krb animation-handle declaration shifts this compiler temporary. Mapping from the unchanged initializer relocation sites is bijective and preserves every existing object payload, type, binding, size, section and canonical relocation; canonical destination unchanged."
+    },
+    {
+      "from": "@2075",
+      "to": "@2061",
+      "evidence": "Shared actual Krb animation-handle declaration shifts this compiler temporary. Mapping from the unchanged initializer relocation sites is bijective and preserves every existing object payload, type, binding, size, section and canonical relocation; canonical destination unchanged."
+    },
+    {
+      "from": "@2076",
+      "to": "@2062",
+      "evidence": "Shared actual Krb animation-handle declaration shifts this compiler temporary. Mapping from the unchanged initializer relocation sites is bijective and preserves every existing object payload, type, binding, size, section and canonical relocation; canonical destination unchanged."
     },
     {
       "from": "@2077",
-      "to": "@2061",
-      "evidence": "Shared actual Krb animation-handle declaration shifts this compiler temporary. Mapping from the unchanged initializer relocation sites is bijective and preserves every existing object payload, type, binding, size, section and canonical relocation; canonical destination unchanged. | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
+      "to": "@2063",
+      "evidence": "Shared actual Krb animation-handle declaration shifts this compiler temporary. Mapping from the unchanged initializer relocation sites is bijective and preserves every existing object payload, type, binding, size, section and canonical relocation; canonical destination unchanged."
     },
     {
       "from": "@2078",
-      "to": "@2062",
-      "evidence": "Shared actual Krb animation-handle declaration shifts this compiler temporary. Mapping from the unchanged initializer relocation sites is bijective and preserves every existing object payload, type, binding, size, section and canonical relocation; canonical destination unchanged. | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
+      "to": "@2064",
+      "evidence": "Shared actual Krb animation-handle declaration shifts this compiler temporary. Mapping from the unchanged initializer relocation sites is bijective and preserves every existing object payload, type, binding, size, section and canonical relocation; canonical destination unchanged."
     },
     {
       "from": "@2079",
-      "to": "@2063",
-      "evidence": "Shared actual Krb animation-handle declaration shifts this compiler temporary. Mapping from the unchanged initializer relocation sites is bijective and preserves every existing object payload, type, binding, size, section and canonical relocation; canonical destination unchanged. | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
+      "to": "@2065",
+      "evidence": "Shared actual Krb animation-handle declaration shifts this compiler temporary. Mapping from the unchanged initializer relocation sites is bijective and preserves every existing object payload, type, binding, size, section and canonical relocation; canonical destination unchanged."
     },
     {
       "from": "@2080",
-      "to": "@2064",
-      "evidence": "Shared actual Krb animation-handle declaration shifts this compiler temporary. Mapping from the unchanged initializer relocation sites is bijective and preserves every existing object payload, type, binding, size, section and canonical relocation; canonical destination unchanged. | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
+      "to": "@2066",
+      "evidence": "Shared actual Krb animation-handle declaration shifts this compiler temporary. Mapping from the unchanged initializer relocation sites is bijective and preserves every existing object payload, type, binding, size, section and canonical relocation; canonical destination unchanged."
     },
     {
       "from": "@2081",
-      "to": "@2065",
-      "evidence": "Shared actual Krb animation-handle declaration shifts this compiler temporary. Mapping from the unchanged initializer relocation sites is bijective and preserves every existing object payload, type, binding, size, section and canonical relocation; canonical destination unchanged. | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
+      "to": "@2067",
+      "evidence": "Shared actual Krb animation-handle declaration shifts this compiler temporary. Mapping from the unchanged initializer relocation sites is bijective and preserves every existing object payload, type, binding, size, section and canonical relocation; canonical destination unchanged."
     },
     {
       "from": "@2082",
-      "to": "@2066",
-      "evidence": "Shared actual Krb animation-handle declaration shifts this compiler temporary. Mapping from the unchanged initializer relocation sites is bijective and preserves every existing object payload, type, binding, size, section and canonical relocation; canonical destination unchanged. | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
+      "to": "@2068",
+      "evidence": "Shared actual Krb animation-handle declaration shifts this compiler temporary. Mapping from the unchanged initializer relocation sites is bijective and preserves every existing object payload, type, binding, size, section and canonical relocation; canonical destination unchanged."
     },
     {
       "from": "@2083",
-      "to": "@2067",
-      "evidence": "Shared actual Krb animation-handle declaration shifts this compiler temporary. Mapping from the unchanged initializer relocation sites is bijective and preserves every existing object payload, type, binding, size, section and canonical relocation; canonical destination unchanged. | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
+      "to": "@2069",
+      "evidence": "Shared actual Krb animation-handle declaration shifts this compiler temporary. Mapping from the unchanged initializer relocation sites is bijective and preserves every existing object payload, type, binding, size, section and canonical relocation; canonical destination unchanged."
     },
     {
       "from": "@2084",
-      "to": "@2068",
-      "evidence": "Shared actual Krb animation-handle declaration shifts this compiler temporary. Mapping from the unchanged initializer relocation sites is bijective and preserves every existing object payload, type, binding, size, section and canonical relocation; canonical destination unchanged. | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
+      "to": "@2070",
+      "evidence": "Shared actual Krb animation-handle declaration shifts this compiler temporary. Mapping from the unchanged initializer relocation sites is bijective and preserves every existing object payload, type, binding, size, section and canonical relocation; canonical destination unchanged."
     },
     {
       "from": "@2085",
-      "to": "@2069",
-      "evidence": "Shared actual Krb animation-handle declaration shifts this compiler temporary. Mapping from the unchanged initializer relocation sites is bijective and preserves every existing object payload, type, binding, size, section and canonical relocation; canonical destination unchanged. | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
+      "to": "@2071",
+      "evidence": "Shared actual Krb animation-handle declaration shifts this compiler temporary. Mapping from the unchanged initializer relocation sites is bijective and preserves every existing object payload, type, binding, size, section and canonical relocation; canonical destination unchanged."
     },
     {
       "from": "@2086",
-      "to": "@2070",
-      "evidence": "Shared actual Krb animation-handle declaration shifts this compiler temporary. Mapping from the unchanged initializer relocation sites is bijective and preserves every existing object payload, type, binding, size, section and canonical relocation; canonical destination unchanged. | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
+      "to": "@2072",
+      "evidence": "Shared actual Krb animation-handle declaration shifts this compiler temporary. Mapping from the unchanged initializer relocation sites is bijective and preserves every existing object payload, type, binding, size, section and canonical relocation; canonical destination unchanged."
     },
     {
       "from": "@2087",
-      "to": "@2071",
-      "evidence": "Shared actual Krb animation-handle declaration shifts this compiler temporary. Mapping from the unchanged initializer relocation sites is bijective and preserves every existing object payload, type, binding, size, section and canonical relocation; canonical destination unchanged. | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
+      "to": "@2073",
+      "evidence": "Shared actual Krb animation-handle declaration shifts this compiler temporary. Mapping from the unchanged initializer relocation sites is bijective and preserves every existing object payload, type, binding, size, section and canonical relocation; canonical destination unchanged."
     },
     {
       "from": "@2088",
-      "to": "@2072",
-      "evidence": "Shared actual Krb animation-handle declaration shifts this compiler temporary. Mapping from the unchanged initializer relocation sites is bijective and preserves every existing object payload, type, binding, size, section and canonical relocation; canonical destination unchanged. | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
-    },
-    {
-      "from": "@2089",
-      "to": "@2073",
-      "evidence": "Shared actual Krb animation-handle declaration shifts this compiler temporary. Mapping from the unchanged initializer relocation sites is bijective and preserves every existing object payload, type, binding, size, section and canonical relocation; canonical destination unchanged. | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
-    },
-    {
-      "from": "@2090",
       "to": "@2074",
-      "evidence": "Shared actual Krb animation-handle declaration shifts this compiler temporary. Mapping from the unchanged initializer relocation sites is bijective and preserves every existing object payload, type, binding, size, section and canonical relocation; canonical destination unchanged. | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
+      "evidence": "Shared actual Krb animation-handle declaration shifts this compiler temporary. Mapping from the unchanged initializer relocation sites is bijective and preserves every existing object payload, type, binding, size, section and canonical relocation; canonical destination unchanged."
     }
   ],
   "symbol_binding_rewrites": [

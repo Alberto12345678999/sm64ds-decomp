@@ -4,9 +4,9 @@
 #include "common.h"
 #include "SharedFilePtr.h"
 #include "private/ov075_entry_mesh.h"
+#include "Memory.h"
 
 extern "C" {
-extern void* _ZN6Memory13operator_new2Ej(unsigned int sz);
 extern void* func_0201787c(void* sfp);
 extern void func_ov075_0211aa94(void* a, void* b);
 extern void func_ov075_0211aa00(char* r4);
@@ -20,8 +20,8 @@ extern "C" int func_ov075_0211b458(char* c, int* src, int a2) {
     mesh->mGridDim[0] = 0x14;
     mesh->mGridDim[1] = 0x14;
     mesh->mNumVertices = mesh->mGridDim[0] * mesh->mGridDim[1];
-    mesh->mVertices = (EntryMeshVertex *)_ZN6Memory13operator_new2Ej(mesh->mNumVertices *
-                                                                     sizeof(EntryMeshVertex));
+    mesh->mVertices =
+        (EntryMeshVertex *)Memory::operator_new2(mesh->mNumVertices * sizeof(EntryMeshVertex));
     func_ov075_0211aa94(c, func_0201787c(&data_ov075_0211d980));
     ((SharedFilePtr *)(&data_ov075_0211d980))->Release();
     mesh->mState = &data_ov075_0211d994;

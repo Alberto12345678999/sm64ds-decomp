@@ -55,7 +55,9 @@
 #include "decl_common.h"
 #include "G2x.h"
 #include "PlayerInput.h"
+#include "G2.h"
 #include "cstd.h"
+#include "GX.h"
 
 /* Scene_StateResult's view of the ov004 score block at gMgScene
    (dScMgBase_c.h declares it void *): the current score at +0xb4 and the best
@@ -80,14 +82,11 @@ extern int   Mg_IsNewRecord(void);
 extern int   func_020126e8(int a);
 extern int   func_02012468(int a, int b, int c, int d, int e, int f, int g, short h);
 extern void  MultiStore16(u16 val, void *dst, int nbytes);
-/* Boo_StateFadeAway and 0211f224 pass `0x10 - alpha` as computed: the
+/* local extern: Boo_StateFadeAway and 0211f224 pass `0x10 - alpha` as computed: the
    cartridge does not narrow it to 16 bits at either call, which G2x.h's
    unsigned short parameters would. So those two call the mangled name. */
 extern void  _ZN3G2x13SetBlendAlphaEPVttttj(volatile unsigned short *reg, int a, int b,
                                             int c, int d);
-/* G2's own name is taken: decl_common.h declares `int G2[]`. */
-extern void *_ZN2G212GetBG2ScrPtrEv(void);
-extern void *_ZN2G213GetBG2CharPtrEv(void);
 struct OAM {
     static void Render(bool, OamAttr *, int, int, int, int, int, int, int, int);
 };
@@ -161,19 +160,6 @@ extern Pmf pmf_dScMgTeresa_c_BigBoo_StateResult;
 }  /* extern "C" */
 
 namespace Sound { void PlayBank2_2D(unsigned int id); }
-namespace G2S {
-char *GetBG0CharPtr();
-void *GetBG0ScrPtr();
-void *GetBG2CharPtr();
-}
-namespace GX {
-void LoadBGPltt(const void *src, u32 offset, u32 size);
-void LoadOBJPltt(const void *src, u32 offset, u32 size);
-}
-namespace GXS {
-void LoadBGPltt(const void *src, u32 offset, u32 size);
-void LoadOBJPltt(const void *src, u32 offset, u32 size);
-}
 
 
 // @symbol _ZN13dScMgTeresa_cD1Ev
@@ -1107,7 +1093,7 @@ void dScMgTeresa_c::TouchTestBoo(int idx)
     for (i = 0; i < 5; i++) {
         x = (mBoos[idx].mX >> 12) - sTeresaBooTouchOffsets[i * 2];
         y = (mBoos[idx].mY >> 12) - sTeresaBooTouchOffsets[i * 2 + 1];
-        r = ((int (*)[8])G2S::GetBG0CharPtr())[(x >> 3) + ((y >> 3) << 5)];
+        r = ((int(*)[8])(char *)G2S::GetBG0CharPtr())[(x >> 3) + ((y >> 3) << 5)];
         word = r[y & 7];
         if (((word >> ((x & 7) << 2)) & 0xf) == 0) {
             count++;
@@ -1958,7 +1944,7 @@ s32 dScMgTeresa_c::InitResources()
     *((volatile u32 *) 0x4000018) = 0;
     *((volatile u16 *) 0x400000c) = ((*((volatile u16 *) 0x400000c)) & 0x43) | 0x1210;
     {
-        void *p = _ZN2G212GetBG2ScrPtrEv();
+        void *p = G2::GetBG2ScrPtr();
         fa = 0x5300;
         MultiStore16(fa, p, 0x800);
     }
@@ -1968,7 +1954,7 @@ s32 dScMgTeresa_c::InitResources()
     *((volatile u32 *) 0x400001c) = 0;
     *((volatile u16 *) 0x400000e) = ((*((volatile u16 *) 0x400000e)) & 0x43) | 0x9310;
     t = LoadFile(0x9b);
-    DecompressLZ16(t, _ZN2G213GetBG2CharPtrEv());
+    DecompressLZ16(t, G2::GetBG2CharPtr());
     Deallocate(t);
     t = LoadFile(0x9c);
     GX::LoadBGPltt(t, 0x60, 0x1a0);
@@ -1994,7 +1980,7 @@ s32 dScMgTeresa_c::InitResources()
     }
     Mg_InitBrush(self, 0, 0, 0);
     {
-        void *p = G2S::GetBG0CharPtr();
+        void *p = (char *)G2S::GetBG0CharPtr();
         fc = 0x1111;
         MultiStore16(fc, p, 0x6000);
     }

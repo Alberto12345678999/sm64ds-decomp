@@ -37,6 +37,7 @@
 #include "dExtAnmTexPat_c.h"
 #include "dExtAnmTexSRT_c.h"
 #include "cstd.h"
+#include "G2.h"
 /* Typed access to a MascotWalker record from the char* helpers below. */
 #define WALKER(p) ((MascotWalker *)(p))
 /* Typed access to a Presenter record from the char* helpers below. */

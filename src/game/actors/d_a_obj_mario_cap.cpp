@@ -127,6 +127,7 @@ enum daObjMarioCap_c_AssetId {
 };
 
 #include "common.h"
+#include "cstd.h"
 #include "nitro/fx/fx.h"
 #include "daObjMarioCap_c.h"
 #include "decl_common.h"
@@ -137,7 +138,6 @@ enum daObjMarioCap_c_AssetId {
 #include "SurfaceInfo.h"
 #include "dBgCh_Gnd.h"
 #include "dBgCh_Actr.h"
-#include "cstd.h"
 
 /* --------------------------------------------------------------------------
  * Local shapes the merged members need.
