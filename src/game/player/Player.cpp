@@ -54,6 +54,8 @@
 #include "dBgCh_Actr.h"
 #include "Sound.h"
 #include "dCamera_c.h"
+#include "SaveData.h"
+#include "Timer.h"
 #include "daObj1UpLogo_c.h"
 #include "daOwl_c.h"
 #include "daShl_c.h"
@@ -272,8 +274,6 @@ particle:
 extern "C" {
 void Player::func_ov002_020bd06c(unsigned int state2)
 {
-    extern void _ZN7fBase_c18MarkForDestructionEv(void *thiz);
-
     extern Player::State data_ov002_02110154;
     char *self = (char *)this;
     int flag;
@@ -289,7 +289,7 @@ void Player::func_ov002_020bd06c(unsigned int state2)
     case 9:
     case 10:
         if (this->mCapActor != 0) {
-            _ZN7fBase_c18MarkForDestructionEv(this->mCapActor);
+            this->mCapActor->MarkForDestruction();
             this->mCapActor = 0;
         }
         break;
@@ -725,7 +725,6 @@ int Player::HasNoCap()
 {
     extern signed char data_0209f2f8;
     extern unsigned char data_0209f2d8;
-    extern int _ZN8SaveData16HasPlayerLostCapEv(void);
     extern Player::State data_ov002_0211058c;
     if(data_0209f2f8 == 0x1f) return 0;
     int r = (data_0209f2d8 == 2);
@@ -733,7 +732,7 @@ int Player::HasNoCap()
         if(!this->IsState(data_ov002_0211058c)){
             r = (data_0209f2d8 == 1);
             if(!r){
-                if(_ZN8SaveData16HasPlayerLostCapEv()) return 1;
+                if(SaveData::HasPlayerLostCap()) return 1;
             }
         }
     }
@@ -1689,28 +1688,20 @@ void Player::func_ov002_020bf36c(void* arg){
 /* recovered: shared common types */
 extern "C" {
 int Player::func_ov002_020bf40c() {
-    struct dBgCh_Gnd {
-        char pad[0x50];
-    };
     extern unsigned char NumStars(void);
     extern void AddVec3(void *, void *, void *);
-    extern void *_ZN9dBgCh_GndC1Ev(void *);
-    extern void _ZN9dBgCh_Gnd12SetObjAndPosERK7Vector3P8dActor_c(void *, void *, void *);
-    extern int _ZN9dBgCh_Gnd10DetectClsnEv(void *);
-    extern void _ZN9dBgCh_GndD1Ev(void *);
     extern void *data_0209f318;
     extern Vector3 data_ov002_0210a590;
     extern void func_0200d858(void *, const Vector3 *);
     Vector3 pos;
     Vector3 off;
-    struct dBgCh_Gnd rg;
     if (NumStars() < 0x50 || param1 != 0) {
         AddVec3(&mPos, &data_ov002_0210a590, &mPos);
         off.x = data_ov002_0210a590.x;
         off.y = data_ov002_0210a590.y;
         off.z = data_ov002_0210a590.z;
         func_0200d858(data_0209f318, &off);
-        _ZN9dBgCh_GndC1Ev(&rg);
+        dBgCh_Gnd rg;
         {
             int py = this->mPosY;
             int pz = this->mPosZ;
@@ -1718,11 +1709,10 @@ int Player::func_ov002_020bf40c() {
             pos.y = py + 0xa0000;
             pos.z = pz;
         }
-        _ZN9dBgCh_Gnd12SetObjAndPosERK7Vector3P8dActor_c(&rg, &pos, this);
-        if (_ZN9dBgCh_Gnd10DetectClsnEv(&rg)) {
-            mGroundY = ((::dBgCh_Gnd *)&rg)->clsnY;
+        rg.SetObjAndPos(pos, this);
+        if (rg.DetectClsn()) {
+            mGroundY = rg.clsnY;
         }
-        _ZN9dBgCh_GndD1Ev(&rg);
         return 1;
     }
     return 0;
@@ -2134,12 +2124,6 @@ int Player::func_ov002_020c0108(int p1)
     typedef short s16;
     typedef unsigned int u32;
     typedef int s32;
-    typedef struct { void *a; u32 b; } PathPtr;
-    extern void *_ZN7PathPtrC1Ev(void*);
-    extern void _ZN7PathPtr6FromIDEj(void*, u32 id);
-    extern int _ZNK7PathPtr8NumNodesEv(void*);
-    extern void _ZNK7PathPtr7GetNodeER7Vector3j(void*, void*, u32 idx);
-    extern u32 _ZNK7PathPtr9GetUnk004Ev(void*);
     extern int Vec3_HorzAngle(const Vector3 *v0, const Vector3 *v1);
     extern int Vec3_VertAngle(const Vector3 *v1, const Vector3 *v0);
     extern Player::State data_ov002_02110304;
@@ -2163,15 +2147,14 @@ int Player::func_ov002_020c0108(int p1)
         Vector3 nodes[3];
         PathPtr path;
 
-        _ZN7PathPtrC1Ev(&path);
-        _ZN7PathPtr6FromIDEj(&path, mClpsWord1Lo);
-        numNodes = _ZNK7PathPtr8NumNodesEv(&path);
+        path.FromID(mClpsWord1Lo);
+        numNodes = path.NumNodes();
 
         for (i = 0; i < numNodes; i++) {
-            _ZNK7PathPtr7GetNodeER7Vector3j(&path, &nodes[i], i);
+            path.GetNode(nodes[i], i);
         }
 
-        idx = _ZNK7PathPtr9GetUnk004Ev((unsigned char **)&path) & 0xff;
+        idx = path.GetUnk004() & 0xff;
         if ((u32)idx >= 4)
             idx = 1;
 
@@ -2375,10 +2358,6 @@ int Player::func_ov002_020c06fc(int arg)
     extern int Vec3_HorzLen(void*);
     extern int atan2_hold_Player_18(int x, int z);
     extern int AngleDiff(int a, int b);
-    extern void *_ZN9dBgCh_LinC1Ev(void*);
-    extern void _ZN9dBgCh_Lin13SetObjAndLineERK7Vector3S2_P8dActor_c(void*, void*, void*, void*);
-    extern int _ZN9dBgCh_Lin10DetectClsnEv(void*);
-    extern void _ZN9dBgCh_LinD1Ev(void*);
     extern void ApproachAngle(void*, short target, int divisor, int band, int maxStep);
     extern short data_0209f4a0[];
     extern char data_0209f4ac[];
@@ -2388,7 +2367,6 @@ int Player::func_ov002_020c06fc(int arg)
         struct Vec3 v1;
         struct Vec3 v2;
         struct Vec3 v3;
-        char ray[0x78];
     } f;
     int a;
     int t;
@@ -2456,7 +2434,7 @@ int Player::func_ov002_020c06fc(int arg)
 
     if ((this->mClsnFlags & 2) != 0 && (u16)(this->mStateFlags & 1) == 0 && this->mHorzSpeed <= 0x10000) {
         int r6b = cstd::atan2(f.v0.x, f.v0.z);
-        _ZN9dBgCh_LinC1Ev(f.ray);
+        dBgCh_Lin ray;
         {
             int tz, ty, tx;
             int p5c = this->mPosX;
@@ -2471,12 +2449,11 @@ int Player::func_ov002_020c06fc(int arg)
             ty = this->mPosY + 0x32000;
             f.v2.x = tx; f.v2.y = ty; f.v2.z = tz;
         }
-        _ZN9dBgCh_Lin13SetObjAndLineERK7Vector3S2_P8dActor_c(f.ray, &f.v1, &f.v2, c);
-        if (_ZN9dBgCh_Lin10DetectClsnEv(f.ray) != 0) {
+        ray.SetObjAndLine(*(const Vector3 *)&f.v1, *(const Vector3 *)&f.v2, this);
+        if (ray.DetectClsn() != 0) {
             f.v0.x = 0;
             f.v0.z = 0;
         }
-        _ZN9dBgCh_LinD1Ev(f.ray);
     }
 
     {
@@ -2602,13 +2579,9 @@ extern "C" {
 int Player::func_ov002_020c0fb4() {
     char *c = (char *)this;
     extern int func_ov002_020dec70(void *);
-    extern void _ZN5Timer10ResetTimerEv(void *);
-    extern void _ZN5Timer10StartTimerEv(void *);
-    extern void _ZN5Timer9StopTimerEv(void *);
-    extern unsigned long long _ZN5Timer7GetTimeEv(void *);
     extern int func_ov002_020d06c0(void *);
     extern unsigned char data_ov002_02111184[];
-    extern unsigned char data_0209d4c8[];
+    extern Timer data_0209d4c8;
     extern signed char data_0209f2f8;
     int r;
     switch (this->mSurfaceType) {
@@ -2639,18 +2612,18 @@ int Player::func_ov002_020c0fb4() {
         if (data_ov002_02111184[0] != 0) {
             break;
         }
-        _ZN5Timer10ResetTimerEv(data_0209d4c8);
+        data_0209d4c8.ResetTimer();
         data_ov002_02111184[0] = 1;
-        _ZN5Timer10StartTimerEv(data_0209d4c8);
+        data_0209d4c8.StartTimer();
         break;
 
     case 16:
-        if (data_0209d4c8[8] == 0) {
+        if (data_0209d4c8.mIsRunning == 0) {
             break;
         }
-        _ZN5Timer9StopTimerEv(data_0209d4c8);
+        data_0209d4c8.StopTimer();
         {
-            unsigned long long t = _ZN5Timer7GetTimeEv(data_0209d4c8);
+            unsigned long long t = data_0209d4c8.GetTime();
             if (((t << 6) / 0x1ff6210) > 0x14) {
                 break;
             }
@@ -2804,7 +2777,6 @@ void Player::func_ov002_020c14b8()
         int f1c, f20, f24;
     } ClsnResultTmp;
     extern int _ZN6Player12Unk_020c9e5cEh(void *, unsigned char state);
-    extern void _ZN5dBgPiD1Ev(void *);
     extern int SurfaceInfo_TestFlag0x20(void*);
     extern int func_02037e20(void *);
     extern int data_02099368;
@@ -2856,7 +2828,7 @@ void Player::func_ov002_020c14b8()
         tmp.f20 = (int)rg.owner;
         tmp.f24 = (int)rg.collider;
         SetFloorSurfaceInfo((const dBgPi &)tmp);
-        _ZN5dBgPiD1Ev(&tmp);
+        ((dBgPi *)&tmp)->dBgPi::~dBgPi();
         mProbedGroundY = rg.clsnY;
         mGroundY = mProbedGroundY;
         mProbedSurfaceType = mSurfaceType;
@@ -3363,8 +3335,6 @@ int Player::func_ov002_020c25a8(int arg1)
         int f24;
     } ClsnResultTmp;
     extern void func_02037318(void*);
-    extern void _ZN10dBgCh_Actr18StopDetectingWaterEv(void*);
-    extern void _ZN10dBgCh_Actr19StartDetectingWaterEv(void*);
     extern void func_020357e0(void*);
     extern void func_02035800(void*);
     extern void func_02035770(void*);
@@ -3374,20 +3344,14 @@ int Player::func_ov002_020c25a8(int arg1)
     extern void func_020357c0(void*);
     extern void func_020355e8(void*);
     extern void func_020355fc(void*);
-    extern void _ZN10dBgCh_Actr15ClearLimMovFlagEv(void*);
-    extern void _ZN10dBgCh_Actr13SetLimMovFlagEv(void*);
     extern void func_020355c8(void*);
     extern void func_020355b4(void*);
     extern void func_ov002_020eed24(void*, void*);
-    extern void _ZN10dBgCh_Actr15ClearGroundFlagEv(void*);
-    extern int _ZNK10dBgCh_Actr8IsOnWallEv(void*);
     extern int func_02035638(void*);
     extern void func_020371fc(void *);
-    extern void _ZN5dBgPiD1Ev(void*);
     extern void _ZNK11SurfaceInfo12CopyNormalToER7Vector3(void*, void*);
     extern int func_020356c8(void*);
     extern void func_ov002_020cef84(void*);
-    extern void *_ZNK10dBgCh_Actr13GetWallResultEv(void*);
     extern int func_ov002_020d0580(void*);
     extern char data_ov002_02110514;
     extern char data_ov002_021100f4;
@@ -3402,14 +3366,14 @@ int Player::func_ov002_020c25a8(int arg1)
     int *dst;
 
     func_02037318(&mMeshClsn);
-    _ZN10dBgCh_Actr18StopDetectingWaterEv(&mMeshClsn);
+    mMeshClsn.StopDetectingWater();
 
     {
         int b1;
         b1 = mRidingShell;
         b1 = (b1 != 0);
         if (b1 || mDetectWater || mIsBalloon)
-            _ZN10dBgCh_Actr19StartDetectingWaterEv(&mMeshClsn);
+            mMeshClsn.StartDetectingWater();
     }
 
     func_020357e0(&mMeshClsn);
@@ -3437,10 +3401,10 @@ int Player::func_ov002_020c25a8(int arg1)
             func_020355fc(&mMeshClsn);
     }
 
-    _ZN10dBgCh_Actr15ClearLimMovFlagEv(&mMeshClsn);
+    mMeshClsn.ClearLimMovFlag();
 
     if (_ZN6Player7IsStateERNS_5StateE(c, &data_ov002_021100f4) && mVertSpeed > 0)
-        _ZN10dBgCh_Actr13SetLimMovFlagEv(&mMeshClsn);
+        mMeshClsn.SetLimMovFlag();
 
     func_020355c8(&mMeshClsn);
 
@@ -3453,12 +3417,12 @@ int Player::func_ov002_020c25a8(int arg1)
         func_ov002_020eed24(&mMeshClsn, c);
 
     if (mVertSpeed > 0x1e000)
-        _ZN10dBgCh_Actr15ClearGroundFlagEv(&mMeshClsn);
+        mMeshClsn.ClearGroundFlag();
 
     if (mMeshClsn.IsOnGround())
         mClsnFlags |= 1;
 
-    if (_ZNK10dBgCh_Actr8IsOnWallEv(&mMeshClsn))
+    if (mMeshClsn.IsOnWall())
         mClsnFlags |= 2;
 
     if (func_02035638(&mMeshClsn))
@@ -3488,7 +3452,7 @@ int Player::func_ov002_020c25a8(int arg1)
         tmp.f24 = (int)fr->collider;
 
         SetFloorSurfaceInfo((const dBgPi &)tmp);
-        _ZN5dBgPiD1Ev(&tmp);
+        ((dBgPi *)&tmp)->dBgPi::~dBgPi();
 
         mGroundY = mPosY;
         ret = fr->surface.clps.GetFloorClass();
@@ -3527,7 +3491,7 @@ int Player::func_ov002_020c25a8(int arg1)
     }
 
     _ZNK11SurfaceInfo12CopyNormalToER7Vector3(
-        &((dBgPi *)_ZNK10dBgCh_Actr13GetWallResultEv(&mMeshClsn))->surface, &wn);
+        &((dBgPi *)mMeshClsn.GetWallResult())->surface, &wn);
     mWallNormalX = wn.x;
     mWallNormalY = wn.y;
     mWallNormalZ = wn.z;
@@ -3556,7 +3520,6 @@ extern "C" {
 void Player::func_ov002_020c29d4()
 {
     extern int Player_ScaleByCharFactor(void*, int a);
-    extern dBgPi *_ZNK10dBgCh_Actr14GetFloorResultEv(const dBgCh_Actr *self);
     extern Player::State data_ov002_0211013c;
     extern Player::State data_ov002_021101b4;
     char *base = (char *)this;
@@ -3575,7 +3538,7 @@ void Player::func_ov002_020c29d4()
         mQuicksandRunFlags = 0x80;
     } else if (flags & 0x80) {
         if (mMeshClsn.IsOnGround()) {
-            int r = _ZNK10dBgCh_Actr14GetFloorResultEv(&mMeshClsn)->surface.clps.GetSurfaceType();
+            int r = ((dBgPi *)mMeshClsn.GetFloorResult())->surface.clps.GetSurfaceType();
             if (r >= 6 && r <= 9) return;
             mQuicksandRunFlags = 0;
             mQuicksandRunTimer = 0;
@@ -3592,13 +3555,8 @@ extern "C" {
 void Player::func_ov002_020c2b08()
 {
     void *arg0 = (void *)this;
-    extern void *_ZNK10dBgCh_Actr14GetFloorResultEv(void*);
     extern int SurfaceInfo_TestFlag0x20(void*);
     extern int Player_ScaleByCharFactor(void*, int a);
-    extern void *_ZN9dBgCh_GndC1Ev(void*);
-    extern void _ZN9dBgCh_Gnd12SetObjAndPosERK7Vector3P8dActor_c(void*, void*, void*);
-    extern int _ZN9dBgCh_Gnd10DetectClsnEv(void*);
-    extern void _ZN9dBgCh_GndD1Ev(void*);
     extern int _ZN6Player7IsStateERNS_5StateE(void*, void*);
     extern char data_ov002_0211013c;
     char *c = (char *)arg0;
@@ -3615,7 +3573,7 @@ void Player::func_ov002_020c2b08()
         if (!mMeshClsn.IsOnGround())
             return;
         if (!SurfaceInfo_TestFlag0x20(
-                (int *)&((dBgPi *)_ZNK10dBgCh_Actr14GetFloorResultEv(&mMeshClsn))->surface.clps))
+                (int *)&((dBgPi *)mMeshClsn.GetFloorResult())->surface.clps))
             return;
 
         limit = Player_ScaleByCharFactor(c, 0x20000);
@@ -3631,7 +3589,7 @@ void Player::func_ov002_020c2b08()
         if (!mMeshClsn.IsOnGround())
             goto clear_timer;
         if (!SurfaceInfo_TestFlag0x20(
-                (int *)&((dBgPi *)_ZNK10dBgCh_Actr14GetFloorResultEv(&mMeshClsn))->surface.clps))
+                (int *)&((dBgPi *)mMeshClsn.GetFloorResult())->surface.clps))
             goto clear_timer;
 
         mIsInShallowWater = 1;
@@ -3675,9 +3633,9 @@ void Player::func_ov002_020c2b08()
 
             {
                 dBgCh_Gnd rg;
-                _ZN9dBgCh_Gnd12SetObjAndPosERK7Vector3P8dActor_c(&rg, v, c);
+                rg.SetObjAndPos(*(const Vector3 *)v, (dActor_c *)c);
 
-                if (_ZN9dBgCh_Gnd10DetectClsnEv(&rg) != 0) {
+                if (rg.DetectClsn() != 0) {
                     mGroundY = rg.clsnY;
                     if (mPosY + mModelOffsetY < rg.clsnY)
                         mWaterRunTimer = 0;
@@ -3695,7 +3653,7 @@ void Player::func_ov002_020c2b08()
     if (!mMeshClsn.IsOnGround())
         return;
     if (SurfaceInfo_TestFlag0x20(
-            (int *)&((dBgPi *)_ZNK10dBgCh_Actr14GetFloorResultEv(&mMeshClsn))->surface.clps) != 0)
+            (int *)&((dBgPi *)mMeshClsn.GetFloorResult())->surface.clps) != 0)
         return;
     if (mIsInShallowWater != 0)
         return;
@@ -4341,7 +4299,6 @@ int Player::func_ov002_020c4188()
     extern short data_ov002_020ff26c[];
     extern unsigned char data_0209d660;
     extern void func_0200d3f8(void*, unsigned char playerID, void*);
-    extern void _ZN9dCamera_c9SetFlag_3Ev(void*);
     extern void func_0201f32c(int arg0);
     extern void func_0200d81c(void*, int playerID);
     extern void func_ov002_020e444c(void*);
@@ -4362,7 +4319,7 @@ int Player::func_ov002_020c4188()
         if (mEventId < 7) {
             func_0200d3f8(p, mPlayerNo, 0);
         } else {
-            _ZN9dCamera_c9SetFlag_3Ev(p);
+            ((dCamera_c *)p)->SetFlag_3();
         }
         mEventStep++;
         if (mEventId >= 7) {
@@ -4476,7 +4433,6 @@ int Player::func_ov002_020c44c4()
     extern void Vec3_RotateYAndTranslate(void*, void*, short angle, void*);
     extern int _ZN6Player11ShowMessageER7fBase_cjPK7Vector3hh(void*, void*, unsigned int id, const void* pos, unsigned int a, unsigned int b);
     extern void func_02012694(unsigned int id, const Vector3 *v);
-    extern unsigned int _ZN8SaveData26CountStarsCollectedInLevelEj(unsigned int);
     extern int SublevelToLevel(int);
     extern u32 data_ov002_0210e14c;
     extern Vector3 data_ov002_0210f3b0;
@@ -4506,7 +4462,7 @@ ret0:
     return 0;
 
 cont:
-    if (_ZN8SaveData26CountStarsCollectedInLevelEj(SublevelToLevel(data_0209f2f8)) != 0) {
+    if (SaveData::CountStarsCollectedInLevel(SublevelToLevel(data_0209f2f8)) != 0) {
         return 0;
     }
 
@@ -4797,7 +4753,6 @@ int Player::ShowMessage2(fBase_c & actor_, unsigned int msg, const Vector3 * pos
 {
     extern void func_020731dc(void*, void*, void*);
     extern void Vec3_RotateYAndTranslate(void*, const Vector3 *in, int angle, const Vector3 *src);
-    extern void _ZN9dCamera_c9SetFlag_3Ev(void*);
     extern Player::State data_ov002_0211046c;
     extern Player::State data_ov002_0211013c;
     extern Player::State data_ov002_02110364;
@@ -4866,7 +4821,7 @@ finish:
     *(unsigned int*)&mAttachOffsetY = msg;
 
     if (e == 2) {
-        _ZN9dCamera_c9SetFlag_3Ev(data_0209f318);
+        ((dCamera_c *)data_0209f318)->SetFlag_3();
     }
 
     return 1;
@@ -5588,7 +5543,6 @@ int Player::func_ov002_020c607c(int p1, int p2, int *outptr)
 extern "C" {
 int Player::func_ov002_020c61ac() {
     extern void func_ov002_020de968(void *);
-    extern void _ZN9dBgCh_Gnd12SetObjAndPosERK7Vector3P8dActor_c(void *, void *, void *);
     extern Player::State data_ov002_021102ec;
     extern Player::State data_ov002_021106dc;
     extern Player::State data_ov002_021106f4;
@@ -5622,7 +5576,7 @@ int Player::func_ov002_020c61ac() {
             v[2] = zv;
             dBgCh_Gnd obj;
             obj.StartDetectingWater();
-            _ZN9dBgCh_Gnd12SetObjAndPosERK7Vector3P8dActor_c(&obj, v, this);
+            obj.SetObjAndPos(*(const Vector3 *)v, this);
             if (obj.DetectClsn()) {
                 mGroundY = obj.clsnY;
                 this->mPosY = mGroundY;
@@ -5952,10 +5906,6 @@ int Player::St_Teleport_Main()
 {
     extern ObjTeleport* GetTeleportDestObj(int i);
     extern void func_02035860(void*, void*);
-    extern void *_ZN9dBgCh_GndC1Ev(void*);
-    extern void _ZN9dBgCh_Gnd12SetObjAndPosERK7Vector3P8dActor_c(void*, void*, void*);
-    extern int _ZN9dBgCh_Gnd10DetectClsnEv(void*);
-    extern void _ZN9dBgCh_GndD1Ev(void*);
     extern void _ZN3G2x18SetBlendBrightnessEPVtts(volatile u16* p, u16 a, s16 b);
     extern void Player_AdvanceAnims(void*);
     extern char* data_0209f318;
@@ -6009,8 +5959,7 @@ int Player::St_Teleport_Main()
             mOpacity = 0x1f;
             if (data_0209f32c >= mPosY + 0x64000) {
                 Vector3 v;
-                char rc[0x50];
-                _ZN9dBgCh_GndC1Ev(rc);
+                dBgCh_Gnd rc;
                 {
                     int vz = mPosZ;
                     int vy = data_0209f32c + 0x64000;
@@ -6019,10 +5968,9 @@ int Player::St_Teleport_Main()
                     v.y = vy;
                     v.z = vz;
                 }
-                _ZN9dBgCh_Gnd12SetObjAndPosERK7Vector3P8dActor_c(rc, &v, ((char*)this));
-                if (_ZN9dBgCh_Gnd10DetectClsnEv(rc))
+                rc.SetObjAndPos(v, this);
+                if (rc.DetectClsn())
                     hit = 1;
-                _ZN9dBgCh_GndD1Ev(rc);
             }
             if (hit)
                 this->ChangeState(data_ov002_0211067c);
@@ -6069,7 +6017,6 @@ int func_ov002_020c6e14(void* actor)
     extern void* data_0209f318[];
     extern int NumStars(void);
     extern int _ZN6Player11ShowMessageER7fBase_cjPK7Vector3hh(void*, void*, unsigned int msg, const void* pos, unsigned int a, unsigned int b);
-    extern void _ZN9dCamera_c9SetFlag_3Ev(void*);
     int idx;
 
     if (data_0209f2ac != 0) {
@@ -6088,7 +6035,7 @@ int func_ov002_020c6e14(void* actor)
             return 0;
 
         if (_ZN6Player11ShowMessageER7fBase_cjPK7Vector3hh(actor, actor, data_ov002_020ff1a0[idx], 0, 0, 2)) {
-            _ZN9dCamera_c9SetFlag_3Ev(data_0209f318[0]);
+            ((dCamera_c *)(data_0209f318[0]))->SetFlag_3();
             return 1;
         }
     }
@@ -6443,29 +6390,17 @@ void Player::func_ov002_020c75f0()
 extern "C" {
 int Player::St_LevelEnter_Init()
 {
-    typedef struct dBgCh_Gnd {
-        char pre[0x10];
-        char result[0x34];
-        int clsnY;
-        char post[0x8];
-    } dBgCh_Gnd;
-    extern int _ZN8SaveData16HasPlayerLostCapEv(void);
     extern void Player_DisableInteraction(void*);
-    extern void *_ZN9dBgCh_GndC1Ev(void*);
-    extern void _ZN9dBgCh_Gnd12SetObjAndPosERK7Vector3P8dActor_c(void*, void*, void*);
-    extern int _ZN9dBgCh_Gnd10DetectClsnEv(void*);
     extern void _ZN6Player16InitWingFeathersEb(void*, int b);
-    extern void _ZN9dBgCh_GndD1Ev(void*);
     extern u8 data_0209f2d8;
     extern s16 data_02082214[];
     extern signed char data_0209f2f8;
     extern u8 data_0209f264;
     extern u8 data_0209f2fc;
     extern u32 data_ov002_0210a7e8[];
-    dBgCh_Gnd rg;
 
     u32 anim = data_ov002_0210a7e8[mStateStep];
-    if (_ZN8SaveData16HasPlayerLostCapEv() != 0) {
+    if (SaveData::HasPlayerLostCap() != 0) {
         if (anim == 0x85) anim = 0xa5;
     }
     this->SetAnim(anim, 0, 0x1000, 0);
@@ -6487,7 +6422,7 @@ int Player::St_LevelEnter_Init()
     mStateArg = 0;
     mPrevAngleY = mAngleY;
     mStateWork = 0;
-    _ZN9dBgCh_GndC1Ev(&rg);
+    dBgCh_Gnd rg;
 
     switch (mStateStep) {
     case 0: {
@@ -6500,9 +6435,9 @@ int Player::St_LevelEnter_Init()
         pos.x = x;
         pos.y = w;
         pos.z = z;
-        _ZN9dBgCh_Gnd12SetObjAndPosERK7Vector3P8dActor_c(&rg, &pos, ((char*)this));
+        rg.SetObjAndPos(pos, this);
         hit = 0x80000000;
-        if (_ZN9dBgCh_Gnd10DetectClsnEv(&rg) != 0) hit = rg.clsnY;
+        if (rg.DetectClsn() != 0) hit = rg.clsnY;
         mPosY = hit;
         mStateWork = 2;
         {
@@ -6586,7 +6521,6 @@ int Player::St_LevelEnter_Init()
         }
     }
 
-    _ZN9dBgCh_GndD1Ev(&rg);
     return 1;
 }
 }
@@ -7411,7 +7345,6 @@ int Player::func_ov002_020c9288(){
 extern "C" {
 int Player::func_ov002_020c92fc()
 {
-    extern int _ZN8SaveData19IsCharacterUnlockedEj(unsigned int a);
     extern void func_0200d3f8(void*, unsigned char playerID, void*);
     extern int data_0209b454;
     extern unsigned char data_0209f2d8;
@@ -7444,7 +7377,7 @@ int Player::func_ov002_020c92fc()
     if (this->FinishedAnim()) {
         if (mStateStep == 9) {
             if ((int)(data_0209f2d8 == 1) == 0) {
-                if ((data_0209caa0[2] & 0x10000000) == 0 && _ZN8SaveData19IsCharacterUnlockedEj(0) == 0 && mHatCharacter == 0 && mPrevCharacter == 3) {
+                if ((data_0209caa0[2] & 0x10000000) == 0 && SaveData::IsCharacterUnlocked(0) == 0 && mHatCharacter == 0 && mPrevCharacter == 3) {
                     mStateStep = 0xa;
                     mStatePhase = 0;
                     func_0200d3f8(data_0209f318, mPlayerNo, 0);
@@ -9287,7 +9220,6 @@ extern "C" {
 int Player::St_Shell_Main()
 {
     extern void func_ov002_020eeca8(void*, int arg);
-    extern int _ZNK10dBgCh_Actr8IsOnWallEv(void*);
     extern int atan2_hold_Player_13(int a, int b);
     extern void ApproachAngle(void*, short target, int divisor, int band, int maxStep);
     extern void _Z14ApproachLinearRiii(void*, int b, int c);
@@ -9301,9 +9233,7 @@ int Player::St_Shell_Main()
     extern Player::State data_ov002_021104e4;
     extern int func_02035638(void*);
     extern int func_0203564c(int);
-    extern int _ZNK5dBgPi9GetClsnIDEv(void*);
     extern int AngleDiff(int, int);
-    extern void*_ZNK10dBgCh_Actr13GetWallResultEv(void*);
     extern void func_ov002_020cc660(void*, int);
     extern int func_ov002_020d674c(void*);
     int flag = 0;
@@ -9312,8 +9242,8 @@ int Player::St_Shell_Main()
     if (func_02035638((u8*)((char*)&mMeshClsn))) {
         flag = 1;
         res = (void*)func_0203564c((int)((char*)&mMeshClsn));
-        if (_ZNK5dBgPi9GetClsnIDEv(res) != -1) {
-            void *a = dActor_c::FindWithID((u32)_ZNK5dBgPi9GetClsnIDEv(res));
+        if (((dBgPi *)res)->GetClsnID() != -1) {
+            void *a = dActor_c::FindWithID((u32)((dBgPi *)res)->GetClsnID());
             if (a) {
                 u16 type = ((dActor_c *)a)->actorID;
                 if ((type == 0x14 ? flag : 0) || (type == 0x15 ? 1 : 0)) {
@@ -9324,10 +9254,10 @@ int Player::St_Shell_Main()
         }
     }
 
-    if (_ZNK10dBgCh_Actr8IsOnWallEv((void*)((char*)&mMeshClsn))) {
+    if (mMeshClsn.IsOnWall()) {
         int ang = cstd::atan2(mWallNormalX, mWallNormalZ);
         if (AngleDiff(ang, mPrevAngleY) > 0x6000) {
-            if (((dBgPi *)_ZNK10dBgCh_Actr13GetWallResultEv((void *)((char *)&mMeshClsn)))
+            if (((dBgPi *)mMeshClsn.GetWallResult())
                     ->surface.clps.GetFloorClass() != 1) {
                 flag = 1;
             }
@@ -10032,7 +9962,6 @@ int Player::St_Swim_Main()
     extern void func_ov002_020cd71c(void*);
     extern void func_ov002_020cd550(void*);
     extern unsigned int func_02022d44(unsigned int, unsigned int, int, int, int, void*);
-    extern void* _ZNK10dBgCh_Actr14GetFloorResultEv(void*);
     extern void* func_02037dc4(void*);
     extern int atan2_hold_Player_12(int, int);
     extern void Vec3_RotateYAndTranslate(void*, void*, short, void*);
@@ -10106,7 +10035,7 @@ int Player::St_Swim_Main()
 
     if (mPrevVertSpeed == 0 && mMeshClsn.IsOnGround() != 0) {
         fr = (int *)func_02037dc4(
-            &((dBgPi *)_ZNK10dBgCh_Actr14GetFloorResultEv(&mMeshClsn))->surface);
+            &((dBgPi *)mMeshClsn.GetFloorResult())->surface);
         ang = fr[1];
         if (ang < 0x720 && ang > 0x400 && mPosY >= mWaterSurfaceY - 0xc8000) {
             int at;
@@ -10324,23 +10253,17 @@ int func_ov002_020ce324(char* c)
     extern short data_02082214[];
     extern Player::State data_ov002_02110694;
     extern int func_ov002_020ceb54(void*);
-    extern void *_ZN9dBgCh_LinC1Ev(void*);
-    extern void _ZN9dBgCh_LinD1Ev(void*);
-    extern void _ZN9dBgCh_Lin13SetObjAndLineERK7Vector3S2_P8dActor_c(void *, const Vector3 *a,
-                                                                     const Vector3 *b, void *);
-    extern int _ZN9dBgCh_Lin10DetectClsnEv(void*);
     extern void _ZNK11SurfaceInfo12CopyNormalToER7Vector3(const void* self, void*);
     extern int atan2_hold_Player_11(int a, int b);
     extern int AngleDiff(int a, int b);
     extern int func_ov002_020ce324(void*);
     Vector3 a1, a2, b1, b2, nrm;
-    char rl1[0x78];
     int ok;
 
     if (!(data_0209f49e[gActivePlayerSlot].f0 & 2)) return 0;
     if (func_ov002_020ceb54(c)) return 0;
 
-    _ZN9dBgCh_LinC1Ev(rl1);
+    dBgCh_Lin rl1;
     a1.x = player->mPosX;
     a1.y = player->mPosY;
     a1.z = player->mPosZ;
@@ -10349,9 +10272,8 @@ int func_ov002_020ce324(char* c)
     a2.z = player->mPosZ;
     a1.y += 0x50000;
     a2.y += 0x96000;
-    _ZN9dBgCh_Lin13SetObjAndLineERK7Vector3S2_P8dActor_c(rl1, &a1, &a2, (dActor_c*)c);
-    if (_ZN9dBgCh_Lin10DetectClsnEv(rl1)) {
-        _ZN9dBgCh_LinD1Ev(rl1);
+    rl1.SetObjAndLine(a1, a2, (dActor_c*)c);
+    if (rl1.DetectClsn()) {
         return 0;
     }
 
@@ -10359,11 +10281,10 @@ int func_ov002_020ce324(char* c)
     if (data_0209f4a4[gActivePlayerSlot].f0 >= 0xa00) {
         ok = 1;
     } else {
-        char rl2[0x78];
         int ax, bz, bx, az, by, ay;
         u16 ang = player->mAngleY;
 
-        _ZN9dBgCh_LinC1Ev(rl2);
+        dBgCh_Lin rl2;
         ax = player->mPosX;
         az = player->mPosZ;
         ay = player->mPosY + 0x32000;
@@ -10376,24 +10297,21 @@ int func_ov002_020ce324(char* c)
         b2.x = bx;
         b2.y = by;
         b2.z = bz;
-        _ZN9dBgCh_Lin13SetObjAndLineERK7Vector3S2_P8dActor_c(rl2, &b1, &b2, (dActor_c*)c);
-        if (_ZN9dBgCh_Lin10DetectClsnEv(rl2)) {
-            _ZNK11SurfaceInfo12CopyNormalToER7Vector3(rl2 + 0x14, &nrm);
+        rl2.SetObjAndLine(b1, b2, (dActor_c*)c);
+        if (rl2.DetectClsn()) {
+            _ZNK11SurfaceInfo12CopyNormalToER7Vector3(&rl2.surface, &nrm);
             if (nrm.y == 0) {
                 if (AngleDiff(cstd::atan2(nrm.x, nrm.z), player->mAngleY) >= 0x5000)
                     ok = 1;
             }
         }
-        _ZN9dBgCh_LinD1Ev(rl2);
     }
 
     if (ok == 1) {
         player->mIsUnderwater = 0;
         player->ChangeState(data_ov002_02110694);
-        _ZN9dBgCh_LinD1Ev(rl1);
         return 1;
     }
-    _ZN9dBgCh_LinD1Ev(rl1);
     return 0;
 }
 }
@@ -10507,9 +10425,6 @@ void func_ov002_020ce798(char* c)
     extern int data_0209f32c;
     extern char data_ov002_0211067c;
     extern int _ZN6Player7IsStateERNS_5StateE(void*, void*);
-    extern void _ZN9dBgCh_Lin13SetObjAndLineERK7Vector3S2_P8dActor_c(void *, const Vector3 *a,
-                                                                     const Vector3 *b, void *);
-    extern int _ZN9dBgCh_Lin10DetectClsnEv(void*);
     Player *player = (Player *)c;
     Vector3 v1, v2;
 
@@ -10529,8 +10444,8 @@ void func_ov002_020ce798(char* c)
     v2.z = player->mPosZ;
     v1.y += 0x50000;
     v2.y += 0x96000;
-    _ZN9dBgCh_Lin13SetObjAndLineERK7Vector3S2_P8dActor_c(&rl, &v1, &v2, (dActor_c *)c);
-    if (_ZN9dBgCh_Lin10DetectClsnEv(&rl)) {
+    rl.SetObjAndLine(v1, v2, (dActor_c *)c);
+    if (rl.DetectClsn()) {
         ::Vector3 cp = rl.GetClsnPos();
         if (player->mPosY >= cp.y - 0x82000) {
             LDR_I(&player->mPosY) -= 0x4000;
@@ -10815,8 +10730,6 @@ int func_ov002_020cef84(char *self)
     extern int _ZN6Player7IsInAirEv(void*);
     extern int _ZN6Player7IsStateERNS_5StateE(void*, void*);
     extern void _ZN6Player11ChangeStateERNS_5StateE(void*, void*);
-    extern unsigned _ZNK5dBgPi9GetClsnIDEv(void*);
-    extern void _ZN5dBgPiD1Ev(void*);
     extern char data_ov002_0211001c;
     extern int data_02099368;
     Vector3 v1, v2;
@@ -10886,10 +10799,10 @@ int func_ov002_020cef84(char *self)
                 tmp.f1c = line.clsnID;
                 tmp.f20 = (int)line.owner;
                 tmp.f24 = (int)line.collider;
-                a = dActor_c::FindWithID(_ZNK5dBgPi9GetClsnIDEv(&tmp));
+                a = dActor_c::FindWithID(((dBgPi *)&tmp)->GetClsnID());
                 if (a)
                     ((dActor_c *)a)->OnHitFromUnderneath(*(dActor_c *)self);
-                _ZN5dBgPiD1Ev(&tmp);
+                ((dBgPi *)&tmp)->dBgPi::~dBgPi();
             }
         }
     }
@@ -11247,11 +11160,9 @@ int func_ov002_020cfbdc(char *self)
 {
     Player *player = (Player *)self;
     extern void func_ov002_020d0948(void*);
-    extern void *_ZNK10dBgCh_Actr14GetFloorResultEv(void*);
     extern short data_02082214[];
     extern Player::State data_ov002_021101b4;
     extern int func_ov002_020cfbdc(void*);
-    extern int _ZNK5dBgPi9GetClsnIDEv(void*);
     Vector3 pts[3];
     int idx = (unsigned short)(short)(player->mAngleY + 0x8000) >> 4;
     int r6 = data_02082214[idx * 2];
@@ -11260,9 +11171,9 @@ int func_ov002_020cfbdc(char *self)
     if (player->mStateWaitTimer == 0) {
         if ((player->mClsnFlags & 2) != 0) {
             if (player->mMeshClsn.IsOnGround() != 0) {
-                void *fr = _ZNK10dBgCh_Actr14GetFloorResultEv(&player->mMeshClsn);
-                if (_ZNK5dBgPi9GetClsnIDEv(fr) != -1) {
-                    if (dActor_c::FindWithID((unsigned int)_ZNK5dBgPi9GetClsnIDEv(fr)) != 0) {
+                dBgPi *fr = (dBgPi *)player->mMeshClsn.GetFloorResult();
+                if (fr->GetClsnID() != -1) {
+                    if (dActor_c::FindWithID((unsigned int)fr->GetClsnID()) != 0) {
                         func_ov002_020d0948(self);
                         return 1;
                     }
@@ -11361,37 +11272,29 @@ extern "C" {
 int func_ov002_020cfea4(char *self)
 {
     Player *p = (Player *)self;
-    extern void *_ZNK10dBgCh_Actr14GetFloorResultEv(void *self);
-    extern int _ZNK5dBgPi9GetClsnIDEv(void *self);
     extern int AngleDiff(int a, int b);
-    extern int _ZNK10dBgCh_Actr8IsOnWallEv(void *self);
-    extern void *_ZNK10dBgCh_Actr13GetWallResultEv(void *self);
-    extern void *_ZN9dBgCh_GndC1Ev(void *self);
-    extern void _ZN9dBgCh_Gnd12SetObjAndPosERK7Vector3P8dActor_c(void *self, const Vector3 *pos, void *actor);
-    extern int _ZN9dBgCh_Gnd10DetectClsnEv(void *self);
-    extern void _ZN9dBgCh_GndD1Ev(void *self);
     extern int func_ov002_020cfd84(void *actor, const Vector3 *a, const Vector3 *b);
     extern short data_02082214[];
 
     Vector3 pts[8];
-    void *fr;
+    dBgPi *fr;
     void *other;
     int idx, dx, dz;
     if (p->mStateWaitTimer == 0 && (p->mClsnFlags & 2) != 0) {
         if (p->mMeshClsn.IsOnGround() != 0) {
-            fr = _ZNK10dBgCh_Actr14GetFloorResultEv(&p->mMeshClsn);
-            if (_ZNK5dBgPi9GetClsnIDEv(fr) != -1) {
-                other = dActor_c::FindWithID((unsigned int)_ZNK5dBgPi9GetClsnIDEv(fr));
+            fr = (dBgPi *)p->mMeshClsn.GetFloorResult();
+            if (fr->GetClsnID() != -1) {
+                other = dActor_c::FindWithID((unsigned int)fr->GetClsnID());
                 if (other != 0) {
                     if (AngleDiff(p->mAngleY, ((dActor_c *)other)->mAngleY) >= 0x4000)
                         return 1;
                 }
             }
         }
-        if (_ZNK10dBgCh_Actr8IsOnWallEv(&p->mMeshClsn) != 0) {
-            fr = _ZNK10dBgCh_Actr13GetWallResultEv(&p->mMeshClsn);
-            if (_ZNK5dBgPi9GetClsnIDEv(fr) != -1) {
-                other = dActor_c::FindWithID((unsigned int)_ZNK5dBgPi9GetClsnIDEv(fr));
+        if (p->mMeshClsn.IsOnWall() != 0) {
+            fr = (dBgPi *)p->mMeshClsn.GetWallResult();
+            if (fr->GetClsnID() != -1) {
+                other = dActor_c::FindWithID((unsigned int)fr->GetClsnID());
                 if (other != 0)
                     return 1;
             }
@@ -11418,8 +11321,8 @@ int func_ov002_020cfea4(char *self)
             pts[1].z = pz;
         }
     }
-    _ZN9dBgCh_Gnd12SetObjAndPosERK7Vector3P8dActor_c(&rg, &pts[1], self);
-    if (_ZN9dBgCh_Gnd10DetectClsnEv(&rg) != 0) {
+    rg.SetObjAndPos(pts[1], (dActor_c *)self);
+    if (rg.DetectClsn() != 0) {
         if (rg.clsnY >= p->mPosY - 0x50000) {
             return 1;
         }
@@ -11471,12 +11374,6 @@ int func_ov002_020cfea4(char *self)
 extern "C" {
 int func_ov002_020d0178(char* c, int arg1, int flag)
 {
-    extern void _ZN9dBgCh_Gnd12SetObjAndPosERK7Vector3P8dActor_c(void *self, Vector3 *pos,
-                                                                 void *actor);
-    extern int _ZN9dBgCh_Gnd10DetectClsnEv(void *self);
-    extern void _ZN9dBgCh_Lin13SetObjAndLineERK7Vector3S2_P8dActor_c(void *self, Vector3 *a,
-                                                                     Vector3 *b, void *actor);
-    extern int _ZN9dBgCh_Lin10DetectClsnEv(void* self);
     extern void _ZNK11SurfaceInfo12CopyNormalToER7Vector3(void *self, Vector3 *out);
     extern int atan2_hold_Player_9(int x, int z);
     extern int AngleDiff(int a, int b);
@@ -11522,8 +11419,8 @@ int func_ov002_020d0178(char* c, int arg1, int flag)
             pos1.z = tz;
         }
     }
-    _ZN9dBgCh_Gnd12SetObjAndPosERK7Vector3P8dActor_c(&rg, &pos1, c);
-    if (!_ZN9dBgCh_Gnd10DetectClsnEv(&rg)) {
+    rg.SetObjAndPos(pos1, (dActor_c *)c);
+    if (!rg.DetectClsn()) {
         return 0;
     }
     gy = rg.clsnY;
@@ -11552,8 +11449,8 @@ int func_ov002_020d0178(char* c, int arg1, int flag)
         lineStart.y = arg1;
         lineStart.z = tz;
     }
-    _ZN9dBgCh_Lin13SetObjAndLineERK7Vector3S2_P8dActor_c(&rl, &lineStart, &pos1, c);
-    if (!_ZN9dBgCh_Lin10DetectClsnEv(&rl)) {
+    rl.SetObjAndLine(lineStart, pos1, (dActor_c *)c);
+    if (!rl.DetectClsn()) {
         return 0;
     }
     _ZNK11SurfaceInfo12CopyNormalToER7Vector3(&rl.surface, &normal);
@@ -11580,8 +11477,8 @@ int func_ov002_020d0178(char* c, int arg1, int flag)
     ::Vector3 clsnPos = rl.GetClsnPos();
     lineStart.y += 0x64000;
     pos1.y += 0x64000;
-    _ZN9dBgCh_Lin13SetObjAndLineERK7Vector3S2_P8dActor_c(&rl, &lineStart, &pos1, c);
-    if (_ZN9dBgCh_Lin10DetectClsnEv(&rl)) {
+    rl.SetObjAndLine(lineStart, pos1, (dActor_c *)c);
+    if (rl.DetectClsn()) {
         return 0;
     }
     lineStart.y = p->mPosY;
@@ -11590,8 +11487,8 @@ int func_ov002_020d0178(char* c, int arg1, int flag)
     line2.y = p->mPosY;
     line2.z = p->mPosZ;
     line2.y = gy + 0xa000;
-    _ZN9dBgCh_Lin13SetObjAndLineERK7Vector3S2_P8dActor_c(&rl, &lineStart, &line2, c);
-    if (_ZN9dBgCh_Lin10DetectClsnEv(&rl)) {
+    rl.SetObjAndLine(lineStart, line2, (dActor_c *)c);
+    if (rl.DetectClsn()) {
         return 0;
     }
     p->mPosX = clsnPos.x - normal.x;
@@ -15529,14 +15426,10 @@ int func_ov002_020d6dac(char *self)
 {
     Player *player = (Player *)self;
     typedef struct P2 { int w[2]; } P2;
-    typedef struct dBgPi { void *vtb; int s0, s1, s2, s3, s4; u16 f, g; int h, i, j; } dBgPi;
+    typedef struct dBgPiCopy { void *vtb; int s0, s1, s2, s3, s4; u16 f, g; int h, i, j; } dBgPiCopy;
     extern int _ZNK6Player14GetBodyModelIDEjb(void *thiz, unsigned int a, int b);
     extern void MulVec3Mat4x3(void *v, void *m, void *dst);
     extern void Vec3_MulScalarInPlace(int *v, int s);
-    extern void _ZN9dBgCh_Lin13SetObjAndLineERK7Vector3S2_P8dActor_c(void *self, void *a, void *b, void *act);
-    extern int _ZN9dBgCh_Lin10DetectClsnEv(void *self);
-    extern int _ZNK5dBgPi9GetClsnIDEv(void *r);
-    extern void _ZN5dBgPiD1Ev(void *r);
     extern int func_02053274(int *a, int *b);
     extern void _ZNK11SurfaceInfo12CopyNormalToER7Vector3(void *thiz, void *out);
     extern short atan2_hold_Player_8(int a, int b);
@@ -15547,7 +15440,7 @@ int func_ov002_020d6dac(char *self)
     Vector3_16f dir;
     Vector3 p1;
     Vector3 p2;
-    dBgPi res;
+    dBgPiCopy res;
     dBgCh_Lin rl;
     int *d;
     char *actor;
@@ -15577,9 +15470,9 @@ int func_ov002_020d6dac(char *self)
         Vec3_MulScalarInPlace((int *)&p2, 0x8000);
     }
 
-    _ZN9dBgCh_Lin13SetObjAndLineERK7Vector3S2_P8dActor_c(&rl, &p1, &p2, self);
+    rl.SetObjAndLine(p1, p2, (dActor_c *)self);
 
-    if (_ZN9dBgCh_Lin10DetectClsnEv(&rl) == 0) {
+    if (rl.DetectClsn() == 0) {
         return 0;
     }
 
@@ -15595,9 +15488,9 @@ int func_ov002_020d6dac(char *self)
     res.i = (int)rl.owner;
     res.j = (int)rl.collider;
 
-    actor = (char *)dActor_c::FindWithID(_ZNK5dBgPi9GetClsnIDEv(&res));
+    actor = (char *)dActor_c::FindWithID(((dBgPi *)&res)->GetClsnID());
     if (actor != 0 && (t = (int)(((dActor_c *)actor)->actorID == 0xc2)) != 0) {
-        _ZN5dBgPiD1Ev(&res);
+        ((dBgPi *)&res)->dBgPi::~dBgPi();
         return 0;
     }
 
@@ -15615,7 +15508,7 @@ int func_ov002_020d6dac(char *self)
     Particle::System::New(0, 0x13f, clsnPos.x, clsnPos.y, clsnPos.z, (const Vector3_16f *)(&dir),
                           0);
 
-    _ZN5dBgPiD1Ev(&res);
+    ((dBgPi *)&res)->dBgPi::~dBgPi();
     return 1;
 }
 }
@@ -16648,15 +16541,9 @@ extern "C" {
 void func_ov002_020d8a50(char* self, int which)
 {
     Player *player = (Player *)self;
-    struct dBgCh_Lin { int head[5]; int surf; int rest[25]; };
     extern int _ZNK6Player14GetBodyModelIDEjb(char* p, unsigned int j, int b);
     extern void func_ov002_020dbf4c(char* c);
-    extern void *_ZN9dBgCh_LinC1Ev(struct dBgCh_Lin* r);
-    extern void _ZN9dBgCh_Lin13SetObjAndLineERK7Vector3S2_P8dActor_c(
-        struct dBgCh_Lin * r, Vector3 * a, Vector3 * b, void *actor);
-    extern int _ZN9dBgCh_Lin10DetectClsnEv(struct dBgCh_Lin* r);
     extern void _ZNK11SurfaceInfo12CopyNormalToER7Vector3(void *s, Vector3 *n);
-    extern void _ZN9dBgCh_LinD1Ev(struct dBgCh_Lin* r);
     extern s16 data_02082214[];
     extern u16 data_ov002_0210a5cc[];
     extern void func_ov002_020d8854(char*);
@@ -16730,13 +16617,12 @@ void func_ov002_020d8a50(char* self, int which)
 
     {
         u16 ang = (u16)player->mAngleY;
-        struct dBgCh_Lin ray;
+        dBgCh_Lin ray;
         Vector3 v1;
         Vector3 v2;
         Vector3 normal;
         int idx;
 
-        _ZN9dBgCh_LinC1Ev(&ray);
         idx = ang >> 4;
         v1.x = player->mPosX;
         v1.y = player->mPosY;
@@ -16747,17 +16633,16 @@ void func_ov002_020d8a50(char* self, int which)
         v2.z = v1.z;
         v2.x += data_02082214[idx * 2] * 0x64;
         v2.z += data_02082214[idx * 2 + 1] * 0x64;
-        _ZN9dBgCh_Lin13SetObjAndLineERK7Vector3S2_P8dActor_c(&ray, &v1, &v2, self);
-        if (_ZN9dBgCh_Lin10DetectClsnEv(&ray)) {
-            _ZNK11SurfaceInfo12CopyNormalToER7Vector3(&ray.surf, &normal);
+        ray.SetObjAndLine(v1, v2, (dActor_c *)self);
+        if (ray.DetectClsn()) {
+            _ZNK11SurfaceInfo12CopyNormalToER7Vector3(&ray.surface, &normal);
             if (normal.y == 0) {
                 player->mHorzSpeed = 0xa000;
                 player->mPrevAngleY = player->mAngleY + 0x8000;
-                ::Vector3 clsnPos = ((::dBgCh_Lin*)&ray)->GetClsnPos();
+                ::Vector3 clsnPos = ray.GetClsnPos();
                 func_ov002_020d8d10(self, &clsnPos);
             }
         }
-        _ZN9dBgCh_LinD1Ev(&ray);
     }
 }
 }
@@ -16956,13 +16841,12 @@ extern "C" {
 int func_ov002_020d91e0(char* thiz, int damage, int doPre)
 {
     extern void func_ov002_020da9d4(void* p);
-    extern int _ZN8SaveData16HasPlayerLostCapEv(void);
     extern u8 data_0209f2d8;
     extern char data_0209ee90[];
     Player *player = (Player *)thiz;
     if (doPre != 0) func_ov002_020da9d4(thiz);
 
-    if (_ZN8SaveData16HasPlayerLostCapEv()) {
+    if (SaveData::HasPlayerLostCap()) {
         if (player->mHasWings == 0)
             damage = damage + (damage >> 1);
     }
@@ -20064,17 +19948,11 @@ change574:
 extern "C" {
 int Player::St_TornadoSpin_Main()
 {
-    struct dBgCh_Gnd { int filler[21]; };
-    extern void *_ZN9dBgCh_GndC1Ev(struct dBgCh_Gnd* self);
-    extern void _ZN9dBgCh_Gnd12SetObjAndPosERK7Vector3P8dActor_c(struct dBgCh_Gnd* self, const Vector3* pos, void* actor);
-    extern int _ZN9dBgCh_Gnd10DetectClsnEv(struct dBgCh_Gnd* self);
     extern void Player_AdvanceAnims(void* self);
-    extern void _ZN9dBgCh_GndD1Ev(struct dBgCh_Gnd* self);
     extern Player::State data_ov002_02110454;
     extern short data_02082214[];
     Vector3 pos;
     Vector3 clsnPos;
-    struct dBgCh_Gnd rc;
     int dx = mPosX - ((dActor_c*)mAttachedActor)->mPosX;
     int dz = mPosZ - ((dActor_c*)mAttachedActor)->mPosZ;
     int sx = FX_MUL(dx, 0xf33);
@@ -20114,11 +19992,11 @@ int Player::St_TornadoSpin_Main()
             ((int*)&pos)[1] = mAttachOffsetY + ((dActor_c*)mAttachedActor)->mPosY;
         }
     }
-    _ZN9dBgCh_GndC1Ev(&rc);
+    dBgCh_Gnd rc;
     clsnPos = pos;
     clsnPos.y += 0x64000;
-    _ZN9dBgCh_Gnd12SetObjAndPosERK7Vector3P8dActor_c(&rc, &clsnPos, this);
-    if (_ZN9dBgCh_Gnd10DetectClsnEv(&rc) != 0) {
+    rc.SetObjAndPos(clsnPos, this);
+    if (rc.DetectClsn() != 0) {
         mPosX = pos.x;
         mPosY = pos.y;
         mPosZ = pos.z;
@@ -20129,7 +20007,6 @@ int Player::St_TornadoSpin_Main()
             mPosY = mGroundY;
     }
     Player_AdvanceAnims(this);
-    _ZN9dBgCh_GndD1Ev(&rc);
     return 1;
 }
 }
@@ -21673,7 +21550,6 @@ int Player::St_CrazedCrate_Main() {
     extern int atan2_hold_Player_2(int, int);
     extern int AngleDiff(int, int);
     extern void func_ov002_020e0f38(void*, int);
-    extern void _ZN7fBase_c18MarkForDestructionEv(void*);
     extern void Player_ReleaseHeldActor(void*);
     extern Player::State data_ov002_0211031c;
     char* self = (char*)this;
@@ -21710,7 +21586,7 @@ int Player::St_CrazedCrate_Main() {
         } else {
             if (param1 == 3) {
                 if ((void *)mObjInMouth != 0) {
-                    _ZN7fBase_c18MarkForDestructionEv((void *)mObjInMouth);
+                    ((fBase_c *)mObjInMouth)->MarkForDestruction();
                 }
                 Vector3 pos;
                 pos.x = mPosX;
@@ -22942,7 +22818,6 @@ int func_ov002_020e2c84(char *self)
 extern "C" {
 extern "C" int func_ov002_020e2ea0(Player *self) {
     int func_ov002_020e3078(Player *self, Player::State *s);
-    dBgPi *_ZNK10dBgCh_Actr14GetFloorResultEv(const dBgCh_Actr *self);
     extern signed char data_0209f2f8;
     extern Player::State data_ov002_021105bc;
     extern Player::State data_ov002_021105a4;
@@ -22967,7 +22842,7 @@ extern "C" int func_ov002_020e2ea0(Player *self) {
         return 0;
     }
 
-    dBgPi *cr = _ZNK10dBgCh_Actr14GetFloorResultEv(&p->mMeshClsn);
+    dBgPi *cr = (dBgPi *)p->mMeshClsn.GetFloorResult();
     if (cr->GetClsnID() != -1) {
         if (dActor_c::FindWithID((unsigned int)cr->GetClsnID()) != 0) {
             return 0;
@@ -23853,9 +23728,7 @@ void func_ov002_020e444c(char *c)
     extern int func_ov002_020d225c(void *o);
     extern void Matrix4x3_ApplyInPlaceToTranslation(struct Matrix4x3 *mF, Fix12i x, Fix12i y, Fix12i z);
     extern void func_ov002_020e4374(void *c, int *p1, int *p2);
-    extern void *_ZNK10dBgCh_Actr14GetFloorResultEv(void *self);
     extern struct Matrix4x3 data_020a0e68;
-    extern int _ZNK5dBgPi9GetClsnIDEv(void*);
     extern int func_ov002_020e3f90(char*);
     Player *player = (Player *)c;
     int sp8, spC;
@@ -23914,9 +23787,9 @@ void func_ov002_020e444c(char *c)
         player->mHideShadow = 1;
 
     if (player->mMeshClsn.IsOnGround() != 0) {
-        void *fr = _ZNK10dBgCh_Actr14GetFloorResultEv(&player->mMeshClsn);
-        if (_ZNK5dBgPi9GetClsnIDEv(fr) != -1) {
-            void *a = dActor_c::FindWithID(_ZNK5dBgPi9GetClsnIDEv(fr));
+        dBgPi *fr = (dBgPi *)player->mMeshClsn.GetFloorResult();
+        if (fr->GetClsnID() != -1) {
+            void *a = dActor_c::FindWithID(fr->GetClsnID());
             if (a != 0) {
                 b = (int)(((dActor_c *)a)->actorID == 0xa1);
                 if (b != 0) {
@@ -24459,13 +24332,8 @@ s32 Player::InitResources()
     void func_02035644(void* p, int a);
     void func_ov002_020d6368(void* p);
     void LoadSilverStarAndNumber(void);
-    int _ZN8SaveData16HasPlayerLostCapEv(void);
     void func_02013a00(void);
-    void *_ZN9dBgCh_GndC1Ev(void* p);
-    void _ZN9dBgCh_Gnd12SetObjAndPosERK7Vector3P8dActor_c(void* p, void* v, void* a);
-    void _ZN5dBgCh19StartDetectingWaterEv(void* p);
     int StartWithFarCamera(void);
-    void _ZN9dBgCh_GndD1Ev(void* p);
     void *_ZN7Vector3D1Ev(void *object);
     void func_0203d384(void);
     extern u8 data_0209f2d8;
@@ -24486,7 +24354,6 @@ s32 Player::InitResources()
     void* self = (void*)this;
     char* c = (char*)self;
     Vector3 pos;
-    char rc[0x50];
     unsigned int a, b;
     u8 n8;
     u8 sub;
@@ -24575,26 +24442,25 @@ Ld0:
     }
     data_0209f254 = 0;
     if (data_0209f2fc == 1) {
-        if (_ZN8SaveData16HasPlayerLostCapEv() != 0) func_02013a00();
+        if (SaveData::HasPlayerLostCap() != 0) func_02013a00();
     }
     ((Player *)(c))->func_ov002_020c7dd0(n8);
-    _ZN9dBgCh_GndC1Ev(rc);
+    dBgCh_Gnd rc;
     tz = mPosZ;
     tx = mPosX;
     td = data_0209212c;
     pos.x = tx;
     pos.y = td;
     pos.z = tz;
-    ((dBgCh_Gnd *)rc)->mProbeHeight = td * 2;
-    _ZN9dBgCh_Gnd12SetObjAndPosERK7Vector3P8dActor_c(rc, &pos, c);
-    _ZN5dBgCh19StartDetectingWaterEv(rc);
+    rc.mProbeHeight = td * 2;
+    rc.SetObjAndPos(pos, (dActor_c *)c);
+    rc.StartDetectingWater();
     if (data_0209f2f8 == 0x1d) {
         data_0209211c = 2;
         data_0209f200 = 0xe;
     }
     if (StartWithFarCamera() != 0) mUseFarCamera = 1;
     mPeakY = mPosY;
-    _ZN9dBgCh_GndD1Ev(rc);
     return 1;
 }
 }
