@@ -42,9 +42,7 @@
 #include "dExtModel_c.h"
 #include "dBgCh_Actr.h"
 #include "Sound.h"
-namespace cstd {
-s16 atan2(s32, s32);
-}
+#include "cstd.h"
 
 /* Views of daObjBC_Switch_c.h and daObjFl_Coin_c.h, same member names and
    offsets: including either header renumbers this TU's @NNN labels. */
@@ -116,7 +114,6 @@ extern void *_ZN5dBgPiC1Ev(void* self);
 extern void _ZN5dBgPiD1Ev(void* self);
 extern void Matrix4x3_FromRotationY(void *m, int angle);
 extern short atan2_hold_d_a_coin_1(int a, int b);
-extern int _ZN4cstd4fdivEii(int a, int b);
 }
 
 // @symbol _ZN8daCoin_cD1Ev
@@ -712,7 +709,7 @@ void daCoin_c::func_ov002_020b1cc0()
     if (normal.y != 0) {
         int dotX = FX_MUL(normal.x, mSpeedX);
         int dotZ = FX_MUL(normal.z, mSpeedZ);
-        mVertSpeed = -(_ZN4cstd4fdivEii(dotX + dotZ, normal.y) + 0x8000);
+        mVertSpeed = -(cstd::fdiv(dotX + dotZ, normal.y) + 0x8000);
     }
 
     if ((unsigned)(floorClass - 1) <= 1) {

@@ -36,6 +36,7 @@ enum daObjSm_Lift_c_AssetId {
 #include "SharedFilePtr.h"
 #include "PathPtr.h"
 #include "nitro/fx/fx.h"
+#include "cstd.h"
 
 bool ApproachLinear(short &value, short target, short step);
 
@@ -69,7 +70,6 @@ void d_a_obj_sm_liftPlayLongHold(unsigned int a, unsigned int b, unsigned int c,
 void Math_Function_0203b14c(void *p, int a, int b, int c, int d);
 void Vec3_Sub(void *out, void *a, void *b);
 int LenVec3(void *v);
-int _ZN4cstd4fdivEii(int a, int b);
 void Vec3_MulScalar(void *out, void *v, int scalar);
 void SubVec3(void *a, void *b, void *c);
 }
@@ -212,7 +212,7 @@ int daObjSm_Lift_c::Behavior()
                 mPosY = nodeA.y;
                 mPosZ = nodeA.z;
             } else {
-                int scale = _ZN4cstd4fdivEii(mHorzSpeed, len);
+                int scale = cstd::fdiv(mHorzSpeed, len);
                 Vec3_MulScalar(&scaled, &diff, scale);
                 SubVec3(&mPosX, &scaled, &mPosX);
             }

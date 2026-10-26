@@ -47,9 +47,7 @@
 #include "dBgCh_Actr.h"
 #include "dCc_c.h"
 #include "Sound.h"
-namespace cstd {
-s16 atan2(s32, s32);
-}
+#include "cstd.h"
 
 /* Actor IDs from symbols/actor_debug_names.tsv. */
 enum {
@@ -114,8 +112,6 @@ void d_a_iblPlayLongHold(u32 a, u32 b, u32 c, void *v, u32 d);
 int _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(Player *p, void *pos, u32 a, int b, u8 d, u8 e, u8 f);
 void func_02038414(void *p);
 int atan2_hold_d_a_ibl_1(int y, int x);
-int _ZN4cstd4fdivEii(int a, int b);
-int _ZN8dActor_c14GetSubtractionEss(void *a, short s1, int s2);
 int func_ov002_020ad660(void *a, void *b, void *d, int e);
 int _Z14ApproachLinearRsss(short *value, short target, short step);
 void _Z14ApproachLinearRiii(int *value, int target, int step);
@@ -243,8 +239,8 @@ void daIbl_c::func_ov100_02142130()
     if (mWithMeshClsn.IsOnWall() != 0) {
         ((SurfaceInfo *)((char *)_ZNK10dBgCh_Actr13GetWallResultEv(&mWithMeshClsn) + 4))
             ->CopyNormalTo(*(Vector3 *)&mWallNormalX);
-        int a = cstd::atan2(mWallNormalX, mWallNormalZ);
-        if (_ZN8dActor_c14GetSubtractionEss(this, mPrevAngleY, a) > 0x4000)
+        short a = cstd::atan2(mWallNormalX, mWallNormalZ);
+        if (GetSubtraction(mPrevAngleY, a) > 0x4000)
             mHitWall = 1;
     }
     if (mWithMeshClsn.IsOnGround() == 0)
@@ -256,7 +252,7 @@ void daIbl_c::func_ov100_02142130()
     mPosZ = mPrevPosZ;
     if (mFloorNormalY == 0) return;
     int s = FX_MUL(mFloorNormalX, mSpeedX) + FX_MUL(mFloorNormalZ, mSpeedZ);
-    mVertSpeed = -(_ZN4cstd4fdivEii(s, mFloorNormalY) + 0x8000);
+    mVertSpeed = -(cstd::fdiv(s, mFloorNormalY) + 0x8000);
 }
 
 // @symbol _ZN7daIbl_c19func_ov100_02142264Ev

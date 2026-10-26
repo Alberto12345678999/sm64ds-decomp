@@ -55,6 +55,7 @@
 #include "decl_common.h"
 #include "G2x.h"
 #include "PlayerInput.h"
+#include "cstd.h"
 
 /* Scene_StateResult's view of the ov004 score block at gMgScene
    (dScMgBase_c.h declares it void *): the current score at +0xb4 and the best
@@ -1586,7 +1587,7 @@ void dScMgTeresa_c::UpdateRubbing() {
         int dist;
         d.x = mRubX - mRubPrevX;
         d.y = mRubY - mRubPrevY;
-        dist = _ZN4cstd4sqrtEy((u64)((d.x) * (d.x) + (d.y) * (d.y)));
+        dist = cstd::sqrt((u64)((d.x) * (d.x) + (d.y) * (d.y)));
         if (dist <= 3)
             close = 1;
         if (close == 0) {

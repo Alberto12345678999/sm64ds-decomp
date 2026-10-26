@@ -54,6 +54,7 @@ struct Vector3_16f;
 #include "decl_dBgCh_Actr.h"
 #include "decl_Particle.h"
 #include "dBgCh_Actr.h"
+#include "cstd.h"
 
 bool ApproachLinear(short &value, short target, short step);
 
@@ -86,7 +87,6 @@ void func_ov077_02125e94(daTgz_c *self, int state);
 
 int SurfaceInfo_TestFlag0x20(int *p);
 void func_02012694(unsigned int id, const Vector3 *pos);
-int _ZN4cstd4fdivEii(int a, int b);
 s32 func_02010844(void *unused, Vector3 *v, s16 angle);
 short Vec3_HorzAngle(void *a, void *b);
 int _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void *self, const Vector3 *pos, unsigned int a, int fix, u8 b, u8 c, u8 d);
@@ -212,10 +212,10 @@ extern "C" void func_ov077_02124d08(daTgz_c *self, dBgCh_Actr *clsn)
                 fr->surface.CopyNormalTo(normal);
             }
             if (normal.y != 0) {
-                self->mVertSpeed = -(_ZN4cstd4fdivEii(FX_MUL(normal.x, self->mSpeedX) +
-                                                          FX_MUL(normal.z, self->mSpeedZ),
-                                                      normal.y) +
-                                     0x8000);
+                self->mVertSpeed =
+                    -(cstd::fdiv(FX_MUL(normal.x, self->mSpeedX) + FX_MUL(normal.z, self->mSpeedZ),
+                                 normal.y) +
+                      0x8000);
             }
             self->mAngleX = func_02010844(self, &normal, self->mAngleY);
             self->mAngleZ = func_02010844(self, &normal, (s16)(self->mAngleY - 0x4000));

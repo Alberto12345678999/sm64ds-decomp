@@ -139,9 +139,7 @@ enum daObjMarioCap_c_AssetId {
 #include "SurfaceInfo.h"
 #include "dBgCh_Gnd.h"
 #include "dBgCh_Actr.h"
-namespace cstd {
-s16 atan2(s32, s32);
-}
+#include "cstd.h"
 
 /* --------------------------------------------------------------------------
  * Local shapes the merged members need.
@@ -248,7 +246,6 @@ void  _Z11UpdateAngleRssis(void *p, short target, int step, short limit);
 void  _Z14ApproachLinearRiii(int *x, int target, int step);
 
 short atan2_hold_d_a_obj_mario_cap_1(int y, int x);
-int   _ZN4cstd4fdivEii(int a, int b);
 
 
 /* dCcAc_c::Init and dBgCh_Actr::Init take Fix12<int> by value, which has no
@@ -1073,9 +1070,9 @@ int daObjMarioCap_c::Slide()
     if (mHorzSpeed > 0xf000)
         mHorzSpeed = 0xf000;
     mPrevAngleY = ang;
-    mVertSpeed = -(_ZN4cstd4fdivEii(FX_MUL(mFloorNormalX, mSpeedX) + FX_MUL(mFloorNormalZ, mSpeedZ),
-                                    mFloorNormalY) +
-                   0x8000);
+    mVertSpeed = -(
+        cstd::fdiv(FX_MUL(mFloorNormalX, mSpeedX) + FX_MUL(mFloorNormalZ, mSpeedZ), mFloorNormalY) +
+        0x8000);
     pitch = func_02010844(this, &mFloorNormalX, mAngleY);
     roll = func_02010844(this, &mFloorNormalX, mAngleY - 0x4000);
     _Z11UpdateAngleRssis(&mAngleX, pitch, 4, 0x1000);

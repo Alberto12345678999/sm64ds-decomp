@@ -7176,11 +7176,6 @@
         "return:int"
       ]
     },
-    "_ZN4cstd7strncpyEPcPKcj": {
-      "src/cstd4.cpp": [
-        "return:void"
-      ]
-    },
     "_ZN4dBgW16UpdatePosAndAngsERS_P8dActor_cR5dBgPiR7Vector3P10Vector3_16S8_": {
       "src/game/actors/d_a_btn.cpp": [
         "arity:0",

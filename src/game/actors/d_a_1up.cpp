@@ -139,9 +139,7 @@ struct System {
 #include "Sound.h"
 #include "SharedFilePtr.h"
 #include "nitro/fx/fx.h"
-namespace cstd {
-s16 atan2(s32, s32);
-}
+#include "cstd.h"
 
 bool ApproachLinear(short &value, short target, short step);
 
@@ -208,7 +206,6 @@ void Matrix4x3_FromRotationY(void*, int);
 void Matrix4x3_FromTranslation(void*, int, int, int);
 void GiveCoins(int, int);
 short atan2_hold_d_a_1up_1(int, int);
-int _ZN4cstd4fdivEii(int, int);
 }
 // @symbol _ZN7da1up_cD1Ev
 // @symbol _ZN7da1up_cD0Ev
@@ -913,7 +910,7 @@ void da1up_c::func_ov002_020afc68() {
         mVertSpeed = 0;
     } else {
         int t = FX_MUL(mHorzSpeed, 0xfae);
-        mHorzSpeed = _ZN4cstd4fdivEii(t, 0x1000);
+        mHorzSpeed = cstd::fdiv(t, 0x1000);
     }
     if (mHorzSpeed > 0x28000) {
         mHorzSpeed = 0x28000;

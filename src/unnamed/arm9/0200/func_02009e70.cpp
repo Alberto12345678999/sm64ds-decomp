@@ -9,10 +9,7 @@
 #include "PlayerInput.h"
 #include "nitro/fx/fx.h"
 #include "Sound.h"
-namespace cstd {
-short atan2(int, int);
-s32 fdiv(s32, s32);
-}
+#include "cstd.h"
 
 extern "C" {
 struct CamMode {
@@ -43,7 +40,6 @@ extern s32 Math_Function_0203b14c(s32 *p, s32 tgt, s32 rate, s32 lim, s32 step);
 extern s32 ApproachAngle(s16 *cur, s32 target, s32 div, s32 band, s32 step);
 extern s32 AngleDiff(s32 a, s32 b);
 extern s16 atan2_hold_func_02009e70_1(s32 y, s32 x);
-extern s32 _ZN4cstd4sqrtEy(u64 v);
 extern u32 func_020093f4(void *p, s32 x);
 extern u32 func_020093d4(void *p, s32 x);
 extern s32 func_02009374(void *self);
@@ -463,7 +459,7 @@ s32 func_02009e70(char *self)
                                     s64 distanceSq = sp28;
                                     distanceSq *= sp28;
                                     distanceSq -= (s64)sp40.y * sp40.y;
-                                    r7 = _ZN4cstd4sqrtEy((u64)distanceSq);
+                                    r7 = cstd::sqrt((u64)distanceSq);
                                 }
                                 t0 = cstd::fdiv(r7, Vec3_HorzLen(&sp40));
                                 sp40.x = FX_MUL(sp40.x, t0);

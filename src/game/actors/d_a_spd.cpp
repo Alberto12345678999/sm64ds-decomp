@@ -41,6 +41,7 @@ enum Scuttlebug_AssetId {
 #include "SurfaceInfo.h"
 #include "nitro/fx/fx.h"
 #include "Sound.h"
+#include "cstd.h"
 
 bool ApproachLinear(short &value, short target, short step);
 
@@ -76,7 +77,6 @@ short AngleDiff(short a, short b);
 void  DecIfAbove0_Short(void *p);
 int   Vec3_Dist(const Vector3 *a, const Vector3 *b);
 short Vec3_HorzAngle(const Vector3 *a, const Vector3 *b);
-int   _ZN4cstd4fdivEii(int a, int b);
 
 void  Matrix4x3_FromRotationY(void *m, int angle);
 void  Matrix4x3_ApplyInPlaceToTranslation(void *m, int x, int y, int z);
@@ -858,8 +858,7 @@ void Scuttlebug::func_ov071_0211f148(dBgCh_Actr *w)
             ((SurfaceInfo *)((char *)fr + 4))->CopyNormalTo(normal);
             if (normal.y != 0) {
                 mVertSpeed =
-                    -(_ZN4cstd4fdivEii(FX_MUL(normal.x, mSpeedX) + FX_MUL(normal.z, mSpeedZ),
-                                       normal.y) +
+                    -(cstd::fdiv(FX_MUL(normal.x, mSpeedX) + FX_MUL(normal.z, mSpeedZ), normal.y) +
                       0x8000);
             }
         }

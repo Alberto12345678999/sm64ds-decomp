@@ -36,6 +36,7 @@
 #include "BMD_File.h"
 #include "dExtAnmTexPat_c.h"
 #include "dExtAnmTexSRT_c.h"
+#include "cstd.h"
 /* Typed access to a MascotWalker record from the char* helpers below. */
 #define WALKER(p) ((MascotWalker *)(p))
 /* Typed access to a Presenter record from the char* helpers below. */
@@ -56,7 +57,6 @@ int ApproachLinear(int &, int, int);
 int ApproachLinear2(short &, short, short);
 extern "C" {
 void MulVec3Mat4x3(void *, void *, void *);
-int _ZN4cstd4fdivEii(int, int);
 void Matrix4x3_ApplyInPlaceToRotationZ(void *, short);
 void Matrix4x3_FromQuaternion(void *, void *);
 void MulVec3Mat3x3(void *, void *, void *);
@@ -2650,13 +2650,13 @@ void Camera_ProjectToScreen(char *r4, void *r1, int *r6, int *r5) {
     int i = ang * 2;
     int cosv = data_02082214[i];
     int sinv = data_02082214[i + 1];
-    int f1 = _ZN4cstd4fdivEii(cosv, sinv);
+    int f1 = cstd::fdiv(cosv, sinv);
     int r = FX_MUL(f1, -out[2]);
-    int f2 = _ZN4cstd4fdivEii(out[1], r);
+    int f2 = cstd::fdiv(out[1], r);
     int t1 = FX_MUL(f2, 0x5f800u);
     r5[0] = -((t1 + (int)0xfffa0800) >> 0xc);
     int g = FX_MUL(r, 0x1555u);
-    int f3 = _ZN4cstd4fdivEii(out[0], g);
+    int f3 = cstd::fdiv(out[0], g);
     int t3 = FX_MUL(f3, 0x7f800u);
     r6[0] = (t3 + 0x7f800) >> 0xc;
 }
@@ -2674,13 +2674,13 @@ void Camera_ProjectToScreen16(char *r4, void *r1, short *r5) {
     int i = ang * 2;
     int cosv = data_02082214[i];
     int sinv = data_02082214[i + 1];
-    int f1 = _ZN4cstd4fdivEii(cosv, sinv);
+    int f1 = cstd::fdiv(cosv, sinv);
     int r = FX_MUL(f1, -out[2]);
-    int f2 = _ZN4cstd4fdivEii(out[1], r);
+    int f2 = cstd::fdiv(out[1], r);
     int t1 = FX_MUL(f2, 0x5f800u);
     r5[1] = -((t1 + (int)0xfffa0800) >> 0xc);
     int g = FX_MUL(r, 0x1555u);
-    int f3 = _ZN4cstd4fdivEii(out[0], g);
+    int f3 = cstd::fdiv(out[0], g);
     int t3 = FX_MUL(f3, 0x7f800u);
     r5[0] = (t3 + 0x7f800) >> 0xc;
 }
