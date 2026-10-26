@@ -18,7 +18,7 @@
  *
  * CONSTRUCTION. The reconstructed class initializer
  * daObjWlPolelift_c_classInit (historical placeholder func_ov026_02111678): it opens
- * with `_ZN7fBase_cnwEj(484)`, i.e. fBase_c::operator new(0x1e4). SIZE
+ * with `_ZN7fBase_cnwEm(484)`, i.e. fBase_c::operator new(0x1e4). SIZE
  * 0x1e4 is read directly off the allocator call. The same constructor
  * placement-constructs four sub-objects after installing the vtable chain:
  *   dExtSimpleModel_c                       at 0x0d4 (sizeof 0x50, ends 0x124)

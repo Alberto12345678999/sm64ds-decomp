@@ -1655,7 +1655,7 @@ s32 dScMgSlot1_c::InitResources() {
  * dThIcon_c's table is ov001's and is stored by its configured address. */
 extern "C" { /* .c-derived member: C linkage for the whole block */
 void *dScMgSlot1_c_classInit(void) {
-    dScMgSlot1_c *scene = (dScMgSlot1_c *)_ZN7fBase_cnwEj(sizeof(dScMgSlot1_c));
+    dScMgSlot1_c *scene = (dScMgSlot1_c *)fBase_c::operator new(sizeof(dScMgSlot1_c));
     if (scene) {
         _ZN11dScMgBase_cC2Ev(scene);
         *(int *)scene = (int)&_ZTV12dScMgSlot1_c[2];

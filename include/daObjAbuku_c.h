@@ -4,8 +4,6 @@
 #include "dActor_c.h"
 #include "dCcAc_c.h"
 
-extern "C" void *_ZN7fBase_cnwEj(unsigned size);
-
 /* ov002 water bubble. RTTI ov002:0x02108924 names daObjAbuku_c
  * (_ZTS12daObjAbuku_c); overlay_actors.md maps profile BUBBLE (291).
  * Not daObjLava_c / LAVA_BUBBLE (#2513). Direct base is dActor_c
@@ -33,11 +31,6 @@ struct daObjAbuku_c : dActor_c {
 
     virtual s32  InitResources();         /* slot  0 */
     virtual s32  Behavior();         /* slot  6 */
-
-    static void *operator new(size_t size)
-    {
-        return _ZN7fBase_cnwEj((unsigned)size);
-    }
 
     /* Inline and last so instantiation emits retail D1 then D0 and no D2. */
     virtual ~daObjAbuku_c() {}            /* slots 16 (D1), 17 (D0) */

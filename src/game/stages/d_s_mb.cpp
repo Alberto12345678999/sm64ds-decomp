@@ -322,7 +322,7 @@ s32 dScMB_c::InitResources() {
 
 // @symbol dScMB_c_classInit
 extern "C" void *dScMB_c_classInit(void) {
-    char *p = (char *)_ZN7fBase_cnwEj(0x68);
+    char *p = (char *)fBase_c::operator new(0x68);
     if (p) {
         _ZN7fBase_cC2Ev(p);
         *(int **)p = data_0208e4b8;

@@ -68,7 +68,7 @@ static inline int IsOffScreen(dActor_c *actor) {
    not preserved. Historical alias: ArmedRotatingPlatform_Spawn.
 
    Every instruction the cartridge has here falls out of the one `new`.
-   800 = 0x320 is the class's own size, into the header's leaf operator new;
+   800 = 0x320 is the class's own size, passed to fBase_c::operator new;
    the implicit constructor inlines dBgActor_c's C2 and the derived vptr
    store. Declaring a constructor of our own would emit a `bl` the factory
    does not have. */

@@ -4,8 +4,6 @@
 #include "types.h"
 #include "daObjKaitendai_c.h"
 
-extern "C" void *_ZN7fBase_cnwEj(unsigned size);
-
 /**
  * Rainbow Ride's spinning disc. No fields of its own: the factory
  * allocates 0x320 = sizeof(dBgActor_c), which daObjKaitendai_c fills.
@@ -21,10 +19,6 @@ struct daObjRc_Kaitendai_c : daObjKaitendai_c {
     virtual ~daObjRc_Kaitendai_c() {}
     virtual s32 CleanupResources(); /* slot 3 */
     virtual s32 InitResources();    /* slot 0 */
-
-    static void *operator new(unsigned long size) {
-        return _ZN7fBase_cnwEj(size);
-    }
 };
 
 #ifndef SM64DS_PLATFORM_PC

@@ -553,7 +553,7 @@
       "reason": "Vague-linkage Vector3 destructor. Vector3 carries a user-declared ~Vector3() (include/types.h) and this TU odr-uses several as function locals -- three in func_ov030_02111734 alone. One row however many objects: the emitted symbol is the single vague copy. arm9 owns the kept copy at 0x020072c0, four bytes of bx lr."
     },
     {
-      "symbol": "_ZN7daMky_c21Bundle$976d_a_mky_cppD1Ev",
+      "symbol": "_ZN7daMky_c21Bundle$964d_a_mky_cppD1Ev",
       "disposition": "deadstrip",
       "reason": "The genuine shared dClipper header and native call renumber the same unreferenced four-byte Bundle destructor from945 to963. Complete seven-TU allocated payload/symbol/typed-relocation comparison preserves its body and attributes. It has no configured ROM home; admit only this exact compiler-local symbol. The native ground-query header/call now renumbers that same unreferenced four-byte destructor from963 to962. Complete-object payload, symbol attributes/order and typed-relocation comparison admits only this measured compiler-local rename; it adds no ROM home, alias or broader suppression. The file-local predicate inlines above it then move it to 981. Retiring the local five-named-parameter dExtAnmModel_c::SetAnim extern for the real member call frees five numbers and moves it to 976."
     },

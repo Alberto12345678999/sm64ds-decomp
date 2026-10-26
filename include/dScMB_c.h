@@ -24,7 +24,7 @@
  * own table holds there.
  *
  * CONSTRUCTION. A real Spawn-style factory, dScMB_c_classInit: it opens with
- * `_ZN7fBase_cnwEj(0x68)`, i.e. fBase_c::operator new(0x68). SIZE 0x68 is
+ * `_ZN7fBase_cnwEm(0x68)`, i.e. fBase_c::operator new(0x68). SIZE 0x68 is
  * read directly off the allocator call.
  *
  * The same constructor writes the vtable chain fBase_c -> (dBase_c/dScene_c

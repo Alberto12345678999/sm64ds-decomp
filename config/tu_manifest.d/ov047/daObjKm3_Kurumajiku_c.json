@@ -1202,12 +1202,12 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@378",
+      "from": "@366",
       "to": "@977",
       "evidence": "Actual compiler-local node @378 maps to the existing configured destination @977; byte/relocation identity proves this spelling-only preparation. Older @364/@365 numbering is historical."
     },
     {
-      "from": "@379",
+      "from": "@367",
       "to": "@980",
       "evidence": "Actual compiler-local node @379 maps to the existing configured destination @980; byte/relocation identity proves this spelling-only preparation. Older @364/@365 numbering is historical."
     }

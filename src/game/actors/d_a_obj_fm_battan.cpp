@@ -44,7 +44,7 @@
  *   data_ov023_02112088 / 02112080 are resource handles this TU's sinit
  *   owns; data_ov064_0211ba4c (CLPS) is overlay .data; data_02082214 is the
  *   sine table.
- *   No Player.h / dCamera_c.h. The leaf operator new stays until #2570.
+ *   No Player.h / dCamera_c.h.
  */
 
 // leftovers:
@@ -56,8 +56,7 @@
 // - data_ov023_02112088 / 02112080 are resource handles this TU's sinit
 //   owns; data_ov064_0211ba4c (CLPS) is overlay .data; data_02082214 is the
 //   sine table.
-// - No Player.h / dCamera_c.h here. The leaf operator new stays until the
-//   fBase_c size_t overload work lands.
+// - No Player.h / dCamera_c.h here.
 
 /* Runtime asset handles resolved through the overlay 0 file table. */
 enum d_a_obj_fm_battan_AssetId {
@@ -121,7 +120,7 @@ BattanCollisionFilePtr data_ov023_02112080(ASSET_FM_BATTAN_KCL);
 
 // @symbol daObjFm_Battan_c_classInit
 /* Every instruction the cartridge has here falls out of the one `new`.
- * sizeof(daObjFm_Battan_c) is 0x37c; the leaf operator new forwards to
+ * sizeof(daObjFm_Battan_c) is 0x37c, passed to the inherited
  * fBase_c::operator new; the implicit constructor calls dBgActor_c's C2,
  * stores this class's vptr, and constructs mShadowModel. The null check is
  * the one `new` itself emits. */

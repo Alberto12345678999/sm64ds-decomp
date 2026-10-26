@@ -8,8 +8,6 @@
 #include "dBgCh_Actr.h"
 #include "PathPtr.h"
 
-extern "C" void *_ZN7fBase_cnwEj(unsigned size);
-
 /* The big rolling snowman's BODY actor.
  *
  * NAME. The cartridge names this class itself: ov072 0x0212278c holds the
@@ -117,10 +115,6 @@ struct daBgSnmBdy_c : dActor_c {
        call sites do not establish the original parameter type; an enum
        spelling is not ruled out. This is an inferred declaration. */
     void SetState(int state);
-
-    static void *operator new(size_t size) {
-        return _ZN7fBase_cnwEj((unsigned)size);
-    }
 
     /* Declared last and inline so class instantiation emits the retail D1/D0
        pair in that order, at the bottom of the run, with no separate D2 body.

@@ -3,7 +3,6 @@
 #include "types.h"
 
 #ifdef __cplusplus
-extern "C" void *_ZN7fBase_cnwEj(unsigned size);
 
 #include "dBgActor_c.h"
 
@@ -42,11 +41,6 @@ struct daObjWc_Obj02_c : dBgActor_c {
     int CleanupResources();
     int Behavior();
     int Render();
-
-    static void *operator new(size_t size)
-    {
-        return _ZN7fBase_cnwEj((unsigned)size);
-    }
 };
 
 #ifndef SM64DS_PLATFORM_PC

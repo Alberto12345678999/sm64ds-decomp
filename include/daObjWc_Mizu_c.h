@@ -19,8 +19,6 @@
 #include "dBgActor_c.h"
 #include "dExtAnmTexSRT_c.h"
 
-extern "C" void *_ZN7fBase_cnwEj(unsigned size);
-
 /* WDW water (profile WDW_WATER 101). ov029 RTTI:
  *   _ZTI  0x02114098  __si_class_type_info; base dBgActor_c
  *   _ZTS  0x021140a4  "14daObjWc_Mizu_c"
@@ -55,10 +53,6 @@ struct daObjWc_Mizu_c : dBgActor_c {
     virtual int CleanupResources();    /* slot  3 */
     virtual int Behavior();            /* slot  6 */
     virtual int Render();              /* slot  9 */
-
-    static void *operator new(size_t size) {
-        return _ZN7fBase_cnwEj((unsigned)size);
-    }
 };
 
 #ifndef SM64DS_PLATFORM_PC

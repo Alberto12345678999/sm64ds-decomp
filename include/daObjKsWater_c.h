@@ -4,8 +4,6 @@
 #include "dBgActor_c.h"
 #include "dExtAnmTexSRT_c.h"
 
-extern "C" void *_ZN7fBase_cnwEj(unsigned size);
-
 /* daObjKsWater_c -- the draining water inside the sunken ship (profile KS_MIZU,
  * actor 62, ov017). It sits still until every treasure chest in the room has
  * been opened, then sinks, frame by frame (mPosY -= 0x5000), until it has
@@ -56,10 +54,6 @@ struct daObjKsWater_c : dBgActor_c {
     u8  pad_339[0x3];
     s32 mSoundID;                                 /* 0x33c -- the looping draining-
                                                      water sound's handle */
-
-    static void *operator new(size_t size) {
-        return _ZN7fBase_cnwEj((unsigned)size);
-    }
 };
 
 #ifndef SM64DS_PLATFORM_PC

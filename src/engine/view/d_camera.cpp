@@ -240,7 +240,7 @@ void _ZN3G3i13PerspectiveW_E5Fix12IiES1_S1_S1_S1_S1_bP9Matrix4x3(int, int, int, 
  * is dView_c's view matrix. */
 extern "C" dCamera_c *dCamera_c_classInit()
 {
-    dCamera_c *camera = (dCamera_c *)_ZN7fBase_cnwEj(sizeof(dCamera_c));
+    dCamera_c *camera = (dCamera_c *)fBase_c::operator new(sizeof(dCamera_c));
     if (camera) {
         _ZN7fBase_cC2Ev(camera);
         *(void ***)camera = (void **)&_ZTV7dBase_c;

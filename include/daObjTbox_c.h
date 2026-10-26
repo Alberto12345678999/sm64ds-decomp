@@ -5,8 +5,6 @@
 #include "dExtAnmModel_c.h"
 #include "dCcAc_c.h"
 
-extern "C" void *_ZN7fBase_cnwEj(unsigned size);
-
 /* The cartridge RTTI names this class daObjTbox_c, and that is now the
  * spelling every named virtual carries; the coined `TreasureChest` alias
  * this header used to gloss it with is gone. The ROM's
@@ -64,15 +62,6 @@ struct daObjTbox_c : dActor_c {
     void UpdateModelTransform();
     void SetState(s32 state);
     void CallStateBehavior();
-
-    /* The factory's allocation goes through the actor heap, not the global
-     * operator new: daObjTbox_c_classInit's first call is fBase_c's own
-     * operator new with the literal 0x178. Spelling it here as a leaf
-     * operator new is what lets the factory be written as a plain
-     * `new daObjTbox_c()` and still emit that call. */
-    static void *operator new(unsigned long size) {
-        return _ZN7fBase_cnwEj((unsigned)size);
-    }
 };
 
 #ifndef SM64DS_PLATFORM_PC

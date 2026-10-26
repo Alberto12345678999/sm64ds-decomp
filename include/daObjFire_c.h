@@ -5,8 +5,6 @@
 #include "dActor_c.h"
 #include "dCcAc_c.h"
 
-extern "C" void *_ZN7fBase_cnwEj(unsigned size);
-
 /* Red and blue flames. RTTI ov002:0x02108ee8 names daObjFire_c;
  * overlay_actors.md lists RED_FLAME(316) and BLUE_FLAME(317). The
  * debug table names those profiles OBJ_RED_FIRE / OBJ_BLUE_FIRE.
@@ -31,10 +29,6 @@ struct daObjFire_c : dActor_c {
     virtual int  Behavior();                    /* slot  6 */
     virtual s32  OnYoshiTryEat();               /* slot 18 */
     virtual void OnTurnIntoEgg(Player &player); /* slot 19 */
-
-    static void *operator new(size_t size) {
-        return _ZN7fBase_cnwEj((unsigned)size);
-    }
 };
 
 #ifndef SM64DS_PLATFORM_PC

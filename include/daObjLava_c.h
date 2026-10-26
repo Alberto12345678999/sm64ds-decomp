@@ -4,8 +4,6 @@
 #include "types.h"
 #include "dActor_c.h"
 
-extern "C" void *_ZN7fBase_cnwEj(unsigned size);
-
 /**
  * Popping lava bubbles. No model: every frame it (re)issues particle
  * 0xb7 at the closest player's position, feeding last frame's handle
@@ -23,10 +21,6 @@ struct daObjLava_c : dActor_c {
     virtual ~daObjLava_c() {}
     virtual s32 InitResources(); /* slot 0 */
     virtual s32 Behavior();      /* slot 6 */
-
-    static void *operator new(unsigned long size) {
-        return _ZN7fBase_cnwEj(size);
-    }
 };
 
 #ifndef SM64DS_PLATFORM_PC

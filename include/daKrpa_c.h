@@ -7,8 +7,6 @@
 #include "dBgCh_Actr.h"
 #include "dActor_c.h"
 
-extern "C" void *_ZN7fBase_cnwEj(unsigned size);
-
 /* daKrpa_c is the ROM's own RTTI name for this class (this tree once coined it
  * FlameChomp): the typeinfo at ov070
  * 0x02123340 names dActor_c as the sole base at offset 0, and the class's
@@ -19,8 +17,8 @@ extern "C" void *_ZN7fBase_cnwEj(unsigned size);
  * maps to FLAME_CHOMP. AMP is 266 / BIRIKYU / daBrq_c; flame-chomp fire is
  * 271 / KERONPA_FIRE / daKpFr_c.
  *
- * The factory is `return new daKrpa_c()`. The leaf unsigned-long operator new
- * forwards to `_ZN7fBase_cnwEj` until #2570's fBase overload lands.
+ * The factory is `return new daKrpa_c()`, which calls the inherited
+ * fBase_c::operator new (`_ZN7fBase_cnwEm`).
  *
  * The Spawn constructs the four owned subobjects below at 0xd4..0x1a0 in
  * declaration order; D1 destroys them in exactly the reverse order before
@@ -111,10 +109,6 @@ struct daKrpa_c : dActor_c {
     void func_ov070_0212180c();
     void func_ov070_02121848();
     void func_ov070_02121880(int state);
-
-    static void *operator new(size_t size) {
-        return _ZN7fBase_cnwEj((unsigned)size);
-    }
 };
 
 #ifndef SM64DS_PLATFORM_PC

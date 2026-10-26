@@ -126,8 +126,8 @@ extern unsigned char data_0209f2d8;
  * C linkage preserves the project's existing bare registry-factory label.
  * The address is ROM-proven; the original SM64DS spelling is not preserved.
  * `return new daBmb_c()` MATCHES (size 0x50); the synthesized ctor stores
- * `_ZTV7daBmb_c + 2` because this TU defines the vtable. The retained leaf operator new
- * forwards to the retail `_ZN7fBase_cnwEj` allocator, as does fBase_c's adapter.
+ * `_ZTV7daBmb_c + 2` because this TU defines the vtable. `new` calls the
+ * inherited fBase_c::operator new, the retail `_ZN7fBase_cnwEm` allocator.
  *
  * Reconstructed source-style name: SM64DS proves daBmb_c through RTTI,
  * allocation size, vtable identity, and the BOMBHEI registry profile; later EAD

@@ -28,7 +28,7 @@
  * HootTheOwl_Spawn) now appends after InitResources, at the end of source
  * order:
  * fBase_c::operator new(size_t) forwards `return new daOwl_c();` to the same
- * _ZN7fBase_cnwEj(1016) allocator the loose factory called by hand, and
+ * _ZN7fBase_cnwEm(1016) allocator the loose factory called by hand, and
  * daOwl_c has no user-declared constructor, so the inherited dEnemyBase_c
  * ctor plus the vtable store plus the four member subobjects in field order
  * (dCcAcPos_c, dBgCh_Actr, dExtAnmModel_c, dExtShadowModel_c) come from the implicit

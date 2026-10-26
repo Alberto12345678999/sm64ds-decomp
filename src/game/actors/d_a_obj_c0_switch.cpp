@@ -95,8 +95,8 @@ extern void hold_d_a_obj_c0_switch(dBgW_KcMbg *self, KCL_File *file, const Matri
  * preserved. Historical alias: daObjC0_Switch_c_Spawn.
  *
  * Every instruction the cartridge has here falls out of the one `new`.
- * 0x02111424 loads 800 = 0x320 -- the class's own size -- into the header's
- * leaf operator new; 0x02111434 calls dBgActor_c's C2 and the store at
+ * 0x02111424 loads 800 = 0x320 -- the class's own size -- into the inherited
+ * fBase_c::operator new; 0x02111434 calls dBgActor_c's C2 and the store at
  * 0x02111440 lays down this class's vptr. The null check is the one `new`
  * itself emits. The implicit constructor is what keeps the intervening
  * dBgActor_c construction inlined; declaring a constructor of our own would

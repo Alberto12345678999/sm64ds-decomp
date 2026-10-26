@@ -480,12 +480,12 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@433",
+      "from": "@421",
       "to": "@82",
       "evidence": "Native GetClsnPos value-return initialization shifts the emitted compiler-local name from @435 to @433. The baseline and candidate have identical allocated sections and relocation targets by section/value/size; preserve the existing canonical binding @82."
     },
     {
-      "from": "@434",
+      "from": "@422",
       "to": "@83",
       "evidence": "Native GetClsnPos value-return initialization shifts the emitted compiler-local name from @436 to @434. The baseline and candidate have identical allocated sections and relocation targets by section/value/size; preserve the existing canonical binding @83."
     }

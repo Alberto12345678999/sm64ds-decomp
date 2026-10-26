@@ -1044,7 +1044,6 @@ bool dScEntry_c::BeforeInitResources() {
  * results. Explicit function-pointer casts mark that runtime ABI
  * boundary. */
 extern "C" {
-extern void *_ZN7fBase_cnwEj(unsigned int);
 extern void *_ZN7fBase_cC2Ev(void *);
 extern void __cxa_vec_ctor(void *base, unsigned int count, unsigned int stride,
                            void (*ctor)(void *), void (*dtor)(void *));
@@ -1065,7 +1064,7 @@ void *dScEntry_c_classInit_RESULT(void) {
        tree; typed member expressions fold five instructions in mwccarm.
        Members cast through it (pauseFlags, the three steps, mIcons,
        mOamAnimations) are byte-neutral. */
-    char *p = (char *)_ZN7fBase_cnwEj(sizeof(dScEntry_c));
+    char *p = (char *)fBase_c::operator new(sizeof(dScEntry_c));
     if (p) {
         dScEntry_c::Step v;
         _ZN7fBase_cC2Ev(p);

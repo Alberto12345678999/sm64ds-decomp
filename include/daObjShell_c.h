@@ -9,8 +9,6 @@
 
 #include "dActor_c.h"
 
-extern "C" void *_ZN7fBase_cnwEj(unsigned size);
-
 /* The clam of Jolly Roger Bay and the sunken ship (profile OBJ_SHELL). It sits
  * shut, snaps open on a timer once the player is within 500.0, and hurts
  * whatever its cylinder touches during the open part of that lunge.
@@ -54,15 +52,6 @@ struct daObjShell_c : dActor_c {
        (position >> 3), the way every dExtAnmModel_c actor in this overlay poses
        its model. Called once, from InitResources. ROM name unrecovered. */
     void func_ov064_0211a9b4();
-
-    /* The factory's allocation goes through the actor heap, not the global
-     * operator new: daObjShell_c_classInit's first call is fBase_c's own
-     * operator new with the literal 0x174. Spelling it here as a leaf operator
-     * new is what lets the factory be written as a plain `new daObjShell_c()`
-     * and still emit that call. */
-    static void *operator new(unsigned long size) {
-        return _ZN7fBase_cnwEj((unsigned)size);
-    }
 };
 
 #else

@@ -29,8 +29,6 @@
 
 #ifdef __cplusplus
 
-extern "C" void *_ZN7fBase_cnwEj(unsigned size);
-
 struct daObjClock_c : dActor_c {
     u8    pad_0d0[0x4];    /* 0x0d0 */
     dExtSimpleModel_c mModel; /* 0x0d4 */
@@ -63,13 +61,6 @@ struct daObjClock_c : dActor_c {
 
     /* State helper taking this (S33): the ROM address is the method name. */
     void func_ov013_02111430();
-
-    /* Until #2570 merges, a leaf `unsigned long` new forwards the retail
-       `fBase_c::operator new(unsigned int)`. `unsigned int` here mangles
-       differently and the factories miss. */
-    static void *operator new(size_t size) {
-        return _ZN7fBase_cnwEj((unsigned)size);
-    }
 };
 
 /* Holds the chain to the size both factories' operator new(0x128) evidences.

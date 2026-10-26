@@ -52,9 +52,9 @@ enum d_a_krpa_AssetId {
 #include "nitro/fx/fx.h"
 
 // @symbol daKrpa_c_classInit
-/* `return new daKrpa_c()` emits 0x50; the leaf unsigned-long
- * operator new forwards `_ZN7fBase_cnwEj`. Historical aliases: daKrpa_c_Spawn
- * and FlameChomp_Spawn. */
+/* `return new daKrpa_c()` emits 0x50, calling the inherited
+ * fBase_c::operator new (`_ZN7fBase_cnwEm`). Historical aliases:
+ * daKrpa_c_Spawn and FlameChomp_Spawn. */
 extern "C" daKrpa_c *daKrpa_c_classInit()
 {
     return new daKrpa_c();

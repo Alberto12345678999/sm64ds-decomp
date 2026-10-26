@@ -4,8 +4,6 @@
 #include "types.h"
 #include "dBgActor_c.h"
 
-extern "C" void *_ZN7fBase_cnwEj(unsigned size);
-
 /* Rainbow Ride armed rotating platform (ARMED_ROTATING_PLATFORM 132,
  * profile RC_GURUGURU). ov036 is mixed (tricky triangles / ship wing /
  * donut block / swinging platform / ROTATING_PLATFORM_RR / flying carpet);
@@ -40,12 +38,6 @@ struct daObjRc_Guruguru_c : dBgActor_c {
     virtual s32   CleanupResources();      /* slot  3 */
     virtual s32   Behavior();              /* slot  6 */
     virtual s32   Render();                /* slot  9 */
-
-    /* size_t == unsigned long on this ABI; unsigned int is illegal.
-       A plain `new` without this relocates to the global `_Znwm`. */
-    static void *operator new(size_t size) {
-        return _ZN7fBase_cnwEj((unsigned)size);
-    }
 };
 
 #ifndef SM64DS_PLATFORM_PC

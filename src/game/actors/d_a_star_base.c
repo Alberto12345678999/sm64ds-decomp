@@ -24,7 +24,7 @@ struct daStarBase_c {
  * preserved. Historical alias: StarMarker_Spawn. */
 int *daStarBase_c_classInit(void)
 {
-    int *p = (int *)_ZN7fBase_cnwEj(476);
+    int *p = (int *)_ZN7fBase_cnwEm(476);
     if (p) {
         _ZN8dActor_cC2Ev(p);
         p[0] = (int)_ZTV12daStarBase_c;

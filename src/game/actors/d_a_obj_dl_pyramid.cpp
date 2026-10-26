@@ -321,9 +321,8 @@ s32 daObjDlPyramidDummy_c::InitResources()
 }
 
 /* -------------------------------------------------------------------------- */
-/* Factories. `return new` routes through each class's operator new adapter,
-   which forwards to fBase_c::operator new -- the allocator the cartridge's
-   own factories call. Spelled by hand they read as a four-step C
+/* Factories. `return new` calls the inherited fBase_c::operator new -- the
+   allocator the cartridge's own factories call. Spelled by hand they read as a four-step C
    transcription; this is the original shape. */
 /* -------------------------------------------------------------------------- */
 // @symbol daObjDlPyramidDummy_c_classInit

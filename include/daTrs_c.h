@@ -44,8 +44,6 @@
 #include "dExtShadowModel_c.h"
 #include "dBgCh_Actr.h"
 
-extern "C" void *_ZN7fBase_cnwEj(unsigned size);
-
 /* The flags halfword at 0x5d4. Named (not anonymous inline) so
    check_header_offsets can parse the member declaration. Bit N is the N-th
    field; d_a_trs.cpp's TrsFlag enum spells the same bits as masks for the
@@ -326,12 +324,6 @@ struct daTrs_c : dCapEnemy_c {
     int  InitResources();
     void OnPendingDestroy();
     int  Render();
-
-    /* Existing leaf forwarding adapter: `return new daTrs_c()` routes
-       through the retail allocator. fBase_c also declares an adapter. */
-    static void *operator new(unsigned long size) {
-        return _ZN7fBase_cnwEj((unsigned)size);
-    }
 
     /* The func_ov063_* methods. r0 is this Boo. The address is the name:
        the cartridge does not spell these. func_ov063_021169c4 lives on

@@ -4,8 +4,6 @@
 #include "dBgActor_c.h"
 #include "dExtAnmTexSRT_c.h"
 
-extern "C" void *_ZN7fBase_cnwEj(unsigned size);
-
 /* CASTLE_WATER (338) -- ov009/daObjMcWater_c, the castle water plane.
  * The moat outside and the flooded basement inside are the same actor.
  *
@@ -46,10 +44,6 @@ struct daObjMcWater_c : dBgActor_c {
     virtual int CleanupResources();    /* slot  3 */
     virtual int Behavior();            /* slot  6 */
     virtual int Render();              /* slot  9 */
-
-    static void *operator new(size_t size) {
-        return _ZN7fBase_cnwEj((unsigned)size);
-    }
 };
 
 #ifndef SM64DS_PLATFORM_PC

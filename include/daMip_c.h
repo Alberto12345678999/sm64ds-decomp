@@ -44,8 +44,6 @@
 #include "dExtShadowModel_c.h"
 #include "dBgCh_Actr.h"
 
-extern "C" void *_ZN7fBase_cnwEj(unsigned size);
-
 struct daMip_c : dEnemyBase_c {
     dCcAc_c           mdCcAc_c;   /* 0x110 */
     dBgCh_Actr                 mWithMeshClsn;         /* 0x144 */
@@ -164,10 +162,6 @@ struct daMip_c : dEnemyBase_c {
     int  StateIdleMain();
     int  StateTalkInit();                  /* record 0x021306dc */
     int  StateTalkMain();
-
-    static void *operator new(unsigned long size) {
-        return _ZN7fBase_cnwEj((unsigned)size);
-    }
 };
 
 #ifndef SM64DS_PLATFORM_PC
@@ -176,8 +170,8 @@ typedef char daMip_c_size_must_be_0x474[sizeof(daMip_c) == 0x474 ? 1 : -1];
 #endif
 
 /* ~daMip_c, the key function, owns the compiler-emitted definition of this
- * vtable. The factory is `return new daMip_c()`; the leaf size_t operator new
- * forwards to `_ZN7fBase_cnwEj` until #2570's fBase overload lands. */
+ * vtable. The factory is `return new daMip_c()`, which calls the inherited
+ * fBase_c::operator new (`_ZN7fBase_cnwEm`). */
 extern int _ZTV7daMip_c[];
 
 #endif /* DAMIP_C_H */

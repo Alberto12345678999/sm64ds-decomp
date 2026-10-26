@@ -969,7 +969,7 @@ int daObjKey_c::InitResources()
 }
 
 /* Both profiles build the same class. fBase_c's inline operator new forwards to
- * _ZN7fBase_cnwEj; the implicit constructor inlines dEnemyBase_c's base step,
+ * _ZN7fBase_cnwEm; the implicit constructor inlines dEnemyBase_c's base step,
  * the vptr store and the five member constructors. */
 // @symbol daObjKey_c_classInit_LAST_STAR
 extern "C" daObjKey_c *daObjKey_c_classInit_LAST_STAR()

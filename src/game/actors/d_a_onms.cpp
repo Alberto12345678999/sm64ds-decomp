@@ -7,7 +7,7 @@
  * are twelve words, not .r/.t. The factory daOnms_c_classInit
  * (0x02132018..0x02132074, historical alias ToxBox_Spawn) now appends after
  * InitResources, at the end of source order: fBase_c::operator new(size_t)
- * forwards `return new daOnms_c();` to the same _ZN7fBase_cnwEj allocator the
+ * forwards `return new daOnms_c();` to the same _ZN7fBase_cnwEm allocator the
  * loose factory called by hand, and daOnms_c has no user-declared
  * constructor, so the inherited dBgActor_c ctor plus the vtable store plus
  * the member subobjects in field order (dBgCh_Actr, dCcAcPos_c, PathPtr)

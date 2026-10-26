@@ -11,7 +11,6 @@
 #include "types.h"
 
 #ifdef __cplusplus
-extern "C" void *_ZN7fBase_cnwEj(unsigned size);
 #include "dBgActor_c.h"
 #include "dExtShadowModel_c.h"
 
@@ -42,10 +41,6 @@ struct daObjCtMecha03_c : dBgActor_c {
     /* Helpers taking this. The ROM address is the method name. */
     void func_ov065_02119fe8();
     int func_ov065_0211a114();
-
-    static void *operator new(size_t size) {
-        return _ZN7fBase_cnwEj((unsigned)size);
-    }
 
     /* Declared last and inline so class instantiation emits the retail D1/D0
      * pair in cartridge order without a separate leaf D2 body. */
