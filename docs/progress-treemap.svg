@@ -20189,11 +20189,11 @@ matched: yes</title></rect><rect x="669.75" y="94.57" width="24.96" height="3.86
 module: ov006
 addr: 0x020c2154
 size: 144 bytes
-matched: yes</title></rect><rect x="694.71" y="94.57" width="9.71" height="3.86" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>Mascot_Destruct
+matched: yes</title></rect><rect x="694.71" y="94.57" width="9.71" height="3.86" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN6MascotD1Ev
 module: ov006
 addr: 0x020c21e4
 size: 56 bytes
-matched: yes</title></rect><rect x="704.42" y="94.57" width="11.09" height="3.86" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>Mascot_Construct
+matched: yes</title></rect><rect x="704.42" y="94.57" width="11.09" height="3.86" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN6MascotC1Ev
 module: ov006
 addr: 0x020c221c
 size: 64 bytes
@@ -20281,11 +20281,11 @@ matched: yes</title></rect><rect x="780.06" y="98.42" width="56.52" height="6.72
 module: ov006
 addr: 0x020c3050
 size: 568 bytes
-matched: yes</title></rect><rect x="836.59" y="98.42" width="33.83" height="6.72" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>Presenter_Destruct
+matched: yes</title></rect><rect x="836.59" y="98.42" width="33.83" height="6.72" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN9PresenterD1Ev
 module: ov006
 addr: 0x020c3288
 size: 340 bytes
-matched: yes</title></rect><rect x="870.42" y="98.42" width="33.04" height="6.72" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>Presenter_Construct
+matched: yes</title></rect><rect x="870.42" y="98.42" width="33.04" height="6.72" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN9PresenterC1Ev
 module: ov006
 addr: 0x020c33dc
 size: 332 bytes
@@ -20357,19 +20357,19 @@ matched: yes</title></rect><rect x="763.04" y="105.14" width="43.70" height="3.1
 module: ov006
 addr: 0x020c3d88
 size: 204 bytes
-matched: yes</title></rect><rect x="806.73" y="105.14" width="6.00" height="3.12" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>FallingPetal_Destruct
+matched: yes</title></rect><rect x="806.73" y="105.14" width="6.00" height="3.12" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN12FallingPetalD1Ev
 module: ov006
 addr: 0x020c3e54
 size: 28 bytes
-matched: yes</title></rect><rect x="812.73" y="105.14" width="48.84" height="3.12" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>FlowerFace_Destruct
+matched: yes</title></rect><rect x="812.73" y="105.14" width="48.84" height="3.12" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10FlowerFaceD1Ev
 module: ov006
 addr: 0x020c3e70
 size: 228 bytes
-matched: yes</title></rect><rect x="861.57" y="105.14" width="46.27" height="3.12" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>FlowerFace_Construct
+matched: yes</title></rect><rect x="861.57" y="105.14" width="46.27" height="3.12" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10FlowerFaceC1Ev
 module: ov006
 addr: 0x020c3f54
 size: 216 bytes
-matched: yes</title></rect><rect x="907.84" y="105.14" width="6.00" height="3.12" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>FallingPetal_Construct
+matched: yes</title></rect><rect x="907.84" y="105.14" width="6.00" height="3.12" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN12FallingPetalC1Ev
 module: ov006
 addr: 0x020c402c
 size: 28 bytes
@@ -27381,7 +27381,7 @@ matched: yes</title></rect><rect x="1033.08" y="663.68" width="15.27" height="5.
 module: ov006
 addr: 0x0212a5c8
 size: 136 bytes
-matched: yes</title></rect><rect x="928.40" y="669.63" width="5.99" height="0.45" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>Petal_ElemDtor
+matched: yes</title></rect><rect x="928.40" y="669.63" width="5.99" height="0.45" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN13dScMgFlower_c5PetalD1Ev
 module: ov006
 addr: 0x0212a650
 size: 4 bytes
@@ -27413,7 +27413,7 @@ matched: yes</title></rect><rect x="934.39" y="773.16" width="6.71" height="14.7
 module: ov006
 addr: 0x0212b7f8
 size: 148 bytes
-matched: yes</title></rect><rect x="941.10" y="684.72" width="3.24" height="0.83" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>Petal_ElemCtor
+matched: yes</title></rect><rect x="941.10" y="684.72" width="3.24" height="0.83" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN13dScMgFlower_c5PetalC1Ev
 module: ov006
 addr: 0x0212b88c
 size: 4 bytes
