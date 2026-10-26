@@ -1,12 +1,9 @@
 //cpp
 
-namespace IRQ {
-int Disable(void);
-}
+namespace IRQ { int Disable(); void Restore(unsigned int); }
 extern "C" {
 extern int data_020a9db8;
 
-extern void _ZN3IRQ7RestoreEj(int saved);
 extern int func_02065edc(unsigned int x);
 
 int func_0206703c(unsigned int arg0, int sel) {
@@ -19,18 +16,18 @@ int func_0206703c(unsigned int arg0, int sel) {
     case 2: code = 0xe; val = 2; break;
     case 3: code = 7;   val = 5; break;
     default:
-        _ZN3IRQ7RestoreEj(saved);
+        IRQ::Restore(saved);
         return 0;
     }
     if (data_020a9db8 != 0 && func_02065edc(arg0) != 0) {
         unsigned int i = arg0 - 1;
         if (*(int *)((char *)data_020a9db8 + i * 4 + 0x14e8) == code) {
             *(short *)((char *)data_020a9db8 + i * 2 + 0x1754) = (short)val;
-            _ZN3IRQ7RestoreEj(saved);
+            IRQ::Restore(saved);
             return 1;
         }
     }
-    _ZN3IRQ7RestoreEj(saved);
+    IRQ::Restore(saved);
     return 0;
 }
 }
