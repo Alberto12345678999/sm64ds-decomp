@@ -241,7 +241,8 @@ extern s8 data_0209f2f8;
 void LoadSilverStarAndNumber(void);
 void LoadBlueCoinModel(void* c);
 void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void* self, void* a, Fix12i r, Fix12i h, unsigned int e, unsigned int g);
-void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(void* self, void* a, Fix12i b, Fix12i cc, void* d, Fix12i e);
+/* Parameter names keep this TU's @NNN. */
+typedef void BgchInitAt_(void* self, void* a, Fix12i b, Fix12i cc, void* d, Fix12i e);
 extern SharedFilePtr *const sKuriboAnimationFiles[7];
 extern int data_ov084_02130258[];
 extern int data_ov084_02130208[];
@@ -1976,7 +1977,7 @@ int daKrb_c::InitResources() {
     if (mGoombaType == GOOMBA_LARGE)
         *(int *)(((int)&mdCcAc_c.vulnFlags) & 0xFFFFFFFFFFFFFFFF) &= ~HIT_YOSHI_TONGUE;
 
-    _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(&mWithMeshClsn, c, mScaleX * 0x3c,
+    mWithMeshClsn.Init( (dActor_c *)c, mScaleX * 0x3c,
                                                                 mScaleX * 0x3c, 0, 0);
     mWithMeshClsn.StartDetectingWater();
 

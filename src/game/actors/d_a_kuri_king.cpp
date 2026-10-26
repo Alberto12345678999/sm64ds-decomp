@@ -180,7 +180,8 @@ extern "C" struct Matrix4x3 data_020a0e68;
 extern "C" struct Matrix4x3 IDENTITY_MATRIX4X3;
 extern "C" void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
     void *self, void *actor, void *pos, s32 fx, s32 fy, u32 a, u32 b);
-extern "C" void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(
+/* Parameter names keep this TU's @NNN. */
+typedef void BgchInitAt_(
     void *self, void *actor, s32 fa, s32 fb, void *v0, void *v1);
 extern "C" void d_a_kuri_kingEarthquakeHold(void *thiz, void *v, int f);
 extern "C" void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
@@ -1786,7 +1787,7 @@ int daKuriKing_c::InitResources()
     mTextureSequence.speed = 0;
     mMaterialChanger.currFrame = (s32)(data_ov074_02122e04[mSizeIndex] << 0xc);
 
-    _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(&mWithMeshClsn, this, 0x14000, 0x14000, 0, 0);
+    mWithMeshClsn.Init( this, 0x14000, 0x14000, 0, 0);
 
     mDirection = -1;
     mMaxWalkSpeed = (s16)(mDirection * data_ov074_02122dfc[mSizeIndex]);
@@ -1972,8 +1973,7 @@ int daKuriKing_c::func_ov074_02122634()
     this->mTerminalVelocity = -0x3c000;
     this->mMegaMushroomID = 0;
 
-    _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(
-        &this->mWithMeshClsn,
+    this->mWithMeshClsn.Init(
         this,
         0x14000, 0x14000,
         (Vector3_16 *)0, 0);

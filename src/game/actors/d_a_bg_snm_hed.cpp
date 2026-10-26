@@ -45,8 +45,6 @@ int Vec3_HorzDist(const void *a, const void *b);
 short Vec3_HorzAngle(const void *a, const void *b);
 void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(
     void *t, void *a, int b, int c, unsigned int d, unsigned int e);
-void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(
-    void *t, void *a, int b, int c, void *d, void *e);
 }
 
 bool ApproachLinear(short &value, short target, short step);
@@ -310,8 +308,7 @@ int daBgSnmHed_c::InitResources()
     mScaleX = 0x1800;
     mScaleY = 0x1800;
     mScaleZ = 0x1800;
-    _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(
-        &mWithMeshClsn, this, 0x96000, 0x96000, 0, 0);
+    mWithMeshClsn.Init( this, 0x96000, 0x96000, 0, 0);
 
     pos.x = mPosX;
     pos.y = mPosY;

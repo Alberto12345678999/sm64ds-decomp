@@ -190,7 +190,8 @@ extern void Vec3_Add(void *out, const void *a, const void *b);
 extern void MulVec3Mat4x3(const void *in, const void *m, void *out);
 extern void func_0203568c(void *p, int v);
 extern void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *mc, void *a, Fix12i r, unsigned int h, unsigned int x, unsigned int y);
-extern void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(void *self, void *actor, int radius, int height, void *a, void *b);
+/* Parameter names keep this TU's @NNN. */
+typedef void BgchInitAt_(void *self, void *actor, int radius, int height, void *a, void *b);
 extern unsigned char DecIfAbove0_Byte(unsigned char *p);
 extern int _ZN4cstd4fdivEii(int a, int b);
 extern void Math_Function_0203b14c(void *ptr, int target, int rate, int limit, int step);
@@ -1507,8 +1508,7 @@ int daYegg_c::InitResources()
         mScaleZ = 0x1000;
         _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(
             &mdCcAc_c, this, 0x46000, 0x8c000, 0x200002, 0xa08000);
-        _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(
-            &mWithMeshClsn, this, 0x28000, 0x28000, 0, 0);
+        mWithMeshClsn.Init( this, 0x28000, 0x28000, 0, 0);
         break;
     case 2:
         mScaleX = 0x2000;
@@ -1516,8 +1516,7 @@ int daYegg_c::InitResources()
         mScaleZ = 0x2000;
         _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(
             &mdCcAc_c, this, 0x78000, 0xa0000, 0x200002, 0xa08000);
-        _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(
-            &mWithMeshClsn, this, 0x64000, 0x64000, 0, 0);
+        mWithMeshClsn.Init( this, 0x64000, 0x64000, 0, 0);
         break;
     default:
         break;

@@ -117,7 +117,6 @@ unsigned int d_a_tgzNewHold(unsigned int uniqueID, unsigned int effectID, int x,
                             const void *dir, void *callback);
 extern int data_0209f32c;
 void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *self, dActor_c *actor, int radius, int height, unsigned int flags, unsigned int vulnFlags);
-void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(void *self, dActor_c *actor, int radius, int height, Vector3_16 *a, Vector3_16 *b);
 extern char IDENTITY_MATRIX4X3;
 extern signed char data_0209f2f8;
 }
@@ -844,7 +843,7 @@ int daTgz_c::InitResources()
     if (!mShadowModel.InitCylinder())
         return 0;
     _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, this, 0x2d000, 0x3c000, 0x200000, 0x4a3d0);
-    _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(&mWithMeshClsn, this, 0x2d000, 0,
+    mWithMeshClsn.Init( this, 0x2d000, 0,
                                                                 &mPrevAngle, &mAngle);
     mScaleX = 0x1000;
     mScaleY = 0x1000;

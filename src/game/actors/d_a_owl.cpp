@@ -186,8 +186,6 @@ void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES
     void *self, void *sm, Matrix4x3 *m, Fix12i fx, int t, unsigned int u);
 void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
     void *, void *, int *, int, int, unsigned int, unsigned int);
-void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(
-    void *, void *, int, int, void *, int);
 int IsStarCollectedInCurLevel(int);
 void DecIfAbove0_Short(void *);
 }
@@ -697,7 +695,7 @@ int daOwl_c::InitResources()
     mTerminalVelocity = -0x1e000;
     mAnimSpeed = 0x1000;
     mOpacity = OPACITY_MAX;
-    _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(&mWithMeshClsn, this, 0x50000, 0x64000, (void *)0, 0);
+    mWithMeshClsn.Init( this, 0x50000, 0x64000, (Vector3_16 *)0, 0);
     func_ov094_02136188(OWL_STATE_DORMANT);
 
     if (data_0209f2f8 == 7) {

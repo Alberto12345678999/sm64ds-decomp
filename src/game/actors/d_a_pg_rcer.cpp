@@ -65,9 +65,6 @@ extern int Vec3_Dist(const Vector3 *a, const Vector3 *b);
 extern void Matrix4x3_FromRotationY(Matrix4x3 *m, short angle);
 
 extern void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *clsn, void *actor, int radius, int height, unsigned int flags, unsigned int vuln);
-extern void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(void *clsn, void *actor,
-                                                                        int radius, int height,
-                                                                        void *a, int b);
 extern void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
     void *self, void *shadow, void *mtx, int rad, int height, unsigned int opacity);
 
@@ -112,14 +109,14 @@ int daPgRcer_c::InitResources()
         mScaleX = 0x1999;
         mScaleY = 0x1000;
         mScaleZ = 0x1999;
-        _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(&mWithMeshClsn, this, 0xd0000, 0xd0000, 0, 0);
+        mWithMeshClsn.Init( this, 0xd0000, 0xd0000, 0, 0);
         SetRanges(0xf0000, 0xf0000, 0x1c20000, 0x1c20000);
     } else {
         _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, this, 0x82000, 0x12c000, 0x800004, 0);
         mScaleX = 0x1000;
         mScaleY = 0x1000;
         mScaleZ = 0x1000;
-        _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(&mWithMeshClsn, this, 0x82000, 0x82000, 0, 0);
+        mWithMeshClsn.Init( this, 0x82000, 0x82000, 0, 0);
     }
 
     mStarSlot = (u8)TrackStar((u8)((param1 >> 8) & 0xf), 2);

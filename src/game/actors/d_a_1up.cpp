@@ -1066,7 +1066,8 @@ struct SystemHold {
 };
 }
 void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void* thiz, dActor_c* a, int r, int h, unsigned int e, unsigned int g);
-void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(void* thiz, dActor_c* a, int r, int h, Vector3_16* p, int q);
+/* Parameter names keep this TU's @NNN. */
+typedef void BgchInitAt_(void* thiz, dActor_c* a, int r, int h, Vector3_16* p, int q);
 int IsStarCollectedInCurLevel(int a);
 }
 
@@ -1254,7 +1255,7 @@ int da1up_c::InitResources()
     mSpawnPosZ = mPosZ;
     mVertAccel = -0x2000;
     mTerminalVelocity = -0x32000;
-    _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(&mWithMeshClsn, (dActor_c*)this, 0x32000, 0x32000, 0, 0);
+    mWithMeshClsn.Init( (dActor_c*)this, 0x32000, 0x32000, 0, 0);
     mWithMeshClsn.SetLimMovFlag();
     mParticleID = 0;
 

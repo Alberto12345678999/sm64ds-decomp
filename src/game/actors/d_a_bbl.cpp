@@ -54,8 +54,6 @@ void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(
  * carries Fix12<int> in its own name, so the call site has to spell the ABI
  * seam -- and that definition takes every argument past the receiver as a
  * plain word, which is why the owner is handed over as one. */
-void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(
-    dBgCh_Actr *self, int actor, int radius, int height, int rotA, int rotB);
 
 /* Eight-byte pointer-to-member records. The cartridge stores the four
  * constants in .data and copies them into the two .bss tables below. */
@@ -112,8 +110,7 @@ int daBbl_c::InitResources()
         mTerminalVelocity = -0x3c000;
     }
     mStateTimer = 0;
-    _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(
-        &mWithMeshClsn, (int)this, 0x32000, 0x32000, 0, 0);
+    mWithMeshClsn.Init( (dActor_c *)(int)this, 0x32000, 0x32000, 0, 0);
     mWithMeshClsn.SetLimMovFlag();
     if (mJumps != 0) {
         func_ov064_021187ec((State *)data_ov064_0211c7c8);

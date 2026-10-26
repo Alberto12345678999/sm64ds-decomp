@@ -138,7 +138,8 @@ extern u32 data_ov034_02113828[];
 extern s16 data_02082214[];
 extern void *data_0209f318;
 extern void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(void *self, void *actor, void *pos, int fix, u32 a, u32 b, u32 cc);
-extern void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(void *self, void *actor, int fix1, int fix2, void *v, int t);
+/* Parameter names keep this TU's @NNN. */
+typedef void BgchInitAt_(void *self, void *actor, int fix1, int fix2, void *v, int t);
 }
 
 // @symbol _ZN12daHanachan_cD1Ev
@@ -1258,7 +1259,7 @@ int daHanachan_c::InitResources()
     } while (j < 5);
 
     SetState(0);
-    _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(&mWithMeshClsn, this, 0x14000, 0x14000, 0, 0);
+    mWithMeshClsn.Init( this, 0x14000, 0x14000, 0, 0);
     mHealth = 4;
     UpdateSegmentModels();
     mHomePos.x = mPosX;

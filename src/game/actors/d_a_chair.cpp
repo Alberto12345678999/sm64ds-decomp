@@ -104,7 +104,8 @@ short Vec3_HorzAngle(const Vector3 *a, const Vector3 *b);
 int AngleDiff(int a, int b);
 void Matrix4x3_FromRotationZXYExt(void *m, int x, int y, int z);
 
-void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(
+/* Parameter names keep this TU's @NNN. */
+typedef void BgchInitAt_(
     void *self, dActor_c *actor, int radius, int height,
     Vector3_16 *rot, Vector3_16 *unk);
 void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
@@ -136,8 +137,7 @@ s32 daChair_c::InitResources()
     BMD_File *file = (BMD_File *)dExtSimpleModel_c::LoadFile(data_ov020_02114af0);
     mModel.SetFile(file, 1, -1);
     mShadowModel.InitCylinder();
-    _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(
-        &mWithMeshClsn, this, 0x32000, 0x64000, 0, 0);
+    mWithMeshClsn.Init( this, 0x32000, 0x64000, 0, 0);
     mClsnOffset.x = 0;
     mClsnOffset.y = 0;
     mClsnOffset.z = 0;

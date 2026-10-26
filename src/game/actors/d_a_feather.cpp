@@ -59,7 +59,6 @@ void func_ov002_020b2c44(daFeather_c *c);
    VALUE (6az). dBgCh_Actr::Init's header is Fix12i, which mangles as i;
    ROM is Fix12<int>. */
 void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(dCcAc_c *self, dActor_c *a, Fix12i b, Fix12i c, unsigned int d, unsigned int e);
-void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(dBgCh_Actr *self, dActor_c *a, Fix12i b, Fix12i c, Vector3_16 *d, Vector3_16 *e);
 u32 d_a_featherNewHold(u32 kind, u32 sub, int x, int y, int z, const Vector3_16 *vec, void *cb);
 void dBgCh_Actr_UpdateContinuous_Veneer(void* p);
 int _Z15ApproachLinear2Rsss(short* ref, short target, short rate);
@@ -134,7 +133,7 @@ int daFeather_c::InitResources()
     mTerminalVelocity = -0x28000;
     _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, this, 0x6e000, 0x6e000, 0x100002, 0);
     func_ov002_020b2c44(this);
-    _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(&mWithMeshClsn, this, 0x28000, 0xa000, 0, 0);
+    mWithMeshClsn.Init( this, 0x28000, 0xa000, 0, 0);
 
     mAngleX = 0x4000;
     mAngleZ = -0x4000;

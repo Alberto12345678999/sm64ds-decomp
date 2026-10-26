@@ -113,7 +113,8 @@ void  _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *self, dActor_c *actor,
                                                 int radius, int height,
                                                 unsigned int flags,
                                                 unsigned int vulnFlags);
-void  _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(
+/* Parameter names keep this TU's @NNN. */
+typedef void BgchInitAt_(
           void *self, dActor_c *actor, int radius, int height,
           Vector3_16 *a, Vector3_16 *b);
 
@@ -225,8 +226,7 @@ int Scuttlebug::InitResources()
         return 0;
     _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(
         &mdCcAc_c, ((dActor_c *)this), 0x46000, 0x64000, 0x200000, 0x6eff0);
-    _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(
-        &mWithMeshClsn, ((dActor_c *)this), 0x50000, 0x50000, (Vector3_16 *)0, (Vector3_16 *)0);
+    mWithMeshClsn.Init( ((dActor_c *)this), 0x50000, 0x50000, (Vector3_16 *)0, (Vector3_16 *)0);
     mWithMeshClsn.StartDetectingWater();
     mHomeX = mPosX;
     mHomeY = mPosY;

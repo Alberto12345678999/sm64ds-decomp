@@ -110,8 +110,8 @@ void  func_02012694(int id, const Vector3 *pos);
 int d_a_menboNewHold(unsigned int a0, unsigned int a1, int a2, int a3, int a4, int a5, int a6);
 
 void  _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(void *self, dActor_c *a, const Vector3 *v, LocFix12 r, LocFix12 h, unsigned int e, unsigned int g);
-/* Not dBgCh_Actr::Init: the header method mangles with int, the ROM symbol with Fix12<int>. */
-void  _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(dBgCh_Actr *self, int a, LocFix12 r, LocFix12 h, int p, int q);
+/* Parameter names keep this TU's @NNN. */
+typedef void BgchInitAt_(dBgCh_Actr *self, int a, LocFix12 r, LocFix12 h, int p, int q);
 int   SurfaceInfo_TestFlag0x20(const SurfaceInfo *p);
 void  func_0203558c(void *self);
 int   func_02035638(u8 *p);
@@ -855,7 +855,7 @@ int daMenbo_c::InitResources()
     mScaleX = 0x1000;
     mScaleY = 0x1000;
     mScaleZ = 0x1000;
-    _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(&mWithMeshClsn, (int)this, 0xc8000, 0, 0, 0);
+    mWithMeshClsn.Init( (dActor_c *)(int)this, 0xc8000, 0, 0, 0);
     func_0203558c(&mWithMeshClsn);
 
     mCoinType = 1;

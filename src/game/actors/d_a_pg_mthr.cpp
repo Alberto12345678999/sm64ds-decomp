@@ -126,7 +126,8 @@ extern void func_ov018_0211235c(daPgMthr_c *self);
 extern PgMthrModelFileHandle data_ov018_02113c00;
 extern SharedFilePtr *data_ov018_02112c04[2];
 extern void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *self, void *act, int a, int b, unsigned int c2, unsigned int d);
-extern void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(void *self, void *act, int a, int b, void *c2, void *d);
+/* Parameter names keep this TU's @NNN. */
+typedef void BgchInitAt_(void *self, void *act, int a, int b, void *c2, void *d);
 }
 
 // @symbol daPgMthr_c_classInit
@@ -158,7 +159,7 @@ int daPgMthr_c::InitResources()
     mScaleY = 0x1000;
     mScaleZ = 0x1000;
     /* Mesh radius and height 50.0. */
-    _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(&mWithMeshClsn, this, 0x32000, 0x32000, 0, 0);
+    mWithMeshClsn.Init( this, 0x32000, 0x32000, 0, 0);
     Vector3 pos;
     pos.x = mPosX;
     pos.y = mPosY;

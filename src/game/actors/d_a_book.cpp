@@ -112,7 +112,8 @@ void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES
 void UnloadBlueCoinModel(void *);
 void LoadBlueCoinModel(void *c);
 void func_0200f760(void *a, void *b);
-void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(
+/* Parameter names keep this TU's @NNN. */
+typedef void BgchInitAt_(
     dBgCh_Actr *self, dActor_c *actor, int radius, int height,
     Vector3_16 *first, Vector3_16 *second);
 void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
@@ -849,7 +850,7 @@ int daBook_c::InitResources()
     if (mShadowModel.InitCylinder() == 0)
         return 0;
 
-    _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(&mWithMeshClsn, this, 0x32000, 0x32000, 0, 0);
+    mWithMeshClsn.Init( this, 0x32000, 0x32000, 0, 0);
 
     mClsnOffset.x = 0;
     mClsnOffset.y = 0;

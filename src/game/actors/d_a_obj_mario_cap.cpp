@@ -254,7 +254,8 @@ int   _ZN4cstd4fdivEii(int a, int b);
 /* dCcAc_c::Init and dBgCh_Actr::Init take Fix12<int> by value, which has no
    implicit int conversion (notes/mwccarm-codegen.md 6az). */
 extern void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *thiz, void *actor, s32 f1, s32 f2, u32 a, u32 b);
-extern void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(void *thiz, void *actor, s32 f1, s32 f2, void *v, void *w);
+/* Parameter names keep this TU's @NNN. */
+typedef void BgchInitAt_(void *thiz, void *actor, s32 f1, s32 f2, void *v, void *w);
 
 void *_ZN9dBgCh_GndC1Ev(dBgCh_Gnd *ray);
 void  _ZN9dBgCh_GndD1Ev(dBgCh_Gnd *ray);
@@ -388,7 +389,7 @@ int daObjMarioCap_c::InitResources()
     /* dCcAc_c collider: radius and height 30 units, flags 0x800002, vulnFlags 0.
        dBgCh_Actr level-collision: radius 30 units, height 22 units. */
     _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, this, kClsnSizeSmall, kClsnSizeSmall, 0x800002, 0);
-    _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(&mWithMeshClsn, this, kClsnSizeSmall, 0x16000, 0, 0);
+    mWithMeshClsn.Init( this, kClsnSizeSmall, 0x16000, 0, 0);
 
     /* Remember where the cap was placed. */
     mHomePosX = mPosX;

@@ -111,7 +111,8 @@ void MulVec3Mat4x3(void *in, void *m, void *out);
 void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
     dCcAcPos_c *self, dActor_c *actor, const Vector3 &offset,
     int radius, int height, u32 d, u32 e);
-void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(
+/* Parameter names keep this TU's @NNN. */
+typedef void BgchInitAt_(
     dBgCh_Actr *self, dActor_c *actor, int radius, int height, void *a, void *b);
 void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
     void *self, void *sm, void *mtx, int f, int g, unsigned int h);
@@ -195,8 +196,7 @@ s32 daBakubaku_c::InitResources()
     mSpawnPosY = mPosY;
     mSpawnPosZ = mPosZ;
 
-    _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(
-        &mWithMeshClsn, this, 0x64000, 0, 0, 0);
+    mWithMeshClsn.Init( this, 0x64000, 0, 0, 0);
 
     mTerminalVelocity = -0x1e000;
     mModelAnim.SetAnim((BCA_File *)data_ov032_02113a50.filePtr, 0, 0x1000, 0);

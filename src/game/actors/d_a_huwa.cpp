@@ -92,7 +92,8 @@ void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES
     void *self, dExtShadowModel_c &shadow, Matrix4x3 &mtx, int radius, int height,
     unsigned int opacity);
 void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *self, dActor_c *actor, int radius, int height, unsigned int flags, unsigned int vulnFlags);
-void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(void *self, dActor_c *actor, int radius, int height, void *a, void *b);
+/* Parameter names keep this TU's @NNN. */
+typedef void BgchInitAt_(void *self, dActor_c *actor, int radius, int height, void *a, void *b);
 /* dEnemyBase_c::KillByInvincibleChar takes a Fix12<int> by value, so the header
    member form size-DIFFs (0x210 -> 0x218, see the leftover note). decl_Enemy.h
    already declares the ROM symbol with plain scalars; use that one spelling
@@ -376,7 +377,7 @@ int daHuwa_c::InitResources()
     if (mShadowModel.InitCylinder() == 0)
         return 0;
     _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, this, 0x3c000, 0x78000, 0x200000, 0xa6efe0);
-    _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(&mWithMeshClsn, this, 0x3c000, 0x3c000, 0, 0);
+    mWithMeshClsn.Init( this, 0x3c000, 0x3c000, 0, 0);
     mWithMeshClsn.StartDetectingWater();
     mHomePosX = mPosX;
     mHomePosY = mPosY;

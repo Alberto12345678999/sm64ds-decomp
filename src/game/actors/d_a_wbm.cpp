@@ -93,7 +93,8 @@ void func_0201267c(u32 id, void *pos);
 
 void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(dCcAc_c *self, dActor_c *actor,
     s32 radius, s32 height, u32 flags, u32 unk);
-void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(
+/* Parameter names keep this TU's @NNN. */
+typedef void BgchInitAt_(
     dBgCh_Actr *self, dActor_c *actor, s32 radius, s32 height,
     Vector3_16 *a, Vector3_16 *b);
 void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
@@ -186,7 +187,7 @@ int daWbm_c::InitResources()
             mScaleY = 0x800;
             mScaleZ = 0x800;
             _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, this, 0x14000, 0x28000, 0x200004, 0);
-            _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(&mWithMeshClsn, this, 0x1e000, 0x1e000, 0, 0);
+            mWithMeshClsn.Init( this, 0x1e000, 0x1e000, 0, 0);
         }
         else
         {
@@ -194,7 +195,7 @@ int daWbm_c::InitResources()
             mScaleY = 0x1000;
             mScaleZ = 0x1000;
             _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, this, 0x28000, 0x50000, 0x204004, 0);
-            _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(&mWithMeshClsn, this, 0x32000, 0x32000, 0, 0);
+            mWithMeshClsn.Init( this, 0x32000, 0x32000, 0, 0);
         }
     }
 

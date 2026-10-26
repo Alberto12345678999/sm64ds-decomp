@@ -87,7 +87,8 @@ extern void func_02039394(int *p, int v);
 extern int Vec3_Dist(Vector3 *a, Vector3 *b);
 extern int Vec3_HorzDist(Vector3 *a, Vector3 *b);
 extern void hold_d_a_obj_pushblock(void *self, KCL_File *k, void *m, int fix, short s, void *clps);
-void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(
+/* Parameter names keep this TU's @NNN. */
+typedef void BgchInitAt_(
     void *self, void *a, int b, int c, void *d, int e);
 }
 
@@ -136,7 +137,7 @@ int daObjPushblock_c::InitResources()
 
     mVertAccel = -0x2000;
     mTerminalVelocity = -0x3c000;
-    _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(&mWithMeshClsn, this, 0x96000, 0x96000, 0, 0);
+    mWithMeshClsn.Init( this, 0x96000, 0x96000, 0, 0);
 
     v.x = mPosX;
     v.y = mPosY;
