@@ -1,6 +1,9 @@
 //cpp
 
-namespace IRQ { int Disable(); void Restore(unsigned int); }
+namespace IRQ {
+int Disable();
+void Restore(unsigned int);
+}
 extern "C" {
 extern int data_020a9db8;
 

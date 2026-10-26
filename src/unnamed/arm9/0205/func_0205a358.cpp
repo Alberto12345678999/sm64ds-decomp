@@ -1,7 +1,10 @@
 //cpp
 #include "IRQ.h"
 
-namespace IRQ { unsigned int Disable(); void Restore(unsigned int); }
+namespace IRQ {
+unsigned int Disable();
+void Restore(unsigned int);
+}
 
 extern "C" {
 typedef struct {
