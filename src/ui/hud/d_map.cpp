@@ -745,7 +745,8 @@ L4d8:
     focusPosSrc = &focus->mPos;
     focusPos = *focusPosSrc;
     FixTHIPaintingRoomPos(focusPos);
-    GetPosOnMinimap(&focusPos, (Vector3*)&this->mMapCenterWorldX, this->mCurrentScale, this->mAngle, &miniPos);
+    GetPosOnMinimap(&focusPos, (Vector3 *)&this->mMapCenterWorldX, this->mCurrentScale,
+                    this->mAngle, &miniPos);
     {
         s32 p = data_0209f250;
         this->mPlayerIconX[p] = (miniPos.x + 0x800) >> 12;
@@ -789,7 +790,8 @@ L738:
             /* the (int) launder keeps the ROM's precomputed copy source */
             playerPos = *(Vector3 *)((int)&o->mPos);
             FixTHIPaintingRoomPos(playerPos);
-            GetPosOnMinimap(&playerPos, (Vector3*)&this->mMapCenterWorldX, this->mCurrentScale, this->mAngle, &miniPos);
+            GetPosOnMinimap(&playerPos, (Vector3 *)&this->mMapCenterWorldX, this->mCurrentScale,
+                            this->mAngle, &miniPos);
             this->mPlayerIconX[i] = (miniPos.x + 0x800) >> 12;
             this->mPlayerIconY[i] = (miniPos.z + 0x800) >> 12;
             if (i != data_0209f250)
@@ -804,9 +806,8 @@ L738:
     for (i = 0; i < 0xc; i++) {
         dActor_c *o = (dActor_c *)data_0209f40c[i];
         if (o != 0) {
-            GetPosOnMinimap(
-                &o->mPos, (Vector3 *)&this->mMapCenterWorldX, this->mCurrentScale, this->mAngle,
-                &miniPos);
+            GetPosOnMinimap(&o->mPos, (Vector3 *)&this->mMapCenterWorldX, this->mCurrentScale,
+                            this->mAngle, &miniPos);
             this->mStarIconX[i] = (miniPos.x + 0x800) >> 12;
             this->mStarIconY[i] = (miniPos.z + 0x800) >> 12;
             if (data_0209f37c[i] != 4)
@@ -821,9 +822,8 @@ L738:
     for (i = 0; i < 9; i++) {
         dActor_c *o = (dActor_c *)data_0209f3e8[i];
         if (o != 0) {
-            GetPosOnMinimap(
-                &o->mPos, (Vector3 *)&this->mMapCenterWorldX, this->mCurrentScale, this->mAngle,
-                &miniPos);
+            GetPosOnMinimap(&o->mPos, (Vector3 *)&this->mMapCenterWorldX, this->mCurrentScale,
+                            this->mAngle, &miniPos);
             this->mCapIconX[i] = (miniPos.x + 0x800) >> 12;
             this->mCapIconY[i] = (miniPos.z + 0x800) >> 12;
             this->mCapMapIDs[i] = (s8)GetMinimapID((Obj *)o, -1);
@@ -838,9 +838,8 @@ L738:
     {
         dActor_c *o = (dActor_c *)data_0209f33c;
         if (o == 0) { this->mStarKeyMapID = -1; goto La64; }
-        GetPosOnMinimap(
-            &o->mPos, (Vector3 *)&this->mMapCenterWorldX, this->mCurrentScale, this->mAngle,
-            &miniPos);
+        GetPosOnMinimap(&o->mPos, (Vector3 *)&this->mMapCenterWorldX, this->mCurrentScale,
+                        this->mAngle, &miniPos);
         this->mStarKeyIconX = (miniPos.x + 0x800) >> 12;
         this->mStarKeyIconY = (miniPos.z + 0x800) >> 12;
         this->mStarKeyMapID = 1;
@@ -850,9 +849,8 @@ La64:
     for (i = 0; i < 8; i++) {
         dActor_c *o = (dActor_c *)data_0209f3a4[i];
         if (o != 0) {
-            GetPosOnMinimap(
-                &o->mPos, (Vector3 *)&this->mMapCenterWorldX, this->mCurrentScale, this->mAngle,
-                &miniPos);
+            GetPosOnMinimap(&o->mPos, (Vector3 *)&this->mMapCenterWorldX, this->mCurrentScale,
+                            this->mAngle, &miniPos);
             this->mSpikeBombIconX[i] = (miniPos.x + 0x800) >> 12;
             this->mSpikeBombIconY[i] = (miniPos.z + 0x800) >> 12;
             this->mSpikeBombMapIDs[i] = o->mAreaId;
@@ -1057,14 +1055,12 @@ extern "C" void _ZN6dMap_c20GetPosFromMinimapPosER7Vector3S1_5Fix12IiEsS1_(
 }
 
 // @symbol _ZN6dMap_c15GetPosOnMinimapEP7Vector3S1_isS1_
-void dMap_c::GetPosOnMinimap(Vector3* out, Vector3* a, Fix12i s, short ang, Vector3* res)
-{
+void dMap_c::GetPosOnMinimap(Vector3 *out, Vector3 *a, Fix12i s, short ang, Vector3 *res) {
     struct Vec3 v;
     Vec3_Sub((Vector3*)&v, out, a);
     Vec3_MulScalarInPlace(&v, s);
     Vec3_RotateYAndTranslate((struct Vec3*)res, &data_ov002_0211116c, (short)(-ang), &v);
 }
-
 
 /* Reconstructed source-style name: SM64DS proves dMap_c through RTTI,
  * allocation size, vtable identity, and the MAP registry profile;
