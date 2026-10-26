@@ -123,7 +123,7 @@ int daKrpa_c::InitResources()
     Vector3 offset;
     void *bmd = dExtSimpleModel_c::LoadFile(gKeronpaModelFile);
     int groundDistance;
-    mModelAnim.SetFile((BMD_File *)bmd, 1, 1);
+    mAnmModel.SetFile((BMD_File *)bmd, 1, 1);
     if (!mShadowModel.InitCylinder())
         return 0;
 
@@ -165,7 +165,7 @@ int daKrpa_c::Behavior()
 // @symbol _ZN8daKrpa_c6RenderEv
 int daKrpa_c::Render()
 {
-    mModelAnim.Render(&mScale);
+    mAnmModel.Render(&mScale);
     return 1;
 }
 
@@ -212,7 +212,7 @@ extern u32 data_ov070_021222e8[];
 }
 
 int daKrpa_c::func_ov070_021217ac() {
-    this->mModelAnim.SetAnim((BCA_File *)data_ov070_021234c4, 0, 0x1000, 0);
+    this->mAnmModel.SetAnim((BCA_File *)data_ov070_021234c4, 0, 0x1000, 0);
     this->mFrameController.func_ov070_02121ae0(
         data_ov070_02122404, 0x64, 1);
     this->mStateTimer = 0x73;
@@ -233,7 +233,7 @@ int daKrpa_c::func_ov070_02121710() {
     } else {
         this->mStateTimer = 0x73;
     }
-    this->mModelAnim.Advance();
+    this->mAnmModel.Advance();
     u32 frame = this->mFrameController.func_ov070_02121a64();
     this->mScaleX = frame;
     this->mScaleY = frame;
@@ -246,7 +246,7 @@ int daKrpa_c::func_ov070_02121710() {
 }
 // @symbol _ZN8daKrpa_c19func_ov070_021216b8Ev
 int daKrpa_c::func_ov070_021216b8() {
-    this->mModelAnim.SetAnim((BCA_File *)data_ov070_021234dc, 0x40000000, 0x1000, 0);
+    this->mAnmModel.SetAnim((BCA_File *)data_ov070_021234dc, 0x40000000, 0x1000, 0);
     this->mFrameController.func_ov070_02121ae0(
         data_ov070_021222e8, 0x47, 0);
     this->mStateIndex = 1;
@@ -277,7 +277,7 @@ int daKrpa_c::func_ov070_0212156c() {
     }
     if (this->mFrameController.cursor == this->mFrameController.count)
         this->func_ov070_02121880(0);
-    this->mModelAnim.Advance();
+    this->mAnmModel.Advance();
     u32 frame = this->mFrameController.func_ov070_02121a64();
     this->mScaleX = frame;
     this->mScaleY = frame;
@@ -331,7 +331,7 @@ int daKrpa_c::func_ov070_02121438()
     this->mScaleY = 0x1000;
     this->mScaleZ = 0x1000;
     this->mStateTimer = 0x2d;
-    this->mModelAnim.SetAnim((BCA_File *)data_ov070_021234c4, 0, 0x1000, 0);
+    this->mAnmModel.SetAnim((BCA_File *)data_ov070_021234c4, 0, 0x1000, 0);
     Particle::System::NewSimple(0x43, this->mPosX, this->mPosY, this->mPosZ);
     Particle::System::NewSimple(0x44, this->mPosX, this->mPosY, this->mPosZ);
     this->mStateIndex = 3;
@@ -342,7 +342,7 @@ int daKrpa_c::func_ov070_02121438()
  * destination; the rest are ordinary real class calls. */
 int daKrpa_c::func_ov070_021213cc() {
     this->mAngleX = this->mAngleX - 0x1000;
-    this->mModelAnim.Advance();
+    this->mAnmModel.Advance();
     this->UpdatePos(&this->mdCcAcPos_c);
     dBgCh_Actr_UpdateDiscreteNoLava_veneer(&this->mWithMeshClsn);
     if (!this->mWithMeshClsn.JustHitGround()) {
@@ -366,14 +366,14 @@ extern "C" void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x
 void daKrpa_c::func_ov070_02121310()
 {
     if (this->mStateIndex == 3) {
-        Matrix4x3_FromRotationXYZExt(&this->mModelAnim.mat4x3,
+        Matrix4x3_FromRotationXYZExt(&this->mAnmModel.mat4x3,
             this->mAngleX, this->mAngleY, this->mAngleZ);
     } else {
-        Matrix4x3_FromRotationY(&this->mModelAnim.mat4x3, this->mAngleY);
+        Matrix4x3_FromRotationY(&this->mAnmModel.mat4x3, this->mAngleY);
     }
-    this->mModelAnim.mat4x3.t.x = this->mPosX >> 3;
-    this->mModelAnim.mat4x3.t.y = this->mPosY >> 3;
-    this->mModelAnim.mat4x3.t.z = this->mPosZ >> 3;
+    this->mAnmModel.mat4x3.t.x = this->mPosX >> 3;
+    this->mAnmModel.mat4x3.t.y = this->mPosY >> 3;
+    this->mAnmModel.mat4x3.t.z = this->mPosZ >> 3;
     this->mMatrix.t.x = this->mPosX >> 3;
     this->mMatrix.t.y = this->mPosY >> 3;
     this->mMatrix.t.z = this->mPosZ >> 3;

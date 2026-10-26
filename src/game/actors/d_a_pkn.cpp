@@ -147,7 +147,7 @@ int daPkn_c::InitResources()
     LoadBlueCoinModel(this);
     dExtSimpleModel_c::LoadFile(data_ov084_02130dfc);
     dExtSimpleModel_c::LoadFile(data_ov002_0210da38);
-    if (mModelAnim.SetFile((BMD_File *)data_ov084_02130dfc.filePtr, 1, -1) == 0)
+    if (mAnmModel.SetFile((BMD_File *)data_ov084_02130dfc.filePtr, 1, -1) == 0)
         return 0;
     if (mModel.SetFile((BMD_File *)data_ov002_0210da38.filePtr, 1, -1) == 0)
         return 0;
@@ -195,7 +195,7 @@ int daPkn_c::InitResources()
     mParticleHandle2 = 0;
     mParticleHandle = mParticleHandle2;
     mLoopSoundHandle = 0;
-    mModelAnim.SetAnim((BCA_File *)data_ov084_02130df4.filePtr, 0, 0x1000, 0);
+    mAnmModel.SetAnim((BCA_File *)data_ov084_02130df4.filePtr, 0, 0x1000, 0);
     return 1;
 }
 
@@ -206,7 +206,7 @@ int daPkn_c::Behavior()
     int r;
     int old;
     int cur;
-    r = UpdateKillByInvincibleChar(mWithMeshClsn, mModelAnim, 1);
+    r = UpdateKillByInvincibleChar(mWithMeshClsn, mAnmModel, 1);
     if (r != 0) {
         if (r == 2) {
             mCoinType = 0;
@@ -221,7 +221,7 @@ int daPkn_c::Behavior()
         return 1;
     }
     MakeVanishLuigiWork(mdCcAc_c1);
-    mModelAnim.Advance();
+    mAnmModel.Advance();
     TrackClosestPlayer();
     old = mState;
     (this->*data_ov084_02130e80[old])();
@@ -263,8 +263,8 @@ int daPkn_c::Render()
 {
     if (mScaleX == 0)
         return 1;
-    mModelAnim.Render(&mScale);
-    if ((int)mModelAnim.file == (int)data_ov084_02130df4.filePtr)
+    mAnmModel.Render(&mScale);
+    if ((int)mAnmModel.file == (int)data_ov084_02130df4.filePtr)
         mModel.Render(&mBubbleScale);
     return 1;
 }
@@ -300,7 +300,7 @@ void daPkn_c::StateWait()
     mScaleZ = 0x1000;
     mClsnEnabled = 1;
     mFlags |= 0x10000000;
-    mModelAnim.SetAnim((BCA_File *)data_ov084_02130df4.filePtr, 0, 0x1000, 0);
+    mAnmModel.SetAnim((BCA_File *)data_ov084_02130df4.filePtr, 0, 0x1000, 0);
     if (mPlayerDist < 0x4b0000)
         mState = 1;
     CheckHits();
@@ -311,11 +311,11 @@ void daPkn_c::StateWait()
 void daPkn_c::StateSleep()
 {
     mClsnEnabled = 1;
-    if (mModelAnim.Finished() || mModelAnim.WillHitFrame(0))
-        mModelAnim.SetAnim((BCA_File *)data_ov084_02130df4.filePtr, 0, 0x1000, 0);
+    if (mAnmModel.Finished() || mAnmModel.WillHitFrame(0))
+        mAnmModel.SetAnim((BCA_File *)data_ov084_02130df4.filePtr, 0, 0x1000, 0);
     int thr = (mPlayerAirborne != 0) ? 0x12c000 : 0x190000;
     if (mPlayerDist < thr && PlayerMovingFast()) {
-        mModelAnim.SetAnim((BCA_File *)(((SharedFilePtr *)&data_ov084_02130e0c)->filePtr),
+        mAnmModel.SetAnim((BCA_File *)(((SharedFilePtr *)&data_ov084_02130e0c)->filePtr),
                            0x40000000, 0x1000, 0);
         mState = 3;
         func_02012694(0x175, &mCamSpacePosX);
@@ -350,17 +350,17 @@ void daPkn_c::StateBite()
        `type == 0xbf` directly changes the code. */
     mClsnEnabled = 1;
 
-    if (mModelAnim.WillHitFrame(0x10)
-        || mModelAnim.WillHitFrame(0x20)
-        || mModelAnim.WillHitFrame(0x34)
-        || mModelAnim.WillHitFrame(0x4b)) {
+    if (mAnmModel.WillHitFrame(0x10)
+        || mAnmModel.WillHitFrame(0x20)
+        || mAnmModel.WillHitFrame(0x34)
+        || mAnmModel.WillHitFrame(0x4b)) {
         func_0201267c(0xc0, &mCamSpacePosX);
     }
 
     ApproachLinear(mPrevAngleY, mTargetAngleY, 0x800);
     mAngleY = mPrevAngleY;
 
-    if (mModelAnim.Finished() != 0) {
+    if (mAnmModel.Finished() != 0) {
         int thr;
         if (mPlayerAirborne != 0)
             thr = 0x12c000;
@@ -370,7 +370,7 @@ void daPkn_c::StateBite()
         if (mPlayerDist > thr)
             mState = 4;
         else
-            mModelAnim.currFrame = 0;
+            mAnmModel.currFrame = 0;
     }
 
     /* Body cylinder. */
@@ -477,8 +477,8 @@ void daPkn_c::StateWake()
     if (CheckHits() != 0) return;
     /* mStateTimer is s16; the ROM compares it as a u16 (ldrh). */
     if ((u16)mStateTimer <= 0xb) return;
-    if (!mModelAnim.Finished()) return;
-    mModelAnim.SetAnim((BCA_File *)data_ov084_02130e14.filePtr, 0x40000000, 0x1000, 0);
+    if (!mAnmModel.Finished()) return;
+    mAnmModel.SetAnim((BCA_File *)data_ov084_02130e14.filePtr, 0x40000000, 0x1000, 0);
     mState = 2;
 }
 
@@ -487,15 +487,15 @@ void daPkn_c::StateWake()
 void daPkn_c::StateDoze()
 {
     mClsnEnabled = 1;
-    if (mModelAnim.Finished()) {
-        mModelAnim.SetAnim((BCA_File *)(((SharedFilePtr *)&data_ov084_02130e0c)->filePtr),
+    if (mAnmModel.Finished()) {
+        mAnmModel.SetAnim((BCA_File *)(((SharedFilePtr *)&data_ov084_02130e0c)->filePtr),
                            0x40000000, 0x1000, 0);
         mState = 1;
     } else {
         int thresh = (mPlayerAirborne != 0) ? 0x12c000 : 0x190000;
         if (mPlayerDist < thresh) {
             if (PlayerMovingFast() != 0) {
-                mModelAnim.currFrame = 0;
+                mAnmModel.currFrame = 0;
                 mState = 2;
             }
         }
@@ -520,7 +520,7 @@ void daPkn_c::StateDie()
         mParticleHandle =
             (s32)Particle::System::New(mParticleHandle, 0xfb, pos.x, pos.y, pos.z, 0, 0);
     }
-    if (mModelAnim.Finished() == 0)
+    if (mAnmModel.Finished() == 0)
         return;
     mState = 6;
     mParticleHandle2 = 0;
@@ -570,7 +570,7 @@ void daPkn_c::StateGone()
     mState = 8;
     mParticleHandle2 = 0;
     mParticleHandle = mParticleHandle2;
-    mModelAnim.SetAnim((BCA_File *)(((SharedFilePtr *)&data_ov084_02130e0c)->filePtr), 0, 0x1000,
+    mAnmModel.SetAnim((BCA_File *)(((SharedFilePtr *)&data_ov084_02130e0c)->filePtr), 0, 0x1000,
                        0);
 }
 
@@ -667,10 +667,10 @@ int daPkn_c::CheckHits()
                     v.y = mPosY;
                     v.z = mPosZ;
                     _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(actor, &v, 3, 0xc000, 1, 0, 1);
-                    mModelAnim.SetAnim(
+                    mAnmModel.SetAnim(
                         (BCA_File *)(((SharedFilePtr *)&data_ov084_02130e0c)->filePtr), 0, 0x1000,
                         0);
-                    mModelAnim.SetFlags(0x40000000);
+                    mAnmModel.SetFlags(0x40000000);
                     mState = 3;
                     func_02012694(0x175, &mCamSpacePosX);
                     return 0;
@@ -738,20 +738,20 @@ void daPkn_c::UpdatePose()
     Matrix4x3_FromTranslation(&data_020a0e68, L.v.x, L.v.y, L.v.z);
     L.saved = data_020a0e68;
     Matrix4x3_ApplyInPlaceToRotationY(&data_020a0e68, mAngleY);
-    *(PknMtx43 *)&mModelAnim.mat4x3 = data_020a0e68;
+    *(PknMtx43 *)&mAnmModel.mat4x3 = data_020a0e68;
 
     ang[0] = 0;
     ang[1] = 0;
     ang[2] = 0;
     for (lr = 0; lr < 5; lr++) {
-        ang[1] = (s16)(ang[1] + *(s16*)((char *)mModelAnim.data.bones + data_ov084_021302ec[lr] * 0x34 + 0x1c));
+        ang[1] = (s16)(ang[1] + *(s16*)((char *)mAnmModel.data.bones + data_ov084_021302ec[lr] * 0x34 + 0x1c));
     }
 
     mHeadClsnOffset.x = 0;
     mHeadClsnOffset.y = 0;
     mHeadClsnOffset.z = 0;
     data_020a0e68 = L.saved;
-    MulMat4x3Mat4x3(&mModelAnim.data.transforms[6], &data_020a0e68, &data_020a0e68);
+    MulMat4x3Mat4x3(&mAnmModel.data.transforms[6], &data_020a0e68, &data_020a0e68);
     mHeadClsnOffset.x = data_020a0e68.w[9];
     mHeadClsnOffset.y = data_020a0e68.w[10];
     mHeadClsnOffset.z = data_020a0e68.w[11];
@@ -766,7 +766,7 @@ void daPkn_c::UpdatePose()
     L.tv.z = mPosZ;
 
     {
-        int rr = (int)((u32)(mModelAnim.currFrame << 4) >> 0x10);
+        int rr = (int)((u32)(mAnmModel.currFrame << 4) >> 0x10);
         int d = rr - 0x28;
         if (d < 0)
             d = -d;
@@ -804,8 +804,8 @@ s32 daPkn_c::OnAimedAtWithEgg()
 void daPkn_c::EnterLunge(int frame)
 {
     mState = 2;
-    mModelAnim.SetAnim((BCA_File *)data_ov084_02130e14.filePtr, 0x40000000, 0x1000, 0);
-    mModelAnim.currFrame = (u16)frame << 12;
+    mAnmModel.SetAnim((BCA_File *)data_ov084_02130e14.filePtr, 0x40000000, 0x1000, 0);
+    mAnmModel.currFrame = (u16)frame << 12;
 }
 
 /* -------------------------------------------------------------------------- */
@@ -815,5 +815,5 @@ void daPkn_c::Die()
 {
     func_0201267c(0xc1, &mCamSpacePosX);
     mState = 5;
-    mModelAnim.SetAnim((BCA_File *)data_ov084_02130e24.filePtr, 0x40000000, 0x1000, 0);
+    mAnmModel.SetAnim((BCA_File *)data_ov084_02130e24.filePtr, 0x40000000, 0x1000, 0);
 }

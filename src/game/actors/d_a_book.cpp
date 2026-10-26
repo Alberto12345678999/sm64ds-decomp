@@ -140,7 +140,7 @@ struct BookAnimationFileHandle : SharedFilePtr {
 };
 
 /* The four slots, by how they are used below:
- *   aa0  the animated model that mModelAnim switches to (STATE_TILT_BACK)
+ *   aa0  the animated model that mAnmModel switches to (STATE_TILT_BACK)
  *   ab8  the model mModel starts with
  *   aa8  the animation that plays during STATE_WIND_UP
  *   ab0  the animation that plays in flight */
@@ -528,8 +528,8 @@ void daBook_c::func_ov020_02111aa8()
  * when it hits the player, the ground, or a wall that faces it (the wall's
  * normal more than a quarter turn from the book's heading). */
 void daBook_c::func_ov020_02111b28() {
-    if (mUsesModelAnim != 0) {
-        mModelAnim.Advance();
+    if (mUsesAnmModel != 0) {
+        mAnmModel.Advance();
     }
     AddVec3(&mPosX, &mSpeedX, &mPosX);
     if (func_ov020_02111418() != 0)
@@ -567,15 +567,15 @@ void daBook_c::func_ov020_02111c30()
     if (func_ov020_02111418())
         return;
 
-    mModelAnim.Advance();
+    mAnmModel.Advance();
 
     {
         if (ApproachLinear(mHorzSpeed, 0xa000, 0xa00) == 0)
             return;
     }
 
-    if (mModelAnim.Finished()) {
-        mModelAnim.SetAnim((BCA_File *)data_ov020_02114ab0.filePtr, 0, 0x1000, 0);
+    if (mAnmModel.Finished()) {
+        mAnmModel.SetAnim((BCA_File *)data_ov020_02114ab0.filePtr, 0, 0x1000, 0);
         mState = STATE_FLY;
         mHorzSpeed = 0;
         func_ov020_021112b0();
@@ -625,7 +625,7 @@ void daBook_c::func_ov020_02111c30()
 }
 
 // @symbol _ZN8daBook_c19func_ov020_02111ee0Ev
-/* STATE_TILT_BACK: tips the book back by 45 degrees, then switches mModelAnim
+/* STATE_TILT_BACK: tips the book back by 45 degrees, then switches mAnmModel
  * to the animated model, starts its animation, lifts the book 50 units and
  * moves the collider down 25. */
 void daBook_c::func_ov020_02111ee0()
@@ -635,11 +635,11 @@ void daBook_c::func_ov020_02111ee0()
   if(ApproachLinear(mAngleX, -0x2000, 0x200)){
     int s;
     mHorzSpeed = 0;
-    s = mModelAnim.SetFile((BMD_File *)data_ov020_02114aa0.filePtr, 1, -1);
+    s = mAnmModel.SetFile((BMD_File *)data_ov020_02114aa0.filePtr, 1, -1);
     if(s == 0) return;
     mState = STATE_WIND_UP;
-    mModelAnim.SetAnim((BCA_File *)data_ov020_02114aa8.filePtr, 0x40000000, 0x1000, 0);
-    mUsesModelAnim = 1;
+    mAnmModel.SetAnim((BCA_File *)data_ov020_02114aa8.filePtr, 0x40000000, 0x1000, 0);
+    mUsesAnmModel = 1;
     mStateTimer = 0;
     {
       int* p60 = &mPosY;
@@ -714,7 +714,7 @@ void daBook_c::func_ov020_02112110() {
  * the home height. */
 void daBook_c::func_ov020_0211216c()
 {
-    Matrix4x3 *m = (mUsesModelAnim != 0) ? &mModelAnim.mat4x3 : &mModel.mat4x3;
+    Matrix4x3 *m = (mUsesAnmModel != 0) ? &mAnmModel.mat4x3 : &mModel.mat4x3;
     Matrix4x3_FromRotationZXYExt(m, mAngleX, mAngleY, mAngleZ);
     m->m[9] = mPosX >> 3;
     m->m[10] = mPosY >> 3;
@@ -756,8 +756,8 @@ int daBook_c::Render()
     if (isHidden != 0)
         return 1;
 
-    if (mUsesModelAnim != 0)
-        mModelAnim.Render(&mScale);
+    if (mUsesAnmModel != 0)
+        mAnmModel.Render(&mScale);
     else
         mModel.Render(&mScale);
 
@@ -868,7 +868,7 @@ int daBook_c::InitResources()
         return 0;
 
     mShadowMat = IDENTITY_MATRIX4X3;
-    mUsesModelAnim = 0;
+    mUsesAnmModel = 0;
     mAngleY += 0x8000;
     mUniformScale = 0x800;
 

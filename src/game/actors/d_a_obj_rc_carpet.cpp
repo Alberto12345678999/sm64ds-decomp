@@ -112,9 +112,9 @@ int daObjRcCarpet_c::InitResources()
 {
     dExtSimpleModel_c::LoadFile(data_ov002_0210d9f0);
     void *modelFile = dExtSimpleModel_c::LoadFile(*data_ov036_02113f58.model);
-    mModelAnim.SetFile((BMD_File *)modelFile, 1, -1);
+    mAnmModel.SetFile((BMD_File *)modelFile, 1, -1);
     dExtFrameCtrl_c::LoadFile(gRcCarpetWaitAnimationFile);
-    mModelAnim.SetAnim((BCA_File *)gRcCarpetWaitAnimationFile.filePtr, 0, 0x1000, 0);
+    mAnmModel.SetAnim((BCA_File *)gRcCarpetWaitAnimationFile.filePtr, 0, 0x1000, 0);
     func_ov036_021122c0(this);
     UpdateClsnPosAndRot();
     KCL_File *collisionFile =
@@ -139,7 +139,7 @@ int daObjRcCarpet_c::Behavior()
     else
         ApproachLinear(mRideDipY, 0, 0x5000);
     BaseBehavior();
-    mModelAnim.Advance();
+    mAnmModel.Advance();
     func_ov036_021122c0(this);
     func_ov036_0211224c(this);
     IsClsnInRange(0, 0);
@@ -151,7 +151,7 @@ int daObjRcCarpet_c::Render()
 {
     if (mWaitTimer < 0x5a && (mWaitTimer & 1))
         return 1;
-    mModelAnim.Render(0);
+    mAnmModel.Render(0);
     return 1;
 }
 
@@ -171,17 +171,17 @@ int daObjRcCarpet_c::CleanupResources()
 extern "C" void func_ov036_021122c0(daObjRcCarpet_c *self)
 {
     Matrix4x3_FromRotationXYZExt(
-        &self->mModelAnim.mat4x3,
+        &self->mAnmModel.mat4x3,
         self->mAngleX, self->mAngleY, self->mAngleZ);
-    self->mModelAnim.mat4x3.m[9] = self->mPosX >> 3;
-    self->mModelAnim.mat4x3.m[10] = (self->mPosY + self->mRideDipY) >> 3;
-    self->mModelAnim.mat4x3.m[11] = self->mPosZ >> 3;
+    self->mAnmModel.mat4x3.m[9] = self->mPosX >> 3;
+    self->mAnmModel.mat4x3.m[10] = (self->mPosY + self->mRideDipY) >> 3;
+    self->mAnmModel.mat4x3.m[11] = self->mPosZ >> 3;
 }
 
 // @symbol func_ov036_0211224c
 extern "C" void func_ov036_0211224c(daObjRcCarpet_c *self)
 {
-    self->mClsnMat = self->mModelAnim.mat4x3;
+    self->mClsnMat = self->mAnmModel.mat4x3;
     self->mClsnMat.m[9] = self->mPosX;
     self->mClsnMat.m[10] = self->mPosY + self->mRideDipY;
     self->mClsnMat.m[11] = self->mPosZ;

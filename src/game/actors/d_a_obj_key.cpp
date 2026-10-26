@@ -334,7 +334,7 @@ void daObjKey_c::func_ov089_0213115c(int anim)
         return;
     }
     mAnimID = anim;
-    mModelAnim.SetAnim((BCA_File *)(data_ov089_02132880[anim]->filePtr), ANIM_FLAGS, ANIM_SPEED, 0);
+    mAnmModel.SetAnim((BCA_File *)(data_ov089_02132880[anim]->filePtr), ANIM_FLAGS, ANIM_SPEED, 0);
 }
 
 // @symbol _ZN10daObjKey_c16StateFlyToCenterEv
@@ -453,7 +453,7 @@ void daObjKey_c::StateFlyToCenter()
 
     Matrix4x3_FromTranslation(&data_020a0e68, mPosX, mPosY, mPosZ);
     Matrix4x3_ApplyInPlaceToRotationY(&data_020a0e68, mPrevAngleY);
-    MulMat4x3Mat4x3(mModelAnim.data.transforms, &data_020a0e68, &data_020a0e68);
+    MulMat4x3Mat4x3(mAnmModel.data.transforms, &data_020a0e68, &data_020a0e68);
     v.x = data_020a0e68.m[9];
     v.y = data_020a0e68.m[10];
     v.z = data_020a0e68.m[11];
@@ -611,8 +611,8 @@ void daObjKey_c::StateStarJump()
             mPosY = pos[1];
             mPosZ = pos[2];
             mAngleY = mPlayer->mAngleY;
-            mModelAnim.Advance();
-            if (mModelAnim.Finished())
+            mAnmModel.Advance();
+            if (mAnmModel.Finished())
                 mStep++;
             return;
         }
@@ -761,10 +761,10 @@ s32 daObjKey_c::OnYoshiTryEat() {
 // @symbol _ZN10daObjKey_c20UpdateModelTransformEv
 void daObjKey_c::UpdateModelTransform()
 {
-    Matrix4x3_FromRotationY(&mModelAnim.mat4x3, mAngleY);
-    mModelAnim.mat4x3.m[9] = mPosX >> 3;
-    mModelAnim.mat4x3.m[10] = mPosY >> 3;
-    mModelAnim.mat4x3.m[11] = mPosZ >> 3;
+    Matrix4x3_FromRotationY(&mAnmModel.mat4x3, mAngleY);
+    mAnmModel.mat4x3.m[9] = mPosX >> 3;
+    mAnmModel.mat4x3.m[10] = mPosY >> 3;
+    mAnmModel.mat4x3.m[11] = mPosZ >> 3;
     if (data_ov089_021328b4[mState] != 0 && mAnimID == 0) {
         Matrix4x3_FromRotationY(&mModel.mat4x3, mAngleY);
         mModel.mat4x3.m[9] = mPosX >> 3;
@@ -776,7 +776,7 @@ void daObjKey_c::UpdateModelTransform()
     mShadowMatrix.m[10] = mPosY >> 3;
     mShadowMatrix.m[11] = mPosZ >> 3;
     /* Shadow only while the idle anim (file 0x801b) is showing. */
-    if (mModelAnim.file == (BCA_File *)data_ov002_02110964.filePtr)
+    if (mAnmModel.file == (BCA_File *)data_ov002_02110964.filePtr)
         _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(this, &mShadowModel, &mShadowMatrix, SHADOW_R, SHADOW_DEPTH, SHADOW_OPACITY);
 }
 
@@ -802,9 +802,9 @@ int daObjKey_c::Render()
     if (hidden)
         return 1;
     if (mAnimID != 0) {
-        mModelAnim.Render(0);
+        mAnmModel.Render(0);
     } else {
-        mModelAnim.Render(&mScale);
+        mAnmModel.Render(&mScale);
         /* mAnimID == 0 is already the else; the second test is in the ROM. */
         if (data_ov089_021328b4[mState] != 0 && mAnimID == 0)
             mModel.Render(0);
@@ -831,10 +831,10 @@ int daObjKey_c::Behavior()
                 mPosZ = pos[2];
                 mAngleY = mPlayer->mAngleY;
             }
-            if (mModelAnim.Finished() == 0) {
+            if (mAnmModel.Finished() == 0) {
                 Matrix4x3_FromTranslation(&data_020a0e68, mPosX, mPosY, mPosZ);
                 Matrix4x3_ApplyInPlaceToRotationY(&data_020a0e68, mAngleY);
-                MulMat4x3Mat4x3(mModelAnim.data.transforms, &data_020a0e68, &data_020a0e68);
+                MulMat4x3Mat4x3(mAnmModel.data.transforms, &data_020a0e68, &data_020a0e68);
                 vec.x = data_020a0e68.m[9];
                 vec.y = data_020a0e68.m[10];
                 vec.z = data_020a0e68.m[11];
@@ -842,7 +842,7 @@ int daObjKey_c::Behavior()
                 Vec3_LslInPlace(&vec, 3);
                 AddVec3(&vec, &mPosX, &vec);
                 /* First bone, word at +0xc. BMD_Bone has no field there. */
-                vec.y = *(int *)((char *)mModelAnim.data.bones + 0xc) * BONE_Y_MUL + vec.y;
+                vec.y = *(int *)((char *)mAnmModel.data.bones + 0xc) * BONE_Y_MUL + vec.y;
                 vec.y = vec.y - Y_BONE;
                 mParticleID[0] = (u32)Particle::System::New(mParticleID[0], FX_BURST_A, vec.x,
                                                             vec.y, vec.z, 0, 0);
@@ -851,14 +851,14 @@ int daObjKey_c::Behavior()
             }
         }
 
-        mModelAnim.Advance();
+        mAnmModel.Advance();
         UpdateModelTransform();
-        if (mModelAnim.Finished()) {
+        if (mAnmModel.Finished()) {
             /* The flag keeps the ROM's moveq and movne pair. */
             int isKey = (actorID == ACTOR_OBJ_KEY);
             if (isKey != 0) {
                 /* Anim 3's file (data_ov089_02132c40, id 0x44f) stays; the others die. */
-                if (mModelAnim.file != (BCA_File *)data_ov089_02132c40.filePtr)
+                if (mAnmModel.file != (BCA_File *)data_ov089_02132c40.filePtr)
                     MarkForDestruction();
             }
         }
@@ -906,10 +906,10 @@ int daObjKey_c::InitResources()
     dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)&data_ov002_02110964);
 
     if (mState == KEY_KIND_STAR) {
-        if (mModelAnim.SetFile((BMD_File *)((ObjKeyFile *)&data_ov002_0211094c)->filePtr, 1, 1) ==
+        if (mAnmModel.SetFile((BMD_File *)((ObjKeyFile *)&data_ov002_0211094c)->filePtr, 1, 1) ==
             0)
             return 0;
-        mModelAnim.SetAnim((BCA_File *)data_ov002_02110964.filePtr, ANIM_FLAGS, ANIM_SPEED, 0);
+        mAnmModel.SetAnim((BCA_File *)data_ov002_02110964.filePtr, ANIM_FLAGS, ANIM_SPEED, 0);
         mScaleX = SCALE_STAR;
         mScaleY = SCALE_STAR;
         mScaleZ = SCALE_STAR;
@@ -926,7 +926,7 @@ int daObjKey_c::InitResources()
         dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)&data_ov089_02132c40);
         dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)&data_ov089_02132c70);
         dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)&data_ov089_02132c48);
-        if (mModelAnim.SetFile((BMD_File *)((ObjKeyFile *)data_ov089_02132894[mState])->filePtr, 1,
+        if (mAnmModel.SetFile((BMD_File *)((ObjKeyFile *)data_ov089_02132894[mState])->filePtr, 1,
                                1) == 0)
             return 0;
         {
@@ -936,7 +936,7 @@ int daObjKey_c::InitResources()
                     return 0;
             }
         }
-        mModelAnim.SetAnim((BCA_File *)data_ov002_02110964.filePtr, ANIM_FLAGS, ANIM_SPEED, 0);
+        mAnmModel.SetAnim((BCA_File *)data_ov002_02110964.filePtr, ANIM_FLAGS, ANIM_SPEED, 0);
         mScaleX = SCALE_KEY;
         mScaleY = SCALE_KEY;
         mScaleZ = SCALE_KEY;

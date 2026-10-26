@@ -255,8 +255,8 @@ int daTor_c::CleanupResources()
 // @symbol _ZN7daTor_c6RenderEv
 int daTor_c::Render()
 {
-    mTextureTransformer.Update(mModelAnim.data);
-    mModelAnim.Render(&mScale);
+    mTextureTransformer.Update(mAnmModel.data);
+    mAnmModel.Render(&mScale);
     return 1;
 }
 
@@ -289,8 +289,8 @@ int daTor_c::Behavior()
     }
     mdCcAc_c.Clear();
     mdCcAc_c.Update();
-    Matrix4x3_FromTranslation(&mModelAnim.mat4x3, mPosX >> 3, mPosY >> 3, mPosZ >> 3);
-    mModelAnim.dExtFrameCtrl_c::Advance();
+    Matrix4x3_FromTranslation(&mAnmModel.mat4x3, mPosX >> 3, mPosY >> 3, mPosZ >> 3);
+    mAnmModel.dExtFrameCtrl_c::Advance();
     mTextureTransformer.Advance();
     return 1;
 }
@@ -299,10 +299,10 @@ int daTor_c::Behavior()
 int daTor_c::InitResources()
 {
     /* The dCcAc_c::Init call below stays mangled (file header leftovers). */
-    mModelAnim.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(gSandTornadoModelFile), 1, 0x15);
+    mAnmModel.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(gSandTornadoModelFile), 1, 0x15);
     dExtFrameCtrl_c::LoadFile(gSandTornadoAnimationFile);
-    func_02016aac(&mModelAnim, 0x16, 1);
-    mModelAnim.SetAnim((BCA_File *)((void *)gSandTornadoAnimationFile.filePtr), 0, 0x1000, 0);
+    func_02016aac(&mAnmModel, 0x16, 1);
+    mAnmModel.SetAnim((BCA_File *)((void *)gSandTornadoAnimationFile.filePtr), 0, 0x1000, 0);
     dExtAnmTexSRT_c::Prepare(*(BMD_File *)gSandTornadoModelFile.filePtr,
                              *(BTA_File *)data_ov024_02112968);
     mTextureTransformer.SetFile(*(BTA_File *)data_ov024_02112968, 0, 0x1000, 0);

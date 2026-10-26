@@ -29,7 +29,7 @@
 
 struct daPgMthr_c : dActor_c {
     u8  pad_0d0[0x4];
-    dExtAnmModel_c mModelAnim;        /* 0x0d4 */
+    dExtAnmModel_c mAnmModel;         /* 0x0d4 */
     dExtAnmTexPat_c mTextureSequence; /* 0x138 */
     dExtShadowModel_c mShadowModel;        /* 0x14c */
     dCcAc_c mdCcAc_c;                /* 0x174 */
@@ -109,7 +109,7 @@ struct daPgMthr_c {
        stopped short of the object, so the member also takes over unk_0dc (+0x8 = data),
        mAnimation (+0x50 = the dExtFrameCtrl_c base), which the header declared separately inside
        it. */
-    dExtAnmModel_c mModelAnim; /* 0x0d4 */
+    dExtAnmModel_c mAnmModel; /* 0x0d4 */
     /* dExtAnmTexPat_c member, named by the class's own destructor calling
        dExtAnmTexPat_c's D1 at +0x138 -- a relocation the ROM build
        checks. Was a u8 marker. [_ZN10daPgMthr_cD0Ev, now in src/game/actors/d_a_pg_mthr.cpp] */

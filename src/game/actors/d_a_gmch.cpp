@@ -369,23 +369,23 @@ void daGmch_c::UpdateDrawMatrices()
     if (inMouth)
         return;
 
-    Matrix4x3_FromRotationY(&mModelAnim.mat4x3, mAngleY);
-    mModelAnim.mat4x3.m[9] = mPosX >> 3;
-    mModelAnim.mat4x3.m[10] = mPosY >> 3;
-    mModelAnim.mat4x3.m[11] = mPosZ >> 3;
+    Matrix4x3_FromRotationY(&mAnmModel.mat4x3, mAngleY);
+    mAnmModel.mat4x3.m[9] = mPosX >> 3;
+    mAnmModel.mat4x3.m[10] = mPosY >> 3;
+    mAnmModel.mat4x3.m[11] = mPosZ >> 3;
 
-    mModelAnim.ApplyOpacity(mState, 0);
+    mAnmModel.ApplyOpacity(mState, 0);
 
     if (mAngleX != 0) {
-        data_020a0e68 = mModelAnim.mat4x3;
+        data_020a0e68 = mAnmModel.mat4x3;
         int y1 = OnAimedAtWithEgg() >> 3;
         Matrix4x3_ApplyInPlaceToTranslation(&data_020a0e68, 0, y1, 0);
         Matrix4x3_ApplyInPlaceToRotationX(&data_020a0e68, mAngleX);
         int y2 = (-OnAimedAtWithEgg()) >> 3;
         Matrix4x3_ApplyInPlaceToTranslation(&data_020a0e68, 0, y2, 0);
-        mModelAnim.mat4x3 = data_020a0e68;
+        mAnmModel.mat4x3 = data_020a0e68;
     } else {
-        data_020a0e68 = mModelAnim.mat4x3;
+        data_020a0e68 = mAnmModel.mat4x3;
         Matrix4x3_ApplyInPlaceToTranslation(&data_020a0e68, data_ov081_02128ef8.x, data_ov081_02128ef8.y, data_ov081_02128ef8.z);
         Matrix4x3_ApplyInPlaceToRotationY(&data_020a0e68, mSpinAngleY);
         mModel.mat4x3 = data_020a0e68;
@@ -406,7 +406,7 @@ void daGmch_c::UpdateDrawMatrices()
 int daGmch_c::UpdateState8()
 {
     mAngleX = mAngleX - 0x1000;
-    mModelAnim.Advance();
+    mAnmModel.Advance();
     UpdatePos(&mdCcAc_c);
     func_02038414(&mWithMeshClsn);
     if (mWithMeshClsn.JustHitGround() != 0 || DecIfAbove0_Byte(&mTimer) == 0) {
@@ -425,8 +425,8 @@ int daGmch_c::EnterState8()
     mHorzSpeed = 0xa000;
     mVertSpeed = 0x28000;
     mTimer = 0x2d;
-    mModelAnim.SetAnim((BCA_File *)data_ov081_02128edc.filePtr, 0, 0x1000, 0);
-    mModelAnim.speed = 0x4000;
+    mAnmModel.SetAnim((BCA_File *)data_ov081_02128edc.filePtr, 0, 0x1000, 0);
+    mAnmModel.speed = 0x4000;
     int yOffset1 = OnAimedAtWithEgg();
     Particle::System::NewSimple(0x43, mPosX, mPosY + yOffset1, mPosZ);
     int yOffset2 = OnAimedAtWithEgg();
@@ -568,7 +568,7 @@ int daGmch_c::UpdateState5()
         ApproachLinear(mAngleY, Vec3_HorzAngle(&mPosX, &mSpawnPosX), 0x2bc);
         mPrevAngleY = mAngleY;
     }
-    mModelAnim.Advance();
+    mAnmModel.Advance();
     UpdatePos(&mdCcAc_c);
     ApplySlopeToVertSpeed(&mWithMeshClsn);
     CheckPlayerContact();
@@ -586,8 +586,8 @@ int daGmch_c::EnterState5()
     extern GmchAnimationFileHandle data_ov081_02128edc;
 
     mHorzSpeed = 0xa000;
-    mModelAnim.SetAnim((BCA_File *)data_ov081_02128edc.filePtr, 0, 0x1000, 0);
-    mModelAnim.speed = 0x1000;
+    mAnmModel.SetAnim((BCA_File *)data_ov081_02128edc.filePtr, 0, 0x1000, 0);
+    mAnmModel.speed = 0x1000;
     mStateIndex = 5;
     return 1;
 }
@@ -595,8 +595,8 @@ int daGmch_c::EnterState5()
 // @symbol _ZN8daGmch_c12UpdateState4Ev
 int daGmch_c::UpdateState4()
 {
-    mModelAnim.Advance();
-    if (mModelAnim.Finished()) {
+    mAnmModel.Advance();
+    if (mAnmModel.Finished()) {
         mFlags |= 1;
         SetState(mNextState);
     }
@@ -611,8 +611,8 @@ int daGmch_c::EnterState4()
 {
     extern GmchAnimationFileHandle gGamaguchiJumpEndAnimationFile;
 
-    mModelAnim.SetAnim((BCA_File *)gGamaguchiJumpEndAnimationFile.filePtr, 0x40000000, 0x1000, 0);
-    mModelAnim.speed = 0x1000;
+    mAnmModel.SetAnim((BCA_File *)gGamaguchiJumpEndAnimationFile.filePtr, 0x40000000, 0x1000, 0);
+    mAnmModel.speed = 0x1000;
     mHorzSpeed = 0;
     mStateIndex = 4;
     return 1;
@@ -623,7 +623,7 @@ int daGmch_c::UpdateState3()
 {
     switch (mPhase) {
     case 0:
-        if ((((unsigned int)mModelAnim.currFrame) << 4) >> 16 == 7) {
+        if ((((unsigned int)mAnmModel.currFrame) << 4) >> 16 == 7) {
             mHorzSpeed = 0x12000;
             mVertSpeed = 0x1e000;
             func_0201267c(0x77, &mCamSpacePosX);
@@ -637,7 +637,7 @@ int daGmch_c::UpdateState3()
         }
         break;
     }
-    mModelAnim.Advance();
+    mAnmModel.Advance();
     UpdatePos(&mdCcAc_c);
     ApplySlopeToVertSpeed(&mWithMeshClsn);
     CheckPlayerContact();
@@ -653,8 +653,8 @@ int daGmch_c::EnterState3()
     extern int data_0209e650[];
 
     mFlags &= ~1;
-    mModelAnim.SetAnim((BCA_File *)gGamaguchiJumpAnimationFile.filePtr, 0x40000000, 0x1000, 0);
-    mModelAnim.currFrame = 0;
+    mAnmModel.SetAnim((BCA_File *)gGamaguchiJumpAnimationFile.filePtr, 0x40000000, 0x1000, 0);
+    mAnmModel.currFrame = 0;
     mAngleY = (short)RandomIntInternal(data_0209e650);
     mPrevAngleY = mAngleY;
     mHorzSpeed = 0;
@@ -666,10 +666,10 @@ int daGmch_c::EnterState3()
 // @symbol _ZN8daGmch_c12UpdateState2Ev
 int daGmch_c::UpdateState2()
 {
-    if (mModelAnim.Finished()) {
+    if (mAnmModel.Finished()) {
         SetState(mNextState);
     }
-    mModelAnim.Advance();
+    mAnmModel.Advance();
     CheckPlayerContact();
     mdCcAc_c.Clear();
     mdCcAc_c.Update();
@@ -681,8 +681,8 @@ int daGmch_c::EnterState2()
 {
     extern GmchAnimationFileHandle gGamaguchiWalkEndAnimationFile;
 
-    mModelAnim.SetAnim((BCA_File *)gGamaguchiWalkEndAnimationFile.filePtr, 0x40000000, 0x1000, 0);
-    mModelAnim.speed = 0x1000;
+    mAnmModel.SetAnim((BCA_File *)gGamaguchiWalkEndAnimationFile.filePtr, 0x40000000, 0x1000, 0);
+    mAnmModel.speed = 0x1000;
     mHorzSpeed = 0;
     mStateIndex = 2;
     return 1;
@@ -696,7 +696,7 @@ int daGmch_c::UpdateState1()
     UpdatePos(&mdCcAc_c);
     ApplySlopeToVertSpeed(&mWithMeshClsn);
     CheckPlayerContact();
-    mModelAnim.Advance();
+    mAnmModel.Advance();
     if (DecIfAbove0_Byte(&mTimer) == 0) {
         ChooseNextState();
     }
@@ -711,8 +711,8 @@ void daGmch_c::EnterState1()
     extern GmchAnimationFileHandle data_ov081_02128edc;
     extern int data_0209e650[];
 
-    mModelAnim.SetAnim((BCA_File *)data_ov081_02128edc.filePtr, 0, 0x1000, 0);
-    mModelAnim.speed = 0x1000;
+    mAnmModel.SetAnim((BCA_File *)data_ov081_02128edc.filePtr, 0, 0x1000, 0);
+    mAnmModel.speed = 0x1000;
     mHorzSpeed = 0xa000;
     mTargetAngleY = (short)RandomIntInternal(data_0209e650);
     mTimer = (unsigned char)((unsigned int)RandomIntInternal(data_0209e650) % 0x78);
@@ -762,9 +762,9 @@ int daGmch_c::EnterState0()
 {
     extern GmchAnimationFileHandle gGamaguchiJumpEndAnimationFile;
 
-    mModelAnim.SetAnim((BCA_File *)gGamaguchiJumpEndAnimationFile.filePtr, 0, 0x1000, 0);
-    mModelAnim.speed = 0x1000;
-    mModelAnim.currFrame = 0x6000;
+    mAnmModel.SetAnim((BCA_File *)gGamaguchiJumpEndAnimationFile.filePtr, 0, 0x1000, 0);
+    mAnmModel.speed = 0x1000;
+    mAnmModel.currFrame = 0x6000;
     mPhase = 0;
     mStateIndex = 0;
     return 1;
@@ -831,7 +831,7 @@ int daGmch_c::Render()
     if (inMouth != 0)
         return 1;
     if (mState > 1) {
-        mModelAnim.Render(0);
+        mAnmModel.Render(0);
     }
     if (mState <= 0x1f) {
         mModel.Render(0);
@@ -866,7 +866,7 @@ int daGmch_c::InitResources()
 
     Vector3 pos;
     void *modelFile = dExtSimpleModel_c::LoadFile(*(SharedFilePtr *)&data_ov081_02128ed4);
-    mModelAnim.SetFile((BMD_File *)modelFile, 1, 1);
+    mAnmModel.SetFile((BMD_File *)modelFile, 1, 1);
     if (mModel.SetFile((BMD_File *)data_ov002_0210d9b8.filePtr, 1, 1) == 0)
         return 0;
     for (int i = 0; i < 4; i++)
@@ -922,7 +922,7 @@ void daGmch_c::OnTurnIntoEgg(Player &player)
 /* The GAMAGUCHI factory. `new` calls fBase_c::operator new (_ZN7fBase_cnwEm),
  * and daGmch_c has no user-declared constructor, so `new` is the base
  * constructor, the vtable store and the five member subobjects in field
- * order (mModelAnim, mModel, mShadowModel, mdCcAc_c, mWithMeshClsn).
+ * order (mAnmModel, mModel, mShadowModel, mdCcAc_c, mWithMeshClsn).
  *
  * Reconstructed source-style name: SM64DS proves daGmch_c through RTTI,
  * allocation size, vtable identity and the GAMAGUCHI registry profile; later

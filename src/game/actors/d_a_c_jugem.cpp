@@ -819,7 +819,7 @@ void daC_Jugem_c::UpdateShadow()
     Vec3_Asr(&v, &mPosX, 3);
     Matrix4x3_FromTranslation(&data_020a0e68, v.x, v.y, v.z);
     Matrix4x3_ApplyInPlaceToRotationZXYExt(&data_020a0e68, mAngleX, mAngleY, mAngleZ);
-    *(M48 *)&mModelAnim1.mat4x3 = *(M48 *)&data_020a0e68;
+    *(M48 *)&mAnmModel1.mat4x3 = *(M48 *)&data_020a0e68;
     Matrix4x3_FromTranslation(&data_020a0e68, mPosX >> 3, (mPosY - 0x38000) >> 3, mPosZ >> 3);
     *(M48 *)&mShadowMat1 = *(M48 *)&data_020a0e68;
     _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
@@ -846,7 +846,7 @@ void daC_Jugem_c::UpdateShadowPlayer()
     Vec3_Asr(&t, &mPosX, 3);
     Matrix4x3_FromTranslation(&data_020a0e68, t.x, t.y, t.z);
     Matrix4x3_ApplyInPlaceToRotationXYZExt(&data_020a0e68, mAngleX, mAngleY, mAngleZ);
-    *(M48 *)&mModelAnim1.mat4x3 = *(M48 *)&data_020a0e68;
+    *(M48 *)&mAnmModel1.mat4x3 = *(M48 *)&data_020a0e68;
 
     Matrix4x3_FromTranslation(&data_020a0e68,
         mPosX >> 3,
@@ -922,8 +922,8 @@ void daC_Jugem_c::OnPendingDestroy()
 int daC_Jugem_c::Render()
 {
   if (mHidden == 1) return 1;
-  mTextureSequence.Update(mModelAnim1.data);
-  mModelAnim1.Render(0);
+  mTextureSequence.Update(mAnmModel1.data);
+  mAnmModel1.Render(0);
   return 1;
 }
 
@@ -933,7 +933,7 @@ int daC_Jugem_c::Behavior()
   DecIfAbove0_Short((unsigned short *)&mStateTimer);
   if (mState[1]) (this->*mState[1])();
   UpdatePos(0);
-  mModelAnim1.Advance();
+  mAnmModel1.Advance();
   mTextureSequence.Advance();
   if (mState == data_ov085_021307d0) {
     mAngleX = mPrevAngleX;
@@ -950,16 +950,16 @@ int daC_Jugem_c::Behavior()
 int daC_Jugem_c::InitResources()
 {
     BMD_File *bmd = (BMD_File *)dExtSimpleModel_c::LoadFile(data_ov085_0213074c);
-    mModelAnim1.SetFile(bmd, 1, -1);
+    mAnmModel1.SetFile(bmd, 1, -1);
     dExtFrameCtrl_c::LoadFile(data_ov085_02130744);
     dExtAnmTexPat_c::LoadFile(data_ov085_0213073c);
     mShadowModel1.InitCylinder();
     mShadowModel2.InitCylinder();
     dExtAnmTexPat_c::Prepare(**(BMD_File **)((char *)&data_ov085_0213074c + 4),
                              **(BTP_File **)((char *)&data_ov085_0213073c + 4));
-    mModelAnim1.SetAnim(*(BCA_File **)((char *)&data_ov085_02130744 + 4), 0, 0x1000, 0);
+    mAnmModel1.SetAnim(*(BCA_File **)((char *)&data_ov085_02130744 + 4), 0, 0x1000, 0);
     mTextureSequence.SetFile(**(BTP_File **)((char *)&data_ov085_0213073c + 4), 0, 0x1000, 0);
-    mModelAnim1.speed = 0x1000;
+    mAnmModel1.speed = 0x1000;
     mVariant = param1 & 0xff;
     if (mVariant == 0xff)
         mVariant = 0;

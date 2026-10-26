@@ -162,7 +162,7 @@ int daBDonketu_c::Behavior()
 int daBDonketu_c::Render()
 {
     if (mNumBulliesKilled >= 3)
-        mModelAnim.Render(0);
+        mAnmModel.Render(0);
     return 1;
 }
 

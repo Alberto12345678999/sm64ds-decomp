@@ -340,8 +340,8 @@ void daKing_Donketu_c::func_ov073_0211f2c0(int strength)
   int y;
   int z;
   func_0200d8c8(data_0209f318, &c->mPosX, strength);
-  data_020a0e68 = c->mBlendModelAnim.mat4x3;
-  MulMat4x3Mat4x3(&c->mBlendModelAnim.data.transforms[c->mStepBoneIdx], &data_020a0e68,
+  data_020a0e68 = c->mBlendAnmModel.mat4x3;
+  MulMat4x3Mat4x3(&c->mBlendAnmModel.data.transforms[c->mStepBoneIdx], &data_020a0e68,
                   &data_020a0e68);
   c->mStepBoneIdx ^= 1;
   ty = *((int *) (((char *) (&data_020a0e68)) + 0x28));
@@ -638,9 +638,9 @@ s32 daKing_Donketu_c::func_ov073_0211f61c()
     }
     func_02012694(SND_REVERSE_AFTER_HURT, &c->mCamSpacePosX);
     ChiefChilly_ChangeState((C *)(c), (PMF *)&data_ov073_02123360);
-    c->mBlendModelAnim.SetAnim(*(BCA_File *)((BCA_File *)gKingIceDonketuHitAnimationFile.filePtr),
+    c->mBlendAnmModel.SetAnim(*(BCA_File *)((BCA_File *)gKingIceDonketuHitAnimationFile.filePtr),
                                4, 0x40000000, 0x1000, 0);
-    c->mBlendModelAnim.speed = 0x1000;
+    c->mBlendAnmModel.speed = 0x1000;
     c->mPhase = 2;
     c->mStateParam = 0x2000;
     c->mStateTimer = 0x1e;
@@ -883,7 +883,7 @@ int daKing_Donketu_c::func_ov073_0211fe8c() {
 // @symbol _ZN16daKing_Donketu_c19func_ov073_0212000cEv
 short daKing_Donketu_c::func_ov073_0212000c() {
     daKing_Donketu_c *c = this;
-    c->mBlendModelAnim.SetAnim(*(BCA_File *)((BCA_File *)gKingIceDonketuDeadAnimationFile.filePtr),
+    c->mBlendAnmModel.SetAnim(*(BCA_File *)((BCA_File *)gKingIceDonketuDeadAnimationFile.filePtr),
                                4, 0, 0x1000, 0);
     c->mStateTimer = 0x32;
     return 1;
@@ -894,7 +894,7 @@ short daKing_Donketu_c::func_ov073_0212000c() {
 // @symbol _ZN16daKing_Donketu_c19func_ov073_0212005cEv
 int daKing_Donketu_c::func_ov073_0212005c() {
     daKing_Donketu_c *c = this;
-    if (c->mBlendModelAnim.Finished()) {
+    if (c->mBlendAnmModel.Finished()) {
         c->mLandedWaypoint = 0xff;
         ChiefChilly_ChangeState((C *)(c), (PMF *)&data_ov073_02123360);
     }
@@ -908,7 +908,7 @@ struct BCA_File;
 int daKing_Donketu_c::func_ov073_02120098() {
     daKing_Donketu_c *c = this;
     c->mEdgeRecovered = 0;
-    c->mBlendModelAnim.SetAnim(
+    c->mBlendAnmModel.SetAnim(
         *(BCA_File *)((BCA_File *)gKingIceDonketuJumpEdAnimationFile.filePtr), 4, 0x40000000,
         0x1000, 0);
     return 1;
@@ -934,10 +934,10 @@ int daKing_Donketu_c::func_ov073_021200e0()
     u16 state = thiz->mStateTimer;
     if (state != 0) {
         if (state == 1) {
-            thiz->mBlendModelAnim.SetAnim(
+            thiz->mBlendAnmModel.SetAnim(
                 *(BCA_File *)((BCA_File *)gKingIceDonketuJumpStAnimationFile.filePtr), 4,
                 0x40000000, 0x1000, 0);
-            thiz->mBlendModelAnim.speed = 0x1000;
+            thiz->mBlendAnmModel.speed = 0x1000;
             thiz->mVertSpeed = 0x46000;
             thiz->mLandedWaypoint = 0xff;
             thiz->mVertAccel = -0x3000;
@@ -999,7 +999,7 @@ int daKing_Donketu_c::func_ov073_021200e0()
         if (thiz->mHitsRemaining == 1 && thiz->mEdgeRecovered == 0) {
             thiz->mLandedWaypoint = 0;
             if (thiz->mStateScratch == 0) {
-                thiz->mBlendModelAnim.SetAnim(
+                thiz->mBlendAnmModel.SetAnim(
                     *(BCA_File *)((BCA_File *)gKingIceDonketuJumpEdAnimationFile.filePtr), 4,
                     0x40000000, 0x1000, 0);
             }
@@ -1054,9 +1054,9 @@ int daKing_Donketu_c::func_ov073_021203ac()
             *p = *p & 7;
         }
 
-        c->mBlendModelAnim.SetAnim(
+        c->mBlendAnmModel.SetAnim(
             *(BCA_File *)((BCA_File *)gKingIceDonketuDamageAnimationFile.filePtr), 4, 0, 0x1000, 0);
-        c->mBlendModelAnim.speed = 0x2000;
+        c->mBlendAnmModel.speed = 0x2000;
     }
     return 1;
 
@@ -1114,7 +1114,7 @@ mainblock:
 int daKing_Donketu_c::func_ov073_021205f0()
 {
     daKing_Donketu_c *p = this;
-    p->mBlendModelAnim.speed = 0;
+    p->mBlendAnmModel.speed = 0;
     p->mStateScratch = 0;
     p->mStateTimer = 2;
     return 1;
@@ -1138,9 +1138,9 @@ int daKing_Donketu_c::func_ov073_02120610() {
 
     if ((unsigned short)c->mStateTimer == 1) {
         c->mVertSpeed = 0x5a000;
-        c->mBlendModelAnim.SetAnim(
+        c->mBlendAnmModel.SetAnim(
             *(BCA_File *)((BCA_File *)gKingIceDonketuDamageAnimationFile.filePtr), 4, 0, 0x1000, 0);
-        c->mBlendModelAnim.speed = 0x2000;
+        c->mBlendAnmModel.speed = 0x2000;
     }
     return 1;
 
@@ -1304,9 +1304,9 @@ int daKing_Donketu_c::func_ov073_02120910()
 int daKing_Donketu_c::func_ov073_02120ad8()
 {
     daKing_Donketu_c *t = this;
-    t->mBlendModelAnim.SetAnim(*(BCA_File *)((BCA_File *)gKingIceDonketuWalkAnimationFile.filePtr),
+    t->mBlendAnmModel.SetAnim(*(BCA_File *)((BCA_File *)gKingIceDonketuWalkAnimationFile.filePtr),
                                4, 0, 0x1000, 0);
-    t->mBlendModelAnim.speed = 0x4000;
+    t->mBlendAnmModel.speed = 0x4000;
     t->mAngleX = 0;
     t->mStateScratch = 0;
     t->mVertAccel = 0;
@@ -1351,9 +1351,9 @@ int daKing_Donketu_c::func_ov073_02120b78() {
 int daKing_Donketu_c::func_ov073_02120c08()
 {
     daKing_Donketu_c *t = this;
-    t->mBlendModelAnim.SetAnim(*(BCA_File *)((BCA_File *)gKingIceDonketuWalkAnimationFile.filePtr),
+    t->mBlendAnmModel.SetAnim(*(BCA_File *)((BCA_File *)gKingIceDonketuWalkAnimationFile.filePtr),
                                4, 0, 0x1000, 0);
-    t->mBlendModelAnim.speed = 0x4000;
+    t->mBlendAnmModel.speed = 0x4000;
     t->mHorzSpeed = 0x14000;
     t->mVertSpeed = 0x1e000;
     t->mAngleX = 0;
@@ -1389,7 +1389,7 @@ int daKing_Donketu_c::func_ov073_02120c7c()
         return 1;
     }
     _Z14ApproachLinearRiii((int *)&c->mHorzSpeed, 0, 0x1000);
-    if (c->mBlendModelAnim.Finished()) {
+    if (c->mBlendAnmModel.Finished()) {
         int b = c->mHorzSpeed; if (b < 0) b = -b;
         if (b < 0xa) {
             c->mHorzSpeed = 0;
@@ -1412,10 +1412,10 @@ int daKing_Donketu_c::func_ov073_02120d80()
 
     fix = 0x1000;
     t = 0;
-    c->mBlendModelAnim.SetAnim(
+    c->mBlendAnmModel.SetAnim(
         *(BCA_File *)((BCA_File *)gKingIceDonketuDamageAnimationFile.filePtr), 4, 0x40000000, fix,
         t);
-    c->mBlendModelAnim.speed = fix;
+    c->mBlendAnmModel.speed = fix;
     ang = c->HorzAngleToCPlayer();
     short *py = &c->mPrevAngleY;
     c->mPrevAngleY = ang;
@@ -1447,9 +1447,9 @@ int daKing_Donketu_c::func_ov073_02120dec() {
 // @symbol _ZN16daKing_Donketu_c19func_ov073_02120e60Ev
 int daKing_Donketu_c::func_ov073_02120e60() {
     daKing_Donketu_c *c = this;
-    c->mBlendModelAnim.SetAnim(*(BCA_File *)((BCA_File *)gKingIceDonketuWalkAnimationFile.filePtr),
+    c->mBlendAnmModel.SetAnim(*(BCA_File *)((BCA_File *)gKingIceDonketuWalkAnimationFile.filePtr),
                                4, 0, 0x1000, 0);
-    c->mBlendModelAnim.speed = 0x2000;
+    c->mBlendAnmModel.speed = 0x2000;
     c->mTargetAngle = Vec3_HorzAngle(&c->mPos, (const Vector3 *)&c->mSpawnPosX);
     c->mStateScratch = 0;
     c->mPrevAngleY = c->mAngleY;
@@ -1573,9 +1573,9 @@ int daKing_Donketu_c::func_ov073_02120ed0() {
         c->mHorzSpeed = 0;
         c->mPrevAngleY = c->mAngleY;
         c->mStateTimer = 0x1e;
-        c->mBlendModelAnim.SetAnim(
+        c->mBlendAnmModel.SetAnim(
             *(BCA_File *)((BCA_File *)gKingIceDonketuWalkAnimationFile.filePtr), 4, 0, 0x1000, 0);
-        c->mBlendModelAnim.speed = 0x2000;
+        c->mBlendAnmModel.speed = 0x2000;
         c->mStateScratch = 0;
         c->mPhase = 0;
         break;
@@ -1583,7 +1583,7 @@ int daKing_Donketu_c::func_ov073_02120ed0() {
     }
 
     if (c->mPhase == 0) {
-        if (c->mBlendModelAnim.WillHitFrame(0) != 0 || c->mBlendModelAnim.WillHitFrame(0xe) != 0) {
+        if (c->mBlendAnmModel.WillHitFrame(0) != 0 || c->mBlendAnmModel.WillHitFrame(0xe) != 0) {
             c->func_ov073_0211f2c0(0x3e8000);
             func_02012694(SND_CHASE_STEP, &c->mCamSpacePosX);
         }
@@ -1600,9 +1600,9 @@ int daKing_Donketu_c::func_ov073_0212122c()
     t->mStateTimer = 0;
     t->mPhase = 0;
     t->mStateParam = 0x2000;
-    t->mBlendModelAnim.SetAnim(*(BCA_File *)((BCA_File *)gKingIceDonketuWalkAnimationFile.filePtr),
+    t->mBlendAnmModel.SetAnim(*(BCA_File *)((BCA_File *)gKingIceDonketuWalkAnimationFile.filePtr),
                                4, 0, 0x1000, 0);
-    t->mBlendModelAnim.speed = 0x2000;
+    t->mBlendAnmModel.speed = 0x2000;
     return 1;
 }
 
@@ -1732,7 +1732,7 @@ int daKing_Donketu_c::func_ov073_02121388() {
 int daKing_Donketu_c::func_ov073_02121538() {
     daKing_Donketu_c *c = this;
     c->mPhase = 0;
-    c->mBlendModelAnim.SetAnim(*(BCA_File *)((BCA_File *)gKingIceDonketuWaitAnimationFile.filePtr),
+    c->mBlendAnmModel.SetAnim(*(BCA_File *)((BCA_File *)gKingIceDonketuWaitAnimationFile.filePtr),
                                4, 0, 0x1000, 0);
     return 1;
 }
@@ -1744,7 +1744,7 @@ int daKing_Donketu_c::func_ov073_02121538() {
 extern "C" int ChiefChilly_ChangeState(C *c, PMF *p) { c->pp = p; PMF *q = c->pp; if (*q == 0) return 1; return (c->**q)(); }
 
 /* Called at the end of every Behavior. Builds the model matrix (mPos >> 3,
-   rotated by mAngleX/Y/Z) into mBlendModelAnim.mat4x3, then sets mFootPos[0..1]
+   rotated by mAngleX/Y/Z) into mBlendAnmModel.mat4x3, then sets mFootPos[0..1]
    to the world positions of bones 2 and 3 (bone matrix times the model
    matrix, translation words shifted left by 3). In ..33b0, ..33e0, ..3410,
    ..33f0 and ..3370 it stops there; in every other state it also draws the
@@ -1767,13 +1767,13 @@ void daKing_Donketu_c::func_ov073_021215cc()
     Matrix4x3_ApplyInPlaceToRotationXYZExt(&data_020a0e68, c->mAngleX, c->mAngleY, c->mAngleZ);
 
     p = (Vec3 *)&c->mFootPos;
-    c->mBlendModelAnim.mat4x3 = data_020a0e68;
-    saved = (Mtx43*)&c->mBlendModelAnim.mat4x3;
+    c->mBlendAnmModel.mat4x3 = data_020a0e68;
+    saved = (Mtx43*)&c->mBlendAnmModel.mat4x3;
     sh = 3;
     i = 0;
     for (; i < 2; i++) {
         data_020a0e68 = *(struct Matrix4x3 *)saved;
-        MulMat4x3Mat4x3(&c->mBlendModelAnim.data.transforms[i + 2], &data_020a0e68, &data_020a0e68);
+        MulMat4x3Mat4x3(&c->mBlendAnmModel.data.transforms[i + 2], &data_020a0e68, &data_020a0e68);
         p->x = data_020a0e68.m[9];
         p->y = data_020a0e68.m[10];
         p->z = data_020a0e68.m[11];
@@ -1820,7 +1820,7 @@ void daKing_Donketu_c::OnPendingDestroy()
 // @symbol _ZN16daKing_Donketu_c6RenderEv
 int daKing_Donketu_c::Render()
 {
-  ((Base *)&mBlendModelAnim)->M((char*)&mScaleX);
+  ((Base *)&mBlendAnmModel)->M((char*)&mScaleX);
   return 1;
 }
 
@@ -1899,9 +1899,9 @@ int daKing_Donketu_c::Behavior()
     }
 
     if (((char *)c->pp == (char *)&data_ov073_02123330 || (char *)c->pp == (char *)&data_ov073_02123350)
-        && mBlendModelAnim.WillHitFrame(7) != 0) {
-        data_020a0e68 = mBlendModelAnim.mat4x3;
-        MulMat4x3Mat4x3(&mBlendModelAnim.data.transforms[2], &data_020a0e68, &data_020a0e68);
+        && mBlendAnmModel.WillHitFrame(7) != 0) {
+        data_020a0e68 = mBlendAnmModel.mat4x3;
+        MulMat4x3Mat4x3(&mBlendAnmModel.data.transforms[2], &data_020a0e68, &data_020a0e68);
         v0.x = data_020a0e68.m[9];
         v0.y = data_020a0e68.m[10];
         v0.z = data_020a0e68.m[11];
@@ -1986,7 +1986,7 @@ int daKing_Donketu_c::Behavior()
     mdCcAcPos_c.Clear();
     mdCcAcPos_c.Update();
     ((daKing_Donketu_c *)self)->func_ov073_021215cc();
-    mBlendModelAnim.Advance();
+    mBlendAnmModel.Advance();
     return 1;
 }
 
@@ -2015,7 +2015,7 @@ int daKing_Donketu_c::InitResources()
     dExtFrameCtrl_c::LoadFile(gKingIceDonketuWaitAnimationFile);
     dExtSimpleModel_c::LoadFile(*(SharedFilePtr *)data_ov002_0210da30);
     f = (BMD_File *)dExtSimpleModel_c::LoadFile(gKingIceDonketuModelModelFile);
-    mBlendModelAnim.SetFile(f, 1, -1);
+    mBlendAnmModel.SetFile(f, 1, -1);
     mShadowModel.InitCylinder();
     mVertAccel = -0x3000;
     mTerminalVelocity = -0x3c000;
@@ -2023,7 +2023,7 @@ int daKing_Donketu_c::InitResources()
     v.y = data_ov073_02123040.y;
     v.z = data_ov073_02123040.z;
     _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(&mdCcAcPos_c, this, &v, 0xa4000, 0x1e4000, 0x200000, 0x567f0);
-    mBlendModelAnim.speed = 0x2000;
+    mBlendAnmModel.speed = 0x2000;
     mWithMeshClsn.Init(this, 0x96000, 0x94000, 0, 0);
     mSpawnPosX = mPosX;
     mSpawnPosY = mPosY;

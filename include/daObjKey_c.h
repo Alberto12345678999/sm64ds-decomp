@@ -33,7 +33,7 @@ struct daObjKey_c : dEnemyBase_c {
     /* No member name here is a recovered symbol; "coined" marks names given
        from the field's uses in this class's code. */
     Player      *mPlayer;           /* 0x110 coined: the Player collecting the key */
-    dExtAnmModel_c mModelAnim;      /* 0x114 */
+    dExtAnmModel_c mAnmModel;       /* 0x114 */
     dExtSimpleModel_c mModel;       /* 0x178 */
     dExtShadowModel_c mShadowModel;       /* 0x1c8 */
     Matrix4x3   mShadowMatrix;      /* 0x1f0 coined: DropShadowRadHeight matrix */

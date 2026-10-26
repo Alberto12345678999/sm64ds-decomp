@@ -114,7 +114,7 @@ void daBasabasa_c::func_ov065_0211704c()
     flags = mdCcAc_c.hitFlags;
     if (flags & 0x2400) {
         mIsFlying = 1;
-        mModelAnim1.SetAnim((BCA_File *)data_ov065_0211d690.filePtr, 0, 0x1000, 0);
+        mAnmModel1.SetAnim((BCA_File *)data_ov065_0211d690.filePtr, 0, 0x1000, 0);
         mDeathState = 2;
         func_ov002_020aea30(this, p, 0);
         func_02012694(0x112, &mCamSpacePosX);
@@ -132,14 +132,14 @@ void daBasabasa_c::func_ov065_0211704c()
     if (flags & 0x40000) {
         mDeathState = 4;
         mIsFlying = 1;
-        mModelAnim1.SetAnim((BCA_File *)data_ov065_0211d690.filePtr, 0, 0x1000, 0);
+        mAnmModel1.SetAnim((BCA_File *)data_ov065_0211d690.filePtr, 0, 0x1000, 0);
         func_ov002_020aea30(this, p, 0);
         func_02012694(0x112, &mCamSpacePosX);
         return;
     }
     if (flags & 0x4380) {
         mIsFlying = 1;
-        mModelAnim1.SetAnim((BCA_File *)data_ov065_0211d690.filePtr, 0, 0x1000, 0);
+        mAnmModel1.SetAnim((BCA_File *)data_ov065_0211d690.filePtr, 0, 0x1000, 0);
         mDeathState = 3;
         func_ov002_020aea30(this, p, 0);
         func_02012694(0x112, &mCamSpacePosX);
@@ -147,7 +147,7 @@ void daBasabasa_c::func_ov065_0211704c()
     }
     if (flags & 0x40) {
         mIsFlying = 1;
-        mModelAnim1.SetAnim((BCA_File *)data_ov065_0211d690.filePtr, 0, 0x1000, 0);
+        mAnmModel1.SetAnim((BCA_File *)data_ov065_0211d690.filePtr, 0, 0x1000, 0);
         mDeathState = 2;
         func_ov002_020aea30(this, p, 0);
         func_02012694(0x112, &mCamSpacePosX);
@@ -246,7 +246,7 @@ int daBasabasa_c::EnterReturn()
     r = RandomIntInternal(&data_0209e650);
     mStateTimer = ((r >> 8) & 0x1f) + 0x32;
     func_02012694(0xf9, &mCamSpacePosX);
-    mModelAnim1.speed = 0x1000;
+    mAnmModel1.speed = 0x1000;
     mFlags &= ~1;
     return 1;
 }
@@ -279,8 +279,8 @@ int daBasabasa_c::EnterChase()
     mIsFlying = 1;
     mFlags = 0x10000003;
     mStateTimer = 0x64;
-    mModelAnim1.speed = 0x2000;
-    mModelAnim1.SetAnim((BCA_File *)data_ov065_0211d690.filePtr, 0, 0x1000, 0);
+    mAnmModel1.speed = 0x2000;
+    mAnmModel1.SetAnim((BCA_File *)data_ov065_0211d690.filePtr, 0, 0x1000, 0);
     mTargetAngleY = ((RandomIntInternal(&data_0209e650) >> 8) & 0xf) << 0xc;
     return 1;
 }
@@ -309,8 +309,8 @@ int daBasabasa_c::EnterDrop()
     mVertAccel = -0x1000;
     mTerminalVelocity = -0xa000;
     mIsFlying = 0;
-    mModelAnim2.speed = 0;
-    mModelAnim2.SetAnim((BCA_File *)data_ov065_0211d6a0.filePtr, 0, 0x1000, 0);
+    mAnmModel2.speed = 0;
+    mAnmModel2.SetAnim((BCA_File *)data_ov065_0211d6a0.filePtr, 0, 0x1000, 0);
     PoofPos vec(mPosX, mPosY + 0x64000, mPosZ);
     mStateTimer = 0x19;
     if (mPosY == 0x898000)
@@ -343,8 +343,8 @@ int daBasabasa_c::EnterPerch()
 {
     mFlags = 3;
     mIsFlying = 0;
-    mModelAnim2.speed = 0x1000;
-    mModelAnim2.SetAnim((BCA_File *)data_ov065_0211d6a0.filePtr, 0, 0x1000, 0);
+    mAnmModel2.speed = 0x1000;
+    mAnmModel2.SetAnim((BCA_File *)data_ov065_0211d6a0.filePtr, 0, 0x1000, 0);
     return 1;
 }
 
@@ -366,9 +366,9 @@ void daBasabasa_c::func_ov065_02117994()
     Matrix4x3_ApplyInPlaceToRotationXYZExt(&data_020a0e68,
         mAngleX, mAngleY, mAngleZ);
     if (mIsFlying == 1) {
-        mModelAnim1.mat4x3 = data_020a0e68;
+        mAnmModel1.mat4x3 = data_020a0e68;
     } else {
-        mModelAnim2.mat4x3 = data_020a0e68;
+        mAnmModel2.mat4x3 = data_020a0e68;
     }
     Matrix4x3_FromTranslation(&data_020a0e68,
         mPosX >> 3,
@@ -402,9 +402,9 @@ int daBasabasa_c::Render()
     int flag = (mFlags & 0x40000) != 0;
     if (flag != 0) return 1;
     if (mIsFlying == 1) {
-        mModelAnim1.Render(0);
+        mAnmModel1.Render(0);
     } else {
-        mModelAnim2.Render(0);
+        mAnmModel2.Render(0);
     }
     return 1;
 }
@@ -422,7 +422,7 @@ int daBasabasa_c::Behavior()
         func_ov065_02117994();
         return 1;
     }
-    if (UpdateKillByInvincibleChar(mWithMeshClsn, mModelAnim1, 3) != 0) {
+    if (UpdateKillByInvincibleChar(mWithMeshClsn, mAnmModel1, 3) != 0) {
         return 1;
     }
     if (mDeathState != 0) {
@@ -435,9 +435,9 @@ int daBasabasa_c::Behavior()
         (this->*mCurrentState->execute)();
     if (mCurrentState == &data_ov065_0211d6e0 || mCurrentState == &data_ov065_0211d6f0) {
         /* Three wingbeat frames, one flap sound. */
-        if (mModelAnim1.WillHitFrame(3) != 0 ||
-            mModelAnim1.WillHitFrame(0xf) != 0 ||
-            mModelAnim1.WillHitFrame(0x1b) != 0) {
+        if (mAnmModel1.WillHitFrame(3) != 0 ||
+            mAnmModel1.WillHitFrame(0xf) != 0 ||
+            mAnmModel1.WillHitFrame(0x1b) != 0) {
             func_02012694(0xe1, &mCamSpacePosX);
         }
     }
@@ -469,9 +469,9 @@ int daBasabasa_c::Behavior()
         }
     }
     if (mIsFlying == 1) {
-        mModelAnim1.Advance();
+        mAnmModel1.Advance();
     } else {
-        mModelAnim2.Advance();
+        mAnmModel2.Advance();
     }
     return 1;
 }
@@ -481,8 +481,8 @@ int daBasabasa_c::Behavior()
  * and 0x364 are two members. */
 int daBasabasa_c::InitResources()
 {
-    mModelAnim1.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(data_ov065_0211d698), 1, -1);
-    mModelAnim2.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(data_ov065_0211d6a8), 1, -1);
+    mAnmModel1.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(data_ov065_0211d698), 1, -1);
+    mAnmModel2.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(data_ov065_0211d6a8), 1, -1);
     mShadowModel.InitCylinder();
     dExtFrameCtrl_c::LoadFile(data_ov065_0211d690);
     dExtFrameCtrl_c::LoadFile(data_ov065_0211d6a0);
@@ -492,8 +492,8 @@ int daBasabasa_c::InitResources()
     mPrevAngleX = -0x8000;
     mAngleX = mPrevAngleX;
     mIsFlying = 0;
-    mModelAnim1.speed = 0x1000;
-    mModelAnim2.speed = 0x1000;
+    mAnmModel1.speed = 0x1000;
+    mAnmModel2.speed = 0x1000;
     mWithMeshClsn.Init(this, 0x28000, 0x1e000, 0, 0);
     mHomePosX = mPosX;
     mHomePosY = mPosY;

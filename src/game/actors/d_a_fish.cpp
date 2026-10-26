@@ -154,9 +154,9 @@ s32 daFish_c::InitResources()
             mVariant = modelIndex - 2;
         mModelIndex = 0;
     }
-    mModelAnim.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(*data_ov100_021473a4[mModelIndex]),
+    mAnmModel.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(*data_ov100_021473a4[mModelIndex]),
                        1, -1);
-    mModelAnim.SetAnim((BCA_File *)dExtFrameCtrl_c::LoadFile(*data_ov100_021473b0[mModelIndex]), 0,
+    mAnmModel.SetAnim((BCA_File *)dExtFrameCtrl_c::LoadFile(*data_ov100_021473b0[mModelIndex]), 0,
                        0x1000, 0);
     mIsSpawner = 1;
     mSpawnerID = uniqueID;
@@ -187,9 +187,9 @@ s32 daFish_c::Behavior()
             &data_020a0e68, shiftedPos.x, shiftedPos.y, shiftedPos.z);
         mAngleY = mPrevAngleY;
         Matrix4x3_ApplyInPlaceToRotationY(&data_020a0e68, mAngleY);
-        *(RawMatrix4x3 *)&mModelAnim.mat4x3 =
+        *(RawMatrix4x3 *)&mAnmModel.mat4x3 =
             *(RawMatrix4x3 *)&data_020a0e68;
-        mModelAnim.Advance();
+        mAnmModel.Advance();
     }
     return 1;
 }
@@ -198,7 +198,7 @@ s32 daFish_c::Behavior()
 s32 daFish_c::Render()
 {
     if (mIsSpawner == 0)
-        mModelAnim.Render(0);
+        mAnmModel.Render(0);
     return 1;
 }
 
@@ -323,9 +323,9 @@ void daFish_c::func_ov100_02146640()
         this->mHorzSpeed = ((r >> 15) & 0x1fff) + 0x3000;
         r = RandomIntInternal(&data_0209e650);
         this->mTriggerDist = ((r % 500) + 0x96) << 0xc;
-        this->mModelAnim.speed = 0x2000;
+        this->mAnmModel.speed = 0x2000;
     } else if (st == 0xa) {
-        this->mModelAnim.speed = 0x1000;
+        this->mAnmModel.speed = 0x1000;
     }
 
     Player *p = this->ClosestPlayer();
@@ -333,7 +333,7 @@ void daFish_c::func_ov100_02146640()
         s16 ang = Vec3_HorzAngle(&this->mPos, &p->mPos);
         if (ApproachLinear(this->mPrevAngleY, ang, 0x400) != 0) {
             if (this->mModelIndex == 0) {
-                this->mModelAnim.SetAnim((BCA_File *)(LoadedBCA(&data_ov100_021489cc)), 0, 0x1000,
+                this->mAnmModel.SetAnim((BCA_File *)(LoadedBCA(&data_ov100_021489cc)), 0, 0x1000,
                                          0);
             }
         }
@@ -342,12 +342,12 @@ void daFish_c::func_ov100_02146640()
             return;
         this->mStateTimer = -1;
         this->mState = 4;
-        this->mModelAnim.SetAnim((BCA_File *)(LoadedBCA(data_ov100_021473b0[this->mModelIndex])), 0,
+        this->mAnmModel.SetAnim((BCA_File *)(LoadedBCA(data_ov100_021473b0[this->mModelIndex])), 0,
                                  0x1000, 0);
     } else {
         this->mStateTimer = -1;
         this->mState = 4;
-        this->mModelAnim.SetAnim((BCA_File *)(LoadedBCA(data_ov100_021473b0[this->mModelIndex])), 0,
+        this->mAnmModel.SetAnim((BCA_File *)(LoadedBCA(data_ov100_021473b0[this->mModelIndex])), 0,
                                  0x1000, 0);
     }
 }
@@ -362,9 +362,9 @@ void daFish_c::func_ov100_021464f4()
         this->mMaxSpeed = (RandomIntInternal(&data_0209e650) & 0x3fff) + 0xd000;
         this->mTriggerDist = (((unsigned int)RandomIntInternal(&data_0209e650) % 0x12c) + 0x1f4) << 12;
         this->mTurnSpeed = (RandomIntInternal(&data_0209e650) & 0x3ff) + 0x400;
-        this->mModelAnim.speed = 0x4000;
+        this->mAnmModel.speed = 0x4000;
     } else if (this->mStateTimer == 0x14) {
-        this->mModelAnim.speed = 0x1000;
+        this->mAnmModel.speed = 0x1000;
     }
     if (this->mHorzSpeed < this->mMaxSpeed) {
         this->mHorzSpeed += 0x800;
@@ -391,7 +391,7 @@ void daFish_c::func_ov100_02146468()
     }
     this->mTurnSpeed = 0x800;
     this->mTargetAngle = this->mPrevAngleY + 0x8000;
-    this->mModelAnim.speed = 0x2000;
+    this->mAnmModel.speed = 0x2000;
     this->mState = 6;
 }
 
@@ -408,7 +408,7 @@ void daFish_c::func_ov100_021463b0()
     }
     if (Vec3_HorzLen(&v) >= 0xfa000) return;
     this->mHorzSpeed = (((unsigned)RandomIntInternal(&data_0209e650) >> 15) & 0x1fff) + 0x2000;
-    this->mModelAnim.speed = 0x1000;
+    this->mAnmModel.speed = 0x1000;
     this->mWanderTimer = (unsigned char)((((unsigned)RandomIntInternal(&data_0209e650) >> 15) & 0x7f) + 0x3c);
     this->mState = 5;
 }
@@ -427,8 +427,8 @@ void daFish_c::func_ov100_0214629c(u32 spawnerID)
     this->mVertAccel = 0;
     this->mTerminalVelocity = -0x1e000;
     unsigned int r = RandomIntInternal(&data_0209e650);
-    int fc = this->mModelAnim.GetFrameCount();
-    this->mModelAnim.currFrame = (unsigned short)(r % (unsigned)fc) << 12;
+    int fc = this->mAnmModel.GetFrameCount();
+    this->mAnmModel.currFrame = (unsigned short)(r % (unsigned)fc) << 12;
     this->mIsSpawner = 0;
     this->mSpawnerID = spawnerID;
     if (this->mVariant != 0) {

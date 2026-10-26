@@ -509,13 +509,13 @@ s32 daStar_c::InitResources()
 
     b = (s32)(actorID == ACTOR_STAR);
     if (b != 0) {
-        if (mModelAnim1.SetFile((BMD_File *)data_ov002_0211094c.filePtr, 1, 1) == 0 ||
-            mModelAnim2.SetFile((BMD_File *)data_ov002_0211095c.filePtr, 1, 0x18) == 0)
+        if (mAnmModel1.SetFile((BMD_File *)data_ov002_0211094c.filePtr, 1, 1) == 0 ||
+            mAnmModel2.SetFile((BMD_File *)data_ov002_0211095c.filePtr, 1, 0x18) == 0)
             ret = 0;
     } else {
         LoadSilverStarAndNumber();
-        if (mModelAnim1.SetFile((BMD_File *)data_ov002_02110954.filePtr, 1, 1) == 0 ||
-            mModelAnim2.SetFile((BMD_File *)data_ov002_02110954.filePtr, 1, 1) == 0)
+        if (mAnmModel1.SetFile((BMD_File *)data_ov002_02110954.filePtr, 1, 1) == 0 ||
+            mAnmModel2.SetFile((BMD_File *)data_ov002_02110954.filePtr, 1, 1) == 0)
             ret = 0;
     }
 
@@ -545,8 +545,8 @@ s32 daStar_c::InitResources()
         mMarkerType = 1;
     }
 
-    mModelAnim1.SetAnim((BCA_File *)data_ov002_02110964.filePtr, 0x40000000, 0x1000, 0);
-    mModelAnim2.SetAnim((BCA_File *)data_ov002_02110964.filePtr, 0x40000000, 0x1000, 0);
+    mAnmModel1.SetAnim((BCA_File *)data_ov002_02110964.filePtr, 0x40000000, 0x1000, 0);
+    mAnmModel2.SetAnim((BCA_File *)data_ov002_02110964.filePtr, 0x40000000, 0x1000, 0);
     if (mShadowModel.InitCylinder() == 0)
         return 0;
 
@@ -931,7 +931,7 @@ int daStarBase_c::Behavior()
 }
 
 // @symbol _ZN8daStar_c6RenderEv
-/* Draws mModelAnim2 (collected, translucent) or mModelAnim1, unless the star
+/* Draws mAnmModel2 (collected, translucent) or mAnmModel1, unless the star
  * is scaled to nothing, hidden by mFlags & 0x40000, or not visible. */
 int daStar_c::Render()
 {
@@ -944,9 +944,9 @@ done:
     return 1;
 callit:
     if (!mBits.collectedModel)
-        mModelAnim1.Render(&mScale);
+        mAnmModel1.Render(&mScale);
     else
-        mModelAnim2.Render(&mScale);
+        mAnmModel2.Render(&mScale);
     return 1;
 }
 
@@ -1414,9 +1414,9 @@ void daStar_c::func_ov002_020ea100() {
         func_ov002_020e9464();
 
         if (common->mIsUnderwater != 0) {
-            mModelAnim1.SetAnim((BCA_File *)data_ov002_02110924.filePtr, 0x40000000, 0x1000, 0);
+            mAnmModel1.SetAnim((BCA_File *)data_ov002_02110924.filePtr, 0x40000000, 0x1000, 0);
         } else {
-            mModelAnim1.SetAnim((BCA_File *)data_ov002_02110944.filePtr, 0x40000000, 0x1000, 0);
+            mAnmModel1.SetAnim((BCA_File *)data_ov002_02110944.filePtr, 0x40000000, 0x1000, 0);
         }
 
         {
@@ -1471,7 +1471,7 @@ void daStar_c::func_ov002_020ea06c() {
     mState = STATE_COLLECT_TALK;
     mSeqTimer = 0;
     mTalkStep = 0;
-    mModelAnim1.Advance();
+    mAnmModel1.Advance();
     func_ov002_020e8098();
     if (mKind == KIND_9) {
         Sound::ChangeMusicVolume(0, 0x7f000);
@@ -1517,7 +1517,7 @@ void daStar_c::func_ov002_020e9d18() {
             Sound::ChangeMusicVolume(0x40, 0xcb33);
         }
     }
-    if (mModelAnim1.Finished() != 0) {
+    if (mAnmModel1.Finished() != 0) {
         mSeqTimer++;
     } else {
         func_ov002_020e7eb4();
@@ -1591,7 +1591,7 @@ LA:
             mPlayer->mFlags &= ~CUTSCENE_FLAG;
             EndKuppaScript();
         }
-        mModelAnim1.Advance();
+        mAnmModel1.Advance();
         func_ov002_020e8098();
         return;
         }
@@ -1603,7 +1603,7 @@ LA:
             func_ov002_020e8618();
     }
 end:
-    mModelAnim1.Advance();
+    mAnmModel1.Advance();
     func_ov002_020e8098();
 }
 
@@ -1765,9 +1765,9 @@ void daStar_c::func_ov002_020e9840() {
 /* STATE_PLAY_AND_END: plays the animation with its effects, then destroys the
  * star. */
 void daStar_c::func_ov002_020e9804() {
-    mModelAnim1.Advance();
+    mAnmModel1.Advance();
     func_ov002_020e7fcc();
-    if (!mModelAnim1.Finished()) return;
+    if (!mAnmModel1.Finished()) return;
     MarkForDestruction();
 }
 
@@ -2454,7 +2454,7 @@ void daStar_c::func_ov002_020e86ec() {
  * records it in the death table, and ends the cutscene (CUTSCENE_FLAG cleared
  * everywhere, event bits 0x1e and 0x1d cleared). */
 void daStar_c::func_ov002_020e8618() {
-    if (mModelAnim1.Finished() == 0) return;
+    if (mAnmModel1.Finished() == 0) return;
     func_ov002_020e7e58();
     mBits.visible = 0;
     UntrackStar(mMarkerSlot);
@@ -2486,29 +2486,29 @@ void daStar_c::func_ov002_020e84ec() {
 
     if (mKind == KIND_8) {
         Vec3_Asr(&v, &mPos, 3);
-        Matrix4x3_FromTranslation(&mModelAnim1.mat4x3, v.x, v.y, v.z);
+        Matrix4x3_FromTranslation(&mAnmModel1.mat4x3, v.x, v.y, v.z);
     } else if (mCarryMatrix != 0) {
         /* M48 overlay: the class headers above switch Matrix4x3 to the
          * structured math/Matrix.h spelling, whose struct-copy codegen
          * differs from the flat 12-word copy this shard proved. M48 is the
          * same 12 words; proven byte-identical in isolation. */
-        *(struct M48 *)&mModelAnim1.mat4x3 = *(struct M48 *)mCarryMatrix;
+        *(struct M48 *)&mAnmModel1.mat4x3 = *(struct M48 *)mCarryMatrix;
     } else if (!mBits.noSpin) {
         ang = (s16 *)&mAngleY;
         t = *ang + 0xc00;
         *ang = t;
-        Matrix4x3_FromRotationY(&mModelAnim1.mat4x3, mAngleY);
-        mModelAnim1.mat4x3.t.x = mPosX >> 3;
-        mModelAnim1.mat4x3.t.y = mPosY >> 3;
-        mModelAnim1.mat4x3.t.z = mPosZ >> 3;
+        Matrix4x3_FromRotationY(&mAnmModel1.mat4x3, mAngleY);
+        mAnmModel1.mat4x3.t.x = mPosX >> 3;
+        mAnmModel1.mat4x3.t.y = mPosY >> 3;
+        mAnmModel1.mat4x3.t.z = mPosZ >> 3;
     } else {
-        Matrix4x3_FromRotationY(&mModelAnim1.mat4x3, mPrevAngleY);
-        mModelAnim1.mat4x3.t.x = mPosX >> 3;
-        mModelAnim1.mat4x3.t.y = (mPosY + 0x32000) >> 3;
-        mModelAnim1.mat4x3.t.z = mPosZ >> 3;
+        Matrix4x3_FromRotationY(&mAnmModel1.mat4x3, mPrevAngleY);
+        mAnmModel1.mat4x3.t.x = mPosX >> 3;
+        mAnmModel1.mat4x3.t.y = (mPosY + 0x32000) >> 3;
+        mAnmModel1.mat4x3.t.z = mPosZ >> 3;
     }
 
-    *(struct M48*)&mModelAnim2.mat4x3 = *(struct M48*)&mModelAnim1.mat4x3;
+    *(struct M48*)&mAnmModel2.mat4x3 = *(struct M48*)&mAnmModel1.mat4x3;
     func_ov002_020e8398();
 }
 
@@ -2585,7 +2585,7 @@ void func_ov002_020e8244(void *out, daStar_c *b)
     }
     Matrix4x3_FromTranslation(&data_020a0e68, b->mPosX, b->mPosY, b->mPosZ);
     Matrix4x3_ApplyInPlaceToRotationY(&data_020a0e68, b->mPrevAngleY);
-    local = *(struct M48 *)b->mModelAnim1.data.transforms;
+    local = *(struct M48 *)b->mAnmModel1.data.transforms;
     MulMat4x3Mat4x3(&local, &data_020a0e68, &data_020a0e68);
     b->mCenterX = data_020a0e68.w[9];
     b->mCenterY = data_020a0e68.w[10];
@@ -2595,7 +2595,7 @@ void func_ov002_020e8244(void *out, daStar_c *b)
     AddVec3((struct Vector3 *)&b->mCenterX, &b->mPos, (struct Vector3 *)&b->mCenterX);
     {
         int *p = &b->mCenterY;
-        *p = *(int *)((char *)b->mModelAnim1.data.bones + 0xc) * 0xd + *p;
+        *p = *(int *)((char *)b->mAnmModel1.data.bones + 0xc) * 0xd + *p;
     }
     ((int *)out)[0] = b->mCenterX;
     ((int *)out)[1] = b->mCenterY;
@@ -2632,7 +2632,7 @@ void daStar_c::func_ov002_020e81e0() {
 void daStar_c::func_ov002_020e8098() {
     Vector3 vc;
     Vector3 v;
-    if (mModelAnim1.Finished()) return;
+    if (mAnmModel1.Finished()) return;
     func_ov002_020e8244(&v, this);
     vc.x = v.x;
     vc.y = v.y;
@@ -2662,17 +2662,17 @@ void daStar_c::func_ov002_020e7fcc() {
     struct Vector3 v1;
     struct Vector3 v2;
 
-    obj = mModelAnim1.data.bones;
+    obj = mAnmModel1.data.bones;
 
-    if (!mModelAnim1.Finished()
-        && (u32)((*(u32*)&mModelAnim1.currFrame << 4) >> 0x10) >= 2
+    if (!mAnmModel1.Finished()
+        && (u32)((*(u32*)&mAnmModel1.currFrame << 4) >> 0x10) >= 2
         && *(int*)((char*)obj + 0xc) != 0) {
         func_ov002_020e8244(&v1, this);
         mParticle[0] = (u32)Particle::System::New(mParticle[0], 0x2f, v1.x, v1.y, v1.z, 0, 0);
         return;
     }
 
-    if (!mModelAnim1.WillHitFrame(0x75)) return;
+    if (!mAnmModel1.WillHitFrame(0x75)) return;
     func_ov002_020e8244(&v2, this);
     Particle::System::NewSimple(0x30, v2.x, v2.y, v2.z);
 }
@@ -3287,8 +3287,8 @@ void daStar_c::func_ov002_020e6fbc(int arg) {
 void daStar_c::func_ov002_020e6edc() {
     struct Vector3 v;
     mKind = KIND_8;
-    mModelAnim1.SetAnim((struct BCA_File *)data_ov002_02110934.filePtr, 0x40000000, 0x1000, 0);
-    mModelAnim2.SetAnim((struct BCA_File *)data_ov002_02110934.filePtr, 0x40000000, 0x1000, 0);
+    mAnmModel1.SetAnim((struct BCA_File *)data_ov002_02110934.filePtr, 0x40000000, 0x1000, 0);
+    mAnmModel2.SetAnim((struct BCA_File *)data_ov002_02110934.filePtr, 0x40000000, 0x1000, 0);
     v.x = data_ov002_0210aa0c[0];
     v.y = data_ov002_0210aa0c[1];
     v.z = data_ov002_0210aa0c[2];
@@ -3306,8 +3306,8 @@ void daStar_c::func_ov002_020e6edc() {
  * in STATE_COLLECT_HOLD. */
 void daStar_c::func_ov002_020e6df8() {
   mKind = KIND_9;
-  mModelAnim1.SetAnim((BCA_File *)data_ov002_02110944.filePtr, 0x40000000, 0x1000, 0);
-  mModelAnim2.SetAnim((BCA_File *)data_ov002_02110944.filePtr, 0x40000000, 0x1000, 0);
+  mAnmModel1.SetAnim((BCA_File *)data_ov002_02110944.filePtr, 0x40000000, 0x1000, 0);
+  mAnmModel2.SetAnim((BCA_File *)data_ov002_02110944.filePtr, 0x40000000, 0x1000, 0);
   {
     Vector3 v;
     v.x = data_ov002_0210aa0c[0];

@@ -159,7 +159,7 @@ s32 daRedBombhei_c::InitResources()
     Vector3 pos;
 
     BMD_File *modelFile = (BMD_File *)dExtSimpleModel_c::LoadFile(data_ov084_02130da4);
-    mModelAnim.SetFile(modelFile, 1, -1);
+    mAnmModel.SetFile(modelFile, 1, -1);
     mShadowModel.InitCylinder();
     dExtFrameCtrl_c::LoadFile(data_ov084_02130d9c);
     _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, this, 0x8c000, 0x8c000, 0x4200004, 0);
@@ -211,8 +211,8 @@ s32 daRedBombhei_c::Behavior()
             ApproachLinear(mAngleY, angle, 0x100);
         }
     }
-    mModelAnim.Advance();
-    if ((unsigned short)(mModelAnim.currFrame >> 12) == 0)
+    mAnmModel.Advance();
+    if ((unsigned short)(mAnmModel.currFrame >> 12) == 0)
         func_02012694(0xd7, &mCamSpacePos);
     func_ov084_0212ce50();
     mdCcAc_c.Clear();
@@ -223,7 +223,7 @@ s32 daRedBombhei_c::Behavior()
 // @symbol _ZN14daRedBombhei_c6RenderEv
 s32 daRedBombhei_c::Render()
 {
-    mModelAnim.Render(0);
+    mAnmModel.Render(0);
     return 1;
 }
 
@@ -239,10 +239,10 @@ s32 daRedBombhei_c::CleanupResources()
 /* Places the model and drops the shadow under the body. */
 void daRedBombhei_c::func_ov084_0212ce50()
 {
-    Matrix4x3_FromRotationY(&this->mModelAnim.mat4x3, this->mAngleY);
-    this->mModelAnim.mat4x3.t.x = this->mPosX >> 3;
-    this->mModelAnim.mat4x3.t.y = (this->mPosY + 0x4000) >> 3;
-    this->mModelAnim.mat4x3.t.z = this->mPosZ >> 3;
+    Matrix4x3_FromRotationY(&this->mAnmModel.mat4x3, this->mAngleY);
+    this->mAnmModel.mat4x3.t.x = this->mPosX >> 3;
+    this->mAnmModel.mat4x3.t.y = (this->mPosY + 0x4000) >> 3;
+    this->mAnmModel.mat4x3.t.z = this->mPosZ >> 3;
     *(RedBombheiMtx *)&this->mShadowMat = *(RedBombheiMtx *)&IDENTITY_MATRIX4X3;
     this->mShadowMat.t.x = this->mPosX >> 3;
     this->mShadowMat.t.y = (this->mPosY - 0x8000) >> 3;
@@ -459,7 +459,7 @@ void daRedBombhei_c::func_ov084_0212c92c()
 {
     unsigned int flags = 0;
     BCA_File *file = (BCA_File *)data_ov084_02130d9c.filePtr;
-    this->mModelAnim.SetAnim((BCA_File *)file, 0, 0x1000, flags);
+    this->mAnmModel.SetAnim((BCA_File *)file, 0, 0x1000, flags);
 }
 
 // @symbol _ZN14daRedBombhei_c19func_ov084_0212c8b0Ev

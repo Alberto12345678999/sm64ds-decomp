@@ -26,7 +26,7 @@
  *   (0x104 -> 0x10c). The ROM calls func_0201267c.
  * - Assigning mMeshCollider.beforeClsnCallback is -4 bytes in
  *   InitResources (0x1c8 -> 0x1c4). The ROM calls func_020393d4.
- * - Naming mModelAnim.currFrame and .file in func_ov027_02111a28 reorders
+ * - Naming mAnmModel.currFrame and .file in func_ov027_02111a28 reorders
  *   6 words (the straight-walk file loads after the frame). c+0x378 /
  *   c+0x380 and the ternary stay.
  */
@@ -153,7 +153,7 @@ s32 daPgDfdr_c::InitResources()
     Vector3 pos;
 
     file = dExtSimpleModel_c::LoadFile(*(SharedFilePtr *)&data_ov027_02113c7c);
-    mModelAnim.SetFile((BMD_File *)file, 1, -1);
+    mAnmModel.SetFile((BMD_File *)file, 1, -1);
 
     for (i = 0; i < 3; i++)
         dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)data_ov027_02112ca4[i]);
@@ -207,7 +207,7 @@ s32 daPgDfdr_c::Behavior()
     } else {
         mFlags |= kSkipRender;
     }
-    mModelAnim.Advance();
+    mAnmModel.Advance();
     mTextureSequence.Advance();
     mdCcAc_c.Clear();
     mdCcAc_c.Update();
@@ -218,8 +218,8 @@ s32 daPgDfdr_c::Behavior()
 // @symbol _ZN10daPgDfdr_c6RenderEv
 s32 daPgDfdr_c::Render()
 {
-    mTextureSequence.Update(mModelAnim.data);
-    mModelAnim.Render(0);
+    mTextureSequence.Update(mAnmModel.data);
+    mAnmModel.Render(0);
     return 1;
 }
 
@@ -272,8 +272,8 @@ void daPgDfdr_c::func_ov027_02111cfc()
 /* State 0 enter: pause-and-turn clip, 20 frames, unk_3d0 = 0. */
 extern "C" int func_ov027_02111ca8(daPgDfdr_c *self)
 {
-    self->mModelAnim.SetAnim((BCA_File *)data_ov027_02113c84.filePtr, 0, 0x1000, 0);
-    self->mModelAnim.speed = 0x1000;
+    self->mAnmModel.SetAnim((BCA_File *)data_ov027_02113c84.filePtr, 0, 0x1000, 0);
+    self->mAnmModel.speed = 0x1000;
     self->mTimer = 20;
     self->unk_3d0 = 0;
     return 1;
@@ -302,11 +302,11 @@ extern "C" void func_ov027_02111b2c(daPgDfdr_c *self)
     self->mHorzSpeed = data_ov027_02113a1c[self->mStepIndex].speed;
     self->mPrevAngleY = data_ov027_02113a1c[self->mStepIndex].startHeading;
     if (data_ov027_02113a1c[self->mStepIndex].startHeading != data_ov027_02113a1c[self->mStepIndex].endHeading) {
-        self->mModelAnim.SetAnim((BCA_File *)data_ov027_02113c8c.filePtr, 0, 0x1000, 0);
-        self->mModelAnim.speed = 0x1000;
+        self->mAnmModel.SetAnim((BCA_File *)data_ov027_02113c8c.filePtr, 0, 0x1000, 0);
+        self->mAnmModel.speed = 0x1000;
     } else {
-        self->mModelAnim.SetAnim((BCA_File *)data_ov027_02113c74.filePtr, 0, 0x1000, 0);
-        self->mModelAnim.speed = FX_MUL(data_ov027_02113a1c[self->mStepIndex].speed, 0x5000);
+        self->mAnmModel.SetAnim((BCA_File *)data_ov027_02113c74.filePtr, 0, 0x1000, 0);
+        self->mAnmModel.speed = FX_MUL(data_ov027_02113a1c[self->mStepIndex].speed, 0x5000);
     }
     self->unk_3d0 = 1;
 }
@@ -366,11 +366,11 @@ int daPgDfdr_c::func_ov027_02111a28()
    full position. Flat Matrix4x3 (common.h before dExtSimpleModel_c.h) is the 12-word copy. */
 extern "C" void func_ov027_02111994(daPgDfdr_c *self)
 {
-    Matrix4x3_FromRotationY(&self->mModelAnim.mat4x3, self->mAngleY);
-    self->mModelAnim.mat4x3.m[9] = self->mPosX >> 3;
-    self->mModelAnim.mat4x3.m[10] = self->mPosY >> 3;
-    self->mModelAnim.mat4x3.m[11] = self->mPosZ >> 3;
-    self->mClsnMat = self->mModelAnim.mat4x3;
+    Matrix4x3_FromRotationY(&self->mAnmModel.mat4x3, self->mAngleY);
+    self->mAnmModel.mat4x3.m[9] = self->mPosX >> 3;
+    self->mAnmModel.mat4x3.m[10] = self->mPosY >> 3;
+    self->mAnmModel.mat4x3.m[11] = self->mPosZ >> 3;
+    self->mClsnMat = self->mAnmModel.mat4x3;
     self->mClsnMat.m[9] = self->mPosX;
     self->mClsnMat.m[10] = self->mPosY;
     self->mClsnMat.m[11] = self->mPosZ;

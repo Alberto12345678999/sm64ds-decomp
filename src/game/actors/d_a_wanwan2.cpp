@@ -496,8 +496,8 @@ extern "C" void func_ov100_021437d4(daWanwan2_c *thisx)
    vtable directly, and that is the whole of the old claim. Was a C source. */
 extern "C" int func_ov100_02143aa4(daWanwan2_c *c)
 {
-    c->mModelAnim.speed = 4096;     /* 1.0 */
-    c->mModelAnim.Advance();
+    c->mAnmModel.speed = 4096;      /* 1.0 */
+    c->mAnmModel.Advance();
     func_ov100_021437d4(c);
     func_ov100_0214344c(c);
     func_ov100_021435e8(c);
@@ -510,7 +510,7 @@ extern "C" int func_ov100_02143aa4(daWanwan2_c *c)
    animation from data_ov100_021486ac. Was a C source. */
 extern "C" int func_ov100_02143ae0(daWanwan2_c *c)
 {
-    c->mModelAnim.SetAnim((BCA_File *)data_ov100_021486ac.filePtr, 0, 0x1000, 0);
+    c->mAnmModel.SetAnim((BCA_File *)data_ov100_021486ac.filePtr, 0, 0x1000, 0);
     return 1;
 }
 
@@ -542,11 +542,11 @@ extern "C" void func_ov100_02143b68(char *self)
     char *rd;
     char *st;
     dExtShadowModel_c *sm;
-    Matrix4x3_FromRotationXYZExt(&c->mModelAnim.mat4x3, c->mAngleX, c->mAngleY, c->mAngleZ);
-    c->mModelAnim.mat4x3.t.x = c->mPosX >> 3;
-    c->mModelAnim.mat4x3.t.y = c->mPosY >> 3;
-    c->mModelAnim.mat4x3.t.z = c->mPosZ >> 3;
-    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(c, &c->mShadowModel, &c->mModelAnim.mat4x3, 0x15e000, 0x1f4000, 0xf);
+    Matrix4x3_FromRotationXYZExt(&c->mAnmModel.mat4x3, c->mAngleX, c->mAngleY, c->mAngleZ);
+    c->mAnmModel.mat4x3.t.x = c->mPosX >> 3;
+    c->mAnmModel.mat4x3.t.y = c->mPosY >> 3;
+    c->mAnmModel.mat4x3.t.z = c->mPosZ >> 3;
+    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(c, &c->mShadowModel, &c->mAnmModel.mat4x3, 0x15e000, 0x1f4000, 0xf);
     tmp = *(M48 *)&IDENTITY_MATRIX4X3;
     i = 0;
     mdst = c->mModels;
@@ -596,7 +596,7 @@ void daWanwan2_c::OnPendingDestroy()
    the six link models are drawn. */
 int daWanwan2_c::Render()
 {
-    mModelAnim.Render(&mScale);
+    mAnmModel.Render(&mScale);
     for (int i = 0; i < 5; i++)
         mModels[i].Render(0);
     return 1;
@@ -732,7 +732,7 @@ int daWanwan2_c::Behavior()
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN11daWanwan2_c13InitResourcesEv
 /* Loads the files (data_ov100_021486bc is the body model, loaded into
-   mModelAnim; data_ov100_021486a4 the link model, set on each mModels[i];
+   mAnmModel; data_ov100_021486a4 the link model, set on each mModels[i];
    data_ov100_021486ac the walk animation the enter member plays;
    data_ov100_021486b4 is loaded and released here and used nowhere else in
    this source; data_ov002_0211092c is not identified), sets up the shadows,
@@ -742,7 +742,7 @@ int daWanwan2_c::Behavior()
 int daWanwan2_c::InitResources()
 {
     dExtSimpleModel_c::LoadFile(data_ov002_0211092c);
-    mModelAnim.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(data_ov100_021486bc), 1, -1);
+    mAnmModel.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(data_ov100_021486bc), 1, -1);
     dExtSimpleModel_c::LoadFile(data_ov100_021486a4);
     dExtFrameCtrl_c::LoadFile(data_ov100_021486ac);
     dExtFrameCtrl_c::LoadFile(data_ov100_021486b4);

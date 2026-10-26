@@ -14,7 +14,7 @@
  */
 struct daWanwan_c : dEnemyBase_c {
     dCcAcPos_c mdCcAcPos_c;                                /* 0x110 */
-    dExtAnmModel_c mModelAnim;                             /* 0x150 */
+    dExtAnmModel_c mAnmModel;                              /* 0x150 */
     dExtShadowModel_c mShadowModel;                        /* 0x1b4 */
     dExtSimpleModel_c mLinkModels[7];                      /* 0x1dc */
     dExtShadowModel_c mLinkShadows[7];                     /* 0x40c */

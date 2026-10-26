@@ -48,7 +48,7 @@ struct daPropeller_Heyho_c : dEnemyBase_c {
 
     dCcAc_c           mdCcAc_c;   /* 0x110 */
     dBgCh_Actr                 mWithMeshClsn;         /* 0x144 */
-    dExtAnmModel_c mModelAnim;                        /* 0x300 */
+    dExtAnmModel_c mAnmModel;                         /* 0x300 */
     dExtShadowModel_c                  mShadowModel;          /* 0x364 */
     /* 0x30-byte block copy from data_020a0e68 in func_ov070_02120070; that
        helper then passes it to DropShadowRadHeight. Left as twelve words

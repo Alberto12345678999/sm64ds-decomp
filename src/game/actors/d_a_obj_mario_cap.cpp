@@ -373,7 +373,7 @@ int daObjMarioCap_c::InitResources()
         break;
     }
 
-    if (mModelAnim.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(
+    if (mAnmModel.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(
                                *(SharedFilePtr *)data_ov002_020ff0ac[mModelIndex]),
                            1, -1) == 0)
         return 0;
@@ -497,7 +497,7 @@ int daObjMarioCap_c::InitResources()
         break;
     }
 
-    mModelAnim.speed = 0x1000;  /* animations play at 1.0x */
+    mAnmModel.speed = 0x1000;   /* animations play at 1.0x */
 
     /* Register with the cap-icon list for this character; flag is the
        cap-bank bit. */
@@ -575,11 +575,11 @@ int daObjMarioCap_c::Behavior()
     }
 
     UpdateMatrix();
-    mModelAnim.Advance();
+    mAnmModel.Advance();
 
-    if (mModelAnim.file != 0) {
-        func_020167a4(&mModelAnim);
-        mModelAnim.UpdateVerts();
+    if (mAnmModel.file != 0) {
+        func_020167a4(&mAnmModel);
+        mAnmModel.UpdateVerts();
     }
 
     if (UpdateYoshiEat(mWithMeshClsn) != 0) {
@@ -616,10 +616,10 @@ int daObjMarioCap_c::Render()
     int t = mType;
     if (t == 4 || t == 17 || t == 5 || t == 18 || t == 16 || t == 11 || (unsigned)(t - 6) <= 3) {
         if (!(mBlinkHidden & 1) || mStateEntry == (int)&data_ov002_0210df54) {
-            mModelAnim.dExtSimpleModel_c::Render(&mScale);
+            mAnmModel.dExtSimpleModel_c::Render(&mScale);
         }
     } else {
-        mModelAnim.dExtSimpleModel_c::Render(&mScale);
+        mAnmModel.dExtSimpleModel_c::Render(&mScale);
     }
     return 1;
 }
@@ -690,7 +690,7 @@ void daObjMarioCap_c::OnTurnIntoEgg(Player &player)
 {
     if (player.SetNoControlState(8, -1, 0) == 1) {
         player.SetNewHatCharacter(mModelIndex & 0xff, 1, 0);
-        mModelAnim.SetAnim((BCA_File *)data_ov002_0210de30.filePtr, 0x40000000, 0x1000, 0);
+        mAnmModel.SetAnim((BCA_File *)data_ov002_0210de30.filePtr, 0x40000000, 0x1000, 0);
         mAnimStarted = 1;
     }
     mPlayer = &player;
@@ -727,18 +727,18 @@ void daObjMarioCap_c::UpdateMatrix()
     }
 
     if (mCarryMatrix != 0) {
-        mModelAnim.mat4x3 = *mCarryMatrix;
+        mAnmModel.mat4x3 = *mCarryMatrix;
         return;
     }
 
     if ((unsigned int)(mType - 6) <= 1)
-        mModelAnim.ApplyOpacity(0, 0);
+        mAnmModel.ApplyOpacity(0, 0);
 
     Vec3_Asr(v, &mPosX, 3);     /* position / 8: the model matrix's translation scale */
     Matrix4x3_FromTranslation(&data_020a0e68, v[0], v[1], v[2]);
     Matrix4x3_ApplyInPlaceToRotationXYZExt(&data_020a0e68, mAngleX,
                                            mAngleY, mAngleZ);
-    mModelAnim.mat4x3 = data_020a0e68;
+    mAnmModel.mat4x3 = data_020a0e68;
 
     {
         char *s = *(char **)&mStateEntry;
@@ -1186,12 +1186,12 @@ int daObjMarioCap_c::Taken() {
         if (mPlayer->SetNoControlState(0xf, -1, 0) == 1) {
             mPlayer->SetNewHatCharacter(mModelIndex & 0xff, 0, 0);
             func_02013a88();
-            mModelAnim.SetAnim((BCA_File *)data_ov002_0210de38.filePtr, 0x40000000, 0x1000, 0);
+            mAnmModel.SetAnim((BCA_File *)data_ov002_0210de38.filePtr, 0x40000000, 0x1000, 0);
             mTakenStep = 2;
         }
         break;
     case 2:
-        if (mModelAnim.Finished() != 0) {
+        if (mAnmModel.Finished() != 0) {
             MarkForDestruction();
         }
         break;
@@ -1203,13 +1203,13 @@ int daObjMarioCap_c::Taken() {
 
     if (mAnimStarted == 0) {
         if (mPlayer->Unk_020c9e5c(8) == 1) {
-            mModelAnim.SetAnim((BCA_File *)data_ov002_0210de30.filePtr, 0x40000000, 0x1000, 0);
+            mAnmModel.SetAnim((BCA_File *)data_ov002_0210de30.filePtr, 0x40000000, 0x1000, 0);
             mAnimStarted = 1;
         }
     }
 
     if (mAnimStarted == 1) {
-        if (mModelAnim.Finished() != 0) {
+        if (mAnmModel.Finished() != 0) {
             if (mType == 4) {
                 dActor_c::Spawn(kActorMarioCap, param1, *(const Vector3 *)&mHomePosX, (const Vector3_16 *)0, mAreaId, -1);
             }
@@ -1228,7 +1228,7 @@ int daObjMarioCap_c::Taken() {
 // @symbol _ZN15daObjMarioCap_c8InitAnimEv
 int daObjMarioCap_c::InitAnim()
 {
-    /* Reading the angles through closest->mAngleX / &mModelAnim methods
+    /* Reading the angles through closest->mAngleX / &mAnmModel methods
        changes the size; the pointer-to-first-member form below is the one
        that matches. */
     int state;
@@ -1253,21 +1253,21 @@ int daObjMarioCap_c::InitAnim()
 
     switch (mType) {
     case 0xa:
-        mModelAnim.SetAnim((BCA_File *)data_ov002_0210de30.filePtr, 0x40000000, 0x1000, 0);
+        mAnmModel.SetAnim((BCA_File *)data_ov002_0210de30.filePtr, 0x40000000, 0x1000, 0);
         break;
     case 0xf:
-        mModelAnim.SetAnim((BCA_File *)(data_ov002_020ff0a0[mModelIndex]->filePtr), 0x40000000,
+        mAnmModel.SetAnim((BCA_File *)(data_ov002_020ff0a0[mModelIndex]->filePtr), 0x40000000,
                            0x1000, 0);
         break;
     case 0x14:
-        mModelAnim.SetAnim((BCA_File *)(data_ov002_020ff0b8[mModelIndex]->filePtr), 0x40000000,
+        mAnmModel.SetAnim((BCA_File *)(data_ov002_020ff0b8[mModelIndex]->filePtr), 0x40000000,
                            0x1000, 0);
         break;
     case 0x15:
-        mModelAnim.SetAnim((BCA_File *)data_ov002_0210de58.filePtr, 0x40000000, 0x1000, 0);
+        mAnmModel.SetAnim((BCA_File *)data_ov002_0210de58.filePtr, 0x40000000, 0x1000, 0);
         break;
     case 0x16:
-        mModelAnim.SetAnim((BCA_File *)data_ov002_0210de18.filePtr, 0x40000000, 0x1000, 0);
+        mAnmModel.SetAnim((BCA_File *)data_ov002_0210de18.filePtr, 0x40000000, 0x1000, 0);
         break;
     }
 
@@ -1302,7 +1302,7 @@ int daObjMarioCap_c::Anim()
         }
     }
 
-    if (mModelAnim.Finished() != 0) {
+    if (mAnmModel.Finished() != 0) {
         switch (mType) {
         case 0xa:
         case 0xf:
@@ -1315,7 +1315,7 @@ int daObjMarioCap_c::Anim()
 
         case 0x14:
             if (mAnimStarted == 0) {
-                mModelAnim.SetAnim((BCA_File *)((void *)data_ov002_020ff0c4[mModelIndex][1]), 0,
+                mAnmModel.SetAnim((BCA_File *)((void *)data_ov002_020ff0c4[mModelIndex][1]), 0,
                                    0x1000, 0);
                 mAnimStarted = 1;
             }

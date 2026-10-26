@@ -167,12 +167,12 @@ s32 daObjHatenaSwitch_c::InitResources()
     void *file;
 
     file = dExtSimpleModel_c::LoadFile(data_ov002_0210dd60);
-    mModelAnim.SetFile((BMD_File *)file, 1, -1);
+    mAnmModel.SetFile((BMD_File *)file, 1, -1);
 
     file = dExtFrameCtrl_c::LoadFile(data_ov002_0210dd68);
-    mModelAnim.SetAnim((BCA_File *)file, 0, 0x1000, 0);
-    mModelAnim.SetFlags(0x40000000);
-    mModelAnim.speed = 0x1000;
+    mAnmModel.SetAnim((BCA_File *)file, 0, 0x1000, 0);
+    mAnmModel.SetFlags(0x40000000);
+    mAnmModel.speed = 0x1000;
     UpdateModelTransform();
 
     file = dBgW_Kc::LoadFile(data_ov002_0210dd58);
@@ -191,11 +191,11 @@ s32 daObjHatenaSwitch_c::InitResources()
 
     if (data_0209caa0[1] & 0x80000000) {
         mActiveMeshCollider = &mMovingMeshCollider;
-        mModelAnim.currFrame = mModelAnim.GetFrameCount() << 12;
-        mModelAnim.Advance();
+        mAnmModel.currFrame = mAnmModel.GetFrameCount() << 12;
+        mAnmModel.Advance();
     } else {
         mActiveMeshCollider = &mStaticMeshCollider;
-        mModelAnim.currFrame = 0;
+        mAnmModel.currFrame = 0;
     }
 
     UpdateClsnTransform();
@@ -220,7 +220,7 @@ s32 daObjHatenaSwitch_c::Behavior()
             case 0:
                 Sound::PlaySub(0x20, 0x14, 0x7f, 0x6b000, false);
                 mSoundDelay = 0x4b;
-                if (mModelAnim.Finished() != 0) {
+                if (mAnmModel.Finished() != 0) {
                     Message::PrepareTalk();
                     player->ShowMessage(*this, 0x183, 0, 1, 2);
                 }
@@ -287,10 +287,10 @@ s32 daObjHatenaSwitch_c::Behavior()
 
     if (UpdateClsnState() == 0) {
         if (mActiveMeshCollider == &mStaticMeshCollider) {
-            mModelAnim.currFrame = 0;
-        } else if (mModelAnim.Finished() == 0) {
-            mModelAnim.Advance();
-            if (mModelAnim.Finished() != 0)
+            mAnmModel.currFrame = 0;
+        } else if (mAnmModel.Finished() == 0) {
+            mAnmModel.Advance();
+            if (mAnmModel.Finished() != 0)
                 Sound::PlayBank3(0, mCamSpacePos);
         }
         UpdateModelTransform();
@@ -305,7 +305,7 @@ s32 daObjHatenaSwitch_c::Behavior()
 // @symbol _ZN19daObjHatenaSwitch_c6RenderEv
 s32 daObjHatenaSwitch_c::Render()
 {
-    mModelAnim.Render(0);
+    mAnmModel.Render(0);
     return 1;
 }
 
@@ -333,10 +333,10 @@ void daObjHatenaSwitch_c::UpdateModelTransform()
     Matrix4x3_FromTranslation(
         &data_020a0e68, shifted[0], shifted[1], shifted[2]);
     Matrix4x3_ApplyInPlaceToRotationY(&data_020a0e68, mAngleY);
-    *(HatenaMatrixWords *)&mModelAnim.mat4x3 =
+    *(HatenaMatrixWords *)&mAnmModel.mat4x3 =
         *(HatenaMatrixWords *)&data_020a0e68;
     *(HatenaMatrixWords *)&mModel.mat4x3 =
-        *(HatenaMatrixWords *)&mModelAnim.mat4x3;
+        *(HatenaMatrixWords *)&mAnmModel.mat4x3;
 }
 
 
@@ -344,7 +344,7 @@ void daObjHatenaSwitch_c::UpdateModelTransform()
 void daObjHatenaSwitch_c::UpdateClsnTransform()
 {
     *(HatenaMatrixWords *)&mClsnMat =
-        *(HatenaMatrixWords *)&mModelAnim.mat4x3;
+        *(HatenaMatrixWords *)&mAnmModel.mat4x3;
     mClsnMat.t.x = mPosX;
     mClsnMat.t.y = mPosY;
     mClsnMat.t.z = mPosZ;

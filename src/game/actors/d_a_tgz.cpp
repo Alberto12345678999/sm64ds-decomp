@@ -352,7 +352,7 @@ extern "C" void func_ov077_021251d0(daTgz_c *self)
         self->mAngleX, self->mAngleY, self->mAngleZ);
     int aimHeightAgain = self->OnAimedAtWithEgg();
     Matrix4x3_ApplyInPlaceToTranslation(&data_020a0e68, 0, (-aimHeightAgain) >> 3, 0);
-    self->mModelAnim.mat4x3 = data_020a0e68;
+    self->mAnmModel.mat4x3 = data_020a0e68;
 }
 
 // @symbol func_ov077_02125290
@@ -367,7 +367,7 @@ extern "C" void func_ov077_02125290(daTgz_c *self)
     if (b)
         m = &self->mModel.mat4x3;
     else
-        m = &self->mModelAnim.mat4x3;
+        m = &self->mAnmModel.mat4x3;
     Matrix4x3_FromRotationZXYExt(m, self->mAngleX, self->mAngleY, self->mAngleZ);
     m->m[9] = self->mPosX >> 3;
     m->m[10] = self->mPosY >> 3;
@@ -397,7 +397,7 @@ extern "C" void func_ov077_02125304(char *vc)
 extern "C" int func_ov077_021253a4(daTgz_c *self)
 {
     self->mAngleX = self->mAngleX - 0x1000;
-    self->mModelAnim.dExtFrameCtrl_c::Advance();
+    self->mAnmModel.dExtFrameCtrl_c::Advance();
     self->UpdatePos(&self->mdCcAc_c);
 
     if (self->mHorzSpeed >= self->mWithMeshClsn.mRadius || self->mVertSpeed >= self->mWithMeshClsn.mRadius)
@@ -428,8 +428,8 @@ extern "C" int func_ov077_02125480(daTgz_c *self)
     self->mAngleX = 0;
     self->mAngleZ = 0;
     self->mActionTimer = 0x2d;
-    self->mModelAnim.SetAnim((BCA_File *)TGZ_BCA, 0, 0x1000, 0);
-    self->mModelAnim.speed = 0x4000;
+    self->mAnmModel.SetAnim((BCA_File *)TGZ_BCA, 0, 0x1000, 0);
+    self->mAnmModel.speed = 0x4000;
     int aimHeight = self->OnAimedAtWithEgg();
     Particle::System::NewSimple(0x43, self->mPosX, self->mPosY + aimHeight, self->mPosZ);
     int aimHeightAgain = self->OnAimedAtWithEgg();
@@ -608,7 +608,7 @@ extern "C" int func_ov077_02125908(daTgz_c *self)
         self->MarkForDestruction();
     }
 
-    self->mModelAnim.dExtFrameCtrl_c::Advance();
+    self->mAnmModel.dExtFrameCtrl_c::Advance();
     self->UpdatePos(&self->mdCcAc_c);
     func_ov077_02124eb0(self);
     self->mdCcAc_c.Clear();
@@ -636,7 +636,7 @@ extern "C" int func_ov077_02125a54(daTgz_c *self)
     int d;
     ApproachLinear(self->mAngleY, self->mTurnTarget, 0x64);
     self->mPrevAngleY = self->mAngleY;
-    self->mModelAnim.dExtFrameCtrl_c::Advance();
+    self->mAnmModel.dExtFrameCtrl_c::Advance();
     func_ov077_02124eb0(self);
     if (self->mWaterY)
         d = self->mPosY - self->mWaterY;
@@ -663,8 +663,8 @@ extern "C" void func_ov077_02125b1c(daTgz_c *self)
 {
     self->mVertAccel = -0x2000;
     self->mTerminalVelocity = -0x3c000;
-    self->mModelAnim.SetAnim((BCA_File *)TGZ_BCA, 0, 0x1000, 0);
-    self->mModelAnim.speed = 0x1000;
+    self->mAnmModel.SetAnim((BCA_File *)TGZ_BCA, 0, 0x1000, 0);
+    self->mAnmModel.speed = 0x1000;
     func_02035684((int *)&self->mWithMeshClsn, 0x28000);
     self->mHorzSpeed = 0x1b33;
     self->mTurnTarget = RandomIntInternal(&data_0209e650);
@@ -797,7 +797,7 @@ int daTgz_c::Render()
     if (s == 0 || s == 4)
         mModel.Render(0);
     else
-        mModelAnim.Render(0);
+        mAnmModel.Render(0);
     return 1;
 }
 
@@ -835,9 +835,9 @@ int daTgz_c::InitResources()
     bmd = (BMD_File *)dExtSimpleModel_c::LoadFile(data_ov077_02127b48);
     mModel.SetFile(bmd, 1, -1);
     bmd = (BMD_File *)dExtSimpleModel_c::LoadFile(data_ov077_02127b38);
-    mModelAnim.SetFile(bmd, 1, -1);
+    mAnmModel.SetFile(bmd, 1, -1);
     dExtFrameCtrl_c::LoadFile(data_ov077_02127c14);
-    mModelAnim.SetAnim((BCA_File *)TGZ_BCA, 0, 0x1000, 0);
+    mAnmModel.SetAnim((BCA_File *)TGZ_BCA, 0, 0x1000, 0);
     if (!mShadowModel.InitCylinder())
         return 0;
     _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, this, 0x2d000, 0x3c000, 0x200000, 0x4a3d0);

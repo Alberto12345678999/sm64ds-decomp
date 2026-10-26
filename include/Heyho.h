@@ -29,7 +29,7 @@ struct Heyho {
     Vector3 mGoal;       /* 0x20 -- the point the gliding motions steer to */
     s32 mMoveKind;       /* 0x2c -- the path a motion takes (switched on) */
     s32 mMotion[2];      /* 0x30 -- the current motion's member-pointer record */
-    dExtAnmModel_c mModelAnim; /* 0x38 -- 0x64 bytes: Heyho_UpdateMatrix sets its mat4x3,
+    dExtAnmModel_c mAnmModel; /* 0x38 -- 0x64 bytes: Heyho_UpdateMatrix sets its mat4x3,
                            * Heyho_Update advances its dExtFrameCtrl_c base */
     Vector3 mPos;        /* 0x9c */
     Vector3 mVel;        /* 0xa8 */

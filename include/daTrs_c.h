@@ -74,7 +74,7 @@
        Behavior's area-reset block runs only while it is clear.
    mirrored (0x100): 02118914 sets it (x = -home x, yaw turned by 0x8000)
        and each relocation (02117364) toggles it. While set: 0211640c places
-       the body (mModelAnim) and mShadowModel1 at -x with the yaw negated,
+       the body (mAnmModel) and mShadowModel1 at -x with the yaw negated,
        and also drops mShadowModel2 at +x;
        02117364's particles, 021177b0's particles and 0211a3d0's PoofDustAt
        (variant 0xf) use -x; 021177b0's camera midpoint is (player x - x) / 2
@@ -107,10 +107,10 @@ struct daTrs_c : dCapEnemy_c {
     s32 mBooDefeatCount;           /* 0x180 */
     dCcAcPos_c mdCcAcPos_c;  /* 0x184 */
     dBgCh_Actr               mWithMeshClsn;               /* 0x1c4 */
-    dExtAnmModel_c mModelAnim;                            /* 0x380 */
+    dExtAnmModel_c mAnmModel;                             /* 0x380 */
     /* Not "mModel": dCapEnemy_c's own dExtSimpleModel_c at 0x114 is inherited, and calling
        this one mModel shadows it. This is the item the Boo carries, not its
-       body (that is mModelAnim): InitResources loads the Boo cage (T_BASKET) or a
+       body (that is mAnmModel): InitResources loads the Boo cage (T_BASKET) or a
        coin model chosen by mCarriedID. Render draws it at mCarriedScaleX
        while `carrying` is set. */
     dExtSimpleModel_c mCarriedModel;                              /* 0x3e4 */

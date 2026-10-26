@@ -44,8 +44,8 @@ struct daBasabasa_c : dEnemyBase_c {
 
     dCcAc_c mdCcAc_c;                 /* 0x110 */
     dBgCh_Actr mWithMeshClsn;         /* 0x144 */
-    dExtAnmModel_c mModelAnim1;       /* 0x300 -- flying model */
-    dExtAnmModel_c mModelAnim2;       /* 0x364 -- hanging model */
+    dExtAnmModel_c mAnmModel1;        /* 0x300 -- flying model */
+    dExtAnmModel_c mAnmModel2;        /* 0x364 -- hanging model */
     dExtShadowModel_c mShadowModel;         /* 0x3c8 */
     Matrix4x3 mShadowMatrix;          /* 0x3f0 -- coined */
     State *mCurrentState;             /* 0x420 */
@@ -57,7 +57,7 @@ struct daBasabasa_c : dEnemyBase_c {
     s32 mPerchTimer;                  /* 0x430 -- frames spent back at home before perching */
     s16 mTargetAngleY;                /* 0x434 */
     u8  pad_436[0x6];
-    u8  mIsFlying;                    /* 0x43c -- 1 draws and animates mModelAnim1 */
+    u8  mIsFlying;                    /* 0x43c -- 1 draws and animates mAnmModel1 */
 
     /* --- vtable --- */
     virtual ~daBasabasa_c();

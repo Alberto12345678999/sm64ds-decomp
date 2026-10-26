@@ -375,7 +375,7 @@ int daMip_c::StateSaveTalkInit()
 
     mActionStep = 0;
     func_02013944();
-    mModelAnim.SetAnim((BCA_File *)data_ov085_021305c0.filePtr, 0, 0x1000, 0);
+    mAnmModel.SetAnim((BCA_File *)data_ov085_021305c0.filePtr, 0, 0x1000, 0);
     return 1;
 }
 
@@ -513,7 +513,7 @@ int daMip_c::StateReleasedInit()
     mdCcAc_c.flags |= 0x4000000;
     mdCcAc_c.radius = 0x78000;
     mdCcAc_c.vulnFlags &= ~0x8000;
-    mModelAnim.SetAnim((BCA_File *)data_ov085_021305c0.filePtr, 0, 0x1000, 0);
+    mAnmModel.SetAnim((BCA_File *)data_ov085_021305c0.filePtr, 0, 0x1000, 0);
     return 1;
 }
 
@@ -745,7 +745,7 @@ int daMip_c::StateCaughtInit()
     mActionStep = 0;
     mHorzSpeed = 0;
     mdCcAc_c.radius = 0x28000;
-    mModelAnim.SetAnim((BCA_File *)data_ov085_021305b8.filePtr, 0, 0x1000, 0);
+    mAnmModel.SetAnim((BCA_File *)data_ov085_021305b8.filePtr, 0, 0x1000, 0);
     return 1;
 }
 
@@ -754,7 +754,7 @@ int daMip_c::StateRestMain()
 {
     extern MipStatePair data_ov085_021306cc;
 
-    if (mModelAnim.Finished() != 0) {
+    if (mAnmModel.Finished() != 0) {
         SetState(&data_ov085_021306cc);
     }
     return 1;
@@ -765,7 +765,7 @@ int daMip_c::StateRestInit()
 {
     extern DaMipAnimationFilePtr data_ov085_021305b0;
 
-    mModelAnim.SetAnim((BCA_File *)data_ov085_021305b0.filePtr, 0x40000000, 0x1000, 0);
+    mAnmModel.SetAnim((BCA_File *)data_ov085_021305b0.filePtr, 0x40000000, 0x1000, 0);
     return 1;
 }
 
@@ -805,7 +805,7 @@ int daMip_c::StateFleeMain() {
         }
     }
     {
-        s32 t = mModelAnim.currFrame >> 12;
+        s32 t = mAnmModel.currFrame >> 12;
         if (((u16)t) == 0) {
             if (TestWaterBelow() == 1) {
                 func_02012694(0x124, &mCamSpacePos);
@@ -934,7 +934,7 @@ int daMip_c::StateFleeInit()
       mPathDir = -1;
   }
 
-  mModelAnim.SetAnim((BCA_File *)gMipRunAnimationFile.filePtr, 0, 0x1000, 0);
+  mAnmModel.SetAnim((BCA_File *)gMipRunAnimationFile.filePtr, 0, 0x1000, 0);
   return 1;
 }
 
@@ -943,7 +943,7 @@ int daMip_c::StateStartleMain()
 {
     extern MipStatePair data_ov085_0213067c;
 
-    if (mModelAnim.Finished() != 0)
+    if (mAnmModel.Finished() != 0)
         SetState(&data_ov085_0213067c);
     return 1;
 }
@@ -953,7 +953,7 @@ int daMip_c::StateStartleInit()
 {
     extern DaMipAnimationFilePtr data_ov085_021305c8;
 
-    mModelAnim.SetAnim((BCA_File *)data_ov085_021305c8.filePtr, 0x40000000, 0x1000, 0);
+    mAnmModel.SetAnim((BCA_File *)data_ov085_021305c8.filePtr, 0x40000000, 0x1000, 0);
     return 1;
 }
 
@@ -1024,21 +1024,21 @@ int daMip_c::StateIdleMain()
         }
     }
 
-    if (mModelAnim.Finished() != 0) {
+    if (mAnmModel.Finished() != 0) {
         switch (mActionStep) {
         case 1:
             mHorzSpeed = 0x4000;
-            mModelAnim.SetAnim((BCA_File *)gMipRunAnimationFile.filePtr, 0x40000000, 0x1000, 0);
+            mAnmModel.SetAnim((BCA_File *)gMipRunAnimationFile.filePtr, 0x40000000, 0x1000, 0);
             (mActionStep)++;
             break;
         case 2:
-            mModelAnim.SetAnim((BCA_File *)data_ov085_021305b0.filePtr, 0x40000000, 0x1000, 0);
+            mAnmModel.SetAnim((BCA_File *)data_ov085_021305b0.filePtr, 0x40000000, 0x1000, 0);
             mHorzSpeed = 0;
             (mActionStep)++;
             break;
         case 3:
             mStateTimer = (s16)((r & 0x1f) + 0x1e);
-            mModelAnim.SetAnim((BCA_File *)data_ov085_021305c0.filePtr, 0, 0x1000, 0);
+            mAnmModel.SetAnim((BCA_File *)data_ov085_021305c0.filePtr, 0, 0x1000, 0);
             mActionStep = 0;
             break;
         }
@@ -1050,7 +1050,7 @@ int daMip_c::StateIdleMain()
             s16 *ang = &mTargetAngY;
             *ang = *ang + (0x1800 - ((r & 3) << 12));
         }
-        mModelAnim.SetAnim((BCA_File *)data_ov085_021305c8.filePtr, 0x40000000, 0x1000, 0);
+        mAnmModel.SetAnim((BCA_File *)data_ov085_021305c8.filePtr, 0x40000000, 0x1000, 0);
         mActionStep = 1;
     }
 
@@ -1063,7 +1063,7 @@ int daMip_c::StateIdleInit()
 {
   extern DaMipAnimationFilePtr data_ov085_021305c0;
 
-  mModelAnim.SetAnim((BCA_File *)(*(void **)((char *)&data_ov085_021305c0 + 4)), 0, 0x1000, 0);
+  mAnmModel.SetAnim((BCA_File *)(*(void **)((char *)&data_ov085_021305c0 + 4)), 0, 0x1000, 0);
   mIdlePosX = mPosX;
   mIdlePosY = mPosY;
   mIdlePosZ = mPosZ;
@@ -1096,8 +1096,8 @@ void daMip_c::UpdateMatrixAndShadow()
     Vec3_Asr(&t, &mPos, 3);
     Matrix4x3_FromTranslation(&data_020a0e68, t.x, t.y, t.z);
     Matrix4x3_ApplyInPlaceToRotationXYZExt(&data_020a0e68, mAngleX, mAngleY, mAngleZ);
-    *(struct Mtx43 *)&mModelAnim.mat4x3 = data_020a0e68;
-    MulMat4x3Mat4x3(mModelAnim.data.transforms, &mModelAnim.mat4x3, tmp);
+    *(struct Mtx43 *)&mAnmModel.mat4x3 = data_020a0e68;
+    MulMat4x3Mat4x3(mAnmModel.data.transforms, &mAnmModel.mat4x3, tmp);
     Matrix4x3_FromTranslation(&data_020a0e68,
         mPosX >> 3,
         (mPosY - 0xe000) >> 3,
@@ -1129,7 +1129,7 @@ void daMip_c::UpdateCarriedMatrix()
         idx = (idx + 2) & 0xff;
     }
     res = UpdateCarry(*mTalkingPlayer, *(Vector3 *)((char *)&data_ov085_021306ec + idx * 0xc));
-    *(struct Mtx43 *)&mModelAnim.mat4x3 = *(struct Mtx43 *)res;
+    *(struct Mtx43 *)&mAnmModel.mat4x3 = *(struct Mtx43 *)res;
     Matrix4x3_FromTranslation(data_020a0e68, mPosX >> 3, (mPosY - 0xc000) >> 3, mPosZ >> 3);
     *(struct Mtx43 *)mShadowMtx = *(struct Mtx43 *)data_020a0e68;
     _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
@@ -1233,7 +1233,7 @@ int daMip_c::Render()
         /* modelFile, then materials.
            +0x20 of each 0x30-byte material is still pad in BMD_Material;
            walking it as BMD_Material:: does not match this loop. */
-        int** base = (int**)&mModelAnim.data;
+        int** base = (int**)&mAnmModel.data;
         BMD_File *modelData = (BMD_File *)base[0];
         char* mat = (char*)base[1];
         for (unsigned int i = 0; i < modelData->numMaterials; i++) {
@@ -1246,7 +1246,7 @@ int daMip_c::Render()
         RenderMirrorImage();
     }
 
-    mModelAnim.Render(&mScale);
+    mAnmModel.Render(&mScale);
     return 1;
 }
 
@@ -1261,17 +1261,17 @@ void daMip_c::RenderMirrorImage()
     extern int data_020a0e68;
 
     struct Mtx43 tmp;
-    tmp = *(struct Mtx43 *)&mModelAnim.mat4x3;
-    mModelAnim.mat4x3.t.x = 0x421800 - mModelAnim.mat4x3.t.x;
+    tmp = *(struct Mtx43 *)&mAnmModel.mat4x3;
+    mAnmModel.mat4x3.t.x = 0x421800 - mAnmModel.mat4x3.t.x;
     func_0203c178(&data_020a0e68, -0x1000, 0x1000, 0x1000);
-    MulMat3x3Mat3x3(&mModelAnim.mat4x3, &data_020a0e68, &mModelAnim.mat4x3);
-    func_02016acc(&mModelAnim, 0x80);
-    func_02016b24(&mModelAnim, 0x40);
-    mModelAnim.dExtAnmModel_c::Render(&mScale);
-    mModelAnim.ApplyOpacity(0xff, 0);
-    func_02016b24(&mModelAnim, 0x80);
-    func_02016acc(&mModelAnim, 0x40);
-    *(struct Mtx43 *)&mModelAnim.mat4x3 = tmp;
+    MulMat3x3Mat3x3(&mAnmModel.mat4x3, &data_020a0e68, &mAnmModel.mat4x3);
+    func_02016acc(&mAnmModel, 0x80);
+    func_02016b24(&mAnmModel, 0x40);
+    mAnmModel.dExtAnmModel_c::Render(&mScale);
+    mAnmModel.ApplyOpacity(0xff, 0);
+    func_02016b24(&mAnmModel, 0x80);
+    func_02016acc(&mAnmModel, 0x40);
+    *(struct Mtx43 *)&mAnmModel.mat4x3 = tmp;
 }
 
 // @symbol _ZN7daMip_c8BehaviorEv
@@ -1420,7 +1420,7 @@ int daMip_c::Behavior()
         UpdateMatrixAndShadow();
         mCatchState = 2;
         SetState(&data_ov085_021306ac);
-        mModelAnim.SetAnim((BCA_File *)(*(void **)((char *)&data_ov085_021305c0 + 4)), 0, 0x1000,
+        mAnmModel.SetAnim((BCA_File *)(*(void **)((char *)&data_ov085_021305c0 + 4)), 0, 0x1000,
                            0);
         if (*(void**)&mTalkingPlayer == 0)
             *(void**)&mTalkingPlayer = ClosestPlayer();
@@ -1432,7 +1432,7 @@ int daMip_c::Behavior()
         if (p != (void*)&data_ov085_021306ac && p != (void*)&data_ov085_0213068c &&
             p != (void*)&data_ov085_021306bc && p != (void*)&data_ov085_021306dc) {
             SetState(&data_ov085_021306ac);
-            mModelAnim.SetAnim((BCA_File *)(*(void **)((char *)&data_ov085_021305c0 + 4)), 0,
+            mAnmModel.SetAnim((BCA_File *)(*(void **)((char *)&data_ov085_021305c0 + 4)), 0,
                                0x1000, 0);
         }
         mHorzSpeed = 0;
@@ -1455,7 +1455,7 @@ int daMip_c::Behavior()
         }
     }
 
-    mModelAnim.Advance();
+    mAnmModel.Advance();
 
     if (IsFlagSet(this, 0x4000))
         UpdateCarriedMatrix();
@@ -1510,7 +1510,7 @@ int daMip_c::InitResources()
     dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)&data_ov085_021305c8);
     dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)&data_ov085_021305c0);
     dExtSimpleModel_c::LoadFile(*(SharedFilePtr *)&data_ov085_021305d8);
-    mModelAnim.SetFile(
+    mAnmModel.SetFile(
         (BMD_File *)dExtSimpleModel_c::LoadFile(*(SharedFilePtr *)&data_ov085_021305e0), 1, -1);
     mShadowModel1.InitCylinder();
     mShadowModel2.InitCylinder();
@@ -1547,7 +1547,7 @@ int daMip_c::InitResources()
     mTerminalVelocity = -0x1e000;
     _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, this, 0x50000, 0x64000, 0xb00004, 0x9000);
     mTalkingPlayer = 0;
-    mModelAnim.speed = 0x1000;
+    mAnmModel.speed = 0x1000;
     mWithMeshClsn.Init(this, 0x28000, 0x28000, 0, 0);
     {
         PathPtr path;
@@ -1620,7 +1620,7 @@ int daMip_c::InitResources()
         if (mAreaId == 3)
             mFlags = 0x8280;
     }
-    mMaterialColor = (mColorVariant << 1) + *(s32*)((char*)mModelAnim.data.materials + 0x20);
+    mMaterialColor = (mColorVariant << 1) + *(s32*)((char*)mAnmModel.data.materials + 0x20);
     SetState(&data_ov085_021306cc);
     return 1;
 }

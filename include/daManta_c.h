@@ -29,7 +29,7 @@ struct MantaState;
 struct daManta_c : dEnemyBase_c {
     dCcAcPos_c mdCcAcPos_c;    /* 0x110 */
     dBgCh_Actr mWithMeshClsn;  /* 0x150 */
-    dExtAnmModel_c mModelAnim; /* 0x30c */
+    dExtAnmModel_c mAnmModel; /* 0x30c */
     MantaState *mState;        /* 0x370 */
     u8 pad_374[4];             /* 0x374 */
     s32 mRingCount;            /* 0x378 -- rings taken in order; 5 starts the star wait; 0xa after it spawns */

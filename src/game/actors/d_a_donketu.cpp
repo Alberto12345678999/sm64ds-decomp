@@ -79,7 +79,7 @@ int daDonketu_c::InitResources()
  */
 int daDonketu_c::Behavior()
 {
-    int outcome = UpdateKillByInvincibleChar(mWithMeshClsn, mModelAnim, 3);
+    int outcome = UpdateKillByInvincibleChar(mWithMeshClsn, mAnmModel, 3);
     if (outcome != 0) {
         if (outcome == 2) {
             int y = mPosY;
@@ -183,8 +183,8 @@ int daDonketu_c::UpdateRunState()
 /* Frames 4 and 7 of the walk cycle are the two footfalls. */
 void daDonketu_c::PlayStepSound()
 {
-    if (mModelAnim.WillHitFrame(4) == 0) {
-        if (mModelAnim.WillHitFrame(7) == 0)
+    if (mAnmModel.WillHitFrame(4) == 0) {
+        if (mAnmModel.WillHitFrame(7) == 0)
             return;
     }
     func_0201267c(0xca, &mCamSpacePos);

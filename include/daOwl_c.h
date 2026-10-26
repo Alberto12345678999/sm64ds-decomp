@@ -58,7 +58,7 @@ struct daOwl_c : dEnemyBase_c {
 
     dCcAcPos_c mdCcAcPos_c;           /* 0x110 */
     dBgCh_Actr mWithMeshClsn;         /* 0x150 */
-    dExtAnmModel_c mModelAnim;        /* 0x30c */
+    dExtAnmModel_c mAnmModel;         /* 0x30c */
     dExtShadowModel_c mShadowModel;         /* 0x370 */
     Matrix4x3 mShadowMat;             /* 0x398 -- fed to DropShadowRadHeight */
     State *mCurrentState;             /* 0x3c8 */
@@ -74,7 +74,7 @@ struct daOwl_c : dEnemyBase_c {
     s32 unk_3e8;                      /* 0x3e8 -- per-state scratch, see d_a_owl.cpp */
     s16 mWanderAngleY;                /* 0x3ec -- heading the hover state steers to */
     u8  pad_3ee[2];
-    Fix12i mAnimSpeed;                /* 0x3f0 -- copied into mModelAnim.speed */
+    Fix12i mAnimSpeed;                /* 0x3f0 -- copied into mAnmModel.speed */
     u32 mSoundHandle;                 /* 0x3f4 -- Sound::PlayLong's returned handle */
 
     /* --- vtable --- */
