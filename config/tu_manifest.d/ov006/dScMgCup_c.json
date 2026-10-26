@@ -1649,42 +1649,42 @@
   "production_mode": "intact-object",
   "defined_symbol_renames": [
     {
-      "from": "@1174",
+      "from": "@1173",
       "to": "pmf_dScMgCup_c_StateSetup",
       "evidence": "Native member-pointer temporary identified bijectively from unchanged220-byte initializer relocation sites and verified8-byte retail object/function destination."
     },
     {
-      "from": "@1176",
+      "from": "@1175",
       "to": "pmf_dScMgCup_c_StatePrepareShuffle",
       "evidence": "Native member-pointer temporary identified bijectively from unchanged220-byte initializer relocation sites and verified8-byte retail object/function destination."
     },
     {
-      "from": "@1178",
+      "from": "@1177",
       "to": "pmf_dScMgCup_c_StateShuffle",
       "evidence": "Native member-pointer temporary identified bijectively from unchanged220-byte initializer relocation sites and verified8-byte retail object/function destination."
     },
     {
-      "from": "@1180",
+      "from": "@1179",
       "to": "pmf_dScMgCup_c_StateWaitForInput",
       "evidence": "Native member-pointer temporary identified bijectively from unchanged220-byte initializer relocation sites and verified8-byte retail object/function destination."
     },
     {
-      "from": "@1182",
+      "from": "@1181",
       "to": "pmf_dScMgCup_c_StateSelect",
       "evidence": "Native member-pointer temporary identified bijectively from unchanged220-byte initializer relocation sites and verified8-byte retail object/function destination."
     },
     {
-      "from": "@1184",
+      "from": "@1183",
       "to": "pmf_dScMgCup_c_StateResult",
       "evidence": "Native member-pointer temporary identified bijectively from unchanged220-byte initializer relocation sites and verified8-byte retail object/function destination."
     },
     {
-      "from": "@1186",
+      "from": "@1185",
       "to": "pmf_dScMgCup_c_StateFinish",
       "evidence": "Native member-pointer temporary identified bijectively from unchanged220-byte initializer relocation sites and verified8-byte retail object/function destination."
     },
     {
-      "from": "@1188",
+      "from": "@1187",
       "to": "pmf_dScMgCup_c_StateIdle",
       "evidence": "Native member-pointer temporary identified bijectively from unchanged220-byte initializer relocation sites and verified8-byte retail object/function destination."
     }

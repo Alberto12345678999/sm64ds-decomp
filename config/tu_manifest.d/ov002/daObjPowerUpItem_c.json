@@ -802,32 +802,32 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@922",
+      "from": "@921",
       "to": "@592",
       "evidence": "mwcc numbers this PMF descriptor @905 per TU and other modules already define a global @905, so the scratch link would multiply-define it"
     },
     {
-      "from": "@924",
+      "from": "@923",
       "to": "@904",
       "evidence": "mwcc numbers this PMF descriptor @907 per TU and other modules already define a global @907, so the scratch link would multiply-define it"
     },
     {
-      "from": "@926",
+      "from": "@925",
       "to": "@591",
       "evidence": "mwcc numbers this PMF descriptor @909 per TU and other modules already define a global @909, so the scratch link would multiply-define it"
     },
     {
-      "from": "@928",
+      "from": "@927",
       "to": "@590",
       "evidence": "mwcc numbers this PMF descriptor @911 per TU and other modules already define a global @911, so the scratch link would multiply-define it"
     },
     {
-      "from": "@930",
+      "from": "@929",
       "to": "@21",
       "evidence": "compiler temp renamed under the pin this row claims; include/types.h's added Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwccarm emits it under this name now"
     },
     {
-      "from": "@932",
+      "from": "@931",
       "to": "@589",
       "evidence": "mwcc numbers this PMF descriptor @915 per TU and other modules already define a global @915, so the scratch link would multiply-define it"
     }
