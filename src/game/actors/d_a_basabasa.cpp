@@ -94,7 +94,7 @@ extern daBasabasa_c::State data_ov065_0211d710;   /* drop */
 // @symbol _ZN12daBasabasa_cD1Ev
 // @symbol _ZN12daBasabasa_cD0Ev
 /* The compiler writes the whole body: the vtable store, the dExtShadowModel_c, both
- * ModelAnims, the dBgCh_Actr and the dCcAc_c in reverse declaration order,
+ * dExtAnmModel_c, the dBgCh_Actr and the dCcAc_c in reverse declaration order,
  * then dEnemyBase_c::~dEnemyBase_c. */
 daBasabasa_c::~daBasabasa_c()
 {
@@ -477,7 +477,7 @@ int daBasabasa_c::Behavior()
 }
 
 // @symbol _ZN12daBasabasa_c13InitResourcesEv
-/* Both ModelAnims are loaded here, the other half of the evidence that 0x300
+/* Both dExtAnmModel_c are loaded here, the other half of the evidence that 0x300
  * and 0x364 are two members. */
 int daBasabasa_c::InitResources()
 {

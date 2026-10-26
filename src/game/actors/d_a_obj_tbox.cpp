@@ -26,6 +26,7 @@ enum daObjTbox_c_AssetId {
 #include "daObjTbox_c.h"
 #include "Player.h"
 #include "SharedFilePtr.h"
+#include "Sound.h"
 
 /* The resource handles as the ROM lays them out: {id, loaded file}. The
    model handle constructs through func_02017acc and destroys through
@@ -50,7 +51,6 @@ void Matrix4x3_FromRotationY(Matrix4x3 *, s32);
  * complete observation of the same arm9 routine, and both call sites compile
  * against it unchanged. */
 unsigned short DecIfAbove0_Short(unsigned short *p);
-void func_02012790(u32 code);
 s16 Vec3_HorzAngle(const Vector3 *from, const Vector3 *to);
 s32 AngleDiff(s32 a, s32 b);
 void func_02012694(u32 code, const Vector3 *pos);

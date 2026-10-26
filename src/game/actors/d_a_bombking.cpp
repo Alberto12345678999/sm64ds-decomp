@@ -43,12 +43,12 @@
 #include "SharedFilePtr.h"
 #include "dBgCh_Gnd.h"
 #include "decl_common.h"
-#include "decl_Animation.h"
 #include "decl_Message.h"
 #include "Player.h"
 #include "dCamera_c.h"
 #include "Message.h"
 #include "nitro/fx/fx.h"
+#include "Sound.h"
 namespace cstd {
 s16 atan2(s32, s32);
 }
@@ -137,11 +137,7 @@ struct System {
     static void NewSimple(unsigned int id, int x, int y, int z);
 };
 }
-extern void _ZN5Sound22StopLoadedMusic_Layer3Ev(void);
 extern void func_02011cfc(void);
-}
-namespace Sound {
-void ChangeMusicVolume(unsigned int a, int b);
 }
 extern "C" {
 extern short Vec3_HorzAngle(const void* a, const void* b);
@@ -252,7 +248,7 @@ int daBombking_c::func_ov078_021238ac()
 
     if (this->mMusicLayer3 == 1) {
         this->mMusicLayer3 = 0;
-        _ZN5Sound22StopLoadedMusic_Layer3Ev();
+        Sound::StopLoadedMusic_Layer3();
         func_02011cfc();
         Sound::ChangeMusicVolume(0x7f, 0x15666);
     }
@@ -1332,7 +1328,7 @@ int daBombking_c::func_ov078_02125950()
     if (target->GetTalkState() == -1) {
         Message::EndTalk();
         func_02011d44();
-        _ZN5Sound22LoadAndSetMusic_Layer3Ej(0x2d);
+        Sound::LoadAndSetMusic_Layer3(0x2d);
         KingBobOmb_SetState(&data_ov078_0212701c);
     }
     return 1;
@@ -1366,7 +1362,7 @@ int daBombking_c::func_ov078_021259ec()
             this->mMusicLayer3 = 0;
             this->mMusicLayer3Timer = 0;
             this->mHealth = 3;
-            _ZN5Sound22StopLoadedMusic_Layer3Ev();
+            Sound::StopLoadedMusic_Layer3();
             func_02011cfc();
             this->mIntroTalked = 0;
         }

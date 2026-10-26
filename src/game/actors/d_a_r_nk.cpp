@@ -158,7 +158,6 @@ enum {
    __sinit_d_a_r_nk.cpp. */
 extern StateFunc data_ov062_0211e0a4[6];
 extern "C" {
-void _ZN5Sound22LoadAndSetMusic_Layer2Ej(u32 id);
 }
 
 /* Scalar fixed-point ABI entry; the class-valued form still needs
@@ -167,7 +166,6 @@ extern "C" s16 atan2_hold_d_a_r_nk_1(int y, int x);
 
 extern "C" {
 /* Positional sound at the actor's camera-space position (Sound::Play(3, id, pos)). */
-extern void func_0201267c(unsigned int id, void *p);
 namespace Particle {
 struct System {
     static void *NewSimple(unsigned int id, int x, int y, int z);
@@ -184,7 +182,6 @@ extern signed char data_0209f2f8;   /* LEVEL_ID */
 extern s8 data_ov002_02111184;      /* DISPLAY_TIMER: nonzero shows the course timer */
 extern bool d_a_r_nkPlaySubHold(u32 a, u32 b, u32 c, int d, int e);
 extern void func_02012694(u32 a, void *b);
-unsigned int func_02012790(unsigned int id);
 extern u8 data_0209d684;            /* MESSAGE_RESULT: which answer the player picked (1 or 2) */
 extern Timer data_0209d4c8;         /* TIME_TIMER: the course timer */
 extern void Vec3_Asr(void *destination, void *source, int shift);
@@ -407,7 +404,7 @@ void daRNk_c::func_ov062_0211a740()
         if (ApproachLinear(this->mPrevAngleY, this->mTargetAngleY, kTurnStep) != 0) {
             SET_ANIM(this, ANIM_TALK, kAnimLoop);
             this->mStep += 1;
-            func_0201267c(kSfxTurnToTalk, &this->mCamSpacePosX);
+            func_0201267c(kSfxTurnToTalk, &this->mCamSpacePos);
             if (this->mPlayer->param1 == 0) {
                 func_02012790(0xa);
                 this->mIsTalkingToMario = 1;
@@ -509,13 +506,13 @@ void daRNk_c::func_ov062_0211a1f4()
             return;
         Sound::PlaySub(0x1f, 0x7f, 0, 0x7f000, 0);
         func_02012694(kSfx4D, &this->mCamSpacePosX);
-        _ZN5Sound22LoadAndSetMusic_Layer2Ej(kMusicRace);
+        Sound::LoadAndSetMusic_Layer2(kMusicRace);
         this->mIsRacing = 1;
         this->mStep++;
         SET_ANIM(this, ANIM_RUN_START, kAnimPlayOnce);
         data_ov002_02111184 = 1;
         data_0209d4c8.StartTimer();
-        func_0201267c(kSfx4D, &this->mCamSpacePosX);
+        func_0201267c(kSfx4D, &this->mCamSpacePos);
         return;
     case 2:
         progress = func_ov062_02119af0();
@@ -974,7 +971,7 @@ check_hi:
 body:
     if (this->mFootstepDone != 0)
         return;
-    func_0201267c(kSfxFootstep, &this->mCamSpacePosX);
+    func_0201267c(kSfxFootstep, &this->mCamSpacePos);
     this->mFootstepDone = 1;
 
     ang = this->mAngleY;

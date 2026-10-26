@@ -29,6 +29,7 @@
 #include "SharedFilePtr.h"
 #include "Player.h"
 #include "nitro/fx/fx.h"
+#include "Sound.h"
 
 bool ApproachLinear(short &value, short target, short step);
 
@@ -70,7 +71,6 @@ extern void Vec3_Sub(Vec3 *out, Vec3 *a, Vec3 *b);
 extern int LenVec3(Vec3 *v);
 extern s16 Vec3_HorzAngle(const Vector3 *v0, const Vector3 *v1);
 extern u8 DecIfAbove0_Byte(u8 *p);
-extern void func_0201267c(unsigned int id, const Vector3 *v);
 extern int _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(Player *self, void *a, unsigned int b, int dmg, unsigned char arg4, unsigned char arg5, unsigned char arg6);
 int Vec3_HorzDist(const Vector3 *a, const Vector3 *b);
 void func_0203568c(int *clsn, int radius);

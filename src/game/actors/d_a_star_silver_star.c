@@ -2,11 +2,14 @@
 /* recovered: vtable identified, globals resolved, declarations from a shared header */
 #include "decl_ActorBase.h"
 #include "decl_Enemy.h"
-#include "decl_ModelAnim.h"
 #include "decl_dCcAcPos_c.h"
 #include "decl_ShadowModel.h"
 #include "decl_dBgCh_Actr.h"
 #include "decl_common.h"
+
+/* local extern: this is a C file, so it cannot include the dExtAnmModel_c.h
+   class header; the factory only needs the member constructor by ROM name. */
+extern void *_ZN14dExtAnmModel_cC1Ev(void *);
 
 /* File-local view of daStar_c (include/daStar_c.h is C++): the five
    members the factory constructs, sized as that header's layout table. */

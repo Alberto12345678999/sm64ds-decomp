@@ -64,7 +64,6 @@ extern dFdColor_c data_0209f5e8;
 u32 LoadCompressedFileAt(u16 fileID, void *target);
 int LoadFile(int handle);
 
-u32 func_02012790(u32 a);
 
 void DecompressLZ16(const void *src, void *dst);
 

@@ -25,6 +25,14 @@
    Sound::dActor_c, which is not the type any caller is holding. */
 struct dActor_c;
 
+/* Two of the arm9 bank-bound wrappers defined in src/engine/sound/Sound.cpp,
+   with their C names: func_0201267c is Sound::Play(3, id, *pos), and
+   func_02012790 is Sound::Play2D(2, id). */
+extern "C" {
+void func_0201267c(unsigned int, const Vector3 *);
+unsigned int func_02012790(unsigned int);
+}
+
 namespace Sound {
 
 /* A bank-bound wrapper over Sound::Play, defined in
@@ -92,6 +100,7 @@ void Play(u32, u32, const Vector3 &v);
 void Play2D(u32, u32);
 void PlayBank0(u32 id, const Vector3 &pos);
 u32  PlayBank2_2D(u32);
+u32 PlayBank3_2D(u32);
 u32  PlayCharVoice(u32, u32, const Vector3 &v);
 int  PlayLong(u32 handle, u32, u32, const Vector3 &pos, s16);
 bool PlaySub(u32, u32, u32, Fix12i, bool);
@@ -102,9 +111,13 @@ int  PlaySecretSound(dActor_c *actor, u16 *counter);
 void PauseMusic();
 void UnpauseMusic();
 void LoadInitialGroup(int group);
+void LoadGroupAndSetBank(int, int);
 void LoadAndSetMusic_Layer1(int);
 void StopLoadedMusic_Layer1(u32);
+void LoadAndSetMusic_Layer2(u32);
 void StopLoadedMusic_Layer2();
+void LoadAndSetMusic_Layer3(u32);
+void StopLoadedMusic_Layer3();
 
 /* The override layer Player drives: SetMusic(playerNo, music) installs a track
    (Sound.cpp ignores any player but the local one), and Sound::EndMusic takes

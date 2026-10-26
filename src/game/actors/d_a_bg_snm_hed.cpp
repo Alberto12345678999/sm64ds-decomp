@@ -18,6 +18,7 @@
 #include "SharedFilePtr.h"
 #include "dExtAnmTexPat_c.h"
 #include "dBgCh_Gnd.h"
+#include "Sound.h"
 
 struct BMD_File;
 struct BTP_File;
@@ -32,7 +33,6 @@ bool PlaySub(u32, u32, u32, int, bool);
 
 extern "C" {
 void Matrix4x3_FromRotationY(void *matrix, int angle);
-int func_0201267c(int id, void *pos);
 namespace Particle {
 struct System {
     static void NewSimple(unsigned int id, int x, int y, int z);
@@ -133,7 +133,7 @@ int daBgSnmHed_c::State2()
             pos.y = mPosY;
             pos.z = mPosZ;
             Earthquake(*(const Vector3 *)&pos, 0x5dc000);
-            func_0201267c(0x115, &mCamSpacePosX);
+            func_0201267c(0x115, &mCamSpacePos);
             Particle::System::NewSimple(0x10f, mPosX, mPosY, mPosZ);
             Particle::System::NewSimple(0x110, mPosX, mPosY, mPosZ);
             Sound::PlaySub(0x20, 0x14, 0x7f, 0x15666, 0);

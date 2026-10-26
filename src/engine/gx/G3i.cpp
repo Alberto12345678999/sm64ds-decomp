@@ -7,10 +7,9 @@
  * projection and streams it to the projection port. Both are static (no this)
  * and both optionally mirror the matrix into a caller's Matrix4x3.
  */
-// leftovers: PerspectiveW_ keeps its literal-mangled extern "C" name and C
-// body with an int * matrix (the six by-value Fix12<int> params are the
-// include/OAM.h ABI wall; the ROM bytes are the C front end's output).
-// func_02055998 keeps its address name (no recovered name exists).
+// leftovers: a real G3i::PerspectiveW_ method does not reproduce this body, so
+// the definition stays C linkage under the Fix12i mangling, with an int *
+// matrix. func_02055998 keeps its address name (no recovered name exists).
 #include "G3i.h"
 #include "math/Matrix.h"
 #include "nitro/fx/fx.h"
@@ -22,17 +21,12 @@ Fix12i DotVec3(const Vector3 *a, const Vector3 *b);
 int _ZN4cstd4fdivEii(int, int);
 int _ZN4cstd11fdiv_resultEv(void);
 s64 _ZN4cstd11ldiv_resultEv(void);
-void _ZN3G3i13PerspectiveW_E5Fix12IiES1_S1_S1_S1_S1_bP9Matrix4x3(
-    int sinF, int cosF, int aspect, int n, int f, int scaleW, int flag,
-    int *mtx);
 }
 
-// @symbol _ZN3G3i13PerspectiveW_E5Fix12IiES1_S1_S1_S1_S1_bP9Matrix4x3
+// @symbol _ZN3G3i13PerspectiveW_EiiiiiibP9Matrix4x3
 #pragma cplusplus off
-void _ZN3G3i13PerspectiveW_E5Fix12IiES1_S1_S1_S1_S1_bP9Matrix4x3(
-    int sinF, int cosF, int aspect, int n, int f, int scaleW, int flag,
-    int *mtx)
-{
+void _ZN3G3i13PerspectiveW_EiiiiiibP9Matrix4x3(int sinF, int cosF, int aspect, int n, int f,
+                                               int scaleW, int flag, int *mtx) {
     int tmp;
     volatile int *port;
     int xx;

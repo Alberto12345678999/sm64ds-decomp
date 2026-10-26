@@ -29,6 +29,7 @@
 #include "Message.h"
 #include "PlayerInput.h"
 #include "SaveData.h"
+#include "Sound.h"
 
 extern "C" {
 extern u8 data_0209d454;
@@ -103,7 +104,6 @@ extern void *func_02054ea8(void);
 extern void MultiCopy_Int(int *dst, int *src, int len);
 extern void MultiStore_Int(int val, int *dst, int len);
 extern int IsButtonInputValid(void);
-extern u32 func_02012790(u32 a);
 extern int func_0201fb4c(void);
 extern u8 NumStars(void);
 extern int func_020138dc(void);
@@ -113,9 +113,6 @@ extern int __aeabi_idiv(int, int);
    byte it passes, and the ROM callers pass it untruncated. Message.cpp
    spells it the same way. */
 extern void _ZN7Message7AddCharEc(int c);
-}
-namespace Sound {
-void ChangeMusicVolume(u32 vol, Fix12i speed);
 }
 extern "C" {
 void OamRender10_Message2(int a, void *b, int c, int d, int e, int f, int g, int h, int i, int j);

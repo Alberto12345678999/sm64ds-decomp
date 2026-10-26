@@ -1374,7 +1374,6 @@ struct MgMenuPickView {
 namespace s20aeb24 {
 extern "C" {
 extern "C" {
-extern void func_02012790(int a);
 extern void func_0203b958(short* o, short* a, short* b);
 extern void func_02012dd0(int a);
 
@@ -2794,7 +2793,6 @@ void Mg_DrawPrompt(char* c)
 // @symbol Mg_DrawTally
 namespace s20b0e84 {
 extern "C" {
-extern "C" void func_02012790(int);
 extern "C" int GetGameLanguage(void);
 extern "C" void RenderOamMainScreen(int a0, int a1, int a2, int a3, int a4);
 

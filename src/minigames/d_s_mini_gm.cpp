@@ -179,7 +179,6 @@ void MiniGm_DrawNumber(void *self, int x, int y, int val);
 void MiniGm_LoadIconPalette(char *self, int n);
 
 /* ---- arm9 / cross-overlay externals ---- */
-int  func_02012790(int);
 void func_02013568(int a, int b, int v);
 int  func_02013580(int a, int b);
 void func_02013598(int x);
@@ -194,7 +193,6 @@ extern void OamRender10_d_s_mini_gm(int sub, OamAttr *attr, int x, int y, int pa
                                     int sy, int c, int d);
 extern void *_ZN2G213GetBG2CharPtrEv(void);
 
-void _ZN5Sound22StopLoadedMusic_Layer1Ej(u32 n);
 }
 
 // @symbol dScMiniGm_c_classInit
@@ -220,7 +218,7 @@ s32 dScMiniGm_c::InitResources()
     LoadTextNarcs();
     LoadArchive(0);
     data_0209f5f8 = 0;
-    _ZN5Sound19LoadGroupAndSetBankEii(0x27, 5);
+    Sound::LoadGroupAndSetBank(0x27, 5);
     func_02019028();
 
     if (!(data_0209caa0[0x48 / 4] & 0x80000000)) {
@@ -418,7 +416,7 @@ s32 dScMiniGm_c::InitResources()
     data_0209d45c |= 4;
     data_0209d45c &= ~8;
     data_0209d454 |= 0xc;
-    _ZN5Sound22LoadAndSetMusic_Layer1Ei(5);
+    Sound::LoadAndSetMusic_Layer1(5);
     return 1;
 }
 
@@ -1078,7 +1076,7 @@ void dScMiniGm_c::UpdateGameSelect()
     gMgMenuRow.level = mStartLevel;
     dScene_c::StartSceneFade(sMiniGmRows[gMgLastSelected[0]].id,
                              sMiniGmRows[gMgLastSelected[0]].sceneParam, 0);
-    _ZN5Sound22StopLoadedMusic_Layer1Ej(0x1e);
+    Sound::StopLoadedMusic_Layer1(0x1e);
     mExiting = 1;
     data_0209b2fc = 1;
 }

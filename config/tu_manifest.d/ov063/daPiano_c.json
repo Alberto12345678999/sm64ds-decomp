@@ -957,37 +957,37 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@788",
+      "from": "@801",
       "to": "@792",
       "evidence": "Measured input-only compiler temporary rename after native factory/local Vector3 reconstruction. The full descriptor/storage section, symbol attributes and typed edges equal the pinned baseline under this exact bijection; canonical name/address remain unchanged."
     },
     {
-      "from": "@789",
+      "from": "@802",
       "to": "@793",
       "evidence": "Measured input-only compiler temporary rename after native factory/local Vector3 reconstruction. The full descriptor/storage section, symbol attributes and typed edges equal the pinned baseline under this exact bijection; canonical name/address remain unchanged."
     },
     {
-      "from": "@790",
+      "from": "@803",
       "to": "@794",
       "evidence": "Measured input-only compiler temporary rename after native factory/local Vector3 reconstruction. The full descriptor/storage section, symbol attributes and typed edges equal the pinned baseline under this exact bijection; canonical name/address remain unchanged."
     },
     {
-      "from": "@792",
+      "from": "@805",
       "to": "@796",
       "evidence": "Measured input-only compiler temporary rename after native factory/local Vector3 reconstruction. The full descriptor/storage section, symbol attributes and typed edges equal the pinned baseline under this exact bijection; canonical name/address remain unchanged."
     },
     {
-      "from": "@794",
+      "from": "@807",
       "to": "@798",
       "evidence": "Measured input-only compiler temporary rename after native factory/local Vector3 reconstruction. The full descriptor/storage section, symbol attributes and typed edges equal the pinned baseline under this exact bijection; canonical name/address remain unchanged."
     },
     {
-      "from": "@796",
+      "from": "@809",
       "to": "@800",
       "evidence": "Measured input-only compiler temporary rename after native factory/local Vector3 reconstruction. The full descriptor/storage section, symbol attributes and typed edges equal the pinned baseline under this exact bijection; canonical name/address remain unchanged."
     },
     {
-      "from": "@798",
+      "from": "@811",
       "to": "@802",
       "evidence": "Measured input-only compiler temporary rename after native factory/local Vector3 reconstruction. The full descriptor/storage section, symbol attributes and typed edges equal the pinned baseline under this exact bijection; canonical name/address remain unchanged."
     }

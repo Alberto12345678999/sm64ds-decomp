@@ -52,7 +52,6 @@
 #include "dBgCh_Gnd.h"
 #include "dBgCh_Lin.h"
 #include "dBgCh_Actr.h"
-#include "decl_Animation.h"
 #include "Sound.h"
 #include "dCamera_c.h"
 #include "daObj1UpLogo_c.h"
@@ -943,7 +942,6 @@ void Player::InitVanishLuigi()
 extern "C" {
 void Player::func_ov002_020bdf8c(){
     extern void _ZN6Player17SetNoControlStateEhih(void*, unsigned char a, int b, unsigned char d);
-    extern void func_02012790(int a);
     extern char* data_0209f318;
   func_ov002_020bda48();
   mScaleAnimStep = 0;
@@ -1000,7 +998,6 @@ void Player::SetNewHatCharacter(unsigned int p1, unsigned int p2, bool p3)
     extern Player::State data_ov002_0211013c;
     extern void func_ov002_020d9c70(void*);
     extern void func_ov002_020da95c(void*);
-    extern void func_02012790(int n);
     extern void func_ov002_020e6350(void*);
   unsigned int old = param1;
   if (p1 == old) return;
@@ -4493,7 +4490,6 @@ int Player::func_ov002_020c44c4()
     extern void Vec3_RotateYAndTranslate(void*, void*, short angle, void*);
     extern int _ZN6Player11ShowMessageER7fBase_cjPK7Vector3hh(void*, void*, unsigned int id, const void* pos, unsigned int a, unsigned int b);
     extern void func_02012694(unsigned int id, const Vector3 *v);
-    extern unsigned int func_02012790(unsigned int a);
     extern unsigned int _ZN8SaveData26CountStarsCollectedInLevelEj(unsigned int);
     extern int SublevelToLevel(int);
     extern u32 data_ov002_0210e14c;
@@ -5974,7 +5970,6 @@ int Player::St_Teleport_Main()
     extern void _ZN9dBgCh_Gnd12SetObjAndPosERK7Vector3P8dActor_c(void*, void*, void*);
     extern int _ZN9dBgCh_Gnd10DetectClsnEv(void*);
     extern void _ZN9dBgCh_GndD1Ev(void*);
-    extern u32 func_02012790(u32 a);
     extern void _ZN3G2x18SetBlendBrightnessEPVtts(volatile u16* p, u16 a, s16 b);
     extern void Player_AdvanceAnims(void*);
     extern char* data_0209f318;
@@ -6475,7 +6470,6 @@ int Player::St_LevelEnter_Init()
     extern void *_ZN9dBgCh_GndC1Ev(void*);
     extern void _ZN9dBgCh_Gnd12SetObjAndPosERK7Vector3P8dActor_c(void*, void*, void*);
     extern int _ZN9dBgCh_Gnd10DetectClsnEv(void*);
-    extern void func_02012790(int a);
     extern void _ZN6Player16InitWingFeathersEb(void*, int b);
     extern void _ZN9dBgCh_GndD1Ev(void*);
     extern u8 data_0209f2d8;
@@ -6736,7 +6730,6 @@ void Player::func_ov002_020c7ff8()
     extern void *data_0209f318;
     extern void func_0200d4b0(void*, u8 playerID, int x);
     extern void func_0200d508(void*, u8 playerID);
-    extern void func_02012790(int x);
     u8 s = mNoCtrlKind;
     void *g = data_0209f318;
     if (s == 0 || s == 1 || s == 0x11) {
@@ -7155,7 +7148,6 @@ int Player::func_ov002_020c8b54()
 extern "C" {
 int Player::func_ov002_020c8b78() {
     extern void PlayerChangeMusicVolumeHold3(unsigned int, int);
-    extern void func_02012790(int);
     extern void func_020731dc(void*, void*, void*);
     extern void *_ZN7Vector3D1Ev(void *object);
     extern void Vec3_RotateYAndTranslate(void*, void*, int, void*);
@@ -8360,7 +8352,6 @@ void func_ov002_020ca940(char* self)
     extern Player::State data_ov002_0211064c;
     extern Player::State data_ov002_02110664;
     extern int func_0200d0ac(int a, unsigned int b);
-    extern unsigned int func_02012790(unsigned int a);
     extern void func_0200d064(int a, unsigned int b);
     extern void func_ov002_020ca940(void*);
     u8 old;
@@ -8506,7 +8497,6 @@ int func_ov002_020cac60(char *self)
     extern short GetAngleToCamera(int i);
     extern void LoadLevel(int a, int b, int c, int d, int e);
     extern void _ZN8dScene_c20SetAndStopColorFaderEv(void);
-    extern void func_02012790(int a);
     extern short data_0209f5e8;
     short ang;
     short angle;
@@ -21161,7 +21151,6 @@ int Player::St_Fly_Main()
     extern void func_ov002_020df8f0(void *);
     extern u32 PlayerNewHold16(u32 handle, u32 kind, Fix12i x, Fix12i y, Fix12i z, const void *dir,
                                void *callback);
-    extern void _ZN5Sound9PlayBank0EjRK7Vector3(u32, void *);
     extern void func_ov002_020e25f0(char *, int a);
     extern void MulVec3Mat4x3(void *dst, void *src, void *out);
     extern void Vec3_MulScalarInPlace(s32 *v, s32 s);
@@ -21250,7 +21239,7 @@ skip:
     if (mPrevVertSpeed >= 0x30000) {
         if (mPrevAngleX > 0x800) {
             if (mStateArg == 0) {
-                _ZN5Sound9PlayBank0EjRK7Vector3(0xb9, &mCamSpacePos);
+                Sound::PlayBank0(0xb9, mCamSpacePos);
                 func_ov002_020e25f0(c, 2);
                 mStateArg++;
             }
@@ -21793,7 +21782,6 @@ int Player::St_CrazedCrate_Main() {
 extern "C" {
 void func_ov002_020e0f38(char* c, int a){
     extern void _ZN8dActor_c11LandingDustEb(void* c, int b);
-    extern void func_0201267c(int anim, char* p);
     extern int data_ov002_020ff17c[];
     extern int data_ov002_020ff188[];
     Player *player = (Player *)c;
@@ -21802,9 +21790,9 @@ void func_ov002_020e0f38(char* c, int a){
     if (a != 0)
         _ZN8dActor_c11LandingDustEb(c, 1);
     if (a != 2)
-        func_0201267c(0x6c, (char *)&player->mCamSpacePos);
+        func_0201267c(0x6c, &player->mCamSpacePos);
     else
-        func_0201267c(0x6d, (char *)&player->mCamSpacePos);
+        func_0201267c(0x6d, &player->mCamSpacePos);
 }
 }
 

@@ -40,6 +40,7 @@
 #include "daObjCloset_c.h"
 #include "Player.h"
 #include "Message.h"
+#include "Sound.h"
 
 bool ApproachLinear(short &value, short target, short step);
 
@@ -71,7 +72,6 @@ enum {
 
 extern "C" {
 /* Sound::Play2D(2, id). The ROM calls this wrapper, not Play2D. */
-unsigned int func_02012790(unsigned int id);
 short Vec3_HorzAngle(const struct Vec3Raw *a, const struct Vec3Raw *b);
 int AngleDiff(int a, int b);
 /* 1: return to the rec room when the menu closes. */

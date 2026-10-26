@@ -25,10 +25,9 @@ struct System {
  *
  * leftovers:
  *  - The Fix12-by-value member calls (dExtShadowModel_c::InitModel,
- *    Particle::System::New,
- *    G3i::PerspectiveW_) keep measured scalar-extern spellings: spelled as
+ *    Particle::System::New) keep measured scalar-extern spellings: spelled as
  *    the real member types, mwccarm homes the register arguments and the
- *    callers grow.
+ *    callers grow. G3i::PerspectiveW_ is the Fix12i method.
  *  - LAUNDER((char*)) stays on the mModel.data / mAnimation.data /
  *    mModel.mat4x3 alias reads in func_ov075_02114be4 -- the plain member
  *    read changes which value-numbering class mwcc folds them into.
@@ -48,6 +47,7 @@ struct System {
 #include "SharedFilePtr.h"
 #include "nitro/fx/fx.h"
 #include "SpawnInfo.h"
+#include "Sound.h"
 
 struct BMD_File;
 struct BTP_File;
@@ -61,6 +61,8 @@ void RenderAll();
 namespace G3i {
 void LookAt_(const Vector3 *camPos, const Vector3 *up, const Vector3 *target, bool draw,
              Matrix4x3 *m);
+void PerspectiveW_(Fix12i sinFov, Fix12i cosFov, Fix12i aspect, Fix12i nearZ, Fix12i farZ,
+                   Fix12i scaleW, bool load, Matrix4x3 *m);
 }
 bool ApproachLinear(short &value, short target, short step);
 void CopyToViewMat(const Matrix4x3 *m);
@@ -97,9 +99,6 @@ void _ZN17dExtShadowModel_c9InitModelEP9Matrix4x35Fix12IiES3_S3_j(void *shadow, 
                                                                   unsigned char flags);
 int d_ent_objNewHold(unsigned handle, unsigned id, int x, int y, int z, const Vector3_16 *dir,
                      void *callback);
-void _ZN3G3i13PerspectiveW_E5Fix12IiES1_S1_S1_S1_S1_bP9Matrix4x3(int sinFov, int cosFov, int aspect,
-                                                                 int nearZ, int farZ, int scaleW,
-                                                                 bool load, Matrix4x3 *m);
 
 int RandomIntInternal(int *seed);
 short Vec3_HorzAngle(const Vector3 *a, const Vector3 *b);
@@ -112,7 +111,6 @@ int Math_Function_0203b14c(int *p, int target, int a, int b, int c);
 unsigned char DecIfAbove0_Byte(unsigned char *p);
 int func_0201251c(int a, int b, void *pos, int c);
 unsigned int func_02012174(unsigned int a, unsigned int b);
-unsigned int func_02012790(unsigned int sound);
 void func_020167a4(void *model);
 int func_ov075_0211b3d8(void *p);
 long long __aeabi_uidiv(unsigned int n, int d);
@@ -838,9 +836,8 @@ int dEntObj_c::func_ov075_02115290(int playerNo) {
 /* Rebuild the projection and the view from the camera eye and target. */
 void dEntObj_c::func_ov075_021152d4() {
     Matrix4x3 view;
-    _ZN3G3i13PerspectiveW_E5Fix12IiES1_S1_S1_S1_S1_bP9Matrix4x3(
-        data_02082614[0xa], data_02082614[0xb], 0x1555, 0x1000, 0x1388000, 0x1000, true,
-        (Matrix4x3 *)0);
+    G3i::PerspectiveW_(data_02082614[0xa], data_02082614[0xb], 0x1555, 0x1000, 0x1388000, 0x1000,
+                       true, (Matrix4x3 *)0);
     G3i::LookAt_((Vector3 *)&mCamPosX, (Vector3 *)&data_ov075_0211c660, (Vector3 *)&mCamTargetX,
                  true, &view);
     CopyToViewMat(&view);

@@ -90,6 +90,7 @@ enum dScMgHanachan_c_AssetId {
 #include "PlayerInput.h"
 #include "nitro/fx/fx.h"
 #include "SpawnInfo.h"
+#include "Sound.h"
 
 struct OamAttr;
 struct OAM {
@@ -228,7 +229,6 @@ extern void Mg_DrawScoreTally(void *a, int b, int c, int d);
 extern int GetGameLanguage(void);
 extern void DrawOamSprite(void *a, int b, int c, int d);
 extern void Mg_DrawNumberRotated(int a, int b, void *c, int d, int e, int f, int g);
-extern void func_02012790(int a);
 extern void StarPopup_Start(int x, int y);
 extern void HanaPopup_Spawn(int x, int y);
 extern s16 sHanaRoundPatterns[];

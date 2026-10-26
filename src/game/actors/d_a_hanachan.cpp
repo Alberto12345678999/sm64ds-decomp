@@ -76,6 +76,7 @@ enum daHanachan_c_AssetId {
 #include "Message.h"
 #include "Vector3s.h"
 #include "nitro/fx/fx.h"
+#include "Sound.h"
 
 void ApproachLinear(int &value, int target, int step);
 bool ApproachLinear(short &value, short target, short step);
@@ -106,7 +107,6 @@ extern void **data_ov034_0211389c[];
 extern void **data_ov034_02113860[];
 extern int Math_Function_0203b14c(void *base, int a, int b, int c, int d);
 extern int data_ov034_021138c4[];
-extern void func_0201267c(int, void *);
 extern short Vec3_HorzAngle(const void* a, const void* b);
 extern short data_ov034_02113820[];
 extern void **data_ov034_021138b0[];
@@ -116,8 +116,6 @@ extern int Vec3_HorzDist(void *a, void *b);
 extern int RandomIntInternal(int *seed);
 extern int data_0209e650;
 extern int data_ov034_02114488[];
-void _ZN5Sound22LoadAndSetMusic_Layer3Ej(unsigned);
-void _ZN5Sound22StopLoadedMusic_Layer3Ev(void);
 extern char data_020a0e68[];
 extern void Matrix4x3_FromRotationY(void *m, int angle);
 extern void MulVec3Mat4x3(void *in, void *m, void *out);
@@ -323,7 +321,7 @@ void daHanachan_c::StateDeadMain()
         starPos.z = pz;
     }
     UntrackAndSpawnStar((s8 &)mStarTrackID, mStarID, mPos, 4);
-    _ZN5Sound22StopLoadedMusic_Layer3Ev();
+    Sound::StopLoadedMusic_Layer3();
     SetState(3);
 }
 
@@ -335,7 +333,7 @@ void daHanachan_c::StateDeadInit()
     mDeathSegment = 0;
     mDefeated = 1;
     mStateTimer = 5;
-    func_0201267c(287, &mCamSpacePosX);
+    func_0201267c(287, &mCamSpacePos);
 }
 
 /* DAMAGETALK: once the message is done, MOVE_START while health remains, else DEAD. */
@@ -398,7 +396,7 @@ void daHanachan_c::StateDamageMain()
             return;
     }
 
-    func_0201267c(0x11b, &mCamSpacePosX);
+    func_0201267c(0x11b, &mCamSpacePos);
     SetState(6);
 }
 
@@ -610,7 +608,7 @@ void daHanachan_c::StateMoveStopMain()
         }
         if (flag == 1) {
             if (player->GetTalkState() == 2) {
-                _ZN5Sound22LoadAndSetMusic_Layer3Ej(0x2d);
+                Sound::LoadAndSetMusic_Layer3(0x2d);
                 Message::EndTalk();
                 SetState(3);
             }
@@ -645,7 +643,7 @@ void daHanachan_c::StateDemoCallMain()
     Message::PrepareTalk();
     ((dCamera_c *)data_0209f318)->SetFlag_3();
     mDriveCamera = 1;
-    func_0201267c(0x11b, &mCamSpacePosX);
+    func_0201267c(0x11b, &mCamSpacePos);
     SetState(2);
 }
 
@@ -807,7 +805,7 @@ void daHanachan_c::HandlePlayerHits()
         playerPos.z = src->z;
         if (IsStompedBy(cyl, a) != 0) {
             _ZN6Player6BounceE5Fix12IiE(a, 0x28000);
-            func_0201267c(0x11c, &mCamSpacePosX);
+            func_0201267c(0x11c, &mCamSpacePos);
             if ((unsigned int)i > 1) {
                 mSegmentBounceTimer[i] = 0x1e;
                 return;
@@ -1013,9 +1011,9 @@ int daHanachan_c::Behavior()
         if (mWithMeshClsn.IsOnGround() != 0) {
             if ((((u32)mModelAnims[0].currFrame << 4) >> 16) == 6) {
                 if (mHealth == 2)
-                    func_0201267c(0x10a, &mCamSpacePosX);
+                    func_0201267c(0x10a, &mCamSpacePos);
                 else
-                    func_0201267c(0x11d, &mCamSpacePosX);
+                    func_0201267c(0x11d, &mCamSpacePos);
             }
             if (mHealth == 2) {
                 Particle::RunningSlidingDustAt(mPosX, mPosY, mPosZ);
@@ -1026,7 +1024,7 @@ int daHanachan_c::Behavior()
     animFile = data_ov034_021138b0[0];
     if (mModelAnims[0].file == (BCA_File *)((SharedFilePtr *)animFile)->filePtr &&
         (((u32)mModelAnims[0].currFrame << 4) >> 16) == 0xf) {
-        func_0201267c(0x11e, &mCamSpacePosX);
+        func_0201267c(0x11e, &mCamSpacePos);
     }
 
     for (i = 0; i < 5; i++) {

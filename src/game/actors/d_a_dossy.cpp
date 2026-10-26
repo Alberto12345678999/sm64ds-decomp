@@ -67,6 +67,7 @@ enum daDossy_c_AssetId {
 #include "Player.h"
 #include "Vector3s.h"
 #include "nitro/fx/fx.h"
+#include "Sound.h"
 namespace cstd {
 s16 atan2(s32, s32);
 }
@@ -139,7 +140,6 @@ extern SharedFilePtr data_ov002_0210d9c0;
 extern SharedFilePtr *data_ov065_0211c080[];
 extern SharedFilePtr *data_ov065_0211c08c[];
 
-extern void func_0201267c(u32 id, char* p);
 extern int atan2_hold_d_a_dossy_1(int a, int b);
 void Matrix4x3_FromTranslation(Matrix4x3 *m, s32 x, s32 y, s32 z);
 void Matrix4x3_ApplyInPlaceToRotationX(Matrix4x3 *m, s16 a);
@@ -614,7 +614,7 @@ void daDossy_c::func_ov065_02118634()
         mStateTimer = 0;
         mStateState = 0;
         mPushDownHeight = mStateState;
-        func_0201267c(0xe6, (char *)&mCamSpacePosX);
+        func_0201267c(0xe6, &mCamSpacePos);
     } else {
         s16 target;
         int speed;

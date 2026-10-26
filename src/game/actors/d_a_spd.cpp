@@ -40,6 +40,7 @@ enum Scuttlebug_AssetId {
 #include "dExtFrameCtrl_c.h"
 #include "SurfaceInfo.h"
 #include "nitro/fx/fx.h"
+#include "Sound.h"
 
 bool ApproachLinear(short &value, short target, short step);
 
@@ -81,7 +82,6 @@ void  Matrix4x3_FromRotationY(void *m, int angle);
 void  Matrix4x3_ApplyInPlaceToTranslation(void *m, int x, int y, int z);
 void  Matrix4x3_ApplyInPlaceToRotationX(void *m, s16 angX);
 
-void  func_0201267c(int id, void *pos);
 void  func_02012694(int id, void *pos);
 
 void  _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs(void *self, const void *pos,
@@ -90,7 +90,6 @@ void  _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs(void *self, const void *pos
 void  _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
           void *self, void *shadow, void *mtx, int radius, int height, u32 flags);
 
-void  _ZN5Sound9PlayBank0EjRK7Vector3(unsigned int id, const void *pos);
 namespace Particle {
 struct System {
     static void NewSimple(unsigned int id, int x, int y, int z);
@@ -362,7 +361,7 @@ int Scuttlebug::func_ov071_02120130()
     mModelAnim.SetAnim((BCA_File *)gSpiderWalkAnimationFile.filePtr, 0, 0x1000, 0);
     mModelAnim.speed = 0x1000;
     mWithMeshClsn.SetLimMovFlag();
-    func_0201267c(0xf1, &mCamSpacePosX);
+    func_0201267c(0xf1, &mCamSpacePos);
     mState = 1;
     return 1;
 }
@@ -425,7 +424,7 @@ int Scuttlebug::func_ov071_0211fee4()
     mModelAnim.Advance();
     unsigned short f = (unsigned short)(mModelAnim.currFrame >> 12);
     if (f == 0 || f == 8 || f == 0x17 || f == 0x1f) {
-        func_0201267c(0xf0, (void *)(&mCamSpacePosX));
+        func_0201267c(0xf0, &mCamSpacePos);
     }
     func_ov071_0211f0b4();
     UpdatePos((dCc_c *)(&mdCcAc_c));
@@ -450,7 +449,7 @@ int Scuttlebug::func_ov071_0211fe38()
     mModelAnim.SetAnim((BCA_File *)gSpiderWalkAnimationFile.filePtr, 0, 0x1000, 0);
     mModelAnim.speed = 0x2c00;
     mModelAnim.currFrame = 0;
-    func_0201267c(0xf1, &mCamSpacePosX);
+    func_0201267c(0xf1, &mCamSpacePos);
     mState = 3;
     return 1;
 }
@@ -473,7 +472,7 @@ int Scuttlebug::func_ov071_0211fd58()
     if (mWithMeshClsn.IsOnGround() != 0) {
         unsigned int t = (unsigned int)(mModelAnim.currFrame << 4) >> 0x10;
         if ((t <= 2) || (t >= 8 && t <= 0xa) || (t >= 0x18 && t <= 0x1a) || (t >= 0x20 && t <= 0x22)) {
-            func_0201267c(0xf0, &mCamSpacePosX);
+            func_0201267c(0xf0, &mCamSpacePos);
         }
     }
     return 1;
@@ -488,7 +487,7 @@ int Scuttlebug::func_ov071_0211fcd4()
     mVertSpeed = 0x12000;
     mModelAnim.SetAnim((BCA_File *)gSpiderWalkAnimationFile.filePtr, 0, 0x1000, 0);
     mModelAnim.speed = 0x2c00;
-    func_0201267c(0xf1, &mCamSpacePosX);
+    func_0201267c(0xf1, &mCamSpacePos);
     mState = 4;
     return 1;
 }
@@ -538,7 +537,7 @@ int Scuttlebug::func_ov071_0211fb24()
     mdCcAc_c.Update();
     unsigned short v = (unsigned short)(mModelAnim.currFrame >> 0xc);
     if (v == 0 || v == 8 || v == 0x17 || v == 0x1f)
-        func_0201267c(0xf0, &mCamSpacePosX);
+        func_0201267c(0xf0, &mCamSpacePos);
     return 1;
 }
 
@@ -692,7 +691,7 @@ int Scuttlebug::func_ov071_0211f7d4()
 // @symbol _ZN10Scuttlebug19func_ov071_0211f6f8Ev
 int Scuttlebug::func_ov071_0211f6f8()
 {
-    _ZN5Sound9PlayBank0EjRK7Vector3(9, (const void *)(&mCamSpacePosX));
+    Sound::PlayBank0(9, mCamSpacePos);
     mFlags &= ~1;
     mHorzSpeed = 0xa000;
     mVertSpeed = 0x28000;
@@ -777,7 +776,7 @@ void Scuttlebug::func_ov071_0211f29c()
     int b;
 
     if (FindEgg(mdCcAc_c) != 0) {
-        _ZN5Sound9PlayBank0EjRK7Vector3(9, &mCamSpacePosX);
+        Sound::PlayBank0(9, mCamSpacePos);
         func_ov071_0211f498();
         return;
     }
@@ -804,7 +803,7 @@ void Scuttlebug::func_ov071_0211f29c()
     if ((mdCcAc_c.hitFlags & 0x66fe0)
         || hitPlayer->IsOnShell() != 0
         || hitPlayer->mIsMetal != 0) {
-        _ZN5Sound9PlayBank0EjRK7Vector3(9, &mCamSpacePosX);
+        Sound::PlayBank0(9, mCamSpacePos);
         func_ov071_0211f498();
         return;
     }

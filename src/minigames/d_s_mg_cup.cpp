@@ -32,6 +32,7 @@ enum dScMgCup_c_AssetId {
 #include "SpawnInfo.h"
 #include "PlayerInput.h"
 #include "nitro/fx/fx.h"
+#include "Sound.h"
 
 /* sCupRoundTable: swap count, then two speed-row nibbles.
    StateSetup reads byte [kind * 2]. df024 reads .lo / .hi. */
@@ -62,9 +63,6 @@ struct AnimStep {
     int ticks;
 };
 
-namespace Sound {
-void PlayBank2_2D(unsigned int id);
-}
 
 namespace G2S {
 int GetBG2CharPtr();
@@ -110,7 +108,6 @@ extern void Presenter_PlayCheer(void *c);
 extern void Mg_SubCredits(void *c, int val);
 extern void Presenter_PlayMiss(char *c);
 extern void Presenter_PlayLose(char *c);
-extern void func_02012790(int x);
 extern void Mg_SubmitScore(int self);
 extern void FreeGfxSlotsById(int arg);
 extern int func_02012468(int a, int b, int c, int d, int e, int f, int g, short h);

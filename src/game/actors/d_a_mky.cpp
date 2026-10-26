@@ -71,12 +71,8 @@
  * a variable's name does not mangle. */
 extern "C" {
 
-void  func_0201267c(unsigned int id, const Vector3 *pos);
 void  Vec3_Asr(void *d, void *s, int sh);
 void  _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(void *self, void *shadow, void *mtx, int rad, int height, unsigned char flags);
-int   func_0203567c(int self);
-int   func_02037f44(void *result);
-unsigned int func_02012790(unsigned int arg);
 
 }
 
@@ -512,7 +508,7 @@ int daMky_c::func_ov030_02112400()
         }
     } else {
         if (this->mWithMeshClsn.IsOnGround()) {
-            dBgPi res = *reinterpret_cast<dBgPi *>(func_0203567c((int)&mWithMeshClsn));
+            dBgPi res = *func_0203567c(&mWithMeshClsn);
             if (res.GetClsnID() == -1 || func_02037f44(&res) == 0) {
                 func_ov030_021141a8(0);
             }
@@ -699,7 +695,7 @@ int daMky_c::func_ov030_02112a84()
     if (this->mWithMeshClsn.JustHitGround() || this->mWithMeshClsn.IsOnGround()) {
         this->mVertSpeed = 0;
         if (IsUkikiThief(this)) {
-            dBgPi res = *reinterpret_cast<dBgPi *>(func_0203567c((int)&mWithMeshClsn));
+            dBgPi res = *func_0203567c(&mWithMeshClsn);
             if (res.GetClsnID() != 0xffffffff)
                 func_ov030_021141a8(9);
             else

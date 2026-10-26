@@ -153,7 +153,6 @@ void Matrix4x3_ApplyInPlaceToRotationXYZExt(void *m, int x, int y, int z);
 int Vec3_Dist(const Vector3 *a, const Vector3 *b);
 short Vec3_HorzAngle(const Vector3 *a, const Vector3 *b);
 u8 IsAreaShowing(int idx);
-unsigned int func_02012790(unsigned int);
 }
 
 /* InitResources tests the profile's actor id as a 0/1 value. */

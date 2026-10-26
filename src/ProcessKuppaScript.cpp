@@ -1,10 +1,10 @@
 //cpp
 #include "types.h"
 #include "PlayerInput.h"
+#include "Sound.h"
 extern "C" {
     short ReadUnalignedShort(unsigned char* p);
     unsigned int ReadUnalignedInt(unsigned char* p);
-    unsigned int func_02012790(unsigned int a);
     void func_0201f32c(int a);
     void LoadLevelNoReturn(u32 levelID, u32 arg1, u32 arg2, u32 arg3);
     int func_02008550(void* obj, unsigned char* msg, int a2, int a3);
@@ -57,12 +57,6 @@ public:
     static void StartSceneFade(unsigned int a, unsigned int b, unsigned short c);
     static void SetAndStopColorFader();
     static void SetFaders(dFdBrightness_c* f);
-};
-class Sound {
-public:
-    static void StopLoadedMusic_Layer1(unsigned int a);
-    static void LoadAndSetMusic_Layer1(int a);
-    static void Play2D(unsigned int a, unsigned int b);
 };
 class SaveData {
 public:

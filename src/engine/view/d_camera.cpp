@@ -34,6 +34,7 @@ struct System {
 };
 }
 #include "nitro/fx/fx.h"
+#include "Sound.h"
 
 typedef struct { int x, y, z; } Vec3;	/* POD triple for the C bodies */
 
@@ -102,7 +103,6 @@ extern "C" {
 extern int func_020092c4(void *self, Vec3 *out, Vec3 *target);
 extern void func_0200928c(void *cam);
 extern void func_0200ee8c(int arg0);
-extern u32 func_02012790(u32 a);
 extern s32 Math_Function_0203b14c(s32 *p, s32 tgt, s32 rate, s32 lim, s32 step);
 extern int StartWithFarCamera();
 extern void *GetViewObj(int idx);
@@ -225,12 +225,9 @@ struct G2x {
     static void SetBlendAlpha(volatile unsigned short *, u16, u16, u16, u32);
 };
 struct G3i {
-    static void PerspectiveW_(int, int, int, int, int, int, bool, Matrix4x3 *);
+    static void PerspectiveW_(Fix12i, Fix12i, Fix12i, Fix12i, Fix12i, Fix12i, bool, Matrix4x3 *);
     static void LookAt_(const Vector3 *, const Vector3 *, const Vector3 *, bool, Matrix4x3 *);
 };
-extern "C" {
-void _ZN3G3i13PerspectiveW_E5Fix12IiES1_S1_S1_S1_S1_bP9Matrix4x3(int, int, int, int, int, int, bool, Matrix4x3 *);
-}
 
 /* @symbol dCamera_c_classInit
  * Allocation factory historically labelled _ZN9dCamera_cC1Ev. Its first action
@@ -496,9 +493,8 @@ int dCamera_c::Render()
     }
 
     s32 idx = ((s32)(u16)sp18 >> 4) * 2;
-    _ZN3G3i13PerspectiveW_E5Fix12IiES1_S1_S1_S1_S1_bP9Matrix4x3(
-        data_02082214[idx], data_02082214[idx + 1], self->mAspect, self->mNear, self->mFar, var_r6,
-        1, (Matrix4x3 *)0);
+    G3i::PerspectiveW_(data_02082214[idx], data_02082214[idx + 1], self->mAspect, self->mNear,
+                       self->mFar, var_r6, 1, (Matrix4x3 *)0);
 
     {
         s32 s2 = (s32)(sp[2] + 4) >> 3;

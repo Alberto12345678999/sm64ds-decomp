@@ -524,15 +524,15 @@ def plan(raw, keep_symbol):
             if sym.name in ext:
                 # MULTIPLE INHERITANCE puts a SECOND vptr store in the object,
                 # pointing past the primary slots into the secondary sub-table --
-                # addend 44 for ModelAnim, where the primary's is 8. The
+                # addend 44 for dExtAnmModel_c, where the primary's is 8. The
                 # correction is the same subtraction either way, because mwcc's
                 # _ZTV addresses the vtable object's start while the ROM's IS the
                 # slot array. The ROM names the destination independently and the
                 # arithmetic lands on it exactly:
                 #
-                #   _ZTV9ModelAnim                   0x0208e980
-                #   VTable_Animation_ModelAnimThunk  0x0208e9a4   = +0x24
-                #   44 - VTABLE_PREAMBLE                          =  0x24
+                #   _ZTV14dExtAnmModel_c                        0x0208e980
+                #   VTable_dExtFrameCtrl_c_dExtAnmModel_cThunk  0x0208e9a4  = +0x24
+                #   44 - VTABLE_PREAMBLE                                    =  0x24
                 #
                 # Two symbols this tree recorded separately agreeing with the
                 # subtraction is the enrolled instance the refusal wanted.
@@ -552,7 +552,8 @@ def plan(raw, keep_symbol):
                 # into the secondary block, which must land on the ROM's
                 # separately named thunk table. That is exactly the
                 # externalise case's arithmetic, whose enrolled instance
-                # (ModelAnim: 44 - 8 = +0x24 = VTable_Animation_ModelAnimThunk)
+                # (dExtAnmModel_c: 44 - 8 = +0x24 =
+                # VTable_dExtFrameCtrl_c_dExtAnmModel_cThunk)
                 # is the verification the original refusal asked for, and
                 # rombuild's module byte-compare still checks every landing.
                 # Non-_ZTV RTTI addends stay refused, and so does any _ZTV

@@ -53,6 +53,7 @@ enum d_a_fish_AssetId {
 #include "common.h"
 #include "Player.h"
 #include "SharedFilePtr.h"
+#include "Sound.h"
 
 bool ApproachLinear(short &value, short target, short step);
 
@@ -101,7 +102,6 @@ extern Matrix4x3 data_020a0e68;              /* scratch matrix */
 
 int RandomIntInternal(int *seed);
 void func_0203b9b4(s32 *value, s32 initial);
-void func_0201267c(unsigned int soundID, const Vector3 *camSpacePos);
 unsigned char DecIfAbove0_Byte(unsigned char *counter);
 void Vec3_Sub(Vector3 *out, Vector3 *a, Vector3 *b);
 int Vec3_HorzLen(const Vector3 *v);

@@ -28,6 +28,7 @@
 #include "CapIconMgr.h"
 #include "dActor_c.h"
 #include "Player.h"
+#include "Sound.h"
 
 extern "C" {
 
@@ -46,7 +47,6 @@ extern signed char data_0209f2f8;
  * pass as object pointers; the definition spells it int. */
 extern int func_0202a8e0(int a, u8 b);
 extern int func_02029600(int x);
-extern unsigned int func_02012790(unsigned int n);
 extern int SublevelToLevel(int i);
 
 void func_ov001_020aa420(void);

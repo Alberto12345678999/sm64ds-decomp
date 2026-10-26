@@ -25,9 +25,12 @@
  *   slot 5  0x020167f8  Render(Vector3 const *)
  *   slot 6  0x020167c4  Virtual18(u32, Vector3 const *)
  *
- * Secondary (dExtFrameCtrl_c-in-dExtAnmModel_c) vtable at +0x24 of the primary,
- * VTable_Animation_ModelAnimThunk: [_ZThn80_ D1, _ZThn80_ D0, null] -- the
- * inherited slot stays null.
+ * Secondary (dExtFrameCtrl_c-in-dExtAnmModel_c) vtable at _ZTV14dExtAnmModel_c
+ * + 0x24, inside the same vtable group (preamble -0x50 / _ZTI14dExtAnmModel_c,
+ * then [_ZThn80_ D1, _ZThn80_ D0, null]) -- the inherited slot stays null. The
+ * cartridge gives the secondary table no name; config/arm9/symbols.txt labels it
+ * VTable_dExtFrameCtrl_c_dExtAnmModel_cThunk because dsd needs a symbol at
+ * every relocation target.
  *
  * CORRECTION. That null slot used to be read here as "dExtAnmModel_c is abstract,
  * which is why only its C2 is ever called from derived constructors and no

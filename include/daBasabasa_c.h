@@ -7,7 +7,7 @@
  * stores this vtable, destroys five members, then calls `dEnemyBase_c::~dEnemyBase_c`.
  *
  * The five members close exactly on one another, and dEnemyBase_c's own 0x110 closes
- * exactly on the first. The destructor destroys TWO ModelAnims, which is what
+ * exactly on the first. The destructor destroys TWO dExtAnmModel_c, which is what
  * makes the pair at 0x300 and 0x364 two members rather than one and a gap:
  *
  *     0x110 dCcAc_c       0x34   -> 0x144

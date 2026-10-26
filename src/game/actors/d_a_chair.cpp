@@ -43,6 +43,7 @@ enum daChair_c_AssetId {
 #include "SurfaceInfo.h"
 #include "Player.h"
 #include "dBgCh_Actr.h"
+#include "Sound.h"
 namespace cstd {
 s16 atan2(s32, s32);
 }
@@ -93,7 +94,6 @@ enum ChairSfxId {
 
 extern "C" {
 void func_0200f760(void *self, void *cyl);
-void func_0201267c(unsigned int id, void *pos);
 void Vec3_Sub(Vec3 *res, Vec3 *v0, Vec3 *v1);
 s16 atan2_hold_d_a_chair_1(s32 y, s32 x);
 s32 Vec3_HorzLen(const Vector3 *v);
@@ -307,7 +307,7 @@ void daChair_c::State1()
         if (mAngleX >= 0) {
             wobble = -4;
         } else {
-            func_0201267c(kSfxWobble, &mCamSpacePosX);
+            func_0201267c(kSfxWobble, &mCamSpacePos);
             wobble = 4;
         }
         /* int-cast address. */
@@ -350,7 +350,7 @@ void daChair_c::State2()
         ApproachStateValue(&mAngleX, &mStateValue0, -0xfa0, 0xc8, 0x14, 2);
         ApproachStateValue(&mAngleZ, &mStateValue2, 0, 0, 0x14, 1);
         if (ST->counter == 0x46)
-            func_0201267c(kSfxWindup, &mCamSpacePosX);
+            func_0201267c(kSfxWindup, &mCamSpacePos);
     } else {
         if (ST->timer != 0) {
             (*(u16 *)((int)&mActionTimer))--;
@@ -360,7 +360,7 @@ void daChair_c::State2()
                 Vec3 playerPos;
                 Vec3 diff;
                 s32 reach;
-                func_0201267c(kSfxHop, &mCamSpacePosX);
+                func_0201267c(kSfxHop, &mCamSpacePos);
                 player = ClosestPlayer();
                 if (player == 0)
                     return;

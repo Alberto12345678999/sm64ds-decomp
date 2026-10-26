@@ -39,6 +39,7 @@ enum daDkk_c_AssetId {
 #include "decl_common.h"
 #include "dBgCh_Lin.h"
 #include "SharedFilePtr.h"
+#include "Sound.h"
 
 /* The model handle constructs through func_02017acc and destroys through
  * func_02017ab4. The collision handle constructs through func_02017b4c and
@@ -62,7 +63,6 @@ bool ApproachLinear(short &value, short target, short step);
  * Vector3 *). This TU's calls do not read a result, so the local extern
  * spells (int, void *). */
 extern "C" {
-extern void func_0201267c(int a, void *b);
 void d_a_dkkEarthquakeHold(void *thiz, const Vector3 &v, int f);
 namespace Particle {
 struct System {
@@ -163,7 +163,7 @@ void daDkk_c::func_ov025_02111a84()
     v[0].z = mPosZ;
     v[0].y = v[0].y + 0x3c000;
     Particle::System::NewSimple(0x2e, v[0].x, v[0].y, v[0].z);
-    func_0201267c(0xc7, &mCamSpacePosX);
+    func_0201267c(0xc7, &mCamSpacePos);
 }
 
 // @symbol _ZN7daDkk_c19func_ov025_021119f4Ev
@@ -178,7 +178,7 @@ void daDkk_c::func_ov025_021119f4()
     if (mLandCount != 4) {
         mState = 5;
         mVertSpeed = 0x3c000;
-        func_0201267c(0xf4, &mCamSpacePosX);
+        func_0201267c(0xf4, &mCamSpacePos);
         return;
     }
     mState = 7;

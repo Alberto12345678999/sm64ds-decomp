@@ -28,11 +28,11 @@
 #include "daStarBase_c.h"
 #include "daObjHatenaBlock_c.h"
 #include "daObjPushblock_c.h"
+#include "Sound.h"
 
 extern "C" {
 int Vec3_Dist(const Vector3 *a, const Vector3 *b);
 unsigned char DecIfAbove0_Byte(unsigned char *p);
-unsigned int func_02012790(unsigned int);
 void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *self, void *actor,
                                               int radius, int height,
                                               unsigned int flags,

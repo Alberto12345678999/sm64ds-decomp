@@ -2,6 +2,7 @@
 #include "dScEntry_c.h"
 #pragma opt_strength_reduction off
 #include "common.h"
+#include "Sound.h"
 
 namespace G2S {
 u16 *GetBG2ScrPtr(void);
@@ -12,7 +13,6 @@ extern int func_0203da9c(void);
 extern int TouchArea_Update(void *p, int x);
 extern void func_ov001_020ab41c(void *p);
 extern void func_ov075_02116c38(void *self);
-extern void func_02012790(int a);
 extern int GetSoundMode(void);
 extern void SetSoundMode(int mode);
 extern void func_ov001_020ab3f0(void *p);

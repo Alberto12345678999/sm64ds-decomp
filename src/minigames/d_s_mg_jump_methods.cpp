@@ -24,6 +24,7 @@
 #include "decl_common.h"
 #include "SharedFilePtr.h"
 #include "types.h"
+#include "Sound.h"
 
 /* `C` stands in for the receiver of the state pointer-to-member at 0x5004.
  * It must stay non-polymorphic: mwccarm lays out a pointer-to-member of a
@@ -82,7 +83,6 @@ void DrawOamSprite(void *a0, void *a1, int a2, void *a3);
 void RenderOamMainScreen(int a0, int a1, int a2, int a3, int a4);
 void func_0203cd80(int *m, short angle);
 void Matrix4x3_FromTranslation(void *m, int x, int y, int z);
-void func_02012790(int a0);
 void FreeGfxSlotsById(int arg);
 int  LoadFile(int handle);
 void DecompressLZ16(void *src, void *dst);

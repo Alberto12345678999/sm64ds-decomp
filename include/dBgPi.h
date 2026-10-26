@@ -92,6 +92,10 @@ struct dBgPi : dBgPc {
     void Reset();
 };
 
+/* The result's owner (+0x20), an arm9 free function that ends the dBgPi
+   run in src/engine/collision/d_bg_ch_sph_crr_query.cpp. */
+extern "C" struct dActor_c *func_02037f44(const dBgPi *);
+
 /* Size is the dBgPi's own span AND the stride of the three consecutive results
    dBgCh_SphCrr holds at 0x74/0x9c/0xc4 -- notes/collision-system.md 3.2. */
 #ifndef SM64DS_PLATFORM_PC

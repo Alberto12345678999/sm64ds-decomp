@@ -91,6 +91,7 @@ struct Vector3_16f;
 #include "dActor_c.h"
 #include "dBgCh_Actr.h"
 #include "dCc_c.h"
+#include "Sound.h"
 
 struct dBgPi;
 
@@ -144,7 +145,6 @@ extern s16 data_02082214[];
 extern int data_0209e650;
 extern M48 data_020a0e68;
 
-extern int func_0203567c(int p);
 extern int func_02035638(u8 *p);
 /* local extern: daStar_c::func_ov002_020e7218. This TU does not include daStar_c.h. */
 extern void _ZN8daStar_c19func_ov002_020e7218EPci(char *a, char *b, int c);
@@ -179,7 +179,6 @@ struct System {
 }
 extern void d_a_yeggRunningSlidingDustAtHold(s32 x, s32 y, s32 z);
 extern void d_a_yeggPlayLongHold(u32 a, u32 b, u32 c, void *v, u32 d);
-extern void _ZN5Sound13PlayCharVoiceEjjRK7Vector3(u32 a, u32 b, const void *pos);
 extern s32 _Z14ApproachLinearR7Vector3RKS_5Fix12IiE(void *dst, const void *src, s32 step);
 extern s16 Vec3_HorzAngle(const void *a, const void *b);
 extern int Vec3_HorzDist(const void *a, const void *b);
@@ -299,7 +298,7 @@ void daYegg_c::func_ov002_020ec670(int arg)
     struct dActor_c* actor;
     u16 type;
 
-    cr = (struct dBgPi*)func_0203567c(arg);
+    cr = func_0203567c((dBgCh_Actr *)arg);
     if (cr->GetClsnID() == -1)
         return;
 
@@ -1259,7 +1258,7 @@ void func_ov002_020edca4(daYegg_c* self)
     Particle::System::NewSimple(0x41, self->mPosX, self->mPosY, self->mPosZ);
     Particle::System::NewSimple(0x42, self->mPosX, self->mPosY, self->mPosZ);
     self->MarkForDestruction();
-    _ZN5Sound13PlayCharVoiceEjjRK7Vector3(0, 0x103, &self->mCamSpacePos);
+    Sound::PlayCharVoice(0, 0x103, self->mCamSpacePos);
 
     self->mBurstDone = 1;
 }

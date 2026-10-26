@@ -58,6 +58,7 @@ enum daWbm_c_AssetId {
 #include "SharedFilePtr.h"
 #include "Player.h"
 #include "nitro/fx/fx.h"
+#include "Sound.h"
 
 typedef void (daWbm_c::*State)();
 
@@ -89,7 +90,6 @@ void Matrix4x3_ApplyInPlaceToRotationY(Matrix4x3 *m, s16 angY);
 s16 Vec3_HorzAngle(const Vector3 *from, const Vector3 *to);
 s32 Vec3_HorzDist(const Vector3 *a, const Vector3 *b);
 u16 DecIfAbove0_Short(u16 *counter);
-void func_0201267c(u32 id, void *pos);
 
 void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(dCcAc_c *self, dActor_c *actor,
     s32 radius, s32 height, u32 flags, u32 unk);
@@ -341,7 +341,7 @@ void daWbm_c::StateDrop()
     spawnPos.z = z;
     dActor_c::Spawn(ACTOR_WATERBOMB, 1, spawnPos, 0, mAreaId, -1)->mHorzSpeed = 0;
     mStateTimer = 0x96;
-    func_0201267c(0xd8, &mCamSpacePosX);
+    func_0201267c(0xd8, &mCamSpacePos);
 }
 
 // @symbol _ZN7daWbm_c11StateBounceEv
@@ -455,7 +455,7 @@ void daWbm_c::Burst()
         frag->mPrevAngleY = data_ov098_0213bf90[i];
         frag->mPrevAngleZ = 0;
     }
-    func_0201267c(0xda, &mCamSpacePosX);
+    func_0201267c(0xda, &mCamSpacePos);
     MarkForDestruction();
 }
 
@@ -485,5 +485,5 @@ void daWbm_c::Land()
     mVertSpeed = 0;
     mHorzSpeed = 0;
     mBouncePhase = 0;
-    func_0201267c(0xd9, &mCamSpacePosX);
+    func_0201267c(0xd9, &mCamSpacePos);
 }
