@@ -52,6 +52,7 @@ enum daObjShell_c_AssetId {
 };
 
 #include "daObjShell_c.h"
+#include "Player.h"
 #include "SharedFilePtr.h"
 #include "dCc_c.h"
 #include "Sound.h"
@@ -87,13 +88,6 @@ struct System {
     static int NewSimple(unsigned id, int x, int y, int z);
 };
 }
-/* `char *` on the receiver, not `dActor_c *`: that is the spelling this ABI
- * seam already carries at most of its call sites, and a promotion is not the
- * place to change a shared declaration. */
-void _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(
-    char *player, int *src, unsigned damage, int knockback,
-    unsigned a, unsigned b, unsigned c);
-
 /* This overlay's three file handles: the model, the lunge animation and the
  * idle animation. InitResources loads all three, CleanupResources releases
  * them, and Behavior swaps between the two animations. Defined at the end
@@ -233,8 +227,7 @@ int daObjShell_c::Behavior()
                 u.hurtFrom[0] = mPosX;
                 u.hurtFrom[1] = mPosY;
                 u.hurtFrom[2] = mPosZ;
-                _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj((char *)touched,
-                    u.hurtFrom, 2, 0xc000, 1, 0, 1);
+                ((Player *)touched)->Hurt(*(Vector3 *)u.hurtFrom, 2, 0xc000, 1, 0, 1);
             }
         }
     }

@@ -209,6 +209,8 @@ extern void d_a_trsChangeMusicVolumeHold(unsigned a, int fx);
 extern void func_02011cfc(void);
 extern s16 data_ov063_0211e1c8[];
 extern int LenVec3(int *v);
+/* local extern: the ROM call sets up no receiver -- r0 is whatever the
+   preceding code left -- so there is no object to call the member on. */
 extern void _ZN17daObjSlIceBlock_c16CleanupResourcesEv(void);
 extern int func_ov002_020c51d0(void *c, int *st);
 extern u16 func_02011d14(void);
@@ -220,8 +222,6 @@ extern s16 data_ov063_0211e1c0[];
 extern int data_ov063_0211e1d0[];
 extern int data_0209b490[];
 extern u8 data_0209d660;
-extern void _ZN6Player6BounceE5Fix12IiE(void* p, s32 f);
-extern void _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void* p, const void * v, u32 a, s32 f, u32 b, u32 c, u32 d);
 extern short data_ov063_0211e7e0[];
 extern int data_ov063_0211edc0;
 extern struct Vec3 data_ov063_0211ee74;
@@ -2519,7 +2519,7 @@ int daTrs_c::func_ov063_0211a0dc() {
     }
 
     if (this->JumpedOnByPlayer(*(dCc_c *)(&this->mdCcAcPos_c), *player) != 0) {
-        _ZN6Player6BounceE5Fix12IiE(player, 0x28000);
+        player->Bounce(0x28000);
         func_0201267c(0x149, &this->mCamSpacePos);
         return -1;
     }
@@ -2528,7 +2528,7 @@ int daTrs_c::func_ov063_0211a0dc() {
     int isBigBoo = (int)(this->actorID == TRS_ID_BOSS_TERESA);
     if (isBigBoo) {
         if (player->mIsAirborne != 0) {
-            _ZN6Player6BounceE5Fix12IiE(player, 0x28000);
+            player->Bounce(0x28000);
             func_0201267c(0x149, &this->mCamSpacePos);
             return -1;
         }
@@ -2536,7 +2536,7 @@ int daTrs_c::func_ov063_0211a0dc() {
         v1.x = this->mPosX;
         v1.y = this->mPosY;
         v1.z = this->mPosZ;
-        _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(player, &v1, this->mHurtDamage, 0xc000, 1, 0, 1);
+        player->Hurt(*(Vector3 *)&v1, this->mHurtDamage, 0xc000, 1, 0, 1);
         func_0201267c(0x149, &this->mCamSpacePos);
         return -1;
     }
@@ -2580,7 +2580,7 @@ no_kind:
     v2.x = this->mPosX;
     v2.y = this->mPosY;
     v2.z = this->mPosZ;
-    _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(player, &v2, this->mHurtDamage, 0xc000, 1, 0, 1);
+    player->Hurt(*(Vector3 *)&v2, this->mHurtDamage, 0xc000, 1, 0, 1);
     func_0201267c(0x149, &this->mCamSpacePos);
     return -1;
 

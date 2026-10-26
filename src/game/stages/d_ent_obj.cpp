@@ -48,6 +48,7 @@ struct System {
 #include "nitro/fx/fx.h"
 #include "SpawnInfo.h"
 #include "Sound.h"
+#include "G3X.h"
 
 struct BMD_File;
 struct BTP_File;
@@ -987,7 +988,7 @@ int dEntObj_c::InitResources() {
 
     dExtAnmTexPat_c::LoadFile(data_ov075_0211d40c);
 
-    _ZN3G3X6SetFogEbiii(0, 0, 2, 0x1000);
+    G3X::SetFog(false, 0, 2, 0x1000);
     dExtShadowModel_c::CleanAll();
 
     mModel.SetFile((BMD_File *)data_ov075_0211d3fc.filePtr, 1, -1);

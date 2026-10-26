@@ -957,37 +957,37 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@788",
+      "from": "@781",
       "to": "@792",
       "evidence": "Measured input-only compiler temporary rename after native factory/local Vector3 reconstruction. The full descriptor/storage section, symbol attributes and typed edges equal the pinned baseline under this exact bijection; canonical name/address remain unchanged. | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     },
     {
-      "from": "@789",
+      "from": "@782",
       "to": "@793",
       "evidence": "Measured input-only compiler temporary rename after native factory/local Vector3 reconstruction. The full descriptor/storage section, symbol attributes and typed edges equal the pinned baseline under this exact bijection; canonical name/address remain unchanged. | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     },
     {
-      "from": "@790",
+      "from": "@783",
       "to": "@794",
       "evidence": "Measured input-only compiler temporary rename after native factory/local Vector3 reconstruction. The full descriptor/storage section, symbol attributes and typed edges equal the pinned baseline under this exact bijection; canonical name/address remain unchanged. | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     },
     {
-      "from": "@792",
+      "from": "@785",
       "to": "@796",
       "evidence": "Measured input-only compiler temporary rename after native factory/local Vector3 reconstruction. The full descriptor/storage section, symbol attributes and typed edges equal the pinned baseline under this exact bijection; canonical name/address remain unchanged. | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     },
     {
-      "from": "@794",
+      "from": "@787",
       "to": "@798",
       "evidence": "Measured input-only compiler temporary rename after native factory/local Vector3 reconstruction. The full descriptor/storage section, symbol attributes and typed edges equal the pinned baseline under this exact bijection; canonical name/address remain unchanged. | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     },
     {
-      "from": "@796",
+      "from": "@789",
       "to": "@800",
       "evidence": "Measured input-only compiler temporary rename after native factory/local Vector3 reconstruction. The full descriptor/storage section, symbol attributes and typed edges equal the pinned baseline under this exact bijection; canonical name/address remain unchanged. | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     },
     {
-      "from": "@798",
+      "from": "@791",
       "to": "@802",
       "evidence": "Measured input-only compiler temporary rename after native factory/local Vector3 reconstruction. The full descriptor/storage section, symbol attributes and typed edges equal the pinned baseline under this exact bijection; canonical name/address remain unchanged. | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     }

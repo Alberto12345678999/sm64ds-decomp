@@ -84,11 +84,6 @@ void  func_0203568c(int *clsn, int radius);
 void  func_02035684(int *clsn, int height);
 
 
-/* local extern: Player.h does not declare this Fix12<int> by-value method.
- * This scalar bridge agrees with the current definition at 0x020d8e70. */
-int _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(
-    Player *player, void *pos, u32 kind, int damage, u8 a, u8 b, u8 c);
-
 }
 namespace Particle {
 void RunningSlidingDustAt(int x, int y, int z);
@@ -541,8 +536,7 @@ int daBgSnmBdy_c::HurtPlayer()
         pos.x = mPosX;
         pos.y = mPosY;
         pos.z = mPosZ;
-        _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(
-            static_cast<Player *>(actor), &pos, 2, 0xc000, 1, 0, 1);
+        static_cast<Player *>(actor)->Hurt(pos, 2, 0xc000, 1, 0, 1);
     }
     return 1;
 }

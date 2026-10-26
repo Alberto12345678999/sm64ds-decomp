@@ -70,7 +70,7 @@ struct daDemo_c : dActor_c {
         void func_ov002_020f64ac(char *r4);
         void func_ov002_020f6514(void *tbl, unsigned char arg);
         void func_ov002_020f65b8();
-        int func_ov002_020f65ec();
+        void func_ov002_020f65ec();
         int func_ov002_020f6618(SharedFilePtr *mdl, int nAnims,
                                 SharedFilePtr **anims, int arg5,
                                 unsigned char texByte, SharedFilePtr **texs,

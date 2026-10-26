@@ -105,9 +105,6 @@ struct System {
 }
 int func_02012694(int a, void *p);
 void d_a_iblPlayLongHold(u32 a, u32 b, u32 c, void *v, u32 d);
-/* local extern: retain the matched scalar ABI for the by-value Fix12 argument.
-   Return and flag widths agree with the current Player definition. */
-int _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(Player *p, void *pos, u32 a, int b, u8 d, u8 e, u8 f);
 void func_02038414(void *p);
 int atan2_hold_d_a_ibl_1(int y, int x);
 int func_ov002_020ad660(void *a, void *b, void *d, int e);
@@ -216,7 +213,7 @@ void daIbl_c::func_ov100_02141fb0()
         v.x = mPosX;
         v.y = mPosY;
         v.z = mPosZ;
-        _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(a, &v, 2, 0xc000, 1, 0, 1);
+        a->Hurt(v, 2, 0xc000, 1, 0, 1);
     }
 }
 

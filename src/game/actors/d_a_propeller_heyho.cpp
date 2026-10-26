@@ -996,10 +996,7 @@ extern daPropeller_Heyho_c::State data_ov070_021235cc;
 extern "C" {
 extern int FlyGuy_ChangeState(daPropeller_Heyho_c* c, daPropeller_Heyho_c::State* p);
 extern void func_ov002_020aea30(void *self, void *actor, void *collision);
-extern void _ZN6Player10SpinBounceE5Fix12IiE(void* p, s32 f);
 extern void func_02012694(int a, void* b);
-extern void _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void *p, const Vector3 *v, u32 a, s32 f, u32 b,
-                                                    u32 c, u32 d);
 }
 
 /* Hit reaction, run once per frame outside the knocked state. Takes the colliding
@@ -1049,7 +1046,7 @@ extern "C" void func_ov070_0211f100(daPropeller_Heyho_c* c)
         return;
 
     if (c->JumpedOnByPlayer(c->mdCcAc_c, *hitPlayer)) {
-        _ZN6Player10SpinBounceE5Fix12IiE(hitPlayer, 0x28000);
+        hitPlayer->SpinBounce(0x28000);
         c->mDeathState = 1;
         func_ov002_020aea30(c, hitPlayer, 0);
         return;
@@ -1074,7 +1071,7 @@ extern "C" void func_ov070_0211f100(daPropeller_Heyho_c* c)
         v.x = c->mPosX;
         v.y = c->mPosY;
         v.z = c->mPosZ;
-        _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(hitPlayer, &v, 2, 0xc000, 1, 0, 1);
+        hitPlayer->Hurt(v, 2, 0xc000, 1, 0, 1);
     }
     if (c->mHitDuringAttack != 0)
         return;

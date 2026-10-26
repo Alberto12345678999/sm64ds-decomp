@@ -33,6 +33,7 @@
 #include "dBgW.h"
 #include "dBgCh_Lin.h"
 #include "dBgCh_Actr.h"
+#include "Player.h"
 #include "Sound.h"
 
 /* ROM symbols with no header of their own. Spelled to agree with their
@@ -352,9 +353,6 @@ typedef struct { int w[2]; } ClsnHitHead;
 
 // @symbol func_ov002_020eea84
 extern "C" int func_ov002_020eea84(dBgCh_Actr *clsn, dActor_c *player) {
-    /* local extern: scalar Fix12 ABI preserves the retail call
-       (notes/mwccarm-codegen.md 6az). */
-    extern int _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void *self, void *v, unsigned int a, int fix, unsigned int b, unsigned int d, unsigned int e);
     struct ClsnHitCopy hit;
     Vector3 hurtFrom;
     Vector3 hurtFrom2;
@@ -385,7 +383,7 @@ extern "C" int func_ov002_020eea84(dBgCh_Actr *clsn, dActor_c *player) {
                     hurtFrom.y = from->y;
                     hurtFrom.z = from->z;
                 }
-                _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(player, &hurtFrom, 3, 0xc000, 1, 0, 1);
+                ((Player *)player)->Hurt(hurtFrom, 3, 0xc000, 1, 0, 1);
                 ((dBgPi *)&hit)->dBgPi::~dBgPi();
                 return 1;
             }
@@ -404,8 +402,7 @@ extern "C" int func_ov002_020eea84(dBgCh_Actr *clsn, dActor_c *player) {
                     hurtFrom2.y = from->y;
                     hurtFrom2.z = from->z;
                 }
-                if (_ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(player, &hurtFrom2, 1, 0xc000, 1, 0,
-                                                            1) != 0)
+                if (((Player *)player)->Hurt(hurtFrom2, 1, 0xc000, 1, 0, 1) != 0)
                     Sound::PlayBank0(0xb5, owner->mCamSpacePos);
                 return 1;
             }

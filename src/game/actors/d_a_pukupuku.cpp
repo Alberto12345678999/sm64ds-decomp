@@ -93,7 +93,6 @@ extern PukuStateRow data_ov090_02134594;
 extern PukuStateRow data_ov090_02134584;
 
 extern "C" {
-extern "C" void _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj( Player*, const Vector3&, unsigned int, Fix12i, unsigned int, unsigned int, unsigned int);
 extern Vector3 data_ov090_021342d8;
 extern int RandomIntInternal(void*);
 extern int data_0209e650[];
@@ -292,7 +291,7 @@ extern "C" void func_ov090_021330c8(char* thiz)
                 hv.x = c->mPosX;
                 hv.y = c->mPosY;
                 hv.z = c->mPosZ;
-                _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(a, hv, 1, 0xc000, 1, 0, 1);
+                a->Hurt(hv, 1, 0xc000, 1, 0, 1);
             }
         }
     }

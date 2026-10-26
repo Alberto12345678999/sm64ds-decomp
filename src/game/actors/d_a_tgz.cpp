@@ -88,7 +88,6 @@ int SurfaceInfo_TestFlag0x20(int *p);
 void func_02012694(unsigned int id, const Vector3 *pos);
 s32 func_02010844(void *unused, Vector3 *v, s16 angle);
 short Vec3_HorzAngle(void *a, void *b);
-int _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void *self, const Vector3 *pos, unsigned int a, int fix, u8 b, u8 c, u8 d);
 void Vec3_Asr(void *dst, void *src, int sh);
 void Matrix4x3_FromTranslation(void *m, int x, int y, int z);
 void Matrix4x3_ApplyInPlaceToTranslation(void *m, int x, int y, int z);
@@ -292,7 +291,7 @@ extern "C" void func_ov077_02124eb0(void *vc)
         v[0] = self->mPosX;
         v[1] = self->mPosY;
         v[2] = self->mPosZ;
-        _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(player, (const Vector3 *)v, 2, 0xc000, 1, 0, 1);
+        player->Hurt(*(const Vector3 *)v, 2, 0xc000, 1, 0, 1);
     }
 }
 
@@ -330,7 +329,7 @@ extern "C" void func_ov077_021250a8(void *vc)
     v.x = self->mPosX;
     v.y = self->mPosY;
     v.z = self->mPosZ;
-    _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(player, &v, 2, 0xc000, 1, 0, 1);
+    player->Hurt(v, 2, 0xc000, 1, 0, 1);
 }
 
 // @symbol func_ov077_021251d0

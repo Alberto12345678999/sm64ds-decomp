@@ -33,6 +33,7 @@
 #include "daManta_c.h"
 #include "daWater_Ring_c.h"
 #include "PathPtr.h"
+#include "Player.h"
 #include "SharedFilePtr.h"
 #include "Sound.h"
 
@@ -83,9 +84,6 @@ extern MantaAnimationFilePtr data_ov090_0213452c;
 extern unsigned char data_0209f2d8;
 extern Matrix4x3 data_020a0e68;
 
-void _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(
-    Player *, const Vector3 &, unsigned int, Fix12i, unsigned int,
-    unsigned int, unsigned int);
 void Vec3_Asr(Vector3 *d, Vector3 *s, int sh);
 void Matrix4x3_FromTranslation(Matrix4x3 *m, Fix12i x, Fix12i y, Fix12i z);
 void Matrix4x3_ApplyInPlaceToRotationXYZExt(void *m, int x, int y, int z);
@@ -134,8 +132,7 @@ void daManta_c::func_ov090_02132730()
         hit.x = mPosX;
         hit.y = mPosY;
         hit.z = mPosZ;
-        _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(
-            (Player *)actor, hit, 1, 0xc000, 1, 0, 1);
+        ((Player *)actor)->Hurt(hit, 1, 0xc000, 1, 0, 1);
     }
 }
 

@@ -63,12 +63,12 @@ int func_02039794(int x);                       /* slope-band classify */
 void func_020381cc(void *block, int idx, void **out);
 void func_02037eb0(SurfaceInfo *info, CLPS clps, Vector3 *normal);
 
-/* local extern: dBgPc's real ctor/dtor (include/dBgPc.h), called explicitly
+/* local extern: dBgPc's real ctor (include/dBgPc.h), called explicitly
    against SurfaceInfo-shaped storage the way the cartridge does it. C++ can
    only spell the constructor call as placement new, which adds a null test,
-   and a block-scope dBgPc local moves the frame. */
+   and a block-scope dBgPc local moves the frame. The matching destructor is
+   an explicit ~dBgPc() call. */
 void _ZN5dBgPcC1Ev(dBgPc *info);
-void _ZN5dBgPcD1Ev(dBgPc *info);
 
 /* local extern: the ROM reads s16 normals through an s32* view. */
 s32 DotVec3(const s32 *a, const Vector3 *b);
@@ -1212,7 +1212,7 @@ s32 dBgW_Kc::DetectClsn(dBgCh_Lin &ray)
                                 ((dBgPi &)ray).RecordHit(triIdx, &info);
                                 found = true;
                             }
-                            _ZN5dBgPcD1Ev((dBgPc *)&info);
+                            ((dBgPc *)&info)->~dBgPc();
                         }
                     }
                 }
