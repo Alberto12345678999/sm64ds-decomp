@@ -169,7 +169,9 @@ int daKpaFire_c::InitResources()
 
     _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(
         &this->mdCcAc_c, this, 0x28000, 0x50000, 0x200002, 0);   /* radius 40, height 80 units; flags 0x200002, vulnFlags 0 */
-    this->mWithMeshClsn.Init( this, 0x32000, 0x32000, 0, 0);     /* radius and height 50 units; the two Vector3_16 * args are null */
+    this->mWithMeshClsn.Init(
+        this, 0x32000, 0x32000, 0,
+        0); /* radius and height 50 units; the two Vector3_16 * args are null */
 
     /* Fix12: gravity -4.0 units per frame per frame, fall speed floor -30.0
        units per frame. The variant's init (below) may overwrite both. */

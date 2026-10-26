@@ -159,7 +159,7 @@ int daPgMthr_c::InitResources()
     mScaleY = 0x1000;
     mScaleZ = 0x1000;
     /* Mesh radius and height 50.0. */
-    mWithMeshClsn.Init( this, 0x32000, 0x32000, 0, 0);
+    mWithMeshClsn.Init(this, 0x32000, 0x32000, 0, 0);
     Vector3 pos;
     pos.x = mPosX;
     pos.y = mPosY;

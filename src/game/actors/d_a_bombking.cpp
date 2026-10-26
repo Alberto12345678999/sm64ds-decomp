@@ -1706,7 +1706,7 @@ int daBombking_c::InitResources()
     mArenaPosX = 0xb1d000;
     mArenaPosY = 0x1060000;
     mArenaPosZ = 0xfee15000;
-    mWithMeshClsn.Init( this, 0x190000, 0x190000, 0, 0);
+    mWithMeshClsn.Init(this, 0x190000, 0x190000, 0, 0);
     func_02035550(&mWithMeshClsn);
     mAnimSpeed = 1;
     mHealth = 3;

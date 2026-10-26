@@ -133,7 +133,7 @@ int daFeather_c::InitResources()
     mTerminalVelocity = -0x28000;
     _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, this, 0x6e000, 0x6e000, 0x100002, 0);
     func_ov002_020b2c44(this);
-    mWithMeshClsn.Init( this, 0x28000, 0xa000, 0, 0);
+    mWithMeshClsn.Init(this, 0x28000, 0xa000, 0, 0);
 
     mAngleX = 0x4000;
     mAngleZ = -0x4000;

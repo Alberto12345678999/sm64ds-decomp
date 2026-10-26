@@ -24606,8 +24606,7 @@ Ld0:
     mScaleY = 0x1000;
     mScaleZ = 0x1000;
     func_ov002_020e63a4(c);
-    mMeshClsn.Init( (dActor_c *)c, 0x32000, 0x32000,
-                                                                &mPrevAngle, &mAngle);
+    mMeshClsn.Init((dActor_c *)c, 0x32000, 0x32000, &mPrevAngle, &mAngle);
     func_02035644(&mMeshClsn, 0x28000);
     mTerminalVelocity = -0x4b000;
     mSpawnPosX = mPosX;

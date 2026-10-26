@@ -1558,7 +1558,7 @@ s32 daMky_c::InitResources()
     mModelAnim.SetAnim((BCA_File *)data_ov030_02115cf0[1], 0, 0x1000, 0);
     mModelAnim.speed = 0x1000;
     _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, this, 0x28000, 0x64000, 0x800004, 0x49000);
-    mWithMeshClsn.Init( this, 0x32000, 0x32000, 0, 0);
+    mWithMeshClsn.Init(this, 0x32000, 0x32000, 0, 0);
     mVertAccel = -0x2000;
     mTerminalVelocity = -0x3c000;
     mPerchPosX = mPosX;

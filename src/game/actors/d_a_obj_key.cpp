@@ -918,7 +918,7 @@ int daObjKey_c::InitResources()
         offset7.y = data_ov089_02132b40.y;
         offset7.z = data_ov089_02132b40.z;
         _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(&mdCcAcPos_c, this, &offset7, CC_R, STAR_CC_H, CC_FLAGS, CC_VULN);
-        mWithMeshClsn.Init( this, STAR_CLSN_R, 0, 0, 0);
+        mWithMeshClsn.Init(this, STAR_CLSN_R, 0, 0, 0);
         mSpinSpeed = SPIN_FAST;
         mVertAccel = 0;
         Sound::PlayBank3(SND_APPEAR, mCamSpacePos);
@@ -946,7 +946,7 @@ int daObjKey_c::InitResources()
         offset.y = data_ov089_02132ca4.y;
         offset.z = data_ov089_02132ca4.z;
         _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(&mdCcAcPos_c, this, &offset, CC_R, KEY_CC_H, CC_FLAGS, CC_VULN);
-        mWithMeshClsn.Init( this, KEY_CLSN_R, 0, 0, 0);
+        mWithMeshClsn.Init(this, KEY_CLSN_R, 0, 0, 0);
         mVertAccel = GRAVITY;
         mSpinSpeed = 0;
     }

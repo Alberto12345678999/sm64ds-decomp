@@ -109,14 +109,14 @@ int daPgRcer_c::InitResources()
         mScaleX = 0x1999;
         mScaleY = 0x1000;
         mScaleZ = 0x1999;
-        mWithMeshClsn.Init( this, 0xd0000, 0xd0000, 0, 0);
+        mWithMeshClsn.Init(this, 0xd0000, 0xd0000, 0, 0);
         SetRanges(0xf0000, 0xf0000, 0x1c20000, 0x1c20000);
     } else {
         _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, this, 0x82000, 0x12c000, 0x800004, 0);
         mScaleX = 0x1000;
         mScaleY = 0x1000;
         mScaleZ = 0x1000;
-        mWithMeshClsn.Init( this, 0x82000, 0x82000, 0, 0);
+        mWithMeshClsn.Init(this, 0x82000, 0x82000, 0, 0);
     }
 
     mStarSlot = (u8)TrackStar((u8)((param1 >> 8) & 0xf), 2);

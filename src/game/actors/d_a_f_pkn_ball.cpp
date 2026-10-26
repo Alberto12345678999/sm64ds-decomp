@@ -425,7 +425,7 @@ int daFPknBall_c::InitResources()
     if (mShadowModel.InitCylinder() == 0)
         return 0;
     _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, this, 0x28000, 0x50000, 0x200002, 0);
-    mWithMeshClsn.Init( this, 0x32000, 0x32000, 0, 0);
+    mWithMeshClsn.Init(this, 0x32000, 0x32000, 0, 0);
     mWithMeshClsn.StartDetectingWater();
     mStateTimer = 0;
     unk_36a = 0;

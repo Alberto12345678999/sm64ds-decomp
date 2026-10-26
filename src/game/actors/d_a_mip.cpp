@@ -1548,7 +1548,7 @@ int daMip_c::InitResources()
     _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, this, 0x50000, 0x64000, 0xb00004, 0x9000);
     mTalkingPlayer = 0;
     mModelAnim.speed = 0x1000;
-    mWithMeshClsn.Init( this, 0x28000, 0x28000, 0, 0);
+    mWithMeshClsn.Init(this, 0x28000, 0x28000, 0, 0);
     {
         PathPtr path;
         path.FromID(mPathId);

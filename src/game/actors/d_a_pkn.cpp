@@ -167,7 +167,7 @@ int daPkn_c::InitResources()
     mStateTimer = 0;
     mCoinType = 3;
     mPlayerAirborne = 0;
-    mWithMeshClsn.Init( this, 0x64000, 0x64000, 0, 0);
+    mWithMeshClsn.Init(this, 0x64000, 0x64000, 0, 0);
     mHeadClsnOffset.x = mPosX;
     mHeadClsnOffset.y = mPosY;
     mHeadClsnOffset.z = mPosZ;

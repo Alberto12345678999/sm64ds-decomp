@@ -275,7 +275,7 @@ int daPropeller_Heyho_Fire_c::InitResources()
     mTerminalVelocity = -0x64000;
     _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj((char *)&mdCcAc_c, this, 0xa000, 0xa000, 0x200004, 0);
     mAngleY = mPrevAngleY;
-    mWithMeshClsn.Init( this, 0xa000, 0xa000, 0, 0);
+    mWithMeshClsn.Init(this, 0xa000, 0xa000, 0, 0);
     func_ov002_020fed2c(this, (State *)&data_ov002_02111190);
     return 1;
 }

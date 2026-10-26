@@ -114,9 +114,8 @@ extern void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
     dCcAcPos_c *clsn, dActor_c *actor, const Vector3 *offset,
     Fix12i radius, Fix12i height, u32 flags, u32 vulnFlags);
 /* Parameter names keep this TU's @NNN. */
-typedef void BgchInitAt_(
-    dBgCh_Actr *clsn, dActor_c *actor, Fix12i radius, Fix12i height,
-    Vector3_16 *a, Vector3_16 *b);
+typedef void BgchInitAt_(dBgCh_Actr *clsn, dActor_c *actor, Fix12i radius, Fix12i height,
+                         Vector3_16 *a, Vector3_16 *b);
 }
 
 int daKrpa_c::InitResources()
@@ -134,7 +133,7 @@ int daKrpa_c::InitResources()
     _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
         &mdCcAcPos_c, this, &offset,
         0x32000, 0x64000, 0x200002, 0x8000);
-    mWithMeshClsn.Init( this, 0x32000, 0x32000, 0, 0);
+    mWithMeshClsn.Init(this, 0x32000, 0x32000, 0, 0);
 
     mVertAccel = 0;
     mTerminalVelocity = 0;

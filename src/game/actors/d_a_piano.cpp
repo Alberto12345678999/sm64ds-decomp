@@ -110,7 +110,7 @@ int daPiano_c::InitResources()
     mHomePos.x = mPosX;
     mHomePos.y = mPosY;
     mHomePos.z = mPosZ;
-    mWithMeshClsn.Init( this, 0x159000, 0x159000, 0, 0);
+    mWithMeshClsn.Init(this, 0x159000, 0x159000, 0, 0);
     for (i = 0, cylinder = mCylinderClsn; i < 2; i++) {
         /* Sensor cylinders, 155.0 radius by 250.0 tall, tracking mPos.
          * 0x200004 is enemy | char-projectile: what can hit the piano.

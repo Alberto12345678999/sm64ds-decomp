@@ -389,7 +389,7 @@ int daObjMarioCap_c::InitResources()
     /* dCcAc_c collider: radius and height 30 units, flags 0x800002, vulnFlags 0.
        dBgCh_Actr level-collision: radius 30 units, height 22 units. */
     _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, this, kClsnSizeSmall, kClsnSizeSmall, 0x800002, 0);
-    mWithMeshClsn.Init( this, kClsnSizeSmall, 0x16000, 0, 0);
+    mWithMeshClsn.Init(this, kClsnSizeSmall, 0x16000, 0, 0);
 
     /* Remember where the cap was placed. */
     mHomePosX = mPosX;

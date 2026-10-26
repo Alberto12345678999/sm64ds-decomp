@@ -378,7 +378,7 @@ int daJango_c::InitResources()
     /* Init(radius, height, flags, vulnFlags): radii 100 and 60 units, both 160 high. */
     _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c1, this, 0x64000, 0xa0000, 0x200002, 0x3eff0);
     _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c2, this, 0x3c000, 0xa0000, 0x200000, 0);
-    mWithMeshClsn.Init( this, 0x1e000, 0x1e000, 0, 0);
+    mWithMeshClsn.Init(this, 0x1e000, 0x1e000, 0, 0);
 
     _ZN7PathPtrC1Ev(path2);
     ((PathPtr *)path2)->FromID(mPathId);

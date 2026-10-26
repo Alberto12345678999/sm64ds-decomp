@@ -195,7 +195,7 @@ int daBgSnmBdy_c::InitResources()
         return 0;
     _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mCylinder, this, 0x82000,
                                              0x104000, 0x800004, 0);
-    mWithMeshClsn.Init( this, 0x82000, 0x82000, 0, 0);
+    mWithMeshClsn.Init(this, 0x82000, 0x82000, 0, 0);
     pos.x = mPosX;
     pos.y = mPosY;
     pos.z = mPosZ;

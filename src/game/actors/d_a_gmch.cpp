@@ -874,7 +874,7 @@ int daGmch_c::InitResources()
     if (mShadowModel.InitCylinder() == 0)
         return 0;
     _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, this, 0x4b000, 0x73000, 0x200000, 0x6eff0);
-    mWithMeshClsn.Init( this, 0x4b000, 0x4b000, 0, 0);
+    mWithMeshClsn.Init(this, 0x4b000, 0x4b000, 0, 0);
     mWithMeshClsn.StartDetectingWater();
     SetState(0);
     mVertAccel = -0x2000;

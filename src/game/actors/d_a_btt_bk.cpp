@@ -398,7 +398,7 @@ int daBttBk_c::InitResources()
     mScaleX = 0x1000;
     mScaleY = 0x1000;
     mScaleZ = 0x1000;
-    mWithMeshClsn.Init( this, 0x32000, 0x32000, 0, 0);
+    mWithMeshClsn.Init(this, 0x32000, 0x32000, 0, 0);
     mCarrier = 0;
     func_ov080_0212513c(0);
     func_ov080_02124c3c();

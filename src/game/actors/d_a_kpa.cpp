@@ -690,7 +690,7 @@ int daKpa_c::InitResources()
     this->mVertAccel = -0x2000;
     this->mTerminalVelocity = -0x3c000;
     this->mTargetPlayer = 0;
-    this->mWithMeshClsn.Init( this, 0x50000, 0x50000, 0, 0);
+    this->mWithMeshClsn.Init(this, 0x50000, 0x50000, 0, 0);
     this->mWithMeshClsn.SetLimMovFlag();
 
     this->mState = BOWSER_STATE_IDLE;

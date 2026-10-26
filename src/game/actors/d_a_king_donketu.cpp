@@ -1994,7 +1994,7 @@ extern "C" {
 extern void LoadKeyModels(int idx);
 extern void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(void* self, dActor_c* a, Vector3* v, Fix12i r, Fix12i h, unsigned int e, unsigned int g);
 /* Parameter names keep this TU's @NNN. */
-typedef void BgchInitAt_(void* self, dActor_c* a, Fix12i r, Fix12i h, Vector3_16* p, Vector3_16* q);
+typedef void BgchInitAt_(void *self, dActor_c *a, Fix12i r, Fix12i h, Vector3_16 *p, Vector3_16 *q);
 }
 
 #pragma pop
@@ -2024,7 +2024,7 @@ int daKing_Donketu_c::InitResources()
     v.z = data_ov073_02123040.z;
     _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(&mdCcAcPos_c, this, &v, 0xa4000, 0x1e4000, 0x200000, 0x567f0);
     mBlendModelAnim.speed = 0x2000;
-    mWithMeshClsn.Init( this, 0x96000, 0x94000, 0, 0);
+    mWithMeshClsn.Init(this, 0x96000, 0x94000, 0, 0);
     mSpawnPosX = mPosX;
     mSpawnPosY = mPosY;
     mSpawnPosZ = mPosZ;

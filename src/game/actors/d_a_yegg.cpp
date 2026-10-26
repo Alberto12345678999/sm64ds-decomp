@@ -1508,7 +1508,7 @@ int daYegg_c::InitResources()
         mScaleZ = 0x1000;
         _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(
             &mdCcAc_c, this, 0x46000, 0x8c000, 0x200002, 0xa08000);
-        mWithMeshClsn.Init( this, 0x28000, 0x28000, 0, 0);
+        mWithMeshClsn.Init(this, 0x28000, 0x28000, 0, 0);
         break;
     case 2:
         mScaleX = 0x2000;
@@ -1516,7 +1516,7 @@ int daYegg_c::InitResources()
         mScaleZ = 0x2000;
         _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(
             &mdCcAc_c, this, 0x78000, 0xa0000, 0x200002, 0xa08000);
-        mWithMeshClsn.Init( this, 0x64000, 0x64000, 0, 0);
+        mWithMeshClsn.Init(this, 0x64000, 0x64000, 0, 0);
         break;
     default:
         break;

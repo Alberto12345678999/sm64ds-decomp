@@ -163,7 +163,7 @@ int daHolhei_c::InitResources()
     mTerminalVelocity = -0x1e000;
     _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCc_c, (dActor_c*)this, 0xc8000, 0xfa000, 0x200004, 0x3010);
     mModel.speed = 0x1000;
-    mMeshClsn.Init( (dActor_c*)this, 0x118000, 0x118000, 0, 0);
+    mMeshClsn.Init((dActor_c *)this, 0x118000, 0x118000, 0, 0);
     mHomePosX = mPosX;
     mHomePosY = mPosY;
     mHomePosZ = mPosZ;

@@ -70,9 +70,8 @@ void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
     dCcAcPos_c *self, dActor_c *actor, const Vector3 *offset, int radius,
     int height, u32 flags, u32 vulnFlags);
 /* Parameter names keep this TU's @NNN. */
-typedef void BgchInitAt_(
-    dBgCh_Actr *self, dActor_c *actor, int radius, int height,
-    Vector3_16 *a, Vector3_16 *b);
+typedef void BgchInitAt_(dBgCh_Actr *self, dActor_c *actor, int radius, int height, Vector3_16 *a,
+                         Vector3_16 *b);
 int _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(
     Player *self, const Vector3 *source, u32 damage, int speed, u8 a, u8 b,
     u8 c);
@@ -122,7 +121,7 @@ s32 daKlr_c::InitResources()
     }
     mState = 0;
     mStateTimer = 0;
-    mWallClsn.Init( this, 0x32000, 0, 0, 0);
+    mWallClsn.Init(this, 0x32000, 0, 0, 0);
     mSmokeTrailID = 0;
     return 1;
 }

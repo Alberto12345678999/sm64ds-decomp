@@ -115,9 +115,7 @@ extern unsigned short DecIfAbove0_Short(unsigned short *p);
 extern void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
 void *thisp, struct dActor_c *, struct Vector3 const &, int, int, unsigned int, unsigned int);
 /* Parameter names keep this TU's @NNN. */
-typedef void BgchInitAt_(void *thisp,
-                                                                        struct dActor_c *, int, int,
-                                                                        struct Vector3_16 *, int);
+typedef void BgchInitAt_(void *thisp, struct dActor_c *, int, int, struct Vector3_16 *, int);
 }
 
 // @symbol daPukupuku_c_classInit
@@ -147,7 +145,7 @@ int daPukupuku_c::InitResources()
     mHomePosY = mPosY;
     mHomePosZ = mPosZ;
     mAngleY = mPrevAngleY;
-    mWithMeshClsn.Init( this, 0x1e000, 0x1e000, 0, 0);
+    mWithMeshClsn.Init(this, 0x1e000, 0x1e000, 0, 0);
 
     mModelAnim.SetAnim((BCA_File *)(((AnimFilePtr *)&data_ov090_0213455c)->file), 0, 0x1000, 0);
 

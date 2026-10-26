@@ -88,8 +88,7 @@ extern int Vec3_Dist(Vector3 *a, Vector3 *b);
 extern int Vec3_HorzDist(Vector3 *a, Vector3 *b);
 extern void hold_d_a_obj_pushblock(void *self, KCL_File *k, void *m, int fix, short s, void *clps);
 /* Parameter names keep this TU's @NNN. */
-typedef void BgchInitAt_(
-    void *self, void *a, int b, int c, void *d, int e);
+typedef void BgchInitAt_(void *self, void *a, int b, int c, void *d, int e);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -137,7 +136,7 @@ int daObjPushblock_c::InitResources()
 
     mVertAccel = -0x2000;
     mTerminalVelocity = -0x3c000;
-    mWithMeshClsn.Init( this, 0x96000, 0x96000, 0, 0);
+    mWithMeshClsn.Init(this, 0x96000, 0x96000, 0, 0);
 
     v.x = mPosX;
     v.y = mPosY;

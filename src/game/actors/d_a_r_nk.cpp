@@ -253,7 +253,7 @@ int daRNk_c::InitResources()
     mVertAccel = -0x2000;           /* gravity: 2 units a frame squared */
     mTerminalVelocity = -0x3c000;   /* 60 units a frame */
     /* Mesh collision: 120 units by 120 units. */
-    mWithMeshClsn.Init( this, 0x78000, 0x78000, 0, 0);
+    mWithMeshClsn.Init(this, 0x78000, 0x78000, 0, 0);
     mPathPtr.FromID(param1 & 0xf);
     mNumPathPts = mPathPtr.NumNodes();
     mCurPathPt = zero;

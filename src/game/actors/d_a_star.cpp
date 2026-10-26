@@ -269,8 +269,7 @@ extern StarModelFilePtr data_ov002_02110954;
 extern StarModelFilePtr data_ov002_0211095c;
 extern void LoadSilverStarAndNumber(void);
 /* Parameter names keep this TU's @NNN. */
-typedef void BgchInitAt_(
-void *self, void *actor, s32 a, s32 b, void *p1, void *p2);
+typedef void BgchInitAt_(void *self, void *actor, s32 a, s32 b, void *p1, void *p2);
 extern s32 IsStarCollected(s32 level, s32 idx);
 /* TUBUILD CONFLICT -- alternate declaration of _ZN8dActor_c15FindWithActorIDEjPS_, from the legacy file for func_ov002_020e7554, NOT applied: extern char* _ZN8dActor_c15FindWithActorIDEjPS_(u32 actorID, char* prev); */
 /* TUBUILD CONFLICT -- alternate declaration of _ZN8dActor_c10FindWithIDEj, from the legacy file for func_ov002_020e7554, NOT applied: extern char* _ZN8dActor_c10FindWithIDEj(u32 id); */
@@ -557,7 +556,7 @@ s32 daStar_c::InitResources()
     v2.z = data_ov002_0210aa0c[2];
     _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
         &mdCc_c, this, &v2, 0x64000, 0x96000, 0x100002, 0x8000);
-    mWithMeshClsn.Init( this, 0x50000, 0, 0, 0);
+    mWithMeshClsn.Init(this, 0x50000, 0, 0, 0);
     mWithMeshClsn.SetLimMovFlag();
     mStarID = (u8)(param1 & 0xf);
     if (mKind != KIND_7 && mKind != KIND_3)

@@ -112,8 +112,8 @@ void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
     dCcAcPos_c *self, dActor_c *actor, const Vector3 &offset,
     int radius, int height, u32 d, u32 e);
 /* Parameter names keep this TU's @NNN. */
-typedef void BgchInitAt_(
-    dBgCh_Actr *self, dActor_c *actor, int radius, int height, void *a, void *b);
+typedef void BgchInitAt_(dBgCh_Actr *self, dActor_c *actor, int radius, int height, void *a,
+                         void *b);
 void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
     void *self, void *sm, void *mtx, int f, int g, unsigned int h);
 /* local extern: native Hurt takes Fix12<int> by value; retain the current
@@ -196,7 +196,7 @@ s32 daBakubaku_c::InitResources()
     mSpawnPosY = mPosY;
     mSpawnPosZ = mPosZ;
 
-    mWithMeshClsn.Init( this, 0x64000, 0, 0, 0);
+    mWithMeshClsn.Init(this, 0x64000, 0, 0, 0);
 
     mTerminalVelocity = -0x1e000;
     mModelAnim.SetAnim((BCA_File *)data_ov032_02113a50.filePtr, 0, 0x1000, 0);

@@ -108,9 +108,8 @@ extern int _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
     dCcAcPos_c *collision, dActor_c *actor, const Vector3 *offset,
     Fix12i radius, Fix12i height, u32 flags, u32 vulnFlags);
 /* Parameter names keep this TU's @NNN. */
-typedef int BgchInitAt_(
-    dBgCh_Actr *collision, dActor_c *actor, Fix12i radius, Fix12i height,
-    void *a, void *b);
+typedef int BgchInitAt_(dBgCh_Actr *collision, dActor_c *actor, Fix12i radius, Fix12i height,
+                        void *a, void *b);
 extern Matrix4x3 IDENTITY_MATRIX4X3;
 }
 
@@ -125,7 +124,7 @@ int daEyBm_c::InitResources()
     mScaleX = 0x1000;
     mScaleY = 0x1000;
     mScaleZ = 0x1000;
-    mWithMeshClsn.Init( this, 0x19000, 0x19000, 0, 0);
+    mWithMeshClsn.Init(this, 0x19000, 0x19000, 0, 0);
     mVertAccel = 0;
     mTerminalVelocity = 0;
     mHorzSpeed = 0xa000;

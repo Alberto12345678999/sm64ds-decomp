@@ -308,7 +308,7 @@ int daBgSnmHed_c::InitResources()
     mScaleX = 0x1800;
     mScaleY = 0x1800;
     mScaleZ = 0x1800;
-    mWithMeshClsn.Init( this, 0x96000, 0x96000, 0, 0);
+    mWithMeshClsn.Init(this, 0x96000, 0x96000, 0, 0);
 
     pos.x = mPosX;
     pos.y = mPosY;

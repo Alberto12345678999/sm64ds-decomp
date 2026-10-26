@@ -76,8 +76,8 @@ extern void hold_d_a_obj_rc_tikuwa(dBgW_KcMbg *self, void *kcl, Matrix4x3 *mat, 
 void func_020393d4(dBgW *bgw, void *fn);
 void func_020393c4(dBgW *bgw, void *fn);
 /* Parameter names keep this TU's @NNN. */
-typedef void BgchInitAt_(
-    dBgCh_Actr *clsn, dActor_c *actor, int radius, int height, void *a, void *b);
+typedef void BgchInitAt_(dBgCh_Actr *clsn, dActor_c *actor, int radius, int height, void *a,
+                         void *b);
 }
 
 // @symbol _ZN16daObjRc_Tikuwa_cD1Ev
@@ -175,7 +175,7 @@ s32 daObjRc_Tikuwa_c::InitResources()
                               *(CLPS_Block *)(data_ov036_02112b48));
     func_020393d4(&mMeshCollider, (void *)&dBgW::UpdatePosWithVelocity);
     func_020393c4(&mMeshCollider, (void *)func_ov036_02111cc4);
-    mWithMeshClsn.Init( this, 0x32000, 0x64000, 0, 0);
+    mWithMeshClsn.Init(this, 0x32000, 0x64000, 0, 0);
     mTerminalVelocity = -0x1e000;
     mVertAccel = ~0x198;
     mHomePosX = mPosX;

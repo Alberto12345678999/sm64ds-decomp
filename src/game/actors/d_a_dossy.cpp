@@ -155,7 +155,7 @@ extern void hold_d_a_dossy(void *self, void *kcl, void *mtx, Fix12i r, short s, 
 extern void func_020393d4(void* p, void* v);
 extern void func_020393c4(void* p, void* v);
 /* Parameter names keep this TU's @NNN. */
-typedef void BgchInitAt_(void* self, void* a, Fix12i r, Fix12i h, void* p, void* q);
+typedef void BgchInitAt_(void *self, void *a, Fix12i r, Fix12i h, void *p, void *q);
 extern void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void* self, void* a, Fix12i r, Fix12i h, unsigned int e, unsigned int g);
 extern void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(void* self, void* a, void* pos, Fix12i r, Fix12i h, unsigned int e, unsigned int g);
 extern int Vec3_HorzDist(void* a, void* b);
@@ -288,7 +288,7 @@ int daDossy_c::InitResources()
     mSpawnPosY = mPosY;
     mSpawnPosZ = mPosZ;
     mPosX += 0x7d0000;
-    mWithMeshClsn.Init( this, 0x1e0000, 0xa0000, 0, 0);
+    mWithMeshClsn.Init(this, 0x1e0000, 0xa0000, 0, 0);
     _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(
         &mCylClsn1, this, 0xdc000, 0xfa000, 2, 0x20);
     {

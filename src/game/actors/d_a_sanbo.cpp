@@ -87,7 +87,7 @@ void UnloadBlueCoinModel(void *);
 void LoadBlueCoinModel(void* actor);
 void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void* self, void* actor, int r, int h, unsigned int d, unsigned int e);
 /* Parameter names keep this TU's @NNN. */
-typedef void BgchInitAt_(void* self, void* actor, int b, int c, void* v, int e);
+typedef void BgchInitAt_(void *self, void *actor, int b, int c, void *v, int e);
 extern Matrix4x3 IDENTITY_MATRIX4X3;
 }
 
@@ -153,7 +153,7 @@ int daSanbo_c::InitResources()
         return 0;
 
     _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, this, 0x3c000, 0x78000, 0x200004, 0x6eff0);
-    mWithMeshClsn.Init( this, 0x3c000, 0x3c000, 0, 0);
+    mWithMeshClsn.Init(this, 0x3c000, 0x3c000, 0, 0);
 
     mVertAccel = -0x2000;
     mTerminalVelocity = -0x3c000;

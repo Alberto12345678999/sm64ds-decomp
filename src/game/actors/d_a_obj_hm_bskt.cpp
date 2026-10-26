@@ -67,9 +67,8 @@ int func_ov030_0211124c(char *c, char *mc);
 extern void hold_d_a_obj_hm_bskt(dBgW_KcMbg *self, KCL_File *file, const Matrix4x3 *mat,
                                  Fix12i scale, s16 angle, CLPS_Block *clps);
 /* Parameter names keep this TU's @NNN. */
-typedef void BgchInitAt_(
-    dBgCh_Actr *self, dActor_c *actor, Fix12i radius, Fix12i height,
-    Vector3_16 *a, Vector3_16 *b);
+typedef void BgchInitAt_(dBgCh_Actr *self, dActor_c *actor, Fix12i radius, Fix12i height,
+                         Vector3_16 *a, Vector3_16 *b);
 
 void dBgCh_Actr_UpdateContinuous_Veneer(void *);
 namespace Particle {
@@ -98,7 +97,7 @@ s32 daObjHmBskt_c::InitResources()
     mScaleY = 0x1000;
     mScaleZ = 0x1000;
 
-    mWithMeshClsn.Init( this, 0x32000, 0x32000, 0, 0);
+    mWithMeshClsn.Init(this, 0x32000, 0x32000, 0, 0);
     UpdateModelPosAndRotY();
     UpdateClsnPosAndRot();
 

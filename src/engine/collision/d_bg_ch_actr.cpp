@@ -69,8 +69,7 @@ dBgCh_Actr::~dBgCh_Actr()
 }
 
 // @symbol _ZN10dBgCh_Actr4InitEP8dActor_ciiP10Vector3_16S3_
-void dBgCh_Actr::Init(dActor_c *actor, Fix12i radius, Fix12i height, Vector3_16 *a, Vector3_16 *b)
-{
+void dBgCh_Actr::Init(dActor_c *actor, Fix12i radius, Fix12i height, Vector3_16 *a, Vector3_16 *b) {
     mActor = actor;
     mRadius = radius;
     mHeight = height;

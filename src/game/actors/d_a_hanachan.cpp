@@ -1259,7 +1259,7 @@ int daHanachan_c::InitResources()
     } while (j < 5);
 
     SetState(0);
-    mWithMeshClsn.Init( this, 0x14000, 0x14000, 0, 0);
+    mWithMeshClsn.Init(this, 0x14000, 0x14000, 0, 0);
     mHealth = 4;
     UpdateSegmentModels();
     mHomePos.x = mPosX;

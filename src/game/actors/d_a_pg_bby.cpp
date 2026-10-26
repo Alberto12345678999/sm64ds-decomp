@@ -47,8 +47,7 @@ extern "C" {
 /* Fix12<int> by-value walls (notes/mwccarm-codegen.md 6az). */
 void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *thiz, void *actor, int r, int h, unsigned int a, unsigned int b);
 /* Parameter names keep this TU's @NNN. */
-typedef void BgchInitAt_(void *thiz, void *actor, int r,
-                                                                 int h, void *v, int b);
+typedef void BgchInitAt_(void *thiz, void *actor, int r, int h, void *v, int b);
 void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
     void *self, void *shadow, void *mtx, int radius, int height, unsigned int flags);
 
@@ -110,7 +109,7 @@ s32 daPgBby_c::InitResources()
     mScaleX = 0x400;
     mScaleY = 0x400;
     mScaleZ = 0x400;
-    mWithMeshClsn.Init( this, 0x32000, 0x32000, 0, 0);
+    mWithMeshClsn.Init(this, 0x32000, 0x32000, 0, 0);
     mEatingPlayer = 0;
     mCarrier = 0;
     func_ov072_02121d50(0);

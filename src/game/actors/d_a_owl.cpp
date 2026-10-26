@@ -695,7 +695,7 @@ int daOwl_c::InitResources()
     mTerminalVelocity = -0x1e000;
     mAnimSpeed = 0x1000;
     mOpacity = OPACITY_MAX;
-    mWithMeshClsn.Init( this, 0x50000, 0x64000, (Vector3_16 *)0, 0);
+    mWithMeshClsn.Init(this, 0x50000, 0x64000, (Vector3_16 *)0, 0);
     func_ov094_02136188(OWL_STATE_DORMANT);
 
     if (data_0209f2f8 == 7) {

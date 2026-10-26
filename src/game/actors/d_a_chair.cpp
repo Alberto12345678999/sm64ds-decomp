@@ -105,9 +105,8 @@ int AngleDiff(int a, int b);
 void Matrix4x3_FromRotationZXYExt(void *m, int x, int y, int z);
 
 /* Parameter names keep this TU's @NNN. */
-typedef void BgchInitAt_(
-    void *self, dActor_c *actor, int radius, int height,
-    Vector3_16 *rot, Vector3_16 *unk);
+typedef void BgchInitAt_(void *self, dActor_c *actor, int radius, int height, Vector3_16 *rot,
+                         Vector3_16 *unk);
 void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
     void *self, dActor_c *actor, const Vector3 *offset,
     int radius, int height, u32 flags, u32 vulnFlags);
@@ -137,7 +136,7 @@ s32 daChair_c::InitResources()
     BMD_File *file = (BMD_File *)dExtSimpleModel_c::LoadFile(data_ov020_02114af0);
     mModel.SetFile(file, 1, -1);
     mShadowModel.InitCylinder();
-    mWithMeshClsn.Init( this, 0x32000, 0x64000, 0, 0);
+    mWithMeshClsn.Init(this, 0x32000, 0x64000, 0, 0);
     mClsnOffset.x = 0;
     mClsnOffset.y = 0;
     mClsnOffset.z = 0;

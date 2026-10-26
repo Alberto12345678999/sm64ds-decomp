@@ -196,7 +196,8 @@ extern "C" void RebuildModelMatrix(struct daObjTatefuda_c *self);
 extern "C" void hold_d_a_obj_tatefuda(void *self, KCL_File *f, const Matrix4x3 &m, s32 fix, s16 sh,
                                       CLPS_Block &b);
 /* Parameter names keep this TU's @NNN. */
-typedef void BgchInitAt_( void *self, dActor_c *a, s32 radius, s32 height, Vector3_16 *v, Vector3_16 *v2);
+typedef void BgchInitAt_(void *self, dActor_c *a, s32 radius, s32 height, Vector3_16 *v,
+                         Vector3_16 *v2);
 extern "C" CLPS_Block data_ov002_0210d714;
 }
 
@@ -287,7 +288,7 @@ int daObjTatefuda_c::InitResources()
     mVertAccel = -0x2000;
     mTerminalVelocity = -0x3c000;
 
-    mWithMeshClsn.Init( (dActor_c*)((char *)this), 0x28000, 0x28000, 0, 0);
+    mWithMeshClsn.Init((dActor_c *)((char *)this), 0x28000, 0x28000, 0, 0);
     mWithMeshClsn.StartDetectingWater();
 
     return 1;

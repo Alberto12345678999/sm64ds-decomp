@@ -80,7 +80,7 @@ extern BasabasaAnimationFileHandle data_ov065_0211d6a0;   /* hanging animation *
 extern BasabasaModelFilePtr data_ov065_0211d6a8;   /* hanging model */
 extern void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void* self, dActor_c* a, int r, int h, unsigned int e, unsigned int g);
 /* Parameter names keep this TU's @NNN. */
-typedef void BgchInitAt_(void* self, dActor_c* a, int r, int h, Vector3_16* p, Vector3_16* q);
+typedef void BgchInitAt_(void *self, dActor_c *a, int r, int h, Vector3_16 *p, Vector3_16 *q);
 }
 
 bool ApproachLinear(short &value, short target, short step);
@@ -494,7 +494,7 @@ int daBasabasa_c::InitResources()
     mIsFlying = 0;
     mModelAnim1.speed = 0x1000;
     mModelAnim2.speed = 0x1000;
-    mWithMeshClsn.Init( this, 0x28000, 0x1e000, 0, 0);
+    mWithMeshClsn.Init(this, 0x28000, 0x1e000, 0, 0);
     mHomePosX = mPosX;
     mHomePosY = mPosY;
     mHomePosZ = mPosZ;

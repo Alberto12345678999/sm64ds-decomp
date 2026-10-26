@@ -127,8 +127,7 @@ extern ButterflyState data_ov100_02148628[];
 void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
     void *actor, void *shadow, void *mtx, int radius, int height, unsigned int opacity);
 /* Parameter names keep this TU's @NNN. */
-typedef void BgchInitAt_(
-    void *w, void *actor, int radius, int height, void *a, void *b);
+typedef void BgchInitAt_(void *w, void *actor, int radius, int height, void *a, void *b);
 void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
     void *c, void *actor, void *pos, int radius, int height, u32 flags, u32 vuln);
 void _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(
@@ -560,7 +559,7 @@ int daBtfly_c::InitResources()
     if (mShadowModel2.InitCylinder() == 0)
         return 0;
 
-    mWithMeshClsn.Init( this, 0x32000, 0x32000, 0, 0);
+    mWithMeshClsn.Init(this, 0x32000, 0x32000, 0, 0);
 
     Vec3 v;
     v.x = 0;

@@ -114,9 +114,8 @@ void  _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *self, dActor_c *actor,
                                                 unsigned int flags,
                                                 unsigned int vulnFlags);
 /* Parameter names keep this TU's @NNN. */
-typedef void BgchInitAt_(
-          void *self, dActor_c *actor, int radius, int height,
-          Vector3_16 *a, Vector3_16 *b);
+typedef void BgchInitAt_(void *self, dActor_c *actor, int radius, int height, Vector3_16 *a,
+                         Vector3_16 *b);
 
 extern Matrix4x3 IDENTITY_MATRIX4X3;
 extern Mtx43     data_020a0e68;           /* scratch matrix        */
@@ -226,7 +225,7 @@ int Scuttlebug::InitResources()
         return 0;
     _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(
         &mdCcAc_c, ((dActor_c *)this), 0x46000, 0x64000, 0x200000, 0x6eff0);
-    mWithMeshClsn.Init( ((dActor_c *)this), 0x50000, 0x50000, (Vector3_16 *)0, (Vector3_16 *)0);
+    mWithMeshClsn.Init(((dActor_c *)this), 0x50000, 0x50000, (Vector3_16 *)0, (Vector3_16 *)0);
     mWithMeshClsn.StartDetectingWater();
     mHomeX = mPosX;
     mHomeY = mPosY;

@@ -151,7 +151,7 @@ int daBrq_c::InitResources()
     }
 
     _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(&mdCcAcPos_c, this, data_ov070_0212365c, 0x2d000, 0x50000, 0x200002, 0x8000);
-    mWithMeshClsn.Init( this, 0x2d000, 0x2d000, 0, 0);
+    mWithMeshClsn.Init(this, 0x2d000, 0x2d000, 0, 0);
 
     mVertAccel = 0;
     mTerminalVelocity = 0;

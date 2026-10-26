@@ -112,8 +112,7 @@ struct AngleWords { u16 w[3]; };
 
 extern "C" {
 /* Parameter names keep this TU's @NNN. */
-typedef void BgchInitAt_(
-    dBgCh_Actr *self, int actor, Fix12i radius, Fix12i height, int a, int b);
+typedef void BgchInitAt_(dBgCh_Actr *self, int actor, Fix12i radius, Fix12i height, int a, int b);
 extern void Vec3_Asr(void *dst, void *src, int n);
 extern void Matrix4x3_FromTranslation(void *m, int x, int y, int z);
 extern void Matrix4x3_ApplyInPlaceToRotationXYZExt(void *m, short a, short b, short c);
@@ -457,7 +456,7 @@ int daGrock_c::InitResources()
         if (mShadowModel.InitCylinder() == 0)
             return 0;
 
-        mWithMeshClsn.Init( (dActor_c *)(int)this, 0x12c000, 0, 0, 0);
+        mWithMeshClsn.Init((dActor_c *)(int)this, 0x12c000, 0, 0, 0);
         mWithMeshClsn.SetLimMovFlag();
         mRollSoundID = 0;
 

@@ -94,9 +94,8 @@ void MulVec3Mat4x3(Vector3 *v, Matrix4x3 *m, Vector3 *res);
 void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(
     dCcAc_c *self, dActor_c *actor, int radius, int height, u32 flags, u32 vulnFlags);
 /* Parameter names keep this TU's @NNN. */
-typedef void BgchInitAt_(dBgCh_Actr *self, dActor_c *actor,
-                                                                 int radius, int height,
-                                                                 Vector3_16 *a, Vector3_16 *b);
+typedef void BgchInitAt_(dBgCh_Actr *self, dActor_c *actor, int radius, int height, Vector3_16 *a,
+                         Vector3_16 *b);
 int d_a_hyuhyuNewHold(u32 slot, u32 effect, int x, int y, int z, const Vector3_16 *rot, void *cb);
 }
 
@@ -185,7 +184,7 @@ int daHyuhyu_c::InitResources()
     if (mVariant == 1) {
         _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, this, 0x3c000, 0x14000, 0x200002, 0);
         func_ov091_02134044(&data_ov091_021356c0);
-        mWithMeshClsn.Init( this, 0x14000, 0, 0, 0);
+        mWithMeshClsn.Init(this, 0x14000, 0, 0, 0);
         mFlags = 0;
         return 1;
     }

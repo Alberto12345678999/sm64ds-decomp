@@ -104,8 +104,8 @@ void  _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void *player, void *pos, unsigned 
 void  _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *self, void *actor, int r, int h,
     unsigned int e, unsigned int g);
 /* Parameter names keep this TU's @NNN. */
-typedef int BgchInitAt_(void *self, void *actor,
-    int radius, int height, Vector3_16 *a, Vector3_16 *b);
+typedef int BgchInitAt_(void *self, void *actor, int radius, int height, Vector3_16 *a,
+                        Vector3_16 *b);
 int   RandomIntInternal(int *seed);
 short Vec3_HorzAngle(const Vector3 *a, const Vector3 *b);
 int   Vec3_HorzDist(const Vector3 *a, const Vector3 *b);
@@ -841,7 +841,7 @@ s32 daChoro_Rock_c::InitResources()
         return 0;
     _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, this, 0x1e000, 0x1e000, 0x200004, 0);
     mIsSmall = param1 & 1;
-    mWithMeshClsn.Init( this, 0x1e000, 0x1e000, 0, 0);
+    mWithMeshClsn.Init(this, 0x1e000, 0x1e000, 0, 0);
     mVertAccel = -0x2000;
     mTerminalVelocity = -0x3c000;
     if (mIsSmall == 0) {

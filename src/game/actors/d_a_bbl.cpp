@@ -110,7 +110,7 @@ int daBbl_c::InitResources()
         mTerminalVelocity = -0x3c000;
     }
     mStateTimer = 0;
-    mWithMeshClsn.Init( (dActor_c *)(int)this, 0x32000, 0x32000, 0, 0);
+    mWithMeshClsn.Init((dActor_c *)(int)this, 0x32000, 0x32000, 0, 0);
     mWithMeshClsn.SetLimMovFlag();
     if (mJumps != 0) {
         func_ov064_021187ec((State *)data_ov064_0211c7c8);

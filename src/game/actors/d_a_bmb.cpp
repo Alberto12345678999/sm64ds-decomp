@@ -217,7 +217,7 @@ int daBmb_c::InitResources()
     mScaleZ = 0x1000;
     mCarrier = 0;
     mTurnCount = 0;
-    mWithMeshClsn.Init( this, 0x32000, 0x32000, 0, 0);
+    mWithMeshClsn.Init(this, 0x32000, 0x32000, 0, 0);
     mWithMeshClsn.StartDetectingWater();
     mShouldRender = 1;
     /* Matrix4x3* while mVariant is 2. It lives in dActor_c's pad, the word

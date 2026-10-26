@@ -173,7 +173,7 @@ int daPopoi_c::InitResources()
   v.z = data_ov077_02127a5c.z;
   _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(&mdCcAcPos_c, this, &v, 0x54000, 0x32000, 0x200004, 0);
   mAngleY = mPrevAngleY;
-  mWithMeshClsn.Init( this, 0x64000, 0x64000, 0, 0);
+  mWithMeshClsn.Init(this, 0x64000, 0x64000, 0, 0);
   mCaughtPlayer = 0;
   mHomePosX = mPosX;
   mHomePosY = mPosY;

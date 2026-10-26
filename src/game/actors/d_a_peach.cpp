@@ -410,7 +410,7 @@ int daPeach_c::InitResources()
         return 0;
     _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(
         &mCylinder, this, 0x90000, 0xc0000, 0x4800004, 0);
-    mWithMeshClsn.Init( this, 0x40000, 0x40000, (Vector3_16 *)0, (Vector3_16 *)0);
+    mWithMeshClsn.Init(this, 0x40000, 0x40000, (Vector3_16 *)0, (Vector3_16 *)0);
     mVertAccel = -0x2000;
     mTerminalVelocity = -0x3c000;
     mScaleX = 0x1000;

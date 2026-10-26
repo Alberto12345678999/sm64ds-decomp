@@ -166,7 +166,7 @@ int daYurei_Mucho_c::InitResources()
     mTerminalVelocity = -0x1e000;
     _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, this, 0x38000, 0x7e000, 0x200000, 0x7eff0);
     mAngleY = mPrevAngleY;
-    mWithMeshClsn.Init( this, 0x46000, 0, 0, 0);
+    mWithMeshClsn.Init(this, 0x46000, 0, 0, 0);
     mCoinType = 1;
     mExtraCoinCount = 1;
     mHomePosX = mPosX;

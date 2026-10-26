@@ -855,7 +855,7 @@ int daMenbo_c::InitResources()
     mScaleX = 0x1000;
     mScaleY = 0x1000;
     mScaleZ = 0x1000;
-    mWithMeshClsn.Init( (dActor_c *)(int)this, 0xc8000, 0, 0, 0);
+    mWithMeshClsn.Init((dActor_c *)(int)this, 0xc8000, 0, 0, 0);
     func_0203558c(&mWithMeshClsn);
 
     mCoinType = 1;
