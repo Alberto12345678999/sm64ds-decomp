@@ -838,6 +838,12 @@ void RouletteRacer_MoveToTile(RacerPos *racer, int tile) {
 }
 
 // @symbol RouletteRacer_Init
+/* sRouletteRacerGoal is a function-local `static Vector2 goal(0xc000, 0xc000)`
+   spelled out by hand. Written that way it is byte-identical (measured
+   2026-10-25), but the compiler then emits the object, its guard and its
+   registration node as this TU's own .bss, and this text-only TU owns none:
+   the three sit at 0x021428cc/0x021428d4/0x02142948, among the
+   __sinit_ov006_021322bc globals' nodes. */
 extern "C" {
 void RouletteRacer_Init(void *racer) {
     int b = sRouletteRacerGoalGuard & 1;

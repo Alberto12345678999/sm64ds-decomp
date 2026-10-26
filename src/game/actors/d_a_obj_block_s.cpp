@@ -136,16 +136,22 @@ extern s16 data_02082214[];
 extern int Vec3_HorzDist(const struct Vector3 *a, const struct Vector3 *b);
 extern u8 DecIfAbove0_Byte(u8 *p);
 extern void *d_a_obj_block_sNewHold(u32 a, u32 b, int c, int d, int e, const void *v, void *cb);
-extern u32 _ZN8Particle6System17NewUnkCallback818Ejj5Fix12IiES2_S2_PK11Vector3_16f(
-    u32 a, u32 b, int c, int d, int e, const Vector3_16f *v);
+extern u32 d_a_obj_block_sNewUnkCallback818Hold(u32 a, u32 b, int c, int d, int e,
+                                                const Vector3_16f *v);
 namespace Particle {
 struct System {
     static void NewSimple(unsigned int id, int x, int y, int z);
 
     static int New(unsigned, unsigned, int, int, int, const ::Vector3_16f *, Callback *);
+    static u32 NewUnkCallback818(u32, u32, int, int, int, const Vector3_16f *);
 };
 }
-extern void _ZN8Particle20RunningSlidingDustAtE5Fix12IiES1_S1_(s32 x, s32 y, s32 z);
+}
+namespace Particle {
+void RunningSlidingDustAt(s32, s32, s32);
+}
+extern "C" {
+extern void d_a_obj_block_sRunningSlidingDustAtHold(s32 x, s32 y, s32 z);
 extern void hold_d_a_obj_block_s(char *thiz, int f, char *m, int fix, short s, int blk);
 extern void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(
     char *thiz, char *actor, int b, int d, void *v, int f);
@@ -1088,7 +1094,7 @@ int daObjBlockS_c::func_ov098_02139228()
     if (_Z14ApproachLinearRiii(&mHorzSpeed, 0, 0x800) == 0
         && mClsnYOffsetTarget != 0xa0
         && mHorzSpeed > 0xa000) {
-        _ZN8Particle20RunningSlidingDustAtE5Fix12IiES1_S1_(mPosX, mPosY, mPosZ);
+        Particle::RunningSlidingDustAt(mPosX, mPosY, mPosZ);
         mSlideSoundHandle =
             Sound::PlayLong(mSlideSoundHandle, 3, 0x93, *(Vector3 *)&mCamSpacePos, 0);
     }
@@ -1314,8 +1320,8 @@ int daObjBlockS_c::Behavior()
         if (DecIfAbove0_Byte(&mBreakTimer)) {
             mParticleHandle1 =
                 (u32)Particle::System::New(mParticleHandle1, 0x13a, v.x, v.y, v.z, 0, 0);
-            mParticleHandle2 = _ZN8Particle6System17NewUnkCallback818Ejj5Fix12IiES2_S2_PK11Vector3_16f(
-                mParticleHandle2, 0x13b, v.x, v.y, v.z, 0);
+            mParticleHandle2 =
+                Particle::System::NewUnkCallback818(mParticleHandle2, 0x13b, v.x, v.y, v.z, 0);
             goto done;
         }
         func_ov098_02138e08();

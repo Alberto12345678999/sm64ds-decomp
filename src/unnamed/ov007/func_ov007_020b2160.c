@@ -1,3 +1,5 @@
+#include "Ov007Work.h"
+
 typedef int Fix12;
 struct Matrix4x3;
 
@@ -20,12 +22,6 @@ typedef struct Ov007Camera {
     /* 0xd4: a u16 angle; this file indexes the sine table with it >> 4 */
     unsigned short fovy;
 } Ov007Camera;
-
-/* data_ov007_0210342c: the overlay's manager; only its cameras here. */
-typedef struct Ov007Work {
-    char pad_00[0x30];
-    Ov007Camera *cameras[2]; /* 0x30: func_ov007_020c023c */
-} Ov007Work;
 
 extern void _ZN3G3i13PerspectiveW_E5Fix12IiES1_S1_S1_S1_S1_bP9Matrix4x3(
     Fix12, int, int, int, int, int, int, struct Matrix4x3*);

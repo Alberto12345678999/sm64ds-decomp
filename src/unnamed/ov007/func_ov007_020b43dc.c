@@ -1,4 +1,5 @@
 #include "Ov007MenuState.h"
+#include "Ov007Work.h"
 
 extern void func_ov007_020b7d94(void *self);
 extern void *data_ov007_0210342c;
@@ -15,13 +16,6 @@ typedef struct Ov007Item {
 typedef struct Ov007ItemView {
     Ov007Item *item; /* 0x00 */
 } Ov007ItemView;
-
-/* data_ov007_0210342c: the overlay's manager; names as in
- * func_ov007_020b3360, only the slot this file reads. */
-typedef struct Ov007Work {
-    char pad_00[0x114];
-    Ov007ItemView *itemViews[0x18]; /* 0x114: func_ov007_020b693c, one per func_ov007_020b4c04 */
-} Ov007Work;
 
 /* Requests state 3 on item views 0x16 and 0x17 (the manager's +0x16c and
  * +0x170), then hands `self` (9 or 0xc at the callers) to

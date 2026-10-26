@@ -1,5 +1,6 @@
 //cpp
 #include "Ov007Sprite.h"
+#include "Ov007Work.h"
 
 extern "C" {
 extern void func_ov007_020c43bc(void*, int);
@@ -12,18 +13,6 @@ extern unsigned char data_ov007_020d7ddd[];
 extern unsigned char data_ov007_020d7dc0[];
 extern short data_ov007_020d7de8[];
 extern short data_ov007_020d7dea[];
-
-/* data_ov007_0210342c: the overlay's manager; names as in
- * func_ov007_020b9880, only the slots this file reads. */
-struct Ov007Work {
-    char pad_00[0x30];
-    void *cameras[2]; /* 0x30: both built by func_ov007_020c023c; [1] is the
-                         * one func_ov007_020b2160 loads into the projection */
-    char pad_38[0x40];
-    void *textures[11]; /* 0x78: func_ov007_020b697c builds them from the BMD textures */
-};
-
-typedef char Ov007Work_size_must_be_0xa4[sizeof(Ov007Work) == 0xa4 ? 1 : -1];
 
 #define WORK ((Ov007Work *)data_ov007_0210342c)
 

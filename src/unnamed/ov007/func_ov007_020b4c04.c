@@ -1,5 +1,6 @@
 #include "types.h"
 #include "Ov007Sprite.h"
+#include "Ov007Work.h"
 
 /* The 0x2c-byte record func_ov007_020aea6c allocates; only the fields this
  * file touches are spelled. */
@@ -30,15 +31,6 @@ typedef struct Ov007Settings {
     char pad_00[0x3a];
     u8 language; /* 0x3a: func_ov007_020b6a84 seeds it from the owner-info language */
 } Ov007Settings;
-
-/* data_ov007_0210342c: the overlay's manager. No class or header names it;
- * only the slots this file touches are spelled. */
-typedef struct Ov007Work {
-    char pad_00[0x28];
-    Ov007Settings *settings; /* 0x28: func_ov007_020b6a84 */
-    char pad_2c[0x4c];
-    void *textures[11]; /* 0x78: func_ov007_020b697c builds them from the BMD textures */
-} Ov007Work;
 
 extern void *func_ov007_020c3df4(int a, int b);
 extern void *func_ov007_020aea6c(int a, void *b, void *c);

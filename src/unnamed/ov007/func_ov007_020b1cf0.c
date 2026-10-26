@@ -1,6 +1,7 @@
 #include "types.h"
 #include "Ov007MenuState.h"
 #include "Ov007Touch.h"
+#include "Ov007Work.h"
 extern void func_ov007_020b2614(int a, int b, int c);
 extern int _ZN4cstd3modEii(int a, int b);
 extern int func_ov007_020c1da0(int i);
@@ -19,11 +20,15 @@ typedef struct Ov007Item {
     s32 wiggleFrames; /* 0x1c: the wiggle's length; func_ov007_020ae2d0 also arms 0x3c */
 } Ov007Item;
 
-/* The 0x1c record func_ov007_020b4c04 returns and the 8-byte one
- * func_ov007_020ade58 returns: both start with the item. */
+/* The 0x1c record func_ov007_020b4c04 returns; only its item here. */
 typedef struct Ov007ItemView {
     Ov007Item *item; /* 0x00 */
 } Ov007ItemView;
+
+/* The 8-byte record func_ov007_020ade58 returns; only its item here. */
+typedef struct Ov007ItemNode {
+    Ov007Item *item; /* 0x00 */
+} Ov007ItemNode;
 
 /* The 0x70-byte key record func_ov007_020c2304 allocates;
  * func_ov007_020c20b8 copies keys into prevKeys, then reads KEYINPUT. */
@@ -49,33 +54,12 @@ typedef struct Ov007Model {
     Ov007AnimPlayer *boneAnim; /* 0x18: func_ov007_020bc894 ticks it */
 } Ov007Model;
 
-/* data_ov007_0210342c: the overlay's manager. No class or header names it;
- * only the slots this file touches are spelled. +0xec (0 or 1; picks the
- * sound) stays raw, as in func_ov007_020b1718. */
-typedef struct Ov007Work {
-    char pad_00[4];
-    Ov007MenuState *states[3]; /* 0x04: func_ov007_020c9388 */
-    char pad_10[0x10];
-    int transitionMode; /* 0x20: func_ov007_020b1718 runs mode 1 after a
-                         * stylus tap here, mode 0 after a button */
-    char pad_24[0x2c];
-    Ov007Touch *touch; /* 0x50: func_ov007_020c2068 */
-    Ov007Pad *pad;     /* 0x54: func_ov007_020c2304 */
-    char pad_58[0x4c];
-    Ov007ItemView *itemNodes[9]; /* 0xa4: func_ov007_020b6d40, one per func_ov007_020ade58 */
-    char pad_c8[0x2c];
-    Ov007Model *model; /* 0xf4: func_ov007_020b2998 stores func_ov007_020b2bd4's model */
-    char pad_f8[0x1c];
-    Ov007ItemView *itemViews[0x18]; /* 0x114: func_ov007_020b693c, one per func_ov007_020b4c04 */
-} Ov007Work;
-
 extern char *data_ov007_0210342c;
 /* The extern keeps the tree's char * spelling (the declaration-agreement
  * gate); the typed view is reached through a cast macro. */
 #define WORK ((Ov007Work *)data_ov007_0210342c)
 
-void func_ov007_020b1cf0(void)
-{
+void func_ov007_020b1cf0(void) {
     Ov007Model *model = WORK->model;
     Ov007MenuState *menu = WORK->states[1];
     int hi = menu->previousState;

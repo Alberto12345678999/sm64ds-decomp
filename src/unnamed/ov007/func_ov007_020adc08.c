@@ -1,3 +1,5 @@
+#include "Ov007Work.h"
+
 extern int func_ov007_020c3df4(int a, int b);
 extern int func_ov007_020c9388(int a);
 extern int func_ov007_020b8500(void);
@@ -26,12 +28,6 @@ typedef struct Ov007Display {
     int bgListSub;  /* 0x0c */
 } Ov007Display;
 
-/* data_ov007_0210342c: the overlay's manager; only the slot this file reads. */
-typedef struct Ov007Work {
-    char pad_00[0x74];
-    Ov007Display *display; /* 0x74: func_ov007_020b6d40 stores func_ov007_020b7594's record */
-} Ov007Work;
-
 /* The 0xc-byte record this function returns; func_ov007_020b6d40 keeps the
  * eight of them from the manager's +0xc8. */
 typedef struct Ov007LayerSlot {
@@ -41,7 +37,6 @@ typedef struct Ov007LayerSlot {
 } Ov007LayerSlot;
 
 typedef char Ov007LayerSlot_size_must_be_0xc[sizeof(Ov007LayerSlot) == 0xc ? 1 : -1];
-typedef char Ov007Work_size_must_be_0x78[sizeof(Ov007Work) == 0x78 ? 1 : -1];
 typedef char Ov007Display_size_must_be_0x10[sizeof(Ov007Display) == 0x10 ? 1 : -1];
 typedef char Ov007BgLayer_size_must_be_0x18[sizeof(Ov007BgLayer) == 0x18 ? 1 : -1];
 

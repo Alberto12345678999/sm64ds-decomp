@@ -6,14 +6,14 @@
 // @symbol func_02022864
 // @symbol func_020228dc
 // @symbol func_0202293c
-// @symbol _ZN8Particle6System9NewRippleE5Fix12IiES2_S2_
+// @symbol _ZN8Particle6System9NewRippleEiii
 // @symbol func_020229f0
 // @symbol func_02022a4c
-// @symbol _ZN8Particle6System12NewBigSplashE5Fix12IiES2_S2_
+// @symbol _ZN8Particle6System12NewBigSplashEiii
 // @symbol func_02022b04
-// @symbol _ZN8Particle20RunningSlidingDustAtE5Fix12IiES1_S1_
-// @symbol _ZN8Particle6System17NewUnkCallback818Ejj5Fix12IiES2_S2_PK11Vector3_16f
-// @symbol _ZN8Particle6System10NewWeatherEjj5Fix12IiES2_S2_PK11Vector3_16fj
+// @symbol _ZN8Particle20RunningSlidingDustAtEiii
+// @symbol _ZN8Particle6System17NewUnkCallback818EjjiiiPK11Vector3_16f
+// @symbol _ZN8Particle6System10NewWeatherEjjiiiPK11Vector3_16fh
 // @symbol func_02022c3c
 // @symbol func_02022c80
 // @symbol func_02022cbc
@@ -361,32 +361,32 @@ u32 func_02022c3c(
     return Particle::System::New(uniqueID, effectID, x, y, z, (const Vector3_16f *)dir,
                                  (Particle::Callback *)&data_0209ee74->mCallback_808);
 }
+}
 
-// @symbol _ZN8Particle6System10NewWeatherEjj5Fix12IiES2_S2_PK11Vector3_16fj
-u32 _ZN8Particle6System10NewWeatherEjj5Fix12IiES2_S2_PK11Vector3_16fj(
-    u32 uniqueID, u32 effectID, Fix12i x, Fix12i y, Fix12i z, const void* dir, u8 numWeatherEffectsNow)
-{
+// @symbol _ZN8Particle6System10NewWeatherEjjiiiPK11Vector3_16fh
+u32 Particle::System::NewWeather(u32 uniqueID, u32 effectID, Fix12i x, Fix12i y, Fix12i z,
+                                 const Vector3_16f *dir, u8 numWeatherEffectsNow) {
     dPa_c::level_c::clipCallback_c *callback = &data_0209ee74->mWeatherCallback;
     callback->enabled = numWeatherEffectsNow;
     return Particle::System::New(uniqueID, effectID, x, y, z, (const Vector3_16f *)dir,
                                  (Particle::Callback *)callback);
 }
 
-// @symbol _ZN8Particle6System17NewUnkCallback818Ejj5Fix12IiES2_S2_PK11Vector3_16f
-u32 _ZN8Particle6System17NewUnkCallback818Ejj5Fix12IiES2_S2_PK11Vector3_16f(
-    u32 uniqueID, u32 effectID, Fix12i x, Fix12i y, Fix12i z, const struct Vector3_16f* dir)
-{
+// @symbol _ZN8Particle6System17NewUnkCallback818EjjiiiPK11Vector3_16f
+u32 Particle::System::NewUnkCallback818(u32 uniqueID, u32 effectID, Fix12i x, Fix12i y, Fix12i z,
+                                        const struct Vector3_16f *dir) {
     return Particle::System::New(uniqueID, effectID, x, y, z, (const Vector3_16f *)dir,
                                  (Particle::Callback *)&data_0209ee74->mCallback_818);
 }
 
-// @symbol _ZN8Particle20RunningSlidingDustAtE5Fix12IiES1_S1_
-void _ZN8Particle20RunningSlidingDustAtE5Fix12IiES1_S1_(Fix12i x, Fix12i y, Fix12i z)
-{
+// @symbol _ZN8Particle20RunningSlidingDustAtEiii
+void Particle::RunningSlidingDustAt(Fix12i x, Fix12i y, Fix12i z) {
     data_0209ee74->mRunningSlidingDustSystemID = Particle::System::New(
         data_0209ee74->mRunningSlidingDustSystemID, 0xda, x, y, z, (const Vector3_16f *)0,
         (Particle::Callback *)&data_0209ee74->mRunningSlidingDustCallback);
 }
+
+extern "C" {
 
 // @symbol func_02022b04
 void func_02022b04(Fix12i x, Fix12i y, Fix12i z)
@@ -395,14 +395,16 @@ void func_02022b04(Fix12i x, Fix12i y, Fix12i z)
         Particle::System::New(data_0209ee74->mSystemID_75c, 0x61, x, y, z, (const Vector3_16f *)0,
                               (Particle::Callback *)&data_0209ee74->mCallback_760);
 }
+}
 
-// @symbol _ZN8Particle6System12NewBigSplashE5Fix12IiES2_S2_
-void _ZN8Particle6System12NewBigSplashE5Fix12IiES2_S2_(Fix12i x, Fix12i y, Fix12i z)
-{
+// @symbol _ZN8Particle6System12NewBigSplashEiii
+void Particle::System::NewBigSplash(Fix12i x, Fix12i y, Fix12i z) {
     data_0209ee74->mBigSplashSystemID = Particle::System::New(
         data_0209ee74->mBigSplashSystemID, 0xdd, x, y, z, (const Vector3_16f *)0,
         (Particle::Callback *)&data_0209ee74->mBigSplashCallback);
 }
+
+extern "C" {
 
 // @symbol func_02022a4c
 u32 func_02022a4c(Fix12i x, Fix12i y, Fix12i z)
@@ -423,10 +425,10 @@ u32 func_020229f0(Fix12i x, Fix12i y, Fix12i z)
     data_0209ee74->mSystemID_780 = result;
     return result;
 }
+}
 
-// @symbol _ZN8Particle6System9NewRippleE5Fix12IiES2_S2_
-u32 _ZN8Particle6System9NewRippleE5Fix12IiES2_S2_(Fix12i x, Fix12i y, Fix12i z)
-{
+// @symbol _ZN8Particle6System9NewRippleEiii
+u32 Particle::System::NewRipple(Fix12i x, Fix12i y, Fix12i z) {
     Particle::SysTracker *tracker = data_0209ee74;
     u32 result =
         Particle::System::New(tracker->mRippleSystemID, 0x109, x, y, z, (const Vector3_16f *)0,
@@ -434,6 +436,8 @@ u32 _ZN8Particle6System9NewRippleE5Fix12IiES2_S2_(Fix12i x, Fix12i y, Fix12i z)
     data_0209ee74->mRippleSystemID = result;
     return result;
 }
+
+extern "C" {
 
 // @symbol func_0202293c
 u32 func_0202293c(Fix12i x, Fix12i y, Fix12i z)

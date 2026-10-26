@@ -106,7 +106,7 @@ extern int Vec3_Dist(void* a, void* b);
 extern void func_ov002_020aea30(void* self, void* attacker, dBgCh_Actr* collision);
 extern void _ZN6Player6BounceE5Fix12IiE(void* p, int f);
 extern int _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(Player* p, void* v, u32 a, int f, u8 b, u8 c, u8 d);
-extern "C" void _ZN8Particle20RunningSlidingDustAtE5Fix12IiES1_S1_(int a, int b, int c);
+extern "C" void d_a_nknkRunningSlidingDustAtHold(int a, int b, int c);
 extern int RandomIntInternal(int *seed);
 extern int data_0209e650;
 extern short Vec3_HorzAngle(const Vector3* a, const Vector3* b);
@@ -822,7 +822,7 @@ void daNknk_c::func_ov062_02118004(int a1) {
     int x = mPosX;
     int y = mPosY;
     int z = mPosZ;
-    _ZN8Particle20RunningSlidingDustAtE5Fix12IiES1_S1_(x, y, z);
+    Particle::RunningSlidingDustAt(x, y, z);
 }
 
 // @symbol _ZN8daNknk_c19func_ov062_02117c98Ev

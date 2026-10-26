@@ -52,8 +52,14 @@ extern "C" {
    parameters (Fix12<int>), which mwccarm passes differently at the call site,
    so declaring the true types breaks the byte match. */
 unsigned short DecIfAbove0_Short(unsigned short *p);
-unsigned int _ZN8Particle6System17NewUnkCallback818Ejj5Fix12IiES2_S2_PK11Vector3_16f(
-    unsigned int a, unsigned int b, Fix12i c, Fix12i d, Fix12i e, const Vector3_16f *f);
+}
+namespace Particle {
+struct System {
+    static unsigned int NewUnkCallback818(unsigned int a, unsigned int b, Fix12i c, Fix12i d,
+                                          Fix12i e, const Vector3_16f *f);
+};
+}
+extern "C" {
 void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(
     void *, dActor_c *a, int b, int c, unsigned int d, unsigned int e);
 
@@ -72,7 +78,6 @@ void func_ov022_02112654(daObj_volcanoCannon_c *c);
 extern daObj_volcanoCannon_c::State data_ov022_02114690;
 extern daObj_volcanoCannon_c::StateFunc data_ov022_0211442c;
 extern daObj_volcanoCannon_c::StateFunc data_ov022_02114424;
-
 }
 
 /* One vtable declaration per class this TU installs, at namespace scope above
@@ -222,8 +227,8 @@ int daObj_volcanoCannon_c::Behavior()
     mCylinderClsn.Clear();
     mCylinderClsn.Update();
     if (!IsOffScreen(this)) {
-        mParticleID = _ZN8Particle6System17NewUnkCallback818Ejj5Fix12IiES2_S2_PK11Vector3_16f(
-            mParticleID, 0x129, mPosX, mPosY, mPosZ, 0);
+        mParticleID =
+            Particle::System::NewUnkCallback818(mParticleID, 0x129, mPosX, mPosY, mPosZ, 0);
     }
     return 1;
 }

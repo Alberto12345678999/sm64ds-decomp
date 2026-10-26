@@ -1,14 +1,41 @@
 #include "types.h"
+
 typedef struct {
-    u8 b0; u8 b1; u16 h2;
-    u8 b4; u8 b5; u16 h6;
-    u8 b8; u8 b9; u16 hA;
-    u8 bC; u8 bD; u16 hE;
-    u8 b10; u8 b11; u16 h12;
-    u8 b14; u8 b15; u16 h16;
-    u8 b18; u8 b19; u16 h1A;
-    u8 b1C; u8 b1D; u16 h1E;
-    u8 b20; u8 b21; u16 h22;
+    unsigned char b[3];
+} B3;
+
+struct B3 {
+    unsigned char b[3];
+};
+
+typedef struct {
+    u8 b0;
+    u8 b1;
+    u16 h2;
+    u8 b4;
+    u8 b5;
+    u16 h6;
+    u8 b8;
+    u8 b9;
+    u16 hA;
+    u8 bC;
+    u8 bD;
+    u16 hE;
+    u8 b10;
+    u8 b11;
+    u16 h12;
+    u8 b14;
+    u8 b15;
+    u16 h16;
+    u8 b18;
+    u8 b19;
+    u16 h1A;
+    u8 b1C;
+    u8 b1D;
+    u16 h1E;
+    u8 b20;
+    u8 b21;
+    u16 h22;
 } Src;
 
 typedef struct {
@@ -28,11 +55,88 @@ typedef struct {
     int *p10;
 } Ctx;
 
-extern int func_020457f0(int v, int a2, int b0, int b1, int *p);
-extern int func_020456a0(int v, int a2, int b0, int b1, short *p);
+extern B3 data_02099f80;
+extern int _ZN4cstd3absEi(int x);
+extern const struct B3 data_02099f84;
 
-void func_0204547c(Ctx *ctx, Src *s, int a2, Dst *d)
-{
+int func_020457f0(int v, int idx, int shift, int flag, int *tbl) {
+    B3 buf;
+    int rem;
+    int hi;
+    int lo;
+    int frac;
+    int aligned;
+    int base;
+    int t;
+
+    if (flag == 0)
+        return tbl[0];
+
+    if (shift == 0)
+        return tbl[idx];
+
+    base = ((v - 1) >> shift) << shift;
+    t = idx >> shift;
+
+    if (idx >= base)
+        return tbl[t + (idx - base)];
+
+    lo = tbl[t];
+    hi = tbl[t + 1];
+    aligned = t << shift;
+    aligned = flag ? aligned : aligned;
+    buf = data_02099f80;
+
+    frac = buf.b[shift];
+    rem = idx - aligned;
+    frac = frac - rem;
+
+    if (rem != 0)
+        return (lo * frac + hi * rem) >> shift;
+
+    return lo;
+}
+
+unsigned short func_020456a0(int a0, int a1, int shift, int a3, short *tbl) {
+    int i, frac;
+    short lo, hi, srange, sfrac;
+    struct B3 buf;
+
+    if (a3 == 0)
+        return ((unsigned short *)tbl)[0];
+    if (shift == 0)
+        return ((unsigned short *)tbl)[a1];
+
+    i = a1 >> shift;
+    {
+        int rounded = ((a0 - 1) >> shift) << shift;
+        if (a1 >= rounded)
+            return ((unsigned short *)tbl)[i + (a1 - rounded)];
+    }
+
+    frac = a1 - (i << shift);
+    lo = tbl[i];
+    hi = tbl[i + 1];
+
+    buf = data_02099f84;
+
+    sfrac = (short)frac;
+    srange = (short)(buf.b[shift] - sfrac);
+
+    if (sfrac == 0)
+        return (unsigned short)lo;
+
+    if (_ZN4cstd3absEi(lo - hi) >= 0x800) {
+        if (lo > hi)
+            hi = (short)(hi + 0x1000);
+        else
+            lo = (short)(lo + 0x1000);
+        return (unsigned short)((unsigned short)((hi * sfrac + lo * srange) >> shift) & 0xfff);
+    }
+    return (unsigned short)((lo * srange + hi * sfrac) >> shift);
+}
+
+void func_0204547c(Ctx *ctx, Src *s, int a2, Dst *d) {
     u16 v = ctx->h2;
     u16 *p;
 
@@ -50,7 +154,7 @@ void func_0204547c(Ctx *ctx, Src *s, int a2, Dst *d)
         d->f10 = 0x1000;
         d->f14 = 0x1000;
     } else {
-        d->fC  = func_020457f0(v, a2, s->b0, s->b1, ctx->p8 + s->h2);
+        d->fC = func_020457f0(v, a2, s->b0, s->b1, ctx->p8 + s->h2);
         d->f10 = func_020457f0(v, a2, s->b4, s->b5, ctx->p8 + s->h6);
         d->f14 = func_020457f0(v, a2, s->b8, s->b9, ctx->p8 + s->hA);
     }

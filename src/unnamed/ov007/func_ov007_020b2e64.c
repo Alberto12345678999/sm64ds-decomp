@@ -1,5 +1,6 @@
 #include "types.h"
 #include "Ov007MenuState.h"
+#include "Ov007Work.h"
 
 extern int* data_ov007_02103360;
 extern int* data_ov007_0210342c;
@@ -31,12 +32,6 @@ typedef struct Ov007Pad {
      * it is up (func_ov007_020c20b8) */
     u32 heldFrames[12];
 } Ov007Pad;
-
-/* data_ov007_0210342c: the overlay's manager; only its pad slot here. */
-typedef struct Ov007Work {
-    char pad_00[0x54];
-    Ov007Pad *pad; /* 0x54: func_ov007_020c2304 */
-} Ov007Work;
 
 typedef char Ov007Cursor_size_must_be_0x18[sizeof(Ov007Cursor) == 0x18 ? 1 : -1];
 typedef char Ov007Pad_size_must_be_0x34[sizeof(Ov007Pad) == 0x34 ? 1 : -1];

@@ -713,22 +713,22 @@
       "reason": "This TU odr-uses Vector3 (members pass it by reference and build by-value temporaries), so mwccarm re-emits Vector3's trivial vague-linkage D1 alongside the licensed text. The cartridge keeps one copy at arm9:0x020072c0, kind:function(arm,size=0x4), and an enrolled source already owns it; rombuild compares this object's body against those cartridge bytes and refuses anything but byte-identical vague-linkage output before discarding the duplicate."
     },
     {
-      "symbol": "_ZN8dActor_c21@class$112d_actor_cppD1Ev",
+      "symbol": "_ZN8dActor_c21@class$111d_actor_cppD1Ev",
       "disposition": "deadstrip",
       "reason": "Unnamed Vector3 union destructor emitted between C1 and C2. No symbols.txt row names it. Deadstripped so the kept constructor order is C1, Vector3sD1, C2."
     },
     {
-      "symbol": "_ZN8dActor_c21@class$109d_actor_cppD1Ev",
+      "symbol": "_ZN8dActor_c21@class$108d_actor_cppD1Ev",
       "disposition": "deadstrip",
       "reason": "Unnamed Vector3 union destructor emitted between C1 and C2. No symbols.txt row names it. Deadstripped so the kept constructor order is C1, Vector3sD1, C2."
     },
     {
-      "symbol": "_ZN8dActor_c21@class$106d_actor_cppD1Ev",
+      "symbol": "_ZN8dActor_c21@class$105d_actor_cppD1Ev",
       "disposition": "deadstrip",
       "reason": "Unnamed Vector3 union destructor emitted between C1 and C2. No symbols.txt row names it. Deadstripped so the kept constructor order is C1, Vector3sD1, C2."
     },
     {
-      "symbol": "_ZN8dActor_c21@class$103d_actor_cppD1Ev",
+      "symbol": "_ZN8dActor_c21@class$102d_actor_cppD1Ev",
       "disposition": "deadstrip",
       "reason": "Unnamed Vector3 union destructor emitted between C1 and C2. No symbols.txt row names it. Deadstripped so the kept constructor order is C1, Vector3sD1, C2."
     },
@@ -819,19 +819,19 @@
     "compilerOnlyOutput": {
       "requested": [
         "_ZN7Vector3D1Ev",
-        "_ZN8dActor_c21@class$112d_actor_cppD1Ev",
-        "_ZN8dActor_c21@class$109d_actor_cppD1Ev",
-        "_ZN8dActor_c21@class$106d_actor_cppD1Ev",
-        "_ZN8dActor_c21@class$103d_actor_cppD1Ev",
+        "_ZN8dActor_c21@class$111d_actor_cppD1Ev",
+        "_ZN8dActor_c21@class$108d_actor_cppD1Ev",
+        "_ZN8dActor_c21@class$105d_actor_cppD1Ev",
+        "_ZN8dActor_c21@class$102d_actor_cppD1Ev",
         "_ZN7dBase_cD2Ev"
       ],
       "deadstripped": [
         "_ZN7Vector3D1Ev",
         "_ZN7dBase_cD2Ev",
-        "_ZN8dActor_c21@class$103d_actor_cppD1Ev",
-        "_ZN8dActor_c21@class$106d_actor_cppD1Ev",
-        "_ZN8dActor_c21@class$109d_actor_cppD1Ev",
-        "_ZN8dActor_c21@class$112d_actor_cppD1Ev"
+        "_ZN8dActor_c21@class$102d_actor_cppD1Ev",
+        "_ZN8dActor_c21@class$105d_actor_cppD1Ev",
+        "_ZN8dActor_c21@class$108d_actor_cppD1Ev",
+        "_ZN8dActor_c21@class$111d_actor_cppD1Ev"
       ],
       "droppedSections": [
         5,

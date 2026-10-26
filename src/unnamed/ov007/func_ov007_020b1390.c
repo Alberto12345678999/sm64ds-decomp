@@ -1,5 +1,6 @@
 #include "types.h"
 #include "Ov007Sprite.h"
+#include "Ov007Work.h"
 
 /* The 0x38-byte BG layer record (func_ov007_020c0aa8); names as in
  * func_ov007_020adc08, only the buffer this file recolours. */
@@ -40,19 +41,6 @@ typedef struct Ov007ItemView {
     Ov007Item *item;     /* 0x00 */
     Ov007Sprite *sprite; /* 0x04: func_ov007_020c44e4 */
 } Ov007ItemView;
-
-/* data_ov007_0210342c: the overlay's manager; names as in
- * func_ov007_020ae558, func_ov007_020b131c and func_ov007_020b3360, only the
- * slots this file reads. */
-typedef struct Ov007Work {
-    char pad_00[0xa4];
-    Ov007ItemNode *itemNodes[9]; /* 0xa4: func_ov007_020b6d40, one per func_ov007_020ade58 */
-    /* 0xc8: func_ov007_020b6d40 stores func_ov007_020adc08(i, ...) for
-     * i = 0..7 */
-    Ov007LayerSlot *layerSlots[8];
-    char pad_e8[0x2c];
-    Ov007ItemView *itemViews[0x18]; /* 0x114: func_ov007_020b693c, one per func_ov007_020b4c04 */
-} Ov007Work;
 
 extern char *data_ov007_0210342c;
 extern u8 data_ov007_020ccc44[];

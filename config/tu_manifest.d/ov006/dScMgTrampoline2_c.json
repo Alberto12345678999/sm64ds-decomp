@@ -1684,7 +1684,8 @@
     "tubuild create warning: CONFLICT: extern declaration '_ZN2GX10LoadBGPlttEPKvjj' differs between the legacy file that used to hold func_ov006_02122e20 and the one that held func_ov006_021245a8; kept the first, the other is commented out for review",
     "tubuild create warning: CONFLICT: local declaration ('struct', 'dExtSimpleModel_c') differs between the legacy file that used to hold Trmp2Spinner_SetModel and the one that held Trmp2Spinner_Destruct; kept the first, the other is commented out for review",
     "Data-boundary reconstruction: all 0x148 bytes of 0x0213fbc4..0x0213fd0c are tiled by compiler-emitted objects from this TU; all 56 relocated words are licensed by exact raw symbol, addend, configured module set, and destination before byte comparison.",
-    "data-trampoline2-wave-tables1017 adds complete700-byte rodata ownership [0212f0f0,0212f3ac):28 native objects670bytes and30 linker-alignment bytes, including six typed scripted waves, observed short-array counts2/3/5, four spinnercolors,16colorbrushpalette and11randompositions. Names/types express consumer evidence; original array lengths/grouping/identifier spelling and historicalTU are not claimed. No source alignment attributes or paddingobjects. Existing raw state/lifecycle findings remain partial."
+    "data-trampoline2-wave-tables1017 adds complete700-byte rodata ownership [0212f0f0,0212f3ac):28 native objects670bytes and30 linker-alignment bytes, including six typed scripted waves, observed short-array counts2/3/5, four spinnercolors,16colorbrushpalette and11randompositions. Names/types express consumer evidence; original array lengths/grouping/identifier spelling and historicalTU are not claimed. No source alignment attributes or paddingobjects. Existing raw state/lifecycle findings remain partial.",
+    "2026-10-25: include/Vector2.h gains Vector2(Fix12i, Fix12i), the inline constructor unit020b2c84's two function-local Vector2 statics need. Its body consumes eight compiler numbers ahead of this TU's first @NNN, so every defined_symbol_renames[].from moved by exactly +8 (base and head objects compared: same @ symbols, each +8, same relocation sites). tubuild verify: TEXT-VERIFIED."
   ],
   "partial_isolation": {
     "round": "tools/tubuild.py partial -- one compile of the consolidated source, objisolate.derive per licensed function, compared against rombuild.compile_one + objisolate.isolate of each legacy source",
@@ -2599,7 +2600,7 @@
   },
   "defined_symbol_renames": [
     {
-      "from": "@1160",
+      "from": "@1167",
       "to": "@1086",
       "evidence": "data-trampoline2-wave-tables1017: named local wave-record type shifts compiler-local destructor registration node from@1111 to@1110. Both are unique12-byte local NOBITS objects; identical64-byte initializer references the node at the same relocation offset/type/addend. Its configured canonicalidentity remains@1086. Complete71-definition proof permits only this exactsite-derived bijection and the random-position semanticrename."
     }

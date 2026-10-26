@@ -12,6 +12,7 @@
 #include "Ov007MenuState.h"
 #include "Ov007StrokePath.h"
 #include "Ov007Touch.h"
+#include "Ov007Work.h"
 
 /* The 0xd0-byte touch picker func_ov007_020c690c builds. Names follow
  * func_ov007_020c5a6c's own struct; only the slots this file touches. */
@@ -37,12 +38,6 @@ typedef struct Ov007PickerScene {
     int strokeTime;  /* 0x34: Q12 frames since the stroke began; func_ov007_020c65bc
                       * stores it >> 12 as the new point's progress threshold */
 } Ov007PickerScene;
-
-/* data_ov007_0210342c: the overlay's manager; only its touch slot here. */
-typedef struct Ov007Work {
-    char pad_00[0x50];
-    Ov007Touch *touch; /* 0x50: func_ov007_020c2068; updated by func_ov007_020c1db0 */
-} Ov007Work;
 
 extern char *data_ov007_02104ba0;
 extern char *data_ov007_0210342c;

@@ -1,5 +1,6 @@
 #include "types.h"
 #include "Ov007MenuState.h"
+#include "Ov007Work.h"
 extern u8 data_ov007_0210342c[];
 extern void Sprite_SetAnimation(char *c, int r1, int r2, int r3, int sp0);
 
@@ -19,19 +20,6 @@ typedef struct Ov007ItemNode {
     Ov007Item *item; /* 0x00: func_ov007_020aea6c */
     char *node;      /* 0x04: func_ov007_020c11ac; Sprite_SetAnimation's target */
 } Ov007ItemNode;
-
-/* data_ov007_0210342c: the overlay's manager; names as in
- * func_ov007_020b1cf0 and func_ov007_020afc44, only the slots this file
- * reads. */
-typedef struct Ov007Work {
-    char pad_00[4];
-    Ov007MenuState *states[3]; /* 0x04: func_ov007_020c9388 */
-    char pad_10[0x10];
-    int transitionMode; /* 0x20: func_ov007_020b1cf0 sets 1 for a stylus
-                         * tap, 0 for a button */
-    char pad_24[0x34];
-    int selectedSlot; /* 0x58: -1 = none (func_ov007_020b0244) */
-} Ov007Work;
 
 typedef char
     Ov007Work_selectedSlot_must_be_at_0x58[(int)&((Ov007Work *)0)->selectedSlot == 0x58 ? 1 : -1];
