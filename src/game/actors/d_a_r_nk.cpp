@@ -158,7 +158,6 @@ enum {
    __sinit_d_a_r_nk.cpp. */
 extern StateFunc data_ov062_0211e0a4[6];
 extern "C" {
-void _ZN5Sound22LoadAndSetMusic_Layer2Ej(u32 id);
 }
 
 /* Scalar fixed-point ABI entry; the class-valued form still needs
@@ -512,7 +511,7 @@ void daRNk_c::func_ov062_0211a1f4()
             return;
         Sound::PlaySub(0x1f, 0x7f, 0, 0x7f000, 0);
         func_02012694(kSfx4D, &this->mCamSpacePosX);
-        _ZN5Sound22LoadAndSetMusic_Layer2Ej(kMusicRace);
+        Sound::LoadAndSetMusic_Layer2(kMusicRace);
         this->mIsRacing = 1;
         this->mStep++;
         SET_ANIM(this, ANIM_RUN_START, kAnimPlayOnce);

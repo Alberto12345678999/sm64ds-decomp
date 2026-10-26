@@ -46,6 +46,7 @@
 #include "dActor_c.h"
 #include "dBgCh_Actr.h"
 #include "dCc_c.h"
+#include "Sound.h"
 namespace cstd {
 s16 atan2(s32, s32);
 }
@@ -107,7 +108,6 @@ struct System {
 };
 }
 int func_02012694(int a, void *p);
-void _ZN5Sound9PlayBank0EjRK7Vector3(u32 id, void *pos);
 void d_a_iblPlayLongHold(u32 a, u32 b, u32 c, void *v, u32 d);
 /* local extern: retain the matched scalar ABI for the by-value Fix12 argument.
    Return and flag widths agree with the current Player definition. */
@@ -213,7 +213,7 @@ void daIbl_c::func_ov100_02141fb0()
             func_02012694(daIbl_SND_BREAK, &mCamSpacePosX);
             return;
         }
-        _ZN5Sound9PlayBank0EjRK7Vector3(daIbl_SND_HIT_NOT_BROKEN, &mCamSpacePosX);
+        Sound::PlayBank0(daIbl_SND_HIT_NOT_BROKEN, mCamSpacePos);
         return;
     }
     {

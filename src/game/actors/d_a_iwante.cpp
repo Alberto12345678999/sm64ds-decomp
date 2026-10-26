@@ -104,6 +104,7 @@ enum Eyerok_AssetId {
 #include "Player.h"
 #include "Message.h"
 #include "dCamera_c.h"
+#include "Sound.h"
 
 /* Actor ids, from symbols/actor_debug_names.tsv. */
 enum {
@@ -377,12 +378,7 @@ extern void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(void *self, 
                                                                     Vector3 *v, s32 f1, s32 f2,
                                                                     u32 a, u32 b);
 }
-namespace Sound {
-void ChangeMusicVolume(unsigned int a, int b);
-}
 extern "C" {
-extern void _ZN5Sound22LoadAndSetMusic_Layer3Ej(unsigned int a);
-extern void _ZN5Sound22StopLoadedMusic_Layer3Ev(void);
 namespace Particle {
 struct System {
     static void NewSimple(unsigned int a, int x, int y, int z);
@@ -2267,12 +2263,12 @@ int Eyerok::func_ov066_0211903c() {
                 cam->mFlags &= ~8;
                 Message::EndTalk();
                 if (data_ov066_0211abe0 == HANDS_BOTH) {
-                    _ZN5Sound22LoadAndSetMusic_Layer3Ej(0x2d);
+                    Sound::LoadAndSetMusic_Layer3(0x2d);
                     func_02011d2c();
                     func_ov066_02119454(&data_ov066_0211b0cc);
                 } else {
                     Sound::ChangeMusicVolume(0x7f, 0x15666);
-                    _ZN5Sound22StopLoadedMusic_Layer3Ev();
+                    Sound::StopLoadedMusic_Layer3();
                     func_02011cfc();
                     star.x = 0;
                     star.y = (int)0xffa24000;

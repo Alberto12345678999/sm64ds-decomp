@@ -210,7 +210,6 @@ int func_ov100_02145014(void);
 void func_ov100_02145070(int v);
 }
 extern "C" {
-void _ZN5Sound13PlayCharVoiceEjjRK7Vector3(unsigned int a, unsigned int b, void *pos);
 /* local extern: include/Player.h declares Player::Unk_020ca488 void, and
    func_ov100_021449c8 tests the value it leaves in r0. */
 int _ZN6Player12Unk_020ca488Ev(void *p);
@@ -567,7 +566,7 @@ int daDoor_c::func_ov100_02144730(Player *arg1)
             u32 *p = &((dCamera_c *)data_0209f318)->mFlags;
             *p &= ~DOOR_CAMERA_FLAGS;
             if (param1 != DOOR_LAST_KEY_MODEL) {
-                _ZN5Sound13PlayCharVoiceEjjRK7Vector3(data_0209caa0.mCharacter, 0x21, &mCamSpacePosX);
+                Sound::PlayCharVoice(data_0209caa0.mCharacter, 0x21, mCamSpacePos);
             } else if (data_ov100_02148704 == 0) {
                 arg1->PlayMammaMiaSound();
             }
