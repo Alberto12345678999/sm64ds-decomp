@@ -16,8 +16,8 @@
  * compiler-ordered.
  *
  * deslop
- * Leftover: dCamera_c::GoBehindPlayer / SetFlag_3 stay mangled (dCamera_c.h shifts
- *   this TU's @452 uniquifier). This TU's St_OpenClose_Init / Main.
+ * Leftover: dCamera_c::SetFlag_3 stays mangled (dCamera_c.h shifts this TU's
+ *   @452 uniquifier). GoBehindPlayer is called on a local declaration.
  * Leftover: func_ov100_02144fcc / 02145014 / 02145070 / 02144f84 stay those
  *   ROM labels. 02144fcc keeps the ellipsis: St_StayClosed_Main passes
  *   (this, player); the body is 0-arg.
@@ -43,14 +43,16 @@ enum d_a_star_gate_AssetId {
 #include "SharedFilePtr.h"
 #include "dExtSimpleModel_c.h"
 
-struct dCamera_c;
+struct dCamera_c {
+    void GoBehindPlayer(unsigned int);
+};
 
 extern "C" {
 int func_ov100_02144fcc(...);
 unsigned char DecIfAbove0_Byte(unsigned char *p);
 void func_02012694(int soundID, void *position, ...);
-/* local extern: including dCamera_c.h shifts this TU's @452 uniquifier; the TU binding policy refuses it */
-void _ZN9dCamera_c14GoBehindPlayerEj(dCamera_c *self, unsigned int a);
+/* Unused. Deleting this named prototype renumbers @NNN later in the file. */
+void StarGate_GoBehindKeep(int kept, int also);
 void Vec3_RotateYAndTranslate(Vector3 *out, void *m, short angle, Vector3 *in);
 void ChangeArea(int areaID);
 int ShowArea(int areaID);
@@ -404,7 +406,7 @@ bool daStarGate_c::St_OpenClose_Main(Player *player)
                 mTerminalVelocity = 0;
                 func_02012694(0x4f, &mCamSpacePosX, 0);
             } else if (mCloseDoorTimer == 8) {
-                _ZN9dCamera_c14GoBehindPlayerEj(data_0209f318, data_0209f250);
+                data_0209f318->GoBehindPlayer(data_0209f250);
             }
         } else if (ready != 0) {
             ChangeState(&ST_WAIT, player);
