@@ -149,7 +149,7 @@ struct Player : dActor_c {
            dExtFrameCtrl_c base (+0x50) and unk_148 at 0x148 was that base's currFrame
            (+0x58). Both are reachable through the member now. */
         dExtAnmModel_c mModelAnim3; /* 0x0f0 */
-        /* EIGHT more models, but Models, not ModelAnims: func_ov002_020e5948 news
+        /* EIGHT more models, dExtSimpleModel_c not dExtAnmModel_c: func_ov002_020e5948 news
            [0..2] and [4..7] as 0x50 bytes + _ZN17dExtSimpleModel_cC1Ev and only [3] as 0x64 +
            _ZN14dExtAnmModel_cC1Ev (it alone gets SetAnim, and the Yoshi sites that drive
            its frame downcast it). Every other access is dExtSimpleModel_c-level: data,

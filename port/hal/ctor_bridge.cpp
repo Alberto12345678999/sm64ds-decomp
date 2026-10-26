@@ -46,12 +46,12 @@
 // is a derived constructor that stores its own vptr on the next line. The
 // asserts below are what keeps that claim honest.
 namespace {
-struct ModelBaseHeir : dExtModel_c {
+struct dExtModelHeir : dExtModel_c {
     int DoSetFile(char *, int, int) { return 0; }
 };
 }
 
-static_assert(sizeof(ModelBaseHeir) == sizeof(dExtModel_c), "dExtModel_c heir changed the layout");
+static_assert(sizeof(dExtModelHeir) == sizeof(dExtModel_c), "dExtModel_c heir changed the layout");
 // ::new, not new: several of these classes declare a class-scope operator new
 // that routes through the DS heap, and class-scope lookup would hide the
 // placement form.
@@ -77,7 +77,7 @@ void _ZN17dExtSimpleModel_cC1Ev(void *self)
     ::new (self) dExtSimpleModel_c();
     *(void **)self = _ZTV17dExtSimpleModel_c;
 }
-CTOR_BRIDGE(_ZN11dExtModel_cC2Ev, ModelBaseHeir)
+CTOR_BRIDGE(_ZN11dExtModel_cC2Ev, dExtModelHeir)
 
 
 // The DS global operator delete routes through the Memory layer. This lived
