@@ -70,7 +70,7 @@ extern BblPmfPair data_ov064_0211c7c8[2];
 
 // @symbol daBbl_c_classInit
 /* The BUBBLE profile's factory. `new` alone reproduces the body: the 0x31c
- * leaf operator new, the base C2, the vptr store and the two member
+ * fBase_c::operator new call, the base C2, the vptr store and the two member
  * constructors inline -- a declared constructor would emit a `bl` the
  * factory does not have. */
 extern "C" daBbl_c *daBbl_c_classInit()

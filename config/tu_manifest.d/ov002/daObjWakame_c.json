@@ -610,12 +610,12 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@304",
+      "from": "@292",
       "to": "@295",
       "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @309 now; licensed under the existing pin @295"
     },
     {
-      "from": "@305",
+      "from": "@293",
       "to": "@296",
       "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @310 now; licensed under the existing pin @296"
     }

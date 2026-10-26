@@ -29,8 +29,10 @@
 //   this TU).
 // - dBgW_KcMbg::SetFile keeps its mangled spelling (by-value Fix12<int>
 //   parameters, wall 6az).
-// - Both factories stay hand-spelled (`new` would call the unavailable
-//   global `_Znwm`); the vptr stores keep the [2] form objisolate requires.
+// - daObjFlMaruta_c_classInit stays hand-spelled. `new daObjFlMaruta_c`
+//   compiles to the same bytes, but the inline daObjMaruta_c constructor
+//   stores `_ZTV13daObjMaruta_c+8` where the ROM stores that ov080 table's
+//   configured address (addend 0), so the linked word would differ.
 
 #include "decl_Actor.h"
 #include "decl_ActorBase.h"
@@ -126,7 +128,7 @@ int daObjFlMaruta_c::InitResources()
 // @symbol daObjFlMaruta_c_classInit
 extern "C" int *daObjFlMaruta_c_classInit(void)
 {
-    int *p = (int *)_ZN7fBase_cnwEj(836);
+    int *p = (int *)fBase_c::operator new(836);
     if (p) {
         _ZN10dBgActor_cC2Ev(p);
         p[0] = (int)_ZTV13daObjMaruta_c;
@@ -243,15 +245,8 @@ int daObj_volcanoCannon_c::InitResources()
 }
 
 // @symbol daObj_volcanoCannon_c_classInit
-extern "C" int *daObj_volcanoCannon_c_classInit(void)
-{
-    int *p = (int *)_ZN7fBase_cnwEj(0x11c);
-    if (p) {
-        _ZN8dActor_cC2Ev(p);
-        p[0] = (int)&_ZTV21daObj_volcanoCannon_c[2];
-        _ZN7dCcAc_cC1Ev(&((daObj_volcanoCannon_c *)p)->mCylinderClsn);
-    }
-    return p;
+extern "C" daObj_volcanoCannon_c *daObj_volcanoCannon_c_classInit(void) {
+    return new daObj_volcanoCannon_c;
 }
 
 /* Static-init global (was the handwritten __sinit_ov022_021130bc shard):

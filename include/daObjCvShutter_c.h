@@ -4,8 +4,6 @@
 #include "types.h"
 #include "daObjSwdoor_c.h"
 
-extern "C" void *_ZN7fBase_cnwEj(unsigned size);
-
 /**
  * Hazy Maze Cave's switch-operated shutter. ov021 SHUTTER_HMC (67).
  *
@@ -26,10 +24,6 @@ struct daObjCvShutter_c : daObjSwdoor_c {
     virtual s32 Behavior();           /* slot 6 */
     virtual s32 CleanupResources();   /* slot 3 */
     virtual s32 InitResources();      /* slot 0 */
-
-    static void *operator new(size_t size) {
-        return _ZN7fBase_cnwEj(size);
-    }
 };
 
 #ifndef SM64DS_PLATFORM_PC

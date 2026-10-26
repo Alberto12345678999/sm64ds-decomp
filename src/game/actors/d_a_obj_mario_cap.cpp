@@ -17,7 +17,7 @@
  * The whole cap unit of ov002 .text, 0x020b6f18..0x020b8bf0, 31 functions:
  * the D1/D0 pair, the state helpers and methods, InitResources and the
  * registry factory daObjMarioCap_c_classInit (`return new`, through the
- * class's leaf operator new). OnYoshiTryEat is the key function -- the first
+ * inherited fBase_c::operator new). OnYoshiTryEat is the key function -- the first
  * out-of-line virtual daObjMarioCap_c declares after the inline destructor in
  * daObjMarioCap_c.h -- so the compiler owns retail's D1/D0 pair and the
  * complete RTTI/vtable group, and no D2 is retained.

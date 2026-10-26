@@ -5,7 +5,7 @@
  * _ZTI12dScMgSlot3_c, which is what ties the table to this class rather
  * than to a neighbour.
  *
- * SIZE 0x5044, from the factory's own `_ZN7fBase_cnwEj(0x5044)`
+ * SIZE 0x5044, from the factory's own `_ZN7fBase_cnwEm(0x5044)`
  * (dScMgSlot3_c_classInit in src/minigames/d_s_mg_slots.cpp). The evidenced field span stops at 0x5043,
  * so the trailing byte is alignment, not unclaimed space.
  *

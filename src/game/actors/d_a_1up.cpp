@@ -1268,7 +1268,7 @@ int da1up_c::InitResources()
 }
 
 /* -------------------------------------------------------------------------- */
-/* MEGA_MUSHROOM (277 / SCALEUP_KINOKO). Leaf operator new routes to
+/* MEGA_MUSHROOM (277 / SCALEUP_KINOKO). `new` calls the inherited
    fBase_c::operator new; the implicit constructor inlines the dEnemyBase_c
    base step, vptr store, and the four member constructors. */
 // @symbol da1up_c_classInit_SCALEUP_KINOKO

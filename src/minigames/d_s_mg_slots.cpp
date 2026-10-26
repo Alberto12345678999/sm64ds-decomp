@@ -1649,13 +1649,15 @@ s32 dScMgSlot1_c::InitResources() {
 // @symbol dScMgSlot1_c_classInit
 /* The name is reconstructed; the ROM proves the class, not the spelling.
  * The allocation, the base C2 call and the three vptr stores are written out
- * by hand: the ROM has no dScMgSlot1_c C1, so `new dScMgSlot1_c` cannot
- * link. This TU emits _ZTV12dScMgSlot1_c and the betIcon_c vtable itself, so
- * their stores take the object-relative +8 the Slot3 factory above uses;
- * dThIcon_c's table is ov001's and is stored by its configured address. */
+ * by hand. `return new dScMgSlot1_c;` with an inline constructor doing the
+ * three clears compiles to these bytes, but its inline dThIcon_c constructor
+ * stores `_ZTV9dThIcon_c+8`. The ROM stores 0x020ad494, which is that ov001
+ * table's configured address (addend 0), so the linked word would differ.
+ * This TU emits _ZTV12dScMgSlot1_c and the betIcon_c vtable itself, so
+ * their stores take the object-relative +8 the Slot3 factory above uses. */
 extern "C" { /* .c-derived member: C linkage for the whole block */
 void *dScMgSlot1_c_classInit(void) {
-    dScMgSlot1_c *scene = (dScMgSlot1_c *)_ZN7fBase_cnwEj(sizeof(dScMgSlot1_c));
+    dScMgSlot1_c *scene = (dScMgSlot1_c *)fBase_c::operator new(sizeof(dScMgSlot1_c));
     if (scene) {
         _ZN11dScMgBase_cC2Ev(scene);
         *(int *)scene = (int)&_ZTV12dScMgSlot1_c[2];

@@ -214,9 +214,8 @@ extern "C" void func_ov036_02111cc4(void *dBgW, void *self, void *clsn)
 }
 
 /* -------------------------------------------------------------------------- */
-/* Factory: `return new` goes through the class's leaf operator new adapter
- * to fBase_c::operator new -- the 0x4ec allocation the cartridge's own
- * factory makes. */
+/* Factory: `return new` calls the inherited fBase_c::operator new -- the
+ * 0x4ec allocation the cartridge's own factory makes. */
 /* -------------------------------------------------------------------------- */
 // @symbol daObjRc_Tikuwa_c_classInit
 extern "C" daObjRc_Tikuwa_c *daObjRc_Tikuwa_c_classInit()

@@ -5,8 +5,6 @@
 #include "dActor_c.h"
 #include "dExtSimpleModel_c.h"
 
-extern "C" void *_ZN7fBase_cnwEj(unsigned size);
-
 /**
  * Whomp's Fortress pole billboard (profile BK_BILLBOARD /
  * POLE_BILLBOARD 42). Direct base is dActor_c. Factory allocates
@@ -24,11 +22,6 @@ struct daObjBkBillboard_c : dActor_c {
     virtual s32 InitResources();         /* slot  0 */
     virtual s32 CleanupResources();      /* slot  3 */
     virtual s32 Render();                /* slot  9 */
-
-    /* size_t == unsigned long here; unsigned int is illegal. */
-    static void *operator new(size_t size) {
-        return _ZN7fBase_cnwEj((unsigned)size);
-    }
 };
 
 #ifndef SM64DS_PLATFORM_PC

@@ -1,7 +1,3 @@
-/* The 0x1c-byte animation player func_ov007_020c92ac allocates and this
- * function resets. state, anim, frame and frameCount are named as in
- * func_ov007_020bc02c; the rest from func_ov007_020c9214 (which starts an
- * animation) and func_ov007_020c9110 (which ticks one). */
 typedef struct Ov007AnimPlayer {
     /* 0x00: 0 playing; 1 held (func_ov007_020c9110 leaves the frame alone);
      * func_ov007_020c9110 sets 2 when a one-shot ends */
@@ -26,9 +22,31 @@ typedef struct Ov007AnimPlayer {
 
 typedef char Ov007AnimPlayer_size_must_be_0x1c[sizeof(Ov007AnimPlayer) == 0x1c ? 1 : -1];
 
+extern void *func_ov007_020c3df4(int a, int b);
+extern void func_ov007_020c9268(char *o);
+extern int func_ov007_020c3d1c(void);
+
+void *func_ov007_020c92ac(void) {
+    void *c = func_ov007_020c3df4(0, 0x1c);
+    func_ov007_020c9268(c);
+    return c;
+}
+
+/* Long-branch veneer: long_calls emits the pooled `ldr ip,[pc]; bx ip`
+ * absolute tail-call; bracketed because the pragma is positional. */
+#pragma long_calls on
+int func_ov007_020c92a0(void) {
+    return func_ov007_020c3d1c();
+}
+#pragma long_calls off
+
+/* The 0x1c-byte animation player func_ov007_020c92ac allocates and this
+ * function resets. state, anim, frame and frameCount are named as in
+ * func_ov007_020bc02c; the rest from func_ov007_020c9214 (which starts an
+ * animation) and func_ov007_020c9110 (which ticks one). */
 /* Resets a player: stopped (state 2), one-shot, no animation, at frame 0.
  * The parameter keeps the tree's char * spelling; `p` is the typed view. */
-void func_ov007_020c9268(char* o){
+void func_ov007_020c9268(char *o) {
     Ov007AnimPlayer *p = (Ov007AnimPlayer *)o;
     p->state = 2;
     p->loopMode = 0;

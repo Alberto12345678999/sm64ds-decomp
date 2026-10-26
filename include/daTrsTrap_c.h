@@ -13,8 +13,6 @@
 #include "dBgW_KcMbg.h"
 #include "dActor_c.h"
 
-extern "C" void *_ZN7fBase_cnwEj(unsigned size);
-
 struct daTrsTrap_c : dActor_c {
     u32 pad_0d0;                 /* 0x0d0 -- dActor_c closes at 0xd0, mModel opens at 0xd4 */
     dExtSimpleModel_c mModel;    /* 0x0d4 */
@@ -81,12 +79,6 @@ struct daTrsTrap_c : dActor_c {
     void func_ov063_0211cb54(); /* 1 TERESAPIT -- trapdoor tilt,  0x0211cb54 */
     void func_ov063_0211c89c(); /* 2 BOOKSHELF -- shelf slide,   0x0211c89c */
     void func_ov063_0211c7b0(); /* 3 MERRYGOROUND -- spin,       0x0211c7b0 */
-
-    /* Leaf adapter until fBase_c::operator new(unsigned long) lands (#2570).
-       `return new daTrsTrap_c()` then routes through the retail allocator. */
-    static void *operator new(unsigned long size) {
-        return _ZN7fBase_cnwEj((unsigned)size);
-    }
 };
 
 #ifndef SM64DS_PLATFORM_PC

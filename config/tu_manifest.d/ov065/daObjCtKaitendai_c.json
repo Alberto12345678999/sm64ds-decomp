@@ -547,22 +547,22 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@466",
+      "from": "@460",
       "to": "@878",
       "evidence": "mwcc numbers this registration node @455 per TU and the fleet already defines a global @455, so the scratch link would multiply-define it"
     },
     {
-      "from": "@467",
+      "from": "@461",
       "to": "@867",
       "evidence": "mwcc numbers this registration node @456 per TU and the in-flight ov060 kpa3bg fork branch already claims @456, so the batch merge would multiply-define it"
     },
     {
-      "from": "@468",
+      "from": "@462",
       "to": "@863",
       "evidence": "mwcc numbers this registration node @457 per TU and the in-flight ov060 kpa3bg fork branch already claims @457, so the batch merge would multiply-define it"
     },
     {
-      "from": "@469",
+      "from": "@463",
       "to": "@818",
       "evidence": "mwcc numbers this registration node @458 per TU and the in-flight ov060 kpa3bg fork branch already claims @458, so the batch merge would multiply-define it"
     }

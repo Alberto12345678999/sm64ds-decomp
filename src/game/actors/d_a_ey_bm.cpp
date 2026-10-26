@@ -80,7 +80,7 @@ static inline int IsPlayerActor(dActor_c *actor) {
     return actor->actorID == 0xbf;
 }
 
-/* The leaf operator new forwards fBase_c::operator new; the implicit constructor
+/* `new` calls the inherited fBase_c::operator new; the implicit constructor
  * emits the measured dActor_c C2, vptr store, and three member C1s. */
 // @symbol daEyBm_c_classInit
 extern "C" daEyBm_c *daEyBm_c_classInit()

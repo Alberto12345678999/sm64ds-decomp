@@ -4,8 +4,6 @@
 #include "types.h"
 #include "daObjUkiyuka_c.h"
 
-extern "C" void *_ZN7fBase_cnwEj(unsigned size);
-
 /**
  * daKpa_c in the Fire Sea's floating floor. No fields of its own: the
  * factory allocates 0x32c, which daObjUkiyuka_c fills. Overrides the
@@ -21,10 +19,6 @@ struct daObjKm2_Ukishima_c : daObjUkiyuka_c {
     virtual ~daObjKm2_Ukishima_c() {}
     virtual s32 CleanupResources(); /* slot 3 */
     virtual s32 InitResources();    /* slot 0 */
-
-    static void *operator new(unsigned long size) {
-        return _ZN7fBase_cnwEj(size);
-    }
 };
 
 #ifndef SM64DS_PLATFORM_PC

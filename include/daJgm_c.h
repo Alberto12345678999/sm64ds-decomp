@@ -9,8 +9,6 @@
 #include "dCcAcPos_c.h"
 #include "dBgCh_Actr.h"
 
-extern "C" void *_ZN7fBase_cnwEj(unsigned size);
-
 struct daJgm_c;
 
 typedef s32 (daJgm_c::*DaJgmStateHandler)();
@@ -38,8 +36,8 @@ typedef char DaJgmStateHandlers_size_must_be_0x10[
  * vtable; g_profile_JUGEM is the registry descriptor.
  *
  * deslop leftovers (this TU):
- * - Factory stays `return new daJgm_c()`. Leaf unsigned-long
- *   operator new forwards `_ZN7fBase_cnwEj` until #2570.
+ * - Factory stays `return new daJgm_c()`, through the inherited
+ *   fBase_c::operator new (`_ZN7fBase_cnwEm`).
  * - Inline destructor: out-of-line emits D0 before D1. Reverse
  *   source order of the ordinary members is the TU's.
  * - sizeof wrap stays (0x420 / DaJgmStateHandlers 0x10).
@@ -86,10 +84,6 @@ struct daJgm_c : dActor_c {
     virtual int  OnYoshiTryEat();       /* slot 18 */
     virtual void OnTurnIntoEgg(Player &player); /* slot 19 */
     virtual int  OnAimedAtWithEgg();    /* slot 29 */
-
-    static void *operator new(size_t size) {
-        return _ZN7fBase_cnwEj((unsigned)size);
-    }
 
 private:
     void EnterState();

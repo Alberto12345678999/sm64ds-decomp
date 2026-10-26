@@ -4,7 +4,7 @@
  * English minigame identity; the unique factory is named
  * dScMgBSC_c_classInit from that profile+RTTI evidence.
  *
- * SIZE 0x51d0, from dScMgBSC_c_classInit's `_ZN7fBase_cnwEj(0x51d0)`.
+ * SIZE 0x51d0, from dScMgBSC_c_classInit's `_ZN7fBase_cnwEm(0x51d0)`.
  *
  * THE DEALER at 0x4f38: a Dealer (include/Dealer.h, 0x270 bytes), the
  * same record the card, roulette and memory scenes embed there.

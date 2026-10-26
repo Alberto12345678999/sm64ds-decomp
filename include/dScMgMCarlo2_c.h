@@ -5,7 +5,7 @@
  * historical English-minigame alias.
  *
  * SIZE 0x5930, from dScMgMCarlo2_c_classInit in the combined class TU's
- * `_ZN7fBase_cnwEj(0x5930)`.
+ * `_ZN7fBase_cnwEm(0x5930)`.
  *
  * THE DEALER at 0x4f38: a Dealer (include/Dealer.h, 0x270 bytes), the
  * same record the card, roulette, BSC and memory scenes embed there. This

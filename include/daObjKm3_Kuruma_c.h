@@ -4,8 +4,6 @@
 #include "types.h"
 #include "daObjKuruma_c.h"
 
-extern "C" void *_ZN7fBase_cnwEj(unsigned size);
-
 /**
  * daKpa_c in the Sky's rickshaw cart (`kuruma`). No fields of its
  * own: the factory allocates 0x320 = sizeof(dBgActor_c), which
@@ -21,10 +19,6 @@ struct daObjKm3_Kuruma_c : daObjKuruma_c {
     virtual ~daObjKm3_Kuruma_c() {}
     s32 CleanupResources();            /* slot  3 */
     s32 InitResources();               /* slot  0 */
-
-    static void *operator new(unsigned long size) {
-        return _ZN7fBase_cnwEj(size);
-    }
 };
 
 #ifndef SM64DS_PLATFORM_PC

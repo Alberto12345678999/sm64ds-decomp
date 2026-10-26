@@ -47,8 +47,6 @@
 #include "dExtShadowModel_c.h"
 #include "dBgCh_Actr.h"
 
-extern "C" void *_ZN7fBase_cnwEj(unsigned size);
-
 /* mMushroomType, intended range 0..13 (Behavior indexes the array without a
    bounds check), is picked from the low nibble of param1 in
    InitResources and indexes the 14-element dispatch array Behavior calls. The
@@ -170,13 +168,6 @@ struct da1up_c : dEnemyBase_c {
     void func_ov002_020afde4();
     void func_ov002_020afe4c();   /* dispatch  1 */
     void func_ov002_020aff10();   /* dispatch  0 */
-
-    /* Leaf allocator until fBase_c::operator new is a real method (#2570).
-       unsigned long, not unsigned int: that is the C++ new signature mwccarm
-       2004/b56 emits for `new da1up_c()`. */
-    static void *operator new(size_t size) {
-        return _ZN7fBase_cnwEj((unsigned)size);
-    }
 };
 
 #ifndef SM64DS_PLATFORM_PC

@@ -10,8 +10,6 @@
 #include "dExtAnmTexPat_c.h"
 #include "dCcAc_c.h"
 
-extern "C" void *_ZN7fBase_cnwEj(unsigned size);
-
 /* Penguin Defender (PENGUIN_DEFENDER 258).
  *
  * RTTI ov027:0x021139e4 names the class daPgDfdr_c; the debug table at
@@ -58,10 +56,6 @@ struct daPgDfdr_c : dBgActor_c {
     virtual s32 Behavior();            /* slot  6 */
     virtual s32 Render();              /* slot  9 */
     virtual void OnPendingDestroy();   /* slot 12 -- empty in the ROM */
-
-    static void *operator new(size_t size) {
-        return _ZN7fBase_cnwEj((unsigned)size);
-    }
 
     void func_ov027_02111cfc();
     void func_ov027_02111d38();

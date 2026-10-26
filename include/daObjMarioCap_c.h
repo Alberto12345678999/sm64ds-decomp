@@ -17,8 +17,6 @@
 #include "dExtShadowModel_c.h"
 #include "dBgCh_Actr.h"
 
-extern "C" void *_ZN7fBase_cnwEj(unsigned size);
-
 /* Derives from dEnemyBase_c, and both witnesses agree offset for offset:
  *
  *   daObjMarioCap_c_classInit (ov002) allocates 0x410, calls _ZN12dEnemyBase_cC2Ev, stores
@@ -184,13 +182,6 @@ struct daObjMarioCap_c : dEnemyBase_c {
     int Fall();             /* df14 per-frame */
     int InitDormant();      /* df44 enter;  type 13 */
     int Dormant();          /* df44 per-frame */
-
-    /* Leaf until fBase_c can declare operator new (#2570). unsigned long, not
-       unsigned int: size_t is unsigned int on this include path and mangles
-       nwEj, colliding with fBase_c's own allocator. */
-    static void *operator new(size_t size) {
-        return _ZN7fBase_cnwEj((unsigned)size);
-    }
 
     /* What the cap is, from the low byte of param1 (0xff reads as 0). Only the
        values the code gives a meaning to are named; the rest are plain numbers

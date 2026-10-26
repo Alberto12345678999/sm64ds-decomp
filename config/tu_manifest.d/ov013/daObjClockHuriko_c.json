@@ -484,7 +484,7 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@296",
+      "from": "@284",
       "to": "@282",
       "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @296 now; licensed under the existing pin @282"
     }

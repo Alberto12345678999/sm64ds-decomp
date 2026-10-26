@@ -6,8 +6,6 @@
 #include "dExtShadowModel_c.h"
 #include "dCcAcPos_c.h"
 
-extern "C" void *_ZN7fBase_cnwEj(unsigned size);
-
 /* BIG_SNOWMAN (272) -- ov072/daBgSnwmn_c, the snowman manager/head assembly.
  *
  * BASE. dActor_c DIRECTLY -- not dBgActor_c. Two independent readings agree:
@@ -59,10 +57,6 @@ struct daBgSnwmn_c : dActor_c {
     /* Builds both model matrices from mAngleY/mPos* and drops the shadow.
        Called once from InitResources. */
     void func_ov072_021208d8();
-
-    static void *operator new(size_t size) {
-        return _ZN7fBase_cnwEj((unsigned)size);
-    }
 
     /* Declared last and inline so class instantiation emits the retail D1/D0
        pair in that order, with no separate D2 body. */

@@ -90,8 +90,6 @@
 
 #ifdef __cplusplus
 
-extern "C" void *_ZN7fBase_cnwEj(unsigned size);
-
 struct daObjClockHuriko_c : dActor_c {
     u8  pad_0d0[0x4];
     /* Named by the implicit constructor's _ZN17dExtSimpleModel_cC1Ev call at +0xd4 -- a
@@ -123,13 +121,6 @@ struct daObjClockHuriko_c : dActor_c {
     virtual s32 CleanupResources();       /* slot 3 */
     virtual s32 Behavior();               /* slot 6 */
     virtual s32 Render();                 /* slot 9 */
-
-    /* Until #2570 merges, a leaf `unsigned long` new forwards the retail
-       `fBase_c::operator new(unsigned int)`. `unsigned int` here mangles
-       differently and the factory misses. */
-    static void *operator new(size_t size) {
-        return _ZN7fBase_cnwEj((unsigned)size);
-    }
 };
 
 /* Holds the chain to the size the factory's operator new(0x128) evidences.

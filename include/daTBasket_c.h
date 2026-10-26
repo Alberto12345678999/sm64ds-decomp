@@ -52,8 +52,6 @@
 #include "dExtShadowModel_c.h"
 #include "dBgCh_Actr.h"
 
-extern "C" void *_ZN7fBase_cnwEj(unsigned size);
-
 struct daTBasket_c : dEnemyBase_c {
     dCcAc_c           mdCcAc_c;   /* 0x110 */
     dBgCh_Actr                 mWithMeshClsn;         /* 0x144 */
@@ -75,12 +73,6 @@ struct daTBasket_c : dEnemyBase_c {
     virtual s32 CleanupResources();  /* slot  3 -- ov063:0x0211ae1c */
     virtual s32 Behavior();          /* slot  6 -- ov063:0x0211b888 */
     virtual s32 Render();            /* slot  9 -- ov063:0x0211b078 */
-
-    /* Existing leaf forwarding adapter: `return new daTBasket_c()` routes
-       through the retail allocator. fBase_c also declares an adapter. */
-    static void *operator new(size_t size) {
-        return _ZN7fBase_cnwEj((unsigned)size);
-    }
 
     /* The shadow-drop helper: rebuilds mModel.mat4x3 from the position and
        calls DropShadowRadHeight on mShadowModel. r0 is this basket. */

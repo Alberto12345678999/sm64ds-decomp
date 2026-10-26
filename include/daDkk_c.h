@@ -60,8 +60,6 @@
 
 #include "daDsnBase_c.h"
 
-extern "C" void *_ZN7fBase_cnwEj(unsigned size);
-
 struct daDkk_c : daDsnBase_c {
     /* The drop shadow's matrix; daDsnBase_c's per-frame shadow refresh
        fills it. Kept as raw bytes: a Matrix4x3 member would add a
@@ -105,15 +103,6 @@ struct daDkk_c : daDsnBase_c {
     int func_ov025_021119a4();
     void func_ov025_021119f4();
     void func_ov025_02111a84();
-
-    /* Leaf operator new until #2570 merges fBase_c's own. unsigned long, not
-       unsigned int: mwccarm 2004/b56 mangles the two differently and the
-       global ::operator new the implicit `new` would otherwise call is
-       `_Znwm`. */
-    static void *operator new(size_t size)
-    {
-        return _ZN7fBase_cnwEj((unsigned)size);
-    }
 };
 
 #ifndef SM64DS_PLATFORM_PC
