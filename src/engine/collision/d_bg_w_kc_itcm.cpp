@@ -63,12 +63,11 @@ int func_02039794(int x);                       /* slope-band classify */
 void func_020381cc(void *block, int idx, void **out);
 void func_02037eb0(SurfaceInfo *info, CLPS clps, Vector3 *normal);
 
-/* local extern: dBgPc's real ctor/dtor (include/dBgPc.h), called explicitly
-   against SurfaceInfo-shaped storage the way the cartridge does it. C++ can
-   only spell the constructor call as placement new, which adds a null test,
-   and a block-scope dBgPc local moves the frame. */
+/* local extern: dBgPc's constructor. Placement new is the only C++ spelling
+   and it inserts a null test, which grows DetectClsn(dBgCh_Lin&) by 8.
+   A block-scope dBgPc local moves the frame. The destructor is an ordinary
+   explicit call and does not. */
 void _ZN5dBgPcC1Ev(dBgPc *info);
-void _ZN5dBgPcD1Ev(dBgPc *info);
 
 /* local extern: the ROM reads s16 normals through an s32* view. */
 s32 DotVec3(const s32 *a, const Vector3 *b);
@@ -1012,8 +1011,8 @@ s32 dBgW_Kc::DetectClsn(dBgCh_SphCrr &sphere)
  * leaf shared across row cells is walked once; rowStep/rowLeaf track the row's
  * first leaf.
  *
- * info, normal and pos stay at function scope, with the dBgPc ctor and
- * dtor spelled on info. The leaf pointer is declared among the cell temps
+ * info, normal and pos stay at function scope, with the dBgPc ctor spelled
+ * on info and the destructor called on it. The leaf pointer is declared among the cell temps
  * and walked with *++leaf. The edge-normal dots stay inline; a named local
  * for them spills the leaf pointer.
  */
@@ -1212,7 +1211,7 @@ s32 dBgW_Kc::DetectClsn(dBgCh_Lin &ray)
                                 ((dBgPi &)ray).RecordHit(triIdx, &info);
                                 found = true;
                             }
-                            _ZN5dBgPcD1Ev((dBgPc *)&info);
+                            ((dBgPc *)&info)->~dBgPc();
                         }
                     }
                 }
