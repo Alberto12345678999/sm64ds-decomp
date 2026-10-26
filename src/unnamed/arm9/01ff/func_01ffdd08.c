@@ -93,7 +93,7 @@ void func_01ffdd98(u32 resetArg) {
  *
  * func_02057020 / func_0205710c keep their func_ names from config/arm9/symbols.txt.
  * The low-halfword truncation of func_02057020's result is the same idiom already in
- * src/unnamed/arm9/0205/func_02058690.c and src/engine/save/SaveData2.cpp.
+ * src/unnamed/arm9/0205/func_0205865c.c and src/engine/save/SaveData2.cpp.
  */
 void func_01ffdd08(void) {
     u32 romOffset = ROM_HEADER_ARM9_ROM_OFFSET;
