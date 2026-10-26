@@ -95,9 +95,9 @@ slot count exactly, and all three are two slots wide:
 
 | thunk vtable | prefix | slots |
 |---|---|---|
-| `VTable_Animation_BlendModelAnimThunk` @0x0208e970 | `[-0x50, dExtBlendAnmModel_c]` | 2 |
-| `VTable_Animation_ModelAnimThunk` @0x0208e9a4 | `[-0x50, dExtAnmModel_c]` | 2 |
-| `VTable_Animation_ModelAnim2Thunk` @0x0208e9d8 | `[-0x50, dExtAnm2Model_c]` | 2 |
+| `VTable_dExtFrameCtrl_c_dExtBlendAnmModel_cThunk` @0x0208e970 | `[-0x50, dExtBlendAnmModel_c]` | 2 |
+| `VTable_dExtFrameCtrl_c_dExtAnmModel_cThunk` @0x0208e9a4 | `[-0x50, dExtAnmModel_c]` | 2 |
+| `VTable_dExtFrameCtrl_c_dExtAnm2Model_cThunk` @0x0208e9d8 | `[-0x50, dExtAnm2Model_c]` | 2 |
 
 So `Update(ModelComponents &)` on the controller family is a plain method, not an override of an
 inherited virtual.
@@ -106,8 +106,10 @@ inherited virtual.
 
 They are ground truth for *semantics* as well as spelling. `dExtFrameCtrl_c` confirms that the
 class is a frame controller — a playback cursor, not the animation data — which is what it
-already does. The thunk vtables keep their descriptive `VTable_Animation_*Thunk` labels: the
-cartridge gives secondary vtables no name of their own. Future naming work can cite this file
+already does. The cartridge gives secondary vtables no name of their own. Each sits inside its
+class's `_ZTV` group at +0x24, and dsd needs a symbol at every relocation target, so the tables keep
+labels, spelled `VTable_<secondary base>_<class>Thunk` like `VTable_dBgPi_dBgCh_LinThunk` (they were
+`VTable_Animation_*Thunk` before the RTTI rename). Future naming work can cite this file
 instead of re-deriving the pointers.
 
 Reproduce any row with:

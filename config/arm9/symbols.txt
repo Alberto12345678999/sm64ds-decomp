@@ -3618,11 +3618,11 @@ _ZTS19dExtBlendAnmModel_c kind:data(any) addr:0x0208e8ec
 _ZTV17dExtSimpleModel_c kind:data(any) addr:0x0208e90c
 _ZTI14dExtAnmModel_c kind:data(any) addr:0x0208e924
 _ZTV19dExtBlendAnmModel_c kind:data(any) addr:0x0208e94c
-VTable_Animation_BlendModelAnimThunk kind:data(any) addr:0x0208e970
+VTable_dExtFrameCtrl_c_dExtBlendAnmModel_cThunk kind:data(any) addr:0x0208e970
 _ZTV14dExtAnmModel_c kind:data(any) addr:0x0208e980
-VTable_Animation_ModelAnimThunk kind:data(any) addr:0x0208e9a4
+VTable_dExtFrameCtrl_c_dExtAnmModel_cThunk kind:data(any) addr:0x0208e9a4
 _ZTV15dExtAnm2Model_c kind:data(any) addr:0x0208e9b4
-VTable_Animation_ModelAnim2Thunk kind:data(any) addr:0x0208e9d8
+VTable_dExtFrameCtrl_c_dExtAnm2Model_cThunk kind:data(any) addr:0x0208e9d8
 _ZTI8dFader_c kind:data(any) addr:0x0208e9e0
 _ZTS8dFader_c kind:data(any) addr:0x0208e9e8
 _ZTS9dFdWipe_c kind:data(any) addr:0x0208e9f4

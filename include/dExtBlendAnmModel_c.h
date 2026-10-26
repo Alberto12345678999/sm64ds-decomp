@@ -6,8 +6,9 @@
 
 /* dExtAnmModel_c child that cross-fades between the previous pose and the new
  * animation, vtable _ZTV19dExtBlendAnmModel_c at 0x0208e94c (same seven-slot
- * shape as dExtAnmModel_c, every slot overridden) plus its own
- * VTable_Animation_BlendModelAnimThunk secondary.
+ * shape as dExtAnmModel_c, every slot overridden) plus its own secondary
+ * dExtFrameCtrl_c table at _ZTV19dExtBlendAnmModel_c + 0x24
+ * (VTable_dExtFrameCtrl_c_dExtBlendAnmModel_cThunk).
  *
  * THE DESTRUCTOR IS DECLARED FIRST -- see include/dExtAnmModel_c.h; the D1
  * additionally frees mBlendBuffer before chaining to dExtAnmModel_c::D2. Defined

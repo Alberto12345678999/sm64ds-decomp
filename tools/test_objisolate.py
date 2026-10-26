@@ -1606,12 +1606,12 @@ class Isolate(unittest.TestCase):
 
         Multiple inheritance stores the secondary sub-table's address as well as
         the primary's, so the addend is past the primary slots -- 44 for
-        `ModelAnim` where the primary's is 8. The correction is the same
+        `dExtAnmModel_c` where the primary's is 8. The correction is the same
         subtraction, because mwcc's `_ZTV` addresses the vtable object's start
         while the ROM's IS the slot array, and the ROM names the destination
-        independently: `_ZTV9ModelAnim` 0x0208e980 and
-        `VTable_Animation_ModelAnimThunk` 0x0208e9a4 differ by 0x24, which is
-        exactly 44 - 8.
+        independently: `_ZTV14dExtAnmModel_c` 0x0208e980 and
+        `VTable_dExtFrameCtrl_c_dExtAnmModel_cThunk` 0x0208e9a4 differ by 0x24,
+        which is exactly 44 - 8.
 
         This was refused while no enrolled instance existed to check the
         arithmetic against. Both stores now drop by the preamble."""
@@ -1634,7 +1634,7 @@ class Isolate(unittest.TestCase):
         addend 8 for the primary store, and 24 (8 preamble + 0x10 into the
         secondary block) for the secondary. The secondary used to be refused
         on the UNDEF path while no enrolled instance verified the arithmetic;
-        ModelAnim's externalised 44 - 8 = +0x24 thunk landing is that
+        dExtAnmModel_c's externalised 44 - 8 = +0x24 thunk landing is that
         verification, and dBgCh_Lin's constructor is the first enrolled
         function to walk this exact path."""
         obj = self.build("struct B1 { int p[4]; virtual ~B1(){} };\n"

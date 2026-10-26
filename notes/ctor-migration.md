@@ -35,7 +35,7 @@ the destructor, defined nowhere), and the secondary store arrives as UNDEF
 `_ZTV9dBgCh_Lin` with **addend 24** — 8 preamble + 0x10 into the secondary
 block. The UNDEF path used to refuse any addend but 8; dExtAnmModel_c's already-
 enrolled externalise case (44 − 8 = +0x24 =
-`VTable_Animation_ModelAnimThunk`) is the verification the original refusal
+`VTable_dExtFrameCtrl_c_dExtAnmModel_cThunk`) is the verification the original refusal
 asked for, so the same subtraction is now accepted there, with a probe test
 (`test_corrects_ctor_only_mi_secondary_vptr`) pinning the shape. Two local
 helpers came out of the same compile — `_ZN7Vector3D1Ev` (Vector3's inline
