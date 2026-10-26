@@ -1904,14 +1904,13 @@ void func_ov002_020bf800(char *c, Vector3_16f v)
 extern "C" {
 void Player::func_ov002_020bf88c(){
     extern void func_02022b04(int x, int y, int z);
-    extern void _ZN8Particle20RunningSlidingDustAtE5Fix12IiES1_S1_(int x, int y, int z);
     extern int data_0208e430;
     if (mIsInShallowWater) return;
     if (data_0208e430 == 0x2e) return;
     if (mIsMega)
         func_02022b04(this->mPosX, this->mPosY, this->mPosZ);
     else
-        _ZN8Particle20RunningSlidingDustAtE5Fix12IiES1_S1_(this->mPosX, this->mPosY, this->mPosZ);
+        Particle::RunningSlidingDustAt(this->mPosX, this->mPosY, this->mPosZ);
 }
 }
 
@@ -1920,7 +1919,6 @@ extern "C" {
 void Player::func_ov002_020bf90c()
 {
     extern void func_02022b04(Fix12i x, Fix12i y, Fix12i z);
-    extern void _ZN8Particle20RunningSlidingDustAtE5Fix12IiES1_S1_(Fix12i x, Fix12i y, Fix12i z);
     extern int func_0201226c(int a0, int a1, int a2, int a3, int a4, short a5);
     extern int data_0208e430;
     if (this->mHorzSpeed == 0) return;
@@ -1931,7 +1929,7 @@ void Player::func_ov002_020bf90c()
     if (mIsMega != 0)
         func_02022b04(this->mPosX, this->mPosY, this->mPosZ);
     else
-        _ZN8Particle20RunningSlidingDustAtE5Fix12IiES1_S1_(this->mPosX, this->mPosY, this->mPosZ);
+        Particle::RunningSlidingDustAt(this->mPosX, this->mPosY, this->mPosZ);
 
     mLoopingSoundHandle = func_0201226c(mLoopingSoundHandle, 0, mGroundSoundType + 0xe2,
                                         (int)&mCamSpacePos, this->mHorzSpeed, 0);
@@ -4031,7 +4029,6 @@ void Player::func_ov002_020c38a0()
 extern "C" {
 int Player::func_ov002_020c3a48()
 {
-    extern void _ZN8Particle20RunningSlidingDustAtE5Fix12IiES1_S1_(int x, int y, int z);
     extern void Player_AdvanceAnims(void*);
     unsigned int r5;
     char *anim;
@@ -4041,7 +4038,7 @@ int Player::func_ov002_020c3a48()
         mAttachOffsetY = 0;
         id = this->GetBodyModelID(param1 & 0xff, 0);
         if (mModels.mBodyModels[id]->WillHitFrame(0x5a)) {
-            _ZN8Particle20RunningSlidingDustAtE5Fix12IiES1_S1_(this->mPosX, this->mPosY, this->mPosZ);
+            Particle::RunningSlidingDustAt(this->mPosX, this->mPosY, this->mPosZ);
             Sound::PlayCharVoice(mCharacter, 0, mCamSpacePos);
             mStateWork += 1;
         }
@@ -4059,7 +4056,7 @@ int Player::func_ov002_020c3a48()
         anim = (char *)((long long)(int)&(dExtFrameCtrl_c &)*mModels.mBodyModels[id]);
         r5 = (unsigned int)(((dExtFrameCtrl_c *)anim)->currFrame << 4) >> 0x10;
         if (r5 == 0x6d || r5 == 0x8d) {
-            _ZN8Particle20RunningSlidingDustAtE5Fix12IiES1_S1_(this->mPosX, this->mPosY, this->mPosZ);
+            Particle::RunningSlidingDustAt(this->mPosX, this->mPosY, this->mPosZ);
         }
         switch (r5) {
         case 0x77:
@@ -10618,7 +10615,6 @@ void func_ov002_020ce9c8(char* self)
     extern u32 func_02022c80(u32 uniqueID, u32 effectID, Fix12i x, Fix12i y, Fix12i z, const void* dir);
     extern u32 func_02022cbc(u32 uniqueID, u32 effectID, Fix12i x, Fix12i y, Fix12i z, const void* dir);
     extern u32 func_02022d00(u32 uniqueID, u32 effectID, Fix12i x, Fix12i y, Fix12i z, void*);
-    extern void _ZN8Particle6System12NewBigSplashE5Fix12IiES2_S2_(Fix12i x, Fix12i y, Fix12i z);
     extern char* data_0209f32c;
     int v[3];
     int effectID;
@@ -10641,7 +10637,7 @@ void func_ov002_020ce9c8(char* self)
     if (player->mIsMega)
         player->mParticle1 = func_02022d00(player->mParticle1, 0x56, player->mPosX, (int)data_0209f32c, player->mPosZ, 0);
     else
-        _ZN8Particle6System12NewBigSplashE5Fix12IiES2_S2_(player->mPosX, (int)data_0209f32c, player->mPosZ);
+        Particle::System::NewBigSplash(player->mPosX, (int)data_0209f32c, player->mPosZ);
 
     if (player->mIsMega)
         Sound::PlayBank0(0xd4, player->mCamSpacePos);
@@ -11952,7 +11948,6 @@ int Player::St_WallSlide_Main()
     extern void func_02022b04(Fix12i, Fix12i, Fix12i);
     extern Player::State data_ov002_021103dc;
     typedef int Fix12i;
-    extern void _ZN8Particle20RunningSlidingDustAtE5Fix12IiES1_S1_(Fix12i x, Fix12i y, Fix12i z);
     extern int func_0201226c(int a0, int a1, int a2, int a3, int a4, short a5);
     extern void Player_AdvanceAnims(void *p);
     extern unsigned char data_0209f49e[];
@@ -11973,7 +11968,8 @@ int Player::St_WallSlide_Main()
     }
     else
     {
-      _ZN8Particle20RunningSlidingDustAtE5Fix12IiES1_S1_(*((int *) ((char *)&mPosX)), *((int *) ((char *)&mPosY)), *((int *) ((char *)&mPosZ)));
+        Particle::RunningSlidingDustAt(*((int *)((char *)&mPosX)), *((int *)((char *)&mPosY)),
+                                       *((int *)((char *)&mPosZ)));
     }
     *((int *) ((char *)&mLoopingSoundHandle)) = func_0201226c(*((int *) ((char *)&mLoopingSoundHandle)), 0, (*((int *) ((char *)&mGroundSoundType))) + 0xe2, (int) ((char *)&mCamSpacePosX), *((int *) ((char *)&mHorzSpeed)), 0);
     if ((*((unsigned short *) (&data_0209f49e[gActivePlayerSlot * 0x18]))) & 2)
@@ -13232,7 +13228,6 @@ int func_ov002_020d2fdc(char *self)
     extern u8 data_0209f2d8;
     extern char data_0209f2f8;
     extern void *data_0209f318;
-    extern void _ZN8Particle20RunningSlidingDustAtE5Fix12IiES1_S1_(int x, int y, int z);
     extern int _ZNK6Player14GetBodyModelIDEjb(void *thiz, unsigned int a, int b);
     extern void func_ov002_020d4c30(void *self);
     Player *p = (Player *)self;
@@ -13257,7 +13252,7 @@ int func_ov002_020d2fdc(char *self)
             p->mDashBoostTimer = 0x1e;
             r5 = 0x3000;
             if (p->mIsInShallowWater == 0) {
-                _ZN8Particle20RunningSlidingDustAtE5Fix12IiES1_S1_(p->mPosX, p->mPosY, p->mPosZ);
+                Particle::RunningSlidingDustAt(p->mPosX, p->mPosY, p->mPosZ);
             }
         }
 
@@ -13984,7 +13979,6 @@ void func_ov002_020d45c0(char* self)
 {
     extern int Player_ScaleByCharFactor(void* c, int a);
     extern void func_02022b04(int x, int y, int z);
-    extern void _ZN8Particle20RunningSlidingDustAtE5Fix12IiES1_S1_(int x, int y, int z);
     extern int data_0208e430;
     extern s16 data_0209f4a0[];
     extern u8 data_0209f4ac[];
@@ -14001,8 +13995,7 @@ void func_ov002_020d45c0(char* self)
                 if (p->mIsMega != 0)
                     func_02022b04(p->mPosX, p->mPosY, p->mPosZ);
                 else
-                    _ZN8Particle20RunningSlidingDustAtE5Fix12IiES1_S1_(p->mPosX, p->mPosY,
-                                                                       p->mPosZ);
+                    Particle::RunningSlidingDustAt(p->mPosX, p->mPosY, p->mPosZ);
             }
         }
     }
@@ -14014,7 +14007,7 @@ void func_ov002_020d45c0(char* self)
             if (p->mIsMega != 0)
                 func_02022b04(p->mPosX, p->mPosY, p->mPosZ);
             else
-                _ZN8Particle20RunningSlidingDustAtE5Fix12IiES1_S1_(p->mPosX, p->mPosY, p->mPosZ);
+                Particle::RunningSlidingDustAt(p->mPosX, p->mPosY, p->mPosZ);
         }
         if (p->mHorzSpeed < Player_ScaleByCharFactor(self, 0x1c000))
             p->mStateArg = 0;
@@ -14048,7 +14041,6 @@ void Player::func_ov002_020d4748()
     /* local extern: AnimSpeed/s5 are wider than u16; each narrowed call costs +8. */
     void _ZN6Player7SetAnimEjiit(void *, unsigned int, int, int, unsigned int);
     int _ZNK6Player14GetBodyModelIDEjb(void*, unsigned int, int);
-    void _ZN8Particle20RunningSlidingDustAtE5Fix12IiES1_S1_(int, int, int);
     int Player_ScaleByCharFactor(void*, int);
     void func_ov002_020d4c30(void*);
     extern unsigned char data_0209f4ac;
@@ -14132,7 +14124,7 @@ void Player::func_ov002_020d4748()
             this->mStateStep = 0x17;
             _ZN6Player7SetAnimEjiit(c, 0x61, 0, 0x1000, AnimSpeed(c));
         } else if (this->mFloorClass == 4 && *(short*)((char*)&data_0209f4a0 + gActivePlayerSlot * 0x18) == 0) {
-            _ZN8Particle20RunningSlidingDustAtE5Fix12IiES1_S1_(this->mPosX, this->mPosY, this->mPosZ);
+            Particle::RunningSlidingDustAt(this->mPosX, this->mPosY, this->mPosZ);
             ((Player *)c)->SetAnim(0x47, 0, 0x1000, 0);
         } else if (this->mIsWalkPace != 0) {
             unsigned int s5 = AnimSpeed(c);
@@ -20653,7 +20645,6 @@ int Player::St_Cannon_Main()
     extern short GetAngleToCamera(int i);
     extern void func_0200d6f0(void* thiz, u8 pid);
     extern void func_02012694(u32 id, void* v);
-    extern void _ZN8Particle20RunningSlidingDustAtE5Fix12IiES1_S1_(int a, int b, int cc);
     extern int atan2_hold_Player_3(int a, int b);
     extern void Player_AdvanceAnims(void* c);
     extern u16 data_0209f49e[];
@@ -20714,7 +20705,7 @@ int Player::St_Cannon_Main()
         if (mHorzSpeed < 0xa000)
             mHorzSpeed = 0xa000;
         if (mVertSpeed >= 0)
-            _ZN8Particle20RunningSlidingDustAtE5Fix12IiES1_S1_(mPosX, mPosY, mPosZ);
+            Particle::RunningSlidingDustAt(mPosX, mPosY, mPosZ);
         if (mStateWork == 0)
             mAngleX = cstd::atan2(mHorzSpeed >> 8, mVertSpeed >> 8) - 0x4000;
         Player_AdvanceAnims(((char*)this));

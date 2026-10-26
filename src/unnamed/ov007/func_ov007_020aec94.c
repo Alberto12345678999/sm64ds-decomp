@@ -1,4 +1,5 @@
 #include "Ov007MenuState.h"
+#include "Ov007Work.h"
 
 extern void func_ov007_020bd9e4(int);
 extern int *data_ov007_0210342c;
@@ -16,20 +17,7 @@ typedef struct Ov007Settings {
     char pad_3a[2];
 } Ov007Settings;
 
-/* data_ov007_0210342c: the overlay's manager; names as in
- * func_ov007_020afc44, only the slots this file touches. */
-typedef struct Ov007Work {
-    char pad_00[4];
-    Ov007MenuState *states[3]; /* 0x04: func_ov007_020c9388 */
-    /* 0x10: the choice this function was last given; func_ov007_020b0834
-     * replays it once the state-9 window closes */
-    int pendingChoice;
-    char pad_14[0x14];
-    Ov007Settings *settings; /* 0x28: func_ov007_020b6a84 */
-} Ov007Work;
-
 typedef char Ov007Settings_size_must_be_0x3c[sizeof(Ov007Settings) == 0x3c ? 1 : -1];
-typedef char Ov007Work_size_must_be_0x2c[sizeof(Ov007Work) == 0x2c ? 1 : -1];
 
 /* The extern keeps its int * spelling; the typed view is reached through a
  * cast macro. */

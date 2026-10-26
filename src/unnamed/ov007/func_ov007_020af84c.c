@@ -1,5 +1,6 @@
 #include "Ov007MenuState.h"
 #include "Ov007Touch.h"
+#include "Ov007Work.h"
 
 /* The 0x70-byte key record func_ov007_020c2304 allocates; names as in
  * func_ov007_020c20b8, only the slots read here. */
@@ -7,23 +8,6 @@ typedef struct Ov007Pad {
     u16 keys;     /* 0x00: held this frame */
     u16 prevKeys; /* 0x02: held last frame */
 } Ov007Pad;
-
-/* data_ov007_0210342c: the overlay's manager; names as in
- * func_ov007_020afc44 and func_ov007_020b1cf0, only the slots this file
- * touches. +0x28's record and the callback at +0x2c stay raw, as in
- * func_ov007_020af59c. */
-typedef struct Ov007Work {
-    char pad_00[4];
-    Ov007MenuState *states[3]; /* 0x04: func_ov007_020c9388 */
-    char pad_10[0x40];
-    Ov007Touch *touch; /* 0x50: func_ov007_020c2068 */
-    Ov007Pad *pad;     /* 0x54: func_ov007_020c2304 */
-    /* 0x58/0x5c, medium confidence: the tapped slot and its target; this
-     * file indexes data_ov007_020ccc20[selectedSlot][targetSlot]; -1 = none
-     * (func_ov007_020b0244) */
-    int selectedSlot;
-    int targetSlot;
-} Ov007Work;
 
 extern char *data_ov007_0210342c;
 extern int data_ov007_020ccc20[];

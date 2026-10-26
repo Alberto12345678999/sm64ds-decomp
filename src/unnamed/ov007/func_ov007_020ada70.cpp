@@ -1,5 +1,6 @@
 //cpp
 #include "Ov007MenuState.h"
+#include "Ov007Work.h"
 
 namespace CP15 {
 void FlushAndInvalidateDataCache(unsigned int a, unsigned int b);
@@ -31,18 +32,7 @@ struct Ov007Display {
     Ov007Palette **palettes;
 };
 
-/* data_ov007_0210342c: the overlay's manager; names as in
- * func_ov007_020b1718 and func_ov007_020adc08, only the slots this file
- * reads. */
-struct Ov007Work {
-    char pad_00[0x40];
-    Ov007MenuState *paletteState; /* 0x40: func_ov007_020bce70 requests palette n on it */
-    char pad_44[0x30];
-    Ov007Display *display; /* 0x74: func_ov007_020b6d40 stores func_ov007_020b7594's record */
-};
-
 typedef char Ov007Display_size_must_be_0x30[sizeof(Ov007Display) == 0x30 ? 1 : -1];
-typedef char Ov007Work_size_must_be_0x78[sizeof(Ov007Work) == 0x78 ? 1 : -1];
 
 /* For palette states 4..7, loads palette 2..5 into the sub BG palette, then
  * copies row 0xc..0xf (0xc by default) of palette 1 into sub OBJ palette

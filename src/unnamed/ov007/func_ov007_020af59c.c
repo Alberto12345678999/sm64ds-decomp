@@ -1,20 +1,5 @@
 #include "Ov007MenuState.h"
-
-/* data_ov007_0210342c: the overlay's manager; names as in
- * func_ov007_020afc44, only the slots this function touches. The callback
- * at +0x2c stays raw (no evidence names it), and so does the record the
- * settings' first word points at (a byte per slot from +0xb). */
-typedef struct Ov007Work {
-    char pad_00[4];
-    Ov007MenuState *states[3]; /* 0x04: func_ov007_020c9388 */
-    char pad_10[0x18];
-    /* 0x28: the 0x3c-byte record func_ov007_020b6a84 allocates */
-    struct Ov007Settings *settings;
-    char pad_2c[0x2c];
-    /* 0x58, medium confidence: the tapped slot; -1 = none
-     * (func_ov007_020b0244) */
-    int selectedSlot;
-} Ov007Work;
+#include "Ov007Work.h"
 
 extern char *data_ov007_0210342c;
 /* The extern keeps the tree's char * spelling (the declaration-agreement

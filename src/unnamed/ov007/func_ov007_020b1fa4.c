@@ -1,4 +1,5 @@
 #include "types.h"
+#include "Ov007Work.h"
 extern int func_ov007_020c0128(void* c);
 extern int _ZN4cstd3divEii(int a, int b);
 extern void func_ov007_020bffb8(void* c);
@@ -20,19 +21,6 @@ typedef struct Ov007Camera {
     char pad_74[0x60];
     short fovy; /* 0xd4 */
 } Ov007Camera;
-
-/* data_ov007_0210342c: the overlay's manager; names as in
- * func_ov007_020b1718, only the slots this file touches. +0xec (0 or 1;
- * picks the preset-1 framing here and the sounds in func_ov007_020b10dc and
- * func_ov007_020b1718) stays raw: no role to name. */
-typedef struct Ov007Work {
-    char pad_00[0x24];
-    /* 0x24, medium confidence: the preset this function last applied;
-     * func_ov007_020be0dc reads it (preset 4 moves its sprite down 0x14b) */
-    int cameraPreset;
-    char pad_28[8];
-    Ov007Camera *cameras[2]; /* 0x30: func_ov007_020c023c */
-} Ov007Work;
 
 #define WORK ((Ov007Work *)data_ov007_0210342c)
 

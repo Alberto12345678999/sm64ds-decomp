@@ -4,6 +4,7 @@
 #include "Ov007Sprite.h"
 #include "Ov007StrokePath.h"
 #include "Ov007Touch.h"
+#include "Ov007Work.h"
 
 extern int func_ov007_020bdeb0(int a);
 extern int func_ov007_020c1da0(int i);
@@ -51,13 +52,6 @@ typedef struct Ov007Pad {
     u16 keys;     /* 0x00: held this frame */
     u16 prevKeys; /* 0x02: held last frame */
 } Ov007Pad;
-
-/* data_ov007_0210342c: the overlay's manager; only its input slots here. */
-typedef struct Ov007Work {
-    char pad_00[0x50];
-    Ov007Touch *touch; /* 0x50: func_ov007_020c2068 */
-    Ov007Pad *pad;     /* 0x54: func_ov007_020c2304 */
-} Ov007Work;
 
 /* The externs keep the tree's char * spelling (the declaration-agreement
  * gate); the typed views are reached through cast macros. */

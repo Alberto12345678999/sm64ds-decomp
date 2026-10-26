@@ -8,6 +8,7 @@
 /* recovered: shared common types */
 #include "common.h"
 #include "nitro/fx/fx.h"
+#include "Ov007Work.h"
 extern short data_02082214[];
 
 extern int _ZN4cstd4fdivEii(int a, int b);
@@ -35,21 +36,8 @@ typedef struct Ov007Figure {
     void *update;
 } Ov007Figure;
 
-/* data_ov007_0210342c: the overlay's manager; only its slots here. */
-typedef struct Ov007Work {
-    char pad_00[4];
-    Ov007MenuState *states[3]; /* 0x04: func_ov007_020c9388 */
-    char pad_10[0x40];
-    Ov007Touch *touch; /* 0x50: func_ov007_020c2068 */
-    char pad_54[0x70];
-    char *pad_c4; /* 0xc4: read raw below; no reader names it */
-    char pad_c8[0x38];
-    Ov007Figure *figure; /* 0x100: func_ov007_020beaa0 */
-} Ov007Work;
-
 typedef char Ov007Model_size_must_be_0x98[sizeof(Ov007Model) == 0x98 ? 1 : -1];
 typedef char Ov007Figure_size_must_be_0x1c[sizeof(Ov007Figure) == 0x1c ? 1 : -1];
-typedef char Ov007Work_size_must_be_0x104[sizeof(Ov007Work) == 0x104 ? 1 : -1];
 
 /* The extern keeps decl_common.h's void * spelling; the typed view is
  * reached through a cast macro. */
@@ -104,7 +92,7 @@ void func_ov007_020b0da0(void* arg0) {
                         data_ov007_02103340 = counter;
                         func_ov007_020bdeb0(0x34);
                         {
-                            char *t0 = *(char **)(WORK->pad_c4 + 0);
+                            char *t0 = *(char **)WORK->itemNodes[8];
                             char *t1 = *(char **)(t0 + 4);
                             *(short *)(t1 + 2) = 4;
                         }

@@ -35,8 +35,12 @@
  * Numbered names. mwccarm numbers its generated names from one counter that
  * every named parameter (prototypes included), local and temporary before a
  * definition advances. The array gMgBanners at the end of the file
- * gets __arraydtor$954 (and @955), and symbols.txt and the manifest name
- * __arraydtor$954, so an edit here has to keep that count. The named
+ * gets __arraydtor$974 (and @975); symbols.txt names the thunk
+ * __arraydtor$954, and the manifest renames both onto their configured
+ * names, so an edit here that moves the count re-keys those two rows. The
+ * two function-local Vector2 statics (Banner_StartWaveBurst,
+ * Banner_SetupZoomBurst) are renamed the same way, onto the ov004 .bss names
+ * at 0x020bf3ec..0x020bf41c that this unit owns. The named
  * parameters on the ApproachLinear2 and __cxa_vec_cleanup prototypes stand
  * in for names removed elsewhere, and the
  * six record copies in Banner_StartSpin, Banner_StartWaveBurst and
@@ -96,6 +100,7 @@
 
 #include "types.h"
 #include "nitro/fx/fx.h"
+#include "Vector2.h"
 
 struct M { int _00, _01, _10, _11; };
 struct Pair { int a, b; };
@@ -162,14 +167,12 @@ int Mg_CopySpriteList(int a, void *b, int c, int d);
 int _ZN4cstd4fdivEii(int a, int b);
 int func_02053200(int x);
 unsigned int func_02012790(unsigned int x);
-void __register_global_object(void *object, void *destructor, void **node);
 void func_0203d704(int *o, int *a, int *b);
 void func_0203d388(int *p, int angle);
 int RandomIntInternal(int *seed);
 void Mg_SpawnFx(int c, short a1, int *a2, int *r3, int *sp0);
-/* local extern: only sibling minigame scene headers declare these two, and the
-   named __cxa_vec_cleanup parameters hold the @NNN count noted above. */
-void NullDestructor_0203d47c(void);
+/* local extern: only sibling minigame scene headers declare it, and its
+   named parameters hold the @NNN count noted above. */
 void __cxa_vec_cleanup(void *array, unsigned int count, unsigned int size, void (*dtor)(void *));
 void Mg_RenderSpriteOnMtx(void *a0, int a1, int a2, int a3, int a4, M *a5);
 void Mg_RenderSpriteOn(int a, int b, int c, int d, int e);
@@ -204,12 +207,6 @@ enum MgBannerCharOffset {
     MG_BANNER_SLOT1_CHARS = 0x6000,
     MG_BANNER_SLOT2_CHARS = 0x6800
 };
-extern int sBannerWaveFxPosGuard;
-extern int sBannerZoomFxPosGuard;
-extern int sBannerWaveFxPos[2];
-extern int sBannerZoomFxPos[2];
-extern void *sBannerZoomFxPosDtorRec[3];
-extern void *sBannerWaveFxPosDtorRec[3];
 extern PairW sBannerUpdateTable[];
 extern PairW sBannerSetupTable[];
 extern PairW sBannerDrawTable[];
@@ -647,7 +644,6 @@ extern "C" void Banner_StartWaveBurst(MgBanner *e) {
     int boxA[2], boxB[2], boxC[2];
     int posA[2];
     int outA[2], outB[2];
-    int flags;
 
     int shifted;
 
@@ -664,26 +660,18 @@ extern "C" void Banner_StartWaveBurst(MgBanner *e) {
     boxB[0] = 0; boxB[1] = -0x1800;
     boxC[0] = 0; boxC[1] = -0x4000;
 
-    flags = sBannerWaveFxPosGuard;
-
     {
-        int y12 = e->mY;
-        int y10 = e->mX;
-        int sY12, sY10;
-        flags = flags & 1;
-        sY12 = y12 << 12;
-        sY10 = y10 << 12;
-        posA[0] = sY10;
-        posA[1] = sY12;
+        int y = e->mY;
+        int x = e->mX;
+        int fy = y << 12;
+        int fx = x << 12;
+        posA[0] = fx;
+        posA[1] = fy;
     }
 
-    if (flags == 0) {
-        sBannerWaveFxPos[0] = 0;
-        sBannerWaveFxPos[1] = 0xc0;
-        __register_global_object(sBannerWaveFxPos, (void *)NullDestructor_0203d47c,
-                                 sBannerWaveFxPosDtorRec);
-        sBannerWaveFxPosGuard = sBannerWaveFxPosGuard | 1;
-    }
+    /* The burst's effect origin: built once, on the first burst, then
+       registered for destruction at exit. */
+    static Vector2 sBannerWaveFxPos(0, 0xc0);
 
     for (i = 0; i < 0x20; i++) {
         int r;
@@ -701,7 +689,7 @@ extern "C" void Banner_StartWaveBurst(MgBanner *e) {
         ang = ang + 0x5a;
         spawnAngle = (s16)ang;
 
-        Mg_SpawnFx(0, spawnAngle, outA, outB, sBannerWaveFxPos);
+        Mg_SpawnFx(0, spawnAngle, outA, outB, (int *)&sBannerWaveFxPos);
     }
 }
 
@@ -1094,7 +1082,6 @@ extern "C" void Banner_SetupZoomBurst(MgBanner *e) {
     int boxA[2], boxB[2], boxC[2];
     int posA[2];
     int outA[2], outB[2];
-    int flags;
     int r;
     int ang;
     s16 spawnAngle;
@@ -1109,26 +1096,16 @@ extern "C" void Banner_SetupZoomBurst(MgBanner *e) {
     boxC[0] = 0;
     boxC[1] = -0x4000;
 
-    flags = sBannerZoomFxPosGuard;
-
     {
-        int y12 = e->mY;
-        int y10 = e->mX;
-        int sY12, sY10;
-        flags = flags & 1;
-        sY12 = y12 << 12;
-        sY10 = y10 << 12;
-        posA[0] = sY10;
-        posA[1] = sY12;
+        int y = e->mY;
+        int x = e->mX;
+        int fy = y << 12;
+        int fx = x << 12;
+        posA[0] = fx;
+        posA[1] = fy;
     }
 
-    if (flags == 0) {
-        sBannerZoomFxPos[0] = 0;
-        sBannerZoomFxPos[1] = 0xc0;
-        __register_global_object(sBannerZoomFxPos, (void *)NullDestructor_0203d47c,
-                                 sBannerZoomFxPosDtorRec);
-        sBannerZoomFxPosGuard = sBannerZoomFxPosGuard | 1;
-    }
+    static Vector2 sBannerZoomFxPos(0, 0xc0);
 
     for (i = 0; i < 0x20; i++) {
         func_0203d704(outA, posA, boxC);
@@ -1142,7 +1119,7 @@ extern "C" void Banner_SetupZoomBurst(MgBanner *e) {
         ang = ang + 0x5a;
         spawnAngle = (s16)ang;
 
-        Mg_SpawnFx(0, spawnAngle, outA, outB, sBannerZoomFxPos);
+        Mg_SpawnFx(0, spawnAngle, outA, outB, (int *)&sBannerZoomFxPos);
     }
 }
 

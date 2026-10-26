@@ -5,6 +5,7 @@ struct Callback;
 struct System {
     static int New(unsigned, unsigned, int, int, int, const ::Vector3_16f *, Callback *);
     static void NewSimple(unsigned int, int, int, int);
+    static unsigned NewUnkCallback818(unsigned, unsigned, int, int, int, const ::Vector3_16f *);
 };
 }
 /**
@@ -461,8 +462,8 @@ struct Vector3_16f;
 extern "C" {
 extern void *d_enemy_baseNewHold(unsigned int a, unsigned int b, int c, int d, int e, const void *f,
                                  void *g);
-extern u32 _ZN8Particle6System17NewUnkCallback818Ejj5Fix12IiES2_S2_PK11Vector3_16f(
-  u32 uniqueID, u32 effectID, Fix12i x, Fix12i y, Fix12i z, const Vector3_16f* dir);
+extern u32 d_enemy_baseNewUnkCallback818Hold(u32 uniqueID, u32 effectID, Fix12i x, Fix12i y,
+                                             Fix12i z, const Vector3_16f *dir);
 }
 
 // @symbol _ZN11EnemyDeathC19func_ov002_020ae4ccER10dBgCh_Actr
@@ -493,9 +494,9 @@ int EnemyDeathC::func_ov002_020ae4cc(dBgCh_Actr &clsn) {
     mDeathParticleID0 =
         (u32)Particle::System::New(mDeathParticleID0, 0x13a, *(int *)((char *)v + 0),
                                    *(int *)((char *)v + 4), *(int *)((char *)v + 8), 0, 0);
-    mDeathParticleID1 = _ZN8Particle6System17NewUnkCallback818Ejj5Fix12IiES2_S2_PK11Vector3_16f(
-        mDeathParticleID1, 0x13b, *(int *)((char *)v + 0), *(int *)((char *)v + 4),
-        *(int *)((char *)v + 8), 0);
+    mDeathParticleID1 =
+        Particle::System::NewUnkCallback818(mDeathParticleID1, 0x13b, *(int *)((char *)v + 0),
+                                            *(int *)((char *)v + 4), *(int *)((char *)v + 8), 0);
     return 0;
 }
 

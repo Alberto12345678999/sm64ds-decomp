@@ -8,12 +8,12 @@
  * here too. dScMgHanachan_c_classInit, just above at 0x020ede18, is still
  * its own file (src/minigames/d_s_mg_hanachan.cpp).
  *
- * The destructor pair and the ten functions from Wiggler_Destroy to
+ * The destructor pair and the ten functions from Wiggler's destructor to
  * Wiggler_DrawTarget came from one-function files. Their bodies are kept
  * as they matched there. The two popup arrays are declared once; where a
  * function spelled a record differently, its tag is renamed per function
- * and the access casts. Wiggler_Destroy is the wiggler array's element
- * destructor and takes the element, so its declaration now says so.
+ * and the access casts. The wiggler array's element destructor
+ * (formerly Wiggler_Destroy) is Wiggler's own inline destructor.
  *
  * The nine helpers that take the scene as their first argument
  * (Phase_WaitTouch .. Phase_SetupRound, the phase and tap handlers) are
@@ -276,9 +276,6 @@ struct S_ea81c {
    HanaPopup_Spawn's layout, which it needs to match; the other
    functions keep the spelling their own match used, through a cast. */
 extern "C" {
-/* local extern: only sibling minigame headers (dScMgAmida_c.h and four
-   others) declare it; this TU includes none of them */
-extern void NullDestructor_0203d47c(void);
 extern char sHanaStarPopup[];
 extern struct S_ea81c sHanaPopups[];
 extern char sMgDigitSprites[];
@@ -286,13 +283,11 @@ extern char sMgDigitSprites[];
 
 // @symbol _ZN15dScMgHanachan_cD1Ev
 // @symbol _ZN15dScMgHanachan_cD0Ev
-/* Destroys the fifteen 0x98-byte wigglers at 0x4678 through
-   __cxa_vec_cleanup, as dScMgBase_c's own destructor does for its array.
-   The vptr store, the base destructor call and D0's delete are the
-   compiler's. */
-dScMgHanachan_c::~dScMgHanachan_c() {
-    __cxa_vec_cleanup(mWiggler, 0xf, 0x98, (void *)Wiggler_Destroy);
-}
+/* Empty: the compiler destroys the fifteen 0x98-byte wigglers at 0x4678
+   through __cxa_vec_cleanup with Wiggler's destructor, as dScMgBase_c's own
+   destructor does for its array. The vptr store, the base destructor call
+   and D0's delete are the compiler's too. */
+dScMgHanachan_c::~dScMgHanachan_c() {}
 
 #ifdef _MSC_VER
 /* THE HOST NEEDS THE ROM'S FLAT D0 NAME, AND MSVC NEVER EMITS IT. MSVC
@@ -308,13 +303,10 @@ extern "C" dScMgHanachan_c *_ZN15dScMgHanachan_cD0Ev(dScMgHanachan_c *thiz) {
 }
 #endif
 
-// @symbol Wiggler_Destroy
-/* The element destructor for one wiggler: its five segment points at
-   +0x18 go through __cxa_vec_cleanup. */
-extern "C" void *Wiggler_Destroy(void *self) {
-    __cxa_vec_cleanup(((Wiggler *)self)->seg, 5, 8, (void *)NullDestructor_0203d47c);
-    return self;
-}
+// @symbol _ZN15dScMgHanachan_c7WigglerD1Ev
+/* Wiggler's empty inline destructor (dScMgHanachan_c.h), emitted here after
+   the class destructor that first uses it: the compiler tears the five
+   Vector2 segment points at +0x18 down through __cxa_vec_cleanup. */
 
 /* The single popup at sHanaStarPopup, as StarPopup_Start, StarPopup_Update,
    StarPopup_Draw and StarPopup_Clear use it. Its byte fields differ from the
@@ -1294,11 +1286,11 @@ void Wiggler_StepSegmentsA(Wiggler *wiggler) {
     int previousIndex;
     s16 bendExcess;
     int angleCorrection;
-    V2 *previousSegment;
+    Vector2 *previousSegment;
     int zero;
     int step;
     int angleStep;
-    V2 *segments;
+    Vector2 *segments;
 
     if (wiggler->bloom != 0)
         return;
@@ -1363,7 +1355,7 @@ void Wiggler_StepSegmentsB(Wiggler *wiggler) {
     V2 segmentPosition;
     V2 headPosition;
     int segmentIndex = 4;
-    V2 *segment = &wiggler->seg[segmentIndex];
+    Vector2 *segment = &wiggler->seg[segmentIndex];
     int baseSpacing = 0x8000;
     s16 zero = 0;
     int previousIndex;
@@ -1401,7 +1393,7 @@ void Wiggler_StepSegmentsB(Wiggler *wiggler) {
     headOffset.x = 0;
     headOffset.y = -0x10000;
     func_0203d388((int *)&headOffset, wiggler->ang[0]);
-    func_0203d704((int *)&headPosition, (int *)((V2 *)(wiggler->seg) + 1), (int *)&headOffset);
+    func_0203d704((int *)&headPosition, (int *)((Vector2 *)(wiggler->seg) + 1), (int *)&headOffset);
     wiggler->seg[0].x = headPosition.x;
     wiggler->seg[0].y = headPosition.y;
 }
@@ -1415,7 +1407,7 @@ void Wiggler_StepSegmentsC(Wiggler *wiggler) {
     V2 segmentPosition;
     V2 headPosition;
     int segmentIndex = 2;
-    V2 *segment = &wiggler->seg[segmentIndex];
+    Vector2 *segment = &wiggler->seg[segmentIndex];
     int previousIndex;
 
     for (; segmentIndex < 5; segmentIndex++) {
@@ -1450,7 +1442,7 @@ void Wiggler_StepSegmentsC(Wiggler *wiggler) {
     headOffset.y = -0x10000;
     wiggler->ang[0] = (s16)(wiggler->ang[1] + (((wiggler->ang[1] - wiggler->ang[2]) << 14) >> 16));
     func_0203d388((int *)&headOffset, wiggler->ang[0]);
-    func_0203d704((int *)&headPosition, (int *)((V2 *)(wiggler->seg) + 1), (int *)&headOffset);
+    func_0203d704((int *)&headPosition, (int *)((Vector2 *)(wiggler->seg) + 1), (int *)&headOffset);
     wiggler->seg[0].x = headPosition.x;
     wiggler->seg[0].y = headPosition.y;
 }
@@ -2020,7 +2012,7 @@ void dScMgHanachan_c::Phase_Play() {
 
     if (b != 0) {
         Thing *p;
-        V2 *src;
+        Vector2 *src;
         a.x = gTouchX[(unsigned int)idx * 4] << 12;
         a.y = gTouchY[(unsigned int)idx * 4] << 12;
         p = (Thing *)s->mTarget;
@@ -2094,7 +2086,7 @@ void dScMgHanachan_c::Phase_Play() {
 
                 func_02012790(0xe);
                 {
-                    V2 *s3 = ((Wiggler *)sel)->seg;
+                    Vector2 *s3 = ((Wiggler *)sel)->seg;
                     vec[2] = s3->x;
                     vec[3] = s3->y;
                 }
