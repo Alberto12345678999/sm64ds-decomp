@@ -151,10 +151,6 @@ extern void *_ZN2G212GetBG2ScrPtrEv(void);
 extern void _ZN3G2x13SetBlendAlphaEPVttttj(volatile u16 *p, u16 a, u16 b, u16 c, u16 d);
 extern u8 data_0209d454;
 extern int data_0208ee44;
-extern void _ZN8Particle10SysTrackerC1Ev(void *);
-extern int Mascot_Construct(char *t);
-extern int _ZTV19dScMgSingle3DBase_c[];
-extern int _ZTV12dScMgSlot3_c[];
 extern void RenderOamMainScreen(void *, int, int, int, int);
 extern void *sSlotsSlotBlinkSprites;
 extern void Mg_LoseCredits(void *c);
@@ -209,9 +205,9 @@ dScMgSlot1_c::~dScMgSlot1_c() {}
 /* The compiler emits D0 from the complete-object destructor above. */
 
 // @symbol _ZN12dScMgSlot3_cD1Ev
-dScMgSlot3_c::~dScMgSlot3_c() {
-    Mascot_Destruct((char *)mMascot);
-}
+/* The compiler destroys mMascot, then the inlined dScMgSingle3DBase_c
+   destructor runs. */
+dScMgSlot3_c::~dScMgSlot3_c() {}
 
 // @symbol _ZN12dScMgSlot3_cD0Ev
 /* The compiler emits D0 from the complete-object destructor above. */
@@ -537,7 +533,7 @@ void FreeGfxSlotsById(int arg);
 void Slot3_StateIntro(char *p) {
     dScMgSlot3_c *scene = (dScMgSlot3_c *)p;
     if (scene->mReelDrawY == 0x50) {
-        Mascot_LookAt((char *)scene->mMascot, 0);
+        Mascot_LookAt((char *)&scene->mMascot, 0);
         Mg_ShowBanner(0xd, 0x80, 0xa8, 1, -1, 0xd);
     }
 
@@ -546,7 +542,7 @@ void Slot3_StateIntro(char *p) {
         if (scene->mReelDrawY != 0)
             return;
         scene->mWinSymbol = scene->mNextWinSymbol;
-        Mascot_StopLooking((int *)scene->mMascot);
+        Mascot_StopLooking((int *)&scene->mMascot);
         return;
     }
 
@@ -707,7 +703,7 @@ s32 dScMgSlot3_c::Render() {
     int i, j;
 
     Camera_InitSlotsView((char *)self->pad_4660);
-    Mascot_Draw((char *)self->mMascot);
+    Mascot_Draw((char *)&self->mMascot);
 
     if (self->mReelDrawY > 0) {
         for (i = 0; i < 3; i++) {
@@ -859,7 +855,7 @@ s32 dScMgSlot3_c::Behavior() {
 
     pc = &self->mFrameCounter;
     *pc = *pc + 1;
-    Mascot_Update(self->mMascot);
+    Mascot_Update(&self->mMascot);
 
     for (i = 0; i < 3; i++) {
         if (self->mState == 1) {
@@ -937,7 +933,7 @@ s32 dScMgSlot3_c::InitResources() {
     data_0209d454 = 0x14;
     _ZN3G2x13SetBlendAlphaEPVttttj((volatile u16 *)0x4000050, 0, 0xc, 0xc, 4);
 
-    Mascot_Load((char *)mMascot);
+    Mascot_Load((char *)&mMascot);
     Camera_InitSlotsView((char *)pad_4660);
 
     mReelDifficulty = (int)mLevel;
@@ -972,31 +968,17 @@ s32 dScMgSlot3_c::InitResources() {
     return 1;
 }
 
+/* The constructor is inline, so the factory below holds it: the base
+   constructors, mSysTracker and mMascot are the compiler's. */
+inline dScMgSlot3_c::dScMgSlot3_c() {}
+
 // @symbol dScMgSlot3_c_classInit
-/* STILL MACHINE-SHAPED (audit 2026-09-18) -- byte-exact; what blocks each part:
- *  1 func_ov006_*                unnamed in config symbols.txt; each needs a
- *                                coined, behaviour-justified name.
- *  3 ctor/dtor/op-new call(s)    C1/C2/D0/D1/D2 is not expressible
- *                                in C++ source; only a real ctor emits it.
- *  2 _ZTV vptr store(s)          stands in for the ctor that would emit it.
- */
 /* Reconstructed source-style name: SM64DS proves dScMgSlot3_c through RTTI,
  * allocation size, vtable identity, and the MG_SLOT3 registry profile;
  * later EAD lineage supplies classInit. Exact original spelling is not
  * preserved. Historical alias: func_ov006_0210c120. */
-extern "C" { /* .c-derived member: C linkage for the whole block */
-int *dScMgSlot3_c_classInit(void) {
-    int *p = (int *)fBase_c::operator new(0x5044);
-    if (p) {
-        _ZN11dScMgBase_cC2Ev(p);
-        p[0] = (int)_ZTV19dScMgSingle3DBase_c;
-        _ZN8Particle10SysTrackerC1Ev(&((dScMgSlot3_c *)p)->mSysTracker);
-
-        p[0] = (int)&_ZTV12dScMgSlot3_c[2];
-        Mascot_Construct((char *)((dScMgSlot3_c *)p)->mMascot);
-    }
-    return p;
-}
+extern "C" void *dScMgSlot3_c_classInit(void) {
+    return new dScMgSlot3_c;
 }
 
 // @symbol SlotLamp_Start

@@ -954,30 +954,6 @@
       "evidence": "origin/main:src/minigames/d_s_mg_snowball.cpp 2x _ZN5ModelC1Ev; head 2x _ZN17dExtSimpleModel_cC1Ev; tools/source_style.py --base origin/main"
     },
     {
-      "path": "src/minigames/unit020bfec0.cpp",
-      "rule": "handspelled-member",
-      "match": "_ZN14dExtAnmModel_cC1Ev",
-      "count": 2,
-      "reason": "Respelled by the Model-family RTTI rename: src/minigames/unit020bfec0.cpp on main carries the same 2 occurrence(s) as _ZN9ModelAnimC1Ev. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings.",
-      "evidence": "origin/main:src/minigames/unit020bfec0.cpp 2x _ZN9ModelAnimC1Ev; head 2x _ZN14dExtAnmModel_cC1Ev; tools/source_style.py --base origin/main"
-    },
-    {
-      "path": "src/minigames/unit020bfec0.cpp",
-      "rule": "handspelled-member",
-      "match": "_ZN17dExtSimpleModel_cC1Ev",
-      "count": 4,
-      "reason": "Respelled by the Model-family RTTI rename: src/minigames/unit020bfec0.cpp on main carries the same 4 occurrence(s) as _ZN5ModelC1Ev. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings.",
-      "evidence": "origin/main:src/minigames/unit020bfec0.cpp 4x _ZN5ModelC1Ev; head 4x _ZN17dExtSimpleModel_cC1Ev; tools/source_style.py --base origin/main"
-    },
-    {
-      "path": "src/minigames/unit020bfec0.cpp",
-      "rule": "handspelled-member",
-      "match": "_ZN19dExtBlendAnmModel_cC1Ev",
-      "count": 5,
-      "reason": "Respelled by the Model-family RTTI rename: src/minigames/unit020bfec0.cpp on main carries the same 5 occurrence(s) as _ZN14BlendModelAnimC1Ev. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings.",
-      "evidence": "origin/main:src/minigames/unit020bfec0.cpp 5x _ZN14BlendModelAnimC1Ev; head 5x _ZN19dExtBlendAnmModel_cC1Ev; tools/source_style.py --base origin/main"
-    },
-    {
       "path": "src/unnamed/ov007/func_ov007_020b3f20.c",
       "rule": "handspelled-member",
       "match": "_ZN17dExtSimpleModel_c17UpdateFileOffsetsER8BMD_File",
@@ -1000,22 +976,6 @@
       "count": 2,
       "reason": "Respelled by the texture-animation RTTI rename: src/minigames/d_mg3d_esp_anim_set.cpp on cpp/model-family-rom-names carries the same 2 occurrence(s) as _ZN18TextureTransformerC1Ev. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings.",
       "evidence": "origin/cpp/model-family-rom-names:src/minigames/d_mg3d_esp_anim_set.cpp 2x _ZN18TextureTransformerC1Ev; head 2x _ZN15dExtAnmTexSRT_cC1Ev; tools/source_style.py --base origin/cpp/model-family-rom-names"
-    },
-    {
-      "path": "src/minigames/unit020bfec0.cpp",
-      "rule": "handspelled-member",
-      "match": "_ZN15dExtAnmTexPat_cC1Ev",
-      "count": 2,
-      "reason": "Respelled by the texture-animation RTTI rename: src/minigames/unit020bfec0.cpp on cpp/model-family-rom-names carries the same 2 occurrence(s) as _ZN15TextureSequenceC1Ev. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings.",
-      "evidence": "origin/cpp/model-family-rom-names:src/minigames/unit020bfec0.cpp 2x _ZN15TextureSequenceC1Ev; head 2x _ZN15dExtAnmTexPat_cC1Ev; tools/source_style.py --base origin/cpp/model-family-rom-names"
-    },
-    {
-      "path": "src/minigames/unit020bfec0.cpp",
-      "rule": "handspelled-member",
-      "match": "_ZN15dExtAnmTexSRT_cC1Ev",
-      "count": 2,
-      "reason": "Respelled by the texture-animation RTTI rename: src/minigames/unit020bfec0.cpp on cpp/model-family-rom-names carries the same 2 occurrence(s) as _ZN18TextureTransformerC1Ev. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings.",
-      "evidence": "origin/cpp/model-family-rom-names:src/minigames/unit020bfec0.cpp 2x _ZN18TextureTransformerC1Ev; head 2x _ZN15dExtAnmTexSRT_cC1Ev; tools/source_style.py --base origin/cpp/model-family-rom-names"
     },
     {
       "path": "src/unnamed/ov007/func_ov007_020b3f20.c",
@@ -1104,14 +1064,6 @@
       "count": 2,
       "reason": "sTrmpLines is a four-element TrmpLine array that the C static initializer __sinit_ov006_0212fc7c builds with __cxa_vec_ctor and registers TrmpLine_CleanupAll to tear down; neither function is a C++ array definition yet, so both hand TrmpLine's constructor and destructor to the array helpers by address. C++ cannot take a constructor's or destructor's address, so the C1/D1 renamed from TrmpLine_Reset/TrmpLine_Destroy when the class got its real constructor and destructor in unit020cd744.cpp are named by their linker spelling. Follow-up: define sTrmpLines as a real `TrmpLine sTrmpLines[4]` in the TU whose __sinit this is, which retires both hand-built helpers. This file is C, so a mangled linker name is its only spelling.",
       "evidence": "ov006 0x020d100c (_ZN8TrmpLineC1Ev) and 0x020d1008 (_ZN8TrmpLineD1Ev) in config/arm9/overlays/ov006/symbols.txt; ov006/unit020cd744 59/59 TEXT-VERIFIED; __sinit_ov006_0212fc7c match.py MATCH at 0x0212fc7c size 0xcc."
-    },
-    {
-      "path": "src/minigames/d_s_mg_card.cpp",
-      "rule": "handspelled-member",
-      "match": "_ZN6DealerC1Ev",
-      "count": 2,
-      "reason": "The ROM has no dScMgCard_c constructor: dScMgCard_c_classInit builds the scene by hand and calls Dealer's out-of-line C1 on the embedded mDealer. C++ cannot name a constructor on storage that already exists, and placement new adds a null test before the call. `new dScMgCard_c` would need dMgCardObj_c/dMgDilarCardObj_c to declare their constructors and destructors, which the walls recorded in include/dScMgCard_c.h rule out. The second occurrence is the extern \"C\" declaration. Follow-up: write the factory as `return new dScMgCard_c;` once the card element classes can declare their ctor/dtor pair.",
-      "evidence": "ov006/dScMgCard_c 37/37 TEXT-VERIFIED with this spelling; `new (&((dScMgCard_c *)p)->mDealer) Dealer` measured 36/37 (dScMgCard_c_classInit DIFF, 3 reloc destinations wrong); _ZN6DealerC1Ev sits at the former Dealer_Construct address 0x020c1d80 in config/arm9/overlays/ov006/symbols.txt."
     },
     {
       "path": "src/unnamed/arm9/0201/func_02018c00.c",
