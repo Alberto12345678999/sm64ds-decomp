@@ -103,7 +103,14 @@ extern s8 NumRedCoins(void);
 extern unsigned int func_02012790(unsigned int a);
 extern void func_02012694(unsigned int id, const Vector3 *v);
 extern int SurfaceInfo_TestFlag0x20(void* p);
-extern void _ZN8Particle6System12NewBigSplashE5Fix12IiES2_S2_(int a, int b, int c);
+}
+namespace Particle {
+struct System {
+    static void NewBigSplash(int a, int b, int c);
+    static void *NewSimple(unsigned int id, Fix12i x, Fix12i y, Fix12i z);
+};
+}
+extern "C" {
 extern short _ZN8dActor_c12ReflectAngleE5Fix12IiES1_s(void*, int, int, short);
 extern void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
     void *c, void *sm, void *mtx, int a, int b, unsigned char u);
@@ -313,7 +320,7 @@ void daCoin_c::func_ov002_020b13e0()
         return;
     if (mVertSpeed > 0) return;
     func_02012694(0xe2, &mCamSpacePos);
-    _ZN8Particle6System12NewBigSplashE5Fix12IiES2_S2_(mPosX, mPosY, mPosZ);
+    Particle::System::NewBigSplash(mPosX, mPosY, mPosZ);
     mHorzSpeed = 0;
     mVertAccel = -0x800;
     mTerminalVelocity = -0x5000;
@@ -779,12 +786,6 @@ void daCoin_c::func_ov002_020b2150()
         mVertAccel = 0;
         mBehaviorType = BEHAVIOR_RESTING;
     }
-}
-
-namespace Particle {
-struct System {
-    static void *NewSimple(unsigned int id, Fix12i x, Fix12i y, Fix12i z);
-};
 }
 
 // @symbol _ZN8daCoin_c16CleanupResourcesEv

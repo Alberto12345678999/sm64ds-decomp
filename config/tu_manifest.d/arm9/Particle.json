@@ -68,7 +68,7 @@
       "ordinal": 6
     },
     {
-      "symbol": "_ZN8Particle6System9NewRippleE5Fix12IiES2_S2_",
+      "symbol": "_ZN8Particle6System9NewRippleEiii",
       "address": "0x02022998",
       "size": "0x00000058",
       "legacy_source": "src/_ZN8Particle6System9NewRippleE5Fix12IiES2_S2_.c",
@@ -89,7 +89,7 @@
       "ordinal": 9
     },
     {
-      "symbol": "_ZN8Particle6System12NewBigSplashE5Fix12IiES2_S2_",
+      "symbol": "_ZN8Particle6System12NewBigSplashEiii",
       "address": "0x02022aa8",
       "size": "0x0000005c",
       "legacy_source": "src/_ZN8Particle6System12NewBigSplashE5Fix12IiES2_S2_.c",
@@ -103,21 +103,21 @@
       "ordinal": 11
     },
     {
-      "symbol": "_ZN8Particle20RunningSlidingDustAtE5Fix12IiES1_S1_",
+      "symbol": "_ZN8Particle20RunningSlidingDustAtEiii",
       "address": "0x02022b58",
       "size": "0x0000005c",
       "legacy_source": "src/_ZN8Particle20RunningSlidingDustAtE5Fix12IiES1_S1_.c",
       "ordinal": 12
     },
     {
-      "symbol": "_ZN8Particle6System17NewUnkCallback818Ejj5Fix12IiES2_S2_PK11Vector3_16f",
+      "symbol": "_ZN8Particle6System17NewUnkCallback818EjjiiiPK11Vector3_16f",
       "address": "0x02022bb4",
       "size": "0x00000044",
       "legacy_source": "src/_ZN8Particle6System17NewUnkCallback818Ejj5Fix12IiES2_S2_PK11Vector3_16f.c",
       "ordinal": 13
     },
     {
-      "symbol": "_ZN8Particle6System10NewWeatherEjj5Fix12IiES2_S2_PK11Vector3_16fj",
+      "symbol": "_ZN8Particle6System10NewWeatherEjjiiiPK11Vector3_16fh",
       "address": "0x02022bf8",
       "size": "0x00000044",
       "legacy_source": "src/_ZN8Particle6System10NewWeatherEjj5Fix12IiES2_S2_PK11Vector3_16fj.c",
