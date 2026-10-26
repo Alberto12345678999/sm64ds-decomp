@@ -27,18 +27,9 @@
 #include "dWipe_c.h"
 #include "IRQ.h"
 #include "decl_common.h"
-
-namespace CP15 {
-void FlushAndInvalidateDataCache(u32 addr, u32 len);
-}
-
-namespace GX {
-void LoadBGPltt(const void *src, u32 offset, u32 len);
-}
-
-namespace GXS {
-void LoadBGPltt(const void *src, u32 offset, u32 len);
-}
+#include "cstd.h"
+#include "CP15.h"
+#include "GX.h"
 
 extern "C" {
 /* The ROM's SetBackwardTime entry point reads a third argument in r2 and
@@ -512,7 +503,7 @@ void dWipe_c::func_0202ee94()
     for (i = 0; i < 0x60; i++) {
         if (r8 <= i) {
             int a = i - 0x60 + sl;
-            int s = _ZN4cstd4sqrtEy((u64)(long long)(a * (r7 - a)));
+            int s = cstd::sqrt((u64)(long long)(a * (r7 - a)));
             int lo = 0x80 - s;
             int hi = s + 0x80;
             if (lo < 0) lo = r5;

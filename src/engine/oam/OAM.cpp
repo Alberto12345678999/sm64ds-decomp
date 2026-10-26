@@ -42,13 +42,8 @@
 #include "OAM.h"
 #include "OamAttr.h"
 #include "OamAnimation.h"
-
-namespace CP15 {
-void FlushAndInvalidateDataCache(u32 addr, u32 size);
-}
-namespace cstd {
-int fdiv(s32, s32);
-}
+#include "CP15.h"
+#include "cstd.h"
 
 struct Matrix2x2 { s32 m00, m01, m10, m11; };
 
@@ -204,12 +199,6 @@ u8 OAM::GetObjWidth(int shape, int sizeBits)
 #pragma opt_common_subs off
 #pragma opt_propagation off
 #pragma opt_loop_invariants off
-#pragma cplusplus off
-/* Callees stay C linkage so their literal mangled names are not mangled again. */
-extern unsigned char _ZN3OAM11GetObjWidthEii(int shape, int size);
-extern unsigned char _ZN3OAM12GetObjHeightEii(int shape, int size);
-extern int _ZN3OAM16LoadAffineParamsEP7OamAttrPiP9Matrix2x2(struct OamAttr *attr, int *affCnt, struct Matrix2x2 *m);
-#pragma cplusplus on
 
 void OAM::Render(bool sub, struct OamAttr *attr_, int xOff, int yOff, int palette, int priority,
                  int scaleX, int scaleY, int rotation, int mode) {
@@ -280,13 +269,13 @@ void OAM::Render(bool sub, struct OamAttr *attr_, int xOff, int yOff, int palett
             u = *(s8 *)attr;
             {
             u32 a = attr->a01;
-            w = _ZN3OAM11GetObjWidthEii((int)((a << 16) >> 30), (int)(a >> 30));
+            w = GetObjWidth((int)((a << 16) >> 30), (int)(a >> 30));
             }
         {
         int h;
         {
             u32 a = attr->a01;
-            h = _ZN3OAM12GetObjHeightEii((int)((a << 16) >> 30), (int)(a >> 30));
+            h = GetObjHeight((int)((a << 16) >> 30), (int)(a >> 30));
         }
         y = u;
 
@@ -385,7 +374,7 @@ void OAM::Render(bool sub, struct OamAttr *attr_, int xOff, int yOff, int palett
                     m.m10 = -m.m10;
                     m.m11 = -m.m11;
                 }
-                aff = _ZN3OAM16LoadAffineParamsEP7OamAttrPiP9Matrix2x2((struct OamAttr *)(dst - *pCount), pAff, &m);
+                aff = LoadAffineParams((struct OamAttr *)(dst - *pCount), pAff, &m);
                 if (aff == -1) {
                     if (attr->a3 == 0xffff) return;
                     attr++;

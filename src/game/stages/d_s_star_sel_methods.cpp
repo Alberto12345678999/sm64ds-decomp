@@ -37,37 +37,8 @@
 #include "Sound.h"
 #include "G3X.h"
 #include "G3i.h"
-
-/* The Nitro SDK's GX (main engine) and GXS (sub engine) VRAM helpers that
- * InitResources calls. No header in the tree declares either namespace
- * yet, so the declarations live here, spelt as src/engine/gx/ and the
- * per-function GX shards define them. G2 cannot be declared the same way:
- * decl_common.h declares the ROM data symbol `extern int G2[];`, which
- * hides a `namespace G2` (see d_s_title.cpp), so G2's two calls keep their
- * final mangled names. */
-namespace GX {
-void DisableAllBanks();
-void SetBankForTex(u16);
-void SetBankForTexPltt(u16);
-void SetBankForBG(u16);
-void SetBankForOBJ(u16);
-void SetBankForSubBG(u16);
-void SetBankForSubOBJ(u16);
-void SetBankForSubOBJExtPltt(u16);
-void SetGraphicsMode(int, int, int);
-void DispOn();
-void LoadBGPltt(const void *, unsigned int, unsigned int);
-void LoadOBJPltt(const void *, unsigned int, unsigned int);
-}
-
-namespace GXS {
-void SetGraphicsMode(int);
-void LoadBGPltt(const void *, unsigned int, unsigned int);
-void LoadOBJPltt(const void *, unsigned int, unsigned int);
-void BeginLoadOBJExtPltt();
-void LoadOBJExtPltt(const void *, u32, u32);
-void EndLoadOBJExtPltt();
-}
+#include "G2.h"
+#include "GX.h"
 
 /* Raw this-relative accessors, and the cosine table lookup used by Render. */
 #define FB(p, o) (*(u8 *)((u8 *)(p) + (o)))
@@ -155,11 +126,6 @@ extern u8 data_0209caa0[0x50];
 extern Matrix4x3 data_020a0e68;
 extern u8 data_02092128;
 extern signed char data_0209f2f4[];
-extern void *_ZN3OAM7NUMBERSE[];
-extern void *_ZN3OAM10LIFE_ICONSE[];
-extern void *_ZN3OAM4COINE[];
-extern void *_ZN3OAM5TIMESE;
-extern void *_ZN3OAM10POWER_STARE;
 extern u8 data_ov001_020ab938;
 extern u8 data_ov001_020ab940;
 extern void *data_ov001_020abb18[];
@@ -258,12 +224,12 @@ void dScStarSel_c::func_ov003_020adfc8() {
     for (i = 2; i >= 0; i--) {
         signed char d = DIGIT(this, i);
         if (d >= 0) {
-            OAM::Render(0, (OamAttr *)_ZN3OAM7NUMBERSE[d], x, 0x4c, 8, -1, 0);
+            OAM::Render(0, OAM::NUMBERS[d], x, 0x4c, 8, -1, 0);
             x -= 9;
         }
     }
-    OAM::Render(0, (OamAttr *)&_ZN3OAM5TIMESE, x, 0x54, -1, -1, 0);
-    OAM::Render(0, (OamAttr *)_ZN3OAM4COINE, x - 0x10, 0x4c, -1, -1, 0);
+    OAM::Render(0, &OAM::TIMES, x, 0x54, -1, -1, 0);
+    OAM::Render(0, &OAM::COIN, x - 0x10, 0x4c, -1, -1, 0);
 }
 
 // @symbol _ZN12dScStarSel_c19func_ov003_020ae0b0Ev
@@ -285,14 +251,14 @@ void dScStarSel_c::func_ov003_020ae0b0() {
         do {
             signed char d = DIGIT(this, i);
             if (d >= 0) {
-                OAM::Render(0, (OamAttr *)_ZN3OAM7NUMBERSE[d], x, y, 8, -1, 0);
+                OAM::Render(0, OAM::NUMBERS[d], x, y, 8, -1, 0);
                 x -= 9;
             }
             i--;
         } while (i >= 0);
     }
-    OAM::Render(0, (OamAttr *)&_ZN3OAM5TIMESE, x, y + 8, -1, -1, 0);
-    OAM::Render(0, (OamAttr *)&_ZN3OAM10POWER_STARE, x - 0x10, y + 8, -1, -1, 0);
+    OAM::Render(0, &OAM::TIMES, x, y + 8, -1, -1, 0);
+    OAM::Render(0, &OAM::POWER_STAR, x - 0x10, y + 8, -1, -1, 0);
 }
 
 // @symbol _ZN12dScStarSel_c19func_ov003_020ae1a4Ei
@@ -330,9 +296,9 @@ void dScStarSel_c::func_ov003_020ae238() {
         x = 0x10;
         y = 0xac;
     }
-    OAM::Render(0, (OamAttr *)_ZN3OAM10LIFE_ICONSE[LIFE_ICON(this)], x, y + 8, -1, -1, 0x1000,
+    OAM::Render(0, OAM::LIFE_ICONS[LIFE_ICON(this)], x, y + 8, -1, -1, 0x1000,
                 0x1000, 0, -1);
-    OAM::Render(0, (OamAttr *)&_ZN3OAM5TIMESE, x + 0x10, y + 8, -1, -1, 0);
+    OAM::Render(0, &OAM::TIMES, x + 0x10, y + 8, -1, -1, 0);
     func_ov003_020ae1a4((unsigned short)data_0209f2f4[0]);
     {
         int i = 0;
@@ -340,7 +306,7 @@ void dScStarSel_c::func_ov003_020ae238() {
         do {
             signed char d = DIGIT(this, i);
             if (d >= 0) {
-                OAM::Render(0, (OamAttr *)_ZN3OAM7NUMBERSE[d], x, y, 8, -1, 0);
+                OAM::Render(0, OAM::NUMBERS[d], x, y, 8, -1, 0);
                 x += 9;
             }
             i++;
@@ -505,13 +471,13 @@ s32 dScStarSel_c::Render() {
         levelNum = SublevelToLevel(data_02092110) + 1;
         if (levelNum <= 0xf) {
             if (levelNum >= 10) {
-                OAM::Render(0, (OamAttr *)_ZN3OAM7NUMBERSE[levelNum / 10], numX = 0x77, 0x7a, 8, -1,
+                OAM::Render(0, OAM::NUMBERS[levelNum / 10], numX = 0x77, 0x7a, 8, -1,
                             0);
                 numX += 9;
             } else {
                 numX = 0x7c;
             }
-            OAM::Render(0, (OamAttr *)_ZN3OAM7NUMBERSE[levelNum % 10], numX, 0x7a, 8, -1, 0);
+            OAM::Render(0, OAM::NUMBERS[levelNum % 10], numX, 0x7a, 8, -1, 0);
         }
     }
 
@@ -997,8 +963,6 @@ enum ZN12dScStarSel_c13InitResourcesEv_AssetId {
 extern "C" {
 void Enable3dEngines(void);
 void *LoadFile(int);
-void *_ZN2G213GetBG2CharPtrEv(void);
-void *_ZN2G212GetBG2ScrPtrEv(void);
 void DecompressLZ16(void *, u32);
 int IsStarCollected(int, int);
 
@@ -1079,14 +1043,14 @@ s32 dScStarSel_c::InitResources() {
         REG16(0x400000C) = (REG16(0x400000C) & 0x43) | 0x1610;
         REG16(0x400000C) &= ~0x40;
         file = LoadFile(ASSET_D_2D_PLAYER_SELECT_KOOPA_BG_NCG_BIN);
-        DecompressLZ16(file, (u32)_ZN2G213GetBG2CharPtrEv());
+        DecompressLZ16(file, (u32)G2::GetBG2CharPtr());
         Deallocate(file);
         file = LoadFile(ASSET_D_2D_PLAYER_SELECT_KOOPA_BG_NCL_BIN);
         GX::LoadBGPltt(file, 0, 0x1A0);
         GXS::LoadBGPltt(file, 0, 2);
         Deallocate(file);
         file = LoadFile(ASSET_D_2D_PLAYER_SELECT_KOOPA_BG_NSC_BIN);
-        DecompressLZ16(file, (u32)_ZN2G212GetBG2ScrPtrEv());
+        DecompressLZ16(file, (u32)G2::GetBG2ScrPtr());
         Deallocate(file);
         SetBg2Offset(0, 0);
         data_0209d45c |= 4;
@@ -1106,13 +1070,13 @@ s32 dScStarSel_c::InitResources() {
         } else {
             file = LoadFile(ASSET_D_2D_SCENARIO_PLAYER_SELECT_COURSE_NUMBER_BG_NCG_BIN);
         }
-        DecompressLZ16(file, (u32)_ZN2G213GetBG2CharPtrEv());
+        DecompressLZ16(file, (u32)G2::GetBG2CharPtr());
         Deallocate(file);
         file = LoadFile(ASSET_D_2D_SCENARIO_PLAYER_SELECT_COURSE_NUMBER_BG_NCL_BIN);
         GX::LoadBGPltt(file, 0, 0x1A0);
         Deallocate(file);
         file = LoadFile(ASSET_D_2D_SCENARIO_PLAYER_SELECT_COURSE_NUMBER_BG_NSC_BIN);
-        DecompressLZ16(file, (u32)_ZN2G212GetBG2ScrPtrEv());
+        DecompressLZ16(file, (u32)G2::GetBG2ScrPtr());
         Deallocate(file);
         SetBg2Offset(0, -4);
         data_0209d45c |= 4;

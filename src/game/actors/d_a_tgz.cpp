@@ -45,6 +45,7 @@ struct Vector3_16f;
  *   overloading, so those four cast.
  */
 #include "decl_common.h"
+#include "cstd.h"
 #include "nitro/fx/fx.h"
 #include "daTgz_c.h"
 #include "Player.h"
@@ -86,7 +87,6 @@ void func_ov077_02125e94(daTgz_c *self, int state);
 
 int SurfaceInfo_TestFlag0x20(int *p);
 void func_02012694(unsigned int id, const Vector3 *pos);
-int _ZN4cstd4fdivEii(int a, int b);
 s32 func_02010844(void *unused, Vector3 *v, s16 angle);
 void _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs(void *self, const Vector3 *pos, unsigned int count, int spread, short angle);
 short Vec3_HorzAngle(void *a, void *b);
@@ -214,7 +214,7 @@ extern "C" void func_ov077_02124d08(daTgz_c *self, dBgCh_Actr *clsn)
                 fr->surface.CopyNormalTo(normal);
             }
             if (normal.y != 0) {
-                self->mVertSpeed = -(_ZN4cstd4fdivEii(FX_MUL(normal.x, self->mSpeedX) +
+                self->mVertSpeed = -(cstd::fdiv(FX_MUL(normal.x, self->mSpeedX) +
                                                           FX_MUL(normal.z, self->mSpeedZ),
                                                       normal.y) +
                                      0x8000);

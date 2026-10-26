@@ -22,8 +22,7 @@
  * Known limits:
  * - dBgW_KcMbg::SetFile, dCcAc_c::Init, Particle::System::New / NewSimple
  *   and dBgActor_c::IsClsnInRangeOnScreen stay mangled: each takes
- *   Fix12<int> by value (notes/mwccarm-codegen.md 6az). cstd::fdiv stays
- *   mangled because no header declares the cstd namespace yet.
+ *   Fix12<int> by value (notes/mwccarm-codegen.md 6az).
  * - data_ov081_02128fd0 / 02128fd8 are this overlay's KCL / BMD file
  *   handles and data_ov002_0210d8d4 the CLPS block, all in data this TU
  *   does not own.
@@ -34,8 +33,7 @@
 // leftovers:
 // - dBgW_KcMbg::SetFile, dCcAc_c::Init, Particle::System::New / NewSimple
 //   and dBgActor_c::IsClsnInRangeOnScreen stay mangled: each takes
-//   Fix12<int> by value (notes/mwccarm-codegen.md 6az). cstd::fdiv stays
-//   mangled because no header declares the cstd namespace yet.
+//   Fix12<int> by value (notes/mwccarm-codegen.md 6az).
 // - data_ov081_02128fd0 / 02128fd8 are this overlay's KCL / BMD file
 //   handles and data_ov002_0210d8d4 the CLPS block, all in data this TU
 //   does not own.
@@ -52,6 +50,7 @@ enum d_a_obj_ice_block_AssetId {
 };
 
 #include "daObjIceBlock_c.h"
+#include "cstd.h"
 #include "Player.h"
 #include "daStar_c.h"
 #include "Sound.h"
@@ -84,7 +83,6 @@ extern CLPS_Block data_ov002_0210d8d4;
 
 u8 DecIfAbove0_Byte(u8 *counter);
 void func_02012694(u32 soundID, const Vector3 *pos);
-int _ZN4cstd4fdivEii(int num, int den);
 
 void *d_a_obj_ice_blockNewSimpleHold(u32 effectID, int x, int y, int z);
 int d_a_obj_ice_blockNewHold(u32 handle, u32 effectID, int x, int y, int z, const Vector3_16f *dir,
@@ -133,7 +131,7 @@ s32 daObjIceBlock_c::Behavior()
     IsClsnInRangeOnScreen(0, 0);
 
     if (mMeltTimer != 0) {
-        mScale = _ZN4cstd4fdivEii(mMeltTimer << 12, kMeltFrames << 12);
+        mScale = cstd::fdiv(mMeltTimer << 12, kMeltFrames << 12);
 
         if (DecIfAbove0_Byte(&mMeltTimer) == 0) {
             dActor_c *star = mContainedActor;

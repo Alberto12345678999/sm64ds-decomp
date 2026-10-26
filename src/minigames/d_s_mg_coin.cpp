@@ -50,21 +50,13 @@ enum dScMgCoin_c_AssetId {
 };
 
 #include "types.h"
+#include "G2.h"
 #include "decl_common.h"
 #include "Sound.h"
 #include "dScMgCoin_c.h"
 #include "PlayerInput.h"
 #include "nitro/fx/fx.h"
-
-namespace GX {
-void LoadBGPltt(const void *p, u32 a, u32 b);
-void LoadOBJPltt(const void *p, u32 a, u32 b);
-}
-
-namespace GXS {
-void LoadBGPltt(const void *p, u32 a, u32 b);
-void LoadOBJPltt(const void *p, u32 a, u32 b);
-}
+#include "GX.h"
 
 #pragma defer_codegen off /* ROM-ascending emission; dropping this inverts it */
 
@@ -1653,7 +1645,7 @@ int dScMgCoin_c::InitResources() {
     *(volatile u16 *)0x400100e = (*(volatile u16 *)0x400100e & 0x43) | 0x1210;
 
     d = LoadFile(ASSET_D_2D_MG_BG_WRECKING_CREW_NCG_BIN);
-    DecompressLZ16(d, (void *)(_ZN3G2S13GetBG3CharPtrEv() + 0x4000));
+    DecompressLZ16(d, (void *)((char *)G2S::GetBG3CharPtr() + 0x4000));
     Deallocate((void *)d);
 
     d = LoadFile(ASSET_D_2D_MG_BG_WRECKING_CREW_NCL_BIN);

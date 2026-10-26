@@ -27,6 +27,7 @@ enum d_a_pg_mthr_AssetId {
 };
 
 #include "common.h"
+#include "cstd.h"
 #include "daPgMthr_c.h"
 #include "types.h"
 #include "nitro/fx/fx.h"
@@ -426,7 +427,6 @@ struct dBgPiRaw {
     void *vt;
     struct dBgPiRawBody info;
 };
-int _ZN4cstd4fdivEii(int a, int b);
 void _ZN5dBgPiD1Ev(struct dBgPiRaw *r);
 extern int data_02099368[];
 
@@ -442,7 +442,7 @@ void func_ov018_02111bf0(void *cv, void *wv)
         floor->surface.CopyNormalTo(n);
         if (n.y != 0) {
             int s = FX_MUL(n.x, self->mSpeedX) + FX_MUL(n.z, self->mSpeedZ);
-            self->mVertSpeed = -(_ZN4cstd4fdivEii(s, n.y) + 0x8000);
+            self->mVertSpeed = -(cstd::fdiv(s, n.y) + 0x8000);
         }
     }
     if (w->IsOnWall() != 0) {

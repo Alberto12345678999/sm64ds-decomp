@@ -27,6 +27,7 @@
 #include "decl_common.h"
 #include "decl_Particle.h"
 #include "dClipper.h"
+#include "cstd.h"
 struct Vector3_16f;
 namespace Particle {
 struct System {
@@ -126,6 +127,8 @@ extern void Matrix4x3_FromRotationZ(void *m, int angle);
 extern void MulMat4x3Mat4x3(void *dst, const void *a, void *b);
 extern void Matrix4x3_LoadIdentity(Matrix4x3 *matrix);
 
+/* local extern: two callers are inside `#pragma cplusplus off` regions, where
+   cstd::fdiv cannot be named; the C++ caller uses cstd.h. */
 extern int _ZN4cstd4fdivEii(int a, int b);
 extern void _Z14ApproachLinearRiii(int *r, int b, int c);
 extern int _Z15ApproachLinear2Rsss(short *dst, short target, short step);
@@ -1518,7 +1521,7 @@ extern "C" int func_0200bec4(char *self, int *arg1, int arg2, char *arg3, int ar
             int fd;
             if (sl != 0) {
                 Math_Function_0203b14c(&f, 0, 0x100, FX_MUL(r5, 0x600), 0x1000);
-                fd = _ZN4cstd4fdivEii(f, sl);
+                fd = cstd::fdiv(f, sl);
                 cam->mLookAtOffset.x = sp8.x - FX_MUL(sp38.x, fd);
                 cam->mLookAtOffset.z = sp8.z - FX_MUL(sp38.z, fd);
             }

@@ -22,6 +22,7 @@ struct System {
 #pragma opt_common_subs off
 
 #include "daPgRcer_c.h"
+#include "cstd.h"
 #include "Player.h"
 #include "SharedFilePtr.h"
 #include "SurfaceInfo.h"
@@ -56,7 +57,6 @@ extern unsigned char data_0209d684;                /* talk-script choice */
 extern unsigned char NumStars(void);
 extern unsigned char DecIfAbove0_Byte(unsigned char *p);
 extern void func_02038414(void *clsn);
-extern int _ZN4cstd4fdivEii(int a, int b);
 extern Fix12i Vec3_HorzDist(const Vector3 *a, const Vector3 *b);
 extern short Vec3_HorzAngle(const Vector3 *a, const Vector3 *b);
 extern int Vec3_Dist(const Vector3 *a, const Vector3 *b);
@@ -607,7 +607,7 @@ int func_ov019_0211140c(daPgRcer_c *self, dBgCh_Actr *clsn)
         if (floorNormal.y != 0) {
             int x = FX_MUL(floorNormal.x, self->mSpeedX);
             int y = FX_MUL(floorNormal.z, self->mSpeedZ);
-            self->mVertSpeed = -(_ZN4cstd4fdivEii(x + y, floorNormal.y) + 0x8000);
+            self->mVertSpeed = -(cstd::fdiv(x + y, floorNormal.y) + 0x8000);
             if (self->mVertSpeed > 0)
                 self->mVertSpeed = 0;
         }

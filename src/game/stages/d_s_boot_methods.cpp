@@ -19,6 +19,8 @@
 enum dScBoot_c_AssetId { ASSET_D_2D_FRAMEWORK_INITIALIZE_NSC_BIN = 0x022d };
 
 #include "dScBoot_c.h"
+#include "G2.h"
+#include "GX.h"
 #include "AsyncJob.h"
 
 #include "dCamera_c.h"
@@ -29,25 +31,6 @@ enum dScBoot_c_AssetId { ASSET_D_2D_FRAMEWORK_INITIALIZE_NSC_BIN = 0x022d };
 #include "decl_common.h"
 #include "MessageBank.h"
 #include "PlayerInput.h"
-
-namespace G2S {
-u32 GetBG1CharPtr(void);
-u32 GetBG1ScrPtr(void);
-u32 GetBG2CharPtr(void);
-u32 GetBG2ScrPtr(void);
-}
-
-namespace GX {
-void LoadBGPltt(const void *p, u32 offset, u32 size);
-void SetBankForBG(u16 bank);
-void SetBankForOBJ(u16 bank);
-void SetBankForSubBG(u16 bank);
-void SetBankForSubOBJ(u16 bank);
-}
-
-namespace GXS {
-void LoadBGPltt(const void *p, u32 a, u32 b);
-}
 
 #pragma opt_common_subs off
 
@@ -67,7 +50,6 @@ int LoadFile(int handle);
 
 void DecompressLZ16(const void *src, void *dst);
 
-void *_ZN2G212GetBG0ScrPtrEv(void);
 }
 
 /* These names describe the observed transitions; original state names are unknown. */
@@ -99,7 +81,7 @@ enum BootMenuState {
  * are the ROM's own.
  */
 s32 dScBoot_c::InitResources() {
-    _ZN2GX15DisableAllBanksEv();
+    GX::DisableAllBanks();
     GX::SetBankForBG(1);
     GX::SetBankForOBJ(2);
     GX::SetBankForSubBG(4);
@@ -107,12 +89,12 @@ s32 dScBoot_c::InitResources() {
 
     *(volatile u32 *)0x4000000 &= 0xffcfffef;
     *(volatile u32 *)0x4001000 &= 0xffcfffef;
-    _ZN2GX15SetGraphicsModeEiii(1, 0, 0);
-    _ZN3GXS15SetGraphicsModeEi(0);
+    GX::SetGraphicsMode(1, 0, 0);
+    GXS::SetGraphicsMode(0);
 
     *(volatile u32 *)0x4000000 = (*(volatile u32 *)0x4000000 & ~0x38000000) | 0x8000000;
     *(volatile u16 *)0x4000304 = (*(volatile u16 *)0x4000304 & 0xfffffdf1) | 0x20e;
-    _ZN2GX6DispOnEv();
+    GX::DispOn();
 
     *(volatile u32 *)0x4001000 |= 0x10000;
     *(volatile u16 *)0x4000008 = (*(volatile u16 *)0x4000008 & ~3) | 1;
@@ -122,7 +104,7 @@ s32 dScBoot_c::InitResources() {
 
     DecompressLZ16(&data_020918c4, func_02054efc());
     GX::LoadBGPltt(&data_020914e0, 0x1c0, 0x40);
-    DecompressLZ16(&data_020916d8, _ZN2G212GetBG0ScrPtrEv());
+    DecompressLZ16(&data_020916d8, G2::GetBG0ScrPtr());
 
     *(volatile u16 *)0x400000e = *(volatile u16 *)0x400000e & ~3;
     *(volatile u16 *)0x400000e = (*(volatile u16 *)0x400000e & 0x43) | 0x1100;

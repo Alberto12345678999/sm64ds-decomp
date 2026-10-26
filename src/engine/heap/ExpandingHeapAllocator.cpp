@@ -54,9 +54,9 @@
 #include "ExpandingHeapAllocator.h"
 #include "Heap.h"
 #include "decl_HeapAllocator.h"
+#include "cstd.h"
 
 extern "C" void MultiStore_Int(int val, void *dst, int len);
-extern "C" int _ZN4cstd3absEi(int);
 extern "C" ExpandingHeapAllocator *_ZN22ExpandingHeapAllocatorC1EPvj(
     ExpandingHeapAllocator *self, void *heapEnd, u32 flags);
 extern "C" void _ZN10MemoryNode6TargetC1EPS_(MemoryNode::Target *t, MemoryNode *node);
@@ -513,7 +513,7 @@ u32 ExpandingHeapAllocator::MemoryLeft()
  * and ignored here. */
 int ExpandingHeapAllocator::MaxAllocatableSize(int arg)
 {
-    int align = _ZN4cstd3absEi(arg);
+    int align = cstd::abs(arg);
     unsigned int bestSize = 0;
     unsigned int bestOffset = -1;
     MemoryNode *n = mFirstNode;

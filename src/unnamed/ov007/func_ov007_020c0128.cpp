@@ -1,8 +1,7 @@
 //cpp
 #include "types.h"
+#include "cstd.h"
 extern "C" {
-extern int _ZN4cstd3divEii(int a, int b);
-extern long long _ZN4cstd4ldivEii(int a, int b);
 }
 extern "C" void Matrix4x3_LoadIdentity(void *m);
 extern "C" void func_02052ec8(void *p);
@@ -65,8 +64,8 @@ extern "C" void func_ov007_020c0128(char *c)
     cam->up.y = 0x1000;
     cam->nearZ = 0x1000;
     cam->farZ = 0x190000;
-    cam->fovy = (short)_ZN4cstd3divEii(0x1e0000, 0x168);
-    long long l = _ZN4cstd4ldivEii(0x4000, 0x3000);
+    cam->fovy = (short)cstd::div(0x1e0000, 0x168);
+    long long l = cstd::ldiv(0x4000, 0x3000);
     cam->aspect = l;
     cam->viewportMinX = 0;
     cam->viewportMaxX = 0xff;

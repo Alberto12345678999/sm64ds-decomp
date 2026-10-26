@@ -112,6 +112,11 @@ enum daDemo_c_AssetId {
 };
 
 #include "types.h"
+#include "CP15.h"
+#include "G2.h"
+#include "G2x.h"
+#include "GX.h"
+#include "Memory.h"
 #include "nitro/fx/fx.h"
 #include "common.h"
 #include "dExtSimpleModel_c.h"
@@ -126,9 +131,7 @@ enum daDemo_c_AssetId {
 #include "SaveData.h"
 #include "dExtAnmTexPat_c.h"
 #include "dCamera_c.h"
-namespace cstd {
-s16 atan2(s32, s32);
-}
+#include "cstd.h"
 
 struct OamAttr;
 
@@ -401,7 +404,11 @@ struct JugemModelFile : SharedFilePtr {
 };
 
 extern "C" {
-extern void _ZN3G2x13SetBlendAlphaEPVttttj( volatile void *reg, unsigned short a, unsigned short b, int c, int d);
+/* local extern: the fades pass a computed alpha and 0x10 minus it; the real
+   unsigned short parameters (G2x.h) narrow both, which the ROM does not
+   (measured: +8 bytes in each of the three fading functions). The fixed-alpha
+   calls use G2x::SetBlendAlpha. */
+extern void _ZN3G2x13SetBlendAlphaEPVttttj(volatile void *reg, unsigned short a, unsigned short b, int c, int d);
 extern unsigned char data_0209d454;
 extern int RandomIntInternal(int *seed);
 extern int data_0209e650;
@@ -478,25 +485,12 @@ extern void func_ov002_020f3954(char *);
 void func_ov002_020f2e30(StaffRoll *, int);
 extern PMF0 data_ov002_02110f9c[];
 extern void SetSubBg3Offset(int a, int b);
-extern void _ZN3GXS15SetGraphicsModeEi(int m);
 extern int LoadFile(int handle);
 extern void DecompressLZ16(int src, void* dst);
 extern void Deallocate(void* p);
-extern void _ZN2GX11LoadOBJPlttEPKvjj(const void* p, u32 a, u32 b);
-extern u32 _ZN3G2S13GetBG1CharPtrEv(void);
-extern void _ZN2GX10LoadBGPlttEPKvjj(const void* p, u32 a, u32 b);
-extern void _ZN3GXS10LoadBGPlttEPKvjj(const void* p, u32 a, u32 b);
 extern void func_02056434(const void* src, int offset, int count);
-extern char* _ZN3G2S13GetBG3CharPtrEv(void);
-extern void _ZN4CP1527FlushAndInvalidateDataCacheEjj(u32 a, u32 b);
-extern void _ZN2GX22SetBankForSubBGExtPlttEt(u16 a);
-extern void _ZN3GXS18BeginLoadBGExtPlttEv(void);
-extern void _ZN3GXS13LoadBGExtPlttEPKvjj(const void* p, u32 a, u32 b);
-extern void _ZN3GXS16EndLoadBGExtPlttEv(void);
 extern void func_020562b4(const void* src, u32 offset, u32 count);
 extern void func_02056374(const void* src, u32 offset, u32 count);
-extern void _ZN3GXS11LoadOBJPlttEPKvjj(const void* p, u32 a, u32 b);
-extern void* _ZN6Memory13operator_new2Ej(u32 sz);
 extern void func_ov002_020f5ad4(char* c);
 extern void func_ov002_020f5f60(char *c);
 extern int func_ov002_020f5fb8(void* c);
@@ -719,8 +713,7 @@ void daDemo_c::func_ov002_020f1fcc()
     data_0209d454 &= ~4;
     *(volatile unsigned int *)0x4001000 =
         (*(volatile unsigned int *)0x4001000 & ~0x1f00) | (data_0209d454 << 8);
-    _ZN3G2x13SetBlendAlphaEPVttttj(
-        (volatile void *)0x4001050, 0, 0x28, 0xc, 4);
+    G2x::SetBlendAlpha((volatile u16 *)0x4001050, 0, 0x28, 0xc, 4);
     mScroll->state++;
     for (i = 0; i < 3; i++) {
         mScroll->spriteDelay[i] = (i + 1) << 4;
@@ -862,7 +855,7 @@ void daDemo_c::func_ov002_020f237c()
 
 int daDemo_c::func_ov002_020f23d0()
 {
-    _ZN6Memory16operator_delete2EPv(this->mScroll);
+    Memory::operator_delete2(this->mScroll);
     return 1;
 }
 
@@ -3412,7 +3405,7 @@ void func_ov002_020f5f60(char *c)
     void *p = ((StaffRoll *)c)->starChars;
     if (p == 0)
         return;
-    _ZN6Memory16operator_delete2EPv(p);
+    Memory::operator_delete2(p);
     ((StaffRoll *)c)->starChars = 0;
 }
 }
@@ -3457,7 +3450,7 @@ void func_ov002_020f5fe4(char* c)
     SetSubBg1Offset(0, 0);
     SetSubBg2Offset(0, 0);
     SetSubBg3Offset(0, 0);
-    _ZN3GXS15SetGraphicsModeEi(0);
+    GXS::SetGraphicsMode(0);
 
     data_0209d454 &= ~0x1f;
 
@@ -3466,7 +3459,7 @@ void func_ov002_020f5fe4(char* c)
     Deallocate((void*)f);
 
     f = LoadFile(ASSET_D_2D_STAFF_ROLL_END_EUR_NCL_BIN);
-    _ZN2GX11LoadOBJPlttEPKvjj((const void*)f, 0, 0x200);
+    GX::LoadOBJPltt((const void*)f, 0, 0x200);
     Deallocate((void*)f);
 
     *(volatile u16*)0x400000e = (*(volatile u16*)0x400000e & ~3);
@@ -3477,12 +3470,12 @@ void func_ov002_020f5fe4(char* c)
     *(volatile u16*)0x400100a = (*(volatile u16*)0x400100a & 0x43) | 0x800;
 
     f = LoadFile(ASSET_D_2D_STAFF_ROLL_CAKE_4BIT_NCG_BIN);
-    DecompressLZ16(f, (void*)_ZN3G2S13GetBG1CharPtrEv());
+    DecompressLZ16(f, (void*)G2S::GetBG1CharPtr());
     Deallocate((void*)f);
 
     f = LoadFile(ASSET_D_2D_STAFF_ROLL_CAKE_4BIT_NCL_BIN);
-    _ZN2GX10LoadBGPlttEPKvjj((const void*)f, 0, 2);
-    _ZN3GXS10LoadBGPlttEPKvjj((const void*)f, 0, 0x200);
+    GX::LoadBGPltt((const void*)f, 0, 2);
+    GXS::LoadBGPltt((const void*)f, 0, 0x200);
     Deallocate((void*)f);
 
     f = LoadFile(ASSET_D_2D_STAFF_ROLL_CAKE_DARK1_NSC_BIN);
@@ -3504,16 +3497,16 @@ void func_ov002_020f5fe4(char* c)
         r5 = LoadFile(ASSET_D_2D_STAFF_ROLL_CAKE_8BIT_NCG_BIN);
     }
 
-    DecompressLZ16(r5, (void*)_ZN3G2S13GetBG3CharPtrEv());
+    DecompressLZ16(r5, (void*)G2S::GetBG3CharPtr());
     Deallocate((void*)r5);
 
     r5 = LoadFile(ASSET_D_2D_STAFF_ROLL_CAKE_8BIT_NCL_BIN);
-    _ZN4CP1527FlushAndInvalidateDataCacheEjj((u32)r5, 0x200);
-    _ZN2GX22SetBankForSubBGExtPlttEt(0x80);
-    _ZN3GXS18BeginLoadBGExtPlttEv();
-    _ZN3GXS13LoadBGExtPlttEPKvjj((const void*)r5, 0x4000, 0x200);
-    _ZN3GXS13LoadBGExtPlttEPKvjj((const void*)r5, 0x6000, 0x200);
-    _ZN3GXS16EndLoadBGExtPlttEv();
+    CP15::FlushAndInvalidateDataCache((u32)r5, 0x200);
+    GX::SetBankForSubBGExtPltt(0x80);
+    GXS::BeginLoadBGExtPltt();
+    GXS::LoadBGExtPltt((const void*)r5, 0x4000, 0x200);
+    GXS::LoadBGExtPltt((const void*)r5, 0x6000, 0x200);
+    GXS::EndLoadBGExtPltt();
     Deallocate((void*)r5);
 
     f = LoadFile(ASSET_D_2D_STAFF_ROLL_CAKE_BRIGHT_NSC_BIN);
@@ -3533,14 +3526,14 @@ void func_ov002_020f5fe4(char* c)
         int f6 = LoadFile(ASSET_D_2D_STAFF_ROLL_CAKE_DOLL_NCG_BIN);
         r5 = LoadFile(ASSET_D_2D_STAFF_ROLL_CAKE_DOLL_NCL_BIN);
         DecompressLZ16(f6, (void*)0x6600000);
-        _ZN3GXS11LoadOBJPlttEPKvjj((const void*)r5, 0, 0x200);
+        GXS::LoadOBJPltt((const void*)r5, 0, 0x200);
         Deallocate((void*)f6);
         Deallocate((void*)r5);
     }
 
     ((StaffRoll *)c)->starChars = 0;
     if (((StaffRoll *)c)->starChars == 0) {
-        ((StaffRoll *)c)->starChars = (u8 *)_ZN6Memory13operator_new2Ej(0x4000);
+        ((StaffRoll *)c)->starChars = (u8 *)Memory::operator_new2(0x4000);
     }
     f = LoadFile(ASSET_D_2D_ED_STAR_NCG_BIN);
     DecompressLZ16(f, ((StaffRoll *)c)->starChars);
@@ -3559,7 +3552,7 @@ int daDemo_c::func_ov002_020f63a0()
 {
     func_ov002_020f5f60((char *)this->mStaffRoll);
     if (this->mStaffRoll != 0) {
-        _ZN6Memory16operator_delete2EPv(this->mStaffRoll);
+        Memory::operator_delete2(this->mStaffRoll);
         this->mStaffRoll = 0;
     }
     return 1;

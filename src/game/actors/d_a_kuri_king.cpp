@@ -97,6 +97,7 @@ enum daKuriKing_c_AssetId {
 #include "dCamera_c.h"
 #include "Message.h"
 #include "nitro/fx/fx.h"
+#include "cstd.h"
 
 /* Resource handles this TU's static initializer constructs. The wrapper
  * spellings are reconstructed; constructor and destructor addresses, file
@@ -158,11 +159,6 @@ extern "C" int AngleDiff(int a, int b);
 extern "C" int func_01ffa594(int a, int b);
 extern "C" int func_01ffa4bc(int a);
 extern "C" int func_01ff9378(int a, int b);
-/* local extern: no header declares cstd::fdiv (daBgSnmBdy_c spells it the same way). */
-namespace cstd {
-s16 atan2(s32, s32);
-int fdiv(int numerator, int denominator);
-}
 extern "C" int Math_Function_0203b14c(int* p, int a, int b, int d, int e);
 extern "C" unsigned short data_ov074_02122dfc[];
 extern "C" int data_ov074_0212291c[];

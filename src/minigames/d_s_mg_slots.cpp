@@ -49,6 +49,7 @@ enum dScMgSlots_AssetId {
 };
 
 #include "dScMgSlot1_c.h"
+#include "G2.h"
 #include "dScMgSlot3_c.h"
 #include "Sound.h"
 #include "OAM.h"
@@ -58,29 +59,8 @@ enum dScMgSlots_AssetId {
 #include "PlayerInput.h"
 #include "dWipe_c.h"
 #include "G2x.h"
-
-namespace CP15 {
-void FlushAndInvalidateDataCache(u32 a, u32 b);
-}
-
-namespace G2S {
-char *GetBG0CharPtr(void);
-char *GetBG0ScrPtr(void);
-char *GetBG1ScrPtr(void);
-void *GetBG2CharPtr(void);
-void *GetBG2ScrPtr(void);
-char *GetBG3ScrPtr(void);
-}
-
-namespace GX {
-void LoadBGPltt(const void *p, u32 a, u32 b);
-void LoadOBJPltt(const void *p, u32 a, u32 b);
-}
-
-namespace GXS {
-void LoadBGPltt(const void *p, u32 a, u32 b);
-void LoadOBJPltt(const void *p, u32 a, u32 b);
-}
+#include "CP15.h"
+#include "GX.h"
 
 #pragma defer_codegen off
 /* Codegen is deferred by default in mwccarm 2004/b56, which is why its
@@ -88,10 +68,6 @@ void LoadOBJPltt(const void *p, u32 a, u32 b);
  * positional brackets below bind to the functions they enclose -- and .text is
  * then emitted in SOURCE order, so this file is written in ASCENDING ROM order.
  */
-
-struct G2 {
-    static void *GetBG1ScrPtr();
-};
 
 typedef void (dScMgSlot3_c::*SlotState)();
 
@@ -145,8 +121,6 @@ extern SlotState pmf_Slot3_StateGameOver;
 extern SlotState pmf_Slot3_StateDone;
 extern int LoadFile(int handle);
 
-extern void *_ZN2G212GetBG2ScrPtrEv(void);
-
 extern u8 data_0209d454;
 extern int data_0208ee44;
 extern void RenderOamMainScreen(void *, int, int, int, int);
@@ -184,8 +158,6 @@ extern dWipe_c data_0209f61c;
 extern int _ZTV12dScMgSlot1_c[];
 extern int _ZTVN12dScMgSlot1_c9betIcon_cE[];
 extern int _ZTV9dThIcon_c[];
-extern char *_ZN2G213GetBG2CharPtrEv(void);
-extern char *_ZN2G212GetBG3ScrPtrEv(void);
 
 extern void Mg_RenderSubSpriteScaled(void *a0, int a1, int a2, int a3, int a4, int a5,
                                      unsigned short a6);
@@ -900,8 +872,8 @@ s32 dScMgSlot3_c::InitResources() {
         Deallocate((void *)h);
     }
 
-    LoadCompressedFileAt(ASSET_D_2D_MG_BG_SLOT_FACE02_NSC_BIN, _ZN2G212GetBG1ScrPtrEv());
-    LoadCompressedFileAt(ASSET_D_2D_MG_BG_SLOT_FACE_NUKI_NSC_BIN, _ZN2G212GetBG2ScrPtrEv());
+    LoadCompressedFileAt(ASSET_D_2D_MG_BG_SLOT_FACE02_NSC_BIN, G2::GetBG1ScrPtr());
+    LoadCompressedFileAt(ASSET_D_2D_MG_BG_SLOT_FACE_NUKI_NSC_BIN, G2::GetBG2ScrPtr());
 
     {
         int h = LoadFile(ASSET_D_2D_MG_BG_SLOT_FACE_NSC_BIN);
@@ -1541,14 +1513,14 @@ s32 dScMgSlot1_c::InitResources() {
     *(volatile u16 *)0x400000e = *(volatile u16 *)0x400000e & ~0x40;
 
     LoadCompressedFileAt(ASSET_D_2D_MG_BG_SLOT_UP_NCG_BIN, (void *)func_02054d88());
-    LoadCompressedFileAt(ASSET_D_2D_MG_BG_SLOT_GRADE_NCG_BIN, _ZN2G213GetBG2CharPtrEv() + 0x7800);
+    LoadCompressedFileAt(ASSET_D_2D_MG_BG_SLOT_GRADE_NCG_BIN, (char *)G2::GetBG2CharPtr() + 0x7800);
     {
         int h = LoadFile(ASSET_D_2D_MG_BG_SLOT_UP_NCL_BIN);
         GX::LoadBGPltt((const void *)h, 0x60, 0x1a0);
         Deallocate((void *)h);
     }
-    LoadCompressedFileAt(ASSET_D_2D_MG_BG_SLOT_SCORE_UP_NSC_BIN, _ZN2G212GetBG2ScrPtrEv());
-    LoadCompressedFileAt(ASSET_D_2D_MG_BG_SLOT_UP_NSC_BIN, _ZN2G212GetBG3ScrPtrEv());
+    LoadCompressedFileAt(ASSET_D_2D_MG_BG_SLOT_SCORE_UP_NSC_BIN, G2::GetBG2ScrPtr());
+    LoadCompressedFileAt(ASSET_D_2D_MG_BG_SLOT_UP_NSC_BIN, G2::GetBG3ScrPtr());
 
     data_0209d45c = 0x1c;
 
@@ -1568,18 +1540,18 @@ s32 dScMgSlot1_c::InitResources() {
     *(volatile u16 *)0x400100e = *(volatile u16 *)0x400100e & ~0x40;
 
     LoadCompressedFileAt(ASSET_D_2D_MG_BG_SLOT_DOWN_NCG_BIN, G2S::GetBG2CharPtr());
-    LoadCompressedFileAt(ASSET_D_2D_MG_BG_SLOT_GRADE_NCG_BIN, G2S::GetBG0CharPtr() + 0x7800);
+    LoadCompressedFileAt(ASSET_D_2D_MG_BG_SLOT_GRADE_NCG_BIN, (char *)G2S::GetBG0CharPtr() + 0x7800);
     {
         int h = LoadFile(ASSET_D_2D_MG_BG_SLOT_DOWN_NCL_BIN);
         GXS::LoadBGPltt((const void *)h, 0x60, 0x1a0);
         Deallocate((void *)h);
     }
     LoadCompressedFileAt(ASSET_D_2D_GRADE_NSC_BIN, G2S::GetBG0ScrPtr());
-    LoadCompressedFileAt(ASSET_D_2D_BADWIZER_NSC_BIN, G2S::GetBG1ScrPtr() + 0x800);
+    LoadCompressedFileAt(ASSET_D_2D_BADWIZER_NSC_BIN, (char *)G2S::GetBG1ScrPtr() + 0x800);
     LoadCompressedFileAt(ASSET_D_2D_MG_BG_SLOT_DOWN_NSC_BIN, G2S::GetBG2ScrPtr());
 
     {
-        char *d3 = G2S::GetBG3ScrPtr();
+        char *d3 = (char *)G2S::GetBG3ScrPtr();
         fill = 0x43e4;
         MultiStore16(fill, d3, 0x800);
     }

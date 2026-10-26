@@ -118,6 +118,7 @@ enum daKpa_c_AssetId {
 };
 
 #include "common.h"
+#include "cstd.h"
 #include "daKpa_c.h"
 #include "daKpaTail_c.h"
 #include "daKpaFire_c.h"
@@ -347,7 +348,6 @@ extern PmfEnt data_ov060_0211aeb4[];
 extern void func_02012694(unsigned int id, const Vector3 *v);
 void _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void* self, const Vector3& v, u32 a, Fix12i b, u32 c, u32 d, u32 e);
 void func_02038408(void* p);
-int _ZN4cstd4fdivEii(int a, int b);
 
 extern PmfEnt data_ov060_0211aed4[];
 
@@ -3143,7 +3143,7 @@ void daKpa_c::func_ov060_021128c0(){
             if (this->mVertSpeed >= 0x14000)
                 this->mVertSpeed = 0x14000;
         } else if (this->mGroundNormalY != 0) {
-            this->mVertSpeed = -(_ZN4cstd4fdivEii(FX_MUL(this->mGroundNormalX, this->mSpeedX) +
+            this->mVertSpeed = -(cstd::fdiv(FX_MUL(this->mGroundNormalX, this->mSpeedX) +
                                                       FX_MUL(this->mGroundNormalZ, this->mSpeedZ),
                                                   this->mGroundNormalY) +
                                  0x8000);

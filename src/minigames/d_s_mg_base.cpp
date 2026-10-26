@@ -38,6 +38,11 @@
 #include "types.h"
 #include "dEnemyBase_c.h"
 #include "PlayerInput.h"
+#include "CP15.h"
+#include "G2.h"
+#include "GX.h"
+#include "Memory.h"
+#include "cstd.h"
 
 #pragma defer_codegen off
 
@@ -91,7 +96,6 @@ struct SceneVCall6 {
 
 int ApproachLinear(int &value, int target, int step);
 int ApproachLinear2(short &value, short target, short step);
-namespace cstd { int fdiv(int num, int den); }
 
 extern "C" {
 extern void *sMgWorkBuffer;
@@ -1019,12 +1023,7 @@ extern "C" {
 extern "C" {
 extern int* func_02054efc(void);
 extern int* func_02054ea8(void);
-extern int* _ZN2G213GetBG2CharPtrEv(void);
 extern int* func_02054d88(void);
-extern int* _ZN3G2S13GetBG0CharPtrEv(void);
-extern int* _ZN3G2S13GetBG1CharPtrEv(void);
-extern int* _ZN3G2S13GetBG2CharPtrEv(void);
-extern int* _ZN3G2S13GetBG3CharPtrEv(void);
 extern void MultiCopy_Int(void* a, void* b, int n);
 }
 
@@ -1037,11 +1036,6 @@ extern int sMgTopScreenYOffset;
 
 void dScMgBase_c::PaintSquare(int cx, int cy, int colour, int size) {
     using s20ae3b4::MultiCopy_Int;
-    using s20ae3b4::_ZN2G213GetBG2CharPtrEv;
-    using s20ae3b4::_ZN3G2S13GetBG0CharPtrEv;
-    using s20ae3b4::_ZN3G2S13GetBG1CharPtrEv;
-    using s20ae3b4::_ZN3G2S13GetBG2CharPtrEv;
-    using s20ae3b4::_ZN3G2S13GetBG3CharPtrEv;
     using s20ae3b4::sMgPaintWord;
     using s20ae3b4::sMgTopScreenYOffset;
     using s20ae3b4::func_02054d88;
@@ -1090,7 +1084,7 @@ void dScMgBase_c::PaintSquare(int cx, int cy, int colour, int size) {
                     switch (mBrushLayer) {
                     case 0: base = func_02054efc(); break;
                     case 1: base = func_02054ea8(); break;
-                    case 2: base = _ZN2G213GetBG2CharPtrEv(); break;
+                    case 2: base = (int *)G2::GetBG2CharPtr(); break;
                     case 3: base = func_02054d88(); break;
                     default: return;
                     }
@@ -1101,10 +1095,10 @@ void dScMgBase_c::PaintSquare(int cx, int cy, int colour, int size) {
                     if (yrow >= 0xc0)
                         goto inc;
                     switch (mBrushLayer) {
-                    case 0: base = _ZN3G2S13GetBG0CharPtrEv(); break;
-                    case 1: base = _ZN3G2S13GetBG1CharPtrEv(); break;
-                    case 2: base = _ZN3G2S13GetBG2CharPtrEv(); break;
-                    case 3: base = _ZN3G2S13GetBG3CharPtrEv(); break;
+                    case 0: base = (int *)G2S::GetBG0CharPtr(); break;
+                    case 1: base = (int *)G2S::GetBG1CharPtr(); break;
+                    case 2: base = (int *)G2S::GetBG2CharPtr(); break;
+                    case 3: base = (int *)G2S::GetBG3CharPtr(); break;
                     default: return;
                     }
                 }
@@ -1519,9 +1513,6 @@ extern "C" u8 data_0209d454;
 extern "C" u8 data_0209d460;
 extern "C" u8 data_0209d458;
 
-extern "C" int _ZN2GX10LoadBGPlttEPKvjj(const void* p, u32 a, u32 b);
-extern "C" int _ZN3GXS10LoadBGPlttEPKvjj(const void* p, u32 a, u32 b);
-
 /* RETURN TYPE, MEASURED -- and it corrects the header's earlier `int`, which
    that slot's own evidence block called "a HINT".  Declaring this member `int`
    and letting control fall off the end does not cost an instruction, but it
@@ -1539,7 +1530,7 @@ extern "C" int _ZN3GXS10LoadBGPlttEPKvjj(const void* p, u32 a, u32 b);
 }
 
 void dScMgBase_c::RestoreScreenFromMenu()
-{ using s20aeed8::_ZN2GX10LoadBGPlttEPKvjj; using s20aeed8::_ZN3GXS10LoadBGPlttEPKvjj; using s20aeed8::data_0209d454; using s20aeed8::data_0209d458; using s20aeed8::data_0209d45c; using s20aeed8::data_0209d460;
+{ using s20aeed8::data_0209d454; using s20aeed8::data_0209d458; using s20aeed8::data_0209d45c; using s20aeed8::data_0209d460;
     MgMenuSaveArea *save = (MgMenuSaveArea *)this;
 
     data_0209d45c = 0;
@@ -1551,12 +1542,12 @@ void dScMgBase_c::RestoreScreenFromMenu()
     *(u32*)0x4000000 = (*(u32*)0x4000000 & ~0xe000) | ((u32)data_0209d460 << 13);
     *(u32*)0x4001000 = (*(u32*)0x4001000 & ~0xe000) | ((u32)data_0209d458 << 13);
 
-    _ZN2GX10LoadBGPlttEPKvjj(save->mainBgPltt, 0x20, 0x1e0);
+    GX::LoadBGPltt(save->mainBgPltt, 0x20, 0x1e0);
     {
         /* stepped from mainBgPltt: save->subBgPltt moves the literal pool */
         char *p = (char *)save->mainBgPltt;
         p += 0x200;
-        _ZN3GXS10LoadBGPlttEPKvjj(p, 0, 0x80);
+        GXS::LoadBGPltt(p, 0, 0x80);
     }
 
     if (GetDisplayMode() != 2)
@@ -1628,9 +1619,6 @@ extern "C" {
    this module is dScMgBase_c::OnGraphCallback2, which reaches it only on a rising edge
    of mMenuOpen.  That is the three-item overlay menu going up, not a Yoshi egg.
    See the slot 29 block in include/dScMgBase_c.h for why the name is kept. */
-extern "C" void _ZN4CP1527FlushAndInvalidateDataCacheEjj(void *addr, unsigned int size);
-extern "C" void _ZN2GX10LoadBGPlttEPKvjj(const void *src, unsigned int offset, unsigned int size);
-extern "C" void _ZN3GXS10LoadBGPlttEPKvjj(const void *src, unsigned int offset, unsigned int size);
 extern "C" void MultiStore16(unsigned short val, char *dst, int nbytes);
 extern "C" void func_0201f32c(int arg0);
 extern "C" int GetGameLanguage(void);
@@ -1651,7 +1639,7 @@ extern "C" unsigned char data_0209d454;
 }
 
 int dScMgBase_c::SaveScreenForMenu()
-{ using s20af094::DecompressLZ16; using s20af094::GetGameLanguage; using s20af094::MultiStore16; using s20af094::_ZN2GX10LoadBGPlttEPKvjj; using s20af094::_ZN3GXS10LoadBGPlttEPKvjj; using s20af094::_ZN4CP1527FlushAndInvalidateDataCacheEjj; using s20af094::data_0209d454; using s20af094::data_0209d45c; using s20af094::func_0201f32c;
+{ using s20af094::DecompressLZ16; using s20af094::GetGameLanguage; using s20af094::MultiStore16; using s20af094::data_0209d454; using s20af094::data_0209d45c; using s20af094::func_0201f32c;
     MgMenuSaveArea *save = (MgMenuSaveArea *)this;
 
     if (GetDisplayMode() != 0)
@@ -1677,10 +1665,10 @@ int dScMgBase_c::SaveScreenForMenu()
         int *pltt = (int *)save->mainBgPltt;
         MultiCopy_Int((int *)0x5000400, pltt + 0x80, 0x80);
     }
-    _ZN4CP1527FlushAndInvalidateDataCacheEjj(save->mainBgPltt, 0x400);
+    CP15::FlushAndInvalidateDataCache((u32)save->mainBgPltt, 0x400);
 
-    _ZN2GX10LoadBGPlttEPKvjj((const void *)sMgMenuBgPltt, 0x20, 0xa0);
-    _ZN3GXS10LoadBGPlttEPKvjj((const void *)sMgMenuSubBgPltt, 0, 0x80);
+    GX::LoadBGPltt((const void *)sMgMenuBgPltt, 0x20, 0xa0);
+    GXS::LoadBGPltt((const void *)sMgMenuSubBgPltt, 0, 0x80);
 
     {
         volatile unsigned short tmp = 0;
@@ -1702,7 +1690,7 @@ int dScMgBase_c::SaveScreenForMenu()
         MultiCopy_Int(vram, (int *)save->subObjChars, 0x2000);
         int idx = GetGameLanguage();
         DecompressLZ16(sMgMenuScreenByLanguage[idx], vram);
-        _ZN4CP1527FlushAndInvalidateDataCacheEjj(save->subObjChars, 0x2000);
+        CP15::FlushAndInvalidateDataCache((u32)save->subObjChars, 0x2000);
     }
 }
 
@@ -1735,24 +1723,9 @@ void dScMgBase_c::OpenMenu()
 namespace s20af2f8 {
 extern "C" {
 extern "C" {
-extern int _ZN2G212GetBG0ScrPtrEv(void);
 extern void MultiStore16(int val, int ptr, int n);
-extern int _ZN3G2S12GetBG0ScrPtrEv(void);
-extern int _ZN2G212GetBG1ScrPtrEv(void);
-extern int _ZN3G2S12GetBG1ScrPtrEv(void);
-extern int _ZN2G212GetBG2ScrPtrEv(void);
-extern int _ZN3G2S12GetBG2ScrPtrEv(void);
-extern int _ZN2G212GetBG3ScrPtrEv(void);
-extern int _ZN3G2S12GetBG3ScrPtrEv(void);
 extern int func_02054efc(void);
-extern int _ZN3G2S13GetBG0CharPtrEv(void);
 extern int func_02054ea8(void);
-extern int _ZN3G2S13GetBG1CharPtrEv(void);
-extern int _ZN2G213GetBG2CharPtrEv(void);
-extern int _ZN3G2S13GetBG2CharPtrEv(void);
-extern int _ZN3G2S13GetBG3CharPtrEv(void);
-extern void _ZN2GX10LoadBGPlttEPKvjj(const void* p, unsigned int a, unsigned int b);
-extern void _ZN3GXS10LoadBGPlttEPKvjj(const void* p, unsigned int a, unsigned int b);
 
 extern char sMgBrushPalette;
 
@@ -1784,41 +1757,41 @@ void Mg_InitBrush(char* sb, char en, int mode, int base)
         switch (scene->mBrushLayer) {
         case 0:
             if (scene->mBrushOnMain) {
-                t = _ZN2G212GetBG0ScrPtrEv();
+                t = (int)G2::GetBG0ScrPtr();
                 t = t + off;
                 MultiStore16(v0 = val, t, 2);
             }
-            t = _ZN3G2S12GetBG0ScrPtrEv();
+            t = (int)G2S::GetBG0ScrPtr();
             t = t + off;
             MultiStore16(v1 = val, t, 2);
             break;
         case 1:
             if (scene->mBrushOnMain) {
-                t = _ZN2G212GetBG1ScrPtrEv();
+                t = (int)G2::GetBG1ScrPtr();
                 t = t + off;
                 MultiStore16(v2 = val, t, 2);
             }
-            t = _ZN3G2S12GetBG1ScrPtrEv();
+            t = (int)G2S::GetBG1ScrPtr();
             t = t + off;
             MultiStore16(v3 = val, t, 2);
             break;
         case 2:
             if (scene->mBrushOnMain) {
-                t = _ZN2G212GetBG2ScrPtrEv();
+                t = (int)G2::GetBG2ScrPtr();
                 t = t + off;
                 MultiStore16(v4 = val, t, 2);
             }
-            t = _ZN3G2S12GetBG2ScrPtrEv();
+            t = (int)G2S::GetBG2ScrPtr();
             t = t + off;
             MultiStore16(v5 = val, t, 2);
             break;
         case 3:
             if (scene->mBrushOnMain) {
-                t = _ZN2G212GetBG3ScrPtrEv();
+                t = (int)G2::GetBG3ScrPtr();
                 t = t + off;
                 MultiStore16(v6 = val, t, 2);
             }
-            t = _ZN3G2S12GetBG3ScrPtrEv();
+            t = (int)G2S::GetBG3ScrPtr();
             t = t + off;
             MultiStore16(v7 = val, t, 2);
             break;
@@ -1834,7 +1807,7 @@ void Mg_InitBrush(char* sb, char en, int mode, int base)
             w0 = 0;
             MultiStore16(w0, t, 0x6000);
         }
-        t = _ZN3G2S13GetBG0CharPtrEv();
+        t = (int)G2S::GetBG0CharPtr();
         w1 = 0;
         MultiStore16(w1, t, 0x6000);
         break;
@@ -1844,17 +1817,17 @@ void Mg_InitBrush(char* sb, char en, int mode, int base)
             w2 = 0;
             MultiStore16(w2, t, 0x6000);
         }
-        t = _ZN3G2S13GetBG1CharPtrEv();
+        t = (int)G2S::GetBG1CharPtr();
         w3 = 0;
         MultiStore16(w3, t, 0x6000);
         break;
     case 2:
         if (scene->mBrushOnMain) {
-            t = _ZN2G213GetBG2CharPtrEv();
+            t = (int)G2::GetBG2CharPtr();
             w4 = 0;
             MultiStore16(w4, t, 0x6000);
         }
-        t = _ZN3G2S13GetBG2CharPtrEv();
+        t = (int)G2S::GetBG2CharPtr();
         w5 = 0;
         MultiStore16(w5, t, 0x6000);
         break;
@@ -1864,7 +1837,7 @@ void Mg_InitBrush(char* sb, char en, int mode, int base)
             w6 = 0;
             MultiStore16(w6, t, 0x6000);
         }
-        t = _ZN3G2S13GetBG3CharPtrEv();
+        t = (int)G2S::GetBG3CharPtr();
         w7 = 0;
         MultiStore16(w7, t, 0x6000);
         break;
@@ -1872,8 +1845,8 @@ void Mg_InitBrush(char* sb, char en, int mode, int base)
         return;
     }
 
-    _ZN2GX10LoadBGPlttEPKvjj(&sMgBrushPalette, base << 5, 0x20);
-    _ZN3GXS10LoadBGPlttEPKvjj(&sMgBrushPalette, base << 5, 0x20);
+    GX::LoadBGPltt(&sMgBrushPalette, base << 5, 0x20);
+    GXS::LoadBGPltt(&sMgBrushPalette, base << 5, 0x20);
 }
 }
 }
@@ -2518,7 +2491,7 @@ bool dScMgBase_c::BeforeInitResources()
         Enable3dEngines();
     mMusicTrack = gMgMenuRow.musicTrack;
     if (sMgWorkBuffer == 0)
-        sMgWorkBuffer = _ZN6Memory13operator_new2Ej(0x4000);
+        sMgWorkBuffer = Memory::operator_new2(0x4000);
     /* +0xb0 is the header's pad_0b0. Scanning ov004 and ov006 turns up no
        other word access at +0xb0 in a scene method or through gMgScene, so
        no role is established and the store stays raw. */
@@ -3634,17 +3607,10 @@ extern "C" {
    result and the one caller ignores whatever falls out. */
 extern void Mg_DisableAllBanks(void);
 extern void Mg_ResetBgOffsets(void);
-extern void _ZN2GX12SetBankForBGEt(u16 a);
-extern void _ZN2GX13SetBankForOBJEt(u16 a);
-extern void _ZN2GX15SetBankForSubBGEt(u16 a);
-extern void _ZN2GX16SetBankForSubOBJEt(u16 a);
 extern s32 GetGameLanguage(void);
 extern void *Ov004_LoadFile(int id);
 extern void DecompressLZ16(void *src, void *dst);
 extern void Ov004_Deallocate(void *p);
-extern void _ZN4CP1527FlushAndInvalidateDataCacheEjj(void *p, u32 len);
-extern void _ZN2GX11LoadOBJPlttEPKvjj(const void *p, u32 a, u32 b);
-extern void _ZN3GXS11LoadOBJPlttEPKvjj(const void *p, u32 a, u32 b);
 extern void Mg_ResetOverlays(void);
 extern void FreeGfxSlotsById(int arg);
 extern int sMgTopScreenYOffset;
@@ -3661,13 +3627,6 @@ void dScMgBase_c::InitEngines() {
     using s20b265c::FreeGfxSlotsById;
     using s20b265c::GetGameLanguage;
     using s20b265c::Ov004_Deallocate;
-    using s20b265c::_ZN2GX11LoadOBJPlttEPKvjj;
-    using s20b265c::_ZN2GX12SetBankForBGEt;
-    using s20b265c::_ZN2GX13SetBankForOBJEt;
-    using s20b265c::_ZN2GX15SetBankForSubBGEt;
-    using s20b265c::_ZN2GX16SetBankForSubOBJEt;
-    using s20b265c::_ZN3GXS11LoadOBJPlttEPKvjj;
-    using s20b265c::_ZN4CP1527FlushAndInvalidateDataCacheEjj;
     using s20b265c::data_0208ee44;
     using s20b265c::data_0209d454;
     using s20b265c::data_0209d45c;
@@ -3684,19 +3643,19 @@ void dScMgBase_c::InitEngines() {
     mBrushOnMain = 0;
     mBrushLayer = -1;
     *(vu32 *)0x4001000u |= 0x10000u;
-    _ZN2GX15SetGraphicsModeEiii(1, 0, 0);
-    _ZN3GXS15SetGraphicsModeEi(0);
+    GX::SetGraphicsMode(1, 0, 0);
+    GXS::SetGraphicsMode(0);
     *(vu32 *)0x4001000u &= 0xffcfffefu;
     *(vu16 *)0x4000304u |= 0x8000u;
     Mg_DisableAllBanks();
     Mg_ResetBgOffsets();
     *(vu32 *)0x4000000u &= ~0x7000000u;
     *(vu32 *)0x4000000u &= ~0x38000000u;
-    _ZN2GX12SetBankForBGEt(3);
-    _ZN2GX13SetBankForOBJEt(0x10);
+    GX::SetBankForBG(3);
+    GX::SetBankForOBJ(0x10);
     data_0209d45c = 0x10;
-    _ZN2GX15SetBankForSubBGEt(4);
-    _ZN2GX16SetBankForSubOBJEt(8);
+    GX::SetBankForSubBG(4);
+    GX::SetBankForSubOBJ(8);
     p = Ov004_LoadFile(sMgStockCounterFiles[GetGameLanguage()]);
     {
         char *dst = (char *)0x6400000; dst += 0x4000;
@@ -3708,9 +3667,9 @@ void dScMgBase_c::InitEngines() {
     }
     Ov004_Deallocate(p);
     p = Ov004_LoadFile(0xc3);
-    _ZN4CP1527FlushAndInvalidateDataCacheEjj(p, 0x100u);
-    _ZN2GX11LoadOBJPlttEPKvjj(p, 0x100u, 0x100u);
-    _ZN3GXS11LoadOBJPlttEPKvjj(p, 0x100u, 0x100u);
+    CP15::FlushAndInvalidateDataCache((u32)p, 0x100u);
+    GX::LoadOBJPltt(p, 0x100u, 0x100u);
+    GXS::LoadOBJPltt(p, 0x100u, 0x100u);
     Ov004_Deallocate(p);
     data_0209d454 = 0x10;
     sMgGraphCallback.mScene = this;
@@ -3758,7 +3717,7 @@ void dScMgBase_c::InitMainScreenBg()
     data_0209d45c[0] &= ~2;
     f = GetGameLanguage();
     LoadCompressedFileAt(sMgPauseBgNcgByLanguage[f], (void *)func_02054ea8());
-    LoadCompressedFileAt(0x67, _ZN2G212GetBG1ScrPtrEv());
+    LoadCompressedFileAt(0x67, G2::GetBG1ScrPtr());
 }
 
 namespace s20b2880 {
@@ -3782,15 +3741,13 @@ extern "C" {
    file plus the shared screen map (file 0x5b) are installed.  It builds this
    minigame's touch-screen background, from BeforeInitResources. */
 extern int GetGameLanguage(void);
-extern unsigned int _ZN3G2S13GetBG1CharPtrEv(void);
 extern unsigned int LoadCompressedFileAt(int fileID, void *target);
-extern void *_ZN3G2S12GetBG1ScrPtrEv(void);
 extern unsigned char data_0209d454[];
 }
 }
 
 int dScMgBase_c::InitSubScreenBg()
-{ using s20b2880::GetGameLanguage; using s20b2880::LoadCompressedFileAt; using s20b2880::_ZN3G2S12GetBG1ScrPtrEv; using s20b2880::_ZN3G2S13GetBG1CharPtrEv; using s20b2880::data_0209d454;
+{ using s20b2880::GetGameLanguage; using s20b2880::LoadCompressedFileAt; using s20b2880::data_0209d454;
     int f;
     *(volatile unsigned short *)0x400100a = (*(volatile unsigned short *)0x400100a & 0x43) | 0x10;
     *(volatile unsigned short *)0x400100a = *(volatile unsigned short *)0x400100a & ~0x40;
@@ -3798,8 +3755,8 @@ int dScMgBase_c::InitSubScreenBg()
     SetSubBg1Offset(0, 0);
     data_0209d454[0] &= ~2;
     f = GetGameLanguage();
-    LoadCompressedFileAt(sMgOptionNcgByLanguage[f], (void *)_ZN3G2S13GetBG1CharPtrEv());
-    LoadCompressedFileAt(0x5b, _ZN3G2S12GetBG1ScrPtrEv());
+    LoadCompressedFileAt(sMgOptionNcgByLanguage[f], (void *)G2S::GetBG1CharPtr());
+    LoadCompressedFileAt(0x5b, G2S::GetBG1ScrPtr());
 }
 
 // @symbol Mg_ResetBgOffsets
@@ -3822,7 +3779,7 @@ void Mg_ResetBgOffsets(void) {
 // @symbol Mg_DisableAllBanks
 namespace s20b2980 {
 extern "C" {
-void Mg_DisableAllBanks(void) { _ZN2GX15DisableAllBanksEv(); }
+void Mg_DisableAllBanks(void) { GX::DisableAllBanks(); }
 }
 }
 

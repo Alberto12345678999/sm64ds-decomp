@@ -22,6 +22,7 @@
  */
 #include "types.h"
 #include "nitro/hw/registers.h"
+#include "cstd.h"
 
 namespace cstd {
 int mod(int a, int b);
@@ -35,8 +36,6 @@ void reciprocal_async(Fix12i a);
 }
 
 extern "C" {
-int _ZN4cstd11fdiv_resultEv(void);
-long long _ZN4cstd11ldiv_resultEv(void);
 int func_02052fdc(void);
 void func_02053008(int n);
 }
@@ -77,7 +76,7 @@ namespace cstd {
 s32 fdiv(s32 numerator, s32 denominator)
 {
     fdiv_async(numerator, denominator);
-    return _ZN4cstd11fdiv_resultEv();
+    return cstd::fdiv_result();
 }
 
 }
@@ -100,7 +99,7 @@ extern "C" {
 s32 func_02053200(s32 x)
 {
     cstd::reciprocal_async(x);
-    return _ZN4cstd11fdiv_resultEv();
+    return cstd::fdiv_result();
 }
 }
 
@@ -132,7 +131,7 @@ s32 func_02053130(s32 x)
     if (x > 0) {
         cstd::reciprocal_async(x);
         func_02053008(x);
-        quotient = _ZN4cstd11ldiv_resultEv();
+        quotient = cstd::ldiv_result();
 
         while (REG_SQRTCNT & SQRT_CONTROL_BUSY)
             ;

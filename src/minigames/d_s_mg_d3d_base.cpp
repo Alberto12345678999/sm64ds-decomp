@@ -16,6 +16,9 @@
 #include "decl_common.h"
 #include "decl_Particle.h"
 #include "types.h"
+#include "GX.h"
+#include "G2.h"
+#include "CP15.h"
 
 /* An OAM entry, with attributes 0 and 1 stored as one word the way this
  * code writes them. */
@@ -67,9 +70,9 @@ void  Ov004_Deallocate(void *x);
 struct dCamera_c;
 void  Camera_UpdateMatrices(dCamera_c *camera);
 
-/* The same for the saved-bank restores: GX takes u16, and passing the saved
- * s32 through the real declaration adds 16 bytes each to InitSubScreenBg and
- * RestoreScreenFromMenu. Constant banks use the GX namespace below. */
+/* local extern: the same for the saved-bank restores. GX takes u16, and
+ * passing the saved s32 through the real declaration adds 16 bytes each to
+ * InitSubScreenBg and RestoreScreenFromMenu. Constant banks use GX.h. */
 void  _ZN2GX15SetBankForSubBGEt(unsigned int x);
 void  _ZN2GX16SetBankForSubOBJEt(unsigned int x);
 
@@ -84,20 +87,6 @@ int  D3D_PanForX(int a);
 
 }
 
-namespace GX {
-void LoadOBJPltt(const void*, u32, u32);
-void SetBankForBG(u16);
-void SetBankForOBJ(u16);
-void SetBankForSubBG(u16);
-void SetBankForSubOBJ(u16);
-void DisableAllBanks();
-void SetBankForTex(u16);
-void SetBankForTexPltt(u16);
-void SetGraphicsMode(int, int, int);
-}
-namespace GXS { void LoadOBJPltt(const void*, u32, u32); void SetGraphicsMode(int); }
-namespace G2S { u32 GetBG1CharPtr(); u32 GetBG1ScrPtr(); }
-namespace CP15 { void FlushAndInvalidateDataCache(u32, u32); }
 namespace Particle { void RenderAll(); }
 
 // @symbol D3D_CaptureToMain

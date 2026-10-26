@@ -21,6 +21,7 @@
 #include "dClipper.h"
 #include "nitro/fx/fx.h"
 #include "Sound.h"
+#include "cstd.h"
 
 bool ApproachLinear(short &value, short target, short step);
 
@@ -57,8 +58,6 @@ short Vec3_HorzAngle(const Vector3 *v0, const Vector3 *v1);
 unsigned short DecIfAbove0_Short(unsigned short *p);
 void Vec3_Asr(Vector3 *d, Vector3 *s, int sh);
 void Matrix4x3_FromRotationY(void *m, int angle);
-
-int _ZN4cstd4fdivEii(int a, int b);
 
 extern short data_02082214[];   /* sine/cosine table */
 extern dClipper data_0209f43c;
@@ -625,7 +624,7 @@ void daPgBby_c::func_ov072_02120fd4(dBgCh_Actr *clsn)
         if (floorNormal.y != 0) {
             int x = FX_MUL(floorNormal.x, mSpeedX);
             int y = FX_MUL(floorNormal.z, mSpeedZ);
-            mVertSpeed = -(_ZN4cstd4fdivEii(x + y, floorNormal.y) + 0x8000);
+            mVertSpeed = -(cstd::fdiv(x + y, floorNormal.y) + 0x8000);
         }
     }
     if (clsn->IsOnWall()) {
