@@ -21,10 +21,9 @@
  * daSoundObj_c_classInit is reconstructed (RTTI daSoundObj_c, SOUND_OBJ
  * registry). Retail does not store that spelling.
  *
- * Leftover: func_ov002_020f9468 still calls PlaySub through the C
- *   identifier. mLoop is a u8; a bool parameter converts it and that
- *   function grows from 0x94 to 0xac. The last parameter stays int so
- *   the row byte passes through unconverted.
+ * Leftover: func_ov002_020f9468 passes mLoop through `*(bool *)&`.
+ *   A bool parameter converts the u8 and the function grows from 0x94
+ *   to 0xac.
  * Leftover: SoundObjectCallbackOwner stays a shadow: entries 0-2 of
  *   the callback table are arm9 Sound:: starters, not daSoundObj_c
  *   members, and the sinit fills the table as non-polymorphic {ptr,0}
@@ -69,11 +68,8 @@ bool PlaySub(u32, u32, u32, int, bool);
 }
 
 extern "C" {
-/* Same function as Sound::PlaySub. The C identifier is the linker symbol.
-   Last parameter stays int: bool would convert mLoop. */
-extern int _ZN5Sound7PlaySubEjjjib(u32 soundID, u32 volume, u32 pan, Fix12i distance, int loop);
 extern SoundObjectCallback data_ov002_0211110c[];
-extern SoundObjRow data_ov002_0210c080[];  /* 7 rows; row 7 is the _ZTV12daSoundObj_c header */
+extern SoundObjRow data_ov002_0210c080[]; /* 7 rows; row 7 is the _ZTV12daSoundObj_c header */
 extern int data_0208e430;                 /* current sub-sound ID, owned by Sound::PlaySub */
 extern int data_0209b490;                 /* MUSIC_VOLUME_LSL_12 */
 extern int data_0209b49c;                 /* MESSAGE_SOUND_VOLUME_LSL_12 */
@@ -153,16 +149,15 @@ int daSoundObj_c::Behavior()
 static const int kPoolDist = 0x8777;
 
 // @symbol func_ov002_020f9468
-extern "C" int func_ov002_020f9468(daSoundObj_c *self, u16 *counter)
-{
+extern "C" int func_ov002_020f9468(daSoundObj_c *self, u16 *counter) {
     /* The starter shape PlaySecretSound, PlaySmallSecretSound and
        func_0200f7f0 share: the pool fallback is an else-if, so the
        steady-state branch falls through to the one `return 0`. */
     if (*counter < self->mCounterLimit - 0xf) {
         int vol = self->mVolume;
-        _ZN5Sound7PlaySubEjjjib(self->mSoundID, vol, 0x7f, (0x7f - vol) << 0xc, self->mLoop);
+        Sound::PlaySub(self->mSoundID, vol, 0x7f, (0x7f - vol) << 0xc, *(bool *)&self->mLoop);
         *counter += 1;
-    } else if (_ZN5Sound7PlaySubEjjjib(self->mSoundID, 0x7f, 0, kPoolDist, self->mLoop)) {
+    } else if (Sound::PlaySub(self->mSoundID, 0x7f, 0, kPoolDist, *(bool *)&self->mLoop)) {
         return 1;
     }
     return 0;
