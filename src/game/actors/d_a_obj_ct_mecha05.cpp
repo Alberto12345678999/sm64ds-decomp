@@ -69,10 +69,6 @@ extern void Matrix4x3_FromRotationY(Matrix4x3 *matrix, int angle);
 extern void MulVec3Mat4x3(const Vector3 *src, const Matrix4x3 *matrix,
                           Vector3 *dst);
 extern void AddVec3(const Vector3 *left, const Vector3 *right, Vector3 *dst);
-/* local extern: respelled, not new; the member call renumbers this TU's @NNN labels (6az). */
-extern void _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x3iiih(
-    dActor_c *actor, dExtShadowModel_c *shadow, Matrix4x3 *matrix, int scaleX, int scaleY,
-    int scaleZ, u32 opacity);
 extern void hold_d_a_obj_ct_mecha05(dBgW_KcMbg *collider, KCL_File *file, Matrix4x3 *matrix,
                                     int scale, s16 angle, CLPS_Block *clps);
 extern void func_020393d4(dBgW *collider, void *callback);
@@ -326,8 +322,8 @@ void func_ov065_0211ac0c(daObjCtMecha05_c *actor)
     actor->mShadowMatrix.m[10] = actor->mGroundY >> 3;
     actor->mShadowMatrix.m[11] = shadowPos.z >> 3;
 
-    _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x3iiih(
-        actor, &actor->mShadowModel, &actor->mShadowMatrix, 0xdc000, 0x32000, 0x28a000, 0xf);
+    actor->DropShadowScaleXYZ(actor->mShadowModel, actor->mShadowMatrix, 0xdc000, 0x32000, 0x28a000,
+                              0xf);
 }
 }
 // @symbol _ZN16daObjCtMecha05_cD1Ev

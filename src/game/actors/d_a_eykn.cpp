@@ -136,12 +136,6 @@ int _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(Player *player, void *source, u32 da
                                             u8 a, u8 b, u8 c);
 void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
     dCcAcPos_c *clsn, dActor_c *actor, const Vector3 *offset, int radius, int height, u32 flags, u32 vulnFlags);
-/* local extern: respelled, not new; the member call renumbers this TU's @NNN labels (6az). */
-void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x3iih(dActor_c *actor,
-                                                                          dExtShadowModel_c *shadow,
-                                                                          Matrix4x3 *matrix,
-                                                                          int radius, int depth,
-                                                                          u32 opacity);
 
 /* Sine and cosine pairs indexed by (angle >> 4) * 2. */
 extern s16 data_02082214[];
@@ -382,8 +376,7 @@ void daEykn_c::UpdateModelTransform()
     mShadowMat[9] = mPosX >> 3;
     mShadowMat[10] = mPosY >> 3;
     mShadowMat[11] = mPosZ >> 3;
-    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x3iih(
-        this, &mShadowModel, (Matrix4x3 *)mShadowMat, mScale * 0xb4, mShadowHeight, 0xf);
+    DropShadowRadHeight(mShadowModel, *(Matrix4x3 *)mShadowMat, mScale * 0xb4, mShadowHeight, 0xf);
 }
 
 

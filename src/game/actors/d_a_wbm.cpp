@@ -96,12 +96,6 @@ void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(dCcAc_c *self, dActor_c *actor,
 /* Parameter names keep this TU's @NNN. */
 typedef void BgchInitAt_(dBgCh_Actr *self, dActor_c *actor, s32 radius, s32 height, Vector3_16 *a,
                          Vector3_16 *b);
-/* local extern: respelled, not new; the member call renumbers this TU's @NNN labels (6az). */
-void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x3iih(dActor_c *self,
-                                                                          dExtShadowModel_c *shadow,
-                                                                          Matrix4x3 *matrix,
-                                                                          s32 radius, s32 depth,
-                                                                          u8 opacity);
 int _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(Player *self, const Vector3 *from,
     u32 a, s32 b, u8 c, u8 d, u8 e);
 namespace Particle {
@@ -472,8 +466,7 @@ void daWbm_c::func_ov098_0213b584()
     mShadowMat = data_020a0e68;
     Matrix4x3_ApplyInPlaceToRotationY(&data_020a0e68, mAngleY);
     mModel.mat4x3 = data_020a0e68;
-    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x3iih(
-        this, &mShadowModel, &mShadowMat, mScaleX * 0xa0, 0x3e8000, 6);
+    DropShadowRadHeight(mShadowModel, mShadowMat, mScaleX * 0xa0, 0x3e8000, 6);
 }
 
 // @symbol _ZN7daWbm_c4LandEv

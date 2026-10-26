@@ -391,11 +391,6 @@ struct System {
 };
 }
 extern u32 d_a_iwanteNewHold(u32 a, u32 b, int x, int y, int z, const void *v, void *cb);
-/* local extern: respelled, not new; the member call renumbers this TU's @NNN labels (6az). */
-extern void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x3iih(void *self,
-                                                                                 void *sm, void *m,
-                                                                                 int rad, int h,
-                                                                                 unsigned int u);
 
 /* ---- the dBgW callback veneer (0x0211a35c), defined at the bottom of this
  *      file; seven call sites pass its address to func_020393c4 ---- */
@@ -2402,8 +2397,7 @@ void Eyerok::func_ov066_021194fc()
             (mPosZ + 0xa0000) >> 3);
     }
     *(M48 *)mShadowMtx = *(M48*)data_020a0e68;
-    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x3iih(
-        this, &mShadowModel, mShadowMtx, 0x140000, 0x258000, 0xf);
+    DropShadowRadHeight(mShadowModel, *(Matrix4x3 *)mShadowMtx, 0x140000, 0x258000, 0xf);
 }
 
 // @symbol _ZN6Eyerok16CleanupResourcesEv

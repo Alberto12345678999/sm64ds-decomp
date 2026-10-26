@@ -62,9 +62,6 @@ struct System {
 };
 }
 int d_a_klrNewHold(u32 uniqueID, u32 effectID, int x, int y, int z, void *dir, void *callback);
-/* local extern: respelled, not new; the member call renumbers this TU's @NNN labels (6az). */
-void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x3iih(
-    dActor_c *self, dExtShadowModel_c *shadow, Matrix4x3 *mtx, int radius, int depth, u8 opacity);
 void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
     dCcAcPos_c *self, dActor_c *actor, const Vector3 *offset, int radius,
     int height, u32 flags, u32 vulnFlags);
@@ -297,8 +294,7 @@ extern "C" void func_ov079_02126704(daKlr_c *self)
     /* One 0x30-byte block copy. Matrix4x3's own assignment goes member by
        member through Vector3 and comes out 0x18 bytes longer. */
     *(MatrixWords *)&self->mModel2.mat4x3 = *(MatrixWords *)&self->mModel.mat4x3;
-    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x3iih(
-        self, &self->mShadow, &self->mModel.mat4x3, 0x50000, 0x50000, 0xf);
+    self->DropShadowRadHeight(self->mShadow, self->mModel.mat4x3, 0x50000, 0x50000, 0xf);
 }
 
 // @symbol _ZN7daKlr_c16OnAimedAtWithEggEv

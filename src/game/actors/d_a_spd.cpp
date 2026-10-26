@@ -84,13 +84,6 @@ void  Matrix4x3_ApplyInPlaceToRotationX(void *m, s16 angX);
 
 void  func_02012694(int id, void *pos);
 
-/* local extern: respelled, not new; the member call renumbers this TU's @NNN labels (6az). */
-void _ZN8dActor_c10SpawnCoinsERK7Vector3iis(void *self, const void *pos, unsigned int count,
-                                            int value, short s);
-/* local extern: respelled, not new; the member call renumbers this TU's @NNN labels (6az). */
-void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x3iih(void *self, void *shadow,
-                                                                          void *mtx, int radius,
-                                                                          int height, u32 flags);
 
 void  _ZN5Sound9PlayBank0EjRK7Vector3(unsigned int id, const void *pos);
 namespace Particle {
@@ -750,8 +743,7 @@ void Scuttlebug::func_ov071_0211f524()
     mShadowMtx[11] = mPosZ >> 3;
 
     int dh = (mState == 8) ? 0x190000 : 0xc8000;
-    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x3iih(
-        this, &mShadowModel, mShadowMtx, 0xa0000, dh, 0xf);
+    DropShadowRadHeight(mShadowModel, *(Matrix4x3 *)mShadowMtx, 0xa0000, dh, 0xf);
 }
 
 // @symbol _ZN10Scuttlebug19func_ov071_0211f498Ev
@@ -761,7 +753,7 @@ void Scuttlebug::func_ov071_0211f498()
     v.x = mPosX;
     v.y = mPosY;
     v.z = mPosZ;
-    _ZN8dActor_c10SpawnCoinsERK7Vector3iis(this, &v, mCoinCount, 0xf000, 0);
+    SpawnCoins(*(const Vector3 *)&v, mCoinCount, 0xf000, 0);
     PoofDust();
     func_02012694(0xc4, &mCamSpacePosX);
     if (param1) {

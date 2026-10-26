@@ -47,9 +47,6 @@ extern void func_020393d4(dBgW_KcMbg *p, void *v);
    traffic the ROM does not have. Keep the register-level spelling. */
 extern void hold_d_a_obj_path_lift(dBgW_KcMbg *self, void *kcl, const Matrix4x3 *mtx, int scale,
                                    short angY, CLPS_Block *clps);
-/* local extern: respelled, not new; the member call renumbers this TU's @NNN labels (6az). */
-void _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x3iiih(
-    dActor_c *self, dExtShadowModel_c *sm, Matrix4x3 *mtx, int a, int b, int d, unsigned int e);
 }
 
 /* The fifth parameter is a signed short, not an unsigned int. Declared
@@ -221,13 +218,11 @@ extern "C" void func_ov100_02146e70(daObjPathLift_c *self)
 
     t = data_0209f2d8 == 1;
     if (t != false) {
-        _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x3iiih(
-            self, &self->mShadowModel, (Matrix4x3 *)self->mShadowMat, 0x118000, 0x7d0000, scaleZ,
-            0xf);
+        self->DropShadowScaleXYZ(self->mShadowModel, *(Matrix4x3 *)self->mShadowMat, 0x118000,
+                                 0x7d0000, scaleZ, 0xf);
     } else {
-        _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x3iiih(
-            self, &self->mShadowModel, (Matrix4x3 *)self->mShadowMat, 0x118000, groundDepth, scaleZ,
-            0xf);
+        self->DropShadowScaleXYZ(self->mShadowModel, *(Matrix4x3 *)self->mShadowMat, 0x118000,
+                                 groundDepth, scaleZ, 0xf);
     }
 }
 // @symbol _ZN15daObjPathLift_cD1Ev

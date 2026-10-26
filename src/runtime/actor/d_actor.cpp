@@ -1013,14 +1013,17 @@ extern "C" void *func_02010304(dActor_c *target, dCc_c *clsn) {
 /* ROM ordinal 48 -- _ZN8dActor_c13SpawnFireballERK7Vector3PK10Vector3_16iij
  * 0x020102b0  size 0x54 */
 /* Spawns actor 0xfe, daFPknBall_c (the fire piranha plant's fireball), with
-   its starting speed and the speed it then approaches. */
-void dActor_c::SpawnFireball(const Vector3 &pos, const Vector3_16 *rot, Fix12i horzSpeed,
-                             Fix12i targetSpeed, u32 param1) {
+   its starting speed and the speed it then approaches. RETURNS THE BALL:
+   r0 holds it from the Spawn call to the `bx lr`, and daTrs_c reads it back
+   after the call, so the void the old local externs mostly spelled was wrong. */
+dActor_c *dActor_c::SpawnFireball(const Vector3 &pos, const Vector3_16 *rot, Fix12i horzSpeed,
+                                  Fix12i targetSpeed, u32 param1) {
     dActor_c *ball = dActor_c::Spawn(0xfe, param1, pos, rot, mAreaId, -1);
     if (ball != 0) {
         ball->mHorzSpeed = horzSpeed;
         static_cast<daFPknBall_c *>(ball)->mTargetSpeed = targetSpeed;
     }
+    return ball;
 }
 
 /* -------------------------------------------------------------------------- */

@@ -81,7 +81,7 @@ struct PileCollisionFilePtr : SharedFilePtr {
 
 extern "C" {
 extern unsigned char DecIfAbove0_Byte(unsigned char *p);
-/* local extern: respelled, not new; the member call renumbers this TU's @NNN labels (6az). */
+/* local extern: called via a function-pointer cast with a by-value V3. */
 extern void _ZN8dActor_c10SpawnCoinsERK7Vector3iis(void *c, V3 v, unsigned int n, int f, short s);
 extern void hold_d_a_obj_pile(void *self, void *kcl, void *mtx, int fix, short s, void *clps);
 extern int func_02012694(int a, void *b);

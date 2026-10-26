@@ -5935,18 +5935,6 @@
         "return:void"
       ]
     },
-    "_ZN17dExtShadowModel_c9InitModelEP9Matrix4x3iiih": {
-      "src/game/stages/d_ent_obj.cpp": [
-        "param:#2 Matrix4x3 *"
-      ],
-      "src/minigames/unit020bfec0.cpp": [
-        "param:#2 void *",
-        "param:#6 unsigned int"
-      ],
-      "src/runtime/actor/d_actor.cpp": [
-        "param:#2 Matrix4x3 *"
-      ]
-    },
     "_ZN17dExtShadowModel_cD1Ev": {
       "include/decl_ShadowModel.h": [
         "return:void"
@@ -9684,85 +9672,9 @@
       ]
     },
     "_ZN8dActor_c10SpawnCoinsERK7Vector3iis": {
-      "src/_ZN6Player19St_CrazedCrate_MainEv.cpp": [
-        "param:#2 const Vector3 &",
-        "param:#3 unsigned int"
-      ],
-      "src/game/actors/d_a_basabasa.cpp": [
-        "param:#2 Vector3 *",
-        "param:#3 unsigned int"
-      ],
-      "src/game/actors/d_a_btn.cpp": [
-        "param:#2 const void *",
-        "param:#3 unsigned int"
-      ],
-      "src/game/actors/d_a_btt_bk.cpp": [
-        "param:#2 const Vector3 &",
-        "param:#3 unsigned int"
-      ],
-      "src/game/actors/d_a_f_pkn.cpp": [
-        "param:#2 const void *",
-        "param:#3 unsigned int"
-      ],
-      "src/game/actors/d_a_gmch.cpp": [
-        "param:#2 const Vector3 &",
-        "param:#3 unsigned int"
-      ],
-      "src/game/actors/d_a_holhei.cpp": [
-        "param:#2 Vector3 *",
-        "param:#3 unsigned int",
-        "return:int"
-      ],
-      "src/game/actors/d_a_huwa.cpp": [
-        "param:#2 Vector3 *",
-        "param:#3 unsigned int",
-        "return:int"
-      ],
-      "src/game/actors/d_a_jgm.cpp": [
-        "param:#2 const DaJgmVector3Words *",
-        "param:#3 unsigned int"
-      ],
-      "src/game/actors/d_a_menbo.cpp": [
-        "param:#2 const void *",
-        "param:#3 unsigned int"
-      ],
-      "src/game/actors/d_a_obj_block_l.cpp": [
-        "param:#2 const Vector3 &",
-        "param:#3 unsigned int"
-      ],
-      "src/game/actors/d_a_obj_block_s.cpp": [
-        "param:#2 void *",
-        "param:#3 unsigned int"
-      ],
       "src/game/actors/d_a_obj_pile.cpp": [
         "param:#2 V3",
         "param:#3 unsigned int"
-      ],
-      "src/game/actors/d_a_propeller_heyho.cpp": [
-        "param:#2 const Vector3 &",
-        "param:#3 unsigned int"
-      ],
-      "src/game/actors/d_a_snowman.cpp": [
-        "param:#2 Vector3 *",
-        "param:#3 unsigned int",
-        "return:int"
-      ],
-      "src/game/actors/d_a_spd.cpp": [
-        "param:#2 const void *",
-        "param:#3 unsigned int"
-      ],
-      "src/game/actors/d_a_tgz.cpp": [
-        "param:#2 const Vector3 *",
-        "param:#3 unsigned int"
-      ],
-      "src/game/actors/d_a_yegg.cpp": [
-        "param:#2 const void *",
-        "param:#3 unsigned int"
-      ],
-      "src/game/actors/d_a_yurei_mucho.cpp": [
-        "param:#2 const Vector3 *",
-        "param:#3 unsigned int",
-        "return:int"
       ]
     },
     "_ZN8dActor_c11LandingDustEb": {
@@ -9780,12 +9692,6 @@
       ],
       "src/game/actors/d_a_yegg.cpp": [
         "param:#2 signed char *"
-      ]
-    },
-    "_ZN8dActor_c12ReflectAngleEiis": {
-      "src/game/actors/d_a_ibl.cpp": [
-        "param:#4 int",
-        "return:int"
       ]
     },
     "_ZN8dActor_c13ClosestPlayerEv": {
@@ -9808,29 +9714,6 @@
     "_ZN8dActor_c13LandingDustAtER7Vector3b": {
       "src/game/actors/d_a_kpa.cpp": [
         "param:#3 int"
-      ]
-    },
-    "_ZN8dActor_c13SpawnFireballERK7Vector3PK10Vector3_16iij": {
-      "include/decl_Actor.h": [
-        "param:#2 const void *",
-        "param:#3 const void *"
-      ],
-      "src/game/actors/d_a_f_pkn.cpp": [
-        "param:#2 const void *",
-        "param:#3 const void *"
-      ],
-      "src/game/actors/d_a_kpa.cpp": [
-        "param:#2 const void *",
-        "param:#3 const void *"
-      ],
-      "src/game/actors/d_a_propeller_heyho.cpp": [
-        "param:#2 void *",
-        "return:void *"
-      ],
-      "src/game/actors/d_a_trs.cpp": [
-        "param:#2 const void *",
-        "param:#3 const void *",
-        "return:char *"
       ]
     },
     "_ZN8dActor_c13SpawnSoundObjEj": {
@@ -9898,51 +9781,6 @@
       ]
     },
     "_ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x3iiih": {
-      "src/game/actors/d_a_btn.cpp": [
-        "param:#2 void *",
-        "param:#3 void *",
-        "param:#7 unsigned int"
-      ],
-      "src/game/actors/d_a_btt_bk.cpp": [
-        "param:#2 void *",
-        "param:#3 void *",
-        "param:#7 unsigned int"
-      ],
-      "src/game/actors/d_a_dsn_base.cpp": [
-        "param:#2 dExtShadowModel_c *",
-        "param:#3 Matrix4x3 *",
-        "param:#7 unsigned int"
-      ],
-      "src/game/actors/d_a_obj_bk_lift.cpp": [
-        "param:#2 void *",
-        "param:#3 void *",
-        "param:#7 unsigned int"
-      ],
-      "src/game/actors/d_a_obj_block_s.cpp": [
-        "param:#2 void *",
-        "param:#3 void *",
-        "param:#7 unsigned int"
-      ],
-      "src/game/actors/d_a_obj_ct_mecha03.cpp": [
-        "param:#2 dExtShadowModel_c *",
-        "param:#3 Matrix4x3 *",
-        "param:#7 unsigned int"
-      ],
-      "src/game/actors/d_a_obj_ct_mecha04.cpp": [
-        "param:#2 dExtShadowModel_c *",
-        "param:#3 Matrix4x3 *",
-        "param:#7 unsigned int"
-      ],
-      "src/game/actors/d_a_obj_ct_mecha05.cpp": [
-        "param:#2 dExtShadowModel_c *",
-        "param:#3 Matrix4x3 *",
-        "param:#7 unsigned int"
-      ],
-      "src/game/actors/d_a_obj_ct_mecha09.cpp": [
-        "param:#2 dExtShadowModel_c *",
-        "param:#3 Matrix4x3 *",
-        "param:#7 unsigned int"
-      ],
       "src/game/actors/d_a_obj_ct_mecha11.cpp": [
         "param:#2 void *",
         "param:#3 void *",
@@ -9961,45 +9799,11 @@
         "param:#7 unsigned int",
         "return:int"
       ],
-      "src/game/actors/d_a_obj_hatena_block.cpp": [
-        "param:#2 void *",
-        "param:#3 void *",
-        "param:#7 unsigned int"
-      ],
-      "src/game/actors/d_a_obj_path_lift.cpp": [
-        "param:#2 dExtShadowModel_c *",
-        "param:#3 Matrix4x3 *",
-        "param:#7 unsigned int"
-      ],
       "src/game/actors/d_a_obj_rotate_updown_lift.cpp": [
         "param:#2 void *",
         "param:#3 void *",
         "param:#7 unsigned int",
         "return:int"
-      ],
-      "src/game/actors/d_a_obj_tatefuda.cpp": [
-        "param:#2 void *",
-        "param:#3 void *",
-        "param:#7 unsigned int"
-      ],
-      "src/game/actors/d_a_obj_wl_polelift.cpp": [
-        "param:#2 void *",
-        "param:#3 void *",
-        "param:#7 unsigned int"
-      ],
-      "src/game/actors/d_a_obj_yajirusi.cpp": [
-        "param:#2 void *",
-        "param:#3 void *",
-        "param:#7 unsigned int"
-      ],
-      "src/game/actors/d_a_yegg.cpp": [
-        "param:#2 void *",
-        "param:#3 void *",
-        "param:#7 unsigned int"
-      ],
-      "src/game/actors/d_a_obj_bk_botaosi.cpp": [
-        "param:#2 void *",
-        "param:#3 void *"
       ]
     },
     "_ZN8dActor_c18FindExplosionActorER5dCc_c": {
@@ -10017,320 +9821,17 @@
       ]
     },
     "_ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x3iih": {
-      "src/game/actors/d_a_bakubaku.cpp": [
-        "param:#2 void *",
-        "param:#3 void *",
-        "param:#6 unsigned int"
-      ],
-      "src/game/actors/d_a_basabasa.cpp": [
-        "param:#2 void *",
-        "param:#3 Matrix4x3 *",
-        "param:#6 unsigned int"
-      ],
-      "src/game/actors/d_a_bg_snm_bdy.cpp": [
-        "param:#2 void *",
-        "param:#3 void *",
-        "param:#6 unsigned int"
-      ],
-      "src/game/actors/d_a_bg_snwmn.cpp": [
-        "param:#2 dExtShadowModel_c *",
-        "param:#3 Matrix4x3 *",
-        "param:#6 unsigned int"
-      ],
-      "src/game/actors/d_a_bombking.cpp": [
-        "param:#2 void *",
-        "param:#3 void *",
-        "param:#6 unsigned int"
-      ],
-      "src/game/actors/d_a_brq.cpp": [
-        "param:#2 dExtShadowModel_c *",
-        "param:#3 Matrix4x3 *",
-        "param:#6 unsigned int"
-      ],
-      "src/game/actors/d_a_btfly.cpp": [
-        "param:#2 void *",
-        "param:#3 void *",
-        "param:#6 unsigned int"
-      ],
-      "src/game/actors/d_a_c_jugem.cpp": [
-        "param:#2 void *",
-        "param:#3 void *",
-        "param:#6 unsigned int"
-      ],
-      "src/game/actors/d_a_chair.cpp": [
-        "param:#2 void *",
-        "param:#3 void *",
-        "param:#6 unsigned int"
-      ],
-      "src/game/actors/d_a_ey_bm.cpp": [
-        "param:#2 dExtShadowModel_c *",
-        "param:#3 Matrix4x3 *",
-        "param:#6 unsigned int"
-      ],
-      "src/game/actors/d_a_eykn.cpp": [
-        "param:#2 dExtShadowModel_c *",
-        "param:#3 Matrix4x3 *",
-        "param:#6 unsigned int"
-      ],
-      "src/game/actors/d_a_f_pkn_ball.cpp": [
-        "param:#2 void *",
-        "param:#3 void *",
-        "param:#6 unsigned int"
-      ],
-      "src/game/actors/d_a_gmch.cpp": [
-        "param:#2 void *",
-        "param:#3 void *",
-        "param:#6 unsigned int"
-      ],
       "src/game/actors/d_a_grock.cpp": [
         "param:#2 void *",
         "param:#3 void *",
         "param:#6 unsigned int",
         "return:int"
       ],
-      "src/game/actors/d_a_holhei.cpp": [
-        "param:#2 dExtShadowModel_c &",
-        "param:#3 Matrix4x3 &",
-        "param:#6 unsigned int"
-      ],
-      "src/game/actors/d_a_huwa.cpp": [
-        "param:#2 dExtShadowModel_c &",
-        "param:#3 Matrix4x3 &",
-        "param:#6 unsigned int"
-      ],
-      "src/game/actors/d_a_ibl.cpp": [
-        "param:#2 void *",
-        "param:#3 void *",
-        "param:#6 unsigned int"
-      ],
-      "src/game/actors/d_a_iwante.cpp": [
-        "param:#2 void *",
-        "param:#3 void *",
-        "param:#6 unsigned int"
-      ],
-      "src/game/actors/d_a_jango.cpp": [
-        "param:#2 void *",
-        "param:#3 void *",
-        "param:#6 unsigned int"
-      ],
-      "src/game/actors/d_a_jgm.cpp": [
-        "param:#2 dExtShadowModel_c *",
-        "param:#3 Matrix4x3 *",
-        "param:#6 unsigned int"
-      ],
-      "src/game/actors/d_a_king_donketu.cpp": [
-        "param:#2 void *",
-        "param:#3 void *",
-        "param:#6 unsigned int"
-      ],
-      "src/game/actors/d_a_kinopio.cpp": [
-        "param:#2 void *",
-        "param:#3 void *",
-        "param:#6 unsigned int"
-      ],
-      "src/game/actors/d_a_kp_fr.cpp": [
-        "param:#2 dExtShadowModel_c *",
-        "param:#3 Matrix4x3 *",
-        "param:#6 unsigned int"
-      ],
-      "src/game/actors/d_a_kpa.cpp": [
-        "param:#2 void *",
-        "param:#3 void *",
-        "param:#6 unsigned int"
-      ],
-      "src/game/actors/d_a_kpa_fire.cpp": [
-        "param:#2 void *",
-        "param:#3 void *",
-        "param:#6 unsigned int"
-      ],
-      "src/game/actors/d_a_krb.cpp": [
-        "param:#2 void *",
-        "param:#3 void *",
-        "param:#6 unsigned int"
-      ],
-      "src/game/actors/d_a_krpa.cpp": [
-        "param:#2 dExtShadowModel_c *",
-        "param:#3 Matrix4x3 *",
-        "param:#6 unsigned int"
-      ],
-      "src/game/actors/d_a_kuri_king.cpp": [
-        "param:#2 void *",
-        "param:#3 void *",
-        "param:#6 unsigned int"
-      ],
-      "src/game/actors/d_a_mip.cpp": [
-        "param:#2 void *",
-        "param:#3 void *",
-        "param:#6 unsigned int"
-      ],
-      "src/game/actors/d_a_obj_ct_kaitendai.cpp": [
-        "param:#2 dExtShadowModel_c *",
-        "param:#3 Matrix4x3 *",
-        "param:#6 unsigned int"
-      ],
-      "src/game/actors/d_a_obj_key.cpp": [
-        "param:#2 void *",
-        "param:#3 void *",
-        "param:#6 unsigned int"
-      ],
-      "src/game/actors/d_a_obj_mario_cap.cpp": [
-        "param:#2 void *",
-        "param:#3 void *",
-        "param:#6 int"
-      ],
       "src/game/actors/d_a_obj_power_up_item.cpp": [
-        "param:#1 char *",
         "param:#2 dExtShadowModel_c *",
         "param:#3 Matrix4x3 *",
         "param:#6 unsigned int",
         "return:int"
-      ],
-      "src/game/actors/d_a_ots.cpp": [
-        "param:#2 void *",
-        "param:#3 void *",
-        "param:#6 unsigned int"
-      ],
-      "src/game/actors/d_a_owl.cpp": [
-        "param:#2 void *",
-        "param:#3 Matrix4x3 *",
-        "param:#6 unsigned int"
-      ],
-      "src/game/actors/d_a_peach.cpp": [
-        "param:#2 void *",
-        "param:#3 void *",
-        "param:#6 unsigned int"
-      ],
-      "src/game/actors/d_a_pg_bby.cpp": [
-        "param:#2 void *",
-        "param:#3 void *",
-        "param:#6 unsigned int"
-      ],
-      "src/game/actors/d_a_pg_mthr.cpp": [
-        "param:#2 dExtShadowModel_c &",
-        "param:#3 Matrix4x3 &",
-        "param:#6 unsigned int"
-      ],
-      "src/game/actors/d_a_pg_rcer.cpp": [
-        "param:#2 void *",
-        "param:#3 void *",
-        "param:#6 unsigned int"
-      ],
-      "src/game/actors/d_a_propeller_heyho.cpp": [
-        "param:#2 void *",
-        "param:#3 void *",
-        "param:#6 unsigned int"
-      ],
-      "src/game/actors/d_a_s_bird.cpp": [
-        "param:#2 dExtShadowModel_c *",
-        "param:#3 Matrix4x3 *",
-        "param:#6 unsigned int",
-        "return:int"
-      ],
-      "src/game/actors/d_a_sanbo.cpp": [
-        "param:#2 void *",
-        "param:#3 void *",
-        "param:#6 unsigned int"
-      ],
-      "src/game/actors/d_a_snowman.cpp": [
-        "param:#2 void *",
-        "param:#3 void *",
-        "param:#6 unsigned int"
-      ],
-      "src/game/actors/d_a_spd.cpp": [
-        "param:#2 void *",
-        "param:#3 void *",
-        "param:#6 unsigned int"
-      ],
-      "src/game/actors/d_a_star.cpp": [
-        "param:#1 char *",
-        "param:#2 dExtShadowModel_c *",
-        "param:#3 Matrix4x3 *",
-        "param:#6 unsigned int",
-        "return:int"
-      ],
-      "src/game/actors/d_a_trs.cpp": [
-        "param:#2 void *",
-        "param:#3 void *",
-        "param:#6 unsigned int"
-      ],
-      "src/game/actors/d_a_wanwan.cpp": [
-        "param:#2 dExtShadowModel_c *",
-        "param:#3 Matrix4x3 *",
-        "param:#6 unsigned int"
-      ],
-      "src/game/actors/d_a_wanwan2.cpp": [
-        "param:#2 void *",
-        "param:#3 void *",
-        "param:#6 unsigned int"
-      ],
-      "src/game/actors/d_a_yegg.cpp": [
-        "param:#2 void *",
-        "param:#3 void *",
-        "param:#6 unsigned int"
-      ],
-      "src/game/actors/d_a_yurei_mucho.cpp": [
-        "param:#2 void *",
-        "param:#3 void *",
-        "param:#6 unsigned int"
-      ],
-      "src/unnamed/ov002/func_ov002_020e444c.c": [
-        "param:#6 unsigned int"
-      ],
-      "src/game/actors/d_a_1up.cpp": [
-        "param:#2 void *",
-        "param:#3 void *"
-      ],
-      "src/game/actors/d_a_book.cpp": [
-        "param:#2 dExtShadowModel_c *",
-        "param:#3 Matrix4x3 *"
-      ],
-      "src/game/actors/d_a_coin.cpp": [
-        "param:#2 void *",
-        "param:#3 void *"
-      ],
-      "src/game/actors/d_a_feather.cpp": [
-        "param:#2 dExtShadowModel_c *",
-        "param:#3 Matrix4x3 *"
-      ],
-      "src/game/actors/d_a_klr.cpp": [
-        "param:#2 dExtShadowModel_c *",
-        "param:#3 Matrix4x3 *"
-      ],
-      "src/game/actors/d_a_luigi.cpp": [
-        "param:#2 dExtShadowModel_c *",
-        "param:#3 Matrix4x3 *"
-      ],
-      "src/game/actors/d_a_mky.cpp": [
-        "param:#2 void *",
-        "param:#3 void *"
-      ],
-      "src/game/actors/d_a_nknk.cpp": [
-        "param:#2 void *",
-        "param:#3 Matrix4x3 *"
-      ],
-      "src/game/actors/d_a_obj_mip_key.cpp": [
-        "param:#2 dExtShadowModel_c *",
-        "param:#3 Matrix4x3 *"
-      ],
-      "src/game/actors/d_a_r_nk.cpp": [
-        "param:#2 void *",
-        "param:#3 void *"
-      ],
-      "src/game/actors/d_a_red_bombhei.cpp": [
-        "param:#2 dExtShadowModel_c *",
-        "param:#3 Matrix4x3 *"
-      ],
-      "src/game/actors/d_a_shl.cpp": [
-        "param:#2 dExtShadowModel_c *",
-        "param:#3 Matrix4x3 *"
-      ],
-      "src/game/actors/d_a_tgz.cpp": [
-        "param:#2 void *",
-        "param:#3 void *"
-      ],
-      "src/game/actors/d_a_wbm.cpp": [
-        "param:#2 dExtShadowModel_c *",
-        "param:#3 Matrix4x3 *"
       ]
     },
     "_ZN8dActor_c19MakeVanishLuigiWorkER5dCc_c": {

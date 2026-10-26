@@ -49,11 +49,6 @@ extern "C" {
 void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *thiz, void *actor, int r, int h, unsigned int a, unsigned int b);
 /* Parameter names keep this TU's @NNN. */
 typedef void BgchInitAt_(void *thiz, void *actor, int r, int h, void *v, int b);
-/* local extern: respelled, not new; the member call renumbers this TU's @NNN labels (6az). */
-void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x3iih(void *self, void *shadow,
-                                                                          void *mtx, int radius,
-                                                                          int height,
-                                                                          unsigned int flags);
 
 int Vec3_Dist(const Vector3 *a, const Vector3 *b);
 short Vec3_HorzAngle(const Vector3 *v0, const Vector3 *v1);
@@ -610,8 +605,7 @@ void daPgBby_c::func_ov072_021210c4()
         }
     }
 
-    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x3iih(
-        this, &mShadowModel, &mModelAnim.mat4x3, shadowRadius, shadowHeight, 0xf);
+    DropShadowRadHeight(mShadowModel, mModelAnim.mat4x3, shadowRadius, shadowHeight, 0xf);
 }
 
 // @symbol _ZN9daPgBby_c19func_ov072_02120fd4EP10dBgCh_Actr

@@ -446,12 +446,6 @@ void func_ov063_0211d5f4(daPiano_c *self)
     extern void Matrix4x3_FromRotationY(Matrix4x3* m, int angle);
     extern void MulVec3Mat4x3(Vector3* in, Matrix4x3* m, Vector3* out);
     extern void AddVec3(Vector3* a, Vector3* b, Vector3* c);
-    extern void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x3iih(
-        dActor_c * self, dExtShadowModel_c * sm, Matrix4x3 * mtx, Fix12i fx, Fix12i t,
-        unsigned int u);
-    extern void _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x3iiih(
-        dActor_c * self, dExtShadowModel_c * sm, Matrix4x3 * mtx, Fix12i fx, Fix12i t1, Fix12i t2,
-        unsigned int u);
 
     extern Matrix4x3 data_020a0e68;   /* shared scratch matrix */
 
@@ -499,12 +493,11 @@ void func_ov063_0211d5f4(daPiano_c *self)
     self->mShadowMats[1].m[10] = self->mPosY >> 3;
     self->mShadowMats[1].m[11] = out.z >> 3;
 
-    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x3iih(
-        self, &self->mShadowModel3, &self->mShadowMats[2], 0xf0000, 0x50000, 0xf);
-    _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x3iiih(
-        self, &self->mShadowModel1, &self->mShadowMats[0], 0xa0000, 0x50000, 0x110000, 0xf);
-    _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x3iiih(
-        self, &self->mShadowModel2, &self->mShadowMats[1], 0x80000, 0x50000, 0xf0000, 0xf);
+    self->DropShadowRadHeight(self->mShadowModel3, self->mShadowMats[2], 0xf0000, 0x50000, 0xf);
+    self->DropShadowScaleXYZ(self->mShadowModel1, self->mShadowMats[0], 0xa0000, 0x50000, 0x110000,
+                             0xf);
+    self->DropShadowScaleXYZ(self->mShadowModel2, self->mShadowMats[1], 0x80000, 0x50000, 0xf0000,
+                             0xf);
 }
 }
 

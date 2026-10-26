@@ -352,8 +352,9 @@ struct dActor_c : dBase_c {
        NAMES here are load-bearing: a class-scope named parameter consumes an
        @NNN number in every consumer, so they must not be dropped.
        notes/mwccarm-codegen.md 6az. */
-    void SpawnFireball(const Vector3 &pos, const Vector3_16 *rot, Fix12i horzSpeed,
-                       Fix12i targetSpeed, u32 param1);
+    /* Returns the spawned ball; see the definition. */
+    dActor_c *SpawnFireball(const Vector3 &pos, const Vector3_16 *rot, Fix12i horzSpeed,
+                            Fix12i targetSpeed, u32 param1);
     bool IsPlayerInRange(Fix12i posX, Fix12i posY, Fix12i posZ, s32 maxDist);
     void DropShadowScaleXYZ(dExtShadowModel_c &, Matrix4x3 &matrix, Fix12i scaleX, Fix12i scaleY,
                             Fix12i scaleZ, u8 opacity);

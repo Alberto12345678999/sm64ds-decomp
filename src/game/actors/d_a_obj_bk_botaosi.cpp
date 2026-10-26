@@ -107,10 +107,6 @@ extern void hold_d_a_obj_bk_botaosi(void *self, void *file, void *mat, int scale
                                     void *clps);
 void *_ZN9dBgCh_GndC1Ev(dBgCh_Gnd *self);
 void _ZN9dBgCh_GndD1Ev(dBgCh_Gnd *self);
-/* local extern: respelled, not new; the member call renumbers this TU's @NNN labels (6az). */
-void _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x3iiih(void *self, void *shadow,
-                                                                          void *mat, int a, int b,
-                                                                          int c, u8 flags);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -229,8 +225,7 @@ extern "C" void func_ov015_021114f0(daObjBk_Botaosi_c *plank)
     }
     if (plank->mState >= 2)
         plank->mShadowMat.t.y = plank->mFrontFloorY >> 3;
-    _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x3iiih(
-        plank, &plank->mShadowModel, &plank->mShadowMat, 0xc8000, 0x12c000, lean, 0xf);
+    plank->DropShadowScaleXYZ(plank->mShadowModel, plank->mShadowMat, 0xc8000, 0x12c000, lean, 0xf);
 }
 #pragma pop
 

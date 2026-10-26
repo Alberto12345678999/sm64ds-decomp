@@ -77,7 +77,7 @@ extern void hold_d_a_obj_ct_mecha11(void *self, KCL_File *f, const Matrix4x3 &m,
 extern void func_020393d4(void *p, void *v);
 extern void func_020396c0(void *p, int value);
 extern CLPS_Block data_ov035_02112238;
-/* local extern: respelled, not new; the member call renumbers this TU's @NNN labels (6az). */
+/* local extern: int return -- `return` forwards the callee's r0 (a tail call). */
 extern int _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x3iiih(void *self,
                                                                                 void *sm, void *mtx,
                                                                                 int a, int b, int d,

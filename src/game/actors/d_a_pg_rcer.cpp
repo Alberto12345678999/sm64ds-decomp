@@ -63,9 +63,6 @@ extern int Vec3_Dist(const Vector3 *a, const Vector3 *b);
 extern void Matrix4x3_FromRotationY(Matrix4x3 *m, short angle);
 
 extern void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *clsn, void *actor, int radius, int height, unsigned int flags, unsigned int vuln);
-/* local extern: respelled, not new; the member call renumbers this TU's @NNN labels (6az). */
-extern void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x3iih(
-    void *self, void *shadow, void *mtx, int rad, int height, unsigned int opacity);
 
 extern void d_a_pg_rcerPlaySubHold(unsigned int a, unsigned int b, unsigned int c, int d, int e);
 extern void *d_a_pg_rcerNewHold(u32 handle, u32 effect, int x, int y, int z, void *dir, void *cb);
@@ -594,8 +591,7 @@ void func_ov019_021114ec(daPgRcer_c *self)
     self->mModelAnim.mat4x3.t.x = self->mPosX >> 3;
     self->mModelAnim.mat4x3.t.y = self->mPosY >> 3;
     self->mModelAnim.mat4x3.t.z = self->mPosZ >> 3;
-    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x3iih(
-        self, &self->mShadowModel, &self->mModelAnim.mat4x3, 0x140000, 0x50000, 0xf);
+    self->DropShadowRadHeight(self->mShadowModel, self->mModelAnim.mat4x3, 0x140000, 0x50000, 0xf);
 }
 
 // @symbol func_ov019_0211140c

@@ -157,9 +157,6 @@ extern void Matrix4x3_FromRotationZXYExt(void *m, int x, int y, int z);
    the actor that hit it -- the call's (actor, egg). */
 /* local extern: daBtn_c::func_ov079_02123804. This TU does not include daBtn_c.h. */
 extern void _ZN7daBtn_c19func_ov079_02123804EP8dActor_c(struct daBtn_c *self, dActor_c *other);
-/* local extern: respelled, not new; the member call renumbers this TU's @NNN labels (6az). */
-extern void _ZN8dActor_c10SpawnCoinsERK7Vector3iis(void *thiz, const void *v, unsigned int n,
-                                                   Fix12i f, short s);
 extern int RandomIntInternal(int *seed);
 extern void _Z15ApproachLinear2Rsss(s16 *p, short a, short b);
 /* Numbering pins: func_ov002_020d5f98/020d6048 are now Player members (see
@@ -204,12 +201,6 @@ extern void Matrix4x3_ApplyInPlaceToRotationZXYExt(M48 *m, int x, int y, int z);
 extern void Matrix4x3_ApplyInPlaceToRotationXYZExt(M48 *m, int x, int y, int z);
 extern int func_ov002_020cf700(void *g);
 extern int func_ov002_020d0d2c(void *g);
-/* local extern: respelled, not new; the member call renumbers this TU's @NNN labels (6az). */
-extern void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x3iih(
-    void *self, void *shadow, void *mtx, int fix, int t, unsigned int n);
-/* local extern: respelled, not new; the member call renumbers this TU's @NNN labels (6az). */
-extern void _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x3iiih(
-    void *self, void *shadow, void *mtx, int fix, int t1, int t2, unsigned int n);
 extern void _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void *self, const void *pos, u32 a, int fix, u32 b, u32 c, u32 d);
 extern void LoadBlueCoinModel(void *self);
 extern void UnloadBlueCoinModel(void *self);
@@ -364,7 +355,7 @@ void daYegg_c::func_ov002_020ec728()
         v2.x = vec.x;
         v2.y = vec.y;
         v2.z = vec.z;
-        _ZN8dActor_c10SpawnCoinsERK7Vector3iis(this, &v2, n, 0x2000, 0);
+        SpawnCoins(v2, n, 0x2000, 0);
     }
     if (func_ov002_020ec628()) {
         struct Vector3 v3;
@@ -1090,11 +1081,9 @@ void daYegg_c::func_ov002_020ed7f8()
     if (b == 0 && mPlayer->mClimbClsn == 0 && !func_ov002_020cf700(mPlayer) &&
         !func_ov002_020d0d2c(mPlayer)) {
         if (func_ov002_020ec654() == 0) {
-            _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x3iih(
-                this, &mShadowModel, mShadowMtx, r4, r5 + 0x28000, 0xf);
+            DropShadowRadHeight(mShadowModel, *(Matrix4x3 *)mShadowMtx, r4, r5 + 0x28000, 0xf);
         } else {
-            _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x3iiih(
-                this, &mShadowModel, mShadowMtx, r4, r5 + 0x28000, r4, 0xf);
+            DropShadowScaleXYZ(mShadowModel, *(Matrix4x3 *)mShadowMtx, r4, r5 + 0x28000, r4, 0xf);
         }
     }
 }

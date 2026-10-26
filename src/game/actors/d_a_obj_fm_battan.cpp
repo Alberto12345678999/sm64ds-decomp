@@ -83,7 +83,7 @@ extern void Matrix4x3_FromRotationXYZExt(void *, int, int, int);
 /* dActor_c::DropShadowScaleXYZ / Earthquake -- reached through the mangled
    name because the by-value Fix12<int> parameters
    (notes/mwccarm-codegen.md 6az) break the method form. */
-/* local extern: respelled, not new; the member call renumbers this TU's @NNN labels (6az). */
+/* local extern: int return -- `return` forwards the callee's r0 (a tail call). */
 extern int _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x3iiih(
     dActor_c *, dExtShadowModel_c *, Matrix4x3 *, Fix12i, Fix12i, Fix12i, u32);
 extern void AddVec3(BattanVector3 *, BattanVector3 *, BattanVector3 *);

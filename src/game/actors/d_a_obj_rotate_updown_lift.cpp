@@ -157,7 +157,7 @@ struct System {
     static void *NewSimple(unsigned int id, int x, int y, int z);
 };
 }
-/* local extern: respelled, not new; the member call renumbers this TU's @NNN labels (6az). */
+/* local extern: int return -- `return` forwards the callee's r0 (a tail call). */
 int _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x3iiih(void *self, void *shadow,
                                                                          void *mat, int sx, int sy,
                                                                          int sz,

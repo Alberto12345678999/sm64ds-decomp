@@ -443,38 +443,89 @@ not a style choice:
   at +0x20, the `addls`/`popls`/`bxls` epilogue at +0x34..0x3c, and the loop's
   closing `blt`->`blo` at +0x114. Signed compares, signed count.
 
-**CONSUMERS WERE RESPELLED, NOT CONVERTED -- deliberately, and the arithmetic is
-the reason.** 293 references across 94 files keep their local `extern` with its
-named parameters; only the symbol string changed, so no byte moves and no
-manifest moves. Converting those call sites to member calls would delete 115
-named-parameter externs, and **71 of the 94 consumer TUs record compiler-local
-`@NNN` labels** in `config/tu_manifest.d/` -- the renumbering trap this section
-documents above. Batch 4 paid that cost for 78 TUs and 10 of them could not be
-remapped at all. Splitting it keeps the byte finding provable on its own.
+**THE CONSUMERS ARE MEMBER CALLS TOO -- 87 of 94 files, every byte verified.**
+The first cut of this PR only respelled the consumers' local externs, to dodge
+the label renumbering documented above (71 of the 94 consumer TUs record
+compiler-local `@NNN` labels). That left 293 unreadable call sites, so the
+conversion was folded in and the renumbering handled properly instead. Result:
+`_ZN8dActor_c19DropShadowRadHeight...(this, &mShadowModel, &mModel.mat4x3, r, d, 0xf)`
+is now `DropShadowRadHeight(mShadowModel, mModel.mat4x3, r, d, 0xf)`, and
+`tubuild verify` reports every touched TU (95) all-MATCH, objisolate-clean,
+with no EXTRA or refused labels.
 
-What that split costs, so the follow-up is not a surprise:
+**How the conversion was driven, so the next batch can reuse it.** A script
+deleted each local extern, rewrote each call site, compiled, and on a compile
+error escalated only the offending call along a per-argument ladder -- the
+receiver clean (`Meth(...)`, `p->`, `x.`) or cast (`((dActor_c *)c)->`), and
+each reference argument as `&x`->`x` / as-is / `*(T *)e` / `*(T *)&e` -- cheapest
+first. Per-ARGUMENT, because the same symbol was declared differently in
+different files: some externs took the shadow model by reference (so callers
+passed `mShadow`), most by pointer (`&mShadow`), and a few actors still store the
+matrix as a raw `int[12]` or `u8[]`, which forces `*(Matrix4x3 *)mShadowMtx`.
+Those casts are honest until the layouts are fixed; that is the next pass.
 
-- **123 `config/source-style-exceptions.json` entries**, one per (file, rule,
-  symbol). The `handspelled-member` rule compares the *normalized matched
-  spelling*, so respelling a banked occurrence reads as a brand-new one even
-  when the count is identical. Each entry's evidence states main's count of the
-  old spelling beside HEAD's count of the new one.
-- **115 `local extern:` markers.** `check_decl_agreement` exempts a symbol that
-  takes `Fix12<int>` by value (`_takes_fix12_by_value`), which is exactly why
-  these declarations never needed a reason before. Renaming retires the
-  exemption and every one of them has to say why it keeps the local copy.
-- **The marker must be a ONE-LINE comment.** The gate reads
+**Seven files keep a mangled extern, and each says why on the line above it:**
+
+- **Six are tail calls.** `return _ZN8dActor_c18DropShadowScaleXYZ...(...)`
+  inside an int-returning caller forwards the callee's r0 as the caller's
+  result, which a `void` member call cannot express without an invented return
+  value -- the same shape as `d_a_ots.cpp`'s SetAnim in batch 1.
+- **`d_a_obj_pile.cpp` calls SpawnCoins through a function-pointer cast** and
+  passes a `V3` BY VALUE (r1-r3); the member's `const Vector3 &` cannot express
+  that byte-identically.
+
+**`SpawnFireball` RETURNS THE BALL.** `d_a_trs.cpp` does
+`fb = SpawnFireball(...)` and uses `fb`, so its ROM caller reads r0 after the
+call. The definition leaves `ball` in r0 from the `Spawn` call to the `bx lr`,
+so `dActor_c *SpawnFireball(...) { ...; return ball; }` is byte-identical. The
+return type is not in the mangled name; only a caller that uses it can show it.
+
+**A real member name can change codegen where a cast does not.**
+`daKinopio_c::UpdateModelPose` reads its shadow block through
+`char *c = (char *)this`. Passing `mShadowModel, mShadowTransform` instead of
+`*(dExtShadowModel_c *)(c + 0x16c), *(Matrix4x3 *)(c + 0x1c4)` -- the same
+addresses -- broke the function (14/15). The cast form stays, banked as a
+raw-offset exception.
+
+**RENUMBERING, DONE RIGHT: pair the two objects' labels by RANK.** Deleting a
+named-parameter extern renumbers the compiler's temporaries but never creates
+or destroys one, so the i-th `@NNN` of the old object IS the i-th of the new.
+Build the TU once from the pre-conversion source (stash `src/`,
+`tubuild verify --no-write`), read both objects' symbol tables with
+pyelftools -- NOT a string scan, which is what polluted batch 4's remap with
+`@0`/`@2`/`@5` -- and pair them. All 61 renumbered TUs paired with equal counts.
+Then only `defined_symbol_renames[].from` changes; the canonical side
+(`data`/`bss`/`relocations`/`.to`) is the ROM's identity and never moves.
+Three traps on the way:
+
+- **A `from` can point at a NAMED data symbol**, e.g.
+  `@939 -> data_ov072_02122a24`. Remapping only label-to-label entries left
+  `daPgBby_c`, `daSanbo_c` and `daObjHatenaBlock_c` refusing renames. Remap
+  every entry whose `from` is a temporary, whatever its `to`.
+- **Entry key order varies** (`to`/`evidence`/`from` in some files), so edit
+  inside each entry's braces, anchored on its unique `to`.
+- **Edit the array in place.** Re-emitting the whole array sorted turned a
+  2-line-per-entry change into a 3,100-line diff git could not pair.
+
+**Never leave a long check running while you edit the tree.** A 3-hour
+`prepush_linkcheck` from before the rebase was still reading the working tree
+through the conversion and the remap; it reported `__sinit_d_ent_obj.cpp`
+WRONG on a state that never existed, and its builds can overwrite the objects a
+concurrent `tubuild verify` is reading. Stop it, or re-verify anything it
+overlapped, serially.
+
+The gates, once converted: `source_style` needs 10 exceptions (the 7 kept
+externs, Kinopio's two casts, and one `Player` cast at an undeclared
+`Player+0x5bc` matrix) instead of the 123 the respell-only cut needed;
+`check_decl_agreement`'s baseline SHRINKS by ~300 lines, because the externs
+that disagreed with the definitions are gone. Two config traps from the
+respell-only cut still bite:
+
+- **The `local extern:` marker must be a ONE-LINE comment.** The gate reads
   `text_lines[d.line - 2 : d.line]` -- the declaration's own line and the one
-  directly above it. A four-line block comment whose first line carries
-  `local extern:` leaves its last line above the declaration and the gate still
-  reports all 115.
-- **20 genuinely new declaration disagreements**, banked. The six definitions
-  now take `const Vector3 &` / `dExtShadowModel_c &` / `Matrix4x3 &` where the
-  mangled free functions took pointers. Same ABI, same bytes; the gate compares
-  spellings.
-
-Two traps specific to the config side:
-
+  directly above it. `check_decl_agreement` also exempts a symbol that takes
+  `Fix12<int>` by value (`_takes_fix12_by_value`), which is why these externs
+  never needed a reason before the rename.
 - **A `// @symbol` mark only names the definition that FOLLOWS it with no
   statement in between.** `check_decl_agreement` takes the marks in
   `[start, decl_start)`, where `start` is the end of the previous statement. An
@@ -484,13 +535,12 @@ Two traps specific to the config side:
   instead -- `SpawnCoins` reported 269 disagreements against `d_a_btn.cpp`'s
   spelling until the helper block moved above the mark. Watch for `plurality is`
   where `definition is` belongs.
-- **A LIVE `tubuild create warning: CONFLICT:` note has to be respelled; a
-  `(RESOLVED)` one must not be.** `check_tubuild_conflicts` matches the note's
-  text against the marker in the source, so renaming the symbol in
-  `d_a_star.cpp` without renaming it in `ov002/daStarBase_c+daStar_c.json`
-  notes[105] reports both `STALE NOTE` and `UNRECORDED` for the same conflict.
-  The other 20 old-spelling notes in that family are `(RESOLVED)` historical
-  records and stay exactly as they are.
+- **A LIVE `tubuild create warning: CONFLICT:` note tracks the marker in the
+  source.** `check_tubuild_conflicts` matches the note's text against it, so a
+  symbol rename must respell the live note; and once the converted file no
+  longer carries the quoted declaration, the marker goes and the note becomes
+  `(RESOLVED)` (`ov002/daStarBase_c+daStar_c.json`). Historical `(RESOLVED)`
+  notes keep their old spelling.
 
 **18 `5Fix12IiE` names remain, and the earlier "~43" count was inflated** -- it
 was a grep over `src/ include/ config/` that also caught `functions[].legacy_source`

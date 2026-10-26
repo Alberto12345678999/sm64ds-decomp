@@ -201,10 +201,6 @@ int daEyBm_c::CleanupResources()
     return 1;
 }
 // @symbol _ZN8daEyBm_c12UpdateShadowEv
-/* local extern: respelled, not new; the member call renumbers this TU's @NNN labels (6az). */
-extern "C" void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x3iih(
-    dActor_c *actor, dExtShadowModel_c *shadow, Matrix4x3 *matrix, Fix12i radius, Fix12i depth,
-    u32 opacity);
 
 void daEyBm_c::UpdateShadow()
 {
@@ -219,8 +215,7 @@ void daEyBm_c::UpdateShadow()
         depth = (mPosY - ground.clsnY) + 0x1e000;
     else
         depth = 0x1f4000;
-    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x3iih(
-        this, &mShadowModel, &mMatrix, 0x50000, depth, 0xf);
+    DropShadowRadHeight(mShadowModel, mMatrix, 0x50000, depth, 0xf);
 }
 
 /*

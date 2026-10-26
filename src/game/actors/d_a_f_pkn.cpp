@@ -129,11 +129,6 @@ void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(void *self, void *a
 u32 d_a_f_pknNewHold(u32 a, u32 b, Fix12i c, Fix12i d, Fix12i e, const void *f, void *g);
 void _ZN6Player6BounceE5Fix12IiE(void *p, int fix);
 int _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void *self, const void *pos, u32 a, int fix, u32 b, u32 c, u32 d);
-/* local extern: respelled, not new; the member call renumbers this TU's @NNN labels (6az). */
-void _ZN8dActor_c13SpawnFireballERK7Vector3PK10Vector3_16iij(void *self, const void *pos,
-                                                             const void *v16, int a, int b, u32 g);
-/* local extern: respelled, not new; the member call renumbers this TU's @NNN labels (6az). */
-void _ZN8dActor_c10SpawnCoinsERK7Vector3iis(void *self, const void *pos, u32 a, int b, short c);
 
 extern SharedFilePtr data_ov084_02130dfc;   /* the plant's model */
 extern SharedFilePtr *data_ov084_021302f4[];/* the six shared animation handles */
@@ -507,8 +502,7 @@ void daFPkn_c::StateSpit()
     pos.y += mMaxScale * 0x5a;
     mAngleX = 0x1000;
 
-    _ZN8dActor_c13SpawnFireballERK7Vector3PK10Vector3_16iij(this, &pos, &mAngleX, 0x1e000, 0xa000,
-                                                            3);
+    SpawnFireball(pos, (const Vector3_16 *)(&mAngleX), 0x1e000, 0xa000, 3);
     return;
 
 cold:
@@ -567,7 +561,7 @@ void daFPkn_c::StateWait()
                 coinPos.x = mPosX;
                 coinPos.y = mPosY;
                 coinPos.z = mPosZ;
-                _ZN8dActor_c10SpawnCoinsERK7Vector3iis(this, &coinPos, 2, 0xa000, 0);
+                SpawnCoins(coinPos, 2, 0xa000, 0);
             }
             if (leader->mGroupDefeatedCount == 5) {
                 dActor_c::Spawn(ACTOR_STAR, mStarID | 0x40, mPos, 0, mAreaId, -1);
@@ -592,7 +586,7 @@ void daFPkn_c::StateWait()
         coinPos2.x = mPosX;
         coinPos2.y = mPosY;
         coinPos2.z = mPosZ;
-        _ZN8dActor_c10SpawnCoinsERK7Vector3iis(this, &coinPos2, 1, 0xa000, 0);
+        SpawnCoins(coinPos2, 1, 0xa000, 0);
         KillAndTrackInDeathTable();
         return;
     }

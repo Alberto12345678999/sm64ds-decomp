@@ -188,10 +188,6 @@ extern "C" void *d_a_obj_tatefudaNewHold(u32 a, u32 b, int c, int d, int e, cons
                                          void *cb);
 extern "C" u32 d_a_obj_tatefudaNewUnkCallback818Hold(u32 a, u32 b, int c, int d, int e,
                                                      const Vector3_16f *v);
-/* local extern: respelled, not new; the member call renumbers this TU's @NNN labels (6az). */
-extern "C" void
-_ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x3iiih(void *self, void *sm, void *m,
-                                                                     int a, int b, int c, u32 j);
 extern "C" void RebuildModelMatrix(struct daObjTatefuda_c *self);
 extern "C" void hold_d_a_obj_tatefuda(void *self, KCL_File *f, const Matrix4x3 &m, s32 fix, s16 sh,
                                       CLPS_Block &b);
@@ -410,8 +406,7 @@ int daObjTatefuda_c::Behavior()
             Reset();
             return 1;
         }
-        _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x3iiih(
-            this, &mShadowModel, &mShadowMat, 0x50000, 0x28000, 0x28000, 0xf);
+        DropShadowScaleXYZ(mShadowModel, mShadowMat, 0x50000, 0x28000, 0x28000, 0xf);
         return 1;
     }
 
@@ -426,8 +421,7 @@ int daObjTatefuda_c::Behavior()
         if (s == STATE_THROWN) {
             RebuildModelMatrix(this);
         } else if (mPoundsLeft == 2 && (u32)s <= 1) {  /* STATE_IDLE or STATE_TALK */
-            _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x3iiih(
-                this, &mShadowModel, &mShadowMat, 0x50000, 0x28000, 0x28000, 0xf);
+            DropShadowScaleXYZ(mShadowModel, mShadowMat, 0x50000, 0x28000, 0x28000, 0xf);
         }
     }
     return 1;

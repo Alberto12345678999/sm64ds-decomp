@@ -109,10 +109,6 @@ typedef void BgchInitAt_(void *self, dActor_c *actor, int radius, int height, Ve
 void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
     void *self, dActor_c *actor, const Vector3 *offset,
     int radius, int height, u32 flags, u32 vulnFlags);
-/* local extern: respelled, not new; the member call renumbers this TU's @NNN labels (6az). */
-void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x3iih(void *self, void *shadow,
-                                                                          void *matrix, int radius,
-                                                                          int height, u32 flags);
 namespace Particle {
 struct System {
     static void *NewSimple(unsigned id, int x, int y, int z);
@@ -192,8 +188,7 @@ void daChair_c::UpdateModel()
     mShadowMat.m[9] = mPosX >> 3;
     mShadowMat.m[10] = mHomePos.y >> 3;
     mShadowMat.m[11] = mPosZ >> 3;
-    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x3iih(
-        this, &mShadowModel, &mShadowMat, 0x32000, 0x1e000, 0xf);
+    DropShadowRadHeight(mShadowModel, mShadowMat, 0x32000, 0x1e000, 0xf);
 }
 
 // @symbol _ZN9daChair_c5BreakEv

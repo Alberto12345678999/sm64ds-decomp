@@ -178,13 +178,6 @@ extern int _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
 /* Parameter names keep this TU's @NNN. */
 typedef int BgchInitAt_(dBgCh_Actr *collision, dActor_c *actor, Fix12i radius, Fix12i height,
                         void *a, void *b);
-/* local extern: respelled, not new; the member call renumbers this TU's @NNN labels (6az). */
-extern void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x3iih(
-    dActor_c *actor, dExtShadowModel_c *shadow, Matrix4x3 *matrix, Fix12i radius, Fix12i depth,
-    u32 opacity);
-/* local extern: respelled, not new; the member call renumbers this TU's @NNN labels (6az). */
-extern void _ZN8dActor_c10SpawnCoinsERK7Vector3iis(dActor_c *actor, const DaJgmVector3Words *pos,
-                                                   unsigned int count, int spread, short angle);
 extern void _ZN6Player6BounceE5Fix12IiE(Player *player, int vel);
 extern void _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(
     Player *player, const DaJgmVector3Words *pos, unsigned int a, int vel,
@@ -575,8 +568,7 @@ void daJgm_c::UpdateModels()
     mMatrix.m[10] = mPosY >> 3;
     mMatrix.m[11] = mPosZ >> 3;
 
-    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x3iih(
-        this, &mShadowModel, &mMatrix, 0x5a000, 0x320000, 0xf);
+    DropShadowRadHeight(mShadowModel, mMatrix, 0x5a000, 0x320000, 0xf);
 
     if (mState != 1)
         return;
@@ -716,7 +708,7 @@ void daJgm_c::DieAndDropCoins()
     t.x = mPosX;
     t.y = mPosY;
     t.z = mPosZ;
-    _ZN8dActor_c10SpawnCoinsERK7Vector3iis(this, &t, 5, 0x3000, 0);
+    SpawnCoins(*(const Vector3 *)&t, 5, 0x3000, 0);
     PoofDust();
     KillAndTrackInDeathTable();
 }

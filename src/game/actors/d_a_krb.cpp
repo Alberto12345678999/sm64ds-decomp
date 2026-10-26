@@ -221,9 +221,6 @@ extern int _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void* p, const Vector3* v, u3
 
 extern u8 data_ov084_02130204[];
 extern void Matrix4x3_FromRotationY(void* m, int angle);
-/* local extern: respelled, not new; the member call renumbers this TU's @NNN labels (6az). */
-extern void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x3iih(
-    void *self, void *sm, void *mtx, int fix, int t, unsigned int j);
 extern short data_02082214[];
 extern char data_ov084_0213089c;
 extern int _Z14ApproachLinearRiii(int *a, int b, int c);
@@ -1130,11 +1127,13 @@ void daKrb_c::func_ov084_0212a580() {
     rotation.z = mAngleZ;
     if ((mFlags & 0x40000 ? 1 : 0) == 0) {
         if (mWithMeshClsn.IsOnGround()) {
-            _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x3iih(
-                (char *)this, &mShadowModel, &mModelAnim.mat4x3, mScaleX * 0x50, 0x1e000, 0xf);
+            ((dActor_c *)this)
+                ->DropShadowRadHeight(mShadowModel, mModelAnim.mat4x3, mScaleX * 0x50, 0x1e000,
+                                      0xf);
         } else {
-            _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x3iih(
-                (char *)this, &mShadowModel, &mModelAnim.mat4x3, mScaleX * 0x50, 0x96000, 0xf);
+            ((dActor_c *)this)
+                ->DropShadowRadHeight(mShadowModel, mModelAnim.mat4x3, mScaleX * 0x50, 0x96000,
+                                      0xf);
         }
     }
     pos.x = 0;

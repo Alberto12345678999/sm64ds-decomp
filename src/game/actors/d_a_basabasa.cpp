@@ -57,9 +57,6 @@ extern "C" {
 extern void func_ov002_020aea30(void *self, void *actor, void *collision);
 extern void func_02012694(int a, void* b);
 extern void _ZN12dEnemyBase_c20KillByInvincibleCharERK10Vector3_16R6Player5Fix12IiE(dEnemyBase_c* self, short* v, Player* p);
-/* local extern: respelled, not new; the member call renumbers this TU's @NNN labels (6az). */
-extern void _ZN8dActor_c10SpawnCoinsERK7Vector3iis(dActor_c *self, Vector3 *pos, unsigned n,
-                                                   int fix, short s);
 extern void _ZN6Player6BounceE5Fix12IiE(Player* p, int fix);
 extern void _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(Player* p, Vector3* pos, unsigned a, int fix, unsigned b, unsigned d, unsigned e);
 int Vec3_Dist(const void* a, const void* b);
@@ -74,9 +71,6 @@ extern void Matrix4x3_ApplyInPlaceToRotationX(void* m, short ang);
 extern void Vec3_Asr(Vector3* d, Vector3* s, int sh);
 extern void Matrix4x3_FromTranslation(Matrix4x3* m, int x, int y, int z);
 extern void Matrix4x3_ApplyInPlaceToRotationXYZExt(void* m, int x, int y, int z);
-/* local extern: respelled, not new; the member call renumbers this TU's @NNN labels (6az). */
-extern void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x3iih(
-    void *self, void *sm, Matrix4x3 *m, int fx, int t, unsigned int u);
 extern unsigned short DecIfAbove0_Short(unsigned short *p);
 extern BasabasaAnimationFileHandle data_ov065_0211d690;   /* flying animation */
 extern BasabasaModelFilePtr data_ov065_0211d698;   /* flying model */
@@ -177,7 +171,7 @@ void daBasabasa_c::func_ov065_0211704c()
         pos.x = mPosX;
         pos.y = mPosY;
         pos.z = mPosZ;
-        _ZN8dActor_c10SpawnCoinsERK7Vector3iis(this, &pos, mExtraCoinCount + 1, 0xa000, 0);
+        SpawnCoins(pos, mExtraCoinCount + 1, 0xa000, 0);
         return;
     }
 
@@ -379,8 +373,7 @@ void daBasabasa_c::func_ov065_02117994()
         (mPosY - 0x18000) >> 3,
         mPosZ >> 3);
     mShadowMatrix = data_020a0e68;
-    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x3iih(
-        this, &mShadowModel, &mShadowMatrix, 0x32000, 0x258000, 0xf);
+    DropShadowRadHeight(mShadowModel, mShadowMatrix, 0x32000, 0x258000, 0xf);
 }
 
 // @symbol _ZN12daBasabasa_c16CleanupResourcesEv

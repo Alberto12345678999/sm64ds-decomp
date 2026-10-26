@@ -209,11 +209,6 @@ void Matrix4x3_FromTranslation(void*, int, int, int);
 void GiveCoins(int, int);
 short atan2_hold_d_a_1up_1(int, int);
 int _ZN4cstd4fdivEii(int, int);
-/* local extern: respelled, not new; the member call renumbers this TU's @NNN labels (6az). */
-short _ZN8dActor_c12ReflectAngleEiis(void *, int, int, short);
-/* local extern: respelled, not new; the member call renumbers this TU's @NNN labels (6az). */
-void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x3iih(void *, void *, void *,
-                                                                          int, int, unsigned char);
 }
 // @symbol _ZN7da1up_cD1Ev
 // @symbol _ZN7da1up_cD0Ev
@@ -296,10 +291,9 @@ void func_ov002_020aefa4(char *raw)
    non-virtual methods. The merged TU has both real classes complete through
    da1up_c.h, so the shadows are gone and the calls go through the real types --
    which mangle identically, the class name being the whole of the difference.
-   _ZN8dActor_c12ReflectAngleEiis stays spelt out. Its reconstructed
-   symbol encodes by-value Fix12<int> parameters; the recorded typed-call
-   experiment changed the bytes. This bridge remains pending further
-   signature/codegen work. */
+   ReflectAngle is a real member call: the by-value Fix12<int> its old
+   mangled name claimed was never in the ROM, and with scalar parameters the
+   typed call costs nothing (notes/mwccarm-codegen.md 6az, batch 5). */
 void da1up_c::func_ov002_020aefb8() {
 
     UpdatePosWithHorzSpeedAndAng();
@@ -319,7 +313,7 @@ void da1up_c::func_ov002_020aefb8() {
     UpdatePosWithOnlySpeed((dCc_c*)&mdCcAc_c);
     UpdateWMClsn(mWithMeshClsn, 0);
     if (!mWithMeshClsn.IsOnWall()) return;
-    mPrevAngleY = _ZN8dActor_c12ReflectAngleEiis(this, mWallNormalX, mWallNormalZ, mPrevAngleY);
+    mPrevAngleY = ReflectAngle(mWallNormalX, mWallNormalZ, mPrevAngleY);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -608,8 +602,7 @@ void da1up_c::func_ov002_020af4ec() {
         radius = (mdCcAc_c.radius - 0xa000) * 2;
     }
 
-    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x3iih(
-        this, &mShadowModel, &mModel.mat4x3, radius, depth, 0xf);
+    DropShadowRadHeight(mShadowModel, mModel.mat4x3, radius, depth, 0xf);
 }
 
 /* -------------------------------------------------------------------------- */

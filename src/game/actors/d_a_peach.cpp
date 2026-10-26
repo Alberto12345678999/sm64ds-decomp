@@ -54,9 +54,6 @@ extern void Matrix4x3_ApplyInPlaceToRotationZ(void *m, short angZ);
 extern int data_020a0e68[];
 
 /* actor plumbing */
-/* local extern: respelled, not new; the member call renumbers this TU's @NNN labels (6az). */
-extern void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x3iih(
-    void *thiz, void *sm, void *mtx, int f, int g, unsigned int h);
 extern void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(
     void *self, dActor_c *a, int b, int c, unsigned int d, unsigned int e);
 
@@ -198,8 +195,7 @@ void daPeach_c::UpdateModel()
     Matrix4x3_ApplyInPlaceToRotationY(data_020a0e68, mLookHorzAngle);
     Matrix4x3_ApplyInPlaceToRotationZ(data_020a0e68, mLookVertAngle);
     *(PeachM48 *)(*(char **)(c + 0xe8) + 0x360) = *(PeachM48 *)data_020a0e68;
-    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x3iih(
-        this, &mShadowModel, &mModelAnim.mat4x3, 0x8c000, 0x32000, 0xf);
+    DropShadowRadHeight(mShadowModel, mModelAnim.mat4x3, 0x8c000, 0x32000, 0xf);
 }
 
 // @symbol _ZN9daPeach_c10InitState0Ev

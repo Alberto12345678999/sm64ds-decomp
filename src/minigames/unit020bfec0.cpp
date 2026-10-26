@@ -90,8 +90,6 @@ void _Z13CopyToViewMatPK9Matrix4x3(void *);
 void SharedFilePtr_Construct_TexSeq(void *, unsigned int);
 void SharedFilePtr_Destruct_Anim(void *);
 void SharedFilePtr_Destruct_TexSeq(void *);
-/* local extern: respelled, not new; the member call renumbers this TU's @NNN labels (6az). */
-void _ZN17dExtShadowModel_c9InitModelEP9Matrix4x3iiih(void *, void *, int, int, int, unsigned int);
 
 /* local extern: dClipper::Func_020156DC takes a by-value Fix12<int> (the Fix12 wall), so it stays spelled out with scalar arguments. */
 void _ZN8dClipper13Func_020156DCEitii(void *, int, int, int, int);
@@ -707,7 +705,6 @@ void FallingPetal_Update(char *self) {
 
 namespace s020c35a8 {
 // @symbol FallingPetal_Draw
-extern "C" {}
 
 extern "C" void FallingPetal_Draw(char *c) {
     FallingPetal_UpdateMatrix(c);
@@ -1632,7 +1629,6 @@ extern "C" void Dealer_Update(char *thiz) {
 namespace s020c1804 {
 // @symbol Dealer_Draw
 
-extern "C" {}
 
 extern "C" void Dealer_Draw(void *self) {
     char *c = (char *)self;
@@ -1965,7 +1961,6 @@ void Dealer_StartReveal(int *t, int a1, int a2) {
 }
 
 namespace s020c0f9c {
-extern "C" {}
 
 extern "C" void Dealer_StateReveal(void *cc) {
     char *c = (char *)cc;
@@ -2361,8 +2356,7 @@ namespace s020c07a0 {
 extern "C" {
 void MascotWalker_Draw(char *t) {
     MascotWalker_UpdateMatrix(t);
-    _ZN17dExtShadowModel_c9InitModelEP9Matrix4x3iiih(&WALKER(t)->mShadow, &WALKER(t)->mModel.mat4x3,
-                                                     0x3c000, 0x14000, 0x3c000, 0xc);
+    (&WALKER(t)->mShadow)->InitModel(&WALKER(t)->mModel.mat4x3, 0x3c000, 0x14000, 0x3c000, 0xc);
     /* dExtSimpleModel_c's own render, called directly (0x02016b78), as Mascot_Draw does. */
     WALKER(t)->mModel.dExtSimpleModel_c::Render(0);
 }

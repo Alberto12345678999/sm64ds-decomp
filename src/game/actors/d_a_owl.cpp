@@ -182,10 +182,6 @@ void Matrix4x3_FromTranslation(Matrix4x3 *m, Fix12i x, Fix12i y, Fix12i z);
 void Matrix4x3_ApplyInPlaceToRotationXYZExt(void *m, int x, int y, int z);
 void Matrix4x3_ApplyInPlaceToTranslation(Matrix4x3 *m, Fix12i x, Fix12i y, Fix12i z);
 void MulMat4x3Mat4x3(const int *a, const int *b, int *dst);
-/* local extern: respelled, not new; the member call renumbers this TU's @NNN labels (6az). */
-void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x3iih(void *self, void *sm,
-                                                                          Matrix4x3 *m, Fix12i fx,
-                                                                          int t, unsigned int u);
 void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
     void *, void *, int *, int, int, unsigned int, unsigned int);
 int IsStarCollectedInCurLevel(int);
@@ -561,8 +557,7 @@ void daOwl_c::func_ov094_021361d8()
         (mPosY - 0x38000) >> 3,
         mPosZ >> 3);
     mShadowMat = data_020a0e68;
-    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x3iih(
-        this, &mShadowModel, &mShadowMat, 0x64000, 0x320000, 0xf);
+    DropShadowRadHeight(mShadowModel, mShadowMat, 0x64000, 0x320000, 0xf);
 }
 
 // @symbol _ZN7daOwl_c19func_ov094_021362e0Ev

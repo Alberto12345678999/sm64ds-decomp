@@ -42,11 +42,6 @@ void  Matrix4x3_ApplyInPlaceToRotationXYZExt(void *m, int x, int y, int z);
 void  MulVec3Mat4x3(Vector3 *v, Matrix4x3 *m, Vector3 *out);
 
 // Scalar bridge: the real Fix12 aggregate call grew this helper by 16 bytes.
-/* local extern: respelled, not new; the member call renumbers this TU's @NNN labels (6az). */
-void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x3iih(dActor_c *thiz,
-                                                                          dExtShadowModel_c *sm,
-                                                                          Matrix4x3 *mtx, int rad,
-                                                                          int height, u8 flags);
 
 bool d_a_obj_mip_keyPlaySubHold(u32 a, u32 b, u32 c, Fix12i d, int loop);
 
@@ -312,8 +307,7 @@ extern "C" void func_ov085_0212d2b8(daObj_Mip_Key_c *thiz)
         thiz->mPosX >> 3,
         (thiz->mPosY - 0x32000) >> 3,
         thiz->mPosZ >> 3);
-    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x3iih(
-        thiz, &thiz->mShadowModel, &thiz->mModel.mat4x3, 0x23000, 0x12c000, 0xf);
+    thiz->DropShadowRadHeight(thiz->mShadowModel, thiz->mModel.mat4x3, 0x23000, 0x12c000, 0xf);
 }
 
 // @symbol _ZN15daObj_Mip_Key_c16CleanupResourcesEv

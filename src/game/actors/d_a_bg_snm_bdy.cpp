@@ -94,10 +94,6 @@ void  Matrix4x3_FromRotationXYZExt(void *m, int x, int y, int z);
 void  func_0203568c(int *clsn, int radius);
 void  func_02035684(int *clsn, int height);
 
-/* local extern: respelled, not new; the member call renumbers this TU's @NNN labels (6az). */
-void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x3iih(void *self, void *shadow,
-                                                                          void *matrix, int radius,
-                                                                          int height, u32 flags);
 
 /* local extern: Player.h does not declare this Fix12<int> by-value method.
  * This scalar bridge agrees with the current definition at 0x020d8e70. */
@@ -521,8 +517,7 @@ void daBgSnmBdy_c::UpdateModel()
     mShadowMat.m[9] = mPosX >> 3;
     mShadowMat.m[10] = (mPosY + mRadius) >> 3;
     mShadowMat.m[11] = mPosZ >> 3;
-    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x3iih(
-        this, &mShadowModel, &mShadowMat, mRadius << 1, mRadius << 1, 0xf);
+    DropShadowRadHeight(mShadowModel, mShadowMat, mRadius << 1, mRadius << 1, 0xf);
 }
 
 // @symbol _ZN12daBgSnmBdy_c21UpdateGroundCollisionEP10dBgCh_Actr

@@ -108,10 +108,6 @@ u8 NumStars(void);
    Fix12<int> BY VALUE, because mwccarm passes those differently at
    the call site than a loose spelling would. */
 int d_a_kinopioPlaySubHold(u32 a, u32 b, u32 c, int d, int e);
-/* local extern: respelled, not new; the member call renumbers this TU's @NNN labels (6az). */
-void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x3iih(void *thiz, void *sm,
-                                                                          void *mtx, int rad,
-                                                                          int height, u32 flags);
 
 /* model / collision / shadow */
 void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(
@@ -387,8 +383,9 @@ void daKinopio_c::UpdateModelPose()
     *(s32 *)(c + 0x1e8) = mPosX >> 3;
     *(s32 *)(c + 0x1ec) = (mPosY - 0x8000) >> 3;
     *(s32 *)(c + 0x1f0) = mPosZ >> 3;
-    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x3iih(c, c + 0x16c, c + 0x1c4,
-                                                                         0x50000, 0x64000, 0xf);
+    ((dActor_c *)c)
+        ->DropShadowRadHeight(*(dExtShadowModel_c *)(c + 0x16c), *(Matrix4x3 *)(c + 0x1c4), 0x50000,
+                              0x64000, 0xf);
 }
 
 // @symbol _ZN11daKinopio_c16CleanupResourcesEv

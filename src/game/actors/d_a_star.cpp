@@ -200,9 +200,6 @@ extern void MulMat4x3Mat4x3(void* out, void* a, void* b);
 extern void Vec3_LslInPlace(void* v, int sh);
 extern struct M48 data_020a0e68;
 extern Mtx IDENTITY_MATRIX4X3;
-/* local extern: respelled, not new; the member call renumbers this TU's @NNN labels (6az). */
-extern int _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x3iih(
-    char *self, struct dExtShadowModel_c *sm, struct Matrix4x3 *m, int fix, int t, u32 f);
 extern void Vec3_Asr(struct Vector3* d, struct Vector3* s, int sh);
 extern void Matrix4x3_FromRotationY(void* m, int angle);
 extern void _ZN5Event8ClearBitEj(unsigned int b);
@@ -236,8 +233,6 @@ extern int _ZN4cstd4sqrtEy(u64 v);
 extern int Vec3_HorzDist(const Vec3* a, const Vec3* b);
 extern s16 GetAngleToCamera(int i);
 extern u8 *data_0209f344;
-/* local extern: respelled, not new; the member call renumbers this TU's @NNN labels (6az). */
-extern short _ZN8dActor_c12ReflectAngleEiis(void *c, Fix12i a, Fix12i b, short ang);
 }
 extern "C" {
 extern int func_ov002_020c6e14(void*);
@@ -361,7 +356,6 @@ extern s32 IsStarCollected(s32 level, s32 idx);
 /* TUBUILD CONFLICT -- alternate declaration of _ZN8dActor_c11UntrackStarERa, from the legacy file for _ZN8daStar_c16CleanupResourcesEv, NOT applied: extern "C" void _ZN8dActor_c11UntrackStarERa(void* self, signed char* star); */
 /* TUBUILD CONFLICT -- alternate declaration of Matrix4x3_FromTranslation, from the legacy file for _ZN12daStarBase_c8BehaviorEv, NOT applied: extern void Matrix4x3_FromTranslation(void *m, int x, int y, int z); */
 /* TUBUILD CONFLICT -- alternate declaration of Matrix4x3_FromRotationY, from the legacy file for _ZN12daStarBase_c8BehaviorEv, NOT applied: extern void Matrix4x3_FromRotationY(void *m, int ang); */
-/* TUBUILD CONFLICT -- alternate declaration of _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x3iih, from the legacy file for _ZN12daStarBase_c8BehaviorEv, NOT applied: extern void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x3iih( */
 /* TUBUILD CONFLICT -- alternate declaration of _ZN8dActor_c10FindWithIDEj, from the legacy file for _ZN12daStarBase_c8BehaviorEv, NOT applied: extern char *_ZN8dActor_c10FindWithIDEj(unsigned int id); */
 /* TUBUILD CONFLICT -- alternate declaration of _ZN5dCc_c5ClearEv, from the legacy file for _ZN12daStarBase_c8BehaviorEv, NOT applied: extern void _ZN5dCc_c5ClearEv(void *p); */
 /* TUBUILD CONFLICT -- alternate declaration of data_0209f208, from the legacy file for _ZN12daStarBase_c8BehaviorEv, NOT applied: extern unsigned char data_0209f208; */
@@ -904,9 +898,9 @@ int daStarBase_c::Behavior()
             int rad = 0xa0000;
             if (mState != 0)
                 rad = 0xc8000;
-            _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x3iih(
-                (char *)this, (struct dExtShadowModel_c *)&mShadowModel,
-                (struct Matrix4x3 *)&mShadowMtx, rad, d + 0x28000, 0xf);
+            ((dActor_c *)this)
+                ->DropShadowRadHeight(*(dExtShadowModel_c *)&mShadowModel,
+                                      *(Matrix4x3 *)&mShadowMtx, rad, d + 0x28000, 0xf);
         }
     }
     if (mState != 0) {
@@ -1682,13 +1676,13 @@ void daStar_c::func_ov002_020e99e8() {
     mPrevPosY = mPosY;
     UpdateWMClsn(mWithMeshClsn, 2);
     if (mWithMeshClsn.IsOnWall()) {
-        mPrevAngleY = _ZN8dActor_c12ReflectAngleEiis(c, mWallNormalX, mWallNormalZ, mPrevAngleY);
+        mPrevAngleY = ((dActor_c *)c)->ReflectAngle(mWallNormalX, mWallNormalZ, mPrevAngleY);
     }
     func_ov002_020e86ec();
     if (mWithMeshClsn.JustHitGround()) {
         func_ov002_020e88a8();
     } else if (mWithMeshClsn.IsOnGround()) {
-        mPrevAngleY = _ZN8dActor_c12ReflectAngleEiis(c, mWallNormalX, mWallNormalZ, mPrevAngleY);
+        mPrevAngleY = ((dActor_c *)c)->ReflectAngle(mWallNormalX, mWallNormalZ, mPrevAngleY);
         if (mBits.water == WATER_IN)
             mVertSpeed = 0xe000;
         else
@@ -2558,8 +2552,9 @@ void daStar_c::func_ov002_020e8398() {
     mShadowMtx.ty = mPosY >> 3;
     mShadowMtx.tz = mPosZ >> 3;
 
-    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x3iih(
-        c, (struct dExtShadowModel_c *)&mShadowModel, (struct Matrix4x3 *)&mShadowMtx, r8, t, 0xf);
+    ((dActor_c *)c)
+        ->DropShadowRadHeight(*(dExtShadowModel_c *)&mShadowModel, *(Matrix4x3 *)&mShadowMtx, r8, t,
+                              0xf);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -2813,8 +2808,6 @@ void daStar_c::func_ov002_020e7d08() {
 /* Camera placement from a StarCamera marker (actor 0xb1): looks at the star
  * from the position of the marker whose star id matches. Returns 1 when one
  * was found. */
-extern "C" {
-}
 
 int daStar_c::func_ov002_020e7c90(void* cam) {
     dActor_c *a = 0;

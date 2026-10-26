@@ -72,11 +72,6 @@
 extern "C" {
 
 void  Vec3_Asr(void *d, void *s, int sh);
-/* local extern: respelled, not new; the member call renumbers this TU's @NNN labels (6az). */
-void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x3iih(void *self, void *shadow,
-                                                                          void *mtx, int rad,
-                                                                          int height,
-                                                                          unsigned char flags);
 }
 
 /* Overloaded (short and int, src/ApproachAngle.cpp), so it stays out of
@@ -427,8 +422,7 @@ void daMky_c::func_ov030_02112094()
     }
 
     if (!IsInYoshiMouth(this)) {
-        _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x3iih(
-            this, &this->mShadowModel, &this->mModelAnim.mat4x3, 0x5a000, 0x190000, 0xf);
+        DropShadowRadHeight(this->mShadowModel, this->mModelAnim.mat4x3, 0x5a000, 0x190000, 0xf);
     }
 
     id = this->mCapUniqueID;

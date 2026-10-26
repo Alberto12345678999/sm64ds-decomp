@@ -102,10 +102,6 @@ typedef char
 /* Fix12-by-value calls keep the scalar argument the callee actually
  * reads. The class spelling homes it (see the leftover above). */
 extern "C" {
-/* local extern: respelled, not new; the member call renumbers this TU's @NNN labels (6az). */
-extern void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x3iih(
-    dActor_c *actor, dExtShadowModel_c *shadow, Matrix4x3 *matrix, int radius, int height,
-    u32 opacity);
 extern void hold_d_a_obj_ct_kaitendai(dBgW_KcMbg *thisp, KCL_File *kcl, const Matrix4x3 &mtx,
                                       int fix, short s, CLPS_Block &clps);
 extern void func_020393d4(void *p, void *v);
@@ -237,8 +233,7 @@ void daObjCtKaitendai_c::func_ov065_0211b40c()
 {
     mShadowMat = mModel.mat4x3;
     mShadowMat.m[10] = (mGroundY + 0x32000) >> 3;
-    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x3iih(
-        this, &mShadowModel, &mShadowMat, 0x258000, 0xc8000, 0xf);
+    DropShadowRadHeight(mShadowModel, mShadowMat, 0x258000, 0xc8000, 0xf);
 }
 
 /* Static-init globals (was the handwritten __sinit_ov065_0211c8fc shard).

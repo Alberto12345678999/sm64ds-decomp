@@ -364,10 +364,6 @@ struct System {
 };
 }
 extern int Vec3_HorzLen(const Vector3* v);
-/* local extern: respelled, not new; the member call renumbers this TU's @NNN labels (6az). */
-extern void _ZN8dActor_c13SpawnFireballERK7Vector3PK10Vector3_16iij(void *self, const void *pos,
-                                                                    const void *rot, int speed,
-                                                                    int gravity, u32 flags);
 extern int RandomIntInternal(int* seed);
 extern int data_0209e650;
 extern KpaAnimationFileHandle data_ov060_0211abe0;
@@ -386,9 +382,6 @@ extern void Matrix4x3_ApplyInPlaceToRotationX(Matrix4x3 *m, s16 angX);
 extern void Matrix4x3_ApplyInPlaceToRotationZ(Matrix4x3 *m, s16 angZ);
 extern void MulMat4x3Mat4x3(void *dst, void *a, void *b);
 extern void Vec3_LslInPlace(void *v, int sh);
-/* local extern: respelled, not new; the member call renumbers this TU's @NNN labels (6az). */
-extern void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x3iih(
-    void *c, void *sm, void *mtx, int rad, int h, unsigned int flags);
 extern Matrix4x3 data_020a0e68;
 void d_a_kpaEarthquakeHold(void *self, struct Vector3 *v, int f);
 extern "C" void func_02011cfc(void);
@@ -1178,8 +1171,8 @@ skip_angles:
         Vec3_Asr(&v2, &pos, 3);
         Matrix4x3_FromTranslation(&data_020a0e68, v2.x, v2.y, v2.z);
         *(Matrix4x3 *)(&this->mShadowMtx) = data_020a0e68;
-        _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x3iih(
-            this, &this->mShadowModel, &this->mShadowMtx, 0x140000, 0x64000, 0xf);
+        DropShadowRadHeight(this->mShadowModel, *(Matrix4x3 *)&this->mShadowMtx, 0x140000, 0x64000,
+                            0xf);
     }
 }
 
@@ -2191,8 +2184,7 @@ void daKpa_c::func_ov060_021140c0(){
             pos.y = new_var;
             dir[0] = 0x1000;
             grav = 0xa000;
-            _ZN8dActor_c13SpawnFireballERK7Vector3PK10Vector3_16iij(this, &pos, dp, 0x1e000, grav,
-                                                                    0);
+            SpawnFireball(pos, (const Vector3_16 *)dp, 0x1e000, grav, 0);
             func_02012694(BOWSER_SND_FIREBALL, (const Vector3 *)(&this->mCamSpacePosX));
         }
     }

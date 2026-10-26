@@ -116,7 +116,7 @@ typedef void BgchInitAt_(dBgCh_Actr *self, int actor, Fix12i radius, Fix12i heig
 extern void Vec3_Asr(void *dst, void *src, int n);
 extern void Matrix4x3_FromTranslation(void *m, int x, int y, int z);
 extern void Matrix4x3_ApplyInPlaceToRotationXYZExt(void *m, short a, short b, short c);
-/* local extern: respelled, not new; the member call renumbers this TU's @NNN labels (6az). */
+/* local extern: int return -- `return` forwards the callee's r0 (a tail call). */
 extern int _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x3iih(void *thiz,
                                                                                 void *sm, void *m,
                                                                                 int rad, int h,
@@ -138,8 +138,6 @@ extern int atan2_hold_d_a_grock_1(int y, int x);
 /* dActor_c.h types GetSubtraction(short, short). The wall angle is an int
  * passed straight through; the short spelling adds lsl/asr #16. */
 extern int _ZN8dActor_c14GetSubtractionEss(void *a, s16 x, int y);
-/* local extern: respelled, not new; the member call renumbers this TU's @NNN labels (6az). */
-extern s16 _ZN8dActor_c12ReflectAngleEiis(void *a, int x, int y, s16 ang);
 extern s16 data_02082214[];
 extern void AddVec3(struct Vector3 *dst, struct Vector3 *a, struct Vector3 *b);
 /* Clears the cylinder flags bit 2, then sets it when the closest player
@@ -317,8 +315,7 @@ extern "C" void func_ov021_02112544(char *raw)
         int wallAngle = cstd::atan2(wallNormal.x, wallNormal.z);
         if (_ZN8dActor_c14GetSubtractionEss(rock, rock->mPrevAngleY, wallAngle) <= 0x1000)
             return;
-        rock->mPrevAngleY =
-            _ZN8dActor_c12ReflectAngleEiis(rock, wallNormal.x, wallNormal.z, rock->mPrevAngleY);
+        rock->mPrevAngleY = rock->ReflectAngle(wallNormal.x, wallNormal.z, rock->mPrevAngleY);
         rock->UpdatePosWithHorzSpeedAndAng();
     }
 }

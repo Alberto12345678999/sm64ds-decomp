@@ -3040,204 +3040,204 @@
   "production_mode": "intact-object",
   "defined_symbol_renames": [
     {
-      "from": "@1852",
+      "from": "@1846",
       "to": "@1831",
-      "evidence": "Measured native-interface continuation: corresponding raw symbol retains section, offset, size, binding, emitted body and complete relocation graph; only compiler input name @1883 -> @1865 changes. Canonical destination unchanged."
+      "evidence": "Measured native-interface continuation: corresponding raw symbol retains section, offset, size, binding, emitted body and complete relocation graph; only compiler input name @1883 -> @1865 changes. Canonical destination unchanged. | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
+    },
+    {
+      "from": "@1847",
+      "to": "@1832",
+      "evidence": "Measured native-interface continuation: corresponding raw symbol retains section, offset, size, binding, emitted body and complete relocation graph; only compiler input name @1884 -> @1866 changes. Canonical destination unchanged. | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
+    },
+    {
+      "from": "@1848",
+      "to": "@1833",
+      "evidence": "Measured native-interface continuation: corresponding raw symbol retains section, offset, size, binding, emitted body and complete relocation graph; only compiler input name @1885 -> @1867 changes. Canonical destination unchanged. | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
+    },
+    {
+      "from": "@1849",
+      "to": "@1834",
+      "evidence": "Measured native-interface continuation: corresponding raw symbol retains section, offset, size, binding, emitted body and complete relocation graph; only compiler input name @1886 -> @1868 changes. Canonical destination unchanged. | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
+    },
+    {
+      "from": "@1850",
+      "to": "@1835",
+      "evidence": "Measured native-interface continuation: corresponding raw symbol retains section, offset, size, binding, emitted body and complete relocation graph; only compiler input name @1887 -> @1869 changes. Canonical destination unchanged. | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
+    },
+    {
+      "from": "@1851",
+      "to": "@1836",
+      "evidence": "Measured native-interface continuation: corresponding raw symbol retains section, offset, size, binding, emitted body and complete relocation graph; only compiler input name @1888 -> @1870 changes. Canonical destination unchanged. | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
+    },
+    {
+      "from": "@1852",
+      "to": "@1837",
+      "evidence": "Measured native-interface continuation: corresponding raw symbol retains section, offset, size, binding, emitted body and complete relocation graph; only compiler input name @1889 -> @1871 changes. Canonical destination unchanged. | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     },
     {
       "from": "@1853",
-      "to": "@1832",
-      "evidence": "Measured native-interface continuation: corresponding raw symbol retains section, offset, size, binding, emitted body and complete relocation graph; only compiler input name @1884 -> @1866 changes. Canonical destination unchanged."
-    },
-    {
-      "from": "@1854",
-      "to": "@1833",
-      "evidence": "Measured native-interface continuation: corresponding raw symbol retains section, offset, size, binding, emitted body and complete relocation graph; only compiler input name @1885 -> @1867 changes. Canonical destination unchanged."
+      "to": "@1838",
+      "evidence": "Measured native-interface continuation: corresponding raw symbol retains section, offset, size, binding, emitted body and complete relocation graph; only compiler input name @1890 -> @1872 changes. Canonical destination unchanged. | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     },
     {
       "from": "@1855",
-      "to": "@1834",
-      "evidence": "Measured native-interface continuation: corresponding raw symbol retains section, offset, size, binding, emitted body and complete relocation graph; only compiler input name @1886 -> @1868 changes. Canonical destination unchanged."
-    },
-    {
-      "from": "@1856",
-      "to": "@1835",
-      "evidence": "Measured native-interface continuation: corresponding raw symbol retains section, offset, size, binding, emitted body and complete relocation graph; only compiler input name @1887 -> @1869 changes. Canonical destination unchanged."
+      "to": "@1840",
+      "evidence": "Measured native-interface continuation: corresponding raw symbol retains section, offset, size, binding, emitted body and complete relocation graph; only compiler input name @1892 -> @1874 changes. Canonical destination unchanged. | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     },
     {
       "from": "@1857",
-      "to": "@1836",
-      "evidence": "Measured native-interface continuation: corresponding raw symbol retains section, offset, size, binding, emitted body and complete relocation graph; only compiler input name @1888 -> @1870 changes. Canonical destination unchanged."
-    },
-    {
-      "from": "@1858",
-      "to": "@1837",
-      "evidence": "Measured native-interface continuation: corresponding raw symbol retains section, offset, size, binding, emitted body and complete relocation graph; only compiler input name @1889 -> @1871 changes. Canonical destination unchanged."
+      "to": "@1842",
+      "evidence": "Measured native-interface continuation: corresponding raw symbol retains section, offset, size, binding, emitted body and complete relocation graph; only compiler input name @1894 -> @1876 changes. Canonical destination unchanged. | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     },
     {
       "from": "@1859",
-      "to": "@1838",
-      "evidence": "Measured native-interface continuation: corresponding raw symbol retains section, offset, size, binding, emitted body and complete relocation graph; only compiler input name @1890 -> @1872 changes. Canonical destination unchanged."
+      "to": "@1844",
+      "evidence": "Measured native-interface continuation: corresponding raw symbol retains section, offset, size, binding, emitted body and complete relocation graph; only compiler input name @1896 -> @1878 changes. Canonical destination unchanged. | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     },
     {
       "from": "@1861",
-      "to": "@1840",
-      "evidence": "Measured native-interface continuation: corresponding raw symbol retains section, offset, size, binding, emitted body and complete relocation graph; only compiler input name @1892 -> @1874 changes. Canonical destination unchanged."
+      "to": "@1846",
+      "evidence": "Measured native-interface continuation: corresponding raw symbol retains section, offset, size, binding, emitted body and complete relocation graph; only compiler input name @1898 -> @1880 changes. Canonical destination unchanged. | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     },
     {
       "from": "@1863",
-      "to": "@1842",
-      "evidence": "Measured native-interface continuation: corresponding raw symbol retains section, offset, size, binding, emitted body and complete relocation graph; only compiler input name @1894 -> @1876 changes. Canonical destination unchanged."
+      "to": "@1848",
+      "evidence": "Measured native-interface continuation: corresponding raw symbol retains section, offset, size, binding, emitted body and complete relocation graph; only compiler input name @1900 -> @1882 changes. Canonical destination unchanged. | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     },
     {
       "from": "@1865",
-      "to": "@1844",
-      "evidence": "Measured native-interface continuation: corresponding raw symbol retains section, offset, size, binding, emitted body and complete relocation graph; only compiler input name @1896 -> @1878 changes. Canonical destination unchanged."
+      "to": "@1850",
+      "evidence": "Measured native-interface continuation: corresponding raw symbol retains section, offset, size, binding, emitted body and complete relocation graph; only compiler input name @1902 -> @1884 changes. Canonical destination unchanged. | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     },
     {
       "from": "@1867",
-      "to": "@1846",
-      "evidence": "Measured native-interface continuation: corresponding raw symbol retains section, offset, size, binding, emitted body and complete relocation graph; only compiler input name @1898 -> @1880 changes. Canonical destination unchanged."
+      "to": "@1852",
+      "evidence": "Measured native-interface continuation: corresponding raw symbol retains section, offset, size, binding, emitted body and complete relocation graph; only compiler input name @1904 -> @1886 changes. Canonical destination unchanged. | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     },
     {
       "from": "@1869",
-      "to": "@1848",
-      "evidence": "Measured native-interface continuation: corresponding raw symbol retains section, offset, size, binding, emitted body and complete relocation graph; only compiler input name @1900 -> @1882 changes. Canonical destination unchanged."
+      "to": "@1854",
+      "evidence": "Measured native-interface continuation: corresponding raw symbol retains section, offset, size, binding, emitted body and complete relocation graph; only compiler input name @1906 -> @1888 changes. Canonical destination unchanged. | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     },
     {
       "from": "@1871",
-      "to": "@1850",
-      "evidence": "Measured native-interface continuation: corresponding raw symbol retains section, offset, size, binding, emitted body and complete relocation graph; only compiler input name @1902 -> @1884 changes. Canonical destination unchanged."
+      "to": "@1856",
+      "evidence": "Measured native-interface continuation: corresponding raw symbol retains section, offset, size, binding, emitted body and complete relocation graph; only compiler input name @1908 -> @1890 changes. Canonical destination unchanged. | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     },
     {
       "from": "@1873",
-      "to": "@1852",
-      "evidence": "Measured native-interface continuation: corresponding raw symbol retains section, offset, size, binding, emitted body and complete relocation graph; only compiler input name @1904 -> @1886 changes. Canonical destination unchanged."
+      "to": "@1858",
+      "evidence": "Measured native-interface continuation: corresponding raw symbol retains section, offset, size, binding, emitted body and complete relocation graph; only compiler input name @1910 -> @1892 changes. Canonical destination unchanged. | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     },
     {
       "from": "@1875",
-      "to": "@1854",
-      "evidence": "Measured native-interface continuation: corresponding raw symbol retains section, offset, size, binding, emitted body and complete relocation graph; only compiler input name @1906 -> @1888 changes. Canonical destination unchanged."
+      "to": "@1860",
+      "evidence": "Measured native-interface continuation: corresponding raw symbol retains section, offset, size, binding, emitted body and complete relocation graph; only compiler input name @1912 -> @1894 changes. Canonical destination unchanged. | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     },
     {
       "from": "@1877",
-      "to": "@1856",
-      "evidence": "Measured native-interface continuation: corresponding raw symbol retains section, offset, size, binding, emitted body and complete relocation graph; only compiler input name @1908 -> @1890 changes. Canonical destination unchanged."
+      "to": "@1862",
+      "evidence": "Measured native-interface continuation: corresponding raw symbol retains section, offset, size, binding, emitted body and complete relocation graph; only compiler input name @1914 -> @1896 changes. Canonical destination unchanged. | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     },
     {
       "from": "@1879",
-      "to": "@1858",
-      "evidence": "Measured native-interface continuation: corresponding raw symbol retains section, offset, size, binding, emitted body and complete relocation graph; only compiler input name @1910 -> @1892 changes. Canonical destination unchanged."
+      "to": "@1864",
+      "evidence": "Measured native-interface continuation: corresponding raw symbol retains section, offset, size, binding, emitted body and complete relocation graph; only compiler input name @1916 -> @1898 changes. Canonical destination unchanged. | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     },
     {
       "from": "@1881",
-      "to": "@1860",
-      "evidence": "Measured native-interface continuation: corresponding raw symbol retains section, offset, size, binding, emitted body and complete relocation graph; only compiler input name @1912 -> @1894 changes. Canonical destination unchanged."
+      "to": "@1866",
+      "evidence": "Measured native-interface continuation: corresponding raw symbol retains section, offset, size, binding, emitted body and complete relocation graph; only compiler input name @1918 -> @1900 changes. Canonical destination unchanged. | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     },
     {
       "from": "@1883",
-      "to": "@1862",
-      "evidence": "Measured native-interface continuation: corresponding raw symbol retains section, offset, size, binding, emitted body and complete relocation graph; only compiler input name @1914 -> @1896 changes. Canonical destination unchanged."
+      "to": "@1868",
+      "evidence": "Measured native-interface continuation: corresponding raw symbol retains section, offset, size, binding, emitted body and complete relocation graph; only compiler input name @1920 -> @1902 changes. Canonical destination unchanged. | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     },
     {
       "from": "@1885",
-      "to": "@1864",
-      "evidence": "Measured native-interface continuation: corresponding raw symbol retains section, offset, size, binding, emitted body and complete relocation graph; only compiler input name @1916 -> @1898 changes. Canonical destination unchanged."
+      "to": "@1870",
+      "evidence": "Measured native-interface continuation: corresponding raw symbol retains section, offset, size, binding, emitted body and complete relocation graph; only compiler input name @1922 -> @1904 changes. Canonical destination unchanged. | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     },
     {
       "from": "@1887",
-      "to": "@1866",
-      "evidence": "Measured native-interface continuation: corresponding raw symbol retains section, offset, size, binding, emitted body and complete relocation graph; only compiler input name @1918 -> @1900 changes. Canonical destination unchanged."
+      "to": "@1872",
+      "evidence": "Measured native-interface continuation: corresponding raw symbol retains section, offset, size, binding, emitted body and complete relocation graph; only compiler input name @1924 -> @1906 changes. Canonical destination unchanged. | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     },
     {
       "from": "@1889",
-      "to": "@1868",
-      "evidence": "Measured native-interface continuation: corresponding raw symbol retains section, offset, size, binding, emitted body and complete relocation graph; only compiler input name @1920 -> @1902 changes. Canonical destination unchanged."
+      "to": "@1874",
+      "evidence": "Measured native-interface continuation: corresponding raw symbol retains section, offset, size, binding, emitted body and complete relocation graph; only compiler input name @1926 -> @1908 changes. Canonical destination unchanged. | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     },
     {
       "from": "@1891",
-      "to": "@1870",
-      "evidence": "Measured native-interface continuation: corresponding raw symbol retains section, offset, size, binding, emitted body and complete relocation graph; only compiler input name @1922 -> @1904 changes. Canonical destination unchanged."
+      "to": "@1876",
+      "evidence": "Measured native-interface continuation: corresponding raw symbol retains section, offset, size, binding, emitted body and complete relocation graph; only compiler input name @1928 -> @1910 changes. Canonical destination unchanged. | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     },
     {
       "from": "@1893",
-      "to": "@1872",
-      "evidence": "Measured native-interface continuation: corresponding raw symbol retains section, offset, size, binding, emitted body and complete relocation graph; only compiler input name @1924 -> @1906 changes. Canonical destination unchanged."
+      "to": "@1878",
+      "evidence": "Measured native-interface continuation: corresponding raw symbol retains section, offset, size, binding, emitted body and complete relocation graph; only compiler input name @1930 -> @1912 changes. Canonical destination unchanged. | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     },
     {
       "from": "@1895",
-      "to": "@1874",
-      "evidence": "Measured native-interface continuation: corresponding raw symbol retains section, offset, size, binding, emitted body and complete relocation graph; only compiler input name @1926 -> @1908 changes. Canonical destination unchanged."
+      "to": "@1880",
+      "evidence": "Measured native-interface continuation: corresponding raw symbol retains section, offset, size, binding, emitted body and complete relocation graph; only compiler input name @1932 -> @1914 changes. Canonical destination unchanged. | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     },
     {
       "from": "@1897",
-      "to": "@1876",
-      "evidence": "Measured native-interface continuation: corresponding raw symbol retains section, offset, size, binding, emitted body and complete relocation graph; only compiler input name @1928 -> @1910 changes. Canonical destination unchanged."
+      "to": "@1882",
+      "evidence": "Measured native-interface continuation: corresponding raw symbol retains section, offset, size, binding, emitted body and complete relocation graph; only compiler input name @1934 -> @1916 changes. Canonical destination unchanged. | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     },
     {
       "from": "@1899",
-      "to": "@1878",
-      "evidence": "Measured native-interface continuation: corresponding raw symbol retains section, offset, size, binding, emitted body and complete relocation graph; only compiler input name @1930 -> @1912 changes. Canonical destination unchanged."
+      "to": "@190",
+      "evidence": "Measured native-interface continuation: corresponding raw symbol retains section, offset, size, binding, emitted body and complete relocation graph; only compiler input name @1936 -> @1918 changes. Canonical destination unchanged. | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     },
     {
       "from": "@1901",
-      "to": "@1880",
-      "evidence": "Measured native-interface continuation: corresponding raw symbol retains section, offset, size, binding, emitted body and complete relocation graph; only compiler input name @1932 -> @1914 changes. Canonical destination unchanged."
-    },
-    {
-      "from": "@1903",
-      "to": "@1882",
-      "evidence": "Measured native-interface continuation: corresponding raw symbol retains section, offset, size, binding, emitted body and complete relocation graph; only compiler input name @1934 -> @1916 changes. Canonical destination unchanged."
-    },
-    {
-      "from": "@1905",
-      "to": "@190",
-      "evidence": "Measured native-interface continuation: corresponding raw symbol retains section, offset, size, binding, emitted body and complete relocation graph; only compiler input name @1936 -> @1918 changes. Canonical destination unchanged."
-    },
-    {
-      "from": "@1907",
       "to": "@191",
-      "evidence": "Measured native-interface continuation: corresponding raw symbol retains section, offset, size, binding, emitted body and complete relocation graph; only compiler input name @1938 -> @1920 changes. Canonical destination unchanged."
+      "evidence": "Measured native-interface continuation: corresponding raw symbol retains section, offset, size, binding, emitted body and complete relocation graph; only compiler input name @1938 -> @1920 changes. Canonical destination unchanged. | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
+    },
+    {
+      "from": "@1902",
+      "to": "@192",
+      "evidence": "Measured native-interface continuation: corresponding raw symbol retains section, offset, size, binding, emitted body and complete relocation graph; only compiler input name @1939 -> @1921 changes. Canonical destination unchanged. | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
+    },
+    {
+      "from": "@1904",
+      "to": "@193",
+      "evidence": "Measured native-interface continuation: corresponding raw symbol retains section, offset, size, binding, emitted body and complete relocation graph; only compiler input name @1941 -> @1923 changes. Canonical destination unchanged. | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
+    },
+    {
+      "from": "@1906",
+      "to": "@1891",
+      "evidence": "Measured native-interface continuation: corresponding raw symbol retains section, offset, size, binding, emitted body and complete relocation graph; only compiler input name @1943 -> @1925 changes. Canonical destination unchanged. | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     },
     {
       "from": "@1908",
-      "to": "@192",
-      "evidence": "Measured native-interface continuation: corresponding raw symbol retains section, offset, size, binding, emitted body and complete relocation graph; only compiler input name @1939 -> @1921 changes. Canonical destination unchanged."
+      "to": "@1893",
+      "evidence": "Measured native-interface continuation: corresponding raw symbol retains section, offset, size, binding, emitted body and complete relocation graph; only compiler input name @1945 -> @1927 changes. Canonical destination unchanged. | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     },
     {
       "from": "@1910",
-      "to": "@193",
-      "evidence": "Measured native-interface continuation: corresponding raw symbol retains section, offset, size, binding, emitted body and complete relocation graph; only compiler input name @1941 -> @1923 changes. Canonical destination unchanged."
+      "to": "@1895",
+      "evidence": "Measured native-interface continuation: corresponding raw symbol retains section, offset, size, binding, emitted body and complete relocation graph; only compiler input name @1947 -> @1929 changes. Canonical destination unchanged. | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     },
     {
       "from": "@1912",
-      "to": "@1891",
-      "evidence": "Measured native-interface continuation: corresponding raw symbol retains section, offset, size, binding, emitted body and complete relocation graph; only compiler input name @1943 -> @1925 changes. Canonical destination unchanged."
+      "to": "@1897",
+      "evidence": "Measured native-interface continuation: corresponding raw symbol retains section, offset, size, binding, emitted body and complete relocation graph; only compiler input name @1949 -> @1931 changes. Canonical destination unchanged. | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     },
     {
       "from": "@1914",
-      "to": "@1893",
-      "evidence": "Measured native-interface continuation: corresponding raw symbol retains section, offset, size, binding, emitted body and complete relocation graph; only compiler input name @1945 -> @1927 changes. Canonical destination unchanged."
+      "to": "@1899",
+      "evidence": "Measured native-interface continuation: corresponding raw symbol retains section, offset, size, binding, emitted body and complete relocation graph; only compiler input name @1951 -> @1933 changes. Canonical destination unchanged. | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     },
     {
       "from": "@1916",
-      "to": "@1895",
-      "evidence": "Measured native-interface continuation: corresponding raw symbol retains section, offset, size, binding, emitted body and complete relocation graph; only compiler input name @1947 -> @1929 changes. Canonical destination unchanged."
-    },
-    {
-      "from": "@1918",
-      "to": "@1897",
-      "evidence": "Measured native-interface continuation: corresponding raw symbol retains section, offset, size, binding, emitted body and complete relocation graph; only compiler input name @1949 -> @1931 changes. Canonical destination unchanged."
-    },
-    {
-      "from": "@1920",
-      "to": "@1899",
-      "evidence": "Measured native-interface continuation: corresponding raw symbol retains section, offset, size, binding, emitted body and complete relocation graph; only compiler input name @1951 -> @1933 changes. Canonical destination unchanged."
-    },
-    {
-      "from": "@1922",
       "to": "@1901",
-      "evidence": "Measured native-interface continuation: corresponding raw symbol retains section, offset, size, binding, emitted body and complete relocation graph; only compiler input name @1953 -> @1935 changes. Canonical destination unchanged."
+      "evidence": "Measured native-interface continuation: corresponding raw symbol retains section, offset, size, binding, emitted body and complete relocation graph; only compiler input name @1953 -> @1935 changes. Canonical destination unchanged. | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     }
   ]
 }

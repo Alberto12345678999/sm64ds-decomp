@@ -116,12 +116,6 @@ void func_02038414(void *p);
 int atan2_hold_d_a_ibl_1(int y, int x);
 int _ZN4cstd4fdivEii(int a, int b);
 int _ZN8dActor_c14GetSubtractionEss(void *a, short s1, int s2);
-/* local extern: respelled, not new; the member call renumbers this TU's @NNN labels (6az). */
-int _ZN8dActor_c12ReflectAngleEiis(void *self, int a, int b, int ang);
-/* local extern: respelled, not new; the member call renumbers this TU's @NNN labels (6az). */
-void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x3iih(void *thiz, void *sm,
-                                                                          void *mtx, int f, int g,
-                                                                          unsigned int h);
 int func_ov002_020ad660(void *a, void *b, void *d, int e);
 int _Z14ApproachLinearRsss(short *value, short target, short step);
 void _Z14ApproachLinearRiii(int *value, int target, int step);
@@ -287,8 +281,8 @@ void daIbl_c::func_ov100_02142264()
         k += 0x28;
     else
         k += 0x190;
-    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x3iih(
-        this, &mShadowModel, mShadowMtx, mDrawScale.x * 0xc8, k * mDrawScale.x, 0xf);
+    DropShadowRadHeight(mShadowModel, *(Matrix4x3 *)mShadowMtx, mDrawScale.x * 0xc8,
+                        k * mDrawScale.x, 0xf);
 }
 
 // @symbol _ZN7daIbl_c19func_ov100_0214233cEv
@@ -463,8 +457,7 @@ int daIbl_c::func_ov100_021424c0()
         vy = mVertSpeed;
         func_ov100_02142130();
         if (mHitWall != 0 && had == 0) {
-            mPrevAngleY =
-                _ZN8dActor_c12ReflectAngleEiis(this, mWallNormalX, mWallNormalZ, mPrevAngleY);
+            mPrevAngleY = ReflectAngle(mWallNormalX, mWallNormalZ, mPrevAngleY);
             mRollSoundHandle = 0;
         } else if (mWithMeshClsn.IsOnGround() != 0) {
             if (mWithMeshClsn.JustHitGround() != 0) {
@@ -613,7 +606,7 @@ void daIbl_c::func_ov100_02142918()
 
     if (mHitWall != 0) {
         int ang;
-        mPrevAngleY = _ZN8dActor_c12ReflectAngleEiis(this, mWallNormalX, mWallNormalZ, mPrevAngleY);
+        mPrevAngleY = ReflectAngle(mWallNormalX, mWallNormalZ, mPrevAngleY);
         ang = *(u16 *)&mPrevAngleY;
         mSpeedX = FX_MUL(mHorzSpeed, data_02082214[(ang >> 4) << 1]);
         ang = *(u16 *)&mPrevAngleY;

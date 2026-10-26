@@ -75,11 +75,6 @@ void Matrix4x3_ApplyInPlaceToRotationY(Matrix4x3 *m, s16 ang);
 void Matrix4x3_ApplyInPlaceToRotationZ(Matrix4x3 *m, s16 ang);
 void Matrix4x3_ApplyInPlaceToRotationX(Matrix4x3 *m, s16 ang);
 void Matrix4x3_FromRotationY(void *m, int angle);
-/* local extern: respelled, not new; the member call renumbers this TU's @NNN labels (6az). */
-void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x3iih(dActor_c *self,
-                                                                          dExtShadowModel_c *sm,
-                                                                          Matrix4x3 *mtx, Fix12i a,
-                                                                          Fix12i b, u8 u);
 }
 
 extern SharedFilePtr data_ov002_0210da58;
@@ -280,8 +275,7 @@ void func_ov002_020b2c44(daFeather_c *c)
         c->mShadowMtx.m[9] = c->mPosX >> 3;
         c->mShadowMtx.m[10] = c->mPosY >> 3;
         c->mShadowMtx.m[11] = c->mPosZ >> 3;
-        _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x3iih(
-            c, &c->mShadowModel, &c->mShadowMtx, 0x96000, 0x320000, 0xf);
+        c->DropShadowRadHeight(c->mShadowModel, c->mShadowMtx, 0x96000, 0x320000, 0xf);
         return;
     }
 
@@ -308,8 +302,7 @@ void func_ov002_020b2c44(daFeather_c *c)
         c->mShadowMtx.m[9] = c->mPosX >> 3;
         c->mShadowMtx.m[10] = c->mPosY >> 3;
         c->mShadowMtx.m[11] = c->mPosZ >> 3;
-        _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x3iih(
-            c, &c->mShadowModel, &c->mShadowMtx, r4, r5 + 0x28000, 0xf);
+        c->DropShadowRadHeight(c->mShadowModel, c->mShadowMtx, r4, r5 + 0x28000, 0xf);
     }
 }
 

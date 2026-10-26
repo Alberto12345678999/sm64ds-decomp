@@ -123,11 +123,6 @@ extern ButterflyState data_ov100_02148628[];
 
 /* Fix12<int> by value. The header method form homes those arguments on the
  * stack; these scalar entries are the ROM calls. */
-/* local extern: respelled, not new; the member call renumbers this TU's @NNN labels (6az). */
-void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x3iih(void *actor, void *shadow,
-                                                                          void *mtx, int radius,
-                                                                          int height,
-                                                                          unsigned int opacity);
 /* Parameter names keep this TU's @NNN. */
 typedef void BgchInitAt_(void *w, void *actor, int radius, int height, void *a, void *b);
 void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
@@ -531,13 +526,11 @@ int daBtfly_c::Behavior()
         Matrix4x3_ApplyInPlaceToRotationY(&data_020a0e68, mAngleY);
         if (mUseAnimModel != 0) {
             *(Mtx *)&mModelAnim.mat4x3 = *(Mtx *)&data_020a0e68;
-            _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x3iih(
-                this, &mShadowModel1, &mModelAnim.mat4x3, 0x14000, 0x12c000, 0xf);
+            DropShadowRadHeight(mShadowModel1, mModelAnim.mat4x3, 0x14000, 0x12c000, 0xf);
             mModelAnim.Advance();
         } else {
             *(Mtx *)&mModel.mat4x3 = *(Mtx *)&data_020a0e68;
-            _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x3iih(
-                this, &mShadowModel2, &mModel.mat4x3, 0x64000, 0x12c000, 0xf);
+            DropShadowRadHeight(mShadowModel2, mModel.mat4x3, 0x64000, 0x12c000, 0xf);
         }
     }
     return 1;

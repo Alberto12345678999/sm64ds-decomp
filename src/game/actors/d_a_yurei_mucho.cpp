@@ -61,12 +61,6 @@ struct V3Quint {
 extern "C" {
 
 /* arm9 scalar ABI and unnamed helpers; see the remaining work above. */
-/* local extern: respelled, not new; the member call renumbers this TU's @NNN labels (6az). */
-extern int _ZN8dActor_c10SpawnCoinsERK7Vector3iis(void *self, const Vector3 *pos, unsigned int n,
-                                                  int f, short s);
-/* local extern: respelled, not new; the member call renumbers this TU's @NNN labels (6az). */
-extern void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x3iih(
-    void *self, void *shadow, void *mtx, int rad, int height, unsigned int flags);
 extern void _ZN6Player6BounceE5Fix12IiE(void *p, int f);
 /* local extern: retain the current scalar definition; native Fix12<int>
    call reconstruction remains separate work. The return value is discarded. */
@@ -333,8 +327,7 @@ void daYurei_Mucho_c::func_ov065_0211696c()
 
     *(Mtx43 *)mShadowMat = *(Mtx43 *)data_020a0e68;
 
-    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x3iih(
-        this, &mShadowModel, mShadowMat, 0x64000, 0x258000, 0xf);
+    DropShadowRadHeight(mShadowModel, *(Matrix4x3 *)mShadowMat, 0x64000, 0x258000, 0xf);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -678,7 +671,7 @@ int daYurei_Mucho_c::func_ov065_02115f84()
     v.x = mPosX;
     v.y = mPosY;
     v.z = mPosZ;
-    _ZN8dActor_c10SpawnCoinsERK7Vector3iis(this, &v, mExtraCoinCount + 1, 0xa000, 0);
+    SpawnCoins(v, mExtraCoinCount + 1, 0xa000, 0);
     KillAndTrackInDeathTable();
     return func_02012694(0x11e, &mCamSpacePosX);
 }

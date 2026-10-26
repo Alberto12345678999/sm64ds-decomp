@@ -110,13 +110,6 @@ struct System {
 };
 }
 extern "C" {
-/* local extern: respelled, not new; the member call renumbers this TU's @NNN labels (6az). */
-extern short _ZN8dActor_c12ReflectAngleEiis(void *, int, int, short);
-/* local extern: respelled, not new; the member call renumbers this TU's @NNN labels (6az). */
-extern void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x3iih(void *c, void *sm,
-                                                                                 void *mtx, int a,
-                                                                                 int b,
-                                                                                 unsigned char u);
 extern void *_ZN9dBgCh_LinC1Ev(dBgCh_Lin* self);
 extern dBgCh_Lin *_ZN9dBgCh_LinD1Ev(void* self);
 extern void *_ZN5dBgPiC1Ev(void* self);
@@ -291,7 +284,7 @@ void daCoin_c::func_ov002_020b1384()
     int normal[3];
     void *wall = mWithMeshClsn.GetWallResult();
     ((SurfaceInfo*)((char*)wall + 4))->CopyNormalTo(*(Vector3*)normal);
-    mPrevAngleY = _ZN8dActor_c12ReflectAngleEiis(this, normal[0], normal[2], mPrevAngleY);
+    mPrevAngleY = ReflectAngle(normal[0], normal[2], mPrevAngleY);
 }
 
 /* Shared per-frame tail of the movement handlers. Counts down the no-collision
@@ -362,8 +355,7 @@ void daCoin_c::func_ov002_020b14d8()
 
     floorState = ((CoinFlagBits*)&mCoinFlags)->floorState;
     if (floorState == FLOOR_DYNAMIC) {
-        _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x3iih(
-            this, &mShadowModel, &mShadowMat, 0x50000, 0x1f4000, 0xf);
+        DropShadowRadHeight(mShadowModel, mShadowMat, 0x50000, 0x1f4000, 0xf);
         mClipRadius = 0x3e800;
         return;
     }
@@ -372,8 +364,7 @@ void daCoin_c::func_ov002_020b14d8()
     {
         int depth = mPosY - mFloorPosY;
         mClipRadius = (depth + 0x50000) >> 3;
-        _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x3iih(
-            this, &mShadowModel, &mShadowMat, 0x50000, depth + 0x28000, 0xf);
+        DropShadowRadHeight(mShadowModel, mShadowMat, 0x50000, depth + 0x28000, 0xf);
     }
 }
 
