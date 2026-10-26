@@ -28,6 +28,7 @@
 #include "dFdColor_c.h"
 #include "Player.h"
 #include "dCamera_c.h"
+#include "Sound.h"
 
 extern "C" {
 extern void LoadLevel(s8 levelID, u8 entranceID, s8 starID, u32 d, s8 e);
@@ -37,7 +38,6 @@ extern void InvMat4x3(void *in, void *out);
 extern void func_ov002_020b0a0c(daChScene_c *self);
 extern void StartExitFaderWipe(int a);
 extern int Vec3_Dist(void *a, void *b);
-extern void func_02012790(int id);
 extern unsigned char data_0209f250;
 extern dActor_c *data_0209f394[];
 extern signed char data_02092110;

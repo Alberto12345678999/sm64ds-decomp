@@ -57,6 +57,7 @@ enum daMip_c_AssetId {
 #include "SaveData.h"
 #include "dBgCh_Gnd.h"
 #include "daObj_Mip_Key_c.h"
+#include "Sound.h"
 
 bool ApproachLinear(short &value, short target, short step);
 
@@ -117,7 +118,6 @@ u16   DecIfAbove0_Short(void *);
 int   func_02013890(int, int);
 void  func_02013944(void);
 void func_02012694(unsigned int id, const Vector3 *pos);
-unsigned int func_02012790(unsigned int);
 void  func_02016acc(void *, int);
 void  func_02016b24(void *, int);
 u32   func_02022a4c(s32, s32, s32);

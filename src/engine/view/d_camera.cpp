@@ -34,6 +34,7 @@ struct System {
 };
 }
 #include "nitro/fx/fx.h"
+#include "Sound.h"
 
 typedef struct { int x, y, z; } Vec3;	/* POD triple for the C bodies */
 
@@ -102,7 +103,6 @@ extern "C" {
 extern int func_020092c4(void *self, Vec3 *out, Vec3 *target);
 extern void func_0200928c(void *cam);
 extern void func_0200ee8c(int arg0);
-extern u32 func_02012790(u32 a);
 extern s32 Math_Function_0203b14c(s32 *p, s32 tgt, s32 rate, s32 lim, s32 step);
 extern int StartWithFarCamera();
 extern void *GetViewObj(int idx);

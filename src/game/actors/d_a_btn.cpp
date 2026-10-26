@@ -71,6 +71,7 @@ enum d_a_btn_AssetId {
 #include "Message.h"
 #include "dCamera_c.h"
 #include "nitro/fx/fx.h"
+#include "Sound.h"
 
 bool ApproachLinear(short &value, short target, short step);
 /* local extern: include/Sound.h does not declare the layer-3 pair yet. It
@@ -128,7 +129,6 @@ void func_01ffb0bc(void *);
 void func_0200fa04(void *c, void *v, int b);
 void func_02011cfc(void);
 void func_02011d38(void);
-void func_0201267c(unsigned int id, void *p);
 void func_02012694(int a, void *p);
 void func_020393c4(void *p, int v);
 void func_020393d4(void *p, void *v);
@@ -578,7 +578,7 @@ void daBtn_c::func_ov079_02125b44()
                         *this, 0xa4, (Vector3 *)pos, 0, 0) != 0) {
                     mSubState++;
                     Message::PrepareTalk();
-                    func_0201267c(0x133, &mCamSpacePosX);
+                    func_0201267c(0x133, &mCamSpacePos);
                 }
             }
             break;
@@ -691,7 +691,7 @@ void daBtn_c::func_ov079_021258fc()
             mHorzSpeed = 0;
             if (mStepPlayed == 0) {
                 mStepPlayed = 1;
-                func_0201267c(0xc5, &mCamSpacePosX);
+                func_0201267c(0xc5, &mCamSpacePos);
             }
         } else {
             mStepPlayed = 0;
@@ -819,7 +819,7 @@ void daBtn_c::func_ov079_02125504()
         if (mStepPlayed != 0)
             return;
         mStepPlayed = 1;
-        func_0201267c(0xc5, &mCamSpacePosX);
+        func_0201267c(0xc5, &mCamSpacePos);
 
         if ((data_0209b454 & 0x800000) == 0) {
             v[1].x = mPosX;
@@ -898,7 +898,7 @@ void daBtn_c::func_ov079_0212538c()
         mPitchSpeed = 0;
         mAngleX = 0x4000;
         mState = 5;
-        func_0201267c(0xc6, &mCamSpacePosX);
+        func_0201267c(0xc6, &mCamSpacePos);
     }
     if (mIsKing) {
         mTipLift = (s16)mAngleX * (s16)0x15;
@@ -1277,7 +1277,7 @@ void daBtn_c::func_ov079_021246dc()
                 if (mPounder->ShowMessage(*this, 0xa5, (Vector3 *)&pos, 0, 0) == 0)
                     return;
                 mSubState++;
-                func_0201267c(0x133, &mCamSpacePosX);
+                func_0201267c(0x133, &mCamSpacePos);
             }
             return;
         case 2:
@@ -1291,7 +1291,7 @@ void daBtn_c::func_ov079_021246dc()
             starPos.y = mPosY;
             starPos.z = mPosZ;
             starPos.y += 0x64000;
-            func_0201267c(0xc6, &mCamSpacePosX);
+            func_0201267c(0xc6, &mCamSpacePos);
             Sound::StopLoadedMusic_Layer3();
             func_02011cfc();
             func_ov079_02123d4c((int *)&v, this);
@@ -1309,7 +1309,7 @@ void daBtn_c::func_ov079_021246dc()
             return;
         }
     } else {
-        func_0201267c(0xc6, &mCamSpacePosX);
+        func_0201267c(0xc6, &mCamSpacePos);
         func_ov079_02123d4c((int *)&v2, this);
         v2.y += 0x28000;
         dp2.x = v2.x;
@@ -1369,7 +1369,7 @@ void daBtn_c::func_ov079_02124530()
             mPitchSpeed = 0;
             mAngleX = 0x4000;
             mState = 5;
-            func_0201267c(0xc6, &mCamSpacePosX);
+            func_0201267c(0xc6, &mCamSpacePos);
         }
         if (mIsKing) {
             mTipLift = (s16)mAngleX * (s16)0x15;

@@ -53,7 +53,6 @@ extern SharedFilePtr data_ov079_021282f0;
 
 void func_0200f760(dActor_c *self, dCc_c *cc);
 void func_02012694(u32 id, const Vector3 *pos);
-void func_0201267c(u32 id, const Vector3 *pos);
 void Vec3_Add(Vector3 *out, const Vector3 *a, const Vector3 *b);
 
 namespace Particle {

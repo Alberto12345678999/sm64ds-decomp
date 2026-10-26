@@ -43,6 +43,7 @@ struct System {
 #include "Player.h"
 #include "daWater_Ring_c.h"
 #include "dExtSimpleModel_c.h"
+#include "Sound.h"
 
 #pragma defer_codegen off
 
@@ -79,7 +80,6 @@ extern void Matrix4x3_ApplyInPlaceToRotationX(void *m, s16 angX);
 extern void MulVec3Mat4x3(struct Vec3 *in, void *m, struct Vec3 *out);
 /* local extern: retain the matched scalar ABI; native Fix12<int> call reconstruction remains pending. */
 extern int d_a_water_hakidasiNewHold(int a, int b, int x, int y, int z, int f, int cb);
-extern void func_02012790(int a);
 extern int data_020a0e68;
 extern int SublevelToLevel(int);
 extern int IsStarCollected(int r0, int r1);

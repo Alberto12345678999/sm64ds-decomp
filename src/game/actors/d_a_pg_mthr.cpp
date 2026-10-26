@@ -39,6 +39,7 @@ enum d_a_pg_mthr_AssetId {
 #include "dBgPi.h"
 #include "Player.h"
 #include "dBgCh_Actr.h"
+#include "Sound.h"
 
 bool ApproachLinear(short &value, short target, short step);
 
@@ -104,7 +105,6 @@ extern int AngleDiff(int a, int b);
 extern s16 Vec3_VertAngle(const Vector3 *v1, const Vector3 *v0);
 /* 0x0201267c plays Sound::Play(3, id, pos). Sound::PlayBank3 is the
    previous function (0x02012664); this TU's bl is not that one. */
-extern void func_0201267c(int a, void *b);
 extern int Vec3_Dist(const struct Vector3 *a, const struct Vector3 *b);
 extern void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(void *, dExtShadowModel_c &sm, Matrix4x3 &mf, int c, int d, unsigned int e);
 extern void Matrix4x3_FromRotationY(void *m, int angle);
@@ -273,7 +273,7 @@ int daPgMthr_c::func_ov018_02112234()
     if (mGaveStar == 0 && mHoldingBaby == 0) {
         unsigned int frame = ((unsigned int)mModelAnim.currFrame << 4) >> 16;
         if (frame == 0x10 || frame == 0x25)
-            func_0201267c(0xdf, &mCamSpacePosX);
+            func_0201267c(0xdf, &mCamSpacePos);
     }
     return 1;
 }
@@ -314,7 +314,7 @@ int daPgMthr_c::func_ov018_02111fac()
                 mouth[1] = data_020a0e68.m[10];
                 mouth[2] = data_020a0e68.m[11];
                 if (mPlayer->ShowMessage(*(fBase_c *)this, mMessageId, (Vector3 *)mouth, 0, 0)) {
-                    func_0201267c(0xdf, &mCamSpacePosX);
+                    func_0201267c(0xdf, &mCamSpacePos);
                     {
                         u8 *p = &mTalkStep;
                         *p = *p + 1;
@@ -349,7 +349,7 @@ int daPgMthr_c::func_ov018_02111fac()
     if (mGaveStar == 0 && mHoldingBaby == 0) {
         unsigned frame = ((unsigned)mModelAnim.currFrame << 4) >> 0x10;
         if (frame == 0x10 || frame == 0x25)
-            func_0201267c(0xdf, &mCamSpacePosX);
+            func_0201267c(0xdf, &mCamSpacePos);
     }
     return 1;
 }
@@ -377,7 +377,7 @@ int daPgMthr_c::func_ov018_02111e28()
     func_ov018_02111a48((char *)mPlayer);
     unsigned int frame = ((unsigned int)mModelAnim.currFrame << 4) >> 0x10;
     if (frame == 9 || frame == 0x15)
-        func_0201267c(0xde, &mCamSpacePosX);
+        func_0201267c(0xde, &mCamSpacePos);
     int holding;
     if (mPlayer->param1 == CHAR_YOSHI)
         holding = (mPlayer->mObjInMouth != 0);

@@ -786,22 +786,22 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@777",
+      "from": "@791",
       "to": "@766",
       "evidence": "Measured local resource-field reconstruction changes compiler input @790 to @789; section, offset, size, binding, bytes and typed relocation destinations preserved. Canonical destination unchanged."
     },
     {
-      "from": "@778",
+      "from": "@792",
       "to": "@767",
       "evidence": "Measured local resource-field reconstruction changes compiler input @791 to @790; section, offset, size, binding, bytes and typed relocation destinations preserved. Canonical destination unchanged."
     },
     {
-      "from": "@780",
+      "from": "@794",
       "to": "@769",
       "evidence": "Measured local resource-field reconstruction changes compiler input @793 to @792; section, offset, size, binding, bytes and typed relocation destinations preserved. Canonical destination unchanged."
     },
     {
-      "from": "@782",
+      "from": "@796",
       "to": "@771",
       "evidence": "Measured local resource-field reconstruction changes compiler input @795 to @794; section, offset, size, binding, bytes and typed relocation destinations preserved. Canonical destination unchanged."
     }

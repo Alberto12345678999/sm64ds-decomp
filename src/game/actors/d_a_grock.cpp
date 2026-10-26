@@ -128,7 +128,6 @@ struct System {
     static int New(unsigned, unsigned, int, int, int, const ::Vector3_16f *, Callback *);
 };
 }
-extern void func_0201267c(int id, void *pos);
 extern void *d_a_grockNewHold(unsigned int prev, unsigned int effect, int x, int y, int z,
                               void *dir, void *cb);
 extern int Vec3_HorzLen(void *v);
@@ -283,7 +282,7 @@ extern "C" void func_ov021_02112544(char *raw)
                 rock->mVertSpeed = -rock->mVertSpeed * 6 / 10;
             pos.y += 0x3c000;
             Particle::System::NewSimple(0x68, pos.x, pos.y, pos.z);
-            func_0201267c(0x48, &rock->mCamSpacePosX);
+            func_0201267c(0x48, &rock->mCamSpacePos);
         } else {
             rock->mDustParticleID =
                 (int)Particle::System::New(rock->mDustParticleID, 0x69, pos.x, pos.y, pos.z, 0, 0);

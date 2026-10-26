@@ -44,6 +44,7 @@
 #include "dBgCh_Gnd.h"
 #include "decl_SaveData.h"
 #include "daObjCannonShutter_c.h"
+#include "Sound.h"
 
 struct BCA_File;
 
@@ -116,7 +117,6 @@ int  IsStarCollected(int level, int star);
 int  SublevelToLevel(int sublevel);
 s8   NumRedCoins(void);
 void func_02012694(unsigned int soundID, const Vector3 *camSpacePos);
-unsigned int func_02012790(unsigned int soundID);
 
 short Vec3_HorzAngle(const Vector3 *v0, const Vector3 *v1);
 int   Vec3_HorzDist(const Vector3 *a, const Vector3 *b);

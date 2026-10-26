@@ -66,6 +66,7 @@ struct OAM {
 #undef G2
 #include "PlayerInput.h"
 #include "dFdBrightness_c.h"
+#include "Sound.h"
 
 namespace G2 {
 void *GetBG2ScrPtr();
@@ -159,7 +160,6 @@ void OamRender10_d_s_game_over(s32 sub, OamAttr *data, s32 x, s32 y, s32 palette
 void _ZN5Sound22StopLoadedMusic_Layer1Ej(unsigned int);
 int LoadFile(int handle);
 void DecompressLZ16(int src, void *dst);
-void func_02012790(int se);
 }
 
 /* The stylus went down this frame: held, with the held state just changed

@@ -71,10 +71,8 @@
  * a variable's name does not mangle. */
 extern "C" {
 
-void  func_0201267c(unsigned int id, const Vector3 *pos);
 void  Vec3_Asr(void *d, void *s, int sh);
 void  _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(void *self, void *shadow, void *mtx, int rad, int height, unsigned char flags);
-unsigned int func_02012790(unsigned int arg);
 
 }
 

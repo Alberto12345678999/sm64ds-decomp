@@ -1788,37 +1788,37 @@
   "production_mode": "intact-object",
   "defined_symbol_renames": [
     {
-      "from": "@3092",
+      "from": "@3090",
       "to": "@3087",
       "evidence": "Input compiler temporary remeasured after native cap/icon interfaces and typed resource handles: full initializer instruction bytes and typed ABS32 edges identify the same 12-byte aligned NOBITS registration record; canonical destination and owned storage unchanged."
     },
     {
-      "from": "@3093",
+      "from": "@3091",
       "to": "@3088",
       "evidence": "Input compiler temporary remeasured after native cap/icon interfaces and typed resource handles: full initializer instruction bytes and typed ABS32 edges identify the same 12-byte aligned NOBITS registration record; canonical destination and owned storage unchanged."
     },
     {
-      "from": "@3094",
+      "from": "@3092",
       "to": "@3089",
       "evidence": "Input compiler temporary remeasured after native cap/icon interfaces and typed resource handles: full initializer instruction bytes and typed ABS32 edges identify the same 12-byte aligned NOBITS registration record; canonical destination and owned storage unchanged."
     },
     {
-      "from": "@3095",
+      "from": "@3093",
       "to": "@3090",
       "evidence": "Input compiler temporary remeasured after native cap/icon interfaces and typed resource handles: full initializer instruction bytes and typed ABS32 edges identify the same 12-byte aligned NOBITS registration record; canonical destination and owned storage unchanged."
     },
     {
-      "from": "@3096",
+      "from": "@3094",
       "to": "@3091",
       "evidence": "Input compiler temporary remeasured after native cap/icon interfaces and typed resource handles: full initializer instruction bytes and typed ABS32 edges identify the same 12-byte aligned NOBITS registration record; canonical destination and owned storage unchanged."
     },
     {
-      "from": "@3097",
+      "from": "@3095",
       "to": "@3092",
       "evidence": "Input compiler temporary remeasured after native cap/icon interfaces and typed resource handles: full initializer instruction bytes and typed ABS32 edges identify the same 12-byte aligned NOBITS registration record; canonical destination and owned storage unchanged."
     },
     {
-      "from": "@3098",
+      "from": "@3096",
       "to": "@3093",
       "evidence": "Input compiler temporary remeasured after native cap/icon interfaces and typed resource handles: full initializer instruction bytes and typed ABS32 edges identify the same 12-byte aligned NOBITS registration record; canonical destination and owned storage unchanged."
     }

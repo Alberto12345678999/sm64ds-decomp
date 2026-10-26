@@ -106,7 +106,6 @@ void Matrix4x3_FromRotationXYZExt(void *m, int x, int y, int z);
 void Matrix4x3_FromRotationY(void *m, int ang);
 void Matrix4x3_ApplyInPlaceToRotationX(void *m, short ang);
 int AngleDiff(int a, int b);
-int func_0201267c(int id, void *pos);
 int ApproachAngle(short *angles, int target, int a, int b, int c);
 unsigned short DecIfAbove0_Short(unsigned short *p);
 int Math_Function_0203b14c(void *p, int a, int b, int c, int d);
@@ -649,7 +648,7 @@ void func_ov014_02111fe0(daWanwan_c *c)
 /* Landing one-shot. Sound 0x39 at camera-space position, then the dust. */
 extern "C" void func_ov014_02111fb8(daWanwan_c *c)
 {
-    func_0201267c(0x39, &c->mCamSpacePosX);
+    func_0201267c(0x39, &c->mCamSpacePos);
     c->HugeLandingDust(true);
 }
 
@@ -1013,7 +1012,7 @@ extern "C" void func_ov014_021115ec(daWanwan_c *self)
 /* State 4 enter: sound 0x3a and a hard upward speed. */
 extern "C" void func_ov014_021115c0(daWanwan_c *c)
 {
-    func_0201267c(0x3a, &c->mCamSpacePosX);
+    func_0201267c(0x3a, &c->mCamSpacePos);
     c->mVertSpeed = 0x12c000;
     c->mVertAccel = 0;
 }

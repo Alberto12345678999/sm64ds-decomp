@@ -99,7 +99,6 @@ extern int data_020a0d90[];
 extern u8 data_0209d45c[];
 extern u8 data_0208ee44[];
 extern u8 data_0209ee90[];
-extern void func_02012790(int idx);
 extern u16 DecIfAbove0_Short(u16 *p);
 extern void Enable3dEngines(void);
 extern void MultiStore16(unsigned short val, char *dst, int nbytes);

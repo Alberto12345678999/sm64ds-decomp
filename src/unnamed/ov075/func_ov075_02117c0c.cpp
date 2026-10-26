@@ -1,6 +1,7 @@
 //cpp
 #include "dScEntry_c.h"
 #include "types.h"
+#include "Sound.h"
 
 extern dScEntry_c::StepSet data_ov075_0211d810;
 extern dScEntry_c::StepSet data_ov075_0211d888;
@@ -14,7 +15,6 @@ extern int TouchArea_Update(void* c, int id);
 extern void func_ov001_020ab41c(void* c);
 extern int func_0203d9b4(void);
 extern void func_02030a78(void);
-extern void func_02012790(int x);
 extern void func_02030aa4(int arg);
 
 static inline unsigned IsMode6(dScEntry_c *scene) {

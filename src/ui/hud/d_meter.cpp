@@ -85,6 +85,7 @@ enum dMeter_c_AssetId {
 #include "dCamera_c.h"
 #include "dScStage_c.h"
 #include "PlayerInput.h"
+#include "Sound.h"
 
 /* The declarations below are the union of what the nineteen shards declared
  * locally, minus everything a shared header already supplies. What is left is
@@ -190,7 +191,6 @@ extern int GetOwnerLanguage(void);
 extern unsigned char data_0209f2bc;
 extern unsigned short data_ov002_02111188;
 extern unsigned char data_0209d454;
-void func_02012790(int);
 extern unsigned char data_ov002_0211117c[];
 extern struct OamAttr *data_ov002_0210c254[];
 extern struct OamAttr *data_ov002_0210c278[];
