@@ -33,7 +33,6 @@ enum Scuttlebug_AssetId {
 };
 
 #include "common.h"
-#include "cstd.h"
 #include "Scuttlebug.h"
 #include "dBgCh_Gnd.h"
 #include "Player.h"
@@ -42,6 +41,7 @@ enum Scuttlebug_AssetId {
 #include "SurfaceInfo.h"
 #include "nitro/fx/fx.h"
 #include "Sound.h"
+#include "cstd.h"
 
 bool ApproachLinear(short &value, short target, short step);
 
@@ -864,8 +864,7 @@ void Scuttlebug::func_ov071_0211f148(dBgCh_Actr *w)
             ((SurfaceInfo *)((char *)fr + 4))->CopyNormalTo(normal);
             if (normal.y != 0) {
                 mVertSpeed =
-                    -(cstd::fdiv(FX_MUL(normal.x, mSpeedX) + FX_MUL(normal.z, mSpeedZ),
-                                       normal.y) +
+                    -(cstd::fdiv(FX_MUL(normal.x, mSpeedX) + FX_MUL(normal.z, mSpeedZ), normal.y) +
                       0x8000);
             }
         }

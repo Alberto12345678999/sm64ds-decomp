@@ -22,13 +22,13 @@ struct System {
 #pragma opt_common_subs off
 
 #include "daPgRcer_c.h"
-#include "cstd.h"
 #include "Player.h"
 #include "SharedFilePtr.h"
 #include "SurfaceInfo.h"
 #include "dBgPi.h"
 #include "Sound.h"
 #include "nitro/fx/fx.h"
+#include "cstd.h"
 
 bool ApproachLinear(short &value, short target, short step);
 int ApproachLinear(int &value, int target, int step);

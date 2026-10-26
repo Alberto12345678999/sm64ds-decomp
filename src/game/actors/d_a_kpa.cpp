@@ -118,7 +118,6 @@ enum daKpa_c_AssetId {
 };
 
 #include "common.h"
-#include "cstd.h"
 #include "daKpa_c.h"
 #include "daKpaTail_c.h"
 #include "daKpaFire_c.h"
@@ -138,6 +137,7 @@ enum daKpa_c_AssetId {
 #include "Sound.h"
 #include "Message.h"
 #include "nitro/fx/fx.h"
+#include "cstd.h"
 
 /* -------------------------------------------------------------------------- */
 /* Names for the numbers this file uses. The values are the ROM's; the names are
@@ -3144,8 +3144,8 @@ void daKpa_c::func_ov060_021128c0(){
                 this->mVertSpeed = 0x14000;
         } else if (this->mGroundNormalY != 0) {
             this->mVertSpeed = -(cstd::fdiv(FX_MUL(this->mGroundNormalX, this->mSpeedX) +
-                                                      FX_MUL(this->mGroundNormalZ, this->mSpeedZ),
-                                                  this->mGroundNormalY) +
+                                                FX_MUL(this->mGroundNormalZ, this->mSpeedZ),
+                                            this->mGroundNormalY) +
                                  0x8000);
         }
     }

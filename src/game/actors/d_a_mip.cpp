@@ -47,7 +47,6 @@ enum daMip_c_AssetId {
 };
 
 #include "daMip_c.h"
-#include "cstd.h"
 #include "common.h"
 #include "SharedFilePtr.h"
 #include "Player.h"
@@ -59,6 +58,7 @@ enum daMip_c_AssetId {
 #include "dBgCh_Gnd.h"
 #include "daObj_Mip_Key_c.h"
 #include "Sound.h"
+#include "cstd.h"
 
 bool ApproachLinear(short &value, short target, short step);
 

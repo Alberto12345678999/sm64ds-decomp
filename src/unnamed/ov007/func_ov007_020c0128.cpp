@@ -1,8 +1,6 @@
 //cpp
 #include "types.h"
 #include "cstd.h"
-extern "C" {
-}
 extern "C" void Matrix4x3_LoadIdentity(void *m);
 extern "C" void func_02052ec8(void *p);
 

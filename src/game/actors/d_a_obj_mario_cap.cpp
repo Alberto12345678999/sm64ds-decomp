@@ -1074,9 +1074,9 @@ int daObjMarioCap_c::Slide()
     if (mHorzSpeed > 0xf000)
         mHorzSpeed = 0xf000;
     mPrevAngleY = ang;
-    mVertSpeed = -(cstd::fdiv(FX_MUL(mFloorNormalX, mSpeedX) + FX_MUL(mFloorNormalZ, mSpeedZ),
-                                    mFloorNormalY) +
-                   0x8000);
+    mVertSpeed = -(
+        cstd::fdiv(FX_MUL(mFloorNormalX, mSpeedX) + FX_MUL(mFloorNormalZ, mSpeedZ), mFloorNormalY) +
+        0x8000);
     pitch = func_02010844(this, &mFloorNormalX, mAngleY);
     roll = func_02010844(this, &mFloorNormalX, mAngleY - 0x4000);
     _Z11UpdateAngleRssis(&mAngleX, pitch, 4, 0x1000);

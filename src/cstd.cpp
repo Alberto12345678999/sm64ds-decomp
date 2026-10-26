@@ -24,17 +24,6 @@
 #include "nitro/hw/registers.h"
 #include "cstd.h"
 
-namespace cstd {
-int mod(int a, int b);
-int div(int a, int b);
-int fdiv_result(void);
-long long ldiv_result(void);
-long long ldiv(int a, int b);
-int fdiv(int numerator, int denominator);
-void fdiv_async(Fix12i a, Fix12i b);
-void reciprocal_async(Fix12i a);
-}
-
 extern "C" {
 int func_02052fdc(void);
 void func_02053008(int n);
@@ -76,7 +65,7 @@ namespace cstd {
 s32 fdiv(s32 numerator, s32 denominator)
 {
     fdiv_async(numerator, denominator);
-    return cstd::fdiv_result();
+    return fdiv_result();
 }
 
 }

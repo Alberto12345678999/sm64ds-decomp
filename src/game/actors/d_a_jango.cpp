@@ -57,9 +57,9 @@ enum daJango_c_AssetId {
 };
 
 #include "daJango_c.h"
-#include "cstd.h"
 #include "types.h"
 #include "common.h"
+#include "cstd.h"
 /* decl_common.h deliberately NOT included; the three names this TU needs
    from it are declared locally instead. */
 extern "C" int AngleDiff(int a, int b);

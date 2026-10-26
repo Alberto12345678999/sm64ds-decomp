@@ -2551,7 +2551,7 @@ extern "C" int func_0204ee40(struct S82 *self, char *name, char *p) {
     fimg_off = fimg + 8;
     self->f58 = (unsigned char *)fimg_off;
 
-    if (func_0205cc80(self, (void *)(name),  (void *)((int(*)(const char *s))cstd::strlen)(name)) == 0)
+    if (func_0205cc80(self, (void *)name, (void *)cstd::strlen(name)) == 0)
         return 0;
 
     if (((int(*)(void *p, int a, int b0, int b4, int c0, int c4, void *fn1, void *fn2))func_0205cb68)(self, (int)fimg_off, (int)(fatb + 0xc) - (int)fimg_off,

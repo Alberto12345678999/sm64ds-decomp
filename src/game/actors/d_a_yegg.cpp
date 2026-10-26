@@ -82,7 +82,6 @@ struct Vector3_16f;
 #pragma defer_codegen off
 
 #include "daYegg_c.h"
-#include "cstd.h"
 #include "types.h"
 #include "nitro/fx/fx.h"
 #include "common.h"
@@ -93,6 +92,7 @@ struct Vector3_16f;
 #include "dBgCh_Actr.h"
 #include "dCc_c.h"
 #include "Sound.h"
+#include "cstd.h"
 
 struct dBgPi;
 

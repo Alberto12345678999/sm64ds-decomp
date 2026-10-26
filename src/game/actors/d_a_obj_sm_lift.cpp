@@ -32,11 +32,11 @@ enum daObjSm_Lift_c_AssetId {
 };
 
 #include "daObjSm_Lift_c.h"
-#include "cstd.h"
 #include "Player.h"
 #include "SharedFilePtr.h"
 #include "PathPtr.h"
 #include "nitro/fx/fx.h"
+#include "cstd.h"
 
 bool ApproachLinear(short &value, short target, short step);
 

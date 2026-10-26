@@ -50,7 +50,6 @@ enum d_a_obj_ice_block_AssetId {
 };
 
 #include "daObjIceBlock_c.h"
-#include "cstd.h"
 #include "Player.h"
 #include "daStar_c.h"
 #include "Sound.h"
@@ -58,6 +57,7 @@ enum d_a_obj_ice_block_AssetId {
 #include "dBgW.h"
 #include "Particle__System.h"
 #include "nitro/fx/fx.h"
+#include "cstd.h"
 
 struct KCL_File;
 struct CLPS_Block;

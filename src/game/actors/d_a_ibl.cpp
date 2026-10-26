@@ -48,9 +48,6 @@
 #include "dCc_c.h"
 #include "Sound.h"
 #include "cstd.h"
-namespace cstd {
-s16 atan2(s32, s32);
-}
 
 /* Actor IDs from symbols/actor_debug_names.tsv. */
 enum {

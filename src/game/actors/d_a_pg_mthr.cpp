@@ -27,7 +27,6 @@ enum d_a_pg_mthr_AssetId {
 };
 
 #include "common.h"
-#include "cstd.h"
 #include "daPgMthr_c.h"
 #include "types.h"
 #include "nitro/fx/fx.h"
@@ -41,6 +40,7 @@ enum d_a_pg_mthr_AssetId {
 #include "Player.h"
 #include "dBgCh_Actr.h"
 #include "Sound.h"
+#include "cstd.h"
 
 bool ApproachLinear(short &value, short target, short step);
 
