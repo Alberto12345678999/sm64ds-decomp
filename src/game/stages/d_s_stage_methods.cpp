@@ -23,8 +23,8 @@
  */
 
 // leftovers:
-// - OAM::Render, OAM::RenderSub, Sound::PlaySub, cstd::atan2 and Fog::Init
-//   stay mangled (Fix12 by value); the OAM
+// - OAM::Render, OAM::RenderSub, Sound::PlaySub and cstd::atan2
+//   stay mangled (Fix12 by value). Fog::Init is the scalar Fix12i method. The OAM
 //   sprite records (COIN, TIMES, VS_NEW_STAR_APPEARED, ...) keep their
 //   mangled data names because OAM.h declares no static data. RenderNumber
 //   keeps a local extern spelled over the member's mask-emitting parameter
@@ -3978,10 +3978,6 @@ void dScStage_c::RenderFog() {
 /* dScStage_c::LoadFog. Lays down two default ramps -- a shallow one in mFog[0] and
    a steeper one in mFog[1] -- then lets the level's own fog records, if it has
    any, overwrite them through Fog::Init. */
-extern "C" {
-extern void _ZN3Fog4InitEt5Fix12IiES1_(Fog *self, unsigned short color, int nearv, int farv);
-}
-
 void dScStage_c::LoadFog() {
     unsigned char normalDensity = 0;
     unsigned char underwaterDensity = 0x28;
@@ -4010,8 +4006,8 @@ void dScStage_c::LoadFog() {
             } else {
                 unsigned short color = ((fogRecord[1] >> 3) | ((fogRecord[2] >> 3) << 5)) |
                                        ((fogRecord[3] >> 3) << 10);
-                _ZN3Fog4InitEt5Fix12IiES1_(fog, color, *((unsigned short *)(fogRecord + 4)),
-                                           *((unsigned short *)(fogRecord + 6)));
+                fog->Init(color, *((unsigned short *)(fogRecord + 4)),
+                          *((unsigned short *)(fogRecord + 6)));
             }
             fogRecord += 8;
             fog++;
@@ -4461,27 +4457,26 @@ void dScStage_c::CheckInput() {
     } while (playerIndex < data_0209f21c);
 }
 
-// @symbol _ZN3Fog4InitEt5Fix12IiES1_
+// @symbol _ZN3Fog4InitEtii
 /* Fills the density ramp from a near/far pair, then writes the fog registers.
-   The ramp is walked with a running `p`, not `self->mDensity[i]`: MEASURED,
+   The ramp is walked with a running `p`, not `mDensity[i]`: MEASURED,
    the indexed spelling changes the function's size. */
-extern "C" void _ZN3Fog4InitEt5Fix12IiES1_(struct Fog *self, unsigned short color, int nearv,
-                                           int farv) {
+void Fog::Init(unsigned short color, Fix12i nearv, Fix12i farv) {
     int dist;
     int step;
     int i;
     char *p; /* walks mDensity */
 
-    self->mEnabled = 1;
+    this->mEnabled = 1;
     dist = 0x28000 - (nearv << 4);
-    self->mColor = color;
-    self->mShift = 6;
-    self->mOffset = 0;
+    this->mColor = color;
+    this->mShift = 6;
+    this->mOffset = 0;
     if (dist >= 0x80000)
         dist = 0x7ffff;
     step = (0x100000 - (farv << 4) - dist) >> 5;
     i = 0;
-    p = ((char *)self);
+    p = ((char *)this);
     while (i < 0x20) {
         if (dist <= 0) {
             *p = 0;
