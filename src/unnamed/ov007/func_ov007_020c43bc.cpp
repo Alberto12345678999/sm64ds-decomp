@@ -1,7 +1,9 @@
 //cpp
 #include "types.h"
 #include "nitro/fx/fx.h"
-namespace cstd { int fdiv(s32, s32); }
+namespace cstd {
+int fdiv(s32, s32);
+}
 extern s16 data_02082214[];
 
 struct A {

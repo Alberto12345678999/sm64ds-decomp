@@ -42,7 +42,9 @@ extern int ApproachLinear(int &, int, int);
 // Partial callback interface only. ROM vtables at 0x0213b2c4/0x0213b2e0
 // implement these five slots through dMgTrmpObjAdapter_c and its children.
 // No destructor slots or complete actor layout are implied by this view.
-namespace cstd { int fdiv(s32, s32); }
+namespace cstd {
+int fdiv(s32, s32);
+}
 namespace {
 struct TrampolineObjectCallbacks {
     virtual Vector3 *GetPos();
@@ -1901,7 +1903,7 @@ extern "C" int TrmpLine_PushJumper(char *c) {
             TRMPLINE(c)->mContactMotion.z = movementDelta.z;
 
             edgeRatio = cstd::fdiv((currentAlong < 0) ? -currentAlong : currentAlong,
-                                         TRMPLINE(c)->mHalfWidth);
+                                   TRMPLINE(c)->mHalfWidth);
             {
                 int halfLength = TRMPLINE(c)->mHalfWidth;
                 int absoluteAlong = (currentAlong < 0) ? -currentAlong : currentAlong;

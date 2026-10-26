@@ -46,7 +46,9 @@
 namespace CP15 {
 void FlushAndInvalidateDataCache(u32 addr, u32 size);
 }
-namespace cstd { int fdiv(s32, s32); }
+namespace cstd {
+int fdiv(s32, s32);
+}
 
 struct Matrix2x2 { s32 m00, m01, m10, m11; };
 

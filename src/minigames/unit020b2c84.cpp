@@ -158,7 +158,9 @@ struct MgBanner {
 extern int ApproachLinear(int &, int, int);
 extern int ApproachLinear2(short &value, short target, short step);
 
-namespace cstd { int fdiv(s32 a, s32 b); }
+namespace cstd {
+int fdiv(s32 a, s32 b);
+}
 extern "C" {
 void Deallocate(void *ptr);
 int GetGameLanguage(void);

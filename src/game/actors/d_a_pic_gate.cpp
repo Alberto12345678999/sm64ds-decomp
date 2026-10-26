@@ -93,7 +93,9 @@ struct PicGateMaterial {
 typedef char PicGateMaterial_size_must_be_0x30[sizeof(PicGateMaterial) == 0x30 ? 1 : -1];
 #endif
 
-namespace cstd { Fix12i fdiv(s32, s32); }
+namespace cstd {
+Fix12i fdiv(s32, s32);
+}
 
 extern "C" {
 void  Vec3_Asr(Vec3 *d, Vec3 *s, int sh);

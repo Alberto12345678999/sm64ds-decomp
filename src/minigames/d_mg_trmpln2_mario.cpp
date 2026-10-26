@@ -76,7 +76,9 @@ struct W2 {
 };
 bool ApproachLinear(short &value, short target, short step);
 int ApproachLinear(int &r, int b, int c);
-namespace cstd { int fdiv(s32, s32); }
+namespace cstd {
+int fdiv(s32, s32);
+}
 
 // ---- Trmp2Mario_GetVelocity
 namespace ns_020c8dd4 {

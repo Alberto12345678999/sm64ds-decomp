@@ -29,7 +29,9 @@
 
 /* local extern: no non-generated header declares these vector helpers, the
    cstd fdiv, or the sine/cosine pair table. */
-namespace cstd { int fdiv(s32, s32); }
+namespace cstd {
+int fdiv(s32, s32);
+}
 extern "C" {
 void MulVec3Mat4x3(const Vector3 *v, const Matrix4x3 *m, Vector3 *res);
 void CrossVec3(Vector3 *a, Vector3 *b, Vector3 *result);
@@ -139,8 +141,7 @@ int dClipper::TransformAndClip(Matrix4x3 &worldToView, Vector3 &worldPos, Fix12i
  */
 void dClipper::Func_0201559C() {
     int angleIndex = (int)mFovAngle >> 4;
-    int tanHalfFov =
-        cstd::fdiv(data_02082214[2 * angleIndex], data_02082214[2 * angleIndex + 1]);
+    int tanHalfFov = cstd::fdiv(data_02082214[2 * angleIndex], data_02082214[2 * angleIndex + 1]);
     Fix12i halfHeight = FX_MUL(mNearZ, tanHalfFov);
     Fix12i halfWidth = FX_MUL(mAspectRatio, halfHeight);
     Vector3 corner0, corner1, corner2, corner3;

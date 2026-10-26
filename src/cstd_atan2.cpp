@@ -6,7 +6,9 @@
 typedef int s32;
 typedef short s16;
 
-namespace cstd { s32 fdiv(s32, s32); }
+namespace cstd {
+s32 fdiv(s32, s32);
+}
 
 extern "C" {
 s32 func_01ffa4bc(s32 a);

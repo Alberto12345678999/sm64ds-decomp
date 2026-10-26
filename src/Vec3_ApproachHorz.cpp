@@ -14,7 +14,9 @@ struct Vec3 { int x, y, z; };
 struct Vector3 { int x, y, z; };
 typedef struct { int x, y, z; } Vec3_Fix12;
 
-namespace cstd { int fdiv(int, int); }
+namespace cstd {
+int fdiv(int, int);
+}
 
 extern "C" {
 extern void Vec3_Sub(struct Vec3* out, struct Vec3* a, struct Vec3* b);
@@ -35,7 +37,7 @@ int _Z14ApproachLinearR7Vector3RKS_5Fix12IiE(struct Vector3& dst, const struct V
             dst = target;
             return 1;
         }
-        Vec3_MulScalar((Vec3_Fix12*)&scaled, (const Vec3_Fix12*)&diff, cstd::fdiv(step, len));
+        Vec3_MulScalar((Vec3_Fix12 *)&scaled, (const Vec3_Fix12 *)&diff, cstd::fdiv(step, len));
         SubVec3((struct Vec3*)&dst, (struct Vec3*)&scaled, (struct Vec3*)&dst);
     } else if (Vec3_Equal(&dst, &target)) {
         return 1;

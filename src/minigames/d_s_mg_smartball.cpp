@@ -895,8 +895,7 @@ void cMgSmartball_board_c::Update() {
             s32 vec[4];
 
             if (ang < 0x4000)
-                vec[0] =
-                    -cstd::fdiv(0x1000, data_02082214[((u16)(ang + 0x8000) >> 4) * 2 + 1]);
+                vec[0] = -cstd::fdiv(0x1000, data_02082214[((u16)(ang + 0x8000) >> 4) * 2 + 1]);
             else
                 vec[0] = -cstd::fdiv(0x1000, data_02082214[((u16)ang >> 4) * 2 + 1]);
             vec[1] = 0;
