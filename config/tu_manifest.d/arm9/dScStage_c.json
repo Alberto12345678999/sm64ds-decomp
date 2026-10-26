@@ -780,7 +780,7 @@
       "ordinal": 107
     },
     {
-      "symbol": "_ZN3Fog4InitEt5Fix12IiES1_",
+      "symbol": "_ZN3Fog4InitEtii",
       "address": "0x0202c830",
       "size": "0x00000088",
       "legacy_source": "src/_ZN3Fog4InitEt5Fix12IiES1_.cpp",
