@@ -826,8 +826,8 @@
     "tubuild create warning: RAW: src/func_ov002_020e9804.cpp (func_ov002_020e9804) did not split (the definition is inside the extern \"C\" block opened on line 2, so it was consumed as a declaration -- tubuild cannot place a block-scoped member in a TU); carried verbatim -- its own includes/declarations stay inside its member block",
     "tubuild create warning: RAW: src/func_ov002_020ea06c.cpp (func_ov002_020ea06c) did not split (the definition is inside the extern \"C\" block opened on line 2, so it was consumed as a declaration -- tubuild cannot place a block-scoped member in a TU); carried verbatim -- its own includes/declarations stay inside its member block",
     "tubuild create warning: RAW: src/func_ov002_020ea100.cpp (func_ov002_020ea100) did not split (the definition is inside the extern \"C\" block opened on line 3, so it was consumed as a declaration -- tubuild cannot place a block-scoped member in a TU); carried verbatim -- its own includes/declarations stay inside its member block",
-    "tubuild create warning: CONFLICT: extern declaration '_ZN8dActor_c15FindWithActorIDEjPS_' differs between the legacy file that used to hold func_ov002_020e700c and the one that held func_ov002_020e7554; kept the first, the other is commented out for review",
-    "tubuild create warning: CONFLICT: extern declaration '_ZN8dActor_c10FindWithIDEj' differs between the legacy file that used to hold func_ov002_020e7454 and the one that held func_ov002_020e7554; kept the first, the other is commented out for review",
+    "tubuild create warning (RESOLVED): CONFLICT: extern declaration '_ZN8dActor_c15FindWithActorIDEjPS_' differs between the legacy file that used to hold func_ov002_020e700c and the one that held func_ov002_020e7554; kept the first, the other is commented out for review -- RESOLVED: the mangled call was converted to a dActor_c member call through include/dActor_c.h, so neither spelling of this extern survives in the promoted TU.",
+    "tubuild create warning (RESOLVED): CONFLICT: extern declaration '_ZN8dActor_c10FindWithIDEj' differs between the legacy file that used to hold func_ov002_020e7454 and the one that held func_ov002_020e7554; kept the first, the other is commented out for review -- RESOLVED: the mangled call was converted to a dActor_c member call through include/dActor_c.h, so neither spelling of this extern survives in the promoted TU.",
     "tubuild create warning: CONFLICT: extern declaration 'data_0209b454' differs between the legacy file that used to hold func_ov002_020e7104 and the one that held func_ov002_020e763c; kept the first, the other is commented out for review",
     "tubuild create warning: CONFLICT: extern declaration '_ZN9dCamera_c9SetLookAtERK7Vector3' differs between the legacy file that used to hold func_ov002_020e763c and the one that held func_ov002_020e7934; kept the first, the other is commented out for review",
     "tubuild create warning: CONFLICT: extern declaration '_ZN9dCamera_c6SetPosERK7Vector3' differs between the legacy file that used to hold func_ov002_020e763c and the one that held func_ov002_020e7934; kept the first, the other is commented out for review",
@@ -841,17 +841,17 @@
     "tubuild create warning: CONFLICT: extern declaration 'AddVec3' differs between the legacy file that used to hold func_ov002_020e8098 and the one that held func_ov002_020e8244; kept the first, the other is commented out for review",
     "tubuild create warning: CONFLICT: extern declaration 'data_0209b454' differs between the legacy file that used to hold func_ov002_020e7104 and the one that held func_ov002_020e8618; kept the first, the other is commented out for review",
     "tubuild create warning (RESOLVED): CONFLICT: extern declaration '_ZN15dExtFrameCtrl_c8FinishedEv' differs between the legacy file that used to hold func_ov002_020e7fcc and the one that held func_ov002_020e8618; kept the first, the other is commented out for review -- RESOLVED: no declaration of this symbol survives in the promoted TU; every use is now a real member call through the class header.",
-    "tubuild create warning: CONFLICT: extern declaration '_ZN8dActor_c11UntrackStarERa' differs between the legacy file that used to hold func_ov002_020e6d88 and the one that held func_ov002_020e8618; kept the first, the other is commented out for review",
+    "tubuild create warning (RESOLVED): CONFLICT: extern declaration '_ZN8dActor_c11UntrackStarERa' differs between the legacy file that used to hold func_ov002_020e6d88 and the one that held func_ov002_020e8618; kept the first, the other is commented out for review -- RESOLVED: the mangled call was converted to a dActor_c member call through include/dActor_c.h, so neither spelling of this extern survives in the promoted TU.",
     "tubuild create warning: CONFLICT: extern declaration 'func_ov002_020e9448' differs between the legacy file that used to hold func_ov002_020e86ec and the one that held func_ov002_020e88a8; kept the first, the other is commented out for review",
     "tubuild create warning: CONFLICT: extern declaration 'Vec3_Dist' differs between the legacy file that used to hold func_ov002_020e700c and the one that held func_ov002_020e88a8; kept the first, the other is commented out for review",
     "tubuild create warning: CONFLICT: extern declaration 'Vec3_HorzAngle' differs between the legacy file that used to hold func_ov002_020e7934 and the one that held func_ov002_020e88a8; kept the first, the other is commented out for review",
-    "tubuild create warning: CONFLICT: extern declaration '_ZN8dActor_c10FindWithIDEj' differs between the legacy file that used to hold func_ov002_020e7454 and the one that held func_ov002_020e8abc; kept the first, the other is commented out for review",
+    "tubuild create warning (RESOLVED): CONFLICT: extern declaration '_ZN8dActor_c10FindWithIDEj' differs between the legacy file that used to hold func_ov002_020e7454 and the one that held func_ov002_020e8abc; kept the first, the other is commented out for review -- RESOLVED: the mangled call was converted to a dActor_c member call through include/dActor_c.h, so neither spelling of this extern survives in the promoted TU.",
     "tubuild create warning: CONFLICT: extern declaration '_ZN7fBase_c18MarkForDestructionEv' differs between the legacy file that used to hold func_ov002_020e8618 and the one that held func_ov002_020e8abc; kept the first, the other is commented out for review",
     "tubuild create warning: CONFLICT: extern declaration 'func_02035860' differs between the legacy file that used to hold func_ov002_020e7454 and the one that held func_ov002_020e8abc; kept the first, the other is commented out for review",
     "tubuild create warning: CONFLICT: extern declaration 'func_ov002_020e9464' differs between the legacy file that used to hold func_ov002_020e7454 and the one that held func_ov002_020e8abc; kept the first, the other is commented out for review",
     "tubuild create warning: CONFLICT: extern declaration 'func_ov002_020e9448' differs between the legacy file that used to hold func_ov002_020e86ec and the one that held func_ov002_020e8abc; kept the first, the other is commented out for review",
     "tubuild create warning: CONFLICT: extern declaration 'func_ov002_020e9464' differs between the legacy file that used to hold func_ov002_020e7454 and the one that held func_ov002_020e8e80; kept the first, the other is commented out for review",
-    "tubuild create warning: CONFLICT: extern declaration '_ZN8dActor_c10FindWithIDEj' differs between the legacy file that used to hold func_ov002_020e7454 and the one that held func_ov002_020e8ef0; kept the first, the other is commented out for review",
+    "tubuild create warning (RESOLVED): CONFLICT: extern declaration '_ZN8dActor_c10FindWithIDEj' differs between the legacy file that used to hold func_ov002_020e7454 and the one that held func_ov002_020e8ef0; kept the first, the other is commented out for review -- RESOLVED: the mangled call was converted to a dActor_c member call through include/dActor_c.h, so neither spelling of this extern survives in the promoted TU.",
     "tubuild create warning: CONFLICT: extern declaration 'LinkSilverStarAndStarMarker' differs between the legacy file that used to hold func_ov002_020e7554 and the one that held func_ov002_020e8ef0; kept the first, the other is commented out for review",
     "tubuild create warning: CONFLICT: extern declaration '_ZN5dCc_c5ClearEv' differs between the legacy file that used to hold _ZN12daStarBase_c7CollectEv and the one that held func_ov002_020e8ef0; kept the first, the other is commented out for review",
     "tubuild create warning: CONFLICT: extern declaration 'func_ov002_020e9630' differs between the legacy file that used to hold func_ov002_020e73ac and the one that held func_ov002_020e8ef0; kept the first, the other is commented out for review",
@@ -859,21 +859,21 @@
     "tubuild create warning: CONFLICT: extern declaration 'func_ov002_020e9464' differs between the legacy file that used to hold func_ov002_020e7454 and the one that held func_ov002_020e8ef0; kept the first, the other is commented out for review",
     "tubuild create warning: CONFLICT: extern declaration 'data_0209f2d8' differs between the legacy file that used to hold func_ov002_020e73ac and the one that held func_ov002_020e8ef0; kept the first, the other is commented out for review",
     "tubuild create warning: CONFLICT: extern declaration 'data_0209b454' differs between the legacy file that used to hold func_ov002_020e7104 and the one that held func_ov002_020e8ef0; kept the first, the other is commented out for review",
-    "tubuild create warning: CONFLICT: extern declaration '_ZN8dActor_c10FindWithIDEj' differs between the legacy file that used to hold func_ov002_020e7454 and the one that held func_ov002_020e930c; kept the first, the other is commented out for review",
+    "tubuild create warning (RESOLVED): CONFLICT: extern declaration '_ZN8dActor_c10FindWithIDEj' differs between the legacy file that used to hold func_ov002_020e7454 and the one that held func_ov002_020e930c; kept the first, the other is commented out for review -- RESOLVED: the mangled call was converted to a dActor_c member call through include/dActor_c.h, so neither spelling of this extern survives in the promoted TU.",
     "tubuild create warning: CONFLICT: extern declaration 'func_ov002_020e8ef0' differs between the legacy file that used to hold func_ov002_020e8e80 and the one that held func_ov002_020e930c; kept the first, the other is commented out for review",
     "tubuild create warning: CONFLICT: extern declaration 'Vec3_HorzAngle' differs between the legacy file that used to hold func_ov002_020e7934 and the one that held func_ov002_020e947c; kept the first, the other is commented out for review",
-    "tubuild create warning: CONFLICT: extern declaration '_ZN8dActor_c10FindWithIDEj' differs between the legacy file that used to hold func_ov002_020e7454 and the one that held func_ov002_020e9590; kept the first, the other is commented out for review",
-    "tubuild create warning: CONFLICT: extern declaration '_ZN8dActor_c15FindWithActorIDEjPS_' differs between the legacy file that used to hold func_ov002_020e700c and the one that held func_ov002_020e9590; kept the first, the other is commented out for review",
+    "tubuild create warning (RESOLVED): CONFLICT: extern declaration '_ZN8dActor_c10FindWithIDEj' differs between the legacy file that used to hold func_ov002_020e7454 and the one that held func_ov002_020e9590; kept the first, the other is commented out for review -- RESOLVED: the mangled call was converted to a dActor_c member call through include/dActor_c.h, so neither spelling of this extern survives in the promoted TU.",
+    "tubuild create warning (RESOLVED): CONFLICT: extern declaration '_ZN8dActor_c15FindWithActorIDEjPS_' differs between the legacy file that used to hold func_ov002_020e700c and the one that held func_ov002_020e9590; kept the first, the other is commented out for review -- RESOLVED: the mangled call was converted to a dActor_c member call through include/dActor_c.h, so neither spelling of this extern survives in the promoted TU.",
     "tubuild create warning: CONFLICT: extern declaration 'LinkSilverStarAndStarMarker' differs between the legacy file that used to hold func_ov002_020e7554 and the one that held func_ov002_020e9590; kept the first, the other is commented out for review",
     "tubuild create warning: CONFLICT: extern declaration 'SublevelToLevel' differs between the legacy file that used to hold func_ov002_020e8ef0 and the one that held func_ov002_020e9630; kept the first, the other is commented out for review",
     "tubuild create warning: CONFLICT: extern declaration 'GiveVsStars' differs between the legacy file that used to hold func_ov002_020e8ef0 and the one that held func_ov002_020e96a0; kept the first, the other is commented out for review",
     "tubuild create warning: CONFLICT: extern declaration 'func_ov002_020e8244' differs between the legacy file that used to hold func_ov002_020e7fcc and the one that held func_ov002_020e96a0; kept the first, the other is commented out for review",
-    "tubuild create warning: CONFLICT: extern declaration '_ZN8dActor_c11SpawnNumberERK7Vector3jbtPS_' differs between the legacy file that used to hold func_ov002_020e7218 and the one that held func_ov002_020e96a0; kept the first, the other is commented out for review",
-    "tubuild create warning: CONFLICT: extern declaration '_ZN8dActor_c11UntrackStarERa' differs between the legacy file that used to hold func_ov002_020e6d88 and the one that held func_ov002_020e96a0; kept the first, the other is commented out for review",
+    "tubuild create warning (RESOLVED): CONFLICT: extern declaration '_ZN8dActor_c11SpawnNumberERK7Vector3jbtPS_' differs between the legacy file that used to hold func_ov002_020e7218 and the one that held func_ov002_020e96a0; kept the first, the other is commented out for review -- RESOLVED: the mangled call was converted to a dActor_c member call through include/dActor_c.h, so neither spelling of this extern survives in the promoted TU.",
+    "tubuild create warning (RESOLVED): CONFLICT: extern declaration '_ZN8dActor_c11UntrackStarERa' differs between the legacy file that used to hold func_ov002_020e6d88 and the one that held func_ov002_020e96a0; kept the first, the other is commented out for review -- RESOLVED: the mangled call was converted to a dActor_c member call through include/dActor_c.h, so neither spelling of this extern survives in the promoted TU.",
     "tubuild create warning: CONFLICT: extern declaration 'func_ov002_020e7e58' differs between the legacy file that used to hold func_ov002_020e8618 and the one that held func_ov002_020e96a0; kept the first, the other is commented out for review",
     "tubuild create warning: CONFLICT: extern declaration '_ZN7fBase_c18MarkForDestructionEv' differs between the legacy file that used to hold func_ov002_020e8618 and the one that held func_ov002_020e96a0; kept the first, the other is commented out for review",
-    "tubuild create warning: CONFLICT: extern declaration '_ZN8dActor_c24KillAndTrackInDeathTableEv' differs between the legacy file that used to hold func_ov002_020e8618 and the one that held func_ov002_020e96a0; kept the first, the other is commented out for review",
-    "tubuild create warning: CONFLICT: extern declaration '_ZN8dActor_c10FindWithIDEj' differs between the legacy file that used to hold func_ov002_020e7454 and the one that held func_ov002_020e9840; kept the first, the other is commented out for review",
+    "tubuild create warning (RESOLVED): CONFLICT: extern declaration '_ZN8dActor_c24KillAndTrackInDeathTableEv' differs between the legacy file that used to hold func_ov002_020e8618 and the one that held func_ov002_020e96a0; kept the first, the other is commented out for review -- RESOLVED: the mangled call was converted to a dActor_c member call through include/dActor_c.h, so neither spelling of this extern survives in the promoted TU.",
+    "tubuild create warning (RESOLVED): CONFLICT: extern declaration '_ZN8dActor_c10FindWithIDEj' differs between the legacy file that used to hold func_ov002_020e7454 and the one that held func_ov002_020e9840; kept the first, the other is commented out for review -- RESOLVED: the mangled call was converted to a dActor_c member call through include/dActor_c.h, so neither spelling of this extern survives in the promoted TU.",
     "tubuild create warning: CONFLICT: extern declaration 'func_02012694' differs between the legacy file that used to hold _ZN12daStarBase_c7CollectEv and the one that held func_ov002_020e9840; kept the first, the other is commented out for review",
     "tubuild create warning: CONFLICT: extern declaration 'func_ov002_020e9448' differs between the legacy file that used to hold func_ov002_020e86ec and the one that held func_ov002_020e9840; kept the first, the other is commented out for review",
     "tubuild create warning: CONFLICT: extern declaration 'data_0209f2d8' differs between the legacy file that used to hold func_ov002_020e73ac and the one that held func_ov002_020e9840; kept the first, the other is commented out for review",
@@ -881,7 +881,7 @@
     "tubuild create warning (RESOLVED): CONFLICT: extern declaration '_ZN15dExtFrameCtrl_c8FinishedEv' differs between the legacy file that used to hold func_ov002_020e7fcc and the one that held func_ov002_020e9d18; kept the first, the other is commented out for review -- RESOLVED: no declaration of this symbol survives in the promoted TU; every use is now a real member call through the class header.",
     "tubuild create warning: CONFLICT: extern declaration 'GiveVsStars' differs between the legacy file that used to hold func_ov002_020e8ef0 and the one that held func_ov002_020e9d18; kept the first, the other is commented out for review",
     "tubuild create warning: CONFLICT: extern declaration 'func_ov002_020e8244' differs between the legacy file that used to hold func_ov002_020e7fcc and the one that held func_ov002_020e9d18; kept the first, the other is commented out for review",
-    "tubuild create warning: CONFLICT: extern declaration '_ZN8dActor_c11SpawnNumberERK7Vector3jbtPS_' differs between the legacy file that used to hold func_ov002_020e7218 and the one that held func_ov002_020e9d18; kept the first, the other is commented out for review",
+    "tubuild create warning (RESOLVED): CONFLICT: extern declaration '_ZN8dActor_c11SpawnNumberERK7Vector3jbtPS_' differs between the legacy file that used to hold func_ov002_020e7218 and the one that held func_ov002_020e9d18; kept the first, the other is commented out for review -- RESOLVED: the mangled call was converted to a dActor_c member call through include/dActor_c.h, so neither spelling of this extern survives in the promoted TU.",
     "tubuild create warning: CONFLICT: extern declaration 'func_ov002_020e8618' differs between the legacy file that used to hold func_ov002_020e9af4 and the one that held func_ov002_020e9d18; kept the first, the other is commented out for review",
     "tubuild create warning: CONFLICT: extern declaration 'func_02012790' differs between the legacy file that used to hold func_ov002_020e8ef0 and the one that held func_ov002_020e9d18; kept the first, the other is commented out for review",
     "tubuild create warning: CONFLICT: extern declaration 'func_ov002_020e9630' differs between the legacy file that used to hold func_ov002_020e73ac and the one that held func_ov002_020e9d18; kept the first, the other is commented out for review",
@@ -890,18 +890,18 @@
     "tubuild create warning: CONFLICT: extern declaration 'func_ov002_020e8ef0' differs between the legacy file that used to hold func_ov002_020e8e80 and the one that held func_ov002_020ea410; kept the first, the other is commented out for review",
     "tubuild create warning (RESOLVED): CONFLICT: extern declaration '_ZN8daStar_c13AddStarMarkerEv' differs between the legacy file that used to hold func_ov002_020e8dd8 and the one that held func_ov002_020ea420; kept the first, the other is commented out for review",
     "tubuild create warning: CONFLICT: extern declaration 'func_02012790' differs between the legacy file that used to hold func_ov002_020e8ef0 and the one that held func_ov002_020ea420; kept the first, the other is commented out for review",
-    "tubuild create warning: CONFLICT: extern declaration '_ZN8dActor_c11UntrackStarERa' differs between the legacy file that used to hold func_ov002_020e6d88 and the one that held func_ov002_020ea420; kept the first, the other is commented out for review",
+    "tubuild create warning (RESOLVED): CONFLICT: extern declaration '_ZN8dActor_c11UntrackStarERa' differs between the legacy file that used to hold func_ov002_020e6d88 and the one that held func_ov002_020ea420; kept the first, the other is commented out for review -- RESOLVED: the mangled call was converted to a dActor_c member call through include/dActor_c.h, so neither spelling of this extern survives in the promoted TU.",
     "tubuild create warning: CONFLICT: extern declaration 'func_ov002_020e930c' differs between the legacy file that used to hold func_ov002_020e99e8 and the one that held func_ov002_020ea420; kept the first, the other is commented out for review",
     "tubuild create warning: CONFLICT: extern declaration 'data_0209b454' differs between the legacy file that used to hold func_ov002_020e7104 and the one that held func_ov002_020ea420; kept the first, the other is commented out for review",
     "tubuild create warning: CONFLICT: extern declaration 'func_ov002_020e9464' differs between the legacy file that used to hold func_ov002_020e7454 and the one that held func_ov002_020ea7ac; kept the first, the other is commented out for review",
     "tubuild create warning: CONFLICT: extern declaration 'func_ov002_020e7d08' differs between the legacy file that used to hold func_ov002_020e99e8 and the one that held func_ov002_020ea7ac; kept the first, the other is commented out for review",
-    "tubuild create warning: CONFLICT: extern declaration '_ZN8dActor_c10FindWithIDEj' differs between the legacy file that used to hold func_ov002_020e7454 and the one that held func_ov002_020ea824; kept the first, the other is commented out for review",
+    "tubuild create warning (RESOLVED): CONFLICT: extern declaration '_ZN8dActor_c10FindWithIDEj' differs between the legacy file that used to hold func_ov002_020e7454 and the one that held func_ov002_020ea824; kept the first, the other is commented out for review -- RESOLVED: the mangled call was converted to a dActor_c member call through include/dActor_c.h, so neither spelling of this extern survives in the promoted TU.",
     "tubuild create warning: CONFLICT: extern declaration 'Vec3_HorzDist' differs between the legacy file that used to hold func_ov002_020e947c and the one that held func_ov002_020ea824; kept the first, the other is commented out for review",
     "tubuild create warning: CONFLICT: extern declaration 'func_ov002_020e9448' differs between the legacy file that used to hold func_ov002_020e86ec and the one that held func_ov002_020ea824; kept the first, the other is commented out for review",
     "tubuild create warning: CONFLICT: extern declaration 'func_ov002_020e81e0' differs between the legacy file that used to hold func_ov002_020ea7ac and the one that held func_ov002_020ea824; kept the first, the other is commented out for review",
     "tubuild create warning: CONFLICT: extern declaration 'func_ov002_020e7e24' differs between the legacy file that used to hold func_ov002_020ea7ac and the one that held func_ov002_020ea824; kept the first, the other is commented out for review",
     "tubuild create warning: CONFLICT: extern declaration 'func_ov002_020e7d08' differs between the legacy file that used to hold func_ov002_020e99e8 and the one that held func_ov002_020ea824; kept the first, the other is commented out for review",
-    "tubuild create warning: CONFLICT: extern declaration '_ZN8dActor_c10FindWithIDEj' differs between the legacy file that used to hold func_ov002_020e7454 and the one that held func_ov002_020ea90c; kept the first, the other is commented out for review",
+    "tubuild create warning (RESOLVED): CONFLICT: extern declaration '_ZN8dActor_c10FindWithIDEj' differs between the legacy file that used to hold func_ov002_020e7454 and the one that held func_ov002_020ea90c; kept the first, the other is commented out for review -- RESOLVED: the mangled call was converted to a dActor_c member call through include/dActor_c.h, so neither spelling of this extern survives in the promoted TU.",
     "tubuild create warning: CONFLICT: extern declaration 'Vec3_HorzDist' differs between the legacy file that used to hold func_ov002_020e947c and the one that held func_ov002_020ea90c; kept the first, the other is commented out for review",
     "tubuild create warning: CONFLICT: extern declaration 'func_ov002_020e81e0' differs between the legacy file that used to hold func_ov002_020ea7ac and the one that held func_ov002_020ea90c; kept the first, the other is commented out for review",
     "tubuild create warning: CONFLICT: extern declaration 'func_ov002_020e7e24' differs between the legacy file that used to hold func_ov002_020ea7ac and the one that held func_ov002_020ea90c; kept the first, the other is commented out for review",
@@ -913,16 +913,16 @@
     "tubuild create warning: CONFLICT: extern declaration '_ZN7fBase_c18MarkForDestructionEv' differs between the legacy file that used to hold func_ov002_020e8618 and the one that held func_ov002_020ea9d0; kept the first, the other is commented out for review",
     "tubuild create warning: CONFLICT: extern declaration 'func_02012694' differs between the legacy file that used to hold _ZN12daStarBase_c7CollectEv and the one that held func_ov002_020ea9d0; kept the first, the other is commented out for review",
     "tubuild create warning: CONFLICT: extern declaration 'func_ov002_020e9448' differs between the legacy file that used to hold func_ov002_020e86ec and the one that held func_ov002_020ea9d0; kept the first, the other is commented out for review",
-    "tubuild create warning: CONFLICT: extern declaration '_ZN8dActor_c10FindWithIDEj' differs between the legacy file that used to hold func_ov002_020e7454 and the one that held func_ov002_020ea9d0; kept the first, the other is commented out for review",
+    "tubuild create warning (RESOLVED): CONFLICT: extern declaration '_ZN8dActor_c10FindWithIDEj' differs between the legacy file that used to hold func_ov002_020e7454 and the one that held func_ov002_020ea9d0; kept the first, the other is commented out for review -- RESOLVED: the mangled call was converted to a dActor_c member call through include/dActor_c.h, so neither spelling of this extern survives in the promoted TU.",
     "tubuild create warning: CONFLICT: extern declaration 'Vec3_HorzDist' differs between the legacy file that used to hold func_ov002_020e947c and the one that held func_ov002_020ea9d0; kept the first, the other is commented out for review",
     "tubuild create warning: CONFLICT: extern declaration 'func_ov002_020e947c' differs between the legacy file that used to hold func_ov002_020e88a8 and the one that held func_ov002_020ea9d0; kept the first, the other is commented out for review",
     "tubuild create warning: CONFLICT: extern declaration 'func_ov002_020e8dd8' differs between the legacy file that used to hold func_ov002_020e9840 and the one that held func_ov002_020ea9d0; kept the first, the other is commented out for review",
-    "tubuild create warning: CONFLICT: extern declaration '_ZN8dActor_c10FindWithIDEj' differs between the legacy file that used to hold func_ov002_020e7454 and the one that held _ZN12daStarBase_c16OnPendingDestroyEv; kept the first, the other is commented out for review",
-    "tubuild create warning: CONFLICT: extern declaration '_ZN8dActor_c11UntrackStarERa' differs between the legacy file that used to hold func_ov002_020e6d88 and the one that held _ZN8daStar_c16CleanupResourcesEv; kept the first, the other is commented out for review",
+    "tubuild create warning (RESOLVED): CONFLICT: extern declaration '_ZN8dActor_c10FindWithIDEj' differs between the legacy file that used to hold func_ov002_020e7454 and the one that held _ZN12daStarBase_c16OnPendingDestroyEv; kept the first, the other is commented out for review -- RESOLVED: the mangled call was converted to a dActor_c member call through include/dActor_c.h, so neither spelling of this extern survives in the promoted TU.",
+    "tubuild create warning (RESOLVED): CONFLICT: extern declaration '_ZN8dActor_c11UntrackStarERa' differs between the legacy file that used to hold func_ov002_020e6d88 and the one that held _ZN8daStar_c16CleanupResourcesEv; kept the first, the other is commented out for review -- RESOLVED: the mangled call was converted to a dActor_c member call through include/dActor_c.h, so neither spelling of this extern survives in the promoted TU.",
     "tubuild create warning: CONFLICT: extern declaration 'Matrix4x3_FromTranslation' differs between the legacy file that used to hold func_ov002_020e8244 and the one that held _ZN12daStarBase_c8BehaviorEv; kept the first, the other is commented out for review",
     "tubuild create warning: CONFLICT: extern declaration 'Matrix4x3_FromRotationY' differs between the legacy file that used to hold func_ov002_020e84ec and the one that held _ZN12daStarBase_c8BehaviorEv; kept the first, the other is commented out for review",
     "tubuild create warning: CONFLICT: extern declaration '_ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j' differs between the legacy file that used to hold func_ov002_020e8398 and the one that held _ZN12daStarBase_c8BehaviorEv; kept the first, the other is commented out for review",
-    "tubuild create warning: CONFLICT: extern declaration '_ZN8dActor_c10FindWithIDEj' differs between the legacy file that used to hold func_ov002_020e7454 and the one that held _ZN12daStarBase_c8BehaviorEv; kept the first, the other is commented out for review",
+    "tubuild create warning (RESOLVED): CONFLICT: extern declaration '_ZN8dActor_c10FindWithIDEj' differs between the legacy file that used to hold func_ov002_020e7454 and the one that held _ZN12daStarBase_c8BehaviorEv; kept the first, the other is commented out for review -- RESOLVED: the mangled call was converted to a dActor_c member call through include/dActor_c.h, so neither spelling of this extern survives in the promoted TU.",
     "tubuild create warning: CONFLICT: extern declaration '_ZN5dCc_c5ClearEv' differs between the legacy file that used to hold _ZN12daStarBase_c7CollectEv and the one that held _ZN12daStarBase_c8BehaviorEv; kept the first, the other is commented out for review",
     "tubuild create warning: CONFLICT: extern declaration 'data_0209f208' differs between the legacy file that used to hold _ZN8daStar_c13AddStarMarkerEv and the one that held _ZN12daStarBase_c8BehaviorEv; kept the first, the other is commented out for review",
     "tubuild create warning: CONFLICT: extern declaration 'data_0209f344' differs between the legacy file that used to hold func_ov002_020e9840 and the one that held _ZN12daStarBase_c8BehaviorEv; kept the first, the other is commented out for review",
@@ -931,7 +931,7 @@
     "tubuild create warning: CONFLICT: extern declaration '_ZN5dCc_c6UpdateEv' differs between the legacy file that used to hold _ZN12daStarBase_c8BehaviorEv and the one that held _ZN8daStar_c8BehaviorEv; kept the first, the other is commented out for review",
     "tubuild create warning: CONFLICT: extern declaration 'data_0209b454' differs between the legacy file that used to hold func_ov002_020e7104 and the one that held _ZN8daStar_c8BehaviorEv; kept the first, the other is commented out for review",
     "tubuild create warning: CONFLICT: extern declaration '_ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj' differs between the legacy file that used to hold func_ov002_020e6edc and the one that held _ZN12daStarBase_c13InitResourcesEv; kept the first, the other is commented out for review",
-    "tubuild create warning: CONFLICT: extern declaration '_ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as' differs between the legacy file that used to hold _ZN12daStarBase_c27SpawnRedCoinStarIfNecessaryEv and the one that held _ZN12daStarBase_c13InitResourcesEv; kept the first, the other is commented out for review",
+    "tubuild create warning (RESOLVED): CONFLICT: extern declaration '_ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as' differs between the legacy file that used to hold _ZN12daStarBase_c27SpawnRedCoinStarIfNecessaryEv and the one that held _ZN12daStarBase_c13InitResourcesEv; kept the first, the other is commented out for review -- RESOLVED: the mangled call was converted to a dActor_c member call through include/dActor_c.h, so neither spelling of this extern survives in the promoted TU.",
     "tubuild create warning (RESOLVED): CONFLICT: extern declaration '_ZN17dExtSimpleModel_c8LoadFileER13SharedFilePtr' differs between the legacy file that used to hold LoadSilverStarAndNumber and the one that held _ZN12daStarBase_c13InitResourcesEv; kept the first, the other is commented out for review -- RESOLVED: no declaration of this symbol survives in the promoted TU; every use is now a real member call through the class header.",
     "tubuild create warning: CONFLICT: extern declaration 'IsStarCollectedInCurLevel' differs between the legacy file that used to hold _ZN8daStar_c13AddStarMarkerEv and the one that held _ZN12daStarBase_c13InitResourcesEv; kept the first, the other is commented out for review",
     "tubuild create warning: CONFLICT: extern declaration '_ZN7fBase_c18MarkForDestructionEv' differs between the legacy file that used to hold func_ov002_020e8618 and the one that held _ZN12daStarBase_c13InitResourcesEv; kept the first, the other is commented out for review",
@@ -951,7 +951,7 @@
     "tubuild create warning (RESOLVED): CONFLICT: extern declaration '_ZN14dExtAnmModel_c7SetAnimEP8BCA_Filei5Fix12IiEj' differs between the legacy file that used to hold func_ov002_020e6edc and the one that held _ZN8daStar_c13InitResourcesEv; kept the first, the other is commented out for review",
     "tubuild create warning: CONFLICT: extern declaration '_ZN17dExtShadowModel_c12InitCylinderEv' differs between the legacy file that used to hold _ZN12daStarBase_c13InitResourcesEv and the one that held _ZN8daStar_c13InitResourcesEv; kept the first, the other is commented out for review",
     "tubuild create warning: CONFLICT: extern declaration '_ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj' differs between the legacy file that used to hold func_ov002_020e6edc and the one that held _ZN8daStar_c13InitResourcesEv; kept the first, the other is commented out for review",
-    "tubuild create warning: CONFLICT: extern declaration '_ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as' differs between the legacy file that used to hold _ZN12daStarBase_c27SpawnRedCoinStarIfNecessaryEv and the one that held _ZN8daStar_c13InitResourcesEv; kept the first, the other is commented out for review",
+    "tubuild create warning (RESOLVED): CONFLICT: extern declaration '_ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as' differs between the legacy file that used to hold _ZN12daStarBase_c27SpawnRedCoinStarIfNecessaryEv and the one that held _ZN8daStar_c13InitResourcesEv; kept the first, the other is commented out for review -- RESOLVED: the mangled call was converted to a dActor_c member call through include/dActor_c.h, so neither spelling of this extern survives in the promoted TU.",
     "tubuild create warning: CONFLICT: extern declaration 'NumVsStarsObtained' differs between the legacy file that used to hold func_ov002_020ea420 and the one that held _ZN8daStar_c13InitResourcesEv; kept the first, the other is commented out for review",
     "tubuild create warning: CONFLICT: extern declaration 'func_ov002_020e9448' differs between the legacy file that used to hold func_ov002_020e86ec and the one that held _ZN8daStar_c13InitResourcesEv; kept the first, the other is commented out for review",
     "tubuild create warning: CONFLICT: extern declaration '_ZN10dBgCh_Actr19StartDetectingWaterEv' differs between the legacy file that used to hold func_ov002_020e86ec and the one that held _ZN8daStar_c13InitResourcesEv; kept the first, the other is commented out for review",
@@ -960,10 +960,10 @@
     "tubuild create warning: CONFLICT: extern declaration 'func_ov002_020e8dd8' differs between the legacy file that used to hold func_ov002_020e9840 and the one that held _ZN8daStar_c13InitResourcesEv; kept the first, the other is commented out for review",
     "tubuild create warning: CONFLICT: extern declaration 'func_ov002_020e7d08' differs between the legacy file that used to hold func_ov002_020e99e8 and the one that held _ZN8daStar_c13InitResourcesEv; kept the first, the other is commented out for review",
     "tubuild create warning: CONFLICT: extern declaration '_ZN5Event8ClearBitEj' differs between the legacy file that used to hold func_ov002_020e8618 and the one that held _ZN8daStar_c13InitResourcesEv; kept the first, the other is commented out for review",
-    "tubuild create warning: CONFLICT: extern declaration '_ZN8dActor_c10FindWithIDEj' differs between the legacy file that used to hold func_ov002_020e7454 and the one that held _ZN8daStar_c13InitResourcesEv; kept the first, the other is commented out for review",
+    "tubuild create warning (RESOLVED): CONFLICT: extern declaration '_ZN8dActor_c10FindWithIDEj' differs between the legacy file that used to hold func_ov002_020e7454 and the one that held _ZN8daStar_c13InitResourcesEv; kept the first, the other is commented out for review -- RESOLVED: the mangled call was converted to a dActor_c member call through include/dActor_c.h, so neither spelling of this extern survives in the promoted TU.",
     "tubuild create warning: CONFLICT: extern declaration 'LinkSilverStarAndStarMarker' differs between the legacy file that used to hold func_ov002_020e7554 and the one that held _ZN8daStar_c13InitResourcesEv; kept the first, the other is commented out for review",
-    "tubuild create warning: CONFLICT: extern declaration '_ZN8dActor_c18GetBitInDeathTableEv' differs between the legacy file that used to hold _ZN12daStarBase_c13InitResourcesEv and the one that held _ZN8daStar_c13InitResourcesEv; kept the first, the other is commented out for review",
-    "tubuild create warning: CONFLICT: extern declaration '_ZN8dActor_c24KillAndTrackInDeathTableEv' differs between the legacy file that used to hold func_ov002_020e8618 and the one that held _ZN8daStar_c13InitResourcesEv; kept the first, the other is commented out for review",
+    "tubuild create warning (RESOLVED): CONFLICT: extern declaration '_ZN8dActor_c18GetBitInDeathTableEv' differs between the legacy file that used to hold _ZN12daStarBase_c13InitResourcesEv and the one that held _ZN8daStar_c13InitResourcesEv; kept the first, the other is commented out for review -- RESOLVED: the mangled call was converted to a dActor_c member call through include/dActor_c.h, so neither spelling of this extern survives in the promoted TU.",
+    "tubuild create warning (RESOLVED): CONFLICT: extern declaration '_ZN8dActor_c24KillAndTrackInDeathTableEv' differs between the legacy file that used to hold func_ov002_020e8618 and the one that held _ZN8daStar_c13InitResourcesEv; kept the first, the other is commented out for review -- RESOLVED: the mangled call was converted to a dActor_c member call through include/dActor_c.h, so neither spelling of this extern survives in the promoted TU.",
     "tubuild create warning: CONFLICT: local declaration ('struct', 'Flags') differs between the legacy file that used to hold func_ov002_020e84ec and the one that held func_ov002_020e86ec; kept the first, the other is commented out for review",
     "tubuild create warning: CONFLICT: local declaration ('struct', 'Flags') differs between the legacy file that used to hold func_ov002_020e84ec and the one that held func_ov002_020e88a8; kept the first, the other is commented out for review",
     "tubuild create warning: CONFLICT: local declaration ('typedef', 'Vec3') differs between the legacy file that used to hold func_ov002_020e763c and the one that held func_ov002_020e947c; kept the first, the other is commented out for review",
@@ -2372,117 +2372,117 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@2222",
+      "from": "@2216",
       "to": "@2223",
       "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @2237 now; licensed under the existing pin @2223"
     },
     {
-      "from": "@2223",
+      "from": "@2217",
       "to": "@2224",
       "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @2238 now; licensed under the existing pin @2224"
     },
     {
-      "from": "@2224",
+      "from": "@2218",
       "to": "@2225",
       "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @2239 now; licensed under the existing pin @2225"
     },
     {
-      "from": "@2225",
+      "from": "@2219",
       "to": "@2226",
       "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @2240 now; licensed under the existing pin @2226"
     },
     {
-      "from": "@2226",
+      "from": "@2220",
       "to": "@2227",
       "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @2241 now; licensed under the existing pin @2227"
     },
     {
-      "from": "@2227",
+      "from": "@2221",
       "to": "@2228",
       "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @2242 now; licensed under the existing pin @2228"
     },
     {
-      "from": "@2228",
+      "from": "@2222",
       "to": "@2229",
       "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @2243 now; licensed under the existing pin @2229"
     },
     {
-      "from": "@2229",
+      "from": "@2223",
       "to": "@2230",
       "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @2244 now; licensed under the existing pin @2230"
     },
     {
-      "from": "@2230",
+      "from": "@2224",
       "to": "@2231",
       "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @2245 now; licensed under the existing pin @2231"
     },
     {
-      "from": "@2232",
+      "from": "@2226",
       "to": "@2233",
       "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @2247 now; licensed under the existing pin @2233"
     },
     {
-      "from": "@2234",
+      "from": "@2228",
       "to": "@2235",
       "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @2249 now; licensed under the existing pin @2235"
     },
     {
-      "from": "@2236",
+      "from": "@2230",
       "to": "@59",
       "evidence": "compiler temp renamed under the pin this row claims; include/types.h's added Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwccarm emits it under this name now"
     },
     {
-      "from": "@2238",
+      "from": "@2232",
       "to": "@58",
       "evidence": "compiler temp renamed under the pin this row claims; include/types.h's added Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwccarm emits it under this name now"
     },
     {
-      "from": "@2240",
+      "from": "@2234",
       "to": "@24",
       "evidence": "compiler temp renamed under the pin this row claims; include/types.h's added Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwccarm emits it under this name now"
     },
     {
-      "from": "@2242",
+      "from": "@2236",
       "to": "@57",
       "evidence": "compiler temp renamed under the pin this row claims; include/types.h's added Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwccarm emits it under this name now"
     },
     {
-      "from": "@2244",
+      "from": "@2238",
       "to": "@23",
       "evidence": "compiler temp renamed under the pin this row claims; include/types.h's added Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwccarm emits it under this name now"
     },
     {
-      "from": "@2246",
+      "from": "@2240",
       "to": "@28",
       "evidence": "compiler temp renamed under the pin this row claims; include/types.h's added Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwccarm emits it under this name now"
     },
     {
-      "from": "@2248",
+      "from": "@2242",
       "to": "@31",
       "evidence": "compiler temp renamed under the pin this row claims; include/types.h's added Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwccarm emits it under this name now"
     },
     {
-      "from": "@2250",
+      "from": "@2244",
       "to": "@56",
       "evidence": "compiler temp renamed under the pin this row claims; include/types.h's added Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwccarm emits it under this name now"
     },
     {
-      "from": "@2252",
+      "from": "@2246",
       "to": "@32",
       "evidence": "compiler temp renamed under the pin this row claims; include/types.h's added Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwccarm emits it under this name now"
     },
     {
-      "from": "@2254",
+      "from": "@2248",
       "to": "@22",
       "evidence": "compiler temp renamed under the pin this row claims; include/types.h's added Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwccarm emits it under this name now"
     },
     {
-      "from": "@2256",
+      "from": "@2250",
       "to": "@27",
       "evidence": "compiler temp renamed under the pin this row claims; include/types.h's added Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwccarm emits it under this name now"
     },
     {
-      "from": "@2258",
+      "from": "@2252",
       "to": "@29",
       "evidence": "compiler temp renamed under the pin this row claims; include/types.h's added Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwccarm emits it under this name now"
     }

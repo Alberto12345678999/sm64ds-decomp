@@ -112,7 +112,6 @@ void d_a_iblPlayLongHold(u32 a, u32 b, u32 c, void *v, u32 d);
 int _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(Player *p, void *pos, u32 a, int b, u8 d, u8 e, u8 f);
 void func_02038414(void *p);
 int atan2_hold_d_a_ibl_1(int y, int x);
-int _ZN8dActor_c14GetSubtractionEss(void *a, short s1, int s2);
 int _ZN8dActor_c12ReflectAngleE5Fix12IiES1_s(void *self, int a, int b, int ang);
 void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(void *thiz, void *sm, void *mtx, int f, int g, unsigned int h);
 int func_ov002_020ad660(void *a, void *b, void *d, int e);
@@ -242,8 +241,8 @@ void daIbl_c::func_ov100_02142130()
     if (mWithMeshClsn.IsOnWall() != 0) {
         ((SurfaceInfo *)((char *)_ZNK10dBgCh_Actr13GetWallResultEv(&mWithMeshClsn) + 4))
             ->CopyNormalTo(*(Vector3 *)&mWallNormalX);
-        int a = cstd::atan2(mWallNormalX, mWallNormalZ);
-        if (_ZN8dActor_c14GetSubtractionEss(this, mPrevAngleY, a) > 0x4000)
+        short a = cstd::atan2(mWallNormalX, mWallNormalZ);
+        if (GetSubtraction(mPrevAngleY, a) > 0x4000)
             mHitWall = 1;
     }
     if (mWithMeshClsn.IsOnGround() == 0)

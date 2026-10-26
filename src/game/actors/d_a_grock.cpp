@@ -35,10 +35,9 @@ struct Vector3_16f;
  * deslop leftovers:
  * - func_ov021_02112294: one UntrackAndSpawnStar with a chosen mode
  *   size-DIFFs (999 words). The two call sites, mode 2 and mode 4, match.
- * - func_ov021_02112544: GetSubtraction(short, short) size-DIFFs (999
- *   words). The wall angle is an int; _ZN8dActor_c14GetSubtractionEss
- *   passes it through. ReflectAngle(Fix12<int>, Fix12<int>, s16)
- *   size-DIFFs the same function. The angle calls are cstd::atan2(s32, s32).
+ * - func_ov021_02112544: ReflectAngle(Fix12<int>, Fix12<int>, s16)
+ *   size-DIFFs. The wall angle is held in a short so GetSubtraction gets
+ *   it without a re-extension. The angle calls are cstd::atan2(s32, s32).
  * - func_ov021_021122fc: DropShadowRadHeight is void in dActor_c.h and
  *   takes Fix12<int> by value. This function returns the scalar call;
  *   the method form does not compile.
@@ -132,9 +131,6 @@ extern void *d_a_grockNewHold(unsigned int prev, unsigned int effect, int x, int
                               void *dir, void *cb);
 extern int Vec3_HorzLen(void *v);
 extern int atan2_hold_d_a_grock_1(int y, int x);
-/* dActor_c.h types GetSubtraction(short, short). The wall angle is an int
- * passed straight through; the short spelling adds lsl/asr #16. */
-extern int _ZN8dActor_c14GetSubtractionEss(void *a, s16 x, int y);
 extern s16 _ZN8dActor_c12ReflectAngleE5Fix12IiES1_s(void *a, int x, int y, s16 ang);
 extern s16 data_02082214[];
 extern void AddVec3(struct Vector3 *dst, struct Vector3 *a, struct Vector3 *b);
@@ -310,8 +306,8 @@ extern "C" void func_ov021_02112544(char *raw)
     hit = (dBgPi *)rock->mWithMeshClsn.GetWallResult();
     hit->surface.CopyNormalTo(*(Vector3 *)&wallNormal);
     {
-        int wallAngle = cstd::atan2(wallNormal.x, wallNormal.z);
-        if (_ZN8dActor_c14GetSubtractionEss(rock, rock->mPrevAngleY, wallAngle) <= 0x1000)
+        short wallAngle = cstd::atan2(wallNormal.x, wallNormal.z);
+        if (rock->GetSubtraction(rock->mPrevAngleY, wallAngle) <= 0x1000)
             return;
         rock->mPrevAngleY = _ZN8dActor_c12ReflectAngleE5Fix12IiES1_s(
             rock, wallNormal.x, wallNormal.z, rock->mPrevAngleY);
