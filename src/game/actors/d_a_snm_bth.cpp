@@ -12,9 +12,8 @@ struct Vector3_16f;
  * defer_codegen off: D1 0x021120c4, D0 0x02112104, D2 deadstripped.
  */
 // leftovers:
-// - Particle::System::New and NewSimple, dCcPos_c::Init,
-//   Player::BlowAway and HasFinishedTalking stay mangled. This TU passes
-//   Fix12<int> by value.
+// - Particle::System::New and NewSimple, Player::BlowAway and
+//   HasFinishedTalking stay mangled. This TU passes Fix12<int> by value.
 // - SnowmanBreathParticle is a coined name. ov027 has no type string for
 //   the member struct.
 // - mInvModelMat stays flat words. A Matrix4x3 member reorders the
@@ -58,10 +57,6 @@ void Matrix4x3_ApplyInPlaceToTranslation(Matrix4x3 *, s32, s32, s32);
 void AddVec3(const Vector3 *, const Vector3 *, Vector3 *);
 int DecIfAbove0_Byte(void *);
 s32 RandomIntInternal(s32 *);
-/* Fix12<int> by-value arguments are kept in their measured raw ABI view: a
- * direct C++ definition of this imported signature hits the mwccarm 6az wall. */
-void _ZN8dCcPos_c4InitERK7Vector35Fix12IiES4_jj(
-    dCcPos_c *, const Vector3 *, s32, s32, u32, u32);
 void Vec3_Asr(Vector3 *, const Vector3 *, int);
 void MulVec3Mat4x3(const Vector3 *, const Matrix4x3 *, Vector3 *);
 void Vec3_LslInPlace(Vector3 *, int);
@@ -228,8 +223,7 @@ int SnowmanBreathParticle::TrySpawn(Player &player)
 SnowmanBreathParticle::SnowmanBreathParticle()
 {
     mPos = data_ov027_02113d10;
-    _ZN8dCcPos_c4InitERK7Vector35Fix12IiES4_jj(
-        &mCollider, &mPos, 0x32000, 0x28000, 0x800002, 0x800000);
+    mCollider.Init(mPos, 0x32000, 0x28000, 0x800002, 0x800000);
     mTimer = 0;
 }
 

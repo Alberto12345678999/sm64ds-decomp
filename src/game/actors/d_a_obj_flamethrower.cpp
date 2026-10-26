@@ -35,9 +35,8 @@
  *   ((char *)this + 0x400) + 0x65. The segment loop is the same
  *   shape as InitResources (this-based, stores at +0x3a4 / +0x104 /
  *   +0xf8). Those two spellings together were 0x454 against 0x470.
- * - InitResources: dCcPos_c::Init as the header method, Fix12<int>
- *   passed by value, was 0x18c against 0x174. The call stays the
- *   mangled int-parameter extern.
+ * - InitResources: dCcPos_c::Init with by-value Fix12<int> was 0x18c
+ *   against 0x174. The call is the scalar Fix12i method.
  */
 
 #include "daObjFlamethrower_c.h"
@@ -80,9 +79,6 @@ extern void func_02022774(Fix12i x, Fix12i y, Fix12i z, s16 ang1, int ang2);
 extern void func_020226fc(Fix12i x, Fix12i y, Fix12i z, s16 ang1, s16 ang2);
 extern void func_02022864(Fix12i x, Fix12i y, Fix12i z, s16 ang1, int ang2);
 extern void func_020227ec(Fix12i x, Fix12i y, Fix12i z, s16 ang1, s16 ang2);
-extern void _ZN8dCcPos_c4InitERK7Vector35Fix12IiES4_jj(
-    void *self, struct Vec3 *pos, int radius, int height,
-    unsigned int flags, unsigned int vuln);
 }
 
 /* data_ov095_02136f80 (decl_common.h) is the per-segment scale,
@@ -151,10 +147,8 @@ int daObjFlamethrower_c::InitResources()
             }
             {
                 short segmentSize = data_ov095_02136f80[i];
-                _ZN8dCcPos_c4InitERK7Vector35Fix12IiES4_jj(
-                    collider, (struct Vec3 *)flamePos,
-                    segmentSize * kRadiusMul, segmentSize * kHeightMul,
-                    kClsnFlags, flag);
+                collider->Init(*flamePos, segmentSize * kRadiusMul, segmentSize * kHeightMul,
+                               kClsnFlags, flag);
             }
             rowBase += 0xc;
             flamePos++;
