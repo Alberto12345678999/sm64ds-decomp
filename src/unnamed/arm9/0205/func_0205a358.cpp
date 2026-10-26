@@ -2,7 +2,8 @@
 #include "IRQ.h"
 
 namespace IRQ {
-u32 Disable(void);
+unsigned int Disable();
+void Restore(unsigned int);
 }
 
 extern "C" {
@@ -19,7 +20,6 @@ typedef struct {
 extern Data0205 data_020a6460;
 extern void func_02059fa8(int ch);
 
-extern void _ZN3IRQ7RestoreEj(int saved);
 extern void func_0205a290(void);
 
 void func_0205a358(int a0, int a1, int a2, void (*a3)(int), int a4) {
@@ -44,6 +44,6 @@ void func_0205a358(int a0, int a1, int a2, void (*a3)(int), int a4) {
     IRQ::SetIRQHandler(0x200000, func_0205a290);
     IRQ::EnableIRQs(0x200000);
     func_0205a290();
-    _ZN3IRQ7RestoreEj(saved);
+    IRQ::Restore(saved);
 }
 }
