@@ -91,12 +91,6 @@ struct System {
 };
 }
 
-void  _ZN6Player6BounceE5Fix12IiE(void *player, int speed);
-int   _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void *player, void *pos,
-                                              unsigned int a, int damage,
-                                              unsigned int b, unsigned int c,
-                                              unsigned int d);
-
 /* dBgCh_Actr::Init's last two parameters are Vector3_16* (the S5_
  * back-references the pointer type). */
 /* Parameter names keep this TU's @NNN. */
@@ -804,7 +798,7 @@ void Scuttlebug::func_ov071_0211f29c()
     }
 
     if (JumpedOnByPlayer(mdCcAc_c, *hitPlayer) != 0) {
-        _ZN6Player6BounceE5Fix12IiE(hitPlayer, 0x28000);
+        hitPlayer->Bounce(0x28000);
         func_ov071_0211f498();
         return;
     }
@@ -817,7 +811,7 @@ void Scuttlebug::func_ov071_0211f29c()
         v[0] = mPosX;
         v[1] = mPosY;
         v[2] = mPosZ;
-        if (_ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(hitPlayer, v, 1, 0xc000, 1, 0, 1) != 0)
+        if (hitPlayer->Hurt(*(Vector3 *)v, 1, 0xc000, 1, 0, 1) != 0)
             SetState(4);
     }
 }

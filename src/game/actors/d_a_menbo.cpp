@@ -111,8 +111,6 @@ int   func_02035638(u8 *p);
 void  func_02035684(int *p, int v);
 
 void  func_ov002_020aea30(void *self, void *actor, void *collision);
-void  _ZN6Player6BounceE5Fix12IiE(void *p, LocFix12 f);
-void  _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void *p, void *v, int a, LocFix12 b, int d, int e, int f);
 
 extern Matrix4x3     data_020a0e68;
 extern int           data_02092138;
@@ -252,7 +250,7 @@ void func_ov090_021310b4(daMenbo_c *c)
         return;
     }
     if (c->JumpedOnByPlayer(*(dCc_c *)&c->mdCcAcPos_c, *(Player *)p)) {
-        _ZN6Player6BounceE5Fix12IiE(p, 0x28000);
+        ((Player *)p)->Bounce(0x28000);
         c->mDeathState = 1;
         func_ov002_020aea30(c, p, 0);
         return;
@@ -294,7 +292,7 @@ void func_ov090_021310b4(daMenbo_c *c)
     hurt.x = c->mPosX;
     hurt.y = c->mPosY;
     hurt.z = c->mPosZ;
-    _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(p, &hurt, 2, 0xc000, 1, 0, 1);
+    ((Player *)p)->Hurt(hurt, 2, 0xc000, 1, 0, 1);
 }
 
 #pragma opt_common_subs on

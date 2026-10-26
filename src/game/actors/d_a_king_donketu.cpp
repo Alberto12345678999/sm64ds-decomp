@@ -249,8 +249,6 @@ extern u16 data_0209e650;
 extern u16 DecIfAbove0_Short(void* p);
 extern void func_02012694(int a, void* b);
 extern int RandomIntInternal(u16* seed);
-extern int _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void *p, const Vector3 *v, u32 a, Fix12i f,
-                                                   u32 b, u32 c, u32 d);
 extern void _Z14ApproachLinearRiii(int* p, int t, int s);
 }
 extern "C" {
@@ -613,7 +611,7 @@ s32 daKing_Donketu_c::func_ov073_0211f61c()
         v2.x = c->mPosX;
         v2.y = c->mPosY;
         v2.z = c->mPosZ;
-        if (_ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(target, &v2, 0, 0x14000, 1, 0, 1) == 0)
+        if (((Player *)target)->Hurt(v2, 0, 0x14000, 1, 0, 1) == 0)
             goto done0;
     }
     {

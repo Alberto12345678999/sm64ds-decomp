@@ -69,8 +69,6 @@ extern s16 Vec3_VertAngle(Vector3 *a, Vector3 *b);
 extern void Matrix4x3_FromRotationY(void *matrix, s32 angle);
 extern void Matrix4x3_ApplyInPlaceToRotationX(void *matrix, s16 angle);
 extern void MulVec3Mat4x3(void *a, void *matrix, void *b);
-extern void _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(
-    void *, void *, unsigned int, int, unsigned int, unsigned int, unsigned int);
 }
 
 bool ApproachLinear(short &value, short target, short step);
@@ -160,7 +158,7 @@ extern "C" void func_ov090_02133710(daShark_c *self)
     pos.x = self->mPosX;
     pos.y = self->mPosY;
     pos.z = self->mPosZ;
-    _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(hit, &pos, 3, 0xc000, 1, 0, 1);
+    ((Player *)hit)->Hurt(pos, 3, 0xc000, 1, 0, 1);
 }
 
 // @symbol func_ov090_02133830

@@ -240,7 +240,6 @@ extern "C" int _ZN14dExtAnmModel_c7SetAnimEP8BCA_Fileiit(dExtAnmModel_c *, BCA_F
                                                          u16);
 int _Z14ApproachLinearRiii(int *dst, int target, int rate);
 
-int _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void* p, const Vector3* v, u32 a, s32 f, u32 b, u32 c, u32 d);
 
 void func_ov064_021163c0(daOts_c *c);
 }
@@ -585,7 +584,7 @@ void daOts_c::func_ov064_02116754()
         v.x = this->mPosX;
         v.y = this->mPosY;
         v.z = this->mPosZ;
-        if (_ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(hitPlayer, &v, 0, 0x14000, 1, 0, 1) != 0) {
+        if (((Player *)hitPlayer)->Hurt(v, 0, 0x14000, 1, 0, 1) != 0) {
             func_ov064_02115f98((char*)hitPlayer);
         }
     }

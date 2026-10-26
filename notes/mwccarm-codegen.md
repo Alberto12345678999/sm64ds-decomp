@@ -353,6 +353,31 @@ sources, 1,492 functions, not just the call-site holders. 1,486 match; the other
 that noise on any wide actor-file change and check it against base rather than
 assuming it is yours.
 
+### BATCH 5: Player's Hurt, Bounce and SpinBounce (2026-10-26)
+
+| old symbol | new symbol | addr/size |
+|---|---|---|
+| `_ZN6Player4HurtERK7Vector3j5Fix12IiEjjj` | `_ZN6Player4HurtERK7Vector3jihhh` | ov002 0x020d8e70/0x348 |
+| `_ZN6Player6BounceE5Fix12IiE` | `_ZN6Player6BounceEi` | ov002 0x020d932c/0x80 |
+| `_ZN6Player10SpinBounceE5Fix12IiE` | `_ZN6Player10SpinBounceEi` | ov002 0x020e1020/0x88 |
+
+All three are real `Player::` methods now, declared in `include/Player.h` with
+their parameters unnamed. Every caller in `src/` calls them as members.
+
+- **`Hurt`'s last three parameters are `u8`, not `u32`.** The old name said
+  `jjj`, but the body reads them with `ldrb`. Spelt `u32`, four words differ;
+  spelt `u8`, the method matches. That is the same correction
+  `ShowMessage`'s `jj` to `hh` needed: a reconstructed name can be wrong in
+  its scalar widths too, not only in the `Fix12` class.
+- **Local vector shadows need a cast at the call.** Several actors build the
+  hurt origin in a local struct of their own (`DaJgmVector3Words`, `Vec3i`,
+  `int[3]`), not a `Vector3`. `*(Vector3 *)&v` binds the reference to the
+  same address the old `&v` passed, so the bytes do not change.
+- **Including `Player.h` only renumbers labels.** `d_a_shl.cpp` held its calls
+  on the claim that the header "is +94". That number is @NNN labels, not bytes:
+  with the header included, every function matches and only the
+  `defined_symbol_renames[].from` keys in its manifest move.
+
 ### DONE for both SetAnim symbols (2026-10-22/23)
 
 `_ZN14dExtAnmModel_c7SetAnimEP8BCA_Filei5Fix12IiEj` is now

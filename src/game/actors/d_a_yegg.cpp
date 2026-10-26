@@ -93,6 +93,8 @@ struct Vector3_16f;
 #include "dCc_c.h"
 #include "Sound.h"
 #include "cstd.h"
+#include "daStar_c.h"
+#include "daBtn_c.h"
 
 struct dBgPi;
 
@@ -147,8 +149,6 @@ extern int data_0209e650;
 extern M48 data_020a0e68;
 
 extern int func_02035638(u8 *p);
-/* local extern: daStar_c::func_ov002_020e7218. This TU does not include daStar_c.h. */
-extern void _ZN8daStar_c19func_ov002_020e7218EPci(char *a, char *b, int c);
 extern char *data_ov002_021000a0[];
 extern void Matrix4x3_FromRotationZXYExt(void *m, int x, int y, int z);
 /* Was spelled `func_02123804`, a name no symbols.txt defines. ov002's relocs
@@ -157,8 +157,6 @@ extern void Matrix4x3_FromRotationZXYExt(void *m, int x, int y, int z);
    types 0xa4 and 0xa5, BATAN and BATANKING, both daBtn_c in ov079, and
    ov079's function there is daBtn_c's hit reaction, which takes the body and
    the actor that hit it -- the call's (actor, egg). */
-/* local extern: daBtn_c::func_ov079_02123804. This TU does not include daBtn_c.h. */
-extern void _ZN7daBtn_c19func_ov079_02123804EP8dActor_c(struct daBtn_c *self, dActor_c *other);
 extern int RandomIntInternal(int *seed);
 extern void _Z15ApproachLinear2Rsss(s16 *p, short a, short b);
 /* Numbering pins: func_ov002_020d5f98/020d6048 are now Player members (see
@@ -200,7 +198,6 @@ extern void Matrix4x3_ApplyInPlaceToRotationZXYExt(M48 *m, int x, int y, int z);
 extern void Matrix4x3_ApplyInPlaceToRotationXYZExt(M48 *m, int x, int y, int z);
 extern int func_ov002_020cf700(void *g);
 extern int func_ov002_020d0d2c(void *g);
-extern void _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void *self, const void *pos, u32 a, int fix, u32 b, u32 c, u32 d);
 extern void LoadBlueCoinModel(void *self);
 extern void UnloadBlueCoinModel(void *self);
 }
@@ -318,7 +315,7 @@ void daYegg_c::func_ov002_020ec670(int arg)
         if (t == 0) return;
     }
 docall:
-    _ZN7daBtn_c19func_ov079_02123804EP8dActor_c((struct daBtn_c *)actor, this);
+    ((daBtn_c *)actor)->func_ov079_02123804(this);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -1243,7 +1240,7 @@ void func_ov002_020edca4(daYegg_c* self)
         spawned =
             (char *)dActor_c::Spawn(ACTOR_SILVER_STAR, 0x10, pos, 0, self->mPlayer->mAreaId, -1);
         if (spawned != 0) {
-            _ZN8daStar_c19func_ov002_020e7218EPci((char*)spawned, (char*)self->mPlayer, 1);
+            ((daStar_c *)spawned)->func_ov002_020e7218((char *)self->mPlayer, 1);
         }
     }
 
@@ -1309,7 +1306,7 @@ int daYegg_c::func_ov002_020eddc4()
                 pos.x = mPosX;
                 pos.y = mPosY;
                 pos.z = mPosZ;
-                _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(actor, &pos, 1, 0xc000, 1, 0, 1);
+                ((Player *)actor)->Hurt(pos, 1, 0xc000, 1, 0, 1);
             }
         }
     }

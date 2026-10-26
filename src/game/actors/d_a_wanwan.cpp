@@ -79,9 +79,6 @@ void func_ov014_02112788(daWanwan_c *c);
 void func_ov014_02112ea8(void *fence);
 void func_ov102_0214ae1c(void *bomb);
 
-/* local extern: Fix12<int> by value; this scalar bridge follows the definition. */
-int _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(
-    Player *player, void *pos, unsigned kind, int power, u8 a, u8 b, u8 c);
 short atan2_hold_d_a_wanwan_1(int y, int x);
 
 void MulVec3Mat4x3(void *v, void *m, void *dst);
@@ -587,8 +584,7 @@ void func_ov014_02112114(daWanwan_c *c)
             v.x = c->mPosX;
             v.y = c->mPosY;
             v.z = c->mPosZ;
-            _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(
-                (Player *)other, &v, 3, 0xc000, 1, 0, 1);
+            ((Player *)other)->Hurt(v, 3, 0xc000, 1, 0, 1);
         }
     }
 

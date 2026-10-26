@@ -66,6 +66,7 @@ struct System {
 
 #include "common.h"
 #include "daShl_c.h"
+#include "Player.h"
 #include "SharedFilePtr.h"
 #include "dBgCh_Gnd.h"
 
@@ -119,12 +120,6 @@ int  SurfaceInfo_TestFlag0x20(int *si);
 u32  func_02022d00(u32 uniqueID, u32 effectID, Fix12i x, Fix12i y, Fix12i z,
                    void *dir);
 
-/* Including Player.h renumbers the pinned @NNN statics by 94. */
-int  _ZN6Player9IsOnShellEv(void *player);  /* local extern: Player.h is +94 */
-int  _ZN6Player7TryGrabER8dActor_c(void *player, dActor_c &actor);  /* local extern: Player.h is +94 */
-int  _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void *player, const Vector3 *v,
-                                            u32 a, Fix12i f, u8 b, u8 c,
-                                            u8 d);
 int d_a_shlNewHold(u32 uniqueID, u32 effectID, Fix12i x, Fix12i y, Fix12i z, void *dir, void *cb);
 /* local extern: these five names hold the @NNN count. Sound::PlayLong is the call. */
 void d_a_shlPlayLongHold(u32 handle, u32 a, u32 soundID, const Vector3 &pos, s16 e);
@@ -376,7 +371,7 @@ int daShl_c::func_ov102_0214d044()
 {
     /* The riderPos/angle/x/ret locals below are needed: without them the
        function is 4 bytes shorter. */
-    if (mCarrier == 0 || _ZN6Player9IsOnShellEv(mCarrier) == 0) {
+    if (mCarrier == 0 || ((Player *)mCarrier)->IsOnShell() == 0) {
         PoofDust();
         MarkForDestruction();
         return 0;
@@ -509,7 +504,7 @@ void daShl_c::func_ov102_0214cbec()
             return;
         if (!(hit & 0x1000))
             return;
-        if (_ZN6Player7TryGrabER8dActor_c(player, *this) == 0)
+        if (((Player *)player)->TryGrab(*this) == 0)
             return;
         mCarrier = player;
         func_ov102_0214d1f8(&data_ov102_0214ea58);
@@ -528,7 +523,7 @@ void daShl_c::func_ov102_0214cbec()
         v1.x = mPosX;
         v1.y = mPosY;
         v1.z = mPosZ;
-        _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(player, &v1, 1, 0xc000, 1, 0, 1);
+        ((Player *)player)->Hurt(v1, 1, 0xc000, 1, 0, 1);
         return;
     }
 
@@ -536,7 +531,7 @@ void daShl_c::func_ov102_0214cbec()
         v2.x = mPosX;
         v2.y = mPosY;
         v2.z = mPosZ;
-        _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(player, &v2, 1, 0xc000, 1, 0, 1);
+        ((Player *)player)->Hurt(v2, 1, 0xc000, 1, 0, 1);
         return;
     }
 

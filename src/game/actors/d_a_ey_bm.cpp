@@ -214,9 +214,6 @@ void daEyBm_c::UpdateShadow()
  * 0x02121ba4, size 0xc8. Player::Hurt retains the measured by-value Fix12
  * ABI seam; Player itself and all accessed fields are the real type. */
 // @symbol _ZN8daEyBm_c10HurtPlayerEv
-extern "C" void _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(
-    Player *player, const DaEyBmVector3Words *position, u32 source,
-    Fix12i amount, u32 a, u32 b, u32 c);
 
 void daEyBm_c::HurtPlayer()
 {
@@ -239,8 +236,7 @@ void daEyBm_c::HurtPlayer()
     position.x = mPosX;
     position.y = mPosY;
     position.z = mPosZ;
-    _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(
-        player, &position, 1, 0xc000, 1, 0, 1);
+    player->Hurt(*(Vector3 *)&position, 1, 0xc000, 1, 0, 1);
     SpawnDestroyEffect();
 }
 
