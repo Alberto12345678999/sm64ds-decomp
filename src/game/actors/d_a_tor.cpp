@@ -64,8 +64,8 @@ u32 d_a_torNewHold(u32 handle, u32 effect, s32 x, s32 y, s32 z, const void *dire
                    void *callback);
 void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(
     void *self, void *actor, int radius, int height, unsigned int flags, unsigned int vuln);
-void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(
-    void *self, void *actor, int radius, int height, void *a, int b);
+/* Parameter names keep this TU's @NNN. */
+typedef void BgchInitAt_(void *self, void *actor, int radius, int height, void *a, int b);
 }
 
 /* The tornado's file-scope SharedFilePtr objects, spelled through the same
@@ -308,8 +308,7 @@ int daTor_c::InitResources()
                              *(BTA_File *)data_ov024_02112968);
     mTextureTransformer.SetFile(*(BTA_File *)data_ov024_02112968, 0, 0x1000, 0);
     _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, this, 0, 0, 0x200002, 0);
-    _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(
-        &mWithMeshClsn, this, 0x50000, 0x50000, 0, 0);
+    mWithMeshClsn.Init(this, 0x50000, 0x50000, 0, 0);
 
     mHomePosX = mPosX;
     mHomePosY = mPosY;

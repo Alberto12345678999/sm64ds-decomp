@@ -405,7 +405,7 @@
       "ordinal": 54
     },
     {
-      "symbol": "_ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_",
+      "symbol": "_ZN10dBgCh_Actr4InitEP8dActor_ciiP10Vector3_16S3_",
       "address": "0x02037388",
       "size": "0x00000030",
       "legacy_source": "src/_ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_.c",

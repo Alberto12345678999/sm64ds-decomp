@@ -59,7 +59,6 @@ extern char data_ov063_0211ecb8;
  * linkage specifications, so everything they call lives here. */
 struct Vec3;
 extern "C" {
-extern void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(dBgCh_Actr *, dActor_c *, Fix12i, Fix12i, Vector3_16 *, Vector3_16 *);
 extern void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(dCcAcPos_c *, dActor_c *, const Vector3 *, Fix12i, Fix12i, unsigned int, unsigned int);
 
 extern void func_ov063_0211d88c(daPiano_c *self);
@@ -111,7 +110,7 @@ int daPiano_c::InitResources()
     mHomePos.x = mPosX;
     mHomePos.y = mPosY;
     mHomePos.z = mPosZ;
-    _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(&mWithMeshClsn, this, 0x159000, 0x159000, 0, 0);
+    mWithMeshClsn.Init(this, 0x159000, 0x159000, 0, 0);
     for (i = 0, cylinder = mCylinderClsn; i < 2; i++) {
         /* Sensor cylinders, 155.0 radius by 250.0 tall, tracking mPos.
          * 0x200004 is enemy | char-projectile: what can hit the piano.

@@ -205,7 +205,8 @@ extern int (daPropeller_Heyho_c::*data_ov070_021230f8)();
 extern void (daPropeller_Heyho_c::*data_ov070_02123100)();
 extern "C" {
 extern void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void* self, dActor_c* a, int r, int h, unsigned int e, unsigned int g);
-extern void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(void* self, dActor_c* a, int r, int h, Vector3_16* p, Vector3_16* q);
+/* Parameter names keep this TU's @NNN. */
+typedef void BgchInitAt_(void *self, dActor_c *a, int r, int h, Vector3_16 *p, Vector3_16 *q);
 extern int FlyGuy_ChangeState(daPropeller_Heyho_c* c, daPropeller_Heyho_c::State* p);
 }
 
@@ -228,7 +229,7 @@ int daPropeller_Heyho_c::InitResources()
     if (mCanSpitFire == 0xff) mCanSpitFire = 0;
     mTerminalVelocity = -0x1e000; /* -30.0 units/frame */
     _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, this, 0x3c000, 0x32000, 0x200000, 0x7eff0);
-    _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(&mWithMeshClsn, this, 0x50000, 0x3c000, 0, 0);
+    mWithMeshClsn.Init(this, 0x50000, 0x3c000, 0, 0);
     mCoinType = 1;
     mExtraCoinCount = 1;
     mHomePosX = mPosX;

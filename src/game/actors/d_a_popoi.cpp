@@ -126,7 +126,6 @@ extern void Matrix4x3_ApplyInPlaceToRotationX(void *m, int angle);
 extern void MulVec3Mat4x3(void *in, void *m, void *out);
 extern void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void*, void*, int, int, unsigned int, unsigned int);
 extern void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(void*, void*, void*, int, int, unsigned int, unsigned int);
-extern void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(void*, void*, int, int, void*, int);
 }
 
 /* Actor ID daPopoi_ACTOR_PLAYER (0xbf) is the Player. These int-returning
@@ -174,7 +173,7 @@ int daPopoi_c::InitResources()
   v.z = data_ov077_02127a5c.z;
   _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(&mdCcAcPos_c, this, &v, 0x54000, 0x32000, 0x200004, 0);
   mAngleY = mPrevAngleY;
-  _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(&mWithMeshClsn, this, 0x64000, 0x64000, 0, 0);
+  mWithMeshClsn.Init(this, 0x64000, 0x64000, 0, 0);
   mCaughtPlayer = 0;
   mHomePosX = mPosX;
   mHomePosY = mPosY;

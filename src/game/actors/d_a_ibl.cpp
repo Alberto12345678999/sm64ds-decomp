@@ -127,7 +127,6 @@ int Vec3_HorzDist(const void *a, const void *b);
 int Vec3_Equal(void *a, void *b);
 int _ZN5dCc_c6UpdateEv(void *c);
 void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *self, void *actor, int a, int b, unsigned int c, unsigned int d);
-void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(void *self, void *actor, int a, int b, void *v0, int v1);
 
 extern int IDENTITY_MATRIX4X3[];
 }
@@ -841,14 +840,14 @@ int daIbl_c::InitResources()
             mDrawScale.y = 0x800;
             mDrawScale.z = 0x800;
             _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, this, 0x1e000, 0x1e000, 0x200004, 0x3c0);
-            _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(&mWithMeshClsn, this, 0x1e000, 0x1e000, 0, 0);
+            mWithMeshClsn.Init(this, 0x1e000, 0x1e000, 0, 0);
             mKillY = -0x640000;        /* -1600 units */
         } else {
             mDrawScale.x = 0x1000;
             mDrawScale.y = 0x1000;
             mDrawScale.z = 0x1000;
             _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, this, 0x64000, 0x64000, 0x200004, 0x3c0);
-            _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(&mWithMeshClsn, this, 0x64000, 0x64000, 0, 0);
+            mWithMeshClsn.Init(this, 0x64000, 0x64000, 0, 0);
             /* Full size: scale 1.0, collider radius and height 100 units.
                Speed per frame: 25 units in sublevel 0x18, 20 in 6, else 10. */
             d = *(volatile signed char *)&data_0209f2f8;
@@ -878,7 +877,7 @@ int daIbl_c::InitResources()
         mDrawScale.y = 0x1000;
         mDrawScale.z = 0x1000;
         _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, this, 0x64000, 0x64000, 0x200004, 0x3c0);
-        _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(&mWithMeshClsn, this, 0x64000, 0x64000, 0, 0);
+        mWithMeshClsn.Init(this, 0x64000, 0x64000, 0, 0);
         _ZN10dBgCh_Actr13SetLimMovFlagEv((char *)&mWithMeshClsn);
         goto end;
     }

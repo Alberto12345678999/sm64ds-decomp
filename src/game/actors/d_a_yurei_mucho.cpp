@@ -72,8 +72,6 @@ extern int _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(Player *p, void *v, unsigned 
                                                    u8 e, u8 f);
 extern void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *self, dActor_c *a, int r, int h,
                                                       unsigned int e, unsigned int g);
-extern void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(
-    void *self, dActor_c *a, int r, int h, Vector3_16 *p, Vector3_16 *q);
 extern unsigned int RandomIntInternal(void *seed);
 extern unsigned short DecIfAbove0_Short(unsigned short *p);
 extern void ApproachAngle(void *p, short target, int a, int b, int limit);
@@ -168,7 +166,7 @@ int daYurei_Mucho_c::InitResources()
     mTerminalVelocity = -0x1e000;
     _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, this, 0x38000, 0x7e000, 0x200000, 0x7eff0);
     mAngleY = mPrevAngleY;
-    _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(&mWithMeshClsn, this, 0x46000, 0, 0, 0);
+    mWithMeshClsn.Init(this, 0x46000, 0, 0, 0);
     mCoinType = 1;
     mExtraCoinCount = 1;
     mHomePosX = mPosX;

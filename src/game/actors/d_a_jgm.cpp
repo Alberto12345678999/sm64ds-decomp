@@ -177,9 +177,9 @@ extern void Vec3_Asr(void *d, void *s, int sh);
 extern int _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
     dCcAcPos_c *collision, dActor_c *actor, const Vector3 *offset,
     Fix12i radius, Fix12i height, u32 flags, u32 vulnFlags);
-extern int _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(
-    dBgCh_Actr *collision, dActor_c *actor, Fix12i radius, Fix12i height,
-    void *a, void *b);
+/* Parameter names keep this TU's @NNN. */
+typedef int BgchInitAt_(dBgCh_Actr *collision, dActor_c *actor, Fix12i radius, Fix12i height,
+                        void *a, void *b);
 extern void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
     dActor_c *actor, dExtShadowModel_c *shadow, Matrix4x3 *matrix,
     Fix12i radius, Fix12i depth, u32 opacity);
@@ -248,8 +248,7 @@ s32 daJgm_c::InitResources()
     _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
         &mdCcAcPos_c, this, (Vector3 *)&data_ov077_02127b88,
         0x41000, 0x78000, 0x200002, 0x6eff0);
-    _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(
-        &mWithMeshClsn, this, 0x2d000, 0x2d000, 0, 0);
+    mWithMeshClsn.Init(this, 0x2d000, 0x2d000, 0, 0);
 
     mVertAccel = 0;
     mTerminalVelocity = 0;

@@ -98,7 +98,6 @@ void  _ZN12dEnemyBase_c20KillByInvincibleCharERK10Vector3_16R6Player5Fix12IiE(vo
    VALUE (6az). dBgCh_Actr::Init's header is Fix12i, which mangles as i;
    ROM is Fix12<int>. */
 void  _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *, dActor_c *a, Fix12i r, Fix12i h, unsigned int d, unsigned int e);
-void  _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(void *, dActor_c *a, Fix12i b, Fix12i c, Vector3_16 *d, Vector3_16 *e);
 
 /* Hoisted out of four member bodies.  A class member function may not sit in a
    block-scope linkage specification, so daBmb_c::State1/3/4/5 cannot carry their
@@ -218,7 +217,7 @@ int daBmb_c::InitResources()
     mScaleZ = 0x1000;
     mCarrier = 0;
     mTurnCount = 0;
-    _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(&mWithMeshClsn, this, 0x32000, 0x32000, 0, 0);
+    mWithMeshClsn.Init(this, 0x32000, 0x32000, 0, 0);
     mWithMeshClsn.StartDetectingWater();
     mShouldRender = 1;
     /* Matrix4x3* while mVariant is 2. It lives in dActor_c's pad, the word
