@@ -24,18 +24,18 @@
 //   CleanupResources and InitResources. Casting `c + (i << 9) + 0x150` to
 //   DorriePlatform * is 4 bytes longer, and `(char *)mPlatforms + (i << 9)`
 //   is 12 bytes longer.
-// - The seven parameter names on the prototypes of Matrix4x3_FromRotationY,
-//   DecIfAbove0_Short and the two mangled method externs hold the @NNN
-//   count: removing the gotos from func_ov065_021183c8 and
+// - The seven parameter names on Matrix4x3_FromRotationY,
+//   DecIfAbove0_Short and the four extra names on BgchInitAt_ hold the
+//   @NNN count: removing the gotos from func_ov065_021183c8 and
 //   func_ov065_021180d4 dropped it by 7, and these 7 names put it back.
 // - daDossyCap_c::Render tests the cap-icon flag as `(flags << 30) >> 31`.
 //   `>> 1 & 1` selects asr/ands instead of lsl/lsrs.
 // - data_ov065_* keep their address names, including the state table
 //   data_ov065_0211d7fc.
 // - func_ov065_021195bc and func_ov065_021195d0 are veneers. The first
-//   argument is not the actor. An explicit cast of &daDossy_c::method to
-//   a function pointer is rejected, so each veneer calls the method
-//   through its mangled name with the second and third arguments.
+//   argument is not the actor. Each one calls the method on the second
+//   argument with the third. An explicit cast of &daDossy_c::method to a
+//   function pointer is rejected; the member call is the tail call.
 // - The BOOL/TRUE/FALSE spelling in func_ov065_02119594 and
 //   func_ov065_0211956c stays. `bool isPlayer = other->actorID == 0xbf`
 //   shrinks each function 0x28 to 0x1c: the ROM keeps the ternary 0/1
@@ -155,7 +155,8 @@ extern void hold_d_a_dossy(void *self, void *kcl, void *mtx, Fix12i r, short s, 
 extern void func_020393d4(void* p, void* v);
 extern void func_020393c4(void* p, void* v);
 /* Parameter names keep this TU's @NNN. */
-typedef void BgchInitAt_(void *self, void *a, Fix12i r, Fix12i h, void *p, void *q);
+typedef void BgchInitAt_(void *self, void *a, Fix12i r, Fix12i h, void *p, void *q, void *holdA,
+                         void *holdB, void *holdC, void *holdD);
 extern void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void* self, void* a, Fix12i r, Fix12i h, unsigned int e, unsigned int g);
 extern void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(void* self, void* a, void* pos, Fix12i r, Fix12i h, unsigned int e, unsigned int g);
 extern int Vec3_HorzDist(void* a, void* b);
@@ -168,9 +169,6 @@ void func_ov065_02118c4c(char* c);
 int func_ov065_02119210(unsigned char* c);
 int func_ov065_021195bc(void *a, void *b, void *c);
 int func_ov065_021195d0(void *a, void *b, void *c);
-/* local extern: mwcc rejects an explicit cast of &daDossy_c::method to a function pointer. */
-extern void _ZN9daDossy_c19func_ov065_0211956cEP8dActor_c(void *self, void *other); /* local extern: veneer calls this method by its mangled name. */
-extern void _ZN9daDossy_c19func_ov065_02119594EP8dActor_c(void *self, void *other); /* local extern: veneer calls this method by its mangled name. */
 }
 
 int ApproachLinear(int &value, int target, int step);
@@ -204,17 +202,15 @@ int daDossyCap_c::OnYoshiTryEat()
 
 #pragma long_calls on
 // @symbol func_ov065_021195d0
-extern "C" int func_ov065_021195d0(void *a, void *b, void *c)
-{
-    return ((int (*)(void *, void *))_ZN9daDossy_c19func_ov065_02119594EP8dActor_c)(b, c);
+extern "C" int func_ov065_021195d0(void *a, void *b, void *c) {
+    ((daDossy_c *)b)->func_ov065_02119594((dActor_c *)c);
 }
 #pragma long_calls off
 
 #pragma long_calls on
 // @symbol func_ov065_021195bc
-extern "C" int func_ov065_021195bc(void *a, void *b, void *c)
-{
-    return ((int (*)(void *, void *))_ZN9daDossy_c19func_ov065_0211956cEP8dActor_c)(b, c);
+extern "C" int func_ov065_021195bc(void *a, void *b, void *c) {
+    ((daDossy_c *)b)->func_ov065_0211956c((dActor_c *)c);
 }
 #pragma long_calls off
 
