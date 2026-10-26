@@ -12,8 +12,8 @@
  * dExtSimpleModel_c implementation.
  *
  * THE DESTRUCTOR IS DECLARED FIRST. It is defined out of line in
- * src/engine/model/d_ext_anm2_model.cpp, which makes that file the key function
- * and emits the MI vtable group. RTTI is off there; the retail table stays
+ * src/engine/model/d_ext_model.cpp, which makes that file the key function
+ * and emits the MI vtable group with its RTTI; the retail table stays
  * externalized. See include/dExtAnmModel_c.h for why the declaration stays first.
  *
  * Func_020162C4 keeps its placeholder name, but its body is SetAnim for
@@ -45,7 +45,7 @@ struct dExtAnm2Model_c : dExtAnmModel_c {
     virtual ~dExtAnm2Model_c(); /* slots 0 (D1), 1 (D0) */
 #endif
 
-    /* DECLARED, defined out of line in src/engine/model/d_ext_anm2_model.cpp as real
+    /* DECLARED, defined out of line in src/engine/model/d_ext_model.cpp as real
      * C++ -- complete-object context, hence C1. Init list `: otherFile(0)`
      * puts the scalar store BEFORE otherAnim's implicit construction, which
      * is the ROM's schedule; a body statement would come one call too late
