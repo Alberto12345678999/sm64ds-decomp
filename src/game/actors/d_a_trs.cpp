@@ -132,7 +132,9 @@ u16 DecIfAbove0_Short(void *p);
 /* ABI seams whose header member forms do not reproduce the ROM (see notes) */
 void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(void *self, void *actor, void *pos, int r, int h, unsigned int e, unsigned int g);
 void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *self, dActor_c *actor, Fix12i radius, Fix12i height, unsigned int flags, unsigned int vulnFlags);
-void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(void *self, dActor_c *actor, Fix12i radius, Fix12i height, Vector3_16 *a, Vector3_16 *b);
+/* Parameter names keep this TU's @NNN. */
+typedef void BgchInitAt_(void *self, dActor_c *actor, Fix12i radius, Fix12i height, Vector3_16 *a,
+                         Vector3_16 *b);
 unsigned int d_a_trsNewHold(unsigned int uniqueID, unsigned int effectID, int x, int y, int z,
                             const void *dir, void *callback);
 
@@ -3437,9 +3439,9 @@ int daTrs_c::InitResources()
         mClsnOffZ = tmp598;
         _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(&mdCcAcPos_c, this, &mClsnOffX, mClsnRadius << 0xc, mClsnHeight << 0xc, 0x200000, 0x207e0);
         if (mVariant != 0xf) {
-            _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(&mWithMeshClsn, this, 0xdc000, 0xdc000, 0, 0);
+            mWithMeshClsn.Init(this, 0xdc000, 0xdc000, 0, 0);
         } else {
-            _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(&mWithMeshClsn, this, 0xc8000, 0xb4000, 0, 0);
+            mWithMeshClsn.Init(this, 0xc8000, 0xb4000, 0, 0);
         }
     } else {
         mVariant = param1 & 0xf;
@@ -3468,7 +3470,7 @@ int daTrs_c::InitResources()
         if (data_0209f2f8 == 0xc && mPosX == 0xbb8000 && mAreaId == 2) {
             mBooFlags.limitZ = 1;
         }
-        _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(&mWithMeshClsn, this, 0x32000, 0x32000, 0, 0);
+        mWithMeshClsn.Init(this, 0x32000, 0x32000, 0, 0);
     }
 
     mCarriedID = TRS_ID_END_OF;
@@ -3646,7 +3648,7 @@ int daTBasket_c::InitResources()
     mVertAccel = -0x4000;
     mTerminalVelocity = -0x46000;
     _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, this, 0x64000, 0x64000, 0x200004, 0);
-    _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(&mWithMeshClsn, this, 0x64000, 0x64000, 0, 0);
+    mWithMeshClsn.Init(this, 0x64000, 0x64000, 0, 0);
     mWithMeshClsn.SetLimMovFlag();
     mParticleID = 0;
     mSoundTimer = 0;

@@ -76,12 +76,8 @@ extern "C" SlideBoxModelFilePtr gKiSlideBoxModelFile;
 extern "C" SlideBoxClsnFilePtr gKiSlideBoxCollisionFile;
 
 extern "C" {
-/* dBgCh_Actr::Init's header takes Fix12i (= s32), so the method form
-   mangles the two radii as `i` and names
-   _ZN10dBgCh_Actr4InitEP8dActor_ciiP10Vector3_16S3_, which no object
-   defines. The ROM's is ..._5Fix12IiES3_P10Vector3_16S5_. */
-void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(
-    dBgCh_Actr *self, int actor, Fix12i radius, Fix12i height, int a, int b);
+/* Parameter names keep this TU's @NNN. */
+typedef void BgchInitAt_(dBgCh_Actr *self, int actor, Fix12i radius, Fix12i height, int a, int b);
 extern int data_ov016_02113bac[];
 extern short data_02082214[];
 extern void Matrix4x3_FromRotationXYZExt(void *mtx, int angleX, int angleY, int angleZ);
@@ -266,7 +262,7 @@ int daSlide_Box_c::InitResources()
         ->dBgW_KcMbg::SetFile((KCL_File *)(clsnFile), *(const Matrix4x3 *)(&mClsnMat), kMeshScale,
                               mAngleY, *(CLPS_Block *)(data_ov016_02113bac));
     func_020393d4(&mMeshCollider, (void *)&dBgW::UpdatePosWithTransform);
-    _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(&mWithMeshClsn, (int)this, kClsnRadius, kClsnRadius, 0, 0);
+    mWithMeshClsn.Init((dActor_c *)(int)this, kClsnRadius, kClsnRadius, 0, 0);
     mVertAccel = kGravity;
     mTerminalVelocity = kTerminalVelocity;
     mShip = 0;

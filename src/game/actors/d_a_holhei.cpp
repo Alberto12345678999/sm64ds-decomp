@@ -60,7 +60,6 @@ extern "C" {
 /* local extern: Fix12<int> by value, wall 6az. Header method homes the arg. */
 extern void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void* self, dActor_c* a, int r, int h, unsigned int e, unsigned int g);
 /* local extern: Fix12<int> by value, wall 6az. Header method homes the arg. */
-extern void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(void* self, dActor_c* a, int r, int h, Vector3_16* p, Vector3_16* q);
 /* local extern: Fix12<int> by value, wall 6az. Header method homes the arg. */
 /* local extern: Fix12<int> by value, wall 6az. Header method homes the arg. */
 extern void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(void *, dExtShadowModel_c &sm, Matrix4x3 &mtx, int a, int b, unsigned int c);
@@ -164,7 +163,7 @@ int daHolhei_c::InitResources()
     mTerminalVelocity = -0x1e000;
     _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCc_c, (dActor_c*)this, 0xc8000, 0xfa000, 0x200004, 0x3010);
     mModel.speed = 0x1000;
-    _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(&mMeshClsn, (dActor_c*)this, 0x118000, 0x118000, 0, 0);
+    mMeshClsn.Init((dActor_c *)this, 0x118000, 0x118000, 0, 0);
     mHomePosX = mPosX;
     mHomePosY = mPosY;
     mHomePosZ = mPosZ;

@@ -87,7 +87,6 @@ int   _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void *player, const void *pos, u32
    notes/agents/handoffs/pr-2450-source-review-fixes.md, compiler experiments. */
 void  _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *self, void *a, int r, int h, u32 e, u32 g);
 void  _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(void *self, void *a, const Vector3 *v, int r, int h, u32 e, u32 g);
-void  _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(void *self, void *a, int b, int c, void *d, void *e);
 
 /* -- shared tables -- */
 extern s16 data_02082214[];              /* the sin/cos table, two shorts a step */
@@ -168,7 +167,7 @@ int daPkn_c::InitResources()
     mStateTimer = 0;
     mCoinType = 3;
     mPlayerAirborne = 0;
-    _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(&mWithMeshClsn, this, 0x64000, 0x64000, 0, 0);
+    mWithMeshClsn.Init(this, 0x64000, 0x64000, 0, 0);
     mHeadClsnOffset.x = mPosX;
     mHeadClsnOffset.y = mPosY;
     mHeadClsnOffset.z = mPosZ;

@@ -70,7 +70,6 @@ extern "C" {
 void *_ZN9dBgCh_GndC1Ev(void *);
 void  _ZN9dBgCh_GndD1Ev(void *);
 int   SurfaceInfo_TestFlag0x20(void *);
-void  _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(void *, void *, s32, s32, void *, void *);
 void  _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *, void *, s32, s32, u32, u32);
 
 /* dActor_c / dEnemyBase_c, reached by their ROM names.
@@ -1549,7 +1548,7 @@ int daMip_c::InitResources()
     _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, this, 0x50000, 0x64000, 0xb00004, 0x9000);
     mTalkingPlayer = 0;
     mModelAnim.speed = 0x1000;
-    _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(&mWithMeshClsn, this, 0x28000, 0x28000, 0, 0);
+    mWithMeshClsn.Init(this, 0x28000, 0x28000, 0, 0);
     {
         PathPtr path;
         path.FromID(mPathId);

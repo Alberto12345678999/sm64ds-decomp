@@ -127,7 +127,6 @@ extern u32 d_a_kpa_fireNewHold(u32 a, u32 b, Fix12i c, Fix12i d, Fix12i e, const
 void d_a_kpa_fireNewSimpleHold(u32 id, Fix12i x, Fix12i y, Fix12i z);
 extern void d_a_kpa_firePlayLongHold(u32 a, u32 b, u32 c, void *pos, u32 d);
 extern void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *self, void *actor, int a, int b, unsigned int c, unsigned int d);
-extern void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(void *self, void *actor, int a, int b, void *v, int c);
 void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(void *thisp, void *sm, void *mtx, int rad, int t, unsigned int j);
 extern void dBgCh_Actr_UpdateDiscreteNoLava_veneer(void *p);
 
@@ -170,8 +169,9 @@ int daKpaFire_c::InitResources()
 
     _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(
         &this->mdCcAc_c, this, 0x28000, 0x50000, 0x200002, 0);   /* radius 40, height 80 units; flags 0x200002, vulnFlags 0 */
-    _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(
-        &this->mWithMeshClsn, this, 0x32000, 0x32000, 0, 0);     /* radius and height 50 units; the two Vector3_16 * args are null */
+    this->mWithMeshClsn.Init(
+        this, 0x32000, 0x32000, 0,
+        0); /* radius and height 50 units; the two Vector3_16 * args are null */
 
     /* Fix12: gravity -4.0 units per frame per frame, fall speed floor -30.0
        units per frame. The variant's init (below) may overwrite both. */

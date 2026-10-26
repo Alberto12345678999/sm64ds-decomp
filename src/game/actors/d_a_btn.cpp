@@ -135,8 +135,8 @@ void func_020393d4(void *p, void *v);
 void func_020396d0(int *, int);
 int func_ov002_020dd8b8(void *c);
 
-void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(
-    void *self, void *actor, int a, int b, void *c, void *d);
+/* Parameter names keep this TU's @NNN. */
+typedef void BgchInitAt_(void *self, void *actor, int a, int b, void *c, void *d);
 extern void hold_d_a_btn(void *mc, void *kcl, void *mtx, int fix, s16 s, void *clps);
 namespace Particle {
 struct System {
@@ -350,7 +350,7 @@ int daBtn_c::InitResources()
 
     func_020396d0((int *)&mMovingMeshCollider, 0xb50);
 
-    _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(&mWithMeshClsn, this, 0x32000, 0x32000, 0, 0);
+    mWithMeshClsn.Init(this, 0x32000, 0x32000, 0, 0);
 
     mState = 0;
     mTargetAngle = mPrevAngleY;
