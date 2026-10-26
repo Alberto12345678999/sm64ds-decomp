@@ -61,8 +61,8 @@ extern "C" {
 unsigned short DecIfAbove0_Short(unsigned short *p);
 void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(
     void *thiz, void *actor, int radius, int height, unsigned int flags, unsigned int vuln);
-void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(
-    void *thiz, void *actor, int radius, int height, void *a, int b);
+/* Parameter names keep this TU's @NNN. */
+typedef void BgchInitAt_(void *thiz, void *actor, int radius, int height, void *a, int b);
 }
 
 extern "C" {
@@ -348,8 +348,7 @@ int daSnowball_c::InitResources()
     mSpawnPosZ = mPosZ;
     mPosY += 0x32000;
     mAngleY = mPrevAngleY;
-    _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(
-        &mWithMeshClsn, this, 0x14000, 0x14000, 0, 0);
+    mWithMeshClsn.Init(this, 0x14000, 0x14000, 0, 0);
 
     func_ov081_021261d4(this, (daSnowball_StateRec *)&data_ov081_02128eb4);
     return 1;

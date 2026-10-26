@@ -116,7 +116,6 @@ extern void func_02012694(unsigned int id, const Vector3 *v);
 extern void *data_0209f318;
 extern void func_0203568c(int *p, int v);
 extern void func_02035684(int *p, int v);
-extern void dBgCh_Actr_UpdateContinuous_Veneer(void* p);
 extern int func_0200fccc(char* s, int r1);
 extern int _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
     char* self, dExtShadowModel_c* sm, struct Matrix4x3* m, int fix, int t, u32 f);
@@ -125,8 +124,8 @@ extern void *gPFlowerCloseModelFile[];
 extern void *gPFlowerOpenModelFile[];
 extern void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(
     void *self, void *act, Fix12i a, Fix12i b, unsigned int c2, unsigned int d);
-extern void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(
-    void *self, void *act, Fix12i a, Fix12i b, void *d, void *e);
+/* Parameter names keep this TU's @NNN. */
+typedef void BgchInitAt_(void *self, void *act, Fix12i a, Fix12i b, void *d, void *e);
 }
 
 // @symbol _ZN18daObjPowerUpItem_cD1Ev
@@ -265,7 +264,7 @@ void daObjPowerUpItem_c::StateLaunched()
     func_0203568c((int*)&mWithMeshClsn, 0x3c000);
     func_02035684((int*)&mWithMeshClsn, 0x3c000);
     UpdatePos((dCc_c*)&mdCcAc_c);
-    dBgCh_Actr_UpdateContinuous_Veneer((void*)&mWithMeshClsn);
+    dBgCh_Actr_UpdateContinuous_Veneer(&mWithMeshClsn);
 
     if (mWithMeshClsn.TouchesWater()) {
         pos.x = mPosX;
@@ -505,8 +504,7 @@ int daObjPowerUpItem_c::InitResources()
     mScaleZ = 0xfa0;
 
     _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, this, 0x32000, 0x64000, 0x800002, 0x8000);
-    _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(&mWithMeshClsn, this, 0x3c000,
-                                                                0x3c000, 0, 0);
+    mWithMeshClsn.Init(this, 0x3c000, 0x3c000, 0, 0);
     mWithMeshClsn.StartDetectingWater();
 
     /* ground probe: a ray starting 0x14000 above the flower */

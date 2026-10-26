@@ -81,14 +81,13 @@ extern Matrix4x3 data_020a0e68;
 extern void Matrix4x3_FromRotationY(Matrix4x3 *m, int angle);
 extern void MulVec3Mat4x3(Vector3 *v, Matrix4x3 *m, Vector3 *dst);
 extern void AddVec3(Vector3 *a, Vector3 *b, Vector3 *c);
-extern void dBgCh_Actr_UpdateContinuous_Veneer(void *p);
 extern void func_020393a4(int *p, int v);
 extern void func_02039394(int *p, int v);
 extern int Vec3_Dist(Vector3 *a, Vector3 *b);
 extern int Vec3_HorzDist(Vector3 *a, Vector3 *b);
 extern void hold_d_a_obj_pushblock(void *self, KCL_File *k, void *m, int fix, short s, void *clps);
-void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(
-    void *self, void *a, int b, int c, void *d, int e);
+/* Parameter names keep this TU's @NNN. */
+typedef void BgchInitAt_(void *self, void *a, int b, int c, void *d, int e);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -136,7 +135,7 @@ int daObjPushblock_c::InitResources()
 
     mVertAccel = -0x2000;
     mTerminalVelocity = -0x3c000;
-    _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(&mWithMeshClsn, this, 0x96000, 0x96000, 0, 0);
+    mWithMeshClsn.Init(this, 0x96000, 0x96000, 0, 0);
 
     v.x = mPosX;
     v.y = mPosY;

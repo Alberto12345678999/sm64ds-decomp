@@ -70,13 +70,13 @@ extern "C" {
 extern TikuwaModelFilePtr gRcTikuwaModelFile;
 extern TikuwaCollisionFilePtr gRcTikuwaCollisionFile;
 
-void dBgCh_Actr_UpdateContinuous_Veneer(dBgCh_Actr *clsn);
 extern void hold_d_a_obj_rc_tikuwa(dBgW_KcMbg *self, void *kcl, Matrix4x3 *mat, int scale, s16 angY,
                                    void *clps);
 void func_020393d4(dBgW *bgw, void *fn);
 void func_020393c4(dBgW *bgw, void *fn);
-void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(
-    dBgCh_Actr *clsn, dActor_c *actor, int radius, int height, void *a, void *b);
+/* Parameter names keep this TU's @NNN. */
+typedef void BgchInitAt_(dBgCh_Actr *clsn, dActor_c *actor, int radius, int height, void *a,
+                         void *b);
 }
 
 // @symbol _ZN16daObjRc_Tikuwa_cD1Ev
@@ -174,8 +174,7 @@ s32 daObjRc_Tikuwa_c::InitResources()
                               *(CLPS_Block *)(data_ov036_02112b48));
     func_020393d4(&mMeshCollider, (void *)&dBgW::UpdatePosWithVelocity);
     func_020393c4(&mMeshCollider, (void *)func_ov036_02111cc4);
-    _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(
-        &mWithMeshClsn, this, 0x32000, 0x64000, 0, 0);
+    mWithMeshClsn.Init(this, 0x32000, 0x64000, 0, 0);
     mTerminalVelocity = -0x1e000;
     mVertAccel = ~0x198;
     mHomePosX = mPosX;

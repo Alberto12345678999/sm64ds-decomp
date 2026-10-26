@@ -114,10 +114,8 @@ struct System {
 };
 }
 void func_02012694(u32 id, const void* v);
-void dBgCh_Actr_UpdateContinuous_Veneer(void* p);
 extern s16 data_02082214[];
 extern void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void* thiz, void* actor, int fix12, int t, unsigned int a, unsigned int b);
-extern void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(void* thiz, void* actor, int fix12, int t, void* vec, int last);
 }
 
 // @symbol _ZN12daFPknBall_cD1Ev
@@ -426,7 +424,7 @@ int daFPknBall_c::InitResources()
     if (mShadowModel.InitCylinder() == 0)
         return 0;
     _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, this, 0x28000, 0x50000, 0x200002, 0);
-    _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(&mWithMeshClsn, this, 0x32000, 0x32000, 0, 0);
+    mWithMeshClsn.Init(this, 0x32000, 0x32000, 0, 0);
     mWithMeshClsn.StartDetectingWater();
     mStateTimer = 0;
     unk_36a = 0;

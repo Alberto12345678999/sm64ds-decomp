@@ -201,7 +201,6 @@ extern ObjKeyStateTable data_ov089_02132cec;
  * temporary size-DIFFs (see the file comment). The ROM calls the
  * UpdateContinuous veneer, not the method. */
 extern "C" {
-extern void dBgCh_Actr_UpdateContinuous_Veneer(char *p);
 extern void *data_0209f318;
 extern int data_0209b454;
 extern void *d_a_obj_keyNewHold(u32 a, u32 b, int c, int d, int e, void *f, void *g);
@@ -232,7 +231,8 @@ extern void Vec3_LslInPlace(void *v, int sh);
 extern void AddVec3(void *d, void *a, void *b);
 extern void LoadKeyModels(int idx);
 extern void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(void *thiz, void *actor, void *pos, int r, int s, unsigned int a, unsigned int b);
-extern void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(void *thiz, void *actor, int a, int b, void *v, void *w);
+/* Parameter names keep this TU's @NNN. */
+typedef void BgchInitAt_(void *thiz, void *actor, int a, int b, void *v, void *w);
 /* An ObjKeyFile in layout, but daDemo_c::InitResources declares it `char`;
    keep that spelling so the declarations of this symbol stay in agreement. */
 extern char data_ov002_0211094c;
@@ -484,7 +484,7 @@ void daObjKey_c::StateStarJump()
         mParticleID[0] = (u32)Particle::System::New(mParticleID[0], FX_FALL, v.x, v.y, v.z, 0, 0);
     }
     if (mStep >= 2)
-        dBgCh_Actr_UpdateContinuous_Veneer((char *)&mWithMeshClsn);
+        dBgCh_Actr_UpdateContinuous_Veneer(&mWithMeshClsn);
 
     switch (mStep) {
     case 0:
@@ -625,7 +625,7 @@ void daObjKey_c::StateDrop()
     dCamera_c *cam = (dCamera_c *)data_0209f318;
     Vector3 v;
 
-    dBgCh_Actr_UpdateContinuous_Veneer((char *)&mWithMeshClsn);
+    dBgCh_Actr_UpdateContinuous_Veneer(&mWithMeshClsn);
 
     switch (mStep) {
     case 0:
@@ -917,7 +917,7 @@ int daObjKey_c::InitResources()
         offset7.y = data_ov089_02132b40.y;
         offset7.z = data_ov089_02132b40.z;
         _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(&mdCcAcPos_c, this, &offset7, CC_R, STAR_CC_H, CC_FLAGS, CC_VULN);
-        _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(&mWithMeshClsn, this, STAR_CLSN_R, 0, 0, 0);
+        mWithMeshClsn.Init(this, STAR_CLSN_R, 0, 0, 0);
         mSpinSpeed = SPIN_FAST;
         mVertAccel = 0;
         Sound::PlayBank3(SND_APPEAR, mCamSpacePos);
@@ -945,7 +945,7 @@ int daObjKey_c::InitResources()
         offset.y = data_ov089_02132ca4.y;
         offset.z = data_ov089_02132ca4.z;
         _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(&mdCcAcPos_c, this, &offset, CC_R, KEY_CC_H, CC_FLAGS, CC_VULN);
-        _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(&mWithMeshClsn, this, KEY_CLSN_R, 0, 0, 0);
+        mWithMeshClsn.Init(this, KEY_CLSN_R, 0, 0, 0);
         mVertAccel = GRAVITY;
         mSpinSpeed = 0;
     }

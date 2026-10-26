@@ -106,15 +106,14 @@ void _ZN6Player6BounceE5Fix12IiE(Player *self, int fix);
 void func_ov063_0211cae8(void *found, unsigned int mask);
 void func_0203568c(int *p, int v);
 void func_0201267c(unsigned int id, const Vector3 *pos);
-void dBgCh_Actr_UpdateContinuous_Veneer(void *c_);
 void Matrix4x3_FromRotationZXYExt(void *m, int x, int y, int z);
 void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(dActor_c *thiz, dExtShadowModel_c *sm, Matrix4x3 *mtx, int radius, int depth, u8 opacity);
 void UnloadBlueCoinModel(void *);
 void LoadBlueCoinModel(void *c);
 void func_0200f760(void *a, void *b);
-void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(
-    dBgCh_Actr *self, dActor_c *actor, int radius, int height,
-    Vector3_16 *first, Vector3_16 *second);
+/* Parameter names keep this TU's @NNN. */
+typedef void BgchInitAt_(dBgCh_Actr *self, dActor_c *actor, int radius, int height,
+                         Vector3_16 *first, Vector3_16 *second);
 void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
     dCcAcPos_c *self, dActor_c *actor, const Vector3 *offset,
     int radius, int height, u32 flags, u32 vulnFlags);
@@ -849,7 +848,7 @@ int daBook_c::InitResources()
     if (mShadowModel.InitCylinder() == 0)
         return 0;
 
-    _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(&mWithMeshClsn, this, 0x32000, 0x32000, 0, 0);
+    mWithMeshClsn.Init(this, 0x32000, 0x32000, 0, 0);
 
     mClsnOffset.x = 0;
     mClsnOffset.y = 0;

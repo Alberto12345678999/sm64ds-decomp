@@ -113,9 +113,9 @@ extern int IDENTITY_MATRIX4X3[];
 extern void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
     dCcAcPos_c *clsn, dActor_c *actor, const Vector3 *offset,
     Fix12i radius, Fix12i height, u32 flags, u32 vulnFlags);
-extern void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(
-    dBgCh_Actr *clsn, dActor_c *actor, Fix12i radius, Fix12i height,
-    Vector3_16 *a, Vector3_16 *b);
+/* Parameter names keep this TU's @NNN. */
+typedef void BgchInitAt_(dBgCh_Actr *clsn, dActor_c *actor, Fix12i radius, Fix12i height,
+                         Vector3_16 *a, Vector3_16 *b);
 }
 
 int daKrpa_c::InitResources()
@@ -133,8 +133,7 @@ int daKrpa_c::InitResources()
     _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
         &mdCcAcPos_c, this, &offset,
         0x32000, 0x64000, 0x200002, 0x8000);
-    _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(
-        &mWithMeshClsn, this, 0x32000, 0x32000, 0, 0);
+    mWithMeshClsn.Init(this, 0x32000, 0x32000, 0, 0);
 
     mVertAccel = 0;
     mTerminalVelocity = 0;
@@ -341,9 +340,6 @@ int daKrpa_c::func_ov070_02121438()
 // @symbol _ZN8daKrpa_c19func_ov070_021213ccEv
 /* The collision update veneer is retained because it is the retail call
  * destination; the rest are ordinary real class calls. */
-extern "C" {
-extern int dBgCh_Actr_UpdateDiscreteNoLava_veneer(dBgCh_Actr *clsn);
-}
 int daKrpa_c::func_ov070_021213cc() {
     this->mAngleX = this->mAngleX - 0x1000;
     this->mModelAnim.Advance();

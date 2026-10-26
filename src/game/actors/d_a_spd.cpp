@@ -84,8 +84,6 @@ void  Matrix4x3_ApplyInPlaceToRotationX(void *m, s16 angX);
 void  func_0201267c(int id, void *pos);
 void  func_02012694(int id, void *pos);
 
-void  dBgCh_Actr_UpdateDiscreteNoLava_veneer(void *p);
-
 void  _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs(void *self, const void *pos,
                                                      unsigned int count,
                                                      int value, short s);
@@ -113,9 +111,9 @@ void  _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *self, dActor_c *actor,
                                                 int radius, int height,
                                                 unsigned int flags,
                                                 unsigned int vulnFlags);
-void  _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(
-          void *self, dActor_c *actor, int radius, int height,
-          Vector3_16 *a, Vector3_16 *b);
+/* Parameter names keep this TU's @NNN. */
+typedef void BgchInitAt_(void *self, dActor_c *actor, int radius, int height, Vector3_16 *a,
+                         Vector3_16 *b);
 
 extern Matrix4x3 IDENTITY_MATRIX4X3;
 extern Mtx43     data_020a0e68;           /* scratch matrix        */
@@ -225,8 +223,7 @@ int Scuttlebug::InitResources()
         return 0;
     _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(
         &mdCcAc_c, ((dActor_c *)this), 0x46000, 0x64000, 0x200000, 0x6eff0);
-    _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(
-        &mWithMeshClsn, ((dActor_c *)this), 0x50000, 0x50000, (Vector3_16 *)0, (Vector3_16 *)0);
+    mWithMeshClsn.Init(((dActor_c *)this), 0x50000, 0x50000, (Vector3_16 *)0, (Vector3_16 *)0);
     mWithMeshClsn.StartDetectingWater();
     mHomeX = mPosX;
     mHomeY = mPosY;

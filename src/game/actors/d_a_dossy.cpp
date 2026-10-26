@@ -154,13 +154,13 @@ extern void Matrix4x3_FromRotationY(void *m, int angle);
 extern void hold_d_a_dossy(void *self, void *kcl, void *mtx, Fix12i r, short s, void *clps);
 extern void func_020393d4(void* p, void* v);
 extern void func_020393c4(void* p, void* v);
-extern void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(void* self, void* a, Fix12i r, Fix12i h, void* p, void* q);
+/* Parameter names keep this TU's @NNN. */
+typedef void BgchInitAt_(void *self, void *a, Fix12i r, Fix12i h, void *p, void *q);
 extern void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void* self, void* a, Fix12i r, Fix12i h, unsigned int e, unsigned int g);
 extern void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(void* self, void* a, void* pos, Fix12i r, Fix12i h, unsigned int e, unsigned int g);
 extern int Vec3_HorzDist(void* a, void* b);
 extern short Vec3_HorzAngle(void* a, void* b);
 extern int AngleDiff(int a, int b);
-extern void dBgCh_Actr_UpdateContinuous_Veneer(void* p);
 extern u16 DecIfAbove0_Short(void *counter);
 
 int func_ov065_021180d4(char* self);
@@ -287,8 +287,7 @@ int daDossy_c::InitResources()
     mSpawnPosY = mPosY;
     mSpawnPosZ = mPosZ;
     mPosX += 0x7d0000;
-    _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(
-        &mWithMeshClsn, this, 0x1e0000, 0xa0000, 0, 0);
+    mWithMeshClsn.Init(this, 0x1e0000, 0xa0000, 0, 0);
     _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(
         &mCylClsn1, this, 0xdc000, 0xfa000, 2, 0x20);
     {

@@ -105,7 +105,6 @@ extern "C" daOnms_cStateEntry data_ov092_02132568[9];
 
 extern "C" {
 int func_ov002_020de328(void *player);
-void dBgCh_Actr_UpdateContinuous_Veneer(void *self);
 void d_a_onmsEarthquakeHold(void *v, int f);
 /* Sound::Play(3, id, pos). The overlay calls this wrapper, not Sound::Play. */
 void func_02012694(unsigned int id, const Vector3 *v);
@@ -119,8 +118,8 @@ struct System {
 s16 Vec3_HorzAngle(const struct Vector3 *v0, const struct Vector3 *v1);
 int Vec3_HorzDist(const Vector3 *a, const Vector3 *b);
 s16 data_02082214[];
-void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(
-    dBgCh_Actr *self, int a1, int a2, int a3, int sp0, int sp1);
+/* Parameter names keep this TU's @NNN. */
+typedef void BgchInitAt_(dBgCh_Actr *self, int a1, int a2, int a3, int sp0, int sp1);
 void Vec3_Asr(Vec3 *d, Vec3 *s, int sh);
 void Matrix4x3_FromTranslation(void *m, int x, int y, int z);
 void Matrix4x3_ApplyInPlaceToRotationX(void *m, short angX);
@@ -587,8 +586,7 @@ int daOnms_c::InitResources()
     f = dExtSimpleModel_c::LoadFile(gOnimasuModelFile);
     mModel.SetFile((BMD_File *)f, 1, -1);
 
-    _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(
-        &mWithMeshClsn, (int)this, 0xfa000, 0, 0, 0);
+    mWithMeshClsn.Init((dActor_c *)(int)this, 0xfa000, 0, 0, 0);
     mWithMeshClsn.SetLimMovFlag();
 
     mMoveKind = param1 & 3;

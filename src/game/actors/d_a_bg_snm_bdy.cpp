@@ -94,7 +94,6 @@ void  Matrix4x3_FromRotationXYZExt(void *m, int x, int y, int z);
 void  func_0201267c(unsigned int id, const Vector3 *pos);
 void  func_0203568c(int *clsn, int radius);
 void  func_02035684(int *clsn, int height);
-void  dBgCh_Actr_UpdateContinuous_Veneer(void *self);
 
 void      _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
               void *self, void *shadow, void *matrix, int radius, int height,
@@ -105,8 +104,6 @@ void      _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix1
 int _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(
     Player *player, void *pos, u32 kind, int damage, u8 a, u8 b, u8 c);
 
-void  _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(
-          void *self, void *actor, int radius, int height, void *v, int c);
 void  _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *self, void *actor,
                                                 int radius, int height,
                                                 u32 flags, u32 vulnFlags);
@@ -197,8 +194,7 @@ int daBgSnmBdy_c::InitResources()
         return 0;
     _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mCylinder, this, 0x82000,
                                              0x104000, 0x800004, 0);
-    _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(
-        &mWithMeshClsn, this, 0x82000, 0x82000, 0, 0);
+    mWithMeshClsn.Init(this, 0x82000, 0x82000, 0, 0);
     pos.x = mPosX;
     pos.y = mPosY;
     pos.z = mPosZ;

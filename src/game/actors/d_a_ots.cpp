@@ -247,7 +247,6 @@ void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES
 int _ZN12dEnemyBase_c20KillByInvincibleCharERK10Vector3_16R6Player5Fix12IiE(void* c, void* v, void* player, s32 flag);
 int _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void* p, const Vector3* v, u32 a, s32 f, u32 b, u32 c, u32 d);
 void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *self, dActor_c *a, int r, int h, unsigned int d, unsigned int e);
-void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(void *self, int a, int b, int c, int d, int e);
 
 void func_ov064_021163c0(daOts_c *c);
 }
@@ -297,7 +296,8 @@ int daOts_c::InitResourcesCommon()
     tail().mHorzDecel = CONFIG(this)->horzDecel;
     tail().mModelYOffset = CONFIG(this)->modelYOffset;
     mStateTimer = 0;
-    _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(&mWithMeshClsn, (int)this, CONFIG(this)->eggAimHeight, CONFIG(this)->eggAimHeight, 0, 0);
+    mWithMeshClsn.Init((dActor_c *)(int)this, CONFIG(this)->eggAimHeight,
+                       CONFIG(this)->eggAimHeight, 0, 0);
     tail().mShadowRadius = CONFIG(this)->shadowRadius;
     mParticle1 = 0;
     mParticle0 = mParticle1;

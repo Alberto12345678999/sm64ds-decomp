@@ -123,8 +123,8 @@ extern struct Matrix4x3 data_020a0e68;
 extern unsigned short DecIfAbove0_Short(unsigned short *p);
 extern void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
     void *self, void *actor, const void *v, int d, int e, u32 f, u32 g);
-extern void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(
-    void *self, void *actor, int b, int c, void *v16, int e);
+/* Parameter names keep this TU's @NNN. */
+typedef void BgchInitAt_(void *self, void *actor, int b, int c, void *v16, int e);
 extern int atan2_hold_d_a_snowman_1(int a, int b);
 extern void Matrix4x3_FromRotationY(void *m, int ang);
 extern int Vec3_HorzLen(void *v);
@@ -1071,8 +1071,7 @@ int daSnowman_c::InitResources()
 
     mAngleY = mPrevAngleY;
     mInitAngleY = mAngleY;
-    _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(
-        &mWithMeshClsn, this, 0x14000, 0xf000, 0, 0);
+    mWithMeshClsn.Init(this, 0x14000, 0xf000, 0, 0);
 
     mCoinType = 1;
     mExtraCoinCount = 2;

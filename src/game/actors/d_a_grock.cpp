@@ -111,12 +111,8 @@ struct Vec3 {
 struct AngleWords { u16 w[3]; };
 
 extern "C" {
-/* dBgCh_Actr::Init's header takes Fix12i (= s32), so the method form
-   mangles the two radii as `i` and names
-   _ZN10dBgCh_Actr4InitEP8dActor_ciiP10Vector3_16S3_, which no object
-   defines. The ROM's is ..._5Fix12IiES3_P10Vector3_16S5_. */
-void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(
-    dBgCh_Actr *self, int actor, Fix12i radius, Fix12i height, int a, int b);
+/* Parameter names keep this TU's @NNN. */
+typedef void BgchInitAt_(dBgCh_Actr *self, int actor, Fix12i radius, Fix12i height, int a, int b);
 extern void Vec3_Asr(void *dst, void *src, int n);
 extern void Matrix4x3_FromTranslation(void *m, int x, int y, int z);
 extern void Matrix4x3_ApplyInPlaceToRotationXYZExt(void *m, short a, short b, short c);
@@ -132,7 +128,6 @@ struct System {
     static int New(unsigned, unsigned, int, int, int, const ::Vector3_16f *, Callback *);
 };
 }
-extern void dBgCh_Actr_UpdateContinuous_Veneer(void *clsn);
 extern void func_0201267c(int id, void *pos);
 extern void *d_a_grockNewHold(unsigned int prev, unsigned int effect, int x, int y, int z,
                               void *dir, void *cb);
@@ -460,7 +455,7 @@ int daGrock_c::InitResources()
         if (mShadowModel.InitCylinder() == 0)
             return 0;
 
-        _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(&mWithMeshClsn, (int)this, 0x12c000, 0, 0, 0);
+        mWithMeshClsn.Init((dActor_c *)(int)this, 0x12c000, 0, 0, 0);
         mWithMeshClsn.SetLimMovFlag();
         mRollSoundID = 0;
 

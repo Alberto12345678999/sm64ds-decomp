@@ -195,7 +195,8 @@ extern struct Matrix4x3 data_020a0e68;  /* MATRIX_SCRATCH_PAPER */
 extern void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *self, void *actor, int r, int h, unsigned int d, unsigned int e);
 /* The existing C initializer erases pointer slots to integers. Keep the
    evidenced actor view here; repairing the shared initializer is separate. */
-extern void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(void *self, void *actor, int r, int h, void *p, int q);
+/* Parameter names keep this TU's @NNN. */
+typedef void BgchInitAt_(void *self, void *actor, int r, int h, void *p, int q);
 /* The files InitResources loads and CleanupResources releases; see ANIM_*. */
 extern RNkModelFileHandle gdaRNkNokonokoModelFile;      /* the model (BMD) */
 extern RNkAnimationFileHandle data_ov062_0211e014;  /* ANIM_RUN_START */
@@ -252,7 +253,7 @@ int daRNk_c::InitResources()
     mVertAccel = -0x2000;           /* gravity: 2 units a frame squared */
     mTerminalVelocity = -0x3c000;   /* 60 units a frame */
     /* Mesh collision: 120 units by 120 units. */
-    _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(&mWithMeshClsn, this, 0x78000, 0x78000, 0, 0);
+    mWithMeshClsn.Init(this, 0x78000, 0x78000, 0, 0);
     mPathPtr.FromID(param1 & 0xf);
     mNumPathPts = mPathPtr.NumNodes();
     mCurPathPt = zero;

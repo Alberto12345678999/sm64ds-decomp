@@ -179,7 +179,6 @@ extern int func_ov002_020bec84(void *player, unsigned int i);
 extern int func_ov002_020bec9c(void *player, unsigned int a, int b, int d, unsigned short e);
 extern void _ZN6Player12ShowMessage2ER7fBase_cjPK7Vector3hh( void *player, void *actor, unsigned int msg, struct Vector3 *pos, unsigned int a, unsigned int b);
 extern void func_02012790(int id);
-extern void dBgCh_Actr_UpdateContinuous_Veneer(void* p);
 extern void _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void* thiz, void* v, unsigned a, int b, unsigned c, unsigned d, unsigned e);
 extern void _Z14ApproachLinearRiii(int* p, int a, int b);
 extern "C" unsigned int data_0209b454;
@@ -195,7 +194,9 @@ extern "C" void _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x3
 extern "C" void RebuildModelMatrix(struct daObjTatefuda_c *self);
 extern "C" void hold_d_a_obj_tatefuda(void *self, KCL_File *f, const Matrix4x3 &m, s32 fix, s16 sh,
                                       CLPS_Block &b);
-extern "C" void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_( void *self, dActor_c *a, s32 radius, s32 height, Vector3_16 *v, Vector3_16 *v2);
+/* Parameter names keep this TU's @NNN. */
+typedef void BgchInitAt_(void *self, dActor_c *a, s32 radius, s32 height, Vector3_16 *v,
+                         Vector3_16 *v2);
 extern "C" CLPS_Block data_ov002_0210d714;
 }
 
@@ -286,8 +287,7 @@ int daObjTatefuda_c::InitResources()
     mVertAccel = -0x2000;
     mTerminalVelocity = -0x3c000;
 
-    _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(
-        &mWithMeshClsn, (dActor_c*)((char *)this), 0x28000, 0x28000, 0, 0);
+    mWithMeshClsn.Init((dActor_c *)((char *)this), 0x28000, 0x28000, 0, 0);
     mWithMeshClsn.StartDetectingWater();
 
     return 1;
@@ -627,7 +627,6 @@ void daObjTatefuda_c::InitDropped()
 
 // @symbol _ZN15daObjTatefuda_c7DroppedEv
 bool ApproachLinear(short &value, short target, short step);
-extern "C" void dBgCh_Actr_UpdateContinuous_Veneer(void* p);
 
 /* DROPPED, update: turn the X angle toward 0x4000 (a quarter turn) by at most
  * 0x1000 per frame, move, and Kill the sign if it touched the ground, a wall or

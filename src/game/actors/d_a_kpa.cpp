@@ -347,7 +347,6 @@ extern PmfEnt data_ov060_0211aeb4[];
 extern void func_02012694(unsigned int id, const Vector3 *v);
 void _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void* self, const Vector3& v, u32 a, Fix12i b, u32 c, u32 d, u32 e);
 void func_02038408(void* p);
-void dBgCh_Actr_UpdateContinuous_Veneer(void* p);
 int _ZN4cstd4fdivEii(int a, int b);
 
 extern PmfEnt data_ov060_0211aed4[];
@@ -427,7 +426,8 @@ extern short data_ov060_02119294[];
 extern short data_ov060_02119296[];
 extern short data_ov060_02119298[];
 extern void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(void *self, void *act, void *pos, int c3, int d, unsigned int e, unsigned int f);
-extern void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(void *self, void *act, int a, int b, void *d1, void *d2);
+/* Parameter names keep this TU's @NNN. */
+typedef void BgchInitAt_(void *self, void *act, int a, int b, void *d1, void *d2);
 extern void func_02011d50(void *a);
 int _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *self, void *actor, int fix, int t, unsigned int e, unsigned int f);
 /* TUBUILD CONFLICT -- alternate declaration of Vec3_HorzDist, from the legacy file for func_ov060_02112434, NOT applied: int Vec3_HorzDist(const Vector3* a, const Vector3* b); */
@@ -689,8 +689,7 @@ int daKpa_c::InitResources()
     this->mVertAccel = -0x2000;
     this->mTerminalVelocity = -0x3c000;
     this->mTargetPlayer = 0;
-    _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(
-        &this->mWithMeshClsn, this, 0x50000, 0x50000, 0, 0);
+    this->mWithMeshClsn.Init(this, 0x50000, 0x50000, 0, 0);
     this->mWithMeshClsn.SetLimMovFlag();
 
     this->mState = BOWSER_STATE_IDLE;

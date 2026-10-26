@@ -113,7 +113,6 @@ struct Vector3;
 struct Vector3_16;
 
 extern "C" void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(void *self, dActor_c *a, Vector3 const &b, int c, int d, unsigned int e, unsigned int f);
-extern "C" void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(void *self, dActor_c *a, int b, int c, Vector3_16 *d, Vector3_16 *e);
 
 extern SharedFilePtr *data_ov070_021222e0[];
 extern BTA_File data_ov070_021231f4;
@@ -152,7 +151,7 @@ int daBrq_c::InitResources()
     }
 
     _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(&mdCcAcPos_c, this, data_ov070_0212365c, 0x2d000, 0x50000, 0x200002, 0x8000);
-    _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(&mWithMeshClsn, this, 0x2d000, 0x2d000, 0, 0);
+    mWithMeshClsn.Init(this, 0x2d000, 0x2d000, 0, 0);
 
     mVertAccel = 0;
     mTerminalVelocity = 0;
@@ -385,7 +384,6 @@ s32 daBrq_c::EnterDefeatedState()
 
 /* The ROM calls the interworking veneer at 0x02038420, not the direct
  * dBgCh_Actr::UpdateDiscreteNoLava body at 0x02037024. */
-extern "C" void dBgCh_Actr_UpdateDiscreteNoLava_veneer(dBgCh_Actr *collision);
 
 // @symbol _ZN7daBrq_c19UpdateDefeatedStateEv
 s32 daBrq_c::UpdateDefeatedState()

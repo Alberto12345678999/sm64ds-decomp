@@ -136,9 +136,9 @@ void _ZN12dEnemyBase_c20KillByInvincibleCharERK10Vector3_16R6Player5Fix12IiE(
 void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *self, dActor_c *owner,
                                               Fix12i radius, Fix12i height,
                                               unsigned int d, unsigned int e);
-void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(
-         void *self, dActor_c *owner, Fix12i radius, Fix12i height,
-         Vector3_16 *d, int e);
+/* Parameter names keep this TU's @NNN. */
+typedef void BgchInitAt_(void *self, dActor_c *owner, Fix12i radius, Fix12i height, Vector3_16 *d,
+                         int e);
 void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
          void *self, dExtShadowModel_c *sm, Matrix4x3 *m, Fix12i radius,
          int height, u8 flags);
@@ -188,7 +188,7 @@ s32 daShl_c::InitResources()
     mTerminalVelocity = -0x32000;  /* -50.0 */
     mStateTimer = 20;
     mCarrier = 0;
-    _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(&mMeshClsn, this, 0x28000, 0x28000, 0, 0);
+    mMeshClsn.Init(this, 0x28000, 0x28000, 0, 0);
     mMeshClsn.StartDetectingWater();
     func_ov102_0214d1f8(&data_ov102_0214ea68);
     mParticleHandle_3d4 = 0;

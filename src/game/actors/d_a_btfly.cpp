@@ -109,7 +109,6 @@ int Vec3_HorzLen(Vector3 *v);
 void Vec3_Asr(void *d, void *s, int sh);
 void Matrix4x3_FromTranslation(void *m, int x, int y, int z);
 void Matrix4x3_ApplyInPlaceToRotationY(void *m, s16 ang);
-void dBgCh_Actr_UpdateContinuous_Veneer(void *c);
 int RandomIntInternal(int *seed);
 extern int data_0209e650;
 extern s16 data_02082214[]; /* sin/cos; index (u16 angle >> 4) * 2 */
@@ -126,8 +125,8 @@ extern ButterflyState data_ov100_02148628[];
  * stack; these scalar entries are the ROM calls. */
 void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
     void *actor, void *shadow, void *mtx, int radius, int height, unsigned int opacity);
-void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(
-    void *w, void *actor, int radius, int height, void *a, void *b);
+/* Parameter names keep this TU's @NNN. */
+typedef void BgchInitAt_(void *w, void *actor, int radius, int height, void *a, void *b);
 void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
     void *c, void *actor, void *pos, int radius, int height, u32 flags, u32 vuln);
 void _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(
@@ -559,8 +558,7 @@ int daBtfly_c::InitResources()
     if (mShadowModel2.InitCylinder() == 0)
         return 0;
 
-    _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(
-        &mWithMeshClsn, this, 0x32000, 0x32000, 0, 0);
+    mWithMeshClsn.Init(this, 0x32000, 0x32000, 0, 0);
 
     Vec3 v;
     v.x = 0;

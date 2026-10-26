@@ -14,9 +14,8 @@
  * emits the retail D1/D0 pair and no D2.
  *
  * deslop leftovers:
- * - dCcPos_c::Init 6az: two by-value Fix12<int> params; the header member
- *   form homes them to the stack and size-DIFFs, so the TU-local wrapper
- *   keeps scalar ints.
+ * - dCcPos_c::Init takes scalar Fix12i. By-value Fix12<int> homes those
+ *   parameters on the stack and size-DIFFs.
  * - dCcPos_c::C1 stays a mangled extern: a language limit, not a codegen
  *   one. C++ has no syntax for a qualified constructor call on storage that
  *   already exists, and the alternative -- placement new -- needs a leaf
@@ -69,9 +68,6 @@ enum {
  * is charged with their mangled spellings. */
 extern "C" {
 void *_ZN8dCcPos_cC1Ev(void *clsn);
-void _ZN8dCcPos_c4InitERK7Vector35Fix12IiES4_jj(
-    dCcPos_c *self, const Vector3 &pos, int radius, int height, u32 flags,
-    u32 vuln);
 void Matrix4x3_FromRotationY(Matrix4x3 *m, short ang);
 /* Spelled Vector3 * for the object actually passed. The definition in
  * src/Vec3_AsrInPlace.c says int *, and the tree also carries s32 * and a
@@ -124,8 +120,7 @@ int daTree_c::InitResources()
     node->pos.z = mPosZ;
     Vec3_AsrInPlace(&node->pos, 3);
     node->pos.y += kCanopyLift;
-    _ZN8dCcPos_c4InitERK7Vector35Fix12IiES4_jj(&node->clsn, mPos, kClsnRadius, kClsnHeight,
-                                               kClsnFlags, 0);
+    node->clsn.Init(mPos, kClsnRadius, kClsnHeight, kClsnFlags, 0);
     node->next = *slot;
     *slot = node;
     if (node->next != 0) {

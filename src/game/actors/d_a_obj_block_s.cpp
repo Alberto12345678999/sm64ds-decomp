@@ -153,8 +153,8 @@ void RunningSlidingDustAt(s32, s32, s32);
 extern "C" {
 extern void d_a_obj_block_sRunningSlidingDustAtHold(s32 x, s32 y, s32 z);
 extern void hold_d_a_obj_block_s(char *thiz, int f, char *m, int fix, short s, int blk);
-extern void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(
-    char *thiz, char *actor, int b, int d, void *v, int f);
+/* Parameter names keep this TU's @NNN. */
+typedef void BgchInitAt_(char *thiz, char *actor, int b, int d, void *v, int f);
 
 extern void _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs(void *self, void *pos, unsigned int n, int speed, short ang);
 extern short _ZN8dActor_c12ReflectAngleE5Fix12IiES1_s(void *self, int a, int b, short c);
@@ -163,7 +163,6 @@ extern void _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix
 extern void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
     void *thiz, void *actor, void *vec, int fix, int t, unsigned u1, unsigned u2);
 
-extern void dBgCh_Actr_UpdateContinuous_Veneer(void *p);
 extern int SurfaceInfo_TestFlag0x20(int *p);
 extern int func_0203567c(int p);
 extern int func_ov002_020ef228(void *c, int arg);
@@ -1383,8 +1382,7 @@ int daObjBlockS_c::InitResources()
         ->dBgW_KcMbg::SetFile((KCL_File *)((int)dBgW_Kc::LoadFile(**(SharedFilePtr **)(f + 4))),
                               *(const Matrix4x3 *)((char *)&mClsnMat), 0x199, mAngleY,
                               *(CLPS_Block *)(*(int *)(f + 8)));
-    _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(
-        (char *)&mWithMeshClsn, ((char *)this), 0x28000, 0x28000, 0, 0);
+    mWithMeshClsn.Init((dActor_c *)((char *)this), 0x28000, 0x28000, 0, 0);
     mWithMeshClsn.StartDetectingWater();
     mVertAccel = -0x2000;
     mTerminalVelocity = -0x3c000;
