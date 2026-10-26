@@ -25,10 +25,8 @@ s64 _ZN4cstd11ldiv_resultEv(void);
 
 // @symbol _ZN3G3i13PerspectiveW_EiiiiiibP9Matrix4x3
 #pragma cplusplus off
-void _ZN3G3i13PerspectiveW_EiiiiiibP9Matrix4x3(
-    int sinF, int cosF, int aspect, int n, int f, int scaleW, int flag,
-    int *mtx)
-{
+void _ZN3G3i13PerspectiveW_EiiiiiibP9Matrix4x3(int sinF, int cosF, int aspect, int n, int f,
+                                               int scaleW, int flag, int *mtx) {
     int tmp;
     volatile int *port;
     int xx;

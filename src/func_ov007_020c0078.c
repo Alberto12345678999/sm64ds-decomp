@@ -45,9 +45,9 @@ void func_ov007_020c0078(char* c)
                         (cam->viewportMaxY << 24);
 
     a = (int)cam->fovy >> 4;
-    _ZN3G3i13PerspectiveW_EiiiiiibP9Matrix4x3(
-        data_02082214[a * 2], data_02082214[a * 2 + 1], (int)(cam->aspect >> 0x14), cam->nearZ,
-        cam->farZ, 0x1000, 1, cam->projMatrix);
+    _ZN3G3i13PerspectiveW_EiiiiiibP9Matrix4x3(data_02082214[a * 2], data_02082214[a * 2 + 1],
+                                              (int)(cam->aspect >> 0x14), cam->nearZ, cam->farZ,
+                                              0x1000, 1, cam->projMatrix);
 
     *(int*)0x400044c = 0;
 }

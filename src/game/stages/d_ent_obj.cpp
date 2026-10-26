@@ -61,7 +61,7 @@ namespace G3i {
 void LookAt_(const Vector3 *camPos, const Vector3 *up, const Vector3 *target, bool draw,
              Matrix4x3 *m);
 void PerspectiveW_(Fix12i sinFov, Fix12i cosFov, Fix12i aspect, Fix12i nearZ, Fix12i farZ,
-                  Fix12i scaleW, bool load, Matrix4x3 *m);
+                   Fix12i scaleW, bool load, Matrix4x3 *m);
 }
 bool ApproachLinear(short &value, short target, short step);
 void CopyToViewMat(const Matrix4x3 *m);
