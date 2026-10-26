@@ -59,10 +59,17 @@ struct OAM {
     static void Render(bool, OamAttr *, int, int, int, int, int, int, int, int);
 };
 #include "SpawnInfo.h"
+/* decl_common.h's `extern int G2[]` hides namespace G2. This TU does not
+ * reference that data symbol. */
+#define G2 G2_decl_common_shadow
 #include "decl_common.h"
+#undef G2
 #include "PlayerInput.h"
 #include "dFdBrightness_c.h"
 
+namespace G2 {
+void *GetBG2ScrPtr();
+}
 namespace G2S {
 u32 GetBG1CharPtr(void);
 unsigned short *GetBG1ScrPtr(void);
@@ -145,7 +152,6 @@ extern u8 data_0209f204;
  * Init passes the result to DecompressLZ16's void* param either way. */
 
 void *_ZN2G213GetBG2CharPtrEv(void);
-void *_ZN2G212GetBG2ScrPtrEv(void);
 void *_ZN2G212GetBG0ScrPtrEv(void);
 
 void OamRender10_d_s_game_over(s32 sub, OamAttr *data, s32 x, s32 y, s32 palette, s32 priority,
@@ -245,7 +251,7 @@ s32 dScGameOver_c::InitResources() {
     Deallocate((void *)f);
 
     f = LoadFile(ASSET_D_2D_GAME_OVER_BG_NSC_BIN);
-    DecompressLZ16(f, _ZN2G212GetBG2ScrPtrEv());
+    DecompressLZ16(f, G2::GetBG2ScrPtr());
     Deallocate((void *)f);
 
     f = LoadFile(ASSET_D_2D_UPR_TOUCH_TO_SELECT_NSC_BIN);

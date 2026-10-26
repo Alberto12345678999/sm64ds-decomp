@@ -32,7 +32,11 @@
 
 #include "dScMgFlower_c.h"
 #include "types.h"
+/* decl_common.h's `extern int G2[]` hides namespace G2. This TU does not
+ * reference that data symbol. */
+#define G2 G2_decl_common_shadow
 #include "decl_common.h"
+#undef G2
 #include "Sound.h"
 #include "G2x.h"
 #include "PlayerInput.h"
@@ -75,14 +79,16 @@ void FreeGfxSlotsById(int a);
 void *Ov004_LoadFileByPath(void *arg);
 void DecompressLZ16(int src, void *dst);
 void Ov004_Deallocate(void *ptr);
-/* G2's calls stay mangled: decl_common.h declares a global named G2. */
+/* GetBG2CharPtr stays spelled. GetBG2ScrPtr is declared with G2 below. */
 char *_ZN2G213GetBG2CharPtrEv(void);
-char *_ZN2G212GetBG2ScrPtrEv(void);
 extern int data_0208ee44;
 extern u8 data_0209d45c;
 extern u8 data_0209d454;
 }
 
+namespace G2 {
+char *GetBG2ScrPtr();
+}
 namespace G2S {
 void *GetBG2CharPtr();
 char *GetBG2ScrPtr();
@@ -578,7 +584,7 @@ s32 dScMgFlower_c::InitResources() {
     Ov004_Deallocate((void *)fileData);
 
     fileData = (int)Ov004_LoadFileByPath(&sFlowerBgUpNscPath);
-    DecompressLZ16(fileData, _ZN2G212GetBG2ScrPtrEv());
+    DecompressLZ16(fileData, G2::GetBG2ScrPtr());
     Ov004_Deallocate((void *)fileData);
 
     fileData = (int)Ov004_LoadFileByPath(&sFlowerBgDownNscPath);
