@@ -24,10 +24,7 @@ extern "C" void func_ov075_02116f40(char* c)
     /* mStepWork[1] counts frames; its bit 3 bobs the three arrows. */
     scene->mStepWork[1] += 1;
     int arrowY = (scene->mStepWork[1] & 8) ? 0xac : 0xae;
-    OAM::Render(false, &OAM::BOUNCING_ARROW, 0x40, arrowY, -1, -1, 0x1000, 0x1000, 0,
-                -1);
-    OAM::Render(false, &OAM::BOUNCING_ARROW, 0x80, arrowY, -1, -1, 0x1000, 0x1000, 0,
-                -1);
-    OAM::Render(false, &OAM::BOUNCING_ARROW, 0xc0, arrowY, -1, -1, 0x1000, 0x1000, 0,
-                -1);
+    OAM::Render(false, &OAM::BOUNCING_ARROW, 0x40, arrowY, -1, -1, 0x1000, 0x1000, 0, -1);
+    OAM::Render(false, &OAM::BOUNCING_ARROW, 0x80, arrowY, -1, -1, 0x1000, 0x1000, 0, -1);
+    OAM::Render(false, &OAM::BOUNCING_ARROW, 0xc0, arrowY, -1, -1, 0x1000, 0x1000, 0, -1);
 }

@@ -1942,8 +1942,7 @@ s32 dScMgSnowball_c::InitResources() {
     *(vu32 *)0x400101c = 0;
     *(vu16 *)0x400100e = (*(vu16 *)0x400100e & ~3) | 3;
 
-    LoadCompressedFileAt(ASSET_D_2D_MG_BG_YUKIDAMA_NCG_BIN,
-                         (u8 *)G2::GetBG2CharPtr() + 0x4000);
+    LoadCompressedFileAt(ASSET_D_2D_MG_BG_YUKIDAMA_NCG_BIN, (u8 *)G2::GetBG2CharPtr() + 0x4000);
     LoadCompressedFileAt(ASSET_D_2D_MG_BG_YUKIDAMA_NCG_BIN,
                          (void *)((unsigned)G2S::GetBG2CharPtr() + 0x4000));
     LoadCompressedFileAt(ASSET_D_2D_MG_BG_YUKA_NSC_BIN, G2::GetBG3ScrPtr());

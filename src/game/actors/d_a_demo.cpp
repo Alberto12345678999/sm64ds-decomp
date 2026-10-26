@@ -408,7 +408,8 @@ extern "C" {
    unsigned short parameters (G2x.h) narrow both, which the ROM does not
    (measured: +8 bytes in each of the three fading functions). The fixed-alpha
    calls use G2x::SetBlendAlpha. */
-extern void _ZN3G2x13SetBlendAlphaEPVttttj(volatile void *reg, unsigned short a, unsigned short b, int c, int d);
+extern void _ZN3G2x13SetBlendAlphaEPVttttj(volatile void *reg, unsigned short a, unsigned short b,
+                                           int c, int d);
 extern unsigned char data_0209d454;
 extern int RandomIntInternal(int *seed);
 extern int data_0209e650;
@@ -3459,7 +3460,7 @@ void func_ov002_020f5fe4(char* c)
     Deallocate((void*)f);
 
     f = LoadFile(ASSET_D_2D_STAFF_ROLL_END_EUR_NCL_BIN);
-    GX::LoadOBJPltt((const void*)f, 0, 0x200);
+    GX::LoadOBJPltt((const void *)f, 0, 0x200);
     Deallocate((void*)f);
 
     *(volatile u16*)0x400000e = (*(volatile u16*)0x400000e & ~3);
@@ -3470,12 +3471,12 @@ void func_ov002_020f5fe4(char* c)
     *(volatile u16*)0x400100a = (*(volatile u16*)0x400100a & 0x43) | 0x800;
 
     f = LoadFile(ASSET_D_2D_STAFF_ROLL_CAKE_4BIT_NCG_BIN);
-    DecompressLZ16(f, (void*)G2S::GetBG1CharPtr());
+    DecompressLZ16(f, (void *)G2S::GetBG1CharPtr());
     Deallocate((void*)f);
 
     f = LoadFile(ASSET_D_2D_STAFF_ROLL_CAKE_4BIT_NCL_BIN);
-    GX::LoadBGPltt((const void*)f, 0, 2);
-    GXS::LoadBGPltt((const void*)f, 0, 0x200);
+    GX::LoadBGPltt((const void *)f, 0, 2);
+    GXS::LoadBGPltt((const void *)f, 0, 0x200);
     Deallocate((void*)f);
 
     f = LoadFile(ASSET_D_2D_STAFF_ROLL_CAKE_DARK1_NSC_BIN);
@@ -3497,15 +3498,15 @@ void func_ov002_020f5fe4(char* c)
         r5 = LoadFile(ASSET_D_2D_STAFF_ROLL_CAKE_8BIT_NCG_BIN);
     }
 
-    DecompressLZ16(r5, (void*)G2S::GetBG3CharPtr());
+    DecompressLZ16(r5, (void *)G2S::GetBG3CharPtr());
     Deallocate((void*)r5);
 
     r5 = LoadFile(ASSET_D_2D_STAFF_ROLL_CAKE_8BIT_NCL_BIN);
     CP15::FlushAndInvalidateDataCache((u32)r5, 0x200);
     GX::SetBankForSubBGExtPltt(0x80);
     GXS::BeginLoadBGExtPltt();
-    GXS::LoadBGExtPltt((const void*)r5, 0x4000, 0x200);
-    GXS::LoadBGExtPltt((const void*)r5, 0x6000, 0x200);
+    GXS::LoadBGExtPltt((const void *)r5, 0x4000, 0x200);
+    GXS::LoadBGExtPltt((const void *)r5, 0x6000, 0x200);
     GXS::EndLoadBGExtPltt();
     Deallocate((void*)r5);
 
@@ -3526,7 +3527,7 @@ void func_ov002_020f5fe4(char* c)
         int f6 = LoadFile(ASSET_D_2D_STAFF_ROLL_CAKE_DOLL_NCG_BIN);
         r5 = LoadFile(ASSET_D_2D_STAFF_ROLL_CAKE_DOLL_NCL_BIN);
         DecompressLZ16(f6, (void*)0x6600000);
-        GXS::LoadOBJPltt((const void*)r5, 0, 0x200);
+        GXS::LoadOBJPltt((const void *)r5, 0, 0x200);
         Deallocate((void*)f6);
         Deallocate((void*)r5);
     }

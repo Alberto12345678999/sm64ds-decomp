@@ -20,7 +20,6 @@ void *Allocate(u32, int);
 void *Allocate(u32);
 void Deallocate(void *, Heap *);
 void Deallocate(void *);
-
 }
 
 #endif

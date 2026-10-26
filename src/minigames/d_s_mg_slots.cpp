@@ -1540,7 +1540,8 @@ s32 dScMgSlot1_c::InitResources() {
     *(volatile u16 *)0x400100e = *(volatile u16 *)0x400100e & ~0x40;
 
     LoadCompressedFileAt(ASSET_D_2D_MG_BG_SLOT_DOWN_NCG_BIN, G2S::GetBG2CharPtr());
-    LoadCompressedFileAt(ASSET_D_2D_MG_BG_SLOT_GRADE_NCG_BIN, (char *)G2S::GetBG0CharPtr() + 0x7800);
+    LoadCompressedFileAt(ASSET_D_2D_MG_BG_SLOT_GRADE_NCG_BIN,
+                         (char *)G2S::GetBG0CharPtr() + 0x7800);
     {
         int h = LoadFile(ASSET_D_2D_MG_BG_SLOT_DOWN_NCL_BIN);
         GXS::LoadBGPltt((const void *)h, 0x60, 0x1a0);

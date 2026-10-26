@@ -16,8 +16,6 @@
  *   class, and the bodies only touch this object's fields.
  * - data_020a0e5a stays u16[][2]. The flat u16[i*2] form costs
  *   func_ov003_020ae358 seventeen words.
- * - OAM::Render and the G3i/G2/GX calls stay mangled. They take
- *   class arguments by value.
  * - The bytes after the dExtSimpleModel_c pair stay offset macros. The header
  *   still holds that tail as opaque storage.
  *
@@ -296,8 +294,7 @@ void dScStarSel_c::func_ov003_020ae238() {
         x = 0x10;
         y = 0xac;
     }
-    OAM::Render(0, OAM::LIFE_ICONS[LIFE_ICON(this)], x, y + 8, -1, -1, 0x1000,
-                0x1000, 0, -1);
+    OAM::Render(0, OAM::LIFE_ICONS[LIFE_ICON(this)], x, y + 8, -1, -1, 0x1000, 0x1000, 0, -1);
     OAM::Render(0, &OAM::TIMES, x + 0x10, y + 8, -1, -1, 0);
     func_ov003_020ae1a4((unsigned short)data_0209f2f4[0]);
     {
@@ -471,8 +468,7 @@ s32 dScStarSel_c::Render() {
         levelNum = SublevelToLevel(data_02092110) + 1;
         if (levelNum <= 0xf) {
             if (levelNum >= 10) {
-                OAM::Render(0, OAM::NUMBERS[levelNum / 10], numX = 0x77, 0x7a, 8, -1,
-                            0);
+                OAM::Render(0, OAM::NUMBERS[levelNum / 10], numX = 0x77, 0x7a, 8, -1, 0);
                 numX += 9;
             } else {
                 numX = 0x7c;

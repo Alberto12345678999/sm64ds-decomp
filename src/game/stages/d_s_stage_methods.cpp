@@ -637,16 +637,12 @@ void dScStage_c::RenderBouncingArrows() {
     A = data_0209f2c4;
     if ((A == 0 && data_0209f284 != 0 && (int)(data_0209f2d8 == 1) == 0) ||
         (A != 0 && (unsigned char)(data_0209f248 + 0xf7) <= 2u)) {
-        OAM::Render(0, &OAM::BOUNCING_ARROW, 0x40, r4, -1, -1, 0x1000, 0x1000, 0,
-                    -1);
-        OAM::Render(0, &OAM::BOUNCING_ARROW, 0x80, r4, -1, -1, 0x1000, 0x1000, 0,
-                    -1);
-        OAM::Render(0, &OAM::BOUNCING_ARROW, 0xc0, r4, -1, -1, 0x1000, 0x1000, 0,
-                    -1);
+        OAM::Render(0, &OAM::BOUNCING_ARROW, 0x40, r4, -1, -1, 0x1000, 0x1000, 0, -1);
+        OAM::Render(0, &OAM::BOUNCING_ARROW, 0x80, r4, -1, -1, 0x1000, 0x1000, 0, -1);
+        OAM::Render(0, &OAM::BOUNCING_ARROW, 0xc0, r4, -1, -1, 0x1000, 0x1000, 0, -1);
     } else {
         OAM::Render(0, &OAM::BOUNCING_ARROW, 0xc, r4, -1, -1, 0x1000, 0x1000, 0, -1);
-        OAM::Render(0, &OAM::BOUNCING_ARROW, 0xf4, r4, -1, -1, 0x1000, 0x1000, 0,
-                    -1);
+        OAM::Render(0, &OAM::BOUNCING_ARROW, 0xf4, r4, -1, -1, 0x1000, 0x1000, 0, -1);
     }
 }
 // @symbol _ZN10dScStage_c9LC_RenderEv
@@ -1094,21 +1090,21 @@ void dScStage_c::PS_Render() {
         }
         if (data_0209f248 == 1 && data_0209f2f0 == 0) {
             if (data_0209f238 == 1) {
-                OAM::Render(0, &OAM::ARROW_POINTING_LEFT, 0x12, 0x60, -1, -1,
-                            0x1000, 0x1000, 0, -1);
+                OAM::Render(0, &OAM::ARROW_POINTING_LEFT, 0x12, 0x60, -1, -1, 0x1000, 0x1000, 0,
+                            -1);
                 OAM::RenderSub(&OAM::ARROW_POINTING_LEFT, 0x12, 0x10);
             } else {
-                OAM::Render(0, &OAM::ARROW_POINTING_LEFT, 0x14, 0x60, -1, -1,
-                            0x1000, 0x1000, 0, -1);
+                OAM::Render(0, &OAM::ARROW_POINTING_LEFT, 0x14, 0x60, -1, -1, 0x1000, 0x1000, 0,
+                            -1);
                 OAM::RenderSub(&OAM::ARROW_POINTING_LEFT, 0x14, 0x10);
             }
             if (data_0209f238 == 2) {
-                OAM::Render(0, &OAM::ARROW_POINTING_RIGHT, 0xee, 0x60, -1, -1,
-                            0x1000, 0x1000, 0, -1);
+                OAM::Render(0, &OAM::ARROW_POINTING_RIGHT, 0xee, 0x60, -1, -1, 0x1000, 0x1000, 0,
+                            -1);
                 OAM::RenderSub(&OAM::ARROW_POINTING_RIGHT, 0xee, 0x10);
             } else {
-                OAM::Render(0, &OAM::ARROW_POINTING_RIGHT, 0xec, 0x60, -1, -1,
-                            0x1000, 0x1000, 0, -1);
+                OAM::Render(0, &OAM::ARROW_POINTING_RIGHT, 0xec, 0x60, -1, -1, 0x1000, 0x1000, 0,
+                            -1);
                 OAM::RenderSub(&OAM::ARROW_POINTING_RIGHT, 0xec, 0x10);
             }
         }
@@ -1118,12 +1114,10 @@ void dScStage_c::PS_Render() {
             if (var_r8 != 0) {
                 do {
                     if (IsStarCollected(data_0209f2c8, var_sl) != 0) {
-                        OAM::Render(false, &OAM::MM_SMALL_STAR, var_sb, 0x60, -1,
-                                    -1, 0);
+                        OAM::Render(false, &OAM::MM_SMALL_STAR, var_sb, 0x60, -1, -1, 0);
                         var_r7 = (var_r7 + 1) & 0xff;
                     } else {
-                        OAM::Render(false, &OAM::SMALL_STAR_EMPTY, var_sb, 0x60, -1,
-                                    -1, 0);
+                        OAM::Render(false, &OAM::SMALL_STAR_EMPTY, var_sb, 0x60, -1, -1, 0);
                         sp18 = 1;
                     }
                     var_sb += 0x10;
@@ -1166,22 +1160,20 @@ void dScStage_c::PS_Render() {
         if (data_0209f2e0 == 3) {
             if (data_0209f29c == 0) {
                 if (GetOwnerLanguage() == 5) {
-                    OAM::Render(true, &OAM::TINY_STAR, 0x46,
-                                ((data_0209f2e0 * 5) + 6) * 8, -1, -1, 0);
+                    OAM::Render(true, &OAM::TINY_STAR, 0x46, ((data_0209f2e0 * 5) + 6) * 8, -1, -1,
+                                0);
                 } else if (GetOwnerLanguage() == 3) {
-                    OAM::Render(true, &OAM::TINY_STAR, 0x4e,
-                                ((data_0209f2e0 * 5) + 6) * 8, -1, -1, 0);
+                    OAM::Render(true, &OAM::TINY_STAR, 0x4e, ((data_0209f2e0 * 5) + 6) * 8, -1, -1,
+                                0);
                 } else {
-                    OAM::Render(true, &OAM::TINY_STAR, 0x56,
-                                ((data_0209f2e0 * 5) + 6) * 8, -1, -1, 0);
+                    OAM::Render(true, &OAM::TINY_STAR, 0x56, ((data_0209f2e0 * 5) + 6) * 8, -1, -1,
+                                0);
                 }
             } else {
-                OAM::Render(true, &OAM::TINY_STAR, 0xce,
-                            ((data_0209f2e0 * 5) + 6) * 8, -1, -1, 0);
+                OAM::Render(true, &OAM::TINY_STAR, 0xce, ((data_0209f2e0 * 5) + 6) * 8, -1, -1, 0);
             }
         } else {
-            OAM::Render(true, &OAM::TINY_STAR, 0x26, ((data_0209f2e0 * 5) + 6) * 8,
-                        -1, -1, 0);
+            OAM::Render(true, &OAM::TINY_STAR, 0x26, ((data_0209f2e0 * 5) + 6) * 8, -1, -1, 0);
         }
         if (GetOwnerLanguage() == 5) {
             OAM::Render(0, (OamAttr *)data_ov001_020abd98[data_0209f2dc], 0x80, 0x60, -1, -1,
@@ -1203,8 +1195,8 @@ void dScStage_c::PS_Render() {
                         0x1000, 0x1000, 0, -1);
             return;
         }
-        OAM::Render(0, OAM::CONTROLLER_MODE_TEXTS[data_0209f2dc], 0x80, 0x60, -1,
-                    -1, 0x1000, 0x1000, 0, -1);
+        OAM::Render(0, OAM::CONTROLLER_MODE_TEXTS[data_0209f2dc], 0x80, 0x60, -1, -1, 0x1000,
+                    0x1000, 0, -1);
         return;
     }
 
@@ -1225,8 +1217,7 @@ void dScStage_c::PS_Render() {
             OAM::Render(true, &OAM::TINY_STAR, 0xce, 0xa8, -1, -1, 0);
         }
     } else {
-        OAM::Render(true, &OAM::TINY_STAR, 0xe, ((data_0209f2e0 * 6) + 7) * 8, -1,
-                    -1, 0);
+        OAM::Render(true, &OAM::TINY_STAR, 0xe, ((data_0209f2e0 * 6) + 7) * 8, -1, -1, 0);
     }
 
     if (data_0209f238 == 2) {
@@ -3060,8 +3051,7 @@ void dScStage_c::RenderVsModeNewStar() {
             OAM::Render(0, (OamAttr *)data_ov002_0210d188, 0x80, 0x30, -1, -1, 0x1000, 0x1000, 0,
                         -1);
         else
-            OAM::Render(0, &OAM::VS_NEW_STAR_APPEARED, 0x80, 0x30, -1, -1, 0x1000,
-                        0x1000, 0, -1);
+            OAM::Render(0, &OAM::VS_NEW_STAR_APPEARED, 0x80, 0x30, -1, -1, 0x1000, 0x1000, 0, -1);
         if (data_0209f1f4 != 0)
             return;
         func_02012790(0x2c);
@@ -5109,14 +5099,16 @@ void dScStage_c::LoadGraphics2D(bool vsMode, int sublevel) {
         volatile u16 blankTile = 0;
         MultiStore16(blankTile, screenMap, 0x40);
         LoadCompressedFileAt(ASSET_D_2D_FRAMEWORK_SELECT_PAUSE_NSC_BIN, screenMap + 0x40);
-        LoadCompressedFileAt(ASSET_D_2D_FRAMEWORK_PAGE_NSC_BIN, (char *)G2::GetBG2ScrPtr() + 0x1800);
+        LoadCompressedFileAt(ASSET_D_2D_FRAMEWORK_PAGE_NSC_BIN,
+                             (char *)G2::GetBG2ScrPtr() + 0x1800);
         LoadCompressedFileAt(ASSET_D_2D_UPR_TOUCH_TO_SELECT_NSC_BIN,
                              (char *)G2::GetBG2ScrPtr() + 0x2800);
         LoadCompressedFileAt(0x9802, screenMap + 0x2800);
         return;
     }
 
-    LoadCompressedFileAt(ASSET_D_2D_UPR_TOUCH_TO_SELECT_NSC_BIN, (char *)G2::GetBG2ScrPtr() + 0x1800);
+    LoadCompressedFileAt(ASSET_D_2D_UPR_TOUCH_TO_SELECT_NSC_BIN,
+                         (char *)G2::GetBG2ScrPtr() + 0x1800);
     LoadCompressedFileAt(ASSET_D_2D_FRAMEWORK_SELECT_PAUSE_NSC_BIN, screenMap);
 }
 

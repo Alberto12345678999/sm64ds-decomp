@@ -1084,7 +1084,9 @@ void dScMgBase_c::PaintSquare(int cx, int cy, int colour, int size) {
                     switch (mBrushLayer) {
                     case 0: base = func_02054efc(); break;
                     case 1: base = func_02054ea8(); break;
-                    case 2: base = (int *)G2::GetBG2CharPtr(); break;
+                    case 2:
+                        base = (int *)G2::GetBG2CharPtr();
+                        break;
                     case 3: base = func_02054d88(); break;
                     default: return;
                     }
@@ -1095,10 +1097,18 @@ void dScMgBase_c::PaintSquare(int cx, int cy, int colour, int size) {
                     if (yrow >= 0xc0)
                         goto inc;
                     switch (mBrushLayer) {
-                    case 0: base = (int *)G2S::GetBG0CharPtr(); break;
-                    case 1: base = (int *)G2S::GetBG1CharPtr(); break;
-                    case 2: base = (int *)G2S::GetBG2CharPtr(); break;
-                    case 3: base = (int *)G2S::GetBG3CharPtr(); break;
+                    case 0:
+                        base = (int *)G2S::GetBG0CharPtr();
+                        break;
+                    case 1:
+                        base = (int *)G2S::GetBG1CharPtr();
+                        break;
+                    case 2:
+                        base = (int *)G2S::GetBG2CharPtr();
+                        break;
+                    case 3:
+                        base = (int *)G2S::GetBG3CharPtr();
+                        break;
                     default: return;
                     }
                 }
@@ -1529,8 +1539,11 @@ extern "C" u8 data_0209d458;
 }
 }
 
-void dScMgBase_c::RestoreScreenFromMenu()
-{ using s20aeed8::data_0209d454; using s20aeed8::data_0209d458; using s20aeed8::data_0209d45c; using s20aeed8::data_0209d460;
+void dScMgBase_c::RestoreScreenFromMenu() {
+    using s20aeed8::data_0209d454;
+    using s20aeed8::data_0209d458;
+    using s20aeed8::data_0209d45c;
+    using s20aeed8::data_0209d460;
     MgMenuSaveArea *save = (MgMenuSaveArea *)this;
 
     data_0209d45c = 0;
@@ -1638,8 +1651,13 @@ extern "C" unsigned char data_0209d454;
 }
 }
 
-int dScMgBase_c::SaveScreenForMenu()
-{ using s20af094::DecompressLZ16; using s20af094::GetGameLanguage; using s20af094::MultiStore16; using s20af094::data_0209d454; using s20af094::data_0209d45c; using s20af094::func_0201f32c;
+int dScMgBase_c::SaveScreenForMenu() {
+    using s20af094::DecompressLZ16;
+    using s20af094::GetGameLanguage;
+    using s20af094::MultiStore16;
+    using s20af094::data_0209d454;
+    using s20af094::data_0209d45c;
+    using s20af094::func_0201f32c;
     MgMenuSaveArea *save = (MgMenuSaveArea *)this;
 
     if (GetDisplayMode() != 0)
@@ -3746,8 +3764,10 @@ extern unsigned char data_0209d454[];
 }
 }
 
-int dScMgBase_c::InitSubScreenBg()
-{ using s20b2880::GetGameLanguage; using s20b2880::LoadCompressedFileAt; using s20b2880::data_0209d454;
+int dScMgBase_c::InitSubScreenBg() {
+    using s20b2880::GetGameLanguage;
+    using s20b2880::LoadCompressedFileAt;
+    using s20b2880::data_0209d454;
     int f;
     *(volatile unsigned short *)0x400100a = (*(volatile unsigned short *)0x400100a & 0x43) | 0x10;
     *(volatile unsigned short *)0x400100a = *(volatile unsigned short *)0x400100a & ~0x40;
@@ -3779,7 +3799,9 @@ void Mg_ResetBgOffsets(void) {
 // @symbol Mg_DisableAllBanks
 namespace s20b2980 {
 extern "C" {
-void Mg_DisableAllBanks(void) { GX::DisableAllBanks(); }
+void Mg_DisableAllBanks(void) {
+    GX::DisableAllBanks();
+}
 }
 }
 

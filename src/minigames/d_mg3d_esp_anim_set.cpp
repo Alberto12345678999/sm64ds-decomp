@@ -1543,11 +1543,11 @@ s32 dScMg3DEsp_c::InitResources()
     *(volatile unsigned short*)0x400100c = (*(volatile unsigned short*)0x400100c & 0x43) | 0x210;
 
     f = LoadFile(0x12);
-    DecompressLZ16((void*)f, (void*)((unsigned)G2S::GetBG2CharPtr() + 0x4000));
+    DecompressLZ16((void *)f, (void *)((unsigned)G2S::GetBG2CharPtr() + 0x4000));
     Deallocate((void*)f);
 
     f = LoadFile(0x13);
-    GXS::LoadBGPltt((const void*)f, 0x1e0, 0x20);
+    GXS::LoadBGPltt((const void *)f, 0x1e0, 0x20);
     Deallocate((void*)f);
 
     f = LoadFile(0x14);
@@ -1557,7 +1557,7 @@ s32 dScMg3DEsp_c::InitResources()
     r5v = LoadFile(8);
     r4v = LoadFile(9);
     DecompressLZ16((void*)r5v, (void*)0x6600000);
-    GXS::LoadOBJPltt((const void*)r4v, 0, 0x100);
+    GXS::LoadOBJPltt((const void *)r4v, 0, 0x100);
     Deallocate((void*)r5v);
     Deallocate((void*)r4v);
 

@@ -820,7 +820,7 @@ extern "C" void func_02033390(int sub)
         int *dst = (int*)(func_02054d88() + 0x4000);
         v = 0;
         MultiStore_Int(v, dst, 0x2000);
-        MultiStore16(fill = 0x2ff, (char*)G2::GetBG3ScrPtr(), 0x800);
+        MultiStore16(fill = 0x2ff, (char *)G2::GetBG3ScrPtr(), 0x800);
     } else {
         volatile u16 fill;
         volatile s32 v;
@@ -911,7 +911,7 @@ extern "C" void func_02033464(int arg0, int arg1, int arg2)
         func_020319fc(0xc);
     } else {
         data_0209fc94 = 0;
-        d = (char*)G2::GetBG3ScrPtr() + (arg0 << 1);
+        d = (char *)G2::GetBG3ScrPtr() + (arg0 << 1);
         sv2 = 0x2ff;
         MultiStore16(sv2, d, 0x80);
         func_02031028(0);
@@ -936,7 +936,7 @@ extern "C" void func_02033464(int arg0, int arg1, int arg2)
             liC = 0;
             MultiStore_Int(liC, dst, 0x300);
         }
-        base = (volatile u16*)((char*)G2::GetBG3ScrPtr() + ((arg0 + (data_0209fc7c >> 3)) << 1));
+        base = (volatile u16 *)((char *)G2::GetBG3ScrPtr() + ((arg0 + (data_0209fc7c >> 3)) << 1));
         { u32 ch = data_0209fc78;
         x = ch + 0x200;
         v1 = ch + 0x20c; }
@@ -1109,7 +1109,7 @@ extern "C" void func_02033bb8(int param0)
     func_02034098();
     n = data_0209fc88;
     m = (n + 7) / 8;
-    scr = (short*)((char*)G2::GetBG2ScrPtr() + 0x40 + (16 - m / 2) * 2);
+    scr = (short *)((char *)G2::GetBG2ScrPtr() + 0x40 + (16 - m / 2) * 2);
     i = 0;
     if (m > 0) {
         int v2 = m + 0x280;

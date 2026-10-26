@@ -1093,7 +1093,7 @@ void dScMgTeresa_c::TouchTestBoo(int idx)
     for (i = 0; i < 5; i++) {
         x = (mBoos[idx].mX >> 12) - sTeresaBooTouchOffsets[i * 2];
         y = (mBoos[idx].mY >> 12) - sTeresaBooTouchOffsets[i * 2 + 1];
-        r = ((int (*)[8])(char *)G2S::GetBG0CharPtr())[(x >> 3) + ((y >> 3) << 5)];
+        r = ((int(*)[8])(char *)G2S::GetBG0CharPtr())[(x >> 3) + ((y >> 3) << 5)];
         word = r[y & 7];
         if (((word >> ((x & 7) << 2)) & 0xf) == 0) {
             count++;

@@ -161,7 +161,7 @@ void SysTracker::Initialise()
     }
 
     {
-        char* base = (char*)Memory::operator_new2(allocSize);
+        char *base = (char *)Memory::operator_new2(allocSize);
         char* end = base + allocSize;
         data_0209ee80 = base;
         data_0209ee78 = base;
@@ -182,7 +182,7 @@ void SysTracker::Initialise()
     } else {
         char* hdr = (char*)(int)M(data_02075f14);
         unsigned int size = (unsigned int)M(*(unsigned int*)(hdr + 4) >> 8);
-        void* dst = Memory::Allocate(size);
+        void *dst = Memory::Allocate(size);
         DecompressLZ16(hdr + 4, dst);
         CP15::FlushDataCache((unsigned int)dst, size);
         mResourceFile = dst;

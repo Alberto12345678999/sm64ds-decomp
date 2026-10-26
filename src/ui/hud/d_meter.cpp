@@ -774,8 +774,7 @@ void dMeter_c::RenderVsTimer() {
         } else {
             int ones = t % 10;
             if (ones > 3) {
-                OAM::Render(0, OAM::VS_YELLOW_NUMBERS[ones], 0x7c, mVsTimerY, -1, -1, 0x1000,
-                            0);
+                OAM::Render(0, OAM::VS_YELLOW_NUMBERS[ones], 0x7c, mVsTimerY, -1, -1, 0x1000, 0);
             } else {
                 OAM::Render(false, data_ov002_0210ca0c[3 - ones], 0x84, mVsTimerY, -1, -1, 0);
             }
@@ -1029,8 +1028,8 @@ void dMeter_c::RenderLifeCount() {
     unsigned char state = data_ov002_02111178;
 
     if (state >= 3 && state < 6) {
-        OAM::Render(0, OAM::LIFE_ICONS[player->mCharacter], mLifeCountX, 0xa, -1, 1, 0x1000,
-                    0x1000, 0, -1);
+        OAM::Render(0, OAM::LIFE_ICONS[player->mCharacter], mLifeCountX, 0xa, -1, 1, 0x1000, 0x1000,
+                    0, -1);
         OAM::Render(false, &OAM::TIMES, mLifeCountX + 0x10, 0xa, -1, 1, 0);
         CalculateDigits((unsigned short)data_0209f2f4);
         int x = mLifeCountX + 0x18;

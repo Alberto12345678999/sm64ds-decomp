@@ -76,7 +76,6 @@ extern void *func_02043810(void *p);
    Memory::Allocate and Memory::Deallocate come from include/Memory.h;
    data_020a0eac, the actor heap they are handed, comes from
    include/fBase_c.h, which needs it for its inline operator delete. */
-
 }
 
 /* aliveState is 0 before the actor joins the lists, 1 while it is alive

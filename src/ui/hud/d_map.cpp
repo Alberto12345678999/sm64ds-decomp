@@ -397,8 +397,8 @@ int dMap_c::Render()
                 this->mArrowMatrixB = (s16)FX_MUL(cn, this->mArrowScale);
                 this->mArrowMatrixC = -this->mArrowMatrixB;
                 this->mArrowMatrixD = this->mArrowMatrixA;
-                OAM::Render(1, &OAM::MM_ARROW, this->mPlayerIconX[idx],
-                            this->mPlayerIconY[idx], -1, 2, this->mArrowScale, ang);
+                OAM::Render(1, &OAM::MM_ARROW, this->mPlayerIconX[idx], this->mPlayerIconY[idx], -1,
+                            2, this->mArrowScale, ang);
             }
             {
                 for (i = 0, j = 0; i < 4; i++, j += 4) {
@@ -408,9 +408,10 @@ int dMap_c::Render()
                             int x = this->mPlayerIconX[i];
                             if (ICON_X_VISIBLE(x)) {
                                 if (data_ov002_02111148 == this->mPlayerMapIDs[i]) {
-                                    OAM::RenderSub(OAM::MM_VS_PLAYER_ICONS_S
-                                                       [j + ((Player *)data_0209f394[i])->param1],
-                                                   x, y, -1, 2);
+                                    OAM::RenderSub(
+                                        OAM::MM_VS_PLAYER_ICONS_S[j + ((Player *)data_0209f394[i])
+                                                                          ->param1],
+                                        x, y, -1, 2);
                                 }
                             }
                         }
@@ -428,8 +429,8 @@ int dMap_c::Render()
                         icon = player->mCharacter * 4 + 3;
                     else
                         icon = player->param1 + player->mCharacter * 4;
-                    OAM::RenderSub(OAM::MM_PLAYER_ICONS[icon],
-                                   this->mPlayerIconX[idx], this->mPlayerIconY[idx], -1, 2);
+                    OAM::RenderSub(OAM::MM_PLAYER_ICONS[icon], this->mPlayerIconX[idx],
+                                   this->mPlayerIconY[idx], -1, 2);
                 }
                 if (data_0209caa0[2] & 0x80) {
                     u8 s = this->mArrowType;
@@ -478,9 +479,7 @@ int dMap_c::Render()
                                     if (ICON_Y_VISIBLE(y)) {
                                         int x = this->mStarIconX[i];
                                         if (ICON_X_VISIBLE(x)) {
-                                            OAM::RenderSub(
-                                                OAM::MM_STAR_MARKERS[icon], x, y,
-                                                -1, 2);
+                                            OAM::RenderSub(OAM::MM_STAR_MARKERS[icon], x, y, -1, 2);
                                         }
                                     }
                                 }

@@ -41,10 +41,9 @@ struct G2x {
        them: (reg, val, amt), (reg, firstTarget, secondTarget, firstAlpha,
        secondAlpha) and (reg, m, a, b, c, d). */
     static void SetBlendBrightness(volatile unsigned short *, unsigned short, short);
-    static void SetBlendAlpha(volatile unsigned short *, unsigned short,
-                              unsigned short, unsigned short, unsigned int);
-    static void SetBGyAffine(volatile unsigned short *, Matrix2x2 *,
-                             int, int, int, int);
+    static void SetBlendAlpha(volatile unsigned short *, unsigned short, unsigned short,
+                              unsigned short, unsigned int);
+    static void SetBGyAffine(volatile unsigned short *, Matrix2x2 *, int, int, int, int);
 #endif
 };
 

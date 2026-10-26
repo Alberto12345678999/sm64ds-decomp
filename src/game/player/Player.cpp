@@ -6036,7 +6036,7 @@ int Player::St_Teleport_Main()
         }
         break;
     }
-    G2x::SetBlendBrightness((volatile u16*)0x4000050, 0x3f, mStateWork);
+    G2x::SetBlendBrightness((volatile u16 *)0x4000050, 0x3f, mStateWork);
     Player_AdvanceAnims(((char*)this));
     return 1;
 }
@@ -24552,7 +24552,7 @@ Ld0:
     mTrailPos =
         (Vector3 *)func_02073470(0x32, 0xc, 8, (void *)func_0203d384, (void *)_ZN7Vector3D1Ev);
     mTrailFlags = (u8 *)Memory::operator_new2(0x32);
-    *(void**)(&mHeldObjQueue) = Memory::operator_new2(0x14);
+    *(void **)(&mHeldObjQueue) = Memory::operator_new2(0x14);
     __builtin__clear((void*)mHeldObjQueue, 0x14);
     mScaleX = 0x1000;
     mScaleY = 0x1000;
