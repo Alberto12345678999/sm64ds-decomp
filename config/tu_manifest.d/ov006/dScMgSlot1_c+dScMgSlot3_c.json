@@ -577,7 +577,7 @@
     {
       "symbol": "_ZN12dScMgSlot3_cD2Ev",
       "disposition": "deadstrip",
-      "reason": "Homeless, and independently of the dScMgSlot1_c row above -- this is the second of the two classes this TU folds, and each one's destructor is its own definition. This TU carries the one out-of-line dScMgSlot3_c::~dScMgSlot3_c() definition, ROM ordinal 2, whose body is the single explicit Mascot_Destruct((char *)this + 0x4f38) call; mwccarm 2004/b56 emits D1, D0 and D2 from it. The cartridge keeps D1 at ov006:0x0210a954 and D0 at ov006:0x0210a9a8, both licensed here, and drops D2. dScMgSlot3_c is likewise a leaf: no edge in the ROM's RTTI graph names its typeinfo record ov006:0x0213e588 as a base, so its base-object destructor is never odr-used. No address in config/ names a D2 for this class -- relocs.load_symbol_homes() over all 106 symbols.txt returns 0 homes for the name, with the same positive controls as the row above. 0 configured homes, so plain deadstrip rather than deadstrip-duplicate. Emitted inside the leading structor group, ahead of ordinal 4, so the licensed run's ROM-ascending emission order is unaffected."
+      "reason": "Homeless, and independently of the dScMgSlot1_c row above -- this is the second of the two classes this TU folds, and each one's destructor is its own definition. This TU carries the one out-of-line dScMgSlot3_c::~dScMgSlot3_c() definition, ROM ordinal 2, whose body is empty since mMascot became a typed Mascot member (its destructor, _ZN6MascotD1Ev, runs as the member's; it was an explicit Mascot_Destruct((char *)this + 0x4f38) call before); mwccarm 2004/b56 emits D1, D0 and D2 from it. The cartridge keeps D1 at ov006:0x0210a954 and D0 at ov006:0x0210a9a8, both licensed here, and drops D2. dScMgSlot3_c is likewise a leaf: no edge in the ROM's RTTI graph names its typeinfo record ov006:0x0213e588 as a base, so its base-object destructor is never odr-used. No address in config/ names a D2 for this class -- relocs.load_symbol_homes() over all 106 symbols.txt returns 0 homes for the name, with the same positive controls as the row above. 0 configured homes, so plain deadstrip rather than deadstrip-duplicate. Emitted inside the leading structor group, ahead of ordinal 4, so the licensed run's ROM-ascending emission order is unaffected."
     },
     {
       "symbol": "_ZTV12dScMgSlot1_c",
@@ -725,6 +725,11 @@
       "reason": "Compiler-emitted metadata, compared against its unique configured ROM home: PARTIAL, 8 compared bytes, zero blind words. Retained canonical storage lies outside this text-only promotion; the isolated object imports that storage. The direct full-symbol comparison also verifies every emitted byte, including vtable preambles and null-terminated name tails; padding to the next ROM symbol remains ROM-owned.",
       "canonical_module": "arm9",
       "canonical_address": "0x02086e60"
+    },
+    {
+      "symbol": "_ZN19dScMgSingle3DBase_cD2Ev",
+      "disposition": "deadstrip",
+      "reason": "Base-object destructor of dScMgSingle3DBase_c, emitted as vague linkage once the factory's `new dScMgSlot3_c` expands the inline constructor chain (the same byproduct ov006/dScMgBSC_c, ov006/dScMgCard_c, ov006/dScMgFlower_c, ov006/dScMgSound_c and ov006/dScMgCup_c license for theirs). dScMgSlot3_c's D1/D0 inline the base destructor rather than chain to it, and no module's symbols.txt gives _ZN19dScMgSingle3DBase_cD2Ev a home. Homeless and unreferenced, so a plain deadstrip."
     }
   ],
   "remaining_work": [],
