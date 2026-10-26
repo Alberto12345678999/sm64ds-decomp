@@ -88,6 +88,11 @@ unsigned int GetBG1CharPtr(void);
 void *GetBG1ScrPtr(void);
 }
 
+struct G2x {
+    static void SetBlendBrightness(volatile unsigned short *, unsigned short, short);
+    static void SetBlendAlpha(volatile unsigned short *, unsigned short, unsigned short,
+                              unsigned short, unsigned int);
+};
 extern "C" {
 /* --- shared ov004 and main helpers --- */
 extern void Mg_RenderSpriteBoth(void *a0, int a1, int a2, int a3, int a4);
@@ -101,7 +106,6 @@ extern int Vec2_Len(int *v);
 extern void FreeGfxSlotsById(int a);
 extern u32 LoadCompressedFileAt(int fileID, void *target);
 extern int LoadFile(int handle);
-extern void _ZN3G2x13SetBlendAlphaEPVttttj(void *p, u16 a, u16 b, u16 c, u16 d);
 extern void SetSubBg2Offset(int a, int b);
 extern void func_02012dbc(int a);
 extern int func_020126e8(int a);
@@ -1793,7 +1797,7 @@ void dScMgAmida_c::SetupRound() {
        evidence for a name yet. */
     *(s32 *)(raw + 0x5370) = 1;
     *(volatile u16 *)0x04000050 = 0;
-    _ZN3G2x13SetBlendAlphaEPVttttj((void *)0x04001050, 4, 8, 6, 0x10);
+    G2x::SetBlendAlpha((volatile unsigned short *)0x04001050, 4, 8, 6, 0x10);
     Mg_ShowBanner(0xd, 0x80, 0x60, 1, -1, 0xd);
 
     mStartBannerTimer = 0x3c;
@@ -2310,7 +2314,7 @@ s32 dScMgAmida_c::InitResources() {
         LoadCompressedFileAt(ASSET_D_2D_MG_BG_AMIDA2_2_NSC_BIN, G2S::GetBG2ScrPtr());
         LoadCompressedFileAt(ASSET_D_2D_MG_BG_AMIDA2_1_NSC_BIN, G2S::GetBG3ScrPtr());
         *(volatile s16 *)0x4000050 = 0;
-        _ZN3G2x13SetBlendAlphaEPVttttj((void *)0x4001050, 4, 8, 6, 0x10);
+        G2x::SetBlendAlpha((volatile unsigned short *)0x4001050, 4, 8, 6, 0x10);
         data_0209d45c |= 9;
         data_0209d454 |= 0xd;
     }

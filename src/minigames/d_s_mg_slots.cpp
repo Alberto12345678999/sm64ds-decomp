@@ -148,7 +148,6 @@ extern int LoadFile(int handle);
 
 extern void *_ZN2G212GetBG2ScrPtrEv(void);
 
-extern void _ZN3G2x13SetBlendAlphaEPVttttj(volatile u16 *p, u16 a, u16 b, u16 c, u16 d);
 extern u8 data_0209d454;
 extern int data_0208ee44;
 extern void RenderOamMainScreen(void *, int, int, int, int);
@@ -931,7 +930,7 @@ s32 dScMgSlot3_c::InitResources() {
     }
 
     data_0209d454 = 0x14;
-    _ZN3G2x13SetBlendAlphaEPVttttj((volatile u16 *)0x4000050, 0, 0xc, 0xc, 4);
+    G2x::SetBlendAlpha((volatile u16 *)0x4000050, 0, 0xc, 0xc, 4);
 
     Mascot_Load((char *)&mMascot);
     Camera_InitSlotsView((char *)pad_4660);
