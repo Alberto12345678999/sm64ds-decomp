@@ -180,6 +180,10 @@ void func_020383e4(dBgCh_Actr *);                          /* UpdateExtraContino
 void dBgCh_Actr_UpdateDiscreteNoLava_veneer(dBgCh_Actr *); /* UpdateDiscreteNoLava */
 }
 
+/* mSphereClsn as its dBgPi base: the result of the last query. Defined in
+   src/engine/collision/d_bg_ch_actr.cpp. */
+extern "C" dBgPi *func_0203567c(dBgCh_Actr *);
+
 #else
 
 /* The C view is a compatibility shim for the .c translation units that have

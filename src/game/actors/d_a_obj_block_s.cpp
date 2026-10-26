@@ -164,7 +164,6 @@ extern void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
     void *thiz, void *actor, void *vec, int fix, int t, unsigned u1, unsigned u2);
 
 extern int SurfaceInfo_TestFlag0x20(int *p);
-extern int func_0203567c(int p);
 extern int func_ov002_020ef228(void *c, int arg);
 extern int func_ov002_020f030c(int x);
 extern int func_ov002_020e496c(char *c);
@@ -701,14 +700,14 @@ int daObjBlockS_c::func_ov098_02138bb8()
  * on it. Which surface func_02035638 tests is not recovered here. */
 int daObjBlockS_c::func_ov098_02138bfc()
 {
-    int r;
+    dBgPi *r;
     void *a;
     unsigned short type;
     if (!func_02035638((unsigned char *)&mWithMeshClsn)) return 0;
-    r = func_0203567c((int)&mWithMeshClsn);
-    if (((dBgPi *)r)->GetClsnID() == -1)
+    r = func_0203567c(&mWithMeshClsn);
+    if (r->GetClsnID() == -1)
         return 0;
-    a = dActor_c::FindWithID((unsigned int)((dBgPi *)r)->GetClsnID());
+    a = dActor_c::FindWithID(r->GetClsnID());
     if (!a) return 0;
     type = ((dActor_c *)a)->actorID;
     {

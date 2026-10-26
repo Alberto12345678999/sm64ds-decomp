@@ -22144,6 +22144,9 @@
       ]
     },
     "func_0203567c": {
+      "include/dBgCh_Actr.h": [
+        "param:#1 struct dBgCh_Actr *"
+      ],
       "src/unnamed/ov002/func_ov002_020eeca8.cpp": [
         "param:#1 void *",
         "return:void *"
@@ -22151,6 +22154,11 @@
       "src/unnamed/ov002/func_ov002_020eed24.cpp": [
         "param:#1 void *",
         "return:void *"
+      ]
+    },
+    "func_02037f44": {
+      "include/dBgPi.h": [
+        "param:#1 const struct dBgPi *"
       ]
     },
     "func_02036acc": {

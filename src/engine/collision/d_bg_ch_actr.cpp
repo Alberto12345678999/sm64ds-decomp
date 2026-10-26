@@ -1070,9 +1070,8 @@ extern "C" void func_02035684(int *p, int v)
 }
 
 // @symbol func_0203567c
-extern "C" int func_0203567c(int p)
-{
-    return p + 48;   /* the query's own dBgPi base, &mSphereClsn + 0x10 */
+extern "C" dBgPi *func_0203567c(dBgCh_Actr *self) {
+    return &self->mSphereClsn; /* its dBgPi base, at +0x10 */
 }
 
 // @symbol _ZNK10dBgCh_Actr14GetFloorResultEv
