@@ -94,7 +94,6 @@ void  Matrix4x3_FromRotationXYZExt(void *m, int x, int y, int z);
 void  func_0201267c(unsigned int id, const Vector3 *pos);
 void  func_0203568c(int *clsn, int radius);
 void  func_02035684(int *clsn, int height);
-void  dBgCh_Actr_UpdateContinuous_Veneer(void *self);
 
 void      _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
               void *self, void *shadow, void *matrix, int radius, int height,

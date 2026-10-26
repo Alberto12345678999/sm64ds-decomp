@@ -169,8 +169,6 @@ extern void _Z15ApproachLinear2Rsss(s16 *p, short a, short b);
    destinations (measured). */
 extern int func_ov002_020d5f98(void *c, unsigned char *a, unsigned char *b);
 extern int func_ov002_020d6048(void *c);
-extern void dBgCh_Actr_UpdateContinuous_Veneer(void *p);
-extern void dBgCh_Actr_UpdateDiscreteNoLava_veneer(void *self);
 extern s32 d_a_yeggNewHold(u32 a, u32 b, s32 x, s32 y, s32 z, struct Vec3_16f *rot, void *cb);
 namespace Particle {
 struct System {

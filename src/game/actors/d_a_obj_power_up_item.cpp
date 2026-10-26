@@ -116,7 +116,6 @@ extern void func_02012694(unsigned int id, const Vector3 *v);
 extern void *data_0209f318;
 extern void func_0203568c(int *p, int v);
 extern void func_02035684(int *p, int v);
-extern void dBgCh_Actr_UpdateContinuous_Veneer(void* p);
 extern int func_0200fccc(char* s, int r1);
 extern int _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
     char* self, dExtShadowModel_c* sm, struct Matrix4x3* m, int fix, int t, u32 f);
@@ -265,7 +264,7 @@ void daObjPowerUpItem_c::StateLaunched()
     func_0203568c((int*)&mWithMeshClsn, 0x3c000);
     func_02035684((int*)&mWithMeshClsn, 0x3c000);
     UpdatePos((dCc_c*)&mdCcAc_c);
-    dBgCh_Actr_UpdateContinuous_Veneer((void*)&mWithMeshClsn);
+    dBgCh_Actr_UpdateContinuous_Veneer(&mWithMeshClsn);
 
     if (mWithMeshClsn.TouchesWater()) {
         pos.x = mPosX;

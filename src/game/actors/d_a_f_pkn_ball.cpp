@@ -114,7 +114,6 @@ struct System {
 };
 }
 void func_02012694(u32 id, const void* v);
-void dBgCh_Actr_UpdateContinuous_Veneer(void* p);
 extern s16 data_02082214[];
 extern void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void* thiz, void* actor, int fix12, int t, unsigned int a, unsigned int b);
 }

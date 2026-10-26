@@ -105,7 +105,6 @@ extern "C" daOnms_cStateEntry data_ov092_02132568[9];
 
 extern "C" {
 int func_ov002_020de328(void *player);
-void dBgCh_Actr_UpdateContinuous_Veneer(void *self);
 void d_a_onmsEarthquakeHold(void *v, int f);
 /* Sound::Play(3, id, pos). The overlay calls this wrapper, not Sound::Play. */
 void func_02012694(unsigned int id, const Vector3 *v);

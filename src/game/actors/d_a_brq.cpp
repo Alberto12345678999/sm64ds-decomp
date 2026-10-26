@@ -384,7 +384,6 @@ s32 daBrq_c::EnterDefeatedState()
 
 /* The ROM calls the interworking veneer at 0x02038420, not the direct
  * dBgCh_Actr::UpdateDiscreteNoLava body at 0x02037024. */
-extern "C" void dBgCh_Actr_UpdateDiscreteNoLava_veneer(dBgCh_Actr *collision);
 
 // @symbol _ZN7daBrq_c19UpdateDefeatedStateEv
 s32 daBrq_c::UpdateDefeatedState()

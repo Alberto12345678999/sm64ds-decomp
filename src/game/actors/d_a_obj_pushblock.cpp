@@ -81,7 +81,6 @@ extern Matrix4x3 data_020a0e68;
 extern void Matrix4x3_FromRotationY(Matrix4x3 *m, int angle);
 extern void MulVec3Mat4x3(Vector3 *v, Matrix4x3 *m, Vector3 *dst);
 extern void AddVec3(Vector3 *a, Vector3 *b, Vector3 *c);
-extern void dBgCh_Actr_UpdateContinuous_Veneer(void *p);
 extern void func_020393a4(int *p, int v);
 extern void func_02039394(int *p, int v);
 extern int Vec3_Dist(Vector3 *a, Vector3 *b);

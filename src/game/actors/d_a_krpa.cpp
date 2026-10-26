@@ -340,9 +340,6 @@ int daKrpa_c::func_ov070_02121438()
 // @symbol _ZN8daKrpa_c19func_ov070_021213ccEv
 /* The collision update veneer is retained because it is the retail call
  * destination; the rest are ordinary real class calls. */
-extern "C" {
-extern int dBgCh_Actr_UpdateDiscreteNoLava_veneer(dBgCh_Actr *clsn);
-}
 int daKrpa_c::func_ov070_021213cc() {
     this->mAngleX = this->mAngleX - 0x1000;
     this->mModelAnim.Advance();

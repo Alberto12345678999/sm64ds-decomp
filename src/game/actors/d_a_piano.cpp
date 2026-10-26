@@ -73,7 +73,6 @@ extern u8 DecIfAbove0_Byte(u8 *p);
 extern void func_0201267c(unsigned int id, const Vector3 *v);
 extern int _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(Player *self, void *a, unsigned int b, int dmg, unsigned char arg4, unsigned char arg5, unsigned char arg6);
 int Vec3_HorzDist(const Vector3 *a, const Vector3 *b);
-void dBgCh_Actr_UpdateContinuous_Veneer(dBgCh_Actr *clsn);
 void func_0203568c(int *clsn, int radius);
 void func_02035684(int *clsn, int height);
 void func_ov063_0211ddf4(daPiano_c *self);
