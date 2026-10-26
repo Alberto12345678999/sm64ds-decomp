@@ -102,8 +102,6 @@ extern int Vec3_Dist(void* a, void* b);
 /* Reconstructed receiver/attacker/nullable collision interface; the original
  * source prototype is not uniquely recoverable from the register traffic. */
 extern void func_ov002_020aea30(void* self, void* attacker, dBgCh_Actr* collision);
-extern void _ZN6Player6BounceE5Fix12IiE(void* p, int f);
-extern int _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(Player* p, void* v, u32 a, int f, u8 b, u8 c, u8 d);
 extern "C" void d_a_nknkRunningSlidingDustAtHold(int a, int b, int c);
 extern int RandomIntInternal(int *seed);
 extern int data_0209e650;
@@ -933,7 +931,7 @@ void daNknk_c::func_ov062_02117c98()
                 mScaleZ = 0x1000;
                 func_0201267c(0x113, &mCamSpacePos);
             }
-            _ZN6Player6BounceE5Fix12IiE(found, 0x28000);
+            ((Player *)found)->Bounce(0x28000);
             return;
         }
         if (player->mIsVanish != 0)
@@ -950,7 +948,7 @@ void daNknk_c::func_ov062_02117c98()
             pw = mHorzSpeed;
             if (pw < 0xf000)
                 pw = 0xf000;
-            _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(player, &L.hv, 0, pw, 1, 0, 1);
+            player->Hurt(*(Vector3 *)&L.hv, 0, pw, 1, 0, 1);
             func_ov062_02117b48();
             if (mKoopaVariant == 2) {
                 PoofDust();

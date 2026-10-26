@@ -79,9 +79,6 @@ struct HeyhoStateTable {
 extern HeyhoStateTable data_ov002_02111190;
 
 extern void func_02012694(unsigned int a, Vector3 const &v);
-/* local extern: the retail Hurt symbol takes Fix12<int> by value. This
-   scalar bridge follows Player.cpp: int result, Player receiver and u8 flags. */
-extern int _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(Player *self, void *position, u32 kind, int damage, u8 arg4, u8 arg5, u8 arg6);
 extern void Vec3_Asr(void *dst, void *src, int n);
 extern void Matrix4x3_FromTranslation(void *m, int x, int y, int z);
 extern void Matrix4x3_ApplyInPlaceToRotationXYZExt(void *m, short rx, short ry, short rz);
@@ -162,7 +159,7 @@ extern "C" void func_ov002_020feb50(daPropeller_Heyho_Fire_c *self) {
     v.x = self->mPosX;
     v.y = self->mPosY;
     v.z = self->mPosZ;
-    _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(player, &v, 1, 0xc000, 1, 0, 1);
+    player->Hurt(v, 1, 0xc000, 1, 0, 1);
 }
 
 // @symbol func_ov002_020fec94

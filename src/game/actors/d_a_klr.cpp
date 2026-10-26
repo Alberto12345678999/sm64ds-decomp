@@ -71,9 +71,6 @@ void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
 /* Parameter names keep this TU's @NNN. */
 typedef void BgchInitAt_(dBgCh_Actr *self, dActor_c *actor, int radius, int height, Vector3_16 *a,
                          Vector3_16 *b);
-int _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(
-    Player *self, const Vector3 *source, u32 damage, int speed, u8 a, u8 b,
-    u8 c);
 
 void func_ov079_02126704(daKlr_c *self);
 }
@@ -159,8 +156,7 @@ s32 daKlr_c::Behavior()
                         pos.x = mPosX;
                         pos.y = mPosY;
                         pos.z = mPosZ;
-                        _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(
-                            (Player *)o, &pos, 3, 0xc000, 1, 0, 1);
+                        ((Player *)o)->Hurt(pos, 3, 0xc000, 1, 0, 1);
                         mState = 1;
                         Sound::PlayBank0(0xb5, mCamSpacePos);
                     }

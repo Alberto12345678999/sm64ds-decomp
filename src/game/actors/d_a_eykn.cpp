@@ -132,8 +132,6 @@ int d_a_eyknNewHold(u32 uniqueID, u32 effectID, int x, int y, int z, const void 
 u32 d_a_eyknNewUnkCallback818Hold(u32 uniqueID, u32 effectID, int x, int y, int z,
                                   const Vector3_16f *dir);
 void d_a_eyknNewSimpleHold(u32 effectID, int x, int y, int z);
-int _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(Player *player, void *source, u32 damage, int speed,
-                                            u8 a, u8 b, u8 c);
 void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
     dCcAcPos_c *clsn, dActor_c *actor, const Vector3 *offset, int radius, int height, u32 flags, u32 vulnFlags);
 void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
@@ -364,7 +362,7 @@ idCheck:
     hv.x = mPosX;
     hv.y = mPosY;
     hv.z = mPosZ;
-    _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj((Player *)f, &hv, 2, 0xc000, 1, 0, 1);
+    ((Player *)f)->Hurt(hv, 2, 0xc000, 1, 0, 1);
 }
 
 

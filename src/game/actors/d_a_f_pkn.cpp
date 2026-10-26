@@ -127,8 +127,6 @@ void UnloadBlueCoinModel(void *);
 void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *self, void *a, int r, int h, u32 e, u32 g);
 void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(void *self, void *a, const Vector3 *v, int r, int h, u32 e, u32 g);
 u32 d_a_f_pknNewHold(u32 a, u32 b, Fix12i c, Fix12i d, Fix12i e, const void *f, void *g);
-void _ZN6Player6BounceE5Fix12IiE(void *p, int fix);
-int _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void *self, const void *pos, u32 a, int fix, u32 b, u32 c, u32 d);
 void _ZN8dActor_c13SpawnFireballERK7Vector3PK10Vector3_165Fix12IiES7_j(
     void *self, const void *pos, const void *v16, int a, int b, u32 g);
 void _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs(void *self, const void *pos, u32 a, int b, short c);
@@ -349,7 +347,7 @@ void daFPkn_c::CheckClsnHits()
     if (cmp != 0) {
         if (JumpedOnByPlayer(mdCcAc_c, *(Player *)hitter) != 0) {
             Sound::PlayBank0(SND_JUMPED_ON, mCamSpacePos);
-            _ZN6Player6BounceE5Fix12IiE(hitter, 0x28000);
+            ((Player *)hitter)->Bounce(0x28000);
             goto activate_path;
         }
     }
@@ -361,7 +359,7 @@ void daFPkn_c::CheckClsnHits()
     pos1.x = mPosX;
     pos1.y = mPosY;
     pos1.z = mPosZ;
-    _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(hitter, &pos1, 2, 0xc000, 1, 0, 1);
+    ((Player *)hitter)->Hurt(pos1, 2, 0xc000, 1, 0, 1);
 
 second:
     otherId = mdCcAcPos_c.otherOwner;
@@ -404,7 +402,7 @@ second:
     pos2.x = mPosX;
     pos2.y = mPosY;
     pos2.z = mPosZ;
-    _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(hitter, &pos2, 2, 0xc000, 1, 0, 1);
+    ((Player *)hitter)->Hurt(pos2, 2, 0xc000, 1, 0, 1);
 }
 
 // @symbol _ZN8daFPkn_c9StateGrowEv

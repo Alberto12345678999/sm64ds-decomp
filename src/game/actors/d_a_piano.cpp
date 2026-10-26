@@ -71,7 +71,6 @@ extern void Vec3_Sub(Vec3 *out, Vec3 *a, Vec3 *b);
 extern int LenVec3(Vec3 *v);
 extern s16 Vec3_HorzAngle(const Vector3 *v0, const Vector3 *v1);
 extern u8 DecIfAbove0_Byte(u8 *p);
-extern int _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(Player *self, void *a, unsigned int b, int dmg, unsigned char arg4, unsigned char arg5, unsigned char arg6);
 int Vec3_HorzDist(const Vector3 *a, const Vector3 *b);
 void func_0203568c(int *clsn, int radius);
 void func_02035684(int *clsn, int height);
@@ -351,7 +350,7 @@ void daPiano_c::func_ov063_0211d8cc()
                     hurtPos.x = this->mPosX;
                     hurtPos.y = this->mPosY;
                     hurtPos.z = this->mPosZ;
-                    _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj((Player*)victim, &hurtPos, three, knock, one, zero, one);
+                    ((Player *)victim)->Hurt(hurtPos, three, knock, one, zero, one);
                 }
             }
         }

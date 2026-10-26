@@ -116,9 +116,6 @@ typedef void BgchInitAt_(dBgCh_Actr *self, dActor_c *actor, int radius, int heig
                          void *b);
 void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
     void *self, void *sm, void *mtx, int f, int g, unsigned int h);
-/* local extern: native Hurt takes Fix12<int> by value; retain the current
- * definition's scalar ABI while that call reconstruction remains pending. */
-int _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(Player *p, void *v, u32 a, int f, u8 c, u8 d, u8 e);
 /* Sets Player::mStateStep to 6 and stores this fish in mAttachedActor. */
 int func_ov002_020c5cd8(void *a, void *self);
 /* Sound::Play with bank 3. */
@@ -669,7 +666,7 @@ void daBakubaku_c::func_ov032_021113fc()
     hv.x = mPosX;
     hv.y = mPosY;
     hv.z = mPosZ;
-    _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(f2, &hv, 2, 0xc000, 1, 0, 1);
+    f2->Hurt(hv, 2, 0xc000, 1, 0, 1);
 }
 
 /* Abort the chase: no player, a wall or floor, or too far from home.

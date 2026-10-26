@@ -120,7 +120,6 @@ extern char data_020a0e68[];
 extern void Matrix4x3_FromRotationY(void *m, int angle);
 extern void MulVec3Mat4x3(void *in, void *m, void *out);
 extern void Vec3_Add(void *out, void *a, void *b);
-extern void _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void *self, struct Vector3 *v, unsigned int b, int c, unsigned int d, unsigned int e, unsigned int f);
 extern int NormalizeVec3IfNonZero(void *v);
 extern void Vec3_MulScalarInPlace(void *v, int s);
 extern SharedFilePtr *data_ov034_02113838[];
@@ -804,7 +803,7 @@ void daHanachan_c::HandlePlayerHits()
         playerPos.y = src->y;
         playerPos.z = src->z;
         if (IsStompedBy(cyl, a) != 0) {
-            _ZN6Player6BounceE5Fix12IiE(a, 0x28000);
+            ((Player *)a)->Bounce(0x28000);
             func_0201267c(0x11c, &mCamSpacePos);
             if ((unsigned int)i > 1) {
                 mSegmentBounceTimer[i] = 0x1e;
@@ -819,7 +818,7 @@ void daHanachan_c::HandlePlayerHits()
             v.x = mPosX;
             v.y = mPosY;
             v.z = mPosZ;
-            _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(a, &v, 2, 0xc000, 1, 0, 1);
+            ((Player *)a)->Hurt(v, 2, 0xc000, 1, 0, 1);
             SetState(8);
         }
     }
@@ -842,7 +841,7 @@ void daHanachan_c::HandlePlayerHits()
             hv.x = mPosX;
             hv.y = mPosY;
             hv.z = mPosZ;
-            _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(a, &hv, 0, 0x5000, 1, 0, 1);
+            ((Player *)a)->Hurt(hv, 0, 0x5000, 1, 0, 1);
         }
     }
 }

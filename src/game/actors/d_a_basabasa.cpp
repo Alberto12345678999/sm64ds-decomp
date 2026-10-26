@@ -58,8 +58,6 @@ extern void func_ov002_020aea30(void *self, void *actor, void *collision);
 extern void func_02012694(int a, void* b);
 extern void _ZN12dEnemyBase_c20KillByInvincibleCharERK10Vector3_16R6Player5Fix12IiE(dEnemyBase_c* self, short* v, Player* p);
 extern void _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs(dActor_c* self, Vector3* pos, unsigned n, int fix, short s);
-extern void _ZN6Player6BounceE5Fix12IiE(Player* p, int fix);
-extern void _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(Player* p, Vector3* pos, unsigned a, int fix, unsigned b, unsigned d, unsigned e);
 int Vec3_Dist(const void* a, const void* b);
 short Vec3_HorzAngle(const Vector3* a, const Vector3* b);
 void Matrix4x3_FromRotationY(void* m, int angle);
@@ -178,7 +176,7 @@ void daBasabasa_c::func_ov065_0211704c()
     }
 
     if (JumpedOnByPlayer(mdCcAc_c, *p) != 0) {
-        _ZN6Player6BounceE5Fix12IiE(p, 0x28000);
+        p->Bounce(0x28000);
         mDeathState = 1;
         func_ov002_020aea30(this, p, 0);
         func_02012694(0x112, &mCamSpacePosX);
@@ -188,7 +186,7 @@ void daBasabasa_c::func_ov065_0211704c()
     pos.x = mPosX;
     pos.y = mPosY;
     pos.z = mPosZ;
-    _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(p, &pos, 1, 0xc000, 1, 0, 1);
+    p->Hurt(pos, 1, 0xc000, 1, 0, 1);
     if (mCurrentState != &data_ov065_0211d6e0)
         return;
     mPerchTimer = 0;

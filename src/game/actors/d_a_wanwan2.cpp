@@ -165,7 +165,6 @@ void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES
 void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
     dCcAcPos_c *clsn, dActor_c *actor, const Vector3 &offset,
     s32 radius, s32 height, u32 flags, u32 vulnFlags);
-void _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void *p, const void *pos, u32 a, int b, u32 c, u32 d, u32 e);
 int func_02012694(int, void *);
 void *_ZN7PathPtrC1Ev(void *thiz);
 void Matrix4x3_FromRotationXYZExt(void *m, int x, int y, int z);
@@ -321,7 +320,7 @@ extern "C" void func_ov100_0214344c(daWanwan2_c *self)
         pos.x = self->mPosX;
         pos.y = self->mPosY;
         pos.z = self->mPosZ;
-        _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(other, &pos, 2, 0xc000, 1, 0, 1);
+        ((Player *)other)->Hurt(*(Vector3 *)&pos, 2, 0xc000, 1, 0, 1);
     }
 }
 

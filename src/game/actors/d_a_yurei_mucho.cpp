@@ -65,11 +65,6 @@ extern int _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs(void *self, const Vect
                                                           unsigned int n, int f, short s);
 extern void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
     void *self, void *shadow, void *mtx, int rad, int height, unsigned int flags);
-extern void _ZN6Player6BounceE5Fix12IiE(void *p, int f);
-/* local extern: retain the current scalar definition; native Fix12<int>
-   call reconstruction remains separate work. The return value is discarded. */
-extern int _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(Player *p, void *v, unsigned int a, int b, u8 d,
-                                                   u8 e, u8 f);
 extern void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *self, dActor_c *a, int r, int h,
                                                       unsigned int e, unsigned int g);
 extern unsigned int RandomIntInternal(void *seed);
@@ -654,7 +649,7 @@ void daYurei_Mucho_c::func_ov065_02115ff0()
         return;
     }
     if (JumpedOnByPlayer(mdCcAc_c, *p)) {
-        _ZN6Player6BounceE5Fix12IiE(p, 0x28000);
+        p->Bounce(0x28000);
         mDeathState = 1;
         func_ov002_020aea30(this, p, 0);
         func_02012694(0x11e, &mCamSpacePosX);
@@ -663,7 +658,7 @@ void daYurei_Mucho_c::func_ov065_02115ff0()
     hv.x = mPosX;
     hv.y = mPosY;
     hv.z = mPosZ;
-    _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(p, &hv, 2, 0xc000, 1, 0, 1);
+    p->Hurt(hv, 2, 0xc000, 1, 0, 1);
 }
 
 /* -------------------------------------------------------------------------- */

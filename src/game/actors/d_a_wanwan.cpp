@@ -88,9 +88,6 @@ void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
 void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
     dActor_c *self, dExtShadowModel_c *shadow, Matrix4x3 *mtx, int radius, int depth,
     unsigned opacity);
-/* local extern: Fix12<int> by value; this scalar bridge follows the definition. */
-int _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(
-    Player *player, void *pos, unsigned kind, int power, u8 a, u8 b, u8 c);
 short atan2_hold_d_a_wanwan_1(int y, int x);
 
 void MulVec3Mat4x3(void *v, void *m, void *dst);
@@ -599,8 +596,7 @@ void func_ov014_02112114(daWanwan_c *c)
             v.x = c->mPosX;
             v.y = c->mPosY;
             v.z = c->mPosZ;
-            _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(
-                (Player *)other, &v, 3, 0xc000, 1, 0, 1);
+            ((Player *)other)->Hurt(v, 3, 0xc000, 1, 0, 1);
         }
     }
 

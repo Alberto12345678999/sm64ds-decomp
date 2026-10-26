@@ -177,8 +177,6 @@ extern u8 data_0209f284;
 extern s32 Vec3_HorzDist(struct Vector3 *a, struct Vector3 *b);
 extern int func_ov002_020bec84(void *player, unsigned int i);
 extern int func_ov002_020bec9c(void *player, unsigned int a, int b, int d, unsigned short e);
-extern void _ZN6Player12ShowMessage2ER7fBase_cjPK7Vector3hh( void *player, void *actor, unsigned int msg, struct Vector3 *pos, unsigned int a, unsigned int b);
-extern void _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void* thiz, void* v, unsigned a, int b, unsigned c, unsigned d, unsigned e);
 extern void _Z14ApproachLinearRiii(int* p, int a, int b);
 extern "C" unsigned int data_0209b454;
 extern "C" void AttachToHolder(struct daObjTatefuda_c *self);
@@ -581,7 +579,7 @@ void daObjTatefuda_c::Thrown()
                     vec.x = mPosX;
                     vec.y = mPosY;
                     vec.z = mPosZ;
-                    _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(found, &vec, 1, 0xc000, 1, 0, 1);
+                    ((Player *)found)->Hurt(vec, 1, 0xc000, 1, 0, 1);
                 }
             }
         }
@@ -807,13 +805,11 @@ void daObjTatefuda_c::Talk()
                     } else if (func_ov002_020bec84(player, 2) != 0 && player->FinishedAnim() != 0) {
                         func_ov002_020bec9c(player, 3, 0x40000000, 0x1000, 0);
                     } else if (func_ov002_020bec84(player, 3) != 0 && player->FinishedAnim() != 0) {
-                        _ZN6Player12ShowMessage2ER7fBase_cjPK7Vector3hh(
-                            player, this, (s16)msgId, &msgPos, 0, 1);
+                        player->ShowMessage2(*this, (s16)msgId, &msgPos, 0, 1);
                     }
                 } else {
                     func_ov002_020bec9c(player, 0, 0, 0x1000, 0);
-                    _ZN6Player12ShowMessage2ER7fBase_cjPK7Vector3hh(
-                        player, this, (s16)msgId, &msgPos, 0, 1);
+                    player->ShowMessage2(*this, (s16)msgId, &msgPos, 0, 1);
                 }
             }
             break;

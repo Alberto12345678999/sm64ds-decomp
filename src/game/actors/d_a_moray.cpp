@@ -124,7 +124,6 @@ void Matrix4x3_ApplyInPlaceToRotationZXYExt(Matrix4x3 *m, int x, int y, int z);
 void Matrix4x3_ApplyInPlaceToRotationXYZExt(Matrix4x3 *m, int x, int y, int z);
 void MulVec3Mat4x3(Vector3 *v, Matrix4x3 *m, Vector3 *out);
 void MulMat4x3Mat4x3(void *m1, void *m0, void *mF);
-void _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void *self, Vector3 *v, u32 a, int fix, u32 b, u32 d, u32 e);
 
 /* Header methods take Fix12<int> by value. Brace-init compiles and homes
    the argument (see Known limits). These scalars are the calls that
@@ -300,7 +299,7 @@ void daMoray_c::func_ov016_02111284()
     hv.x = this->mPosX;
     hv.y = this->mPosY;
     hv.z = this->mPosZ;
-    _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(p, &hv, 3, 0xc000, 1, 0, 1);
+    ((Player *)p)->Hurt(hv, 3, 0xc000, 1, 0, 1);
 }
 
 /* Retreat execute. When the timer set by the retreat init runs out, stops,

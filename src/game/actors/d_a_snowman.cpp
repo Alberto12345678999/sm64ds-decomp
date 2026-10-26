@@ -98,8 +98,6 @@ extern void func_ov002_020aea30(void *self, void *actor, void *collision);
 extern void func_02012694(int a, void *p);
 extern void _ZN12dEnemyBase_c20KillByInvincibleCharERK10Vector3_16R6Player5Fix12IiE(
     void *self, void *v, void *a);
-extern void _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(
-    void *p, void *v, u32 a, int f, u32 c, u32 d, u32 e);
 extern Vector3 data_ov081_02128998; /* cylinder offset (0, 0x1e000, 0) */
 extern unsigned char data_0209f21c[];
 extern void *data_0209f394[];
@@ -337,7 +335,7 @@ void daSnowman_c::func_ov081_021243cc()
         if (hit == 0) {
             Vector3 hv;
             hv = this->mPos;
-            _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(found, &hv, 2, 0xc000, 1, 0, 1);
+            found->Hurt(hv, 2, 0xc000, 1, 0, 1);
         }
     }
     if (hit != 1) return;

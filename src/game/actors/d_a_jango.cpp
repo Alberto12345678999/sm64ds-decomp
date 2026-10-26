@@ -185,8 +185,6 @@ extern int data_020a0e68[];
 extern "C" void *_ZN7PathPtrC1Ev(void *self);
 extern "C" int Vec3_HorzDist(const Vector3* a, const Vector3* b);
 extern signed char data_0209f2f8;
-extern int _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void *pl, Vector3 *v, unsigned int a, int b,
-                                                   unsigned int c, unsigned int d, unsigned int e);
 extern "C" void func_02012694(unsigned int, void*);
 extern s16 Vec3_HorzAngle(const Vector3 *v0, const Vector3 *v1);
 extern s16 Vec3_VertAngle(const Vector3 *v0, const Vector3 *v1);
@@ -1280,7 +1278,7 @@ int daJango_c::func_ov062_0211b51c()
     pos.x = mPosX;
     pos.y = mPosY;
     pos.z = mPosZ;
-    r = _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(pl, &pos, flag, 0xc000, 1, 0, 1);
+    r = pl->Hurt(pos, flag, 0xc000, 1, 0, 1);
     if (r == 0)
         return r;
     mTimer = 0x1e;

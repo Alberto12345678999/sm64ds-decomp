@@ -346,7 +346,6 @@ extern PmfEnt data_ov060_0211aeb4[];
  * third argument the callee does not take (a counter byte, and a value stored
  * on the line above); dropped here rather than widening the signature. */
 extern void func_02012694(unsigned int id, const Vector3 *v);
-void _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void* self, const Vector3& v, u32 a, Fix12i b, u32 c, u32 d, u32 e);
 void func_02038408(void* p);
 
 extern PmfEnt data_ov060_0211aed4[];
@@ -3111,7 +3110,7 @@ void daKpa_c::func_ov060_021128c0(){
                 v.x = this->mPosX;
                 v.y = this->mPosY;
                 v.z = this->mPosZ;
-                _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(f, v, 2, 0x8000, 1, 0, 1);
+                ((Player *)f)->Hurt(v, 2, 0x8000, 1, 0, 1);
             }
         }
     }

@@ -1192,7 +1192,6 @@ void func_ov102_0214ae1c(void *cv) {
     typedef struct Bmb_Ae1cVec3 { int x, y, z; } Vec3;
     extern void d_a_bmbNewSimpleHold(unsigned int id, int x, int y, int z);
     extern void func_ov002_020ef228(void *a, void *b);
-    extern void _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void *self, Vec3 *v, unsigned int a, int fix, unsigned int b, unsigned int d, unsigned int e);
 
     daBmb_c *self = (daBmb_c *)cv;
     Vec3 v;
@@ -1222,7 +1221,7 @@ void func_ov102_0214ae1c(void *cv) {
         w.x = self->mPosX;
         w.y = self->mPosY;
         w.z = self->mPosZ;
-        _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(self->mCarrier, &w, 2, 0xc000, 1, 0, 1);
+        self->mCarrier->Hurt(*(Vector3 *)&w, 2, 0xc000, 1, 0, 1);
         self->mCarrier = 0;
     } else if (self->mdCc_c.otherOwner) {
         dActor_c *a = dActor_c::FindWithID(self->mdCc_c.otherOwner);
@@ -1232,7 +1231,7 @@ void func_ov102_0214ae1c(void *cv) {
                 w.x = self->mPosX;
                 w.y = self->mPosY;
                 w.z = self->mPosZ;
-                _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(a, &w, self->mHurtDamage, 0xc000, 1, 0, 1);
+                ((Player *)a)->Hurt(*(Vector3 *)&w, self->mHurtDamage, 0xc000, 1, 0, 1);
             }
         }
     }
@@ -1241,8 +1240,7 @@ void func_ov102_0214ae1c(void *cv) {
         w.x = self->mPosX;
         w.y = self->mPosY;
         w.z = self->mPosZ;
-        _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj((Player *)self->mEatingPlayer, &w,
-                                                self->mHurtDamage, 0xc000, 1, 0, 1);
+        ((Player *)self->mEatingPlayer)->Hurt(*(Vector3 *)&w, self->mHurtDamage, 0xc000, 1, 0, 1);
         ((Player *)self->mEatingPlayer)->func_ov002_020d718c();
         self->mEatingPlayer = 0;
     }

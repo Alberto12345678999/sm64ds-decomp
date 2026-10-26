@@ -67,7 +67,6 @@ struct System {
 };
 }
 void d_a_kiraiEarthquakeHold(void *self, Vector3 *v, int f);
-extern void _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void *self, Vector3 *v, unsigned int b, int c, unsigned int d, unsigned int e, unsigned int f);
 /* local extern: dCcAcPos_c::Init also takes its radius and height as
    Fix12<int> by value; spelt through the header, the two aggregate
    temporaries grow the frame by 8 and InitResources by 0x10. */
@@ -289,7 +288,7 @@ void daKirai_c::func_ov060_02118970()
     hurtPos.x = mPosX;
     hurtPos.y = mPosY;
     hurtPos.z = mPosZ;
-    _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(a, &hurtPos, 2, 0xc000, 1, 0, 1);
+    ((Player *)a)->Hurt(hurtPos, 2, 0xc000, 1, 0, 1);
     func_ov060_021184bc();
 }
 

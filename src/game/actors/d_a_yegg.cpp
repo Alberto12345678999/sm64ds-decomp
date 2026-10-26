@@ -204,7 +204,6 @@ extern int func_ov002_020cf700(void *g);
 extern int func_ov002_020d0d2c(void *g);
 extern void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(void *self, void *shadow, void *mtx, int fix, int t, unsigned int n);
 extern void _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_S5_j(void *self, void *shadow, void *mtx, int fix, int t1, int t2, unsigned int n);
-extern void _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void *self, const void *pos, u32 a, int fix, u32 b, u32 c, u32 d);
 extern void LoadBlueCoinModel(void *self);
 extern void UnloadBlueCoinModel(void *self);
 }
@@ -1315,7 +1314,7 @@ int daYegg_c::func_ov002_020eddc4()
                 pos.x = mPosX;
                 pos.y = mPosY;
                 pos.z = mPosZ;
-                _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(actor, &pos, 1, 0xc000, 1, 0, 1);
+                ((Player *)actor)->Hurt(pos, 1, 0xc000, 1, 0, 1);
             }
         }
     }
