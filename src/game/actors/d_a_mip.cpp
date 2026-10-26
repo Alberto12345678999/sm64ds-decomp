@@ -58,6 +58,7 @@ enum daMip_c_AssetId {
 #include "dBgCh_Gnd.h"
 #include "daObj_Mip_Key_c.h"
 #include "Sound.h"
+#include "cstd.h"
 
 bool ApproachLinear(short &value, short target, short step);
 
@@ -103,7 +104,6 @@ void  SubVec3(void *, void *, void *);
 s32   LenVec3(const void *);
 int   AngleDiff(int, int);
 int   ApproachAngle(void *, s16, int, int, int);
-int   _ZN4cstd4fdivEii(int, int);
 void  Matrix4x3_FromTranslation(void *, int, int, int);
 void  Matrix4x3_FromRotationY(void *, int);
 void  Matrix4x3_ApplyInPlaceToRotationXYZExt(void *, int, int, int);
@@ -874,7 +874,7 @@ int daMip_c::StateFleeMain() {
         if (AngleDiff(ang, mPrevAngleY) < 0x2000) {
             ysave = mPosY;
             {
-                int s = _ZN4cstd4fdivEii(lim, len);
+                int s = cstd::fdiv(lim, len);
                 Vec3_MulScalar(&scaled, &delta, s);
                 SubVec3(&mPos, &scaled, &mPos);
             }

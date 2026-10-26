@@ -77,6 +77,7 @@ enum daStar_c_AssetId {
 #include "daSoundObj_c.h"
 #include "dExtSimpleModel_c.h"
 #include "Sound.h"
+#include "cstd.h"
 
 /* Plain-data stand-ins. Vector3 and Matrix4x3 carry declared destructors, so
  * a local or a struct copy of either one adds cleanup code the cartridge does
@@ -230,7 +231,6 @@ extern u8 data_0209d684;
 extern int _ZN5Event6GetBitEj(unsigned int bit);
 /* local extern: ROM calls the mangled name with no arg, reusing r0 as `this`. */
 extern void _ZN12daStarBase_c7CollectEv(void);
-extern int _ZN4cstd4sqrtEy(u64 v);
 extern int Vec3_HorzDist(const Vec3* a, const Vec3* b);
 extern s16 GetAngleToCamera(int i);
 extern u8 *data_0209f344;
@@ -1870,9 +1870,9 @@ void daStar_c::func_ov002_020e947c(Vector3 *p, int n) {
     if (dy < 0)
         dy = -dy;
     {
-        int s0 = _ZN4cstd4sqrtEy((u64)(s64)n);
-        int s1 = _ZN4cstd4sqrtEy((u64)(s64)(n + dy));
-        int s2 = _ZN4cstd4sqrtEy((u64)(s64)n);
+        int s0 = cstd::sqrt((u64)(s64)n);
+        int s1 = cstd::sqrt((u64)(s64)(n + dy));
+        int s2 = cstd::sqrt((u64)(s64)n);
         dy = (s0 * 0x32) / (s1 + s2);
     }
     {

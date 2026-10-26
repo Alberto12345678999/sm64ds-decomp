@@ -87,9 +87,7 @@ enum daObjBlockS_c_AssetId {
 #include "SurfaceInfo.h"
 #include "dCc_c.h"
 #include "Sound.h"
-namespace cstd {
-s16 atan2(s32, s32);
-}
+#include "cstd.h"
 
 struct Vector3_16f;
 
@@ -176,7 +174,6 @@ extern void d_a_obj_block_sPlayLongHold(u32 a, u32 b, u32 c, const Vector3 *pos,
 extern int _Z14ApproachLinearRiii(int *a, int b, int c);
 extern void _Z11UpdateAngleRssis(s16 *a, s16 b, int c, s16 d);
 extern s16 atan2_hold_d_a_obj_block_s_1(s32 y, s32 x);
-extern int _ZN4cstd4fdivEii(int a, int b);
 extern s32 Vec3_HorzLen(const Vector3 *v0);
 extern void Vec3_MulScalarInPlace(int *v, int s);
 extern void Vec3_Add(Vector3 *out, Vector3 *a, Vector3 *b);
@@ -1066,7 +1063,7 @@ int daObjBlockS_c::func_ov098_02139228()
     {
         s32 m0 = FX_MUL(mFloorNormalX, mSpeedX);
         s32 m1 = FX_MUL(mFloorNormalZ, mSpeedZ);
-        mVertSpeed = -(_ZN4cstd4fdivEii(m0 + m1, mFloorNormalY) + 0x8000);
+        mVertSpeed = -(cstd::fdiv(m0 + m1, mFloorNormalY) + 0x8000);
     }
 
     if (func_ov002_020f035c(n, mFloorNormalY) != 0 && mHorzSpeed > 0x5000) {
@@ -1079,7 +1076,7 @@ int daObjBlockS_c::func_ov098_02139228()
             if (q1 < 0) q1 = ((-q1) << 16) >> 16;
             if (q1 < 0x10) {
                 s32 v = mHorzSpeed;
-                sd = _ZN4cstd4fdivEii(FX_MUL(v, 8), 0xa);
+                sd = cstd::fdiv(FX_MUL(v, 8), 0xa);
                 if (sd < 0) sd = -sd;
                 if (mVertSpeed > 0xa000)
                     Sound::PlayBank3(0x51, mCamSpacePos);

@@ -59,6 +59,7 @@ enum d_a_obj_ice_block_AssetId {
 #include "dBgW.h"
 #include "Particle__System.h"
 #include "nitro/fx/fx.h"
+#include "cstd.h"
 
 struct KCL_File;
 struct CLPS_Block;
@@ -84,7 +85,6 @@ extern CLPS_Block data_ov002_0210d8d4;
 
 u8 DecIfAbove0_Byte(u8 *counter);
 void func_02012694(u32 soundID, const Vector3 *pos);
-int _ZN4cstd4fdivEii(int num, int den);
 
 void *d_a_obj_ice_blockNewSimpleHold(u32 effectID, int x, int y, int z);
 int d_a_obj_ice_blockNewHold(u32 handle, u32 effectID, int x, int y, int z, const Vector3_16f *dir,
@@ -133,7 +133,7 @@ s32 daObjIceBlock_c::Behavior()
     IsClsnInRangeOnScreen(0, 0);
 
     if (mMeltTimer != 0) {
-        mScale = _ZN4cstd4fdivEii(mMeltTimer << 12, kMeltFrames << 12);
+        mScale = cstd::fdiv(mMeltTimer << 12, kMeltFrames << 12);
 
         if (DecIfAbove0_Byte(&mMeltTimer) == 0) {
             dActor_c *star = mContainedActor;
