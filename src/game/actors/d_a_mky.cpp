@@ -58,6 +58,7 @@
 #include "dBgPi.h"
 #include "dClipper.h"
 #include "Sound.h"
+#include "math/MtxStack.h"
 
 /* The callees of this TU's members, spelled by their mangled or ROM names.
  * They cannot be declared inside a method body: a block-scope extern in a
@@ -79,12 +80,6 @@ void  _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiE
 void  dBgCh_Actr_UpdateContinuous_Veneer(void *self);
 int   func_0203567c(int self);
 int   func_02037f44(void *result);
-void  Matrix4x3_FromRotationY(void *m, int angle);
-void  Matrix4x3_FromTranslation(void *m, int x, int y, int z);
-void  Matrix4x3_ApplyInPlaceToRotationY(void *m, short angY);
-void  Matrix4x3_ApplyInPlaceToTranslation(void *m, int x, int y, int z);
-void  Matrix4x3_ApplyInPlaceToRotationXYZExt(void *m, int x, int y, int z);
-void  MulMat4x3Mat4x3(void *a, void *b, void *out);
 unsigned int func_02012790(unsigned int arg);
 
 }
@@ -414,7 +409,6 @@ void daMky_c::func_ov030_02112094()
 
     struct Bundle { Vector3_16 rot; short _p; Vector3 trans; int _tail[2]; };
 
-    extern Matrix4x3 data_020a0e68;
     int idx;
     Matrix4x3 *res;
     dActor_c* obj;
@@ -456,13 +450,11 @@ void daMky_c::func_ov030_02112094()
     bnd.rot.y = 0;
     bnd.rot.z = -0x4000;
 
-    data_020a0e68 = mModelAnim.mat4x3;
-    MulMat4x3Mat4x3(&mModelAnim.data.transforms[5], &data_020a0e68, &data_020a0e68);
-    Matrix4x3_ApplyInPlaceToTranslation(&data_020a0e68,
-        *(volatile int*)&bnd.trans.x, *(volatile int*)&bnd.trans.y, *(volatile int*)&bnd.trans.z);
-    Matrix4x3_ApplyInPlaceToRotationXYZExt(&data_020a0e68,
-        *(volatile short*)&bnd.rot.x, *(volatile short*)&bnd.rot.y, *(volatile short*)&bnd.rot.z);
-    mCapMtx = data_020a0e68;
+    MtxStack::copy(mModelAnim.mat4x3);
+    MtxStack::concat(mModelAnim.data.transforms[5]);
+    MtxStack::transM(bnd.trans);
+    MtxStack::XYZrotM(bnd.rot);
+    mCapMtx = MtxStack::get();
 
     obj->mCarryMatrix = &mCapMtx;
     obj->mPosX = this->mPosX;
@@ -967,7 +959,6 @@ int daMky_c::func_ov030_02113324()
 {
 
     extern dCamera_c *data_0209f318;
-    extern Matrix4x3 data_020a0e68;
     extern unsigned char data_0209d684;
 
     this->mAngleY = this->mPlayer->mAngleY;
@@ -1009,15 +1000,15 @@ int daMky_c::func_ov030_02113324()
                 short ang = Vec3_HorzAngle(&camPos, &this->mPlayer->mPos);
                 {
                     Vector3 *op = &this->mPlayer->mPos;
-                    Matrix4x3_FromTranslation(&data_020a0e68, op->x, op->y, op->z);
+                    MtxStack::transS(op->x, op->y, op->z);
                 }
-                Matrix4x3_ApplyInPlaceToRotationY(&data_020a0e68, ang);
-                Matrix4x3_ApplyInPlaceToTranslation(&data_020a0e68, 0, 0, -0x64000);
+                MtxStack::YrotM(ang);
+                MtxStack::transM(0, 0, -0x64000);
 
                 Vector3 msgPos;
-                msgPos.x = data_020a0e68.m[9];
-                msgPos.y = data_020a0e68.m[10];
-                msgPos.z = data_020a0e68.m[11];
+                msgPos.x = MtxStack::get().m[9];
+                msgPos.y = MtxStack::get().m[10];
+                msgPos.z = MtxStack::get().m[11];
                 msgPos.y = this->mPosY + 0x64000;
 
                 if (this->mPlayer->ShowMessage(*this, 0xc0, &msgPos, 0, 2) != 0) {
@@ -1083,7 +1074,6 @@ int daMky_c::func_ov030_021136b0()
     /* The arm9 symbols.txt row spells this Vector3_16 (not Vector3s) — a wrong mangling here left the reloc BLIND and broke mwldarm. */
 
     extern dCamera_c *data_0209f318;
-    extern Matrix4x3 data_020a0e68;
     int msg;
     s16 a = this->mPlayer->mAngleY;
     this->mAngleY = a;
@@ -1137,15 +1127,15 @@ int daMky_c::func_ov030_021136b0()
         }
         {
             int *op = &this->mPlayer->mPosX;
-            Matrix4x3_FromTranslation(&data_020a0e68, op[0], op[1], op[2]);
+            MtxStack::transS(op[0], op[1], op[2]);
         }
-        Matrix4x3_ApplyInPlaceToRotationY(&data_020a0e68, ang);
-        Matrix4x3_ApplyInPlaceToTranslation(&data_020a0e68, 0, 0, -0x64000);
+        MtxStack::YrotM(ang);
+        MtxStack::transM(0, 0, -0x64000);
         {
             int msgArg = ((int)msg << 16) >> 16;
-            int my = data_020a0e68.m[10];
-            int mx = data_020a0e68.m[9];
-            int mz = data_020a0e68.m[11];
+            int my = MtxStack::get().m[10];
+            int mx = MtxStack::get().m[9];
+            int mz = MtxStack::get().m[11];
             msgPos.x = mx;
             msgPos.y = my;
             msgPos.z = mz;
