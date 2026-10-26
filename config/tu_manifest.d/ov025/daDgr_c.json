@@ -477,12 +477,12 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@478",
+      "from": "@466",
       "to": "@147",
       "evidence": "compiler temporary; mwcc numbers it @467 per TU and ov060 daKpa3Bg_c (this batch) also defines a global @467, so the scratch link collides"
     },
     {
-      "from": "@479",
+      "from": "@467",
       "to": "@148",
       "evidence": "compiler temporary; mwcc numbers it @468 per TU and ov060 daKpa3Bg_c (this batch) also defines a global @468, so the scratch link collides"
     }

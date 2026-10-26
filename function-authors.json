@@ -7239,7 +7239,7 @@
     },
     "arm9:0x02043444": {
       "author": "tangosdev",
-      "name": "_ZN7fBase_cnwEj"
+      "name": "_ZN7fBase_cnwEm"
     },
     "arm9:0x02043494": {
       "author": "tangosdev",

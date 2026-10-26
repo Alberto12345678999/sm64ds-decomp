@@ -5,8 +5,6 @@
 #include "dExtSimpleModel_c.h"
 #include "dCcAc_c.h"
 
-extern "C" void *_ZN7fBase_cnwEj(unsigned size);
-
 /* daObjWc_Obj03_c -- Wet-Dry World's water diamond (profile WATER_DIAMOND,
  * actor 97, ov029). The name is the cartridge's own RTTI: the typeinfo string
  * at 0x02113d7c reads daObjWc_Obj03_c and every method mangles against that
@@ -46,13 +44,6 @@ struct daObjWc_Obj03_c : dActor_c {
     void CheckClsnWithPlayer();
     void SetWaterID();
     void UpdateModelTransform();
-
-    /* Leaf size_t operator new. A plain `new daObjWc_Obj03_c` without this
-       relocates to the global `_Znwm`; this routes the factory through
-       fBase_c::operator new, the call this TU's classInit actually makes. */
-    static void *operator new(size_t size) {
-        return _ZN7fBase_cnwEj((unsigned)size);
-    }
 
     virtual ~daObjWc_Obj03_c() {}             /* slots 16 (D1), 17 (D0) */
 };

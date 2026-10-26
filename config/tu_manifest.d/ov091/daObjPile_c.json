@@ -658,12 +658,12 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@793",
+      "from": "@781",
       "to": "@783",
       "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
     },
     {
-      "from": "@794",
+      "from": "@782",
       "to": "@784",
       "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
     }

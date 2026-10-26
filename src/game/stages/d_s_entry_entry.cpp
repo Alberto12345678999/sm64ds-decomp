@@ -27,7 +27,7 @@ void* dScEntry_c_classInit_ENTRY(void)
 {
     /* The raw byte pointer preserves the ROM factory's address-expression
        tree; typed member expressions fold five instructions in mwccarm. */
-    char *p = (char *)_ZN7fBase_cnwEj(sizeof(dScEntry_c));
+    char *p = (char *)fBase_c::operator new(sizeof(dScEntry_c));
     if (p) {
         struct P2 v;
         _ZN7fBase_cC2Ev(p);

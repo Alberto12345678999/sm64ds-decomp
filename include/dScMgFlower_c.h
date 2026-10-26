@@ -4,7 +4,7 @@
  * pointer one word below it is _ZTI13dScMgFlower_c, which is what ties
  * that table to this class rather than to a neighbour.
  *
- * SIZE 0x5ff8, from the factory's own `_ZN7fBase_cnwEj(0x5ff8)`
+ * SIZE 0x5ff8, from the factory's own `_ZN7fBase_cnwEm(0x5ff8)`
  * (dScMgFlower_c_classInit, at the end of src/minigames/d_s_mg_flower.cpp).
  *
  * FACTORY AND DESTRUCTOR AGREE MEMBER FOR MEMBER. The factory builds

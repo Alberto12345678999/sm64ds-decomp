@@ -109,7 +109,7 @@ void DisableAllBanks();
  * the same arm9 C1 call. */
 // @symbol dScDSMT_c_classInit
 extern "C" dScDSMT_c *dScDSMT_c_classInit(void) {
-    int *p = (int *)_ZN7fBase_cnwEj(0x64);
+    int *p = (int *)fBase_c::operator new(0x64);
     if (p) {
         unsigned char *f;
         _ZN7fBase_cC2Ev(p);

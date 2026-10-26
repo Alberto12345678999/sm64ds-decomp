@@ -99,9 +99,9 @@ void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(
  * later EAD lineage supplies classInit. Exact original spelling is not
  * preserved. Historical alias: PushBlock_Spawn.
  *
- * Leaf operator new(unsigned long) forwards _ZN7fBase_cnwEj until a tree-wide
- * fBase_c::operator new lands. A natural `new daObjPushblock_c` then emits
- * the retail allocation/base/member seam (dBgActor_c C2, vptr, dBgCh_Actr C1). */
+ * A natural `new daObjPushblock_c` calls the inherited fBase_c::operator new
+ * (_ZN7fBase_cnwEm) and emits the retail allocation/base/member seam
+ * (dBgActor_c C2, vptr, dBgCh_Actr C1). */
 extern "C" daObjPushblock_c *daObjPushblock_c_classInit()
 {
     return new daObjPushblock_c();

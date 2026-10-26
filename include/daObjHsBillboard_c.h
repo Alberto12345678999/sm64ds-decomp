@@ -4,8 +4,6 @@
 #include "dExtSimpleModel_c.h"
 #include "dActor_c.h"
 
-extern "C" void *_ZN7fBase_cnwEj(unsigned size);
-
 /* Slide decoration billboard. ov031 actors 302-305 share this one class.
  * ROM debug names: HS_MOON / HS_STAR / HS_Y_STAR / HS_B_STAR.
  * overlay_actors.md community names (not synonyms of those debug strings):
@@ -28,14 +26,7 @@ struct daObjHsBillboard_c : dActor_c {
     virtual int InitResources();
     virtual int Render();
     virtual int CleanupResources();
-
-    static void *operator new(size_t size);
 };
-
-inline void *daObjHsBillboard_c::operator new(size_t size)
-{
-    return _ZN7fBase_cnwEj((unsigned)size);
-}
 
 #ifndef SM64DS_PLATFORM_PC
 /* ROM layout under mwccarm; host ABI divergence is tracked separately. */

@@ -720,22 +720,22 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@292",
+      "from": "@280",
       "to": "@278",
       "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @292 now; licensed under the existing pin @278"
     },
     {
-      "from": "@291",
+      "from": "@279",
       "to": "@277",
       "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @291 now; licensed under the existing pin @277"
     },
     {
-      "from": "@289",
+      "from": "@277",
       "to": "@275",
       "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @289 now; licensed under the existing pin @275"
     },
     {
-      "from": "@290",
+      "from": "@278",
       "to": "@276",
       "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @290 now; licensed under the existing pin @276"
     }

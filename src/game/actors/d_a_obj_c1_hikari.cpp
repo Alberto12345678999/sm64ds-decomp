@@ -91,7 +91,7 @@ extern int _ZTV15daObjC1Hikari_c[];
  *
  * Every instruction the cartridge has here falls out of the one `new`.
  * fBase_c::operator new(unsigned long) keeps the allocation on
- * _ZN7fBase_cnwEj; without it the call relocates to the unavailable global
+ * _ZN7fBase_cnwEm; without it the call relocates to the unavailable global
  * `_Znwm`. */
 // @symbol daObjC1Hikari_c_classInit
 extern "C" daObjC1Hikari_c *daObjC1Hikari_c_classInit()

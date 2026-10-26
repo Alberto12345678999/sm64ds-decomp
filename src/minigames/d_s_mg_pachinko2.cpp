@@ -2672,7 +2672,7 @@ s32 dScMgPachinko2_c::InitResources() {
    0x0213dbbc stored as data. The classInit spelling follows later EAD
    lineage; the historical alias is MgLakituLaunch_Spawn. */
 extern "C" int *dScMgPachinko2_c_classInit(void) {
-    int *p = (int *)_ZN7fBase_cnwEj(22140);
+    int *p = (int *)fBase_c::operator new(22140);
     if (p) {
         _ZN11dScMgBase_cC2Ev(p);
         p[0] = (int)data_ov006_0213dbbc;

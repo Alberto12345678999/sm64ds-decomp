@@ -131,7 +131,7 @@ extern "C" void _ZN17dMgDilarCardObj_cC1Ev(void* elem)
 // @symbol dScMgCard_c_classInit
 extern "C" void* dScMgCard_c_classInit()
 {
-    char* p = (char*)_ZN7fBase_cnwEj(sizeof(dScMgCard_c));
+    char* p = (char*)fBase_c::operator new(sizeof(dScMgCard_c));
     if (p) {
         _ZN11dScMgBase_cC2Ev(p);
         *(void **)p = _ZTV19dScMgSingle3DBase_c;

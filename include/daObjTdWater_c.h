@@ -5,8 +5,6 @@
 #include "dBgActor_c.h"
 #include "dExtAnmTexSRT_c.h"
 
-extern "C" void *_ZN7fBase_cnwEj(unsigned size);
-
 /* Huge water plane (profile HUGE_WATER / TD_WATER 107). ov032 also has
  * HUGE_COVER(106) / daObjTdFuta_c.
  *
@@ -49,12 +47,6 @@ struct daObjTdWater_c : dBgActor_c {
     virtual s32   CleanupResources();      /* slot  3 */
     virtual s32   Behavior();              /* slot  6 */
     virtual s32   Render();                /* slot  9 */
-
-    /* Leaf operator new. Parameter is size_t (unsigned long on this
-       compiler). `return new` relocates to `_Znwm` without this. */
-    static void *operator new(size_t size) {
-        return _ZN7fBase_cnwEj((unsigned)size);
-    }
 };
 
 #ifndef SM64DS_PLATFORM_PC

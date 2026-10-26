@@ -627,11 +627,10 @@ bool fBase_c::OnHeapCreated()
     return 1;
 }
 
-/* Actor-heap allocation, cleared before construction. The configured ABI takes
- * unsigned; the class's size_t operator-new overload forwards here because
- * the compiler requires size_t for an in-class operator new. */
-// @symbol _ZN7fBase_cnwEj
-extern "C" void *_ZN7fBase_cnwEj(unsigned int size)
+/* Actor-heap allocation, cleared before construction. Every `new` of a
+ * process class lands here. */
+// @symbol _ZN7fBase_cnwEm
+void *fBase_c::operator new(size_t size)
 {
     void *p = _ZN6Memory8AllocateEjiPN5mHeap6Heap_tE(size, -4, data_020a0eac);
     if (!p)

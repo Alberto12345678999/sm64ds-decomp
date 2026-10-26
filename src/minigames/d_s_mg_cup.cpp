@@ -1003,7 +1003,7 @@ s32 dScMgCup_c::InitResources() {
    Only mModel as a member with real structors gives that order, and those
    are unit020bfec0's (Presenter_Construct / Presenter_Destruct). */
 extern "C" void *dScMgCup_c_classInit() {
-    dScMgCup_c *scene = (dScMgCup_c *)_ZN7fBase_cnwEj(sizeof(dScMgCup_c));
+    dScMgCup_c *scene = (dScMgCup_c *)fBase_c::operator new(sizeof(dScMgCup_c));
     if (scene) {
         _ZN11dScMgBase_cC2Ev(scene);
         *(void **)scene = _ZTV19dScMgSingle3DBase_c;

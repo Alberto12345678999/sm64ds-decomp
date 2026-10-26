@@ -4,7 +4,7 @@
  * pointer one word below it is _ZTI13dScMgMCarlo_c, which is what ties
  * that table to this class rather than to a neighbour.
  *
- * SIZE 0x60b0, from the factory's own `_ZN7fBase_cnwEj(0x60b0)`
+ * SIZE 0x60b0, from the factory's own `_ZN7fBase_cnwEm(0x60b0)`
  * (the classInit factory in src/minigames/d_s_mg_m_carlo.cpp).
  *
  * THE DEALER at 0x4f38: a Dealer (include/Dealer.h, 0x270 bytes), the

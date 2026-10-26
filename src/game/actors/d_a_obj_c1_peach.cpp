@@ -58,7 +58,7 @@ extern C1PeachModelFilePtr gC1PeachModelFile;
  * lineage supplies classInit. Historical alias: PeachPainting_Spawn.
  *
  * fBase_c::operator new(unsigned long) keeps the allocation on
- * _ZN7fBase_cnwEj. The emitted constructor stores the vtable address point. */
+ * _ZN7fBase_cnwEm. The emitted constructor stores the vtable address point. */
 // @symbol daObjC1Peach_c_classInit
 extern "C" daObjC1Peach_c *daObjC1Peach_c_classInit()
 {

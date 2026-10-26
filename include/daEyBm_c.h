@@ -7,8 +7,6 @@
 #include "dActor_c.h"
 #include "math/Matrix.h"
 
-extern "C" void *_ZN7fBase_cnwEj(unsigned size);
-
 /* daEyBm_c is the ROM's own RTTI name for this class (this tree once coined it
  * MrI_Projectile): the typeinfo at ov071
  * 0x02122db8 names dActor_c as the sole base at offset 0, and the class's
@@ -60,13 +58,6 @@ struct daEyBm_c : dActor_c {
     virtual s32  Render();              /* slot 9 */
     virtual void OnPendingDestroy();    /* slot 12 */
     virtual int  OnYoshiTryEat();       /* slot 18 */
-
-    /* Leaf in-class operator new until fBase_c::operator new(unsigned long)
-       lands (#2570). unsigned long, not unsigned int: `new daEyBm_c()` looks
-       up _Znwm. */
-    static void *operator new(size_t size) {
-        return _ZN7fBase_cnwEj((unsigned)size);
-    }
 
 private:
     /* Class ownership, calls, bodies and codegen are proven. These readable

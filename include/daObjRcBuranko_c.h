@@ -29,8 +29,6 @@
 
 #include "dBgActor_c.h"
 
-extern "C" void *_ZN7fBase_cnwEj(unsigned size);
-
 struct daObjRcBuranko_c : dBgActor_c {
     s16 mSwingVelZ;   /* 0x31e -- signed angular velocity added to mAngleZ each
                          frame; Behavior nudges it by +/-4 against the sign of
@@ -49,11 +47,6 @@ struct daObjRcBuranko_c : dBgActor_c {
     int Behavior();           /* slot  6 -- 0x021112f0 */
     int Render();             /* slot  9 -- 0x021112c8 */
     int CleanupResources();   /* slot  3 -- 0x02111284 */
-
-    /* size_t == unsigned long here; unsigned int is illegal. */
-    static void *operator new(size_t size) {
-        return _ZN7fBase_cnwEj((unsigned)size);
-    }
 };
 
 #ifndef SM64DS_PLATFORM_PC

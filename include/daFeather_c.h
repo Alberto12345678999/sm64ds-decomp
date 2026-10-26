@@ -15,8 +15,6 @@
 #include "dCcAc_c.h"
 #include "dBgCh_Actr.h"
 
-extern "C" void *_ZN7fBase_cnwEj(unsigned size);
-
 /* 0x388 bytes per the factory's operator new(904). The four members are
  * constructed in declaration order and torn down in reverse:
  *
@@ -74,12 +72,6 @@ struct daFeather_c : dActor_c {
     virtual s32 CleanupResources();     /* slot  3 */
     virtual s32 Behavior();             /* slot  6 */
     virtual s32 Render();               /* slot  9 */
-
-    /* Leaf adapter until fBase_c::operator new(unsigned long) lands (#2570).
-       `return new daFeather_c()` then routes through the retail allocator. */
-    static void *operator new(unsigned long size) {
-        return _ZN7fBase_cnwEj((unsigned)size);
-    }
 };
 
 #ifndef SM64DS_PLATFORM_PC

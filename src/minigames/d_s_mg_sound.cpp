@@ -312,7 +312,7 @@ extern void *_ZTV19dScMgSingle3DBase_c[];
 extern void *_ZTV12dScMgSound_c[];
 
 extern "C" void *dScMgSound_c_classInit(void) {
-    char *p = (char *)_ZN7fBase_cnwEj(0x562c);
+    char *p = (char *)fBase_c::operator new(0x562c);
     if (p) {
         _ZN11dScMgBase_cC2Ev(p);
         *(void **)p = _ZTV19dScMgSingle3DBase_c;

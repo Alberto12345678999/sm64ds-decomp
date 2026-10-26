@@ -4,8 +4,6 @@
 #include "types.h"
 #include "dBgActor_c.h"
 
-extern "C" void *_ZN7fBase_cnwEj(unsigned size);
-
 /**
  * Lethal Lava Land lava bridge. ov022 LAVA_BRIDGE (73), profile FL_LONDON.
  *
@@ -31,13 +29,6 @@ struct daObjFl_London_c : dBgActor_c {
 
     u8  mCooldown;                         /* 0x31e */
     u8  mFlag;                             /* 0x31f */
-
-    /* Leaf until fBase_c::operator new(unsigned long) lands (#2570).
-     * MWCC has no size_t here; unsigned long is the new-expression operand. */
-    static void *operator new(size_t size)
-    {
-        return _ZN7fBase_cnwEj((unsigned)size);
-    }
 };
 
 #ifndef SM64DS_PLATFORM_PC

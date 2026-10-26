@@ -986,7 +986,7 @@ s32 dScMgSlot3_c::InitResources() {
  * preserved. Historical alias: func_ov006_0210c120. */
 extern "C" { /* .c-derived member: C linkage for the whole block */
 int *dScMgSlot3_c_classInit(void) {
-    int *p = (int *)_ZN7fBase_cnwEj(0x5044);
+    int *p = (int *)fBase_c::operator new(0x5044);
     if (p) {
         _ZN11dScMgBase_cC2Ev(p);
         p[0] = (int)_ZTV19dScMgSingle3DBase_c;
@@ -1673,7 +1673,7 @@ s32 dScMgSlot1_c::InitResources() {
  * dThIcon_c's table is ov001's and is stored by its configured address. */
 extern "C" { /* .c-derived member: C linkage for the whole block */
 void *dScMgSlot1_c_classInit(void) {
-    dScMgSlot1_c *scene = (dScMgSlot1_c *)_ZN7fBase_cnwEj(sizeof(dScMgSlot1_c));
+    dScMgSlot1_c *scene = (dScMgSlot1_c *)fBase_c::operator new(sizeof(dScMgSlot1_c));
     if (scene) {
         _ZN11dScMgBase_cC2Ev(scene);
         *(int *)scene = (int)&_ZTV12dScMgSlot1_c[2];

@@ -126,7 +126,7 @@ int daObjFlMaruta_c::InitResources()
 // @symbol daObjFlMaruta_c_classInit
 extern "C" int *daObjFlMaruta_c_classInit(void)
 {
-    int *p = (int *)_ZN7fBase_cnwEj(836);
+    int *p = (int *)fBase_c::operator new(836);
     if (p) {
         _ZN10dBgActor_cC2Ev(p);
         p[0] = (int)_ZTV13daObjMaruta_c;
@@ -245,7 +245,7 @@ int daObj_volcanoCannon_c::InitResources()
 // @symbol daObj_volcanoCannon_c_classInit
 extern "C" int *daObj_volcanoCannon_c_classInit(void)
 {
-    int *p = (int *)_ZN7fBase_cnwEj(0x11c);
+    int *p = (int *)fBase_c::operator new(0x11c);
     if (p) {
         _ZN8dActor_cC2Ev(p);
         p[0] = (int)&_ZTV21daObj_volcanoCannon_c[2];

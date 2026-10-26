@@ -4729,7 +4729,7 @@
     "src/game/actors/d_a_jango.cpp#_ZN9daJango_cD1Ev": "tangosdev",
     "src/engine/collision/d_m3d_g_lin.cpp#_ZN8dM3dGLin3SetERK7Vector3S2_": "tangosdev",
     "src/engine/collision/d_m3d_g_lin.cpp#_ZN8dM3dGLinD2Ev": "tangosdev",
-    "src/runtime/actor/ActorBase.cpp#_ZN7fBase_cnwEj": "tangosdev",
+    "src/runtime/actor/ActorBase.cpp#_ZN7fBase_cnwEm": "tangosdev",
     "src/runtime/actor/ActorBase.cpp#_ZN7fBase_c13OnHeapCreatedEv": "tangosdev",
     "src/runtime/actor/ActorBase.cpp#_ZN7fBase_c9Virtual38Ejj": "tangosdev",
     "src/runtime/actor/ActorBase.cpp#_ZN7fBase_c9Virtual34Ejj": "aitddlabs",

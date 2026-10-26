@@ -4,8 +4,6 @@
 #include "dActor_c.h"
 #include "dExtAnmModel_c.h"
 
-extern "C" void *_ZN7fBase_cnwEj(unsigned size);
-
 /* FLAG (342) -- ov009/daMcFlag_c, castle grounds flag.
  *
  * ov009 is mixed (DOCK_POLE / CASTLE_WATER / METAL_NET / FLAG / BIRD).
@@ -35,13 +33,6 @@ struct daMcFlag_c : dActor_c {
     virtual s32 CleanupResources();          /* slot  3 */
     virtual s32 Behavior();                  /* slot  6 */
     virtual s32 Render();                    /* slot  9 */
-
-    /* Until #2570 merges, a leaf `unsigned long` new forwards the retail
-       `fBase_c::operator new(unsigned int)`. `unsigned int` here mangles
-       differently and the factory misses. */
-    static void *operator new(size_t size) {
-        return _ZN7fBase_cnwEj((unsigned)size);
-    }
 };
 
 #ifndef SM64DS_PLATFORM_PC

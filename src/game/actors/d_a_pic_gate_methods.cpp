@@ -471,7 +471,7 @@ s32 daPicGate_c::InitResources() {
 // @symbol daPicGate_c_classInit
 extern "C" daPicGate_c *daPicGate_c_classInit()
 {
-    int *p = (int *)_ZN7fBase_cnwEj(sizeof(daPicGate_c));
+    int *p = (int *)fBase_c::operator new(sizeof(daPicGate_c));
     if (p) {
         _ZN8dActor_cC2Ev(p);
         p[0] = (int)_ZTV11daPicGate_c;

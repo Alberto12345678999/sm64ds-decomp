@@ -10,7 +10,7 @@
  * intermediate base's destructor would have left behind.
  *
  * SIZE 0x629c, from dScMgSmartball_c_classInit's own
- * `_ZN7fBase_cnwEj(0x629c)`, and the last array closes EXACTLY on it:
+ * `_ZN7fBase_cnwEm(0x629c)`, and the last array closes EXACTLY on it:
  * 0x599c + 0x40 * 0x24 = 0x629c. The coined English _Spawn name
  * MgBingoBallSlotsShot_Spawn is already attributed and is retained as a
  * historical alias, the same convention as dScMgCard_c_classInit

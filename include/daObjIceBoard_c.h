@@ -3,8 +3,6 @@
 
 #include "dBgActor_c.h"
 
-extern "C" void *_ZN7fBase_cnwEj(unsigned size);
-
 /* daObjIceBoard_c -- Cool Cool Mountain's shatterable ice sheet (profile
  * ICE_BOARD, actor 295, ov018).
  *
@@ -39,13 +37,6 @@ struct daObjIceBoard_c : dBgActor_c {
     virtual void OnGroundPounded(dActor_c &other);/* slot 21 */
     virtual void OnHitByMegaChar(Player &player); /* slot 27 */
     virtual void Kill();                          /* slot 31 */
-
-    /* Leaf size_t operator new. A plain `new daObjIceBoard_c` without this
-       relocates to the global `_Znwm`; this routes the factory through
-       fBase_c::operator new, the call this TU's classInit actually makes. */
-    static void *operator new(size_t size) {
-        return _ZN7fBase_cnwEj((unsigned)size);
-    }
 
     virtual ~daObjIceBoard_c() {}                 /* slots 16, 17 */
 };
