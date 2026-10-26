@@ -44,13 +44,13 @@ struct ModelComponents;
 struct BMD_File;
 struct SharedFilePtr;
 
-/* Only the header words UpdateFileOffsets touches are typed. texRecords
+/* Only the frame count and the header words UpdateFileOffsets touches are typed. texRecords
    and palRecords are the name-lookup tables Prepare indexes -- 8-byte
    { s16 resourceId; u16 pad; char *name; } records per func_02046d50's
    Tbl view -- and seqRecords the 0xc-byte sequence table alongside them;
    each holds file-relative offsets that UpdateFileOffsets rebases. */
 struct BTP_File {
-    u16 unk_00;
+    u16 numFrames;             /* 0x00 - handed to SetAnimation by SetFile */
     u16 numTexRecords;         /* 0x02 - 8-byte records at texRecords */
     char *texRecords;          /* 0x04 - fixed up on load */
     u16 numPalRecords;         /* 0x08 - 8-byte records at palRecords */
@@ -69,7 +69,7 @@ struct dExtAnmTexPat_c : dExtFrameCtrl_c {
     /* --- vtable: the destructor pair only. --- */
     virtual ~dExtAnmTexPat_c(); /* slots 0 (D1), 1 (D0) */
 
-    /* DECLARED, never defined as a method here -- src/engine/model/d_ext_anm_tex_pat.cpp
+    /* DECLARED, never defined as a method here -- src/engine/model/d_ext_model.cpp
        owns C1 (notes/ctor-migration.md section 2). */
     dExtAnmTexPat_c();
 

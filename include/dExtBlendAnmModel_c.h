@@ -11,8 +11,8 @@
  *
  * THE DESTRUCTOR IS DECLARED FIRST -- see include/dExtAnmModel_c.h; the D1
  * additionally frees mBlendBuffer before chaining to dExtAnmModel_c::D2. Defined
- * out of line in src/engine/model/d_ext_blend_anm_model.cpp. That definition is
- * the key function, so the TU also emits the MI vtable group; RTTI is off
+ * out of line in src/engine/model/d_ext_model.cpp. That definition is
+ * the key function, so the TU also emits the MI vtable group with its RTTI,
  * and the retail table stays externalized (see the TU manifest).
  *
  * LAYOUT: dExtAnmModel_c 0x00..0x64, then the blend state. blendWeight ramps
@@ -58,7 +58,7 @@ struct dExtBlendAnmModel_c : dExtAnmModel_c {
     virtual void Render(const Vector3 *scale);            /* slot 5 */
     virtual void Virtual18(u32 mat, const Vector3 *scale);/* slot 6 */
 
-    /* DECLARED, defined out of line in src/engine/model/d_ext_blend_anm_model.cpp
+    /* DECLARED, defined out of line in src/engine/model/d_ext_model.cpp
      * as real C++ -- complete-object context for every ROM caller (it is a
      * member subobject in daKing_Donketu_c/Eyerok/daJango_c/daMoray_c...), hence C1.
      * Body is empty; blendWeight and mBlendBuffer are initialised through the init

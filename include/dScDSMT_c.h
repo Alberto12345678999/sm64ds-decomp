@@ -21,7 +21,7 @@
  *     override, matching dScMiniGm_c and unlike dScEntry_c.
  *
  * CONSTRUCTION. dScDSMT_c_classInit is the factory: it opens with
- * `_ZN7fBase_cnwEj(0x64)` -- fBase_c::operator new(0x64). SIZE 0x64 (100
+ * `_ZN7fBase_cnwEm(0x64)` -- fBase_c::operator new(0x64). SIZE 0x64 (100
  * bytes) therefore comes directly off the allocator call.
  *
  * The same function writes the vtable chain fBase_c -> (dBase_c/dScene_c

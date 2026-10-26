@@ -40,6 +40,7 @@
 #include "Ov007MenuState.h"
 #include "Ov007Sprite.h"
 #include "Ov007Touch.h"
+#include "Ov007Work.h"
 
 /* The 0x2c-byte record func_ov007_020aea6c allocates; names as in
  * func_ov007_020b4c04 and func_ov007_020b5bf0, only the slots read here. */
@@ -70,15 +71,6 @@ typedef struct Ov007ItemView {
     Ov007Item *item;     /* 0x00 */
     Ov007Sprite *sprite; /* 0x04 */
 } Ov007ItemView;
-
-/* data_ov007_0210342c: the overlay's manager; names as in func_ov007_020afc44. */
-typedef struct Ov007Work {
-    char pad_00[4];
-    Ov007MenuState *states[3]; /* 0x04 */
-    char pad_10[0x18];
-    struct Ov007Settings *settings; /* 0x28: its first word points at a record
-                                     * whose byte 9 picks item 0xc or 0xd */
-} Ov007Work;
 
 typedef struct { u32 f0; u32 f4; u32 f8; } Tbl;
 extern Tbl data_ov007_020d77dc[];

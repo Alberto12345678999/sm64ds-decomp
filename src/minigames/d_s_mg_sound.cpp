@@ -297,30 +297,17 @@ PmfEntry sSoundPop12Table[3] = {
     {pmf_dScMgSound_c_Pop12_Finish},
 };
 
+/* The body is empty: everything the factory's `new` runs (dScMgBase_c's
+   C2, dScMgSingle3DBase_c's vptr and mSysTracker, this class's vptr, then
+   mTable's constructor) is the compiler's inlining of the base and member
+   constructors. */
+inline dScMgSound_c::dScMgSound_c() {}
+
 // @symbol dScMgSound_c_classInit
 /* The MG_SOUND registry factory. It sits directly after InitResources and
-   installs this class's vtable, so it was compiled with the class.
-   Still a hand-written constructor: the header declares none, so the base
-   and Particle::SysTracker constructors are called by their mangled names.
-   The two vtable stores differ on purpose. dScMgSingle3DBase_c's table is
-   external and its symbol is the address point; this class's table is
-   emitted here, where the symbol sits two words lower, hence the `+ 2`. */
-extern "C" void *_ZN11dScMgBase_cC2Ev(void *);
-extern "C" void _ZN8Particle10SysTrackerC1Ev(void *);
-extern "C" void Presenter_Construct(void *);
-extern void *_ZTV19dScMgSingle3DBase_c[];
-extern void *_ZTV12dScMgSound_c[];
-
+   installs this class's vtable, so it was compiled with the class. */
 extern "C" void *dScMgSound_c_classInit(void) {
-    char *p = (char *)_ZN7fBase_cnwEj(0x562c);
-    if (p) {
-        _ZN11dScMgBase_cC2Ev(p);
-        *(void **)p = _ZTV19dScMgSingle3DBase_c;
-        _ZN8Particle10SysTrackerC1Ev(&((dScMgSound_c *)p)->mSysTracker);
-        *(void **)p = _ZTV12dScMgSound_c + 2;
-        Presenter_Construct(&((dScMgSound_c *)p)->mTable);
-    }
-    return p;
+    return new dScMgSound_c;
 }
 
 // @symbol _ZN12dScMgSound_c13InitResourcesEv
@@ -363,7 +350,7 @@ s32 dScMgSound_c::InitResources() {
     if (Presenter_Load((void *)&mTable) == 0)
         return 0;
 
-    mTable.mSuppressSound = 1;
+    mTable.mQuiet = 1;
     ResetRound();
     DealNotes();
     mTries = 3;
@@ -414,7 +401,7 @@ s32 dScMgSound_c::Behavior() {
             (*(u16 *)(int)&mResultTimer)--;
             if (mResultTimer == 0) {
                 if (mTries != 0) {
-                    mTable.mSuppressSound = 0;
+                    mTable.mQuiet = 0;
                     Presenter_PlayCheer((char *)&mTable);
                     if (mTries == 3)
                         Mg_SetPerfectBanner();
@@ -449,7 +436,7 @@ s32 dScMgSound_c::Behavior() {
         if (mResultTimer != 0) {
             (*(u16 *)(int)&mResultTimer)--;
             if (*(s16 *)&mResultTimer <= 0) {
-                mTable.mSuppressSound = 0;
+                mTable.mQuiet = 0;
                 Presenter_PlayLose((char *)&mTable);
                 Mg_SetSharedState(MG_STATE_GAME_OVER);
                 mPromptEnabled = 0;
@@ -512,7 +499,7 @@ void dScMgSound_c::StartRound(int mode) {
         Mg_SubmitScore(total);
     }
 
-    mTable.mSuppressSound = 1;
+    mTable.mQuiet = 1;
     ResetRound();
 
     mTries = 3;

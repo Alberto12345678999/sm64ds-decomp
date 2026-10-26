@@ -1,5 +1,6 @@
 //cpp
 #include "Ov007MenuState.h"
+#include "Ov007Work.h"
 
 extern "C" {
 extern void func_ov007_020b283c(void);
@@ -41,24 +42,7 @@ struct Ov007Settings {
     unsigned char dialogKind;
 };
 
-/* data_ov007_0210342c: the overlay's manager; names as in
- * func_ov007_020aec94, func_ov007_020b0da0 and func_ov007_020b2370, only the
- * slots this file touches. The callback at +0x2c and the 0/1 pair at
- * +0xec/+0xf0 stay raw on G. */
-struct Ov007Work {
-    char pad_00[4];
-    Ov007MenuState *states[3]; /* 0x04: func_ov007_020c9388 */
-    char pad_10[0x18];
-    Ov007Settings *settings; /* 0x28: func_ov007_020b6a84 */
-    char pad_2c[0xc8];
-    Ov007Model *model; /* 0xf4: func_ov007_020b2bd4 builds it */
-    char pad_f8[8];
-    Ov007Figure *figure;    /* 0x100: func_ov007_020beaa0 */
-    Ov007Figure *altFigure; /* 0x104: func_ov007_020be850 returns it when +0xec is 1 */
-};
-
 typedef char Ov007Model_visible_must_be_at_0x94[(int)&((Ov007Model *)0)->visible == 0x94 ? 1 : -1];
-typedef char Ov007Work_size_must_be_0x108[sizeof(Ov007Work) == 0x108 ? 1 : -1];
 
 /* The extern keeps the tree's char * spelling; the typed view is reached
  * through a cast macro. */

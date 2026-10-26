@@ -18,7 +18,7 @@
  * Butterfly_Spawn) appends after InitResources, at the end of source order:
  * the pragma above never toggles back on, so it stays in effect for this
  * new function too. fBase_c::operator new(size_t) forwards
- * `return new daBtfly_c();` to the same _ZN7fBase_cnwEj(1012) allocator the
+ * `return new daBtfly_c();` to the same _ZN7fBase_cnwEm(1012) allocator the
  * loose factory called by hand, and daBtfly_c has no user-declared
  * constructor, so the inherited dActor_c ctor plus the vtable store plus the
  * six member subobjects in field order (dExtAnmModel_c, dExtSimpleModel_c, dExtShadowModel_c x2,

@@ -10,6 +10,7 @@
 #include "nitro/fx/fx.h"
 namespace cstd {
 short atan2(int, int);
+s32 fdiv(s32, s32);
 }
 
 extern "C" {
@@ -41,7 +42,6 @@ extern s32 Math_Function_0203b14c(s32 *p, s32 tgt, s32 rate, s32 lim, s32 step);
 extern s32 ApproachAngle(s16 *cur, s32 target, s32 div, s32 band, s32 step);
 extern s32 AngleDiff(s32 a, s32 b);
 extern s16 atan2_hold_func_02009e70_1(s32 y, s32 x);
-extern s32 _ZN4cstd4fdivEii(s32 a, s32 b);
 extern s32 _ZN4cstd4sqrtEy(u64 v);
 extern u32 func_020093f4(void *p, s32 x);
 extern u32 func_020093d4(void *p, s32 x);
@@ -451,12 +451,12 @@ s32 func_02009e70(char *self)
                                     ApproachAngle((s16 *)&sp18, sb, 0x20, 0x800, 0);
                                     t0 = (sp18 >> 4) * 2;
                                     sp40.y = FX_MUL(sp28, -data_02082214[t0]);
-                                    t0 = _ZN4cstd4fdivEii(FX_MUL(sp28, data_02082214[t0 + 1]), fp);
+                                    t0 = cstd::fdiv(FX_MUL(sp28, data_02082214[t0 + 1]), fp);
                                     sp40.x = FX_MUL(sp40.x, t0);
                                     sp40.z = FX_MUL(sp40.z, t0);
                                 }
                                 Math_Function_0203b14c(&sp28, r4, 0x400, r7 + 0x20000, 0x100);
-                                Vec3_MulScalarInPlace((s32 *)&sp40, _ZN4cstd4fdivEii(sp28, sp14));
+                                Vec3_MulScalarInPlace((s32 *)&sp40, cstd::fdiv(sp28, sp14));
                             } else if (sp28 < fp) {
                                 Math_Function_0203b14c(&sp28, fp, 0x400, r7 + 0x20000, 0x100);
                                 {
@@ -465,7 +465,7 @@ s32 func_02009e70(char *self)
                                     distanceSq -= (s64)sp40.y * sp40.y;
                                     r7 = _ZN4cstd4sqrtEy((u64)distanceSq);
                                 }
-                                t0 = _ZN4cstd4fdivEii(r7, Vec3_HorzLen(&sp40));
+                                t0 = cstd::fdiv(r7, Vec3_HorzLen(&sp40));
                                 sp40.x = FX_MUL(sp40.x, t0);
                                 sp40.z = FX_MUL(sp40.z, t0);
                                 cam->mInputYawLag -= cam->mAngleY - sb;
@@ -480,7 +480,7 @@ s32 func_02009e70(char *self)
                         } else {
                             if (sb > r4) {
                                 Math_Function_0203b14c(&sp28, r4, 0x400, r7 + 0x20000, 0x100);
-                                Vec3_MulScalarInPlace((s32 *)&sp40, _ZN4cstd4fdivEii(sp28, sb));
+                                Vec3_MulScalarInPlace((s32 *)&sp40, cstd::fdiv(sp28, sb));
                                 MoveCameraPosition(cam, sp40);
                             }
                         }

@@ -12,7 +12,6 @@
 #include "types.h"
 
 #ifdef __cplusplus
-extern "C" void *_ZN7fBase_cnwEj(unsigned size);
 #include "dBgActor_c.h"
 #include "dExtShadowModel_c.h"
 #include "dExtAnmTexSRT_c.h"
@@ -44,10 +43,6 @@ struct daObjCtMecha04_c : dBgActor_c {
      * type encoded in the symbol are inferred from the callback ABI. */
     static void AfterClsnCallback(dBgW *collider, dActor_c *owner,
                                   dActor_c *other);
-
-    static void *operator new(size_t size) {
-        return _ZN7fBase_cnwEj((unsigned)size);
-    }
 
     /* Declared last and inline so class instantiation emits the retail D1/D0
      * pair in cartridge order without a separate leaf D2 body. */

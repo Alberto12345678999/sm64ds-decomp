@@ -580,17 +580,17 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@639",
+      "from": "@633",
       "to": "@795",
       "evidence": "compiler-local __register_global_object node; renamed to an unused fleet temp of equal length"
     },
     {
-      "from": "@640",
+      "from": "@634",
       "to": "@791",
       "evidence": "compiler-local __register_global_object node; @629 is taken on main by ov064 data, renamed to an unused fleet temp of equal length"
     },
     {
-      "from": "@641",
+      "from": "@635",
       "to": "@789",
       "evidence": "compiler-local __register_global_object node; renamed to an unused fleet temp of equal length"
     }

@@ -160,7 +160,7 @@ void *_ZN17dExtSimpleModel_c23AddToCommonModelDataArrER8BMD_File(void *file)
 /* The DS global operator new is spelled `operator new(size_t)` (_Znwm) in
    src/engine/heap/Heap.cpp and stays the CRT's on the host; the one
    host-compiled allocation that must come from the DS heap
-   (src/engine/model/d_ext_simple_model.cpp) calls func_0203cc0c directly.
+   (src/engine/model/d_ext_model.cpp) calls func_0203cc0c directly.
    _ZN6Memory16operator_delete2EPv now lives in hal/ctor_bridge.cpp:
    every target that builds a migrated model-family constructor needs
    it, not just the ones that link this file. */

@@ -76,6 +76,9 @@ struct W2 {
 };
 bool ApproachLinear(short &value, short target, short step);
 int ApproachLinear(int &r, int b, int c);
+namespace cstd {
+int fdiv(s32, s32);
+}
 
 // ---- Trmp2Mario_GetVelocity
 namespace ns_020c8dd4 {
@@ -447,7 +450,6 @@ int DotVec3(const Vector3 *a, const Vector3 *b);
 void Vec3_MulScalar(Vector3 *out, const Vector3 *in, int scale);
 void SubVec3(Vector3 *a, Vector3 *b, Vector3 *c);
 void AddVec3(Vector3 *a, Vector3 *b, Vector3 *c);
-int _ZN4cstd4fdivEii(int a, int b);
 void *d_mg_trmpln2_marioNewHold(unsigned int a, unsigned int b, int fx1, int fx2, int fx3,
                                 const void *vec, void *cb);
 void Sound_PlayBank1Panned(int a0, int a1, int a2);
@@ -481,7 +483,7 @@ extern "C" void Trmp2Mario_BounceOffLineA(char *c) {
     Vec3_MulScalar(&tmp2, &tmp, scale);
     SubVec3(&MARIO2(c)->mVel, &tmp2, &MARIO2(c)->mVel);
 
-    fdivr = _ZN4cstd4fdivEii(lineHalfLength, lineHalfLength + alongLine);
+    fdivr = cstd::fdiv(lineHalfLength, lineHalfLength + alongLine);
     scale = FX_MUL(sTrmp2RiseSpeedMax, fdivr);
     Vec3_MulScalar(&tmp3, &tmp, scale);
     AddVec3(&MARIO2(c)->mVel, &tmp3, &MARIO2(c)->mVel);
@@ -679,7 +681,6 @@ int DotVec3(const Vector3 *a, const Vector3 *b);
 void Vec3_MulScalar(Vector3 *out, const Vector3 *in, int scale);
 void SubVec3(Vector3 *a, Vector3 *b, Vector3 *c);
 void AddVec3(Vector3 *a, Vector3 *b, Vector3 *c);
-int _ZN4cstd4fdivEii(int a, int b);
 void Sound_PlayBank1Panned(int a0, int a1, int a2);
 void Trmp2Mario_StateWallBounce(char *c);
 }
@@ -712,7 +713,7 @@ extern "C" void Trmp2Mario_BounceOffLineB(char *c) {
     Vec3_MulScalar(&tmp2, &tmp, scale);
     SubVec3(&MARIO2(c)->mVel, &tmp2, &MARIO2(c)->mVel);
 
-    fdivr = _ZN4cstd4fdivEii(lineHalfLength, lineHalfLength + alongLine);
+    fdivr = cstd::fdiv(lineHalfLength, lineHalfLength + alongLine);
     scale = FX_MUL(sTrmpSpeedScale, fdivr);
     Vec3_MulScalar(&tmp3, &tmp, scale);
     AddVec3(&MARIO2(c)->mVel, &tmp3, &MARIO2(c)->mVel);
@@ -889,9 +890,6 @@ extern "C" void Trmp2Mario_StateMissed(char *c) {
 namespace ns_020c9fe4 {
 extern "C" {
 extern void D3D_PlaySeAtX(int a, int b);
-/* S4 WALL (wave-2): kept: local void return disagrees with Sound.h u32
-   (definition returns unsigned int); params match, caller ignores r0. */
-extern void _ZN5Sound12PlayBank2_2DEj(unsigned int);
 extern int sTrmp2Lives[];
 extern double pmf_Trmp2Mario_StateMissed_2;
 void Trmp2Mario_EnterMissed(char *c);
@@ -900,7 +898,7 @@ void Trmp2Mario_EnterMissed(char *c) {
     if (sTrmp2Lives[0] > 1)
         D3D_PlaySeAtX(0x1ca, MARIO2(c)->mPos.x);
     else
-        _ZN5Sound12PlayBank2_2DEj(0x1c9);
+        Sound::PlayBank2_2D(0x1c9);
     MARIO2(c)->mModelAnim.SetAnim(sTrmpAnimStruggle, 0, 0x800, 0);
     MARIO2(c)->mTimer = 0x28;
     *(double *)MARIO2(c)->mState = pmf_Trmp2Mario_StateMissed_2;
@@ -2138,7 +2136,6 @@ int DotVec3(const Vector3 *a, const Vector3 *b);
 void Vec3_MulScalar(Vector3 *out, const Vector3 *in, int scale);
 void SubVec3(Vector3 *a, Vector3 *b, Vector3 *c);
 void AddVec3(Vector3 *a, Vector3 *b, Vector3 *c);
-int _ZN4cstd4fdivEii(int a, int b);
 void *d_mg_trmpln2_marioNewHold2(unsigned int a, unsigned int b, int c, int d, int e, const void *f,
                                  void *g);
 void Sound_PlayBank1Panned(int a0, int a1, int a2);
@@ -2173,7 +2170,7 @@ extern "C" void Trmp3DMario_BounceOffLineA(char *c) {
     Vec3_MulScalar(&tmp2, &tmp, scale);
     SubVec3(&MARIO3D(c)->mVel, &tmp2, &MARIO3D(c)->mVel);
 
-    fdivr = _ZN4cstd4fdivEii(lineHalfLength, lineHalfLength + alongLine);
+    fdivr = cstd::fdiv(lineHalfLength, lineHalfLength + alongLine);
 
     MARIO3D(c)->mGravityStep = sTrmp3DGravityStep;
 
@@ -2366,7 +2363,6 @@ int DotVec3(const Vector3 *a, const Vector3 *b);
 void Vec3_MulScalar(Vector3 *out, const Vector3 *in, int scale);
 void SubVec3(Vector3 *a, Vector3 *b, Vector3 *c);
 void AddVec3(Vector3 *a, Vector3 *b, Vector3 *c);
-int _ZN4cstd4fdivEii(int a, int b);
 void Sound_PlayBank1Panned(int a0, int a1, int a2);
 void Trmp3DMario_StateBounce(char *c);
 }
@@ -2400,7 +2396,7 @@ extern "C" void Trmp3DMario_BounceOffLineB(char *c) {
     Vec3_MulScalar(&tmp2, &tmp, scale);
     SubVec3(&MARIO3D(c)->mVel, &tmp2, &MARIO3D(c)->mVel);
 
-    fdivr = _ZN4cstd4fdivEii(lineHalfLength, lineHalfLength + alongLine);
+    fdivr = cstd::fdiv(lineHalfLength, lineHalfLength + alongLine);
     MARIO3D(c)->mGravityStep = sTrmp3DGravityStep;
 
     scale = FX_MUL(sTrmp3DBounceScale, fdivr);
@@ -2503,9 +2499,6 @@ extern "C" {
 typedef short s16;
 extern void Puff_Spawn(int a, int b);
 extern void _Z14ApproachLinearRiii(int *ref, int target, int step);
-/* S4 WALL (wave-2): kept: local void return disagrees with Sound.h u32
-   (definition returns unsigned int); params match, caller ignores r0. */
-extern void _ZN5Sound12PlayBank2_2DEj(unsigned int x);
 extern void Trmp3DMario_EnterOffstage(char *c);
 extern "C" int sTrmpMariosInPlay;
 extern "C" int sTrmp3DLives;
@@ -2518,7 +2511,7 @@ void Trmp3DMario_StateMissed(char *c) {
         Puff_Spawn(MARIO3D(c)->mScreenPos[0], 0xc0);
         sTrmpMariosInPlay -= 1;
         _Z14ApproachLinearRiii(&sTrmp3DLives, 0, 1);
-        _ZN5Sound12PlayBank2_2DEj(0x130);
+        Sound::PlayBank2_2D(0x130);
         Trmp3DMario_EnterOffstage(c);
         return;
     }
@@ -2539,9 +2532,6 @@ void Trmp3DMario_StateMissed(char *c) {
 namespace ns_020cc37c {
 extern "C" {
 extern void D3D_PlaySeAtX(int a, int b);
-/* S4 WALL (wave-2): kept: local void return disagrees with Sound.h u32
-   (definition returns unsigned int); params match, caller ignores r0. */
-extern void _ZN5Sound12PlayBank2_2DEj(unsigned int);
 extern int sTrmp3DLives[];
 extern double pmf_Trmp3DMario_StateMissed_2;
 void Trmp3DMario_EnterMissed(char *c);
@@ -2550,7 +2540,7 @@ void Trmp3DMario_EnterMissed(char *c) {
     if (sTrmp3DLives[0] > 1)
         D3D_PlaySeAtX(0x1ca, MARIO3D(c)->mPos.x);
     else
-        _ZN5Sound12PlayBank2_2DEj(0x1c9);
+        Sound::PlayBank2_2D(0x1c9);
     MARIO3D(c)->mModelAnim.SetAnim(sTrmpAnimStruggle, 0, 0x800, 0);
     MARIO3D(c)->mTimer = 0x28;
     *(double *)MARIO3D(c)->mState = pmf_Trmp3DMario_StateMissed_2;

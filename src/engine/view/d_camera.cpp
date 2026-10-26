@@ -27,6 +27,12 @@
 #include "decl_common.h"
 #include "decl_Particle.h"
 #include "dClipper.h"
+struct Vector3_16f;
+namespace Particle {
+struct System {
+    static u32 NewWeather(u32, u32, Fix12i, Fix12i, Fix12i, const ::Vector3_16f *, u8);
+};
+}
 #include "nitro/fx/fx.h"
 
 typedef struct { int x, y, z; } Vec3;	/* POD triple for the C bodies */
@@ -234,7 +240,7 @@ void _ZN3G3i13PerspectiveW_E5Fix12IiES1_S1_S1_S1_S1_bP9Matrix4x3(int, int, int, 
  * is dView_c's view matrix. */
 extern "C" dCamera_c *dCamera_c_classInit()
 {
-    dCamera_c *camera = (dCamera_c *)_ZN7fBase_cnwEj(sizeof(dCamera_c));
+    dCamera_c *camera = (dCamera_c *)fBase_c::operator new(sizeof(dCamera_c));
     if (camera) {
         _ZN7fBase_cC2Ev(camera);
         *(void ***)camera = (void **)&_ZTV7dBase_c;
@@ -366,11 +372,11 @@ block_7:
             } else {
                 flag = IsUnderwater();
             }
-            mWeather = _ZN8Particle6System10NewWeatherEjj5Fix12IiES2_S2_PK11Vector3_16fj(
-                mWeather, (u32)r5, spVec[0], spVec[1], spVec[2], 0, flag);
+            mWeather = Particle::System::NewWeather(mWeather, (u32)r5, spVec[0], spVec[1], spVec[2],
+                                                    0, flag);
             if (r5 == 0x86) {
-                mWeather2 = _ZN8Particle6System10NewWeatherEjj5Fix12IiES2_S2_PK11Vector3_16fj(
-                    mWeather2, 0x87, spVec[0], spVec[1], spVec[2], 0, 1);
+                mWeather2 = Particle::System::NewWeather(mWeather2, 0x87, spVec[0], spVec[1],
+                                                         spVec[2], 0, 1);
             }
         }
     }

@@ -4,8 +4,6 @@
 #include "dActor_c.h"
 #include "dCcAc_c.h"
 
-extern "C" void *_ZN7fBase_cnwEj(unsigned size);
-
 /* daObjKinokoTag_c is the cartridge's own class name: the literal
  * `16daObjKinokoTag_c` is stored in its RTTI type-name object at ov002
  * 0x02108ca0. overlay_actors.md maps MEGA_MUSHROOM_CREATE_TAG(319) and
@@ -55,14 +53,6 @@ struct daObjKinokoTag_c : dActor_c {
      * tail-calls the larger one after reading this collider. */
     void SpawnMegaMushroom();
     void TrySpawnMegaMushroom();
-
-    /* Leaf operator new until #2570 puts the same allocator on fBase_c.
-       Parameter is unsigned long (size_t on this ABI). `return new`
-       relocates to `_Znwm` without this. */
-    static void *operator new(size_t size)
-    {
-        return _ZN7fBase_cnwEj((unsigned)size);
-    }
 };
 
 #ifndef SM64DS_PLATFORM_PC

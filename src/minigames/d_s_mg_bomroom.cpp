@@ -35,10 +35,18 @@
 
 #include "dScMgBomroom_c.h"
 #include "types.h"
+/* decl_common.h's `extern int G2[]` hides namespace G2. This TU does not
+ * reference that data symbol. */
+#define G2 G2_decl_common_shadow
 #include "decl_common.h"
+#undef G2
 #include "Sound.h"
 #include "G2x.h"
 #include "nitro/fx/fx.h"
+
+namespace G2 {
+void *GetBG2ScrPtr();
+}
 
 namespace GX {
 void LoadBGPltt(const void *p, u32 a, u32 b);
@@ -85,7 +93,6 @@ extern int sBomroomRoundEndTable[];
 extern int LoadFile(int handle);
 extern void DecompressLZ16(void *src, void *dst);
 
-extern void *_ZN2G212GetBG2ScrPtrEv(void);
 extern void MultiStore16(u16 val, char *dst, int nbytes);
 
 extern void func_02056554(const void *src, int offset, int count);
@@ -2209,7 +2216,7 @@ s32 dScMgBomroom_c::InitResources() {
     *(volatile u16 *)0x400000c = (*(volatile u16 *)0x400000c & 0x43) | 0x9410;
 
     f = LoadFile(3);
-    b = (char *)_ZN2G212GetBG2ScrPtrEv();
+    b = (char *)G2::GetBG2ScrPtr();
     fill = 0xf23f;
     MultiStore16(fill, b, 0x1000);
     func_020563d4((const void *)f, 0, 0x800);

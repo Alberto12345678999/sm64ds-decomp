@@ -918,7 +918,7 @@ void daGmch_c::OnTurnIntoEgg(Player &player)
 }
 
 // @symbol daGmch_c_classInit
-/* The GAMAGUCHI factory. fBase_c::operator new forwards to _ZN7fBase_cnwEj,
+/* The GAMAGUCHI factory. `new` calls fBase_c::operator new (_ZN7fBase_cnwEm),
  * and daGmch_c has no user-declared constructor, so `new` is the base
  * constructor, the vtable store and the five member subobjects in field
  * order (mModelAnim, mModel, mShadowModel, mdCcAc_c, mWithMeshClsn).

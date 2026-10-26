@@ -1,5 +1,4 @@
 #include "types.h"
-// @symbol func_ov002_020effb8
 /* recovered: shared common types */
 #include "common.h"
 #include "nitro/fx/fx.h"
@@ -8,9 +7,64 @@
 extern s32 Vec3_Equal(struct Vector3 *a, struct Vector3 *b);
 extern s32 _ZN4cstd4fdivEii(s32 a, s32 b);
 
+int func_ov002_020f035c(unsigned int sel, int r1) {
+    int v;
+    switch (sel) {
+    case 4:
+        v = 0xff0;
+        break;
+    case 5:
+        v = 0xfff;
+        break;
+    case 3:
+        v = 0xfc1;
+        break;
+    default:
+        v = 0xf74;
+        break;
+    case 1:
+    case 2:
+        v = 0xf08;
+        break;
+    }
+    return r1 <= v;
+}
+
+int func_ov002_020f030c(int x) {
+    switch (x) {
+    case 4:
+    case 5:
+        return 0xfae;
+    case 3:
+        return 0xf5c;
+    default:
+    case 0:
+        return 0xeb8;
+    case 1:
+    case 2:
+        return 0xeb8;
+    }
+}
+
+int func_ov002_020f02c8(int x) {
+    switch (x) {
+    case 4:
+    case 5:
+        return 0xa000;
+    case 3:
+        return 0x8000;
+    case 0:
+    default:
+        return 0x7000;
+    case 1:
+    case 2:
+        return 0x5000;
+    }
+}
+
+// @symbol func_ov002_020effb8
 void func_ov002_020effb8(struct Vector3 *out, s32 t, struct Vector3 *a, struct Vector3 *b,
-                         struct Vector3 *c, struct Vector3 *d)
-{
+                         struct Vector3 *c, struct Vector3 *d) {
     s32 s0, s1;
     s32 t4, u, u4;
     s32 t2, t3, u2, u3;

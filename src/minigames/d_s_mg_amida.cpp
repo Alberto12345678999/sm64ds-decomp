@@ -4,11 +4,12 @@
  *
  * This file is the class's whole ov006 unit, in ROM order, lowest address
  * first, under `#pragma defer_codegen off`: from the destructor pair at
- * 0x020d1018 to AmidaPiece_ElemCtor, the piece array's element constructor.
+ * 0x020d1018 to dScMgAmida_c_Piece's constructor, the piece array's element
+ * constructor.
  * The previous unit ends at 0x020d1018 with TrmpLine_Reset, and
  * dScMgBomroom_c's D1 starts the next at 0x020d5a54. tu_map stops this unit
  * at 0x020d5974; the relocation census in the manifest shows that the
- * factory and AmidaPiece_ElemCtor above it belong to it too. The destructor
+ * factory and the piece constructor above it belong to it too. The destructor
  * is the key function, so this file also emits the vtable and RTTI.
  * The native profile, tables and metadata now own .data 0x0213b814..0x0213b9ac.
  * This production assignment does not establish the original source-file cut.
@@ -39,10 +40,6 @@
  * - Amida_RestoreBgChars and Amida_SaveBgChars stay free helpers: the
  *   object pointer they take is never read -- both only copy BG char VRAM --
  *   so membership cannot be proven from the bodies.
- * - AmidaPiece_ElemDtor / AmidaPiece_ElemCtor stay free: they are the piece
- *   array's element dtor/ctor callbacks for __cxa_vec_cleanup / vec_ctor;
- *   declaring them on dScMgAmida_c_Piece would make the class destructor
- *   emit a second vector cleanup.
  * - gTouchX/gTouchY stay 4-byte rows (flat indexing costs CheckHurryButton
  *   four words, measured at promotion), the pattern table is five separate
  *   data symbols. mLineColor is named for its only use, the colour
@@ -91,6 +88,11 @@ unsigned int GetBG1CharPtr(void);
 void *GetBG1ScrPtr(void);
 }
 
+struct G2x {
+    static void SetBlendBrightness(volatile unsigned short *, unsigned short, short);
+    static void SetBlendAlpha(volatile unsigned short *, unsigned short, unsigned short,
+                              unsigned short, unsigned int);
+};
 extern "C" {
 /* --- shared ov004 and main helpers --- */
 extern void Mg_RenderSpriteBoth(void *a0, int a1, int a2, int a3, int a4);
@@ -104,10 +106,7 @@ extern int Vec2_Len(int *v);
 extern void FreeGfxSlotsById(int a);
 extern u32 LoadCompressedFileAt(int fileID, void *target);
 extern int LoadFile(int handle);
-extern void _ZN3G2x13SetBlendAlphaEPVttttj(void *p, u16 a, u16 b, u16 c, u16 d);
 extern void SetSubBg2Offset(int a, int b);
-extern void __cxa_vec_ctor(void *obj, int a, int b, void *cb1, void *cb2);
-extern void func_0203d738(void *p);
 extern void func_02012dbc(int a);
 extern int func_020126e8(int a);
 extern void func_020126ac(int a0, int a1, int a2, int a3, int a4);
@@ -118,7 +117,6 @@ extern int GetGameLanguage(void);
 /* --- the class's own functions defined below --- */
 extern void Amida_RestoreBgChars(void *);
 extern void Amida_SaveBgChars(void *sb);
-extern void AmidaPiece_ElemCtor(void);
 extern void *dScMgAmida_c_classInit(void);
 
 /* --- data --- */
@@ -231,16 +229,13 @@ extern AmidaRenderPeriods sAmidaRenderPeriods;
 
 // @symbol _ZN12dScMgAmida_cD1Ev
 // @symbol _ZN12dScMgAmida_cD0Ev
-/* The four member arrays go down last-built first: the 0x80 pieces, then
-   the lane velocities, the lane positions and the cells. Both element
-   destructors do nothing. D1 stores the vptr and ends in dScMgBase_c's D2;
-   D0 repeats the same body and adds the delete. */
-dScMgAmida_c::~dScMgAmida_c() {
-    __cxa_vec_cleanup(mPieces, 0x80, 0x18, (void *)AmidaPiece_ElemDtor);
-    __cxa_vec_cleanup(mLaneVel, 4, 8, (void *)NullDestructor_0203d47c);
-    __cxa_vec_cleanup(mLanePos, 4, 8, (void *)NullDestructor_0203d47c);
-    __cxa_vec_cleanup(mWalkerCell, 4, 8, (void *)NullDestructor_0203d47c);
-}
+/* Empty: the compiler tears the four member arrays down in reverse
+   declaration order through __cxa_vec_cleanup -- the 0x80 pieces (with
+   dScMgAmida_c_Piece's destructor), then the lane velocities, the lane
+   positions and the cells (with Vector2's, NullDestructor_0203d47c). D1
+   stores the vptr and ends in dScMgBase_c's D2; D0 repeats the same body and
+   adds the delete. */
+dScMgAmida_c::~dScMgAmida_c() {}
 
 #ifdef _MSC_VER
 /* THE HOST NEEDS THE ROM'S FLAT D0 NAME, AND MSVC NEVER EMITS IT. MSVC
@@ -256,9 +251,9 @@ extern "C" dScMgAmida_c *_ZN12dScMgAmida_cD0Ev(dScMgAmida_c *thiz) {
 }
 #endif
 
-// @symbol AmidaPiece_ElemDtor
-/* Element destructor for the 0x80 falling pieces: nothing to undo. */
-extern "C" void AmidaPiece_ElemDtor(void) {}
+// @symbol _ZN18dScMgAmida_c_PieceD1Ev
+/* dScMgAmida_c_Piece's empty inline destructor (dScMgAmida_c.h), emitted
+   here, after the class destructor that first uses it. */
 
 // @symbol _ZN12dScMgAmida_c12IsAltVariantEv
 /* Slot 35, the family's only override of it. The base asks whether the low
@@ -899,8 +894,8 @@ int dScMgAmida_c::StepWalker(int walker, int dir) {
     u8 lineMark;
     u8 *walkerMark;
 
-    gridX = mWalkerCell[walker][0];
-    gridY = mWalkerCell[walker][1] + 0xc0;
+    gridX = mWalkerCell[walker].x;
+    gridY = mWalkerCell[walker].y + 0xc0;
 
     // Directions run across a 3x3 neighbourhood, skipping the centre.
     switch (dir) {
@@ -948,8 +943,8 @@ int dScMgAmida_c::StepWalker(int walker, int dir) {
             return 0;
 
         mWalkerDir[walker] = dir;
-        mWalkerCell[walker][0] = gridX;
-        mWalkerCell[walker][1] = gridY - 0xc0;
+        mWalkerCell[walker].x = gridX;
+        mWalkerCell[walker].y = gridY - 0xc0;
         return 1;
     } else {
         int progress500, soundPosition;
@@ -959,11 +954,11 @@ int dScMgAmida_c::StepWalker(int walker, int dir) {
 
         mWalkerDir[walker] = dir;
         *walkerMark = *(u8 *)(mInkGrid + gridX * 0x158 + gridY);
-        mWalkerCell[walker][0] = gridX;
-        mWalkerCell[walker][1] = gridY - 0xc0;
+        mWalkerCell[walker].x = gridX;
+        mWalkerCell[walker].y = gridY - 0xc0;
 
-        progress500 = (mWalkerCell[walker][1] + 0xd4) * 0x1f4 / (mLineEndY + 0xd4);
-        soundPosition = func_020126e8(mWalkerCell[walker][0] << 0xc);
+        progress500 = (mWalkerCell[walker].y + 0xd4) * 0x1f4 / (mLineEndY + 0xd4);
+        soundPosition = func_020126e8(mWalkerCell[walker].x << 0xc);
         func_020126ac(0x1bf, 6, 0, progress500, soundPosition);
         return 1;
     }
@@ -1039,7 +1034,7 @@ void dScMgAmida_c::StepWalkers() {
             {
                 int ent = (int)sceneBytes + walker * 8;
                 s32 progress500;
-                s32 *walkerY = &((dScMgAmida_c *)ent)->mWalkerCell[0][1];
+                s32 *walkerY = &((dScMgAmida_c *)ent)->mWalkerCell[0].y;
                 s32 y = *walkerY;
                 s32 goalY = mLineEndY;
 
@@ -1053,7 +1048,7 @@ void dScMgAmida_c::StepWalkers() {
                         if (IsVariant2() != 0) {
                             u32 wantedGoal = (u32)mLaneWants[walker];
                             walkerX =
-                                &((dScMgAmida_c *)(sceneBytes + walker * 8))->mWalkerCell[0][0];
+                                &((dScMgAmida_c *)(sceneBytes + walker * 8))->mWalkerCell[0].x;
                             x = *walkerX;
                             switch (x) {
                             case 0x20:
@@ -1086,7 +1081,7 @@ void dScMgAmida_c::StepWalkers() {
                                 break;
                             }
                         } else {
-                            walkerX = &((dScMgAmida_c *)ent)->mWalkerCell[0][0];
+                            walkerX = &((dScMgAmida_c *)ent)->mWalkerCell[0].x;
                             x = *walkerX;
                             switch (x) {
                             case 0x20:
@@ -1161,7 +1156,7 @@ void dScMgAmida_c::StepWalkers() {
                                 mRoundTimer = 0x1e;
                             } else {
                                 s32 *walkerX =
-                                    &((dScMgAmida_c *)(sceneBytes + walker * 8))->mWalkerCell[0][0];
+                                    &((dScMgAmida_c *)(sceneBytes + walker * 8))->mWalkerCell[0].x;
                                 s32 speedMode;
                                 func_02012718(v10, *walkerX << 0xc);
                                 func_02012718(0x1c1, *walkerX << 0xc);
@@ -1206,9 +1201,9 @@ void dScMgAmida_c::StepWalkers() {
                         if (IsVariant2() != 0) {
                             func_02012dbc(5);
                             if (mRoundFailed == 0) {
-                                func_02012718(0x1c2, mWalkerCell[walker][0] << 0xc);
+                                func_02012718(0x1c2, mWalkerCell[walker].x << 0xc);
                             } else {
-                                func_02012718(0x1c3, mWalkerCell[walker][0] << 0xc);
+                                func_02012718(0x1c3, mWalkerCell[walker].x << 0xc);
                             }
                             *done = 1;
                             mRoundFailed = 1;
@@ -1218,7 +1213,7 @@ void dScMgAmida_c::StepWalkers() {
                             }
                             return;
                         }
-                        func_02012718(0xe1, mWalkerCell[walker][0] << 0xc);
+                        func_02012718(0xe1, mWalkerCell[walker].x << 0xc);
                         mResultWaitTimer = 0x3c;
                         mState = 2;
                         mRoundFailed = 1;
@@ -1245,11 +1240,12 @@ void dScMgAmida_c::StepWalkers() {
                         default:
                             break;
                         case 0:
-                            if (mWalkerCell[walker][0] == 0x21 || mWalkerCell[walker][0] == 0x61 ||
-                                mWalkerCell[walker][0] == 0xa1 || mWalkerCell[walker][0] == 0xe1) {
+                            if (mWalkerCell[walker].x == 0x21 || mWalkerCell[walker].x == 0x61 ||
+                                mWalkerCell[walker].x == 0xa1 || mWalkerCell[walker].x == 0xe1) {
                                 {
                                     s32 *walkerX = &((dScMgAmida_c *)(sceneBytes + walker * 8))
-                                                        ->mWalkerCell[0][0];
+                                                        ->mWalkerCell[0]
+                                                        .x;
                                     *walkerX -= 1;
                                     *walkerDir = c6;
                                     *walkerMark = c1;
@@ -1273,11 +1269,12 @@ void dScMgAmida_c::StepWalkers() {
                             }
                             break;
                         case 2:
-                            if (mWalkerCell[walker][0] == 0x1f || mWalkerCell[walker][0] == 0x5f ||
-                                mWalkerCell[walker][0] == 0x9f || mWalkerCell[walker][0] == 0xdf) {
+                            if (mWalkerCell[walker].x == 0x1f || mWalkerCell[walker].x == 0x5f ||
+                                mWalkerCell[walker].x == 0x9f || mWalkerCell[walker].x == 0xdf) {
                                 {
                                     s32 *walkerX = &((dScMgAmida_c *)(sceneBytes + walker * 8))
-                                                        ->mWalkerCell[0][0];
+                                                        ->mWalkerCell[0]
+                                                        .x;
                                     *walkerX += 1;
                                     *walkerDir = c6;
                                     *walkerMark = c1;
@@ -1293,11 +1290,12 @@ void dScMgAmida_c::StepWalkers() {
                             }
                             break;
                         case 3:
-                            if (mWalkerCell[walker][0] == 0x21 || mWalkerCell[walker][0] == 0x61 ||
-                                mWalkerCell[walker][0] == 0xa1 || mWalkerCell[walker][0] == 0xe1) {
+                            if (mWalkerCell[walker].x == 0x21 || mWalkerCell[walker].x == 0x61 ||
+                                mWalkerCell[walker].x == 0xa1 || mWalkerCell[walker].x == 0xe1) {
                                 {
                                     s32 *walkerX = &((dScMgAmida_c *)(sceneBytes + walker * 8))
-                                                        ->mWalkerCell[0][0];
+                                                        ->mWalkerCell[0]
+                                                        .x;
                                     *walkerX -= 1;
                                     *walkerDir = c6;
                                     *walkerMark = c1;
@@ -1314,11 +1312,12 @@ void dScMgAmida_c::StepWalkers() {
                             }
                             break;
                         case 4:
-                            if (mWalkerCell[walker][0] == 0x1f || mWalkerCell[walker][0] == 0x5f ||
-                                mWalkerCell[walker][0] == 0x9f || mWalkerCell[walker][0] == 0xdf) {
+                            if (mWalkerCell[walker].x == 0x1f || mWalkerCell[walker].x == 0x5f ||
+                                mWalkerCell[walker].x == 0x9f || mWalkerCell[walker].x == 0xdf) {
                                 {
                                     s32 *walkerX = &((dScMgAmida_c *)(sceneBytes + walker * 8))
-                                                        ->mWalkerCell[0][0];
+                                                        ->mWalkerCell[0]
+                                                        .x;
                                     *walkerX += 1;
                                     *walkerDir = c6;
                                     *walkerMark = c1;
@@ -1335,11 +1334,12 @@ void dScMgAmida_c::StepWalkers() {
                             }
                             break;
                         case 5:
-                            if (mWalkerCell[walker][0] == 0x21 || mWalkerCell[walker][0] == 0x61 ||
-                                mWalkerCell[walker][0] == 0xa1 || mWalkerCell[walker][0] == 0xe1) {
+                            if (mWalkerCell[walker].x == 0x21 || mWalkerCell[walker].x == 0x61 ||
+                                mWalkerCell[walker].x == 0xa1 || mWalkerCell[walker].x == 0xe1) {
                                 {
                                     s32 *walkerX = &((dScMgAmida_c *)(sceneBytes + walker * 8))
-                                                        ->mWalkerCell[0][0];
+                                                        ->mWalkerCell[0]
+                                                        .x;
                                     *walkerX -= 1;
                                     *walkerDir = c6;
                                     *walkerMark = c1;
@@ -1363,11 +1363,12 @@ void dScMgAmida_c::StepWalkers() {
                             }
                             break;
                         case 7:
-                            if (mWalkerCell[walker][0] == 0x1f || mWalkerCell[walker][0] == 0x5f ||
-                                mWalkerCell[walker][0] == 0x9f || mWalkerCell[walker][0] == 0xdf) {
+                            if (mWalkerCell[walker].x == 0x1f || mWalkerCell[walker].x == 0x5f ||
+                                mWalkerCell[walker].x == 0x9f || mWalkerCell[walker].x == 0xdf) {
                                 {
                                     s32 *walkerX = &((dScMgAmida_c *)(sceneBytes + walker * 8))
-                                                        ->mWalkerCell[0][0];
+                                                        ->mWalkerCell[0]
+                                                        .x;
                                     *walkerX += 1;
                                     *walkerDir = c6;
                                     *walkerMark = c1;
@@ -1531,11 +1532,11 @@ void dScMgAmida_c::InitWalkers() {
             this->mWalkerDelay[i] =
                 i * ((AmidaPattern *)sAmidaPatterns)[this->mPatternIndex].walkerStagger * 0x3c;
         }
-        this->mWalkerCell[i][0] = (this->mLanePerm[i] << 6) + 0x20;
+        this->mWalkerCell[i].x = (this->mLanePerm[i] << 6) + 0x20;
         if (this->IsVariant2() != 0) {
-            this->mWalkerCell[i][1] = -0xcc;
+            this->mWalkerCell[i].y = -0xcc;
         } else {
-            this->mWalkerCell[i][1] = -0xd4;
+            this->mWalkerCell[i].y = -0xd4;
         }
         this->mWalkerDir[i] = -1;
         this->mWalkerMark[i] = 0;
@@ -1796,7 +1797,7 @@ void dScMgAmida_c::SetupRound() {
        evidence for a name yet. */
     *(s32 *)(raw + 0x5370) = 1;
     *(volatile u16 *)0x04000050 = 0;
-    _ZN3G2x13SetBlendAlphaEPVttttj((void *)0x04001050, 4, 8, 6, 0x10);
+    G2x::SetBlendAlpha((volatile unsigned short *)0x04001050, 4, 8, 6, 0x10);
     Mg_ShowBanner(0xd, 0x80, 0x60, 1, -1, 0xd);
 
     mStartBannerTimer = 0x3c;
@@ -1822,10 +1823,10 @@ void dScMgAmida_c::SetupRound() {
             xw[0] = 0x20;
             xw[1] = 0;
             for (; z < 4; z++) {
-                mLanePos[z][0] = xw[0] << 12;
-                mLanePos[z][1] = 0xb0000;
-                mLaneVel[z][0] = xw[1];
-                mLaneVel[z][1] = xw[1];
+                mLanePos[z].x = xw[0] << 12;
+                mLanePos[z].y = 0xb0000;
+                mLaneVel[z].x = xw[1];
+                mLaneVel[z].y = xw[1];
                 xw[0] += 0x40;
             }
             mFinaleTimer = xw[1];
@@ -1870,8 +1871,8 @@ void dScMgAmida_c::RenderBoard() {
                 if (*animFrame >= 14)
                     *animFrame = 0;
             }
-            Mg_RenderSpriteBoth(sAmidaLaneAnimSprites[mLaneAnimFrame[i]], mLanePos[i][0] >> 12,
-                                (mLanePos[i][1] >> 12) - 4, noPalette, 0);
+            Mg_RenderSpriteBoth(sAmidaLaneAnimSprites[mLaneAnimFrame[i]], mLanePos[i].x >> 12,
+                                (mLanePos[i].y >> 12) - 4, noPalette, 0);
         } else {
             int *timer;
             int *frame;
@@ -1910,7 +1911,7 @@ void dScMgAmida_c::RenderBoard() {
     {
         int j;
         for (j = 0; j < mWalkerCount; j++) {
-            Mg_RenderSpriteBoth(data_ov006_0213a32c, mWalkerCell[j][0], mWalkerCell[j][1], -1, 0);
+            Mg_RenderSpriteBoth(data_ov006_0213a32c, mWalkerCell[j].x, mWalkerCell[j].y, -1, 0);
         }
     }
     Mg_RenderSpriteBoth(sAmidaSideSprite, 8, 0x60, -1, 0);
@@ -1931,8 +1932,8 @@ void dScMgAmida_c::RenderBoardAlt() {
         Mg_RenderSpriteBoth((void *)data_ov006_0213a338[0], 0x80, 0xb0, noPalette, 0);
     }
     for (i = 0; i < 4; i++) {
-        Mg_RenderSpriteBoth((void *)sAmidaLaneWantSprites[mLaneWants[i]], mWalkerCell[i][0],
-                            mWalkerCell[i][1], noPalette, 0);
+        Mg_RenderSpriteBoth((void *)sAmidaLaneWantSprites[mLaneWants[i]], mWalkerCell[i].x,
+                            mWalkerCell[i].y, noPalette, 0);
     }
     j = 0;
     x = 0x20;
@@ -1979,7 +1980,7 @@ s32 dScMgAmida_c::Render() {
                             *counterB = 0;
                     }
                     Mg_RenderSpriteBoth(sAmidaLaneAnimSprites[mLaneAnimFrame[i]],
-                                        mLanePos[i][0] >> 12, (mLanePos[i][1] >> 12) - 4, -1, 0);
+                                        mLanePos[i].x >> 12, (mLanePos[i].y >> 12) - 4, -1, 0);
                 }
             }
 
@@ -2142,9 +2143,9 @@ s32 dScMgAmida_c::Behavior() {
         mFinaleTimer += 1;
         lane = 0;
         do {
-            mLaneVel[lane][1] -= 0x100;
-            mLanePos[lane][0] += mLaneVel[lane][0];
-            mLanePos[lane][1] += mLaneVel[lane][1];
+            mLaneVel[lane].y -= 0x100;
+            mLanePos[lane].x += mLaneVel[lane].x;
+            mLanePos[lane].y += mLaneVel[lane].y;
             lane++;
         } while (lane < 4);
 
@@ -2185,8 +2186,8 @@ s32 dScMgAmida_c::Behavior() {
                             sinA = data_02082214[idxA];
                             mPieces[slot].posY =
                                 FX_MUL(cosB, (int)((0x8000LL * sinA + 0x800) >> 12));
-                            mPieces[slot].posX += mLanePos[j][0];
-                            mPieces[slot].posY += mLanePos[j][1];
+                            mPieces[slot].posX += mLanePos[j].x;
+                            mPieces[slot].posY += mLanePos[j].y;
                             mPieces[slot].velX =
                                 FX_MUL(cosB, (int)((0x1000LL * (int)(cA) + 0x800) >> 12));
                             mPieces[slot].velY =
@@ -2313,7 +2314,7 @@ s32 dScMgAmida_c::InitResources() {
         LoadCompressedFileAt(ASSET_D_2D_MG_BG_AMIDA2_2_NSC_BIN, G2S::GetBG2ScrPtr());
         LoadCompressedFileAt(ASSET_D_2D_MG_BG_AMIDA2_1_NSC_BIN, G2S::GetBG3ScrPtr());
         *(volatile s16 *)0x4000050 = 0;
-        _ZN3G2x13SetBlendAlphaEPVttttj((void *)0x4001050, 4, 8, 6, 0x10);
+        G2x::SetBlendAlpha((volatile unsigned short *)0x4001050, 4, 8, 6, 0x10);
         data_0209d45c |= 9;
         data_0209d454 |= 0xd;
     }
@@ -2364,33 +2365,18 @@ void dScMgAmida_c::AfterCleanupResources(u32 vfSuccess) {
     dScMgBase_c::AfterCleanupResources(vfSuccess);
 }
 
-extern int _ZTV12dScMgAmida_c[];
-
 // @symbol dScMgAmida_c_classInit
-/* Builds the scene by hand (operator new, base constructor, vtable,
-   member arrays) because the class has no constructor declared yet.
-   This file emits the vtable, so the store skips its two-word preamble
-   to reach slot 0. */
+/* `new` inlines the implicit constructor: dScMgBase_c's C2, this class's
+   vptr, then the four member arrays in declaration order through
+   __cxa_vec_ctor -- the cells, lane positions and lane velocities with
+   Vector2's structors, the pieces with dScMgAmida_c_Piece's. */
 extern "C" void *dScMgAmida_c_classInit(void) {
-    char *scene = (char *)_ZN7fBase_cnwEj(0x53fc);
-    if (scene != 0) {
-        _ZN11dScMgBase_cC2Ev(scene);
-        *(int *)scene = (int)&_ZTV12dScMgAmida_c[2];
-        __cxa_vec_ctor(((dScMgAmida_c *)scene)->mWalkerCell, 4, 8, (void *)func_0203d738,
-                       (void *)NullDestructor_0203d47c);
-        __cxa_vec_ctor(((dScMgAmida_c *)scene)->mLanePos, 4, 8, (void *)func_0203d738,
-                       (void *)NullDestructor_0203d47c);
-        __cxa_vec_ctor(((dScMgAmida_c *)scene)->mLaneVel, 4, 8, (void *)func_0203d738,
-                       (void *)NullDestructor_0203d47c);
-        __cxa_vec_ctor(((dScMgAmida_c *)scene)->mPieces, 0x80, 0x18, (void *)AmidaPiece_ElemCtor,
-                       (void *)AmidaPiece_ElemDtor);
-    }
-    return scene;
+    return new dScMgAmida_c;
 }
 
-// @symbol AmidaPiece_ElemCtor
-/* Element constructor for the 0x80 falling pieces. */
-extern "C" void AmidaPiece_ElemCtor(void) {}
+// @symbol _ZN18dScMgAmida_c_PieceC1Ev
+/* dScMgAmida_c_Piece's empty inline constructor (dScMgAmida_c.h), emitted
+   here, after the factory that first uses it. */
 
 /* Runtime asset handles in GetGameLanguage order. These are IDs in the
  * overlay 0 file table, not NitroFS file numbers. */

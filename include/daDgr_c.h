@@ -9,8 +9,6 @@
 
 #include "dBgActor_c.h"
 
-extern "C" void *_ZN7fBase_cnwEj(unsigned size);
-
 /* Spindel (actor 163 DONGURU). RTTI ov025:0x02113730 names `7daDgr_c`.
  * g_profile_DONGURU (ov025:0x0211373c) is this class's registry descriptor.
  * overlay_actors lists SPINDEL(163) on ov021 because the actor is used in HMC;
@@ -22,8 +20,8 @@ extern "C" void *_ZN7fBase_cnwEj(unsigned size);
  * then `_ZTV10dBgActor_c` -- one intermediate-free inlined base.
  *
  * SIZE IS 0x334 (820 decimal), THE LITERAL THE FACTORY PASSES TO operator new.
- * The factory is `return new daDgr_c()`: leaf `operator new(unsigned long)`
- * forwards `_ZN7fBase_cnwEj`, the implicit ctor calls `dBgActor_c()` and
+ * The factory is `return new daDgr_c()`: the inherited fBase_c::operator new
+ * (`_ZN7fBase_cnwEm`) allocates, the implicit ctor calls `dBgActor_c()` and
  * stores `_ZTV7daDgr_c`. No dedicated `daDgr_c()` body exists in the ROM.
  *
  * MEMBERS. dBgActor_c ends at 0x320; daDgr_c adds 0x14 more bytes and destructs
@@ -72,13 +70,6 @@ struct daDgr_c : dBgActor_c {
     u8  pad_32a[0x2];
     u32 mDustParticle1;
     u32 mDustParticle2;
-
-    /* Leaf allocator until #2570 merges a shared fBase_c::operator new.
-       `unsigned long` is size_t on this ABI; `unsigned int` is illegal. */
-    static void *operator new(size_t size)
-    {
-        return _ZN7fBase_cnwEj((unsigned)size);
-    }
 
     /* --- vtable, in ROM order. Do not reorder. ---
      * DECLARED INLINE, AND FIRST. This is measured against the cartridge, not

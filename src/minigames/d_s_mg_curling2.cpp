@@ -72,6 +72,11 @@ typedef void (C::*PMF1)(int);
 
 /* Everything this file calls or reads that no included header declares.
  * Keep it above the first function. */
+struct G2x {
+    static void SetBlendBrightness(volatile unsigned short *, unsigned short, short);
+    static void SetBlendAlpha(volatile unsigned short *, unsigned short, unsigned short,
+                              unsigned short, unsigned int);
+};
 extern "C" {
 
 extern int Mg_GetSubmittedScore(void);
@@ -109,8 +114,6 @@ extern void func_02056314(void *a, u32 b, u32 c);
 extern void func_020563d4(const void *a, u32 b, u32 c);
 extern void func_02056374(const void *a, u32 b, u32 c);
 extern int func_02054d88(void);
-
-extern void _ZN3G2x13SetBlendAlphaEPVttttj(volatile u16 *p, u16 a, u16 b, u16 c, u32 d);
 
 extern int data_0209d4b8;
 extern u8 data_0209d45c;
@@ -1715,8 +1718,8 @@ void dScMgCurling2_c::StartRound(int /* arg */) {
     mState = 0;
     ResetGame();
     Scroll();
-    _ZN3G2x13SetBlendAlphaEPVttttj((volatile u16 *)0x4000050, 0, 0xd, 2, 0x10);
-    _ZN3G2x13SetBlendAlphaEPVttttj((volatile u16 *)0x4001050, 0, 4, 2, 0x10);
+    G2x::SetBlendAlpha((volatile u16 *)0x4000050, 0, 0xd, 2, 0x10);
+    G2x::SetBlendAlpha((volatile u16 *)0x4001050, 0, 4, 2, 0x10);
     mTopRecord = Mg_GetTopRecord();
 }
 
@@ -1832,8 +1835,8 @@ s32 dScMgCurling2_c::InitResources() {
     Mg_SetTopScreenYOffset(0x20);
     mStateTimer = 0x40;
     mRunDuringFade = 1;
-    _ZN3G2x13SetBlendAlphaEPVttttj((volatile u16 *)0x4000050, 0, 0xd, 2, 0x10);
-    _ZN3G2x13SetBlendAlphaEPVttttj((volatile u16 *)0x4001050, 0, 4, 2, 0x10);
+    G2x::SetBlendAlpha((volatile u16 *)0x4000050, 0, 0xd, 2, 0x10);
+    G2x::SetBlendAlpha((volatile u16 *)0x4001050, 0, 4, 2, 0x10);
     mTopRecord = Mg_GetTopRecord();
     return 1;
 }

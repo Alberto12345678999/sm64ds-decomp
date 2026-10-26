@@ -80,7 +80,7 @@ static inline int IsPlayerActor(dActor_c *actor) {
     return actor->actorID == 0xbf;
 }
 
-/* The leaf operator new forwards fBase_c::operator new; the implicit constructor
+/* `new` calls the inherited fBase_c::operator new; the implicit constructor
  * emits the measured dActor_c C2, vptr store, and three member C1s. */
 // @symbol daEyBm_c_classInit
 extern "C" daEyBm_c *daEyBm_c_classInit()
@@ -182,18 +182,13 @@ int daEyBm_c::Behavior()
 }
 
 // @symbol _ZN8daEyBm_c6RenderEv
-extern "C" u32 _ZN8Particle6System17NewUnkCallback818Ejj5Fix12IiES2_S2_PK11Vector3_16f(
-    u32 handle, u32 effectID, Fix12i x, Fix12i y, Fix12i z,
-    const Vector3_16f *rotation);
+extern "C" u32 d_a_ey_bmNewUnkCallback818Hold(u32 handle, u32 effectID, Fix12i x, Fix12i y,
+                                              Fix12i z, const Vector3_16f *rotation);
 
 int daEyBm_c::Render()
 {
-    mParticle1 =
-        _ZN8Particle6System17NewUnkCallback818Ejj5Fix12IiES2_S2_PK11Vector3_16f(
-            mParticle1, 0x46, mPosX, mPosY, mPosZ, 0);
-    mParticle2 =
-        _ZN8Particle6System17NewUnkCallback818Ejj5Fix12IiES2_S2_PK11Vector3_16f(
-            mParticle2, 0x47, mPosX, mPosY, mPosZ, 0);
+    mParticle1 = Particle::System::NewUnkCallback818(mParticle1, 0x46, mPosX, mPosY, mPosZ, 0);
+    mParticle2 = Particle::System::NewUnkCallback818(mParticle2, 0x47, mPosX, mPosY, mPosZ, 0);
     return 1;
 }
 // @symbol _ZN8daEyBm_c16OnPendingDestroyEv

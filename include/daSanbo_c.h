@@ -25,8 +25,6 @@
  * Pokey_Spawn) constructs it for the SANBO
  * registry profile.
  */
-extern "C" void *_ZN7fBase_cnwEj(unsigned size);
-
 struct daSanbo_c : dActor_c {
     /* The twelve state handlers leave 1 in the return register. Dispatch
        ignores the result; int is a consistent reconstructed interface,
@@ -124,15 +122,11 @@ struct daSanbo_c : dActor_c {
     void func_ov096_021368b4();
     void func_ov096_021368f0();
     void func_ov096_02136928(int a);
-
-    static void *operator new(unsigned long size) {
-        return _ZN7fBase_cnwEj((unsigned)size);
-    }
 };
 
 /* Inline destructor is the key function, so this TU emits the vtable. Both
- * factories are `return new daSanbo_c()`; the leaf size_t operator new
- * forwards to `_ZN7fBase_cnwEj` until #2570's fBase overload lands. */
+ * factories are `return new daSanbo_c()`, which calls the inherited
+ * fBase_c::operator new (`_ZN7fBase_cnwEm`). */
 extern int _ZTV9daSanbo_c[];
 
 #ifndef SM64DS_PLATFORM_PC

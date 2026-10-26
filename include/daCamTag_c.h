@@ -3,8 +3,6 @@
 
 #include "dActor_c.h"
 
-extern "C" void *_ZN7fBase_cnwEj(unsigned size);
-
 /* dCamera_c-tag position marker -- ov002/daCamTag_c.
  *
  * ROM RTTI at ov002 0x021084fc names `10daCamTag_c`; its one base is
@@ -38,13 +36,6 @@ struct daCamTag_c : dActor_c {
     virtual s32 Behavior();             /* slot 6 */
     virtual s32 Render();               /* slot 9 */
     virtual void OnPendingDestroy();    /* slot 12 */
-
-    /* Leaf operator new until #2570 puts the same allocator on fBase_c.
-       Parameter is size_t (unsigned long on this compiler). `return new`
-       relocates to `_Znwm` without this. */
-    static void *operator new(unsigned long size) {
-        return _ZN7fBase_cnwEj((unsigned)size);
-    }
 };
 
 #ifndef SM64DS_PLATFORM_PC

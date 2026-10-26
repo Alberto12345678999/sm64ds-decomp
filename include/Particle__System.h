@@ -76,7 +76,15 @@ struct System {
     /* Unnamed parameters: a name here numbers @NNN in every includer. */
     static void *NewSimple(u32, Fix12i, Fix12i, Fix12i);
     static int New(u32, u32, Fix12i, Fix12i, Fix12i, const Vector3_16f *, Callback *);
+    static u32 NewRipple(Fix12i, Fix12i, Fix12i);
+    static void NewBigSplash(Fix12i, Fix12i, Fix12i);
+    static u32 NewUnkCallback818(u32, u32, Fix12i, Fix12i, Fix12i, const Vector3_16f *);
+    /* Last parameter is u8. unsigned int shrinks a caller and reloads the
+       argument as a word; the matched body loads a byte. */
+    static u32 NewWeather(u32, u32, Fix12i, Fix12i, Fix12i, const Vector3_16f *, u8);
 };
+
+void RunningSlidingDustAt(Fix12i, Fix12i, Fix12i);
 
 #ifndef SM64DS_PLATFORM_PC
 /* ROM layout under mwccarm; host ABI divergence is tracked separately. */

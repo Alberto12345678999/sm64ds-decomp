@@ -1441,32 +1441,32 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@411",
+      "from": "@405",
       "to": "@228",
       "evidence": "Compiler-local registration node at ov070:0x02123614; unique short configured label changes no bytes or relocations."
     },
     {
-      "from": "@412",
+      "from": "@406",
       "to": "@229",
       "evidence": "Compiler-local registration node at ov070:0x02123620; unique short configured label changes no bytes or relocations."
     },
     {
-      "from": "@413",
+      "from": "@407",
       "to": "@230",
       "evidence": "Compiler-local registration node at ov070:0x0212362c; unique short configured label changes no bytes or relocations."
     },
     {
-      "from": "@414",
+      "from": "@408",
       "to": "@232",
       "evidence": "Compiler-local registration node at ov070:0x02123638; unique short configured label changes no bytes or relocations."
     },
     {
-      "from": "@416",
+      "from": "@410",
       "to": "@233",
       "evidence": "Compiler-local registration node at ov070:0x02123644; unique short configured label changes no bytes or relocations."
     },
     {
-      "from": "@415",
+      "from": "@409",
       "to": "@234",
       "evidence": "Compiler-local registration node at ov070:0x02123650; unique short configured label changes no bytes or relocations."
     }

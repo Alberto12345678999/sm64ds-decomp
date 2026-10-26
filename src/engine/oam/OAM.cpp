@@ -46,6 +46,9 @@
 namespace CP15 {
 void FlushAndInvalidateDataCache(u32 addr, u32 size);
 }
+namespace cstd {
+int fdiv(s32, s32);
+}
 
 struct Matrix2x2 { s32 m00, m01, m10, m11; };
 
@@ -99,7 +102,6 @@ void func_02056674(const void *src, unsigned int offset, unsigned int count);
 void MultiCopy_Int(int *dst, int *src, int len);
 void MultiCopy32Bytes(int *src, int *dst, int len);
 
-int _ZN4cstd4fdivEii(int num, int den);
 int func_0202043c(int thiz);
 }
 
@@ -207,7 +209,6 @@ u8 OAM::GetObjWidth(int shape, int sizeBits)
 extern unsigned char _ZN3OAM11GetObjWidthEii(int shape, int size);
 extern unsigned char _ZN3OAM12GetObjHeightEii(int shape, int size);
 extern int _ZN3OAM16LoadAffineParamsEP7OamAttrPiP9Matrix2x2(struct OamAttr *attr, int *affCnt, struct Matrix2x2 *m);
-extern int _ZN4cstd4fdivEii(int num, int den);
 #pragma cplusplus on
 
 void OAM::Render(bool sub, struct OamAttr *attr_, int xOff, int yOff, int palette, int priority,
@@ -295,9 +296,9 @@ void OAM::Render(bool sub, struct OamAttr *attr_, int xOff, int yOff, int palett
             halfW = w >> 1;
             halfH = h >> 1;
             if (scaleX != 0x1000)
-                x = _ZN4cstd4fdivEii(x, scaleX);
+                x = cstd::fdiv(x, scaleX);
             if (scaleY != 0x1000)
-                y = _ZN4cstd4fdivEii(y, scaleY);
+                y = cstd::fdiv(y, scaleY);
             if (rotation != 0) {
                 s16 s, c;
                 s = data_02082214[sinIdx];

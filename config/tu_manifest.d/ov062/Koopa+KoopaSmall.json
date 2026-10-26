@@ -1517,57 +1517,57 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@1298",
+      "from": "@1291",
       "to": "@1292",
       "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @1306 now; licensed under the existing pin @1292"
     },
     {
-      "from": "@1291",
+      "from": "@1284",
       "to": "@1285",
       "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @1299 now; licensed under the existing pin @1285"
     },
     {
-      "from": "@1293",
+      "from": "@1286",
       "to": "@1287",
       "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @1301 now; licensed under the existing pin @1287"
     },
     {
-      "from": "@1294",
+      "from": "@1287",
       "to": "@1288",
       "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @1302 now; licensed under the existing pin @1288"
     },
     {
-      "from": "@1292",
+      "from": "@1285",
       "to": "@1286",
       "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @1300 now; licensed under the existing pin @1286"
     },
     {
-      "from": "@1295",
+      "from": "@1288",
       "to": "@1289",
       "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @1303 now; licensed under the existing pin @1289"
     },
     {
-      "from": "@1296",
+      "from": "@1289",
       "to": "@1290",
       "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @1304 now; licensed under the existing pin @1290"
     },
     {
-      "from": "@1290",
+      "from": "@1283",
       "to": "@1284",
       "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @1298 now; licensed under the existing pin @1284"
     },
     {
-      "from": "@1288",
+      "from": "@1281",
       "to": "@1282",
       "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @1296 now; licensed under the existing pin @1282"
     },
     {
-      "from": "@1289",
+      "from": "@1282",
       "to": "@1283",
       "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @1297 now; licensed under the existing pin @1283"
     },
     {
-      "from": "@1297",
+      "from": "@1290",
       "to": "@1291",
       "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @1305 now; licensed under the existing pin @1291"
     }

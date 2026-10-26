@@ -5,8 +5,6 @@
 #include "dActor_c.h"
 #include "dExtSimpleModel_c.h"
 
-extern "C" void *_ZN7fBase_cnwEj(unsigned size);
-
 /* Cloud platform (ov039 CLOUD / OBJ_KUMO, actor 314). `kumo` is the ROM's
  * own word for it -- the debug table and _ZTS11daObjKumo_c both say so --
  * not a spider.
@@ -46,12 +44,6 @@ struct daObjKumo_c : dActor_c {
     virtual int CleanupResources();    /* slot  3 */
     virtual int Behavior();            /* slot  6 */
     virtual int Render();              /* slot  9 */
-
-    /* size_t == unsigned long here; unsigned int is illegal. Forwards to
-       fBase_c::operator new until #2570 merges a shared spelling. */
-    static void *operator new(size_t size) {
-        return _ZN7fBase_cnwEj((unsigned)size);
-    }
 };
 
 #ifndef SM64DS_PLATFORM_PC

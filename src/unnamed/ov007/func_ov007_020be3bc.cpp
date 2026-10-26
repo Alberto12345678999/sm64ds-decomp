@@ -1,4 +1,6 @@
 //cpp
+#include "Ov007Work.h"
+
 extern "C" void *func_ov007_020b7690(int i);
 extern int* data_ov007_0210342c;
 extern int* data_ov007_02104bc0;
@@ -23,12 +25,6 @@ struct Ov007Display {
     /* 0x14: the sub screen's 0x400-byte OAM buffer; func_ov007_020b7384 copies
    * it to 0x07000400 (func_02056674), and +0x10 to the main screen's OAM */
     char *oamSub;
-};
-
-/* data_ov007_0210342c: the overlay's manager; only the slot this file reads. */
-struct Ov007Work {
-    char pad_00[0x74];
-    Ov007Display *display; /* 0x74: func_ov007_020b6d40 stores func_ov007_020b7594's record */
 };
 
 /* *data_ov007_02104bc0: the 0x108-byte record func_ov007_020be50c allocates

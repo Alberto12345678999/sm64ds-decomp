@@ -17,13 +17,6 @@
 #include "dCcAc_c.h"
 #include "dBgCh_Actr.h"
 
-/* The actor heap's own allocator. daBbl_c_classInit's first call is
- * fBase_c::operator new with the literal 0x31c, not the global operator new;
- * declaring it here, and the leaf `operator new` below, is what lets the
- * factory be written as a plain `new daBbl_c()` and still emit that call.
- * Spelt exactly as include/decl_common.h spells it. */
-extern "C" void *_ZN7fBase_cnwEj(unsigned size);
-
 struct daBbl_c : dEnemyBase_c {
     /* The bubble runs a two-entry state table. Each entry is an enter hook
      * the transition calls once and an execute hook Behavior calls every
@@ -78,10 +71,6 @@ struct daBbl_c : dEnemyBase_c {
     int func_ov064_02118760();
     int func_ov064_021187d0();
     int func_ov064_021187ec(State *state);
-
-    static void *operator new(unsigned long size) {
-        return _ZN7fBase_cnwEj((unsigned)size);
-    }
 };
 
 #ifndef SM64DS_PLATFORM_PC

@@ -35,19 +35,12 @@
 #include "PathLift.h"
 #include "dExtShadowModel_c.h"
 
-extern "C" void *_ZN7fBase_cnwEj(unsigned size);
-
 struct daObjPathLift_c : dPathLiftActor_c {
     dExtShadowModel_c mShadowModel; /* 0x450 */
     s32 mShadowMat[12];             /* 0x478 -- [9..11] the translation, pos >> 3 */
     u32         mSoundHandle; /* 0x4a8 */
     s32         mGroundY;     /* 0x4ac */
     u8          mTimer;       /* 0x4b0 */
-
-    static void *operator new(size_t size)
-    {
-        return _ZN7fBase_cnwEj((unsigned)size);
-    }
 
     virtual ~daObjPathLift_c() {}
 

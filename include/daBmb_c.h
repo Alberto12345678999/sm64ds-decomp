@@ -47,8 +47,6 @@
 #include "dExtAnmTexSRT_c.h"
 #include "dBgCh_Actr.h"
 
-extern "C" void *_ZN7fBase_cnwEj(unsigned size);
-
 struct daBmb_c : dEnemyBase_c {
     dCcAc_c           mdCc_c;         /* 0x110 */
     dBgCh_Actr                 mWithMeshClsn;         /* 0x144 */
@@ -143,12 +141,6 @@ struct daBmb_c : dEnemyBase_c {
     void State5();
     void func_ov102_0214bd90();
     void func_ov102_0214b03c();
-
-    /* Retained leaf size_t adapter to the retail unsigned-size allocator.
-       fBase_c also supplies this forwarding adapter. */
-    static void *operator new(size_t size) {
-        return _ZN7fBase_cnwEj((unsigned)size);
-    }
 };
 
 #ifndef SM64DS_PLATFORM_PC

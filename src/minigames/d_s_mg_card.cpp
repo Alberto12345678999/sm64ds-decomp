@@ -3,16 +3,12 @@
  * (ov006/dScMgCard_c, 37 functions).
  *
  * Keep definition order: the compiler emits functions in reverse. The scene
- * destructor is inline in dScMgCard_c.h, which with the four card
- * constructor and destructor callbacks keeps D1 ahead of D0 as in the
- * cartridge.
+ * destructor is inline in dScMgCard_c.h, so its D1 and D0 come out first,
+ * as in the cartridge. The two card destructors are defined at the bottom
+ * of this file and their D1s follow the scene's D0. The card constructors
+ * are implicit and come out after the factory that uses them.
  *
  * leftovers:
- *   - the ROM has no dScMgCard_c constructor, so the factory builds the
- *     scene by hand and its base constructor, operator new, vtable stores
- *     and mDealer's constructor stay mangled. `new dScMgCard_c` needs the
- *     card element classes to declare their constructors and destructors,
- *     which the walls in dScMgCard_c.h rule out.
  *   - the ov004 and ov006 helpers are unnamed in symbols.txt.
  */
 
@@ -49,9 +45,6 @@ typedef struct OamAttrTmpl {
 extern "C" {
 extern int pmf_Dealer_StateDeal_2[2];
 extern int pmf_Dealer_StateReveal[2];
-/* The two element vtables are emitted here by their key functions. The four
-   measured array-construction ABI callbacks reference the ROM address points;
-   these names are already mangled, so C linkage means "use literally". */
 extern unsigned short sCardFaceSprites[];
 extern void *sCardObjSprites[];
 extern int sMgCardSprites[];
@@ -101,53 +94,17 @@ extern void *LoadFile(int);
 extern int GetGameLanguage(void);
 extern void DecompressLZ16(void *, void *);
 extern int Dealer_Load(char *);
-void *_ZN11dScMgBase_cC2Ev(void*);
-void _ZN8Particle10SysTrackerC1Ev(void*);
-typedef void (*CardElementCallback)(void *);
-void __cxa_vec_ctor(void *, unsigned int, unsigned int,
-                    CardElementCallback, CardElementCallback);
-extern void *_ZTV19dScMgSingle3DBase_c[];
-extern int _ZTV11dScMgCard_c[];
-extern int _ZTV12dMgCardObj_c[];
-extern int _ZTV17dMgDilarCardObj_c[];
-void _ZN12dMgCardObj_cC1Ev(void*);
-void _ZN17dMgDilarCardObj_cC1Ev(void*);
-Dealer *_ZN6DealerC1Ev(Dealer *dealer);
-}
-
-// @symbol _ZN12dMgCardObj_cC1Ev
-extern "C" void _ZN12dMgCardObj_cC1Ev(void* elem)
-{
-    *(int*)elem = (int)&_ZTV12dMgCardObj_c[2];
-}
-
-// @symbol _ZN17dMgDilarCardObj_cC1Ev
-extern "C" void _ZN17dMgDilarCardObj_cC1Ev(void* elem)
-{
-    *(int*)elem = (int)&_ZTV12dMgCardObj_c[2];
-    *(int*)elem = (int)&_ZTV17dMgDilarCardObj_c[2];
 }
 
 // @symbol dScMgCard_c_classInit
+/* `new` inlines the implicit constructor: the base chain, this class's
+   vptr, mDealer, then the two hands through __cxa_vec_ctor. The two card
+   classes' implicit constructors are generated here, as the ROM's
+   _ZN12dMgCardObj_cC1Ev (0x020dbe30) and _ZN17dMgDilarCardObj_cC1Ev
+   (0x020dbe14), the last two functions of the run. */
 extern "C" void* dScMgCard_c_classInit()
 {
-    char* p = (char*)_ZN7fBase_cnwEj(sizeof(dScMgCard_c));
-    if (p) {
-        _ZN11dScMgBase_cC2Ev(p);
-        *(void **)p = _ZTV19dScMgSingle3DBase_c;
-        _ZN8Particle10SysTrackerC1Ev(p + 0x471c);
-        *(int*)p = (int)&_ZTV11dScMgCard_c[2];
-        /* C++ cannot name a constructor on existing storage; placement new
-           adds a null test before the call (measured 36/37). */
-        _ZN6DealerC1Ev(&((dScMgCard_c *)p)->mDealer);
-        __cxa_vec_ctor(p + 0x51a8, 5, 0x30,
-                     _ZN12dMgCardObj_cC1Ev,
-                     _ZN12dMgCardObj_cD1Ev);
-        __cxa_vec_ctor(p + 0x5298, 5, 0x30,
-                     _ZN17dMgDilarCardObj_cC1Ev,
-                     _ZN17dMgDilarCardObj_cD1Ev);
-    }
-    return p;
+    return new dScMgCard_c;
 }
 
 /* Engine calls by their C++ names. The parameter types are read off the
@@ -1705,22 +1662,21 @@ void dMgDilarCardObj_c::Render()
 
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN17dMgDilarCardObj_cD1Ev
-/* Genuine C++ produces these two stores only when the base destructor is
- * inline, but then emits the base D1 between the scene D1/D0. This callback
- * is the measured section-order ABI bridge. */
-extern "C" void _ZN17dMgDilarCardObj_cD1Ev(void *elem)
-{
-  *(int *)elem = (int)&_ZTV17dMgDilarCardObj_c[2];
-  *(int *)elem = (int)&_ZTV12dMgCardObj_c[2];
-}
+/* The ROM's D1 sets this class's vptr, then the base's, with no call: the
+ * base destructor below is inlined into it. */
+dMgDilarCardObj_c::~dMgDilarCardObj_c() {}
 
 // @symbol _ZN12dMgCardObj_cD1Ev
-/* The real inline body is byte-identical but cannot occupy the cartridge's
- * post-scene-D0 section position. */
-extern "C" void _ZN12dMgCardObj_cD1Ev(void *elem)
-{
-  *(int *)elem = (int)&_ZTV12dMgCardObj_c[2];
-}
+/* Defined last so its D1 sits below the dealer card's, as in the ROM.
+ * auto_inline lets the dealer card's destructor above inline this body even
+ * though it comes later. Without it that D1 calls this class's D2 and is 0x24
+ * bytes, not 0x1c. With auto_inline on for the whole file, five scene methods
+ * stop matching, so it is scoped to this one definition. Defining this
+ * destructor `inline` instead puts its D1 between the scene's D1 and D0. */
+#pragma push
+#pragma auto_inline on
+dMgCardObj_c::~dMgCardObj_c() {}
+#pragma pop
 
 /* The destructor is DEFINED INLINE in include/dScMgCard_c.h. mwcc emits the
  * D1/D0 pair at ROM ordinals 1 and 2 (0x020d95a4 size 0x94, 0x020d9638 size

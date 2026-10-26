@@ -4,8 +4,6 @@
 #include "types.h"
 #include "daObjDorifu_c.h"
 
-extern "C" void *_ZN7fBase_cnwEj(unsigned size);
-
 /**
  * daKpa_c in the Sky's drifting stairs (`dorifu`). No fields of
  * its own: the factory allocates 0xdcc, which daObjDorifu_c fills
@@ -21,10 +19,6 @@ struct daObjKm3_Dorifu_c : daObjDorifu_c {
     virtual ~daObjKm3_Dorifu_c() {}
     int CleanupResources();                /* slot  3 */
     int InitResources();                   /* slot  0 */
-
-    static void *operator new(unsigned long size) {
-        return _ZN7fBase_cnwEj(size);
-    }
 };
 
 #ifndef SM64DS_PLATFORM_PC

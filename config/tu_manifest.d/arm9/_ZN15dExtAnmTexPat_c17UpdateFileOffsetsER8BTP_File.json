@@ -8,7 +8,7 @@
   "boundary_evidence": [
     "single-function run: 0x020468a0..0x020469ac, 1 function, delinks.txt entry `complete`.",
     "TOP EDGE: _ZN17dExtSimpleModel_c17UpdateFileOffsetsER8BMD_File (0x020465fc..0x020468a0) ends exactly where the run begins -- a different class's same-named method, matching the fold note \"dExtSimpleModel_c::UpdateFileOffsets has just ended\". BOTTOM EDGE: _ZN15dExtFrameCtrl_c17UpdateFileOffsetsER8BCA_File (0x020469ac..0x020469e0) begins exactly where it ends -- again a different class's method, so neither side claims a dExtAnmTexPat_c classmate.",
-    "the class's real run is arm9/dExtAnmTexPat_c (src/engine/model/d_ext_anm_tex_pat.cpp, 0x0201597c..0x02015a7c), a full screen away; this function is its own translation unit, filed as src/engine/model/dExtAnmTexPat_c_UpdateFileOffsets.cpp. The symbol is unchanged."
+    "the class's real run is in arm9/dExtModel_c (src/engine/model/d_ext_model.cpp, 0x0201597c..0x02015a7c), a full screen away; this function is its own translation unit, filed as src/engine/model/dExtAnmTexPat_c_UpdateFileOffsets.cpp. The symbol is unchanged."
   ],
   "sections": [
     {

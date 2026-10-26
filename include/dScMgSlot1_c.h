@@ -51,11 +51,11 @@
  * destructor now lets the compiler perform the member teardown. Render calls
  * mBetIcon.Render() directly and retains the ROM's virtual dispatch.
  *
- * dScMgSlot1_c_classInit remains an explicit C-ABI factory because this compiler
- * cannot reproduce the ROM factory with a usable class-specific or placement
- * operator new spelling (the documented factory wall). Its allocation size,
- * object pointer, member pointer and vtable symbols are nevertheless typed;
- * only the codegen-sensitive construction sequence remains explicit.
+ * dScMgSlot1_c_classInit remains an explicit C-ABI factory: a `new` reproduces
+ * its bytes, but the inline dThIcon_c constructor would store a different
+ * address for that ov001 vtable than the ROM does (see the factory). Its
+ * allocation size, object pointer, member pointer and vtable symbols are
+ * nevertheless typed; only the construction sequence remains explicit.
  *
  * 0x4684 and 0x4690 are two SlotBlink markers (0xc bytes each) and 0x469c
  * a SlotLamp (0x8 bytes): the factory clears them through SlotBlink_Clear and

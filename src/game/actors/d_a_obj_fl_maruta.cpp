@@ -29,8 +29,10 @@
 //   this TU).
 // - dBgW_KcMbg::SetFile keeps its mangled spelling (by-value Fix12<int>
 //   parameters, wall 6az).
-// - Both factories stay hand-spelled (`new` would call the unavailable
-//   global `_Znwm`); the vptr stores keep the [2] form objisolate requires.
+// - daObjFlMaruta_c_classInit stays hand-spelled. `new daObjFlMaruta_c`
+//   compiles to the same bytes, but the inline daObjMaruta_c constructor
+//   stores `_ZTV13daObjMaruta_c+8` where the ROM stores that ov080 table's
+//   configured address (addend 0), so the linked word would differ.
 
 #include "decl_Actor.h"
 #include "decl_ActorBase.h"
@@ -52,8 +54,14 @@ extern "C" {
    parameters (Fix12<int>), which mwccarm passes differently at the call site,
    so declaring the true types breaks the byte match. */
 unsigned short DecIfAbove0_Short(unsigned short *p);
-unsigned int _ZN8Particle6System17NewUnkCallback818Ejj5Fix12IiES2_S2_PK11Vector3_16f(
-    unsigned int a, unsigned int b, Fix12i c, Fix12i d, Fix12i e, const Vector3_16f *f);
+}
+namespace Particle {
+struct System {
+    static unsigned int NewUnkCallback818(unsigned int a, unsigned int b, Fix12i c, Fix12i d,
+                                          Fix12i e, const Vector3_16f *f);
+};
+}
+extern "C" {
 void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(
     void *, dActor_c *a, int b, int c, unsigned int d, unsigned int e);
 
@@ -72,7 +80,6 @@ void func_ov022_02112654(daObj_volcanoCannon_c *c);
 extern daObj_volcanoCannon_c::State data_ov022_02114690;
 extern daObj_volcanoCannon_c::StateFunc data_ov022_0211442c;
 extern daObj_volcanoCannon_c::StateFunc data_ov022_02114424;
-
 }
 
 /* One vtable declaration per class this TU installs, at namespace scope above
@@ -121,7 +128,7 @@ int daObjFlMaruta_c::InitResources()
 // @symbol daObjFlMaruta_c_classInit
 extern "C" int *daObjFlMaruta_c_classInit(void)
 {
-    int *p = (int *)_ZN7fBase_cnwEj(836);
+    int *p = (int *)fBase_c::operator new(836);
     if (p) {
         _ZN10dBgActor_cC2Ev(p);
         p[0] = (int)_ZTV13daObjMaruta_c;
@@ -222,8 +229,8 @@ int daObj_volcanoCannon_c::Behavior()
     mCylinderClsn.Clear();
     mCylinderClsn.Update();
     if (!IsOffScreen(this)) {
-        mParticleID = _ZN8Particle6System17NewUnkCallback818Ejj5Fix12IiES2_S2_PK11Vector3_16f(
-            mParticleID, 0x129, mPosX, mPosY, mPosZ, 0);
+        mParticleID =
+            Particle::System::NewUnkCallback818(mParticleID, 0x129, mPosX, mPosY, mPosZ, 0);
     }
     return 1;
 }
@@ -238,15 +245,8 @@ int daObj_volcanoCannon_c::InitResources()
 }
 
 // @symbol daObj_volcanoCannon_c_classInit
-extern "C" int *daObj_volcanoCannon_c_classInit(void)
-{
-    int *p = (int *)_ZN7fBase_cnwEj(0x11c);
-    if (p) {
-        _ZN8dActor_cC2Ev(p);
-        p[0] = (int)&_ZTV21daObj_volcanoCannon_c[2];
-        _ZN7dCcAc_cC1Ev(&((daObj_volcanoCannon_c *)p)->mCylinderClsn);
-    }
-    return p;
+extern "C" daObj_volcanoCannon_c *daObj_volcanoCannon_c_classInit(void) {
+    return new daObj_volcanoCannon_c;
 }
 
 /* Static-init global (was the handwritten __sinit_ov022_021130bc shard):

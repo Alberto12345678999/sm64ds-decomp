@@ -95,8 +95,8 @@ extern Matrix4x3 data_020a0e68;
  *
  * C LINKAGE IS LOAD-BEARING -- the ROM symbol is the bare name.
  * `return new daFeather_c()` MATCHES; the synthesized ctor stores
- * `_ZTV11daFeather_c + 2` because this TU defines the vtable. Leaf operator
- * new forwards `_ZN7fBase_cnwEj` until #2570.
+ * `_ZTV11daFeather_c + 2` because this TU defines the vtable. `new` calls
+ * the inherited fBase_c::operator new (`_ZN7fBase_cnwEm`).
  *
  * Reconstructed source-style name: SM64DS proves this class through
  * allocation size, vtable identity, and the FEATHER registry profile; later

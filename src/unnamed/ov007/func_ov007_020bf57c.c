@@ -1,4 +1,5 @@
 #include "Ov007Sprite.h"
+#include "Ov007Work.h"
 
 extern int func_ov007_020c43bc(void* a, void* b);
 extern void func_ov007_020c4388(void* a, void* b);
@@ -21,12 +22,6 @@ typedef struct Ov007ItemView {
     Ov007Sprite *sprite; /* 0x04: func_ov007_020c44e4 */
 } Ov007ItemView;
 
-/* data_ov007_0210342c: the overlay's manager; only the slot read here. */
-typedef struct Ov007Work {
-    char pad_00[0x114];
-    Ov007ItemView *itemViews[0x18]; /* 0x114: func_ov007_020b693c */
-} Ov007Work;
-
 /* data_ov007_02104bd4: the 0x30-byte record func_ov007_020bf428 builds;
  * names as in func_ov007_020beeb0. */
 typedef struct Ov007MeshScene {
@@ -37,7 +32,6 @@ typedef struct Ov007MeshScene {
 } Ov007MeshScene;
 
 typedef char Ov007MeshScene_size_must_be_0x30[sizeof(Ov007MeshScene) == 0x30 ? 1 : -1];
-typedef char Ov007Work_size_must_be_0x174[sizeof(Ov007Work) == 0x174 ? 1 : -1];
 
 /* The externs keep the tree's char * spelling; the typed views are reached
  * through cast macros. */

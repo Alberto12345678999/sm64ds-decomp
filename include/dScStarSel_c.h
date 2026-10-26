@@ -15,7 +15,7 @@
  * dScStarSel_c). No new virtual is added.
  *
  * CONSTRUCTION. dScStarSel_c_classInit is the factory: it opens with
- * `_ZN7fBase_cnwEj(0x13c)`, i.e. fBase_c::operator new(0x13c). SIZE 0x13c
+ * `_ZN7fBase_cnwEm(0x13c)`, i.e. fBase_c::operator new(0x13c). SIZE 0x13c
  * is read directly off the allocator call. The same factory then calls the
  * shared "construct N elements of size S" helper, __cxa_vec_ctor(p+0x64, 2,
  * 0x50, dExtSimpleModel_c::dExtSimpleModel_c, dExtSimpleModel_c::~dExtSimpleModel_c) -- two dExtSimpleModel_c objects (include/dExtSimpleModel_c.h,

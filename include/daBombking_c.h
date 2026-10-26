@@ -28,8 +28,6 @@
 
 struct Player;
 
-extern "C" void *_ZN7fBase_cnwEj(unsigned size);
-
 struct daBombking_c : dEnemyBase_c {
     /* Declared first, DEFINED OUT OF LINE at the top of src/game/actors/d_a_bombking.cpp.
      * Measured on this TU under `#pragma defer_codegen off`: an out-of-line
@@ -161,15 +159,11 @@ struct daBombking_c : dEnemyBase_c {
     int KingBobOmb_SetState(void *rec);
     void func_ov078_02125de0();
     void func_ov078_02125f8c();
-
-    static void *operator new(unsigned long size) {
-        return _ZN7fBase_cnwEj((unsigned)size);
-    }
 };
 
 /* ~daBombking_c, the key function, owns the compiler-emitted definition of this
- * vtable. The factory is `return new daBombking_c()`; the leaf size_t operator
- * new forwards to `_ZN7fBase_cnwEj` until #2570's fBase overload lands. */
+ * vtable. The factory is `return new daBombking_c()`, which calls the
+ * inherited fBase_c::operator new (`_ZN7fBase_cnwEm`). */
 extern int _ZTV12daBombking_c[];
 
 #ifndef SM64DS_PLATFORM_PC

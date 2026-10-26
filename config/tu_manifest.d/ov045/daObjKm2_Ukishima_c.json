@@ -527,12 +527,12 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@378",
+      "from": "@366",
       "to": "@603",
       "evidence": "compiler-local __register_global_object node; @364 is taken on main by ov036 bss, renamed to an unused fleet temp of equal length"
     },
     {
-      "from": "@379",
+      "from": "@367",
       "to": "@426",
       "evidence": "compiler-local __register_global_object node; @365 is taken on main by ov036 bss, renamed to an unused fleet temp of equal length"
     }

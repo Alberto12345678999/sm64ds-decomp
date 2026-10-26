@@ -581,27 +581,27 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@558",
+      "from": "@551",
       "to": "@777",
       "evidence": "mwcc numbers this registration node @544 per TU and another module already defines @544"
     },
     {
-      "from": "@559",
+      "from": "@552",
       "to": "@775",
       "evidence": "mwcc numbers this registration node @545 per TU and another module already defines @545"
     },
     {
-      "from": "@560",
+      "from": "@553",
       "to": "@658",
       "evidence": "mwcc numbers this registration node @546 per TU and another module already defines @546"
     },
     {
-      "from": "@561",
+      "from": "@554",
       "to": "@654",
       "evidence": "mwcc numbers this registration node @547 per TU and another module already defines @547"
     },
     {
-      "from": "@562",
+      "from": "@555",
       "to": "@648",
       "evidence": "mwcc numbers this registration node @548 per TU and another module already defines @548"
     }

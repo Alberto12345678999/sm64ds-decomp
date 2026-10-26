@@ -116,8 +116,8 @@ int GetGameLanguage(void);
 void DrawOamSprite(void *a0, void *a1, int a2, void *a3);
 void RenderOamMainScreen(int a0, int a1, int a2, int a3, int a4);
 extern int data_020a0e68;
-unsigned int _ZN8Particle6System17NewUnkCallback818Ejj5Fix12IiES2_S2_PK11Vector3_16f(
-    unsigned int a, unsigned int b, int c, int d, int e, const Vector3_16f *f);
+unsigned int d_s_mg_jump2NewUnkCallback818Hold(unsigned int a, unsigned int b, int c, int d, int e,
+                                               const Vector3_16f *f);
 void Jump2Popup_UpdateAll(void);
 extern void *Jump3D_AllIdle(void *);
 extern void *Heyho_AllIdle(void *);
@@ -411,8 +411,8 @@ void dScMgJump2_c::State_Idle() {}
  * calls keep their mangled spellings: declaring the real Fix12<int>
  * parameters changes how the call passes them. */
 s32 dScMgJump2_c::Behavior() {
-    mParticleID = _ZN8Particle6System17NewUnkCallback818Ejj5Fix12IiES2_S2_PK11Vector3_16f(
-        mParticleID, 0xf0, 0x400000, 0x800000, -0x480000, 0);
+    mParticleID =
+        Particle::System::NewUnkCallback818(mParticleID, 0xf0, 0x400000, 0x800000, -0x480000, 0);
     void *system = Particle::System::FromUniqueID(mParticleID);
     if (system != 0) {
         *(int *)((char *)system + 0x50) = 0x4000;

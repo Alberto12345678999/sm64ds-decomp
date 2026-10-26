@@ -26,7 +26,7 @@ typedef struct {
  * preserved. Historical alias: PowerStar_Spawn. */
 int *daStar_c_classInit_STAR(void)
 {
-    int *p = (int *)_ZN7fBase_cnwEj(1220);
+    int *p = (int *)_ZN7fBase_cnwEm(1220);
     if (p) {
         _ZN12dEnemyBase_cC2Ev(p);
         p[0] = (int)_ZTV8daStar_c;

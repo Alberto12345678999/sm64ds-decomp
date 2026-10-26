@@ -10,7 +10,7 @@
  * intermediate base's destructor would have left behind.
  *
  * SIZE 0x629c, from dScMgSmartball_c_classInit's own
- * `_ZN7fBase_cnwEj(0x629c)`, and the last array closes EXACTLY on it:
+ * `_ZN7fBase_cnwEm(0x629c)`, and the last array closes EXACTLY on it:
  * 0x599c + 0x40 * 0x24 = 0x629c. The coined English _Spawn name
  * MgBingoBallSlotsShot_Spawn is already attributed and is retained as a
  * historical alias, the same convention as dScMgCard_c_classInit
@@ -27,8 +27,14 @@
  * object counts and tables, the score popup queue, the dust puffs, the two
  * decompressed BG maps, the round state and the result tallies. Each field
  * below carries its evidence. mPopupPos, mDustPos and mDustVel stay byte
- * arrays: their element is an 8-byte pair with a constructor and destructor,
- * and a member of such a type changes this class's codegen.
+ * arrays for now, though their element is include/Vector2.h's Vector2: typed
+ * that way, with `new dScMgSmartball_c` and an empty destructor, all 132
+ * functions still match (measured 2026-10-25). What blocks it is the TU's
+ * other Vector2 sites -- cMgSmartball_slot_c_Construct and the two inlined
+ * slot deletes, and SpawnObjects's local pos array -- which name
+ * func_0203d738 / NullDestructor_0203d47c directly; tubuild refuses a Vector2
+ * deadstrip-duplicate row while the same object names its canonical body.
+ * The conversion waits on the slot class's real structors.
  *
  * So: the four arrays below are evidenced by two witnesses each and the
  * size is evidenced by a third.

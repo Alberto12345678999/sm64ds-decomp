@@ -24,7 +24,6 @@
  * - PILE / daObjPile_c.h +0x32c backlink (actor ID 0x1b).
  * - Vec3_Dist: no shared header this TU can take without a campaign.
  * - no Player.h / dCamera_c.h.
- * - leaf operator new until #2570.
  */
 
 #include "daObjKinokoTag_c.h"

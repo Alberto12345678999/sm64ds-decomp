@@ -36,8 +36,6 @@
 #include "dExtAnmTexSRT_c.h"
 #include "dBgCh_Actr.h"
 
-extern "C" void *_ZN7fBase_cnwEj(unsigned size);
-
 struct daPropeller_Heyho_c : dEnemyBase_c {
     /* What mCurrentState points at. ChangeState writes the pointer and calls
        the init PMF at +0x00 when it is non-zero; Behavior calls the main PMF
@@ -126,16 +124,12 @@ struct daPropeller_Heyho_c : dEnemyBase_c {
     int func_ov070_0211f48c();
     int func_ov070_0211f62c();
     int func_ov070_0211f6e0();
-
-    static void *operator new(size_t size) {
-        return _ZN7fBase_cnwEj((unsigned)size);
-    }
 };
 
 /* Inline destructor is not the key function; OnYoshiTryEat is the first
  * out-of-line virtual, so this TU emits the vtable. The factory is
- * `return new daPropeller_Heyho_c()`; the leaf size_t operator new
- * forwards to `_ZN7fBase_cnwEj` until #2570's fBase overload lands. */
+ * `return new daPropeller_Heyho_c()`, which calls the inherited
+ * fBase_c::operator new (`_ZN7fBase_cnwEm`). */
 extern int _ZTV19daPropeller_Heyho_c[];
 
 #ifndef SM64DS_PLATFORM_PC

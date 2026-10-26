@@ -5,8 +5,6 @@
 #include "dExtSimpleModel_c.h"
 #include "dActor_c.h"
 
-extern "C" void *_ZN7fBase_cnwEj(unsigned size);
-
 /* The orange-ball billboard (profile KB1_BILLBOARD / ORANGE_BALL_BILLBOARD(301)).
  *
  * ROM-proven class identity: _ZTI19daObjKb1Billboard_c and
@@ -26,20 +24,11 @@ struct daObjKb1Billboard_c : dActor_c {
     virtual s32 CleanupResources();
     virtual s32 Render();
 
-    /* Leaf operator new until fBase_c can declare it (#2570). unsigned long
-       is size_t on this ABI; unsigned int is illegal. */
-    static void *operator new(size_t size);
-
 private:
     /* Ownership, body, call site, and codegen are proven. The readable name is
      * inferred because no original symbol string survives. */
     void UpdateModelTransform();
 };
-
-inline void *daObjKb1Billboard_c::operator new(size_t size)
-{
-    return _ZN7fBase_cnwEj((unsigned)size);
-}
 
 #ifndef SM64DS_PLATFORM_PC
 /* ROM layout under mwccarm; host ABI divergence is tracked separately. */

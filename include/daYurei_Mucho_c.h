@@ -15,8 +15,6 @@
 #include "dExtShadowModel_c.h"
 #include "dBgCh_Actr.h"
 
-extern "C" void *_ZN7fBase_cnwEj(unsigned size);
-
 struct daYurei_Mucho_c : dEnemyBase_c {
     /* Two 8-byte PMFs, called on state entry and each frame. The names and
        int signatures are reconstructed; forwarding r0 does not establish
@@ -82,15 +80,11 @@ struct daYurei_Mucho_c : dEnemyBase_c {
     int func_ov065_021162c0();
     void func_ov065_02115ff0();
     int func_ov065_02115f84();
-
-    static void *operator new(size_t size) {
-        return _ZN7fBase_cnwEj((unsigned)size);
-    }
 };
 
 /* Inline destructor is the key function, so this TU emits the vtable. The
- * factory is `return new daYurei_Mucho_c()`; the leaf size_t operator new
- * forwards to `_ZN7fBase_cnwEj` until #2570's fBase overload lands. */
+ * factory is `return new daYurei_Mucho_c()`, which calls the inherited
+ * fBase_c::operator new (`_ZN7fBase_cnwEm`). */
 extern int _ZTV15daYurei_Mucho_c[];
 
 #ifndef SM64DS_PLATFORM_PC

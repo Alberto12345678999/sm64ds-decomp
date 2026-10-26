@@ -5,6 +5,7 @@ struct Callback;
 struct System {
     static int New(unsigned, unsigned, int, int, int, const ::Vector3_16f *, Callback *);
 };
+void RunningSlidingDustAt(int, int, int);
 }
 /* daHanachan_c: the Wiggler (HANACHAN), ov034. Was coined Wiggler.
  *
@@ -127,7 +128,7 @@ extern void Vec3_MulScalarInPlace(void *v, int s);
 extern SharedFilePtr *data_ov034_02113838[];
 extern SharedFilePtr *data_ov034_0211384c[];
 extern void **data_ov034_02113874[];
-extern void _ZN8Particle20RunningSlidingDustAtE5Fix12IiES1_S1_(s32 x, s32 y, s32 z);
+extern void d_a_hanachanRunningSlidingDustAtHold(s32 x, s32 y, s32 z);
 extern void *d_a_hanachanNewHold(u32 a, u32 b, s32 x, s32 y, s32 z, const void *v, void *cb);
 extern int func_ov002_020c51d0(void *, void *);
 extern unsigned char data_ov034_0211433c[];
@@ -1016,7 +1017,7 @@ int daHanachan_c::Behavior()
                     func_0201267c(0x11d, &mCamSpacePosX);
             }
             if (mHealth == 2) {
-                _ZN8Particle20RunningSlidingDustAtE5Fix12IiES1_S1_(mPosX, mPosY, mPosZ);
+                Particle::RunningSlidingDustAt(mPosX, mPosY, mPosZ);
             }
         }
     }

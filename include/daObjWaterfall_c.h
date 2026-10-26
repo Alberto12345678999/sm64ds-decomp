@@ -4,8 +4,6 @@
 #include "types.h"
 #include "dActor_c.h"
 
-extern "C" void *_ZN7fBase_cnwEj(unsigned size);
-
 /**
  * Waterfall mist. No model: InitResources picks a particle ID from the
  * current course, then every frame Behavior (re)issues that particle at
@@ -28,10 +26,6 @@ struct daObjWaterfall_c : dActor_c {
     virtual ~daObjWaterfall_c() {}
     virtual s32 InitResources(); /* slot 0 */
     virtual s32 Behavior();      /* slot 6 */
-
-    static void *operator new(unsigned long size) {
-        return _ZN7fBase_cnwEj(size);
-    }
 };
 
 #ifndef SM64DS_PLATFORM_PC

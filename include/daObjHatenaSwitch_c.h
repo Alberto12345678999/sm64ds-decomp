@@ -7,8 +7,6 @@
 
 struct Player;
 
-extern "C" void *_ZN7fBase_cnwEj(unsigned size);
-
 /* daObjHatenaSwitch_c is the ROM-proven class identity: the ov002 RTTI at
  * 0x02108e14 names this type and dBgActor_c as its sole base. The factory
  * allocates 0x724 bytes. ov002 also has EXCLAMATION_SWITCH(11),
@@ -35,11 +33,6 @@ struct daObjHatenaSwitch_c : dBgActor_c {
     virtual s32 Behavior();
     virtual s32 Render();
     virtual void OnGroundPounded(dActor_c &other);
-
-    /* size_t == unsigned long here; unsigned int is illegal. */
-    static void *operator new(size_t size) {
-        return _ZN7fBase_cnwEj((unsigned)size);
-    }
 
 private:
     /* Class ownership and bodies are proven. These readable private spellings

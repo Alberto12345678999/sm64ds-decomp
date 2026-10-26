@@ -41,7 +41,7 @@
  * Leftover: g_profile_MINIGAME lives outside this TU (S14).
  * Leftover: OAM::Render Fix12-by-value stays mangled (OAM.h, wall 6az).
  *   This TU's Render.
- * Leftover: GX / G2 / G2S / GXS / G3X / CP15 stay mangled. No recovered
+ * Leftover: GX / G2::GetBG2CharPtr / G2S / GXS / G3X / CP15 stay mangled. No recovered
  *   members in headers this TU includes. InitResources /
  *   MiniGm_LoadGroupIcons / MiniGm_LoadIconPalette are the callers.
  * Leftover: Sound::LoadGroupAndSetBank / LoadAndSetMusic_Layer1 and
@@ -62,12 +62,19 @@
 #include "Sound.h"
 #include "OAM.h"
 #include "decl_Scene.h"
+/* decl_common.h's `extern int G2[]` hides namespace G2. This TU does not
+ * reference that data symbol. */
+#define G2 G2_decl_common_shadow
 #include "decl_common.h"
+#undef G2
 
 namespace CP15 {
 void FlushAndInvalidateDataCache(u32 a, u32 b);
 }
 
+namespace G2 {
+void *GetBG2ScrPtr();
+}
 namespace G2S {
 void *GetBG0CharPtr(void);
 void *GetBG0ScrPtr(void);
@@ -185,7 +192,6 @@ extern void MultiStore16(u16 val, void *dst, int nbytes);
 
 extern void OamRender10_d_s_mini_gm(int sub, OamAttr *attr, int x, int y, int pal, int prio, int sx,
                                     int sy, int c, int d);
-extern void *_ZN2G212GetBG2ScrPtrEv(void);
 extern void *_ZN2G213GetBG2CharPtrEv(void);
 
 void _ZN5Sound22StopLoadedMusic_Layer1Ej(u32 n);
@@ -305,7 +311,7 @@ s32 dScMiniGm_c::InitResources()
     Deallocate((void *)f);
 
     f = LoadFile(0x59);
-    DecompressLZ16(f, _ZN2G212GetBG2ScrPtrEv());
+    DecompressLZ16(f, G2::GetBG2ScrPtr());
     Deallocate((void *)f);
 
     if (GetOwnerLanguage() == 5) {

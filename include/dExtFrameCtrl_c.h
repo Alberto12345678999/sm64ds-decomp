@@ -20,7 +20,7 @@
  * i.e. the playback cursor, not the animation data.
  *
  * The destructor is declared first, which makes it the key virtual function.
- * src/engine/animation/d_ext_frame_ctrl.cpp defines it once, and mwcc emits
+ * src/engine/model/d_ext_model.cpp defines it once, and mwcc emits
  * D2/D0/D1 together along with the class's _ZTV/_ZTI/_ZTS.
  *
  * LAYOUT is 0x10 bytes, pinned by C2 (vptr store, +0x8 zeroed, +0xc set
@@ -55,7 +55,7 @@ struct dExtFrameCtrl_c {
     /* --- vtable, in ROM order: the destructor pair and nothing else. --- */
     virtual ~dExtFrameCtrl_c();                /* slots 0 (D1), 1 (D0) */
 
-    /* DECLARED, never defined here -- src/engine/animation/d_ext_frame_ctrl.cpp
+    /* DECLARED, never defined here -- src/engine/model/d_ext_model.cpp
        defines it out of line and emits both C1 and the base-subobject C2
        (notes/ctor-migration.md section 2). Declaring it is what makes
        dExtAnmMaterial_c/dExtAnmTexSRT_c/dExtAnmTexPat_c (and dExtAnmModel_c's

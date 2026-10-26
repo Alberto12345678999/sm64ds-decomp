@@ -4,8 +4,6 @@
 #include "types.h"
 #include "dBgActor_c.h"
 
-extern "C" void *_ZN7fBase_cnwEj(unsigned size);
-
 struct Player;
 
 /**
@@ -31,10 +29,6 @@ struct daObjBk_Dossunbar_c : dBgActor_c {
     virtual s32 Render();
     virtual void OnHitByMegaChar(Player &player);
     virtual void Kill();
-
-    static void *operator new(unsigned long size) {
-        return _ZN7fBase_cnwEj(size);
-    }
 
     /* Inline empty dtor: mwccarm emits D1 then D0, no D2. */
     virtual ~daObjBk_Dossunbar_c() {}

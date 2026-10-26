@@ -14,8 +14,6 @@
 #include "dActor_c.h"
 #include "dExtAnmModel_c.h"
 
-extern "C" void *_ZN7fBase_cnwEj(unsigned size);
-
 /* An animated seaweed prop -- ov002/daObjWakame_c, a scenery model and nothing
  * else. Profile SEAWEED(296) in symbols/overlay_actors.md.
  *
@@ -66,13 +64,6 @@ struct daObjWakame_c : dActor_c {
     virtual s32 CleanupResources();     /* slot 3 -- 0x020bc4c8 */
     virtual s32 Behavior();             /* slot 6 -- 0x020bc520 */
     virtual s32 Render();               /* slot 9 -- 0x020bc4f8 */
-
-    /* Leaf operator new until #2570 puts the same allocator on fBase_c.
-       Parameter is size_t (unsigned long on this compiler). `return new`
-       relocates to `_Znwm` without this. */
-    static void *operator new(size_t size) {
-        return _ZN7fBase_cnwEj((unsigned)size);
-    }
 
     /* INLINE, AND THAT IS WHAT LETS THIS CLASS OWN A TRANSLATION UNIT. Declared
        out of line, mwccarm 2004/b56 emits D0 before D1 -- the reverse of the

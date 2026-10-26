@@ -115,18 +115,17 @@ extern ShellAnimationFilePtr data_ov064_0211c9cc;
  * preserved. Historical alias: Clam_Spawn.
  *
  * Every instruction the cartridge has here falls out of the one `new`. The
- * literal 0x174 is the class's own size, handed to the leaf operator new the
- * header declares; then dActor_c's C2, this class's vptr store, and the
+ * literal 0x174 is the class's own size, handed to the inherited
+ * fBase_c::operator new; then dActor_c's C2, this class's vptr store, and the
  * dExtAnmModel_c (0x0d4) and dCcAc_c (0x138) member constructors, in declaration
  * order. The null check is the one `new` itself emits, and the implicit
  * default constructor is what keeps that construction inlined -- declaring a
  * constructor of our own would emit a `bl` the factory does not have.
  *
  * The legacy one-function file this replaces had to spell the allocation as a
- * direct call to the mangled fBase_c::operator new, because without a leaf
- * `operator new` in scope `new daObjShell_c` reached for the global one. The
- * header now declares that leaf, so the factory is a plain `new` and the ROM's
- * own allocator call is what the compiler emits.
+ * direct call to the mangled fBase_c::operator new. fBase_c now declares that
+ * allocator as a real class member, so the factory is a plain `new` and the
+ * ROM's own allocator call is what the compiler emits.
  */
 extern "C" daObjShell_c *daObjShell_c_classInit()
 {

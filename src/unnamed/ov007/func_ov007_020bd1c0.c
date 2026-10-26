@@ -1,4 +1,5 @@
 #include "types.h"
+#include "Ov007Work.h"
 typedef struct { int a, b, c; } S12;
 
 /* One of the overlay's two lights (func_ov007_020c241c, Work lights[0/1]);
@@ -17,27 +18,6 @@ typedef struct Ov007Settings {
     char pad_00[0x3a];
     u8 language; /* 0x3a: func_ov007_020b6a84 seeds it from the owner-info language */
 } Ov007Settings;
-
-/* data_ov007_0210342c: the overlay's manager; names as in
- * func_ov007_020b1718, func_ov007_020b65e0 and func_ov007_020b2370, only the
- * slots this file touches. +0xec stays raw: a 0/1 selector with no role
- * evidenced yet. */
-typedef struct Ov007Work {
-    char pad_00[0x20];
-    int transitionMode; /* 0x20: func_ov007_020b1cf0 sets 1 for a stylus
-                         * tap, 0 for a button */
-    char pad_24[4];
-    Ov007Settings *settings; /* 0x28: func_ov007_020b6a84 */
-    char pad_2c[4];
-    void *cameras[2];      /* 0x30: func_ov007_020c023c */
-    Ov007Light *lights[2]; /* 0x38: func_ov007_020c241c(0/1) */
-    char pad_40[0x38];
-    void *textures[11]; /* 0x78: func_ov007_020b697c builds them from the BMD textures */
-    char pad_a4[0x54];
-    /* 0xf8: Q12; func_ov007_020b2370 scales the model from 1/16 (0) up to 1
-     * (0x1000) by it */
-    int modelGrowth;
-} Ov007Work;
 
 extern char* data_ov007_0210342c;
 extern S12 data_ov007_020d7c34[];

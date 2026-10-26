@@ -14,7 +14,7 @@
  * leftovers:
  * - ROM-descending source order (factory first, OnYoshiTryEat last); the
  *   inline destructor emits D1 then D0 with no D2. The factory stays
- *   `return new daJgm_c()`; the leaf operator new forwards fBase_c's.
+ *   `return new daJgm_c()`, through the inherited fBase_c::operator new.
  * - common.h first is load-bearing: the flat m[12] Matrix4x3 keeps the
  *   12-word ldm/stm copies; UpdateModels writes translation as m[9..11].
  * - DaJgmVector3Words (not Vector3): a Vector3 stack local emits a

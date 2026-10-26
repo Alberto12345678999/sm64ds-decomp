@@ -74,6 +74,7 @@ enum dScMgSmartball_c_AssetId { ASSET_D_2D_MG_BG_OPTION_NSC_BIN = 0x005b };
 
 namespace cstd {
 s16 atan2(s32, s32);
+int fdiv(s32, s32);
 }
 
 namespace G2 {
@@ -180,17 +181,13 @@ typedef struct State2 {
     int baseZ;
 } State2;
 
-/* shadow 'Sound' -- 2 member(s). */
+/* shadow 'Sound' -- 2 member(s).
+   void, not the definition's unsigned int: Sound.h would overload this shadow. */
 namespace Sound {
 void PlayBank2_2D(u32 id);
 }
 
 extern "C" {
-/* S4 WALL (wave-2): kept: this void extern and the namespace Sound shadow
-   above disagree with Sound.h u32 return (definition returns unsigned int);
-   including Sound.h would illegally overload the shadow, so both stay.
-   Params match; all callers ignore r0. */
-extern void _ZN5Sound12PlayBank2_2DEj(unsigned int);
 extern void func_0203d388(V2 *p, int angle);
 extern long long func_0203d5bc(int *p);
 /* Of this helper's five recorded parameter views three spell the first
@@ -210,7 +207,6 @@ extern int Vec2_Len(Vec2 *v);
    pointers and one spells them ints; the pointer view is kept. */
 extern "C" void RenderOamBothScreens(void *a0, int a1, int a2, int a3, int a4, void *a5);
 extern "C" int GetOwnerLanguage(void);
-extern "C" int _ZN4cstd4fdivEii(int a, int b);
 extern OamAttr *sSmartballLineSpritesItalian[];
 extern OamAttr *sSmartballLineSpritesSpanish[];
 extern OamAttr *sSmartballLineSpritesGerman[];
@@ -448,13 +444,13 @@ void cMgSmartball_wing_c::Trigger() {
         mTriggerTime = 0x14;
         mTriggerFlag = 1;
         mTriggerPhase = 0;
-        _ZN5Sound12PlayBank2_2DEj(0x1a1);
+        Sound::PlayBank2_2D(0x1a1);
         return;
     }
     mTriggerTime = 0;
     mTriggerFlag = 1;
     mTriggerPhase = 0;
-    _ZN5Sound12PlayBank2_2DEj(0x1a2);
+    Sound::PlayBank2_2D(0x1a2);
 }
 
 // @symbol _ZN19cMgSmartball_wing_c12RebuildVertsEv
@@ -686,7 +682,7 @@ int cMgSmartball_pushswitch_c::CheckBall(int *p) {
         ((dScMgSmartball_c *)mpManager)->mpSlot->StartSpin();
         mTriggered = 1;
         mReleaseDelay = 0xa;
-        _ZN5Sound12PlayBank2_2DEj(0x1a4);
+        Sound::PlayBank2_2D(0x1a4);
     }
     return 1;
 }
@@ -899,10 +895,9 @@ void cMgSmartball_board_c::Update() {
             s32 vec[4];
 
             if (ang < 0x4000)
-                vec[0] =
-                    -_ZN4cstd4fdivEii(0x1000, data_02082214[((u16)(ang + 0x8000) >> 4) * 2 + 1]);
+                vec[0] = -cstd::fdiv(0x1000, data_02082214[((u16)(ang + 0x8000) >> 4) * 2 + 1]);
             else
-                vec[0] = -_ZN4cstd4fdivEii(0x1000, data_02082214[((u16)ang >> 4) * 2 + 1]);
+                vec[0] = -cstd::fdiv(0x1000, data_02082214[((u16)ang >> 4) * 2 + 1]);
             vec[1] = 0;
             vec[2] = 0;
             vec[3] = 0x1000;
@@ -1047,7 +1042,7 @@ void cMgSmartball_board_c::ClaimCell(int i) {
     b[0] = v;
     b[1] = 0x78000;
     PaintCell(i, (int *)b);
-    _ZN5Sound12PlayBank2_2DEj(0x173);
+    Sound::PlayBank2_2D(0x173);
     count = 0;
     if (slot < 3) {
         if ((&mTriggered)[slot + 3] == 1 && (&mTriggered)[slot + 6] == 1) {
@@ -1186,7 +1181,7 @@ void cMgSmartball_board_c::ClaimCell(int i) {
     ((dScMgSmartball_c *)mpManager)->EmitScore((int *)e, 0x2710, 0x3c, 1);
     ((dScMgSmartball_c *)mpManager)->CountBingo();
     ((dScMgSmartball_c *)mpManager)->EndRound();
-    _ZN5Sound12PlayBank2_2DEj(0x174);
+    Sound::PlayBank2_2D(0x174);
 }
 
 // @symbol _ZN20cMgSmartball_board_c12SaveSnapshotEv
@@ -1418,7 +1413,7 @@ void cMgSmartball_slot_c::StartSpin() {
     mIsSpeedingUp = 1;
     mIsSpinning = 1;
     mSpinTimer = 0xb4;
-    _ZN5Sound12PlayBank2_2DEj(0x160);
+    Sound::PlayBank2_2D(0x160);
 }
 
 // @symbol _ZN19cMgSmartball_slot_c10UpdateSpinEv
@@ -1473,7 +1468,7 @@ void cMgSmartball_slot_c::UpdateSpin() {
                     if (mReelStopCount[ic] == 0) {
                         mReelVel[ic].y = 0;
                         mReelOffset[ic].y = (mReelOffset[ic].y / 0x10000) << 16;
-                        _ZN5Sound12PlayBank2_2DEj(0x19e);
+                        Sound::PlayBank2_2D(0x19e);
                     }
                 }
             }
@@ -1537,7 +1532,7 @@ void cMgSmartball_slot_c::UpdateSpin() {
                 break;
             }
             }
-            _ZN5Sound12PlayBank2_2DEj(0x1a7);
+            Sound::PlayBank2_2D(0x1a7);
         }
     }
     mSpinCooldown = 0x3c;
@@ -1761,7 +1756,7 @@ void cMgSmartball_pakkun_c::Update() {
                 int _00, _01, _10, _11;
             } vec;
             if (f38 < 0x20) {
-                scale = _ZN4cstd4fdivEii(0x20000, f38 << 12);
+                scale = cstd::fdiv(0x20000, f38 << 12);
             } else {
                 scale = 0x1000;
                 if ((f38 - 0x20) % 16 < 4)
@@ -2430,7 +2425,7 @@ void cMgSmartball_kinoko_c::Update() {
         int vec[4];
         if (mRadius < 0x1000)
             return;
-        d = _ZN4cstd4fdivEii(0x7000, mRadius);
+        d = cstd::fdiv(0x7000, mRadius);
         b = FX_MUL(data_02082214[1], d);
         a = FX_MUL(data_02082214[0], d);
         vec[0] = b;
@@ -3039,7 +3034,7 @@ block1:
     mVel0 = 0;
     mVel1 = 0;
 
-    mCurrent1 = _ZN4cstd4fdivEii(FX_MUL(mCurrent0, 0xa000), 0xd8000) + 0x90000;
+    mCurrent1 = cstd::fdiv(FX_MUL(mCurrent0, 0xa000), 0xd8000) + 0x90000;
 
     if (mIndex > ((dScMgSmartball_c *)mpManager)->mServeIndex) {
         mQueueGap = (mIndex - ((dScMgSmartball_c *)mpManager)->mServeIndex) * 0xf;
@@ -3053,7 +3048,7 @@ block2:
     mVel0 = 0;
     mVel1 = 0;
 
-    mCurrent1 = _ZN4cstd4fdivEii(FX_MUL(mCurrent0, 0xa000), 0xd8000) + 0x90000;
+    mCurrent1 = cstd::fdiv(FX_MUL(mCurrent0, 0xa000), 0xd8000) + 0x90000;
 
     if (mIndex > ((dScMgSmartball_c *)mpManager)->mServeIndex) {
         mQueueGap = (mIndex - ((dScMgSmartball_c *)mpManager)->mServeIndex) * 0xf;
@@ -5068,7 +5063,7 @@ void dScMgSmartball_c::SpawnObjects() {
         for (j = 0; j < mBallCount; j++) {
             void *p;
             pos[j].x = ((1 - j) << 0x10) + 0xc0000;
-            pos[j].y = _ZN4cstd4fdivEii(FX_MUL(pos[j].x, 0xa000), 0xd8000) + 0x90000;
+            pos[j].y = cstd::fdiv(FX_MUL(pos[j].x, 0xa000), 0xd8000) + 0x90000;
             p = ::operator new(0x12c);
             if (p != 0) {
                 V2 tmp = pos[j];
@@ -5965,7 +5960,7 @@ s32 dScMgSmartball_c::Behavior() {
                             ->Burst();
                         CopyObjectPos(vec, (int *)((i >= 13) ? 0 : (char *)mpBalls[i]));
                         ((dScMgSmartball_c *)c)->EmitScore(vec, 0x7d0, 0, 1);
-                        _ZN5Sound12PlayBank2_2DEj(0x175);
+                        Sound::PlayBank2_2D(0x175);
                         ((dScMgSmartball_c *)(c))->CountOut();
                         found = 1;
                         break;
@@ -6541,7 +6536,9 @@ void dScMgSmartball_c::AfterCleanupResources(u32 vfSuccess) {
 
 #pragma pop
 
-/* The scene factory and its empty particle-element constructor share this unit. */
+/* The scene factory and its empty particle-element constructor share this unit.
+   The factory stays hand-built; include/dScMgSmartball_c.h says why it is not
+   `new dScMgSmartball_c` yet. */
 extern int _ZTV16dScMgSmartball_c[];
 extern "C" void *_ZN11dScMgBase_cC2Ev(void *p);
 extern "C" void SmartballObj_ElemCtor(void);
@@ -6550,7 +6547,7 @@ extern "C" void SmartballObj_ElemCtor(void);
 /* Allocates and constructs the scene; returns null if allocation fails.
  * Historical alias: MgBingoBallSlotsShot_Spawn. */
 extern "C" void *dScMgSmartball_c_classInit(void) {
-    dScMgSmartball_c *scene = (dScMgSmartball_c *)_ZN7fBase_cnwEj(0x629c);
+    dScMgSmartball_c *scene = (dScMgSmartball_c *)fBase_c::operator new(0x629c);
     if (scene != 0) {
         _ZN11dScMgBase_cC2Ev(scene);
         *(int *)scene = (int)&_ZTV16dScMgSmartball_c[2];
