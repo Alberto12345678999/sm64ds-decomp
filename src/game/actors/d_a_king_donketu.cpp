@@ -130,6 +130,7 @@ enum daKing_Donketu_c_AssetId {
 #include "dCamera_c.h"
 #include "dBgCh_Lin.h"
 #include "nitro/fx/fx.h"
+#include "Sound.h"
 namespace cstd {
 s16 atan2(s32, s32);
 }
@@ -253,9 +254,6 @@ extern int RandomIntInternal(u16* seed);
 extern int _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void *p, const Vector3 *v, u32 a, Fix12i f,
                                                    u32 b, u32 c, u32 d);
 extern void _Z14ApproachLinearRiii(int* p, int t, int s);
-}
-namespace Sound {
-void ChangeMusicVolume(unsigned int a, int b);
 }
 extern "C" {
 extern void d_a_king_donketuPlayLongHold(unsigned int a, unsigned int b, unsigned int c,
@@ -675,7 +673,7 @@ int daKing_Donketu_c::func_ov073_0211fa74() {
     pos.y = c->mSpawnPosY;
     pos.z = c->mSpawnPosZ;
     Message::EndTalk();
-    _ZN5Sound22StopLoadedMusic_Layer3Ev();
+    Sound::StopLoadedMusic_Layer3();
     func_02011cfc();
     Sound::ChangeMusicVolume(0x7f, 0x15666);
     pos.y = pos.y + 0x190000;
@@ -1642,7 +1640,7 @@ int daKing_Donketu_c::func_ov073_0212128c()
 
     if (player->GetTalkState() == -1) {
         ((dCamera_c *)cam)->mFlags &= ~8;
-        _ZN5Sound22LoadAndSetMusic_Layer3Ej(0x2d);
+        Sound::LoadAndSetMusic_Layer3(0x2d);
         func_02011d08();
         ChiefChilly_ChangeState((C *)(c), (PMF *)&data_ov073_02123360);
     }
@@ -1715,7 +1713,7 @@ int daKing_Donketu_c::func_ov073_02121388() {
     msg = (short)(p->param1 + 0xe3);
     if (p->StartTalk(*c, 1)) {
         if (c->mPhase == 0) {
-            _ZN5Sound22LoadAndSetMusic_Layer3Ej(0x2c);
+            Sound::LoadAndSetMusic_Layer3(0x2c);
             c->mPhase = 0;
         }
 

@@ -116,8 +116,6 @@ extern int Vec3_HorzDist(void *a, void *b);
 extern int RandomIntInternal(int *seed);
 extern int data_0209e650;
 extern int data_ov034_02114488[];
-void _ZN5Sound22LoadAndSetMusic_Layer3Ej(unsigned);
-void _ZN5Sound22StopLoadedMusic_Layer3Ev(void);
 extern char data_020a0e68[];
 extern void Matrix4x3_FromRotationY(void *m, int angle);
 extern void MulVec3Mat4x3(void *in, void *m, void *out);
@@ -323,7 +321,7 @@ void daHanachan_c::StateDeadMain()
         starPos.z = pz;
     }
     UntrackAndSpawnStar((s8 &)mStarTrackID, mStarID, mPos, 4);
-    _ZN5Sound22StopLoadedMusic_Layer3Ev();
+    Sound::StopLoadedMusic_Layer3();
     SetState(3);
 }
 
@@ -610,7 +608,7 @@ void daHanachan_c::StateMoveStopMain()
         }
         if (flag == 1) {
             if (player->GetTalkState() == 2) {
-                _ZN5Sound22LoadAndSetMusic_Layer3Ej(0x2d);
+                Sound::LoadAndSetMusic_Layer3(0x2d);
                 Message::EndTalk();
                 SetState(3);
             }

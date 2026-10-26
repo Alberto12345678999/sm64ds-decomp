@@ -161,8 +161,6 @@ void _ZN7Message11DisplayTextEt(int m);
 // local extern: Message.h's u16 parameter changes the sign-extended (s16) argument codegen (PS_Update differs).
 void _ZN7Message22DisplayOptionsMenuTextEt(int m);
 bool d_s_stage_methodsPlaySubHold(unsigned int a, unsigned int b, unsigned int c, int fix, int e);
-unsigned int _ZN5Sound12PlayBank3_2DEj(unsigned int a);
-void _ZN5Sound22StopLoadedMusic_Layer1Ej(unsigned int a);
 // local extern: SaveData.h's (s8, u8) parameters re-narrow both arguments (LC_Update differs).
 void _ZN8SaveData21SetCoinRecordIfHigherEah(int a, int b);
 void _ZN3G2x18SetBlendBrightnessEPVtts(volatile unsigned short *p, int val, short amt);
@@ -806,7 +804,7 @@ void dScStage_c::LC_Update() {
             data_0209f260 += 1;
             if (data_0209f260 % 50 == 0) {
                 GiveLives(1);
-                _ZN5Sound12PlayBank3_2DEj(0x6e);
+                Sound::PlayBank3_2D(0x6e);
             }
             if (data_0209f358[0] == data_0209f260) {
                 if (data_0209f2ac != 0) {
@@ -959,7 +957,7 @@ void dScStage_c::LC_Update() {
         } else {
             dScene_c::StartSceneFade(1, 0, 0);
             data_ov002_02111178 = 0;
-            _ZN5Sound22StopLoadedMusic_Layer1Ej(0xa);
+            Sound::StopLoadedMusic_Layer1(0xa);
             {
                 int t = data_0209b454 | 0x40000000;
                 data_0209b454 = t;
@@ -2562,7 +2560,7 @@ void dScStage_c::PS_Update() {
         dScStage_c::PS_Cleanup();
         data_0209b454 |= 0x40000000;
         data_0209b464 = data_0209b454;
-        _ZN5Sound22StopLoadedMusic_Layer1Ej(0xa);
+        Sound::StopLoadedMusic_Layer1(0xa);
         return;
     }
     case 0x10: {
