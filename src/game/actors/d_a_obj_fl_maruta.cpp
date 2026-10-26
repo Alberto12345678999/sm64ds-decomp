@@ -55,8 +55,8 @@ unsigned short DecIfAbove0_Short(unsigned short *p);
 }
 namespace Particle {
 struct System {
-    static unsigned int NewUnkCallback818(
-        unsigned int a, unsigned int b, Fix12i c, Fix12i d, Fix12i e, const Vector3_16f *f);
+    static unsigned int NewUnkCallback818(unsigned int a, unsigned int b, Fix12i c, Fix12i d,
+                                          Fix12i e, const Vector3_16f *f);
 };
 }
 extern "C" {
@@ -78,7 +78,6 @@ void func_ov022_02112654(daObj_volcanoCannon_c *c);
 extern daObj_volcanoCannon_c::State data_ov022_02114690;
 extern daObj_volcanoCannon_c::StateFunc data_ov022_0211442c;
 extern daObj_volcanoCannon_c::StateFunc data_ov022_02114424;
-
 }
 
 /* One vtable declaration per class this TU installs, at namespace scope above
@@ -228,8 +227,8 @@ int daObj_volcanoCannon_c::Behavior()
     mCylinderClsn.Clear();
     mCylinderClsn.Update();
     if (!IsOffScreen(this)) {
-        mParticleID = Particle::System::NewUnkCallback818(
-            mParticleID, 0x129, mPosX, mPosY, mPosZ, 0);
+        mParticleID =
+            Particle::System::NewUnkCallback818(mParticleID, 0x129, mPosX, mPosY, mPosZ, 0);
     }
     return 1;
 }

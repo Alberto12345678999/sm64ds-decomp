@@ -672,8 +672,7 @@ void daYegg_c::func_ov002_020ecd18()
                     }
                     mAngleY = Vec3_HorzAngle(&mPosX, &tmp);
                 }
-                Particle::RunningSlidingDustAt(
-                    mPosX, mPosY, mPosZ);
+                Particle::RunningSlidingDustAt(mPosX, mPosY, mPosZ);
                 flag = 1;
                 if (func_ov002_020eddc4() != 0)
                     return;

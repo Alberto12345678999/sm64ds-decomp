@@ -11968,7 +11968,8 @@ int Player::St_WallSlide_Main()
     }
     else
     {
-      Particle::RunningSlidingDustAt(*((int *) ((char *)&mPosX)), *((int *) ((char *)&mPosY)), *((int *) ((char *)&mPosZ)));
+        Particle::RunningSlidingDustAt(*((int *)((char *)&mPosX)), *((int *)((char *)&mPosY)),
+                                       *((int *)((char *)&mPosZ)));
     }
     *((int *) ((char *)&mLoopingSoundHandle)) = func_0201226c(*((int *) ((char *)&mLoopingSoundHandle)), 0, (*((int *) ((char *)&mGroundSoundType))) + 0xe2, (int) ((char *)&mCamSpacePosX), *((int *) ((char *)&mHorzSpeed)), 0);
     if ((*((unsigned short *) (&data_0209f49e[gActivePlayerSlot * 0x18]))) & 2)
@@ -13994,8 +13995,7 @@ void func_ov002_020d45c0(char* self)
                 if (p->mIsMega != 0)
                     func_02022b04(p->mPosX, p->mPosY, p->mPosZ);
                 else
-                    Particle::RunningSlidingDustAt(p->mPosX, p->mPosY,
-                                                                       p->mPosZ);
+                    Particle::RunningSlidingDustAt(p->mPosX, p->mPosY, p->mPosZ);
             }
         }
     }

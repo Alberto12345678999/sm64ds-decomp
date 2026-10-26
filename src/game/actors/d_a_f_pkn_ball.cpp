@@ -109,7 +109,8 @@ struct System {
     static void NewSimple(u32 id, s32 x, s32 y, s32 z);
 
     static int New(unsigned, unsigned, int, int, int, const ::Vector3_16f *, Callback *);
-    static u32 NewUnkCallback818(u32 a, u32 b, Fix12i c, Fix12i d, Fix12i e, const struct Vector3_16f* f);
+    static u32 NewUnkCallback818(u32 a, u32 b, Fix12i c, Fix12i d, Fix12i e,
+                                 const struct Vector3_16f *f);
 };
 }
 void func_02012694(u32 id, const void* v);
@@ -209,8 +210,8 @@ void daFPknBall_c::func_ov002_020f8b24()
     }
     pos.y = pos.y + data_ov002_02100320[mVariant];
 
-    mTrailEffect = Particle::System::NewUnkCallback818(
-        mTrailEffect, data_ov002_02100334[mVariant], pos.x, pos.y, pos.z, 0);
+    mTrailEffect = Particle::System::NewUnkCallback818(mTrailEffect, data_ov002_02100334[mVariant],
+                                                       pos.x, pos.y, pos.z, 0);
 
     mSparkEffect = (void *)Particle::System::New((u32)mSparkEffect, data_ov002_02100348[mVariant],
                                                  pos.x, pos.y, pos.z, 0, 0);

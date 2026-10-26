@@ -372,11 +372,11 @@ block_7:
             } else {
                 flag = IsUnderwater();
             }
-            mWeather = Particle::System::NewWeather(
-                mWeather, (u32)r5, spVec[0], spVec[1], spVec[2], 0, flag);
+            mWeather = Particle::System::NewWeather(mWeather, (u32)r5, spVec[0], spVec[1], spVec[2],
+                                                    0, flag);
             if (r5 == 0x86) {
-                mWeather2 = Particle::System::NewWeather(
-                    mWeather2, 0x87, spVec[0], spVec[1], spVec[2], 0, 1);
+                mWeather2 = Particle::System::NewWeather(mWeather2, 0x87, spVec[0], spVec[1],
+                                                         spVec[2], 0, 1);
             }
         }
     }

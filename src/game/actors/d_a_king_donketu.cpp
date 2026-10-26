@@ -1376,8 +1376,7 @@ int daKing_Donketu_c::func_ov073_02120c7c()
     if (a > 0xa) {
         int i = 0;
         do {
-            Particle::RunningSlidingDustAt(c->mFootPos[i].x, c->mFootPos[i].y,
-                                                               c->mFootPos[i].z);
+            Particle::RunningSlidingDustAt(c->mFootPos[i].x, c->mFootPos[i].y, c->mFootPos[i].z);
             i++;
         } while (i < 2);
     }
@@ -1537,8 +1536,8 @@ int daKing_Donketu_c::func_ov073_02120ed0() {
         if (d > 0xa) {
             i = 0;
             do {
-                Particle::RunningSlidingDustAt(
-                    c->mFootPos[i].x, c->mFootPos[i].y, c->mFootPos[i].z);
+                Particle::RunningSlidingDustAt(c->mFootPos[i].x, c->mFootPos[i].y,
+                                               c->mFootPos[i].z);
                 i++;
             } while (i < 2);
         }

@@ -127,8 +127,7 @@ int dPa_c::level_c::splashCallback_c::OnUpdate(
 
         if (particle->velocityAsr3.y < 0 && (y << 3) < data_0209f32c) {
             particle->age = particle->lifetime;
-            Particle::System::NewRipple(
-                x << 3, data_0209f32c + 0x3000, z << 3);
+            Particle::System::NewRipple(x << 3, data_0209f32c + 0x3000, z << 3);
         }
         particle = particle->next;
     }
@@ -149,8 +148,7 @@ int dPa_c::level_c::bubbleCallback_c::OnUpdate(
 
         if ((y << 3) > data_0209f32c) {
             particle->age = particle->lifetime;
-            Particle::System::NewRipple(
-                x << 3, data_0209f32c + 0x3000, z << 3);
+            Particle::System::NewRipple(x << 3, data_0209f32c + 0x3000, z << 3);
         }
         particle = particle->next;
     }
@@ -299,8 +297,7 @@ int dPa_c::level_c::checkWaterRippleCallback_c::OnUpdate(
 
         if (particle->velocityAsr3.y < 0 && (y << 3) < data_0209f32c) {
             particle->age = particle->lifetime;
-            Particle::System::NewRipple(
-                x << 3, data_0209f32c + 0x3000, z << 3);
+            Particle::System::NewRipple(x << 3, data_0209f32c + 0x3000, z << 3);
         }
         particle = particle->next;
     }

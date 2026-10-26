@@ -284,8 +284,8 @@ bool ApproachLinear(short &value, short target, short step);
 extern "C" {
 void d_a_sanboRunningSlidingDustAtHold(int x, int y, int z);
 unsigned d_a_sanboNewHold(unsigned a, unsigned b, int x, int y, int z, const void *dir, void *cb);
-unsigned d_a_sanboNewUnkCallback818Hold(
-    unsigned a, unsigned b, int x, int y, int z, const Vector3_16f *dir);
+unsigned d_a_sanboNewUnkCallback818Hold(unsigned a, unsigned b, int x, int y, int z,
+                                        const Vector3_16f *dir);
 void _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(
     void *player, void *at, unsigned a, int fix, unsigned b, unsigned d, unsigned e);
 }
@@ -399,8 +399,7 @@ int daSanbo_c::func_ov096_021365d4()
     mdCcAc_c.Clear();
     mdCcAc_c.dCc_c::Update();
     if (mWithMeshClsn.IsOnGround() != 0) {
-        Particle::RunningSlidingDustAt(
-            mPosX, mPosY, mPosZ);
+        Particle::RunningSlidingDustAt(mPosX, mPosY, mPosZ);
     }
     return 1;
 }
@@ -443,8 +442,7 @@ int daSanbo_c::func_ov096_02136434()
         ((int *)&pos)[1] = y;
         ((int *)&pos)[2] = z;
         mParticle0 = Particle::System::New(mParticle0, 0x13a, pos.x, pos.y, pos.z, 0, 0);
-        mParticle1 = Particle::System::NewUnkCallback818(
-            mParticle1, 0x13b, pos.x, pos.y, pos.z, 0);
+        mParticle1 = Particle::System::NewUnkCallback818(mParticle1, 0x13b, pos.x, pos.y, pos.z, 0);
         p0 = Particle::System::FromUniqueID(mParticle0);
         p1 = Particle::System::FromUniqueID(mParticle1);
         if (p0)
@@ -723,8 +721,8 @@ void daSanbo_c::func_ov096_02135948()
             ((int *)&pos)[1] = y;
             ((int *)&pos)[2] = z;
             mParticle0 = Particle::System::New(mParticle0, 0x13a, pos.x, pos.y, pos.z, 0, 0);
-            mParticle1 = Particle::System::NewUnkCallback818(
-                mParticle1, 0x13b, pos.x, pos.y, pos.z, 0);
+            mParticle1 =
+                Particle::System::NewUnkCallback818(mParticle1, 0x13b, pos.x, pos.y, pos.z, 0);
             Sound::PlayBank0(9, mCamSpacePos);
             mHitActor = player;
             func_ov096_02136928(2);

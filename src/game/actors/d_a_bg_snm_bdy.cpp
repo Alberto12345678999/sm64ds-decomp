@@ -110,7 +110,6 @@ void  _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(
 void  _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *self, void *actor,
                                                 int radius, int height,
                                                 u32 flags, u32 vulnFlags);
-
 }
 namespace Particle {
 void RunningSlidingDustAt(int x, int y, int z);
@@ -420,8 +419,7 @@ int daBgSnmBdy_c::State3()
                 Vec3_HorzAngle(&mPosX, &data_ov072_02122b58),
                 2, 0x600);
             mPrevAngleY = mAngleY;
-            Particle::RunningSlidingDustAt(
-                mPosX, mPosY, mPosZ);
+            Particle::RunningSlidingDustAt(mPosX, mPosY, mPosZ);
             mSoundID = Sound::PlayLong(mSoundID, 3, 0x8a, mCamSpacePos, 0);
             if (distToLanding < 0x17c000) {
                 daBgSnmHed_c *head =

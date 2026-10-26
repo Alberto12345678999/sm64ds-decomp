@@ -136,8 +136,8 @@ extern s16 data_02082214[];
 extern int Vec3_HorzDist(const struct Vector3 *a, const struct Vector3 *b);
 extern u8 DecIfAbove0_Byte(u8 *p);
 extern void *d_a_obj_block_sNewHold(u32 a, u32 b, int c, int d, int e, const void *v, void *cb);
-extern u32 d_a_obj_block_sNewUnkCallback818Hold(
-    u32 a, u32 b, int c, int d, int e, const Vector3_16f *v);
+extern u32 d_a_obj_block_sNewUnkCallback818Hold(u32 a, u32 b, int c, int d, int e,
+                                                const Vector3_16f *v);
 namespace Particle {
 struct System {
     static void NewSimple(unsigned int id, int x, int y, int z);
@@ -1320,8 +1320,8 @@ int daObjBlockS_c::Behavior()
         if (DecIfAbove0_Byte(&mBreakTimer)) {
             mParticleHandle1 =
                 (u32)Particle::System::New(mParticleHandle1, 0x13a, v.x, v.y, v.z, 0, 0);
-            mParticleHandle2 = Particle::System::NewUnkCallback818(
-                mParticleHandle2, 0x13b, v.x, v.y, v.z, 0);
+            mParticleHandle2 =
+                Particle::System::NewUnkCallback818(mParticleHandle2, 0x13b, v.x, v.y, v.z, 0);
             goto done;
         }
         func_ov098_02138e08();

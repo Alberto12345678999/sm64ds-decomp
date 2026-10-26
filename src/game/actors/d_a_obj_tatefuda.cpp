@@ -188,7 +188,8 @@ extern "C" u8 DecIfAbove0_Byte(u8 *p);
 extern "C" int _ZN10dBgActor_c20UpdateKillByMegaCharEsss5Fix12IiE(void *self, short a, short b, short c, int fix);
 extern "C" void *d_a_obj_tatefudaNewHold(u32 a, u32 b, int c, int d, int e, const void *v,
                                          void *cb);
-extern "C" u32 d_a_obj_tatefudaNewUnkCallback818Hold(u32 a, u32 b, int c, int d, int e, const Vector3_16f *v);
+extern "C" u32 d_a_obj_tatefudaNewUnkCallback818Hold(u32 a, u32 b, int c, int d, int e,
+                                                     const Vector3_16f *v);
 extern "C" void _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_S5_j(
     void *self, void *sm, void *m, int a, int b, int c, u32 j);
 extern "C" void RebuildModelMatrix(struct daObjTatefuda_c *self);
@@ -393,8 +394,8 @@ int daObjTatefuda_c::Behavior()
         if (DecIfAbove0_Byte(&mBreakTimer) != 0) {
             *(void **)&mParticleHandle1 =
                 (void *)Particle::System::New(mParticleHandle1, 0x13a, v.x, v.y, v.z, 0, 0);
-            mParticleHandle2 = Particle::System::NewUnkCallback818(
-                mParticleHandle2, 0x13b, v.x, v.y, v.z, 0);
+            mParticleHandle2 =
+                Particle::System::NewUnkCallback818(mParticleHandle2, 0x13b, v.x, v.y, v.z, 0);
         } else {
             int x2, y2, z2;
             x2 = mPosX;

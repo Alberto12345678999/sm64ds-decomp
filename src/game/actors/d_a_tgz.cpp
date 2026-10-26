@@ -694,8 +694,7 @@ extern "C" int func_ov077_02125bb4(daTgz_c *self)
     if (underwater) {
         if (self->mInWater == 0) {
             func_02012694(0xe2, &self->mCamSpacePos);
-            Particle::System::NewBigSplash(
-                self->mPosX, data_0209f32c, self->mPosZ);
+            Particle::System::NewBigSplash(self->mPosX, data_0209f32c, self->mPosZ);
             self->mRippleId = Particle::System::New(self->mRippleId, 0x109, self->mPosX,
                                                     data_0209f32c, self->mPosZ, 0, 0);
         }
