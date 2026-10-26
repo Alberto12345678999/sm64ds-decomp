@@ -87,7 +87,8 @@ struct EspAnimSetTexSequenceFilePtr : SharedFilePtr {
 
 struct G2x {
     static void SetBlendBrightness(volatile unsigned short *, unsigned short, short);
-    static void SetBlendAlpha(volatile unsigned short *, unsigned short, unsigned short, unsigned short, unsigned int);
+    static void SetBlendAlpha(volatile unsigned short *, unsigned short, unsigned short,
+                              unsigned short, unsigned int);
 };
 extern "C" {
 /* The file handles: word 1 of a SharedFilePtr is its loaded file. */
@@ -1271,8 +1272,7 @@ void dScMg3DEsp_c::Fade()
     if (mFadeTick >= 4) {
         mFadeTick = 0;
         mFade += 1;
-        G2x::SetBlendAlpha((volatile unsigned short *)0x4001050, 0, 4, mFade,
-                                       0x10 - mFade);
+        G2x::SetBlendAlpha((volatile unsigned short *)0x4001050, 0, 4, mFade, 0x10 - mFade);
     }
     UpdateCards();
     if (mFade < 0x10)

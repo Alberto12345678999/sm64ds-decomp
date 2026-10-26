@@ -45,7 +45,8 @@ int ApproachLinear(Fix12i &value, Fix12i target, Fix12i step);
 
 struct G2x {
     static void SetBlendBrightness(volatile unsigned short *, unsigned short, short);
-    static void SetBlendAlpha(volatile unsigned short *, unsigned short, unsigned short, unsigned short, unsigned int);
+    static void SetBlendAlpha(volatile unsigned short *, unsigned short, unsigned short,
+                              unsigned short, unsigned int);
 };
 extern "C" {
 void func_02053a90(u16 *reg, int value);
@@ -229,7 +230,7 @@ void dFdWipe_c::AdvanceFade()
     cur = currInterp;
     if (cur == 0 && cur == old) return;
     if (cur == 0x1000) {
-        G2x::SetBlendBrightness((volatile u16*)0x4000050, 0x3f, -0x10);
+        G2x::SetBlendBrightness((volatile u16 *)0x4000050, 0x3f, -0x10);
     } else {
         if (speed != 0) {
             if (old != 0x1000) *(u16*)0x4000050 = 0;

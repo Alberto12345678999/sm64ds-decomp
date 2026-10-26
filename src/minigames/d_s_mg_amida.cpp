@@ -90,7 +90,8 @@ void *GetBG1ScrPtr(void);
 
 struct G2x {
     static void SetBlendBrightness(volatile unsigned short *, unsigned short, short);
-    static void SetBlendAlpha(volatile unsigned short *, unsigned short, unsigned short, unsigned short, unsigned int);
+    static void SetBlendAlpha(volatile unsigned short *, unsigned short, unsigned short,
+                              unsigned short, unsigned int);
 };
 extern "C" {
 /* --- shared ov004 and main helpers --- */

@@ -89,7 +89,8 @@ struct B4 {
  * `extern "C"` block, so the C-linkage names are collected here in one. */
 struct G2x {
     static void SetBlendBrightness(volatile unsigned short *, unsigned short, short);
-    static void SetBlendAlpha(volatile unsigned short *, unsigned short, unsigned short, unsigned short, unsigned int);
+    static void SetBlendAlpha(volatile unsigned short *, unsigned short, unsigned short,
+                              unsigned short, unsigned int);
 };
 extern "C" {
 
