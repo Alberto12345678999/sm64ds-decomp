@@ -43,6 +43,7 @@
 #include "dActor_c.h"
 #include "dCamera_c.h"
 #include "OAM.h"
+#include "cstd.h"
 
 namespace G2S {
 void *GetBG3ScrPtr(void);
@@ -93,7 +94,6 @@ struct Vec3 { int x, y, z; };
 
 extern "C" {
 extern void Vec3_Sub(struct Vector3* out, struct Vector3* a, struct Vector3* b);
-extern int _ZN4cstd4fdivEii(int a, int b);
 extern signed char data_0209f2f8;
 extern u8 data_0209f220;
 extern u32 data_0209caa0[];
@@ -206,7 +206,7 @@ void dMap_c::FixTHIPaintingRoomPos(Vector3 & v_)
     if (v->z <= p0.z) {
         int factor;
         Vec3_Sub(&out, v, &p0);
-        factor = 0xc00 - (_ZN4cstd4fdivEii(out.z, (int)0xffffd1a0) >> 12);
+        factor = 0xc00 - (cstd::fdiv(out.z, (int)0xffffd1a0) >> 12);
         v->x = p0.x + FX_MUL(out.x, factor);
         v->z = p0.z + FX_MUL(out.z, 0x200);
     } else {
@@ -723,7 +723,7 @@ L4b0:
         this->mInvScale = this->mTargetInvScale;
 
 L4d8:
-    this->mCurrentScale = _ZN4cstd4fdivEii(this->mScale, this->mInvScale);
+    this->mCurrentScale = cstd::fdiv(this->mScale, this->mInvScale);
     { s32 s1 = data_02082214[(((s32)(u16)this->mAngle >> 4) * 2) + 1];
         this->mBgMatrixA = FX_MUL(s1, this->mInvScale);
     }

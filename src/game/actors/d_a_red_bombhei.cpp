@@ -45,6 +45,7 @@
 #include "decl_SaveData.h"
 #include "daObjCannonShutter_c.h"
 #include "Sound.h"
+#include "cstd.h"
 
 struct BCA_File;
 
@@ -127,7 +128,6 @@ void  Vec3_MulScalarInPlace(Vector3 *v, int s);
 void  MulVec3Mat4x3(Vector3 *v, Matrix4x3 *m, Vector3 *out);
 void  Matrix4x3_FromRotationY(void *m, int angle);
 int   Math_Function_0203b14c(int *value, int target, int a, int b, int c);
-int   _ZN4cstd4fdivEii(int a, int b);
 
 /* Player::ShowMessage takes the two flag bytes as unsigned char. The
    member re-masks the caller's word and func_ov084_0212c9f0 grows. */
@@ -264,7 +264,7 @@ int daRedBombhei_c::func_ov084_0212cda0(Vector3 *cur, Vector3 *target)
     if (len == 0) return 1;
     newLen = len;
     remaining = Math_Function_0203b14c(&newLen, 0, 0x400, 0x100000, 0x1000);
-    Vec3_MulScalarInPlace(&delta, _ZN4cstd4fdivEii(newLen, len));
+    Vec3_MulScalarInPlace(&delta, cstd::fdiv(newLen, len));
     {
         Vector3 next;
         Vec3_Add(&next, target, &delta);

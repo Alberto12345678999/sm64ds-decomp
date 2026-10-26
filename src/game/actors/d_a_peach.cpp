@@ -20,6 +20,7 @@
 #include "dCc_c.h"
 #include "types.h"
 #include "dBgCh_Actr.h"
+#include "cstd.h"
 
 bool ApproachLinear(short &value, short target, short step);
 
@@ -47,7 +48,6 @@ extern int AngleDiff(int, int);
 extern int Vec3_HorzDist(const void *a, const void *b);
 extern short Vec3_HorzAngle(const void *a, const void *b);
 extern short Vec3_VertAngle(const void *a, const void *b);
-extern int _ZN4cstd4fdivEii(int a, int b);
 extern void Matrix4x3_FromRotationY(void *m, int angle);
 extern void Matrix4x3_ApplyInPlaceToRotationY(void *m, short angY);
 extern void Matrix4x3_ApplyInPlaceToRotationZ(void *m, short angZ);
@@ -147,7 +147,7 @@ void daPeach_c::UpdateGroundCollision(dBgCh_Actr *clsn)
         if (floorN[1] != 0) {
             int x = FX_MUL(floorN[0], words[0xa4 / 4]);
             int z = FX_MUL(floorN[2], words[0xac / 4]);
-            mVertSpeed = -(_ZN4cstd4fdivEii(x + z, floorN[1]) + 0x8000);
+            mVertSpeed = -(cstd::fdiv(x + z, floorN[1]) + 0x8000);
         }
     }
     if (clsn->IsOnWall()) {
