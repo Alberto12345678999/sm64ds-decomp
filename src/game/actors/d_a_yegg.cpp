@@ -1,6 +1,7 @@
 //cpp
 namespace Particle {
 struct Callback;
+void RunningSlidingDustAt(int, int, int);
 }
 struct Vector3_16f;
 /* daYegg_c -- the Yoshi egg (registry profile YOSHI_EGG).
@@ -178,7 +179,7 @@ struct System {
     static int New(unsigned, unsigned, int, int, int, const ::Vector3_16f *, Callback *);
 };
 }
-extern void _ZN8Particle20RunningSlidingDustAtE5Fix12IiES1_S1_(s32 x, s32 y, s32 z);
+extern void d_a_yeggRunningSlidingDustAtHold(s32 x, s32 y, s32 z);
 extern void d_a_yeggPlayLongHold(u32 a, u32 b, u32 c, void *v, u32 d);
 extern void _ZN5Sound13PlayCharVoiceEjjRK7Vector3(u32 a, u32 b, const void *pos);
 extern s32 _Z14ApproachLinearR7Vector3RKS_5Fix12IiE(void *dst, const void *src, s32 step);
@@ -671,8 +672,7 @@ void daYegg_c::func_ov002_020ecd18()
                     }
                     mAngleY = Vec3_HorzAngle(&mPosX, &tmp);
                 }
-                _ZN8Particle20RunningSlidingDustAtE5Fix12IiES1_S1_(
-                    mPosX, mPosY, mPosZ);
+                Particle::RunningSlidingDustAt(mPosX, mPosY, mPosZ);
                 flag = 1;
                 if (func_ov002_020eddc4() != 0)
                     return;

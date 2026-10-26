@@ -1,5 +1,6 @@
 #include "types.h"
 #include "Ov007MenuState.h"
+#include "Ov007Work.h"
 extern u8 data_ov007_0210342c[];
 extern void Sprite_SetAnimation(char *c, int r1, int r2, int r3, int sp0);
 
@@ -34,20 +35,7 @@ typedef struct Ov007ItemNode {
     Ov007OamNode *node; /* 0x04: func_ov007_020c11ac */
 } Ov007ItemNode;
 
-/* data_ov007_0210342c: the overlay's manager; names as in
- * func_ov007_020afc44 and func_ov007_020b1cf0, only the slots this file
- * reads. */
-typedef struct Ov007Work {
-    char pad_00[4];
-    Ov007MenuState *states[3]; /* 0x04: func_ov007_020c9388 */
-    char pad_10[0x48];
-    int selectedSlot; /* 0x58: -1 = none (func_ov007_020b0244) */
-    char pad_5c[0x48];
-    Ov007ItemNode *itemNodes[9]; /* 0xa4: func_ov007_020b6d40, one per func_ov007_020ade58 */
-} Ov007Work;
-
 typedef char Ov007Item_size_must_be_0x2c[sizeof(Ov007Item) == 0x2c ? 1 : -1];
-typedef char Ov007Work_size_must_be_0xc8[sizeof(Ov007Work) == 0xc8 ? 1 : -1];
 
 /* Picks the next state for one item node from the menu state and the item's
  * own state. The parameter keeps the char * spelling of its caller

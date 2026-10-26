@@ -2,6 +2,7 @@
 #include "nitro/fx/fx.h"
 #include "Ov007MenuState.h"
 #include "Ov007Sprite.h"
+#include "Ov007Work.h"
 extern short data_02082214[];
 extern u8 data_ov007_0210342c[];
 
@@ -39,14 +40,6 @@ typedef struct Ov007ItemView {
     char pad_08[8];                /* 0x08 */
     struct Ov007Tween *slideTween; /* 0x10: func_ov007_020c908c */
 } Ov007ItemView;
-
-/* data_ov007_0210342c: the overlay's manager; only its settings slot here. */
-typedef struct Ov007Work {
-    char pad_00[0x28];
-    /* 0x28: the 0x3c-byte record func_ov007_020b6a84 allocates; its first word
-     * points at a record with no layout yet, so `obj` below stays raw */
-    struct Ov007Settings *settings;
-} Ov007Work;
 
 /* The extern keeps this file's u8[] spelling; the manager pointer is stored there. */
 #define WORK (*(Ov007Work **)data_ov007_0210342c)

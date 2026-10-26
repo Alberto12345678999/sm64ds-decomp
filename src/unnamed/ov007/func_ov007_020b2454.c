@@ -1,6 +1,7 @@
 #include "types.h"
 #include "nitro/fx/fx.h"
 #include "dExtModel_c.h"
+#include "Ov007Work.h"
 /* AddVec3 still defines its vector as its own struct Vec3;
    declared as defined, the call casts. */
 struct Vec3;
@@ -11,15 +12,6 @@ extern void AddVec3(struct Vec3 *a, struct Vec3 *b, struct Vec3 *c);
 typedef struct Ov007Model {
     struct ModelComponents *model; /* 0x00 */
 } Ov007Model;
-
-/* data_ov007_0210342c: the overlay's manager; only the slots this function
- * reads. +0xec (0 or 1) stays raw, as in func_ov007_020b1718. */
-struct Ov007Work {
-    char pad[0xec];
-    int fec;
-    char pad2[4];
-    Ov007Model *model; /* 0xf4: func_ov007_020b2998 stores func_ov007_020b2bd4's model */
-};
 
 extern void *data_ov007_0210342c;
 
@@ -38,9 +30,9 @@ void func_ov007_020b2454(Vector3 *out, Vector3 *r1) {
     a.y = 0;
     a.x = 0;
     base = &in->t;
-    /* fec is only ever 0 or 1 here; the ROM has no default arm either, so
+    /* figureIndex is only ever 0 or 1 here; the ROM has no default arm either, so
        any other value would read w uninitialised. */
-    switch (m->fec) {
+    switch (m->figureIndex) {
     case 0:
         a.y = FX_MUL((-in->r.m[4]), 0x8543);
         w = 0xbb8;

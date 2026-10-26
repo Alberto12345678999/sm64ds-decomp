@@ -193,12 +193,7 @@ src/unnamed/ov075/func_ov075_0211aa94.c:
 
 src/unnamed/ov075/func_ov075_0211ab38.c:
     complete
-    .text start:0x0211ab38 end:0x0211abb0
-
-src/unnamed/ov075/func_ov075_0211abb0.c:
-    complete
-    .text start:0x0211abb0 end:0x0211ad60
-
+    .text start:0x0211ab38 end:0x0211ad60
 src/unnamed/ov075/func_ov075_0211ad60.c:
     complete
     .text start:0x0211ad60 end:0x0211addc

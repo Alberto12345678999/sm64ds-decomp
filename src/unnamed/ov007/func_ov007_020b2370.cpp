@@ -1,5 +1,6 @@
 //cpp
 #include "types.h"
+#include "Ov007Work.h"
 extern "C" {
 void func_ov007_020bc02c(void* a, void* b);
 void func_ov007_020be9ac(void* a, void* b, void* c);
@@ -29,22 +30,7 @@ struct Ov007Figure {
     Ov007Model *model; /* 0x04: func_ov007_020bc6d4 */
 };
 
-/* data_ov007_0210342c: the overlay's manager; only the slots this file
- * reads. figure and altFigure are read as a pair through `arr`. */
-struct Ov007Work {
-    char pad_00[0x30];
-    Ov007Camera *cameras[2]; /* 0x30: func_ov007_020c023c */
-    char pad_38[0xbc];
-    Ov007Model *model; /* 0xf4: func_ov007_020b2998 stores func_ov007_020b2bd4's model */
-    /* 0xf8: Q12; this file scales model from 1/16 (0) up to 1 (0x1000) by it */
-    int modelGrowth;
-    char pad_fc[4];
-    Ov007Figure *figure;    /* 0x100: func_ov007_020beaa0 */
-    Ov007Figure *altFigure; /* 0x104: func_ov007_020be850 returns it when +0xec is 1 */
-};
-
 typedef char Ov007Model_size_must_be_0x4c[sizeof(Ov007Model) == 0x4c ? 1 : -1];
-typedef char Ov007Work_size_must_be_0x108[sizeof(Ov007Work) == 0x108 ? 1 : -1];
 
 /* Poses the manager model and both figures against camera 0's view matrix,
  * scales the model by modelGrowth, then renders all three. */

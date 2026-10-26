@@ -1,3 +1,5 @@
+#include "Ov007Work.h"
+
 extern int func_ov007_020c0638(void* p, int a, int b, int d);
 extern int* data_ov007_0210342c[];
 
@@ -21,16 +23,7 @@ typedef struct Ov007LayerSlot {
     Ov007BgLayer *layer; /* 0x04 */
 } Ov007LayerSlot;
 
-/* data_ov007_0210342c: the overlay's manager; only the slot this file reads. */
-typedef struct Ov007Work {
-    char pad_00[0xc8];
-    /* 0xc8: func_ov007_020b6d40 stores func_ov007_020adc08(i, ...) for
-     * i = 0..7 */
-    Ov007LayerSlot *layerSlots[8];
-} Ov007Work;
-
 typedef char Ov007BgLayer_size_must_be_0x30[sizeof(Ov007BgLayer) == 0x30 ? 1 : -1];
-typedef char Ov007Work_size_must_be_0xe8[sizeof(Ov007Work) == 0xe8 ? 1 : -1];
 
 /* Resets the scroll of layer slots 6 and 1 and rebuilds both screens from
  * their sources at a y offset of -0xc0 pixels (func_ov007_020c0638). */

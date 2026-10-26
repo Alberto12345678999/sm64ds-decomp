@@ -106,6 +106,7 @@ namespace Particle {
 struct System {
     static void *NewSimple(unsigned int id, int x, int y, int z);
     static int New(unsigned, unsigned, int, int, int, const ::Vector3_16f *, Callback *);
+    static void NewBigSplash(Fix12i, Fix12i, Fix12i);
 };
 }
 extern s16 data_02082214[];
@@ -693,8 +694,7 @@ extern "C" int func_ov077_02125bb4(daTgz_c *self)
     if (underwater) {
         if (self->mInWater == 0) {
             func_02012694(0xe2, &self->mCamSpacePos);
-            _ZN8Particle6System12NewBigSplashE5Fix12IiES2_S2_(
-                self->mPosX, data_0209f32c, self->mPosZ);
+            Particle::System::NewBigSplash(self->mPosX, data_0209f32c, self->mPosZ);
             self->mRippleId = Particle::System::New(self->mRippleId, 0x109, self->mPosX,
                                                     data_0209f32c, self->mPosZ, 0, 0);
         }

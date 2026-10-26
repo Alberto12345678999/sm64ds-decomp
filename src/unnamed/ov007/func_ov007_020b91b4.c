@@ -7,6 +7,7 @@
 #include "Ov007MenuState.h"
 #include "Ov007Sprite.h"
 #include "Ov007Touch.h"
+#include "Ov007Work.h"
 
 /* The 0xd0-byte touch picker func_ov007_020c690c builds; names as in
  * func_ov007_020c5014 and func_ov007_020c684c, only the slots this file
@@ -51,12 +52,6 @@ typedef struct Ov007PickerSprites {
     s32 slideProgress;
     Ov007Sprite *sprites[4]; /* 0x04: func_ov007_020c44e4 */
 } Ov007PickerSprites;
-
-/* data_ov007_0210342c: the overlay's manager; only the slot this file reads. */
-typedef struct Ov007Work {
-    char pad_00[0x50];
-    Ov007Touch *touch; /* 0x50: func_ov007_020c2068 */
-} Ov007Work;
 
 typedef char Ov007Picker_size_must_be_0xb4[sizeof(Ov007Picker) == 0xb4 ? 1 : -1];
 typedef char Ov007PickerScene_size_must_be_0x4c[sizeof(Ov007PickerScene) == 0x4c ? 1 : -1];

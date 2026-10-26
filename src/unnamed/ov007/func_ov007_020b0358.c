@@ -1,4 +1,5 @@
 #include "Ov007MenuState.h"
+#include "Ov007Work.h"
 
 extern void func_ov007_020c1d8c(int i);
 extern void func_ov007_020bca40(int i);
@@ -8,22 +9,6 @@ extern void func_ov007_020b76a0(void);
 extern void func_ov007_020bd1c0(int i);
 extern void *func_ov007_020b8f78(void);
 extern char *data_ov007_0210342c;
-
-/* data_ov007_0210342c: the overlay's manager; names as in
- * func_ov007_020b1718 and func_ov007_020b1cf0, only the slots this file
- * touches. */
-typedef struct Ov007Work {
-    char pad_00[4];
-    Ov007MenuState *states[3]; /* 0x04: func_ov007_020c9388; [1] is the main one */
-    char pad_10[8];
-    /* 0x18: func_ov007_020b6eb4 starts a display capture
-     * (func_ov007_020bd4e8 writes DISPCAPCNT) while it is set, and clears it */
-    int pendingCapture;
-    int pendingBgMode;  /* 0x1c: func_ov007_020b6eb4 hands it to
-                         * func_ov007_020bd648 and clears it */
-    int transitionMode; /* 0x20: func_ov007_020b1cf0 sets 1 for a stylus
-                         * tap, 0 for a button */
-} Ov007Work;
 
 typedef char Ov007Work_transitionMode_must_be_at_0x20[(int)&((Ov007Work *)0)->transitionMode == 0x20
                                                           ? 1

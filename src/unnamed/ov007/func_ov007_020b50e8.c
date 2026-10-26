@@ -2,6 +2,7 @@
 #include "nitro/fx/fx.h"
 #include "Ov007MenuState.h"
 #include "Ov007Sprite.h"
+#include "Ov007Work.h"
 extern char *data_ov007_0210342c;
 extern int data_ov007_02103428;
 
@@ -40,27 +41,10 @@ typedef struct Ov007ItemView {
     Ov007Sprite *sprite; /* 0x04: func_ov007_020c44e4 */
 } Ov007ItemView;
 
-/* data_ov007_0210342c: the overlay's manager; names as in
- * func_ov007_020afc44 and func_ov007_020b3360, only the slots this file
- * reads. The callback at +0x2c stays raw. */
-typedef struct Ov007Work {
-    char pad_00[4];
-    Ov007MenuState *states[3]; /* 0x04: func_ov007_020c9388; [1] is the main one */
-    char pad_10[0x18];
-    /* 0x28: the 0x3c-byte record func_ov007_020b6a84 allocates; its first
-     * word points at a record with no layout yet, so `gp` stays raw */
-    struct Ov007Settings *settings;
-    char pad_2c[0x2c];
-    int selectedSlot; /* 0x58: -1 = none (func_ov007_020b0244) */
-    char pad_5c[0xb8];
-    Ov007ItemView *itemViews[0x18]; /* 0x114: func_ov007_020b693c, one per func_ov007_020b4c04 */
-} Ov007Work;
-
 typedef char Ov007Item_layout_must_be_at_0x24[(int)&((Ov007Item *)0)->layout == 0x24 ? 1 : -1];
 typedef char Ov007Sprite_scaleY_must_be_at_0x40[(int)&((Ov007Sprite *)0)->scaleY == 0x40 ? 1 : -1];
 typedef char
     Ov007Work_selectedSlot_must_be_at_0x58[(int)&((Ov007Work *)0)->selectedSlot == 0x58 ? 1 : -1];
-typedef char Ov007Work_size_must_be_0x174[sizeof(Ov007Work) == 0x174 ? 1 : -1];
 
 #define WORK ((Ov007Work *)data_ov007_0210342c)
 

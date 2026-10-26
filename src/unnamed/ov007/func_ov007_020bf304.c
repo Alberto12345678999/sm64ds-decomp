@@ -1,4 +1,5 @@
 #include "types.h"
+#include "Ov007Work.h"
 #pragma opt_strength_reduction off
 #pragma opt_common_subs off
 extern u8 data_ov007_02104bd4[];
@@ -20,19 +21,6 @@ typedef struct Ov007MeshScene {
 } Ov007MeshScene;
 
 typedef char Ov007MeshScene_size_must_be_0x30[sizeof(Ov007MeshScene) == 0x30 ? 1 : -1];
-
-/* data_ov007_0210342c: the overlay's manager; only the slots this file
- * frees. */
-typedef struct Ov007Work {
-    char pad_00[0x174];
-    /* 0x174, medium confidence: the three Ov007Sprites func_ov007_020b42d8
-     * builds (func_ov007_020c44e4) for func_ov007_020bf428; func_ov007_020b413c
-     * draws a number with them: [2] once per decimal digit, [0] after the
-     * digits, [1] alone when there is no number */
-    void *numberSprites[3];
-} Ov007Work;
-
-typedef char Ov007Work_size_must_be_0x180[sizeof(Ov007Work) == 0x180 ? 1 : -1];
 
 /* The externs keep the tree's u8[] spelling; the typed views are reached
  * through cast macros. */

@@ -121,7 +121,8 @@ extern Entry data_ov060_0211afb4[];
 extern PMF data_ov060_0211af74[];
 
 /* Fix12<int>-by-value and other mangled-name calls (see the banner). */
-extern u32 _ZN8Particle6System17NewUnkCallback818Ejj5Fix12IiES2_S2_PK11Vector3_16f( u32 a, u32 b, Fix12i c, Fix12i d, Fix12i e, const struct Vector3_16f* f);
+extern u32 d_a_kpa_fireNewUnkCallback818Hold(u32 a, u32 b, Fix12i c, Fix12i d, Fix12i e,
+                                             const struct Vector3_16f *f);
 extern u32 d_a_kpa_fireNewHold(u32 a, u32 b, Fix12i c, Fix12i d, Fix12i e, const void *f, void *g);
 void d_a_kpa_fireNewSimpleHold(u32 id, Fix12i x, Fix12i y, Fix12i z);
 extern void d_a_kpa_firePlayLongHold(u32 a, u32 b, u32 c, void *pos, u32 d);
@@ -511,9 +512,8 @@ void daKpaFire_c::func_ov060_02116f90() {
 
     if (this->mLanded == 0) {
         this->mParticleHandle =
-            _ZN8Particle6System17NewUnkCallback818Ejj5Fix12IiES2_S2_PK11Vector3_16f(
-                this->mParticleHandle, PARTICLE_FALLING, this->mPosX, this->mPosY + 0x37000,
-                this->mPosZ, 0);
+            Particle::System::NewUnkCallback818(this->mParticleHandle, PARTICLE_FALLING,
+                                                this->mPosX, this->mPosY + 0x37000, this->mPosZ, 0);
         this->mdCcAc_c.flags |= 1;
         func_ov060_0211712c();
         if (this->mWithMeshClsn.IsOnGround()) {
@@ -846,9 +846,8 @@ void daKpaFire_c::func_ov060_02116518(u32 kind, int resize, int yOffset) {
     Particle::System *sys;
 
     if (kind == 0xa2 || kind == 0xa4) {
-        this->mParticleHandle =
-            _ZN8Particle6System17NewUnkCallback818Ejj5Fix12IiES2_S2_PK11Vector3_16f(
-                this->mParticleHandle, kind, this->mPosX, this->mPosY + yOffset, this->mPosZ, 0);
+        this->mParticleHandle = Particle::System::NewUnkCallback818(
+            this->mParticleHandle, kind, this->mPosX, this->mPosY + yOffset, this->mPosZ, 0);
     } else {
         this->mParticleHandle = Particle::System::New(this->mParticleHandle, kind, this->mPosX,
                                                       this->mPosY + yOffset, this->mPosZ, 0, 0);
