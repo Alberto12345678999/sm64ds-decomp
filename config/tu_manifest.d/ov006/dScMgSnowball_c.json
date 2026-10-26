@@ -971,72 +971,72 @@
   "undefined_symbol_aliases": [],
   "defined_symbol_renames": [
     {
-      "from": "@2742",
+      "from": "@2726",
       "to": "@2723",
       "evidence": "mwcc numbers this PMF descriptor @2714. ov060 already defines @2714, and objisolate cannot grow a name, so this row maps the compiled name to the unused same-length @2723."
     },
     {
-      "from": "@2744",
+      "from": "@2728",
       "to": "@2719",
       "evidence": "mwcc numbers this PMF descriptor @2716. ov002 already defines @2716, and objisolate cannot grow a name, so this row maps the compiled name to the unused same-length @2725."
     },
     {
-      "from": "@2746",
+      "from": "@2730",
       "to": "@2721",
       "evidence": "mwcc numbers this PMF descriptor @2718. ov002 already defines @2718, and objisolate cannot grow a name, so this row maps the compiled name to the unused same-length @2727."
     },
     {
-      "from": "@2758",
+      "from": "@2742",
       "to": "@2730",
       "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @2758 now; licensed under the existing pin @2730"
     },
     {
-      "from": "@2756",
+      "from": "@2740",
       "to": "@2728",
       "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @2756 now; licensed under the existing pin @2728"
     },
     {
-      "from": "@2754",
+      "from": "@2738",
       "to": "@2726",
       "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @2754 now; licensed under the existing pin @2726"
     },
     {
-      "from": "@2750",
+      "from": "@2734",
       "to": "@2722",
       "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @2750 now; licensed under the existing pin @2722"
     },
     {
-      "from": "@2748",
+      "from": "@2732",
       "to": "@2720",
       "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @2748 now; licensed under the existing pin @2720"
     },
     {
-      "from": "@2752",
+      "from": "@2736",
       "to": "@2724",
       "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @2752 now; licensed under the existing pin @2724"
     },
     {
-      "from": "@2762",
+      "from": "@2746",
       "to": "@2734",
       "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @2762 now; licensed under the existing pin @2734"
     },
     {
-      "from": "@2764",
+      "from": "@2748",
       "to": "@2736",
       "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @2764 now; licensed under the existing pin @2736"
     },
     {
-      "from": "@2760",
+      "from": "@2744",
       "to": "@2732",
       "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @2760 now; licensed under the existing pin @2732"
     },
     {
-      "from": "@2738",
+      "from": "@2722",
       "to": "@2725",
       "evidence": "compiler temp; the real constructor's inline Vector2 and SnowSpray structors shift this TU's per-TU @NNN uniquifier by 13, so mwcc emits it as @2738 now; licensed under the existing pin @2725"
     },
     {
-      "from": "@2740",
+      "from": "@2724",
       "to": "@2727",
       "evidence": "compiler temp; the real constructor's inline Vector2 and SnowSpray structors shift this TU's per-TU @NNN uniquifier by 13, so mwcc emits it as @2740 now; licensed under the existing pin @2727"
     }

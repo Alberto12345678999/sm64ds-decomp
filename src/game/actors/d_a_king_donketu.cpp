@@ -77,8 +77,8 @@
  *   takes C*. The sixteen state labels are descriptions; the sinit owns
  *   the records. The header's 0x504 size wrap stays.
  * - dExtBlendAnmModel_c::SetAnim, Particle::System::New / NewSimple,
- *   RunningSlidingDustAt, Player::Hurt, Sound::ChangeMusicVolume,
- *   DropShadowRadHeight and cstd::atan2 stay mangled (Fix12<int> by value).
+ *   RunningSlidingDustAt, Player::Hurt, Sound::ChangeMusicVolume and
+ *   DropShadowRadHeight stay mangled (Fix12<int> by value).
  *   NewSimple and the layer-3 sound calls retain their local declarations.
  *   FromUniqueID is followed by a store at sys+0x44, which is still pad_042
  *   on Particle::System.
@@ -130,9 +130,7 @@ enum daKing_Donketu_c_AssetId {
 #include "dBgCh_Lin.h"
 #include "nitro/fx/fx.h"
 #include "Sound.h"
-namespace cstd {
-s16 atan2(s32, s32);
-}
+#include "cstd.h"
 
 bool ApproachLinear(short &value, short target, short step);
 

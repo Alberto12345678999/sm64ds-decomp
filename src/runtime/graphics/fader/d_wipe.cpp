@@ -28,18 +28,8 @@
 #include "IRQ.h"
 #include "decl_common.h"
 #include "cstd.h"
-
-namespace CP15 {
-void FlushAndInvalidateDataCache(u32 addr, u32 len);
-}
-
-namespace GX {
-void LoadBGPltt(const void *src, u32 offset, u32 len);
-}
-
-namespace GXS {
-void LoadBGPltt(const void *src, u32 offset, u32 len);
-}
+#include "CP15.h"
+#include "GX.h"
 
 extern "C" {
 /* The ROM's SetBackwardTime entry point reads a third argument in r2 and

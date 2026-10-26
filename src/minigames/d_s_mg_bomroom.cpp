@@ -35,28 +35,13 @@
 
 #include "dScMgBomroom_c.h"
 #include "types.h"
-/* decl_common.h's `extern int G2[]` hides namespace G2. This TU does not
- * reference that data symbol. */
-#define G2 G2_decl_common_shadow
+#include "GX.h"
+#include "cstd.h"
 #include "decl_common.h"
-#undef G2
 #include "Sound.h"
 #include "G2x.h"
 #include "nitro/fx/fx.h"
-
-namespace G2 {
-void *GetBG2ScrPtr();
-}
-
-namespace GX {
-void LoadBGPltt(const void *p, u32 a, u32 b);
-void LoadOBJPltt(const void *p, u32 a, u32 b);
-}
-
-namespace GXS {
-void LoadBGPltt(const void *p, u32 a, u32 b);
-void LoadOBJPltt(const void *p, u32 a, u32 b);
-}
+#include "G2.h"
 
 extern "C" {
 extern void Hud_RenderSprite(void* a0, int a1, int a2, int a3, int a4);
@@ -98,11 +83,6 @@ extern void MultiStore16(u16 val, char *dst, int nbytes);
 extern void func_02056554(const void *src, int offset, int count);
 extern u8 data_0209d45c;
 extern u8 data_0209d454;
-}
-
-namespace cstd {
-s16 atan2(s32, s32);
-int sqrt(u64 value);
 }
 
 #pragma defer_codegen off
@@ -2247,7 +2227,7 @@ s32 dScMgBomroom_c::InitResources() {
 
     {
         int f7 = LoadFile(0x23);
-        DecompressLZ16((void *)f7, (void *)(_ZN3G2S13GetBG3CharPtrEv() + 0x4000));
+        DecompressLZ16((void *)f7, (void *)((char *)G2S::GetBG3CharPtr() + 0x4000));
         Deallocate((void *)f7);
 
         f7 = LoadFile(0x24);

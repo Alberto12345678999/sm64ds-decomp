@@ -25,6 +25,7 @@
  */
 #include "types.h"
 #include "Sound.h"
+#include "Memory.h"
 
 extern "C" {
 
@@ -83,7 +84,6 @@ extern void func_02048f14(void);
 extern void func_02048f24(void);
 extern void func_0204efe0(void);
 extern void func_0204effc(void);
-extern void *_ZN6Memory8AllocateEj(u32 size);
 /* Callers that consume r0 from the void-declared Sound::Play2D keep the
  * mangled spelling; the extern "C" name is not type-checked across the seam.
  * Members reach the same symbol by casting Play2D/Play's address instead. */
@@ -1212,7 +1212,7 @@ extern "C" void func_020133bc(void)
 {
     char *anim;
     func_0204f070();
-    data_0209b498 = (int)func_0205130c((u32)_ZN6Memory8AllocateEj(0x100000), 0x100000);
+    data_0209b498 = (int)func_0205130c((u32)Memory::Allocate(0x100000), 0x100000);
     anim = data_0208e498;
     func_0201a9fc(data_0209d574);
     func_02050f34(&data_0209b4b4, (int)anim, data_0209b498, 0);

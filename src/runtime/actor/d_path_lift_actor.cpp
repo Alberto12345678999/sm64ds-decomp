@@ -38,6 +38,7 @@
 #include "decl_PathPtr.h"
 #include "decl_common.h"
 #include "common.h"
+#include "cstd.h"
 
 bool ApproachLinear(short &value, short target, short step);
 
@@ -66,11 +67,6 @@ struct PathStuff {
     void *filePtr;
 };
 extern PathStuff data_ov002_0210d9f0;
-
-/* local extern: no header declares cstd's arithmetic helpers. */
-namespace cstd {
-int fdiv(int numerator, int denominator);
-}
 
 /* ROM symbols with no header of their own. The vector helpers whose
    definitions take a file-local struct stay void *. */
