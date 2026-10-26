@@ -131,6 +131,7 @@ struct System {
 #pragma defer_codegen off
 
 #include "types.h"
+#include "cstd.h"
 #include "common.h"
 #include "da1up_c.h"
 #include "dBgCh_Actr.h"
@@ -139,7 +140,6 @@ struct System {
 #include "Sound.h"
 #include "SharedFilePtr.h"
 #include "nitro/fx/fx.h"
-#include "cstd.h"
 
 bool ApproachLinear(short &value, short target, short step);
 

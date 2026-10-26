@@ -43,18 +43,10 @@
 #include "dActor_c.h"
 #include "dCamera_c.h"
 #include "OAM.h"
+#include "G2x.h"
 #include "cstd.h"
-
-namespace G2S {
-void *GetBG3ScrPtr(void);
-}
-
-namespace GXS {
-void BeginLoadBGExtPltt(void);
-void EndLoadBGExtPltt(void);
-void LoadBGExtPltt(const void *p, u32 a, u32 b);
-void LoadBGPltt(const void *p, u32 a, u32 b);
-}
+#include "GX.h"
+#include "G2.h"
 
 #pragma defer_codegen off
 /* Codegen is deferred by default in mwccarm 2004/b56, which makes its
@@ -69,10 +61,6 @@ void LoadBGPltt(const void *p, u32 a, u32 b);
  * closing brace but at the next top-level token, so a pragma written
  * directly after Behavior would still reach it; the declarations that sit
  * between Behavior and InitResources are that token. */
-
-namespace G2S {
-    void* GetBG3CharPtr();
-}
 
 struct Event {
     static int GetBit(unsigned int bit);
@@ -107,25 +95,17 @@ extern u8 data_0209f250;
 extern u8 data_0209f2d4;
 extern u8 data_0209f2d8;
 extern void *data_0209f394[];
-extern void *_ZN3OAM18MM_VS_PLAYER_ICONSE[];
 extern s16 data_02082214[];
-extern char _ZN3OAM8MM_ARROWE[];
-extern void *_ZN3OAM20MM_VS_PLAYER_ICONS_SE[];
 extern s8 data_ov002_02111148;
-extern void *_ZN3OAM15MM_PLAYER_ICONSE[];
 extern u8 data_0209f37c[];
 extern int data_0208ee44;
-extern void *_ZN3OAM15MM_STAR_MARKERSE[];
 extern u8 data_0209f288;
-extern char _ZN3OAM11MM_RED_COINE[];
 extern u8 data_ov002_02111154[];
 extern u8 data_0209f370[];
 extern void *data_ov002_0210cac8[];
 extern void *data_ov002_0210c748[];
 extern u8 data_0209d660;
 extern u32 data_020a0db0;
-extern void *_ZN3OAM12MM_STAR_KEYSE[];
-extern char _ZN3OAM13MM_SPIKE_BOMBE[];
 extern VtblOwner *data_0209f5bc;
 extern void *data_0209f318;
 extern u32  data_0209b454;
@@ -145,7 +125,6 @@ extern int data_0209f40c[];
 extern int data_0209f3e8[];
 extern int data_0209f3a4[];
 extern void SetSubBg2Offset(s32 a, s32 b);
-extern void _ZN3G2x13SetBlendAlphaEPVttttj(volatile u16 *p, u16 a, u16 b, u16 c, u16 d);
 extern void _ZN6dMap_c20GetPosFromMinimapPosER7Vector3S1_5Fix12IiEsS1_(Vector3 *a, Vector3 *b, int c, s16 d, Vector3 *e);
 extern void AddVec3(Vector3 *a, Vector3 *b, Vector3 *c);
 extern s32  GetMinimapID(struct Obj *obj, s32 arg);
@@ -407,7 +386,7 @@ int dMap_c::Render()
         Player *player = (Player *)data_0209f394[idx];
         int vs = (data_0209f2d8 == 1);
         if (vs != 0) {
-            OAM::RenderSub((OamAttr *)_ZN3OAM18MM_VS_PLAYER_ICONSE[player->param1 + idx * 4],
+            OAM::RenderSub(OAM::MM_VS_PLAYER_ICONS[player->param1 + idx * 4],
                            this->mPlayerIconX[idx], this->mPlayerIconY[idx], -1, 2);
             {
                 u16 ang = (s16)this->mAngle + ((player->mAngleY ^ 0xffff) + 0x8001);
@@ -418,8 +397,8 @@ int dMap_c::Render()
                 this->mArrowMatrixB = (s16)FX_MUL(cn, this->mArrowScale);
                 this->mArrowMatrixC = -this->mArrowMatrixB;
                 this->mArrowMatrixD = this->mArrowMatrixA;
-                OAM::Render(1, (OamAttr *)_ZN3OAM8MM_ARROWE, this->mPlayerIconX[idx],
-                            this->mPlayerIconY[idx], -1, 2, this->mArrowScale, ang);
+                OAM::Render(1, &OAM::MM_ARROW, this->mPlayerIconX[idx], this->mPlayerIconY[idx], -1,
+                            2, this->mArrowScale, ang);
             }
             {
                 for (i = 0, j = 0; i < 4; i++, j += 4) {
@@ -429,9 +408,10 @@ int dMap_c::Render()
                             int x = this->mPlayerIconX[i];
                             if (ICON_X_VISIBLE(x)) {
                                 if (data_ov002_02111148 == this->mPlayerMapIDs[i]) {
-                                    OAM::RenderSub((OamAttr *)_ZN3OAM20MM_VS_PLAYER_ICONS_SE
-                                                       [j + ((Player *)data_0209f394[i])->param1],
-                                                   x, y, -1, 2);
+                                    OAM::RenderSub(
+                                        OAM::MM_VS_PLAYER_ICONS_S[j + ((Player *)data_0209f394[i])
+                                                                          ->param1],
+                                        x, y, -1, 2);
                                 }
                             }
                         }
@@ -449,8 +429,8 @@ int dMap_c::Render()
                         icon = player->mCharacter * 4 + 3;
                     else
                         icon = player->param1 + player->mCharacter * 4;
-                    OAM::RenderSub((OamAttr *)_ZN3OAM15MM_PLAYER_ICONSE[icon],
-                                   this->mPlayerIconX[idx], this->mPlayerIconY[idx], -1, 2);
+                    OAM::RenderSub(OAM::MM_PLAYER_ICONS[icon], this->mPlayerIconX[idx],
+                                   this->mPlayerIconY[idx], -1, 2);
                 }
                 if (data_0209caa0[2] & 0x80) {
                     u8 s = this->mArrowType;
@@ -468,7 +448,7 @@ int dMap_c::Render()
                             this->mArrowMatrixB = (s16)FX_MUL(cn, this->mArrowScale);
                             this->mArrowMatrixC = -this->mArrowMatrixB;
                             this->mArrowMatrixD = this->mArrowMatrixA;
-                            OAM::Render(1, (OamAttr *)_ZN3OAM8MM_ARROWE, this->mPlayerIconX[idx],
+                            OAM::Render(1, &OAM::MM_ARROW, this->mPlayerIconX[idx],
                                         this->mPlayerIconY[idx], -1, 2, this->mArrowScale, ang);
                         }
                     }
@@ -499,9 +479,7 @@ int dMap_c::Render()
                                     if (ICON_Y_VISIBLE(y)) {
                                         int x = this->mStarIconX[i];
                                         if (ICON_X_VISIBLE(x)) {
-                                            OAM::RenderSub(
-                                                (OamAttr *)_ZN3OAM15MM_STAR_MARKERSE[icon], x, y,
-                                                -1, 2);
+                                            OAM::RenderSub(OAM::MM_STAR_MARKERS[icon], x, y, -1, 2);
                                         }
                                     }
                                 }
@@ -511,7 +489,7 @@ int dMap_c::Render()
                         }
                     } else {
                         if (data_0209f288 != 0) {
-                            OAM::Render(true, (OamAttr *)_ZN3OAM11MM_RED_COINE, this->mStarIconX[i],
+                            OAM::Render(true, &OAM::MM_RED_COIN, this->mStarIconX[i],
                                         this->mStarIconY[i], -1, 2, 0);
                         }
                     }
@@ -548,7 +526,7 @@ int dMap_c::Render()
             if (this->mStarKeyMapID >= 0) {
                 if (data_0209d660 == 0 || !(data_020a0db0 & 8)) {
                     int sel = ((u32)this->mStarKeyBlinkTimer < 2) ? 1 : 0;
-                    OAM::Render(true, (OamAttr *)_ZN3OAM12MM_STAR_KEYSE[sel], this->mStarKeyIconX,
+                    OAM::Render(true, OAM::MM_STAR_KEYS[sel], this->mStarKeyIconX,
                                 this->mStarKeyIconY, -1, 2, 0);
                 }
             }
@@ -560,7 +538,7 @@ int dMap_c::Render()
                 if (ICON_Y_VISIBLE(y)) {
                     int x = this->mSpikeBombIconX[i];
                     if (ICON_X_VISIBLE(x)) {
-                        OAM::Render(true, (OamAttr *)_ZN3OAM13MM_SPIKE_BOMBE, x, y, -1, 2, 0);
+                        OAM::Render(true, &OAM::MM_SPIKE_BOMB, x, y, -1, 2, 0);
                     }
                 }
             }
@@ -620,7 +598,7 @@ s32 dMap_c::Behavior()
             SetSubBg2Offset(0x100 - data_0209f4a8[gActivePlayerSlot * 0x18],
                             0x80 - data_0209f4a9[gActivePlayerSlot * 0x18]);
         }
-        _ZN3G2x13SetBlendAlphaEPVttttj((volatile u16 *)0x4001050, 4, 0x28, 4, 0xd);
+        G2x::SetBlendAlpha((volatile u16 *)0x4001050, 4, 0x28, 4, 0xd);
         if (data_0209f4ae[gActivePlayerSlot * 0x18] != 2)
             *(volatile u16 *)0x400100c = (u16)((*(volatile u16 *)0x400100c & 0x43) | 0x5300);
         else

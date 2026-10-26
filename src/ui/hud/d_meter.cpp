@@ -46,7 +46,6 @@
  *
  * leftovers:
  * - The HUD globals are data_ names: symbols.txt has no recovered name for them.
- * - The OAM class below stands in for the OamAttr statics include/OAM.h lacks.
  * - The OAM::Render overloads that take Fix12<int> by value keep their mangled
  *   spellings: the natural static member call homes the Fix12 arguments
  *   differently under mwccarm (the Fix12 wall) and rewrites every call site.
@@ -76,6 +75,8 @@ enum dMeter_c_AssetId {
 };
 
 #include "dMeter_c.h"
+#include "OAM.h"
+#include "GX.h"
 #include "Timer.h"
 #include "decl_common.h"
 #include "dFdBrightness_c.h"
@@ -95,50 +96,11 @@ enum dMeter_c_AssetId {
 struct OamAttr;
 struct Matrix2x2;
 
-/* Stands in for include/OAM.h, which declares Render and the five-argument
- * RenderSub but none of these OamAttr statics. The legacy sources spelled the
- * same twelve objects this way, and a static data member cannot be added to a
- * class from outside it, so moving them would mean editing a shared header that
- * every sprite-drawing TU consumes. The `namespace OAM` spelling one shard used
- * is folded in here; both mangle to _ZN3OAM...E. */
-class OAM {
-public:
-    static OamAttr CAM_BUTTON_L;
-    static OamAttr CAM_BUTTON_L_PRESSED;
-    static OamAttr CAM_BUTTON_R;
-    static OamAttr CAM_BUTTON_R_PRESSED;
-    static OamAttr S_CAM_BUTTON_L;
-    static OamAttr S_CAM_BUTTON_L_PRESSED;
-    static OamAttr S_CAM_BUTTON_R;
-    static OamAttr S_CAM_BUTTON_R_PRESSED;
-    static OamAttr CAM_ZOOM_BUTTON;
-    static OamAttr CAM_ZOOM_BUTTON_PRESSED;
-    static OamAttr S_CAM_ZOOM_BUTTON;
-    static OamAttr S_CAM_ZOOM_BUTTON_PRESSED;
-    static void RenderSub(OamAttr *attr, int x, int y, int a, int b);
-    static void Render(bool vis, OamAttr *attr, int x, int y, int a, int b, Matrix2x2 *m);
-    static void Render(bool, OamAttr *, int, int, int, int, int, int, int, int);
-    static OamAttr *Render(bool, OamAttr *, int, int, int, int, int, int);
-};
-
-namespace GX {
-void LoadOBJPltt(const void *, u32, u32);
-}
-
-namespace GXS {
-void LoadOBJPltt(const void *, u32, u32);
-}
-
 extern "C" {
 extern unsigned char data_ov002_02111184;
 extern Timer data_0209d4c8;
 extern struct OamAttr data_ov002_0210ce80;
-extern struct OamAttr _ZN3OAM4TIMEE;
-extern struct OamAttr _ZN3OAM7MINUTESE;
 extern struct OamAttr data_ov002_0210c6c0;
-/* ov001's OAM::NUMBERS, not ov000's -- ov000 shares this load window with ov002 and
-* so can never be the module this reaches. Sits with OAM::TIME and OAM::MINUTES above. */
-extern struct OamAttr *_ZN3OAM7NUMBERSE[];
 extern void OamRender10_d_meter(int sub, struct OamAttr *attr, int x, int y, int a, int b, int sx,
                                 int sy, int c, int d);
 extern volatile unsigned short data_ov002_0210c208[];
@@ -146,8 +108,6 @@ extern unsigned char data_0209f250;
 extern unsigned char data_ov002_02111178;
 extern signed char data_0209f2f4;
 struct OamAttr;
-extern OamAttr *_ZN3OAM10LIFE_ICONSE[];
-extern OamAttr _ZN3OAM5TIMESE;
 extern void *data_0209f394[];
 extern u8 data_ov002_02111180;
 extern void *data_0209f318;
@@ -157,18 +117,18 @@ extern u32 data_0209b454;
 extern unsigned short data_0209f49c[];
 extern u8 data_0209d660;
 extern signed char data_0209f310[];
+/* ov001's OAM::NUMBERS, not ov000's -- ov000 shares this load window with ov002 and
+* so can never be the module this reaches. */
 extern int data_ov001_020abac8[];
 extern unsigned char data_0209f2d8;
 extern unsigned char data_0209f2fc;
 extern unsigned char data_0209f2ac;
 extern unsigned char data_0209f2d4;
 extern int data_020a0db0;
-extern struct OamAttr _ZN3OAM10POWER_STARE;
 extern unsigned char NumStars(void);
 extern signed char data_0209f30c[];
 extern struct OamAttr data_ov002_0210c6b8;
 extern signed char data_0209f2f8;
-extern OamAttr _ZN3OAM4COINE;
 extern int SublevelToLevel(int i);
 extern unsigned char data_0209f2c4;
 extern unsigned char data_0209f20c;
@@ -178,14 +138,11 @@ extern struct OamAttr data_ov002_0210d290;
 extern struct OamAttr data_ov002_0210d2c0;
 extern struct OamAttr data_ov002_0210d300;
 extern struct OamAttr data_ov002_0210d338;
-extern struct OamAttr _ZN3OAM7VS_TIMEE;
-extern struct OamAttr *_ZN3OAM17VS_YELLOW_NUMBERSE[];
 extern struct OamAttr *data_ov002_0210ca0c[];
 extern struct OamAttr data_ov002_0210d2a0;
 extern struct OamAttr data_ov002_0210d2d0;
 extern struct OamAttr data_ov002_0210d308;
 extern struct OamAttr data_ov002_0210d348;
-extern struct OamAttr _ZN3OAM10VS_TIME_UPE;
 extern int GetOwnerLanguage(void);
 
 extern unsigned char data_0209f2bc;
@@ -804,7 +761,7 @@ void dMeter_c::RenderVsTimer() {
         } else if (GetOwnerLanguage() == 2) {
             OAM::Render(0, &data_ov002_0210d338, 0x84, 9, -1, -1, 0x1000, 0x1000, 0, -1);
         } else {
-            OAM::Render(0, &_ZN3OAM7VS_TIMEE, 0x84, 9, -1, -1, 0x1000, 0x1000, 0, -1);
+            OAM::Render(0, &OAM::VS_TIME, 0x84, 9, -1, -1, 0x1000, 0x1000, 0, -1);
         }
     }
 
@@ -812,13 +769,12 @@ void dMeter_c::RenderVsTimer() {
         int pal = (mVsTimer <= 5) ? 0xb : -1;
         unsigned short tens = t / 10;
         if (tens != 0) {
-            OAM::Render(false, _ZN3OAM17VS_YELLOW_NUMBERSE[tens], 0x74, mVsTimerY, pal, -1, 0);
-            OAM::Render(false, _ZN3OAM17VS_YELLOW_NUMBERSE[t % 10], 0x84, mVsTimerY, pal, -1, 0);
+            OAM::Render(false, OAM::VS_YELLOW_NUMBERS[tens], 0x74, mVsTimerY, pal, -1, 0);
+            OAM::Render(false, OAM::VS_YELLOW_NUMBERS[t % 10], 0x84, mVsTimerY, pal, -1, 0);
         } else {
             int ones = t % 10;
             if (ones > 3) {
-                OAM::Render(0, _ZN3OAM17VS_YELLOW_NUMBERSE[ones], 0x7c, mVsTimerY, -1, -1, 0x1000,
-                            0);
+                OAM::Render(0, OAM::VS_YELLOW_NUMBERS[ones], 0x7c, mVsTimerY, -1, -1, 0x1000, 0);
             } else {
                 OAM::Render(false, data_ov002_0210ca0c[3 - ones], 0x84, mVsTimerY, -1, -1, 0);
             }
@@ -833,7 +789,7 @@ void dMeter_c::RenderVsTimer() {
         } else if (GetOwnerLanguage() == 2) {
             OAM::Render(0, &data_ov002_0210d348, 0x80, mVsTimerY, -1, -1, 0x1000, 0x1000, 0, -1);
         } else {
-            OAM::Render(0, &_ZN3OAM10VS_TIME_UPE, 0x80, mVsTimerY, -1, -1, 0x1000, 0x1000, 0, -1);
+            OAM::Render(0, &OAM::VS_TIME_UP, 0x80, mVsTimerY, -1, -1, 0x1000, 0x1000, 0, -1);
         }
     }
 }
@@ -847,12 +803,12 @@ void dMeter_c::RenderCoinCount() {
         for (int i = 2; i >= 0; i--) {
             signed char d = mDigits[i];
             if (d >= 0) {
-                OAM::Render(true, _ZN3OAM7NUMBERSE[d], sb, 2, -1, 1, 0);
+                OAM::Render(true, OAM::NUMBERS[d], sb, 2, -1, 1, 0);
                 sb -= 9;
             }
         }
-        OAM::Render(true, &_ZN3OAM5TIMESE, sb, 0xa, -1, 1, 0);
-        OAM::Render(true, &_ZN3OAM4COINE, sb - 0x10, 2, -1, 1, 0);
+        OAM::Render(true, &OAM::TIMES, sb, 0xa, -1, 1, 0);
+        OAM::Render(true, &OAM::COIN, sb - 0x10, 2, -1, 1, 0);
     } else {
         if (SublevelToLevel(data_0209f2f8) == 0x1d)
             return;
@@ -862,12 +818,12 @@ void dMeter_c::RenderCoinCount() {
         for (i = 2; i >= 0; i--) {
             signed char d = mDigits[i];
             if (d >= 0) {
-                OAM::Render(false, _ZN3OAM7NUMBERSE[d], sb, 2, -1, 1, 0);
+                OAM::Render(false, OAM::NUMBERS[d], sb, 2, -1, 1, 0);
                 sb -= 9;
             }
         }
-        OAM::Render(false, &_ZN3OAM5TIMESE, sb, 0xa, -1, 1, 0);
-        OAM::Render(false, &_ZN3OAM4COINE, sb - 0x10, 2, -1, 1, 0);
+        OAM::Render(false, &OAM::TIMES, sb, 0xa, -1, 1, 0);
+        OAM::Render(false, &OAM::COIN, sb - 0x10, 2, -1, 1, 0);
     }
 }
 
@@ -930,12 +886,12 @@ void dMeter_c::RenderStarCount() {
         CalculateDigits((unsigned short)data_0209f310[data_0209f250]);
         for (i = 2; i >= 0; i--) {
             if (mDigits[i] >= 0) {
-                OAM::Render(false, _ZN3OAM7NUMBERSE[mDigits[i]], x, 2, -1, 1, 0);
+                OAM::Render(false, OAM::NUMBERS[mDigits[i]], x, 2, -1, 1, 0);
                 x -= 9;
             }
         }
-        OAM::Render(false, &_ZN3OAM5TIMESE, x, 10, -1, 1, 0);
-        OAM::Render(false, &_ZN3OAM10POWER_STARE, x - 16, 10, -1, 1, 0);
+        OAM::Render(false, &OAM::TIMES, x, 10, -1, 1, 0);
+        OAM::Render(false, &OAM::POWER_STAR, x - 16, 10, -1, 1, 0);
         return;
     }
 
@@ -950,24 +906,24 @@ void dMeter_c::RenderStarCount() {
             }
             for (i = 2; i >= 0; i--) {
                 if (mDigits[i] >= 0) {
-                    OAM::Render(false, _ZN3OAM7NUMBERSE[mDigits[i]], x, 2, -1, 1, 0);
+                    OAM::Render(false, OAM::NUMBERS[mDigits[i]], x, 2, -1, 1, 0);
                     x -= 9;
                 }
             }
-            OAM::Render(false, &_ZN3OAM5TIMESE, x, 10, -1, 1, 0);
-            OAM::Render(false, &_ZN3OAM10POWER_STARE, x - 16, 10, -1, 1, 0);
+            OAM::Render(false, &OAM::TIMES, x, 10, -1, 1, 0);
+            OAM::Render(false, &OAM::POWER_STAR, x - 16, 10, -1, 1, 0);
             return;
         }
     }
 
     for (i = 2; i >= 0; i--) {
         if (mDigits[i] >= 0) {
-            OAM::Render(true, _ZN3OAM7NUMBERSE[mDigits[i]], x, 2, -1, 1, 0);
+            OAM::Render(true, OAM::NUMBERS[mDigits[i]], x, 2, -1, 1, 0);
             x -= 9;
         }
     }
-    OAM::Render(true, &_ZN3OAM5TIMESE, x, 10, -1, 1, 0);
-    OAM::Render(true, &_ZN3OAM10POWER_STARE, x - 16, 10, -1, 1, 0);
+    OAM::Render(true, &OAM::TIMES, x, 10, -1, 1, 0);
+    OAM::Render(true, &OAM::POWER_STAR, x - 16, 10, -1, 1, 0);
 }
 
 /* ROM ordinal 6 -- _ZN8dMeter_c17RenderSilverStarsEv, 0x020fc3c4, size 0x94 */
@@ -1072,28 +1028,28 @@ void dMeter_c::RenderLifeCount() {
     unsigned char state = data_ov002_02111178;
 
     if (state >= 3 && state < 6) {
-        OAM::Render(0, _ZN3OAM10LIFE_ICONSE[player->mCharacter], mLifeCountX, 0xa, -1, 1, 0x1000,
-                    0x1000, 0, -1);
-        OAM::Render(false, &_ZN3OAM5TIMESE, mLifeCountX + 0x10, 0xa, -1, 1, 0);
+        OAM::Render(0, OAM::LIFE_ICONS[player->mCharacter], mLifeCountX, 0xa, -1, 1, 0x1000, 0x1000,
+                    0, -1);
+        OAM::Render(false, &OAM::TIMES, mLifeCountX + 0x10, 0xa, -1, 1, 0);
         CalculateDigits((unsigned short)data_0209f2f4);
         int x = mLifeCountX + 0x18;
         for (int i = 0; i < 3; i++) {
             signed char d = mDigits[i];
             if (d >= 0) {
-                OAM::Render(false, _ZN3OAM7NUMBERSE[d], x, 2, -1, 1, 0);
+                OAM::Render(false, OAM::NUMBERS[d], x, 2, -1, 1, 0);
                 x += 9;
             }
         }
     } else {
-        OAM::RenderSub(_ZN3OAM10LIFE_ICONSE[player->mCharacter], mLifeCountX, 0xa, -1, 1);
-        OAM::Render(true, &_ZN3OAM5TIMESE, mLifeCountX + 0x10, 0xa, -1, 1, 0);
+        OAM::RenderSub(OAM::LIFE_ICONS[player->mCharacter], mLifeCountX, 0xa, -1, 1);
+        OAM::Render(true, &OAM::TIMES, mLifeCountX + 0x10, 0xa, -1, 1, 0);
         CalculateDigits((unsigned short)data_0209f2f4);
         int i;
         int x = mLifeCountX + 0x18;
         for (i = 0; i < 3; i++) {
             signed char d = mDigits[i];
             if (d >= 0) {
-                OAM::Render(true, _ZN3OAM7NUMBERSE[d], x, 2, -1, 1, 0);
+                OAM::Render(true, OAM::NUMBERS[d], x, 2, -1, 1, 0);
                 x += 9;
             }
         }
@@ -1155,24 +1111,24 @@ void dMeter_c::RenderTimeTimer() {
         if (GetOwnerLanguage() == 5 || GetOwnerLanguage() == 4 || GetOwnerLanguage() == 2) {
             OAM::Render(0, &data_ov002_0210ce80, 0xa4, 0x1e, -1, 1, 0x1000, 0x1000, 0, -1);
         } else {
-            OAM::Render(0, &_ZN3OAM4TIMEE, 0xa4, 0x1e, -1, 1, 0x1000, 0x1000, 0, -1);
+            OAM::Render(0, &OAM::TIME, 0xa4, 0x1e, -1, 1, 0x1000, 0x1000, 0, -1);
         }
-        OAM::Render(false, _ZN3OAM7NUMBERSE[min / 10], 0xb8, 0x16, -1, 1, 0);
+        OAM::Render(false, OAM::NUMBERS[min / 10], 0xb8, 0x16, -1, 1, 0);
     } else {
         if (GetOwnerLanguage() == 5 || GetOwnerLanguage() == 4 || GetOwnerLanguage() == 2) {
             OAM::Render(0, &data_ov002_0210ce80, 0xac, 0x1e, -1, 1, 0x1000, 0x1000, 0, -1);
         } else {
-            OAM::Render(0, &_ZN3OAM4TIMEE, 0xac, 0x1e, -1, 1, 0x1000, 0x1000, 0, -1);
+            OAM::Render(0, &OAM::TIME, 0xac, 0x1e, -1, 1, 0x1000, 0x1000, 0, -1);
         }
     }
 
-    OAM::Render(false, _ZN3OAM7NUMBERSE[min % 10], 0xc0, 0x16, -1, 1, 0);
-    OAM::Render(false, &_ZN3OAM7MINUTESE, 0xc4, 0x1e, -1, 1, 0);
-    OAM::Render(false, _ZN3OAM7NUMBERSE[sec / 10], 0xcf, 0x16, -1, 1, 0);
-    OAM::Render(false, _ZN3OAM7NUMBERSE[sec % 10], 0xd7, 0x16, -1, 1, 0);
+    OAM::Render(false, OAM::NUMBERS[min % 10], 0xc0, 0x16, -1, 1, 0);
+    OAM::Render(false, &OAM::MINUTES, 0xc4, 0x1e, -1, 1, 0);
+    OAM::Render(false, OAM::NUMBERS[sec / 10], 0xcf, 0x16, -1, 1, 0);
+    OAM::Render(false, OAM::NUMBERS[sec % 10], 0xd7, 0x16, -1, 1, 0);
     OAM::Render(false, &data_ov002_0210c6c0, 0xdb, 0x1e, -1, 1, 0);
-    OAM::Render(false, _ZN3OAM7NUMBERSE[centi / 10], 0xe8, 0x16, -1, 1, 0);
-    OAM::Render(false, _ZN3OAM7NUMBERSE[centi % 10], 0xf0, 0x16, -1, 1, 0);
+    OAM::Render(false, OAM::NUMBERS[centi / 10], 0xe8, 0x16, -1, 1, 0);
+    OAM::Render(false, OAM::NUMBERS[centi % 10], 0xf0, 0x16, -1, 1, 0);
 }
 
 /* ROM ordinal 1 -- _ZN8dMeter_cD0Ev, 0x020fb928, size 0x44 */

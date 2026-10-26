@@ -30,8 +30,6 @@
  *   case 13. Naming belongs in arm9.
  * Leftover: ApproachLinear2 stays mangled. No header. This TU's
  *   icon_c::Behavior.
- * Leftover: G2S::GetBG2ScrPtr stays mangled. No header. GraphCallback2
- *   and icon_c::Render.
  * Leftover: OAM::Render Fix12-by-value stays mangled (OAM.h, wall 6az).
  *   This TU's icon_c::Render.
  * Leftover: data_ov075_0211cb64 / 0211c720 / 0211c730 / 0211c954 are
@@ -70,14 +68,7 @@
 #include "dScEntry_c.h"
 #include "OAM.h"
 #include "OamAttr.h"
-
-namespace G2 {
-void *GetBG1ScrPtr();
-}
-
-namespace G2S {
-unsigned int GetBG2ScrPtr();
-}
+#include "G2.h"
 
 extern "C" {
 

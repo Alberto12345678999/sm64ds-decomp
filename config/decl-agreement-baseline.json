@@ -28561,6 +28561,37 @@
       "src/unnamed/ov002/func_ov002_020d8a50.c": [
         "return:int"
       ]
+    },
+    "Allocate": {
+      "include/Memory.h": [
+        "arity:2",
+        "arity:1"
+      ]
+    },
+    "Deallocate": {
+      "include/Memory.h": [
+        "arity:2"
+      ]
+    },
+    "FlushAndInvalidateDataCache": {
+      "include/CP15.h": [
+        "arity:2"
+      ]
+    },
+    "FlushDataCache": {
+      "include/CP15.h": [
+        "arity:2"
+      ]
+    },
+    "SetGraphicsMode": {
+      "include/GX.h": [
+        "arity:1"
+      ]
+    },
+    "_ZN3OAM6RenderEbP7OamAttriiiiiiii": {
+      "src/unnamed/arm9/0203/func_0203083c.c": [
+        "param:#1 int"
+      ]
     }
   },
   "_comment": "Declaration/definition disagreements present when this gate was built. tools/check_decl_agreement.py fails on any disagreement NOT listed here. Keyed symbol -> declaring file -> \"<kind>:<what differs>\". These are NOT text edits: changing a declaration can change instruction selection at every call site, so each one is matching work that needs a rebuild and byte proof (tools/match.py) before it moves. Regenerate with --update only from a clean checkout, and read the diff: a new entry is usually an extern copied from the wrong sibling."

@@ -81,6 +81,7 @@ enum daObjKey_c_AssetId {
 #include "Sound.h"
 #include "SharedFilePtr.h"
 #include "Message.h"
+#include "cstd.h"
 
 #pragma defer_codegen off
 
@@ -248,9 +249,6 @@ extern int _Z14ApproachLinearR7Vector3RKS_5Fix12IiE(Vector3 &value, const Vector
    (the func_ov002_020e3e00 precedent for its neighbours 0x02111b64/6c). */
 extern int data_ov055_02111b68;
 }
-
-/* local extern: no header declares cstd; its ROM symbol is _ZN4cstd4sqrtEy. */
-namespace cstd { s32 sqrt(u64 value); }
 
 /* The key function, defined first. Under defer_codegen off it emits D1, D0 and
  * a D2 the cartridge does not keep, then the vtable and RTTI chain. */

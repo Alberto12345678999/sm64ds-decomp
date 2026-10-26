@@ -92,7 +92,6 @@ void dExtSimpleModel_c::UpdateFileOffsets(BMD_File &file) {
 }
 #undef REBASE
 
-
 // @symbol func_02046590
 extern "C" int func_02046590(const void *tbl, const char *name)
 {

@@ -22,8 +22,7 @@
  * Known limits:
  * - dBgW_KcMbg::SetFile, dCcAc_c::Init, Particle::System::New / NewSimple
  *   and dBgActor_c::IsClsnInRangeOnScreen stay mangled: each takes
- *   Fix12<int> by value (notes/mwccarm-codegen.md 6az). cstd::fdiv stays
- *   mangled because no header declares the cstd namespace yet.
+ *   Fix12<int> by value (notes/mwccarm-codegen.md 6az).
  * - data_ov081_02128fd0 / 02128fd8 are this overlay's KCL / BMD file
  *   handles and data_ov002_0210d8d4 the CLPS block, all in data this TU
  *   does not own.
@@ -34,8 +33,7 @@
 // leftovers:
 // - dBgW_KcMbg::SetFile, dCcAc_c::Init, Particle::System::New / NewSimple
 //   and dBgActor_c::IsClsnInRangeOnScreen stay mangled: each takes
-//   Fix12<int> by value (notes/mwccarm-codegen.md 6az). cstd::fdiv stays
-//   mangled because no header declares the cstd namespace yet.
+//   Fix12<int> by value (notes/mwccarm-codegen.md 6az).
 // - data_ov081_02128fd0 / 02128fd8 are this overlay's KCL / BMD file
 //   handles and data_ov002_0210d8d4 the CLPS block, all in data this TU
 //   does not own.

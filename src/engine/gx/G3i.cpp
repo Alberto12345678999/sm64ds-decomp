@@ -18,6 +18,8 @@ extern "C" {
 void NormalizeVec3(Vector3 *v, Vector3 *out);
 void CrossVec3(const Vector3 *a, const Vector3 *b, Vector3 *out);
 Fix12i DotVec3(const Vector3 *a, const Vector3 *b);
+/* local extern: every caller is inside the `#pragma cplusplus off` body
+   below, where cstd.h's namespace cannot be named. */
 int _ZN4cstd4fdivEii(int, int);
 int _ZN4cstd11fdiv_resultEv(void);
 s64 _ZN4cstd11ldiv_resultEv(void);

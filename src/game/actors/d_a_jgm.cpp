@@ -74,12 +74,11 @@ enum d_a_jgm_AssetId {
 #include "Sound.h"
 #include "SurfaceInfo.h"
 #include "nitro/fx/fx.h"
+#include "cstd.h"
 
-/* local extern: no header declares ApproachLinear or cstd::fdiv. */
+/* local extern: no header declares ApproachLinear. */
 int ApproachLinear(int &value, int target, int step);
 bool ApproachLinear(short &value, short target, short step);
-
-namespace cstd { int fdiv(int numerator, int denominator); }
 
 /* Local three-word ABI value. Vector3 has a genuine non-trivial destructor;
  * these stack values are plain fixed-point words and must not instantiate its

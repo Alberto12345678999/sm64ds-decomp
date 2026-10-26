@@ -71,6 +71,7 @@ struct System {
 #include "SurfaceInfo.h"
 #include "dBgCh_Actr.h"
 #include "Sound.h"
+#include "cstd.h"
 
 /* Written as the real constructor, which is the form the legacy shard recovered
    and byte-matched. Two steps, and neither is spelled below: the dActor_c
@@ -119,12 +120,6 @@ dEnemyBase_c::~dEnemyBase_c()
    not declare -- decl_common.h already spells it with a void *. */
 extern "C" {
 extern void func_02038414(dBgCh_Actr *);
-}
-
-/* local extern: no header declares the cstd division routines. */
-namespace cstd {
-s16 atan2(s32, s32);
-int fdiv(int, int);
 }
 
 void dEnemyBase_c::UpdateWMClsn(dBgCh_Actr &clsn, unsigned int sel) {

@@ -57,7 +57,6 @@ unsigned short DecIfAbove0_Short(unsigned short *p);
 void Vec3_Asr(Vector3 *d, Vector3 *s, int sh);
 void Matrix4x3_FromRotationY(void *m, int angle);
 
-
 extern short data_02082214[];   /* sine/cosine table */
 extern dClipper data_0209f43c;
 extern Matrix4x3 data_0209b3ec;
