@@ -118,8 +118,8 @@ extern "C" daObjFl_Koma_D_c *_ZN16daObjFl_Koma_D_cD0Ev(daObjFl_Koma_D_c *thiz)
     return thiz;
 }
 
-extern "C" daObjFl_Koma_D_c *_ZN19RotatingPlatformLllD0Ev(daObjFl_Koma_D_c *thiz)
-{
-    return _ZN16daObjFl_Koma_D_cD0Ev(thiz);
+extern "C" daObjFl_Koma_D_c *_ZN19RotatingPlatformLllD0Ev(daObjFl_Koma_D_c *thiz) {
+    delete thiz;
+    return thiz;
 }
 #endif
