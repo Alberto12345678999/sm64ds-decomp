@@ -996,7 +996,12 @@ s32 dScMgCup_c::InitResources() {
 }
 // @symbol dScMgCup_c_classInit
 /* No dScMgCup_c constructor. Base ctor, intermediate vtable, the tracker,
-   then this vtable, the model, the effects, the cups. */
+   then this vtable, the model, the effects, the cups.
+   mCup is three Vector2s (include/Vector2.h) but stays hand-built here: as a
+   Vector2 member its __cxa_vec_ctor would run before any factory code, ahead
+   of Presenter_Construct(&mModel), and the cartridge builds mModel first.
+   Only mModel as a member with real structors gives that order, and those
+   are unit020bfec0's (Presenter_Construct / Presenter_Destruct). */
 extern "C" void *dScMgCup_c_classInit() {
     dScMgCup_c *scene = (dScMgCup_c *)_ZN7fBase_cnwEj(sizeof(dScMgCup_c));
     if (scene) {
