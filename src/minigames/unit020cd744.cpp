@@ -42,6 +42,9 @@ extern int ApproachLinear(int &, int, int);
 // Partial callback interface only. ROM vtables at 0x0213b2c4/0x0213b2e0
 // implement these five slots through dMgTrmpObjAdapter_c and its children.
 // No destructor slots or complete actor layout are implied by this view.
+namespace cstd {
+int fdiv(s32, s32);
+}
 namespace {
 struct TrampolineObjectCallbacks {
     virtual Vector3 *GetPos();
@@ -313,7 +316,6 @@ extern "C" void TrmpItem_SetMotionHover(char *c) {
 }
 
 namespace s020cdc8c {
-extern "C" extern int _ZN4cstd4fdivEii(int a, int b);
 
 #pragma push
 #pragma opt_propagation off
@@ -328,7 +330,7 @@ extern "C" void TrmpItem_MotionSway(char *self) {
     distanceFromCenterY = TRMPITEM(self)->mPos.y - 0x74000;
     if (distanceFromCenterY < 0)
         distanceFromCenterY = -distanceFromCenterY;
-    xSpeed = (_ZN4cstd4fdivEii(distanceFromCenterY, 0x4c000) >> 3) + minimumSpeed;
+    xSpeed = (cstd::fdiv(distanceFromCenterY, 0x4c000) >> 3) + minimumSpeed;
 
     if (TRMPITEM(self)->mPhase & 0x4000)
         TRMPITEM(self)->mVel.x = xSpeed;
@@ -1291,7 +1293,6 @@ struct Vec3 {
 extern "C" extern int DotVec3(struct Vec3 *a, struct Vec3 *b);
 extern "C" extern void SubVec3(struct Vec3 *a, struct Vec3 *b, struct Vec3 *c);
 extern "C" extern int LenVec3(struct Vec3 *v);
-extern "C" extern int _ZN4cstd4fdivEii(int a, int b);
 extern "C" {
 extern int data_ov006_0212e0f0[];
 }
@@ -1309,7 +1310,7 @@ extern "C" void TrmpLine_PointDistance(char *sl, void *referencePoint, struct Ve
             SubVec3((struct Vec3 *)restVertex, (struct Vec3 *)referencePoint, &delta);
             int halfLength = (long long)(TRMPLINE(sl)->mHalfWidth);
             int distance = LenVec3(&delta);
-            int distanceWeight = _ZN4cstd4fdivEii(halfLength, halfLength + distance);
+            int distanceWeight = cstd::fdiv(halfLength, halfLength + distance);
             int weightedProjection = FX_MUL(negatedProjection, *gridWeight);
             weightedAmplitude = FX_MUL(weightedProjection, distanceWeight);
             *amplitude = weightedAmplitude;
@@ -1783,7 +1784,6 @@ extern "C" extern void SubVec3(Vector3 *a, Vector3 *b, Vector3 *c);
 extern "C" extern int DotVec3(Vector3 *a, Vector3 *b);
 extern "C" extern void Vec2_Sub(int *o, int *a, int *b);
 extern "C" extern int func_0203d524(int *a, int *b);
-extern "C" extern int _ZN4cstd4fdivEii(int a, int b);
 extern "C" extern void D3D_PlaySePannedLoop(int a0, int a1, int a2);
 extern "C" extern void TrmpLine_PointDistance(char *sl, void *arg1, Vector3 *r2);
 extern "C" extern void TrmpLine_SetStateSettle(char *p);
@@ -1902,8 +1902,8 @@ extern "C" int TrmpLine_PushJumper(char *c) {
             TRMPLINE(c)->mContactMotion.y = movementDelta.y;
             TRMPLINE(c)->mContactMotion.z = movementDelta.z;
 
-            edgeRatio = _ZN4cstd4fdivEii((currentAlong < 0) ? -currentAlong : currentAlong,
-                                         TRMPLINE(c)->mHalfWidth);
+            edgeRatio = cstd::fdiv((currentAlong < 0) ? -currentAlong : currentAlong,
+                                   TRMPLINE(c)->mHalfWidth);
             {
                 int halfLength = TRMPLINE(c)->mHalfWidth;
                 int absoluteAlong = (currentAlong < 0) ? -currentAlong : currentAlong;
@@ -2005,7 +2005,6 @@ extern void Vec3_MulScalarInPlace(int *v, int s);
 extern void SubVec3(Vector3 *a, Vector3 *b, Vector3 *c);
 extern Fix12i Vec3_Dist(const Vector3 *a, const Vector3 *b);
 extern Fix12i DotVec3(const Vector3 *a, const Vector3 *b);
-extern int _ZN4cstd4fdivEii(int a, int b);
 extern void TrmpLine_PointDistance(void *a, void *b, void *c);
 extern void TrmpLine_ComputeNormals(void *a);
 extern void D3D_PlaySePannedLoop(int a0, int a1, int a2);
@@ -2243,7 +2242,7 @@ extern "C" void TrmpLine_Build(char *c, short *startPoint, short *endPoint) {
         TRMPLINE(c)->mContactMotion.z = selectedVelocity.z;
 
         absoluteAlong = (selectedAlong < 0) ? (0 - selectedAlong) : selectedAlong;
-        edgeRatio = _ZN4cstd4fdivEii(absoluteAlong, TRMPLINE(c)->mHalfWidth);
+        edgeRatio = cstd::fdiv(absoluteAlong, TRMPLINE(c)->mHalfWidth);
         halfLength = TRMPLINE(c)->mHalfWidth;
         absoluteAlong = (selectedAlong < 0) ? (0 - selectedAlong) : selectedAlong;
         offsetTimesHalfLength = FX_MUL(absoluteAlong, halfLength);
@@ -2433,7 +2432,6 @@ namespace s020d0c38 {
 extern "C" extern void func_0203b958(s16 *o, s16 *a, s16 *b);
 extern "C" extern int func_0203d434(int *in);
 extern "C" extern int Vec2_Len(int *v);
-extern "C" extern int _ZN4cstd4fdivEii(int, int);
 extern "C" extern void func_0203d630(int *p, int m);
 extern "C" extern void func_0203d704(int *o, int *a, int *b);
 extern "C" extern void Vec2_Sub(int *o, int *a, int *b);
@@ -2531,7 +2529,7 @@ extern "C" int TrmpLine_Create(s16 *startPoint, s16 *endPoint) {
         scaledDirection[1] = direction[1];
         scaledDirection[1] = weightedY;
         scaledDirectionLength = Vec2_Len(scaledDirection);
-        func_0203d630(direction, _ZN4cstd4fdivEii(0x18000, scaledDirectionLength));
+        func_0203d630(direction, cstd::fdiv(0x18000, scaledDirectionLength));
 
         func_0203d704(adjustedStart, midpoint, direction);
         Vec2_Sub(adjustedEnd, midpoint, direction);

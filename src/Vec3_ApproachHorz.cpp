@@ -6,8 +6,6 @@
  *   LenVec3 and SubVec3 take Vec3; Vec3_HorzLen and Vec3_Equal take
  *   Vector3; Vec3_MulScalar takes Vec3_Fix12. One struct makes those
  *   calls disagree with the declarations they already have.
- * - The divide stays _ZN4cstd4fdivEii. decl_common.h spells cstd_fdiv, which
- *   is a different linker symbol.
  * - Vector3 stays a local POD twin rather than include/types.h's: that one
  *   declares a ctor and dtor under C++, which turns `dst = target` below from
  *   a block move into memberwise stores and loses the match.
@@ -16,11 +14,14 @@ struct Vec3 { int x, y, z; };
 struct Vector3 { int x, y, z; };
 typedef struct { int x, y, z; } Vec3_Fix12;
 
+namespace cstd {
+int fdiv(int, int);
+}
+
 extern "C" {
 extern void Vec3_Sub(struct Vec3* out, struct Vec3* a, struct Vec3* b);
 extern int Vec3_HorzLen(const struct Vector3* v);
 extern int LenVec3(struct Vec3* v);
-extern int _ZN4cstd4fdivEii(int a, int b);
 extern void Vec3_MulScalar(Vec3_Fix12* out, const Vec3_Fix12* in, int scale);
 extern void SubVec3(struct Vec3* a, struct Vec3* b, struct Vec3* c);
 extern int Vec3_Equal(const struct Vector3 *a, const struct Vector3 *b);
@@ -36,7 +37,7 @@ int _Z14ApproachLinearR7Vector3RKS_5Fix12IiE(struct Vector3& dst, const struct V
             dst = target;
             return 1;
         }
-        Vec3_MulScalar((Vec3_Fix12*)&scaled, (const Vec3_Fix12*)&diff, _ZN4cstd4fdivEii(step, len));
+        Vec3_MulScalar((Vec3_Fix12 *)&scaled, (const Vec3_Fix12 *)&diff, cstd::fdiv(step, len));
         SubVec3((struct Vec3*)&dst, (struct Vec3*)&scaled, (struct Vec3*)&dst);
     } else if (Vec3_Equal(&dst, &target)) {
         return 1;
@@ -59,7 +60,7 @@ int Vec3_ApproachHorz(struct Vec3* out, struct Vec3* a, int maxStep)
             return 1;
         }
         {
-            int s = _ZN4cstd4fdivEii(maxStep, len);
+            int s = cstd::fdiv(maxStep, len);
             Vec3_MulScalar((Vec3_Fix12*)&scaled, (const Vec3_Fix12*)&diff, s);
             SubVec3(out, &scaled, out);
         }
