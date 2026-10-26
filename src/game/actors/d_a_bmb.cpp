@@ -107,7 +107,6 @@ void  func_ov102_0214b3b8(void *c);
 /* Real definitions: func_0201267c and func_0200fc44 (arm9).
    The methods call through these so the names stay unmangled. aa18, a free
    function, still redeclares func_0200fc44 at block scope. */
-void  func_0201267c(unsigned int id, const Vector3 *v);
 int   func_0200fc44(int a, Vector3 *pos, int flag);
 
 extern signed char   data_0209f2f8;
@@ -1191,7 +1190,6 @@ extern "C" {
 // @symbol func_ov102_0214ae1c
 void func_ov102_0214ae1c(void *cv) {
     typedef struct Bmb_Ae1cVec3 { int x, y, z; } Vec3;
-    extern void func_0201267c(int a, void *b);
     extern void d_a_bmbNewSimpleHold(unsigned int id, int x, int y, int z);
     extern void func_ov002_020ef228(void *a, void *b);
     extern void _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void *self, Vec3 *v, unsigned int a, int fix, unsigned int b, unsigned int d, unsigned int e);
@@ -1210,7 +1208,7 @@ void func_ov102_0214ae1c(void *cv) {
         dActor_c::Spawn(0x120, 2, *(Vector3 *)&v, 0, self->mAreaId, -1);
         self->mCoinType = 0;
     }
-    func_0201267c(0x10c, &self->mCamSpacePosX);
+    func_0201267c(0x10c, &self->mCamSpacePos);
     v.y = self->mPosY + 0x64000;
     Particle::System::NewSimple(0x14, v.x, v.y, v.z);
     Particle::System::NewSimple(0x15, v.x, v.y, v.z);

@@ -110,7 +110,6 @@ bool ApproachLinear(short &value, short target, short step);
 
 extern "C" {
 void func_02012694(u32 id, const Vector3 *pos);
-void func_0201267c(u32 id, const Vector3 *pos);
 short Vec3_HorzAngle(const Vector3 *a, const Vector3 *b);
 int IsStarCollectedInCurLevel(u32 flag);
 void SetStarMarker(int i, void *self, int v);

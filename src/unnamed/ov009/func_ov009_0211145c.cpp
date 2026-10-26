@@ -42,13 +42,13 @@
  */
 #include "daSBird_c.h"
 #include "common.h"
+#include "Sound.h"
 
 extern "C" {
 extern int RandomIntInternal(int *seed);
 extern int data_0209e650;
 extern void Vec3_Sub(void *out, void *a, void *b);
 extern s32 Vec3_HorzLen(void *v);
-extern void func_0201267c(unsigned int id, const Vector3 *v);
 }
 
 extern "C" void func_ov009_0211145c(daSBird_c *self)

@@ -76,6 +76,7 @@ enum daStar_c_AssetId {
 #include "fBase_c.h"
 #include "daSoundObj_c.h"
 #include "dExtSimpleModel_c.h"
+#include "Sound.h"
 
 /* Plain-data stand-ins. Vector3 and Matrix4x3 carry declared destructors, so
  * a local or a struct copy of either one adds cleanup code the cartridge does
@@ -213,7 +214,6 @@ extern int IsStarCollectedInCurLevel(int starID);
 extern int data_0209f40c[];
 extern u8 data_0209f208;
 extern unsigned char data_0209f264;
-void func_02012790(int a);
 // local extern: Player.h's u8 parameters re-narrow the arguments (func_ov002_020e8ef0 differs).
 int _ZN6Player17SetNoControlStateEhih(void* p, int a, int b, int d);
 void _ZN5Event6SetBitEj(u32 a);
@@ -235,9 +235,6 @@ extern int Vec3_HorzDist(const Vec3* a, const Vec3* b);
 extern s16 GetAngleToCamera(int i);
 extern u8 *data_0209f344;
 extern short _ZN8dActor_c12ReflectAngleE5Fix12IiES1_s(void* c, Fix12i a, Fix12i b, short ang);
-}
-namespace Sound {
-void ChangeMusicVolume(u32, int);
 }
 extern "C" {
 extern int func_ov002_020c6e14(void*);

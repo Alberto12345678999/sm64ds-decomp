@@ -69,6 +69,7 @@ enum dScMgSmartball_c_AssetId { ASSET_D_2D_MG_BG_OPTION_NSC_BIN = 0x005b };
 #include "private/disp_obj_vtbl.h"
 #include "private/ov006_smartball_pair.h"
 #include "PlayerInput.h"
+#include "Sound.h"
 #include "Memory.h"
 #include "nitro/fx/fx.h"
 
@@ -181,12 +182,6 @@ typedef struct State2 {
     int baseZ;
 } State2;
 
-/* shadow 'Sound' -- 2 member(s).
-   void, not the definition's unsigned int: Sound.h would overload this shadow. */
-namespace Sound {
-void PlayBank2_2D(u32 id);
-}
-
 extern "C" {
 extern void func_0203d388(V2 *p, int angle);
 extern long long func_0203d5bc(int *p);
@@ -295,7 +290,6 @@ extern OamAttr *data_ov006_02137a60[];
 extern OamAttr *sSmartballSideSprites[];
 extern OamAttr *sSmartballSideSpritesAlt[];
 void FreeGfxSlotsById(int a);
-unsigned int func_02012790(unsigned int a);
 
 extern unsigned int LoadCompressedFileAt(int fileID, void *target);
 

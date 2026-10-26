@@ -33,11 +33,11 @@ enum daDonketu_c_AssetId {
 #include "daBDonketu_c.h"
 #include "decl_common.h"
 #include "SharedFilePtr.h"
+#include "Sound.h"
 
 /* func_ov064_02116110, func_ov064_0211616c and data_ov064_0211b834 come
  * from decl_common.h. */
 extern "C" {
-extern void func_0201267c(u32 soundID, const Vector3 *pos);
 extern int RandomIntInternal(int *seed);
 extern int data_0209e650;
 }

@@ -150,7 +150,6 @@ extern void MultiStore16(unsigned short val, char *dst, int nbytes);
 extern const unsigned char sTrmpBrushPltt[];
 extern dFdBrightness_c *data_0209f5bc;
 extern int sTrmpTouchBlocked;
-unsigned int func_02012790(unsigned int a);
 int TrmpLine_Create(Vec2s *a, Vec2s *b);
 
 void SetBg2Offset(int a, int b);

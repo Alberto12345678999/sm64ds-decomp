@@ -20,6 +20,7 @@
 #include "dBgCh_Actr.h"
 #include "dClipper.h"
 #include "nitro/fx/fx.h"
+#include "Sound.h"
 
 bool ApproachLinear(short &value, short target, short step);
 
@@ -56,7 +57,6 @@ short Vec3_HorzAngle(const Vector3 *v0, const Vector3 *v1);
 unsigned short DecIfAbove0_Short(unsigned short *p);
 void Vec3_Asr(Vector3 *d, Vector3 *s, int sh);
 void Matrix4x3_FromRotationY(void *m, int angle);
-void func_0201267c(unsigned int soundID, const Vector3 *pos);
 
 int _ZN4cstd4fdivEii(int a, int b);
 

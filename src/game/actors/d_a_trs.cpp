@@ -123,7 +123,6 @@ void Matrix4x3_FromTranslation(void *m, s32 x, s32 y, s32 z);
 void MulMat4x3Mat4x3(void *a, void *b, void *dst);
 void SubVec3(void *a, void *b, void *dst);
 void func_0200f760(void *thiz, void *cyl);
-int func_0201267c(u32 a, const void *b);
 u8 IsAreaShowing(s8 idx);
 s16 Vec3_HorzAngle(const void *a, const void *b, ...);
 s32 Vec3_HorzDist(const void *a, const void *b);
@@ -144,6 +143,12 @@ extern unsigned char data_0209f264;
 extern int data_ov063_0211e22c[];
 extern int data_ov063_0211e1ec[];
 extern Matrix4x3 data_020a0e68;
+}
+
+/* local extern: func_ov063_02118b2c returns what func_0201267c leaves in
+   r0 -- a tail call -- which Sound.h's void declaration cannot spell. */
+namespace tail_267c {
+extern "C" int func_0201267c(u32, const void *);
 }
 
 /* The seven file handles __sinit_ov063_0211e29c constructs. SharedFilePtr
@@ -383,7 +388,7 @@ void daTrs_c::func_ov063_021162c8() {
             this->mBooFlags.carrying = 0;
         }
     }
-    func_0201267c(0x14a, &this->mCamSpacePosX);
+    func_0201267c(0x14a, &this->mCamSpacePos);
 }
 
 
@@ -595,7 +600,7 @@ void daTrs_c::func_ov063_02116a1c() {
         if (this->mDistToPlayer < 0x3e8000) {
             unsigned char *st = (unsigned char *)&this->mState;
             *st += 1;
-            func_0201267c(0xf8, &this->mCamSpacePosX);
+            func_0201267c(0xf8, &this->mCamSpacePos);
         }
         this->mHorzSpeed = 0;
     } else {
@@ -706,7 +711,7 @@ void daTrs_c::func_ov063_02116dbc() {
 
     if (func_ov063_0211a3d0() == 0) return;
     this->MarkForDestruction();
-    func_0201267c(0xd5, &this->mCamSpacePosX);
+    func_0201267c(0xd5, &this->mCamSpacePos);
 }
 
 
@@ -738,7 +743,7 @@ void daTrs_c::func_ov063_02116e14() {
     }
     if (this->mBooFlags.hitByParam3Player) {
         this->mState = 4;
-        func_0201267c(0x14a, &this->mCamSpacePosX);
+        func_0201267c(0x14a, &this->mCamSpacePos);
         return;
     }
     this->mState = 3;
@@ -807,7 +812,7 @@ void daTrs_c::func_ov063_02116fac() {
         if (this->mDistToPlayer < 0x258000) {
             state = L8(this, 0x5cc);
             (*state)++;
-            func_0201267c(0xf8, &this->mCamSpacePosX);
+            func_0201267c(0xf8, &this->mCamSpacePos);
         }
         this->mHorzSpeed = 0;
         break;
@@ -926,7 +931,7 @@ void daTrs_c::func_ov063_02117364() {
             this->mParticle1 = 0;
             this->mParticle0 = this->mParticle1;
             this->mRelocateTimer = 0x78;
-            func_02012694(0x154, &this->mCamSpacePosX);
+            func_02012694(0x154, &this->mCamSpacePos);
             return;
         }
         pos.y += this->mClsnScale * 0xaf;
@@ -1120,7 +1125,7 @@ void daTrs_c::func_ov063_021177b0() {
     this->mTargetOpacity = 0;
     func_ov063_0211adfc();
     this->mRelocateTimer = 0x78;
-    func_02012694(0x153, &this->mCamSpacePosX);
+    func_02012694(0x153, &this->mCamSpacePos);
 }
 
 
@@ -1449,13 +1454,13 @@ void daTrs_c::func_ov063_02118458() {
     if (this->mAnmModel.Finished()) {
         if (func_ov063_0211a8a4()) {
             if (this->mAnmModel.file == (BCA_File *)data_ov063_0211edcc.filePtr) {
-                func_02012694(0x158, &this->mCamSpacePosX);
+                func_02012694(0x158, &this->mCamSpacePos);
                 this->mAnmModel.SetAnim((BCA_File *)data_ov063_0211edd4.filePtr, 0x40000000, 0x1000,
                                         0);
             } else if (this->mAttackRepeats != 0) {
                 this->mAttackRepeats -= 1;
                 this->mAnmModel.currFrame = 0;
-                func_02012694(0x158, &this->mCamSpacePosX);
+                func_02012694(0x158, &this->mCamSpacePos);
             } else {
                 int rnd;
                 this->mState = 1;
@@ -1484,7 +1489,7 @@ void daTrs_c::func_ov063_02118458() {
             v.z = data_02082214[(*(u16 *)&this->mAngleY >> 4) * 2 + 1] * m + v.z;
             char* fb;
             this->mAngleX = 0x1000;
-            func_02012694(0x156, &this->mCamSpacePosX);
+            func_02012694(0x156, &this->mCamSpacePos);
             fb = _ZN8dActor_c13SpawnFireballERK7Vector3PK10Vector3_165Fix12IiES7_j(
                 this, &v, (const void*)&this->mAngleX, 0x14000, 0x6999, 4);
             this->mAngleX = 0;
@@ -1493,7 +1498,7 @@ void daTrs_c::func_ov063_02118458() {
             else
                 ((daFPknBallView *)fb)->mMirrored = 0;
             ((daFPknBallView *)fb)->mMaxDistance = 0x3e8000;
-            func_02012694(0x122, &this->mCamSpacePosX);
+            func_02012694(0x122, &this->mCamSpacePos);
         }
     }
 
@@ -1504,7 +1509,7 @@ void daTrs_c::func_ov063_02118458() {
     if (r4 != 1)
         return;
     this->mState = 3;
-    func_02012694(0x152, &this->mCamSpacePosX);
+    func_02012694(0x152, &this->mCamSpacePos);
 }
 
 // @symbol _ZN7daTrs_c19func_ov063_0211873cEv
@@ -1537,9 +1542,9 @@ void daTrs_c::func_ov063_0211873c() {
     if (r == 1) {
         this->mState = 3;
         if (this->mHitPoints == 1)
-            func_02012694(0x155, &this->mCamSpacePosX);
+            func_02012694(0x155, &this->mCamSpacePos);
         else
-            func_02012694(0x152, &this->mCamSpacePosX);
+            func_02012694(0x152, &this->mCamSpacePos);
         return;
     }
     if (this->mNextRelocateTimer == 0) {
@@ -1550,7 +1555,7 @@ void daTrs_c::func_ov063_0211873c() {
         this->mHorzSpeed = 0;
         func_ov063_0211adfc();
         this->mRelocateTimer = 0x78;
-        func_02012694(0x153, &this->mCamSpacePosX);
+        func_02012694(0x153, &this->mCamSpacePos);
         return;
     }
     if (this->mAttackTimer != 0)
@@ -1558,7 +1563,7 @@ void daTrs_c::func_ov063_0211873c() {
     this->mState = 4;
     this->mVertSpeed = 0;
     this->mVertAccel = 0;
-    func_02012694(0x159, &this->mCamSpacePosX);
+    func_02012694(0x159, &this->mCamSpacePos);
     this->mAnmModel.SetAnim((BCA_File *)data_ov063_0211edcc.filePtr, 0x40000000, 0x1000, 0);
     {
         unsigned int rnd = (unsigned int)RandomIntInternal(&data_0209e650);
@@ -1656,7 +1661,7 @@ int daTrs_c::func_ov063_02118b2c() {
     }
     if (r == 1) {
         this->mState = 3;
-        return func_0201267c(0xc7, &this->mCamSpacePosX);
+        return tail_267c::func_0201267c(0xc7, &this->mCamSpacePosX);
     }
     {
         unsigned x = *(u16 *)&this->mStateTimer;
@@ -1712,12 +1717,12 @@ bigblock:
     }
 after_strb:
     this->MarkForDestruction();
-    func_0201267c(0xd5, &this->mCamSpacePosX);
+    func_0201267c(0xd5, &this->mCamSpacePos);
     return;
 
 special:
     this->MarkForDestruction();
-    func_0201267c(0xd5, &this->mCamSpacePosX);
+    func_0201267c(0xd5, &this->mCamSpacePos);
 }
 
 
@@ -1766,7 +1771,7 @@ void daTrs_c::func_ov063_02118ddc() {
   if(s < 0) s = -s;
   v.x = s;
   dActor_c::Spawn(TRS_ID_OBJ_KEY, 3, *(const Vector3 *)(&v), (const Vector3_16 *)(0), this->mAreaIdx, -1);
-  func_02012694(0xbb, &this->mCamSpacePosX);
+  func_02012694(0xbb, &this->mCamSpacePos);
 }
 
 
@@ -1991,7 +1996,7 @@ void daTrs_c::func_ov063_0211934c() {
     r4 = (void *)this->mTalkPlayer;
     if (r4 == 0 || this->mVariant != 2) {
         KillAndTrackInDeathTable();
-        func_0201267c(0xd5, &this->mCamSpacePosX);
+        func_0201267c(0xd5, &this->mCamSpacePos);
         if (((this->mCapId) & 0xf) >= 6)
             return;
         
@@ -2051,14 +2056,14 @@ void daTrs_c::func_ov063_0211934c() {
             u8 *q = (u8 *)&this->mSubState;
             *q = *q + 1;
         }
-        func_0201267c(0xf8, &this->mCamSpacePosX);
+        func_0201267c(0xf8, &this->mCamSpacePos);
         return;
     }
 
     case 2:
         if (data_0209d660 != 0)
             return;
-        func_0201267c(0xd5, &this->mCamSpacePosX);
+        func_0201267c(0xd5, &this->mCamSpacePos);
         if (this->mBigBooID != 0) {
             void *found;
             this->mFoundActor = (dActor_c *)dActor_c::FindWithID(this->mBigBooID);
@@ -2144,7 +2149,7 @@ void daTrs_c::func_ov063_0211975c() {
     if (!func_ov063_0211a3d0()) return;
     if (this->mDeathMode != 0) {
         KillAndTrackInDeathTable();
-        func_0201267c(0xd5, &this->mCamSpacePosX);
+        func_0201267c(0xd5, &this->mCamSpacePos);
         if ((this->mCapId & 0xf) >= 6) return;
         this->mPosX = this->mHomePosX;
         this->mPosY = this->mHomePosY;
@@ -2521,7 +2526,7 @@ int daTrs_c::func_ov063_0211a0dc() {
 
     if (this->JumpedOnByPlayer(*(dCc_c *)(&this->mdCcAcPos_c), *player) != 0) {
         _ZN6Player6BounceE5Fix12IiE(player, 0x28000);
-        func_0201267c(0x149, &this->mCamSpacePosX);
+        func_0201267c(0x149, &this->mCamSpacePos);
         return -1;
     }
 
@@ -2530,7 +2535,7 @@ int daTrs_c::func_ov063_0211a0dc() {
     if (isBigBoo) {
         if (player->mIsAirborne != 0) {
             _ZN6Player6BounceE5Fix12IiE(player, 0x28000);
-            func_0201267c(0x149, &this->mCamSpacePosX);
+            func_0201267c(0x149, &this->mCamSpacePos);
             return -1;
         }
 
@@ -2538,7 +2543,7 @@ int daTrs_c::func_ov063_0211a0dc() {
         v1.y = this->mPosY;
         v1.z = this->mPosZ;
         _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(player, &v1, this->mHurtDamage, 0xc000, 1, 0, 1);
-        func_0201267c(0x149, &this->mCamSpacePosX);
+        func_0201267c(0x149, &this->mCamSpacePos);
         return -1;
     }
     }
@@ -2582,7 +2587,7 @@ no_kind:
     v2.y = this->mPosY;
     v2.z = this->mPosZ;
     _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(player, &v2, this->mHurtDamage, 0xc000, 1, 0, 1);
-    func_0201267c(0x149, &this->mCamSpacePosX);
+    func_0201267c(0x149, &this->mCamSpacePos);
     return -1;
 
 ret0:
@@ -2789,7 +2794,7 @@ int daTrs_c::func_ov063_0211a8a4() {
         if (this->mOpacity == 0x28) {
             this->mTargetOpacity = 0xff;
             if (this->mVariant != 0xf)
-                func_0201267c(0xf8, &this->mCamSpacePosX);
+                func_0201267c(0xf8, &this->mCamSpacePos);
             this->mChaseDelay = 0x1e;
         }
         if (this->mOpacity > 0xb4)
@@ -3108,7 +3113,7 @@ int daTrs_c::Behavior()
             PoofDust();
             if (mDeathMode != 0) {
                 KillAndTrackInDeathTable();
-                func_0201267c(0xd5, &mCamSpacePosX);
+                func_0201267c(0xd5, &mCamSpacePos);
                 if (((mCapId) & 0xf) < 6) {
                     mPosX = mHomePosX;
                     mPosY = mHomePosY;
@@ -3200,7 +3205,7 @@ int daTrs_c::Behavior()
                 if (pl->ShowMessage(*this, 0x15a, 0, 0, 2) != 0) {
                     bp = (u8 *)&this->mTalkStep;
                     *bp = (*bp) + 1;
-                    func_0201267c(0xf8, &mCamSpacePosX);
+                    func_0201267c(0xf8, &mCamSpacePos);
                 }
                 break;
             case 1:

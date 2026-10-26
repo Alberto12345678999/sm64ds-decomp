@@ -60,6 +60,7 @@ enum daSnowman_c_AssetId {
 #include "PathPtr.h"
 #include "SaveData.h"
 #include "Player.h"
+#include "Sound.h"
 
 int ApproachLinear(int &ref, int target, int step);
 
@@ -85,7 +86,6 @@ enum {
 extern "C" {
 extern int RandomIntInternal(int *seed);
 /* Sound::Play2D(2, id). This TU calls the wrapper, not Play2D. */
-extern void func_02012790(int);
 extern int data_0209e650;
 extern s16 data_ov081_021289a4;
 extern s16 data_ov081_021289a6;

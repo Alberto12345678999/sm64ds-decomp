@@ -2,6 +2,7 @@
 #include "dScEntry_c.h"
 #include "types.h"
 #include "PlayerInput.h"
+#include "Sound.h"
 
 extern dScEntry_c::StepSet data_ov075_0211d810;
 
@@ -11,7 +12,6 @@ extern int func_0203da9c(void);
 extern int func_02020168(void);
 extern void func_02020304(void);
 extern void func_020200e0(void);
-extern void func_02012790(int id);
 extern int func_0203d9b4(void);
 extern void func_02020124(void);
 extern void func_02020334(void);

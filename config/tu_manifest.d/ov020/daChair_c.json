@@ -540,7 +540,7 @@
   "externalized_output": [],
   "defined_symbol_renames": [
     {
-      "from": "@683",
+      "from": "@696",
       "to": "@678",
       "evidence": "compiler temp; the current source moves this TU's per-TU @NNN uniquifier, so mwcc emits it as @690 (was @691); licensed under the existing pin"
     }

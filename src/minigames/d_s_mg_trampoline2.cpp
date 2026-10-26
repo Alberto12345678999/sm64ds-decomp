@@ -41,6 +41,7 @@ enum d_s_mg_trampoline2_AssetId {
 #define _ZTV18dScMgTrampoline2_c _ZTV18dScMgTrampoline2_c_decl_common_shadow
 #include "decl_common.h"
 #include "PlayerInput.h"
+#include "Sound.h"
 /* local: the ROM re-reads the slot byte at each use here, so keep the read volatile. */
 #define ACTIVE_SLOT (*(volatile unsigned char *)&gActivePlayerSlot)
 /* local: these readers only reproduce through a 4-byte-record view of the lane. */
@@ -137,7 +138,6 @@ extern void MultiStore16(unsigned short val, char *dst, int nbytes);
 extern const u16 sTrmp2BrushPltt[];
 extern dFdBrightness_c *data_0209f5bc;
 extern int sTrmp2TouchBlocked;
-unsigned int func_02012790(unsigned int a);
 int TrmpLine_Create(u16 *a, u16 *b);
 extern "C" void Mg_CommitRecords(void);
 void func_0203cd80(int *m, short angle);

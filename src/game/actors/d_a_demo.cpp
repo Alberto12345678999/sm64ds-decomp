@@ -523,7 +523,6 @@ extern short ReadUnalignedShort(unsigned char *p);
 extern s16 Vec3_HorzAngle(const struct Vector3 *v0, const struct Vector3 *v1);
 /* local extern dropped: decl_common.h declares data_ov002_0210bc88 as 'int'; callers cast the address */
 extern void AddVec3(Vec3 *a, Vec3 *b, Vec3 *c);
-extern void func_0201267c(int a, void *p);
 extern void func_020731dc(void *object, void *destructor, void **node);
 extern void MulVec3Mat4x3(Vector3 *v, Matrix4x3 *m, Vector3 *dst);
 extern int* Vec3_LslInPlace(int *v, int sh);
@@ -538,7 +537,6 @@ extern int data_ov002_0210b958;
 extern s16 Vec3_VertAngle(const struct Vector3* v1, const struct Vector3* v0);
 extern void ApproachAngle(s16* cur, s16 target, int divisor, int band, int maxStep);
 extern int _Z14ApproachLinearRiii(int* p, int a, int b);
-extern void func_02012790(int x);
 extern void func_0201f138(void);
 extern void func_0201ef38(void);
 extern void Math_Function_0203b0fc(int* p, int target, int scale, int max);
@@ -3971,8 +3969,8 @@ int daDemo_c::func_ov002_020f6c60(void *arg1, int arg2, int arg3)
     }
     if (arg2 != data_ov002_0210b614)
     {
-      func_0201267c(0x6a, &this->mCamSpacePosX);
-      data_ov002_0210b614 = arg2;
+        func_0201267c(0x6a, &this->mCamSpacePos);
+        data_ov002_0210b614 = arg2;
     }
   }
   if (arg3 == data_0209b274)

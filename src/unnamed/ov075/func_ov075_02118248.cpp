@@ -1,6 +1,7 @@
 //cpp
 #include "dScEntry_c.h"
 #include "types.h"
+#include "Sound.h"
 
 extern dScEntry_c::StepSet data_ov075_0211d870;
 extern dScEntry_c::StepSet data_ov075_0211d8b8;
@@ -12,7 +13,6 @@ extern dScEntry_c::StepSet data_ov075_0211d810;
 extern int func_0203da9c(void);
 extern int TouchArea_Update(void* c, int id);
 extern void func_ov001_020ab41c(void* c);
-extern void func_02012790(int x);
 
 void func_ov075_02118248(char* self)
 {

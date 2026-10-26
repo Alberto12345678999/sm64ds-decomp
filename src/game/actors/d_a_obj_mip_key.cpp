@@ -19,6 +19,7 @@
 #include "Player.h"
 #include "dCamera_c.h"
 #include "Message.h"
+#include "Sound.h"
 
 namespace Sound {
 bool PlaySub(u32, u32, u32, int, bool);
@@ -46,7 +47,6 @@ void  _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiE
 
 bool d_a_obj_mip_keyPlaySubHold(u32 a, u32 b, u32 c, Fix12i d, int loop);
 
-unsigned int func_02012790(unsigned int a);
 void  func_02013868(int t, int x);
 void  StartMinigameMenu(u8 a);
 

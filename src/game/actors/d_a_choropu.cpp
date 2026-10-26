@@ -57,6 +57,7 @@ enum daChoropu_c_AssetId {
 #include "SharedFilePtr.h"
 #include "dCc_c.h"
 #include "Player.h"
+#include "Sound.h"
 
 /* daChoropu_c's state table: one pointer-to-member per state, indexed by
  * the state number at +0x17c. */
@@ -109,7 +110,6 @@ int   RandomIntInternal(int *seed);
 short Vec3_HorzAngle(const Vector3 *a, const Vector3 *b);
 int   Vec3_HorzDist(const Vector3 *a, const Vector3 *b);
 void  Matrix4x3_FromRotationY(void *m, int ang);
-void  func_0201267c(unsigned int id, const void *pos);
 void  func_02012694(int a, void *p);
 
 void  func_ov080_02124418(daChoro_Rock_c *t);
@@ -279,7 +279,7 @@ void daChoropu_c::func_ov080_02123a34()
         a->mSpeedX = 0;
         a->mVertSpeed = (d << 2) / 100 + 0x4000;
         a->mSpeedZ = 0;
-        func_0201267c(0xd2, &mCamSpacePosX);
+        func_0201267c(0xd2, &mCamSpacePos);
     }
 
     if (mAnmModel.Finished() == 0)
@@ -420,7 +420,7 @@ void daChoropu_c::func_ov080_02123ecc()
             mPrevAngleY = mAngleY;
             *a = *a & ~daChoropu_CC_DISABLED;
             *b = *b | daChoropu_FLAG_EMERGED;
-            func_0201267c(0x116, &mCamSpacePosX);
+            func_0201267c(0x116, &mCamSpacePos);
         }
         return;
     }
@@ -498,7 +498,7 @@ void daChoropu_c::func_ov080_02124088()
         *pb0 &= ~daChoropu_FLAG_EMERGED;
     }
 
-    func_0201267c(0xd5, &mCamSpacePosX);
+    func_0201267c(0xd5, &mCamSpacePos);
 
     v1.x = mPosX;
     {

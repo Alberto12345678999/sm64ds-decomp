@@ -19,6 +19,7 @@
 #include "types.h"
 #include "decl_common.h"
 #include "PlayerInput.h"
+#include "Sound.h"
 
 /* sMCarlo2Cards is the head of the live card list and _02142568 its
  * tail (SetupBoard builds it); _0214256c heads the list of cleared cards,
@@ -60,7 +61,6 @@ int  GetGameLanguage(void);
 int  LoadFile(int handle);
 void DecompressLZ16(int src, int dst);
 void Vec2_Sub(int* out, int* a, int* b);
-unsigned int func_02012790(unsigned int id);
 int  func_0203d5dc(void* a, void* b);
 void Mg_CommitRecords(void* t);
 void Mg_SubmitScore(int score);
@@ -76,7 +76,6 @@ int  Dealer_Load(void* t);
 
 namespace GX { void LoadOBJPltt(const void*, unsigned int, unsigned int); }
 namespace GXS { void LoadOBJPltt(const void*, unsigned int, unsigned int); }
-namespace Sound { void PlayBank2_2D(unsigned int); }
 
 /* C++ linkage: the reference parameters are part of the ROM names. */
 int ApproachLinear(int& value, int target, int step);

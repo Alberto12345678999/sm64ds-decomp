@@ -120,7 +120,6 @@ extern unsigned char data_0209d45c;
 extern unsigned char DecIfAbove0_Byte(unsigned char *p);
 void Mg_AddCredits(void *c, int delta);
 void Mg_SubCredits(void *c, int val);
-extern unsigned int func_02012790(unsigned int arg);
 extern void Mg_SubmitScore(int self);
 extern int data_ov006_0213e948[];
 extern void Slot3_ReelDigits(char *c, int i);

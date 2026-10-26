@@ -128,7 +128,6 @@ void func_02020334(void);
 void func_02020124(void);
 int func_0203d890(void);
 u32 LoadCompressedFileAt(u16, void *);
-u32 func_02012790(u32);
 int Sound_PlayIfNotActive(int, int, int, int);
 void func_ov075_02116030(void *, int);
 void func_ov075_02116028(int *, int);

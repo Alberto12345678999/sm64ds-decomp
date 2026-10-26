@@ -119,7 +119,6 @@ void Camera_UpdateMatrices(void* self);
 int Mg_RenderSubSpriteScaled(int a0, int a1, int a2, int a3, int a4, int a5, u16 a6);
 void Mg_RenderSubSpriteMtx(void* a, int b, int c, void* m);
 void Mg_DrawScoreTally(void *c, int a, int b, int d);
-unsigned int func_02012790(unsigned int);
 void Mg_SubmitScore(int);
 void Mg_SetNextBanner(int);
 void Mg_SetSharedState(int);

@@ -47,6 +47,7 @@
 #include "dBgW.h"
 #include "dBgCh_Gnd.h"
 #include "nitro/fx/fx.h"
+#include "Sound.h"
 
 /* Actor IDs this TU compares. No header vocabulary exists (cleaned callers
  * pass raw hex), so they live here, cited to the ROM's own debug table. */
@@ -117,7 +118,6 @@ extern int Vec3_Dist(const Vector3 *, const Vector3 *);
 
 /* d_a_dkk.cpp's spelling, whose void return the enrolled definition at
  * src/engine/sound/Sound.cpp confirms. */
-extern void func_0201267c(int id, void *pos);
 
 /* Fix12<int> BY VALUE (6az): the header member form would home the argument
  * and move the caller. Scalar tail is deliberate; the (const Vector3 &)
@@ -256,7 +256,7 @@ void daDsnBase_c::func_ov091_02132f04()
     quakePos.y = mPosY;
     quakePos.z = mPosZ;
     Earthquake(quakePos, 0x7d0000);
-    func_0201267c(0xc7, &mCamSpacePosX);
+    func_0201267c(0xc7, &mCamSpacePos);
 }
 
 /* State 1, the hover. Spends the timer state 0 rolled, then drops to

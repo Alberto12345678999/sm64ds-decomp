@@ -93,7 +93,6 @@ int RandomIntInternal(int *seed);
 void SetBg2Offset(int x, int y);
 void SetSubBg2Offset(int x, int y);
 void SetSubBg0Offset(int a, int b);
-unsigned int func_02012790(unsigned int a);
 void FreeGfxSlotsById(int arg);
 void DrawOamSprite(void *a0, void *a1, int a2, void *a3);
 void Hud_RenderSprite(void *a, int b, int c, int d, int e);
@@ -1760,7 +1759,6 @@ void dScMgPanel_c::Scene_StateGameOver() {
 // @symbol _ZN12dScMgPanel_c17Scene_StateResultEv
 #pragma push
 #pragma opt_propagation off
-extern "C" {}
 void dScMgPanel_c::Scene_StateResult() {
     char *scene = (char *)this;
     extern PanelStateFnI sPanelPanelStateTable[];
