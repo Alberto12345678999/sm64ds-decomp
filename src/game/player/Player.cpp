@@ -15150,8 +15150,7 @@ void func_ov002_020d6368(char *self)
     rot.z = zero;
     rot.y = rotY;
 
-    spawned = dActor_c::Spawn(9, p->mEggParams << 4, pos, (const Vector3_16 *)&rot, p->mAreaId,
-                              -1);
+    spawned = dActor_c::Spawn(9, p->mEggParams << 4, pos, (const Vector3_16 *)&rot, p->mAreaId, -1);
     ((daYegg_c *)spawned)->mPlayer = (Player *)self;
     func_ov002_020d6334(self, (int)spawned);
     p->mEggParams = zero;

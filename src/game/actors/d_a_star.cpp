@@ -1766,7 +1766,8 @@ void daStar_c::func_ov002_020e96a0() {
             GiveVsStars(mPlayer->mPlayerNo, 1);
             func_ov002_020e8244(v, this);
             p = (char *)mPlayer;
-            SpawnNumber(*(Vector3 *)v, (unsigned int)data_0209f310[mPlayer->mPlayerNo], 1, 0, (dActor_c *)p);
+            SpawnNumber(*(Vector3 *)v, (unsigned int)data_0209f310[mPlayer->mPlayerNo], 1, 0,
+                        (dActor_c *)p);
             UntrackStar(mMarkerSlot);
         }
         mBits.visible = 0;
