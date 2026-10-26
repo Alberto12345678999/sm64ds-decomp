@@ -59,6 +59,8 @@
 #include "dClipper.h"
 #include "Sound.h"
 #include "math/MtxStack.h"
+#include "math/CalcLib.h"
+#include "cstd.h"
 
 /* The callees of this TU's members, spelled by their mangled or ROM names.
  * They cannot be declared inside a method body: a block-scope extern in a
@@ -69,13 +71,9 @@
  * a variable's name does not mangle. */
 extern "C" {
 
-short Vec3_HorzAngle(const void *a, const void *b);
-int   Vec3_Dist(const void *a, const void *b);
 void  func_0201267c(unsigned int id, const Vector3 *pos);
 void  func_020383f0(void *p);
-unsigned char DecIfAbove0_Byte(unsigned char *p);
 void  Vec3_Asr(void *d, void *s, int sh);
-int   Vec3_HorzDist(const Vector3 *a, const Vector3 *b);
 void  _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(void *self, void *shadow, void *mtx, int rad, int height, unsigned char flags);
 void  dBgCh_Actr_UpdateContinuous_Veneer(void *self);
 int   func_0203567c(int self);
@@ -84,11 +82,10 @@ unsigned int func_02012790(unsigned int arg);
 
 }
 
+/* Overloaded (short and int, src/ApproachAngle.cpp), so it stays out of
+ * math/CalcLib.h: the declaration-agreement gate gives a .h declaration
+ * unknown linkage and cannot pick the overload it names. */
 bool ApproachLinear(short &value, short target, short step);
-void UpdateAngle(short &angle, short target, int divisor, short maxStep);
-namespace cstd {
-int fdiv(int numerator, int denominator);
-}
 
 /* Actor IDs 0xbf, 0x10b and 0x10c are PLAYER, UKIKI_THIEF and UKIKI_STAR.
  * dActor_c::mFlags bits 0x20000 and 0x40000 are the two yoshi-mouth states.
@@ -563,8 +560,8 @@ int daMky_c::func_ov030_02112578()
         func_ov030_02111890();
         break;
     case 1:
-        ApproachLinear(this->mAngleY, Vec3_HorzAngle(&this->mPos, &player->mPosX), 0x300);
-        if (Vec3_Dist(&this->mPos, &player->mPosX) < 0x96000) {
+        ApproachLinear(this->mAngleY, Vec3_HorzAngle(&this->mPos, &player->mPos), 0x300);
+        if (Vec3_Dist(&this->mPos, &player->mPos) < 0x96000) {
             if (player->StartTalk(*this, 1) != 0) {
                 {
                     u8 *p = &this->mSubState;
@@ -1284,7 +1281,7 @@ int daMky_c::EnterState2() {
         this->mAngleY = Vec3_HorzAngle(&this->mPos, (Vector3 *)&this->mPerchPosX);
     } else if (Vec3_Dist((Vector3 *)&this->mPerchPosX, &this->mPos) < 0x514000 &&
                this->mPosY > this->mPerchPosY - 0x12c000) {
-        this->mAngleY = Vec3_HorzAngle(&this->mPos, &p->mPosX);
+        this->mAngleY = Vec3_HorzAngle(&this->mPos, &p->mPos);
     } else {
         this->mAngleY = Vec3_HorzAngle(&this->mPos, (Vector3 *)&this->mPerchPosX);
     }
@@ -1318,22 +1315,22 @@ int daMky_c::func_ov030_02113d20()
     if (p == 0)
         p = this->ClosestPlayer();
 
-    dist = Vec3_Dist(&this->mPos, &p->mPosX);
+    dist = Vec3_Dist(&this->mPos, &p->mPos);
 
-    if ((IsUkikiStar(this) && Vec3_Dist((Vector3 *)&this->mPerchPosX, &p->mPosX) > 0x514000) ||
+    if ((IsUkikiStar(this) && Vec3_Dist((Vector3 *)&this->mPerchPosX, &p->mPos) > 0x514000) ||
         p->mPosY < this->mPerchPosY - 0x12c000) {
         this->mSubState = 2;
     }
 
     switch (this->mSubState) {
     case 0:
-        angle = Vec3_HorzAngle(&this->mPos, &p->mPosX) + 0x8000;
+        angle = Vec3_HorzAngle(&this->mPos, &p->mPos) + 0x8000;
         this->mHorzSpeed = 0x13000;
         if (dist >= 0x1f4000)
             this->mSubState = 2;
         break;
     case 1:
-        angle = Vec3_HorzAngle(&this->mPos, &p->mPosX);
+        angle = Vec3_HorzAngle(&this->mPos, &p->mPos);
         this->mHorzSpeed = 0xc000;
         if (dist < 0x190000)
             this->mSubState = 0;
@@ -1341,7 +1338,7 @@ int daMky_c::func_ov030_02113d20()
             this->mSubState = 2;
         break;
     case 2:
-        angle = Vec3_HorzAngle(&this->mPos, &p->mPosX);
+        angle = Vec3_HorzAngle(&this->mPos, &p->mPos);
         this->mHorzSpeed = 0;
         if (dist < 0x190000)
             this->mSubState = 0;
