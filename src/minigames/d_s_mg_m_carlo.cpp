@@ -20,6 +20,7 @@ enum d_s_mg_m_carlo_AssetId { ASSET_D_2D_MG_CARD_NCL_BIN = 0x00bb };
 #include "decl_common.h"
 #include "dScMgCard_c.h"
 #include "PlayerInput.h"
+#include "Sound.h"
 
 /* Coined from the card transitions in DealIn and Update. The byte-sized
  * mState field retains its existing layout. */
@@ -36,9 +37,6 @@ enum CardState {
  * encode. */
 namespace GXS {
 void LoadOBJPltt(void const *, unsigned int, unsigned int);
-}
-namespace Sound {
-void PlayBank2_2D(u32 id);
 }
 int ApproachLinear(int &value, int target, int step);
 int ApproachLinear2(s16 &value, s16 target, s16 step);
@@ -66,7 +64,6 @@ extern int sMCarloCardSprites[];
 extern void Vec2_Sub(int *o, int *a, int *b);
 extern void func_0203d630(int *p, int m);
 extern int sMgCoinsBetPlaced;
-extern unsigned int func_02012790(unsigned int a);
 extern int func_0203d5dc(void *a, void *b);
 extern int sMCarloHudSprite;
 extern void Mg_DrawNumber(int a, int b, int c, int d, int e, int f, int g);
