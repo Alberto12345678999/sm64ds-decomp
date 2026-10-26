@@ -56,7 +56,7 @@ struct daTor_c : dActor_c {
        checks. D1 and not D2, so it is this type and not an inlined base. The marker's pad
        stopped short of the object, so the member also takes over mAnimation (+0x50 = the
        dExtFrameCtrl_c base), which the header declared separately inside it. */
-    dExtAnmModel_c mModelAnim; /* 0x2c4 */
+    dExtAnmModel_c mAnmModel; /* 0x2c4 */
     /* dExtAnmTexSRT_c member, named by the class's own destructor calling
        dExtAnmTexSRT_c's D1 at +0x328 -- a relocation the ROM build
        checks. Was a u8 marker. */

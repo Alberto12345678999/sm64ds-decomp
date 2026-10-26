@@ -17,8 +17,8 @@
  *     0x3a4 dExtShadowModel_c                0x28   -> 0x3cc
  *
  * Typing them absorbed these markers, which were a member's insides:
- *   - 0x390 mAnimation   = mModelAnim + 0x50
- *   - 0x39c unk_39c      = mModelAnim + 0x5c
+ *   - 0x390 mAnimation   = mAnmModel + 0x50
+ *   - 0x39c unk_39c      = mAnmModel + 0x5c
  *
  * Member NAMES are the ones this header already used -- a rebase should not
  * also rename things its callers spell.
@@ -75,7 +75,7 @@ struct daPopoi_c : dEnemyBase_c {
     dCcAc_c           mdCcAc_c;   /* 0x110 */
     dCcAcPos_c    mdCcAcPos_c; /* 0x144 */
     dBgCh_Actr                 mWithMeshClsn;         /* 0x184 */
-    dExtAnmModel_c mModelAnim;                        /* 0x340 */
+    dExtAnmModel_c mAnmModel;                         /* 0x340 */
     dExtShadowModel_c                  mShadowModel;          /* 0x3a4 */
     u8  pad_3cc[0x30];                                   /* 0x3cc -- no function here touches it */
     /* The current state's record; see the table above. Installed by
@@ -138,7 +138,7 @@ struct daPopoi_c : dEnemyBase_c {
     void func_ov077_02126528();
     /* State installer: stores the record in mState and runs its enter handler. */
     int  func_ov077_02126d5c(daPopoi_StateRecord *next);
-    /* Rebuilds mModelAnim.mat4x3 from mAngleY and mPos. Behavior only. */
+    /* Rebuilds mAnmModel.mat4x3 from mAngleY and mPos. Behavior only. */
     void func_ov077_02126dac();
 
     /* The five state records' handler pairs; see the table above. */

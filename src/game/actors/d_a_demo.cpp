@@ -3932,7 +3932,7 @@ int daDemo_c::func_ov002_020f6c24(unsigned char *src)
 int daDemo_c::func_ov002_020f6c34(unsigned char *src)
 {
     unsigned char v = *src;
-    ((anmModel_c*)this->mModelAnim)->func_ov002_020f6514((u8*)&data_ov002_0210bc88, v);
+    ((anmModel_c *)this->mAnmModel)->func_ov002_020f6514((u8 *)&data_ov002_0210bc88, v);
     return 1;
 }
 
@@ -4014,39 +4014,39 @@ int daDemo_c::func_ov002_020f6c60(void *arg1, int arg2, int arg3)
 
 int daDemo_c::func_ov002_020f6e48(unsigned char *p)
 {
-  int b;
-  int c0;
-  int d;
-  int e;
-  int a;
-  int f;
-  unsigned char new_var;
-  int rv;
-  int new_var2;
-  a = ReadUnalignedShort(p + 4) << 12;
-  b = ReadUnalignedShort(p + 2) << 12;
-  c0 = ReadUnalignedShort(p) << 12;
-  this->mPosX = c0;
-  this->mPosY = b;
-  this->mPosZ = a;
-  d = ReadUnalignedShort(p + 0xa);
-  e = ReadUnalignedShort(p + 8);
-  f = ReadUnalignedShort(p + 6);
-  this->mAngleX = (short) f;
-  this->mAngleY = (short) e;
-  this->mAngleZ = (short) d;
-  this->mPrevAngleX = this->mAngleX;
-  this->mPrevAngleY = this->mAngleY;
-  this->mPrevAngleZ = this->mAngleZ;
-  this->mMagnitude = (new_var = p[0xc]) << 12;
-  this->mScaleX = 0xb33;
-  this->mScaleY = 0xb33;
-  this->mScaleZ = 0xb33;
-  rv = mModelAnim->numFramesAndFlags;
-  new_var2 = RandomIntInternal(&data_0209e650);
-  mModelAnim->currFrame =
-      ((unsigned short)(FX_MUL((int)((((unsigned int)new_var2) >> 20) & 0xfff), rv) >> 12)) << 12;
-  return 1;
+    int b;
+    int c0;
+    int d;
+    int e;
+    int a;
+    int f;
+    unsigned char new_var;
+    int rv;
+    int new_var2;
+    a = ReadUnalignedShort(p + 4) << 12;
+    b = ReadUnalignedShort(p + 2) << 12;
+    c0 = ReadUnalignedShort(p) << 12;
+    this->mPosX = c0;
+    this->mPosY = b;
+    this->mPosZ = a;
+    d = ReadUnalignedShort(p + 0xa);
+    e = ReadUnalignedShort(p + 8);
+    f = ReadUnalignedShort(p + 6);
+    this->mAngleX = (short)f;
+    this->mAngleY = (short)e;
+    this->mAngleZ = (short)d;
+    this->mPrevAngleX = this->mAngleX;
+    this->mPrevAngleY = this->mAngleY;
+    this->mPrevAngleZ = this->mAngleZ;
+    this->mMagnitude = (new_var = p[0xc]) << 12;
+    this->mScaleX = 0xb33;
+    this->mScaleY = 0xb33;
+    this->mScaleZ = 0xb33;
+    rv = mAnmModel->numFramesAndFlags;
+    new_var2 = RandomIntInternal(&data_0209e650);
+    mAnmModel->currFrame =
+        ((unsigned short)(FX_MUL((int)((((unsigned int)new_var2) >> 20) & 0xfff), rv) >> 12)) << 12;
+    return 1;
 }
 
 /* -------------------------------------------------------------------------- */
@@ -4063,7 +4063,7 @@ void daDemo_c::func_ov002_020f6f48(struct Vector3 *v, int amt)
     Matrix4x3 *m;
     ApproachAngle(&this->mAngleX, Vec3_VertAngle((&this->mPos), v), amt, 0x4000, 0);
     ApproachAngle(&this->mAngleY, Vec3_HorzAngle((&this->mPos), v), amt, 0x4000, 0);
-    m = &this->mModelAnim->mat4x3;
+    m = &this->mAnmModel->mat4x3;
     this->mSpeedX = FX_MUL(this->mMagnitude, m->m[6]);
     this->mVertSpeed = FX_MUL(this->mMagnitude, m->m[7]);
     this->mSpeedZ = FX_MUL(this->mMagnitude, m->m[8]);
@@ -4103,7 +4103,7 @@ int daDemo_c::func_ov002_020f7038(int a, int arg)
         }
     }
     {
-        anmModel_c *obj = (anmModel_c *)this->mModelAnim;
+        anmModel_c *obj = (anmModel_c *)this->mAnmModel;
         if (obj->mAnimEntry == 0 && (this->mGroundFlags & 1)) {
             obj->func_ov002_020f6514((u8 *)&data_ov002_0210bc88, 1);
         }
@@ -4250,7 +4250,7 @@ int daDemo_c::func_ov002_020f7410(unsigned char *in, int sel)
 // @symbol _ZN8daDemo_c19func_ov002_020f7538EPhi
 /* Script handler 3. On the start frame, when arg1[0] is non-zero, it sets
  * fixed angles and clears mRate. Every frame Math_Function_0203b0fc moves
- * mRate toward 1.0 (arg1[0] non-zero) or 0, and the vector at mModelAnim +
+ * mRate toward 1.0 (arg1[0] non-zero) or 0, and the vector at mAnmModel +
  * 0x64 (the param_c tail base) becomes base + (data_ov002_02110e0c - base) *
  * mRate, with base data_ov002_02110df4 or data_ov002_02110e18 by the same
  * test. mPos = that vector times INV_VIEW_MATRIX_ASR_3, then << 3; mMagnitude
@@ -4258,71 +4258,71 @@ int daDemo_c::func_ov002_020f7410(unsigned char *in, int sel)
 
 int daDemo_c::func_ov002_020f7538(unsigned char *arg1, int arg2)
 {
-  int a = arg1[0];
-  int b = arg1[1];
-  int f1 = a << 0xc;
-  int f2 = b << 8;
-  int* base;
-  int scale;
-  Vec3 tmp, diff, scaled, sum;
+    int a = arg1[0];
+    int b = arg1[1];
+    int f1 = a << 0xc;
+    int f2 = b << 8;
+    int *base;
+    int scale;
+    Vec3 tmp, diff, scaled, sum;
 
-  if (f1 != 0 && arg2 == data_0209b274) {
-    this->mAngleX = 0xd00;
-    this->mAngleY = -0x7300;
-    this->mAngleZ = 0x2f00;
-    this->mRate = 0;
-  }
+    if (f1 != 0 && arg2 == data_0209b274) {
+        this->mAngleX = 0xd00;
+        this->mAngleY = -0x7300;
+        this->mAngleZ = 0x2f00;
+        this->mRate = 0;
+    }
 
-  if (!(data_ov002_02110b04 & 1)) {
-    data_ov002_02110df4[0] = 0x2800;
-    data_ov002_02110df4[1] = 0xfffee900;
-    data_ov002_02110df4[2] = -0x4200;
-    func_020731dc(data_ov002_02110df4, (void *)_ZN7Vector3D1Ev, (void**)data_ov002_02110de8);
-    data_ov002_02110b04 |= 1;
-  }
-  if (!(data_ov002_02110afc & 1)) {
-    data_ov002_02110e0c[0] = 0x3300;
-    data_ov002_02110e0c[1] = 0xfffee900;
-    data_ov002_02110e0c[2] = -0x5e00;
-    func_020731dc(data_ov002_02110e0c, (void *)_ZN7Vector3D1Ev, (void**)data_ov002_02110e00);
-    data_ov002_02110afc |= 1;
-  }
-  if (!(data_ov002_02110b08 & 1)) {
-    data_ov002_02110e18[0] = 0x4c00;
-    data_ov002_02110e18[1] = -0xf200;
-    data_ov002_02110e18[2] = -0xff00;
-    func_020731dc(data_ov002_02110e18, (void *)_ZN7Vector3D1Ev, (void**)data_ov002_02110dac);
-    data_ov002_02110b08 |= 1;
-  }
+    if (!(data_ov002_02110b04 & 1)) {
+        data_ov002_02110df4[0] = 0x2800;
+        data_ov002_02110df4[1] = 0xfffee900;
+        data_ov002_02110df4[2] = -0x4200;
+        func_020731dc(data_ov002_02110df4, (void *)_ZN7Vector3D1Ev, (void **)data_ov002_02110de8);
+        data_ov002_02110b04 |= 1;
+    }
+    if (!(data_ov002_02110afc & 1)) {
+        data_ov002_02110e0c[0] = 0x3300;
+        data_ov002_02110e0c[1] = 0xfffee900;
+        data_ov002_02110e0c[2] = -0x5e00;
+        func_020731dc(data_ov002_02110e0c, (void *)_ZN7Vector3D1Ev, (void **)data_ov002_02110e00);
+        data_ov002_02110afc |= 1;
+    }
+    if (!(data_ov002_02110b08 & 1)) {
+        data_ov002_02110e18[0] = 0x4c00;
+        data_ov002_02110e18[1] = -0xf200;
+        data_ov002_02110e18[2] = -0xff00;
+        func_020731dc(data_ov002_02110e18, (void *)_ZN7Vector3D1Ev, (void **)data_ov002_02110dac);
+        data_ov002_02110b08 |= 1;
+    }
 
-  if (f1 != 0) {
-    base = data_ov002_02110df4;
-    scale = 0x1000;
-  } else {
-    base = data_ov002_02110e18;
-    scale = 0;
-  }
+    if (f1 != 0) {
+        base = data_ov002_02110df4;
+        scale = 0x1000;
+    } else {
+        base = data_ov002_02110e18;
+        scale = 0;
+    }
 
-  Math_Function_0203b0fc(&this->mRate, scale, 0x40, 0x100);
-  Vec3_Sub(&diff, (Vec3*)data_ov002_02110e0c, (Vec3*)base);
-  tmp.x = diff.x;
-  tmp.y = diff.y;
-  tmp.z = diff.z;
-  Vec3_MulScalar(&scaled, &tmp, this->mRate);
-  Vec3_Add(&sum, (Vec3*)base, &scaled);
+    Math_Function_0203b0fc(&this->mRate, scale, 0x40, 0x100);
+    Vec3_Sub(&diff, (Vec3 *)data_ov002_02110e0c, (Vec3 *)base);
+    tmp.x = diff.x;
+    tmp.y = diff.y;
+    tmp.z = diff.z;
+    Vec3_MulScalar(&scaled, &tmp, this->mRate);
+    Vec3_Add(&sum, (Vec3 *)base, &scaled);
 
-  {
-      Vector3 *dp = ((param_c &)*(anmModel_c *)this->mModelAnim).mScale;
-      dp->x = sum.x;
-      dp->y = sum.y;
-      dp->z = sum.z;
-  }
-  MulVec3Mat4x3(((param_c &)*(anmModel_c *)this->mModelAnim).mScale, (Matrix4x3 *)&data_0209b41c,
-                &this->mPos);
-  Vec3_LslInPlace((int*)(&this->mPosX), 3);
-  _Z14ApproachLinearRiii(&this->mMagnitude, f1, f2);
-  this->mOpacity = this->mMagnitude >> 0xc;
-  return 1;
+    {
+        Vector3 *dp = ((param_c &)*(anmModel_c *)this->mAnmModel).mScale;
+        dp->x = sum.x;
+        dp->y = sum.y;
+        dp->z = sum.z;
+    }
+    MulVec3Mat4x3(((param_c &)*(anmModel_c *)this->mAnmModel).mScale, (Matrix4x3 *)&data_0209b41c,
+                  &this->mPos);
+    Vec3_LslInPlace((int *)(&this->mPosX), 3);
+    _Z14ApproachLinearRiii(&this->mMagnitude, f1, f2);
+    this->mOpacity = this->mMagnitude >> 0xc;
+    return 1;
 }
 
 /* -------------------------------------------------------------------------- */
@@ -4575,13 +4575,17 @@ extern "C" void func_ov002_020f7d74(daDemo_c* self, unsigned char* p, int a2, in
 // @symbol _ZN8daDemo_c16CleanupResourcesEv
 int daDemo_c::CleanupResources()
 {
-  int r1 = param1;
-  if (r1 == 0x2e) return func_ov002_020f63a0();
-  if (r1 == 0x2f) return func_ov002_020f23d0();
-  /* The guards are compiled in: bare deletes build 0x70, not the ROM's 0x80. */
-  if (mModel) delete mModel;
-  if (mModelAnim) delete mModelAnim;
-  return 1;
+    int r1 = param1;
+    if (r1 == 0x2e)
+        return func_ov002_020f63a0();
+    if (r1 == 0x2f)
+        return func_ov002_020f23d0();
+    /* The guards are compiled in: bare deletes build 0x70, not the ROM's 0x80. */
+    if (mModel)
+        delete mModel;
+    if (mAnmModel)
+        delete mAnmModel;
+    return 1;
 }
 
 // @symbol _ZN8daDemo_c16OnPendingDestroyEv
@@ -4626,10 +4630,10 @@ int daDemo_c::Render() {
     if (mModel != 0) {
         mModel->ApplyOpacity(op, 0);
         mModel->Render(&mScale);
-    } else if (mModelAnim != 0) {
-        ((anmModel_c *)mModelAnim)->func_ov002_020f65b8();
-        mModelAnim->ApplyOpacity(mOpacity, 0);
-        mModelAnim->Render(&mScale);
+    } else if (mAnmModel != 0) {
+        ((anmModel_c *)mAnmModel)->func_ov002_020f65b8();
+        mAnmModel->ApplyOpacity(mOpacity, 0);
+        mAnmModel->Render(&mScale);
     }
     return 1;
 }
@@ -4637,72 +4641,64 @@ int daDemo_c::Render() {
 // @symbol _ZN8daDemo_c8BehaviorEv
 int daDemo_c::Behavior()
 {
-  Vector3 v;
-  Vec3 asr;
-  int new_var2;
-  s32 t;
-  t = this->param1;
-  if (t == 0x2e)
-  {
-    return func_ov002_020f63d4();
-  }
-  if (t == 0x2f)
-  {
-    return func_ov002_020f23f0();
-  }
-  if ((((u32) t) >= 0x1a) && (((u32) t) <= 0x2d))
-  {
-    UpdatePosWithOnlySpeed(0);
-  }
-  else
-  {
-    UpdatePos(0);
-  }
-  {
-      anmModel_c *g = (anmModel_c *)this->mModelAnim;
-      if ((g != 0) && (g->mSnapToFloor != 0)) {
-          {
-              s32 xx = this->mPosX;
-              s32 yy = this->mPosY;
-              s32 zz = this->mPosZ;
-              new_var2 = yy + 0x96000;
-              v.x = xx;
-              v.y = new_var2;
-              v.z = zz;
-          }
-          dBgCh_Gnd ground;
-          ground.SetObjAndPos(v, 0);
-          if (ground.DetectClsn() != 0) {
-              s32 h = ground.clsnY;
-              if ((this->mPosY) < h) {
-                  this->mPosY = h;
-                  this->mGroundFlags |= 1;
-              }
-          }
-      }
-  }
-  Vec3_Asr(&asr, (Vec3 *) (&this->mPosX), 3);
-  Matrix4x3_FromTranslation(&data_020a0e68, asr.x, asr.y, asr.z);
-  t = this->param1;
-  if ((((u32) t) >= 0x1a) && (((u32) t) <= 0x2d))
-  {
-    Matrix4x3_ApplyInPlaceToRotationZXYExt(&data_020a0e68, this->mAngleX, this->mAngleY, this->mAngleZ);
-  }
-  else
-  {
-    Matrix4x3_ApplyInPlaceToRotationXYZExt(&data_020a0e68, this->mAngleX, this->mAngleY, this->mAngleZ);
-  }
-  if (this->mModel != 0)
-  {
-    this->mModel->mat4x3 = data_020a0e68;
-  }
-  if (this->mModelAnim != 0)
-  {
-    this->mModelAnim->mat4x3 = data_020a0e68;
-    (((anmModel_c*)this->mModelAnim))->func_ov002_020f64ac((char*)&data_ov002_0210bc88);
-    (((anmModel_c*)this->mModelAnim))->func_ov002_020f65ec();
-  }
-  return 1;
+    Vector3 v;
+    Vec3 asr;
+    int new_var2;
+    s32 t;
+    t = this->param1;
+    if (t == 0x2e) {
+        return func_ov002_020f63d4();
+    }
+    if (t == 0x2f) {
+        return func_ov002_020f23f0();
+    }
+    if ((((u32)t) >= 0x1a) && (((u32)t) <= 0x2d)) {
+        UpdatePosWithOnlySpeed(0);
+    } else {
+        UpdatePos(0);
+    }
+    {
+        anmModel_c *g = (anmModel_c *)this->mAnmModel;
+        if ((g != 0) && (g->mSnapToFloor != 0)) {
+            {
+                s32 xx = this->mPosX;
+                s32 yy = this->mPosY;
+                s32 zz = this->mPosZ;
+                new_var2 = yy + 0x96000;
+                v.x = xx;
+                v.y = new_var2;
+                v.z = zz;
+            }
+            dBgCh_Gnd ground;
+            ground.SetObjAndPos(v, 0);
+            if (ground.DetectClsn() != 0) {
+                s32 h = ground.clsnY;
+                if ((this->mPosY) < h) {
+                    this->mPosY = h;
+                    this->mGroundFlags |= 1;
+                }
+            }
+        }
+    }
+    Vec3_Asr(&asr, (Vec3 *)(&this->mPosX), 3);
+    Matrix4x3_FromTranslation(&data_020a0e68, asr.x, asr.y, asr.z);
+    t = this->param1;
+    if ((((u32)t) >= 0x1a) && (((u32)t) <= 0x2d)) {
+        Matrix4x3_ApplyInPlaceToRotationZXYExt(&data_020a0e68, this->mAngleX, this->mAngleY,
+                                               this->mAngleZ);
+    } else {
+        Matrix4x3_ApplyInPlaceToRotationXYZExt(&data_020a0e68, this->mAngleX, this->mAngleY,
+                                               this->mAngleZ);
+    }
+    if (this->mModel != 0) {
+        this->mModel->mat4x3 = data_020a0e68;
+    }
+    if (this->mAnmModel != 0) {
+        this->mAnmModel->mat4x3 = data_020a0e68;
+        (((anmModel_c *)this->mAnmModel))->func_ov002_020f64ac((char *)&data_ov002_0210bc88);
+        (((anmModel_c *)this->mAnmModel))->func_ov002_020f65ec();
+    }
+    return 1;
 }
 
 // @symbol _ZN8daDemo_c13InitResourcesEv
@@ -4710,23 +4706,37 @@ int daDemo_c::Behavior()
  * param_c's constructor on the tail base, the model base's C2, then the
  * class vptr and, for anmModel_c, the dExtFrameCtrl_c base's secondary vptr
  * at +0x50. The model base sits at offset 0, so storing the result in
- * mModel/mModelAnim needs no null test. */
+ * mModel/mAnmModel needs no null test. */
 int daDemo_c::InitResources()
 {
     int t;
 
     if (param1 == 0x12) {
-        this->mModelAnim = new anmModel_c;
-        if (this->mModelAnim == 0) return 0;
-        if (((anmModel_c*)this->mModelAnim)->func_ov002_020f6618((SharedFilePtr*)&data_ov085_0213074c, 1, (SharedFilePtr**)&data_ov002_0210b60c, 1, 1, (SharedFilePtr**)&data_ov002_0210b608, -1) == 0) return 0;
+        this->mAnmModel = new anmModel_c;
+        if (this->mAnmModel == 0)
+            return 0;
+        if (((anmModel_c *)this->mAnmModel)
+                ->func_ov002_020f6618((SharedFilePtr *)&data_ov085_0213074c, 1,
+                                      (SharedFilePtr **)&data_ov002_0210b60c, 1, 1,
+                                      (SharedFilePtr **)&data_ov002_0210b608, -1) == 0)
+            return 0;
     } else if (param1 == 0x13) {
-        this->mModelAnim = new anmModel_c;
-        if (this->mModelAnim == 0) return 0;
+        this->mAnmModel = new anmModel_c;
+        if (this->mAnmModel == 0)
+            return 0;
         t = (*(volatile unsigned char *)&data_0209f2d8 == 2);
         if (t == 0) {
-            if (((anmModel_c*)this->mModelAnim)->func_ov002_020f6618((SharedFilePtr*)&data_ov002_02110b98, 1, (SharedFilePtr**)&data_ov002_0210b610, 1, 1, (SharedFilePtr**)&data_ov002_0210b600, 0x16) == 0) return 0;
+            if (((anmModel_c *)this->mAnmModel)
+                    ->func_ov002_020f6618((SharedFilePtr *)&data_ov002_02110b98, 1,
+                                          (SharedFilePtr **)&data_ov002_0210b610, 1, 1,
+                                          (SharedFilePtr **)&data_ov002_0210b600, 0x16) == 0)
+                return 0;
         } else {
-            if (((anmModel_c*)this->mModelAnim)->func_ov002_020f6618((SharedFilePtr*)&data_ov002_02110c18, 0xD, (SharedFilePtr**)&data_ov002_0210bcf0, 1, 0xD, (SharedFilePtr**)&data_ov002_0210bd24, 0x16) == 0) return 0;
+            if (((anmModel_c *)this->mAnmModel)
+                    ->func_ov002_020f6618((SharedFilePtr *)&data_ov002_02110c18, 0xD,
+                                          (SharedFilePtr **)&data_ov002_0210bcf0, 1, 0xD,
+                                          (SharedFilePtr **)&data_ov002_0210bd24, 0x16) == 0)
+                return 0;
         }
     } else if (param1 >= 0x14 && param1 <= 0x16) {
         this->mModel = new simpleModel_c;
@@ -4745,9 +4755,13 @@ int daDemo_c::InitResources()
         if (this->mModel == 0) return 0;
         if (((simpleModel_c*)this->mModel)->func_ov002_020f6960((SharedFilePtr*)&data_ov002_02110b78, 0x13) == 0) return 0;
     } else if (param1 >= 0x1A && param1 <= 0x2D) {
-        this->mModelAnim = new anmModel_c;
-        if (this->mModelAnim == 0) return 0;
-        if (((anmModel_c*)this->mModelAnim)->func_ov002_020f6618((SharedFilePtr*)data_ov009_02113c20, 1, (SharedFilePtr**)&data_ov002_0210b604, 0, 0, 0, -1) == 0) return 0;
+        this->mAnmModel = new anmModel_c;
+        if (this->mAnmModel == 0)
+            return 0;
+        if (((anmModel_c *)this->mAnmModel)
+                ->func_ov002_020f6618((SharedFilePtr *)data_ov009_02113c20, 1,
+                                      (SharedFilePtr **)&data_ov002_0210b604, 0, 0, 0, -1) == 0)
+            return 0;
     }
     mScaleX = 0x1000;
     mScaleY = 0x1000;

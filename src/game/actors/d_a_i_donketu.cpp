@@ -106,7 +106,7 @@ int daIDonketu_c::InitResources()
  * why mStarSlot is signed. See the long note on that symbol in dActor_c.h. */
 int daIDonketu_c::Behavior()
 {
-    int r = UpdateKillByInvincibleChar(mWithMeshClsn, mModelAnim, 0);
+    int r = UpdateKillByInvincibleChar(mWithMeshClsn, mAnmModel, 0);
     if (r != 0) {
         if (r == 2) {
             Vector3 v;

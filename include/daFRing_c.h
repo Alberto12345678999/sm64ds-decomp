@@ -15,7 +15,7 @@
  *     dExtAnmModel_c           0x0d4 + 0x064 = 0x138   -> mTextureSequence1
  *     dExtAnmTexPat_c     0x138 + 0x014 = 0x14c   -> mMaterialChanger1
  *     dExtAnmMaterial_c     0x14c + 0x014 = 0x160   -> mTextureTransformer1
- *     dExtAnmTexSRT_c  0x160 + 0x014 = 0x174   -> mModelAnim2
+ *     dExtAnmTexSRT_c  0x160 + 0x014 = 0x174   -> mAnmModel2
  *     dExtAnmModel_c           0x174 + 0x064 = 0x1d8   -> mTextureSequence2
  *     dExtAnmTexPat_c     0x1d8 + 0x014 = 0x1ec   -> mMaterialChanger2
  *     dExtAnmMaterial_c     0x1ec + 0x014 = 0x200   -> mTextureTransformer2
@@ -51,11 +51,11 @@
 
 struct daFRing_c : dActor_c {
     u8 pad_0d0[0x4];
-    dExtAnmModel_c mModelAnim1;                /* 0x0d4 */
+    dExtAnmModel_c mAnmModel1;                 /* 0x0d4 */
     dExtAnmTexPat_c mTextureSequence1;         /* 0x138 */
     dExtAnmMaterial_c mMaterialChanger1;       /* 0x14c */
     dExtAnmTexSRT_c mTextureTransformer1;      /* 0x160 */
-    dExtAnmModel_c mModelAnim2;                /* 0x174 */
+    dExtAnmModel_c mAnmModel2;                 /* 0x174 */
     dExtAnmTexPat_c mTextureSequence2;         /* 0x1d8 */
     dExtAnmMaterial_c mMaterialChanger2;       /* 0x1ec */
     dExtAnmTexSRT_c mTextureTransformer2;      /* 0x200 */
@@ -88,11 +88,11 @@ struct daFRing_c {
     s32 mPosY;                                 /* 0x060 */
     s32 mPosZ;                                 /* 0x064 */
     u8 pad_068[0x6c];
-    dExtAnmModel_c mModelAnim1;                /* 0x0d4 */
+    dExtAnmModel_c mAnmModel1;                 /* 0x0d4 */
     dExtAnmTexPat_c mTextureSequence1;         /* 0x138 */
     dExtAnmMaterial_c mMaterialChanger1;       /* 0x14c */
     dExtAnmTexSRT_c mTextureTransformer1;      /* 0x160 */
-    dExtAnmModel_c mModelAnim2;                /* 0x174 */
+    dExtAnmModel_c mAnmModel2;                 /* 0x174 */
     dExtAnmTexPat_c mTextureSequence2;         /* 0x1d8 */
     dExtAnmMaterial_c mMaterialChanger2;       /* 0x1ec */
     dExtAnmTexSRT_c mTextureTransformer2;      /* 0x200 */

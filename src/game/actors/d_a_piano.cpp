@@ -98,12 +98,12 @@ int daPiano_c::InitResources()
     void *f;
 
     f = dExtSimpleModel_c::LoadFile(gPianoModelFile);
-    mModelAnim.SetFile((BMD_File *)f, 1, -1);
+    mAnmModel.SetFile((BMD_File *)f, 1, -1);
     mShadowModel1.InitCuboid();
     mShadowModel2.InitCuboid();
     mShadowModel3.InitCylinder();
     f = dExtFrameCtrl_c::LoadFile(gPianoAttackAnimationFile);
-    mModelAnim.SetAnim((BCA_File *)f, 0, 0x1000, 0);
+    mAnmModel.SetAnim((BCA_File *)f, 0, 0x1000, 0);
     mVertAccel = -0x2000;
     mTerminalVelocity = -0x3c000;
     mHomePos.x = mPosX;
@@ -161,7 +161,7 @@ int daPiano_c::Behavior()
 // @symbol _ZN9daPiano_c6RenderEv
 int daPiano_c::Render()
 {
-    mModelAnim.Render(0);
+    mAnmModel.Render(0);
     return 1;
 }
 
@@ -300,7 +300,7 @@ void daPiano_c::func_ov063_0211dbb8() {
  * 30-frame windup before the bite. */
 void daPiano_c::func_ov063_0211dba4()
 {
-    this->mModelAnim.speed = 4096;
+    this->mAnmModel.speed = 4096;
     this->mAttackTimer = 30;
 }
 
@@ -359,7 +359,7 @@ void daPiano_c::func_ov063_0211d8cc()
             break;
     }
 
-    if ((u16)(this->mModelAnim.currFrame >> 12) == 0)
+    if ((u16)(this->mAnmModel.currFrame >> 12) == 0)
         func_0201267c(0x106, &this->mCamSpacePos);
 
     target = this->mTarget;
@@ -369,19 +369,19 @@ void daPiano_c::func_ov063_0211d8cc()
         ApproachLinear(this->mPrevAngleY, Vec3_HorzAngle(&this->mPos, &this->mTarget->mPos), 0x200);
         this->mAngleY = this->mPrevAngleY;
         if (dist > 0x3ab000) {
-            if ((u16)(this->mModelAnim.currFrame >> 12) == 0) {
+            if ((u16)(this->mAnmModel.currFrame >> 12) == 0) {
                 func_ov063_0211ddac(this, kStateSearch);
                 return;
             }
         }
     } else {
-        if ((u16)(this->mModelAnim.currFrame >> 12) == 0) {
+        if ((u16)(this->mAnmModel.currFrame >> 12) == 0) {
             func_ov063_0211ddac(this, kStateSearch);
             return;
         }
     }
 
-    this->mModelAnim.Advance();
+    this->mAnmModel.Advance();
 
     x = this->mPosX;
     proj.x = x;
@@ -417,10 +417,10 @@ extern "C" {
 void func_ov063_0211d88c(daPiano_c *self)
 {
     extern void Matrix4x3_FromRotationY(Matrix4x3 *, int);
-    Matrix4x3_FromRotationY(&self->mModelAnim.mat4x3, self->mAngleY);
-    self->mModelAnim.mat4x3.m[9] = self->mPosX >> 3;
-    self->mModelAnim.mat4x3.m[10] = self->mPosY >> 3;
-    self->mModelAnim.mat4x3.m[11] = self->mPosZ >> 3;
+    Matrix4x3_FromRotationY(&self->mAnmModel.mat4x3, self->mAngleY);
+    self->mAnmModel.mat4x3.m[9] = self->mPosX >> 3;
+    self->mAnmModel.mat4x3.m[10] = self->mPosY >> 3;
+    self->mAnmModel.mat4x3.m[11] = self->mPosZ >> 3;
 }
 }
 
@@ -429,7 +429,7 @@ extern "C" {
 /* Refresh the collision matrix from the model matrix and position, then
  * refit the mesh collider to it. */
 void func_ov063_0211d828(daPiano_c *self){
-    self->mClsnMat = self->mModelAnim.mat4x3;
+    self->mClsnMat = self->mAnmModel.mat4x3;
     self->mClsnMat.m[9] = self->mPosX;
     self->mClsnMat.m[10] = self->mPosY;
     self->mClsnMat.m[11] = self->mPosZ;

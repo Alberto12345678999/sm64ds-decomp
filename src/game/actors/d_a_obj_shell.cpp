@@ -141,8 +141,8 @@ int daObjShell_c::InitResources()
     dExtFrameCtrl_c::LoadFile(data_ov064_0211c9cc);
     dExtFrameCtrl_c::LoadFile(data_ov064_0211c9bc);
     BMD_File *modelFile = (BMD_File *)dExtSimpleModel_c::LoadFile(data_ov064_0211c9c4);
-    mModelAnim.SetFile(modelFile, 1, -1);
-    mModelAnim.SetAnim((BCA_File *)data_ov064_0211c9bc.filePtr, 0x40000000, 0x1000, 0);
+    mAnmModel.SetFile(modelFile, 1, -1);
+    mAnmModel.SetAnim((BCA_File *)data_ov064_0211c9bc.filePtr, 0x40000000, 0x1000, 0);
     _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(
         &mdCcAc_c, this, 0x64000, 0x64000, 0x200004, 0);
     func_ov064_0211a9b4();
@@ -163,7 +163,7 @@ int daObjShell_c::InitResources()
  * Whatever the state, a touched actor whose actor ID is ACTOR_PLAYER is hurt
  * for 2 with 0xc000 of knockback, every frame the contact persists.
  *
- * mModelAnim carries the dExtFrameCtrl_c base at +0x50, so the ROM's calls on
+ * mAnmModel carries the dExtFrameCtrl_c base at +0x50, so the ROM's calls on
  * `this + 0x124` are member calls on `this + 0xd4`: the compiler applies
  * the same adjustment the hand-spelt offsets did.
  *
@@ -186,7 +186,7 @@ int daObjShell_c::Behavior()
 
     switch (mState) {
     case STATE_SHUT:
-        if (mModelAnim.WillHitFrame(0x19)) {
+        if (mAnmModel.WillHitFrame(0x19)) {
             func_0201267c(0x27, &mCamSpacePos);
             u.shutPuff[0] = mPosX;
             u.shutPuff[1] = mPosY;
@@ -207,7 +207,7 @@ int daObjShell_c::Behavior()
                 Particle::System::NewSimple(0x10b, u.lungePuff[0], u.lungePuff[1], u.lungePuff[2]);
                 mStateTimer = 0;
                 mState = STATE_LUNGE;
-                mModelAnim.SetAnim((BCA_File *)data_ov064_0211c9cc.filePtr, 0x40000000, 0x1000, 0);
+                mAnmModel.SetAnim((BCA_File *)data_ov064_0211c9cc.filePtr, 0x40000000, 0x1000, 0);
             } else {
                 if (mShutTimer != 0)
                     mShutTimer--;
@@ -217,11 +217,11 @@ int daObjShell_c::Behavior()
     case STATE_LUNGE:
         if (mStateTimer > 0x96) {
             mState = STATE_SHUT;
-            mModelAnim.SetAnim((BCA_File *)data_ov064_0211c9bc.filePtr, 0x40000000, 0x1000, 0);
+            mAnmModel.SetAnim((BCA_File *)data_ov064_0211c9bc.filePtr, 0x40000000, 0x1000, 0);
             mStateTimer = 0;
         } else {
-            if (!mModelAnim.WillHitFrame(8)) {
-                if (mModelAnim.WillHitFrame(0xf))
+            if (!mAnmModel.WillHitFrame(8)) {
+                if (mAnmModel.WillHitFrame(0xf))
                     mdCcAc_c.flags |= 1;
             }
         }
@@ -244,7 +244,7 @@ int daObjShell_c::Behavior()
         }
     }
 
-    mModelAnim.Advance();
+    mAnmModel.Advance();
     mdCcAc_c.Clear();
     mdCcAc_c.Update();
     return 1;
@@ -253,7 +253,7 @@ int daObjShell_c::Behavior()
 // @symbol _ZN12daObjShell_c6RenderEv
 int daObjShell_c::Render()
 {
-    mModelAnim.Render(0);
+    mAnmModel.Render(0);
     return 1;
 }
 
@@ -283,10 +283,10 @@ int daObjShell_c::CleanupResources()
  * coining one belongs in a rename PR. */
 void daObjShell_c::func_ov064_0211a9b4()
 {
-    Matrix4x3_FromRotationY(&mModelAnim.mat4x3, mAngleY);
-    mModelAnim.mat4x3.t.x = mPosX >> 3;
-    mModelAnim.mat4x3.t.y = mPosY >> 3;
-    mModelAnim.mat4x3.t.z = mPosZ >> 3;
+    Matrix4x3_FromRotationY(&mAnmModel.mat4x3, mAngleY);
+    mAnmModel.mat4x3.t.x = mPosX >> 3;
+    mAnmModel.mat4x3.t.y = mPosY >> 3;
+    mAnmModel.mat4x3.t.z = mPosZ >> 3;
 }
 
 /* The destructors (D0 0x0211a968, D1 0x0211a930) are not written here on

@@ -164,7 +164,7 @@ daFPkn_c::~daFPkn_c()
 void daFPkn_c::SpawnDeathSmoke()
 {
     Particle::System *particle;
-    if (mModelAnim.file != data_ov084_02130e24.filePtr)
+    if (mAnmModel.file != data_ov084_02130e24.filePtr)
         return;
 
     mParticleHandle1 =
@@ -192,9 +192,9 @@ void daFPkn_c::SpawnDeathBurst()
     Vector3 pos;
     int frame, burstReach, product;
 
-    if (mModelAnim.file != data_ov084_02130e24.filePtr)
+    if (mAnmModel.file != data_ov084_02130e24.filePtr)
         return;
-    frame = (int)((unsigned)(mModelAnim.currFrame << 4) >> 16);  /* whole frames */
+    frame = (int)((unsigned)(mAnmModel.currFrame << 4) >> 16); /* whole frames */
     if (frame >= 0xa)
         return;
 
@@ -222,10 +222,10 @@ void daFPkn_c::UpdateClsnOffset()
     struct ClsnOffsetLocals locals;
     int scaledSinAcc0, sinAcc1, cosAcc1, scaledCosAcc0, isFirepakun;
 
-    Matrix4x3_FromRotationY(&mModelAnim.mat4x3, mAngleY);
-    mModelAnim.mat4x3.m[9] = mPosX >> 3;
-    mModelAnim.mat4x3.m[10] = mPosY >> 3;
-    mModelAnim.mat4x3.m[11] = mPosZ >> 3;
+    Matrix4x3_FromRotationY(&mAnmModel.mat4x3, mAngleY);
+    mAnmModel.mat4x3.m[9] = mPosX >> 3;
+    mAnmModel.mat4x3.m[10] = mPosY >> 3;
+    mAnmModel.mat4x3.m[11] = mPosZ >> 3;
 
     if ((u32)(mState - STATE_SPIT) > 1) return;
     if (mScale != mMaxScale) return;
@@ -234,7 +234,7 @@ void daFPkn_c::UpdateClsnOffset()
     locals.acc[1] = 0;
     locals.acc[2] = 0;
     {
-        char* base = (char *)mModelAnim.data.bones;
+        char *base = (char *)mAnmModel.data.bones;
         int i;
         for (i = 0; i < 5; i++) {
             u8* p = data_ov084_02130294 + i;
@@ -255,7 +255,7 @@ void daFPkn_c::UpdateClsnOffset()
         locals.tmp[1],
         locals.tmp[2]
     );
-    MulMat4x3Mat4x3(mModelAnim.data.transforms[6].m, data_020a0e68, data_020a0e68);
+    MulMat4x3Mat4x3(mAnmModel.data.transforms[6].m, data_020a0e68, data_020a0e68);
     mClsnOffset.x = ((Matrix4x3 *)data_020a0e68)->m[9];
     mClsnOffset.y = ((Matrix4x3 *)data_020a0e68)->m[10];
     mClsnOffset.z = ((Matrix4x3 *)data_020a0e68)->m[11];
@@ -320,7 +320,7 @@ void daFPkn_c::CheckClsnHits()
             mSpinSpeed = 0x1f40;
             mdCcAc_c.flags |= 1;
             mFlags &= ~0x10000000;
-            mModelAnim.SetAnim((BCA_File *)data_ov084_02130e24.filePtr, 0x40000000, 0x1000, 0);
+            mAnmModel.SetAnim((BCA_File *)data_ov084_02130e24.filePtr, 0x40000000, 0x1000, 0);
             mSuppressDeathReward = 0;
             mParticleHandle1 = 0;
         }
@@ -391,7 +391,7 @@ second:
         mSpinSpeed = 0x1f40;
         mdCcAc_c.flags |= 1;
         mFlags &= ~0x10000000;
-        mModelAnim.SetAnim((BCA_File *)data_ov084_02130e24.filePtr, 0x40000000, 0x1000, 0);
+        mAnmModel.SetAnim((BCA_File *)data_ov084_02130e24.filePtr, 0x40000000, 0x1000, 0);
         mSuppressDeathReward = 0;
         mParticleHandle1 = 0;
         return;
@@ -420,10 +420,8 @@ void daFPkn_c::StateGrow()
         goto tail;  /* an early return here DIFFs */
     }
 
-    if (mModelAnim.WillHitFrame(0x10) ||
-        mModelAnim.WillHitFrame(0x20) ||
-        mModelAnim.WillHitFrame(0x34) ||
-        mModelAnim.WillHitFrame(0x4b)) {
+    if (mAnmModel.WillHitFrame(0x10) || mAnmModel.WillHitFrame(0x20) ||
+        mAnmModel.WillHitFrame(0x34) || mAnmModel.WillHitFrame(0x4b)) {
         func_0201267c(SND_GROW_BITE, &mCamSpacePos);
     }
 
@@ -444,7 +442,7 @@ void daFPkn_c::StateGrow()
         if (spawned == 0) return;
 
         mSuppressDeathReward = 2;
-        ((daPkn_c *)spawned)->EnterLunge((short)((unsigned int)(mModelAnim.currFrame << 4) >> 16));
+        ((daPkn_c *)spawned)->EnterLunge((short)((unsigned int)(mAnmModel.currFrame << 4) >> 16));
         mdCcAc_c.flags |= 1;
         mdCcAcPos_c.flags |= 1;
         return;
@@ -469,15 +467,15 @@ void daFPkn_c::StateSpit()
         goto cold;  /* the ROM places this branch last */
 
     /* The int flag cmp keeps the ROM's compare; a direct test DIFFs. */
-    if (mModelAnim.Finished() != 0) {
+    if (mAnmModel.Finished() != 0) {
         cmp = (int)(actorID == ACTOR_FIREPAKUN_S);
         if (cmp != 0)
             func_0201267c(SND_SPIT_END_S, &mCamSpacePos);
         else
             func_0201267c(SND_SPIT_END, &mCamSpacePos);
         mState = STATE_WAIT;
-        mModelAnim.SetAnim((BCA_File *)(((SharedFilePtr *)data_ov084_02130e1c)->filePtr), 0, 0x1000,
-                           0);
+        mAnmModel.SetAnim((BCA_File *)(((SharedFilePtr *)data_ov084_02130e1c)->filePtr), 0, 0x1000,
+                          0);
     } else {
         if ((u16)mStateTimer < 0x3a) {
             targetAngle = mAngleY;
@@ -488,7 +486,7 @@ void daFPkn_c::StateSpit()
         }
     }
 
-    if (mModelAnim.WillHitFrame(0x3a) == 0)
+    if (mAnmModel.WillHitFrame(0x3a) == 0)
         return;
 
     cmp = (int)(actorID == ACTOR_FIREPAKUN_S);
@@ -530,7 +528,7 @@ void daFPkn_c::StateWait()
         mAngleY += mSpinSpeed;
         ApproachLinear(mSpinSpeed, 0, 0xc8);
         SpawnDeathBurst();
-        if (mModelAnim.Finished() == 0)
+        if (mAnmModel.Finished() == 0)
             return;
         mSpinCount--;
         if (mSpinCount != 0)
@@ -627,11 +625,11 @@ void daFPkn_c::StateWait()
     cmp = actorID == ACTOR_PAKUN2;
     if (cmp != false) {
         mState = STATE_GROW;
-        mModelAnim.SetAnim((BCA_File *)data_ov084_02130e14.filePtr, 0x40000000, 0x1000, 0);
+        mAnmModel.SetAnim((BCA_File *)data_ov084_02130e14.filePtr, 0x40000000, 0x1000, 0);
     } else {
         mState = STATE_SPIT;
-        mModelAnim.SetAnim((BCA_File *)data_ov084_02130e04.filePtr, 0x40000000, 0x1000, 0);
-        mModelAnim.currFrame = 0;
+        mAnmModel.SetAnim((BCA_File *)data_ov084_02130e04.filePtr, 0x40000000, 0x1000, 0);
+        mAnmModel.currFrame = 0;
     }
     cmp = actorID == ACTOR_FIREPAKUN;
     if (cmp != false) {
@@ -698,7 +696,7 @@ int daFPkn_c::Render()
     size.x = scale;
     size.y = scale;
     size.z = scale;
-    mModelAnim.Render(&size);
+    mAnmModel.Render(&size);
     return 1;
 }
 
@@ -712,7 +710,7 @@ int daFPkn_c::Behavior()
         UpdateClsnOffset();
         return 1;
     }
-    mModelAnim.Advance();
+    mAnmModel.Advance();
     int prevState = mState;
     switch (prevState) {
     case STATE_INIT:
@@ -762,7 +760,7 @@ int daFPkn_c::InitResources()
     int type;
     int cmp;
 
-    mModelAnim.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(data_ov084_02130dfc), 1, -1);
+    mAnmModel.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(data_ov084_02130dfc), 1, -1);
 
     for (i = 0; i < 6; i++)
         dExtFrameCtrl_c::LoadFile(*data_ov084_021302f4[i]);
@@ -771,7 +769,7 @@ int daFPkn_c::InitResources()
     LoadBlueCoinModel(this);
 
     /* A real SetAnim call with a Fix12<int> speed DIFFs; see the file header. */
-    mModelAnim.SetAnim((BCA_File *)data_ov084_02130df4.filePtr, 0x40000000, 0x1000, 0);
+    mAnmModel.SetAnim((BCA_File *)data_ov084_02130df4.filePtr, 0x40000000, 0x1000, 0);
 
     _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(
         &mdCcAc_c, this, 0, 0, 0x200001, HIT_DAMAGE & ~HIT_MEGA_CHARACTER);

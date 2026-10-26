@@ -16,7 +16,7 @@ struct System {
      record they operate on (0xf0 stride) is laid out in include/Heyho.h and read
      through the HEYHO() cast; the per-file typedef/extern universes disagree, so
      the helpers keep their char* parameters rather than a shared typed one.
-   - Heyho::mModelAnim is a real dExtAnmModel_c, so its SetFile/SetAnim/Render/
+   - Heyho::mAnmModel is a real dExtAnmModel_c, so its SetFile/SetAnim/Render/
      Advance calls and its mat4x3 store are member calls (the helpers that
      used to reach the matrix and the frame controller as separate byte views
      were reading inside that one object). Heyho's own constructor and
@@ -66,7 +66,7 @@ extern HeyhoAdapterAnimationFileHandle gMgPHeyhoWaitAnimFile;
 Heyho::Heyho() {}
 
 /* ---- Heyho::~Heyho ---- */
-/* Each Heyho releases both shared resource handles; mModelAnim's destructor
+/* Each Heyho releases both shared resource handles; mAnmModel's destructor
    runs after the body. */
 // @symbol _ZN5HeyhoD1Ev
 Heyho::~Heyho() {
@@ -97,16 +97,16 @@ extern "C" void Heyho_SetIdle(char *p);
 extern "C" int Heyho_LoadResources(char *c) {
     BMD_File *m = (BMD_File *)dExtSimpleModel_c::LoadFile(gMgPHeyhoMiniModelFile);
     BCA_File *a = (BCA_File *)dExtFrameCtrl_c::LoadFile(gMgPHeyhoWaitAnimFile);
-    if (HEYHO(c)->mModelAnim.SetFile(m, 1, -1) == 0) {
+    if (HEYHO(c)->mAnmModel.SetFile(m, 1, -1) == 0) {
         return 0;
     }
-    HEYHO(c)->mModelAnim.SetAnim(a, 0, 0x800, 0);
-    func_02016acc(&HEYHO(c)->mModelAnim, 1u);
-    func_02016b24((char *)&HEYHO(c)->mModelAnim, 2);
+    HEYHO(c)->mAnmModel.SetAnim(a, 0, 0x800, 0);
+    func_02016acc(&HEYHO(c)->mAnmModel, 1u);
+    func_02016b24((char *)&HEYHO(c)->mAnmModel, 2);
     int b = (((fBaseView *)data_0209f5c0)->actorID == 0x175);
     if (b != 0) {
-        func_02016a14((char *)&HEYHO(c)->mModelAnim, 0x7fff);
-        func_02016a04((char *)&HEYHO(c)->mModelAnim, 0x7d40);
+        func_02016a14((char *)&HEYHO(c)->mAnmModel, 0x7fff);
+        func_02016a04((char *)&HEYHO(c)->mAnmModel, 0x7d40);
     }
     Heyho_UpdateMatrix(c);
     Heyho_SetIdle(c);
@@ -1595,11 +1595,10 @@ struct Foo {
   void (Foo::*pmf)();
 };
 extern "C" void Heyho_Update(struct Foo *c){
-  (c->*(c->pmf))();
-  HEYHO(c)->mModelAnim.Advance();
-  Heyho_UpdateMatrix(c);
+    (c->*(c->pmf))();
+    HEYHO(c)->mAnmModel.Advance();
+    Heyho_UpdateMatrix(c);
 }
-
 }
 
 /* ---- Heyho_Draw ---- */
@@ -1618,7 +1617,7 @@ extern "C" void Heyho_Draw(int this_) {
             return;
     }
     Vec3_MulScalar(&v, &HEYHO(this_)->mScale, HEYHO(this_)->mSize);
-    HEYHO(this_)->mModelAnim.Render(&v);
+    HEYHO(this_)->mAnmModel.Render(&v);
 }
 
 }
@@ -1633,7 +1632,7 @@ extern void Matrix4x3_ApplyInPlaceToRotationY(struct Matrix4x3* m, short angY);
 void Heyho_UpdateMatrix(char* c) {
     Matrix4x3_FromTranslation(&data_020a0e68, HEYHO(c)->mPos.x, HEYHO(c)->mPos.y, HEYHO(c)->mPos.z);
     Matrix4x3_ApplyInPlaceToRotationY(&data_020a0e68, HEYHO(c)->mLean);
-    HEYHO(c)->mModelAnim.mat4x3 = data_020a0e68;
+    HEYHO(c)->mAnmModel.mat4x3 = data_020a0e68;
 }
 
 }

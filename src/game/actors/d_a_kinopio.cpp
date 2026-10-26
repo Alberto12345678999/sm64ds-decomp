@@ -18,7 +18,7 @@
  * - Source is ROM-ascending under defer_codegen off; the destructor is
  *   header-declared and defined out of line (D1 then D0, no D2).
  * - The opt_propagation off brackets on St_Talk_Main and InitResources
- *   and the qualified `mModelAnim.dExtSimpleModel_c::Render(0)` are the matched
+ *   and the qualified `mAnmModel.dExtSimpleModel_c::Render(0)` are the matched
  *   form.
  * - dCcAc_c::Init, dExtAnmModel_c::SetAnim, DropShadowRadHeight and
  *   Sound::PlaySub stay mangled: by-value Fix12<int> is wall 6az. The
@@ -278,7 +278,7 @@ void daKinopio_c::St_Talk_Init()
 {
     u32 flags = 0;
     BCA_File *file = (BCA_File *)data_ov085_02130490.filePtr;
-    mModelAnim.SetAnim((BCA_File *)file, 0, 0x1000, flags);
+    mAnmModel.SetAnim((BCA_File *)file, 0, 0x1000, flags);
 }
 
 // @symbol _ZN11daKinopio_c12St_Idle_MainEv
@@ -305,7 +305,7 @@ void daKinopio_c::St_Idle_Main()
 // @symbol _ZN11daKinopio_c12St_Idle_InitEv
 void daKinopio_c::St_Idle_Init()
 {
-    mModelAnim.SetAnim((BCA_File *)data_ov085_02130488.filePtr, 0, 0x1000, 0);
+    mAnmModel.SetAnim((BCA_File *)data_ov085_02130488.filePtr, 0, 0x1000, 0);
 }
 
 // @symbol _ZN11daKinopio_c8SetStateEi
@@ -410,14 +410,14 @@ int daKinopio_c::CleanupResources()
 // @symbol _ZN11daKinopio_c6RenderEv
 /* One call. THE CALL IS QUALIFIED, AND THAT IS LOAD-BEARING. dExtSimpleModel_c::Render is
  * virtual (slot 5 of _ZTV17dExtSimpleModel_c) and dExtAnmModel_c overrides it, so a plain
- * `mModelAnim.Render(0)` emits the vtable dispatch -- three words where the ROM
+ * `mAnmModel.Render(0)` emits the vtable dispatch -- three words where the ROM
  * has one `bl`. Naming the base explicitly suppresses the dispatch and
  * reproduces the cartridge exactly. The null argument is the scale, and passing
  * 0 is what makes this Toad render at his own size rather than a
  * caller-supplied one. */
 int daKinopio_c::Render()
 {
-    mModelAnim.dExtSimpleModel_c::Render(0);
+    mAnmModel.dExtSimpleModel_c::Render(0);
     return 1;
 }
 
@@ -445,7 +445,7 @@ int daKinopio_c::Render()
 int daKinopio_c::Behavior()
 {
     RunState();
-    mModelAnim.UpdateVerts();
+    mAnmModel.UpdateVerts();
 
     Player *player = ClosestPlayer();
     if (player != 0) {
@@ -506,13 +506,13 @@ int daKinopio_c::Behavior()
 
     _Z15ApproachLinear2Riii((s32 *)&mOpacity, mTargetOpacity, 6);
 
-    mModelAnim.Advance();
+    mAnmModel.Advance();
 
     UpdateModelPose();
 
-    mModelAnim.speed = 0x1000;
+    mAnmModel.speed = 0x1000;
 
-    mModelAnim.ApplyOpacity((u32)(u8)(mOpacity >> 3), 1);
+    mAnmModel.ApplyOpacity((u32)(u8)(mOpacity >> 3), 1);
 
     mCollider.Clear();
     mCollider.Update();
@@ -549,7 +549,7 @@ int daKinopio_c::InitResources()
     Vector3 objPos;
     dExtFrameCtrl_c::LoadFile(data_ov085_02130488);
     dExtFrameCtrl_c::LoadFile(data_ov085_02130490);
-    mModelAnim.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(data_ov085_02130480), 1, 0x16);
+    mAnmModel.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(data_ov085_02130480), 1, 0x16);
     mShadowModel.InitCylinder();
     _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mCollider, this,
         0x78000, 0x8c000, 0x4200004, 0);

@@ -173,7 +173,7 @@ s32 daBakubaku_c::InitResources()
     void *f;
 
     f = dExtSimpleModel_c::LoadFile(*(SharedFilePtr *)&gBakubakuModelFile);
-    mModelAnim.SetFile((BMD_File *)f, 1, -1);
+    mAnmModel.SetFile((BMD_File *)f, 1, -1);
     mShadowModel.InitCylinder();
     dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)&data_ov032_02113a50);
     dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)&data_ov032_02113a48);
@@ -199,8 +199,8 @@ s32 daBakubaku_c::InitResources()
     mWithMeshClsn.Init(this, 0x64000, 0, 0, 0);
 
     mTerminalVelocity = -0x1e000;
-    mModelAnim.SetAnim((BCA_File *)data_ov032_02113a50.filePtr, 0, 0x1000, 0);
-    mModelAnim.speed = 0x1000;
+    mAnmModel.SetAnim((BCA_File *)data_ov032_02113a50.filePtr, 0, 0x1000, 0);
+    mAnmModel.speed = 0x1000;
 
     func_ov032_02111ff4((State *)&data_ov032_02113a8c);
     return 1;
@@ -209,7 +209,7 @@ s32 daBakubaku_c::InitResources()
 // @symbol _ZN12daBakubaku_c8BehaviorEv
 s32 daBakubaku_c::Behavior()
 {
-    if (UpdateKillByInvincibleChar(mWithMeshClsn, mModelAnim, 3) != 0)
+    if (UpdateKillByInvincibleChar(mWithMeshClsn, mAnmModel, 3) != 0)
         return 1;
 
     DecIfAbove0_Short((unsigned short *)&mStateTimer);
@@ -227,12 +227,12 @@ s32 daBakubaku_c::Behavior()
     func_ov032_02112044();
 
     if (mState != &data_ov032_02113aac) {
-        mModelAnim.speed = 0x1000;
+        mAnmModel.speed = 0x1000;
     } else {
-        mModelAnim.speed = 0x2000;
+        mAnmModel.speed = 0x2000;
     }
 
-    mModelAnim.Advance();
+    mAnmModel.Advance();
     func_ov032_021113fc();
     mBodyClsn.Clear();
     mHeadClsn.Clear();
@@ -251,7 +251,7 @@ s32 daBakubaku_c::Render()
 {
     if (IsInYoshiMouth(this))
         return 1;
-    mModelAnim.Render(0);
+    mAnmModel.Render(0);
     return 1;
 }
 
@@ -278,7 +278,7 @@ void daBakubaku_c::func_ov032_02112044()
     Matrix4x3_FromTranslation(&data_020a0e68, v.x, v.y, v.z);
     Matrix4x3_ApplyInPlaceToRotationXYZExt(
         &data_020a0e68, mAngleX, mAngleY, mAngleZ);
-    mModelAnim.mat4x3 = data_020a0e68;
+    mAnmModel.mat4x3 = data_020a0e68;
     Matrix4x3_FromTranslation(
         &data_020a0e68, mPosX >> 3,
         (mPosY - 0x5a000) >> 3, mPosZ >> 3);
@@ -307,7 +307,7 @@ int daBakubaku_c::func_ov032_02111f9c()
     mAngTarget = ((r >> 8) & 0xf) << 0xc;
     r = RandomIntInternal(data_0209e650);
     mStateTimer = ((r >> 8) & 0x3f) + 0x32;
-    mModelAnim.speed = 0x1000;
+    mAnmModel.speed = 0x1000;
     return 1;
 }
 
@@ -361,7 +361,7 @@ int daBakubaku_c::func_ov032_02111dd8()
 {
     unsigned int r = RandomIntInternal(data_0209e650);
     mStateTimer = ((r >> 8) & 0x1f) + 0x14;
-    mModelAnim.speed = 0x1000;
+    mAnmModel.speed = 0x1000;
     mSpeedX = 0;
     mVertSpeed = 0;
     mSpeedZ = 0;
@@ -386,7 +386,7 @@ int daBakubaku_c::func_ov032_02111d7c()
 int daBakubaku_c::func_ov032_02111d58()
 {
     mStateTimer = 0x12c;
-    mModelAnim.speed = 0x2000;
+    mAnmModel.speed = 0x2000;
     mHorzSpeed = 0xa000;
     return 1;
 }
@@ -398,7 +398,7 @@ int daBakubaku_c::func_ov032_02111b9c()
     /* Out of time, chase aborted, or no target: back to wandering. */
     if (*(unsigned short *)&mStateTimer == 0 || func_ov032_02111350() == 1 ||
         func_ov032_02111254() == 0) {
-        mModelAnim.SetAnim((BCA_File *)data_ov032_02113a50.filePtr, 0, 0x1000, 0);
+        mAnmModel.SetAnim((BCA_File *)data_ov032_02113a50.filePtr, 0, 0x1000, 0);
         mChaseCooldown = 0x64;
         func_ov032_02111ff4((State *)&data_ov032_02113a8c);
         return 1;
@@ -413,12 +413,12 @@ int daBakubaku_c::func_ov032_02111b9c()
         if (d < (int)(short)(s5 + 0x200)) {
             mAngTarget = Vec3_VertAngle(&mPos, (Vector3 *)&mTargetPosX);
             mFlags = 0;
-            mModelAnim.speed = 0x1000;
+            mAnmModel.speed = 0x1000;
             mDiveStartY = mPosY;
             mStateTimer = 0;
             mHorzSpeed = 0x14000;
             unk_429 = 0;
-            mModelAnim.SetAnim((BCA_File *)data_ov032_02113a48.filePtr, 0x40000000, 0x1000, 0);
+            mAnmModel.SetAnim((BCA_File *)data_ov032_02113a48.filePtr, 0x40000000, 0x1000, 0);
             if (mAngTarget > 0)
                 func_ov032_02111ff4(&data_ov032_02113a7c);
             else
@@ -507,7 +507,7 @@ int daBakubaku_c::func_ov032_02111830()
     }
     ApproachLinear(mAngTarget, speed, 0x200);
     ApproachLinear(mPrevAngleX, mAngTarget, 0x200);
-    if (mModelAnim.Finished() != 0) {
+    if (mAnmModel.Finished() != 0) {
         mMouthOpen = 0;
         if (speed == 0) {
             s16 a = mPrevAngleX;
@@ -518,14 +518,14 @@ int daBakubaku_c::func_ov032_02111830()
                 mFlags = 3; /* profile clip bits 1|2 */
                 mBodyClsn.flags &= ~kCcCharMove;
                 mHeadClsn.flags &= ~kCcCharMove;
-                mModelAnim.SetAnim((BCA_File *)data_ov032_02113a50.filePtr, 0, 0x1000, 0);
+                mAnmModel.SetAnim((BCA_File *)data_ov032_02113a50.filePtr, 0, 0x1000, 0);
                 func_ov032_02111ff4((State *)&data_ov032_02113a8c);
                 return 1;
             }
         }
     } else {
         /* currFrame is 20.12. lsl #4 / lsr #16 is the integer frame. */
-        unsigned int t = (unsigned int)(mModelAnim.currFrame << 4) >> 0x10;
+        unsigned int t = (unsigned int)(mAnmModel.currFrame << 4) >> 0x10;
         if (t > 0x14 && t < 0x3c)
             mMouthOpen = 1;
         else
@@ -575,7 +575,7 @@ int daBakubaku_c::func_ov032_02111620()
 
     /* Once the lunge has started or the bite animation is over, level out
        and go back to wandering; until then, pitch toward the player. */
-    if (mLungePhase != 0 || mModelAnim.Finished() != 0) {
+    if (mLungePhase != 0 || mAnmModel.Finished() != 0) {
         ApproachLinear(mPrevAngleX, 0, 0x200);
         mLungePhase = 1;
         mMouthOpen = 0;
@@ -584,7 +584,7 @@ int daBakubaku_c::func_ov032_02111620()
             mChaseCooldown = 0x64;
             mAngTarget = mAngleY;
             mFlags = 3;
-            mModelAnim.SetAnim((BCA_File *)data_ov032_02113a50.filePtr, 0, 0x1000, 0);
+            mAnmModel.SetAnim((BCA_File *)data_ov032_02113a50.filePtr, 0, 0x1000, 0);
             func_ov032_02111ff4((State *)&data_ov032_02113a8c);
         }
     } else {
@@ -599,7 +599,7 @@ int daBakubaku_c::func_ov032_02111620()
         } else {
             ApproachLinear(mPrevAngleX, Vec3_VertAngle(&mPos, &vec), 0x200);
         }
-        n = (unsigned int)(mModelAnim.currFrame << 4) >> 0x10;
+        n = (unsigned int)(mAnmModel.currFrame << 4) >> 0x10;
         if (n > 0x14 && n < 0x3c)
             mMouthOpen = 1;
         else

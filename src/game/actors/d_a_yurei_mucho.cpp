@@ -13,7 +13,7 @@
  * Remaining reconstruction under issue #2478:
  * - mStateTimer comparisons read it through a (u16) cast, because the ROM
  *   loads it with ldrh.
- * - The Mtx43 / V3A overlays on mModelAnim.mat4x3, mShadowMat and the
+ * - The Mtx43 / V3A overlays on mAnmModel.mat4x3, mShadowMat and the
  *   player position copies. Plain Matrix4x3 / Vector3 assignment
  *   scalarizes.
  * - dExtAnmModel_c::SetAnim, dCcAc_c::Init, dBgCh_Actr::Init,
@@ -158,7 +158,7 @@ s32 daYurei_Mucho_c::OnAimedAtWithEgg()
    absent from symbols.txt. Retain these ABI calls pending interface repair. */
 int daYurei_Mucho_c::InitResources()
 {
-    mModelAnim.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(data_ov065_0211d618), 1, -1);
+    mAnmModel.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(data_ov065_0211d618), 1, -1);
     dExtSimpleModel_c::LoadFile(data_ov065_0211d610);
     mShadowModel.InitCylinder();
     dExtFrameCtrl_c::LoadFile(data_ov065_0211d600);
@@ -172,7 +172,7 @@ int daYurei_Mucho_c::InitResources()
     mHomePosX = mPosX;
     mHomePosY = mPosY;
     mHomePosZ = mPosZ;
-    mModelAnim.speed = 0x1000;
+    mAnmModel.speed = 0x1000;
     func_ov065_0211691c((State *)data_ov065_0211d670);
     return 1;
 }
@@ -196,7 +196,7 @@ int daYurei_Mucho_c::Behavior()
         func_ov065_0211691c((State *)data_ov065_0211d670);
         return 1;
     }
-    if (UpdateKillByInvincibleChar(mWithMeshClsn, mModelAnim, 3) != 0) {
+    if (UpdateKillByInvincibleChar(mWithMeshClsn, mAnmModel, 3) != 0) {
         return 1;
     }
     if (mDeathState != 0) {
@@ -257,7 +257,7 @@ int daYurei_Mucho_c::Behavior()
             mdCcAc_c.Update();
         }
     }
-    mModelAnim.Advance();
+    mAnmModel.Advance();
     return 1;
 }
 
@@ -268,7 +268,7 @@ int daYurei_Mucho_c::Render()
 {
     int b = ((mFlags & 0x40000) != 0);
     if (b) return 1;
-    mModelAnim.Render(0);
+    mAnmModel.Render(0);
     return 1;
 }
 
@@ -307,13 +307,13 @@ void daYurei_Mucho_c::func_ov065_0211696c()
     Matrix4x3_ApplyInPlaceToRotationXYZExt(data_020a0e68,
         mAngleX, mAngleY, mAngleZ);
 
-    *(Mtx43 *)&mModelAnim.mat4x3 = *(Mtx43 *)data_020a0e68;
+    *(Mtx43 *)&mAnmModel.mat4x3 = *(Mtx43 *)data_020a0e68;
     mShotPosX = 0;
     mShotPosY = 0;
     mShotPosZ = 0;
-    *(Mtx43 *)data_020a0e68 = *(Mtx43 *)&mModelAnim.mat4x3;
+    *(Mtx43 *)data_020a0e68 = *(Mtx43 *)&mAnmModel.mat4x3;
 
-    MulMat4x3Mat4x3(reinterpret_cast<const int *>(&mModelAnim.data.transforms[4]), data_020a0e68,
+    MulMat4x3Mat4x3(reinterpret_cast<const int *>(&mAnmModel.data.transforms[4]), data_020a0e68,
                     data_020a0e68);
 
     mShotPosX = data_020a0e68[9];
@@ -366,7 +366,7 @@ int daYurei_Mucho_c::func_ov065_021168a8()
 {
     mTargetAngle = (short)((RandomIntInternal(data_0209e650) >> 8) << 0xc);
     mStateTimer = (short)(((RandomIntInternal(data_0209e650) >> 8) & 0x1f) + 0x32);
-    mModelAnim.SetAnim((BCA_File *)data_ov065_0211d600.filePtr, 0, 0x1000, 0);
+    mAnmModel.SetAnim((BCA_File *)data_ov065_0211d600.filePtr, 0, 0x1000, 0);
     return 1;
 }
 
@@ -486,7 +486,7 @@ int daYurei_Mucho_c::func_ov065_021165d8()
 short daYurei_Mucho_c::func_ov065_02116588()
 {
     mShotCount = 0;
-    mModelAnim.SetAnim((BCA_File *)data_ov065_0211d608.filePtr, 0x40000000, 0x1000, 0);
+    mAnmModel.SetAnim((BCA_File *)data_ov065_0211d608.filePtr, 0x40000000, 0x1000, 0);
     mStateTimer = 0;
     return 1;
 }
@@ -505,7 +505,7 @@ int daYurei_Mucho_c::func_ov065_02116364()
         mTargetAngle = Vec3_HorzAngle(&mPosX, &L.tgt);
         ApproachAngle(&mPrevAngleY, mTargetAngle, 1, 0x500, 0x500);
 
-        if ((((u32)mModelAnim.currFrame << 4) >> 16) >= 0xf && (u16)mStateTimer == 0 &&
+        if ((((u32)mAnmModel.currFrame << 4) >> 16) >= 0xf && (u16)mStateTimer == 0 &&
             mShotCount < 3) {
             void *spawned = dActor_c::Spawn(0xe9, 1, *(Vector3 *)&mShotPosX, 0, mAreaId, -1);
             if (spawned != 0) {
@@ -529,7 +529,7 @@ int daYurei_Mucho_c::func_ov065_02116364()
         }
     }
 
-    if (mModelAnim.Finished() != 0) {
+    if (mAnmModel.Finished() != 0) {
         if (pl != 0) {
             s32 *dsrc = (s32 *)(int)(&pl->mPosX);
             L.d.x = dsrc[0];
@@ -540,7 +540,7 @@ int daYurei_Mucho_c::func_ov065_02116364()
                 func_ov065_0211691c((State *)data_ov065_0211d670);
             } else {
                 mStateTimer = 0x32;
-                mModelAnim.SetAnim((BCA_File *)data_ov065_0211d600.filePtr, 0, 0x1000, 0);
+                mAnmModel.SetAnim((BCA_File *)data_ov065_0211d600.filePtr, 0, 0x1000, 0);
                 func_ov065_0211691c((State *)&data_ov065_0211d680);
             }
         } else {

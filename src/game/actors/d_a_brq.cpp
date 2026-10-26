@@ -125,7 +125,7 @@ int daBrq_c::InitResources()
 {
     BMD_File *bmd;
     bmd = (BMD_File *)dExtSimpleModel_c::LoadFile(data_ov070_021235fc);
-    mModelAnim.SetFile(bmd, 1, 1);
+    mAnmModel.SetFile(bmd, 1, 1);
     bmd = (BMD_File *)dExtSimpleModel_c::LoadFile(data_ov070_02123604);
     mModel.SetFile(bmd, 1, 1);
 
@@ -179,7 +179,7 @@ int daBrq_c::Behavior()
 // @symbol _ZN7daBrq_c6RenderEv
 int daBrq_c::Render()
 {
-    mModelAnim.Render(0);
+    mAnmModel.Render(0);
 
     if (mState != 0 && mState != 2) {
         mTextureSequence.Update(mModel.data);
@@ -238,7 +238,7 @@ void daBrq_c::UpdateState()
 // @symbol _ZN7daBrq_c18EnterCooldownStateEv
 s32 daBrq_c::EnterCooldownState()
 {
-    mModelAnim.SetAnim((BCA_File *)data_ov070_0212360c.filePtr, 0x40000000, 0x1000, 0);
+    mAnmModel.SetAnim((BCA_File *)data_ov070_0212360c.filePtr, 0x40000000, 0x1000, 0);
     mStateTimer = 0x3c;
     mState = 0;
     return 1;
@@ -249,7 +249,7 @@ extern "C" unsigned char DecIfAbove0_Byte(unsigned char *p);
 // @symbol _ZN7daBrq_c19UpdateCooldownStateEv
 s32 daBrq_c::UpdateCooldownState()
 {
-    mModelAnim.Advance();
+    mAnmModel.Advance();
     unsigned char timeLeft = DecIfAbove0_Byte(&mStateTimer);
     if (timeLeft == 0) {
         SetState(1);
@@ -267,8 +267,8 @@ extern BTA_File data_ov070_021231f4;
 // @symbol _ZN7daBrq_c16EnterActiveStateEv
 s32 daBrq_c::EnterActiveState()
 {
-    mModelAnim.SetAnim((BCA_File *)data_ov070_021235f4.filePtr, 0, 0x1000, 0);
-    mModelAnim.speed = 0x1000;
+    mAnmModel.SetAnim((BCA_File *)data_ov070_021235f4.filePtr, 0, 0x1000, 0);
+    mAnmModel.speed = 0x1000;
     mTextureSequence.SetFile(*(BTP_File *)data_ov070_021235ec.filePtr, 0, 0x1000, 0);
     mTextureSequence.speed = 0x1000;
     mTextureTransformer.SetFile(data_ov070_021231f4, 0, 0x1000, 0);
@@ -341,7 +341,7 @@ s32 daBrq_c::UpdateActiveState()
         mScaleZ = scale;
     }
 
-    mModelAnim.Advance();
+    mAnmModel.Advance();
     mTextureSequence.Advance();
     mTextureTransformer.Advance();
 
@@ -375,7 +375,7 @@ s32 daBrq_c::EnterDefeatedState()
     mHorzSpeed = 0xa000;
     mVertSpeed = 0x28000;
     mStateTimer = 0x2d;
-    mModelAnim.SetAnim((BCA_File *)data_ov070_0212360c.filePtr, 0x40000000, 0x1000, 0);
+    mAnmModel.SetAnim((BCA_File *)data_ov070_0212360c.filePtr, 0x40000000, 0x1000, 0);
     Particle::System::NewSimple(0x43, mPosX, mPosY, mPosZ);
     Particle::System::NewSimple(0x44, mPosX, mPosY, mPosZ);
     mState = 2;
@@ -389,7 +389,7 @@ s32 daBrq_c::EnterDefeatedState()
 s32 daBrq_c::UpdateDefeatedState()
 {
     mAngleX = (s16)(mAngleX - 0x1000);
-    mModelAnim.Advance();
+    mAnmModel.Advance();
     UpdatePos(&mdCcAcPos_c);
     dBgCh_Actr_UpdateDiscreteNoLava_veneer(&mWithMeshClsn);
 
@@ -416,19 +416,18 @@ void daBrq_c::UpdateModelTransform()
     int shadowDepth;
 
     if (mState == 2) {
-        Matrix4x3_FromRotationXYZExt(
-            &mModelAnim.mat4x3, mAngleX, mAngleY, mAngleZ);
-        mModelAnim.mat4x3.m[9] = mPosX >> 3;
-        mModelAnim.mat4x3.m[10] = mPosY >> 3;
-        mModelAnim.mat4x3.m[11] = mPosZ >> 3;
+        Matrix4x3_FromRotationXYZExt(&mAnmModel.mat4x3, mAngleX, mAngleY, mAngleZ);
+        mAnmModel.mat4x3.m[9] = mPosX >> 3;
+        mAnmModel.mat4x3.m[10] = mPosY >> 3;
+        mAnmModel.mat4x3.m[11] = mPosZ >> 3;
         mMat4x3.m[9] = mPosX >> 3;
         mMat4x3.m[10] = mPosY >> 3;
         mMat4x3.m[11] = mPosZ >> 3;
     } else {
-        mModelAnim.mat4x3.m[9] = mOrbitCenter.x >> 3;
-        mModelAnim.mat4x3.m[10] = mOrbitCenter.y >> 3;
-        mModelAnim.mat4x3.m[11] = mOrbitCenter.z >> 3;
-        mModel.mat4x3 = mModelAnim.mat4x3;
+        mAnmModel.mat4x3.m[9] = mOrbitCenter.x >> 3;
+        mAnmModel.mat4x3.m[10] = mOrbitCenter.y >> 3;
+        mAnmModel.mat4x3.m[11] = mOrbitCenter.z >> 3;
+        mModel.mat4x3 = mAnmModel.mat4x3;
         mMat4x3.m[9] = mOrbitCenter.x >> 3;
         mMat4x3.m[10] = mOrbitCenter.y >> 3;
         mMat4x3.m[11] = mOrbitCenter.z >> 3;

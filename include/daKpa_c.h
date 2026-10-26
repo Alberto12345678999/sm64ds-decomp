@@ -25,7 +25,7 @@
  * TWO OF THE GENERATED HEADER'S FIELDS WERE THE dExtAnmModel_c'S OWN INSIDES and are
  * gone from this half: `mAnimation` at 0x124 is 0x0d4 + 0x50, the dExtFrameCtrl_c base
  * inside dExtAnmModel_c, and `unk_130` at 0x130 is 0x0d4 + 0x5c. Both were declared as
- * siblings of a `u8 mModelAnim` marker whose pad stopped short of the real object.
+ * siblings of a `u8 mAnmModel` marker whose pad stopped short of the real object.
  * Same shape as Player's two dExtAnmModel_c members.
  *
  * sizeof is 0x454, which is not inferred from the fields: daKpa_c_classInit asks
@@ -48,7 +48,7 @@
 
 struct daKpa_c : dActor_c {
     u8  pad_0d0[0x4];
-    dExtAnmModel_c mModelAnim;                              /* 0x0d4 */
+    dExtAnmModel_c mAnmModel;                               /* 0x0d4 */
     dExtAnmTexPat_c mTextureSequence;                       /* 0x138 */
     dBgCh_Actr mWithMeshClsn;                             /* 0x14c */
     dExtShadowModel_c mShadowModel;                               /* 0x308 */
@@ -257,7 +257,7 @@ struct daKpa_c {
     u8  pad_0a4[0x28];
     s8  mAreaId;            /* 0x0cc */
     u8  pad_0cd[0x7];
-    dExtAnmModel_c mModelAnim;                              /* 0x0d4 */
+    dExtAnmModel_c mAnmModel;                               /* 0x0d4 */
     dExtAnmTexPat_c mTextureSequence;                       /* 0x138 */
     dBgCh_Actr mWithMeshClsn;                             /* 0x14c */
     dExtShadowModel_c mShadowModel;                               /* 0x308 */

@@ -385,7 +385,7 @@ int daMoray_c::func_ov016_021115c0()
 // @symbol _ZN9daMoray_c19func_ov016_02111718Ev
 int daMoray_c::func_ov016_02111718()
 {
-    this->mBlendModelAnim.SetAnim(*(BCA_File *)data_ov016_02114d30.filePtr, 8, 0, 0x1000, 0);
+    this->mBlendAnmModel.SetAnim(*(BCA_File *)data_ov016_02114d30.filePtr, 8, 0, 0x1000, 0);
     return 1;
 }
 
@@ -401,7 +401,7 @@ int daMoray_c::func_ov016_02111758()
     Vector3 worldTarget;
     localOffset.x = 0; localOffset.y = 0; localOffset.z = 0;
     worldTarget.x = 0; worldTarget.y = 0; worldTarget.z = 0;
-    unsigned int frame = (unsigned int)this->mBlendModelAnim.currFrame << 4 >> 0x10;
+    unsigned int frame = (unsigned int)this->mBlendAnmModel.currFrame << 4 >> 0x10;
     if (frame >= 0x15 && frame <= 0x3c) {
         if (data_0209f220 == 1) {
             localOffset.z = 0x2bc000;
@@ -416,7 +416,7 @@ int daMoray_c::func_ov016_02111758()
         worldTarget.z += this->mHomePosZ;
         _Z14ApproachLinearR7Vector3RKS_5Fix12IiE(this->mPos, worldTarget, 0x14000);
     }
-    if (this->mBlendModelAnim.Finished()) {
+    if (this->mBlendAnmModel.Finished()) {
         this->mHorzSpeed = 0;
         func_ov016_02111bf0(&data_ov016_02114dac);
     }
@@ -427,8 +427,8 @@ int daMoray_c::func_ov016_02111758()
 // @symbol _ZN9daMoray_c19func_ov016_02111860Ev
 int daMoray_c::func_ov016_02111860()
 {
-    this->mBlendModelAnim.SetAnim(*(BCA_File *)data_ov016_02114d20.filePtr, 8, 0x40000000, 0x1000,
-                                  0);
+    this->mBlendAnmModel.SetAnim(*(BCA_File *)data_ov016_02114d20.filePtr, 8, 0x40000000, 0x1000,
+                                 0);
     func_02012694(0xfa, &this->mCamSpacePos);
     return 1;
 }
@@ -464,7 +464,7 @@ int daMoray_c::func_ov016_02111994()
 {
     this->unk_400 = 0;
     func_02012694(0xfa, &this->mCamSpacePos);
-    this->mBlendModelAnim.SetAnim(*(BCA_File *)data_ov016_02114d28.filePtr, 8, 0, 0x1000, 0);
+    this->mBlendAnmModel.SetAnim(*(BCA_File *)data_ov016_02114d28.filePtr, 8, 0, 0x1000, 0);
     return 1;
 }
 
@@ -558,7 +558,7 @@ int daMoray_c::func_ov016_021119ec()
 int daMoray_c::func_ov016_02111bac()
 {
     this->unk_400 = 0;
-    this->mBlendModelAnim.SetAnim(*(BCA_File *)data_ov016_02114d28.filePtr, 8, 0, 0x1000, 0);
+    this->mBlendAnmModel.SetAnim(*(BCA_File *)data_ov016_02114d28.filePtr, 8, 0, 0x1000, 0);
     return 1;
 }
 
@@ -605,10 +605,10 @@ void daMoray_c::func_ov016_02111c40()
     Matrix4x3_FromTranslation(&data_020a0e68, (this->mPosX + worldTarget.x) >> 3, this->mPosY >> 3,
                               (this->mPosZ + worldTarget.z) >> 3);
     Matrix4x3_ApplyInPlaceToRotationZXYExt(&data_020a0e68, this->mAngleX, this->mAngleY, this->mAngleZ);
-    this->mBlendModelAnim.mat4x3 = data_020a0e68;
+    this->mBlendAnmModel.mat4x3 = data_020a0e68;
     ApproachLinear(this->mSegmentAngle[6], this->mSegmentAngle[7], 0x40);
     i = 0;
-    modelMtx = &this->mBlendModelAnim.mat4x3;
+    modelMtx = &this->mBlendAnmModel.mat4x3;
     this->mSegmentAngle[5] = this->mSegmentAngle[6];
     /* mSegmentPos[i] / transforms[i] is 0x10 smaller than this walk
        (func_ov016_02111c40 0x2f8 -> 0x2e8). row steps one Vector3 at a time
@@ -625,7 +625,7 @@ void daMoray_c::func_ov016_02111c40()
         row->mSegmentPos[0].z = zero[0];
         dst = &data_020a0e68;
         *dst = *modelMtx;
-        MulMat4x3Mat4x3((char *)this->mBlendModelAnim.data.transforms + transformOffset, dst, dst);
+        MulMat4x3Mat4x3((char *)this->mBlendAnmModel.data.transforms + transformOffset, dst, dst);
         pos->x = dst->m[9];
         pos->y = dst->m[10];
         pos->z = dst->m[11];
@@ -648,7 +648,8 @@ void daMoray_c::func_ov016_02111c40()
     this->mStarPos.x = 0;
     this->mStarPos.y = 0;
     this->mStarPos.z = 0;
-    MulMat4x3Mat4x3(&this->mBlendModelAnim.data.transforms[4], &this->mBlendModelAnim.mat4x3, &this->mStarMtx);
+    MulMat4x3Mat4x3(&this->mBlendAnmModel.data.transforms[4], &this->mBlendAnmModel.mat4x3,
+                    &this->mStarMtx);
     Matrix4x3_FromTranslation(&data_020a0e68, 0x28000, 0, 0);
     Matrix4x3_ApplyInPlaceToRotationXYZExt(&data_020a0e68, 0x4000, -0x8000, this->mStarSpinAngle);
     MulMat4x3Mat4x3(&data_020a0e68, &this->mStarMtx, &this->mStarMtx);
@@ -686,8 +687,8 @@ s32 daMoray_c::Render()
     MorayRenderStep *step;
     MorayBone *bone;
 
-    func_020167a4(&mBlendModelAnim);
-    bone = (MorayBone *)mBlendModelAnim.data.bones + 1;
+    func_020167a4(&mBlendAnmModel);
+    bone = (MorayBone *)mBlendAnmModel.data.bones + 1;
     step = data_ov016_02114908;
     for (i = 1; i < 7; i++) {
         s16 movement = mSegmentAngle[i];
@@ -696,8 +697,8 @@ s32 daMoray_c::Render()
         step++;
         bone++;
     }
-    func_0204531c(&mBlendModelAnim.data, mBlendModelAnim.blendWeight);
-    mBlendModelAnim.dExtSimpleModel_c::Render(0);
+    func_0204531c(&mBlendAnmModel.data, mBlendAnmModel.blendWeight);
+    mBlendAnmModel.dExtSimpleModel_c::Render(0);
     return 1;
 }
 #pragma pop
@@ -748,7 +749,7 @@ s32 daMoray_c::Behavior()
         mdCcAcPos_c2.Clear();
         mdCcAcPos_c2.Update();
     }
-    mBlendModelAnim.Advance();
+    mBlendAnmModel.Advance();
     return 1;
 }
 
@@ -763,7 +764,7 @@ s32 daMoray_c::InitResources()
     dActor_c *spawned;
 
     file = dExtSimpleModel_c::LoadFile(data_ov016_02114d38);
-    mBlendModelAnim.SetFile((BMD_File *)file, 1, -1);
+    mBlendAnmModel.SetFile((BMD_File *)file, 1, -1);
     dExtFrameCtrl_c::LoadFile(data_ov016_02114d20);
     dExtFrameCtrl_c::LoadFile(data_ov016_02114d30);
     dExtFrameCtrl_c::LoadFile(data_ov016_02114d28);
@@ -803,7 +804,7 @@ s32 daMoray_c::InitResources()
     }
     mPathNodeIndex = 1;
     mStarUniqueID = 0;
-    mBlendModelAnim.speed = 0x1000;
+    mBlendAnmModel.speed = 0x1000;
 
     if (data_0209f220 == 1 || IsStarCollected(SublevelToLevel(8), 1) == 0) {
         /* Entrance 1, or star 1 still uncollected: only variant 2. */

@@ -45,7 +45,7 @@ struct dMgTrmpln2Mario_c : dMgTrmpRingObjAdapter_c {
     s16 mTimer;             /* 0x6c -- state countdown */
     s16 mVisible;           /* 0x6e -- Render draws only while set */
     s32 mState[2];          /* 0x70 -- the current state's member-pointer record */
-    dExtAnmModel_c mModelAnim; /* 0x78 -- 0x64 bytes: UpdateMatrix sets its mat4x3, the
+    dExtAnmModel_c mAnmModel; /* 0x78 -- 0x64 bytes: UpdateMatrix sets its mat4x3, the
                              * states drive its dExtFrameCtrl_c base and read its file */
 };
 

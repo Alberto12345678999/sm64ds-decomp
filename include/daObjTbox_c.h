@@ -25,7 +25,7 @@
  */
 struct daObjTbox_c : dActor_c {
     u32 unk_0d0;                         /* 0x0d0 -- not accessed by this TU */
-    dExtAnmModel_c mModelAnim;           /* 0x0d4 */
+    dExtAnmModel_c mAnmModel;            /* 0x0d4 */
     dCcAc_c mCylinder;                   /* 0x138 */
     s32 mState;                          /* 0x16c -- indexes the three PMF pairs */
     u16 mStateTimer;                     /* 0x170 -- opening/star countdown */

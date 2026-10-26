@@ -47,7 +47,7 @@ struct daHanachan_c : dEnemyBase_c {
         const char *mName;               /* 0x10 -- "DEMOWAIT", "MOVE", ... */
     };
 
-    dExtAnmModel_c mModelAnims[5];                   /* 0x110 */
+    dExtAnmModel_c mAnmModels[5];                    /* 0x110 */
     dExtAnmMaterial_c mMaterialChangers[5];          /* 0x304 */
     dExtAnmTexPat_c mTextureSequences[5];            /* 0x368 */
     /* One entry per body segment, head first; these segment names are coined. */

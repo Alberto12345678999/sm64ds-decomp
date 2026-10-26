@@ -20379,7 +20379,7 @@ s32 Player::St_Balloon_Main()
     func_ov002_020de3d0(this, &mAngleZ, &mAngleYSpeed);
     func_ov002_020de3d0(this, &mAngleX, &mAngleXSpeed);
     mPrevVertSpeed = mVertSpeed;
-    mModels.mModelAnim3.Advance();
+    mModels.mAnmModel1.Advance();
     return 1;
 }
 }
@@ -20406,9 +20406,9 @@ int Player::St_Balloon_Init() {
     mAngleYSpeed = 0x100;
     mAngleXSpeed = 0x100;
     mPrevVertSpeed = mVertSpeed;
-    ((dExtAnmModel_c *)((char *)&mModels.mModelAnim3))
+    ((dExtAnmModel_c *)((char *)&mModels.mAnmModel1))
         ->SetAnim((BCA_File *)((void *)data_ov002_0210e750[1]), 0x40000000, 0x1000, 0);
-    mModels.mModelAnim3.currFrame = 0;
+    mModels.mAnmModel1.currFrame = 0;
     return 1;
 }
 }
@@ -20866,7 +20866,7 @@ int Player::St_Owl_Main()
         short ang;
         int i;
         short mag = 10;
-        x = ((daOwl_c *)x)->mModelAnim.currFrame;
+        x = ((daOwl_c *)x)->mAnmModel.currFrame;
         x = (unsigned short)((unsigned int)x >> 12);
         x += 0xb;
         ang = x * 0xccc;
@@ -23611,20 +23611,20 @@ int Player::Render()
             }
             func_ov002_020e3e00(bodyMdl, &mScale, mOpacity);
             if (mDrawnHasWings != 0) {
-                mModels.mModelAnim4.ApplyOpacity(mOpacity, 0);
+                mModels.mAnmModel2.ApplyOpacity(mOpacity, 0);
                 if (mBodyModelId == 3) {
                     Matrix4x3_FromTranslation(&data_020a0e68, -0x1b33, -0x666, 0);
                     Matrix4x3_ApplyInPlaceToRotationZ(&data_020a0e68, 0x4000);
                     MulMat4x3Mat4x3(&data_020a0e68, &bodyMdl->data.transforms[8], &data_020a0e68);
-                    ((VObj *)((char *)&mModels.mModelAnim4))->m18(&data_020a0e68, &mScale);
+                    ((VObj *)((char *)&mModels.mAnmModel2))->m18(&data_020a0e68, &mScale);
                 } else {
-                    ((VObj *)((char *)&mModels.mModelAnim4))
+                    ((VObj *)((char *)&mModels.mAnmModel2))
                         ->m18(&bodyMdl->data.transforms[15], &mScale);
                 }
             }
         } else {
-            mModels.mModelAnim3.ApplyOpacity(mOpacity, 0);
-            ((VObj *)((char *)&mModels.mModelAnim3))->m14((char *)&mScaleX);
+            mModels.mAnmModel1.ApplyOpacity(mOpacity, 0);
+            ((VObj *)((char *)&mModels.mAnmModel1))->m14((char *)&mScaleX);
         }
         i = func_ov002_020becf4(mBodyModelId, 1);
         {
@@ -23845,7 +23845,7 @@ int func_ov002_020e3f90(char* self) {
     n = _ZNK6Player14GetBodyModelIDEjb(self, player->param1 & 0xff, 0);
     m = (char *)player->mModels.mBodyModels[n];
     *(struct M48 *)&((dExtSimpleModel_c *)m)->mat4x3 = data_020a0e68;
-    *(struct M48 *)&player->mModels.mModelAnim4.mat4x3 = data_020a0e68;
+    *(struct M48 *)&player->mModels.mAnmModel2.mat4x3 = data_020a0e68;
     n = _ZN6Player19func_ov002_020becf4Eii(self, player->param1 & 0xff, 0);
     if (n != 9 && n != 8) {
         m = (char *)player->mModels.mHeadModels[n];
@@ -23931,9 +23931,9 @@ void func_ov002_020e444c(char *c)
         if (player->mIsBalloon == 0) {
             int bodyID = _ZNK6Player14GetBodyModelIDEjb(c, player->param1 & 0xff, 0);
             player->mModels.mBodyModels[bodyID]->mat4x3 = data_020a0e68;
-            player->mModels.mModelAnim4.mat4x3 = data_020a0e68;
+            player->mModels.mAnmModel2.mat4x3 = data_020a0e68;
         } else {
-            player->mModels.mModelAnim3.mat4x3 = data_020a0e68;
+            player->mModels.mAnmModel1.mat4x3 = data_020a0e68;
         }
 
         {
@@ -24389,7 +24389,7 @@ after_player_slot:
     *(u16 *)LAU((char *)&mStateFlags) &= ~0x440;
 
     if (mHasWings != 0)
-        mModels.mModelAnim4.Advance();
+        mModels.mAnmModel2.Advance();
 
     mPreClsnPosX = mPosX;
     mPreClsnPosY = mPosY;
@@ -24964,20 +24964,20 @@ void func_ov002_020e5948(void* arg0)
                     (BMD_File *)dExtSimpleModel_c::LoadFile(data_ov002_0210e780), 1, -1);
                 player->mModels.mBodyModels[4]->Func_020162C4(
                     (u32)data_ov002_020ff480[0xC6]->filePtr, 0, 0x1000, 0);
-                player->mModels.mModelAnim3.SetFile(
+                player->mModels.mAnmModel1.SetFile(
                     (BMD_File *)dExtSimpleModel_c::LoadFile(data_ov002_0210e6f8), 1, 1);
-                player->mModels.mModelAnim3.SetAnim((BCA_File *)data_ov002_0210e750.filePtr, 0,
-                                                    0x1000, 0);
-                player->mModels.mModelAnim4.SetFile(
+                player->mModels.mAnmModel1.SetAnim((BCA_File *)data_ov002_0210e750.filePtr, 0,
+                                                   0x1000, 0);
+                player->mModels.mAnmModel2.SetFile(
                     (BMD_File *)dExtSimpleModel_c::LoadFile(data_ov002_0210e7b0), 1, 1);
-                player->mModels.mModelAnim4.SetAnim((BCA_File *)data_ov002_0210e4c0.filePtr, 0,
-                                                    0x1000, 0);
+                player->mModels.mAnmModel2.SetAnim((BCA_File *)data_ov002_0210e4c0.filePtr, 0,
+                                                   0x1000, 0);
             }
         } else {
-            player->mModels.mModelAnim4.SetFile(
+            player->mModels.mAnmModel2.SetFile(
                 (BMD_File *)dExtSimpleModel_c::LoadFile(data_ov002_0210e7b0), 1, 1);
-            player->mModels.mModelAnim4.SetAnim((BCA_File *)data_ov002_0210e4c0.filePtr, 0, 0x1000,
-                                                0);
+            player->mModels.mAnmModel2.SetAnim((BCA_File *)data_ov002_0210e4c0.filePtr, 0, 0x1000,
+                                               0);
         }
     }
 

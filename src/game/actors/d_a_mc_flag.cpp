@@ -57,8 +57,8 @@ extern "C" daMcFlag_c *daMcFlag_c_classInit()
 // @symbol _ZN10daMcFlag_c13InitResourcesEv
 s32 daMcFlag_c::InitResources()
 {
-    mModelAnim.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(data_ov009_02113eb8), 1, -1);
-    mModelAnim.SetAnim((BCA_File *)dExtFrameCtrl_c::LoadFile(data_ov009_02113eb0), 0, 0x1000, 0);
+    mAnmModel.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(data_ov009_02113eb8), 1, -1);
+    mAnmModel.SetAnim((BCA_File *)dExtFrameCtrl_c::LoadFile(data_ov009_02113eb0), 0, 0x1000, 0);
     return 1;
 }
 
@@ -67,11 +67,11 @@ s32 daMcFlag_c::InitResources()
 // @symbol _ZN10daMcFlag_c8BehaviorEv
 s32 daMcFlag_c::Behavior()
 {
-    mModelAnim.Advance();
-    Matrix4x3_FromRotationY(&mModelAnim.mat4x3, mAngleY);
-    mModelAnim.mat4x3.t.x = mPosX >> 3;
-    mModelAnim.mat4x3.t.y = mPosY >> 3;
-    mModelAnim.mat4x3.t.z = mPosZ >> 3;
+    mAnmModel.Advance();
+    Matrix4x3_FromRotationY(&mAnmModel.mat4x3, mAngleY);
+    mAnmModel.mat4x3.t.x = mPosX >> 3;
+    mAnmModel.mat4x3.t.y = mPosY >> 3;
+    mAnmModel.mat4x3.t.z = mPosZ >> 3;
     return 1;
 }
 
@@ -80,7 +80,7 @@ s32 daMcFlag_c::Behavior()
 // @symbol _ZN10daMcFlag_c6RenderEv
 s32 daMcFlag_c::Render()
 {
-    mModelAnim.Render(0);
+    mAnmModel.Render(0);
     return 1;
 }
 

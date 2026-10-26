@@ -46,7 +46,7 @@ struct daJango_c : dEnemyBase_c {
     dCcAc_c           mdCcAc_c1;  /* 0x110 */
     dCcAc_c           mdCcAc_c2;  /* 0x144 */
     dBgCh_Actr                 mWithMeshClsn;         /* 0x178 */
-    dExtBlendAnmModel_c mBlendModelAnim;              /* 0x334 */
+    dExtBlendAnmModel_c mBlendAnmModel;               /* 0x334 */
     dExtShadowModel_c                  mShadowModel;          /* 0x3a4 */
     /* Both matrices are 12 words rather than a Matrix4x3 member: a Matrix4x3
        member makes the synthesised constructor emit a Matrix4x3 destructor that

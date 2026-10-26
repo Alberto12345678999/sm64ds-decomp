@@ -125,7 +125,7 @@ struct dEntObj_c : dBase_c {
 
     Particle::SysTracker mParticles; /* 0x050 */
     dExtSimpleModel_c mModel;        /* 0x86c */
-    dExtAnmModel_c mModelAnim;       /* 0x8bc */
+    dExtAnmModel_c mAnmModel;        /* 0x8bc */
     UnknownVsPlayer mPlayers[4];     /* 0x920 */
     /* 0xe80 -- the 0xa8-byte entry-menu grid mesh (EntryMesh,
        include/private/ov075_entry_mesh.h), spelled as its first byte plus

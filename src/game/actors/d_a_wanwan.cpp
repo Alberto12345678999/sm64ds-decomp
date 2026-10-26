@@ -45,7 +45,7 @@ enum {
  * and destroy through SharedFilePtr_Destruct_Anim. The manifest aliases those
  * undefined members onto the ROM symbols. filePtr is the BMD or BCA the load
  * just filled in.
- *   02114968  body BMD   sinit 0x9c02, dExtSimpleModel_c::LoadFile, mModelAnim
+ *   02114968  body BMD   sinit 0x9c02, dExtSimpleModel_c::LoadFile, mAnmModel
  *   02114978  link BMD   sinit 0x9c01, dExtSimpleModel_c::LoadFile, mLinkModels
  *   02114980  idle BCA   sinit 0x9c04, dExtFrameCtrl_c::LoadFile
  *   02114970  lunge BCA  sinit 0x9c03, dExtFrameCtrl_c::LoadFile
@@ -124,7 +124,7 @@ extern "C" int func_0201267c(int id, void *pos, int unused);
 }
 
 #define SetChompAnim(self, bca) \
-    (self)->mModelAnim.SetAnim((BCA_File *)(bca).filePtr, 0, 0x1000, 0)
+    (self)->mAnmModel.SetAnim((BCA_File *)(bca).filePtr, 0, 0x1000, 0)
 
 // @symbol daWanwan_c_classInit
 extern "C" daWanwan_c *daWanwan_c_classInit()
@@ -136,7 +136,7 @@ extern "C" daWanwan_c *daWanwan_c_classInit()
 int daWanwan_c::InitResources()
 {
     void *f = dExtSimpleModel_c::LoadFile(data_ov014_02114968);
-    mModelAnim.SetFile((BMD_File *)f, 1, 1);
+    mAnmModel.SetFile((BMD_File *)f, 1, 1);
     dExtSimpleModel_c::LoadFile(data_ov014_02114978);
     dExtFrameCtrl_c::LoadFile(data_ov014_02114980);
     dExtFrameCtrl_c::LoadFile(data_ov014_02114970);
@@ -258,7 +258,7 @@ int daWanwan_c::Behavior()
 // @symbol _ZN10daWanwan_c6RenderEv
 int daWanwan_c::Render()
 {
-    mModelAnim.Render(&mScale);
+    mAnmModel.Render(&mScale);
 
     int j = 0;
     dExtSimpleModel_c *p = mLinkModels;
@@ -300,16 +300,16 @@ void func_ov014_02112788(daWanwan_c *c)
     daWanwan_c *e;
     daWanwan_c *o;
     dExtShadowModel_c *sm;
-    Matrix4x3_FromRotationXYZExt(&c->mModelAnim.mat4x3, c->mAngleX, c->mAngleY, c->mAngleZ);
-    c->mModelAnim.mat4x3.m[9] = c->mPosX >> 3;
-    c->mModelAnim.mat4x3.m[10] = c->mPosY >> 3;
-    c->mModelAnim.mat4x3.m[11] = c->mPosZ >> 3;
+    Matrix4x3_FromRotationXYZExt(&c->mAnmModel.mat4x3, c->mAngleX, c->mAngleY, c->mAngleZ);
+    c->mAnmModel.mat4x3.m[9] = c->mPosX >> 3;
+    c->mAnmModel.mat4x3.m[10] = c->mPosY >> 3;
+    c->mAnmModel.mat4x3.m[11] = c->mPosZ >> 3;
     t = c->mPosY - c->mSpawnPosY;
     if (t <= 0x1000)
         t = 0x1000;
     /* DropShadowRadHeight takes Fix12<int> by value. */
     _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
-        c, &c->mShadowModel, &c->mModelAnim.mat4x3, 0x15e000 - FX_MUL(t, 0x180), t + 0x28000, 0xf);
+        c, &c->mShadowModel, &c->mAnmModel.mat4x3, 0x15e000 - FX_MUL(t, 0x180), t + 0x28000, 0xf);
     tmp = IDENTITY_MATRIX4X3;
     sm = c->mLinkShadows;
     i = 0;
@@ -788,7 +788,7 @@ extern "C" void func_ov014_02111ca8(daWanwan_c *c)
             c->func_ov014_02111ebc(2);
         }
     }
-    static_cast<dExtFrameCtrl_c &>(c->mModelAnim).Advance();
+    static_cast<dExtFrameCtrl_c &>(c->mAnmModel).Advance();
 }
 
 // @symbol func_ov014_02111b70
@@ -844,7 +844,7 @@ extern "C" int func_ov014_02111af0(daWanwan_c *c)
         goto adv;
     c->func_ov014_02111ebc(1);
 adv:
-    static_cast<dExtFrameCtrl_c &>(c->mModelAnim).Advance();
+    static_cast<dExtFrameCtrl_c &>(c->mAnmModel).Advance();
 }
 
 // @symbol func_ov014_02111a6c
@@ -1005,7 +1005,7 @@ extern "C" void func_ov014_021115ec(daWanwan_c *self)
             self->MarkForDestruction();
         break;
     }
-    static_cast<dExtFrameCtrl_c &>(self->mModelAnim).Advance();
+    static_cast<dExtFrameCtrl_c &>(self->mAnmModel).Advance();
 }
 
 // @symbol func_ov014_021115c0
