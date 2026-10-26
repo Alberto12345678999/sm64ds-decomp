@@ -9,13 +9,13 @@
  * (dScMgSlot3_c_classInit in src/minigames/d_s_mg_slots.cpp). The evidenced field span stops at 0x5043,
  * so the trailing byte is alignment, not unclaimed space.
  *
- * MASCOT at 0x4f38: Toad at the table. Mascot_Construct and
- * Mascot_Destruct build and tear it down here, and this class's Load,
- * Behavior and Render hand the same address to Mascot_Load, Mascot_Update
- * and Mascot_Draw, the Mascot_* helpers over include/Mascot.h's 0xac-byte
- * record. Kept as bytes so this header need not include Mascot.h. Its size
- * is bounded by what follows it, and that bound is 0xac, not the 0xb8 the
- * first draft of this header claimed: a THREE-ELEMENT s32 array sits at 0x4fe4, indexed by
+ * MASCOT at 0x4f38: Toad at the table, a typed Mascot member
+ * (include/Mascot.h). Mascot's own constructor and destructor (ov006
+ * 0x020c221c and 0x020c21e4) build and tear it down as part of this class's,
+ * and this class's Load, Behavior and Render hand its address to
+ * Mascot_Load, Mascot_Update and Mascot_Draw. Its size is bounded by what
+ * follows it, and that bound is 0xac, not the 0xb8 the first draft of this
+ * header claimed: a THREE-ELEMENT s32 array sits at 0x4fe4, indexed by
  * five of this class's methods (the legacy Render's local
  * `struct T4fe4 { char pad[0x4fe4]; int vals[3]; }` names it outright, and
  * InitResources, Slot3_StateSpin, Slot3_StateJudge and
@@ -33,19 +33,19 @@
  * THE DESTRUCTOR IS NOT DEFINED INLINE -- a leaf, no RTTI descendants of
  * its own. Its definition in src/minigames/d_s_mg_slots.cpp emits both
  * destructor variants. No separate operator delete is needed --
- * dScMgBase_c, two levels up, already provides one.
+ * dScMgBase_c, two levels up, already provides one. The constructor is
+ * inline in that file, so the factory dScMgSlot3_c_classInit (historical
+ * alias func_ov006_0210c120), a plain `new dScMgSlot3_c`, holds it.
  *
- * SM64DS RTTI names the implementation dScMgSlot3_c. The reconstructed factory
- * dScMgSlot3_c_classInit (historical alias func_ov006_0210c120) installs this class's
- * cartridge vtable for the MG_SLOT3 registry profile.
+ * SM64DS RTTI names the implementation dScMgSlot3_c.
  */
 #ifndef DSCMGSLOT3_C_H
 #define DSCMGSLOT3_C_H
 #include "dScMgSingle3DBase_c.h"
-
-extern "C" int Mascot_Destruct(char *t); /* decl_common.h's own signature */
+#include "Mascot.h"
 
 struct dScMgSlot3_c : dScMgSingle3DBase_c {
+    dScMgSlot3_c();
     virtual ~dScMgSlot3_c();
 
     /* This class's own overrides, read off the ROM's vtable: the slots where the
@@ -68,7 +68,7 @@ struct dScMgSlot3_c : dScMgSingle3DBase_c {
     s32 Behavior();                       /* slot  6 */
     s32 Render();                         /* slot  9 */
 
-    u8 mMascot[0xac];        /* 0x4f38 -- a Mascot (include/Mascot.h), see file banner */
+    Mascot mMascot;          /* 0x4f38 -- Toad at the table, see file banner */
     s32 mReelPos[3];         /* 0x4fe4 -- Fix12 scroll of each reel; seeded to a
                                random symbol * 0x50000 (0x50 px a symbol) */
     s32 mReelPeriod;         /* 0x4ff0 -- strip length * 80 pixels, in Fix12 */

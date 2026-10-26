@@ -857,6 +857,11 @@
       "canonical_module": "ov006",
       "canonical_address": "0x0213bd00",
       "reason": "ancestor RTTI name passenger; the canonical cartridge copy is independently enrolled"
+    },
+    {
+      "symbol": "_ZN19dScMgSingle3DBase_cD2Ev",
+      "disposition": "deadstrip",
+      "reason": "Base-object destructor of dScMgSingle3DBase_c, emitted as vague linkage once the factory's `new dScMgCup_c` expands the inline constructor chain (the same byproduct ov006/dScMgBSC_c, ov006/dScMgCard_c, ov006/dScMgFlower_c and ov006/dScMgSound_c license for theirs). dScMgCup_c's D1/D0 inline the base destructor rather than chain to it, and no module's symbols.txt gives _ZN19dScMgSingle3DBase_cD2Ev a home. Homeless and unreferenced, so a plain deadstrip."
     }
   ],
   "init": [
@@ -1644,42 +1649,42 @@
   "production_mode": "intact-object",
   "defined_symbol_renames": [
     {
-      "from": "@1051",
+      "from": "@1173",
       "to": "pmf_dScMgCup_c_StateSetup",
       "evidence": "Native member-pointer temporary identified bijectively from unchanged220-byte initializer relocation sites and verified8-byte retail object/function destination."
     },
     {
-      "from": "@1053",
+      "from": "@1175",
       "to": "pmf_dScMgCup_c_StatePrepareShuffle",
       "evidence": "Native member-pointer temporary identified bijectively from unchanged220-byte initializer relocation sites and verified8-byte retail object/function destination."
     },
     {
-      "from": "@1055",
+      "from": "@1177",
       "to": "pmf_dScMgCup_c_StateShuffle",
       "evidence": "Native member-pointer temporary identified bijectively from unchanged220-byte initializer relocation sites and verified8-byte retail object/function destination."
     },
     {
-      "from": "@1057",
+      "from": "@1179",
       "to": "pmf_dScMgCup_c_StateWaitForInput",
       "evidence": "Native member-pointer temporary identified bijectively from unchanged220-byte initializer relocation sites and verified8-byte retail object/function destination."
     },
     {
-      "from": "@1059",
+      "from": "@1181",
       "to": "pmf_dScMgCup_c_StateSelect",
       "evidence": "Native member-pointer temporary identified bijectively from unchanged220-byte initializer relocation sites and verified8-byte retail object/function destination."
     },
     {
-      "from": "@1061",
+      "from": "@1183",
       "to": "pmf_dScMgCup_c_StateResult",
       "evidence": "Native member-pointer temporary identified bijectively from unchanged220-byte initializer relocation sites and verified8-byte retail object/function destination."
     },
     {
-      "from": "@1063",
+      "from": "@1185",
       "to": "pmf_dScMgCup_c_StateFinish",
       "evidence": "Native member-pointer temporary identified bijectively from unchanged220-byte initializer relocation sites and verified8-byte retail object/function destination."
     },
     {
-      "from": "@1065",
+      "from": "@1187",
       "to": "pmf_dScMgCup_c_StateIdle",
       "evidence": "Native member-pointer temporary identified bijectively from unchanged220-byte initializer relocation sites and verified8-byte retail object/function destination."
     }

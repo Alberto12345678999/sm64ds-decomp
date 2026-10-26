@@ -15,14 +15,15 @@
  * inline constructor, so it also emits dScMgSingle3DBase_c's D2, likewise
  * dropped.
  *
- * The 0x16-entry petal table at 0x4f38 uses the plain Petal record from
- * dScMgFlower_c.h.
+ * The 0x16-entry petal table at 0x4f38 is an array of the Petal record from
+ * dScMgFlower_c.h, and mFace is a FlowerFace member: the compiler builds and
+ * tears both down. Petal's empty constructor and destructor are out of line
+ * so each lands at its own cartridge address; their extra C2/D2 are dropped
+ * at link.
  *
  * comment leftovers:
- *  - Petal_ElemDtor and Petal_ElemCtor stay free functions: they
- *    are the empty element destructor and constructor handed to
- *    __cxa_vec_cleanup and __cxa_vec_ctor for the petal records, not scene
- *    methods.
+ *  - The FlowerFace_* helpers are free functions over a char* record in
+ *    src/minigames/unit020bfec0.cpp, so mFace is passed by address.
  *  - DealPetals' layout and shuffle loops reach the petal fields through
  *    c + i * 0x20 cast back to the scene, ((dScMgFlower_c *)p)->mPetals[0]:
  *    indexing mPetals[i] there changes the code (see its doc comment).
@@ -99,18 +100,16 @@ namespace CP15 {
 void FlushAndInvalidateDataCache(u32 address, u32 length);
 }
 
-/* Written first so D1 and D0 are emitted first, as in the cartridge. Frees
- * mFace, then the petal table, in reverse of construction; the
- * rest of the teardown is the inlined base destructors. */
-dScMgFlower_c::~dScMgFlower_c() {
-    FlowerFace_Destruct(mFace);
-    __cxa_vec_cleanup(mPetals, 0x16, 0x20, (void *)Petal_ElemDtor);
-}
+/* Written first so D1 and D0 are emitted first, as in the cartridge. The
+ * body is empty: the compiler destroys mFace, then the petal table, in
+ * reverse of construction; the rest of the teardown is the inlined base
+ * destructors. */
+dScMgFlower_c::~dScMgFlower_c() {}
 
-// @symbol Petal_ElemDtor
-extern "C" { /* .c-derived member: C linkage for the whole block */
-void Petal_ElemDtor(void) {}
-}
+// @symbol _ZN13dScMgFlower_c5PetalD1Ev
+/* The petal record's destructor, which __cxa_vec_cleanup runs on each of
+ * mPetals. Empty, like its constructor. */
+dScMgFlower_c::Petal::~Petal() {}
 
 // @symbol _ZN13dScMgFlower_c12UpdatePetalsEv
 /* Per-frame petal update: released petals drift and fall, speeding up to
@@ -274,7 +273,7 @@ void dScMgFlower_c::StartRound(int /* arg */) {
     } else {
         mHoldTimer = 0;
     }
-    FlowerFace_Reset(mFace);
+    FlowerFace_Reset(&mFace);
     DealPetals();
 }
 
@@ -313,7 +312,7 @@ s32 dScMgFlower_c::Render() {
     }
 
     Camera_InitFlowerView(pad_4660);
-    FlowerFace_Draw(mFace);
+    FlowerFace_Draw(&mFace);
     return 1;
 }
 
@@ -440,7 +439,7 @@ s32 dScMgFlower_c::Behavior() {
                     if (self->mPetals[self->mHeldPetal].counted == 0) {
                         newlyCounted = 1;
                         self->mPetals[self->mHeldPetal].counted = 1;
-                        FlowerFace_PlayPetalPulled(self->mFace);
+                        FlowerFace_PlayPetalPulled((char *)&self->mFace);
                     }
                 }
                 self->mPetals[self->mHeldPetal].held = 0;
@@ -475,11 +474,11 @@ s32 dScMgFlower_c::Behavior() {
                     self->mState = 1;
                     Mg_SetSharedState(MG_STATE_RETRY_PROMPT_WIDE);
                 }
-                if (FlowerFace_IsIdle(self->mFace) != 0) {
+                if (FlowerFace_IsIdle((char *)&self->mFace) != 0) {
                     if (self->mPetalToggle == 1)
-                        FlowerFace_PlayLike(self->mFace);
+                        FlowerFace_PlayLike((char *)&self->mFace);
                     else
-                        FlowerFace_PlayHate(self->mFace);
+                        FlowerFace_PlayHate((char *)&self->mFace);
                 }
             } else {
                 FreeGfxSlotsById(0x1d);
@@ -526,11 +525,11 @@ s32 dScMgFlower_c::Behavior() {
         UpdatePetals();
         break;
     case 1:
-        if (FlowerFace_IsIdle(self->mFace) != 0) {
+        if (FlowerFace_IsIdle((char *)&self->mFace) != 0) {
             if (self->mPetalToggle == 1)
-                FlowerFace_PlayLike(self->mFace);
+                FlowerFace_PlayLike((char *)&self->mFace);
             else
-                FlowerFace_PlayHate(self->mFace);
+                FlowerFace_PlayHate((char *)&self->mFace);
         }
         self->mPromptEnabled = 0;
         UpdatePetals();
@@ -538,7 +537,7 @@ s32 dScMgFlower_c::Behavior() {
     default:
         break;
     }
-    FlowerFace_Update(self->mFace);
+    FlowerFace_Update((char *)&self->mFace);
     return 1;
 }
 #pragma opt_common_subs on
@@ -626,7 +625,7 @@ s32 dScMgFlower_c::InitResources() {
 
     data_0209d45c |= 1;
     *(volatile u16 *)0x4000008 = (*(volatile u16 *)0x4000008 & ~3) | 1;
-    FlowerFace_Load(mFace);
+    FlowerFace_Load((char *)&mFace);
     Camera_InitFlowerView(pad_4660);
 
     return 1;
@@ -634,22 +633,13 @@ s32 dScMgFlower_c::InitResources() {
 
 /* The factory unit: the factory and the empty constructor of the petal
  * records, which follows it in the ROM. */
-extern "C" {
-void __cxa_vec_ctor(void *base, unsigned int count, unsigned int stride, void (*ctor)(void *),
-                    void (*dtor)(void *));
-void *FlowerFace_Construct(char *p);
-void Petal_ElemCtor(void);
-}
-
-/* Builds the petal table, then mFace; ~dScMgFlower_c() above
- * tears them down in the reverse order. Everything before these two calls
- * (dScMgBase_c's C2, dScMgSingle3DBase_c's vptr and mSysTracker, then this
- * class's own vptr) is the compiler's inlining of the base constructors. */
-inline dScMgFlower_c::dScMgFlower_c() {
-    __cxa_vec_ctor(mPetals, 0x16, 0x20, (void (*)(void *))Petal_ElemCtor,
-                   (void (*)(void *))Petal_ElemDtor);
-    FlowerFace_Construct(mFace);
-}
+/* The body is empty: the compiler builds the petal table (through
+ * __cxa_vec_ctor with Petal's own constructor and destructor), then mFace;
+ * ~dScMgFlower_c() above tears them down in the reverse order. Everything
+ * before them (dScMgBase_c's C2, dScMgSingle3DBase_c's vptr and mSysTracker,
+ * then this class's own vptr) is the compiler's inlining of the base
+ * constructors. */
+inline dScMgFlower_c::dScMgFlower_c() {}
 
 // @symbol dScMgFlower_c_classInit
 /* Reconstructed source-style name: SM64DS proves dScMgFlower_c through RTTI,
@@ -660,7 +650,7 @@ extern "C" void *dScMgFlower_c_classInit() {
     return new dScMgFlower_c;
 }
 
-// @symbol Petal_ElemCtor
-/* The petal record's constructor, handed to __cxa_vec_ctor above. Empty, like
- * its destructor Petal_ElemDtor. */
-extern "C" void Petal_ElemCtor(void) {}
+// @symbol _ZN13dScMgFlower_c5PetalC1Ev
+/* The petal record's constructor, which __cxa_vec_ctor runs on each of
+ * mPetals. Empty, like its destructor. */
+dScMgFlower_c::Petal::Petal() {}
