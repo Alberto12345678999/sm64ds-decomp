@@ -57,6 +57,7 @@
 #include "dBgCh_Lin.h"
 #include "dBgPi.h"
 #include "dClipper.h"
+#include "Sound.h"
 
 /* The callees of this TU's members, spelled by their mangled or ROM names.
  * They cannot be declared inside a method body: a block-scope extern in a
@@ -65,17 +66,12 @@
  * rejects two extern "C" declarations of one name that disagree, so one
  * spelling has to serve every call site. Data objects stay in the bodies:
  * a variable's name does not mangle. */
-namespace Sound {
-bool PlaySub(u32, u32, u32, int, bool);
-}
-
 extern "C" {
 
 short Vec3_HorzAngle(const void *a, const void *b);
 int   Vec3_Dist(const void *a, const void *b);
 void  func_0201267c(unsigned int id, const Vector3 *pos);
 void  func_020383f0(void *p);
-bool d_a_mkyPlaySubHold(unsigned int a, unsigned int b, unsigned int c, int speed, int e);
 unsigned char DecIfAbove0_Byte(unsigned char *p);
 void  Vec3_Asr(void *d, void *s, int sh);
 int   Vec3_HorzDist(const Vector3 *a, const Vector3 *b);
