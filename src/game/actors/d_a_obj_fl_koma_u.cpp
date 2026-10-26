@@ -20,7 +20,7 @@ struct System {
  */
 
 // leftovers:
-// - dBgActor_c::IsClsnInRange, dBgW_KcMbg::SetFile, dCcPos_c::Init and
+// - dBgActor_c::IsClsnInRange, dBgW_KcMbg::SetFile and
 //   Particle::System::New take Fix12<int> by value, so they stay mangled.
 // - Behavior's collider slot writes keep their raw w offsets (see the note
 //   at the stores).
@@ -75,8 +75,9 @@ void AddVec3(const Vector3 *a, const Vector3 *b, Vector3 *dst);
 void func_020393d4(dBgW *bgw, void *fn);
 extern void hold_d_a_obj_fl_koma_u(dBgW_KcMbg *self, KCL_File *kcl, const Matrix4x3 *mtx, int scale,
                                    s16 angleY, CLPS_Block *clps);
-void _ZN8dCcPos_c4InitERK7Vector35Fix12IiES4_jj(
-    dCcPos_c *self, const Vector3 *pos, int radius, int height, u32 flags, u32 vuln);
+/* local extern: six named parameters hold this TU's @NNN count. */
+void d_a_obj_fl_koma_uAtHold(dCcPos_c *self, const Vector3 *pos, int radius, int height,
+                             u32 flags, u32 vuln);
 u32 d_a_obj_fl_koma_uNewHold(u32 handle, u32 effect, int x, int y, int z, const void *direction,
                              void *callback);
 }
@@ -194,8 +195,7 @@ s32 daObjFl_KomaU_c::InitResources()
 
     mModel.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(*data_ov064_0211adbc.model), 1, -1);
     for (i = 0; i < 8; i++)
-        _ZN8dCcPos_c4InitERK7Vector35Fix12IiES4_jj(&mColliders[i], &mPos, 0x4b000, 0x96000,
-                                                   0x200002, 0);
+        mColliders[i].Init(mPos, 0x4b000, 0x96000, 0x200002, 0);
     UpdateModelPosAndRotY();
     UpdateClsnPosAndRot();
     ((dBgW_KcMbg *)(&mMeshCollider))
