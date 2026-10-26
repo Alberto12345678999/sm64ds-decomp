@@ -76,8 +76,8 @@ void func_020393d4(dBgW *bgw, void *fn);
 extern void hold_d_a_obj_fl_koma_u(dBgW_KcMbg *self, KCL_File *kcl, const Matrix4x3 *mtx, int scale,
                                    s16 angleY, CLPS_Block *clps);
 /* local extern: six named parameters hold this TU's @NNN count. */
-void d_a_obj_fl_koma_uAtHold(dCcPos_c *self, const Vector3 *pos, int radius, int height,
-                             u32 flags, u32 vuln);
+void d_a_obj_fl_koma_uAtHold(dCcPos_c *self, const Vector3 *pos, int radius, int height, u32 flags,
+                             u32 vuln);
 u32 d_a_obj_fl_koma_uNewHold(u32 handle, u32 effect, int x, int y, int z, const void *direction,
                              void *callback);
 }

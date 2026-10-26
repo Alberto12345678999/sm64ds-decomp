@@ -68,8 +68,7 @@ u32 dCcPos_c::GetOwnerID()
 /* Scalar Fix12i: a by-value Fix12<int> is the class type wall 6az homes
    on the stack. The reference is the same address the pointer spelling
    passed. */
-void dCcPos_c::Init(const Vector3 &pos, Fix12i radius, Fix12i height, u32 flags, u32 vulnFlags)
-{
+void dCcPos_c::Init(const Vector3 &pos, Fix12i radius, Fix12i height, u32 flags, u32 vulnFlags) {
     this->pos.x = pos.x;
     this->pos.y = pos.y;
     this->pos.z = pos.z;

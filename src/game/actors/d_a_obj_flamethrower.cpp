@@ -147,8 +147,8 @@ int daObjFlamethrower_c::InitResources()
             }
             {
                 short segmentSize = data_ov095_02136f80[i];
-                collider->Init(*flamePos, segmentSize * kRadiusMul,
-                               segmentSize * kHeightMul, kClsnFlags, flag);
+                collider->Init(*flamePos, segmentSize * kRadiusMul, segmentSize * kHeightMul,
+                               kClsnFlags, flag);
             }
             rowBase += 0xc;
             flamePos++;
