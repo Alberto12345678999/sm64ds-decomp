@@ -114,8 +114,10 @@ void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
 /* Parameter names keep this TU's @NNN. */
 typedef void BgchInitAt_(dBgCh_Actr *self, dActor_c *actor, int radius, int height, void *a,
                          void *b);
-void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
-    void *self, void *sm, void *mtx, int f, int g, unsigned int h);
+/* local extern: respelled, not new; the member call renumbers this TU's @NNN labels (6az). */
+void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x3iih(void *self, void *sm,
+                                                                          void *mtx, int f, int g,
+                                                                          unsigned int h);
 /* local extern: native Hurt takes Fix12<int> by value; retain the current
  * definition's scalar ABI while that call reconstruction remains pending. */
 int _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(Player *p, void *v, u32 a, int f, u8 c, u8 d, u8 e);
@@ -283,7 +285,7 @@ void daBakubaku_c::func_ov032_02112044()
         &data_020a0e68, mPosX >> 3,
         (mPosY - 0x5a000) >> 3, mPosZ >> 3);
     mShadowMat = data_020a0e68;
-    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
+    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x3iih(
         this, &mShadowModel, &mShadowMat, 0xfa000, 0x258000, 0xf);
 }
 

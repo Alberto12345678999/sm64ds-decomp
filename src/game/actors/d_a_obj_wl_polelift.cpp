@@ -55,8 +55,11 @@ extern "C" {
 void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
     dCcAcPos_c *self, dActor_c *actor, const Vector3 *offset,
     Fix12i radius, Fix12i height, u32 flags, u32 vulnFlags);
-void _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_S5_j(
-    void *self, void *shadow, void *mtx, int x, int y, int z, unsigned int flags);
+/* local extern: respelled, not new; the member call renumbers this TU's @NNN labels (6az). */
+void _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x3iiih(void *self, void *shadow,
+                                                                          void *mtx, int x, int y,
+                                                                          int z,
+                                                                          unsigned int flags);
 
 u16 DecIfAbove0_Short(u16 *timer);
 void Vec3_Sub(Vector3 *out, Vector3 *a, Vector3 *b);
@@ -228,7 +231,7 @@ extern "C" void func_ov026_02111234(daObjWlPolelift_c *actor)
 {
     actor->dropShadowMtx = actor->model.mat4x3;
     actor->dropShadowMtx.m[10] = actor->groundY >> 3;
-    _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_S5_j(
+    _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x3iiih(
         actor, &actor->shadow, &actor->dropShadowMtx, 0x64000, 0xc8000, 0x64000, 0xf);
 }
 

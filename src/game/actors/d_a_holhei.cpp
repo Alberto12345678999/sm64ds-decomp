@@ -62,9 +62,10 @@ extern void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void* self, dActor_c* a, i
 /* local extern: Fix12<int> by value, wall 6az. Header method homes the arg. */
 /* local extern: Fix12<int> by value, wall 6az. Header method homes the arg. */
 /* local extern: Fix12<int> by value, wall 6az. Header method homes the arg. */
-extern void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(void *, dExtShadowModel_c &sm, Matrix4x3 &mtx, int a, int b, unsigned int c);
+extern void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x3iih(
+    void *, dExtShadowModel_c &sm, Matrix4x3 &mtx, int a, int b, unsigned int c);
 /* local extern: Fix12<int> by value, wall 6az. Header method homes the arg. */
-extern int _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs(void* a, Vector3* v, unsigned n, int f, short s);
+extern int _ZN8dActor_c10SpawnCoinsERK7Vector3iis(void *a, Vector3 *v, unsigned n, int f, short s);
 /* local extern: Fix12<int> by value, wall 6az. Header method homes the arg. */
 extern void _ZN12dEnemyBase_c20KillByInvincibleCharERK10Vector3_16R6Player5Fix12IiE(void *c, void *v, void *a, int flag);
 
@@ -320,10 +321,10 @@ extern "C" void func_ov062_02116dbc(daHolhei_c *self)
     self->mShadowMtx.m[10] = self->mPosY >> 3;
     self->mShadowMtx.m[11] = self->mPosZ >> 3;
     if (self->mMeshClsn.IsOnGround() != 0) {
-        _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
+        _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x3iih(
             self, self->mShadowModel, self->mShadowMtx, 0x12c000, 0x32000, 0xf);
     } else {
-        _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
+        _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x3iih(
             self, self->mShadowModel, self->mShadowMtx, 0x12c000, 0x3e8000, 0xf);
     }
 }
@@ -337,7 +338,7 @@ void daHolhei_c::func_ov062_02116d28()
     mShadowMtx.m[9] = mHeld->mPosX >> 3;
     mShadowMtx.m[10] = mHeld->mPosY >> 3;
     mShadowMtx.m[11] = mHeld->mPosZ >> 3;
-    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
+    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x3iih(
         this, mShadowModel, mShadowMtx, 0x12c000, 0x32000, 0xf);
 }
 
@@ -629,8 +630,7 @@ extern "C" int func_ov062_021163b0(daHolhei_c *self)
         v[1].x = self->mPosX;
         v[1].y = self->mPosY;
         v[1].z = self->mPosZ;
-        _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs(self, &v[1], self->mExtraCoinCount + 1,
-                                                       0xa000, 0);
+        _ZN8dActor_c10SpawnCoinsERK7Vector3iis(self, &v[1], self->mExtraCoinCount + 1, 0xa000, 0);
     }
     return 1;
 }

@@ -156,7 +156,9 @@ extern "C" {
 extern Fix12i Vec3_Dist(const void *a, const void *b);
 extern s16    Vec3_HorzAngle(const void *a, const void *b);
 extern unsigned int RandomIntInternal(int *seed);
-extern void   _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs(void *self, Vector3 const &pos, unsigned int n, int fix, short s);
+/* local extern: respelled, not new; the member call renumbers this TU's @NNN labels (6az). */
+extern void _ZN8dActor_c10SpawnCoinsERK7Vector3iis(void *self, Vector3 const &pos, unsigned int n,
+                                                   int fix, short s);
 extern void   _ZN6Player6BounceE5Fix12IiE(void *p, int fix);
 extern int    _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(Player *p, void *pos, u32 a, int fix, u8 b, u8 cc, u8 d);
 extern int    func_02038414(void *clsn);
@@ -164,7 +166,9 @@ extern void   Matrix4x3_FromRotationY(void *m, int angle);
 extern void   Matrix4x3_ApplyInPlaceToTranslation(void *m, int x, int y, int z);
 extern void   Matrix4x3_ApplyInPlaceToRotationX(void *m, s16 angX);
 extern void   Matrix4x3_ApplyInPlaceToRotationY(void *m, s16 angY);
-extern void   _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(void *self, void *shadow, void *mtx, int rad, int height, u32 flags);
+/* local extern: respelled, not new; the member call renumbers this TU's @NNN labels (6az). */
+extern void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x3iih(
+    void *self, void *shadow, void *mtx, int rad, int height, u32 flags);
 extern int DecIfAbove0_Byte(void *p);
 namespace Particle {
 struct System {
@@ -254,7 +258,7 @@ void daGmch_c::SpawnCoinsAndDie()
     coinPos.x = mPosX;
     coinPos.y = mPosY;
     coinPos.z = mPosZ;
-    _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs(this, coinPos, 5, 0xf000, 0);
+    _ZN8dActor_c10SpawnCoinsERK7Vector3iis(this, coinPos, 5, 0xf000, 0);
     PoofDust();
     KillAndTrackInDeathTable();
 }
@@ -397,7 +401,7 @@ void daGmch_c::UpdateDrawMatrices()
     mMatrix.m[11] = mPosZ >> 3;
 
     int dh = (mStateIndex == 8) ? 0x258000 : 0x12c000;
-    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
+    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x3iih(
         this, &mShadowModel, &mMatrix, 0x78000, dh, 0xf);
 }
 

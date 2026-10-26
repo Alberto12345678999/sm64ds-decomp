@@ -156,9 +156,13 @@ extern void hold_d_a_obj_block_s(char *thiz, int f, char *m, int fix, short s, i
 /* Parameter names keep this TU's @NNN. */
 typedef void BgchInitAt_(char *thiz, char *actor, int b, int d, void *v, int f);
 
-extern void _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs(void *self, void *pos, unsigned int n, int speed, short ang);
-extern short _ZN8dActor_c12ReflectAngleE5Fix12IiES1_s(void *self, int a, int b, short c);
-extern void _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_S5_j(
+/* local extern: respelled, not new; the member call renumbers this TU's @NNN labels (6az). */
+extern void _ZN8dActor_c10SpawnCoinsERK7Vector3iis(void *self, void *pos, unsigned int n, int speed,
+                                                   short ang);
+/* local extern: respelled, not new; the member call renumbers this TU's @NNN labels (6az). */
+extern short _ZN8dActor_c12ReflectAngleEiis(void *self, int a, int b, short c);
+/* local extern: respelled, not new; the member call renumbers this TU's @NNN labels (6az). */
+extern void _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x3iiih(
     void *self, void *shadow, void *mtx, int fix, int t1, int t2, unsigned int n);
 extern void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
     void *thiz, void *actor, void *vec, int fix, int t, unsigned u1, unsigned u2);
@@ -780,7 +784,7 @@ void daObjBlockS_c::func_ov098_02138e08()
     v[0] = mPosX;
     v[1] = mPosY;
     v[2] = mPosZ;
-    _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs(this, v, 3, 0xf000, 0);
+    _ZN8dActor_c10SpawnCoinsERK7Vector3iis(this, v, 3, 0xf000, 0);
     mCoinsPaid = 1;
 }
 
@@ -937,8 +941,7 @@ void daObjBlockS_c::func_ov098_021390ec()
     }
     Vector3 v;
     ((SurfaceInfo *)((char *)mWithMeshClsn.GetWallResult() + 4))->CopyNormalTo(v);
-    mPrevAngleY =
-        _ZN8dActor_c12ReflectAngleE5Fix12IiES1_s(this, v.x, v.z, mPrevAngleY);
+    mPrevAngleY = _ZN8dActor_c12ReflectAngleEiis(this, v.x, v.z, mPrevAngleY);
 }
 
 #pragma push
@@ -1142,7 +1145,7 @@ void daObjBlockS_c::func_ov098_021396a4()
     mShadowMtx.m[9] = mPosX >> 3;
     mShadowMtx.m[10] = (mPosY - 0x14000) >> 3;
     mShadowMtx.m[11] = mPosZ >> 3;
-    _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_S5_j(
+    _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x3iiih(
         this, &mShadowModel, &mShadowMtx, r4, r5 + 0x28000, r4, 0xf);
 }
 

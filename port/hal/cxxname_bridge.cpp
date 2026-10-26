@@ -38,8 +38,8 @@ void _ZN10dBgActor_c21UpdateModelPosAndRotYEv(void *self)
    data_020ad524 is BUILT AT RUNTIME by boot code not yet hosted (the ov000
    static image holds path strings there). InitCuboid and the per-frame
    drop-shadow install are no-ops until that boot path lands. */
-void _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_S5_j(
-    void *, void *, void *, int, int, int, unsigned) {}
+void _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x3iiih(
+    void *, void *, void *, int, int, int, unsigned char) {}
 void *_ZN17dExtSimpleModel_c8LoadFileER13SharedFilePtr(void *fp)
 { return dExtSimpleModel_c::LoadFile(*(SharedFilePtr *)fp); }
 

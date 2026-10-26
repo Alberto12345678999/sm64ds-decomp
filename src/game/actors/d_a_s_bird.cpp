@@ -120,8 +120,11 @@ extern void func_ov009_0211145c(daSBird_c *bird);
 /* dExtAnmModel_c::SetAnim -- wall 6az. */
 
 /* dActor_c::DropShadowRadHeight -- wall 6az. */
-int _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
-    dActor_c *self, dExtShadowModel_c *sm, Matrix4x3 *m, int rad, int h, unsigned u);
+/* local extern: respelled, not new; the member call renumbers this TU's @NNN labels (6az). */
+int _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x3iih(dActor_c *self,
+                                                                         dExtShadowModel_c *sm,
+                                                                         Matrix4x3 *m, int rad,
+                                                                         int h, unsigned u);
 }
 
 extern int _ZTV9daSBird_c[];
@@ -168,7 +171,7 @@ s32 daSBird_c::Behavior()
     Matrix4x3_ApplyInPlaceToRotationZ(&data_020a0e68, mAngleZ);
     Matrix4x3_ApplyInPlaceToRotationY(&data_020a0e68, mAngleY);
     *(BirdMtx *)((char *)&mModelAnim.mat4x3) = data_020a0e68;
-    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
+    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x3iih(
         this, &mShadowModel, &mModelAnim.mat4x3, 0x1e000, 0x7d0000, 0xf);
     mModelAnim.Advance();
     return 1;

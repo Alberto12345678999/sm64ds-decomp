@@ -217,9 +217,10 @@ int daKpFr_c::func_ov070_02121eb0() {
 extern "C" {
 /* Fix12-by-value, notes/mwccarm-codegen.md 6az -- header method form homes the
    class args. */
-extern void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
-    dActor_c *actor, dExtShadowModel_c *shadow, Matrix4x3 *matrix,
-    Fix12i radius, Fix12i depth, u32 opacity);
+/* local extern: respelled, not new; the member call renumbers this TU's @NNN labels (6az). */
+extern void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x3iih(
+    dActor_c *actor, dExtShadowModel_c *shadow, Matrix4x3 *matrix, Fix12i radius, Fix12i depth,
+    u32 opacity);
 }
 // @symbol _ZN8daKpFr_c19func_ov070_02121e14Ev
 void daKpFr_c::func_ov070_02121e14() {
@@ -233,7 +234,7 @@ void daKpFr_c::func_ov070_02121e14() {
     shadowDepth = (mPosY - ground.clsnY) + 0x1e000;
   else
     shadowDepth = 0x12c000;
-  _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
+  _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x3iih(
       this, &mShadowModel, &mMatrix, 0x64000, shadowDepth, 0xf);
 }
 

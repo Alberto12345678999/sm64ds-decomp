@@ -125,8 +125,10 @@ void  MulVec3Mat4x3(const void *v, const void *m, void *out);
    spelling -- the mangled spelling is the one that matches. Sound.h covers
    PlayLong, so only PlaySub stays. */
 int d_a_c_jugemPlaySubHold(u32 a, u32 b, u32 c, Fix12i d, bool loop);
-void  _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
-         void *thiz, void *sm, void *mtx, int rad, int height, u32 flags);
+/* local extern: respelled, not new; the member call renumbers this TU's @NNN labels (6az). */
+void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x3iih(void *thiz, void *sm,
+                                                                          void *mtx, int rad,
+                                                                          int height, u32 flags);
 
 /* other overlays / arm9 */
 void  func_ov002_020c3e8c(void *player);
@@ -821,7 +823,7 @@ void daC_Jugem_c::UpdateShadow()
     *(M48 *)&mModelAnim1.mat4x3 = *(M48 *)&data_020a0e68;
     Matrix4x3_FromTranslation(&data_020a0e68, mPosX >> 3, (mPosY - 0x38000) >> 3, mPosZ >> 3);
     *(M48 *)&mShadowMat1 = *(M48 *)&data_020a0e68;
-    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
+    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x3iih(
         this, &mShadowModel1, &mShadowMat1, 0x46000, 0x258000, 0xf);
 }
 
@@ -853,7 +855,7 @@ void daC_Jugem_c::UpdateShadowPlayer()
         mPosZ >> 3);
     *(M48 *)&mShadowMat1 = *(M48 *)&data_020a0e68;
 
-    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
+    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x3iih(
         this, &mShadowModel1, &mShadowMat1, 0x46000, 0x258000, 0xf);
 
     pl = ClosestPlayer();
@@ -897,8 +899,8 @@ void daC_Jugem_c::UpdateShadowPlayer()
     func_ov002_020e4374(pl, &p1, &p2);
 
     *(M48 *)&mShadowMat2 = *(M48 *)&data_020a0e68;
-    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
-        this, &mShadowModel2, &mShadowMat2, p2, p1, 0xf);
+    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x3iih(this, &mShadowModel2,
+                                                                         &mShadowMat2, p2, p1, 0xf);
 }
 
 // @symbol _ZN11daC_Jugem_c16CleanupResourcesEv

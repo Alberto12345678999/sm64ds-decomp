@@ -83,7 +83,8 @@ extern void Matrix4x3_FromRotationXYZExt(void *, int, int, int);
 /* dActor_c::DropShadowScaleXYZ / Earthquake -- reached through the mangled
    name because the by-value Fix12<int> parameters
    (notes/mwccarm-codegen.md 6az) break the method form. */
-extern int _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_S5_j(
+/* local extern: respelled, not new; the member call renumbers this TU's @NNN labels (6az). */
+extern int _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x3iiih(
     dActor_c *, dExtShadowModel_c *, Matrix4x3 *, Fix12i, Fix12i, Fix12i, u32);
 extern void AddVec3(BattanVector3 *, BattanVector3 *, BattanVector3 *);
 extern void func_0200fa04(dActor_c *, BattanVector3 *, int);
@@ -291,7 +292,6 @@ int daObjFm_Battan_c::UpdateShadow()
     mShadowMat.m[11] = mPosZ >> 3;
     /* MEASURED: three by-value Fix12<int> scales; see notes/mwccarm-codegen.md
        6az. */
-    return _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_S5_j(
-        this, &mShadowModel, &mShadowMat,
-        0x258000, 0x32000, -depth, 0xf);
+    return _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x3iiih(
+        this, &mShadowModel, &mShadowMat, 0x258000, 0x32000, -depth, 0xf);
 }

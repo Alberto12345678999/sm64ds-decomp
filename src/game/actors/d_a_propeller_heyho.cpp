@@ -381,7 +381,9 @@ extern "C" {
 extern void Vec3_Asr(void* d, void* s, int sh);
 extern void Matrix4x3_FromTranslation(void* m, int x, int y, int z);
 extern void Matrix4x3_ApplyInPlaceToRotationXYZExt(void* m, int x, int y, int z);
-extern void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(void* thiz, void* sm, void* mtx, int f, int g, unsigned int h);
+/* local extern: respelled, not new; the member call renumbers this TU's @NNN labels (6az). */
+extern void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x3iih(
+    void *thiz, void *sm, void *mtx, int f, int g, unsigned int h);
 extern int data_020a0e68[];
 
 typedef struct { int w[12]; } M48;
@@ -399,7 +401,7 @@ void func_ov070_02120070(daPropeller_Heyho_c* c)
     *(M48*)&c->mModelAnim.mat4x3 = *(M48*)data_020a0e68;
     Matrix4x3_FromTranslation(data_020a0e68, c->mPosX >> 3, (c->mPosY - 0xa000) >> 3, c->mPosZ >> 3);
     *(M48*)c->mShadowMatrix = *(M48*)data_020a0e68;
-    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
+    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x3iih(
         c, &c->mShadowModel, c->mShadowMatrix, 0x76000, 0x320000, 0xf);
 }
 }
@@ -874,7 +876,9 @@ extern "C" {
 short Vec3_HorzAngle(void* a, void* b);
 /* (ApproachAngle: this file's own int-target view, namespace ApproachAngleInt above) */
 short Vec3_VertAngle(void* a, void* b);
-void* _ZN8dActor_c13SpawnFireballERK7Vector3PK10Vector3_165Fix12IiES7_j(void* self, void* pos, void* vel, int a, int b, unsigned int d);
+/* local extern: respelled, not new; the member call renumbers this TU's @NNN labels (6az). */
+void *_ZN8dActor_c13SpawnFireballERK7Vector3PK10Vector3_16iij(void *self, void *pos, void *vel,
+                                                              int a, int b, unsigned int d);
 void func_02012694(int a, void* p);
 int FlyGuy_ChangeState(daPropeller_Heyho_c* c, daPropeller_Heyho_c::State* p);
 extern daPropeller_Heyho_c::State data_ov070_0212359c;
@@ -919,7 +923,8 @@ int daPropeller_Heyho_c::func_ov070_0211f48c() {
             fp.z = base[2];
             vel.x = Vec3_VertAngle(&mPosX, &fp);
         }
-        _ZN8dActor_c13SpawnFireballERK7Vector3PK10Vector3_165Fix12IiES7_j(this, &mPosX, &vel, 0x1e000, 0xa000, 1);
+        _ZN8dActor_c13SpawnFireballERK7Vector3PK10Vector3_16iij(this, &mPosX, &vel, 0x1e000, 0xa000,
+                                                                1);
         func_02012694(kSndFireSpit, &mCamSpacePosX);
     }
     if (mModelAnim.dExtFrameCtrl_c::Finished() != 0) {
@@ -1099,7 +1104,9 @@ extern "C" void func_ov070_0211f100(daPropeller_Heyho_c* c)
 
 /* (dActor_c: real header type in scope; SpawnCoins goes through the mangled extern below) */
 /* SpawnCoins takes Fix12<int> by value, so this call stays the mangled extern. */
-extern "C" void _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs(void *, Vector3 const &, unsigned int, int, short);
+/* local extern: respelled, not new; the member call renumbers this TU's @NNN labels (6az). */
+extern "C" void _ZN8dActor_c10SpawnCoinsERK7Vector3iis(void *, Vector3 const &, unsigned int, int,
+                                                       short);
 
 /* Defeat helper: a small puff of dust, then mExtraCoinCount + 1 coins spread
  * 10.0 units from the actor, then the actor is killed and recorded in the
@@ -1111,7 +1118,7 @@ extern "C" int func_ov070_0211f0a4(daPropeller_Heyho_c *c) {
     pos.y = c->mPosY;
     pos.z = c->mPosZ;
     unsigned int coins = (unsigned char)c->mExtraCoinCount + 1;
-    _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs(c, pos, coins, 0xa000, 0);
+    _ZN8dActor_c10SpawnCoinsERK7Vector3iis(c, pos, coins, 0xa000, 0);
     c->KillAndTrackInDeathTable();
 }
 

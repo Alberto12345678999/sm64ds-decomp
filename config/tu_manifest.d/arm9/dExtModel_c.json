@@ -570,7 +570,7 @@
       "ordinal": 32
     },
     {
-      "symbol": "_ZN17dExtShadowModel_c9InitModelEP9Matrix4x35Fix12IiES3_S3_j",
+      "symbol": "_ZN17dExtShadowModel_c9InitModelEP9Matrix4x3iiih",
       "address": "0x02015e64",
       "size": "0x00000058",
       "legacy_source": "src/engine/model/d_ext_shadow_model.cpp",

@@ -52,12 +52,16 @@ struct System {
     static void NewSimple(unsigned int id, int x, int y, int z);
 };
 }
-void _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs(void *self, const Vector3 &v, unsigned int n, int vel, short unk);
+/* local extern: respelled, not new; the member call renumbers this TU's @NNN labels (6az). */
+void _ZN8dActor_c10SpawnCoinsERK7Vector3iis(void *self, const Vector3 &v, unsigned int n, int vel,
+                                            short unk);
 void Matrix4x3_ApplyInPlaceToTranslation(Mtx43 *m, int x, int y, int z);
 void Vec3_LslInPlace(Vector3 *v, int sh);
 void Matrix4x3_FromRotationY(void *m, int angle);
-void _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_S5_j(
-    void *self, void *sm, void *mtx, int r, int t5, int t6, unsigned int u);
+/* local extern: respelled, not new; the member call renumbers this TU's @NNN labels (6az). */
+void _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x3iiih(void *self, void *sm,
+                                                                          void *mtx, int r, int t5,
+                                                                          int t6, unsigned int u);
 void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *self, void *actor, int a, int b, unsigned int c, unsigned int d);
 /* Parameter names keep this TU's @NNN. */
 typedef void BgchInitAt_(void *self, void *actor, int a, int b, void *v, int c);
@@ -132,7 +136,7 @@ void daBttBk_c::func_ov080_02124acc()
     v.y = t;
     v3.y = t;
     v3.z = v.z;
-    _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs(this, v3, 5, 0xf000, 0);
+    _ZN8dActor_c10SpawnCoinsERK7Vector3iis(this, v3, 5, 0xf000, 0);
     Sound::PlayBank3(0x41, mCamSpacePos);
     MarkForDestruction();
 }
@@ -190,7 +194,7 @@ void daBttBk_c::func_ov080_02124c3c()
         int sv = data_02082214[((unsigned short)(short)(a << 1) >> 4) * 2];
         if (sv < 0) sv = -sv;
         int result = FX_MUL(sv, 0x28000);
-        _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_S5_j(
+        _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x3iiih(
             this, &mShadowModel, mShadowMtx, 0x96000, 0x32000, result + 0x96000, 0xf);
     }
 }
@@ -262,7 +266,7 @@ int daBttBk_c::func_ov080_02124edc()
                 v3.z = zz;
                 vec.y = y2;
                 v3.y = y2;
-                _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs(this, v3, 5, 0xf000, 0);
+                _ZN8dActor_c10SpawnCoinsERK7Vector3iis(this, v3, 5, 0xf000, 0);
             }
 
             Sound::PlayBank3(0x41, mCamSpacePos);

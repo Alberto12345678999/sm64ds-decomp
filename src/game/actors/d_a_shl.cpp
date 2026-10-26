@@ -139,10 +139,9 @@ void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *self, dActor_c *owner,
 /* Parameter names keep this TU's @NNN. */
 typedef void BgchInitAt_(void *self, dActor_c *owner, Fix12i radius, Fix12i height, Vector3_16 *d,
                          int e);
-void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
-         void *self, dExtShadowModel_c *sm, Matrix4x3 *m, Fix12i radius,
-         int height, u8 flags);
-
+/* local extern: respelled, not new; the member call renumbers this TU's @NNN labels (6az). */
+void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x3iih(
+    void *self, dExtShadowModel_c *sm, Matrix4x3 *m, Fix12i radius, int height, u8 flags);
 }
 
 /* Plain three-word position: Vector3 members here emit an extra
@@ -472,7 +471,8 @@ void daShl_c::func_ov102_0214ce60()
     int hidden = (mFlags & 0x40000) != 0;
     if (hidden)
         return;
-    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(this, &mShadowModel, &mModel.mat4x3, 0x50000, 0x50000, 0xf);
+    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x3iih(
+        this, &mShadowModel, &mModel.mat4x3, 0x50000, 0x50000, 0xf);
 }
 
 // @symbol _ZN7daShl_c19func_ov102_0214cbecEv

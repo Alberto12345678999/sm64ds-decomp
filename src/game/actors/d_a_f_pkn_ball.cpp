@@ -97,7 +97,9 @@ extern void *d_a_f_pkn_ballNewHold(u32 a, u32 b, Fix12i c, Fix12i d, Fix12i e, c
                                    void *g);
 extern void Vec3_Asr(Vec3* d, Vec3* s, int sh);
 extern void Matrix4x3_FromTranslation(Matrix4x3* m, s32 x, s32 y, s32 z);
-extern void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(void* thiz, void* sm, void* mtx, Fix12i f, Fix12i a, u32 b);
+/* local extern: respelled, not new; the member call renumbers this TU's @NNN labels (6az). */
+extern void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x3iih(
+    void *thiz, void *sm, void *mtx, Fix12i f, Fix12i a, u32 b);
 extern s32 data_ov002_02100320[];
 extern s32 data_ov002_02100334[];
 extern s32 data_ov002_02100348[];
@@ -225,7 +227,7 @@ void daFPknBall_c::func_ov002_020f8b24()
     Vec3_Asr(&shadowPos, &pos, 3);
     Matrix4x3_FromTranslation(&data_020a0e68, shadowPos.x, shadowPos.y, shadowPos.z);
     mShadowMat = data_020a0e68;
-    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
+    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x3iih(
         this, &mShadowModel, &mShadowMat, 0x28000, 0x64000, 0xf);
 }
 

@@ -411,6 +411,104 @@ declaration; removing the declaration leaves the marker recording nothing, so
 those were dropped. That is different from the `config/tu_manifest.d/` strings,
 which stay.
 
+### BATCH 5: the drop-shadow path, and two parameter TYPES the names got wrong (2026-10-26)
+
+| old symbol | new symbol | addr/size |
+|---|---|---|
+| `_ZN17dExtShadowModel_c9InitModelEP9Matrix4x35Fix12IiES3_S3_j` | `_ZN17dExtShadowModel_c9InitModelEP9Matrix4x3iiih` | 0x02015e64/0x58 |
+| `_ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j` | `_ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x3iih` | 0x02010be8/0x48 |
+| `_ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_S5_j` | `_ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x3iiih` | 0x02010b9c/0x4c |
+| `_ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs` | `_ZN8dActor_c10SpawnCoinsERK7Vector3iis` | 0x02010714/0x130 |
+| `_ZN8dActor_c12ReflectAngleE5Fix12IiES1_s` | `_ZN8dActor_c12ReflectAngleEiis` | 0x02010428/0x34 |
+| `_ZN8dActor_c13SpawnFireballERK7Vector3PK10Vector3_165Fix12IiES7_j` | `_ZN8dActor_c13SpawnFireballERK7Vector3PK10Vector3_16iij` | 0x020102b0/0x54 |
+
+All six reproduce as real C++ methods at 2004/b56. `InitModel` was the second
+flagship: its own header argued at length that "a plain int can never reproduce
+that name, which is what include/math/Fix12.h exists for", and its definition
+sat under `#pragma cplusplus off` to dodge the homing. Both were consequences of
+the name, and the name was ours.
+
+**THE BYTES CORRECTED TWO PARAMETER TYPES, NOT JUST THE Fix12 ONES.** Once the
+definition is a real method the compiler picks instructions from the declared
+types, so a wrong one shows up as a one-instruction miss. That is new evidence,
+not a style choice:
+
+- **`InitModel`'s opacity is `u8`, not the `u32` its name claimed.** With `u32`
+  the only mismatch in 0x58 bytes was `+0x14`: the ROM reads the fifth stack
+  argument with `ldrb r2, [sp, #4]`, a `u32` parameter emits `ldr`. Both
+  `DropShadow*` forward that argument, so both took `h` too -- and their local
+  externs across 84 files already said `unsigned char`, against their own names.
+- **`SpawnCoins`'s count is SIGNED, although its name said `j` and all 18 local
+  externs said `unsigned int`.** With `u32` five instructions miss: `ble`->`bls`
+  at +0x20, the `addls`/`popls`/`bxls` epilogue at +0x34..0x3c, and the loop's
+  closing `blt`->`blo` at +0x114. Signed compares, signed count.
+
+**CONSUMERS WERE RESPELLED, NOT CONVERTED -- deliberately, and the arithmetic is
+the reason.** 293 references across 94 files keep their local `extern` with its
+named parameters; only the symbol string changed, so no byte moves and no
+manifest moves. Converting those call sites to member calls would delete 115
+named-parameter externs, and **71 of the 94 consumer TUs record compiler-local
+`@NNN` labels** in `config/tu_manifest.d/` -- the renumbering trap this section
+documents above. Batch 4 paid that cost for 78 TUs and 10 of them could not be
+remapped at all. Splitting it keeps the byte finding provable on its own.
+
+What that split costs, so the follow-up is not a surprise:
+
+- **123 `config/source-style-exceptions.json` entries**, one per (file, rule,
+  symbol). The `handspelled-member` rule compares the *normalized matched
+  spelling*, so respelling a banked occurrence reads as a brand-new one even
+  when the count is identical. Each entry's evidence states main's count of the
+  old spelling beside HEAD's count of the new one.
+- **115 `local extern:` markers.** `check_decl_agreement` exempts a symbol that
+  takes `Fix12<int>` by value (`_takes_fix12_by_value`), which is exactly why
+  these declarations never needed a reason before. Renaming retires the
+  exemption and every one of them has to say why it keeps the local copy.
+- **The marker must be a ONE-LINE comment.** The gate reads
+  `text_lines[d.line - 2 : d.line]` -- the declaration's own line and the one
+  directly above it. A four-line block comment whose first line carries
+  `local extern:` leaves its last line above the declaration and the gate still
+  reports all 115.
+- **20 genuinely new declaration disagreements**, banked. The six definitions
+  now take `const Vector3 &` / `dExtShadowModel_c &` / `Matrix4x3 &` where the
+  mangled free functions took pointers. Same ABI, same bytes; the gate compares
+  spellings.
+
+Two traps specific to the config side:
+
+- **A `// @symbol` mark only names the definition that FOLLOWS it with no
+  statement in between.** `check_decl_agreement` takes the marks in
+  `[start, decl_start)`, where `start` is the end of the previous statement. An
+  `extern "C" { ... }` helper block sitting between the mark and the definition
+  swallows the mark, the definition becomes an unnamed orphan, and the gate
+  silently falls back to comparing every declaration against the **plurality**
+  instead -- `SpawnCoins` reported 269 disagreements against `d_a_btn.cpp`'s
+  spelling until the helper block moved above the mark. Watch for `plurality is`
+  where `definition is` belongs.
+- **A LIVE `tubuild create warning: CONFLICT:` note has to be respelled; a
+  `(RESOLVED)` one must not be.** `check_tubuild_conflicts` matches the note's
+  text against the marker in the source, so renaming the symbol in
+  `d_a_star.cpp` without renaming it in `ov002/daStarBase_c+daStar_c.json`
+  notes[105] reports both `STALE NOTE` and `UNRECORDED` for the same conflict.
+  The other 20 old-spelling notes in that family are `(RESOLVED)` historical
+  records and stay exactly as they are.
+
+**18 `5Fix12IiE` names remain, and the earlier "~43" count was inflated** -- it
+was a grep over `src/ include/ config/` that also caught `functions[].legacy_source`
+provenance paths and `(RESOLVED)` manifest prose, neither of which is a live
+reference. Counted against `config/**/symbols.txt`, 13 are enrolled symbols,
+every one of them with a definition in `src/`:
+
+`ApproachLinear`, `LoadMinimapChangeObject`, `dBgCh_SphCrr::SetObjAndSphere`,
+`dCc_c::Init`, `dCcAcPos_c::Init`, `dCcAc_c::Init`, `G3i::PerspectiveW_`,
+`Player::Bounce`, `Player::SpinBounce`, `Player::Hurt`,
+`dMap_c::GetPosFromMinimapPos`, `dEnemyBase_c::KillByInvincibleChar`, and
+`dBgActor_c::UpdateKillByMegaChar`, which is the measured genuine wall and stays.
+
+The other five -- `dBgCh_Actr::Init`, `OAM::Render`, `cstd::atan2`,
+`Sound::ChangeMusicVolume` and `Particle::System::New` -- are in no
+`symbols.txt` at all: they exist only as local `extern` declarations in `src/`,
+so there is nothing enrolled to rename and nothing but the spelling to fix.
+
 ## 1. Ground rules of the build
 
 - **Reloc slots are wildcards.** Every `bl`/`blx` target and every pc-relative `ldr` of an

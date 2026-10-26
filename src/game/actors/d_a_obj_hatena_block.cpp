@@ -217,7 +217,8 @@ extern void Matrix4x3_FromRotationY(void *m, int angle);
 extern void func_020393a4(int *p, int v);
 extern void func_02039394(int *p, int v);
 void d_a_obj_hatena_blockEarthquakeHold(void *self, void *pos, s32 radius);
-extern void _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_S5_j(
+/* local extern: respelled, not new; the member call renumbers this TU's @NNN labels (6az). */
+extern void _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x3iiih(
     void *self, void *shadow, void *mtx, int fix, int t1, int t2, unsigned int n);
 extern void hold_d_a_obj_hatena_block(void *thiz, void *kcl, void *mtx, int fix, short s,
                                       void *clps);
@@ -697,7 +698,7 @@ skipcall:
     mShadowMat.m[9] = mPosX >> 3;
     mShadowMat.m[10] = (mPosY - 0x20000) >> 3;
     mShadowMat.m[11] = mPosZ >> 3;
-    _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_S5_j(
+    _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x3iiih(
         this, &mShadowModel, &mShadowMat, shadowScale, height + 0x14000, shadowScale, 0xf);
 }
 

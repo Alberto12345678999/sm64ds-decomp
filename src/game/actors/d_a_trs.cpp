@@ -188,7 +188,10 @@ int RandomIntInternal(int *seed);
 void Vec3_Asr(void *d, const void *s, int sh);
 void _Z14ApproachLinearRiii(int *p, int target, int step);
 int d_a_trsPlaySubHold(unsigned int a, unsigned int b, unsigned int c, s32 d, int e);
-void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(void *self, void *sm, void *m, int rad, int h, u32 a);
+/* local extern: respelled, not new; the member call renumbers this TU's @NNN labels (6az). */
+void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x3iih(void *self, void *sm,
+                                                                          void *m, int rad, int h,
+                                                                          u32 a);
 int func_020092c4(void *cam, void *out, void *target);
 int func_02012694(int a, void *p, ...);
 u16 func_0201277c(int a);
@@ -221,7 +224,10 @@ extern int data_ov008_02111b6c;
 extern int data_0209caa0[];
 extern s16 data_ov063_0211e1dc[];
 extern s16 data_ov063_0211e1e4[];
-extern char* _ZN8dActor_c13SpawnFireballERK7Vector3PK10Vector3_165Fix12IiES7_j(void* self, const void * v, const void* p, s32 a, s32 b, unsigned int n);
+/* local extern: respelled, not new; the member call renumbers this TU's @NNN labels (6az). */
+extern char *_ZN8dActor_c13SpawnFireballERK7Vector3PK10Vector3_16iij(void *self, const void *v,
+                                                                     const void *p, s32 a, s32 b,
+                                                                     unsigned int n);
 extern s16 data_ov063_0211e1c0[];
 extern int data_ov063_0211e1d0[];
 extern int data_0209b490[];
@@ -457,7 +463,7 @@ void daTrs_c::func_ov063_0211640c() {
         Matrix4x3_FromTranslation(&data_020a0e68,
             pos.x >> 3, pos.y >> 3, pos.z >> 3);
         *(struct Matrix4x3 *)&this->mShadowMtx[0] = data_020a0e68;
-        _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
+        _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x3iih(
             this, &this->mShadowModel1, &this->mShadowMtx[0], 0x12c000, 0xc8000, 0xf);
 
         if (this->mBooFlags.mirrored) {
@@ -467,7 +473,7 @@ void daTrs_c::func_ov063_0211640c() {
             Matrix4x3_FromTranslation(&data_020a0e68,
                 pos.x >> 3, pos.y >> 3, pos.z >> 3);
             this->mShadowMtx2 = data_020a0e68;
-            _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
+            _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x3iih(
                 this, &this->mShadowModel2, &this->mShadowMtx2, 0x12c000, 0xc8000, 0xf);
         }
     }
@@ -529,9 +535,11 @@ void daTrs_c::func_ov063_021166ac() {
     {
         int big = (this->actorID == TRS_ID_BOSS_TERESA);
         if (big)
-            _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(this, &this->mShadowModel1, &this->mShadowMtx[0], 0x12c000, 0xc8000, 0xf);
+            _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x3iih(
+                this, &this->mShadowModel1, &this->mShadowMtx[0], 0x12c000, 0xc8000, 0xf);
         else
-            _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(this, &this->mShadowModel1, &this->mShadowMtx[0], 0x64000, 0xc8000, 0xf);
+            _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x3iih(
+                this, &this->mShadowModel1, &this->mShadowMtx[0], 0x64000, 0xc8000, 0xf);
     }
     this->mCapPosY = this->mClsnOffY + FX_MUL(this->mScaleX, 0x60000);
     pos.x = this->mCapPosX;
@@ -559,7 +567,8 @@ void daTrs_c::func_ov063_021166ac() {
 void daTBasket_c::func_ov063_021169c4() {
 
     Matrix4x3_FromTranslation(&this->mModel.mat4x3, this->mPosX>>3, this->mPosY>>3, this->mPosZ>>3);
-    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(this, &this->mShadowModel, &this->mModel.mat4x3, 0x64000, 0x64000, 0xf);
+    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x3iih(
+        this, &this->mShadowModel, &this->mModel.mat4x3, 0x64000, 0x64000, 0xf);
 }
 
 
@@ -1491,8 +1500,8 @@ void daTrs_c::func_ov063_02118458() {
             char* fb;
             this->mAngleX = 0x1000;
             func_02012694(0x156, &this->mCamSpacePos);
-            fb = _ZN8dActor_c13SpawnFireballERK7Vector3PK10Vector3_165Fix12IiES7_j(
-                this, &v, (const void*)&this->mAngleX, 0x14000, 0x6999, 4);
+            fb = _ZN8dActor_c13SpawnFireballERK7Vector3PK10Vector3_16iij(
+                this, &v, (const void *)&this->mAngleX, 0x14000, 0x6999, 4);
             this->mAngleX = 0;
             if (this->mBooFlags.mirrored)
                 ((daFPknBallView *)fb)->mMirrored = 1;

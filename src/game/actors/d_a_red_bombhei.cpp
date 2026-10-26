@@ -137,8 +137,12 @@ int _ZN6Player11ShowMessageER7fBase_cjPK7Vector3hh(Player *self, fBase_c *actor,
 void _ZN9dCamera_c9SetFlag_3Ev(dCamera_c *cam);
 
 void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(dCcAc_c *self, dActor_c *actor, int radius, int height, unsigned int flags, unsigned int vulnFlags);
-void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(dActor_c *self, dExtShadowModel_c *shadow, Matrix4x3 *mtx, int radius, int depth, unsigned char opacity);
-
+/* local extern: respelled, not new; the member call renumbers this TU's @NNN labels (6az). */
+void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x3iih(dActor_c *self,
+                                                                          dExtShadowModel_c *shadow,
+                                                                          Matrix4x3 *mtx,
+                                                                          int radius, int depth,
+                                                                          unsigned char opacity);
 }
 
 /* This int-returning predicate is what makes the ROM materialize 0/1
@@ -247,7 +251,8 @@ void daRedBombhei_c::func_ov084_0212ce50()
     this->mShadowMat.t.x = this->mPosX >> 3;
     this->mShadowMat.t.y = (this->mPosY - 0x8000) >> 3;
     this->mShadowMat.t.z = this->mPosZ >> 3;
-    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(this, &this->mShadowModel, &this->mShadowMat, 0x64000, 0x32000, 0xf);
+    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x3iih(
+        this, &this->mShadowModel, &this->mShadowMat, 0x64000, 0x32000, 0xf);
 }
 
 // @symbol _ZN14daRedBombhei_c19func_ov084_0212cda0EP7Vector3S1_

@@ -161,7 +161,10 @@ extern int atan2_hold_d_a_bombking_1(int a, int b);
 extern int Vec3_HorzLen(void* v);
 extern int func_ov002_020db5f4(char* c, char* arg);
 extern void func_0200d8c8(void* cam, void* v, int strength);
-void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(void* self, void* sm, void* mtx, int fix, int t, unsigned int j);
+/* local extern: respelled, not new; the member call renumbers this TU's @NNN labels (6az). */
+void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x3iih(void *self, void *sm,
+                                                                          void *mtx, int fix, int t,
+                                                                          unsigned int j);
 extern Matrix4x3 IDENTITY_MATRIX4X3;
 extern void Matrix4x3_ApplyInPlaceToTranslation(void *m, int x, int y, int z);
 extern void Matrix4x3_ApplyInPlaceToRotationXYZExt(void *m, int x, int y, int z);
@@ -1467,7 +1470,7 @@ void daBombking_c::func_ov078_02125c98() {
   this->mShadowMtx[9] = this->mPosX >> 3;
   this->mShadowMtx[10] = this->mPosY >> 3;
   this->mShadowMtx[11] = this->mPosZ >> 3;
-  _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
+  _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x3iih(
       this, &this->mShadowModel, this->mShadowMtx, scale, ip + 0x28000, 0xf);
 }
 

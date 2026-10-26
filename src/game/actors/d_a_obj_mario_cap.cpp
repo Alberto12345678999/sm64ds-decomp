@@ -262,9 +262,12 @@ void  _ZN9dBgCh_GndD1Ev(dBgCh_Gnd *ray);
 
 /* SetRanges carries Fix12<int> by value; dActor_c.h deliberately omits it
    (notes/mwccarm-codegen.md 6az). A call is unaffected. */
-void  _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
-          void *self, void *shadow, void *matrix, int radius, int depth, int opacity);
-short _ZN8dActor_c12ReflectAngleE5Fix12IiES1_s(void *self, int nx, int nz, short ang);
+/* local extern: respelled, not new; the member call renumbers this TU's @NNN labels (6az). */
+void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x3iih(void *self, void *shadow,
+                                                                          void *matrix, int radius,
+                                                                          int depth, int opacity);
+/* local extern: respelled, not new; the member call renumbers this TU's @NNN labels (6az). */
+short _ZN8dActor_c12ReflectAngleEiis(void *self, int nx, int nz, short ang);
 
 /* -- data -- */
 extern Matrix4x3      data_020a0e68;
@@ -784,7 +787,7 @@ void daObjMarioCap_c::UpdateMatrix()
         mShadowMat.m[9] = mPosX >> 3;
         mShadowMat.m[10] = (y + (off << 12)) >> 3;
         mShadowMat.m[11] = mPosZ >> 3;
-        _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
+        _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x3iih(
             this, &mShadowModel, &mShadowMat, 0x50000, 0x32000, 0xf);
     }
 }
@@ -1363,8 +1366,7 @@ void daObjMarioCap_c::CheckTouch()
     if (mWithMeshClsn.IsOnWall() != 0) {
         void *wr = mWithMeshClsn.GetWallResult();
         ((SurfaceInfo *)((char*)wr + 4))->CopyNormalTo(*(Vector3 *)&normal[0]);
-        mPrevAngleY = _ZN8dActor_c12ReflectAngleE5Fix12IiES1_s(
-            this, normal[0], normal[2], mPrevAngleY);
+        mPrevAngleY = _ZN8dActor_c12ReflectAngleEiis(this, normal[0], normal[2], mPrevAngleY);
     }
 
     if (mdCcAc_c.otherOwner == 0) return;

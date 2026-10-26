@@ -116,8 +116,11 @@ typedef void BgchInitAt_(dBgCh_Actr *self, int actor, Fix12i radius, Fix12i heig
 extern void Vec3_Asr(void *dst, void *src, int n);
 extern void Matrix4x3_FromTranslation(void *m, int x, int y, int z);
 extern void Matrix4x3_ApplyInPlaceToRotationXYZExt(void *m, short a, short b, short c);
-extern int _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
-    void *thiz, void *sm, void *m, int rad, int h, unsigned u);
+/* local extern: respelled, not new; the member call renumbers this TU's @NNN labels (6az). */
+extern int _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x3iih(void *thiz,
+                                                                                void *sm, void *m,
+                                                                                int rad, int h,
+                                                                                unsigned u);
 extern struct Matrix4x3 data_020a0e68;
 /* Same body as Sound::PlayBank3 (0x02012664). The ROM calls these copies. */
 extern void func_02012694(int id, void *pos);
@@ -135,7 +138,8 @@ extern int atan2_hold_d_a_grock_1(int y, int x);
 /* dActor_c.h types GetSubtraction(short, short). The wall angle is an int
  * passed straight through; the short spelling adds lsl/asr #16. */
 extern int _ZN8dActor_c14GetSubtractionEss(void *a, s16 x, int y);
-extern s16 _ZN8dActor_c12ReflectAngleE5Fix12IiES1_s(void *a, int x, int y, s16 ang);
+/* local extern: respelled, not new; the member call renumbers this TU's @NNN labels (6az). */
+extern s16 _ZN8dActor_c12ReflectAngleEiis(void *a, int x, int y, s16 ang);
 extern s16 data_02082214[];
 extern void AddVec3(struct Vector3 *dst, struct Vector3 *a, struct Vector3 *b);
 /* Clears the cylinder flags bit 2, then sets it when the closest player
@@ -194,7 +198,7 @@ extern "C" int func_ov021_021122fc(char *raw)
     Matrix4x3_ApplyInPlaceToRotationXYZExt(&data_020a0e68,
                                             rock->mAngleX, rock->mAngleY, rock->mAngleZ);
     rock->mModel.mat4x3 = data_020a0e68;
-    return _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
+    return _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x3iih(
         rock, &rock->mShadowModel, rock->pad_188, 0x1f4000, 0x1f4000, 0xf);
 }
 
@@ -313,8 +317,8 @@ extern "C" void func_ov021_02112544(char *raw)
         int wallAngle = cstd::atan2(wallNormal.x, wallNormal.z);
         if (_ZN8dActor_c14GetSubtractionEss(rock, rock->mPrevAngleY, wallAngle) <= 0x1000)
             return;
-        rock->mPrevAngleY = _ZN8dActor_c12ReflectAngleE5Fix12IiES1_s(
-            rock, wallNormal.x, wallNormal.z, rock->mPrevAngleY);
+        rock->mPrevAngleY =
+            _ZN8dActor_c12ReflectAngleEiis(rock, wallNormal.x, wallNormal.z, rock->mPrevAngleY);
         rock->UpdatePosWithHorzSpeedAndAng();
     }
 }

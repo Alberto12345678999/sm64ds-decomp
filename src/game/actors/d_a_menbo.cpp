@@ -117,7 +117,8 @@ void  func_0203558c(void *self);
 int   func_02035638(u8 *p);
 void  func_02035684(int *p, int v);
 
-void  _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs(void *self, const void *v, u32 n, s32 fix, s16 s);
+/* local extern: respelled, not new; the member call renumbers this TU's @NNN labels (6az). */
+void _ZN8dActor_c10SpawnCoinsERK7Vector3iis(void *self, const void *v, u32 n, s32 fix, s16 s);
 
 void  _ZN12dEnemyBase_c20KillByInvincibleCharERK10Vector3_16R6Player5Fix12IiE(void *self, void *v, void *player, LocFix12 a);
 void  func_ov002_020aea30(void *self, void *actor, void *collision);
@@ -295,7 +296,7 @@ void func_ov090_021310b4(daMenbo_c *c)
         cv.x = c->mPosX;
         cv.y = c->mPosY;
         cv.z = c->mPosZ;
-        _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs(c, &cv, c->mExtraCoinCount + 1, 0xa000, 0);
+        _ZN8dActor_c10SpawnCoinsERK7Vector3iis(c, &cv, c->mExtraCoinCount + 1, 0xa000, 0);
         c->PoofDust();
         c->KillAndTrackInDeathTable();
         return;
@@ -755,7 +756,7 @@ int daMenbo_c::Behavior()
             v.x = mPosX;
             v.y = mPosY;
             v.z = mPosZ;
-            _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs(c, &v, mExtraCoinCount + 1, 0xa000, 0);
+            _ZN8dActor_c10SpawnCoinsERK7Vector3iis(c, &v, mExtraCoinCount + 1, 0xa000, 0);
             PoofDust();
             KillAndTrackInDeathTable();
         }

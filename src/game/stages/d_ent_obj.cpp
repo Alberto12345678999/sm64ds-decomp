@@ -94,9 +94,9 @@ struct EntObjTextureSequenceFileHandle : SharedFilePtr {
  * class type, mwccarm homes the register arguments and the callers grow, so
  * the measured scalar views stay. */
 extern "C" {
-void _ZN17dExtShadowModel_c9InitModelEP9Matrix4x35Fix12IiES3_S3_j(void *shadow, Matrix4x3 *mat,
-                                                                  int radius, int height, int depth,
-                                                                  unsigned char flags);
+/* local extern: respelled, not new; the member call renumbers this TU's @NNN labels (6az). */
+void _ZN17dExtShadowModel_c9InitModelEP9Matrix4x3iiih(void *shadow, Matrix4x3 *mat, int radius,
+                                                      int height, int depth, unsigned char flags);
 int d_ent_objNewHold(unsigned handle, unsigned id, int x, int y, int z, const Vector3_16 *dir,
                      void *callback);
 
@@ -648,8 +648,8 @@ void UnknownVsPlayer::func_ov075_02114cd8() {
     (this->*data_ov075_0211d53c[mAnimState].state)();
     mModel.Advance();
     mTextureSequence.Advance();
-    _ZN17dExtShadowModel_c9InitModelEP9Matrix4x35Fix12IiES3_S3_j(&mShadow, &mModel.mat4x3, 0x50000,
-                                                                 0x1f4000, 0x50000, 0xf);
+    _ZN17dExtShadowModel_c9InitModelEP9Matrix4x3iiih(&mShadow, &mModel.mat4x3, 0x50000, 0x1f4000,
+                                                     0x50000, 0xf);
 }
 
 // @symbol _ZN15UnknownVsPlayer19func_ov075_02114ddcEhhi

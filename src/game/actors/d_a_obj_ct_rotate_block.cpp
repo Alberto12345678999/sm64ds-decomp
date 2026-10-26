@@ -77,8 +77,11 @@ extern void MulVec3Mat4x3(void *src, void *mtx, void *dst);
 extern void AddVec3(void *a, void *b, void *c);
 extern u16 DecIfAbove0_Short(u16 *p);
 extern int RandomIntInternal(int *seed);
-extern int _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_S5_j(
-    void *self, void *sm, void *mtx, int a, int b, int d, unsigned int e);
+/* local extern: respelled, not new; the member call renumbers this TU's @NNN labels (6az). */
+extern int _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x3iiih(void *self,
+                                                                                void *sm, void *mtx,
+                                                                                int a, int b, int d,
+                                                                                unsigned int e);
 extern void hold_d_a_obj_ct_rotate_block(void *mc, void *kcl, void *mtx, int fix, s16 s,
                                          void *clps);
 extern void func_020393d4(void *p, void *v);
@@ -119,7 +122,7 @@ int daObjCtRotateBlock_c::UpdateShadow()
         int s = data_02082214[idx << 1];
         int sa = s < 0 ? -s : s;
         int depthAdd = FX_MUL(sa, 0x64000);
-        return _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_S5_j(
+        return _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x3iiih(
             this, &mShadowModel, &mShadowMat, d + depthAdd, b, d, 0xf);
     }
 }

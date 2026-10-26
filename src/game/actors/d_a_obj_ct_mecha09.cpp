@@ -55,7 +55,8 @@ struct Mecha09ClsnFilePtr : SharedFilePtr {
  * include/dActor_c.h). */
 extern "C" {
 extern void Matrix4x3_FromRotationY(Matrix4x3 *matrix, int angle);
-extern void _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_S5_j(
+/* local extern: respelled, not new; the member call renumbers this TU's @NNN labels (6az). */
+extern void _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x3iiih(
     dActor_c *actor, dExtShadowModel_c *shadow, Matrix4x3 *matrix, int scaleX, int scaleY,
     int scaleZ, u32 opacity);
 extern Mecha09ClsnFilePtr data_ov065_0211d9cc;
@@ -90,7 +91,7 @@ void daObjCtMecha09_c::func_ov065_0211bc88()
     mShadowMat.t.x = mPosX >> 3;
     mShadowMat.t.y = (mGroundY + 0x1000) >> 3;
     mShadowMat.t.z = mPosZ >> 3;
-    _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_S5_j(
+    _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x3iiih(
         this, &mShadowModel, &mShadowMat, 0x1e0000, 0x32000, 0xfa000, 0xf);
 }
 

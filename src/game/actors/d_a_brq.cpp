@@ -403,9 +403,10 @@ s32 daBrq_c::UpdateDefeatedState()
 #include "dBgCh_Gnd.h"
 extern "C" void Matrix4x3_FromRotationXYZExt(
     Matrix4x3 *matrix, s16 x, s16 y, s16 z);
-extern "C" void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
-    dActor_c *actor, dExtShadowModel_c *shadow, Matrix4x3 *matrix,
-    s32 radius, s32 depth, u32 opacity);
+/* local extern: respelled, not new; the member call renumbers this TU's @NNN labels (6az). */
+extern "C" void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x3iih(
+    dActor_c *actor, dExtShadowModel_c *shadow, Matrix4x3 *matrix, s32 radius, s32 depth,
+    u32 opacity);
 extern signed char data_0209f2f8[];
 
 struct BrqVector3Words { int x, y, z; };
@@ -450,7 +451,7 @@ void daBrq_c::UpdateModelTransform()
         }
     }
 
-    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
+    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x3iih(
         this, &mShadowModel, &mMat4x3, 0x5a000, shadowDepth, 0xf);
 }
 

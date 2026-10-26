@@ -87,8 +87,11 @@ int func_02012694(int id, void *pos);
 int _ZN10dBgActor_c20UpdateKillByMegaCharEsss5Fix12IiE(void *self, short a, short b, short c, int d);
 void func_02039394(int *collider, int v);
 void func_020393a4(int *collider, int v);
-void _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_S5_j(
-    void *self, void *shadow, void *mtx, int sy, int sx, int sz, unsigned int flags);
+/* local extern: respelled, not new; the member call renumbers this TU's @NNN labels (6az). */
+void _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x3iiih(void *self, void *shadow,
+                                                                          void *mtx, int sy, int sx,
+                                                                          int sz,
+                                                                          unsigned int flags);
 extern void hold_d_a_obj_yajirusi(void *self, void *kcl, void *mtx, int scale, short angle,
                                   void *clps);
 /* dExtSimpleModel_c, KCL and CLPS. Each column is its own symbol so the relocations
@@ -157,7 +160,7 @@ int daObjYajirusi_c::Behavior()
         return 1;
     func_02039394((int *)&mMeshCollider, 0xc0000);
     func_020393a4((int *)&mMeshCollider, 0xe0000);
-    _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_S5_j(
+    _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x3iiih(
         this, &mShadowModel, mShadowMat, 0x10e000, 0x64000, 0x46000, 0xf);
     IsClsnInRangeOnScreen(0x600000, 0);
     return 1;

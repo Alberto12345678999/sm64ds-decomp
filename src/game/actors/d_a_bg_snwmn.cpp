@@ -38,10 +38,9 @@ void Matrix4x3_FromRotationY(void *, short);
 void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
     void *self, void *actor, const void *offset, int radius, int height,
     u32 flags, u32 unk);
-void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
-    void *self, dExtShadowModel_c *shadow, Matrix4x3 *matrix, int radius,
-    int height, u32 flags);
-
+/* local extern: respelled, not new; the member call renumbers this TU's @NNN labels (6az). */
+void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x3iih(
+    void *self, dExtShadowModel_c *shadow, Matrix4x3 *matrix, int radius, int height, u32 flags);
 }
 
 /* Four file-scope objects. mwcc emits __sinit_d_a_bg_snwmn.cpp from them.
@@ -191,7 +190,7 @@ void daBgSnwmn_c::func_ov072_021208d8()
     mModel2.mat4x3.t.y = mPosY >> 3;
     mModel2.mat4x3.t.z = mPosZ >> 3;
 
-    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
+    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x3iih(
         this, &mShadow, &mModel2.mat4x3, 0xe6000, 0x12c000, 0xf);
 }
 

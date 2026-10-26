@@ -359,9 +359,10 @@ end:
  * reason as the two Init imports above. */
 extern "C" void Matrix4x3_FromRotationXYZExt(void *m, int x, int y, int z);
 extern "C" void Matrix4x3_FromRotationY(void *m, int angle);
-extern "C" void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
-    dActor_c *actor, dExtShadowModel_c *shadow, Matrix4x3 *matrix,
-    Fix12i radius, Fix12i depth, u32 opacity);
+/* local extern: respelled, not new; the member call renumbers this TU's @NNN labels (6az). */
+extern "C" void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x3iih(
+    dActor_c *actor, dExtShadowModel_c *shadow, Matrix4x3 *matrix, Fix12i radius, Fix12i depth,
+    u32 opacity);
 
 void daKrpa_c::func_ov070_02121310()
 {
@@ -377,9 +378,9 @@ void daKrpa_c::func_ov070_02121310()
     this->mMatrix.t.x = this->mPosX >> 3;
     this->mMatrix.t.y = this->mPosY >> 3;
     this->mMatrix.t.z = this->mPosZ >> 3;
-    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
-        this, &this->mShadowModel, &this->mMatrix,
-        this->mScaleX * 0x46, this->mGroundDistance, 0xf);
+    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x3iih(
+        this, &this->mShadowModel, &this->mMatrix, this->mScaleX * 0x46, this->mGroundDistance,
+        0xf);
 }
 
 bool ApproachLinear(short &value, short target, short step);

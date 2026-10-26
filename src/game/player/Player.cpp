@@ -21717,7 +21717,8 @@ int Player::St_CrazedCrate_Main() {
     extern int AngleDiff(int, int);
     extern void func_ov002_020e0f38(void*, int);
     extern void _ZN7fBase_c18MarkForDestructionEv(void*);
-    extern void _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs(void*, const Vector3&, unsigned int, int, short);
+    extern void _ZN8dActor_c10SpawnCoinsERK7Vector3iis(void *, const Vector3 &, unsigned int, int,
+                                                       short);
     extern void Player_ReleaseHeldActor(void*);
     extern Player::State data_ov002_0211031c;
     char* self = (char*)this;
@@ -21760,7 +21761,7 @@ int Player::St_CrazedCrate_Main() {
                 pos.x = mPosX;
                 pos.y = mPosY;
                 pos.z = mPosZ;
-                _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs(self, pos, 5, 0xf000, 0);
+                _ZN8dActor_c10SpawnCoinsERK7Vector3iis(self, pos, 5, 0xf000, 0);
                 func_ov002_020d718c();
             } else {
                 Player_ReleaseHeldActor(self);
@@ -23899,7 +23900,8 @@ void func_ov002_020e444c(char *c)
     extern void Matrix4x3_ApplyInPlaceToTranslation(struct Matrix4x3 *mF, Fix12i x, Fix12i y, Fix12i z);
     extern void func_ov002_020e4374(void *c, int *p1, int *p2);
     extern void *_ZNK10dBgCh_Actr14GetFloorResultEv(void *self);
-    extern void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(void *self, void *sm, void *mtx, Fix12i a, Fix12i b, u32 flags);
+    extern void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x3iih(
+        void *self, void *sm, void *mtx, Fix12i a, Fix12i b, u32 flags);
     extern struct Matrix4x3 data_020a0e68;
     extern int _ZNK5dBgPi9GetClsnIDEv(void*);
     extern int func_ov002_020e3f90(char*);
@@ -23975,8 +23977,8 @@ void func_ov002_020e444c(char *c)
     if (player->mHideShadow != 0)
         return;
 
-    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
-        c, &player->mShadowModel, c + 0x5bc, spC, sp8, 0xf);
+    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x3iih(c, &player->mShadowModel,
+                                                                         c + 0x5bc, spC, sp8, 0xf);
 }
 }
 

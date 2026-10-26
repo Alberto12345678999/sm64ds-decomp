@@ -161,7 +161,10 @@ extern "C" {
 unsigned short DecIfAbove0_Short(unsigned short *p);
 void _Z14ApproachLinearRiii(int &x, int target, int step);
 int __aeabi_idiv(int, int);
-void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(void *self, void *sm, void *mtx, int a, int b, unsigned int g);
+/* local extern: respelled, not new; the member call renumbers this TU's @NNN labels (6az). */
+void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x3iih(void *self, void *sm,
+                                                                          void *mtx, int a, int b,
+                                                                          unsigned int g);
 void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
     dCcAcPos_c *clsn, dActor_c *actor, const Vector3 &offset,
     s32 radius, s32 height, u32 flags, u32 vulnFlags);
@@ -546,7 +549,8 @@ extern "C" void func_ov100_02143b68(char *self)
     c->mModelAnim.mat4x3.t.x = c->mPosX >> 3;
     c->mModelAnim.mat4x3.t.y = c->mPosY >> 3;
     c->mModelAnim.mat4x3.t.z = c->mPosZ >> 3;
-    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(c, &c->mShadowModel, &c->mModelAnim.mat4x3, 0x15e000, 0x1f4000, 0xf);
+    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x3iih(
+        c, &c->mShadowModel, &c->mModelAnim.mat4x3, 0x15e000, 0x1f4000, 0xf);
     tmp = *(M48 *)&IDENTITY_MATRIX4X3;
     i = 0;
     mdst = c->mModels;
@@ -561,7 +565,8 @@ extern "C" void func_ov100_02143b68(char *self)
         *(int *)(st + 0x3b0) = *(int *)(rd + 0x6d8) >> 3;
         *(int *)(st + 0x3b4) = *(int *)(rd + 0x6dc) >> 3;
         *(int *)(st + 0x3b8) = *(int *)(rd + 0x6e0) >> 3;
-        _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(c, sm, &mdst->mat4x3, 0x78000, 0x1f4000, 0xf);
+        _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x3iih(
+            c, sm, &mdst->mat4x3, 0x78000, 0x1f4000, 0xf);
         mdst++;
         rd += 0xc;
         st += 0x50;

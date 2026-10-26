@@ -551,32 +551,25 @@ void dActor_c::UpdatePos(dCc_c *clsn)
 }
 
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j
-/* ROM ordinal 72 -- _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j
+// @symbol _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x3iih
+/* ROM ordinal 72 -- _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x3iih
  * 0x02010be8  size 0x48 */
-/* local extern: dExtShadowModel_c::InitModel takes Fix12<int> by value, so it
-   is called by its symbol (the Fix12 wall); so are both definitions below. */
-extern "C" void _ZN17dExtShadowModel_c9InitModelEP9Matrix4x35Fix12IiES3_S3_j(
-    dExtShadowModel_c *shadow, Matrix4x3 *matrix, Fix12i scaleX, Fix12i scaleY, Fix12i scaleZ,
-    u8 opacity);
-extern "C" void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
-    dActor_c *self, dExtShadowModel_c *shadow, Matrix4x3 *matrix, Fix12i radius, Fix12i depth,
-    u8 opacity) {
-    if (self->mFlags & 0x10) /* beyond mFarDistance: no drop shadow */
+void dActor_c::DropShadowRadHeight(dExtShadowModel_c &shadow, Matrix4x3 &matrix, Fix12i radius,
+                                   Fix12i depth, u8 opacity) {
+    if (mFlags & 0x10) /* beyond mFarDistance: no drop shadow */
         return;
-    _ZN17dExtShadowModel_c9InitModelEP9Matrix4x35Fix12IiES3_S3_j(shadow, matrix, radius, depth, radius, opacity);
+    shadow.InitModel(&matrix, radius, depth, radius, opacity);
 }
 
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_S5_j
-/* ROM ordinal 71 -- _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_S5_j
+// @symbol _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x3iiih
+/* ROM ordinal 71 -- _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x3iiih
  * 0x02010b9c  size 0x4c */
-extern "C" void _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_S5_j(
-    dActor_c *self, dExtShadowModel_c *shadow, Matrix4x3 *matrix, Fix12i scaleX, Fix12i scaleY,
-    Fix12i scaleZ, u8 opacity) {
-    if (self->mFlags & 0x10)
+void dActor_c::DropShadowScaleXYZ(dExtShadowModel_c &shadow, Matrix4x3 &matrix, Fix12i scaleX,
+                                  Fix12i scaleY, Fix12i scaleZ, u8 opacity) {
+    if (mFlags & 0x10)
         return;
-    _ZN17dExtShadowModel_c9InitModelEP9Matrix4x35Fix12IiES3_S3_j(shadow, matrix, scaleX, scaleY, scaleZ, opacity);
+    shadow.InitModel(&matrix, scaleX, scaleY, scaleZ, opacity);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -750,24 +743,24 @@ extern "C" s32 func_02010844(void *actor, Vector3 *v, s16 angle) {
 }
 
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs
-/* ROM ordinal 61 -- _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs
- * 0x02010714  size 0x130 */
 extern "C" {
 extern int RandomIntInternal(int *seed);
 extern int data_0209e650[];
 }
-extern "C" void _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs(
-    struct dActor_c *self, const struct Vector3 *pos, s32 count,
-    s32 spread, s16 angle)
-{
-    struct dActor_c *actor;
+// @symbol _ZN8dActor_c10SpawnCoinsERK7Vector3iis
+/* ROM ordinal 61 -- _ZN8dActor_c10SpawnCoinsERK7Vector3iis
+ * 0x02010714  size 0x130 */
+/* count is SIGNED, although every local extern of this symbol and the old
+   mangled name claimed unsigned: 0x02010734 branches with `ble` and the loop
+   closes with `blt`, which an unsigned count assembles as `bls`/`blo`. */
+void dActor_c::SpawnCoins(const Vector3 &pos, s32 count, Fix12i spread, s16 angle) {
+    dActor_c *actor;
     s32 ang;
     s32 prev;
     s32 i;
     u32 r;
     s16 ang0;
-    struct Vector3_16 *rot;
+    Vector3_16 *rot;
     s32 deathId;
     u32 id;
     u32 param;
@@ -785,7 +778,7 @@ extern "C" void _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs(
     }
 
     for (i = 0; i < count; i++) {
-        actor = dActor_c::Spawn(id, param, *pos, rot, self->mAreaId, deathId);
+        actor = dActor_c::Spawn(id, param, pos, rot, mAreaId, deathId);
 
         if (actor != 0) {
             do {
@@ -938,13 +931,11 @@ bool dActor_c::IsPlayerInRange(const Vector3 &pos, s32 maxDist)
 }
 
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN8dActor_c12ReflectAngleE5Fix12IiES1_s
-/* ROM ordinal 53 -- _ZN8dActor_c12ReflectAngleE5Fix12IiES1_s
+// @symbol _ZN8dActor_c12ReflectAngleEiis
+/* ROM ordinal 53 -- _ZN8dActor_c12ReflectAngleEiis
  * 0x02010428  size 0x34 */
-/* Fix12<int> by value: defined by its symbol. Mirrors angToReflect, turned
-   around, about the normal's heading. */
-extern "C" s16 _ZN8dActor_c12ReflectAngleE5Fix12IiES1_s(dActor_c *self, Fix12i normalX,
-                                                        Fix12i normalZ, s16 angToReflect) {
+/* Mirrors angToReflect, turned around, about the normal's heading. */
+s16 dActor_c::ReflectAngle(Fix12i normalX, Fix12i normalZ, s16 angToReflect) {
     s16 normalAngle = cstd::atan2(normalX, normalZ);
     s16 delta = (s16)((angToReflect + 0x8000) - normalAngle);
     return (s16)(normalAngle - delta);
@@ -1018,16 +1009,14 @@ extern "C" void *func_02010304(dActor_c *target, dCc_c *clsn) {
 }
 
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN8dActor_c13SpawnFireballERK7Vector3PK10Vector3_165Fix12IiES7_j
-/* ROM ordinal 48 -- _ZN8dActor_c13SpawnFireballERK7Vector3PK10Vector3_165Fix12IiES7_j
+// @symbol _ZN8dActor_c13SpawnFireballERK7Vector3PK10Vector3_16iij
+/* ROM ordinal 48 -- _ZN8dActor_c13SpawnFireballERK7Vector3PK10Vector3_16iij
  * 0x020102b0  size 0x54 */
 /* Spawns actor 0xfe, daFPknBall_c (the fire piranha plant's fireball), with
-   its starting speed and the speed it then approaches. Fix12<int> by value,
-   so defined by its symbol. */
-extern "C" void _ZN8dActor_c13SpawnFireballERK7Vector3PK10Vector3_165Fix12IiES7_j(
-    dActor_c *self, const Vector3 *pos, const Vector3_16 *rot, Fix12i horzSpeed, Fix12i targetSpeed,
-    u32 param1) {
-    dActor_c *ball = dActor_c::Spawn(0xfe, param1, *pos, rot, self->mAreaId, -1);
+   its starting speed and the speed it then approaches. */
+void dActor_c::SpawnFireball(const Vector3 &pos, const Vector3_16 *rot, Fix12i horzSpeed,
+                             Fix12i targetSpeed, u32 param1) {
+    dActor_c *ball = dActor_c::Spawn(0xfe, param1, pos, rot, mAreaId, -1);
     if (ball != 0) {
         ball->mHorzSpeed = horzSpeed;
         static_cast<daFPknBall_c *>(ball)->mTargetSpeed = targetSpeed;

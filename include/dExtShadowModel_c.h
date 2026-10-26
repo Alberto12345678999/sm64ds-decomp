@@ -30,16 +30,15 @@
  * prev and next; InitModel fills mat/scale/opacity and links; the D1
  * unlink pins prev at 0x20 and next at 0x24.
  *
- * InitModel's mangled name carries 5Fix12IiES3_S3_ -- the real Fix12<int>
- * template with Itanium substitutions for the repeats. A plain int can
- * never reproduce that name, which is what include/math/Fix12.h exists
- * for. The DECLARATION below is therefore the true signature, but the
- * DEFINITION stays a mangled free function (its .c file): CW homes every
- * class-typed by-value parameter to the stack (push {r0-r3} plus reloads,
- * +0x14 bytes) under 1.2/sp2p3 and 2004/b56 alike, while the ROM reads the
- * registers directly. Until that homing lever is found, a real method body
- * cannot reproduce the bytes; callers may still use this declaration, since
- * a call emits the same S3_ symbol either way. See notes/mwccarm-codegen.md.
+ * CORRECTED 2026-10-26. This comment used to argue that InitModel's mangled
+ * name carries 5Fix12IiES3_S3_, so a plain int "can never reproduce that
+ * name", so the definition had to stay a mangled free function to dodge wall
+ * 6az's by-value homing. That reasoning was circular: the name was ours. The
+ * stripped cartridge contains no _Z strings and no 5Fix12IiE anywhere (arm9
+ * plus all 105 overlays), so there is no ROM evidence that this parameter was
+ * ever a class type -- only that it is a 20.12 scalar, which Fix12i says. With
+ * Fix12i the DEFINITION is a real method and reproduces 0x02015e64/0x58
+ * exactly. See notes/mwccarm-codegen.md 6az.
  */
 
 #ifdef __cplusplus
@@ -76,8 +75,9 @@ struct dExtShadowModel_c : dExtModel_c {
     virtual int DoSetFile(char *file, int a, int b);  /* slot 2 */
 
     /* --- non-virtual --- */
-    void InitModel(Matrix4x3 *m, Fix12<int> sx, Fix12<int> sy, Fix12<int> sz,
-                   u32 opacity);   /* defined as a free function, see above */
+    /* opacity is u8, not the u32 the old name claimed: 0x02015e78 reads the
+       fifth argument with `ldrb r2, [sp, #4]`. */
+    void InitModel(Matrix4x3 *m, Fix12i sx, Fix12i sy, Fix12i sz, u8 opacity);
     /* RETURNS int, not void: 0x02015ebc ends in `bx ip`, a tail call, so the
        callee's r0 is this function's. Same evidence as dExtModel_c::SetFile. */
     int InitCylinder();

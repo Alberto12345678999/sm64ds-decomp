@@ -117,8 +117,9 @@ extern void *data_0209f318;
 extern void func_0203568c(int *p, int v);
 extern void func_02035684(int *p, int v);
 extern int func_0200fccc(char* s, int r1);
-extern int _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
-    char* self, dExtShadowModel_c* sm, struct Matrix4x3* m, int fix, int t, u32 f);
+/* local extern: respelled, not new; the member call renumbers this TU's @NNN labels (6az). */
+extern int _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x3iih(
+    char *self, dExtShadowModel_c *sm, struct Matrix4x3 *m, int fix, int t, u32 f);
 extern void Matrix4x3_FromRotationY(void* m, int angle);
 extern void *gPFlowerCloseModelFile[];
 extern void *gPFlowerOpenModelFile[];
@@ -416,7 +417,8 @@ int daObjPowerUpItem_c::DropShadow()
         r3 = 0x64000 - FX_MUL(d, 0x180);
         if (r3 < 0x3c000) r3 = 0x3c000;
     }
-    return _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j((char*)this, &mShadowModel, &mShadowMat, r3, 0x3c000, 0xf);
+    return _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x3iih(
+        (char *)this, &mShadowModel, &mShadowMat, r3, 0x3c000, 0xf);
 }
 
 /* dExtSimpleModel_c matrices: rotates mOpenModel's matrix by mAngleY, sets its translation

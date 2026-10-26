@@ -144,9 +144,12 @@ struct System {
 };
 }
 void d_a_btnEarthquakeHold(void *self, const void *v, int f);
-void _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs(void *self, const void *pos, u32 n, int fix, s16 s);
-void _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_S5_j(
-    void *self, void *sm, void *mtx, int a, int b, int c, unsigned int g);
+/* local extern: respelled, not new; the member call renumbers this TU's @NNN labels (6az). */
+void _ZN8dActor_c10SpawnCoinsERK7Vector3iis(void *self, const void *pos, u32 n, int fix, s16 s);
+/* local extern: respelled, not new; the member call renumbers this TU's @NNN labels (6az). */
+void _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x3iiih(void *self, void *sm,
+                                                                          void *mtx, int a, int b,
+                                                                          int c, unsigned int g);
 
 /* ---- data ---- */
 extern s16 data_02082214[];
@@ -990,7 +993,7 @@ void daBtn_c::func_ov079_02125058(dActor_c *other)
         y = p->y; v1.y = y;
         z = p->z; v1.z = z;
         w1.x = x; w1.y = y; w1.z = z;
-        _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs(this, &w1, 1, 0x8000, 0);
+        _ZN8dActor_c10SpawnCoinsERK7Vector3iis(this, &w1, 1, 0x8000, 0);
         mCoinGiven = 1;
         return;
     }
@@ -1006,7 +1009,7 @@ void daBtn_c::func_ov079_02125058(dActor_c *other)
         if (y - mPosY < 0x2bc000) return;
         if (DecIfAbove0_Byte(&mCoinsLeft) == 0) return;
         w2.x = v2.x; w2.y = v2.y; w2.z = v2.z;
-        _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs(this, &w2, 1, 0x8000, 0);
+        _ZN8dActor_c10SpawnCoinsERK7Vector3iis(this, &w2, 1, 0x8000, 0);
         mCoinGiven = 1;
         return;
     }
@@ -1087,7 +1090,7 @@ void daBtn_c::func_ov079_02124dec()
                 v1.y = y;
                 w1.y = y;
 
-                _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs(this, &w1, 5, 0x8000, 0);
+                _ZN8dActor_c10SpawnCoinsERK7Vector3iis(this, &w1, 5, 0x8000, 0);
                 mState = 8;
             } else {
                 mSubState++;
@@ -1486,10 +1489,10 @@ void daBtn_c::func_ov079_02124188()
         return;
 
     if (mIsKing != 0) {
-        _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_S5_j(
+        _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x3iiih(
             this, &mShadowModel, mShadowMatrix, 0x1cc000, 0x190000, shadowRad, 0xf);
     } else {
-        _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_S5_j(
+        _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x3iiih(
             this, &mShadowModel, mShadowMatrix, 0xf0000, 0x190000, shadowRad, 0xf);
     }
     return;
@@ -1792,7 +1795,7 @@ void daBtn_c::func_ov079_02123804(dActor_c *other)
             pos.x = q[0];
             pos.y = q[1];
             pos.z = q[2];
-            _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs(this, &pos, 1, 0, 0);
+            _ZN8dActor_c10SpawnCoinsERK7Vector3iis(this, &pos, 1, 0, 0);
         }
         mHorzSpeed = 0;
         mModelAnim.SetAnim(

@@ -81,7 +81,8 @@ extern void MulVec3Mat4x3(Vector3 *in, Matrix4x3 *m, Vector3 *out);
 extern void AddVec3(Vector3 *a, Vector3 *b, Vector3 *c);
 extern u16 DecIfAbove0_Short(u16 *p);
 extern int RandomIntInternal(int *seed);
-extern void _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_S5_j(
+/* local extern: respelled, not new; the member call renumbers this TU's @NNN labels (6az). */
+extern void _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x3iiih(
     dActor_c *actor, dExtShadowModel_c *shadow, Matrix4x3 *matrix, int scaleX, int scaleY,
     int scaleZ, u32 opacity);
 extern void hold_d_a_obj_ct_mecha03(dBgW_KcMbg *thisp, KCL_File *kcl, const Matrix4x3 &mtx, int fix,
@@ -251,7 +252,7 @@ void daObjCtMecha03_c::func_ov065_02119fe8()
     mShadowMat.m[9] = bobPos.x >> 3;
     mShadowMat.m[10] = mGroundY >> 3;
     mShadowMat.m[11] = bobPos.z >> 3;
-    _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_S5_j(
+    _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x3iiih(
         this, &mShadowModel, &mShadowMat, 0x12c000, 0x12c000, 0x78000, 0xf);
 }
 // @symbol _ZN16daObjCtMecha03_cD1Ev

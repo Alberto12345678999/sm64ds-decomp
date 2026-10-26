@@ -82,15 +82,20 @@ short Vec3_HorzAngle(const Vector3 *a, const Vector3 *b);
 
 /* Scalar stand-ins for Fix12<int> by-value callees. The header methods
  * mangle to these same symbols and home the argument. */
-int _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs(void *self, Vector3 *pos, unsigned int count, int spread, short angle);
+/* local extern: respelled, not new; the member call renumbers this TU's @NNN labels (6az). */
+int _ZN8dActor_c10SpawnCoinsERK7Vector3iis(void *self, Vector3 *pos, unsigned int count, int spread,
+                                           short angle);
 namespace Particle {
 struct System {
     static void NewSimple(unsigned int id, int x, int y, int z);
 };
 }
-void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
-    void *self, dExtShadowModel_c &shadow, Matrix4x3 &mtx, int radius, int height,
-    unsigned int opacity);
+/* local extern: respelled, not new; the member call renumbers this TU's @NNN labels (6az). */
+void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x3iih(void *self,
+                                                                          dExtShadowModel_c &shadow,
+                                                                          Matrix4x3 &mtx,
+                                                                          int radius, int height,
+                                                                          unsigned int opacity);
 void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *self, dActor_c *actor, int radius, int height, unsigned int flags, unsigned int vulnFlags);
 /* Parameter names keep this TU's @NNN. */
 typedef void BgchInitAt_(void *self, dActor_c *actor, int radius, int height, void *a, void *b);
@@ -166,7 +171,7 @@ extern "C" void func_ov081_021237ec(daHuwa_c *self)
     coins.x = self->mPosX;
     coins.y = self->mPosY;
     coins.z = self->mPosZ;
-    _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs(self, &coins, 3, 0xa000, 0);
+    _ZN8dActor_c10SpawnCoinsERK7Vector3iis(self, &coins, 3, 0xa000, 0);
 
     Matrix4x3_FromTranslation(&data_020a0e68, self->mPosX, self->mPosY, self->mPosZ);
     MulMat4x3Mat4x3((const int *)(self->mModelAnim.data.transforms + 1), data_020a0e68.m, data_020a0e68.m);
@@ -275,10 +280,10 @@ extern "C" void func_ov081_02123b20(daHuwa_c *self)
     if (IsInYoshiMouth(self))
         return;
     if (self->mWithMeshClsn.IsOnGround() != 0) {
-        _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
+        _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x3iih(
             self, self->mShadowModel, self->mModelAnim.mat4x3, 0x50000, 0x1e000, 0xf);
     } else {
-        _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
+        _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x3iih(
             self, self->mShadowModel, self->mModelAnim.mat4x3, 0x50000, 0x96000, 0xf);
     }
 }
