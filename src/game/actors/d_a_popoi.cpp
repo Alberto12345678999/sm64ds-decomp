@@ -160,30 +160,31 @@ extern "C" int *daPopoi_c_classInit(void)
  * animation at normal speed, and installs the Wander state. */
 int daPopoi_c::InitResources()
 {
-  Vector3 v;
-  mAnmModel.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(data_ov077_02127c88), 1, -1);
-  dExtFrameCtrl_c::LoadFile(data_ov077_02127ca0);
-  dExtFrameCtrl_c::LoadFile(data_ov077_02127c90);
-  dExtFrameCtrl_c::LoadFile(data_ov077_02127c98);
-  mVertAccel = -0x1000;
-  mTerminalVelocity = -0x1e000;
-  _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, this, 0x52000, 0x52000, 0x800004, 0);
-  v.x = data_ov077_02127a5c.x;
-  v.y = data_ov077_02127a5c.y;
-  v.z = data_ov077_02127a5c.z;
-  _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(&mdCcAcPos_c, this, &v, 0x54000, 0x32000, 0x200004, 0);
-  mAngleY = mPrevAngleY;
-  mWithMeshClsn.Init(this, 0x64000, 0x64000, 0, 0);
-  mCaughtPlayer = 0;
-  mHomePosX = mPosX;
-  mHomePosY = mPosY;
-  mHomePosZ = mPosZ;
-  mAnmModel.speed = 0x1000;
-  mSavedPosX = mPosX;
-  mSavedPosY = mPosY;
-  mSavedPosZ = mPosZ;
-  func_ov077_02126d5c((daPopoi_StateRecord *)&data_ov077_02127ce8);   /* start in Wander */
-  return 1;
+    Vector3 v;
+    mAnmModel.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(data_ov077_02127c88), 1, -1);
+    dExtFrameCtrl_c::LoadFile(data_ov077_02127ca0);
+    dExtFrameCtrl_c::LoadFile(data_ov077_02127c90);
+    dExtFrameCtrl_c::LoadFile(data_ov077_02127c98);
+    mVertAccel = -0x1000;
+    mTerminalVelocity = -0x1e000;
+    _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, this, 0x52000, 0x52000, 0x800004, 0);
+    v.x = data_ov077_02127a5c.x;
+    v.y = data_ov077_02127a5c.y;
+    v.z = data_ov077_02127a5c.z;
+    _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(&mdCcAcPos_c, this, &v, 0x54000,
+                                                            0x32000, 0x200004, 0);
+    mAngleY = mPrevAngleY;
+    mWithMeshClsn.Init(this, 0x64000, 0x64000, 0, 0);
+    mCaughtPlayer = 0;
+    mHomePosX = mPosX;
+    mHomePosY = mPosY;
+    mHomePosZ = mPosZ;
+    mAnmModel.speed = 0x1000;
+    mSavedPosX = mPosX;
+    mSavedPosY = mPosY;
+    mSavedPosZ = mPosZ;
+    func_ov077_02126d5c((daPopoi_StateRecord *)&data_ov077_02127ce8); /* start in Wander */
+    return 1;
 }
 
 // @symbol _ZN9daPopoi_c8BehaviorEv
@@ -345,13 +346,13 @@ int daPopoi_c::func_ov077_02126d5c(daPopoi_StateRecord *next)
  * speed and plays file 0x40f's animation (data_ov077_02127c90), and starts walking
  * at 8 units/frame (0x8000). Always returns 1. */
 int daPopoi_c::func_ov077_02126cd4(){
-  mTargetAngleY = (short)(((RandomIntInternal(data_0209e650) >> 8) & 0xf) << 0xc);
-  mStateTimer = (short)(((RandomIntInternal(data_0209e650) >> 8) & 0x3f) + 0xaa);
-  mAnmModel.speed = 0x1000;
-  mHorzSpeed = 0x8000;
-  unk_41c = 0;
-  mAnmModel.SetAnim((BCA_File *)((void *)((int *)&data_ov077_02127c90)[1]), 0, 0x1000, 0);
-  return 1;
+    mTargetAngleY = (short)(((RandomIntInternal(data_0209e650) >> 8) & 0xf) << 0xc);
+    mStateTimer = (short)(((RandomIntInternal(data_0209e650) >> 8) & 0x3f) + 0xaa);
+    mAnmModel.speed = 0x1000;
+    mHorzSpeed = 0x8000;
+    unk_41c = 0;
+    mAnmModel.SetAnim((BCA_File *)((void *)((int *)&data_ov077_02127c90)[1]), 0, 0x1000, 0);
+    return 1;
 }
 
 bool ApproachLinear(short &value, short target, short step);
@@ -405,7 +406,7 @@ int daPopoi_c::func_ov077_02126ad0()
     ApproachLinear(mPrevAngleY, mTargetAngleY, 0x100);
 
     if (*(unsigned short*)&mStateTimer < 0x64)
-        mAnmModel.speed = 0x1000 / (0x64 - *(unsigned short*)&mStateTimer);
+        mAnmModel.speed = 0x1000 / (0x64 - *(unsigned short *)&mStateTimer);
 
     if (*(unsigned short*)&mStateTimer == 0) {
         func_ov077_02126d5c((daPopoi_StateRecord *)data_ov077_02127cf8);   /* Pause */
@@ -486,13 +487,13 @@ int daPopoi_c::func_ov077_021269a8() {
  * mAnmModel.speed is overwritten by SetAnim's speed argument 0x1000, so the
  * animation ends up at speed 1.0. Returns 1. */
 int daPopoi_c::func_ov077_02126930(){
-  mStateTimer = (short)(((RandomIntInternal(data_0209e650) >> 8) & 0x3f) + 0xaa);
-  mHorzSpeed = 0x6000;
-  mTurnRate = 0;
-  unk_41c = 0;
-  mAnmModel.speed = 0x2000;
-  mAnmModel.SetAnim((BCA_File *)((void *)((int *)&data_ov077_02127c90)[1]), 0, 0x1000, 0);
-  return 1;
+    mStateTimer = (short)(((RandomIntInternal(data_0209e650) >> 8) & 0x3f) + 0xaa);
+    mHorzSpeed = 0x6000;
+    mTurnRate = 0;
+    unk_41c = 0;
+    mAnmModel.speed = 0x2000;
+    mAnmModel.SetAnim((BCA_File *)((void *)((int *)&data_ov077_02127c90)[1]), 0, 0x1000, 0);
+    return 1;
 }
 
 /* Chase, UPDATE handler (record data_ov077_02127d08). Each frame:
@@ -560,10 +561,10 @@ int daPopoi_c::func_ov077_0212679c()
  * normal animation speed, and play file 0x40e's animation (data_ov077_02127ca0) with
  * SetAnim flags 0x40000000 (every other state passes 0). Returns 1. */
 int daPopoi_c::func_ov077_02126758(){
-  mHorzSpeed=0;
-  mAnmModel.speed=0x1000;
-  mAnmModel.SetAnim((BCA_File *)(((void **)&data_ov077_02127ca0)[1]), 0x40000000, 0x1000, 0);
-  return 1;
+    mHorzSpeed = 0;
+    mAnmModel.speed = 0x1000;
+    mAnmModel.SetAnim((BCA_File *)(((void **)&data_ov077_02127ca0)[1]), 0x40000000, 0x1000, 0);
+    return 1;
 }
 
 // @symbol _ZN9daPopoi_c19func_ov077_02126640Ev

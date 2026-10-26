@@ -416,8 +416,7 @@ void daBrq_c::UpdateModelTransform()
     int shadowDepth;
 
     if (mState == 2) {
-        Matrix4x3_FromRotationXYZExt(
-            &mAnmModel.mat4x3, mAngleX, mAngleY, mAngleZ);
+        Matrix4x3_FromRotationXYZExt(&mAnmModel.mat4x3, mAngleX, mAngleY, mAngleZ);
         mAnmModel.mat4x3.m[9] = mPosX >> 3;
         mAnmModel.mat4x3.m[10] = mPosY >> 3;
         mAnmModel.mat4x3.m[11] = mPosZ >> 3;

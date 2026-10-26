@@ -154,10 +154,10 @@ s32 daFish_c::InitResources()
             mVariant = modelIndex - 2;
         mModelIndex = 0;
     }
-    mAnmModel.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(*data_ov100_021473a4[mModelIndex]),
-                       1, -1);
+    mAnmModel.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(*data_ov100_021473a4[mModelIndex]), 1,
+                      -1);
     mAnmModel.SetAnim((BCA_File *)dExtFrameCtrl_c::LoadFile(*data_ov100_021473b0[mModelIndex]), 0,
-                       0x1000, 0);
+                      0x1000, 0);
     mIsSpawner = 1;
     mSpawnerID = uniqueID;
     mState = 0;
@@ -187,8 +187,7 @@ s32 daFish_c::Behavior()
             &data_020a0e68, shiftedPos.x, shiftedPos.y, shiftedPos.z);
         mAngleY = mPrevAngleY;
         Matrix4x3_ApplyInPlaceToRotationY(&data_020a0e68, mAngleY);
-        *(RawMatrix4x3 *)&mAnmModel.mat4x3 =
-            *(RawMatrix4x3 *)&data_020a0e68;
+        *(RawMatrix4x3 *)&mAnmModel.mat4x3 = *(RawMatrix4x3 *)&data_020a0e68;
         mAnmModel.Advance();
     }
     return 1;
@@ -334,7 +333,7 @@ void daFish_c::func_ov100_02146640()
         if (ApproachLinear(this->mPrevAngleY, ang, 0x400) != 0) {
             if (this->mModelIndex == 0) {
                 this->mAnmModel.SetAnim((BCA_File *)(LoadedBCA(&data_ov100_021489cc)), 0, 0x1000,
-                                         0);
+                                        0);
             }
         }
         Vec3_Sub(&d, &this->mPos, &p->mPos);
@@ -343,12 +342,12 @@ void daFish_c::func_ov100_02146640()
         this->mStateTimer = -1;
         this->mState = 4;
         this->mAnmModel.SetAnim((BCA_File *)(LoadedBCA(data_ov100_021473b0[this->mModelIndex])), 0,
-                                 0x1000, 0);
+                                0x1000, 0);
     } else {
         this->mStateTimer = -1;
         this->mState = 4;
         this->mAnmModel.SetAnim((BCA_File *)(LoadedBCA(data_ov100_021473b0[this->mModelIndex])), 0,
-                                 0x1000, 0);
+                                0x1000, 0);
     }
 }
 

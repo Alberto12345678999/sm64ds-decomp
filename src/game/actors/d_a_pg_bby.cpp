@@ -288,7 +288,7 @@ int daPgBby_c::func_ov072_021218dc()
         mHorzSpeed -= 0x3000;
         if (mHorzSpeed < 0) {
             mAnmModel.SetAnim((BCA_File *)gPenguinBabyStandUpAnimationFile.filePtr, 0x40000000,
-                               0x1000, 0);
+                              0x1000, 0);
             mHorzSpeed = 0;
             mSubState++;
         }

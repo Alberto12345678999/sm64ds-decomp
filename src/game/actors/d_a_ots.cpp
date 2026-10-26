@@ -435,20 +435,23 @@ int daOts_c::CleanupResources()
  * shrinks by 3/32 (0x180 / 0x1000) of the actor's height above the floor, but not
  * below 10 units, and its depth is that height plus 40 units. Opacity is 0xf. */
 void daOts_c::func_ov064_02116bac(){
-  Matrix4x3_FromRotationY(&this->mAnmModel.mat4x3, this->mAngleY);
-  this->mAnmModel.mat4x3.t.x = this->mPosX >> 3;
-  this->mAnmModel.mat4x3.t.y = (this->mPosY + tail().mModelYOffset) >> 3;
-  this->mAnmModel.mat4x3.t.z = this->mPosZ >> 3;
-  int d = this->mPosY - tail().mFloorY;     /* height above the floor, at least 1 unit */
-  if(d <= 0x1000) d = 0x1000;
-  int rad = FX_MUL(d, 0x180); /* how much the shadow shrinks */
-  int h = tail().mShadowRadius - rad;
-  if(h < 0xa000) h = 0xa000;                /* shadow radius, at least 10 units */
-  Matrix4x3_FromRotationY(&tail().mShadowMtx, this->mAngleY);
-  tail().mShadowMtx.t.x = this->mPosX >> 3;
-  tail().mShadowMtx.t.y = this->mPosY >> 3;
-  tail().mShadowMtx.t.z = this->mPosZ >> 3;
-  _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(this, &this->mShadowModel, &tail().mShadowMtx, h, d+0x28000, 0xf);
+    Matrix4x3_FromRotationY(&this->mAnmModel.mat4x3, this->mAngleY);
+    this->mAnmModel.mat4x3.t.x = this->mPosX >> 3;
+    this->mAnmModel.mat4x3.t.y = (this->mPosY + tail().mModelYOffset) >> 3;
+    this->mAnmModel.mat4x3.t.z = this->mPosZ >> 3;
+    int d = this->mPosY - tail().mFloorY; /* height above the floor, at least 1 unit */
+    if (d <= 0x1000)
+        d = 0x1000;
+    int rad = FX_MUL(d, 0x180); /* how much the shadow shrinks */
+    int h = tail().mShadowRadius - rad;
+    if (h < 0xa000)
+        h = 0xa000; /* shadow radius, at least 10 units */
+    Matrix4x3_FromRotationY(&tail().mShadowMtx, this->mAngleY);
+    tail().mShadowMtx.t.x = this->mPosX >> 3;
+    tail().mShadowMtx.t.y = this->mPosY >> 3;
+    tail().mShadowMtx.t.z = this->mPosZ >> 3;
+    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
+        this, &this->mShadowModel, &tail().mShadowMtx, h, d + 0x28000, 0xf);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -645,8 +648,8 @@ void daOts_c::func_ov064_021165d8()
         this->mPosX = tail().mPosBeforeMoveX;
         this->mPosZ = tail().mPosBeforeMoveZ;
         tail().mState = STATE_LEDGE_TURN;
-        this->mAnmModel.SetAnim((BCA_File *)(CONFIG_BCA(this, kAnimLedgeTurn)), 0,
-                                 kAnimSpeedNormal, 0);
+        this->mAnmModel.SetAnim((BCA_File *)(CONFIG_BCA(this, kAnimLedgeTurn)), 0, kAnimSpeedNormal,
+                                0);
     }
 
     this->UpdateWMClsn(this->mWithMeshClsn, 0);
@@ -676,12 +679,13 @@ int daOts_c::UpdateRunState()
  * to STATE_RETURN_HOME and restarts the walk animation. Returns the range test's
  * result, or SetAnim's when it gave up the chase. */
 int daOts_c::func_ov064_02116560(){
-  this->UpdateRunState();
-  int r = IsPlayerInRange(tail().mHomePosX, this->mPosY, tail().mHomePosZ, kKeepChaseRange);
-  if(r) return r;
-  tail().mState=STATE_RETURN_HOME;
-  return _ZN14dExtAnmModel_c7SetAnimEP8BCA_Fileiit(
-      &this->mAnmModel, (BCA_File *)(CONFIG_BCA(this, kAnimWalk)), 0, kAnimSpeedNormal, 0);
+    this->UpdateRunState();
+    int r = IsPlayerInRange(tail().mHomePosX, this->mPosY, tail().mHomePosZ, kKeepChaseRange);
+    if (r)
+        return r;
+    tail().mState = STATE_RETURN_HOME;
+    return _ZN14dExtAnmModel_c7SetAnimEP8BCA_Fileiit(
+        &this->mAnmModel, (BCA_File *)(CONFIG_BCA(this, kAnimWalk)), 0, kAnimSpeedNormal, 0);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -819,7 +823,7 @@ void daOts_c::func_ov064_02116220() {
             } else if (r == 1) {
                 tail().mState = STATE_DYING;
                 this->mAnmModel.SetAnim((BCA_File *)(CONFIG_BCA(this, kAnimDeath)), 0,
-                                         kAnimSpeedNormal, 0);
+                                        kAnimSpeedNormal, 0);
                 this->mFlags &= ~1u;
                 this->PlayDeathSound();
                 tail().mHomePosX = this->mPosX;

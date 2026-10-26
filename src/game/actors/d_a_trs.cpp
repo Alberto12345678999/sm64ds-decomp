@@ -307,22 +307,21 @@ int daTrs_c::OnAimedAtWithEgg() {
 // @symbol _ZN7daTrs_c19func_ov063_021160d4Ev
 void daTrs_c::func_ov063_021160d4() {
 
-  int *p;
-  this->mClsnOffX = 0;
-  this->mClsnOffY = 0;
-  this->mClsnOffZ = 0;
-  Matrix4x3_FromTranslation(&data_020a0e68, this->mPosX, this->mPosY, this->mPosZ);
-  MulMat4x3Mat4x3(this->mAnmModel.data.transforms, &data_020a0e68, &data_020a0e68);
-  this->mClsnOffX = data_020a0e68.m[9];
-  this->mClsnOffY = inline_fn(10);
-  this->mClsnOffZ = inline_fn(11);
-  SubVec3((Vec3 *) &this->mClsnOffX, (Vec3 *) &this->mPosX, (Vec3 *) &this->mClsnOffX);
-  SubVec3((Vec3 *) &this->mClsnOffX, (Vec3 *) &this->mClsnBaseX, (Vec3 *) &this->mClsnOffX);
-  Vec3_MulScalarInPlace((Vec3 *) &this->mClsnOffX, 0x6800);
-  p = (int *) &this->mClsnOffZ;
-  *p += this->mClsnZBias;
+    int *p;
+    this->mClsnOffX = 0;
+    this->mClsnOffY = 0;
+    this->mClsnOffZ = 0;
+    Matrix4x3_FromTranslation(&data_020a0e68, this->mPosX, this->mPosY, this->mPosZ);
+    MulMat4x3Mat4x3(this->mAnmModel.data.transforms, &data_020a0e68, &data_020a0e68);
+    this->mClsnOffX = data_020a0e68.m[9];
+    this->mClsnOffY = inline_fn(10);
+    this->mClsnOffZ = inline_fn(11);
+    SubVec3((Vec3 *)&this->mClsnOffX, (Vec3 *)&this->mPosX, (Vec3 *)&this->mClsnOffX);
+    SubVec3((Vec3 *)&this->mClsnOffX, (Vec3 *)&this->mClsnBaseX, (Vec3 *)&this->mClsnOffX);
+    Vec3_MulScalarInPlace((Vec3 *)&this->mClsnOffX, 0x6800);
+    p = (int *)&this->mClsnOffZ;
+    *p += this->mClsnZBias;
 }
-
 
 // @symbol _ZN7daTrs_c19func_ov063_02116190Ev
 int daTrs_c::func_ov063_02116190() {
@@ -1451,8 +1450,8 @@ void daTrs_c::func_ov063_02118458() {
         if (func_ov063_0211a8a4()) {
             if (this->mAnmModel.file == (BCA_File *)data_ov063_0211edcc.filePtr) {
                 func_02012694(0x158, &this->mCamSpacePosX);
-                this->mAnmModel.SetAnim((BCA_File *)data_ov063_0211edd4.filePtr, 0x40000000,
-                                         0x1000, 0);
+                this->mAnmModel.SetAnim((BCA_File *)data_ov063_0211edd4.filePtr, 0x40000000, 0x1000,
+                                        0);
             } else if (this->mAttackRepeats != 0) {
                 this->mAttackRepeats -= 1;
                 this->mAnmModel.currFrame = 0;

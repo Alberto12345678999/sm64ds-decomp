@@ -435,8 +435,7 @@ int daBasabasa_c::Behavior()
         (this->*mCurrentState->execute)();
     if (mCurrentState == &data_ov065_0211d6e0 || mCurrentState == &data_ov065_0211d6f0) {
         /* Three wingbeat frames, one flap sound. */
-        if (mAnmModel1.WillHitFrame(3) != 0 ||
-            mAnmModel1.WillHitFrame(0xf) != 0 ||
+        if (mAnmModel1.WillHitFrame(3) != 0 || mAnmModel1.WillHitFrame(0xf) != 0 ||
             mAnmModel1.WillHitFrame(0x1b) != 0) {
             func_02012694(0xe1, &mCamSpacePosX);
         }

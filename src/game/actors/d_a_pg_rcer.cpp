@@ -285,8 +285,7 @@ int func_ov019_02111fec(daPgRcer_c *self)
 // @symbol func_ov019_02111f54
 int func_ov019_02111f54(daPgRcer_c *self)
 {
-    self->mAnmModel.SetAnim((BCA_File *)gPenguinJumpStAnimationFile.filePtr, 0x40000000, 0x1000,
-                             0);
+    self->mAnmModel.SetAnim((BCA_File *)gPenguinJumpStAnimationFile.filePtr, 0x40000000, 0x1000, 0);
     self->mVertAccel = -0x2000;
     self->mTerminalVelocity = -0x3c000;
     self->mVertSpeed = 0x16000;
@@ -313,14 +312,14 @@ int func_ov019_02111dec(daPgRcer_c *self)
         func_ov019_0211140c(self, &self->mWithMeshClsn);
         if (self->mWithMeshClsn.JustHitGround() != 0) {
             self->mAnmModel.SetAnim((BCA_File *)gPenguinJumpEdAnimationFile.filePtr, 0x40000000,
-                                     0x1000, 0);
+                                    0x1000, 0);
             ++self->mActionStep;
         }
         break;
     case 2:
         if (self->mAnmModel.dExtFrameCtrl_c::Finished() != 0) {
             self->mAnmModel.SetAnim((BCA_File *)gOV019PenguinWait1AnimationFile.filePtr, 0, 0x1000,
-                                     0);
+                                    0);
         }
         if (self->mTalkPlayer->GetTalkState() == -1) {
             Sound::PlaySub(0x1f, 0x7f, 0, 0x15666, 0);
@@ -391,7 +390,7 @@ int func_ov019_0211197c(daPgRcer_c *self)
         if (self->func_ov019_0211131c()) {
             if (self->mPathNodeIndex >= (int)self->mPath.NumNodes() - 2) {
                 self->mAnmModel.SetAnim((BCA_File *)gPenguinStandUpAnimationFile.filePtr,
-                                         0x40000000, 0x1000, 0);
+                                        0x40000000, 0x1000, 0);
                 self->mActionStep++;
             } else {
                 self->func_ov019_021113b0();

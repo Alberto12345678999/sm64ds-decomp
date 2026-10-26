@@ -316,7 +316,7 @@ void daPkn_c::StateSleep()
     int thr = (mPlayerAirborne != 0) ? 0x12c000 : 0x190000;
     if (mPlayerDist < thr && PlayerMovingFast()) {
         mAnmModel.SetAnim((BCA_File *)(((SharedFilePtr *)&data_ov084_02130e0c)->filePtr),
-                           0x40000000, 0x1000, 0);
+                          0x40000000, 0x1000, 0);
         mState = 3;
         func_02012694(0x175, &mCamSpacePosX);
         Particle::System::NewSimple(0xfe, mBubblePos.x, mBubblePos.y, mBubblePos.z);
@@ -350,10 +350,8 @@ void daPkn_c::StateBite()
        `type == 0xbf` directly changes the code. */
     mClsnEnabled = 1;
 
-    if (mAnmModel.WillHitFrame(0x10)
-        || mAnmModel.WillHitFrame(0x20)
-        || mAnmModel.WillHitFrame(0x34)
-        || mAnmModel.WillHitFrame(0x4b)) {
+    if (mAnmModel.WillHitFrame(0x10) || mAnmModel.WillHitFrame(0x20) ||
+        mAnmModel.WillHitFrame(0x34) || mAnmModel.WillHitFrame(0x4b)) {
         func_0201267c(0xc0, &mCamSpacePosX);
     }
 
@@ -477,7 +475,8 @@ void daPkn_c::StateWake()
     if (CheckHits() != 0) return;
     /* mStateTimer is s16; the ROM compares it as a u16 (ldrh). */
     if ((u16)mStateTimer <= 0xb) return;
-    if (!mAnmModel.Finished()) return;
+    if (!mAnmModel.Finished())
+        return;
     mAnmModel.SetAnim((BCA_File *)data_ov084_02130e14.filePtr, 0x40000000, 0x1000, 0);
     mState = 2;
 }
@@ -489,7 +488,7 @@ void daPkn_c::StateDoze()
     mClsnEnabled = 1;
     if (mAnmModel.Finished()) {
         mAnmModel.SetAnim((BCA_File *)(((SharedFilePtr *)&data_ov084_02130e0c)->filePtr),
-                           0x40000000, 0x1000, 0);
+                          0x40000000, 0x1000, 0);
         mState = 1;
     } else {
         int thresh = (mPlayerAirborne != 0) ? 0x12c000 : 0x190000;
@@ -570,8 +569,7 @@ void daPkn_c::StateGone()
     mState = 8;
     mParticleHandle2 = 0;
     mParticleHandle = mParticleHandle2;
-    mAnmModel.SetAnim((BCA_File *)(((SharedFilePtr *)&data_ov084_02130e0c)->filePtr), 0, 0x1000,
-                       0);
+    mAnmModel.SetAnim((BCA_File *)(((SharedFilePtr *)&data_ov084_02130e0c)->filePtr), 0, 0x1000, 0);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -744,7 +742,8 @@ void daPkn_c::UpdatePose()
     ang[1] = 0;
     ang[2] = 0;
     for (lr = 0; lr < 5; lr++) {
-        ang[1] = (s16)(ang[1] + *(s16*)((char *)mAnmModel.data.bones + data_ov084_021302ec[lr] * 0x34 + 0x1c));
+        ang[1] = (s16)(ang[1] + *(s16 *)((char *)mAnmModel.data.bones +
+                                         data_ov084_021302ec[lr] * 0x34 + 0x1c));
     }
 
     mHeadClsnOffset.x = 0;

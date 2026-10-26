@@ -333,18 +333,15 @@ void daObjHatenaSwitch_c::UpdateModelTransform()
     Matrix4x3_FromTranslation(
         &data_020a0e68, shifted[0], shifted[1], shifted[2]);
     Matrix4x3_ApplyInPlaceToRotationY(&data_020a0e68, mAngleY);
-    *(HatenaMatrixWords *)&mAnmModel.mat4x3 =
-        *(HatenaMatrixWords *)&data_020a0e68;
-    *(HatenaMatrixWords *)&mModel.mat4x3 =
-        *(HatenaMatrixWords *)&mAnmModel.mat4x3;
+    *(HatenaMatrixWords *)&mAnmModel.mat4x3 = *(HatenaMatrixWords *)&data_020a0e68;
+    *(HatenaMatrixWords *)&mModel.mat4x3 = *(HatenaMatrixWords *)&mAnmModel.mat4x3;
 }
 
 
 // @symbol _ZN19daObjHatenaSwitch_c19UpdateClsnTransformEv
 void daObjHatenaSwitch_c::UpdateClsnTransform()
 {
-    *(HatenaMatrixWords *)&mClsnMat =
-        *(HatenaMatrixWords *)&mAnmModel.mat4x3;
+    *(HatenaMatrixWords *)&mClsnMat = *(HatenaMatrixWords *)&mAnmModel.mat4x3;
     mClsnMat.t.x = mPosX;
     mClsnMat.t.y = mPosY;
     mClsnMat.t.z = mPosZ;

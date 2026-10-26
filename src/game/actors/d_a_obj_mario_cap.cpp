@@ -374,8 +374,8 @@ int daObjMarioCap_c::InitResources()
     }
 
     if (mAnmModel.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(
-                               *(SharedFilePtr *)data_ov002_020ff0ac[mModelIndex]),
-                           1, -1) == 0)
+                              *(SharedFilePtr *)data_ov002_020ff0ac[mModelIndex]),
+                          1, -1) == 0)
         return 0;
 
     mShadowModel.InitCylinder();
@@ -497,7 +497,7 @@ int daObjMarioCap_c::InitResources()
         break;
     }
 
-    mAnmModel.speed = 0x1000;   /* animations play at 1.0x */
+    mAnmModel.speed = 0x1000; /* animations play at 1.0x */
 
     /* Register with the cap-icon list for this character; flag is the
        cap-bank bit. */
@@ -1257,11 +1257,11 @@ int daObjMarioCap_c::InitAnim()
         break;
     case 0xf:
         mAnmModel.SetAnim((BCA_File *)(data_ov002_020ff0a0[mModelIndex]->filePtr), 0x40000000,
-                           0x1000, 0);
+                          0x1000, 0);
         break;
     case 0x14:
         mAnmModel.SetAnim((BCA_File *)(data_ov002_020ff0b8[mModelIndex]->filePtr), 0x40000000,
-                           0x1000, 0);
+                          0x1000, 0);
         break;
     case 0x15:
         mAnmModel.SetAnim((BCA_File *)data_ov002_0210de58.filePtr, 0x40000000, 0x1000, 0);
@@ -1316,7 +1316,7 @@ int daObjMarioCap_c::Anim()
         case 0x14:
             if (mAnimStarted == 0) {
                 mAnmModel.SetAnim((BCA_File *)((void *)data_ov002_020ff0c4[mModelIndex][1]), 0,
-                                   0x1000, 0);
+                                  0x1000, 0);
                 mAnimStarted = 1;
             }
             break;

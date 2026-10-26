@@ -630,24 +630,26 @@ void daBook_c::func_ov020_02111c30()
  * moves the collider down 25. */
 void daBook_c::func_ov020_02111ee0()
 {
-  int r = func_ov020_02111418();
-  if(r) return;
-  if(ApproachLinear(mAngleX, -0x2000, 0x200)){
-    int s;
-    mHorzSpeed = 0;
-    s = mAnmModel.SetFile((BMD_File *)data_ov020_02114aa0.filePtr, 1, -1);
-    if(s == 0) return;
-    mState = STATE_WIND_UP;
-    mAnmModel.SetAnim((BCA_File *)data_ov020_02114aa8.filePtr, 0x40000000, 0x1000, 0);
-    mUsesAnmModel = 1;
-    mStateTimer = 0;
-    {
-      int* p60 = &mPosY;
-      *p60 = *p60 + 0x32000;
+    int r = func_ov020_02111418();
+    if (r)
+        return;
+    if (ApproachLinear(mAngleX, -0x2000, 0x200)) {
+        int s;
+        mHorzSpeed = 0;
+        s = mAnmModel.SetFile((BMD_File *)data_ov020_02114aa0.filePtr, 1, -1);
+        if (s == 0)
+            return;
+        mState = STATE_WIND_UP;
+        mAnmModel.SetAnim((BCA_File *)data_ov020_02114aa8.filePtr, 0x40000000, 0x1000, 0);
+        mUsesAnmModel = 1;
+        mStateTimer = 0;
+        {
+            int *p60 = &mPosY;
+            *p60 = *p60 + 0x32000;
+        }
+        mClsnOffset.y = -0x19000;
     }
-    mClsnOffset.y = -0x19000;
-  }
-  UpdatePos(0);
+    UpdatePos(0);
 }
 
 // @symbol _ZN8daBook_c19func_ov020_02111fc4Ev

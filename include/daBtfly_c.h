@@ -100,7 +100,7 @@ struct daBtfly_c : dActor_c {
                                  param1 bits 0xc0. Only kind 1 becomes actor
                                  0x114 in State6; Behavior skips
                                  all movement while this is 0. */
-    u8  mUseAnimModel;      /* 0x3f1 -- 1: draw mAnmModel with mShadowModel1
+    u8 mUseAnimModel;       /* 0x3f1 -- 1: draw mAnmModel with mShadowModel1
                                  and advance the animation. 0: draw mModel with
                                  mShadowModel2 and do not. Set by
                                  InitResources, cleared by

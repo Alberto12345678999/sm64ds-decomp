@@ -230,8 +230,7 @@ int daMky_c::func_ov030_02111a00()
          !IsPlayingAnim(this, gMonkeyWait2AnimationFile) &&
          !IsPlayingAnim(this, gMonkeyWait3AnimationFile) &&
          !IsPlayingAnim(this, gMonkeyWait4AnimationFile))) {
-        this->mAnmModel.SetAnim((BCA_File *)(data_ov030_02115bc8[this->mAnimIdx][1]), 0, 0x1000,
-                                 0);
+        this->mAnmModel.SetAnim((BCA_File *)(data_ov030_02115bc8[this->mAnimIdx][1]), 0, 0x1000, 0);
         {
             unsigned char *p = &this->mAnimIdx;
             this->mAnmModel.speed = 0x1000;
@@ -575,7 +574,7 @@ int daMky_c::func_ov030_02112578()
         sp[1] += 0x50000;
         if (player->ShowMessage(*this, 0xbd, (const Vector3 *)sp, 1, 0) != 0) {
             this->mAnmModel.SetAnim((BCA_File *)gMonkeyWait3AnimationFile[1], 0, 0x1000, 0);
-            static_cast<dExtFrameCtrl_c &>(this->mAnmModel).SetFlags( 0);
+            static_cast<dExtFrameCtrl_c &>(this->mAnmModel).SetFlags(0);
             func_0201267c(0xd1, &this->mCamSpacePos);
             {
                 u8 *p = &this->mSubState;
@@ -597,7 +596,7 @@ int daMky_c::func_ov030_02112578()
     case 4:
         if (ApproachLinear(this->mAngleY, (s16)0xffffe04e, 0x400) != 0) {
             this->mAnmModel.SetAnim((BCA_File *)gMonkeyJumpStAnimationFile[1], 0x40000000, 0x1000,
-                                     0);
+                                    0);
             this->mPrevAngleY = this->mAngleY;
             this->mHorzSpeed = 0xf000;
             this->mVertSpeed = 0x2f000;
@@ -611,7 +610,7 @@ int daMky_c::func_ov030_02112578()
     case 5:
         if (this->mWithMeshClsn.JustHitGround() != 0) {
             this->mAnmModel.SetAnim((BCA_File *)gMonkeyJumpEdAnimationFile[1], 0x40000000, 0x1000,
-                                     0);
+                                    0);
             this->mHorzSpeed = 0;
             {
                 u8 *p = &this->mSubState;
@@ -726,58 +725,58 @@ int daMky_c::EnterState7()
     typedef short s16;
     extern short data_02082214[];
     extern void *gMonkeyJumpStAnimationFile[];
-  u8 *new_var;
-  int *pos;
-  int *py;
-  int *pz;
-  struct Vector3 v;
-  Player *other;
-  u16 ang;
-  s16 s;
-  int mul = 0x4b000;
-  mFlags &= ~0x80000;
-  this->mAnmModel.SetAnim((BCA_File *)gMonkeyJumpStAnimationFile[1], 0x40000000, 0x1000, 0);
-  this->mHorzSpeed = 0xa000;
-  this->mVertSpeed = 0;
-  other = this->mPlayer;
-  pos = &mPosX;
-  s = other->mAngleY;
-  this->mAngleY = s;
-  s = this->mAngleY;
-  py = &mPosY;
-  pz = &mPosZ;
-  this->mPrevAngleY = s;
-  other = this->mPlayer;
-  {
-      int *op = &other->mPosX;
-      int t0 = op[0];
-      mPosX = t0;
-      int t1 = op[1];
-      this->mPosY = t1;
-      int t2 = op[2];
-      this->mPosZ = t2;
-  }
-  ang = (u16)this->mAngleY;
-  s = data_02082214[(ang >> 4) * 2];
-  *pos = (*pos) + FX_MUL(s, mul);
-  *py = (*py) + 0x50000;
-  ang = (u16)this->mAngleY;
-  s = data_02082214[((ang >> 4) * 2) + 1];
-  *pz = (*pz) + FX_MUL(s, mul);
-  other = this->mPlayer;
-  {
-    int oy = other->mPosY;
-    int oz = *((int *) (new_var = (u8 *)&other->mPosZ));
-    mul = oy + 0x50000;
-    v.x = other->mPosX;
-    v.y = mul;
-    v.z = oz;
-  }
-  this->DetectRaycastClsn(v, *reinterpret_cast<Vector3 *>(pos), 1);
-  mEatingPlayer = 0;
-  this->mPlayer = 0;
-  this->mState = 7;
-  return 1;
+    u8 *new_var;
+    int *pos;
+    int *py;
+    int *pz;
+    struct Vector3 v;
+    Player *other;
+    u16 ang;
+    s16 s;
+    int mul = 0x4b000;
+    mFlags &= ~0x80000;
+    this->mAnmModel.SetAnim((BCA_File *)gMonkeyJumpStAnimationFile[1], 0x40000000, 0x1000, 0);
+    this->mHorzSpeed = 0xa000;
+    this->mVertSpeed = 0;
+    other = this->mPlayer;
+    pos = &mPosX;
+    s = other->mAngleY;
+    this->mAngleY = s;
+    s = this->mAngleY;
+    py = &mPosY;
+    pz = &mPosZ;
+    this->mPrevAngleY = s;
+    other = this->mPlayer;
+    {
+        int *op = &other->mPosX;
+        int t0 = op[0];
+        mPosX = t0;
+        int t1 = op[1];
+        this->mPosY = t1;
+        int t2 = op[2];
+        this->mPosZ = t2;
+    }
+    ang = (u16)this->mAngleY;
+    s = data_02082214[(ang >> 4) * 2];
+    *pos = (*pos) + FX_MUL(s, mul);
+    *py = (*py) + 0x50000;
+    ang = (u16)this->mAngleY;
+    s = data_02082214[((ang >> 4) * 2) + 1];
+    *pz = (*pz) + FX_MUL(s, mul);
+    other = this->mPlayer;
+    {
+        int oy = other->mPosY;
+        int oz = *((int *)(new_var = (u8 *)&other->mPosZ));
+        mul = oy + 0x50000;
+        v.x = other->mPosX;
+        v.y = mul;
+        v.z = oz;
+    }
+    this->DetectRaycastClsn(v, *reinterpret_cast<Vector3 *>(pos), 1);
+    mEatingPlayer = 0;
+    this->mPlayer = 0;
+    this->mState = 7;
+    return 1;
 }
 
 // @symbol _ZN7daMky_c19func_ov030_02112da0Ev
@@ -1245,21 +1244,21 @@ int daMky_c::func_ov030_02113b38()
 {
     typedef int Fix12i;
     extern int gMonkeyRunAnimationFile[];
-  static_cast<dExtFrameCtrl_c &>(this->mAnmModel).Advance();
-  this->UpdatePos(&this->mdCcAc_c);
-  func_ov030_02111f6c(&this->mWithMeshClsn);
-  if (this->mWithMeshClsn.JustHitGround() != 0) {
-    this->mWithMeshClsn.ClearLimMovFlag();
-    this->mAnmModel.SetAnim((BCA_File *)((void *)gMonkeyRunAnimationFile[1]), 0, 0x1000, 0);
-    this->mAnmModel.speed = 0x1000;
-    this->mSpawnPosX = this->mPosX;
-    this->mSpawnPosY = this->mPosY;
-    this->mSpawnPosZ = this->mPosZ;
-    func_ov030_021141a8(this->mPrevState);
-  }
-  this->mdCcAc_c.Clear();
-  func_ov030_02111bc4();
-  return 1;
+    static_cast<dExtFrameCtrl_c &>(this->mAnmModel).Advance();
+    this->UpdatePos(&this->mdCcAc_c);
+    func_ov030_02111f6c(&this->mWithMeshClsn);
+    if (this->mWithMeshClsn.JustHitGround() != 0) {
+        this->mWithMeshClsn.ClearLimMovFlag();
+        this->mAnmModel.SetAnim((BCA_File *)((void *)gMonkeyRunAnimationFile[1]), 0, 0x1000, 0);
+        this->mAnmModel.speed = 0x1000;
+        this->mSpawnPosX = this->mPosX;
+        this->mSpawnPosY = this->mPosY;
+        this->mSpawnPosZ = this->mPosZ;
+        func_ov030_021141a8(this->mPrevState);
+    }
+    this->mdCcAc_c.Clear();
+    func_ov030_02111bc4();
+    return 1;
 }
 // @symbol _ZN7daMky_c11EnterState2Ev
 int daMky_c::EnterState2() {
@@ -1288,7 +1287,7 @@ int daMky_c::EnterState2() {
 
     this->mWithMeshClsn.SetLimMovFlag();
     this->mAnmModel.SetAnim((BCA_File *)(((void **)&gMonkeyJumpStAnimationFile)[1]), 0x40000000,
-                             0x1000, 0);
+                            0x1000, 0);
     func_0201267c(0xd1, &this->mCamSpacePos);
     func_0201267c(0xf1, &this->mCamSpacePos);
     this->mState = 2;
@@ -1346,8 +1345,7 @@ int daMky_c::func_ov030_02113d20()
     ApproachLinear(this->mAngleY, angle, 0xa28);
     this->mPrevAngleY = this->mAngleY;
     if (this->mHorzSpeed != 0)
-        this->mAnmModel.SetAnim((BCA_File *)(((void **)&gMonkeyRunAnimationFile)[1]), 0, 0x1000,
-                                 0);
+        this->mAnmModel.SetAnim((BCA_File *)(((void **)&gMonkeyRunAnimationFile)[1]), 0, 0x1000, 0);
     else
         func_ov030_02111a00();
 
@@ -1391,33 +1389,33 @@ int daMky_c::func_ov030_02113ff0()
     typedef int Fix12i;
     typedef short s16;
     extern int gMonkeyRunAnimationFile[];
-  int dist = this->DistToCPlayer();
-  if (dist > 0x15e000) {
-    this->mHorzSpeed = 0xc000;
-    this->mAnmModel.SetAnim((BCA_File *)((void *)gMonkeyRunAnimationFile[1]), 0, 0x1000, 0);
-  } else if (dist <= 0xfa000) {
-    this->mHorzSpeed = 0;
-    func_ov030_02111a00();
-  }
-  ApproachLinear(this->mAngleY, this->HorzAngleToCPlayer(), 0x514);
-  this->mPrevAngleY = this->mAngleY;
-  this->mAnmModel.speed = 0x1000;
-  static_cast<dExtFrameCtrl_c &>(this->mAnmModel).Advance();
-  if (IsUkikiThief(this)) {
-      this->UpdatePos(&this->mdCcAc_c);
-      func_ov030_02111dd0();
-      func_ov030_02111f6c(&this->mWithMeshClsn);
-      func_ov030_02111bc4();
-  } else {
-      this->UpdatePos(&this->mdCcAc_c);
-      func_ov030_02111f6c(&this->mWithMeshClsn);
-      func_ov030_02111bc4();
-      func_ov030_02111ea4();
-  }
-  this->mdCcAc_c.Clear();
-  this->mdCcAc_c.Update();
-  func_ov030_02111890();
-  return 1;
+    int dist = this->DistToCPlayer();
+    if (dist > 0x15e000) {
+        this->mHorzSpeed = 0xc000;
+        this->mAnmModel.SetAnim((BCA_File *)((void *)gMonkeyRunAnimationFile[1]), 0, 0x1000, 0);
+    } else if (dist <= 0xfa000) {
+        this->mHorzSpeed = 0;
+        func_ov030_02111a00();
+    }
+    ApproachLinear(this->mAngleY, this->HorzAngleToCPlayer(), 0x514);
+    this->mPrevAngleY = this->mAngleY;
+    this->mAnmModel.speed = 0x1000;
+    static_cast<dExtFrameCtrl_c &>(this->mAnmModel).Advance();
+    if (IsUkikiThief(this)) {
+        this->UpdatePos(&this->mdCcAc_c);
+        func_ov030_02111dd0();
+        func_ov030_02111f6c(&this->mWithMeshClsn);
+        func_ov030_02111bc4();
+    } else {
+        this->UpdatePos(&this->mdCcAc_c);
+        func_ov030_02111f6c(&this->mWithMeshClsn);
+        func_ov030_02111bc4();
+        func_ov030_02111ea4();
+    }
+    this->mdCcAc_c.Clear();
+    this->mdCcAc_c.Update();
+    func_ov030_02111890();
+    return 1;
 }
 // @symbol _ZN7daMky_c11EnterState0Ev
 int daMky_c::EnterState0()

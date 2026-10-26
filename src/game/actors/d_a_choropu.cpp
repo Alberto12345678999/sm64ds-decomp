@@ -159,7 +159,7 @@ void daChoropu_c::func_ov080_02123860()
     unsigned int idx;
 
     mAnmModel.Advance();
-    idx = (unsigned int)(mAnmModel.currFrame << 4) >> 0x10;    /* whole frame number */
+    idx = (unsigned int)(mAnmModel.currFrame << 4) >> 0x10; /* whole frame number */
     if (idx >= 0xf) {
         mdCcAc_c.flags |= daChoropu_CC_DISABLED;
         mFlags &= ~daChoropu_FLAG_EMERGED;

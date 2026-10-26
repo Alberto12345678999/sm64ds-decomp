@@ -169,7 +169,8 @@ extern "C" void func_ov081_021237ec(daHuwa_c *self)
     _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs(self, &coins, 3, 0xa000, 0);
 
     Matrix4x3_FromTranslation(&data_020a0e68, self->mPosX, self->mPosY, self->mPosZ);
-    MulMat4x3Mat4x3((const int *)(self->mAnmModel.data.transforms + 1), data_020a0e68.m, data_020a0e68.m);
+    MulMat4x3Mat4x3((const int *)(self->mAnmModel.data.transforms + 1), data_020a0e68.m,
+                    data_020a0e68.m);
 
     dust.x = data_020a0e68.m[9];
     dust.y = data_020a0e68.m[10];

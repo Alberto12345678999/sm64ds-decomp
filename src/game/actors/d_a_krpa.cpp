@@ -366,8 +366,8 @@ extern "C" void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x
 void daKrpa_c::func_ov070_02121310()
 {
     if (this->mStateIndex == 3) {
-        Matrix4x3_FromRotationXYZExt(&this->mAnmModel.mat4x3,
-            this->mAngleX, this->mAngleY, this->mAngleZ);
+        Matrix4x3_FromRotationXYZExt(&this->mAnmModel.mat4x3, this->mAngleX, this->mAngleY,
+                                     this->mAngleZ);
     } else {
         Matrix4x3_FromRotationY(&this->mAnmModel.mat4x3, this->mAngleY);
     }

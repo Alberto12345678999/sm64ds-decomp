@@ -1767,7 +1767,8 @@ void daStar_c::func_ov002_020e9840() {
 void daStar_c::func_ov002_020e9804() {
     mAnmModel1.Advance();
     func_ov002_020e7fcc();
-    if (!mAnmModel1.Finished()) return;
+    if (!mAnmModel1.Finished())
+        return;
     MarkForDestruction();
 }
 
@@ -2454,7 +2455,8 @@ void daStar_c::func_ov002_020e86ec() {
  * records it in the death table, and ends the cutscene (CUTSCENE_FLAG cleared
  * everywhere, event bits 0x1e and 0x1d cleared). */
 void daStar_c::func_ov002_020e8618() {
-    if (mAnmModel1.Finished() == 0) return;
+    if (mAnmModel1.Finished() == 0)
+        return;
     func_ov002_020e7e58();
     mBits.visible = 0;
     UntrackStar(mMarkerSlot);
@@ -2508,7 +2510,7 @@ void daStar_c::func_ov002_020e84ec() {
         mAnmModel1.mat4x3.t.z = mPosZ >> 3;
     }
 
-    *(struct M48*)&mAnmModel2.mat4x3 = *(struct M48*)&mAnmModel1.mat4x3;
+    *(struct M48 *)&mAnmModel2.mat4x3 = *(struct M48 *)&mAnmModel1.mat4x3;
     func_ov002_020e8398();
 }
 
@@ -2632,7 +2634,8 @@ void daStar_c::func_ov002_020e81e0() {
 void daStar_c::func_ov002_020e8098() {
     Vector3 vc;
     Vector3 v;
-    if (mAnmModel1.Finished()) return;
+    if (mAnmModel1.Finished())
+        return;
     func_ov002_020e8244(&v, this);
     vc.x = v.x;
     vc.y = v.y;
@@ -2664,15 +2667,15 @@ void daStar_c::func_ov002_020e7fcc() {
 
     obj = mAnmModel1.data.bones;
 
-    if (!mAnmModel1.Finished()
-        && (u32)((*(u32*)&mAnmModel1.currFrame << 4) >> 0x10) >= 2
-        && *(int*)((char*)obj + 0xc) != 0) {
+    if (!mAnmModel1.Finished() && (u32)((*(u32 *)&mAnmModel1.currFrame << 4) >> 0x10) >= 2 &&
+        *(int *)((char *)obj + 0xc) != 0) {
         func_ov002_020e8244(&v1, this);
         mParticle[0] = (u32)Particle::System::New(mParticle[0], 0x2f, v1.x, v1.y, v1.z, 0, 0);
         return;
     }
 
-    if (!mAnmModel1.WillHitFrame(0x75)) return;
+    if (!mAnmModel1.WillHitFrame(0x75))
+        return;
     func_ov002_020e8244(&v2, this);
     Particle::System::NewSimple(0x30, v2.x, v2.y, v2.z);
 }
@@ -3305,21 +3308,21 @@ void daStar_c::func_ov002_020e6edc() {
 /* Kind 9 set-up (param1 & 0x7f == 0x6f): visible, no spin, star id 6, starts
  * in STATE_COLLECT_HOLD. */
 void daStar_c::func_ov002_020e6df8() {
-  mKind = KIND_9;
-  mAnmModel1.SetAnim((BCA_File *)data_ov002_02110944.filePtr, 0x40000000, 0x1000, 0);
-  mAnmModel2.SetAnim((BCA_File *)data_ov002_02110944.filePtr, 0x40000000, 0x1000, 0);
-  {
-    Vector3 v;
-    v.x = data_ov002_0210aa0c[0];
-    v.y = data_ov002_0210aa0c[1];
-    v.z = data_ov002_0210aa0c[2];
-    _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
-      &mdCc_c, this, &v, 0x64000, 0x96000, 1, 0);
-  }
-  mBits.noSpin = 1;
-  mBits.visible = 1;
-  mStarID = 6;
-  mState = STATE_COLLECT_HOLD;
+    mKind = KIND_9;
+    mAnmModel1.SetAnim((BCA_File *)data_ov002_02110944.filePtr, 0x40000000, 0x1000, 0);
+    mAnmModel2.SetAnim((BCA_File *)data_ov002_02110944.filePtr, 0x40000000, 0x1000, 0);
+    {
+        Vector3 v;
+        v.x = data_ov002_0210aa0c[0];
+        v.y = data_ov002_0210aa0c[1];
+        v.z = data_ov002_0210aa0c[2];
+        _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(&mdCc_c, this, &v, 0x64000, 0x96000,
+                                                                1, 0);
+    }
+    mBits.noSpin = 1;
+    mBits.visible = 1;
+    mStarID = 6;
+    mState = STATE_COLLECT_HOLD;
 }
 
 /* -------------------------------------------------------------------------- */

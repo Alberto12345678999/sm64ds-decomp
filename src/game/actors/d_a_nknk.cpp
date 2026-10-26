@@ -362,29 +362,30 @@ int daNknk_c::Behavior()
 // @symbol _ZN8daNknk_c6RenderEv
 int daNknk_c::Render()
 {
-  volatile struct V3 saved;
-  int b = (mFlags & 0x40000) != 0;
-  if (b) return 1;
-  if (mKoopaVariant == 1) {
-    mAnmModel.ShowMaterial(0, 1);
-    mAnmModel.HideMaterial(0, 2);
-  } else {
-    mAnmModel.HideMaterial(0, 1);
-    mAnmModel.ShowMaterial(0, 2);
-  }
-  saved.x = mScaleX;
-  saved.y = mScaleY;
-  saved.z = mScaleZ;
-  if (mDeathState == 1 && mKoopaVariant == 2) {
-      mScaleX = FX_MUL(*(volatile int *)&mScaleX, 0x800);
-      mScaleY = FX_MUL(*(volatile int *)&mScaleY, 0x800);
-      mScaleZ = FX_MUL(*(volatile int *)&mScaleZ, 0x800);
-  }
-  mAnmModel.Render(&mScale);
-  mScaleX = saved.x;
-  mScaleY = saved.y;
-  mScaleZ = saved.z;
-  return 1;
+    volatile struct V3 saved;
+    int b = (mFlags & 0x40000) != 0;
+    if (b)
+        return 1;
+    if (mKoopaVariant == 1) {
+        mAnmModel.ShowMaterial(0, 1);
+        mAnmModel.HideMaterial(0, 2);
+    } else {
+        mAnmModel.HideMaterial(0, 1);
+        mAnmModel.ShowMaterial(0, 2);
+    }
+    saved.x = mScaleX;
+    saved.y = mScaleY;
+    saved.z = mScaleZ;
+    if (mDeathState == 1 && mKoopaVariant == 2) {
+        mScaleX = FX_MUL(*(volatile int *)&mScaleX, 0x800);
+        mScaleY = FX_MUL(*(volatile int *)&mScaleY, 0x800);
+        mScaleZ = FX_MUL(*(volatile int *)&mScaleZ, 0x800);
+    }
+    mAnmModel.Render(&mScale);
+    mScaleX = saved.x;
+    mScaleY = saved.y;
+    mScaleZ = saved.z;
+    return 1;
 }
 
 // @symbol _ZN8daNknk_c16OnPendingDestroyEv
@@ -416,7 +417,8 @@ void daNknk_c::func_ov062_02118de8()
 {
     mHorzSpeed = 0;
     if (mAnimIndex == 2) {
-        if (mAnmModel.Finished() == 0) return;
+        if (mAnmModel.Finished() == 0)
+            return;
         func_ov062_02117994(4);
         return;
     }
@@ -710,25 +712,28 @@ void daNknk_c::func_ov062_021183e0()
 // @symbol _ZN8daNknk_c19func_ov062_02118334Ev
 void daNknk_c::func_ov062_02118334()
 {
-  short *angleY;
-  struct Vec3 v;
-  Vec3_Asr(&v, (struct Vec3 *)&mPosX, 3);
-  if (1)
-  {
-    Matrix4x3_FromTranslation(&data_020a0e68, v.x, v.y, v.z);
-    angleY = &mAngleY;
-    Matrix4x3_ApplyInPlaceToRotationY(inline_fn(), *angleY);
-    { struct M12w { int w[12]; };  /* array-wrapper copy: keeps C's block copy under -lang c++ */
-      *(M12w *)&mAnmModel.mat4x3 = *(M12w *)&data_020a0e68; }
-    {
-      int b = (int) ((mFlags & 0x40000) != 0);
-      if (b != 0)
-      {
-        return;
-      }
+    short *angleY;
+    struct Vec3 v;
+    Vec3_Asr(&v, (struct Vec3 *)&mPosX, 3);
+    if (1) {
+        Matrix4x3_FromTranslation(&data_020a0e68, v.x, v.y, v.z);
+        angleY = &mAngleY;
+        Matrix4x3_ApplyInPlaceToRotationY(inline_fn(), *angleY);
+        {
+            struct M12w {
+                int w[12];
+            }; /* array-wrapper copy: keeps C's block copy under -lang c++ */
+            *(M12w *)&mAnmModel.mat4x3 = *(M12w *)&data_020a0e68;
+        }
+        {
+            int b = (int)((mFlags & 0x40000) != 0);
+            if (b != 0) {
+                return;
+            }
+        }
     }
-  }
-  _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(this, &mShadowModel, &mAnmModel.mat4x3, 0x50000, 0x50000, 0xf);
+    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
+        this, &mShadowModel, &mAnmModel.mat4x3, 0x50000, 0x50000, 0xf);
 }
 
 // @symbol _ZN8daNknk_c19func_ov062_02118258Ei
@@ -761,7 +766,8 @@ void daNknk_c::func_ov062_021181a0() {
     } else {
         ApproachLinear(mHorzSpeed, 0x3000, 0x4cc);
     }
-    if (mAnmModel.Finished() == 0) return;
+    if (mAnmModel.Finished() == 0)
+        return;
     {
         u16 *p = &mWalkState;
         *p = (u16)(*p + 1);
@@ -1052,7 +1058,7 @@ void daNknk_c::func_ov062_021179e4() {
 // @symbol _ZN8daNknk_c19func_ov062_02117994Ei
 void daNknk_c::func_ov062_02117994(int idx) {
     mAnmModel.SetAnim((BCA_File *)data_ov062_0211cee8[idx]->filePtr, data_ov062_0211cf0c[idx],
-                       mAnimSpeed, 0);
+                      mAnimSpeed, 0);
     mAnimIndex = (u8)idx;
 }
 

@@ -170,9 +170,8 @@ int daObjRcCarpet_c::CleanupResources()
 // @symbol func_ov036_021122c0
 extern "C" void func_ov036_021122c0(daObjRcCarpet_c *self)
 {
-    Matrix4x3_FromRotationXYZExt(
-        &self->mAnmModel.mat4x3,
-        self->mAngleX, self->mAngleY, self->mAngleZ);
+    Matrix4x3_FromRotationXYZExt(&self->mAnmModel.mat4x3, self->mAngleX, self->mAngleY,
+                                 self->mAngleZ);
     self->mAnmModel.mat4x3.m[9] = self->mPosX >> 3;
     self->mAnmModel.mat4x3.m[10] = (self->mPosY + self->mRideDipY) >> 3;
     self->mAnmModel.mat4x3.m[11] = self->mPosZ >> 3;

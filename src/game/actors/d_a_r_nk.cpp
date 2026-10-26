@@ -303,16 +303,16 @@ int daRNk_c::CleanupResources()
    body cylinder and draw the drop shadow. */
 int daRNk_c::Behavior()
 {
-  StateFunc *states = data_ov062_0211e0a4;
-  (this->*states[mState])();
-  mAnmModel.Advance();
-  mAngleY = mPrevAngleY;
-  UpdatePos(&mdCcAc_c);
-  UpdateWMClsn(mWithMeshClsn, 0);
-  mdCcAc_c.Clear();
-  mdCcAc_c.Update();
-  func_ov062_0211aac0();
-  return 1;
+    StateFunc *states = data_ov062_0211e0a4;
+    (this->*states[mState])();
+    mAnmModel.Advance();
+    mAngleY = mPrevAngleY;
+    UpdatePos(&mdCcAc_c);
+    UpdateWMClsn(mWithMeshClsn, 0);
+    mdCcAc_c.Clear();
+    mdCcAc_c.Update();
+    func_ov062_0211aac0();
+    return 1;
 }
 
 // @symbol _ZN7daRNk_c6RenderEv
@@ -320,9 +320,9 @@ int daRNk_c::Behavior()
    non-virtual and the slot-5 virtual is Render, which dExtAnmModel_c overrides. */
 int daRNk_c::Render()
 {
-  mAnmModel.HideMaterial(0, 1);
-  mAnmModel.Render(&mScale);
-  return 1;
+    mAnmModel.HideMaterial(0, 1);
+    mAnmModel.Render(&mScale);
+    return 1;
 }
 
 // @symbol _ZN7daRNk_c19func_ov062_0211aac0Ev
@@ -330,13 +330,18 @@ int daRNk_c::Render()
    matrix expects) and heading in the scratch matrix, copy it into the model's matrix,
    and give DropShadowRadHeight a radius and height of 160 units. */
 void daRNk_c::func_ov062_0211aac0(){
-  struct Vector3 v;
-  Vec3_Asr(&v, &this->mPosX, 3);
-  Matrix4x3_FromTranslation(&data_020a0e68, v.x, v.y, v.z);
-  Matrix4x3_ApplyInPlaceToRotationY(&data_020a0e68, this->mAngleY);
-  { struct M43w { int w[12]; };  /* array-wrapper copy: keeps C's block copy under -lang c++ */
-    *(M43w*)&this->mAnmModel.mat4x3 = *(M43w*)&data_020a0e68; }
-  _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(this, &this->mShadowModel, &this->mAnmModel.mat4x3, 0xa0000, 0xa0000, 0xf);
+    struct Vector3 v;
+    Vec3_Asr(&v, &this->mPosX, 3);
+    Matrix4x3_FromTranslation(&data_020a0e68, v.x, v.y, v.z);
+    Matrix4x3_ApplyInPlaceToRotationY(&data_020a0e68, this->mAngleY);
+    {
+        struct M43w {
+            int w[12];
+        }; /* array-wrapper copy: keeps C's block copy under -lang c++ */
+        *(M43w *)&this->mAnmModel.mat4x3 = *(M43w *)&data_020a0e68;
+    }
+    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
+        this, &this->mShadowModel, &this->mAnmModel.mat4x3, 0xa0000, 0xa0000, 0xf);
 }
 
 // @symbol _ZN7daRNk_c19func_ov062_0211a9c4Ev
@@ -574,7 +579,8 @@ void daRNk_c::func_ov062_0211a1f4()
         } else {
             this->mAnmModel.speed = 0x1000;
             if (this->mAnmModel.Finished() != 0 &&
-                (this->mAnmModel.file == (BCA_File *)ANIM_RUN_START || this->mAnmModel.file == (BCA_File *)ANIM_LAND))
+                (this->mAnmModel.file == (BCA_File *)ANIM_RUN_START ||
+                 this->mAnmModel.file == (BCA_File *)ANIM_LAND))
                 SET_ANIM(this, ANIM_RUN, kAnimLoop);
         }
         if (progress == PATH_NODE_REACHED && (this->mCurPathPt == this->mPathPtToJumpAt1 || this->mCurPathPt == this->mPathPtToJumpAt2)) {
@@ -634,13 +640,13 @@ void daRNk_c::func_ov062_0211a1f4()
    step); when the current animation is about to hit its last frame, fix the
    speed at 3 units, play ANIM_BRAKE once and go to STATE_STOP. */
 void daRNk_c::func_ov062_0211a168(){
-  ApproachLinear(this->mHorzSpeed, 0x3000, 0x1000);
-  if (this->mAnmModel.WillHitFrame(
-        (unsigned short)(this->mAnmModel.GetFrameCount() - 1)) == 0) return;
-  this->mState = daRNk_c::STATE_STOP;
-  this->mHorzSpeed = 0x3000;
-  this->mStep = 0;
-  SET_ANIM(this, ANIM_BRAKE, kAnimPlayOnce);
+    ApproachLinear(this->mHorzSpeed, 0x3000, 0x1000);
+    if (this->mAnmModel.WillHitFrame((unsigned short)(this->mAnmModel.GetFrameCount() - 1)) == 0)
+        return;
+    this->mState = daRNk_c::STATE_STOP;
+    this->mHorzSpeed = 0x3000;
+    this->mStep = 0;
+    SET_ANIM(this, ANIM_BRAKE, kAnimPlayOnce);
 }
 
 // @symbol _ZN7daRNk_c19func_ov062_0211a0f0Ev
@@ -650,7 +656,8 @@ void daRNk_c::func_ov062_0211a168(){
 void daRNk_c::func_ov062_0211a0f0()
 {
     ApproachLinear(this->mHorzSpeed, 0, 0x4000);
-    if (!this->mAnmModel.Finished()) return;
+    if (!this->mAnmModel.Finished())
+        return;
     SET_ANIM(this, ANIM_IDLE, kAnimLoop);
     this->mState = daRNk_c::STATE_POST_RACE_TALK;
     this->mStep = 0;

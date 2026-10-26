@@ -690,7 +690,7 @@ void daDossy_c::func_ov065_021183c8()
                     mState++;
                     mStateState = 0;
                     mAnmModel.SetAnim((BCA_File *)data_ov065_0211d748.filePtr, 0x40000000, 0x1000,
-                                       0);
+                                      0);
                     mRider = mClsnPlayer;
                 }
             }
@@ -712,7 +712,8 @@ void daDossy_c::func_ov065_021182e4()
 {
     switch (mStateState) {
     case 0:
-        if (mAnmModel.Finished() == 0) return;
+        if (mAnmModel.Finished() == 0)
+            return;
         mStateState = 1;
         mAnmModel.SetAnim((BCA_File *)data_ov065_0211d770.filePtr, 0, 0x1000, 0);
         if (mRider == 0) return;

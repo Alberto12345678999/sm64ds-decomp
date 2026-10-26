@@ -428,7 +428,7 @@ int daMoray_c::func_ov016_02111758()
 int daMoray_c::func_ov016_02111860()
 {
     this->mBlendAnmModel.SetAnim(*(BCA_File *)data_ov016_02114d20.filePtr, 8, 0x40000000, 0x1000,
-                                  0);
+                                 0);
     func_02012694(0xfa, &this->mCamSpacePos);
     return 1;
 }
@@ -648,7 +648,8 @@ void daMoray_c::func_ov016_02111c40()
     this->mStarPos.x = 0;
     this->mStarPos.y = 0;
     this->mStarPos.z = 0;
-    MulMat4x3Mat4x3(&this->mBlendAnmModel.data.transforms[4], &this->mBlendAnmModel.mat4x3, &this->mStarMtx);
+    MulMat4x3Mat4x3(&this->mBlendAnmModel.data.transforms[4], &this->mBlendAnmModel.mat4x3,
+                    &this->mStarMtx);
     Matrix4x3_FromTranslation(&data_020a0e68, 0x28000, 0, 0);
     Matrix4x3_ApplyInPlaceToRotationXYZExt(&data_020a0e68, 0x4000, -0x8000, this->mStarSpinAngle);
     MulMat4x3Mat4x3(&data_020a0e68, &this->mStarMtx, &this->mStarMtx);

@@ -396,7 +396,7 @@ void func_ov070_02120070(daPropeller_Heyho_c* c)
     Vec3_Asr(&v, &c->mPosX, 3);
     Matrix4x3_FromTranslation(data_020a0e68, v.x, v.y, v.z);
     Matrix4x3_ApplyInPlaceToRotationXYZExt(data_020a0e68, c->mAngleX, c->mAngleY, c->mAngleZ);
-    *(M48*)&c->mAnmModel.mat4x3 = *(M48*)data_020a0e68;
+    *(M48 *)&c->mAnmModel.mat4x3 = *(M48 *)data_020a0e68;
     Matrix4x3_FromTranslation(data_020a0e68, c->mPosX >> 3, (c->mPosY - 0xa000) >> 3, c->mPosZ >> 3);
     *(M48*)c->mShadowMatrix = *(M48*)data_020a0e68;
     _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
@@ -426,10 +426,10 @@ extern int data_0209e650[];
  * 22.5 degrees apart), timer = 50 + random 0..31 frames, plays the file-02123520
  * animation at speed 1.0. */
 int func_ov070_0211ffa8(daPropeller_Heyho_c* c){
-  c->mTargetAngY = (short)(((RandomIntInternal(data_0209e650) >> 8) & 0xf) << 0xc);
-  c->mStateTimer = (short)(((RandomIntInternal(data_0209e650) >> 8) & 0x1f) + 0x32);
-  c->mAnmModel.SetAnim((BCA_File *)data_ov070_02123520.filePtr, 0, 0x1000, 0);
-  return 1;
+    c->mTargetAngY = (short)(((RandomIntInternal(data_0209e650) >> 8) & 0xf) << 0xc);
+    c->mStateTimer = (short)(((RandomIntInternal(data_0209e650) >> 8) & 0x1f) + 0x32);
+    c->mAnmModel.SetAnim((BCA_File *)data_ov070_02123520.filePtr, 0, 0x1000, 0);
+    return 1;
 }
 }
 

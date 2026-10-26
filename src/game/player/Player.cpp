@@ -24978,17 +24978,17 @@ void func_ov002_020e5948(void* arg0)
                 player->mModels.mAnmModel1.SetFile(
                     (BMD_File *)dExtSimpleModel_c::LoadFile(data_ov002_0210e6f8), 1, 1);
                 player->mModels.mAnmModel1.SetAnim((BCA_File *)data_ov002_0210e750.filePtr, 0,
-                                                    0x1000, 0);
+                                                   0x1000, 0);
                 player->mModels.mAnmModel2.SetFile(
                     (BMD_File *)dExtSimpleModel_c::LoadFile(data_ov002_0210e7b0), 1, 1);
                 player->mModels.mAnmModel2.SetAnim((BCA_File *)data_ov002_0210e4c0.filePtr, 0,
-                                                    0x1000, 0);
+                                                   0x1000, 0);
             }
         } else {
             player->mModels.mAnmModel2.SetFile(
                 (BMD_File *)dExtSimpleModel_c::LoadFile(data_ov002_0210e7b0), 1, 1);
             player->mModels.mAnmModel2.SetAnim((BCA_File *)data_ov002_0210e4c0.filePtr, 0, 0x1000,
-                                                0);
+                                               0);
         }
     }
 

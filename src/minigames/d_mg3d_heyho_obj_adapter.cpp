@@ -1595,11 +1595,10 @@ struct Foo {
   void (Foo::*pmf)();
 };
 extern "C" void Heyho_Update(struct Foo *c){
-  (c->*(c->pmf))();
-  HEYHO(c)->mAnmModel.Advance();
-  Heyho_UpdateMatrix(c);
+    (c->*(c->pmf))();
+    HEYHO(c)->mAnmModel.Advance();
+    Heyho_UpdateMatrix(c);
 }
-
 }
 
 /* ---- Heyho_Draw ---- */

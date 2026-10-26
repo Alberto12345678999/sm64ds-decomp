@@ -906,8 +906,7 @@ int daObjKey_c::InitResources()
     dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)&data_ov002_02110964);
 
     if (mState == KEY_KIND_STAR) {
-        if (mAnmModel.SetFile((BMD_File *)((ObjKeyFile *)&data_ov002_0211094c)->filePtr, 1, 1) ==
-            0)
+        if (mAnmModel.SetFile((BMD_File *)((ObjKeyFile *)&data_ov002_0211094c)->filePtr, 1, 1) == 0)
             return 0;
         mAnmModel.SetAnim((BCA_File *)data_ov002_02110964.filePtr, ANIM_FLAGS, ANIM_SPEED, 0);
         mScaleX = SCALE_STAR;
@@ -927,7 +926,7 @@ int daObjKey_c::InitResources()
         dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)&data_ov089_02132c70);
         dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)&data_ov089_02132c48);
         if (mAnmModel.SetFile((BMD_File *)((ObjKeyFile *)data_ov089_02132894[mState])->filePtr, 1,
-                               1) == 0)
+                              1) == 0)
             return 0;
         {
             void *extra = data_ov089_021328b4[mState];

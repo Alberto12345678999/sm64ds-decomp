@@ -496,7 +496,7 @@ extern "C" void func_ov100_021437d4(daWanwan2_c *thisx)
    vtable directly, and that is the whole of the old claim. Was a C source. */
 extern "C" int func_ov100_02143aa4(daWanwan2_c *c)
 {
-    c->mAnmModel.speed = 4096;      /* 1.0 */
+    c->mAnmModel.speed = 4096; /* 1.0 */
     c->mAnmModel.Advance();
     func_ov100_021437d4(c);
     func_ov100_0214344c(c);
@@ -546,7 +546,8 @@ extern "C" void func_ov100_02143b68(char *self)
     c->mAnmModel.mat4x3.t.x = c->mPosX >> 3;
     c->mAnmModel.mat4x3.t.y = c->mPosY >> 3;
     c->mAnmModel.mat4x3.t.z = c->mPosZ >> 3;
-    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(c, &c->mShadowModel, &c->mAnmModel.mat4x3, 0x15e000, 0x1f4000, 0xf);
+    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
+        c, &c->mShadowModel, &c->mAnmModel.mat4x3, 0x15e000, 0x1f4000, 0xf);
     tmp = *(M48 *)&IDENTITY_MATRIX4X3;
     i = 0;
     mdst = c->mModels;

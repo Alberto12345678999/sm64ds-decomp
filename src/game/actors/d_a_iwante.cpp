@@ -517,12 +517,12 @@ int Eyerok::func_ov066_0211603c()
             if (mHitPoints > 0) {
                 if (mPartIdx == PART_HAND_2) {
                     mBlendAnmModel.SetAnim(*(BCA_File *)data_ov066_0211ae5c.filePtr, 4, 0x40000000,
-                                            0x1000, 0);
+                                           0x1000, 0);
                     mTextureSequence.SetFile(*(BTP_File *)data_ov066_0211ae3c.filePtr, 0x40000000,
                                              0x1000, 0);
                 } else {
                     mBlendAnmModel.SetAnim(*(BCA_File *)data_ov066_0211ae84.filePtr, 4, 0x40000000,
-                                            0x1000, 0);
+                                           0x1000, 0);
                     mTextureSequence.SetFile(*(BTP_File *)data_ov066_0211aebc.filePtr, 0x40000000,
                                              0x1000, 0);
                 }
@@ -621,7 +621,8 @@ void Eyerok::func_ov066_02116390()
 void Eyerok::func_ov066_021164ec()
 {
     if (mStateWork1 != 0) return;
-    if ((unsigned short)(mBlendAnmModel.currFrame >> 0xc) != 0) return;
+    if ((unsigned short)(mBlendAnmModel.currFrame >> 0xc) != 0)
+        return;
     mdCcAcPos_c.vulnFlags |= HIT_HAND_VULNERABLE | HIT_MEGA;
     mFlags = 0x10000000;
     mdCcAcPos_c.flags |= 2;
@@ -1844,9 +1845,8 @@ int Eyerok::func_ov066_02118678()
         }
     }
 
-    if (mVertAccel == 0
-        && Vec3_HorzDist(&mPosX, &mRestPosX) <= 0x14000
-        && mBlendAnmModel.Finished()) {
+    if (mVertAccel == 0 && Vec3_HorzDist(&mPosX, &mRestPosX) <= 0x14000 &&
+        mBlendAnmModel.Finished()) {
         mMeshCollider2.Enable(this);
         data_ov066_0211ae0c |= mPartIdx;
         func_ov066_02119454(&data_ov066_0211b06c);
@@ -2381,7 +2381,7 @@ void Eyerok::func_ov066_021194fc()
     if (mPartIdx == PART_MAIN)
         *(M48 *)&mModel2.mat4x3 = *(M48*)data_020a0e68;
     else
-        *(M48 *)&mBlendAnmModel.mat4x3 = *(M48*)data_020a0e68;
+        *(M48 *)&mBlendAnmModel.mat4x3 = *(M48 *)data_020a0e68;
     if (mPartIdx == PART_MAIN)
         return;
     if (mRestPosY >= mPosY)

@@ -653,7 +653,7 @@ void dMgJump3DMario_c::StateMove()
                     else
                         mAnimIdx = 1;
                     mAnmModel.SetAnim((BCA_File *)(*sJump3DAnimTable[mAnimIdx]), 0x40000000,
-                                       kAnimSpeed, 0);
+                                      kAnimSpeed, 0);
                     mAnmModel.dExtFrameCtrl_c::currFrame = 0;
                     Particle::System::NewSimple(0xed, mPos.x << 3, mPos.y << 3, mPos.z << 3);
                     Particle::System::NewSimple(0xee, v[0] << 3, v[1] << 3, v[2] << 3);
@@ -677,8 +677,8 @@ void dMgJump3DMario_c::StateMove()
             mVel.x = -FX_MUL(mVel.x, 0xd00);
             if (mVel.y > 0) {
                 mAnimIdx = 2;
-                mAnmModel.SetAnim((BCA_File *)(*sJump3DAnimTable[mAnimIdx]), 0x40000000,
-                                   kAnimSpeed, 0);
+                mAnmModel.SetAnim((BCA_File *)(*sJump3DAnimTable[mAnimIdx]), 0x40000000, kAnimSpeed,
+                                  0);
                 mAnmModel.dExtFrameCtrl_c::currFrame = 0;
                 Sound_PlayBank1Panned(0, mAnimIdx, mPos.x);
             }
@@ -686,8 +686,8 @@ void dMgJump3DMario_c::StateMove()
             mVel.x = -FX_MUL(mVel.x, 0xd00);
             if (mVel.y > 0) {
                 mAnimIdx = 2;
-                mAnmModel.SetAnim((BCA_File *)(*sJump3DAnimTable[mAnimIdx]), 0x40000000,
-                                   kAnimSpeed, 0);
+                mAnmModel.SetAnim((BCA_File *)(*sJump3DAnimTable[mAnimIdx]), 0x40000000, kAnimSpeed,
+                                  0);
                 mAnmModel.dExtFrameCtrl_c::currFrame = 0;
                 Sound_PlayBank1Panned(0, mAnimIdx, mPos.x);
             }
@@ -797,8 +797,7 @@ void dMgJump3DMario_c::StateBounce()
         mVel.x = -FX_MUL(mVel.x, 0xd00);
         if (mVel.y > 0) {
             mAnimIdx = 2;
-            mAnmModel.SetAnim((BCA_File *)(*sJump3DAnimTable[mAnimIdx]), 0x40000000, kAnimSpeed,
-                               0);
+            mAnmModel.SetAnim((BCA_File *)(*sJump3DAnimTable[mAnimIdx]), 0x40000000, kAnimSpeed, 0);
             mAnmModel.dExtFrameCtrl_c::currFrame = 0;
             Sound_PlayBank1Panned(0, mAnimIdx, mPos.x);
         }
@@ -806,8 +805,7 @@ void dMgJump3DMario_c::StateBounce()
         mVel.x = -FX_MUL(mVel.x, 0xd00);
         if (mVel.y > 0) {
             mAnimIdx = 2;
-            mAnmModel.SetAnim((BCA_File *)(*sJump3DAnimTable[mAnimIdx]), 0x40000000, kAnimSpeed,
-                               0);
+            mAnmModel.SetAnim((BCA_File *)(*sJump3DAnimTable[mAnimIdx]), 0x40000000, kAnimSpeed, 0);
             mAnmModel.dExtFrameCtrl_c::currFrame = 0;
             Sound_PlayBank1Panned(0, mAnimIdx, mPos.x);
         }

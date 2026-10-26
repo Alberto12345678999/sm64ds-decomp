@@ -370,8 +370,7 @@ L70: {
         int t;
 
         MARIO2(c)->mAnim = 2;
-        MARIO2(c)->mAnmModel.SetAnim(*sTrmpBounceAnimTable[MARIO2(c)->mAnim], 0x40000000, 0x800,
-                                      0);
+        MARIO2(c)->mAnmModel.SetAnim(*sTrmpBounceAnimTable[MARIO2(c)->mAnim], 0x40000000, 0x800, 0);
 
         MARIO2(c)->mAnmModel.currFrame = 0;
         Sound_PlayBank1Panned(0, MARIO2(c)->mAnim, MARIO2(c)->mPos.x);
@@ -614,8 +613,7 @@ L70: {
         MARIO2(c)->mVel.y = v40;
 
         MARIO2(c)->mAnim = 2;
-        MARIO2(c)->mAnmModel.SetAnim(*sTrmpBounceAnimTable[MARIO2(c)->mAnim], 0x40000000, 0x800,
-                                      0);
+        MARIO2(c)->mAnmModel.SetAnim(*sTrmpBounceAnimTable[MARIO2(c)->mAnim], 0x40000000, 0x800, 0);
 
         MARIO2(c)->mAnmModel.currFrame = 0;
         Sound_PlayBank1Panned(0, MARIO2(c)->mAnim, MARIO2(c)->mPos.x);
@@ -972,8 +970,7 @@ L70: {
     {
         MARIO2(c)->mVel.y = 0x800;
         MARIO2(c)->mAnim = 2;
-        MARIO2(c)->mAnmModel.SetAnim(*sTrmpBounceAnimTable[MARIO2(c)->mAnim], 0x40000000, 0x800,
-                                      0);
+        MARIO2(c)->mAnmModel.SetAnim(*sTrmpBounceAnimTable[MARIO2(c)->mAnim], 0x40000000, 0x800, 0);
 
         MARIO2(c)->mAnmModel.currFrame = 0;
         Sound_PlayBank1Panned(0, MARIO2(c)->mAnim, MARIO2(c)->mPos.x);
@@ -2096,7 +2093,7 @@ L134:
     if (MARIO3D(c)->mVel.y > 0) {
         MARIO3D(c)->mAnim = 2;
         MARIO3D(c)->mAnmModel.SetAnim(*sTrmpBounceAnimTable[MARIO3D(c)->mAnim], 0x40000000, 0x800,
-                                       0);
+                                      0);
 
         MARIO3D(c)->mAnmModel.currFrame = 0;
         Sound_PlayBank1Panned(0, MARIO3D(c)->mAnim, MARIO3D(c)->mPos.x);
@@ -2324,7 +2321,7 @@ L134:
     if (MARIO3D(c)->mVel.y > 0) {
         MARIO3D(c)->mAnim = 2;
         MARIO3D(c)->mAnmModel.SetAnim(*sTrmpBounceAnimTable[MARIO3D(c)->mAnim], 0x40000000, 0x800,
-                                       0);
+                                      0);
 
         MARIO3D(c)->mAnmModel.currFrame = 0;
         Sound_PlayBank1Panned(0, MARIO3D(c)->mAnim, MARIO3D(c)->mPos.x);

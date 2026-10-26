@@ -369,7 +369,7 @@ int daObjHatenaBlock_c::InitResources()
         modelFile = dExtSimpleModel_c::LoadFile(data_ov102_0214e7e8);
         mAnmModel.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(data_ov102_0214e808), 1, 0x19);
         mAnmModel.SetAnim((BCA_File *)(dExtFrameCtrl_c::LoadFile(data_ov102_0214e7f8)), 0, 0x1000,
-                           0);
+                          0);
         dExtSimpleModel_c::LoadFile(data_ov002_0210d9e0);
         break;
     case 1:   /* ITEM_BLOCK */

@@ -57,7 +57,7 @@ struct daBasabasa_c : dEnemyBase_c {
     s32 mPerchTimer;                  /* 0x430 -- frames spent back at home before perching */
     s16 mTargetAngleY;                /* 0x434 */
     u8  pad_436[0x6];
-    u8  mIsFlying;                    /* 0x43c -- 1 draws and animates mAnmModel1 */
+    u8 mIsFlying; /* 0x43c -- 1 draws and animates mAnmModel1 */
 
     /* --- vtable --- */
     virtual ~daBasabasa_c();

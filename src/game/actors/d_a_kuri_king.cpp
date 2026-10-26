@@ -624,7 +624,8 @@ void daKuriKing_c::func_ov074_0211fc34()
 void daKuriKing_c::func_ov074_0211fc38()
 {
     if (ApproachAngle(&this->mWalkSpeed, 0, 0xa, 0x100, 1) != 0) goto reset;
-    if (this->mAnmModel.Finished() == 0) return;
+    if (this->mAnmModel.Finished() == 0)
+        return;
     if (this->mSizeIndex != 0) goto detox;
     {
         Player* player = this->ClosestPlayer();
@@ -676,7 +677,8 @@ L90:;
     Player* pl = this->ClosestPlayer();
     if (this->mSizeIndex == 1 && (int)pl->param1 != 3) spawnTarget = spawnTarget + 1;
 
-    if (this->mAnmModel.Finished() == 0) return;
+    if (this->mAnmModel.Finished() == 0)
+        return;
     if (DecIfAbove0_Short(&this->mTimer) != 0) return;
 
     Vector3 pos;
@@ -711,7 +713,8 @@ L90:;
     if ((int)pl2->param1 != 3) {
         if (this->mSizeIndex == 1) dv = 5;
     }
-    if (this->mSpawnedCount % dv == 0) this->mAnmModel.currFrame = 0;
+    if (this->mSpawnedCount % dv == 0)
+        this->mAnmModel.currFrame = 0;
 
     if (this->mSpawnedCount < spawnTarget) return;
     func_ov074_021203e4(3);
@@ -749,20 +752,23 @@ extern "C" void func_ov074_0212007c(void)
 
 // @symbol _ZN12daKuriKing_c19func_ov074_02120080Ev
 void daKuriKing_c::func_ov074_02120080(){
-  if(this->mSpawnedCount == 0){
-    func_ov074_021203e4(2);
-    return;
-  }
-  if(func_ov074_02121a20(0xa) != 0){
-    if(this->mAnmModel.Finished() == 0) return;
-    func_ov074_02121a4c((char*)this, 8);
-    return;
-  }
-  ApproachAngle(&this->mWalkSpeed, this->mMaxWalkSpeed, 0xa, 0x20, 1);
-  func_ov074_021216f4();
-  if(this->DistToCPlayer() >= 0x4b0000) return;
-  if(AngleDiff(this->HorzAngleToCPlayer(), this->mAngleY) <= 0x4000) return;
-  func_ov074_021203e4(4);
+    if (this->mSpawnedCount == 0) {
+        func_ov074_021203e4(2);
+        return;
+    }
+    if (func_ov074_02121a20(0xa) != 0) {
+        if (this->mAnmModel.Finished() == 0)
+            return;
+        func_ov074_02121a4c((char *)this, 8);
+        return;
+    }
+    ApproachAngle(&this->mWalkSpeed, this->mMaxWalkSpeed, 0xa, 0x20, 1);
+    func_ov074_021216f4();
+    if (this->DistToCPlayer() >= 0x4b0000)
+        return;
+    if (AngleDiff(this->HorzAngleToCPlayer(), this->mAngleY) <= 0x4000)
+        return;
+    func_ov074_021203e4(4);
 }
 
 // @symbol _ZN12daKuriKing_c19func_ov074_0212016cEv

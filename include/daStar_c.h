@@ -86,7 +86,9 @@ struct daStar_c : dEnemyBase_c {
     enum StarFlag {
         FLAG_NO_SPIN         = 0x0001, /* clear: func_ov002_020e84ec spins it (+0xc00 on mAngleY per frame); set: faces mPrevAngleY, 50.0 up */
         FLAG_VISIBLE         = 0x0002, /* Render, the drop shadow and the touch volume all need it; InitResources disables the touch volume while clear */
-        FLAG_COLLECTED_MODEL = 0x0004, /* Render draws mAnmModel2 (the translucent star) instead of mAnmModel1; AddStarMarker turns marker type 2 into 3 */
+        /* Render draws mAnmModel2 (the translucent star) instead of mAnmModel1;
+           AddStarMarker turns marker type 2 into 3 */
+        FLAG_COLLECTED_MODEL = 0x0004,
         FLAG_NO_PICKUP       = 0x0008, /* STATE_BOUNCE skips the pickup test (func_ov002_020e930c) while set */
         FLAG_WATER_MASK      = 0x0030, /* bits 4..5, a WaterState */
         FLAG_RELINK_MARKER   = 0x0040, /* out of bounds -> re-link to a marker (func_ov002_020e7454) instead of going home; set by func_ov002_020e7218 */

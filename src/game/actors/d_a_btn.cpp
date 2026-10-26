@@ -490,11 +490,12 @@ int daBtn_c::Behavior()
 // @symbol _ZN7daBtn_c6RenderEv
 int daBtn_c::Render()
 {
-  if(mShouldRender==0) return 1;
-  if(mIsKing!=0)
-    mTextureSequence.Update(mAnmModel.data);
-  mAnmModel.Render(0);
-  return 1;
+    if (mShouldRender == 0)
+        return 1;
+    if (mIsKing != 0)
+        mTextureSequence.Update(mAnmModel.data);
+    mAnmModel.Render(0);
+    return 1;
 }
 
 // @symbol _ZN7daBtn_c16CleanupResourcesEv
@@ -917,30 +918,33 @@ void daBtn_c::func_ov079_0212538c()
    move to state 6; from then on the collider's contact callback is the
    veneer above. The king lands with a heavier dust burst. */
 void daBtn_c::func_ov079_02125240(){
-  Vector3 v;
-  Vector3 a;
-  Vector3 b;
-  if(mSubState) return;
-  if(!mWithMeshClsn.IsOnGround()) return;
-  mVertSpeed = 0;
-  func_01ffb098(&mMovingMeshCollider);
-  func_01ffb0bc(&mMovingMeshCollider);
-  mSubState++;
-  mAnmModel.SetAnim((BCA_File *)(((SharedFilePtr *)data_ov079_021275ec[mIsKing * 5 + 1])->filePtr),
-                     0x40000000, 0x1000, 0);
-  v.x = mPosX;
-  v.y = mPosY;
-  v.z = mPosZ;
-  Earthquake(v, 0x7d0000);
-  mState = 6;
-  func_020393c4(&mMovingMeshCollider, (int)func_ov079_0212522c);
-  if(mIsKing != 0){
-    func_ov079_02123d4c((int *)&a, this);
-    func_0200fa04(this, &a, 0);
-  } else {
-    func_ov079_02123d4c((int *)&b, this);
-    LandingDustAt(b, false);
-  }
+    Vector3 v;
+    Vector3 a;
+    Vector3 b;
+    if (mSubState)
+        return;
+    if (!mWithMeshClsn.IsOnGround())
+        return;
+    mVertSpeed = 0;
+    func_01ffb098(&mMovingMeshCollider);
+    func_01ffb0bc(&mMovingMeshCollider);
+    mSubState++;
+    mAnmModel.SetAnim(
+        (BCA_File *)(((SharedFilePtr *)data_ov079_021275ec[mIsKing * 5 + 1])->filePtr), 0x40000000,
+        0x1000, 0);
+    v.x = mPosX;
+    v.y = mPosY;
+    v.z = mPosZ;
+    Earthquake(v, 0x7d0000);
+    mState = 6;
+    func_020393c4(&mMovingMeshCollider, (int)func_ov079_0212522c);
+    if (mIsKing != 0) {
+        func_ov079_02123d4c((int *)&a, this);
+        func_0200fa04(this, &a, 0);
+    } else {
+        func_ov079_02123d4c((int *)&b, this);
+        LandingDustAt(b, false);
+    }
 }
 
 // @symbol func_ov079_0212522c
@@ -1446,8 +1450,7 @@ void daBtn_c::func_ov079_02124188()
     int sinComp;
     char *bone;
 
-    Matrix4x3_FromRotationXYZExt(&mAnmModel.mat4x3,
-        mAngleX, mAngleY, mAngleZ);
+    Matrix4x3_FromRotationXYZExt(&mAnmModel.mat4x3, mAngleX, mAngleY, mAngleZ);
 
     mAnmModel.mat4x3.t.x = mPosX >> 3;
     mAnmModel.mat4x3.t.y = (mPosY + mTipLift) >> 3;

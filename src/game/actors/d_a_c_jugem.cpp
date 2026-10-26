@@ -921,29 +921,34 @@ void daC_Jugem_c::OnPendingDestroy()
 // @symbol _ZN11daC_Jugem_c6RenderEv
 int daC_Jugem_c::Render()
 {
-  if (mHidden == 1) return 1;
-  mTextureSequence.Update(mAnmModel1.data);
-  mAnmModel1.Render(0);
-  return 1;
+    if (mHidden == 1)
+        return 1;
+    mTextureSequence.Update(mAnmModel1.data);
+    mAnmModel1.Render(0);
+    return 1;
 }
 
 // @symbol _ZN11daC_Jugem_c8BehaviorEv
 int daC_Jugem_c::Behavior()
 {
-  DecIfAbove0_Short((unsigned short *)&mStateTimer);
-  if (mState[1]) (this->*mState[1])();
-  UpdatePos(0);
-  mAnmModel1.Advance();
-  mTextureSequence.Advance();
-  if (mState == data_ov085_021307d0) {
-    mAngleX = mPrevAngleX;
-    mAngleY = mPrevAngleY;
-    mAngleZ = mPrevAngleZ;
-  }
-  if (mState == data_ov085_021307e0) return 1;
-  if (mVariant == 0) UpdateShadowPlayer();
-  else UpdateShadow();
-  return 1;
+    DecIfAbove0_Short((unsigned short *)&mStateTimer);
+    if (mState[1])
+        (this->*mState[1])();
+    UpdatePos(0);
+    mAnmModel1.Advance();
+    mTextureSequence.Advance();
+    if (mState == data_ov085_021307d0) {
+        mAngleX = mPrevAngleX;
+        mAngleY = mPrevAngleY;
+        mAngleZ = mPrevAngleZ;
+    }
+    if (mState == data_ov085_021307e0)
+        return 1;
+    if (mVariant == 0)
+        UpdateShadowPlayer();
+    else
+        UpdateShadow();
+    return 1;
 }
 
 // @symbol _ZN11daC_Jugem_c13InitResourcesEv
@@ -978,10 +983,9 @@ int daC_Jugem_c::InitResources()
             SetState(data_ov085_02130790);
         else
             SetState(data_ov085_021307e0);
+    } break;
     }
-    break;
-  }
-  return 1;
+    return 1;
 }
 
 // @symbol daC_Jugem_c_classInit

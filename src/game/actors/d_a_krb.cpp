@@ -745,7 +745,7 @@ int daKrb_c::func_ov084_02129a00() {
                 ((dCc_c *)&goomba->mdCcAc_c)->Update();
             } else if (s == 5) {
                 goomba->mAnmModel.SetAnim((BCA_File *)data_ov084_02130ce0.filePtr, 0x40000000,
-                                           0x1000, 0);
+                                          0x1000, 0);
                 goomba->mPrevAngleY += 0x8000; /* half a turn */
                 goomba->mHorzSpeed = -goomba->mHorzSpeed;
                 dExtAnmMaterial_c::Prepare(*(BMD_File *)(data_ov084_02130cf8.filePtr),
@@ -970,32 +970,32 @@ void daKrb_c::func_ov084_02129ed4() {
         if (flags & HIT_UNLISTED_20000) {
             goomba->mDeathState = daKrb_c::DEATH_HIT_20000;
             goomba->mAnmModel.SetAnim((BCA_File *)data_ov084_02130ce0.filePtr, 0x40000000, 0x1000,
-                                       0);
+                                      0);
             *(s32*)(((int)&goomba->mdCcAc_c.flags) & 0xffffffffffffffffULL) |= 1;
             goto block_68;
         }
         if (flags & (HIT_EGG | HIT_DIVE)) {
             goomba->mDeathState = daKrb_c::DEATH_DIVE_OR_EGG;
             goomba->mAnmModel.SetAnim((BCA_File *)data_ov084_02130ce0.filePtr, 0x40000000, 0x1000,
-                                       0);
+                                      0);
             goto block_68;
         }
         if (flags & HIT_EXPLOSION) {
             goomba->mDeathState = daKrb_c::DEATH_EXPLOSION;
             goomba->mAnmModel.SetAnim((BCA_File *)data_ov084_02130cd0.filePtr, 0x40000000, 0x1000,
-                                       0);
+                                      0);
             goto block_68;
         }
         if (flags & (HIT_KICK | HIT_BREAKDANCE | HIT_SLIDE_KICK)) {
             turnAround = 1;
             goomba->mAnmModel.SetAnim((BCA_File *)data_ov084_02130cd0.filePtr, 0x40000000, 0x1000,
-                                       0);
+                                      0);
             goomba->mDeathState = daKrb_c::DEATH_KICKED;
             goto block_68;
         }
         if (flags & HIT_PUNCH) {
             goomba->mAnmModel.SetAnim((BCA_File *)data_ov084_02130ce0.filePtr, 0x40000000, 0x1000,
-                                       0);
+                                      0);
             goomba->mDeathState = daKrb_c::DEATH_PUNCHED;
             turnAround = 1;
             goto block_68;
@@ -1020,7 +1020,7 @@ void daKrb_c::func_ov084_02129ed4() {
                     goomba->mDeathState = daKrb_c::DEATH_DIVE_OR_EGG;
                     turnAround = 1;
                     goomba->mAnmModel.SetAnim((BCA_File *)data_ov084_02130ce0.filePtr, 0x40000000,
-                                               0x1000, 0);
+                                              0x1000, 0);
                     goto block_68;
                 }
                 if (((dActor_c *)goomba)->JumpedOnByPlayer(*(dCc_c *)&goomba->mdCcAc_c, *(Player *)other) != 0) {
@@ -1128,9 +1128,11 @@ void daKrb_c::func_ov084_0212a580() {
     rotation.z = mAngleZ;
     if ((mFlags & 0x40000 ? 1 : 0) == 0) {
         if (mWithMeshClsn.IsOnGround()) {
-            _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j((char *)this, &mShadowModel, &mAnmModel.mat4x3, mScaleX * 0x50, 0x1e000, 0xf);
+            _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
+                (char *)this, &mShadowModel, &mAnmModel.mat4x3, mScaleX * 0x50, 0x1e000, 0xf);
         } else {
-            _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j((char *)this, &mShadowModel, &mAnmModel.mat4x3, mScaleX * 0x50, 0x96000, 0xf);
+            _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
+                (char *)this, &mShadowModel, &mAnmModel.mat4x3, mScaleX * 0x50, 0x96000, 0xf);
         }
     }
     pos.x = 0;
@@ -1929,8 +1931,7 @@ int daKrb_c::InitResources() {
     if (DestroyIfCapNotNeeded() == 0)
         return 0;
 
-    if (((dExtModel_c *)&mAnmModel)->SetFile((BMD_File *)(data_ov084_02130cf8.filePtr), 1, -1) ==
-        0)
+    if (((dExtModel_c *)&mAnmModel)->SetFile((BMD_File *)(data_ov084_02130cf8.filePtr), 1, -1) == 0)
         return 0;
 
     if (mShadowModel.InitCylinder() == 0)

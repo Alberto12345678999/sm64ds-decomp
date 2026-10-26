@@ -203,7 +203,8 @@ extern "C" void func_ov090_02130f94(daMenbo_c *c_)
         Vector3 r;
 
         data_020a0e68 = *src;
-        MulMat4x3Mat4x3((Matrix4x3 *)c->mAnmModel.data.transforms + idx, &data_020a0e68, &data_020a0e68);
+        MulMat4x3Mat4x3((Matrix4x3 *)c->mAnmModel.data.transforms + idx, &data_020a0e68,
+                        &data_020a0e68);
         v.x = *(int *)((char *)&data_020a0e68 + 0x24);
         v.y = *(int *)((char *)&data_020a0e68 + 0x28);
         v.z = *(int *)((char *)&data_020a0e68 + 0x2c);
@@ -427,7 +428,8 @@ int daMenbo_c::func_ov090_02131648()
     rnd = (u32)RandomIntInternal(&data_0209e650) >> 8;
     dist = Vec3_Dist(&self->mPos, (Vector3 *)&self->mAnchorPosX);
 
-    if (((((u32)static_cast<dExtFrameCtrl_c &>(self->mAnmModel).currFrame) << 4) >> 0x10 & 0xf) == 0) {
+    if (((((u32) static_cast<dExtFrameCtrl_c &>(self->mAnmModel).currFrame) << 4) >> 0x10 & 0xf) ==
+        0) {
         func_02012694(0xfc, &self->mCamSpacePos);
     }
 
@@ -536,7 +538,8 @@ int daMenbo_c::func_ov090_02131648()
         }
     }
 
-    if (((u32)(((u32)static_cast<dExtFrameCtrl_c &>(self->mAnmModel).currFrame) << 4) >> 0x10) >= 0x10) {
+    if (((u32)(((u32) static_cast<dExtFrameCtrl_c &>(self->mAnmModel).currFrame) << 4) >> 0x10) >=
+        0x10) {
         p390 = &self->mAnimLoops;
         *p390 = *p390 + 1;
     }

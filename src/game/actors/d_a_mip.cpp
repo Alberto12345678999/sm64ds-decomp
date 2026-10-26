@@ -898,44 +898,45 @@ int daMip_c::StateFleeMain() {
    ROM emits no scope-exit cleanup here. */
 int daMip_c::StateFleeInit()
 {
-    typedef struct Vector3 { int x, y, z; } Vector3;
-  extern DaMipAnimationFilePtr gMipRunAnimationFile;
+    typedef struct Vector3 {
+        int x, y, z;
+    } Vector3;
+    extern DaMipAnimationFilePtr gMipRunAnimationFile;
 
-  char pathptr[8];
-  int indices[2];
-  struct Vector3 v;
-  struct Vector3 nodes[2];
-  int i;
-  int d0;
-  struct Vector3 *src;
+    char pathptr[8];
+    int indices[2];
+    struct Vector3 v;
+    struct Vector3 nodes[2];
+    int i;
+    int d0;
+    struct Vector3 *src;
 
-  Player *p = ClosestPlayer();
-  mActionStep = 0;
-  if (p)
-  {
-    src = (struct Vector3 *)&p->mPosX;
-    v = *src;
-    _ZN7PathPtrC1Ev(pathptr);
-    ((PathPtr *)pathptr)->FromID(mPathId);
+    Player *p = ClosestPlayer();
+    mActionStep = 0;
+    if (p) {
+        src = (struct Vector3 *)&p->mPosX;
+        v = *src;
+        _ZN7PathPtrC1Ev(pathptr);
+        ((PathPtr *)pathptr)->FromID(mPathId);
 
-    indices[0] = mPathNodeIndex - 1;
-    if (mPathNodeIndex - 1 < 0)
-      indices[0] = mNumPathNodes - 1;
-    indices[1] = mPathNodeIndex + 1;
-    if (mPathNodeIndex + 1 >= mNumPathNodes)
-      indices[1] = 0;
+        indices[0] = mPathNodeIndex - 1;
+        if (mPathNodeIndex - 1 < 0)
+            indices[0] = mNumPathNodes - 1;
+        indices[1] = mPathNodeIndex + 1;
+        if (mPathNodeIndex + 1 >= mNumPathNodes)
+            indices[1] = 0;
 
-    for (i = 0; i < 2; i++)
-      ((PathPtr *)pathptr)->GetNode(*(::Vector3 *)&nodes[i], indices[i]);
+        for (i = 0; i < 2; i++)
+            ((PathPtr *)pathptr)->GetNode(*(::Vector3 *)&nodes[i], indices[i]);
 
-    mPathDir = 1;
-    d0 = Vec3_Dist(&v, &nodes[0]);
-    if (d0 > Vec3_Dist(&v, &nodes[1]))
-      mPathDir = -1;
-  }
+        mPathDir = 1;
+        d0 = Vec3_Dist(&v, &nodes[0]);
+        if (d0 > Vec3_Dist(&v, &nodes[1]))
+            mPathDir = -1;
+    }
 
-  mAnmModel.SetAnim((BCA_File *)gMipRunAnimationFile.filePtr, 0, 0x1000, 0);
-  return 1;
+    mAnmModel.SetAnim((BCA_File *)gMipRunAnimationFile.filePtr, 0, 0x1000, 0);
+    return 1;
 }
 
 // @symbol _ZN7daMip_c16StateStartleMainEv
@@ -1061,15 +1062,15 @@ int daMip_c::StateIdleMain()
 // @symbol _ZN7daMip_c13StateIdleInitEv
 int daMip_c::StateIdleInit()
 {
-  extern DaMipAnimationFilePtr data_ov085_021305c0;
+    extern DaMipAnimationFilePtr data_ov085_021305c0;
 
-  mAnmModel.SetAnim((BCA_File *)(*(void **)((char *)&data_ov085_021305c0 + 4)), 0, 0x1000, 0);
-  mIdlePosX = mPosX;
-  mIdlePosY = mPosY;
-  mIdlePosZ = mPosZ;
-  mActionStep = 0;
-  mStateTimer = 0;
-  return 1;
+    mAnmModel.SetAnim((BCA_File *)(*(void **)((char *)&data_ov085_021305c0 + 4)), 0, 0x1000, 0);
+    mIdlePosX = mPosX;
+    mIdlePosY = mPosY;
+    mIdlePosZ = mPosZ;
+    mActionStep = 0;
+    mStateTimer = 0;
+    return 1;
 }
 
 // @symbol _ZN7daMip_c8SetStateEPv
@@ -1233,7 +1234,7 @@ int daMip_c::Render()
         /* modelFile, then materials.
            +0x20 of each 0x30-byte material is still pad in BMD_Material;
            walking it as BMD_Material:: does not match this loop. */
-        int** base = (int**)&mAnmModel.data;
+        int **base = (int **)&mAnmModel.data;
         BMD_File *modelData = (BMD_File *)base[0];
         char* mat = (char*)base[1];
         for (unsigned int i = 0; i < modelData->numMaterials; i++) {
@@ -1420,8 +1421,7 @@ int daMip_c::Behavior()
         UpdateMatrixAndShadow();
         mCatchState = 2;
         SetState(&data_ov085_021306ac);
-        mAnmModel.SetAnim((BCA_File *)(*(void **)((char *)&data_ov085_021305c0 + 4)), 0, 0x1000,
-                           0);
+        mAnmModel.SetAnim((BCA_File *)(*(void **)((char *)&data_ov085_021305c0 + 4)), 0, 0x1000, 0);
         if (*(void**)&mTalkingPlayer == 0)
             *(void**)&mTalkingPlayer = ClosestPlayer();
         return 1;
@@ -1432,8 +1432,8 @@ int daMip_c::Behavior()
         if (p != (void*)&data_ov085_021306ac && p != (void*)&data_ov085_0213068c &&
             p != (void*)&data_ov085_021306bc && p != (void*)&data_ov085_021306dc) {
             SetState(&data_ov085_021306ac);
-            mAnmModel.SetAnim((BCA_File *)(*(void **)((char *)&data_ov085_021305c0 + 4)), 0,
-                               0x1000, 0);
+            mAnmModel.SetAnim((BCA_File *)(*(void **)((char *)&data_ov085_021305c0 + 4)), 0, 0x1000,
+                              0);
         }
         mHorzSpeed = 0;
     }
@@ -1620,7 +1620,7 @@ int daMip_c::InitResources()
         if (mAreaId == 3)
             mFlags = 0x8280;
     }
-    mMaterialColor = (mColorVariant << 1) + *(s32*)((char*)mAnmModel.data.materials + 0x20);
+    mMaterialColor = (mColorVariant << 1) + *(s32 *)((char *)mAnmModel.data.materials + 0x20);
     SetState(&data_ov085_021306cc);
     return 1;
 }

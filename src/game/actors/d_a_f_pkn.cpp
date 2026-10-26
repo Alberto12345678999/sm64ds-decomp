@@ -195,7 +195,7 @@ void daFPkn_c::SpawnDeathBurst()
 
     if (mAnmModel.file != data_ov084_02130e24.filePtr)
         return;
-    frame = (int)((unsigned)(mAnmModel.currFrame << 4) >> 16);   /* whole frames */
+    frame = (int)((unsigned)(mAnmModel.currFrame << 4) >> 16); /* whole frames */
     if (frame >= 0xa)
         return;
 
@@ -235,7 +235,7 @@ void daFPkn_c::UpdateClsnOffset()
     locals.acc[1] = 0;
     locals.acc[2] = 0;
     {
-        char* base = (char *)mAnmModel.data.bones;
+        char *base = (char *)mAnmModel.data.bones;
         int i;
         for (i = 0; i < 5; i++) {
             u8* p = data_ov084_02130294 + i;
@@ -421,10 +421,8 @@ void daFPkn_c::StateGrow()
         goto tail;  /* an early return here DIFFs */
     }
 
-    if (mAnmModel.WillHitFrame(0x10) ||
-        mAnmModel.WillHitFrame(0x20) ||
-        mAnmModel.WillHitFrame(0x34) ||
-        mAnmModel.WillHitFrame(0x4b)) {
+    if (mAnmModel.WillHitFrame(0x10) || mAnmModel.WillHitFrame(0x20) ||
+        mAnmModel.WillHitFrame(0x34) || mAnmModel.WillHitFrame(0x4b)) {
         func_0201267c(SND_GROW_BITE, &mCamSpacePos);
     }
 
@@ -478,7 +476,7 @@ void daFPkn_c::StateSpit()
             func_0201267c(SND_SPIT_END, &mCamSpacePos);
         mState = STATE_WAIT;
         mAnmModel.SetAnim((BCA_File *)(((SharedFilePtr *)data_ov084_02130e1c)->filePtr), 0, 0x1000,
-                           0);
+                          0);
     } else {
         if ((u16)mStateTimer < 0x3a) {
             targetAngle = mAngleY;

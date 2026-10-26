@@ -383,7 +383,7 @@ int daJango_c::InitResources()
     _ZN7PathPtrC1Ev(path2);
     ((PathPtr *)path2)->FromID(mPathId);
     ((PathPtr *)path2)->GetNode(*(Vector3 *)&mPathNodePosX, mPathNodeIndex);
-    mBlendAnmModel.speed = 0x1000;              /* 1.0x */
+    mBlendAnmModel.speed = 0x1000; /* 1.0x */
     mHeldActorID = 0;
 
     if (mCarriedItem == CARRIES_STAR) {
@@ -539,7 +539,9 @@ int daJango_c::Behavior()
    through the table instead of being resolved at compile time. */
 int daJango_c::Render()
 {
- Base *b = (Base *)&mBlendAnmModel; b->m(0); return 1;
+    Base *b = (Base *)&mBlendAnmModel;
+    b->m(0);
+    return 1;
 }
 
 // @symbol _ZN9daJango_c16OnPendingDestroyEv
@@ -590,7 +592,7 @@ void daJango_c::func_ov062_0211c6a8()
     Vec3_Asr(v, &mPosX, 3);
     Matrix4x3_FromTranslation(data_020a0e68, v[0], v[1], v[2]);
     Matrix4x3_ApplyInPlaceToRotationZXYExt(data_020a0e68, mAngleX, mAngleY, mAngleZ);
-    *(M48*)&mBlendAnmModel.mat4x3 = *(M48*)data_020a0e68;
+    *(M48 *)&mBlendAnmModel.mat4x3 = *(M48 *)data_020a0e68;
 
     if (mHeldActorID != 0)
     {

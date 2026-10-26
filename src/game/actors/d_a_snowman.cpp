@@ -720,8 +720,8 @@ int daSnowman_c::func_ov081_021250c8()
     if (this->mWithMeshClsn.IsOnGround()) {
         func_02012694(0xe5, &this->mCamSpacePosX);
         func_ov081_02125488(&data_ov081_02128e54);
-        this->mAnmModel.SetAnim((BCA_File *)gSnowmanJumpEdAnimationFile.filePtr, 0x40000000,
-                                 0x1000, 0);
+        this->mAnmModel.SetAnim((BCA_File *)gSnowmanJumpEdAnimationFile.filePtr, 0x40000000, 0x1000,
+                                0);
         return 1;
     }
 
@@ -782,7 +782,7 @@ int daSnowman_c::func_ov081_02125208()
             this->mVertSpeed = 0x3a000;
             this->mVertAccel = -0x4000;
             this->mAnmModel.SetAnim((BCA_File *)gSnowmanJumpStAnimationFile.filePtr, 0x40000000,
-                                     0x1000, 0);
+                                    0x1000, 0);
             func_02012694(0xdd, &this->mCamSpacePosX);
             func_ov081_02125488(&data_ov081_02128e74);
         }
@@ -859,7 +859,8 @@ void daSnowman_c::func_ov081_021254d8()
         this->mCapPos.z = 0;
         actor = dActor_c::FindWithID(this->mCapUniqueID);
         if (actor != 0) {
-            MulMat4x3Mat4x3(&this->mAnmModel.data.transforms[5], &this->mAnmModel.mat4x3, &this->mCapMatrix);
+            MulMat4x3Mat4x3(&this->mAnmModel.data.transforms[5], &this->mAnmModel.mat4x3,
+                            &this->mCapMatrix);
 
             this->mCapPos.x = data_020a0e68.m[9];
             this->mCapPos.y = data_020a0e68.m[10];
@@ -957,7 +958,8 @@ int daSnowman_c::Behavior()
         }
         return 1;
     }
-    if (UpdateKillByInvincibleChar(mWithMeshClsn, mAnmModel, 3)) return 1;
+    if (UpdateKillByInvincibleChar(mWithMeshClsn, mAnmModel, 3))
+        return 1;
     if (mDeathState != 0) {
         if (UpdateDeath(mWithMeshClsn) && mType == 2) {
             dActor_c::Spawn(kSnowmanId, kSpawnWatcher, mHomePos, 0, mAreaId, -1);

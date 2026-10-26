@@ -80,7 +80,7 @@ int daObjTbox_c::InitResources()
     dExtSimpleModel_c::LoadFile(data_ov002_0210da38);
     mAnmModel.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(data_ov064_0211c96c), 1, -1);
     mAnmModel.SetAnim((BCA_File *)dExtFrameCtrl_c::LoadFile(data_ov064_0211c964), 0x40000000,
-                       0x1000, 0);
+                      0x1000, 0);
     _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(
         &mCylinder, this, 0x96000, 0x96000, 0x200004, 0);
     UpdateModelTransform();

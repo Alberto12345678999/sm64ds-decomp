@@ -197,9 +197,9 @@ void daHanachan_c::StateDamageStartInit()
 {
     mStateTimer = 0;
     mAnmModels[0].SetAnim((BCA_File *)(((SharedFilePtr *)data_ov034_02113888[0])->filePtr),
-                           0x40000000, 0x1000, 0);
+                          0x40000000, 0x1000, 0);
     mAnmModels[1].SetAnim((BCA_File *)(((SharedFilePtr *)data_ov034_02113888[1])->filePtr),
-                           0x40000000, 0x1000, 0);
+                          0x40000000, 0x1000, 0);
 }
 
 /* DAMAGE_WAIT: wait out the timer, then DAMAGE_START. */
@@ -241,7 +241,7 @@ void daHanachan_c::StateDamageStopMain()
         int i;
         for (i = 0; i < 5; i++)
             mAnmModels[i].SetAnim((BCA_File *)(((SharedFilePtr *)data_ov034_02113860[i])->filePtr),
-                                   0, 0x1000, 0);
+                                  0, 0x1000, 0);
     }
 
     {
@@ -267,9 +267,9 @@ void daHanachan_c::StateDamageStopInit()
 {
     mStateTimer = 0;
     mAnmModels[0].SetAnim((BCA_File *)(((SharedFilePtr *)data_ov034_0211389c[0])->filePtr),
-                           0x40000000, 0x1000, 0);
+                          0x40000000, 0x1000, 0);
     mAnmModels[1].SetAnim((BCA_File *)(((SharedFilePtr *)data_ov034_0211389c[1])->filePtr),
-                           0x40000000, 0x1000, 0);
+                          0x40000000, 0x1000, 0);
 }
 
 /* DEAD: poof one segment every five frames while the scales settle, then spawn the star and go to MOVE_START. */
@@ -359,7 +359,7 @@ void daHanachan_c::StateDamageTalkInit()
     int i;
     for (i = 0; i < 5; i++)
         mAnmModels[i].SetAnim((BCA_File *)(((SharedFilePtr *)data_ov034_02113860[i])->filePtr), 0,
-                               0x1000, 0);
+                              0x1000, 0);
 }
 
 /* DAMAGE: stop, face the player and start the hurt message, then DAMAGETALK. */
@@ -559,9 +559,9 @@ void daHanachan_c::StateMoveStartInit()
         mdCc_cs1[i].flags &= ~4;
     mStateTimer = 0;
     mAnmModels[0].SetAnim((BCA_File *)(((SharedFilePtr *)data_ov034_02113888[0])->filePtr),
-                           0x40000000, 0x1000, 0);
+                          0x40000000, 0x1000, 0);
     mAnmModels[1].SetAnim((BCA_File *)(((SharedFilePtr *)data_ov034_02113888[1])->filePtr),
-                           0x40000000, 0x1000, 0);
+                          0x40000000, 0x1000, 0);
 }
 
 #pragma opt_strength_reduction on
@@ -577,9 +577,9 @@ void daHanachan_c::StateMoveStopMain()
 
     if (mStateTimer == 0) {
         mAnmModels[0].SetAnim((BCA_File *)(((SharedFilePtr *)data_ov034_0211389c[0])->filePtr),
-                               0x40000000, 0x1000, 0);
+                              0x40000000, 0x1000, 0);
         mAnmModels[1].SetAnim((BCA_File *)(((SharedFilePtr *)data_ov034_0211389c[1])->filePtr),
-                               0x40000000, 0x1000, 0);
+                              0x40000000, 0x1000, 0);
     }
 
     anim = &mAnmModels[0];
@@ -595,7 +595,7 @@ void daHanachan_c::StateMoveStopMain()
         int i;
         for (i = 0; i < 5; i++)
             mAnmModels[i].SetAnim((BCA_File *)(((SharedFilePtr *)data_ov034_02113860[i])->filePtr),
-                                   0, 0x1000, 0);
+                                  0, 0x1000, 0);
     }
 
     player = mPlayer;
@@ -1246,7 +1246,7 @@ int daHanachan_c::InitResources()
     mVertAccel = -0x1000;
     mTerminalVelocity = -0x64000;
     mAnmModels[0].SetAnim((BCA_File *)(((SharedFilePtr *)data_ov034_02113874[0])->filePtr), 0,
-                           0x1000, 0xc);
+                          0x1000, 0xc);
     anim = &mAnmModels[0];
     anim = anim + 1;
     j = 1;

@@ -78,7 +78,7 @@ struct daBook_c : dEnemyBase_c {
     s32                          mUniformScale;         /* 0x44c */
     /* Nonzero once the animated model is in use: Render draws mAnmModel
        instead of mModel, and func_ov020_0211216c builds the matrix in it. */
-    u8                           mUsesAnmModel;         /* 0x450 */
+    u8 mUsesAnmModel; /* 0x450 */
     u8  pad_451[0x3];
 
     /* --- vtable --- */
