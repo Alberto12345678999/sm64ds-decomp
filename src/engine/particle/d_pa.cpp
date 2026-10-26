@@ -39,8 +39,7 @@ extern Matrix4x3 data_0209b41c;
 extern void MulVec3Mat4x3(
     Vector3 *vector, Matrix4x3 *matrix, Vector3 *result);
 extern s32 data_0209f32c;
-extern u32 _ZN8Particle6System9NewRippleE5Fix12IiES2_S2_(
-    Fix12i x, Fix12i y, Fix12i z);
+extern u32 d_paNewRippleHold(Fix12i x, Fix12i y, Fix12i z);
 extern void func_0204dab4(void* system, void* records, int count,
                                 u32 mask, void* callback);
 /* This initializer's 0xc-byte layout is evidenced, but its original class
@@ -128,8 +127,7 @@ int dPa_c::level_c::splashCallback_c::OnUpdate(
 
         if (particle->velocityAsr3.y < 0 && (y << 3) < data_0209f32c) {
             particle->age = particle->lifetime;
-            _ZN8Particle6System9NewRippleE5Fix12IiES2_S2_(
-                x << 3, data_0209f32c + 0x3000, z << 3);
+            Particle::System::NewRipple(x << 3, data_0209f32c + 0x3000, z << 3);
         }
         particle = particle->next;
     }
@@ -150,8 +148,7 @@ int dPa_c::level_c::bubbleCallback_c::OnUpdate(
 
         if ((y << 3) > data_0209f32c) {
             particle->age = particle->lifetime;
-            _ZN8Particle6System9NewRippleE5Fix12IiES2_S2_(
-                x << 3, data_0209f32c + 0x3000, z << 3);
+            Particle::System::NewRipple(x << 3, data_0209f32c + 0x3000, z << 3);
         }
         particle = particle->next;
     }
@@ -300,8 +297,7 @@ int dPa_c::level_c::checkWaterRippleCallback_c::OnUpdate(
 
         if (particle->velocityAsr3.y < 0 && (y << 3) < data_0209f32c) {
             particle->age = particle->lifetime;
-            _ZN8Particle6System9NewRippleE5Fix12IiES2_S2_(
-                x << 3, data_0209f32c + 0x3000, z << 3);
+            Particle::System::NewRipple(x << 3, data_0209f32c + 0x3000, z << 3);
         }
         particle = particle->next;
     }

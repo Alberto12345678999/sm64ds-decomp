@@ -130,8 +130,8 @@ void func_0200f760(void *actor, void *clsn);
    See the leftover list. */
 int d_a_eyknNewHold(u32 uniqueID, u32 effectID, int x, int y, int z, const void *dir,
                     void *callback);
-u32 _ZN8Particle6System17NewUnkCallback818Ejj5Fix12IiES2_S2_PK11Vector3_16f(
-    u32 uniqueID, u32 effectID, int x, int y, int z, const Vector3_16f *dir);
+u32 d_a_eyknNewUnkCallback818Hold(u32 uniqueID, u32 effectID, int x, int y, int z,
+                                  const Vector3_16f *dir);
 void d_a_eyknNewSimpleHold(u32 effectID, int x, int y, int z);
 int _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(Player *player, void *source, u32 damage, int speed,
                                             u8 a, u8 b, u8 c);
@@ -355,7 +355,8 @@ idCheck:
     if (mdCcAcPos_c.hitFlags & kKillHit) {
         mParticleID0 =
             (u32)Particle::System::New(mParticleID0, kDeathPtcl0, mPosX, mPosY, mPosZ, 0, 0);
-        mParticleID1 = _ZN8Particle6System17NewUnkCallback818Ejj5Fix12IiES2_S2_PK11Vector3_16f(mParticleID1, kDeathPtcl1, mPosX, mPosY, mPosZ, 0);
+        mParticleID1 =
+            Particle::System::NewUnkCallback818(mParticleID1, kDeathPtcl1, mPosX, mPosY, mPosZ, 0);
         SetState(2);
         return;
     }
@@ -403,8 +404,8 @@ int daEykn_c::St_Die_Main()
         Particle::System *p0;
         Particle::System *p1;
         mParticleID0 = (u32)Particle::System::New(id0, kDeathPtcl0, mPosX, mPosY, mPosZ, 0, 0);
-        mParticleID1 = _ZN8Particle6System17NewUnkCallback818Ejj5Fix12IiES2_S2_PK11Vector3_16f(
-            mParticleID1, kDeathPtcl1, mPosX, mPosY, mPosZ, 0);
+        mParticleID1 =
+            Particle::System::NewUnkCallback818(mParticleID1, kDeathPtcl1, mPosX, mPosY, mPosZ, 0);
         p0 = Particle::System::FromUniqueID(mParticleID0);
         p1 = Particle::System::FromUniqueID(mParticleID1);
         if (p0 != 0) {

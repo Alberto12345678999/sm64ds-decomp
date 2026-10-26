@@ -1,6 +1,7 @@
 #include "types.h"
 #include "nitro/fx/fx.h"
 #include "Ov007MenuState.h"
+#include "Ov007Work.h"
 extern u8 data_ov007_0210342c[];
 extern short data_02082214[];
 
@@ -84,28 +85,9 @@ typedef struct Ov007Figure {
     Ov007Model *model; /* 0x04: func_ov007_020bc6d4 */
 } Ov007Figure;
 
-/* data_ov007_0210342c: the overlay's manager; names as in
- * func_ov007_020b1cf0, func_ov007_020b1718 and func_ov007_020b2370, only the
- * slots this file reads. +0xec (0 or 1; func_ov007_020be850 returns
- * altFigure when it is 1) stays raw, as in those files: no role to name. */
-typedef struct Ov007Work {
-    char pad_00[4];
-    Ov007MenuState *states[3]; /* 0x04: func_ov007_020c9388 */
-    char pad_10[0x30];
-    /* 0x40: func_ov007_020bce70 requests palette n on it */
-    Ov007MenuState *paletteState;
-    char pad_44[0xb0];
-    Ov007Model *model; /* 0xf4: func_ov007_020b2998 stores func_ov007_020b2bd4's model */
-    char pad_f8[0xc];
-    Ov007Figure *altFigure; /* 0x104: func_ov007_020be850 returns it when +0xec is 1 */
-    char pad_108[0xc];
-    Ov007ItemView *itemViews[0x18]; /* 0x114: func_ov007_020b693c, one per func_ov007_020b4c04 */
-} Ov007Work;
-
 typedef char Ov007BgLayer_size_must_be_0x30[sizeof(Ov007BgLayer) == 0x30 ? 1 : -1];
 typedef char Ov007LayerSlot_size_must_be_0xc[sizeof(Ov007LayerSlot) == 0xc ? 1 : -1];
 typedef char Ov007Item_size_must_be_0x28[sizeof(Ov007Item) == 0x28 ? 1 : -1];
-typedef char Ov007Work_size_must_be_0x174[sizeof(Ov007Work) == 0x174 ? 1 : -1];
 
 /* The extern keeps this file's u8[] spelling; the manager pointer is stored there. */
 #define WORK (*(Ov007Work **)data_ov007_0210342c)

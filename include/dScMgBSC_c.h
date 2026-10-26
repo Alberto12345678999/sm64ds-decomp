@@ -18,10 +18,10 @@
  * Math_Function_0203b14c as coordinates (0x02124fd8), and Render reads
  * them back with `>> 12` for the dMeter_c -- 1:4096 fixed-point screen
  * positions, spelled s32 like the camera fields in
- * dScMgSingle3DBase_c.h. CardPos declares a constructor and destructor
- * that are never defined: the ROM builds and destroys the pair through
- * arm9's shared empty callbacks func_0203d738 and NullDestructor_0203d47c,
- * and this TU's manifest maps the two coined spellings onto them.
+ * dScMgSingle3DBase_c.h. Each card is a Vector2 (include/Vector2.h): the
+ * ROM builds and destroys the pair through that type's arm9 structors,
+ * func_0203d738 and NullDestructor_0203d47c, and this TU's manifest
+ * discards its own inline copies of them as duplicates of those bodies.
  *
  * OWN TAIL, 0x51b8..0x51d0, all named: mState is the state number that
  * indexes the member-pointer state table sBSCStateTable (filled at
@@ -44,7 +44,7 @@
  * mechanism as dScMgSingle3DBase_c one level up -- see that header's note.
  *
  * The destructor's body is empty: the compiler tears down mCardPos
- * (__cxa_vec_cleanup with CardPos's destructor) and then mDealer, the
+ * (__cxa_vec_cleanup with Vector2's destructor) and then mDealer, the
  * cartridge's order. The factory is `new dScMgBSC_c`, which builds them in
  * declaration order. dScMgBase_c, two levels up, provides operator new and
  * delete. */
@@ -52,6 +52,7 @@
 #define DSCMGBSC_C_H
 #include "dScMgSingle3DBase_c.h"
 #include "Dealer.h"
+#include "Vector2.h"
 
 struct dScMgBSC_c : dScMgSingle3DBase_c {
     virtual ~dScMgBSC_c() {}
@@ -120,19 +121,8 @@ struct dScMgBSC_c : dScMgSingle3DBase_c {
     void StateReturnCards();   /* mState 11     -- ov006 0x02124a08 */
     void StateDone();          /* mState 12, 13 -- ov006 0x02124a04 */
 
-    /* A card's fixed-point screen position, 1:4096 -- the scale Render
-       takes back with `>> 12`. The constructor and destructor are declared
-       only; see the file banner. */
-    struct CardPos {
-        CardPos();
-        ~CardPos();
-
-        s32 x; /* 0x00 */
-        s32 y; /* 0x04 */
-    };
-
     Dealer mDealer;      /* 0x4f38 */
-    CardPos mCardPos[2]; /* 0x51a8 */
+    Vector2 mCardPos[2]; /* 0x51a8 -- 1:4096 screen positions, see the banner */
     s32 mState;          /* 0x51b8 -- index into sBSCStateTable */
     s32 mStateTimer;     /* 0x51bc */
     s32 mChosenCard;     /* 0x51c0 */
@@ -146,7 +136,6 @@ struct dScMgBSC_c : dScMgSingle3DBase_c {
 
 #ifndef SM64DS_PLATFORM_PC
 /* ROM layout under mwccarm; host ABI divergence is tracked separately. */
-typedef char dScMgBSC_CardPos_size_must_be_0x8[sizeof(dScMgBSC_c::CardPos) == 0x8 ? 1 : -1];
 typedef char dScMgBSC_c_size_must_be_0x51d0[sizeof(dScMgBSC_c) == 0x51d0 ? 1 : -1];
 #endif
 

@@ -5,7 +5,7 @@
  * the 0x32-element array at this+0xbe94, and last the factory
  * dScMgSnowball_c_classInit (0x0212a520).
  * The constructor (0x021295ac) and the 18 functions after it were separate
- * one-function files (dScMgSnowball_c_Construct through Bit_InitAll).
+ * one-function files (the constructor through Bit_InitAll).
  *
  * _ZTS15dScMgSnowball_c 0x0213ffdc. _ZTI15dScMgSnowball_c 0x0213ffd0.
  * _ZTV15dScMgSnowball_c 0x0214000c. The destructor is the key function:
@@ -30,13 +30,9 @@
 //   0x10 -> 0x28, v leaves sp+0) under every alias shape tried, so it keeps
 //   its char* parameter and C linkage (caller: Behavior's per-element
 //   dispatch in this TU).
-// - SnowSpray_ElemDtor (empty element destructor) and SnowSpray_ElemCtor
-//   (empty element constructor) stay free: they are ctor/dtor slots in the
-//   __cxa_vec_ctor call for the mSprays records, not dispatch
-//   targets on the scene.
-// - dScMgSnowball_c_Construct stays free: it is the C2 construction body called by
-//   dScMgSnowball_c_classInit, below, after allocation;
-//   writing it as a real ctor changes codegen.
+// - dScMgSnowball_c::Vec2, the collision ring's hit pair, stays its own nested
+//   type with a destructor and no constructor (see the header); it was not
+//   swapped for Vector2 in the pass that typed mArray1/mArray2.
 // - The raw-pointer puns (the AT()/ATS()/ATI() launders) are load-bearing: the
 //   0xa000..0xc000 field offsets exceed the +/-0xfff store immediate, so the
 //   compiler's own pointer arithmetic has to stand in for them. Sites
@@ -198,24 +194,19 @@ extern u8 data_0209d454;
 }
 
 // @symbol _ZN15dScMgSnowball_cD1Ev
-/* Destroys mSprays, mArray2 and mArray1, in reverse of construction. The
-   ROM's fourth call, ~dExtSimpleModel_c on mModel, is not written: mModel is declared
-   before the arrays, so the compiler destroys it last, where the ROM has it.
-   The rest is the inlined dScMgSingle3DBase_c destructor. */
-dScMgSnowball_c::~dScMgSnowball_c() {
-    __cxa_vec_cleanup(mSprays, 0x20, 0x24, (void *)SnowSpray_ElemDtor);
-    __cxa_vec_cleanup(mArray2, 0x80, 8, (void *)NullDestructor_0203d47c);
-    __cxa_vec_cleanup(mArray1, 0x80, 8, (void *)NullDestructor_0203d47c);
-}
+/* Empty: every call in the ROM's body is compiler-generated. The members go
+   in reverse declaration order -- __cxa_vec_cleanup on mSprays (with
+   SnowSpray's destructor), mArray2 and mArray1 (with Vector2's,
+   NullDestructor_0203d47c), then ~dExtSimpleModel_c on mModel -- and the rest
+   is the inlined dScMgSingle3DBase_c destructor. */
+dScMgSnowball_c::~dScMgSnowball_c() {}
 
 // @symbol _ZN15dScMgSnowball_cD0Ev
 /* The deleting destructor (D0) has no source of its own: the compiler emits
    it from the definition above. */
 
-// @symbol SnowSpray_ElemDtor
-extern "C" {
-void SnowSpray_ElemDtor(void) {}
-}
+// @symbol _ZN9SnowSprayD1Ev
+/* SnowSpray's empty inline destructor (dScMgSnowball_c.h), emitted here. */
 
 // @symbol _ZN15dScMgSnowball_c17SnowSpray_DrawAllEv
 void dScMgSnowball_c::SnowSpray_DrawAll() {
@@ -383,23 +374,23 @@ int dScMgSnowball_c::HitsBreakable(int *point) {
             int dx, dy;
             /* mArray1 member spellings here grow the function by 8 bytes, so
                these reads keep `prop + offset` */
-            if (point[0] >= *(int *)(prop + SNOW_OFF(mArray1[0][0])) + 0x10000)
+            if (point[0] >= *(int *)(prop + SNOW_OFF(mArray1[0].x)) + 0x10000)
                 continue;
-            if (point[0] < *(int *)(prop + SNOW_OFF(mArray1[0][0])) - 0x10000)
+            if (point[0] < *(int *)(prop + SNOW_OFF(mArray1[0].x)) - 0x10000)
                 continue;
-            if (point[1] >= *(int *)(prop + SNOW_OFF(mArray1[0][1])) + 0x8000)
+            if (point[1] >= *(int *)(prop + SNOW_OFF(mArray1[0].y)) + 0x8000)
                 continue;
-            if (point[1] < *(int *)(prop + SNOW_OFF(mArray1[0][1])) - 0x8000)
+            if (point[1] < *(int *)(prop + SNOW_OFF(mArray1[0].y)) - 0x8000)
                 continue;
-            dy = *(int *)(prop + SNOW_OFF(mArray1[0][1])) - point[1];
-            dx = *(int *)(prop + SNOW_OFF(mArray1[0][0])) - point[0];
+            dy = *(int *)(prop + SNOW_OFF(mArray1[0].y)) - point[1];
+            dx = *(int *)(prop + SNOW_OFF(mArray1[0].x)) - point[0];
             if (FX_MUL(dx, dx) + FX_MUL(dy, dy) / 4 > 0x100000)
                 continue;
             ((dScMgSnowball_c *)(scene + i))->mArray1Hit[0] = 1;
             if (mArray1Kind[i] == 1) {
                 mSoundPending = 1;
-                mHitSoundX = ((dScMgSnowball_c *)prop)->mArray1[0][0];
-                mHitSoundY = ((dScMgSnowball_c *)prop)->mArray1[0][1];
+                mHitSoundX = ((dScMgSnowball_c *)prop)->mArray1[0].x;
+                mHitSoundY = ((dScMgSnowball_c *)prop)->mArray1[0].y;
             }
             return 1;
         }
@@ -1199,8 +1190,8 @@ void dScMgSnowball_c::BuildCourse() {
                         cooldown = 0x10;
                         for (i = 0; i < 0x80; i++) {
                             if (self->mArray1Active[i] == 0) {
-                                self->mArray1[i][0] = (lane * 16 + 8) << 12;
-                                self->mArray1[i][1] = (row * 16 + 8) << 12;
+                                self->mArray1[i].x = (lane * 16 + 8) << 12;
+                                self->mArray1[i].y = (row * 16 + 8) << 12;
                                 self->mArray1Active[i] = 1;
                                 break;
                             }
@@ -1220,8 +1211,8 @@ void dScMgSnowball_c::BuildCourse() {
                         cooldown = 0x10;
                         for (i = 0; i < 0x80; i++) {
                             if (self->mArray1Active[i] == 0) {
-                                self->mArray1[i][0] = (wideLane * 16 + 8) << 12;
-                                self->mArray1[i][1] = (row * 16 + 8) << 12;
+                                self->mArray1[i].x = (wideLane * 16 + 8) << 12;
+                                self->mArray1[i].y = (row * 16 + 8) << 12;
                                 self->mArray1Active[i] = 1;
                                 break;
                             }
@@ -1240,8 +1231,8 @@ void dScMgSnowball_c::BuildCourse() {
                         cooldown = 0x10;
                         for (i = 0; i < 0x80; i++) {
                             if (self->mArray1Active[i] == 0) {
-                                self->mArray1[i][0] = (lane * 16 + 8) << 12;
-                                self->mArray1[i][1] = (row * 16 + 8) << 12;
+                                self->mArray1[i].x = (lane * 16 + 8) << 12;
+                                self->mArray1[i].y = (row * 16 + 8) << 12;
                                 self->mArray1Active[i] = 1;
                                 break;
                             }
@@ -1284,8 +1275,8 @@ void dScMgSnowball_c::BuildCourse() {
                     self->mTileMap[col][propRow] = (u16)(roll + 0x1d);
                 } else if (roll == 4) {
                     if (slot < 0x80) {
-                        self->mArray2[slot][0] = (col * 16 + 8) << 12;
-                        self->mArray2[slot][1] = (propRow * 16 + 8) << 12;
+                        self->mArray2[slot].x = (col * 16 + 8) << 12;
+                        self->mArray2[slot].y = (propRow * 16 + 8) << 12;
                         self->mArray2Active[slot] = 1;
                         self->mArray2Kind[slot] =
                             (((u32)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff) * 4 >> 15;
@@ -1458,18 +1449,18 @@ s32 dScMgSnowball_c::Render() {
         char *p = c + i1;
         if (((dScMgSnowball_c *)p)->mArray1Active[0] == 1) {
             int t6 = self->mScrollY;
-            int t5 = *(int *)((long long)(int)&((dScMgSnowball_c *)(c + i1 * 8))->mArray1[0][1]);
+            int t5 = *(int *)((long long)(int)&((dScMgSnowball_c *)(c + i1 * 8))->mArray1[0].y);
             if (t5 >= t6 - 0x20000 && t5 < t6 + 0x1a0000 + (Mg_GetTopScreenYOffset() << 0xc)) {
                 if (mArray1Kind[i1] == 1) {
                     int cnt = self->mAnimCounter;
                     int idx = (cnt / 4) & 7;
                     if (((dScMgSnowball_c *)p)->mArray1Hit[0] == 1)
                         idx += 8;
-                    int a1 = (self->mArray1[i1][0] - self->mScrollX) >> 0xc;
+                    int a1 = (self->mArray1[i1].x - self->mScrollX) >> 0xc;
                     int a2 = ((t5 - t6) >> 0xc) - 0x110;
                     Mg_RenderSpriteBoth(sSnowballBreakableAnimSprites[idx], a1, a2, -1, -1);
                 } else {
-                    int a1 = (self->mArray1[i1][0] - self->mScrollX) >> 0xc;
+                    int a1 = (self->mArray1[i1].x - self->mScrollX) >> 0xc;
                     int a2 = ((t5 - t6) >> 0xc) - 0x110;
                     Mg_RenderSpriteBoth(sSnowballBreakableSprite, a1, a2, -1, 2);
                 }
@@ -1480,19 +1471,19 @@ s32 dScMgSnowball_c::Render() {
     for (int i2 = 0; i2 < 0x80; i2++) {
         if (self->mArray2Active[i2] == 1) {
             int t7 = self->mScrollY;
-            int t6 = *(int *)((long long)(int)&((dScMgSnowball_c *)(c + i2 * 8))->mArray2[0][1]);
+            int t6 = *(int *)((long long)(int)&((dScMgSnowball_c *)(c + i2 * 8))->mArray2[0].y);
             if (t6 >= t7 - 0x40000 && t6 < t7 + 0x1c0000 + (Mg_GetTopScreenYOffset() << 0xc)) {
                 switch (mArray2Kind[i2]) {
                 case 0:
                 case 1:
                 case 2: {
-                    int a1 = (self->mArray2[i2][0] - self->mScrollX) >> 0xc;
+                    int a1 = (self->mArray2[i2].x - self->mScrollX) >> 0xc;
                     int a2 = ((t6 - t7) >> 0xc) - 0x110;
                     Mg_RenderSpriteBoth(sSnowballObstacleSprite, a1, a2, -1, 1);
                     break;
                 }
                 case 3: {
-                    int v = self->mArray2[i2][0];
+                    int v = self->mArray2[i2].x;
                     int sel = (v < 0x80000) ? 1 : 0;
                     int a1 = (v - self->mScrollX) >> 0xc;
                     int a2 = ((t6 - t7) >> 0xc) - 0x110;
@@ -2021,43 +2012,17 @@ s32 dScMgSnowball_c::InitResources() {
     return 1;
 }
 
-// @symbol dScMgSnowball_c_Construct
-/* The constructor body of dScMgSnowball_c, called from dScMgSnowball_c_classInit
-   on the freshly allocated 0xc59c-byte object. Base C2, the two vptr stores
-   (dScMgSingle3DBase_c's, then this class's own, which lands on the cartridge's
-   _ZTV15dScMgSnowball_c), the tracker at 0x471c, mModel, the `= 0` at 0xabf4
-   and the three element arrays, constructed in the order ~dScMgSnowball_c
-   unwinds them. */
-extern "C" {
-void *_ZN11dScMgBase_cC2Ev(void *p);
-void _ZN8Particle10SysTrackerC1Ev(void *p);
-void *_ZN17dExtSimpleModel_cC1Ev(void *p);
-void __cxa_vec_ctor(void *arr, int count, int size, void *ctor, void *dtor);
-void func_0203d738(void *);
-void SnowSpray_ElemCtor(void);
-}
-extern void *_ZTV19dScMgSingle3DBase_c;
-extern void *_ZTV15dScMgSnowball_c[];
-extern "C" void *dScMgSnowball_c_Construct(char *t) {
-    _ZN11dScMgBase_cC2Ev(t);
-    *(void **)t = &_ZTV19dScMgSingle3DBase_c;
-    _ZN8Particle10SysTrackerC1Ev(&((dScMgSnowball_c *)t)->mSysTracker);
-    *(void **)t = &_ZTV15dScMgSnowball_c[2];
-    _ZN17dExtSimpleModel_cC1Ev(&((dScMgSnowball_c *)t)->mModel);
-    ((dScMgSnowball_c *)t)->mBallBmd = 0;
-    __cxa_vec_ctor(((dScMgSnowball_c *)t)->mArray1, 0x80, 8, (void *)func_0203d738,
-                   (void *)NullDestructor_0203d47c);
-    __cxa_vec_ctor(((dScMgSnowball_c *)t)->mArray2, 0x80, 8, (void *)func_0203d738,
-                   (void *)NullDestructor_0203d47c);
-    __cxa_vec_ctor(((dScMgSnowball_c *)t)->mSprays, 0x20, 0x24, (void *)SnowSpray_ElemCtor,
-                   (void *)SnowSpray_ElemDtor);
-    return t;
-}
+// @symbol _ZN15dScMgSnowball_cC1Ev
+/* Everything but the `= 0` at 0xabf4 is compiler-generated: the base C2, the
+   two vptr stores (dScMgSingle3DBase_c's, then this class's own, which lands
+   on the cartridge's _ZTV15dScMgSnowball_c), the tracker at 0x471c, mModel,
+   and the three element arrays through __cxa_vec_ctor (mArray1 and mArray2
+   with Vector2's func_0203d738 / NullDestructor_0203d47c, mSprays with
+   SnowSpray's pair), in the order ~dScMgSnowball_c unwinds them. */
+dScMgSnowball_c::dScMgSnowball_c() : mBallBmd(0) {}
 
-// @symbol SnowSpray_ElemCtor
-extern "C" {
-void SnowSpray_ElemCtor(void) {}
-}
+// @symbol _ZN9SnowSprayC1Ev
+/* SnowSpray's empty inline constructor (dScMgSnowball_c.h), emitted here. */
 
 // @symbol _ZN15dScMgSnowball_c11Bit_DrawAllEv
 extern "C" {
@@ -2646,14 +2611,8 @@ Entry_02129d94 sSnowballBitStateTable[3] = {
  * allocation size, vtable identity, and the MG_SNOWBALL registry profile;
  * later EAD lineage supplies classInit. Exact original spelling is not
  * preserved. Historical alias: MgSnowballSlalom_Spawn.
- * The allocation and the construction are two steps here, not `new`: the
- * constructor body is the free dScMgSnowball_c_Construct above (see the banner),
- * so the factory calls the class's operator new itself and hands the
- * storage over. */
+ * `new` goes through fBase_c's operator new for the 0xc59c bytes and runs
+ * the real constructor above on them. */
 extern "C" dScMgSnowball_c *dScMgSnowball_c_classInit(void) {
-    void *p = dScMgSnowball_c::operator new(sizeof(dScMgSnowball_c));
-    if (p) {
-        return (dScMgSnowball_c *)dScMgSnowball_c_Construct((char *)p);
-    }
-    return (dScMgSnowball_c *)p;
+    return new dScMgSnowball_c;
 }

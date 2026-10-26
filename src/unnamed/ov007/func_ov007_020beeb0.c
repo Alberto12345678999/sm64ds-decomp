@@ -3,6 +3,7 @@
 #include "Ov007MenuState.h"
 #include "Ov007Sprite.h"
 #include "Ov007Touch.h"
+#include "Ov007Work.h"
 #pragma opt_strength_reduction off
 
 extern int func_ov007_020c1da0(int i);
@@ -42,22 +43,6 @@ typedef struct Ov007Light {
     char pad_00[0x22];
     u16 color; /* 0x22 */
 } Ov007Light;
-
-/* data_ov007_0210342c: the overlay's manager. No class or header names it;
- * only the slots this file touches are spelled. */
-typedef struct Ov007Work {
-    char pad_00[4];
-    Ov007MenuState *states[3]; /* 0x04: func_ov007_020c9388 */
-    char pad_10[0x20];
-    void *cameras[2];             /* 0x30: func_ov007_020c023c */
-    Ov007Light *lights[2];        /* 0x38: func_ov007_020c241c(0/1) */
-    Ov007MenuState *paletteState; /* 0x40: func_ov007_020bce70 requests palette n on
-                                   * it and blends over its stateTicks */
-    char pad_44[0xc];
-    Ov007Touch *touch; /* 0x50: func_ov007_020c2068 */
-    char pad_54[0xc0];
-    Ov007ItemView *itemViews[0x18]; /* 0x114: one per func_ov007_020b4c04 */
-} Ov007Work;
 
 /* The 0x34-byte mesh material func_ov007_020bee14 hands to
  * func_ov007_020ca5f0; names as in that file, only the slots this file

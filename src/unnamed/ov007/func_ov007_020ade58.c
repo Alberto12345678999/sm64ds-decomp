@@ -1,4 +1,5 @@
 #include "types.h"
+#include "Ov007Work.h"
 extern char *data_ov007_0210342c[];
 extern u8 data_ov007_020ccbc4[];
 extern u8 data_ov007_020ccb7d[];
@@ -63,12 +64,6 @@ typedef struct Ov007Display {
      * array of 0x10-byte animations */
     char **spriteBanks;
 } Ov007Display;
-
-/* data_ov007_0210342c: the overlay's manager; only the slot this file reads. */
-typedef struct Ov007Work {
-    char pad_00[0x74];
-    Ov007Display *display; /* 0x74: func_ov007_020b6d40 stores func_ov007_020b7594's record */
-} Ov007Work;
 
 typedef char Ov007OamNode_head_must_be_at_0x38[(int)&((Ov007OamNode *)0)->head == 0x38 ? 1 : -1];
 typedef char Ov007Display_size_must_be_0x40[sizeof(Ov007Display) == 0x40 ? 1 : -1];

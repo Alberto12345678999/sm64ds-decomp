@@ -1,4 +1,5 @@
 #include "types.h"
+#include "Ov007Work.h"
 
 /* The 0xd8-byte camera func_ov007_020c023c builds; names as in
  * func_ov007_020c0128, only the slots this file touches. */
@@ -17,13 +18,6 @@ typedef struct Ov007Camera {
 } Ov007Camera;
 
 typedef char Ov007Camera_fovy_must_be_at_0xd4[(int)&((Ov007Camera *)0)->fovy == 0xd4 ? 1 : -1];
-
-/* data_ov007_0210342c: the overlay's manager; names as in
- * func_ov007_020b1fa4, only its cameras here. */
-typedef struct Ov007Work {
-    char pad_00[0x30];
-    Ov007Camera *cameras[2]; /* 0x30: func_ov007_020c023c */
-} Ov007Work;
 
 extern char* data_ov007_0210342c;
 extern void func_ov007_020c0128(char* c);

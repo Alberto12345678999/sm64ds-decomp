@@ -1,6 +1,7 @@
 #include "types.h"
 #include "Ov007MenuState.h"
 #include "Ov007Sprite.h"
+#include "Ov007Work.h"
 extern u8 data_ov007_0210342c[];
 
 /* The 10-byte layout row func_ov007_020aea6c's item points at; names as in
@@ -29,16 +30,6 @@ typedef struct Ov007ItemView {
     Ov007Item *item;     /* 0x00 */
     Ov007Sprite *sprite; /* 0x04: func_ov007_020c44e4 */
 } Ov007ItemView;
-
-/* data_ov007_0210342c: the overlay's manager; names as in
- * func_ov007_020b1718, only the slots this file reads. +0xf0 stays raw: no
- * reader names it. */
-typedef struct Ov007Work {
-    char pad_00[4];
-    Ov007MenuState *states[3]; /* 0x04: func_ov007_020c9388 */
-    char pad_10[0x10];
-    int transitionMode; /* 0x20: func_ov007_020b1cf0 sets 1 for a stylus tap, 0 for a button */
-} Ov007Work;
 
 typedef char Ov007Work_transitionMode_must_be_at_0x20[(int)&((Ov007Work *)0)->transitionMode == 0x20
                                                           ? 1

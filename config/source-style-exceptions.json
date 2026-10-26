@@ -1080,6 +1080,182 @@
       "count": 2,
       "reason": "sTrmpLines is a four-element TrmpLine array that the C static initializer __sinit_ov006_0212fc7c builds with __cxa_vec_ctor and registers TrmpLine_CleanupAll to tear down; neither function is a C++ array definition yet, so both hand TrmpLine's constructor and destructor to the array helpers by address. C++ cannot take a constructor's or destructor's address, so the C1/D1 renamed from TrmpLine_Reset/TrmpLine_Destroy when the class got its real constructor and destructor in unit020cd744.cpp are named by their linker spelling. Follow-up: define sTrmpLines as a real `TrmpLine sTrmpLines[4]` in the TU whose __sinit this is, which retires both hand-built helpers. This file is C, so a mangled linker name is its only spelling.",
       "evidence": "ov006 0x020d100c (_ZN8TrmpLineC1Ev) and 0x020d1008 (_ZN8TrmpLineD1Ev) in config/arm9/overlays/ov006/symbols.txt; ov006/unit020cd744 59/59 TEXT-VERIFIED; __sinit_ov006_0212fc7c match.py MATCH at 0x0212fc7c size 0xcc."
+    },
+    {
+      "path": "src/unnamed/arm9/0201/func_02018c00.c",
+      "rule": "raw-offset",
+      "match": "(int*)(self+0x20",
+      "count": 1,
+      "reason": "func_02018cbc moved here verbatim from its own shard; the offset is carried unchanged because no struct for that object exists yet. Follow-up: replace with the field once the struct is reconstructed.",
+      "evidence": "present on origin/main in src/unnamed/arm9/0201/func_02018cbc.c; folded into src/unnamed/arm9/0201/func_02018c00.c with the rest of its contiguous run. rombuild 106/106 exact and prepush_linkcheck VERIFIED for every folded function."
+    },
+    {
+      "path": "src/unnamed/arm9/0201/func_02019f10.c",
+      "rule": "handspelled-member",
+      "match": "_ZN3IRQ7DisableEv",
+      "count": 2,
+      "reason": "func_0201a028 moved here verbatim from its own shard; this file is a C translation unit, so it cannot name the C++ member and spells the mangled name in its extern declaration and at the call. The fold changes neither line. Follow-up: retire when this unit migrates to C++ or the callee gets a C-linkage name.",
+      "evidence": "present on origin/main in src/unnamed/arm9/0201/func_0201a028.c; folded into src/unnamed/arm9/0201/func_02019f10.c with the rest of its contiguous run. rombuild 106/106 exact and prepush_linkcheck VERIFIED for every folded function."
+    },
+    {
+      "path": "src/unnamed/arm9/0201/func_02019f10.c",
+      "rule": "handspelled-member",
+      "match": "_ZN4CP1516WaitForInterruptEv",
+      "count": 2,
+      "reason": "func_0201a028 moved here verbatim from its own shard; this file is a C translation unit, so it cannot name the C++ member and spells the mangled name in its extern declaration and at the call. The fold changes neither line. Follow-up: retire when this unit migrates to C++ or the callee gets a C-linkage name.",
+      "evidence": "present on origin/main in src/unnamed/arm9/0201/func_0201a028.c; folded into src/unnamed/arm9/0201/func_02019f10.c with the rest of its contiguous run. rombuild 106/106 exact and prepush_linkcheck VERIFIED for every folded function."
+    },
+    {
+      "path": "src/unnamed/arm9/0201/func_0201a428.c",
+      "rule": "handspelled-member",
+      "match": "_ZN5mHeap6Heap_t14CreateRootHeapEPvj",
+      "count": 2,
+      "reason": "func_0201a458 moved here verbatim from its own shard; this file is a C translation unit, so it cannot name the C++ member and spells the mangled name in its extern declaration and at the call. The fold changes neither line. Follow-up: retire when this unit migrates to C++ or the callee gets a C-linkage name.",
+      "evidence": "present on origin/main in src/unnamed/arm9/0201/func_0201a458.c; folded into src/unnamed/arm9/0201/func_0201a428.c with the rest of its contiguous run. rombuild 106/106 exact and prepush_linkcheck VERIFIED for every folded function."
+    },
+    {
+      "path": "src/unnamed/arm9/0204/func_02041a94.c",
+      "rule": "handspelled-member",
+      "match": "_ZN3IRQ7DisableEv",
+      "count": 2,
+      "reason": "func_02041bbc moved here verbatim from its own shard; this file is a C translation unit, so it cannot name the C++ member and spells the mangled name in its extern declaration and at the call. The fold changes neither line. Follow-up: retire when this unit migrates to C++ or the callee gets a C-linkage name.",
+      "evidence": "present on origin/main in src/unnamed/arm9/0204/func_02041bbc.c; folded into src/unnamed/arm9/0204/func_02041a94.c with the rest of its contiguous run. rombuild 106/106 exact and prepush_linkcheck VERIFIED for every folded function."
+    },
+    {
+      "path": "src/unnamed/arm9/0204/func_02041a94.c",
+      "rule": "handspelled-member",
+      "match": "_ZN3IRQ7RestoreEj",
+      "count": 2,
+      "reason": "func_02041bbc moved here verbatim from its own shard; this file is a C translation unit, so it cannot name the C++ member and spells the mangled name in its extern declaration and at the call. The fold changes neither line. Follow-up: retire when this unit migrates to C++ or the callee gets a C-linkage name.",
+      "evidence": "present on origin/main in src/unnamed/arm9/0204/func_02041bbc.c; folded into src/unnamed/arm9/0204/func_02041a94.c with the rest of its contiguous run. rombuild 106/106 exact and prepush_linkcheck VERIFIED for every folded function."
+    },
+    {
+      "path": "src/unnamed/arm9/0205/func_0205865c.c",
+      "rule": "handspelled-member",
+      "match": "_ZN3IRQ7DisableEv",
+      "count": 2,
+      "reason": "func_02058690 moved here verbatim from its own shard; this file is a C translation unit, so it cannot name the C++ member and spells the mangled name in its extern declaration and at the call. The fold changes neither line. Follow-up: retire when this unit migrates to C++ or the callee gets a C-linkage name.",
+      "evidence": "present on origin/main in src/unnamed/arm9/0205/func_02058690.c; folded into src/unnamed/arm9/0205/func_0205865c.c with the rest of its contiguous run. rombuild 106/106 exact and prepush_linkcheck VERIFIED for every folded function."
+    },
+    {
+      "path": "src/unnamed/arm9/0205/func_0205865c.c",
+      "rule": "handspelled-member",
+      "match": "_ZN3IRQ7RestoreEj",
+      "count": 2,
+      "reason": "func_02058690 moved here verbatim from its own shard; this file is a C translation unit, so it cannot name the C++ member and spells the mangled name in its extern declaration and at the call. The fold changes neither line. Follow-up: retire when this unit migrates to C++ or the callee gets a C-linkage name.",
+      "evidence": "present on origin/main in src/unnamed/arm9/0205/func_02058690.c; folded into src/unnamed/arm9/0205/func_0205865c.c with the rest of its contiguous run. rombuild 106/106 exact and prepush_linkcheck VERIFIED for every folded function."
+    },
+    {
+      "path": "src/unnamed/arm9/0205/func_0205d3e4.c",
+      "rule": "handspelled-member",
+      "match": "_ZN3IRQ7DisableEv",
+      "count": 2,
+      "reason": "func_0205d3f4 moved here verbatim from its own shard; this file is a C translation unit, so it cannot name the C++ member and spells the mangled name in its extern declaration and at the call. The fold changes neither line. Follow-up: retire when this unit migrates to C++ or the callee gets a C-linkage name.",
+      "evidence": "present on origin/main in src/unnamed/arm9/0205/func_0205d3f4.c; folded into src/unnamed/arm9/0205/func_0205d3e4.c with the rest of its contiguous run. rombuild 106/106 exact and prepush_linkcheck VERIFIED for every folded function."
+    },
+    {
+      "path": "src/unnamed/arm9/0205/func_0205d3e4.c",
+      "rule": "handspelled-member",
+      "match": "_ZN3IRQ7RestoreEj",
+      "count": 2,
+      "reason": "func_0205d3f4 moved here verbatim from its own shard; this file is a C translation unit, so it cannot name the C++ member and spells the mangled name in its extern declaration and at the call. The fold changes neither line. Follow-up: retire when this unit migrates to C++ or the callee gets a C-linkage name.",
+      "evidence": "present on origin/main in src/unnamed/arm9/0205/func_0205d3f4.c; folded into src/unnamed/arm9/0205/func_0205d3e4.c with the rest of its contiguous run. rombuild 106/106 exact and prepush_linkcheck VERIFIED for every folded function."
+    },
+    {
+      "path": "src/unnamed/arm9/0206/func_0206116c.c",
+      "rule": "handspelled-member",
+      "match": "_ZN4CP1519InvalidateDataCacheEjj",
+      "count": 6,
+      "reason": "func_02061188 moved here verbatim from its own shard; this file is a C translation unit, so it cannot name the C++ member and spells the mangled name in its extern declaration and at the call. The fold changes neither line. Follow-up: retire when this unit migrates to C++ or the callee gets a C-linkage name.",
+      "evidence": "present on origin/main in src/unnamed/arm9/0206/func_02061188.c; folded into src/unnamed/arm9/0206/func_0206116c.c with the rest of its contiguous run. rombuild 106/106 exact and prepush_linkcheck VERIFIED for every folded function."
+    },
+    {
+      "path": "src/unnamed/arm9/0206/func_0206116c.c",
+      "rule": "raw-offset",
+      "match": "(char*)msg+0x14",
+      "count": 2,
+      "reason": "func_02061188 moved here verbatim from its own shard; the offset is carried unchanged because no struct for that object exists yet. Follow-up: replace with the field once the struct is reconstructed.",
+      "evidence": "present on origin/main in src/unnamed/arm9/0206/func_02061188.c; folded into src/unnamed/arm9/0206/func_0206116c.c with the rest of its contiguous run. rombuild 106/106 exact and prepush_linkcheck VERIFIED for every folded function."
+    },
+    {
+      "path": "src/unnamed/arm9/0206/func_0206116c.c",
+      "rule": "raw-offset",
+      "match": "(char*)msg+0x1c",
+      "count": 1,
+      "reason": "func_02061188 moved here verbatim from its own shard; the offset is carried unchanged because no struct for that object exists yet. Follow-up: replace with the field once the struct is reconstructed.",
+      "evidence": "present on origin/main in src/unnamed/arm9/0206/func_02061188.c; folded into src/unnamed/arm9/0206/func_0206116c.c with the rest of its contiguous run. rombuild 106/106 exact and prepush_linkcheck VERIFIED for every folded function."
+    },
+    {
+      "path": "src/unnamed/ov002/func_ov002_020e6a78.c",
+      "rule": "handspelled-member",
+      "match": "_ZN6Memory13operator_new2Ej",
+      "count": 2,
+      "reason": "func_ov002_020e6bb0 moved here verbatim from its own shard; this file is a C translation unit, so it cannot name the C++ member and spells the mangled name in its extern declaration and at the call. The fold changes neither line. Follow-up: retire when this unit migrates to C++ or the callee gets a C-linkage name.",
+      "evidence": "present on origin/main in src/unnamed/ov002/func_ov002_020e6bb0.c; folded into src/unnamed/ov002/func_ov002_020e6a78.c with the rest of its contiguous run. rombuild 106/106 exact and prepush_linkcheck VERIFIED for every folded function."
+    },
+    {
+      "path": "src/unnamed/ov002/func_ov002_020e6a78.c",
+      "rule": "raw-offset",
+      "match": "(char*)obj+0x24",
+      "count": 1,
+      "reason": "func_ov002_020e6b74 moved here verbatim from its own shard; the offset is carried unchanged because no struct for that object exists yet. Follow-up: replace with the field once the struct is reconstructed.",
+      "evidence": "present on origin/main in src/unnamed/ov002/func_ov002_020e6b74.c; folded into src/unnamed/ov002/func_ov002_020e6a78.c with the rest of its contiguous run. rombuild 106/106 exact and prepush_linkcheck VERIFIED for every folded function."
+    },
+    {
+      "path": "src/unnamed/ov002/func_ov002_020e6a78.c",
+      "rule": "raw-offset",
+      "match": "(char*)p+0x40",
+      "count": 1,
+      "reason": "func_ov002_020e6ad4 moved here verbatim from its own shard; the offset is carried unchanged because no struct for that object exists yet. Follow-up: replace with the field once the struct is reconstructed.",
+      "evidence": "present on origin/main in src/unnamed/ov002/func_ov002_020e6ad4.c; folded into src/unnamed/ov002/func_ov002_020e6a78.c with the rest of its contiguous run. rombuild 106/106 exact and prepush_linkcheck VERIFIED for every folded function."
+    },
+    {
+      "path": "src/unnamed/ov002/func_ov002_020e6a78.c",
+      "rule": "raw-offset",
+      "match": "(int*)(dst+0x1c",
+      "count": 1,
+      "reason": "func_ov002_020e6b74 moved here verbatim from its own shard; the offset is carried unchanged because no struct for that object exists yet. Follow-up: replace with the field once the struct is reconstructed.",
+      "evidence": "present on origin/main in src/unnamed/ov002/func_ov002_020e6b74.c; folded into src/unnamed/ov002/func_ov002_020e6a78.c with the rest of its contiguous run. rombuild 106/106 exact and prepush_linkcheck VERIFIED for every folded function."
+    },
+    {
+      "path": "src/unnamed/ov002/func_ov002_020e6a78.c",
+      "rule": "raw-offset",
+      "match": "(int*)(src+0x1c",
+      "count": 1,
+      "reason": "func_ov002_020e6bb0 moved here verbatim from its own shard; the offset is carried unchanged because no struct for that object exists yet. Follow-up: replace with the field once the struct is reconstructed.",
+      "evidence": "present on origin/main in src/unnamed/ov002/func_ov002_020e6bb0.c; folded into src/unnamed/ov002/func_ov002_020e6a78.c with the rest of its contiguous run. rombuild 106/106 exact and prepush_linkcheck VERIFIED for every folded function."
+    },
+    {
+      "path": "src/unnamed/ov002/func_ov002_020e6a78.c",
+      "rule": "raw-offset",
+      "match": "(unsignedint*)(base+0x24",
+      "count": 1,
+      "reason": "func_ov002_020e6bb0 moved here verbatim from its own shard; the offset is carried unchanged because no struct for that object exists yet. Follow-up: replace with the field once the struct is reconstructed.",
+      "evidence": "present on origin/main in src/unnamed/ov002/func_ov002_020e6bb0.c; folded into src/unnamed/ov002/func_ov002_020e6a78.c with the rest of its contiguous run. rombuild 106/106 exact and prepush_linkcheck VERIFIED for every folded function."
+    },
+    {
+      "path": "src/func_0204547c.c",
+      "rule": "handspelled-member",
+      "match": "_ZN4cstd3absEi",
+      "count": 2,
+      "reason": "func_020456a0 moved here verbatim from its own shard; this file is a C translation unit, so it cannot name the C++ member and spells the mangled name in its extern declaration and at the call. The fold changes neither line. Follow-up: retire when this unit migrates to C++ or the callee gets a C-linkage name.",
+      "evidence": "present on origin/main in src/func_020456a0.c; folded into src/func_0204547c.c with the rest of its contiguous run. rombuild 106/106 exact and prepush_linkcheck VERIFIED for every folded function."
+    },
+    {
+      "path": "src/unnamed/ov007/func_ov007_020c0a44.c",
+      "rule": "raw-offset",
+      "match": "(char*)o+0x1c",
+      "count": 1,
+      "reason": "func_ov007_020c0aa8 moved here verbatim from its own shard; the offset is carried unchanged because no struct for that object exists yet. Follow-up: replace with the field once the struct is reconstructed.",
+      "evidence": "present on origin/main in src/unnamed/ov007/func_ov007_020c0aa8.c; folded into src/unnamed/ov007/func_ov007_020c0a44.c with the rest of its contiguous run. rombuild 106/106 exact and prepush_linkcheck VERIFIED for every folded function."
+    },
+    {
+      "path": "src/unnamed/ov007/func_ov007_020c0a44.c",
+      "rule": "raw-offset",
+      "match": "(char*)o+0x1e",
+      "count": 1,
+      "reason": "func_ov007_020c0aa8 moved here verbatim from its own shard; the offset is carried unchanged because no struct for that object exists yet. Follow-up: replace with the field once the struct is reconstructed.",
+      "evidence": "present on origin/main in src/unnamed/ov007/func_ov007_020c0aa8.c; folded into src/unnamed/ov007/func_ov007_020c0a44.c with the rest of its contiguous run. rombuild 106/106 exact and prepush_linkcheck VERIFIED for every folded function."
     }
   ]
 }

@@ -1,6 +1,7 @@
 #include "types.h"
 #include "Ov007MenuState.h"
 #include "Ov007Touch.h"
+#include "Ov007Work.h"
 
 /* The 0x3c-byte record func_ov007_020b6a84 allocates; names as in
  * func_ov007_020aec94. +0x37 and +0x38 stay raw, as there. */
@@ -23,26 +24,6 @@ typedef struct Ov007Pad {
     u16 keys;     /* 0x00: held this frame */
     u16 prevKeys; /* 0x02: held last frame */
 } Ov007Pad;
-
-/* data_ov007_0210342c: the overlay's manager; names as in
- * func_ov007_020aec94, func_ov007_020b1cf0 and func_ov007_020b131c, only
- * the slots this file touches. The callback at +0x2c stays raw. */
-typedef struct Ov007Work {
-    char pad_00[4];
-    Ov007MenuState *states[3]; /* 0x04: func_ov007_020c9388 */
-    /* 0x10: the choice func_ov007_020aec94 was last given; replayed below
-     * once the state-9 window closes */
-    int pendingChoice;
-    char pad_14[0x14];
-    Ov007Settings *settings; /* 0x28: func_ov007_020b6a84 */
-    char pad_2c[0x24];
-    Ov007Touch *touch; /* 0x50: func_ov007_020c2068 */
-    Ov007Pad *pad;     /* 0x54: func_ov007_020c2304 */
-    char pad_58[0x70];
-    /* 0xc8: func_ov007_020b6d40 stores func_ov007_020adc08(i, ...) for
-     * i = 0..7 */
-    Ov007LayerSlot *layerSlots[8];
-} Ov007Work;
 
 extern void func_ov007_020c0638(int a, int b, int c, int d);
 extern void func_ov007_020b7d94(int kind);

@@ -94,7 +94,6 @@ void _ZN17dExtShadowModel_c9InitModelEP9Matrix4x35Fix12IiES3_S3_j(void *, void *
                                                                   unsigned int);
 int _ZN3G3i13PerspectiveW_E5Fix12IiES1_S1_S1_S1_S1_bP9Matrix4x3(int, int, int, int, int, int, int,
                                                                 void *);
-void _ZN5Sound12PlayBank2_2DEj(unsigned int);
 /* local extern: dClipper::Func_020156DC takes a by-value Fix12<int> (the Fix12 wall), so it stays spelled out with scalar arguments. */
 void _ZN8dClipper13Func_020156DCEitii(void *, int, int, int, int);
 void *_ZN7Vector3D1Ev(void *);
@@ -1203,7 +1202,7 @@ void Presenter_StateSurprisedThenSmile(void *c) {
     if (PRESENTER(r4)->mFace.file != (BCA_File *)PRESENTER(r4)->mSurprisedAnim.filePtr)
         return;
     if (PRESENTER(r4)->mQuiet == 0)
-        _ZN5Sound12PlayBank2_2DEj(0x1d1);
+        Sound::PlayBank2_2D(0x1d1);
     PRESENTER(r4)->mFace.SetAnim(*(BCA_File *)PRESENTER(r4)->mSmileAnim.filePtr, 8, 0, 0x800, 0);
     PRESENTER(r4)->mTexSeq.SetFile(*(BTP_File *)PRESENTER(r4)->mSmileTexSeq.filePtr, 0, 0x800, 0);
     PRESENTER(r4)->mTexAnim.SetFile(*(BTA_File *)&sPresenterSmileTexAnim, 0, 0x800, 0);
@@ -1224,7 +1223,7 @@ extern void *sPresenterLoseTexAnim;
 }
 void Presenter_PlayLose(char *c) {
     if (PRESENTER(c)->mQuiet == 0)
-        _ZN5Sound12PlayBank2_2DEj(0x1c9);
+        Sound::PlayBank2_2D(0x1c9);
     PRESENTER(c)->mFace.SetAnim(*(BCA_File *)PRESENTER(c)->mLoseStartAnim.filePtr, 0, 0x40000000,
                                 0x800, 0);
     PRESENTER(c)->mTexSeq.SetFile(*(BTP_File *)PRESENTER(c)->mLoseStartTexSeq.filePtr, 0x40000000,
@@ -1816,7 +1815,7 @@ extern V *gMgScene;
 
 extern "C" void Dealer_StateShuffle(char *c) {
     if (DEALER(c)->mShuffleSoundPlayed == 0) {
-        _ZN5Sound12PlayBank2_2DEj(0x139);
+        Sound::PlayBank2_2D(0x139);
         DEALER(c)->mShuffleSoundPlayed = 1;
     }
 
@@ -1840,7 +1839,7 @@ extern "C" void Dealer_StateShuffle(char *c) {
     if (!DEALER(c)->mModel.WillHitFrame(4))
         return;
 
-    _ZN5Sound12PlayBank2_2DEj(0x141);
+    Sound::PlayBank2_2D(0x141);
     if (DEALER(c)->mShuffleLeft == DEALER(c)->mDealDoneAt) {
         V *o = gMgScene;
         if (o)
@@ -1908,7 +1907,7 @@ void Dealer_StateDeal(char *c) {
                                               0x40000000, 0x800, 0);
                     if (DEALER(c)->mDealSoundPlayed != 0)
                         return;
-                    _ZN5Sound12PlayBank2_2DEj(0x13a);
+                    Sound::PlayBank2_2D(0x13a);
                     DEALER(c)->mDealSoundPlayed = 1;
                     return;
                 } else if (state == 2) {
@@ -1916,7 +1915,7 @@ void Dealer_StateDeal(char *c) {
                                               0x40000000, 0x800, 0);
                     if (DEALER(c)->mDealSoundPlayed != 0)
                         return;
-                    _ZN5Sound12PlayBank2_2DEj(0x13a);
+                    Sound::PlayBank2_2D(0x13a);
                     DEALER(c)->mDealSoundPlayed = 1;
                     return;
                 } else {
@@ -1930,7 +1929,7 @@ void Dealer_StateDeal(char *c) {
             return;
         if (!DEALER(c)->mModel.WillHitFrame(5))
             return;
-        _ZN5Sound12PlayBank2_2DEj(0x142);
+        Sound::PlayBank2_2D(0x142);
         {
             short *p = (short *)DEALER(c)->mDealtCount;
             *p = (short)(*p + 1);
@@ -1989,7 +1988,7 @@ extern "C" void Dealer_StateReveal(void *cc) {
                                           0x40000000, 0x800, 0);
                 if (DEALER(c)->mDealSoundPlayed != 0)
                     return;
-                _ZN5Sound12PlayBank2_2DEj(0x13a);
+                Sound::PlayBank2_2D(0x13a);
                 DEALER(c)->mDealSoundPlayed = 1;
                 return;
             } else if (a == 2) {
@@ -1997,7 +1996,7 @@ extern "C" void Dealer_StateReveal(void *cc) {
                                           0x40000000, 0x800, 0);
                 if (DEALER(c)->mDealSoundPlayed != 0)
                     return;
-                _ZN5Sound12PlayBank2_2DEj(0x13a);
+                Sound::PlayBank2_2D(0x13a);
                 DEALER(c)->mDealSoundPlayed = 1;
                 return;
             } else {
@@ -2011,7 +2010,7 @@ extern "C" void Dealer_StateReveal(void *cc) {
         return;
     if (!DEALER(c)->mModel.WillHitFrame(5))
         return;
-    _ZN5Sound12PlayBank2_2DEj(0x142);
+    Sound::PlayBank2_2D(0x142);
     *(short *)DEALER(c)->mDealtCount += 1;
     return;
 
@@ -2131,7 +2130,7 @@ void Dealer_StateLose(char *c) {
         Dealer_PlayIdle(c);
         return;
     }
-    _ZN5Sound12PlayBank2_2DEj(0x13c);
+    Sound::PlayBank2_2D(0x13c);
     DEALER(c)->mHand = 0;
     DEALER(c)->mModel.SetAnim(*(BCA_File *)DEALER(c)->mLoseAnim.filePtr, 0, 0x40000000, 0x800, 0);
 }
@@ -2148,7 +2147,7 @@ extern struct G2 pmf_Dealer_StateWin;
 }
 void Dealer_PlayWin(void *c) {
     char *r4 = (char *)c;
-    _ZN5Sound12PlayBank2_2DEj(0x13b);
+    Sound::PlayBank2_2D(0x13b);
     DEALER(r4)->mModel.SetAnim(*(BCA_File *)DEALER(r4)->mWinStartAnim.filePtr, 0, 0x40000000, 0x800,
                                0);
     DEALER(r4)->mShuffleLeft = 5;

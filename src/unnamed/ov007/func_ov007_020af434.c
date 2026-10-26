@@ -1,3 +1,5 @@
+#include "Ov007Work.h"
+
 extern void func_ov007_020b283c(void);
 extern void func_ov007_020b76a0(void);
 extern void func_ov007_020bcba8(int i);
@@ -27,17 +29,8 @@ typedef struct Ov007Display {
     Ov007BgLayer **bgLayers;
 } Ov007Display;
 
-/* data_ov007_0210342c: the overlay's manager; only the slot this file
- * reads. Its +0x2c callback stays raw: nothing here or in its other callers
- * shows what it is. */
-typedef struct Ov007Work {
-    char pad_00[0x74];
-    Ov007Display *display; /* 0x74: func_ov007_020b6d40 stores func_ov007_020b7594's record */
-} Ov007Work;
-
 typedef char Ov007BgLayer_size_must_be_0x30[sizeof(Ov007BgLayer) == 0x30 ? 1 : -1];
 typedef char Ov007Display_size_must_be_0x38[sizeof(Ov007Display) == 0x38 ? 1 : -1];
-typedef char Ov007Work_size_must_be_0x78[sizeof(Ov007Work) == 0x78 ? 1 : -1];
 
 void func_ov007_020af434(void) {
     Ov007BgLayer **layers;

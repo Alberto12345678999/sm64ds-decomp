@@ -4,24 +4,13 @@
 #pragma opt_strength_reduction off
 
 #include "Ov007Sprite.h"
+#include "Ov007Work.h"
 
 /* The 0x1c record func_ov007_020b4c04 returns (names as in that file). */
 typedef struct Ov007ItemView {
     struct Ov007Item *item; /* 0x00 */
     Ov007Sprite *sprite;    /* 0x04 */
 } Ov007ItemView;
-
-/* data_ov007_0210342c: the overlay's manager. No class or header names it;
- * only the slots this file touches are spelled. */
-typedef struct Ov007Work {
-    char pad_00[0x30];
-    void *cameras[2]; /* 0x30: both built by func_ov007_020c023c; [1] is the
-                         * one func_ov007_020b2160 loads into the projection */
-    char pad_38[0x40];
-    void *textures[11]; /* 0x78: func_ov007_020b697c builds them from the BMD textures */
-    char pad_a4[0x70];
-    Ov007ItemView *itemViews[0x18]; /* 0x114: func_ov007_020b693c, one per func_ov007_020b4c04 */
-} Ov007Work;
 
 /* data_ov007_02104ba0: the 0x4c record this function allocates and
  * func_ov007_020b9770 frees. It owns the touch picker func_ov007_020c690c

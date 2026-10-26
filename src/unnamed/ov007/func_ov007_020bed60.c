@@ -1,7 +1,9 @@
-extern int func_ov007_020bf630(int* self, int* p1, int p2, int p3, int arg5);
+#include "Ov007Work.h"
+
+extern int func_ov007_020bf630(int *self, int *p1, int p2, int p3, int arg5);
 extern int _ZN4cstd3modEii(int, int);
 extern int _ZN4cstd3divEii(int, int);
-extern void func_ov007_020ca578(int* a, int b, int c, int d);
+extern void func_ov007_020ca578(int *a, int b, int c, int d);
 extern int *data_ov007_02104bd4;
 extern int *data_ov007_0210342c;
 
@@ -24,22 +26,15 @@ typedef struct Ov007MeshWave {
     int delay; /* 0x04: no wave runs until it counts down to 0 */
 } Ov007MeshWave;
 
-/* data_ov007_0210342c: the overlay's manager; names as in
- * func_ov007_020c023c, only the slot this file reads. */
-typedef struct Ov007Work {
-    char pad_00[0x30];
-    int *cameras[2]; /* 0x30: func_ov007_020bfe4c's Ov007Camera */
-} Ov007Work;
-
 /* Pokes the mesh at screen point (arg0, arg1): func_ov007_020bf630 picks the
  * grid point under it through the camera, func_ov007_020ca578 pushes that
  * point with strength arg2, and the waves hold off for 0x78 ticks. */
-void func_ov007_020bed60(int arg0, int arg1, int arg2)
-{
+void func_ov007_020bed60(int arg0, int arg1, int arg2) {
     Ov007Mesh *self = (Ov007Mesh *)*data_ov007_02104bd4;
-    int *p1 = ((Ov007Work *)data_ov007_0210342c)->cameras[0];
+    int *p1 = (int *)((Ov007Work *)data_ov007_0210342c)->cameras[0];
     int res = func_ov007_020bf630((int *)self, p1, arg0, arg1, -1);
-    if (res == -1) return;
+    if (res == -1)
+        return;
     {
         int m = _ZN4cstd3modEii(res, self->grid->columns);
         int d = _ZN4cstd3divEii(res, self->grid->columns);

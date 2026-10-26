@@ -1,5 +1,6 @@
 #include "types.h"
 #include "Ov007MenuState.h"
+#include "Ov007Work.h"
 extern void func_ov007_020bdeb0(int a);
 extern char* data_ov007_02103360;
 extern char* data_ov007_0210342c;
@@ -22,17 +23,6 @@ typedef struct Ov007Cursor {
      * 0 up, 1 down, 2 right, 3 left */
     int dirPressed;
 } Ov007Cursor;
-
-/* data_ov007_0210342c: the overlay's manager; names as in
- * func_ov007_020afc44, only the slots this file reads. */
-typedef struct Ov007Work {
-    char pad_00[4];
-    Ov007MenuState *states[3]; /* 0x04: func_ov007_020c9388 */
-    char pad_10[0x18];
-    /* 0x28: the 0x3c-byte record func_ov007_020b6a84 allocates; its first word
-     * points at a record with no layout yet, so that read stays raw */
-    struct Ov007Settings *settings;
-} Ov007Work;
 
 /* The externs keep the tree's char * spelling (the declaration-agreement
  * gate); the typed views are reached through cast macros. */

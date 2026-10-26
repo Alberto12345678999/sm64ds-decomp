@@ -21515,7 +21515,7 @@
     },
     "ov006:0x020d116c": {
       "author": "tangosdev",
-      "name": "AmidaPiece_ElemDtor"
+      "name": "_ZN18dScMgAmida_c_PieceD1Ev"
     },
     "ov006:0x020d1170": {
       "author": "andrewboudreau",
@@ -21615,7 +21615,7 @@
     },
     "ov006:0x020d5a50": {
       "author": "tangosdev",
-      "name": "AmidaPiece_ElemCtor"
+      "name": "_ZN18dScMgAmida_c_PieceC1Ev"
     },
     "ov006:0x020d5a54": {
       "author": "andrewboudreau",
@@ -23255,7 +23255,7 @@
     },
     "ov006:0x020ea324": {
       "author": "tangosdev",
-      "name": "Wiggler_Destroy"
+      "name": "_ZN15dScMgHanachan_c7WigglerD1Ev"
     },
     "ov006:0x020ea350": {
       "author": "tangosdev",
@@ -23495,7 +23495,7 @@
     },
     "ov006:0x020ede80": {
       "author": "github-actions[bot]",
-      "name": "Wiggler_Construct"
+      "name": "_ZN15dScMgHanachan_c7WigglerC1Ev"
     },
     "ov006:0x020edec0": {
       "author": "tangosdev",
@@ -27399,7 +27399,7 @@
     },
     "ov006:0x02125800": {
       "author": "tangosdev",
-      "name": "SnowSpray_ElemDtor"
+      "name": "_ZN9SnowSprayD1Ev"
     },
     "ov006:0x02125804": {
       "author": "tangosdev",
@@ -27483,11 +27483,11 @@
     },
     "ov006:0x021295ac": {
       "author": "tangosdev",
-      "name": "dScMgSnowball_c_Construct"
+      "name": "_ZN15dScMgSnowball_cC1Ev"
     },
     "ov006:0x0212968c": {
       "author": "tangosdev",
-      "name": "SnowSpray_ElemCtor"
+      "name": "_ZN9SnowSprayC1Ev"
     },
     "ov006:0x02129690": {
       "author": "andrewboudreau",

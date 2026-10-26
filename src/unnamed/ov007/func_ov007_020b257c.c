@@ -1,3 +1,5 @@
+#include "Ov007Work.h"
+
 extern char* data_ov007_0210342c;
 
 /* The 0x1c-byte animation player func_ov007_020c92ac allocates and
@@ -27,20 +29,7 @@ typedef struct Ov007Figure {
     Ov007Model *model; /* 0x04: func_ov007_020bc6d4 */
 } Ov007Figure;
 
-/* data_ov007_0210342c: the overlay's manager; only the slots this file
- * reads. */
-typedef struct Ov007Work {
-    char pad_00[0xf4];
-    Ov007Model *model; /* 0xf4: func_ov007_020b2998 stores func_ov007_020b2bd4's model */
-    char pad_f8[8];
-    Ov007Figure *figure; /* 0x100: func_ov007_020beaa0 */
-    /* 0x104: the second figure; func_ov007_020be850 returns it in place of
-     * figure when +0xec is 1 */
-    Ov007Figure *altFigure;
-} Ov007Work;
-
 typedef char Ov007Model_size_must_be_0x34[sizeof(Ov007Model) == 0x34 ? 1 : -1];
-typedef char Ov007Work_size_must_be_0x108[sizeof(Ov007Work) == 0x108 ? 1 : -1];
 
 #define WORK ((Ov007Work*)data_ov007_0210342c)
 
