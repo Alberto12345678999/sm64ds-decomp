@@ -18337,7 +18337,7 @@ matched: yes</title></rect><rect x="420.40" y="941.65" width="17.31" height="43.
 module: ov002
 addr: 0x020fb38c
 size: 1144 bytes
-matched: yes</title></rect><rect x="420.40" y="985.62" width="17.31" height="3.38" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN6dMap_c20GetPosFromMinimapPosER7Vector3S1_5Fix12IiEsS1_
+matched: yes</title></rect><rect x="420.40" y="985.62" width="17.31" height="3.38" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN6dMap_c20GetPosFromMinimapPosER7Vector3S1_isS1_
 module: ov002
 addr: 0x020fb804
 size: 88 bytes
