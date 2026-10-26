@@ -82,6 +82,7 @@ enum dScMgAmida_c_AssetId {
 #include "dScMgAmida_c.h"
 #include "SpawnInfo.h"
 #include "nitro/fx/fx.h"
+#include "Sound.h"
 
 namespace G2S {
 unsigned int GetBG1CharPtr(void);
@@ -111,7 +112,6 @@ extern void func_02012dbc(int a);
 extern int func_020126e8(int a);
 extern void func_020126ac(int a0, int a1, int a2, int a3, int a4);
 extern int func_02012468(int handle, int a, int sfx, int b, int c, int d, int pan, short e);
-extern void func_02012790(int sfx);
 extern int GetGameLanguage(void);
 
 /* --- the class's own functions defined below --- */
@@ -189,10 +189,6 @@ char *GetBG0CharPtr();
 void *GetBG2ScrPtr();
 void *GetBG3ScrPtr();
 char *GetBG3CharPtr();
-}
-
-namespace Sound {
-void PlayBank2_2D(unsigned int id);
 }
 
 namespace Memory {

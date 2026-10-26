@@ -46,6 +46,7 @@ enum dScMgRoulette_c_AssetId {
 #include "decl_common.h"
 #include "PlayerInput.h"
 #include "nitro/fx/fx.h"
+#include "Sound.h"
 
 /* Local views of the records the helpers walk. */
 
@@ -130,9 +131,6 @@ typedef struct RacerScene {
 #define SCENE_BONUS ((gMgScene != 0) \
                         ? gMgScene->mCredits : 0)
 
-namespace Sound {
-void PlayBank2_2D(unsigned int id);
-}
 
 namespace cstd {
 int fdiv(int a, int b);
@@ -174,7 +172,6 @@ void FreeGfxSlotsById(int a);
 void NullDestructor_0203d47c(void);
 void Camera_UpdateMatrices(char *cam);
 
-void func_02012790(int a);
 void func_020731dc(void *object, void *destructor, void **node);
 void func_0203d680(Vec2_Fix12 *out, const Vec2_Fix12 *in, int scale);
 void *Ov004_LoadFile(int id);

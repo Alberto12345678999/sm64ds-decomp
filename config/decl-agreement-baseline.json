@@ -7331,9 +7331,6 @@
       "src/minigames/d_s_mg_slots.cpp": [
         "return:void"
       ],
-      "src/minigames/d_s_mg_smartball.cpp": [
-        "return:void"
-      ],
       "src/minigames/unit020bfec0.cpp": [
         "return:void"
       ]
@@ -7468,16 +7465,10 @@
       ]
     },
     "_ZN5Sound17ChangeMusicVolumeEj5Fix12IiE": {
-      "src/Message2.cpp": [
-        "return:void"
-      ],
       "src/_ZN7Message12UpdateWindowEv.cpp": [
         "return:void"
       ],
       "src/game/actors/d_a_bombking.cpp": [
-        "return:void"
-      ],
-      "src/game/actors/d_a_door.cpp": [
         "return:void"
       ],
       "src/game/actors/d_a_iwante.cpp": [
@@ -7490,9 +7481,6 @@
         "return:void"
       ],
       "src/game/actors/d_a_kuri_king.cpp": [
-        "return:void"
-      ],
-      "src/game/actors/d_a_star.cpp": [
         "return:void"
       ],
       "src/game/actors/d_a_trs.cpp": [
@@ -7530,9 +7518,6 @@
       ],
       "src/game/actors/d_a_c_jugem.cpp": [
         "param:#5 bool",
-        "return:int"
-      ],
-      "src/game/actors/d_a_door.cpp": [
         "return:int"
       ],
       "src/game/actors/d_a_kinopio.cpp": [
@@ -19599,30 +19584,6 @@
       ]
     },
     "func_02012790": {
-      "src/game/actors/d_a_door.cpp": [
-        "param:#1 int",
-        "return:void"
-      ],
-      "src/game/actors/d_a_star.cpp": [
-        "param:#1 int",
-        "return:void"
-      ],
-      "src/minigames/d_s_mg_amida.cpp": [
-        "param:#1 int",
-        "return:void"
-      ],
-      "src/minigames/d_s_mg_cup.cpp": [
-        "param:#1 int",
-        "return:void"
-      ],
-      "src/minigames/d_s_mg_roulette_methods.cpp": [
-        "param:#1 int",
-        "return:void"
-      ],
-      "src/minigames/d_s_mg_sound.cpp": [
-        "param:#1 int",
-        "return:void"
-      ],
       "src/unnamed/arm9/0201/func_020199a4.c": [
         "param:#1 int",
         "return:void"

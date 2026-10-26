@@ -110,6 +110,7 @@ enum daDoor_c_AssetId {
 #include "dExtSimpleModel_c.h"
 #include "dExtFrameCtrl_c.h"
 #include "dActor_c.h"
+#include "Sound.h"
 
 /* Three plain words: the stack and static vectors of the helpers that were
    C, which carry none of Vector3's empty destructor. */
@@ -199,10 +200,6 @@ struct daDoor_StateRecord {
 
 struct Vector3_16;
 
-namespace Sound {
-bool PlaySub(u32, u32, u32, int, bool);
-}
-
 extern "C" {
 /* Defined below, called before their definitions. These four are the shared
    countdown helpers -- free functions, not members: Player.cpp, daMugenBGM_c
@@ -212,19 +209,14 @@ int func_ov100_02144fcc(void);
 int func_ov100_02145014(void);
 void func_ov100_02145070(int v);
 }
-namespace Sound {
-void ChangeMusicVolume(unsigned int a, int b);
-}
 extern "C" {
 void _ZN5Sound13PlayCharVoiceEjjRK7Vector3(unsigned int a, unsigned int b, void *pos);
 /* local extern: include/Player.h declares Player::Unk_020ca488 void, and
    func_ov100_021449c8 tests the value it leaves in r0. */
 int _ZN6Player12Unk_020ca488Ev(void *p);
-/* func_0201277c(id) and func_02012790(id) play a sound id with no position
-   (d_a_jango.cpp says the same of func_02012790); func_02012694(id, pos)
-   plays it at a position. */
+/* func_0201277c(id) plays a sound id with no position, as func_02012790
+   does (Sound.h); func_02012694(id, pos) plays it at a position. */
 void func_0201277c(int a);
-void func_02012790(int a);
 int func_02012694(int a, void *b);
 unsigned char DecIfAbove0_Byte(void *p);
 int DecIfAbove0_Short(void *p);

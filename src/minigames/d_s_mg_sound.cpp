@@ -27,6 +27,7 @@ enum dScMgSound_c_AssetId {
 #include "decl_common.h"
 #include "PlayerInput.h"
 #include "nitro/fx/fx.h"
+#include "Sound.h"
 
 /* A cursor keeps the add-#0x5000 split on a walk that advances the scene
    pointer. Pointing the record itself at the slot pools the base instead. */
@@ -46,10 +47,6 @@ struct PmfEntry {
     Pmf pmf;
 };
 
-namespace Sound {
-void PlayBank2_2D(unsigned int id);
-void LoadAndSetMusic_Layer1(int music);
-}
 
 namespace G2S {
 unsigned GetBG2CharPtr();
@@ -165,7 +162,6 @@ extern const u8 sSoundPop00Dirs[3] = {0, 0, 1};
 /* SpawnPops consumes the first three selectors. The other two stored values
  * are retained; their original grouping is unknown. */
 extern const u8 sSoundPopSpawnKinds[5] = {0, 1, 2, 2, 1};
-extern void func_02012790(int);
 extern void Presenter_PlayMatch(void *c);
 extern void Presenter_PlayMiss(char *c);
 extern int sSoundRowLengthAlt[];
