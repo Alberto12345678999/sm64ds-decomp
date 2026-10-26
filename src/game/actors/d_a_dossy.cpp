@@ -200,16 +200,14 @@ int daDossyCap_c::OnYoshiTryEat()
 
 #pragma long_calls on
 // @symbol func_ov065_021195d0
-extern "C" void func_ov065_021195d0(void *a, void *b, void *c)
-{
+extern "C" void func_ov065_021195d0(void *a, void *b, void *c) {
     static_cast<daDossy_c *>(b)->func_ov065_02119594(static_cast<dActor_c *>(c));
 }
 #pragma long_calls off
 
 #pragma long_calls on
 // @symbol func_ov065_021195bc
-extern "C" void func_ov065_021195bc(void *a, void *b, void *c)
-{
+extern "C" void func_ov065_021195bc(void *a, void *b, void *c) {
     static_cast<daDossy_c *>(b)->func_ov065_0211956c(static_cast<dActor_c *>(c));
 }
 #pragma long_calls off

@@ -196,8 +196,7 @@ s32 daKpa3Bg_c::CleanupResources()
 // @symbol _ZN10daKpa3Bg_c19func_ov060_021181b4Ev
 /* mState 0: finds the daKpa actor (id 0x117), remembers its uniqueID and
    moves to mState 1. Retries every frame until Bowser exists. */
-int daKpa3Bg_c::func_ov060_021181b4()
-{
+int daKpa3Bg_c::func_ov060_021181b4() {
     dActor_c *koopa = dActor_c::FindWithActorID(0x117, 0);
     if (koopa) {
         mKoopaUniqueId = koopa->uniqueID;
@@ -388,7 +387,7 @@ Kpa3BgCollisionFilePtr data_ov060_0211b084(0x634);
 Kpa3BgCollisionFilePtr data_ov060_0211b08c(0x636);
 Kpa3BgCollisionFilePtr data_ov060_0211b04c(0x638);
 HandlerEntry data_ov060_0211b1ac[3] = {
-    { (Handler)&daKpa3Bg_c::func_ov060_021181b4 },
-    { &daKpa3Bg_c::func_ov060_021180e0 },
-    { &daKpa3Bg_c::func_ov060_02117db8 },
+    {(Handler)&daKpa3Bg_c::func_ov060_021181b4},
+    {&daKpa3Bg_c::func_ov060_021180e0},
+    {&daKpa3Bg_c::func_ov060_02117db8},
 };

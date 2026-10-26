@@ -748,7 +748,8 @@ L6f0:
         else if (this->mPlayerIconY[p] > 0x9c) { miniPos.z = 0x9c000; }
     }
 L738:
-    GetPosFromMinimapPos(miniPos, *(Vector3*)&this->mMapCenterWorldX, this->mCurrentScale, this->mAngle, clampedWorld);
+    GetPosFromMinimapPos(miniPos, *(Vector3 *)&this->mMapCenterWorldX, this->mCurrentScale,
+                         this->mAngle, clampedWorld);
     Vec3_Sub(&scrollDelta, &focusPos, &clampedWorld);
     AddVec3((Vector3*)&this->mMapCenterWorldX, &scrollDelta, (Vector3*)&this->mMapCenterWorldX);
     this->mMapCenterX =
@@ -1021,12 +1022,11 @@ int dMap_c::InitResources()
 #pragma opt_strength_reduction on
 
 // @symbol _ZN6dMap_c20GetPosFromMinimapPosER7Vector3S1_isS1_
-void dMap_c::GetPosFromMinimapPos(Vector3 &a, Vector3 &b, Fix12i c, short d, Vector3 &e)
-{
+void dMap_c::GetPosFromMinimapPos(Vector3 &a, Vector3 &b, Fix12i c, short d, Vector3 &e) {
     struct Vec3 local;
-    Vec3_Sub((Vector3*)&local, &a, (Vector3*)&data_ov002_0211116c);
+    Vec3_Sub((Vector3 *)&local, &a, (Vector3 *)&data_ov002_0211116c);
     Vec3_DivScalarInPlace(&local, c);
-    Vec3_RotateYAndTranslate((struct Vec3*)&e, (struct Vec3*)&b, d, &local);
+    Vec3_RotateYAndTranslate((struct Vec3 *)&e, (struct Vec3 *)&b, d, &local);
 }
 
 // @symbol _ZN6dMap_c15GetPosOnMinimapEP7Vector3S1_isS1_

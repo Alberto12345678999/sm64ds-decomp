@@ -3664,8 +3664,7 @@ void daDemo_c::anmModel_c::func_ov002_020f65b8()
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN8daDemo_c10anmModel_c19func_ov002_020f65ecEv
 
-void daDemo_c::anmModel_c::func_ov002_020f65ec()
-{
+void daDemo_c::anmModel_c::func_ov002_020f65ec() {
     if (mTexSeq != 0)
         mTexSeq->Advance();
 }
