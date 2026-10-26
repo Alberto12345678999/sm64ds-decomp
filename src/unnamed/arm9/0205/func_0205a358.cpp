@@ -3,7 +3,7 @@
 
 namespace IRQ {
 unsigned int Disable();
-void Restore(unsigned int);
+unsigned int Restore(unsigned int);
 }
 
 extern "C" {

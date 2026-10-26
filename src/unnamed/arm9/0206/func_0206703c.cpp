@@ -2,7 +2,7 @@
 
 namespace IRQ {
 int Disable();
-void Restore(unsigned int);
+unsigned int Restore(unsigned int);
 }
 extern "C" {
 extern int data_020a9db8;
