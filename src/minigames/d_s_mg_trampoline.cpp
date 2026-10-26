@@ -523,6 +523,7 @@ void dScMgTrampoline_c::BeginPlay() {
 
 // @symbol _ZN17dScMgTrampoline_c12UpdateScrollEv
 int ApproachLinear(int &, int, int);
+int ApproachLinear2(short &, short, short);
 
 void dScMgTrampoline_c::UpdateScroll() {
     int q = sTrmpComboCount / 10;
@@ -569,7 +570,7 @@ void dScMgTrampoline_c::StatePlay() {
         mInputEnabled = 0;
         BeginResults();
     } else {
-        if (_Z14ApproachLinearRiii(&mTimer, 0, 1)) {
+        if (ApproachLinear(mTimer, 0, 1)) {
             if (sTrmpComboCount >= 5 || sTrmpMariosInPlay < 3) {
                 int i;
                 char *p = (char *)mMarios;
@@ -592,7 +593,7 @@ void dScMgTrampoline_c::StatePlay() {
     }
 
     if (sTrmpAnyOnLedge == 0) {
-        if (_Z15ApproachLinear2Rsss((short *)&mDoorSwitchTimer, 0, 1)) {
+        if (ApproachLinear2(mDoorSwitchTimer, 0, 1)) {
             if (GetDoorSide()) {
                 SetDoorSide(0);
                 mDoorMark.Show(mDoorSide);
@@ -612,7 +613,7 @@ void dScMgTrampoline_c::StatePlay() {
     }
 
     if (mDoorSwitchTimer <= 0x3c) {
-        if (_Z15ApproachLinear2Rsss((short *)&mDoorBlinkTimer, 0, 1)) {
+        if (ApproachLinear2(mDoorBlinkTimer, 0, 1)) {
             mDoorBlinkTimer = 0xa;
             if (mDoorBlinkPhase != 0)
                 mDoorBlinkPhase = 0;
@@ -622,11 +623,11 @@ void dScMgTrampoline_c::StatePlay() {
     }
 
     if (mDoorSide != 0) {
-        _Z14ApproachLinearRiii(&mArrow1X, 0, 1);
-        _Z14ApproachLinearRiii(&mArrow2X, 0x20, 1);
+        ApproachLinear(mArrow1X, 0, 1);
+        ApproachLinear(mArrow2X, 0x20, 1);
     } else {
-        _Z14ApproachLinearRiii(&mArrow1X, 0x20, 1);
-        _Z14ApproachLinearRiii(&mArrow2X, 0, 1);
+        ApproachLinear(mArrow1X, 0x20, 1);
+        ApproachLinear(mArrow2X, 0, 1);
     }
 }
 
@@ -642,7 +643,7 @@ void dScMgTrampoline_c::BeginResults() {
 void dScMgTrampoline_c::StateResults() {
     unsigned char *c = (unsigned char *)this;
     Trmp3DMario_UpdateAll(c);
-    if (_Z14ApproachLinearRiii(&mTimer, 0, 1) == 0)
+    if (ApproachLinear(mTimer, 0, 1) == 0)
         return;
     if (Trmp3DMario_CountFinished() == 0)
         return;
