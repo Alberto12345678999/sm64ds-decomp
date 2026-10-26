@@ -99,8 +99,6 @@ struct System {
 }
 unsigned int d_a_choropuNewHold(unsigned int a, unsigned int b, int x, int y, int z, void *vel,
                                 void *cb);
-void  _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void *player, void *pos, unsigned int a, int b,
-    unsigned int d, unsigned int e, unsigned int f);
 void  _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *self, void *actor, int r, int h,
     unsigned int e, unsigned int g);
 /* Parameter names keep this TU's @NNN. */
@@ -585,7 +583,7 @@ void daChoropu_c::func_ov080_02124208()
 
     if (JumpedOnByPlayer(mdCcAc_c, *p)) {
         func_ov080_02124088();
-        _ZN6Player6BounceE5Fix12IiE(p, 0x28000);
+        p->Bounce(0x28000);
         return;
     }
 
@@ -609,7 +607,7 @@ void daChoropu_c::func_ov080_02124208()
         pos.x = mPosX;
         pos.y = mPosY;
         pos.z = mPosZ;
-        _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(p, &pos, 2, 0xc000, 1, 0, 1);
+        p->Hurt(pos, 2, 0xc000, 1, 0, 1);
     }
 }
 
@@ -747,13 +745,13 @@ s32 daChoro_Rock_c::Behavior()
                 pos.x = mPosX;
                 pos.y = mPosY;
                 pos.z = mPosZ;
-                _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(player, &pos, 1, 0xc000, 1, 0, 1);
+                player->Hurt(pos, 1, 0xc000, 1, 0, 1);
             } else if (!player->mIsVanish) {
                 Vector3 pos;
                 pos.x = mPosX;
                 pos.y = mPosY;
                 pos.z = mPosZ;
-                _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(player, &pos, 1, 0xc000, 1, 0, 1);
+                player->Hurt(pos, 1, 0xc000, 1, 0, 1);
             }
         }
     }

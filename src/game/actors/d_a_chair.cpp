@@ -116,8 +116,6 @@ struct System {
     static void *NewSimple(unsigned id, int x, int y, int z);
 };
 }
-int _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(
-    void *player, const void *pos, u32 kind, int damage, u32 a, u32 b, u32 c);
 
 extern s16 data_02082214[];
 }
@@ -420,8 +418,7 @@ void daChair_c::State2()
             pos.x = mPosX;
             pos.y = mPosY;
             pos.z = mPosZ;
-            _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(
-                actor, &pos, 2, 0xc000, 1, 0, 1);
+            ((Player *)actor)->Hurt(*(Vector3 *)&pos, 2, 0xc000, 1, 0, 1);
         }
     }
 }

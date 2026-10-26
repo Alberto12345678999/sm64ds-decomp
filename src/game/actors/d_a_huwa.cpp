@@ -98,8 +98,6 @@ typedef void BgchInitAt_(void *self, dActor_c *actor, int radius, int height, vo
    member form size-DIFFs (0x210 -> 0x218, see the leftover note). decl_Enemy.h
    already declares the ROM symbol with plain scalars; use that one spelling
    rather than adding a third local copy. */
-void _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void *player, void *pos, unsigned int n, int knockback, unsigned int a, unsigned int b, unsigned int c);
-void _ZN6Player10SpinBounceE5Fix12IiE(void *player, int speed);
 }
 
 int ApproachLinear(int &value, int target, int step);
@@ -238,7 +236,7 @@ extern "C" void func_ov081_02123910(daHuwa_c *self)
     }
 
     if (self->JumpedOnByPlayer(self->mdCcAc_c, *player) != 0) {
-        _ZN6Player10SpinBounceE5Fix12IiE(player, 0x28000);
+        player->SpinBounce(0x28000);
         func_ov081_021237ec(self);
         return;
     }
@@ -261,7 +259,7 @@ extern "C" void func_ov081_02123910(daHuwa_c *self)
     pos.x = self->mPosX;
     pos.y = self->mPosY;
     pos.z = self->mPosZ;
-    _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(player, &pos, 2, 0xc000, 1, 0, 1);
+    player->Hurt(pos, 2, 0xc000, 1, 0, 1);
 }
 
 /* Yaw the model, plant its translation at pos>>3, then the drop shadow.

@@ -142,8 +142,6 @@ extern int data_0209e650;
 extern void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
     void *clsn, void *actor, void *offset, int radius, int height, u32 flags, u32 vuln);
 extern GrockModelFilePtr data_ov021_02114a50;
-extern int _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(
-    void *player, struct Vector3 *pos, u32 kind, int knockback, u32 a, u32 b, u32 c);
 }
 
 /* D1 stores this vtable, destroys the members in reverse declaration order,
@@ -248,7 +246,7 @@ extern "C" void func_ov021_021123b0(char *raw)
         pos.x = rock->mPosX;
         pos.y = rock->mPosY;
         pos.z = rock->mPosZ;
-        _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(other, &pos, 3, 0xc000, 1, 0, 1);
+        ((Player *)other)->Hurt(pos, 3, 0xc000, 1, 0, 1);
     }
 }
 

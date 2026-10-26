@@ -129,8 +129,6 @@ void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES
 typedef void BgchInitAt_(void *w, void *actor, int radius, int height, void *a, void *b);
 void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
     void *c, void *actor, void *pos, int radius, int height, u32 flags, u32 vuln);
-void _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(
-    void *player, Vector3 *pos, unsigned int a, int damage, unsigned int c, unsigned int d, unsigned int e);
 }
 
 // @symbol _ZN9daBtfly_cD1Ev
@@ -198,7 +196,7 @@ void daBtfly_c::State7()
                 pos.x = mPosX;
                 pos.y = mPosY;
                 pos.z = mPosZ;
-                _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(hit, &pos, 2, 0xc000, 1, 0, 1);
+                ((Player *)hit)->Hurt(pos, 2, 0xc000, 1, 0, 1);
             }
         }
     }

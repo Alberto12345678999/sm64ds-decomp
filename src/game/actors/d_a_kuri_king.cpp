@@ -168,7 +168,6 @@ extern "C" void Vec3_Sub(Vector3 *out, const Vector3 *a, const Vector3 *b);
 extern "C" s32 Vec3_HorzLen(const Vector3 *v);
 extern "C" s16 atan2_hold_d_a_kuri_king_1(s32 y, s32 x);
 extern "C" unsigned char DecIfAbove0_Byte(unsigned char *p);
-extern "C" void _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(char *p, const struct Vector3 *v, unsigned int a, int b, unsigned int c, unsigned int d, unsigned int e);
 extern "C" s16 Vec3_HorzAngle(const struct Vector3 *v0, const struct Vector3 *v1);
 extern "C" void MulMat4x3Mat4x3(void* out, void* a, void* b);
 extern "C" void Vec3_LslInPlace(void* v, int n);
@@ -1239,8 +1238,7 @@ void daKuriKing_c::func_ov074_02120d74() {
                             v1.x = this->mPosX;
                             v1.y = this->mPosY;
                             v1.z = this->mPosZ;
-                            _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj((char *)pl, &v1, 1, 0x5000, 1,
-                                                                    0, 1);
+                            pl->Hurt(v1, 1, 0x5000, 1, 0, 1);
                         }
                     } else if (cur == &this->mdCc_cs[3]) {
                         if (this->mWalkSpeed != 0) {
@@ -1250,15 +1248,13 @@ void daKuriKing_c::func_ov074_02120d74() {
                             v2.x = this->mPosX;
                             v2.y = this->mPosY;
                             v2.z = this->mPosZ;
-                            _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj((char *)pl, &v2, 1, 0x5000, 1,
-                                                                    0, 1);
+                            pl->Hurt(v2, 1, 0x5000, 1, 0, 1);
                         }
                     } else {
                         v3.x = this->mPosX;
                         v3.y = this->mPosY;
                         v3.z = this->mPosZ;
-                        _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj((char *)pl, &v3, 1, 0x5000, 1, 0,
-                                                                1);
+                        pl->Hurt(v3, 1, 0x5000, 1, 0, 1);
                         this->mHurtTimer = 0x10;
                     }
                 }

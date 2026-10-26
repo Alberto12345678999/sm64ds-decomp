@@ -101,8 +101,6 @@ s16  Vec3_HorzAngle(const Vector3 *a, const Vector3 *b);
 int  Vec3_HorzDist(const Vector3 *a, const Vector3 *b);
 void AddVec3(void *a, void *b, void *c_);
 int  RandomIntInternal(void *p);
-int  _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(Player *self, const Vector3 *pos, unsigned int a, int fix, u8 b, u8 d, u8 e);
-void _ZN6Player6BounceE5Fix12IiE(Player *self, int fix);
 void func_ov063_0211cae8(void *found, unsigned int mask);
 void func_0203568c(int *p, int v);
 void Matrix4x3_FromRotationZXYExt(void *m, int x, int y, int z);
@@ -264,7 +262,7 @@ int daBook_c::func_ov020_02111418()
     if (r == HIT_METAL_PLAYER) {
         Vector3 v;
         v.x = mPosX; v.y = mPosY; v.z = mPosZ;
-        _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(mTouchedPlayer, &v, 0, 0xc000, 1, 0, 1);
+        mTouchedPlayer->Hurt(v, 0, 0xc000, 1, 0, 1);
         func_ov020_02112110();
         return 1;
     }
@@ -273,18 +271,18 @@ int daBook_c::func_ov020_02111418()
         if (eq) {
             Vector3 v;
             v.x = mPosX; v.y = mPosY; v.z = mPosZ;
-            _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(mTouchedPlayer, &v, 2, 0xc000, 1, 0, 1);
+            mTouchedPlayer->Hurt(v, 2, 0xc000, 1, 0, 1);
         } else {
             Vector3 v;
             v.x = mPosX; v.y = mPosY; v.z = mPosZ;
-            _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(mTouchedPlayer, &v, 1, 0xc000, 1, 0, 1);
+            mTouchedPlayer->Hurt(v, 1, 0xc000, 1, 0, 1);
         }
         mCoinType = 0;
         func_ov020_02112110();
         return 1;
     }
     if (r != HIT_STOMPED) return 0;
-    _ZN6Player6BounceE5Fix12IiE(mTouchedPlayer, 0x28000);
+    mTouchedPlayer->Bounce(0x28000);
     func_ov020_02112110();
     return 1;
 }

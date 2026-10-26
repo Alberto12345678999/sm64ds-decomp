@@ -71,10 +71,6 @@ struct System {
     static void NewSimple(unsigned int id, int x, int y, int z);
 };
 }
-/* local extern: Player.h has no Hurt member; the owning symbol remains a
- * scalar C ABI entry. Keep its exact return, receiver, payload and byte flags. */
-int _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(
-    Player *player, void *pos, u32 a, int b, u8 c, u8 d, u8 e);
 void func_02012694(int a0, void *a1);
 void Vec3_Asr(void *dst, void *src, int n);
 void Matrix4x3_FromTranslation(void *m, int x, int y, int z);
@@ -174,7 +170,7 @@ extern "C" void func_ov081_02125fb8(daSnowball_c *self)
                 pos.x = self->mPosX;
                 pos.y = self->mPosY;
                 pos.z = self->mPosZ;
-                _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(player, &pos, 1, 0xc000, 1, 0, 1);
+                player->Hurt(pos, 1, 0xc000, 1, 0, 1);
                 func_02012694(SND3_SNOWBALL_BURST, &self->mCamSpacePosX);
                 Particle::System::NewSimple(PTCL_SNOWBALL_BURST, self->mPosX, self->mPosY,
                                             self->mPosZ);

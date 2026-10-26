@@ -287,8 +287,6 @@ void d_a_sanboRunningSlidingDustAtHold(int x, int y, int z);
 unsigned d_a_sanboNewHold(unsigned a, unsigned b, int x, int y, int z, const void *dir, void *cb);
 unsigned d_a_sanboNewUnkCallback818Hold(unsigned a, unsigned b, int x, int y, int z,
                                         const Vector3_16f *dir);
-void _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(
-    void *player, void *at, unsigned a, int fix, unsigned b, unsigned d, unsigned e);
 }
 
 // @symbol _ZN9daSanbo_c19func_ov096_02136754Ev
@@ -745,15 +743,13 @@ void daSanbo_c::func_ov096_02135948()
                         vv1[0] = mPosX;
                         vv1[1] = mPosY;
                         vv1[2] = mPosZ;
-                        _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(
-                            player, vv1, 2, 0xc000, 1, 0, 1);
+                        player->Hurt(*(Vector3 *)vv1, 2, 0xc000, 1, 0, 1);
                     }
                 } else if (mVertSpeed == 0 && prev->mVertSpeed == 0) {
                     vv2[0] = mPosX;
                     vv2[1] = mPosY;
                     vv2[2] = mPosZ;
-                    _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(
-                        player, vv2, 2, 0xc000, 1, 0, 1);
+                    player->Hurt(*(Vector3 *)vv2, 2, 0xc000, 1, 0, 1);
                 }
             } else if (state == 1) {
                 if (mPrevSegment == 0) {
@@ -761,23 +757,20 @@ void daSanbo_c::func_ov096_02135948()
                         vv3[0] = mPosX;
                         vv3[1] = mPosY;
                         vv3[2] = mPosZ;
-                        _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(
-                            player, vv3, 2, 0xc000, 1, 0, 1);
+                        player->Hurt(*(Vector3 *)vv3, 2, 0xc000, 1, 0, 1);
                     }
                 } else if (mWithMeshClsn.IsOnGround() != 0 &&
                            mPrevSegment->mVertSpeed == 0) {
                     vv4[0] = mPosX;
                     vv4[1] = mPosY;
                     vv4[2] = mPosZ;
-                    _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(
-                        player, vv4, 2, 0xc000, 1, 0, 1);
+                    player->Hurt(*(Vector3 *)vv4, 2, 0xc000, 1, 0, 1);
                 }
             } else {
                 vv5[0] = mPosX;
                 vv5[1] = mPosY;
                 vv5[2] = mPosZ;
-                _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(
-                    player, vv5, 2, 0xc000, 1, 0, 1);
+                player->Hurt(*(Vector3 *)vv5, 2, 0xc000, 1, 0, 1);
             }
         }
     }

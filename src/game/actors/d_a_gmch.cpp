@@ -157,8 +157,6 @@ extern Fix12i Vec3_Dist(const void *a, const void *b);
 extern s16    Vec3_HorzAngle(const void *a, const void *b);
 extern unsigned int RandomIntInternal(int *seed);
 extern void   _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs(void *self, Vector3 const &pos, unsigned int n, int fix, short s);
-extern void   _ZN6Player6BounceE5Fix12IiE(void *p, int fix);
-extern int    _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(Player *p, void *pos, u32 a, int fix, u8 b, u8 cc, u8 d);
 extern int    func_02038414(void *clsn);
 extern void   Matrix4x3_FromRotationY(void *m, int angle);
 extern void   Matrix4x3_ApplyInPlaceToTranslation(void *m, int x, int y, int z);
@@ -312,7 +310,7 @@ void daGmch_c::CheckPlayerContact()
     if (JumpedOnByPlayer(mdCcAc_c, *player) != 0) {
         if (mStateIndex == 0)
             return;
-        _ZN6Player6BounceE5Fix12IiE(player, 0x28000);
+        player->Bounce(0x28000);
         SpawnCoinsAndDie();
         return;
     }
@@ -325,7 +323,7 @@ void daGmch_c::CheckPlayerContact()
         hurtPos.x = mPosX;
         hurtPos.y = mPosY;
         hurtPos.z = mPosZ;
-        _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(player, &hurtPos, 2, 0xc000, 1, 0, 1);
+        player->Hurt(hurtPos, 2, 0xc000, 1, 0, 1);
     }
 }
 

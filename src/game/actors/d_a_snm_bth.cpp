@@ -113,7 +113,7 @@ void SnowmanBreathParticle::HitPlayer()
         return;
     if (player->mIsBalloon)
         return;
-    _ZN6Player8BlowAwayEs(player, mAngleY);
+    player->BlowAway(mAngleY);
     if (player->IsCollectingCap())
         return;
     if (player->mHasWings)
@@ -322,7 +322,7 @@ int daSnmBth_c::Behavior()
             break;
         case 2:
             if (mTalkPlayer->GetTalkState() == -1) {
-                _ZN6Player18HasFinishedTalkingEv(mTalkPlayer);
+                mTalkPlayer->HasFinishedTalking();
                 mTalkDone = 1;
             }
             break;

@@ -245,7 +245,6 @@ int _Z14ApproachLinearRiii(int *dst, int target, int rate);
 
 void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(void* a, void* sm, void* mtx, int rad, int h, unsigned int x);
 int _ZN12dEnemyBase_c20KillByInvincibleCharERK10Vector3_16R6Player5Fix12IiE(void* c, void* v, void* player, s32 flag);
-int _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void* p, const Vector3* v, u32 a, s32 f, u32 b, u32 c, u32 d);
 void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *self, dActor_c *a, int r, int h, unsigned int d, unsigned int e);
 
 void func_ov064_021163c0(daOts_c *c);
@@ -590,7 +589,7 @@ void daOts_c::func_ov064_02116754()
         v.x = this->mPosX;
         v.y = this->mPosY;
         v.z = this->mPosZ;
-        if (_ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(hitPlayer, &v, 0, 0x14000, 1, 0, 1) != 0) {
+        if (((Player *)hitPlayer)->Hurt(v, 0, 0x14000, 1, 0, 1) != 0) {
             func_ov064_02115f98((char*)hitPlayer);
         }
     }

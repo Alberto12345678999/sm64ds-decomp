@@ -98,11 +98,6 @@ void      _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix1
               void *self, void *shadow, void *matrix, int radius, int height,
               u32 flags);
 
-/* local extern: Player.h does not declare this Fix12<int> by-value method.
- * This scalar bridge agrees with the current definition at 0x020d8e70. */
-int _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(
-    Player *player, void *pos, u32 kind, int damage, u8 a, u8 b, u8 c);
-
 void  _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *self, void *actor,
                                                 int radius, int height,
                                                 u32 flags, u32 vulnFlags);
@@ -560,8 +555,7 @@ int daBgSnmBdy_c::HurtPlayer()
         pos.x = mPosX;
         pos.y = mPosY;
         pos.z = mPosZ;
-        _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(
-            static_cast<Player *>(actor), &pos, 2, 0xc000, 1, 0, 1);
+        static_cast<Player *>(actor)->Hurt(pos, 2, 0xc000, 1, 0, 1);
     }
     return 1;
 }
