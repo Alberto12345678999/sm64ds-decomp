@@ -60,6 +60,9 @@
 #include "daSoundObj_c.h"
 #include "daTor_c.h"
 #include "daYegg_c.h"
+#include "daObjKey_c.h"
+#include "daStar_c.h"
+#include "dScene_c.h"
 #include "nitro/fx/fx.h"
 #include "G2x.h"
 #include "Memory.h"
@@ -6256,7 +6259,6 @@ void Player::func_ov002_020c7350()
     typedef unsigned short u16;
     typedef unsigned int u32;
     typedef signed char s8;
-    extern void _ZN10daObjKey_c19func_ov089_0213115cEi(void*, int i);
     extern u8 data_0209f20c;
     extern u8 data_0209f2d8;
     extern char data_0209caa0[];
@@ -6303,9 +6305,9 @@ void Player::func_ov002_020c7350()
             this->SetAnim(0x94, 0x40000000, 0x1000, 0);
             actor = Spawn(0x11a, mKeyModelId, mPos, &mAngle, this->mAreaId, -1);
             if (param1 == 2) {
-                _ZN10daObjKey_c19func_ov089_0213115cEi(actor, 4);
+                ((daObjKey_c *)actor)->func_ov089_0213115c(4);
             } else {
-                _ZN10daObjKey_c19func_ov089_0213115cEi(actor, 1);
+                ((daObjKey_c *)actor)->func_ov089_0213115c(1);
             }
             mStateWork = 6;
             return;
@@ -6963,7 +6965,6 @@ int Player::func_ov002_020c8714()
     extern void PlayerChangeMusicVolumeHold2(int, int);
     extern u32 PlayerNewHold5(u32 handle, u32 kind, Fix12i x, Fix12i y, Fix12i z, const void *dir,
                               void *callback);
-    extern void _ZN8daStar_c19func_ov002_020e7090Ei(int, void*);
     volatile int v[3];
 
     if (mStateArg == 0) {
@@ -7017,7 +7018,7 @@ int Player::func_ov002_020c8714()
             func_ov002_020c7ff8();
             st = (int)Spawn(0xb2, 0x6f, mPos, &mAngle, this->mAreaId, -1);
             if (st != 0)
-                _ZN8daStar_c19func_ov002_020e7090Ei(st, this);
+                ((daStar_c *)st)->func_ov002_020e7090((int)this);
         }
         mStateArg = 0;
     }
@@ -8441,7 +8442,6 @@ int func_ov002_020cac60(char *self)
     extern unsigned char NumStars(void);
     extern short GetAngleToCamera(int i);
     extern void LoadLevel(int a, int b, int c, int d, int e);
-    extern void _ZN8dScene_c20SetAndStopColorFaderEv(void);
     extern short data_0209f5e8;
     short ang;
     short angle;
@@ -8450,7 +8450,7 @@ int func_ov002_020cac60(char *self)
         angle = GetAngleToCamera(player->mPlayerNo);
         if (ang <= 0x1c00 && angle >= -0x1000 && angle <= 0x1000) {
             LoadLevel(0x1f, 0, 1, 0, 0xe);
-            _ZN8dScene_c20SetAndStopColorFaderEv();
+            dScene_c::SetAndStopColorFader();
             *(short *)((char *)&data_0209f5e8 + 0xc) = 0x7fff;
             func_02012790(0x1e);
             return 1;
@@ -16997,13 +16997,11 @@ fail:
 
 // @symbol _ZN6Player19func_ov002_020d94ccEv
 /* recovered: shared common types */
-/* local extern: daStar_c::func_ov002_020e7218. This TU does not include daStar_c.h. */
 extern "C" {
 int Player::func_ov002_020d94cc()
 {
     short GetAngleToCamera(int i);
     void GiveVsStars(int idx, int delta);
-    void _ZN8daStar_c19func_ov002_020e7218EPci(char *a, char *b, int gate);
     extern u8 data_0209f2d8;
     extern s8 data_0209f310;
     /* local extern: dActor_c.h declares SpawnSoundObj void; its result is tested here. */
@@ -17043,7 +17041,7 @@ int Player::func_ov002_020d94cc()
 
     if (spawned == 0) goto fail;
 
-    _ZN8daStar_c19func_ov002_020e7218EPci(spawned, self, 0);
+    ((daStar_c *)spawned)->func_ov002_020e7218(self, 0);
 
     b = (data_0209f2d8 == 1);
     if (!b) {
@@ -24336,7 +24334,6 @@ s32 Player::InitResources()
     void func_02013a00(void);
     void *_ZN9dBgCh_GndC1Ev(void* p);
     void _ZN9dBgCh_Gnd12SetObjAndPosERK7Vector3P8dActor_c(void* p, void* v, void* a);
-    void _ZN5dBgCh19StartDetectingWaterEv(void* p);
     int StartWithFarCamera(void);
     void _ZN9dBgCh_GndD1Ev(void* p);
     void *_ZN7Vector3D1Ev(void *object);
@@ -24460,7 +24457,7 @@ Ld0:
     pos.z = tz;
     ((dBgCh_Gnd *)rc)->mProbeHeight = td * 2;
     _ZN9dBgCh_Gnd12SetObjAndPosERK7Vector3P8dActor_c(rc, &pos, c);
-    _ZN5dBgCh19StartDetectingWaterEv(rc);
+    ((dBgCh_Gnd *)rc)->StartDetectingWater();
     if (data_0209f2f8 == 0x1d) {
         data_0209211c = 2;
         data_0209f200 = 0xe;

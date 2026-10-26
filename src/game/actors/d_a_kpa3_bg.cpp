@@ -12,8 +12,10 @@
  * Behavior runs data_ov060_0211b1ac[mState]: 0 finds Bowser, 1 watches
  * him, 2 drops the platform. The three handlers are declared in the
  * header so the table's pointer-to-member constants are real.
- * func_ov060_021180e0 is defined as a member; the other two are free
- * functions under the members' mangled names.
+ * func_ov060_021181b4 and func_ov060_021180e0 are defined as members;
+ * func_ov060_02117db8 is a free function under the member's mangled name.
+ * func_ov060_021181b4 returns an int, so its table entry casts the
+ * pointer-to-member to the table's void handler type.
  *
  * __sinit at the end of this file emits compiler-numbered statics; they
  * compile as @666..@691 and the manifest maps them to the ROM's
@@ -23,9 +25,6 @@
  * advances it by 25, and including daKpa_c.h by 171), so adding or
  * deleting one renumbers them. These
  * names are there for the count:
- * - the local-extern prototype of func_ov060_021181b4 names its
- *   parameter c. Making the function a member drops that name; the
- *   bytes stay the same, and one extra named local restores the count.
  * - InitResources loads the model through the named local bmd.
  * - func_ov060_021180e0 steps its timer through two named locals.
  * - func_ov060_02117db8 keeps live, p and py (never read) and steps
@@ -91,8 +90,6 @@ void func_ov060_021183cc(daKpa3Bg_c *self, dActor_c *other);
 
 // local extern: defined below as a free function (cplusplus off has no member syntax); the header declares the member spelling for the PMF table.
 void _ZN10daKpa3Bg_c19func_ov060_02117db8Ev(daKpa3Bg_c *self);
-// local extern: defined below as a free function; this prototype's named c counts toward the @NNN statics (see the banner). The header declares the member spelling for the PMF table.
-int _ZN10daKpa3Bg_c19func_ov060_021181b4Ev(char *c);
 
 }
 
@@ -199,13 +196,12 @@ s32 daKpa3Bg_c::CleanupResources()
 // @symbol _ZN10daKpa3Bg_c19func_ov060_021181b4Ev
 /* mState 0: finds the daKpa actor (id 0x117), remembers its uniqueID and
    moves to mState 1. Retries every frame until Bowser exists. */
-extern "C" int _ZN10daKpa3Bg_c19func_ov060_021181b4Ev(char *c)
+int daKpa3Bg_c::func_ov060_021181b4()
 {
-    daKpa3Bg_c *bg = (daKpa3Bg_c *)c;
     dActor_c *koopa = dActor_c::FindWithActorID(0x117, 0);
     if (koopa) {
-        bg->mKoopaUniqueId = koopa->uniqueID;
-        bg->mState = 1;
+        mKoopaUniqueId = koopa->uniqueID;
+        mState = 1;
         return 1;
     }
     return (int)koopa;
@@ -392,7 +388,7 @@ Kpa3BgCollisionFilePtr data_ov060_0211b084(0x634);
 Kpa3BgCollisionFilePtr data_ov060_0211b08c(0x636);
 Kpa3BgCollisionFilePtr data_ov060_0211b04c(0x638);
 HandlerEntry data_ov060_0211b1ac[3] = {
-    { &daKpa3Bg_c::func_ov060_021181b4 },
+    { (Handler)&daKpa3Bg_c::func_ov060_021181b4 },
     { &daKpa3Bg_c::func_ov060_021180e0 },
     { &daKpa3Bg_c::func_ov060_02117db8 },
 };

@@ -82,6 +82,7 @@ enum daKrb_c_AssetId {
 #include "dExtAnmMaterial_c.h"
 #include "Player.h"
 #include "daKuriKing_c.h"
+#include "daStarBase_c.h"
 
 /* daStar_c::mMarkerID (daStar_c.h, 0x434), seen through a local view:
    including daStar_c.h renumbers this TU's @NNN labels. */
@@ -205,8 +206,6 @@ extern void func_02012694(unsigned int id, const Vector3 *pos);
 extern int SurfaceInfo_TestFlag0x20(int* p);
 extern void _ZN5dBgPiD1Ev(void*);
 extern int data_02099368[];
-/* local extern: daStarBase_c::LinkSilverStarAndStarMarker. This TU does not include daStarBase_c.h. */
-extern void _ZN12daStarBase_c27LinkSilverStarAndStarMarkerEPc(char *a, char *b);
 extern u8 data_0209f208[];
 extern u8 *data_0209f344;
 /* Three-register reconstructed interface; death-state stores also use r3. */
@@ -579,7 +578,7 @@ void daKrb_c::func_ov084_021296cc() {
             (char *)dActor_c::Spawn(ACTOR_SILVER_STAR, 0x10, goomba->mPos, 0, goomba->mAreaId, -1);
         if (starMarker != 0 && silverStar != 0) {
             ((SilverStarView *)silverStar)->mMarkerID = ((dActor_c *)starMarker)->uniqueID;
-            _ZN12daStarBase_c27LinkSilverStarAndStarMarkerEPc(starMarker, silverStar);
+            ((daStarBase_c *)starMarker)->LinkSilverStarAndStarMarker(silverStar);
             goomba->SpawnSoundObj(1);
         }
         /* The (int) cast on the load is load-bearing: a plain

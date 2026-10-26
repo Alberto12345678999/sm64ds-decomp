@@ -230,8 +230,6 @@ extern u8 data_0209f2ac;
 extern s16 data_0209f358[];
 extern u8 data_0209d684;
 extern int _ZN5Event6GetBitEj(unsigned int bit);
-/* local extern: ROM calls the mangled name with no arg, reusing r0 as `this`. */
-extern void _ZN12daStarBase_c7CollectEv(void);
 extern int Vec3_HorzDist(const Vec3* a, const Vec3* b);
 extern s16 GetAngleToCamera(int i);
 extern u8 *data_0209f344;
@@ -1921,17 +1919,19 @@ void daStar_c::func_ov002_020e930c() {
         if (_ZN5Event6GetBitEj(0x1e) != 0) return;
         if (func_ov002_020e8ef0(o) == 0) return;
         if (mKind != KIND_6) return;
-        if (dActor_c::FindWithID(mMarkerID) == 0)
+        o = dActor_c::FindWithID(mMarkerID);
+        if (o == 0)
             return;
-        _ZN12daStarBase_c7CollectEv();
+        ((daStarBase_c *)o)->Collect();
     } else {
         if (flags & 0x8000) {
             if (b->mIsNoControl != 0) return;
             if (_ZN5Event6GetBitEj(0x1e) != 0) return;
             if (mKind != KIND_6) return;
-            if (dActor_c::FindWithID(mMarkerID) == 0)
+            o = dActor_c::FindWithID(mMarkerID);
+            if (o == 0)
                 return;
-            _ZN12daStarBase_c7CollectEv();
+            ((daStarBase_c *)o)->Collect();
         }
     }
 }

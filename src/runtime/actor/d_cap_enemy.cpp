@@ -21,7 +21,8 @@
  *  - Both destructors keep extern "C" ABI bodies end to end: the vptr
  *    store has no member spelling; an unqualified member-destructor call
  *    emits a vtable dispatch instead of the direct D1 branch the cartridge
- *    has (the model's qualified call is direct, and is used below);
+ *    has (the qualified calls on CapIcon and the model are direct, and are
+ *    used below);
  *    self->dEnemyBase_c::~dEnemyBase_c() emits D1 where the
  *    chain needs D2; and an out-of-line ~dCapEnemy_c() emits the extra
  *    STB_GLOBAL D1 that isolation will not deadstrip.
@@ -30,7 +31,6 @@
 #include "decl_common.h"
 #include "Memory.h"
 
-extern "C" void _ZN10dCapIcon_cD1Ev(void *);
 extern "C" void _ZN12dEnemyBase_cD2Ev(void *);
 
 // @symbol _ZN11dCapEnemy_cD0Ev
@@ -41,7 +41,7 @@ extern "C" void _ZN12dEnemyBase_cD2Ev(void *);
 extern "C" dCapEnemy_c *_ZN11dCapEnemy_cD0Ev(dCapEnemy_c *self)
 {
     *(int *)self = (int)_ZTV11dCapEnemy_c;
-    _ZN10dCapIcon_cD1Ev(&self->mCapIcon);
+    self->mCapIcon.dCapIcon_c::~dCapIcon_c();
     self->mModel.dExtSimpleModel_c::~dExtSimpleModel_c();
     _ZN12dEnemyBase_cD2Ev(self);
     Memory::Deallocate(self, (Heap *)data_020a0eac);
@@ -55,7 +55,7 @@ extern "C" dCapEnemy_c *_ZN11dCapEnemy_cD0Ev(dCapEnemy_c *self)
 extern "C" dCapEnemy_c *_ZN11dCapEnemy_cD2Ev(dCapEnemy_c *self)
 {
     *(int *)self = (int)_ZTV11dCapEnemy_c;
-    _ZN10dCapIcon_cD1Ev(&self->mCapIcon);
+    self->mCapIcon.dCapIcon_c::~dCapIcon_c();
     self->mModel.dExtSimpleModel_c::~dExtSimpleModel_c();
     _ZN12dEnemyBase_cD2Ev(self);
     return self;

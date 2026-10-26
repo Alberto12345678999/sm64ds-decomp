@@ -41,12 +41,6 @@
  * Leftover: g_profile_MINIGAME lives outside this TU (S14).
  * Leftover: OAM::Render Fix12-by-value stays mangled (OAM.h, wall 6az).
  *   This TU's Render.
- * Leftover: G3X::SetFog stays mangled (no G3X header). InitResources is
- *   the caller.
- * Leftover: Sound::LoadGroupAndSetBank / LoadAndSetMusic_Layer1 and
- *   dScene_c::SetFaders / SetAndStopColorFader stay
- *   mangled -- decl_common.h / decl_Scene.h already declare the
- *   extern "C" names this TU includes.
  * Leftover: TouchOwner is a local overlay of data_0209f5bc. Slot 5 is
  *   IsActive. UpdateGameSelect / MiniGm_SaveIfDirty call the named
  *   method; the other tap helpers still dispatch vt[5] by hand.
@@ -65,6 +59,8 @@
 #include "G2.h"
 #include "GX.h"
 #include "CP15.h"
+#include "G3X.h"
+#include "dScene_c.h"
 
 struct MinigameSaveData;
 struct OamAttr;
@@ -255,7 +251,7 @@ s32 dScMiniGm_c::InitResources()
     *(volatile u32 *)0x4000000 &= ~0x38000000;
     GX::DispOn();
     *(volatile u32 *)0x4001000 |= 0x10000;
-    _ZN3G3X6SetFogEbiii(0, 0, 2, 0x1000);
+    G3X::SetFog(false, 0, 2, 0x1000);
     InitialiseVramGlobals();
     *(volatile u32 *)0x40004cc = 0x7fff;
     *(volatile u32 *)0x40004cc = 0x40007fff;
@@ -373,7 +369,7 @@ s32 dScMiniGm_c::InitResources()
     }
     data_0208ee44 = 1;
     if (data_0209b2fc != 0) {
-        _ZN8dScene_c9SetFadersEP15dFdBrightness_c(&data_0209f61c);
+        dScene_c::SetFaders(&data_0209f61c);
     }
 
     data_0209b2fc = 0;
@@ -583,7 +579,7 @@ s32 dScMiniGm_c::Behavior()
     } else if (mExitTimer > 1) {
         mExitTimer -= 1;
         if (mExitTimer == 1) {
-            _ZN8dScene_c20SetAndStopColorFaderEv();
+            dScene_c::SetAndStopColorFader();
             ExitMinigameMenu();
             Sound::StopLoadedMusic_Layer1(0x1e);
             mExiting = 1;
@@ -1039,7 +1035,7 @@ void dScMiniGm_c::UpdateGameSelect()
     }
     MiniGm_LoadIconPalette((char *)this, sel);
     func_02012790(0x1e);
-    _ZN8dScene_c9SetFadersEP15dFdBrightness_c(&data_0209f61c);
+    dScene_c::SetFaders(&data_0209f61c);
     data_0209f61c.func_0202ec9c(0);
     gMgMenuRow.level = mStartLevel;
     dScene_c::StartSceneFade(sMiniGmRows[gMgLastSelected[0]].id,

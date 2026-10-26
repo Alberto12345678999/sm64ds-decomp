@@ -505,10 +505,7 @@ extern void func_ov002_020f3978(char *c);
 extern int func_ov002_020f27e8(char *c);
 extern int func_ov002_020f2990(char *c);
 extern void func_ov002_020f5f0c(C* c, int idx);
-extern void _ZN5dPa_c7level_c20edStarKiraCallback_cC1Ev(char *self);
 extern void func_ov002_020f5fe4(char *c);
-extern int _ZN15dExtFrameCtrl_c7AdvanceEv(char*); /* local extern: untyped this. */
-extern int _ZN15dExtFrameCtrl_c8FinishedEv(char*); /* local extern: untyped this. */
 /* local extern dropped: decl_common.h declares func_ov002_020f6514(unsigned char*, void*, unsigned char) */
 /* local extern: the D1 address handed to func_020731dc; ~Vector3 is inline in types.h. */
 extern void *_ZN7Vector3D1Ev(void *object);
@@ -3603,9 +3600,7 @@ int daDemo_c::func_ov002_020f6448(unsigned char *arg1)
 {
     StaffRoll *p;
     this->mCue = *arg1;
-    p = (StaffRoll *)::operator new(sizeof(StaffRoll));
-    if (p)
-        _ZN5dPa_c7level_c20edStarKiraCallback_cC1Ev((char *)&p->kira);
+    p = new StaffRoll;
     this->mStaffRoll = p;
     if (this->mStaffRoll == 0)
         return 0;
@@ -3669,12 +3664,10 @@ void daDemo_c::anmModel_c::func_ov002_020f65b8()
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN8daDemo_c10anmModel_c19func_ov002_020f65ecEv
 
-int daDemo_c::anmModel_c::func_ov002_020f65ec()
+void daDemo_c::anmModel_c::func_ov002_020f65ec()
 {
-    void *p = mTexSeq;
-    if (p == 0)
-        return (int)p;
-    return _ZN15dExtFrameCtrl_c7AdvanceEv((char*)p);
+    if (mTexSeq != 0)
+        mTexSeq->Advance();
 }
 
 /* -------------------------------------------------------------------------- */
