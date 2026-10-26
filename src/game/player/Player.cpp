@@ -52,7 +52,6 @@
 #include "dBgCh_Gnd.h"
 #include "dBgCh_Lin.h"
 #include "dBgCh_Actr.h"
-#include "decl_Animation.h"
 #include "Sound.h"
 #include "dCamera_c.h"
 #include "daObj1UpLogo_c.h"

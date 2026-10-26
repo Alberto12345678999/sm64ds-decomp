@@ -148,11 +148,11 @@ int data_0209b3ec[12];      /* camera Matrix4x3 the render walk composes */
 // every method non-virtually (qualified), so plain zero slots are fine; if
 // anything ever dispatches through them it faults immediately and loudly.
 void *_ZTV17dExtSimpleModel_c[8];
-// Same story for the animated-model hierarchy: primary vtables plus the
-// multiple-inheritance thunk table the dExtAnmModel_c ctor installs at +0x50.
+// Same story for the animated-model hierarchy. The secondary (dExtFrameCtrl_c
+// at +0x50) table needs no storage here: on the DS it is _ZTV14dExtAnmModel_c
+// + 0x24, inside the same vtable group, and nothing in src/ names it.
 void *_ZTV15dExtFrameCtrl_c[8];
 void *_ZTV14dExtAnmModel_c[10];
-void *VTable_Animation_ModelAnimThunk[8];
 void *_ZTV4dBgW[13];   /* base: never dispatched in the gates */
 unsigned char data_020a0c78[8]; /* the default CLPS ENTRY (8-byte storage,
                                    func_02037e9c fills it on first lookup) */

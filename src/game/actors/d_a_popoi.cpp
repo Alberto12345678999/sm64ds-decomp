@@ -31,8 +31,8 @@
  *   - func_ov077_021269a8 calls AngleDiff through an (int(*)(short,short))
  *     pointer cast: decl_common declares (int,int), and the short call-site
  *     typing is byte-load-bearing.
- *   - Render reaches dExtAnmModel_c::Render through the ModelAnimDraw slot window:
- *     the real class is multiply derived, so declaring it changes codegen.
+ *   - Render calls dExtAnmModel_c::Render through a dExtAnmModel_c pointer, so it
+ *     dispatches through vtable slot 5 as the ROM does.
  *   - unk_41c is only ever zeroed here, and nothing reads it in this file.
  *   - the Grab enter handler passes flags 0x40000000 to dExtAnmModel_c::SetAnim
  *     where every other state passes 0; what that bit does is not recovered.
@@ -269,25 +269,13 @@ int daPopoi_c::Behavior()
 }
 
 // @symbol _ZN9daPopoi_c6RenderEv
-
-/* Just enough of dExtAnmModel_c's vtable to reach dExtAnmModel_c::Render at slot 5
- * (offset 0x14). The five leading virtuals exist only to place that slot;
- * declaring the real class here would drag in its bases, and dExtAnmModel_c is
- * multiply derived. */
-struct ModelAnimDraw {
-    virtual void slot0();
-    virtual void slot1();
-    virtual void slot2();
-    virtual void slot3();
-    virtual void slot4();
-    virtual void Render(int);  /* vtable offset 0x14 */
-};
-
 int daPopoi_c::Render()
 {
     /* Nothing below the water surface is drawn. */
     if (mPosY < data_0209f32c) return 1;
-    ModelAnimDraw *model = (ModelAnimDraw *)((char *)&mModelAnim);
+    /* Through a pointer, so the call dispatches through vtable slot 5 as the
+       ROM does instead of binding dExtAnmModel_c::Render directly. */
+    dExtAnmModel_c *model = &mModelAnim;
     model->Render(0);
     return 1;
 }

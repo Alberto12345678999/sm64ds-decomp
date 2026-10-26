@@ -53,7 +53,6 @@ enum daChoropu_c_AssetId {
 #include "decl_common.h"
 #include "daChoropu_c.h"
 #include "daChoro_Rock_c.h"
-#include "decl_Animation.h"
 #include "decl_Player.h"
 #include "SharedFilePtr.h"
 #include "dCc_c.h"

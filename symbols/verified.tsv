@@ -1146,11 +1146,11 @@
 0x0208e8a4	_ZTV17dExtCommonModel_c	data
 0x0208e90c	_ZTV17dExtSimpleModel_c	data
 0x0208e94c	_ZTV19dExtBlendAnmModel_c	data
-0x0208e970	VTable_Animation_BlendModelAnimThunk	data
+0x0208e970	VTable_dExtFrameCtrl_c_dExtBlendAnmModel_cThunk	data
 0x0208e980	_ZTV14dExtAnmModel_c	data
-0x0208e9a4	VTable_Animation_ModelAnimThunk	data
+0x0208e9a4	VTable_dExtFrameCtrl_c_dExtAnmModel_cThunk	data
 0x0208e9b4	_ZTV15dExtAnm2Model_c	data
-0x0208e9d8	VTable_Animation_ModelAnim2Thunk	data
+0x0208e9d8	VTable_dExtFrameCtrl_c_dExtAnm2Model_cThunk	data
 0x0208ea9c	_ZTV9dFdWipe_c	data
 0x0208eacc	_ZTV15dFdBrightness_c	data
 0x0208eafc	_ZTV8dFader_c	data

@@ -65,7 +65,6 @@ enum daStar_c_AssetId {
 #include "common.h"
 #include "dBgCh_Lin.h"
 #include "dBgCh_Gnd.h"
-#include "decl_Animation.h"
 #include "decl_dBgCh_Actr.h"
 #include "decl_Actor.h"
 #include "Player.h"

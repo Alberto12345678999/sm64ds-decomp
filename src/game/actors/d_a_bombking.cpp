@@ -43,7 +43,6 @@
 #include "SharedFilePtr.h"
 #include "dBgCh_Gnd.h"
 #include "decl_common.h"
-#include "decl_Animation.h"
 #include "decl_Message.h"
 #include "Player.h"
 #include "dCamera_c.h"

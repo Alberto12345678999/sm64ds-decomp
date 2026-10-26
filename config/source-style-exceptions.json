@@ -690,94 +690,6 @@
       "evidence": "origin/main:include/dScMgRoulette_c.h 3x _ZN5ModelD1Ev; head 3x _ZN17dExtSimpleModel_cD1Ev; tools/source_style.py --base origin/main"
     },
     {
-      "path": "include/decl_Model.h",
-      "rule": "handspelled-member",
-      "match": "_ZN17dExtSimpleModel_c12HideMaterialEii",
-      "count": 1,
-      "reason": "Respelled by the Model-family RTTI rename: include/decl_Model.h on main carries the same 1 occurrence(s) as _ZN5Model12HideMaterialEii. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings.",
-      "evidence": "origin/main:include/decl_Model.h 1x _ZN5Model12HideMaterialEii; head 1x _ZN17dExtSimpleModel_c12HideMaterialEii; tools/source_style.py --base origin/main"
-    },
-    {
-      "path": "include/decl_Model.h",
-      "rule": "handspelled-member",
-      "match": "_ZN17dExtSimpleModel_c12ShowMaterialEii",
-      "count": 1,
-      "reason": "Respelled by the Model-family RTTI rename: include/decl_Model.h on main carries the same 1 occurrence(s) as _ZN5Model12ShowMaterialEii. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings.",
-      "evidence": "origin/main:include/decl_Model.h 1x _ZN5Model12ShowMaterialEii; head 1x _ZN17dExtSimpleModel_c12ShowMaterialEii; tools/source_style.py --base origin/main"
-    },
-    {
-      "path": "include/decl_Model.h",
-      "rule": "handspelled-member",
-      "match": "_ZN17dExtSimpleModel_c13GetVramOffsetEj",
-      "count": 1,
-      "reason": "Respelled by the Model-family RTTI rename: include/decl_Model.h on main carries the same 1 occurrence(s) as _ZN5Model13GetVramOffsetEj. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings.",
-      "evidence": "origin/main:include/decl_Model.h 1x _ZN5Model13GetVramOffsetEj; head 1x _ZN17dExtSimpleModel_c13GetVramOffsetEj; tools/source_style.py --base origin/main"
-    },
-    {
-      "path": "include/decl_Model.h",
-      "rule": "handspelled-member",
-      "match": "_ZN17dExtSimpleModel_c13LoadTexAndPalER8BMD_File",
-      "count": 1,
-      "reason": "Respelled by the Model-family RTTI rename: include/decl_Model.h on main carries the same 1 occurrence(s) as _ZN5Model13LoadTexAndPalER8BMD_File. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings.",
-      "evidence": "origin/main:include/decl_Model.h 1x _ZN5Model13LoadTexAndPalER8BMD_File; head 1x _ZN17dExtSimpleModel_c13LoadTexAndPalER8BMD_File; tools/source_style.py --base origin/main"
-    },
-    {
-      "path": "include/decl_Model.h",
-      "rule": "handspelled-member",
-      "match": "_ZN17dExtSimpleModel_cC1Ev",
-      "count": 1,
-      "reason": "Respelled by the Model-family RTTI rename: include/decl_Model.h on main carries the same 1 occurrence(s) as _ZN5ModelC1Ev. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings.",
-      "evidence": "origin/main:include/decl_Model.h 1x _ZN5ModelC1Ev; head 1x _ZN17dExtSimpleModel_cC1Ev; tools/source_style.py --base origin/main"
-    },
-    {
-      "path": "include/decl_Model.h",
-      "rule": "handspelled-member",
-      "match": "_ZN17dExtSimpleModel_cC2Ev",
-      "count": 1,
-      "reason": "Respelled by the Model-family RTTI rename: include/decl_Model.h on main carries the same 1 occurrence(s) as _ZN5ModelC2Ev. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings.",
-      "evidence": "origin/main:include/decl_Model.h 1x _ZN5ModelC2Ev; head 1x _ZN17dExtSimpleModel_cC2Ev; tools/source_style.py --base origin/main"
-    },
-    {
-      "path": "include/decl_Model.h",
-      "rule": "handspelled-member",
-      "match": "_ZN17dExtSimpleModel_cD1Ev",
-      "count": 1,
-      "reason": "Respelled by the Model-family RTTI rename: include/decl_Model.h on main carries the same 1 occurrence(s) as _ZN5ModelD1Ev. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings.",
-      "evidence": "origin/main:include/decl_Model.h 1x _ZN5ModelD1Ev; head 1x _ZN17dExtSimpleModel_cD1Ev; tools/source_style.py --base origin/main"
-    },
-    {
-      "path": "include/decl_ModelAnim.h",
-      "rule": "handspelled-member",
-      "match": "_ZN14dExtAnmModel_c6RenderEPK7Vector3",
-      "count": 1,
-      "reason": "Respelled by the Model-family RTTI rename: include/decl_ModelAnim.h on main carries the same 1 occurrence(s) as _ZN9ModelAnim6RenderEPK7Vector3. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings.",
-      "evidence": "origin/main:include/decl_ModelAnim.h 1x _ZN9ModelAnim6RenderEPK7Vector3; head 1x _ZN14dExtAnmModel_c6RenderEPK7Vector3; tools/source_style.py --base origin/main"
-    },
-    {
-      "path": "include/decl_ModelAnim.h",
-      "rule": "handspelled-member",
-      "match": "_ZN14dExtAnmModel_cC1Ev",
-      "count": 1,
-      "reason": "Respelled by the Model-family RTTI rename: include/decl_ModelAnim.h on main carries the same 1 occurrence(s) as _ZN9ModelAnimC1Ev. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings.",
-      "evidence": "origin/main:include/decl_ModelAnim.h 1x _ZN9ModelAnimC1Ev; head 1x _ZN14dExtAnmModel_cC1Ev; tools/source_style.py --base origin/main"
-    },
-    {
-      "path": "include/decl_ModelAnim.h",
-      "rule": "handspelled-member",
-      "match": "_ZN14dExtAnmModel_cC2Ev",
-      "count": 1,
-      "reason": "Respelled by the Model-family RTTI rename: include/decl_ModelAnim.h on main carries the same 1 occurrence(s) as _ZN9ModelAnimC2Ev. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings.",
-      "evidence": "origin/main:include/decl_ModelAnim.h 1x _ZN9ModelAnimC2Ev; head 1x _ZN14dExtAnmModel_cC2Ev; tools/source_style.py --base origin/main"
-    },
-    {
-      "path": "include/decl_ModelAnim.h",
-      "rule": "handspelled-member",
-      "match": "_ZN14dExtAnmModel_cD1Ev",
-      "count": 1,
-      "reason": "Respelled by the Model-family RTTI rename: include/decl_ModelAnim.h on main carries the same 1 occurrence(s) as _ZN9ModelAnimD1Ev. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings.",
-      "evidence": "origin/main:include/decl_ModelAnim.h 1x _ZN9ModelAnimD1Ev; head 1x _ZN14dExtAnmModel_cD1Ev; tools/source_style.py --base origin/main"
-    },
-    {
       "path": "src/engine/model/d_ext_model.cpp",
       "rule": "handspelled-member",
       "match": "_ZN17dExtShadowModel_c9InitModelEP9Matrix4x35Fix12IiES3_S3_j",
@@ -861,25 +773,25 @@
       "path": "src/game/actors/d_a_star_base.c",
       "rule": "handspelled-member",
       "match": "_ZN17dExtSimpleModel_cC1Ev",
-      "count": 1,
-      "reason": "Respelled by the Model-family RTTI rename: src/game/actors/d_a_star_base.c on main carries the same 1 occurrence(s) as _ZN5ModelC1Ev. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings.",
-      "evidence": "origin/main:src/game/actors/d_a_star_base.c 1x _ZN5ModelC1Ev; head 1x _ZN17dExtSimpleModel_cC1Ev; tools/source_style.py --base origin/main"
+      "count": 2,
+      "reason": "C factory shard: C cannot include the C++ class header, so the member constructor call(s) bind by mangled name (1 on main). The declaration used to come from the catch-all include/decl_Model.h, which this change retires; the extra occurrence is that same declaration restated in the file as a `local extern`. No new call site. Follow-up: retires when the star factory moves to C++ as `new`.",
+      "evidence": "origin/main:src/game/actors/d_a_star_base.c 1x _ZN17dExtSimpleModel_cC1Ev, declared by origin/main:include/decl_Model.h; head 2x (1 call(s) + 1 local extern); tools/source_style.py --base origin/main"
     },
     {
       "path": "src/game/actors/d_a_star_silver_star.c",
       "rule": "handspelled-member",
       "match": "_ZN14dExtAnmModel_cC1Ev",
-      "count": 2,
-      "reason": "Respelled by the Model-family RTTI rename: src/game/actors/d_a_star_silver_star.c on main carries the same 2 occurrence(s) as _ZN9ModelAnimC1Ev. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings.",
-      "evidence": "origin/main:src/game/actors/d_a_star_silver_star.c 2x _ZN9ModelAnimC1Ev; head 2x _ZN14dExtAnmModel_cC1Ev; tools/source_style.py --base origin/main"
+      "count": 3,
+      "reason": "C factory shard: C cannot include the C++ class header, so the member constructor call(s) bind by mangled name (2 on main). The declaration used to come from the catch-all include/decl_ModelAnim.h, which this change retires; the extra occurrence is that same declaration restated in the file as a `local extern`. No new call site. Follow-up: retires when the star factory moves to C++ as `new`.",
+      "evidence": "origin/main:src/game/actors/d_a_star_silver_star.c 2x _ZN14dExtAnmModel_cC1Ev, declared by origin/main:include/decl_ModelAnim.h; head 3x (2 call(s) + 1 local extern); tools/source_style.py --base origin/main"
     },
     {
       "path": "src/game/actors/d_a_star_star.c",
       "rule": "handspelled-member",
       "match": "_ZN14dExtAnmModel_cC1Ev",
-      "count": 2,
-      "reason": "Respelled by the Model-family RTTI rename: src/game/actors/d_a_star_star.c on main carries the same 2 occurrence(s) as _ZN9ModelAnimC1Ev. No new hand-spelled binding is added. Follow-up: convert to a real member call with the rest of this file's bindings.",
-      "evidence": "origin/main:src/game/actors/d_a_star_star.c 2x _ZN9ModelAnimC1Ev; head 2x _ZN14dExtAnmModel_cC1Ev; tools/source_style.py --base origin/main"
+      "count": 3,
+      "reason": "C factory shard: C cannot include the C++ class header, so the member constructor call(s) bind by mangled name (2 on main). The declaration used to come from the catch-all include/decl_ModelAnim.h, which this change retires; the extra occurrence is that same declaration restated in the file as a `local extern`. No new call site. Follow-up: retires when the star factory moves to C++ as `new`.",
+      "evidence": "origin/main:src/game/actors/d_a_star_star.c 2x _ZN14dExtAnmModel_cC1Ev, declared by origin/main:include/decl_ModelAnim.h; head 3x (2 call(s) + 1 local extern); tools/source_style.py --base origin/main"
     },
     {
       "path": "src/game/stages/d_ent_obj.cpp",
