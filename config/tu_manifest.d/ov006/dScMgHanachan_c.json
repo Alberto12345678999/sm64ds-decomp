@@ -1943,177 +1943,177 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@1128",
+      "from": "@1142",
       "to": "pmf_Wiggler_StateWait",
       "evidence": "Compiler-local native PMF matched uniquely by consumer function and relocation offset; target and full8-byte record independently verified."
     },
     {
-      "from": "@2161",
+      "from": "@2175",
       "to": "pmf_dScMgHanachan_c_Phase_WaitIntro",
       "evidence": "Compiler-local native PMF matched uniquely by consumer function and relocation offset; target and full8-byte record independently verified."
     },
     {
-      "from": "@1074",
+      "from": "@1088",
       "to": "pmf_Wiggler_TurnTowardAim",
       "evidence": "Compiler-local native PMF matched uniquely by consumer function and relocation offset; target and full8-byte record independently verified."
     },
     {
-      "from": "@1125",
+      "from": "@1139",
       "to": "pmf_Wiggler_StateMoveB",
       "evidence": "Compiler-local native PMF matched uniquely by consumer function and relocation offset; target and full8-byte record independently verified."
     },
     {
-      "from": "@665",
+      "from": "@679",
       "to": "pmf_Wiggler_StateWait_2",
       "evidence": "Compiler-local native PMF matched uniquely by consumer function and relocation offset; target and full8-byte record independently verified."
     },
     {
-      "from": "@828",
+      "from": "@842",
       "to": "pmf_Wiggler_TurnTowardAim_2",
       "evidence": "Compiler-local native PMF matched uniquely by consumer function and relocation offset; target and full8-byte record independently verified."
     },
     {
-      "from": "@1791",
+      "from": "@1805",
       "to": "pmf_dScMgHanachan_c_Phase_Result",
       "evidence": "Compiler-local native PMF matched uniquely by consumer function and relocation offset; target and full8-byte record independently verified."
     },
     {
-      "from": "@1047",
+      "from": "@1061",
       "to": "pmf_Wiggler_StateMoveA",
       "evidence": "Compiler-local native PMF matched uniquely by consumer function and relocation offset; target and full8-byte record independently verified."
     },
     {
-      "from": "@1049",
+      "from": "@1063",
       "to": "pmf_Wiggler_StateWait_3",
       "evidence": "Compiler-local native PMF matched uniquely by consumer function and relocation offset; target and full8-byte record independently verified."
     },
     {
-      "from": "@1777",
+      "from": "@1791",
       "to": "pmf_dScMgHanachan_c_Phase_Play",
       "evidence": "Compiler-local native PMF matched uniquely by consumer function and relocation offset; target and full8-byte record independently verified."
     },
     {
-      "from": "@1037",
+      "from": "@1051",
       "to": "pmf_Wiggler_TurnTowardAim_3",
       "evidence": "Compiler-local native PMF matched uniquely by consumer function and relocation offset; target and full8-byte record independently verified."
     },
     {
-      "from": "@1087",
+      "from": "@1101",
       "to": "pmf_Wiggler_Update",
       "evidence": "Compiler-local native PMF matched uniquely by consumer function and relocation offset; target and full8-byte record independently verified."
     },
     {
-      "from": "@1084",
+      "from": "@1098",
       "to": "pmf_Wiggler_StateMoveA_2",
       "evidence": "Compiler-local native PMF matched uniquely by consumer function and relocation offset; target and full8-byte record independently verified."
     },
     {
-      "from": "@2117",
+      "from": "@2131",
       "to": "pmf_dScMgHanachan_c_Phase_Play_2",
       "evidence": "Compiler-local native PMF matched uniquely by consumer function and relocation offset; target and full8-byte record independently verified."
     },
     {
-      "from": "@1161",
+      "from": "@1175",
       "to": "pmf_Wiggler_StateHold",
       "evidence": "Compiler-local native PMF matched uniquely by consumer function and relocation offset; target and full8-byte record independently verified."
     },
     {
-      "from": "@1727",
+      "from": "@1741",
       "to": "pmf_Wiggler_TurnTowardAim_4",
       "evidence": "Compiler-local native PMF matched uniquely by consumer function and relocation offset; target and full8-byte record independently verified."
     },
     {
-      "from": "@1121",
+      "from": "@1135",
       "to": "pmf_Wiggler_MoveBounce",
       "evidence": "Compiler-local native PMF matched uniquely by consumer function and relocation offset; target and full8-byte record independently verified."
     },
     {
-      "from": "@1118",
+      "from": "@1132",
       "to": "pmf_Wiggler_TurnTowardAim_5",
       "evidence": "Compiler-local native PMF matched uniquely by consumer function and relocation offset; target and full8-byte record independently verified."
     },
     {
-      "from": "@1107",
+      "from": "@1121",
       "to": "pmf_Wiggler_TurnTowardAim_6",
       "evidence": "Compiler-local native PMF matched uniquely by consumer function and relocation offset; target and full8-byte record independently verified."
     },
     {
-      "from": "@1057",
+      "from": "@1071",
       "to": "pmf_Wiggler_StateHold_2",
       "evidence": "Compiler-local native PMF matched uniquely by consumer function and relocation offset; target and full8-byte record independently verified."
     },
     {
-      "from": "@1153",
+      "from": "@1167",
       "to": "pmf_Wiggler_StateWait_4",
       "evidence": "Compiler-local native PMF matched uniquely by consumer function and relocation offset; target and full8-byte record independently verified."
     },
     {
-      "from": "@1677",
+      "from": "@1691",
       "to": "pmf_Wiggler_CheckOffLeftB",
       "evidence": "Compiler-local native PMF matched uniquely by consumer function and relocation offset; target and full8-byte record independently verified."
     },
     {
-      "from": "@1611",
+      "from": "@1625",
       "to": "pmf_Wiggler_MoveBounce_2",
       "evidence": "Compiler-local native PMF matched uniquely by consumer function and relocation offset; target and full8-byte record independently verified."
     },
     {
-      "from": "@915",
+      "from": "@929",
       "to": "pmf_Wiggler_TurnTowardAim_7",
       "evidence": "Compiler-local native PMF matched uniquely by consumer function and relocation offset; target and full8-byte record independently verified."
     },
     {
-      "from": "@1543",
+      "from": "@1557",
       "to": "pmf_Wiggler_CheckOffLeftA",
       "evidence": "Compiler-local native PMF matched uniquely by consumer function and relocation offset; target and full8-byte record independently verified."
     },
     {
-      "from": "@1828",
+      "from": "@1842",
       "to": "pmf_dScMgHanachan_c_Phase_WaitIntro_2",
       "evidence": "Compiler-local native PMF matched uniquely by consumer function and relocation offset; target and full8-byte record independently verified."
     },
     {
-      "from": "@1818",
+      "from": "@1832",
       "to": "pmf_dScMgHanachan_c_Phase_WaitTouch",
       "evidence": "Compiler-local native PMF matched uniquely by consumer function and relocation offset; target and full8-byte record independently verified."
     },
     {
-      "from": "@1815",
+      "from": "@1829",
       "to": "pmf_Hana_StateNoneB",
       "evidence": "Compiler-local native PMF matched uniquely by consumer function and relocation offset; target and full8-byte record independently verified."
     },
     {
-      "from": "@890",
+      "from": "@904",
       "to": "pmf_Wiggler_TurnTowardAim_8",
       "evidence": "Compiler-local native PMF matched uniquely by consumer function and relocation offset; target and full8-byte record independently verified."
     },
     {
-      "from": "@2027",
+      "from": "@2041",
       "to": "pmf_Wiggler_TurnTowardAim_9",
       "evidence": "Compiler-local native PMF matched uniquely by consumer function and relocation offset; target and full8-byte record independently verified."
     },
     {
-      "from": "@1937",
+      "from": "@1951",
       "to": "pmf_Hana_StateNoneA",
       "evidence": "Compiler-local native PMF matched uniquely by consumer function and relocation offset; target and full8-byte record independently verified."
     },
     {
-      "from": "@1951",
+      "from": "@1965",
       "to": "pmf_dScMgHanachan_c_Phase_WaitTouch_2",
       "evidence": "Compiler-local native PMF matched uniquely by consumer function and relocation offset; target and full8-byte record independently verified."
     },
     {
-      "from": "@1963",
+      "from": "@1977",
       "to": "pmf_Hana_StateNoneB_2",
       "evidence": "Compiler-local native PMF matched uniquely by consumer function and relocation offset; target and full8-byte record independently verified."
     },
     {
-      "from": "@2004",
+      "from": "@2018",
       "to": "pmf_dScMgHanachan_c_Phase_Result_2",
       "evidence": "Compiler-local native PMF matched uniquely by consumer function and relocation offset; target and full8-byte record independently verified."
     },
     {
-      "from": "@2054",
+      "from": "@2068",
       "to": "pmf_Wiggler_TurnTowardAim_10",
       "evidence": "Compiler-local native PMF matched uniquely by consumer function and relocation offset; target and full8-byte record independently verified."
     }

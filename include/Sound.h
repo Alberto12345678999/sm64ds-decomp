@@ -25,6 +25,14 @@
    Sound::dActor_c, which is not the type any caller is holding. */
 struct dActor_c;
 
+/* Two of the arm9 bank-bound wrappers defined in src/engine/sound/Sound.cpp,
+   with their C names: func_0201267c is Sound::Play(3, id, *pos), and
+   func_02012790 is Sound::Play2D(2, id). */
+extern "C" {
+void func_0201267c(unsigned int, const Vector3 *);
+unsigned int func_02012790(unsigned int);
+}
+
 namespace Sound {
 
 /* A bank-bound wrapper over Sound::Play, defined in

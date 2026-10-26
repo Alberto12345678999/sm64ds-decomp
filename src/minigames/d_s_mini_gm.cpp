@@ -179,7 +179,6 @@ void MiniGm_DrawNumber(void *self, int x, int y, int val);
 void MiniGm_LoadIconPalette(char *self, int n);
 
 /* ---- arm9 / cross-overlay externals ---- */
-int  func_02012790(int);
 void func_02013568(int a, int b, int v);
 int  func_02013580(int a, int b);
 void func_02013598(int x);

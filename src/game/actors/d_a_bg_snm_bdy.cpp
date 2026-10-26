@@ -91,7 +91,6 @@ short Vec3_HorzAngle(const void *a, const void *b);
 void  Vec3_Asr(void *dst, const void *src, int shift);
 unsigned short DecIfAbove0_Short(unsigned short *timer);
 void  Matrix4x3_FromRotationXYZExt(void *m, int x, int y, int z);
-void  func_0201267c(unsigned int id, const Vector3 *pos);
 void  func_0203568c(int *clsn, int radius);
 void  func_02035684(int *clsn, int height);
 

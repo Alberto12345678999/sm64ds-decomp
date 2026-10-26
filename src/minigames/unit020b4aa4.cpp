@@ -86,6 +86,7 @@
 #include "PlayerInput.h"
 #include "dScMgBase_c.h"
 #include "nitro/fx/fx.h"
+#include "Sound.h"
 
 struct Vec2i { int x, y; };
 
@@ -106,7 +107,6 @@ struct Sprite {
 typedef char Sprite_size_must_be_0x24[sizeof(Sprite) == 0x24 ? 1 : -1];
 #endif
 
-namespace Sound { void PlayBank2_2D(unsigned int); }
 int ApproachLinear(int&, int, int);
 int ApproachLinear2(short&, short, short);
 
@@ -115,7 +115,6 @@ extern void Vec2_Sub(void* o, void* a, void* b);
 extern void func_0203d680(void* out, void* in, int scale);
 extern int __aeabi_idiv(int a, int b);
 extern void __cxa_vec_cleanup(void *, unsigned int, unsigned int, void (*)(void *));
-extern unsigned int func_02012790(unsigned int a);
 extern int GetGameLanguage(void);
 extern void Hud_RenderSprite(void* a0, int a1, int a2, int a3, int a4);
 

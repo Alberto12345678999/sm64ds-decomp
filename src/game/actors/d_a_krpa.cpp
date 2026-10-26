@@ -50,6 +50,7 @@ enum d_a_krpa_AssetId {
 #include "Player.h"
 #include "SharedFilePtr.h"
 #include "nitro/fx/fx.h"
+#include "Sound.h"
 
 // @symbol daKrpa_c_classInit
 /* `return new daKrpa_c()` emits 0x50, calling the inherited
@@ -255,7 +256,6 @@ int daKrpa_c::func_ov070_021216b8() {
 // @symbol _ZN8daKrpa_c19func_ov070_0212156cEv
 extern "C" {
 extern short data_02082214[];
-void func_0201267c(u32 soundID, const Vector3 *pos);
 }
 
 int daKrpa_c::func_ov070_0212156c() {

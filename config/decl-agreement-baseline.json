@@ -7331,9 +7331,6 @@
       "src/minigames/d_s_mg_slots.cpp": [
         "return:void"
       ],
-      "src/minigames/d_s_mg_smartball.cpp": [
-        "return:void"
-      ],
       "src/minigames/unit020bfec0.cpp": [
         "return:void"
       ]
@@ -7468,16 +7465,10 @@
       ]
     },
     "_ZN5Sound17ChangeMusicVolumeEj5Fix12IiE": {
-      "src/Message2.cpp": [
-        "return:void"
-      ],
       "src/_ZN7Message12UpdateWindowEv.cpp": [
         "return:void"
       ],
       "src/game/actors/d_a_bombking.cpp": [
-        "return:void"
-      ],
-      "src/game/actors/d_a_door.cpp": [
         "return:void"
       ],
       "src/game/actors/d_a_iwante.cpp": [
@@ -7490,9 +7481,6 @@
         "return:void"
       ],
       "src/game/actors/d_a_kuri_king.cpp": [
-        "return:void"
-      ],
-      "src/game/actors/d_a_star.cpp": [
         "return:void"
       ],
       "src/game/actors/d_a_trs.cpp": [
@@ -7530,9 +7518,6 @@
       ],
       "src/game/actors/d_a_c_jugem.cpp": [
         "param:#5 bool",
-        "return:int"
-      ],
-      "src/game/actors/d_a_door.cpp": [
         "return:int"
       ],
       "src/game/actors/d_a_kinopio.cpp": [
@@ -19448,61 +19433,6 @@
       ]
     },
     "func_0201267c": {
-      "src/game/actors/d_a_bg_snm_hed.cpp": [
-        "param:#1 int",
-        "return:int"
-      ],
-      "src/game/actors/d_a_choropu.cpp": [
-        "param:#2 const void *"
-      ],
-      "src/game/actors/d_a_demo.cpp": [
-        "param:#1 int"
-      ],
-      "src/game/actors/d_a_dkk.cpp": [
-        "param:#1 int"
-      ],
-      "src/game/actors/d_a_dossy.cpp": [
-        "param:#2 char *"
-      ],
-      "src/game/actors/d_a_dsn_base.cpp": [
-        "param:#1 int"
-      ],
-      "src/game/actors/d_a_gmch.cpp": [
-        "param:#1 int"
-      ],
-      "src/game/actors/d_a_grock.cpp": [
-        "param:#1 int"
-      ],
-      "src/game/actors/d_a_hanachan.cpp": [
-        "param:#1 int"
-      ],
-      "src/game/actors/d_a_jgm.cpp": [
-        "param:#1 int"
-      ],
-      "src/game/actors/d_a_obj_shell.cpp": [
-        "param:#1 int",
-        "param:#2 int *"
-      ],
-      "src/game/actors/d_a_pg_dfdr.cpp": [
-        "param:#1 int",
-        "param:#2 char *"
-      ],
-      "src/game/actors/d_a_pg_mthr.cpp": [
-        "param:#1 int"
-      ],
-      "src/game/actors/d_a_pg_rcer.cpp": [
-        "param:#1 int"
-      ],
-      "src/game/actors/d_a_pkn.cpp": [
-        "param:#1 int",
-        "return:int"
-      ],
-      "src/game/actors/d_a_s_bird.cpp": [
-        "return:int"
-      ],
-      "src/game/actors/d_a_spd.cpp": [
-        "param:#1 int"
-      ],
       "src/game/actors/d_a_trs.cpp": [
         "param:#2 const void *",
         "return:int"
@@ -19510,13 +19440,6 @@
       "src/game/actors/d_a_wanwan.cpp": [
         "arity:3",
         "param:#1 int",
-        "return:int"
-      ],
-      "src/unnamed/ov002/func_ov002_020e0f38.cpp": [
-        "param:#1 int",
-        "param:#2 char *"
-      ],
-      "src/unnamed/ov009/func_ov009_0211145c.c": [
         "return:int"
       ]
     },
@@ -19661,120 +19584,6 @@
       ]
     },
     "func_02012790": {
-      "src/_ZN7Message6UpdateEv.cpp": [
-        "param:#1 int",
-        "return:void"
-      ],
-      "src/game/actors/d_a_c_jugem.cpp": [
-        "param:#1 int",
-        "return:void"
-      ],
-      "src/game/actors/d_a_ch_scene.cpp": [
-        "param:#1 int",
-        "return:void"
-      ],
-      "src/game/actors/d_a_demo.cpp": [
-        "param:#1 int",
-        "return:void"
-      ],
-      "src/game/actors/d_a_door.cpp": [
-        "param:#1 int",
-        "return:void"
-      ],
-      "src/game/actors/d_a_jango.cpp": [
-        "param:#1 int",
-        "return:void"
-      ],
-      "src/game/actors/d_a_manta.cpp": [
-        "return:void"
-      ],
-      "src/game/actors/d_a_obj_tatefuda.cpp": [
-        "param:#1 int",
-        "return:void"
-      ],
-      "src/game/actors/d_a_obj_tbox.cpp": [
-        "return:void"
-      ],
-      "src/game/actors/d_a_pg_rcer.cpp": [
-        "param:#1 int",
-        "return:void"
-      ],
-      "src/game/actors/d_a_snowman.cpp": [
-        "param:#1 int",
-        "return:void"
-      ],
-      "src/game/actors/d_a_star.cpp": [
-        "param:#1 int",
-        "return:void"
-      ],
-      "src/game/actors/d_a_water_hakidasi.cpp": [
-        "param:#1 int",
-        "return:void"
-      ],
-      "src/game/stages/d_s_game_over.cpp": [
-        "param:#1 int",
-        "return:void"
-      ],
-      "src/game/stages/d_s_mb.cpp": [
-        "param:#1 int",
-        "return:void"
-      ],
-      "src/game/stages/d_s_star_sel_methods.cpp": [
-        "param:#1 int",
-        "return:void"
-      ],
-      "src/game/stages/d_s_title.cpp": [
-        "param:#1 int",
-        "return:void"
-      ],
-      "src/minigames/d_mg_ps_opt.cpp": [
-        "param:#1 int",
-        "return:void"
-      ],
-      "src/minigames/d_s_mg_amida.cpp": [
-        "param:#1 int",
-        "return:void"
-      ],
-      "src/minigames/d_s_mg_base.cpp": [
-        "param:#1 int",
-        "return:void"
-      ],
-      "src/minigames/d_s_mg_cup.cpp": [
-        "param:#1 int",
-        "return:void"
-      ],
-      "src/minigames/d_s_mg_hanachan_methods.cpp": [
-        "param:#1 int",
-        "return:void"
-      ],
-      "src/minigames/d_s_mg_jump_methods.cpp": [
-        "param:#1 int",
-        "return:void"
-      ],
-      "src/minigames/d_s_mg_memory.cpp": [
-        "param:#1 int",
-        "return:void"
-      ],
-      "src/minigames/d_s_mg_roulette_methods.cpp": [
-        "param:#1 int",
-        "return:void"
-      ],
-      "src/minigames/d_s_mg_snowball.cpp": [
-        "param:#1 int",
-        "return:void"
-      ],
-      "src/minigames/d_s_mg_sound.cpp": [
-        "param:#1 int",
-        "return:void"
-      ],
-      "src/minigames/d_s_mini_gm.cpp": [
-        "param:#1 int",
-        "return:int"
-      ],
-      "src/ui/hud/d_meter.cpp": [
-        "param:#1 int",
-        "return:void"
-      ],
       "src/unnamed/arm9/0201/func_020199a4.c": [
         "param:#1 int",
         "return:void"
@@ -19787,62 +19596,11 @@
         "param:#1 int",
         "return:void"
       ],
-      "src/unnamed/ov075/func_ov075_0211705c.cpp": [
-        "param:#1 int",
-        "return:void"
-      ],
-      "src/unnamed/ov075/func_ov075_0211763c.cpp": [
-        "param:#1 int",
-        "return:void"
-      ],
-      "src/unnamed/ov075/func_ov075_02117c0c.cpp": [
-        "param:#1 int",
-        "return:void"
-      ],
       "src/unnamed/ov075/func_ov075_02117f5c.c": [
         "param:#1 int",
         "return:void"
       ],
-      "src/unnamed/ov075/func_ov075_02118248.cpp": [
-        "param:#1 int",
-        "return:void"
-      ],
       "src/unnamed/ov075/func_ov075_02118378.c": [
-        "param:#1 int",
-        "return:void"
-      ],
-      "src/unnamed/ov075/func_ov075_0211867c.cpp": [
-        "param:#1 int",
-        "return:void"
-      ],
-      "src/_ZN10dScEntry_c18UpdateCourseSelectEv.cpp": [
-        "return:void"
-      ],
-      "src/unnamed/ov075/func_ov075_0211919c.c": [
-        "param:#1 int",
-        "return:void"
-      ],
-      "src/unnamed/ov075/func_ov075_021192bc.c": [
-        "param:#1 int",
-        "return:void"
-      ],
-      "src/unnamed/ov075/func_ov075_021196d0.c": [
-        "param:#1 int",
-        "return:void"
-      ],
-      "src/unnamed/ov075/func_ov075_021197e8.c": [
-        "param:#1 int",
-        "return:void"
-      ],
-      "src/unnamed/ov075/func_ov075_02119b34.c": [
-        "param:#1 int",
-        "return:void"
-      ],
-      "src/unnamed/ov075/func_ov075_02119dc4.cpp": [
-        "param:#1 int",
-        "return:void"
-      ],
-      "src/game/stages/d_s_entry_readiness.cpp": [
         "param:#1 int",
         "return:void"
       ]

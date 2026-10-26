@@ -135,7 +135,6 @@ void  func_ov002_020c3f2c(void *p);
 void  func_ov002_020d228c(void *p);
 void  func_ov002_020e4374(void *p, int *a, int *b);
 void  func_0201f32c(int a);
-void  func_02012790(int a);
 
 /* globals */
 extern void          *data_0209f318;        /* the camera object */

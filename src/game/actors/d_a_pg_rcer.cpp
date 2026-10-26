@@ -55,8 +55,6 @@ extern unsigned char data_0209d684;                /* talk-script choice */
 
 extern unsigned char NumStars(void);
 extern unsigned char DecIfAbove0_Byte(unsigned char *p);
-extern void func_0201267c(int id, void *pos);
-extern void func_02012790(int id);
 extern void func_02038414(void *clsn);
 extern int _ZN4cstd4fdivEii(int a, int b);
 extern Fix12i Vec3_HorzDist(const Vector3 *a, const Vector3 *b);
@@ -229,7 +227,7 @@ extern "C" {
 int func_ov019_0211213c(daPgRcer_c *self)
 {
     self->mActionStep = 0;
-    func_0201267c(0xdf, &self->mCamSpacePosX);
+    func_0201267c(0xdf, &self->mCamSpacePos);
     self->mAction = 1;
     return 1;
 }
@@ -291,7 +289,7 @@ int func_ov019_02111f54(daPgRcer_c *self)
     self->mVertSpeed = 0x16000;
     self->mActionStep = 0;
     Sound::PlaySub(0x1f, 0x14, 0x7f, 0x15666, 0);
-    func_0201267c(0x138, &self->mCamSpacePosX);
+    func_0201267c(0x138, &self->mCamSpacePos);
     self->mAction = 2;
     return 1;
 }
@@ -323,7 +321,7 @@ int func_ov019_02111dec(daPgRcer_c *self)
         }
         if (self->mTalkPlayer->GetTalkState() == -1) {
             Sound::PlaySub(0x1f, 0x7f, 0, 0x15666, 0);
-            func_0201267c(0x4d, &self->mCamSpacePosX);
+            func_0201267c(0x4d, &self->mCamSpacePos);
             self->func_ov019_021122dc(3);
         }
         break;
@@ -494,7 +492,7 @@ int func_ov019_021117a8(daPgRcer_c *self)
         {
             unsigned int frame = ((unsigned int)self->mAnmModel.currFrame << 4) >> 0x10;
             if (frame == 9 || frame == 0x15) {
-                func_0201267c(0xde, &self->mCamSpacePosX);
+                func_0201267c(0xde, &self->mCamSpacePos);
             }
         }
         break;
@@ -510,7 +508,7 @@ int func_ov019_021117a8(daPgRcer_c *self)
     {
         unsigned int frame = ((unsigned int)self->mAnmModel.currFrame << 4) >> 0x10;
         if (frame == 9 || frame == 0x15) {
-            func_0201267c(0xf3, &self->mCamSpacePosX);
+            func_0201267c(0xf3, &self->mCamSpacePos);
         }
     }
     return 1;
@@ -564,7 +562,7 @@ int func_ov019_02111558(daPgRcer_c *self)
                     id = 0xa8;
             }
             if (self->mTalkPlayer->ShowMessage(*self, id, &v, 1, 2) != 0) {
-                func_0201267c(0xdf, &self->mCamSpacePosX);
+                func_0201267c(0xdf, &self->mCamSpacePos);
                 ++self->mActionStep;
             }
         }

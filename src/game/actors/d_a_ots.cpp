@@ -106,6 +106,7 @@
 #include "SharedFilePtr.h"
 #include "Player.h"
 #include "nitro/fx/fx.h"
+#include "Sound.h"
 namespace cstd {
 s16 atan2(s32, s32);
 }
@@ -222,7 +223,6 @@ struct System {
 }
 extern void *d_a_otsNewHold(u32 id, u32 param, Fix12i x, Fix12i y, Fix12i z, const Vector3_16f *pos,
                             struct Callback *cb);
-extern void func_0201267c(u32 soundID, const Vector3 *pos);
 extern void Matrix4x3_FromRotationY(void* m, short angle);
 short Vec3_HorzAngle(const Vector3 *a, const Vector3 *b);
 

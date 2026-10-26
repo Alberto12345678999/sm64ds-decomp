@@ -17,6 +17,7 @@
 
 #include "types.h"
 #include "dMgPsOpt_c.h"
+#include "Sound.h"
 
 /* The blitter's 2x2 matrix. This panel always passes none. */
 struct M;
@@ -90,7 +91,6 @@ int TouchArea_Update(void *icon, int touch);
 /* Toggles mOn, drops mReady, and reloads mPressTimer from mPressTime. */
 void func_ov001_020ab3f0(void *icon);
 /* Sound::Play2D(2, id). The ROM calls this thunk, not Play2D. */
-void func_02012790(int id);
 int GetSoundMode(void);
 void SetSoundMode(int mode);
 /* If mOn is clear, sets it. Otherwise the same pulse as func_ov001_020ab3f0. */

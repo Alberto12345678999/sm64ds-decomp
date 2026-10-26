@@ -46,6 +46,7 @@ enum daHuwa_c_AssetId {
 #include "daHuwa_c.h"
 #include "Player.h"
 #include "SharedFilePtr.h"
+#include "Sound.h"
 
 /* The resource handles as the ROM lays them out: {id, loaded file}. The
    model handle constructs through func_02017acc and destroys through
@@ -69,7 +70,6 @@ extern HuwaAnimationFileHandle gHuwahuwaMoveAnimationFile;
 extern "C" {
 extern struct Matrix4x3 data_020a0e68;
 extern int func_ov002_020e10a8(void *);
-extern void func_0201267c(unsigned int id, const Vector3 *pos);
 
 void Matrix4x3_FromTranslation(struct Matrix4x3 *m, int x, int y, int z);
 void Matrix4x3_FromRotationY(void *m, int angle);

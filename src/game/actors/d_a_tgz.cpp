@@ -86,7 +86,6 @@ void func_ov077_02125e94(daTgz_c *self, int state);
 
 int SurfaceInfo_TestFlag0x20(int *p);
 void func_02012694(unsigned int id, const Vector3 *pos);
-void func_0201267c(unsigned int id, const Vector3 *pos);
 int _ZN4cstd4fdivEii(int a, int b);
 s32 func_02010844(void *unused, Vector3 *v, s16 angle);
 void _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs(void *self, const Vector3 *pos, unsigned int count, int spread, short angle);

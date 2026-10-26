@@ -128,7 +128,6 @@ void EndLoadOBJExtPltt();
 extern "C" {
 extern unsigned char sStarSelectCharacterOrder[];
 extern unsigned short sStarSelectDecimalDivisors[];
-extern void func_02012790(int a);
 extern unsigned char NumStars(void);
 // local extern: this file needs a record-view spelling of one of the touch lanes (the ROM scales the slot in the addressing mode), which conflicts with PlayerInput.h; the header is not included and all five symbols are declared here.
 extern unsigned char gActivePlayerSlot;

@@ -49,6 +49,7 @@ enum daPgDfdr_c_AssetId {
 #include "dExtAnmTexPat_c.h"
 #include "dBgCh_Gnd.h"
 #include "nitro/fx/fx.h"
+#include "Sound.h"
 
 bool ApproachLinear(short &value, short target, short step);
 
@@ -72,7 +73,6 @@ extern "C" {
 void Matrix4x3_FromRotationY(void *mat, short angY);
 int DecIfAbove0_Byte(void *p);
 /* Sound::Play(3, id, pos). The ROM calls this veneer, not Play itself. */
-void func_0201267c(int id, char *pos);
 /* Stores dBgW::beforeClsnCallback (p[6]). dBgW.h has no setter. */
 void func_020393d4(int *collider, int callback);
 extern void hold_d_a_pg_dfdr(void *self, void *kcl, void *mat, int scale, short angY, void *clps);
@@ -350,11 +350,11 @@ int daPgDfdr_c::func_ov027_02111a28()
         unsigned int frame = (unsigned int)(frameRaw << 4) >> 0x10;
         if (curAnim == walkAnim) {
             if (frame == 0xa || frame == 0x16) {
-                func_0201267c(0xf3, (char *)&mCamSpacePosX);
+                func_0201267c(0xf3, &mCamSpacePos);
             }
         } else if (curAnim == (int)data_ov027_02113c8c.filePtr) {
             if (frame == 9 || frame == 0x16) {
-                func_0201267c(0xf3, (char *)&mCamSpacePosX);
+                func_0201267c(0xf3, &mCamSpacePos);
             }
         }
     }

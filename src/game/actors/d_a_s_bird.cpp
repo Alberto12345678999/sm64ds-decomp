@@ -46,6 +46,7 @@
 #include "daSBird_c.h"
 #include "common.h"
 #include "SharedFilePtr.h"
+#include "Sound.h"
 namespace cstd {
 s16 atan2(s32, s32);
 }
@@ -111,7 +112,6 @@ extern void Matrix4x3_FromTranslation(void *m, int x, int y, int z);
 extern void Matrix4x3_ApplyInPlaceToRotationZ(void *m, s16 a);
 extern void Matrix4x3_ApplyInPlaceToRotationY(void *m, s16 a);
 extern s16 atan2_hold_d_a_s_bird_1(s32 y, s32 x);
-extern int func_0201267c(unsigned int a, void *b);
 
 /* State 2: a free function in ROM (src/unnamed/ov009/func_ov009_0211145c.cpp),
  * called through the state table. */
@@ -241,7 +241,7 @@ void daSBird_c::func_ov009_021115d8()
             if (len > 0x7d0000)
                 return;
         }
-        func_0201267c(0x6a, &mCamSpacePosX);
+        func_0201267c(0x6a, &mCamSpacePos);
     } else {
         daSBird_c *p = (daSBird_c *)dActor_c::FindWithID(mOwnerID);
         if (p == 0) {

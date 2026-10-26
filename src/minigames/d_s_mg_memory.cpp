@@ -71,7 +71,6 @@ extern void Mg_DrawBlinkSprite(void *c, int arg1, int arg2);
 /* Unused. Deleting this named prototype renumbers @NNN later in the file. */
 extern short atan2_hold_d_s_mg_memory_1(int y, int x);
 extern short data_02082214[];
-void func_02012790(int a);
 void MgCoins_StartLoseOneMore(void);
 extern void Hud_RenderSprite(void *a0, int a1, int a2, int a3, int a4);
 extern u16 sMemoryCardFrameSprites[];

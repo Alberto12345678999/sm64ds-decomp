@@ -70,6 +70,7 @@ extern "C" int AngleDiff(int a, int b);
 #include "dExtBlendAnmModel_c.h"
 #include "dExtFrameCtrl_c.h"
 #include "daObjMarioCap_c.h"
+#include "Sound.h"
 
 /* Static-init ownership (was the handwritten __sinit_ov062_0211d6fc shard).
  * The file-scope objects at the end of this file construct the four
@@ -185,7 +186,6 @@ extern "C" int Vec3_HorzDist(const Vector3* a, const Vector3* b);
 extern signed char data_0209f2f8;
 extern int _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void *pl, Vector3 *v, unsigned int a, int b,
                                                    unsigned int c, unsigned int d, unsigned int e);
-extern "C" void func_02012790(int);
 extern "C" void func_02012694(unsigned int, void*);
 extern s16 Vec3_HorzAngle(const Vector3 *v0, const Vector3 *v1);
 extern s16 Vec3_VertAngle(const Vector3 *v0, const Vector3 *v1);

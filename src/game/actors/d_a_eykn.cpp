@@ -123,7 +123,6 @@ s16 Vec3_VertAngle(const Vector3 *a, const Vector3 *b);
 void Matrix4x3_FromRotationXYZExt(Matrix4x3 *m, int x, int y, int z);
 void LoadBlueCoinModel(void *actor);
 void UnloadBlueCoinModel(void *actor);
-void func_0201267c(u32 id, void *pos); /* Sound::Play(3, id, pos) */
 void func_0200f760(void *actor, void *clsn);
 
 /* Fix12<int> by value. Scalar parameters: the member form size-DIFFs.
@@ -395,7 +394,7 @@ int daEykn_c::St_Die_Main()
     mAngleY = (s16)(mAngleY + mHorzSpeed);
     mDeathSpinAngle += mHorzSpeed;
     if (mDeathSpinAngle / 131070 != 0) {
-        func_0201267c(0x119, &mCamSpacePosX);
+        func_0201267c(0x119, &mCamSpacePos);
     }
     mDeathSpinAngle %= 131070;
 
@@ -484,7 +483,7 @@ int daEykn_c::St_Die_Main()
                 Particle::System::NewSimple(0x126, mPosX, mPosY, mPosZ);
             }
         }
-        func_0201267c(0xc4, &mCamSpacePosX);
+        func_0201267c(0xc4, &mCamSpacePos);
         if (data_0209f2f8 == 0x2e) {
             KillAndTrackInDeathTable();
         } else {
@@ -514,7 +513,7 @@ int daEykn_c::St_Die_Init()
     mSubState = 0;
     mSubTimer = kCircleFrames;
     mWobblePhase = 0;
-    func_0201267c(0x119, &mCamSpacePosX);
+    func_0201267c(0x119, &mCamSpacePos);
     mFlags &= ~1;
     mStateID = 2;
     mWobbleAmp = 0x500;
@@ -622,7 +621,7 @@ int daEykn_c::St_Attack_Main()
             else
                 param = 0;
             Spawn(kMrIBeam, param, pos, &rot, mAreaId, -1);
-            func_0201267c(0x165, &mCamSpacePosX);
+            func_0201267c(0x165, &mCamSpacePos);
             mCircleTimer = kCircleFrames;
             unk_212 = 0xf0;
             mShotTimer = 0x53;
