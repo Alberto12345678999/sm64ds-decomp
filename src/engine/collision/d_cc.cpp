@@ -18,6 +18,7 @@
 #include "dCc_c.h"
 #include "dActor_c.h"
 #include "nitro/fx/fx.h"
+#include "cstd.h"
 
 struct Player;
 struct Arg;
@@ -34,12 +35,6 @@ extern Fix12i Vec3_HorzLen(const Vector3 *v);
    arg->m2() is vtable slot 2, our GetPos, and it tests the flags word at
    +0x18). */
 int func_ov002_020caf98(struct Player *player, struct Arg *clsn);
-}
-
-namespace cstd {
-/* local extern: no header declares the cstd math namespace; src/cstd.cpp
-   defines fdiv(s32, s32). */
-int fdiv(int numerator, int denominator);
 }
 
 // @symbol _ZN5dCc_cC2Ev
