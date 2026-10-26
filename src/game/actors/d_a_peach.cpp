@@ -53,9 +53,6 @@ extern void Matrix4x3_ApplyInPlaceToRotationY(void *m, short angY);
 extern void Matrix4x3_ApplyInPlaceToRotationZ(void *m, short angZ);
 extern int data_020a0e68[];
 
-/* mesh collision */
-extern void dBgCh_Actr_UpdateContinuous_Veneer(void *c);
-
 /* actor plumbing */
 extern void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
     void *thiz, void *sm, void *mtx, int f, int g, unsigned int h);

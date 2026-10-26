@@ -426,7 +426,6 @@ struct dBgPiRaw {
     void *vt;
     struct dBgPiRawBody info;
 };
-void dBgCh_Actr_UpdateDiscreteNoLava_veneer(void *w);
 int _ZN4cstd4fdivEii(int a, int b);
 void _ZN5dBgPiD1Ev(struct dBgPiRaw *r);
 extern int data_02099368[];

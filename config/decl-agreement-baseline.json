@@ -10942,43 +10942,14 @@
         "param:#5 void *"
       ]
     },
+    "dBgCh_Actr_UpdateContinuous_Veneer": {
+      "include/dBgCh_Actr.h": [
+        "param:#1 struct dBgCh_Actr *"
+      ]
+    },
     "dBgCh_Actr_UpdateDiscreteNoLava_veneer": {
-      "src/game/actors/d_a_brq.cpp": [
-        "arity:1"
-      ],
-      "src/game/actors/d_a_btt_bk.cpp": [
-        "arity:1"
-      ],
-      "src/game/actors/d_a_coin.cpp": [
-        "arity:1"
-      ],
-      "src/game/actors/d_a_ey_bm.cpp": [
-        "arity:1"
-      ],
-      "src/game/actors/d_a_jgm.cpp": [
-        "arity:1"
-      ],
-      "src/game/actors/d_a_kpa_fire.cpp": [
-        "arity:1"
-      ],
-      "src/game/actors/d_a_krpa.cpp": [
-        "arity:1",
-        "return:int"
-      ],
-      "src/game/actors/d_a_pg_mthr.cpp": [
-        "arity:1"
-      ],
-      "src/game/actors/d_a_spd.cpp": [
-        "arity:1"
-      ],
-      "src/game/actors/d_a_tgz.cpp": [
-        "arity:1"
-      ],
-      "src/game/actors/d_a_yegg.cpp": [
-        "arity:1"
-      ],
-      "src/runtime/actor/d_enemy_base.cpp": [
-        "arity:1"
+      "include/dBgCh_Actr.h": [
+        "param:#1 struct dBgCh_Actr *"
       ]
     },
     "data_02082158": {
@@ -11292,6 +11263,16 @@
     "func_0201973c": {
       "src/game/player/Player.cpp": [
         "linkage:bare extern in a C++ TU"
+      ]
+    },
+    "func_020383e4": {
+      "include/dBgCh_Actr.h": [
+        "param:#1 struct dBgCh_Actr *"
+      ]
+    },
+    "func_020383f0": {
+      "include/dBgCh_Actr.h": [
+        "param:#1 struct dBgCh_Actr *"
       ]
     },
     "func_0203b9b4": {

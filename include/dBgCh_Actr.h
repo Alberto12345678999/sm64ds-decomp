@@ -169,6 +169,17 @@ typedef char dBgCh_Actr_size_must_be_0x1bc[
     sizeof(dBgCh_Actr) == 0x1bc ? 1 : -1];
 #endif
 
+/* The arm9 tail-call veneers over the Update* members, defined in
+   src/engine/collision/d_bg_ch_sph_crr_query.cpp. Each is its own ROM
+   function, and callers branch to it rather than to the member, so a call
+   has to name the veneer or its relocation moves. */
+extern "C" {
+void dBgCh_Actr_UpdateContinuous_Veneer(dBgCh_Actr *);     /* UpdateContinuous */
+void func_020383f0(dBgCh_Actr *);                          /* UpdateContinuousNoLava */
+void func_020383e4(dBgCh_Actr *);                          /* UpdateExtraContinous */
+void dBgCh_Actr_UpdateDiscreteNoLava_veneer(dBgCh_Actr *); /* UpdateDiscreteNoLava */
+}
+
 #else
 
 /* The C view is a compatibility shim for the .c translation units that have

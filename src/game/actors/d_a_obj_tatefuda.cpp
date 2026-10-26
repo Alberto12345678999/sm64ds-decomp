@@ -179,7 +179,6 @@ extern int func_ov002_020bec84(void *player, unsigned int i);
 extern int func_ov002_020bec9c(void *player, unsigned int a, int b, int d, unsigned short e);
 extern void _ZN6Player12ShowMessage2ER7fBase_cjPK7Vector3hh( void *player, void *actor, unsigned int msg, struct Vector3 *pos, unsigned int a, unsigned int b);
 extern void func_02012790(int id);
-extern void dBgCh_Actr_UpdateContinuous_Veneer(void* p);
 extern void _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void* thiz, void* v, unsigned a, int b, unsigned c, unsigned d, unsigned e);
 extern void _Z14ApproachLinearRiii(int* p, int a, int b);
 extern "C" unsigned int data_0209b454;
@@ -628,7 +627,6 @@ void daObjTatefuda_c::InitDropped()
 
 // @symbol _ZN15daObjTatefuda_c7DroppedEv
 bool ApproachLinear(short &value, short target, short step);
-extern "C" void dBgCh_Actr_UpdateContinuous_Veneer(void* p);
 
 /* DROPPED, update: turn the X angle toward 0x4000 (a quarter turn) by at most
  * 0x1000 per frame, move, and Kill the sign if it touched the ground, a wall or

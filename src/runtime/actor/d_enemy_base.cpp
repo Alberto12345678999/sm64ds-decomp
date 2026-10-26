@@ -114,16 +114,11 @@ dEnemyBase_c::~dEnemyBase_c()
    On a floor that does not limit movement, the vertical velocity is re-derived
    so the motion stays in the floor plane. */
 // @symbol _ZN12dEnemyBase_c12UpdateWMClsnER10dBgCh_Actrj
-/* local extern: the four arm9 tail-call veneers over dBgCh_Actr's Update*
-   methods (src/engine/collision/d_bg_ch_sph_crr_query.cpp) have no header.
-   The calls must reach the veneers, not the members, or every relocation
-   moves. func_020383f0 forwards to UpdateContinuousNoLava and func_02038414
-   to UpdateDiscreteNoLava_2. */
+/* local extern: func_02038414, the tail-call veneer to
+   dBgCh_Actr::UpdateDiscreteNoLava_2, is the one veneer dBgCh_Actr.h does
+   not declare -- decl_common.h already spells it with a void *. */
 extern "C" {
-extern void func_020383f0(dBgCh_Actr *);
-extern void dBgCh_Actr_UpdateDiscreteNoLava_veneer(dBgCh_Actr *);
 extern void func_02038414(dBgCh_Actr *);
-extern void dBgCh_Actr_UpdateContinuous_Veneer(dBgCh_Actr *);
 }
 
 /* local extern: no header declares the cstd division routines. */

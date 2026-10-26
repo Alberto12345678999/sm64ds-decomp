@@ -58,7 +58,6 @@ void Vec3_LslInPlace(Vector3 *v, int sh);
 void Matrix4x3_FromRotationY(void *m, int angle);
 void _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_S5_j(
     void *self, void *sm, void *mtx, int r, int t5, int t6, unsigned int u);
-void dBgCh_Actr_UpdateDiscreteNoLava_veneer(dBgCh_Actr *w);
 void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *self, void *actor, int a, int b, unsigned int c, unsigned int d);
 /* Parameter names keep this TU's @NNN. */
 typedef void BgchInitAt_(void *self, void *actor, int a, int b, void *v, int c);

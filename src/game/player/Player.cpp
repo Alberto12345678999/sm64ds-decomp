@@ -3393,7 +3393,6 @@ int Player::func_ov002_020c25a8(int arg1)
     extern void _ZN10dBgCh_Actr13SetLimMovFlagEv(void*);
     extern void func_020355c8(void*);
     extern void func_020355b4(void*);
-    extern void func_020383e4(void*);
     extern void func_ov002_020eed24(void*, void*);
     extern void _ZN10dBgCh_Actr15ClearGroundFlagEv(void*);
     extern int _ZNK10dBgCh_Actr8IsOnWallEv(void*);

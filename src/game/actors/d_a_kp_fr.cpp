@@ -243,8 +243,6 @@ void daKpFr_c::func_ov070_02121e14() {
  * method. FX_MUL's 64-bit product is the smull the ROM uses. */
 namespace cstd { int fdiv(int a, int b); }
 
-extern "C" void dBgCh_Actr_UpdateContinuous_Veneer(void* c);
-
 void daKpFr_c::func_ov070_02121d50(void* vclsn) {
     dBgCh_Actr* clsn = (dBgCh_Actr*)vclsn;
     Fix12i normal[3];

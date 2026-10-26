@@ -94,7 +94,6 @@ enum ChairSfxId {
 extern "C" {
 void func_0200f760(void *self, void *cyl);
 void func_0201267c(unsigned int id, void *pos);
-void dBgCh_Actr_UpdateContinuous_Veneer(void *clsn);
 void Vec3_Sub(Vec3 *res, Vec3 *v0, Vec3 *v1);
 s16 atan2_hold_d_a_chair_1(s32 y, s32 x);
 s32 Vec3_HorzLen(const Vector3 *v);

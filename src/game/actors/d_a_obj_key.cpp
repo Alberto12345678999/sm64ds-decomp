@@ -201,7 +201,6 @@ extern ObjKeyStateTable data_ov089_02132cec;
  * temporary size-DIFFs (see the file comment). The ROM calls the
  * UpdateContinuous veneer, not the method. */
 extern "C" {
-extern void dBgCh_Actr_UpdateContinuous_Veneer(char *p);
 extern void *data_0209f318;
 extern int data_0209b454;
 extern void *d_a_obj_keyNewHold(u32 a, u32 b, int c, int d, int e, void *f, void *g);
@@ -485,7 +484,7 @@ void daObjKey_c::StateStarJump()
         mParticleID[0] = (u32)Particle::System::New(mParticleID[0], FX_FALL, v.x, v.y, v.z, 0, 0);
     }
     if (mStep >= 2)
-        dBgCh_Actr_UpdateContinuous_Veneer((char *)&mWithMeshClsn);
+        dBgCh_Actr_UpdateContinuous_Veneer(&mWithMeshClsn);
 
     switch (mStep) {
     case 0:
@@ -626,7 +625,7 @@ void daObjKey_c::StateDrop()
     dCamera_c *cam = (dCamera_c *)data_0209f318;
     Vector3 v;
 
-    dBgCh_Actr_UpdateContinuous_Veneer((char *)&mWithMeshClsn);
+    dBgCh_Actr_UpdateContinuous_Veneer(&mWithMeshClsn);
 
     switch (mStep) {
     case 0:

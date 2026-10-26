@@ -70,7 +70,6 @@ extern "C" {
 extern TikuwaModelFilePtr gRcTikuwaModelFile;
 extern TikuwaCollisionFilePtr gRcTikuwaCollisionFile;
 
-void dBgCh_Actr_UpdateContinuous_Veneer(dBgCh_Actr *clsn);
 extern void hold_d_a_obj_rc_tikuwa(dBgW_KcMbg *self, void *kcl, Matrix4x3 *mat, int scale, s16 angY,
                                    void *clps);
 void func_020393d4(dBgW *bgw, void *fn);

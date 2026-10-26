@@ -60,7 +60,6 @@ void func_ov002_020b2c44(daFeather_c *c);
    ROM is Fix12<int>. */
 void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(dCcAc_c *self, dActor_c *a, Fix12i b, Fix12i c, unsigned int d, unsigned int e);
 u32 d_a_featherNewHold(u32 kind, u32 sub, int x, int y, int z, const Vector3_16 *vec, void *cb);
-void dBgCh_Actr_UpdateContinuous_Veneer(void* p);
 int _Z15ApproachLinear2Rsss(short* ref, short target, short rate);
 void _Z14ApproachLinearRiii(int* ref, int target, int rate);
 u8 DecIfAbove0_Byte(u8* p);
