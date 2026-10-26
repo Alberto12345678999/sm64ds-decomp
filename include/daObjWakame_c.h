@@ -55,7 +55,7 @@
  */
 struct daObjWakame_c : dActor_c {
     u32       unk_0d0;                  /* 0x0d0 -- not accessed by this TU */
-    dExtAnmModel_c mModelAnim;          /* 0x0d4 -- model and its animation */
+    dExtAnmModel_c mAnmModel;           /* 0x0d4 -- model and its animation */
 
     /* All four are overrides of fBase_c/dActor_c, not new members -- see the
        vtable diff above. `virtual` is redundant to the compiler and costs no
@@ -88,7 +88,7 @@ struct daObjWakame_c : dActor_c {
        mov r0,r4 / bl _ZN8dActor_cD2Ev / mov r0,r4 / pop / bx lr`: one vptr store,
        then the member destroyed, then the tail into the base destructor. All
        three are things the compiler emits for an empty body -- the member call
-       BECAUSE mModelAnim has a destructor of its own, which is exactly why this
+       BECAUSE mAnmModel has a destructor of its own, which is exactly why this
        class's D1 is 0x30 bytes where a scalar-only sibling's is 0x24. Writing
        anything between the braces would add code the cartridge does not have. */
     virtual ~daObjWakame_c() {}         /* slots 16 (D1), 17 (D0) */

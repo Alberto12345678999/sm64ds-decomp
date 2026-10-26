@@ -484,7 +484,7 @@ int daBtfly_c::Render()
     if (mState == 4)
         return 1;
     if (mUseAnimModel != 0)
-        mModelAnim.Render(0);
+        mAnmModel.Render(0);
     else
         mModel.Render((Vector3 *)&mScaleX);
     return 1;
@@ -525,9 +525,9 @@ int daBtfly_c::Behavior()
         mAngleY = mPrevAngleY;
         Matrix4x3_ApplyInPlaceToRotationY(&data_020a0e68, mAngleY);
         if (mUseAnimModel != 0) {
-            *(Mtx *)&mModelAnim.mat4x3 = *(Mtx *)&data_020a0e68;
-            DropShadowRadHeight(mShadowModel1, mModelAnim.mat4x3, 0x14000, 0x12c000, 0xf);
-            mModelAnim.Advance();
+            *(Mtx *)&mAnmModel.mat4x3 = *(Mtx *)&data_020a0e68;
+            DropShadowRadHeight(mShadowModel1, mAnmModel.mat4x3, 0x14000, 0x12c000, 0xf);
+            mAnmModel.Advance();
         } else {
             *(Mtx *)&mModel.mat4x3 = *(Mtx *)&data_020a0e68;
             DropShadowRadHeight(mShadowModel2, mModel.mat4x3, 0x64000, 0x12c000, 0xf);
@@ -544,9 +544,9 @@ int daBtfly_c::InitResources()
     dExtSimpleModel_c::LoadFile(data_ov100_02148668);
     void *bmd = dExtSimpleModel_c::LoadFile(gButterflyModelFile);
 
-    if (mModelAnim.SetFile((BMD_File *)bmd, 1, 1) == 0)
+    if (mAnmModel.SetFile((BMD_File *)bmd, 1, 1) == 0)
         return 0;
-    mModelAnim.SetAnim((BCA_File *)gButterflyFlyAnimationFile.filePtr, 0, 0x1000, 0);
+    mAnmModel.SetAnim((BCA_File *)gButterflyFlyAnimationFile.filePtr, 0, 0x1000, 0);
     if (mShadowModel1.InitCylinder() == 0)
         return 0;
     if (mModel.SetFile((BMD_File *)data_ov100_02148668.filePtr, 1, 1) == 0)
@@ -581,9 +581,9 @@ int daBtfly_c::InitResources()
     mHomePosZ = mPosZ;
 
     int r = RandomIntInternal(&data_0209e650);
-    int fc = mModelAnim.GetFrameCount();
+    int fc = mAnmModel.GetFrameCount();
     u32 rem = (u32)r % (u32)fc;
-    mModelAnim.currFrame = (rem << 16) >> 4;
+    mAnmModel.currFrame = (rem << 16) >> 4;
 
     mScale = 0x1000;
     s32 spd = mScale;

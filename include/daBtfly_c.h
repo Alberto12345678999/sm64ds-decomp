@@ -43,7 +43,7 @@ struct daBtfly_c : dActor_c {
        stopped short of the object, so the member also takes over unk_0f0 (+0x1c = mat4x3),
        mAnimation (+0x50 = the dExtFrameCtrl_c base), which the header declared separately inside
        it. */
-    dExtAnmModel_c mModelAnim; /* 0x0d4 */
+    dExtAnmModel_c mAnmModel; /* 0x0d4 */
     /* dExtSimpleModel_c member, named by _ZN17dExtSimpleModel_cD1Ev at +0x138 -- a relocation the ROM build checks.
        D1 and not D2, so it is this type and not an inlined base. The marker's pad stopped
        short of the object, so the member also takes over unk_154 (+0x1c = mat4x3), which
@@ -100,7 +100,7 @@ struct daBtfly_c : dActor_c {
                                  param1 bits 0xc0. Only kind 1 becomes actor
                                  0x114 in State6; Behavior skips
                                  all movement while this is 0. */
-    u8  mUseAnimModel;      /* 0x3f1 -- 1: draw mModelAnim with mShadowModel1
+    u8 mUseAnimModel;       /* 0x3f1 -- 1: draw mAnmModel with mShadowModel1
                                  and advance the animation. 0: draw mModel with
                                  mShadowModel2 and do not. Set by
                                  InitResources, cleared by

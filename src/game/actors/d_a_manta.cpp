@@ -154,7 +154,7 @@ int daManta_c::func_ov090_021327e4()
     Vector3 num1;
     Vector3 num2;
 
-    mModelAnim.Advance();
+    mAnmModel.Advance();
     func_ov090_02132730();
 
     if (mRingCount < MANTA_RING_GOAL) {
@@ -227,11 +227,11 @@ int daManta_c::func_ov090_021327e4()
 // @symbol _ZN9daManta_c19func_ov090_02132a58Ev
 int daManta_c::func_ov090_02132a58()
 {
-    mModelAnim.SetAnim((BCA_File *)data_ov090_0213452c.filePtr, 0, 0x1000, 0);
+    mAnmModel.SetAnim((BCA_File *)data_ov090_0213452c.filePtr, 0, 0x1000, 0);
     mHitRing = 0;
     mRingWrite = 0;
     mRingRead = 0;
-    mModelAnim.speed = 0x1000;
+    mAnmModel.speed = 0x1000;
     int i;
     for (i = 0; i < MANTA_RING_SLOTS; i++)
         mRingIDs[i] = 0;
@@ -260,14 +260,12 @@ void daManta_c::func_ov090_02132b14()
     Matrix4x3_FromTranslation(&data_020a0e68, scaled.x, scaled.y, scaled.z);
     Matrix4x3_ApplyInPlaceToRotationXYZExt(
         &data_020a0e68, mAngleX, mAngleY, mAngleZ);
-    mModelAnim.mat4x3 = data_020a0e68;
+    mAnmModel.mat4x3 = data_020a0e68;
     mRingPos.x = 0;
     mRingPos.y = 0;
     mRingPos.z = 0;
-    data_020a0e68 = mModelAnim.mat4x3;
-    MulMat4x3Mat4x3(
-        (const int *)(mModelAnim.data.transforms + 3),
-        data_020a0e68.m, data_020a0e68.m);
+    data_020a0e68 = mAnmModel.mat4x3;
+    MulMat4x3Mat4x3((const int *)(mAnmModel.data.transforms + 3), data_020a0e68.m, data_020a0e68.m);
     mRingPos.x = data_020a0e68.m[9];
     mRingPos.y = data_020a0e68.m[10];
     mRingPos.z = data_020a0e68.m[11];
@@ -294,7 +292,7 @@ void daManta_c::OnPendingDestroy()
 // @symbol _ZN9daManta_c6RenderEv
 int daManta_c::Render()
 {
-    mModelAnim.Render(0);
+    mAnmModel.Render(0);
     return 1;
 }
 
@@ -353,7 +351,7 @@ int daManta_c::Behavior()
 // @symbol _ZN9daManta_c13InitResourcesEv
 int daManta_c::InitResources()
 {
-    mModelAnim.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(data_ov090_02134524), 1, -1);
+    mAnmModel.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(data_ov090_02134524), 1, -1);
     dExtSimpleModel_c::LoadFile(data_ov002_0210da10);
     dExtSimpleModel_c::LoadFile(data_ov002_0210d9a8);
     dExtFrameCtrl_c::LoadFile(data_ov090_0213452c);

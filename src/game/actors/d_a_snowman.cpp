@@ -522,7 +522,7 @@ int daSnowman_c::func_ov081_02124b08()
     this->mVertSpeed = 0xa000;
     this->mVertAccel = -0x4000;
     this->mInitAngleY = 0;
-    this->mModelAnim.SetAnim((BCA_File *)data_ov081_02128da8.filePtr, 0, 0x1000, 0);
+    this->mAnmModel.SetAnim((BCA_File *)data_ov081_02128da8.filePtr, 0, 0x1000, 0);
     return 1;
 }
 
@@ -540,7 +540,7 @@ int daSnowman_c::func_ov081_02124b98()
             target->mPosX = this->mHandPos.x;
             target->mPosY = this->mHandPos.y;
             target->mPosZ = this->mHandPos.z;
-            if (this->mModelAnim.WillHitFrame(0xa) != 0) {
+            if (this->mAnmModel.WillHitFrame(0xa) != 0) {
                 in.x = 0; in.y = 0; in.z = 0x1e000;
                 out.x = 0; out.y = 0; out.z = 0;
                 v[0].x = 0; v[0].y = 0; v[0].z = 0;
@@ -569,7 +569,7 @@ int daSnowman_c::func_ov081_02124b98()
             }
         }
     }
-    if (this->mModelAnim.Finished() != 0) {
+    if (this->mAnmModel.Finished() != 0) {
         func_ov081_02125488(&data_ov081_02128e14);
     }
     return 1;
@@ -579,7 +579,7 @@ int daSnowman_c::func_ov081_02124b98()
 /* State "throw", enter. */
 int daSnowman_c::func_ov081_02124d14()
 {
-    this->mModelAnim.SetAnim((BCA_File *)data_ov081_02128db8.filePtr, 0x40000000, 0x1000, 0);
+    this->mAnmModel.SetAnim((BCA_File *)data_ov081_02128db8.filePtr, 0x40000000, 0x1000, 0);
     return 1;
 }
 
@@ -634,7 +634,7 @@ int daSnowman_c::func_ov081_02124e64()
 /* State "face the player", enter. */
 int daSnowman_c::func_ov081_02124ec0()
 {
-    this->mModelAnim.SetAnim((BCA_File *)gSnowmanWaitAnimationFile.filePtr, 0, 0x1000, 0);
+    this->mAnmModel.SetAnim((BCA_File *)gSnowmanWaitAnimationFile.filePtr, 0, 0x1000, 0);
     if (this->mType == 2)
         this->mFlags = 0x18000002;
     else
@@ -698,7 +698,7 @@ int daSnowman_c::func_ov081_02125068()
     } else if (v == 2) {
         this->mFlags = 0x8000002;
     }
-    this->mModelAnim.SetAnim((BCA_File *)gSnowmanWaitAnimationFile.filePtr, 0, 0x1000, 0);
+    this->mAnmModel.SetAnim((BCA_File *)gSnowmanWaitAnimationFile.filePtr, 0, 0x1000, 0);
     return 1;
 }
 
@@ -714,8 +714,8 @@ int daSnowman_c::func_ov081_021250c8()
     if (this->mWithMeshClsn.IsOnGround()) {
         func_02012694(0xe5, &this->mCamSpacePosX);
         func_ov081_02125488(&data_ov081_02128e54);
-        this->mModelAnim.SetAnim((BCA_File *)gSnowmanJumpEdAnimationFile.filePtr, 0x40000000,
-                                 0x1000, 0);
+        this->mAnmModel.SetAnim((BCA_File *)gSnowmanJumpEdAnimationFile.filePtr, 0x40000000, 0x1000,
+                                0);
         return 1;
     }
 
@@ -775,8 +775,8 @@ int daSnowman_c::func_ov081_02125208()
             this->mStep = 0;
             this->mVertSpeed = 0x3a000;
             this->mVertAccel = -0x4000;
-            this->mModelAnim.SetAnim((BCA_File *)gSnowmanJumpStAnimationFile.filePtr, 0x40000000,
-                                     0x1000, 0);
+            this->mAnmModel.SetAnim((BCA_File *)gSnowmanJumpStAnimationFile.filePtr, 0x40000000,
+                                    0x1000, 0);
             func_02012694(0xdd, &this->mCamSpacePosX);
             func_ov081_02125488(&data_ov081_02128e74);
         }
@@ -810,7 +810,7 @@ int daSnowman_c::func_ov081_0212538c()
         this->mStep = 1;
     }
     this->mStateTimer = 0xa;
-    this->mModelAnim.SetAnim((BCA_File *)gSnowmanWaitAnimationFile.filePtr, 0, 0x1000, 0);
+    this->mAnmModel.SetAnim((BCA_File *)gSnowmanWaitAnimationFile.filePtr, 0, 0x1000, 0);
     return 1;
 }
 
@@ -833,7 +833,7 @@ void daSnowman_c::func_ov081_021254d8()
     int t;
     dActor_c *actor;
 
-    this->mModelAnim.UpdateVerts();
+    this->mAnmModel.UpdateVerts();
 
     src[0] = this->mPosX;
     t = this->mPosY;
@@ -845,7 +845,7 @@ void daSnowman_c::func_ov081_021254d8()
 
     Matrix4x3_ApplyInPlaceToRotationXYZExt(&data_020a0e68,
         this->mAngleX, this->mAngleY, this->mAngleZ);
-    this->mModelAnim.mat4x3 = data_020a0e68;
+    this->mAnmModel.mat4x3 = data_020a0e68;
 
     if (this->mCapUniqueID != 0) {
         this->mCapPos.x = 0;
@@ -853,7 +853,8 @@ void daSnowman_c::func_ov081_021254d8()
         this->mCapPos.z = 0;
         actor = dActor_c::FindWithID(this->mCapUniqueID);
         if (actor != 0) {
-            MulMat4x3Mat4x3(&this->mModelAnim.data.transforms[5], &this->mModelAnim.mat4x3, &this->mCapMatrix);
+            MulMat4x3Mat4x3(&this->mAnmModel.data.transforms[5], &this->mAnmModel.mat4x3,
+                            &this->mCapMatrix);
 
             this->mCapPos.x = data_020a0e68.m[9];
             this->mCapPos.y = data_020a0e68.m[10];
@@ -875,8 +876,8 @@ void daSnowman_c::func_ov081_021254d8()
     this->mHandPos.x = 0;
     this->mHandPos.y = 0;
     this->mHandPos.z = 0;
-    data_020a0e68 = this->mModelAnim.mat4x3;
-    MulMat4x3Mat4x3(&this->mModelAnim.data.transforms[3], &data_020a0e68, &data_020a0e68);
+    data_020a0e68 = this->mAnmModel.mat4x3;
+    MulMat4x3Mat4x3(&this->mAnmModel.data.transforms[3], &data_020a0e68, &data_020a0e68);
     Matrix4x3_ApplyInPlaceToTranslation(&data_020a0e68, 0xc000, -0x1000, 0);
 
     this->mHandPos.x = data_020a0e68.m[9];
@@ -922,11 +923,11 @@ int daSnowman_c::Render()
     if (s == 3) return 1;
     if (s == 2) {
         if (mCapUniqueID)
-            mModelAnim.HideMaterial(0, 2);
+            mAnmModel.HideMaterial(0, 2);
         else
-            mModelAnim.ShowMaterial(0, 2);
+            mAnmModel.ShowMaterial(0, 2);
     }
-    mModelAnim.dExtSimpleModel_c::Render(&mScale);
+    mAnmModel.dExtSimpleModel_c::Render(&mScale);
     return 1;
 }
 
@@ -950,7 +951,8 @@ int daSnowman_c::Behavior()
         }
         return 1;
     }
-    if (UpdateKillByInvincibleChar(mWithMeshClsn, mModelAnim, 3)) return 1;
+    if (UpdateKillByInvincibleChar(mWithMeshClsn, mAnmModel, 3))
+        return 1;
     if (mDeathState != 0) {
         if (UpdateDeath(mWithMeshClsn) && mType == 2) {
             dActor_c::Spawn(kSnowmanId, kSpawnWatcher, mHomePos, 0, mAreaId, -1);
@@ -1002,8 +1004,8 @@ int daSnowman_c::Behavior()
         if (p != 0 && p->mIsVanish == 0)
             mdCcAcPos_c.Update();
     }
-    mModelAnim.speed = 0x1000;
-    mModelAnim.Advance();
+    mAnmModel.speed = 0x1000;
+    mAnmModel.Advance();
     return 1;
 }
 
@@ -1012,7 +1014,7 @@ int daSnowman_c::InitResources()
 {
     Vector3 v;
 
-    mModelAnim.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(data_ov081_02128db0), 1, -1);
+    mAnmModel.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(data_ov081_02128db0), 1, -1);
     dExtSimpleModel_c::LoadFile(data_ov081_02128d90);
     mShadowModel.InitCylinder();
     dExtFrameCtrl_c::LoadFile(gSnowmanWaitAnimationFile);

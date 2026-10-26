@@ -300,7 +300,7 @@ void daKpaFire_c::func_ov060_02117624() {
  *
  * Bowser's position goes through v[] first (volatile, so the reads keep their
  * order). Yaw is the unsigned half of mAngleY. Frame count is the
- * dExtFrameCtrl_c inside mModelAnim. */
+ * dExtFrameCtrl_c inside mAnmModel. */
 void daKpaFire_c::func_ov060_0211747c() {
     daKpa_c *koopa;
     int n;
@@ -337,7 +337,7 @@ void daKpaFire_c::func_ov060_0211747c() {
     v[2] = kpaPos[2];
     t = data_ov060_02119364;
 
-    if (n == koopa->mModelAnim.GetFrameCount())
+    if (n == koopa->mAnmModel.GetFrameCount())
         n = 0;
 
     t += n * 5;

@@ -39,8 +39,8 @@ struct daC_Jugem_c : dEnemyBase_c {
        SetState installs one and runs its enter; Behavior calls the run. */
     typedef int (daC_Jugem_c::*StateFn)();
 
-    dExtAnmModel_c mModelAnim1;                         /* 0x110 */
-    dExtAnmModel_c mModelAnim2;                         /* 0x174 */
+    dExtAnmModel_c mAnmModel1;                          /* 0x110 */
+    dExtAnmModel_c mAnmModel2;                          /* 0x174 */
     dExtAnmTexPat_c mTextureSequence;                   /* 0x1d8 */
     StateFn                     *mState;                /* 0x1ec */
     dExtShadowModel_c            mShadowModel1;         /* 0x1f0 */

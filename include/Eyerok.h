@@ -58,7 +58,7 @@ struct EyerokState;
 
 struct Eyerok : dBgActor_c {
     dCcAcPos_c mdCcAcPos_c;                                 /* 0x320 */
-    dExtBlendAnmModel_c mBlendModelAnim;                    /* 0x360 */
+    dExtBlendAnmModel_c mBlendAnmModel;                     /* 0x360 */
     dExtSimpleModel_c mModel2;                              /* 0x3d0 */
     dExtShadowModel_c mShadowModel;                         /* 0x420 */
     dExtAnmTexPat_c mTextureSequence;                       /* 0x448 */

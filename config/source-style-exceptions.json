@@ -806,7 +806,7 @@
       "rule": "raw-offset",
       "match": "(dExtFrameCtrl_c*)(c+0x5034",
       "count": 1,
-      "reason": "FlashSync reads mEspModel's mModelAnim frame control (0x4fd8 + 0xc + 0x50). The ROM pool-loads 0x5034 as one constant, and spelling it as that member grows FlashSync from 0xb4 to 0xb8 bytes (the comment at the call says so). The offset was already the untyped this of a hand-spelled _ZNK15dExtFrameCtrl_c12WillHitFrameEi call; this change only turns that call into a member call. Follow-up: drop the offset if a member spelling that keeps the single pooled constant is found.",
+      "reason": "FlashSync reads mEspModel's mAnmModel frame control (0x4fd8 + 0xc + 0x50). The ROM pool-loads 0x5034 as one constant, and spelling it as that member grows FlashSync from 0xb4 to 0xb8 bytes (the comment at the call says so). The offset was already the untyped this of a hand-spelled _ZNK15dExtFrameCtrl_c12WillHitFrameEi call; this change only turns that call into a member call. Follow-up: drop the offset if a member spelling that keeps the single pooled constant is found.",
       "evidence": "ov006/dMg3DEspAnimSet_c 68/68 TEXT-VERIFIED (tubuild verify --no-write); the base spelling was _ZNK15dExtFrameCtrl_c12WillHitFrameEi(c + 0x5034, 0)"
     },
     {

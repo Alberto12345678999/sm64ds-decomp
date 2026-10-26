@@ -41,7 +41,7 @@ enum { daWanwan2_NUM_LINKS = 6 };
 struct daWanwan2_c : dEnemyBase_c {
     dCcAcPos_c mdCcAcPos_c;  /* 0x110 */
     dBgCh_Actr        mWithMeshClsn;      /* 0x150 */
-    dExtAnmModel_c mModelAnim;    /* 0x30c -- the chomp's body; its mat4x3 is the body matrix */
+    dExtAnmModel_c mAnmModel;     /* 0x30c -- the chomp's body; its mat4x3 is the body matrix */
     dExtSimpleModel_c mModels[6]; /* 0x370 -- one per chain link; mat4x3 is that link's matrix */
     dExtShadowModel_c         mShadowModels[6];                     /* 0x550 -- the links' drop shadows */
     dExtShadowModel_c         mShadowModel;       /* 0x640 -- the body's drop shadow */

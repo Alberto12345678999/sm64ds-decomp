@@ -52,7 +52,7 @@ struct daKinopio_c : dActor_c {
 
     u8 mPadD0[0x4];               /* 0x0d0 */
     dCcAc_c mCollider;             /* 0x0d4 */
-    dExtAnmModel_c mModelAnim;     /* 0x108 */
+    dExtAnmModel_c mAnmModel;      /* 0x108 */
     dExtShadowModel_c mShadowModel;      /* 0x16c */
     Matrix4x3 mCapTransform;       /* 0x194 */
     Matrix4x3 mShadowTransform;    /* 0x1c4 */

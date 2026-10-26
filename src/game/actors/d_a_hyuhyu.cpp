@@ -193,10 +193,10 @@ int daHyuhyu_c::InitResources()
     dExtSimpleModel_c::LoadFile(data_ov002_0210da40);
     dExtSimpleModel_c::LoadFile(data_ov002_0210d9a0);
     dExtSimpleModel_c::LoadFile(data_ov002_0210d9c0);
-    mModelAnim.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(data_ov091_02135674), 1, -1);
+    mAnmModel.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(data_ov091_02135674), 1, -1);
     dExtFrameCtrl_c::LoadFile(data_ov091_0213567c);
     dExtFrameCtrl_c::LoadFile(data_ov091_02135684);
-    mModelAnim.speed = 0x1000;
+    mAnmModel.speed = 0x1000;
     func_ov091_02134044(&data_ov091_021356d0);
     return 1;
 }
@@ -243,7 +243,7 @@ int daHyuhyu_c::Behavior()
         return 1;
     }
 
-    mModelAnim.Advance();
+    mAnmModel.Advance();
     func_ov091_02134094();
     return 1;
 }
@@ -255,7 +255,7 @@ int daHyuhyu_c::Render()
         return 1;
     if (IsInYoshiMouth(this))
         return 1;
-    mModelAnim.Render(0);
+    mAnmModel.Render(0);
     return 1;
 }
 
@@ -287,7 +287,7 @@ void daHyuhyu_c::func_ov091_02134094()
     Matrix4x3_FromTranslation(&data_020a0e68, pos.x, pos.y, pos.z);
     Matrix4x3_ApplyInPlaceToRotationXYZExt(&data_020a0e68,
         this->mAngleX, this->mAngleY, this->mAngleZ);
-    this->mModelAnim.mat4x3 = data_020a0e68;
+    this->mAnmModel.mat4x3 = data_020a0e68;
 }
 
 // @symbol _ZN10daHyuhyu_c19func_ov091_02134044EP16daHyuhyu_c_State
@@ -305,7 +305,7 @@ int daHyuhyu_c::func_ov091_02134044(daHyuhyu_c_State *state)
 /* Cloud, waiting: enter. Loop the wait animation. */
 int daHyuhyu_c::func_ov091_0213400c()
 {
-    this->mModelAnim.SetAnim((BCA_File *)data_ov091_02135684.filePtr, 0, 0x1000, 0);
+    this->mAnmModel.SetAnim((BCA_File *)data_ov091_02135684.filePtr, 0, 0x1000, 0);
     return 1;
 }
 
@@ -339,7 +339,7 @@ int daHyuhyu_c::func_ov091_02133f60()
 /* Cloud, blowing: enter. Play the blow animation once. */
 int daHyuhyu_c::func_ov091_02133f24()
 {
-    this->mModelAnim.SetAnim((BCA_File *)data_ov091_0213567c.filePtr, 0x40000000, 0x1000, 0);
+    this->mAnmModel.SetAnim((BCA_File *)data_ov091_0213567c.filePtr, 0x40000000, 0x1000, 0);
     return 1;
 }
 
@@ -360,11 +360,11 @@ int daHyuhyu_c::func_ov091_02133d30()
     pos.y = this->mPosY;
     pos.z = this->mPosZ;
 
-    u16 frame = (u16)(this->mModelAnim.currFrame >> 12);
+    u16 frame = (u16)(this->mAnmModel.currFrame >> 12);
     if (frame == 0x1f)
         func_02012694(0x164, &this->mCamSpacePosX);
 
-    if ((u16)(this->mModelAnim.currFrame >> 12) > 0x1e) {
+    if ((u16)(this->mAnmModel.currFrame >> 12) > 0x1e) {
         rot.x = data_02082214[((u16)this->mAngleY >> 4) * 2];
         rot.y = 0;
         rot.z = data_02082214[((u16)this->mAngleY >> 4) * 2 + 1];
@@ -376,7 +376,7 @@ int daHyuhyu_c::func_ov091_02133d30()
         this->mGustParticle2 = Particle::System::New(this->mGustParticle2, 0x73, pos.x, pos.y,
                                                      pos.z, (const Vector3_16f *)(&rot), 0);
 
-        if (!((u16)(this->mModelAnim.currFrame >> 12) & 1)) {
+        if (!((u16)(this->mAnmModel.currFrame >> 12) & 1)) {
             gust = dActor_c::Spawn(0xe7, 1, this->mPos, 0, this->mAreaId, -1);
             if (gust != 0) {
                 player = this->ClosestPlayer();
@@ -400,7 +400,7 @@ int daHyuhyu_c::func_ov091_02133d30()
         }
     }
 
-    if (this->mModelAnim.Finished() != 0) {
+    if (this->mAnmModel.Finished() != 0) {
         this->mStateTimer = 100;
         func_ov091_02134044(&data_ov091_021356d0);
     }

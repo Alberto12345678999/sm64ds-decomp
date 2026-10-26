@@ -37,7 +37,7 @@
  *   handle constructs through func_02017acc; the animation handle
  *   constructs through SharedFilePtr::Construct.
  * - common.h is not first: this file wants math/Matrix.h's Matrix4x3 so
- *   mModelAnim.mat4x3.t is a Vector3.
+ *   mAnmModel.mat4x3.t is a Vector3.
  * - No Player.h / dCamera_c.h.
  */
 
@@ -87,7 +87,7 @@ void func_ov002_020bc488(daObjWakame_c *t);
  * 0x020bc5ac loads 312 = 0x138 -- the class's own size -- into the header's
  * inline operator new; 0x020bc5bc calls dActor_c's C2, the store at
  * 0x020bc5c8 lays down this class's vptr, and 0x020bc5d0 constructs
- * mModelAnim. The null check is the one `new` itself emits. */
+ * mAnmModel. The null check is the one `new` itself emits. */
 // @symbol daObjWakame_c_classInit
 extern "C" daObjWakame_c *daObjWakame_c_classInit(void)
 {
@@ -100,10 +100,10 @@ extern "C" daObjWakame_c *daObjWakame_c_classInit(void)
 s32 daObjWakame_c::InitResources()
 {
     void *m = dExtSimpleModel_c::LoadFile(data_ov002_0210e0dc);
-    mModelAnim.SetFile((BMD_File *)m, 1, -1);
+    mAnmModel.SetFile((BMD_File *)m, 1, -1);
     void *a = dExtFrameCtrl_c::LoadFile(data_ov002_0210e0d4);
     /* MEASURED: by-value Fix12<int> speed is wall 6az. */
-    mModelAnim.SetAnim((BCA_File *)a, 0, 0x1000, 0);
+    mAnmModel.SetAnim((BCA_File *)a, 0, 0x1000, 0);
     func_ov002_020bc488(this);
     return 1;
 }
@@ -117,7 +117,7 @@ s32 daObjWakame_c::InitResources()
    a seaweed's whole per-frame behaviour is to advance its animation. */
 s32 daObjWakame_c::Behavior()
 {
-    mModelAnim.Advance();
+    mAnmModel.Advance();
     return 1;
 }
 
@@ -131,7 +131,7 @@ s32 daObjWakame_c::Behavior()
    spelling and the null argument is Render's `const Vector3 *scale`. */
 s32 daObjWakame_c::Render()
 {
-    mModelAnim.Render(0);
+    mAnmModel.Render(0);
     return 1;
 }
 
@@ -152,10 +152,10 @@ s32 daObjWakame_c::CleanupResources()
    ROM's, and this file does not explain it. */
 extern "C" void func_ov002_020bc488(daObjWakame_c *t)
 {
-    Matrix4x3_FromRotationY(&t->mModelAnim.mat4x3, t->mAngleY);
-    t->mModelAnim.mat4x3.t.x = t->mPosX >> 3;
-    t->mModelAnim.mat4x3.t.y = t->mPosY >> 3;
-    t->mModelAnim.mat4x3.t.z = t->mPosZ >> 3;
+    Matrix4x3_FromRotationY(&t->mAnmModel.mat4x3, t->mAngleY);
+    t->mAnmModel.mat4x3.t.x = t->mPosX >> 3;
+    t->mAnmModel.mat4x3.t.y = t->mPosY >> 3;
+    t->mAnmModel.mat4x3.t.z = t->mPosZ >> 3;
 }
 
 /* -------------------------------------------------------------------------- */

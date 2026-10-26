@@ -91,6 +91,7 @@ struct Vector3_16f;
 #include "dActor_c.h"
 #include "dBgCh_Actr.h"
 #include "dCc_c.h"
+#include "Sound.h"
 
 struct dBgPi;
 
@@ -177,7 +178,6 @@ struct System {
 }
 extern void d_a_yeggRunningSlidingDustAtHold(s32 x, s32 y, s32 z);
 extern void d_a_yeggPlayLongHold(u32 a, u32 b, u32 c, void *v, u32 d);
-extern void _ZN5Sound13PlayCharVoiceEjjRK7Vector3(u32 a, u32 b, const void *pos);
 extern s32 _Z14ApproachLinearR7Vector3RKS_5Fix12IiE(void *dst, const void *src, s32 step);
 extern s16 Vec3_HorzAngle(const void *a, const void *b);
 extern int Vec3_HorzDist(const void *a, const void *b);
@@ -438,7 +438,7 @@ void daYegg_c::func_ov002_020ec938(){
  * speed, zeroes the horizontal speed and sets gravity to -0x2000 (-2 units
  * per frame squared). */
 void daYegg_c::func_ov002_020ec978() {
-    mModelAnim.SetAnim((BCA_File *)(*(void **)(data_ov002_0210eb78 + 4)), 0, 0x1000, 0);
+    mAnmModel.SetAnim((BCA_File *)(*(void **)(data_ov002_0210eb78 + 4)), 0, 0x1000, 0);
     mHorzSpeed = 0;
     mVertAccel = -0x2000;
 }
@@ -492,7 +492,7 @@ void daYegg_c::func_ov002_020ec9c4(){
  * animation (file 0x0210eb78) at normal speed. */
 void daYegg_c::func_ov002_020ecad4() {
     mHorzSpeed = 0;
-    mModelAnim.SetAnim((BCA_File *)(*(void **)(data_ov002_0210eb78 + 4)), 0, 0x1000, 0);
+    mAnmModel.SetAnim((BCA_File *)(*(void **)(data_ov002_0210eb78 + 4)), 0, 0x1000, 0);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -719,7 +719,7 @@ void daYegg_c::func_ov002_020ecf94()
 void daYegg_c::func_ov002_020ecfc8() {
     dActor_c *r5;
     mTargetId = 0;
-    mModelAnim.SetAnim((BCA_File *)(*(void **)(data_ov002_0210e6b0 + 4)), 0, 0x1000, 0);
+    mAnmModel.SetAnim((BCA_File *)(*(void **)(data_ov002_0210e6b0 + 4)), 0, 0x1000, 0);
     mHorzSpeed = 0x64000;
     if (!func_ov002_020ec654()) {
         mVertAccel = 0;
@@ -875,9 +875,9 @@ void daYegg_c::func_ov002_020ed0d4()
         int speed = idx << 8;
         if (mPlayer->mIsAirborne != 0) speed = 0;
         if (v98 != 0) {
-            mModelAnim.SetAnim((BCA_File *)(*(void **)(data_ov002_0210e6b0 + 4)), 0, speed, 0);
+            mAnmModel.SetAnim((BCA_File *)(*(void **)(data_ov002_0210e6b0 + 4)), 0, speed, 0);
         } else {
-            mModelAnim.SetAnim((BCA_File *)(*(void **)(data_ov002_0210eb78 + 4)), 0, speed, 0);
+            mAnmModel.SetAnim((BCA_File *)(*(void **)(data_ov002_0210eb78 + 4)), 0, speed, 0);
         }
     }
 
@@ -1101,7 +1101,7 @@ void daYegg_c::func_ov002_020ed7f8()
  * Otherwise it builds the matrix from the egg's own pose: the translation is
  * mPos with 0x14000 (20 units) added to Y, scaled by 1/8 (x << 9 >> 12, rounded),
  * rotated by (mAngleX, mAngleY, mAngleZ), and stored into the model's own
- * matrix (mModelAnim.mat4x3). */
+ * matrix (mAnmModel.mat4x3). */
 void daYegg_c::func_ov002_020ed998()
 {
     int on = (mFlags & daYegg_FLAG_ATTACHED) != 0;
@@ -1130,7 +1130,7 @@ void daYegg_c::func_ov002_020ed998()
                               (int)((((long long)mPosZ << 9) + 0x800) >> 12));
     Matrix4x3_ApplyInPlaceToRotationXYZExt(&data_020a0e68,
         mAngleX, mAngleY, mAngleZ);
-    *(M48 *)&mModelAnim.mat4x3 = data_020a0e68;
+    *(M48 *)&mAnmModel.mat4x3 = data_020a0e68;
 }
 
 /* -------------------------------------------------------------------------- */
@@ -1253,7 +1253,7 @@ void func_ov002_020edca4(daYegg_c* self)
     Particle::System::NewSimple(0x41, self->mPosX, self->mPosY, self->mPosZ);
     Particle::System::NewSimple(0x42, self->mPosX, self->mPosY, self->mPosZ);
     self->MarkForDestruction();
-    _ZN5Sound13PlayCharVoiceEjjRK7Vector3(0, 0x103, &self->mCamSpacePos);
+    Sound::PlayCharVoice(0, 0x103, self->mCamSpacePos);
 
     self->mBurstDone = 1;
 }
@@ -1371,7 +1371,7 @@ int daYegg_c::Render()
 
     if (mPlayer->IsInsideOfCannon()) return 1;
     if (mPlayer->mOpacity < 1) return 1;
-    mModelAnim.Render(0);
+    mAnmModel.Render(0);
     return 1;
 }
 
@@ -1392,7 +1392,7 @@ int daYegg_c::Behavior()
     Vector3 vmid;
     Vector3 vout;
     func_ov002_020ed684();
-    mModelAnim.Advance();
+    mAnmModel.Advance();
     if (mState != daYegg_STATE_SEEK) {
         if (mPlayer->mOpacity < 0xa) {
             /* BOTH oddities below are load-bearing, measured one at a time.
@@ -1419,9 +1419,9 @@ int daYegg_c::Behavior()
             mPosY = vout.y;
             mPosZ = vout.z;
         }
-        mModelAnim.ApplyOpacity(mPlayer->mOpacity, 0);
+        mAnmModel.ApplyOpacity(mPlayer->mOpacity, 0);
     } else {
-        mModelAnim.ApplyOpacity(0x1f, 0);
+        mAnmModel.ApplyOpacity(0x1f, 0);
     }
     func_ov002_020ed998();
     func_ov002_020ed7f8();
@@ -1469,7 +1469,7 @@ int daYegg_c::InitResources()
 
     dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)data_ov002_0210e6b0);
     dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)data_ov002_0210eb78);
-    if (mModelAnim.SetFile(*(BMD_File **)(data_ov002_021000a0[idx] + 4), 1, -1) == 0)
+    if (mAnmModel.SetFile(*(BMD_File **)(data_ov002_021000a0[idx] + 4), 1, -1) == 0)
         return 0;
 
     /* The predicate is asked a SECOND time rather than reusing idx: the ROM calls
@@ -1482,7 +1482,7 @@ int daYegg_c::InitResources()
             return 0;
     }
 
-    mModelAnim.SetAnim((BCA_File *)(*(void **)(data_ov002_0210eb78 + 4)), 0, 0x1000, 0);
+    mAnmModel.SetAnim((BCA_File *)(*(void **)(data_ov002_0210eb78 + 4)), 0, 0x1000, 0);
 
     mAreaId = -1;
     mSpawnPosX = mPosX;

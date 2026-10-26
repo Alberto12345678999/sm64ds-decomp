@@ -426,7 +426,7 @@ void daKuriKing_c::func_ov074_0211f5b8()
     cam = (dCamera_c *)data_0209f318;
     player = this->mTalkPlayer;
 
-    if (this->mModelAnim.Finished() != 0) {
+    if (this->mAnmModel.Finished() != 0) {
         func_ov074_02121a4c((char*)this, 4);
     }
 
@@ -622,7 +622,8 @@ void daKuriKing_c::func_ov074_0211fc34()
 void daKuriKing_c::func_ov074_0211fc38()
 {
     if (ApproachAngle(&this->mWalkSpeed, 0, 0xa, 0x100, 1) != 0) goto reset;
-    if (this->mModelAnim.Finished() == 0) return;
+    if (this->mAnmModel.Finished() == 0)
+        return;
     if (this->mSizeIndex != 0) goto detox;
     {
         Player* player = this->ClosestPlayer();
@@ -674,7 +675,8 @@ L90:;
     Player* pl = this->ClosestPlayer();
     if (this->mSizeIndex == 1 && (int)pl->param1 != 3) spawnTarget = spawnTarget + 1;
 
-    if (this->mModelAnim.Finished() == 0) return;
+    if (this->mAnmModel.Finished() == 0)
+        return;
     if (DecIfAbove0_Short(&this->mTimer) != 0) return;
 
     Vector3 pos;
@@ -709,7 +711,8 @@ L90:;
     if ((int)pl2->param1 != 3) {
         if (this->mSizeIndex == 1) dv = 5;
     }
-    if (this->mSpawnedCount % dv == 0) this->mModelAnim.currFrame = 0;
+    if (this->mSpawnedCount % dv == 0)
+        this->mAnmModel.currFrame = 0;
 
     if (this->mSpawnedCount < spawnTarget) return;
     func_ov074_021203e4(3);
@@ -747,20 +750,23 @@ extern "C" void func_ov074_0212007c(void)
 
 // @symbol _ZN12daKuriKing_c19func_ov074_02120080Ev
 void daKuriKing_c::func_ov074_02120080(){
-  if(this->mSpawnedCount == 0){
-    func_ov074_021203e4(2);
-    return;
-  }
-  if(func_ov074_02121a20(0xa) != 0){
-    if(this->mModelAnim.Finished() == 0) return;
-    func_ov074_02121a4c((char*)this, 8);
-    return;
-  }
-  ApproachAngle(&this->mWalkSpeed, this->mMaxWalkSpeed, 0xa, 0x20, 1);
-  func_ov074_021216f4();
-  if(this->DistToCPlayer() >= 0x4b0000) return;
-  if(AngleDiff(this->HorzAngleToCPlayer(), this->mAngleY) <= 0x4000) return;
-  func_ov074_021203e4(4);
+    if (this->mSpawnedCount == 0) {
+        func_ov074_021203e4(2);
+        return;
+    }
+    if (func_ov074_02121a20(0xa) != 0) {
+        if (this->mAnmModel.Finished() == 0)
+            return;
+        func_ov074_02121a4c((char *)this, 8);
+        return;
+    }
+    ApproachAngle(&this->mWalkSpeed, this->mMaxWalkSpeed, 0xa, 0x20, 1);
+    func_ov074_021216f4();
+    if (this->DistToCPlayer() >= 0x4b0000)
+        return;
+    if (AngleDiff(this->HorzAngleToCPlayer(), this->mAngleY) <= 0x4000)
+        return;
+    func_ov074_021203e4(4);
 }
 
 // @symbol _ZN12daKuriKing_c19func_ov074_0212016cEv
@@ -969,7 +975,7 @@ int daKuriKing_c::func_ov074_021204c0() {
 int daKuriKing_c::func_ov074_021206c8() {
     if (func_ov074_02121a20(8) != 0) {
         if (ApproachAngle(&this->mWalkSpeed, 0, 0x1e, 0x20, 1) == 0) {
-            if ((unsigned short)(this->mModelAnim.currFrame >> 12) == 0) {
+            if ((unsigned short)(this->mAnmModel.currFrame >> 12) == 0) {
                 func_ov074_02121a4c((char*)this, 9);
             }
             goto ret0;
@@ -982,7 +988,7 @@ int daKuriKing_c::func_ov074_021206c8() {
         goto ret0;
     }
     if (func_ov074_02121a20(9) != 0) {
-        if (this->mModelAnim.Finished() != 0) {
+        if (this->mAnmModel.Finished() != 0) {
             return 1;
         }
         goto ret0;
@@ -993,13 +999,13 @@ ret0:
 }
 
 // @symbol _ZN12daKuriKing_c19func_ov074_021207b8Ev
-/* If anim 6 is current and mModelAnim has finished, flip mAngleY by half
+/* If anim 6 is current and mAnmModel has finished, flip mAngleY by half
  * a turn and return 1. Otherwise return 0.
  */
 int daKuriKing_c::func_ov074_021207b8()
 {
     if (func_ov074_02121a20(6)) {
-        if (this->mModelAnim.Finished()) {
+        if (this->mAnmModel.Finished()) {
             this->mAngleY += 0x8000;
             return 1;
         }
@@ -1341,7 +1347,7 @@ extern "C" void func_ov074_02121270(Vector3 *out, daKuriKing_c *self, int bone) 
     v->y = 0;
     v->z = 0;
     data_020a0e68 = *(struct Matrix4x3 *)self->mBodyMatrix;
-    boneMat = (Matrix4x3 *)self->mModelAnim.data.transforms + bone;
+    boneMat = (Matrix4x3 *)self->mAnmModel.data.transforms + bone;
     MulMat4x3Mat4x3(boneMat, &data_020a0e68, &data_020a0e68);
     v->x = data_020a0e68.m[9];
     v->y = data_020a0e68.m[10];
@@ -1527,25 +1533,25 @@ void daKuriKing_c::func_ov074_02121800()
  * world >> 3). */
 void daKuriKing_c::func_ov074_0212195c()
 {
-    Matrix4x3_FromRotationY(&mModelAnim.mat4x3, mAngleY);
-    mModelAnim.mat4x3.m[9] = mPosX >> 3;
-    mModelAnim.mat4x3.m[10] = mPosY >> 3;
-    mModelAnim.mat4x3.m[11] = mPosZ >> 3;
+    Matrix4x3_FromRotationY(&mAnmModel.mat4x3, mAngleY);
+    mAnmModel.mat4x3.m[9] = mPosX >> 3;
+    mAnmModel.mat4x3.m[10] = mPosY >> 3;
+    mAnmModel.mat4x3.m[11] = mPosZ >> 3;
 }
 
 // @symbol _ZN12daKuriKing_c19func_ov074_0212199cEv
 void daKuriKing_c::func_ov074_0212199c()
 {
     if (func_ov074_02121a20(8)) {
-        mModelAnim.speed = func_ov074_02120b24();
+        mAnmModel.speed = func_ov074_02120b24();
     } else if (func_ov074_02121a20(0xb)) {
-        if ((((unsigned int)mModelAnim.currFrame << 4) >> 0x10) == 8) {
+        if ((((unsigned int)mAnmModel.currFrame << 4) >> 0x10) == 8) {
             func_02012694(0x15d, &mCamSpacePosX);
         }
     } else {
-        mModelAnim.speed = 0x1000;
+        mAnmModel.speed = 0x1000;
     }
-    mModelAnim.Advance();
+    mAnmModel.Advance();
     mTextureTransformer.Advance();
 }
 
@@ -1562,7 +1568,7 @@ extern KuriKingAnimEntry data_ov074_02122f34[];
 int daKuriKing_c::func_ov074_02121a20(int idx)
 {
     KuriKingAnimFile *anim = data_ov074_02122f34[idx].anim;
-    return this->mModelAnim.file == anim->filePtr;
+    return this->mAnmModel.file == anim->filePtr;
 }
 
 // @symbol func_ov074_02121a4c
@@ -1571,7 +1577,7 @@ extern "C" void func_ov074_02121a4c(char* c, int idx)
     int off = idx * 0xc;
     void* file1 = data_ov074_02122f34[idx].anim->filePtr;
     int arg2 = *(int*)(data_ov074_02122f3c + off);
-    ((dExtAnmModel_c *)&((daKuriKing_c *)c)->mModelAnim)
+    ((dExtAnmModel_c *)&((daKuriKing_c *)c)->mAnmModel)
         ->SetAnim((BCA_File *)file1, arg2, 0x1000, 0);
     ((daKuriKing_c *)c)
         ->mTextureTransformer.SetFile(**(BTA_File **)(data_ov074_02122f38 + off), 0, 0x1000, 0);
@@ -1602,10 +1608,10 @@ int daKuriKing_c::Render()
 {
     if (param1 == 0x1111) return func_ov074_021222e0();
     if (mShouldRender == 0) return 1;
-    mModelAnim.Render(&mScale);
-    mTextureSequence.Update(mModelAnim.data);
-    mMaterialChanger.Update(mModelAnim.data);
-    mTextureTransformer.Update(mModelAnim.data);
+    mAnmModel.Render(&mScale);
+    mTextureSequence.Update(mAnmModel.data);
+    mMaterialChanger.Update(mAnmModel.data);
+    mTextureTransformer.Update(mAnmModel.data);
     return 1;
 }
 
@@ -1736,7 +1742,7 @@ int daKuriKing_c::InitResources()
 
     dExtAnmTexPat_c::LoadFile(gKurikingAngerTextureSequenceFile);
     p = dExtSimpleModel_c::LoadFile(gKurikingModelModelFile);
-    mModelAnim.SetFile((BMD_File *)p, 1, -1);
+    mAnmModel.SetFile((BMD_File *)p, 1, -1);
 
     j = 0;
     do {
@@ -1763,7 +1769,7 @@ int daKuriKing_c::InitResources()
         k++;
     } while (k < 4);
 
-    mModelAnim.SetAnim((BCA_File *)data_ov074_02123030.filePtr, 0, 0x1000, 0);
+    mAnmModel.SetAnim((BCA_File *)data_ov074_02123030.filePtr, 0, 0x1000, 0);
     dExtAnmTexPat_c::Prepare(*(BMD_File *)gKurikingModelModelFile.filePtr,
                              *(BTP_File *)gKurikingAngerTextureSequenceFile.filePtr);
     dExtAnmMaterial_c::Prepare(*(BMD_File *)gKurikingModelModelFile.filePtr,
@@ -1849,12 +1855,12 @@ int daKuriKing_c::func_ov074_021222e0()
     Matrix4x3_ApplyInPlaceToTranslation(&data_020a0e68, 0, 0x6400, 0);
     Matrix4x3_ApplyInPlaceToRotationZXYExt(&data_020a0e68, this->mAngleX, this->mAngleY, this->mAngleZ);
     Matrix4x3_ApplyInPlaceToTranslation(&data_020a0e68, 0, -0x6400, 0);
-    this->mModelAnim.mat4x3 = data_020a0e68;
+    this->mAnmModel.mat4x3 = data_020a0e68;
 
     if (this->mShouldRender == 0) return 1;
 
-    this->mModelAnim.Render(0);
-    this->mMaterialChanger.Update(this->mModelAnim.data);
+    this->mAnmModel.Render(0);
+    this->mMaterialChanger.Update(this->mAnmModel.data);
     return 1;
 }
 
@@ -1950,7 +1956,7 @@ int daKuriKing_c::func_ov074_02122634()
     for (i = 0; i < 7; i++)
         dExtFrameCtrl_c::LoadFile(*sKurikingMinionAnimationFiles[i]);
 
-    if (this->mModelAnim.SetFile((BMD_File *)data_ov084_02130cf8.filePtr, 1, 1) == 0)
+    if (this->mAnmModel.SetFile((BMD_File *)data_ov084_02130cf8.filePtr, 1, 1) == 0)
         return 0;
 
     if (this->mShadowModels[0].InitCylinder() == 0)
@@ -1961,7 +1967,7 @@ int daKuriKing_c::func_ov074_02122634()
 
     this->mMaterialChanger.SetFile(*(BMA_File *)&data_ov084_0213089c, 0x40000000, 0x1000, 0);
 
-    this->mModelAnim.SetAnim((BCA_File *)data_ov084_02130cc8.filePtr, 0, 0x1000, 0);
+    this->mAnmModel.SetAnim((BCA_File *)data_ov084_02130cc8.filePtr, 0, 0x1000, 0);
 
     this->mPrevAngleX = this->mAngleX;
     this->mPrevAngleY = this->mAngleY;

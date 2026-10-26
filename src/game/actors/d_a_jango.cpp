@@ -346,7 +346,7 @@ int daJango_c::InitResources()
     char path2[8];
 
     bmd = dExtSimpleModel_c::LoadFile(data_ov062_0211e0fc); /* jango.bmd */
-    mBlendModelAnim.SetFile((BMD_File *)bmd, 1, -1);
+    mBlendAnmModel.SetFile((BMD_File *)bmd, 1, -1);
     mShadowModel.InitCylinder();
     dExtFrameCtrl_c::LoadFile(data_ov062_0211e114);                   /* jango_attack.bca */
     dExtFrameCtrl_c::LoadFile(data_ov062_0211e10c);                   /* jango_damage.bca */
@@ -382,7 +382,7 @@ int daJango_c::InitResources()
     _ZN7PathPtrC1Ev(path2);
     ((PathPtr *)path2)->FromID(mPathId);
     ((PathPtr *)path2)->GetNode(*(Vector3 *)&mPathNodePosX, mPathNodeIndex);
-    mBlendModelAnim.speed = 0x1000;             /* 1.0x */
+    mBlendAnmModel.speed = 0x1000; /* 1.0x */
     mHeldActorID = 0;
 
     if (mCarriedItem == CARRIES_STAR) {
@@ -518,7 +518,7 @@ int daJango_c::Behavior()
             MarkForDestruction();
     }
 
-    mBlendModelAnim.Advance();
+    mBlendAnmModel.Advance();
     /* Hurt state excepted, test the cylinders for a hit or a player contact. */
     if (mState != (void *)JANGO_STATE_HURT) {
         func_ov062_0211b51c();
@@ -538,7 +538,9 @@ int daJango_c::Behavior()
    through the table instead of being resolved at compile time. */
 int daJango_c::Render()
 {
- Base *b = (Base *)&mBlendModelAnim; b->m(0); return 1;
+    Base *b = (Base *)&mBlendAnmModel;
+    b->m(0);
+    return 1;
 }
 
 // @symbol _ZN9daJango_c16OnPendingDestroyEv
@@ -574,7 +576,7 @@ int daJango_c::CleanupResources()
 // @symbol _ZN9daJango_c19func_ov062_0211c6a8Ev
 /* Per-frame matrices (called from Behavior).
    1. dExtSimpleModel_c matrix: translation = mPos >> 3, rotation = mAngle X/Y/Z
-      (Matrix4x3_ApplyInPlaceToRotationZXYExt), stored in mBlendModelAnim.mat4x3.
+      (Matrix4x3_ApplyInPlaceToRotationZXYExt), stored in mBlendAnmModel.mat4x3.
    2. If something is held: multiply bone 6 of the model by the model matrix into
       mHeldMat, set mHeldPos to the translation row of data_020a0e68 shifted
       back up by 3, then place the held actor with a fixed offset and rotation
@@ -589,7 +591,7 @@ void daJango_c::func_ov062_0211c6a8()
     Vec3_Asr(v, &mPosX, 3);
     Matrix4x3_FromTranslation(data_020a0e68, v[0], v[1], v[2]);
     Matrix4x3_ApplyInPlaceToRotationZXYExt(data_020a0e68, mAngleX, mAngleY, mAngleZ);
-    *(M48*)&mBlendModelAnim.mat4x3 = *(M48*)data_020a0e68;
+    *(M48 *)&mBlendAnmModel.mat4x3 = *(M48 *)data_020a0e68;
 
     if (mHeldActorID != 0)
     {
@@ -599,7 +601,7 @@ void daJango_c::func_ov062_0211c6a8()
             mHeldPosX = 0;
             mHeldPosY = 0;
             mHeldPosZ = 0;
-            MulMat4x3Mat4x3(&mBlendModelAnim.data.transforms[6], &mBlendModelAnim.mat4x3, &mHeldMat);
+            MulMat4x3Mat4x3(&mBlendAnmModel.data.transforms[6], &mBlendAnmModel.mat4x3, &mHeldMat);
             mHeldPosX = data_020a0e68[9];
             mHeldPosY = data_020a0e68[10];
             mHeldPosZ = data_020a0e68[11];
@@ -662,7 +664,7 @@ int daJango_c::func_ov062_0211c594() {
         mStateTimer = 0x3c;
     }
 
-    mBlendModelAnim.SetAnim(*(BCA_File *)data_ov062_0211e104.filePtr, 4, 0, 0x1000, 0);
+    mBlendAnmModel.SetAnim(*(BCA_File *)data_ov062_0211e104.filePtr, 4, 0, 0x1000, 0);
     return 1;
 }
 }
@@ -775,7 +777,7 @@ int daJango_c::func_ov062_0211c218()
         mHitPlayer = 0;
     }
     mLeaveDelay = 0;
-    mBlendModelAnim.SetAnim(*(BCA_File *)data_ov062_0211e104.filePtr, 4, 0, 0x1000, 0);
+    mBlendAnmModel.SetAnim(*(BCA_File *)data_ov062_0211e104.filePtr, 4, 0, 0x1000, 0);
     if (mSilverStarFlag == 2 ||
         (unsigned char)(signed char)((signed char)data_0209f2f8 - 0x18) <= 1) {
         mLeaveDelay = 2;
@@ -907,7 +909,7 @@ int daJango_c::func_ov062_0211bd10()
 
     if (angD < 0x300) {
         if (mStateParam == 1) {
-            mBlendModelAnim.SetAnim(*(BCA_File *)data_ov062_0211e104.filePtr, 4, 0, 0x1000, 0);
+            mBlendAnmModel.SetAnim(*(BCA_File *)data_ov062_0211e104.filePtr, 4, 0, 0x1000, 0);
             if (mSilverStarFlag == 2 ||
                 (unsigned)(u8)(s8)((s8)data_0209f2f8 - 0x18) <= 1u) {
                 p43c = &mLeaveDelay;
@@ -919,7 +921,7 @@ int daJango_c::func_ov062_0211bd10()
             mStateParam = 2;
         }
     } else if (mStateParam == 0) {
-        mBlendModelAnim.SetAnim(*(BCA_File *)data_ov062_0211e114.filePtr, 4, 0, 0x1000, 0);
+        mBlendAnmModel.SetAnim(*(BCA_File *)data_ov062_0211e114.filePtr, 4, 0, 0x1000, 0);
         p43c = &mStateParam;
         *p43c = *p43c + 1;
     }
@@ -977,7 +979,7 @@ int daJango_c::func_ov062_0211bc54()
     mSpeedZ = 0;
     func_02012694(SND_AT_SWOOP_ENTER, &mCamSpacePosX);
     mStateParam = ((((unsigned)RandomIntInternal(&data_0209e650) >> 8) & 3) << 8) + 0x300;
-    mBlendModelAnim.SetAnim(*(BCA_File *)data_ov062_0211e114.filePtr, 4, 0, 0x1000, 0);
+    mBlendAnmModel.SetAnim(*(BCA_File *)data_ov062_0211e114.filePtr, 4, 0, 0x1000, 0);
     return 1;
 }
 
@@ -1075,7 +1077,7 @@ int func_ov062_0211ba84(char *c)
 int daJango_c::func_ov062_0211b930()
 {
     dActor_c* found;
-    ((dExtBlendAnmModel_c *)&(mBlendModelAnim))
+    ((dExtBlendAnmModel_c *)&(mBlendAnmModel))
         ->SetAnim(*(BCA_File *)data_ov062_0211e10c.filePtr, 4, 0x40000000, 0x1000, 0);
     mStateParam = 1;
     if (mHeldActorID != 0 && (found = dActor_c::FindWithID(mHeldActorID)) != 0) {
@@ -1111,8 +1113,8 @@ int daJango_c::func_ov062_0211b930()
    part of the 20.12 frame counter, with its top four bits masked off, against
    the frame count minus 1), set mTimer to 30 and go back to CIRCLE. */
 int daJango_c::func_ov062_0211b8d8() {
-    int f = mBlendModelAnim.currFrame;
-    int fc = mBlendModelAnim.GetFrameCount();
+    int f = mBlendAnmModel.currFrame;
+    int fc = mBlendAnmModel.GetFrameCount();
     if ((int)((unsigned int)(f << 4) >> 16) >= fc - 1) {
         mTimer = 0x1e;
         func_ov062_0211c658(JANGO_STATE_CIRCLE);
@@ -1130,12 +1132,12 @@ int daJango_c::func_ov062_0211b8d8() {
    mwccarm passes differently at the call site, so declaring the true
    types breaks the byte match. See notes/mwccarm-codegen.md 6az. */
 int daJango_c::func_ov062_0211b880() {
-    mBlendModelAnim.speed = 0x2000;
+    mBlendAnmModel.speed = 0x2000;
     mSpeedX = 0;
     mVertSpeed = 0;
     mSpeedZ = 0;
     mVertAccel = 0;
-    mBlendModelAnim.SetAnim(*(BCA_File *)data_ov062_0211e104.filePtr, 4, 0, 0x1000, 0);
+    mBlendAnmModel.SetAnim(*(BCA_File *)data_ov062_0211e104.filePtr, 4, 0, 0x1000, 0);
     return 1;
 }
 
@@ -1154,7 +1156,7 @@ int daJango_c::func_ov062_0211b800() {
         mVertSpeed = 0;
         mSpeedZ = 0;
         mPosY = mPathNodePosY;
-        mBlendModelAnim.speed = 0x1000;
+        mBlendAnmModel.speed = 0x1000;
         func_ov062_0211c658(JANGO_STATE_CIRCLE);
     }
     return 1;

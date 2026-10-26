@@ -134,9 +134,9 @@ extern "C" daSBird_c *daSBird_c_classInit()
 s32 daSBird_c::InitResources()
 {
     BMD_File *modelFile = (BMD_File *)dExtSimpleModel_c::LoadFile(data_ov009_02113c20);
-    mModelAnim.SetFile(modelFile, 1, 1);
+    mAnmModel.SetFile(modelFile, 1, 1);
     BCA_File *animFile = (BCA_File *)dExtFrameCtrl_c::LoadFile(data_ov009_02113c28);
-    mModelAnim.SetAnim((BCA_File *)animFile, 0, 0x1000, 0);
+    mAnmModel.SetAnim((BCA_File *)animFile, 0, 0x1000, 0);
     mShadowModel.InitCylinder();
     {
         int *p60 = &mPosY;
@@ -165,16 +165,16 @@ s32 daSBird_c::Behavior()
     mAngleY = mPrevAngleY;
     Matrix4x3_ApplyInPlaceToRotationZ(&data_020a0e68, mAngleZ);
     Matrix4x3_ApplyInPlaceToRotationY(&data_020a0e68, mAngleY);
-    *(BirdMtx *)((char *)&mModelAnim.mat4x3) = data_020a0e68;
-    DropShadowRadHeight(mShadowModel, mModelAnim.mat4x3, 0x1e000, 0x7d0000, 0xf);
-    mModelAnim.Advance();
+    *(BirdMtx *)((char *)&mAnmModel.mat4x3) = data_020a0e68;
+    DropShadowRadHeight(mShadowModel, mAnmModel.mat4x3, 0x1e000, 0x7d0000, 0xf);
+    mAnmModel.Advance();
     return 1;
 }
 
 // @symbol _ZN9daSBird_c6RenderEv
 s32 daSBird_c::Render()
 {
-    mModelAnim.Render(0);
+    mAnmModel.Render(0);
     return 1;
 }
 

@@ -165,7 +165,8 @@ extern "C" void func_ov081_021237ec(daHuwa_c *self)
     self->SpawnCoins(coins, 3, 0xa000, 0);
 
     Matrix4x3_FromTranslation(&data_020a0e68, self->mPosX, self->mPosY, self->mPosZ);
-    MulMat4x3Mat4x3((const int *)(self->mModelAnim.data.transforms + 1), data_020a0e68.m, data_020a0e68.m);
+    MulMat4x3Mat4x3((const int *)(self->mAnmModel.data.transforms + 1), data_020a0e68.m,
+                    data_020a0e68.m);
 
     dust.x = data_020a0e68.m[9];
     dust.y = data_020a0e68.m[10];
@@ -264,17 +265,17 @@ extern "C" void func_ov081_02123910(daHuwa_c *self)
 // @symbol func_ov081_02123b20
 extern "C" void func_ov081_02123b20(daHuwa_c *self)
 {
-    Matrix4x3_FromRotationY(&self->mModelAnim.mat4x3, self->mAngleY);
-    self->mModelAnim.mat4x3.m[9] = self->mPosX >> 3;
-    self->mModelAnim.mat4x3.m[10] = self->mPosY >> 3;
-    self->mModelAnim.mat4x3.m[11] = self->mPosZ >> 3;
+    Matrix4x3_FromRotationY(&self->mAnmModel.mat4x3, self->mAngleY);
+    self->mAnmModel.mat4x3.m[9] = self->mPosX >> 3;
+    self->mAnmModel.mat4x3.m[10] = self->mPosY >> 3;
+    self->mAnmModel.mat4x3.m[11] = self->mPosZ >> 3;
     if (IsInYoshiMouth(self))
         return;
     if (self->mWithMeshClsn.IsOnGround() != 0) {
-        self->DropShadowRadHeight(self->mShadowModel, self->mModelAnim.mat4x3, 0x50000, 0x1e000,
+        self->DropShadowRadHeight(self->mShadowModel, self->mAnmModel.mat4x3, 0x50000, 0x1e000,
                                   0xf);
     } else {
-        self->DropShadowRadHeight(self->mShadowModel, self->mModelAnim.mat4x3, 0x50000, 0x96000,
+        self->DropShadowRadHeight(self->mShadowModel, self->mAnmModel.mat4x3, 0x50000, 0x96000,
                                   0xf);
     }
 }
@@ -292,14 +293,14 @@ int daHuwa_c::Render()
 {
     if (IsInYoshiMouth(this))
         return 1;
-    mModelAnim.Render(0);
+    mAnmModel.Render(0);
     return 1;
 }
 
 // @symbol _ZN8daHuwa_c8BehaviorEv
 int daHuwa_c::Behavior()
 {
-    int killed = UpdateKillByInvincibleChar(mWithMeshClsn, mModelAnim, 3);
+    int killed = UpdateKillByInvincibleChar(mWithMeshClsn, mAnmModel, 3);
     if (killed != 0) {
         if (killed == 2)
             func_ov081_021237ec(this);
@@ -348,7 +349,7 @@ int daHuwa_c::Behavior()
         break;
     }
 
-    mModelAnim.Advance();
+    mAnmModel.Advance();
     UpdatePos(0);
     UpdateWMClsn(mWithMeshClsn, 0);
 
@@ -367,9 +368,9 @@ int daHuwa_c::Behavior()
 int daHuwa_c::InitResources()
 {
     void *modelFile = dExtSimpleModel_c::LoadFile(gHuwahuwaModelModelFile);
-    mModelAnim.dExtModel_c::SetFile((BMD_File *)modelFile, 1, -1);
+    mAnmModel.dExtModel_c::SetFile((BMD_File *)modelFile, 1, -1);
     dExtFrameCtrl_c::LoadFile(gHuwahuwaMoveAnimationFile);
-    mModelAnim.SetAnim((BCA_File *)gHuwahuwaMoveAnimationFile.filePtr, 0, 0x1000, 0);
+    mAnmModel.SetAnim((BCA_File *)gHuwahuwaMoveAnimationFile.filePtr, 0, 0x1000, 0);
     if (mShadowModel.InitCylinder() == 0)
         return 0;
     _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, this, 0x3c000, 0x78000, 0x200000, 0xa6efe0);

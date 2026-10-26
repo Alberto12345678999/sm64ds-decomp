@@ -148,7 +148,7 @@ struct Player : dActor_c {
            this replaces are its own sub-objects: mAnimation1 at 0x140 was the
            dExtFrameCtrl_c base (+0x50) and unk_148 at 0x148 was that base's currFrame
            (+0x58). Both are reachable through the member now. */
-        dExtAnmModel_c mModelAnim3; /* 0x0f0 */
+        dExtAnmModel_c mAnmModel1; /* 0x0f0 */
         /* EIGHT more models, dExtSimpleModel_c not dExtAnmModel_c: func_ov002_020e5948 news
            [0..2] and [4..7] as 0x50 bytes + _ZN17dExtSimpleModel_cC1Ev and only [3] as 0x64 +
            _ZN14dExtAnmModel_cC1Ev (it alone gets SetAnim, and the Yoshi sites that drive
@@ -159,7 +159,7 @@ struct Player : dActor_c {
            func_ov002_020becf4(mBodyModelId, 1). That helper can also return 8 or 9,
            which are "no model" sentinels -- Render loads the slot FIRST and only then
            tests `i != 9 && i != 8`, so the ROM itself reads one word past this run in
-           those two cases. Kept as written; the read lands in mModelAnim4 below and
+           those two cases. Kept as written; the read lands in mAnmModel2 below and
            its result is discarded. [0..3] are the per-character head_cap models
            (Yoshi: yoshi_head) from data_ov002_0210a69c, [4..7] the head_nocap ones
            (Yoshi: yoshi_head_fill) from data_ov002_0210a6ac; Render pins each to body
@@ -167,7 +167,7 @@ struct Player : dActor_c {
         dExtSimpleModel_c *mHeadModels[8]; /* 0x154 */
         /* The other dExtAnmModel_c, destroyed FIRST of the two. 0x174..0x1d8, closing
            exactly at mSleepBubbleModel; mAnimation2 at 0x1c4 was its dExtFrameCtrl_c base. */
-        dExtAnmModel_c mModelAnim4; /* 0x174 */
+        dExtAnmModel_c mAnmModel2; /* 0x174 */
         /* func_ov002_020e5948 news a 0x50-byte dExtSimpleModel_c here (_ZN17dExtSimpleModel_cC1Ev) and SetFiles it
            from data_ov002_0210da38 (file 0x8004, the bubble d_a_pkn also sleeps
            with); func_ov002_020e444c places it in front of the face, Render draws

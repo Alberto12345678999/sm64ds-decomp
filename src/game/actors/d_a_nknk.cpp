@@ -195,7 +195,7 @@ int daNknk_c::InitResources()
         dExtFrameCtrl_c::LoadFile(*data_ov062_0211cee8[i]);
 
     f = (BMD_File *)dExtSimpleModel_c::LoadFile(*data_ov062_0211ced8[mModelIndex]);
-    if (mModelAnim.SetFile(f, 1, -1) == 0)
+    if (mAnmModel.SetFile(f, 1, -1) == 0)
         return 0;
 
     if (mShadowModel.InitCylinder() == 0)
@@ -254,7 +254,7 @@ int daNknk_c::Behavior()
     int state;
     int kind;
 
-    if (UpdateKillByInvincibleChar(mWithMeshClsn, mModelAnim, 3) != 0)
+    if (UpdateKillByInvincibleChar(mWithMeshClsn, mAnmModel, 3) != 0)
         return 1;
 
     MakeVanishLuigiWork(mdCc_c);
@@ -298,7 +298,7 @@ int daNknk_c::Behavior()
         func_ov062_02118258(0x3e8000);
 
         if (mState != 0)
-            mModelAnim.Advance();
+            mAnmModel.Advance();
 
         kind = mKoopaVariant;
         state = mState;
@@ -360,29 +360,30 @@ int daNknk_c::Behavior()
 // @symbol _ZN8daNknk_c6RenderEv
 int daNknk_c::Render()
 {
-  volatile struct V3 saved;
-  int b = (mFlags & 0x40000) != 0;
-  if (b) return 1;
-  if (mKoopaVariant == 1) {
-    mModelAnim.ShowMaterial(0, 1);
-    mModelAnim.HideMaterial(0, 2);
-  } else {
-    mModelAnim.HideMaterial(0, 1);
-    mModelAnim.ShowMaterial(0, 2);
-  }
-  saved.x = mScaleX;
-  saved.y = mScaleY;
-  saved.z = mScaleZ;
-  if (mDeathState == 1 && mKoopaVariant == 2) {
-      mScaleX = FX_MUL(*(volatile int *)&mScaleX, 0x800);
-      mScaleY = FX_MUL(*(volatile int *)&mScaleY, 0x800);
-      mScaleZ = FX_MUL(*(volatile int *)&mScaleZ, 0x800);
-  }
-  mModelAnim.Render(&mScale);
-  mScaleX = saved.x;
-  mScaleY = saved.y;
-  mScaleZ = saved.z;
-  return 1;
+    volatile struct V3 saved;
+    int b = (mFlags & 0x40000) != 0;
+    if (b)
+        return 1;
+    if (mKoopaVariant == 1) {
+        mAnmModel.ShowMaterial(0, 1);
+        mAnmModel.HideMaterial(0, 2);
+    } else {
+        mAnmModel.HideMaterial(0, 1);
+        mAnmModel.ShowMaterial(0, 2);
+    }
+    saved.x = mScaleX;
+    saved.y = mScaleY;
+    saved.z = mScaleZ;
+    if (mDeathState == 1 && mKoopaVariant == 2) {
+        mScaleX = FX_MUL(*(volatile int *)&mScaleX, 0x800);
+        mScaleY = FX_MUL(*(volatile int *)&mScaleY, 0x800);
+        mScaleZ = FX_MUL(*(volatile int *)&mScaleZ, 0x800);
+    }
+    mAnmModel.Render(&mScale);
+    mScaleX = saved.x;
+    mScaleY = saved.y;
+    mScaleZ = saved.z;
+    return 1;
 }
 
 // @symbol _ZN8daNknk_c16OnPendingDestroyEv
@@ -414,11 +415,12 @@ void daNknk_c::func_ov062_02118de8()
 {
     mHorzSpeed = 0;
     if (mAnimIndex == 2) {
-        if (mModelAnim.Finished() == 0) return;
+        if (mAnmModel.Finished() == 0)
+            return;
         func_ov062_02117994(4);
         return;
     }
-    if (mModelAnim.WillHitFrame((unsigned short)(mModelAnim.GetFrameCount() - 1)) != 0) {
+    if (mAnmModel.WillHitFrame((unsigned short)(mAnmModel.GetFrameCount() - 1)) != 0) {
         u16 *hp = &mWalkState;
         *hp = (u16)(*hp + 1);
     } else {
@@ -522,9 +524,9 @@ void daNknk_c::func_ov062_02118a50()
         }
     }
 
-    if (mModelAnim.WillHitFrame(0x1e) != 0)
+    if (mAnmModel.WillHitFrame(0x1e) != 0)
         func_ov062_021175c0();
-    if (mModelAnim.Finished() == 0)
+    if (mAnmModel.Finished() == 0)
         return;
     mState = 1;
     func_ov062_02117994(2);
@@ -572,7 +574,7 @@ void daNknk_c::func_ov062_02118718()
                     u16 *turn = &mTurnTimer;
                     *turn = (u16)(*turn - 1);
                 } else {
-                    /* (int)& forces the pool add. mTargetAngle -= folds to mModelAnim+0xc2. */
+                    /* (int)& forces the pool add. mTargetAngle -= folds to mAnmModel+0xc2. */
                     if (((unsigned)RandomIntInternal(&data_0209e650) >> 16) & 0x8000)
                         *(s16 *)((int)&mTargetAngle) -= ((unsigned)RandomIntInternal(&data_0209e650) >> 16) & 0x1fff;
                     else
@@ -649,9 +651,9 @@ void daNknk_c::func_ov062_02118588()
         }
     }
 
-    if (mModelAnim.WillHitFrame(0x1e) != 0)
+    if (mAnmModel.WillHitFrame(0x1e) != 0)
         func_ov062_021175c0();
-    if (mModelAnim.Finished() == 0)
+    if (mAnmModel.Finished() == 0)
         return;
     if (mModelIndex != 0) {
         mState = 5;
@@ -668,7 +670,7 @@ void daNknk_c::func_ov062_021183e0()
     int dist = 0x7fffffff;
     dActor_c *other;
 
-    if (mModelAnim.Finished())
+    if (mAnmModel.Finished())
         func_ov062_02117994(1);
 
     if (mTurning) {
@@ -707,25 +709,27 @@ void daNknk_c::func_ov062_021183e0()
 // @symbol _ZN8daNknk_c19func_ov062_02118334Ev
 void daNknk_c::func_ov062_02118334()
 {
-  short *angleY;
-  struct Vec3 v;
-  Vec3_Asr(&v, (struct Vec3 *)&mPosX, 3);
-  if (1)
-  {
-    Matrix4x3_FromTranslation(&data_020a0e68, v.x, v.y, v.z);
-    angleY = &mAngleY;
-    Matrix4x3_ApplyInPlaceToRotationY(inline_fn(), *angleY);
-    { struct M12w { int w[12]; };  /* array-wrapper copy: keeps C's block copy under -lang c++ */
-      *(M12w *)&mModelAnim.mat4x3 = *(M12w *)&data_020a0e68; }
-    {
-      int b = (int) ((mFlags & 0x40000) != 0);
-      if (b != 0)
-      {
-        return;
-      }
+    short *angleY;
+    struct Vec3 v;
+    Vec3_Asr(&v, (struct Vec3 *)&mPosX, 3);
+    if (1) {
+        Matrix4x3_FromTranslation(&data_020a0e68, v.x, v.y, v.z);
+        angleY = &mAngleY;
+        Matrix4x3_ApplyInPlaceToRotationY(inline_fn(), *angleY);
+        {
+            struct M12w {
+                int w[12];
+            }; /* array-wrapper copy: keeps C's block copy under -lang c++ */
+            *(M12w *)&mAnmModel.mat4x3 = *(M12w *)&data_020a0e68;
+        }
+        {
+            int b = (int)((mFlags & 0x40000) != 0);
+            if (b != 0) {
+                return;
+            }
+        }
     }
-  }
-  DropShadowRadHeight(mShadowModel, mModelAnim.mat4x3, 0x50000, 0x50000, 0xf);
+    DropShadowRadHeight(mShadowModel, mAnmModel.mat4x3, 0x50000, 0x50000, 0xf);
 }
 
 // @symbol _ZN8daNknk_c19func_ov062_02118258Ei
@@ -758,7 +762,8 @@ void daNknk_c::func_ov062_021181a0() {
     } else {
         ApproachLinear(mHorzSpeed, 0x3000, 0x4cc);
     }
-    if (mModelAnim.Finished() == 0) return;
+    if (mAnmModel.Finished() == 0)
+        return;
     {
         u16 *p = &mWalkState;
         *p = (u16)(*p + 1);
@@ -775,7 +780,7 @@ void daNknk_c::func_ov062_0211811c() {
         *p = (u16)(*p - 1);
         return;
     }
-    if (mModelAnim.WillHitFrame((unsigned short)(mModelAnim.GetFrameCount() - 1)) == 0)
+    if (mAnmModel.WillHitFrame((unsigned short)(mAnmModel.GetFrameCount() - 1)) == 0)
         return;
     {
         u16 *q = &mWalkState;
@@ -787,7 +792,7 @@ void daNknk_c::func_ov062_0211811c() {
 // @symbol _ZN8daNknk_c19func_ov062_021180d4Ev
 void daNknk_c::func_ov062_021180d4() {
     ApproachLinear(mHorzSpeed, 0, 0x1000);
-    int done = mModelAnim.Finished();
+    int done = mAnmModel.Finished();
     if (!done) return;
     mState = 1;
     func_ov062_02117994(4);
@@ -1048,8 +1053,8 @@ void daNknk_c::func_ov062_021179e4() {
 
 // @symbol _ZN8daNknk_c19func_ov062_02117994Ei
 void daNknk_c::func_ov062_02117994(int idx) {
-    mModelAnim.SetAnim((BCA_File *)data_ov062_0211cee8[idx]->filePtr, data_ov062_0211cf0c[idx],
-                       mAnimSpeed, 0);
+    mAnmModel.SetAnim((BCA_File *)data_ov062_0211cee8[idx]->filePtr, data_ov062_0211cf0c[idx],
+                      mAnimSpeed, 0);
     mAnimIndex = (u8)idx;
 }
 
@@ -1057,7 +1062,7 @@ void daNknk_c::func_ov062_02117994(int idx) {
 // 6f: keep constant live / flip coloring
 void daNknk_c::func_ov062_02117724(unsigned int a1, unsigned int a2, unsigned int a3, unsigned short a4) /* uxth vs a1-a3: ROM compares h<=a4 after a halfword arg */
 {
-    unsigned int h = (unsigned int)(mModelAnim.currFrame << 4) >> 16;
+    unsigned int h = (unsigned int)(mAnmModel.currFrame << 4) >> 16;
     if ((h >= a1 && h <= a2) || (h >= a3 && h <= a4)) {
         Vector3 pos;
         int k, iscb, idx, uid, iscb2;

@@ -41,7 +41,7 @@ extern s32 LenVec3(void *v);
 extern s16 atan2_hold_d_a_s_bird_head_1(s32 y, s32 x);
 }
 
-/* Empty body: mShadowModel then mModelAnim teardown, the vptr store and
+/* Empty body: mShadowModel then mAnmModel teardown, the vptr store and
    dActor_c's teardown are synthesised. */
 // @symbol _ZN9daSBird_cD1Ev
 // @symbol _ZN9daSBird_cD0Ev

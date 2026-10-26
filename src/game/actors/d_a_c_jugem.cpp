@@ -816,7 +816,7 @@ void daC_Jugem_c::UpdateShadow()
     Vec3_Asr(&v, &mPosX, 3);
     Matrix4x3_FromTranslation(&data_020a0e68, v.x, v.y, v.z);
     Matrix4x3_ApplyInPlaceToRotationZXYExt(&data_020a0e68, mAngleX, mAngleY, mAngleZ);
-    *(M48 *)&mModelAnim1.mat4x3 = *(M48 *)&data_020a0e68;
+    *(M48 *)&mAnmModel1.mat4x3 = *(M48 *)&data_020a0e68;
     Matrix4x3_FromTranslation(&data_020a0e68, mPosX >> 3, (mPosY - 0x38000) >> 3, mPosZ >> 3);
     *(M48 *)&mShadowMat1 = *(M48 *)&data_020a0e68;
     DropShadowRadHeight(mShadowModel1, *(Matrix4x3 *)&mShadowMat1, 0x46000, 0x258000, 0xf);
@@ -842,7 +842,7 @@ void daC_Jugem_c::UpdateShadowPlayer()
     Vec3_Asr(&t, &mPosX, 3);
     Matrix4x3_FromTranslation(&data_020a0e68, t.x, t.y, t.z);
     Matrix4x3_ApplyInPlaceToRotationXYZExt(&data_020a0e68, mAngleX, mAngleY, mAngleZ);
-    *(M48 *)&mModelAnim1.mat4x3 = *(M48 *)&data_020a0e68;
+    *(M48 *)&mAnmModel1.mat4x3 = *(M48 *)&data_020a0e68;
 
     Matrix4x3_FromTranslation(&data_020a0e68,
         mPosX >> 3,
@@ -915,45 +915,50 @@ void daC_Jugem_c::OnPendingDestroy()
 // @symbol _ZN11daC_Jugem_c6RenderEv
 int daC_Jugem_c::Render()
 {
-  if (mHidden == 1) return 1;
-  mTextureSequence.Update(mModelAnim1.data);
-  mModelAnim1.Render(0);
-  return 1;
+    if (mHidden == 1)
+        return 1;
+    mTextureSequence.Update(mAnmModel1.data);
+    mAnmModel1.Render(0);
+    return 1;
 }
 
 // @symbol _ZN11daC_Jugem_c8BehaviorEv
 int daC_Jugem_c::Behavior()
 {
-  DecIfAbove0_Short((unsigned short *)&mStateTimer);
-  if (mState[1]) (this->*mState[1])();
-  UpdatePos(0);
-  mModelAnim1.Advance();
-  mTextureSequence.Advance();
-  if (mState == data_ov085_021307d0) {
-    mAngleX = mPrevAngleX;
-    mAngleY = mPrevAngleY;
-    mAngleZ = mPrevAngleZ;
-  }
-  if (mState == data_ov085_021307e0) return 1;
-  if (mVariant == 0) UpdateShadowPlayer();
-  else UpdateShadow();
-  return 1;
+    DecIfAbove0_Short((unsigned short *)&mStateTimer);
+    if (mState[1])
+        (this->*mState[1])();
+    UpdatePos(0);
+    mAnmModel1.Advance();
+    mTextureSequence.Advance();
+    if (mState == data_ov085_021307d0) {
+        mAngleX = mPrevAngleX;
+        mAngleY = mPrevAngleY;
+        mAngleZ = mPrevAngleZ;
+    }
+    if (mState == data_ov085_021307e0)
+        return 1;
+    if (mVariant == 0)
+        UpdateShadowPlayer();
+    else
+        UpdateShadow();
+    return 1;
 }
 
 // @symbol _ZN11daC_Jugem_c13InitResourcesEv
 int daC_Jugem_c::InitResources()
 {
     BMD_File *bmd = (BMD_File *)dExtSimpleModel_c::LoadFile(data_ov085_0213074c);
-    mModelAnim1.SetFile(bmd, 1, -1);
+    mAnmModel1.SetFile(bmd, 1, -1);
     dExtFrameCtrl_c::LoadFile(data_ov085_02130744);
     dExtAnmTexPat_c::LoadFile(data_ov085_0213073c);
     mShadowModel1.InitCylinder();
     mShadowModel2.InitCylinder();
     dExtAnmTexPat_c::Prepare(**(BMD_File **)((char *)&data_ov085_0213074c + 4),
                              **(BTP_File **)((char *)&data_ov085_0213073c + 4));
-    mModelAnim1.SetAnim(*(BCA_File **)((char *)&data_ov085_02130744 + 4), 0, 0x1000, 0);
+    mAnmModel1.SetAnim(*(BCA_File **)((char *)&data_ov085_02130744 + 4), 0, 0x1000, 0);
     mTextureSequence.SetFile(**(BTP_File **)((char *)&data_ov085_0213073c + 4), 0, 0x1000, 0);
-    mModelAnim1.speed = 0x1000;
+    mAnmModel1.speed = 0x1000;
     mVariant = param1 & 0xff;
     if (mVariant == 0xff)
         mVariant = 0;
@@ -972,10 +977,9 @@ int daC_Jugem_c::InitResources()
             SetState(data_ov085_02130790);
         else
             SetState(data_ov085_021307e0);
+    } break;
     }
-    break;
-  }
-  return 1;
+    return 1;
 }
 
 // @symbol daC_Jugem_c_classInit

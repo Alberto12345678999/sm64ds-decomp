@@ -7401,14 +7401,6 @@
         "param:#3 const Vector3 *",
         "return:void"
       ],
-      "src/game/actors/d_a_door.cpp": [
-        "param:#3 void *",
-        "return:void"
-      ],
-      "src/game/actors/d_a_yegg.cpp": [
-        "param:#3 const void *",
-        "return:void"
-      ],
       "src/unnamed/ov002/func_ov002_020bcdf0.c": [
         "param:#3 void *",
         "return:void"
@@ -7454,15 +7446,6 @@
     },
     "_ZN5Sound17ChangeMusicVolumeEj5Fix12IiE": {
       "src/_ZN7Message12UpdateWindowEv.cpp": [
-        "return:void"
-      ],
-      "src/game/actors/d_a_bombking.cpp": [
-        "return:void"
-      ],
-      "src/game/actors/d_a_iwante.cpp": [
-        "return:void"
-      ],
-      "src/game/actors/d_a_king_donketu.cpp": [
         "return:void"
       ],
       "src/game/actors/d_a_kpa.cpp": [
@@ -7685,12 +7668,6 @@
         "param:#2 void *",
         "return:int"
       ],
-      "src/game/actors/d_a_ibl.cpp": [
-        "param:#2 void *"
-      ],
-      "src/game/actors/d_a_spd.cpp": [
-        "param:#2 const void *"
-      ],
       "src/runtime/actor/d_actor.cpp": [
         "param:#2 const Vector3 *"
       ],
@@ -7729,9 +7706,6 @@
       ],
       "src/game/actors/d_a_obj_fl_coin.cpp": [
         "param:#2 const Vector3 *"
-      ],
-      "src/game/actors/d_a_obj_fl_ring.cpp": [
-        "param:#2 void *"
       ]
     },
     "_ZN5Timer7GetTimeEv": {

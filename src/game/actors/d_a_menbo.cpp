@@ -191,7 +191,7 @@ extern "C" void func_ov090_02130f94(daMenbo_c *c_)
     if (IsOffScreen(c))
         return;
 
-    src = &c->mModelAnim.mat4x3;
+    src = &c->mAnmModel.mat4x3;
     i = 0;
     idx = 6;
     zero = 0;
@@ -202,7 +202,8 @@ extern "C" void func_ov090_02130f94(daMenbo_c *c_)
         Vector3 r;
 
         data_020a0e68 = *src;
-        MulMat4x3Mat4x3((Matrix4x3 *)c->mModelAnim.data.transforms + idx, &data_020a0e68, &data_020a0e68);
+        MulMat4x3Mat4x3((Matrix4x3 *)c->mAnmModel.data.transforms + idx, &data_020a0e68,
+                        &data_020a0e68);
         v.x = *(int *)((char *)&data_020a0e68 + 0x24);
         v.y = *(int *)((char *)&data_020a0e68 + 0x28);
         v.z = *(int *)((char *)&data_020a0e68 + 0x2c);
@@ -384,7 +385,7 @@ int daMenbo_c::func_ov090_02131584()
 {
     unsigned int v;
     mHorzSpeed = 0;
-    v = ((unsigned int)static_cast<dExtFrameCtrl_c &>(mModelAnim).currFrame << 4) >> 0x10;
+    v = ((unsigned int)static_cast<dExtFrameCtrl_c &>(mAnmModel).currFrame << 4) >> 0x10;
     if (v >= 0x3b)
         mAnimLoops += 1;
     if (mAnimLoops > 2 || func_ov090_021314a0(this) == 1)
@@ -400,7 +401,7 @@ int daMenbo_c::func_ov090_02131608()
 {
     mAnimLoops = 0;
     mAnimSpeed = 0x1000;
-    mModelAnim.SetAnim((BCA_File *)data_ov090_02134498.filePtr, 0, 0x1000, 0);
+    mAnmModel.SetAnim((BCA_File *)data_ov090_02134498.filePtr, 0, 0x1000, 0);
     return 1;
 }
 
@@ -426,7 +427,8 @@ int daMenbo_c::func_ov090_02131648()
     rnd = (u32)RandomIntInternal(&data_0209e650) >> 8;
     dist = Vec3_Dist(&self->mPos, (Vector3 *)&self->mAnchorPosX);
 
-    if (((((u32)static_cast<dExtFrameCtrl_c &>(self->mModelAnim).currFrame) << 4) >> 0x10 & 0xf) == 0) {
+    if (((((u32) static_cast<dExtFrameCtrl_c &>(self->mAnmModel).currFrame) << 4) >> 0x10 & 0xf) ==
+        0) {
         func_02012694(0xfc, &self->mCamSpacePos);
     }
 
@@ -535,7 +537,8 @@ int daMenbo_c::func_ov090_02131648()
         }
     }
 
-    if (((u32)(((u32)static_cast<dExtFrameCtrl_c &>(self->mModelAnim).currFrame) << 4) >> 0x10) >= 0x10) {
+    if (((u32)(((u32) static_cast<dExtFrameCtrl_c &>(self->mAnmModel).currFrame) << 4) >> 0x10) >=
+        0x10) {
         p390 = &self->mAnimLoops;
         *p390 = *p390 + 1;
     }
@@ -559,7 +562,7 @@ int daMenbo_c::func_ov090_02131a74()
     mSpeedHoldTimer = 0;
     mWanderTimer = 0x32;
     mAnimLoops = 0;
-    mModelAnim.SetAnim((BCA_File *)data_ov090_02134480.filePtr, 0, 0x1000, 0);
+    mAnmModel.SetAnim((BCA_File *)data_ov090_02134480.filePtr, 0, 0x1000, 0);
     return 1;
 }
 
@@ -601,7 +604,7 @@ int daMenbo_c::func_ov090_02131b94()
     r = (unsigned)RandomIntInternal(&data_0209e650);
     mStateTimer = (short)(((r >> 8) & 0x1f) + 0x96);
     mAnimSpeed = 0x1000;
-    mModelAnim.SetAnim((BCA_File *)data_ov090_02134490.filePtr, 0, 0x1000, 0);
+    mAnmModel.SetAnim((BCA_File *)data_ov090_02134490.filePtr, 0, 0x1000, 0);
     return 1;
 }
 
@@ -611,10 +614,10 @@ int daMenbo_c::func_ov090_02131b94()
  * enough, go back to water rest. Off the water, drop the anchor and idle. */
 int daMenbo_c::func_ov090_02131c48()
 {
-    if ((((unsigned)static_cast<dExtFrameCtrl_c &>(mModelAnim).currFrame) << 4) >> 16 >= 4)
+    if ((((unsigned)static_cast<dExtFrameCtrl_c &>(mAnmModel).currFrame) << 4) >> 16 >= 4)
         mHorzSpeed = 0x19000;
 
-    if ((((unsigned)static_cast<dExtFrameCtrl_c &>(mModelAnim).currFrame) << 4) >> 16 == 4)
+    if ((((unsigned)static_cast<dExtFrameCtrl_c &>(mAnmModel).currFrame) << 4) >> 16 == 4)
         func_02012694(0xfd, &mCamSpacePos);
 
     if (mTurnTimer == 0 && mWithMeshClsn.IsOnWall() &&
@@ -627,7 +630,7 @@ int daMenbo_c::func_ov090_02131c48()
     if (mTurnTimer != 0) {
         ApproachAngle(&mPrevAngleY, (s16)mTargetAngleY, 1, 0x1000, 0x1000);
     } else {
-        if (static_cast<dExtFrameCtrl_c &>(mModelAnim).Finished()) {
+        if (static_cast<dExtFrameCtrl_c &>(mAnmModel).Finished()) {
             s32 *q = &mAnimLoops;
             *q = *q + 1;
             if (mAnimLoops > 0x14)
@@ -650,7 +653,7 @@ int daMenbo_c::func_ov090_02131c48()
 /* Water-chase entry. The 0x40000000 flag is passed straight through. */
 int daMenbo_c::func_ov090_02131db0()
 {
-    mModelAnim.SetAnim((BCA_File *)data_ov090_02134488.filePtr, 0x40000000, 0x1000, 0);
+    mAnmModel.SetAnim((BCA_File *)data_ov090_02134488.filePtr, 0x40000000, 0x1000, 0);
     mAnimSpeed = 0x1000;
     mAnimLoops = 0;
     return 1;
@@ -679,7 +682,7 @@ void func_ov090_02131e50(daMenbo_c *c)
     Vec3_Asr(dst, src, 3);
     Matrix4x3_FromTranslation(&data_020a0e68, dst[0], dst[1], dst[2]);
     Matrix4x3_ApplyInPlaceToRotationXYZExt(&data_020a0e68, c->mAngleX, c->mAngleY, c->mAngleZ);
-    c->mModelAnim.mat4x3 = data_020a0e68;
+    c->mAnmModel.mat4x3 = data_020a0e68;
 }
 
 // @symbol _ZN9daMenbo_c16CleanupResourcesEv
@@ -707,7 +710,7 @@ int daMenbo_c::Render()
     unsigned int f = mFlags;
     int b = ((f & 0x40000) != 0);
     if (b) return 1;
-    mModelAnim.Render(&mScale);
+    mAnmModel.Render(&mScale);
     return 1;
 }
 
@@ -730,7 +733,7 @@ int daMenbo_c::Behavior()
         return 1;
     }
 
-    if (UpdateKillByInvincibleChar(mWithMeshClsn, mModelAnim, 3))
+    if (UpdateKillByInvincibleChar(mWithMeshClsn, mAnmModel, 3))
         return 1;
 
     if (mDeathState != 0) {
@@ -808,8 +811,8 @@ int daMenbo_c::Behavior()
             (this->*n[1])();
     }
     mAngleY = mPrevAngleY;
-    static_cast<dExtFrameCtrl_c &>(mModelAnim).speed = mAnimSpeed;
-    static_cast<dExtFrameCtrl_c &>(mModelAnim).Advance();
+    static_cast<dExtFrameCtrl_c &>(mAnmModel).speed = mAnimSpeed;
+    static_cast<dExtFrameCtrl_c &>(mAnmModel).Advance();
     func_ov090_02131e50(this);
     func_ov090_021310b4(this);
     mdCcAcPos_c.Clear();
@@ -836,7 +839,7 @@ int daMenbo_c::InitResources()
     Vector3 v;
 
     f = (BMD_File *)dExtSimpleModel_c::LoadFile(data_ov090_021344a0);
-    mModelAnim.SetFile(f, 1, -1);
+    mAnmModel.SetFile(f, 1, -1);
     dExtFrameCtrl_c::LoadFile(data_ov090_02134488);
     dExtFrameCtrl_c::LoadFile(data_ov090_02134480);
     dExtFrameCtrl_c::LoadFile(data_ov090_02134490);

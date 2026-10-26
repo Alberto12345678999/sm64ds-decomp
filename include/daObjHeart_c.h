@@ -18,7 +18,7 @@ struct daObjHeart_c : dActor_c {
     u8 pad_0d0[0x4];
     /* dExtAnmModel_c member, named by _ZN14dExtAnmModel_cD1Ev at +0xd4 -- a relocation the ROM build
        checks. D1 and not D2, so it is this type and not an inlined base. */
-    dExtAnmModel_c mModelAnim; /* 0x0d4 */
+    dExtAnmModel_c mAnmModel; /* 0x0d4 */
     /* dCcAc_c member. The cartridge's own ~daObjHeart_c calls _ZN7dCcAc_cD1Ev at +0x138
        (D0/D1), a relocation the ROM build checks. D1 and not D2, so it is this type
        and not an inlined base. */
@@ -36,7 +36,7 @@ struct daObjHeart_c : dActor_c {
     virtual s32 Behavior();         /* slot  6 */
     virtual s32 Render();           /* slot  9 */
 
-    /* Rebuilds mModelAnim's rotation/translation from mAngleY/mPos. */
+    /* Rebuilds mAnmModel's rotation/translation from mAngleY/mPos. */
     void func_ov002_020bc664();
 };
 

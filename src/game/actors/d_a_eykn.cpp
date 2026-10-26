@@ -369,10 +369,10 @@ idCheck:
 // @symbol _ZN8daEykn_c20UpdateModelTransformEv
 void daEykn_c::UpdateModelTransform()
 {
-    Matrix4x3_FromRotationXYZExt(&mModelAnim.mat4x3, mAngleX, mAngleY, mAngleZ);
-    mModelAnim.mat4x3.t.x = mPosX >> 3;
-    mModelAnim.mat4x3.t.y = mPosY >> 3;
-    mModelAnim.mat4x3.t.z = mPosZ >> 3;
+    Matrix4x3_FromRotationXYZExt(&mAnmModel.mat4x3, mAngleX, mAngleY, mAngleZ);
+    mAnmModel.mat4x3.t.x = mPosX >> 3;
+    mAnmModel.mat4x3.t.y = mPosY >> 3;
+    mAnmModel.mat4x3.t.z = mPosZ >> 3;
     mShadowMat[9] = mPosX >> 3;
     mShadowMat[10] = mPosY >> 3;
     mShadowMat[11] = mPosZ >> 3;
@@ -425,8 +425,8 @@ int daEykn_c::St_Die_Main()
         break;
     }
     case 1:
-        mModelAnim.Advance();
-        if (mModelAnim.Finished() != 0) {
+        mAnmModel.Advance();
+        if (mAnmModel.Finished() != 0) {
             mSubState++;
         }
         break;
@@ -504,10 +504,10 @@ int daEykn_c::St_Die_Init()
         mDeathSpinSpeed = 0x2500;
     else
         mDeathSpinSpeed = -0x2500;
-    mModelAnim.SetAnim((BCA_File *)gEyknDeathAnimationFile.filePtr, 0, 0x1000, 0);
-    mModelAnim.SetFlags(0x40000000);
-    mModelAnim.speed = 0x2800;
-    mModelAnim.currFrame = 0;
+    mAnmModel.SetAnim((BCA_File *)gEyknDeathAnimationFile.filePtr, 0, 0x1000, 0);
+    mAnmModel.SetFlags(0x40000000);
+    mAnmModel.speed = 0x2800;
+    mAnmModel.currFrame = 0;
     mSubState = 0;
     mSubTimer = kCircleFrames;
     mWobblePhase = 0;
@@ -745,9 +745,9 @@ void daEykn_c::OnPendingDestroy()
 // @symbol _ZN8daEykn_c6RenderEv
 int daEykn_c::Render()
 {
-    mTextureSequence.Update(mModelAnim.data);
+    mTextureSequence.Update(mAnmModel.data);
     /* Not &mScale: daEykn_c's own s32 mScale hides dActor_c's vector. */
-    mModelAnim.Render((Vector3 *)&mScaleX);
+    mAnmModel.Render((Vector3 *)&mScaleX);
     return 1;
 }
 
@@ -774,7 +774,7 @@ s32 daEykn_c::InitResources()
 
     dExtSimpleModel_c::LoadFile(data_ov002_0210da38);
     bmd = (BMD_File *)dExtSimpleModel_c::LoadFile(gEyknModelFile);
-    ((dExtModel_c *)&mModelAnim)->SetFile(bmd, 1, 1);
+    ((dExtModel_c *)&mAnmModel)->SetFile(bmd, 1, 1);
 
     int i;
     for (i = 0; i < 2; i++) {
@@ -825,9 +825,9 @@ s32 daEykn_c::InitResources()
     mTerminalVelocity = 0;
     SetState(0);
 
-    mModelAnim.SetAnim((BCA_File *)gEyknDeathAnimationFile.filePtr, 0, 0x1000, 0);
+    mAnmModel.SetAnim((BCA_File *)gEyknDeathAnimationFile.filePtr, 0, 0x1000, 0);
 
-    mModelAnim.speed = 0x1000;
+    mAnmModel.speed = 0x1000;
     mTextureSequence.SetFile(*(BTP_File *)gEyknCloseTextureSequenceFile.filePtr, 0, 0x1000, 0);
 
     mTextureSequence.speed = 0x1000;

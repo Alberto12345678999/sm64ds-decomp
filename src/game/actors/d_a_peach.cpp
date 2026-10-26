@@ -187,15 +187,15 @@ done:
 void daPeach_c::UpdateModel()
 {
     char *c = (char *)this;
-    Matrix4x3_FromRotationY(&mModelAnim.mat4x3, mAngleY);
-    mModelAnim.mat4x3.m[9] = mPosX >> 3;
-    mModelAnim.mat4x3.m[10] = mPosY >> 3;
-    mModelAnim.mat4x3.m[11] = mPosZ >> 3;
+    Matrix4x3_FromRotationY(&mAnmModel.mat4x3, mAngleY);
+    mAnmModel.mat4x3.m[9] = mPosX >> 3;
+    mAnmModel.mat4x3.m[10] = mPosY >> 3;
+    mAnmModel.mat4x3.m[11] = mPosZ >> 3;
     *(PeachM48 *)data_020a0e68 = *(PeachM48 *)(*(char **)(c + 0xe8) + 0x360);
     Matrix4x3_ApplyInPlaceToRotationY(data_020a0e68, mLookHorzAngle);
     Matrix4x3_ApplyInPlaceToRotationZ(data_020a0e68, mLookVertAngle);
     *(PeachM48 *)(*(char **)(c + 0xe8) + 0x360) = *(PeachM48 *)data_020a0e68;
-    DropShadowRadHeight(mShadowModel, mModelAnim.mat4x3, 0x8c000, 0x32000, 0xf);
+    DropShadowRadHeight(mShadowModel, mAnmModel.mat4x3, 0x8c000, 0x32000, 0xf);
 }
 
 // @symbol _ZN9daPeach_c10InitState0Ev
@@ -210,8 +210,8 @@ int daPeach_c::InitState0()
 // @symbol _ZN9daPeach_c6State0Ev
 int daPeach_c::State0()
 {
-    mModelAnim.SetAnim((BCA_File *)data_ov085_021304ec[1], 0, 0x1000, 0);
-    ((dExtFrameCtrl_c *)&mModelAnim)->SetFlags(0x40000000);
+    mAnmModel.SetAnim((BCA_File *)data_ov085_021304ec[1], 0, 0x1000, 0);
+    ((dExtFrameCtrl_c *)&mAnmModel)->SetFlags(0x40000000);
     mHorzSpeed = 0x4000;
     mVertSpeed = 0xa000;
     mStateValue = 4;
@@ -227,7 +227,7 @@ int daPeach_c::State2()
 // @symbol _ZN9daPeach_c10InitState2Ev
 int daPeach_c::InitState2()
 {
-    mModelAnim.SetAnim((BCA_File *)((void *)data_ov085_021304e4[1]), 0, 0x1000, 0);
+    mAnmModel.SetAnim((BCA_File *)((void *)data_ov085_021304e4[1]), 0, 0x1000, 0);
     mHorzSpeed = 0x4000;
     mStateValue = 3;
     return 1;
@@ -247,7 +247,7 @@ int daPeach_c::InitState4()
 // @symbol _ZN9daPeach_c6State1Ev
 int daPeach_c::State1()
 {
-    mModelAnim.SetAnim((BCA_File *)((void *)data_ov085_021304c4[1]), 0, 0x1000, 0);
+    mAnmModel.SetAnim((BCA_File *)((void *)data_ov085_021304c4[1]), 0, 0x1000, 0);
     mHorzSpeed = 0x1800;
     mStateValue = 2;
     return 1;
@@ -286,9 +286,9 @@ int daPeach_c::State3()
 // @symbol _ZN9daPeach_c10InitState1Ev
 int daPeach_c::InitState1()
 {
-    mModelAnim.SetAnim((BCA_File *)data_ov085_021304d4[1], 0, 0x1000, 0);
-    ((dExtFrameCtrl_c *)&mModelAnim)->currFrame = 0;
-    ((dExtFrameCtrl_c *)&mModelAnim)->Advance();
+    mAnmModel.SetAnim((BCA_File *)data_ov085_021304d4[1], 0, 0x1000, 0);
+    ((dExtFrameCtrl_c *)&mAnmModel)->currFrame = 0;
+    ((dExtFrameCtrl_c *)&mAnmModel)->Advance();
     mTalkState = 1;
     mStateValue = 1;
     return 1;
@@ -317,7 +317,7 @@ int daPeach_c::InitState3()
 // @symbol _ZN9daPeach_c6State4Ev
 int daPeach_c::State4()
 {
-    mModelAnim.SetAnim((BCA_File *)((void *)data_ov085_021304bc[1]), 0, 0x1000, 0);
+    mAnmModel.SetAnim((BCA_File *)((void *)data_ov085_021304bc[1]), 0, 0x1000, 0);
     mStateValue = 0;
     return 1;
 }
@@ -370,7 +370,7 @@ void daPeach_c::OnPendingDestroy()
 /* Qualified dExtSimpleModel_c::Render. dExtAnmModel_c overrides the slot. */
 int daPeach_c::Render()
 {
-    mModelAnim.dExtSimpleModel_c::Render(0);
+    mAnmModel.dExtSimpleModel_c::Render(0);
     return 1;
 }
 
@@ -380,8 +380,8 @@ int daPeach_c::Behavior()
     CallStateBehavior();
     UpdateLookAt();
     if (mStateValue != 1)
-        ((dExtFrameCtrl_c *)((dExtFrameCtrl_c *)&mModelAnim))->Advance();
-    ((PeachAnimSlots *)((char *)&mModelAnim))->g3();
+        ((dExtFrameCtrl_c *)((dExtFrameCtrl_c *)&mAnmModel))->Advance();
+    ((PeachAnimSlots *)((char *)&mAnmModel))->g3();
     ((dCc_c *)&mCylinder)->Clear();
     ((dCc_c *)&mCylinder)->Update();
     UpdateModel();
@@ -397,7 +397,7 @@ int daPeach_c::Behavior()
 int daPeach_c::InitResources()
 {
     void *f = dExtSimpleModel_c::LoadFile(*(SharedFilePtr *)&data_ov085_021304f4);
-    ((dExtModel_c *)&mModelAnim)->SetFile((BMD_File *)f, 1, -1);
+    ((dExtModel_c *)&mAnmModel)->SetFile((BMD_File *)f, 1, -1);
     for (int i = 0; i < 7; i++)
         dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)data_ov085_0212f280[i]);
     if (mShadowModel.InitCylinder() == 0)

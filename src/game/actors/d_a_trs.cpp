@@ -93,7 +93,7 @@ struct daFPknBallView { /* daFPknBall_c.h: SpawnFireball's result */
     u8 pad_368[0x6];
     u8 mMirrored; /* 0x36e */
 };
-/* One 0x34-byte runtime bone of mModelAnim.data.bones (ModelComponents types
+/* One 0x34-byte runtime bone of mAnmModel.data.bones (ModelComponents types
    the array as BMD_Bone). Same rotX/rotY/rotZ at 0x1a as d_a_moray.cpp's
    MorayBone and d_a_cnn.cpp's CnnBone; the two render paths pose bone 0
    with the Boo's angles. */
@@ -208,13 +208,11 @@ struct System {
 };
 }
 extern void d_a_trsChangeMusicVolumeHold(unsigned a, int fx);
-extern void _ZN5Sound22StopLoadedMusic_Layer3Ev(void);
 extern void func_02011cfc(void);
 extern s16 data_ov063_0211e1c8[];
 extern int LenVec3(int *v);
 extern void _ZN17daObjSlIceBlock_c16CleanupResourcesEv(void);
 extern int func_ov002_020c51d0(void *c, int *st);
-extern void _ZN5Sound22LoadAndSetMusic_Layer3Ej(u32 x);
 extern u16 func_02011d14(void);
 extern int data_ov008_02111b6c;
 extern int data_0209caa0[];
@@ -310,22 +308,21 @@ int daTrs_c::OnAimedAtWithEgg() {
 // @symbol _ZN7daTrs_c19func_ov063_021160d4Ev
 void daTrs_c::func_ov063_021160d4() {
 
-  int *p;
-  this->mClsnOffX = 0;
-  this->mClsnOffY = 0;
-  this->mClsnOffZ = 0;
-  Matrix4x3_FromTranslation(&data_020a0e68, this->mPosX, this->mPosY, this->mPosZ);
-  MulMat4x3Mat4x3(this->mModelAnim.data.transforms, &data_020a0e68, &data_020a0e68);
-  this->mClsnOffX = data_020a0e68.m[9];
-  this->mClsnOffY = inline_fn(10);
-  this->mClsnOffZ = inline_fn(11);
-  SubVec3((Vec3 *) &this->mClsnOffX, (Vec3 *) &this->mPosX, (Vec3 *) &this->mClsnOffX);
-  SubVec3((Vec3 *) &this->mClsnOffX, (Vec3 *) &this->mClsnBaseX, (Vec3 *) &this->mClsnOffX);
-  Vec3_MulScalarInPlace((Vec3 *) &this->mClsnOffX, 0x6800);
-  p = (int *) &this->mClsnOffZ;
-  *p += this->mClsnZBias;
+    int *p;
+    this->mClsnOffX = 0;
+    this->mClsnOffY = 0;
+    this->mClsnOffZ = 0;
+    Matrix4x3_FromTranslation(&data_020a0e68, this->mPosX, this->mPosY, this->mPosZ);
+    MulMat4x3Mat4x3(this->mAnmModel.data.transforms, &data_020a0e68, &data_020a0e68);
+    this->mClsnOffX = data_020a0e68.m[9];
+    this->mClsnOffY = inline_fn(10);
+    this->mClsnOffZ = inline_fn(11);
+    SubVec3((Vec3 *)&this->mClsnOffX, (Vec3 *)&this->mPosX, (Vec3 *)&this->mClsnOffX);
+    SubVec3((Vec3 *)&this->mClsnOffX, (Vec3 *)&this->mClsnBaseX, (Vec3 *)&this->mClsnOffX);
+    Vec3_MulScalarInPlace((Vec3 *)&this->mClsnOffX, 0x6800);
+    p = (int *)&this->mClsnOffZ;
+    *p += this->mClsnZBias;
 }
-
 
 // @symbol _ZN7daTrs_c19func_ov063_02116190Ev
 int daTrs_c::func_ov063_02116190() {
@@ -433,22 +430,22 @@ void daTrs_c::func_ov063_0211640c() {
     if (this->mState == 3) {
         Vec3_Asr(&t1, &pos, 3);
         Matrix4x3_FromTranslation(&data_020a0e68, t1.x, t1.y, t1.z);
-        this->mModelAnim.mat4x3 = data_020a0e68;
-        this->mModelAnim.ApplyOpacity((u8)((int)this->mOpacity >> 3), 1);
-        func_020167a4(&this->mModelAnim);
+        this->mAnmModel.mat4x3 = data_020a0e68;
+        this->mAnmModel.ApplyOpacity((u8)((int)this->mOpacity >> 3), 1);
+        func_020167a4(&this->mAnmModel);
         {
-            TrsBone *m = (TrsBone *)this->mModelAnim.data.bones;
+            TrsBone *m = (TrsBone *)this->mAnmModel.data.bones;
             m->rotX = this->mAngleX;
             m->rotY = (s16)(ang - 0x4000);
             m->rotZ = this->mAngleZ;
         }
-        this->mModelAnim.data.UpdateVertsUsingBones();
+        this->mAnmModel.data.UpdateVertsUsingBones();
     } else {
         Vec3_Asr(&t2, &pos, 3);
         Matrix4x3_FromTranslation(&data_020a0e68, t2.x, t2.y, t2.z);
         Matrix4x3_ApplyInPlaceToRotationY(&data_020a0e68, ang);
-        this->mModelAnim.mat4x3 = data_020a0e68;
-        this->mModelAnim.ApplyOpacity((u8)((int)this->mOpacity >> 3), 1);
+        this->mAnmModel.mat4x3 = data_020a0e68;
+        this->mAnmModel.ApplyOpacity((u8)((int)this->mOpacity >> 3), 1);
     }
 
     if (this->mOpacity >= 0x10) {
@@ -503,22 +500,22 @@ void daTrs_c::func_ov063_021166ac() {
         t->mState == 3 || t->mState == 3) {
         Vec3_Asr(&t1, &this->mPos, 3);
         Matrix4x3_FromTranslation(&data_020a0e68, t1.x, t1.y, t1.z);
-        this->mModelAnim.mat4x3 = data_020a0e68;
-        this->mModelAnim.ApplyOpacity((u8)(this->mOpacity >> 3), 1);
-        func_020167a4(&this->mModelAnim);
+        this->mAnmModel.mat4x3 = data_020a0e68;
+        this->mAnmModel.ApplyOpacity((u8)(this->mOpacity >> 3), 1);
+        func_020167a4(&this->mAnmModel);
         {
-            TrsBone *p = (TrsBone *)this->mModelAnim.data.bones;
+            TrsBone *p = (TrsBone *)this->mAnmModel.data.bones;
             p->rotX = this->mAngleX;
             p->rotY = this->mAngleY - 0x4000;
             p->rotZ = this->mAngleZ;
         }
-        this->mModelAnim.data.UpdateVertsUsingBones();
+        this->mAnmModel.data.UpdateVertsUsingBones();
     } else {
         Vec3_Asr(&t2, &this->mPos, 3);
         Matrix4x3_FromTranslation(&data_020a0e68, t2.x, t2.y, t2.z);
         Matrix4x3_ApplyInPlaceToRotationY(&data_020a0e68, this->mAngleY);
-        this->mModelAnim.mat4x3 = data_020a0e68;
-        this->mModelAnim.ApplyOpacity((u8)(this->mOpacity >> 3), 1);
+        this->mAnmModel.mat4x3 = data_020a0e68;
+        this->mAnmModel.ApplyOpacity((u8)(this->mOpacity >> 3), 1);
     }
 
     Matrix4x3_FromTranslation(&data_020a0e68, this->mPosX >> 3, this->mPosY >> 3, this->mPosZ >> 3);
@@ -1180,7 +1177,7 @@ void daTrs_c::func_ov063_02117b0c() {
         if (this->mTalkPlayer->GetTalkState() != -1)
             return;
         this->mState = 5;
-        _ZN5Sound22StopLoadedMusic_Layer3Ev();
+        Sound::StopLoadedMusic_Layer3();
         Sound::ChangeMusicVolume(0x7f, 0x7222);
         func_02011cfc();
         {
@@ -1415,7 +1412,7 @@ void daTrs_c::func_ov063_02117cdc() {
         if (this->mClosestPlayer->ShowMessage(*(fBase_c *)(this), (u32)msg, (const Vector3 *)(w), 0, 2) == 0) {
             return;
         }
-        _ZN5Sound22LoadAndSetMusic_Layer3Ej(0x2c);
+        Sound::LoadAndSetMusic_Layer3(0x2c);
         {
             u8 *st = (u8 *)&this->mSubState;
             int n = *st + 1;
@@ -1435,7 +1432,7 @@ void daTrs_c::func_ov063_02117cdc() {
         cam->mFlags &= ~8;
         rr = RandomIntInternal(&data_0209e650);
         this->mNextRelocateTimer = ((rr >> 0x10) % 0x96) + 0x12c;
-        _ZN5Sound22LoadAndSetMusic_Layer3Ej(0x2d);
+        Sound::LoadAndSetMusic_Layer3(0x2d);
         func_02011d14();
         return;
     }
@@ -1451,15 +1448,15 @@ void daTrs_c::func_ov063_02118458() {
     ApproachLinear(this->mPrevAngleY, this->mAngleToPlayer,
         data_ov063_0211e1c0[this->mHitPoints - 1]);
 
-    if (this->mModelAnim.Finished()) {
+    if (this->mAnmModel.Finished()) {
         if (func_ov063_0211a8a4()) {
-            if (this->mModelAnim.file == (BCA_File *)data_ov063_0211edcc.filePtr) {
+            if (this->mAnmModel.file == (BCA_File *)data_ov063_0211edcc.filePtr) {
                 func_02012694(0x158, &this->mCamSpacePos);
-                this->mModelAnim.SetAnim((BCA_File *)data_ov063_0211edd4.filePtr, 0x40000000,
-                                         0x1000, 0);
+                this->mAnmModel.SetAnim((BCA_File *)data_ov063_0211edd4.filePtr, 0x40000000, 0x1000,
+                                        0);
             } else if (this->mAttackRepeats != 0) {
                 this->mAttackRepeats -= 1;
-                this->mModelAnim.currFrame = 0;
+                this->mAnmModel.currFrame = 0;
                 func_02012694(0x158, &this->mCamSpacePos);
             } else {
                 int rnd;
@@ -1467,7 +1464,7 @@ void daTrs_c::func_ov063_02118458() {
                 this->mdCcAcPos_c.flags &= ~1;
                 rnd = ((unsigned int)RandomIntInternal(&data_0209e650) >> 16) & 0x3f;
                 this->mAttackTimer = rnd + 0xb4;
-                this->mModelAnim.SetAnim((BCA_File *)data_ov063_0211ede4.filePtr, 0, 0x1000, 0);
+                this->mAnmModel.SetAnim((BCA_File *)data_ov063_0211ede4.filePtr, 0, 0x1000, 0);
             }
         } else {
             int rnd;
@@ -1475,11 +1472,11 @@ void daTrs_c::func_ov063_02118458() {
             this->mdCcAcPos_c.flags &= ~1;
             rnd = ((unsigned int)RandomIntInternal(&data_0209e650) >> 16) & 0x3f;
             this->mAttackTimer = rnd + 0xb4;
-            this->mModelAnim.SetAnim((BCA_File *)data_ov063_0211ede4.filePtr, 0, 0x1000, 0);
+            this->mAnmModel.SetAnim((BCA_File *)data_ov063_0211ede4.filePtr, 0, 0x1000, 0);
         }
     } else {
-        if (this->mModelAnim.file == (BCA_File *)data_ov063_0211edd4.filePtr &&
-            this->mModelAnim.WillHitFrame(6)) {
+        if (this->mAnmModel.file == (BCA_File *)data_ov063_0211edd4.filePtr &&
+            this->mAnmModel.WillHitFrame(6)) {
             Vec3 v;
             s16 m = 0x78;
             v.x = this->mPosX;
@@ -1564,7 +1561,7 @@ void daTrs_c::func_ov063_0211873c() {
     this->mVertSpeed = 0;
     this->mVertAccel = 0;
     func_02012694(0x159, &this->mCamSpacePos);
-    this->mModelAnim.SetAnim((BCA_File *)data_ov063_0211edcc.filePtr, 0x40000000, 0x1000, 0);
+    this->mAnmModel.SetAnim((BCA_File *)data_ov063_0211edcc.filePtr, 0x40000000, 0x1000, 0);
     {
         unsigned int rnd = (unsigned int)RandomIntInternal(&data_0209e650);
         this->mAttackRepeats = (u8)((rnd >> 0x10) % 3);
@@ -1916,7 +1913,7 @@ void daTrs_c::func_ov063_02119074() {
         this->mScaleY = scale;
         this->mScaleZ = scale;
 
-        this->mModelAnim.SetPolygonID(0x16);
+        this->mAnmModel.SetPolygonID(0x16);
 
         if (this->mVariant == 0xd) {
             this->mSavedMusicVolume = data_0209b490[0];
@@ -2858,11 +2855,11 @@ void daTrs_c::func_ov063_0211aa34() {
         }
     }
     if (this->mOpacity == 0xff) {
-        this->mModelAnim.SetPolygonID(1);
+        this->mAnmModel.SetPolygonID(1);
     } else if (this->mBooFlags.mirrored) {
-        this->mModelAnim.SetPolygonID(2);
+        this->mAnmModel.SetPolygonID(2);
     } else {
-        this->mModelAnim.SetPolygonID(0x16);
+        this->mAnmModel.SetPolygonID(0x16);
     }
     v = this->mClsnScale * 8 / 10
         + this->mClsnScale * (this->mOpacity * 2) / 2550;
@@ -3049,7 +3046,7 @@ int daTrs_c::Render()
     {
         unsigned char st = mVariant;
         if (st >= 0xc && st != 0xf)
-            mModelAnim.HideMaterial(0, 2);
+            mAnmModel.HideMaterial(0, 2);
     }
 
     if (mDeathState != 8 &&
@@ -3057,9 +3054,9 @@ int daTrs_c::Render()
          mState == 3 ||
          mState == 3 ||
          mState == 3)) {
-        mModelAnim.dExtSimpleModel_c::Render(&mScale);
+        mAnmModel.dExtSimpleModel_c::Render(&mScale);
     } else {
-        mModelAnim.Render(&mScale);
+        mAnmModel.Render(&mScale);
     }
 
     return 1;
@@ -3107,7 +3104,7 @@ int daTrs_c::Behavior()
     if (GetCapState() == 0)
         return 1;
 
-    t = UpdateKillByInvincibleChar(mWithMeshClsn, mModelAnim, 0);
+    t = UpdateKillByInvincibleChar(mWithMeshClsn, mAnmModel, 0);
     if (t != 0) {
         if (t == 2) {
             PoofDust();
@@ -3350,7 +3347,7 @@ block_39:
         }
     }
     if ((((mState != 3) && (mState != 3)) && (mState != 3)) && (mState != 3))
-        mModelAnim.Advance();
+        mAnmModel.Advance();
     func_ov063_021166ac();
     mdCcAcPos_c.Clear();
     if (mOpacity == 0xff) {
@@ -3431,8 +3428,8 @@ int daTrs_c::InitResources()
             mFoundActor = 0;
         }
         dExtFrameCtrl_c::LoadFile(data_ov063_0211ede4);
-        mModelAnim.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(data_ov063_0211edf4), 1, 1);
-        mModelAnim.SetAnim((BCA_File *)data_ov063_0211ede4.filePtr, 0, 0x1000, 0);
+        mAnmModel.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(data_ov063_0211edf4), 1, 1);
+        mAnmModel.SetAnim((BCA_File *)data_ov063_0211ede4.filePtr, 0, 0x1000, 0);
         mHitPoints = 3;
         mClsnRadius = 0xc8;
         mClsnHeight = 0x104;
@@ -3450,8 +3447,8 @@ int daTrs_c::InitResources()
     } else {
         mVariant = param1 & 0xf;
         dExtFrameCtrl_c::LoadFile(data_ov063_0211eddc);
-        mModelAnim.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(data_ov063_0211edc4), 1, 0x16);
-        mModelAnim.SetAnim((BCA_File *)data_ov063_0211eddc.filePtr, 0, 0x1000, 0);
+        mAnmModel.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(data_ov063_0211edc4), 1, 0x16);
+        mAnmModel.SetAnim((BCA_File *)data_ov063_0211eddc.filePtr, 0, 0x1000, 0);
         mHitPoints = 1;
         if (mVariant == 5) {
             mClsnZBias = -0x24000;
@@ -3628,7 +3625,7 @@ int daTrs_c::InitResources()
     mClsnBaseY = 0;
     mClsnBaseZ = 0;
     Matrix4x3_FromTranslation(&data_020a0e68, mPosX, mPosY, mPosZ);
-    MulMat4x3Mat4x3(this->mModelAnim.data.transforms, &data_020a0e68, &data_020a0e68);
+    MulMat4x3Mat4x3(this->mAnmModel.data.transforms, &data_020a0e68, &data_020a0e68);
     mClsnBaseX = data_020a0e68.m[9];
     mClsnBaseY = data_020a0e68.m[10];
     mClsnBaseZ = data_020a0e68.m[11];

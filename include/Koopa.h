@@ -32,7 +32,7 @@
 struct daNknk_c : dEnemyBase_c {
     dCcAc_c         mdCc_c;                  /* 0x110 */
     dBgCh_Actr      mWithMeshClsn;           /* 0x144 */
-    dExtAnmModel_c mModelAnim;               /* 0x300 */
+    dExtAnmModel_c mAnmModel;                /* 0x300 */
     dExtShadowModel_c     mShadowModel;            /* 0x364 */
     s32             mState;                  /* 0x38c */
     s32             mKoopaVariant;           /* 0x390 */

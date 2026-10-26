@@ -130,9 +130,9 @@ int daLuigi_c::InitResources()
 {
     Vec3 t;
 
-    mModelAnim.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(data_ov002_0210ebb8), 1, -1);
-    func_02016acc(&mModelAnim, kMatClear);
-    func_02016b24(&mModelAnim, kMatSet);
+    mAnmModel.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(data_ov002_0210ebb8), 1, -1);
+    func_02016acc(&mAnmModel, kMatClear);
+    func_02016b24(&mAnmModel, kMatSet);
 
     mModel.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(data_ov002_0210eb20), 1, -1);
     func_02016acc(&mModel, kMatClear);
@@ -147,13 +147,13 @@ int daLuigi_c::InitResources()
 
     mShadowModel.InitCylinder();
 
-    mModelAnim.SetAnim((BCA_File *)dExtFrameCtrl_c::LoadFile(data_ov002_0210eaa0), 0, kFxOne, 0);
+    mAnmModel.SetAnim((BCA_File *)dExtFrameCtrl_c::LoadFile(data_ov002_0210eaa0), 0, kFxOne, 0);
 
     Vec3_Asr(&t, (Vec3 *)&mPosX, 3);
     Matrix4x3_FromTranslation(&data_020a0e68, t.x, t.y, t.z);
     Matrix4x3_ApplyInPlaceToRotationY(&data_020a0e68, mAngleY);
 
-    *(Mtx *)&mModelAnim.mat4x3 = *(Mtx *)&data_020a0e68;
+    *(Mtx *)&mAnmModel.mat4x3 = *(Mtx *)&data_020a0e68;
     *(Mtx *)&mModel.mat4x3 = *(Mtx *)&data_020a0e68;
 
     SetState(&data_ov055_02111b70, CurrentPlayer());
@@ -206,7 +206,7 @@ int daLuigi_c::Render()
     player = CurrentPlayer();
     body = (dExtSimpleModel_c *)func_ov002_020e496c((char *)player);
 
-    comps = &mModelAnim.data;
+    comps = &mAnmModel.data;
     file = comps->modelFile;
     dst = (Mtx *)comps->transforms;
     src = (Mtx *)body->data.transforms;
@@ -218,7 +218,7 @@ int daLuigi_c::Render()
         dst++;
     }
 
-    mat = &mModelAnim.mat4x3;
+    mat = &mAnmModel.mat4x3;
     *(Mtx *)mat = *(Mtx *)&body->mat4x3;
     mat->t.x = -mat->t.x;
     func_0203c178(&data_020a0e68, kMirrorSx, kFxOne, kFxOne);
@@ -227,9 +227,9 @@ int daLuigi_c::Render()
 
     if (data_ov055_02111b64 & kHideBit) return 1;
 
-    mModelAnim.dExtSimpleModel_c::Render(0);
-    *(Mtx *)&mModel.data.transforms[0] = *(Mtx *)&mModelAnim.data.transforms[15];
-    mTextureSequences[0].Update(mModelAnim.data);
+    mAnmModel.dExtSimpleModel_c::Render(0);
+    *(Mtx *)&mModel.data.transforms[0] = *(Mtx *)&mAnmModel.data.transforms[15];
+    mTextureSequences[0].Update(mAnmModel.data);
     mTextureSequences[0].currFrame = player->mIsVanish << 12;
     mTextureSequences[1].Update(mModel.data);
     mTextureSequences[1].currFrame = player->mIsVanish << 12;

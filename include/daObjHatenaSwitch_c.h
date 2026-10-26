@@ -16,7 +16,7 @@ struct daObjHatenaSwitch_c : dBgActor_c {
     dBgW_KcMbg *mActiveMeshCollider;    /* 0x320 */
     dBgW_KcMbg mStaticMeshCollider;     /* 0x324 */
     dBgW_KcMbg mMovingMeshCollider;     /* 0x4ec */
-    dExtAnmModel_c mModelAnim;          /* 0x6b4 */
+    dExtAnmModel_c mAnmModel;           /* 0x6b4 */
     u8 mPressTimer;                     /* 0x718 */
     u8 pad_719[0x1];
     u8 mPressedThisFrame;               /* 0x71a */

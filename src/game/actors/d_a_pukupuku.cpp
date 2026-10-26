@@ -29,7 +29,7 @@
  * deslop leftovers:
  * - Render: `if ((mFlags & 0x40000) != 0) return 1` shrinks the function
  *   0x50 -> 0x44. The compare has to land in an int (`int b = ((mFlags &
- *   0x40000) != 0); if (b)`). mModelAnim.Render(0) itself matches.
+ *   0x40000) != 0); if (b)`). mAnmModel.Render(0) itself matches.
  * - func_ov090_02133190 and func_ov090_02133200: `mStateTimer == 0` is
  *   ldrsh. The ROM is ldrh, so the test is
  *   `*(unsigned short *)&mStateTimer`. One word in 02133190.
@@ -133,7 +133,7 @@ int daPukupuku_c::InitResources()
     struct Vector3 v;
 
     bmd = (struct BMD_File *)dExtSimpleModel_c::LoadFile(*(SharedFilePtr *)&data_ov090_02134564);
-    mModelAnim.SetFile(bmd, 1, -1);
+    mAnmModel.SetFile(bmd, 1, -1);
 
     dExtFrameCtrl_c::LoadFile(*(struct SharedFilePtr *)&data_ov090_0213455c);
 
@@ -147,7 +147,7 @@ int daPukupuku_c::InitResources()
     mAngleY = mPrevAngleY;
     mWithMeshClsn.Init(this, 0x1e000, 0x1e000, 0, 0);
 
-    mModelAnim.SetAnim((BCA_File *)(((AnimFilePtr *)&data_ov090_0213455c)->file), 0, 0x1000, 0);
+    mAnmModel.SetAnim((BCA_File *)(((AnimFilePtr *)&data_ov090_0213455c)->file), 0, 0x1000, 0);
 
     func_ov090_021332e8((PukuStatePMF *)&data_ov090_02134594);
     return 1;
@@ -175,8 +175,8 @@ int daPukupuku_c::Behavior()
             (((dEnemyBase_c *)this)->*(q->main))();
     }
     mAngleY = mPrevAngleY;
-    mModelAnim.speed = 0x1000;
-    static_cast<dExtFrameCtrl_c &>(mModelAnim).Advance();
+    mAnmModel.speed = 0x1000;
+    static_cast<dExtFrameCtrl_c &>(mAnmModel).Advance();
     func_ov090_02133338((char *)this);
     func_ov090_021330c8((char *)this);
     mdCcAcPos_c.Clear();
@@ -194,7 +194,7 @@ int daPukupuku_c::Render()
 {
     int b = ((mFlags & 0x40000) != 0);
     if (b) return 1;
-    mModelAnim.Render(0);
+    mAnmModel.Render(0);
     return 1;
 }
 
@@ -220,7 +220,7 @@ void func_ov090_02133338(char *c) {
     Matrix4x3_FromTranslation(&data_020a0e68, v[0], v[1], v[2]);
     Matrix4x3_ApplyInPlaceToRotationXYZExt(&data_020a0e68,
         self->mAngleX, self->mAngleY, self->mAngleZ);
-    self->mModelAnim.mat4x3 = data_020a0e68;
+    self->mAnmModel.mat4x3 = data_020a0e68;
 }
 }
 

@@ -224,7 +224,7 @@ s32 daJgm_c::InitResources()
 {
     dExtSimpleModel_c::LoadFile(data_ov077_02127b38);
     BMD_File *bodyFile = (BMD_File *)dExtSimpleModel_c::LoadFile(data_ov077_02127b50);
-    mModelAnim.SetFile(bodyFile, 1, 1);
+    mAnmModel.SetFile(bodyFile, 1, 1);
     BMD_File *heldFile = (BMD_File *)dExtSimpleModel_c::LoadFile(data_ov077_02127b48);
     mModel.SetFile(heldFile, 1, 1);
     for (int i = 0; i < 2; i++)
@@ -275,10 +275,10 @@ s32 daJgm_c::Render()
     int b = (int)((mFlags & 0x40000) != 0);
     if (b != 0)
         return 1;
-    mTextureSequence.Update(mModelAnim.data);
-    mModelAnim.Render(0);
+    mTextureSequence.Update(mAnmModel.data);
+    mAnmModel.Render(0);
     if (mState == 1) {
-        unsigned int v = ((unsigned int)(mModelAnim.currFrame << 4)) >> 0x10;
+        unsigned int v = ((unsigned int)(mAnmModel.currFrame << 4)) >> 0x10;
         if (v >= 0x19 && v <= 0x3a)
             mModel.Render(0);
     }
@@ -331,8 +331,8 @@ void daJgm_c::UpdateState()
 s32 daJgm_c::EnterHoverState()
 {
     mHorzSpeed = 0xc000;
-    mModelAnim.SetAnim((BCA_File *)data_ov077_02127b28.filePtr, 0, 0x1000, 0);
-    mModelAnim.speed = 0x1000;
+    mAnmModel.SetAnim((BCA_File *)data_ov077_02127b28.filePtr, 0, 0x1000, 0);
+    mAnmModel.speed = 0x1000;
     mTextureSequence.SetFile(*(BTP_File *)data_ov077_02127b20.filePtr, 0, 0x1000, 0);
     mTextureSequence.speed = 0x1000;
     mTimer = 0x96;
@@ -358,7 +358,7 @@ s32 daJgm_c::UpdateHoverState()
     }
     UpdateFlight();
     UpdateHoverBob();
-    mModelAnim.Advance();
+    mAnmModel.Advance();
     mTextureSequence.Advance();
     HandlePlayerCollision();
     {
@@ -378,10 +378,10 @@ s32 daJgm_c::UpdateHoverState()
 // @symbol _ZN7daJgm_c15EnterThrowStateEv
 s32 daJgm_c::EnterThrowState()
 {
-    mModelAnim.SetAnim((BCA_File *)data_ov077_02127b40.filePtr, 0, 0x1000, 0);
-    mModelAnim.SetFlags(0x40000000);
-    mModelAnim.speed = 0x1000;
-    mModelAnim.currFrame = 0;
+    mAnmModel.SetAnim((BCA_File *)data_ov077_02127b40.filePtr, 0, 0x1000, 0);
+    mAnmModel.SetFlags(0x40000000);
+    mAnmModel.speed = 0x1000;
+    mAnmModel.currFrame = 0;
     mTextureSequence.SetFile(*(BTP_File *)data_ov077_02127b30.filePtr, 0, 0x1000, 0);
     mTextureSequence.SetFlags(0x40000000);
     mTextureSequence.speed = 0x1000;
@@ -393,16 +393,16 @@ s32 daJgm_c::EnterThrowState()
 // @symbol _ZN7daJgm_c16UpdateThrowStateEv
 s32 daJgm_c::UpdateThrowState()
 {
-    unsigned int frame = (unsigned int)(mModelAnim.currFrame << 4) >> 16;
+    unsigned int frame = (unsigned int)(mAnmModel.currFrame << 4) >> 16;
     if (frame == 0x3a) {
         dActor_c::Spawn(0x104, 0, *(Vector3 *)&mThrowPosX, &mAngle, mAreaId, -1);
         func_0201267c(0xd2, &mCamSpacePos);
     }
-    if (mModelAnim.Finished())
+    if (mAnmModel.Finished())
         SetState(0);
     UpdateFlight();
     UpdateHoverBob();
-    mModelAnim.Advance();
+    mAnmModel.Advance();
     mTextureSequence.Advance();
     HandlePlayerCollision();
     {
@@ -518,8 +518,8 @@ s32 daJgm_c::EnterFallState()
     mHorzSpeed = 0xa000;
     mVertSpeed = 0x28000;
     mTimer = 0x2d;
-    mModelAnim.SetAnim((BCA_File *)data_ov077_02127b28.filePtr, 0, 0x1000, 0);
-    mModelAnim.speed = 0x4000;
+    mAnmModel.SetAnim((BCA_File *)data_ov077_02127b28.filePtr, 0, 0x1000, 0);
+    mAnmModel.speed = 0x4000;
     {
         int aimHeight = OnAimedAtWithEgg();
         Particle::System::NewSimple(0x43, mPosX, mPosY + aimHeight, mPosZ);
@@ -534,7 +534,7 @@ s32 daJgm_c::EnterFallState()
 s32 daJgm_c::UpdateFallState()
 {
     mAngleX = (short)(mAngleX - 0x1000);
-    mModelAnim.Advance();
+    mAnmModel.Advance();
     UpdatePos(&mdCcAcPos_c);
     dBgCh_Actr_UpdateDiscreteNoLava_veneer(&mWithMeshClsn);
     if (mWithMeshClsn.JustHitGround() || !DecIfAbove0_Byte(&mTimer))
@@ -549,19 +549,19 @@ void daJgm_c::UpdateModels()
     if (b)
         return;
 
-    Matrix4x3_FromRotationY(&mModelAnim.mat4x3, mAngleY);
-    mModelAnim.mat4x3.m[9] = mPosX >> 3;
-    mModelAnim.mat4x3.m[10] = (mPosY + mBobOffsetY) >> 3;
-    mModelAnim.mat4x3.m[11] = mPosZ >> 3;
+    Matrix4x3_FromRotationY(&mAnmModel.mat4x3, mAngleY);
+    mAnmModel.mat4x3.m[9] = mPosX >> 3;
+    mAnmModel.mat4x3.m[10] = (mPosY + mBobOffsetY) >> 3;
+    mAnmModel.mat4x3.m[11] = mPosZ >> 3;
 
     if (mState == 4) {
-        data_020a0e68 = mModelAnim.mat4x3;
+        data_020a0e68 = mAnmModel.mat4x3;
         int y1 = OnAimedAtWithEgg() >> 3;
         Matrix4x3_ApplyInPlaceToTranslation(&data_020a0e68, 0, y1, 0);
         Matrix4x3_ApplyInPlaceToRotationX(&data_020a0e68, mAngleX);
         int y2 = (-OnAimedAtWithEgg()) >> 3;
         Matrix4x3_ApplyInPlaceToTranslation(&data_020a0e68, 0, y2, 0);
-        mModelAnim.mat4x3 = data_020a0e68;
+        mAnmModel.mat4x3 = data_020a0e68;
     }
 
     mMatrix.m[9] = mPosX >> 3;
@@ -573,7 +573,7 @@ void daJgm_c::UpdateModels()
     if (mState != 1)
         return;
 
-    u32 t = (u32)(mModelAnim.currFrame << 4) >> 0x10;
+    u32 t = (u32)(mAnmModel.currFrame << 4) >> 0x10;
     if (t < 0x19)
         return;
     if (t > 0x3a)
@@ -584,10 +584,8 @@ void daJgm_c::UpdateModels()
     lv.t[1] = 0x1800;
     lv.t[2] = 0x1000;
 
-    data_020a0e68 = mModelAnim.mat4x3;
-    MulMat4x3Mat4x3(
-        &mModelAnim.data.transforms[3], &data_020a0e68,
-        &data_020a0e68);
+    data_020a0e68 = mAnmModel.mat4x3;
+    MulMat4x3Mat4x3(&mAnmModel.data.transforms[3], &data_020a0e68, &data_020a0e68);
 
     mThrowPosX = data_020a0e68.m[9];
     mThrowPosY = data_020a0e68.m[10];

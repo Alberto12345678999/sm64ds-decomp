@@ -54,6 +54,7 @@ enum daObjFl_Ring_c_AssetId {
 #include "daObjFl_Ring_c.h"
 #include "SharedFilePtr.h"
 #include "daObj_volcanoCannon_c.h"
+#include "Sound.h"
 
 /* This class's own file table, ov022 .data at 0x02113cc8: the model and
  * collision SharedFilePtrs (ov022 .bss 0x02114500 / 0x02114508, defined at
@@ -88,7 +89,6 @@ u16 DecIfAbove0_Short(u16 *p);
 u8  DecIfAbove0_Byte(u8 *p);
 int ApproachAngle(s16 *p, int target, int a, int b, int c);
 
-void _ZN5Sound9PlayBank3EjRK7Vector3(u32 id, void *pos);
 extern void hold_d_a_obj_fl_ring(void *self, void *kcl, void *mtx, int scale, s16 angleY,
                                  void *clps);
 
@@ -184,7 +184,7 @@ s32 daObjFl_Ring_c::Behavior()
             break;
         mCooldown = 0x96;
         mState = 1;
-        _ZN5Sound9PlayBank3EjRK7Vector3(0xc, &mCamSpacePosX);
+        Sound::PlayBank3(0xc, mCamSpacePos);
         break;
 
     case 1:
