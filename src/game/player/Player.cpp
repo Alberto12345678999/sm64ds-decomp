@@ -732,7 +732,8 @@ int Player::HasNoCap()
         if(!this->IsState(data_ov002_0211058c)){
             r = (data_0209f2d8 == 1);
             if(!r){
-                if(SaveData::HasPlayerLostCap()) return 1;
+                if (SaveData::HasPlayerLostCap())
+                    return 1;
             }
         }
     }
@@ -3490,8 +3491,7 @@ int Player::func_ov002_020c25a8(int arg1)
             return wallFlag;
     }
 
-    _ZNK11SurfaceInfo12CopyNormalToER7Vector3(
-        &((dBgPi *)mMeshClsn.GetWallResult())->surface, &wn);
+    _ZNK11SurfaceInfo12CopyNormalToER7Vector3(&((dBgPi *)mMeshClsn.GetWallResult())->surface, &wn);
     mWallNormalX = wn.x;
     mWallNormalY = wn.y;
     mWallNormalZ = wn.z;
@@ -3572,8 +3572,7 @@ void Player::func_ov002_020c2b08()
 
         if (!mMeshClsn.IsOnGround())
             return;
-        if (!SurfaceInfo_TestFlag0x20(
-                (int *)&((dBgPi *)mMeshClsn.GetFloorResult())->surface.clps))
+        if (!SurfaceInfo_TestFlag0x20((int *)&((dBgPi *)mMeshClsn.GetFloorResult())->surface.clps))
             return;
 
         limit = Player_ScaleByCharFactor(c, 0x20000);
@@ -3588,8 +3587,7 @@ void Player::func_ov002_020c2b08()
     if (mWaterRunTimer != 0) {
         if (!mMeshClsn.IsOnGround())
             goto clear_timer;
-        if (!SurfaceInfo_TestFlag0x20(
-                (int *)&((dBgPi *)mMeshClsn.GetFloorResult())->surface.clps))
+        if (!SurfaceInfo_TestFlag0x20((int *)&((dBgPi *)mMeshClsn.GetFloorResult())->surface.clps))
             goto clear_timer;
 
         mIsInShallowWater = 1;
@@ -3652,8 +3650,7 @@ void Player::func_ov002_020c2b08()
     mDetectWater = 0;
     if (!mMeshClsn.IsOnGround())
         return;
-    if (SurfaceInfo_TestFlag0x20(
-            (int *)&((dBgPi *)mMeshClsn.GetFloorResult())->surface.clps) != 0)
+    if (SurfaceInfo_TestFlag0x20((int *)&((dBgPi *)mMeshClsn.GetFloorResult())->surface.clps) != 0)
         return;
     if (mIsInShallowWater != 0)
         return;
@@ -6437,7 +6434,8 @@ int Player::St_LevelEnter_Init()
         pos.z = z;
         rg.SetObjAndPos(pos, this);
         hit = 0x80000000;
-        if (rg.DetectClsn() != 0) hit = rg.clsnY;
+        if (rg.DetectClsn() != 0)
+            hit = rg.clsnY;
         mPosY = hit;
         mStateWork = 2;
         {
@@ -7377,7 +7375,8 @@ int Player::func_ov002_020c92fc()
     if (this->FinishedAnim()) {
         if (mStateStep == 9) {
             if ((int)(data_0209f2d8 == 1) == 0) {
-                if ((data_0209caa0[2] & 0x10000000) == 0 && SaveData::IsCharacterUnlocked(0) == 0 && mHatCharacter == 0 && mPrevCharacter == 3) {
+                if ((data_0209caa0[2] & 0x10000000) == 0 && SaveData::IsCharacterUnlocked(0) == 0 &&
+                    mHatCharacter == 0 && mPrevCharacter == 3) {
                     mStateStep = 0xa;
                     mStatePhase = 0;
                     func_0200d3f8(data_0209f318, mPlayerNo, 0);
@@ -9257,8 +9256,7 @@ int Player::St_Shell_Main()
     if (mMeshClsn.IsOnWall()) {
         int ang = cstd::atan2(mWallNormalX, mWallNormalZ);
         if (AngleDiff(ang, mPrevAngleY) > 0x6000) {
-            if (((dBgPi *)mMeshClsn.GetWallResult())
-                    ->surface.clps.GetFloorClass() != 1) {
+            if (((dBgPi *)mMeshClsn.GetWallResult())->surface.clps.GetFloorClass() != 1) {
                 flag = 1;
             }
         }
@@ -10034,8 +10032,7 @@ int Player::St_Swim_Main()
     }
 
     if (mPrevVertSpeed == 0 && mMeshClsn.IsOnGround() != 0) {
-        fr = (int *)func_02037dc4(
-            &((dBgPi *)mMeshClsn.GetFloorResult())->surface);
+        fr = (int *)func_02037dc4(&((dBgPi *)mMeshClsn.GetFloorResult())->surface);
         ang = fr[1];
         if (ang < 0x720 && ang > 0x400 && mPosY >= mWaterSurfaceY - 0xc8000) {
             int at;
@@ -10272,7 +10269,7 @@ int func_ov002_020ce324(char* c)
     a2.z = player->mPosZ;
     a1.y += 0x50000;
     a2.y += 0x96000;
-    rl1.SetObjAndLine(a1, a2, (dActor_c*)c);
+    rl1.SetObjAndLine(a1, a2, (dActor_c *)c);
     if (rl1.DetectClsn()) {
         return 0;
     }
@@ -10297,7 +10294,7 @@ int func_ov002_020ce324(char* c)
         b2.x = bx;
         b2.y = by;
         b2.z = bz;
-        rl2.SetObjAndLine(b1, b2, (dActor_c*)c);
+        rl2.SetObjAndLine(b1, b2, (dActor_c *)c);
         if (rl2.DetectClsn()) {
             _ZNK11SurfaceInfo12CopyNormalToER7Vector3(&rl2.surface, &nrm);
             if (nrm.y == 0) {
@@ -15426,7 +15423,12 @@ int func_ov002_020d6dac(char *self)
 {
     Player *player = (Player *)self;
     typedef struct P2 { int w[2]; } P2;
-    typedef struct dBgPiCopy { void *vtb; int s0, s1, s2, s3, s4; u16 f, g; int h, i, j; } dBgPiCopy;
+    typedef struct dBgPiCopy {
+        void *vtb;
+        int s0, s1, s2, s3, s4;
+        u16 f, g;
+        int h, i, j;
+    } dBgPiCopy;
     extern int _ZNK6Player14GetBodyModelIDEjb(void *thiz, unsigned int a, int b);
     extern void MulVec3Mat4x3(void *v, void *m, void *dst);
     extern void Vec3_MulScalarInPlace(int *v, int s);
@@ -24442,7 +24444,8 @@ Ld0:
     }
     data_0209f254 = 0;
     if (data_0209f2fc == 1) {
-        if (SaveData::HasPlayerLostCap() != 0) func_02013a00();
+        if (SaveData::HasPlayerLostCap() != 0)
+            func_02013a00();
     }
     ((Player *)(c))->func_ov002_020c7dd0(n8);
     dBgCh_Gnd rc;
