@@ -1,8 +1,7 @@
 //cpp
 /* The constructor/destructor order retains all five lifecycle variants used
  * by dBgW_KcMbgSclY. The func_02039* transform workers retain C linkage.
- * SetFile is the scalar method. SetObjAndSphere retains the
- * Fix12<int>-by-value symbol. Flat matrix copies use RawMatrix4x3;
+ * SetFile is the scalar method. Flat matrix copies use RawMatrix4x3;
  * the shared Matrix4x3 copy changes the retail instruction sequence.
  */
 /* dBgW_KcMbg: KCL mesh under a Matrix4x3, with a uniform scale.
@@ -42,12 +41,6 @@ void func_01ffb07c(dBgW_Kc *self, const Vector3 *v);
 void func_01ffb0b0(dBgW_Kc *self);
 void func_01ffb0bc(dBgW_Kc *self);
 void func_020396d0(int *p, int v);
-
-/* local extern: the radius is Fix12 by value, so the call spells the symbol. */
-void _ZN12dBgCh_SphCrr15SetObjAndSphereERK7Vector35Fix12IiEP8dActor_c(dBgCh_SphCrr *sphere,
-                                                                      const Vector3 *localCentre,
-                                                                      Fix12i radius,
-                                                                      dActor_c *actor);
 
 /* The shared scratch line (in collider space), its lineEnd and dBgPi base, and
    the scratch scaled matrix.
@@ -290,8 +283,7 @@ int dBgW_KcMbg::DetectClsn(dBgCh_SphCrr &sphere) {
     int hit;
 
     func_02039e48(this, &sphere.centre, &localCentre);
-    _ZN12dBgCh_SphCrr15SetObjAndSphereERK7Vector35Fix12IiEP8dActor_c(
-        &localSphere, &localCentre, FX_MUL(sphere.radius, invScale), 0);
+    localSphere.SetObjAndSphere(localCentre, FX_MUL(sphere.radius, invScale), 0);
     localSphere.mWallRejectHalfExtent = FX_MUL(sphere.mWallRejectHalfExtent, invScale);
     localSphere.func_02037940(sphere.flags);
     (dBgCh &)localSphere = sphere;
