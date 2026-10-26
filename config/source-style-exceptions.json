@@ -2,14 +2,6 @@
   "schema": 1,
   "exceptions": [
     {
-      "path": "src/engine/view/Graphics3D.cpp",
-      "rule": "handspelled-member",
-      "match": "_ZN3G3i13PerspectiveW_E5Fix12IiES1_S1_S1_S1_S1_bP9Matrix4x3",
-      "count": 2,
-      "reason": "G3i::PerspectiveW_ takes six Fix12<int> by value, and include/G3i.h deliberately leaves it undeclared for that reason (the by-value Fix12 ABI wall). Initialise3dGraphics calls it once to load the default perspective; the second occurrence is the extern \"C\" declaration. Follow-up: retire it with the other Fix12-by-value walls once a Fix12 spelling that passes in registers exists.",
-      "evidence": "include/G3i.h header comment (PerspectiveW_ is NOT declared here); carried verbatim from src/Initialise3dGraphics.cpp on main, which this PR folds; arm9/Graphics3D 4/4 TEXT-VERIFIED"
-    },
-    {
       "path": "src/game/stages/d_s_star_sel_methods.cpp",
       "rule": "handspelled-member",
       "match": "_ZN2G212GetBG2ScrPtrEv",
@@ -1240,6 +1232,30 @@
       "count": 2,
       "reason": "func_ov007_020ca308 moved here verbatim from its own shard; this file is a C translation unit, so it cannot name the C++ member and spells the mangled name in its extern declaration and at the call. The fold changes neither line. Follow-up: retire when this unit migrates to C++ or the callee gets a C-linkage name.",
       "evidence": "present on origin/main in src/unnamed/ov007/func_ov007_020ca308.c; folded into src/unnamed/ov007/func_ov007_020ca1d4.c with the rest of its contiguous run. rombuild 106/106 exact and prepush_linkcheck VERIFIED for every folded function."
+    },
+    {
+      "path": "src/engine/gx/G3i.cpp",
+      "rule": "handspelled-member",
+      "match": "_ZN3G3i13PerspectiveW_EiiiiiibP9Matrix4x3",
+      "count": 1,
+      "reason": "The definition of G3i::PerspectiveW_ stays a C-linkage body under `#pragma cplusplus off` because a real C++ method does not reproduce the ROM body (the G3i.json note), so it spells the mangled name once at the definition. Follow-up: retire once a method form of the body matches.",
+      "evidence": "Symbol renamed from the Fix12<int> mangling to the Fix12i (plain int) one in config/arm9/symbols.txt and config/tu_manifest.d/arm9/G3i.json; arm9 0x02055bfc and the callers still byte-match (rombuild 106/106 exact)."
+    },
+    {
+      "path": "src/func_ov007_020c0078.c",
+      "rule": "handspelled-member",
+      "match": "_ZN3G3i13PerspectiveW_EiiiiiibP9Matrix4x3",
+      "count": 2,
+      "reason": "func_ov007_020c0078 is a C translation unit, so it cannot name the G3i::PerspectiveW_ method; it spells the mangled name once in the extern declaration and once at the call. Follow-up: retire with the C++ migration of this file.",
+      "evidence": "Symbol renamed from the Fix12<int> mangling to the Fix12i (plain int) one in config/arm9/symbols.txt and config/tu_manifest.d/arm9/G3i.json; arm9 0x02055bfc and the callers still byte-match (rombuild 106/106 exact)."
+    },
+    {
+      "path": "src/unnamed/ov007/func_ov007_020b2160.c",
+      "rule": "handspelled-member",
+      "match": "_ZN3G3i13PerspectiveW_EiiiiiibP9Matrix4x3",
+      "count": 3,
+      "reason": "func_ov007_020b2160 is a C translation unit, so it cannot name the G3i::PerspectiveW_ method; it spells the mangled name once in the extern declaration and at each of its two calls. Follow-up: retire with the C++ migration of this file.",
+      "evidence": "Symbol renamed from the Fix12<int> mangling to the Fix12i (plain int) one in config/arm9/symbols.txt and config/tu_manifest.d/arm9/G3i.json; arm9 0x02055bfc and the callers still byte-match (rombuild 106/106 exact)."
     }
   ]
 }

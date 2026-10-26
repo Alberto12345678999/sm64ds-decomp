@@ -9161,7 +9161,7 @@ matched: yes</title></rect><rect x="24.66" y="742.79" width="9.56" height="28.62
 module: arm9
 addr: 0x02055a64
 size: 408 bytes
-matched: yes</title></rect><rect x="24.66" y="771.41" width="9.56" height="34.79" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN3G3i13PerspectiveW_E5Fix12IiES1_S1_S1_S1_S1_bP9Matrix4x3
+matched: yes</title></rect><rect x="24.66" y="771.41" width="9.56" height="34.79" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN3G3i13PerspectiveW_EiiiiiibP9Matrix4x3
 module: arm9
 addr: 0x02055bfc
 size: 496 bytes

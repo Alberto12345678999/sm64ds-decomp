@@ -1,7 +1,6 @@
 #include "Ov007Work.h"
 
 typedef int Fix12;
-struct Matrix4x3;
 
 /* The overlay's camera (func_ov007_020c023c); names as in
  * func_ov007_020c0128, only the slots this file reads. */
@@ -23,8 +22,7 @@ typedef struct Ov007Camera {
     unsigned short fovy;
 } Ov007Camera;
 
-extern void _ZN3G3i13PerspectiveW_E5Fix12IiES1_S1_S1_S1_S1_bP9Matrix4x3(
-    Fix12, int, int, int, int, int, int, struct Matrix4x3*);
+extern void _ZN3G3i13PerspectiveW_EiiiiiibP9Matrix4x3(Fix12, int, int, int, int, int, int, int *);
 extern void _ZN3G3i7LookAt_EPK7Vector3S2_S2_bP9Matrix4x3(
     void*, void*, void*, int, void*);
 extern void func_ov007_020bff38(char* c);
@@ -45,19 +43,19 @@ void func_ov007_020b2160(int mode)
     {
     case 1:
         a = (int)WORK->cameras[1]->fovy >> 4;
-        _ZN3G3i13PerspectiveW_E5Fix12IiES1_S1_S1_S1_S1_bP9Matrix4x3(
+        _ZN3G3i13PerspectiveW_EiiiiiibP9Matrix4x3(
             data_02082214[a * 2], data_02082214[a * 2 + 1], (int)(WORK->cameras[1]->aspect >> 0x14),
             WORK->cameras[1]->nearZ, WORK->cameras[1]->farZ, WORK->cameras[1]->scaleW, 1,
-            (struct Matrix4x3 *)WORK->cameras[1]->projMatrix);
+            WORK->cameras[1]->projMatrix);
         _ZN3G3i7LookAt_EPK7Vector3S2_S2_bP9Matrix4x3(WORK->cameras[1]->eye, WORK->cameras[1]->up,
                                                      WORK->cameras[1]->target, 1,
                                                      WORK->cameras[1]->viewMatrix);
         break;
     case 0:
         a = (int)WORK->cameras[0]->fovy >> 4;
-        _ZN3G3i13PerspectiveW_E5Fix12IiES1_S1_S1_S1_S1_bP9Matrix4x3(
+        _ZN3G3i13PerspectiveW_EiiiiiibP9Matrix4x3(
             data_02082214[a * 2], data_02082214[a * 2 + 1], (int)(WORK->cameras[0]->aspect >> 0x14),
-            WORK->cameras[0]->nearZ, WORK->cameras[0]->farZ, 0x1000, 1, (struct Matrix4x3 *)0);
+            WORK->cameras[0]->nearZ, WORK->cameras[0]->farZ, 0x1000, 1, (int *)0);
         func_ov007_020bff38((char *)WORK->cameras[0]);
         func_ov007_020bffb8((char *)WORK->cameras[0]);
         _ZN3G3i7LookAt_EPK7Vector3S2_S2_bP9Matrix4x3(WORK->cameras[0]->eye, WORK->cameras[0]->up,
