@@ -162,7 +162,6 @@ extern Matrix4x3 IDENTITY_MATRIX4X3;
 extern unsigned char DecIfAbove0_Byte(unsigned char *p);
 extern int Vec3_HorzDist(const Vector3 *a, const Vector3 *b);
 extern short Vec3_HorzAngle(const Vector3 *a, const Vector3 *b);
-extern void func_0201267c(int id, void *pos);
 
 extern void Matrix4x3_FromRotationY(void *m, int angle);
 extern void Matrix4x3_ApplyInPlaceToTranslation(void *m, int x, int y, int z);
@@ -403,7 +402,7 @@ s32 daJgm_c::UpdateThrowState()
     unsigned int frame = (unsigned int)(mModelAnim.currFrame << 4) >> 16;
     if (frame == 0x3a) {
         dActor_c::Spawn(0x104, 0, *(Vector3 *)&mThrowPosX, &mAngle, mAreaId, -1);
-        func_0201267c(0xd2, &mCamSpacePosX);
+        func_0201267c(0xd2, &mCamSpacePos);
     }
     if (mModelAnim.Finished())
         SetState(0);

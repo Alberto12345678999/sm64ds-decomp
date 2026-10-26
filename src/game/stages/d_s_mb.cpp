@@ -26,6 +26,7 @@
 #include "decl_common.h"
 #include "Heap.h"
 #include "OAM.h"
+#include "Sound.h"
 
 namespace GX {
 void LoadOBJPltt(const void *p, u32 a, u32 b);
@@ -40,7 +41,6 @@ void MultiStore16(u16 val, char *dst, int nbytes);
 void DecompressLZ16(int src, void *dst);
 
 void func_020308b4(void);
-void func_02012790(int x);
 
 void func_0201a5f8(int t);
 void *func_0201a3e4(void);

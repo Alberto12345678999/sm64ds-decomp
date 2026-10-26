@@ -72,7 +72,6 @@ extern PknStatePMF data_ov084_02130e80[];
 /* -- other modules -- */
 void  LoadBlueCoinModel(void *c);
 void  UnloadBlueCoinModel(void *c);
-int   func_0201267c(int a, void *b);
 void  func_02012694(u32 id, void *pos);
 void  func_020105cc(void *thiz, u32 flags);
 
@@ -354,7 +353,7 @@ void daPkn_c::StateBite()
         || mModelAnim.WillHitFrame(0x20)
         || mModelAnim.WillHitFrame(0x34)
         || mModelAnim.WillHitFrame(0x4b)) {
-        func_0201267c(0xc0, &mCamSpacePosX);
+        func_0201267c(0xc0, &mCamSpacePos);
     }
 
     ApproachLinear(mPrevAngleY, mTargetAngleY, 0x800);
@@ -813,7 +812,7 @@ void daPkn_c::EnterLunge(int frame)
 /* Kills the plant: death animation and state 5. */
 void daPkn_c::Die()
 {
-    func_0201267c(0xc1, &mCamSpacePosX);
+    func_0201267c(0xc1, &mCamSpacePos);
     mState = 5;
     mModelAnim.SetAnim((BCA_File *)data_ov084_02130e24.filePtr, 0x40000000, 0x1000, 0);
 }

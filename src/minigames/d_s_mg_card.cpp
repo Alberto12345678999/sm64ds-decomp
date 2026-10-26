@@ -51,7 +51,6 @@ extern int sMgCardSprites[];
 extern void Hud_RenderSprite(void *sprite, int x, int y, int a3, int a4);
 extern void **sCardPayoutHighlightSprites[];
 extern void *sCardHudSprites[];
-unsigned int func_02012790(unsigned int a);
 extern int sCardSelectLocked;
 extern int sCardSwapRequested;
 extern int data_ov006_02141770;

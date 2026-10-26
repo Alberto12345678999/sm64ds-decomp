@@ -172,7 +172,6 @@ struct System {
 };
 }
 extern int    _Z15ApproachLinear2Riii(int *p, int target, int step);
-extern void   func_0201267c(int id, void *pos);
 extern void   _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *self, void *actor, int a, int b, unsigned int c, unsigned int d);
 /* Parameter names keep this TU's @NNN. */
 typedef void BgchInitAt_(void *self, void *actor, int a, int b, void *v, int c);
@@ -626,13 +625,13 @@ int daGmch_c::UpdateState3()
         if ((((unsigned int)mModelAnim.currFrame) << 4) >> 16 == 7) {
             mHorzSpeed = 0x12000;
             mVertSpeed = 0x1e000;
-            func_0201267c(0x77, &mCamSpacePosX);
+            func_0201267c(0x77, &mCamSpacePos);
             mPhase++;
         }
         break;
     case 1:
         if (mWithMeshClsn.JustHitGround()) {
-            func_0201267c(0x71, &mCamSpacePosX);
+            func_0201267c(0x71, &mCamSpacePos);
             ChooseNextState();
         }
         break;
@@ -733,7 +732,7 @@ int daGmch_c::UpdateState0()
     case 1:
         if (DistToCPlayer() < 0x1f4000) {
             mFlags |= 0x10000000;
-            func_0201267c(0x76, &mCamSpacePosX);
+            func_0201267c(0x76, &mCamSpacePos);
             mPhase++;
         }
         break;

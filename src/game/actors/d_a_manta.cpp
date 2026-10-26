@@ -37,6 +37,7 @@
 #include "daWater_Ring_c.h"
 #include "PathPtr.h"
 #include "SharedFilePtr.h"
+#include "Sound.h"
 
 /* init at +0, execute at +8. Same shape as daWater_Ring_c::State.
  * The overlay image stores each as (function, this-delta) with delta 0. */
@@ -88,7 +89,6 @@ extern Matrix4x3 data_020a0e68;
 void _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(
     Player *, const Vector3 &, unsigned int, Fix12i, unsigned int,
     unsigned int, unsigned int);
-void func_02012790(u32 a);
 void Vec3_Asr(Vector3 *d, Vector3 *s, int sh);
 void Matrix4x3_FromTranslation(Matrix4x3 *m, Fix12i x, Fix12i y, Fix12i z);
 void Matrix4x3_ApplyInPlaceToRotationXYZExt(void *m, int x, int y, int z);

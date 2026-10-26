@@ -28,6 +28,7 @@
 #include "Message.h"
 #include "SaveData.h"
 #include "dScStage_c.h"
+#include "Sound.h"
 
 namespace G2 {
 void *GetBG1ScrPtr(void);
@@ -117,7 +118,6 @@ extern void func_0201b6f8(int a);
 extern void func_0201b7cc(void);
 extern void func_0201b388(int a);
 extern void func_0201b100(int a);
-extern u32 func_02012790(u32 a);
 extern int func_0201fb4c(void);
 extern int func_02054d88(void);
 extern void *func_02054ea8(void);

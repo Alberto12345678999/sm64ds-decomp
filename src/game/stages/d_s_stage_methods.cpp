@@ -142,7 +142,6 @@ void SetBg3Offset(int x, int y);
 void SetBg1Offset(int x, int y);
 void SetSubBg0Offset(int x, int y);
 void SetSubBg1Offset(int x, int y);
-unsigned int func_02012790(unsigned int snd);
 int func_02029408(void);
 int LoadFile(int handle);
 void SetControllerMode(unsigned char m);

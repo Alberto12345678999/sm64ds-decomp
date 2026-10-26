@@ -55,6 +55,7 @@ enum daObjShell_c_AssetId {
 #include "daObjShell_c.h"
 #include "SharedFilePtr.h"
 #include "dCc_c.h"
+#include "Sound.h"
 
 /* 8-byte file handles. The model uses func_02017acc / func_02017ab4; both
  * animations use SharedFilePtr::Construct / SharedFilePtr_Destruct_Anim.
@@ -82,7 +83,6 @@ enum {
 extern "C" {
 void Matrix4x3_FromRotationY(Matrix4x3 *, s32);
 /* The positional-sound entry point; takes the actor's camera-space position. */
-void func_0201267c(int soundId, Fix12i *camSpacePos);
 namespace Particle {
 struct System {
     static int NewSimple(unsigned id, int x, int y, int z);
@@ -187,7 +187,7 @@ int daObjShell_c::Behavior()
     switch (mState) {
     case STATE_SHUT:
         if (mModelAnim.WillHitFrame(0x19)) {
-            func_0201267c(0x27, &mCamSpacePosX);
+            func_0201267c(0x27, &mCamSpacePos);
             u.shutPuff[0] = mPosX;
             u.shutPuff[1] = mPosY;
             u.shutPuff[2] = mPosZ;
@@ -199,7 +199,7 @@ int daObjShell_c::Behavior()
         } else {
             if (mStateTimer > 0x96 &&
                 DistToCPlayer() < 0x1f4000) {
-                func_0201267c(0x26, &mCamSpacePosX);
+                func_0201267c(0x26, &mCamSpacePos);
                 u.lungePuff[0] = mPosX;
                 u.lungePuff[1] = mPosY;
                 u.lungePuff[2] = mPosZ;

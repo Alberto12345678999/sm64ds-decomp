@@ -62,6 +62,7 @@ enum d_a_nknk_AssetId {
 #include "Particle__System.h"
 #include "dBgPi.h"
 #include "nitro/fx/fx.h"
+#include "Sound.h"
 
 int ApproachLinear(int &value, int target, int step);
 bool ApproachLinear(short &value, short target, short step);
@@ -92,7 +93,6 @@ extern "C" {
 extern int d_a_nknkNewHold(u32 uniqueID, u32 effectID, s32 x, s32 y, s32 z, const void *dir,
                            void *callback);
 extern void _ZN8Particle19SetSelfDestructFlagEj(u32 id);
-extern void func_0201267c(unsigned int id, const Vector3 *pos);
 extern s16 data_02082214[];         /* SINE_TABLE: sin, cos pairs */
 extern NknkAnimationFileHandle *data_ov062_0211cee8[];
 extern int data_ov062_0211cf0c[];

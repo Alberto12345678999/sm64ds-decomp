@@ -1,5 +1,6 @@
 //cpp
 #include "dScEntry_c.h"
+#include "Sound.h"
 extern "C" {
 extern int func_0203da9c(void);
 extern int TouchArea_Update(void *p, int x);
@@ -7,7 +8,6 @@ extern void SetControllerMode(unsigned char mode);
 extern void func_02020028(int a, unsigned char b);
 extern void func_ov001_020ab41c(void *p);
 extern void func_ov075_02116c38(void *self);
-extern void func_02012790(int a);
 extern void SetBg2Offset(int a, int b);
 extern unsigned short data_020a0e5a[];
 

@@ -8,6 +8,7 @@
 #include "dBgCh_Lin.h"
 #include "PlayerInput.h"
 #include "nitro/fx/fx.h"
+#include "Sound.h"
 namespace cstd {
 short atan2(int, int);
 s32 fdiv(s32, s32);
@@ -56,7 +57,6 @@ extern void func_0200b590(void *self, void *a, s32 b);
 extern void func_0200b0fc(void *self, void *a, s32 b);
 extern void func_0200b990(void *self, void *a, s32 b);
 extern void func_0200c9e0(void *self, s32 *a, s32 *b);
-extern u32 func_02012790(u32 a);
 extern s32 Sound_PlayIfNotActive(s32 a, s32 b, s32 c, s32 d);
 
 static inline void SetVec(struct Vector3 &v, s32 x, s32 y, s32 z) { v.x = x; v.y = y; v.z = z; }

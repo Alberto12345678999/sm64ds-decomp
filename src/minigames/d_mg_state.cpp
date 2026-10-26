@@ -112,6 +112,7 @@
 #include "dScene_c.h"
 #include "dWipe_c.h"
 #include "PlayerInput.h"
+#include "Sound.h"
 
 extern int ApproachLinear(s32 &value, s32 target, s32 step);
 /* local extern: including Sound.h renumbers SetState's local static. */
@@ -168,7 +169,6 @@ struct FaderCallView {
 extern "C" {
 extern void FreeGfxSlotsById(int arg);
 extern int GetGameLanguage(void);
-extern unsigned int func_02012790(unsigned int x);
 extern void func_02012dd0(void *c);
 extern void Mg_CommitRecords(void);
 extern int Mg_GetSubmittedScore(void);

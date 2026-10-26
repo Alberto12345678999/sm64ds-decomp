@@ -89,7 +89,6 @@ int dScEntry_c::ArePlayersReady() {
 // @symbol _ZN10dScEntry_c16CheckMenuConfirmEi
 extern "C" {
 int func_0203da9c();
-u32 func_02012790(u32 sound);
 extern u16 data_020a0e5a[];
 }
 

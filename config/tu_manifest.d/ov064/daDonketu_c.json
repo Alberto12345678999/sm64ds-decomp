@@ -647,27 +647,27 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@534",
+      "from": "@547",
       "to": "@69",
       "evidence": "emitted destructor-registration node name collides with the configured @527 on ov080 on main; @69 is unused everywhere and shorter than the original"
     },
     {
-      "from": "@535",
+      "from": "@548",
       "to": "@70",
       "evidence": "emitted destructor-registration node name collides with the configured @528 on ov080 on main; @70 is unused everywhere and shorter than the original"
     },
     {
-      "from": "@536",
+      "from": "@549",
       "to": "@71",
       "evidence": "emitted destructor-registration node name collides with the configured @529 on ov080 on main; @71 is unused everywhere and shorter than the original"
     },
     {
-      "from": "@537",
+      "from": "@550",
       "to": "@75",
       "evidence": "emitted destructor-registration node name collides with the configured @530 on ov080 on main; @75 is unused everywhere and shorter than the original"
     },
     {
-      "from": "@538",
+      "from": "@551",
       "to": "@76",
       "evidence": "emitted destructor-registration node name collides with the configured @531 on ov080 on main; @76 is unused everywhere and shorter than the original"
     }

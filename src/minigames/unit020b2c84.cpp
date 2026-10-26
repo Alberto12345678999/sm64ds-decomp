@@ -101,6 +101,7 @@
 #include "types.h"
 #include "nitro/fx/fx.h"
 #include "Vector2.h"
+#include "Sound.h"
 
 struct M { int _00, _01, _10, _11; };
 struct Pair { int a, b; };
@@ -168,7 +169,6 @@ int LoadFile(int handle);
 void DecompressLZ16(void *src, void *dst);
 int Mg_CopySpriteList(int a, void *b, int c, int d);
 int func_02053200(int x);
-unsigned int func_02012790(unsigned int x);
 void func_0203d704(int *o, int *a, int *b);
 void func_0203d388(int *p, int angle);
 int RandomIntInternal(int *seed);
