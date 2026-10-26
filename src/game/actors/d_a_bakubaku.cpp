@@ -108,9 +108,6 @@ void Matrix4x3_ApplyInPlaceToRotationX(void *m, s16 angX);
 void MulVec3Mat4x3(void *in, void *m, void *out);
 
 /* local extern: retain the matched scalar ABI; native Fix12<int> calls remain pending. */
-void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
-    dCcAcPos_c *self, dActor_c *actor, const Vector3 &offset,
-    int radius, int height, u32 d, u32 e);
 /* Parameter names keep this TU's @NNN. */
 typedef void BgchInitAt_(dBgCh_Actr *self, dActor_c *actor, int radius, int height, void *a,
                          void *b);
@@ -179,16 +176,12 @@ s32 daBakubaku_c::InitResources()
     bodyOffset.x = data_ov032_021137cc.x;
     bodyOffset.y = data_ov032_021137cc.y;
     bodyOffset.z = data_ov032_021137cc.z;
-    _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
-        &mBodyClsn, this, bodyOffset, 0x64000, 0x64000,
-        kCcEnemy | kCcCharProjectile, kCcMega);
+    mBodyClsn.Init(this, bodyOffset, 0x64000, 0x64000, kCcEnemy | kCcCharProjectile, kCcMega);
 
     headOffset.x = data_ov032_021137d8.x;
     headOffset.y = data_ov032_021137d8.y;
     headOffset.z = data_ov032_021137d8.z;
-    _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
-        &mHeadClsn, this, headOffset, 0x64000, 0x8c000,
-        kCcEnemy | kCcCharProjectile, 0);
+    mHeadClsn.Init(this, headOffset, 0x64000, 0x8c000, kCcEnemy | kCcCharProjectile, 0);
 
     mSpawnPosX = mPosX;
     mSpawnPosY = mPosY;

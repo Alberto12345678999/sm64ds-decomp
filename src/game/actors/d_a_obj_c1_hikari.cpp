@@ -16,8 +16,6 @@
  * then D0 pair without a D2 or a forcing helper.
  *
  * Leftover:
- * - dCcAcPos_c::Init stays mangled (Fix12<int> by value, wall 6az; this
- *   InitResources passes 0xf0000 / 0x8c000 / 0x4800002)
  * - HikariVec3 POD locals; Vector3's empty destructor would add
  *   _ZN7Vector3D1Ev to this TU
  * - gC1HikariModelFile is the model SharedFilePtr this Init LoadFile's,
@@ -66,9 +64,6 @@ extern void Vec3_Add(Vec3 *out, Vec3 *a, Vec3 *b);
 extern s16 Vec3_HorzAngle(const Vector3 *v0, const Vector3 *v1);
 extern int AngleDiff(int a, int b);
 extern unsigned char NumStars(void);
-extern void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
-    dCcAcPos_c *self, dActor_c *actor, const Vector3 *offset,
-    int radius, int height, unsigned int flags, unsigned int vulnFlags);
 
 extern Matrix4x3 data_020a0e68;
 /* Defined at the end of this file so its constructor does not enter .text. */
@@ -108,8 +103,7 @@ int daObjC1Hikari_c::InitResources()
     if (data_0209caa0[1] & 0x80000000)
         return 0;
     mModel.SetFile((BMD_File *)gC1HikariModelFile.filePtr, 1, 0x13);
-    _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(&mCylinder, this, &mPos, 0xf0000,
-                                                            0x8c000, 0x4800002, 0);
+    mCylinder.Init(this, mPos, 0xf0000, 0x8c000, 0x4800002, 0);
     UpdateModelTransform();
     return 1;
 }

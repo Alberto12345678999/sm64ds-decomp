@@ -21,10 +21,7 @@
  * Leftover: BrqMatrixWords block-copies IDENTITY_MATRIX4X3 through
  *   int[12] -- a Matrix4x3 assignment scalarizes. Vector3 overlays on
  *   mCamSpacePosX / mScaleX / mPosX stand in where no member exists at
- *   those addresses. SetRanges, dCcAcPos_c::Init, dBgCh_Actr::Init
- *   and DropShadowRadHeight stay mangled
- *   extern "C" spellings -- they take Fix12<int> by value
- *   (notes/mwccarm-codegen.md 6az).
+ *   those addresses.
  *   UpdateDefeatedState calls the interworking veneer
  *   dBgCh_Actr_UpdateDiscreteNoLava_veneer (0x02038420), not the method
  *   body at 0x02037024. The data_ov070_* resource handles and the PMF
@@ -103,16 +100,12 @@ extern "C" SpawnInfo<daBrq_c> g_profile_BIRIKYU = {
     0x00a28000
 };
 
-/* SetRanges / dCcAcPos_c::Init / dBgCh_Actr::Init stay mangled (Fix12 by
- * value, notes/mwccarm-codegen.md 6az). */
 struct SharedFilePtr;
 struct BMD_File;
 struct BTA_File;
 struct dActor_c;
 struct Vector3;
 struct Vector3_16;
-
-extern "C" void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(void *self, dActor_c *a, Vector3 const &b, int c, int d, unsigned int e, unsigned int f);
 
 extern SharedFilePtr *data_ov070_021222e0[];
 extern BTA_File data_ov070_021231f4;
@@ -150,7 +143,7 @@ int daBrq_c::InitResources()
         SetRanges(0, 0x2c1000, 0x1000000, 0xa28000);
     }
 
-    _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(&mdCcAcPos_c, this, data_ov070_0212365c, 0x2d000, 0x50000, 0x200002, 0x8000);
+    mdCcAcPos_c.Init(this, data_ov070_0212365c, 0x2d000, 0x50000, 0x200002, 0x8000);
     mWithMeshClsn.Init(this, 0x2d000, 0x2d000, 0, 0);
 
     mVertAccel = 0;

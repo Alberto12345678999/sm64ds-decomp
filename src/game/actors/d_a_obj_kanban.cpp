@@ -54,9 +54,6 @@ extern int Vec3_ApproachHorz(Vector3 *out, Vector3 *a, int maxStep);
 extern int AngleDiff(int a, int b);
 extern s16 data_02082214[];
 
-/* actor / collision plumbing */
-extern void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(char *self, char *actor, const struct Vector3 *pos, int a, unsigned int b, unsigned int c, unsigned int d);
-
 /* model loading */
 
 /* the player side of the conversation */
@@ -190,7 +187,8 @@ int daObjKanban_c::InitResources()
   v.x = data_ov085_0212f29c.x;
   v.y = data_ov085_0212f29c.y;
   v.z = data_ov085_0212f29c.z;
-  _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(((char*)this) + 0x320, ((char*)this), &v, 0x78000, 0x64000, 0x4800002, 0);
+  ((dCcAcPos_c *)(((char *)this) + 0x320))
+      ->Init((dActor_c *)this, v, 0x78000, 0x64000, 0x4800002, 0);
   return 1;
 }
 

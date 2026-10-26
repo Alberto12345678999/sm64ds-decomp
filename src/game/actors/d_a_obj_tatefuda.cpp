@@ -48,8 +48,7 @@ struct Callback;
  *   data_0209d660, data_0209d6bc and data_0209f284, the Player::Hurt
  *   arguments after the first two, and what the player-side calls
  *   func_ov002_020bec84 and func_ov002_020bec9c test and start.
- * - dCcAc_c::Init, dBgCh_Actr::Init, DropShadow, Particle::New and the
- *   Player/Sound helpers stay mangled scalar externs (Fix12<int>-by-value
+ * - The Player helpers stay mangled scalar externs (Fix12<int>-by-value
  *   member form is the 6az wall).
  * - SignPost_ClsnFile / SignPost_ModelFile keep their coined BSS names
  *   (historical, like the Spawn aliases).
@@ -144,7 +143,6 @@ enum {
 };
 
 extern "C" {
-extern void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *thiz, void *actor, int b, int d, unsigned int e, unsigned int f);
 extern void Matrix4x3_FromRotationY(void *, int);
 extern void Vec3_Asr(struct Vector3* d, struct Vector3* s, int sh);
 extern void Matrix4x3_FromTranslation(struct Matrix4x3* m, Fix12i x, Fix12i y, Fix12i z);
@@ -241,10 +239,7 @@ extern "C" daObjTatefuda_c *daObjTatefuda_c_classInit(void)
                            and so emitted a `bl` to
                            ..._Matrix4x3isR10CLPS_Block, which exists nowhere.
                            match.py compares relocated words as wildcards, so
-                           nothing caught it.
-
-   The remaining ABI-only calls are dCcAc_c::Init and dBgCh_Actr::Init; they
-   have the same Fix12<int> problem with no collision forcing the issue yet. */
+                           nothing caught it. */
 /* dBgCh_Actr is the real class now, through this actor's header, and it
    declares StartDetectingWater itself. */
 int daObjTatefuda_c::InitResources()
@@ -271,8 +266,7 @@ int daObjTatefuda_c::InitResources()
     ((dBgW_KcMbg *)(&mMeshCollider))
         ->dBgW_KcMbg::SetFile((KCL_File *)kf, mClsnMat, 0x199, mAngleY, data_ov002_0210d714);
 
-    _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(
-        &mdCcAc_c, (dActor_c*)((char *)this), 0x64000, 0x64000, 0x4800002, 0x41000);
+    mdCcAc_c.Init((dActor_c *)((char *)this), 0x64000, 0x64000, 0x4800002, 0x41000);
 
     mPoundsLeft = 2;
     mHomePosX = mPosX;
@@ -1170,7 +1164,7 @@ void daObjTatefuda_c::Reset()
   UpdateShadowMatrix();
   SetState(STATE_IDLE);
   mMegaKnockback = 0;
-  _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, this, 0x64000, 0x64000, 0x4800002, 0x41000);
+  mdCcAc_c.Init(this, 0x64000, 0x64000, 0x4800002, 0x41000);
   if (_ZN4dBgW9IsEnabledEv(&mMeshCollider))
   {
     _ZN4dBgW7DisableEv(&mMeshCollider);

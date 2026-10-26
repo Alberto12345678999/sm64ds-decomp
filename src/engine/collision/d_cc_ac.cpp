@@ -4,9 +4,8 @@
  * qualified call is what -interworking lowers to `ldr ip,[pc]; bx ip`,
  * and _ZTV10dCcAcPos_c slot 3 binds to that veneer rather than to the
  * base body (dCcAcPos_c.h).
- * The two Init definitions stay mangled free functions: the real signatures
- * carry Fix12<int> by value (wall 6az); dCcAc_c.h and dCcAcPos_c.h keep the
- * real declarations for callers.
+ * The two Init definitions are methods. Their radius and height are the
+ * scalar Fix12i the ROM symbols encode (notes/mwccarm-codegen.md 6az).
  */
 /* dCcAc_c -- collision cylinder attached to an dActor_c. Cartridge class:
    _ZTV7dCcAc_c at 0x0208e6d4, _ZTS7dCcAc_c at 0x0208e668, _ZTI7dCcAc_c at
@@ -76,28 +75,17 @@ u32 dCcAc_c::GetOwnerID()
     return owner->uniqueID;
 }
 
-// @symbol _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj
-/* Stays a mangled free definition: the real signature carries Fix12<int> and
-   wall 6az (notes/mwccarm-codegen.md) homes class-typed by-value parameters.
-   The declaration in dCcAc_c.h is the real one and callers may use it.
-   local extern: the base Init carries Fix12<int> by value too, so the call
-   spells its symbol rather than going through dCc_c.h's member. */
-extern "C" void _ZN5dCc_c4InitE5Fix12IiES1_jj(dCc_c *self, int radius, int height, u32 flags, u32 vulnFlags);
-
-extern "C" void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(dCcAc_c *self, dActor_c *actor, int radius, int height, u32 flags, u32 vulnFlags)
-{
-    self->owner = actor;
-    _ZN5dCc_c4InitE5Fix12IiES1_jj(self, radius, height, flags, vulnFlags);
+// @symbol _ZN7dCcAc_c4InitEP8dActor_ciijj
+void dCcAc_c::Init(dActor_c *actor, Fix12i radius, Fix12i height, u32 flags, u32 vulnFlags) {
+    owner = actor;
+    dCc_c::Init(radius, height, flags, vulnFlags);
 }
 
-// @symbol _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj
-/* Stays a mangled free definition like the base Init it wraps: the real
-   signature carries Fix12<int> by value, same wall 6az. The declaration in
-   dCcAcPos_c.h is the real one and callers may use it. */
-extern "C" void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(dCcAcPos_c *self, dActor_c *actor, const Vector3 *offset, int radius, int height, u32 flags, u32 vulnFlags)
-{
-    _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(self, actor, radius, height, flags, vulnFlags);
-    self->SetPosRelativeToActor(*offset);
+// @symbol _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector3iijj
+void dCcAcPos_c::Init(dActor_c *actor, const Vector3 &offset, Fix12i radius, Fix12i height,
+                      u32 flags, u32 vulnFlags) {
+    dCcAc_c::Init(actor, radius, height, flags, vulnFlags);
+    SetPosRelativeToActor(offset);
 }
 
 // @symbol _ZN10dCcAcPos_c21SetPosRelativeToActorERK7Vector3

@@ -1,8 +1,7 @@
 //cpp
 /* leftovers:
- * - SetFile, dCcAc_c::Init and IsClsnInRangeOnScreen stay scalar
- *   adapters. The Fix12<int> method calls grew InitResources from
- *   0xd0 to 0xf8.
+ * - SetFile and IsClsnInRangeOnScreen stay scalar adapters. The
+ *   Fix12<int> method calls grew InitResources from 0xd0 to 0xf8.
  * - data_ov045_02112510 is the CLPS block, outside this TU. The KCL
  *   and BMD handles are the file-scope objects at the bottom.
  * - data_02082214 is the sine table.

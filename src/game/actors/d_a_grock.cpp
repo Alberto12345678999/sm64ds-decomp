@@ -41,14 +41,7 @@ struct Vector3_16f;
  * - func_ov021_021122fc: DropShadowRadHeight is void in dActor_c.h and
  *   takes Fix12<int> by value. This function returns the scalar call;
  *   the method form does not compile.
- * - InitResources: dCcAcPos_c::Init with Fix12<int> by value size-DIFFs
- *   (999 words). The scalar extern matches. dBgCh_Actr::Init is called by
- *   its ROM symbol: the header's Fix12i (= s32) mangles the radii as `i`
- *   and names a symbol no object defines, so the member form linked to
- *   nothing.
- * - Particle::System::New and NewSimple are not declared on
- *   Particle::System (include/Particle__System.h). Player::Hurt is not
- *   declared on Player. Those 5Fix12IiE externs stay.
+ * - Player::Hurt is not declared on Player; its 5Fix12IiE extern stays.
  */
 
 /* Runtime asset handles resolved through the overlay 0 file table. */
@@ -141,8 +134,6 @@ extern void AddVec3(struct Vector3 *dst, struct Vector3 *a, struct Vector3 *b);
 extern void func_0200f760(void *self, void *cyl);
 extern int RandomIntInternal(int *seed);
 extern int data_0209e650;
-extern void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
-    void *clsn, void *actor, void *offset, int radius, int height, u32 flags, u32 vuln);
 extern GrockModelFilePtr data_ov021_02114a50;
 extern int _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(
     void *player, struct Vector3 *pos, u32 kind, int knockback, u32 a, u32 b, u32 c);
@@ -461,15 +452,13 @@ int daGrock_c::InitResources()
             offset.x = 0;
             offset.y = 0;
             offset.z = 0;
-            _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
-                &mdCcAcPos_c, this, &offset, 0x10e000, 0x226000, 0x200004, 0x3c0);
+            mdCcAcPos_c.Init(this, *(Vector3 *)&offset, 0x10e000, 0x226000, 0x200004, 0x3c0);
         } else {
             Vec3 offset;
             offset.x = 0;
             offset.y = 0;
             offset.z = 0;
-            _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
-                &mdCcAcPos_c, this, &offset, 0xf3000, 0x226000, 0x200004, 0x3c0);
+            mdCcAcPos_c.Init(this, *(Vector3 *)&offset, 0xf3000, 0x226000, 0x200004, 0x3c0);
 
             if (mType == kGrockStar)
                 mStarID = (u8)((param1 >> 8) & 0xf);

@@ -1620,72 +1620,72 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@1018",
+      "from": "@1005",
       "to": "@300",
       "evidence": "Including the Vector3s inline default constructor advances this compiler temporary from @1013 to @1017; complete baseline/candidate symbol bytes, metadata and all typed relocation references prove the same object, retaining the existing @300 ROM pin."
     },
     {
-      "from": "@1019",
+      "from": "@1006",
       "to": "@1000",
       "evidence": "Including the Vector3s inline default constructor advances this compiler temporary from @1014 to @1018; complete baseline/candidate symbol bytes, metadata and all typed relocation references prove the same object, retaining the existing @1000 ROM pin."
     },
     {
-      "from": "@1020",
+      "from": "@1007",
       "to": "@1001",
       "evidence": "Including the Vector3s inline default constructor advances this compiler temporary from @1015 to @1019; complete baseline/candidate symbol bytes, metadata and all typed relocation references prove the same object, retaining the existing @1001 ROM pin."
     },
     {
-      "from": "@1021",
+      "from": "@1008",
       "to": "@1002",
       "evidence": "Including the Vector3s inline default constructor advances this compiler temporary from @1016 to @1020; complete baseline/candidate symbol bytes, metadata and all typed relocation references prove the same object, retaining the existing @1002 ROM pin."
     },
     {
-      "from": "@1022",
+      "from": "@1009",
       "to": "@1003",
       "evidence": "Including the Vector3s inline default constructor advances this compiler temporary from @1017 to @1021; complete baseline/candidate symbol bytes, metadata and all typed relocation references prove the same object, retaining the existing @1003 ROM pin."
     },
     {
-      "from": "@1023",
+      "from": "@1010",
       "to": "@1004",
       "evidence": "Including the Vector3s inline default constructor advances this compiler temporary from @1018 to @1022; complete baseline/candidate symbol bytes, metadata and all typed relocation references prove the same object, retaining the existing @1004 ROM pin."
     },
     {
-      "from": "@1024",
+      "from": "@1011",
       "to": "@1005",
       "evidence": "Including the Vector3s inline default constructor advances this compiler temporary from @1019 to @1023; complete baseline/candidate symbol bytes, metadata and all typed relocation references prove the same object, retaining the existing @1005 ROM pin."
     },
     {
-      "from": "@1025",
+      "from": "@1012",
       "to": "@1006",
       "evidence": "Including the Vector3s inline default constructor advances this compiler temporary from @1020 to @1024; complete baseline/candidate symbol bytes, metadata and all typed relocation references prove the same object, retaining the existing @1006 ROM pin."
     },
     {
-      "from": "@1026",
+      "from": "@1013",
       "to": "@1007",
       "evidence": "Including the Vector3s inline default constructor advances this compiler temporary from @1021 to @1025; complete baseline/candidate symbol bytes, metadata and all typed relocation references prove the same object, retaining the existing @1007 ROM pin."
     },
     {
-      "from": "@1027",
+      "from": "@1014",
       "to": "@1008",
       "evidence": "Including the Vector3s inline default constructor advances this compiler temporary from @1022 to @1026; complete baseline/candidate symbol bytes, metadata and all typed relocation references prove the same object, retaining the existing @1008 ROM pin."
     },
     {
-      "from": "@1028",
+      "from": "@1015",
       "to": "@1009",
       "evidence": "Including the Vector3s inline default constructor advances this compiler temporary from @1023 to @1027; complete baseline/candidate symbol bytes, metadata and all typed relocation references prove the same object, retaining the existing @1009 ROM pin."
     },
     {
-      "from": "@1030",
+      "from": "@1017",
       "to": "@2700",
       "evidence": "Including the Vector3s inline default constructor advances this compiler temporary from @1025 to @1029; complete baseline/candidate symbol bytes, metadata and all typed relocation references prove the same object, retaining the existing @2700 ROM pin."
     },
     {
-      "from": "@1032",
+      "from": "@1019",
       "to": "@2701",
       "evidence": "Including the Vector3s inline default constructor advances this compiler temporary from @1027 to @1031; complete baseline/candidate symbol bytes, metadata and all typed relocation references prove the same object, retaining the existing @2701 ROM pin."
     },
     {
-      "from": "@1034",
+      "from": "@1021",
       "to": "@2702",
       "evidence": "Including the Vector3s inline default constructor advances this compiler temporary from @1029 to @1033; complete baseline/candidate symbol bytes, metadata and all typed relocation references prove the same object, retaining the existing @2702 ROM pin."
     }

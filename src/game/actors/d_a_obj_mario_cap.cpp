@@ -96,8 +96,6 @@
  *   InitResources keeps two `(u32)param1` read-side casts; spelled plainly,
  *   2004/b56 materialises the param1 address once for each read-modify-write
  *   and the body grows from 0x4c8 to 0x4d0 (see the comments at both sites).
- *   It also keeps the dCcAc_c::Init / dBgCh_Actr::Init calls mangled: both
- *   take Fix12<int> by value.
  *   The data_ov002_0210de* / 0210df* handles have no recovered names in
  *   symbols.txt, so none are coined; the sixteen-byte state records are only
  *   described above.
@@ -248,17 +246,11 @@ void  _Z14ApproachLinearRiii(int *x, int target, int step);
 short atan2_hold_d_a_obj_mario_cap_1(int y, int x);
 
 
-/* dCcAc_c::Init and dBgCh_Actr::Init take Fix12<int> by value, which has no
-   implicit int conversion (notes/mwccarm-codegen.md 6az). */
-extern void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *thiz, void *actor, s32 f1, s32 f2, u32 a, u32 b);
 /* Parameter names keep this TU's @NNN. */
 typedef void BgchInitAt_(void *thiz, void *actor, s32 f1, s32 f2, void *v, void *w);
 
 void *_ZN9dBgCh_GndC1Ev(dBgCh_Gnd *ray);
 void  _ZN9dBgCh_GndD1Ev(dBgCh_Gnd *ray);
-
-/* SetRanges carries Fix12<int> by value; dActor_c.h deliberately omits it
-   (notes/mwccarm-codegen.md 6az). A call is unaffected. */
 
 /* -- data -- */
 extern Matrix4x3      data_020a0e68;
@@ -382,7 +374,7 @@ int daObjMarioCap_c::InitResources()
 
     /* dCcAc_c collider: radius and height 30 units, flags 0x800002, vulnFlags 0.
        dBgCh_Actr level-collision: radius 30 units, height 22 units. */
-    _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, this, kClsnSizeSmall, kClsnSizeSmall, 0x800002, 0);
+    mdCcAc_c.Init(this, kClsnSizeSmall, kClsnSizeSmall, 0x800002, 0);
     mWithMeshClsn.Init(this, kClsnSizeSmall, 0x16000, 0, 0);
 
     /* Remember where the cap was placed. */

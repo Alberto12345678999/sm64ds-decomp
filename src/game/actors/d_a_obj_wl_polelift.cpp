@@ -3,9 +3,6 @@
  * - common.h stays first.
  * - The destructor stays inline. Out of line it emits D0 before D1,
  *   and a D2.
- * - dCcAcPos_c::Init is not on the header, and a by-value Fix12
- *   changes InitResources. DropShadowScaleXYZ takes three Fix12<int>
- *   by value.
  * - func_ov026_02111234 and func_ov026_021112a4 stay address-named
  *   C-linkage helpers.
  * - data_ov026_02113ea0 is the BMD handle and data_ov026_02113a9c
@@ -51,11 +48,6 @@ int fdiv(int a, int b);
 }
 
 extern "C" {
-/* ABI seams: both take Fix12<int> by value. */
-void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
-    dCcAcPos_c *self, dActor_c *actor, const Vector3 *offset,
-    Fix12i radius, Fix12i height, u32 flags, u32 vulnFlags);
-
 u16 DecIfAbove0_Short(u16 *timer);
 void Vec3_Sub(Vector3 *out, Vector3 *a, Vector3 *b);
 int LenVec3(Vector3 *v);
@@ -95,8 +87,7 @@ s32 daObjWlPolelift_c::InitResources()
     offset.x = data_ov026_02113a9c.x;
     offset.y = data_ov026_02113a9c.y;
     offset.z = data_ov026_02113a9c.z;
-    _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
-        &clsn, this, &offset, 0x50000, 0x12c000, 0x80000c, 0);
+    clsn.Init(this, offset, 0x50000, 0x12c000, 0x80000c, 0);
     func_ov026_021112a4(this);
     return 1;
 }

@@ -96,8 +96,6 @@ struct System {
  *   it `int` so func_ov002_020af218 could tail-return it costs four of its
  *   five words; af218 instead tail-returns it through an
  *   `int (*)(void *)` cast of its name (folds to the same `bl`).
- * - dBgCh_Actr::Init / dCcAc_c::Init / DropShadowRadHeight / ReflectAngle 6az
- *   (Fix12i mangles as i; ROM is Fix12<int> -- method form Undefined)
  * - Particle::System::New: no method declaration in include/
  * - Behavior 0x100: named ++mStateTimer size-DIFF vs unsigned-short launder
  *   (the u16 casts of dEnemyBase_c::mStateTimer at 0x100 stay everywhere they
@@ -1059,7 +1057,6 @@ struct SystemHold {
     static void NewSimple(unsigned int id, int x, int y, int z);
 };
 }
-void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void* thiz, dActor_c* a, int r, int h, unsigned int e, unsigned int g);
 /* Parameter names keep this TU's @NNN. */
 typedef void BgchInitAt_(void *thiz, dActor_c *a, int r, int h, Vector3_16 *p, int q);
 int IsStarCollectedInCurLevel(int a);
@@ -1217,16 +1214,16 @@ int da1up_c::InitResources()
         return 0;
 
     if (mMushroomType == 6 || mMushroomType == 8 || (unsigned int)(mMushroomType - 0xb) <= 1) {
-        _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, (dActor_c*)this, 0x64000, 0x40000, 0x100002, 0);
+        mdCcAc_c.Init((dActor_c *)this, 0x64000, 0x40000, 0x100002, 0);
         if ((unsigned int)(mMushroomType - 0xb) <= 1) {
             mdCcAc_c.vulnFlags |= CC_VULN_YOSHI_TONGUE;
         }
     } else {
         isMega = (actorID == ACTOR_SCALEUP_KINOKO);
         if (isMega) {
-            _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, (dActor_c*)this, 0x41000, 0x41000, 0x100002, 0);
+            mdCcAc_c.Init((dActor_c *)this, 0x41000, 0x41000, 0x100002, 0);
         } else {
-            _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, (dActor_c*)this, 0x32000, 0x32000, 0x100002, 0);
+            mdCcAc_c.Init((dActor_c *)this, 0x32000, 0x32000, 0x100002, 0);
         }
     }
 

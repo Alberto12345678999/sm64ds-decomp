@@ -30,9 +30,6 @@ struct Vector3_16f;
  * Leftover: the four helpers keep their unmangled ROM-only names
  *   (func_ov024_021112c0, 02111350, 02111480, 021114c4). They are this TU's
  *   own statics/helpers, not vtable slots, and no header names them.
- * Leftover: dBgW_KcMbg::SetFile, dExtSimpleModel_c::LoadFile and dCcAc_c::Init keep
- *   their mangled extern-C spellings. SetFile takes Fix12<int> by value
- *   (Fix12 wall, notes/mwccarm-codegen.md 6az).
  * The two resource handles below (model gDlPyramidModelFile, collision
  * gDlPyramidCollisionFile) are defined by this TU; mwcc builds
  * __sinit_d_a_obj_dl_pyramid.cpp from them. data_ov024_021129f0 is the
@@ -70,8 +67,6 @@ struct System {
 };
 }
 int d_a_obj_dl_pyramidNewHold(u32 handle, u32 id, int x, int y, int z, void *dir, void *callback);
-void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(
-    void *cylinder, dActor_c *owner, Fix12i radius, Fix12i height, u32 flags, u32 hitFlags);
 extern void hold_d_a_obj_dl_pyramid(void *collider, void *kcl, void *mat, int scale, short angY,
                                     void *clps);
 void Matrix4x3_FromRotationY(void *m, int angleY);
@@ -315,8 +310,7 @@ s32 daObjDlPyramidDummy_c::InitResources()
     }
 
     mPyramidTopID = top->uniqueID;
-    _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(
-        &mCylinder, this, 0x7d000, 0x28000, 2, 0x400000);
+    mCylinder.Init(this, 0x7d000, 0x28000, 2, 0x400000);
     return 1;
 }
 

@@ -4343,8 +4343,6 @@ int Player::func_ov002_020c4188()
     extern void func_0200d3f8(void*, unsigned char playerID, void*);
     extern void _ZN9dCamera_c9SetFlag_3Ev(void*);
     extern void func_0201f32c(int arg0);
-    /* local extern: dActor_c.h declares SpawnSoundObj void; its result is stored here. */
-    extern void* _ZN8dActor_c13SpawnSoundObjEj(void*, unsigned int a);
     extern void func_0200d81c(void*, int playerID);
     extern void func_ov002_020e444c(void*);
     int* p;
@@ -4385,7 +4383,7 @@ int Player::func_ov002_020c4188()
         }
         func_0201f32c(data_ov002_020ff26c[mEventId - 1]);
         if (mEventId == 6) {
-            mAttachedActor = (s32)_ZN8dActor_c13SpawnSoundObjEj(this, 5);
+            mAttachedActor = (s32)SpawnSoundObj(5);
         }
         mEventStep++;
         break;
@@ -11866,7 +11864,6 @@ int Player::St_LedgeHang_Init() {
     struct Vec3 {
         int x, y, z;
     };
-    extern void _ZN10dCcAcPos_c21SetPosRelativeToActorERK7Vector3(char *o, struct Vec3 *p);
 
     mStateWaitTimer = 0;
     if (mStateStep == 0) {
@@ -11887,7 +11884,7 @@ int Player::St_LedgeHang_Init() {
         off.x = z3.x;
         off.y = z3.y;
         off.z = z3.z;
-        _ZN10dCcAcPos_c21SetPosRelativeToActorERK7Vector3((char *)&mdCcAcPos_c, &off);
+        mdCcAcPos_c.SetPosRelativeToActor(*(Vector3 *)&off);
     }
     mStatePhase = 0;
     return 1;
@@ -17094,11 +17091,9 @@ int Player::func_ov002_020d94cc()
     void _ZN8daStar_c19func_ov002_020e7218EPci(char *a, char *b, int gate);
     extern u8 data_0209f2d8;
     extern s8 data_0209f310;
-    /* local extern: dActor_c.h declares SpawnSoundObj void; its result is tested here. */
-    extern char *_ZN8dActor_c13SpawnSoundObjEj(char *self, u32 a);
     char *self = (char*)this;
     Vector3 pos;
-    char *sndobj;
+    dActor_c *sndobj;
     char *spawned;
     int ang, xx, zz;
     int xv, yv, sum, zv;
@@ -17106,7 +17101,7 @@ int Player::func_ov002_020d94cc()
 
     if ((&data_0209f310)[this->mPlayerNo] <= 0) goto fail;
 
-    sndobj = _ZN8dActor_c13SpawnSoundObjEj(self, 3);
+    sndobj = SpawnSoundObj(3);
     b = (data_0209f2d8 == 1);
     if (b) {
         if (sndobj != 0)
@@ -18917,17 +18912,13 @@ void func_ov002_020dc09c(char *c) {
 extern "C" {
 /* The attack collision's offset, reach and height. pos is a const Vector3 *: it
    goes straight to dCcAcPos_c::Init, whose ROM symbol is
-   _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj -- RK7Vector3, a
+   _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector3iijj -- RK7Vector3, a
    const Vector3 &. Eleven callers in this file each used to spell it void *. */
 void func_ov002_020dc174(char *c, const Vector3 *pos, Fix12i reach, Fix12i height, u32 flags,
                          u32 a6) {
-    extern int _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
-        void *thiz, void *actor, const Vector3 *pos, Fix12i reach, Fix12i height, u32 flags,
-        u32 a6);
     Player *player = (Player *)c;
     int f = player->mIsMega ? 0x10 : 0;
-    _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(&player->mAttackClsn, c, pos, reach,
-                                                            height, flags | 2 | f, a6);
+    player->mAttackClsn.Init((dActor_c *)c, *pos, reach, height, flags | 2 | f, a6);
 }
 }
 
@@ -24157,7 +24148,6 @@ int Player::Behavior()
     };
     extern u16 DecIfAbove0_Short(u16 *p);
     extern s16 GetAngleToCamera(u8 playerID);
-    extern void _ZN10dCcAcPos_c21SetPosRelativeToActorERK7Vector3(void *self, const Vector3 *v);
     extern void func_02035684(void *p, s32 v);
     extern void func_0203568c(void *p, s32 v);
     extern void func_ov002_020ce8bc(void *self, s32 arg);
@@ -24385,7 +24375,7 @@ after_player_slot:
     v1.x = v0.x;
     v1.y = v0.y;
     v1.z = v0.z;
-    _ZN10dCcAcPos_c21SetPosRelativeToActorERK7Vector3(&mdCcAcPos_c, &v1);
+    mdCcAcPos_c.SetPosRelativeToActor(v1);
     func_ov002_020c2db8();
 
     if (mIsInShallowWater != 0)
@@ -25021,15 +25011,13 @@ void func_ov002_020e6350(char* c){
 // @symbol func_ov002_020e63a4
 extern "C" {
 void func_ov002_020e63a4(char* c){
-    extern int _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(void*,void*,void*,int,int,int,int);
     extern int data_ov002_0210f92c[];
     Player *player = (Player *)c;
     int v[3];
     v[0] = data_ov002_0210f92c[0];
     v[1] = data_ov002_0210f92c[1];
     v[2] = data_ov002_0210f92c[2];
-    _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(&player->mdCcAcPos_c, c, v, 0x28000,
-                                                            0x96000, 0x400008, 0x4f3ffe0);
+    player->mdCcAcPos_c.Init((dActor_c *)c, *(Vector3 *)v, 0x28000, 0x96000, 0x400008, 0x4f3ffe0);
 }
 }
 

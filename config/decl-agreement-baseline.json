@@ -5365,74 +5365,6 @@
         "param:#2 const void *"
       ]
     },
-    "_ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj": {
-      "src/game/actors/d_a_bakubaku.cpp": [
-        "param:#3 const Vector3 &"
-      ],
-      "src/game/actors/d_a_bg_snwmn.cpp": [
-        "param:#3 const void *"
-      ],
-      "src/game/actors/d_a_bombking.cpp": [
-        "param:#3 Vector3 *"
-      ],
-      "src/game/actors/d_a_brq.cpp": [
-        "param:#3 const Vector3 &"
-      ],
-      "src/game/actors/d_a_ey_bm.cpp": [
-        "return:int"
-      ],
-      "src/game/actors/d_a_hanachan.cpp": [
-        "param:#5 unsigned int"
-      ],
-      "src/game/actors/d_a_iwante.cpp": [
-        "param:#3 Vector3 *"
-      ],
-      "src/game/actors/d_a_jgm.cpp": [
-        "return:int"
-      ],
-      "src/game/actors/d_a_king_donketu.cpp": [
-        "param:#3 Vector3 *"
-      ],
-      "src/game/actors/d_a_kirai.cpp": [
-        "param:#3 const Vector3 &"
-      ],
-      "src/game/actors/d_a_manta.cpp": [
-        "param:#3 const Vector3 &"
-      ],
-      "src/game/actors/d_a_obj_kanban.cpp": [
-        "param:#1 char *",
-        "param:#2 char *",
-        "param:#5 unsigned int"
-      ],
-      "src/game/actors/d_a_owl.cpp": [
-        "param:#3 int *"
-      ],
-      "src/game/actors/d_a_pukupuku.cpp": [
-        "param:#3 const Vector3 &"
-      ],
-      "src/game/actors/d_a_snowman.cpp": [
-        "param:#3 const void *"
-      ],
-      "src/game/actors/d_a_star.cpp": [
-        "param:#3 const void *"
-      ],
-      "src/game/actors/d_a_wanwan2.cpp": [
-        "param:#3 const Vector3 &"
-      ],
-      "src/game/actors/d_a_water_suikomi.cpp": [
-        "param:#3 V3 *"
-      ],
-      "src/unnamed/ov002/func_ov002_020dc174.c": [
-        "param:#6 int",
-        "param:#7 int",
-        "return:int"
-      ],
-      "src/unnamed/ov002/func_ov002_020e63a4.c": [
-        "param:#6 int",
-        "param:#7 int",
-        "return:int"
-      ]
-    },
     "_ZN10dCcAcPos_cD1Ev": {
       "src/d_a_kuri_king_kuriking.cpp": [
         "return:void"
@@ -5482,63 +5414,6 @@
     "_ZN12dEnemyBase_c14UpdateYoshiEatER10dBgCh_Actr": {
       "src/game/actors/d_a_star.cpp": [
         "param:#2 char *"
-      ]
-    },
-    "_ZN12dEnemyBase_c20KillByInvincibleCharERK10Vector3_16R6Player5Fix12IiE": {
-      "include/decl_Enemy.h": [
-        "param:#2 Vector3_16 *",
-        "param:#3 void *",
-        "param:#4 int"
-      ],
-      "src/game/actors/d_a_basabasa.cpp": [
-        "arity:3"
-      ],
-      "src/game/actors/d_a_bmb.cpp": [
-        "param:#2 void *",
-        "param:#3 void *",
-        "param:#4 unsigned int"
-      ],
-      "src/game/actors/d_a_holhei.cpp": [
-        "param:#2 void *",
-        "param:#3 void *",
-        "param:#4 int"
-      ],
-      "src/game/actors/d_a_ibl.cpp": [
-        "param:#2 Vector3_16 *",
-        "param:#3 void *",
-        "param:#4 int"
-      ],
-      "src/game/actors/d_a_krb.cpp": [
-        "param:#2 short *",
-        "param:#3 void *",
-        "param:#4 int"
-      ],
-      "src/game/actors/d_a_menbo.cpp": [
-        "param:#2 void *",
-        "param:#3 void *",
-        "param:#4 int"
-      ],
-      "src/game/actors/d_a_ots.cpp": [
-        "param:#2 void *",
-        "param:#3 void *",
-        "param:#4 int",
-        "return:int"
-      ],
-      "src/game/actors/d_a_shl.cpp": [
-        "param:#4 int"
-      ],
-      "src/game/actors/d_a_snowman.cpp": [
-        "arity:3"
-      ],
-      "src/game/actors/d_a_trs.cpp": [
-        "param:#2 void *",
-        "param:#3 void *",
-        "param:#4 int"
-      ],
-      "src/game/actors/d_a_yurei_mucho.cpp": [
-        "param:#2 const void *",
-        "param:#3 void *",
-        "param:#4 int"
       ]
     },
     "_ZN12dEnemyBase_c27SpawnParticlesIfHitOtherObjER5dCc_c": {
@@ -8956,20 +8831,6 @@
       "include/decl_dCcAc_c.h": [
         "arity:0",
         "return:void"
-      ]
-    },
-    "_ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj": {
-      "src/game/actors/d_a_kpa.cpp": [
-        "return:int"
-      ],
-      "src/game/actors/d_a_obj_abuku.cpp": [
-        "return:int"
-      ],
-      "src/game/actors/d_a_propeller_heyho_fire.cpp": [
-        "param:#1 char *"
-      ],
-      "src/game/actors/d_a_yegg.cpp": [
-        "param:#4 unsigned int"
       ]
     },
     "_ZN7dCcAc_cD1Ev": {

@@ -26,9 +26,8 @@ struct Vector3_16f;
  * - func_ov079_0212682c, func_ov079_02126794 and func_ov079_02126704
  *   keep address names: the two state-table methods have no recovered
  *   name evidence, and the pose helper is a plain free function.
- * - Particle::System::New/NewSimple, dActor_c::DropShadowRadHeight,
- *   dCcAcPos_c::Init, dBgCh_Actr::Init and Player::Hurt take Fix12<int>
- *   by value, so they stay mangled (notes/mwccarm-codegen.md 6az);
+ * - Player::Hurt takes Fix12<int> by value, so it stays mangled
+ *   (notes/mwccarm-codegen.md 6az);
  *   dBgCh_Actr::GetWallResult has no header decl.
  * - func_0200f760, func_0201267c, func_02012694 and Vec3_Add keep linker
  *   names. data_ov079_02128300 / 021282f0 are the model handles, in
@@ -62,9 +61,6 @@ struct System {
 };
 }
 int d_a_klrNewHold(u32 uniqueID, u32 effectID, int x, int y, int z, void *dir, void *callback);
-void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
-    dCcAcPos_c *self, dActor_c *actor, const Vector3 *offset, int radius,
-    int height, u32 flags, u32 vulnFlags);
 /* Parameter names keep this TU's @NNN. */
 typedef void BgchInitAt_(dBgCh_Actr *self, dActor_c *actor, int radius, int height, Vector3_16 *a,
                          Vector3_16 *b);
@@ -112,8 +108,7 @@ s32 daKlr_c::InitResources()
         offset.x = 0;
         offset.y = -0x50000;
         offset.z = 0;
-        _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
-            &mCylClsn, this, &offset, 0x78000, 0xa0000, 0x200005, 0x3c0);
+        mCylClsn.Init(this, offset, 0x78000, 0xa0000, 0x200005, 0x3c0);
     }
     mState = 0;
     mStateTimer = 0;

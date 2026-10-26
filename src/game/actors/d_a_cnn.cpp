@@ -42,9 +42,6 @@ struct System {
  *   their linker addresses as names; the real names are unrecovered. The
  *   state table's pointer-to-member records are still the sinit's .data
  *   words, resolved to the mangled spellings through symbols.txt.
- * Leftover: dCcAc_c::Init, dActor_c::Earthquake and Particle::System::New
- *   stay mangled; each takes Fix12<int> by value (notes/mwccarm-codegen.md
- *   6az).
  * Leftover: func_ov098_0213a984 and InitResources reach the model's bone
  *   records through raw offsets; BMD_Bone does not name those fields.
  * Leftover: the fire state's launch block keeps the legacy match's shape (a
@@ -115,8 +112,6 @@ int func_ov002_020df300(Player *player);
 int func_ov002_020df34c(Player *player);
 void func_ov102_0214ae1c(dActor_c *bomb);
 
-void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(dCcAc_c *self, dActor_c *actor,
-    int radius, int height, u32 flags, u32 vulnFlags);
 void d_a_cnnEarthquakeHold(dActor_c *self, const Vector3 *pos, int magnitude);
 int d_a_cnnNewHold(u32 slot, u32 id, int x, int y, int z, const Vector3_16 *rot, void *cb);
 }
@@ -191,16 +186,14 @@ int daCnn_c::InitResources()
         mTargetAngleY = mAngleY;
         mState = 0;
         func_ov098_0213b15c();
-        _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(
-            &mdCcAc_c, this, 0xa0000, 0x12c000, 0x800004, 0);
+        mdCcAc_c.Init(this, 0xa0000, 0x12c000, 0x800004, 0);
     } else {
         mPosY -= 0x190000;
         mTargetAngleY = mAngleZ;
         mTargetPitch = 0x2000;
         mState = 2;
         mFlags &= ~1;
-        _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(
-            &mdCcAc_c, this, 0x50000, 0x12c000, 0x800004, 0);
+        mdCcAc_c.Init(this, 0x50000, 0x12c000, 0x800004, 0);
     }
 
     dExtSimpleModel_c::LoadFile(data_ov098_0213c91c);

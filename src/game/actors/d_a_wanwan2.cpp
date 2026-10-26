@@ -47,9 +47,8 @@
  *   include/decl_common.h declares them that way and check_decl_agreement
  *   compares the two. func_ov100_02143aa4 and func_ov100_02143ae0 are the
  *   state pair's members, called through ChompPmfSelf rather than as methods.
- * - The callees with Fix12<int> parameters (dActor_c's shadow drop,
- *   Player::Hurt, dCcAcPos_c::Init, cstd::atan2) stay
- *   spelled as mangled extern-C free functions.
+ * - Player::Hurt, which takes a Fix12<int> parameter, stays spelled as a
+ *   mangled extern-C free function.
  * - func_ov100_02143b68 reaches the link positions and the link models'
  *   translations through two raw char pointers that start at the chomp,
  *   and InitResources' link seeding loop does the same. Written as
@@ -161,9 +160,6 @@ extern "C" {
 unsigned short DecIfAbove0_Short(unsigned short *p);
 void _Z14ApproachLinearRiii(int &x, int target, int step);
 int __aeabi_idiv(int, int);
-void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
-    dCcAcPos_c *clsn, dActor_c *actor, const Vector3 &offset,
-    s32 radius, s32 height, u32 flags, u32 vulnFlags);
 void _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void *p, const void *pos, u32 a, int b, u32 c, u32 d, u32 e);
 int func_02012694(int, void *);
 void *_ZN7PathPtrC1Ev(void *thiz);
@@ -788,9 +784,8 @@ int daWanwan2_c::InitResources()
         offset.x = data_ov100_02148008[0];
         offset.y = data_ov100_02148008[1];
         offset.z = data_ov100_02148008[2];
-        _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
-            &mdCcAcPos_c, this, offset,
-            0xaa000, 0x140000, 0x200004, 0x6010);   /* radius 170, height 320 units */
+        mdCcAcPos_c.Init(this, offset, 0xaa000, 0x140000, 0x200004,
+                         0x6010); /* radius 170, height 320 units */
     }
 
     unk_6c9 = 0x1f;

@@ -10,10 +10,6 @@
  * math/Matrix.h spelling scalarizes a twelve-word copy.
  *
  * Known limits, measured in this TU:
- * - dCcAc_c::Init, dBgCh_Actr::Init, dExtAnmModel_c::SetAnim,
- *   dActor_c::DropShadowRadHeight, dActor_c::SpawnCoins and
- *   dEnemyBase_c::KillByInvincibleChar stay mangled. Each carries
- *   Fix12<int> by value (notes/mwccarm-codegen.md, wall 6az).
  * - The six file handles and the ten state records keep data_ov062_*
  *   names; symbols.txt has no other. de90, dec0 and def0 keep the
  *   char[]/int[] types decl_common.h declares (another type is a new
@@ -57,15 +53,6 @@ struct HolheiState {
 int ApproachLinear(int &ref, int target, int step);
 
 extern "C" {
-/* local extern: Fix12<int> by value, wall 6az. Header method homes the arg. */
-extern void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void* self, dActor_c* a, int r, int h, unsigned int e, unsigned int g);
-/* local extern: Fix12<int> by value, wall 6az. Header method homes the arg. */
-/* local extern: Fix12<int> by value, wall 6az. Header method homes the arg. */
-/* local extern: Fix12<int> by value, wall 6az. Header method homes the arg. */
-/* local extern: Fix12<int> by value, wall 6az. Header method homes the arg. */
-/* local extern: Fix12<int> by value, wall 6az. Header method homes the arg. */
-extern void _ZN12dEnemyBase_c20KillByInvincibleCharERK10Vector3_16R6Player5Fix12IiE(void *c, void *v, void *a, int flag);
-
 extern short func_02010844(void* unused, Vector3* v, short angle);
 extern void func_02012694(int a, void *p);
 extern int daHolhei_c_ChangeState(daHolhei_c *self, HolheiState *p);
@@ -159,7 +146,7 @@ int daHolhei_c::InitResources()
     dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)&gHoruheiWalkAnimationFile);
     mVertAccel = -0x3000;
     mTerminalVelocity = -0x1e000;
-    _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCc_c, (dActor_c*)this, 0xc8000, 0xfa000, 0x200004, 0x3010);
+    mdCc_c.Init((dActor_c *)this, 0xc8000, 0xfa000, 0x200004, 0x3010);
     mModel.speed = 0x1000;
     mMeshClsn.Init((dActor_c *)this, 0x118000, 0x118000, 0, 0);
     mHomePosX = mPosX;
@@ -711,7 +698,7 @@ extern "C" void func_ov062_02116010(daHolhei_c *self)
         v.x = 0x1000;
         v.y = 0;
         v.z = 0;
-        _ZN12dEnemyBase_c20KillByInvincibleCharERK10Vector3_16R6Player5Fix12IiE(self, &v, a, 0);
+        self->KillByInvincibleChar(v, *(Player *)a, 0);
         func_02012694(0x125, &self->mCamSpacePosX);
         return;
     }

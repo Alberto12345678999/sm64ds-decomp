@@ -1,8 +1,5 @@
 //cpp
 /* leftovers:
- * - SetAnim, DropShadowRadHeight, IsTooFarAwayFromPlayer,
- *   dCcAc_c::Init and dBgCh_Actr::Init stay
- *   mangled. Each takes Fix12<int> by value.
  * - The local file-handle wrappers' constructor/destructor veneers are
  *   mapped to the retail destinations in this TU's manifest.
  * - The state steps stay func_ov072_*. The cartridge has no names
@@ -46,8 +43,6 @@ typedef char PgBbyModelFile_size_must_be_0x08[sizeof(PgBbyModelFile) == 0x08 ? 1
 typedef char PgBbyAnimationFile_size_must_be_0x08[sizeof(PgBbyAnimationFile) == 0x08 ? 1 : -1];
 
 extern "C" {
-/* Fix12<int> by-value walls (notes/mwccarm-codegen.md 6az). */
-void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *thiz, void *actor, int r, int h, unsigned int a, unsigned int b);
 /* Parameter names keep this TU's @NNN. */
 typedef void BgchInitAt_(void *thiz, void *actor, int r, int h, void *v, int b);
 
@@ -95,7 +90,7 @@ s32 daPgBby_c::InitResources()
         dExtFrameCtrl_c::LoadFile(*gPenguinBabyAnimationFiles[i]);
     }
     if (mShadowModel.InitCylinder() == 0) return 0;
-    _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mCylClsn, this, 0x28000, 0x50000, 0x800004, 0x9000);
+    mCylClsn.Init(this, 0x28000, 0x50000, 0x800004, 0x9000);
     mVertAccel = -0x2000;
     mTerminalVelocity = -0x3c000;
     mSpawnPosX = mPosX;

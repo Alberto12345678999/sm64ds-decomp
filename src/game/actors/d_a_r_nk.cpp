@@ -157,8 +157,6 @@ enum {
 /* Table of six pointers-to-member, one per State, built by
    __sinit_d_a_r_nk.cpp. */
 extern StateFunc data_ov062_0211e0a4[6];
-extern "C" {
-}
 
 /* Scalar fixed-point ABI entry; the class-valued form still needs
    caller reconstruction under the pinned compiler. */
@@ -188,7 +186,6 @@ extern void Vec3_Asr(void *destination, void *source, int shift);
 extern void Matrix4x3_FromTranslation(void* m, int x, int y, int z);
 extern void Matrix4x3_ApplyInPlaceToRotationY(void* m, short angY);
 extern struct Matrix4x3 data_020a0e68;  /* MATRIX_SCRATCH_PAPER */
-extern void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *self, void *actor, int r, int h, unsigned int d, unsigned int e);
 /* The existing C initializer erases pointer slots to integers. Keep the
    evidenced actor view here; repairing the shared initializer is separate. */
 /* Parameter names keep this TU's @NNN. */
@@ -238,7 +235,7 @@ int daRNk_c::InitResources()
     mScaleY = 0x14cc;
     mScaleZ = 0x14cc;
     /* Body cylinder: radius 120 units, height 300 units. */
-    _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, this, 0x78000, 0x12c000, 0x800004, 0);
+    mdCcAc_c.Init(this, 0x78000, 0x12c000, 0x800004, 0);
     zero = 0;
     mState = zero;
     unk_3aa = (s16)zero;

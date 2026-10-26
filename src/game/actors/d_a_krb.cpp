@@ -14,9 +14,6 @@
  * ledge check, collision, and the stuck check.
  *
  * leftovers:
- * - dCcAc_c::Init, DropShadowRadHeight and KillByInvincibleChar take
- *   Fix12<int> by value. The header calls size-DIFF their callers. The bridges pass those bits as
- *   scalars and still name the 5Fix12IiE symbols.
  * - dBgCh_Actr::Init stays mangled. Fix12i is a plain s32, so the
  *   header method mangles as int.
  * - Player::Hurt, Player::Bounce and dActor_c::IsTooFarAwayFromPlayer
@@ -215,7 +212,6 @@ extern int *data_ov084_0213088c;
 extern int data_ov084_02130248[];
 extern Fix12i Vec3_Dist(const struct Vector3 *a, const struct Vector3 *b);
 extern short Vec3_HorzAngle(const struct Vector3 *a, const struct Vector3 *b);
-extern void _ZN12dEnemyBase_c20KillByInvincibleCharERK10Vector3_16R6Player5Fix12IiE(void* thiz, s16* v, void* r6, s32 flag);
 extern void _ZN6Player6BounceE5Fix12IiE(void* p, s32 f);
 extern int _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void* p, const Vector3* v, u32 a, s32 f, u8 b, u8 cc, u8 d);
 
@@ -239,7 +235,6 @@ extern void UnloadBlueCoinModel(void* p);
 extern s8 data_0209f2f8;
 void LoadSilverStarAndNumber(void);
 void LoadBlueCoinModel(void* c);
-void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void* self, void* a, Fix12i r, Fix12i h, unsigned int e, unsigned int g);
 /* Parameter names keep this TU's @NNN. */
 typedef void BgchInitAt_(void *self, void *a, Fix12i b, Fix12i cc, void *d, Fix12i e);
 extern SharedFilePtr *const sKuriboAnimationFiles[7];
@@ -938,11 +933,13 @@ void daKrb_c::func_ov084_02129ed4() {
         typeMatch = (s32)(goomba->actorID == ACTOR_KURIBO);
         if (typeMatch != 0) {
             killDirNormal[0] = -0x2000; killDirNormal[1] = 0; killDirNormal[2] = 0;
-            _ZN12dEnemyBase_c20KillByInvincibleCharERK10Vector3_16R6Player5Fix12IiE(goomba, killDirNormal, other, 0x41000);     /* 65.0 */
+            goomba->KillByInvincibleChar(*(Vector3_16 *)killDirNormal, *(Player *)other,
+                                         0x41000); /* 65.0 */
             return;
         }
         killDirVariant[0] = -0x1800; killDirVariant[1] = 0; killDirVariant[2] = 0;
-        _ZN12dEnemyBase_c20KillByInvincibleCharERK10Vector3_16R6Player5Fix12IiE(goomba, killDirVariant, other, 0x96000);     /* 150.0 */
+        goomba->KillByInvincibleChar(*(Vector3_16 *)killDirVariant, *(Player *)other,
+                                     0x96000); /* 150.0 */
         return;
     }
 
@@ -1006,7 +1003,8 @@ void daKrb_c::func_ov084_02129ed4() {
                     capReleaseOnKill.x = 0; capReleaseOnKill.y = 0x6c000; capReleaseOnKill.z = 0;     /* 108.0 */
                     goomba->ReleaseCap(capReleaseOnKill);
                     killDirPlayer[0] = 0x2000; killDirPlayer[1] = 0; killDirPlayer[2] = 0;
-                    _ZN12dEnemyBase_c20KillByInvincibleCharERK10Vector3_16R6Player5Fix12IiE(goomba, killDirPlayer, other, 0x41000);     /* 65.0 */
+                    goomba->KillByInvincibleChar(*(Vector3_16 *)killDirPlayer, *(Player *)other,
+                                                 0x41000); /* 65.0 */
                     return;
                 }
                 {
@@ -1971,8 +1969,8 @@ int daKrb_c::InitResources() {
         mScaleY = scale;
         mScaleZ = scale;
     }
-    _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, c, mScaleX * 0x3c,
-                                              data_ov084_02130208[mGoombaType], 0x200000, 0xa6efe0);
+    mdCcAc_c.Init((dActor_c *)c, mScaleX * 0x3c, data_ov084_02130208[mGoombaType], 0x200000,
+                  0xa6efe0);
 
     if (mGoombaType == GOOMBA_LARGE)
         *(int *)(((int)&mdCcAc_c.vulnFlags) & 0xFFFFFFFFFFFFFFFF) &= ~HIT_YOSHI_TONGUE;

@@ -14,11 +14,8 @@ struct System {
  * func_ov070_0211f100 sorts contact. Source order is the reverse of the
  * ROM, so the one .text section emits ascending.
  */
-/* leftovers: dCcAc_c::Init and dBgCh_Actr::Init stay mangled.
- * InitResources calls them, and each takes Fix12<int> by value; the
- * header spells Fix12i. dExtAnmModel_c::SetAnim, DropShadowRadHeight,
- * SpawnCoins, SpawnFireball, Particle::System::New, NewUnkCallback818,
- * Player::SpinBounce and Player::Hurt stay mangled for the same reason.
+/* leftovers: Player::SpinBounce and Player::Hurt stay mangled: each takes
+ * Fix12<int> by value.
  * Finished and WillHitFrame stay qualified through mAnmModel; a char*
  * view of that member moves a word in func_ov070_0211f48c,
  * func_ov070_0211f62c and func_ov070_0211f6e0. Player-position reads
@@ -204,7 +201,6 @@ extern void (daPropeller_Heyho_c::*data_ov070_021230e0)();
 extern int (daPropeller_Heyho_c::*data_ov070_021230f8)();
 extern void (daPropeller_Heyho_c::*data_ov070_02123100)();
 extern "C" {
-extern void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void* self, dActor_c* a, int r, int h, unsigned int e, unsigned int g);
 /* Parameter names keep this TU's @NNN. */
 typedef void BgchInitAt_(void *self, dActor_c *a, int r, int h, Vector3_16 *p, Vector3_16 *q);
 extern int FlyGuy_ChangeState(daPropeller_Heyho_c* c, daPropeller_Heyho_c::State* p);
@@ -228,7 +224,7 @@ int daPropeller_Heyho_c::InitResources()
     mCanSpitFire = param1 & 0xff;
     if (mCanSpitFire == 0xff) mCanSpitFire = 0;
     mTerminalVelocity = -0x1e000; /* -30.0 units/frame */
-    _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, this, 0x3c000, 0x32000, 0x200000, 0x7eff0);
+    mdCcAc_c.Init(this, 0x3c000, 0x32000, 0x200000, 0x7eff0);
     mWithMeshClsn.Init(this, 0x50000, 0x3c000, 0, 0);
     mCoinType = 1;
     mExtraCoinCount = 1;

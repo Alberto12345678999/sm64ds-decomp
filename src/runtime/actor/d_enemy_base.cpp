@@ -816,8 +816,8 @@ struct SystemHold {
 }
 }
 
-// @symbol _ZN12dEnemyBase_c20KillByInvincibleCharERK10Vector3_16R6Player5Fix12IiE
-void dEnemyBase_c::KillByInvincibleChar(const Vector3_16 &spin, Player &player, Fix12<int>) {
+// @symbol _ZN12dEnemyBase_c20KillByInvincibleCharERK10Vector3_16R6Playeri
+void dEnemyBase_c::KillByInvincibleChar(const Vector3_16 &spin, Player &player, Fix12i) {
     mFlags &= ~0x10000001;
     mPrevAngleY = Vec3_HorzAngle(&player.mPos, &mPos);
     mHorzSpeed = 0xa000;

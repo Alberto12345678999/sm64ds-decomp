@@ -37,9 +37,6 @@ struct System {
  * records mState points at.
  *
  * leftovers:
- * - dCcAc_c::Init, dBgCh_Actr::Init, dExtAnmModel_c::SetAnim and
- *   Particle::System::New stay mangled: each takes Fix12<int> by value
- *   (notes/mwccarm-codegen.md 6az).
  * - data_ov091_02135674 / 0213567c / 02135684 are this overlay's BMD and
  *   two BCA SharedFilePtr handles; data_ov002_0210da40 / 0210d9a0 /
  *   0210d9c0 are shared ov002 files the cloud also claims. symbols.txt has
@@ -91,8 +88,6 @@ void Matrix4x3_FromRotationY(Matrix4x3 *m, int angle);
 void Matrix4x3_ApplyInPlaceToRotationX(Matrix4x3 *m, s16 angX);
 void MulVec3Mat4x3(Vector3 *v, Matrix4x3 *m, Vector3 *res);
 
-void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(
-    dCcAc_c *self, dActor_c *actor, int radius, int height, u32 flags, u32 vulnFlags);
 /* Parameter names keep this TU's @NNN. */
 typedef void BgchInitAt_(dBgCh_Actr *self, dActor_c *actor, int radius, int height, Vector3_16 *a,
                          Vector3_16 *b);
@@ -182,13 +177,13 @@ int daHyuhyu_c::InitResources()
     if (mVariant == 0xff)
         mVariant = 0;
     if (mVariant == 1) {
-        _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, this, 0x3c000, 0x14000, 0x200002, 0);
+        mdCcAc_c.Init(this, 0x3c000, 0x14000, 0x200002, 0);
         func_ov091_02134044(&data_ov091_021356c0);
         mWithMeshClsn.Init(this, 0x14000, 0, 0, 0);
         mFlags = 0;
         return 1;
     }
-    _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, this, 0x64000, 0x64000, 0x200002, 0x4a010);
+    mdCcAc_c.Init(this, 0x64000, 0x64000, 0x200002, 0x4a010);
     mFlags = 0x10000000;
     dExtSimpleModel_c::LoadFile(data_ov002_0210da40);
     dExtSimpleModel_c::LoadFile(data_ov002_0210d9a0);

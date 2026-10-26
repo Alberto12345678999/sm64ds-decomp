@@ -12,8 +12,7 @@
  * unnamed mFlags plumbing, sub-object accessors, and step helpers; the ROM
  * gives them no member name, so they stay extern "C" free functions taking
  * the object by raw pointer. */
-// leftovers: the SetObjAndSphere call spells its symbol (Fix12i params travel
-// by value in the mangling, wall 6az). The checker-family helpers stay local
+// leftovers: the checker-family helpers stay local
 // externs (no non-generated header declares them). The func_0203* workers keep
 // address names (no member evidence names them); five of them keep raw-pointer
 // params because other TUs declare them with int/char pointer types.
@@ -36,13 +35,6 @@ int  func_0203842c(char *self);
 int  func_0203859c(void *obj);
 int  func_02039794(int x);
 int  SurfaceInfo_TestFlag0x20(int *p);
-/* local extern: the radius travels by value inside the mangled name
-   (wall 6az), so the call spells the symbol with Fix12i rather than going
-   through the member. */
-void _ZN12dBgCh_SphCrr15SetObjAndSphereERK7Vector35Fix12IiEP8dActor_c(dBgCh_SphCrr *self,
-                                                                      const Vector3 *pos,
-                                                                      Fix12i radius,
-                                                                      dActor_c *actor);
 
 /* This TU's own workers, defined below. */
 int func_0203553c(dBgCh_Actr *self);  /* (mFlags & 0x4000) == 0 -- water-tracking bit */
@@ -167,8 +159,7 @@ void dBgCh_Actr::UpdateDiscreteNoLava()
     sphere.y = y;
     sphere.z = pos->z;
     sphere.y = y + mHeight;
-    _ZN12dBgCh_SphCrr15SetObjAndSphereERK7Vector35Fix12IiEP8dActor_c(&mSphereClsn, &sphere, mRadius,
-                                                                     mActor);
+    mSphereClsn.SetObjAndSphere(sphere, mRadius, mActor);
     mSphereClsn.mMaxNormalY = mScale;
     if (pos->y - prev->y > 0) {
         mSphereClsn.flags |= 0x20;
@@ -210,8 +201,7 @@ void dBgCh_Actr::UpdateDiscreteNoLava_2()
     sphere.y = y;
     sphere.z = pos->z;
     sphere.y = y + mHeight;
-    _ZN12dBgCh_SphCrr15SetObjAndSphereERK7Vector35Fix12IiEP8dActor_c(&mSphereClsn, &sphere, mRadius,
-                                                                     mActor);
+    mSphereClsn.SetObjAndSphere(sphere, mRadius, mActor);
     mSphereClsn.mMaxNormalY = mScale;
     if (pos->y - actor->mPrevPosY > 0) {
         mSphereClsn.flags |= 0x20;
@@ -334,8 +324,7 @@ extern "C" void func_02036acc(dBgCh_Actr *self) {
     sphere.y = pos->y;
     sphere.z = pos->z;
     sphere.y += height;
-    _ZN12dBgCh_SphCrr15SetObjAndSphereERK7Vector35Fix12IiEP8dActor_c(&self->mSphereClsn, &sphere,
-                                                                     self->mRadius, self->mActor);
+    self->mSphereClsn.SetObjAndSphere(sphere, self->mRadius, self->mActor);
     if (func_0203553c(self) == 0)
         self->mSphereClsn.flags |= 0x40;
     self->mSphereClsn.mMaxNormalY = self->mScale;
@@ -466,8 +455,7 @@ void dBgCh_Actr::UpdateContinuous()
     sphere.y = pos->y;
     sphere.z = pos->z;
     sphere.y += height;
-    _ZN12dBgCh_SphCrr15SetObjAndSphereERK7Vector35Fix12IiEP8dActor_c(&mSphereClsn, &sphere, mRadius,
-                                                                     mActor);
+    mSphereClsn.SetObjAndSphere(sphere, mRadius, mActor);
     if (func_0203553c(this) == 0)
         mSphereClsn.flags |= 0x40;
     mSphereClsn.mMaxNormalY = mScale;
@@ -592,8 +580,7 @@ void dBgCh_Actr::UpdateContinuousNoLava()
     sphere.y = pos->y;
     sphere.z = pos->z;
     sphere.y += height;
-    _ZN12dBgCh_SphCrr15SetObjAndSphereERK7Vector35Fix12IiEP8dActor_c(&mSphereClsn, &sphere, mRadius,
-                                                                     mActor);
+    mSphereClsn.SetObjAndSphere(sphere, mRadius, mActor);
     mSphereClsn.mMaxNormalY = mScale;
     if (pos->y - prev->y > 0)
         mSphereClsn.flags |= 0x20;
@@ -767,8 +754,7 @@ void dBgCh_Actr::UpdateExtraContinous()
         sphere.y = pos->y;
         sphere.z = pos->z;
         sphere.y = sphere.y + height;
-        _ZN12dBgCh_SphCrr15SetObjAndSphereERK7Vector35Fix12IiEP8dActor_c(&mSphereClsn, &sphere,
-                                                                         mRadius, mActor);
+        mSphereClsn.SetObjAndSphere(sphere, mRadius, mActor);
 
         mSphereClsn.mMaxNormalY = mScale;
         if (func_02035764(this))

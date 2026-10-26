@@ -22,13 +22,6 @@
  *   matching form.
  *   func_ov070_02121d50 calls dBgCh_Actr_UpdateContinuous_Veneer, as the
  *   ROM does, not UpdateContinuous.
- *
- * WHY SOME CALLS ARE SPELLED AS MANGLED SYMBOLS (Fix12<int> by value, see
- * notes/mwccarm-codegen.md 6az, unless noted):
- *   dCcAc_c::Init, DropShadowRadHeight and
- *   Particle::System::NewUnkCallback818.
- *   dBgCh_Actr::Init: its header's Fix12i mangles as int.
- *   dBgCh_Actr::GetFloorResult: not in dBgCh_Actr.h yet.
  */
 
 // leftovers:
@@ -74,9 +67,6 @@ extern "C" SpawnInfo<daKpFr_c> g_profile_KERONPA_FIRE = {
  * Nested math/Matrix.h spelling (via dExtShadowModel_c.h) scalarizes otherwise. */
 struct M48 { int w[12]; };
 extern "C" {
-/* Fix12-by-value, notes/mwccarm-codegen.md 6az. dBgCh_Actr::Init header Fix12i
-   mangles as int. */
-extern void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(dCcAc_c*, dActor_c*, Fix12i, Fix12i, unsigned int, unsigned int);
 extern int IDENTITY_MATRIX4X3[];
 }
 
@@ -84,7 +74,7 @@ int daKpFr_c::InitResources()
 {
     if (mShadowModel.InitCylinder() == 0)
         return 0;
-    _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, this, 0x37000, 0x78000, 0x200002, 0x8000);
+    mdCcAc_c.Init(this, 0x37000, 0x78000, 0x200002, 0x8000);
     mWithMeshClsn.Init(this, 0x32000, 0x32000, 0, 0);
     mVertAccel = -0x400;
     mTerminalVelocity = -0x5000;

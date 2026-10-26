@@ -1443,8 +1443,6 @@ void daMky_c::func_ov030_021141a8(int idx)
  * methods above are members of this class and are not redeclared. */
 extern "C" {
 
-void  _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *self, void *actor, int a, int b, u32 c, u32 d);
-
 extern SharedFilePtr  data_ov002_0210da40;
 extern SharedFilePtr  data_ov002_0210d9a0;
 extern SharedFilePtr  data_ov002_0210d9c0;
@@ -1529,7 +1527,7 @@ s32 daMky_c::InitResources()
         return 0;
     mAnmModel.SetAnim((BCA_File *)data_ov030_02115cf0[1], 0, 0x1000, 0);
     mAnmModel.speed = 0x1000;
-    _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, this, 0x28000, 0x64000, 0x800004, 0x49000);
+    mdCcAc_c.Init(this, 0x28000, 0x64000, 0x800004, 0x49000);
     mWithMeshClsn.Init(this, 0x32000, 0x32000, 0, 0);
     mVertAccel = -0x2000;
     mTerminalVelocity = -0x3c000;

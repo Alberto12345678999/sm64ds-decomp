@@ -66,8 +66,6 @@ extern void _ZN6Player6BounceE5Fix12IiE(void *p, int f);
    call reconstruction remains separate work. The return value is discarded. */
 extern int _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(Player *p, void *v, unsigned int a, int b, u8 d,
                                                    u8 e, u8 f);
-extern void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *self, dActor_c *a, int r, int h,
-                                                      unsigned int e, unsigned int g);
 extern unsigned int RandomIntInternal(void *seed);
 extern unsigned short DecIfAbove0_Short(unsigned short *p);
 extern void ApproachAngle(void *p, short target, int a, int b, int limit);
@@ -87,9 +85,7 @@ extern int data_020a0e68[];
 extern int data_0209e650[];
 extern short data_02082214[];
 
-/* ov002 -- 6az KillByInvincibleChar; unnamed particle helper. */
-extern void _ZN12dEnemyBase_c20KillByInvincibleCharERK10Vector3_16R6Player5Fix12IiE(
-    void *self, const void *v, void *p, int a);
+/* ov002 -- unnamed particle helper. */
 extern void func_ov002_020aea30(void *self, void *actor, void *collision);
 
 /* The four shared-file handles and four State records remain ROM-supplied BSS.
@@ -160,7 +156,7 @@ int daYurei_Mucho_c::InitResources()
     dExtFrameCtrl_c::LoadFile(data_ov065_0211d600);
     dExtFrameCtrl_c::LoadFile(data_ov065_0211d608);
     mTerminalVelocity = -0x1e000;
-    _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, this, 0x38000, 0x7e000, 0x200000, 0x7eff0);
+    mdCcAc_c.Init(this, 0x38000, 0x7e000, 0x200000, 0x7eff0);
     mAngleY = mPrevAngleY;
     mWithMeshClsn.Init(this, 0x46000, 0, 0, 0);
     mCoinType = 1;
@@ -624,7 +620,7 @@ void daYurei_Mucho_c::func_ov065_02115ff0()
         v.x = -0x2000;
         v.y = 0;
         v.z = 0;
-        _ZN12dEnemyBase_c20KillByInvincibleCharERK10Vector3_16R6Player5Fix12IiE(this, &v, p, 0);
+        KillByInvincibleChar(v, *p, 0);
         func_02012694(0x11e, &mCamSpacePosX);
         return;
     }

@@ -44,10 +44,8 @@
  * Leftover: func_ov094_02136024 stores mPos into `d` and then overwrites all
  *   three fields. Dropping those three stores shrank the method from ROM
  *   0x12c to object 0x114. The stores stay.
- * Leftover: dExtAnmModel_c::SetAnim, dCcAcPos_c::Init, dBgCh_Actr::Init and
- *   dActor_c::DropShadowRadHeight take Fix12<int> by value, so they stay
- *   mangled calls. dBgCh_Actr::Unk_0203589c has no member
- *   declaration in a shared header.
+ * Leftover: dBgCh_Actr::Unk_0203589c has no member declaration in a shared
+ *   header.
  * Leftover: unk_3e8 is scratch that each state uses differently (fade phase,
  *   sound latch, bobbing phase). It stays unnamed.
  * Leftover: the rider matrix pointer at +0xc8, and the model matrix at +0x328
@@ -182,8 +180,6 @@ void Matrix4x3_FromTranslation(Matrix4x3 *m, Fix12i x, Fix12i y, Fix12i z);
 void Matrix4x3_ApplyInPlaceToRotationXYZExt(void *m, int x, int y, int z);
 void Matrix4x3_ApplyInPlaceToTranslation(Matrix4x3 *m, Fix12i x, Fix12i y, Fix12i z);
 void MulMat4x3Mat4x3(const int *a, const int *b, int *dst);
-void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
-    void *, void *, int *, int, int, unsigned int, unsigned int);
 int IsStarCollectedInCurLevel(int);
 void DecIfAbove0_Short(void *);
 }
@@ -685,7 +681,7 @@ int daOwl_c::InitResources()
     v0[0] = data_ov094_02136a1c[0];
     v0[1] = data_ov094_02136a1c[1];
     v0[2] = data_ov094_02136a1c[2];
-    _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(&mdCcAcPos_c, this, v0, 0x64000, 0x64000, 0x800004, 0);
+    mdCcAcPos_c.Init(this, *(Vector3 *)v0, 0x64000, 0x64000, 0x800004, 0);
 
     mRider = 0;
     mdCcAcPos_c.flags |= 2;

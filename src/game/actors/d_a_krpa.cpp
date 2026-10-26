@@ -25,12 +25,6 @@
  *   dExtAnmModel_c.h; putting common.h first would drop .t.
  *   func_ov070_021213cc calls dBgCh_Actr_UpdateDiscreteNoLava_veneer: the
  *   veneer is the retail call destination.
- *
- * WHY SOME CALLS ARE SPELLED AS MANGLED SYMBOLS (Fix12<int> by value, see
- * notes/mwccarm-codegen.md 6az):
- *   dCcAcPos_c::Init, dBgCh_Actr::Init (its header Fix12i also mangles as
- *   int), dExtAnmModel_c::SetAnim, DropShadowRadHeight and
- *   Particle::System::NewSimple.
  */
 
 // leftovers:
@@ -111,9 +105,6 @@ struct KrpaModelFilePtr : SharedFilePtr {
 extern "C" {
 extern KrpaModelFilePtr gKeronpaModelFile;
 extern int IDENTITY_MATRIX4X3[];
-extern void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
-    dCcAcPos_c *clsn, dActor_c *actor, const Vector3 *offset,
-    Fix12i radius, Fix12i height, u32 flags, u32 vulnFlags);
 /* Parameter names keep this TU's @NNN. */
 typedef void BgchInitAt_(dBgCh_Actr *clsn, dActor_c *actor, Fix12i radius, Fix12i height,
                          Vector3_16 *a, Vector3_16 *b);
@@ -131,9 +122,7 @@ int daKrpa_c::InitResources()
     offset.x = 0;
     offset.y = -0x32000;
     offset.z = 0;
-    _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
-        &mdCcAcPos_c, this, &offset,
-        0x32000, 0x64000, 0x200002, 0x8000);
+    mdCcAcPos_c.Init(this, offset, 0x32000, 0x64000, 0x200002, 0x8000);
     mWithMeshClsn.Init(this, 0x32000, 0x32000, 0, 0);
 
     mVertAccel = 0;

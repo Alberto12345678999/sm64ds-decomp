@@ -10,10 +10,6 @@
  * pointer-to-member constants at 0x0212812c..0x02128158.
  */
 // leftovers:
-// - SpawnCoins, DropShadowScaleXYZ, dCcAc_c::Init and dBgCh_Actr::Init stay
-//   mangled extern "C". SpawnCoins as a member, with Fix12<int> by value,
-//   grew func_ov080_02124acc (0x170 to 0x17c) and func_ov080_02124edc
-//   (0x110 to 0x11c).
 // - mShadowMtx stays u8[0x30] and is cast to Matrix4x3. The header names the
 //   array, not a Matrix4x3.
 // - func_ov080_02124e60 stores 0 through *(int *)pad_0d0, the pad in front of
@@ -55,7 +51,6 @@ struct System {
 void Matrix4x3_ApplyInPlaceToTranslation(Mtx43 *m, int x, int y, int z);
 void Vec3_LslInPlace(Vector3 *v, int sh);
 void Matrix4x3_FromRotationY(void *m, int angle);
-void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *self, void *actor, int a, int b, unsigned int c, unsigned int d);
 /* Parameter names keep this TU's @NNN. */
 typedef void BgchInitAt_(void *self, void *actor, int a, int b, void *v, int c);
 }
@@ -374,7 +369,7 @@ int daBttBk_c::InitResources()
     void *file = dExtSimpleModel_c::LoadFile(*(SharedFilePtr *)&gBattaBlockModelFile);
     mModel.SetFile((BMD_File *)file, 1, 1);
     mShadowModel.InitCuboid();
-    _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, this, 0x64000, 0x78000, 0x800004, 0x9010);
+    mdCcAc_c.Init(this, 0x64000, 0x78000, 0x800004, 0x9010);
     mVertAccel = -0x2000;
     mTerminalVelocity = -0x3c000;
     {

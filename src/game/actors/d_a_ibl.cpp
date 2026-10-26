@@ -16,10 +16,10 @@
  * - The eight helpers stay func_ov100_02141fb0 .. 02142b90. Behavior
  *   reads data_ov100_0214867c by hand: the table is .bss the startup
  *   code fills with two-word pointer-to-member records.
- * - Particle::System::NewSimple, dCcAc_c::Init, dBgCh_Actr::Init,
- *   DropShadowRadHeight and Player::Hurt stay mangled. Each takes
- *   Fix12<int> by value; their native call reconstruction remains pending.
- *   The local Hurt declaration agrees with the current scalar definition.
+ * - Player::Hurt stays mangled: it takes Fix12<int> by value. The local
+ *   Hurt declaration agrees with the current scalar definition.
+ * - func_ov100_021424c0 calls dCc_c::Update by its symbol: the function
+ *   returns that call's r0, and the member is void.
  * - The spawner copies Player position through a byte view of the whole object
  *   into a real Vector3. The inherited position fields remain separate scalars.
  * - Spawn still borrows this actor's flat position and angle fields through
@@ -99,7 +99,6 @@ int PlayLong(u32, u32, u32, const Vector3 &, s16);
 extern "C" {
 /* Defined below. */
 
-void _ZN12dEnemyBase_c20KillByInvincibleCharERK10Vector3_16R6Player5Fix12IiE(void *c, Vector3_16 *s, void *a, int z);
 namespace Particle {
 struct System {
     static void NewSimple(u32 id, int x, int y, int z);
@@ -118,8 +117,10 @@ void _Z14ApproachLinearRiii(int *value, int target, int step);
 int Vec3_HorzLen(void *v);
 int Vec3_HorzDist(const void *a, const void *b);
 int Vec3_Equal(void *a, void *b);
+/* local extern: func_ov100_021424c0 returns an int and its tail returns this
+   call's r0, but dCc_c::Update is void, so the member call does not compile
+   as the return value. */
 int _ZN5dCc_c6UpdateEv(void *c);
-void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *self, void *actor, int a, int b, unsigned int c, unsigned int d);
 
 extern int IDENTITY_MATRIX4X3[];
 }
@@ -196,7 +197,7 @@ void daIbl_c::func_ov100_02141fb0()
         u32 r = OnAimedAtWithEgg();
         mPosY += r;
         s.x = 0; s.y = 0; s.z = 0;
-        _ZN12dEnemyBase_c20KillByInvincibleCharERK10Vector3_16R6Player5Fix12IiE(this, &s, a, 0);
+        KillByInvincibleChar(s, *a, 0);
         _ZN10dBgCh_Actr15ClearGroundFlagEv(&mWithMeshClsn);
         return;
     }
@@ -564,7 +565,7 @@ ground:
     UpdatePosWithOnlySpeed(0);
     func_ov100_02142264();
     mdCcAc_c.Clear();
-    _ZN5dCc_c6UpdateEv(&mdCcAc_c);
+    mdCcAc_c.Update();
 }
 
 // @symbol _ZN7daIbl_c19func_ov100_02142918Ev
@@ -652,7 +653,7 @@ Lend: {
     UpdatePosWithOnlySpeed(0);
     func_ov100_02142264();
     mdCcAc_c.Clear();
-    _ZN5dCc_c6UpdateEv(&mdCcAc_c);
+    mdCcAc_c.Update();
 }
 
 // @symbol _ZN7daIbl_c19func_ov100_02142b90Ev
@@ -830,14 +831,14 @@ int daIbl_c::InitResources()
             mDrawScale.x = 0x800;
             mDrawScale.y = 0x800;
             mDrawScale.z = 0x800;
-            _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, this, 0x1e000, 0x1e000, 0x200004, 0x3c0);
+            mdCcAc_c.Init(this, 0x1e000, 0x1e000, 0x200004, 0x3c0);
             mWithMeshClsn.Init(this, 0x1e000, 0x1e000, 0, 0);
             mKillY = -0x640000;        /* -1600 units */
         } else {
             mDrawScale.x = 0x1000;
             mDrawScale.y = 0x1000;
             mDrawScale.z = 0x1000;
-            _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, this, 0x64000, 0x64000, 0x200004, 0x3c0);
+            mdCcAc_c.Init(this, 0x64000, 0x64000, 0x200004, 0x3c0);
             mWithMeshClsn.Init(this, 0x64000, 0x64000, 0, 0);
             /* Full size: scale 1.0, collider radius and height 100 units.
                Speed per frame: 25 units in sublevel 0x18, 20 in 6, else 10. */
@@ -867,7 +868,7 @@ int daIbl_c::InitResources()
         mDrawScale.x = 0x1000;
         mDrawScale.y = 0x1000;
         mDrawScale.z = 0x1000;
-        _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, this, 0x64000, 0x64000, 0x200004, 0x3c0);
+        mdCcAc_c.Init(this, 0x64000, 0x64000, 0x200004, 0x3c0);
         mWithMeshClsn.Init(this, 0x64000, 0x64000, 0, 0);
         _ZN10dBgCh_Actr13SetLimMovFlagEv((char *)&mWithMeshClsn);
         goto end;

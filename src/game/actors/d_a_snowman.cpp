@@ -96,8 +96,6 @@ extern int AngleDiff(int a, int b);
 extern void func_ov002_020aea30(void *self, void *actor, void *collision);
 /* Sound::Play(3, id, pos) — PlayBank3. This TU calls the wrapper. */
 extern void func_02012694(int a, void *p);
-extern void _ZN12dEnemyBase_c20KillByInvincibleCharERK10Vector3_16R6Player5Fix12IiE(
-    void *self, void *v, void *a);
 extern void _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(
     void *p, void *v, u32 a, int f, u32 c, u32 d, u32 e);
 extern Vector3 data_ov081_02128998; /* cylinder offset (0, 0x1e000, 0) */
@@ -117,8 +115,6 @@ extern void MulMat4x3Mat4x3(void *dst, void *a, void *b);
 extern void Matrix4x3_ApplyInPlaceToTranslation(void *m, int x, int y, int z);
 extern struct Matrix4x3 data_020a0e68;
 extern unsigned short DecIfAbove0_Short(unsigned short *p);
-extern void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
-    void *self, void *actor, const void *v, int d, int e, u32 f, u32 g);
 /* Parameter names keep this TU's @NNN. */
 typedef void BgchInitAt_(void *self, void *actor, int b, int c, void *v16, int e);
 extern int atan2_hold_d_a_snowman_1(int a, int b);
@@ -319,7 +315,7 @@ void daSnowman_c::func_ov081_021243cc()
             vv.x = (s16)-0x1200;
             vv.y = 0;
             vv.z = 0;
-            _ZN12dEnemyBase_c20KillByInvincibleCharERK10Vector3_16R6Player5Fix12IiE(this, &vv, found);
+            KillByInvincibleChar(vv, *(Player *)found, 0);
             func_02012694(0x1d, &this->mCamSpacePosX);
             hit = 1;
         }
@@ -1061,8 +1057,7 @@ int daSnowman_c::InitResources()
     mTerminalVelocity = -0xc8000;
 
     v = data_ov081_02128998;
-    _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
-        &mdCcAcPos_c, this, &v, 0x3c000, 0x96000, 0x200004, 0x42050);
+    mdCcAcPos_c.Init(this, v, 0x3c000, 0x96000, 0x200004, 0x42050);
 
     mAngleY = mPrevAngleY;
     mInitAngleY = mAngleY;

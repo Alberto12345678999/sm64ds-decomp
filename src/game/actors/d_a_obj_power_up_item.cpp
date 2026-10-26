@@ -27,10 +27,9 @@ struct Callback;
  * __sinit from six descriptor records.
  *
  * leftovers:
- *  - DropShadow and InitResources keep their mangled `_ZN` spellings for
- *    DropShadowRadHeight, dCcAc_c::Init and dBgCh_Actr::Init: those take
- *    Fix12<int> by value, and Fix12<int> has no int conversion (the Fix12
- *    wall the rest of the tree banks on too).
+ *  - DropShadow keeps DropShadowRadHeight's mangled `_ZN` spelling: it
+ *    returns an int its early exit computes, and the member is void (see
+ *    the local extern).
  *  - dBgCh_Actr_UpdateContinuous_Veneer is a real ROM symbol callers name
  *    directly, not a wrapper to collapse into UpdateContinuous.
  *  - StateOpening still writes mWobbleAngle through a `short*` pun:
@@ -123,8 +122,6 @@ extern int _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x3iih(
 extern void Matrix4x3_FromRotationY(void* m, int angle);
 extern void *gPFlowerCloseModelFile[];
 extern void *gPFlowerOpenModelFile[];
-extern void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(
-    void *self, void *act, Fix12i a, Fix12i b, unsigned int c2, unsigned int d);
 /* Parameter names keep this TU's @NNN. */
 typedef void BgchInitAt_(void *self, void *act, Fix12i a, Fix12i b, void *d, void *e);
 }
@@ -505,7 +502,7 @@ int daObjPowerUpItem_c::InitResources()
     mScaleY = 0xfa0;
     mScaleZ = 0xfa0;
 
-    _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, this, 0x32000, 0x64000, 0x800002, 0x8000);
+    mdCcAc_c.Init(this, 0x32000, 0x64000, 0x800002, 0x8000);
     mWithMeshClsn.Init(this, 0x3c000, 0x3c000, 0, 0);
     mWithMeshClsn.StartDetectingWater();
 

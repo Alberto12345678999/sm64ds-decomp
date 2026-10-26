@@ -154,8 +154,6 @@ extern void hold_d_a_obj_block_s(char *thiz, int f, char *m, int fix, short s, i
 /* Parameter names keep this TU's @NNN. */
 typedef void BgchInitAt_(char *thiz, char *actor, int b, int d, void *v, int f);
 
-extern void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
-    void *thiz, void *actor, void *vec, int fix, int t, unsigned u1, unsigned u2);
 
 extern int SurfaceInfo_TestFlag0x20(int *p);
 extern int func_ov002_020ef228(void *c, int arg);
@@ -753,14 +751,12 @@ void daObjBlockS_c::func_ov098_02138ce0()
     a1.x = zero.x;
     a1.y = zero.y;
     a1.z = zero.z;
-    _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
-        &mdCcAcPos_c1, this, &a1, 0x3c000, 0x6e000, 0x200002, 0x4d390);
+    mdCcAcPos_c1.Init(this, a1, 0x3c000, 0x6e000, 0x200002, 0x4d390);
 
     a2.x = zero.x;
     a2.y = zero.y;
     a2.z = zero.z;
-    _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
-        &mdCcAcPos_c2, this, &a2, 0x3c000, 0x1e000, 0x800004, 0);
+    mdCcAcPos_c2.Init(this, a2, 0x3c000, 0x1e000, 0x800004, 0);
 }
 
 // @symbol _ZN13daObjBlockS_c19func_ov098_02138e08Ev

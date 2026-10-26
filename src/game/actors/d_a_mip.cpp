@@ -12,10 +12,6 @@ struct System {
  * is the key function: the cartridge has D1 below D0 and no D2.
  *
  * leftovers:
- * - dExtAnmModel_c::SetAnim, dCcAc_c::Init, dBgCh_Actr::Init,
- *   DropShadowRadHeight, Sound::PlaySub and Particle::System::New
- *   stay mangled. They take Fix12 by value. dBgCh_Actr::Init's
- *   header spells Fix12i, which mangles as int.
  * - g_profile_MIP stays outside this TU. The file handles, the eight
  *   state records, the carry offsets and the rabbit-count int are
  *   the folded sinit objects at the end of this file.
@@ -72,7 +68,6 @@ extern "C" {
 void *_ZN9dBgCh_GndC1Ev(void *);
 void  _ZN9dBgCh_GndD1Ev(void *);
 int   SurfaceInfo_TestFlag0x20(void *);
-void  _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *, void *, s32, s32, u32, u32);
 
 /* dActor_c / dEnemyBase_c, reached by their ROM names.
    dActor_c::ClosestPlayer and dActor_c::FindWithID are deliberately NOT here:
@@ -1544,7 +1539,7 @@ int daMip_c::InitResources()
 
     mVertAccel = -0x1000;
     mTerminalVelocity = -0x1e000;
-    _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, this, 0x50000, 0x64000, 0xb00004, 0x9000);
+    mdCcAc_c.Init(this, 0x50000, 0x64000, 0xb00004, 0x9000);
     mTalkingPlayer = 0;
     mAnmModel.speed = 0x1000;
     mWithMeshClsn.Init(this, 0x28000, 0x28000, 0, 0);

@@ -23,10 +23,8 @@
  * - mSpawnPosX stays punned: daJgm_c stores it as three scalars.
  * - dBgCh_Actr_UpdateDiscreteNoLava_veneer stays: the named
  *   UpdateDiscreteNoLava method is WRONG-DEST (ROM 0x02038420).
- * - Fix12<int>-by-value callees stay mangled (6az): dCcAcPos_c::Init,
- *   dBgCh_Actr::Init (whose header mangles Fix12i as `i`, not the ROM's
- *   5Fix12IiE), DropShadowRadHeight, SpawnCoins, Player::Bounce / Hurt and
- *   Particle::System::NewSimple (Particle__System.h lacks it).
+ * - Player::Bounce / Hurt stay mangled: each takes Fix12<int> by value
+ *   (6az).
  * - dActor_c::IsTooFarAwayFromPlayer, ApproachLinear and cstd::fdiv have
  *   no header decl, so they are declared locally;
  *   ApproachLinear2 keeps C++ linkage (_Z15ApproachLinear2Rsss).
@@ -172,9 +170,6 @@ extern void MulMat4x3Mat4x3(void *a, void *b, void *out);
 extern void Vec3_LslInPlace(void *v, int sh);
 extern void Vec3_Asr(void *d, void *s, int sh);
 
-extern int _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
-    dCcAcPos_c *collision, dActor_c *actor, const Vector3 *offset,
-    Fix12i radius, Fix12i height, u32 flags, u32 vulnFlags);
 /* Parameter names keep this TU's @NNN. */
 typedef int BgchInitAt_(dBgCh_Actr *collision, dActor_c *actor, Fix12i radius, Fix12i height,
                         void *a, void *b);
@@ -237,9 +232,7 @@ s32 daJgm_c::InitResources()
     }
     if (mShadowModel.InitCylinder() == 0)
         return 0;
-    _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
-        &mdCcAcPos_c, this, (Vector3 *)&data_ov077_02127b88,
-        0x41000, 0x78000, 0x200002, 0x6eff0);
+    mdCcAcPos_c.Init(this, *((Vector3 *)&data_ov077_02127b88), 0x41000, 0x78000, 0x200002, 0x6eff0);
     mWithMeshClsn.Init(this, 0x2d000, 0x2d000, 0, 0);
 
     mVertAccel = 0;

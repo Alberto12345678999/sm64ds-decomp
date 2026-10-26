@@ -12,10 +12,8 @@
 
 // leftovers:
 // - Particle::System::New / SetSelfDestructFlag, dExtAnmModel_c::SetAnim,
-//   dCcAc_c::Init, dBgCh_Actr::Init, dActor_c::ReflectAngle /
-//   DropShadowRadHeight / IsTooFarAwayFromPlayer,
-//   dEnemyBase_c::KillByInvincibleChar, Player::Bounce / Hurt and
-//   Particle::RunningSlidingDustAt stay mangled. Each passes Fix12<int>
+//   dBgCh_Actr::Init, dActor_c::IsTooFarAwayFromPlayer, Player::Bounce /
+//   Hurt and Particle::RunningSlidingDustAt stay mangled. Each passes Fix12<int>
 //   by value (notes/mwccarm-codegen.md 6az), or the header declaration
 //   does not mangle to the ROM symbol. func_0201267c is the bank-3
 //   Sound::Play wrapper.
@@ -112,7 +110,6 @@ extern short Vec3_HorzAngle(const Vector3* a, const Vector3* b);
 extern SharedFilePtr* data_ov062_0211ced8[2];
 extern SharedFilePtr* data_ov062_0211cee0[2];
 
-extern void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void* self, dActor_c* a, int r, int h, unsigned int e, unsigned int g);
 /* Parameter names keep this TU's @NNN. */
 typedef void BgchInitAt_(void *self, dActor_c *a, int r, int h, Vector3_16 *p, int q);
 extern void LoadBlueCoinModel(void* c);
@@ -224,7 +221,7 @@ int daNknk_c::InitResources()
         dExtSimpleModel_c::LoadFile(*data_ov062_0211cee0[mModelIndex]);
     }
 
-    _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCc_c, this, r, h, 0x200000, 0xb6efe0);
+    mdCc_c.Init(this, r, h, 0x200000, 0xb6efe0);
 
     mStateTimer = 0;
     mWalkState = 0;
@@ -849,10 +846,7 @@ void daNknk_c::func_ov062_02117c98()
         v.x = (s16)-0x2000;
         v.y = (s16)turnAround;
         v.z = (s16)turnAround;
-        // The member's unused Fix12<int> argument is one raw register word.
-        // Native aggregate passing adds a load/copy here under 2004/b56;
-        // retain decl_Enemy.h's scalar ABI bridge to the actual member symbol.
-        _ZN12dEnemyBase_c20KillByInvincibleCharERK10Vector3_16R6Player5Fix12IiE(this, &v, found, 0x46000);
+        KillByInvincibleChar(v, *(Player *)found, 0x46000);
         return;
     }
     if (flags & 0x22400) {

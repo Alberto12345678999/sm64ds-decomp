@@ -53,10 +53,6 @@ extern void Matrix4x3_ApplyInPlaceToRotationY(void *m, short angY);
 extern void Matrix4x3_ApplyInPlaceToRotationZ(void *m, short angZ);
 extern int data_020a0e68[];
 
-/* actor plumbing */
-extern void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(
-    void *self, dActor_c *a, int b, int c, unsigned int d, unsigned int e);
-
 /* model / animation */
 
 /* ov085 statics. data_ov085_0212f280 and data_ov085_021304f4 keep
@@ -402,8 +398,7 @@ int daPeach_c::InitResources()
         dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)data_ov085_0212f280[i]);
     if (mShadowModel.InitCylinder() == 0)
         return 0;
-    _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(
-        &mCylinder, this, 0x90000, 0xc0000, 0x4800004, 0);
+    mCylinder.Init(this, 0x90000, 0xc0000, 0x4800004, 0);
     mWithMeshClsn.Init(this, 0x40000, 0x40000, (Vector3_16 *)0, (Vector3_16 *)0);
     mVertAccel = -0x2000;
     mTerminalVelocity = -0x3c000;

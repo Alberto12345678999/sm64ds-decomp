@@ -60,7 +60,6 @@ extern char data_ov063_0211ecb8;
  * linkage specifications, so everything they call lives here. */
 struct Vec3;
 extern "C" {
-extern void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(dCcAcPos_c *, dActor_c *, const Vector3 *, Fix12i, Fix12i, unsigned int, unsigned int);
 
 extern void func_ov063_0211d88c(daPiano_c *self);
 extern void func_ov063_0211d828(daPiano_c *self);
@@ -114,8 +113,7 @@ int daPiano_c::InitResources()
         /* Sensor cylinders, 155.0 radius by 250.0 tall, tracking mPos.
          * 0x200004 is enemy | char-projectile: what can hit the piano.
          * Players are Hurt manually (func_ov063_0211d8cc), not via dCc. */
-        _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(cylinder, this, &mPos, 0x9b000,
-                                                                0xfa000, 0x200004, 0);
+        cylinder->Init(this, mPos, 0x9b000, 0xfa000, 0x200004, 0);
         cylinder++;
     }
     f = dBgW_Kc::LoadFile(gPianoCollisionFile);

@@ -1591,9 +1591,8 @@ void dActor_c::KillAndTrackInDeathTable()
 // @symbol _ZN8dActor_c13SpawnSoundObjEj
 /* ROM ordinal 7 -- _ZN8dActor_c13SpawnSoundObjEj
  * 0x0200f97c  size 0x3c */
-void dActor_c::SpawnSoundObj(u32 soundObjParam)
-{
-    Spawn(0x167, soundObjParam, mPos, 0, mAreaId, -1);
+dActor_c *dActor_c::SpawnSoundObj(u32 soundObjParam) {
+    return Spawn(0x167, soundObjParam, mPos, 0, mAreaId, -1);
 }
 
 /* -------------------------------------------------------------------------- */

@@ -59,8 +59,6 @@ extern daSnowball_StateRec data_ov081_02128eb4;
 
 extern "C" {
 unsigned short DecIfAbove0_Short(unsigned short *p);
-void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(
-    void *thiz, void *actor, int radius, int height, unsigned int flags, unsigned int vuln);
 /* Parameter names keep this TU's @NNN. */
 typedef void BgchInitAt_(void *thiz, void *actor, int radius, int height, void *a, int b);
 }
@@ -334,14 +332,7 @@ int daSnowball_c::InitResources()
 
     mVertAccel = -0x2000;
     mTerminalVelocity = -0x3c000;
-    /* leftover: both Init calls below stay on their mangled names.
-       dCcAc_c::Init takes Fix12<int> by value, and passing the radii that way
-       spills them into .rodata, so the method call no longer matches.
-       dBgCh_Actr::Init is declared with Fix12i, a plain s32 that mangles as
-       `i`, so the method call would name a symbol other than the ROM's
-       5Fix12IiE one. */
-    _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(
-        &mdCcAc_c, this, 0x1e000, 0x1e000, SNOWBALL_CC_FLAGS, SNOWBALL_CC_VULN);
+    mdCcAc_c.Init(this, 0x1e000, 0x1e000, SNOWBALL_CC_FLAGS, SNOWBALL_CC_VULN);
 
     mSpawnPosX = mPosX;
     mSpawnPosY = mPosY;

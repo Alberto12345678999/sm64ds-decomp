@@ -168,16 +168,12 @@ extern void DeathTable_ClearBit(int);
 extern void FUN_0202a130(void);
 extern void UnloadSilverStarAndNumber(void);
 extern StarAnimationFileHandle data_ov002_02110934;
-extern void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(void *self, void *actor, const void *v, int d, int e, u32 f, u32 g);
 extern int Vec3_Dist(void*, void*);
 extern unsigned int data_0209b454;
 extern int data_ov002_0210da28[];
 extern signed char data_0209f310[];
 extern "C" signed char NumRedCoins(void);
 extern unsigned char data_0209f2d8;
-/* local extern: dActor_c.h declares SpawnSoundObj void, but it returns Spawn's
-   result in r0 and two callers here test it. */
-extern char *_ZN8dActor_c13SpawnSoundObjEj(void *thiz, unsigned int id);
 extern void func_02035860(void* o, void* src);
 extern int RandomIntInternal(int* seed);
 extern int data_0209e650;
@@ -523,8 +519,7 @@ s32 daStar_c::InitResources()
     v2.x = data_ov002_0210aa0c[0];
     v2.y = data_ov002_0210aa0c[1];
     v2.z = data_ov002_0210aa0c[2];
-    _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
-        &mdCc_c, this, &v2, 0x64000, 0x96000, 0x100002, 0x8000);
+    mdCc_c.Init(this, *(Vector3 *)&v2, 0x64000, 0x96000, 0x100002, 0x8000);
     mWithMeshClsn.Init(this, 0x50000, 0, 0, 0);
     mWithMeshClsn.SetLimMovFlag();
     mStarID = (u8)(param1 & 0xf);
@@ -669,7 +664,7 @@ int daStarBase_c::InitResources()
     v0.x = 0;
     v0.y = -0x50000;
     v0.z = 0;
-    _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(&mdCcAcPos_c, this, &v0, 0x50000, 0xa0000, 0x100002, 0x8000);
+    mdCcAcPos_c.Init(this, v0, 0x50000, 0xa0000, 0x100002, 0x8000);
     dBgCh_Gnd ground;
     ground.StartDetectingWater();
 
@@ -706,14 +701,14 @@ int daStarBase_c::InitResources()
         v4.x = 0;
         v4.y = -0x50000;
         v4.z = 0;
-        _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(&mdCcAcPos_c, this, &v4, 0x50000, 0xa0000, 0x100004, 0);
+        mdCcAcPos_c.Init(this, v4, 0x50000, 0xa0000, 0x100004, 0);
         mAppearTimer = 0;
     } else if (kind == 5) {
         mState = 3;
         v5.x = 0;
         v5.y = -0x50000;
         v5.z = 0;
-        _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(&mdCcAcPos_c, this, &v5, 0x50000, 0xa0000, 1, 0);
+        mdCcAcPos_c.Init(this, v5, 0x50000, 0xa0000, 1, 0);
     } else if (kind & 1) {
         mState = 1;
         if (kind & 2) {
@@ -2728,7 +2723,7 @@ void daStar_c::func_ov002_020e7e58() {
 void daStar_c::func_ov002_020e7e24() {
     if (mSoundObj6State != 0xff)
         return;
-    if (_ZN8dActor_c13SpawnSoundObjEj(this, 6))
+    if (SpawnSoundObj(6))
         mSoundObj6State = 0x78;
 }
 
@@ -3243,7 +3238,7 @@ void daStar_c::func_ov002_020e700c() {
  * sound id func_ov002_020ea3a4 picks at volume arg. */
 void daStar_c::func_ov002_020e6fbc(int arg) {
   if (mSoundObjID != 0) return;
-  daSoundObj_c *s = (daSoundObj_c *)_ZN8dActor_c13SpawnSoundObjEj((char *)this, 4);
+  daSoundObj_c *s = (daSoundObj_c *)SpawnSoundObj(4);
   if (s == 0) return;
   mSoundObjID = s->uniqueID;
   s->mSoundID = func_ov002_020ea3a4();
@@ -3264,7 +3259,7 @@ void daStar_c::func_ov002_020e6edc() {
     v.x = data_ov002_0210aa0c[0];
     v.y = data_ov002_0210aa0c[1];
     v.z = data_ov002_0210aa0c[2];
-    _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(&mdCc_c, this, &v, 0x64000, 0x96000, 1, 0);
+    mdCc_c.Init(this, v, 0x64000, 0x96000, 1, 0);
     mState = STATE_PLAY_AND_END;
     mBits.noSpin = 1;
     mBits.visible = 1;
@@ -3285,8 +3280,7 @@ void daStar_c::func_ov002_020e6df8() {
         v.x = data_ov002_0210aa0c[0];
         v.y = data_ov002_0210aa0c[1];
         v.z = data_ov002_0210aa0c[2];
-        _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(&mdCc_c, this, &v, 0x64000, 0x96000,
-                                                                1, 0);
+        mdCc_c.Init(this, v, 0x64000, 0x96000, 1, 0);
     }
     mBits.noSpin = 1;
     mBits.visible = 1;

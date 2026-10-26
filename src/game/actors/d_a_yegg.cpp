@@ -56,8 +56,8 @@ struct Vector3_16f;
  *
  * deslop leftovers:
  * - the callees with Fix12<int> parameters (dExtAnmModel_c::SetAnim,
- *   dCcAc_c::Init, dBgCh_Actr::Init, the shadow drops, Particle::System::New)
- *   stay spelled as mangled extern-C free functions. A real method call homes
+ *   dBgCh_Actr::Init, Particle::System::New) stay spelled as mangled
+ *   extern-C free functions. A real method call homes
  *   a class-typed by-value argument and size-DIFFs the caller
  *   (notes/mwccarm-codegen.md 6az).
  * - the DOSUN byte at +0x3a2 in func_ov002_020ec670 remains a raw offset.
@@ -186,7 +186,6 @@ extern int Vec3_Dist(const void *a, const void *b);
 extern void Vec3_Add(void *out, const void *a, const void *b);
 extern void MulVec3Mat4x3(const void *in, const void *m, void *out);
 extern void func_0203568c(void *p, int v);
-extern void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *mc, void *a, Fix12i r, unsigned int h, unsigned int x, unsigned int y);
 /* Parameter names keep this TU's @NNN. */
 typedef void BgchInitAt_(void *self, void *actor, int radius, int height, void *a, void *b);
 extern unsigned char DecIfAbove0_Byte(unsigned char *p);
@@ -737,7 +736,7 @@ void daYegg_c::func_ov002_020ecfc8() {
                 func_ov002_020edca4(this);
         }
     }
-    _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, this, 0x64000, 0xc8000, 0x202000, 0);
+    mdCcAc_c.Init(this, 0x64000, 0xc8000, 0x202000, 0);
     mPrevAngleY = mAngleY;
 }
 
@@ -1498,16 +1497,14 @@ int daYegg_c::InitResources()
         mScaleX = 0x1000;
         mScaleY = 0x1000;
         mScaleZ = 0x1000;
-        _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(
-            &mdCcAc_c, this, 0x46000, 0x8c000, 0x200002, 0xa08000);
+        mdCcAc_c.Init(this, 0x46000, 0x8c000, 0x200002, 0xa08000);
         mWithMeshClsn.Init(this, 0x28000, 0x28000, 0, 0);
         break;
     case 2:
         mScaleX = 0x2000;
         mScaleY = 0x2000;
         mScaleZ = 0x2000;
-        _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(
-            &mdCcAc_c, this, 0x78000, 0xa0000, 0x200002, 0xa08000);
+        mdCcAc_c.Init(this, 0x78000, 0xa0000, 0x200002, 0xa08000);
         mWithMeshClsn.Init(this, 0x64000, 0x64000, 0, 0);
         break;
     default:

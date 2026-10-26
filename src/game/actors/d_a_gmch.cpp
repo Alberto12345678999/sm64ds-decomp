@@ -8,11 +8,7 @@
  * - common.h stays before daGmch_c.h. InitResources assigns
  *   IDENTITY_MATRIX4X3 into mMatrix; the .r/.t Matrix4x3 spelling is
  *   0x1f0 against the ROM's 0x1d4. decl_common.h is not included.
- * - dExtAnmModel_c::SetAnim, dCcAc_c::Init, dBgCh_Actr::Init,
- *   Particle::System::NewSimple, dActor_c::SpawnCoins,
- *   DropShadowRadHeight, Player::Bounce and Player::Hurt stay mangled
- *   (Fix12<int> by value). SpawnCoins as a member stopped
- *   SpawnCoinsAndDie matching.
+ * - Player::Bounce and Player::Hurt stay mangled (Fix12<int> by value).
  * - GetFloorResult / GetWallResult return the raw word; a dBgPi* return
  *   disagrees with the definitions, so the callers still cast.
  *   TouchesWater and cstd::fdiv are the const method and the divide.
@@ -170,7 +166,6 @@ struct System {
 };
 }
 extern int    _Z15ApproachLinear2Riii(int *p, int target, int step);
-extern void   _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *self, void *actor, int a, int b, unsigned int c, unsigned int d);
 /* Parameter names keep this TU's @NNN. */
 typedef void BgchInitAt_(void *self, void *actor, int a, int b, void *v, int c);
 }
@@ -721,7 +716,7 @@ int daGmch_c::UpdateState0()
     switch (mPhase) {
     case 0:
         if (_Z15ApproachLinear2Riii((int *)&mState, 1, 2) != 0) {
-            _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, this, 0x4b000, 0x73000, 0x200000, 0);
+            mdCcAc_c.Init(this, 0x4b000, 0x73000, 0x200000, 0);
             mFlags &= ~0x10000000;
             mPhase++;
         }
@@ -735,7 +730,7 @@ int daGmch_c::UpdateState0()
         break;
     case 2:
         if (_Z15ApproachLinear2Riii((int *)&mState, 0x1f, 2) != 0) {
-            _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, this, 0x4b000, 0x73000, 0x200000, 0x6eff0);
+            mdCcAc_c.Init(this, 0x4b000, 0x73000, 0x200000, 0x6eff0);
             SetState(3);
         }
         break;
@@ -869,7 +864,7 @@ int daGmch_c::InitResources()
         dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)data_ov081_021280d8[i]);
     if (mShadowModel.InitCylinder() == 0)
         return 0;
-    _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, this, 0x4b000, 0x73000, 0x200000, 0x6eff0);
+    mdCcAc_c.Init(this, 0x4b000, 0x73000, 0x200000, 0x6eff0);
     mWithMeshClsn.Init(this, 0x4b000, 0x4b000, 0, 0);
     mWithMeshClsn.StartDetectingWater();
     SetState(0);

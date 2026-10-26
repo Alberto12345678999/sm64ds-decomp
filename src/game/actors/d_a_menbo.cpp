@@ -36,12 +36,6 @@ struct System {
  * - func_ov090_02131608: dExtAnmModel_c::SetAnim with a Fix12<int> rate is 0x4c
  *   against 0x40 and emits 4 bytes of .rodata. The scalar SetAnim call
  *   matches. The patrol, water-rest and water-chase entries keep it.
- * - func_ov090_021310b4: dActor_c::SpawnCoins with a Fix12<int> spread is
- *   0x2cc against 0x2c4 and emits 4 bytes of .rodata. The same function's
- *   KillByInvincibleChar with a Fix12<int> argument is 0x2d0 against 0x2c4.
- *   Both scalar calls match. Behavior's coin spawn keeps the scalar call.
- * - InitResources: dCcAcPos_c::Init with two Fix12<int> arguments is 0x2d0
- *   against 0x2bc and emits two 4-byte .rodata words. The scalar call matches.
  */
 
 #pragma defer_codegen off
@@ -109,7 +103,6 @@ void  func_02012694(int id, const Vector3 *pos);
 
 int d_a_menboNewHold(unsigned int a0, unsigned int a1, int a2, int a3, int a4, int a5, int a6);
 
-void  _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(void *self, dActor_c *a, const Vector3 *v, LocFix12 r, LocFix12 h, unsigned int e, unsigned int g);
 /* Parameter names keep this TU's @NNN. */
 typedef void BgchInitAt_(dBgCh_Actr *self, int a, LocFix12 r, LocFix12 h, int p, int q);
 int   SurfaceInfo_TestFlag0x20(const SurfaceInfo *p);
@@ -117,8 +110,6 @@ void  func_0203558c(void *self);
 int   func_02035638(u8 *p);
 void  func_02035684(int *p, int v);
 
-
-void  _ZN12dEnemyBase_c20KillByInvincibleCharERK10Vector3_16R6Player5Fix12IiE(void *self, void *v, void *player, LocFix12 a);
 void  func_ov002_020aea30(void *self, void *actor, void *collision);
 void  _ZN6Player6BounceE5Fix12IiE(void *p, LocFix12 f);
 void  _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void *p, void *v, int a, LocFix12 b, int d, int e, int f);
@@ -279,7 +270,7 @@ void func_ov090_021310b4(daMenbo_c *c)
         hv[0] = 0x1000;
         hv[1] = 0;
         hv[2] = 0;
-        _ZN12dEnemyBase_c20KillByInvincibleCharERK10Vector3_16R6Player5Fix12IiE(c, hv, p, 0);
+        c->KillByInvincibleChar(*(Vector3_16 *)hv, *(Player *)p, 0);
         func_02012694(0x1d, &c->mCamSpacePos);
         return;
     }
@@ -850,7 +841,7 @@ int daMenbo_c::InitResources()
     v.x = data_ov090_0213412c.x;
     v.y = data_ov090_0213412c.y;
     v.z = data_ov090_0213412c.z;
-    _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(&mdCcAcPos_c, this, &v, 0x5a000, 0x5a000, 0x200000, 0x7eff0);
+    mdCcAcPos_c.Init(this, v, 0x5a000, 0x5a000, 0x200000, 0x7eff0);
 
     mAngleY = mPrevAngleY;
     mAnimSpeed = 0x1000;

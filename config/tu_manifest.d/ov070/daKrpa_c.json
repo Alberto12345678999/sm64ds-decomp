@@ -742,47 +742,47 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@696",
+      "from": "@689",
       "to": "@676",
       "evidence": "compiler temporary destructor-registration node; mwcc numbers it @692 per TU and ov062 daJango_c (on main) also defines a global @692, so the scratch link collides | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     },
     {
-      "from": "@697",
+      "from": "@690",
       "to": "@677",
       "evidence": "compiler temporary pointer-to-member descriptor; mwcc numbers it @693 per TU and ov079 daBtn_c (on main) also defines a global @693, so the scratch link collides | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     },
     {
-      "from": "@698",
+      "from": "@691",
       "to": "@679",
       "evidence": "compiler temporary pointer-to-member descriptor; mwcc numbers it @694 per TU and ov079 daBtn_c (on main) also defines a global @694, so the scratch link collides | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     },
     {
-      "from": "@699",
+      "from": "@692",
       "to": "@680",
       "evidence": "compiler temporary pointer-to-member descriptor; mwcc numbers it @695 per TU and ov079 daBtn_c (on main) also defines a global @695, so the scratch link collides | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     },
     {
-      "from": "@700",
+      "from": "@693",
       "to": "@681",
       "evidence": "compiler temporary pointer-to-member descriptor; mwcc numbers it @696 per TU and ov085 daObjKanban_c (on main) also defines a global @696, so the scratch link collides | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     },
     {
-      "from": "@701",
+      "from": "@694",
       "to": "@682",
       "evidence": "compiler temporary pointer-to-member descriptor; mwcc numbers it @697 per TU and ov079 daBtn_c (on main) also defines a global @697, so the scratch link collides | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     },
     {
-      "from": "@702",
+      "from": "@695",
       "to": "@683",
       "evidence": "compiler temporary pointer-to-member descriptor; mwcc numbers it @698 per TU and ov079 daBtn_c (on main) also defines a global @698, so the scratch link collides | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     },
     {
-      "from": "@703",
+      "from": "@696",
       "to": "@684",
       "evidence": "compiler temporary pointer-to-member descriptor; mwcc numbers it @699 per TU and ov079 daBtn_c (on main) also defines a global @699, so the scratch link collides | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     },
     {
-      "from": "@704",
+      "from": "@697",
       "to": "@685",
       "evidence": "compiler temporary pointer-to-member descriptor; mwcc numbers it @700 per TU and ov089 daObjKey_c (on main) also defines a global @700, so the scratch link collides | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     }

@@ -309,7 +309,9 @@ struct dActor_c : dBase_c {
     void KillAndTrackInDeathTable();
     void TrackInDeathTable();
     void UntrackInDeathTable();
-    void SpawnSoundObj(u32 soundObjParam);
+    /* Returns the spawned daSoundObj_c: r0 is Spawn's result at the return,
+       and daStar_c and Player keep or test it. */
+    dActor_c *SpawnSoundObj(u32 soundObjParam);
     s32  GetWaterHeightWDW();
     bool DetectRaycastClsn(Vector3 &start, Vector3 &end, bool storeHitPos);
 

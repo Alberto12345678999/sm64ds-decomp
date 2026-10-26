@@ -129,8 +129,6 @@ s32 Vec3_HorzDist(const void *a, const void *b);
 u16 DecIfAbove0_Short(void *p);
 
 /* ABI seams whose header member forms do not reproduce the ROM (see notes) */
-void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(void *self, void *actor, void *pos, int r, int h, unsigned int e, unsigned int g);
-void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *self, dActor_c *actor, Fix12i radius, Fix12i height, unsigned int flags, unsigned int vulnFlags);
 /* Parameter names keep this TU's @NNN. */
 typedef void BgchInitAt_(void *self, dActor_c *actor, Fix12i radius, Fix12i height, Vector3_16 *a,
                          Vector3_16 *b);
@@ -224,7 +222,6 @@ extern int data_0209b490[];
 extern u8 data_0209d660;
 extern void _ZN6Player6BounceE5Fix12IiE(void* p, s32 f);
 extern void _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void* p, const void * v, u32 a, s32 f, u32 b, u32 c, u32 d);
-extern void _ZN12dEnemyBase_c20KillByInvincibleCharERK10Vector3_16R6Player5Fix12IiE(void* c, void* v, void* r4, s32 flag);
 extern short data_ov063_0211e7e0[];
 extern int data_ov063_0211edc0;
 extern struct Vec3 data_ov063_0211ee74;
@@ -2569,7 +2566,7 @@ found_kind:
             v[0] = -0x2000;
             v[1] = 0;
             v[2] = 0;
-            _ZN12dEnemyBase_c20KillByInvincibleCharERK10Vector3_16R6Player5Fix12IiE(this, v, found2, 0);
+            KillByInvincibleChar(*(Vector3_16 *)v, *(Player *)found2, 0);
 
             {
                 s16* ap = (s16*)&this->mAngleY;
@@ -3438,7 +3435,8 @@ int daTrs_c::InitResources()
         mClsnOffX = 0;
         mClsnOffY = 0;
         mClsnOffZ = tmp598;
-        _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(&mdCcAcPos_c, this, &mClsnOffX, mClsnRadius << 0xc, mClsnHeight << 0xc, 0x200000, 0x207e0);
+        mdCcAcPos_c.Init(this, *(Vector3 *)&mClsnOffX, mClsnRadius << 0xc, mClsnHeight << 0xc,
+                         0x200000, 0x207e0);
         if (mVariant != 0xf) {
             mWithMeshClsn.Init(this, 0xdc000, 0xdc000, 0, 0);
         } else {
@@ -3467,7 +3465,8 @@ int daTrs_c::InitResources()
             mClsnRadius = 0x4a;
             mClsnHeight = 0x64;
         }
-        _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(&mdCcAcPos_c, this, &mClsnOffX, mClsnRadius << 0xc, mClsnHeight << 0xc, 0x200000, 0x207e0);
+        mdCcAcPos_c.Init(this, *(Vector3 *)&mClsnOffX, mClsnRadius << 0xc, mClsnHeight << 0xc,
+                         0x200000, 0x207e0);
         if (data_0209f2f8 == 0xc && mPosX == 0xbb8000 && mAreaId == 2) {
             mBooFlags.limitZ = 1;
         }
@@ -3648,7 +3647,7 @@ int daTBasket_c::InitResources()
         return 0;
     mVertAccel = -0x4000;
     mTerminalVelocity = -0x46000;
-    _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, this, 0x64000, 0x64000, 0x200004, 0);
+    mdCcAc_c.Init(this, 0x64000, 0x64000, 0x200004, 0);
     mWithMeshClsn.Init(this, 0x64000, 0x64000, 0, 0);
     mWithMeshClsn.SetLimMovFlag();
     mParticleID = 0;

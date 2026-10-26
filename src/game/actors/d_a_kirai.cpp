@@ -11,9 +11,7 @@
  * The registry factory daKirai_c_classInit closes the file.
  */
 /* leftovers:
- * - Particle::System::NewSimple, dActor_c::Earthquake, Player::Hurt and
- *   dCcAcPos_c::Init stay mangled. Each takes Fix12<int> by value; the
- *   Init member spelling grows InitResources by 0x10.
+ * - Player::Hurt stays mangled: it takes Fix12<int> by value.
  * - data_ov060_0211b1c4 is the model handle (LoadFile / Release).
  *   data_ov060_0211b1d8 is the four-state member-pointer table Behavior
  *   dispatches through.
@@ -57,8 +55,8 @@ extern int Vec3_Dist(const Vector3 *a, const Vector3 *b);
 extern short Vec3_HorzAngle(const Vector3 *v0, const Vector3 *v1);
 extern void Matrix4x3_FromTranslation(void *m, int x, int y, int z);
 extern void func_02012694(int a, void *b);
-/* local extern: Particle::System::NewSimple, dActor_c::Earthquake and
-   Player::Hurt take Fix12<int> by value and none of them is declared in
+/* local extern: Particle::System::NewSimple and Player::Hurt take
+   Fix12<int> by value and none of them is declared in
    include/; the sibling promoted TUs (daDkk_c, daDgr_c) keep the same
    mangled spelling for the same reason. */
 namespace Particle {
@@ -68,11 +66,6 @@ struct System {
 }
 void d_a_kiraiEarthquakeHold(void *self, Vector3 *v, int f);
 extern void _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void *self, Vector3 *v, unsigned int b, int c, unsigned int d, unsigned int e, unsigned int f);
-/* local extern: dCcAcPos_c::Init also takes its radius and height as
-   Fix12<int> by value; spelt through the header, the two aggregate
-   temporaries grow the frame by 8 and InitResources by 0x10. */
-extern void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
-    dCcAcPos_c *self, dActor_c *actor, const Vector3 &v, int radius, int height, unsigned flags, unsigned vulnFlags);
 extern KiraiModelFilePtr data_ov060_0211b1c4;
 extern KiraiState data_ov060_0211b1d8[4];
 }
@@ -334,8 +327,7 @@ int daKirai_c::InitResources()
     v.x = 0;
     v.y = -0x96000;
     v.z = 0;
-    _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
-        &mdCcAcPos_c, this, v, 0x96000, 0x12c000, 0x204004, 0);
+    mdCcAcPos_c.Init(this, v, 0x96000, 0x12c000, 0x204004, 0);
     mScaleX = 0x1000;
     mScaleY = 0x1000;
     mScaleZ = 0x1000;

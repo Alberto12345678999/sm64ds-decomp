@@ -6,9 +6,6 @@
  * This is the manager, not daBgSnmBdy_c (body) and not the penguin.
  *
  * deslop leftovers:
- * - dCcAcPos_c::Init / DropShadowRadHeight 6az:
- *   InitResources and func_ov072_021208d8 pass Fix12<int> by value
- *   (notes/mwccarm-codegen.md 6az).
  * - InitResources' dExtAnmTexPat_c::Prepare / SetFile read the BMD/BTP
  *   through gdaBgSnwmnBigSnowmanHeadModelFile / 02122c50's filePtr.
  * - gdaBgSnwmnBigSnowmanBodyModelFile / 02122c48 / 02122c50 model/BTP handles and
@@ -35,9 +32,6 @@ enum daBgSnwmn_c_AssetId {
 extern "C" {
 extern int IsStarCollectedInLevel(s8 levelID, int starID);
 void Matrix4x3_FromRotationY(void *, short);
-void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
-    void *self, void *actor, const void *offset, int radius, int height,
-    u32 flags, u32 unk);
 }
 
 /* Four file-scope objects. mwcc emits __sinit_d_a_bg_snwmn.cpp from them.
@@ -117,9 +111,7 @@ s32 daBgSnwmn_c::InitResources()
     if (mShadow.InitCylinder() == 0)
         return 0;
 
-    _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
-        &mCylClsn, this, &data_ov072_02122c70, 0xc3000, 0x17c000,
-        0x800004, 0);
+    mCylClsn.Init(this, data_ov072_02122c70, 0xc3000, 0x17c000, 0x800004, 0);
 
     pos.x = mPosX;
     pos.y = mPosY;

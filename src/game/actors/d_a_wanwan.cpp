@@ -9,10 +9,8 @@
 /* leftovers: the chain helpers and the twelve state handlers stay extern "C"
  * free functions under their func_ov014_* address names; the rows of
  * data_ov014_0211476c reach the handlers through 8-byte PMF descriptors.
- * g_profile_WANWAN is not this file's data. dExtAnmModel_c::SetAnim,
- * dCcAcPos_c::Init, DropShadowRadHeight, Player::Hurt and cstd::atan2
- * stay mangled: this file calls them, and each takes Fix12<int> by
- * value. The factory constructs the real class, including its two
+ * g_profile_WANWAN is not this file's data. Player::Hurt stays mangled:
+ * it takes Fix12<int> by value. The factory constructs the real class, including its two
  * Vector3[7] arrays. The four resource handles keep address names;
  * their definitions drive this file's static initializer.
  */
@@ -81,10 +79,6 @@ void func_ov014_02112788(daWanwan_c *c);
 void func_ov014_02112ea8(void *fence);
 void func_ov102_0214ae1c(void *bomb);
 
-/* Scalar stand-ins. The header methods take Fix12<int> by value. */
-void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
-    dCcAcPos_c *self, dActor_c *actor, const Vector3 *pos, int radius, int height,
-    unsigned flags, unsigned vuln);
 /* local extern: Fix12<int> by value; this scalar bridge follows the definition. */
 int _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(
     Player *player, void *pos, unsigned kind, int power, u8 a, u8 b, u8 c);
@@ -167,9 +161,7 @@ int daWanwan_c::InitResources()
         v[0] = data_ov014_02114700[0];
         v[1] = data_ov014_02114700[1];
         v[2] = data_ov014_02114700[2];
-        /* dCcAcPos_c::Init takes Fix12<int> by value. */
-        _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
-            &mdCcAcPos_c, this, (Vector3 *)v, 0x96000, 0x12c000, 0x200004, 0x26ff0);
+        mdCcAcPos_c.Init(this, *((Vector3 *)v), 0x96000, 0x12c000, 0x200004, 0x26ff0);
     }
 
     func_ov014_02111ebc(1);

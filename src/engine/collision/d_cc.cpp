@@ -59,17 +59,12 @@ dCc_c::~dCc_c() {
     Unlink();
 }
 
-// @symbol _ZN5dCc_c4InitE5Fix12IiES1_jj
-/* The header's scalar Init(Fix12i, Fix12i, u32, u32) reproduces these
- * bytes as a method, but emits _ZN5dCc_c4InitEiijj. Production still names
- * this entry _ZN5dCc_c4InitE5Fix12IiES1_jj; keep the C-linkage boundary
- * until the symbol and its callers are reconciled. */
-extern "C" void _ZN5dCc_c4InitE5Fix12IiES1_jj(dCc_c *self, int radius, int height, unsigned flags,
-                                              unsigned vulnFlags) {
-    self->radius = radius;
-    self->height = height;
-    self->flags = flags;
-    self->vulnFlags = vulnFlags;
+// @symbol _ZN5dCc_c4InitEiijj
+void dCc_c::Init(Fix12i radius_, Fix12i height_, u32 flags_, u32 vulnFlags_) {
+    radius = radius_;
+    height = height_;
+    flags = flags_;
+    vulnFlags = vulnFlags_;
 }
 
 // @symbol _ZN5dCc_c5ClearEv

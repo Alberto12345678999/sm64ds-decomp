@@ -34,8 +34,8 @@ struct System {
  *   file-global and the later members matched without it.
  * - func_ov064_021193b4 keeps its M() launders, the volatile rot block and
  *   `m1 = -1` as found; they were needed to match.
- * - Particle::System::New and dCcAc_c::Init stay mangled extern "C" calls,
- *   with Fix12<int> spelled as int (see InitResources).
+ * - Particle::System::New stays a scalar extern "C" call, with Fix12<int>
+ *   spelled as int.
  */
 
 #include "daWater_Hakidasi_c.h"
@@ -83,9 +83,6 @@ extern int d_a_water_hakidasiNewHold(int a, int b, int x, int y, int z, int f, i
 extern int data_020a0e68;
 extern int SublevelToLevel(int);
 extern int IsStarCollected(int r0, int r1);
-/* local extern: retain the matched scalar ABI; native Fix12<int> call reconstruction remains pending. */
-extern void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(
-    void *, dActor_c *a, Fix12i b, int c, unsigned int d, unsigned int e);
 unsigned short DecIfAbove0_Short(unsigned short *p);
 }
 
@@ -353,9 +350,6 @@ s32 daWater_Hakidasi_c::Behavior()
 }
 
 // @symbol _ZN18daWater_Hakidasi_c13InitResourcesEv
-/* Signature of _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj deliberately keeps
-   Fix12<int> as a plain int: mwccarm passes that class by value differently
-   when the parameter is spelled as the real type. See notes/mwccarm-codegen.md 6az. */
 s32 daWater_Hakidasi_c::InitResources()
 {
     dExtSimpleModel_c::LoadFile(data_ov002_0210da10);
@@ -367,7 +361,7 @@ s32 daWater_Hakidasi_c::InitResources()
     if (data_0209f2f8 == 8 && (data_0209f220 == 1 || IsStarCollected(SublevelToLevel(8), 1) == 0)) {
         return 0;
     }
-    _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, (dActor_c*)this, 0xc8000, 0x190000, 0x800004, 0);
+    mdCcAc_c.Init((dActor_c *)this, 0xc8000, 0x190000, 0x800004, 0);
     func_ov064_0211982c((C *)this, (PMF *)&data_ov064_0211c934);
     return 1;
 }

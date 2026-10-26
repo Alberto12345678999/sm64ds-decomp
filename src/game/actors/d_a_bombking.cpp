@@ -7,13 +7,7 @@
  * and opt_common_subs are off around func_ov078_02125448. InitResources
  * has opt_strength_reduction off. Each pragma is push/pop on that member.
  */
-/* leftovers: dExtBlendAnmModel_c::SetAnim, dCcAcPos_c::Init and
- * DropShadowRadHeight stay scalar externs. func_ov078_02124060 cannot pass
- * a scalar speed to SetAnim, and Fix12<int>(0x1000) is the same illegal
- * conversion. InitResources keeps
- * _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_ because
- * include/dBgCh_Actr.h spells Fix12i, which mangles as i.
- * The held matrix pointer at actor+0xc8 is dActor_c::mCarryMatrix.
+/* leftovers: the held matrix pointer at actor+0xc8 is dActor_c::mCarryMatrix.
  * func_ov078_02125de0 stores the king's own as the member; the stores into
  * the held actor (there and in the throw helper) and the reads in Render and
  * Behavior still use the raw offset on that other actor.
@@ -161,7 +155,6 @@ extern void func_0200d8c8(void* cam, void* v, int strength);
 extern Matrix4x3 IDENTITY_MATRIX4X3;
 extern void Matrix4x3_ApplyInPlaceToTranslation(void *m, int x, int y, int z);
 extern void Matrix4x3_ApplyInPlaceToRotationXYZExt(void *m, int x, int y, int z);
-extern void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(void* self, dActor_c* a, Vector3* v, Fix12i r, Fix12i h, unsigned int e, unsigned int g);
 }
 
 /* `opt_strength_reduction`, `opt_common_subs` and `opt_propagation` are
@@ -1687,11 +1680,11 @@ int daBombking_c::InitResources()
     v0.x = data_ov078_02126e00.x;
     v0.y = data_ov078_02126e00.y;
     v0.z = data_ov078_02126e00.z;
-    _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(&mdCcAcPos_c, this, &v0, 0x78000, 0xc8000, 0x200004, 0x206000);
+    mdCcAcPos_c.Init(this, v0, 0x78000, 0xc8000, 0x200004, 0x206000);
     v1.x = data_ov078_02126e00.x;
     v1.y = data_ov078_02126e00.y;
     v1.z = data_ov078_02126e00.z;
-    _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(&mdCcAcPos_c2, this, &v1, 0xc8000, 0xc8000, 0x200000, 0x207000);
+    mdCcAcPos_c2.Init(this, v1, 0xc8000, 0xc8000, 0x200000, 0x207000);
     unk_498 = 0x1f;
     mHomePosX = mPosX;
     mHomePosY = mPosY;

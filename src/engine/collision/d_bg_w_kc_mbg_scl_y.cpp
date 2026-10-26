@@ -33,12 +33,6 @@ int func_02053200(int v);
    d_bg_w_kc_mbg.cpp that no header declares. */
 void func_02039db8(dBgW_KcMbg *self, Vector3 *v, Vector3 *res);
 
-/* local extern: the radius is Fix12 by value, so the call spells the symbol. */
-void _ZN12dBgCh_SphCrr15SetObjAndSphereERK7Vector35Fix12IiEP8dActor_c(dBgCh_SphCrr *sphere,
-                                                                      const Vector3 *localCentre,
-                                                                      Fix12i radius,
-                                                                      dActor_c *actor);
-
 /* local extern: no header in include/ declares these three. */
 extern dBgCh_Lin data_020a0d0c; /* the scratch line, in collider space */
 extern Vector3 data_020a0d60;   /* == data_020a0d0c.lineEnd  (+0x54) */
@@ -167,8 +161,7 @@ int dBgW_KcMbgSclY::DetectClsn(dBgCh_SphCrr &sphere) {
     localExtraExtent = FX_MUL(sphere.mWallRejectHalfExtent, inverseScale);
 
     dBgCh_SphCrr localSphere;
-    _ZN12dBgCh_SphCrr15SetObjAndSphereERK7Vector35Fix12IiEP8dActor_c(&localSphere, &localCentre,
-                                                                     localRadius, 0);
+    localSphere.SetObjAndSphere(localCentre, localRadius, 0);
     localSphere.mWallRejectHalfExtent = localExtraExtent;
     localSphere.func_02037940(sphere.flags);
     (dBgCh &)localSphere = sphere;

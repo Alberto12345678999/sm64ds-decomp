@@ -20,8 +20,7 @@ void RunningSlidingDustAt(int, int, int);
  *   InitResources walk segment rows through char* bases. Indexing
  *   mSegmentPos[seg] / &mAnmModels[i].mat4x3 changes those sizes, and
  *   UpdateSegments' NormalizeVec3IfNonZero relocation moves with them.
- * - func_ov002_020c51d0 is ov002's. dCcAcPos_c::Init,
- *   dBgCh_Actr::Init, Player::Hurt and Particle::System::New
+ * - func_ov002_020c51d0 is ov002's. Player::Hurt and Player::Bounce
  *   stay mangled (Fix12<int> by value).
  */
 
@@ -135,7 +134,6 @@ extern void func_020092c4(void *arg0, void *out, void *target);
 extern u32 data_ov034_02113828[];
 extern s16 data_02082214[];
 extern void *data_0209f318;
-extern void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(void *self, void *actor, void *pos, int fix, u32 a, u32 b, u32 cc);
 /* Parameter names keep this TU's @NNN. */
 typedef void BgchInitAt_(void *self, void *actor, int fix1, int fix2, void *v, int t);
 }
@@ -1228,8 +1226,8 @@ int daHanachan_c::InitResources()
         ((daHanachan_c *)posRow)->mSegmentScale[0].y = 0x1000;
         ((daHanachan_c *)posRow)->mSegmentScale[0].z = 0x1000;
         radius = data_ov034_021138d8[i];
-        _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(cyl1, this, segPos, radius + 0xA000, cyl1Height, cyl1Flags, 0x26FE0);
-        _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(cyl2, this, segPos, radius, cyl2Height, 0x200004, 0x26FE0);
+        cyl1->Init(this, *segPos, radius + 0xA000, cyl1Height, cyl1Flags, 0x26FE0);
+        cyl2->Init(this, *segPos, radius, cyl2Height, 0x200004, 0x26FE0);
         texRow += 0x14;
         animRow++;
         cyl1++;

@@ -40,16 +40,8 @@
  * - Behavior scratch matrix: Matrix4x3 assignment is 0x264 vs 0x22c.
  *   Flat Mtx copy is the ROM ldm/stm; the real type's translation is a
  *   Vector3 and runs ~Vector3.
- * - InitResources dExtAnmModel_c::SetAnim: method form is 0x244 vs 0x238
- *   (+0xc). Fix12<int> speed.
- * - InitResources dBgCh_Actr::Init: header Fix12i mangles as cii. ROM
- *   symbol is 5Fix12IiES3_.
- * - InitResources dCcAcPos_c::Init: method form is 0x248 vs 0x238
- *   (+0x10). Fix12<int> by value, and a stack Vector3 emits ~Vector3, so
- *   the offset stays a destructor-free Vec3.
  * - State0: building the angle triple before reading param1 differs by
  *   10 words.
- * - State6 SetRanges stays the scalar symbol. dActor_c does not declare it.
  * - daBtfly_c_classInit and g_profile_BUTTERFLY sit past this text run.
  */
 
@@ -125,8 +117,6 @@ extern ButterflyState data_ov100_02148628[];
  * stack; these scalar entries are the ROM calls. */
 /* Parameter names keep this TU's @NNN. */
 typedef void BgchInitAt_(void *w, void *actor, int radius, int height, void *a, void *b);
-void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
-    void *c, void *actor, void *pos, int radius, int height, u32 flags, u32 vuln);
 void _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(
     void *player, Vector3 *pos, unsigned int a, int damage, unsigned int c, unsigned int d, unsigned int e);
 }
@@ -560,8 +550,7 @@ int daBtfly_c::InitResources()
     v.x = 0;
     v.y = -0x32000;
     v.z = 0;
-    _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
-        &mdCcAcPos_c, this, &v, 0x32000, 0x64000, 0x200000, 0);
+    mdCcAcPos_c.Init(this, *(Vector3 *)&v, 0x32000, 0x64000, 0x200000, 0);
 
     int sub = (int)(u8)(param1 & 0x30);
     if (sub != 0x10 && sub != 0x20) {

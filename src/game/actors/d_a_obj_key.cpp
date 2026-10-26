@@ -23,11 +23,8 @@ struct System {
  * - StateDrop: Particle::System::New (Fix12<int> x/y/z) size 0x2b4 -> 0x2c8
  *   (+0x14). Behavior's two calls size 0x310 -> 0x344 (+0x34). The header
  *   does not declare New, and a bare int does not convert to Fix12<int>.
- * - UpdateModelTransform: dActor_c::DropShadowRadHeight with Fix12<int>
- *   radius/depth size 0x130 -> 0x140 (+0x10). A bare int does not compile.
  * - InitResources: dExtAnmModel_c::SetAnim, both calls, Fix12<int> speed, size
- *   0x32c -> 0x344 (+0x18). dCcAcPos_c::Init, both calls, Fix12<int>
- *   radius/height, size 0x32c -> 0x34c (+0x20).
+ *   0x32c -> 0x344 (+0x18).
  * - InitResources: mWithMeshClsn.Init(...) links to the undefined
  *   _ZN10dBgCh_Actr4InitEP8dActor_ciiP10Vector3_16S3_: dBgCh_Actr.h spells
  *   the radii Fix12i, a plain s32, so the ROM's Fix12<int> mangling is
@@ -195,9 +192,8 @@ struct ObjKeyStateTable {
 
 extern ObjKeyStateTable data_ov089_02132cec;
 
-/* local extern: dCamera_c.h has no SetFlag_3. Particle::System::New,
- * DropShadowRadHeight, dExtAnmModel_c::SetAnim and dCcAcPos_c::Init take
- * Fix12<int> by value; the scalar call does not compile and the Fix12
+/* local extern: dCamera_c.h has no SetFlag_3. Particle::System::New and
+ * dExtAnmModel_c::SetAnim take Fix12<int> by value; the scalar call does not compile and the Fix12
  * temporary size-DIFFs (see the file comment). The ROM calls the
  * UpdateContinuous veneer, not the method. */
 extern "C" {
@@ -229,7 +225,6 @@ extern void SubVec3(void *d, void *a, void *b);
 extern void Vec3_LslInPlace(void *v, int sh);
 extern void AddVec3(void *d, void *a, void *b);
 extern void LoadKeyModels(int idx);
-extern void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(void *thiz, void *actor, void *pos, int r, int s, unsigned int a, unsigned int b);
 /* Parameter names keep this TU's @NNN. */
 typedef void BgchInitAt_(void *thiz, void *actor, int a, int b, void *v, void *w);
 /* An ObjKeyFile in layout, but daDemo_c::InitResources declares it `char`;
@@ -914,7 +909,7 @@ int daObjKey_c::InitResources()
         offset7.x = data_ov089_02132b40.x;
         offset7.y = data_ov089_02132b40.y;
         offset7.z = data_ov089_02132b40.z;
-        _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(&mdCcAcPos_c, this, &offset7, CC_R, STAR_CC_H, CC_FLAGS, CC_VULN);
+        mdCcAcPos_c.Init(this, offset7, CC_R, STAR_CC_H, CC_FLAGS, CC_VULN);
         mWithMeshClsn.Init(this, STAR_CLSN_R, 0, 0, 0);
         mSpinSpeed = SPIN_FAST;
         mVertAccel = 0;
@@ -942,7 +937,7 @@ int daObjKey_c::InitResources()
         offset.x = data_ov089_02132ca4.x;
         offset.y = data_ov089_02132ca4.y;
         offset.z = data_ov089_02132ca4.z;
-        _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(&mdCcAcPos_c, this, &offset, CC_R, KEY_CC_H, CC_FLAGS, CC_VULN);
+        mdCcAcPos_c.Init(this, offset, CC_R, KEY_CC_H, CC_FLAGS, CC_VULN);
         mWithMeshClsn.Init(this, KEY_CLSN_R, 0, 0, 0);
         mVertAccel = GRAVITY;
         mSpinSpeed = 0;

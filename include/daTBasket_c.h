@@ -28,12 +28,6 @@
  * there once, out of line: D1 0x02115fc4, D0 0x0211600c, homeless D2 licensed.
  *
  * deslop leftovers:
- * - dCcAc_c::Init / dBgCh_Actr::Init stay TU-local mangled scalars: the
- *   header member forms take Fix12<int> BY VALUE but the tree's Fix12 has no
- *   int constructor (measured: neither a bare 0x64000 nor Fix12<int>(0x64000)
- *   converts), so only the scalar spelling reproduces the ROM's raw-word
- *   passing; dBgCh_Actr::Init's header additionally takes Fix12i, which
- *   mangles as i while the ROM is Fix12<int>.
  * - Sound::PlaySecretSound uses the shared declaration in Sound.h.
  *   Particle::System::New retains its TU-local scalar ABI declaration.
  * - func_ov063_021169c4 is this class's own shadow helper (writes

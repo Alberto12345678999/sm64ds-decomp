@@ -26,11 +26,8 @@
  *
  * Source order is the reverse of the ROM. The factory is written first.
  */
-/* leftovers: dExtAnmModel_c::SetAnim, dCcAc_c::Init and
- * dActor_c::DropShadowRadHeight stay mangled. This file calls them, and
- * each takes Fix12<int> by value. Player::ShowMessage stays a local
- * extern: the member re-masks the flag bytes and func_ov084_0212c9f0
- * grows. dCamera_c::SetFlag_3 has no declaration in dCamera_c.h.
+/* leftovers: Player::ShowMessage stays a local extern: the member re-masks
+ * the flag bytes and func_ov084_0212c9f0 grows. dCamera_c::SetFlag_3 has no declaration in dCamera_c.h.
  * data_ov084_02130da4, data_ov084_02130d9c and data_ov084_02130dc4 keep
  * address names. This text-only TU does not own that .bss. The state
  * bodies stay address-named members; the table reaches them by address.
@@ -135,8 +132,6 @@ int _ZN6Player11ShowMessageER7fBase_cjPK7Vector3hh(Player *self, fBase_c *actor,
 
 /* local extern: dCamera_c.h does not declare this member. */
 void _ZN9dCamera_c9SetFlag_3Ev(dCamera_c *cam);
-
-void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(dCcAc_c *self, dActor_c *actor, int radius, int height, unsigned int flags, unsigned int vulnFlags);
 }
 
 /* This int-returning predicate is what makes the ROM materialize 0/1
@@ -160,7 +155,7 @@ s32 daRedBombhei_c::InitResources()
     mAnmModel.SetFile(modelFile, 1, -1);
     mShadowModel.InitCylinder();
     dExtFrameCtrl_c::LoadFile(data_ov084_02130d9c);
-    _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, this, 0x8c000, 0x8c000, 0x4200004, 0);
+    mdCcAc_c.Init(this, 0x8c000, 0x8c000, 0x4200004, 0);
     func_ov084_0212c960(0);
     mShutterID = 0;
 

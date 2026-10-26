@@ -9,8 +9,6 @@
  * Highest address first.
  */
 // leftovers:
-// - dExtAnmModel_c::SetAnim and dCcAc_c::Init stay C ABI spellings in
-//   InitResources. Fix12<int> by value lowers differently as a member call.
 // - func_02012790 and func_02012694 stay linker names. State0 calls them
 //   with a sound id, and the second also takes a position.
 // - data_ov002_0210d9a8 and data_ov002_0210da38 are ov002 handles this TU
@@ -61,9 +59,6 @@ extern TboxModelFilePtr data_ov064_0211c96c;
 extern TboxAnimationFileHandle data_ov064_0211c964;
 extern SharedFilePtr data_ov002_0210d9a8;
 extern SharedFilePtr data_ov002_0210da38;
-void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(
-    dCcAc_c *self, dActor_c *actor, int radius, int height,
-    u32 flags, u32 vulnFlags);
 }
 
 // @symbol daObjTbox_c_classInit
@@ -81,8 +76,7 @@ int daObjTbox_c::InitResources()
     mAnmModel.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(data_ov064_0211c96c), 1, -1);
     mAnmModel.SetAnim((BCA_File *)dExtFrameCtrl_c::LoadFile(data_ov064_0211c964), 0x40000000,
                       0x1000, 0);
-    _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(
-        &mCylinder, this, 0x96000, 0x96000, 0x200004, 0);
+    mCylinder.Init(this, 0x96000, 0x96000, 0x200004, 0);
     UpdateModelTransform();
     mOrder = param1;
     mStarID = (u32)param1 >> 8;

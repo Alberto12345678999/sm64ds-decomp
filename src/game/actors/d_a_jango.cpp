@@ -203,7 +203,6 @@ extern void Matrix4x3_FromTranslation(void* m, int x, int y, int z);
 extern void Matrix4x3_ApplyInPlaceToRotationZXYExt(void* m, int x, int y, int z);
 extern void Matrix4x3_ApplyInPlaceToRotationXYZExt(void* m, int x, int y, int z);
 extern void MulMat4x3Mat4x3(void* a, void* b, void* c);
-extern void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *self, void *a, Fix12i r, Fix12i h, unsigned int d, unsigned int e);
 /* Parameter names keep this TU's @NNN. */
 typedef void BgchInitAt_(void *self, void *a, Fix12i b, Fix12i c, void *d, void *e);
 extern SharedFilePtr data_ov002_0210da40;
@@ -372,8 +371,8 @@ int daJango_c::InitResources()
     mSpawnPosY = mPosY;
     mSpawnPosZ = mPosZ;
     /* Init(radius, height, flags, vulnFlags): radii 100 and 60 units, both 160 high. */
-    _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c1, this, 0x64000, 0xa0000, 0x200002, 0x3eff0);
-    _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c2, this, 0x3c000, 0xa0000, 0x200000, 0);
+    mdCcAc_c1.Init(this, 0x64000, 0xa0000, 0x200002, 0x3eff0);
+    mdCcAc_c2.Init(this, 0x3c000, 0xa0000, 0x200000, 0);
     mWithMeshClsn.Init(this, 0x1e000, 0x1e000, 0, 0);
 
     _ZN7PathPtrC1Ev(path2);

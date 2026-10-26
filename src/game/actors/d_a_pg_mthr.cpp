@@ -1,8 +1,5 @@
 //cpp
 /* leftovers:
- * - dCcAc_c::Init and DropShadowRadHeight stay scalar externs. The
- *   Fix12<int> method form grows those bodies and emits an unlicensed
- *   .data word.
  * - dBgCh_Actr::Init's member call mangles with int. The ROM row is
  *   Fix12<int>. GetFloorResult and GetWallResult are not on the header.
  * - func_0201267c is Sound::Play(3, id, pos). The state helpers stay
@@ -125,7 +122,6 @@ extern void func_ov018_02112398(daPgMthr_c *self);
 extern void func_ov018_0211235c(daPgMthr_c *self);
 extern PgMthrModelFileHandle data_ov018_02113c00;
 extern SharedFilePtr *data_ov018_02112c04[2];
-extern void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *self, void *act, int a, int b, unsigned int c2, unsigned int d);
 /* Parameter names keep this TU's @NNN. */
 typedef void BgchInitAt_(void *self, void *act, int a, int b, void *c2, void *d);
 }
@@ -151,7 +147,7 @@ int daPgMthr_c::InitResources()
     if (mShadowModel.InitCylinder() == 0)
         return 0;
     /* Cylinder 260 x 300. Flags 0x4800004 / vuln 0x900000. */
-    _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, this, 0x104000, 0x12c000, 0x4800004, 0x900000);
+    mdCcAc_c.Init(this, 0x104000, 0x12c000, 0x4800004, 0x900000);
     func_ov018_021123d0(0);
     mVertAccel = -0x2000;
     mTerminalVelocity = -0x3c000;

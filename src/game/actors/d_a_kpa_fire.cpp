@@ -31,11 +31,6 @@
  * - func_ov060_02116740, 02117624 stay free functions with
  *   the char * / unsigned char * decl_common.h declares. Their bodies
  *   compile as C++; 02117624 uses a POD matrix view for its block copy.
- * - dCcAc_c::Init, dBgCh_Actr::Init, DropShadowRadHeight,
- *   Particle::System::New / NewSimple / NewUnkCallback818 and
- *   SaveData::IsCharacterUnlocked stay mangled. Those calls pass
- *   Fix12<int> by value; the header spelling of dBgCh_Actr::Init is
- *   Fix12i, which mangles as int.
  * - Particle::System::callbackScale and callbackVelocity are named.
  *   The word at +0x44 sits in pad_042 and stays a raw store.
  * - DropShadowRadHeight's matrix is `mShadowMat`, raw `u8[0x30]` storage.
@@ -126,7 +121,6 @@ extern u32 d_a_kpa_fireNewUnkCallback818Hold(u32 a, u32 b, Fix12i c, Fix12i d, F
 extern u32 d_a_kpa_fireNewHold(u32 a, u32 b, Fix12i c, Fix12i d, Fix12i e, const void *f, void *g);
 void d_a_kpa_fireNewSimpleHold(u32 id, Fix12i x, Fix12i y, Fix12i z);
 extern void d_a_kpa_firePlayLongHold(u32 a, u32 b, u32 c, void *pos, u32 d);
-extern void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *self, void *actor, int a, int b, unsigned int c, unsigned int d);
 
 extern short Vec3_HorzAngle(const struct Vector3* a, const struct Vector3* b);
 extern Fix12i Vec3_HorzDist(const Vector3* a, const Vector3* b);
@@ -156,8 +150,7 @@ extern "C" daKpaFire_c *daKpaFire_c_classInit(void)
  * exit); the variant dispatch through data_ov060_0211af74 measured
  * byte-identical with the real dActor_c. The `|= 1` sets dCc_c::flags bit 0
  * inside mdCcAc_c when the variant is mouth. The doubled pos.y store is the
- * ROM's own shape. dCcAc_c/dBgCh_Actr Init stay mangled: they take
- * Fix12<int> by value (notes/mwccarm-codegen.md, 6az). */
+ * ROM's own shape. */
 int daKpaFire_c::InitResources()
 {
     Vector3 pos;
@@ -165,8 +158,8 @@ int daKpaFire_c::InitResources()
     if (this->mShadowModel.InitCylinder() == 0)
         return 0;
 
-    _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(
-        &this->mdCcAc_c, this, 0x28000, 0x50000, 0x200002, 0);   /* radius 40, height 80 units; flags 0x200002, vulnFlags 0 */
+    this->mdCcAc_c.Init(this, 0x28000, 0x50000, 0x200002,
+                        0); /* radius 40, height 80 units; flags 0x200002, vulnFlags 0 */
     this->mWithMeshClsn.Init(
         this, 0x32000, 0x32000, 0,
         0); /* radius and height 50 units; the two Vector3_16 * args are null */

@@ -30,8 +30,7 @@
  * first and emits no D2 body.
  *
  * leftovers:
- * - dExtAnmModel_c::SetAnim, dCcAc_c::Init, Particle::System::NewSimple and
- *   Player::Hurt keep their C ABI spellings: their real declarations pass
+ * - Player::Hurt keeps its C ABI spelling: its real declaration passes
  *   Fix12<int> by value, which mwccarm lowers differently at a C++ call site.
  * - func_0201267c is still a linker name; it is the positional-sound entry
  *   point both state transitions use.
@@ -88,9 +87,6 @@ struct System {
     static int NewSimple(unsigned id, int x, int y, int z);
 };
 }
-void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(
-    dCcAc_c *self, dActor_c *actor, int radius, int height,
-    u32 flags, u32 vulnFlags);
 /* `char *` on the receiver, not `dActor_c *`: that is the spelling this ABI
  * seam already carries at most of its call sites, and a promotion is not the
  * place to change a shared declaration. */
@@ -143,8 +139,7 @@ int daObjShell_c::InitResources()
     BMD_File *modelFile = (BMD_File *)dExtSimpleModel_c::LoadFile(data_ov064_0211c9c4);
     mAnmModel.SetFile(modelFile, 1, -1);
     mAnmModel.SetAnim((BCA_File *)data_ov064_0211c9bc.filePtr, 0x40000000, 0x1000, 0);
-    _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(
-        &mdCcAc_c, this, 0x64000, 0x64000, 0x200004, 0);
+    mdCcAc_c.Init(this, 0x64000, 0x64000, 0x200004, 0);
     func_ov064_0211a9b4();
     mState = STATE_SHUT;
     return 1;

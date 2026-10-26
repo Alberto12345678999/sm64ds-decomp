@@ -33,10 +33,8 @@
  * not reorder.
  *
  * leftovers:
- * - dCcAc_c::Init, dBgCh_Actr::Init, dActor_c::DropShadowRadHeight,
- *   Player::Hurt and Particle::System::NewSimple stay mangled. Each takes
- *   Fix12<int> by value (wall 6az): passing a Fix12<int> local to
- *   mdCcAc_c.Init makes InitResources 0x20 bytes longer.
+ * - Player::Hurt and Particle::System::NewSimple stay mangled. Each takes
+ *   Fix12<int> by value (wall 6az).
  * - The hit check and the placement helper are members but keep their
  *   func_ov098_* address names.
  * - The fragment angle table (data_ov098_0213bf90) is an unnamed ov098 row
@@ -91,8 +89,6 @@ s16 Vec3_HorzAngle(const Vector3 *from, const Vector3 *to);
 s32 Vec3_HorzDist(const Vector3 *a, const Vector3 *b);
 u16 DecIfAbove0_Short(u16 *counter);
 
-void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(dCcAc_c *self, dActor_c *actor,
-    s32 radius, s32 height, u32 flags, u32 unk);
 /* Parameter names keep this TU's @NNN. */
 typedef void BgchInitAt_(dBgCh_Actr *self, dActor_c *actor, s32 radius, s32 height, Vector3_16 *a,
                          Vector3_16 *b);
@@ -182,7 +178,7 @@ int daWbm_c::InitResources()
             mScaleX = 0x800;
             mScaleY = 0x800;
             mScaleZ = 0x800;
-            _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, this, 0x14000, 0x28000, 0x200004, 0);
+            mdCcAc_c.Init(this, 0x14000, 0x28000, 0x200004, 0);
             mWithMeshClsn.Init(this, 0x1e000, 0x1e000, 0, 0);
         }
         else
@@ -190,7 +186,7 @@ int daWbm_c::InitResources()
             mScaleX = 0x1000;
             mScaleY = 0x1000;
             mScaleZ = 0x1000;
-            _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, this, 0x28000, 0x50000, 0x204004, 0);
+            mdCcAc_c.Init(this, 0x28000, 0x50000, 0x204004, 0);
             mWithMeshClsn.Init(this, 0x32000, 0x32000, 0, 0);
         }
     }

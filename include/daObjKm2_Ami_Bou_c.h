@@ -8,15 +8,12 @@
 struct KCL_File;
 struct CLPS_Block;
 
-/* Scalar adapters for this class only. The real methods take Fix12<int>
- * by value and home those arguments; these int parameters do not.
- * Do not move the mangled names onto dBgW_KcMbg.h / dCcAc_c.h /
- * dBgActor_c.h. */
+/* Scalar adapter for this class only. The real method takes Fix12<int>
+ * by value and homes that argument; this int parameter does not.
+ * Do not move the name onto dBgW_KcMbg.h / dBgActor_c.h. */
 extern "C" {
 extern void hold_daObjKm2_Ami_Bou_c(dBgW_KcMbg *self, KCL_File *kcl, const Matrix4x3 *mtx,
                                     int scale, s16 angleY, CLPS_Block *clps);
-void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(dCcAc_c *self, dActor_c *act, int radius, int height,
-                                               unsigned flags, unsigned vulnFlags);
 }
 
 /* daKpa_c in the Fire Sea net pole (profile KM2_AMI_BOU).
@@ -44,8 +41,7 @@ struct daObjKm2_Ami_Bou_c : dBgActor_c {
             ->dBgW_KcMbg::SetFile(kcl, *(&mClsnMat), scale, mAngleY, *(clps));
     }
     void InitClsn(int radius, int height, unsigned flags, unsigned vulnFlags) {
-        _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(
-            &mdCcAc_c, this, radius, height, flags, vulnFlags);
+        mdCcAc_c.Init(this, radius, height, flags, vulnFlags);
     }
     int ClsnInRangeOnScreen(int rangeX, int rangeY) {
         return IsClsnInRangeOnScreen(rangeX, rangeY);

@@ -64,8 +64,6 @@ void MulMat4x3Mat4x3(void *, void *, void *);
 void *__cxa_vec_cleanup(void *, int, int, void *);
 void func_020169d8(void *, int, unsigned int);
 void func_0203cebc(void *, void *, void *, void *);
-void _ZN17dExtShadowModel_c8CleanAllEv(
-    void); // local extern: raw char*/void* view of the actor memory; the class header declares the typed form and would change call-site codegen
 void AddVec3(void *, void *, void *);
 int DotVec3(void *, void *);
 void Matrix4x3_ApplyInPlaceToRotationX(void *, short);
@@ -1548,7 +1546,7 @@ int Dealer_Load(char *c) {
     void *f;
     void *ip;
 
-    _ZN17dExtShadowModel_c8CleanAllEv();
+    dExtShadowModel_c::CleanAll();
     DEALER(c)->mModelData = (int)dExtSimpleModel_c::LoadFile(DEALER(c)->mModelFile);
     DEALER(c)->mTableData = (int)dExtSimpleModel_c::LoadFile(DEALER(c)->mTableFile);
     f = ((void *)DEALER(c)->mModelData);

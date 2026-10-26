@@ -16,21 +16,15 @@
  * 814); this TU only loads and releases them.
  *
  * deslop leftovers:
- * - func_ov081_021237ec SpawnCoins as dActor_c::SpawnCoins: 0x124 -> 0x130 (+12).
- *   Particle::System::NewSimple with Fix12<int> x/y/z: 0x124 -> 0x148 (+36).
- * - func_ov081_02123910 KillByInvincibleChar as the method: 0x210 -> 0x218 (+8).
- *   Player::Hurt with Fix12<int> knockback: 0x210 -> 0x21c (+12). SpinBounce
+ * - func_ov081_021237ec Particle::System::NewSimple with Fix12<int> x/y/z:
+ *   0x124 -> 0x148 (+36).
+ * - func_ov081_02123910 Player::Hurt with Fix12<int> knockback: 0x210 -> 0x21c (+12). SpinBounce
  *   with Fix12<int>: 0x210 -> 0x21c (+12).
- * - func_ov081_02123b20 each DropShadowRadHeight method call: 0xcc -> 0xdc (+16).
  * - The 0/1 the ROM materializes in func_ov081_02123910, func_ov081_02123b20
  *   and Render comes from the int-returning IsPlayerActor / IsInYoshiMouth
  *   inlines. A direct `!=` or bit test is 16 / 12 / 12 bytes short.
  * - Behavior copying player->mPosX/Y/Z instead of int* at player+0x5c: 0x264 -> 0x260
  *   (-4).
- * - InitResources dExtAnmModel_c::SetAnim: 0x108 -> 0x114 (+12). dCcAc_c::Init:
- *   0x108 -> 0x120 (+24). dBgCh_Actr::Init stays 0x108 but the header's Fix12i
- *   parameters mangle to _ZN10dBgCh_Actr4InitEP8dActor_ciiP10Vector3_16S3_,
- *   not the ROM's 5Fix12IiE symbol.
  */
 
 /* Runtime asset handles resolved through the overlay 0 file table. */
@@ -87,13 +81,8 @@ struct System {
     static void NewSimple(unsigned int id, int x, int y, int z);
 };
 }
-void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *self, dActor_c *actor, int radius, int height, unsigned int flags, unsigned int vulnFlags);
 /* Parameter names keep this TU's @NNN. */
 typedef void BgchInitAt_(void *self, dActor_c *actor, int radius, int height, void *a, void *b);
-/* dEnemyBase_c::KillByInvincibleChar takes a Fix12<int> by value, so the header
-   member form size-DIFFs (0x210 -> 0x218, see the leftover note). decl_Enemy.h
-   already declares the ROM symbol with plain scalars; use that one spelling
-   rather than adding a third local copy. */
 void _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void *player, void *pos, unsigned int n, int knockback, unsigned int a, unsigned int b, unsigned int c);
 void _ZN6Player10SpinBounceE5Fix12IiE(void *player, int speed);
 }
@@ -207,7 +196,7 @@ extern "C" void func_ov081_02123910(daHuwa_c *self)
         knock.y = 0;
         knock.z = 0;
         height = ((dActor_c *)self)->OnAimedAtWithEgg();
-        _ZN12dEnemyBase_c20KillByInvincibleCharERK10Vector3_16R6Player5Fix12IiE(self, &knock, other, height);
+        self->KillByInvincibleChar(knock, *(Player *)other, height);
         return;
     }
 
@@ -373,7 +362,7 @@ int daHuwa_c::InitResources()
     mAnmModel.SetAnim((BCA_File *)gHuwahuwaMoveAnimationFile.filePtr, 0, 0x1000, 0);
     if (mShadowModel.InitCylinder() == 0)
         return 0;
-    _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, this, 0x3c000, 0x78000, 0x200000, 0xa6efe0);
+    mdCcAc_c.Init(this, 0x3c000, 0x78000, 0x200000, 0xa6efe0);
     mWithMeshClsn.Init(this, 0x3c000, 0x3c000, 0, 0);
     mWithMeshClsn.StartDetectingWater();
     mHomePosX = mPosX;
