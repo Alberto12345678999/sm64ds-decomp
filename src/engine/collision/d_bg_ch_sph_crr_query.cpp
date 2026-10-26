@@ -643,10 +643,10 @@ u32 dBgPi::GetClsnID() const
 }
 
 // @symbol func_02037f44
-/* Reads a dBgPi's owner word (+0x20) through an untyped record pointer;
-   it ends the dBgPi run. d_a_mky.cpp is its caller. */
-extern "C" int func_02037f44(int *p) {
-    return reinterpret_cast<int>(reinterpret_cast<dBgPi *>(p)->owner);
+/* The owner of the collider that produced this result; it ends the dBgPi
+   run. d_a_mky.cpp is its caller. */
+extern "C" dActor_c *func_02037f44(const dBgPi *p) {
+    return p->owner;
 }
 
 /* The constructor is defined before the destructor so the deferred

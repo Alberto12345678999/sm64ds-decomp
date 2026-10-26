@@ -95,7 +95,6 @@ extern "C" {
 /* dBgCh_Actr queries (src/engine/collision/d_bg_ch_actr.cpp), not yet
    declared in dBgCh_Actr.h. */
 int func_02035638(void *clsn); /* mSphereClsn.flags & 0x10: the ceiling bit */
-int func_0203567c(int clsn);   /* &mSphereClsn + 0x10: its own dBgPi base */
 int func_0203564c(int clsn);   /* mSphereClsn.GetUnderResult(): the ceiling hit */
 /* Player.cpp: sets 0x20 in Player::mStateFlags. */
 void func_ov002_020d8838(void *player);
@@ -315,7 +314,7 @@ extern "C" int func_ov002_020eed24(dBgCh_Actr *clsn, Player *player) {
     dBgPi *hit;
     dActor_c *owner;
     if (clsn->IsOnWall() || clsn->IsOnGround() || func_02035638(clsn)) {
-        hit = (dBgPi *)func_0203567c((int)clsn);
+        hit = func_0203567c(clsn);
         if (hit->GetClsnID() != -1) {
             owner = dActor_c::FindWithID(hit->GetClsnID());
             if (owner) {
@@ -330,7 +329,7 @@ extern "C" int func_ov002_020eed24(dBgCh_Actr *clsn, Player *player) {
 // @symbol func_ov002_020eeca8
 extern "C" int func_ov002_020eeca8(dBgCh_Actr *clsn, dActor_c *other) {
     if (func_02035638(clsn)) {
-        dBgPi *hit = (dBgPi *)func_0203567c((int)clsn);
+        dBgPi *hit = func_0203567c(clsn);
         if (hit->GetClsnID() != -1) {
             dActor_c *owner = dActor_c::FindWithID(hit->GetClsnID());
             if (owner != 0) {

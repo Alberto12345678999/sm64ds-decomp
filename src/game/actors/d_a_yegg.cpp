@@ -144,7 +144,6 @@ extern s16 data_02082214[];
 extern int data_0209e650;
 extern M48 data_020a0e68;
 
-extern int func_0203567c(int p);
 extern int func_02035638(u8 *p);
 /* local extern: daStar_c::func_ov002_020e7218. This TU does not include daStar_c.h. */
 extern void _ZN8daStar_c19func_ov002_020e7218EPci(char *a, char *b, int c);
@@ -299,7 +298,7 @@ void daYegg_c::func_ov002_020ec670(int arg)
     struct dActor_c* actor;
     u16 type;
 
-    cr = (struct dBgPi*)func_0203567c(arg);
+    cr = func_0203567c((dBgCh_Actr *)arg);
     if (cr->GetClsnID() == -1)
         return;
 
