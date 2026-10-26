@@ -92,8 +92,6 @@ u16 DecIfAbove0_Short(u16 *counter);
 /* Parameter names keep this TU's @NNN. */
 typedef void BgchInitAt_(dBgCh_Actr *self, dActor_c *actor, s32 radius, s32 height, Vector3_16 *a,
                          Vector3_16 *b);
-int _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(Player *self, const Vector3 *from,
-    u32 a, s32 b, u8 c, u8 d, u8 e);
 namespace Particle {
 struct System {
     static void *NewSimple(u32 id, s32 x, s32 y, s32 z);
@@ -411,7 +409,7 @@ int daWbm_c::func_ov098_0213b6e0()
                 pos.x = mPosX;
                 pos.y = mPosY;
                 pos.z = mPosZ;
-                _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj((Player *)other, &pos, 1, 0xc000, 1, 0, 1);
+                ((Player *)other)->Hurt(pos, 1, 0xc000, 1, 0, 1);
                 if (mVariant == 1) {
                     Particle::System::NewSimple(0x1c, mPosX, mPosY, mPosZ);
                     Particle::System::NewSimple(0x1d, mPosX, mPosY, mPosZ);

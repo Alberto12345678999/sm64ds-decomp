@@ -26,9 +26,10 @@
 // - OAM::Render, OAM::RenderSub, Sound::PlaySub and cstd::atan2
 //   stay mangled (Fix12 by value). Fog::Init is the scalar Fix12i method.
 //   RenderNumber keeps a local extern spelled over the member's mask-emitting
-//   parameter conversions; G2x::SetBlendBrightness, G3X::SetFog and
-//   dScStage_c::LoadGraphics2D stay mangled where the ROM passes a raw int
-//   the header's u16/bool parameter would narrow.
+//   parameter conversions; G2x::SetBlendBrightness and G3X::SetFog stay
+//   mangled where the ROM passes a raw int the header's u16/bool parameter
+//   would narrow. InitResources calls LoadGraphics2D with the comparison
+//   itself as the bool, which is what the ROM passes.
 // - LoadTextureTransformers spells `new` as an explicit operator new call
 //   plus a null-guarded constructor call, a form from before the allocator
 //   was named _Znwm, when a new-expression could not link; the fader array passes dFdWipe_c's constructor and destructor by address.
@@ -4618,8 +4619,6 @@ void func_ov001_020ab2e4(void);
 // local extern: the fader array's constructor is passed by address to
 // func_02073470, which member syntax cannot express.
 void *_ZN9dFdWipe_cC1Ev(void *thiz);
-// local extern: member form converts the e3d argument to bool; the ROM call passes the raw int
-void _ZN10dScStage_c14LoadGraphics2DEbi(int e3d, int level);
 }
 
 int dScStage_c::InitResources() {
@@ -4820,8 +4819,7 @@ int dScStage_c::InitResources() {
         }
 
         *(volatile u16 *)0x04000008 = (*(volatile u16 *)0x04000008 & ~3) | 2;
-        int vsModeGraphics = (data_0209f2d8 == 1) ? 1 : 0;
-        _ZN10dScStage_c14LoadGraphics2DEbi(vsModeGraphics, data_0209f2f8);
+        LoadGraphics2D(data_0209f2d8 == 1, data_0209f2f8);
 
         {
             u32 i;

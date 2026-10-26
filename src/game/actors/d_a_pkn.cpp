@@ -73,8 +73,6 @@ void  UnloadBlueCoinModel(void *c);
 void  func_02012694(u32 id, void *pos);
 void  func_020105cc(void *thiz, u32 flags);
 
-void  _ZN6Player6BounceE5Fix12IiE(void *player, int fix);
-int   _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void *player, const void *pos, u32 a, int fix, u32 b, u32 c, u32 d);
 
 /* -- shared tables -- */
 extern s16 data_02082214[];              /* the sin/cos table, two shorts a step */
@@ -381,7 +379,7 @@ void daPkn_c::StateBite()
                     pos1.x = mPosX;
                     pos1.y = mPosY;
                     pos1.z = mPosZ;
-                    _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(actor, &pos1, 3, 0xc000, 1, 0, 1);
+                    ((Player *)actor)->Hurt(pos1, 3, 0xc000, 1, 0, 1);
                     return;
                 }
                 if ((flags & 0x40000) == 0)
@@ -452,7 +450,7 @@ void daPkn_c::StateBite()
     pos2.x = mPosX;
     pos2.y = mPosY;
     pos2.z = mPosZ;
-    _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(actor, &pos2, 3, 0xc000, 1, 0, 1);
+    ((Player *)actor)->Hurt(pos2, 3, 0xc000, 1, 0, 1);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -643,7 +641,7 @@ int daPkn_c::CheckHits()
                     func_020105cc(this, flags);
                     Die();
                 } else if (JumpedOnByPlayer(mdCcAc_c1, *(Player *)actor) != 0) {
-                    _ZN6Player6BounceE5Fix12IiE(actor, 0x28000);
+                    ((Player *)actor)->Bounce(0x28000);
                     Die();
                 } else if (mdCcAc_c1.hitFlags & 0x40000) {
                     Die();
@@ -652,7 +650,7 @@ int daPkn_c::CheckHits()
                     v.x = mPosX;
                     v.y = mPosY;
                     v.z = mPosZ;
-                    _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(actor, &v, 3, 0xc000, 1, 0, 1);
+                    ((Player *)actor)->Hurt(v, 3, 0xc000, 1, 0, 1);
                     mAnmModel.SetAnim(
                         (BCA_File *)(((SharedFilePtr *)&data_ov084_02130e0c)->filePtr), 0, 0x1000,
                         0);
@@ -690,7 +688,7 @@ int daPkn_c::CheckHits()
                     return 1;
                 }
                 if (JumpedOnByPlayer(mdCcAc_c1, *(Player *)actor) != 0) {
-                    _ZN6Player6BounceE5Fix12IiE(actor, 0x28000);
+                    ((Player *)actor)->Bounce(0x28000);
                     Die();
                     return 1;
                 }

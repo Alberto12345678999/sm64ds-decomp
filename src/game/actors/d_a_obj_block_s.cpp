@@ -161,7 +161,6 @@ extern int func_ov002_020f030c(int x);
 extern int func_ov002_020e496c(char *c);
 extern s16 func_02010844(void *unused, Vector3 *v, s16 angle);
 
-extern void _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void *p, struct Vector3 *pos, u32 a, int b, u32 d, u32 e, u32 f);
 
 extern void d_a_obj_block_sPlayLongHold(u32 a, u32 b, u32 c, const Vector3 *pos, u32 e);
 
@@ -856,7 +855,7 @@ void daObjBlockS_c::func_ov098_02138e6c()
         v.x = mPosX;
         v.y = mPosY;
         v.z = mPosZ;
-        _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(a, &v, 1, 0xc000, 1, 0, 1);
+        ((Player *)a)->Hurt(v, 1, 0xc000, 1, 0, 1);
     }
 }
 

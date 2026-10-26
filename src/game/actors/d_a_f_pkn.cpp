@@ -123,8 +123,6 @@ void UnloadBlueCoinModel(void *);
 /* Called by their mangled names: each carries a Fix12<int> by value and
    the member spelling DIFFs. */
 u32 d_a_f_pknNewHold(u32 a, u32 b, Fix12i c, Fix12i d, Fix12i e, const void *f, void *g);
-void _ZN6Player6BounceE5Fix12IiE(void *p, int fix);
-int _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void *self, const void *pos, u32 a, int fix, u32 b, u32 c, u32 d);
 
 extern SharedFilePtr data_ov084_02130dfc;   /* the plant's model */
 extern SharedFilePtr *data_ov084_021302f4[];/* the six shared animation handles */
@@ -342,7 +340,7 @@ void daFPkn_c::CheckClsnHits()
     if (cmp != 0) {
         if (JumpedOnByPlayer(mdCcAc_c, *(Player *)hitter) != 0) {
             Sound::PlayBank0(SND_JUMPED_ON, mCamSpacePos);
-            _ZN6Player6BounceE5Fix12IiE(hitter, 0x28000);
+            ((Player *)hitter)->Bounce(0x28000);
             goto activate_path;
         }
     }
@@ -354,7 +352,7 @@ void daFPkn_c::CheckClsnHits()
     pos1.x = mPosX;
     pos1.y = mPosY;
     pos1.z = mPosZ;
-    _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(hitter, &pos1, 2, 0xc000, 1, 0, 1);
+    ((Player *)hitter)->Hurt(pos1, 2, 0xc000, 1, 0, 1);
 
 second:
     otherId = mdCcAcPos_c.otherOwner;
@@ -397,7 +395,7 @@ second:
     pos2.x = mPosX;
     pos2.y = mPosY;
     pos2.z = mPosZ;
-    _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(hitter, &pos2, 2, 0xc000, 1, 0, 1);
+    ((Player *)hitter)->Hurt(pos2, 2, 0xc000, 1, 0, 1);
 }
 
 // @symbol _ZN8daFPkn_c9StateGrowEv

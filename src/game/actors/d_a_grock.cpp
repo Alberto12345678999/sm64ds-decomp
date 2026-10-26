@@ -135,8 +135,6 @@ extern void func_0200f760(void *self, void *cyl);
 extern int RandomIntInternal(int *seed);
 extern int data_0209e650;
 extern GrockModelFilePtr data_ov021_02114a50;
-extern int _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(
-    void *player, struct Vector3 *pos, u32 kind, int knockback, u32 a, u32 b, u32 c);
 }
 
 /* D1 stores this vtable, destroys the members in reverse declaration order,
@@ -241,7 +239,7 @@ extern "C" void func_ov021_021123b0(char *raw)
         pos.x = rock->mPosX;
         pos.y = rock->mPosY;
         pos.z = rock->mPosZ;
-        _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(other, &pos, 3, 0xc000, 1, 0, 1);
+        ((Player *)other)->Hurt(pos, 3, 0xc000, 1, 0, 1);
     }
 }
 

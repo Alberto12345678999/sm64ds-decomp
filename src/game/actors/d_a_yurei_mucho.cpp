@@ -61,11 +61,6 @@ struct V3Quint {
 extern "C" {
 
 /* arm9 scalar ABI and unnamed helpers; see the remaining work above. */
-extern void _ZN6Player6BounceE5Fix12IiE(void *p, int f);
-/* local extern: retain the current scalar definition; native Fix12<int>
-   call reconstruction remains separate work. The return value is discarded. */
-extern int _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(Player *p, void *v, unsigned int a, int b, u8 d,
-                                                   u8 e, u8 f);
 extern unsigned int RandomIntInternal(void *seed);
 extern unsigned short DecIfAbove0_Short(unsigned short *p);
 extern void ApproachAngle(void *p, short target, int a, int b, int limit);
@@ -645,7 +640,7 @@ void daYurei_Mucho_c::func_ov065_02115ff0()
         return;
     }
     if (JumpedOnByPlayer(mdCcAc_c, *p)) {
-        _ZN6Player6BounceE5Fix12IiE(p, 0x28000);
+        p->Bounce(0x28000);
         mDeathState = 1;
         func_ov002_020aea30(this, p, 0);
         func_02012694(0x11e, &mCamSpacePosX);
@@ -654,7 +649,7 @@ void daYurei_Mucho_c::func_ov065_02115ff0()
     hv.x = mPosX;
     hv.y = mPosY;
     hv.z = mPosZ;
-    _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(p, &hv, 2, 0xc000, 1, 0, 1);
+    p->Hurt(hv, 2, 0xc000, 1, 0, 1);
 }
 
 /* -------------------------------------------------------------------------- */

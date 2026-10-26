@@ -65,7 +65,6 @@ struct System {
 };
 }
 void d_a_kiraiEarthquakeHold(void *self, Vector3 *v, int f);
-extern void _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void *self, Vector3 *v, unsigned int b, int c, unsigned int d, unsigned int e, unsigned int f);
 extern KiraiModelFilePtr data_ov060_0211b1c4;
 extern KiraiState data_ov060_0211b1d8[4];
 }
@@ -282,7 +281,7 @@ void daKirai_c::func_ov060_02118970()
     hurtPos.x = mPosX;
     hurtPos.y = mPosY;
     hurtPos.z = mPosZ;
-    _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(a, &hurtPos, 2, 0xc000, 1, 0, 1);
+    ((Player *)a)->Hurt(hurtPos, 2, 0xc000, 1, 0, 1);
     func_ov060_021184bc();
 }
 

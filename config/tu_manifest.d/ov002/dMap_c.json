@@ -83,7 +83,7 @@
       "ordinal": 8
     },
     {
-      "symbol": "_ZN6dMap_c20GetPosFromMinimapPosER7Vector3S1_5Fix12IiEsS1_",
+      "symbol": "_ZN6dMap_c20GetPosFromMinimapPosER7Vector3S1_isS1_",
       "address": "0x020fb804",
       "size": "0x00000058",
       "legacy_source": "src/_ZN6dMap_c20GetPosFromMinimapPosER7Vector3S1_5Fix12IiEsS1_.cpp",

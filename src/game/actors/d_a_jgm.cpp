@@ -172,10 +172,6 @@ extern void Vec3_Asr(void *d, void *s, int sh);
 /* Parameter names keep this TU's @NNN. */
 typedef int BgchInitAt_(dBgCh_Actr *collision, dActor_c *actor, Fix12i radius, Fix12i height,
                         void *a, void *b);
-extern void _ZN6Player6BounceE5Fix12IiE(Player *player, int vel);
-extern void _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(
-    Player *player, const DaJgmVector3Words *pos, unsigned int a, int vel,
-    unsigned int b, unsigned int c, unsigned int d);
 /* local extern: kept as a count holder: its five named parameters hold
  * the @NNN count. Sound.h's PlayLong emits the same bytes. */
 extern void d_a_jgmPlayLongHold(unsigned int handle, unsigned int a, unsigned int id,
@@ -673,7 +669,7 @@ void daJgm_c::HandlePlayerCollision()
     }
 
     if (JumpedOnByPlayer(mdCcAcPos_c, *player) != 0) {
-        _ZN6Player6BounceE5Fix12IiE(player, 0x28000);
+        player->Bounce(0x28000);
         DieAndDropCoins();
         return;
     }
@@ -686,8 +682,7 @@ void daJgm_c::HandlePlayerCollision()
         v.x = mPosX;
         v.y = mPosY;
         v.z = mPosZ;
-        _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(
-            player, &v, 2, 0xc000, 1, 0, 1);
+        player->Hurt(*(Vector3 *)&v, 2, 0xc000, 1, 0, 1);
     }
 }
 

@@ -126,8 +126,9 @@ void  MulVec3Mat4x3(Vector3 *v, Matrix4x3 *m, Vector3 *out);
 void  Matrix4x3_FromRotationY(void *m, int angle);
 int   Math_Function_0203b14c(int *value, int target, int a, int b, int c);
 
-/* Player::ShowMessage takes the two flag bytes as unsigned char. The
-   member re-masks the caller's word and func_ov084_0212c9f0 grows. */
+/* local extern: Player::ShowMessage takes the two flag bytes as unsigned
+   char. The member call re-masks the caller's word and func_ov084_0212c9f0
+   grows from 0x70 to 0x74. */
 int _ZN6Player11ShowMessageER7fBase_cjPK7Vector3hh(Player *self, fBase_c *actor, unsigned int msgID, const Vector3 *pos, unsigned int a, unsigned int b);
 
 }
