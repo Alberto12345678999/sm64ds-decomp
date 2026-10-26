@@ -59,12 +59,11 @@ struct FlowerFace {
     FlowerFaceModelFilePtr mModelFile;       /* 0xd7c -- yoshi_model.bmd (0x222) */
     FlowerFaceModelFilePtr mPetalFile;       /* 0xd84 -- f_parts.bmd (0x201) */
     FlowerFaceAnimationFileHandle mWaitAnim; /* 0xd8c -- yoshi_wait.bca (0x224) */
-    FlowerFaceAnimationFileHandle
-        mPickAnim; /* 0xd94 -- yoshi_pick.bca (0x223), as a petal comes off */
-    FlowerFaceAnimationFileHandle
-        mLikeAnim; /* 0xd9c -- yoshi_like.bca (0x221), the "loves me" ending */
-    FlowerFaceAnimationFileHandle
-        mHateAnim; /* 0xda4 -- yoshi_hate.bca (0x220), the "loves me not" ending */
+    /* Pick plays as a petal comes off; Like and Hate are the "loves me" and
+       "loves me not" endings. */
+    FlowerFaceAnimationFileHandle mPickAnim; /* 0xd94 -- yoshi_pick.bca (0x223) */
+    FlowerFaceAnimationFileHandle mLikeAnim; /* 0xd9c -- yoshi_like.bca (0x221) */
+    FlowerFaceAnimationFileHandle mHateAnim; /* 0xda4 -- yoshi_hate.bca (0x220) */
 };
 
 #ifndef SM64DS_PLATFORM_PC
