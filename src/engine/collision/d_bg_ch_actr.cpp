@@ -12,12 +12,11 @@
  * unnamed mFlags plumbing, sub-object accessors, and step helpers; the ROM
  * gives them no member name, so they stay extern "C" free functions taking
  * the object by raw pointer. */
-// leftovers: Init stays a free definition spelling its own mangled name, and
-// the SetObjAndSphere call spells its symbol (Fix12i params travel by value in
-// the mangling, wall 6az). The checker-family helpers stay local externs (no
-// non-generated header declares them). The func_0203* workers keep address
-// names (no member evidence names them); five of them keep raw-pointer params
-// because other TUs declare them with int/char pointer types.
+// leftovers: the SetObjAndSphere call spells its symbol (Fix12i params travel
+// by value in the mangling, wall 6az). The checker-family helpers stay local
+// externs (no non-generated header declares them). The func_0203* workers keep
+// address names (no member evidence names them); five of them keep raw-pointer
+// params because other TUs declare them with int/char pointer types.
 
 #include "types.h"
 #include "common.h"
@@ -69,21 +68,15 @@ dBgCh_Actr::~dBgCh_Actr()
 {
 }
 
-/* Init stays a free definition spelling its own mangled name: the Fix12i
-   parameters travel by value inside the mangling (wall 6az), so no member
-   spelling is available in this TU. */
-
-// @symbol _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_
-extern "C" void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(
-    dBgCh_Actr *self, int actor, int radius, int height, int a, int b)
-{
-    self->mActor = (dActor_c *)actor;
-    self->mRadius = radius;
-    self->mHeight = height;
-    self->mFlags = 0;
-    self->mSphereClsn.mMotionAngPtr = a;
-    self->mAngPtr = b;
-    self->mScale = 0x1000;
+// @symbol _ZN10dBgCh_Actr4InitEP8dActor_ciiP10Vector3_16S3_
+void dBgCh_Actr::Init(dActor_c *actor, Fix12i radius, Fix12i height, Vector3_16 *a, Vector3_16 *b) {
+    mActor = actor;
+    mRadius = radius;
+    mHeight = height;
+    mFlags = 0;
+    mSphereClsn.mMotionAngPtr = (s32)a;
+    mAngPtr = (s32)b;
+    mScale = 0x1000;
 }
 
 // @symbol func_02037318

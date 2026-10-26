@@ -114,7 +114,8 @@ extern SharedFilePtr* data_ov062_0211ced8[2];
 extern SharedFilePtr* data_ov062_0211cee0[2];
 
 extern void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void* self, dActor_c* a, int r, int h, unsigned int e, unsigned int g);
-extern void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(void* self, dActor_c* a, int r, int h, Vector3_16* p, int q);
+/* Parameter names keep this TU's @NNN. */
+typedef void BgchInitAt_(void *self, dActor_c *a, int r, int h, Vector3_16 *p, int q);
 extern void LoadBlueCoinModel(void* c);
 extern void UnloadBlueCoinModel(void *c);
 
@@ -239,7 +240,7 @@ int daNknk_c::InitResources()
     mHomePosZ = mPosZ;
     mVertAccel = -0x2000;
     mTerminalVelocity = -0x3c000;
-    _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(&mWithMeshClsn, this, 0x32000, 0x32000, 0, 0);
+    mWithMeshClsn.Init(this, 0x32000, 0x32000, 0, 0);
 
     mWithMeshClsn.StartDetectingWater();
 

@@ -125,8 +125,8 @@ extern void *gPFlowerCloseModelFile[];
 extern void *gPFlowerOpenModelFile[];
 extern void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(
     void *self, void *act, Fix12i a, Fix12i b, unsigned int c2, unsigned int d);
-extern void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(
-    void *self, void *act, Fix12i a, Fix12i b, void *d, void *e);
+/* Parameter names keep this TU's @NNN. */
+typedef void BgchInitAt_(void *self, void *act, Fix12i a, Fix12i b, void *d, void *e);
 }
 
 // @symbol _ZN18daObjPowerUpItem_cD1Ev
@@ -505,8 +505,7 @@ int daObjPowerUpItem_c::InitResources()
     mScaleZ = 0xfa0;
 
     _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, this, 0x32000, 0x64000, 0x800002, 0x8000);
-    _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(&mWithMeshClsn, this, 0x3c000,
-                                                                0x3c000, 0, 0);
+    mWithMeshClsn.Init(this, 0x3c000, 0x3c000, 0, 0);
     mWithMeshClsn.StartDetectingWater();
 
     /* ground probe: a ray starting 0x14000 above the flower */

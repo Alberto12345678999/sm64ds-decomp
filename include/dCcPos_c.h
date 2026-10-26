@@ -48,7 +48,7 @@ struct dCcPos_c : dCc_c {
     dCcPos_c();
 
     /* --- non-virtual --- */
-    void Init(const Vector3 &pos, Fix12<int> radius, Fix12<int> height, u32 flags, u32 vulnFlags);
+    void Init(const Vector3 &pos, Fix12i radius, Fix12i height, u32 flags, u32 vulnFlags);
 };
 
 #ifndef SM64DS_PLATFORM_PC

@@ -12,10 +12,9 @@
  * cartridge's own copies at ov002 0x0210b584 / 0x0210b544 / 0x0210b550.
  *
  * deslop
- * Leftover: Fog::Init, Sound::PlaySub, Vec3_Sub, Vec3_RotateYAndTranslate,
- *   AngleDiff and NumStars stay spelled as mangled/extern-C free functions.
- *   Fog::Init takes Fix12<int> by value; a real method call homes the
- *   argument and size-DIFFs the caller (notes/mwccarm-codegen.md 6az).
+ * Leftover: Sound::PlaySub, Vec3_Sub, Vec3_RotateYAndTranslate, AngleDiff
+ *   and NumStars stay spelled as mangled/extern-C free functions.
+ *   Fog::Init is the scalar Fix12i method.
  * Leftover: func_ov002_020f1c20 keeps its C-ABI cartridge name. It is this
  *   TU's own fog accessor (returns the stored Fog instance when the stored
  *   area matches the current one), not a vtable slot.
@@ -28,6 +27,7 @@
 
 #include "daMugenBGM_c.h"
 #include "types.h"
+#include "Fog.h"
 #include "decl_common.h"
 #include "nitro/fx/fx.h"
 
@@ -43,7 +43,6 @@ void Vec3_Sub(int* out, int* a, int* b);
 void Vec3_RotateYAndTranslate(int* out, int* in, short angle, int* src);
 u32 NumStars(void);
 int AngleDiff(int a, int b);
-void _ZN3Fog4InitEt5Fix12IiES1_(void* thiz, unsigned short a, int b, int d);
 int func_ov100_02144f84(void);
 int d_a_mugen_bgmPlaySubHold(u32 a, u32 b, u32 c, int d, int e);
 extern u8 data_0209f250;
@@ -79,7 +78,7 @@ int daMugenBGM_c::InitResources()
         p = ::operator new(0x28);
         data_ov002_02110af8 = p;
         if (p != 0) {
-            _ZN3Fog4InitEt5Fix12IiES1_(p, 0, 0x700, 0xd00);
+            ((Fog *)p)->Init(0, 0x700, 0xd00);
         }
         data_ov002_02110af0 = mAreaId;
     }
@@ -145,7 +144,7 @@ int daMugenBGM_c::Behavior()
     {
         void* fog = data_ov002_02110af8;
         if (fog != 0)
-            _ZN3Fog4InitEt5Fix12IiES1_(fog, 0, (u16)depth, color);
+            ((Fog *)fog)->Init(0, (u16)depth, color);
     }
 
     if (mHorzSpeed == 0) {

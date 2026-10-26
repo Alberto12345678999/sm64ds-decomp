@@ -60,7 +60,8 @@ void _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5
     void *self, void *sm, void *mtx, int r, int t5, int t6, unsigned int u);
 void dBgCh_Actr_UpdateDiscreteNoLava_veneer(dBgCh_Actr *w);
 void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *self, void *actor, int a, int b, unsigned int c, unsigned int d);
-void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(void *self, void *actor, int a, int b, void *v, int c);
+/* Parameter names keep this TU's @NNN. */
+typedef void BgchInitAt_(void *self, void *actor, int a, int b, void *v, int c);
 }
 
 extern Mtx43 data_020a0e68;
@@ -397,7 +398,7 @@ int daBttBk_c::InitResources()
     mScaleX = 0x1000;
     mScaleY = 0x1000;
     mScaleZ = 0x1000;
-    _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(&mWithMeshClsn, this, 0x32000, 0x32000, 0, 0);
+    mWithMeshClsn.Init(this, 0x32000, 0x32000, 0, 0);
     mCarrier = 0;
     func_ov080_0212513c(0);
     func_ov080_02124c3c();

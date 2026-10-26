@@ -24514,7 +24514,6 @@ s32 Player::InitResources()
     void* func_02073470(int a, int b, int c, void* d, void* e);
     void* _ZN6Memory13operator_new2Ej(unsigned int sz);
     void func_ov002_020e63a4(void* p);
-    void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(void* thiz, void* actor, int a, int b, void* v1, void* v2);
     void func_02035644(void* p, int a);
     void func_ov002_020d6368(void* p);
     void LoadSilverStarAndNumber(void);
@@ -24606,8 +24605,7 @@ Ld0:
     mScaleY = 0x1000;
     mScaleZ = 0x1000;
     func_ov002_020e63a4(c);
-    _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(&mMeshClsn, c, 0x32000, 0x32000,
-                                                                &mPrevAngle, &mAngle);
+    mMeshClsn.Init((dActor_c *)c, 0x32000, 0x32000, &mPrevAngle, &mAngle);
     func_02035644(&mMeshClsn, 0x28000);
     mTerminalVelocity = -0x4b000;
     mSpawnPosX = mPosX;

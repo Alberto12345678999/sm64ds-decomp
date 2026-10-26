@@ -174,7 +174,8 @@ struct System {
 extern int    _Z15ApproachLinear2Riii(int *p, int target, int step);
 extern void   func_0201267c(int id, void *pos);
 extern void   _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *self, void *actor, int a, int b, unsigned int c, unsigned int d);
-extern void   _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(void *self, void *actor, int a, int b, void *v, int c);
+/* Parameter names keep this TU's @NNN. */
+typedef void BgchInitAt_(void *self, void *actor, int a, int b, void *v, int c);
 }
 
 namespace cstd { int fdiv(int a, int b); }
@@ -873,7 +874,7 @@ int daGmch_c::InitResources()
     if (mShadowModel.InitCylinder() == 0)
         return 0;
     _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, this, 0x4b000, 0x73000, 0x200000, 0x6eff0);
-    _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(&mWithMeshClsn, this, 0x4b000, 0x4b000, 0, 0);
+    mWithMeshClsn.Init(this, 0x4b000, 0x4b000, 0, 0);
     mWithMeshClsn.StartDetectingWater();
     SetState(0);
     mVertAccel = -0x2000;

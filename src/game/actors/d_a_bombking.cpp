@@ -166,7 +166,6 @@ extern Matrix4x3 IDENTITY_MATRIX4X3;
 extern void Matrix4x3_ApplyInPlaceToTranslation(void *m, int x, int y, int z);
 extern void Matrix4x3_ApplyInPlaceToRotationXYZExt(void *m, int x, int y, int z);
 extern void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(void* self, dActor_c* a, Vector3* v, Fix12i r, Fix12i h, unsigned int e, unsigned int g);
-extern void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(void* self, dActor_c* a, Fix12i r, Fix12i h, Vector3_16* p, Vector3_16* q);
 }
 
 /* `opt_strength_reduction`, `opt_common_subs` and `opt_propagation` are
@@ -1706,7 +1705,7 @@ int daBombking_c::InitResources()
     mArenaPosX = 0xb1d000;
     mArenaPosY = 0x1060000;
     mArenaPosZ = 0xfee15000;
-    _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(&mWithMeshClsn, this, 0x190000, 0x190000, 0, 0);
+    mWithMeshClsn.Init(this, 0x190000, 0x190000, 0, 0);
     func_02035550(&mWithMeshClsn);
     mAnimSpeed = 1;
     mHealth = 3;
