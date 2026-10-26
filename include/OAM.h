@@ -69,6 +69,55 @@ struct OAM {
     static OamAttr *Render(bool, OamAttr *, int, int, int, int, int, int);
     static void RenderSub(OamAttr* data, s32 x, s32 y);
     static void RenderSub(OamAttr* data, s32 x, s32 y, s32 palette, s32 priority);
+
+    /* The sprite tables. These are ROM data with no definition in src/; each
+       name is its symbols.txt row (_ZN3OAM<name>E). A single sprite
+       is an OamAttr whose ADDRESS the callers pass to Render; a table is an
+       array of OamAttr pointers that the callers index by digit, character or
+       mode. A data member's type is not part of its mangled name. */
+    static OamAttr *LIFE_ICONS[];
+    static OamAttr *NUMBERS[];
+    static OamAttr *VS_YELLOW_NUMBERS[];
+    static OamAttr *CONTROLLER_MODE_TEXTS[];
+    static OamAttr *MM_PLAYER_ICONS[];
+    static OamAttr *MM_VS_PLAYER_ICONS[];
+    static OamAttr *MM_VS_PLAYER_ICONS_S[];
+    static OamAttr *MM_STAR_MARKERS[];
+    static OamAttr *MM_STAR_KEYS[];
+    static OamAttr TIMES;
+    static OamAttr COIN;
+    static OamAttr POWER_STAR;
+    static OamAttr SMALL_STAR_EMPTY;
+    static OamAttr TINY_STAR;
+    static OamAttr BOUNCING_ARROW;
+    static OamAttr ARROW_POINTING_LEFT;
+    static OamAttr ARROW_POINTING_RIGHT;
+    static OamAttr SMALL_ARROW_POINTING_LEFT;
+    static OamAttr SMALL_ARROW_POINTING_RIGHT;
+    static OamAttr PAUSE;
+    static OamAttr VS_PAUSE;
+    static OamAttr VS_NEW_STAR_APPEARED;
+    static OamAttr VS_TIME;
+    static OamAttr VS_TIME_UP;
+    static OamAttr TIME;
+    static OamAttr MINUTES;
+    static OamAttr MM_SMALL_STAR;
+    static OamAttr MM_ARROW;
+    static OamAttr MM_RED_COIN;
+    static OamAttr MM_SPIKE_BOMB;
+    /* The camera-control buttons, top screen and (S_) sub screen. */
+    static OamAttr CAM_BUTTON_L;
+    static OamAttr CAM_BUTTON_L_PRESSED;
+    static OamAttr CAM_BUTTON_R;
+    static OamAttr CAM_BUTTON_R_PRESSED;
+    static OamAttr S_CAM_BUTTON_L;
+    static OamAttr S_CAM_BUTTON_L_PRESSED;
+    static OamAttr S_CAM_BUTTON_R;
+    static OamAttr S_CAM_BUTTON_R_PRESSED;
+    static OamAttr CAM_ZOOM_BUTTON;
+    static OamAttr CAM_ZOOM_BUTTON_PRESSED;
+    static OamAttr S_CAM_ZOOM_BUTTON;
+    static OamAttr S_CAM_ZOOM_BUTTON_PRESSED;
 #endif
 };
 

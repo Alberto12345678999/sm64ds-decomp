@@ -36,12 +36,14 @@ struct Matrix2x2;
 
 struct G2x {
 #ifdef __cplusplus
-    /* All static -- see the header note. */
-    static void SetBlendBrightness(volatile unsigned short *p, unsigned short val, short amt);
-    static void SetBlendAlpha(volatile unsigned short *reg, unsigned short a,
-                              unsigned short b, unsigned short c, unsigned int d);
-    static void SetBGyAffine(volatile unsigned short *p, Matrix2x2 *m,
-                             int a, int b, int c, int d);
+    /* All static -- see the header note. Unnamed: a named parameter takes an
+       @NNN in every includer. The definitions in src/engine/gx/G2x.cpp name
+       them: (reg, val, amt), (reg, firstTarget, secondTarget, firstAlpha,
+       secondAlpha) and (reg, m, a, b, c, d). */
+    static void SetBlendBrightness(volatile unsigned short *, unsigned short, short);
+    static void SetBlendAlpha(volatile unsigned short *, unsigned short, unsigned short,
+                              unsigned short, unsigned int);
+    static void SetBGyAffine(volatile unsigned short *, Matrix2x2 *, int, int, int, int);
 #endif
 };
 

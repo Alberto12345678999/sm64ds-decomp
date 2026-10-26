@@ -55,13 +55,13 @@ enum dScMgSnowball_c_AssetId {
    here, so the one copy that has to be a block move goes through M4x3Flat,
    below, rather than member-wise through Vector3's destructor. */
 #include "dScMgSnowball_c.h"
+#include "G2.h"
 #include "SpawnInfo.h"
 #include "types.h"
-/* decl_common.h's `extern int G2[]` hides namespace G2. This TU does not
- * reference that data symbol. */
-#define G2 G2_decl_common_shadow
+#include "CP15.h"
+#include "GX.h"
+#include "cstd.h"
 #include "decl_common.h"
-#undef G2
 #include "common.h"
 #include "Sound.h"
 #include "dScMgBase_c.h"
@@ -116,29 +116,6 @@ struct SPS {
 #define pnew Particle::System::New
 #define pfromid(id) ((int *)Particle::System::FromUniqueID(id))
 
-namespace cstd {
-s16 atan2(s32, s32);
-int fdiv(int numerator, int denominator);
-}
-namespace G2 {
-char *GetBG2ScrPtr();
-}
-namespace G2S {
-char *GetBG2ScrPtr();
-unsigned GetBG2CharPtr();
-void *GetBG3ScrPtr();
-}
-namespace GX {
-void LoadBGPltt(const void *src, u32 offset, u32 size);
-void LoadOBJPltt(const void *src, u32 offset, u32 size);
-}
-namespace GXS {
-void LoadBGPltt(const void *src, u32 offset, u32 size);
-void LoadOBJPltt(const void *src, u32 offset, u32 size);
-}
-namespace CP15 {
-void FlushAndInvalidateDataCache(u32 address, u32 length);
-}
 namespace G3X {
 void SetFog(bool enable, int blend, int slope, int offset);
 }
@@ -185,8 +162,6 @@ s32 GetGameLanguage(void);
 void FreeGfxSlotsById(int arg);
 void Vec2_Sub(int *o, int *a, int *b);
 extern "C" void Ov004_Deallocate(void *p);
-void *_ZN2G213GetBG2CharPtrEv(void);
-void *_ZN2G212GetBG3ScrPtrEv(void);
 u32 LoadCompressedFileAt(u16 fileID, void *target);
 void *Ov004_LoadFileByPath(void *p);
 void DecompressLZ16(void *src, void *dst);
@@ -846,42 +821,42 @@ void dScMgSnowball_c::DrawCourseColumn(int col, int flag) {
         do {
             idx = *(u16 *)(row + SNOW_OFF(mTileMap));
             tile = *(u16 *)((char *)sSnowballCourseTiles + (idx << 3));
-            scr = (volatile u16 *)(G2::GetBG2ScrPtr() + off);
+            scr = (volatile u16 *)((char *)G2::GetBG2ScrPtr() + off);
             MultiStore16(v0 = tile, (char *)(scr + j), n);
 
             idx = *(u16 *)(row + SNOW_OFF(mTileMap));
             tile = *(u16 *)((char *)sSnowballCourseTiles + (idx << 3) + 2);
-            scr = (volatile u16 *)(G2::GetBG2ScrPtr() + off);
+            scr = (volatile u16 *)((char *)G2::GetBG2ScrPtr() + off);
             MultiStore16(v1 = tile, (char *)(scr + j + 1), n);
 
             idx = *(u16 *)(row + SNOW_OFF(mTileMap));
             tile = *(u16 *)((char *)sSnowballCourseTiles + (idx << 3) + 4);
-            scr = (volatile u16 *)(G2::GetBG2ScrPtr() + off);
+            scr = (volatile u16 *)((char *)G2::GetBG2ScrPtr() + off);
             MultiStore16(v2 = tile, (char *)(scr + j + 0x20), n);
 
             idx = *(u16 *)(row + SNOW_OFF(mTileMap));
             tile = *(u16 *)((char *)sSnowballCourseTiles + (idx << 3) + 6);
-            scr = (volatile u16 *)(G2::GetBG2ScrPtr() + off);
+            scr = (volatile u16 *)((char *)G2::GetBG2ScrPtr() + off);
             MultiStore16(v3 = tile, (char *)(scr + j + 0x21), n);
 
             idx = *(u16 *)(row + SNOW_OFF(mTileMap));
             tile = *(u16 *)((char *)sSnowballCourseTiles + (idx << 3));
-            scr = (volatile u16 *)(G2S::GetBG2ScrPtr() + off);
+            scr = (volatile u16 *)((char *)G2S::GetBG2ScrPtr() + off);
             MultiStore16(v4 = tile, (char *)(scr + j), n);
 
             idx = *(u16 *)(row + SNOW_OFF(mTileMap));
             tile = *(u16 *)((char *)sSnowballCourseTiles + (idx << 3) + 2);
-            scr = (volatile u16 *)(G2S::GetBG2ScrPtr() + off);
+            scr = (volatile u16 *)((char *)G2S::GetBG2ScrPtr() + off);
             MultiStore16(v5 = tile, (char *)(scr + j + 1), n);
 
             idx = *(u16 *)(row + SNOW_OFF(mTileMap));
             tile = *(u16 *)((char *)sSnowballCourseTiles + (idx << 3) + 4);
-            scr = (volatile u16 *)(G2S::GetBG2ScrPtr() + off);
+            scr = (volatile u16 *)((char *)G2S::GetBG2ScrPtr() + off);
             MultiStore16(v6 = tile, (char *)(scr + j + 0x20), n);
 
             idx = *(u16 *)(row + SNOW_OFF(mTileMap));
             tile = *(u16 *)((char *)sSnowballCourseTiles + (idx << 3) + 6);
-            scr = (volatile u16 *)(G2S::GetBG2ScrPtr() + off);
+            scr = (volatile u16 *)((char *)G2S::GetBG2ScrPtr() + off);
             MultiStore16(v7 = tile, (char *)(scr + j + 0x21), n);
 
             row += 0x5c0;
@@ -901,42 +876,42 @@ void dScMgSnowball_c::DrawCourseColumn(int col, int flag) {
     do {
         idx = *(u16 *)(row + SNOW_OFF(mTileMap));
         tile = *(u16 *)((char *)sSnowballCourseTiles + (idx << 3));
-        scr = (volatile u16 *)(G2::GetBG2ScrPtr() + 0x800 + off);
+        scr = (volatile u16 *)((char *)G2::GetBG2ScrPtr() + 0x800 + off);
         MultiStore16(w0 = tile, (char *)(scr + j), n);
 
         idx = *(u16 *)(row + SNOW_OFF(mTileMap));
         tile = *(u16 *)((char *)sSnowballCourseTiles + (idx << 3) + 2);
-        scr = (volatile u16 *)(G2::GetBG2ScrPtr() + 0x802 + off);
+        scr = (volatile u16 *)((char *)G2::GetBG2ScrPtr() + 0x802 + off);
         MultiStore16(w1 = tile, (char *)(scr + j), n);
 
         idx = *(u16 *)(row + SNOW_OFF(mTileMap));
         tile = *(u16 *)((char *)sSnowballCourseTiles + (idx << 3) + 4);
-        scr = (volatile u16 *)(G2::GetBG2ScrPtr() + 0x840 + off);
+        scr = (volatile u16 *)((char *)G2::GetBG2ScrPtr() + 0x840 + off);
         MultiStore16(w2 = tile, (char *)(scr + j), n);
 
         idx = *(u16 *)(row + SNOW_OFF(mTileMap));
         tile = *(u16 *)((char *)sSnowballCourseTiles + (idx << 3) + 6);
-        scr = (volatile u16 *)(G2::GetBG2ScrPtr() + k842 + off);
+        scr = (volatile u16 *)((char *)G2::GetBG2ScrPtr() + k842 + off);
         MultiStore16(w3 = tile, (char *)(scr + j), n);
 
         idx = *(u16 *)(row + SNOW_OFF(mTileMap));
         tile = *(u16 *)((char *)sSnowballCourseTiles + (idx << 3));
-        scr = (volatile u16 *)(G2S::GetBG2ScrPtr() + 0x800 + off);
+        scr = (volatile u16 *)((char *)G2S::GetBG2ScrPtr() + 0x800 + off);
         MultiStore16(w4 = tile, (char *)(scr + j), n);
 
         idx = *(u16 *)(row + SNOW_OFF(mTileMap));
         tile = *(u16 *)((char *)sSnowballCourseTiles + (idx << 3) + 2);
-        scr = (volatile u16 *)(G2S::GetBG2ScrPtr() + 0x802 + off);
+        scr = (volatile u16 *)((char *)G2S::GetBG2ScrPtr() + 0x802 + off);
         MultiStore16(w5 = tile, (char *)(scr + j), n);
 
         idx = *(u16 *)(row + SNOW_OFF(mTileMap));
         tile = *(u16 *)((char *)sSnowballCourseTiles + (idx << 3) + 4);
-        scr = (volatile u16 *)(G2S::GetBG2ScrPtr() + 0x840 + off);
+        scr = (volatile u16 *)((char *)G2S::GetBG2ScrPtr() + 0x840 + off);
         MultiStore16(w6 = tile, (char *)(scr + j), n);
 
         idx = *(u16 *)(row + SNOW_OFF(mTileMap));
         tile = *(u16 *)((char *)sSnowballCourseTiles + (idx << 3) + 6);
-        scr = (volatile u16 *)(G2S::GetBG2ScrPtr() + k842 + off);
+        scr = (volatile u16 *)((char *)G2S::GetBG2ScrPtr() + k842 + off);
         MultiStore16(w7 = tile, (char *)(scr + j), n);
 
         row += 0x5c0;
@@ -1967,11 +1942,10 @@ s32 dScMgSnowball_c::InitResources() {
     *(vu32 *)0x400101c = 0;
     *(vu16 *)0x400100e = (*(vu16 *)0x400100e & ~3) | 3;
 
+    LoadCompressedFileAt(ASSET_D_2D_MG_BG_YUKIDAMA_NCG_BIN, (u8 *)G2::GetBG2CharPtr() + 0x4000);
     LoadCompressedFileAt(ASSET_D_2D_MG_BG_YUKIDAMA_NCG_BIN,
-                         (u8 *)_ZN2G213GetBG2CharPtrEv() + 0x4000);
-    LoadCompressedFileAt(ASSET_D_2D_MG_BG_YUKIDAMA_NCG_BIN,
-                         (void *)(G2S::GetBG2CharPtr() + 0x4000));
-    LoadCompressedFileAt(ASSET_D_2D_MG_BG_YUKA_NSC_BIN, _ZN2G212GetBG3ScrPtrEv());
+                         (void *)((unsigned)G2S::GetBG2CharPtr() + 0x4000));
+    LoadCompressedFileAt(ASSET_D_2D_MG_BG_YUKA_NSC_BIN, G2::GetBG3ScrPtr());
     LoadCompressedFileAt(ASSET_D_2D_MG_BG_YUKA_NSC_BIN, G2S::GetBG3ScrPtr());
 
     data_0209d45c |= 0xc;

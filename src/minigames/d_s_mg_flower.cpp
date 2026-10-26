@@ -32,14 +32,13 @@
 
 #include "dScMgFlower_c.h"
 #include "types.h"
-/* decl_common.h's `extern int G2[]` hides namespace G2. This TU does not
- * reference that data symbol. */
-#define G2 G2_decl_common_shadow
 #include "decl_common.h"
-#undef G2
 #include "Sound.h"
 #include "G2x.h"
 #include "PlayerInput.h"
+#include "G2.h"
+#include "CP15.h"
+#include "GX.h"
 
 #pragma defer_codegen off
 #pragma opt_strength_reduction off
@@ -79,31 +78,9 @@ void FreeGfxSlotsById(int a);
 void *Ov004_LoadFileByPath(void *arg);
 void DecompressLZ16(int src, void *dst);
 void Ov004_Deallocate(void *ptr);
-/* GetBG2CharPtr stays spelled. GetBG2ScrPtr is declared with G2 below. */
-char *_ZN2G213GetBG2CharPtrEv(void);
 extern int data_0208ee44;
 extern u8 data_0209d45c;
 extern u8 data_0209d454;
-}
-
-namespace G2 {
-char *GetBG2ScrPtr();
-}
-namespace G2S {
-void *GetBG2CharPtr();
-char *GetBG2ScrPtr();
-char *GetBG3ScrPtr();
-}
-namespace GX {
-void LoadBGPltt(const void *src, u32 offset, u32 size);
-void LoadOBJPltt(const void *src, u32 offset, u32 size);
-}
-namespace GXS {
-void LoadBGPltt(const void *src, u32 offset, u32 size);
-void LoadOBJPltt(const void *src, u32 offset, u32 size);
-}
-namespace CP15 {
-void FlushAndInvalidateDataCache(u32 address, u32 length);
 }
 
 /* Written first so D1 and D0 are emitted first, as in the cartridge. The
@@ -576,7 +553,7 @@ s32 dScMgFlower_c::InitResources() {
     *(volatile u16 *)0x400100e = (*(volatile u16 *)0x400100e & ~3) | 3;
 
     fileData = (int)Ov004_LoadFileByPath(&sFlowerBgUpNcgPath);
-    DecompressLZ16(fileData, _ZN2G213GetBG2CharPtrEv());
+    DecompressLZ16(fileData, G2::GetBG2CharPtr());
     Ov004_Deallocate((void *)fileData);
 
     fileData = (int)Ov004_LoadFileByPath(&sFlowerBgDownNcgPath);

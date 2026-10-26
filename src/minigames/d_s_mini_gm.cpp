@@ -41,9 +41,8 @@
  * Leftover: g_profile_MINIGAME lives outside this TU (S14).
  * Leftover: OAM::Render Fix12-by-value stays mangled (OAM.h, wall 6az).
  *   This TU's Render.
- * Leftover: GX / G2::GetBG2CharPtr / G2S / GXS / G3X / CP15 stay mangled. No recovered
- *   members in headers this TU includes. InitResources /
- *   MiniGm_LoadGroupIcons / MiniGm_LoadIconPalette are the callers.
+ * Leftover: G3X::SetFog stays mangled (no G3X header). InitResources is
+ *   the caller.
  * Leftover: Sound::LoadGroupAndSetBank / LoadAndSetMusic_Layer1 and
  *   dScene_c::SetFaders / SetAndStopColorFader stay
  *   mangled -- decl_common.h / decl_Scene.h already declare the
@@ -62,40 +61,10 @@
 #include "Sound.h"
 #include "OAM.h"
 #include "decl_Scene.h"
-/* decl_common.h's `extern int G2[]` hides namespace G2. This TU does not
- * reference that data symbol. */
-#define G2 G2_decl_common_shadow
 #include "decl_common.h"
-#undef G2
-
-namespace CP15 {
-void FlushAndInvalidateDataCache(u32 a, u32 b);
-}
-
-namespace G2 {
-void *GetBG2ScrPtr();
-}
-namespace G2S {
-void *GetBG0CharPtr(void);
-void *GetBG0ScrPtr(void);
-void *GetBG2CharPtr(void);
-void *GetBG2ScrPtr(void);
-void *GetBG3ScrPtr(void);
-}
-
-namespace GX {
-void LoadBGPltt(const void *p, u32 a, u32 b);
-void LoadOBJPltt(const void *p, u32 a, u32 b);
-void SetBankForBG(u16 v);
-void SetBankForOBJ(u16 v);
-void SetBankForSubBG(u16 v);
-void SetBankForSubOBJ(u16 v);
-}
-
-namespace GXS {
-void LoadBGPltt(const void *p, u32 a, u32 b);
-void LoadOBJPltt(const void *p, u32 a, u32 b);
-}
+#include "G2.h"
+#include "GX.h"
+#include "CP15.h"
 
 struct MinigameSaveData;
 struct OamAttr;
@@ -191,7 +160,6 @@ extern void MultiStore16(u16 val, void *dst, int nbytes);
 
 extern void OamRender10_d_s_mini_gm(int sub, OamAttr *attr, int x, int y, int pal, int prio, int sx,
                                     int sy, int c, int d);
-extern void *_ZN2G213GetBG2CharPtrEv(void);
 
 }
 
@@ -265,27 +233,27 @@ s32 dScMiniGm_c::InitResources()
     }
     mGfxSlot = 0;
 
-    _ZN2GX15DisableAllBanksEv();
+    GX::DisableAllBanks();
     *(volatile u16 *)0x4000304 |= 0x8000;
-    _ZN2GX13SetBankForTexEt(1);
+    GX::SetBankForTex(1);
     GX::SetBankForBG(2);
     GX::SetBankForSubBG(4);
     GX::SetBankForSubOBJ(8);
     GX::SetBankForOBJ(0x10);
-    _ZN2GX17SetBankForTexPlttEt(0x20);
+    GX::SetBankForTexPltt(0x20);
 
     data_0209d45c &= ~0x1f;
     data_0209d454 &= ~0x1f;
     *(volatile u32 *)0x4000000 &= ~0x1f00;
     *(volatile u32 *)0x4001000 &= ~0x1f00;
-    _ZN2GX15SetGraphicsModeEiii(1, 0, 1);
-    _ZN3GXS15SetGraphicsModeEi(0);
+    GX::SetGraphicsMode(1, 0, 1);
+    GXS::SetGraphicsMode(0);
 
     *(volatile u32 *)0x4000000 &= 0xffcfffef;
     *(volatile u32 *)0x4001000 &= 0xffcfffef;
     *(volatile u32 *)0x4000000 &= ~0x7000000;
     *(volatile u32 *)0x4000000 &= ~0x38000000;
-    _ZN2GX6DispOnEv();
+    GX::DispOn();
     *(volatile u32 *)0x4001000 |= 0x10000;
     _ZN3G3X6SetFogEbiii(0, 0, 2, 0x1000);
     InitialiseVramGlobals();
@@ -300,7 +268,7 @@ s32 dScMiniGm_c::InitResources()
     SetBg2Offset(0, 0);
 
     f = LoadFile(0x4e);
-    DecompressLZ16(f, _ZN2G213GetBG2CharPtrEv());
+    DecompressLZ16(f, G2::GetBG2CharPtr());
     Deallocate(f);
 
     f = LoadFile(0x58);

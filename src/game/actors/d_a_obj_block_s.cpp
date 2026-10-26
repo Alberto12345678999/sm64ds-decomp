@@ -75,6 +75,7 @@ enum daObjBlockS_c_AssetId {
 };
 
 #include "decl_Actor.h"
+#include "cstd.h"
 #include "nitro/fx/fx.h"
 #include "decl_common.h"
 #include "daObjBlockS_c.h"
@@ -87,7 +88,6 @@ enum daObjBlockS_c_AssetId {
 #include "SurfaceInfo.h"
 #include "dCc_c.h"
 #include "Sound.h"
-#include "cstd.h"
 
 struct Vector3_16f;
 

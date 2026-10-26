@@ -28,6 +28,7 @@
  */
 #include "dCapEnemy_c.h"
 #include "decl_common.h"
+#include "Memory.h"
 
 extern "C" void _ZN10dCapIcon_cD1Ev(void *);
 extern "C" void _ZN12dEnemyBase_cD2Ev(void *);
@@ -43,7 +44,7 @@ extern "C" dCapEnemy_c *_ZN11dCapEnemy_cD0Ev(dCapEnemy_c *self)
     _ZN10dCapIcon_cD1Ev(&self->mCapIcon);
     self->mModel.dExtSimpleModel_c::~dExtSimpleModel_c();
     _ZN12dEnemyBase_cD2Ev(self);
-    _ZN6Memory10DeallocateEPvPN5mHeap6Heap_tE(self, data_020a0eac);
+    Memory::Deallocate(self, (Heap *)data_020a0eac);
     return self;
 }
 

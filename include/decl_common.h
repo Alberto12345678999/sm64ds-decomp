@@ -277,7 +277,6 @@ extern int AngleDiff(int, int);
 extern int ContinueKuppaScriptIfNecessary(void);
 extern int G;
 extern int G1[];
-extern int G2[];
 extern int GetOwnerLanguage(void);
 extern int GiveHealth(int, int);
 extern int IsButtonInputValid(void);
