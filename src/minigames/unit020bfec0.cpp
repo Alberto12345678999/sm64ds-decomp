@@ -92,8 +92,7 @@ void SharedFilePtr_Destruct_Anim(void *);
 void SharedFilePtr_Destruct_TexSeq(void *);
 void _ZN17dExtShadowModel_c9InitModelEP9Matrix4x35Fix12IiES3_S3_j(void *, void *, int, int, int,
                                                                   unsigned int);
-int _ZN3G3i13PerspectiveW_E5Fix12IiES1_S1_S1_S1_S1_bP9Matrix4x3(int, int, int, int, int, int, int,
-                                                                void *);
+
 /* local extern: dClipper::Func_020156DC takes a by-value Fix12<int> (the Fix12 wall), so it stays spelled out with scalar arguments. */
 void _ZN8dClipper13Func_020156DCEitii(void *, int, int, int, int);
 void *_ZN7Vector3D1Ev(void *);
@@ -2634,9 +2633,8 @@ void Camera_UpdateMatrices(struct dCamera_c *self) {
     }
 
     idx = (self->angle >> 4) * 2;
-    _ZN3G3i13PerspectiveW_E5Fix12IiES1_S1_S1_S1_S1_bP9Matrix4x3(
-        data_02082214[idx], data_02082214[idx + 1], 0x1555, 0x1000, 0x1388000, 0x1000, 1,
-        &self->projMat);
+    G3i::PerspectiveW_(data_02082214[idx], data_02082214[idx + 1], 0x1555, 0x1000, 0x1388000,
+                       0x1000, 1, (Matrix4x3 *)&self->projMat);
 
     G3i::LookAt_(&self->eye, &up, &self->target, true, (Matrix4x3 *)&self->viewMat);
 
