@@ -93,6 +93,10 @@ struct PicGateMaterial {
 typedef char PicGateMaterial_size_must_be_0x30[sizeof(PicGateMaterial) == 0x30 ? 1 : -1];
 #endif
 
+namespace cstd {
+Fix12i fdiv(s32, s32);
+}
+
 extern "C" {
 void  Vec3_Asr(Vec3 *d, Vec3 *s, int sh);
 void  Matrix4x3_FromTranslation(Matrix4x3 *m, int x, int y, int z);
@@ -107,7 +111,6 @@ Fix12i Vec3_Dist(const Vector3 *a, const Vector3 *b);
 void  MulMat4x3Mat4x3(const int *m1, const int *m0, int *mF);
 void  func_020553a4(void *m);
 void  func_02012694(u32 id, void *pos);
-Fix12i _ZN4cstd4fdivEii(Fix12i a, Fix12i b);
 int   __aeabi_idiv(int a, int b);
 void *func_0201787c(SharedFilePtr *sfp);
 u32   func_02045ad8(const void *src, u32 size);
@@ -387,7 +390,7 @@ s32 daPicGate_c::func_ov080_02125bb0(s32 r6)
     r5res = func_ov080_02125d08(r6);
     r4res = func_ov080_02125cd4(mWaveParams->duration - mWaveTimer);
 
-    f = _ZN4cstd4fdivEii(r4res, mWaveParams->radius);
+    f = cstd::fdiv(r4res, mWaveParams->radius);
     sum = r4res + FX_MUL(-f, r6);
     if (sum < 0)
         sum = 0;
@@ -413,7 +416,7 @@ s32 daPicGate_c::func_ov080_02125cd4(s32 n)
 /* The wave's phase at distance dist from the origin: dist * 0xffff /
  * wavelength, 4.12 fixed-point, minus the running phase mWavePhase. */
 s32 daPicGate_c::func_ov080_02125d08(s32 dist) {
-    Fix12i speed = _ZN4cstd4fdivEii(0xffff, mWaveParams->wavelength);
+    Fix12i speed = cstd::fdiv(0xffff, mWaveParams->wavelength);
     int result = FX_MUL(dist, speed);
     s16 cur = mWavePhase;
     return (s16)(result - cur);

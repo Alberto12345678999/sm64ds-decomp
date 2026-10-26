@@ -158,13 +158,15 @@ struct MgBanner {
 extern int ApproachLinear(int &, int, int);
 extern int ApproachLinear2(short &value, short target, short step);
 
+namespace cstd {
+int fdiv(s32 a, s32 b);
+}
 extern "C" {
 void Deallocate(void *ptr);
 int GetGameLanguage(void);
 int LoadFile(int handle);
 void DecompressLZ16(void *src, void *dst);
 int Mg_CopySpriteList(int a, void *b, int c, int d);
-int _ZN4cstd4fdivEii(int a, int b);
 int func_02053200(int x);
 unsigned int func_02012790(unsigned int x);
 void func_0203d704(int *o, int *a, int *b);
@@ -702,7 +704,7 @@ extern "C" void Banner_DrawSqueeze(MgBanner *e) {
     m = FX_MUL(e->mTimer, 0xcc);
     {
         u8* el = e->mOam;
-        fd = _ZN4cstd4fdivEii(m, 0x1000);
+        fd = cstd::fdiv(m, 0x1000);
         t = FX_MUL(fd, 0x1000);
         v = func_02053200(m);
         {
@@ -753,7 +755,7 @@ extern "C" void Banner_DrawPopSpinA(MgBanner *e) {
             if (e->mTimer >= 0x14000) {
                 v = 0x1000;
             } else {
-                int t = _ZN4cstd4fdivEii(0x1000, 0x18000);
+                int t = cstd::fdiv(0x1000, 0x18000);
                 v -= FX_MUL(e->mTimer, t);
                 v = func_02053200(v);
             }
@@ -804,7 +806,7 @@ extern "C" void Banner_DrawPopSpinB(MgBanner *e) {
             if (e->mTimer >= 0x14000) {
                 v = 0x1000;
             } else {
-                int t = _ZN4cstd4fdivEii(0x1000, 0x18000);
+                int t = cstd::fdiv(0x1000, 0x18000);
                 v -= FX_MUL(e->mTimer, t);
                 v = func_02053200(v);
             }
@@ -945,12 +947,12 @@ extern "C" void Banner_DrawZoomA(MgBanner *e) {
             if (val < 0x14000) {
                 int t;
                 d = FX_MUL(val, 0x100);
-                t = _ZN4cstd4fdivEii(d, 0x1400);
+                t = cstd::fdiv(d, 0x1400);
                 scale = FX_MUL(t, 0x1400);
             } else {
                 int a = FX_MUL((val - 0x14000), 0x66);
                 int b = 0x1400 - a;
-                int t = _ZN4cstd4fdivEii(b - 0x1000, 0x400);
+                int t = cstd::fdiv(b - 0x1000, 0x400);
                 scale = (0x1000 - t) + FX_MUL(t, 0x1400);
                 d = b;
             }
@@ -1014,12 +1016,12 @@ extern "C" void Banner_DrawZoomB(MgBanner *e) {
             if (val < 0x14000) {
                 int t;
                 d = FX_MUL(val, 0x100);
-                t = _ZN4cstd4fdivEii(d, 0x1400);
+                t = cstd::fdiv(d, 0x1400);
                 scale = FX_MUL(t, 0x1400);
             } else {
                 int a = FX_MUL((val - 0x14000), 0x66);
                 int b = 0x1400 - a;
-                int t = _ZN4cstd4fdivEii(b - 0x1000, 0x400);
+                int t = cstd::fdiv(b - 0x1000, 0x400);
                 scale = (0x1000 - t) + FX_MUL(t, 0x1400);
                 d = b;
             }
