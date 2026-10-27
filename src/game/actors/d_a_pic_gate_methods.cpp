@@ -112,7 +112,7 @@ extern u8 data_ov080_02127714[];
 extern void func_020553a4(void *mtx);
 extern void *data_ov080_02127834;
 extern void func_0203cbc0(void *a);
-/* daPicGate_c_classInit builds the object by hand; see the note above it. */
+/* local extern: daPicGate_c_classInit builds the object by hand; see the note above it. */
 extern void *_ZN8dActor_cC2Ev(void *self);
 }
 

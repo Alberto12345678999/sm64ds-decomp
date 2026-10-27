@@ -14,11 +14,9 @@
  * the same pragma lays .text down in source order, so this file is ROM-ascending.
  */
 
-// leftovers: dBgW_KcMbg::SetFile, dActor_c::DropShadowScaleXYZ and
-// dBgActor_c::IsClsnInRange take Fix12<int> by value, so they stay mangled
-// (a member call homes the argument and changes the ROM ABI -- this TU's
-// InitResources/Behavior/UpdateShadow calls). func_020393d4 is a 4-byte
-// store into dBgW's callback slot; naming belongs with dBgW in arm9.
+// leftovers: func_020393d4 is a 4-byte store into dBgW's callback slot;
+// naming belongs with dBgW in arm9. UpdateShadow is void: its early exit
+// leaves no value, and Behavior ignores it.
 
 /* The two registry factories close the run in ROM order:
  * daObjCtRotateBlock_c_classInit_CT_MECHA02 (0x02119ebc, historical alias
@@ -77,11 +75,6 @@ extern void MulVec3Mat4x3(void *src, void *mtx, void *dst);
 extern void AddVec3(void *a, void *b, void *c);
 extern u16 DecIfAbove0_Short(u16 *p);
 extern int RandomIntInternal(int *seed);
-/* local extern: int return -- `return` forwards the callee's r0 (a tail call). */
-extern int _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x3iiih(void *self,
-                                                                                void *sm, void *mtx,
-                                                                                int a, int b, int d,
-                                                                                unsigned int e);
 extern void hold_d_a_obj_ct_rotate_block(void *mc, void *kcl, void *mtx, int fix, s16 s,
                                          void *clps);
 extern void func_020393d4(void *p, void *v);
@@ -102,14 +95,14 @@ daObjCtRotateBlock_c::~daObjCtRotateBlock_c()
 }
 
 // @symbol _ZN20daObjCtRotateBlock_c12UpdateShadowEv
-int daObjCtRotateBlock_c::UpdateShadow()
-{
+void daObjCtRotateBlock_c::UpdateShadow() {
     int d, b;
     int bval = mFloorY;
     int aval = mPosY;
     int diff = aval - bval;
     if (diff < 0) diff = -diff;
-    if (diff > 0x9c4000) return 0x9c4000;
+    if (diff > 0x9c4000)
+        return;
     b = 0x32000;
     d = 0x190000;
     if (mUnevenGround) { b = 0x17c000; d = b; }
@@ -122,8 +115,7 @@ int daObjCtRotateBlock_c::UpdateShadow()
         int s = data_02082214[idx << 1];
         int sa = s < 0 ? -s : s;
         int depthAdd = FX_MUL(sa, 0x64000);
-        return _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x3iiih(
-            this, &mShadowModel, &mShadowMat, d + depthAdd, b, d, 0xf);
+        DropShadowScaleXYZ(mShadowModel, mShadowMat, d + depthAdd, b, d, 0xf);
     }
 }
 

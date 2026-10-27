@@ -17,12 +17,13 @@
  * of the run and is written last.
  *
  * leftovers:
- * - dBgActor_c::IsClsnInRangeOnScreen, dActor_c::SpawnCoins and
- *   dBgW_KcMbg::SetFile take Fix12<int> by value. Fix12<int>{0} does not
- *   compile. The calls stay the scalar externs.
- * - Behavior's SpawnCoins goes through V3 (copy ctor, empty dtor) by value.
- *   func_ov091_021334b8 uses a two-Vector3 stack struct and a function-pointer
- *   cast to const Vector3 &. Those are different calls; do not unify them.
+ * - dBgActor_c::IsClsnInRangeOnScreen and dBgW_KcMbg::SetFile take
+ *   Fix12<int> by value. Fix12<int>{0} does not compile. The calls stay the
+ *   scalar externs.
+ * - Behavior's SpawnCoins passes a Vector3(x, y, z) temporary built from the
+ *   local, so the call copies the triple first. func_ov091_021334b8 passes a
+ *   two-Vector3 stack struct's second triple directly. Those are different
+ *   calls; do not unify them.
  * - func_ov091_021334b8 keeps the mPosY and mStepsLeft pointer
  *   read-modify-writes and `*q = *q - 1`. The else path materializes offset
  *   0x31e from the pool because that displacement is not an ARM immediate.
@@ -57,15 +58,6 @@ enum daObjPile_c_AssetId {
 #include "SharedFilePtr.h"
 #include "daObjKinokoTag_c.h"
 
-/* SpawnCoins is declared on dActor_c as const Vector3 &, which is not the
- * call Behavior emits. V3's copy is what matches that call. */
-struct V3 {
-    int x, y, z;
-    V3() {}
-    V3(const V3 &o) { x = o.x; y = o.y; z = o.z; }
-    ~V3() {}
-};
-
 /* 8-byte file handles. The model uses func_02017acc / func_02017ab4 and the
  * collision file func_02017b4c / SharedFilePtr_Destruct_Clsn. The spellings
  * are local; the manifest aliases the generated names to those ROM symbols. */
@@ -81,8 +73,6 @@ struct PileCollisionFilePtr : SharedFilePtr {
 
 extern "C" {
 extern unsigned char DecIfAbove0_Byte(unsigned char *p);
-/* local extern: called via a function-pointer cast with a by-value V3. */
-extern void _ZN8dActor_c10SpawnCoinsERK7Vector3iis(void *c, V3 v, unsigned int n, int f, short s);
 extern void hold_d_a_obj_pile(void *self, void *kcl, void *mtx, int fix, short s, void *clps);
 extern int func_02012694(int a, void *b);
 
@@ -154,9 +144,7 @@ void daObjPile_c::func_ov091_021334b8(int flag)
             st.v2x = st.vx;
             st.v2y = st.vy;
             st.v2z = st.vz;
-            typedef void (*SpawnRef)(void *, Vector3 const &, unsigned int, int, short);
-            ((SpawnRef)_ZN8dActor_c10SpawnCoinsERK7Vector3iis)(this, *(Vector3 *)&st.v2x, 5, 0x5000,
-                                                               0);
+            SpawnCoins(*(Vector3 *)&st.v2x, 5, 0x5000, 0);
         }
     }
     TrackInDeathTable();
@@ -243,12 +231,12 @@ s32 daObjPile_c::Behavior()
                     a = -a;
                 if (a > 0x30000 && mBusy == 0
                     && GetBitInDeathTable() == 0) {
-                    V3 v;
+                    Vector3 v;
                     v.x = mPosX;
                     v.y = mPosY;
                     v.z = mPosZ;
                     v.y += 0xc8000;
-                    _ZN8dActor_c10SpawnCoinsERK7Vector3iis(this, v, 5, 0x5000, 0);
+                    SpawnCoins(Vector3(v.x, v.y, v.z), 5, 0x5000, 0);
                     TrackInDeathTable();
                 }
             }

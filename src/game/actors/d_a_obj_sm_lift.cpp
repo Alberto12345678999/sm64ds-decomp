@@ -13,9 +13,9 @@
  * the same pragma lays .text down in source order, so this file is ROM-ascending.
  *
  * leftovers:
- * - dBgW_KcMbg::SetFile, dBgActor_c::UpdateKillByMegaChar and
- *   dBgActor_c::IsClsnInRange take Fix12<int> by value, so they stay mangled;
- *   a member call homes the argument and changes the ROM ABI.
+ * - dBgW_KcMbg::SetFile and dBgActor_c::IsClsnInRange take Fix12<int> by
+ *   value, so they stay mangled; a member call homes the argument and
+ *   changes the ROM ABI.
  * - InitResources keeps the param1 mask, the yaw adjust, and the
  *   node-index add as offset writes. Naming them changed the function size.
  * The file ends with the mesh-collider callback func_ov018_021117e8, the
@@ -51,7 +51,6 @@ void Matrix4x3_ApplyInPlaceToRotationX(Matrix4x3 *m, short angX);
 extern Matrix4x3 data_020a0e68;
 extern s16 data_02082214[];
 
-int _ZN10dBgActor_c20UpdateKillByMegaCharEsss5Fix12IiE(void *self, s16 a, s16 b, s16 c, int d);
 extern void hold_d_a_obj_sm_lift(void *th, void *kf, void *mtx, int fx, short s, void *clps);
 void func_020393d4(int *p, int v);
 void func_020393c4(int *p, int v);
@@ -144,7 +143,7 @@ int daObjSm_Lift_c::Behavior()
     s16 target;
     char *other;
 
-    if (_ZN10dBgActor_c20UpdateKillByMegaCharEsss5Fix12IiE(self, 0x2000, 0, 0, 0) != 0)
+    if (UpdateKillByMegaChar(0x2000, 0, 0, 0) != 0)
         return 1;
 
     if (DecIfAbove0_Byte(&unk_331) == 0)

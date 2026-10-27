@@ -211,7 +211,7 @@ struct daStar_c : dEnemyBase_c {
     void func_ov002_020e700c();
     void func_ov002_020e7090(int arg);
     void func_ov002_020e7218(char* a, int gate);
-    int func_ov002_020e73ac();
+    u8 func_ov002_020e73ac();
     void func_ov002_020e7454();
     void func_ov002_020e7554();
     void func_ov002_020e763c();

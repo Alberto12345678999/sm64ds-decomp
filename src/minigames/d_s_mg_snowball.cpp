@@ -150,6 +150,7 @@ extern void SetSubBg2Offset(int, int);
 extern void SetSubBg3Offset(int, int);
 extern void func_020731dc(void *, void *, void **);
 extern void Quaternion_Normalize(s32 *);
+/* local extern: C++ cannot take ~Vector3()'s address */
 extern void *_ZN7Vector3D1Ev(void *object);
 extern u32 sSnowball_ResetScene_UnitYGuard;
 extern void *sSnowball_ResetScene_UnitYDtorRec;

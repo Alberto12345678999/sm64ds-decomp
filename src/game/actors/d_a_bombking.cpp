@@ -137,9 +137,6 @@ extern "C" {
 extern short Vec3_HorzAngle(const void* a, const void* b);
 extern int Vec3_Dist(const void* a, const void* b);
 extern void ApproachAngle(void *p, int target, int a, int b, int c);
-/* local extern: the matched call sets up no Player in r0 (it reuses whatever the
-   previous call left), so there is no object to call Player::GetHealth() on */
-extern "C" int _ZN6Player9GetHealthEv(void);
 extern int RandomIntInternal(int* seed);
 extern int data_0209e650;
 extern void Matrix4x3_FromRotationY(void *m, int angle);
@@ -419,8 +416,8 @@ int daBombking_c::func_ov078_02123f1c()
 {
     if (func_ov078_02123804() != 1) {
         if (this->mHeldActor == 0) goto L6c;
-        /* No receiver: r0 is whatever the previous call left. */
-        if (_ZN6Player9GetHealthEv() != 0) goto L6c;
+        if (this->mHeldActor->GetHealth() != 0)
+            goto L6c;
     }
     func_ov078_02123864();
     if (this->mHeldActor != 0) {

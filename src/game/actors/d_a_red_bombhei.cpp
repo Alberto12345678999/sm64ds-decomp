@@ -26,9 +26,7 @@
  *
  * Source order is the reverse of the ROM. The factory is written first.
  */
-/* leftovers: Player::ShowMessage stays a local extern: the member re-masks
- * the flag bytes and func_ov084_0212c9f0 grows.
- * data_ov084_02130da4, data_ov084_02130d9c and data_ov084_02130dc4 keep
+/* leftovers: data_ov084_02130da4, data_ov084_02130d9c and data_ov084_02130dc4 keep
  * address names. This text-only TU does not own that .bss. The state
  * bodies stay address-named members; the table reaches them by address.
  */
@@ -126,10 +124,6 @@ void  MulVec3Mat4x3(Vector3 *v, Matrix4x3 *m, Vector3 *out);
 void  Matrix4x3_FromRotationY(void *m, int angle);
 int   Math_Function_0203b14c(int *value, int target, int a, int b, int c);
 
-/* local extern: Player::ShowMessage takes the two flag bytes as unsigned
-   char. The member call re-masks the caller's word and func_ov084_0212c9f0
-   grows from 0x70 to 0x74. */
-int _ZN6Player11ShowMessageER7fBase_cjPK7Vector3hh(Player *self, fBase_c *actor, unsigned int msgID, const Vector3 *pos, unsigned int a, unsigned int b);
 
 }
 
@@ -414,10 +408,9 @@ int daRedBombhei_c::func_ov084_0212ca60()
     return result;
 }
 
-// @symbol _ZN14daRedBombhei_c19func_ov084_0212c9f0Eij
+// @symbol _ZN14daRedBombhei_c19func_ov084_0212c9f0Eih
 /* Opens message msgID on the talking player's screen, with the talk sound. */
-void daRedBombhei_c::func_ov084_0212c9f0(int msgID, unsigned int msgFlag)
-{
+void daRedBombhei_c::func_ov084_0212c9f0(int msgID, u8 msgFlag) {
     Player *player = this->mTalkPlayer;
     Vector3 pos;
     int x = this->mPosX;
@@ -427,7 +420,7 @@ void daRedBombhei_c::func_ov084_0212c9f0(int msgID, unsigned int msgFlag)
     pos.y = y;
     pos.z = z;
     func_02012694(0x108, &this->mCamSpacePos);
-    _ZN6Player11ShowMessageER7fBase_cjPK7Vector3hh(player, this, (s16)msgID, &pos, msgFlag, 0);
+    player->ShowMessage(*this, (s16)msgID, &pos, msgFlag, 0);
 }
 
 // @symbol _ZN14daRedBombhei_c19func_ov084_0212c9a8Ev

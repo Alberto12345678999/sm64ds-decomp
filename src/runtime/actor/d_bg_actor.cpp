@@ -509,9 +509,8 @@ void dBgActor_c::UpdateClsnPosAndRot()
  * the per-frame angle steps, integrate, and Kill() when the fuse runs out.
  * Callers (pushblock, signpost, ski lift, Bill Blaster) pass the X step and a
  * model-pivot height; nonzero return means "still flying". */
-// @symbol _ZN10dBgActor_c20UpdateKillByMegaCharEsss5Fix12IiE
-int dBgActor_c::UpdateKillByMegaChar(s16 angStepX, s16 angStepY, s16 angStepZ, Fix12<int> pivotY)
-{
+// @symbol _ZN10dBgActor_c20UpdateKillByMegaCharEsssi
+int dBgActor_c::UpdateKillByMegaChar(s16 angStepX, s16 angStepY, s16 angStepZ, Fix12i pivotY) {
     Vector3 probe;
     Vector3 rayEnd;
     Vector3 sum;
@@ -540,7 +539,7 @@ int dBgActor_c::UpdateKillByMegaChar(s16 angStepX, s16 angStepY, s16 angStepZ, F
     UpdatePos(0);
     if (DecIfAbove0_Byte(&mMegaKnockbackTimer) == 0)
         Kill();
-    func_ov002_020ee5d0(this, pivotY.val);
+    func_ov002_020ee5d0(this, pivotY);
     return 1;
 }
 

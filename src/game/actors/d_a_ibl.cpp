@@ -18,8 +18,6 @@
  *   code fills with two-word pointer-to-member records.
  * - Player::Hurt stays mangled: it takes Fix12<int> by value. The local
  *   Hurt declaration agrees with the current scalar definition.
- * - func_ov100_021424c0 calls dCc_c::Update by its symbol: the function
- *   returns that call's r0, and the member is void.
  * - The spawner copies Player position through a byte view of the whole object
  *   into a real Vector3. The inherited position fields remain separate scalars.
  * - Spawn still borrows this actor's flat position and angle fields through
@@ -113,10 +111,6 @@ void _Z14ApproachLinearRiii(int *value, int target, int step);
 int Vec3_HorzLen(void *v);
 int Vec3_HorzDist(const void *a, const void *b);
 int Vec3_Equal(void *a, void *b);
-/* local extern: func_ov100_021424c0 returns an int and its tail returns this
-   call's r0, but dCc_c::Update is void, so the member call does not compile
-   as the return value. */
-int _ZN5dCc_c6UpdateEv(void *c);
 
 extern int IDENTITY_MATRIX4X3[];
 }
@@ -412,8 +406,7 @@ int daIbl_c::func_ov100_0214233c()
  * 4 ramps toward it by 0x400 (0.25 units/frame) a frame, and kind 2 adds
  * the floor normal's X and Z to its velocity. Last comes the collision
  * update. */
-int daIbl_c::func_ov100_021424c0()
-{
+void daIbl_c::func_ov100_021424c0() {
     int r;
     int vy;
 
@@ -421,17 +414,15 @@ int daIbl_c::func_ov100_021424c0()
     r = func_ov002_020ad660(this, &mWithMeshClsn, &mModel, 3);
     if (r != 0) {
         if (r != 2)
-            return r;
+            return;
         Particle::System::NewSimple(daIbl_PTCL_BREAK, mPosX, mPosY, mPosZ);
-        return func_02012694(daIbl_SND_BREAK, &mCamSpacePosX);
+        func_02012694(daIbl_SND_BREAK, &mCamSpacePosX);
+        return;
     }
 
     func_ov100_02141fb0();
-    {
-        int m = mDeathState;
-        if (m == daIbl_DEATH_KNOCKED)
-            return m;
-    }
+    if (mDeathState == daIbl_DEATH_KNOCKED)
+        return;
 
     r = func_ov100_0214233c();
     _Z14ApproachLinearRsss(&mPrevAngleY, mHeadingToNode, 0x800);
@@ -478,7 +469,7 @@ int daIbl_c::func_ov100_021424c0()
     UpdatePos(0);
     func_ov100_02142264();
     mdCcAc_c.Clear();
-    return _ZN5dCc_c6UpdateEv(&mdCcAc_c);
+    mdCcAc_c.Update();
 }
 
 // @symbol _ZN7daIbl_c19func_ov100_0214272cEv

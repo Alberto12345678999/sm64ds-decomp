@@ -27,9 +27,6 @@ struct Callback;
  * __sinit from six descriptor records.
  *
  * leftovers:
- *  - DropShadow keeps DropShadowRadHeight's mangled `_ZN` spelling: it
- *    returns an int its early exit computes, and the member is void (see
- *    the local extern).
  *  - dBgCh_Actr_UpdateContinuous_Veneer is a real ROM symbol callers name
  *    directly, not a wrapper to collapse into UpdateContinuous.
  *  - StateOpening still writes mWobbleAngle through a `short*` pun:
@@ -115,9 +112,6 @@ extern void *data_0209f318;
 extern void func_0203568c(int *p, int v);
 extern void func_02035684(int *p, int v);
 extern int func_0200fccc(char* s, int r1);
-/* local extern: int return -- `return` forwards the callee's r0 (a tail call). */
-extern int _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x3iih(
-    char *self, dExtShadowModel_c *sm, struct Matrix4x3 *m, int fix, int t, u32 f);
 extern void Matrix4x3_FromRotationY(void* m, int angle);
 extern void *gPFlowerCloseModelFile[];
 extern void *gPFlowerOpenModelFile[];
@@ -396,14 +390,14 @@ void daObjPowerUpItem_c::CheckPickup() {
 /* Shadow: copies mOpenModel's matrix into mShadowMat, puts its Y at the ground
  * height (mGroundY >> 3) and drops the shadow. In state 0 the shadow radius
  * shrinks with the flower's height above the ground (0x64000 down to a floor of
- * 0x3c000); otherwise it is 0x78000. Returns 1 without doing anything while the
- * 0x40000 yoshi-mouth bit is set. */
+ * 0x3c000); otherwise it is 0x78000. Does nothing while the 0x40000 yoshi-mouth
+ * bit is set. */
 // @symbol _ZN18daObjPowerUpItem_c10DropShadowEv
-int daObjPowerUpItem_c::DropShadow()
-{
+void daObjPowerUpItem_c::DropShadow() {
     int r3;
     int b = (int)((mFlags & 0x40000) != 0);
-    if (b != 0) return b;
+    if (b != 0)
+        return;
     *(struct Matrix4x3*)&mShadowMat = *(struct Matrix4x3*)&mOpenModel.mat4x3;
     mShadowMat.m[10] = mGroundY >> 3;
     r3 = 0x78000;
@@ -413,8 +407,7 @@ int daObjPowerUpItem_c::DropShadow()
         r3 = 0x64000 - FX_MUL(d, 0x180);
         if (r3 < 0x3c000) r3 = 0x3c000;
     }
-    return _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x3iih(
-        (char *)this, &mShadowModel, &mShadowMat, r3, 0x3c000, 0xf);
+    DropShadowRadHeight(mShadowModel, mShadowMat, r3, 0x3c000, 0xf);
 }
 
 /* dExtSimpleModel_c matrices: rotates mOpenModel's matrix by mAngleY, sets its translation

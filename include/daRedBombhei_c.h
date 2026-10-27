@@ -58,7 +58,7 @@ struct daRedBombhei_c : dActor_c {
     void func_ov084_0212c92c();
     void func_ov084_0212c960(int state);
     void func_ov084_0212c9a8();
-    void func_ov084_0212c9f0(int msgID, unsigned int msgFlag);
+    void func_ov084_0212c9f0(int msgID, u8 msgFlag);
     int  func_ov084_0212ca60();
     int  func_ov084_0212caa8();
     int  func_ov084_0212cac0();
