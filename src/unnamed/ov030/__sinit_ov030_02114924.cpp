@@ -1,3 +1,8 @@
+//cpp
+#include "SharedFilePtr.h"
+
+extern "C" {
+
 /* Runtime asset handles resolved through the overlay 0 file table. */
 enum sinit_ov030_02114924_AssetId {
     ASSET_MONKEY_BMD = 0x03aa,
@@ -13,37 +18,43 @@ enum sinit_ov030_02114924_AssetId {
     ASSET_MONKEY_WAIT4_BCA = 0x03b4
 };
 
-extern int func_02017acc(void*, int);
-extern void func_020731dc(void*, void*, void**);
-extern int _ZN13SharedFilePtr9ConstructEj(void*, int);
-extern void func_02017ab4(void);
-extern void SharedFilePtr_Destruct_Anim(void);
+extern void *func_02017acc(void *, unsigned int);
+extern void func_020731dc(void *, void *, void **);
+extern int func_02017ab4(int);
+extern int SharedFilePtr_Destruct_Anim(int);
+/* local extern: C++ cannot take a destructor's address, so the registrations
+   name ~Vector3() by its linker name. */
 extern void *_ZN7Vector3D1Ev(void *object);
 
 extern void* data_ov030_02115d00;
 extern void* data_ov030_02115d28;
-extern void* gMonkeyHoldAnimationFile;
+extern SharedFilePtr gMonkeyHoldAnimationFile;
 extern void* data_ov030_02115d34;
-extern void* gMonkeyJumpStAnimationFile;
+extern SharedFilePtr gMonkeyJumpStAnimationFile;
 extern void* data_ov030_02115d40;
-extern void* gMonkeyJumpEdAnimationFile;
+extern SharedFilePtr gMonkeyJumpEdAnimationFile;
 extern void* data_ov030_02115d64;
-extern void* gMonkeyRunStAnimationFile;
+extern SharedFilePtr gMonkeyRunStAnimationFile;
 extern void* data_ov030_02115d70;
-extern void* gMonkeyRunAnimationFile;
+extern SharedFilePtr gMonkeyRunAnimationFile;
 extern void* data_ov030_02115d88;
-extern void* gMonkeyRunEdAnimationFile;
+extern SharedFilePtr gMonkeyRunEdAnimationFile;
 extern void* data_ov030_02115d94;
-extern void* data_ov030_02115cf0;
+extern SharedFilePtr data_ov030_02115cf0;
 extern void* data_ov030_02115dac;
-extern void* gMonkeyWait2AnimationFile;
+extern SharedFilePtr gMonkeyWait2AnimationFile;
 extern void* data_ov030_02115db8;
-extern void* gMonkeyWait3AnimationFile;
+extern SharedFilePtr gMonkeyWait3AnimationFile;
 extern void* data_ov030_02115dc4;
-extern void* gMonkeyWait4AnimationFile;
+extern SharedFilePtr gMonkeyWait4AnimationFile;
 extern void* data_ov030_02115dd0;
 
-typedef struct { int a, b; } S8;
+/* Two words copied as a unit. Under C++ a struct of two scalar fields is
+   assigned field by field, which reorders the loads; an array member keeps
+   C's schedule. */
+typedef struct {
+    int w[2];
+} S8;
 typedef struct { S8 lo, hi; } S16;
 
 extern S8 data_ov030_02115b68;
@@ -83,27 +94,36 @@ extern void* data_ov030_02115da0;
 void __sinit_ov030_02114924(void)
 {
     func_02017acc(&data_ov030_02115d00, ASSET_MONKEY_BMD);
-    func_020731dc(&data_ov030_02115d00, (void*)&func_02017ab4, (void**)&data_ov030_02115d28);
-    _ZN13SharedFilePtr9ConstructEj(&gMonkeyHoldAnimationFile, ASSET_MONKEY_HOLD_BCA);
-    func_020731dc(&gMonkeyHoldAnimationFile, (void*)&SharedFilePtr_Destruct_Anim, (void**)&data_ov030_02115d34);
-    _ZN13SharedFilePtr9ConstructEj(&gMonkeyJumpStAnimationFile, ASSET_MONKEY_JUMP_ST_BCA);
-    func_020731dc(&gMonkeyJumpStAnimationFile, (void*)&SharedFilePtr_Destruct_Anim, (void**)&data_ov030_02115d40);
-    _ZN13SharedFilePtr9ConstructEj(&gMonkeyJumpEdAnimationFile, ASSET_MONKEY_JUMP_ED_BCA);
-    func_020731dc(&gMonkeyJumpEdAnimationFile, (void*)&SharedFilePtr_Destruct_Anim, (void**)&data_ov030_02115d64);
-    _ZN13SharedFilePtr9ConstructEj(&gMonkeyRunStAnimationFile, ASSET_MONKEY_RUN_ST_BCA);
-    func_020731dc(&gMonkeyRunStAnimationFile, (void*)&SharedFilePtr_Destruct_Anim, (void**)&data_ov030_02115d70);
-    _ZN13SharedFilePtr9ConstructEj(&gMonkeyRunAnimationFile, ASSET_MONKEY_RUN_BCA);
-    func_020731dc(&gMonkeyRunAnimationFile, (void*)&SharedFilePtr_Destruct_Anim, (void**)&data_ov030_02115d88);
-    _ZN13SharedFilePtr9ConstructEj(&gMonkeyRunEdAnimationFile, ASSET_MONKEY_RUN_ED_BCA);
-    func_020731dc(&gMonkeyRunEdAnimationFile, (void*)&SharedFilePtr_Destruct_Anim, (void**)&data_ov030_02115d94);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov030_02115cf0, ASSET_MONKEY_WAIT1_BCA);
-    func_020731dc(&data_ov030_02115cf0, (void*)&SharedFilePtr_Destruct_Anim, (void**)&data_ov030_02115dac);
-    _ZN13SharedFilePtr9ConstructEj(&gMonkeyWait2AnimationFile, ASSET_MONKEY_WAIT2_BCA);
-    func_020731dc(&gMonkeyWait2AnimationFile, (void*)&SharedFilePtr_Destruct_Anim, (void**)&data_ov030_02115db8);
-    _ZN13SharedFilePtr9ConstructEj(&gMonkeyWait3AnimationFile, ASSET_MONKEY_WAIT3_BCA);
-    func_020731dc(&gMonkeyWait3AnimationFile, (void*)&SharedFilePtr_Destruct_Anim, (void**)&data_ov030_02115dc4);
-    _ZN13SharedFilePtr9ConstructEj(&gMonkeyWait4AnimationFile, ASSET_MONKEY_WAIT4_BCA);
-    func_020731dc(&gMonkeyWait4AnimationFile, (void*)&SharedFilePtr_Destruct_Anim, (void**)&data_ov030_02115dd0);
+    func_020731dc(&data_ov030_02115d00, (void *)func_02017ab4, &data_ov030_02115d28);
+    gMonkeyHoldAnimationFile.Construct(ASSET_MONKEY_HOLD_BCA);
+    func_020731dc(&gMonkeyHoldAnimationFile, (void *)SharedFilePtr_Destruct_Anim,
+                  &data_ov030_02115d34);
+    gMonkeyJumpStAnimationFile.Construct(ASSET_MONKEY_JUMP_ST_BCA);
+    func_020731dc(&gMonkeyJumpStAnimationFile, (void *)SharedFilePtr_Destruct_Anim,
+                  &data_ov030_02115d40);
+    gMonkeyJumpEdAnimationFile.Construct(ASSET_MONKEY_JUMP_ED_BCA);
+    func_020731dc(&gMonkeyJumpEdAnimationFile, (void *)SharedFilePtr_Destruct_Anim,
+                  &data_ov030_02115d64);
+    gMonkeyRunStAnimationFile.Construct(ASSET_MONKEY_RUN_ST_BCA);
+    func_020731dc(&gMonkeyRunStAnimationFile, (void *)SharedFilePtr_Destruct_Anim,
+                  &data_ov030_02115d70);
+    gMonkeyRunAnimationFile.Construct(ASSET_MONKEY_RUN_BCA);
+    func_020731dc(&gMonkeyRunAnimationFile, (void *)SharedFilePtr_Destruct_Anim,
+                  &data_ov030_02115d88);
+    gMonkeyRunEdAnimationFile.Construct(ASSET_MONKEY_RUN_ED_BCA);
+    func_020731dc(&gMonkeyRunEdAnimationFile, (void *)SharedFilePtr_Destruct_Anim,
+                  &data_ov030_02115d94);
+    data_ov030_02115cf0.Construct(ASSET_MONKEY_WAIT1_BCA);
+    func_020731dc(&data_ov030_02115cf0, (void *)SharedFilePtr_Destruct_Anim, &data_ov030_02115dac);
+    gMonkeyWait2AnimationFile.Construct(ASSET_MONKEY_WAIT2_BCA);
+    func_020731dc(&gMonkeyWait2AnimationFile, (void *)SharedFilePtr_Destruct_Anim,
+                  &data_ov030_02115db8);
+    gMonkeyWait3AnimationFile.Construct(ASSET_MONKEY_WAIT3_BCA);
+    func_020731dc(&gMonkeyWait3AnimationFile, (void *)SharedFilePtr_Destruct_Anim,
+                  &data_ov030_02115dc4);
+    gMonkeyWait4AnimationFile.Construct(ASSET_MONKEY_WAIT4_BCA);
+    func_020731dc(&gMonkeyWait4AnimationFile, (void *)SharedFilePtr_Destruct_Anim,
+                  &data_ov030_02115dd0);
 
     data_ov030_02115e0c[0].lo = data_ov030_02115b68;
     data_ov030_02115e0c[0].hi = data_ov030_02115b60;
@@ -131,26 +151,27 @@ void __sinit_ov030_02114924(void)
     *(unsigned int*)&data_ov030_02115ddc = 0x1c000;
     *(unsigned int*)((char*)&data_ov030_02115ddc + 4) = (unsigned int)-0x42000;
     *(unsigned int*)((char*)&data_ov030_02115ddc + 8) = 0x18000;
-    func_020731dc(&data_ov030_02115ddc, (void*)&_ZN7Vector3D1Ev, (void**)&data_ov030_02115d58);
+    func_020731dc(&data_ov030_02115ddc, (void *)&_ZN7Vector3D1Ev, &data_ov030_02115d58);
     {
         unsigned int *p = (unsigned int*)&data_ov030_02115de8;
         p[0] = 0x1c000;
         p[1] = (unsigned int)-0x28000;
         p[2] = 0x28000;
-        func_020731dc(p, (void*)&_ZN7Vector3D1Ev, (void**)&data_ov030_02115d4c);
+        func_020731dc(p, (void *)&_ZN7Vector3D1Ev, &data_ov030_02115d4c);
     }
     {
         unsigned int *p = (unsigned int*)&data_ov030_02115df4;
         p[0] = 0x2b000;
         p[1] = (unsigned int)-0x42000;
         p[2] = 0x18000;
-        func_020731dc(p, (void*)&_ZN7Vector3D1Ev, (void**)&data_ov030_02115d7c);
+        func_020731dc(p, (void *)&_ZN7Vector3D1Ev, &data_ov030_02115d7c);
     }
     {
         unsigned int *p = (unsigned int*)&data_ov030_02115e00;
         p[0] = 0x30000;
         p[1] = (unsigned int)-0x1e000;
         p[2] = 0x1e000;
-        func_020731dc(p, (void*)&_ZN7Vector3D1Ev, (void**)&data_ov030_02115da0);
+        func_020731dc(p, (void *)&_ZN7Vector3D1Ev, &data_ov030_02115da0);
     }
+}
 }

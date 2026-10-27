@@ -1,3 +1,8 @@
+//cpp
+#include "SharedFilePtr.h"
+
+extern "C" {
+
 /* Runtime asset handles resolved through the overlay 0 file table. */
 enum sinit_ov002_02107370_AssetId {
     ASSET_PEACH_ED_ENTER_WAIT_BCA = 0x03d6,
@@ -36,13 +41,12 @@ enum sinit_ov002_02107370_AssetId {
     ASSET_PEACH_LETTER_US_BMD = 0x049b
 };
 
-extern int func_02017acc(void*, int);
-extern void func_020731dc(void*, void*, void**);
-extern int _ZN13SharedFilePtr9ConstructEj(void*, int);
-extern int SharedFilePtr_Construct_TexSeq(void*, int);
-extern void func_02017ab4(void);
-extern void SharedFilePtr_Destruct_Anim(void);
-extern void SharedFilePtr_Destruct_TexSeq(void);
+extern void *func_02017acc(void *, unsigned int);
+extern void func_020731dc(void *, void *, void **);
+extern void *SharedFilePtr_Construct_TexSeq(void *, unsigned int);
+extern int func_02017ab4(int);
+extern int SharedFilePtr_Destruct_Anim(int);
+extern int SharedFilePtr_Destruct_TexSeq(int);
 
 extern void* data_ov002_02110dc4;
 extern void* data_ov002_02110c2c;
@@ -82,20 +86,20 @@ extern void* data_ov002_02110da0;
 extern void* data_ov002_02110b50;
 extern void* data_ov002_02110b98;
 extern void* data_ov002_02110c18;
-extern void* data_ov002_02110bf8;
-extern void* data_ov002_02110c10;
-extern void* data_ov002_02110bd0;
-extern void* data_ov002_02110b28;
-extern void* data_ov002_02110bf0;
-extern void* data_ov002_02110b68;
-extern void* data_ov002_02110ba0;
-extern void* data_ov002_02110bb0;
-extern void* data_ov002_02110b48;
-extern void* data_ov002_02110b30;
-extern void* data_ov002_02110be8;
-extern void* data_ov002_02110c08;
-extern void* data_ov002_02110c00;
-extern void* data_ov002_02110bd8;
+extern SharedFilePtr data_ov002_02110bf8;
+extern SharedFilePtr data_ov002_02110c10;
+extern SharedFilePtr data_ov002_02110bd0;
+extern SharedFilePtr data_ov002_02110b28;
+extern SharedFilePtr data_ov002_02110bf0;
+extern SharedFilePtr data_ov002_02110b68;
+extern SharedFilePtr data_ov002_02110ba0;
+extern SharedFilePtr data_ov002_02110bb0;
+extern SharedFilePtr data_ov002_02110b48;
+extern SharedFilePtr data_ov002_02110b30;
+extern SharedFilePtr data_ov002_02110be8;
+extern SharedFilePtr data_ov002_02110c08;
+extern SharedFilePtr data_ov002_02110c00;
+extern SharedFilePtr data_ov002_02110bd8;
 extern void* data_ov002_02110b60;
 extern void* data_ov002_02110be0;
 extern void* data_ov002_02110b90;
@@ -114,7 +118,12 @@ extern void* data_ov002_02110b18;
 extern void* data_ov002_02110b70;
 extern void* data_ov002_02110b78;
 
-typedef struct { int a, b; } S8;
+/* Two words copied as a unit. Under C++ a struct of two scalar fields is
+   assigned field by field, which reorders the loads; an array member keeps
+   C's schedule. */
+typedef struct {
+    int w[2];
+} S8;
 typedef struct { S8 x, y; } S16;
 
 extern S16 data_ov002_02110f9c[11];
@@ -201,73 +210,88 @@ extern S8 data_ov002_0210b6e0;
 void __sinit_ov002_02107370(void)
 {
     func_02017acc(&data_ov002_02110b50, ASSET_PEACH_LETTER_US_BMD);
-    func_020731dc(&data_ov002_02110b50, (void*)&func_02017ab4, (void**)&data_ov002_02110dc4);
+    func_020731dc(&data_ov002_02110b50, (void *)func_02017ab4, &data_ov002_02110dc4);
     func_02017acc(&data_ov002_02110b98, ASSET_PEACH_HIGH_BMD);
-    func_020731dc(&data_ov002_02110b98, (void*)&func_02017ab4, (void**)&data_ov002_02110c2c);
+    func_020731dc(&data_ov002_02110b98, (void *)func_02017ab4, &data_ov002_02110c2c);
     func_02017acc(&data_ov002_02110c18, ASSET_PEACH_LOW_BMD);
-    func_020731dc(&data_ov002_02110c18, (void*)&func_02017ab4, (void**)&data_ov002_02110c38);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_02110bf8, ASSET_PEACH_OP_WAIT_BCA);
-    func_020731dc(&data_ov002_02110bf8, (void*)&SharedFilePtr_Destruct_Anim, (void**)&data_ov002_02110c44);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_02110c10, ASSET_PEACH_ED_ENTER_WAIT_BCA);
-    func_020731dc(&data_ov002_02110c10, (void*)&SharedFilePtr_Destruct_Anim, (void**)&data_ov002_02110c50);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_02110bd0, ASSET_PEACH_ED_LANDING_BCA);
-    func_020731dc(&data_ov002_02110bd0, (void*)&SharedFilePtr_Destruct_Anim, (void**)&data_ov002_02110c5c);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_02110b28, ASSET_PEACH_ED_WAIT_BCA);
-    func_020731dc(&data_ov002_02110b28, (void*)&SharedFilePtr_Destruct_Anim, (void**)&data_ov002_02110c68);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_02110bf0, ASSET_PEACH_ED_LOOK_ABOUT_BCA);
-    func_020731dc(&data_ov002_02110bf0, (void*)&SharedFilePtr_Destruct_Anim, (void**)&data_ov002_02110c74);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_02110b68, ASSET_PEACH_ED_NOTICE_MARIO_BCA);
-    func_020731dc(&data_ov002_02110b68, (void*)&SharedFilePtr_Destruct_Anim, (void**)&data_ov002_02110c80);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_02110ba0, ASSET_PEACH_ED_NOTICE_YOSHI_BCA);
-    func_020731dc(&data_ov002_02110ba0, (void*)&SharedFilePtr_Destruct_Anim, (void**)&data_ov002_02110c8c);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_02110bb0, ASSET_PEACH_ED_LOOKUP_BCA);
-    func_020731dc(&data_ov002_02110bb0, (void*)&SharedFilePtr_Destruct_Anim, (void**)&data_ov002_02110c98);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_02110b48, ASSET_PEACH_ED_LOOKUP_TO_WAIT_BCA);
-    func_020731dc(&data_ov002_02110b48, (void*)&SharedFilePtr_Destruct_Anim, (void**)&data_ov002_02110ca4);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_02110b30, ASSET_PEACH_ED_STEP_UP_BCA);
-    func_020731dc(&data_ov002_02110b30, (void*)&SharedFilePtr_Destruct_Anim, (void**)&data_ov002_02110cb0);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_02110be8, ASSET_PEACH_ED_KISS_BCA);
-    func_020731dc(&data_ov002_02110be8, (void*)&SharedFilePtr_Destruct_Anim, (void**)&data_ov002_02110cbc);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_02110c08, ASSET_PEACH_ED_TURN_BCA);
-    func_020731dc(&data_ov002_02110c08, (void*)&SharedFilePtr_Destruct_Anim, (void**)&data_ov002_02110cc8);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_02110c00, ASSET_PEACH_ED_WALK_BCA);
-    func_020731dc(&data_ov002_02110c00, (void*)&SharedFilePtr_Destruct_Anim, (void**)&data_ov002_02110cd4);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_02110bd8, ASSET_PEACH_ED_WAVE_BCA);
-    func_020731dc(&data_ov002_02110bd8, (void*)&SharedFilePtr_Destruct_Anim, (void**)&data_ov002_02110ce0);
+    func_020731dc(&data_ov002_02110c18, (void *)func_02017ab4, &data_ov002_02110c38);
+    data_ov002_02110bf8.Construct(ASSET_PEACH_OP_WAIT_BCA);
+    func_020731dc(&data_ov002_02110bf8, (void *)SharedFilePtr_Destruct_Anim, &data_ov002_02110c44);
+    data_ov002_02110c10.Construct(ASSET_PEACH_ED_ENTER_WAIT_BCA);
+    func_020731dc(&data_ov002_02110c10, (void *)SharedFilePtr_Destruct_Anim, &data_ov002_02110c50);
+    data_ov002_02110bd0.Construct(ASSET_PEACH_ED_LANDING_BCA);
+    func_020731dc(&data_ov002_02110bd0, (void *)SharedFilePtr_Destruct_Anim, &data_ov002_02110c5c);
+    data_ov002_02110b28.Construct(ASSET_PEACH_ED_WAIT_BCA);
+    func_020731dc(&data_ov002_02110b28, (void *)SharedFilePtr_Destruct_Anim, &data_ov002_02110c68);
+    data_ov002_02110bf0.Construct(ASSET_PEACH_ED_LOOK_ABOUT_BCA);
+    func_020731dc(&data_ov002_02110bf0, (void *)SharedFilePtr_Destruct_Anim, &data_ov002_02110c74);
+    data_ov002_02110b68.Construct(ASSET_PEACH_ED_NOTICE_MARIO_BCA);
+    func_020731dc(&data_ov002_02110b68, (void *)SharedFilePtr_Destruct_Anim, &data_ov002_02110c80);
+    data_ov002_02110ba0.Construct(ASSET_PEACH_ED_NOTICE_YOSHI_BCA);
+    func_020731dc(&data_ov002_02110ba0, (void *)SharedFilePtr_Destruct_Anim, &data_ov002_02110c8c);
+    data_ov002_02110bb0.Construct(ASSET_PEACH_ED_LOOKUP_BCA);
+    func_020731dc(&data_ov002_02110bb0, (void *)SharedFilePtr_Destruct_Anim, &data_ov002_02110c98);
+    data_ov002_02110b48.Construct(ASSET_PEACH_ED_LOOKUP_TO_WAIT_BCA);
+    func_020731dc(&data_ov002_02110b48, (void *)SharedFilePtr_Destruct_Anim, &data_ov002_02110ca4);
+    data_ov002_02110b30.Construct(ASSET_PEACH_ED_STEP_UP_BCA);
+    func_020731dc(&data_ov002_02110b30, (void *)SharedFilePtr_Destruct_Anim, &data_ov002_02110cb0);
+    data_ov002_02110be8.Construct(ASSET_PEACH_ED_KISS_BCA);
+    func_020731dc(&data_ov002_02110be8, (void *)SharedFilePtr_Destruct_Anim, &data_ov002_02110cbc);
+    data_ov002_02110c08.Construct(ASSET_PEACH_ED_TURN_BCA);
+    func_020731dc(&data_ov002_02110c08, (void *)SharedFilePtr_Destruct_Anim, &data_ov002_02110cc8);
+    data_ov002_02110c00.Construct(ASSET_PEACH_ED_WALK_BCA);
+    func_020731dc(&data_ov002_02110c00, (void *)SharedFilePtr_Destruct_Anim, &data_ov002_02110cd4);
+    data_ov002_02110bd8.Construct(ASSET_PEACH_ED_WAVE_BCA);
+    func_020731dc(&data_ov002_02110bd8, (void *)SharedFilePtr_Destruct_Anim, &data_ov002_02110ce0);
     SharedFilePtr_Construct_TexSeq(&data_ov002_02110b60, ASSET_PEACH_ED_ENTER_WAIT_BTP);
-    func_020731dc(&data_ov002_02110b60, (void*)&SharedFilePtr_Destruct_TexSeq, (void**)&data_ov002_02110cec);
+    func_020731dc(&data_ov002_02110b60, (void *)SharedFilePtr_Destruct_TexSeq,
+                  &data_ov002_02110cec);
     SharedFilePtr_Construct_TexSeq(&data_ov002_02110be0, ASSET_PEACH_ED_KISS_BTP);
-    func_020731dc(&data_ov002_02110be0, (void*)&SharedFilePtr_Destruct_TexSeq, (void**)&data_ov002_02110cf8);
+    func_020731dc(&data_ov002_02110be0, (void *)SharedFilePtr_Destruct_TexSeq,
+                  &data_ov002_02110cf8);
     SharedFilePtr_Construct_TexSeq(&data_ov002_02110b90, ASSET_PEACH_ED_LANDING_BTP);
-    func_020731dc(&data_ov002_02110b90, (void*)&SharedFilePtr_Destruct_TexSeq, (void**)&data_ov002_02110d04);
+    func_020731dc(&data_ov002_02110b90, (void *)SharedFilePtr_Destruct_TexSeq,
+                  &data_ov002_02110d04);
     SharedFilePtr_Construct_TexSeq(&data_ov002_02110bc0, ASSET_PEACH_ED_LOOKUP_BTP);
-    func_020731dc(&data_ov002_02110bc0, (void*)&SharedFilePtr_Destruct_TexSeq, (void**)&data_ov002_02110d10);
+    func_020731dc(&data_ov002_02110bc0, (void *)SharedFilePtr_Destruct_TexSeq,
+                  &data_ov002_02110d10);
     SharedFilePtr_Construct_TexSeq(&data_ov002_02110b80, ASSET_PEACH_ED_LOOKUP_TO_WAIT_BTP);
-    func_020731dc(&data_ov002_02110b80, (void*)&SharedFilePtr_Destruct_TexSeq, (void**)&data_ov002_02110d1c);
+    func_020731dc(&data_ov002_02110b80, (void *)SharedFilePtr_Destruct_TexSeq,
+                  &data_ov002_02110d1c);
     SharedFilePtr_Construct_TexSeq(&data_ov002_02110b88, ASSET_PEACH_ED_LOOK_ABOUT_BTP);
-    func_020731dc(&data_ov002_02110b88, (void*)&SharedFilePtr_Destruct_TexSeq, (void**)&data_ov002_02110dd0);
+    func_020731dc(&data_ov002_02110b88, (void *)SharedFilePtr_Destruct_TexSeq,
+                  &data_ov002_02110dd0);
     SharedFilePtr_Construct_TexSeq(&data_ov002_02110b38, ASSET_PEACH_ED_NOTICE_MARIO_BTP);
-    func_020731dc(&data_ov002_02110b38, (void*)&SharedFilePtr_Destruct_TexSeq, (void**)&data_ov002_02110d28);
+    func_020731dc(&data_ov002_02110b38, (void *)SharedFilePtr_Destruct_TexSeq,
+                  &data_ov002_02110d28);
     SharedFilePtr_Construct_TexSeq(&data_ov002_02110ba8, ASSET_PEACH_ED_NOTICE_YOSHI_BTP);
-    func_020731dc(&data_ov002_02110ba8, (void*)&SharedFilePtr_Destruct_TexSeq, (void**)&data_ov002_02110d34);
+    func_020731dc(&data_ov002_02110ba8, (void *)SharedFilePtr_Destruct_TexSeq,
+                  &data_ov002_02110d34);
     SharedFilePtr_Construct_TexSeq(&data_ov002_02110b20, ASSET_PEACH_ED_STEP_UP_BTP);
-    func_020731dc(&data_ov002_02110b20, (void*)&SharedFilePtr_Destruct_TexSeq, (void**)&data_ov002_02110d40);
+    func_020731dc(&data_ov002_02110b20, (void *)SharedFilePtr_Destruct_TexSeq,
+                  &data_ov002_02110d40);
     SharedFilePtr_Construct_TexSeq(&data_ov002_02110b40, ASSET_PEACH_ED_TURN_BTP);
-    func_020731dc(&data_ov002_02110b40, (void*)&SharedFilePtr_Destruct_TexSeq, (void**)&data_ov002_02110d4c);
+    func_020731dc(&data_ov002_02110b40, (void *)SharedFilePtr_Destruct_TexSeq,
+                  &data_ov002_02110d4c);
     SharedFilePtr_Construct_TexSeq(&data_ov002_02110b58, ASSET_PEACH_ED_WAIT_BTP);
-    func_020731dc(&data_ov002_02110b58, (void*)&SharedFilePtr_Destruct_TexSeq, (void**)&data_ov002_02110d58);
+    func_020731dc(&data_ov002_02110b58, (void *)SharedFilePtr_Destruct_TexSeq,
+                  &data_ov002_02110d58);
     SharedFilePtr_Construct_TexSeq(&data_ov002_02110bb8, ASSET_PEACH_ED_WAVE_BTP);
-    func_020731dc(&data_ov002_02110bb8, (void*)&SharedFilePtr_Destruct_TexSeq, (void**)&data_ov002_02110d64);
+    func_020731dc(&data_ov002_02110bb8, (void *)SharedFilePtr_Destruct_TexSeq,
+                  &data_ov002_02110d64);
     SharedFilePtr_Construct_TexSeq(&data_ov002_02110b10, ASSET_PEACH_OP_WINK_BTP);
-    func_020731dc(&data_ov002_02110b10, (void*)&SharedFilePtr_Destruct_TexSeq, (void**)&data_ov002_02110d70);
+    func_020731dc(&data_ov002_02110b10, (void *)SharedFilePtr_Destruct_TexSeq,
+                  &data_ov002_02110d70);
     SharedFilePtr_Construct_TexSeq(&data_ov002_02110bc8, ASSET_PEACH_WAIT_BTP);
-    func_020731dc(&data_ov002_02110bc8, (void*)&SharedFilePtr_Destruct_TexSeq, (void**)&data_ov002_02110d7c);
+    func_020731dc(&data_ov002_02110bc8, (void *)SharedFilePtr_Destruct_TexSeq,
+                  &data_ov002_02110d7c);
     SharedFilePtr_Construct_TexSeq(&data_ov002_02110b18, ASSET_PEACH_WALK_BTP);
-    func_020731dc(&data_ov002_02110b18, (void*)&SharedFilePtr_Destruct_TexSeq, (void**)&data_ov002_02110d88);
+    func_020731dc(&data_ov002_02110b18, (void *)SharedFilePtr_Destruct_TexSeq,
+                  &data_ov002_02110d88);
     func_02017acc(&data_ov002_02110b70, ASSET_OBJ_DOKAN_BMD);
-    func_020731dc(&data_ov002_02110b70, (void*)&func_02017ab4, (void**)&data_ov002_02110d94);
+    func_020731dc(&data_ov002_02110b70, (void *)func_02017ab4, &data_ov002_02110d94);
     func_02017acc(&data_ov002_02110b78, ASSET_OBJ_KUMO_BMD);
-    func_020731dc(&data_ov002_02110b78, (void*)&func_02017ab4, (void**)&data_ov002_02110da0);
+    func_020731dc(&data_ov002_02110b78, (void *)func_02017ab4, &data_ov002_02110da0);
 
     data_ov002_02110f9c[0].x = data_ov002_0210b718;
     data_ov002_02110f9c[0].y = data_ov002_0210b690;
@@ -347,4 +371,5 @@ void __sinit_ov002_02107370(void)
     data_ov002_02110ebc[1].y = data_ov002_0210b6f8;
     data_ov002_02110ebc[2].x = data_ov002_0210b6f0;
     data_ov002_02110ebc[2].y = data_ov002_0210b6e0;
+}
 }

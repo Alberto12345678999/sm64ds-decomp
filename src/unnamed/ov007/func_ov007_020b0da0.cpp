@@ -1,7 +1,18 @@
+//cpp
 #include "types.h"
 #include "dExtModel_c.h"
 #include "Ov007MenuState.h"
 #include "Ov007Touch.h"
+#include "cstd.h"
+
+extern "C" {
+
+/* Vector3 declares a constructor and destructor under C++, which makes its
+ * assignment copy word by word. The ROM copies these with C's ldm/stm block
+ * move, which C++ keeps for a struct with an array member. */
+typedef struct Vec3Words {
+    Fix12i w[3];
+} Vec3Words;
 // @symbol func_ov007_020b0da0
 /* recovered: shared common types, declarations from a shared header */
 #include "decl_common.h"
@@ -11,7 +22,6 @@
 #include "Ov007Work.h"
 extern short data_02082214[];
 
-extern int _ZN4cstd4fdivEii(int a, int b);
 extern void Matrix4x3_LoadIdentity(void* mat);
 
 /* Reconstructed layouts and names, not recovered class identity; only the
@@ -103,15 +113,15 @@ void func_ov007_020b0da0(void* arg0) {
 
         if (st->stateWork & OV007_FIGURE_SWAY) {
             int var_r4;
-            _ZN4cstd3modEii(counter, 0x28);
+            cstd::mod(counter, 0x28);
             {
-                int m1 = _ZN4cstd3modEii(counter, 0x28);
+                int m1 = cstd::mod(counter, 0x28);
                 if (m1 <= 0) {
                     var_r4 = 0;
                 } else if (m1 >= 0x28) {
                     var_r4 = 0x1000;
                 } else {
-                    var_r4 = _ZN4cstd3divEii(m1 << 12, 0x28);
+                    var_r4 = cstd::div(m1 << 12, 0x28);
                 }
             }
 
@@ -122,13 +132,13 @@ void func_ov007_020b0da0(void* arg0) {
 
             {
                 int var_r8;
-                int m2 = _ZN4cstd3modEii(counter, 0xa0);
+                int m2 = cstd::mod(counter, 0xa0);
                 if (m2 <= 0) {
                     var_r8 = 0;
                 } else if (m2 >= 0xa0) {
                     var_r8 = 0x1000;
                 } else {
-                    var_r8 = _ZN4cstd3divEii(m2 << 12, 0xa0);
+                    var_r8 = cstd::div(m2 << 12, 0xa0);
                 }
 
                 Matrix4x3_LoadIdentity(mat);
@@ -161,7 +171,7 @@ void func_ov007_020b0da0(void* arg0) {
             } else if (diff >= 0x50) {
                 ratio = 0x1000;
             } else {
-                ratio = _ZN4cstd4fdivEii(diff, 0x50);
+                ratio = cstd::fdiv(diff, 0x50);
             }
             sq = (int)(((s64)ratio * ratio) >> 12);
             out.y = sq * 30;
@@ -170,6 +180,7 @@ void func_ov007_020b0da0(void* arg0) {
             }
         }
 
-        mat->t = out;
+        *(Vec3Words *)&mat->t = *(Vec3Words *)&out;
     }
+}
 }

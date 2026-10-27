@@ -1,4 +1,9 @@
+//cpp
 #include "types.h"
+#include "G2x.h"
+
+extern "C" {
+
 typedef struct S {
     s32 mode;
     u32 flags;
@@ -17,9 +22,6 @@ typedef struct S {
         unsigned char byte[4];
     };
 } S;
-
-extern void _ZN3G2x13SetBlendAlphaEPVtiiii(volatile void *p, int a, int b, int c, int d);
-extern void _ZN3G2x18SetBlendBrightnessEPVtii(void *p, int a, int b);
 
 void func_ov007_020c86c4(S *p)
 {
@@ -51,24 +53,26 @@ void func_ov007_020c86c4(S *p)
     case 2:
     case 3:
         if (p->flags & 1) {
-            _ZN3G2x13SetBlendAlphaEPVtiiii((volatile void *)0x4000050, p->f28, p->f2c,
-                                           p->cond ? p->byte[2] : p->byte[0],
-                                           p->cond ? p->byte[3] : p->byte[1]);
+            G2x::SetBlendAlpha((volatile unsigned short *)0x4000050, p->f28, p->f2c,
+                               p->cond ? p->byte[2] : p->byte[0],
+                               p->cond ? p->byte[3] : p->byte[1]);
         }
         if (!(p->flags & 2))
             return;
-        _ZN3G2x13SetBlendAlphaEPVtiiii((volatile void *)0x4001050, p->f28, p->f2c,
-                                       p->cond ? p->byte[2] : p->byte[0],
-                                       p->cond ? p->byte[3] : p->byte[1]);
+        G2x::SetBlendAlpha((volatile unsigned short *)0x4001050, p->f28, p->f2c,
+                           p->cond ? p->byte[2] : p->byte[0], p->cond ? p->byte[3] : p->byte[1]);
         return;
 
     case 4:
         if (p->flags & 1) {
-            _ZN3G2x18SetBlendBrightnessEPVtii((void *)0x4000050, p->f28, p->cond ? p->f30 : p->f2c);
+            G2x::SetBlendBrightness((volatile unsigned short *)0x4000050, p->f28,
+                                    p->cond ? p->f30 : p->f2c);
         }
         if (!(p->flags & 2))
             return;
-        _ZN3G2x18SetBlendBrightnessEPVtii((void *)0x4001050, p->f28, p->cond ? p->f30 : p->f2c);
+        G2x::SetBlendBrightness((volatile unsigned short *)0x4001050, p->f28,
+                                p->cond ? p->f30 : p->f2c);
         return;
     }
+}
 }

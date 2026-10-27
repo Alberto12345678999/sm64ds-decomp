@@ -1,7 +1,10 @@
+//cpp
 #include "BMD_File.h"
 #include "private/ov075_entry_mesh.h"
+#include "dExtSimpleModel_c.h"
 
-void *_ZN17dExtSimpleModel_c27LoadCompressedTextureToVramEPcjS0_(char *a, unsigned int b, char *c);
+extern "C" {
+
 int func_02045ad8(void *p);
 unsigned int func_02045a50(const void *src, unsigned int size);
 
@@ -32,8 +35,8 @@ int func_ov075_0211aa94(char *c, char *b)
     d = (char *)file->materials;
     pal = file->palettes;
 
-    mesh->mMaterial.texAddr = (u32)_ZN17dExtSimpleModel_c27LoadCompressedTextureToVramEPcjS0_(
-        tex->data, tex->size, tex->data + tex->size);
+    mesh->mMaterial.texAddr =
+        dExtSimpleModel_c::LoadCompressedTextureToVram(tex->data, tex->size, tex->data + tex->size);
     sz = pal->size;
     if (sz <= 8)
         mesh->mMaterial.pltAddr = func_02045ad8(pal->data);
@@ -46,4 +49,5 @@ int func_ov075_0211aa94(char *c, char *b)
     if (mesh->mMaterial.texAddr == 0 || mesh->mMaterial.pltAddr == 0)
         return 0;
     return 1;
+}
 }

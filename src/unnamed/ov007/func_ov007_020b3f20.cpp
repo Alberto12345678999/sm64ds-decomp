@@ -1,14 +1,18 @@
+//cpp
 #include "types.h"
+#include "CP15.h"
+#include "dExtSimpleModel_c.h"
+#include "dExtFrameCtrl_c.h"
+#include "dExtAnmTexPat_c.h"
+
+extern "C" {
+
 extern void *data_ov007_02103370[];
 extern u16 data_ov007_020d7584[];
 extern void *(*data_ov007_02103368)(u16);
 extern void *(*data_ov007_0210336c)(void *);
 extern int func_ov007_020c3df4(int a, void *b);
 extern void DecompressLZ16(void *src, void *dst);
-extern void _ZN4CP1514FlushDataCacheEjj(u32 a, u32 b);
-extern void _ZN17dExtSimpleModel_c17UpdateFileOffsetsER8BMD_File(void *f);
-extern void _ZN15dExtFrameCtrl_c17UpdateFileOffsetsER8BCA_File(void *f);
-extern void _ZN15dExtAnmTexPat_c17UpdateFileOffsetsER8BTP_File(void *f);
 void *func_ov007_020b3f20(int idx)
 {
   void *new_var;
@@ -39,7 +43,7 @@ void *func_ov007_020b3f20(int idx)
         int sz = func_ov007_020c3df4(0, (void *) hv);
         DecompressLZ16(obj, (void *) sz);
         data_ov007_0210336c(obj);
-        _ZN4CP1514FlushDataCacheEjj(sz, hv);
+        CP15::FlushDataCache(sz, hv);
         data_ov007_02103370[idx] = (void *) sz;
       }
         break;
@@ -61,7 +65,7 @@ void *func_ov007_020b3f20(int idx)
       case 0x23:
 
       case 0x24:
-          _ZN17dExtSimpleModel_c17UpdateFileOffsetsER8BMD_File(obj);
+          dExtSimpleModel_c::UpdateFileOffsets(*(BMD_File *)obj);
           break;
 
       case 4:
@@ -87,8 +91,8 @@ void *func_ov007_020b3f20(int idx)
       case 0xe:
 
       case 0xf:
-        _ZN15dExtFrameCtrl_c17UpdateFileOffsetsER8BCA_File(obj);
-        break;
+          dExtFrameCtrl_c::UpdateFileOffsets(*(BCA_File *)obj);
+          break;
 
       case 0x10:
 
@@ -101,7 +105,7 @@ void *func_ov007_020b3f20(int idx)
       case 0x14:
 
       case 0x15:
-          _ZN15dExtAnmTexPat_c17UpdateFileOffsetsER8BTP_File(obj);
+          dExtAnmTexPat_c::UpdateFileOffsets(*(BTP_File *)obj);
           break;
 
       default:
@@ -111,4 +115,5 @@ void *func_ov007_020b3f20(int idx)
 
   }
   return data_ov007_02103370[idx];
+}
 }

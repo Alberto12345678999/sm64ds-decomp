@@ -1,20 +1,22 @@
+//cpp
 #include "Ov007Work.h"
+#include "G2.h"
+#include "GX.h"
+
+extern "C" {
 
 /* func_ov007_020bcba8 at 0x020bcba8
  *
  * Matched byte-for-byte with mwccarm 1.2/sp2p3 (ov007).
  */
 extern void* func_ov007_020b3f20(int n);
-extern void* func_02054ea8(void);
-extern void *_ZN3G2S13GetBG1CharPtrEv(void);
+extern void *func_02054ea8(void);
 extern int func_02054d88(void);
-extern void func_ov007_020b8548(int a0, void* a1, int a2, void* a3, unsigned int a4, int a5, int a6);
-extern void _ZN2GX7LoadOBJEPKvjj(const void*, unsigned int, unsigned int);
-extern void func_ov007_020c32e8(char* c, int sel, unsigned int n, int off);
-extern void _ZN2GX11LoadOBJPlttEPKvjj(const void*, unsigned int, unsigned int);
+extern void func_ov007_020b8548(int a0, void *a1, int a2, void *a3, unsigned int a4, int a5,
+                                int a6);
+extern void func_ov007_020c32e8(char *c, int sel, unsigned int n, int off);
 extern void func_ov007_020b3edc(int r0);
-extern void func_02056014(const void* src, unsigned int offset, unsigned int count);
-extern void _ZN2GX10LoadBGPlttEPKvjj(const void*, unsigned int, unsigned int);
+extern void func_02056014(const void *src, unsigned int offset, unsigned int count);
 extern void func_ov007_020bcdb8(int idx);
 extern void func_ov007_020c33d0(char* c, int sel, unsigned int off);
 extern void func_ov007_020b850c(void);
@@ -62,21 +64,21 @@ void func_ov007_020bcba8(int idx)
         {
             void* a1 = func_ov007_020b3f20(0x25);
             void* a3 = func_02054ea8();
-            unsigned int a4 = (unsigned int)_ZN3G2S13GetBG1CharPtrEv();
+            unsigned int a4 = (unsigned int)G2S::GetBG1CharPtr();
             int a6 = *(int *)(*(char **)((Ov007Work *)g)->settings + 0x9c);
             int idx2;
             func_ov007_020b8548(0, a1, 0, a3, a4, 0, a6);
 
-            _ZN2GX7LoadOBJEPKvjj(s->characters[1]->tiles, 0, 0x2000);
+            GX::LoadOBJ(s->characters[1]->tiles, 0, 0x2000);
             func_ov007_020c32e8(s->palettes[1], 0, 0, 0);
-            _ZN2GX7LoadOBJEPKvjj(func_ov007_020b3f20(0x2c), 0x2000, 0x2000);
-            _ZN2GX11LoadOBJPlttEPKvjj((char*)func_ov007_020b3f20(0x2d) + 0xc0, 0x1e0, 0x20);
+            GX::LoadOBJ(func_ov007_020b3f20(0x2c), 0x2000, 0x2000);
+            GX::LoadOBJPltt((char *)func_ov007_020b3f20(0x2d) + 0xc0, 0x1e0, 0x20);
             func_ov007_020b3edc(0x2c);
             func_ov007_020b3edc(0x2d);
 
             idx2 = ((Ov007Work *)data_ov007_0210342c)->settings->language + 0x25;
             func_02056014(func_ov007_020b3f20(idx2), 0, 0x4000);
-            _ZN2GX10LoadBGPlttEPKvjj(func_ov007_020b3f20(0x2b), 0, 0x200);
+            GX::LoadBGPltt(func_ov007_020b3f20(0x2b), 0, 0x200);
             func_ov007_020b3edc(idx2);
             func_ov007_020b3edc(0x2b);
 
@@ -90,7 +92,7 @@ void func_ov007_020bcba8(int idx)
         {
             void* a1 = func_ov007_020b3f20(0x25);
             void* a3 = func_02054ea8();
-            unsigned int a4 = (unsigned int)_ZN3G2S13GetBG1CharPtrEv();
+            unsigned int a4 = (unsigned int)G2S::GetBG1CharPtr();
             int a5 = func_02054d88();
             int a6 = *(int *)(*(char **)((Ov007Work *)g)->settings + 0x9c);
             func_ov007_020b8548(0, a1, 0, a3, a4, a5, a6);
@@ -104,4 +106,5 @@ void func_ov007_020bcba8(int idx)
     case 2:
         break;
     }
+}
 }

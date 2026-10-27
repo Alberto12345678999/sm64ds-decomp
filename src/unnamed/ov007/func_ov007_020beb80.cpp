@@ -1,11 +1,27 @@
+//cpp
 #include "types.h"
 #include "nitro/fx/fx.h"
 #include "dExtModel_c.h"
+#include "cstd.h"
+#include "Vector3s.h"
+
+extern "C" {
+
+/* Vector3 declares a constructor and destructor under C++, which makes its
+ * assignment copy word by word. The ROM copies these with C's ldm/stm block
+ * move, which C++ keeps for a struct with an array member. */
+typedef struct Vec3Words {
+    Fix12i w[3];
+} Vec3Words;
+
+/* The same for Vector3s's six-byte halfword copy. */
+typedef struct Vec3sWords {
+    s16 w[3];
+} Vec3sWords;
 
 extern int func_020538b8(int a, int b);
 extern void *func_ov007_020b7690(int i);
 extern int func_02053644(s16 *v);
-extern int _ZN4cstd4fdivEii(int a, int b);
 extern void func_02053380(s16 *in, s16 *out);
 
 /* The 0x1c-byte animation player; names as in func_ov007_020bc02c. */
@@ -76,7 +92,7 @@ void func_ov007_020beb80(char *self) {
     dd.z = (short)(tp->z - f->prevPos.z);
     if (f->model->animTick != 0) {
         f->yaw = r;
-        f->prevPos = *tp;
+        *(Vec3Words *)&f->prevPos = *(Vec3Words *)tp;
     }
     e = (TrackElem *)func_ov007_020b7690(f->particleIndex);
     {
@@ -89,21 +105,24 @@ void func_ov007_020beb80(char *self) {
                 int t;
                 if (mag <= 0) sc = 0;
                 else if (mag >= 0xfa0) sc = 0x1000;
-                else sc = _ZN4cstd4fdivEii(mag, 0xfa0);
+                else
+                    sc = cstd::fdiv(mag, 0xfa0);
                 if (mag <= 0x1f4) t = 0;
                 else if (mag >= 0x3e8) t = 0x1000;
-                else t = _ZN4cstd4fdivEii(mag - 0x1f4, 0x1f4);
+                else
+                    t = cstd::fdiv(mag - 0x1f4, 0x1f4);
                 frames -= t;
                 func_02053380((s16 *)&dd, (s16 *)&dd);
-                e->delta = dd;
+                *(Vec3sWords *)&e->delta = *(Vec3sWords *)&dd;
                 vel = (short)FX_MUL(sc, 0x460);
             }
             e->frames = (u8)(((frames << 2) >> 12) + 1);
             e->vel = vel;
             e->flags &= ~2;
-            e->pos = *tp;
+            *(Vec3Words *)&e->pos = *(Vec3Words *)tp;
         } else {
             e->flags |= 2;
         }
     }
+}
 }

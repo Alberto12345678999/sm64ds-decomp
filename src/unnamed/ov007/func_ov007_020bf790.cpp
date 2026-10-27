@@ -1,5 +1,9 @@
+//cpp
+#include "G2x.h"
+
+extern "C" {
+
 extern void func_ov007_020bdeb0(int a);
-extern void _ZN3G2x18SetBlendBrightnessEPVtii(void *p, unsigned short a, short b);
 extern void func_ov007_020c86a8(void *c, int v);
 extern void func_ov007_020c8688(void *p, int a);
 
@@ -174,7 +178,7 @@ void func_ov007_020bf790(void)
     }
 
     if (r5 & 0x10) {
-        _ZN3G2x18SetBlendBrightnessEPVtii((void *)0x4000050, 0x3F, 0);
+        G2x::SetBlendBrightness((volatile unsigned short *)0x4000050, 0x3F, 0);
     }
 
     if (r5 & 2) {
@@ -184,4 +188,5 @@ void func_ov007_020bf790(void)
     }
 
     data_ov007_02104bd8->obj6->unk24 = data_ov007_02104bd8->unkC;
+}
 }

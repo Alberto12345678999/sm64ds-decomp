@@ -1,5 +1,9 @@
+//cpp
 #include "types.h"
 #include "Ov007Work.h"
+#include "G3i.h"
+
+extern "C" {
 
 /* The 0xd8-byte camera func_ov007_020c023c builds; names as in
  * func_ov007_020c0128, only the slots this file touches. */
@@ -22,8 +26,7 @@ typedef char Ov007Camera_fovy_must_be_at_0xd4[(int)&((Ov007Camera *)0)->fovy == 
 extern char* data_ov007_0210342c;
 extern void func_ov007_020c0128(char* c);
 extern void func_ov007_020bffb8(char* c);
-extern void func_ov007_020c0078(char* c);
-extern void _ZN3G3i7LookAt_EPK7Vector3S2_S2_bP9Matrix4x3(void* a, void* b, void* c, int d, void* e);
+extern void func_ov007_020c0078(char *c);
 
 /* The extern keeps the tree's char * spelling; the typed view is reached
  * through a cast macro. */
@@ -38,7 +41,7 @@ void func_ov007_020b20e8(void){
     cam->fovy = 0x4da;
     cam->scaleW = 0x12bb;
     func_ov007_020bffb8((char *)cam);
-    _ZN3G3i7LookAt_EPK7Vector3S2_S2_bP9Matrix4x3(&cam->eye, &cam->up, &cam->target, 1,
-                                                 cam->viewMatrix);
+    G3i::LookAt_(&cam->eye, &cam->up, &cam->target, true, (Matrix4x3 *)cam->viewMatrix);
     func_ov007_020c0078((char *)cam);
+}
 }

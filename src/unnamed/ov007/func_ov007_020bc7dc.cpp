@@ -1,6 +1,10 @@
-extern int _ZN4cstd3divEii(int, int);
-extern void func_ov007_020c9110(void* p);
-extern void _ZN15ModelComponents11UpdateBonesEP8BCA_Filei(void* model, void* bca, int frame);
+//cpp
+#include "dExtModel_c.h"
+#include "cstd.h"
+
+extern "C" {
+
+extern void func_ov007_020c9110(void *p);
 extern void func_0204531c(void* model, int x);
 
 /* The 0x1c-byte animation player func_ov007_020c92ac allocates and
@@ -17,9 +21,9 @@ typedef struct Ov007AnimPlayer {
  * func_ov007_020bc02c and func_ov007_020bc6d4, only the slots this file
  * touches. */
 typedef struct Ov007Model {
-    void *model; /* 0x00: the ModelComponents */
+    ModelComponents *model; /* 0x00 */
     char pad_04[0x10];
-    void **boneAnims; /* 0x14: BCA_File table; Ov007AnimPlayer::anim indexes it */
+    BCA_File **boneAnims; /* 0x14: Ov007AnimPlayer::anim indexes it */
     char pad_18[0x70];
     Ov007AnimPlayer *blendAnim; /* 0x88: the cross-fade's source pose */
     /* 0x8c: frames left of the cross-fade; func_ov007_020bc374 seeds it and
@@ -39,17 +43,17 @@ typedef char Ov007Model_size_must_be_0x9c[sizeof(Ov007Model) == 0x9c ? 1 : -1];
 void func_ov007_020bc7dc(char* c)
 {
     Ov007Model *m = (Ov007Model *)c;
-    void *model = m->model;
+    ModelComponents *model = m->model;
     Ov007AnimPlayer *p = m->blendAnim;
-    void *entry = m->boneAnims[p->anim];
-    int quot = _ZN4cstd3divEii(m->blendFrames << 12, m->blendFrameCount);
+    BCA_File *entry = m->boneAnims[p->anim];
+    int quot = cstd::div(m->blendFrames << 12, m->blendFrameCount);
 
     if (m->animTick != 0)
         func_ov007_020c9110(m->blendAnim);
 
     p = m->blendAnim;
     if (p->anim != -1)
-        _ZN15ModelComponents11UpdateBonesEP8BCA_Filei(model, entry, p->frame);
+        model->UpdateBones(entry, p->frame);
 
     func_0204531c(model, quot);
 
@@ -59,4 +63,5 @@ void func_ov007_020bc7dc(char* c)
     m->blendFrames -= 1;
     if (m->blendFrames <= 0)
         m->blendFrames = 0;
+}
 }

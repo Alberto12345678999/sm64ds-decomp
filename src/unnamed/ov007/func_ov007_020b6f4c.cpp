@@ -1,4 +1,8 @@
-extern void _ZN3G2x18SetBlendBrightnessEPVtii(volatile unsigned short *, unsigned short, short);
+//cpp
+#include "G2x.h"
+
+extern "C" {
+
 extern void func_ov007_020b65e0(void);
 extern void func_ov007_020b3050(void);
 extern void func_ov007_020b7764(void);
@@ -33,13 +37,13 @@ int func_ov007_020b6f4c(void)
         r |= t;
     }
     if (p->field_10 != 0xa && p->field_10 != 0xb && p->field_14 != 0) {
-        _ZN3G2x18SetBlendBrightnessEPVtii((volatile unsigned short *)0x4000050, 0x3f, 0x10);
-        _ZN3G2x18SetBlendBrightnessEPVtii((volatile unsigned short *)0x4001050, 0x3f, 0x10);
+        G2x::SetBlendBrightness((volatile unsigned short *)0x4000050, 0x3f, 0x10);
+        G2x::SetBlendBrightness((volatile unsigned short *)0x4001050, 0x3f, 0x10);
         *(unsigned int*)0x4000000 &= ~0x1f00;
         *(unsigned int*)0x4001000 &= ~0x1f00;
     } else {
-        _ZN3G2x18SetBlendBrightnessEPVtii((volatile unsigned short *)0x4000050, 0x20, -0x10);
-        _ZN3G2x18SetBlendBrightnessEPVtii((volatile unsigned short *)0x4001050, 0x20, -0x10);
+        G2x::SetBlendBrightness((volatile unsigned short *)0x4000050, 0x20, -0x10);
+        G2x::SetBlendBrightness((volatile unsigned short *)0x4001050, 0x20, -0x10);
     }
     func_ov007_020b65e0();
     func_ov007_020b3050();
@@ -50,4 +54,5 @@ int func_ov007_020b6f4c(void)
     func_ov007_020be47c();
     func_ov007_020b40c0();
     return r;
+}
 }

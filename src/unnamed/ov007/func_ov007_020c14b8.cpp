@@ -1,4 +1,8 @@
+//cpp
 #include "types.h"
+#include "GX.h"
+
+extern "C" {
 
 /* One of the texture records func_ov007_020b697c builds from the BMD
  * (func_ov007_020bd1c0 uploads them through func_ov007_020c14b8). Bit 0 of
@@ -19,14 +23,8 @@ struct Tex {
 extern u32 data_ov007_02104bdc;
 extern u32 data_ov007_02104be4;
 extern void Crash(void);
-extern void _ZN2GX12BeginLoadTexEv(void);
-extern void _ZN2GX7LoadTexEPKvjj(const void *src, u32 slot, u32 size);
-extern void _ZN2GX10EndLoadTexEv(void);
 extern u32 data_ov007_02104be8;
 extern u32 data_ov007_02104be0;
-extern void _ZN2GX16BeginLoadTexPlttEv(void);
-extern void _ZN2GX11LoadTexPlttEPKvjj(const void *src, u32 slot, u32 size);
-extern void _ZN2GX14EndLoadTexPlttEv(void);
 
 void func_ov007_020c1560(struct Tex *t) {
     u32 slot;
@@ -39,9 +37,9 @@ void func_ov007_020c1560(struct Tex *t) {
     end = data_ov007_02104be4;
 
     if (slot + t->texSize <= end) {
-        _ZN2GX12BeginLoadTexEv();
-        _ZN2GX7LoadTexEPKvjj(t->texSrc, data_ov007_02104bdc, t->texSize);
-        _ZN2GX10EndLoadTexEv();
+        GX::BeginLoadTex();
+        GX::LoadTex(t->texSrc, data_ov007_02104bdc, t->texSize);
+        GX::EndLoadTex();
 
         t->texDest = data_ov007_02104bdc;
         data_ov007_02104bdc += t->texSize;
@@ -61,9 +59,9 @@ void func_ov007_020c14d4(struct Tex *t) {
     end = data_ov007_02104be0;
 
     if (slot + t->plttSize <= end) {
-        _ZN2GX16BeginLoadTexPlttEv();
-        _ZN2GX11LoadTexPlttEPKvjj(t->plttSrc, data_ov007_02104be8, t->plttSize);
-        _ZN2GX14EndLoadTexPlttEv();
+        GX::BeginLoadTexPltt();
+        GX::LoadTexPltt(t->plttSrc, data_ov007_02104be8, t->plttSize);
+        GX::EndLoadTexPltt();
 
         t->plttDest = data_ov007_02104be8;
         data_ov007_02104be8 += t->plttSize;
@@ -73,6 +71,7 @@ void func_ov007_020c14d4(struct Tex *t) {
 }
 
 void func_ov007_020c14b8(void *t) {
-    func_ov007_020c1560(t);
-    func_ov007_020c14d4(t);
+    func_ov007_020c1560((struct Tex *)t);
+    func_ov007_020c14d4((struct Tex *)t);
+}
 }

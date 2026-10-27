@@ -1,3 +1,7 @@
+//cpp
+#include "G3X.h"
+
+extern "C" {
 
 typedef short s16;
 struct Obj
@@ -21,7 +25,6 @@ extern struct Obj *data_ov007_0210342c;
 extern void func_ov007_020c93b4(int a);
 extern void func_020557b4(void);
 extern void func_02055624(void);
-extern void _ZN3G3X13SetClearColorEtiiib(int a, int b, int c, int d, int e);
 extern void func_ov007_020b2160(int a);
 extern void func_ov007_020b8fd4(int a);
 extern void func_ov007_020b413c(int a, int b);
@@ -53,7 +56,7 @@ void func_ov007_020bcf90(void)
   func_ov007_020c93b4(data_ov007_0210342c->m44);
   func_020557b4();
   func_02055624();
-  _ZN3G3X13SetClearColorEtiiib(0x7fff, 0, 0x7fff, 0x3f, 1);
+  G3X::SetClearColor(0x7fff, 0, 0x7fff, 0x3f, true);
   func_ov007_020b2160(1);
   switch (*pA)
   {
@@ -143,4 +146,5 @@ void func_ov007_020bcf90(void)
     func_ov007_020b2370();
   }
   func_ov007_020bfaf0(data_ov007_0210342c->m30);
+}
 }

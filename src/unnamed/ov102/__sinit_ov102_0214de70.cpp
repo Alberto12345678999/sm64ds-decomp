@@ -1,22 +1,28 @@
+//cpp
 #include "types.h"
+#include "SharedFilePtr.h"
+
+extern "C" {
+
 /* Runtime asset handles resolved through the overlay 0 file table. */
 enum sinit_ov102_0214de70_AssetId {
     ASSET_BOMBHEI_CARRY_BCA = 0x02b7,
     ASSET_BOMBHEI_WALK_BCA = 0x02b8
 };
 
-extern void _ZN13SharedFilePtr9ConstructEj();
-extern void func_020731dc(void*, void*, void*);
-extern void SharedFilePtr_Destruct_Anim();
+extern void func_020731dc(void *, void *, void **);
+extern int SharedFilePtr_Destruct_Anim(int);
+/* local extern: C++ cannot take a destructor's address, so the registrations
+   name ~Vector3() by its linker name. */
 extern int _ZN7Vector3D1Ev[];
-extern int data_ov102_0214e9c0[];
-extern int data_ov102_0214e9c8[];
-extern int data_ov102_0214e9d0[];
-extern int data_ov102_0214e9dc[];
-extern int data_ov102_0214ea0c[];
-extern int data_ov102_0214e9f4[];
-extern int data_ov102_0214ea00[];
-extern int data_ov102_0214e9e8[];
+extern SharedFilePtr data_ov102_0214e9c0;
+extern SharedFilePtr data_ov102_0214e9c8;
+extern void *data_ov102_0214e9d0[3];
+extern void *data_ov102_0214e9dc[3];
+extern void *data_ov102_0214ea0c[3];
+extern void *data_ov102_0214e9f4[3];
+extern void *data_ov102_0214ea00[3];
+extern void *data_ov102_0214e9e8[3];
 
 extern Vector3 data_ov102_0214ea18;
 extern Vector3 data_ov102_0214ea24;
@@ -25,10 +31,10 @@ extern Vector3 data_ov102_0214ea3c;
 
 void __sinit_ov102_0214de70(void)
 {
-    _ZN13SharedFilePtr9ConstructEj(data_ov102_0214e9c0, ASSET_BOMBHEI_WALK_BCA);
-    func_020731dc(data_ov102_0214e9c0, SharedFilePtr_Destruct_Anim, data_ov102_0214e9d0);
-    _ZN13SharedFilePtr9ConstructEj(data_ov102_0214e9c8, ASSET_BOMBHEI_CARRY_BCA);
-    func_020731dc(data_ov102_0214e9c8, SharedFilePtr_Destruct_Anim, data_ov102_0214e9dc);
+    data_ov102_0214e9c0.Construct(ASSET_BOMBHEI_WALK_BCA);
+    func_020731dc(&data_ov102_0214e9c0, (void *)SharedFilePtr_Destruct_Anim, data_ov102_0214e9d0);
+    data_ov102_0214e9c8.Construct(ASSET_BOMBHEI_CARRY_BCA);
+    func_020731dc(&data_ov102_0214e9c8, (void *)SharedFilePtr_Destruct_Anim, data_ov102_0214e9dc);
 
     data_ov102_0214ea18.x = 0x1c000;
     data_ov102_0214ea18.y = -0x14000;
@@ -58,4 +64,5 @@ void __sinit_ov102_0214de70(void)
         p->z = 0x3c000;
     }
     func_020731dc(&data_ov102_0214ea3c, _ZN7Vector3D1Ev, data_ov102_0214e9e8);
+}
 }

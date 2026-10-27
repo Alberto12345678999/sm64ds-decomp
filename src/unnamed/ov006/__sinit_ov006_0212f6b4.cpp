@@ -1,44 +1,50 @@
+//cpp
 #include "types.h"
+#include "SharedFilePtr.h"
+
+extern "C" {
+
 /* Runtime asset handles resolved through the overlay 0 file table. */
 enum sinit_ov006_0212f6b4_AssetId {
     ASSET_MARIO_MODEL_MG_BMD = 0x0216
 };
 
 extern void func_02017a24(void*, int);
-extern void func_020731dc(void*, void*, void*);
-extern void _ZN13SharedFilePtr9ConstructEj(void*, int);
+extern void func_020731dc(void *, void *, void **);
 extern void func_02017a0c(void);
-extern void SharedFilePtr_Destruct_Anim(void);
+extern int SharedFilePtr_Destruct_Anim(int);
+/* local extern: C++ cannot take a destructor's address, so the registrations
+   name ~Vector3() by its linker name. */
 extern void *_ZN7Vector3D1Ev(void *object);
 
 extern int sTrmpMarioModelFile[];
-extern int data_ov006_021406ac[];
-extern int sTrmpMarioJumpAnimFile[];
-extern int data_ov006_021406c4[];
-extern int sTrmpMarioDoubleJump1AnimFile[];
-extern int data_ov006_021406d0[];
-extern int sTrmpMarioWallJumpAnimFile[];
-extern int data_ov006_021406e8[];
-extern int sTrmpMarioHangUpAnimFile[];
-extern int data_ov006_021406f4[];
-extern int sTrmpMarioRollJumpEndAnimFile[];
-extern int data_ov006_0214070c[];
-extern int sTrmpMarioWalkAnimFile[];
-extern int data_ov006_02140718[];
-extern int sTrmpMarioDoubleJump2AnimFile[];
-extern int data_ov006_02140724[];
-extern int sTrmpMarioJumpEndAnimFile[];
-extern int data_ov006_02140730[];
-extern int sTrmpMarioTurnAnimFile[];
-extern int data_ov006_0214073c[];
-extern int sTrmpMarioTurnEndAnimFile[];
-extern int data_ov006_02140748[];
-extern int sTrmpMarioRollJumpAnimFile[];
-extern int data_ov006_02140754[];
-extern int sTrmpMarioStruggleAnimFile[];
-extern int data_ov006_02140760[];
-extern int sTrmpMarioSdownAnimFile[];
-extern int data_ov006_0214076c[];
+extern void *data_ov006_021406ac[3];
+extern SharedFilePtr sTrmpMarioJumpAnimFile;
+extern void *data_ov006_021406c4[3];
+extern SharedFilePtr sTrmpMarioDoubleJump1AnimFile;
+extern void *data_ov006_021406d0[3];
+extern SharedFilePtr sTrmpMarioWallJumpAnimFile;
+extern void *data_ov006_021406e8[3];
+extern SharedFilePtr sTrmpMarioHangUpAnimFile;
+extern void *data_ov006_021406f4[3];
+extern SharedFilePtr sTrmpMarioRollJumpEndAnimFile;
+extern void *data_ov006_0214070c[3];
+extern SharedFilePtr sTrmpMarioWalkAnimFile;
+extern void *data_ov006_02140718[3];
+extern SharedFilePtr sTrmpMarioDoubleJump2AnimFile;
+extern void *data_ov006_02140724[3];
+extern SharedFilePtr sTrmpMarioJumpEndAnimFile;
+extern void *data_ov006_02140730[3];
+extern SharedFilePtr sTrmpMarioTurnAnimFile;
+extern void *data_ov006_0214073c[3];
+extern SharedFilePtr sTrmpMarioTurnEndAnimFile;
+extern void *data_ov006_02140748[3];
+extern SharedFilePtr sTrmpMarioRollJumpAnimFile;
+extern void *data_ov006_02140754[3];
+extern SharedFilePtr sTrmpMarioStruggleAnimFile;
+extern void *data_ov006_02140760[3];
+extern SharedFilePtr sTrmpMarioSdownAnimFile;
+extern void *data_ov006_0214076c[3];
 
 struct P2 { int a, b; };
 extern struct P2 sTrmpRowBaseHeights;
@@ -73,12 +79,12 @@ extern Vector3 data_ov006_02140790;
 extern Vector3 data_ov006_0214079c;
 extern Vector3 data_ov006_021407a8;
 extern Vector3 data_ov006_021407b4;
-extern int data_ov006_02140640[];
-extern int data_ov006_0214064c[];
-extern int data_ov006_02140658[];
-extern int data_ov006_02140664[];
-extern int data_ov006_02140670[];
-extern int data_ov006_0214067c[];
+extern void *data_ov006_02140640[3];
+extern void *data_ov006_0214064c[3];
+extern void *data_ov006_02140658[3];
+extern void *data_ov006_02140664[3];
+extern void *data_ov006_02140670[3];
+extern void *data_ov006_0214067c[3];
 
 extern Vector3 data_ov006_021407c0;
 extern Vector3 data_ov006_021407cc;
@@ -86,55 +92,55 @@ extern Vector3 data_ov006_021407d8;
 extern Vector3 data_ov006_021407e4;
 extern Vector3 data_ov006_021407f0;
 extern Vector3 data_ov006_021407fc;
-extern int data_ov006_02140688[];
-extern int data_ov006_02140694[];
-extern int data_ov006_021406a0[];
-extern int data_ov006_021406b8[];
-extern int data_ov006_021406dc[];
-extern int data_ov006_02140700[];
+extern void *data_ov006_02140688[3];
+extern void *data_ov006_02140694[3];
+extern void *data_ov006_021406a0[3];
+extern void *data_ov006_021406b8[3];
+extern void *data_ov006_021406dc[3];
+extern void *data_ov006_02140700[3];
 
 void __sinit_ov006_0212f6b4(void)
 {
     func_02017a24(sTrmpMarioModelFile, ASSET_MARIO_MODEL_MG_BMD);
     func_020731dc(sTrmpMarioModelFile, (void *)&func_02017a0c, data_ov006_021406ac);
-    _ZN13SharedFilePtr9ConstructEj(sTrmpMarioJumpAnimFile, 0x8078);
-    func_020731dc(sTrmpMarioJumpAnimFile, (void *)&SharedFilePtr_Destruct_Anim,
+    sTrmpMarioJumpAnimFile.Construct(0x8078);
+    func_020731dc(&sTrmpMarioJumpAnimFile, (void *)SharedFilePtr_Destruct_Anim,
                   data_ov006_021406c4);
-    _ZN13SharedFilePtr9ConstructEj(sTrmpMarioDoubleJump1AnimFile, 0x801d);
-    func_020731dc(sTrmpMarioDoubleJump1AnimFile, (void *)&SharedFilePtr_Destruct_Anim,
+    sTrmpMarioDoubleJump1AnimFile.Construct(0x801d);
+    func_020731dc(&sTrmpMarioDoubleJump1AnimFile, (void *)SharedFilePtr_Destruct_Anim,
                   data_ov006_021406d0);
-    _ZN13SharedFilePtr9ConstructEj(sTrmpMarioWallJumpAnimFile, 0x80be);
-    func_020731dc(sTrmpMarioWallJumpAnimFile, (void *)&SharedFilePtr_Destruct_Anim,
+    sTrmpMarioWallJumpAnimFile.Construct(0x80be);
+    func_020731dc(&sTrmpMarioWallJumpAnimFile, (void *)SharedFilePtr_Destruct_Anim,
                   data_ov006_021406e8);
-    _ZN13SharedFilePtr9ConstructEj(sTrmpMarioHangUpAnimFile, 0x8071);
-    func_020731dc(sTrmpMarioHangUpAnimFile, (void *)&SharedFilePtr_Destruct_Anim,
+    sTrmpMarioHangUpAnimFile.Construct(0x8071);
+    func_020731dc(&sTrmpMarioHangUpAnimFile, (void *)SharedFilePtr_Destruct_Anim,
                   data_ov006_021406f4);
-    _ZN13SharedFilePtr9ConstructEj(sTrmpMarioRollJumpEndAnimFile, 0x808f);
-    func_020731dc(sTrmpMarioRollJumpEndAnimFile, (void *)&SharedFilePtr_Destruct_Anim,
+    sTrmpMarioRollJumpEndAnimFile.Construct(0x808f);
+    func_020731dc(&sTrmpMarioRollJumpEndAnimFile, (void *)SharedFilePtr_Destruct_Anim,
                   data_ov006_0214070c);
-    _ZN13SharedFilePtr9ConstructEj(sTrmpMarioWalkAnimFile, 0x80b4);
-    func_020731dc(sTrmpMarioWalkAnimFile, (void *)&SharedFilePtr_Destruct_Anim,
+    sTrmpMarioWalkAnimFile.Construct(0x80b4);
+    func_020731dc(&sTrmpMarioWalkAnimFile, (void *)SharedFilePtr_Destruct_Anim,
                   data_ov006_02140718);
-    _ZN13SharedFilePtr9ConstructEj(sTrmpMarioDoubleJump2AnimFile, 0x801e);
-    func_020731dc(sTrmpMarioDoubleJump2AnimFile, (void *)&SharedFilePtr_Destruct_Anim,
+    sTrmpMarioDoubleJump2AnimFile.Construct(0x801e);
+    func_020731dc(&sTrmpMarioDoubleJump2AnimFile, (void *)SharedFilePtr_Destruct_Anim,
                   data_ov006_02140724);
-    _ZN13SharedFilePtr9ConstructEj(sTrmpMarioJumpEndAnimFile, 0x8077);
-    func_020731dc(sTrmpMarioJumpEndAnimFile, (void *)&SharedFilePtr_Destruct_Anim,
+    sTrmpMarioJumpEndAnimFile.Construct(0x8077);
+    func_020731dc(&sTrmpMarioJumpEndAnimFile, (void *)SharedFilePtr_Destruct_Anim,
                   data_ov006_02140730);
-    _ZN13SharedFilePtr9ConstructEj(sTrmpMarioTurnAnimFile, 0x80ac);
-    func_020731dc(sTrmpMarioTurnAnimFile, (void *)&SharedFilePtr_Destruct_Anim,
+    sTrmpMarioTurnAnimFile.Construct(0x80ac);
+    func_020731dc(&sTrmpMarioTurnAnimFile, (void *)SharedFilePtr_Destruct_Anim,
                   data_ov006_0214073c);
-    _ZN13SharedFilePtr9ConstructEj(sTrmpMarioTurnEndAnimFile, 0x80ab);
-    func_020731dc(sTrmpMarioTurnEndAnimFile, (void *)&SharedFilePtr_Destruct_Anim,
+    sTrmpMarioTurnEndAnimFile.Construct(0x80ab);
+    func_020731dc(&sTrmpMarioTurnEndAnimFile, (void *)SharedFilePtr_Destruct_Anim,
                   data_ov006_02140748);
-    _ZN13SharedFilePtr9ConstructEj(sTrmpMarioRollJumpAnimFile, 0x808e);
-    func_020731dc(sTrmpMarioRollJumpAnimFile, (void *)&SharedFilePtr_Destruct_Anim,
+    sTrmpMarioRollJumpAnimFile.Construct(0x808e);
+    func_020731dc(&sTrmpMarioRollJumpAnimFile, (void *)SharedFilePtr_Destruct_Anim,
                   data_ov006_02140754);
-    _ZN13SharedFilePtr9ConstructEj(sTrmpMarioStruggleAnimFile, 0x80a4);
-    func_020731dc(sTrmpMarioStruggleAnimFile, (void *)&SharedFilePtr_Destruct_Anim,
+    sTrmpMarioStruggleAnimFile.Construct(0x80a4);
+    func_020731dc(&sTrmpMarioStruggleAnimFile, (void *)SharedFilePtr_Destruct_Anim,
                   data_ov006_02140760);
-    _ZN13SharedFilePtr9ConstructEj(sTrmpMarioSdownAnimFile, 0x8092);
-    func_020731dc(sTrmpMarioSdownAnimFile, (void *)&SharedFilePtr_Destruct_Anim,
+    sTrmpMarioSdownAnimFile.Construct(0x8092);
+    func_020731dc(&sTrmpMarioSdownAnimFile, (void *)SharedFilePtr_Destruct_Anim,
                   data_ov006_0214076c);
 
     sTrmpRowHeights.a = sTrmpRowBaseHeights.a;
@@ -243,4 +249,5 @@ void __sinit_ov006_0212f6b4(void)
         p[2] = 0;
         func_020731dc(p, (void*)&_ZN7Vector3D1Ev, data_ov006_02140700);
     }
+}
 }

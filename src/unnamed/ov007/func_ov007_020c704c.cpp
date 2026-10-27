@@ -1,8 +1,18 @@
+//cpp
 #include "types.h"
 #include "nitro/fx/fx.h"
+#include "cstd.h"
+
+extern "C" {
+
+/* Vector3 declares a constructor and destructor under C++, which makes its
+ * assignment copy word by word. The ROM copies these with C's ldm/stm block
+ * move, which C++ keeps for a struct with an array member. */
+typedef struct Vec3Words {
+    Fix12i w[3];
+} Vec3Words;
 
 extern int func_020531a4(int a);
-extern int _ZN4cstd4fdivEii(int a, int b);
 
 typedef struct S {
     Vector3 *p;
@@ -31,17 +41,18 @@ int func_ov007_020c704c(S *self, Vector3 *b, int r2arg, int r3arg, int radius) {
         self->fc = self->f10;
         self->f8 = self->fc;
         self->f4 = self->f8;
-        *self->p = *b;
+        *(Vec3Words *)self->p = *(Vec3Words *)b;
         return 2;
     }
 
     if (sum <= FX_MUL(r3arg, r3arg)) {
         spd = func_020531a4(sum);
-        ratio = _ZN4cstd4fdivEii(r2arg, spd);
+        ratio = cstd::fdiv(r2arg, spd);
 
         self->f10 += FX_MUL(ratio, sdx);
         self->f14 += FX_MUL(ratio, sdy);
         return 1;
     }
     return 0;
+}
 }

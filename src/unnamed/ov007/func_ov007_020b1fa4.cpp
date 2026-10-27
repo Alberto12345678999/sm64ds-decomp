@@ -1,10 +1,13 @@
+//cpp
 #include "types.h"
 #include "Ov007Work.h"
-extern int func_ov007_020c0128(void* c);
-extern int _ZN4cstd3divEii(int a, int b);
-extern void func_ov007_020bffb8(void* c);
-extern void _ZN3G3i7LookAt_EPK7Vector3S2_S2_bP9Matrix4x3(void *camPos, void *up, void *target,
-                                                         int draw, void *m);
+#include "G3i.h"
+#include "cstd.h"
+
+extern "C" {
+
+extern int func_ov007_020c0128(void *c);
+extern void func_ov007_020bffb8(void *c);
 extern void func_ov007_020c0078(void* c);
 extern char* data_ov007_0210342c;
 
@@ -35,12 +38,12 @@ void func_ov007_020b1fa4(int preset) {
         case 0:
             cam->target.y = -0x3e8;
             cam->distance = 0x1e000;
-            cam->fovy = (short)_ZN4cstd3divEii(0xf0000, 0x168);
+            cam->fovy = (short)cstd::div(0xf0000, 0x168);
             break;
         case 1:
             cam->target.y = -0x7d0;
             cam->distance = 0x28000;
-            cam->fovy = (short)_ZN4cstd3divEii(0x120000, 0x168);
+            cam->fovy = (short)cstd::div(0x120000, 0x168);
             break;
         }
         break;
@@ -49,17 +52,17 @@ void func_ov007_020b1fa4(int preset) {
         break;
     case 3:
         cam->distance = 0x5000;
-        cam->fovy = (short)_ZN4cstd3divEii(0x140000, 0x168);
+        cam->fovy = (short)cstd::div(0x140000, 0x168);
         break;
     case 4:
         cam->target.y = -0x3e8;
         cam->distance = 0x1e000;
-        cam->fovy = (short)_ZN4cstd3divEii(0xf0000, 0x168);
+        cam->fovy = (short)cstd::div(0xf0000, 0x168);
         break;
     }
     func_ov007_020bffb8(cam);
-    _ZN3G3i7LookAt_EPK7Vector3S2_S2_bP9Matrix4x3(&cam->eye, &cam->up, &cam->target, 1,
-                                                 cam->viewMatrix);
+    G3i::LookAt_(&cam->eye, &cam->up, &cam->target, true, (Matrix4x3 *)cam->viewMatrix);
     func_ov007_020c0078(cam);
     WORK->cameraPreset = preset;
+}
 }

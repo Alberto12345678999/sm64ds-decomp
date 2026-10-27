@@ -1,3 +1,8 @@
+//cpp
+#include "G2x.h"
+
+extern "C" {
+
 extern void func_ov007_020b6c54(void);
 extern void func_ov007_020c3e3c(int v);
 extern void func_ov007_020c3e2c(int v);
@@ -9,7 +14,6 @@ extern void func_ov007_020bd5a8(void);
 extern void func_ov007_020bd500(void);
 extern void func_ov007_020bd648(int mode);
 extern void func_02045d9c(void);
-extern void _ZN3G2x18SetBlendBrightnessEPVtii(void *p, unsigned short a, short b);
 extern void func_ov007_020b68e8(void);
 extern void func_ov007_020b30b0(void);
 extern void func_ov007_020be00c(void);
@@ -68,8 +72,8 @@ int func_ov007_020b7138(struct Arg *a, int *b)
     func_ov007_020bd500();
     func_ov007_020bd648(1);
     func_02045d9c();
-    _ZN3G2x18SetBlendBrightnessEPVtii((void *)0x4000050, 0x3f, -0x10);
-    _ZN3G2x18SetBlendBrightnessEPVtii((void *)0x4001050, 0x3f, -0x10);
+    G2x::SetBlendBrightness((volatile unsigned short *)0x4000050, 0x3f, -0x10);
+    G2x::SetBlendBrightness((volatile unsigned short *)0x4001050, 0x3f, -0x10);
     *(unsigned int *)0x4000000 &= ~0x1f00;
     *(unsigned int *)0x4001000 &= ~0x1f00;
     *(unsigned short *)0x4000304 &= ~0x8000;
@@ -90,4 +94,5 @@ int func_ov007_020b7138(struct Arg *a, int *b)
     data_ov007_0210342c->ffd = (flags & 0x18) >> 3;
     data_ov007_02103430 = 1;
     return 1;
+}
 }

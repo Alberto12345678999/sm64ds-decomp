@@ -1,4 +1,9 @@
+//cpp
 #include "types.h"
+#include "SharedFilePtr.h"
+
+extern "C" {
+
 /* Runtime asset handles resolved through the overlay 0 file table. */
 enum sinit_ov062_0211cf30_AssetId {
     ASSET_HORUHEI_BMD = 0x0327,
@@ -9,24 +14,25 @@ enum sinit_ov062_0211cf30_AssetId {
     ASSET_HORUHEI_WALK_BCA = 0x032c
 };
 
-extern int func_02017acc(void*, int);
-extern void func_020731dc(void*, void*, void**);
-extern int _ZN13SharedFilePtr9ConstructEj(void*, int);
-extern void func_02017ab4(void);
-extern void SharedFilePtr_Destruct_Anim(void);
+extern void *func_02017acc(void *, unsigned int);
+extern void func_020731dc(void *, void *, void **);
+extern int func_02017ab4(int);
+extern int SharedFilePtr_Destruct_Anim(int);
+/* local extern: C++ cannot take a destructor's address, so the registrations
+   name ~Vector3() by its linker name. */
 extern void *_ZN7Vector3D1Ev(void *object);
 
 extern void* data_ov062_0211ddf0;
 extern void* data_ov062_0211de10;
-extern void* data_ov062_0211dde8;
+extern SharedFilePtr data_ov062_0211dde8;
 extern void* data_ov062_0211de1c;
-extern void* gHoruheiLiftLoopAnimationFile;
+extern SharedFilePtr gHoruheiLiftLoopAnimationFile;
 extern void* data_ov062_0211de28;
-extern void* data_ov062_0211de00;
+extern SharedFilePtr data_ov062_0211de00;
 extern void* data_ov062_0211de34;
-extern void* data_ov062_0211de08;
+extern SharedFilePtr data_ov062_0211de08;
 extern void* data_ov062_0211de40;
-extern void* gHoruheiWalkAnimationFile;
+extern SharedFilePtr gHoruheiWalkAnimationFile;
 extern void* data_ov062_0211de4c;
 
 extern Vector3 data_ov062_0211df10;
@@ -34,7 +40,12 @@ extern void* data_ov062_0211de58;
 extern Vector3 data_ov062_0211df1c;
 extern void* data_ov062_0211de64;
 
-typedef struct { int a, b; } S8;
+/* Two words copied as a unit. Under C++ a struct of two scalar fields is
+   assigned field by field, which reorders the loads; an array member keeps
+   C's schedule. */
+typedef struct {
+    int w[2];
+} S8;
 struct P2 { S8 a, b; };
 extern struct P2 data_ov062_0211de70;
 extern struct P2 data_ov062_0211de80;
@@ -61,28 +72,30 @@ extern S8 data_ov062_0211d948, data_ov062_0211d970;
 void __sinit_ov062_0211cf30(void)
 {
     func_02017acc(&data_ov062_0211ddf0, ASSET_HORUHEI_BMD);
-    func_020731dc(&data_ov062_0211ddf0, (void*)&func_02017ab4, (void**)&data_ov062_0211de10);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov062_0211dde8, ASSET_HORUHEI_LIFT_BCA);
-    func_020731dc(&data_ov062_0211dde8, (void*)&SharedFilePtr_Destruct_Anim, (void**)&data_ov062_0211de1c);
-    _ZN13SharedFilePtr9ConstructEj(&gHoruheiLiftLoopAnimationFile, ASSET_HORUHEI_LIFT_LOOP_BCA);
-    func_020731dc(&gHoruheiLiftLoopAnimationFile, (void*)&SharedFilePtr_Destruct_Anim, (void**)&data_ov062_0211de28);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov062_0211de00, ASSET_HORUHEI_STRUGGLE_BCA);
-    func_020731dc(&data_ov062_0211de00, (void*)&SharedFilePtr_Destruct_Anim, (void**)&data_ov062_0211de34);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov062_0211de08, ASSET_HORUHEI_THROW_BCA);
-    func_020731dc(&data_ov062_0211de08, (void*)&SharedFilePtr_Destruct_Anim, (void**)&data_ov062_0211de40);
-    _ZN13SharedFilePtr9ConstructEj(&gHoruheiWalkAnimationFile, ASSET_HORUHEI_WALK_BCA);
-    func_020731dc(&gHoruheiWalkAnimationFile, (void*)&SharedFilePtr_Destruct_Anim, (void**)&data_ov062_0211de4c);
+    func_020731dc(&data_ov062_0211ddf0, (void *)func_02017ab4, &data_ov062_0211de10);
+    data_ov062_0211dde8.Construct(ASSET_HORUHEI_LIFT_BCA);
+    func_020731dc(&data_ov062_0211dde8, (void *)SharedFilePtr_Destruct_Anim, &data_ov062_0211de1c);
+    gHoruheiLiftLoopAnimationFile.Construct(ASSET_HORUHEI_LIFT_LOOP_BCA);
+    func_020731dc(&gHoruheiLiftLoopAnimationFile, (void *)SharedFilePtr_Destruct_Anim,
+                  &data_ov062_0211de28);
+    data_ov062_0211de00.Construct(ASSET_HORUHEI_STRUGGLE_BCA);
+    func_020731dc(&data_ov062_0211de00, (void *)SharedFilePtr_Destruct_Anim, &data_ov062_0211de34);
+    data_ov062_0211de08.Construct(ASSET_HORUHEI_THROW_BCA);
+    func_020731dc(&data_ov062_0211de08, (void *)SharedFilePtr_Destruct_Anim, &data_ov062_0211de40);
+    gHoruheiWalkAnimationFile.Construct(ASSET_HORUHEI_WALK_BCA);
+    func_020731dc(&gHoruheiWalkAnimationFile, (void *)SharedFilePtr_Destruct_Anim,
+                  &data_ov062_0211de4c);
 
     data_ov062_0211df10.x = 0x2c000;
     data_ov062_0211df10.y = -0x14000;
     data_ov062_0211df10.z = -0x78000;
-    func_020731dc(&data_ov062_0211df10, (void*)&_ZN7Vector3D1Ev, (void**)&data_ov062_0211de58);
+    func_020731dc(&data_ov062_0211df10, (void *)&_ZN7Vector3D1Ev, &data_ov062_0211de58);
 
     int* p_df1c = (int*)&data_ov062_0211df1c;
     *p_df1c = 0x44000;
     p_df1c[1] = -0x14000;
     p_df1c[2] = -0x78000;
-    func_020731dc(&data_ov062_0211df1c, (void*)&_ZN7Vector3D1Ev, (void**)&data_ov062_0211de64);
+    func_020731dc(&data_ov062_0211df1c, (void *)&_ZN7Vector3D1Ev, &data_ov062_0211de64);
 
     data_ov062_0211ded0.a = data_ov062_0211d940;
     data_ov062_0211ded0.b = data_ov062_0211d938;
@@ -104,4 +117,5 @@ void __sinit_ov062_0211cf30(void)
     data_ov062_0211de80.b = data_ov062_0211d928;
     data_ov062_0211deb0.a = data_ov062_0211d948;
     data_ov062_0211deb0.b = data_ov062_0211d970;
+}
 }

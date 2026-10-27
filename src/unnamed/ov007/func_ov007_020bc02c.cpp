@@ -1,13 +1,15 @@
+//cpp
 #include "types.h"
 #include "dExtModel_c.h"
+
+extern "C" {
+
 typedef struct { int f[12]; } Blk;
 
 #define LS(a) (*(short*)(((long long)(int)(a))))
 
 extern void func_ov007_020bc968(char *c, void *other);
 extern void func_ov007_020bc894(char *c);
-extern void _ZN15ModelComponents21UpdateVertsUsingBonesEv(void *self);
-extern void _ZN15ModelComponents11UpdateBonesEP8BCA_Filei(void *self, void *bca, int frame);
 extern void func_ov007_020bc7dc(char *c);
 extern void func_02044dc4(void *self);
 
@@ -68,15 +70,15 @@ void func_ov007_020bc02c(char *c, void *other) {
     func_ov007_020bc968(c, other);
     if (m->animTick != 0) {
         func_ov007_020bc894(c);
-        _ZN15ModelComponents21UpdateVertsUsingBonesEv(r5);
+        r5->UpdateVertsUsingBones();
     } else if (r4 != 0) {
         Ov007AnimPlayer *o = m->boneAnim;
         struct BCA_File **bones = m->boneAnims;
-        _ZN15ModelComponents11UpdateBonesEP8BCA_Filei(r5, bones[o->anim], (u16)(o->frame + 1));
-        r5->transforms = m->nextTransforms;
-        _ZN15ModelComponents21UpdateVertsUsingBonesEv(r5);
+        r5->UpdateBones(bones[o->anim], (u16)(o->frame + 1));
+        r5->transforms = (Matrix4x3 *)m->nextTransforms;
+        r5->UpdateVertsUsingBones();
         unsigned int i = 0;
-        r5->transforms = m->transforms;
+        r5->transforms = (Matrix4x3 *)m->transforms;
         while (i < r5->modelFile->numBones) {
             Blk *a = (Blk *)((char *)m->transforms + i * 0x30);
             Blk *b = (Blk *)((char *)m->nextTransforms + i * 0x30);
@@ -111,4 +113,5 @@ void func_ov007_020bc02c(char *c, void *other) {
         }
         m->animTick = (m->animTick == 0) ? 1 : 0;
     }
+}
 }

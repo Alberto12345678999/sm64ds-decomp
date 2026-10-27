@@ -1,3 +1,8 @@
+//cpp
+#include "Memory.h"
+
+extern "C" {
+
 struct A {
     char pad[0x24];
     unsigned int count;
@@ -9,7 +14,6 @@ struct B {
     char pad2[0x10];
 };
 
-extern void *_ZN6Memory13operator_new2Ej(unsigned int sz);
 extern unsigned short Color_Interp(void *a, unsigned short x, unsigned short y, int z);
 extern void func_020555a4(void *p);
 extern unsigned short data_ov002_0210a760[];
@@ -26,7 +30,7 @@ int *func_ov002_020e6bb0(char *self) {
     pp = (char **)(((long long)(int)(self + 8)));
     base = *pp;
     count = *(unsigned int *)(base + 0x24);
-    out = (int *)_ZN6Memory13operator_new2Ej(count << 2);
+    out = (int *)Memory::operator_new2(count << 2);
 
     p = out;
     src = pp[1];
@@ -83,4 +87,5 @@ void func_ov002_020e6a78(char *c, int b) {
         *dst++ = Color_Interp(c, *src++, *tbl++, b);
     }
     func_020555a4(c + 0x40);
+}
 }

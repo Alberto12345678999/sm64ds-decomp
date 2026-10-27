@@ -1,15 +1,24 @@
+//cpp
+#include "SharedFilePtr.h"
+
+extern "C" {
+
 /* Runtime asset handles resolved through the overlay 0 file table. */
 enum sinit_ov077_0212749c_AssetId {
     ASSET_TOGEZO_WALK_BCA = 0x042b
 };
 
-extern int _ZN13SharedFilePtr9ConstructEj();
-extern void func_020731dc();
-extern void SharedFilePtr_Destruct_Anim(void);
-extern char data_ov077_02127c14[];
-extern char data_ov077_02127c1c[];
+extern void func_020731dc(void *, void *, void **);
+extern int SharedFilePtr_Destruct_Anim(int);
+extern SharedFilePtr data_ov077_02127c14;
+extern void *data_ov077_02127c1c[3];
 
-struct Pair { int a, b; };
+/* Two words copied as a unit. Under C++ a struct of two scalar fields is
+   assigned field by field, which reorders the loads; an array member keeps
+   C's schedule. */
+struct Pair {
+    int w[2];
+};
 extern struct Pair data_ov077_02127928;
 extern struct Pair data_ov077_02127910;
 extern struct Pair data_ov077_02127908;
@@ -41,8 +50,8 @@ extern struct Dst data_ov077_02127c28;
 
 void __sinit_ov077_0212749c(void)
 {
-    _ZN13SharedFilePtr9ConstructEj(data_ov077_02127c14, ASSET_TOGEZO_WALK_BCA);
-    func_020731dc(data_ov077_02127c14, &SharedFilePtr_Destruct_Anim, data_ov077_02127c1c);
+    data_ov077_02127c14.Construct(ASSET_TOGEZO_WALK_BCA);
+    func_020731dc(&data_ov077_02127c14, (void *)SharedFilePtr_Destruct_Anim, data_ov077_02127c1c);
     data_ov077_02127c28.p0 = data_ov077_02127928;
     data_ov077_02127c28.p1 = data_ov077_02127910;
     data_ov077_02127c28.p2 = data_ov077_02127908;
@@ -55,4 +64,5 @@ void __sinit_ov077_0212749c(void)
     data_ov077_02127c28.p9 = data_ov077_02127930;
     data_ov077_02127c28.p10 = data_ov077_02127900;
     data_ov077_02127c28.p11 = data_ov077_02127920;
+}
 }
