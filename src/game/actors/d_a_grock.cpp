@@ -38,9 +38,6 @@ struct Vector3_16f;
  * - func_ov021_02112544: ReflectAngle(Fix12<int>, Fix12<int>, s16)
  *   size-DIFFs. The wall angle is held in a short so GetSubtraction gets
  *   it without a re-extension. The angle calls are cstd::atan2(s32, s32).
- * - func_ov021_021122fc: DropShadowRadHeight is void in dActor_c.h and
- *   takes Fix12<int> by value. This function returns the scalar call;
- *   the method form does not compile.
  * - Player::Hurt is not declared on Player; its 5Fix12IiE extern stays.
  */
 
@@ -108,11 +105,6 @@ typedef void BgchInitAt_(dBgCh_Actr *self, int actor, Fix12i radius, Fix12i heig
 extern void Vec3_Asr(void *dst, void *src, int n);
 extern void Matrix4x3_FromTranslation(void *m, int x, int y, int z);
 extern void Matrix4x3_ApplyInPlaceToRotationXYZExt(void *m, short a, short b, short c);
-/* local extern: int return -- `return` forwards the callee's r0 (a tail call). */
-extern int _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x3iih(void *thiz,
-                                                                                void *sm, void *m,
-                                                                                int rad, int h,
-                                                                                unsigned u);
 extern struct Matrix4x3 data_020a0e68;
 /* Same body as Sound::PlayBank3 (0x02012664). The ROM calls these copies. */
 extern void func_02012694(int id, void *pos);
@@ -170,7 +162,7 @@ extern "C" void func_ov021_02112294(void *raw)
 /* Shift the position down 3, build the scratch matrix, keep the unrotated
  * copy in pad_188 for the shadow, then rotate it into the model. */
 // @symbol func_ov021_021122fc
-extern "C" int func_ov021_021122fc(char *raw)
+extern "C" void func_ov021_021122fc(char *raw)
 {
     daGrock_c *rock = (daGrock_c *)raw;
     int shifted[3];
@@ -181,8 +173,8 @@ extern "C" int func_ov021_021122fc(char *raw)
     Matrix4x3_ApplyInPlaceToRotationXYZExt(&data_020a0e68,
                                             rock->mAngleX, rock->mAngleY, rock->mAngleZ);
     rock->mModel.mat4x3 = data_020a0e68;
-    return _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x3iih(
-        rock, &rock->mShadowModel, rock->pad_188, 0x1f4000, 0x1f4000, 0xf);
+    rock->DropShadowRadHeight(rock->mShadowModel, *(Matrix4x3 *)rock->pad_188, 0x1f4000,
+                              0x1f4000, 0xf);
 }
 
 /* Cylinder hit. Mega always breaks the rock. Punch/kick/breakdance/slide

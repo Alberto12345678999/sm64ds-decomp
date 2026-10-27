@@ -57,7 +57,7 @@ struct daObjCtRotateBlock_c : dBgActor_c {
     /* These three routines are anonymous in the image. Their names describe
      * their exclusive calls and field effects; they are not claimed as
      * cartridge-authenticated EAD spellings. */
-    s32 UpdateShadow();
+    void UpdateShadow();
     void UpdateClsn();
     void UpdateModel();
 };

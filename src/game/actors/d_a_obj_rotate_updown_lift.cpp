@@ -28,11 +28,9 @@
  * leftovers (member spellings measured and rejected on size):
  * - Kill: Particle::System::NewSimple(Fix12<int> x, y, z) is +0x24
  *   (0x8c -> 0xb0). The scalar extern passes the three positions in r1-r3.
- * - func_ov091_02131160: dActor_c::DropShadowScaleXYZ as a method is +0x1c
- *   (0x1e0 -> 0x1fc). A Matrix4x3 * local for mShadowMat is +4
+ * - func_ov091_02131160: a Matrix4x3 * local for mShadowMat is +4
  *   (0x1e0 -> 0x1e4); the translation row is stored through `this`.
- * - Behavior: dBgActor_c::UpdateKillByMegaChar as a method is +0xc
- *   (0x488 -> 0x494). One this+0x3a2 halfword for the arrived pitch is
+ * - Behavior: one this+0x3a2 halfword for the arrived pitch is
  *   -0xc (0x488 -> 0x47c); &mPitchBase is a pool add of 0x3a2 and the
  *   step stays this+0x300+0xa4.
  * - InitResources: dBgW_KcMbg::SetFile as a method is +4 (0x2b4 -> 0x2b8).
@@ -157,11 +155,6 @@ struct System {
     static void *NewSimple(unsigned int id, int x, int y, int z);
 };
 }
-/* local extern: int return -- `return` forwards the callee's r0 (a tail call). */
-int _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x3iiih(void *self, void *shadow,
-                                                                         void *mat, int sx, int sy,
-                                                                         int sz,
-                                                                         unsigned int opacity);
 extern void hold_d_a_obj_rotate_updown_lift(dBgW_KcMbg *self, KCL_File *file, const Matrix4x3 *mat,
                                             int scale, s16 angY, CLPS_Block *clps);
 }
@@ -244,7 +237,7 @@ void daObjRotateUpdownLift_c::OnHitByMegaChar(Player &player)
 // @symbol func_ov091_02131160
 /* Aim the cuboid shadow and the clip volume. Called every frame except
    for HS_UPDOWN_LIFT. */
-int daObjRotateUpdownLift_c::func_ov091_02131160()
+void daObjRotateUpdownLift_c::func_ov091_02131160()
 {
     /* Holding mShadowMat in a Matrix4x3 * local steals r4 from `this` and
        the function grows. The three translation words are stored from
@@ -287,8 +280,8 @@ int daObjRotateUpdownLift_c::func_ov091_02131160()
     int fac = 0xa0000 - shr;
     if (cosine < 0)
         cosine = -cosine;
-    return _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x3iiih(
-        c, &mShadowModel, mShadowMat, sx, h, shadowSizeZ.v[variantC] + FX_MUL(fac, cosine), 0xf);
+    DropShadowScaleXYZ(mShadowModel, *(Matrix4x3 *)mShadowMat, sx, h,
+                       shadowSizeZ.v[variantC] + FX_MUL(fac, cosine), 0xf);
 }
 
 // 0x02131340 (0x48)
@@ -401,7 +394,7 @@ int daObjRotateUpdownLift_c::Behavior()
         return 1;
     }
 
-    if (_ZN10dBgActor_c20UpdateKillByMegaCharEsss5Fix12IiE(this, 0x2000, 0, 0, 0) != 0)
+    if (UpdateKillByMegaChar(0x2000, 0, 0, 0) != 0)
         return 1;
 
     {

@@ -29,12 +29,6 @@
  *   common.h first (via dBgActor_c.h): Matrix4x3 is s32 m[12], so the
  *   translation stays m[9]/m[10]/m[11].
  *
- * WHY SOME CALLS ARE SPELLED AS MANGLED SYMBOLS (Fix12<int> by value, see
- * notes/mwccarm-codegen.md 6az; the header method form changes the code
- * size): dBgW_KcMbg::SetFile
- * (InitResources), dActor_c::DropShadowScaleXYZ (UpdateShadow) and
- * dActor_c::Earthquake (Behavior).
- *
  * Known limits:
  *   func_020393d4: InitResources stores dBgW::UpdatePosWithTransform on
  *   mMeshCollider; dBgW.h has no setter.
@@ -80,12 +74,6 @@ extern s16 data_02082214[];
 
 extern void Matrix4x3_FromRotationY(void *, s16);
 extern void Matrix4x3_FromRotationXYZExt(void *, int, int, int);
-/* dActor_c::DropShadowScaleXYZ / Earthquake -- reached through the mangled
-   name because the by-value Fix12<int> parameters
-   (notes/mwccarm-codegen.md 6az) break the method form. */
-/* local extern: int return -- `return` forwards the callee's r0 (a tail call). */
-extern int _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x3iiih(
-    dActor_c *, dExtShadowModel_c *, Matrix4x3 *, Fix12i, Fix12i, Fix12i, u32);
 extern void AddVec3(BattanVector3 *, BattanVector3 *, BattanVector3 *);
 extern void func_0200fa04(dActor_c *, BattanVector3 *, int);
 
@@ -280,7 +268,7 @@ void daObjFm_Battan_c::UpdateModelTransform()
 }
 
 // @symbol _ZN16daObjFm_Battan_c12UpdateShadowEv
-int daObjFm_Battan_c::UpdateShadow()
+void daObjFm_Battan_c::UpdateShadow()
 {
     int tableIndex = (u16)mAngleX >> 4;
     int sinX = data_02082214[tableIndex * 2];
@@ -290,8 +278,5 @@ int daObjFm_Battan_c::UpdateShadow()
     mShadowMat.m[9] = mPosX >> 3;
     mShadowMat.m[10] = mPosY >> 3;
     mShadowMat.m[11] = mPosZ >> 3;
-    /* MEASURED: three by-value Fix12<int> scales; see notes/mwccarm-codegen.md
-       6az. */
-    return _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x3iiih(
-        this, &mShadowModel, &mShadowMat, 0x258000, 0x32000, -depth, 0xf);
+    DropShadowScaleXYZ(mShadowModel, mShadowMat, 0x258000, 0x32000, -depth, 0xf);
 }

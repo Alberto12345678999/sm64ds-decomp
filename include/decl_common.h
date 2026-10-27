@@ -961,7 +961,7 @@ extern int func_ov018_02111804[];
 /* Returns nothing: ov018 0x02111d18..0x02111d24 pops straight to bx lr with no
    r0 set. Definition in src/game/actors/d_a_pg_mthr.cpp. */
 extern void func_ov018_02111bf0(void*, void*);
-extern int func_ov021_021122fc(char*);
+extern void func_ov021_021122fc(char*);
 extern void func_ov022_0211193c(void);
 extern int func_ov025_0211123c(char*);
 extern int func_ov025_021119a4(char*);
