@@ -11,6 +11,7 @@
 
 #include "decl_common.h"
 #include "daBgSnmHed_c.h"
+#include "SpawnInfo.h"
 #include "Player.h"
 #include "SharedFilePtr.h"
 #include "dExtAnmTexPat_c.h"
@@ -21,9 +22,38 @@
 struct BMD_File;
 struct BTP_File;
 
-extern "C" daBgSnmHed_c::StateEntry data_ov072_02122c00[];
-extern int gBigSnowmanSmileTextureSequenceFile[];
-extern int gBigSnowmanCryTextureSequenceFile[];
+/* The model and texture-sequence handles reach their files through these
+ * wrappers' constructor and destructor veneers; the manifest maps each to
+ * the retail destination. Descriptive local types, not recovered spellings. */
+struct BgSnmHedModelFile : SharedFilePtr {
+    BgSnmHedModelFile(u32);
+    ~BgSnmHedModelFile();
+};
+
+struct BgSnmHedTexSeqFile : SharedFilePtr {
+    BgSnmHedTexSeqFile(u32);
+    ~BgSnmHedTexSeqFile();
+};
+
+/* Runtime asset handles, distinct from the NitroFS file IDs. */
+enum BgSnmHedAssetId {
+    ASSET_BIG_SNOWMAN_CRY_BTP = 0x02ae,
+    ASSET_BIG_SNOWMAN_HEAD_BMD = 0x02af,
+    ASSET_BIG_SNOWMAN_SMILE_BTP = 0x02b0
+};
+
+/* This TU's statics, in the order the retail initializer (0x021221f8)
+ * builds them. */
+BgSnmHedModelFile gBgSnmHedModelFile(ASSET_BIG_SNOWMAN_HEAD_BMD);
+BgSnmHedTexSeqFile gBigSnowmanCryTextureSequenceFile(ASSET_BIG_SNOWMAN_CRY_BTP);
+BgSnmHedTexSeqFile gBigSnowmanSmileTextureSequenceFile(ASSET_BIG_SNOWMAN_SMILE_BTP);
+
+daBgSnmHed_c::StateEntry gBgSnmHedStates[4] = {
+    {&daBgSnmHed_c::InitState0, &daBgSnmHed_c::State0},
+    {&daBgSnmHed_c::InitState1, &daBgSnmHed_c::State1},
+    {&daBgSnmHed_c::InitState2, &daBgSnmHed_c::State2},
+    {&daBgSnmHed_c::InitState3, &daBgSnmHed_c::State3},
+};
 
 namespace Sound {
 bool PlaySub(u32, u32, u32, int, bool);
@@ -104,7 +134,8 @@ int daBgSnmHed_c::State3()
 // @symbol _ZN12daBgSnmHed_c10InitState3Ev
 int daBgSnmHed_c::InitState3()
 {
-    mTextureSequence.SetFile(*(BTP_File *)gBigSnowmanSmileTextureSequenceFile[1], 0, 0x1000, 0);
+    mTextureSequence.SetFile(*(BTP_File *)gBigSnowmanSmileTextureSequenceFile.filePtr, 0, 0x1000,
+                             0);
     mVertAccel = 0;
     mTerminalVelocity = 0;
     mSubstate = 0;
@@ -221,7 +252,7 @@ int daBgSnmHed_c::State0()
 // @symbol _ZN12daBgSnmHed_c10InitState0Ev
 int daBgSnmHed_c::InitState0()
 {
-    mTextureSequence.SetFile(*(BTP_File *)gBigSnowmanCryTextureSequenceFile[1], 0, 0x1000, 0);
+    mTextureSequence.SetFile(*(BTP_File *)gBigSnowmanCryTextureSequenceFile.filePtr, 0, 0x1000, 0);
     mVertAccel = 0;
     mTerminalVelocity = 0;
     mStateValue = 0;
@@ -243,14 +274,14 @@ void daBgSnmHed_c::CallStateInit()
 // @symbol _ZN12daBgSnmHed_c8SetStateEi
 void daBgSnmHed_c::SetState(int state)
 {
-    mState = &data_ov072_02122c00[state];
+    mState = &gBgSnmHedStates[state];
     CallStateInit();
 }
 
 // @symbol _ZN12daBgSnmHed_c16CleanupResourcesEv
 int daBgSnmHed_c::CleanupResources()
 {
-    ((SharedFilePtr *)&data_ov072_02122bc4)->Release();
+    gBgSnmHedModelFile.Release();
     int i = 0;
     do {
         ((SharedFilePtr **)&data_ov072_02121ffc)[i]->Release();
@@ -288,13 +319,12 @@ int daBgSnmHed_c::InitResources()
     struct Vector3 pos;
     int i;
 
-    mModel.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(*(SharedFilePtr *)&data_ov072_02122bc4),
-                   1, -1);
+    mModel.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(gBgSnmHedModelFile), 1, -1);
 
     for (i = 0; i < 2; i++) {
         void *tex = ((void **)&data_ov072_02121ffc)[i];
         dExtAnmTexPat_c::LoadFile(*(SharedFilePtr *)tex);
-        dExtAnmTexPat_c::Prepare(*(BMD_File *)((void **)&data_ov072_02122bc4)[1],
+        dExtAnmTexPat_c::Prepare(*(BMD_File *)gBgSnmHedModelFile.filePtr,
                                  *(BTP_File *)((void **)tex)[1]);
     }
 
@@ -325,3 +355,11 @@ extern "C" daBgSnmHed_c *daBgSnmHed_c_classInit()
 {
     return new daBgSnmHed_c();
 }
+
+/* The actor profile, in SpawnInfo's layout (include/SpawnInfo.h): the
+ * factory, behavior and render priorities (the behavior priority equals the
+ * BIG_SNOWMAN_HEAD registry id), actor flags, then the clip offset Y, clip
+ * radius, clip distance and far distance passed to SetRanges. The retail
+ * values are unchanged. */
+SpawnInfo<daBgSnmHed_c> g_profile_BIG_SNOWMAN_HEAD = {
+    daBgSnmHed_c_classInit, 0x0111, 0x0084, 3, 0x96000, 0x96000, 0x01194000, 0x00bb8000};
