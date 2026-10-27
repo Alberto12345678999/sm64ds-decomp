@@ -37,6 +37,8 @@
 struct OamAttr;   /* fwd only -- see the note above */
 struct Matrix2x2; /* fwd only -- a pointer parameter needs no more, and the two
                      files that pass one keep their own 4 x s32 definition */
+struct OamTmp;    /* fwd only -- EnableSubOAM's caller passes one and the body
+                     does not read it */
 
 struct OAM {
     u8  pad_000[0xa8];
@@ -54,7 +56,7 @@ struct OAM {
        mangled name, not chosen: `Eii` is (int, int), `Ev` is (). */
     static u8 GetObjWidth(int shape, int sizeBits);
     static u8 GetObjHeight(int shape, int sizeBits);
-    static u32 EnableSubOAM();
+    static u32 EnableSubOAM(OamTmp *);
     static void Flush();
     static void Load();
     static void Reset();
