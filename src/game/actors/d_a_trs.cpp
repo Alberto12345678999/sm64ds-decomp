@@ -209,9 +209,10 @@ extern void d_a_trsChangeMusicVolumeHold(unsigned a, int fx);
 extern void func_02011cfc(void);
 extern s16 data_ov063_0211e1c8[];
 extern int LenVec3(int *v);
-/* local extern: the ROM call sets up no receiver -- r0 is whatever the
-   preceding code left -- so there is no object to call the member on. */
-extern void _ZN17daObjSlIceBlock_c16CleanupResourcesEv(void);
+/* The call at 0x02118004 relocates to overlays(27,55). r0 still holds the
+   state timer there, so the callee takes no object: ov055's free function at
+   0x02111264, not ov027's daObjSlIceBlock_c::CleanupResources. */
+extern "C" void func_ov055_02111264(void);
 extern int func_ov002_020c51d0(void *c, int *st);
 extern u16 func_02011d14(void);
 extern int data_ov008_02111b6c;
@@ -1295,7 +1296,7 @@ void daTrs_c::func_ov063_02117cdc() {
         if (*(u16 *)&this->mStateTimer < 0x1e) {
             return;
         }
-        _ZN17daObjSlIceBlock_c16CleanupResourcesEv();
+        func_ov055_02111264();
         {
             u8 *st = (u8 *)&this->mSubState;
             int n = *st + 1;
