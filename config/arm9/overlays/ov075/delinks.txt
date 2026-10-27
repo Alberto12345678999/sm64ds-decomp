@@ -206,7 +206,7 @@ src/unnamed/ov075/func_ov075_0211aea4.c:
     complete
     .text start:0x0211aea4 end:0x0211aeb8
 
-src/unnamed/ov075/func_ov075_0211aeb8.c:
+src/unnamed/ov075/func_ov075_0211aeb8.cpp:
     complete
     .text start:0x0211aeb8 end:0x0211af0c
 

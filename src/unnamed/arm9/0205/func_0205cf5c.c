@@ -8,7 +8,7 @@ extern void func_0205cfa4(int a);
  * (func_0205c788 = FSi_ReleaseCommand), start the archive's next queued
  * command (func_0205d044 = FSi_NextCommand, func_0205cfa4 =
  * FSi_ExecuteAsyncCommand), and report whether the file's error is
- * FS_RESULT_SUCCESS (0). FSFile carries the names func_0205d044.c gives
+ * FS_RESULT_SUCCESS (0). FSFile carries the names func_0205d044.cpp gives
  * those fields. */
 typedef struct FSFile {
     char pad_00[8];

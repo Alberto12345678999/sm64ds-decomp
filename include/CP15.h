@@ -14,6 +14,19 @@ void FlushDataCache(unsigned int, unsigned int);
 void FlushAndInvalidateDataCache(unsigned int, unsigned int);
 void DrainWriteBuffer(void);
 void InvalidateInstructionCache(unsigned int, unsigned int);
+
+/* Halt until an interrupt arrives (src/IRQ3.cpp). */
+void WaitForInterrupt(void);
+
+/* Protection unit and DTCM control (src/engine/cp15/). */
+void SystemSetup(void);
+void EnableMPU(void);
+void DisableMPU(void);
+void MPUDataRegion1(unsigned int);
+void MPUDataRegion7(unsigned int);
+unsigned int MPUGetDataRegion7(void);
+void EnableDTCM(void);
+unsigned int GetDTCMBaseAddress(void);
 }
 
 #endif

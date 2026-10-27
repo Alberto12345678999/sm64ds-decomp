@@ -6,7 +6,7 @@
  * switch callback (func_02057e48 = OS_SetSwitchThreadCallback) and create the
  * idle thread (data_020a6188) through func_02058200 (OS_CreateThread).
  *
- * The OSThread view copies func_02058200.c's names (only the fields used here
+ * The OSThread view copies func_02058200.cpp's names (only the fields used here
  * are spelled out). OSThreadInfo is the SDK's non-SDK_THREAD_INFINITY layout:
  * func_02058538 scans entry[] for a free id, func_02057e84 / func_020584d0
  * walk the priority list from +0x0c, and func_02057e48 swaps the callback at

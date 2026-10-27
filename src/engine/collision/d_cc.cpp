@@ -27,7 +27,7 @@ extern "C" {
 /* local extern: the collider-list head. decl_common.h's copy is `void*`; the
    real type is the node pointer every method here reads. */
 extern dCc_c *data_0209cee8;
-/* local extern: no header declares the C vector helpers; src/Vec3_HorzLen.c
+/* local extern: no header declares the C vector helpers; src/Vec3_HorzLen.cpp
    defines it with this signature. */
 extern Fix12i Vec3_HorzLen(const Vector3 *v);
 /* local extern: no header declares it; the definition lives in Player.cpp

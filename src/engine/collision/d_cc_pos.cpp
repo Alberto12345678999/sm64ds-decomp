@@ -1,7 +1,7 @@
 //cpp
 /* leftovers:
  * func_020147bc keeps its address name: a print helper shared with
- * nds_print.c and nds_printt.c, which keep their own declarations and call
+ * nds_print.c and nds_printt.cpp, which keep their own declarations and call
  * sites.
  * data_0208e500 keeps its address name: ROM data resolved from
  * config/arm9/symbols.txt, defined by no TU.
@@ -73,7 +73,7 @@ void dCcPos_c::Init(const Vector3 &pos, Fix12i radius, Fix12i height, u32 flags,
 
 /* ROM ordinal 0 -- the run's backward neighbour, absorbed (reverse emission
  * puts the lowest address last). A print helper shared with nds_print.c and
- * nds_printt.c, which keep their own matching extern declarations and call
+ * nds_printt.cpp, which keep their own matching extern declarations and call
  * sites; only the definition moves. Body as recovered. */
 
 // @symbol func_020147bc
