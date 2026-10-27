@@ -91,11 +91,11 @@ daPgBby_c_classInit kind:function(arm,size=0x50) addr:0x02121fac
 data_ov072_02121ffc kind:data(any) addr:0x02121ffc
 gPenguinBabyAnimationFiles kind:data(any) addr:0x02122004
 __sinit_d_a_bg_snm_bdy.cpp kind:function(arm,size=0x1e0) addr:0x02122018
-__sinit_ov072_021221f8 kind:function(arm,size=0x158) addr:0x021221f8
+__sinit_d_a_bg_snm_hed.cpp kind:function(arm,size=0x158) addr:0x021221f8
 __sinit_d_a_bg_snwmn.cpp kind:function(arm,size=0xc4) addr:0x02122350
 __sinit_d_a_pg_bby.cpp kind:function(arm,size=0x2f4) addr:0x02122414
 .p__sinit_d_a_bg_snm_bdy.cpp kind:data(word) addr:0x02122708
-.p__sinit_ov072_021221f8 kind:data(word) addr:0x0212270c
+.p__sinit_d_a_bg_snm_hed.cpp kind:data(word) addr:0x0212270c
 .p__sinit_d_a_bg_snwmn.cpp kind:data(word) addr:0x02122710
 .p__sinit_d_a_pg_bby.cpp kind:data(word) addr:0x02122714
 data_ov072_02122720 kind:data(any) addr:0x02122720
@@ -154,13 +154,13 @@ gBgSnmBdyReachPoint kind:bss addr:0x02122b40
 data_ov072_02122b4c kind:bss addr:0x02122b4c
 gBgSnmBdyLandingPoint kind:bss addr:0x02122b58
 gBgSnmBdyStates kind:bss addr:0x02122b64
-data_ov072_02122bc4 kind:bss addr:0x02122bc4
+gBgSnmHedModelFile kind:bss addr:0x02122bc4
 gBigSnowmanSmileTextureSequenceFile kind:bss addr:0x02122bcc
 gBigSnowmanCryTextureSequenceFile kind:bss addr:0x02122bd4
 data_ov072_02122bdc kind:bss addr:0x02122bdc
 data_ov072_02122be8 kind:bss addr:0x02122be8
 data_ov072_02122bf4 kind:bss addr:0x02122bf4
-data_ov072_02122c00 kind:bss addr:0x02122c00
+gBgSnmHedStates kind:bss addr:0x02122c00
 data_ov072_02122c08 kind:bss addr:0x02122c08 ambiguous
 gdaBgSnwmnBigSnowmanBodyModelFile kind:bss addr:0x02122c40
 gdaBgSnwmnBigSnowmanHeadModelFile kind:bss addr:0x02122c48
