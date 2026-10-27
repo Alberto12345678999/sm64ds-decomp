@@ -8705,7 +8705,7 @@ except for the size, 0xd0 against 0xd4. An inline `operator new(size_t, int extr
 `::new (4) dActor_c` matches it whole, but that overload is coined, so the site stays on
 #3198.
 
-## 6df. A hand-written `__register_global_object` call is a static `Vector3` the source hasn't declared; mwcc emits the guard, the stores, the registration and `__sinit_<file>.cpp` byte-identical (dMap_c, dScMgSnowball_c, 2026-10-27)
+## 6df. A hand-written `__register_global_object` call is a static `Vector3` the source hasn't declared; mwcc emits the guard, the stores, the registration and `__sinit_<file>.cpp` byte-identical (dMap_c, dScMgSnowball_c, unit020bfec0, 2026-10-27)
 
 Some sources built a static by hand: three stores, then
 `func_020731dc(&obj, _ZN7Vector3D1Ev, &node)`, either in a separate `__sinit_<addr>.c` shard
@@ -8716,7 +8716,8 @@ the same thing:
 - **File scope:** `static Vector3 sMapScreenCenter(0x80000, 0, 0x60000);`. mwcc emits
   `__sinit_d_map.cpp` (0x48, identical to retail `__sinit_ov002_0210804c`), its `.ctor` word,
   and a 12-byte `@NNN` registration node in `.bss`.
-- **Function scope:** `static Vector3 sUnitY(0, 0x1000, 0);` inside the function. mwcc emits
+- **Function scope:** `static Vector3 sUnitY(0, 0x1000, 0);` inside the function
+  (dScMgSnowball_c::ResetScene, and `sAxis` in unit020bfec0's FallingPetal_Spawn). mwcc emits
   the guard test (`_ZGVsUnitY$NNN`, 4 bytes), the stores, the registration call and
   `guard |= 1` inline, in the same place the hand-written block had them.
 
@@ -8732,7 +8733,9 @@ Bookkeeping, following daObj1UpLogo_c and dMgState_c:
    `symbol_binding_rewrites` for the sinit, `.p__sinit`, node and statics, and an
    `undefined_symbol_aliases` row `__register_global_object` -> `func_020731dc`. Without the
    alias the scratch link fails with `Undefined : "__register_global_object"`. A file-scope
-   sinit also needs explicit `relocations` rows for its `.init`/`.ctor` words.
+   sinit also needs explicit `relocations` rows for its `.init`/`.ctor` words. A text-only
+   TU (unit020bfec0) can go intact-object with only `.text` plus the new `.bss` claim, as
+   long as verify shows nothing else unlicensed.
 2. Rename `symbols.txt` rows to the compiled names (`__sinit_d_map.cpp`, `sUnitY$1570`,
    `_ZGVsUnitY$1570`, `@NNN`). An emitted `@NNN` that another module already defines takes a
    `defined_symbol_renames` row onto an unused name of the same length.
@@ -8746,11 +8749,10 @@ Bookkeeping, following daObj1UpLogo_c and dMgState_c:
 
 `tubuild verify` still prints `EXTRA .text __sinit_<file>.cpp ... not in manifest` for every
 compiler-emitted sinit (1UpLogo, brq and snowball on main print it too). That's a verify
-limitation, not a regression. linkcheck is the gate here, and both TUs are
-SCRATCH-DATA-VERIFIED.
+limitation, not a regression. A function-local static emits no sinit, so unit020bfec0 verifies
+with no EXTRA lines. linkcheck is the gate here, and all three TUs are SCRATCH-DATA-VERIFIED.
 
 **Not done:** `unit020cd744` (TrmpItem). Its nine function-local unit vectors' `.bss` is
 interleaved with file globals and ring-model handles, so they can only move as one
-whole-TU `.bss` claim. `unit020bfec0` (FallingPetal) is open in #4392. The
-ov019/ov062/ov072/ov078 `.c` sinit shards mix resource handles and PMF tables and need an
+whole-TU `.bss` claim. The ov019/ov062/ov072/ov078 `.c` sinit shards mix resource handles and PMF tables and need an
 owner TU first.

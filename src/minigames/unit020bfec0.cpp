@@ -86,7 +86,6 @@ void SharedFilePtr_Construct_TexSeq(void *, unsigned int);
 void SharedFilePtr_Destruct_Anim(void *);
 void SharedFilePtr_Destruct_TexSeq(void *);
 
-void *_ZN7Vector3D1Ev(void *);
 void *__cxa_vec_ctor(void *, int, int, void *, void *);
 void func_02012174(int, int);
 void func_02016a04(void *, int);
@@ -97,7 +96,6 @@ void *func_02017acc(void *, unsigned int);
 void func_0202ffec(void *, void *, void *);
 void func_0203ccd4(void *, short);
 void func_0203cd80(void *, short);
-void func_020731dc(void *, void *, void **);
 void Camera_ProjectToScreen16(char *r4, void *r1, short *r5);
 void Camera_ProjectToScreen(char *r4, void *r1, int *r6, int *r5);
 void Camera_UpdateMatrices(void *self);
@@ -590,15 +588,6 @@ void FallingPetal_SetModel(char *t, int a1) {
 namespace s020c3754 {
 extern "C" {
 extern "C" {
-extern int sFallingPetal_Spawn_UnitYGuard;
-}
-extern "C" {
-extern int sFallingPetal_Spawn_UnitYDtorRec;
-}
-extern "C" {
-extern int sFallingPetalAxis[3];
-}
-extern "C" {
 extern int data_0209e650;
 }
 extern "C" {
@@ -606,15 +595,10 @@ extern int data_02092768[4];
 }
 
 void FallingPetal_Spawn(int *r6, int *r5, int *r4) {
-    int *n;
-    if (!(sFallingPetal_Spawn_UnitYGuard & 1)) {
-        n = sFallingPetalAxis;
-        n[0] = 0;
-        n[1] = 0x1000;
-        n[2] = 0;
-        func_020731dc(n, (void *)_ZN7Vector3D1Ev, (void **)&sFallingPetal_Spawn_UnitYDtorRec);
-        sFallingPetal_Spawn_UnitYGuard |= 1;
-    }
+    /* Every petal spins about +Y. Constructed on the first spawn: mwcc emits
+       the guard test, the three stores and the ~Vector3() registration here. */
+    static Vector3 sAxis(0, 0x1000, 0);
+
     r6[0] = r5[0];
     r6[1] = r5[1];
     r6[2] = r5[2];
@@ -625,15 +609,15 @@ void FallingPetal_Spawn(int *r6, int *r5, int *r4) {
     r6[7] = -0x40;
     r6[8] = 0;
     PETAL(r6)->mLife = 0xb4;
-    r6[9] = sFallingPetalAxis[0];
-    r6[10] = sFallingPetalAxis[1];
-    r6[11] = sFallingPetalAxis[2];
+    r6[9] = sAxis.x;
+    r6[10] = sAxis.y;
+    r6[11] = sAxis.z;
     func_0203cd80(&PETAL(r6)->mAxis, (short)RandomIntInternal(&data_0209e650));
     r6[12] = data_02092768[0];
     r6[13] = data_02092768[1];
     r6[14] = data_02092768[2];
     r6[15] = data_02092768[3];
-    Quaternion_FromVector3(PETAL(r6)->mRot, sFallingPetalAxis, (int *)&PETAL(r6)->mAxis);
+    Quaternion_FromVector3(PETAL(r6)->mRot, &sAxis, (int *)&PETAL(r6)->mAxis);
     PETAL(r6)->mActive = 1;
 }
 }

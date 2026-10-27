@@ -4380,9 +4380,9 @@ sFlowerBgUpNclPath kind:data(any) addr:0x02140260
 sFlowerBgDownNclPath kind:data(any) addr:0x02140284
 sFlowerNcgPath kind:data(any) addr:0x021402a8
 sFlowerNclPath kind:data(any) addr:0x021402c4
-sFallingPetal_Spawn_UnitYGuard kind:bss addr:0x021402e0
-sFallingPetal_Spawn_UnitYDtorRec kind:bss addr:0x021402e4
-sFallingPetalAxis kind:bss addr:0x021402f0
+_ZGVsAxis$543 kind:bss addr:0x021402e0
+@546 kind:bss addr:0x021402e4
+sAxis$543 kind:bss addr:0x021402f0
 data_ov006_021402fc kind:bss addr:0x021402fc
 sHeyho_React_Left256Guard kind:bss addr:0x02140300
 sHeyhoUnsettledCount kind:bss addr:0x02140304
