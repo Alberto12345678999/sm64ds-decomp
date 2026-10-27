@@ -15,6 +15,6 @@ src/game/actors/d_a_sld_mng.cpp:
     .ctor start:0x02112b68 end:0x02112b6c
     .bss start:0x021135cc end:0x021135e4
 
-src/unnamed/ov019/__sinit_ov019_021127a4.c:
+src/unnamed/ov019/__sinit_ov019_021127a4.cpp:
     complete
     .init start:0x021127a4 end:0x02112b14

@@ -265,7 +265,7 @@ src/unnamed/ov006/__sinit_ov006_0212f660.c:
     complete
     .init start:0x0212f660 end:0x0212f6b4
 
-src/unnamed/ov006/__sinit_ov006_0212f6b4.c:
+src/unnamed/ov006/__sinit_ov006_0212f6b4.cpp:
     complete
     .init start:0x0212f6b4 end:0x0212fc7c
 
