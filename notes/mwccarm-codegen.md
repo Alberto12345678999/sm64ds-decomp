@@ -8653,3 +8653,54 @@ in the call argument, so it is not a later live range; 265). About 1,030 cells.
 local reaches, assign the value into a DEAD earlier local whose first assignment has the rank
 you need. With 6dc this makes one rule: in b56, colour rank comes from the order of FIRST
 assignment, and reused locals inherit it.
+
+## 6de. Placement new always null-tests in 2004/b56; build the object as what it really is, a member or a block-scope local, and the mangled C1 call goes away (2026-10-27)
+
+Several sources called a constructor by its mangled C1 name on storage that already existed,
+because `new (p) T(...)` adds a `cmp r0,#0` the ROM does not have. The null test cannot be
+switched off. Measured on `mHeap::Heap_t::CreateSolidHeapAllocator` (target 0x4c), and the
+test survived every variant:
+
+| spelling | size |
+|---|---|
+| inline global or class-scope `operator new(size_t, void*)`, with or without `throw()`, `throw(bad_alloc)`, `#pragma exceptions on`, `-Cpp_exceptions on` (`.exceptix` appears: the flag took), `__attribute__((nothrow))`, `__attribute__((pure))` | 0x5c (+16) |
+| declared-only placement `operator new` | 0x70 (+36) |
+| placement on `&global` or on an array global | +24 |
+| an explicit `if (start == 0) return 0;` first | +36 (the test is duplicated) |
+| `p->T::T()`, with or without `#pragma cpp_extensions on` | "illegal use of type-name" |
+| `__declspec(nothrow)` | "illegal type qualifier" |
+
+The positive control for the attribute rows is `__attribute__((never_inline))`, which did take
+effect (+36).
+
+**Lever.** Don't construct on raw storage. Find what the object really is:
+
+- **A member built by its owner's implicit constructor.** `dScDSMT_c::mGraphCallback` was
+  `u8[4]`, so classInit wrote both vptrs and called `_ZN10dFdDummy_cC1Ev` by hand. Typed as
+  `graphCallback_c`, with the nested class defined before the member, classInit becomes
+  `return new dScDSMT_c;` and matches. It emits the `_ZN8dScene_cD2Ev` / `_ZN7dBase_cD2Ev`
+  helpers, which are deadstripped the same way as in dScGameOver_c.
+- **A block-scope local.** The ROM frames follow one rule. Function-scope locals get slots
+  first, in declaration order. Block-scope locals follow, in textual declaration order. A
+  local of an inlined static helper comes after all of the caller's locals. So declare the
+  object in the block where the ROM constructs it, and its destructor runs at scope exit,
+  where the ROM's explicit D1 call was. That closed `ExpandingHeapAllocator::Reallocate`
+  (`MemoryNode::Target tgt(block)`), `dBgW_Kc::DetectClsn(dBgCh_Lin&)` (`dBgPc pc` in the hit
+  block, `pos` in the result block) and `daObjBk_Botaosi_c::InitResources` (`dBgCh_Gnd gnd`).
+  Reallocate's `volatile int` fill zero has to sit below both Targets, so it moves into a
+  `FillZero` inline. A placement new there costs +8, and block locals without the helper
+  give 5 to 15 frame-word diffs.
+- **Drop `opt_propagation off` when a scope-exit destructor follows the return constant.**
+  Under the pragma, botaosi's typed local kept `return 1` live in r4 across the destructor
+  (+8 bytes, the reason for the old word storage). Without it the constant rematerializes
+  after the call. The two Vector3 zero blocks then need x, y, z order with literal zeros
+  (`a = b = 0` chains store right to left).
+
+**Still held.** The factory C1 calls on a computed, aligned address
+(`CreateSolidHeapAllocator`, `CreateExpandingHeapAllocator`, +16 as placement new). The
+`NestedHeapIterator` "C1" calls in NestedHeapIterator.cpp and SoundEngine.cpp are NitroSDK
+`NNS_FndInitList` on existing storage. The `__sinit_02074e84` dClipper global is defined in
+a `.bss` no TU owns. `StarCamera_Spawn` is a real new-expression: `new dActor_c` matches
+except for the size, 0xd0 against 0xd4. An inline `operator new(size_t, int extra)` with
+`::new (4) dActor_c` matches it whole, but that overload is coined, so the site stays on
+#3198.

@@ -40,9 +40,11 @@
  * - CreateNode indexes its Target* through `int* c`: the body's `c[0]`/`c[1]`
  *   arithmetic is verbatim -- retyping as extent->start/end is the kind of
  *   tidy that already produced a three-word divergence on this class.
- * - Reallocate constructs its first Target through the mangled
- *   `_ZN10MemoryNode6TargetC1EPS_`: the Target must keep its function-scope
- *   stack slot and mwccarm cannot express a placement constructor call.
+ * - Reallocate's two Targets are block-scope locals, each declared in the
+ *   branch that uses it, and the zero fill goes through the FillZero inline.
+ *   mwccarm gives function-scope locals their frame slots first and an
+ *   inlined helper's locals last, so the volatile zero must live in the
+ *   helper to land below both Targets.
  * - The file-local `GetList` inline stays for the same reason it existed in
  *   the shard: spelling `this+0x24` as an accessor call is what mwccarm's
  *   register allocator keys on for Reallocate's r7/r8/sb assignment.
@@ -57,11 +59,10 @@
 #include "cstd.h"
 
 extern "C" void MultiStore_Int(int val, void *dst, int len);
-/* local extern: both constructors run over storage that already exists (see
-   the leftovers above); a placement new would add a null test. */
+/* local extern: the factory runs this constructor over storage that already
+   exists (see the leftovers above); a placement new would add a null test. */
 extern "C" ExpandingHeapAllocator *_ZN22ExpandingHeapAllocatorC1EPvj(
     ExpandingHeapAllocator *self, void *heapEnd, u32 flags);
-extern "C" void _ZN10MemoryNode6TargetC1EPS_(MemoryNode::Target *t, MemoryNode *node);
 
 /* The free list sentinel: a view of the allocator's node bookkeeping from
  * this+0x24, with the header's member names. mFlags2 bit 0 is the
@@ -402,15 +403,20 @@ void *ExpandingHeapAllocator::Allocate(u32 size, int align)
     return this->AllocateBackwards(size, (u32)-align);
 }
 
+/* Zero len bytes at p through a volatile zero, so the store loop takes its
+ * value from a stack slot. */
+static inline void FillZero(void *p, u32 len) {
+    volatile int zero;
+    zero = 0;
+    MultiStore_Int(zero, p, len);
+}
+
 // @symbol _ZN22ExpandingHeapAllocator10ReallocateEPvj
 /* Grow a block in place by swallowing the free node directly after it, or
  * shrink it and hand the tail back to the free list. The allocator's low flag
  * bit asks for freshly-gained bytes to be zero filled. */
 u32 ExpandingHeapAllocator::Reallocate(void *ptrRaw, u32 size)
 {
-    MemoryNode::Target tgt;
-    MemoryNode::Target tgt2;
-    volatile int fill;
     MemoryNode *block;
     u32 blockSize;
     MemoryNode *node;
@@ -441,9 +447,7 @@ u32 ExpandingHeapAllocator::Reallocate(void *ptrRaw, u32 size)
             return 0;
         }
 
-        /* See the leftover note: tgt keeps its function-scope slot, and the
-         * constructor goes through the mangled spelling. */
-        _ZN10MemoryNode6TargetC1EPS_(&tgt, block);
+        MemoryNode::Target tgt(block);
         prev = (MemoryNode *)UnlinkNode((MemoryNode *)list, block);
         oldStart = tgt.start;
         tgt.start = (char *)(size + (u32)ptr);
@@ -459,11 +463,11 @@ u32 ExpandingHeapAllocator::Reallocate(void *ptrRaw, u32 size)
             u16 opt = (u16)(mFlags & 0xff);
             u32 len = (u32)(tgt.start - oldStart);
             if (opt & 1) {
-                fill = 0;
-                MultiStore_Int(fill, oldStart, len);
+                FillZero(oldStart, len);
             }
         }
     } else {
+        MemoryNode::Target tgt2;
         tgt2.start = (char *)(size + (u32)ptr);
         tgt2.end = (char *)(node->size + ((u32)node + 0x10));
         node->size = size;
