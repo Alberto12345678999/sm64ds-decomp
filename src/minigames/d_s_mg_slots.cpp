@@ -155,9 +155,6 @@ extern s16 sSlotMatchBlinkY[][2];
 extern s16 sSlotWildBlinkX[][2];
 extern s16 sSlotWildBlinkY[][2];
 extern dWipe_c data_0209f61c;
-extern int _ZTV12dScMgSlot1_c[];
-extern int _ZTVN12dScMgSlot1_c9betIcon_cE[];
-extern int _ZTV9dThIcon_c[];
 
 extern void Mg_RenderSubSpriteScaled(void *a0, int a1, int a2, int a3, int a4, int a5,
                                      unsigned short a6);
@@ -1617,30 +1614,18 @@ s32 dScMgSlot1_c::InitResources() {
     return 1;
 }
 
-// @symbol dScMgSlot1_c_classInit
-/* The name is reconstructed; the ROM proves the class, not the spelling.
- * The allocation, the base C2 call and the three vptr stores are written out
- * by hand. `return new dScMgSlot1_c;` with an inline constructor doing the
- * three clears compiles to these bytes, but its inline dThIcon_c constructor
- * stores `_ZTV9dThIcon_c+8`. The ROM stores 0x020ad494, which is that ov001
- * table's configured address (addend 0), so the linked word would differ.
- * This TU emits _ZTV12dScMgSlot1_c and the betIcon_c vtable itself, so
- * their stores take the object-relative +8 the Slot3 factory above uses. */
-extern "C" { /* .c-derived member: C linkage for the whole block */
-void *dScMgSlot1_c_classInit(void) {
-    dScMgSlot1_c *scene = (dScMgSlot1_c *)fBase_c::operator new(sizeof(dScMgSlot1_c));
-    if (scene) {
-        _ZN11dScMgBase_cC2Ev(scene);
-        *(int *)scene = (int)&_ZTV12dScMgSlot1_c[2];
-        dScMgSlot1_c::betIcon_c *icon = &scene->mBetIcon;
-        *(int *)icon = (int)_ZTV9dThIcon_c;
-        *(int *)icon = (int)&_ZTVN12dScMgSlot1_c9betIcon_cE[2];
-        SlotBlink_Clear((char *)&scene->mMatchBlink);
-        SlotBlink_Clear((char *)&scene->mWildBlink);
-        SlotLamp_Clear((char *)&scene->mPayoutLamp);
-    }
-    return scene;
+/* The constructor is inline, so the factory below holds it: the base
+   constructor, mBetIcon, and the three marker clears. */
+inline dScMgSlot1_c::dScMgSlot1_c() {
+    SlotBlink_Clear((char *)&mMatchBlink);
+    SlotBlink_Clear((char *)&mWildBlink);
+    SlotLamp_Clear((char *)&mPayoutLamp);
 }
+
+// @symbol dScMgSlot1_c_classInit
+/* Reconstructed source-style name. Historical alias: func_ov006_0210d6b8. */
+extern "C" void *dScMgSlot1_c_classInit(void) {
+    return new dScMgSlot1_c;
 }
 
 /* Static-init globals (was the handwritten __sinit_ov006_02132894 shard).
