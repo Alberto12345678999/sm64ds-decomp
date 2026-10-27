@@ -81,12 +81,12 @@ typedef struct Vec2s {
     s16 x, y;
 } Vec2s;
 
-/* Raw storage form of mwccarm's eight-byte single-inheritance PMF. Behavior
-   gives the live scene storage its dScMgTrampoline_c::State meaning at the
-   dispatch site; these descriptors retain the raw form because direct
-   namespace-scope PMF initialization makes
-   mwccarm 2004/b56 emit a __sinit, .ctor entry, and five anonymous data
-   temporaries that the cartridge does not contain. */
+/* Eight-byte state descriptors. A namespace-scope pointer-to-member is not
+   static data on this class: the named object moves to .bss, __sinit grows
+   by 0xb4, a .ctor word appears, and the RELA lands on an anonymous temp.
+   StateDone is empty, so it is static and its address is an ordinary
+   function pointer (same mangling). The other four read members and stay
+   a raw (code, 0) pair. */
 struct P2 {
     int a, b;
 };
@@ -212,11 +212,9 @@ extern void Trmp3DMario_DrawAll(void);
 extern void TrmpLine_DrawAll(void);
 
 dScMgTrampoline_c *dScMgTrampoline_c_classInit(void);
-/* Literal aliases used only to make the five ROM PMF relocations static data.
-   Their definitions below are real compiler-spelled C++ members. Each is a
-   local extern: a pointer to member cannot convert to the int word a P2
-   entry holds, so dScMgTrampoline_c.h's declarations cannot fill the table. */
-extern "C" void _ZN17dScMgTrampoline_c9StateDoneEv(void);      /* local extern: PMF -> int */
+/* The four non-static state methods. A pointer to member does not convert
+   to the int word a descriptor holds. StateDone is static, so the
+   descriptor below names it directly. */
 extern "C" void _ZN17dScMgTrampoline_c13StateWaitExitEv(void); /* local extern: PMF -> int */
 extern "C" void _ZN17dScMgTrampoline_c12StateResultsEv(void);  /* local extern: PMF -> int */
 extern "C" void _ZN17dScMgTrampoline_c9StatePlayEv(void);      /* local extern: PMF -> int */
@@ -234,7 +232,7 @@ extern int sMgTextSpritesItalian[];
 
 /* Data owned by the same original TU. */
 P2 pmf_dScMgTrampoline_c_StateWaitExit = {(int)_ZN17dScMgTrampoline_c13StateWaitExitEv, 0};
-P2 pmf_dScMgTrampoline_c_StateDone = {(int)_ZN17dScMgTrampoline_c9StateDoneEv, 0};
+P2 pmf_dScMgTrampoline_c_StateDone = {(int)&dScMgTrampoline_c::StateDone, 0};
 P2 pmf_dScMgTrampoline_c_StateIntro = {(int)_ZN17dScMgTrampoline_c10StateIntroEv, 0};
 BaseSpawnInfo<dScMgTrampoline_c> g_profile_MG_TRAMPOLINE = {
     dScMgTrampoline_c_classInit,
