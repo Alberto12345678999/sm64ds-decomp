@@ -236,7 +236,7 @@ void daKlr_c::func_ov079_0212682c()
         if ((u16)this->mStateTimer > 150)
             hit = 1;
         if (this->mWallClsn.IsOnWall() != 0) {
-            dBgPi *wall = (dBgPi *)this->mWallClsn.GetWallResult();
+            dBgPi *wall = this->mWallClsn.GetWallResult();
             if (wall->GetClsnID() != (u32)-1) {
                 if (dActor_c::FindWithID(wall->GetClsnID()) != this->mLauncher)
                     hit = 1;

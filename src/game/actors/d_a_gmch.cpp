@@ -328,7 +328,7 @@ void daGmch_c::ApplySlopeToVertSpeed(void *clsn)
     Vector3 wallNormal;
     func_02038414(clsn);
     if (((dBgCh_Actr *)clsn)->IsOnGround()) {
-        ((dBgPi *)((dBgCh_Actr *)clsn)->GetFloorResult())->surface.CopyNormalTo(floorNormal);
+        ((dBgCh_Actr *)clsn)->GetFloorResult()->surface.CopyNormalTo(floorNormal);
         if (floorNormal.y != 0) {
             /* mSpeedX / mSpeedZ: world velocity X/Z next to mVertSpeed. */
             s32 velX = mSpeedX;
@@ -341,7 +341,7 @@ void daGmch_c::ApplySlopeToVertSpeed(void *clsn)
         }
     }
     if (((dBgCh_Actr *)clsn)->IsOnWall()) {
-        ((dBgPi *)((dBgCh_Actr *)clsn)->GetWallResult())->surface.CopyNormalTo(wallNormal);
+        ((dBgCh_Actr *)clsn)->GetWallResult()->surface.CopyNormalTo(wallNormal);
     }
 }
 

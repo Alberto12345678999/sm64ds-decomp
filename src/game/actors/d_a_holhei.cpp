@@ -740,7 +740,7 @@ extern "C" int func_ov062_02115f84(daHolhei_c *self) {
     Vector3 v;
     short slope = 0;
     if (self->mMeshClsn.IsOnGround()) {
-        dBgPi *floor = (dBgPi *)self->mMeshClsn.GetFloorResult();
+        dBgPi *floor = self->mMeshClsn.GetFloorResult();
         floor->surface.CopyNormalTo(v);
         slope = func_02010844(self, &v, self->mAngleY);
     }

@@ -901,7 +901,7 @@ void daObjBlockS_c::func_ov098_021390ec()
     if (DecIfAbove0_Byte(&mWallCooldown) != 0)
         return;
     if (mWithMeshClsn.IsOnWall() != 0) {
-        dBgPi *wr = (dBgPi *)mWithMeshClsn.GetWallResult();
+        dBgPi *wr = mWithMeshClsn.GetWallResult();
         if (wr->GetClsnID() != -1) {
             dActor_c *a = dActor_c::FindWithID((u32)wr->GetClsnID());
             if (a != 0) {

@@ -234,7 +234,7 @@ void daKpFr_c::func_ov070_02121d50(void* vclsn) {
     Fix12i normal[3];
     dBgCh_Actr_UpdateContinuous_Veneer(clsn);
     if (clsn->IsOnGround()) {
-        ((dBgPi *)clsn->GetFloorResult())->surface.CopyNormalTo(*(Vector3 *)normal);
+        clsn->GetFloorResult()->surface.CopyNormalTo(*(Vector3 *)normal);
         if (normal[1] != 0) {
             int a = FX_MUL(normal[0], mSpeedX);
             int b = FX_MUL(normal[2], mSpeedZ);
