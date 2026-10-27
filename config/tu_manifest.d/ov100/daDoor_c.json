@@ -29,7 +29,7 @@
     },
     {
       "name": ".bss",
-      "start": "0x02148724",
+      "start": "0x0214870c",
       "end": "0x02148934"
     }
   ],
@@ -262,6 +262,48 @@
   "data": [],
   "bss": [
     {
+      "symbol": "_ZGVsEnterPos$1003",
+      "address": "0x0214870c",
+      "size": "0x4",
+      "binding": "STB_GLOBAL",
+      "evidence": "guard word of func_ov100_021451c4's function-local static sEnterPos; the function tests and sets bit 0 exactly as retail"
+    },
+    {
+      "symbol": "_ZGVsDoorOff$1175",
+      "address": "0x02148710",
+      "size": "0x4",
+      "binding": "STB_GLOBAL",
+      "evidence": "guard word of InitResources' function-local static sDoorOff; InitResources tests and sets bit 0 exactly as retail"
+    },
+    {
+      "symbol": "_ZGVsEnterNeg$1007",
+      "address": "0x02148714",
+      "size": "0x4",
+      "binding": "STB_GLOBAL",
+      "evidence": "guard word of func_ov100_021451c4's function-local static sEnterNeg; the function tests and sets bit 0 exactly as retail"
+    },
+    {
+      "symbol": "_ZGVsBackOff$777",
+      "address": "0x02148718",
+      "size": "0x4",
+      "binding": "STB_GLOBAL",
+      "evidence": "guard word of func_ov100_02144a38's function-local static sBackOff; the function tests and sets bit 0 exactly as retail"
+    },
+    {
+      "symbol": "_ZGVsKeyOff$781",
+      "address": "0x0214871c",
+      "size": "0x4",
+      "binding": "STB_GLOBAL",
+      "evidence": "guard word of func_ov100_02144a38's function-local static sKeyOff; the function tests and sets bit 0 exactly as retail"
+    },
+    {
+      "symbol": "_ZGVsFrontOff$773",
+      "address": "0x02148720",
+      "size": "0x4",
+      "binding": "STB_GLOBAL",
+      "evidence": "guard word of func_ov100_02144a38's function-local static sFrontOff; the function tests and sets bit 0 exactly as retail"
+    },
+    {
       "symbol": "gObjDoor0Star1ModelFile",
       "address": "0x02148724",
       "size": "0x8",
@@ -353,18 +395,18 @@
       "evidence": "compiler-generated destructor-registration node for the 0x9c0b resource handle"
     },
     {
-      "symbol": "data_ov100_02148790",
+      "symbol": "@817",
       "address": "0x02148790",
       "size": "0xc",
       "binding": "STB_GLOBAL",
-      "evidence": "registration node for the 0x0214879c function-local vector static"
+      "evidence": "destructor-registration node for sBackOff; func_ov100_02144a38 passes it to __register_global_object. Emitted @780, which ov095 already defines, so renamed to the unused same-length @817"
     },
     {
-      "symbol": "data_ov100_0214879c",
+      "symbol": "sBackOff$777",
       "address": "0x0214879c",
       "size": "0xc",
       "binding": "STB_GLOBAL",
-      "evidence": "the Vec3i function-local vector static of the helpers"
+      "evidence": "func_ov100_02144a38's function-local static Vector3(0x4b000, 0, -0x6e000)"
     },
     {
       "symbol": "@569",
@@ -374,60 +416,60 @@
       "evidence": "compiler-generated destructor-registration node for the 0x9c08 resource handle"
     },
     {
-      "symbol": "data_ov100_021487b4",
+      "symbol": "@1088",
       "address": "0x021487b4",
       "size": "0xc",
       "binding": "STB_GLOBAL",
-      "evidence": "registration node for the 0x021487c0 function-local vector static"
+      "evidence": "destructor-registration node for sDoorOff; InitResources passes it to __register_global_object. Emitted @1178, which ov089 already defines, so renamed to the unused same-length @1088"
     },
     {
-      "symbol": "data_ov100_021487c0",
+      "symbol": "sDoorOff$1175",
       "address": "0x021487c0",
       "size": "0xc",
       "binding": "STB_GLOBAL",
-      "evidence": "the Vec3i function-local vector static of the helpers"
+      "evidence": "InitResources' function-local static Vector3(0x4b000, 0, 0)"
     },
     {
-      "symbol": "data_ov100_021487cc",
+      "symbol": "@1082",
       "address": "0x021487cc",
       "size": "0xc",
       "binding": "STB_GLOBAL",
-      "evidence": "registration node for the 0x021487e4 function-local vector static"
+      "evidence": "destructor-registration node for sEnterPos; func_ov100_021451c4 passes it to __register_global_object. Emitted @1006, which ov065 already defines, so renamed to the unused same-length @1082"
     },
     {
-      "symbol": "data_ov100_021487d8",
+      "symbol": "@819",
       "address": "0x021487d8",
       "size": "0xc",
       "binding": "STB_GLOBAL",
-      "evidence": "registration node for the 0x021487f0 function-local vector static"
+      "evidence": "destructor-registration node for sKeyOff; func_ov100_02144a38 passes it to __register_global_object. Emitted @784, which ov091 already defines, so renamed to the unused same-length @819"
     },
     {
-      "symbol": "data_ov100_021487e4",
+      "symbol": "sEnterPos$1003",
       "address": "0x021487e4",
       "size": "0xc",
       "binding": "STB_GLOBAL",
-      "evidence": "the three-int function-local vector static of the helpers"
+      "evidence": "func_ov100_021451c4's function-local static Vector3(0, 0, 0x64000)"
     },
     {
-      "symbol": "data_ov100_021487f0",
+      "symbol": "sKeyOff$781",
       "address": "0x021487f0",
       "size": "0xc",
       "binding": "STB_GLOBAL",
-      "evidence": "the Vec3i function-local vector static of the helpers"
+      "evidence": "func_ov100_02144a38's function-local static Vector3(-0x4c000, 0, 0x6d000)"
     },
     {
-      "symbol": "data_ov100_021487fc",
+      "symbol": "@1084",
       "address": "0x021487fc",
       "size": "0xc",
       "binding": "STB_GLOBAL",
-      "evidence": "registration node for the 0x02148808 function-local vector static"
+      "evidence": "destructor-registration node for sEnterNeg; func_ov100_021451c4 passes it to __register_global_object. Emitted @1010, which ov080 already defines, so renamed to the unused same-length @1084"
     },
     {
-      "symbol": "data_ov100_02148808",
+      "symbol": "sEnterNeg$1007",
       "address": "0x02148808",
       "size": "0xc",
       "binding": "STB_GLOBAL",
-      "evidence": "the three-int function-local vector static of the helpers"
+      "evidence": "func_ov100_021451c4's function-local static Vector3(0, 0, -0x64000)"
     },
     {
       "symbol": "@558",
@@ -465,11 +507,11 @@
       "evidence": "compiler-generated destructor-registration node for the 0x43e resource handle"
     },
     {
-      "symbol": "data_ov100_02148850",
+      "symbol": "@764",
       "address": "0x02148850",
       "size": "0xc",
       "binding": "STB_GLOBAL",
-      "evidence": "registration node for the 0x02148880 function-local vector static"
+      "evidence": "destructor-registration node for sFrontOff; func_ov100_02144a38 passes it to __register_global_object. Emitted @776, which ov091 already defines, so renamed to the unused same-length @764"
     },
     {
       "symbol": "@571",
@@ -493,11 +535,11 @@
       "evidence": "compiler-generated destructor-registration node for the 0x440 resource handle"
     },
     {
-      "symbol": "data_ov100_02148880",
+      "symbol": "sFrontOff$773",
       "address": "0x02148880",
       "size": "0xc",
       "binding": "STB_GLOBAL",
-      "evidence": "the Vec3i function-local vector static of the helpers"
+      "evidence": "func_ov100_02144a38's function-local static Vector3(0x4b000, 0, 0x6e000)"
     },
     {
       "symbol": "@564",
@@ -581,10 +623,10 @@
     "Thirty-two-function unit 0x021443f4..0x021458d4: D1 and D0 from the out-of-line destructor, the twenty-four helpers func_ov100_02144468..func_ov100_021453d8, CleanupResources, OnPendingDestroy, Render, Behavior, InitResources, and the folded registry factory daDoor_c_classInit as `return new daDoor_c;`.",
     "Written in ROM order under `#pragma defer_codegen off`, which keeps D1 ahead of D0. None of the legacy shards carried a pragma.",
     "The per-shard extern blocks are merged into one declaration per callee. Where shards disagreed (func_ov100_021453d8's argument types, the int/void* return of func_ov100_02145370, data_0209caa0 as bytes, words or a three-word struct, data_ov100_02148204 as bytes or a 16-byte entry) the TU keeps one spelling and casts at the call sites; every caller reproduces with it. The nine state tables are declared as the int include/decl_common.h gives two of them, and the helpers' Player calls are member calls through include/Player.h.",
-    "Eighteen of the helpers, InitResources and the factory were C sources; they compile as C++ here. Their stack and static vectors are a plain three-word struct so they carry no destructor, and InitResources copies the door matrix into both models through a twelve-word array struct (the struct-copy lever of notes/cpp-class-form.md).",
+    "Eighteen of the helpers, InitResources and the factory were C sources; they compile as C++ here. Their stack vectors stay a plain three-word struct so they carry no destructor. The six static offsets are function-local Vector3s. InitResources copies the door matrix into both models through a twelve-word array struct (the struct-copy lever of notes/cpp-class-form.md).",
     "InitResources is now the real daDoor_c::InitResources method rather than a C free function taking the object explicitly; the redundant (u32) cast on the param1 shift is still what keeps the offset folded into both accesses.",
     "Fourteen helpers (func_ov100_02144468..func_ov100_02144cf8) are the enter/execute members of the door's nine states: pointer-to-member constants at ov100 0x021480d4..0x02148144, copied by the module's static initializer into the 16-byte tables data_ov100_021488a4..data_ov100_02148924. func_ov100_021453d8 stores a state at +0x140 and calls its enter half; Behavior calls the execute half.",
-    "Folded __sinit_ov100_02147698: the eleven model-flavor and one animation SharedFilePtr-flavored resource handles, their twelve compiler-generated registration nodes and the nine {enter, execute} state records now emit from this TU; the helpers' six function-local vector statics inside the same .bss span keep their spelled-out guard/vector/node triples.",
+    "Folded __sinit_ov100_02147698: the eleven model-flavor and one animation SharedFilePtr-flavored resource handles, their twelve compiler-generated registration nodes and the nine {enter, execute} state records now emit from this TU. The six function-local Vector3 statics are declared in the functions that construct them; their guards extend this TU's .bss claim down to 0x0214870c.",
     "LOCAL WORKER NOTE: this machine's stock dump is the EU image (gamecode ASMP), so the scratch link built ROM sha256 ddab9300b24aeae254192c2a30d812b07ece3adff83230e75c865ed915c9de40 -- byte-identical to this tree's stock build -- while the recorded rom.sha256 carries the fleet-canonical stock SHA-256 that every other intact entry on main shares (d1506e90...c478e8). The divergent bytes are NDS container/packaging fields outside every module range; the content proof is identical either way."
   ],
   "compiler_only_output": [
@@ -655,6 +697,13 @@
       "reason": "Owning the key function makes mwcc emit the whole inherited RTTI chain as vague linkage; this is the typeinfo name for an ancestor. The cartridge keeps the canonical copy at arm9:0x02086e60, outside this TU's licensed range (.text 0x021443f4-0x021458d4), so dsd supplies that ROM data independently. romdata_check compares the emitted copy against the cartridge before production isolation discards it.",
       "canonical_module": "arm9",
       "canonical_address": "0x02086e60"
+    },
+    {
+      "symbol": "_ZN7Vector3D1Ev",
+      "disposition": "deadstrip-duplicate",
+      "canonical_module": "arm9",
+      "canonical_address": "0x020072c0",
+      "reason": "The six function-local static Vector3s register ~Vector3(), so mwcc re-emits Vector3's trivial vague-linkage D1. The cartridge keeps one copy at arm9:0x020072c0, kind:function(arm,size=0x4), and an enrolled source already owns it. rombuild compares this object's body against those cartridge bytes and discards the duplicate."
     }
   ],
   "verification": {
@@ -730,7 +779,7 @@
         "compile": true,
         "link": true,
         "checkModules": true,
-        "checkSymbols": false,
+        "checkSymbols": true,
         "rom": true
       },
       "tuRange": {
@@ -763,14 +812,14 @@
         },
         {
           "section": ".bss",
-          "start": "0x02148724",
+          "start": "0x0214870c",
           "end": "0x02148934",
           "comparison": "NOBITS -- symbol/module gates"
         }
       ],
       "objectAudit": {
         "counts": {
-          "LICENSED": 79
+          "LICENSED": 85
         },
         "emittedTextOrderIsRomAscending": true,
         "nonLicensedSymbols": [],
@@ -781,19 +830,19 @@
           {
             "section": ".init",
             "original": [
-              129
+              136
             ],
             "desired": [
-              129
+              136
             ]
           },
           {
             "section": ".ctor",
             "original": [
-              127
+              134
             ],
             "desired": [
-              127
+              134
             ]
           },
           {
@@ -832,65 +881,77 @@
               35,
               36,
               37,
-              38,
-              39,
-              40,
-              41,
-              42,
-              43,
-              44,
-              45,
-              46,
-              47,
-              48,
-              49
+              60,
+              61,
+              62,
+              63,
+              64,
+              65,
+              66,
+              67,
+              68,
+              93,
+              94,
+              95,
+              96,
+              97,
+              98,
+              113,
+              114,
+              115
             ],
             "desired": [
-              15,
-              6,
-              14,
-              13,
+              93,
+              113,
+              96,
+              63,
+              66,
+              60,
               16,
-              5,
-              8,
-              11,
-              9,
-              7,
               12,
+              11,
+              15,
+              14,
               10,
-              32,
+              6,
+              5,
+              7,
+              9,
+              8,
+              13,
               25,
+              64,
+              65,
+              22,
+              114,
+              115,
+              94,
+              67,
+              95,
+              68,
+              97,
+              98,
+              27,
+              20,
               28,
-              26,
-              31,
-              35,
-              37,
-              39,
               17,
               18,
-              20,
-              22,
-              23,
-              21,
-              40,
-              30,
-              27,
-              24,
+              61,
               19,
+              21,
+              26,
+              62,
+              23,
+              24,
+              37,
               33,
-              36,
-              29,
-              38,
               34,
-              49,
-              45,
-              46,
-              41,
-              42,
-              44,
-              47,
-              43,
-              48
+              29,
+              30,
+              32,
+              35,
+              31,
+              36
             ]
           }
         ],
@@ -932,65 +993,77 @@
                 35,
                 36,
                 37,
-                38,
-                39,
-                40,
-                41,
-                42,
-                43,
-                44,
-                45,
-                46,
-                47,
-                48,
-                49
+                60,
+                61,
+                62,
+                63,
+                64,
+                65,
+                66,
+                67,
+                68,
+                93,
+                94,
+                95,
+                96,
+                97,
+                98,
+                113,
+                114,
+                115
               ],
               "desired": [
-                15,
-                6,
-                14,
-                13,
+                93,
+                113,
+                96,
+                63,
+                66,
+                60,
                 16,
-                5,
-                8,
-                11,
-                9,
-                7,
                 12,
+                11,
+                15,
+                14,
                 10,
-                32,
+                6,
+                5,
+                7,
+                9,
+                8,
+                13,
                 25,
+                64,
+                65,
+                22,
+                114,
+                115,
+                94,
+                67,
+                95,
+                68,
+                97,
+                98,
+                27,
+                20,
                 28,
-                26,
-                31,
-                35,
-                37,
-                39,
                 17,
                 18,
-                20,
-                22,
-                23,
-                21,
-                40,
-                30,
-                27,
-                24,
+                61,
                 19,
+                21,
+                26,
+                62,
+                23,
+                24,
+                37,
                 33,
-                36,
-                29,
-                38,
                 34,
-                49,
-                45,
-                46,
-                41,
-                42,
-                44,
-                47,
-                43,
-                48
+                29,
+                30,
+                32,
+                35,
+                31,
+                36
               ],
               "slots": [
                 5,
@@ -1026,22 +1099,28 @@
                 35,
                 36,
                 37,
-                38,
-                39,
-                40,
-                41,
-                42,
-                43,
-                44,
-                45,
-                46,
-                47,
-                48,
-                49
+                60,
+                61,
+                62,
+                63,
+                64,
+                65,
+                66,
+                67,
+                68,
+                93,
+                94,
+                95,
+                96,
+                97,
+                98,
+                113,
+                114,
+                115
               ]
             }
           ],
-          "symbolIndices": 45,
+          "symbolIndices": 51,
           "sectionLinks": 0,
           "sectionInfos": 0,
           "error": null
@@ -1055,7 +1134,7 @@
       "moduleSetSha256": "f9852ffaf80ef19662ab5535df4b13b935188ac3087b5b1d4561c089e4dd802b",
       "rom": {
         "bytes": 16777216,
-        "sha256": "d1506e90efae5e2d2cf119926a4ac2a291bd5ca78349d09d5024e1a918c478e8",
+        "sha256": "ddab9300b24aeae254192c2a30d812b07ece3adff83230e75c865ed915c9de40",
         "matchesStockRom": true
       },
       "linkerOutput": null
@@ -1200,6 +1279,114 @@
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local resource-handle registration node is a configured initializer relocation destination at 0x02148898"
+    },
+    {
+      "symbol": "_ZGVsEnterPos$1003",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "function-local static guard; DSD requires a configured global symbol at 0x0214870c"
+    },
+    {
+      "symbol": "sEnterPos$1003",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "function-local static Vector3; DSD requires a configured global symbol at 0x021487e4"
+    },
+    {
+      "symbol": "@1082",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "compiler-local destructor-registration node; DSD requires a configured global symbol at 0x021487cc"
+    },
+    {
+      "symbol": "_ZGVsDoorOff$1175",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "function-local static guard; DSD requires a configured global symbol at 0x02148710"
+    },
+    {
+      "symbol": "sDoorOff$1175",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "function-local static Vector3; DSD requires a configured global symbol at 0x021487c0"
+    },
+    {
+      "symbol": "@1088",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "compiler-local destructor-registration node; DSD requires a configured global symbol at 0x021487b4"
+    },
+    {
+      "symbol": "_ZGVsEnterNeg$1007",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "function-local static guard; DSD requires a configured global symbol at 0x02148714"
+    },
+    {
+      "symbol": "sEnterNeg$1007",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "function-local static Vector3; DSD requires a configured global symbol at 0x02148808"
+    },
+    {
+      "symbol": "@1084",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "compiler-local destructor-registration node; DSD requires a configured global symbol at 0x021487fc"
+    },
+    {
+      "symbol": "_ZGVsBackOff$777",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "function-local static guard; DSD requires a configured global symbol at 0x02148718"
+    },
+    {
+      "symbol": "sBackOff$777",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "function-local static Vector3; DSD requires a configured global symbol at 0x0214879c"
+    },
+    {
+      "symbol": "@817",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "compiler-local destructor-registration node; DSD requires a configured global symbol at 0x02148790"
+    },
+    {
+      "symbol": "_ZGVsKeyOff$781",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "function-local static guard; DSD requires a configured global symbol at 0x0214871c"
+    },
+    {
+      "symbol": "sKeyOff$781",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "function-local static Vector3; DSD requires a configured global symbol at 0x021487f0"
+    },
+    {
+      "symbol": "@819",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "compiler-local destructor-registration node; DSD requires a configured global symbol at 0x021487d8"
+    },
+    {
+      "symbol": "_ZGVsFrontOff$773",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "function-local static guard; DSD requires a configured global symbol at 0x02148720"
+    },
+    {
+      "symbol": "sFrontOff$773",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "function-local static Vector3; DSD requires a configured global symbol at 0x02148880"
+    },
+    {
+      "symbol": "@764",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "compiler-local destructor-registration node; DSD requires a configured global symbol at 0x02148850"
     }
   ],
   "relocations": [
@@ -1966,64 +2153,94 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@579",
+      "from": "@575",
       "to": "@570",
-      "evidence": "mwcc numbers this resource-handle registration node @560 per TU; daObjHeart_c's emitted object already carries @560 globally, so the scratch link would multiply-define it"
+      "evidence": "resource-handle registration node. The sinit's relocations map the previous @579 onto @575 after the six function-local Vector3 statics (uniform -4, same targets, same order). Licensed under the existing pin @570"
     },
     {
-      "from": "@580",
+      "from": "@576",
       "to": "@571",
-      "evidence": "mwcc numbers this resource-handle registration node @561 per TU; daObjHeart_c's emitted object already carries @561 globally, so the scratch link would multiply-define it"
-    },
-    {
-      "from": "@585",
-      "to": "@566",
-      "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @580 now; licensed under the existing pin @566"
-    },
-    {
-      "from": "@588",
-      "to": "@569",
-      "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @583 now; licensed under the existing pin @569"
-    },
-    {
-      "from": "@577",
-      "to": "@558",
-      "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @572 now; licensed under the existing pin @558"
-    },
-    {
-      "from": "@587",
-      "to": "@568",
-      "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @582 now; licensed under the existing pin @568"
-    },
-    {
-      "from": "@578",
-      "to": "@559",
-      "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @573 now; licensed under the existing pin @559"
-    },
-    {
-      "from": "@586",
-      "to": "@567",
-      "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @581 now; licensed under the existing pin @567"
+      "evidence": "resource-handle registration node. The sinit's relocations map the previous @580 onto @576 after the six function-local Vector3 statics (uniform -4, same targets, same order). Licensed under the existing pin @571"
     },
     {
       "from": "@581",
-      "to": "@562",
-      "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @576 now; licensed under the existing pin @562"
-    },
-    {
-      "from": "@582",
-      "to": "@563",
-      "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @577 now; licensed under the existing pin @563"
-    },
-    {
-      "from": "@583",
-      "to": "@564",
-      "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @578 now; licensed under the existing pin @564"
+      "to": "@566",
+      "evidence": "resource-handle registration node. The sinit's relocations map the previous @585 onto @581 after the six function-local Vector3 statics (uniform -4, same targets, same order). Licensed under the existing pin @566"
     },
     {
       "from": "@584",
+      "to": "@569",
+      "evidence": "resource-handle registration node. The sinit's relocations map the previous @588 onto @584 after the six function-local Vector3 statics (uniform -4, same targets, same order). Licensed under the existing pin @569"
+    },
+    {
+      "from": "@573",
+      "to": "@558",
+      "evidence": "resource-handle registration node. The sinit's relocations map the previous @577 onto @573 after the six function-local Vector3 statics (uniform -4, same targets, same order). Licensed under the existing pin @558"
+    },
+    {
+      "from": "@583",
+      "to": "@568",
+      "evidence": "resource-handle registration node. The sinit's relocations map the previous @587 onto @583 after the six function-local Vector3 statics (uniform -4, same targets, same order). Licensed under the existing pin @568"
+    },
+    {
+      "from": "@574",
+      "to": "@559",
+      "evidence": "resource-handle registration node. The sinit's relocations map the previous @578 onto @574 after the six function-local Vector3 statics (uniform -4, same targets, same order). Licensed under the existing pin @559"
+    },
+    {
+      "from": "@582",
+      "to": "@567",
+      "evidence": "resource-handle registration node. The sinit's relocations map the previous @586 onto @582 after the six function-local Vector3 statics (uniform -4, same targets, same order). Licensed under the existing pin @567"
+    },
+    {
+      "from": "@577",
+      "to": "@562",
+      "evidence": "resource-handle registration node. The sinit's relocations map the previous @581 onto @577 after the six function-local Vector3 statics (uniform -4, same targets, same order). Licensed under the existing pin @562"
+    },
+    {
+      "from": "@578",
+      "to": "@563",
+      "evidence": "resource-handle registration node. The sinit's relocations map the previous @582 onto @578 after the six function-local Vector3 statics (uniform -4, same targets, same order). Licensed under the existing pin @563"
+    },
+    {
+      "from": "@579",
+      "to": "@564",
+      "evidence": "resource-handle registration node. The sinit's relocations map the previous @583 onto @579 after the six function-local Vector3 statics (uniform -4, same targets, same order). Licensed under the existing pin @564"
+    },
+    {
+      "from": "@580",
       "to": "@565",
-      "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @579 now; licensed under the existing pin @565"
+      "evidence": "resource-handle registration node. The sinit's relocations map the previous @584 onto @580 after the six function-local Vector3 statics (uniform -4, same targets, same order). Licensed under the existing pin @565"
+    },
+    {
+      "from": "@776",
+      "to": "@764",
+      "evidence": "sFrontOff's registration node. ov091 already defines @776, and objisolate cannot grow a name, so this maps the compiled name to the unused same-length @764"
+    },
+    {
+      "from": "@780",
+      "to": "@817",
+      "evidence": "sBackOff's registration node. ov095 already defines @780, and objisolate cannot grow a name, so this maps the compiled name to the unused same-length @817"
+    },
+    {
+      "from": "@784",
+      "to": "@819",
+      "evidence": "sKeyOff's registration node. ov091 already defines @784, and objisolate cannot grow a name, so this maps the compiled name to the unused same-length @819"
+    },
+    {
+      "from": "@1006",
+      "to": "@1082",
+      "evidence": "sEnterPos's registration node. ov065 already defines @1006, and objisolate cannot grow a name, so this maps the compiled name to the unused same-length @1082"
+    },
+    {
+      "from": "@1010",
+      "to": "@1084",
+      "evidence": "sEnterNeg's registration node. ov080 already defines @1010, and objisolate cannot grow a name, so this maps the compiled name to the unused same-length @1084"
+    },
+    {
+      "from": "@1178",
+      "to": "@1088",
+      "evidence": "sDoorOff's registration node. ov089 already defines @1178, and objisolate cannot grow a name, so this maps the compiled name to the unused same-length @1088"
     }
   ],
   "externalized_output": [],
