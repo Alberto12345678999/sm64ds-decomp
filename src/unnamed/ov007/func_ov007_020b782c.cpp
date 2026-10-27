@@ -5,8 +5,7 @@ extern "C" {
 int func_ov007_020c3df4(int a, void *b);
 char *func_0204a4c8(char *(*alloc)(int), int a, int b, int c, unsigned short arg5);
 void *func_ov007_020b3f20(int a);
-struct EData;
-void func_0204a17c(EData *a, char *b);
+void func_0204a17c(Particle::Manager *manager, char *resource);
 
 extern char data_ov007_02102dd0[];
 extern void *data_ov007_02103448;
@@ -27,7 +26,7 @@ void func_ov007_020b782c(void) {
         data_ov007_02103450[i] = empty;
         i++;
     } while (i < 2);
-    func_0204a17c(static_cast<EData *>(data_ov007_0210344c),
+    func_0204a17c(static_cast<Particle::Manager *>(data_ov007_0210344c),
                   static_cast<char *>(func_ov007_020b3f20(0x17)));
 }
 }

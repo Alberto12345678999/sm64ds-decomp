@@ -21892,7 +21892,7 @@
     },
     "func_0204d8e8": {
       "src/engine/particle/Particle_Manager.cpp": [
-        "return:int"
+        "return:void *"
       ],
       "src/unnamed/arm9/0204/func_0204a730.c": [
         "return:void *"
@@ -21903,7 +21903,7 @@
         "return:void *"
       ],
       "src/engine/particle/Particle_Manager.cpp": [
-        "return:Particle::System *"
+        "return:void *"
       ]
     },
     "func_0204dab4": {
