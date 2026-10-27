@@ -1191,7 +1191,7 @@ void daObjBlockS_c::func_ov098_02139850()
         Math_Function_0203b14c((char *)&mCarryOffsetY, *(int *)((char *)data_ov098_0213bf64 + r5 * 0xc), 0x800, 0x3e8000, 4);
         Math_Function_0203b14c((char *)&mCarryOffsetZ, *(int *)((char *)data_ov098_0213bf68 + r5 * 0xc), 0x800, 0x3e8000, 4);
         {
-            char *res = (char *)UpdateCarry(*(Player *)mHoldingPlayer, *(Vector3 *)&mCarryOffsetX);
+            char *res = (char *)UpdateCarry(*mHoldingPlayer, *(Vector3 *)&mCarryOffsetX);
             mModel.mat4x3 = *(struct Matrix4x3 *)res;
         }
         mFlags |= 0x4000000;

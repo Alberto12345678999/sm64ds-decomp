@@ -277,7 +277,7 @@ extern "C" void func_ov062_02116edc(daHolhei_c *self) {
     Math_Function_0203b14c(&self->mCarryOffsX, *(int*)((char*)data_ov062_0211df10 + k), 0x800, 0x3e8000, 4);
     Math_Function_0203b14c(&self->mCarryOffsY, *(int*)((char*)data_ov062_0211df14 + k), 0x800, 0x3e8000, 4);
     Math_Function_0203b14c(&self->mCarryOffsZ, *(int*)((char*)data_ov062_0211df18 + k), 0x800, 0x3e8000, 4);
-    void* r = self->UpdateCarry(*(Player *)self->mHeld, *(Vector3 *)&self->mCarryOffsX);
+    void* r = self->UpdateCarry(*self->mHeld, *(Vector3 *)&self->mCarryOffsX);
     struct M12w { int w[12]; };
     *(M12w *)&self->mModel.mat4x3 = *(M12w *)r;
 }
@@ -713,23 +713,24 @@ extern "C" void func_ov062_02116010(daHolhei_c *self)
         return;
     if (!IsPlayerActor(a))
         return;
+    Player *player = static_cast<Player *>(a);
     angle = self->HorzAngleToCPlayer();
     angle = AngleDiff(angle, self->mAngleY);
     if (angle > 0x2000) {
         if ((self->mdCc_c.hitFlags & 0x1000) == 0)
             return;
         self->mFlags |= 0x80;
-        if (((Player *)a)->TryGrab(*self) == 0)
+        if (player->TryGrab(*self) == 0)
             return;
-        self->mHeld = a;
+        self->mHeld = player;
         self->mdCc_c.flags |= 2;
         self->mHorzSpeed = 0;
         ::daHolhei_c_ChangeState(self, (HolheiState *)data_ov062_0211dea0);
         return;
     }
-    if (func_ov002_020db5f4(a, self) == 0)
+    if (func_ov002_020db5f4(player, self) == 0)
         return;
-    self->mHeld = a;
+    self->mHeld = player;
     self->mHorzSpeed = 0;
     ::daHolhei_c_ChangeState(self, (HolheiState *)data_ov062_0211def0);
 }

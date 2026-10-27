@@ -84,16 +84,6 @@ struct ShlStateEnd {
     ShlStateFn tail[3];
 };
 
-/* The carrying Player seen only as far as Player::mIsAirborne (0x6de):
-   including Player.h renumbers the pinned @NNN statics by 94. */
-struct ShlCarrierView {
-    u8 pad_000[0x6de];
-    u8 mIsAirborne; /* 0x6de */
-};
-#ifndef SM64DS_PLATFORM_PC
-typedef char ShlCarrierView_size_must_be_0x6df[sizeof(ShlCarrierView) == 0x6df ? 1 : -1];
-#endif
-
 namespace Sound {
 /* local extern: including Sound.h renumbers @NNN. */
 int PlayLong(u32, u32, u32, const Vector3 &, s16);
@@ -371,7 +361,7 @@ int daShl_c::func_ov102_0214d044()
 {
     /* The riderPos/angle/x/ret locals below are needed: without them the
        function is 4 bytes shorter. */
-    if (mCarrier == 0 || ((Player *)mCarrier)->IsOnShell() == 0) {
+    if (mCarrier == 0 || mCarrier->IsOnShell() == 0) {
         PoofDust();
         MarkForDestruction();
         return 0;
@@ -417,7 +407,7 @@ int daShl_c::func_ov102_0214cf98(dActor_c *player)
 {
     if (mCarrier != 0)
         return 0;
-    mCarrier = player;
+    mCarrier = static_cast<Player *>(player);
     if (mState != &data_ov102_0214ea48)
         func_ov102_0214d1f8(&data_ov102_0214ea48);
     return 1;
@@ -446,7 +436,7 @@ void daShl_c::func_ov102_0214ce60()
         offset.x = 0x1e000;
         offset.y = -0x1e000;
         offset.z = 0x32000;
-        mModel.mat4x3 = *UpdateCarry(*(Player *)mCarrier, offset);
+        mModel.mat4x3 = *UpdateCarry(*mCarrier, offset);
     } else {
         Matrix4x3_FromRotationY(&mModel.mat4x3, mAngleY);
         mModel.mat4x3.m[9] = mPosX >> 3;
@@ -561,7 +551,7 @@ void daShl_c::func_ov102_0214c84c()
     pos.trail.z = mPosZ;
 
     if (mState == &data_ov102_0214ea48 && mCarrier != 0 &&
-        ((ShlCarrierView *)mCarrier)->mIsAirborne == 0) {
+        mCarrier->mIsAirborne == 0) {
         dBgCh_Gnd ground;
         ground.StartDetectingWater();
         {
