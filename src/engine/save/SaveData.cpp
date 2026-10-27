@@ -413,9 +413,8 @@ u8 SaveData::GetCoinRecord(u32 courseID)
     return data_0209cad2[courseID];
 }
 
-// @symbol _ZN8SaveData21SetCoinRecordIfHigherEah
-void SaveData::SetCoinRecordIfHigher(s8 courseID, u8 coins)
-{
+// @symbol _ZN8SaveData21SetCoinRecordIfHigherEih
+void SaveData::SetCoinRecordIfHigher(int courseID, u8 coins) {
     if (coins > data_0209cad2[courseID])
         data_0209cad2[courseID] = coins;
 }

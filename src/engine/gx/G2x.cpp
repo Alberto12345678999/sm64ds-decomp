@@ -41,13 +41,11 @@ void G2x::SetBGyAffine(volatile unsigned short *p, Matrix2x2 *m, int a, int b, i
     *(volatile int *)(p + 6) = y >> 4;
 }
 
-// @symbol _ZN3G2x13SetBlendAlphaEPVttttj
-/* The final argument is 32-bit: the ROM loads its stack slot with `ldr`, not
-   `ldrh`. The former `...ttttt` name contradicted that instruction. */
-void G2x::SetBlendAlpha(volatile u16 *reg, u16 firstTarget,
-                        u16 secondTarget, u16 firstAlpha,
-                        u32 secondAlpha)
-{
+// @symbol _ZN3G2x13SetBlendAlphaEPVtiiii
+/* The Nitro SDK's G2x_SetBlendAlpha_(vu16 *, int, int, int, int). The final
+   argument is 32-bit: the ROM loads its stack slot with `ldr`, not `ldrh`. */
+void G2x::SetBlendAlpha(volatile u16 *reg, int firstTarget, int secondTarget, int firstAlpha,
+                        int secondAlpha) {
     *(volatile u32 *)reg =
         ((firstTarget | 0x40) | (secondTarget << 8)) |
         ((firstAlpha | (secondAlpha << 8)) << 16);

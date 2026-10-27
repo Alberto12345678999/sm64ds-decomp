@@ -120,7 +120,9 @@ extern dScMgJump_c::StatePmf pmf_dScMgJump_c_State_Play;
 }
 
 namespace GX   { void LoadOBJPltt(const void *src, unsigned int offset, unsigned int size); }
-namespace G3X  { void SetFog(bool enable, int mode, int slope, int offset); }
+namespace G3X {
+void SetFog(int enable, int mode, int slope, int offset);
+}
 namespace cstd { s32 fdiv(s32 a, s32 b); }
 
 // @symbol _ZN11dScMgJump_c10StartRoundEi

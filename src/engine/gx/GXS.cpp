@@ -7,12 +7,13 @@
  */
 // leftovers: opt_propagation off is file-global for LoadOBJ and
 // func_020565b4 (constant VRAM destinations 0x6400000/0x6600000); every other
-// member matches either way. DMASyncWordTransfer and the SetBankFor* calls
-// keep wide u32 spellings (local extern): the definitions' narrower params
-// insert narrowing ops at the call. The func_ helpers keep address names (no
+// member matches either way. DMASyncWordTransfer keeps a wide u32 spelling
+// (local extern): the definition's narrower channel inserts a narrowing op at
+// the call. The func_ helpers keep address names (no
 // recovered names exist).
 
 #include "types.h"
+#include "GX.h"
 
 namespace G2 {
 void *GetBG0ScrPtr(void);
@@ -59,10 +60,6 @@ extern void MultiCopy_Int(int *src, int *dst, int len);
 extern int func_02054d88(void);
 extern void *func_02054ea8(void);
 extern void *func_02054efc(void);
-
-// local extern: u16 parameter per the definition inserts narrowing shifts at the call
-extern void _ZN2GX22SetBankForSubBGExtPlttEt(u32 bank);
-extern void _ZN2GX23SetBankForSubOBJExtPlttEt(u32 bank);
 }
 
 namespace GXS {
@@ -410,7 +407,7 @@ void EndLoadBGExtPltt() {
     if (dmaId != (u32)-1) {
         func_02059fa8(dmaId);
     }
-    _ZN2GX22SetBankForSubBGExtPlttEt(data_020a60a4);
+    GX::SetBankForSubBGExtPltt(data_020a60a4);
     data_020a60a4 = 0;
 }
 
@@ -437,7 +434,7 @@ void EndLoadOBJExtPltt() {
     if (dmaId != (u32)-1) {
         func_02059fa8(dmaId);
     }
-    _ZN2GX23SetBankForSubOBJExtPlttEt(data_020a60a8);
+    GX::SetBankForSubOBJExtPltt(data_020a60a8);
     data_020a60a8 = 0;
 }
 

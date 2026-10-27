@@ -405,12 +405,6 @@ struct JugemModelFile : SharedFilePtr {
 };
 
 extern "C" {
-/* local extern: the fades pass a computed alpha and 0x10 minus it; the real
-   unsigned short parameters (G2x.h) narrow both, which the ROM does not
-   (measured: +8 bytes in each of the three fading functions). The fixed-alpha
-   calls use G2x::SetBlendAlpha. */
-extern void _ZN3G2x13SetBlendAlphaEPVttttj(volatile void *reg, unsigned short a, unsigned short b,
-                                           int c, int d);
 extern unsigned char data_0209d454;
 extern int RandomIntInternal(int *seed);
 extern int data_0209e650;
@@ -701,8 +695,7 @@ void daDemo_c::func_ov002_020f1fcc()
     mScroll->fadeLevel--;
     v = mScroll->fadeLevel;
     if (v != 0) {
-        _ZN3G2x13SetBlendAlphaEPVttttj(
-            (volatile void *)0x4001050, 4, 0x28, v, 0x10 - v);
+        G2x::SetBlendAlpha((volatile u16 *)0x4001050, 4, 0x28, v, 0x10 - v);
         return;
     }
     data_0209d454 &= ~4;
@@ -1209,7 +1202,7 @@ void func_ov002_020f2aec(char *c, int idx)
         *(unsigned short *)(c + idx * 8 + CREDIT_OFF(blendTimer)) = 0;
         *(unsigned char *)(c + CREDIT_OFF(blend) + idx * 8) += 1;
         cnt = *(unsigned char *)(c + idx * 8 + CREDIT_OFF(blend));
-        _ZN3G2x13SetBlendAlphaEPVttttj((volatile void *)0x4001050, 1, 0x36, cnt, 0x10 - cnt);
+        G2x::SetBlendAlpha((volatile u16 *)0x4001050, 1, 0x36, cnt, 0x10 - cnt);
     }
 
     if (*(unsigned short *)(c + idx * 8 + CREDIT_OFF(timer)) < 30) {
@@ -1239,7 +1232,7 @@ void func_ov002_020f2bf4(char *c, int idx)
         *(unsigned short *)(c + idx * 8 + CREDIT_OFF(blendTimer)) = 0;
         *(unsigned char *)(c + CREDIT_OFF(blend) + idx * 8) += 1;
         cnt = *(unsigned char *)(c + idx * 8 + CREDIT_OFF(blend));
-        _ZN3G2x13SetBlendAlphaEPVttttj((volatile void *)0x4001050, 1, 0x36, 0x10 - cnt, cnt);
+        G2x::SetBlendAlpha((volatile u16 *)0x4001050, 1, 0x36, 0x10 - cnt, cnt);
     }
 
     if (*(unsigned short *)(c + idx * 8 + CREDIT_OFF(timer)) < 30) {
@@ -4221,7 +4214,7 @@ int daDemo_c::func_ov002_020f7410(unsigned char *in, int sel)
         if (r != 0 || a != 0) {
             t = (r * 0xa00) >> 12;
             if (t > 0x10) t = 0x10;
-            _ZN3G2x13SetBlendAlphaEPVttttj((volatile void *)0x4000050, 8, 1, t, 0x10 - t);
+            G2x::SetBlendAlpha((volatile u16 *)0x4000050, 8, 1, t, 0x10 - t);
         }
     }
     return 1;

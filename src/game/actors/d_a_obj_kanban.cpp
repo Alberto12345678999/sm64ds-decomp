@@ -56,8 +56,7 @@ extern s16 data_02082214[];
 /* model loading */
 
 /* the player side of the conversation */
-extern int func_ov002_020bec9c(void *c, unsigned int a, int b, int d, unsigned short e);
-
+extern void func_ov002_020bec9c(void *c, unsigned int a, int b, int d, unsigned short e);
 }
 
 #pragma defer_codegen off

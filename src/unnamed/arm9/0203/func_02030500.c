@@ -1,10 +1,10 @@
 #include "types.h"
 extern void func_02019028(void);
 extern void _ZN2GX15DisableAllBanksEv(void);
-extern void _ZN2GX12SetBankForBGEt(u16 b);
-extern void _ZN2GX13SetBankForOBJEt(u16 b);
-extern void _ZN2GX15SetBankForSubBGEt(u16 b);
-extern void _ZN2GX16SetBankForSubOBJEt(u16 b);
+extern void _ZN2GX12SetBankForBGEi(int b);
+extern void _ZN2GX13SetBankForOBJEi(int b);
+extern void _ZN2GX15SetBankForSubBGEi(int b);
+extern void _ZN2GX16SetBankForSubOBJEi(int b);
 extern void _ZN2GX15SetGraphicsModeEiii(int a, int b, int c);
 extern void _ZN3GXS15SetGraphicsModeEi(int a);
 extern s32 func_02030fa8(void);
@@ -38,10 +38,10 @@ void func_02030500(void)
 
     func_02019028();
     _ZN2GX15DisableAllBanksEv();
-    _ZN2GX12SetBankForBGEt(1);
-    _ZN2GX13SetBankForOBJEt(2);
-    _ZN2GX15SetBankForSubBGEt(4);
-    _ZN2GX16SetBankForSubOBJEt(8);
+    _ZN2GX12SetBankForBGEi(1);
+    _ZN2GX13SetBankForOBJEi(2);
+    _ZN2GX15SetBankForSubBGEi(4);
+    _ZN2GX16SetBankForSubOBJEi(8);
 
     tmp = *(volatile u32*)0x4000000 & ~0x7000000;
     *(volatile u32*)0x4000000 = tmp;
