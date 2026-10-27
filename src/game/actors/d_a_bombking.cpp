@@ -147,7 +147,7 @@ extern void func_0200fa8c(void *c, int a);
 extern void func_ov102_0214b384(void* a, int b);
 extern int atan2_hold_d_a_bombking_1(int a, int b);
 extern int Vec3_HorzLen(void* v);
-extern int func_ov002_020db5f4(char* c, char* arg);
+extern int func_ov002_020db5f4(Player* c, dActor_c* arg);
 extern void func_0200d8c8(void* cam, void* v, int strength);
 extern Matrix4x3 IDENTITY_MATRIX4X3;
 extern void Matrix4x3_ApplyInPlaceToTranslation(void *m, int x, int y, int z);
@@ -1176,17 +1176,18 @@ int daBombking_c::func_ov078_02125448()
             if (a != 0) {
                 isType = (int)(a->actorID == 0xbf);
                 if (isType != 0) {
+                    Player *player = static_cast<Player *>(a);
                     if (AngleDiff(this->HorzAngleToCPlayer(), this->mAngleY) > 0x2800) {
                         if ((this->mdCcAcPos_c2.hitFlags & 0x1000) != 0) {
                             this->mFlags |= 0x80;
-                            if (((Player *)a)->TryGrab(*(dActor_c *)this) != 0) {
-                                this->mHeldActor = (Player *)a;
+                            if (player->TryGrab(*this) != 0) {
+                                this->mHeldActor = player;
                                 this->mHorzSpeed = 0;
                                 KingBobOmb_SetState(data_ov078_0212707c);
                             }
                         }
-                    } else if (func_ov002_020db5f4((char *)a, (char *)this) != 0) {
-                        this->mHeldActor = (Player *)a;
+                    } else if (func_ov002_020db5f4(player, this) != 0) {
+                        this->mHeldActor = player;
                         this->mHorzSpeed = 0;
                         KingBobOmb_SetState(data_ov078_0212706c);
                     }

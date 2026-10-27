@@ -159,7 +159,7 @@ typedef void BgchInitAt_(char *thiz, char *actor, int b, int d, void *v, int f);
 extern int SurfaceInfo_TestFlag0x20(int *p);
 extern int func_ov002_020ef228(void *c, int arg);
 extern int func_ov002_020f030c(int x);
-extern int func_ov002_020e496c(char *c);
+extern int func_ov002_020e496c(Player *c);
 extern s16 func_02010844(void *unused, Vector3 *v, s16 angle);
 
 
@@ -1177,7 +1177,7 @@ void daObjBlockS_c::func_ov098_02139850()
         goto other;
 
     {
-        char *r4 = (char *)func_ov002_020e496c((char *)obj);
+        char *r4 = (char *)func_ov002_020e496c(obj);
         int r5 = 0;
         if (mHoldingPlayer->IsFrontSliding() != 0)
             r5 = 1;
