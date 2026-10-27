@@ -54,12 +54,28 @@
 struct KCL_File;
 struct CLPS_Block;
 
+/* Runtime asset handles, distinct from the NitroFS file IDs. */
+enum daObjFl_UkiKi_c_AssetId { ASSET_FL_UKI_KI_BMD = 0x0612, ASSET_FL_UKI_KI_KCL = 0x0613 };
+
+/* The handles reach their files through these wrappers' constructor and
+ * destructor veneers; the manifest maps each to the retail destination.
+ * Descriptive local types, not recovered spellings. */
+struct FlUkiKiModelFile : SharedFilePtr {
+    FlUkiKiModelFile(u32 fileID);
+    ~FlUkiKiModelFile();
+};
+
+struct FlUkiKiCollisionFile : SharedFilePtr {
+    FlUkiKiCollisionFile(u32 fileID);
+    ~FlUkiKiCollisionFile();
+};
+
+/* This TU's two file handles, in the order the retail initializer
+ * (0x02112f78) builds them. */
+FlUkiKiModelFile FloatingFloorLllBig_ModelFile(ASSET_FL_UKI_KI_BMD);
+FlUkiKiCollisionFile FloatingFloorLllBig_ClsnFile(ASSET_FL_UKI_KI_KCL);
+
 extern "C" {
-/* This overlay's two file handles, constructed by the ov022 sinit as file IDs
- * 1554 (model) and 1555 (collision). Named rows in ov022/symbols.txt at
- * 0x02114620 and 0x02114618. */
-extern SharedFilePtr FloatingFloorLllBig_ModelFile;   /* the BMD */
-extern SharedFilePtr FloatingFloorLllBig_ClsnFile;    /* the KCL */
 extern CLPS_Block    data_ov064_0211ba6c;   /* the CLPS block SetFile is handed */
 extern s16           data_02082214[];   /* shared sin/cos table, sin at [i*2] */
 
