@@ -786,30 +786,6 @@
       "evidence": "origin/main:src/game/actors/d_a_kpa3_bg.cpp 2x _ZN8dActor_c10EarthquakeERK7Vector35Fix12IiE; head 2x _ZN8dActor_c10EarthquakeERK7Vector3i; file banner (func_ov060_02117db8 parses as C); tools/source_style.py --base origin/main"
     },
     {
-      "path": "src/minigames/unit020cd744.cpp",
-      "rule": "handspelled-member",
-      "match": "_ZN8TrmpLineD1Ev",
-      "count": 2,
-      "reason": "sTrmpLines is a four-element TrmpLine array that the C static initializer __sinit_ov006_0212fc7c builds with __cxa_vec_ctor and registers TrmpLine_CleanupAll to tear down; neither function is a C++ array definition yet, so both hand TrmpLine's constructor and destructor to the array helpers by address. C++ cannot take a constructor's or destructor's address, so the C1/D1 renamed from TrmpLine_Reset/TrmpLine_Destroy when the class got its real constructor and destructor in unit020cd744.cpp are named by their linker spelling. Follow-up: define sTrmpLines as a real `TrmpLine sTrmpLines[4]` in the TU whose __sinit this is, which retires both hand-built helpers.",
-      "evidence": "ov006 0x020d100c (_ZN8TrmpLineC1Ev) and 0x020d1008 (_ZN8TrmpLineD1Ev) in config/arm9/overlays/ov006/symbols.txt; ov006/unit020cd744 59/59 TEXT-VERIFIED; __sinit_ov006_0212fc7c match.py MATCH at 0x0212fc7c size 0xcc."
-    },
-    {
-      "path": "src/unnamed/ov006/__sinit_ov006_0212fc7c.c",
-      "rule": "handspelled-member",
-      "match": "_ZN8TrmpLineD1Ev",
-      "count": 2,
-      "reason": "sTrmpLines is a four-element TrmpLine array that the C static initializer __sinit_ov006_0212fc7c builds with __cxa_vec_ctor and registers TrmpLine_CleanupAll to tear down; neither function is a C++ array definition yet, so both hand TrmpLine's constructor and destructor to the array helpers by address. C++ cannot take a constructor's or destructor's address, so the C1/D1 renamed from TrmpLine_Reset/TrmpLine_Destroy when the class got its real constructor and destructor in unit020cd744.cpp are named by their linker spelling. Follow-up: define sTrmpLines as a real `TrmpLine sTrmpLines[4]` in the TU whose __sinit this is, which retires both hand-built helpers. This file is C, so a mangled linker name is its only spelling.",
-      "evidence": "ov006 0x020d100c (_ZN8TrmpLineC1Ev) and 0x020d1008 (_ZN8TrmpLineD1Ev) in config/arm9/overlays/ov006/symbols.txt; ov006/unit020cd744 59/59 TEXT-VERIFIED; __sinit_ov006_0212fc7c match.py MATCH at 0x0212fc7c size 0xcc."
-    },
-    {
-      "path": "src/unnamed/ov006/__sinit_ov006_0212fc7c.c",
-      "rule": "handspelled-member",
-      "match": "_ZN8TrmpLineC1Ev",
-      "count": 2,
-      "reason": "sTrmpLines is a four-element TrmpLine array that the C static initializer __sinit_ov006_0212fc7c builds with __cxa_vec_ctor and registers TrmpLine_CleanupAll to tear down; neither function is a C++ array definition yet, so both hand TrmpLine's constructor and destructor to the array helpers by address. C++ cannot take a constructor's or destructor's address, so the C1/D1 renamed from TrmpLine_Reset/TrmpLine_Destroy when the class got its real constructor and destructor in unit020cd744.cpp are named by their linker spelling. Follow-up: define sTrmpLines as a real `TrmpLine sTrmpLines[4]` in the TU whose __sinit this is, which retires both hand-built helpers. This file is C, so a mangled linker name is its only spelling.",
-      "evidence": "ov006 0x020d100c (_ZN8TrmpLineC1Ev) and 0x020d1008 (_ZN8TrmpLineD1Ev) in config/arm9/overlays/ov006/symbols.txt; ov006/unit020cd744 59/59 TEXT-VERIFIED; __sinit_ov006_0212fc7c match.py MATCH at 0x0212fc7c size 0xcc."
-    },
-    {
       "path": "src/unnamed/arm9/0201/func_02018c00.c",
       "rule": "raw-offset",
       "match": "(int*)(self+0x20",
