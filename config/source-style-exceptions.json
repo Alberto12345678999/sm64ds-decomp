@@ -722,7 +722,7 @@
       "evidence": "origin/main:src/game/actors/d_a_spd.cpp 2x _ZN9ModelAnimC1Ev; head 2x _ZN14dExtAnmModel_cC1Ev; tools/source_style.py --base origin/main"
     },
     {
-      "path": "src/game/actors/d_a_star_base.c",
+      "path": "src/game/actors/d_a_star_base.cpp",
       "rule": "handspelled-member",
       "match": "_ZN17dExtSimpleModel_cC1Ev",
       "count": 2,
@@ -730,7 +730,7 @@
       "evidence": "origin/main:src/game/actors/d_a_star_base.c 1x _ZN17dExtSimpleModel_cC1Ev, declared by origin/main:include/decl_Model.h; head 2x (1 call(s) + 1 local extern); tools/source_style.py --base origin/main"
     },
     {
-      "path": "src/game/actors/d_a_star_silver_star.c",
+      "path": "src/game/actors/d_a_star_silver_star.cpp",
       "rule": "handspelled-member",
       "match": "_ZN14dExtAnmModel_cC1Ev",
       "count": 3,
@@ -738,7 +738,7 @@
       "evidence": "origin/main:src/game/actors/d_a_star_silver_star.c 2x _ZN14dExtAnmModel_cC1Ev, declared by origin/main:include/decl_ModelAnim.h; head 3x (2 call(s) + 1 local extern); tools/source_style.py --base origin/main"
     },
     {
-      "path": "src/game/actors/d_a_star_star.c",
+      "path": "src/game/actors/d_a_star_star.cpp",
       "rule": "handspelled-member",
       "match": "_ZN14dExtAnmModel_cC1Ev",
       "count": 3,
@@ -818,7 +818,7 @@
       "evidence": "origin/main:src/minigames/d_s_mg_snowball.cpp 2x _ZN5ModelC1Ev; head 2x _ZN17dExtSimpleModel_cC1Ev; tools/source_style.py --base origin/main"
     },
     {
-      "path": "src/unnamed/ov007/func_ov007_020b3f20.c",
+      "path": "src/unnamed/ov007/func_ov007_020b3f20.cpp",
       "rule": "handspelled-member",
       "match": "_ZN17dExtSimpleModel_c17UpdateFileOffsetsER8BMD_File",
       "count": 2,
@@ -826,7 +826,7 @@
       "evidence": "origin/main:src/unnamed/ov007/func_ov007_020b3f20.c 2x _ZN5Model17UpdateFileOffsetsER8BMD_File; head 2x _ZN17dExtSimpleModel_c17UpdateFileOffsetsER8BMD_File; tools/source_style.py --base origin/main"
     },
     {
-      "path": "src/unnamed/ov075/func_ov075_0211aa94.c",
+      "path": "src/unnamed/ov075/func_ov075_0211aa94.cpp",
       "rule": "handspelled-member",
       "match": "_ZN17dExtSimpleModel_c27LoadCompressedTextureToVramEPcjS0_",
       "count": 2,
@@ -842,7 +842,7 @@
       "evidence": "origin/cpp/model-family-rom-names:src/minigames/d_mg3d_esp_anim_set.cpp 2x _ZN18TextureTransformerC1Ev; head 2x _ZN15dExtAnmTexSRT_cC1Ev; tools/source_style.py --base origin/cpp/model-family-rom-names"
     },
     {
-      "path": "src/unnamed/ov007/func_ov007_020b3f20.c",
+      "path": "src/unnamed/ov007/func_ov007_020b3f20.cpp",
       "rule": "handspelled-member",
       "match": "_ZN15dExtAnmTexPat_c17UpdateFileOffsetsER8BTP_File",
       "count": 2,
@@ -866,7 +866,7 @@
       "evidence": "origin/main:src/game/actors/d_a_kpa3_bg.cpp 2x _ZN8dActor_c10EarthquakeERK7Vector35Fix12IiE; head 2x _ZN8dActor_c10EarthquakeERK7Vector3i; file banner (func_ov060_02117db8 parses as C); tools/source_style.py --base origin/main"
     },
     {
-      "path": "src/unnamed/ov075/func_ov075_02117fe4.c",
+      "path": "src/unnamed/ov075/func_ov075_02117fe4.cpp",
       "rule": "handspelled-member",
       "match": "_ZN3OAM6RenderEbP7OamAttriiiiii",
       "count": 3,
@@ -946,7 +946,7 @@
       "evidence": "present on origin/main in src/unnamed/arm9/0206/func_02061188.c; folded into src/unnamed/arm9/0206/func_0206116c.c with the rest of its contiguous run. rombuild 106/106 exact and prepush_linkcheck VERIFIED for every folded function."
     },
     {
-      "path": "src/unnamed/ov002/func_ov002_020e6a78.c",
+      "path": "src/unnamed/ov002/func_ov002_020e6a78.cpp",
       "rule": "handspelled-member",
       "match": "_ZN6Memory13operator_new2Ej",
       "count": 2,
@@ -954,7 +954,7 @@
       "evidence": "present on origin/main in src/unnamed/ov002/func_ov002_020e6bb0.c; folded into src/unnamed/ov002/func_ov002_020e6a78.c with the rest of its contiguous run. rombuild 106/106 exact and prepush_linkcheck VERIFIED for every folded function."
     },
     {
-      "path": "src/unnamed/ov002/func_ov002_020e6a78.c",
+      "path": "src/unnamed/ov002/func_ov002_020e6a78.cpp",
       "rule": "raw-offset",
       "match": "(char*)obj+0x24",
       "count": 1,
@@ -962,7 +962,7 @@
       "evidence": "present on origin/main in src/unnamed/ov002/func_ov002_020e6b74.c; folded into src/unnamed/ov002/func_ov002_020e6a78.c with the rest of its contiguous run. rombuild 106/106 exact and prepush_linkcheck VERIFIED for every folded function."
     },
     {
-      "path": "src/unnamed/ov002/func_ov002_020e6a78.c",
+      "path": "src/unnamed/ov002/func_ov002_020e6a78.cpp",
       "rule": "raw-offset",
       "match": "(char*)p+0x40",
       "count": 1,
@@ -970,7 +970,7 @@
       "evidence": "present on origin/main in src/unnamed/ov002/func_ov002_020e6ad4.c; folded into src/unnamed/ov002/func_ov002_020e6a78.c with the rest of its contiguous run. rombuild 106/106 exact and prepush_linkcheck VERIFIED for every folded function."
     },
     {
-      "path": "src/unnamed/ov002/func_ov002_020e6a78.c",
+      "path": "src/unnamed/ov002/func_ov002_020e6a78.cpp",
       "rule": "raw-offset",
       "match": "(int*)(dst+0x1c",
       "count": 1,
@@ -978,7 +978,7 @@
       "evidence": "present on origin/main in src/unnamed/ov002/func_ov002_020e6b74.c; folded into src/unnamed/ov002/func_ov002_020e6a78.c with the rest of its contiguous run. rombuild 106/106 exact and prepush_linkcheck VERIFIED for every folded function."
     },
     {
-      "path": "src/unnamed/ov002/func_ov002_020e6a78.c",
+      "path": "src/unnamed/ov002/func_ov002_020e6a78.cpp",
       "rule": "raw-offset",
       "match": "(int*)(src+0x1c",
       "count": 1,
@@ -986,7 +986,7 @@
       "evidence": "present on origin/main in src/unnamed/ov002/func_ov002_020e6bb0.c; folded into src/unnamed/ov002/func_ov002_020e6a78.c with the rest of its contiguous run. rombuild 106/106 exact and prepush_linkcheck VERIFIED for every folded function."
     },
     {
-      "path": "src/unnamed/ov002/func_ov002_020e6a78.c",
+      "path": "src/unnamed/ov002/func_ov002_020e6a78.cpp",
       "rule": "raw-offset",
       "match": "(unsignedint*)(base+0x24",
       "count": 1,
@@ -1026,7 +1026,7 @@
       "evidence": "spelled _ZN7fBase_cnwEj on origin/main; renamed with the symbol (arm9 0x02043444, size 0x50); every src file recompiled at base and head, bytes and relocation destinations identical"
     },
     {
-      "path": "src/game/actors/d_a_star_base.c",
+      "path": "src/game/actors/d_a_star_base.cpp",
       "rule": "handspelled-member",
       "match": "_ZN7fBase_cnwEm",
       "count": 1,
@@ -1034,7 +1034,7 @@
       "evidence": "spelled _ZN7fBase_cnwEj on origin/main; renamed with the symbol (arm9 0x02043444, size 0x50); every src file recompiled at base and head, bytes and relocation destinations identical"
     },
     {
-      "path": "src/game/actors/d_a_star_silver_star.c",
+      "path": "src/game/actors/d_a_star_silver_star.cpp",
       "rule": "handspelled-member",
       "match": "_ZN7fBase_cnwEm",
       "count": 1,
@@ -1042,7 +1042,7 @@
       "evidence": "spelled _ZN7fBase_cnwEj on origin/main; renamed with the symbol (arm9 0x02043444, size 0x50); every src file recompiled at base and head, bytes and relocation destinations identical"
     },
     {
-      "path": "src/game/actors/d_a_star_star.c",
+      "path": "src/game/actors/d_a_star_star.cpp",
       "rule": "handspelled-member",
       "match": "_ZN7fBase_cnwEm",
       "count": 1,
@@ -1050,7 +1050,7 @@
       "evidence": "spelled _ZN7fBase_cnwEj on origin/main; renamed with the symbol (arm9 0x02043444, size 0x50); every src file recompiled at base and head, bytes and relocation destinations identical"
     },
     {
-      "path": "src/unnamed/ov007/func_ov007_020c14b8.c",
+      "path": "src/unnamed/ov007/func_ov007_020c14b8.cpp",
       "rule": "handspelled-member",
       "match": "_ZN2GX12BeginLoadTexEv",
       "count": 2,
@@ -1058,7 +1058,7 @@
       "evidence": "present on origin/main in src/unnamed/ov007/func_ov007_020c1560.c; folded into src/unnamed/ov007/func_ov007_020c14b8.c with the rest of its contiguous run. rombuild 106/106 exact and prepush_linkcheck VERIFIED for every folded function."
     },
     {
-      "path": "src/unnamed/ov007/func_ov007_020c14b8.c",
+      "path": "src/unnamed/ov007/func_ov007_020c14b8.cpp",
       "rule": "handspelled-member",
       "match": "_ZN2GX7LoadTexEPKvjj",
       "count": 2,
@@ -1066,7 +1066,7 @@
       "evidence": "present on origin/main in src/unnamed/ov007/func_ov007_020c1560.c; folded into src/unnamed/ov007/func_ov007_020c14b8.c with the rest of its contiguous run. rombuild 106/106 exact and prepush_linkcheck VERIFIED for every folded function."
     },
     {
-      "path": "src/unnamed/ov007/func_ov007_020c14b8.c",
+      "path": "src/unnamed/ov007/func_ov007_020c14b8.cpp",
       "rule": "handspelled-member",
       "match": "_ZN2GX10EndLoadTexEv",
       "count": 2,
@@ -1074,7 +1074,7 @@
       "evidence": "present on origin/main in src/unnamed/ov007/func_ov007_020c1560.c; folded into src/unnamed/ov007/func_ov007_020c14b8.c with the rest of its contiguous run. rombuild 106/106 exact and prepush_linkcheck VERIFIED for every folded function."
     },
     {
-      "path": "src/unnamed/ov007/func_ov007_020c14b8.c",
+      "path": "src/unnamed/ov007/func_ov007_020c14b8.cpp",
       "rule": "handspelled-member",
       "match": "_ZN2GX16BeginLoadTexPlttEv",
       "count": 2,
@@ -1082,7 +1082,7 @@
       "evidence": "present on origin/main in src/unnamed/ov007/func_ov007_020c14d4.c; folded into src/unnamed/ov007/func_ov007_020c14b8.c with the rest of its contiguous run. rombuild 106/106 exact and prepush_linkcheck VERIFIED for every folded function."
     },
     {
-      "path": "src/unnamed/ov007/func_ov007_020c14b8.c",
+      "path": "src/unnamed/ov007/func_ov007_020c14b8.cpp",
       "rule": "handspelled-member",
       "match": "_ZN2GX11LoadTexPlttEPKvjj",
       "count": 2,
@@ -1090,7 +1090,7 @@
       "evidence": "present on origin/main in src/unnamed/ov007/func_ov007_020c14d4.c; folded into src/unnamed/ov007/func_ov007_020c14b8.c with the rest of its contiguous run. rombuild 106/106 exact and prepush_linkcheck VERIFIED for every folded function."
     },
     {
-      "path": "src/unnamed/ov007/func_ov007_020c14b8.c",
+      "path": "src/unnamed/ov007/func_ov007_020c14b8.cpp",
       "rule": "handspelled-member",
       "match": "_ZN2GX14EndLoadTexPlttEv",
       "count": 2,
@@ -1114,7 +1114,7 @@
       "evidence": "Symbol renamed from the Fix12<int> mangling to the Fix12i (plain int) one in config/arm9/symbols.txt and config/tu_manifest.d/arm9/G3i.json; arm9 0x02055bfc and the callers still byte-match (rombuild 106/106 exact)."
     },
     {
-      "path": "src/unnamed/ov007/func_ov007_020b2160.c",
+      "path": "src/unnamed/ov007/func_ov007_020b2160.cpp",
       "rule": "handspelled-member",
       "match": "_ZN3G3i13PerspectiveW_EiiiiiiiP9Matrix4x3",
       "count": 3,
@@ -1210,7 +1210,7 @@
       "evidence": "origin/main:src/unnamed/arm9/0201/func_020197b8.c 3x _ZN3G2x18SetBlendBrightnessEPVtts; head 3x _ZN3G2x18SetBlendBrightnessEPVtii; tools/source_style.py --base origin/main"
     },
     {
-      "path": "src/unnamed/ov007/func_ov007_020b6f4c.c",
+      "path": "src/unnamed/ov007/func_ov007_020b6f4c.cpp",
       "rule": "handspelled-member",
       "match": "_ZN3G2x18SetBlendBrightnessEPVtii",
       "count": 5,
@@ -1218,7 +1218,7 @@
       "evidence": "origin/main:src/unnamed/ov007/func_ov007_020b6f4c.c 5x _ZN3G2x18SetBlendBrightnessEPVtts; head 5x _ZN3G2x18SetBlendBrightnessEPVtii; tools/source_style.py --base origin/main"
     },
     {
-      "path": "src/unnamed/ov007/func_ov007_020b7138.c",
+      "path": "src/unnamed/ov007/func_ov007_020b7138.cpp",
       "rule": "handspelled-member",
       "match": "_ZN3G2x18SetBlendBrightnessEPVtii",
       "count": 3,
@@ -1226,7 +1226,7 @@
       "evidence": "origin/main:src/unnamed/ov007/func_ov007_020b7138.c 3x _ZN3G2x18SetBlendBrightnessEPVtts; head 3x _ZN3G2x18SetBlendBrightnessEPVtii; tools/source_style.py --base origin/main"
     },
     {
-      "path": "src/unnamed/ov007/func_ov007_020bf690.c",
+      "path": "src/unnamed/ov007/func_ov007_020bf690.cpp",
       "rule": "handspelled-member",
       "match": "_ZN3G2x18SetBlendBrightnessEPVtii",
       "count": 3,
@@ -1234,7 +1234,7 @@
       "evidence": "origin/main:src/unnamed/ov007/func_ov007_020bf690.c 3x _ZN3G2x18SetBlendBrightnessEPVtts; head 3x _ZN3G2x18SetBlendBrightnessEPVtii; tools/source_style.py --base origin/main"
     },
     {
-      "path": "src/unnamed/ov007/func_ov007_020bf790.c",
+      "path": "src/unnamed/ov007/func_ov007_020bf790.cpp",
       "rule": "handspelled-member",
       "match": "_ZN3G2x18SetBlendBrightnessEPVtii",
       "count": 2,
@@ -1242,7 +1242,7 @@
       "evidence": "origin/main:src/unnamed/ov007/func_ov007_020bf790.c 2x _ZN3G2x18SetBlendBrightnessEPVtts; head 2x _ZN3G2x18SetBlendBrightnessEPVtii; tools/source_style.py --base origin/main"
     },
     {
-      "path": "src/unnamed/ov007/func_ov007_020c86c4.c",
+      "path": "src/unnamed/ov007/func_ov007_020c86c4.cpp",
       "rule": "handspelled-member",
       "match": "_ZN3G2x18SetBlendBrightnessEPVtii",
       "count": 3,
@@ -1250,7 +1250,7 @@
       "evidence": "origin/main:src/unnamed/ov007/func_ov007_020c86c4.c 3x _ZN3G2x18SetBlendBrightnessEPVtts; head 3x _ZN3G2x18SetBlendBrightnessEPVtii; tools/source_style.py --base origin/main"
     },
     {
-      "path": "src/unnamed/ov075/func_ov075_021173a8.c",
+      "path": "src/unnamed/ov075/func_ov075_021173a8.cpp",
       "rule": "handspelled-member",
       "match": "_ZN3G2x18SetBlendBrightnessEPVtii",
       "count": 2,
@@ -1258,7 +1258,7 @@
       "evidence": "origin/main:src/unnamed/ov075/func_ov075_021173a8.c 2x _ZN3G2x18SetBlendBrightnessEPVtts; head 2x _ZN3G2x18SetBlendBrightnessEPVtii; tools/source_style.py --base origin/main"
     },
     {
-      "path": "src/unnamed/ov075/func_ov075_02117918.c",
+      "path": "src/unnamed/ov075/func_ov075_02117918.cpp",
       "rule": "handspelled-member",
       "match": "_ZN3G2x18SetBlendBrightnessEPVtii",
       "count": 2,
@@ -1266,7 +1266,7 @@
       "evidence": "origin/main:src/unnamed/ov075/func_ov075_02117918.c 2x _ZN3G2x18SetBlendBrightnessEPVtts; head 2x _ZN3G2x18SetBlendBrightnessEPVtii; tools/source_style.py --base origin/main"
     },
     {
-      "path": "src/unnamed/ov075/func_ov075_02117ac4.c",
+      "path": "src/unnamed/ov075/func_ov075_02117ac4.cpp",
       "rule": "handspelled-member",
       "match": "_ZN3G2x18SetBlendBrightnessEPVtii",
       "count": 2,
@@ -1370,7 +1370,7 @@
       "evidence": "origin/main:src/unnamed/arm9/0203/func_02030500.c 2x _ZN2GX16SetBankForSubOBJEt; head 2x _ZN2GX16SetBankForSubOBJEi; tools/source_style.py --base origin/main"
     },
     {
-      "path": "src/unnamed/ov007/func_ov007_020c86c4.c",
+      "path": "src/unnamed/ov007/func_ov007_020c86c4.cpp",
       "rule": "handspelled-member",
       "match": "_ZN3G2x13SetBlendAlphaEPVtiiii",
       "count": 3,
@@ -1378,7 +1378,7 @@
       "evidence": "origin/main:src/unnamed/ov007/func_ov007_020c86c4.c 3x _ZN3G2x13SetBlendAlphaEPVttttj; head 3x _ZN3G2x13SetBlendAlphaEPVtiiii; tools/source_style.py --base origin/main"
     },
     {
-      "path": "src/unnamed/ov075/func_ov075_02118378.c",
+      "path": "src/unnamed/ov075/func_ov075_02118378.cpp",
       "rule": "handspelled-member",
       "match": "_ZN3G2x13SetBlendAlphaEPVtiiii",
       "count": 2,
