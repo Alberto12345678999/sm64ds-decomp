@@ -27,7 +27,7 @@
  * Source order is the reverse of the ROM. The factory is written first.
  */
 /* leftovers: Player::ShowMessage stays a local extern: the member re-masks
- * the flag bytes and func_ov084_0212c9f0 grows. dCamera_c::SetFlag_3 has no declaration in dCamera_c.h.
+ * the flag bytes and func_ov084_0212c9f0 grows.
  * data_ov084_02130da4, data_ov084_02130d9c and data_ov084_02130dc4 keep
  * address names. This text-only TU does not own that .bss. The state
  * bodies stay address-named members; the table reaches them by address.
@@ -39,7 +39,7 @@
 #include "Player.h"
 #include "dCamera_c.h"
 #include "dBgCh_Gnd.h"
-#include "decl_SaveData.h"
+#include "SaveData.h"
 #include "daObjCannonShutter_c.h"
 #include "Sound.h"
 #include "cstd.h"
@@ -131,8 +131,6 @@ int   Math_Function_0203b14c(int *value, int target, int a, int b, int c);
    grows from 0x70 to 0x74. */
 int _ZN6Player11ShowMessageER7fBase_cjPK7Vector3hh(Player *self, fBase_c *actor, unsigned int msgID, const Vector3 *pos, unsigned int a, unsigned int b);
 
-/* local extern: dCamera_c.h does not declare this member. */
-void _ZN9dCamera_c9SetFlag_3Ev(dCamera_c *cam);
 }
 
 /* This int-returning predicate is what makes the ROM materialize 0/1
@@ -177,8 +175,7 @@ s32 daRedBombhei_c::InitResources()
         u8 character = ClosestPlayer()->mCharacter;
         if ((character == 0 && param1 == kParamMario) ||
             (character == 1 && param1 == kParamLuigi) ||
-            (character == 2 && param1 == kParamWario) ||
-            _ZN8SaveData16HasPlayerLostCapEv())
+            (character == 2 && param1 == kParamWario) || SaveData::HasPlayerLostCap())
             return 0;
     }
 
@@ -663,7 +660,7 @@ void daRedBombhei_c::func_ov084_0212c1a0()
             this->mSavedCamPos.x = pos[0];
             this->mSavedCamPos.y = pos[1];
             this->mSavedCamPos.z = pos[2];
-            _ZN9dCamera_c9SetFlag_3Ev(cam);
+            cam->SetFlag_3();
             this->mFlags &= ~1;
             this->mCutsceneStep += 1;
             return;

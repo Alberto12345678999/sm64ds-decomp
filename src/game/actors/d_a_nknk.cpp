@@ -58,6 +58,7 @@ enum d_a_nknk_AssetId {
 #include "decl_dCcAc_c.h"
 #include "decl_ShadowModel.h"
 #include "Particle__System.h"
+#include "Particle__Manager.h"
 #include "dBgPi.h"
 #include "nitro/fx/fx.h"
 #include "Sound.h"
@@ -90,7 +91,6 @@ struct V3 { int x, y, z; };
 extern "C" {
 extern int d_a_nknkNewHold(u32 uniqueID, u32 effectID, s32 x, s32 y, s32 z, const void *dir,
                            void *callback);
-extern void _ZN8Particle19SetSelfDestructFlagEj(u32 id);
 extern s16 data_02082214[];         /* SINE_TABLE: sin, cos pairs */
 extern NknkAnimationFileHandle *data_ov062_0211cee8[];
 extern int data_ov062_0211cf0c[];
@@ -1095,7 +1095,7 @@ void daNknk_c::func_ov062_02117724(unsigned int a1, unsigned int a2, unsigned in
             pos.z = k * *(short *)((char *)data_02082214 + i1) + pos.z;
         }
         uid = Particle::System::New(0, 0xf9, pos.x, pos.y, pos.z, 0, 0);
-        _ZN8Particle19SetSelfDestructFlagEj(0xf9);
+        Particle::SetSelfDestructFlag(0xf9);
         if (uid == 0) return;
         ps = Particle::System::FromUniqueID(uid);
         if (ps == 0) return;
@@ -1138,7 +1138,7 @@ void daNknk_c::func_ov062_021175c0()
                                   (Particle::Callback *)((void *)0));
     }
 
-    _ZN8Particle19SetSelfDestructFlagEj(0xb2);
+    Particle::SetSelfDestructFlag(0xb2);
 
     mLandingDustTimer = 0xa;
     if (spawned == 0) return;

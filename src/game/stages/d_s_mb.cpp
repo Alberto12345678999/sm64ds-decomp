@@ -53,6 +53,8 @@ extern u8 data_0209d454;
 extern void *data_0209d4a8;
 extern int data_0208ee44;
 
+/* local extern: the factory runs the base constructor over fresh operator new
+   storage and stores the vptrs itself; C++ has no call spelling for a C2. */
 void *_ZN7fBase_cC2Ev(void *);
 extern int data_0208e4b8[];
 extern int data_020943c4[];

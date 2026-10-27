@@ -23,6 +23,7 @@
 #include "dCamera_c.h"
 #include "Player.h"
 #include "dBgCh_Lin.h"
+#include "dBgCh_Gnd.h"
 #include "Memory.h"
 #include "decl_common.h"
 #include "decl_Particle.h"
@@ -132,17 +133,15 @@ extern void Matrix4x3_LoadIdentity(Matrix4x3 *matrix);
 extern int _ZN4cstd4fdivEii(int a, int b);
 extern void _Z14ApproachLinearRiii(int *r, int b, int c);
 extern int _Z15ApproachLinear2Rsss(short *dst, short target, short step);
-/* local extern: dClipper::Func_020156DC takes a by-value Fix12<int> (the Fix12
-   wall), so it stays spelled out with scalar arguments. */
+/* local extern: the only caller, func_0200d954, is in a cplusplus-off region
+   and cannot make the member call. */
 extern void _ZN8dClipper13Func_020156DCEitii(void *self, int a, int b, int c, int d);
-extern void *_ZN9dBgCh_GndC1Ev(void *self);
-extern void _ZN9dBgCh_GndD1Ev(void *self);
-extern int _ZN9dBgCh_Gnd10DetectClsnEv(void *self);
-extern void _ZN9dBgCh_Gnd12SetObjAndPosERK7Vector3P8dActor_c(void *self, const void *pos, void *actor);
 /* The C bodies spell the member by its mangled name (C cannot write `this->ChangeState`). */
 /* local extern: dCamera_c.h declares the same symbol as a member. */
 extern int _ZN9dCamera_c11ChangeStateEPNS_5StateE(void *thiz, void *state);
 
+/* local extern: the factory runs the base constructor over fresh operator new
+   storage and stores the vptrs itself; C++ has no call spelling for a C2. */
 extern void *_ZN7fBase_cC2Ev(void *self);
 /* _ZTV7dBase_c/_ZTV7dView_c/_ZTV9dCamera_c come from decl_common.h (int[]/u32
    spellings); the stores below take their addresses explicitly. */
@@ -158,16 +157,9 @@ extern int func_0200d0ac(int a, unsigned int b);
 extern void func_0200d954(char *c, short arg);
 }
 
-/* Opaque camera-side records used by the older handlers. The ground-query
-   shadow retains its measured 0x54-byte frame; clsnY at 0x44 is the floor
-   height, as in dBgCh_Gnd.h, and the words from 0x14 are the hit record
-   CLPS::func_02037e48/func_02037e68 read. Line queries use the real dBgCh_Lin class
-   above. The remaining records are typedef'd for the cplusplus-off regions. */
-typedef struct dBgCh_Gnd {
-    int _[0x11];
-    Fix12i clsnY;
-    int pad48[3];
-} dBgCh_Gnd;
+/* Opaque camera-side records used by the older handlers. Ground and line
+   queries use the real dBgCh_Gnd and dBgCh_Lin classes above. The remaining
+   records are typedef'd for the cplusplus-off regions. */
 typedef struct dBgCh_LinHit { char pad[0x14]; char surf[0x64]; } dBgCh_LinHit;   /* func_0200b990's variant */
 typedef struct Entry3 { int a, b, c; } Entry3;                      /* data_02086f58 rows */
 extern Entry3 data_02086f58[];
@@ -1016,10 +1008,9 @@ extern "C" void func_0200cce4(char* cam)
             vec.z = cp.z;
         }
         dBgCh_Gnd ground;
-        _ZN9dBgCh_GndC1Ev(&ground);
         func_0200897c(cam, &ground);
-        _ZN9dBgCh_Gnd12SetObjAndPosERK7Vector3P8dActor_c(&ground, &vec, 0);
-        if (_ZN9dBgCh_Gnd10DetectClsnEv(&ground) != 0) {
+        ground.SetObjAndPos(*(Vector3 *)&vec, 0);
+        if (ground.DetectClsn() != 0) {
             self->pos.y = d + ground.clsnY;
         }
         self->pos.y += func_020093d4(cam, 0x3c286);
@@ -1044,7 +1035,6 @@ extern "C" void func_0200cce4(char* cam)
         }
         func_0200928c(cam);
         ChangeArea(((dActor_c *)self->mTargetPlayer)->mAreaId);
-        _ZN9dBgCh_GndD1Ev(&ground);
     }
     self->mFlags |= 4;
 }
@@ -1259,19 +1249,17 @@ extern "C" int func_0200c66c(void *self_, void *pos_, int *out2_, int *out1_, in
             tmp.z = clsn.z;
         }
         dBgCh_Gnd ground;
-        _ZN9dBgCh_GndC1Ev(&ground);
         func_0200897c(self, &ground);
-        _ZN9dBgCh_Gnd12SetObjAndPosERK7Vector3P8dActor_c(&ground, &tmp, 0);
-        if (_ZN9dBgCh_Gnd10DetectClsnEv(&ground) == 0) {
+        ground.SetObjAndPos(*(Vector3 *)&tmp, 0);
+        if (ground.DetectClsn() == 0) {
             hval = pos->y;
             col1 = 0;
             col2 = 0x3f;
         } else {
             hval = ground.clsnY;
-            col1 = ((const CLPS *)&ground._[5])->func_02037e48() & 0xff;
-            col2 = ((const CLPS *)&ground._[5])->func_02037e68() & 0xff;
+            col1 = ((const CLPS *)&ground.surface)->func_02037e48() & 0xff;
+            col2 = ((const CLPS *)&ground.surface)->func_02037e68() & 0xff;
         }
-        _ZN9dBgCh_GndD1Ev(&ground);
 
     }
 
@@ -1478,14 +1466,13 @@ extern "C" int func_0200bec4(char *self, int *arg1, int arg2, char *arg3, int ar
         sp2C.y = sp5C.y;
         sp2C.z = sp5C.z;
     }
-    char spEC[0x54];
-    _ZN9dBgCh_GndC1Ev(spEC);
-    func_0200897c(self, spEC);
-    _ZN9dBgCh_Gnd12SetObjAndPosERK7Vector3P8dActor_c(spEC, &sp2C, 0);
+    dBgCh_Gnd spEC;
+    func_0200897c(self, &spEC);
+    spEC.SetObjAndPos(*(Vector3 *)&sp2C, 0);
     r4 = sp8.y;
-    if (_ZN9dBgCh_Gnd10DetectClsnEv(spEC) != 0) {
+    if (spEC.DetectClsn() != 0) {
         int d;
-        r4 = ((dBgCh_Gnd *)spEC)->clsnY;
+        r4 = spEC.clsnY;
         d = r4 - sp8.y;
         if (d > 0) {
             if (d > 0x30000)
@@ -1532,8 +1519,6 @@ extern "C" int func_0200bec4(char *self, int *arg1, int arg2, char *arg3, int ar
             cam->mLookAtOffset.y = sp8.y - FX_MUL(diff, 0xf80);
         }
         if (cam->mFlags & 0x400) {
-            _ZN9dBgCh_GndD1Ev(spEC);
-
             return r4;
         }
     }
@@ -1561,8 +1546,6 @@ extern "C" int func_0200bec4(char *self, int *arg1, int arg2, char *arg3, int ar
             }
         }
     }
-    _ZN9dBgCh_GndD1Ev(spEC);
-
     return r4;
 }
 #pragma cplusplus on

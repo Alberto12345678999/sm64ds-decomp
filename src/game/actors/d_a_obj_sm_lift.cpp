@@ -16,8 +16,6 @@
  * - dBgW_KcMbg::SetFile, dBgActor_c::UpdateKillByMegaChar and
  *   dBgActor_c::IsClsnInRange take Fix12<int> by value, so they stay mangled;
  *   a member call homes the argument and changes the ROM ABI.
- * - The path handles are still 8-byte local views of PathPtr, constructed
- *   explicitly.
  * - InitResources keeps the param1 mask, the yaw adjust, and the
  *   node-index add as offset writes. Naming them changed the function size.
  * The file ends with the mesh-collider callback func_ov018_021117e8, the
@@ -60,7 +58,6 @@ void func_020393c4(int *p, int v);
 void func_ov018_02111804(void *collider, daObjSm_Lift_c *self, dActor_c *other);
 int AngleDiff(int, int);
 extern int data_ov018_02112f48[];
-void *_ZN7PathPtrC1Ev(void *self);
 
 u8 DecIfAbove0_Byte(u8 *p);
 int Vec3_HorzDist(const void *a, const void *b);
@@ -91,9 +88,6 @@ struct SmLiftClsnFileHandle : SharedFilePtr {
 
 extern SmLiftModelFilePtr gSmLiftModelFile;
 extern SmLiftClsnFileHandle gSmLiftCollisionFile;
-
-struct PathBytes { char b[8]; };
-struct PathPtrObj { int a, b; };
 
 /* Emission order is ROM order. The destructor pair must stay first. */
 #pragma defer_codegen off
@@ -146,7 +140,6 @@ s32 daObjSm_Lift_c::Render()
 int daObjSm_Lift_c::Behavior()
 {
     char *self = (char *)this;
-    struct PathPtrObj path;
     Vector3 nodeA, nodeB, diff, scaled;
     s16 target;
     char *other;
@@ -184,8 +177,8 @@ int daObjSm_Lift_c::Behavior()
 
         unk_350 = Sound::PlayLong(unk_350, 3, 0x8c, *(Vector3 *)&mCamSpacePosX, 0);
 
-        _ZN7PathPtrC1Ev(&path);
-        ((PathPtr *)&path)->FromID(mPathId);
+        PathPtr path;
+        path.FromID(mPathId);
 
         {
             int step = mNodeStep;
@@ -197,9 +190,9 @@ int daObjSm_Lift_c::Behavior()
             } else {
                 if (idx2 >= mNodeCount) idx2 = 0;
             }
-            ((PathPtr *)&path)->GetNode(nodeA, curIdx);
+            path.GetNode(nodeA, curIdx);
         }
-        ((PathPtr *)&path)->GetNode(nodeB, idx2);
+        path.GetNode(nodeB, idx2);
 
         Math_Function_0203b14c(&mHorzSpeed, 0xa000, 0x200, 0x2000, 0x200);
 
@@ -222,7 +215,7 @@ int daObjSm_Lift_c::Behavior()
             int *pIdx = &mNodeIndex;
             *pIdx = *pIdx + mNodeStep;
             if (mNodeIndex < 0) {
-                if (((PathPtr *)&path)->Loops() != 0) {
+                if (path.Loops() != 0) {
                     mNodeIndex = mNodeCount - 1;
                 } else {
                     unk_331 = 0x3c;
@@ -233,7 +226,7 @@ int daObjSm_Lift_c::Behavior()
                 }
             }
             if (mNodeIndex >= mNodeCount) {
-                if (((PathPtr *)&path)->Loops() != 0) {
+                if (path.Loops() != 0) {
                     mNodeIndex = 0;
                 } else {
                     unk_331 = 0x3c;
@@ -281,10 +274,9 @@ s32 daObjSm_Lift_c::InitResources()
         short *ang = (short *)(c + 0x8e);
         *ang = *ang - 0x4000;
     }
-    PathBytes p;
-    _ZN7PathPtrC1Ev(&p);
-    ((PathPtr *)&p)->FromID(mPathId);
-    mNodeCount = ((PathPtr *)&p)->NumNodes();
+    PathPtr p;
+    p.FromID(mPathId);
+    mNodeCount = p.NumNodes();
     mNodeStep = 1;
     {
         int *ip = (int *)(c + 0x33c);

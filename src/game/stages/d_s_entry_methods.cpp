@@ -1043,6 +1043,8 @@ bool dScEntry_c::BeforeInitResources() {
  * results. Explicit function-pointer casts mark that runtime ABI
  * boundary. */
 extern "C" {
+/* local extern: the factory runs the base constructor over fresh operator new
+   storage and stores the vptrs itself; C++ has no call spelling for a C2. */
 extern void *_ZN7fBase_cC2Ev(void *);
 extern void __cxa_vec_ctor(void *base, unsigned int count, unsigned int stride,
                            void (*ctor)(void *), void (*dtor)(void *));
@@ -1051,6 +1053,8 @@ extern char data_0208e4b8[];
 extern char _ZTV10dScEntry_c[];
 extern dScEntry_c::icon_c *_ZN10dScEntry_c6icon_cD1Ev(dScEntry_c::icon_c *object);
 extern dScEntry_c::icon_c *_ZN10dScEntry_c6icon_cC1Ev(dScEntry_c::icon_c *object);
+/* local extern: __cxa_vec_ctor takes the element constructor and destructor
+   by address, and C++ cannot take a constructor's or destructor's address. */
 extern OamAnimation *_ZN12OamAnimationD1Ev(OamAnimation *object);
 extern OamAnimation *_ZN12OamAnimationC1Ev(OamAnimation *object);
 

@@ -120,7 +120,6 @@ enum daKing_Donketu_c_AssetId {
 #include "common.h"
 #include "daKing_Donketu_c.h"
 #include "decl_common.h"
-#include "decl_Message.h"
 #include "types.h"
 #include "SharedFilePtr.h"
 #include "Particle__System.h"
@@ -790,7 +789,7 @@ int daKing_Donketu_c::func_ov073_0211fc78() {
         c->mTalkPlayer = player;
         msg = (short)(c->mTalkPlayer->param1 + 0xe7);
         Sound::ChangeMusicVolume(0x14, 0x15666);
-        _ZN7Message11PrepareTalkEv();
+        Message::PrepareTalk();
         if (c->mTalkPlayer->StartTalk(*c, 1)) {
             ((dCamera_c *)cam)->SetFlag_3();
             if (c->mTalkPlayer->ShowMessage(*c, msg, &msgpos[1], 0, 2)) {

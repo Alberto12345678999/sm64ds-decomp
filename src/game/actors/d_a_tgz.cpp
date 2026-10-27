@@ -51,7 +51,6 @@ struct Vector3_16f;
 #include "SharedFilePtr.h"
 #include "Sound.h"
 #include "dBgCh_Gnd.h"
-#include "decl_dBgCh_Actr.h"
 #include "decl_Particle.h"
 #include "dBgCh_Actr.h"
 #include "cstd.h"
@@ -220,7 +219,7 @@ extern "C" void func_ov077_02124d08(daTgz_c *self, dBgCh_Actr *clsn)
         }
     }
     if (clsn->IsOnWall()) {
-        dBgPi *wr = (dBgPi *)_ZNK10dBgCh_Actr13GetWallResultEv(clsn);
+        dBgPi *wr = (dBgPi *)clsn->GetWallResult();
         wr->surface.CopyNormalTo(wallnormal);
     }
 }

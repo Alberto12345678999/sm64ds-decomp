@@ -84,9 +84,6 @@ extern void func_02048f14(void);
 extern void func_02048f24(void);
 extern void func_0204efe0(void);
 extern void func_0204effc(void);
-extern void _ZN5Sound13Func_02048eb4Ev(void);
-extern void _ZN5Sound13Func_02048ec4Ev(void);
-extern void _ZN5Sound13Func_02048ee4Ev(void);
 /* Callers that consume r0 from the void-declared Sound::Play2D keep the
  * mangled spelling; the extern "C" name is not type-checked across the seam.
  * Members reach the same symbol by casting Play2D/Play's address instead. */
@@ -907,7 +904,7 @@ extern "C" void func_02011d2c(void)
 // @symbol func_02011d20
 extern "C" void func_02011d20(void)
 {
-    _ZN5Sound13Func_02048ee4Ev();
+    Sound::Func_02048ee4();
 }
 
 // @symbol func_02011d14
@@ -919,13 +916,13 @@ extern "C" void func_02011d14(void)
 // @symbol func_02011d08
 extern "C" void func_02011d08(void)
 {
-    _ZN5Sound13Func_02048ec4Ev();
+    Sound::Func_02048ec4();
 }
 
 // @symbol func_02011cfc
 extern "C" void func_02011cfc(void)
 {
-    _ZN5Sound13Func_02048eb4Ev();
+    Sound::Func_02048eb4();
 }
 
 // @symbol DisableSoundPlayersForCredits

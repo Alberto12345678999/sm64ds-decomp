@@ -40,7 +40,6 @@
 #include "nitro/fx/fx.h"
 #include "common.h"
 #include "SharedFilePtr.h"
-#include "decl_dBgCh_Actr.h"
 #include "Player.h"
 #include "dExtSimpleModel_c.h"
 #include "dActor_c.h"
@@ -195,7 +194,7 @@ void daIbl_c::func_ov100_02141fb0()
         mPosY += r;
         s.x = 0; s.y = 0; s.z = 0;
         KillByInvincibleChar(s, *a, 0);
-        _ZN10dBgCh_Actr15ClearGroundFlagEv(&mWithMeshClsn);
+        mWithMeshClsn.ClearGroundFlag();
         return;
     }
     if ((fl & daIbl_HIT_ATTACK) != 0) {
@@ -235,7 +234,7 @@ void daIbl_c::func_ov100_02142130()
     if (data_0209f2f8 == 0x19) func_020383f0(&mWithMeshClsn);
     else func_02038414(&mWithMeshClsn);
     if (mWithMeshClsn.IsOnWall() != 0) {
-        ((SurfaceInfo *)((char *)_ZNK10dBgCh_Actr13GetWallResultEv(&mWithMeshClsn) + 4))
+        ((SurfaceInfo *)((char *)mWithMeshClsn.GetWallResult() + 4))
             ->CopyNormalTo(*(Vector3 *)&mWallNormalX);
         short a = cstd::atan2(mWallNormalX, mWallNormalZ);
         if (GetSubtraction(mPrevAngleY, a) > 0x4000)
@@ -854,7 +853,7 @@ int daIbl_c::InitResources()
             }
         }
         UpdatePos(0);
-        _ZN10dBgCh_Actr13SetLimMovFlagEv((char *)&mWithMeshClsn);
+        mWithMeshClsn.SetLimMovFlag();
         goto end;
     }
 
@@ -867,7 +866,7 @@ int daIbl_c::InitResources()
         mDrawScale.z = 0x1000;
         mdCcAc_c.Init(this, 0x64000, 0x64000, 0x200004, 0x3c0);
         mWithMeshClsn.Init(this, 0x64000, 0x64000, 0, 0);
-        _ZN10dBgCh_Actr13SetLimMovFlagEv((char *)&mWithMeshClsn);
+        mWithMeshClsn.SetLimMovFlag();
         goto end;
     }
 

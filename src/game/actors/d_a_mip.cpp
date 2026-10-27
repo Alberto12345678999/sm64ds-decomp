@@ -48,7 +48,6 @@ enum daMip_c_AssetId {
 #include "Player.h"
 #include "PathPtr.h"
 #include "decl_Message.h"
-#include "decl_PathPtr.h"
 #include "Message.h"
 #include "SaveData.h"
 #include "dBgCh_Gnd.h"
@@ -65,8 +64,6 @@ bool PlaySub(u32, u32, u32, int, bool);
 extern "C" {
 
 /* ground probe / collision */
-void *_ZN9dBgCh_GndC1Ev(void *);
-void  _ZN9dBgCh_GndD1Ev(void *);
 int   SurfaceInfo_TestFlag0x20(void *);
 
 /* dActor_c / dEnemyBase_c, reached by their ROM names.
@@ -84,8 +81,6 @@ int   SurfaceInfo_TestFlag0x20(void *);
 
 /* model / animation / shadow */
 
-/* path, particle, construction */
-void *_ZN7PathPtrC1Ev(void *);
 
 /* maths and the still-unnamed helpers */
 s16   Vec3_HorzAngle(const void *, const void *);
@@ -247,13 +242,12 @@ daMip_c::~daMip_c()
    water flag to pick splash over dust. */
 int daMip_c::TestWaterBelow()
 {
+    /* A POD twin: a real Vector3 local emits the vague-linkage ~Vector3. */
     typedef struct Vector3 { int x, y, z; } Vector3;
-    struct RG { char a[0x14]; int detect[16]; };
 
-    struct RG rg;
+    dBgCh_Gnd rg;
     Vector3 v;
-    _ZN9dBgCh_GndC1Ev(&rg);
-    ((dBgCh *)&rg)->StartDetectingWater();
+    rg.StartDetectingWater();
     int x = mPosX;
     int y = mPosY;
     int z = mPosZ;
@@ -261,15 +255,12 @@ int daMip_c::TestWaterBelow()
     v.x = x;
     v.y = yk;
     v.z = z;
-    ((dBgCh_Gnd *)&rg)->SetObjAndPos(*(::Vector3 *)&v, this);
-    if (((dBgCh_Gnd *)&rg)->dBgCh_Gnd::DetectClsn()) {
-        mFloorY = rg.detect[12];
-        if (SurfaceInfo_TestFlag0x20(rg.detect)) {
-            _ZN9dBgCh_GndD1Ev(&rg);
+    rg.SetObjAndPos(*(::Vector3 *)&v, this);
+    if (rg.DetectClsn()) {
+        mFloorY = rg.clsnY;
+        if (SurfaceInfo_TestFlag0x20(&rg.surface))
             return 1;
-        }
     }
-    _ZN9dBgCh_GndD1Ev(&rg);
     return 0;
 }
 
@@ -778,7 +769,6 @@ int daMip_c::StateFleeMain() {
     extern MipStatePair data_ov085_0213069c;
 
     Player *pl;
-    char pathptr[8];
     struct V3Blk v;
     struct Vector3 pos;
     struct Vector3 node;
@@ -826,9 +816,9 @@ int daMip_c::StateFleeMain() {
         }
     }
 
-    _ZN7PathPtrC1Ev(pathptr);
-    ((PathPtr *)pathptr)->FromID(mPathId);
-    ((PathPtr *)pathptr)->GetNode(*(::Vector3 *)&node, mPathNodeIndex);
+    PathPtr pathptr;
+    pathptr.FromID(mPathId);
+    pathptr.GetNode(*(::Vector3 *)&node, mPathNodeIndex);
     ang = Vec3_HorzAngle(&mPos, &node);
     ApproachAngle(&mPrevAngleY, ang, 1, 0x1000, 0x1000);
     idx = mPathNodeIndex + mPathDir;
@@ -838,7 +828,7 @@ int daMip_c::StateFleeMain() {
     if (idx >= mNumPathNodes) {
         idx = 0;
     }
-    ((PathPtr *)pathptr)->GetNode(*(::Vector3 *)&node2, (u32)idx);
+    pathptr.GetNode(*(::Vector3 *)&node2, (u32)idx);
     lim = 0x26000;
     if (mRabbitId == 7) {
         lim = lim >> 1;
@@ -897,8 +887,6 @@ int daMip_c::StateFleeInit()
     } Vector3;
     extern DaMipAnimationFilePtr gMipRunAnimationFile;
 
-    char pathptr[8];
-    int indices[2];
     struct Vector3 v;
     struct Vector3 nodes[2];
     int i;
@@ -910,8 +898,9 @@ int daMip_c::StateFleeInit()
     if (p) {
         src = (struct Vector3 *)&p->mPosX;
         v = *src;
-        _ZN7PathPtrC1Ev(pathptr);
-        ((PathPtr *)pathptr)->FromID(mPathId);
+        PathPtr pathptr;
+        int indices[2];
+        pathptr.FromID(mPathId);
 
         indices[0] = mPathNodeIndex - 1;
         if (mPathNodeIndex - 1 < 0)
@@ -921,7 +910,7 @@ int daMip_c::StateFleeInit()
             indices[1] = 0;
 
         for (i = 0; i < 2; i++)
-            ((PathPtr *)pathptr)->GetNode(*(::Vector3 *)&nodes[i], indices[i]);
+            pathptr.GetNode(*(::Vector3 *)&nodes[i], indices[i]);
 
         mPathDir = 1;
         d0 = Vec3_Dist(&v, &nodes[0]);

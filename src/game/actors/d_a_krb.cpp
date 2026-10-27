@@ -201,7 +201,6 @@ extern StateHandler data_ov084_02130d74[];
 int func_02037e20(int* p);
 extern void func_02012694(unsigned int id, const Vector3 *pos);
 extern int SurfaceInfo_TestFlag0x20(int* p);
-extern void _ZN5dBgPiD1Ev(void*);
 extern int data_02099368[];
 extern u8 data_0209f208[];
 extern u8 *data_0209f344;
@@ -531,7 +530,7 @@ action:
         goomba->RespawnIfHasCap();
     }
 dtor:
-    _ZN5dBgPiD1Ev(obj);
+    ((dBgPi *)obj)->dBgPi::~dBgPi();
 }
 
 // @symbol func_ov084_021296b0

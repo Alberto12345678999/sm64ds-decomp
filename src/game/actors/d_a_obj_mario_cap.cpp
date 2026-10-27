@@ -90,7 +90,7 @@
  *   dActor_c::SetRanges is not on the header (notes/mwccarm-codegen.md 6az).
  *   dExtAnmModel_c::SetAnim / DropShadowRadHeight / ReflectAngle take Fix12<int>
  *   by value, which has no implicit int conversion (notes/mwccarm-codegen.md
- *   6az). dBgCh_Actr::GetFloorResult / GetWallResult are not declared.
+ *   6az).
  *
  * leftovers:
  *   InitResources keeps two `(u32)param1` read-side casts; spelled plainly,
@@ -249,8 +249,6 @@ short atan2_hold_d_a_obj_mario_cap_1(int y, int x);
 /* Parameter names keep this TU's @NNN. */
 typedef void BgchInitAt_(void *thiz, void *actor, s32 f1, s32 f2, void *v, void *w);
 
-void *_ZN9dBgCh_GndC1Ev(dBgCh_Gnd *ray);
-void  _ZN9dBgCh_GndD1Ev(dBgCh_Gnd *ray);
 
 /* -- data -- */
 extern Matrix4x3      data_020a0e68;
@@ -703,7 +701,6 @@ void daObjMarioCap_c::UpdateMatrix()
 {
     int probe[3];
     int v[3];
-    char ray[0x50];
     int m = mType;
     if (m != 5 && m != 0x12 && m != 0x10 && m != 0xb && m != 7 && m != 9 &&
         m != 0x14 && m != 0x15 && m != 0x16) {
@@ -747,12 +744,11 @@ void daObjMarioCap_c::UpdateMatrix()
             probe[1] = mPosY;
             probe[2] = mPosZ;
             probe[1] = probe[1] + 0x28000;
-            _ZN9dBgCh_GndC1Ev((dBgCh_Gnd *)ray);
-            ((dBgCh_Gnd *)ray)->SetObjAndPos(*(Vector3 *)probe, 0);
+            dBgCh_Gnd ray;
+            ray.SetObjAndPos(*(Vector3 *)probe, 0);
             y = probe[1];
-            if (((dBgCh_Gnd *)ray)->DetectClsn() != 0)
-                y = ((dBgCh_Gnd *)ray)->clsnY;
-            _ZN9dBgCh_GndD1Ev((dBgCh_Gnd *)ray);
+            if (ray.DetectClsn() != 0)
+                y = ray.clsnY;
         }
 
         off = 0;

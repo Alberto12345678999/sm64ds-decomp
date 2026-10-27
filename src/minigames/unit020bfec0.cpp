@@ -90,7 +90,9 @@ void SharedFilePtr_Construct_TexSeq(void *, unsigned int);
 void SharedFilePtr_Destruct_Anim(void *);
 void SharedFilePtr_Destruct_TexSeq(void *);
 
-/* local extern: dClipper::Func_020156DC takes a by-value Fix12<int> (the Fix12 wall), so it stays spelled out with scalar arguments. */
+/* local extern: dClipper.h's Func_020156DC takes the fov angle as u16, and passing
+   the short camera angle through it loads it with ldrh where the ROM has ldrsh
+   (Camera_UpdateMatrices +0x104), so the call keeps int parameters. */
 void _ZN8dClipper13Func_020156DCEitii(void *, int, int, int, int);
 void *_ZN7Vector3D1Ev(void *);
 void *__cxa_vec_ctor(void *, int, int, void *, void *);
