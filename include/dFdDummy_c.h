@@ -50,7 +50,7 @@ struct dFdDummy_c : dFdColor_c {
     dFdDummy_c();                                /* 0x02017278 */
     virtual ~dFdDummy_c();                       /* slots 0 (D1), 1 (D0) */
     virtual void AdvanceFade();                  /* slot 2 */
-    virtual int SetBackwardTime(u32 frames, u32 extra); /* slot 3 */
+    virtual int SetBackwardTime(u32 frames, u32); /* slot 3 */
     virtual int  SetForwardTime(u32 frames);     /* slot 4 */
 };
 
