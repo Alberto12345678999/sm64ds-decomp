@@ -36,7 +36,7 @@
  */
 
 // Notes (each measured): the widened int idMatch / isMecha12L stay (folding
-// the actorID tests into the ifs reorders the body). func_020396c0 and
+// the actorID tests into the ifs reorders the body). dBgW_Kc::SetEdgeToleranceShift and
 // func_020393d4 are the out-of-line stores into the collider's
 // edgeToleranceShift and beforeClsnCallback; d_bg_w.cpp defines them and no
 // header declares them. Both data_ov035_02111ef0 stores stay (one local
@@ -95,7 +95,6 @@ extern "C" {
 u16 DecIfAbove0_Short(u16 *p);
 int RandomIntInternal(int *state);
 void func_020393d4(dBgW *collider, void *callback);
-void func_020396c0(dBgW *collider, int v);
 }
 
 // @symbol daObjCtMecha10_c_classInit_CT_MECHA10
@@ -130,7 +129,7 @@ int daObjCtMecha10_c::InitResources() {
         ((dBgW_KcMbg *)(&mMeshCollider))
             ->dBgW_KcMbg::SetFile((KCL_File *)dBgW_Kc::LoadFile(gCtMechaObj10CollisionFile),
                                   mClsnMat, 0x1000, mAngleY, data_ov035_021121d8);
-        func_020396c0(&mMeshCollider, 0);
+        mMeshCollider.SetEdgeToleranceShift(0);
         func_020393d4(&mMeshCollider, (void *)&dBgW::UpdatePosAndAngs);
         mRotationState = 0;
     } else {

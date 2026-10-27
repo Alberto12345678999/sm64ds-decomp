@@ -66,10 +66,53 @@ Reports are in this worktree under `build/collision-*.log` and
 `build/collision-*.json`. The focused link check covers all directly changed
 source files; the full production build covers shared-header consumers too.
 
+## Collider property continuation
+
+The next pass names 15 more helpers, for 28 named interfaces across both passes:
+
+| Address | Interface | Caller evidence |
+| --- | --- | --- |
+| 02039624 | `dBgW::Reset` | Base constructor and both mesh SetFile implementations initialize owner, callbacks, clip settings and disabled slot sentinel. |
+| 020395fc | `dBgW::SetActor` | Enable records both owner pointer and unique ID. |
+| 02039404 / 020393fc / 020393f0 | `GetSlotIndex` / `SetSlotIndex` / `ClearSlotIndex` | Enable/Disable maintain the 24-entry registry; clearing the index alone does not unregister. |
+| 020393b4 / 020393ac | `GetActor` / `GetActorUniqueID` | Every ground/line/sphere registry scan identifies ownership and writes the collider identity into its hit record. |
+| 020393a4 / 0203939c | `SetClipRadius` / `GetClipRadius` | Actor setup writes the distance used by query culling; -0x1000 selects the owning actor's clip volume. |
+| 02039394 / 0203938c | `SetClipOffsetY` / `GetClipOffsetY` | Actor setup writes the vertical offset added by those same culling tests. |
+| 020393cc / 020393bc | `GetBeforeClsnCallback` / `GetStoodOnCallback` | Hit dispatch tests the first callback before the virtual BeforeClsn call, and invokes the second as (collider, owner, actor). |
+| 020396d0 | `dBgW_Kc::SetDepthDirMinDot` | Moving mesh and actor setup select the minimum face-direction dot product used by the sphere scan. |
+| 020396c0 | `dBgW_Kc::SetEdgeToleranceShift` | Three actor setup callers set the edge tolerance; the helper clamps negative shifts to zero. |
+
+The 34 directly changed source/header files now use declared property members;
+the hit callback dispatch uses the shared `StoodOnCallback` type and actor
+pointers rather than integer-address views. The callback setters remain pending.
+
+Complete before/after objects for 246 affected manifest-backed units compare
+equal in allocated bytes, section kind/flags/size/alignment, defined-symbol
+attributes/order and typed relocation destinations, with renamed interfaces
+resolved to the same addresses. Removing local named-parameter declarations
+renumbers compiler-local symbols in 23 manifests; only their source identities
+were updated, leaving every retail destination unchanged. The report is
+`build/collision-properties-control/comparison.json`.
+
+Validation on the final sources:
+
+- Full `rombuild.py -j16 --no-rom`: 106/106 exact modules, 11,380/11,380
+  reproduced functions, 395/395 source-owned data claims; intact-TU symbol
+  errors zero and storage aliases exact.
+- 499 affected functions / 67,824 bytes verified, zero unresolved relocations.
+  The raw function verifier covers 474 directly. Its 25 static-initializer
+  cases require the manifest transformations and module-local anonymous-symbol
+  addresses: checking those same functions from the final production objects
+  closes all 233 raw unresolved slots. Report:
+  `build/collision-properties-focused-production.json`.
+- Declaration agreement: no new disagreements or local header redeclarations.
+- Source style (including pinned formatter), port references, dead references,
+  language-mode ratchet and `git diff --check`: pass.
+
 ## Remaining folder work
 
 This change does not complete the folder-wide objective. Remaining work includes
-`dBgCh_Actr` address-named accessors/workers, `dBgW` property accessors and callbacks,
+`dBgCh_Actr` address-named accessors/workers, `dBgW` callback setters and registry helpers,
 mesh-coordinate transforms and KCL helpers, the CLPS water/toxic helpers and their
 actor callers, sphere hit forwarders, and collision-list/clipper helpers.
 

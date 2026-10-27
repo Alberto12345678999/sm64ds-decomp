@@ -15,8 +15,6 @@
  *   no shared header owns those 0xc-stride rows yet.
  * - linkedActor + 0x3b0 is an unnamed byte on the mega character
  *   (actor 0x121); no header names it.
- * - func_02039394 / func_020393a4 are small stores into dBgW. This TU
- *   calls them; naming belongs to dBgW.
  * - data_0209f2f8 reads as the level ID and data_0209f220 as a star
  *   flag (same pattern in the daObjBk_Botaosi_c TU); neither has a
  *   shared home.
@@ -77,8 +75,6 @@ extern u8 data_0209f220;
 
 /* local extern: dBgW setters and a coined star helper with no shared header. */
 extern "C" {
-void func_020393a4(dBgW_KcMbg *p, int v);
-void func_02039394(dBgW_KcMbg *p, int v);
 int IsStarCollectedInCurLevel(int star);
 }
 
@@ -352,7 +348,7 @@ int daObjBlockL_c::Render() {
 }
 
 // @symbol _ZN13daObjBlockL_c8BehaviorEv
-/* func_020393a4 and func_02039394 are the ROM's unnamed collision setters.
+/* dBgW::SetClipRadius and dBgW::SetClipOffsetY are the ROM's unnamed collision setters.
    IsClsnInRangeOnScreen takes its Fix12 arguments as Fix12i. */
 int daObjBlockL_c::Behavior() {
     if (IsActorID(this, 0x13)) {
@@ -370,8 +366,8 @@ int daObjBlockL_c::Behavior() {
             if (mMeshCollider.IsEnabled() != 0)
                 mMeshCollider.Disable();
         } else {
-            func_020393a4(&mMeshCollider, 0x15e000);
-            func_02039394(&mMeshCollider, 0x64000);
+            mMeshCollider.SetClipRadius(0x15e000);
+            mMeshCollider.SetClipOffsetY(0x64000);
             IsClsnInRangeOnScreen(0x150000, 0);
         }
 
@@ -383,8 +379,8 @@ int daObjBlockL_c::Behavior() {
             v1 = 0x1c2000;
             v5 = 0x96000;
         }
-        func_020393a4(&mMeshCollider, v1);
-        func_02039394(&mMeshCollider, v5);
+        mMeshCollider.SetClipRadius(v1);
+        mMeshCollider.SetClipOffsetY(v5);
         IsClsnInRangeOnScreen(0x600000, 0);
     }
     return 1;

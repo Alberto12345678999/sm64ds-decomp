@@ -40,8 +40,6 @@ extern unsigned char data_0209f2d8;
 extern "C" {
 extern void Matrix4x3_FromRotationXYZExt(Matrix4x3 *dst, int a, int b, int c2);
 extern unsigned char DecIfAbove0_Byte(unsigned char *p);
-extern void func_020393a4(dBgW_KcMbg *p, int v);
-extern void func_02039394(dBgW_KcMbg *p, int v);
 extern void func_020393d4(dBgW_KcMbg *p, void *v);
 }
 
@@ -116,8 +114,8 @@ int daObjPathLift_c::Behavior() {
     UpdateModelMatrix();
     UpdateClsnPosAndRot();
     UpdateShadow();
-    func_020393a4(&mMeshCollider, 0x150000);
-    func_02039394(&mMeshCollider, 0x1000);
+    mMeshCollider.SetClipRadius(0x150000);
+    mMeshCollider.SetClipOffsetY(0x1000);
     int b = (int)(data_0209f2d8 == 1);
     if (b != 0) {
         if (mMeshCollider.IsEnabled() == 0) {

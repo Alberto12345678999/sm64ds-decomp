@@ -12,7 +12,7 @@
  * (2004/b56 emits .text back to front); factory first, Kill() last.
  *
  * Notes:
- * - func_02039394 / func_020393a4 / func_020393c4 / func_020393d4 are
+ * - dBgW::SetClipOffsetY / dBgW::SetClipRadius / func_020393c4 / func_020393d4 are
  *   small stores into dBgW (d_bg_w.cpp, no header).
  * - StoodOnCallback keeps #pragma long_calls -- the ROM veneer is the
  *   pooled ldr ip,[pc,#8]; bx ip absolute tail-call (size 0x14); a near b
@@ -84,8 +84,6 @@ extern "C" {
 int DecIfAbove0_Byte(u8 *p);
 int IsStarCollectedInCurLevel(int starID);
 int Vec3_Dist(void *a, void *b);
-void func_02039394(void *collider, int v);
-void func_020393a4(void *collider, int v);
 void func_020393c4(dBgW *collider, void *callback);
 void func_020393d4(dBgW *collider, void *callback);
 }
@@ -233,8 +231,8 @@ int daObjBk_Lift_c::Behavior() {
         IsClsnInRange(0x150000, 0x1000);
     }
 
-    func_020393a4(&mMeshCollider, 0x150000);
-    func_02039394(&mMeshCollider, 0x1000);
+    mMeshCollider.SetClipRadius(0x150000);
+    mMeshCollider.SetClipOffsetY(0x1000);
     UpdateShadow();
     return 1;
 }

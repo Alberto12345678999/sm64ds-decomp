@@ -26,7 +26,7 @@
  *   declared locally. The port's gate-9 slice compiles this TU for the
  *   host, and Particle__System.h / math/MtxStack.h have not been tried
  *   there.
- * - func_02039394 / func_020393a4 store the collider words at +0x10
+ * - dBgW::SetClipOffsetY / dBgW::SetClipRadius store the collider words at +0x10
  *   and +0x0c (0xc0000 / 0xe0000, the profile ranges). Those names belong
  *   to dBgW.
  * - func_02012694 is Sound::Play of bank 3 at a pointer
@@ -80,8 +80,6 @@ struct ArrowSignFileColumn {
 extern "C" {
 void Matrix4x3_FromRotationY(void *mtx, int angle);
 int func_02012694(int id, void *pos);
-void func_02039394(int *collider, int v);
-void func_020393a4(int *collider, int v);
 }
 
 namespace Particle {
@@ -144,8 +142,8 @@ int daObjYajirusi_c::InitResources() {
 int daObjYajirusi_c::Behavior() {
     if (UpdateKillByMegaChar(-0x2000, 0, 0, 0x96000))
         return 1;
-    func_02039394((int *)&mMeshCollider, 0xc0000);
-    func_020393a4((int *)&mMeshCollider, 0xe0000);
+    mMeshCollider.SetClipOffsetY(0xc0000);
+    mMeshCollider.SetClipRadius(0xe0000);
     DropShadowScaleXYZ(mShadowModel, *(Matrix4x3 *)mShadowMat, 0x10e000, 0x64000, 0x46000, 0xf);
     IsClsnInRangeOnScreen(0x600000, 0);
     return 1;

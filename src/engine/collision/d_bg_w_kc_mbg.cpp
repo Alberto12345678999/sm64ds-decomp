@@ -31,7 +31,6 @@ int InvMat4x3(void *dst, void *src);
 void Matrix4x3_ApplyInPlaceToScale(Matrix4x3 *m, s32 x, s32 y, s32 z);
 int LenVec3(void *v);
 void NormalizeVec3(void *src, void *dst);
-void func_02039624(char *p);
 int func_02053200(int v);
 
 /* dBgW_Kc's ITCM depth-policy setters and d_bg_w.cpp's threshold setter, run
@@ -41,7 +40,6 @@ void func_01ffb0a4(dBgW_Kc *self);
 void func_01ffb07c(dBgW_Kc *self, const Vector3 *v);
 void func_01ffb0b0(dBgW_Kc *self);
 void func_01ffb0bc(dBgW_Kc *self);
-void func_020396d0(int *p, int v);
 
 /* The scratch line's lineEnd and dBgPi base (both inside data_020a0d0c,
    below), and the scratch scaled matrix.
@@ -92,7 +90,7 @@ void dBgW_KcMbg::SetFile(KCL_File *file, const Matrix4x3 &mtx, Fix12i scale, s16
         RawVector3 up;
     } scratch;
     self->dBgW_Kc::SetFile(file, clps);
-    func_02039624((char *)self);
+    self->Reset();
     self->scale = scale;
     *(RawMatrix4x3 *)&self->mat = *(RawMatrix4x3 *)&mtx;
     *(RawMatrix4x3 *)&self->invMat = *(RawMatrix4x3 *)&self->mat;
@@ -184,7 +182,7 @@ void dBgW_KcMbg::Transform(const Matrix4x3 &mtx, s16 angle) {
         RawVector3 localDir;
         func_02039e18(this, (Vector3 *)&moveDir, (Vector3 *)&localDir);
         func_01ffb07c(this, (Vector3 *)&localDir);
-        func_020396d0((int *)this, 0xe66);
+        SetDepthDirMinDot(0xe66);
         func_01ffb0b0(this);
     } else {
         func_01ffb0bc(this);

@@ -13,7 +13,7 @@
  * The destructor is inline in include/daObjWc_Obj05_c.h (D1 then D0, no D2).
  *
  * What stays:
- * - func_020393d4 / func_020393c4 / func_020393a4: InitResources stores
+ * - func_020393d4 / func_020393c4 / dBgW::SetClipRadius: InitResources stores
  *   dBgW::UpdatePosWithTransform and &StoodOnCallback on mMeshCollider;
  *   Behavior clips at 0x250000; dBgW.h has no setter.
  * - gWcObj05ModelFile / 02114284 are this TU's BMD/KCL file handles;
@@ -48,7 +48,6 @@ struct WcObj05CollisionFilePtr : SharedFilePtr {
 extern "C" {
 void func_020393d4(void *p, void *v);
 void func_020393c4(void *p, void *v);
-void func_020393a4(int *p, int v);
 }
 
 extern WcObj05ModelFilePtr gWcObj05ModelFile;
@@ -115,7 +114,7 @@ s32 daObjWc_Obj05_c::InitResources() {
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN15daObjWc_Obj05_c8BehaviorEv
 s32 daObjWc_Obj05_c::Behavior() {
-    func_020393a4((int *)&mMeshCollider, 0x250000);
+    mMeshCollider.SetClipRadius(0x250000);
 
     switch (mState) {
     case 0:

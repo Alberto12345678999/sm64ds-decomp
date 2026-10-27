@@ -22,7 +22,7 @@
  * unit and ov035's .text.
  */
 
-// Notes: func_020393a4 / func_02039394 / func_020393d4 / func_020396c0 are
+// Notes: dBgW::SetClipRadius / dBgW::SetClipOffsetY / func_020393d4 / dBgW_Kc::SetEdgeToleranceShift are
 // the out-of-line stores into the collider's range fields and callback slot;
 // d_bg_w.cpp defines them and no header declares them.
 
@@ -57,10 +57,7 @@ extern "C" {
 extern void Matrix4x3_FromRotationXYZExt(void *m, int x, int y, int z);
 extern int DecIfAbove0_Short(char *p);
 extern int RandomIntInternal(char *p);
-extern void func_020393a4(int *p, int v);
-extern void func_02039394(int *p, int v);
 extern void func_020393d4(void *p, void *v);
-extern void func_020396c0(void *p, int value);
 }
 
 extern short data_02082214[];
@@ -146,8 +143,8 @@ int daObjCtMecha11_c::Behavior() {
             }
         }
     }
-    func_020393a4((int *)&mMeshCollider, 0x180000);
-    func_02039394((int *)&mMeshCollider, 0x1000);
+    mMeshCollider.SetClipRadius(0x180000);
+    mMeshCollider.SetClipOffsetY(0x1000);
     short *angle = &mAngleX;
     *angle = (short)(*angle + mPrevAngleX);
     UpdateModel();
@@ -168,7 +165,7 @@ int daObjCtMecha11_c::InitResources() {
     ((dBgW_KcMbg *)(&mMeshCollider))
         ->dBgW_KcMbg::SetFile(kf, mClsnMat, 0x1000, mAngleY, data_ov035_02112238);
     func_020393d4(&mMeshCollider, (void *)&dBgW::UpdatePosWithTransform);
-    func_020396c0(&mMeshCollider, 0);
+    mMeshCollider.SetEdgeToleranceShift(0);
     Vector3 v;
     v.x = mPosX;
     v.y = mPosY;

@@ -12,7 +12,7 @@
  * registry). Retail does not store that spelling.
  *
  * What stays, and why:
- * - func_020393a4 is an 8-byte store into dBgW+0x0c. This TU calls it;
+ * - dBgW::SetClipRadius is an 8-byte store into dBgW+0x0c. This TU calls it;
  *   naming belongs with dBgW in arm9.
  * - data_ov052_021124d4 is this overlay's BMD/KCL/CLPS bundle;
  *   symbols.txt has no recovered name.
@@ -54,7 +54,6 @@ extern daObjEmmLog_c_Resources data_ov052_021124d4;
 
 /* local extern: writes the mesh active range at dBgW+0x0c; the definition
    is C and has no shared header. */
-extern "C" void func_020393a4(dBgW *bgw, int range);
 
 // @symbol daObjEmmLog_c_classInit
 extern "C" daObjEmmLog_c *daObjEmmLog_c_classInit() {
@@ -83,7 +82,7 @@ s32 daObjEmmLog_c::InitResources() {
 
 // @symbol _ZN13daObjEmmLog_c8BehaviorEv
 s32 daObjEmmLog_c::Behavior() {
-    func_020393a4(&mMeshCollider, 0x600000);
+    mMeshCollider.SetClipRadius(0x600000);
 
     int idx = (u16)mBobPhase >> 4;
     int s = *(short *)((char *)data_02082214 + (idx << 2));

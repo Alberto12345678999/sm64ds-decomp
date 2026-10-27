@@ -12,7 +12,7 @@
  * - The file table is still data_ov022_021140d4 (two Resources rows,
  *   indexed by mVariant). The four handles it points at are defined at the
  *   bottom of this file; __sinit_d_a_obj_fl_ukiyuka.cpp constructs them.
- * - func_020393a4 is still the linker name of the dBgW range setter both
+ * - dBgW::SetClipRadius is still the linker name of the dBgW range setter both
  *   Init arms call on mMeshCollider.
  * - InitResources returns nothing, faithfully: the header declares `int`,
  *   the body sets no return value and neither does the ROM. A `return`
@@ -36,7 +36,6 @@ enum daObjFl_Ukiyuka_c_AssetId {
 #include "dBgW.h"
 
 extern "C" {
-void func_020393a4(dBgW *bgw, int range);
 }
 extern daObjUkiyuka_c::Resources data_ov022_021140d4[];
 
@@ -67,11 +66,11 @@ int daObjFl_Ukiyuka_c::InitResources() {
     switch (actorID) {
     case 0x4b:
         mVariant = 0;
-        func_020393a4(&mMeshCollider, 0x650000);
+        mMeshCollider.SetClipRadius(0x650000);
         break;
     case 0x4c:
         mVariant = 1;
-        func_020393a4(&mMeshCollider, 0x1000000);
+        mMeshCollider.SetClipRadius(0x1000000);
         break;
     }
     InitResourcesFrom(&data_ov022_021140d4[mVariant], kBobAmplitude);

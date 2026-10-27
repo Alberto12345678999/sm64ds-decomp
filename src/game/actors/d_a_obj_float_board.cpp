@@ -13,7 +13,7 @@
  * OnStoodOn, StoodOnCallback) are coined from the bodies; nothing in the ROM
  * names them.
  *
- * What stays: func_020393a4 is an 8-byte store into dBgW+0x0c (d_a_obj_emm_log
+ * What stays: dBgW::SetClipRadius is an 8-byte store into dBgW+0x0c (d_a_obj_emm_log
  *   finding); naming belongs with dBgW in arm9. Its parameter is spelled
  *   dBgW_KcMbg * because that is what dBgActor_c::mMeshCollider is declared as
  *   in include/dBgActor_c.h, so the call needs no upcast; d_a_obj_path_lift.cpp
@@ -47,10 +47,9 @@ extern short data_02082214[]; /* sin/cos table */
 
 int SurfaceInfo_TestFlag0x20(int *p);
 void Matrix4x3_FromRotationZXYExt(void *m, int x, int y, int z);
-void func_020393a4(dBgW_KcMbg *clsn, int range);
 
 /* Stores into the mesh collider's two callback slots (+0x1c / +0x18 of the
-   embedded dBgW; the +0x0c store is func_020393a4). */
+   embedded dBgW; the +0x0c store is dBgW::SetClipRadius). */
 void func_020393c4(int *collider, int callback);
 void func_020393d4(int *collider, int callback);
 }
@@ -173,7 +172,7 @@ int daObjFloatBoard_c::Behavior() {
     short s, co, tv;
     short val1, val2;
 
-    func_020393a4(&mMeshCollider, 0x300000);
+    mMeshCollider.SetClipRadius(0x300000);
 
     if (UpdateWaterY() != 0) {
         if (ApproachLinear(mSinkOffset, mRider != 0 ? -0x28000 : 0, 0x5000) != 0) {

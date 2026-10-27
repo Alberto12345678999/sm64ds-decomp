@@ -65,8 +65,6 @@
  *       (func_ov102_02149c78).
  *
  * Known limits:
- *   func_020393a4 / func_02039394 poke mMeshCollider (Behavior), which has
- *   no setter; naming belongs with dBgW in arm9.
  *   The func_ov102_* helpers keep their linker names -- no semantic names
  *   are known. All take the block as arg0 and are declared as members on
  *   daObjHatenaBlock_c except func_ov102_02149684, which takes it as arg1
@@ -214,8 +212,6 @@ extern int RandomIntInternal(int *seed);
 extern int Vec3_HorzDist(const void *a, const void *b);
 extern int DecIfAbove0_Short(void *p);
 extern void Matrix4x3_FromRotationY(void *m, int angle);
-extern void func_020393a4(int *p, int v);
-extern void func_02039394(int *p, int v);
 void d_a_obj_hatena_blockEarthquakeHold(void *self, void *pos, s32 radius);
 extern void hold_d_a_obj_hatena_block(void *thiz, void *kcl, void *mtx, int fix, short s,
                                       void *clps);
@@ -472,7 +468,7 @@ end:
  *  1. Run the state's update routine (func_ov102_02149df0).
  *  2. Unless POPPED: move (UpdatePos), clamp mPosY up to mHomePosY, rebuild
  *     the model matrix and the shadow / clip volume.
- *  3. Poke two words of the mesh collider (func_020393a4 / func_02039394)
+ *  3. Poke two words of the mesh collider (dBgW::SetClipRadius / dBgW::SetClipOffsetY)
  *     with 0x8c000 (140 units) and 0x46000 (70 units).
  *  4. In any state but IDLE keep the collider disabled and return.
  *  5. In IDLE: a HATENA_BLOCK with SAVE_FLAGS1_BIT31 clear just advances its
@@ -491,8 +487,8 @@ int daObjHatenaBlock_c::Behavior()
         func_ov102_02149ff0();
         func_ov102_02149ea4();
     }
-    func_020393a4((int *)&mMeshCollider, 0x8c000);
-    func_02039394((int *)&mMeshCollider, 0x46000);
+    mMeshCollider.SetClipRadius(0x8c000);
+    mMeshCollider.SetClipOffsetY(0x46000);
     if (mState != STATE_IDLE) {
         if (mMeshCollider.IsEnabled() != 0) {
             mMeshCollider.Disable();

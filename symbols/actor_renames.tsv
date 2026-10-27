@@ -7184,3 +7184,18 @@ arm9	0x02037e14	func_02037e14	_ZNK4CLPS12IsCameraOnlyEv	inferred from ShouldPass
 ov002	0x020fea4c	func_ov002_020fea4c	_ZNK8dM3dGLin6GetEndEv	inferred endpoint getter; Vector3 return uses hidden result buffer in r0 and this in r1; called by dBgCh_Lin::ResetResult
 ov002	0x020fea68	func_ov002_020fea68	_ZNK8dM3dGLin8GetStartEv	inferred endpoint getter; Vector3 return uses hidden result buffer in r0 and this in r1; called by dBgCh_Lin::ResetResult
 arm9	0x02037940	_ZN12dBgCh_SphCrr13func_02037940Eh	_ZN12dBgCh_SphCrr13SetQueryFlagsEh	inferred from KcMbg and KcMbgSclY local sphere setup: copy query flags while clearing floor/wall/under contact bits (0x1c)
+arm9	0x02039624	func_02039624	_ZN4dBgW5ResetEv	inferred collider property member; constructor/SetFile, Enable/Disable and registry scans identify its field and use; mask/slot widths preserved
+arm9	0x020395fc	func_020395fc	_ZN4dBgW8SetActorEP8dActor_c	inferred collider property member; constructor/SetFile, Enable/Disable and registry scans identify its field and use; mask/slot widths preserved
+arm9	0x02039404	func_02039404	_ZNK4dBgW12GetSlotIndexEv	inferred collider property member; constructor/SetFile, Enable/Disable and registry scans identify its field and use; mask/slot widths preserved
+arm9	0x020393fc	func_020393fc	_ZN4dBgW12SetSlotIndexEi	inferred collider property member; constructor/SetFile, Enable/Disable and registry scans identify its field and use; mask/slot widths preserved
+arm9	0x020393f0	func_020393f0	_ZN4dBgW14ClearSlotIndexEv	inferred collider property member; constructor/SetFile, Enable/Disable and registry scans identify its field and use; mask/slot widths preserved
+arm9	0x020393cc	func_020393cc	_ZNK4dBgW21GetBeforeClsnCallbackEv	inferred collider property member; constructor/SetFile, Enable/Disable and registry scans identify its field and use; mask/slot widths preserved
+arm9	0x020393bc	func_020393bc	_ZNK4dBgW18GetStoodOnCallbackEv	inferred collider property member; constructor/SetFile, Enable/Disable and registry scans identify its field and use; mask/slot widths preserved
+arm9	0x020393b4	func_020393b4	_ZNK4dBgW8GetActorEv	inferred collider property member; constructor/SetFile, Enable/Disable and registry scans identify its field and use; mask/slot widths preserved
+arm9	0x020393ac	func_020393ac	_ZNK4dBgW16GetActorUniqueIDEv	inferred collider property member; constructor/SetFile, Enable/Disable and registry scans identify its field and use; mask/slot widths preserved
+arm9	0x020393a4	func_020393a4	_ZN4dBgW13SetClipRadiusEi	inferred collider property member; constructor/SetFile, Enable/Disable and registry scans identify its field and use; mask/slot widths preserved
+arm9	0x0203939c	func_0203939c	_ZNK4dBgW13GetClipRadiusEv	inferred collider property member; constructor/SetFile, Enable/Disable and registry scans identify its field and use; mask/slot widths preserved
+arm9	0x02039394	func_02039394	_ZN4dBgW14SetClipOffsetYEi	inferred collider property member; constructor/SetFile, Enable/Disable and registry scans identify its field and use; mask/slot widths preserved
+arm9	0x0203938c	func_0203938c	_ZNK4dBgW14GetClipOffsetYEv	inferred collider property member; constructor/SetFile, Enable/Disable and registry scans identify its field and use; mask/slot widths preserved
+arm9	0x020396d0	func_020396d0	_ZN7dBgW_Kc17SetDepthDirMinDotEi	inferred from Kc sphere scan: sets face-direction minimum dot or clamped edge-tolerance shift; actor and moving-collider setup call sites agree
+arm9	0x020396c0	func_020396c0	_ZN7dBgW_Kc21SetEdgeToleranceShiftEi	inferred from Kc sphere scan: sets face-direction minimum dot or clamped edge-tolerance shift; actor and moving-collider setup call sites agree

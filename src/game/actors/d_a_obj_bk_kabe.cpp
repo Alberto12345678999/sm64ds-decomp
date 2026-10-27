@@ -37,7 +37,7 @@
  * - Behavior: `pos.y = mPosY + kStarPopY` is a size-DIFF, 0xf0 to 0xec.
  *   Y is stored, then increased.
  * - Behavior: assigning mMeshCollider.clipRadius is a size-DIFF, 0xf0 to 0xe8.
- *   func_020393a4 stays; that is the call the ROM makes.
+ *   dBgW::SetClipRadius stays; that is the call the ROM makes.
  * - Behavior: IsClsnInRange(kClsnRange, 0) does not compile (no conversion
  *   to Fix12<int>). Fix12<int> locals are a size-DIFF, 0xf0 to 0x108. The
  *   scalar extern stays.
@@ -87,7 +87,6 @@ extern KabeFiles data_ov079_02128058[];
 
 /* local extern: writes the mesh active range at dBgW+0x0c. The definition
  * is C and takes int *, so this spelling matches it and the call casts. */
-extern "C" void func_020393a4(int *mesh, int range);
 
 /* Scalar ABI. Particle__System.h's NewSimple takes Fix12<int> by value, and
  * that spelling does not compile against the ints Kill passes (see above). */
@@ -167,7 +166,7 @@ int daObjBk_Kabe_c::Behavior() {
         }
         return 1;
     }
-    func_020393a4((int *)&mMeshCollider, kClsnRange);
+    mMeshCollider.SetClipRadius(kClsnRange);
     IsClsnInRange(kClsnRange, 0);
     return 1;
 }
