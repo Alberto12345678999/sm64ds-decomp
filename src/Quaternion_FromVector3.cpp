@@ -1,4 +1,9 @@
+//cpp
 #include "nitro/fx/fx.h"
+#include "cstd.h"
+
+extern "C" {
+
 typedef long long s64;
 typedef struct { int x, y, z; } Vec3;
 typedef struct { int x, y, z, w; } Quat;
@@ -7,7 +12,6 @@ extern int NormalizeVec3IfNonZero(Vec3 *v);
 extern int DotVec3(const Vec3 *a, const Vec3 *b);
 extern int func_020531a4(int a);
 extern void func_0203cebc(Vec3 *out, Vec3 *p, Vec3 *q, Vec3 *r);
-extern int _ZN4cstd4fdivEii(int a, int b);
 extern Quat data_02075b04;
 
 void Quaternion_FromVector3(Quat *out, Vec3 *a, Vec3 *b)
@@ -32,7 +36,7 @@ void Quaternion_FromVector3(Quat *out, Vec3 *a, Vec3 *b)
         vb.z = vcross.z;
         absr4 = (r4 < 0) ? -r4 : r4;
         if (absr4 > 4) {
-            q = _ZN4cstd4fdivEii(0x1000, r4);
+            q = cstd::fdiv(0x1000, r4);
             out->x = FX_MUL(vb.x, q);
             out->y = FX_MUL(vb.y, q);
             out->z = FX_MUL(vb.z, q);
@@ -49,4 +53,5 @@ void Quaternion_FromVector3(Quat *out, Vec3 *a, Vec3 *b)
     out->y = data_02075b04.y;
     out->z = data_02075b04.z;
     out->w = data_02075b04.w;
+}
 }

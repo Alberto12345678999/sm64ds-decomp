@@ -1,4 +1,10 @@
+//cpp
 #include "types.h"
+#include "CP15.h"
+#include "IRQ.h"
+
+extern "C" {
+
 struct G {
     char pad[0x18];
     u32 f18;
@@ -11,15 +17,6 @@ extern struct G data_020a8180;
 extern char func_01ff8000;
 extern void func_02060cac(void);
 extern void func_02060d1c(void);
-extern u32 _ZN4CP1518GetDTCMBaseAddressEv(void);
-extern int _ZN3IRQ7DisableEv(void);
-extern void _ZN4CP1527FlushAndInvalidateDataCacheEjj(u32 a, u32 b);
-extern void _ZN4CP1526InvalidateInstructionCacheEjj(u32 a, u32 b);
-extern void _ZN3IRQ13SetIRQHandlerEjPFvvE(u32 n, void (*h)(void));
-extern void _ZN3IRQ15ClearInterruptsEj(u32 n);
-extern void _ZN3IRQ10EnableIRQsEj(u32 n);
-extern void _ZN4CP1516DrainWriteBufferEv(void);
-extern void _ZN3IRQ7RestoreEj(int n);
 
 #pragma opt_propagation off
 int func_02060b64(int *self)
@@ -55,7 +52,7 @@ int func_02060b64(int *self)
         int reject;
         u32 e2;
         dtcm = g->f20;
-        d = _ZN4CP1518GetDTCMBaseAddressEv();
+        d = CP15::GetDTCMBaseAddress();
         e2 = base + dtcm;
         bad = 1;
         reject = 0;
@@ -83,16 +80,17 @@ int func_02060b64(int *self)
     p[1] = (*(int *)0x27ffe60 & ~0x7000000) | 0xa1000000;
 
     if (r7 != 0) {
-        saved = _ZN3IRQ7DisableEv();
-        _ZN4CP1527FlushAndInvalidateDataCacheEjj(g->f1c, g->f20);
-        _ZN4CP1526InvalidateInstructionCacheEjj(g->f1c, g->f20);
-        _ZN3IRQ13SetIRQHandlerEjPFvvE(0x80000, func_02060cac);
-        _ZN3IRQ15ClearInterruptsEj(0x80000);
-        _ZN3IRQ10EnableIRQsEj(0x80000);
-        _ZN4CP1516DrainWriteBufferEv();
-        _ZN3IRQ7RestoreEj(saved);
+        saved = IRQ::Disable();
+        CP15::FlushAndInvalidateDataCache(g->f1c, g->f20);
+        CP15::InvalidateInstructionCache(g->f1c, g->f20);
+        IRQ::SetIRQHandler(0x80000, func_02060cac);
+        IRQ::ClearInterrupts(0x80000);
+        IRQ::EnableIRQs(0x80000);
+        CP15::DrainWriteBuffer();
+        IRQ::Restore(saved);
         func_02060d1c();
     }
 
     return r7;
+}
 }

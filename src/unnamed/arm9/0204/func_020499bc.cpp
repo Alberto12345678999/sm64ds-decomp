@@ -1,6 +1,10 @@
+//cpp
+#include "CP15.h"
+
+extern "C" {
+
 typedef short s16;
 
-extern void _ZN4CP1527FlushAndInvalidateDataCacheEjj(void *addr, unsigned int size);
 
 #pragma opt_strength_reduction off
 #pragma opt_common_subs off
@@ -54,6 +58,7 @@ void func_020499bc(s16 *a0, s16 *a1, unsigned int a2, int *a3) {
         *(int *)((char *)(a3 + i) + 0xc) = local[i];
     }
 
-    _ZN4CP1527FlushAndInvalidateDataCacheEjj(a0, a2);
-    _ZN4CP1527FlushAndInvalidateDataCacheEjj(a1, a2);
+    CP15::FlushAndInvalidateDataCache((unsigned int)a0, a2);
+    CP15::FlushAndInvalidateDataCache((unsigned int)a1, a2);
+}
 }

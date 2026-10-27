@@ -1,10 +1,14 @@
+//cpp
 #include "types.h"
+#include "cstd.h"
+
+extern "C" {
+
 /* SubVec3 still defines its vector as its own struct Vec3;
    declared as defined, the calls cast. */
 struct Vec3;
 extern void SubVec3(struct Vec3 *a, struct Vec3 *b, struct Vec3 *c);
 extern int func_020538b8(int x, int y);
-extern int _ZN4cstd3divEii(int a, int b);
 
 /* A point list as func_ov007_020c798c builds it; only the count is read. */
 typedef struct Ov007PointList {
@@ -75,17 +79,20 @@ void func_ov007_020c9a84(char *o, int *w, short *ox, short *oy)
         unsigned short lim = self->params->maxRotX;
         if (aa <= 0) t1 = 0;
         else if (aa >= lim) t1 = 0x1000;
-        else t1 = _ZN4cstd3divEii(aa << 12, lim);
+        else
+            t1 = cstd::div(aa << 12, lim);
     }
     ab = (a2 >= 0) ? a2 : -a2;
     {
         unsigned short lim = self->params->maxRotY;
         if (ab <= 0) t2 = 0;
         else if (ab >= lim) t2 = 0x1000;
-        else t2 = _ZN4cstd3divEii(ab << 12, lim);
+        else
+            t2 = cstd::div(ab << 12, lim);
     }
     q1 = (int)(((long long)t1 * (0x2000 - t1)) >> 12);
     q2 = (int)(((long long)t2 * (0x2000 - t2)) >> 12);
     *ox = (short)((self->params->maxRotX * (q1 * ((a1 >= 0) ? 1 : -1))) >> 12);
     *oy = (short)((self->params->maxRotY * (q2 * ((a2 >= 0) ? 1 : -1))) >> 12);
+}
 }

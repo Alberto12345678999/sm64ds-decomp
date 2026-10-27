@@ -1,7 +1,11 @@
+//cpp
 #include "common.h"
+#include "cstd.h"
+
+extern "C" {
+
 extern void *data_ov007_02104bd8;
 extern void func_ov007_020bc47c(void *thiz);
-extern int _ZN4cstd3divEii(int a, int b);
 extern int InvMat4x3(int *src, int *dst); /* as defined */
 extern void MulVec3Mat4x3(Vector3 *in, Matrix4x3 *mat, Vector3 *out);
 
@@ -28,7 +32,7 @@ void func_ov007_020bfbdc(void *self)
     Matrix4x3 mat;
 
     func_ov007_020bc47c(o);
-    o->period = (short)_ZN4cstd3divEii(0x5a0000, 0x168);
+    o->period = (short)cstd::div(0x5a0000, 0x168);
     o->f94 = 0;
 
     vec.y = 0;
@@ -36,4 +40,5 @@ void func_ov007_020bfbdc(void *self)
     vec.z = 0xffffef9c;
     InvMat4x3((int *)&s->mtx, (int *)&mat);
     MulVec3Mat4x3(&vec, &mat, &o->pos);
+}
 }

@@ -1,5 +1,8 @@
+//cpp
 #include "types.h"
-extern void _ZN4CP1527FlushAndInvalidateDataCacheEjj(u32 addr, u32 size);
+#include "CP15.h"
+
+extern "C" {
 
 /* NitroSDK SNDSharedWork, the ARM9/ARM7 shared sound status block
  * (data_020a64e0, which func_0205b358 = SND_CommandInit hands here and
@@ -42,5 +45,6 @@ void func_0205b554(char *p)
     for (j = 0; j < 16; j++)
         work->globalVariable[j] = -1;
 
-    _ZN4CP1527FlushAndInvalidateDataCacheEjj((u32)work, sizeof(SNDSharedWork));
+    CP15::FlushAndInvalidateDataCache((u32)work, sizeof(SNDSharedWork));
+}
 }

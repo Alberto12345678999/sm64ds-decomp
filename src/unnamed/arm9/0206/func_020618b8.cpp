@@ -1,7 +1,11 @@
+//cpp
 #include "types.h"
+#include "CP15.h"
+
+extern "C" {
+
 extern void *WM_GetSystemWork(void);
 extern int func_0206152c(void);
-extern void _ZN4CP1519InvalidateDataCacheEjj(unsigned int addr, unsigned int n);
 
 /* NitroSDK WMStatus and WMArm9Buf, the fields read here; the names follow
  * func_02061ab0's views (status at +0x04) and include/WmWork.h's WmStatus
@@ -30,19 +34,20 @@ int func_020618b8(void)
     WMStatus *status;
     if (func_0206152c())
         return 0;
-    _ZN4CP1519InvalidateDataCacheEjj((unsigned int)&sys->status->state, 2);
+    CP15::InvalidateDataCache((unsigned int)&sys->status->state, 2);
     status = sys->status;
     switch (status->state) {
     case 9:
-        _ZN4CP1519InvalidateDataCacheEjj((unsigned int)&status->child_bitmap, 2);
+        CP15::InvalidateDataCache((unsigned int)&status->child_bitmap, 2);
         status = sys->status;
         if (status->child_bitmap == 0)
             return 0;
         /* fall through */
     case 0xa:
     case 0xb:
-        _ZN4CP1519InvalidateDataCacheEjj((unsigned int)&status->mp_readyBitmap, 2);
+        CP15::InvalidateDataCache((unsigned int)&status->mp_readyBitmap, 2);
         return sys->status->mp_readyBitmap;
     }
     return 0;
+}
 }

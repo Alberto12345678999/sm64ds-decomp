@@ -1,5 +1,8 @@
-extern unsigned int _ZN3IRQ7DisableEv(void);
-extern void _ZN3IRQ7RestoreEj(unsigned int saved);
+//cpp
+#include "IRQ.h"
+
+extern "C" {
+
 extern void func_020584d0(void *node);
 extern void func_02057f54(void);
 
@@ -27,7 +30,7 @@ int func_02057e84(Node *target, int value)
     prev = 0;
     cur = data_020a6134.head;
 
-    saved = _ZN3IRQ7DisableEv();
+    saved = IRQ::Disable();
 
     while (cur != 0 && cur != target) {
         prev = cur;
@@ -35,7 +38,7 @@ int func_02057e84(Node *target, int value)
     }
 
     if (cur == 0 || cur == &data_020a6188) {
-        _ZN3IRQ7RestoreEj(saved);
+        IRQ::Restore(saved);
         return 0;
     }
 
@@ -49,6 +52,7 @@ int func_02057e84(Node *target, int value)
         func_02057f54();
     }
 
-    _ZN3IRQ7RestoreEj(saved);
+    IRQ::Restore(saved);
     return 1;
+}
 }

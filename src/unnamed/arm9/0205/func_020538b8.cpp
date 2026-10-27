@@ -1,6 +1,9 @@
+//cpp
 #include "types.h"
+#include "cstd.h"
 
-extern s32 _ZN4cstd4fdivEii(s32 numerator, s32 denominator);
+extern "C" {
+
 extern s16 data_02086214[];
 
 void func_02053a8c(void) {}
@@ -81,7 +84,8 @@ int func_020538b8(int x, int y) {
     if (denom == 0)
         return 0;
     if (add)
-        return (u16)(off + data_02086214[_ZN4cstd4fdivEii(num, denom) >> 5]);
+        return (u16)(off + data_02086214[cstd::fdiv(num, denom) >> 5]);
     else
-        return (u16)(off - data_02086214[_ZN4cstd4fdivEii(num, denom) >> 5]);
+        return (u16)(off - data_02086214[cstd::fdiv(num, denom) >> 5]);
+}
 }

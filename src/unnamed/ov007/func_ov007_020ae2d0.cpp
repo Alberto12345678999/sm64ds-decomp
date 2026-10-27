@@ -1,10 +1,13 @@
+//cpp
 #include "types.h"
 #include "Ov007MenuState.h"
 #include "Ov007Work.h"
+#include "cstd.h"
+
+extern "C" {
+
 extern u8 data_ov007_0210342c[];
 extern short data_02082214[];
-extern int _ZN4cstd3modEii(int, int);
-extern int _ZN4cstd3divEii(int, int);
 
 /* The 10-byte layout row an item points at (names as in
  * func_ov007_020ae834); only the home row is read here. */
@@ -63,7 +66,8 @@ void func_ov007_020ae2d0(char *c)
         }
         if (a == 2) return;
         if (v < 0x28) return;
-        if (_ZN4cstd3modEii(v - 0x28, 0x10e) != 0) return;
+        if (cstd::mod(v - 0x28, 0x10e) != 0)
+            return;
         {
             Ov007Item *p2 = view->item;
             p2->wiggleFrames = 0x3c;
@@ -72,13 +76,14 @@ void func_ov007_020ae2d0(char *c)
         return;
     }
     case 0: {
-        int n = _ZN4cstd3modEii(v, 0x32);
+        int n = cstd::mod(v, 0x32);
         int m, arrIdx;
         short idx, base;
         Ov007Item *q;
         if (n <= 0) n = 0;
         else if (n >= 0x32) n = 0x1000;
-        else n = _ZN4cstd3divEii(n << 0xc, 0x32);
+        else
+            n = cstd::div(n << 0xc, 0x32);
         m = (-n) * 0xffff;
         m = (int)(((unsigned)(m << 4)) >> 0x10);
         arrIdx = m >> 4;
@@ -103,4 +108,5 @@ void func_ov007_020ae2d0(char *c)
         return;
     }
     }
+}
 }

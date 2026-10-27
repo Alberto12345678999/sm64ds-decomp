@@ -1,5 +1,8 @@
-extern unsigned int _ZN3IRQ7DisableEv(void);
-extern void _ZN3IRQ7RestoreEj(unsigned int saved);
+//cpp
+#include "IRQ.h"
+
+extern "C" {
+
 extern void func_02058988(void *list, char *node);
 extern void OS_WakeupThread(char *node);
 
@@ -27,7 +30,7 @@ extern int data_020a6134[];
 
 void func_02058a94(char *obj) {
     OSMutex *mutex = (OSMutex *)obj;
-    unsigned int saved = _ZN3IRQ7DisableEv();
+    unsigned int saved = IRQ::Disable();
     struct OSThread *current = THREAD_INFO.current;
     if (mutex->thread == current) {
         if (--mutex->count == 0) {
@@ -36,5 +39,6 @@ void func_02058a94(char *obj) {
             OS_WakeupThread(obj);
         }
     }
-    _ZN3IRQ7RestoreEj(saved);
+    IRQ::Restore(saved);
+}
 }

@@ -1,3 +1,4 @@
+//cpp
 /* func_020412f0 @ 0x020412f0 (arm9, size 0x46c)   [mwccarm 2004/b56]
  * Lever (notes 6y.1 refinement): the byte-triple store into data_020a2409 needs the
  * pooled base in r3 and the derived pointer (base + r6) in r2; every plain spelling
@@ -13,6 +14,9 @@
  */
 #include "private/arm9_a1fc0_file_share.h"
 #include "private/arm9_wbt.h"
+#include "IRQ.h"
+
+extern "C" {
 
 typedef unsigned int u32;
 typedef unsigned short u16;
@@ -23,8 +27,6 @@ typedef signed int s32;
 extern int func_02065a4c(int x);
 extern void *func_02041ce0(void *base, int a, int b);
 extern void *func_02041c64(void *base, int a, int b);
-extern u32 _ZN3IRQ7DisableEv(void);
-extern void _ZN3IRQ7RestoreEj(u32 saved);
 extern void *func_02041c2c(void *base, int key);
 extern void func_020657fc(int key);
 extern void func_02041ae8(void *base, void *node);
@@ -124,7 +126,7 @@ void func_020412f0(char *thiz)
             break;
         }
         case 2: {
-            u32 saved = _ZN3IRQ7DisableEv();
+            u32 saved = IRQ::Disable();
             FileShareNode *p;
 
             area->mReplyPending |= (1 << sb);
@@ -140,8 +142,8 @@ void func_020412f0(char *thiz)
                 }
             }
 
-            _ZN3IRQ7RestoreEj(saved);
-        break;
+            IRQ::Restore(saved);
+            break;
         }
         }
 
@@ -238,4 +240,5 @@ void func_020412f0(char *thiz)
         break;
     }
     }
+}
 }

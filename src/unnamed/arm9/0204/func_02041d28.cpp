@@ -1,9 +1,11 @@
+//cpp
 #include "private/arm9_a1fc0_file_share.h"
+#include "IRQ.h"
 
-extern unsigned int _ZN3IRQ7DisableEv(void);
+extern "C" {
+
 extern int func_020658c0(void *node, int a1, void *a2, int a3, int arg5, unsigned short arg6);
 extern void func_02041b24(FileShareParentArea *area, FileShareNode *node);
-extern void _ZN3IRQ7RestoreEj(unsigned int saved);
 
 extern int data_020a1fc0;
 extern int data_02082158;
@@ -24,7 +26,7 @@ struct R7 { int f0; int f4; };
 
 void func_02041d28(char *r7, struct R6 *r6)
 {
-    unsigned int saved = _ZN3IRQ7DisableEv();
+    unsigned int saved = IRQ::Disable();
     int mask;
 
     if ((&data_020a1fc0)[3] != 0) {
@@ -51,5 +53,6 @@ void func_02041d28(char *r7, struct R6 *r6)
             r7 += 0xc;
         }
     }
-    _ZN3IRQ7RestoreEj(saved);
+    IRQ::Restore(saved);
+}
 }

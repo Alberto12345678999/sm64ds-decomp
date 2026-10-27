@@ -1,11 +1,14 @@
+//cpp
+#include "IRQ.h"
+
+extern "C" {
+
 enum Bool { FALSE, TRUE };
 
-extern unsigned int _ZN3IRQ7DisableEv(void);
-extern void _ZN3IRQ7RestoreEj(unsigned int i);
 extern void* func_0205d044(void* self);
 extern void func_0205cfa4(void* p);
 
-/* NitroSDK FSArchive, the field touched here (func_0205d044.c's name). */
+/* NitroSDK FSArchive, the field touched here (func_0205d044.cpp's name). */
 typedef struct FSArchive {
     char pad_00[0x10];
     int flag; /* 0x10 */
@@ -24,16 +27,17 @@ int func_0205c7e4(char* self)
     enum Bool bit;
     enum Bool notset;
 
-    saved = _ZN3IRQ7DisableEv();
+    saved = IRQ::Disable();
     bit = (enum Bool)((p_arc->flag & 8) != 0);
     notset = (enum Bool)(bit == FALSE);
     if (notset == FALSE) {
         p_arc->flag &= ~8;
         r = func_0205d044(self);
     }
-    _ZN3IRQ7RestoreEj(saved);
+    IRQ::Restore(saved);
     if (r != 0) {
         func_0205cfa4(r);
     }
     return notset;
+}
 }

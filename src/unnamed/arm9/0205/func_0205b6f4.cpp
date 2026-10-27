@@ -1,3 +1,8 @@
+//cpp
+#include "CP15.h"
+
+extern "C" {
+
 struct Node;
 
 struct Slot { struct Node *p18; struct Node *p1c; };
@@ -9,7 +14,6 @@ struct Node {
     struct Slot slots[1];
 };
 
-extern void _ZN4CP1514FlushDataCacheEjj(unsigned int a, unsigned int b);
 
 void func_0205b6f4(struct Node *base)
 {
@@ -19,7 +23,7 @@ void func_0205b6f4(struct Node *base)
         if (n == 0) continue;
         if ((struct Node *)&base->slots[i] == n->slots[0].p18) {
             n->slots[0].p18 = base->slots[i].p1c;
-            _ZN4CP1514FlushDataCacheEjj((unsigned int)n, 0x3c);
+            CP15::FlushDataCache((unsigned int)n, 0x3c);
         } else {
             struct Node *p = n->slots[0].p18;
             if (p != 0) {
@@ -31,7 +35,8 @@ void func_0205b6f4(struct Node *base)
                 }
             }
             p->f4 = (struct Node *)base->slots[i].p1c;
-            _ZN4CP1514FlushDataCacheEjj((unsigned int)p, 8);
+            CP15::FlushDataCache((unsigned int)p, 8);
         }
     }
+}
 }

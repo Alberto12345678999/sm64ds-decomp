@@ -1,4 +1,9 @@
+//cpp
 #include "types.h"
+#include "cstd.h"
+
+extern "C" {
+
 struct Vec3
 {
   s32 x;
@@ -9,7 +14,6 @@ extern void Vec3_Add(struct Vec3 *out, struct Vec3 *a, struct Vec3 *b);
 extern int *Vec3_AsrInPlace(int *v, int sh);
 extern s32 Vec3_Dist(const struct Vec3 *a, const struct Vec3 *b);
 extern void Vec3_Sub(struct Vec3 *out, struct Vec3 *a, struct Vec3 *b);
-extern int _ZN4cstd4fdivEii(int a, int b);
 extern void Vec3_MulScalarInPlace(int *v, int s);
 extern s16 Vec3_HorzAngle(const struct Vec3 *v0, const struct Vec3 *v1);
 extern s16 Vec3_VertAngle(const struct Vec3 *v1, const struct Vec3 *v0);
@@ -84,7 +88,7 @@ int func_02005110(char *self) {
         dist = Vec3_Dist(&eye, &aim);
         if (dist > 0x30000) {
             Vec3_Sub(&diff, &aim, &eye);
-            scale = _ZN4cstd4fdivEii(0x30000, dist);
+            scale = cstd::fdiv(0x30000, dist);
             Vec3_MulScalarInPlace((int *)(&diff), scale);
             Vec3_Add(&newAim, &eye, &diff);
             aim.x = newAim.x;
@@ -126,4 +130,5 @@ int func_02005110(char *self) {
         }
     }
     return 1;
+}
 }

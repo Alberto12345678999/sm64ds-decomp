@@ -1,6 +1,8 @@
+//cpp
 #include "types.h"
-extern u32 _ZN3IRQ7DisableEv(void);
-extern void _ZN3IRQ7RestoreEj(u32 state);
+#include "IRQ.h"
+
+extern "C" {
 
 typedef struct {
     s16 x0;
@@ -60,7 +62,7 @@ u32 func_0205eb58(TPCalibrateParam *calibrate, u16 raw_x1, u16 raw_y1, u16 dx1, 
     rx_width = raw_x1 - raw_x2;
     dx_width = dx1 - dx2;
 
-    enabled = _ZN3IRQ7DisableEv();
+    enabled = IRQ::Disable();
 
     CP_SetDiv32_32(((u32)rx_width) << 8, (u32)dx_width);
 
@@ -72,20 +74,20 @@ u32 func_0205eb58(TPCalibrateParam *calibrate, u16 raw_x1, u16 raw_y1, u16 dx1, 
 
     if (!IN_S16_RANGE(tmp32))
     {
-        _ZN3IRQ7RestoreEj(enabled);
+        IRQ::Restore(enabled);
         return 1;
     }
     calibrate->xDotSize = (s16)tmp32;
     tmp32 = (s16)((((s32)(raw_x1 + raw_x2) << 8) - ((s32)(dx1 + dx2) * calibrate->xDotSize)) >> 7);
     if (!IN_S16_RANGE(tmp32))
     {
-        _ZN3IRQ7RestoreEj(enabled);
+        IRQ::Restore(enabled);
         return 1;
     }
     calibrate->x0 = (s16)tmp32;
 
     tmp32 = CP_GetDivResult32();
-    _ZN3IRQ7RestoreEj(enabled);
+    IRQ::Restore(enabled);
 
     if (!IN_S16_RANGE(tmp32))
     {
@@ -100,4 +102,5 @@ u32 func_0205eb58(TPCalibrateParam *calibrate, u16 raw_x1, u16 raw_y1, u16 dx1, 
     calibrate->y0 = (s16)tmp32;
 
     return 0;
+}
 }

@@ -1,11 +1,15 @@
-extern int _ZN4cstd6strlenEPKc(const char *s);
+//cpp
+#include "cstd.h"
+
+extern "C" {
+
 extern void func_020147bc(unsigned short *p, int c);
 
 #pragma opt_common_subs off
 
 void nds_printt(unsigned short *dest, char *str, int value)
 {
-    int len = _ZN4cstd6strlenEPKc(str);
+    int len = cstd::strlen(str);
     char c;
     unsigned short *p = dest + len;
     while (value != 0 && len != 0) {
@@ -36,4 +40,5 @@ void nds_printt(unsigned short *dest, char *str, int value)
             func_020147bc(q, space);
         } while (len != 0);
     }
+}
 }

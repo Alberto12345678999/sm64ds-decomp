@@ -1,6 +1,11 @@
+//cpp
 #include "types.h"
 #include "Ov007Touch.h"
 #include "Ov007Work.h"
+#include "cstd.h"
+
+extern "C" {
+
 /* func_ov007_020b9ca8 @ 0x020b9ca8 (ov007, size 0x264)
  * Minigame cursor/pen update: advances the shared pen state, spawns the
  * touch feedback (sound id 0x25..0x28 by rhythm), fades the music with pen
@@ -53,10 +58,8 @@ extern void func_ov007_020bb4b0(void);
 extern int func_ov007_020c1da0(int);
 extern void func_ov007_020bfe4c(char *, int, int, int, int *);
 extern void func_ov007_020c5a6c(void *, int *, int);
-extern int _ZN4cstd3modEii(int, int);
 extern void func_ov007_020bdeb0(int);
 extern void func_ov007_020bbc08(int, int, int);
-extern int _ZN4cstd3divEii(int, int);
 extern void func_ov007_020c6314(char *, int, int);
 extern void func_ov007_020c5fc8(char *, int, int);
 extern void func_ov007_020c5948(char *, int *);
@@ -78,8 +81,8 @@ void func_ov007_020b9ca8(void)
             int s;
             func_ov007_020c5a6c(r5, v, 0);
             s = 0x25;
-            if (_ZN4cstd3modEii(SCENE->restartCount, 3) == 2) {
-                switch (_ZN4cstd3modEii(SCENE->restartCount, 9)) {
+            if (cstd::mod(SCENE->restartCount, 3) == 2) {
+                switch (cstd::mod(SCENE->restartCount, 9)) {
                 case 2:
                     s = 0x26;
                     break;
@@ -105,7 +108,7 @@ void func_ov007_020b9ca8(void)
             else if ((int)t >= 0x12c)
                 f = 0x1000;
             else
-                f = _ZN4cstd3divEii((t - 5) << 12, 0x127);
+                f = cstd::div((t - 5) << 12, 0x127);
             picker = SCENE->picker;
             if (picker->groupCount >= 2)
                 func_ov007_020c6314((char *)picker, picker->hitGroup, 2);
@@ -125,4 +128,5 @@ void func_ov007_020b9ca8(void)
     } else {
         SCENE->idleFrames++;
     }
+}
 }

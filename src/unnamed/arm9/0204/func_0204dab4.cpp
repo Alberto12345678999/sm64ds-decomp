@@ -1,4 +1,9 @@
+//cpp
 #include "nitro/fx/fx.h"
+#include "cstd.h"
+
+extern "C" {
+
 typedef struct ParticleNode ParticleNode;
 typedef struct TrackingRecord TrackingRecord;
 
@@ -44,7 +49,6 @@ struct TrackingRecord {
 typedef char ParticleNode_size_must_be_0x30[sizeof(ParticleNode) == 0x30 ? 1 : -1];
 typedef char TrackingRecord_size_must_be_0xc[sizeof(TrackingRecord) == 0xc ? 1 : -1];
 
-extern int _ZN4cstd3divEii(int a, int b);
 extern void func_0204dcc0(int *src, short *o1, short *o2, int *o3);
 
 void func_0204dab4(void *sys, TrackingRecord *buf, int count, unsigned int mask, void *cb) {
@@ -91,7 +95,7 @@ void func_0204dab4(void *sys, TrackingRecord *buf, int count, unsigned int mask,
         if (slot != 0) {
             int scale;
 
-            scale = 0x1000 - _ZN4cstd3divEii((int)walk->age << 12, walk->lifetime);
+            scale = 0x1000 - cstd::div((int)walk->age << 12, walk->lifetime);
 
             sp[1] = walk->offsetAsr3.x + walk->positionAsr3.x;
             sp[2] = walk->offsetAsr3.y + walk->positionAsr3.y;
@@ -123,4 +127,5 @@ void func_0204dab4(void *sys, TrackingRecord *buf, int count, unsigned int mask,
         *fp6 = (unsigned char)(*fp6 & ~4u);
         p++;
     } while (++j < count);
+}
 }

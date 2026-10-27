@@ -1,8 +1,12 @@
+//cpp
 #include "types.h"
+#include "CP15.h"
+
+extern "C" {
+
 #pragma opt_common_subs off
 extern int WM_GetSystemWork(void);
 extern int WM_CheckStateEx(int count, ...);
-extern void _ZN4CP1519InvalidateDataCacheEjj(u32 addr, u32 len);
 extern int func_020623ec(int a0, int a1, int a2, int a3, u16 a4, u16 a5);
 extern void MultiCopyHalf(const void *src, void *dst, u32 count);
 extern void func_020627e8(void *self, int x);
@@ -73,7 +77,7 @@ int func_02062df0(u8 *self, u8 *sendData, u8 *receiveData) {
     if (r != 0)
         return r;
 
-    _ZN4CP1519InvalidateDataCacheEjj((u32)(&((WMArm9Buf *)result)->status->mp_flag), 4);
+    CP15::InvalidateDataCache((u32)(&((WMArm9Buf *)result)->status->mp_flag), 4);
     if (((WMArm9Buf *)result)->status->mp_flag == 0)
         return 3;
 
@@ -84,10 +88,10 @@ int func_02062df0(u8 *self, u8 *sendData, u8 *receiveData) {
     if (receiveData == 0)
         return 6;
 
-    _ZN4CP1519InvalidateDataCacheEjj((u32)(&((WMArm9Buf *)result)->status->aid), 2);
+    CP15::InvalidateDataCache((u32)(&((WMArm9Buf *)result)->status->aid), 2);
     aid = ((WMArm9Buf *)result)->status->aid;
     if (aid == 0) {
-        _ZN4CP1519InvalidateDataCacheEjj((u32)((WMArm9Buf *)result)->status + 0x86, 2);
+        CP15::InvalidateDataCache((u32)((WMArm9Buf *)result)->status + 0x86, 2);
         childMask = *(u16 *)((u32)((WMArm9Buf *)result)->status + 0x86);
     }
 
@@ -177,4 +181,5 @@ int func_02062df0(u8 *self, u8 *sendData, u8 *receiveData) {
     }
 
     return result;
+}
 }

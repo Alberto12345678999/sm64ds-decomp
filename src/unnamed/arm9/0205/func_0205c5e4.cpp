@@ -1,3 +1,4 @@
+//cpp
 /* NitroSDK FSi_TranslateCommand(p_file, command): mark the archive busy for a
  * synchronous (FS_ARCHIVE_FLAG_IS_SYNC 0x200) or asynchronous
  * (FS_ARCHIVE_FLAG_IS_ASYNC 0x100) caller by the file's FS_FILE_STATUS_SYNC
@@ -8,8 +9,12 @@
  * synchronous caller sleeps on sync_q until IS_SYNC clears; anything else
  * clears the busy bit and either releases the file (func_0205c788 =
  * FSi_ReleaseCommand) or stores the result for the waiter. Field names follow
- * the SDK's FSFile and FSArchive, as func_0205d044.c spells them; only the
+ * the SDK's FSFile and FSArchive, as func_0205d044.cpp spells them; only the
  * fields this function touches are spelled out. */
+#include "IRQ.h"
+
+extern "C" {
+
 typedef struct FSArchive FSArchive;
 
 typedef struct FSFile {
@@ -32,8 +37,6 @@ struct FSArchive {
     unsigned int proc_flag;    /* 0x4c -- which commands go to proc */
 };
 
-extern unsigned int _ZN3IRQ7DisableEv();
-extern void _ZN3IRQ7RestoreEj(unsigned int);
 extern void OS_SleepThread(unsigned short*);
 extern void func_0205c788(char*, int);
 extern unsigned int (*data_02086758[])(char*);
@@ -88,12 +91,12 @@ int func_0205c5e4(char *self, int idx) {
         int t = (p_file->stat & 4) ? 1 : 0;
         if (t != 0) {
             unsigned short *p;
-            irq = _ZN3IRQ7DisableEv();
+            irq = IRQ::Disable();
             p = &r->sync_q;
             while ((busy = (r->flag & 0x200) ? 1 : 0) != 0)
                 OS_SleepThread(p);
             ret = p_file->error;
-            _ZN3IRQ7RestoreEj(irq);
+            IRQ::Restore(irq);
         }
     } else {
         int t2 = (p_file->stat & 4) ? 1 : 0;
@@ -107,4 +110,5 @@ int func_0205c5e4(char *self, int idx) {
     }
 
     return ret;
+}
 }

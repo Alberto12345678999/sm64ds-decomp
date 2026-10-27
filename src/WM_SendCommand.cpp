@@ -1,7 +1,10 @@
+//cpp
 #include "types.h"
+#include "CP15.h"
+
+extern "C" {
+
 extern void func_020587e4(void *a, void **out, int c);
-extern void _ZN4CP1514FlushDataCacheEjj(u32 addr, u32 len);
-extern void _ZN4CP1519InvalidateDataCacheEjj(u32 addr, u32 len);
 extern void DMASyncWordTransfer(int channel, u32 src, u32 dest, u32 len);
 extern int IPCSend(u32 a, u32 c, u32 b);
 extern void func_02058894(void *a, void *b, int c);
@@ -27,8 +30,8 @@ int WM_SendCommand(short a0, unsigned short count, ...)
     func_020587e4(&data_020a89b0, (void **)&buf, 1);
 
     if (count == 0) {
-        _ZN4CP1514FlushDataCacheEjj(data_020a89ac->field_c, 0x100);
-        _ZN4CP1519InvalidateDataCacheEjj((u32)buf, 0x100);
+        CP15::FlushDataCache(data_020a89ac->field_c, 0x100);
+        CP15::InvalidateDataCache((u32)buf, 0x100);
         DMASyncWordTransfer(data_020a89ac->field_560, data_020a89ac->field_c, (u32)buf, 0x100);
     }
 
@@ -39,9 +42,10 @@ int WM_SendCommand(short a0, unsigned short count, ...)
         (buf + i)[1] = src[-1];
     }
 
-    _ZN4CP1514FlushDataCacheEjj((u32)buf, 0x100);
+    CP15::FlushDataCache((u32)buf, 0x100);
     r = IPCSend(0xa, (u32)buf, 0);
     func_02058894(&data_020a89b0, buf, 1);
     if (r < 0) return 8;
     return 2;
+}
 }

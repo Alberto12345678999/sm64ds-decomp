@@ -1,7 +1,12 @@
+//cpp
 #include "types.h"
 #include "nitro/fx/fx.h"
 #include "Ov007MenuState.h"
 #include "Ov007Work.h"
+#include "cstd.h"
+
+extern "C" {
+
 extern u8 data_ov007_0210342c[];
 extern short data_02082214[];
 
@@ -10,7 +15,6 @@ extern void func_ov007_020c0638(void *a, int b, int c, int d);
 extern void func_ov007_020c02d8(void *a, int b, u16 c);
 extern void RequestScreenFade(int a, int b, int c);
 extern void func_ov007_020c1d8c(int a);
-extern int _ZN4cstd3divEii(int, int);
 extern void func_ov007_020ada70(void);
 
 /* The 0x38-byte BG layer record func_ov007_020c0aa8 allocates; screen as in
@@ -196,11 +200,11 @@ void func_ov007_020ad660(char *arg0)
             } else if (temp_r1 >= 0x50) {
                 var_r4 = 0x1000;
             } else {
-                var_r4 = _ZN4cstd3divEii(temp_r1 << 0xc, 0x50);
+                var_r4 = cstd::div(temp_r1 << 0xc, 0x50);
             }
             {
                 int t = FX_MUL(var_r4, 0xe10);
-                int r = _ZN4cstd3divEii(t << 0x10, 0x168);
+                int r = cstd::div(t << 0x10, 0x168);
                 int inv, inv2, prod, result;
                 r = (u16)r;
                 inv = 0x1000 - var_r4;
@@ -226,7 +230,7 @@ void func_ov007_020ad660(char *arg0)
             } else if (temp_r1 >= 8) {
                 var_r0 = 0x1000;
             } else {
-                var_r0 = _ZN4cstd3divEii(temp_r1 << 0xc, 8);
+                var_r0 = cstd::div(temp_r1 << 0xc, 8);
             }
             {
                 int inv = 0x1000 - var_r0;
@@ -257,4 +261,5 @@ void func_ov007_020ad660(char *arg0)
     default:
         return;
     }
+}
 }

@@ -1,7 +1,11 @@
+//cpp
 #include "types.h"
+#include "CP15.h"
+
+extern "C" {
+
 extern int *WM_GetSystemWork(void);
 extern int WM_CheckStateEx(int a, int b, int c);
-extern void _ZN4CP1519InvalidateDataCacheEjj(u32 addr, u32 size);
 
 /* NitroSDK WM_GetMPSendBufferSize(): 0 unless the system is a parent or a
  * child (states 7, 8) that has not started MP yet; otherwise mp_maxSendSize
@@ -32,13 +36,14 @@ u32 func_02061b9c(void)
     if (WM_CheckStateEx(2, 7, 8) != 0)
         return 0;
 
-    _ZN4CP1519InvalidateDataCacheEjj((u32)&r4->status->mp_flag, 4);
+    CP15::InvalidateDataCache((u32)&r4->status->mp_flag, 4);
 
     p = r4->status;
     if (p->mp_flag == 1)
         return 0;
 
-    _ZN4CP1519InvalidateDataCacheEjj((u32)&p->mp_maxSendSize, 4);
+    CP15::InvalidateDataCache((u32)&p->mp_maxSendSize, 4);
 
     return (r4->status->mp_maxSendSize + 0x1f) & ~0x1f;
+}
 }

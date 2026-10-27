@@ -893,6 +893,11 @@
         "param:#2 int",
         "param:#3 int"
       ],
+      "src/unnamed/arm9/0205/func_0205f040.cpp": [
+        "param:#1 int",
+        "param:#2 int",
+        "param:#3 int"
+      ],
       "src/unnamed/arm9/0205/func_0205f8b0.c": [
         "param:#1 int",
         "param:#2 int",
@@ -10714,6 +10719,51 @@
         "linkage:bare extern in a C++ TU"
       ]
     },
+    "func_0205b470": {
+      "src/unnamed/arm9/0205/func_0205aed0.cpp": [
+        "param:#1 void *"
+      ]
+    },
+    "func_0205b78c": {
+      "src/engine/sound/SoundEngine.cpp": [
+        "param:#1 struct Node *",
+        "param:#3 struct Node *"
+      ]
+    },
+    "func_0205de9c": {
+      "src/unnamed/arm9/0205/func_0205db88.cpp": [
+        "param:#1 Obj *",
+        "param:#2 void *",
+        "param:#3 void *",
+        "return:unsigned int"
+      ]
+    },
+    "func_0205e904": {
+      "src/unnamed/arm9/0205/func_0205db88.cpp": [
+        "param:#1 unsigned int",
+        "return:unsigned int"
+      ]
+    },
+    "func_0206062c": {
+      "src/unnamed/arm9/0206/func_02060484.cpp": [
+        "return:int"
+      ]
+    },
+    "func_02060a30": {
+      "src/unnamed/arm9/0206/func_02060918.cpp": [
+        "arity:1"
+      ]
+    },
+    "func_02060b64": {
+      "src/unnamed/arm9/0206/func_02060918.cpp": [
+        "param:#1 char *"
+      ]
+    },
+    "func_0206cf98": {
+      "src/unnamed/arm9/0205/func_0205dc7c.cpp": [
+        "return:void"
+      ]
+    },
     "func_020731dc": {
       "src/game/player/Player.cpp": [
         "linkage:bare extern in a C++ TU"
@@ -12237,6 +12287,9 @@
       ]
     },
     "data_020a3fc0": {
+      "src/unnamed/arm9/0204/func_02040a5c.cpp": [
+        "return:UnkStruct_020a3fc0"
+      ],
       "src/unnamed/arm9/0204/func_02040a84.c": [
         "return:int []"
       ]
@@ -12321,6 +12374,9 @@
       ]
     },
     "data_020a4c70": {
+      "src/unnamed/arm9/0204/func_02049c48.cpp": [
+        "return:unsigned short []"
+      ],
       "src/unnamed/arm9/0204/func_02049cd8.c": [
         "return:char []"
       ]
@@ -12353,6 +12409,9 @@
       ]
     },
     "data_020a6188": {
+      "src/unnamed/arm9/0205/func_02057e84.cpp": [
+        "return:Node"
+      ],
       "src/unnamed/arm9/0205/func_02058308.c": [
         "return:char []"
       ]
@@ -12373,6 +12432,9 @@
       ]
     },
     "data_020a63a0": {
+      "src/unnamed/arm9/0205/func_0205950c.cpp": [
+        "return:MPUFunc"
+      ],
       "src/unnamed/arm9/0205/func_02059578.c": [
         "return:int []"
       ],
@@ -12381,6 +12443,9 @@
       ]
     },
     "data_020a63a4": {
+      "src/unnamed/arm9/0205/func_0205950c.cpp": [
+        "return:unsigned int"
+      ],
       "src/unnamed/arm9/0205/func_02059578.c": [
         "return:int []"
       ]
@@ -12396,6 +12461,9 @@
       ]
     },
     "data_020a6438": {
+      "src/unnamed/arm9/0205/func_02059650.cpp": [
+        "return:volatile unsigned int []"
+      ],
       "src/unnamed/arm9/0205/func_02059700.c": [
         "return:volatile unsigned long long"
       ],
@@ -12409,6 +12477,9 @@
       ]
     },
     "data_020a645c": {
+      "src/unnamed/arm9/01ff/func_01ffdd08.cpp": [
+        "return:volatile unsigned short"
+      ],
       "src/unnamed/arm9/0205/func_02059e04.c": [
         "return:char []"
       ]
@@ -12613,6 +12684,9 @@
       ]
     },
     "data_020a9570": {
+      "src/unnamed/arm9/0206/func_02065af0.cpp": [
+        "return:int"
+      ],
       "src/unnamed/arm9/0206/func_02065b88.c": [
         "return:unsigned char []"
       ]
@@ -18467,6 +18541,9 @@
       ]
     },
     "func_01ff8000": {
+      "src/unnamed/arm9/0206/func_02060b64.cpp": [
+        "kind:data"
+      ],
       "src/unnamed/arm9/0207/func_020708b4.c": [
         "kind:function"
       ]
@@ -23283,6 +23360,9 @@
         "arity:3"
       ],
       "src/unnamed/arm9/0205/func_0205dd9c.c": [
+        "arity:3"
+      ],
+      "src/unnamed/arm9/0205/func_0205e0b0.cpp": [
         "arity:3"
       ],
       "src/unnamed/arm9/0206/func_02061e38.cpp": [

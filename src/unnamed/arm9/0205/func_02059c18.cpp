@@ -1,8 +1,12 @@
+//cpp
 #include "types.h"
+#include "IRQ.h"
+
+extern "C" {
+
 extern long long func_02059650(void *obj);
 extern void func_02056e4c(u32 idx, u32 handler, u32 arg);
 extern void func_02059824(void);
-extern void _ZN3IRQ10EnableIRQsEj(unsigned int mask);
 typedef struct Obj
 {
   char pad0c[0xc];
@@ -32,5 +36,6 @@ void func_02059c18(Obj *obj)
   }
   *((volatile u16 *) 0x4000104) = timer;
   *((volatile u16 *) 0x4000106) = 0xc1;
-  _ZN3IRQ10EnableIRQsEj(0x10);
+  IRQ::EnableIRQs(0x10);
+}
 }

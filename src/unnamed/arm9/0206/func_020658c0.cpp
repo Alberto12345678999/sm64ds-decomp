@@ -1,6 +1,9 @@
+//cpp
 #include "types.h"
-extern u32 _ZN3IRQ7DisableEv(void);
-extern void _ZN3IRQ7RestoreEj(u32 s);
+#include "IRQ.h"
+
+extern "C" {
+
 extern int func_02065ae0(void);
 extern void func_02065ad0(int v);
 extern void CpuCopy8(void *a, void *b, int n);
@@ -17,7 +20,7 @@ struct Node {
 
 int func_020658c0(struct Node *node, int a1, void *a2, int a3, int arg5, u16 arg6)
 {
-    u32 irq = _ZN3IRQ7DisableEv();
+    u32 irq = IRQ::Disable();
     if (func_02065ae0() == 0) {
         func_02065ad0((int)node);
     } else {
@@ -42,6 +45,7 @@ int func_020658c0(struct Node *node, int a1, void *a2, int a3, int arg5, u16 arg
     node->f4 = arg5;
     node->f30 = arg6;
     CpuCopy8(a2, (char *)node + 8, 0x20);
-    _ZN3IRQ7RestoreEj(irq);
+    IRQ::Restore(irq);
     return 1;
+}
 }

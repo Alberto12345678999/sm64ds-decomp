@@ -1,4 +1,9 @@
+//cpp
 #include "types.h"
+#include "CP15.h"
+
+extern "C" {
+
 #define ROM_HEADER_ARM9_ROM_OFFSET (*(u32 *)0x027FFE20)
 #define ROM_HEADER_ARM9_RAM_ADDR   (*(u32 *)0x027FFE28)
 #define ROM_HEADER_ARM9_SIZE       (*(u32 *)0x027FFE2C)
@@ -14,7 +19,6 @@ extern void func_01ffdb28(void);
 extern vu16 data_020a645c;
 extern int func_02057020(void);
 extern void func_0205710c(int lockId);
-extern void _ZN4CP1527FlushAndInvalidateDataCacheEv(void);
 extern void OSReadROMArea(u32 romOffset, u32 dest, u32 size);
 
 /* func_01ffdd98 at 0x01ffdd98 (ITCM). Soft reset: hand the caller's argument to the
@@ -25,7 +29,7 @@ extern void OSReadROMArea(u32 romOffset, u32 dest, u32 size);
  * fresh copy off the card, so the code driving that cannot itself be running from main RAM.
  *
  * Names, and where each one comes from:
- *   Crash            0x02019740, already named in config/arm9/symbols.txt (src/Crash.c).
+ *   Crash            0x02019740, already named in config/arm9/symbols.txt (src/Crash.cpp).
  *                    Reached when the boot-info halfword is 2, i.e. this build refuses to
  *                    soft reset in that boot mode. src/func_02013f4c.c makes the same test
  *                    and routes the ==2 case to func_0205f958 instead of calling here.
@@ -93,7 +97,7 @@ void func_01ffdd98(u32 resetArg) {
  *
  * func_02057020 / func_0205710c keep their func_ names from config/arm9/symbols.txt.
  * The low-halfword truncation of func_02057020's result is the same idiom already in
- * src/unnamed/arm9/0205/func_0205865c.c and src/engine/save/SaveData2.cpp.
+ * src/unnamed/arm9/0205/func_0205865c.cpp and src/engine/save/SaveData2.cpp.
  */
 void func_01ffdd08(void) {
     u32 romOffset = ROM_HEADER_ARM9_ROM_OFFSET;
@@ -101,7 +105,7 @@ void func_01ffdd08(void) {
     u32 size = ROM_HEADER_ARM9_SIZE;
 
     func_0205710c((u16)func_02057020());
-    _ZN4CP1527FlushAndInvalidateDataCacheEv();
+    CP15::FlushAndInvalidateDataCache();
 
     if (romOffset < ROM_SECURE_AREA_END) {
         u32 skipped = ROM_SECURE_AREA_END - romOffset;
@@ -112,4 +116,5 @@ void func_01ffdd08(void) {
     OSReadROMArea(romOffset, dest, size);
 
     OSReadROMArea(ROM_HEADER_ARM7_ROM_OFFSET, ROM_HEADER_ARM7_RAM_ADDR, ROM_HEADER_ARM7_SIZE);
+}
 }

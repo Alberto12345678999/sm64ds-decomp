@@ -1,6 +1,7 @@
+//cpp
 /* func_ov007_020b91b4 at 0x020b91b4 (ov007), size 0x48c
  * Compiler mwccarm 1.2/sp2p3, flags:
- * -O4,p -enum int -lang c99 -char signed -interworking -proc arm946e -gccext,on -msgstyle gcc
+ * -O4,p -enum int -lang c++ -char signed -interworking -proc arm946e -gccext,on -msgstyle gcc
  * 0/1 select is emitted true-arm-first and {0,1} int arms canonicalize to bool(!=0);
  * pointer-typed arms ((char*)0/(char*)1 cast back to int) pin moveq-first */
 #include "types.h"
@@ -8,6 +9,9 @@
 #include "Ov007Sprite.h"
 #include "Ov007Touch.h"
 #include "Ov007Work.h"
+#include "cstd.h"
+
+extern "C" {
 
 /* The 0xd0-byte touch picker func_ov007_020c690c builds; names as in
  * func_ov007_020c5014 and func_ov007_020c684c, only the slots this file
@@ -71,7 +75,6 @@ extern int func_ov007_020c3be0(int t, int a, int b);
 extern int func_ov007_020c5d5c(void *o);
 extern int func_ov007_020bbd24(int a);
 extern void func_ov007_020c4dfc(void *c, int a1, int a2, int a3);
-extern int _ZN4cstd3divEii(int a, int b);
 extern void func_ov007_020c4f50(void *c, int a1, int a2, int a3, int a4);
 extern void func_ov007_020c4e98(void *c, int a1, int a2, int a3, int a4, int a5, int a6);
 void func_ov007_020b91b4(void)
@@ -143,7 +146,7 @@ void func_ov007_020b91b4(void)
                 } else if (r4 >= 0x28) {
                     q = 0x1000;
                 } else {
-                    q = _ZN4cstd3divEii(r4 << 0xc, 0x28);
+                    q = cstd::div(r4 << 0xc, 0x28);
                 }
                 SPRITES->sprites[1]->alpha = q * 0xc;
                 if (q < 0x1000) {
@@ -194,7 +197,7 @@ void func_ov007_020b91b4(void)
             } else if (r4 >= 0xf) {
                 q = 0x1000;
             } else {
-                q = _ZN4cstd3divEii(r4 << 0xc, 0xf);
+                q = cstd::div(r4 << 0xc, 0xf);
             }
             if ((SCENE->states[1]->currentState) == 6) {
                 q = 0x1000 - q;
@@ -227,4 +230,5 @@ void func_ov007_020b91b4(void)
 
   }
 
+}
 }

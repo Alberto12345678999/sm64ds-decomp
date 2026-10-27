@@ -1,4 +1,9 @@
+//cpp
 #include "types.h"
+#include "CP15.h"
+
+extern "C" {
+
 typedef struct EchoChan {
     int l;
     int r;
@@ -9,7 +14,6 @@ typedef struct EchoWork {
     EchoChan ch[24];
 } EchoWork;
 
-extern void _ZN4CP1527FlushAndInvalidateDataCacheEjj(u32 addr, u32 size);
 
 void func_020497a0(s16* p0, s16* p1, u32 len, EchoWork* st)
 {
@@ -78,6 +82,7 @@ void func_020497a0(s16* p0, s16* p1, u32 len, EchoWork* st)
         st->ch[dst].r = (p0[idx] + 1) >> 2;
     }
 
-    _ZN4CP1527FlushAndInvalidateDataCacheEjj((u32)p0, len);
-    _ZN4CP1527FlushAndInvalidateDataCacheEjj((u32)p1, len);
+    CP15::FlushAndInvalidateDataCache((u32)p0, len);
+    CP15::FlushAndInvalidateDataCache((u32)p1, len);
+}
 }

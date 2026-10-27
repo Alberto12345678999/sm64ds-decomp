@@ -1,8 +1,10 @@
+//cpp
 #include "types.h"
 #include "private/arm9_a1fc0_file_share.h"
+#include "IRQ.h"
 
-extern u32 _ZN3IRQ7DisableEv(void);
-extern void _ZN3IRQ7RestoreEj(u32 state);
+extern "C" {
+
 extern void func_0205cd5c(void *arg0, int arg1);
 extern void func_020421b4(void);
 extern void func_02065170(void);
@@ -27,18 +29,18 @@ typedef struct FSFile {
  * function is 12 bytes shorter). */
 void func_02040aa4(void) {
     FileShareWork *work = FILE_SHARE_WORK;
-    u32 saved0 = _ZN3IRQ7DisableEv();
+    u32 saved0 = IRQ::Disable();
 
     if (data_020a0f84 != 0) {
         int cb1 = work->mTable;
 
         if (cb1 != 0) {
             if (cb1 != 0) {
-                u32 saved1 = _ZN3IRQ7DisableEv();
+                u32 saved1 = IRQ::Disable();
                 void *ctxArg = (void *)FILE_SHARE_WORK->mAllocArg;
                 CallbackFn fn = (CallbackFn)FILE_SHARE_WORK->mAllocFunc;
                 fn(ctxArg, 0, cb1);
-                _ZN3IRQ7RestoreEj(saved1);
+                IRQ::Restore(saved1);
             }
             *(volatile int *)&work->mTable = 0;
             *(volatile int *)&work->mTableSize = 0;
@@ -58,11 +60,11 @@ void func_02040aa4(void) {
             {
                 int cb2 = child->mRecvWork;
                 if (cb2 != 0) {
-                    u32 saved2 = _ZN3IRQ7DisableEv();
+                    u32 saved2 = IRQ::Disable();
                     void *ctxArg2 = (void *)FILE_SHARE_WORK->mAllocArg;
                     CallbackFn fn2 = (CallbackFn)FILE_SHARE_WORK->mAllocFunc;
                     fn2(ctxArg2, 0, cb2);
-                    _ZN3IRQ7RestoreEj(saved2);
+                    IRQ::Restore(saved2);
                 }
             }
         } else {
@@ -73,5 +75,6 @@ void func_02040aa4(void) {
         data_020a0f84 = 0;
     }
 
-    _ZN3IRQ7RestoreEj(saved0);
+    IRQ::Restore(saved0);
+}
 }

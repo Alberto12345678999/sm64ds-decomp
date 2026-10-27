@@ -1,6 +1,11 @@
+//cpp
 #include "types.h"
 #include "private/arm9_a1fc0_file_share.h"
 #include "private/arm9_wbt.h"
+#include "CP15.h"
+
+extern "C" {
+
 typedef struct {
     u32 kind : 4;
     u32 chan : 4;
@@ -27,7 +32,6 @@ extern void func_02065788(u16 type, u32 arg1, const void *src, u32 arg3);
 extern void func_02041a00(int x);
 extern void func_02065730(u16 type, u32 arg1, const void *src1, u32 arg3, const void *src2,
                           u32 extra);
-extern void _ZN4CP1527FlushAndInvalidateDataCacheEjj(u32 a, u32 b);
 extern int func_020423dc(int *r6);
 extern int func_020656d4(u16 arg0, const void *arg1, int arg2, u32 arg3);
 extern void func_020657d0(u16 id, void *obj);
@@ -75,8 +79,8 @@ void func_02040f30(void *arg0) {
             return;
         }
         if ((FILE_SHARE_WORK->mState != 2) != 0) {
-            _ZN4CP1527FlushAndInvalidateDataCacheEjj((u32)FILE_SHARE_WORK->mTable,
-                                                     (u32)FILE_SHARE_WORK->mTableSize);
+            CP15::FlushAndInvalidateDataCache((u32)FILE_SHARE_WORK->mTable,
+                                              (u32)FILE_SHARE_WORK->mTableSize);
             func_020423dc((int *)FILE_SHARE_WORK->mTable);
             {
                 FILE_SHARE_WORK->mState = 2;
@@ -136,4 +140,5 @@ void func_02040f30(void *arg0) {
         return;
     }
     }
+}
 }

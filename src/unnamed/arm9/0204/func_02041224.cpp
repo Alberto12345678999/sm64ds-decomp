@@ -1,10 +1,12 @@
+//cpp
 #include "private/arm9_a1fc0_file_share.h"
+#include "IRQ.h"
+
+extern "C" {
 
 typedef int (*FnT)(int a, int b, int c);
 
 extern char data_020a1fc0[];
-extern unsigned int _ZN3IRQ7DisableEv(void);
-extern void _ZN3IRQ7RestoreEj(unsigned int);
 extern unsigned int __aeabi_uidiv(unsigned int n, unsigned int d);
 
 /* Grow the child's receive work (WBT's packet bitmap) to cover a read of n
@@ -27,9 +29,9 @@ void func_02041224(char *thiz, int n)
     r6 = child->mRecvWork;
     if (r6 != 0) {
         g = data_020a1fc0;
-        saved = _ZN3IRQ7DisableEv();
+        saved = IRQ::Disable();
         ((FnT)((FileShareWork *)g)->mAllocFunc)(((FileShareWork *)g)->mAllocArg, 0, r6);
-        _ZN3IRQ7RestoreEj(saved);
+        IRQ::Restore(saved);
     }
     {
         int dm = FILE_SHARE_WORK->mParentPacketSize - 0xe;
@@ -37,9 +39,10 @@ void func_02041224(char *thiz, int n)
     }
     r5 = ((q + 0x1f) >> 2) << 4;
     g = data_020a1fc0;
-    saved = _ZN3IRQ7DisableEv();
+    saved = IRQ::Disable();
     r5 = ((FnT)((FileShareWork *)g)->mAllocFunc)(((FileShareWork *)g)->mAllocArg, r5, 0);
-    _ZN3IRQ7RestoreEj(saved);
+    IRQ::Restore(saved);
     child->mRecvWork = r5;
     child->mPacketBitmapTable[0] = child->mRecvWork;
+}
 }

@@ -1,5 +1,9 @@
+//cpp
 // func_ov007_020c9d90 at 0x020c9d90 (ov007)
 #include "types.h"
+#include "cstd.h"
+
+extern "C" {
 
 typedef struct Obj { int f0; int f4; int f8; } Obj;
 typedef struct Cell { Obj* obj; } Cell;
@@ -28,8 +32,6 @@ typedef struct Self {
 } Self;
 
 extern int func_ov007_020c30ac(Vector3 *arr, int count, Vector3 *target, int arg4, int *out);
-extern int _ZN4cstd3modEii(int a, int b);
-extern int _ZN4cstd3divEii(int a, int b);
 extern void func_ov007_020c8010(int a, int b, Cell* c);
 
 void func_ov007_020c9d90(Self* self, Ctx* ctx)
@@ -54,8 +56,8 @@ void func_ov007_020c9d90(Self* self, Ctx* ctx)
         b = func_ov007_020c30ac(ctx->arr, count, &self->v38[i], -1, 0);
 
         g = ctx->grid;
-        m = _ZN4cstd3modEii(a, g->w);
-        d = _ZN4cstd3divEii(a, g->h);
+        m = cstd::mod(a, g->w);
+        d = cstd::div(a, g->h);
         cell = g->rows[d]->cells[m];
         obj = cell->obj;
         old = obj->f8;
@@ -64,8 +66,8 @@ void func_ov007_020c9d90(Self* self, Ctx* ctx)
         cell->obj->f8 = old;
 
         g = ctx->grid;
-        m = _ZN4cstd3modEii(b, g->w);
-        d = _ZN4cstd3divEii(b, g->h);
+        m = cstd::mod(b, g->w);
+        d = cstd::div(b, g->h);
         cell = g->rows[d]->cells[m];
         obj = cell->obj;
         old = obj->f8;
@@ -73,4 +75,5 @@ void func_ov007_020c9d90(Self* self, Ctx* ctx)
         func_ov007_020c8010(self->f68[i], self->f58[i], cell);
         cell->obj->f8 = old;
     }
+}
 }

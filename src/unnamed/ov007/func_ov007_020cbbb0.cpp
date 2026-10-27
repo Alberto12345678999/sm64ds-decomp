@@ -1,5 +1,10 @@
+//cpp
 #include "types.h"
 #include "nitro/fx/fx.h"
+#include "cstd.h"
+
+extern "C" {
+
 typedef struct {
     char pad[8];
     Vector3 ****rows;
@@ -15,7 +20,6 @@ typedef struct {
     int *buf28; int *buf2c; int *buf30; int *buf34;
 } Ctx;
 extern void *func_ov007_020c3df4(int a, int size);
-extern long long _ZN4cstd3divEii(int num, int den);
 extern void *func_ov007_020c73f0(int a, int b, int c, int d);
 extern void *func_ov007_020c80a4(void);
 extern void func_ov007_020c72d0(void *g);
@@ -29,9 +33,9 @@ void *func_ov007_020cbbb0(int a0, int a1, int a2, int *a3)
 
     ctx = (Ctx *)func_ov007_020c3df4(0, 0x38);
     a0m1 = a0 - 1;
-    d1 = (int)_ZN4cstd3divEii(a2, a0m1);
+    d1 = (int)cstd::div(a2, a0m1);
     t = FX_MUL(a2, 0x16a1);
-    d2 = (int)_ZN4cstd3divEii(t / 2, a0m1);
+    d2 = (int)cstd::div(t / 2, a0m1);
     {
         int n = a0 - 1;
         a0m1 = n;
@@ -106,4 +110,5 @@ void *func_ov007_020cbbb0(int a0, int a1, int a2, int *a3)
     ctx->copy = *(Copy6 *)a3;
     func_ov007_020cb3dc(ctx);
     return ctx;
+}
 }

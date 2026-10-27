@@ -1,4 +1,8 @@
+//cpp
 #include "types.h"
+#include "IRQ.h"
+
+extern "C" {
 
 /* NitroSDK OS_CreateThread(thread, func, arg, stack, stackSize, prio):
  * take a free thread id (func_02058538), file the thread in the id table
@@ -46,8 +50,6 @@ typedef char OSContext_size_must_be_0x64[sizeof(OSContext) == 0x64 ? 1 : -1];
 typedef char OSThread_joinQueue_must_be_at_0x90[(int)&((OSThread *)0)->joinQueue == 0x90 ? 1 : -1];
 #endif
 
-extern u32 _ZN3IRQ7DisableEv(void);
-extern void _ZN3IRQ7RestoreEj(u32 s);
 extern int func_02058538(void);
 extern void func_020584d0(void *node);
 extern void func_02058568(void *a, int b, int c);
@@ -62,10 +64,10 @@ void func_02058200(char *self, int a1, int a2, int end, int arg4, int arg5)
     int id;
     char *base;
     volatile int zero;
-    saved = _ZN3IRQ7DisableEv();
+    saved = IRQ::Disable();
     id = func_02058538();
     if (id < 0) {
-        _ZN3IRQ7RestoreEj(saved);
+        IRQ::Restore(saved);
         return;
     }
     thread->priority = arg5;
@@ -89,5 +91,6 @@ void func_02058200(char *self, int a1, int a2, int end, int arg4, int arg5)
     thread->mutex = 0;
     thread->mutexQueue.head = 0;
     thread->mutexQueue.tail = 0;
-    _ZN3IRQ7RestoreEj(saved);
+    IRQ::Restore(saved);
+}
 }

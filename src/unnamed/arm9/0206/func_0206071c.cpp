@@ -1,5 +1,9 @@
+//cpp
+#include "CP15.h"
+
+extern "C" {
+
 #pragma opt_loop_invariants off
-extern void _ZN4CP1519InvalidateDataCacheEjj(unsigned int a, unsigned int b);
 extern int func_02060f60(void *thiz, int a, int b);
 extern void CpuCopy8(void *a, int b, unsigned int c);
 extern void func_0206081c(void *thiz);
@@ -15,7 +19,7 @@ typedef struct ChunkRequest {
 
 /* The card access state block data_020a8180 (NitroSDK CARDiCommon), the
  * fields this function touches; names as func_0206062c.cpp and
- * func_02060484.c spell them. */
+ * func_02060484.cpp spell them. */
 typedef struct CardCommon {
     ChunkRequest *mRequest; /* 0x00 */
     unsigned char pad_04[0x14];
@@ -41,7 +45,7 @@ void func_0206071c(char *thiz) {
         n = p->mRemaining;
         if (n > 0x100)
             n = 0x100;
-        _ZN4CP1519InvalidateDataCacheEjj((unsigned int)p->mBuffer, 0x100);
+        CP15::InvalidateDataCache((unsigned int)p->mBuffer, 0x100);
         p->mRequest->mSrc = p->mSrc;
         p->mRequest->mDst = (int)p->mBuffer;
         p->mRequest->mLen = n;
@@ -54,4 +58,5 @@ void func_0206071c(char *thiz) {
     } while (p->mRemaining != 0);
 
     func_0206081c(thiz);
+}
 }

@@ -1,7 +1,11 @@
+//cpp
 #include "types.h"
 #include "nitro/fx/fx.h"
+#include "cstd.h"
+
+extern "C" {
+
 extern void func_ov007_020b2614(int a, int b, int c);
-extern int _ZN4cstd3divEii(int a, int b);
 
 struct Sub { char pad2[2]; s16 field2; int field4; char pad8[4]; int fieldc; };
 struct S {
@@ -32,7 +36,7 @@ void func_ov007_020b1b74(void)
         else if (r4 >= 0xa)
             val = 0x1000;
         else
-            val = _ZN4cstd3divEii(r4 << 12, 0xa);
+            val = cstd::div(r4 << 12, 0xa);
         sq = (int)(((long long)val * val) >> 12);
         data_ov007_0210342c->ff8 = FX_MUL(sq, 0x17d0);
     } else if (r4 <= 0x1e) {
@@ -44,7 +48,7 @@ void func_ov007_020b1b74(void)
         else if (r4 >= 0x1e)
             val = 0x1000;
         else
-            val = _ZN4cstd3divEii((r4 - 0xa) << 12, 0x14);
+            val = cstd::div((r4 - 0xa) << 12, 0x14);
         t = 0x1000 - val;
         sq = (int)(((long long)t * t) >> 12);
         data_ov007_0210342c->ff8 = FX_MUL(sq, 0x7d0) + 0x1000;
@@ -54,4 +58,5 @@ void func_ov007_020b1b74(void)
 
     if (data_ov007_0210342c->fec == 1)
         data_ov007_0210342c->ff8 = 0x1000;
+}
 }

@@ -1,5 +1,8 @@
-extern int _ZN3IRQ7DisableEv(void);
-extern void _ZN3IRQ7RestoreEj(unsigned int);
+//cpp
+#include "IRQ.h"
+
+extern "C" {
+
 extern void OS_SleepThread(void *p);
 
 /* NitroSDK FS_SuspendArchive(p_arc): with interrupts off, unless the archive
@@ -7,7 +10,7 @@ extern void OS_SleepThread(void *p);
  * (FS_ARCHIVE_FLAG_RUNNING, 0x10) set FS_ARCHIVE_FLAG_SUSPENDING (0x40) and
  * sleep on stat_q until that clears, otherwise set SUSPEND at once. Returns
  * whether the archive was not suspended before. Field names follow the SDK's
- * FSArchive, as func_0205d044.c spells it; only the fields this function
+ * FSArchive, as func_0205d044.cpp spells it; only the fields this function
  * touches are spelled out. */
 typedef struct FSArchive {
     char pad_00[0xe];
@@ -32,7 +35,7 @@ int func_0205c864(int *thiz)
     FSArchive *p_arc = (FSArchive *)thiz;
     unsigned int saved;
     int retval;
-    saved = (unsigned int)_ZN3IRQ7DisableEv();
+    saved = (unsigned int)IRQ::Disable();
     retval = !FS_IsArchiveSuspended(p_arc);
     if (retval) {
         if (FS_IsArchiveRunning(p_arc)) {
@@ -44,6 +47,7 @@ int func_0205c864(int *thiz)
             p_arc->flag |= 8;
         }
     }
-    _ZN3IRQ7RestoreEj(saved);
+    IRQ::Restore(saved);
     return retval;
+}
 }

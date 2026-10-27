@@ -1,4 +1,7 @@
-extern void _ZN4CP1514FlushDataCacheEjj(unsigned int addr, unsigned int size);
+//cpp
+#include "CP15.h"
+
+extern "C" {
 
 /* NitroSDK SND_DestroyWaveArc: unlink every SNDWaveArcLink that still points
  * at this wave archive, clearing each link and flushing it so the ARM7 sees
@@ -22,7 +25,8 @@ void func_0205b6b0(void *thiz)
         SNDWaveArcLink *next = link->next;
         link->waveArc = 0;
         link->next = 0;
-        _ZN4CP1514FlushDataCacheEjj((unsigned int)link, 8);
+        CP15::FlushDataCache((unsigned int)link, 8);
         link = next;
     } while (link != 0);
+}
 }

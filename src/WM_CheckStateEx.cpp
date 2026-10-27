@@ -1,6 +1,10 @@
+//cpp
 #include "types.h"
+#include "CP15.h"
+
+extern "C" {
+
 extern int func_0206152c(void);
-extern void _ZN4CP1519InvalidateDataCacheEjj(unsigned int addr, unsigned int n);
 extern unsigned int *data_020a89ac;
 
 int WM_CheckStateEx(int count, ...)
@@ -11,7 +15,7 @@ int WM_CheckStateEx(int count, ...)
     r = func_0206152c();
     if (r != 0)
         return r;
-    _ZN4CP1519InvalidateDataCacheEjj(data_020a89ac[1], 2);
+    CP15::InvalidateDataCache(data_020a89ac[1], 2);
     target = *(u16 *)data_020a89ac[1];
     p = (int *)((unsigned int)&count & ~3) + 1;
     r = 3;
@@ -23,4 +27,5 @@ int WM_CheckStateEx(int count, ...)
             r = 0;
     } while (--count != 0);
     return r;
+}
 }

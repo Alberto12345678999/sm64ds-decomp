@@ -1,8 +1,10 @@
+//cpp
 #include "Ov007Work.h"
+#include "cstd.h"
+
+extern "C" {
 
 extern int func_ov007_020bf630(int *self, int *p1, int p2, int p3, int arg5);
-extern int _ZN4cstd3modEii(int, int);
-extern int _ZN4cstd3divEii(int, int);
 extern void func_ov007_020ca578(int *a, int b, int c, int d);
 extern int *data_ov007_02104bd4;
 extern int *data_ov007_0210342c;
@@ -36,12 +38,13 @@ void func_ov007_020bed60(int arg0, int arg1, int arg2) {
     if (res == -1)
         return;
     {
-        int m = _ZN4cstd3modEii(res, self->grid->columns);
-        int d = _ZN4cstd3divEii(res, self->grid->columns);
+        int m = cstd::mod(res, self->grid->columns);
+        int d = cstd::div(res, self->grid->columns);
         func_ov007_020ca578((int *)self, m, d, arg2);
     }
     {
         Ov007MeshWave *p = (Ov007MeshWave *)data_ov007_02104bd4[3];
         p->delay = 0x78;
     }
+}
 }

@@ -1,8 +1,12 @@
+//cpp
 #include "types.h"
 #include "Ov007MenuState.h"
 #include "Ov007Sprite.h"
 #include "Ov007Work.h"
-extern int _ZN4cstd3divEii(int, int);
+#include "cstd.h"
+
+extern "C" {
+
 extern void func_ov007_020c4388(char *r0, int r1);
 extern void func_ov007_020c421c(char *r4);
 extern char *data_ov007_02104b9c;
@@ -124,8 +128,8 @@ void func_ov007_020b8fd4(int param) {
     if (sh == 1) {
         return;
     }
-    scale = _ZN4cstd3divEii(f14 << 12, 500);
-    other = _ZN4cstd3divEii(f8 << 12, 200);
+    scale = cstd::div(f14 << 12, 500);
+    other = cstd::div(f8 << 12, 200);
     if (scale <= other) {
         scale = other;
     }
@@ -138,4 +142,5 @@ void func_ov007_020b8fd4(int param) {
     func_ov007_020c4388((char *)p_10, param);
     func_ov007_020c421c((char *)p_c);
     func_ov007_020c421c((char *)p_10);
+}
 }

@@ -1,6 +1,9 @@
+//cpp
 #include "types.h"
-extern u32 _ZN3IRQ7DisableEv(void);
-extern void _ZN3IRQ7RestoreEj(u32 state);
+#include "IRQ.h"
+
+extern "C" {
+
 extern void func_020589ac(void* node, void* self);
 extern void OS_SleepThread(void* self);
 
@@ -20,7 +23,7 @@ extern struct Globals data_020a6134;
 
 void func_02058b08(struct Obj* self)
 {
-    u32 saved = _ZN3IRQ7DisableEv();
+    u32 saved = IRQ::Disable();
     struct Node* cur = data_020a6134.f8;
 
     for (;;) {
@@ -39,5 +42,6 @@ void func_02058b08(struct Obj* self)
         cur->f78 = 0;
     }
 
-    _ZN3IRQ7RestoreEj(saved);
+    IRQ::Restore(saved);
+}
 }

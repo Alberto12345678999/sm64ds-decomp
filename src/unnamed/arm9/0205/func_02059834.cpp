@@ -1,5 +1,9 @@
+//cpp
 #include "types.h"
-extern void _ZN3IRQ11DisableIRQsEj(u32 mask);
+#include "IRQ.h"
+
+extern "C" {
+
 extern u64 func_02059650(void);
 extern void func_02059c18(void *p);
 extern void func_02059a60(void *p, u64 key);
@@ -27,7 +31,7 @@ void func_02059834(void)
     struct Node *n;
     u64 now;
     *(volatile unsigned short *)0x4000106 = 0;
-    _ZN3IRQ11DisableIRQsEj(0x10);
+    IRQ::DisableIRQs(0x10);
     *(int *)(((int)&data_023c0000 + 0x3ff8)) |= 0x10;
     now = func_02059650();
     e = data_020a6444.head;
@@ -51,4 +55,5 @@ void func_02059834(void)
         func_02059a60(e, 0);
     }
     if (data_020a6444.head != 0) func_02059c18(data_020a6444.head);
+}
 }

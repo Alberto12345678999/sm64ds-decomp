@@ -1,4 +1,9 @@
+//cpp
 #include "types.h"
+#include "IRQ.h"
+
+extern "C" {
+
 struct Node {
     char pad[0x64];
     u32 unk64;
@@ -13,12 +18,10 @@ struct Manager {
 
 extern struct Manager data_020a6134;
 
-u32 _ZN3IRQ7DisableEv(void);
-void _ZN3IRQ7RestoreEj(u32 state);
 void func_02057f54(void);
 
 void OS_WakeupThread(u16 *self) {
-    u32 r4 = _ZN3IRQ7DisableEv();
+    u32 r4 = IRQ::Disable();
     u32 mask = *self;
     if (mask != 0) {
         struct Node *node = data_020a6134.first;
@@ -34,5 +37,6 @@ void OS_WakeupThread(u16 *self) {
         *self = 0;
         func_02057f54();
     }
-    _ZN3IRQ7RestoreEj(r4);
+    IRQ::Restore(r4);
+}
 }

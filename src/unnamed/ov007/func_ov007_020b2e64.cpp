@@ -1,12 +1,15 @@
+//cpp
 #include "types.h"
 #include "Ov007MenuState.h"
 #include "Ov007Work.h"
+#include "cstd.h"
+
+extern "C" {
 
 extern int* data_ov007_02103360;
 extern int* data_ov007_0210342c;
 extern int data_ov007_02103364;
 extern int func_ov007_020c1da0(int i);
-extern int _ZN4cstd3modEii(int a, int b);
 extern void func_ov007_020c92d0(int q);
 extern int func_ov007_020b3360(void);
 extern void func_ov007_020b3e84(short* r0);
@@ -57,13 +60,13 @@ void func_ov007_020b2e64(char* self)
 
     if (func_ov007_020c1da0(0) != 0) {
         r2 = -1;
-    } else if (r4[0] == 1 || (r4[0] >= 0x14 && _ZN4cstd3modEii(r4[0] - 0x14, 0xa) == 0)) {
+    } else if (r4[0] == 1 || (r4[0] >= 0x14 && cstd::mod(r4[0] - 0x14, 0xa) == 0)) {
         r2 = 0;
-    } else if (r4[1] == 1 || (r4[1] >= 0x14 && _ZN4cstd3modEii(r4[1] - 0x14, 0xa) == 0)) {
+    } else if (r4[1] == 1 || (r4[1] >= 0x14 && cstd::mod(r4[1] - 0x14, 0xa) == 0)) {
         r2 = 1;
-    } else if (r4[2] == 1 || (r4[2] >= 0x14 && _ZN4cstd3modEii(r4[2] - 0x14, 0xa) == 0)) {
+    } else if (r4[2] == 1 || (r4[2] >= 0x14 && cstd::mod(r4[2] - 0x14, 0xa) == 0)) {
         r2 = 2;
-    } else if (r4[3] == 1 || (r4[3] >= 0x14 && _ZN4cstd3modEii(r4[3] - 0x14, 0xa) == 0)) {
+    } else if (r4[3] == 1 || (r4[3] >= 0x14 && cstd::mod(r4[3] - 0x14, 0xa) == 0)) {
         r2 = 3;
     } else {
         r2 = -1;
@@ -95,4 +98,5 @@ void func_ov007_020b2e64(char* self)
     }
 
     func_ov007_020b3190();
+}
 }

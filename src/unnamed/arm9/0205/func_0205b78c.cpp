@@ -1,3 +1,8 @@
+//cpp
+#include "CP15.h"
+
+extern "C" {
+
 typedef struct Node Node;
 
 struct Slot { struct Node *p18; struct Node *p1c; };
@@ -9,7 +14,6 @@ struct Node {
     struct Slot slots[1];
 };
 
-extern void _ZN4CP1514FlushDataCacheEjj(unsigned int a, unsigned int b);
 
 void func_0205b78c(struct Node *base, int index, struct Node *arg)
 {
@@ -19,7 +23,7 @@ void func_0205b78c(struct Node *base, int index, struct Node *arg)
             return;
         if ((struct Node *)&base->slots[index] == r3->slots[0].p18) {
             r3->slots[0].p18 = base->slots[index].p1c;
-            _ZN4CP1514FlushDataCacheEjj((unsigned int)base->slots[index].p18, 0x3c);
+            CP15::FlushDataCache((unsigned int)base->slots[index].p18, 0x3c);
         } else {
             struct Node *p = r3->slots[0].p18;
             if (p != 0) {
@@ -33,7 +37,7 @@ void func_0205b78c(struct Node *base, int index, struct Node *arg)
                 }
             }
             p->f4 = (struct Node *)base->slots[index].p1c;
-            _ZN4CP1514FlushDataCacheEjj((unsigned int)p, 8);
+            CP15::FlushDataCache((unsigned int)p, 8);
         }
     }
     {
@@ -41,7 +45,8 @@ void func_0205b78c(struct Node *base, int index, struct Node *arg)
         arg->slots[0].p18 = (struct Node *)&base->slots[index];
         base->slots[index].p1c = (struct Node *)old;
         base->slots[index].p18 = arg;
-        _ZN4CP1514FlushDataCacheEjj((unsigned int)base, 0x3c);
-        _ZN4CP1514FlushDataCacheEjj((unsigned int)arg, 0x3c);
+        CP15::FlushDataCache((unsigned int)base, 0x3c);
+        CP15::FlushDataCache((unsigned int)arg, 0x3c);
     }
+}
 }

@@ -1,8 +1,12 @@
+//cpp
 /* func_ov007_020bda8c at 0x020bda8c
  *
  * Matched byte-for-byte with mwccarm 1.2/sp2p3 (ov007).
  */
-extern int _ZN4cstd3divEii(int a, int b);
+#include "cstd.h"
+
+extern "C" {
+
 extern void func_0204f8cc(void* obj, int a, int b);
 extern void func_ov007_020bde2c(int idx);
 extern void func_0204f79c(void* obj, int a, int b);
@@ -17,7 +21,7 @@ static inline int scale_div(int v, int range, int scale)
     else if (v >= range)
         q = 0x1000;
     else
-        q = _ZN4cstd3divEii(v << 12, range);
+        q = cstd::div(v << 12, range);
     return (q * scale) >> 12;
 }
 
@@ -40,4 +44,5 @@ void func_ov007_020bda8c(int a, int b)
     func_ov007_020bde2c(0x36);
     func_0204f79c(obj, 0xf, r4);
     func_0204f76c(obj, 0xf, r6);
+}
 }

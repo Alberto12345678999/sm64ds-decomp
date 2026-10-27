@@ -1,11 +1,15 @@
+//cpp
 #include "types.h"
 /* recovered: shared common types */
 #include "common.h"
 #include "nitro/fx/fx.h"
+#include "cstd.h"
+
+extern "C" {
+
 #define TERM(v, w) ((FX_MUL(v, w) + 8) >> 4)
 
 extern s32 Vec3_Equal(struct Vector3 *a, struct Vector3 *b);
-extern s32 _ZN4cstd4fdivEii(s32 a, s32 b);
 
 int func_ov002_020f035c(unsigned int sel, int r1) {
     int v;
@@ -86,8 +90,8 @@ void func_ov002_020effb8(struct Vector3 *out, s32 t, struct Vector3 *a, struct V
     u2 = FX_MUL(u4, u);
     u3 = FX_MUL(u2, u);
     s0 = (t3 + 1) >> 1;
-    w0 = _ZN4cstd4fdivEii(u3, 0x6000);
-    w3 = _ZN4cstd4fdivEii(t3, 0x6000);
+    w0 = cstd::fdiv(u3, 0x6000);
+    w3 = cstd::fdiv(t3, 0x6000);
     s1 = ((t2 + 1) >> 1) - s0;
     w2 = (s1 + ((t4 + 1) >> 1)) + 0x2aab;
     w1 = (s0 - t2) + 0xaaab;
@@ -95,4 +99,5 @@ void func_ov002_020effb8(struct Vector3 *out, s32 t, struct Vector3 *a, struct V
     out->x = TERM(a->x, w0) + TERM(b->x, w1) + TERM(c->x, w2) + TERM(d->x, w3);
     out->y = TERM(a->y, w0) + TERM(b->y, w1) + TERM(c->y, w2) + TERM(d->y, w3);
     out->z = TERM(a->z, w0) + TERM(b->z, w1) + TERM(c->z, w2) + TERM(d->z, w3);
+}
 }

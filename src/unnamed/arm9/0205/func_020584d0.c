@@ -1,7 +1,7 @@
 extern int data_020a6134[];
 
 /* NitroSDK OSThread, the fields read here; names and offsets as
- * func_02058200.c (OS_CreateThread) spells them. */
+ * func_02058200.cpp (OS_CreateThread) spells them. */
 typedef struct OSThread {
     char pad_00[0x68];
     struct OSThread *next; /* 0x68 */

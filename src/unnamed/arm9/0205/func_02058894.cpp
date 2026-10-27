@@ -1,6 +1,9 @@
-extern unsigned int _ZN3IRQ7DisableEv(void);
-extern void _ZN3IRQ7RestoreEj(unsigned int saved);
-extern void OS_SleepThread(void *this);
+//cpp
+#include "IRQ.h"
+
+extern "C" {
+
+extern void OS_SleepThread(void *queue);
 extern void OS_WakeupThread(void *p);
 
 /* NitroSDK OS_SendMessage(mq, msg, flags): wait (OS_MESSAGE_BLOCK, bit 0) on
@@ -17,10 +20,10 @@ struct Q {
 };
 
 int func_02058894(struct Q *q, int val, int flag) {
-    unsigned int saved = _ZN3IRQ7DisableEv();
+    unsigned int saved = IRQ::Disable();
     while (q->msgCount <= q->usedCount) {
         if ((flag & 1) == 0) {
-            _ZN3IRQ7RestoreEj(saved);
+            IRQ::Restore(saved);
             return 0;
         }
         OS_SleepThread(&q->queueSend);
@@ -30,7 +33,8 @@ int func_02058894(struct Q *q, int val, int flag) {
         q->msgArray[idx] = val;
         q->usedCount++;
         OS_WakeupThread(&q->queueReceive);
-        _ZN3IRQ7RestoreEj(saved);
+        IRQ::Restore(saved);
         return 1;
     }
+}
 }

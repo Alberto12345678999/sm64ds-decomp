@@ -1,4 +1,9 @@
+//cpp
 #include "types.h"
+#include "IRQ.h"
+
+extern "C" {
+
 struct Node {
     struct Node* next;
     u32 lo;
@@ -9,8 +14,6 @@ extern struct Node* data_020aa3f0;
 
 enum Flag { F0, F1 };
 
-unsigned int _ZN3IRQ7DisableEv(void);
-void _ZN3IRQ7RestoreEj(unsigned int);
 void func_0206cf98(int a, u32 b, u32 c);
 
 void func_0205dc7c(u32* q) {
@@ -30,7 +33,7 @@ void func_0205dc7c(u32* q) {
         r5 = q[1] + q[2];
         r4 = r5 + (u32)((int)(q[2] + q[3]) - q[2]);
         tail = 0;
-        saved = _ZN3IRQ7DisableEv();
+        saved = IRQ::Disable();
         prev = 0;
         head = *hp;
         node = head;
@@ -51,7 +54,7 @@ void func_0205dc7c(u32* q) {
             }
             node = nx;
         }
-        _ZN3IRQ7RestoreEj(saved);
+        IRQ::Restore(saved);
         if (collected == 0) break;
         do {
             void (*cb)(u32);
@@ -68,4 +71,5 @@ void func_0205dc7c(u32* q) {
         enum Flag flag = (v == 0) ? F0 : F1;
         func_0206cf98(flag, a1, b);
     }
+}
 }

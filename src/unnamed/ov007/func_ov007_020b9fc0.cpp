@@ -1,6 +1,10 @@
+//cpp
 #include "Ov007MenuState.h"
 #include "Ov007Sprite.h"
-extern int _ZN4cstd3divEii(int, int);
+#include "cstd.h"
+
+extern "C" {
+
 extern void *data_ov007_02104b9c;
 extern void *data_ov007_02104ba0;
 
@@ -39,7 +43,8 @@ int func_ov007_020b9fc0(void) {
         }
     }
 
-    ((Ov007PickerScene *)data_ov007_02104ba0)->tweenOut[1] = _ZN4cstd3divEii(*addr4, 0x1f);
+    ((Ov007PickerScene *)data_ov007_02104ba0)->tweenOut[1] = cstd::div(*addr4, 0x1f);
 
     return (*addr4 == 0) ? 1 : 0;
+}
 }

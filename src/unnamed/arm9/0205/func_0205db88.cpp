@@ -1,4 +1,9 @@
+//cpp
 #include "types.h"
+#include "IRQ.h"
+
+extern "C" {
+
 struct Storage {
     void *a;
     void *b;
@@ -15,8 +20,6 @@ extern struct Obj data_0209a7d8;
 u32 func_0205e904(u32 newVal);
 u32 func_0205de9c(struct Obj *obj, void *a, void *b);
 void Crash(void);
-u32 _ZN3IRQ7DisableEv(void);
-void _ZN3IRQ7RestoreEj(u32 state);
 
 void func_0205db88(u32 r0, void *r1, void *r2) {
     struct Storage *r5;
@@ -34,8 +37,9 @@ void func_0205db88(u32 r0, void *r1, void *r2) {
         }
         func_0205e904(r4);
     }
-    u32 irqState = _ZN3IRQ7DisableEv();
+    u32 irqState = IRQ::Disable();
     r5->a = r7;
     r5->b = r6;
-    _ZN3IRQ7RestoreEj(irqState);
+    IRQ::Restore(irqState);
+}
 }

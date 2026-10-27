@@ -1,8 +1,11 @@
+//cpp
+#include "IRQ.h"
+
+extern "C" {
+
 extern void *func_02062734(void *c, unsigned m, void *acc, int bit);
 extern void MultiCopyHalf(void *dst, void *src, int n);
 extern void MultiStore16(unsigned short val, void *dst, int n);
-extern unsigned _ZN3IRQ7DisableEv(void);
-extern void _ZN3IRQ7RestoreEj(unsigned);
 
 /* NitroSDK data sharing, WmDataSharingReceiveData: store the data AID bit
  * sent into the data set still waiting for it (ds[writeIndex], or in double
@@ -65,8 +68,9 @@ void func_02062990(char *c, int bit, void *arg2)
         zero = 0;
         MultiStore16(zero, r, info->dataLength);
     }
-    s = _ZN3IRQ7DisableEv();
+    s = IRQ::Disable();
     info->ds[idx].aidHeader &= ~mask;
     info->ds[idx].receivedBitmap |= mask;
-    _ZN3IRQ7RestoreEj(s);
+    IRQ::Restore(s);
+}
 }

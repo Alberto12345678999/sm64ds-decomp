@@ -1,5 +1,8 @@
-unsigned int _ZN3IRQ7DisableEv(void);
-void _ZN3IRQ7RestoreEj(unsigned int);
+//cpp
+#include "IRQ.h"
+
+extern "C" {
+
 void Crash(void);
 void OS_SleepThread(void* p);
 typedef struct { int* f0; char pad4[4]; int f8; int fc; int f10; int f14; } G;
@@ -7,7 +10,7 @@ extern G data_020a8180;
 void func_02060188(int a0, int a1)
 {
     int gi = (int)&data_020a8180;
-    unsigned int s = _ZN3IRQ7DisableEv();
+    unsigned int s = IRQ::Disable();
     G* g = (G*)gi;
     if (g->f8 == a0) {
         if (g->f14 != a1) Crash();
@@ -18,5 +21,6 @@ void func_02060188(int a0, int a1)
     }
     { int* pc = (int*)((gi + 0xc)); *pc = *pc + 1; }
     *g->f0 = 0;
-    _ZN3IRQ7RestoreEj(s);
+    IRQ::Restore(s);
+}
 }

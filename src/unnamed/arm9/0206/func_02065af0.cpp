@@ -1,5 +1,8 @@
-extern int _ZN3IRQ7DisableEv(void);
-extern void _ZN3IRQ7RestoreEj(unsigned int);
+//cpp
+#include "IRQ.h"
+
+extern "C" {
+
 extern int *func_02065b88(void);
 extern void MultiCopy_Int(int *src, int *dst, int len);
 extern int data_020a94c0;
@@ -7,18 +10,19 @@ extern int data_020a9570;
 
 int func_02065af0(int *thiz)
 {
-    int saved = _ZN3IRQ7DisableEv();
+    int saved = IRQ::Disable();
     int *r;
     if (data_020a94c0 != 1) {
-        _ZN3IRQ7RestoreEj(saved);
+        IRQ::Restore(saved);
         return 0;
     }
     r = func_02065b88();
     if (r == 0 || *r != 0) {
-        _ZN3IRQ7RestoreEj(saved);
+        IRQ::Restore(saved);
         return 0;
     }
     MultiCopy_Int(thiz, &data_020a9570, 0x9c);
-    _ZN3IRQ7RestoreEj(saved);
+    IRQ::Restore(saved);
     return 1;
+}
 }

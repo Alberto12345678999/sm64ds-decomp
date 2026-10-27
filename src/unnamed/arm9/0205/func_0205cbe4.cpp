@@ -1,6 +1,9 @@
+//cpp
 #include "types.h"
-extern unsigned int _ZN3IRQ7DisableEv(void);
-extern void _ZN3IRQ7RestoreEj(unsigned int saved);
+#include "IRQ.h"
+
+extern "C" {
+
 typedef struct Node {
     u32 f0;
     struct Node *next;
@@ -24,7 +27,7 @@ void func_0205cbe4(Node *node)
     u32 saved;
     Node *n;
     if (node->f0 == 0) return;
-    saved = _ZN3IRQ7DisableEv();
+    saved = IRQ::Disable();
     n = node->next;
     if (n) n->prev = node->prev;
     n = node->prev;
@@ -39,5 +42,6 @@ void func_0205cbe4(Node *node)
         data_020a804c.cur = (Node *)data_020a8048;
         data_020a804c.a = 0;
     }
-    _ZN3IRQ7RestoreEj(saved);
+    IRQ::Restore(saved);
+}
 }

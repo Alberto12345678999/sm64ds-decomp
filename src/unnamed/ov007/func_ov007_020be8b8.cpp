@@ -1,4 +1,8 @@
-extern int _ZN4cstd3divEii(int a, int b);
+//cpp
+#include "cstd.h"
+
+extern "C" {
+
 extern int func_02053200(int x);
 extern char* data_ov007_02104bc0;
 
@@ -8,7 +12,7 @@ void func_ov007_020be8b8(void)
     for (sl = 0; sl < 0x10; sl++) {
         char* base = data_ov007_02104bc0 + 8;
         int* e = (int*)(base + sl * 0x10);
-        int x = _ZN4cstd3divEii(sl * 0x1000, 0xf);
+        int x = cstd::div(sl * 0x1000, 0xf);
         int r3 = 0x1000 - x;
         long long m = (long long)r3 * 0x12c;
         int v = (int)((m + ((long long)x << 12)) >> 12);
@@ -18,4 +22,5 @@ void func_ov007_020be8b8(void)
         e[2] = 0;
         e[3] = v;
     }
+}
 }

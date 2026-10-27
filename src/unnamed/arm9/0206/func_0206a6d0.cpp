@@ -1,14 +1,18 @@
+//cpp
+#include "CP15.h"
+#include "IRQ.h"
+
+extern "C" {
+
 typedef unsigned short u16;
 typedef unsigned char u8;
 
-extern unsigned int _ZN3IRQ7SetIRQsEj(unsigned int);
 extern void func_0206a3a4(int arg0, int *out);
 extern void func_0206a458(int *out);
 extern void DMASyncHalfTransfer(unsigned int channel, void *src, void *dst, unsigned int numHalfs);
 extern void func_0206a424(int *self);
 extern void func_0206a37c(int a, int *p);
 extern void MultiCopy_Int(int *dst, int *src, int len);
-extern void _ZN4CP1527FlushAndInvalidateDataCacheEv(void);
 extern void func_0206a318(void *arg);
 extern void WaitByLoop(int n);
 
@@ -75,7 +79,7 @@ void func_0206a6d0(void)
     data_020a9de4 = 1;
     if ((*(volatile u16 *)0x4000300 & 1) == 0)
         return;
-    irq = _ZN3IRQ7SetIRQsEj(0x40000);
+    irq = IRQ::SetIRQs(0x40000);
     save208 = *(volatile u16 *)0x4000208;
     *(volatile u16 *)0x4000208 = 1;
     func_0206a3a4(CTRDG_WORK.mLockId, sp);
@@ -103,7 +107,7 @@ void func_0206a6d0(void)
         info->gameCode = CTRDG_HEADER.gameCode;
     }
     MultiCopy_Int((int *)0xffff0020, &data_020a9e04, 0x9c);
-    _ZN4CP1527FlushAndInvalidateDataCacheEv();
+    CP15::FlushAndInvalidateDataCache();
     arg = (void *)((((unsigned int)&data_020a9e00 + 0xfe000000) >> 5) << 6 | 1);
     func_0206a318(arg);
     if (CTRDG_WORK.mSubpAck != 1) {
@@ -113,5 +117,6 @@ void func_0206a6d0(void)
     }
     (void)*(volatile u16 *)0x4000208;
     *(volatile u16 *)0x4000208 = save208;
-    _ZN3IRQ7SetIRQsEj(irq);
+    IRQ::SetIRQs(irq);
+}
 }

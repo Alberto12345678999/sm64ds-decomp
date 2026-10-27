@@ -1,5 +1,9 @@
+//cpp
 #pragma long_calls on
 #include "types.h"
+#include "IRQ.h"
+
+extern "C" {
 
 typedef struct UnkStruct_0205d4a0 {
     char pad0[0x10];
@@ -29,8 +33,6 @@ struct Obj {
 };
 
 extern void func_0205cdf4(UnkStruct_0205d4a0 *self, int a);
-extern u32 _ZN3IRQ7DisableEv(void);
-extern void _ZN3IRQ7RestoreEj(u32);
 extern void OS_SleepThread(unsigned short *self);
 extern int func_0205cf5c(Obj *);
 extern void func_0205d688(void *, int, int, int);
@@ -47,7 +49,7 @@ void func_0205d4a0(UnkStruct_0205d4a0 *self, int a, int b) {
 
 int func_0205d3f4(Obj *t) {
     int woken = 0;
-    u32 irq = _ZN3IRQ7DisableEv();
+    u32 irq = IRQ::Disable();
     int busy = (t->flags & 1) ? 1 : 0;
     if ((int)((long long)busy) != 0) {
         woken = (t->owner->cur != t) ? 1 : 0;
@@ -59,7 +61,7 @@ int func_0205d3f4(Obj *t) {
             busy = (t->flags & 1) ? 1 : 0;
         } while ((int)((long long)busy) != 0);
     }
-    _ZN3IRQ7RestoreEj(irq);
+    IRQ::Restore(irq);
     if (woken) {
         return func_0205cf5c(t);
     }
@@ -68,4 +70,5 @@ int func_0205d3f4(Obj *t) {
 
 void func_0205d3e4(void *a, int b, int c) {
     func_0205d688(a, b, c, 1);
+}
 }

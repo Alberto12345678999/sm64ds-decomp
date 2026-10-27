@@ -1,4 +1,10 @@
+//cpp
 #include "types.h"
+#include "CP15.h"
+#include "IRQ.h"
+
+extern "C" {
+
 #pragma opt_propagation off
 #pragma opt_loop_invariants off
 /* data_020a1fc0, the file-sharing work block, under FileShareWork's names
@@ -22,15 +28,11 @@ typedef struct {
 extern WorkInfo data_020a1fc0;
 extern int data_02099e6c;
 
-extern u32 _ZN3IRQ7DisableEv(void);
-extern void _ZN3IRQ7RestoreEj(u32 irq);
 extern void* func_0205d23c(void* a, int b);
 extern void FS_InitFile(int* s);
 extern int func_0205d5e8(char* self, int a1, int a2, int a3, int a4);
 extern int FS_ReadFile(int a, int b, int c);
 extern int FS_CloseFile(char* self);
-extern void _ZN4CP1527FlushAndInvalidateDataCacheEjj(u32 a, u32 b);
-extern void _ZN4CP1516DrainWriteBufferEv(void);
 
 void func_020424c0(void)
 {
@@ -55,9 +57,9 @@ void func_020424c0(void)
         i++;
     } while (i < 4);
 
-    irq = _ZN3IRQ7DisableEv();
+    irq = IRQ::Disable();
     fp = data_020a1fc0.mAllocFunc(data_020a1fc0.mAllocArg, sl, 0);
-    _ZN3IRQ7RestoreEj(irq);
+    IRQ::Restore(irq);
 
     if (data_020a1fc0.mIsParent != 0) {
         void* sb;
@@ -104,10 +106,11 @@ void func_020424c0(void)
             *(int*)fp = max;
         }
 
-        _ZN4CP1527FlushAndInvalidateDataCacheEjj((u32)fp, sl);
-        _ZN4CP1516DrainWriteBufferEv();
+        CP15::FlushAndInvalidateDataCache((u32)fp, sl);
+        CP15::DrainWriteBuffer();
     }
 
     data_020a1fc0.mTable = fp;
     data_020a1fc0.mTableSize = sl;
+}
 }

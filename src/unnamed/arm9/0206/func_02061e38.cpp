@@ -1,5 +1,9 @@
+//cpp
+#include "CP15.h"
+
+extern "C" {
+
 extern int WM_CheckStateEx(int a, int b);
-extern void _ZN4CP1514FlushDataCacheEjj(unsigned int a, unsigned int b);
 extern void WM_SetCallbackTable(int i, int val);
 extern int *WM_GetSystemWork(void);
 extern void CpuCopy8(void *src, void *dst, unsigned int size);
@@ -27,7 +31,7 @@ int func_02061e38(int a, int b, void *c)
     r = WM_CheckStateEx(1, 2);
     if (r != 0) return r;
     if (b == 0) return 6;
-    _ZN4CP1514FlushDataCacheEjj(b, 0xc0);
+    CP15::FlushDataCache(b, 0xc0);
     WM_SetCallbackTable(0xc, a);
     p = WM_GetSystemWork();
     q = (WMStartConnectReq *)p[3];
@@ -40,4 +44,5 @@ int func_02061e38(int a, int b, void *c)
     }
     r = WM_SendCommand(0xc, 0);
     return (r == 0) ? 2 : r;
+}
 }

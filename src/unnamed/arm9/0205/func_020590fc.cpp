@@ -1,6 +1,9 @@
+//cpp
 #include "types.h"
-extern unsigned int _ZN3IRQ7DisableEv(void);
-extern void _ZN3IRQ7RestoreEj(unsigned int savedState);
+#include "IRQ.h"
+
+extern "C" {
+
 extern void * func_02059364(void *a, void *n);
 extern void * func_0205929c(void *a, void *n);
 struct Elem { void *w0; void *w4; void *w8; };  /* 0xc */
@@ -18,7 +21,7 @@ void func_020590fc(int idx, int sel, void *arg)
     struct G637c *g;
     struct Elem *e;
     void *a;
-    u32 saved = _ZN3IRQ7DisableEv();
+    u32 saved = IRQ::Disable();
     g = data_020a637c[idx];
     if (sel < 0)
         sel = g->head;
@@ -26,5 +29,6 @@ void func_020590fc(int idx, int sel, void *arg)
     e = &g->base[sel];
     e->w8 = func_02059364(e->w8, a);
     e->w4 = func_0205929c(e->w4, a);
-    _ZN3IRQ7RestoreEj(saved);
+    IRQ::Restore(saved);
+}
 }

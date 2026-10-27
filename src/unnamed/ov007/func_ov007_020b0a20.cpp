@@ -1,5 +1,10 @@
+//cpp
 #include "types.h"
 #include "nitro/fx/fx.h"
+#include "cstd.h"
+
+extern "C" {
+
 typedef struct SubC {
     int unk0;
     char pad4[8];
@@ -89,7 +94,6 @@ extern int func_ov007_020be964(Sub100 *);
 extern void func_ov007_020c0638(int, int, int, int);
 extern void func_ov007_020b797c(void);
 extern void func_ov007_020bdeb0(int);
-extern int _ZN4cstd3divEii(int, int);
 extern void func_ov007_020bde70(int, int);
 extern void func_ov007_020b131c(void);
 
@@ -142,7 +146,7 @@ void func_ov007_020b0a20(void)
             } else if (v >= 0x14) {
                 v = 0x1000;
             } else {
-                v = _ZN4cstd3divEii((v - 0x10) << 12, 4);
+                v = cstd::div((v - 0x10) << 12, 4);
             }
             e->unk48 = 0x1770 - FX_MUL(v, 0x9C4);
             e->unk44 = e->unk48;
@@ -182,4 +186,5 @@ void func_ov007_020b0a20(void)
     e->unk44 = e->unk48;
     e->unk40 = e->unk44;
     data_ov007_0210342c->unkC4->unk0->unk4->unk2 = 1;
+}
 }

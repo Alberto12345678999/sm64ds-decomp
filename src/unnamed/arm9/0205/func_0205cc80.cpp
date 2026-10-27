@@ -1,5 +1,8 @@
-extern unsigned int _ZN3IRQ7DisableEv(void);
-extern void _ZN3IRQ7RestoreEj(unsigned int saved);
+//cpp
+#include "IRQ.h"
+
+extern "C" {
+
 extern void *func_0205d23c(void *a, int b);
 extern void *func_0205d304(void *a, void *b);
 
@@ -25,7 +28,7 @@ int func_0205cc80(Node *thiz, void *a, void *b)
     unsigned int saved;
     int ret = 0;
 
-    saved = _ZN3IRQ7DisableEv();
+    saved = IRQ::Disable();
 
     if (func_0205d23c(a, (int)b) == 0) {
         if (data_020a8048 == 0) {
@@ -45,6 +48,7 @@ int func_0205cc80(Node *thiz, void *a, void *b)
         ret = 1;
     }
 
-    _ZN3IRQ7RestoreEj(saved);
+    IRQ::Restore(saved);
     return ret;
+}
 }

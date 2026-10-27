@@ -1,6 +1,11 @@
+//cpp
 #include "types.h"
 #include "nitro/fx/fx.h"
 #include "Ov007MenuState.h"
+#include "cstd.h"
+
+extern "C" {
+
 extern u8 data_ov007_02104ba0[];
 
 /* data_ov007_02104ba0: the 0x4c record func_ov007_020b9880 allocates; names
@@ -25,8 +30,6 @@ extern u16 data_ov007_020d7b54[];
 extern short data_02082214[];
 
 extern void func_ov007_020c92d0(void *a);
-extern int _ZN4cstd3modEii(int, int);
-extern int _ZN4cstd3divEii(int, int);
 extern void func_ov007_020bbc08(int a, int b, int c);
 extern void func_ov007_020c55bc(int a, int b, int c);
 
@@ -48,13 +51,13 @@ void func_ov007_020bad8c(void)
     obj = SCENE->states[2];
     r5 = obj->stateTicks;
     period = data_ov007_020d7b54[obj->currentState];
-    t = _ZN4cstd3modEii(r5, period);
+    t = cstd::mod(r5, period);
     if (t <= 0) {
         var_r4 = 0;
     } else if (t >= period) {
         var_r4 = 0x1000;
     } else {
-        var_r4 = _ZN4cstd3divEii(t << 0xc, period);
+        var_r4 = cstd::div(t << 0xc, period);
     }
 
     mgr = SCENE;
@@ -70,7 +73,7 @@ void func_ov007_020bad8c(void)
         return;
     case 1:
         mgr->springSet = 0;
-        if (_ZN4cstd3modEii(r5, 6) != 0) {
+        if (cstd::mod(r5, 6) != 0) {
             return;
         }
         {
@@ -120,13 +123,13 @@ void func_ov007_020bad8c(void)
             return;
         }
         p3 = data_ov007_020d7b54[3];
-        m = _ZN4cstd3modEii(d, p3);
+        m = cstd::mod(d, p3);
         if (m <= 0) {
             var_r0 = 0;
         } else if (m >= p3) {
             var_r0 = 0x1000;
         } else {
-            var_r0 = _ZN4cstd3divEii(m << 0xc, p3);
+            var_r0 = cstd::div(m << 0xc, p3);
         }
         {
             u32 u = (u32)(var_r0 * 0xffff);
@@ -145,7 +148,7 @@ void func_ov007_020bad8c(void)
     }
     case 4:
     {
-        int m = _ZN4cstd3modEii(r5, 0x3c);
+        int m = cstd::mod(r5, 0x3c);
         SCENE->springSet = 2;
         if (m == 0) {
             func_ov007_020bbc08(1, 0, 0);
@@ -161,4 +164,5 @@ void func_ov007_020bad8c(void)
     default:
         return;
     }
+}
 }

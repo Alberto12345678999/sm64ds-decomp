@@ -1,6 +1,9 @@
+//cpp
+#include "types.h"
+#include "IRQ.h"
 
-extern int _ZN3IRQ7DisableEv(void);
-extern void _ZN3IRQ7RestoreEj(unsigned int x);
+extern "C" {
+
 extern int *func_02065ae0(void);
 extern void func_02065ad0(int v);
 struct Node
@@ -11,19 +14,18 @@ struct Node
 };
 struct Node *func_020657fc(int *key)
 {
-  int saved = (0, _ZN3IRQ7DisableEv());
-  struct Node *head = (struct Node *) func_02065ae0();
-  struct Node *cur;
-  struct Node *prev;
-  if (head == 0)
-  {
-    _ZN3IRQ7RestoreEj(saved);
-    return 0;
-  }
+    u32 saved = (0, IRQ::Disable());
+    struct Node *head = (struct Node *)func_02065ae0();
+    struct Node *cur;
+    struct Node *prev;
+    if (head == 0) {
+        IRQ::Restore(saved);
+        return 0;
+    }
   if (head->key == key)
   {
     func_02065ad0((int) head->next);
-    _ZN3IRQ7RestoreEj(saved);
+    IRQ::Restore(saved);
     return head;
   }
   prev = head;
@@ -33,13 +35,14 @@ struct Node *func_020657fc(int *key)
     if (cur->key == key)
     {
       prev->next = cur->next;
-      _ZN3IRQ7RestoreEj(saved);
+      IRQ::Restore(saved);
       return cur;
     }
     prev = cur;
     cur = cur->next;
   }
 
-  _ZN3IRQ7RestoreEj(saved);
+  IRQ::Restore(saved);
   return 0;
+}
 }

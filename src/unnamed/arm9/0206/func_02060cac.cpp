@@ -1,6 +1,9 @@
+//cpp
+#include "IRQ.h"
+
+extern "C" {
+
 extern void func_02059f58(int x);
-extern void _ZN3IRQ11DisableIRQsEj(unsigned int mask);
-extern void _ZN3IRQ15ClearInterruptsEj(unsigned int mask);
 extern void func_02060e38(void);
 extern void func_02060d1c(void);
 
@@ -22,10 +25,11 @@ void func_02060cac(void)
     g->f20 -= 0x200;
     if (g->f20 == 0) {
         func_02059f58(g->f24);
-        _ZN3IRQ11DisableIRQsEj(0x80000);
-        _ZN3IRQ15ClearInterruptsEj(0x80000);
+        IRQ::DisableIRQs(0x80000);
+        IRQ::ClearInterrupts(0x80000);
         func_02060e38();
     } else {
         func_02060d1c();
     }
+}
 }

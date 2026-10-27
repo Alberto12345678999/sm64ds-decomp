@@ -1,5 +1,10 @@
+//cpp
 #include "nitro/fx/fx.h"
 #include "Ov007Work.h"
+#include "cstd.h"
+
+extern "C" {
+
 typedef short s16;
 typedef unsigned short u16;
 typedef unsigned char u8;
@@ -10,8 +15,6 @@ extern u8 data_ov007_0210342c[];
 extern u8 data_ov007_02104ba0[];
 extern short data_02082214[];
 
-extern int _ZN4cstd3divEii(int, int);
-extern int _ZN4cstd3modEii(int, int);
 extern void func_ov007_020bbc08(int a, int b, int c);
 extern void func_ov007_020bdeb0(int a);
 extern void func_ov007_020bde2c(int idx);
@@ -99,7 +102,7 @@ void func_ov007_020bb4b0(void)
         if (v <= w) {
             v = w;
         }
-        if (_ZN4cstd3modEii(v, 5) == 1) {
+        if (cstd::mod(v, 5) == 1) {
             func_ov007_020bbc08(2, 0xa, 0x1000);
             SCENE->springSet = 0;
         } else {
@@ -142,7 +145,7 @@ void func_ov007_020bb4b0(void)
             } else if (t1 >= 0x64) {
                 ratio = 0x1000;
             } else {
-                ratio = _ZN4cstd3divEii(t1 << 0xc, 0x64);
+                ratio = cstd::div(t1 << 0xc, 0x64);
             }
             ease = (int)(((s64)ratio * (0x2000 - ratio)) >> 0xc);
             if (t1 <= 0x50) {
@@ -150,12 +153,12 @@ void func_ov007_020bb4b0(void)
             } else if (t1 >= 0xc8) {
                 v2 = 0x1000;
             } else {
-                v2 = _ZN4cstd3divEii((t1 - 0x50) << 0xc, 0x78);
+                v2 = cstd::div((t1 - 0x50) << 0xc, 0x78);
             }
             half = ((int)(((s64)v2 * (0x2000 - v2)) >> 0xc)) / 2;
             fpv = half + 0x1000;
             if (t1 >= 0xa0) {
-                int m = _ZN4cstd3modEii(t1 - 0xa0, 5);
+                int m = cstd::mod(t1 - 0xa0, 5);
                 int mc, v3, v3sq;
                 u32 u;
                 s16 tbl;
@@ -164,14 +167,14 @@ void func_ov007_020bb4b0(void)
                 } else if (m >= 5) {
                     mc = 0x1000;
                 } else {
-                    mc = _ZN4cstd3divEii(m << 0xc, 5);
+                    mc = cstd::div(m << 0xc, 5);
                 }
                 if (t1 <= 0xa0) {
                     v3 = 0;
                 } else if (t1 >= 0xc8) {
                     v3 = 0x1000;
                 } else {
-                    v3 = _ZN4cstd3divEii((t1 - 0xa0) << 0xc, 0x28);
+                    v3 = cstd::div((t1 - 0xa0) << 0xc, 0x28);
                 }
                 v3sq = (int)(((s64)v3 * v3) >> 0xc);
                 u = (u32)(mc * 0xffff);
@@ -218,7 +221,7 @@ void func_ov007_020bb4b0(void)
         dir2 = (c1 > c2) ? 1 : -1;
         c1 = (c1 > c2) ? c1 : c2;
         if (c1 > 0) {
-            int md = _ZN4cstd3modEii(c1, 5);
+            int md = cstd::mod(c1, 5);
             if (c1 < 0x64) {
                 int r;
                 if (c1 <= 0) {
@@ -226,7 +229,7 @@ void func_ov007_020bb4b0(void)
                 } else if (c1 >= 0x64) {
                     r = 0x1000;
                 } else {
-                    r = _ZN4cstd3divEii(c1 << 0xc, 0x64);
+                    r = cstd::div(c1 << 0xc, 0x64);
                 }
                 amp = r / 2;
             } else {
@@ -236,12 +239,12 @@ void func_ov007_020bb4b0(void)
                 } else if (c1 >= 0x12c) {
                     v = 0x1000;
                 } else {
-                    v = _ZN4cstd3divEii((c1 - 0x64) << 0xc, 0xc8);
+                    v = cstd::div((c1 - 0x64) << 0xc, 0xc8);
                 }
                 sq = (int)(((s64)v * v) >> 0xc);
                 amp = sq / 2 + 0x800;
                 if (c1 >= 0x12c) {
-                    int m2 = _ZN4cstd3modEii(c1, 0x64);
+                    int m2 = cstd::mod(c1, 0x64);
                     int mc2;
                     u32 u2;
                     int t2v;
@@ -250,7 +253,7 @@ void func_ov007_020bb4b0(void)
                     } else if (m2 >= 0x64) {
                         mc2 = 0x1000;
                     } else {
-                        mc2 = _ZN4cstd3divEii(m2 << 0xc, 0x64);
+                        mc2 = cstd::div(m2 << 0xc, 0x64);
                     }
                     u2 = (u32)(mc2 * 0xffff);
                     u2 = u2 << 4;
@@ -271,7 +274,7 @@ void func_ov007_020bb4b0(void)
                 func_020524e4(mat, data_02082214[idx * 2], data_02082214[idx * 2 + 1]);
                 func_ov007_020c5490((char *)s, mat);
             } else {
-                int n = _ZN4cstd3divEii(((Ov007Picker *)s)->groupCount, 4) + 1;
+                int n = cstd::div(((Ov007Picker *)s)->groupCount, 4) + 1;
                 if (n == 1) {
                     n = ((Ov007Picker *)s)->groupCount;
                 }
@@ -295,4 +298,5 @@ void func_ov007_020bb4b0(void)
             }
         }
     }
+}
 }

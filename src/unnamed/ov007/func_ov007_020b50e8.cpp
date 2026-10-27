@@ -1,8 +1,13 @@
+//cpp
 #include "types.h"
 #include "nitro/fx/fx.h"
 #include "Ov007MenuState.h"
 #include "Ov007Sprite.h"
 #include "Ov007Work.h"
+#include "cstd.h"
+
+extern "C" {
+
 extern char *data_ov007_0210342c;
 extern int data_ov007_02103428;
 
@@ -11,7 +16,6 @@ extern void func_ov007_020b647c(int r0, int r1, short r2);
 extern void func_ov007_020b6208(int s);
 extern void func_ov007_020b64a8(int a);
 extern void func_ov007_020b7eec(void *t);
-extern int _ZN4cstd3divEii(int a, int b);
 extern void func_ov007_020aec94(int a);
 extern void func_ov007_020b6134(int a);
 extern void func_ov007_020b7a44(void);
@@ -134,7 +138,7 @@ void func_ov007_020b50e8(char *arg)
         } else if (t >= thresh) {
             q = 0x1000;
         } else {
-            q = _ZN4cstd3divEii(t << 12, thresh);
+            q = cstd::div(t << 12, thresh);
         }
         if (is34 != 0) {
             if (q < 0x555) {
@@ -293,4 +297,5 @@ void func_ov007_020b50e8(char *arg)
     view->sprite->scaleY = result;
     view->sprite->scaleX = view->sprite->scaleY;
     view->item->posX = posX;
+}
 }

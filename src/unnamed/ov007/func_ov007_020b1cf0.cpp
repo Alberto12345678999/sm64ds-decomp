@@ -1,9 +1,13 @@
+//cpp
 #include "types.h"
 #include "Ov007MenuState.h"
 #include "Ov007Touch.h"
 #include "Ov007Work.h"
+#include "cstd.h"
+
+extern "C" {
+
 extern void func_ov007_020b2614(int a, int b, int c);
-extern int _ZN4cstd3modEii(int a, int b);
 extern int func_ov007_020c1da0(int i);
 extern void func_ov007_020aec94(int r4);
 
@@ -74,7 +78,7 @@ void func_ov007_020b1cf0(void) {
     }
 
     if (r5 >= 0x28) {
-        int m = _ZN4cstd3modEii(r5 - 0x28, 0x154);
+        int m = cstd::mod(r5 - 0x28, 0x154);
         Ov007Item *p;
         switch (m) {
         case 0:
@@ -130,4 +134,5 @@ void func_ov007_020b1cf0(void) {
             return;
         func_ov007_020aec94(8);
     }
+}
 }

@@ -1,5 +1,8 @@
+//cpp
 #include "Ov007StrokePath.h"
-extern int _ZN4cstd3divEii(int a, int b);
+#include "cstd.h"
+
+extern "C" {
 
 /* Whether the turn into point idx (2 <= idx < pointCount) is sharper than v
  * degrees: the change between the two segment angles before it, squared,
@@ -11,10 +14,11 @@ int func_ov007_020c2dfc(char* self, int idx, int v) {
     unsigned short* s;
     int d;
     if (v >= 0 && idx >= 2 && idx < path->pointCount) {
-        q = (unsigned short)_ZN4cstd3divEii(v << 0x10, 0x168);
+        q = (unsigned short)cstd::div(v << 0x10, 0x168);
         s = path->segmentAngles;
         d = (short)(s[idx] - s[idx - 1]);
         return d * d < q * q;
     }
     return 0;
+}
 }

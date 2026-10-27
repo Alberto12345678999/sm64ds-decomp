@@ -1,3 +1,8 @@
+//cpp
+#include "CP15.h"
+
+extern "C" {
+
 typedef struct {
     char pad00[0x20];
     unsigned int wr;
@@ -25,7 +30,6 @@ extern int CpuCopy8(void *a, void *b, int c);
 extern int func_0205d368(int *o, int r1, int sel);
 extern int FS_CloseFile(char *self);
 extern void func_02067b68(void *s, unsigned int start, unsigned int end, int flag);
-extern void _ZN4CP1527FlushAndInvalidateDataCacheEjj(unsigned int a, unsigned int b);
 
 extern int data_0209a080;
 extern int *data_0209a07c;
@@ -113,9 +117,10 @@ int func_02067bfc(Ctx *a, Ctx *b, unsigned int c)
         }
 
         if (result) {
-            _ZN4CP1527FlushAndInvalidateDataCacheEjj((unsigned int)b, c);
+            CP15::FlushAndInvalidateDataCache((unsigned int)b, c);
         }
     }
 
     return result;
+}
 }

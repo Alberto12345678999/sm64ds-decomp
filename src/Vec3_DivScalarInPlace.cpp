@@ -1,5 +1,9 @@
+//cpp
+#include "cstd.h"
+
+extern "C" {
+
 typedef int s32;
-extern s32 _ZN4cstd4fdivEii(s32 a, s32 b);
 
 s32 *Vec3_DivScalarInPlace(s32 *v, s32 s)
 {
@@ -11,9 +15,10 @@ s32 *Vec3_DivScalarInPlace(s32 *v, s32 s)
         if (v[2] > 0) v[2] = 0x7fffffff;
         else if (v[2] < 0) v[2] = (s32)0x80000000;
     } else {
-        v[0] = _ZN4cstd4fdivEii(v[0], s);
-        v[1] = _ZN4cstd4fdivEii(v[1], s);
-        v[2] = _ZN4cstd4fdivEii(v[2], s);
+        v[0] = cstd::fdiv(v[0], s);
+        v[1] = cstd::fdiv(v[1], s);
+        v[2] = cstd::fdiv(v[2], s);
     }
     return v;
+}
 }

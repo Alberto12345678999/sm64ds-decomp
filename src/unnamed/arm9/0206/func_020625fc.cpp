@@ -1,11 +1,15 @@
+//cpp
 #include "types.h"
+#include "CP15.h"
+
+extern "C" {
+
 /* func_020625fc at 0x020625fc
  *
  * Matched byte-for-byte with mwccarm 1.2/sp2p3 (arm9 main).
  */
 extern int *WM_GetSystemWork(void);
 extern int WM_CheckStateEx(int a, int b, int c);
-extern void _ZN4CP1519InvalidateDataCacheEjj(unsigned int addr, unsigned int n);
 extern int func_02061ab0(void);
 extern int func_02061b9c(void);
 extern void WM_SetCallbackTable(int i, int val);
@@ -22,7 +26,7 @@ int func_020625fc(int arg0, int arg1, int arg2, int arg3, u16 arg4, u16 arg5,
     r = WM_CheckStateEx(2, 7, 8);
     if (r != 0)
         return r;
-    _ZN4CP1519InvalidateDataCacheEjj((unsigned int)(base[1] + 0x10), 4);
+    CP15::InvalidateDataCache((unsigned int)(base[1] + 0x10), 4);
     if (((int *)base[1])[4] == 1)
         return 3;
     if (arg2 < func_02061ab0())
@@ -39,4 +43,5 @@ int func_020625fc(int arg0, int arg1, int arg2, int arg3, u16 arg4, u16 arg5,
     if (r == 0)
         r = 2;
     return r;
+}
 }

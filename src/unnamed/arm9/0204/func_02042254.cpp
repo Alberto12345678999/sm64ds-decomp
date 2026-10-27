@@ -1,14 +1,16 @@
+//cpp
 #pragma opt_strength_reduction off
 
 #include "private/arm9_a1fc0_file_share.h"
+#include "IRQ.h"
+
+extern "C" {
 
 extern char data_02099e6c[];
 extern int data_020a1fc0;
 extern char data_020a2400[];
 
 extern void *func_0205d23c(void *a, int b);
-extern unsigned int _ZN3IRQ7DisableEv(void);
-extern void _ZN3IRQ7RestoreEj(unsigned int saved);
 extern void OS_SleepThread(unsigned short *self);
 extern int func_0205d5e8(char *self, int a1, int a2, int a3, int a4);
 extern int FS_ReadFile(char *a, char *b, int c);
@@ -35,18 +37,18 @@ void func_02042254(void) {
     char *base = data_020a2400;
 
     while (1) {
-        unsigned int irq = _ZN3IRQ7DisableEv();
+        unsigned int irq = IRQ::Disable();
         FileShareParentArea *area = (FileShareParentArea *)base;
         node = area->mBusyList;
         while (node == 0) {
             if (work->mState == 0) {
-                _ZN3IRQ7RestoreEj(irq);
+                IRQ::Restore(irq);
                 return;
             }
             OS_SleepThread(0);
             node = area->mBusyList;
         }
-        _ZN3IRQ7RestoreEj(irq);
+        IRQ::Restore(irq);
 
         if (node->mState == 1) {
             func_0205d5e8((char *)node->mFile, arc, node->mFileOffset,
@@ -65,14 +67,15 @@ void func_02042254(void) {
             node->mPrevSeqNo = 0;
             node->mLastRefillPage = b;
             node->mLoadingPage = c;
-            irq = _ZN3IRQ7DisableEv();
+            irq = IRQ::Disable();
             func_02041d28(base, node, d);
-            _ZN3IRQ7RestoreEj(irq);
+            IRQ::Restore(irq);
         } else {
             FS_CloseFile((char *)node->mFile);
-            irq = _ZN3IRQ7DisableEv();
+            irq = IRQ::Disable();
             func_02041a94(area, node);
-            _ZN3IRQ7RestoreEj(irq);
+            IRQ::Restore(irq);
         }
     }
+}
 }

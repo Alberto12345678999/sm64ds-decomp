@@ -1,6 +1,9 @@
+//cpp
 #include "types.h"
-extern unsigned int _ZN3IRQ7DisableEv(void);
-extern void _ZN3IRQ7RestoreEj(unsigned int savedState);
+#include "IRQ.h"
+
+extern "C" {
+
 typedef struct {
     char pad[0xb50];
     u32 field_b50;
@@ -10,7 +13,8 @@ extern UnkStruct_020a3fc0 data_020a3fc0;
 
 void func_02040a5c(u32 val)
 {
-    u32 saved = _ZN3IRQ7DisableEv();
+    u32 saved = IRQ::Disable();
     data_020a3fc0.field_b50 = val & ~1u;
-    _ZN3IRQ7RestoreEj(saved);
+    IRQ::Restore(saved);
+}
 }

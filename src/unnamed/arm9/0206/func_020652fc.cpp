@@ -1,8 +1,11 @@
+//cpp
 #include "types.h"
 #include "private/arm9_wbt.h"
+#include "IRQ.h"
+
+extern "C" {
+
 extern int data_020a94c0;
-extern unsigned int _ZN3IRQ7DisableEv(void);
-extern void _ZN3IRQ7RestoreEj(unsigned int);
 extern void func_02065a84(int x);
 extern void func_02065ad0(int v);
 extern char *func_02065b94(void);
@@ -20,13 +23,13 @@ extern void func_02065bb0(int v);
  * header (func_02065ba0, func_02065bb0). func_02040c34 passes the file-share
  * packet sizes and func_020412f0, the file-share parent's callback. */
 void func_020652fc(int send_packet_size, int recv_packet_size, int callback) {
-    unsigned int saved = _ZN3IRQ7DisableEv();
+    unsigned int saved = IRQ::Disable();
     int i;
     char *p;
     WBTCommand cmd;
 
     if (data_020a94c0 == 1) {
-        _ZN3IRQ7RestoreEj(saved);
+        IRQ::Restore(saved);
         return;
     }
     data_020a94c0 = 1;
@@ -53,5 +56,6 @@ void func_020652fc(int send_packet_size, int recv_packet_size, int callback) {
     func_02065be0();
     func_02065ba0(send_packet_size - 0xe);
     func_02065bb0(recv_packet_size - 0xe);
-    _ZN3IRQ7RestoreEj(saved);
+    IRQ::Restore(saved);
+}
 }

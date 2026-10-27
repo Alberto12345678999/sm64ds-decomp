@@ -1,4 +1,8 @@
+//cpp
 #include "types.h"
+#include "CP15.h"
+
+extern "C" {
 
 typedef void (*Handler)(void *msg);
 
@@ -16,7 +20,6 @@ typedef struct {
     u32 d1c;     /* 0x1c */
 } BufT;
 
-extern void _ZN4CP1519InvalidateDataCacheEjj(u32 addr, u32 len);
 extern void Crash(void);
 extern void MultiCopyHalf(const void *src, void *dst, u32 count);
 extern int func_02061674(void);
@@ -31,8 +34,8 @@ void func_02061188(int unused, u16 *msg, int flag) {
     if (flag != 0)
         return;
 
-    _ZN4CP1519InvalidateDataCacheEjj(data_020a89ac[4], 0x100);
-    _ZN4CP1519InvalidateDataCacheEjj(data_020a89ac[1], 0xa00);
+    CP15::InvalidateDataCache(data_020a89ac[4], 0x100);
+    CP15::InvalidateDataCache(data_020a89ac[1], 0xa00);
 
     op = msg[0];
     if (op >= 0x25) {
@@ -44,8 +47,8 @@ void func_02061188(int unused, u16 *msg, int flag) {
         } else if (op == 0x82) {
             if ((data_020a89ac + msg[3])[0x2b] != 0) {
                 *(u32 *)((char *)msg + 0x1c) = (data_020a89ac + msg[3])[0x3b];
-                _ZN4CP1519InvalidateDataCacheEjj(*(u32 *)(msg + 4),
-                                                 *(u16 *)((char *)data_020a89ac[1] + 0x46));
+                CP15::InvalidateDataCache(*(u32 *)(msg + 4),
+                                          *(u16 *)((char *)data_020a89ac[1] + 0x46));
                 ((Handler)(data_020a89ac + msg[3])[0x2b])(msg);
             }
         } else if (op == 0x81) {
@@ -56,8 +59,8 @@ void func_02061188(int unused, u16 *msg, int flag) {
     } else {
         if (op == 0xe) {
             if ((u16)(msg[2] + 0xfff5) <= 1 && msg[1] == 0) {
-                _ZN4CP1519InvalidateDataCacheEjj(*(u32 *)(msg + 4),
-                                                 *(u16 *)((char *)data_020a89ac[1] + 0x46));
+                CP15::InvalidateDataCache(*(u32 *)(msg + 4),
+                                          *(u16 *)((char *)data_020a89ac[1] + 0x46));
             }
         }
 
@@ -112,7 +115,7 @@ void func_02061188(int unused, u16 *msg, int flag) {
         }
     }
 
-    _ZN4CP1519InvalidateDataCacheEjj(data_020a89ac[4], 0x100);
+    CP15::InvalidateDataCache(data_020a89ac[4], 0x100);
     func_0206116c();
 }
 
@@ -120,4 +123,5 @@ void func_0206116c(void) {
     u16 *p = (u16 *)0x027fff96;
     if (*p & 1)
         *p &= ~1;
+}
 }

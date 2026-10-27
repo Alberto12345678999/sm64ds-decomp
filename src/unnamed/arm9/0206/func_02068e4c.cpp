@@ -1,9 +1,11 @@
+//cpp
 #include "types.h"
 #include "WmWork.h"
+#include "IRQ.h"
+
+extern "C" {
 
 extern void func_02059f2c(void *p);
-extern int _ZN3IRQ7DisableEv(void);
-extern void _ZN3IRQ7RestoreEj(int state);
 extern void MultiStore_Int(int val, int *dst, int len);
 extern void MultiStore16(int val, char *dst, int nbytes);
 extern void CpuCopy8(u16 *a, char *b, int c);
@@ -43,7 +45,7 @@ int func_02068e4c(int a0, u16 *a1, int a2, int a3, u16 a4, int a5) {
     }
     base1 = (char *)((a0 + 0x1f) & (~0x1f));
     base2 = (char *)(((int)base1 + sizeof(WmWork) + 0x1f) & (~0x1f));
-    irq = _ZN3IRQ7DisableEv();
+    irq = IRQ::Disable();
     fill_i = 0;
     data_020a9db0 = (short)a5;
     data_020a9db4 = (int)base1;
@@ -103,7 +105,8 @@ int func_02068e4c(int a0, u16 *a1, int a2, int a3, u16 a4, int a5) {
     ((WmWork *)base1)->mpSending = 0;
     ((WmWork *)base1)->initialized = 0;
     *((int *)(base2 + 0x1324)) = 0;
-    _ZN3IRQ7RestoreEj(irq);
+    IRQ::Restore(irq);
     *((u16 *)(base2 + 0x1316)) = 1;
     return 0;
+}
 }

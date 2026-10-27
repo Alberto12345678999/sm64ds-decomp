@@ -1,8 +1,11 @@
+//cpp
 #include "types.h"
 #include "private/arm9_wbt.h"
+#include "IRQ.h"
+
+extern "C" {
+
 extern int data_020a94c0;
-extern unsigned int _ZN3IRQ7DisableEv(void);
-extern void _ZN3IRQ7RestoreEj(unsigned int);
 extern void func_02065a84(int x);
 extern void func_02065ad0(int v);
 extern char *func_02065b94(void);
@@ -16,13 +19,13 @@ extern void func_02065bb0(int v);
  * callback becomes the system command's callback; func_02040c34
  * passes func_02040f30, the file-share child's. */
 void func_02065234(int callback) {
-    unsigned int saved = _ZN3IRQ7DisableEv();
+    unsigned int saved = IRQ::Disable();
     int i;
     char *p;
     WBTCommand cmd;
 
     if (data_020a94c0 == 1) {
-        _ZN3IRQ7RestoreEj(saved);
+        IRQ::Restore(saved);
         return;
     }
     data_020a94c0 = 1;
@@ -47,5 +50,6 @@ void func_02065234(int callback) {
     func_02065be0();
     func_02065ba0(0);
     func_02065bb0(0);
-    _ZN3IRQ7RestoreEj(saved);
+    IRQ::Restore(saved);
+}
 }

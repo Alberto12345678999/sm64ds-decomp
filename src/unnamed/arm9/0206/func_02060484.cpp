@@ -1,11 +1,14 @@
+//cpp
 #include "types.h"
+#include "IRQ.h"
+
+extern "C" {
+
 extern char data_020a8180[];
 extern int data_020a6134[];
 void OS_SleepThread(void* p);
 void func_02060228(void* fn);
 int func_0206062c(void* g);
-extern unsigned int _ZN3IRQ7DisableEv(void);
-extern void _ZN3IRQ7RestoreEj(unsigned int flags);
 
 /* The request block a chunk is handed over in (NitroSDK CARDiCommandArg);
  * names as func_0206062c.cpp spells them. */
@@ -45,14 +48,14 @@ typedef struct CardCommon {
  * calls return whether the request succeeded. */
 int func_02060484(int dst, int src, int len, int callback, int arg, int is_async) {
     CardCommon *g = (CardCommon *)data_020a8180;
-    unsigned int irq = _ZN3IRQ7DisableEv();
+    unsigned int irq = IRQ::Disable();
     if (g->mFlags & 4) {
         do {
             OS_SleepThread(g->mBusyQueue);
         } while (g->mFlags & 4);
     }
     g->mFlags |= 4;
-    _ZN3IRQ7RestoreEj(irq);
+    IRQ::Restore(irq);
     g->mSrc = src;
     g->mDst = dst;
     g->mRemaining = len;
@@ -66,4 +69,5 @@ int func_02060484(int dst, int src, int len, int callback, int arg, int is_async
     ((CardCommon *)data_020a8180)->mCurThread = data_020a6134[2];
     func_0206062c(g);
     return g->mRequest->mResult == 0;
+}
 }

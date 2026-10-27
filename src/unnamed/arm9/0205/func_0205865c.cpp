@@ -1,13 +1,16 @@
+//cpp
+#include "IRQ.h"
+
+extern "C" {
+
 extern int func_02058690(void);
 extern int func_020587dc(void);
 extern int func_0205865c(void);
 extern int data_0209a040;
 extern int func_02057020(void);
-extern unsigned int _ZN3IRQ7DisableEv(void);
 extern int func_020570b8(unsigned short *p);
 extern int func_02057158(int x);
 extern int func_02057178(int a);
-extern void _ZN3IRQ7RestoreEj(unsigned int flags);
 
 int func_02058764(void) {
     if (data_0209a040 == -1) {
@@ -38,7 +41,7 @@ int func_02058690(void) {
 
     do {
         res = -1;
-        irq = _ZN3IRQ7DisableEv();
+        irq = IRQ::Disable();
         if ((func_020570b8((unsigned short *)0x027fffe8) & 0x40) != 0 ||
             (res = func_02057158(x)) == 0) {
             if (*(unsigned int *)0x8000000 == 0x544e494e &&
@@ -51,7 +54,7 @@ int func_02058690(void) {
                 done = 1;
             }
         }
-        _ZN3IRQ7RestoreEj(irq);
+        IRQ::Restore(irq);
     } while (done == 0);
 
     return result;
@@ -64,4 +67,5 @@ int func_0205865c(void) {
     else
         a = 0x27ffc14;
     return *(volatile unsigned short *)a == 1;
+}
 }

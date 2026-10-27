@@ -1,8 +1,12 @@
+//cpp
 #include "nitro/fx/fx.h"
+#include "cstd.h"
+
+extern "C" {
+
 typedef long long s64;
 
 extern int func_020531a4(int a);
-extern int _ZN4cstd4fdivEii(int a, int b);
 extern void func_ov007_020bde2c(int idx);
 extern void func_0204f924(int *p, int v);
 extern void func_0204f7fc(int *p, int a, int b);
@@ -39,7 +43,7 @@ void func_ov007_020bdbcc(int a0, int a1)
     } else if (spd >= 0x1b58) {
         percent = 0x1000;
     } else {
-        percent = _ZN4cstd4fdivEii(spd - 0x1388, 0x7d0);
+        percent = cstd::fdiv(spd - 0x1388, 0x7d0);
     }
 
     if (data_ov007_02104bbc[0x35] == 0) {
@@ -72,7 +76,7 @@ void func_ov007_020bdbcc(int a0, int a1)
     } else if (spd >= 0x5000) {
         t = 0x1000;
     } else {
-        t = _ZN4cstd4fdivEii(spd - 0x1388, 0x3c78);
+        t = cstd::fdiv(spd - 0x1388, 0x3c78);
     }
 
     pp = &data_ov007_02104bbc[0x35];
@@ -81,4 +85,5 @@ void func_ov007_020bdbcc(int a0, int a1)
     func_0204f7fc(pp, 0xf, -(((0x1000 - t) * 0x300) >> 12));
 
     data_ov007_02104bac = data_ov007_02104bac + 1;
+}
 }

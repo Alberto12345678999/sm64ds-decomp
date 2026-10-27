@@ -1,6 +1,10 @@
+//cpp
 #include "types.h"
+#include "CP15.h"
+
+extern "C" {
+
 extern void MultiStore32Bytes(unsigned val, int *dst, int len);
-extern void _ZN4CP1527FlushAndInvalidateDataCacheEjj(unsigned int a, unsigned int b);
 extern void func_02058200(void *a, void *fn, int c, void *d, int e, int f);
 extern void func_02058048(void *a);
 extern void func_0205ba64(int a, void *fn);
@@ -36,7 +40,7 @@ void func_0206002c(void)
     data_020a8180.f14 = 0;
     data_020a8180.ptr = data_020a8160;
     MultiStore32Bytes(local, data_020a8160, 0x20);
-    _ZN4CP1527FlushAndInvalidateDataCacheEjj((unsigned int)data_020a8160, 0x20);
+    CP15::FlushAndInvalidateDataCache((unsigned int)data_020a8160, 0x20);
     data_020a8180.f10 = 0;
     data_020a8180.fd4 = 0;
     data_020a8180.f38 = 4;
@@ -44,4 +48,5 @@ void func_0206002c(void)
                   data_020a8180.f38);
     func_02058048(&data_020a81bc);
     func_0205ba64(0xb, (void *)func_02060310);
+}
 }

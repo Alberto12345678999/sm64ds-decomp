@@ -1,7 +1,9 @@
+//cpp
 #include "private/arm9_wbt.h"
+#include "IRQ.h"
 
-extern int _ZN3IRQ7DisableEv(void);
-extern void _ZN3IRQ7RestoreEj(unsigned int x);
+extern "C" {
+
 extern void func_02065a84(int x);
 extern void func_02065ad0(int v);
 extern char *func_02065b94(void);
@@ -20,12 +22,12 @@ extern int data_020a94c0;
  * sizes (func_02065ba0, func_02065bb0) to -1. */
 void func_02065170(void)
 {
-    int saved = _ZN3IRQ7DisableEv();
+    int saved = IRQ::Disable();
     char *p;
     int i;
     WBTCommand cmd;
     if (data_020a94c0 == 0) {
-        _ZN3IRQ7RestoreEj(saved);
+        IRQ::Restore(saved);
         return;
     }
     data_020a94c0 = 0;
@@ -52,5 +54,6 @@ void func_02065170(void)
     func_02065be0();
     func_02065ba0(-1);
     func_02065bb0(-1);
-    _ZN3IRQ7RestoreEj(saved);
+    IRQ::Restore(saved);
+}
 }

@@ -1,6 +1,8 @@
+//cpp
 #include "types.h"
-extern u32  _ZN3IRQ7DisableEv(void);
-extern void _ZN3IRQ7RestoreEj(u32 state);
+#include "IRQ.h"
+
+extern "C" {
 
 typedef struct {
     char pad18[0x18];
@@ -25,7 +27,7 @@ void func_0205f0e0(s16 *arg)
         return;
     }
 
-    state = _ZN3IRQ7DisableEv();
+    state = IRQ::Disable();
 
     vv = (u32)arg[2];
     *(volatile u16 *)0x4000280 = 0;
@@ -47,6 +49,7 @@ void func_0205f0e0(s16 *arg)
     }
     data_020a80cc.field_2c = *(volatile u32 *)0x40002a0;
 
-    _ZN3IRQ7RestoreEj(state);
+    IRQ::Restore(state);
     data_020a80cc.field_30 = 1;
+}
 }

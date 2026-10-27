@@ -1,6 +1,11 @@
+//cpp
 #include "types.h"
 #include "nitro/fx/fx.h"
 #include "Ov007MenuState.h"
+#include "cstd.h"
+
+extern "C" {
+
 #pragma opt_common_subs off
 #pragma opt_strength_reduction off
 
@@ -62,11 +67,10 @@ typedef char Ov007MeshWave_size_must_be_0x1c[sizeof(Ov007MeshWave) == 0x1c ? 1 :
 
 extern short data_02082214[];
 extern int func_ov007_020c3ba8(int);
-extern int _ZN4cstd3divEii(int, int);
 extern void *func_ov007_020c3df4(int a, int b);
 extern void *func_ov007_020c9388(int initialState);
 extern void func_ov007_020c937c(void *state);
-extern int func_ov007_020c3d1c();
+extern int func_ov007_020c3d1c(void *);
 extern void func_ov007_020c92d0(int a);
 
 /* Steps wave i over the mesh: while it holds a line and keepChance wins it
@@ -114,7 +118,7 @@ void func_ov007_020ca308(char *self, char *t, int i) {
         int c = h->keepChance;
         if (func_ov007_020c3ba8(10000) <= c * 10 - 1) {
             u16 base;
-            u16 step = (u16)_ZN4cstd3divEii(b, cnt);
+            u16 step = (u16)cstd::div(b, cnt);
             j = 0;
             base = (u16)(timer * a);
             if (cnt <= 0)
@@ -192,4 +196,5 @@ void func_ov007_020ca1d4(char *self, int arg1) {
             *(int *)(self + 4) = 0;
     }
     (*(int *)(self))++;
+}
 }

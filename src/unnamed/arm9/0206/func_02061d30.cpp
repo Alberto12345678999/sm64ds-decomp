@@ -1,7 +1,11 @@
+//cpp
 #include "types.h"
+#include "CP15.h"
+
+extern "C" {
+
 extern int WM_GetSystemWork(void);
 extern int WM_CheckStateEx(int count, int a, int b, int c, int d, int e);
-extern void _ZN4CP1519InvalidateDataCacheEjj(u32 a, u32 b);
 extern void WM_SetCallbackTable(int i, int val);
 extern int WM_SendCommand(int a, int b, int c);
 
@@ -19,7 +23,7 @@ int func_02061d30(int self, unsigned int idx)
         if (v == 7 || v == 9) {
             if (idx < 1 || idx > 0xf)
                 return 6;
-            _ZN4CP1519InvalidateDataCacheEjj((u32)o + 0x17e, 2);
+            CP15::InvalidateDataCache((u32)o + 0x17e, 2);
             if ((*(u16*)((char*)*(int**)(h + 4) + 0x17e) & (1u << idx)) == 0) return 7;
         } else {
             if (idx != 0) return 6;
@@ -29,4 +33,5 @@ int func_02061d30(int self, unsigned int idx)
     r = WM_SendCommand(0xd, 1, 1u << idx);
     if (r == 0) return 2;
     return r;
+}
 }

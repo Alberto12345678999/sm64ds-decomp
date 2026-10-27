@@ -1,13 +1,14 @@
+//cpp
 #include "types.h"
+#include "IRQ.h"
+
+extern "C" {
+
 typedef struct {
     u32 lock;
     u16 owner;
 } LockObj;
 
-extern u32 _ZN3IRQ10DisableAllEv(void);
-extern u32 _ZN3IRQ7DisableEv(void);
-extern void _ZN3IRQ10RestoreAllEj(u32 state);
-extern void _ZN3IRQ7RestoreEj(u32 state);
 
 extern u32 func_0205a74c(u32 val, LockObj *addr);
 
@@ -17,9 +18,9 @@ u32 func_02057198(u32 val, LockObj *addr, void (*cleanupFn)(void), u32 useAll)
     u32 old;
 
     if (useAll)
-        state = _ZN3IRQ10DisableAllEv();
+        state = IRQ::DisableAll();
     else
-        state = _ZN3IRQ7DisableEv();
+        state = IRQ::Disable();
 
     old = func_0205a74c(val, addr);
     if (old == 0)
@@ -30,9 +31,10 @@ u32 func_02057198(u32 val, LockObj *addr, void (*cleanupFn)(void), u32 useAll)
     }
 
     if (useAll)
-        _ZN3IRQ10RestoreAllEj(state);
+        IRQ::RestoreAll(state);
     else
-        _ZN3IRQ7RestoreEj(state);
+        IRQ::Restore(state);
 
     return old;
+}
 }

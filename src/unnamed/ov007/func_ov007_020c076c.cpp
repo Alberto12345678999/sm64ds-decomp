@@ -1,5 +1,9 @@
+//cpp
 #include "types.h"
-extern void _ZN4CP1527FlushAndInvalidateDataCacheEjj(u32 addr, u32 size);
+#include "CP15.h"
+
+extern "C" {
+
 extern void func_02056554(const void* src, int offset, int count);
 extern void func_02056494(const void* src, int offset, int count);
 extern void func_020563d4(const void* src, u32 offset, u32 count);
@@ -36,7 +40,7 @@ void func_ov007_020c076c(struct S *s, int flags)
 
     if (s->flag_c != 0) {
         size = s->w * s->h * 2;
-        _ZN4CP1527FlushAndInvalidateDataCacheEjj((u32)s->buf, size);
+        CP15::FlushAndInvalidateDataCache((u32)s->buf, size);
         if (flags & 1) {
             switch (s->type) {
             case 0: func_02056554((const void*)s->buf, s->arg18, size); break;
@@ -73,4 +77,5 @@ void func_ov007_020c076c(struct S *s, int flags)
         case 3: *(volatile u32*)0x400101c = (x & 0x1ff) | ((y << 16) & 0x1ff0000); break;
         }
     }
+}
 }

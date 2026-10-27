@@ -1,4 +1,8 @@
+//cpp
 #include "types.h"
+#include "IRQ.h"
+
+extern "C" {
 
 /* NitroSDK FS_NotifyArchiveAsyncEnd(p_arc, ret): the archive's procedure
  * finished the command at the head of its list. An asynchronous one
@@ -7,7 +11,7 @@
  * FSi_NextCommand, func_0205cfa4 = FSi_ExecuteAsyncCommand); a synchronous
  * one gets ret as its error, FS_ARCHIVE_FLAG_IS_SYNC (0x200) is cleared and
  * the waiting caller woken on sync_q. Field names follow the SDK's FSFile
- * and FSArchive, as func_0205d044.c spells them; only the fields this
+ * and FSArchive, as func_0205d044.cpp spells them; only the fields this
  * function touches are spelled out. */
 typedef struct FSFile {
     char pad_00[0x14];
@@ -28,9 +32,7 @@ typedef struct FSArchive {
 extern void func_0205c788(void *p, int arg);
 extern int func_0205d044(void *self);
 extern void func_0205cfa4(int x);
-extern u32 _ZN3IRQ7DisableEv(void);
 extern void OS_WakeupThread(u16 *p);
-extern void _ZN3IRQ7RestoreEj(u32 f);
 
 void func_0205cd5c(FSArchive *self, int arg) {
     /* The FS_IsArchiveAsync test is materialized as a 0/1 int; testing the
@@ -52,11 +54,12 @@ void func_0205cd5c(FSArchive *self, int arg) {
     }
     {
         FSFile *p = self->list.next;
-        u32 irq = _ZN3IRQ7DisableEv();
+        u32 irq = IRQ::Disable();
 
         p->error = arg;
         self->flag &= ~0x200;
         OS_WakeupThread(&self->sync_q);
-        _ZN3IRQ7RestoreEj(irq);
+        IRQ::Restore(irq);
     }
+}
 }

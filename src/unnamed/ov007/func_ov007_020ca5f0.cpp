@@ -1,8 +1,12 @@
+//cpp
 #include "types.h"
 #include "nitro/fx/fx.h"
+#include "cstd.h"
+
+extern "C" {
+
 extern void func_ov007_020c1448(void *a, int b, int c, int d, int e);
 extern void func_ov007_020c1404(void *c);
-extern int _ZN4cstd3divEii(int a, int b);
 extern void func_ov007_020caeac(int a0, int a1, int a2, int a3, int s0, int s1, int s2, int s3,
                                 int s4, int s5, int s6, int s7, int s8);
 extern void func_ov007_020ca86c(int a0, int a1, int a2, int a3, int s0);
@@ -104,8 +108,8 @@ void func_ov007_020ca5f0(char *a1, char *a2, int *a3, int a4, int a5) {
     *((volatile u32 *)0x400046c) = 0x40000;
     *((volatile u32 *)0x400046c) = 0x40000;
     if (a5 != 0) {
-        int q1 = _ZN4cstd3divEii(tw * mat->tilesS, d0);
-        int q2 = _ZN4cstd3divEii(th * mat->tilesT, d1);
+        int q1 = cstd::div(tw * mat->tilesS, d0);
+        int q2 = cstd::div(th * mat->tilesT, d1);
         int fx1 = FX_MUL(mesh->cellWidth, mat->warpS);
         int fx2 = FX_MUL(mesh->cellHeight, mat->warpT);
         func_ov007_020caeac((int)mesh->verts, (int)mesh->vertexNormals, (int)mesh->texOffsetS,
@@ -138,4 +142,5 @@ void func_ov007_020ca5f0(char *a1, char *a2, int *a3, int a4, int a5) {
         func_ov007_020ca86c((int)mesh->verts, (int)mesh->faceNormals, d0, d1, 6);
     }
     *((volatile u32 *)0x4000448) = 2;
+}
 }

@@ -1,5 +1,8 @@
-extern unsigned int _ZN3IRQ7DisableEv(void);
-extern void _ZN3IRQ7RestoreEj(unsigned int);
+//cpp
+#include "IRQ.h"
+
+extern "C" {
+
 extern void* func_02059364(void* a, void* n);
 extern void* func_0205938c(void* next, void* node);
 extern int* data_020a637c[];
@@ -43,10 +46,10 @@ void *func_02059170(int id, int heap, int size) {
     unsigned int state;
     int leftoverSize;
 
-    state = _ZN3IRQ7DisableEv();
+    state = IRQ::Disable();
     heapInfo = (OSHeapInfo *)data_020a637c[id];
     if (heapInfo == 0) {
-        _ZN3IRQ7RestoreEj(state);
+        IRQ::Restore(state);
         return 0;
     }
     if (heap < 0)
@@ -62,12 +65,12 @@ void *func_02059170(int id, int heap, int size) {
         } while (cell != 0);
     }
     if (cell == 0) {
-        _ZN3IRQ7RestoreEj(state);
+        IRQ::Restore(state);
         return 0;
     }
     leftoverSize = cell->size - size;
     if ((unsigned int)leftoverSize < 0x40) {
-        hd->free = func_02059364(hd->free, cell);
+        hd->free = (Cell *)func_02059364(hd->free, cell);
     } else {
         Cell *newCell;
         cell->size = size;
@@ -82,7 +85,8 @@ void *func_02059170(int id, int heap, int size) {
         else
             hd->free = newCell;
     }
-    hd->allocated = func_0205938c(hd->allocated, cell);
-    _ZN3IRQ7RestoreEj(state);
+    hd->allocated = (Cell *)func_0205938c(hd->allocated, cell);
+    IRQ::Restore(state);
     return (char *)cell + HEADERSIZE;
+}
 }

@@ -1,4 +1,9 @@
+//cpp
 #include "types.h"
+#include "CP15.h"
+
+extern "C" {
+
 typedef struct {
     u32   unk0;
     void *ptr;      /* +4 */
@@ -6,8 +11,6 @@ typedef struct {
     u32   size;     /* +c */
 } CodeRegion;
 
-extern void _ZN4CP1526InvalidateInstructionCacheEjj(u32 addr, u32 size);
-extern void _ZN4CP1519InvalidateDataCacheEjj(u32 addr, u32 size);
 extern void MultiStore_Int(u32 val, void *dst, u32 size);
 
 void func_02017fd0(CodeRegion *rgn)
@@ -23,9 +26,10 @@ void func_02017fd0(CodeRegion *rgn)
     ptr   = rgn->ptr;
     len   = start + siz;
 
-    _ZN4CP1526InvalidateInstructionCacheEjj((u32)ptr, len);
-    _ZN4CP1519InvalidateDataCacheEjj((u32)ptr, len);
+    CP15::InvalidateInstructionCache((u32)ptr, len);
+    CP15::InvalidateDataCache((u32)ptr, len);
 
     fillVal = 0xe6000010;
     MultiStore_Int(fillVal, ptr, len);
+}
 }

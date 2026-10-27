@@ -1,9 +1,13 @@
+//cpp
 #include "types.h"
+#include "CP15.h"
+
+extern "C" {
+
 #pragma opt_common_subs off
 #pragma opt_strength_reduction off
 extern int WM_GetSystemWork(void);
 extern int WM_CheckStateEx(int count, ...);
-extern void _ZN4CP1519InvalidateDataCacheEjj(u32 addr, u32 len);
 extern void MultiStore32Bytes(unsigned val, int *dst, int len);
 extern int func_02061c88(int idx, int b, int c);
 typedef void (*Fn)(void *);
@@ -76,7 +80,7 @@ int func_020631dc(u8 *self, int port, int aidBitmap, int dataLength, int doubleM
     if (r != 0)
         return r;
 
-    _ZN4CP1519InvalidateDataCacheEjj((u32)&sys->status->mp_flag, 4);
+    CP15::InvalidateDataCache((u32)&sys->status->mp_flag, 4);
     if (sys->status->mp_flag == 0)
         return 3;
 
@@ -87,10 +91,10 @@ int func_020631dc(u8 *self, int port, int aidBitmap, int dataLength, int doubleM
     if (aidBitmap == 0)
         return 6;
 
-    _ZN4CP1519InvalidateDataCacheEjj((u32)&sys->status->aid, 2);
+    CP15::InvalidateDataCache((u32)&sys->status->aid, 2);
     aid = sys->status->aid;
     if (aid == 0) {
-        _ZN4CP1519InvalidateDataCacheEjj((u32)sys->status + 0x86, 2);
+        CP15::InvalidateDataCache((u32)sys->status + 0x86, 2);
         childMask = *(u16 *)((u32)sys->status + 0x86);
     }
 
@@ -161,4 +165,5 @@ int func_020631dc(u8 *self, int port, int aidBitmap, int dataLength, int doubleM
     }
 
     return 0;
+}
 }

@@ -1,9 +1,12 @@
+//cpp
 #include "types.h"
+#include "CP15.h"
+#include "IRQ.h"
+
+extern "C" {
+
 #pragma opt_common_subs off
 extern int WM_GetSystemWork(void);
-extern unsigned int _ZN3IRQ7DisableEv(void);
-extern void _ZN3IRQ7RestoreEj(unsigned int savedState);
-extern void _ZN4CP1519InvalidateDataCacheEjj(u32 addr, u32 len);
 extern void MultiStore16(u16 val, void *dst, int nbytes);
 extern int func_020623ec(int a0, int a1, int a2, int a3, u16 a4, u16 a5);
 extern void func_02062d10(void *self);
@@ -48,10 +51,10 @@ void func_020627e8(u8 *self, int flag)
     WMDataSharingInfo *info = (WMDataSharingInfo *)self;
 
     ctx = WM_GetSystemWork();
-    saved = _ZN3IRQ7DisableEv();
+    saved = IRQ::Disable();
     slot = info->writeIndex;
     if (info->ds[slot].aidHeader == 0) {
-        _ZN4CP1519InvalidateDataCacheEjj(*(u32 *)(ctx + 4) + 0x86, 2);
+        CP15::InvalidateDataCache(*(u32 *)(ctx + 4) + 0x86, 2);
 
         prevSlot = info->writeIndex;
         next = (u16)((prevSlot + 1) % 4);
@@ -68,7 +71,7 @@ void func_020627e8(u8 *self, int flag)
             info->ds[prevSlot].aidHeader &= ~1;
         }
 
-        _ZN3IRQ7RestoreEj(saved);
+        IRQ::Restore(saved);
 
         ret = func_020623ec((int)func_02062d10, (int)&info->ds[prevSlot], info->dataSetLength,
                             (u16)(info->aidBitmap & mask), info->port, 1);
@@ -80,6 +83,7 @@ void func_020627e8(u8 *self, int flag)
             info->state = 3;
         }
     } else {
-        _ZN3IRQ7RestoreEj(saved);
+        IRQ::Restore(saved);
     }
+}
 }

@@ -1,4 +1,8 @@
+//cpp
 #include "types.h"
+#include "IRQ.h"
+
+extern "C" {
 
 /* NitroSDK FSi_NextCommand(p_arc): with interrupts off, release every queued
  * file marked for cancel (FS_ARCHIVE_FLAG_CANCELING 0x20, FS_FILE_STATUS_CANCEL
@@ -42,15 +46,13 @@ typedef struct FSArchive {
 typedef char FSFile_size_must_be_0x44[sizeof(FSFile) == 0x44 ? 1 : -1];
 typedef char FSArchive_proc_flag_must_be_at_0x4c[sizeof(FSArchive) == 0x50 ? 1 : -1];
 
-extern u32 _ZN3IRQ7DisableEv(void);
-extern void _ZN3IRQ7RestoreEj(u32 state);
 extern void func_0205c788(char *self, int arg);
 extern void OS_WakeupThread(u16 *self);
 extern void FS_InitFile(int *s);
 
 void *func_0205d044(void *pool) {
     FSArchive *p_arc = (FSArchive *)pool;
-    u32 irqSave = _ZN3IRQ7DisableEv();
+    u32 irqSave = IRQ::Disable();
     int f1 = (int)((*(volatile u32 *)&p_arc->flag & 0x20) != 0);
 
     if (f1 != 0) {
@@ -83,7 +85,7 @@ void *func_0205d044(void *pool) {
                 int notSet = (int)(wasSet == 0);
                 if (notSet != 0)
                     p_arc->flag |= 0x10;
-                _ZN3IRQ7RestoreEj(irqSave);
+                IRQ::Restore(irqSave);
                 if (notSet != 0) {
                     if (p_arc->proc_flag & 0x200) {
                         FS_ARCHIVE_PROC_FUNC cb = p_arc->proc;
@@ -127,6 +129,7 @@ void *func_0205d044(void *pool) {
         }
     }
 
-    _ZN3IRQ7RestoreEj(irqSave);
+    IRQ::Restore(irqSave);
     return 0;
+}
 }

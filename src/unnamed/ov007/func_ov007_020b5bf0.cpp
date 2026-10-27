@@ -1,8 +1,13 @@
+//cpp
 #include "types.h"
 #include "nitro/fx/fx.h"
 #include "Ov007MenuState.h"
 #include "Ov007Sprite.h"
 #include "Ov007Work.h"
+#include "cstd.h"
+
+extern "C" {
+
 extern short data_02082214[];
 extern u8 data_ov007_0210342c[];
 
@@ -44,7 +49,6 @@ typedef struct Ov007ItemView {
 /* The extern keeps this file's u8[] spelling; the manager pointer is stored there. */
 #define WORK (*(Ov007Work **)data_ov007_0210342c)
 
-extern int _ZN4cstd3divEii(int, int);
 extern unsigned short func_ov007_020c3be0(int t, int a, int b);
 extern void func_ov007_020b5f64(void *a);
 extern void func_ov007_020c8f98(int a);
@@ -65,11 +69,11 @@ void func_ov007_020b5bf0(Ov007ItemView *view) {
             } else if (diff >= r7->wiggleFrames) {
                 sb = 0x1000;
             } else {
-                sb = _ZN4cstd3divEii(diff << 0xc, r7->wiggleFrames);
+                sb = cstd::div(diff << 0xc, r7->wiggleFrames);
             }
             {
                 int t1 = (sb * (r7->wiggleFrames * 0x48)) >> 0xc;
-                int r = _ZN4cstd3divEii(t1 << 0x10, 0x168);
+                int r = cstd::div(t1 << 0x10, 0x168);
                 int idx;
                 short tblval;
                 int inv;
@@ -86,7 +90,7 @@ void func_ov007_020b5bf0(Ov007ItemView *view) {
                 r2 = FX_MUL(tblval, inv);
                 mulfactor = (typeField == 0) ? 4 : 8;
                 result = (r2 * mulfactor) >> 0xc;
-                view->sprite->rotZ = _ZN4cstd3divEii(result << 0x10, 0x168);
+                view->sprite->rotZ = cstd::div(result << 0x10, 0x168);
             }
         } else {
             view->sprite->rotZ = r6;
@@ -175,4 +179,5 @@ void func_ov007_020b5bf0(Ov007ItemView *view) {
         func_ov007_020b5f64(view);
     }
     func_ov007_020c8f98((int)view->slideTween);
+}
 }

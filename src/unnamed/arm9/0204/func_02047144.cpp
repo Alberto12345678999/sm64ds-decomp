@@ -1,5 +1,9 @@
+//cpp
 #include "types.h"
-extern int _ZN4cstd6strcmpEPKcS1_(const char* a, const char* b);
+#include "cstd.h"
+
+extern "C" {
+
 extern void Crash(void);
 typedef struct {
     const char* name;
@@ -19,11 +23,12 @@ int func_02047144(const Table2* tbl, const char* name)
     if (i < count) {
         Entry16* entries = tbl->entries;
         do {
-            if (_ZN4cstd6strcmpEPKcS1_(entries[i].name, name) == 0)
+            if (cstd::strcmp(entries[i].name, name) == 0)
                 return (int)i;
             i++;
         } while (i < tbl->count);
     }
     Crash();
     return -1;
+}
 }

@@ -1,15 +1,18 @@
+//cpp
 #include "types.h"
 #include "nitro/fx/fx.h"
 #include "Ov007Sprite.h"
 #include "Ov007Work.h"
+#include "cstd.h"
+
+extern "C" {
+
 extern u8 data_ov007_02104ba0[];
 extern u8 data_ov007_02104b9c[];
 extern s16 data_ov007_02104b98[];
 extern u8 data_ov007_0210342c[];
 extern short data_02082214[];
 
-extern int _ZN4cstd3divEii(int, int);
-extern int _ZN4cstd3modEii(int, int);
 extern void func_ov007_020bdeb0(int a);
 extern void func_ov007_020bda8c(int a, int b);
 extern void func_ov007_020bfe4c(void *o, int x, int y, int z, void *out);
@@ -100,7 +103,7 @@ int func_ov007_020ba368(int t)
         } else if (t >= 0x1e) {
             ratio = 0x1000;
         } else {
-            ratio = _ZN4cstd3divEii(t << 0xc, 0x1e);
+            ratio = cstd::div(t << 0xc, 0x1e);
         }
         SPRITES->sprites[1]->alpha = ratio * 0x1f;
         return ratio >= 0x1000;
@@ -124,7 +127,7 @@ int func_ov007_020ba368(int t)
         } else if (t >= 0x28) {
             ratio = 0x1000;
         } else {
-            ratio = _ZN4cstd3divEii(t << 0xc, 0x28);
+            ratio = cstd::div(t << 0xc, 0x28);
         }
         ease = (int)(((s64)ratio * (0x2000 - ratio)) >> 0xc);
         SCENE->springSet = 1;
@@ -150,7 +153,7 @@ int func_ov007_020ba368(int t)
         } else if (t >= 0x78) {
             ratio = 0x1000;
         } else {
-            ratio = _ZN4cstd3divEii(t << 0xc, 0x78);
+            ratio = cstd::div(t << 0xc, 0x78);
         }
         if (t == 0) {
             SPRITES->slideProgress = 0x1000;
@@ -171,7 +174,7 @@ int func_ov007_020ba368(int t)
         } else if (t >= 0x258) {
             v = 0x1000;
         } else {
-            v = _ZN4cstd3divEii((t - 0xc8) << 0xc, 0x190);
+            v = cstd::div((t - 0xc8) << 0xc, 0x190);
         }
         ratio += FX_MUL(v, 0x1e000);
         r8arg = 0x1000;
@@ -190,7 +193,7 @@ int func_ov007_020ba368(int t)
         }
         {
             int ret = func_ov007_020c5854(s, local, (ratio * 0xc8) >> 0xc, 0x2000, ratio * 0x12c, r8arg);
-            int dv = _ZN4cstd3divEii(ret << 0xc, SCENE->totalPoints);
+            int dv = cstd::div(ret << 0xc, SCENE->totalPoints);
             SPRITES->sprites[1]->alpha = dv * 0x1f;
             if (dv >= 0x1000) {
                 s16 c = *(s16 *)data_ov007_02104b98;
@@ -227,23 +230,23 @@ int func_ov007_020ba368(int t)
             } else if (t >= 0x28) {
                 ratio = 0x1000;
             } else {
-                ratio = _ZN4cstd3divEii(t << 0xc, 0x28);
+                ratio = cstd::div(t << 0xc, 0x28);
             }
             ease1 = (int)(((s64)ratio * (0x2000 - ratio)) >> 0xc);
-            m = _ZN4cstd3modEii(t, 6);
+            m = cstd::mod(t, 6);
             if (m <= 0) {
                 mc = 0;
             } else if (m >= 6) {
                 mc = 0x1000;
             } else {
-                mc = _ZN4cstd3divEii(m << 0xc, 6);
+                mc = cstd::div(m << 0xc, 6);
             }
             if (t <= 0x14) {
                 r2c = 0;
             } else if (t >= 0x3c) {
                 r2c = 0x1000;
             } else {
-                r2c = _ZN4cstd3divEii((t - 0x14) << 0xc, 0x28);
+                r2c = cstd::div((t - 0x14) << 0xc, 0x28);
             }
             ease2 = (int)(((s64)r2c * (0x2000 - r2c)) >> 0xc);
             u = (u32)(mc * 0xffff);
@@ -269,7 +272,7 @@ int func_ov007_020ba368(int t)
             } else if (t >= 0x64) {
                 v = 0x1000;
             } else {
-                v = _ZN4cstd3divEii((t - 0x50) << 0xc, 0x14);
+                v = cstd::div((t - 0x50) << 0xc, 0x14);
             }
             a -= v;
             b -= v;
@@ -288,4 +291,5 @@ int func_ov007_020ba368(int t)
     }
     }
     return done;
+}
 }

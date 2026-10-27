@@ -1,5 +1,10 @@
+//cpp
 #include "types.h"
 #include "private/arm9_a9db8_mb_parent.h"
+#include "IRQ.h"
+
+extern "C" {
+
 extern char *data_020a9db8;
 extern u8 data_020a9d28;
 
@@ -39,8 +44,6 @@ typedef struct MBGameInfo {
     u8 fileNo;     /* 0x4ad */
 } MBGameInfo;
 
-extern u32 _ZN3IRQ7DisableEv(void);
-extern void _ZN3IRQ7RestoreEj(u32 state);
 extern int func_020687f8(void);
 extern void func_020678a4(void *out, void *in, void *dst);
 extern int func_02067604(void *a, void *b);
@@ -65,21 +68,21 @@ int func_02067928(void *a, void *b)
     end = (char *)b + 0x160 + ((RomHeaderView *)b)->main.size + ((RomHeaderView *)b)->sub.size;
     idx = 0xff;
 
-    state = _ZN3IRQ7DisableEv();
+    state = IRQ::Disable();
     if (!func_020687f8()) {
-        _ZN3IRQ7RestoreEj(state);
+        IRQ::Restore(state);
         return 0;
     }
 
     if (MB_WORK->mFileCount + 1 > 0x10) {
-        _ZN3IRQ7RestoreEj(state);
+        IRQ::Restore(state);
         return 0;
     }
 
     for (i = 0; i < 0x10; i++) {
         MbParentWork *slot = MB_STEP(i);
         if (slot->mFiles[0].mGameRegistry == a) {
-            _ZN3IRQ7RestoreEj(state);
+            IRQ::Restore(state);
             return 0;
         }
         if (slot->mFiles[0].mActive == 0) {
@@ -88,17 +91,17 @@ int func_02067928(void *a, void *b)
         }
     }
     if (i == 0x10) {
-        _ZN3IRQ7RestoreEj(state);
+        IRQ::Restore(state);
         return 0;
     }
 
-    MB_WORK->mFiles[idx].mGameRegistry = a;
+    MB_WORK->mFiles[idx].mGameRegistry = (u8 *)a;
 
     dst2 = MB_WORK->mFiles[idx].mHeader;
     func_020678a4(dst2, b, end);
 
     if (!func_02067604(MB_WORK->mFiles[idx].mBlockTable, dst2)) {
-        _ZN3IRQ7RestoreEj(state);
+        IRQ::Restore(state);
         return 0;
     }
 
@@ -119,6 +122,7 @@ int func_02067928(void *a, void *b)
     MB_WORK->mFiles[idx].mActive = 1;
     MB_WORK->mFileCount += 1;
 
-    _ZN3IRQ7RestoreEj(state);
+    IRQ::Restore(state);
     return 1;
+}
 }

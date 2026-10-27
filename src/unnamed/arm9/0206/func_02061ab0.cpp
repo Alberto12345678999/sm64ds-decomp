@@ -1,6 +1,10 @@
+//cpp
+#include "CP15.h"
+
+extern "C" {
+
 extern int WM_GetSystemWork(void);
 extern int WM_CheckStateEx(int count, ...);
-extern void _ZN4CP1519InvalidateDataCacheEjj(unsigned int a, unsigned int b);
 
 /* NitroSDK WM_GetMPReceiveBufferSize(): 0 unless the system is a parent or a
  * child (states 7, 8) that has not started MP yet (mp_flag); otherwise the
@@ -40,22 +44,23 @@ int func_02061ab0(void) {
     if (WM_CheckStateEx(2, 7, 8) != 0)
         return 0;
 
-    _ZN4CP1519InvalidateDataCacheEjj((unsigned int)&h->status->mp_flag, 4);
+    CP15::InvalidateDataCache((unsigned int)&h->status->mp_flag, 4);
     p = h->status;
     if (p->mp_flag == 1)
         return 0;
 
-    _ZN4CP1519InvalidateDataCacheEjj((unsigned int)&h->status->aid, 2);
+    CP15::InvalidateDataCache((unsigned int)&h->status->aid, 2);
     p = h->status;
     flag = (p->aid == 0);
 
-    _ZN4CP1519InvalidateDataCacheEjj((unsigned int)&p->mp_maxRecvSize, 2);
+    CP15::InvalidateDataCache((unsigned int)&p->mp_maxRecvSize, 2);
     p = h->status;
     v = p->mp_maxRecvSize;
     if (flag != 1)
         return (((v + 0x51) & ~0x1f) << 1);
 
-    _ZN4CP1519InvalidateDataCacheEjj((unsigned int)&p->pparam.maxEntry, 2);
+    CP15::InvalidateDataCache((unsigned int)&p->pparam.maxEntry, 2);
     p = h->status;
     return (((((v + 0xc) * p->pparam.maxEntry) + 0x29) & ~0x1f) << 1);
+}
 }

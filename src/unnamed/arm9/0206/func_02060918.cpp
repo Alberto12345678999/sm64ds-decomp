@@ -1,4 +1,9 @@
+//cpp
 #include "types.h"
+#include "IRQ.h"
+
+extern "C" {
+
 struct S8180 {
     char pad0[0x18];
     u32 f18;
@@ -23,8 +28,6 @@ extern struct S8180 data_020a8180;
 extern char data_020a8780;
 extern struct S6134 data_020a6134;
 
-extern u32 _ZN3IRQ7DisableEv(void);
-extern void _ZN3IRQ7RestoreEj(u32);
 
 void OS_SleepThread(void *p);
 void func_02059f58(int a);
@@ -40,7 +43,7 @@ void func_02060918(u32 a0, u32 a1, u32 a2, u32 a3, u32 a4, u32 a5, int a6)
     char *cb = &data_020a8780;
     u32 mask;
 
-    mask = _ZN3IRQ7DisableEv();
+    mask = IRQ::Disable();
     while (t->f34 & 4) {
         OS_SleepThread(&t->fd4);
     }
@@ -48,7 +51,7 @@ void func_02060918(u32 a0, u32 a1, u32 a2, u32 a3, u32 a4, u32 a5, int a6)
         u32 *p34 = (u32 *)(((int)t + 0x34));
         *p34 |= 4;
     }
-    _ZN3IRQ7RestoreEj(mask);
+    IRQ::Restore(mask);
 
     t->f24 = a0;
     t->f18 = a1;
@@ -74,4 +77,5 @@ void func_02060918(u32 a0, u32 a1, u32 a2, u32 a3, u32 a4, u32 a5, int a6)
 
     t->fd0 = data_020a6134.f8;
     func_02060a30(t);
+}
 }

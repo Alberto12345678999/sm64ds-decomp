@@ -1,6 +1,10 @@
+//cpp
 #include "nitro/fx/fx.h"
 #include "Ov007MenuState.h"
-extern int _ZN4cstd3divEii(int,int);
+#include "cstd.h"
+
+extern "C" {
+
 extern short data_02082214[];
 
 /* The 10-byte layout row an item points at (names as in
@@ -53,9 +57,9 @@ void func_ov007_020ae454(char *c) {
         else if (d >= b)
             r4 = 0x1000;
         else
-            r4 = _ZN4cstd3divEii(d << 0xc, b);
+            r4 = cstd::div(d << 0xc, b);
         int t = ((r4 * (s->wiggleFrames * 0x2d)) >> 0xc) << 0x10;
-        int r = _ZN4cstd3divEii(t, 0x168);
+        int r = cstd::div(t, 0x168);
         r = (unsigned short)r;
         int sv = data_02082214[(r >> 4) << 1];
         int inv = 0x1000 - r4;
@@ -66,4 +70,5 @@ void func_ov007_020ae454(char *c) {
         int e = s->layout->homeY;
         s->posY = e << 0xc;
     }
+}
 }

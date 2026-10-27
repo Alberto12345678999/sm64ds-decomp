@@ -1,3 +1,8 @@
+//cpp
+#include "cstd.h"
+
+extern "C" {
+
 typedef short s16;
 
 typedef struct Q {
@@ -44,7 +49,6 @@ extern S *data_ov007_02103360;
 extern G2 *data_ov007_0210342c;
 extern int func_ov007_020b79e4(void);
 extern void func_ov007_020b3e04(int mode, s16 *p1, s16 *p2);
-extern int _ZN4cstd3divEii(int, int);
 extern void func_ov007_020c4388(Obj *o, void *arg);
 extern void func_ov007_020c421c(Obj *o);
 
@@ -79,7 +83,7 @@ void func_ov007_020b2cf0(void) {
         } else if (sel >= 4) {
             factor = 0x1000;
         } else {
-            factor = _ZN4cstd3divEii(sel << 12, 4);
+            factor = cstd::div(sel << 12, 4);
         }
         factor = 0x1000 - factor;
         prod_c = -data_ov007_02103360->c * factor * 6;
@@ -89,4 +93,5 @@ void func_ov007_020b2cf0(void) {
     data_ov007_02103360->obj->f8 = prod_e + (y << 12);
     func_ov007_020c4388(data_ov007_02103360->obj, data_ov007_0210342c->f34);
     func_ov007_020c421c(data_ov007_02103360->obj);
+}
 }

@@ -1,3 +1,4 @@
+//cpp
 /* DMAStartTransfer at 0x01ffde50 (ITCM)
  *
  * Arms one DMA channel: writes its source, destination and control registers
@@ -16,6 +17,9 @@
  */
 
 #include "nitro/hw/registers.h"
+#include "IRQ.h"
+
+extern "C" {
 
 /* Source, destination and control for one DMA channel. */
 typedef struct DMAChannelRegs {
@@ -24,12 +28,10 @@ typedef struct DMAChannelRegs {
     vu32 ctrl;
 } DMAChannelRegs;
 
-extern u32 _ZN3IRQ7DisableEv(void);
-extern void _ZN3IRQ7RestoreEj(u32 state);
 
 void DMAStartTransfer(u32 channel, u32 src, u32 dest, u32 ctrl)
 {
-    u32 state = _ZN3IRQ7DisableEv();
+    u32 state = IRQ::Disable();
     DMAChannelRegs *reg = (DMAChannelRegs *)((u32)REG_DMA_BASE +
         channel * sizeof(DMAChannelRegs));
 
@@ -37,5 +39,6 @@ void DMAStartTransfer(u32 channel, u32 src, u32 dest, u32 ctrl)
     reg->dest = dest;
     reg->ctrl = ctrl;
 
-    _ZN3IRQ7RestoreEj(state);
+    IRQ::Restore(state);
+}
 }

@@ -1,6 +1,9 @@
-extern int _ZN3IRQ7DisableEv(void);
+//cpp
+#include "IRQ.h"
+
+extern "C" {
+
 extern int func_0206152c(void);
-extern void _ZN3IRQ7RestoreEj(int token);
 extern char *WM_GetSystemWork(void);
 
 /* WM_GetSystemWork's WMArm9Buf, the per-port tables this function fills,
@@ -16,10 +19,10 @@ typedef struct WMArm9Buf {
  * initialised (func_0206152c's error), store the port's receive callback
  * and its argument with interrupts off. */
 int func_02061c88(int port, int callback, int arg) {
-    int token = _ZN3IRQ7DisableEv();
+    int token = IRQ::Disable();
     int r = func_0206152c();
     if (r != 0) {
-        _ZN3IRQ7RestoreEj(token);
+        IRQ::Restore(token);
         return r;
     }
     {
@@ -27,6 +30,7 @@ int func_02061c88(int port, int callback, int arg) {
         sys->portCallbackTable[port] = (void *)callback;
         sys->portCallbackArgument[port] = (void *)arg;
     }
-    _ZN3IRQ7RestoreEj(token);
+    IRQ::Restore(token);
     return 0;
+}
 }

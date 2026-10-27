@@ -1,10 +1,16 @@
-extern void _ZN4cstd8__assertEPKcS1_S1_i(const char *, const char *, const char *, int);
+//cpp
+#include "cstd.h"
+
+extern "C" {
+
 #pragma optimize_for_size on /* built for size like func_0206d32c: the loop enters at its test */
 extern const char data_020868fc;
 extern const char data_02086a08;
 
 struct Elem {
-    int a, b, c, d;
+    /* 16 bytes, only ever copied whole. An array member keeps the C++ struct
+     * copy the ldm/stm block move C emitted (notes/cpp-class-form.md). */
+    int w[4];
 };
 
 struct Arr {
@@ -16,9 +22,10 @@ struct Arr {
 void func_0206d8c4(struct Arr *s, unsigned int index) {
     unsigned int n;
     if (index >= s->count) {
-        _ZN4cstd8__assertEPKcS1_S1_i(&data_020868fc, (const char *)0x55, &data_02086a08, 1);
+        cstd::__assert(&data_020868fc, (const char *)0x55, &data_02086a08, 1);
     }
     s->count--;
     for (n = s->count; index < n; index++)
         s->elems[index] = s->elems[index + 1];
+}
 }

@@ -1,9 +1,12 @@
+//cpp
 #include "common.h"
+#include "cstd.h"
 
-extern s16 _ZN4cstd5atan2Eii(Fix12i y, Fix12i x);
+extern "C" {
 
 s16 Vec3_HorzAngle(const Vector3 *v0, const Vector3 *v1) {
     Fix12i dx = v1->x - v0->x;
     Fix12i dz = v1->z - v0->z;
-    return _ZN4cstd5atan2Eii(dx, dz);
+    return cstd::atan2(dx, dz);
+}
 }

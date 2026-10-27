@@ -1,6 +1,10 @@
+//cpp
 #include "types.h"
 #include "dExtModel_c.h"
 #include "Ov007Work.h"
+#include "cstd.h"
+
+extern "C" {
 
 /* Names as in func_ov007_020bc02c and func_ov007_020b257c, only the slots
  * this file reads. */
@@ -56,7 +60,6 @@ int func_ov007_020be850(void);
 void Sprite_SetAnimation(void *c, int a, int b, int d, int e);
 void func_ov007_020bfd70(void *a0, void *a1, int *o1, int *o2);
 int func_020538b8(int x, int y);
-int _ZN4cstd3divEii(int a, int b);
 void *func_ov007_020b7690(int i);
 void func_ov007_020be684(void *a0, void *ctx);
 void func_ov007_020c3fe4(void *p);
@@ -130,7 +133,7 @@ int func_ov007_020be0dc(void) {
         {
             int *pp = &BONE0->r.m[6];
             int d = func_020538b8(pp[0], pp[2]);
-            int e = _ZN4cstd3divEii(d << 0xc, 0xffff);
+            int e = cstd::div(d << 0xc, 0xffff);
             unsigned int scale = ((e * 0x12) >> 0xc) & 0xff;
             if (scale >= 0x12)
                 scale = 0x11;
@@ -178,4 +181,5 @@ int func_ov007_020be0dc(void) {
         node->visible = r0;
         return r0;
     }
+}
 }

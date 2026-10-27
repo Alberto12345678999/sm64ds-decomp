@@ -1,5 +1,8 @@
-extern int _ZN3IRQ7DisableEv(void);
-extern void _ZN3IRQ7RestoreEj(unsigned int);
+//cpp
+#include "IRQ.h"
+
+extern "C" {
+
 extern int data_020a637c[];
 
 struct Blk {
@@ -12,7 +15,7 @@ struct Blk {
 
 int func_02059040(int idx, struct Blk *b, unsigned int c, int d)
 {
-    unsigned int saved = (unsigned int)_ZN3IRQ7DisableEv();
+    unsigned int saved = (unsigned int)IRQ::Disable();
     int i;
     int m = d * 0xc;
     data_020a637c[idx] = (int)b;
@@ -27,6 +30,7 @@ int func_02059040(int idx, struct Blk *b, unsigned int c, int d)
     b->f0 = -1;
     b->f8 = (int)(((char*)b->f10 + m + 0x1f) - 0) & ~0x1f;
     b->fc = c & ~0x1f;
-    _ZN3IRQ7RestoreEj(saved);
+    IRQ::Restore(saved);
     return b->f8;
+}
 }

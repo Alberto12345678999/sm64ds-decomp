@@ -1,6 +1,8 @@
+//cpp
 #include "Ov007StrokePath.h"
+#include "cstd.h"
 
-extern int _ZN4cstd3divEii(int, int);
+extern "C" {
 
 /* The 0xd0-byte touch picker func_ov007_020c690c builds; names as in that
  * file and func_ov007_020c684c, only the slots this function touches. */
@@ -67,9 +69,10 @@ int func_ov007_020c5014(char *c, int x) {
             den = arr[j] - arr[j - 1];
             if (den == 0)
                 den = 1;
-            self->limitFraction = 0x1000 - _ZN4cstd3divEii(d << 12, den);
+            self->limitFraction = 0x1000 - cstd::div(d << 12, den);
         }
         return 0;
     }
     return 2;
+}
 }

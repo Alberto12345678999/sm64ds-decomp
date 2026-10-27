@@ -1,14 +1,18 @@
+//cpp
 #include "types.h"
 #include "nitro/fx/fx.h"
 #include "Ov007MenuState.h"
 #include "Ov007Sprite.h"
 #include "Ov007Touch.h"
 #include "Ov007Work.h"
+#include "cstd.h"
+
+extern "C" {
+
 #pragma opt_strength_reduction off
 
 extern int func_ov007_020c1da0(int i);
 extern int func_020531a4(int a);
-extern int _ZN4cstd3divEii(int a, int b);
 extern void func_ov007_020bed60(int a, int b, int c);
 extern char *func_ov007_020b2cdc(void);
 extern void func_ov007_020ca1d4(char *self, int a);
@@ -91,7 +95,7 @@ void func_ov007_020beeb0(void)
         if (base->heldFrames != 0) {
             int s2 = base->deltaY;
             int s1 = base->deltaX;
-            int d = _ZN4cstd3divEii(func_020531a4((s1 * s1 + s2 * s2) << 0xc), 0x1e);
+            int d = cstd::div(func_020531a4((s1 * s1 + s2 * s2) << 0xc), 0x1e);
             int r2 = FX_MUL(r6, d);
             if (r2 >= 0x1000)
                 r2 = 0x1000;
@@ -192,7 +196,7 @@ void func_ov007_020beeb0(void)
         else if (n >= r5)
             ratio = 0x1000;
         else
-            ratio = _ZN4cstd3divEii(n << 0xc, r5);
+            ratio = cstd::div(n << 0xc, r5);
         *p7 = func_ov007_020c3be0(ratio, *p7, sp4);
         *p6 = func_ov007_020c3be0(ratio, *p6, sp8);
     }
@@ -209,14 +213,15 @@ void func_ov007_020beeb0(void)
             if (n <= 0)
                 r0 = 0;
             else if (n < 0x1e)
-                r0 = _ZN4cstd3divEii(n << 0xc, 0x1e);
+                r0 = cstd::div(n << 0xc, 0x1e);
         } else if (s == 0xa) {
             int n = t2->stateTicks;
             if (n <= 0)
                 r0 = 0;
             else if (n < 0x1e)
-                r0 = _ZN4cstd3divEii(n << 0xc, 0x1e);
+                r0 = cstd::div(n << 0xc, 0x1e);
         }
         WORK->lights[0]->color = func_ov007_020c3be0(r0, WORK->lights[0]->color, r4v);
     }
+}
 }

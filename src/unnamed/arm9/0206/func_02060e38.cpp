@@ -1,4 +1,9 @@
+//cpp
 #include "types.h"
+#include "IRQ.h"
+
+extern "C" {
+
 struct Obj {
     char pad[0x64];
     u32 unk64;
@@ -19,8 +24,6 @@ typedef struct {
 
 extern G data_020a8180;
 
-u32 _ZN3IRQ7DisableEv(void);
-void _ZN3IRQ7RestoreEj(u32 state);
 void OS_WakeupThread(u16 *self);
 void func_02058048(struct Obj *self);
 
@@ -33,7 +36,7 @@ void func_02060e38(void) {
     u32 *pf;
 
     *g->f0 = 0;
-    s = _ZN3IRQ7DisableEv();
+    s = IRQ::Disable();
     pf = (u32 *)((gi + 0x34));
     {
         u32 val = *pf;
@@ -44,8 +47,9 @@ void func_02060e38(void) {
     if (g->flags & 0x10) {
         func_02058048(&g->obj);
     }
-    _ZN3IRQ7RestoreEj(s);
+    IRQ::Restore(s);
     if (cb) {
         cb(arg);
     }
+}
 }

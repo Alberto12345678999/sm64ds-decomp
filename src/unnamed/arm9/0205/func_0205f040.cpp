@@ -1,5 +1,8 @@
-unsigned int _ZN3IRQ7DisableEv(void);
-void _ZN3IRQ7RestoreEj(unsigned int);
+//cpp
+#include "IRQ.h"
+
+extern "C" {
+
 int IPCSend(int cmd, int a, int b);
 
 typedef struct {
@@ -12,11 +15,11 @@ extern G_t data_020a80cc;
 
 void func_0205f040(void)
 {
-    unsigned int saved = _ZN3IRQ7DisableEv();
+    unsigned int saved = IRQ::Disable();
     int ok = (IPCSend(6, 0x3000000, 0) >= 0);
     if (!ok) {
         void (*fp)(int,int,int);
-        _ZN3IRQ7RestoreEj(saved);
+        IRQ::Restore(saved);
         fp = data_020a80cc.fp;
         data_020a80cc.s34 |= 1;
         if (fp == 0) return;
@@ -25,5 +28,6 @@ void func_0205f040(void)
     }
     data_020a80cc.s36 |= 1;
     data_020a80cc.s34 &= ~1;
-    _ZN3IRQ7RestoreEj(saved);
+    IRQ::Restore(saved);
+}
 }

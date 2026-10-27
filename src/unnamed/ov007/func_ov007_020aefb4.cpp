@@ -1,9 +1,11 @@
+//cpp
 #include "Ov007MenuState.h"
 #include "Ov007Work.h"
+#include "cstd.h"
+
+extern "C" {
 
 extern char* data_ov007_0210342c;
-extern int _ZN4cstd3modEii(int,int);
-extern int _ZN4cstd3divEii(int,int);
 extern int func_ov007_020b8fb4(void);
 extern int func_ov007_020af260(int,int,int*,int*);
 extern int func_ov007_020b8f64(void);
@@ -40,8 +42,8 @@ void func_ov007_020aefb4(void) {
     int r6 = 0;
     int n = WORK->states[1]->stateTicks - 0x3c;
     if (n >= 0) {
-        int rem = _ZN4cstd3modEii(n, 0xf0);
-        int quo = _ZN4cstd3divEii(n - rem, 0xf0);
+        int rem = cstd::mod(n, 0xf0);
+        int quo = cstd::div(n - rem, 0xf0);
         if (rem == 0) {
             Ov007Item *p = WORK->itemNodes[1]->item;
             p->wiggleFrames = 0x3c;
@@ -66,4 +68,5 @@ void func_ov007_020aefb4(void) {
         ((Ov007MenuState *)func_ov007_020b8f50())->requestedState = 0;
     }
     func_ov007_020b9640();
+}
 }

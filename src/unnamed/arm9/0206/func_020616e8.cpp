@@ -1,7 +1,11 @@
+//cpp
 #include "types.h"
+#include "CP15.h"
+
+extern "C" {
+
 extern void func_0205b858(void);
 extern int func_0205ba3c(int bit, int word);
-extern void _ZN4CP1519InvalidateDataCacheEjj(unsigned int, unsigned int);
 extern void DMASyncFillTransfer(int ch, void *dst, int val, int len);
 extern void func_0206116c(void);
 extern int func_02061c88(int idx, int b, int c);
@@ -40,7 +44,7 @@ int func_020616e8(void *buf, int ch)
         return 4;
     }
 
-    _ZN4CP1519InvalidateDataCacheEjj((unsigned int)buf, 0x1300);
+    CP15::InvalidateDataCache((unsigned int)buf, 0x1300);
     DMASyncFillTransfer(ch, buf, 0, 0x1300);
 
     data_020a89ac = (int *)buf;
@@ -71,4 +75,5 @@ int func_020616e8(void *buf, int ch)
 
     func_0205ba64(0xa, (void *)func_02061188);
     return 0;
+}
 }

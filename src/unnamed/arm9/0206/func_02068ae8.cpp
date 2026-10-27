@@ -1,9 +1,12 @@
+//cpp
 #include "types.h"
 #include "WmWork.h"
 #include "private/arm9_a9db8_mb_parent.h"
+#include "IRQ.h"
+
+extern "C" {
+
 #pragma opt_strength_reduction off
-extern u32 _ZN3IRQ7DisableEv(void);
-extern void _ZN3IRQ7RestoreEj(u32 prev);
 
 extern char *data_020a9db4;
 extern char *data_020a9db8;
@@ -36,7 +39,7 @@ int func_02068ae8(int param0)
     int i;
     int result;
 
-    saved = _ZN3IRQ7DisableEv();
+    saved = IRQ::Disable();
 
     WM_WORK->parentParam.channel = param0;
 
@@ -75,7 +78,8 @@ int func_02068ae8(int param0)
     func_020684a8();
     result = func_02068d08();
 
-    _ZN3IRQ7RestoreEj(saved);
+    IRQ::Restore(saved);
 
     return result;
+}
 }

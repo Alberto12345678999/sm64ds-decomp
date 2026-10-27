@@ -1,5 +1,8 @@
-extern int _ZN3IRQ7DisableEv(void);
-extern void _ZN3IRQ7RestoreEj(unsigned int);
+//cpp
+#include "IRQ.h"
+
+extern "C" {
+
 struct Node;
 extern void func_02059c18(struct Node *p);
 
@@ -21,10 +24,10 @@ extern struct List data_020a6444;
 
 void func_02059950(struct Node *thiz)
 {
-    int saved = _ZN3IRQ7DisableEv();
+    int saved = IRQ::Disable();
     struct Node *next;
     if (thiz->f0 == 0) {
-        _ZN3IRQ7RestoreEj(saved);
+        IRQ::Restore(saved);
         return;
     }
     next = thiz->next;
@@ -42,5 +45,6 @@ void func_02059950(struct Node *thiz)
     thiz->f0 = 0;
     thiz->f1c = 0;
     thiz->f20 = 0;
-    _ZN3IRQ7RestoreEj(saved);
+    IRQ::Restore(saved);
+}
 }

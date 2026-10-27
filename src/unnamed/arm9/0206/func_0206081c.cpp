@@ -1,11 +1,14 @@
-extern unsigned int _ZN3IRQ7DisableEv(void);
-extern void _ZN3IRQ7RestoreEj(unsigned int saved);
+//cpp
+#include "IRQ.h"
+
+extern "C" {
+
 extern void OS_WakeupThread(char* p);
 extern void func_02058048(char* p);
 typedef void (*CB)(void*);
 
 /* The card access state block data_020a8180 (NitroSDK CARDiCommon), the
- * fields this function touches; names as func_02060484.c spells them, plus
+ * fields this function touches; names as func_02060484.cpp spells them, plus
  * mThread. */
 typedef struct CardCommon {
     unsigned char pad_00[0x28];
@@ -38,14 +41,15 @@ void func_0206081c(char* obj) {
     CardCommon *p = (CardCommon *)obj;
     CB cb = p->mCallback;
     void *arg = p->mCallbackArg;
-    unsigned int saved = _ZN3IRQ7DisableEv();
+    unsigned int saved = IRQ::Disable();
     p->mFlags &= ~0xc;
     OS_WakeupThread(p->mBusyQueue);
     if (p->mFlags & 0x10) {
         func_02058048(p->mThread);
     }
-    _ZN3IRQ7RestoreEj(saved);
+    IRQ::Restore(saved);
     if (cb != 0) {
         cb(arg);
     }
+}
 }
