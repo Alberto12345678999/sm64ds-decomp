@@ -139,10 +139,10 @@ extern "C" {
 void func_ov002_020ed63c(daYegg_c *c, int i);
 void func_ov002_020edca4(daYegg_c *self);
 
-/* Data. 0x0210e6b0 and 0x0210eb78 are the two shared animation files; +4 of
-   each is the file the shared loader put there. */
-extern char data_ov002_0210e6b0[];
-extern char data_ov002_0210eb78[];
+/* Data. 0x0210e6b0 and 0x0210eb78 are the two shared animation file
+   handles; Player.cpp's static initializer constructs both. */
+extern SharedFilePtr data_ov002_0210e6b0;
+extern SharedFilePtr data_ov002_0210eb78;
 extern s16 data_ov002_021000a8[];
 extern s16 data_02082214[];
 extern int data_0209e650;
@@ -434,7 +434,7 @@ void daYegg_c::func_ov002_020ec938(){
  * speed, zeroes the horizontal speed and sets gravity to -0x2000 (-2 units
  * per frame squared). */
 void daYegg_c::func_ov002_020ec978() {
-    mAnmModel.SetAnim((BCA_File *)(*(void **)(data_ov002_0210eb78 + 4)), 0, 0x1000, 0);
+    mAnmModel.SetAnim((BCA_File *)data_ov002_0210eb78.filePtr, 0, 0x1000, 0);
     mHorzSpeed = 0;
     mVertAccel = -0x2000;
 }
@@ -488,7 +488,7 @@ void daYegg_c::func_ov002_020ec9c4(){
  * animation (file 0x0210eb78) at normal speed. */
 void daYegg_c::func_ov002_020ecad4() {
     mHorzSpeed = 0;
-    mAnmModel.SetAnim((BCA_File *)(*(void **)(data_ov002_0210eb78 + 4)), 0, 0x1000, 0);
+    mAnmModel.SetAnim((BCA_File *)data_ov002_0210eb78.filePtr, 0, 0x1000, 0);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -715,7 +715,7 @@ void daYegg_c::func_ov002_020ecf94()
 void daYegg_c::func_ov002_020ecfc8() {
     dActor_c *r5;
     mTargetId = 0;
-    mAnmModel.SetAnim((BCA_File *)(*(void **)(data_ov002_0210e6b0 + 4)), 0, 0x1000, 0);
+    mAnmModel.SetAnim((BCA_File *)data_ov002_0210e6b0.filePtr, 0, 0x1000, 0);
     mHorzSpeed = 0x64000;
     if (!func_ov002_020ec654()) {
         mVertAccel = 0;
@@ -871,9 +871,9 @@ void daYegg_c::func_ov002_020ed0d4()
         int speed = idx << 8;
         if (mPlayer->mIsAirborne != 0) speed = 0;
         if (v98 != 0) {
-            mAnmModel.SetAnim((BCA_File *)(*(void **)(data_ov002_0210e6b0 + 4)), 0, speed, 0);
+            mAnmModel.SetAnim((BCA_File *)data_ov002_0210e6b0.filePtr, 0, speed, 0);
         } else {
-            mAnmModel.SetAnim((BCA_File *)(*(void **)(data_ov002_0210eb78 + 4)), 0, speed, 0);
+            mAnmModel.SetAnim((BCA_File *)data_ov002_0210eb78.filePtr, 0, speed, 0);
         }
     }
 
@@ -1344,11 +1344,11 @@ fail:
    unloads the blue-coin model InitResources loaded. */
 int daYegg_c::CleanupResources()
 {
-  ((SharedFilePtr *)(&data_ov002_0210e6b0))->Release();
-  ((SharedFilePtr *)(&data_ov002_0210eb78))->Release();
-  if (func_ov002_020ec628() != 0)
-    UnloadBlueCoinModel(((void*)this));
-  return 1;
+    data_ov002_0210e6b0.Release();
+    data_ov002_0210eb78.Release();
+    if (func_ov002_020ec628() != 0)
+        UnloadBlueCoinModel(((void *)this));
+    return 1;
 }
 
 // @symbol _ZN8daYegg_c6RenderEv
@@ -1463,8 +1463,8 @@ int daYegg_c::InitResources()
     if (func_ov002_020ec654() != 0)
         idx = 1;
 
-    dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)data_ov002_0210e6b0);
-    dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)data_ov002_0210eb78);
+    dExtFrameCtrl_c::LoadFile(data_ov002_0210e6b0);
+    dExtFrameCtrl_c::LoadFile(data_ov002_0210eb78);
     if (mAnmModel.SetFile(*(BMD_File **)(data_ov002_021000a0[idx] + 4), 1, -1) == 0)
         return 0;
 
@@ -1478,7 +1478,7 @@ int daYegg_c::InitResources()
             return 0;
     }
 
-    mAnmModel.SetAnim((BCA_File *)(*(void **)(data_ov002_0210eb78 + 4)), 0, 0x1000, 0);
+    mAnmModel.SetAnim((BCA_File *)data_ov002_0210eb78.filePtr, 0, 0x1000, 0);
 
     mAreaId = -1;
     mSpawnPosX = mPosX;
