@@ -22566,6 +22566,11 @@
         "return:void"
       ]
     },
+    "func_0204a17c": {
+      "src/unnamed/ov007/func_ov007_020b782c.cpp": [
+        "param:#1 EData *"
+      ]
+    },
     "func_0204ae2c": {
       "src/engine/particle/Particle_Manager.cpp": [
         "param:#1 Particle::System *"
@@ -22629,7 +22634,7 @@
     },
     "func_0204d8e8": {
       "src/engine/particle/Particle_Manager.cpp": [
-        "return:int"
+        "return:void *"
       ],
       "src/unnamed/arm9/0204/func_0204a730.c": [
         "return:void *"
@@ -22640,7 +22645,7 @@
         "return:void *"
       ],
       "src/engine/particle/Particle_Manager.cpp": [
-        "return:Particle::System *"
+        "return:void *"
       ]
     },
     "func_0204dab4": {
