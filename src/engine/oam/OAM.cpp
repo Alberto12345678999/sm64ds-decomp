@@ -126,7 +126,7 @@ void func_02020820(char *self, int *src, int arg2, int arg3, u8 arg5, u8 arg6)
 
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN3OAM16LoadAffineParamsEP7OamAttrPiP9Matrix2x2
-/* ROM ordinal 1 -- _ZN3OAM16LoadAffineParamsEP7OamAttrPiP9Matrix2x2
+/* ROM ordinal 1 -- OAM::LoadAffineParams(OamAttr *, int *, Matrix2x2 *)
  * 0x02020884  size 0xe8 */
 #pragma opt_strength_reduction off
 #pragma opt_common_subs off
@@ -171,7 +171,7 @@ int OAM::LoadAffineParams(OamAttr *oam, int *count, Matrix2x2 *mtx)
 
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN3OAM12GetObjHeightEii
-/* ROM ordinal 2 -- _ZN3OAM12GetObjHeightEii
+/* ROM ordinal 2 -- OAM::GetObjHeight(int, int)
  * 0x0202096c  size 0x14 */
 u8 OAM::GetObjHeight(int shape, int sizeBits)
 {
@@ -182,7 +182,7 @@ u8 OAM::GetObjHeight(int shape, int sizeBits)
 
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN3OAM11GetObjWidthEii
-/* ROM ordinal 3 -- _ZN3OAM11GetObjWidthEii
+/* ROM ordinal 3 -- OAM::GetObjWidth(int, int)
  * 0x02020980  size 0x14 */
 u8 OAM::GetObjWidth(int shape, int sizeBits)
 {
@@ -194,7 +194,7 @@ u8 OAM::GetObjWidth(int shape, int sizeBits)
 
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN3OAM6RenderEbP7OamAttriiiiiiii
-/* ROM ordinal 4 -- _ZN3OAM6RenderEbP7OamAttriiiiiiii
+/* ROM ordinal 4 -- OAM::Render(bool, OamAttr *, int, int, int, int, int, int, int, int)
  * 0x02020994  size 0x690 */
 #pragma opt_common_subs off
 #pragma opt_propagation off
@@ -615,7 +615,7 @@ OamAttr *OAM::Render(bool draw, OamAttr *obj_, int px, int py, int pal, int prio
 
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN3OAM6RenderEbP7OamAttriiiiP9Matrix2x2
-/* ROM ordinal 6 -- _ZN3OAM6RenderEbP7OamAttriiiiP9Matrix2x2
+/* ROM ordinal 6 -- OAM::Render(bool, OamAttr *, int, int, int, int, Matrix2x2 *)
  * 0x020214a4  size 0x2e4 */
 void OAM::Render(bool draw, OamAttr *obj_, int px, int py, int pal, int prio, Matrix2x2 *mtx)
 {
@@ -716,7 +716,7 @@ void OAM::Render(bool draw, OamAttr *obj_, int px, int py, int pal, int prio, Ma
 
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN3OAM5ResetEv
-/* ROM ordinal 7 -- _ZN3OAM5ResetEv
+/* ROM ordinal 7 -- OAM::Reset()
  * 0x02021788  size 0xdc */
 void OAM::Reset()
 {
@@ -741,7 +741,7 @@ void OAM::Reset()
 
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN3OAM5FlushEv
-/* ROM ordinal 8 -- _ZN3OAM5FlushEv
+/* ROM ordinal 8 -- OAM::Flush()
  * 0x02021864  size 0x34 */
 void OAM::Flush()
 {
@@ -754,7 +754,7 @@ void OAM::Flush()
 
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN3OAM4LoadEv
-/* ROM ordinal 9 -- _ZN3OAM4LoadEv
+/* ROM ordinal 9 -- OAM::Load()
  * 0x02021898  size 0xb4 */
 void OAM::Load()
 {
@@ -778,7 +778,7 @@ void OAM::Load()
 
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN3OAM9RenderSubEP7OamAttrii
-/* ROM ordinal 10 -- _ZN3OAM9RenderSubEP7OamAttrii
+/* ROM ordinal 10 -- OAM::RenderSub(OamAttr *, int, int)
  * 0x0202194c  size 0x50 */
 void OAM::RenderSub(OamAttr *data, s32 x, s32 y)
 {
@@ -792,7 +792,7 @@ void OAM::RenderSub(OamAttr *data, s32 x, s32 y)
 
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN3OAM9RenderSubEP7OamAttriiii
-/* ROM ordinal 11 -- _ZN3OAM9RenderSubEP7OamAttriiii
+/* ROM ordinal 11 -- OAM::RenderSub(OamAttr *, int, int, int, int)
  * 0x0202199c  size 0x54 */
 void OAM::RenderSub(OamAttr *data, s32 x, s32 y, s32 palette, s32 priority)
 {
@@ -805,7 +805,7 @@ void OAM::RenderSub(OamAttr *data, s32 x, s32 y, s32 palette, s32 priority)
 
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN3OAM12EnableSubOAMEv
-/* ROM ordinal 12 -- _ZN3OAM12EnableSubOAMEv
+/* ROM ordinal 12 -- OAM::EnableSubOAM()
  * 0x020219f0  size 0x14 */
 u32 OAM::EnableSubOAM()
 {

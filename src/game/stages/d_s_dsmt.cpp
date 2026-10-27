@@ -21,7 +21,7 @@
  * reorder.
  *
  * classInit stays a literal construction bridge: the fader member's
- * constructor is the out-of-line arm9 _ZN10dFdDummy_cC1Ev, so
+ * constructor is the out-of-line arm9 dFdDummy_c::dFdDummy_c(), so
  * `new dScDSMT_c` would not spell the same call.
  */
 

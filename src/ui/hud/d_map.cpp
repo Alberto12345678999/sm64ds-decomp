@@ -1041,7 +1041,7 @@ void dMap_c::GetPosOnMinimap(Vector3 *out, Vector3 *a, Fix12i s, short ang, Vect
  * allocation size, vtable identity, and the MAP registry profile;
  * later EAD lineage supplies classInit. Exact original spelling is not
  * preserved. Historical alias: Minimap_Spawn. It was once labelled
- * _ZN6dMap_cC1Ev, but it takes no `this`: it is the registry factory. */
+ * the dMap_c constructor, but it takes no `this`: it is the registry factory. */
 // @symbol dMap_c_classInit
 extern "C" dMap_c *dMap_c_classInit()
 {

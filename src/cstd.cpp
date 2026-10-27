@@ -12,9 +12,8 @@
  * They used to keep the shards' extern "C" spellings of mangled names
  * carrying Fix12<int> by value, on the grounds that such a parameter is
  * stack-homed when the body reads it (wall 6az). The Fix12<int> in those
- * names was ours, not the ROM's: under the honest scalar Fix12i they mangle
- * as _ZN4cstd10fdiv_asyncEii and _ZN4cstd16reciprocal_asyncEi and reproduce
- * exactly. See notes/mwccarm-codegen.md 6az, MEASURED 2026-10-22.
+ * names was ours, not the ROM's: declared with the honest scalar Fix12i
+ * (plain int) parameters they reproduce exactly. See notes/mwccarm-codegen.md 6az, MEASURED 2026-10-22.
  *
  * leftovers:
  * - src/InvMat4x3.c is C and cannot name a C++ namespaced function, so it
