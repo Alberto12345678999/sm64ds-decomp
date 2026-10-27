@@ -17,9 +17,9 @@
  * deslop leftovers:
  * - dBgW_KcMbg::SetFile 6az: InitResources
  *   passes Fix12<int> by value; the header method form size-DIFFs.
- * - data_ov009_02113c68 / 02113c70 / 02112bc4 / 02112c38 model/KCL/BTA/CLPS
- *   handles and data_ov009_02113d8c / 02113de0 / 02113e34 spawn tables;
- *   this TU consumes them, overlay .bss/.data owns them.
+ * - data_ov009_02112bc4 / 02112c38 BTA/CLPS blocks: this TU consumes
+ *   them, overlay .data owns them. The model/KCL handles and the three
+ *   spawn tables are defined here.
  * - S14: g_profile_MC_WATER stays outside the licensed .text.
  * - func_ov009_02111b1c stays a C-linkage free function; the cartridge
  *   gives it a global symbol other config still names.
@@ -50,17 +50,58 @@ struct CLPS_Block;
 extern "C" {
 void func_ov009_02111b1c(daObjMcWater_c *self);
 
-extern SharedFilePtr data_ov009_02113c68;
-extern SharedFilePtr data_ov009_02113c70;
 extern BTA_File data_ov009_02112bc4;
 extern CLPS_Block data_ov009_02112c38;
-extern Vector3 data_ov009_02113d8c[];
-extern Vector3 data_ov009_02113de0[];
-extern Vector3 data_ov009_02113e34[];
 extern unsigned char data_0209f2d8[];
 extern int data_0209caa0[];
 extern int data_0209f32c;
 }
+
+/* Runtime asset handles, distinct from the NitroFS file IDs. */
+enum daObjMcWater_c_AssetId { ASSET_MC_WATER_BMD = 0x0693, ASSET_MC_WATER_KCL = 0x0694 };
+
+/* The handles reach their files through these wrappers' constructor and
+   destructor veneers; the manifest maps each to the retail destination.
+   Descriptive local types, not recovered spellings. */
+struct McWaterModelFile : SharedFilePtr {
+    McWaterModelFile(u32 fileID);
+    ~McWaterModelFile();
+};
+
+struct McWaterCollisionFile : SharedFilePtr {
+    McWaterCollisionFile(u32 fileID);
+    ~McWaterCollisionFile();
+};
+
+/* This TU's file handles and spawn tables, in the order the retail
+   initializer (0x02112524) builds them. */
+McWaterModelFile gMcWaterModelFile(ASSET_MC_WATER_BMD);
+McWaterCollisionFile gMcWaterCollisionFile(ASSET_MC_WATER_KCL);
+
+/* func_ov009_02111b1c spawns actor 0xc5 at each of the seven positions in
+   one of these tables. Its default table: */
+Vector3 data_ov009_02113d8c[7] = {
+    Vector3(-0x16b2000, -0x5a000, -0x9f6000),  Vector3(-0x15e0000, -0x5a000, -0xad2000),
+    Vector3(-0x1540000, -0x5a000, -0xbc2000),  Vector3(-0x14aa000, -0x5a000, -0xcbc000),
+    Vector3(-0x1450000, -0x5a000, -0xdca000),  Vector3(-0x141e000, -0x5a000, -0xeec000),
+    Vector3(-0x141e000, -0x5a000, -0x100e000),
+};
+
+/* ... when bit 0x80000 of data_0209caa0[2] is set: */
+Vector3 data_ov009_02113e34[7] = {
+    Vector3(-0x152c000, -0x320000, -0x97e000), Vector3(-0x1450000, -0x320000, -0xa46000),
+    Vector3(-0x13a6000, -0x320000, -0xb2c000), Vector3(-0x1324000, -0x320000, -0xc30000),
+    Vector3(-0x12ac000, -0x320000, -0xd34000), Vector3(-0x12ac000, -0x320000, -0xda2000),
+    Vector3(-0x1298000, -0x320000, -0xe56000),
+};
+
+/* ... and when data_0209f2d8[0] is 1: */
+Vector3 data_ov009_02113de0[7] = {
+    Vector3(-0x14d2000, -0x42e000, -0x960000), Vector3(-0x140a000, -0x42e000, -0xa32000),
+    Vector3(-0x136a000, -0x42e000, -0xb18000), Vector3(-0x12f2000, -0x42e000, -0xc12000),
+    Vector3(-0x1284000, -0x42e000, -0xd0c000), Vector3(-0x1266000, -0x42e000, -0xe1a000),
+    Vector3(-0x128e000, -0x42e000, -0xf32000),
+};
 
 /* -------------------------------------------------------------------------- */
 /* -------------------------------------------------------------------------- */
@@ -84,15 +125,15 @@ int daObjMcWater_c::InitResources()
         }
     }
     {
-        BMD_File *bmd = (BMD_File *)dExtSimpleModel_c::LoadFile(data_ov009_02113c68);
+        BMD_File *bmd = (BMD_File *)dExtSimpleModel_c::LoadFile(gMcWaterModelFile);
         mModel.SetFile(bmd, 1, 0x14);
     }
-    dExtAnmTexSRT_c::Prepare(*(BMD_File *)data_ov009_02113c68.filePtr, data_ov009_02112bc4);
+    dExtAnmTexSRT_c::Prepare(*(BMD_File *)gMcWaterModelFile.filePtr, data_ov009_02112bc4);
     mTexTransformer.SetFile(data_ov009_02112bc4, 0, 0x1000, 0);
     UpdateModelPosAndRotY();
     UpdateClsnPosAndRot();
     {
-        KCL_File *kcl = (KCL_File *)dBgW_Kc::LoadFile(data_ov009_02113c70);
+        KCL_File *kcl = (KCL_File *)dBgW_Kc::LoadFile(gMcWaterCollisionFile);
         /* 6az: header SetFile takes Fix12<int> by value. */
         ((dBgW_KcMbg *)(&mMeshCollider))
             ->dBgW_KcMbg::SetFile((KCL_File *)(kcl), *(const Matrix4x3 *)(&mClsnMat), 0x1000,
@@ -132,8 +173,8 @@ int daObjMcWater_c::Render()
 // @symbol _ZN14daObjMcWater_c16CleanupResourcesEv
 int daObjMcWater_c::CleanupResources()
 {
-    data_ov009_02113c68.Release();
-    data_ov009_02113c70.Release();
+    gMcWaterModelFile.Release();
+    gMcWaterCollisionFile.Release();
     if (mMeshCollider.IsEnabled())
         mMeshCollider.Disable();
     return 1;
