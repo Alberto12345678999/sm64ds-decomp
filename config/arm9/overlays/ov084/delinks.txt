@@ -28,7 +28,7 @@ src/game/actors/d_a_f_pkn.cpp:
 src/game/actors/d_a_pkn.cpp:
     complete
     .text start:0x0212eaf0 end:0x02130174
-
-src/unnamed/ov084/__sinit_ov084_02130654.cpp:
-    complete
     .init start:0x02130654 end:0x02130860
+    .ctor start:0x02130868 end:0x0213086c
+    .data start:0x02130ba4 end:0x02130ca4
+    .bss start:0x02130df4 end:0x02130ec8
