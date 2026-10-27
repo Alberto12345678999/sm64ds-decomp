@@ -2298,7 +2298,7 @@ void daStar_c::func_ov002_020e88a8() {
         mHorzSpeed = 0xc000;
         mVertSpeed = 0x17000;
     }
-    r = ((dBgPi *)mWithMeshClsn.GetFloorResult())->surface.clps.GetSurfaceType();
+    r = mWithMeshClsn.GetFloorResult()->surface.clps.GetSurfaceType();
     if (r == 1 || r == 9) {
         w.x = mSafePosX;
         w.y = mSafePosY;
@@ -2326,7 +2326,7 @@ void daStar_c::func_ov002_020e88a8() {
         mPrevAngleY = Vec3_HorzAngle(&v, &mPos);
         if (mFloorNormalY >= *(short*)(data_02082714 + 0x56)) {
             if (data_0209f2f8 != 0x1d) return;
-            if (((dBgPi *)mWithMeshClsn.GetFloorResult())->surface.clps.GetFloorClass() != 5)
+            if (mWithMeshClsn.GetFloorResult()->surface.clps.GetFloorClass() != 5)
                 return;
         }
         {

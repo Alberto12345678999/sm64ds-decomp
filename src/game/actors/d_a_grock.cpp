@@ -247,7 +247,7 @@ extern "C" void func_ov021_02112544(char *raw)
 
     dBgCh_Actr_UpdateContinuous_Veneer(&rock->mWithMeshClsn);
     if (rock->mWithMeshClsn.IsOnGround() != 0) {
-        hit = (dBgPi *)rock->mWithMeshClsn.GetFloorResult();
+        hit = rock->mWithMeshClsn.GetFloorResult();
         hit->surface.CopyNormalTo(*(Vector3 *)&normal);
 
         pos = *(Vec3 *)&rock->mPosX;
@@ -285,7 +285,7 @@ extern "C" void func_ov021_02112544(char *raw)
     if (rock->mWithMeshClsn.IsOnWall() == 0)
         return;
 
-    hit = (dBgPi *)rock->mWithMeshClsn.GetWallResult();
+    hit = rock->mWithMeshClsn.GetWallResult();
     hit->surface.CopyNormalTo(*(Vector3 *)&wallNormal);
     {
         short wallAngle = cstd::atan2(wallNormal.x, wallNormal.z);

@@ -205,7 +205,7 @@ extern "C" void func_ov077_02124d08(daTgz_c *self, dBgCh_Actr *clsn)
                 return;
             }
             {
-                dBgPi *fr = (dBgPi *)clsn->GetFloorResult();
+                dBgPi *fr = clsn->GetFloorResult();
                 fr->surface.CopyNormalTo(normal);
             }
             if (normal.y != 0) {
@@ -219,7 +219,7 @@ extern "C" void func_ov077_02124d08(daTgz_c *self, dBgCh_Actr *clsn)
         }
     }
     if (clsn->IsOnWall()) {
-        dBgPi *wr = (dBgPi *)clsn->GetWallResult();
+        dBgPi *wr = clsn->GetWallResult();
         wr->surface.CopyNormalTo(wallnormal);
     }
 }

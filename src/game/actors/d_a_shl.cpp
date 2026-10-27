@@ -645,7 +645,7 @@ void daShl_c::func_ov102_0214c7fc()
 {
     if (!mMeshClsn.IsOnGround())
         return;
-    dBgPi *floor = (dBgPi *)mMeshClsn.GetFloorResult();
+    dBgPi *floor = mMeshClsn.GetFloorResult();
     if (!SurfaceInfo_TestFlag0x20((int *)&floor->surface))
         return;
     PoofDust();

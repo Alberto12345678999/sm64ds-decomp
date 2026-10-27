@@ -431,7 +431,7 @@ void func_ov018_02111bf0(void *cv, void *wv)
     dBgCh_Actr_UpdateDiscreteNoLava_veneer(w);
     if (w->IsOnGround() != 0) {
         Vector3 n;
-        dBgPi *floor = (dBgPi *)w->GetFloorResult();
+        dBgPi *floor = w->GetFloorResult();
         floor->surface.CopyNormalTo(n);
         if (n.y != 0) {
             int s = FX_MUL(n.x, self->mSpeedX) + FX_MUL(n.z, self->mSpeedZ);
