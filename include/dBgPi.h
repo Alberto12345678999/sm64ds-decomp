@@ -90,7 +90,7 @@ struct dBgPi : dBgPc {
     int IsHitBy(int uid, struct dActor_c *owner, struct dBgW *collider) const;
     int IsValid() const;
     int HasCollider() const;
-    void RecordHit(s16 triID, SurfaceInfo *src);
+    void RecordHit(int triID, SurfaceInfo *src);
     void SetCollider(int idx, int uid, struct dActor_c *owner,
                      struct dBgW *collider);
     void Reset();
