@@ -1227,8 +1227,8 @@ void func_ov102_0214ae1c(void *cv) {
         w.x = self->mPosX;
         w.y = self->mPosY;
         w.z = self->mPosZ;
-        ((Player *)self->mEatingPlayer)->Hurt(*(Vector3 *)&w, self->mHurtDamage, 0xc000, 1, 0, 1);
-        ((Player *)self->mEatingPlayer)->func_ov002_020d718c();
+        self->mEatingPlayer->Hurt(*(Vector3 *)&w, self->mHurtDamage, 0xc000, 1, 0, 1);
+        self->mEatingPlayer->func_ov002_020d718c();
         self->mEatingPlayer = 0;
     }
     func_ov102_0214baa0((char *)self);
@@ -1318,7 +1318,7 @@ int func_ov102_0214ab1c(void *selfv) {
 
     self->mFlags &= ~0x10000000u;
 
-    player = (Player *)self->mEatingPlayer;
+    player = self->mEatingPlayer;
     if (player != 0) {
         if (player->IsInsideOfCannon() != 0) {
             goto shocked;

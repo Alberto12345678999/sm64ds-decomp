@@ -876,7 +876,7 @@ int daMky_c::func_ov030_02113094()
         if (IsInYoshiMouth(this)) {
             if (this->mHasSpawnedCap != 0) {
                 ::dActor_c *a = ::dActor_c::FindWithID(this->mCapUniqueID);
-                static_cast<daObjMarioCap_c *>(a)->mEatingPlayer = reinterpret_cast<s32>(mPlayer);
+                static_cast<daObjMarioCap_c *>(a)->mEatingPlayer = mPlayer;
                 a->mFlags |= 0x40000;
             }
             this->mSubState++;
