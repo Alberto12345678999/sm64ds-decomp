@@ -1269,7 +1269,7 @@ extern void _ZN17dExtCommonModel_cD1Ev(void*);
 extern void _ZN4dBgW7DisableEv(void*);
 extern void _ZN2GX10EndLoadTexEv(void);
 extern void _ZN2GX12BeginLoadTexEv(void);
-extern void _ZN2GX15DisableAllBanksEv(void);
+extern void DisableAllBanks(void);
 extern void _ZN2GX15SetGraphicsModeEiii(int, int, int);
 extern void _ZN2GX6DispOnEv(void);
 extern void _ZN2GX7LoadTexEPKvjj(const void*, u32, u32);

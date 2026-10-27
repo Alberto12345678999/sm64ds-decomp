@@ -232,28 +232,28 @@
       "ordinal": 29
     },
     {
-      "symbol": "_ZN2GX23SetBankForSubOBJExtPlttEi",
+      "symbol": "SetBankForSubOBJExtPltt",
       "address": "0x020541f0",
       "size": "0x0000008c",
       "legacy_source": "src/_ZN2GX23SetBankForSubOBJExtPlttEt.cpp",
       "ordinal": 30
     },
     {
-      "symbol": "_ZN2GX22SetBankForSubBGExtPlttEi",
+      "symbol": "SetBankForSubBGExtPltt",
       "address": "0x0205427c",
       "size": "0x0000008c",
       "legacy_source": "src/_ZN2GX22SetBankForSubBGExtPlttEt.cpp",
       "ordinal": 31
     },
     {
-      "symbol": "_ZN2GX16SetBankForSubOBJEi",
+      "symbol": "SetBankForSubOBJ",
       "address": "0x02054308",
       "size": "0x0000007c",
       "legacy_source": "src/_ZN2GX16SetBankForSubOBJEt.cpp",
       "ordinal": 32
     },
     {
-      "symbol": "_ZN2GX15SetBankForSubBGEi",
+      "symbol": "SetBankForSubBG",
       "address": "0x02054384",
       "size": "0x000000ac",
       "legacy_source": "src/_ZN2GX15SetBankForSubBGEt.cpp",
@@ -267,14 +267,14 @@
       "ordinal": 34
     },
     {
-      "symbol": "_ZN2GX17SetBankForTexPlttEi",
+      "symbol": "SetBankForTexPltt",
       "address": "0x02054450",
       "size": "0x000000f4",
       "legacy_source": "src/_ZN2GX17SetBankForTexPlttEt.cpp",
       "ordinal": 35
     },
     {
-      "symbol": "_ZN2GX13SetBankForTexEi",
+      "symbol": "SetBankForTex",
       "address": "0x02054544",
       "size": "0x00000204",
       "legacy_source": "src/_ZN2GX13SetBankForTexEt.cpp",
@@ -288,7 +288,7 @@
       "ordinal": 37
     },
     {
-      "symbol": "_ZN2GX13SetBankForOBJEi",
+      "symbol": "SetBankForOBJ",
       "address": "0x0205485c",
       "size": "0x0000016c",
       "legacy_source": "src/_ZN2GX13SetBankForOBJEt.cpp",

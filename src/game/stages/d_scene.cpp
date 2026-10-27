@@ -51,8 +51,6 @@ struct FaderVTable {
 };
 struct FaderObject { FaderVTable *vt; };
 
-namespace GX { void DisableAllBanks(); }
-
 extern "C" {
 extern int  func_02053c10(int enable);
 extern int  func_02053be0(int enable);
@@ -214,12 +212,21 @@ void dScene_c::ResetHardwareRegisters()
 }
 
 namespace GX {
-// @symbol _ZN2GX15DisableAllBanksEv
-void DisableAllBanks(){
- func_02053f58(); func_02054018(); func_02054004(); func_02053f6c();
- func_02053fa8(); func_02053f94(); func_02053f80(); func_02053fe0();
- func_02053fbc(); func_02053f44(); func_02053f30(); func_02053f08();
- func_02053ee0();
+// @symbol DisableAllBanks
+extern "C" void DisableAllBanks() {
+    func_02053f58();
+    func_02054018();
+    func_02054004();
+    func_02053f6c();
+    func_02053fa8();
+    func_02053f94();
+    func_02053f80();
+    func_02053fe0();
+    func_02053fbc();
+    func_02053f44();
+    func_02053f30();
+    func_02053f08();
+    func_02053ee0();
 }
 }
 

@@ -1,23 +1,23 @@
 #include "types.h"
-extern void _ZN2GX15DisableAllBanksEv(void);
-extern void _ZN2GX13SetBankForTexEi(int v);
-extern void _ZN2GX17SetBankForTexPlttEi(int v);
+void DisableAllBanks(void);
+void SetBankForTex(int);
+void SetBankForTexPltt(int);
 void SetBankForBG(int);
-extern void _ZN2GX13SetBankForOBJEi(int v);
-extern void _ZN2GX15SetBankForSubBGEi(int v);
-extern void _ZN2GX16SetBankForSubOBJEi(int v);
+void SetBankForOBJ(int);
+void SetBankForSubBG(int);
+void SetBankForSubOBJ(int);
 extern void _ZN2GX15SetGraphicsModeEiii(int a, int b, int c);
 extern void _ZN3GXS15SetGraphicsModeEi(int a);
 
 void func_0200f2cc(void)
 {
-    _ZN2GX15DisableAllBanksEv();
-    _ZN2GX13SetBankForTexEi(3);
-    _ZN2GX17SetBankForTexPlttEi(0x10);
+    DisableAllBanks();
+    SetBankForTex(3);
+    SetBankForTexPltt(0x10);
     SetBankForBG(4);
-    _ZN2GX13SetBankForOBJEi(0x60);
-    _ZN2GX15SetBankForSubBGEi(0x180);
-    _ZN2GX16SetBankForSubOBJEi(8);
+    SetBankForOBJ(0x60);
+    SetBankForSubBG(0x180);
+    SetBankForSubOBJ(8);
 
     *(volatile u32 *)0x4000000 &= ~0x7000000;
     *(volatile u32 *)0x4000000 &= ~0x38000000;
