@@ -26,7 +26,7 @@
  * both the inheritance and owned-member layout. */
 struct daObjShell_c : dActor_c {
     u8 pad_0d0[0x4];         /* 0x0d0 */
-    dExtAnmModel_c mModelAnim; /* 0x0d4 */
+    dExtAnmModel_c mAnmModel; /* 0x0d4 */
     dCcAc_c mdCcAc_c;         /* 0x138 */
     u8 mState;                /* 0x16c: 0 shut, 1 lunging */
     u8 pad_16d[0x1];
@@ -67,7 +67,7 @@ struct daObjShell_c {
        Behavior takes its address, which is what pins it. */
     s32 mCamSpacePosX;            /* 0x074 */
     u8  pad_078[0x5c];
-    dExtAnmModel_c mModelAnim; /* 0x0d4 */
+    dExtAnmModel_c mAnmModel; /* 0x0d4 */
     dCcAc_c mdCcAc_c;         /* 0x138 */
     u8  mState;            /* 0x16c */
     u8  pad_16d[0x1];

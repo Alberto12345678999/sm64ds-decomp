@@ -23,10 +23,8 @@
  * emits D1 then D0; D2 has no ROM home. Both vtables are keyed here.
  * common.h comes first so InitResources' mShadowMat copy stays twelve words.
  */
-/* leftovers: dExtAnmModel_c::SetAnim, dBgCh_Actr::Init, dCcAcPos_c::Init,
- * Player::Hurt, Player::Bounce, DropShadowRadHeight and cstd::atan2 stay
- * mangled externs. This file calls them. The headers spell Fix12i, which
- * does not mangle to the Fix12<int> symbols the ROM has. GetWallResult is
+/* leftovers: Player::Hurt and Player::Bounce stay mangled externs. This file
+ * calls them, and each symbol takes Fix12<int> by value. GetWallResult is
  * not a dBgCh_Actr method; the call is dBgCh_Actr_UpdateContinuous_Veneer,
  * not UpdateContinuous. data_ov020_02114aa0 and 02114ab8 are model handles,
  * 02114aa8 and 02114ab0 animation handles; filePtr is the loaded file.
@@ -44,12 +42,11 @@
 #include "dCc_c.h"
 #include "Sound.h"
 #include "dBgCh_Actr.h"
+#include "math/Approach.h"
 namespace cstd {
 s16 atan2(s32, s32);
 }
 
-int ApproachLinear(int &value, int target, int step);
-int ApproachLinear(short &value, short target, short step);
 
 /* Actor IDs from the ROM's actor table (symbols/actor_debug_names.tsv). */
 enum {
@@ -101,21 +98,15 @@ s16  Vec3_HorzAngle(const Vector3 *a, const Vector3 *b);
 int  Vec3_HorzDist(const Vector3 *a, const Vector3 *b);
 void AddVec3(void *a, void *b, void *c_);
 int  RandomIntInternal(void *p);
-int  _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(Player *self, const Vector3 *pos, unsigned int a, int fix, u8 b, u8 d, u8 e);
-void _ZN6Player6BounceE5Fix12IiE(Player *self, int fix);
 void func_ov063_0211cae8(void *found, unsigned int mask);
 void func_0203568c(int *p, int v);
 void Matrix4x3_FromRotationZXYExt(void *m, int x, int y, int z);
-void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(dActor_c *thiz, dExtShadowModel_c *sm, Matrix4x3 *mtx, int radius, int depth, u8 opacity);
 void UnloadBlueCoinModel(void *);
 void LoadBlueCoinModel(void *c);
 void func_0200f760(void *a, void *b);
 /* Parameter names keep this TU's @NNN. */
 typedef void BgchInitAt_(dBgCh_Actr *self, dActor_c *actor, int radius, int height,
                          Vector3_16 *first, Vector3_16 *second);
-void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
-    dCcAcPos_c *self, dActor_c *actor, const Vector3 *offset,
-    int radius, int height, u32 flags, u32 vulnFlags);
 }
 
 extern int data_0209e650[];     /* the random number generator's state */
@@ -139,7 +130,7 @@ struct BookAnimationFileHandle : SharedFilePtr {
 };
 
 /* The four slots, by how they are used below:
- *   aa0  the animated model that mModelAnim switches to (STATE_TILT_BACK)
+ *   aa0  the animated model that mAnmModel switches to (STATE_TILT_BACK)
  *   ab8  the model mModel starts with
  *   aa8  the animation that plays during STATE_WIND_UP
  *   ab0  the animation that plays in flight */
@@ -264,7 +255,7 @@ int daBook_c::func_ov020_02111418()
     if (r == HIT_METAL_PLAYER) {
         Vector3 v;
         v.x = mPosX; v.y = mPosY; v.z = mPosZ;
-        _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(mTouchedPlayer, &v, 0, 0xc000, 1, 0, 1);
+        mTouchedPlayer->Hurt(v, 0, 0xc000, 1, 0, 1);
         func_ov020_02112110();
         return 1;
     }
@@ -273,18 +264,18 @@ int daBook_c::func_ov020_02111418()
         if (eq) {
             Vector3 v;
             v.x = mPosX; v.y = mPosY; v.z = mPosZ;
-            _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(mTouchedPlayer, &v, 2, 0xc000, 1, 0, 1);
+            mTouchedPlayer->Hurt(v, 2, 0xc000, 1, 0, 1);
         } else {
             Vector3 v;
             v.x = mPosX; v.y = mPosY; v.z = mPosZ;
-            _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(mTouchedPlayer, &v, 1, 0xc000, 1, 0, 1);
+            mTouchedPlayer->Hurt(v, 1, 0xc000, 1, 0, 1);
         }
         mCoinType = 0;
         func_ov020_02112110();
         return 1;
     }
     if (r != HIT_STOMPED) return 0;
-    _ZN6Player6BounceE5Fix12IiE(mTouchedPlayer, 0x28000);
+    mTouchedPlayer->Bounce(0x28000);
     func_ov020_02112110();
     return 1;
 }
@@ -527,8 +518,8 @@ void daBook_c::func_ov020_02111aa8()
  * when it hits the player, the ground, or a wall that faces it (the wall's
  * normal more than a quarter turn from the book's heading). */
 void daBook_c::func_ov020_02111b28() {
-    if (mUsesModelAnim != 0) {
-        mModelAnim.Advance();
+    if (mUsesAnmModel != 0) {
+        mAnmModel.Advance();
     }
     AddVec3(&mPosX, &mSpeedX, &mPosX);
     if (func_ov020_02111418() != 0)
@@ -566,15 +557,15 @@ void daBook_c::func_ov020_02111c30()
     if (func_ov020_02111418())
         return;
 
-    mModelAnim.Advance();
+    mAnmModel.Advance();
 
     {
         if (ApproachLinear(mHorzSpeed, 0xa000, 0xa00) == 0)
             return;
     }
 
-    if (mModelAnim.Finished()) {
-        mModelAnim.SetAnim((BCA_File *)data_ov020_02114ab0.filePtr, 0, 0x1000, 0);
+    if (mAnmModel.Finished()) {
+        mAnmModel.SetAnim((BCA_File *)data_ov020_02114ab0.filePtr, 0, 0x1000, 0);
         mState = STATE_FLY;
         mHorzSpeed = 0;
         func_ov020_021112b0();
@@ -624,29 +615,31 @@ void daBook_c::func_ov020_02111c30()
 }
 
 // @symbol _ZN8daBook_c19func_ov020_02111ee0Ev
-/* STATE_TILT_BACK: tips the book back by 45 degrees, then switches mModelAnim
+/* STATE_TILT_BACK: tips the book back by 45 degrees, then switches mAnmModel
  * to the animated model, starts its animation, lifts the book 50 units and
  * moves the collider down 25. */
 void daBook_c::func_ov020_02111ee0()
 {
-  int r = func_ov020_02111418();
-  if(r) return;
-  if(ApproachLinear(mAngleX, -0x2000, 0x200)){
-    int s;
-    mHorzSpeed = 0;
-    s = mModelAnim.SetFile((BMD_File *)data_ov020_02114aa0.filePtr, 1, -1);
-    if(s == 0) return;
-    mState = STATE_WIND_UP;
-    mModelAnim.SetAnim((BCA_File *)data_ov020_02114aa8.filePtr, 0x40000000, 0x1000, 0);
-    mUsesModelAnim = 1;
-    mStateTimer = 0;
-    {
-      int* p60 = &mPosY;
-      *p60 = *p60 + 0x32000;
+    int r = func_ov020_02111418();
+    if (r)
+        return;
+    if (ApproachLinear(mAngleX, -0x2000, 0x200)) {
+        int s;
+        mHorzSpeed = 0;
+        s = mAnmModel.SetFile((BMD_File *)data_ov020_02114aa0.filePtr, 1, -1);
+        if (s == 0)
+            return;
+        mState = STATE_WIND_UP;
+        mAnmModel.SetAnim((BCA_File *)data_ov020_02114aa8.filePtr, 0x40000000, 0x1000, 0);
+        mUsesAnmModel = 1;
+        mStateTimer = 0;
+        {
+            int *p60 = &mPosY;
+            *p60 = *p60 + 0x32000;
+        }
+        mClsnOffset.y = -0x19000;
     }
-    mClsnOffset.y = -0x19000;
-  }
-  UpdatePos(0);
+    UpdatePos(0);
 }
 
 // @symbol _ZN8daBook_c19func_ov020_02111fc4Ev
@@ -713,7 +706,7 @@ void daBook_c::func_ov020_02112110() {
  * the home height. */
 void daBook_c::func_ov020_0211216c()
 {
-    Matrix4x3 *m = (mUsesModelAnim != 0) ? &mModelAnim.mat4x3 : &mModel.mat4x3;
+    Matrix4x3 *m = (mUsesAnmModel != 0) ? &mAnmModel.mat4x3 : &mModel.mat4x3;
     Matrix4x3_FromRotationZXYExt(m, mAngleX, mAngleY, mAngleZ);
     m->m[9] = mPosX >> 3;
     m->m[10] = mPosY >> 3;
@@ -723,8 +716,7 @@ void daBook_c::func_ov020_0211216c()
     mShadowMat.m[9] = mPosX >> 3;
     mShadowMat.m[10] = mHomePosY >> 3;
     mShadowMat.m[11] = mPosZ >> 3;
-    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
-        this, &mShadowModel, &mShadowMat, mScaleX * 0x64, 0x12c000, 0xf);
+    DropShadowRadHeight(mShadowModel, mShadowMat, mScaleX * 0x64, 0x12c000, 0xf);
 }
 
 // @symbol _ZN8daBook_c16CleanupResourcesEv
@@ -755,8 +747,8 @@ int daBook_c::Render()
     if (isHidden != 0)
         return 1;
 
-    if (mUsesModelAnim != 0)
-        mModelAnim.Render(&mScale);
+    if (mUsesAnmModel != 0)
+        mAnmModel.Render(&mScale);
     else
         mModel.Render(&mScale);
 
@@ -852,7 +844,7 @@ int daBook_c::InitResources()
     mClsnOffset.x = 0;
     mClsnOffset.y = 0;
     mClsnOffset.z = 0;
-    _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(&mdCcAcPos_c, this, &mClsnOffset, 0x19000, 0x32000, 0x200001, 0);
+    mdCcAcPos_c.Init(this, mClsnOffset, 0x19000, 0x32000, 0x200001, 0);
 
     mLinkedActorID = 0;
     mTouchedPlayer = 0;
@@ -867,7 +859,7 @@ int daBook_c::InitResources()
         return 0;
 
     mShadowMat = IDENTITY_MATRIX4X3;
-    mUsesModelAnim = 0;
+    mUsesAnmModel = 0;
     mAngleY += 0x8000;
     mUniformScale = 0x800;
 

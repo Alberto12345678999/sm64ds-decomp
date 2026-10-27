@@ -15,8 +15,6 @@
  * - SetBackwardTime keeps its 3-argument extern-C form: the ROM entry
  *   forwards r2 untouched, which the header's 2-param member would drop
  *   (vtable slot 3 still binds through the header decl).
- * - G2x::SetBlendBrightness stays a local extern (the ROM passes r2 with
- *   no sign-extend; the header's s16 emits sxth at this call site).
  * - opt_strength_reduction off runs to end of file: its reset reaches
  *   backward, so it cannot be restored between the two table builders
  *   (measured). func_0202f2c4, func_0202f3a4, func_02053c10, the
@@ -27,18 +25,10 @@
 #include "dWipe_c.h"
 #include "IRQ.h"
 #include "decl_common.h"
-
-namespace CP15 {
-void FlushAndInvalidateDataCache(u32 addr, u32 len);
-}
-
-namespace GX {
-void LoadBGPltt(const void *src, u32 offset, u32 len);
-}
-
-namespace GXS {
-void LoadBGPltt(const void *src, u32 offset, u32 len);
-}
+#include "cstd.h"
+#include "CP15.h"
+#include "GX.h"
+#include "G2x.h"
 
 extern "C" {
 /* The ROM's SetBackwardTime entry point reads a third argument in r2 and
@@ -46,9 +36,6 @@ extern "C" {
    forwarded register.
    local extern: byte-required arity, banked in decl-agreement-baseline.json */
 int  _ZN15dFdBrightness_c15SetBackwardTimeEj(dFdBrightness_c *self, u32 time, u32 extra);
-/* local extern: the ROM passes the blend target in r2 with no sign-extend;
-   the header's s16 parameter emits sxth at this call site. */
-void _ZN3G2x18SetBlendBrightnessEPVtts(volatile u16 *p, u16 a, int b);
 
 void MultiStore_Int(int val, int *dst, int len);
 void func_0202f2c4(void);
@@ -316,8 +303,8 @@ void dWipe_c::AdvanceFade()
             wipeInterp = 0;
             needsCleanup = 0;
             b = (type == 0) ? 0x10 : -0x10;
-            _ZN3G2x18SetBlendBrightnessEPVtts((u16 *)0x4000050, 0x3f, b);
-            _ZN3G2x18SetBlendBrightnessEPVtts((u16 *)0x4001050, 0x3f, b);
+            G2x::SetBlendBrightness((u16 *)0x4000050, 0x3f, b);
+            G2x::SetBlendBrightness((u16 *)0x4001050, 0x3f, b);
             func_0202fb30();
             state = 4;
         }
@@ -512,7 +499,7 @@ void dWipe_c::func_0202ee94()
     for (i = 0; i < 0x60; i++) {
         if (r8 <= i) {
             int a = i - 0x60 + sl;
-            int s = _ZN4cstd4sqrtEy((u64)(long long)(a * (r7 - a)));
+            int s = cstd::sqrt((u64)(long long)(a * (r7 - a)));
             int lo = 0x80 - s;
             int hi = s + 0x80;
             if (lo < 0) lo = r5;

@@ -20,12 +20,8 @@
 #include "HeapAllocator.h"
 #include "SolidHeapAllocator.h"
 #include "Heap.h"
-
-namespace CP15 {
-void FlushAndInvalidateDataCache(unsigned int a, unsigned int b);
-void FlushDataCache(unsigned int a, unsigned int b);
-void InvalidateDataCache(unsigned int addr, unsigned int n);
-}
+#include "cstd.h"
+#include "CP15.h"
 
 namespace IRQ {
     /* Defined at 0x02059d1c/0x02059d30 (the IRQ TU); namespace-scope externs
@@ -404,9 +400,11 @@ extern void MultiStore_Int(int val, int *dst, int len);
 extern struct NestedHeapIterator;
 extern struct Obj;
 extern struct Obj1;
+/* local extern: these callers run the constructor over storage that already
+   exists (and func_02051064 returns its r0), which C++ cannot spell without a
+   placement new the tree does not have. */
 extern int _ZN18NestedHeapIteratorC1Ej(int a, int b);
 
-extern unsigned int _ZN4cstd6strlenEPKc(const char *s);
 extern int __aeabi_idiv(int a, int b);
 extern unsigned int __aeabi_uidiv(unsigned int a, unsigned int b);
 extern s16 data_02086384[];
@@ -1704,8 +1702,8 @@ extern "C" int func_020503a4(int a, int b, int c, int d, int p5, int p6, int p7,
 
     handle = -1;
     g = ((G_20503a4*)&data_020a5634);
-    ((void (*)(int a, int b))CP15::FlushAndInvalidateDataCache)(b, dd);
-    ((void (*)(int a, int b))CP15::FlushAndInvalidateDataCache)(c, dd);
+    CP15::FlushAndInvalidateDataCache(b, dd);
+    CP15::FlushAndInvalidateDataCache(c, dd);
     stereo = (p5 == 1) ? 1 : 0;
     align = 0xffb0ff / p9;
     if (p14 != 0) {
@@ -2556,7 +2554,7 @@ extern "C" int func_0204ee40(struct S82 *self, char *name, char *p) {
     fimg_off = fimg + 8;
     self->f58 = (unsigned char *)fimg_off;
 
-    if (func_0205cc80(self, (void *)(name),  (void *)((int(*)(const char *s))_ZN4cstd6strlenEPKc)(name)) == 0)
+    if (func_0205cc80(self, (void *)name, (void *)cstd::strlen(name)) == 0)
         return 0;
 
     if (((int(*)(void *p, int a, int b0, int b4, int c0, int c4, void *fn1, void *fn2))func_0205cb68)(self, (int)fimg_off, (int)(fatb + 0xc) - (int)fimg_off,

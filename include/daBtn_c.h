@@ -43,7 +43,7 @@
 
 struct daBtn_c : dEnemyBase_c {
     dBgCh_Actr                 mWithMeshClsn;         /* 0x110 */
-    dExtAnmModel_c mModelAnim;                        /* 0x2cc */
+    dExtAnmModel_c mAnmModel;                         /* 0x2cc */
     dExtAnmTexPat_c mTextureSequence;                 /* 0x330 */
     dExtShadowModel_c                  mShadowModel;          /* 0x344 */
     /* The drop shadow's matrix: func_ov079_02124188 builds it every frame

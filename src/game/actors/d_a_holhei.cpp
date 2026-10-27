@@ -10,10 +10,6 @@
  * math/Matrix.h spelling scalarizes a twelve-word copy.
  *
  * Known limits, measured in this TU:
- * - dCcAc_c::Init, dBgCh_Actr::Init, dExtAnmModel_c::SetAnim,
- *   dActor_c::DropShadowRadHeight, dActor_c::SpawnCoins and
- *   dEnemyBase_c::KillByInvincibleChar stay mangled. Each carries
- *   Fix12<int> by value (notes/mwccarm-codegen.md, wall 6az).
  * - The six file handles and the ten state records keep data_ov062_*
  *   names; symbols.txt has no other. de90, dec0 and def0 keep the
  *   char[]/int[] types decl_common.h declares (another type is a new
@@ -42,6 +38,7 @@
 #include "SurfaceInfo.h"
 #include "dBgPi.h"
 #include "Sound.h"
+#include "math/Approach.h"
 
 /* A state record: daHolhei_c_ChangeState stores its address in mState
    and calls a non-null enter; past the UpdateKillByInvincibleChar check,
@@ -54,20 +51,8 @@ struct HolheiState {
     HolheiUpdate update;  /* 0x8 */
 };
 
-int ApproachLinear(int &ref, int target, int step);
 
 extern "C" {
-/* local extern: Fix12<int> by value, wall 6az. Header method homes the arg. */
-extern void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void* self, dActor_c* a, int r, int h, unsigned int e, unsigned int g);
-/* local extern: Fix12<int> by value, wall 6az. Header method homes the arg. */
-/* local extern: Fix12<int> by value, wall 6az. Header method homes the arg. */
-/* local extern: Fix12<int> by value, wall 6az. Header method homes the arg. */
-extern void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(void *, dExtShadowModel_c &sm, Matrix4x3 &mtx, int a, int b, unsigned int c);
-/* local extern: Fix12<int> by value, wall 6az. Header method homes the arg. */
-extern int _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs(void* a, Vector3* v, unsigned n, int f, short s);
-/* local extern: Fix12<int> by value, wall 6az. Header method homes the arg. */
-extern void _ZN12dEnemyBase_c20KillByInvincibleCharERK10Vector3_16R6Player5Fix12IiE(void *c, void *v, void *a, int flag);
-
 extern short func_02010844(void* unused, Vector3* v, short angle);
 extern void func_02012694(int a, void *p);
 extern int daHolhei_c_ChangeState(daHolhei_c *self, HolheiState *p);
@@ -161,7 +146,7 @@ int daHolhei_c::InitResources()
     dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)&gHoruheiWalkAnimationFile);
     mVertAccel = -0x3000;
     mTerminalVelocity = -0x1e000;
-    _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCc_c, (dActor_c*)this, 0xc8000, 0xfa000, 0x200004, 0x3010);
+    mdCc_c.Init((dActor_c *)this, 0xc8000, 0xfa000, 0x200004, 0x3010);
     mModel.speed = 0x1000;
     mMeshClsn.Init((dActor_c *)this, 0x118000, 0x118000, 0, 0);
     mHomePosX = mPosX;
@@ -320,11 +305,9 @@ extern "C" void func_ov062_02116dbc(daHolhei_c *self)
     self->mShadowMtx.m[10] = self->mPosY >> 3;
     self->mShadowMtx.m[11] = self->mPosZ >> 3;
     if (self->mMeshClsn.IsOnGround() != 0) {
-        _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
-            self, self->mShadowModel, self->mShadowMtx, 0x12c000, 0x32000, 0xf);
+        self->DropShadowRadHeight(self->mShadowModel, self->mShadowMtx, 0x12c000, 0x32000, 0xf);
     } else {
-        _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
-            self, self->mShadowModel, self->mShadowMtx, 0x12c000, 0x3e8000, 0xf);
+        self->DropShadowRadHeight(self->mShadowModel, self->mShadowMtx, 0x12c000, 0x3e8000, 0xf);
     }
 }
 
@@ -337,8 +320,7 @@ void daHolhei_c::func_ov062_02116d28()
     mShadowMtx.m[9] = mHeld->mPosX >> 3;
     mShadowMtx.m[10] = mHeld->mPosY >> 3;
     mShadowMtx.m[11] = mHeld->mPosZ >> 3;
-    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
-        this, mShadowModel, mShadowMtx, 0x12c000, 0x32000, 0xf);
+    DropShadowRadHeight(mShadowModel, mShadowMtx, 0x12c000, 0x32000, 0xf);
 }
 
 /* Coined name. Switches to state p and runs its enter function, if any;
@@ -629,8 +611,7 @@ extern "C" int func_ov062_021163b0(daHolhei_c *self)
         v[1].x = self->mPosX;
         v[1].y = self->mPosY;
         v[1].z = self->mPosZ;
-        _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs(self, &v[1], self->mExtraCoinCount + 1,
-                                                       0xa000, 0);
+        self->SpawnCoins(v[1], self->mExtraCoinCount + 1, 0xa000, 0);
     }
     return 1;
 }
@@ -717,7 +698,7 @@ extern "C" void func_ov062_02116010(daHolhei_c *self)
         v.x = 0x1000;
         v.y = 0;
         v.z = 0;
-        _ZN12dEnemyBase_c20KillByInvincibleCharERK10Vector3_16R6Player5Fix12IiE(self, &v, a, 0);
+        self->KillByInvincibleChar(v, *(Player *)a, 0);
         func_02012694(0x125, &self->mCamSpacePosX);
         return;
     }
@@ -759,7 +740,7 @@ extern "C" int func_ov062_02115f84(daHolhei_c *self) {
     Vector3 v;
     short slope = 0;
     if (self->mMeshClsn.IsOnGround()) {
-        dBgPi *floor = (dBgPi *)self->mMeshClsn.GetFloorResult();
+        dBgPi *floor = self->mMeshClsn.GetFloorResult();
         floor->surface.CopyNormalTo(v);
         slope = func_02010844(self, &v, self->mAngleY);
     }

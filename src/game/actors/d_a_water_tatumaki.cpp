@@ -33,7 +33,7 @@ struct System {
  *   mPullRadius is 0x90 against ROM 0x98. Deleting unk_190 = 0 is 0x94
  *   against ROM 0x98. The ROM zeroes both heights and then overwrites
  *   them; unk_190 is stored 0 and never read in this TU.
- * - func_ov026_02111f30: mModelAnim.mat4x3 = data_020a0e68 is 0x90 against
+ * - func_ov026_02111f30: mAnmModel.mat4x3 = data_020a0e68 is 0x90 against
  *   ROM 0x74. This TU sees Matrix4x3 as {Matrix3x3 r; Vector3 t}. The ROM
  *   copies twelve words with one three-pass ldm/stm.
  * - InitResources: dExtAnmTexSRT_c::SetFile with a Fix12<int> temporary
@@ -67,6 +67,7 @@ enum daWater_Tatumaki_c_AssetId {
 #include "SharedFilePtr.h"
 #include "dExtAnmTexSRT_c.h"
 #include "private/mtx43.h"
+#include "math/Approach.h"
 
 /* 20.12 distances and s16 angles used by the funnel. Same numeric value can
    be a fix12 step and an angle; the names stay with the call that uses them. */
@@ -136,8 +137,6 @@ extern int _Z14ApproachLinearR7Vector3RKS_5Fix12IiE(Vector3 &value, const Vector
 #define Particle_System_New Particle::System::New
 #define ApproachLinearVec _Z14ApproachLinearR7Vector3RKS_5Fix12IiE
 
-void ApproachLinear2(s16 &value, s16 target, s16 step);
-void ApproachLinear(int &value, int target, int step);
 
 extern "C" int func_ov026_02111ee0(daWater_Tatumaki_c *self, const daWater_Tatumaki_c::State *state);
 
@@ -317,7 +316,7 @@ extern "C" void func_ov026_02111f30(daWater_Tatumaki_c *self)
     Matrix4x3_ApplyInPlaceToRotationXYZExt(&data_020a0e68,
         self->mAngleX, self->mAngleY, self->mAngleZ);
     /* Twelve flat words. A Matrix4x3 assignment copies r and t separately. */
-    *(Mtx43 *)&self->mModelAnim.mat4x3 = *(Mtx43 *)&data_020a0e68;
+    *(Mtx43 *)&self->mAnmModel.mat4x3 = *(Mtx43 *)&data_020a0e68;
 }
 
 // @symbol _ZN18daWater_Tatumaki_c16CleanupResourcesEv
@@ -336,8 +335,8 @@ void daWater_Tatumaki_c::OnPendingDestroy()
 // @symbol _ZN18daWater_Tatumaki_c6RenderEv
 int daWater_Tatumaki_c::Render()
 {
-    mTextureTransformer.Update(mModelAnim.data);
-    mModelAnim.Render(0);
+    mTextureTransformer.Update(mAnmModel.data);
+    mAnmModel.Render(0);
     return 1;
 }
 
@@ -371,7 +370,7 @@ int daWater_Tatumaki_c::Behavior()
 
     func_ov026_02111f30(this);
     mTextureTransformer.Advance();
-    mModelAnim.Advance();
+    mAnmModel.Advance();
     return 1;
 }
 
@@ -379,7 +378,7 @@ int daWater_Tatumaki_c::Behavior()
 int daWater_Tatumaki_c::InitResources()
 {
     BMD_File *model = (BMD_File *)dExtSimpleModel_c::LoadFile(gWaterTatumakiModelFile);
-    mModelAnim.SetFile(model, 1, -1);
+    mAnmModel.SetFile(model, 1, -1);
 
     dExtFrameCtrl_c::LoadFile(gWaterTatumakiAnimationFile);
 
@@ -387,14 +386,14 @@ int daWater_Tatumaki_c::InitResources()
     mTextureTransformer.SetFile(WHIRLPOOL_BTA, 0, kAnimSpeed, 0);
 
     mTextureTransformer.speed = kAnimSpeed;
-    mModelAnim.speed = kAnimSpeed;
+    mAnmModel.speed = kAnimSpeed;
 
     mCenter.x = mPosX;
     mCenter.y = mPosY;
     mCenter.z = mPosZ;
     mCenter.y -= kFunnelDepth;
 
-    mModelAnim.SetAnim((BCA_File *)gWaterTatumakiAnimationFile.filePtr, 0, kAnimSpeed, 0);
+    mAnmModel.SetAnim((BCA_File *)gWaterTatumakiAnimationFile.filePtr, 0, kAnimSpeed, 0);
 
     func_ov026_02111ee0(this, STATE_SPIN);
     return 1;

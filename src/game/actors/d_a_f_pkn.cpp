@@ -20,9 +20,7 @@
  * and RTTI.
  */
 /* leftovers:
- * - dExtAnmModel_c::SetAnim, dCcAc_c::Init, dCcAcPos_c::Init,
- *   Particle::System::New, dActor_c::SpawnFireball / SpawnCoins and
- *   Player::Hurt / Bounce stay mangled. Each takes Fix12<int> by value
+ * - Player::Hurt / Bounce stay mangled. Each takes Fix12<int> by value
  *   and the member spelling of those calls stops matching.
  * - CheckClsnHits, StateGrow and StateSpit keep their int locals and
  *   gotos. The direct spelling at each of those sites stops matching.
@@ -38,6 +36,7 @@
 #include "Sound.h"
 #include "Particle__System.h"
 #include "nitro/fx/fx.h"
+#include "math/Approach.h"
 
 #pragma defer_codegen off
 
@@ -102,8 +101,6 @@ enum {
     SND_HIT = 0x1e               /* FIREPAKUN is hit */
 };
 
-int ApproachLinear(int &value, int target, int step);
-bool ApproachLinear(short &value, short target, short step);
 
 /* daPkn_c::EnterLunge, declared on the class's own header: hands the
    spawned PAKUN the grow-in frame. */
@@ -124,14 +121,7 @@ void UnloadBlueCoinModel(void *);
 
 /* Called by their mangled names: each carries a Fix12<int> by value and
    the member spelling DIFFs. */
-void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *self, void *a, int r, int h, u32 e, u32 g);
-void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(void *self, void *a, const Vector3 *v, int r, int h, u32 e, u32 g);
 u32 d_a_f_pknNewHold(u32 a, u32 b, Fix12i c, Fix12i d, Fix12i e, const void *f, void *g);
-void _ZN6Player6BounceE5Fix12IiE(void *p, int fix);
-int _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void *self, const void *pos, u32 a, int fix, u32 b, u32 c, u32 d);
-void _ZN8dActor_c13SpawnFireballERK7Vector3PK10Vector3_165Fix12IiES7_j(
-    void *self, const void *pos, const void *v16, int a, int b, u32 g);
-void _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs(void *self, const void *pos, u32 a, int b, short c);
 
 extern SharedFilePtr data_ov084_02130dfc;   /* the plant's model */
 extern SharedFilePtr *data_ov084_021302f4[];/* the six shared animation handles */
@@ -164,7 +154,7 @@ daFPkn_c::~daFPkn_c()
 void daFPkn_c::SpawnDeathSmoke()
 {
     Particle::System *particle;
-    if (mModelAnim.file != data_ov084_02130e24.filePtr)
+    if (mAnmModel.file != data_ov084_02130e24.filePtr)
         return;
 
     mParticleHandle1 =
@@ -192,9 +182,9 @@ void daFPkn_c::SpawnDeathBurst()
     Vector3 pos;
     int frame, burstReach, product;
 
-    if (mModelAnim.file != data_ov084_02130e24.filePtr)
+    if (mAnmModel.file != data_ov084_02130e24.filePtr)
         return;
-    frame = (int)((unsigned)(mModelAnim.currFrame << 4) >> 16);  /* whole frames */
+    frame = (int)((unsigned)(mAnmModel.currFrame << 4) >> 16); /* whole frames */
     if (frame >= 0xa)
         return;
 
@@ -222,10 +212,10 @@ void daFPkn_c::UpdateClsnOffset()
     struct ClsnOffsetLocals locals;
     int scaledSinAcc0, sinAcc1, cosAcc1, scaledCosAcc0, isFirepakun;
 
-    Matrix4x3_FromRotationY(&mModelAnim.mat4x3, mAngleY);
-    mModelAnim.mat4x3.m[9] = mPosX >> 3;
-    mModelAnim.mat4x3.m[10] = mPosY >> 3;
-    mModelAnim.mat4x3.m[11] = mPosZ >> 3;
+    Matrix4x3_FromRotationY(&mAnmModel.mat4x3, mAngleY);
+    mAnmModel.mat4x3.m[9] = mPosX >> 3;
+    mAnmModel.mat4x3.m[10] = mPosY >> 3;
+    mAnmModel.mat4x3.m[11] = mPosZ >> 3;
 
     if ((u32)(mState - STATE_SPIT) > 1) return;
     if (mScale != mMaxScale) return;
@@ -234,7 +224,7 @@ void daFPkn_c::UpdateClsnOffset()
     locals.acc[1] = 0;
     locals.acc[2] = 0;
     {
-        char* base = (char *)mModelAnim.data.bones;
+        char *base = (char *)mAnmModel.data.bones;
         int i;
         for (i = 0; i < 5; i++) {
             u8* p = data_ov084_02130294 + i;
@@ -255,7 +245,7 @@ void daFPkn_c::UpdateClsnOffset()
         locals.tmp[1],
         locals.tmp[2]
     );
-    MulMat4x3Mat4x3(mModelAnim.data.transforms[6].m, data_020a0e68, data_020a0e68);
+    MulMat4x3Mat4x3(mAnmModel.data.transforms[6].m, data_020a0e68, data_020a0e68);
     mClsnOffset.x = ((Matrix4x3 *)data_020a0e68)->m[9];
     mClsnOffset.y = ((Matrix4x3 *)data_020a0e68)->m[10];
     mClsnOffset.z = ((Matrix4x3 *)data_020a0e68)->m[11];
@@ -320,7 +310,7 @@ void daFPkn_c::CheckClsnHits()
             mSpinSpeed = 0x1f40;
             mdCcAc_c.flags |= 1;
             mFlags &= ~0x10000000;
-            mModelAnim.SetAnim((BCA_File *)data_ov084_02130e24.filePtr, 0x40000000, 0x1000, 0);
+            mAnmModel.SetAnim((BCA_File *)data_ov084_02130e24.filePtr, 0x40000000, 0x1000, 0);
             mSuppressDeathReward = 0;
             mParticleHandle1 = 0;
         }
@@ -349,7 +339,7 @@ void daFPkn_c::CheckClsnHits()
     if (cmp != 0) {
         if (JumpedOnByPlayer(mdCcAc_c, *(Player *)hitter) != 0) {
             Sound::PlayBank0(SND_JUMPED_ON, mCamSpacePos);
-            _ZN6Player6BounceE5Fix12IiE(hitter, 0x28000);
+            ((Player *)hitter)->Bounce(0x28000);
             goto activate_path;
         }
     }
@@ -361,7 +351,7 @@ void daFPkn_c::CheckClsnHits()
     pos1.x = mPosX;
     pos1.y = mPosY;
     pos1.z = mPosZ;
-    _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(hitter, &pos1, 2, 0xc000, 1, 0, 1);
+    ((Player *)hitter)->Hurt(pos1, 2, 0xc000, 1, 0, 1);
 
 second:
     otherId = mdCcAcPos_c.otherOwner;
@@ -391,7 +381,7 @@ second:
         mSpinSpeed = 0x1f40;
         mdCcAc_c.flags |= 1;
         mFlags &= ~0x10000000;
-        mModelAnim.SetAnim((BCA_File *)data_ov084_02130e24.filePtr, 0x40000000, 0x1000, 0);
+        mAnmModel.SetAnim((BCA_File *)data_ov084_02130e24.filePtr, 0x40000000, 0x1000, 0);
         mSuppressDeathReward = 0;
         mParticleHandle1 = 0;
         return;
@@ -404,7 +394,7 @@ second:
     pos2.x = mPosX;
     pos2.y = mPosY;
     pos2.z = mPosZ;
-    _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(hitter, &pos2, 2, 0xc000, 1, 0, 1);
+    ((Player *)hitter)->Hurt(pos2, 2, 0xc000, 1, 0, 1);
 }
 
 // @symbol _ZN8daFPkn_c9StateGrowEv
@@ -420,10 +410,8 @@ void daFPkn_c::StateGrow()
         goto tail;  /* an early return here DIFFs */
     }
 
-    if (mModelAnim.WillHitFrame(0x10) ||
-        mModelAnim.WillHitFrame(0x20) ||
-        mModelAnim.WillHitFrame(0x34) ||
-        mModelAnim.WillHitFrame(0x4b)) {
+    if (mAnmModel.WillHitFrame(0x10) || mAnmModel.WillHitFrame(0x20) ||
+        mAnmModel.WillHitFrame(0x34) || mAnmModel.WillHitFrame(0x4b)) {
         func_0201267c(SND_GROW_BITE, &mCamSpacePos);
     }
 
@@ -444,7 +432,7 @@ void daFPkn_c::StateGrow()
         if (spawned == 0) return;
 
         mSuppressDeathReward = 2;
-        ((daPkn_c *)spawned)->EnterLunge((short)((unsigned int)(mModelAnim.currFrame << 4) >> 16));
+        ((daPkn_c *)spawned)->EnterLunge((short)((unsigned int)(mAnmModel.currFrame << 4) >> 16));
         mdCcAc_c.flags |= 1;
         mdCcAcPos_c.flags |= 1;
         return;
@@ -469,15 +457,15 @@ void daFPkn_c::StateSpit()
         goto cold;  /* the ROM places this branch last */
 
     /* The int flag cmp keeps the ROM's compare; a direct test DIFFs. */
-    if (mModelAnim.Finished() != 0) {
+    if (mAnmModel.Finished() != 0) {
         cmp = (int)(actorID == ACTOR_FIREPAKUN_S);
         if (cmp != 0)
             func_0201267c(SND_SPIT_END_S, &mCamSpacePos);
         else
             func_0201267c(SND_SPIT_END, &mCamSpacePos);
         mState = STATE_WAIT;
-        mModelAnim.SetAnim((BCA_File *)(((SharedFilePtr *)data_ov084_02130e1c)->filePtr), 0, 0x1000,
-                           0);
+        mAnmModel.SetAnim((BCA_File *)(((SharedFilePtr *)data_ov084_02130e1c)->filePtr), 0, 0x1000,
+                          0);
     } else {
         if ((u16)mStateTimer < 0x3a) {
             targetAngle = mAngleY;
@@ -488,7 +476,7 @@ void daFPkn_c::StateSpit()
         }
     }
 
-    if (mModelAnim.WillHitFrame(0x3a) == 0)
+    if (mAnmModel.WillHitFrame(0x3a) == 0)
         return;
 
     cmp = (int)(actorID == ACTOR_FIREPAKUN_S);
@@ -505,8 +493,7 @@ void daFPkn_c::StateSpit()
     pos.y += mMaxScale * 0x5a;
     mAngleX = 0x1000;
 
-    _ZN8dActor_c13SpawnFireballERK7Vector3PK10Vector3_165Fix12IiES7_j(
-        this, &pos, &mAngleX, 0x1e000, 0xa000, 3);
+    SpawnFireball(pos, (const Vector3_16 *)(&mAngleX), 0x1e000, 0xa000, 3);
     return;
 
 cold:
@@ -530,7 +517,7 @@ void daFPkn_c::StateWait()
         mAngleY += mSpinSpeed;
         ApproachLinear(mSpinSpeed, 0, 0xc8);
         SpawnDeathBurst();
-        if (mModelAnim.Finished() == 0)
+        if (mAnmModel.Finished() == 0)
             return;
         mSpinCount--;
         if (mSpinCount != 0)
@@ -565,7 +552,7 @@ void daFPkn_c::StateWait()
                 coinPos.x = mPosX;
                 coinPos.y = mPosY;
                 coinPos.z = mPosZ;
-                _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs(this, &coinPos, 2, 0xa000, 0);
+                SpawnCoins(coinPos, 2, 0xa000, 0);
             }
             if (leader->mGroupDefeatedCount == 5) {
                 dActor_c::Spawn(ACTOR_STAR, mStarID | 0x40, mPos, 0, mAreaId, -1);
@@ -590,7 +577,7 @@ void daFPkn_c::StateWait()
         coinPos2.x = mPosX;
         coinPos2.y = mPosY;
         coinPos2.z = mPosZ;
-        _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs(this, &coinPos2, 1, 0xa000, 0);
+        SpawnCoins(coinPos2, 1, 0xa000, 0);
         KillAndTrackInDeathTable();
         return;
     }
@@ -627,11 +614,11 @@ void daFPkn_c::StateWait()
     cmp = actorID == ACTOR_PAKUN2;
     if (cmp != false) {
         mState = STATE_GROW;
-        mModelAnim.SetAnim((BCA_File *)data_ov084_02130e14.filePtr, 0x40000000, 0x1000, 0);
+        mAnmModel.SetAnim((BCA_File *)data_ov084_02130e14.filePtr, 0x40000000, 0x1000, 0);
     } else {
         mState = STATE_SPIT;
-        mModelAnim.SetAnim((BCA_File *)data_ov084_02130e04.filePtr, 0x40000000, 0x1000, 0);
-        mModelAnim.currFrame = 0;
+        mAnmModel.SetAnim((BCA_File *)data_ov084_02130e04.filePtr, 0x40000000, 0x1000, 0);
+        mAnmModel.currFrame = 0;
     }
     cmp = actorID == ACTOR_FIREPAKUN;
     if (cmp != false) {
@@ -698,7 +685,7 @@ int daFPkn_c::Render()
     size.x = scale;
     size.y = scale;
     size.z = scale;
-    mModelAnim.Render(&size);
+    mAnmModel.Render(&size);
     return 1;
 }
 
@@ -712,7 +699,7 @@ int daFPkn_c::Behavior()
         UpdateClsnOffset();
         return 1;
     }
-    mModelAnim.Advance();
+    mAnmModel.Advance();
     int prevState = mState;
     switch (prevState) {
     case STATE_INIT:
@@ -762,7 +749,7 @@ int daFPkn_c::InitResources()
     int type;
     int cmp;
 
-    mModelAnim.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(data_ov084_02130dfc), 1, -1);
+    mAnmModel.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(data_ov084_02130dfc), 1, -1);
 
     for (i = 0; i < 6; i++)
         dExtFrameCtrl_c::LoadFile(*data_ov084_021302f4[i]);
@@ -771,16 +758,14 @@ int daFPkn_c::InitResources()
     LoadBlueCoinModel(this);
 
     /* A real SetAnim call with a Fix12<int> speed DIFFs; see the file header. */
-    mModelAnim.SetAnim((BCA_File *)data_ov084_02130df4.filePtr, 0x40000000, 0x1000, 0);
+    mAnmModel.SetAnim((BCA_File *)data_ov084_02130df4.filePtr, 0x40000000, 0x1000, 0);
 
-    _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(
-        &mdCcAc_c, this, 0, 0, 0x200001, HIT_DAMAGE & ~HIT_MEGA_CHARACTER);
+    mdCcAc_c.Init(this, 0, 0, 0x200001, HIT_DAMAGE & ~HIT_MEGA_CHARACTER);
 
     clsnPos.x = 0;
     clsnPos.y = 0;
     clsnPos.z = 0;
-    _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
-        &mdCcAcPos_c, this, &clsnPos, 0x4b000, 0x64000, 0x200002, HIT_DAMAGE & ~HIT_MEGA_CHARACTER);
+    mdCcAcPos_c.Init(this, clsnPos, 0x4b000, 0x64000, 0x200002, HIT_DAMAGE & ~HIT_MEGA_CHARACTER);
 
     mScale = 0;
     mRespawnMode = 0;

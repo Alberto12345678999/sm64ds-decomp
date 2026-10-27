@@ -36,7 +36,7 @@ typedef int (PukuStateC::*PukuStatePMF)();
 struct daPukupuku_c : dEnemyBase_c {
     dCcAcPos_c mdCcAcPos_c;/* 0x110 */
     dBgCh_Actr mWithMeshClsn;       /* 0x150 */
-    dExtAnmModel_c mModelAnim;      /* 0x30c */
+    dExtAnmModel_c mAnmModel;       /* 0x30c */
     /* The current state record: enter PMF at +0, main PMF at +8.
        func_ov090_021332e8 installs it and calls enter; Behavior calls main. */
     PukuStatePMF *mState;               /* 0x370 */
@@ -96,7 +96,7 @@ struct daPukupuku_c {
        dBgCh_Actr's D1 at +0x150 -- a relocation the ROM build
        checks. Was a u8 marker. [_ZN12daPukupuku_cD1Ev, now in src/game/actors/d_a_pukupuku.cpp] */
     dBgCh_Actr mWithMeshClsn;            /* 0x150 */
-    u8  mModelAnim;            /* 0x30c */
+    u8 mAnmModel;                        /* 0x30c */
     u8 pad_30d[0x63];
     void *mState;             /* 0x370 */
     s32 mHomePosX;            /* 0x374 */

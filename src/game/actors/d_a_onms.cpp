@@ -33,11 +33,8 @@
  *   0x74 -> 0x78. That wrapper is Sound::Play(3, id, pos).
  * - func_ov092_02131a88: UpdateClsnPosAndRot(), size 0x64 -> 0xc. The
  *   body is that function written out; the ROM does not call it.
- * - InitResources: dCcAcPos_c::Init and dBgW_KcMbg::SetFile do not compile
- *   (header Fix12<int>, and this TU's ints are not that type). A direct
- *   beforeClsnCallback store, size 0x278 -> 0x274. func_020393d4 stays;
- *   it writes dBgW + 0x18. dBgCh_Actr::Init stays the mangled free call:
- *   the header method mangles with int, the ROM symbol with Fix12<int>.
+ * - InitResources: a direct beforeClsnCallback store is size 0x278 -> 0x274.
+ *   func_020393d4 stays; it writes dBgW + 0x18.
  */
 
 /* Runtime asset handles resolved through the overlay 0 file table. */
@@ -129,9 +126,6 @@ extern void hold_d_a_onms(dBgW_KcMbg *self, KCL_File *file, const Matrix4x3 *mat
                           short angY, void *clps);
 /* Stores beforeClsnCallback: p[6] = value, the word at dBgW + 0x18. */
 void func_020393d4(int *p, int v);
-void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
-    dCcAcPos_c *self, dActor_c *actor, const Vector3 *offset,
-    int radius, int height, unsigned int flags, unsigned int vulnFlags);
 /* CLPS block ("CLPS" magic) handed to SetFile. */
 extern char data_ov092_02132220;
 /* Three s32* move scripts, indexed by param1 & 3. A path (kind 3) ignores it. */
@@ -247,7 +241,7 @@ void daOnms_c::StateKnocked()
     /* The wrapper returns the sphere query's dBgPi. Its dBgPc base owns
        the surface. Keep each CLPS address at its call site; the earlier
        hoisted-address probe differed by 13 words. */
-    dBgPi *floor = (dBgPi *)mWithMeshClsn.GetFloorResult();
+    dBgPi *floor = mWithMeshClsn.GetFloorResult();
 
     if (floor->surface.clps.GetSurfaceType() == 9) {
         mMoveDir = kDirSink;
@@ -629,8 +623,7 @@ int daOnms_c::InitResources()
         offset.x = 0;
         offset.y = -0xfa000;
         offset.z = 0;
-        _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
-            &mdCcAcPos_c, this, &offset, 0xc8000, 0x190000, 2, 0x6003c0);
+        mdCcAcPos_c.Init(this, offset, 0xc8000, 0x190000, 2, 0x6003c0);
     }
 
     mPlayerActor = 0;

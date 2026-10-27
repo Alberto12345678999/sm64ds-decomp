@@ -35,21 +35,10 @@ struct Vector3_16f;
  * deslop leftovers:
  * - func_ov021_02112294: one UntrackAndSpawnStar with a chosen mode
  *   size-DIFFs (999 words). The two call sites, mode 2 and mode 4, match.
- * - func_ov021_02112544: GetSubtraction(short, short) size-DIFFs (999
- *   words). The wall angle is an int; _ZN8dActor_c14GetSubtractionEss
- *   passes it through. ReflectAngle(Fix12<int>, Fix12<int>, s16)
- *   size-DIFFs the same function. The angle calls are cstd::atan2(s32, s32).
- * - func_ov021_021122fc: DropShadowRadHeight is void in dActor_c.h and
- *   takes Fix12<int> by value. This function returns the scalar call;
- *   the method form does not compile.
- * - InitResources: dCcAcPos_c::Init with Fix12<int> by value size-DIFFs
- *   (999 words). The scalar extern matches. dBgCh_Actr::Init is called by
- *   its ROM symbol: the header's Fix12i (= s32) mangles the radii as `i`
- *   and names a symbol no object defines, so the member form linked to
- *   nothing.
- * - Particle::System::New and NewSimple are not declared on
- *   Particle::System (include/Particle__System.h). Player::Hurt is not
- *   declared on Player. Those 5Fix12IiE externs stay.
+ * - func_ov021_02112544: ReflectAngle(Fix12<int>, Fix12<int>, s16)
+ *   size-DIFFs. The wall angle is held in a short so GetSubtraction gets
+ *   it without a re-extension. The angle calls are cstd::atan2(s32, s32).
+ * - Player::Hurt is not declared on Player; its 5Fix12IiE extern stays.
  */
 
 /* Runtime asset handles resolved through the overlay 0 file table. */
@@ -116,8 +105,6 @@ typedef void BgchInitAt_(dBgCh_Actr *self, int actor, Fix12i radius, Fix12i heig
 extern void Vec3_Asr(void *dst, void *src, int n);
 extern void Matrix4x3_FromTranslation(void *m, int x, int y, int z);
 extern void Matrix4x3_ApplyInPlaceToRotationXYZExt(void *m, short a, short b, short c);
-extern int _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
-    void *thiz, void *sm, void *m, int rad, int h, unsigned u);
 extern struct Matrix4x3 data_020a0e68;
 /* Same body as Sound::PlayBank3 (0x02012664). The ROM calls these copies. */
 extern void func_02012694(int id, void *pos);
@@ -132,10 +119,6 @@ extern void *d_a_grockNewHold(unsigned int prev, unsigned int effect, int x, int
                               void *dir, void *cb);
 extern int Vec3_HorzLen(void *v);
 extern int atan2_hold_d_a_grock_1(int y, int x);
-/* dActor_c.h types GetSubtraction(short, short). The wall angle is an int
- * passed straight through; the short spelling adds lsl/asr #16. */
-extern int _ZN8dActor_c14GetSubtractionEss(void *a, s16 x, int y);
-extern s16 _ZN8dActor_c12ReflectAngleE5Fix12IiES1_s(void *a, int x, int y, s16 ang);
 extern s16 data_02082214[];
 extern void AddVec3(struct Vector3 *dst, struct Vector3 *a, struct Vector3 *b);
 /* Clears the cylinder flags bit 2, then sets it when the closest player
@@ -143,11 +126,7 @@ extern void AddVec3(struct Vector3 *dst, struct Vector3 *a, struct Vector3 *b);
 extern void func_0200f760(void *self, void *cyl);
 extern int RandomIntInternal(int *seed);
 extern int data_0209e650;
-extern void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
-    void *clsn, void *actor, void *offset, int radius, int height, u32 flags, u32 vuln);
 extern GrockModelFilePtr data_ov021_02114a50;
-extern int _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(
-    void *player, struct Vector3 *pos, u32 kind, int knockback, u32 a, u32 b, u32 c);
 }
 
 /* D1 stores this vtable, destroys the members in reverse declaration order,
@@ -183,8 +162,7 @@ extern "C" void func_ov021_02112294(void *raw)
 /* Shift the position down 3, build the scratch matrix, keep the unrotated
  * copy in pad_188 for the shadow, then rotate it into the model. */
 // @symbol func_ov021_021122fc
-extern "C" int func_ov021_021122fc(char *raw)
-{
+extern "C" void func_ov021_021122fc(char *raw) {
     daGrock_c *rock = (daGrock_c *)raw;
     int shifted[3];
 
@@ -194,8 +172,8 @@ extern "C" int func_ov021_021122fc(char *raw)
     Matrix4x3_ApplyInPlaceToRotationXYZExt(&data_020a0e68,
                                             rock->mAngleX, rock->mAngleY, rock->mAngleZ);
     rock->mModel.mat4x3 = data_020a0e68;
-    return _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
-        rock, &rock->mShadowModel, rock->pad_188, 0x1f4000, 0x1f4000, 0xf);
+    rock->DropShadowRadHeight(rock->mShadowModel, *(Matrix4x3 *)rock->pad_188, 0x1f4000, 0x1f4000,
+                              0xf);
 }
 
 /* Cylinder hit. Mega always breaks the rock. Punch/kick/breakdance/slide
@@ -252,7 +230,7 @@ extern "C" void func_ov021_021123b0(char *raw)
         pos.x = rock->mPosX;
         pos.y = rock->mPosY;
         pos.z = rock->mPosZ;
-        _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(other, &pos, 3, 0xc000, 1, 0, 1);
+        ((Player *)other)->Hurt(pos, 3, 0xc000, 1, 0, 1);
     }
 }
 
@@ -269,7 +247,7 @@ extern "C" void func_ov021_02112544(char *raw)
 
     dBgCh_Actr_UpdateContinuous_Veneer(&rock->mWithMeshClsn);
     if (rock->mWithMeshClsn.IsOnGround() != 0) {
-        hit = (dBgPi *)rock->mWithMeshClsn.GetFloorResult();
+        hit = rock->mWithMeshClsn.GetFloorResult();
         hit->surface.CopyNormalTo(*(Vector3 *)&normal);
 
         pos = *(Vec3 *)&rock->mPosX;
@@ -307,14 +285,13 @@ extern "C" void func_ov021_02112544(char *raw)
     if (rock->mWithMeshClsn.IsOnWall() == 0)
         return;
 
-    hit = (dBgPi *)rock->mWithMeshClsn.GetWallResult();
+    hit = rock->mWithMeshClsn.GetWallResult();
     hit->surface.CopyNormalTo(*(Vector3 *)&wallNormal);
     {
-        int wallAngle = cstd::atan2(wallNormal.x, wallNormal.z);
-        if (_ZN8dActor_c14GetSubtractionEss(rock, rock->mPrevAngleY, wallAngle) <= 0x1000)
+        short wallAngle = cstd::atan2(wallNormal.x, wallNormal.z);
+        if (rock->GetSubtraction(rock->mPrevAngleY, wallAngle) <= 0x1000)
             return;
-        rock->mPrevAngleY = _ZN8dActor_c12ReflectAngleE5Fix12IiES1_s(
-            rock, wallNormal.x, wallNormal.z, rock->mPrevAngleY);
+        rock->mPrevAngleY = rock->ReflectAngle(wallNormal.x, wallNormal.z, rock->mPrevAngleY);
         rock->UpdatePosWithHorzSpeedAndAng();
     }
 }
@@ -464,15 +441,13 @@ int daGrock_c::InitResources()
             offset.x = 0;
             offset.y = 0;
             offset.z = 0;
-            _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
-                &mdCcAcPos_c, this, &offset, 0x10e000, 0x226000, 0x200004, 0x3c0);
+            mdCcAcPos_c.Init(this, *(Vector3 *)&offset, 0x10e000, 0x226000, 0x200004, 0x3c0);
         } else {
             Vec3 offset;
             offset.x = 0;
             offset.y = 0;
             offset.z = 0;
-            _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
-                &mdCcAcPos_c, this, &offset, 0xf3000, 0x226000, 0x200004, 0x3c0);
+            mdCcAcPos_c.Init(this, *(Vector3 *)&offset, 0xf3000, 0x226000, 0x200004, 0x3c0);
 
             if (mType == kGrockStar)
                 mStarID = (u8)((param1 >> 8) & 0xf);

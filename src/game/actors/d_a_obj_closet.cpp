@@ -32,17 +32,13 @@
  *   destructor makes the function 0x3f0 against 0x3e0.
  * - Behavior: the jingles call func_02012790. Sound::Play2D(2, id) is
  *   0x3e8 and relocates to _ZN5Sound6Play2DEjj, not 0x02012790.
- * - InitResources: dCcAcPos_c::Init with Fix12<int> by value is 0x7c
- *   against 0x6c. The call stays the scalar mangled symbol
- *   (notes/mwccarm-codegen.md 6az).
  */
 
 #include "daObjCloset_c.h"
 #include "Player.h"
 #include "Message.h"
 #include "Sound.h"
-
-bool ApproachLinear(short &value, short target, short step);
+#include "math/Approach.h"
 
 /* include/types.h's Vector3 declares a destructor. Under that type the
    five locals below grow the frame by 0x10. The ROM copies are a plain
@@ -79,11 +75,6 @@ void StartMinigameMenu(unsigned char returnToRecRoom);
 extern s16 data_02082214[];
 extern u8 data_0209d684;
 extern u8 data_0209d660;
-/* Scalar Fix12i, not Fix12<int>: the class-typed header method pools
-   the constants (notes/mwccarm-codegen.md 6az). */
-void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
-    void *self, void *actor, void *offset, Fix12i radius, Fix12i height,
-    unsigned int flags, unsigned int vulnFlags);
 }
 
 /* Emission order is ROM order: the destructor pair must stay first.
@@ -241,8 +232,8 @@ s32 daObjCloset_c::InitResources()
     int i;
     dCcAcPos_c *collider = mColliders;
     for (i = 0; i < kCylinderCount; i++) {
-        _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
-            collider, this, &mPosX, kCylinderRadius, kCylinderHeight, kCylinderFlags, 0);
+        collider->Init(this, *(Vector3 *)&mPosX, kCylinderRadius, kCylinderHeight, kCylinderFlags,
+                       0);
         collider++;
     }
     return 1;

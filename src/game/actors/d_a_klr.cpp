@@ -26,9 +26,8 @@ struct Vector3_16f;
  * - func_ov079_0212682c, func_ov079_02126794 and func_ov079_02126704
  *   keep address names: the two state-table methods have no recovered
  *   name evidence, and the pose helper is a plain free function.
- * - Particle::System::New/NewSimple, dActor_c::DropShadowRadHeight,
- *   dCcAcPos_c::Init, dBgCh_Actr::Init and Player::Hurt take Fix12<int>
- *   by value, so they stay mangled (notes/mwccarm-codegen.md 6az);
+ * - Player::Hurt takes Fix12<int> by value, so it stays mangled
+ *   (notes/mwccarm-codegen.md 6az);
  *   dBgCh_Actr::GetWallResult has no header decl.
  * - func_0200f760, func_0201267c, func_02012694 and Vec3_Add keep linker
  *   names. data_ov079_02128300 / 021282f0 are the model handles, in
@@ -44,6 +43,7 @@ struct Vector3_16f;
 #include "Sound.h"
 #include "dBgPi.h"
 #include "dBgCh_Actr.h"
+#include "math/Approach.h"
 
 struct BMD_File;
 
@@ -62,23 +62,13 @@ struct System {
 };
 }
 int d_a_klrNewHold(u32 uniqueID, u32 effectID, int x, int y, int z, void *dir, void *callback);
-void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
-    dActor_c *self, dExtShadowModel_c *shadow, Matrix4x3 *mtx, int radius, int depth,
-    u8 opacity);
-void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
-    dCcAcPos_c *self, dActor_c *actor, const Vector3 *offset, int radius,
-    int height, u32 flags, u32 vulnFlags);
 /* Parameter names keep this TU's @NNN. */
 typedef void BgchInitAt_(dBgCh_Actr *self, dActor_c *actor, int radius, int height, Vector3_16 *a,
                          Vector3_16 *b);
-int _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(
-    Player *self, const Vector3 *source, u32 damage, int speed, u8 a, u8 b,
-    u8 c);
 
 void func_ov079_02126704(daKlr_c *self);
 }
 
-bool ApproachLinear(short &value, short target, short step);
 
 /* Indexed by mState: [0] func_ov079_0212682c, [1] func_ov079_02126794.
    Defined at the end of this file so it does not insert a function into .text. */
@@ -115,8 +105,7 @@ s32 daKlr_c::InitResources()
         offset.x = 0;
         offset.y = -0x50000;
         offset.z = 0;
-        _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
-            &mCylClsn, this, &offset, 0x78000, 0xa0000, 0x200005, 0x3c0);
+        mCylClsn.Init(this, offset, 0x78000, 0xa0000, 0x200005, 0x3c0);
     }
     mState = 0;
     mStateTimer = 0;
@@ -159,8 +148,7 @@ s32 daKlr_c::Behavior()
                         pos.x = mPosX;
                         pos.y = mPosY;
                         pos.z = mPosZ;
-                        _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(
-                            (Player *)o, &pos, 3, 0xc000, 1, 0, 1);
+                        ((Player *)o)->Hurt(pos, 3, 0xc000, 1, 0, 1);
                         mState = 1;
                         Sound::PlayBank0(0xb5, mCamSpacePos);
                     }
@@ -248,7 +236,7 @@ void daKlr_c::func_ov079_0212682c()
         if ((u16)this->mStateTimer > 150)
             hit = 1;
         if (this->mWallClsn.IsOnWall() != 0) {
-            dBgPi *wall = (dBgPi *)this->mWallClsn.GetWallResult();
+            dBgPi *wall = this->mWallClsn.GetWallResult();
             if (wall->GetClsnID() != (u32)-1) {
                 if (dActor_c::FindWithID(wall->GetClsnID()) != this->mLauncher)
                     hit = 1;
@@ -297,8 +285,7 @@ extern "C" void func_ov079_02126704(daKlr_c *self)
     /* One 0x30-byte block copy. Matrix4x3's own assignment goes member by
        member through Vector3 and comes out 0x18 bytes longer. */
     *(MatrixWords *)&self->mModel2.mat4x3 = *(MatrixWords *)&self->mModel.mat4x3;
-    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
-        self, &self->mShadow, &self->mModel.mat4x3, 0x50000, 0x50000, 0xf);
+    self->DropShadowRadHeight(self->mShadow, self->mModel.mat4x3, 0x50000, 0x50000, 0xf);
 }
 
 // @symbol _ZN7daKlr_c16OnAimedAtWithEggEv

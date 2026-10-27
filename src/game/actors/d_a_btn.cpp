@@ -72,8 +72,8 @@ enum d_a_btn_AssetId {
 #include "dCamera_c.h"
 #include "nitro/fx/fx.h"
 #include "Sound.h"
+#include "math/Approach.h"
 
-bool ApproachLinear(short &value, short target, short step);
 /* local extern: include/Sound.h does not declare the layer-3 pair yet. It
    sits outside the extern "C" block below, where the names would come out
    unmangled. */
@@ -144,9 +144,6 @@ struct System {
 };
 }
 void d_a_btnEarthquakeHold(void *self, const void *v, int f);
-void _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs(void *self, const void *pos, u32 n, int fix, s16 s);
-void _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_S5_j(
-    void *self, void *sm, void *mtx, int a, int b, int c, unsigned int g);
 
 /* ---- data ---- */
 extern s16 data_02082214[];
@@ -277,7 +274,7 @@ int daBtn_c::InitResources()
     if (b) {
         mIsKing = 1;
         bmd = dExtSimpleModel_c::LoadFile(data_ov079_02128168);
-        mModelAnim.SetFile((BMD_File *)bmd, 1, -1);
+        mAnmModel.SetFile((BMD_File *)bmd, 1, -1);
         animIdx = 0;
         do {
             anim = data_ov079_02127600[animIdx];
@@ -288,7 +285,7 @@ int daBtn_c::InitResources()
     } else {
         mIsKing = 0;
         bmd = dExtSimpleModel_c::LoadFile(data_ov079_02128170);
-        mModelAnim.SetFile((BMD_File *)bmd, 1, -1);
+        mAnmModel.SetFile((BMD_File *)bmd, 1, -1);
         animIdx = 0;
         do {
             anim = data_ov079_021275ec[animIdx];
@@ -359,7 +356,7 @@ int daBtn_c::InitResources()
 
     idx = mIsKing;
     anim = ((SharedFilePtr *)data_ov079_021275ec[idx * 5 + 3])->filePtr;
-    mModelAnim.SetAnim((BCA_File *)anim, 0, 0x1000, 0);
+    mAnmModel.SetAnim((BCA_File *)anim, 0, 0x1000, 0);
 
     mSpawnPosX = mPosX;
     mSpawnPosY = mPosY;
@@ -490,11 +487,12 @@ int daBtn_c::Behavior()
 // @symbol _ZN7daBtn_c6RenderEv
 int daBtn_c::Render()
 {
-  if(mShouldRender==0) return 1;
-  if(mIsKing!=0)
-    mTextureSequence.Update(mModelAnim.data);
-  mModelAnim.Render(0);
-  return 1;
+    if (mShouldRender == 0)
+        return 1;
+    if (mIsKing != 0)
+        mTextureSequence.Update(mAnmModel.data);
+    mAnmModel.Render(0);
+    return 1;
 }
 
 // @symbol _ZN7daBtn_c16CleanupResourcesEv
@@ -527,15 +525,15 @@ void daBtn_c::func_ov079_02125b44()
 {
     int pos[3];
 
-    if (mModelAnim.Finished() != 0) {
-        mModelAnim.SetAnim(
+    if (mAnmModel.Finished() != 0) {
+        mAnmModel.SetAnim(
             (BCA_File *)(((SharedFilePtr *)data_ov079_021275ec[mIsKing * 5 + 3])->filePtr), 0,
             0x1000, 0);
     }
 
     if (mIsKing != 0) {
-        mModelAnim.Advance();
-        mModelAnim.speed = 0x1000;
+        mAnmModel.Advance();
+        mAnmModel.speed = 0x1000;
 
         switch (mSubState) {
         case 0:
@@ -602,7 +600,7 @@ void daBtn_c::func_ov079_02125b44()
             break;
         case 6:
             mState = 2;
-            mModelAnim.SetAnim(
+            mAnmModel.SetAnim(
                 (BCA_File *)(((SharedFilePtr *)data_ov079_021275ec[mIsKing * 5 + 3])->filePtr), 0,
                 0x1000, 0);
             break;
@@ -611,11 +609,11 @@ void daBtn_c::func_ov079_02125b44()
     } else {
         if (mNearestDist < 0x3e8000) {
             mState = 1;
-            mModelAnim.SetAnim(
+            mAnmModel.SetAnim(
                 (BCA_File *)(((SharedFilePtr *)data_ov079_021275ec[mIsKing * 5 + 3])->filePtr), 0,
                 0x1000, 0);
         }
-        mModelAnim.Advance();
+        mAnmModel.Advance();
     }
 }
 
@@ -637,9 +635,9 @@ void daBtn_c::func_ov079_021258fc()
     int lim;
 
     idx = mIsKing;
-    q = mModelAnim.currFrame;
+    q = mAnmModel.currFrame;
     walk = data_ov079_021275ec[((int)idx * 5) + 3];
-    cur = mModelAnim.file;
+    cur = mAnmModel.file;
     want = ((SharedFilePtr *)walk)->filePtr;
     frame = (unsigned short)(q >> 12);
 
@@ -650,8 +648,8 @@ void daBtn_c::func_ov079_021258fc()
             king = idx;
             mHorzSpeed = data_ov079_021275dc[king];
         }
-        if (mModelAnim.Finished() != 0) {
-            mModelAnim.SetAnim(
+        if (mAnmModel.Finished() != 0) {
+            mAnmModel.SetAnim(
                 (BCA_File *)(((SharedFilePtr *)data_ov079_021275ec[mIsKing * 5 + 3])->filePtr), 0,
                 0x1000, 0);
         }
@@ -664,29 +662,29 @@ void daBtn_c::func_ov079_021258fc()
         lim = 0xc8000;
     else
         lim = 0x2bc000;
-    mModelAnim.speed = 0x1000;
+    mAnmModel.speed = 0x1000;
     if (Vec3_HorzDist(&mPosX, &mSpawnPosX) > lim) {
         mState = 7;
-        mModelAnim.SetAnim(
+        mAnmModel.SetAnim(
             (BCA_File *)(((SharedFilePtr *)data_ov079_021275ec[mIsKing * 5 + 3])->filePtr), 0,
             0x1000, 0);
         mFlags &= ~0x2000000;
     } else {
         if (mFrontDist < 0x5dc000) {
             mHorzSpeed = 0x9000;
-            mModelAnim.speed = data_ov079_021275dc[mIsKing];
+            mAnmModel.speed = data_ov079_021275dc[mIsKing];
         }
-        if (mModelAnim.file == ((SharedFilePtr *)data_ov079_021275ec[mIsKing * 5 + 3])->filePtr) {
+        if (mAnmModel.file == ((SharedFilePtr *)data_ov079_021275ec[mIsKing * 5 + 3])->filePtr) {
             if (mFrontDist < 0xc8000) {
                 mState = 3;
-                mModelAnim.SetAnim(
+                mAnmModel.SetAnim(
                     (BCA_File *)(((SharedFilePtr *)data_ov079_021275ec[mIsKing * 5])->filePtr),
                     0x40000000, 0x1000, 0);
             }
         }
     }
 
-    if (mModelAnim.file == ((SharedFilePtr *)data_ov079_021275ec[mIsKing * 5 + 3])->filePtr) {
+    if (mAnmModel.file == ((SharedFilePtr *)data_ov079_021275ec[mIsKing * 5 + 3])->filePtr) {
         if (frame <= 7 || (frame >= 0x1e && frame <= 0x26)) {
             mHorzSpeed = 0;
             if (mStepPlayed == 0) {
@@ -698,7 +696,7 @@ void daBtn_c::func_ov079_021258fc()
         }
     }
 
-    mModelAnim.Advance();
+    mAnmModel.Advance();
 }
 
 // @symbol _ZN7daBtn_c19func_ov079_021256d4Ev
@@ -711,16 +709,16 @@ void daBtn_c::func_ov079_021256d4()
 {
     Player *r;
 
-    if (mModelAnim.file != ((SharedFilePtr *)data_ov079_021275ec[mIsKing * 5 + 3])->filePtr) {
-        if (mModelAnim.Finished() != 0) {
-            mModelAnim.SetAnim(
+    if (mAnmModel.file != ((SharedFilePtr *)data_ov079_021275ec[mIsKing * 5 + 3])->filePtr) {
+        if (mAnmModel.Finished() != 0) {
+            mAnmModel.SetAnim(
                 (BCA_File *)(((SharedFilePtr *)data_ov079_021275ec[mIsKing * 5 + 3])->filePtr), 0,
                 0x1000, 0);
         }
     }
 
     mHorzSpeed = data_ov079_021275dc[mIsKing];
-    mModelAnim.speed = 0x1000;
+    mAnmModel.speed = 0x1000;
     func_ov079_02123bcc();
 
     ApproachLinear(mPrevAngleY, mTargetAngle, 0x200);
@@ -729,12 +727,12 @@ void daBtn_c::func_ov079_021256d4()
     if ((u16)mStateTimer > 0x1e) {
         if (mFrontDist < 0x5dc000) {
             mHorzSpeed = 0xd800;
-            mModelAnim.speed = 0x3000;
+            mAnmModel.speed = 0x3000;
         }
         r = mPlayers[mFrontPlayer];
         if (r->mIsMega == 0) {
             if (mFrontDist < 0x190000) {
-                mModelAnim.SetAnim(
+                mAnmModel.SetAnim(
                     (BCA_File *)(((SharedFilePtr *)data_ov079_021275ec[mIsKing * 5])->filePtr),
                     0x40000000, 0x1000, 0);
                 mState = 3;
@@ -743,7 +741,7 @@ void daBtn_c::func_ov079_021256d4()
     }
 
     func_ov079_02125504();
-    mModelAnim.Advance();
+    mAnmModel.Advance();
 
     r = mPlayers[mNearestPlayer];
     if (r != 0) {
@@ -767,7 +765,7 @@ void daBtn_c::func_ov079_021256d4()
         mPosZ = mSpawnPosZ;
         tab = data_ov079_021275ec;
         t = mSpawnAngleX;
-        ma = &mModelAnim;
+        ma = &mAnmModel;
         mAngleX = t;
         t = mSpawnAngleY;
         mAngleY = t;
@@ -805,9 +803,9 @@ void daBtn_c::func_ov079_02125504()
         BCA_File *cur;
         void *want;
         i = mIsKing;
-        q = mModelAnim.currFrame;
+        q = mAnmModel.currFrame;
         e = (SharedFilePtr *)data_ov079_021275ec[(int)i * 5 + 3];
-        cur = mModelAnim.file;
+        cur = mAnmModel.file;
         want = e->filePtr;
         frame = (unsigned short)(q >> 12);
         if (cur != want)
@@ -867,8 +865,8 @@ void daBtn_c::func_ov079_02125504()
 void daBtn_c::func_ov079_021254b4()
 {
     mHorzSpeed = 0;
-    mModelAnim.Advance();
-    if (!mModelAnim.WillHitFrame(15))
+    mAnmModel.Advance();
+    if (!mAnmModel.WillHitFrame(15))
         return;
     mState = 4;
     mFlags |= 0x2000000;
@@ -883,7 +881,7 @@ void daBtn_c::func_ov079_0212538c()
 {
     func_01ffb0b0(&mMovingMeshCollider);
     func_01ffb0a4(&mMovingMeshCollider);
-    mModelAnim.Advance();
+    mAnmModel.Advance();
     if ((u16)mStateTimer == 0)
         mVertSpeed = data_ov079_021275e4[mIsKing];
     if ((u16)mStateTimer < 8)
@@ -917,30 +915,33 @@ void daBtn_c::func_ov079_0212538c()
    move to state 6; from then on the collider's contact callback is the
    veneer above. The king lands with a heavier dust burst. */
 void daBtn_c::func_ov079_02125240(){
-  Vector3 v;
-  Vector3 a;
-  Vector3 b;
-  if(mSubState) return;
-  if(!mWithMeshClsn.IsOnGround()) return;
-  mVertSpeed = 0;
-  func_01ffb098(&mMovingMeshCollider);
-  func_01ffb0bc(&mMovingMeshCollider);
-  mSubState++;
-  mModelAnim.SetAnim((BCA_File *)(((SharedFilePtr *)data_ov079_021275ec[mIsKing * 5 + 1])->filePtr),
-                     0x40000000, 0x1000, 0);
-  v.x = mPosX;
-  v.y = mPosY;
-  v.z = mPosZ;
-  Earthquake(v, 0x7d0000);
-  mState = 6;
-  func_020393c4(&mMovingMeshCollider, (int)func_ov079_0212522c);
-  if(mIsKing != 0){
-    func_ov079_02123d4c((int *)&a, this);
-    func_0200fa04(this, &a, 0);
-  } else {
-    func_ov079_02123d4c((int *)&b, this);
-    LandingDustAt(b, false);
-  }
+    Vector3 v;
+    Vector3 a;
+    Vector3 b;
+    if (mSubState)
+        return;
+    if (!mWithMeshClsn.IsOnGround())
+        return;
+    mVertSpeed = 0;
+    func_01ffb098(&mMovingMeshCollider);
+    func_01ffb0bc(&mMovingMeshCollider);
+    mSubState++;
+    mAnmModel.SetAnim(
+        (BCA_File *)(((SharedFilePtr *)data_ov079_021275ec[mIsKing * 5 + 1])->filePtr), 0x40000000,
+        0x1000, 0);
+    v.x = mPosX;
+    v.y = mPosY;
+    v.z = mPosZ;
+    Earthquake(v, 0x7d0000);
+    mState = 6;
+    func_020393c4(&mMovingMeshCollider, (int)func_ov079_0212522c);
+    if (mIsKing != 0) {
+        func_ov079_02123d4c((int *)&a, this);
+        func_0200fa04(this, &a, 0);
+    } else {
+        func_ov079_02123d4c((int *)&b, this);
+        LandingDustAt(b, false);
+    }
 }
 
 // @symbol func_ov079_0212522c
@@ -990,7 +991,7 @@ void daBtn_c::func_ov079_02125058(dActor_c *other)
         y = p->y; v1.y = y;
         z = p->z; v1.z = z;
         w1.x = x; w1.y = y; w1.z = z;
-        _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs(this, &w1, 1, 0x8000, 0);
+        SpawnCoins(w1, 1, 0x8000, 0);
         mCoinGiven = 1;
         return;
     }
@@ -1006,7 +1007,7 @@ void daBtn_c::func_ov079_02125058(dActor_c *other)
         if (y - mPosY < 0x2bc000) return;
         if (DecIfAbove0_Byte(&mCoinsLeft) == 0) return;
         w2.x = v2.x; w2.y = v2.y; w2.z = v2.z;
-        _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs(this, &w2, 1, 0x8000, 0);
+        SpawnCoins(w2, 1, 0x8000, 0);
         mCoinGiven = 1;
         return;
     }
@@ -1020,7 +1021,7 @@ void daBtn_c::func_ov079_02125058(dActor_c *other)
    10 gets it up. */
 void daBtn_c::func_ov079_02124ed4()
 {
-    mModelAnim.Advance();
+    mAnmModel.Advance();
     mCoinGiven = 0;
     if (mSubState == 0) {
         if (mPounded != 0) {
@@ -1032,10 +1033,10 @@ void daBtn_c::func_ov079_02124ed4()
                 Particle::System::NewSimple(3, p[0], p[1], p[2]);
             }
             if (mHitPoints == 0) {
-                mModelAnim.SetAnim((BCA_File *)data_ov079_021281b0.filePtr, 0x40000000, 0x1000, 0);
+                mAnmModel.SetAnim((BCA_File *)data_ov079_021281b0.filePtr, 0x40000000, 0x1000, 0);
                 mState = 8;
             } else {
-                mModelAnim.SetAnim((BCA_File *)data_ov079_021281b0.filePtr, 0x40000000, 0x1000, 0);
+                mAnmModel.SetAnim((BCA_File *)data_ov079_021281b0.filePtr, 0x40000000, 0x1000, 0);
                 mPounder = 0;
                 mTextureSequence.Advance();
                 mSubState++;
@@ -1070,7 +1071,7 @@ void daBtn_c::func_ov079_02124dec()
        dropping it shrinks the function 0xe8 -> 0xd8. */
     Vector3 v1;
     Vector3 w1;
-    mModelAnim.Advance();
+    mAnmModel.Advance();
     if (mSubState == 0) {
         if (mTouched != 0) {
             if (mPounded != 0) {
@@ -1087,7 +1088,7 @@ void daBtn_c::func_ov079_02124dec()
                 v1.y = y;
                 w1.y = y;
 
-                _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs(this, &w1, 5, 0x8000, 0);
+                SpawnCoins(w1, 5, 0x8000, 0);
                 mState = 8;
             } else {
                 mSubState++;
@@ -1134,7 +1135,7 @@ void daBtn_c::func_ov079_02124b08()
             }
             unk_407 = 0;
             mSubState = 0xb;
-            mModelAnim.SetAnim(
+            mAnmModel.SetAnim(
                 (BCA_File *)(((SharedFilePtr *)data_ov079_021275ec[mIsKing * 5 + 2])->filePtr),
                 0x40000000, 0x1000, 0);
             mSubTimer = 0;
@@ -1144,13 +1145,13 @@ void daBtn_c::func_ov079_02124b08()
 
 
     if (st == 0xa) {
-        mModelAnim.Advance();
+        mAnmModel.Advance();
         mSubTimer++;
         if (mSubTimer <= 0x1e)
             return;
         unk_407 = 0;
         mSubState++;
-        mModelAnim.SetAnim(
+        mAnmModel.SetAnim(
             (BCA_File *)(((SharedFilePtr *)data_ov079_021275ec[mIsKing * 5 + 2])->filePtr),
             0x40000000, 0x1000, 0);
         mSubTimer = 0;
@@ -1166,8 +1167,8 @@ void daBtn_c::func_ov079_02124b08()
     } else {
         mPitchSpeed = 0;
         mAngleX = 0;
-        if (mModelAnim.Finished() != 0) {
-            mModelAnim.SetAnim(
+        if (mAnmModel.Finished() != 0) {
+            mAnmModel.SetAnim(
                 (BCA_File *)(((SharedFilePtr *)data_ov079_021275ec[mIsKing * 5 + 4])->filePtr),
                 0x40000000, 0x1000, 0);
 
@@ -1191,13 +1192,13 @@ void daBtn_c::func_ov079_02124b08()
         }
     }
 
-    mModelAnim.Advance();
+    mAnmModel.Advance();
     {
         u8 v;
         unsigned int q;
         int m;
         v = mIsKing;
-        q = mModelAnim.currFrame;
+        q = mAnmModel.currFrame;
         m = v * 0x30;
         mTipLift = data_ov079_02127cfc[m + (int)((unsigned short)(q >> 12))];
     }
@@ -1216,7 +1217,7 @@ void daBtn_c::func_ov079_021249f0()
     }
     if (mSubState == 0) {
         mHorzSpeed = 0;
-        mModelAnim.speed = 0x2000;
+        mAnmModel.speed = 0x2000;
         if ((u16)mStateTimer >= 0x20) {
             mSubState++;
         } else {
@@ -1227,12 +1228,12 @@ void daBtn_c::func_ov079_021249f0()
         mHorzSpeed = data_ov079_021275dc[mIsKing];
         if ((u16)mStateTimer > 0x2a) {
             mState = 1;
-            mModelAnim.SetAnim(
+            mAnmModel.SetAnim(
                 (BCA_File *)(((SharedFilePtr *)data_ov079_021275ec[mIsKing * 5 + 3])->filePtr), 0,
                 0x1000, 0);
         }
     }
-    mModelAnim.Advance();
+    mAnmModel.Advance();
 }
 
 // @symbol _ZN7daBtn_c19func_ov079_021246dcEv
@@ -1358,8 +1359,8 @@ void daBtn_c::func_ov079_02124638()
    state 5. While the hop plays the body rises. */
 void daBtn_c::func_ov079_02124530()
 {
-    mModelAnim.Advance();
-    if (mModelAnim.Finished()) {
+    mAnmModel.Advance();
+    if (mAnmModel.Finished()) {
         if (mIsKing)
             mPitchSpeed += 0xe0;
         else
@@ -1446,14 +1447,13 @@ void daBtn_c::func_ov079_02124188()
     int sinComp;
     char *bone;
 
-    Matrix4x3_FromRotationXYZExt(&mModelAnim.mat4x3,
-        mAngleX, mAngleY, mAngleZ);
+    Matrix4x3_FromRotationXYZExt(&mAnmModel.mat4x3, mAngleX, mAngleY, mAngleZ);
 
-    mModelAnim.mat4x3.t.x = mPosX >> 3;
-    mModelAnim.mat4x3.t.y = (mPosY + mTipLift) >> 3;
-    mModelAnim.mat4x3.t.z = mPosZ >> 3;
+    mAnmModel.mat4x3.t.x = mPosX >> 3;
+    mAnmModel.mat4x3.t.y = (mPosY + mTipLift) >> 3;
+    mAnmModel.mat4x3.t.z = mPosZ >> 3;
 
-    bone = (char *)mModelAnim.data.bones;
+    bone = (char *)mAnmModel.data.bones;
     pos.x = mPosX;
     pos.y = mPosY;
     pos.z = mPosZ;
@@ -1486,11 +1486,11 @@ void daBtn_c::func_ov079_02124188()
         return;
 
     if (mIsKing != 0) {
-        _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_S5_j(
-            this, &mShadowModel, mShadowMatrix, 0x1cc000, 0x190000, shadowRad, 0xf);
+        DropShadowScaleXYZ(mShadowModel, *(Matrix4x3 *)mShadowMatrix, 0x1cc000, 0x190000, shadowRad,
+                           0xf);
     } else {
-        _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_S5_j(
-            this, &mShadowModel, mShadowMatrix, 0xf0000, 0x190000, shadowRad, 0xf);
+        DropShadowScaleXYZ(mShadowModel, *(Matrix4x3 *)mShadowMatrix, 0xf0000, 0x190000, shadowRad,
+                           0xf);
     }
     return;
 }
@@ -1519,7 +1519,7 @@ void daBtn_c::func_ov079_02124008()
     }
 
     off = (n + 1) * ((s - 0x1000) * 0x168);
-    *(MatrixWords *)mMeshMatrix = *(MatrixWords *)&mModelAnim.mat4x3;
+    *(MatrixWords *)mMeshMatrix = *(MatrixWords *)&mAnmModel.mat4x3;
 
     Matrix4x3_ApplyInPlaceToRotationY(mMeshMatrix, mBodyYaw);
     if (mState != 1 && mState != 7) {
@@ -1792,13 +1792,13 @@ void daBtn_c::func_ov079_02123804(dActor_c *other)
             pos.x = q[0];
             pos.y = q[1];
             pos.z = q[2];
-            _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs(this, &pos, 1, 0, 0);
+            SpawnCoins(pos, 1, 0, 0);
         }
         mHorzSpeed = 0;
-        mModelAnim.SetAnim(
+        mAnmModel.SetAnim(
             (BCA_File *)(((SharedFilePtr *)data_ov079_021275ec[mIsKing * 5])->filePtr), 0x40000000,
             0x1000, 0);
-        mModelAnim.speed = 0x4000;
+        mAnmModel.speed = 0x4000;
         mState = 0xb;
         mResumePending = 1;
         return;

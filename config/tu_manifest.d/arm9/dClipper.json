@@ -42,7 +42,7 @@
       "ordinal": 2
     },
     {
-      "symbol": "_ZN8dClipper13Func_020156DCEitii",
+      "symbol": "_ZN8dClipper13Func_020156DCEisii",
       "address": "0x020156dc",
       "size": "0x00000020",
       "legacy_source": "src/_ZN8dClipper13Func_020156DCEitii.cpp",

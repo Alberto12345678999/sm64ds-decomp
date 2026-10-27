@@ -3035,7 +3035,7 @@
       "ordinal": 428
     },
     {
-      "symbol": "_ZN6Player4HurtERK7Vector3j5Fix12IiEjjj",
+      "symbol": "_ZN6Player4HurtERK7Vector3jihhh",
       "address": "0x020d8e70",
       "size": "0x00000348",
       "legacy_source": "src/_ZN6Player4HurtERK7Vector3j5Fix12IiEjjj.cpp",
@@ -3063,7 +3063,7 @@
       "ordinal": 432
     },
     {
-      "symbol": "_ZN6Player6BounceE5Fix12IiE",
+      "symbol": "_ZN6Player6BounceEi",
       "address": "0x020d932c",
       "size": "0x00000080",
       "legacy_source": "src/_ZN6Player6BounceE5Fix12IiE.cpp",
@@ -3931,7 +3931,7 @@
       "ordinal": 556
     },
     {
-      "symbol": "_ZN6Player10SpinBounceE5Fix12IiE",
+      "symbol": "_ZN6Player10SpinBounceEi",
       "address": "0x020e1020",
       "size": "0x00000088",
       "legacy_source": "src/_ZN6Player10SpinBounceE5Fix12IiE.cpp",
@@ -20011,7 +20011,7 @@
       "type": "R_ARM_ABS32",
       "kind": "load",
       "addend": 0,
-      "symbol": "data_02086b58",
+      "symbol": "__ptmf_null",
       "target_module": "arm9",
       "target_address": "0x02086b58"
     },
@@ -20021,7 +20021,7 @@
       "type": "R_ARM_ABS32",
       "kind": "load",
       "addend": 0,
-      "symbol": "data_ov002_02110154",
+      "symbol": "_ZN6Player7ST_WAITE",
       "target_module": "ov002",
       "target_address": "0x02110154"
     },
@@ -20241,7 +20241,7 @@
       "type": "R_ARM_ABS32",
       "kind": "load",
       "addend": 0,
-      "symbol": "data_ov002_02110244",
+      "symbol": "_ZN6Player6ST_OWLE",
       "target_module": "ov002",
       "target_address": "0x02110244"
     },

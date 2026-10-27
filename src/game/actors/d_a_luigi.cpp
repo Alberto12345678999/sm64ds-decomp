@@ -39,6 +39,7 @@
 #include "daLuigi_c.h"
 #include "SharedFilePtr.h"
 #include "Player.h"
+#include "math/Approach.h"
 
 /* Twelve-word copy. Assigning Matrix4x3 itself is a different sequence. */
 struct Mtx { int m[12]; };
@@ -65,7 +66,6 @@ struct Obj;
 #define kAppearSound 0x179
 #define kMirrorSx (-0x1000)
 
-int ApproachLinear(int &value, int target, int step);
 
 extern "C" {
 /* Reflection state in this overlay. b68 is the request: bit 0 resets, bit 1
@@ -113,9 +113,6 @@ void Vec3_Asr(Vec3 *dst, Vec3 *src, int shift);
 void Matrix4x3_ApplyInPlaceToRotationY(Matrix4x3 *m, short angY);
 
 /* Fix12<int> by value. The method form homes that argument on the stack. */
-void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
-    dActor_c *self, dExtShadowModel_c *shadow, Matrix4x3 *mat, int radius, int depth,
-    unsigned char opacity);
 }
 
 /* Reconstructed source-style name: SM64DS proves daLuigi_c through RTTI,
@@ -133,9 +130,9 @@ int daLuigi_c::InitResources()
 {
     Vec3 t;
 
-    mModelAnim.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(data_ov002_0210ebb8), 1, -1);
-    func_02016acc(&mModelAnim, kMatClear);
-    func_02016b24(&mModelAnim, kMatSet);
+    mAnmModel.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(data_ov002_0210ebb8), 1, -1);
+    func_02016acc(&mAnmModel, kMatClear);
+    func_02016b24(&mAnmModel, kMatSet);
 
     mModel.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(data_ov002_0210eb20), 1, -1);
     func_02016acc(&mModel, kMatClear);
@@ -150,13 +147,13 @@ int daLuigi_c::InitResources()
 
     mShadowModel.InitCylinder();
 
-    mModelAnim.SetAnim((BCA_File *)dExtFrameCtrl_c::LoadFile(data_ov002_0210eaa0), 0, kFxOne, 0);
+    mAnmModel.SetAnim((BCA_File *)dExtFrameCtrl_c::LoadFile(data_ov002_0210eaa0), 0, kFxOne, 0);
 
     Vec3_Asr(&t, (Vec3 *)&mPosX, 3);
     Matrix4x3_FromTranslation(&data_020a0e68, t.x, t.y, t.z);
     Matrix4x3_ApplyInPlaceToRotationY(&data_020a0e68, mAngleY);
 
-    *(Mtx *)&mModelAnim.mat4x3 = *(Mtx *)&data_020a0e68;
+    *(Mtx *)&mAnmModel.mat4x3 = *(Mtx *)&data_020a0e68;
     *(Mtx *)&mModel.mat4x3 = *(Mtx *)&data_020a0e68;
 
     SetState(&data_ov055_02111b70, CurrentPlayer());
@@ -186,8 +183,7 @@ int daLuigi_c::Behavior()
         (this->*mState->execute)(player);
     Matrix4x3_FromTranslation(&mShadowMatrix, mPosX >> 3, mPosY >> 3, mPosZ >> 3);
     func_ov002_020e4374((char *)player, &depth, &radius);
-    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
-        this, &mShadowModel, &mShadowMatrix, radius, depth, kShadowOpacity);
+    DropShadowRadHeight(mShadowModel, mShadowMatrix, radius, depth, kShadowOpacity);
     /* dCamera_c::mFramedActor; this file does not include dCamera_c.h. */
     *(daLuigi_c **)((char *)data_0209f318 + 0x114) = this;
     return 1;
@@ -210,7 +206,7 @@ int daLuigi_c::Render()
     player = CurrentPlayer();
     body = (dExtSimpleModel_c *)func_ov002_020e496c((char *)player);
 
-    comps = &mModelAnim.data;
+    comps = &mAnmModel.data;
     file = comps->modelFile;
     dst = (Mtx *)comps->transforms;
     src = (Mtx *)body->data.transforms;
@@ -222,7 +218,7 @@ int daLuigi_c::Render()
         dst++;
     }
 
-    mat = &mModelAnim.mat4x3;
+    mat = &mAnmModel.mat4x3;
     *(Mtx *)mat = *(Mtx *)&body->mat4x3;
     mat->t.x = -mat->t.x;
     func_0203c178(&data_020a0e68, kMirrorSx, kFxOne, kFxOne);
@@ -231,9 +227,9 @@ int daLuigi_c::Render()
 
     if (data_ov055_02111b64 & kHideBit) return 1;
 
-    mModelAnim.dExtSimpleModel_c::Render(0);
-    *(Mtx *)&mModel.data.transforms[0] = *(Mtx *)&mModelAnim.data.transforms[15];
-    mTextureSequences[0].Update(mModelAnim.data);
+    mAnmModel.dExtSimpleModel_c::Render(0);
+    *(Mtx *)&mModel.data.transforms[0] = *(Mtx *)&mAnmModel.data.transforms[15];
+    mTextureSequences[0].Update(mAnmModel.data);
     mTextureSequences[0].currFrame = player->mIsVanish << 12;
     mTextureSequences[1].Update(mModel.data);
     mTextureSequences[1].currFrame = player->mIsVanish << 12;

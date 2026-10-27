@@ -20,10 +20,6 @@
  * section per function in the reverse of source order.
  *
  * Known limits:
- * - dBgW_KcMbg::SetFile, dCcAc_c::Init, Particle::System::New / NewSimple
- *   and dBgActor_c::IsClsnInRangeOnScreen stay mangled: each takes
- *   Fix12<int> by value (notes/mwccarm-codegen.md 6az). cstd::fdiv stays
- *   mangled because no header declares the cstd namespace yet.
  * - data_ov081_02128fd0 / 02128fd8 are this overlay's KCL / BMD file
  *   handles and data_ov002_0210d8d4 the CLPS block, all in data this TU
  *   does not own.
@@ -32,10 +28,6 @@
  */
 
 // leftovers:
-// - dBgW_KcMbg::SetFile, dCcAc_c::Init, Particle::System::New / NewSimple
-//   and dBgActor_c::IsClsnInRangeOnScreen stay mangled: each takes
-//   Fix12<int> by value (notes/mwccarm-codegen.md 6az). cstd::fdiv stays
-//   mangled because no header declares the cstd namespace yet.
 // - data_ov081_02128fd0 / 02128fd8 are this overlay's KCL / BMD file
 //   handles and data_ov002_0210d8d4 the CLPS block, all in data this TU
 //   does not own.
@@ -59,6 +51,7 @@ enum d_a_obj_ice_block_AssetId {
 #include "dBgW.h"
 #include "Particle__System.h"
 #include "nitro/fx/fx.h"
+#include "cstd.h"
 
 struct KCL_File;
 struct CLPS_Block;
@@ -84,14 +77,10 @@ extern CLPS_Block data_ov002_0210d8d4;
 
 u8 DecIfAbove0_Byte(u8 *counter);
 void func_02012694(u32 soundID, const Vector3 *pos);
-int _ZN4cstd4fdivEii(int num, int den);
 
 void *d_a_obj_ice_blockNewSimpleHold(u32 effectID, int x, int y, int z);
 int d_a_obj_ice_blockNewHold(u32 handle, u32 effectID, int x, int y, int z, const Vector3_16f *dir,
                              void *callback);
-void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(
-    dCcAc_c *self, dActor_c *owner, int radius, int height, u32 flags,
-    u32 vulnFlags);
 extern void hold_d_a_obj_ice_block(dBgW_KcMbg *self, KCL_File *kcl, const Matrix4x3 *mtx, int scale,
                                    s16 angleY, CLPS_Block *clps);
 
@@ -115,8 +104,7 @@ extern "C" daObjIceBlock_c *daObjIceBlock_c_classInit()
 s32 daObjIceBlock_c::InitResources()
 {
     mModel.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(data_ov081_02128fd8), 1, 0x17);
-    _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(
-        &mCollider, this, 0xc8000, 0x12c000, 0x800002, 0x44000);
+    mCollider.Init(this, 0xc8000, 0x12c000, 0x800002, 0x44000);
     UpdateModelPosAndRotY();
     UpdateClsnPosAndRot();
 
@@ -133,7 +121,7 @@ s32 daObjIceBlock_c::Behavior()
     IsClsnInRangeOnScreen(0, 0);
 
     if (mMeltTimer != 0) {
-        mScale = _ZN4cstd4fdivEii(mMeltTimer << 12, kMeltFrames << 12);
+        mScale = cstd::fdiv(mMeltTimer << 12, kMeltFrames << 12);
 
         if (DecIfAbove0_Byte(&mMeltTimer) == 0) {
             dActor_c *star = mContainedActor;

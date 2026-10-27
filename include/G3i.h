@@ -6,10 +6,9 @@
  * from the mangled name, the same shape as include/G2x.h and include/OAM.h.
  *
  * PerspectiveW_ is declared below with six Fix12i scalars (they mangle as
- * int), a bool and a Matrix4x3 *. A real C++ method with that signature does
- * not reproduce the ROM body, so engine/gx/G3i.cpp keeps a C-linkage
- * definition whose identifier is the mangled name the method would have
- * emitted. Parameters are unnamed: a named parameter renumbers @NNN in every
+ * int), the SDK's BOOL load flag as an int, and a Matrix4x3 *. With a bool
+ * flag the definition does not reproduce the ROM body; with int it does.
+ * Parameters are unnamed: a named parameter renumbers @NNN in every
  * includer.
  */
 #ifndef G3I_H
@@ -23,7 +22,7 @@ struct G3i {
     /* All static -- see the header note. */
     static void LookAt_(const Vector3 *camPos, const Vector3 *up, const Vector3 *target, bool draw,
                         Matrix4x3 *mat);
-    static void PerspectiveW_(Fix12i, Fix12i, Fix12i, Fix12i, Fix12i, Fix12i, bool, Matrix4x3 *);
+    static void PerspectiveW_(Fix12i, Fix12i, Fix12i, Fix12i, Fix12i, Fix12i, int, Matrix4x3 *);
 #endif
 };
 

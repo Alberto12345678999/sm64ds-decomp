@@ -9,8 +9,6 @@
  * Highest address first.
  */
 // leftovers:
-// - dExtAnmModel_c::SetAnim and dCcAc_c::Init stay C ABI spellings in
-//   InitResources. Fix12<int> by value lowers differently as a member call.
 // - func_02012790 and func_02012694 stay linker names. State0 calls them
 //   with a sound id, and the second also takes a position.
 // - data_ov002_0210d9a8 and data_ov002_0210da38 are ov002 handles this TU
@@ -61,9 +59,6 @@ extern TboxModelFilePtr data_ov064_0211c96c;
 extern TboxAnimationFileHandle data_ov064_0211c964;
 extern SharedFilePtr data_ov002_0210d9a8;
 extern SharedFilePtr data_ov002_0210da38;
-void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(
-    dCcAc_c *self, dActor_c *actor, int radius, int height,
-    u32 flags, u32 vulnFlags);
 }
 
 // @symbol daObjTbox_c_classInit
@@ -78,11 +73,10 @@ int daObjTbox_c::InitResources()
 {
     dExtSimpleModel_c::LoadFile(data_ov002_0210d9a8);
     dExtSimpleModel_c::LoadFile(data_ov002_0210da38);
-    mModelAnim.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(data_ov064_0211c96c), 1, -1);
-    mModelAnim.SetAnim((BCA_File *)dExtFrameCtrl_c::LoadFile(data_ov064_0211c964), 0x40000000,
-                       0x1000, 0);
-    _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(
-        &mCylinder, this, 0x96000, 0x96000, 0x200004, 0);
+    mAnmModel.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(data_ov064_0211c96c), 1, -1);
+    mAnmModel.SetAnim((BCA_File *)dExtFrameCtrl_c::LoadFile(data_ov064_0211c964), 0x40000000,
+                      0x1000, 0);
+    mCylinder.Init(this, 0x96000, 0x96000, 0x200004, 0);
     UpdateModelTransform();
     mOrder = param1;
     mStarID = (u32)param1 >> 8;
@@ -104,7 +98,7 @@ int daObjTbox_c::Behavior()
 // @symbol _ZN11daObjTbox_c6RenderEv
 int daObjTbox_c::Render()
 {
-    dExtSimpleModel_c *model = &mModelAnim;
+    dExtSimpleModel_c *model = &mAnmModel;
     model->Render(0);
     return 1;
 }
@@ -140,7 +134,7 @@ void daObjTbox_c::SetState(s32 state)
 // @symbol _ZN11daObjTbox_c10InitState0Ev
 void daObjTbox_c::InitState0()
 {
-    mModelAnim.currFrame = 0;
+    mAnmModel.currFrame = 0;
 }
 
 // @symbol _ZN11daObjTbox_c6State0Ev
@@ -231,8 +225,8 @@ void daObjTbox_c::InitState1()
 // @symbol _ZN11daObjTbox_c6State1Ev
 void daObjTbox_c::State1()
 {
-    mModelAnim.Advance();
-    if (((u32)(mModelAnim.currFrame << 4) >> 0x10) == 0x14) {
+    mAnmModel.Advance();
+    if (((u32)(mAnmModel.currFrame << 4) >> 0x10) == 0x14) {
         Player *player = ClosestPlayer();
 
         Vector3 spawnPos;
@@ -258,7 +252,7 @@ void daObjTbox_c::State1()
         }
     }
 
-    if (mModelAnim.Finished() != 0)
+    if (mAnmModel.Finished() != 0)
         SetState(2);
 }
 
@@ -294,10 +288,10 @@ void daObjTbox_c::State2()
 // @symbol _ZN11daObjTbox_c20UpdateModelTransformEv
 void daObjTbox_c::UpdateModelTransform()
 {
-    Matrix4x3_FromRotationY(&mModelAnim.mat4x3, mAngleY);
-    mModelAnim.mat4x3.t.x = mPosX >> 3;
-    mModelAnim.mat4x3.t.y = mPosY >> 3;
-    mModelAnim.mat4x3.t.z = mPosZ >> 3;
+    Matrix4x3_FromRotationY(&mAnmModel.mat4x3, mAngleY);
+    mAnmModel.mat4x3.t.x = mPosX >> 3;
+    mAnmModel.mat4x3.t.y = mPosY >> 3;
+    mAnmModel.mat4x3.t.z = mPosZ >> 3;
 }
 
 // @symbol _ZN11daObjTbox_cD1Ev

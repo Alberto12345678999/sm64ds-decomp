@@ -87,6 +87,7 @@
 #include "dScMgBase_c.h"
 #include "nitro/fx/fx.h"
 #include "Sound.h"
+#include "math/Approach.h"
 
 struct Vec2i { int x, y; };
 
@@ -107,8 +108,6 @@ struct Sprite {
 typedef char Sprite_size_must_be_0x24[sizeof(Sprite) == 0x24 ? 1 : -1];
 #endif
 
-int ApproachLinear(int&, int, int);
-int ApproachLinear2(short&, short, short);
 
 extern "C" {
 extern void Vec2_Sub(void* o, void* a, void* b);

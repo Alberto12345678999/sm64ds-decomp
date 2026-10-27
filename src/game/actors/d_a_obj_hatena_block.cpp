@@ -179,7 +179,7 @@ enum {
 
 /* SaveData::flags1 (data_0209caa0[1]) bit 31. Its meaning is not named in
    the tree; this class only tests it. While it is CLEAR, an actor 20
-   (HATENA_BLOCK) is drawn as the animated model (mModelAnim), Behavior only
+   (HATENA_BLOCK) is drawn as the animated model (mAnmModel), Behavior only
    advances that animation (while IDLE) and keeps the collider off, and the mega-player
    trigger (func_ov102_02149ccc) does not run for it. */
 enum { SAVE_FLAGS1_BIT31 = 0x80000000 };
@@ -217,8 +217,6 @@ extern void Matrix4x3_FromRotationY(void *m, int angle);
 extern void func_020393a4(int *p, int v);
 extern void func_02039394(int *p, int v);
 void d_a_obj_hatena_blockEarthquakeHold(void *self, void *pos, s32 radius);
-extern void _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_S5_j(
-    void *self, void *shadow, void *mtx, int fix, int t1, int t2, unsigned int n);
 extern void hold_d_a_obj_hatena_block(void *thiz, void *kcl, void *mtx, int fix, short s,
                                       void *clps);
 extern void func_ov102_0214ad14(void *actor);
@@ -367,9 +365,9 @@ int daObjHatenaBlock_c::InitResources()
     switch (actorID - ACTOR_HATENA_BLOCK) {
     case 0:   /* HATENA_BLOCK */
         modelFile = dExtSimpleModel_c::LoadFile(data_ov102_0214e7e8);
-        mModelAnim.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(data_ov102_0214e808), 1, 0x19);
-        mModelAnim.SetAnim((BCA_File *)(dExtFrameCtrl_c::LoadFile(data_ov102_0214e7f8)), 0, 0x1000,
-                           0);
+        mAnmModel.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(data_ov102_0214e808), 1, 0x19);
+        mAnmModel.SetAnim((BCA_File *)(dExtFrameCtrl_c::LoadFile(data_ov102_0214e7f8)), 0, 0x1000,
+                          0);
         dExtSimpleModel_c::LoadFile(data_ov002_0210d9e0);
         break;
     case 1:   /* ITEM_BLOCK */
@@ -504,7 +502,7 @@ int daObjHatenaBlock_c::Behavior()
     if ((data_0209caa0[1] & SAVE_FLAGS1_BIT31) == 0) {
         int b = (int)(actorID == ACTOR_HATENA_BLOCK);
         if (b != 0) {
-            mModelAnim.Advance();
+            mAnmModel.Advance();
             if (mMeshCollider.IsEnabled() != 0) {
                 mMeshCollider.Disable();
             }
@@ -535,7 +533,7 @@ end:
 
 // @symbol _ZN18daObjHatenaBlock_c6RenderEv
 /* Draws nothing while POPPED. A HATENA_BLOCK with SAVE_FLAGS1_BIT31 clear
-   draws mModelAnim; every other case draws mModel, passing the Vector3 at
+   draws mAnmModel; every other case draws mModel, passing the Vector3 at
    mScaleX. Always returns 1. */
 int daObjHatenaBlock_c::Render()
 {
@@ -544,7 +542,7 @@ int daObjHatenaBlock_c::Render()
     if ((data_0209caa0[1] & SAVE_FLAGS1_BIT31) == 0) {
         int b = (actorID == ACTOR_HATENA_BLOCK);
         if (b != 0) {
-            mModelAnim.Render(0);
+            mAnmModel.Render(0);
             goto done;
         }
     }
@@ -640,7 +638,7 @@ int daObjHatenaBlock_c::CleanupResources()
 // @symbol _ZN18daObjHatenaBlock_c19func_ov102_02149ff0Ev
 /* Rebuilds the model matrix: a Y rotation by mAngleY, with the translation
    set to (mPosX, mPosY + mBounceYOffs, mPosZ) >> 3. A HATENA_BLOCK with
-   SAVE_FLAGS1_BIT31 clear then copies the matrix into mModelAnim as well. */
+   SAVE_FLAGS1_BIT31 clear then copies the matrix into mAnmModel as well. */
 void daObjHatenaBlock_c::func_ov102_02149ff0()
 {
     Matrix4x3_FromRotationY(&mModel.mat4x3, mAngleY);
@@ -652,7 +650,7 @@ void daObjHatenaBlock_c::func_ov102_02149ff0()
     int b = (int)(actorID == ACTOR_HATENA_BLOCK);
     if (b == 0)
         return;
-    mModelAnim.mat4x3 = mModel.mat4x3;
+    mAnmModel.mat4x3 = mModel.mat4x3;
 }
 
 // @symbol _ZN18daObjHatenaBlock_c19func_ov102_02149ea4Ev
@@ -697,8 +695,7 @@ skipcall:
     mShadowMat.m[9] = mPosX >> 3;
     mShadowMat.m[10] = (mPosY - 0x20000) >> 3;
     mShadowMat.m[11] = mPosZ >> 3;
-    _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_S5_j(
-        this, &mShadowModel, &mShadowMat, shadowScale, height + 0x14000, shadowScale, 0xf);
+    DropShadowScaleXYZ(mShadowModel, mShadowMat, shadowScale, height + 0x14000, shadowScale, 0xf);
 }
 
 // @symbol _ZN18daObjHatenaBlock_c19func_ov102_02149e38Ev

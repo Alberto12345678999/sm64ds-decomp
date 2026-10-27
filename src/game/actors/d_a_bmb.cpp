@@ -16,14 +16,9 @@ struct System {
  * math/Matrix.h's nested Matrix4x3 scalarizes that copy (Vector3 is non-POD).
  *
  * Leftovers, remeasured in this file:
- * - dExtAnmModel_c::SetAnim, dCcAc_c::Init and DropShadowRadHeight: the header
- *   methods take Fix12<int> by value and the call grows. dBgCh_Actr::Init's
- *   header is Fix12i (mangles as i); this TU's call is Fix12<int>.
- *   The 4-arg KillByInvincibleChar stays a scalar extern; Behavior already
- *   calls the 3-arg method.
  * - Behavior skips 4 bytes past GetFloorResult's dBgPi to the SurfaceInfo
  *   and tests CLPS bit 0x20 (water).
- * - States 0, 1 and 3 advance the dExtFrameCtrl_c base of mModelAnim
+ * - States 0, 1 and 3 advance the dExtFrameCtrl_c base of mAnmModel
  *   explicitly. The qualified base call preserves the ROM entry point
  *   without a byte-offset pointer or a dExtAnmModel_c forwarding call.
  * - dActor_c::mCarryMatrix (0xc8) is the matrix 0214b53c copies into the
@@ -53,8 +48,7 @@ struct System {
 #include "SharedFilePtr.h"
 #include "dBgCh_Gnd.h"
 #include "dBgCh_Actr.h"
-
-bool ApproachLinear(short &value, short target, short step);
+#include "math/Approach.h"
 
 /* The three shared files this actor claims.  InitResources loads them and
    CleanupResources releases them, so both C++-named members need one agreed
@@ -90,14 +84,8 @@ void  func_ov102_0214c0b8(void *self);
 void  GiveCoins(int who, int count);
 int   SurfaceInfo_TestFlag0x20(int *si);
 
-void  _ZN12dEnemyBase_c20KillByInvincibleCharERK10Vector3_16R6Player5Fix12IiE(void *, void *, void *, unsigned int);
 
 
-
-/* dCcAc_c::Init / dBgCh_Actr::Init stay scalar: they carry Fix12<int> BY
-   VALUE (6az). dBgCh_Actr::Init's header is Fix12i, which mangles as i;
-   ROM is Fix12<int>. */
-void  _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *, dActor_c *a, Fix12i r, Fix12i h, unsigned int d, unsigned int e);
 
 /* Hoisted out of four member bodies.  A class member function may not sit in a
    block-scope linkage specification, so daBmb_c::State1/3/4/5 cannot carry their
@@ -182,7 +170,7 @@ int daBmb_c::InitResources()
     dExtFrameCtrl_c::LoadFile(data_ov102_0214e9c0);
     dExtFrameCtrl_c::LoadFile(data_ov102_0214e9c8);
     bmd = (BMD_File *)dExtSimpleModel_c::LoadFile(data_ov002_0210d9e0);
-    if (mModelAnim.SetFile(bmd, 1, -1) == 0)
+    if (mAnmModel.SetFile(bmd, 1, -1) == 0)
         return 0;
     if (mShadowModel.InitCylinder() == 0)
         return 0;
@@ -190,7 +178,7 @@ int daBmb_c::InitResources()
     mVariant = (unsigned char)(param1 & 7);
     mNoticeAngle = 0x2000;
     func_ov102_0214c0b8(this);
-    _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCc_c, this, 0x3c000, 0x50000, 0x200004, 0xa6d380);
+    mdCc_c.Init(this, 0x3c000, 0x50000, 0x200004, 0xa6d380);
     mTerminalVelocity = -0x37000;
 
     if (mVariant == 2) {
@@ -250,7 +238,7 @@ int daBmb_c::Behavior()
         return 1;
     }
 
-    killResult = UpdateKillByInvincibleChar(mWithMeshClsn, mModelAnim, 0);
+    killResult = UpdateKillByInvincibleChar(mWithMeshClsn, mAnmModel, 0);
     if (killResult != 0) {
         if (killResult == 2) {
             func_ov102_0214ae1c(this);
@@ -282,7 +270,7 @@ int daBmb_c::Behavior()
                 v[0] = -0x2000;
                 v[1] = 0;
                 v[2] = 0;
-                _ZN12dEnemyBase_c20KillByInvincibleCharERK10Vector3_16R6Player5Fix12IiE(this, v, other, 0x32000);
+                KillByInvincibleChar(*(Vector3_16 *)v, *(Player *)other, 0x32000);
                 UpdatePos(&mdCc_c);
                 UpdateWMClsn(mWithMeshClsn, 0);
                 mdCc_c.Clear();
@@ -356,7 +344,7 @@ int daBmb_c::Render()
         int flags = mFlags;
         int b = (flags & 0x40000) != 0;
         if (!b) {
-            mModelAnim.Render(&mScale);
+            mAnmModel.Render(&mScale);
         }
     }
     return result;
@@ -390,7 +378,7 @@ void func_ov102_0214c0b8(void *cv) {
         self->mHorzSpeed = 0;
     else
         self->mHorzSpeed = 0x5000;
-    self->mModelAnim.SetAnim((BCA_File *)data_ov102_0214e9c0.filePtr, 0, 0x1000, 0);
+    self->mAnmModel.SetAnim((BCA_File *)data_ov102_0214e9c0.filePtr, 0, 0x1000, 0);
     self->mTurnTimer = 0x200;
     self->mVertAccel = -0x2000;
     self->mCarrier = 0;
@@ -408,7 +396,6 @@ extern "C" {
 void func_ov102_0214bf64(void *ov)
 {
     extern unsigned short DecIfAbove0_Short(unsigned short* p);
-    extern void _Z14ApproachLinearRiii(int& v, int target, int step);
     extern short Vec3_HorzAngle(const Vector3* v0, const Vector3* v1);
     extern int Vec3_Dist(const Vector3* a, const Vector3* b);
     extern void func_ov102_0214b988(void* c);
@@ -418,7 +405,7 @@ void func_ov102_0214bf64(void *ov)
     DecIfAbove0_Short(&o->mTurnTimer);
     if (o->mVariant != 1) {
         if (o->mChasePlayer == 0) {
-            _Z14ApproachLinearRiii(o->mHorzSpeed, 0x5000, 0x2aa);
+            ApproachLinear(o->mHorzSpeed, 0x5000, 0x2aa);
             func_ov102_0214b988(o);
             if (o->mChasePlayer != 0) {
                 o->mHorzSpeed = 0;
@@ -438,7 +425,7 @@ void func_ov102_0214bf64(void *ov)
                 }
             }
         } else {
-            _Z14ApproachLinearRiii(o->mHorzSpeed, 0x10000, 0x1000);
+            ApproachLinear(o->mHorzSpeed, 0x10000, 0x1000);
             s16 target = Vec3_HorzAngle(&o->mPos, &o->mChasePlayer->mPos);
             if (o->mVariant == 3) {
                 /* Player::mGrabbedByActor: stop turning toward a held player. */
@@ -449,9 +436,9 @@ void func_ov102_0214bf64(void *ov)
             ApproachLinear(o->mPrevAngleY, target, 0x800);
             o->mAngleY = o->mPrevAngleY;
         }
-        o->mModelAnim.speed = o->mHorzSpeed >> 3;
+        o->mAnmModel.speed = o->mHorzSpeed >> 3;
     }
-    o->mModelAnim.dExtFrameCtrl_c::Advance();
+    o->mAnmModel.dExtFrameCtrl_c::Advance();
 }
 
 }
@@ -498,14 +485,14 @@ void func_ov102_0214beb4(void *cv)
 // @symbol _ZN7daBmb_c6State1Ev
 void daBmb_c::State1() {
     if (mChasePlayer == 0) {
-        mModelAnim.speed = 0x800;
+        mAnmModel.speed = 0x800;
         ApproachLinear(mPrevAngleY, *(short *)&mTargetAngY, 0x400);
     } else {
-        mModelAnim.speed = 0x1000;
+        mAnmModel.speed = 0x1000;
         ApproachLinear(mPrevAngleY, *(short *)&mTargetAngY, 0x800);
     }
     mAngleY = mPrevAngleY;
-    mModelAnim.dExtFrameCtrl_c::Advance();
+    mAnmModel.dExtFrameCtrl_c::Advance();
     if (mState == 2) return;
     if (mPrevAngleY != *(short *)&mTargetAngY) return;
     func_ov102_0214c0b8(this);
@@ -548,7 +535,7 @@ void func_ov102_0214bd20(char *c) {
     self->mState = 3;
     self->mVertAccel = 0;
     self->mHorzSpeed = 0;
-    self->mModelAnim.SetAnim((BCA_File *)data_ov102_0214e9c8.filePtr, 0, 0x1000, 0);
+    self->mAnmModel.SetAnim((BCA_File *)data_ov102_0214e9c8.filePtr, 0, 0x1000, 0);
     func_ov102_0214b384(c, 0x96);
     self->mdCc_c.flags |= 2;
     self->mdCc_c.flags &= ~4;
@@ -591,7 +578,7 @@ void daBmb_c::State3()
             func_ov102_0214c0b8(this);
         }
     }
-    mModelAnim.dExtFrameCtrl_c::Advance();
+    mAnmModel.dExtFrameCtrl_c::Advance();
 }
 
 /* ==========================================================================
@@ -625,7 +612,7 @@ void func_ov102_0214bc20(char *c) {
     self->mHorzSpeed = a1.v[idx];
     self->mVertSpeed = a2.v[idx];
     self->mState = 4;
-    self->mModelAnim.SetAnim((BCA_File *)data_ov102_0214e9c0.filePtr, 0, 0x1000, 0);
+    self->mAnmModel.SetAnim((BCA_File *)data_ov102_0214e9c0.filePtr, 0, 0x1000, 0);
     self->mVertAccel = -0x2000;
 }
 }
@@ -806,7 +793,7 @@ void func_ov102_0214b53c(char *c) {
     /* Plain short-circuit.  A chain of `& 0xFFFFFFFFu` masks is C-only: under
      -lang c++ the `&&` is a bool and the mask costs three instructions. */
     if ((self->mVariant == 2) && ((src = (char *)self->mCarryMatrix) != 0)) {
-        self->mModelAnim.mat4x3 = *((Matrix4x3 *)src);
+        self->mAnmModel.mat4x3 = *((Matrix4x3 *)src);
     } else {
         int haveMtx = (int)((self->mFlags & 0x4000) != 0);
         Player *player0;
@@ -833,28 +820,28 @@ void func_ov102_0214b53c(char *c) {
                                    *((int *)(((char *)data_ov102_0214ea20) + off)), 0x800, 0x3e8000,
                                    4);
             Matrix4x3 *rmtx = self->UpdateCarry(*self->mCarrier, *(Vector3 *)self->mCarryOff);
-            self->mModelAnim.mat4x3 = *rmtx;
+            self->mAnmModel.mat4x3 = *rmtx;
         } else {
             self->mCarryOff[0] = 0;
             self->mCarryOff[1] = 0;
             self->mCarryOff[2] = 0;
-            Matrix4x3_FromRotationY(&self->mModelAnim.mat4x3, self->mAngleY);
-            self->mModelAnim.mat4x3.m[9] = self->mPosX >> 3;
-            self->mModelAnim.mat4x3.m[10] = self->mPosY >> 3;
-            self->mModelAnim.mat4x3.m[11] = self->mPosZ >> 3;
+            Matrix4x3_FromRotationY(&self->mAnmModel.mat4x3, self->mAngleY);
+            self->mAnmModel.mat4x3.m[9] = self->mPosX >> 3;
+            self->mAnmModel.mat4x3.m[10] = self->mPosY >> 3;
+            self->mAnmModel.mat4x3.m[11] = self->mPosZ >> 3;
         }
     }
     int haveMtx2 = (int)((self->mFlags & 0x4000) != 0);
     if ((haveMtx2 != 0) || (self->mFuse != 0)) {
         {
             Matrix4x3 *g = &data_020a0e68;
-            Matrix4x3 *m = &self->mModelAnim.mat4x3;
+            Matrix4x3 *m = &self->mAnmModel.mat4x3;
             p.x = 0;
             p.y = 0;
             p.z = 0;
             *g = *m;
         }
-        MulMat4x3Mat4x3(&self->mModelAnim.data.transforms[2], &data_020a0e68, &data_020a0e68);
+        MulMat4x3Mat4x3(&self->mAnmModel.data.transforms[2], &data_020a0e68, &data_020a0e68);
         {
             int ty = *((int *)(((char *)(&data_020a0e68)) + 0x28));
             int tx = *((int *)(((char *)(&data_020a0e68)) + 0x24));
@@ -949,8 +936,6 @@ extern "C" {
 // @symbol func_ov102_0214b444
 void func_ov102_0214b444(void *cv)
 {
-    extern void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
-        int self, int sm, int mat, int fix, int t, unsigned int j);
 
     daBmb_c *self = (daBmb_c *)cv;
     int c = (int)self;
@@ -982,8 +967,10 @@ void func_ov102_0214b444(void *cv)
     self->mMatrix[10] = v >> 3;
     self->mMatrix[11] = self->mPosZ >> 3;
 
-    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
-        c, (int)&self->mShadowModel, (int)self->mMatrix, self->mScaleX * 0x50, 0x1e000, 0xf);
+    ((dActor_c *)c)
+        ->DropShadowRadHeight(*(dExtShadowModel_c *)((int)&self->mShadowModel),
+                              *(Matrix4x3 *)((int)self->mMatrix), self->mScaleX * 0x50, 0x1e000,
+                              0xf);
 }
 
 }
@@ -1152,8 +1139,8 @@ void func_ov102_0214b128(void *cv) {
 
 // @symbol _ZN7daBmb_c19func_ov102_0214b03cEv
 void daBmb_c::func_ov102_0214b03c() {
-    if (mState < 2 && mModelAnim.file == (BCA_File *)data_ov102_0214e9c0.filePtr) {
-        if (mModelAnim.WillHitFrame(0) != 0 || mModelAnim.WillHitFrame(0x10) != 0) {
+    if (mState < 2 && mAnmModel.file == (BCA_File *)data_ov102_0214e9c0.filePtr) {
+        if (mAnmModel.WillHitFrame(0) != 0 || mAnmModel.WillHitFrame(0x10) != 0) {
             func_0201267c(0x132, &mCamSpacePos);
         }
     }
@@ -1192,7 +1179,6 @@ void func_ov102_0214ae1c(void *cv) {
     typedef struct Bmb_Ae1cVec3 { int x, y, z; } Vec3;
     extern void d_a_bmbNewSimpleHold(unsigned int id, int x, int y, int z);
     extern void func_ov002_020ef228(void *a, void *b);
-    extern void _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void *self, Vec3 *v, unsigned int a, int fix, unsigned int b, unsigned int d, unsigned int e);
 
     daBmb_c *self = (daBmb_c *)cv;
     Vec3 v;
@@ -1222,7 +1208,7 @@ void func_ov102_0214ae1c(void *cv) {
         w.x = self->mPosX;
         w.y = self->mPosY;
         w.z = self->mPosZ;
-        _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(self->mCarrier, &w, 2, 0xc000, 1, 0, 1);
+        self->mCarrier->Hurt(*(Vector3 *)&w, 2, 0xc000, 1, 0, 1);
         self->mCarrier = 0;
     } else if (self->mdCc_c.otherOwner) {
         dActor_c *a = dActor_c::FindWithID(self->mdCc_c.otherOwner);
@@ -1232,7 +1218,7 @@ void func_ov102_0214ae1c(void *cv) {
                 w.x = self->mPosX;
                 w.y = self->mPosY;
                 w.z = self->mPosZ;
-                _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(a, &w, self->mHurtDamage, 0xc000, 1, 0, 1);
+                ((Player *)a)->Hurt(*(Vector3 *)&w, self->mHurtDamage, 0xc000, 1, 0, 1);
             }
         }
     }
@@ -1241,8 +1227,7 @@ void func_ov102_0214ae1c(void *cv) {
         w.x = self->mPosX;
         w.y = self->mPosY;
         w.z = self->mPosZ;
-        _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj((Player *)self->mEatingPlayer, &w,
-                                                self->mHurtDamage, 0xc000, 1, 0, 1);
+        ((Player *)self->mEatingPlayer)->Hurt(*(Vector3 *)&w, self->mHurtDamage, 0xc000, 1, 0, 1);
         ((Player *)self->mEatingPlayer)->func_ov002_020d718c();
         self->mEatingPlayer = 0;
     }
@@ -1355,7 +1340,7 @@ after_cannon:
     if (self->mVariant == 2) {
         self->mVariant = 3;
         self->mState = 0;
-        self->mModelAnim.SetAnim((BCA_File *)data_ov102_0214e9c0.filePtr, 0, 0x1000, 0);
+        self->mAnmModel.SetAnim((BCA_File *)data_ov102_0214e9c0.filePtr, 0, 0x1000, 0);
         self->mTurnTimer = 0x200;
         self->mVertAccel = -0x2000;
         self->mdCc_c.flags &= ~2u;

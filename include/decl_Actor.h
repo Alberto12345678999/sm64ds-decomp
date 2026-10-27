@@ -24,7 +24,6 @@ extern char*_ZN8dActor_c14FarthestPlayerEv(void*);
 extern int _ZN8dActor_c15IsPlayerInRangeEi(void*, int);
 extern int _ZN8dActor_c18FindExplosionActorER5dCc_c(void*, void*);
 extern int _ZN8dActor_c7FindEggER5dCc_c(void*, void*);
-extern void _ZN8dActor_c13SpawnFireballERK7Vector3PK10Vector3_165Fix12IiES7_j(void*, const void*, const void*, int, int, u32);
 extern void _ZN8dActor_c17TrackInDeathTableEv(void*);
 extern void _ZN8dActor_c19DisappearPoofDustAtERK7Vector3(void*, const struct Vector3*);
 extern void *_ZN8dActor_cC2Ev(void*);

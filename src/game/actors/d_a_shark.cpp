@@ -7,7 +7,7 @@
  * forward at 0x14000. The hurt cylinder cycles three lateral offsets.
  *
  * common.h FIRST. func_ov090_02133904 copies data_020a0e68 into
- * mModelAnim.mat4x3 as twelve words. common.h's flat s32 m[12] is that
+ * mAnmModel.mat4x3 as twelve words. common.h's flat s32 m[12] is that
  * copy; math/Matrix.h's nested {Matrix3x3 r; Vector3 t;} scalarizes it.
  *
  * #pragma defer_codegen off emits .text in source order. The out-of-line
@@ -31,8 +31,6 @@
  *   0x114. The int temporary stays.
  * - func_ov090_0213387c: dExtAnmModel_c::SetAnim with a Fix12<int> speed is
  *   size 0x38 to 0x44. The int-parameter call stays.
- * - InitResources: dCcAcPos_c::Init with Fix12<int> radius and height is
- *   size 0x108 to 0x118. The int-parameter call stays.
  * - Behavior: clamping with `speed < mTerminalVelocity` and dropping the
  *   mSpeedZ copy is size 0x1c0 to 0x1b8 and shifts the calls
  *   (WRONG-DEST, func_ov090_02133904 against 0x02010d40). The
@@ -52,6 +50,7 @@ enum daShark_c_AssetId {
 #include "PathPtr.h"
 #include "SharedFilePtr.h"
 #include "Player.h"
+#include "math/Approach.h"
 
 /* Scratch matrix, owned by the overlay. */
 
@@ -71,14 +70,8 @@ extern s16 Vec3_VertAngle(Vector3 *a, Vector3 *b);
 extern void Matrix4x3_FromRotationY(void *matrix, s32 angle);
 extern void Matrix4x3_ApplyInPlaceToRotationX(void *matrix, s16 angle);
 extern void MulVec3Mat4x3(void *a, void *matrix, void *b);
-extern void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
-    void *thiz, void *actor, void *pos, int f, int g,
-    unsigned int h, unsigned int i);
-extern void _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(
-    void *, void *, unsigned int, int, unsigned int, unsigned int, unsigned int);
 }
 
-bool ApproachLinear(short &value, short target, short step);
 
 typedef int (daShark_c::*SharkFn)();
 
@@ -165,20 +158,20 @@ extern "C" void func_ov090_02133710(daShark_c *self)
     pos.x = self->mPosX;
     pos.y = self->mPosY;
     pos.z = self->mPosZ;
-    _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(hit, &pos, 3, 0xc000, 1, 0, 1);
+    ((Player *)hit)->Hurt(pos, 3, 0xc000, 1, 0, 1);
 }
 
 // @symbol func_ov090_02133830
 extern "C" int func_ov090_02133830(daShark_c *self)
 {
-    int frame = self->mModelAnim.currFrame;
+    int frame = self->mAnmModel.currFrame;
 
     frame = (frame >> 12) << 16;
     frame = (unsigned int)frame >> 16;
     if (frame == 0)
         func_02012694(9, &self->mCamSpacePosX);
-    self->mModelAnim.speed = 0x1000;
-    static_cast<dExtFrameCtrl_c &>(self->mModelAnim).Advance();
+    self->mAnmModel.speed = 0x1000;
+    static_cast<dExtFrameCtrl_c &>(self->mAnmModel).Advance();
     func_ov090_02133710(self);
     return 1;
 }
@@ -186,7 +179,7 @@ extern "C" int func_ov090_02133830(daShark_c *self)
 // @symbol func_ov090_0213387c
 extern "C" int func_ov090_0213387c(daShark_c *self)
 {
-    self->mModelAnim.SetAnim((BCA_File *)data_ov090_021345ac.filePtr, 0, 0x1000, 0);
+    self->mAnmModel.SetAnim((BCA_File *)data_ov090_021345ac.filePtr, 0, 0x1000, 0);
     return 1;
 }
 
@@ -212,7 +205,7 @@ extern "C" void func_ov090_02133904(daShark_c *self)
     Matrix4x3_FromTranslation(data_020a0e68, pos[0], pos[1], pos[2]);
     Matrix4x3_ApplyInPlaceToRotationXYZExt(
         data_020a0e68, self->mAngleX, self->mAngleY, self->mAngleZ);
-    self->mModelAnim.mat4x3 = *(Matrix4x3 *)data_020a0e68;
+    self->mAnmModel.mat4x3 = *(Matrix4x3 *)data_020a0e68;
 }
 
 // @symbol _ZN9daShark_c16CleanupResourcesEv
@@ -231,7 +224,7 @@ void daShark_c::OnPendingDestroy()
 // @symbol _ZN9daShark_c6RenderEv
 int daShark_c::Render()
 {
-    mModelAnim.Render((const Vector3 *)0);
+    mAnmModel.Render((const Vector3 *)0);
     return 1;
 }
 
@@ -298,7 +291,7 @@ int daShark_c::InitResources()
 {
     /* Each PathPtr constructs at its declaration. The first call is
      * before the cylinder init and the second is after it. */
-    mModelAnim.SetFile(
+    mAnmModel.SetFile(
         (BMD_File *)dExtSimpleModel_c::LoadFile(*(SharedFilePtr *)&data_ov090_021345a4), 1, -1);
     dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)&data_ov090_021345ac);
     mPathID = (*(s32 *)&param1) & 0xff;
@@ -313,8 +306,7 @@ int daShark_c::InitResources()
     mClsnOffset.x = 0;
     mClsnOffset.y = 0;
     mClsnOffset.z = 0;
-    _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
-        &mdCcAcPos_c, this, &mClsnOffset, 0x42000, 0x6e000, 0x200004, 0);
+    mdCcAcPos_c.Init(this, mClsnOffset, 0x42000, 0x6e000, 0x200004, 0);
     {
         PathPtr path;
         path.FromID(mPathID);

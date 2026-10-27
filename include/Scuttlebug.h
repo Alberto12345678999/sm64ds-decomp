@@ -34,7 +34,7 @@
 struct Scuttlebug : dActor_c {
     /* Actor this bug copies its pose from, then clears when it lets go. */
     dActor_c *mParent;                       /* 0x0d0 */
-    dExtAnmModel_c mModelAnim;               /* 0x0d4 */
+    dExtAnmModel_c mAnmModel;                /* 0x0d4 */
     dExtShadowModel_c mShadowModel;                /* 0x138 */
     dCcAc_c mdCcAc_c;  /* 0x160 */
     dBgCh_Actr mWithMeshClsn;              /* 0x194 */

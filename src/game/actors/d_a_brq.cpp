@@ -21,10 +21,7 @@
  * Leftover: BrqMatrixWords block-copies IDENTITY_MATRIX4X3 through
  *   int[12] -- a Matrix4x3 assignment scalarizes. Vector3 overlays on
  *   mCamSpacePosX / mScaleX / mPosX stand in where no member exists at
- *   those addresses. SetRanges, dCcAcPos_c::Init, dBgCh_Actr::Init
- *   and DropShadowRadHeight stay mangled
- *   extern "C" spellings -- they take Fix12<int> by value
- *   (notes/mwccarm-codegen.md 6az).
+ *   those addresses.
  *   UpdateDefeatedState calls the interworking veneer
  *   dBgCh_Actr_UpdateDiscreteNoLava_veneer (0x02038420), not the method
  *   body at 0x02037024. The data_ov070_* resource handles and the PMF
@@ -39,6 +36,7 @@
 #include "nitro/fx/fx.h"
 #include "SpawnInfo.h"
 #include "SharedFilePtr.h"
+#include "math/Approach.h"
 
 /* Inferred eight-byte resource-family ABI views, not recovered original
  * type names. Exact manifest aliases bind each C1/D1 to its retail helper. */
@@ -103,16 +101,12 @@ extern "C" SpawnInfo<daBrq_c> g_profile_BIRIKYU = {
     0x00a28000
 };
 
-/* SetRanges / dCcAcPos_c::Init / dBgCh_Actr::Init stay mangled (Fix12 by
- * value, notes/mwccarm-codegen.md 6az). */
 struct SharedFilePtr;
 struct BMD_File;
 struct BTA_File;
 struct dActor_c;
 struct Vector3;
 struct Vector3_16;
-
-extern "C" void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(void *self, dActor_c *a, Vector3 const &b, int c, int d, unsigned int e, unsigned int f);
 
 extern SharedFilePtr *data_ov070_021222e0[];
 extern BTA_File data_ov070_021231f4;
@@ -125,7 +119,7 @@ int daBrq_c::InitResources()
 {
     BMD_File *bmd;
     bmd = (BMD_File *)dExtSimpleModel_c::LoadFile(data_ov070_021235fc);
-    mModelAnim.SetFile(bmd, 1, 1);
+    mAnmModel.SetFile(bmd, 1, 1);
     bmd = (BMD_File *)dExtSimpleModel_c::LoadFile(data_ov070_02123604);
     mModel.SetFile(bmd, 1, 1);
 
@@ -150,7 +144,7 @@ int daBrq_c::InitResources()
         SetRanges(0, 0x2c1000, 0x1000000, 0xa28000);
     }
 
-    _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(&mdCcAcPos_c, this, data_ov070_0212365c, 0x2d000, 0x50000, 0x200002, 0x8000);
+    mdCcAcPos_c.Init(this, data_ov070_0212365c, 0x2d000, 0x50000, 0x200002, 0x8000);
     mWithMeshClsn.Init(this, 0x2d000, 0x2d000, 0, 0);
 
     mVertAccel = 0;
@@ -179,7 +173,7 @@ int daBrq_c::Behavior()
 // @symbol _ZN7daBrq_c6RenderEv
 int daBrq_c::Render()
 {
-    mModelAnim.Render(0);
+    mAnmModel.Render(0);
 
     if (mState != 0 && mState != 2) {
         mTextureSequence.Update(mModel.data);
@@ -238,7 +232,7 @@ void daBrq_c::UpdateState()
 // @symbol _ZN7daBrq_c18EnterCooldownStateEv
 s32 daBrq_c::EnterCooldownState()
 {
-    mModelAnim.SetAnim((BCA_File *)data_ov070_0212360c.filePtr, 0x40000000, 0x1000, 0);
+    mAnmModel.SetAnim((BCA_File *)data_ov070_0212360c.filePtr, 0x40000000, 0x1000, 0);
     mStateTimer = 0x3c;
     mState = 0;
     return 1;
@@ -249,7 +243,7 @@ extern "C" unsigned char DecIfAbove0_Byte(unsigned char *p);
 // @symbol _ZN7daBrq_c19UpdateCooldownStateEv
 s32 daBrq_c::UpdateCooldownState()
 {
-    mModelAnim.Advance();
+    mAnmModel.Advance();
     unsigned char timeLeft = DecIfAbove0_Byte(&mStateTimer);
     if (timeLeft == 0) {
         SetState(1);
@@ -267,8 +261,8 @@ extern BTA_File data_ov070_021231f4;
 // @symbol _ZN7daBrq_c16EnterActiveStateEv
 s32 daBrq_c::EnterActiveState()
 {
-    mModelAnim.SetAnim((BCA_File *)data_ov070_021235f4.filePtr, 0, 0x1000, 0);
-    mModelAnim.speed = 0x1000;
+    mAnmModel.SetAnim((BCA_File *)data_ov070_021235f4.filePtr, 0, 0x1000, 0);
+    mAnmModel.speed = 0x1000;
     mTextureSequence.SetFile(*(BTP_File *)data_ov070_021235ec.filePtr, 0, 0x1000, 0);
     mTextureSequence.speed = 0x1000;
     mTextureTransformer.SetFile(data_ov070_021231f4, 0, 0x1000, 0);
@@ -283,7 +277,6 @@ s32 daBrq_c::EnterActiveState()
     return 1;
 }
 
-void ApproachLinear(s32 &value, s32 target, s32 step);
 extern "C" void AddVec3(Vector3 *a, Vector3 *b, Vector3 *c);
 namespace Sound {
 u32 PlayLong(u32 handle, u32 bank, u32 soundId,
@@ -341,7 +334,7 @@ s32 daBrq_c::UpdateActiveState()
         mScaleZ = scale;
     }
 
-    mModelAnim.Advance();
+    mAnmModel.Advance();
     mTextureSequence.Advance();
     mTextureTransformer.Advance();
 
@@ -375,7 +368,7 @@ s32 daBrq_c::EnterDefeatedState()
     mHorzSpeed = 0xa000;
     mVertSpeed = 0x28000;
     mStateTimer = 0x2d;
-    mModelAnim.SetAnim((BCA_File *)data_ov070_0212360c.filePtr, 0x40000000, 0x1000, 0);
+    mAnmModel.SetAnim((BCA_File *)data_ov070_0212360c.filePtr, 0x40000000, 0x1000, 0);
     Particle::System::NewSimple(0x43, mPosX, mPosY, mPosZ);
     Particle::System::NewSimple(0x44, mPosX, mPosY, mPosZ);
     mState = 2;
@@ -389,7 +382,7 @@ s32 daBrq_c::EnterDefeatedState()
 s32 daBrq_c::UpdateDefeatedState()
 {
     mAngleX = (s16)(mAngleX - 0x1000);
-    mModelAnim.Advance();
+    mAnmModel.Advance();
     UpdatePos(&mdCcAcPos_c);
     dBgCh_Actr_UpdateDiscreteNoLava_veneer(&mWithMeshClsn);
 
@@ -403,9 +396,6 @@ s32 daBrq_c::UpdateDefeatedState()
 #include "dBgCh_Gnd.h"
 extern "C" void Matrix4x3_FromRotationXYZExt(
     Matrix4x3 *matrix, s16 x, s16 y, s16 z);
-extern "C" void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
-    dActor_c *actor, dExtShadowModel_c *shadow, Matrix4x3 *matrix,
-    s32 radius, s32 depth, u32 opacity);
 extern signed char data_0209f2f8[];
 
 struct BrqVector3Words { int x, y, z; };
@@ -416,19 +406,18 @@ void daBrq_c::UpdateModelTransform()
     int shadowDepth;
 
     if (mState == 2) {
-        Matrix4x3_FromRotationXYZExt(
-            &mModelAnim.mat4x3, mAngleX, mAngleY, mAngleZ);
-        mModelAnim.mat4x3.m[9] = mPosX >> 3;
-        mModelAnim.mat4x3.m[10] = mPosY >> 3;
-        mModelAnim.mat4x3.m[11] = mPosZ >> 3;
+        Matrix4x3_FromRotationXYZExt(&mAnmModel.mat4x3, mAngleX, mAngleY, mAngleZ);
+        mAnmModel.mat4x3.m[9] = mPosX >> 3;
+        mAnmModel.mat4x3.m[10] = mPosY >> 3;
+        mAnmModel.mat4x3.m[11] = mPosZ >> 3;
         mMat4x3.m[9] = mPosX >> 3;
         mMat4x3.m[10] = mPosY >> 3;
         mMat4x3.m[11] = mPosZ >> 3;
     } else {
-        mModelAnim.mat4x3.m[9] = mOrbitCenter.x >> 3;
-        mModelAnim.mat4x3.m[10] = mOrbitCenter.y >> 3;
-        mModelAnim.mat4x3.m[11] = mOrbitCenter.z >> 3;
-        mModel.mat4x3 = mModelAnim.mat4x3;
+        mAnmModel.mat4x3.m[9] = mOrbitCenter.x >> 3;
+        mAnmModel.mat4x3.m[10] = mOrbitCenter.y >> 3;
+        mAnmModel.mat4x3.m[11] = mOrbitCenter.z >> 3;
+        mModel.mat4x3 = mAnmModel.mat4x3;
         mMat4x3.m[9] = mOrbitCenter.x >> 3;
         mMat4x3.m[10] = mOrbitCenter.y >> 3;
         mMat4x3.m[11] = mOrbitCenter.z >> 3;
@@ -450,8 +439,7 @@ void daBrq_c::UpdateModelTransform()
         }
     }
 
-    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
-        this, &mShadowModel, &mMat4x3, 0x5a000, shadowDepth, 0xf);
+    DropShadowRadHeight(mShadowModel, mMat4x3, 0x5a000, shadowDepth, 0xf);
 }
 
 #include "Player.h"

@@ -97,7 +97,7 @@ struct Player {
    PlaySub's parameters stay unnamed: a name here takes an @NNN in every includer. */
 
 void Play(u32, u32, const Vector3 &v);
-void Play2D(u32, u32);
+u32 Play2D(u32, u32);
 void PlayBank0(u32 id, const Vector3 &pos);
 u32  PlayBank2_2D(u32);
 u32 PlayBank3_2D(u32);
@@ -118,6 +118,11 @@ void LoadAndSetMusic_Layer2(u32);
 void StopLoadedMusic_Layer2();
 void LoadAndSetMusic_Layer3(u32);
 void StopLoadedMusic_Layer3();
+
+/* func_02048fd4 wrappers, defined in src/engine/sound/Sound2.cpp. */
+void Func_02048eb4();
+void Func_02048ec4();
+void Func_02048ee4();
 
 /* The override layer Player drives: SetMusic(playerNo, music) installs a track
    (Sound.cpp ignores any player but the local one), and Sound::EndMusic takes

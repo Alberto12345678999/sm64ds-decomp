@@ -27,7 +27,7 @@ struct daTgz_c : dActor_c {
        clears the pointer once the Spiny is thrown. */
     dActor_c *mCarrier;                  /* 0x0d0 */
     dExtSimpleModel_c mModel;            /* 0x0d4 */
-    dExtAnmModel_c mModelAnim;           /* 0x124 */
+    dExtAnmModel_c mAnmModel;            /* 0x124 */
     dExtShadowModel_c mShadowModel;            /* 0x188 */
     dCcAc_c mdCcAc_c;                    /* 0x1b0 */
     dBgCh_Actr mWithMeshClsn;            /* 0x1e4 */

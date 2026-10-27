@@ -24,14 +24,10 @@
 
 // leftovers:
 // - OAM::Render, OAM::RenderSub, Sound::PlaySub and cstd::atan2
-//   stay mangled (Fix12 by value). Fog::Init is the scalar Fix12i method. The OAM
-//   sprite records (COIN, TIMES, VS_NEW_STAR_APPEARED, ...) keep their
-//   mangled data names because OAM.h declares no static data. RenderNumber
-//   keeps a local extern spelled over the member's mask-emitting parameter
-//   conversions; G2x::SetBlendBrightness, G3X::SetFog and
-//   dScStage_c::LoadGraphics2D stay mangled where the ROM passes a raw int
-//   the header's u16/bool parameter would narrow. G2:: stays mangled
-//   (decl_common.h's `extern int G2[]` hides the namespace).
+//   stay mangled (Fix12 by value). Fog::Init is the scalar Fix12i method.
+//   RenderNumber keeps a local extern spelled over the member's mask-emitting
+//   parameter conversions. InitResources calls LoadGraphics2D with the comparison
+//   itself as the bool, which is what the ROM passes.
 // - LoadTextureTransformers spells `new` as an explicit operator new call
 //   plus a null-guarded constructor call, a form from before the allocator
 //   was named _Znwm, when a new-expression could not link; the fader array passes dFdWipe_c's constructor and destructor by address.
@@ -50,6 +46,7 @@
 enum dScStage_c_AssetId { ASSET_D_2D_UPR_COURSE_CLEAR_MESSAGE_NCL_BIN = 0x025a };
 
 #include "types.h"
+#include "G2.h"
 #include "dFdBrightness_c.h"
 #include "dScStage_c.h"
 #include "Timer.h"
@@ -79,10 +76,8 @@ enum dScStage_c_AssetId { ASSET_D_2D_UPR_COURSE_CLEAR_MESSAGE_NCL_BIN = 0x025a }
 #include "Message.h"
 #include "Memory.h"
 #include "Heap.h"
-
-namespace GX {
-void LoadOBJPltt(const void *p, unsigned int a, unsigned int b);
-}
+#include "GX.h"
+#include "cstd.h"
 
 struct OamAttr;
 struct Matrix2x2 {
@@ -152,20 +147,8 @@ void TurnBacklightOn(void);
 void TurnBacklightOff(void);
 int IsStarCollected(int lv, int star);
 
-// local extern: Message.h's s8 level parameter re-narrows the SublevelToLevel result (LC_Update differs).
-void _ZN7Message21DisplayLevelClearTextEta(int m, unsigned char lvl);
-// local extern: Message::Display is a non-static member; this call passes the message id in r0 with no receiver.
-void _ZN7Message7DisplayEj(int m);
-// local extern: Message.h's u16 parameter re-narrows the s16 table entry (PS_Update differs by one word).
-void _ZN7Message11DisplayTextEt(int m);
-// local extern: Message.h's u16 parameter changes the sign-extended (s16) argument codegen (PS_Update differs).
-void _ZN7Message22DisplayOptionsMenuTextEt(int m);
 bool d_s_stage_methodsPlaySubHold(unsigned int a, unsigned int b, unsigned int c, int fix, int e);
-// local extern: SaveData.h's (s8, u8) parameters re-narrow both arguments (LC_Update differs).
-void _ZN8SaveData21SetCoinRecordIfHigherEah(int a, int b);
-void _ZN3G2x18SetBlendBrightnessEPVtts(volatile unsigned short *p, int val, short amt);
 
-void _ZN3OAM14BOUNCING_ARROWE(void);
 void OamRender10_d_s_stage_methods(int sub, void *attr, int x, int y, int a, int cc, int fx, int fy,
                                    int rot, int mode);
 int __aeabi_idiv(int a, int b);
@@ -251,19 +234,6 @@ extern void *data_ov001_020abd98[];
 extern void *data_ov001_020ac218[];
 extern void *data_ov001_020ac64c[];
 extern void *data_ov001_020acb68[];
-extern void *_ZN3OAM21CONTROLLER_MODE_TEXTSE[];
-extern OamAttr *_ZN3OAM7NUMBERSE[];
-extern char _ZN3OAM8VS_PAUSEE;
-extern char _ZN3OAM19ARROW_POINTING_LEFTE;
-extern char _ZN3OAM20ARROW_POINTING_RIGHTE;
-extern char _ZN3OAM13MM_SMALL_STARE;
-extern char _ZN3OAM5PAUSEE;
-extern char _ZN3OAM9TINY_STARE;
-extern char _ZN3OAM25SMALL_ARROW_POINTING_LEFTE;
-extern char _ZN3OAM26SMALL_ARROW_POINTING_RIGHTE;
-extern char _ZN3OAM16SMALL_STAR_EMPTYE;
-extern OamAttr _ZN3OAM4COINE;
-extern OamAttr _ZN3OAM5TIMESE;
 }
 
 /* The level-state globals the stage's free functions below read and write: the
@@ -327,7 +297,6 @@ extern int OVERLAY_60_ID;
 extern int OVERLAY_98_ID;
 extern int OVERLAY_102_ID;
 extern char VS_STAR_SPAWN_ORDERS[][0xC];
-extern int _ZN3OAM20VS_NEW_STAR_APPEAREDE[];
 extern u8 data_020755bc[];
 extern u16 data_020755e0[7];
 extern u16 data_020755f0[7];
@@ -501,32 +470,9 @@ void LoadOrUnloadObjectOverlays(void (*fn)(int), int levelID);
 namespace Particle {
 void RenderAll();
 }
-// And to _ZN4cstd6strcmpEPKcS1_.
-namespace cstd {
-s16 atan2(s32, s32);
-int strcmp(const char *a, const char *b);
-int sqrt(unsigned long long v);
-int fdiv(int a, int b);
-}
 
-// Outside extern "C" so the namespace mangles to _ZN3G2S12GetBG1ScrPtrEv.
-namespace G2S {
-u16 *GetBG1ScrPtr();
-char *GetBG0CharPtr();
-char *GetBG0ScrPtr();
-char *GetBG2ScrPtr();
-}
-
-// The GX/GXS/Sound entry points InitResources and CleanupResources call that no
+// The Sound entry points InitResources and CleanupResources call that no
 // header declares yet.
-namespace GX {
-void DisableAllBanks();
-void SetGraphicsMode(int, int, int);
-void DispOn();
-}
-namespace GXS {
-void SetGraphicsMode(int);
-}
 namespace Sound {
 void ResetPlayerVoiceGroup();
 void LoadGroupAndSetBank(int group, int bank);
@@ -662,8 +608,8 @@ void dScStage_c::VE_Init() {
     data_0209b464 = data_0209b454;
     data_0209f294 = 1;
     data_0209f290 = 0;
-    _ZN3G2x18SetBlendBrightnessEPVtts((volatile unsigned short *)0x4000050, a | 0x20, -7);
-    _ZN3G2x18SetBlendBrightnessEPVtts((volatile unsigned short *)0x4001050, b | 0x20, -7);
+    G2x::SetBlendBrightness((volatile unsigned short *)0x4000050, a | 0x20, -7);
+    G2x::SetBlendBrightness((volatile unsigned short *)0x4001050, b | 0x20, -7);
 }
 // @symbol _ZN10dScStage_c20RenderBouncingArrowsEv
 void dScStage_c::RenderBouncingArrows() {
@@ -677,16 +623,12 @@ void dScStage_c::RenderBouncingArrows() {
     A = data_0209f2c4;
     if ((A == 0 && data_0209f284 != 0 && (int)(data_0209f2d8 == 1) == 0) ||
         (A != 0 && (unsigned char)(data_0209f248 + 0xf7) <= 2u)) {
-        OAM::Render(0, (OamAttr *)_ZN3OAM14BOUNCING_ARROWE, 0x40, r4, -1, -1, 0x1000, 0x1000, 0,
-                    -1);
-        OAM::Render(0, (OamAttr *)_ZN3OAM14BOUNCING_ARROWE, 0x80, r4, -1, -1, 0x1000, 0x1000, 0,
-                    -1);
-        OAM::Render(0, (OamAttr *)_ZN3OAM14BOUNCING_ARROWE, 0xc0, r4, -1, -1, 0x1000, 0x1000, 0,
-                    -1);
+        OAM::Render(0, &OAM::BOUNCING_ARROW, 0x40, r4, -1, -1, 0x1000, 0x1000, 0, -1);
+        OAM::Render(0, &OAM::BOUNCING_ARROW, 0x80, r4, -1, -1, 0x1000, 0x1000, 0, -1);
+        OAM::Render(0, &OAM::BOUNCING_ARROW, 0xc0, r4, -1, -1, 0x1000, 0x1000, 0, -1);
     } else {
-        OAM::Render(0, (OamAttr *)_ZN3OAM14BOUNCING_ARROWE, 0xc, r4, -1, -1, 0x1000, 0x1000, 0, -1);
-        OAM::Render(0, (OamAttr *)_ZN3OAM14BOUNCING_ARROWE, 0xf4, r4, -1, -1, 0x1000, 0x1000, 0,
-                    -1);
+        OAM::Render(0, &OAM::BOUNCING_ARROW, 0xc, r4, -1, -1, 0x1000, 0x1000, 0, -1);
+        OAM::Render(0, &OAM::BOUNCING_ARROW, 0xf4, r4, -1, -1, 0x1000, 0x1000, 0, -1);
     }
 }
 // @symbol _ZN10dScStage_c9LC_RenderEv
@@ -777,7 +719,7 @@ void dScStage_c::LC_Update() {
     switch (data_0209f2d4) {
     case 0:
         REG16(0x400100a) = (REG16(0x400100a) & 0x43) | 0xd00;
-        _ZN7Message21DisplayLevelClearTextEta(0x27a, SublevelToLevel(data_02092124));
+        Message::DisplayLevelClearText(0x27a, SublevelToLevel(data_02092124));
         data_0209f360[0] = 0xa0;
         data_0209f360[1] = 0x140;
         data_0209f360[2] = 0x1e0;
@@ -816,7 +758,7 @@ void dScStage_c::LC_Update() {
                     u8 coins = data_0209f260;
                     if (SaveData::GetCoinRecord(level) >= coins)
                         return;
-                    _ZN8SaveData21SetCoinRecordIfHigherEah(level, coins);
+                    SaveData::SetCoinRecordIfHigher(level, coins);
                     data_0209f2b0 = 1;
                     func_02012790(0x22);
                     return;
@@ -858,8 +800,8 @@ void dScStage_c::LC_Update() {
         SetSubBg1Offset(0, 0);
         data_0209d45c |= 4;
         data_0209d454 |= 3;
-        _ZN3G2x18SetBlendBrightnessEPVtts((volatile u16 *)0x4000050, t6 | 0x20, -7);
-        _ZN3G2x18SetBlendBrightnessEPVtts((volatile u16 *)0x4001050, t5 | 0x20, -7);
+        G2x::SetBlendBrightness((volatile u16 *)0x4000050, t6 | 0x20, -7);
+        G2x::SetBlendBrightness((volatile u16 *)0x4001050, t5 | 0x20, -7);
         data_0209f2d4 = 3;
         return;
     }
@@ -1097,9 +1039,9 @@ void dScStage_c::RenderNumber(unsigned char num, int x, int y, bool b, int p5) {
         int digit = __aeabi_idiv(num, data_020755b8[i]);
         if (digit != 0 || leading != 0 || i == 2) {
             if (b == 0) {
-                OAM::Render(true, _ZN3OAM7NUMBERSE[digit], x, y, p5, -1, mtx);
+                OAM::Render(true, OAM::NUMBERS[digit], x, y, p5, -1, mtx);
             } else {
-                OAM::Render(false, _ZN3OAM7NUMBERSE[digit], x, y, p5, -1, 0);
+                OAM::Render(false, OAM::NUMBERS[digit], x, y, p5, -1, 0);
             }
             leading = 1;
             x += 9;
@@ -1117,7 +1059,7 @@ void dScStage_c::PS_Render() {
 
     int r0v = (data_0209f2d8 == 1);
     if (r0v != 0 && data_0209fc68 == 0) {
-        OAM::Render(0, (OamAttr *)&_ZN3OAM8VS_PAUSEE, 0x80, 0x60, -1, -1, 0x1000, 0x1000, 0, -1);
+        OAM::Render(0, &OAM::VS_PAUSE, 0x80, 0x60, -1, -1, 0x1000, 0x1000, 0, -1);
     } else if (data_0209f248 == 1 ||
                (SublevelToLevel(data_0209f2f8) == 0x1d &&
                 ((unsigned int)data_0209f248 < 7U || (unsigned int)data_0209f248 > 8U))) {
@@ -1134,22 +1076,22 @@ void dScStage_c::PS_Render() {
         }
         if (data_0209f248 == 1 && data_0209f2f0 == 0) {
             if (data_0209f238 == 1) {
-                OAM::Render(0, (OamAttr *)&_ZN3OAM19ARROW_POINTING_LEFTE, 0x12, 0x60, -1, -1,
-                            0x1000, 0x1000, 0, -1);
-                OAM::RenderSub((OamAttr *)&_ZN3OAM19ARROW_POINTING_LEFTE, 0x12, 0x10);
+                OAM::Render(0, &OAM::ARROW_POINTING_LEFT, 0x12, 0x60, -1, -1, 0x1000, 0x1000, 0,
+                            -1);
+                OAM::RenderSub(&OAM::ARROW_POINTING_LEFT, 0x12, 0x10);
             } else {
-                OAM::Render(0, (OamAttr *)&_ZN3OAM19ARROW_POINTING_LEFTE, 0x14, 0x60, -1, -1,
-                            0x1000, 0x1000, 0, -1);
-                OAM::RenderSub((OamAttr *)&_ZN3OAM19ARROW_POINTING_LEFTE, 0x14, 0x10);
+                OAM::Render(0, &OAM::ARROW_POINTING_LEFT, 0x14, 0x60, -1, -1, 0x1000, 0x1000, 0,
+                            -1);
+                OAM::RenderSub(&OAM::ARROW_POINTING_LEFT, 0x14, 0x10);
             }
             if (data_0209f238 == 2) {
-                OAM::Render(0, (OamAttr *)&_ZN3OAM20ARROW_POINTING_RIGHTE, 0xee, 0x60, -1, -1,
-                            0x1000, 0x1000, 0, -1);
-                OAM::RenderSub((OamAttr *)&_ZN3OAM20ARROW_POINTING_RIGHTE, 0xee, 0x10);
+                OAM::Render(0, &OAM::ARROW_POINTING_RIGHT, 0xee, 0x60, -1, -1, 0x1000, 0x1000, 0,
+                            -1);
+                OAM::RenderSub(&OAM::ARROW_POINTING_RIGHT, 0xee, 0x10);
             } else {
-                OAM::Render(0, (OamAttr *)&_ZN3OAM20ARROW_POINTING_RIGHTE, 0xec, 0x60, -1, -1,
-                            0x1000, 0x1000, 0, -1);
-                OAM::RenderSub((OamAttr *)&_ZN3OAM20ARROW_POINTING_RIGHTE, 0xec, 0x10);
+                OAM::Render(0, &OAM::ARROW_POINTING_RIGHT, 0xec, 0x60, -1, -1, 0x1000, 0x1000, 0,
+                            -1);
+                OAM::RenderSub(&OAM::ARROW_POINTING_RIGHT, 0xec, 0x10);
             }
         }
         if (data_0209f2c8 != 0xf) {
@@ -1158,12 +1100,10 @@ void dScStage_c::PS_Render() {
             if (var_r8 != 0) {
                 do {
                     if (IsStarCollected(data_0209f2c8, var_sl) != 0) {
-                        OAM::Render(false, (OamAttr *)&_ZN3OAM13MM_SMALL_STARE, var_sb, 0x60, -1,
-                                    -1, 0);
+                        OAM::Render(false, &OAM::MM_SMALL_STAR, var_sb, 0x60, -1, -1, 0);
                         var_r7 = (var_r7 + 1) & 0xff;
                     } else {
-                        OAM::Render(false, (OamAttr *)&_ZN3OAM16SMALL_STAR_EMPTYE, var_sb, 0x60, -1,
-                                    -1, 0);
+                        OAM::Render(false, &OAM::SMALL_STAR_EMPTY, var_sb, 0x60, -1, -1, 0);
                         sp18 = 1;
                     }
                     var_sb += 0x10;
@@ -1171,33 +1111,33 @@ void dScStage_c::PS_Render() {
                 } while (var_r7 != var_r8);
             }
             if (sp18 == 0 && var_r8 != 7) {
-                OAM::Render(false, (OamAttr *)&_ZN3OAM16SMALL_STAR_EMPTYE, var_sb, 0x60, -1, -1, 0);
+                OAM::Render(false, &OAM::SMALL_STAR_EMPTY, var_sb, 0x60, -1, -1, 0);
             }
             unsigned char r5v = SaveData::GetCoinRecord(data_0209f2c8);
-            OAM::Render(false, &_ZN3OAM4COINE, 0x70, 0x70, -1, -1, 0);
-            OAM::Render(false, &_ZN3OAM5TIMESE, 0x80, 0x78, -1, -1, 0);
+            OAM::Render(false, &OAM::COIN, 0x70, 0x70, -1, -1, 0);
+            OAM::Render(false, &OAM::TIMES, 0x80, 0x78, -1, -1, 0);
             RenderNumber(r5v, 0x88, 0x70, 1, 8);
             if (IsStarCollected(data_0209f2c8, 0) != 0) {
-                OAM::Render(false, (OamAttr *)&_ZN3OAM13MM_SMALL_STARE, 0xb0, 0x78, -1, -1, 0);
+                OAM::Render(false, &OAM::MM_SMALL_STAR, 0xb0, 0x78, -1, -1, 0);
             }
         } else {
-            OAM::Render(false, (OamAttr *)&_ZN3OAM13MM_SMALL_STARE, 0x70, 0x60, -1, -1, 0);
-            OAM::Render(false, &_ZN3OAM5TIMESE, 0x80, 0x60, -1, -1, 0);
+            OAM::Render(false, &OAM::MM_SMALL_STAR, 0x70, 0x60, -1, -1, 0);
+            OAM::Render(false, &OAM::TIMES, 0x80, 0x60, -1, -1, 0);
             RenderNumber(CountStarsCollectedInLevelToDisplay(0x1d), 0x88, 0x58, 1, 8);
         }
     } else if (data_0209d45c & 8) {
         if ((unsigned int)data_0209f2c8 < 0xfU) {
             unsigned char r4v = CountStarsCollectedInLevelToDisplay(data_0209f2c8);
-            OAM::Render(false, (OamAttr *)&_ZN3OAM13MM_SMALL_STARE, 0x58, 0x8c, -1, -1, 0);
-            OAM::Render(false, &_ZN3OAM5TIMESE, 0x68, 0x8c, -1, -1, 0);
+            OAM::Render(false, &OAM::MM_SMALL_STAR, 0x58, 0x8c, -1, -1, 0);
+            OAM::Render(false, &OAM::TIMES, 0x68, 0x8c, -1, -1, 0);
             RenderNumber(r4v, 0x70, 0x84, 1, 1);
             unsigned char r4v2 = SaveData::GetCoinRecord(data_0209f2c8);
-            OAM::Render(false, &_ZN3OAM4COINE, 0x88, 0x84, -1, -1, 0);
-            OAM::Render(false, &_ZN3OAM5TIMESE, 0x98, 0x8c, -1, -1, 0);
+            OAM::Render(false, &OAM::COIN, 0x88, 0x84, -1, -1, 0);
+            OAM::Render(false, &OAM::TIMES, 0x98, 0x8c, -1, -1, 0);
             RenderNumber(r4v2, 0xa0, 0x84, 1, 1);
         }
         if (data_0209f248 == 0xb) {
-            OAM::RenderSub((OamAttr *)&_ZN3OAM5PAUSEE, 0x80, 0x60);
+            OAM::RenderSub(&OAM::PAUSE, 0x80, 0x60);
         }
     }
 
@@ -1206,22 +1146,20 @@ void dScStage_c::PS_Render() {
         if (data_0209f2e0 == 3) {
             if (data_0209f29c == 0) {
                 if (GetOwnerLanguage() == 5) {
-                    OAM::Render(true, (OamAttr *)&_ZN3OAM9TINY_STARE, 0x46,
-                                ((data_0209f2e0 * 5) + 6) * 8, -1, -1, 0);
+                    OAM::Render(true, &OAM::TINY_STAR, 0x46, ((data_0209f2e0 * 5) + 6) * 8, -1, -1,
+                                0);
                 } else if (GetOwnerLanguage() == 3) {
-                    OAM::Render(true, (OamAttr *)&_ZN3OAM9TINY_STARE, 0x4e,
-                                ((data_0209f2e0 * 5) + 6) * 8, -1, -1, 0);
+                    OAM::Render(true, &OAM::TINY_STAR, 0x4e, ((data_0209f2e0 * 5) + 6) * 8, -1, -1,
+                                0);
                 } else {
-                    OAM::Render(true, (OamAttr *)&_ZN3OAM9TINY_STARE, 0x56,
-                                ((data_0209f2e0 * 5) + 6) * 8, -1, -1, 0);
+                    OAM::Render(true, &OAM::TINY_STAR, 0x56, ((data_0209f2e0 * 5) + 6) * 8, -1, -1,
+                                0);
                 }
             } else {
-                OAM::Render(true, (OamAttr *)&_ZN3OAM9TINY_STARE, 0xce,
-                            ((data_0209f2e0 * 5) + 6) * 8, -1, -1, 0);
+                OAM::Render(true, &OAM::TINY_STAR, 0xce, ((data_0209f2e0 * 5) + 6) * 8, -1, -1, 0);
             }
         } else {
-            OAM::Render(true, (OamAttr *)&_ZN3OAM9TINY_STARE, 0x26, ((data_0209f2e0 * 5) + 6) * 8,
-                        -1, -1, 0);
+            OAM::Render(true, &OAM::TINY_STAR, 0x26, ((data_0209f2e0 * 5) + 6) * 8, -1, -1, 0);
         }
         if (GetOwnerLanguage() == 5) {
             OAM::Render(0, (OamAttr *)data_ov001_020abd98[data_0209f2dc], 0x80, 0x60, -1, -1,
@@ -1243,8 +1181,8 @@ void dScStage_c::PS_Render() {
                         0x1000, 0x1000, 0, -1);
             return;
         }
-        OAM::Render(0, (OamAttr *)_ZN3OAM21CONTROLLER_MODE_TEXTSE[data_0209f2dc], 0x80, 0x60, -1,
-                    -1, 0x1000, 0x1000, 0, -1);
+        OAM::Render(0, OAM::CONTROLLER_MODE_TEXTS[data_0209f2dc], 0x80, 0x60, -1, -1, 0x1000,
+                    0x1000, 0, -1);
         return;
     }
 
@@ -1255,31 +1193,30 @@ void dScStage_c::PS_Render() {
     if (data_0209f2e0 == 2) {
         if (data_0209f29c == 0) {
             if (GetOwnerLanguage() == 5) {
-                OAM::Render(true, (OamAttr *)&_ZN3OAM9TINY_STARE, 0x46, 0xa8, -1, -1, 0);
+                OAM::Render(true, &OAM::TINY_STAR, 0x46, 0xa8, -1, -1, 0);
             } else if (GetOwnerLanguage() == 3) {
-                OAM::Render(true, (OamAttr *)&_ZN3OAM9TINY_STARE, 0x4e, 0xa8, -1, -1, 0);
+                OAM::Render(true, &OAM::TINY_STAR, 0x4e, 0xa8, -1, -1, 0);
             } else {
-                OAM::Render(true, (OamAttr *)&_ZN3OAM9TINY_STARE, 0x56, 0xa8, -1, -1, 0);
+                OAM::Render(true, &OAM::TINY_STAR, 0x56, 0xa8, -1, -1, 0);
             }
         } else {
-            OAM::Render(true, (OamAttr *)&_ZN3OAM9TINY_STARE, 0xce, 0xa8, -1, -1, 0);
+            OAM::Render(true, &OAM::TINY_STAR, 0xce, 0xa8, -1, -1, 0);
         }
     } else {
-        OAM::Render(true, (OamAttr *)&_ZN3OAM9TINY_STARE, 0xe, ((data_0209f2e0 * 6) + 7) * 8, -1,
-                    -1, 0);
+        OAM::Render(true, &OAM::TINY_STAR, 0xe, ((data_0209f2e0 * 6) + 7) * 8, -1, -1, 0);
     }
 
     if (data_0209f238 == 2) {
-        OAM::Render(true, (OamAttr *)&_ZN3OAM25SMALL_ARROW_POINTING_LEFTE, 0x62, 0x38, -1, -1, 0);
+        OAM::Render(true, &OAM::SMALL_ARROW_POINTING_LEFT, 0x62, 0x38, -1, -1, 0);
     } else {
-        OAM::Render(true, (OamAttr *)&_ZN3OAM25SMALL_ARROW_POINTING_LEFTE, 0x64, 0x38, -1, -1, 0);
+        OAM::Render(true, &OAM::SMALL_ARROW_POINTING_LEFT, 0x64, 0x38, -1, -1, 0);
     }
 
     if (data_0209f238 == 1) {
-        OAM::Render(true, (OamAttr *)&_ZN3OAM26SMALL_ARROW_POINTING_RIGHTE, 0xf6, 0x38, -1, -1, 0);
+        OAM::Render(true, &OAM::SMALL_ARROW_POINTING_RIGHT, 0xf6, 0x38, -1, -1, 0);
         return;
     }
-    OAM::Render(true, (OamAttr *)&_ZN3OAM26SMALL_ARROW_POINTING_RIGHTE, 0xf4, 0x38, -1, -1, 0);
+    OAM::Render(true, &OAM::SMALL_ARROW_POINTING_RIGHT, 0xf4, 0x38, -1, -1, 0);
 }
 // @symbol _ZN10dScStage_c25PS_UpdateOkAndBackButtonsEb
 /* Lever (notes 6au): TWO coupled changes that only work together.
@@ -1326,7 +1263,7 @@ void dScStage_c::PS_UpdateOkAndBackButtons(bool b) {
         }
 
         idx = i + base;
-        u16 *scr = G2S::GetBG1ScrPtr() + data_020755cc[idx];
+        u16 *scr = (u16 *)G2S::GetBG1ScrPtr() + data_020755cc[idx];
         for (j = 0; j < data_02075610[idx]; j++) {
             scr[0] = (scr[0] & 0x3ff) | sl;
             scr[0x20] = (scr[0x20] & 0x3ff) | sl;
@@ -1353,7 +1290,7 @@ void dScStage_c::PS_UpdateSaveMenu(bool b) {
                 t = 0x1000;
             v = (u16)t;
         }
-        p = G2S::GetBG1ScrPtr() + data_020755c8[i];
+        p = (u16 *)G2S::GetBG1ScrPtr() + data_020755c8[i];
         for (j = 0; j < 10; j++) {
             p[0] = (p[0] & 0x3ff) | v;
             p[0x20] = (p[0x20] & 0x3ff) | v;
@@ -1373,7 +1310,7 @@ void dScStage_c::PS_UpdateOptionsMenu() {
     u16 v;
 
     sel = (data_0209f2e4 != 0) ? 0x5000 : 0x6000;
-    scr = G2S::GetBG1ScrPtr() + 0xae;
+    scr = (u16 *)G2S::GetBG1ScrPtr() + 0xae;
     for (j = 0; j < 0xf; j++) {
         scr[0] = (scr[0] & 0x3ff) | sel;
         scr[0x20] = (scr[0x20] & 0x3ff) | sel;
@@ -1383,7 +1320,7 @@ void dScStage_c::PS_UpdateOptionsMenu() {
     }
 
     for (j = 0; j < 2; j++) {
-        scr = G2S::GetBG1ScrPtr() + data_020755c0[j];
+        scr = (u16 *)G2S::GetBG1ScrPtr() + data_020755c0[j];
         v = (data_0209f2e0 == j) ? 0x4000 : 0x3000;
         counter = 0;
         for (; counter < 0xa; counter++) {
@@ -1394,7 +1331,7 @@ void dScStage_c::PS_UpdateOptionsMenu() {
     }
 
     for (i = 0; i < 2; i++) {
-        scr = G2S::GetBG1ScrPtr() + data_020755c4[i];
+        scr = (u16 *)G2S::GetBG1ScrPtr() + data_020755c4[i];
         v = (data_0209f2ec == i && data_0209f2cc == 0) ? 0x6000 : 0x5000;
         counter = 0;
         for (; counter < 7; counter++) {
@@ -1413,7 +1350,7 @@ void dScStage_c::UpdateMenuButtons(bool b) {
         unsigned int v;
         int j;
         u16 *p;
-        p = G2S::GetBG1ScrPtr() + data_0209f360[i];
+        p = (u16 *)G2S::GetBG1ScrPtr() + data_0209f360[i];
         if (b == 0) {
             if (data_0209f2e0 == i && data_0209f244 == 0) {
                 v = 0x2000;
@@ -1558,7 +1495,7 @@ void dScStage_c::PS_Update() {
             }
             data_0209f2f0 = 0;
         }
-        _ZN7Message7DisplayEj(data_020756d0[data_0209f2c8]);
+        Message::Display(data_020756d0[data_0209f2c8]);
         data_0209f360[0] = 0x80;
         data_0209f360[1] = 0x120;
         data_0209f360[2] = 0x1c0;
@@ -1738,7 +1675,7 @@ void dScStage_c::PS_Update() {
         }
         if (var_fp == 0)
             return;
-        _ZN7Message11DisplayTextEt(data_020756d0[data_0209f2c8]);
+        Message::DisplayText(data_020756d0[data_0209f2c8]);
         return;
     }
     case 2: {
@@ -2174,7 +2111,7 @@ void dScStage_c::PS_Update() {
         data_0209f2ec = data_0208ee3c ^ 1;
         data_0209f1fc = data_0208ee40;
         data_0209f238 = 0;
-        _ZN7Message22DisplayOptionsMenuTextEt((s16)(data_0209f234 + 0x284));
+        Message::DisplayOptionsMenuText(data_0209f234 + 0x284);
         data_0209f2b4 = 2;
         data_0209f2e0 = 0;
         dScStage_c::PS_UpdateOptionsMenu();
@@ -2239,7 +2176,7 @@ void dScStage_c::PS_Update() {
                 data_0209f238 = 2;
                 data_0209f210 = data_0208ee44 * 3;
                 data_0209f2e0 = 0;
-                _ZN7Message22DisplayOptionsMenuTextEt((s16)(data_0209f234 + 0x284));
+                Message::DisplayOptionsMenuText(data_0209f234 + 0x284);
                 data_0209f2e4 = 8;
                 dScStage_c::PS_UpdateOptionsMenu();
                 SetSoundMode(data_0209f234);
@@ -2280,7 +2217,7 @@ void dScStage_c::PS_Update() {
                 func_02012790(0x64);
                 data_0209f2e4 = 8;
                 dScStage_c::PS_UpdateOptionsMenu();
-                _ZN7Message22DisplayOptionsMenuTextEt((s16)(data_0209f234 + 0x284));
+                Message::DisplayOptionsMenuText(data_0209f234 + 0x284);
                 {
                     u8 s3 = gActivePlayerSlot;
                     u8 x3 = gTouchX[s3 * 4];
@@ -2681,8 +2618,7 @@ extern "C" int func_02029408(void) {
 /* Open the pause screen: clear the pause-menu state, pick the first page from
  * the level-clear/VS/castle situation, pause the music and darken both
  * screens. Static, like the rest of the pause-screen family -- dScStage_c::
- * Behavior calls it with nothing in r0. SetBlendBrightness is reached through
- * its mangled symbol `_ZN3G2x18SetBlendBrightnessEPVtts` (declared above). */
+ * Behavior calls it with nothing in r0. */
 void dScStage_c::PS_Init() {
     int isVsMode;
     u8 specialPauseState;
@@ -2737,8 +2673,8 @@ void dScStage_c::PS_Init() {
     }
 
     Sound::PauseMusic();
-    _ZN3G2x18SetBlendBrightnessEPVtts((volatile u16 *)0x04000050, mainBlendTargets | 0x20, -7);
-    _ZN3G2x18SetBlendBrightnessEPVtts((volatile u16 *)0x04001050, subBlendTargets | 0x20, -7);
+    G2x::SetBlendBrightness((volatile u16 *)0x04000050, mainBlendTargets | 0x20, -7);
+    G2x::SetBlendBrightness((volatile u16 *)0x04001050, subBlendTargets | 0x20, -7);
 }
 
 // @symbol func_02029600
@@ -3100,8 +3036,7 @@ void dScStage_c::RenderVsModeNewStar() {
             OAM::Render(0, (OamAttr *)data_ov002_0210d188, 0x80, 0x30, -1, -1, 0x1000, 0x1000, 0,
                         -1);
         else
-            OAM::Render(0, (OamAttr *)_ZN3OAM20VS_NEW_STAR_APPEAREDE, 0x80, 0x30, -1, -1, 0x1000,
-                        0x1000, 0, -1);
+            OAM::Render(0, &OAM::VS_NEW_STAR_APPEARED, 0x80, 0x30, -1, -1, 0x1000, 0x1000, 0, -1);
         if (data_0209f1f4 != 0)
             return;
         func_02012790(0x2c);
@@ -3952,8 +3887,6 @@ void dScStage_c::LoadModel() {
 // @symbol _ZN10dScStage_c9RenderFogEv
 extern "C" {
 void *func_ov002_020f1c20(void);
-// local extern: G3X::SetFog takes a bool, and the ROM passes the raw byte with no conversion
-void _ZN3G3X6SetFogEbiii(int b, int a1, int a2, int a3);
 }
 
 void dScStage_c::RenderFog() {
@@ -3966,7 +3899,7 @@ void dScStage_c::RenderFog() {
         if (camera->IsUnderwater())
             fog++;
     }
-    _ZN3G3X6SetFogEbiii(fog->mEnabled, 0, fog->mShift, fog->mOffset);
+    G3X::SetFog(fog->mEnabled, 0, fog->mShift, fog->mOffset);
     *(volatile unsigned int *)0x4000358 = fog->mColor | 0x1f0000;
     G3X::SetFogTable(fog);
 }
@@ -4107,8 +4040,8 @@ int dScStage_c::Render() {
         int coinCounterY = (SublevelToLevel(data_02092124) < 0xf) ? 0x80 : 0x70;
         if (data_0209f2b0 != 0)
             coinCounterY += 0x10;
-        OAM::Render(0, &_ZN3OAM4COINE, 0x68, coinCounterY, -1, -1, 0);
-        OAM::Render(0, &_ZN3OAM5TIMESE, 0x78, coinCounterY + 8, -1, -1, 0);
+        OAM::Render(0, &OAM::COIN, 0x68, coinCounterY, -1, -1, 0);
+        OAM::Render(0, &OAM::TIMES, 0x78, coinCounterY + 8, -1, -1, 0);
         RenderNumber(data_0209f260, 0x80, coinCounterY, 1, 8);
     }
     LC_Render();
@@ -4519,7 +4452,7 @@ extern "C" void ResetInput(void) {
 }
 
 // @symbol _ZN10dScStage_c16CleanupResourcesEv
-/* _ZN10dScStage_c16CleanupResourcesEv @ 0x0202c9a8 (arm9, size 0x264)
+/* dScStage_c::CleanupResources() @ 0x0202c9a8 (arm9, size 0x264)
  * Releases the level file handles, tears down fader/mesh-collider/message
  * state and unloads the level overlays/archive. Returns 1.
  */
@@ -4668,8 +4601,6 @@ void func_ov001_020ab2e4(void);
 // local extern: the fader array's constructor is passed by address to
 // func_02073470, which member syntax cannot express.
 void *_ZN9dFdWipe_cC1Ev(void *thiz);
-// local extern: member form converts the e3d argument to bool; the ROM call passes the raw int
-void _ZN10dScStage_c14LoadGraphics2DEbi(int e3d, int level);
 }
 
 int dScStage_c::InitResources() {
@@ -4870,8 +4801,7 @@ int dScStage_c::InitResources() {
         }
 
         *(volatile u16 *)0x04000008 = (*(volatile u16 *)0x04000008 & ~3) | 2;
-        int vsModeGraphics = (data_0209f2d8 == 1) ? 1 : 0;
-        _ZN10dScStage_c14LoadGraphics2DEbi(vsModeGraphics, data_0209f2f8);
+        LoadGraphics2D(data_0209f2d8 == 1, data_0209f2f8);
 
         {
             u32 i;
@@ -4993,10 +4923,8 @@ extern "C" {
 void SetBg0Offset(int a, int b);
 void LoadFont(u8 arg);
 int GetOwnerLanguage(void);
-char *_ZN2G213GetBG2CharPtrEv(void);
 u32 LoadCompressedFileAt(u16 fileID, void *target);
 int LoadFileAt(int handle, int dest);
-char *_ZN2G212GetBG2ScrPtrEv(void);
 void LoadControllerModeText(int a);
 void LoadFont3D(void);
 void MultiStore16(u16 val, char *dst, int nbytes);
@@ -5027,18 +4955,18 @@ void dScStage_c::LoadGraphics2D(bool vsMode, int sublevel) {
     if (vsMode == 0) {
         LoadFont(0);
         if (GetOwnerLanguage() == 5) {
-            LoadCompressedFileAt(0xb00f, _ZN2G213GetBG2CharPtrEv());
+            LoadCompressedFileAt(0xb00f, G2::GetBG2CharPtr());
         } else if (GetOwnerLanguage() == 4) {
-            LoadCompressedFileAt(0xac0f, _ZN2G213GetBG2CharPtrEv());
+            LoadCompressedFileAt(0xac0f, G2::GetBG2CharPtr());
         } else if (GetOwnerLanguage() == 3) {
-            LoadCompressedFileAt(0xa80f, _ZN2G213GetBG2CharPtrEv());
+            LoadCompressedFileAt(0xa80f, G2::GetBG2CharPtr());
         } else if (GetOwnerLanguage() == 2) {
-            LoadCompressedFileAt(0xa40f, _ZN2G213GetBG2CharPtrEv());
+            LoadCompressedFileAt(0xa40f, G2::GetBG2CharPtr());
         } else {
-            LoadCompressedFileAt(0xa00f, _ZN2G213GetBG2CharPtrEv());
+            LoadCompressedFileAt(0xa00f, G2::GetBG2CharPtr());
         }
         LoadFileAt(0x980b, 0x5000000);
-        screenMap = _ZN2G212GetBG2ScrPtrEv();
+        screenMap = (char *)G2::GetBG2ScrPtr();
         LoadCompressedFileAt(0x9808, screenMap);
         LoadCompressedFileAt(0x9809, screenMap + 0x800);
         LoadCompressedFileAt(0x980a, screenMap + 0x1000);
@@ -5066,7 +4994,7 @@ void dScStage_c::LoadGraphics2D(bool vsMode, int sublevel) {
         LoadCompressedFileAt(ASSET_D_2D_OP_OBJ_CL_NCG_BIN, (void *)0x6600000);
         LoadFileAt(ASSET_D_2D_OP_OBJ_CL_NCL_BIN, 0x5000600);
         {
-            char *clearScreenMap = G2S::GetBG2ScrPtr();
+            char *clearScreenMap = (char *)G2S::GetBG2ScrPtr();
             volatile u16 fillTile = 0x10d0;
             MultiStore16(fillTile, clearScreenMap, 0x800);
         }
@@ -5121,7 +5049,7 @@ void dScStage_c::LoadGraphics2D(bool vsMode, int sublevel) {
         LoadCompressedFileAt(0xa00b, screenMap + 0x2000);
     }
 
-    subBg2Screen = G2S::GetBG2ScrPtr();
+    subBg2Screen = (char *)G2S::GetBG2ScrPtr();
     LoadCompressedFileAt(0x9805, subBg2Screen);
     LoadCompressedFileAt(0x9806, subBg2Screen + 0x1000);
 
@@ -5130,19 +5058,19 @@ void dScStage_c::LoadGraphics2D(bool vsMode, int sublevel) {
             return;
         }
         if (GetOwnerLanguage() == 5) {
-            LoadCompressedFileAt(0xb00f, _ZN2G213GetBG2CharPtrEv());
+            LoadCompressedFileAt(0xb00f, G2::GetBG2CharPtr());
         } else if (GetOwnerLanguage() == 4) {
-            LoadCompressedFileAt(0xac0f, _ZN2G213GetBG2CharPtrEv());
+            LoadCompressedFileAt(0xac0f, G2::GetBG2CharPtr());
         } else if (GetOwnerLanguage() == 3) {
-            LoadCompressedFileAt(0xa80f, _ZN2G213GetBG2CharPtrEv());
+            LoadCompressedFileAt(0xa80f, G2::GetBG2CharPtr());
         } else if (GetOwnerLanguage() == 2) {
-            LoadCompressedFileAt(0xa40f, _ZN2G213GetBG2CharPtrEv());
+            LoadCompressedFileAt(0xa40f, G2::GetBG2CharPtr());
         } else {
-            LoadCompressedFileAt(0xa00f, _ZN2G213GetBG2CharPtrEv());
+            LoadCompressedFileAt(0xa00f, G2::GetBG2CharPtr());
         }
         LoadFileAt(0x980b, 0x5000000);
         LoadCompressedFileAt(ASSET_D_2D_UPR_TOUCH_TO_SELECT_NSC_BIN,
-                             _ZN2G212GetBG2ScrPtrEv() + 0x1800);
+                             (char *)G2::GetBG2ScrPtr() + 0x1800);
         LoadCompressedFileAt(0x9801, screenMap + 0x2800);
         return;
     }
@@ -5151,14 +5079,16 @@ void dScStage_c::LoadGraphics2D(bool vsMode, int sublevel) {
         volatile u16 blankTile = 0;
         MultiStore16(blankTile, screenMap, 0x40);
         LoadCompressedFileAt(ASSET_D_2D_FRAMEWORK_SELECT_PAUSE_NSC_BIN, screenMap + 0x40);
-        LoadCompressedFileAt(ASSET_D_2D_FRAMEWORK_PAGE_NSC_BIN, _ZN2G212GetBG2ScrPtrEv() + 0x1800);
+        LoadCompressedFileAt(ASSET_D_2D_FRAMEWORK_PAGE_NSC_BIN,
+                             (char *)G2::GetBG2ScrPtr() + 0x1800);
         LoadCompressedFileAt(ASSET_D_2D_UPR_TOUCH_TO_SELECT_NSC_BIN,
-                             _ZN2G212GetBG2ScrPtrEv() + 0x2800);
+                             (char *)G2::GetBG2ScrPtr() + 0x2800);
         LoadCompressedFileAt(0x9802, screenMap + 0x2800);
         return;
     }
 
-    LoadCompressedFileAt(ASSET_D_2D_UPR_TOUCH_TO_SELECT_NSC_BIN, _ZN2G212GetBG2ScrPtrEv() + 0x1800);
+    LoadCompressedFileAt(ASSET_D_2D_UPR_TOUCH_TO_SELECT_NSC_BIN,
+                         (char *)G2::GetBG2ScrPtr() + 0x1800);
     LoadCompressedFileAt(ASSET_D_2D_FRAMEWORK_SELECT_PAUSE_NSC_BIN, screenMap);
 }
 

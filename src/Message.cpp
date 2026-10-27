@@ -10,9 +10,9 @@
  *   static and drive the globals around data_0209d660.
  * - data_0209d6f4 is volatile. DisplayCourseNameForStarSelect stores it twice
  *   in a row and both stores have to emit.
- * - IsStarCollected, G2x::SetBlendBrightness and Message::DisplayText stay
- *   local externs. The header spellings take s8 / u16 and those parameters
- *   emit a narrow the ROM does not have. DisplayText must see this untruncated.
+ * - IsStarCollected and Message::DisplayText stay local externs. The header
+ *   spellings take s8 / u16 and those parameters emit a narrow the ROM does
+ *   not have. DisplayText must see this untruncated.
  * - Sound::ChangeMusicVolume stays mangled. The second parameter is
  *   Fix12<int> by value.
  * - BG pointer getters are G2:: / G2S:: calls. Their return types stay the
@@ -26,6 +26,7 @@
 #pragma defer_codegen off
 #include "types.h"
 #include "Message.h"
+#include "G2x.h"
 #include "SaveData.h"
 #include "dScStage_c.h"
 #include "Sound.h"
@@ -125,22 +126,11 @@ extern void *func_02054ea8(void);
    parameter would emit a sign-extend of arg0 the ROM lacks. */
 extern int IsStarCollected(u32 a, u8 b);
 extern int SublevelToLevel(int a);
-/* local extern: byte-forced spelling -- calling Message::AddChar(char) makes
-   func_0201d850 narrow its arguments (4 words differ from the ROM).
-   Message2.cpp spells it the same way. */
-extern void _ZN7Message7AddCharEc(int c);
 }
 namespace Sound {
 int ChangeMusicVolume(u32 a, s32 b);
 }
 extern "C" {
-/* local extern: byte-forced spelling -- the definition is
-   (volatile u16*, u16, s16); u16/s16 parameters would emit an explicit narrow
-   the ROM lacks. Every caller already casts the pointer and the value args. */
-extern void _ZN3G2x18SetBlendBrightnessEPVtts(volatile u16 *p, int a, int b);
-/* local extern: byte-forced spelling -- Display must pass `this` untruncated
-   in r0; a u16 parameter (the member's real signature) would emit uxth. */
-extern void _ZN7Message11DisplayTextEt(void *self);
 
 void func_0201cd08(int arg);
 void func_0201cebc(short a0);
@@ -274,9 +264,8 @@ extern "C" void func_0201cebc(short a0)
     Message_DrawCenteredLine(0x1c0, 0x20);
 }
 
-// @symbol _ZN7Message21DisplayLevelClearTextEta
-void Message::DisplayLevelClearText(u16 msgID, s8 course)
-{
+// @symbol _ZN7Message21DisplayLevelClearTextEth
+void Message::DisplayLevelClearText(u16 msgID, u8 course) {
     func_0201d850(course);
     data_0209d6d4 = msgID;
     data_0209d668 = 1;
@@ -294,9 +283,8 @@ extern "C" void func_0201cfb8(int arg0)
     func_0201d418(0xcf, 0x68);
 }
 
-// @symbol _ZN7Message22DisplayOptionsMenuTextEt
-void Message::DisplayOptionsMenuText(unsigned short n)
-{
+// @symbol _ZN7Message22DisplayOptionsMenuTextEs
+void Message::DisplayOptionsMenuText(s16 n) {
     volatile int li;
     volatile unsigned short ls;
     int p, s;
@@ -583,13 +571,13 @@ extern "C" void func_0201d850(u32 arg0)
         base = data_0209d6fc + 0x28 + *(s32 *)((char *)data_0209d70c + 4);
         data_0209d6f4 = base + *(s32 *)ep;
         func_0201b7cc();
-        _ZN7Message7AddCharEc(0x4d);
+        Message::AddChar(0x4d);
 
         num = (arg0 + 1) & 0xff;
         if (num / 10 != 0) {
-            _ZN7Message7AddCharEc(data_0208ee74[num / 10]);
+            Message::AddChar(data_0208ee74[num / 10]);
         }
-        _ZN7Message7AddCharEc(data_0208ee74[num % 10]);
+        Message::AddChar(data_0208ee74[num % 10]);
 
         data_0209d6a8 = (data_0209d6b0 + 7) / 8;
         func_0201b388(data_0209d6a8);
@@ -668,12 +656,12 @@ L_r4_else:
         MultiStore_Int(sp8, data_0209d74c, 0xf00);
         data_0209d6b8 = 1;
         if ((IsStarCollected(arg0, data_0209f220) != 0) || (data_0209f20c != 0)) {
-            _ZN7Message7AddCharEc(0xf0);
+            Message::AddChar(0xf0);
         } else {
-            _ZN7Message7AddCharEc(0xf1);
+            Message::AddChar(0xf1);
         }
         data_0209d65c += data_0208f074[0xf0];
-        _ZN7Message7AddCharEc(0x4d);
+        Message::AddChar(0x4d);
         data_0209d65c += data_0208f074[0x4d];
         if (arg0 < 0xf) {
             if (data_0209f20c != 0) {
@@ -872,9 +860,8 @@ void Message::DisplaySaveMenuText(u16 msgID)
     func_0201e220(0);
 }
 
-// @symbol _ZN7Message11DisplayTextEt
-void Message::DisplayText(unsigned short t)
-{
+// @symbol _ZN7Message11DisplayTextEi
+void Message::DisplayText(int t) {
     volatile int li;
     volatile unsigned short ls;
     int idx;
@@ -947,7 +934,7 @@ void Message::Display(unsigned int msg)
     s = (int)G2::GetBG3ScrPtr();
     ls = 0x2ff;
     MultiStore16(ls, (char*)s, 0x800);
-    _ZN7Message11DisplayTextEt(((void*)this));
+    DisplayText(msg);
     data_0209d6d4 = 0x276;
     data_0209d6c4 = 0;
     data_0209d668 = 1;
@@ -1198,7 +1185,7 @@ void Message::DisplaySaving(unsigned short n)
     {
         int b = data_0209d45c | 0x20;
         data_0209b454 |= 0x80000000u;
-        _ZN3G2x18SetBlendBrightnessEPVtts((volatile u16 *)0x4000050, b, -8);
+        G2x::SetBlendBrightness((volatile u16 *)0x4000050, b, -8);
     }
 
     {
@@ -1516,7 +1503,7 @@ extern "C" void func_0201f32c(int arg0)
         return;
     }
     if (disp2 == 1) {
-        _ZN3G2x18SetBlendBrightnessEPVtts((volatile u16 *)0x04001050, data_0209d454 | 0x20, -7);
+        G2x::SetBlendBrightness((volatile u16 *)0x04001050, data_0209d454 | 0x20, -7);
         *(volatile u16 *)0x04001048 = (*(volatile u16 *)0x04001048 & ~0x3f) | (data_0209d454 | 2) | 0x20;
         *(volatile u16 *)0x0400104a = (*(volatile u16 *)0x0400104a & ~0x3f) | 0x1d;
         *(volatile s16 *)0x04001040 = ((data_0209d658 << 8) & 0xff00) | (u8)(((data_0209d6d0 * 2) - data_0209d658) + 1);
@@ -1528,9 +1515,9 @@ extern "C" void func_0201f32c(int arg0)
     }
 
     if (data_0209d6d4 >= 0x2a && data_0209d6d4 < 0x83) {
-        _ZN3G2x18SetBlendBrightnessEPVtts((volatile u16 *)0x04000050, data_0209d45c & ~0x38, 7);
+        G2x::SetBlendBrightness((volatile u16 *)0x04000050, data_0209d45c & ~0x38, 7);
     } else {
-        _ZN3G2x18SetBlendBrightnessEPVtts((volatile u16 *)0x04000050, data_0209d45c & ~0x38, -8);
+        G2x::SetBlendBrightness((volatile u16 *)0x04000050, data_0209d45c & ~0x38, -8);
     }
     *(volatile u16 *)0x04000048 = (*(volatile u16 *)0x04000048 & ~0x3f) | (data_0209d45c | 8) | 0x20;
     *(volatile u16 *)0x0400004a = (*(volatile u16 *)0x0400004a & ~0x3f) | 0x17;

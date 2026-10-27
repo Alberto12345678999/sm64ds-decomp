@@ -78,29 +78,22 @@ enum dScMgAmida_c_AssetId {
 };
 
 #include "types.h"
+#include "G2.h"
 #include "decl_common.h"
 #include "dScMgAmida_c.h"
 #include "SpawnInfo.h"
 #include "nitro/fx/fx.h"
 #include "Sound.h"
+#include "CP15.h"
+#include "GX.h"
+#include "G2x.h"
 
-namespace G2S {
-unsigned int GetBG1CharPtr(void);
-void *GetBG1ScrPtr(void);
-}
-
-struct G2x {
-    static void SetBlendBrightness(volatile unsigned short *, unsigned short, short);
-    static void SetBlendAlpha(volatile unsigned short *, unsigned short, unsigned short,
-                              unsigned short, unsigned int);
-};
 extern "C" {
 /* --- shared ov004 and main helpers --- */
 extern void Mg_RenderSpriteBoth(void *a0, int a1, int a2, int a3, int a4);
 extern void Mg_DrawScoreTally(void *a0, int a1, int a2, int a3);
 extern int Mg_DrawLine(void *a, int b, int c, int d, int e, int f, int g);
 extern void MultiCopyHalf(void *dst, void *src, int nbytes);
-extern void *_ZN2G212GetBG3ScrPtrEv(void); /* decl_common.h declares a data array named G2 */
 extern void MultiStore16(u16 val, void *dst, int nbytes);
 extern int RandomIntInternal(int *seed);
 extern int Vec2_Len(int *v);
@@ -168,27 +161,6 @@ extern int sAmidaLaneWantSprites[];
 extern int sAmidaBoardAnimationFrames[13];
 extern s32 sAmidaLaneTargets[];
 extern s32 sAmidaLaneSaved[];
-}
-
-namespace CP15 {
-void FlushAndInvalidateDataCache(u32 addr, u32 size);
-}
-
-namespace GX {
-void LoadBGPltt(const void *data, u32 offset, u32 size);
-void LoadOBJPltt(const void *data, u32 offset, u32 size);
-}
-
-namespace GXS {
-void LoadBGPltt(const void *data, u32 offset, u32 size);
-void LoadOBJPltt(const void *data, u32 offset, u32 size);
-}
-
-namespace G2S {
-char *GetBG0CharPtr();
-void *GetBG2ScrPtr();
-void *GetBG3ScrPtr();
-char *GetBG3CharPtr();
 }
 
 namespace Memory {
@@ -1391,8 +1363,8 @@ void dScMgAmida_c::StepWalkers() {
 extern "C" void Amida_RestoreBgChars(void *) {
     char *mainChars = (char *)func_02054efc();
     MultiCopyHalf((char *)func_02054efc() + 0xc000, mainChars, 0x6000);
-    char *subChars = G2S::GetBG0CharPtr();
-    MultiCopyHalf(G2S::GetBG0CharPtr() + 0x6000, subChars, 0x6000);
+    char *subChars = (char *)G2S::GetBG0CharPtr();
+    MultiCopyHalf((char *)G2S::GetBG0CharPtr() + 0x6000, subChars, 0x6000);
 }
 
 // @symbol Amida_SaveBgChars
@@ -1400,7 +1372,7 @@ extern "C" void Amida_RestoreBgChars(void *) {
 extern "C" void Amida_SaveBgChars(void *) {
     char *mainChars = (char *)func_02054efc() + 0xc000;
     MultiCopyHalf((char *)func_02054efc(), mainChars, 0x6000);
-    char *subChars = G2S::GetBG0CharPtr() + 0x6000;
+    char *subChars = (char *)G2S::GetBG0CharPtr() + 0x6000;
     MultiCopyHalf(G2S::GetBG0CharPtr(), subChars, 0x6000);
 }
 
@@ -1600,7 +1572,7 @@ void dScMgAmida_c::SetupRound() {
         d = (char *)func_02054efc();
         v1 = 0;
         MultiStore16(v1, d, 0x6000);
-        d = G2S::GetBG0CharPtr();
+        d = (char *)G2S::GetBG0CharPtr();
         v2 = 0;
         MultiStore16(v2, d, 0x6000);
     }
@@ -2258,7 +2230,7 @@ s32 dScMgAmida_c::InitResources() {
     *(volatile s32 *)0x4001010 = 0;
     *(volatile u16 *)0x4001008 = (*(volatile u16 *)0x4001008 & ~3) | 1;
 
-    file = G2S::GetBG0CharPtr();
+    file = (char *)G2S::GetBG0CharPtr();
     zeroSub = 0;
     MultiStore16((u16)zeroSub, file, 0x6000);
 
@@ -2275,14 +2247,14 @@ s32 dScMgAmida_c::InitResources() {
         CP15::FlushAndInvalidateDataCache((u32)file, 0x1a0);
         GX::LoadBGPltt(file, 0x60, 0x1a0);
         Deallocate(file);
-        LoadCompressedFileAt(ASSET_D_2D_MG_BG_AMIDA_FACE_UP_NSC_BIN, _ZN2G212GetBG3ScrPtrEv());
+        LoadCompressedFileAt(ASSET_D_2D_MG_BG_AMIDA_FACE_UP_NSC_BIN, G2::GetBG3ScrPtr());
     } else {
         LoadCompressedFileAt(ASSET_D_2D_MG_BG_AMIDA1_NCG_BIN, (void *)func_02054d88());
         file = (void *)LoadFile(ASSET_D_2D_MG_BG_AMIDA1_NCL_BIN);
         CP15::FlushAndInvalidateDataCache((u32)file, 0x1a0);
         GX::LoadBGPltt(file, 0x60, 0x1a0);
         Deallocate(file);
-        LoadCompressedFileAt(ASSET_D_2D_MG_BG_AMIDA1_NSC_BIN, _ZN2G212GetBG3ScrPtrEv());
+        LoadCompressedFileAt(ASSET_D_2D_MG_BG_AMIDA1_NSC_BIN, G2::GetBG3ScrPtr());
     }
 
     *(volatile u16 *)0x400100c = (*(volatile u16 *)0x400100c & 0x43) | 0x40c;

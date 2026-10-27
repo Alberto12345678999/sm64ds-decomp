@@ -11,12 +11,7 @@
  * stays twelve words. opt_common_subs off holds ApproachStateValue.
  */
 // leftovers:
-// - dCcAcPos_c::Init, dBgCh_Actr::Init, DropShadowRadHeight,
-//   Particle::System::NewSimple, Player::Hurt and cstd::atan2 stay scalar
-//   externs. The header Fix12<int> forms pool constants (InitResources
-//   and UpdateModel grew .rodata). dBgCh_Actr::Init's header spells
-//   Fix12i, which mangles as int, not 5Fix12IiE; a scalar cstd::atan2
-//   declaration would mangle as ii.
+// - Player::Hurt stays a scalar extern (Fix12<int> by value).
 // - The ROM calls dBgCh_Actr_UpdateContinuous_Veneer (0x020383fc), not
 //   UpdateContinuous. func_0200f760 (cylinder movement bit from the
 //   vanish flag) and func_0201267c (bank-3 player, one past
@@ -106,18 +101,11 @@ void Matrix4x3_FromRotationZXYExt(void *m, int x, int y, int z);
 /* Parameter names keep this TU's @NNN. */
 typedef void BgchInitAt_(void *self, dActor_c *actor, int radius, int height, Vector3_16 *rot,
                          Vector3_16 *unk);
-void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
-    void *self, dActor_c *actor, const Vector3 *offset,
-    int radius, int height, u32 flags, u32 vulnFlags);
-void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
-    void *self, void *shadow, void *matrix, int radius, int height, u32 flags);
 namespace Particle {
 struct System {
     static void *NewSimple(unsigned id, int x, int y, int z);
 };
 }
-int _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(
-    void *player, const void *pos, u32 kind, int damage, u32 a, u32 b, u32 c);
 
 extern s16 data_02082214[];
 }
@@ -139,8 +127,7 @@ s32 daChair_c::InitResources()
     mClsnOffset.x = 0;
     mClsnOffset.y = 0;
     mClsnOffset.z = 0;
-    _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
-        &mCylinder, this, &mClsnOffset, 0x32000, 0x64000, 0x200004, 0);
+    mCylinder.Init(this, mClsnOffset, 0x32000, 0x64000, 0x200004, 0);
     mState = 0;
     mHomePos.x = mPosX;
     mHomePos.y = mPosY;
@@ -190,8 +177,7 @@ void daChair_c::UpdateModel()
     mShadowMat.m[9] = mPosX >> 3;
     mShadowMat.m[10] = mHomePos.y >> 3;
     mShadowMat.m[11] = mPosZ >> 3;
-    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
-        this, &mShadowModel, &mShadowMat, 0x32000, 0x1e000, 0xf);
+    DropShadowRadHeight(mShadowModel, mShadowMat, 0x32000, 0x1e000, 0xf);
 }
 
 // @symbol _ZN9daChair_c5BreakEv
@@ -420,8 +406,7 @@ void daChair_c::State2()
             pos.x = mPosX;
             pos.y = mPosY;
             pos.z = mPosZ;
-            _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(
-                actor, &pos, 2, 0xc000, 1, 0, 1);
+            ((Player *)actor)->Hurt(*(Vector3 *)&pos, 2, 0xc000, 1, 0, 1);
         }
     }
 }

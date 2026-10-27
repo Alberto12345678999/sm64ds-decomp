@@ -5,7 +5,7 @@ extern void func_02041224(char *thiz, int n);
 extern int func_020656d4(u16 arg0, const void *arg1, s32 arg2, u32 arg3);
 extern void func_02042160(void);
 
-/* The FSFile being read, with the names func_02040f30.c gives it: this
+/* The FSFile being read, with the names func_02040f30.cpp gives it: this
  * ROM's FSFile has its prop union at 0x1c and its arg union at 0x2c. */
 typedef struct FSFile {
     char pad_00[0x28];

@@ -46,12 +46,9 @@
  *
  * deslop leftovers:
  * - SetAnim 6az: helpers pass Fix12<int> by value; header method form size-DIFFs.
- * - DropShadowRadHeight 6az: func_ov064_02116bac.
  * - IsTooFarAwayFromPlayer / IsPlayerInRange(Fix12,Fix12,Fix12,s32) 6az:
  *   func_ov064_021165d8 / 02116560. Header methods carry Fix12<int>.
- * - KillByInvincibleChar 6az: func_ov064_02116754.
  * - Particle::System::New / NewSimple 6az: func_ov064_0211616c / 02115f98.
- * - _Z14ApproachLinearRiii stays mangled; no header method form here.
  * - func_0201267c: PlayStepSound / PlayHitSound / PlayDeathSound at mCamSpacePosX.
  * - 0x398..0x3f9 stay children's padding (annexing them as members would move
  *   the fields the children declare from 0x3fa on); the helpers reach them
@@ -61,10 +58,9 @@
  *   identifiers). InitResourcesCommon / BehaviorCommon are the two that
  *   were leftover shards; names describe the children's slot-0 / slot-6
  *   wrappers.
- * - InitResourcesCommon 6az: dCcAc_c::Init / dBgCh_Actr::Init / SetAnim
- *   keep mangled forms (Fix12<int> by value).
+ * - InitResourcesCommon 6az: dBgCh_Actr::Init / SetAnim keep mangled forms (Fix12<int> by value).
  * - BehaviorCommon: the mStateTimer increment stays unsigned short (ldrh).
- * - daOts_c.h first: nested Matrix4x3 for mModelAnim.mat4x3.t (02116bac).
+ * - daOts_c.h first: nested Matrix4x3 for mAnmModel.mat4x3.t (02116bac).
  *   common.h's flat m[12] would stand down if it came first.
  * - Vec3_Sub / HorzLen / atan2 take int*; 02115f98 keeps the int-array pos copy.
  * - bool-widening `int isD8 = (int)(actorID == kBigBullyActorId)` / `isBf` in
@@ -107,11 +103,11 @@
 #include "Player.h"
 #include "nitro/fx/fx.h"
 #include "Sound.h"
+#include "math/Approach.h"
 namespace cstd {
 s16 atan2(s32, s32);
 }
 
-bool ApproachLinear(short &value, short target, short step);
 
 /* Actor IDs (symbols/actor_debug_names.tsv). */
 enum {
@@ -226,27 +222,6 @@ extern void *d_a_otsNewHold(u32 id, u32 param, Fix12i x, Fix12i y, Fix12i z, con
 extern void Matrix4x3_FromRotationY(void* m, short angle);
 short Vec3_HorzAngle(const Vector3 *a, const Vector3 *b);
 
-/* ONE SPELLING FOR ONE SYMBOL, with one exception. The shards carried four
- * declarations of dExtAnmModel_c::SetAnim that differed only in parameter spelling
- * and return type; the old name's by-value Fix12<int> was ours, not the ROM's,
- * so five of the six call sites now call the real method (which returns void).
- * See notes/mwccarm-codegen.md 6az, MEASURED 2026-10-22.
- *
- * local extern: func_ov064_02116560 TAIL-FORWARDS SetAnim's r0 as its own int
- * result, so that one site needs the int-returning spelling -- `return` on a
- * void method does not compile, and splitting it into a call plus a separate
- * return costs the tail call. Byte-proved: 0x02116560/0x74 reproduces with this
- * declaration and not without it. The return-type disagreement against the
- * void definition is deliberate and banked. */
-/* local extern: func_ov064_02116560 tail-forwards SetAnim r0 as its own int result, so the int-returning spelling is load-bearing; byte-proved */
-extern "C" int _ZN14dExtAnmModel_c7SetAnimEP8BCA_Fileiit(dExtAnmModel_c *, BCA_File *, int, Fix12i,
-                                                         u16);
-int _Z14ApproachLinearRiii(int *dst, int target, int rate);
-
-void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(void* a, void* sm, void* mtx, int rad, int h, unsigned int x);
-int _ZN12dEnemyBase_c20KillByInvincibleCharERK10Vector3_16R6Player5Fix12IiE(void* c, void* v, void* player, s32 flag);
-int _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void* p, const Vector3* v, u32 a, s32 f, u32 b, u32 c, u32 d);
-void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *self, dActor_c *a, int r, int h, unsigned int d, unsigned int e);
 
 void func_ov064_021163c0(daOts_c *c);
 }
@@ -273,12 +248,13 @@ int daOts_c::InitResourcesCommon()
     dExtFrameCtrl_c::LoadFile(*CONFIG(this)->files[kAnimLedgeTurn]);
     dExtFrameCtrl_c::LoadFile(*CONFIG(this)->files[kAnimWalk]);
     bmd = (BMD_File *)dExtSimpleModel_c::LoadFile(*CONFIG(this)->files[kFileModel]);
-    if (mModelAnim.SetFile(bmd, 1, 1) == 0)
+    if (mAnmModel.SetFile(bmd, 1, 1) == 0)
         return 0;
     if (mShadowModel.InitCylinder() == 0)
         return 0;
-    mModelAnim.SetAnim((BCA_File *)(CONFIG_BCA(this, kAnimWalk)), 0, kAnimSpeedNormal, 0);
-    _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, this, CONFIG(this)->cylinderRadius, CONFIG(this)->cylinderHeight, 0x200000, kHitAttackMask | kHitEgg);
+    mAnmModel.SetAnim((BCA_File *)(CONFIG_BCA(this, kAnimWalk)), 0, kAnimSpeedNormal, 0);
+    mdCcAc_c.Init(this, CONFIG(this)->cylinderRadius, CONFIG(this)->cylinderHeight, 0x200000,
+                  kHitAttackMask | kHitEgg);
     {
         int isD9 = (int)(actorID == kChillBullyActorId);
         if (isD9) {
@@ -342,7 +318,7 @@ int daOts_c::BehaviorCommon()
         mHorzSpeed = kWalkSpeed;
         if (func_ov064_021166f0() != 0) {
             tail().mState = STATE_CHASE;
-            mModelAnim.SetAnim((BCA_File *)(CONFIG_BCA(this, kAnimWalk)), 0, kAnimSpeedDouble, 0);
+            mAnmModel.SetAnim((BCA_File *)(CONFIG_BCA(this, kAnimWalk)), 0, kAnimSpeedDouble, 0);
         }
         func_ov064_021165d8();
         mAngleY = mPrevAngleY;
@@ -351,7 +327,7 @@ int daOts_c::BehaviorCommon()
         func_ov064_02116560();
         func_ov064_021165d8();
         mAngleY = mPrevAngleY;
-        mModelAnim.speed = kAnimSpeedDouble;
+        mAnmModel.speed = kAnimSpeedDouble;
         break;
     case STATE_KNOCKED_BACK:
         func_ov064_02116460();
@@ -371,7 +347,7 @@ int daOts_c::BehaviorCommon()
         break;
     }
 
-    mModelAnim.Advance();
+    mAnmModel.Advance();
     unsigned short *p100 = (unsigned short *)&mStateTimer;
     *p100 = *p100 + 1;
     if (four != tail().mState)
@@ -395,7 +371,7 @@ int daOts_c::BehaviorCommon()
  */
 int daOts_c::Render()
 {
-    mModelAnim.Render(0);
+    mAnmModel.Render(0);
     return 1;
 }
 
@@ -435,20 +411,22 @@ int daOts_c::CleanupResources()
  * shrinks by 3/32 (0x180 / 0x1000) of the actor's height above the floor, but not
  * below 10 units, and its depth is that height plus 40 units. Opacity is 0xf. */
 void daOts_c::func_ov064_02116bac(){
-  Matrix4x3_FromRotationY(&this->mModelAnim.mat4x3, this->mAngleY);
-  this->mModelAnim.mat4x3.t.x = this->mPosX >> 3;
-  this->mModelAnim.mat4x3.t.y = (this->mPosY + tail().mModelYOffset) >> 3;
-  this->mModelAnim.mat4x3.t.z = this->mPosZ >> 3;
-  int d = this->mPosY - tail().mFloorY;     /* height above the floor, at least 1 unit */
-  if(d <= 0x1000) d = 0x1000;
-  int rad = FX_MUL(d, 0x180); /* how much the shadow shrinks */
-  int h = tail().mShadowRadius - rad;
-  if(h < 0xa000) h = 0xa000;                /* shadow radius, at least 10 units */
-  Matrix4x3_FromRotationY(&tail().mShadowMtx, this->mAngleY);
-  tail().mShadowMtx.t.x = this->mPosX >> 3;
-  tail().mShadowMtx.t.y = this->mPosY >> 3;
-  tail().mShadowMtx.t.z = this->mPosZ >> 3;
-  _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(this, &this->mShadowModel, &tail().mShadowMtx, h, d+0x28000, 0xf);
+    Matrix4x3_FromRotationY(&this->mAnmModel.mat4x3, this->mAngleY);
+    this->mAnmModel.mat4x3.t.x = this->mPosX >> 3;
+    this->mAnmModel.mat4x3.t.y = (this->mPosY + tail().mModelYOffset) >> 3;
+    this->mAnmModel.mat4x3.t.z = this->mPosZ >> 3;
+    int d = this->mPosY - tail().mFloorY; /* height above the floor, at least 1 unit */
+    if (d <= 0x1000)
+        d = 0x1000;
+    int rad = FX_MUL(d, 0x180); /* how much the shadow shrinks */
+    int h = tail().mShadowRadius - rad;
+    if (h < 0xa000)
+        h = 0xa000; /* shadow radius, at least 10 units */
+    Matrix4x3_FromRotationY(&tail().mShadowMtx, this->mAngleY);
+    tail().mShadowMtx.t.x = this->mPosX >> 3;
+    tail().mShadowMtx.t.y = this->mPosY >> 3;
+    tail().mShadowMtx.t.z = this->mPosZ >> 3;
+    DropShadowRadHeight(this->mShadowModel, tail().mShadowMtx, h, d + 0x28000, 0xf);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -505,7 +483,7 @@ void daOts_c::func_ov064_02116754()
             this->mHorzSpeed = kHitSpeedHeavy;
         else
             this->mHorzSpeed = kHitSpeedLight;
-        this->mModelAnim.SetAnim((BCA_File *)(CONFIG_BCA(this, kAnimHit)), 0, kAnimSpeedNormal, 0);
+        this->mAnmModel.SetAnim((BCA_File *)(CONFIG_BCA(this, kAnimHit)), 0, kAnimSpeedNormal, 0);
         func_ov064_02115f98((char*)hitPlayer);
         tail().mState = STATE_KNOCKED_BACK;
         tail().mHopCount = 0;
@@ -516,7 +494,7 @@ void daOts_c::func_ov064_02116754()
     if (hitFlags & kHitEgg) {
         this->mPrevAngleY = hitPlayer->mPrevAngleY;
         this->mHorzSpeed = kHitSpeedLight;
-        this->mModelAnim.SetAnim((BCA_File *)(CONFIG_BCA(this, kAnimHit)), 0, kAnimSpeedNormal, 0);
+        this->mAnmModel.SetAnim((BCA_File *)(CONFIG_BCA(this, kAnimHit)), 0, kAnimSpeedNormal, 0);
         func_ov064_02115f98((char*)hitPlayer);
         tail().mState = STATE_KNOCKED_BACK;
         tail().mHopCount = 0;
@@ -531,7 +509,8 @@ void daOts_c::func_ov064_02116754()
             v[0] = 0x2000;
             v[1] = 0;
             v[2] = 0;
-            _ZN12dEnemyBase_c20KillByInvincibleCharERK10Vector3_16R6Player5Fix12IiE(this, v, hitPlayer, CONFIG(this)->eggAimHeight);
+            KillByInvincibleChar(*(Vector3_16 *)v, *(Player *)hitPlayer,
+                                 CONFIG(this)->eggAimHeight);
             this->PlayHitSound();
             return;
         }
@@ -540,7 +519,7 @@ void daOts_c::func_ov064_02116754()
     if (hitFlags & kHitBit40000) {
         this->mPrevAngleY = hitPlayer->mAngleY;
         this->mHorzSpeed = kHitSpeedBit40000;
-        this->mModelAnim.SetAnim((BCA_File *)(CONFIG_BCA(this, kAnimHit)), 0, kAnimSpeedNormal, 0);
+        this->mAnmModel.SetAnim((BCA_File *)(CONFIG_BCA(this, kAnimHit)), 0, kAnimSpeedNormal, 0);
         func_ov064_02115f98((char*)hitPlayer);
         tail().mState = STATE_KNOCKED_BACK;
         tail().mHopCount = 0;
@@ -554,7 +533,7 @@ void daOts_c::func_ov064_02116754()
             this->mHorzSpeed = kHitSpeedHeavy;
         else
             this->mHorzSpeed = kHitSpeedLight;
-        this->mModelAnim.SetAnim((BCA_File *)(CONFIG_BCA(this, kAnimHit)), 0, kAnimSpeedNormal, 0);
+        this->mAnmModel.SetAnim((BCA_File *)(CONFIG_BCA(this, kAnimHit)), 0, kAnimSpeedNormal, 0);
         func_ov064_02115f98((char*)hitPlayer);
         tail().mState = STATE_KNOCKED_BACK;
         tail().mHopCount = 0;
@@ -566,7 +545,7 @@ void daOts_c::func_ov064_02116754()
         hitPlayer->mHorzSpeed = -this->mHorzSpeed;
         this->mPrevAngleY = (s16)(this->mAngleY + 0x8000);
         this->mHorzSpeed = kHitSpeedLight;
-        this->mModelAnim.SetAnim((BCA_File *)(CONFIG_BCA(this, kAnimWalk)), 0, kAnimSpeedNormal, 0);
+        this->mAnmModel.SetAnim((BCA_File *)(CONFIG_BCA(this, kAnimWalk)), 0, kAnimSpeedNormal, 0);
         this->PlayShellHitSound();
         func_ov064_02115f98((char*)hitPlayer);
         tail().mState = STATE_KNOCKED_BACK;
@@ -587,7 +566,7 @@ void daOts_c::func_ov064_02116754()
         v.x = this->mPosX;
         v.y = this->mPosY;
         v.z = this->mPosZ;
-        if (_ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(hitPlayer, &v, 0, 0x14000, 1, 0, 1) != 0) {
+        if (((Player *)hitPlayer)->Hurt(v, 0, 0x14000, 1, 0, 1) != 0) {
             func_ov064_02115f98((char*)hitPlayer);
         }
     }
@@ -600,7 +579,7 @@ void daOts_c::func_ov064_02116754()
         else
             this->mHorzSpeed = kHurtRecoilSpeedBigBully;
     }
-    this->mModelAnim.SetAnim((BCA_File *)(CONFIG_BCA(this, kAnimWalk)), 0, kAnimSpeedNormal, 0);
+    this->mAnmModel.SetAnim((BCA_File *)(CONFIG_BCA(this, kAnimWalk)), 0, kAnimSpeedNormal, 0);
     this->PlayShellHitSound();
 }
 
@@ -645,8 +624,8 @@ void daOts_c::func_ov064_021165d8()
         this->mPosX = tail().mPosBeforeMoveX;
         this->mPosZ = tail().mPosBeforeMoveZ;
         tail().mState = STATE_LEDGE_TURN;
-        this->mModelAnim.SetAnim((BCA_File *)(CONFIG_BCA(this, kAnimLedgeTurn)), 0,
-                                 kAnimSpeedNormal, 0);
+        this->mAnmModel.SetAnim((BCA_File *)(CONFIG_BCA(this, kAnimLedgeTurn)), 0, kAnimSpeedNormal,
+                                0);
     }
 
     this->UpdateWMClsn(this->mWithMeshClsn, 0);
@@ -673,15 +652,14 @@ int daOts_c::UpdateRunState()
 // @symbol _ZN7daOts_c19func_ov064_02116560Ev
 /* STATE_CHASE's body: runs the child's UpdateRunState, then, unless the player is
  * within 1000 units of mHomePos (measured at the actor's own height), drops back
- * to STATE_RETURN_HOME and restarts the walk animation. Returns the range test's
- * result, or SetAnim's when it gave up the chase. */
-int daOts_c::func_ov064_02116560(){
-  this->UpdateRunState();
-  int r = IsPlayerInRange(tail().mHomePosX, this->mPosY, tail().mHomePosZ, kKeepChaseRange);
-  if(r) return r;
-  tail().mState=STATE_RETURN_HOME;
-  return _ZN14dExtAnmModel_c7SetAnimEP8BCA_Fileiit(
-      &this->mModelAnim, (BCA_File *)(CONFIG_BCA(this, kAnimWalk)), 0, kAnimSpeedNormal, 0);
+ * to STATE_RETURN_HOME and restarts the walk animation. The caller ignores the
+ * result, so this is void; the ROM's tail call to SetAnim needs nothing more. */
+void daOts_c::func_ov064_02116560() {
+    this->UpdateRunState();
+    if (IsPlayerInRange(tail().mHomePosX, this->mPosY, tail().mHomePosZ, kKeepChaseRange))
+        return;
+    tail().mState = STATE_RETURN_HOME;
+    mAnmModel.SetAnim((BCA_File *)(CONFIG_BCA(this, kAnimWalk)), 0, kAnimSpeedNormal, 0);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -695,7 +673,7 @@ int daOts_c::func_ov064_02116560(){
  * animation at double speed. */
 void daOts_c::func_ov064_02116460()
 {
-    if (_Z14ApproachLinearRiii(&this->mHorzSpeed, 0, tail().mHorzDecel) != 0) {
+    if (ApproachLinear(this->mHorzSpeed, 0, tail().mHorzDecel) != 0) {
         int b = (this->actorID == kBigBullyActorId);
         int lim = b ? 0x14 : 0xa;
         if (tail().mHopCount < 2) {
@@ -713,7 +691,7 @@ void daOts_c::func_ov064_02116460()
         this->mPrevAngleY = this->mAngleY;
         {
             BCA_File *anim = CONFIG_BCA(this, kAnimWalk);
-            this->mModelAnim.SetAnim((BCA_File *)anim, 0, kAnimSpeedDouble, 0);
+            this->mAnmModel.SetAnim((BCA_File *)anim, 0, kAnimSpeedDouble, 0);
         }
         return;
     }
@@ -741,7 +719,7 @@ extern "C" void func_ov064_021163c0(daOts_c *c)
     c->mPrevAngleY = c->mAngleY;
     c->tail().mState = daOts_c::STATE_RETURN_HOME;
     BCA_File *f = CONFIG_BCA(c, kAnimWalk);
-    c->mModelAnim.SetAnim((BCA_File *)f, 0, kAnimSpeedNormal, 0);
+    c->mAnmModel.SetAnim((BCA_File *)f, 0, kAnimSpeedNormal, 0);
     return;
 }
 
@@ -757,8 +735,8 @@ void daOts_c::UpdateDeathState()
 /* Slot 33. Plays the footstep sound on frames 4 and 7 of the animation. */
 void daOts_c::PlayStepSound()
 {
-    if (mModelAnim.WillHitFrame(4) == 0) {
-        if (mModelAnim.WillHitFrame(7) == 0)
+    if (mAnmModel.WillHitFrame(4) == 0) {
+        if (mAnmModel.WillHitFrame(7) == 0)
             return;
     }
     func_0201267c(kSfxStep, &mCamSpacePos);
@@ -818,8 +796,8 @@ void daOts_c::func_ov064_02116220() {
                 tail().mState = STATE_REMOVE;
             } else if (r == 1) {
                 tail().mState = STATE_DYING;
-                this->mModelAnim.SetAnim((BCA_File *)(CONFIG_BCA(this, kAnimDeath)), 0,
-                                         kAnimSpeedNormal, 0);
+                this->mAnmModel.SetAnim((BCA_File *)(CONFIG_BCA(this, kAnimDeath)), 0,
+                                        kAnimSpeedNormal, 0);
                 this->mFlags &= ~1u;
                 this->PlayDeathSound();
                 tail().mHomePosX = this->mPosX;

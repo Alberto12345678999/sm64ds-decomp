@@ -731,42 +731,42 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@989",
+      "from": "@986",
       "to": "@938",
       "evidence": "mwcc emits the destructor-registration node as @941, already promoted by other modules; @938 is unused fleet-wide and the same length"
     },
     {
-      "from": "sBannerWaveFxPos$534",
+      "from": "sBannerWaveFxPos$531",
       "to": "sBannerWaveFxPos",
       "evidence": "mwccarm names a function-local static name$N, its guard _ZGVname$N and its registration node @N from the per-TU counter; renamed onto the configured ov004 name at the same address"
     },
     {
-      "from": "_ZGVsBannerWaveFxPos$534",
+      "from": "_ZGVsBannerWaveFxPos$531",
       "to": "sBannerWaveFxPosGuard",
       "evidence": "mwccarm names a function-local static name$N, its guard _ZGVname$N and its registration node @N from the per-TU counter; renamed onto the configured ov004 name at the same address"
     },
     {
-      "from": "@537",
+      "from": "@534",
       "to": "sBannerWaveFxPosDtorRec",
       "evidence": "mwccarm names a function-local static name$N, its guard _ZGVname$N and its registration node @N from the per-TU counter; renamed onto the configured ov004 name at the same address"
     },
     {
-      "from": "sBannerZoomFxPos$922",
+      "from": "sBannerZoomFxPos$919",
       "to": "sBannerZoomFxPos",
       "evidence": "mwccarm names a function-local static name$N, its guard _ZGVname$N and its registration node @N from the per-TU counter; renamed onto the configured ov004 name at the same address"
     },
     {
-      "from": "_ZGVsBannerZoomFxPos$922",
+      "from": "_ZGVsBannerZoomFxPos$919",
       "to": "sBannerZoomFxPosGuard",
       "evidence": "mwccarm names a function-local static name$N, its guard _ZGVname$N and its registration node @N from the per-TU counter; renamed onto the configured ov004 name at the same address"
     },
     {
-      "from": "@925",
+      "from": "@922",
       "to": "sBannerZoomFxPosDtorRec",
       "evidence": "mwccarm names a function-local static name$N, its guard _ZGVname$N and its registration node @N from the per-TU counter; renamed onto the configured ov004 name at the same address"
     },
     {
-      "from": "__arraydtor$988",
+      "from": "__arraydtor$985",
       "to": "__arraydtor$954",
       "owned_function": {
         "module": "ov004",

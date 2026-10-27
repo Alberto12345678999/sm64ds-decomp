@@ -11,9 +11,6 @@
  * so they keep their address names.
  *
  * leftovers:
- * - dCcAcPos_c::Init stays a mangled local extern: the header spelling
- *   takes Fix12<int> by value, and Fix12 has no int constructor, so a call
- *   through it cannot be written with these literals.
  * - The data_ov064_* tables and constants keep address names; the profile
  *   rows and .data PMF constants are not owned by this TU.
  */
@@ -25,6 +22,7 @@
 #include "SharedFilePtr.h"
 #include "dExtAnmTexSRT_c.h"
 #include "Player.h"
+#include "math/Approach.h"
 
 extern "C" {
 /* The two state tables, ov064 .bss; the definitions at the end of this
@@ -49,15 +47,10 @@ void Vec3_Asr(struct Vector3 *d, struct Vector3 *s, int sh);
 void Matrix4x3_FromTranslation(void *m, int x, int y, int z);
 void Matrix4x3_ApplyInPlaceToRotationXYZExt(void *m, int x, int y, int z);
 
-/* local extern: the header spellings take Fix12<int> by value, and Fix12
-   has no int constructor, so a call through them cannot be written with
-   these literals. */
-void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(dCcAcPos_c *self, dActor_c *actor, const Vector3 *offset, int radius, int height, u32 flags, u32 vulnFlags);
 }
 
 extern SharedFilePtr data_ov002_0210da10;   /* the ring's BMD */
 
-void ApproachLinear(int &value, int target, int step);
 
 // @symbol _ZN14daWater_Ring_cD1Ev
 // @symbol _ZN14daWater_Ring_cD0Ev
@@ -266,7 +259,7 @@ int daWater_Ring_c::InitResources()
     v.x = data_ov064_0211c3d0.x;
     v.y = data_ov064_0211c3d0.y;
     v.z = data_ov064_0211c3d0.z;
-    _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(&mdCcAcPos_c, this, &v, 0x88000, 0xe8000, 0x800006, 0);
+    mdCcAcPos_c.Init(this, v, 0x88000, 0xe8000, 0x800006, 0);
 
     mOpacity = 0x1f;
     func_ov064_02119ecc(&data_ov064_0211c954);

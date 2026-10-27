@@ -12,6 +12,7 @@
 
 #include "dExtSimpleModel_c.h"
 #include "G3X.h"
+#include "cstd.h"
 
 namespace CP15 {
 void EnableDTCM(void);
@@ -91,8 +92,6 @@ void dExtSimpleModel_c::UpdateFileOffsets(BMD_File &file) {
 }
 #undef REBASE
 
-extern "C" int _ZN4cstd6strcmpEPKcS1_(const char *a, const char *b);
-
 // @symbol func_02046590
 extern "C" int func_02046590(const void *tbl, const char *name)
 {
@@ -112,7 +111,7 @@ extern "C" int func_02046590(const void *tbl, const char *name)
         struct Entry *entry = t->entries;
         while (1)
         {
-            if (_ZN4cstd6strcmpEPKcS1_(entry->name, name) == 0)
+            if (cstd::strcmp(entry->name, name) == 0)
                 return (int)i;
             i++;
             entry = (struct Entry *)((char *)entry + 0x30);

@@ -18,9 +18,6 @@
  *   ring's uniqueID in cartridge order (cmp r0, r1). Swapping the
  *   operands DIFFs. The 0x3ac/+4 dance stays; uniqueID is the word
  *   at +4 of that ring.
- * - dExtAnmModel_c::SetAnim and dCcAcPos_c::Init stay the scalar
- *   Fix12<int> externs. The member calls grow those functions and
- *   move InitResources' reloc off data_ov090_02134524.
  * - Behavior keeps the mSpeedZ copy after the terminal clamp.
  *   Dropping it loses the reload of dActor_c's z speed.
  * - Matrix4x3 stays decl_common.h's flat s32[12].
@@ -36,8 +33,10 @@
 #include "daManta_c.h"
 #include "daWater_Ring_c.h"
 #include "PathPtr.h"
+#include "Player.h"
 #include "SharedFilePtr.h"
 #include "Sound.h"
+#include "math/Approach.h"
 
 /* init at +0, execute at +8. Same shape as daWater_Ring_c::State.
  * The overlay image stores each as (function, this-delta) with delta 0. */
@@ -86,9 +85,6 @@ extern MantaAnimationFilePtr data_ov090_0213452c;
 extern unsigned char data_0209f2d8;
 extern Matrix4x3 data_020a0e68;
 
-void _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(
-    Player *, const Vector3 &, unsigned int, Fix12i, unsigned int,
-    unsigned int, unsigned int);
 void Vec3_Asr(Vector3 *d, Vector3 *s, int sh);
 void Matrix4x3_FromTranslation(Matrix4x3 *m, Fix12i x, Fix12i y, Fix12i z);
 void Matrix4x3_ApplyInPlaceToRotationXYZExt(void *m, int x, int y, int z);
@@ -101,12 +97,8 @@ short Vec3_VertAngle(const Vector3 *v0, const Vector3 *v1);
 void Matrix4x3_FromRotationY(void *m, int angle);
 void Matrix4x3_ApplyInPlaceToRotationX(void *m, short angle);
 void MulVec3Mat4x3(Vector3 *v, void *m, Vector3 *out);
-void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(void *self, dActor_c *a,
-                                                             const Vector3 &v, int b, int c,
-                                                             unsigned int d, unsigned int e);
 }
 
-bool ApproachLinear(short &value, short target, short step);
 
 extern MantaState data_ov090_0213454c;
 
@@ -140,8 +132,7 @@ void daManta_c::func_ov090_02132730()
         hit.x = mPosX;
         hit.y = mPosY;
         hit.z = mPosZ;
-        _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(
-            (Player *)actor, hit, 1, 0xc000, 1, 0, 1);
+        ((Player *)actor)->Hurt(hit, 1, 0xc000, 1, 0, 1);
     }
 }
 
@@ -154,7 +145,7 @@ int daManta_c::func_ov090_021327e4()
     Vector3 num1;
     Vector3 num2;
 
-    mModelAnim.Advance();
+    mAnmModel.Advance();
     func_ov090_02132730();
 
     if (mRingCount < MANTA_RING_GOAL) {
@@ -227,11 +218,11 @@ int daManta_c::func_ov090_021327e4()
 // @symbol _ZN9daManta_c19func_ov090_02132a58Ev
 int daManta_c::func_ov090_02132a58()
 {
-    mModelAnim.SetAnim((BCA_File *)data_ov090_0213452c.filePtr, 0, 0x1000, 0);
+    mAnmModel.SetAnim((BCA_File *)data_ov090_0213452c.filePtr, 0, 0x1000, 0);
     mHitRing = 0;
     mRingWrite = 0;
     mRingRead = 0;
-    mModelAnim.speed = 0x1000;
+    mAnmModel.speed = 0x1000;
     int i;
     for (i = 0; i < MANTA_RING_SLOTS; i++)
         mRingIDs[i] = 0;
@@ -260,14 +251,12 @@ void daManta_c::func_ov090_02132b14()
     Matrix4x3_FromTranslation(&data_020a0e68, scaled.x, scaled.y, scaled.z);
     Matrix4x3_ApplyInPlaceToRotationXYZExt(
         &data_020a0e68, mAngleX, mAngleY, mAngleZ);
-    mModelAnim.mat4x3 = data_020a0e68;
+    mAnmModel.mat4x3 = data_020a0e68;
     mRingPos.x = 0;
     mRingPos.y = 0;
     mRingPos.z = 0;
-    data_020a0e68 = mModelAnim.mat4x3;
-    MulMat4x3Mat4x3(
-        (const int *)(mModelAnim.data.transforms + 3),
-        data_020a0e68.m, data_020a0e68.m);
+    data_020a0e68 = mAnmModel.mat4x3;
+    MulMat4x3Mat4x3((const int *)(mAnmModel.data.transforms + 3), data_020a0e68.m, data_020a0e68.m);
     mRingPos.x = data_020a0e68.m[9];
     mRingPos.y = data_020a0e68.m[10];
     mRingPos.z = data_020a0e68.m[11];
@@ -294,7 +283,7 @@ void daManta_c::OnPendingDestroy()
 // @symbol _ZN9daManta_c6RenderEv
 int daManta_c::Render()
 {
-    mModelAnim.Render(0);
+    mAnmModel.Render(0);
     return 1;
 }
 
@@ -353,7 +342,7 @@ int daManta_c::Behavior()
 // @symbol _ZN9daManta_c13InitResourcesEv
 int daManta_c::InitResources()
 {
-    mModelAnim.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(data_ov090_02134524), 1, -1);
+    mAnmModel.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(data_ov090_02134524), 1, -1);
     dExtSimpleModel_c::LoadFile(data_ov002_0210da10);
     dExtSimpleModel_c::LoadFile(data_ov002_0210d9a8);
     dExtFrameCtrl_c::LoadFile(data_ov090_0213452c);
@@ -376,8 +365,7 @@ int daManta_c::InitResources()
         offset.x = data_ov090_02134200.x;
         offset.y = data_ov090_02134200.y;
         offset.z = data_ov090_02134200.z;
-        _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
-            &mdCcAcPos_c, this, offset, 0x150000, 0xc8000, 0x200004, 0);
+        mdCcAcPos_c.Init(this, offset, 0x150000, 0xc8000, 0x200004, 0);
     }
 
     {

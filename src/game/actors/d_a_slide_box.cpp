@@ -222,7 +222,7 @@ int daSlide_Box_c::Behavior()
         UpdatePos(0);
         dBgCh_Actr_UpdateContinuous_Veneer(&mWithMeshClsn);
         if (mWithMeshClsn.IsOnGround()) {
-            dBgPi *floor = (dBgPi *)mWithMeshClsn.GetFloorResult();
+            dBgPi *floor = mWithMeshClsn.GetFloorResult();
             floor->surface.CopyNormalTo(normal);
             if (normal.y != 0) {
                 mVertSpeed =

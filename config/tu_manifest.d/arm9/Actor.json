@@ -359,7 +359,7 @@
       "ordinal": 47
     },
     {
-      "symbol": "_ZN8dActor_c13SpawnFireballERK7Vector3PK10Vector3_165Fix12IiES7_j",
+      "symbol": "_ZN8dActor_c13SpawnFireballERK7Vector3PK10Vector3_16iij",
       "address": "0x020102b0",
       "size": "0x00000054",
       "legacy_source": "src/_ZN8dActor_c13SpawnFireballERK7Vector3PK10Vector3_165Fix12IiES7_j.cpp",
@@ -394,7 +394,7 @@
       "ordinal": 52
     },
     {
-      "symbol": "_ZN8dActor_c12ReflectAngleE5Fix12IiES1_s",
+      "symbol": "_ZN8dActor_c12ReflectAngleEiis",
       "address": "0x02010428",
       "size": "0x00000034",
       "legacy_source": "src/_ZN8dActor_c12ReflectAngleE5Fix12IiES1_s.cpp",
@@ -450,7 +450,7 @@
       "ordinal": 60
     },
     {
-      "symbol": "_ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs",
+      "symbol": "_ZN8dActor_c10SpawnCoinsERK7Vector3iis",
       "address": "0x02010714",
       "size": "0x00000130",
       "legacy_source": "src/_ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs.cpp",
@@ -520,14 +520,14 @@
       "ordinal": 70
     },
     {
-      "symbol": "_ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_S5_j",
+      "symbol": "_ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x3iiih",
       "address": "0x02010b9c",
       "size": "0x0000004c",
       "legacy_source": "src/_ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_S5_j.cpp",
       "ordinal": 71
     },
     {
-      "symbol": "_ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j",
+      "symbol": "_ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x3iih",
       "address": "0x02010be8",
       "size": "0x00000048",
       "legacy_source": "src/_ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j.cpp",

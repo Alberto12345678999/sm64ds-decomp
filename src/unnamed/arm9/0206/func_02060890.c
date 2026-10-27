@@ -5,7 +5,7 @@ extern char data_020a8180[];
 extern void *data_020a8780;
 
 /* The card access state block data_020a8180 (NitroSDK CARDiCommon), the
- * fields this function touches; names as func_02060484.c spells them. */
+ * fields this function touches; names as func_02060484.cpp spells them. */
 typedef struct CardCommon {
     unsigned char pad_00[0x18];
     int mSrc;                /* 0x18 */

@@ -48,7 +48,7 @@
       "ordinal": 3
     },
     {
-      "symbol": "_ZN7Message21DisplayLevelClearTextEta",
+      "symbol": "_ZN7Message21DisplayLevelClearTextEth",
       "address": "0x0201cf80",
       "size": "0x00000038",
       "legacy_source": "src/_ZN7Message21DisplayLevelClearTextEta.cpp",
@@ -62,7 +62,7 @@
       "ordinal": 5
     },
     {
-      "symbol": "_ZN7Message22DisplayOptionsMenuTextEt",
+      "symbol": "_ZN7Message22DisplayOptionsMenuTextEs",
       "address": "0x0201d018",
       "size": "0x000000e0",
       "legacy_source": "src/_ZN7Message22DisplayOptionsMenuTextEt.cpp",
@@ -139,7 +139,7 @@
       "ordinal": 16
     },
     {
-      "symbol": "_ZN7Message11DisplayTextEt",
+      "symbol": "_ZN7Message11DisplayTextEi",
       "address": "0x0201e36c",
       "size": "0x00000208",
       "legacy_source": "src/_ZN7Message11DisplayTextEt.cpp",

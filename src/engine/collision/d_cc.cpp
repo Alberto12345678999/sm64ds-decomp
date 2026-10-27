@@ -18,6 +18,7 @@
 #include "dCc_c.h"
 #include "dActor_c.h"
 #include "nitro/fx/fx.h"
+#include "cstd.h"
 
 struct Player;
 struct Arg;
@@ -26,7 +27,7 @@ extern "C" {
 /* local extern: the collider-list head. decl_common.h's copy is `void*`; the
    real type is the node pointer every method here reads. */
 extern dCc_c *data_0209cee8;
-/* local extern: no header declares the C vector helpers; src/Vec3_HorzLen.c
+/* local extern: no header declares the C vector helpers; src/Vec3_HorzLen.cpp
    defines it with this signature. */
 extern Fix12i Vec3_HorzLen(const Vector3 *v);
 /* local extern: no header declares it; the definition lives in Player.cpp
@@ -34,12 +35,6 @@ extern Fix12i Vec3_HorzLen(const Vector3 *v);
    arg->m2() is vtable slot 2, our GetPos, and it tests the flags word at
    +0x18). */
 int func_ov002_020caf98(struct Player *player, struct Arg *clsn);
-}
-
-namespace cstd {
-/* local extern: no header declares the cstd math namespace; src/cstd.cpp
-   defines fdiv(s32, s32). */
-int fdiv(int numerator, int denominator);
 }
 
 // @symbol _ZN5dCc_cC2Ev
@@ -59,17 +54,12 @@ dCc_c::~dCc_c() {
     Unlink();
 }
 
-// @symbol _ZN5dCc_c4InitE5Fix12IiES1_jj
-/* The header's scalar Init(Fix12i, Fix12i, u32, u32) reproduces these
- * bytes as a method, but emits _ZN5dCc_c4InitEiijj. Production still names
- * this entry _ZN5dCc_c4InitE5Fix12IiES1_jj; keep the C-linkage boundary
- * until the symbol and its callers are reconciled. */
-extern "C" void _ZN5dCc_c4InitE5Fix12IiES1_jj(dCc_c *self, int radius, int height, unsigned flags,
-                                              unsigned vulnFlags) {
-    self->radius = radius;
-    self->height = height;
-    self->flags = flags;
-    self->vulnFlags = vulnFlags;
+// @symbol _ZN5dCc_c4InitEiijj
+void dCc_c::Init(Fix12i radius_, Fix12i height_, u32 flags_, u32 vulnFlags_) {
+    radius = radius_;
+    height = height_;
+    flags = flags_;
+    vulnFlags = vulnFlags_;
 }
 
 // @symbol _ZN5dCc_c5ClearEv

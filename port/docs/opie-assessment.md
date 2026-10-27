@@ -149,7 +149,7 @@ That grep proves nothing in a tree that names unknowns `func_XXXX`. Re-examined:
 
 - **G3d/G2d: genuinely absent.** The BMD loader checks no magic anywhere, `BMD_File.h`
   is a flat count/offset header, and name lookup is linear `strcmp`
-  (`src/func_020471ac.c`) where NNS G3d uses radix dictionaries. Hand-rolled EAD readers.
+  (`src/func_020471ac.cpp`) where NNS G3d uses radix dictionaries. Hand-rolled EAD readers.
 - **FND heaps: NNS under EAD names.** The signatures are literal NNS FND tags —
   `0x46524d48` = `'FRMH'` (`src/engine/heap/SolidHeapAllocator.cpp:86`) and `0x45585048` =
   `'EXPH'` (`src/engine/heap/ExpandingHeapAllocator.cpp`, the `C1`).
@@ -165,7 +165,7 @@ side is the **stock NitroSDK sound stack over SDAT**:
 
 - `src/Snd_SendCommand.c` builds command records from a pool and dispatches them —
   NitroSDK's `SND` command-queue shape.
-- `src/func_0205b070.c` is `SND_FlushCommand` (DC-flush of 0x1800 = 256 × 0x18, then IPC
+- `src/func_0205b070.cpp` is `SND_FlushCommand` (DC-flush of 0x1800 = 256 × 0x18, then IPC
   on **PXI tag 7** = sound). `IPCSend` in `src/engine/pxi/PXI_Fifo.cpp` is `PXI_SendWordByFifo` on `0x4000188`.
 - The data is SDAT: `symbols/verified.tsv` names `0x020a5bb8` as
   `_ZN5Sound8SDAT_RAM3PTRE`, and `Sound::InfoSequenceEntry::GetWithID` walks the SDAT

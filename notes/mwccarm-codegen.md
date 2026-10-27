@@ -353,6 +353,31 @@ sources, 1,492 functions, not just the call-site holders. 1,486 match; the other
 that noise on any wide actor-file change and check it against base rather than
 assuming it is yours.
 
+### BATCH 5: Player's Hurt, Bounce and SpinBounce (2026-10-26)
+
+| old symbol | new symbol | addr/size |
+|---|---|---|
+| `_ZN6Player4HurtERK7Vector3j5Fix12IiEjjj` | `_ZN6Player4HurtERK7Vector3jihhh` | ov002 0x020d8e70/0x348 |
+| `_ZN6Player6BounceE5Fix12IiE` | `_ZN6Player6BounceEi` | ov002 0x020d932c/0x80 |
+| `_ZN6Player10SpinBounceE5Fix12IiE` | `_ZN6Player10SpinBounceEi` | ov002 0x020e1020/0x88 |
+
+All three are real `Player::` methods now, declared in `include/Player.h` with
+their parameters unnamed. Every caller in `src/` calls them as members.
+
+- **`Hurt`'s last three parameters are `u8`, not `u32`.** The old name said
+  `jjj`, but the body reads them with `ldrb`. Spelt `u32`, four words differ;
+  spelt `u8`, the method matches. That is the same correction
+  `ShowMessage`'s `jj` to `hh` needed: a reconstructed name can be wrong in
+  its scalar widths too, not only in the `Fix12` class.
+- **Local vector shadows need a cast at the call.** Several actors build the
+  hurt origin in a local struct of their own (`DaJgmVector3Words`, `Vec3i`,
+  `int[3]`), not a `Vector3`. `*(Vector3 *)&v` binds the reference to the
+  same address the old `&v` passed, so the bytes do not change.
+- **Including `Player.h` only renumbers labels.** `d_a_shl.cpp` held its calls
+  on the claim that the header "is +94". That number is @NNN labels, not bytes:
+  with the header included, every function matches and only the
+  `defined_symbol_renames[].from` keys in its manifest move.
+
 ### DONE for both SetAnim symbols (2026-10-22/23)
 
 `_ZN14dExtAnmModel_c7SetAnimEP8BCA_Filei5Fix12IiEj` is now
@@ -410,6 +435,154 @@ Two things that differ from the dExtAnmModel_c pass, both from parameter 2 being
 declaration; removing the declaration leaves the marker recording nothing, so
 those were dropped. That is different from the `config/tu_manifest.d/` strings,
 which stay.
+
+### BATCH 5: the drop-shadow path, and two parameter TYPES the names got wrong (2026-10-26)
+
+| old symbol | new symbol | addr/size |
+|---|---|---|
+| `_ZN17dExtShadowModel_c9InitModelEP9Matrix4x35Fix12IiES3_S3_j` | `_ZN17dExtShadowModel_c9InitModelEP9Matrix4x3iiih` | 0x02015e64/0x58 |
+| `_ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j` | `_ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x3iih` | 0x02010be8/0x48 |
+| `_ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_S5_j` | `_ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x3iiih` | 0x02010b9c/0x4c |
+| `_ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs` | `_ZN8dActor_c10SpawnCoinsERK7Vector3iis` | 0x02010714/0x130 |
+| `_ZN8dActor_c12ReflectAngleE5Fix12IiES1_s` | `_ZN8dActor_c12ReflectAngleEiis` | 0x02010428/0x34 |
+| `_ZN8dActor_c13SpawnFireballERK7Vector3PK10Vector3_165Fix12IiES7_j` | `_ZN8dActor_c13SpawnFireballERK7Vector3PK10Vector3_16iij` | 0x020102b0/0x54 |
+
+All six reproduce as real C++ methods at 2004/b56. `InitModel` was the second
+flagship: its own header argued at length that "a plain int can never reproduce
+that name, which is what include/math/Fix12.h exists for", and its definition
+sat under `#pragma cplusplus off` to dodge the homing. Both were consequences of
+the name, and the name was ours.
+
+**THE BYTES CORRECTED TWO PARAMETER TYPES, NOT JUST THE Fix12 ONES.** Once the
+definition is a real method the compiler picks instructions from the declared
+types, so a wrong one shows up as a one-instruction miss. That is new evidence,
+not a style choice:
+
+- **`InitModel`'s opacity is `u8`, not the `u32` its name claimed.** With `u32`
+  the only mismatch in 0x58 bytes was `+0x14`: the ROM reads the fifth stack
+  argument with `ldrb r2, [sp, #4]`, a `u32` parameter emits `ldr`. Both
+  `DropShadow*` forward that argument, so both took `h` too -- and their local
+  externs across 84 files already said `unsigned char`, against their own names.
+- **`SpawnCoins`'s count is SIGNED, although its name said `j` and all 18 local
+  externs said `unsigned int`.** With `u32` five instructions miss: `ble`->`bls`
+  at +0x20, the `addls`/`popls`/`bxls` epilogue at +0x34..0x3c, and the loop's
+  closing `blt`->`blo` at +0x114. Signed compares, signed count.
+
+**THE CONSUMERS ARE MEMBER CALLS TOO -- 87 of 94 files, every byte verified.**
+The first cut of this PR only respelled the consumers' local externs, to dodge
+the label renumbering documented above (71 of the 94 consumer TUs record
+compiler-local `@NNN` labels). That left 293 unreadable call sites, so the
+conversion was folded in and the renumbering handled properly instead. Result:
+`_ZN8dActor_c19DropShadowRadHeight...(this, &mShadowModel, &mModel.mat4x3, r, d, 0xf)`
+is now `DropShadowRadHeight(mShadowModel, mModel.mat4x3, r, d, 0xf)`, and
+`tubuild verify` reports every touched TU (95) all-MATCH, objisolate-clean,
+with no EXTRA or refused labels.
+
+**How the conversion was driven, so the next batch can reuse it.** A script
+deleted each local extern, rewrote each call site, compiled, and on a compile
+error escalated only the offending call along a per-argument ladder -- the
+receiver clean (`Meth(...)`, `p->`, `x.`) or cast (`((dActor_c *)c)->`), and
+each reference argument as `&x`->`x` / as-is / `*(T *)e` / `*(T *)&e` -- cheapest
+first. Per-ARGUMENT, because the same symbol was declared differently in
+different files: some externs took the shadow model by reference (so callers
+passed `mShadow`), most by pointer (`&mShadow`), and a few actors still store the
+matrix as a raw `int[12]` or `u8[]`, which forces `*(Matrix4x3 *)mShadowMtx`.
+Those casts are honest until the layouts are fixed; that is the next pass.
+
+**Seven files keep a mangled extern, and each says why on the line above it:**
+
+- **Six are tail calls.** `return _ZN8dActor_c18DropShadowScaleXYZ...(...)`
+  inside an int-returning caller forwards the callee's r0 as the caller's
+  result, which a `void` member call cannot express without an invented return
+  value -- the same shape as `d_a_ots.cpp`'s SetAnim in batch 1.
+- **`d_a_obj_pile.cpp` calls SpawnCoins through a function-pointer cast** and
+  passes a `V3` BY VALUE (r1-r3); the member's `const Vector3 &` cannot express
+  that byte-identically.
+
+**`SpawnFireball` RETURNS THE BALL.** `d_a_trs.cpp` does
+`fb = SpawnFireball(...)` and uses `fb`, so its ROM caller reads r0 after the
+call. The definition leaves `ball` in r0 from the `Spawn` call to the `bx lr`,
+so `dActor_c *SpawnFireball(...) { ...; return ball; }` is byte-identical. The
+return type is not in the mangled name; only a caller that uses it can show it.
+
+**A real member name can change codegen where a cast does not.**
+`daKinopio_c::UpdateModelPose` reads its shadow block through
+`char *c = (char *)this`. Passing `mShadowModel, mShadowTransform` instead of
+`*(dExtShadowModel_c *)(c + 0x16c), *(Matrix4x3 *)(c + 0x1c4)` -- the same
+addresses -- broke the function (14/15). The cast form stays, banked as a
+raw-offset exception.
+
+**RENUMBERING, DONE RIGHT: pair the two objects' labels by RANK.** Deleting a
+named-parameter extern renumbers the compiler's temporaries but never creates
+or destroys one, so the i-th `@NNN` of the old object IS the i-th of the new.
+Build the TU once from the pre-conversion source (stash `src/`,
+`tubuild verify --no-write`), read both objects' symbol tables with
+pyelftools -- NOT a string scan, which is what polluted batch 4's remap with
+`@0`/`@2`/`@5` -- and pair them. All 61 renumbered TUs paired with equal counts.
+Then only `defined_symbol_renames[].from` changes; the canonical side
+(`data`/`bss`/`relocations`/`.to`) is the ROM's identity and never moves.
+Three traps on the way:
+
+- **A `from` can point at a NAMED data symbol**, e.g.
+  `@939 -> data_ov072_02122a24`. Remapping only label-to-label entries left
+  `daPgBby_c`, `daSanbo_c` and `daObjHatenaBlock_c` refusing renames. Remap
+  every entry whose `from` is a temporary, whatever its `to`.
+- **Entry key order varies** (`to`/`evidence`/`from` in some files), so edit
+  inside each entry's braces, anchored on its unique `to`.
+- **Edit the array in place.** Re-emitting the whole array sorted turned a
+  2-line-per-entry change into a 3,100-line diff git could not pair.
+
+**Never leave a long check running while you edit the tree.** A 3-hour
+`prepush_linkcheck` from before the rebase was still reading the working tree
+through the conversion and the remap; it reported `__sinit_d_ent_obj.cpp`
+WRONG on a state that never existed, and its builds can overwrite the objects a
+concurrent `tubuild verify` is reading. Stop it, or re-verify anything it
+overlapped, serially.
+
+The gates, once converted: `source_style` needs 10 exceptions (the 7 kept
+externs, Kinopio's two casts, and one `Player` cast at an undeclared
+`Player+0x5bc` matrix) instead of the 123 the respell-only cut needed;
+`check_decl_agreement`'s baseline SHRINKS by ~300 lines, because the externs
+that disagreed with the definitions are gone. Two config traps from the
+respell-only cut still bite:
+
+- **The `local extern:` marker must be a ONE-LINE comment.** The gate reads
+  `text_lines[d.line - 2 : d.line]` -- the declaration's own line and the one
+  directly above it. `check_decl_agreement` also exempts a symbol that takes
+  `Fix12<int>` by value (`_takes_fix12_by_value`), which is why these externs
+  never needed a reason before the rename.
+- **A `// @symbol` mark only names the definition that FOLLOWS it with no
+  statement in between.** `check_decl_agreement` takes the marks in
+  `[start, decl_start)`, where `start` is the end of the previous statement. An
+  `extern "C" { ... }` helper block sitting between the mark and the definition
+  swallows the mark, the definition becomes an unnamed orphan, and the gate
+  silently falls back to comparing every declaration against the **plurality**
+  instead -- `SpawnCoins` reported 269 disagreements against `d_a_btn.cpp`'s
+  spelling until the helper block moved above the mark. Watch for `plurality is`
+  where `definition is` belongs.
+- **A LIVE `tubuild create warning: CONFLICT:` note tracks the marker in the
+  source.** `check_tubuild_conflicts` matches the note's text against it, so a
+  symbol rename must respell the live note; and once the converted file no
+  longer carries the quoted declaration, the marker goes and the note becomes
+  `(RESOLVED)` (`ov002/daStarBase_c+daStar_c.json`). Historical `(RESOLVED)`
+  notes keep their old spelling.
+
+**18 `5Fix12IiE` names remain, and the earlier "~43" count was inflated** -- it
+was a grep over `src/ include/ config/` that also caught `functions[].legacy_source`
+provenance paths and `(RESOLVED)` manifest prose, neither of which is a live
+reference. Counted against `config/**/symbols.txt`, 13 are enrolled symbols,
+every one of them with a definition in `src/`:
+
+`ApproachLinear`, `LoadMinimapChangeObject`, `dBgCh_SphCrr::SetObjAndSphere`,
+`dCc_c::Init`, `dCcAcPos_c::Init`, `dCcAc_c::Init`, `G3i::PerspectiveW_`,
+`Player::Bounce`, `Player::SpinBounce`, `Player::Hurt`,
+`dMap_c::GetPosFromMinimapPos`, `dEnemyBase_c::KillByInvincibleChar`, and
+`dBgActor_c::UpdateKillByMegaChar`, which is the measured genuine wall and stays.
+
+The other five -- `dBgCh_Actr::Init`, `OAM::Render`, `cstd::atan2`,
+`Sound::ChangeMusicVolume` and `Particle::System::New` -- are in no
+`symbols.txt` at all: they exist only as local `extern` declarations in `src/`,
+so there is nothing enrolled to rename and nothing but the spelling to fix.
 
 ## 1. Ground rules of the build
 
@@ -4796,7 +4969,7 @@ the lever should not be re-tried.
 **51 committed sources carry it right now** (`grep -rl '#pragma long_calls' src/`) -- 50 of
 them overlay files (19 in ov007, the rest spread over
 ov002/006/014/015/016/022/029/030/036/063/064/065/066/073/079/080/091/095/098) and exactly
-ONE arm9 file, `src/unnamed/arm9/0205/func_0205d3e4.c`. Most sit under a header comment that says the pragma
+ONE arm9 file, `src/unnamed/arm9/0205/func_0205d3e4.cpp`. Most sit under a header comment that says the pragma
 is what emits the pooled veneer. They all still byte-match, because the pragma is inert, but
 the comment is wrong and every one of those compiles now prints `warning: illegal #pragma`
 under the `-w illpragmas` in `DEFAULT_FLAGS`. Deleting the line from those files is a no-op
@@ -8480,3 +8653,106 @@ in the call argument, so it is not a later live range; 265). About 1,030 cells.
 local reaches, assign the value into a DEAD earlier local whose first assignment has the rank
 you need. With 6dc this makes one rule: in b56, colour rank comes from the order of FIRST
 assignment, and reused locals inherit it.
+
+## 6de. Placement new always null-tests in 2004/b56; build the object as what it really is, a member or a block-scope local, and the mangled C1 call goes away (2026-10-27)
+
+Several sources called a constructor by its mangled C1 name on storage that already existed,
+because `new (p) T(...)` adds a `cmp r0,#0` the ROM does not have. The null test cannot be
+switched off. Measured on `mHeap::Heap_t::CreateSolidHeapAllocator` (target 0x4c), and the
+test survived every variant:
+
+| spelling | size |
+|---|---|
+| inline global or class-scope `operator new(size_t, void*)`, with or without `throw()`, `throw(bad_alloc)`, `#pragma exceptions on`, `-Cpp_exceptions on` (`.exceptix` appears: the flag took), `__attribute__((nothrow))`, `__attribute__((pure))` | 0x5c (+16) |
+| declared-only placement `operator new` | 0x70 (+36) |
+| placement on `&global` or on an array global | +24 |
+| an explicit `if (start == 0) return 0;` first | +36 (the test is duplicated) |
+| `p->T::T()`, with or without `#pragma cpp_extensions on` | "illegal use of type-name" |
+| `__declspec(nothrow)` | "illegal type qualifier" |
+
+The positive control for the attribute rows is `__attribute__((never_inline))`, which did take
+effect (+36).
+
+**Lever.** Don't construct on raw storage. Find what the object really is:
+
+- **A member built by its owner's implicit constructor.** `dScDSMT_c::mGraphCallback` was
+  `u8[4]`, so classInit wrote both vptrs and called `_ZN10dFdDummy_cC1Ev` by hand. Typed as
+  `graphCallback_c`, with the nested class defined before the member, classInit becomes
+  `return new dScDSMT_c;` and matches. It emits the `_ZN8dScene_cD2Ev` / `_ZN7dBase_cD2Ev`
+  helpers, which are deadstripped the same way as in dScGameOver_c.
+- **A block-scope local.** The ROM frames follow one rule. Function-scope locals get slots
+  first, in declaration order. Block-scope locals follow, in textual declaration order. A
+  local of an inlined static helper comes after all of the caller's locals. So declare the
+  object in the block where the ROM constructs it, and its destructor runs at scope exit,
+  where the ROM's explicit D1 call was. That closed `ExpandingHeapAllocator::Reallocate`
+  (`MemoryNode::Target tgt(block)`), `dBgW_Kc::DetectClsn(dBgCh_Lin&)` (`dBgPc pc` in the hit
+  block, `pos` in the result block) and `daObjBk_Botaosi_c::InitResources` (`dBgCh_Gnd gnd`).
+  Reallocate's `volatile int` fill zero has to sit below both Targets, so it moves into a
+  `FillZero` inline. A placement new there costs +8, and block locals without the helper
+  give 5 to 15 frame-word diffs.
+- **Drop `opt_propagation off` when a scope-exit destructor follows the return constant.**
+  Under the pragma, botaosi's typed local kept `return 1` live in r4 across the destructor
+  (+8 bytes, the reason for the old word storage). Without it the constant rematerializes
+  after the call. The two Vector3 zero blocks then need x, y, z order with literal zeros
+  (`a = b = 0` chains store right to left).
+
+**Still held.** The factory C1 calls on a computed, aligned address
+(`CreateSolidHeapAllocator`, `CreateExpandingHeapAllocator`, +16 as placement new). The
+`NestedHeapIterator` "C1" calls in NestedHeapIterator.cpp and SoundEngine.cpp are NitroSDK
+`NNS_FndInitList` on existing storage. The `__sinit_02074e84` dClipper global is defined in
+a `.bss` no TU owns. `StarCamera_Spawn` is a real new-expression: `new dActor_c` matches
+except for the size, 0xd0 against 0xd4. An inline `operator new(size_t, int extra)` with
+`::new (4) dActor_c` matches it whole, but that overload is coined, so the site stays on
+#3198.
+
+## 6df. A hand-written `__register_global_object` call is a static `Vector3` the source hasn't declared; mwcc emits the guard, the stores, the registration and `__sinit_<file>.cpp` byte-identical (dMap_c, dScMgSnowball_c, unit020bfec0, 2026-10-27)
+
+Some sources built a static by hand: three stores, then
+`func_020731dc(&obj, _ZN7Vector3D1Ev, &node)`, either in a separate `__sinit_<addr>.c` shard
+or under a hand-tested guard word. `include/types.h` gives `Vector3` a non-trivial
+`~Vector3() {}` and a `(Fix12i, Fix12i, Fix12i)` constructor, so declaring the object does
+the same thing:
+
+- **File scope:** `static Vector3 sMapScreenCenter(0x80000, 0, 0x60000);`. mwcc emits
+  `__sinit_d_map.cpp` (0x48, identical to retail `__sinit_ov002_0210804c`), its `.ctor` word,
+  and a 12-byte `@NNN` registration node in `.bss`.
+- **Function scope:** `static Vector3 sUnitY(0, 0x1000, 0);` inside the function
+  (dScMgSnowball_c::ResetScene, and `sAxis` in unit020bfec0's FallingPetal_Spawn). mwcc emits
+  the guard test (`_ZGVsUnitY$NNN`, 4 bytes), the stores, the registration call and
+  `guard |= 1` inline, in the same place the hand-written block had them.
+
+Both are byte- and relocation-identical, and the hand-written guard, the node extern, and the
+`_ZN7Vector3D1Ev` extern all go away. Under `-O4,p` mwcc orders the `.bss` objects by size,
+then by name. Retail matches that order (`@NNN` node before `sMapScreenCenter`; guard, node,
+then storage), and objisolate reorders `.bss` sections to the manifest addresses anyway.
+
+Bookkeeping, following daObj1UpLogo_c and dMgState_c:
+
+1. The TU's manifest becomes `intact-object` and claims `.init`/`.ctor` (file scope) and the
+   `.bss` range, with `bss`/`init`/`ctor` rows, STB_LOCAL->STB_GLOBAL
+   `symbol_binding_rewrites` for the sinit, `.p__sinit`, node and statics, and an
+   `undefined_symbol_aliases` row `__register_global_object` -> `func_020731dc`. Without the
+   alias the scratch link fails with `Undefined : "__register_global_object"`. A file-scope
+   sinit also needs explicit `relocations` rows for its `.init`/`.ctor` words. A text-only
+   TU (unit020bfec0) can go intact-object with only `.text` plus the new `.bss` claim, as
+   long as verify shows nothing else unlicensed.
+2. Rename `symbols.txt` rows to the compiled names (`__sinit_d_map.cpp`, `sUnitY$1570`,
+   `_ZGVsUnitY$1570`, `@NNN`). An emitted `@NNN` that another module already defines takes a
+   `defined_symbol_renames` row onto an unused name of the same length.
+3. The new objects take uniquifiers ahead of every later `@NNN` in the TU. Snowball's 14 PMF
+   descriptors all moved +2, so every `defined_symbol_renames[].from` moved +2. Map the shift
+   by each descriptor's relocation targets, not by guessing; `to` and everything keyed on it
+   stays put.
+4. Move `delinks.txt` `.init`/`.ctor`/`.bss` into the TU entry and retire the shard.
+5. `tubuild linkcheck` needs a fresh `linkcheck --baseline` after every `config/arm9` edit.
+   Otherwise unrelated vtable-policy TUs fail with `baseline content fingerprint differs`.
+
+`tubuild verify` still prints `EXTRA .text __sinit_<file>.cpp ... not in manifest` for every
+compiler-emitted sinit (1UpLogo, brq and snowball on main print it too). That's a verify
+limitation, not a regression. A function-local static emits no sinit, so unit020bfec0 verifies
+with no EXTRA lines. linkcheck is the gate here, and all three TUs are SCRATCH-DATA-VERIFIED.
+
+**Not done:** `unit020cd744` (TrmpItem). Its nine function-local unit vectors' `.bss` is
+interleaved with file globals and ring-model handles, so they can only move as one
+whole-TU `.bss` claim. The ov019/ov062/ov072/ov078 `.c` sinit shards mix resource handles and PMF tables and need an
+owner TU first.

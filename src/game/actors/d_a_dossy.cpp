@@ -33,9 +33,8 @@
 // - data_ov065_* keep their address names, including the state table
 //   data_ov065_0211d7fc.
 // - func_ov065_021195bc and func_ov065_021195d0 are veneers. The first
-//   argument is not the actor. An explicit cast of &daDossy_c::method to
-//   a function pointer is rejected, so each veneer calls the method
-//   through its mangled name with the second and third arguments.
+//   argument is not the actor: each veneer calls the method on its second
+//   argument, passing the third.
 // - The BOOL/TRUE/FALSE spelling in func_ov065_02119594 and
 //   func_ov065_0211956c stays. `bool isPlayer = other->actorID == 0xbf`
 //   shrinks each function 0x28 to 0x1c: the ROM keeps the ternary 0/1
@@ -68,13 +67,14 @@ enum daDossy_c_AssetId {
 #include "Vector3s.h"
 #include "nitro/fx/fx.h"
 #include "Sound.h"
+#include "math/Approach.h"
 namespace cstd {
 s16 atan2(s32, s32);
 }
 
 typedef enum { FALSE = 0, TRUE = 1 } BOOL;
 
-/* One 0x34-byte runtime pose record of mModelAnim.data.bones, filled by
+/* One 0x34-byte runtime pose record of mAnmModel.data.bones, filled by
    UpdateBones (not BMD_Bone, 0x40, as the header types it). Same shape as
    d_a_trs.cpp's file-local TrsBone, but the rotation is u16: the ROM reads
    it with ldrh, and with s16 members func_ov065_02118838 stops matching. */
@@ -156,8 +156,6 @@ extern void func_020393d4(void* p, void* v);
 extern void func_020393c4(void* p, void* v);
 /* Parameter names keep this TU's @NNN. */
 typedef void BgchInitAt_(void *self, void *a, Fix12i r, Fix12i h, void *p, void *q);
-extern void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void* self, void* a, Fix12i r, Fix12i h, unsigned int e, unsigned int g);
-extern void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(void* self, void* a, void* pos, Fix12i r, Fix12i h, unsigned int e, unsigned int g);
 extern int Vec3_HorzDist(void* a, void* b);
 extern short Vec3_HorzAngle(void* a, void* b);
 extern int AngleDiff(int a, int b);
@@ -166,15 +164,10 @@ extern u16 DecIfAbove0_Short(void *counter);
 int func_ov065_021180d4(char* self);
 void func_ov065_02118c4c(char* c);
 int func_ov065_02119210(unsigned char* c);
-int func_ov065_021195bc(void *a, void *b, void *c);
-int func_ov065_021195d0(void *a, void *b, void *c);
-/* local extern: mwcc rejects an explicit cast of &daDossy_c::method to a function pointer. */
-extern void _ZN9daDossy_c19func_ov065_0211956cEP8dActor_c(void *self, void *other); /* local extern: veneer calls this method by its mangled name. */
-extern void _ZN9daDossy_c19func_ov065_02119594EP8dActor_c(void *self, void *other); /* local extern: veneer calls this method by its mangled name. */
+void func_ov065_021195bc(void *a, void *b, void *c);
+void func_ov065_021195d0(void *a, void *b, void *c);
 }
 
-int ApproachLinear(int &value, int target, int step);
-bool ApproachLinear(short &value, short target, short step);
 
 typedef void (daDossy_c::*StateFunc)();
 extern "C" StateFunc data_ov065_0211d7fc[];
@@ -204,17 +197,15 @@ int daDossyCap_c::OnYoshiTryEat()
 
 #pragma long_calls on
 // @symbol func_ov065_021195d0
-extern "C" int func_ov065_021195d0(void *a, void *b, void *c)
-{
-    return ((int (*)(void *, void *))_ZN9daDossy_c19func_ov065_02119594EP8dActor_c)(b, c);
+extern "C" void func_ov065_021195d0(void *a, void *b, void *c) {
+    static_cast<daDossy_c *>(b)->func_ov065_02119594(static_cast<dActor_c *>(c));
 }
 #pragma long_calls off
 
 #pragma long_calls on
 // @symbol func_ov065_021195bc
-extern "C" int func_ov065_021195bc(void *a, void *b, void *c)
-{
-    return ((int (*)(void *, void *))_ZN9daDossy_c19func_ov065_0211956cEP8dActor_c)(b, c);
+extern "C" void func_ov065_021195bc(void *a, void *b, void *c) {
+    static_cast<daDossy_c *>(b)->func_ov065_0211956c(static_cast<dActor_c *>(c));
 }
 #pragma long_calls off
 
@@ -243,7 +234,7 @@ int daDossyCap_c::InitResources()
 {
     mModel.SetFile((BMD_File *)data_ov002_0210d9c0.filePtr, 1, -1);
     mCapIcon.func_ov001_020ab228((char *)this, 2, 2, 0);
-    _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, this, 0x96000, 0x96000, 0x100002, 0x8000);
+    mdCcAc_c.Init(this, 0x96000, 0x96000, 0x100002, 0x8000);
     mCarrier = 0;
     return 1;
 }
@@ -253,11 +244,11 @@ int daDossy_c::InitResources()
 {
     int i;
     void *f = dExtSimpleModel_c::LoadFile(data_ov065_0211d720);
-    mModelAnim.SetFile((BMD_File *)f, 1, -1);
+    mAnmModel.SetFile((BMD_File *)f, 1, -1);
     dExtSimpleModel_c::LoadFile(data_ov002_0210d9c0);
     for (i = 0; i < 3; i++)
         dExtFrameCtrl_c::LoadFile(*data_ov065_0211c080[i]);
-    mModelAnim.SetAnim((BCA_File *)data_ov065_0211d770.filePtr, 0, 0x1000, 0);
+    mAnmModel.SetAnim((BCA_File *)data_ov065_0211d770.filePtr, 0, 0x1000, 0);
     func_ov065_02118cc4();
     func_ov065_02118838();
 
@@ -288,15 +279,13 @@ int daDossy_c::InitResources()
     mSpawnPosZ = mPosZ;
     mPosX += 0x7d0000;
     mWithMeshClsn.Init(this, 0x1e0000, 0xa0000, 0, 0);
-    _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(
-        &mCylClsn1, this, 0xdc000, 0xfa000, 2, 0x20);
+    mCylClsn1.Init(this, 0xdc000, 0xfa000, 2, 0x20);
     {
         int v[3];
         v[0] = 0;
         v[1] = 0x50000;
         v[2] = 0x150000;
-        _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
-            &mCylClsn2, this, v, 0x60000, 0x1b0000, 2, 0x400000);
+        mCylClsn2.Init(this, *(Vector3 *)v, 0x60000, 0x1b0000, 2, 0x400000);
     }
     {
         mHomePosX = mPosX;
@@ -426,7 +415,7 @@ int daDossy_c::Behavior()
     UpdatePos(0);
     dBgCh_Actr_UpdateContinuous_Veneer(&mWithMeshClsn);
     mPosY = mSpawnPosY - mSinkHeight - mPushDownHeight;
-    mModelAnim.Advance();
+    mAnmModel.Advance();
     func_ov065_02118cc4();
     func_ov065_02118838();
     func_ov065_02118248();
@@ -452,7 +441,7 @@ int daDossyCap_c::Render()
 // @symbol _ZN9daDossy_c6RenderEv
 int daDossy_c::Render()
 {
-    mModelAnim.Render(0);
+    mAnmModel.Render(0);
     return 1;
 }
 
@@ -477,10 +466,10 @@ int daDossy_c::CleanupResources()
 // @symbol _ZN9daDossy_c19func_ov065_02118cc4Ev
 void daDossy_c::func_ov065_02118cc4()
 {
-    Matrix4x3_FromRotationY(&mModelAnim.mat4x3, mAngleY);
-    mModelAnim.mat4x3.m[9] = mPosX >> 3;
-    mModelAnim.mat4x3.m[10] = mPosY >> 3;
-    mModelAnim.mat4x3.m[11] = mPosZ >> 3;
+    Matrix4x3_FromRotationY(&mAnmModel.mat4x3, mAngleY);
+    mAnmModel.mat4x3.m[9] = mPosX >> 3;
+    mAnmModel.mat4x3.m[10] = mPosY >> 3;
+    mAnmModel.mat4x3.m[11] = mPosZ >> 3;
 }
 
 // @symbol func_ov065_02118c4c
@@ -518,7 +507,7 @@ void daDossy_c::func_ov065_02118838()
     three = 3;
     tbl = data_ov065_0211c078;
     for (i = 0; i < 7; i++) {
-        char *ent = (char *)mModelAnim.data.bones + *tbl * 0x34;
+        char *ent = (char *)mAnmModel.data.bones + *tbl * 0x34;
         {
             u16 tz = ((DossyBone *)ent)->rotZ;
             u16 ty = ((DossyBone *)ent)->rotY;
@@ -539,7 +528,7 @@ void daDossy_c::func_ov065_02118838()
         {
             Matrix4x3 *m = &data_020a0e68;
             *m = base;
-            MulMat4x3Mat4x3(&mModelAnim.data.transforms[*tbl], m, m);
+            MulMat4x3Mat4x3(&mAnmModel.data.transforms[*tbl], m, m);
             v.x = m->m[9];
             v.y = m->m[10];
             v.z = m->m[11];
@@ -608,7 +597,7 @@ void daDossy_c::func_ov065_02118634()
         mState++;
         mHorzSpeed = 0;
         mAngVelY = 0;
-        mModelAnim.SetAnim((BCA_File *)data_ov065_0211d768.filePtr, 0x40000000, 0x1000, 0);
+        mAnmModel.SetAnim((BCA_File *)data_ov065_0211d768.filePtr, 0x40000000, 0x1000, 0);
         mCylClsn1.Clear();
         mCylClsn2.Clear();
         mStateTimer = 0;
@@ -674,7 +663,7 @@ void daDossy_c::func_ov065_021183c8()
         }
     }
 
-    if (mModelAnim.Finished() == 0)
+    if (mAnmModel.Finished() == 0)
         return;
 
     mStateTimer++;
@@ -689,8 +678,8 @@ void daDossy_c::func_ov065_021183c8()
                     && ((Player *)mClsnPlayer)->SetNoControlState(5, -1, 0) != 0) {
                     mState++;
                     mStateState = 0;
-                    mModelAnim.SetAnim((BCA_File *)data_ov065_0211d748.filePtr, 0x40000000, 0x1000,
-                                       0);
+                    mAnmModel.SetAnim((BCA_File *)data_ov065_0211d748.filePtr, 0x40000000, 0x1000,
+                                      0);
                     mRider = mClsnPlayer;
                 }
             }
@@ -701,7 +690,7 @@ void daDossy_c::func_ov065_021183c8()
         if (mStateTimer > 0x96) {
             mState++;
             mStateState = 0;
-            mModelAnim.SetAnim((BCA_File *)data_ov065_0211d748.filePtr, 0x40000000, 0x1000, 0);
+            mAnmModel.SetAnim((BCA_File *)data_ov065_0211d748.filePtr, 0x40000000, 0x1000, 0);
         }
         mStateTimer++;
     }
@@ -712,9 +701,10 @@ void daDossy_c::func_ov065_021182e4()
 {
     switch (mStateState) {
     case 0:
-        if (mModelAnim.Finished() == 0) return;
+        if (mAnmModel.Finished() == 0)
+            return;
         mStateState = 1;
-        mModelAnim.SetAnim((BCA_File *)data_ov065_0211d770.filePtr, 0, 0x1000, 0);
+        mAnmModel.SetAnim((BCA_File *)data_ov065_0211d770.filePtr, 0, 0x1000, 0);
         if (mRider == 0) return;
         ((Player *)mRider)->Unk_020ca150(5);
         return;

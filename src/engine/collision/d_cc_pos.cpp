@@ -1,7 +1,7 @@
 //cpp
 /* leftovers:
  * func_020147bc keeps its address name: a print helper shared with
- * nds_print.c and nds_printt.c, which keep their own declarations and call
+ * nds_print.c and nds_printt.cpp, which keep their own declarations and call
  * sites.
  * data_0208e500 keeps its address name: ROM data resolved from
  * config/arm9/symbols.txt, defined by no TU.
@@ -24,10 +24,6 @@
 #include "dCcPos_c.h"
 
 extern "C" {
-/* local extern: the real signature carries Fix12<int> and wall 6az homes
-   class-typed by-value parameters, so callers go through the real method
-   while the callee stays the mangled scalar spelling dCc_c's TU defines. */
-void _ZN5dCc_c4InitE5Fix12IiES1_jj(dCc_c *self, int radius, int height, u32 flags, u32 vulnFlags);
 /* local extern: ROM data no TU defines and no header declares -- the
    font-base halfword the absorbed print helper below adds the glyph index to. */
 extern unsigned short data_0208e500;
@@ -72,12 +68,12 @@ void dCcPos_c::Init(const Vector3 &pos, Fix12i radius, Fix12i height, u32 flags,
     this->pos.x = pos.x;
     this->pos.y = pos.y;
     this->pos.z = pos.z;
-    _ZN5dCc_c4InitE5Fix12IiES1_jj(this, radius, height, flags, vulnFlags);
+    dCc_c::Init(radius, height, flags, vulnFlags);
 }
 
 /* ROM ordinal 0 -- the run's backward neighbour, absorbed (reverse emission
  * puts the lowest address last). A print helper shared with nds_print.c and
- * nds_printt.c, which keep their own matching extern declarations and call
+ * nds_printt.cpp, which keep their own matching extern declarations and call
  * sites; only the definition moves. Body as recovered. */
 
 // @symbol func_020147bc

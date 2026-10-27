@@ -8,11 +8,7 @@
  * - common.h stays before daGmch_c.h. InitResources assigns
  *   IDENTITY_MATRIX4X3 into mMatrix; the .r/.t Matrix4x3 spelling is
  *   0x1f0 against the ROM's 0x1d4. decl_common.h is not included.
- * - dExtAnmModel_c::SetAnim, dCcAc_c::Init, dBgCh_Actr::Init,
- *   Particle::System::NewSimple, dActor_c::SpawnCoins,
- *   DropShadowRadHeight, Player::Bounce and Player::Hurt stay mangled
- *   (Fix12<int> by value). SpawnCoins as a member stopped
- *   SpawnCoinsAndDie matching.
+ * - Player::Bounce and Player::Hurt stay mangled (Fix12<int> by value).
  * - GetFloorResult / GetWallResult return the raw word; a dBgPi* return
  *   disagrees with the definitions, so the callers still cast.
  *   TouchesWater and cstd::fdiv are the const method and the divide.
@@ -20,7 +16,7 @@
  *   UpdateState6.
  * - UpdateState0 keeps mPhase++. mPhase = (u8)(mPhase + 1) is 0x144
  *   against 0x158, and mSpinAngleY += 0xc00 is four words off.
- * - ApproachLinear2 takes &mState as int* because mState, mPhase and
+ * - ApproachLinear2 steps *(int *)&mState because mState, mPhase and
  *   mTimer share one word. State numbers, mFlags bit 0x80000 and hit
  *   mask 0x66fe0 stay numeric.
  * - The loaded BCA is data_ov081_02128edc.filePtr. GmchDrawReg is the
@@ -39,6 +35,7 @@ enum daGmch_c_AssetId {
 #pragma defer_codegen off
 
 #include "types.h"
+#include "math/Approach.h"
 /* BEFORE daGmch_c.h, and load-bearing: common.h and math/Matrix.h both define
    Matrix4x3 under one guard and whichever is seen FIRST stands.  InitResources
    assigns IDENTITY_MATRIX4X3 whole into mMatrix; under common.h flat s32[12]
@@ -57,7 +54,6 @@ enum daGmch_c_AssetId {
 #include "SpawnInfo.h"
 #include "nitro/fx/fx.h"
 
-bool ApproachLinear(short &value, short target, short step);
 
 /* Actor ids are from symbols/actor_debug_names.tsv. */
 enum {
@@ -156,23 +152,17 @@ extern "C" {
 extern Fix12i Vec3_Dist(const void *a, const void *b);
 extern s16    Vec3_HorzAngle(const void *a, const void *b);
 extern unsigned int RandomIntInternal(int *seed);
-extern void   _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs(void *self, Vector3 const &pos, unsigned int n, int fix, short s);
-extern void   _ZN6Player6BounceE5Fix12IiE(void *p, int fix);
-extern int    _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(Player *p, void *pos, u32 a, int fix, u8 b, u8 cc, u8 d);
 extern int    func_02038414(void *clsn);
 extern void   Matrix4x3_FromRotationY(void *m, int angle);
 extern void   Matrix4x3_ApplyInPlaceToTranslation(void *m, int x, int y, int z);
 extern void   Matrix4x3_ApplyInPlaceToRotationX(void *m, s16 angX);
 extern void   Matrix4x3_ApplyInPlaceToRotationY(void *m, s16 angY);
-extern void   _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(void *self, void *shadow, void *mtx, int rad, int height, u32 flags);
 extern int DecIfAbove0_Byte(void *p);
 namespace Particle {
 struct System {
     static void NewSimple(unsigned int n, int a, int b, int c);
 };
 }
-extern int    _Z15ApproachLinear2Riii(int *p, int target, int step);
-extern void   _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *self, void *actor, int a, int b, unsigned int c, unsigned int d);
 /* Parameter names keep this TU's @NNN. */
 typedef void BgchInitAt_(void *self, void *actor, int a, int b, void *v, int c);
 }
@@ -254,7 +244,7 @@ void daGmch_c::SpawnCoinsAndDie()
     coinPos.x = mPosX;
     coinPos.y = mPosY;
     coinPos.z = mPosZ;
-    _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs(this, coinPos, 5, 0xf000, 0);
+    SpawnCoins(coinPos, 5, 0xf000, 0);
     PoofDust();
     KillAndTrackInDeathTable();
 }
@@ -312,7 +302,7 @@ void daGmch_c::CheckPlayerContact()
     if (JumpedOnByPlayer(mdCcAc_c, *player) != 0) {
         if (mStateIndex == 0)
             return;
-        _ZN6Player6BounceE5Fix12IiE(player, 0x28000);
+        player->Bounce(0x28000);
         SpawnCoinsAndDie();
         return;
     }
@@ -325,7 +315,7 @@ void daGmch_c::CheckPlayerContact()
         hurtPos.x = mPosX;
         hurtPos.y = mPosY;
         hurtPos.z = mPosZ;
-        _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(player, &hurtPos, 2, 0xc000, 1, 0, 1);
+        player->Hurt(hurtPos, 2, 0xc000, 1, 0, 1);
     }
 }
 
@@ -337,7 +327,7 @@ void daGmch_c::ApplySlopeToVertSpeed(void *clsn)
     Vector3 wallNormal;
     func_02038414(clsn);
     if (((dBgCh_Actr *)clsn)->IsOnGround()) {
-        ((dBgPi *)((dBgCh_Actr *)clsn)->GetFloorResult())->surface.CopyNormalTo(floorNormal);
+        ((dBgCh_Actr *)clsn)->GetFloorResult()->surface.CopyNormalTo(floorNormal);
         if (floorNormal.y != 0) {
             /* mSpeedX / mSpeedZ: world velocity X/Z next to mVertSpeed. */
             s32 velX = mSpeedX;
@@ -350,7 +340,7 @@ void daGmch_c::ApplySlopeToVertSpeed(void *clsn)
         }
     }
     if (((dBgCh_Actr *)clsn)->IsOnWall()) {
-        ((dBgPi *)((dBgCh_Actr *)clsn)->GetWallResult())->surface.CopyNormalTo(wallNormal);
+        ((dBgCh_Actr *)clsn)->GetWallResult()->surface.CopyNormalTo(wallNormal);
     }
 }
 
@@ -368,23 +358,23 @@ void daGmch_c::UpdateDrawMatrices()
     if (inMouth)
         return;
 
-    Matrix4x3_FromRotationY(&mModelAnim.mat4x3, mAngleY);
-    mModelAnim.mat4x3.m[9] = mPosX >> 3;
-    mModelAnim.mat4x3.m[10] = mPosY >> 3;
-    mModelAnim.mat4x3.m[11] = mPosZ >> 3;
+    Matrix4x3_FromRotationY(&mAnmModel.mat4x3, mAngleY);
+    mAnmModel.mat4x3.m[9] = mPosX >> 3;
+    mAnmModel.mat4x3.m[10] = mPosY >> 3;
+    mAnmModel.mat4x3.m[11] = mPosZ >> 3;
 
-    mModelAnim.ApplyOpacity(mState, 0);
+    mAnmModel.ApplyOpacity(mState, 0);
 
     if (mAngleX != 0) {
-        data_020a0e68 = mModelAnim.mat4x3;
+        data_020a0e68 = mAnmModel.mat4x3;
         int y1 = OnAimedAtWithEgg() >> 3;
         Matrix4x3_ApplyInPlaceToTranslation(&data_020a0e68, 0, y1, 0);
         Matrix4x3_ApplyInPlaceToRotationX(&data_020a0e68, mAngleX);
         int y2 = (-OnAimedAtWithEgg()) >> 3;
         Matrix4x3_ApplyInPlaceToTranslation(&data_020a0e68, 0, y2, 0);
-        mModelAnim.mat4x3 = data_020a0e68;
+        mAnmModel.mat4x3 = data_020a0e68;
     } else {
-        data_020a0e68 = mModelAnim.mat4x3;
+        data_020a0e68 = mAnmModel.mat4x3;
         Matrix4x3_ApplyInPlaceToTranslation(&data_020a0e68, data_ov081_02128ef8.x, data_ov081_02128ef8.y, data_ov081_02128ef8.z);
         Matrix4x3_ApplyInPlaceToRotationY(&data_020a0e68, mSpinAngleY);
         mModel.mat4x3 = data_020a0e68;
@@ -397,15 +387,14 @@ void daGmch_c::UpdateDrawMatrices()
     mMatrix.m[11] = mPosZ >> 3;
 
     int dh = (mStateIndex == 8) ? 0x258000 : 0x12c000;
-    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
-        this, &mShadowModel, &mMatrix, 0x78000, dh, 0xf);
+    DropShadowRadHeight(mShadowModel, mMatrix, 0x78000, dh, 0xf);
 }
 
 // @symbol _ZN8daGmch_c12UpdateState8Ev
 int daGmch_c::UpdateState8()
 {
     mAngleX = mAngleX - 0x1000;
-    mModelAnim.Advance();
+    mAnmModel.Advance();
     UpdatePos(&mdCcAc_c);
     func_02038414(&mWithMeshClsn);
     if (mWithMeshClsn.JustHitGround() != 0 || DecIfAbove0_Byte(&mTimer) == 0) {
@@ -424,8 +413,8 @@ int daGmch_c::EnterState8()
     mHorzSpeed = 0xa000;
     mVertSpeed = 0x28000;
     mTimer = 0x2d;
-    mModelAnim.SetAnim((BCA_File *)data_ov081_02128edc.filePtr, 0, 0x1000, 0);
-    mModelAnim.speed = 0x4000;
+    mAnmModel.SetAnim((BCA_File *)data_ov081_02128edc.filePtr, 0, 0x1000, 0);
+    mAnmModel.speed = 0x4000;
     int yOffset1 = OnAimedAtWithEgg();
     Particle::System::NewSimple(0x43, mPosX, mPosY + yOffset1, mPosZ);
     int yOffset2 = OnAimedAtWithEgg();
@@ -567,7 +556,7 @@ int daGmch_c::UpdateState5()
         ApproachLinear(mAngleY, Vec3_HorzAngle(&mPosX, &mSpawnPosX), 0x2bc);
         mPrevAngleY = mAngleY;
     }
-    mModelAnim.Advance();
+    mAnmModel.Advance();
     UpdatePos(&mdCcAc_c);
     ApplySlopeToVertSpeed(&mWithMeshClsn);
     CheckPlayerContact();
@@ -585,8 +574,8 @@ int daGmch_c::EnterState5()
     extern GmchAnimationFileHandle data_ov081_02128edc;
 
     mHorzSpeed = 0xa000;
-    mModelAnim.SetAnim((BCA_File *)data_ov081_02128edc.filePtr, 0, 0x1000, 0);
-    mModelAnim.speed = 0x1000;
+    mAnmModel.SetAnim((BCA_File *)data_ov081_02128edc.filePtr, 0, 0x1000, 0);
+    mAnmModel.speed = 0x1000;
     mStateIndex = 5;
     return 1;
 }
@@ -594,8 +583,8 @@ int daGmch_c::EnterState5()
 // @symbol _ZN8daGmch_c12UpdateState4Ev
 int daGmch_c::UpdateState4()
 {
-    mModelAnim.Advance();
-    if (mModelAnim.Finished()) {
+    mAnmModel.Advance();
+    if (mAnmModel.Finished()) {
         mFlags |= 1;
         SetState(mNextState);
     }
@@ -610,8 +599,8 @@ int daGmch_c::EnterState4()
 {
     extern GmchAnimationFileHandle gGamaguchiJumpEndAnimationFile;
 
-    mModelAnim.SetAnim((BCA_File *)gGamaguchiJumpEndAnimationFile.filePtr, 0x40000000, 0x1000, 0);
-    mModelAnim.speed = 0x1000;
+    mAnmModel.SetAnim((BCA_File *)gGamaguchiJumpEndAnimationFile.filePtr, 0x40000000, 0x1000, 0);
+    mAnmModel.speed = 0x1000;
     mHorzSpeed = 0;
     mStateIndex = 4;
     return 1;
@@ -622,7 +611,7 @@ int daGmch_c::UpdateState3()
 {
     switch (mPhase) {
     case 0:
-        if ((((unsigned int)mModelAnim.currFrame) << 4) >> 16 == 7) {
+        if ((((unsigned int)mAnmModel.currFrame) << 4) >> 16 == 7) {
             mHorzSpeed = 0x12000;
             mVertSpeed = 0x1e000;
             func_0201267c(0x77, &mCamSpacePos);
@@ -636,7 +625,7 @@ int daGmch_c::UpdateState3()
         }
         break;
     }
-    mModelAnim.Advance();
+    mAnmModel.Advance();
     UpdatePos(&mdCcAc_c);
     ApplySlopeToVertSpeed(&mWithMeshClsn);
     CheckPlayerContact();
@@ -652,8 +641,8 @@ int daGmch_c::EnterState3()
     extern int data_0209e650[];
 
     mFlags &= ~1;
-    mModelAnim.SetAnim((BCA_File *)gGamaguchiJumpAnimationFile.filePtr, 0x40000000, 0x1000, 0);
-    mModelAnim.currFrame = 0;
+    mAnmModel.SetAnim((BCA_File *)gGamaguchiJumpAnimationFile.filePtr, 0x40000000, 0x1000, 0);
+    mAnmModel.currFrame = 0;
     mAngleY = (short)RandomIntInternal(data_0209e650);
     mPrevAngleY = mAngleY;
     mHorzSpeed = 0;
@@ -665,10 +654,10 @@ int daGmch_c::EnterState3()
 // @symbol _ZN8daGmch_c12UpdateState2Ev
 int daGmch_c::UpdateState2()
 {
-    if (mModelAnim.Finished()) {
+    if (mAnmModel.Finished()) {
         SetState(mNextState);
     }
-    mModelAnim.Advance();
+    mAnmModel.Advance();
     CheckPlayerContact();
     mdCcAc_c.Clear();
     mdCcAc_c.Update();
@@ -680,8 +669,8 @@ int daGmch_c::EnterState2()
 {
     extern GmchAnimationFileHandle gGamaguchiWalkEndAnimationFile;
 
-    mModelAnim.SetAnim((BCA_File *)gGamaguchiWalkEndAnimationFile.filePtr, 0x40000000, 0x1000, 0);
-    mModelAnim.speed = 0x1000;
+    mAnmModel.SetAnim((BCA_File *)gGamaguchiWalkEndAnimationFile.filePtr, 0x40000000, 0x1000, 0);
+    mAnmModel.speed = 0x1000;
     mHorzSpeed = 0;
     mStateIndex = 2;
     return 1;
@@ -695,7 +684,7 @@ int daGmch_c::UpdateState1()
     UpdatePos(&mdCcAc_c);
     ApplySlopeToVertSpeed(&mWithMeshClsn);
     CheckPlayerContact();
-    mModelAnim.Advance();
+    mAnmModel.Advance();
     if (DecIfAbove0_Byte(&mTimer) == 0) {
         ChooseNextState();
     }
@@ -710,8 +699,8 @@ void daGmch_c::EnterState1()
     extern GmchAnimationFileHandle data_ov081_02128edc;
     extern int data_0209e650[];
 
-    mModelAnim.SetAnim((BCA_File *)data_ov081_02128edc.filePtr, 0, 0x1000, 0);
-    mModelAnim.speed = 0x1000;
+    mAnmModel.SetAnim((BCA_File *)data_ov081_02128edc.filePtr, 0, 0x1000, 0);
+    mAnmModel.speed = 0x1000;
     mHorzSpeed = 0xa000;
     mTargetAngleY = (short)RandomIntInternal(data_0209e650);
     mTimer = (unsigned char)((unsigned int)RandomIntInternal(data_0209e650) % 0x78);
@@ -723,8 +712,8 @@ int daGmch_c::UpdateState0()
 {
     switch (mPhase) {
     case 0:
-        if (_Z15ApproachLinear2Riii((int *)&mState, 1, 2) != 0) {
-            _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, this, 0x4b000, 0x73000, 0x200000, 0);
+        if (ApproachLinear2(*(int *)&mState, 1, 2) != 0) {
+            mdCcAc_c.Init(this, 0x4b000, 0x73000, 0x200000, 0);
             mFlags &= ~0x10000000;
             mPhase++;
         }
@@ -737,8 +726,8 @@ int daGmch_c::UpdateState0()
         }
         break;
     case 2:
-        if (_Z15ApproachLinear2Riii((int *)&mState, 0x1f, 2) != 0) {
-            _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, this, 0x4b000, 0x73000, 0x200000, 0x6eff0);
+        if (ApproachLinear2(*(int *)&mState, 0x1f, 2) != 0) {
+            mdCcAc_c.Init(this, 0x4b000, 0x73000, 0x200000, 0x6eff0);
             SetState(3);
         }
         break;
@@ -761,9 +750,9 @@ int daGmch_c::EnterState0()
 {
     extern GmchAnimationFileHandle gGamaguchiJumpEndAnimationFile;
 
-    mModelAnim.SetAnim((BCA_File *)gGamaguchiJumpEndAnimationFile.filePtr, 0, 0x1000, 0);
-    mModelAnim.speed = 0x1000;
-    mModelAnim.currFrame = 0x6000;
+    mAnmModel.SetAnim((BCA_File *)gGamaguchiJumpEndAnimationFile.filePtr, 0, 0x1000, 0);
+    mAnmModel.speed = 0x1000;
+    mAnmModel.currFrame = 0x6000;
     mPhase = 0;
     mStateIndex = 0;
     return 1;
@@ -830,7 +819,7 @@ int daGmch_c::Render()
     if (inMouth != 0)
         return 1;
     if (mState > 1) {
-        mModelAnim.Render(0);
+        mAnmModel.Render(0);
     }
     if (mState <= 0x1f) {
         mModel.Render(0);
@@ -865,14 +854,14 @@ int daGmch_c::InitResources()
 
     Vector3 pos;
     void *modelFile = dExtSimpleModel_c::LoadFile(*(SharedFilePtr *)&data_ov081_02128ed4);
-    mModelAnim.SetFile((BMD_File *)modelFile, 1, 1);
+    mAnmModel.SetFile((BMD_File *)modelFile, 1, 1);
     if (mModel.SetFile((BMD_File *)data_ov002_0210d9b8.filePtr, 1, 1) == 0)
         return 0;
     for (int i = 0; i < 4; i++)
         dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)data_ov081_021280d8[i]);
     if (mShadowModel.InitCylinder() == 0)
         return 0;
-    _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, this, 0x4b000, 0x73000, 0x200000, 0x6eff0);
+    mdCcAc_c.Init(this, 0x4b000, 0x73000, 0x200000, 0x6eff0);
     mWithMeshClsn.Init(this, 0x4b000, 0x4b000, 0, 0);
     mWithMeshClsn.StartDetectingWater();
     SetState(0);
@@ -921,7 +910,7 @@ void daGmch_c::OnTurnIntoEgg(Player &player)
 /* The GAMAGUCHI factory. `new` calls fBase_c::operator new (_ZN7fBase_cnwEm),
  * and daGmch_c has no user-declared constructor, so `new` is the base
  * constructor, the vtable store and the five member subobjects in field
- * order (mModelAnim, mModel, mShadowModel, mdCcAc_c, mWithMeshClsn).
+ * order (mAnmModel, mModel, mShadowModel, mdCcAc_c, mWithMeshClsn).
  *
  * Reconstructed source-style name: SM64DS proves daGmch_c through RTTI,
  * allocation size, vtable identity and the GAMAGUCHI registry profile; later

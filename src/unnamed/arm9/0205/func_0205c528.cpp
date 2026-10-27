@@ -10,7 +10,7 @@ extern "C" {
 }
 
 /* NitroSDK FSArchive, the fields touched here; names follow the SDK's, as
- * func_0205c5e4.c (sync_q, flag) and func_0205c9b8.c (table_func) spell them. */
+ * func_0205c5e4.cpp (sync_q, flag) and func_0205c9b8.c (table_func) spell them. */
 struct FSArchive;
 typedef int (*FS_ARCHIVE_TABLE_FUNC)(FSArchive *p_arc, int dst, int pos, int size);
 struct FSArchive {

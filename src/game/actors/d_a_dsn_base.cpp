@@ -132,8 +132,6 @@ struct System {
  * (dActor_c / dExtShadowModel_c / Matrix4x3 pointers, scalar ints -- see the
  * _ZN8dActor_c18DropShadowScaleXYZ file); d_a_obj_path_lift.cpp calls it this
  * way. The three scales stay scalar ints. */
-extern void _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_S5_j(
-    dActor_c *self, dExtShadowModel_c *shadow, Matrix4x3 *matrix, int scaleX, int scaleY, int scaleZ, unsigned opacity);
 
 /* Same 6az tail: both take Fix12<int> BY VALUE, so the header member form
  * would home the argument. */
@@ -323,9 +321,8 @@ void daDsnBase_c::func_ov091_02133098()
     cycle->shadowMtx.m[9] = cycle->posX >> 3;
     cycle->shadowMtx.m[10] = (cycle->posY - shadowDrop) >> 3;
     cycle->shadowMtx.m[11] = cycle->posZ >> 3;
-    _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_S5_j(
-        this, &mShadowModel, &cycle->shadowMtx,
-        scaleX, heightAboveGround + 0x28000, scaleZ, 0xf);
+    DropShadowScaleXYZ(mShadowModel, cycle->shadowMtx, scaleX, heightAboveGround + 0x28000, scaleZ,
+                       0xf);
 }
 
 /* Vtable slot 3, inherited by both leaves -- and the key function, so this

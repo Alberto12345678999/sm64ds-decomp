@@ -197,7 +197,7 @@ src/Color_Interp.c:
     complete
     .text start:0x020e6a08 end:0x020e6a78
 
-src/unnamed/ov002/func_ov002_020e6a78.c:
+src/unnamed/ov002/func_ov002_020e6a78.cpp:
     complete
     .text start:0x020e6a78 end:0x020e6c0c
 src/game/player/d_a_ply.cpp:
@@ -216,15 +216,15 @@ src/game/actors/StarCamera_Spawn.cpp:
     complete
     .text start:0x020ebe5c end:0x020ebe8c
 
-src/game/actors/d_a_star_base.c:
+src/game/actors/d_a_star_base.cpp:
     complete
     .text start:0x020ebe8c end:0x020ebed4
 
-src/game/actors/d_a_star_silver_star.c:
+src/game/actors/d_a_star_silver_star.cpp:
     complete
     .text start:0x020ebed4 end:0x020ebf30
 
-src/game/actors/d_a_star_star.c:
+src/game/actors/d_a_star_star.cpp:
     complete
     .text start:0x020ebf30 end:0x020ebf8c
 
@@ -255,7 +255,7 @@ src/runtime/actor/d_path_lift_actor.cpp:
     .ctor start:0x0210811c end:0x02108120
     .data start:0x0210aeb8 end:0x0210af68
 
-src/unnamed/ov002/func_ov002_020effb8.c:
+src/unnamed/ov002/func_ov002_020effb8.cpp:
     complete
     .text start:0x020effb8 end:0x020f03c4
 src/game/actors/d_a_s_coin.cpp:
@@ -309,6 +309,9 @@ src/game/actors/d_a_sound_obj.cpp:
 src/ui/hud/d_map.cpp:
     complete
     .text start:0x020f975c end:0x020fb8f8
+    .init start:0x0210804c end:0x02108094
+    .ctor start:0x02108130 end:0x02108134
+    .bss start:0x02111160 end:0x02111178
 
 src/ui/hud/d_meter.cpp:
     complete
@@ -339,14 +342,10 @@ src/unnamed/ov002/__sinit_ov002_02100f84.c:
     .init start:0x02100f84 end:0x02101064
 
 
-src/unnamed/ov002/__sinit_ov002_02107370.c:
+src/unnamed/ov002/__sinit_ov002_02107370.cpp:
     complete
     .init start:0x02107370 end:0x02107f88
 
 src/unnamed/ov002/__sinit_ov002_02107f88.c:
     complete
     .init start:0x02107f88 end:0x0210804c
-
-src/unnamed/ov002/__sinit_ov002_0210804c.c:
-    complete
-    .init start:0x0210804c end:0x02108094

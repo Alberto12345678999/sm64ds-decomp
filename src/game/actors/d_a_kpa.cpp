@@ -137,6 +137,8 @@ enum daKpa_c_AssetId {
 #include "Sound.h"
 #include "Message.h"
 #include "nitro/fx/fx.h"
+#include "cstd.h"
+#include "math/Approach.h"
 
 /* -------------------------------------------------------------------------- */
 /* Names for the numbers this file uses. The values are the ROM's; the names are
@@ -325,10 +327,8 @@ struct Obj { virtual void v0(); virtual void v1(); virtual void v2(); virtual vo
 
 /* 0x0203adec; called by the turn-to-target and charge handlers on mAngleY,
  * which both ignore the result. */
-bool ApproachLinear(short &value, short target, short step);
 /* 0x0203ae58 (ApproachAngle.cpp); steps mHorzSpeed and the cutscene camera
  * points toward their targets. */
-int ApproachLinear(int &value, int target, int step);
 
 extern "C" {
 /* The dCamera_c; Bowser publishes himself into its mFramedActor. */
@@ -345,9 +345,7 @@ extern PmfEnt data_ov060_0211aeb4[];
  * third argument the callee does not take (a counter byte, and a value stored
  * on the line above); dropped here rather than widening the signature. */
 extern void func_02012694(unsigned int id, const Vector3 *v);
-void _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void* self, const Vector3& v, u32 a, Fix12i b, u32 c, u32 d, u32 e);
 void func_02038408(void* p);
-int _ZN4cstd4fdivEii(int a, int b);
 
 extern PmfEnt data_ov060_0211aed4[];
 
@@ -364,7 +362,6 @@ struct System {
 };
 }
 extern int Vec3_HorzLen(const Vector3* v);
-extern void _ZN8dActor_c13SpawnFireballERK7Vector3PK10Vector3_165Fix12IiES7_j( void* self, const void* pos, const void* rot, int speed, int gravity, u32 flags);
 extern int RandomIntInternal(int* seed);
 extern int data_0209e650;
 extern KpaAnimationFileHandle data_ov060_0211abe0;
@@ -383,7 +380,6 @@ extern void Matrix4x3_ApplyInPlaceToRotationX(Matrix4x3 *m, s16 angX);
 extern void Matrix4x3_ApplyInPlaceToRotationZ(Matrix4x3 *m, s16 angZ);
 extern void MulMat4x3Mat4x3(void *dst, void *a, void *b);
 extern void Vec3_LslInPlace(void *v, int sh);
-extern void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(void *c, void *sm, void *mtx, int rad, int h, unsigned int flags);
 extern Matrix4x3 data_020a0e68;
 void d_a_kpaEarthquakeHold(void *self, struct Vector3 *v, int f);
 extern "C" void func_02011cfc(void);
@@ -425,11 +421,9 @@ extern KpaAnimationFileHandle data_ov060_0211ac90;
 extern short data_ov060_02119294[];
 extern short data_ov060_02119296[];
 extern short data_ov060_02119298[];
-extern void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(void *self, void *act, void *pos, int c3, int d, unsigned int e, unsigned int f);
 /* Parameter names keep this TU's @NNN. */
 typedef void BgchInitAt_(void *self, void *act, int a, int b, void *d1, void *d2);
 extern void func_02011d50(void *a);
-int _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *self, void *actor, int fix, int t, unsigned int e, unsigned int f);
 /* TUBUILD CONFLICT -- alternate declaration of Vec3_HorzDist, from the legacy file for func_ov060_02112434, NOT applied: int Vec3_HorzDist(const Vector3* a, const Vector3* b); */
 /* TUBUILD CONFLICT -- alternate declaration of Vec3_HorzAngle, from the legacy file for func_ov060_02112434, NOT applied: short Vec3_HorzAngle(const Vector3* a, const Vector3* b); */
 /* TUBUILD CONFLICT -- alternate declaration of func_ov060_02111cc0, from the legacy file for func_ov060_021125f0, NOT applied: extern int func_ov060_02111cc0(char *c, int a, int b); */
@@ -619,7 +613,7 @@ the grab bit of dCc_c's hit-flag table (that table is a best-effort reading, see
 include/dCc_c.h). Always returns 1. */
 int daKpaTail_c::InitResources()
 {
-    _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, this, 0x32000, 0x50000, 0x800000, 0x1000);
+    mdCcAc_c.Init(this, 0x32000, 0x50000, 0x800000, 0x1000);
     return 1;
 }
 
@@ -653,7 +647,7 @@ int daKpa_c::InitResources()
     daKpaFire_c *fire;
     daKpaTail_c *tail;
 
-    this->mModelAnim.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(data_ov060_0211ac78), 1, 0x16);
+    this->mAnmModel.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(data_ov060_0211ac78), 1, 0x16);
 
     for (i = 0; i < 0x1c; i++)
         dExtFrameCtrl_c::LoadFile(*data_ov060_021192dc[i]);
@@ -679,8 +673,7 @@ int daKpa_c::InitResources()
     pos.x = 0;
     pos.y = 0;
     pos.z = 0;
-    _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
-        &this->mdCcAcPos_c, this, &pos, 0x78000, 0x118000, 0x200004, 0);
+    this->mdCcAcPos_c.Init(this, pos, 0x78000, 0x118000, 0x200004, 0);
 
     this->mHomePosX = this->mPosX;
     this->mHomePosY = this->mPosY;
@@ -782,7 +775,7 @@ mCapActorAlive once no cap actor exists any more. Always returns 1. */
  * camera's mFramedActor, then rebuild the body cylinder 0x50000 in front of
  * the actor. mdCcAcPos_c is a dCc_c by inheritance (dCcAcPos_c -> dCcAc_c ->
  * dCc_c), so Clear() and Update() are its own. The animation speed written here
- * (0x130) is the `speed` of the dExtFrameCtrl_c base inside mModelAnim (+0x50,
+ * (0x130) is the `speed` of the dExtFrameCtrl_c base inside mAnmModel (+0x50,
  * +0x0c), so advancing the animation is advancing the model.
  */
 int daKpa_c::Behavior()
@@ -799,8 +792,8 @@ int daKpa_c::Behavior()
     func_ov060_02112434();
     func_ov060_02111a28();
     mPrevAngleY = mAngleY;
-    mModelAnim.speed = mAnimSpeed;
-    mModelAnim.Advance();
+    mAnmModel.speed = mAnimSpeed;
+    mAnmModel.Advance();
     func_ov060_0211577c();
     ((dCamera_c *)data_0209f318)->mFramedActor = this;
     mdCcAcPos_c.Clear();
@@ -834,10 +827,10 @@ int daKpa_c::Render()
 {
     if (mOpacity < 8) return 1;
     mTextureSequence.Advance();
-    mTextureSequence.Update(mModelAnim.data);
+    mTextureSequence.Update(mAnmModel.data);
     /* dExtAnmModel_c's slot-5 Render(const Vector3 *) takes the scale vector;
      * daKpa2Bg_c::Render makes the same call on its mModel2. */
-    mModelAnim.Render(&mScale);
+    mAnmModel.Render(&mScale);
     return 1;
 }
 
@@ -1085,14 +1078,14 @@ void daKpa_c::func_ov060_02115a84(char* counter){
 /*
 True once the model's animation has reached its last frame or will reach it on
 the coming advance (dExtFrameCtrl_c::Finished, or WillHitFrame(frame count - 1)).
-Reads mModelAnim through a copy of this: the plain this->mModelAnim form builds
+Reads mAnmModel through a copy of this: the plain this->mAnmModel form builds
 the same code but draws one @NNN fewer, renumbering every pinned @NNN in this
 TU (measured). */
 // Bowser_IsAnimAtLastFrame at 0x02115a30 -- matched byte-for-byte with mwccarm 1.2/sp2p3 (ov060).
 bool daKpa_c::Bowser_IsAnimAtLastFrame(){
     daKpa_c *obj = this;
-    return obj->mModelAnim.Finished() ||
-           obj->mModelAnim.WillHitFrame((unsigned short)(obj->mModelAnim.GetFrameCount() - 1));
+    return obj->mAnmModel.Finished() ||
+           obj->mAnmModel.WillHitFrame((unsigned short)(obj->mAnmModel.GetFrameCount() - 1));
 }
 
 /* -------------------------------------------------------------------------- */
@@ -1106,7 +1099,7 @@ normal and mAngleY - 0x4000 (a quarter turn), both through func_02010844.
 2) Build the model matrix in data_020a0e68: translation = position >> 3
 (Vec3_Asr by 3; the foot points below are shifted left 3 on the way back out),
 then rotations about Y, X and Z; copy it into the model and apply opacity
-mOpacity >> 3 (0..31). 3) For skeleton nodes 3 and 6 (mModelAnim.data.transforms
+mOpacity >> 3 (0..31). 3) For skeleton nodes 3 and 6 (mAnmModel.data.transforms
 [3] and [6]) multiply the node matrix by the model matrix (the product lands
 back in data_020a0e68), read its translation (m[9..11]) and shift it left 3 to
 full scale: node 3 gives mFootPosB, node 6 gives mFootPosA, each with Y replaced
@@ -1134,14 +1127,14 @@ skip_angles:
     Matrix4x3_ApplyInPlaceToRotationY(&data_020a0e68, this->mAngleY);
     Matrix4x3_ApplyInPlaceToRotationX(&data_020a0e68, this->mAngleX);
     Matrix4x3_ApplyInPlaceToRotationZ(&data_020a0e68, this->mAngleZ);
-    this->mModelAnim.mat4x3 = data_020a0e68;
-    this->mModelAnim.ApplyOpacity((unsigned char)((int)this->mOpacity >> 3), 1);
+    this->mAnmModel.mat4x3 = data_020a0e68;
+    this->mAnmModel.ApplyOpacity((unsigned char)((int)this->mOpacity >> 3), 1);
     saved = data_020a0e68;
     zero = 0;
     this->mFootPosBX = zero;
     this->mFootPosBY = zero;
     this->mFootPosBZ = zero;
-    MulMat4x3Mat4x3((char *)&this->mModelAnim.data.transforms[3], &data_020a0e68, &data_020a0e68);
+    MulMat4x3Mat4x3((char *)&this->mAnmModel.data.transforms[3], &data_020a0e68, &data_020a0e68);
     this->mFootPosBX = data_020a0e68.m[9];
     this->mFootPosBY = data_020a0e68.m[10];
     this->mFootPosBZ = data_020a0e68.m[11];
@@ -1151,7 +1144,7 @@ skip_angles:
     this->mFootPosAY = zero;
     this->mFootPosAZ = zero;
     data_020a0e68 = saved;
-    MulMat4x3Mat4x3((char *)&this->mModelAnim.data.transforms[6], &data_020a0e68, &data_020a0e68);
+    MulMat4x3Mat4x3((char *)&this->mAnmModel.data.transforms[6], &data_020a0e68, &data_020a0e68);
     this->mFootPosAX = data_020a0e68.m[9];
     this->mFootPosAY = data_020a0e68.m[10];
     this->mFootPosAZ = data_020a0e68.m[11];
@@ -1173,7 +1166,8 @@ skip_angles:
         Vec3_Asr(&v2, &pos, 3);
         Matrix4x3_FromTranslation(&data_020a0e68, v2.x, v2.y, v2.z);
         *(Matrix4x3 *)(&this->mShadowMtx) = data_020a0e68;
-        _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(this, &this->mShadowModel, &this->mShadowMtx, 0x140000, 0x64000, 0xf);
+        DropShadowRadHeight(this->mShadowModel, *(Matrix4x3 *)&this->mShadowMtx, 0x140000, 0x64000,
+                            0xf);
     }
 }
 
@@ -1614,21 +1608,21 @@ BOWSER_STATE_IDLE, and after any other animation (the one playing when the state
 is entered) start animation 8; the three are started with 0x40000000 (play once). */
 void daKpa_c::func_ov060_02114e9c(){
     this->mHorzSpeed = 0;
-    if ((int)this->mModelAnim.file == (int)data_ov060_0211ac20.filePtr) {
-        if (this->mModelAnim.WillHitFrame(8)) {
+    if ((int)this->mAnmModel.file == (int)data_ov060_0211ac20.filePtr) {
+        if (this->mAnmModel.WillHitFrame(8)) {
             func_02012694(BOWSER_SND_B5, (const Vector3 *)(&this->mCamSpacePosX));
         }
     }
     if (Bowser_IsAnimAtLastFrame() == 0) return;
-    if (*(int *)&this->mModelAnim.file == (int)data_ov060_0211ac20.filePtr) {
+    if (*(int *)&this->mAnmModel.file == (int)data_ov060_0211ac20.filePtr) {
         func_ov060_02111cc0(6, 0x40000000);
         return;
     }
-    if (*(int *)&this->mModelAnim.file == (int)data_ov060_0211ac68.filePtr) {
+    if (*(int *)&this->mAnmModel.file == (int)data_ov060_0211ac68.filePtr) {
         func_ov060_02111cc0(7, 0x40000000);
         return;
     }
-    if (*(int *)&this->mModelAnim.file == (int)data_ov060_0211ac70.filePtr) {
+    if (*(int *)&this->mAnmModel.file == (int)data_ov060_0211ac70.filePtr) {
         this->mState = BOWSER_STATE_IDLE;
         return;
     }
@@ -1686,7 +1680,7 @@ void daKpa_c::func_ov060_02114d08(){
             return;
         }
         if (r4 >= 0x2000) return;
-        this->mModelAnim.currFrame = 0;
+        this->mAnmModel.currFrame = 0;
         (this->mStep)++;
         this->mStepCounter = 0;
         return;
@@ -1798,11 +1792,11 @@ mStep: 0 starts animation 0x16 (once) with sound 0xb5, 1 starts 0x15 (looping),
 2 starts 0x17 (once), 3 goes to BOWSER_STATE_IDLE and clears the flag. */
 void daKpa_c::func_ov060_02114858(){
     int new_var2;
-    s32 v134 = (s32)this->mModelAnim.file;
+    s32 v134 = (s32)this->mAnmModel.file;
     if ((v134 == (int)data_ov060_0211acd8.filePtr) ||
         ((v134 == (int)data_ov060_0211acf0.filePtr) &&
-         ((((u32)(((u32)(this->mModelAnim.currFrame)) << 4)) >> 16) > 0x2a))) {
-        s32 v12c = this->mModelAnim.currFrame;
+         ((((u32)(((u32)(this->mAnmModel.currFrame)) << 4)) >> 16) > 0x2a))) {
+        s32 v12c = this->mAnmModel.currFrame;
         s32 v450 = *(volatile s32 *)&this->mSoundID;
         s32 r4 = ((u32) (v12c << 4)) >> 16;
         if (v450 != 0x180)
@@ -1948,7 +1942,7 @@ Jump wind-up: play animation 0xb once; return 1 when the animation will cross
 frame 0x20 on this advance, otherwise 0. */
 int daKpa_c::func_ov060_0211469c(){
     func_ov060_02111cc0(0xb, 0x40000000);
-    int r = this->mModelAnim.WillHitFrame(0x20);
+    int r = this->mAnmModel.WillHitFrame(0x20);
     if (r != 0) return 1;
     return 0;
 }
@@ -2148,8 +2142,8 @@ void daKpa_c::func_ov060_021140c0(){
             this->mFireballShots = 3;
         }
     }
-    if ((int)this->mModelAnim.file == (int)data_ov060_0211abe0.filePtr) {
-        if (this->mModelAnim.WillHitFrame(5)) {
+    if ((int)this->mAnmModel.file == (int)data_ov060_0211abe0.filePtr) {
+        if (this->mAnmModel.WillHitFrame(5)) {
             Vector3 pos;
             u16 dir[3];
             u16 ax, ay, az;
@@ -2185,13 +2179,12 @@ void daKpa_c::func_ov060_021140c0(){
             pos.y = new_var;
             dir[0] = 0x1000;
             grav = 0xa000;
-            _ZN8dActor_c13SpawnFireballERK7Vector3PK10Vector3_165Fix12IiES7_j(
-                this, &pos, dp, 0x1e000, grav, 0);
+            SpawnFireball(pos, (const Vector3_16 *)dp, 0x1e000, grav, 0);
             func_02012694(BOWSER_SND_FIREBALL, (const Vector3 *)(&this->mCamSpacePosX));
         }
     }
     if (Bowser_IsAnimAtLastFrame() != 0) {
-        if ((int)this->mModelAnim.file == (int)data_ov060_0211abe0.filePtr) {
+        if ((int)this->mAnmModel.file == (int)data_ov060_0211abe0.filePtr) {
             this->mStep++;
             if (this->mStep >= this->mFireballShots) {
                 this->mState = BOWSER_STATE_IDLE;
@@ -2199,7 +2192,7 @@ void daKpa_c::func_ov060_021140c0(){
         } else {
             func_ov060_02111cc0(0x14, 0);
         }
-        this->mModelAnim.currFrame = 0;
+        this->mAnmModel.currFrame = 0;
     }
 }
 
@@ -2530,7 +2523,7 @@ void daKpa_c::func_ov060_02113740(){
     }
     case 1:
         func_ov060_02111cc0(0xb, 0x40000000);
-        if ((((u32)this->mModelAnim.currFrame << 4) >> 16) >= 0x20) {
+        if ((((u32)this->mAnmModel.currFrame << 4) >> 16) >= 0x20) {
             this->mAngleY = this->mAngleToCenter;
             this->mPrevAngleY = this->mAngleY;
             this->mVertSpeed = 0x28000;
@@ -2686,7 +2679,7 @@ void daKpa_c::func_ov060_021134ac(){
     this->unk_422 = 1;
     func_ov060_02115a84((char *)&this->mStepCounter);
     if (this->mWithMeshClsn.JustHitGround()) {
-        if ((int)this->mModelAnim.file == (int)data_ov060_0211ac88.filePtr) {
+        if ((int)this->mAnmModel.file == (int)data_ov060_0211ac88.filePtr) {
             func_ov060_02111cc0(5, 0x40000000);
         }
         this->mHorzSpeed >>= 1;
@@ -2714,7 +2707,7 @@ more than 0x6000 (135 degrees), that is, he is looking toward Bowser; otherwise
 int daKpa_c::func_ov060_02113404(){
     int r = 0;
     func_ov060_02112350();
-    if ((int)this->mModelAnim.file == (int)data_ov060_0211ac60.filePtr) {
+    if ((int)this->mAnmModel.file == (int)data_ov060_0211ac60.filePtr) {
         char* player = (char *)this->mTargetPlayer;
         if (player != 0) {
             int* targetPos = &this->mTargetPlayer->mPosX;
@@ -3111,7 +3104,7 @@ void daKpa_c::func_ov060_021128c0(){
                 v.x = this->mPosX;
                 v.y = this->mPosY;
                 v.z = this->mPosZ;
-                _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(f, v, 2, 0x8000, 1, 0, 1);
+                ((Player *)f)->Hurt(v, 2, 0x8000, 1, 0, 1);
             }
         }
     }
@@ -3143,9 +3136,9 @@ void daKpa_c::func_ov060_021128c0(){
             if (this->mVertSpeed >= 0x14000)
                 this->mVertSpeed = 0x14000;
         } else if (this->mGroundNormalY != 0) {
-            this->mVertSpeed = -(_ZN4cstd4fdivEii(FX_MUL(this->mGroundNormalX, this->mSpeedX) +
-                                                      FX_MUL(this->mGroundNormalZ, this->mSpeedZ),
-                                                  this->mGroundNormalY) +
+            this->mVertSpeed = -(cstd::fdiv(FX_MUL(this->mGroundNormalX, this->mSpeedX) +
+                                                FX_MUL(this->mGroundNormalZ, this->mSpeedZ),
+                                            this->mGroundNormalY) +
                                  0x8000);
         }
     }
@@ -3407,9 +3400,9 @@ void daKpa_c::func_ov060_021123a0(int enable){
 When the current animation has finished and is animation 5 (data_ov060_0211acd0
 is entry 5 of the animation table), start animation 3 (looping). */
 void daKpa_c::func_ov060_02112350(){
-    int finished = this->mModelAnim.Finished();
+    int finished = this->mAnmModel.Finished();
     if (!finished) return;
-    if ((int)this->mModelAnim.file != (int)data_ov060_0211acd0.filePtr)
+    if ((int)this->mAnmModel.file != (int)data_ov060_0211acd0.filePtr)
         return;
     func_ov060_02111cc0(3, 0);
 }
@@ -3540,7 +3533,7 @@ with texture-sequence flags 0x40000000); 3 and 5 use ac10, 0xe uses abf0, and
 every other idx (0 included) uses ac28 (these three with flags 0). */
 void daKpa_c::func_ov060_02111cc0(int idx, int animFlags){
     int a;  /* deliberately never assigned: it is animFlags, still in r2 (see above) */
-    this->mModelAnim.SetAnim((BCA_File *)(data_ov060_021192dc[idx]->filePtr), a, 0x1000, 0);
+    this->mAnmModel.SetAnim((BCA_File *)(data_ov060_021192dc[idx]->filePtr), a, 0x1000, 0);
     switch (idx) {
     case 1:
         dExtAnmTexPat_c::Prepare(*(BMD_File *)data_ov060_0211ac78.filePtr,
@@ -3593,13 +3586,13 @@ Row number for the mouth fire in daKpaFire_c, or -1. While animation 8 plays
 frame number minus 0x31 from frame 0x31 on; while animation 6 plays
 (data_ov060_0211ac68) it is the frame number plus 0xb; otherwise -1. */
 int daKpa_c::func_ov060_02111c68(){
-    int anim = (int)this->mModelAnim.file;
+    int anim = (int)this->mAnmModel.file;
     if (anim == (int)data_ov060_0211ac20.filePtr) {
-        unsigned int frame = ((unsigned int)this->mModelAnim.currFrame << 4) >> 0x10;
+        unsigned int frame = ((unsigned int)this->mAnmModel.currFrame << 4) >> 0x10;
         if (frame >= 0x31) return frame - 0x31;
     }
     if (anim == (int)data_ov060_0211ac68.filePtr) {
-        return (((unsigned int)this->mModelAnim.currFrame << 4) >> 0x10) + 0xb;
+        return (((unsigned int)this->mAnmModel.currFrame << 4) >> 0x10) + 0xb;
     }
     return -1;
 }
@@ -3622,11 +3615,11 @@ fires only on entering one: huge landing dust at the chosen foot point, sound
 the Fix12 argument 0x320000 (800.0). */
 void daKpa_c::func_ov060_02111a28(){
     /* (unsigned short)(u32 >> 12) forces ROM prologue load order
-       (mModelAnim.currFrame at 0x12c into r0, then mFootfallLatch at 0x446 into r1)
+       (mAnmModel.currFrame at 0x12c into r0, then mFootfallLatch at 0x446 into r1)
        + lsl#4/lsr#16 extract. */
-    int n = (unsigned short)((unsigned)this->mModelAnim.currFrame >> 12);
+    int n = (unsigned short)((unsigned)this->mAnmModel.currFrame >> 12);
     int wasInWindow = (this->mFootfallLatch != 0) ? 1 : 0;
-    int anim = (int)this->mModelAnim.file;
+    int anim = (int)this->mAnmModel.file;
     int foot = 0;
     this->mFootfallLatch = 0;
 

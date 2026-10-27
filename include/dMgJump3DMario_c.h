@@ -123,7 +123,7 @@ struct dMgJump3DMario_c : dMg3DHeyhoObjAdapter_c {
     void EnterRespawn(); /* 0x020c8768 */
     int LoadResources(); /* 0x020c87d0 */
 
-    dExtAnmModel_c mModelAnim; /* 0x4c */
+    dExtAnmModel_c mAnmModel; /* 0x4c */
     u8 unk_0b0[0x08];     /* 0xb0 -- untouched by every member; proven only by sizeof */
 };
 

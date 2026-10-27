@@ -81,18 +81,18 @@ s32 daFRing_c::CleanupResources()
 // @symbol _ZN9daFRing_c6RenderEv
 s32 daFRing_c::Render()
 {
-    mTextureSequence1.Update(mModelAnim1.data);
-    mTextureSequence2.Update(mModelAnim2.data);
-    mMaterialChanger1.Update(mModelAnim1.data);
-    mMaterialChanger2.Update(mModelAnim2.data);
-    mTextureTransformer1.Update(mModelAnim1.data);
-    mTextureTransformer2.Update(mModelAnim2.data);
-    mModelAnim1.Render(0);
+    mTextureSequence1.Update(mAnmModel1.data);
+    mTextureSequence2.Update(mAnmModel2.data);
+    mMaterialChanger1.Update(mAnmModel1.data);
+    mMaterialChanger2.Update(mAnmModel2.data);
+    mTextureTransformer1.Update(mAnmModel1.data);
+    mTextureTransformer2.Update(mAnmModel2.data);
+    mAnmModel1.Render(0);
     Vector3 scale;
     scale.x = 0x800;
     scale.y = 0x800;
     scale.z = 0x800;
-    mModelAnim2.Render(&scale);
+    mAnmModel2.Render(&scale);
     return 1;
 }
 
@@ -118,11 +118,11 @@ s32 daFRing_c::Behavior()
     mMaterialChanger2.Advance();
     mTextureTransformer1.Advance();
     mTextureTransformer2.Advance();
-    static_cast<dExtFrameCtrl_c &>(mModelAnim1).Advance();
-    static_cast<dExtFrameCtrl_c &>(mModelAnim2).Advance();
-    Matrix4x3_FromTranslation(&mModelAnim1.mat4x3, mPosX >> 3, mPosY >> 3, mPosZ >> 3);
-    Matrix4x3_FromTranslation(&mModelAnim2.mat4x3, mPosX >> 3, mPosY >> 3, mPosZ >> 3);
-    if (static_cast<dExtFrameCtrl_c &>(mModelAnim1).Finished())
+    static_cast<dExtFrameCtrl_c &>(mAnmModel1).Advance();
+    static_cast<dExtFrameCtrl_c &>(mAnmModel2).Advance();
+    Matrix4x3_FromTranslation(&mAnmModel1.mat4x3, mPosX >> 3, mPosY >> 3, mPosZ >> 3);
+    Matrix4x3_FromTranslation(&mAnmModel2.mat4x3, mPosX >> 3, mPosY >> 3, mPosZ >> 3);
+    if (static_cast<dExtFrameCtrl_c &>(mAnmModel1).Finished())
         MarkForDestruction();
     return 1;
 }
@@ -130,18 +130,18 @@ s32 daFRing_c::Behavior()
 // @symbol _ZN9daFRing_c13InitResourcesEv
 s32 daFRing_c::InitResources()
 {
-    mModelAnim1.SetFile(
+    mAnmModel1.SetFile(
         (BMD_File *)dExtSimpleModel_c::LoadFile(*(SharedFilePtr *)&data_ov060_0211b208), 1, 0x13);
-    mModelAnim2.SetFile((BMD_File *)data_ov060_0211b208.filePtr, 1, 0x13);
+    mAnmModel2.SetFile((BMD_File *)data_ov060_0211b208.filePtr, 1, 0x13);
 
     dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)&data_ov060_0211b1f8);
     dExtAnmTexPat_c::LoadFile(*(SharedFilePtr *)&data_ov060_0211b200);
 
-    func_02016b24(&mModelAnim1, 0x4000);
-    func_02016b24(&mModelAnim2, 0x4000);
+    func_02016b24(&mAnmModel1, 0x4000);
+    func_02016b24(&mAnmModel2, 0x4000);
 
-    mModelAnim1.SetAnim((BCA_File *)data_ov060_0211b1f8.filePtr, 0x40000000, 0x1000, 0);
-    mModelAnim2.SetAnim((BCA_File *)data_ov060_0211b1f8.filePtr, 0x40000000, 0x1000, 0);
+    mAnmModel1.SetAnim((BCA_File *)data_ov060_0211b1f8.filePtr, 0x40000000, 0x1000, 0);
+    mAnmModel2.SetAnim((BCA_File *)data_ov060_0211b1f8.filePtr, 0x40000000, 0x1000, 0);
 
     dExtAnmTexPat_c::Prepare(*(BMD_File *)data_ov060_0211b208.filePtr,
                              *(BTP_File *)data_ov060_0211b200.filePtr);

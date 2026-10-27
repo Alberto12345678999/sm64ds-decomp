@@ -5,8 +5,6 @@
  * sits 60 units above the actor. defer_codegen off: D1 then D0, no D2.
  */
 // leftovers:
-// - dExtAnmModel_c::SetAnim and dCcAc_c::Init stay mangled. Spelling them as
-//   methods changed InitResources (Fix12<int> by value).
 // - The player test stays `b = (actorID == 0xbf)` as an int. A bool does
 //   not match Behavior.
 // - func_ov062_0211afbc keeps the linker name. That is the enrolled symbol
@@ -32,7 +30,6 @@ bool PlaySub(u32, u32, u32, int, bool);
 
 extern "C" {
 
-void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *, dActor_c *, int, int, unsigned int, unsigned int);
 void Matrix4x3_FromRotationY(void *, int);
 extern Timer data_0209d4c8;
 }
@@ -72,10 +69,10 @@ daRFlag_c::~daRFlag_c()
 extern "C" void func_ov062_0211afbc(char *raw)
 {
     daRFlag_c *flag = (daRFlag_c *)raw;
-    Matrix4x3_FromRotationY(&flag->mModelAnim.mat4x3, flag->mAngleY);
-    flag->mModelAnim.mat4x3.t.x = flag->mPosX >> 3;
-    flag->mModelAnim.mat4x3.t.y = (flag->mPosY + 0x3c000) >> 3;
-    flag->mModelAnim.mat4x3.t.z = flag->mPosZ >> 3;
+    Matrix4x3_FromRotationY(&flag->mAnmModel.mat4x3, flag->mAngleY);
+    flag->mAnmModel.mat4x3.t.x = flag->mPosX >> 3;
+    flag->mAnmModel.mat4x3.t.y = (flag->mPosY + 0x3c000) >> 3;
+    flag->mAnmModel.mat4x3.t.z = flag->mPosZ >> 3;
 }
 
 // @symbol _ZN9daRFlag_c16CleanupResourcesEv
@@ -89,7 +86,7 @@ int daRFlag_c::CleanupResources()
 // @symbol _ZN9daRFlag_c6RenderEv
 int daRFlag_c::Render()
 {
-    mModelAnim.Render(0);
+    mAnmModel.Render(0);
     return 1;
 }
 
@@ -126,7 +123,7 @@ int daRFlag_c::Behavior()
         }
     }
 
-    mModelAnim.Advance();
+    mAnmModel.Advance();
     func_ov062_0211afbc(((char *)this));
     mdCcAc_c.Clear();
     mdCcAc_c.Update();
@@ -134,14 +131,11 @@ int daRFlag_c::Behavior()
 }
 
 // @symbol _ZN9daRFlag_c13InitResourcesEv
-/* SetAnim and dCcAc_c::Init are declared with the loose spellings the call
- * sites were matched under. The mangled names pass Fix12 by value. */
 int daRFlag_c::InitResources()
 {
-    mModelAnim.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(data_ov062_0211e0d4), 1, -1);
-    mModelAnim.SetAnim((BCA_File *)dExtFrameCtrl_c::LoadFile(data_ov062_0211e0dc), 0, 0x1000, 0);
-    _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(
-        &mdCcAc_c, this, 0x35555, 0x294000, 0x280000c, 0);
+    mAnmModel.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(data_ov062_0211e0d4), 1, -1);
+    mAnmModel.SetAnim((BCA_File *)dExtFrameCtrl_c::LoadFile(data_ov062_0211e0dc), 0, 0x1000, 0);
+    mdCcAc_c.Init(this, 0x35555, 0x294000, 0x280000c, 0);
     mHasTouchedFlag = 0xff;
     mVictoryTimer = 0;
     return 1;

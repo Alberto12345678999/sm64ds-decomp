@@ -20,8 +20,8 @@
 #include "dCc_c.h"
 #include "types.h"
 #include "dBgCh_Actr.h"
-
-bool ApproachLinear(short &value, short target, short step);
+#include "cstd.h"
+#include "math/Approach.h"
 
 struct BMD_File;
 struct Vector3_16;
@@ -47,17 +47,10 @@ extern int AngleDiff(int, int);
 extern int Vec3_HorzDist(const void *a, const void *b);
 extern short Vec3_HorzAngle(const void *a, const void *b);
 extern short Vec3_VertAngle(const void *a, const void *b);
-extern int _ZN4cstd4fdivEii(int a, int b);
 extern void Matrix4x3_FromRotationY(void *m, int angle);
 extern void Matrix4x3_ApplyInPlaceToRotationY(void *m, short angY);
 extern void Matrix4x3_ApplyInPlaceToRotationZ(void *m, short angZ);
 extern int data_020a0e68[];
-
-/* actor plumbing */
-extern void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
-    void *thiz, void *sm, void *mtx, int f, int g, unsigned int h);
-extern void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(
-    void *self, dActor_c *a, int b, int c, unsigned int d, unsigned int e);
 
 /* model / animation */
 
@@ -147,7 +140,7 @@ void daPeach_c::UpdateGroundCollision(dBgCh_Actr *clsn)
         if (floorN[1] != 0) {
             int x = FX_MUL(floorN[0], words[0xa4 / 4]);
             int z = FX_MUL(floorN[2], words[0xac / 4]);
-            mVertSpeed = -(_ZN4cstd4fdivEii(x + z, floorN[1]) + 0x8000);
+            mVertSpeed = -(cstd::fdiv(x + z, floorN[1]) + 0x8000);
         }
     }
     if (clsn->IsOnWall()) {
@@ -189,16 +182,15 @@ done:
 void daPeach_c::UpdateModel()
 {
     char *c = (char *)this;
-    Matrix4x3_FromRotationY(&mModelAnim.mat4x3, mAngleY);
-    mModelAnim.mat4x3.m[9] = mPosX >> 3;
-    mModelAnim.mat4x3.m[10] = mPosY >> 3;
-    mModelAnim.mat4x3.m[11] = mPosZ >> 3;
+    Matrix4x3_FromRotationY(&mAnmModel.mat4x3, mAngleY);
+    mAnmModel.mat4x3.m[9] = mPosX >> 3;
+    mAnmModel.mat4x3.m[10] = mPosY >> 3;
+    mAnmModel.mat4x3.m[11] = mPosZ >> 3;
     *(PeachM48 *)data_020a0e68 = *(PeachM48 *)(*(char **)(c + 0xe8) + 0x360);
     Matrix4x3_ApplyInPlaceToRotationY(data_020a0e68, mLookHorzAngle);
     Matrix4x3_ApplyInPlaceToRotationZ(data_020a0e68, mLookVertAngle);
     *(PeachM48 *)(*(char **)(c + 0xe8) + 0x360) = *(PeachM48 *)data_020a0e68;
-    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
-        this, &mShadowModel, &mModelAnim.mat4x3, 0x8c000, 0x32000, 0xf);
+    DropShadowRadHeight(mShadowModel, mAnmModel.mat4x3, 0x8c000, 0x32000, 0xf);
 }
 
 // @symbol _ZN9daPeach_c10InitState0Ev
@@ -213,8 +205,8 @@ int daPeach_c::InitState0()
 // @symbol _ZN9daPeach_c6State0Ev
 int daPeach_c::State0()
 {
-    mModelAnim.SetAnim((BCA_File *)data_ov085_021304ec[1], 0, 0x1000, 0);
-    ((dExtFrameCtrl_c *)&mModelAnim)->SetFlags(0x40000000);
+    mAnmModel.SetAnim((BCA_File *)data_ov085_021304ec[1], 0, 0x1000, 0);
+    ((dExtFrameCtrl_c *)&mAnmModel)->SetFlags(0x40000000);
     mHorzSpeed = 0x4000;
     mVertSpeed = 0xa000;
     mStateValue = 4;
@@ -230,7 +222,7 @@ int daPeach_c::State2()
 // @symbol _ZN9daPeach_c10InitState2Ev
 int daPeach_c::InitState2()
 {
-    mModelAnim.SetAnim((BCA_File *)((void *)data_ov085_021304e4[1]), 0, 0x1000, 0);
+    mAnmModel.SetAnim((BCA_File *)((void *)data_ov085_021304e4[1]), 0, 0x1000, 0);
     mHorzSpeed = 0x4000;
     mStateValue = 3;
     return 1;
@@ -250,7 +242,7 @@ int daPeach_c::InitState4()
 // @symbol _ZN9daPeach_c6State1Ev
 int daPeach_c::State1()
 {
-    mModelAnim.SetAnim((BCA_File *)((void *)data_ov085_021304c4[1]), 0, 0x1000, 0);
+    mAnmModel.SetAnim((BCA_File *)((void *)data_ov085_021304c4[1]), 0, 0x1000, 0);
     mHorzSpeed = 0x1800;
     mStateValue = 2;
     return 1;
@@ -289,9 +281,9 @@ int daPeach_c::State3()
 // @symbol _ZN9daPeach_c10InitState1Ev
 int daPeach_c::InitState1()
 {
-    mModelAnim.SetAnim((BCA_File *)data_ov085_021304d4[1], 0, 0x1000, 0);
-    ((dExtFrameCtrl_c *)&mModelAnim)->currFrame = 0;
-    ((dExtFrameCtrl_c *)&mModelAnim)->Advance();
+    mAnmModel.SetAnim((BCA_File *)data_ov085_021304d4[1], 0, 0x1000, 0);
+    ((dExtFrameCtrl_c *)&mAnmModel)->currFrame = 0;
+    ((dExtFrameCtrl_c *)&mAnmModel)->Advance();
     mTalkState = 1;
     mStateValue = 1;
     return 1;
@@ -320,7 +312,7 @@ int daPeach_c::InitState3()
 // @symbol _ZN9daPeach_c6State4Ev
 int daPeach_c::State4()
 {
-    mModelAnim.SetAnim((BCA_File *)((void *)data_ov085_021304bc[1]), 0, 0x1000, 0);
+    mAnmModel.SetAnim((BCA_File *)((void *)data_ov085_021304bc[1]), 0, 0x1000, 0);
     mStateValue = 0;
     return 1;
 }
@@ -373,7 +365,7 @@ void daPeach_c::OnPendingDestroy()
 /* Qualified dExtSimpleModel_c::Render. dExtAnmModel_c overrides the slot. */
 int daPeach_c::Render()
 {
-    mModelAnim.dExtSimpleModel_c::Render(0);
+    mAnmModel.dExtSimpleModel_c::Render(0);
     return 1;
 }
 
@@ -383,8 +375,8 @@ int daPeach_c::Behavior()
     CallStateBehavior();
     UpdateLookAt();
     if (mStateValue != 1)
-        ((dExtFrameCtrl_c *)((dExtFrameCtrl_c *)&mModelAnim))->Advance();
-    ((PeachAnimSlots *)((char *)&mModelAnim))->g3();
+        ((dExtFrameCtrl_c *)((dExtFrameCtrl_c *)&mAnmModel))->Advance();
+    ((PeachAnimSlots *)((char *)&mAnmModel))->g3();
     ((dCc_c *)&mCylinder)->Clear();
     ((dCc_c *)&mCylinder)->Update();
     UpdateModel();
@@ -400,13 +392,12 @@ int daPeach_c::Behavior()
 int daPeach_c::InitResources()
 {
     void *f = dExtSimpleModel_c::LoadFile(*(SharedFilePtr *)&data_ov085_021304f4);
-    ((dExtModel_c *)&mModelAnim)->SetFile((BMD_File *)f, 1, -1);
+    ((dExtModel_c *)&mAnmModel)->SetFile((BMD_File *)f, 1, -1);
     for (int i = 0; i < 7; i++)
         dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)data_ov085_0212f280[i]);
     if (mShadowModel.InitCylinder() == 0)
         return 0;
-    _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(
-        &mCylinder, this, 0x90000, 0xc0000, 0x4800004, 0);
+    mCylinder.Init(this, 0x90000, 0xc0000, 0x4800004, 0);
     mWithMeshClsn.Init(this, 0x40000, 0x40000, (Vector3_16 *)0, (Vector3_16 *)0);
     mVertAccel = -0x2000;
     mTerminalVelocity = -0x3c000;

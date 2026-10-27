@@ -1,5 +1,6 @@
 //cpp
 #include "dFdBrightness_c.h"
+#include "math/Approach.h"
 /* dScMgTrampoline_c -- Trampoline Time. Draw a line on the touch screen
  * (up to three at once) and bounce Mario to the lit door. Three misses
  * end the round.
@@ -56,7 +57,7 @@ void LoadBGPltt(const void *src, u32 offset, u32 size);
 void LoadOBJPltt(const void *src, u32 offset, u32 size);
 }
 namespace G3X {
-void SetFog(bool enable, int blend, int slope, int offset);
+void SetFog(int enable, int blend, int slope, int offset);
 }
 
 /* Local stand-ins for types no header declares yet. */
@@ -134,7 +135,6 @@ extern "C" {
 extern void Mg_RenderSpriteBoth(void *a, int b, int c, int d, int e);
 extern int sTrmpRowScreenY[];
 extern int sTrmpRowMarkerSprite;
-extern int _Z15ApproachLinear2Rsss(s16 *dst, s16 a, s16 b);
 extern void Mg_DrawBigNumber(int, int, int, int, int, int, int);
 extern void TrmpFx_Link(int *self);
 extern struct Node *sTrmpFxList;
@@ -165,7 +165,6 @@ extern int func_02012468(int a, int b, int c, int d, int e, int f, int g, short 
 extern short sTrmpGoalRow;
 
 extern void Trmp3DMario_UpdateAll(...);
-extern int _Z14ApproachLinearRiii(int *, int, int);
 extern int Trmp3DMario_CountFinished(void);
 extern void Mg_SetSharedState(int);
 extern void Trmp3DMario_StartAll(void *c);
@@ -522,7 +521,6 @@ void dScMgTrampoline_c::BeginPlay() {
 }
 
 // @symbol _ZN17dScMgTrampoline_c12UpdateScrollEv
-int ApproachLinear(int &, int, int);
 
 void dScMgTrampoline_c::UpdateScroll() {
     int q = sTrmpComboCount / 10;
@@ -569,7 +567,7 @@ void dScMgTrampoline_c::StatePlay() {
         mInputEnabled = 0;
         BeginResults();
     } else {
-        if (_Z14ApproachLinearRiii(&mTimer, 0, 1)) {
+        if (ApproachLinear(mTimer, 0, 1)) {
             if (sTrmpComboCount >= 5 || sTrmpMariosInPlay < 3) {
                 int i;
                 char *p = (char *)mMarios;
@@ -592,7 +590,7 @@ void dScMgTrampoline_c::StatePlay() {
     }
 
     if (sTrmpAnyOnLedge == 0) {
-        if (_Z15ApproachLinear2Rsss((short *)&mDoorSwitchTimer, 0, 1)) {
+        if (ApproachLinear2(*(short *)&mDoorSwitchTimer, 0, 1)) {
             if (GetDoorSide()) {
                 SetDoorSide(0);
                 mDoorMark.Show(mDoorSide);
@@ -612,7 +610,7 @@ void dScMgTrampoline_c::StatePlay() {
     }
 
     if (mDoorSwitchTimer <= 0x3c) {
-        if (_Z15ApproachLinear2Rsss((short *)&mDoorBlinkTimer, 0, 1)) {
+        if (ApproachLinear2(*(short *)&mDoorBlinkTimer, 0, 1)) {
             mDoorBlinkTimer = 0xa;
             if (mDoorBlinkPhase != 0)
                 mDoorBlinkPhase = 0;
@@ -622,11 +620,11 @@ void dScMgTrampoline_c::StatePlay() {
     }
 
     if (mDoorSide != 0) {
-        _Z14ApproachLinearRiii(&mArrow1X, 0, 1);
-        _Z14ApproachLinearRiii(&mArrow2X, 0x20, 1);
+        ApproachLinear(mArrow1X, 0, 1);
+        ApproachLinear(mArrow2X, 0x20, 1);
     } else {
-        _Z14ApproachLinearRiii(&mArrow1X, 0x20, 1);
-        _Z14ApproachLinearRiii(&mArrow2X, 0, 1);
+        ApproachLinear(mArrow1X, 0x20, 1);
+        ApproachLinear(mArrow2X, 0, 1);
     }
 }
 
@@ -642,7 +640,7 @@ void dScMgTrampoline_c::BeginResults() {
 void dScMgTrampoline_c::StateResults() {
     unsigned char *c = (unsigned char *)this;
     Trmp3DMario_UpdateAll(c);
-    if (_Z14ApproachLinearRiii(&mTimer, 0, 1) == 0)
+    if (ApproachLinear(mTimer, 0, 1) == 0)
         return;
     if (Trmp3DMario_CountFinished() == 0)
         return;
@@ -1123,7 +1121,7 @@ void TrmpScorePopup::Update() {
     if ((*((short *)(self + 0x20))) == 0) {
         return;
     }
-    if (_Z15ApproachLinear2Rsss((short *)(self + 0x1c), 0, 1)) {
+    if (ApproachLinear2(*((short *)(self + 0x1c)), 0, 1)) {
         TrmpFx_Unlink((Node *)self);
         *((short *)(self + 0x20)) = 0;
     }
@@ -1131,7 +1129,7 @@ void TrmpScorePopup::Update() {
         int *p = (int *)(((int)self + 4));
         *p = *p + (*((int *)(self + 0x14)));
     }
-    _Z14ApproachLinearRiii((int *)(self + 8), *((int *)(self + 0x10)), 0x1800);
+    ApproachLinear(*((int *)(self + 8)), *((int *)(self + 0x10)), 0x1800);
     func_0203d630((int *)(self + 0x14), 0xf00);
 }
 
@@ -1170,7 +1168,7 @@ void dScMgTrampoline_DoorMark::Show(int side) {
 void dScMgTrampoline_DoorMark::Update() {
     if (active == 0)
         return;
-    if (_Z15ApproachLinear2Rsss(&timer, 0, 1) != 0) {
+    if (ApproachLinear2(timer, 0, 1) != 0) {
         active = 0;
     }
     if (((timer / 10) & 1) != 0) {

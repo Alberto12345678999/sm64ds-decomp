@@ -32,7 +32,7 @@ struct dBgCh_SphCrr : dBgCh, dBgPi, dM3dGSph {
        THE QUERY SPHERE. dBgW_KcMbg::DetectClsn(dBgCh_SphCrr&) hands 0x03c
        to func_02039e48, which transforms a Vector3 into the collider's local
        frame, and scales 0x048 by the collider's uniform scale before passing it
-       as the `Fix12<int> radius` argument of dBgCh_SphCrr::SetObjAndSphere -- so
+       as the `Fix12i radius` argument of dBgCh_SphCrr::SetObjAndSphere -- so
        0x03c is twelve bytes of centre and 0x048 is the radius that follows it. */
     /* A Vector3 DISPLACEMENT. dBgCh_Actr's Update* methods read these three
        words (their Actr +0x6c) as a Vector3 and feed them to the movement
@@ -104,7 +104,7 @@ struct dBgCh_SphCrr : dBgCh, dBgPi, dM3dGSph {
 
     /* methods */
     void SetFloorResult(const dBgPi &result);
-    void SetObjAndSphere(const Vector3 &pos, Fix12<int> radius, dActor_c *actor);
+    void SetObjAndSphere(const Vector3 &pos, Fix12i radius, dActor_c *actor);
     int  DetectClsn();
 
     /* Result-slot accessors. mClsnResult1/2/3 are the floor / wall /

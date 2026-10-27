@@ -41,7 +41,7 @@ struct Player;
 struct daKrb_c : dCapEnemy_c {
     dCcAc_c mdCcAc_c;         /* 0x180 */
     dBgCh_Actr mWithMeshClsn; /* 0x1b4 */
-    dExtAnmModel_c mModelAnim;      /* 0x370 */
+    dExtAnmModel_c mAnmModel; /* 0x370 */
     dExtShadowModel_c mShadowModel; /* 0x3d4 */
     dExtAnmMaterial_c mMaterialChanger; /* 0x3fc */
     /* Last position that IsGoingOffCliff did not reject; Behavior snaps back to

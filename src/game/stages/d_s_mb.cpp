@@ -27,14 +27,7 @@
 #include "Heap.h"
 #include "OAM.h"
 #include "Sound.h"
-
-namespace GX {
-void LoadOBJPltt(const void *p, u32 a, u32 b);
-}
-
-namespace GXS {
-void LoadOBJPltt(const void *p, u32 a, u32 b);
-}
+#include "GX.h"
 
 extern "C" {
 void MultiStore16(u16 val, char *dst, int nbytes);
@@ -60,6 +53,8 @@ extern u8 data_0209d454;
 extern void *data_0209d4a8;
 extern int data_0208ee44;
 
+/* local extern: the factory runs the base constructor over fresh operator new
+   storage and stores the vptrs itself; C++ has no call spelling for a C2. */
 void *_ZN7fBase_cC2Ev(void *);
 extern int data_0208e4b8[];
 extern int data_020943c4[];
@@ -303,7 +298,7 @@ s32 dScMB_c::InitResources() {
     *(u8 *)&data_0209d454 = 0;
     *(volatile u32 *)0x4000000 &= ~0x1f00;
     *(volatile u32 *)0x4001000 &= ~0x1f00;
-    _ZN2GX6DispOnEv();
+    GX::DispOn();
 
     *(volatile u32 *)0x4001000 |= 0x10000;
     func_02034b1c((void *)&data_020a0c68, (int)this);

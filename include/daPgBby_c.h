@@ -54,7 +54,7 @@ struct daPgBby_c : dActor_c {
     /* The player whose Yoshi has the penguin in its mouth; state 5's enter
        step places the penguin in front of it and clears it. */
     Player *mEatingPlayer;          /* 0x0d0 */
-    dExtAnmModel_c mModelAnim;      /* 0x0d4 */
+    dExtAnmModel_c mAnmModel;       /* 0x0d4 */
     dExtShadowModel_c mShadowModel;       /* 0x138 */
     dCcAc_c mCylClsn;               /* 0x160 */
     dBgCh_Actr mWithMeshClsn;       /* 0x194 */

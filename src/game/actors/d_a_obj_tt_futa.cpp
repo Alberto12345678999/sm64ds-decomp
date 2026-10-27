@@ -4,8 +4,6 @@
  * it. The lid stays shut until event bit 0xe opens it.
  */
 // leftovers:
-// - Event::GetBit and Event::SetBit stay mangled. There is no Event header.
-//   InitResources and the pound call them for bit 0xe.
 // - dBgW_KcMbg::SetFile stays mangled. InitResources passes Fix12<int> by
 //   value, and data_ov033_02111bfc is the CLPS block it takes.
 // - dBgActor_c::IsClsnInRange stays mangled. Behavior passes Fix12<int>.
@@ -19,6 +17,7 @@ enum daObjTtFuta_c_AssetId {
 #include "daObjTtFuta_c.h"
 #include "SharedFilePtr.h"
 #include "Sound.h"
+#include "Event.h"
 
 /* 8-byte file handles. The model uses func_02017acc / func_02017ab4 and the
  * collision file func_02017b4c / SharedFilePtr_Destruct_Clsn. The spellings
@@ -45,8 +44,6 @@ struct System {
 };
 }
 extern int data_ov033_02111bfc[];
-extern int _ZN5Event6GetBitEj(unsigned int);
-extern void _ZN5Event6SetBitEj(unsigned int b);
 }
 
 /* Emission order is ROM order: the destructor pair must stay first.
@@ -72,7 +69,7 @@ void daObjTtFuta_c::OnGroundPounded(dActor_c &other)
     int *v = (int *)(((char *)&other) + 0x5c);
     Particle::System::NewSimple(0x28, v[0], v[1], v[2]);
     Sound::PlayBank3(0xf, mCamSpacePos);
-    _ZN5Event6SetBitEj(0xe);
+    Event::SetBit(0xe);
     MarkForDestruction();
 }
 
@@ -108,7 +105,7 @@ s32 daObjTtFuta_c::InitResources() {
     ((dBgW_KcMbg *)(&mMeshCollider))
         ->dBgW_KcMbg::SetFile((KCL_File *)(k), *(const Matrix4x3 *)(&mClsnMat), 0x199, mAngleY,
                               *(CLPS_Block *)(data_ov033_02111bfc));
-    return _ZN5Event6GetBitEj(0xe) == 0;
+    return Event::GetBit(0xe) == 0;
 }
 
 /* TT_FUTA factory. */

@@ -16,10 +16,8 @@
  * - The eight helpers stay func_ov100_02141fb0 .. 02142b90. Behavior
  *   reads data_ov100_0214867c by hand: the table is .bss the startup
  *   code fills with two-word pointer-to-member records.
- * - Particle::System::NewSimple, dCcAc_c::Init, dBgCh_Actr::Init,
- *   DropShadowRadHeight and Player::Hurt stay mangled. Each takes
- *   Fix12<int> by value; their native call reconstruction remains pending.
- *   The local Hurt declaration agrees with the current scalar definition.
+ * - Player::Hurt stays mangled: it takes Fix12<int> by value. The local
+ *   Hurt declaration agrees with the current scalar definition.
  * - The spawner copies Player position through a byte view of the whole object
  *   into a real Vector3. The inherited position fields remain separate scalars.
  * - Spawn still borrows this actor's flat position and angle fields through
@@ -40,16 +38,14 @@
 #include "nitro/fx/fx.h"
 #include "common.h"
 #include "SharedFilePtr.h"
-#include "decl_dBgCh_Actr.h"
 #include "Player.h"
 #include "dExtSimpleModel_c.h"
 #include "dActor_c.h"
 #include "dBgCh_Actr.h"
 #include "dCc_c.h"
 #include "Sound.h"
-namespace cstd {
-s16 atan2(s32, s32);
-}
+#include "cstd.h"
+#include "math/Approach.h"
 
 /* Actor IDs from symbols/actor_debug_names.tsv. */
 enum {
@@ -101,7 +97,6 @@ int PlayLong(u32, u32, u32, const Vector3 &, s16);
 extern "C" {
 /* Defined below. */
 
-void _ZN12dEnemyBase_c20KillByInvincibleCharERK10Vector3_16R6Player5Fix12IiE(void *c, Vector3_16 *s, void *a, int z);
 namespace Particle {
 struct System {
     static void NewSimple(u32 id, int x, int y, int z);
@@ -109,23 +104,12 @@ struct System {
 }
 int func_02012694(int a, void *p);
 void d_a_iblPlayLongHold(u32 a, u32 b, u32 c, void *v, u32 d);
-/* local extern: retain the matched scalar ABI for the by-value Fix12 argument.
-   Return and flag widths agree with the current Player definition. */
-int _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(Player *p, void *pos, u32 a, int b, u8 d, u8 e, u8 f);
 void func_02038414(void *p);
 int atan2_hold_d_a_ibl_1(int y, int x);
-int _ZN4cstd4fdivEii(int a, int b);
-int _ZN8dActor_c14GetSubtractionEss(void *a, short s1, int s2);
-int _ZN8dActor_c12ReflectAngleE5Fix12IiES1_s(void *self, int a, int b, int ang);
-void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(void *thiz, void *sm, void *mtx, int f, int g, unsigned int h);
 int func_ov002_020ad660(void *a, void *b, void *d, int e);
-int _Z14ApproachLinearRsss(short *value, short target, short step);
-void _Z14ApproachLinearRiii(int *value, int target, int step);
 int Vec3_HorzLen(void *v);
 int Vec3_HorzDist(const void *a, const void *b);
 int Vec3_Equal(void *a, void *b);
-int _ZN5dCc_c6UpdateEv(void *c);
-void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *self, void *actor, int a, int b, unsigned int c, unsigned int d);
 
 extern int IDENTITY_MATRIX4X3[];
 }
@@ -202,8 +186,8 @@ void daIbl_c::func_ov100_02141fb0()
         u32 r = OnAimedAtWithEgg();
         mPosY += r;
         s.x = 0; s.y = 0; s.z = 0;
-        _ZN12dEnemyBase_c20KillByInvincibleCharERK10Vector3_16R6Player5Fix12IiE(this, &s, a, 0);
-        _ZN10dBgCh_Actr15ClearGroundFlagEv(&mWithMeshClsn);
+        KillByInvincibleChar(s, *a, 0);
+        mWithMeshClsn.ClearGroundFlag();
         return;
     }
     if ((fl & daIbl_HIT_ATTACK) != 0) {
@@ -222,7 +206,7 @@ void daIbl_c::func_ov100_02141fb0()
         v.x = mPosX;
         v.y = mPosY;
         v.z = mPosZ;
-        _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(a, &v, 2, 0xc000, 1, 0, 1);
+        a->Hurt(v, 2, 0xc000, 1, 0, 1);
     }
 }
 
@@ -243,10 +227,10 @@ void daIbl_c::func_ov100_02142130()
     if (data_0209f2f8 == 0x19) func_020383f0(&mWithMeshClsn);
     else func_02038414(&mWithMeshClsn);
     if (mWithMeshClsn.IsOnWall() != 0) {
-        ((SurfaceInfo *)((char *)_ZNK10dBgCh_Actr13GetWallResultEv(&mWithMeshClsn) + 4))
+        ((SurfaceInfo *)((char *)mWithMeshClsn.GetWallResult() + 4))
             ->CopyNormalTo(*(Vector3 *)&mWallNormalX);
-        int a = cstd::atan2(mWallNormalX, mWallNormalZ);
-        if (_ZN8dActor_c14GetSubtractionEss(this, mPrevAngleY, a) > 0x4000)
+        short a = cstd::atan2(mWallNormalX, mWallNormalZ);
+        if (GetSubtraction(mPrevAngleY, a) > 0x4000)
             mHitWall = 1;
     }
     if (mWithMeshClsn.IsOnGround() == 0)
@@ -258,7 +242,7 @@ void daIbl_c::func_ov100_02142130()
     mPosZ = mPrevPosZ;
     if (mFloorNormalY == 0) return;
     int s = FX_MUL(mFloorNormalX, mSpeedX) + FX_MUL(mFloorNormalZ, mSpeedZ);
-    mVertSpeed = -(_ZN4cstd4fdivEii(s, mFloorNormalY) + 0x8000);
+    mVertSpeed = -(cstd::fdiv(s, mFloorNormalY) + 0x8000);
 }
 
 // @symbol _ZN7daIbl_c19func_ov100_02142264Ev
@@ -283,8 +267,8 @@ void daIbl_c::func_ov100_02142264()
         k += 0x28;
     else
         k += 0x190;
-    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
-        this, &mShadowModel, mShadowMtx, mDrawScale.x * 0xc8, k * mDrawScale.x, 0xf);
+    DropShadowRadHeight(mShadowModel, *(Matrix4x3 *)mShadowMtx, mDrawScale.x * 0xc8,
+                        k * mDrawScale.x, 0xf);
 }
 
 // @symbol _ZN7daIbl_c19func_ov100_0214233cEv
@@ -421,8 +405,7 @@ int daIbl_c::func_ov100_0214233c()
  * 4 ramps toward it by 0x400 (0.25 units/frame) a frame, and kind 2 adds
  * the floor normal's X and Z to its velocity. Last comes the collision
  * update. */
-int daIbl_c::func_ov100_021424c0()
-{
+void daIbl_c::func_ov100_021424c0() {
     int r;
     int vy;
 
@@ -430,20 +413,18 @@ int daIbl_c::func_ov100_021424c0()
     r = func_ov002_020ad660(this, &mWithMeshClsn, &mModel, 3);
     if (r != 0) {
         if (r != 2)
-            return r;
+            return;
         Particle::System::NewSimple(daIbl_PTCL_BREAK, mPosX, mPosY, mPosZ);
-        return func_02012694(daIbl_SND_BREAK, &mCamSpacePosX);
+        func_02012694(daIbl_SND_BREAK, &mCamSpacePosX);
+        return;
     }
 
     func_ov100_02141fb0();
-    {
-        int m = mDeathState;
-        if (m == daIbl_DEATH_KNOCKED)
-            return m;
-    }
+    if (mDeathState == daIbl_DEATH_KNOCKED)
+        return;
 
     r = func_ov100_0214233c();
-    _Z14ApproachLinearRsss(&mPrevAngleY, mHeadingToNode, 0x800);
+    ApproachLinear(mPrevAngleY, mHeadingToNode, 0x800);
 
     if (r == -1) {
         mVariant = daIbl_KIND_ROLL_OFF;
@@ -459,9 +440,7 @@ int daIbl_c::func_ov100_021424c0()
         vy = mVertSpeed;
         func_ov100_02142130();
         if (mHitWall != 0 && had == 0) {
-            mPrevAngleY = _ZN8dActor_c12ReflectAngleE5Fix12IiES1_s(this, mWallNormalX,
-                                                                      mWallNormalZ,
-                                                                      mPrevAngleY);
+            mPrevAngleY = ReflectAngle(mWallNormalX, mWallNormalZ, mPrevAngleY);
             mRollSoundHandle = 0;
         } else if (mWithMeshClsn.IsOnGround() != 0) {
             if (mWithMeshClsn.JustHitGround() != 0) {
@@ -477,7 +456,7 @@ int daIbl_c::func_ov100_021424c0()
             if (mHorzSpeed >= 0x23000) {
                 mHorzSpeed = 0x23000;
             } else if (mVariant == daIbl_KIND_PATH_RAMP) {
-                _Z14ApproachLinearRiii(&mHorzSpeed, 0x23000, 0x400);
+                ApproachLinear(mHorzSpeed, 0x23000, 0x400);
             } else {
                 mSpeedX += mFloorNormalX;
                 mSpeedZ += mFloorNormalZ;
@@ -489,7 +468,7 @@ int daIbl_c::func_ov100_021424c0()
     UpdatePos(0);
     func_ov100_02142264();
     mdCcAc_c.Clear();
-    return _ZN5dCc_c6UpdateEv(&mdCcAc_c);
+    mdCcAc_c.Update();
 }
 
 // @symbol _ZN7daIbl_c19func_ov100_0214272cEv
@@ -572,7 +551,7 @@ ground:
     UpdatePosWithOnlySpeed(0);
     func_ov100_02142264();
     mdCcAc_c.Clear();
-    _ZN5dCc_c6UpdateEv(&mdCcAc_c);
+    mdCcAc_c.Update();
 }
 
 // @symbol _ZN7daIbl_c19func_ov100_02142918Ev
@@ -610,7 +589,7 @@ void daIbl_c::func_ov100_02142918()
 
     if (mHitWall != 0) {
         int ang;
-        mPrevAngleY = _ZN8dActor_c12ReflectAngleE5Fix12IiES1_s(this, mWallNormalX, mWallNormalZ, mPrevAngleY);
+        mPrevAngleY = ReflectAngle(mWallNormalX, mWallNormalZ, mPrevAngleY);
         ang = *(u16 *)&mPrevAngleY;
         mSpeedX = FX_MUL(mHorzSpeed, data_02082214[(ang >> 4) << 1]);
         ang = *(u16 *)&mPrevAngleY;
@@ -660,7 +639,7 @@ Lend: {
     UpdatePosWithOnlySpeed(0);
     func_ov100_02142264();
     mdCcAc_c.Clear();
-    _ZN5dCc_c6UpdateEv(&mdCcAc_c);
+    mdCcAc_c.Update();
 }
 
 // @symbol _ZN7daIbl_c19func_ov100_02142b90Ev
@@ -838,14 +817,14 @@ int daIbl_c::InitResources()
             mDrawScale.x = 0x800;
             mDrawScale.y = 0x800;
             mDrawScale.z = 0x800;
-            _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, this, 0x1e000, 0x1e000, 0x200004, 0x3c0);
+            mdCcAc_c.Init(this, 0x1e000, 0x1e000, 0x200004, 0x3c0);
             mWithMeshClsn.Init(this, 0x1e000, 0x1e000, 0, 0);
             mKillY = -0x640000;        /* -1600 units */
         } else {
             mDrawScale.x = 0x1000;
             mDrawScale.y = 0x1000;
             mDrawScale.z = 0x1000;
-            _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, this, 0x64000, 0x64000, 0x200004, 0x3c0);
+            mdCcAc_c.Init(this, 0x64000, 0x64000, 0x200004, 0x3c0);
             mWithMeshClsn.Init(this, 0x64000, 0x64000, 0, 0);
             /* Full size: scale 1.0, collider radius and height 100 units.
                Speed per frame: 25 units in sublevel 0x18, 20 in 6, else 10. */
@@ -864,7 +843,7 @@ int daIbl_c::InitResources()
             }
         }
         UpdatePos(0);
-        _ZN10dBgCh_Actr13SetLimMovFlagEv((char *)&mWithMeshClsn);
+        mWithMeshClsn.SetLimMovFlag();
         goto end;
     }
 
@@ -875,9 +854,9 @@ int daIbl_c::InitResources()
         mDrawScale.x = 0x1000;
         mDrawScale.y = 0x1000;
         mDrawScale.z = 0x1000;
-        _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, this, 0x64000, 0x64000, 0x200004, 0x3c0);
+        mdCcAc_c.Init(this, 0x64000, 0x64000, 0x200004, 0x3c0);
         mWithMeshClsn.Init(this, 0x64000, 0x64000, 0, 0);
-        _ZN10dBgCh_Actr13SetLimMovFlagEv((char *)&mWithMeshClsn);
+        mWithMeshClsn.SetLimMovFlag();
         goto end;
     }
 

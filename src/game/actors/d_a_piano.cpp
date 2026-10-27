@@ -30,8 +30,7 @@
 #include "Player.h"
 #include "nitro/fx/fx.h"
 #include "Sound.h"
-
-bool ApproachLinear(short &value, short target, short step);
+#include "math/Approach.h"
 
 /* The TU's three resource handles, defined at file end so mwcc emits their
  * constructor calls, destructor registrations, and the PMF-table copy into
@@ -60,7 +59,6 @@ extern char data_ov063_0211ecb8;
  * linkage specifications, so everything they call lives here. */
 struct Vec3;
 extern "C" {
-extern void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(dCcAcPos_c *, dActor_c *, const Vector3 *, Fix12i, Fix12i, unsigned int, unsigned int);
 
 extern void func_ov063_0211d88c(daPiano_c *self);
 extern void func_ov063_0211d828(daPiano_c *self);
@@ -71,7 +69,6 @@ extern void Vec3_Sub(Vec3 *out, Vec3 *a, Vec3 *b);
 extern int LenVec3(Vec3 *v);
 extern s16 Vec3_HorzAngle(const Vector3 *v0, const Vector3 *v1);
 extern u8 DecIfAbove0_Byte(u8 *p);
-extern int _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(Player *self, void *a, unsigned int b, int dmg, unsigned char arg4, unsigned char arg5, unsigned char arg6);
 int Vec3_HorzDist(const Vector3 *a, const Vector3 *b);
 void func_0203568c(int *clsn, int radius);
 void func_02035684(int *clsn, int height);
@@ -98,12 +95,12 @@ int daPiano_c::InitResources()
     void *f;
 
     f = dExtSimpleModel_c::LoadFile(gPianoModelFile);
-    mModelAnim.SetFile((BMD_File *)f, 1, -1);
+    mAnmModel.SetFile((BMD_File *)f, 1, -1);
     mShadowModel1.InitCuboid();
     mShadowModel2.InitCuboid();
     mShadowModel3.InitCylinder();
     f = dExtFrameCtrl_c::LoadFile(gPianoAttackAnimationFile);
-    mModelAnim.SetAnim((BCA_File *)f, 0, 0x1000, 0);
+    mAnmModel.SetAnim((BCA_File *)f, 0, 0x1000, 0);
     mVertAccel = -0x2000;
     mTerminalVelocity = -0x3c000;
     mHomePos.x = mPosX;
@@ -114,8 +111,7 @@ int daPiano_c::InitResources()
         /* Sensor cylinders, 155.0 radius by 250.0 tall, tracking mPos.
          * 0x200004 is enemy | char-projectile: what can hit the piano.
          * Players are Hurt manually (func_ov063_0211d8cc), not via dCc. */
-        _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(cylinder, this, &mPos, 0x9b000,
-                                                                0xfa000, 0x200004, 0);
+        cylinder->Init(this, mPos, 0x9b000, 0xfa000, 0x200004, 0);
         cylinder++;
     }
     f = dBgW_Kc::LoadFile(gPianoCollisionFile);
@@ -161,7 +157,7 @@ int daPiano_c::Behavior()
 // @symbol _ZN9daPiano_c6RenderEv
 int daPiano_c::Render()
 {
-    mModelAnim.Render(0);
+    mAnmModel.Render(0);
     return 1;
 }
 
@@ -300,7 +296,7 @@ void daPiano_c::func_ov063_0211dbb8() {
  * 30-frame windup before the bite. */
 void daPiano_c::func_ov063_0211dba4()
 {
-    this->mModelAnim.speed = 4096;
+    this->mAnmModel.speed = 4096;
     this->mAttackTimer = 30;
 }
 
@@ -351,7 +347,7 @@ void daPiano_c::func_ov063_0211d8cc()
                     hurtPos.x = this->mPosX;
                     hurtPos.y = this->mPosY;
                     hurtPos.z = this->mPosZ;
-                    _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj((Player*)victim, &hurtPos, three, knock, one, zero, one);
+                    ((Player *)victim)->Hurt(hurtPos, three, knock, one, zero, one);
                 }
             }
         }
@@ -359,7 +355,7 @@ void daPiano_c::func_ov063_0211d8cc()
             break;
     }
 
-    if ((u16)(this->mModelAnim.currFrame >> 12) == 0)
+    if ((u16)(this->mAnmModel.currFrame >> 12) == 0)
         func_0201267c(0x106, &this->mCamSpacePos);
 
     target = this->mTarget;
@@ -369,19 +365,19 @@ void daPiano_c::func_ov063_0211d8cc()
         ApproachLinear(this->mPrevAngleY, Vec3_HorzAngle(&this->mPos, &this->mTarget->mPos), 0x200);
         this->mAngleY = this->mPrevAngleY;
         if (dist > 0x3ab000) {
-            if ((u16)(this->mModelAnim.currFrame >> 12) == 0) {
+            if ((u16)(this->mAnmModel.currFrame >> 12) == 0) {
                 func_ov063_0211ddac(this, kStateSearch);
                 return;
             }
         }
     } else {
-        if ((u16)(this->mModelAnim.currFrame >> 12) == 0) {
+        if ((u16)(this->mAnmModel.currFrame >> 12) == 0) {
             func_ov063_0211ddac(this, kStateSearch);
             return;
         }
     }
 
-    this->mModelAnim.Advance();
+    this->mAnmModel.Advance();
 
     x = this->mPosX;
     proj.x = x;
@@ -417,10 +413,10 @@ extern "C" {
 void func_ov063_0211d88c(daPiano_c *self)
 {
     extern void Matrix4x3_FromRotationY(Matrix4x3 *, int);
-    Matrix4x3_FromRotationY(&self->mModelAnim.mat4x3, self->mAngleY);
-    self->mModelAnim.mat4x3.m[9] = self->mPosX >> 3;
-    self->mModelAnim.mat4x3.m[10] = self->mPosY >> 3;
-    self->mModelAnim.mat4x3.m[11] = self->mPosZ >> 3;
+    Matrix4x3_FromRotationY(&self->mAnmModel.mat4x3, self->mAngleY);
+    self->mAnmModel.mat4x3.m[9] = self->mPosX >> 3;
+    self->mAnmModel.mat4x3.m[10] = self->mPosY >> 3;
+    self->mAnmModel.mat4x3.m[11] = self->mPosZ >> 3;
 }
 }
 
@@ -429,7 +425,7 @@ extern "C" {
 /* Refresh the collision matrix from the model matrix and position, then
  * refit the mesh collider to it. */
 void func_ov063_0211d828(daPiano_c *self){
-    self->mClsnMat = self->mModelAnim.mat4x3;
+    self->mClsnMat = self->mAnmModel.mat4x3;
     self->mClsnMat.m[9] = self->mPosX;
     self->mClsnMat.m[10] = self->mPosY;
     self->mClsnMat.m[11] = self->mPosZ;
@@ -446,10 +442,6 @@ void func_ov063_0211d5f4(daPiano_c *self)
     extern void Matrix4x3_FromRotationY(Matrix4x3* m, int angle);
     extern void MulVec3Mat4x3(Vector3* in, Matrix4x3* m, Vector3* out);
     extern void AddVec3(Vector3* a, Vector3* b, Vector3* c);
-    extern void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
-        dActor_c* self, dExtShadowModel_c* sm, Matrix4x3* mtx, Fix12i fx, Fix12i t, unsigned int u);
-    extern void _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_S5_j(
-        dActor_c* self, dExtShadowModel_c* sm, Matrix4x3* mtx, Fix12i fx, Fix12i t1, Fix12i t2, unsigned int u);
 
     extern Matrix4x3 data_020a0e68;   /* shared scratch matrix */
 
@@ -497,12 +489,11 @@ void func_ov063_0211d5f4(daPiano_c *self)
     self->mShadowMats[1].m[10] = self->mPosY >> 3;
     self->mShadowMats[1].m[11] = out.z >> 3;
 
-    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
-        self, &self->mShadowModel3, &self->mShadowMats[2], 0xf0000, 0x50000, 0xf);
-    _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_S5_j(
-        self, &self->mShadowModel1, &self->mShadowMats[0], 0xa0000, 0x50000, 0x110000, 0xf);
-    _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_S5_j(
-        self, &self->mShadowModel2, &self->mShadowMats[1], 0x80000, 0x50000, 0xf0000, 0xf);
+    self->DropShadowRadHeight(self->mShadowModel3, self->mShadowMats[2], 0xf0000, 0x50000, 0xf);
+    self->DropShadowScaleXYZ(self->mShadowModel1, self->mShadowMats[0], 0xa0000, 0x50000, 0x110000,
+                             0xf);
+    self->DropShadowScaleXYZ(self->mShadowModel2, self->mShadowMats[1], 0x80000, 0x50000, 0xf0000,
+                             0xf);
 }
 }
 

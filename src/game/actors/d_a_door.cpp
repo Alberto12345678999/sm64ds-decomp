@@ -210,9 +210,6 @@ int func_ov100_02145014(void);
 void func_ov100_02145070(int v);
 }
 extern "C" {
-/* local extern: include/Player.h declares Player::Unk_020ca488 void, and
-   func_ov100_021449c8 tests the value it leaves in r0. */
-int _ZN6Player12Unk_020ca488Ev(void *p);
 /* func_0201277c(id) plays a sound id with no position, as func_02012790
    does (Sound.h); func_02012694(id, pos) plays it at a position. */
 void func_0201277c(int a);
@@ -237,6 +234,7 @@ unsigned char IsAreaShowing(int idx);
 void SetTouchScreenDelay(void);
 void LoadKeyModels(int idx);
 void UnloadKeyModels(int idx);
+/* local extern: C++ cannot take ~Vector3()'s address */
 void *_ZN7Vector3D1Ev(void *object);
 
 extern DoorEntry data_ov100_02148204[];
@@ -627,7 +625,7 @@ int daDoor_c::func_ov100_02144950(Player *pl, int unused)
    data_ov100_021488b4. */
 int daDoor_c::func_ov100_021449c8(Player *a2)
 {
-    if (!_ZN6Player12Unk_020ca488Ev(a2)) {
+    if (!a2->Unk_020ca488()) {
         signed char sh = (((signed char *)data_ov100_02148204) + (param1 << 4))[0xa];  /* flagShift; the array-indexed spelling compiles to a different load */
         data_0209caa0.flags1 |= DOOR_SAVE_KEY_UNLOCKED << sh;
         func_ov100_021453d8(&data_ov100_021488b4, (int)a2);

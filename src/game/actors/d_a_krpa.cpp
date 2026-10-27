@@ -25,12 +25,6 @@
  *   dExtAnmModel_c.h; putting common.h first would drop .t.
  *   func_ov070_021213cc calls dBgCh_Actr_UpdateDiscreteNoLava_veneer: the
  *   veneer is the retail call destination.
- *
- * WHY SOME CALLS ARE SPELLED AS MANGLED SYMBOLS (Fix12<int> by value, see
- * notes/mwccarm-codegen.md 6az):
- *   dCcAcPos_c::Init, dBgCh_Actr::Init (its header Fix12i also mangles as
- *   int), dExtAnmModel_c::SetAnim, DropShadowRadHeight and
- *   Particle::System::NewSimple.
  */
 
 // leftovers:
@@ -51,6 +45,7 @@ enum d_a_krpa_AssetId {
 #include "SharedFilePtr.h"
 #include "nitro/fx/fx.h"
 #include "Sound.h"
+#include "math/Approach.h"
 
 // @symbol daKrpa_c_classInit
 /* `return new daKrpa_c()` emits 0x50, calling the inherited
@@ -111,9 +106,6 @@ struct KrpaModelFilePtr : SharedFilePtr {
 extern "C" {
 extern KrpaModelFilePtr gKeronpaModelFile;
 extern int IDENTITY_MATRIX4X3[];
-extern void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
-    dCcAcPos_c *clsn, dActor_c *actor, const Vector3 *offset,
-    Fix12i radius, Fix12i height, u32 flags, u32 vulnFlags);
 /* Parameter names keep this TU's @NNN. */
 typedef void BgchInitAt_(dBgCh_Actr *clsn, dActor_c *actor, Fix12i radius, Fix12i height,
                          Vector3_16 *a, Vector3_16 *b);
@@ -124,16 +116,14 @@ int daKrpa_c::InitResources()
     Vector3 offset;
     void *bmd = dExtSimpleModel_c::LoadFile(gKeronpaModelFile);
     int groundDistance;
-    mModelAnim.SetFile((BMD_File *)bmd, 1, 1);
+    mAnmModel.SetFile((BMD_File *)bmd, 1, 1);
     if (!mShadowModel.InitCylinder())
         return 0;
 
     offset.x = 0;
     offset.y = -0x32000;
     offset.z = 0;
-    _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
-        &mdCcAcPos_c, this, &offset,
-        0x32000, 0x64000, 0x200002, 0x8000);
+    mdCcAcPos_c.Init(this, offset, 0x32000, 0x64000, 0x200002, 0x8000);
     mWithMeshClsn.Init(this, 0x32000, 0x32000, 0, 0);
 
     mVertAccel = 0;
@@ -166,7 +156,7 @@ int daKrpa_c::Behavior()
 // @symbol _ZN8daKrpa_c6RenderEv
 int daKrpa_c::Render()
 {
-    mModelAnim.Render(&mScale);
+    mAnmModel.Render(&mScale);
     return 1;
 }
 
@@ -213,7 +203,7 @@ extern u32 data_ov070_021222e8[];
 }
 
 int daKrpa_c::func_ov070_021217ac() {
-    this->mModelAnim.SetAnim((BCA_File *)data_ov070_021234c4, 0, 0x1000, 0);
+    this->mAnmModel.SetAnim((BCA_File *)data_ov070_021234c4, 0, 0x1000, 0);
     this->mFrameController.func_ov070_02121ae0(
         data_ov070_02122404, 0x64, 1);
     this->mStateTimer = 0x73;
@@ -234,7 +224,7 @@ int daKrpa_c::func_ov070_02121710() {
     } else {
         this->mStateTimer = 0x73;
     }
-    this->mModelAnim.Advance();
+    this->mAnmModel.Advance();
     u32 frame = this->mFrameController.func_ov070_02121a64();
     this->mScaleX = frame;
     this->mScaleY = frame;
@@ -247,7 +237,7 @@ int daKrpa_c::func_ov070_02121710() {
 }
 // @symbol _ZN8daKrpa_c19func_ov070_021216b8Ev
 int daKrpa_c::func_ov070_021216b8() {
-    this->mModelAnim.SetAnim((BCA_File *)data_ov070_021234dc, 0x40000000, 0x1000, 0);
+    this->mAnmModel.SetAnim((BCA_File *)data_ov070_021234dc, 0x40000000, 0x1000, 0);
     this->mFrameController.func_ov070_02121ae0(
         data_ov070_021222e8, 0x47, 0);
     this->mStateIndex = 1;
@@ -277,7 +267,7 @@ int daKrpa_c::func_ov070_0212156c() {
     }
     if (this->mFrameController.cursor == this->mFrameController.count)
         this->func_ov070_02121880(0);
-    this->mModelAnim.Advance();
+    this->mAnmModel.Advance();
     u32 frame = this->mFrameController.func_ov070_02121a64();
     this->mScaleX = frame;
     this->mScaleY = frame;
@@ -331,7 +321,7 @@ int daKrpa_c::func_ov070_02121438()
     this->mScaleY = 0x1000;
     this->mScaleZ = 0x1000;
     this->mStateTimer = 0x2d;
-    this->mModelAnim.SetAnim((BCA_File *)data_ov070_021234c4, 0, 0x1000, 0);
+    this->mAnmModel.SetAnim((BCA_File *)data_ov070_021234c4, 0, 0x1000, 0);
     Particle::System::NewSimple(0x43, this->mPosX, this->mPosY, this->mPosZ);
     Particle::System::NewSimple(0x44, this->mPosX, this->mPosY, this->mPosZ);
     this->mStateIndex = 3;
@@ -342,7 +332,7 @@ int daKrpa_c::func_ov070_02121438()
  * destination; the rest are ordinary real class calls. */
 int daKrpa_c::func_ov070_021213cc() {
     this->mAngleX = this->mAngleX - 0x1000;
-    this->mModelAnim.Advance();
+    this->mAnmModel.Advance();
     this->UpdatePos(&this->mdCcAcPos_c);
     dBgCh_Actr_UpdateDiscreteNoLava_veneer(&this->mWithMeshClsn);
     if (!this->mWithMeshClsn.JustHitGround()) {
@@ -359,30 +349,25 @@ end:
  * reason as the two Init imports above. */
 extern "C" void Matrix4x3_FromRotationXYZExt(void *m, int x, int y, int z);
 extern "C" void Matrix4x3_FromRotationY(void *m, int angle);
-extern "C" void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
-    dActor_c *actor, dExtShadowModel_c *shadow, Matrix4x3 *matrix,
-    Fix12i radius, Fix12i depth, u32 opacity);
 
 void daKrpa_c::func_ov070_02121310()
 {
     if (this->mStateIndex == 3) {
-        Matrix4x3_FromRotationXYZExt(&this->mModelAnim.mat4x3,
-            this->mAngleX, this->mAngleY, this->mAngleZ);
+        Matrix4x3_FromRotationXYZExt(&this->mAnmModel.mat4x3, this->mAngleX, this->mAngleY,
+                                     this->mAngleZ);
     } else {
-        Matrix4x3_FromRotationY(&this->mModelAnim.mat4x3, this->mAngleY);
+        Matrix4x3_FromRotationY(&this->mAnmModel.mat4x3, this->mAngleY);
     }
-    this->mModelAnim.mat4x3.t.x = this->mPosX >> 3;
-    this->mModelAnim.mat4x3.t.y = this->mPosY >> 3;
-    this->mModelAnim.mat4x3.t.z = this->mPosZ >> 3;
+    this->mAnmModel.mat4x3.t.x = this->mPosX >> 3;
+    this->mAnmModel.mat4x3.t.y = this->mPosY >> 3;
+    this->mAnmModel.mat4x3.t.z = this->mPosZ >> 3;
     this->mMatrix.t.x = this->mPosX >> 3;
     this->mMatrix.t.y = this->mPosY >> 3;
     this->mMatrix.t.z = this->mPosZ >> 3;
-    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
-        this, &this->mShadowModel, &this->mMatrix,
-        this->mScaleX * 0x46, this->mGroundDistance, 0xf);
+    DropShadowRadHeight(this->mShadowModel, this->mMatrix, this->mScaleX * 0x46,
+                        this->mGroundDistance, 0xf);
 }
 
-bool ApproachLinear(short &value, short target, short step);
 extern "C" {
 extern int Vec3_Dist(void* a, void* b);
 extern short Vec3_HorzAngle(void* a, void* b);

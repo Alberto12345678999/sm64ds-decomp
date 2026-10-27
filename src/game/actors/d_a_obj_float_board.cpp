@@ -36,15 +36,10 @@
 #include "common.h"
 #include "dBgCh_Gnd.h"
 #include "SharedFilePtr.h"
+#include "math/Approach.h"
 namespace cstd {
 s16 atan2(s32, s32);
 }
-
-/* ApproachLinear's two overloads mangle back to the ROM's own
- * _Z14ApproachLinearRiii and _Z14ApproachLinearRsss, so they are declared as
- * real C++ overloads and the compiler produces the reference. */
-int  ApproachLinear(int &p, int value, int speed);
-bool ApproachLinear(short &value, short target, short step);
 
 /* cstd::atan2 and dBgActor_c::IsClsnInRangeOnScreen take Fix12<int> BY VALUE,
  * which hits the documented mwccarm stack-homing wall when they are spelled

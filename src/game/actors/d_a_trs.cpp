@@ -69,6 +69,7 @@ enum daTrs_c_AssetId {
 #include "dCamera_c.h"
 #include "dBgCh_Gnd.h"
 #include "nitro/fx/fx.h"
+#include "math/Approach.h"
 
 /* Views of three classes this Boo reaches through other actors' pointers.
    Their headers are not included because each one renumbers this file's
@@ -93,7 +94,7 @@ struct daFPknBallView { /* daFPknBall_c.h: SpawnFireball's result */
     u8 pad_368[0x6];
     u8 mMirrored; /* 0x36e */
 };
-/* One 0x34-byte runtime bone of mModelAnim.data.bones (ModelComponents types
+/* One 0x34-byte runtime bone of mAnmModel.data.bones (ModelComponents types
    the array as BMD_Bone). Same rotX/rotY/rotZ at 0x1a as d_a_moray.cpp's
    MorayBone and d_a_cnn.cpp's CnnBone; the two render paths pose bone 0
    with the Boo's angles. */
@@ -108,7 +109,6 @@ struct TrsBone {
 typedef char TrsBone_size_must_be_0x34[sizeof(TrsBone) == 0x34 ? 1 : -1];
 #endif
 
-bool ApproachLinear(short &value, short target, short step);
 
 extern "C" {
 /* shared engine entry points without a header declaration */
@@ -129,8 +129,6 @@ s32 Vec3_HorzDist(const void *a, const void *b);
 u16 DecIfAbove0_Short(void *p);
 
 /* ABI seams whose header member forms do not reproduce the ROM (see notes) */
-void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(void *self, void *actor, void *pos, int r, int h, unsigned int e, unsigned int g);
-void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *self, dActor_c *actor, Fix12i radius, Fix12i height, unsigned int flags, unsigned int vulnFlags);
 /* Parameter names keep this TU's @NNN. */
 typedef void BgchInitAt_(void *self, dActor_c *actor, Fix12i radius, Fix12i height, Vector3_16 *a,
                          Vector3_16 *b);
@@ -186,9 +184,7 @@ extern "C" {
 void Matrix4x3_ApplyInPlaceToRotationY(void *m, s16 angY);
 int RandomIntInternal(int *seed);
 void Vec3_Asr(void *d, const void *s, int sh);
-void _Z14ApproachLinearRiii(int *p, int target, int step);
 int d_a_trsPlaySubHold(unsigned int a, unsigned int b, unsigned int c, s32 d, int e);
-void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(void *self, void *sm, void *m, int rad, int h, u32 a);
 int func_020092c4(void *cam, void *out, void *target);
 int func_02012694(int a, void *p, ...);
 u16 func_0201277c(int a);
@@ -212,21 +208,20 @@ extern void d_a_trsChangeMusicVolumeHold(unsigned a, int fx);
 extern void func_02011cfc(void);
 extern s16 data_ov063_0211e1c8[];
 extern int LenVec3(int *v);
-extern void _ZN17daObjSlIceBlock_c16CleanupResourcesEv(void);
+/* The call at 0x02118004 relocates to overlays(27,55). r0 still holds the
+   state timer there, so the callee takes no object: ov055's free function at
+   0x02111264, not ov027's daObjSlIceBlock_c::CleanupResources. */
+extern "C" void func_ov055_02111264(void);
 extern int func_ov002_020c51d0(void *c, int *st);
 extern u16 func_02011d14(void);
 extern int data_ov008_02111b6c;
 extern int data_0209caa0[];
 extern s16 data_ov063_0211e1dc[];
 extern s16 data_ov063_0211e1e4[];
-extern char* _ZN8dActor_c13SpawnFireballERK7Vector3PK10Vector3_165Fix12IiES7_j(void* self, const void * v, const void* p, s32 a, s32 b, unsigned int n);
 extern s16 data_ov063_0211e1c0[];
 extern int data_ov063_0211e1d0[];
 extern int data_0209b490[];
 extern u8 data_0209d660;
-extern void _ZN6Player6BounceE5Fix12IiE(void* p, s32 f);
-extern void _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void* p, const void * v, u32 a, s32 f, u32 b, u32 c, u32 d);
-extern void _ZN12dEnemyBase_c20KillByInvincibleCharERK10Vector3_16R6Player5Fix12IiE(void* c, void* v, void* r4, s32 flag);
 extern short data_ov063_0211e7e0[];
 extern int data_ov063_0211edc0;
 extern struct Vec3 data_ov063_0211ee74;
@@ -235,6 +230,7 @@ extern struct Vec3 data_ov063_0211ee8c;
 extern void* data_ov063_0211ee20[3];
 extern void* data_ov063_0211edfc[3];
 extern void* data_ov063_0211ee08[3];
+/* local extern: C++ cannot take ~Vector3()'s address */
 extern void *_ZN7Vector3D1Ev(void *object);
 /* __register_global_object is the compiler's own name for func_020731dc:
    the initializer's registrations and the lazy ones below share the one
@@ -310,22 +306,21 @@ int daTrs_c::OnAimedAtWithEgg() {
 // @symbol _ZN7daTrs_c19func_ov063_021160d4Ev
 void daTrs_c::func_ov063_021160d4() {
 
-  int *p;
-  this->mClsnOffX = 0;
-  this->mClsnOffY = 0;
-  this->mClsnOffZ = 0;
-  Matrix4x3_FromTranslation(&data_020a0e68, this->mPosX, this->mPosY, this->mPosZ);
-  MulMat4x3Mat4x3(this->mModelAnim.data.transforms, &data_020a0e68, &data_020a0e68);
-  this->mClsnOffX = data_020a0e68.m[9];
-  this->mClsnOffY = inline_fn(10);
-  this->mClsnOffZ = inline_fn(11);
-  SubVec3((Vec3 *) &this->mClsnOffX, (Vec3 *) &this->mPosX, (Vec3 *) &this->mClsnOffX);
-  SubVec3((Vec3 *) &this->mClsnOffX, (Vec3 *) &this->mClsnBaseX, (Vec3 *) &this->mClsnOffX);
-  Vec3_MulScalarInPlace((Vec3 *) &this->mClsnOffX, 0x6800);
-  p = (int *) &this->mClsnOffZ;
-  *p += this->mClsnZBias;
+    int *p;
+    this->mClsnOffX = 0;
+    this->mClsnOffY = 0;
+    this->mClsnOffZ = 0;
+    Matrix4x3_FromTranslation(&data_020a0e68, this->mPosX, this->mPosY, this->mPosZ);
+    MulMat4x3Mat4x3(this->mAnmModel.data.transforms, &data_020a0e68, &data_020a0e68);
+    this->mClsnOffX = data_020a0e68.m[9];
+    this->mClsnOffY = inline_fn(10);
+    this->mClsnOffZ = inline_fn(11);
+    SubVec3((Vec3 *)&this->mClsnOffX, (Vec3 *)&this->mPosX, (Vec3 *)&this->mClsnOffX);
+    SubVec3((Vec3 *)&this->mClsnOffX, (Vec3 *)&this->mClsnBaseX, (Vec3 *)&this->mClsnOffX);
+    Vec3_MulScalarInPlace((Vec3 *)&this->mClsnOffX, 0x6800);
+    p = (int *)&this->mClsnOffZ;
+    *p += this->mClsnZBias;
 }
-
 
 // @symbol _ZN7daTrs_c19func_ov063_02116190Ev
 int daTrs_c::func_ov063_02116190() {
@@ -433,30 +428,30 @@ void daTrs_c::func_ov063_0211640c() {
     if (this->mState == 3) {
         Vec3_Asr(&t1, &pos, 3);
         Matrix4x3_FromTranslation(&data_020a0e68, t1.x, t1.y, t1.z);
-        this->mModelAnim.mat4x3 = data_020a0e68;
-        this->mModelAnim.ApplyOpacity((u8)((int)this->mOpacity >> 3), 1);
-        func_020167a4(&this->mModelAnim);
+        this->mAnmModel.mat4x3 = data_020a0e68;
+        this->mAnmModel.ApplyOpacity((u8)((int)this->mOpacity >> 3), 1);
+        func_020167a4(&this->mAnmModel);
         {
-            TrsBone *m = (TrsBone *)this->mModelAnim.data.bones;
+            TrsBone *m = (TrsBone *)this->mAnmModel.data.bones;
             m->rotX = this->mAngleX;
             m->rotY = (s16)(ang - 0x4000);
             m->rotZ = this->mAngleZ;
         }
-        this->mModelAnim.data.UpdateVertsUsingBones();
+        this->mAnmModel.data.UpdateVertsUsingBones();
     } else {
         Vec3_Asr(&t2, &pos, 3);
         Matrix4x3_FromTranslation(&data_020a0e68, t2.x, t2.y, t2.z);
         Matrix4x3_ApplyInPlaceToRotationY(&data_020a0e68, ang);
-        this->mModelAnim.mat4x3 = data_020a0e68;
-        this->mModelAnim.ApplyOpacity((u8)((int)this->mOpacity >> 3), 1);
+        this->mAnmModel.mat4x3 = data_020a0e68;
+        this->mAnmModel.ApplyOpacity((u8)((int)this->mOpacity >> 3), 1);
     }
 
     if (this->mOpacity >= 0x10) {
         Matrix4x3_FromTranslation(&data_020a0e68,
             pos.x >> 3, pos.y >> 3, pos.z >> 3);
         *(struct Matrix4x3 *)&this->mShadowMtx[0] = data_020a0e68;
-        _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
-            this, &this->mShadowModel1, &this->mShadowMtx[0], 0x12c000, 0xc8000, 0xf);
+        DropShadowRadHeight(this->mShadowModel1, *(Matrix4x3 *)&this->mShadowMtx[0], 0x12c000,
+                            0xc8000, 0xf);
 
         if (this->mBooFlags.mirrored) {
             int px = pos.x;
@@ -465,8 +460,7 @@ void daTrs_c::func_ov063_0211640c() {
             Matrix4x3_FromTranslation(&data_020a0e68,
                 pos.x >> 3, pos.y >> 3, pos.z >> 3);
             this->mShadowMtx2 = data_020a0e68;
-            _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
-                this, &this->mShadowModel2, &this->mShadowMtx2, 0x12c000, 0xc8000, 0xf);
+            DropShadowRadHeight(this->mShadowModel2, this->mShadowMtx2, 0x12c000, 0xc8000, 0xf);
         }
     }
 
@@ -504,22 +498,22 @@ void daTrs_c::func_ov063_021166ac() {
         t->mState == 3 || t->mState == 3) {
         Vec3_Asr(&t1, &this->mPos, 3);
         Matrix4x3_FromTranslation(&data_020a0e68, t1.x, t1.y, t1.z);
-        this->mModelAnim.mat4x3 = data_020a0e68;
-        this->mModelAnim.ApplyOpacity((u8)(this->mOpacity >> 3), 1);
-        func_020167a4(&this->mModelAnim);
+        this->mAnmModel.mat4x3 = data_020a0e68;
+        this->mAnmModel.ApplyOpacity((u8)(this->mOpacity >> 3), 1);
+        func_020167a4(&this->mAnmModel);
         {
-            TrsBone *p = (TrsBone *)this->mModelAnim.data.bones;
+            TrsBone *p = (TrsBone *)this->mAnmModel.data.bones;
             p->rotX = this->mAngleX;
             p->rotY = this->mAngleY - 0x4000;
             p->rotZ = this->mAngleZ;
         }
-        this->mModelAnim.data.UpdateVertsUsingBones();
+        this->mAnmModel.data.UpdateVertsUsingBones();
     } else {
         Vec3_Asr(&t2, &this->mPos, 3);
         Matrix4x3_FromTranslation(&data_020a0e68, t2.x, t2.y, t2.z);
         Matrix4x3_ApplyInPlaceToRotationY(&data_020a0e68, this->mAngleY);
-        this->mModelAnim.mat4x3 = data_020a0e68;
-        this->mModelAnim.ApplyOpacity((u8)(this->mOpacity >> 3), 1);
+        this->mAnmModel.mat4x3 = data_020a0e68;
+        this->mAnmModel.ApplyOpacity((u8)(this->mOpacity >> 3), 1);
     }
 
     Matrix4x3_FromTranslation(&data_020a0e68, this->mPosX >> 3, this->mPosY >> 3, this->mPosZ >> 3);
@@ -527,9 +521,11 @@ void daTrs_c::func_ov063_021166ac() {
     {
         int big = (this->actorID == TRS_ID_BOSS_TERESA);
         if (big)
-            _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(this, &this->mShadowModel1, &this->mShadowMtx[0], 0x12c000, 0xc8000, 0xf);
+            DropShadowRadHeight(this->mShadowModel1, *(Matrix4x3 *)&this->mShadowMtx[0], 0x12c000,
+                                0xc8000, 0xf);
         else
-            _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(this, &this->mShadowModel1, &this->mShadowMtx[0], 0x64000, 0xc8000, 0xf);
+            DropShadowRadHeight(this->mShadowModel1, *(Matrix4x3 *)&this->mShadowMtx[0], 0x64000,
+                                0xc8000, 0xf);
     }
     this->mCapPosY = this->mClsnOffY + FX_MUL(this->mScaleX, 0x60000);
     pos.x = this->mCapPosX;
@@ -557,7 +553,7 @@ void daTrs_c::func_ov063_021166ac() {
 void daTBasket_c::func_ov063_021169c4() {
 
     Matrix4x3_FromTranslation(&this->mModel.mat4x3, this->mPosX>>3, this->mPosY>>3, this->mPosZ>>3);
-    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(this, &this->mShadowModel, &this->mModel.mat4x3, 0x64000, 0x64000, 0xf);
+    DropShadowRadHeight(this->mShadowModel, this->mModel.mat4x3, 0x64000, 0x64000, 0xf);
 }
 
 
@@ -604,7 +600,7 @@ void daTrs_c::func_ov063_02116a1c() {
         this->mHorzSpeed = 0;
     } else {
         int t;
-        _Z14ApproachLinearRiii((int *)&this->mHorzSpeed, 0x30000, 0x1800);
+        ApproachLinear(*(int *)&this->mHorzSpeed, 0x30000, 0x1800);
         t = 0x3e8000;
         v.x = -t;
         v.z = (int)0xfdcd8000;
@@ -816,7 +812,7 @@ void daTrs_c::func_ov063_02116fac() {
         this->mHorzSpeed = 0;
         break;
     case 2:
-        _Z14ApproachLinearRiii((int*)&this->mHorzSpeed, 0x3a000, 0x1800);
+        ApproachLinear(*(int *)&this->mHorzSpeed, 0x3a000, 0x1800);
         fr.v.x = -0x3e8000;
         fr.v.y = 0;
         fr.v.z = 0xfea84000;
@@ -826,7 +822,7 @@ void daTrs_c::func_ov063_02116fac() {
         }
         break;
     case 3:
-        _Z14ApproachLinearRiii((int*)&this->mHorzSpeed, 0, 0x9000);
+        ApproachLinear(*(int *)&this->mHorzSpeed, 0, 0x9000);
         fr.v.x = -0x3e8000;
         fr.v.y = 0;
         fr.v.z = -0xfa0000;
@@ -852,7 +848,7 @@ void daTrs_c::func_ov063_02116fac() {
         }
         break;
     case 5:
-        _Z14ApproachLinearRiii((int*)&this->mHorzSpeed, 0x3a000, 0x1800);
+        ApproachLinear(*(int *)&this->mHorzSpeed, 0x3a000, 0x1800);
         fr.v.x = -0x3e8000;
         fr.v.y = 0;
         fr.v.z = 0xfea84000;
@@ -1300,7 +1296,7 @@ void daTrs_c::func_ov063_02117cdc() {
         if (*(u16 *)&this->mStateTimer < 0x1e) {
             return;
         }
-        _ZN17daObjSlIceBlock_c16CleanupResourcesEv();
+        func_ov055_02111264();
         {
             u8 *st = (u8 *)&this->mSubState;
             int n = *st + 1;
@@ -1450,15 +1446,15 @@ void daTrs_c::func_ov063_02118458() {
     ApproachLinear(this->mPrevAngleY, this->mAngleToPlayer,
         data_ov063_0211e1c0[this->mHitPoints - 1]);
 
-    if (this->mModelAnim.Finished()) {
+    if (this->mAnmModel.Finished()) {
         if (func_ov063_0211a8a4()) {
-            if (this->mModelAnim.file == (BCA_File *)data_ov063_0211edcc.filePtr) {
+            if (this->mAnmModel.file == (BCA_File *)data_ov063_0211edcc.filePtr) {
                 func_02012694(0x158, &this->mCamSpacePos);
-                this->mModelAnim.SetAnim((BCA_File *)data_ov063_0211edd4.filePtr, 0x40000000,
-                                         0x1000, 0);
+                this->mAnmModel.SetAnim((BCA_File *)data_ov063_0211edd4.filePtr, 0x40000000, 0x1000,
+                                        0);
             } else if (this->mAttackRepeats != 0) {
                 this->mAttackRepeats -= 1;
-                this->mModelAnim.currFrame = 0;
+                this->mAnmModel.currFrame = 0;
                 func_02012694(0x158, &this->mCamSpacePos);
             } else {
                 int rnd;
@@ -1466,7 +1462,7 @@ void daTrs_c::func_ov063_02118458() {
                 this->mdCcAcPos_c.flags &= ~1;
                 rnd = ((unsigned int)RandomIntInternal(&data_0209e650) >> 16) & 0x3f;
                 this->mAttackTimer = rnd + 0xb4;
-                this->mModelAnim.SetAnim((BCA_File *)data_ov063_0211ede4.filePtr, 0, 0x1000, 0);
+                this->mAnmModel.SetAnim((BCA_File *)data_ov063_0211ede4.filePtr, 0, 0x1000, 0);
             }
         } else {
             int rnd;
@@ -1474,11 +1470,11 @@ void daTrs_c::func_ov063_02118458() {
             this->mdCcAcPos_c.flags &= ~1;
             rnd = ((unsigned int)RandomIntInternal(&data_0209e650) >> 16) & 0x3f;
             this->mAttackTimer = rnd + 0xb4;
-            this->mModelAnim.SetAnim((BCA_File *)data_ov063_0211ede4.filePtr, 0, 0x1000, 0);
+            this->mAnmModel.SetAnim((BCA_File *)data_ov063_0211ede4.filePtr, 0, 0x1000, 0);
         }
     } else {
-        if (this->mModelAnim.file == (BCA_File *)data_ov063_0211edd4.filePtr &&
-            this->mModelAnim.WillHitFrame(6)) {
+        if (this->mAnmModel.file == (BCA_File *)data_ov063_0211edd4.filePtr &&
+            this->mAnmModel.WillHitFrame(6)) {
             Vec3 v;
             s16 m = 0x78;
             v.x = this->mPosX;
@@ -1486,11 +1482,11 @@ void daTrs_c::func_ov063_02118458() {
             v.z = this->mPosZ;
             v.x = data_02082214[(*(u16 *)&this->mAngleY >> 4) * 2] * m + v.x;
             v.z = data_02082214[(*(u16 *)&this->mAngleY >> 4) * 2 + 1] * m + v.z;
-            char* fb;
+            dActor_c *fb;
             this->mAngleX = 0x1000;
             func_02012694(0x156, &this->mCamSpacePos);
-            fb = _ZN8dActor_c13SpawnFireballERK7Vector3PK10Vector3_165Fix12IiES7_j(
-                this, &v, (const void*)&this->mAngleX, 0x14000, 0x6999, 4);
+            fb = SpawnFireball(*(const Vector3 *)&v, (const Vector3_16 *)&this->mAngleX, 0x14000,
+                               0x6999, 4);
             this->mAngleX = 0;
             if (this->mBooFlags.mirrored)
                 ((daFPknBallView *)fb)->mMirrored = 1;
@@ -1563,7 +1559,7 @@ void daTrs_c::func_ov063_0211873c() {
     this->mVertSpeed = 0;
     this->mVertAccel = 0;
     func_02012694(0x159, &this->mCamSpacePos);
-    this->mModelAnim.SetAnim((BCA_File *)data_ov063_0211edcc.filePtr, 0x40000000, 0x1000, 0);
+    this->mAnmModel.SetAnim((BCA_File *)data_ov063_0211edcc.filePtr, 0x40000000, 0x1000, 0);
     {
         unsigned int rnd = (unsigned int)RandomIntInternal(&data_0209e650);
         this->mAttackRepeats = (u8)((rnd >> 0x10) % 3);
@@ -1915,7 +1911,7 @@ void daTrs_c::func_ov063_02119074() {
         this->mScaleY = scale;
         this->mScaleZ = scale;
 
-        this->mModelAnim.SetPolygonID(0x16);
+        this->mAnmModel.SetPolygonID(0x16);
 
         if (this->mVariant == 0xd) {
             this->mSavedMusicVolume = data_0209b490[0];
@@ -2524,7 +2520,7 @@ int daTrs_c::func_ov063_0211a0dc() {
     }
 
     if (this->JumpedOnByPlayer(*(dCc_c *)(&this->mdCcAcPos_c), *player) != 0) {
-        _ZN6Player6BounceE5Fix12IiE(player, 0x28000);
+        player->Bounce(0x28000);
         func_0201267c(0x149, &this->mCamSpacePos);
         return -1;
     }
@@ -2533,7 +2529,7 @@ int daTrs_c::func_ov063_0211a0dc() {
     int isBigBoo = (int)(this->actorID == TRS_ID_BOSS_TERESA);
     if (isBigBoo) {
         if (player->mIsAirborne != 0) {
-            _ZN6Player6BounceE5Fix12IiE(player, 0x28000);
+            player->Bounce(0x28000);
             func_0201267c(0x149, &this->mCamSpacePos);
             return -1;
         }
@@ -2541,7 +2537,7 @@ int daTrs_c::func_ov063_0211a0dc() {
         v1.x = this->mPosX;
         v1.y = this->mPosY;
         v1.z = this->mPosZ;
-        _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(player, &v1, this->mHurtDamage, 0xc000, 1, 0, 1);
+        player->Hurt(*(Vector3 *)&v1, this->mHurtDamage, 0xc000, 1, 0, 1);
         func_0201267c(0x149, &this->mCamSpacePos);
         return -1;
     }
@@ -2571,7 +2567,7 @@ found_kind:
             v[0] = -0x2000;
             v[1] = 0;
             v[2] = 0;
-            _ZN12dEnemyBase_c20KillByInvincibleCharERK10Vector3_16R6Player5Fix12IiE(this, v, found2, 0);
+            KillByInvincibleChar(*(Vector3_16 *)v, *(Player *)found2, 0);
 
             {
                 s16* ap = (s16*)&this->mAngleY;
@@ -2585,7 +2581,7 @@ no_kind:
     v2.x = this->mPosX;
     v2.y = this->mPosY;
     v2.z = this->mPosZ;
-    _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(player, &v2, this->mHurtDamage, 0xc000, 1, 0, 1);
+    player->Hurt(*(Vector3 *)&v2, this->mHurtDamage, 0xc000, 1, 0, 1);
     func_0201267c(0x149, &this->mCamSpacePos);
     return -1;
 
@@ -2857,11 +2853,11 @@ void daTrs_c::func_ov063_0211aa34() {
         }
     }
     if (this->mOpacity == 0xff) {
-        this->mModelAnim.SetPolygonID(1);
+        this->mAnmModel.SetPolygonID(1);
     } else if (this->mBooFlags.mirrored) {
-        this->mModelAnim.SetPolygonID(2);
+        this->mAnmModel.SetPolygonID(2);
     } else {
-        this->mModelAnim.SetPolygonID(0x16);
+        this->mAnmModel.SetPolygonID(0x16);
     }
     v = this->mClsnScale * 8 / 10
         + this->mClsnScale * (this->mOpacity * 2) / 2550;
@@ -3048,7 +3044,7 @@ int daTrs_c::Render()
     {
         unsigned char st = mVariant;
         if (st >= 0xc && st != 0xf)
-            mModelAnim.HideMaterial(0, 2);
+            mAnmModel.HideMaterial(0, 2);
     }
 
     if (mDeathState != 8 &&
@@ -3056,9 +3052,9 @@ int daTrs_c::Render()
          mState == 3 ||
          mState == 3 ||
          mState == 3)) {
-        mModelAnim.dExtSimpleModel_c::Render(&mScale);
+        mAnmModel.dExtSimpleModel_c::Render(&mScale);
     } else {
-        mModelAnim.Render(&mScale);
+        mAnmModel.Render(&mScale);
     }
 
     return 1;
@@ -3106,7 +3102,7 @@ int daTrs_c::Behavior()
     if (GetCapState() == 0)
         return 1;
 
-    t = UpdateKillByInvincibleChar(mWithMeshClsn, mModelAnim, 0);
+    t = UpdateKillByInvincibleChar(mWithMeshClsn, mAnmModel, 0);
     if (t != 0) {
         if (t == 2) {
             PoofDust();
@@ -3349,7 +3345,7 @@ block_39:
         }
     }
     if ((((mState != 3) && (mState != 3)) && (mState != 3)) && (mState != 3))
-        mModelAnim.Advance();
+        mAnmModel.Advance();
     func_ov063_021166ac();
     mdCcAcPos_c.Clear();
     if (mOpacity == 0xff) {
@@ -3430,8 +3426,8 @@ int daTrs_c::InitResources()
             mFoundActor = 0;
         }
         dExtFrameCtrl_c::LoadFile(data_ov063_0211ede4);
-        mModelAnim.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(data_ov063_0211edf4), 1, 1);
-        mModelAnim.SetAnim((BCA_File *)data_ov063_0211ede4.filePtr, 0, 0x1000, 0);
+        mAnmModel.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(data_ov063_0211edf4), 1, 1);
+        mAnmModel.SetAnim((BCA_File *)data_ov063_0211ede4.filePtr, 0, 0x1000, 0);
         mHitPoints = 3;
         mClsnRadius = 0xc8;
         mClsnHeight = 0x104;
@@ -3440,7 +3436,8 @@ int daTrs_c::InitResources()
         mClsnOffX = 0;
         mClsnOffY = 0;
         mClsnOffZ = tmp598;
-        _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(&mdCcAcPos_c, this, &mClsnOffX, mClsnRadius << 0xc, mClsnHeight << 0xc, 0x200000, 0x207e0);
+        mdCcAcPos_c.Init(this, *(Vector3 *)&mClsnOffX, mClsnRadius << 0xc, mClsnHeight << 0xc,
+                         0x200000, 0x207e0);
         if (mVariant != 0xf) {
             mWithMeshClsn.Init(this, 0xdc000, 0xdc000, 0, 0);
         } else {
@@ -3449,8 +3446,8 @@ int daTrs_c::InitResources()
     } else {
         mVariant = param1 & 0xf;
         dExtFrameCtrl_c::LoadFile(data_ov063_0211eddc);
-        mModelAnim.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(data_ov063_0211edc4), 1, 0x16);
-        mModelAnim.SetAnim((BCA_File *)data_ov063_0211eddc.filePtr, 0, 0x1000, 0);
+        mAnmModel.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(data_ov063_0211edc4), 1, 0x16);
+        mAnmModel.SetAnim((BCA_File *)data_ov063_0211eddc.filePtr, 0, 0x1000, 0);
         mHitPoints = 1;
         if (mVariant == 5) {
             mClsnZBias = -0x24000;
@@ -3469,7 +3466,8 @@ int daTrs_c::InitResources()
             mClsnRadius = 0x4a;
             mClsnHeight = 0x64;
         }
-        _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(&mdCcAcPos_c, this, &mClsnOffX, mClsnRadius << 0xc, mClsnHeight << 0xc, 0x200000, 0x207e0);
+        mdCcAcPos_c.Init(this, *(Vector3 *)&mClsnOffX, mClsnRadius << 0xc, mClsnHeight << 0xc,
+                         0x200000, 0x207e0);
         if (data_0209f2f8 == 0xc && mPosX == 0xbb8000 && mAreaId == 2) {
             mBooFlags.limitZ = 1;
         }
@@ -3627,7 +3625,7 @@ int daTrs_c::InitResources()
     mClsnBaseY = 0;
     mClsnBaseZ = 0;
     Matrix4x3_FromTranslation(&data_020a0e68, mPosX, mPosY, mPosZ);
-    MulMat4x3Mat4x3(this->mModelAnim.data.transforms, &data_020a0e68, &data_020a0e68);
+    MulMat4x3Mat4x3(this->mAnmModel.data.transforms, &data_020a0e68, &data_020a0e68);
     mClsnBaseX = data_020a0e68.m[9];
     mClsnBaseY = data_020a0e68.m[10];
     mClsnBaseZ = data_020a0e68.m[11];
@@ -3650,7 +3648,7 @@ int daTBasket_c::InitResources()
         return 0;
     mVertAccel = -0x4000;
     mTerminalVelocity = -0x46000;
-    _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, this, 0x64000, 0x64000, 0x200004, 0);
+    mdCcAc_c.Init(this, 0x64000, 0x64000, 0x200004, 0);
     mWithMeshClsn.Init(this, 0x64000, 0x64000, 0, 0);
     mWithMeshClsn.SetLimMovFlag();
     mParticleID = 0;

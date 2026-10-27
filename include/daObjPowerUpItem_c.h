@@ -109,7 +109,7 @@ struct daObjPowerUpItem_c : dActor_c {
     /* Behavior's per-frame helpers: the pickup check against the flower's
        collider, the drop shadow, and the open/close model matrices. */
     void CheckPickup();
-    int  DropShadow();
+    void DropShadow();
     void UpdateMatrices();
 };
 

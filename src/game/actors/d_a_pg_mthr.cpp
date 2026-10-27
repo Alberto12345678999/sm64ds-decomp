@@ -1,8 +1,5 @@
 //cpp
 /* leftovers:
- * - dCcAc_c::Init and DropShadowRadHeight stay scalar externs. The
- *   Fix12<int> method form grows those bodies and emits an unlicensed
- *   .data word.
  * - dBgCh_Actr::Init's member call mangles with int. The ROM row is
  *   Fix12<int>. GetFloorResult and GetWallResult are not on the header.
  * - func_0201267c is Sound::Play(3, id, pos). The state helpers stay
@@ -40,8 +37,8 @@ enum d_a_pg_mthr_AssetId {
 #include "Player.h"
 #include "dBgCh_Actr.h"
 #include "Sound.h"
-
-bool ApproachLinear(short &value, short target, short step);
+#include "cstd.h"
+#include "math/Approach.h"
 
 enum {
     ACTOR_PLAYER = 0xbf,
@@ -106,7 +103,6 @@ extern s16 Vec3_VertAngle(const Vector3 *v1, const Vector3 *v0);
 /* 0x0201267c plays Sound::Play(3, id, pos). Sound::PlayBank3 is the
    previous function (0x02012664); this TU's bl is not that one. */
 extern int Vec3_Dist(const struct Vector3 *a, const struct Vector3 *b);
-extern void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(void *, dExtShadowModel_c &sm, Matrix4x3 &mf, int c, int d, unsigned int e);
 extern void Matrix4x3_FromRotationY(void *m, int angle);
 extern void Matrix4x3_ApplyInPlaceToRotationY(Matrix4x3 *mf, short angY);
 extern void Matrix4x3_ApplyInPlaceToRotationX(Matrix4x3 *mf, short angX);
@@ -125,7 +121,6 @@ extern void func_ov018_02112398(daPgMthr_c *self);
 extern void func_ov018_0211235c(daPgMthr_c *self);
 extern PgMthrModelFileHandle data_ov018_02113c00;
 extern SharedFilePtr *data_ov018_02112c04[2];
-extern void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *self, void *act, int a, int b, unsigned int c2, unsigned int d);
 /* Parameter names keep this TU's @NNN. */
 typedef void BgchInitAt_(void *self, void *act, int a, int b, void *c2, void *d);
 }
@@ -140,7 +135,7 @@ extern "C" daPgMthr_c *daPgMthr_c_classInit()
 int daPgMthr_c::InitResources()
 {
     void *m = dExtSimpleModel_c::LoadFile(data_ov018_02113c00);
-    mModelAnim.SetFile((BMD_File *)m, 1, 1);
+    mAnmModel.SetFile((BMD_File *)m, 1, 1);
     for (int i = 0; i < 2; i++)
         dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)data_ov018_02112c0c[i]);
     for (int i = 0; i < 2; i++) {
@@ -151,7 +146,7 @@ int daPgMthr_c::InitResources()
     if (mShadowModel.InitCylinder() == 0)
         return 0;
     /* Cylinder 260 x 300. Flags 0x4800004 / vuln 0x900000. */
-    _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, this, 0x104000, 0x12c000, 0x4800004, 0x900000);
+    mdCcAc_c.Init(this, 0x104000, 0x12c000, 0x4800004, 0x900000);
     func_ov018_021123d0(0);
     mVertAccel = -0x2000;
     mTerminalVelocity = -0x3c000;
@@ -183,11 +178,11 @@ int daPgMthr_c::InitResources()
 int daPgMthr_c::Behavior()
 {
     func_ov018_0211235c(this);
-    mModelAnim.dExtFrameCtrl_c::Advance();
+    mAnmModel.dExtFrameCtrl_c::Advance();
     mTextureSequence.Advance();
     mdCcAc_c.Clear();
     mdCcAc_c.Update();
-    mModelAnim.UpdateVerts();
+    mAnmModel.UpdateVerts();
     func_ov018_02111d28();
     return 1;
 }
@@ -195,9 +190,9 @@ int daPgMthr_c::Behavior()
 // @symbol _ZN10daPgMthr_c6RenderEv
 int daPgMthr_c::Render()
 {
-    mTextureSequence.Update(mModelAnim.data);
+    mTextureSequence.Update(mAnmModel.data);
     /* dExtAnmModel_c overrides Render. Qualifying it is the direct bl. */
-    mModelAnim.dExtSimpleModel_c::Render(0);
+    mAnmModel.dExtSimpleModel_c::Render(0);
     return 1;
 }
 
@@ -240,8 +235,8 @@ extern "C" void func_ov018_0211235c(daPgMthr_c *self)
 /* State 0 enter. Idle anim, stopped, not talking. */
 int daPgMthr_c::func_ov018_021122ec()
 {
-    mModelAnim.SetAnim((BCA_File *)gPenguinWait1AnimationFile.filePtr, 0, 0x1000, 0);
-    mModelAnim.speed = 0x1000;
+    mAnmModel.SetAnim((BCA_File *)gPenguinWait1AnimationFile.filePtr, 0, 0x1000, 0);
+    mAnmModel.speed = 0x1000;
     mTextureSequence.SetFile(*(BTP_File *)gPenguinWait1TextureSequenceFile.filePtr, 0, 0x1000, 0);
     mHorzSpeed = 0;
     mPlayer = 0;
@@ -271,7 +266,7 @@ int daPgMthr_c::func_ov018_02112234()
     UpdatePos(&mdCcAc_c);
     func_ov018_02111bf0((char *)this, &mWithMeshClsn);
     if (mGaveStar == 0 && mHoldingBaby == 0) {
-        unsigned int frame = ((unsigned int)mModelAnim.currFrame << 4) >> 16;
+        unsigned int frame = ((unsigned int)mAnmModel.currFrame << 4) >> 16;
         if (frame == 0x10 || frame == 0x25)
             func_0201267c(0xdf, &mCamSpacePos);
     }
@@ -281,8 +276,8 @@ int daPgMthr_c::func_ov018_02112234()
 // @symbol _ZN10daPgMthr_c19func_ov018_021121dcEv
 int daPgMthr_c::func_ov018_021121dc()
 {
-    mModelAnim.SetAnim((BCA_File *)gPenguinWait1AnimationFile.filePtr, 0, 0x1000, 0);
-    mModelAnim.speed = 0x1000;
+    mAnmModel.SetAnim((BCA_File *)gPenguinWait1AnimationFile.filePtr, 0, 0x1000, 0);
+    mAnmModel.speed = 0x1000;
     mTalkStep = 0;
     mTalkTimer = 0x3c;
     unk_37c = 1;
@@ -347,7 +342,7 @@ int daPgMthr_c::func_ov018_02111fac()
     }
     func_ov018_02111a48((char *)mPlayer);
     if (mGaveStar == 0 && mHoldingBaby == 0) {
-        unsigned frame = ((unsigned)mModelAnim.currFrame << 4) >> 0x10;
+        unsigned frame = ((unsigned)mAnmModel.currFrame << 4) >> 0x10;
         if (frame == 0x10 || frame == 0x25)
             func_0201267c(0xdf, &mCamSpacePos);
     }
@@ -360,8 +355,8 @@ int daPgMthr_c::func_ov018_02111f1c()
     if (mPlayer == 0 && mGaveStar == 0)
         func_ov018_021123d0(0);
     mHorzSpeed = 0x5000;
-    mModelAnim.SetAnim((BCA_File *)gPenguinWalkAnimationFile.filePtr, 0, 0x1000, 0);
-    mModelAnim.speed = 0x1000;
+    mAnmModel.SetAnim((BCA_File *)gPenguinWalkAnimationFile.filePtr, 0, 0x1000, 0);
+    mAnmModel.speed = 0x1000;
     mTextureSequence.SetFile(*(BTP_File *)gPenguinAngryTextureSequenceFile.filePtr, 0, 0x1000, 0);
     unk_37c = 2;
     return 1;
@@ -375,7 +370,7 @@ int daPgMthr_c::func_ov018_02111e28()
     UpdatePos(&mdCcAc_c);
     func_ov018_02111bf0((char *)this, &mWithMeshClsn);
     func_ov018_02111a48((char *)mPlayer);
-    unsigned int frame = ((unsigned int)mModelAnim.currFrame << 4) >> 0x10;
+    unsigned int frame = ((unsigned int)mAnmModel.currFrame << 4) >> 0x10;
     if (frame == 9 || frame == 0x15)
         func_0201267c(0xde, &mCamSpacePos);
     int holding;
@@ -395,19 +390,18 @@ void daPgMthr_c::func_ov018_02111d28()
 {
     /* Unused, but deleting this local DIFFs. */
     char *s = (char *)this;
-    Matrix4x3_FromRotationY(&mModelAnim.mat4x3, mAngleY);
+    Matrix4x3_FromRotationY(&mAnmModel.mat4x3, mAngleY);
     /* m[9..11] are mat4x3's translation (pos >> 3). */
-    mModelAnim.mat4x3.m[9] = mPosX >> 3;
-    mModelAnim.mat4x3.m[10] = mPosY >> 3;
-    mModelAnim.mat4x3.m[11] = mPosZ >> 3;
-    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
-        this, mShadowModel, mModelAnim.mat4x3, 0x140000, 0x50000, 0xf);
+    mAnmModel.mat4x3.m[9] = mPosX >> 3;
+    mAnmModel.mat4x3.m[10] = mPosY >> 3;
+    mAnmModel.mat4x3.m[11] = mPosZ >> 3;
+    DropShadowRadHeight(mShadowModel, mAnmModel.mat4x3, 0x140000, 0x50000, 0xf);
     if (mLookAngX != 0 || mLookAngY != 0) {
-        Matrix4x3 *bone = &mModelAnim.data.transforms[LOOK_BONE];
+        Matrix4x3 *bone = &mAnmModel.data.transforms[LOOK_BONE];
         data_020a0e68 = *bone;
         Matrix4x3_ApplyInPlaceToRotationY(&data_020a0e68, mLookAngY);
         Matrix4x3_ApplyInPlaceToRotationX(&data_020a0e68, mLookAngX);
-        mModelAnim.data.transforms[LOOK_BONE] = data_020a0e68;
+        mAnmModel.data.transforms[LOOK_BONE] = data_020a0e68;
     }
 }
 
@@ -426,8 +420,6 @@ struct dBgPiRaw {
     void *vt;
     struct dBgPiRawBody info;
 };
-int _ZN4cstd4fdivEii(int a, int b);
-void _ZN5dBgPiD1Ev(struct dBgPiRaw *r);
 extern int data_02099368[];
 
 void func_ov018_02111bf0(void *cv, void *wv)
@@ -438,11 +430,11 @@ void func_ov018_02111bf0(void *cv, void *wv)
     dBgCh_Actr_UpdateDiscreteNoLava_veneer(w);
     if (w->IsOnGround() != 0) {
         Vector3 n;
-        dBgPi *floor = (dBgPi *)w->GetFloorResult();
+        dBgPi *floor = w->GetFloorResult();
         floor->surface.CopyNormalTo(n);
         if (n.y != 0) {
             int s = FX_MUL(n.x, self->mSpeedX) + FX_MUL(n.z, self->mSpeedZ);
-            self->mVertSpeed = -(_ZN4cstd4fdivEii(s, n.y) + 0x8000);
+            self->mVertSpeed = -(cstd::fdiv(s, n.y) + 0x8000);
         }
     }
     if (w->IsOnWall() != 0) {
@@ -469,7 +461,7 @@ void func_ov018_02111bf0(void *cv, void *wv)
         cr.info.owner = src->info.owner;
         cr.info.collider = src->info.collider;
         ((SurfaceInfo *)dst)->CopyNormalTo(wn);
-        _ZN5dBgPiD1Ev(&cr);
+        ((dBgPi *)&cr)->dBgPi::~dBgPi();
     }
 }
 }
@@ -528,7 +520,7 @@ void daPgMthr_c::func_ov018_02111a48(char *b)
         lookTarget.x = tx;
         lookTarget.z = tz;
         lookTarget.y = ty;
-        bone = &mModelAnim.data.transforms[LOOK_BONE];
+        bone = &mAnmModel.data.transforms[LOOK_BONE];
         nodePos.x = bone->m[9];
         nodePos.y = bone->m[10];
         nodePos.z = bone->m[11];

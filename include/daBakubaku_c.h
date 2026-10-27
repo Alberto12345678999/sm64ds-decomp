@@ -30,7 +30,7 @@ struct daBakubaku_c : dEnemyBase_c {
     dCcAcPos_c  mBodyClsn;       /* 0x110 */
     dCcAcPos_c  mHeadClsn;       /* 0x150 */
     dBgCh_Actr  mWithMeshClsn;   /* 0x190 */
-    dExtAnmModel_c mModelAnim;   /* 0x34c */
+    dExtAnmModel_c mAnmModel;    /* 0x34c */
     State      *mState;          /* 0x3b0 -- the table this fish is running */
     dExtShadowModel_c mShadowModel;    /* 0x3b4 */
     Matrix4x3   mShadowMat;      /* 0x3dc -- DropShadowRadHeight source */

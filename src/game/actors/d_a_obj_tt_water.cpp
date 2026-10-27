@@ -9,7 +9,6 @@
  * transformer, and records the drain floor from the spawn height.
  *
  * deslop
- * Leftover: Event::GetBit stays mangled (no Event header in this tree).
  * Leftover: dBgW_KcMbg::SetFile keeps its mangled spelling (by-value
  *   Fix12<int> parameter, wall 6az).
  * Leftover: data_ov033_02111bc8 (BTA) and data_ov033_02111c1c
@@ -26,6 +25,7 @@ enum daObjTtWater_c_AssetId {
 #include "SharedFilePtr.h"
 #include "dMap_c.h"
 #include "Sound.h"
+#include "Event.h"
 
 /* 8-byte file handles. The model uses func_02017acc / func_02017ab4 and the
  * collision file func_02017b4c / SharedFilePtr_Destruct_Clsn. The spellings
@@ -46,7 +46,6 @@ extern TtWaterModelFilePtr data_ov033_021124f0;
 extern TtWaterCollisionFilePtr data_ov033_021124e8;
 
 extern "C" {
-int _ZN5Event6GetBitEj(u32 bit);
 extern int data_ov033_02111bc8[];
 extern int data_ov033_02111c1c[];
 extern void hold_d_a_obj_tt_water(void *thiz, void *kcl, void *mtx, int fix, short s, void *clps);
@@ -89,7 +88,7 @@ int daObjTtWater_c::Render()
  */
 int daObjTtWater_c::Behavior()
 {
-    if (_ZN5Event6GetBitEj(0xe)) {
+    if (Event::GetBit(0xe)) {
         if (mPosY <= mMinPosY) {
             if (Sound::PlaySecretSound((dActor_c *)this, (u16 *)&mSoundTimer))
                 MarkForDestruction();
@@ -125,7 +124,7 @@ int daObjTtWater_c::InitResources()
                               *(CLPS_Block *)(data_ov033_02111c1c));
     mMeshCollider.Enable(this);
     mMinPosY = mPosY - 0x3c000;
-    return _ZN5Event6GetBitEj(0xe) == 0;
+    return Event::GetBit(0xe) == 0;
 }
 
 /* Reconstructed source-style name: SM64DS proves daObjTtWater_c through

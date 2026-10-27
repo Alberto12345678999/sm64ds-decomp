@@ -1,5 +1,6 @@
 //cpp
 #include "Vector3s.h"
+#include "math/Approach.h"
 /* daWanwan2_c -- the unchained Chain Chomp (registry profile WANWAN2).
  *
  * The chomp walks a path (param1's low byte is the path ID, mPathID) and
@@ -47,9 +48,8 @@
  *   include/decl_common.h declares them that way and check_decl_agreement
  *   compares the two. func_ov100_02143aa4 and func_ov100_02143ae0 are the
  *   state pair's members, called through ChompPmfSelf rather than as methods.
- * - The callees with Fix12<int> parameters (dActor_c's shadow drop,
- *   Player::Hurt, dCcAcPos_c::Init, cstd::atan2) stay
- *   spelled as mangled extern-C free functions.
+ * - Player::Hurt, which takes a Fix12<int> parameter, stays spelled as a
+ *   mangled extern-C free function.
  * - func_ov100_02143b68 reaches the link positions and the link models'
  *   translations through two raw char pointers that start at the chomp,
  *   and InitResources' link seeding loop does the same. Written as
@@ -159,15 +159,8 @@ struct dCc_c;
 
 extern "C" {
 unsigned short DecIfAbove0_Short(unsigned short *p);
-void _Z14ApproachLinearRiii(int &x, int target, int step);
 int __aeabi_idiv(int, int);
-void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(void *self, void *sm, void *mtx, int a, int b, unsigned int g);
-void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
-    dCcAcPos_c *clsn, dActor_c *actor, const Vector3 &offset,
-    s32 radius, s32 height, u32 flags, u32 vulnFlags);
-void _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void *p, const void *pos, u32 a, int b, u32 c, u32 d, u32 e);
 int func_02012694(int, void *);
-void *_ZN7PathPtrC1Ev(void *thiz);
 void Matrix4x3_FromRotationXYZExt(void *m, int x, int y, int z);
 void Matrix4x3_FromRotationY(void *m, int angle);
 void Matrix4x3_ApplyInPlaceToRotationX(void *m, int angX);
@@ -321,7 +314,7 @@ extern "C" void func_ov100_0214344c(daWanwan2_c *self)
         pos.x = self->mPosX;
         pos.y = self->mPosY;
         pos.z = self->mPosZ;
-        _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(other, &pos, 2, 0xc000, 1, 0, 1);
+        ((Player *)other)->Hurt(*(Vector3 *)&pos, 2, 0xc000, 1, 0, 1);
     }
 }
 
@@ -496,8 +489,8 @@ extern "C" void func_ov100_021437d4(daWanwan2_c *thisx)
    vtable directly, and that is the whole of the old claim. Was a C source. */
 extern "C" int func_ov100_02143aa4(daWanwan2_c *c)
 {
-    c->mModelAnim.speed = 4096;     /* 1.0 */
-    c->mModelAnim.Advance();
+    c->mAnmModel.speed = 4096; /* 1.0 */
+    c->mAnmModel.Advance();
     func_ov100_021437d4(c);
     func_ov100_0214344c(c);
     func_ov100_021435e8(c);
@@ -510,7 +503,7 @@ extern "C" int func_ov100_02143aa4(daWanwan2_c *c)
    animation from data_ov100_021486ac. Was a C source. */
 extern "C" int func_ov100_02143ae0(daWanwan2_c *c)
 {
-    c->mModelAnim.SetAnim((BCA_File *)data_ov100_021486ac.filePtr, 0, 0x1000, 0);
+    c->mAnmModel.SetAnim((BCA_File *)data_ov100_021486ac.filePtr, 0, 0x1000, 0);
     return 1;
 }
 
@@ -542,11 +535,11 @@ extern "C" void func_ov100_02143b68(char *self)
     char *rd;
     char *st;
     dExtShadowModel_c *sm;
-    Matrix4x3_FromRotationXYZExt(&c->mModelAnim.mat4x3, c->mAngleX, c->mAngleY, c->mAngleZ);
-    c->mModelAnim.mat4x3.t.x = c->mPosX >> 3;
-    c->mModelAnim.mat4x3.t.y = c->mPosY >> 3;
-    c->mModelAnim.mat4x3.t.z = c->mPosZ >> 3;
-    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(c, &c->mShadowModel, &c->mModelAnim.mat4x3, 0x15e000, 0x1f4000, 0xf);
+    Matrix4x3_FromRotationXYZExt(&c->mAnmModel.mat4x3, c->mAngleX, c->mAngleY, c->mAngleZ);
+    c->mAnmModel.mat4x3.t.x = c->mPosX >> 3;
+    c->mAnmModel.mat4x3.t.y = c->mPosY >> 3;
+    c->mAnmModel.mat4x3.t.z = c->mPosZ >> 3;
+    c->DropShadowRadHeight(c->mShadowModel, c->mAnmModel.mat4x3, 0x15e000, 0x1f4000, 0xf);
     tmp = *(M48 *)&IDENTITY_MATRIX4X3;
     i = 0;
     mdst = c->mModels;
@@ -561,7 +554,7 @@ extern "C" void func_ov100_02143b68(char *self)
         *(int *)(st + 0x3b0) = *(int *)(rd + 0x6d8) >> 3;
         *(int *)(st + 0x3b4) = *(int *)(rd + 0x6dc) >> 3;
         *(int *)(st + 0x3b8) = *(int *)(rd + 0x6e0) >> 3;
-        _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(c, sm, &mdst->mat4x3, 0x78000, 0x1f4000, 0xf);
+        c->DropShadowRadHeight(*sm, mdst->mat4x3, 0x78000, 0x1f4000, 0xf);
         mdst++;
         rd += 0xc;
         st += 0x50;
@@ -596,7 +589,7 @@ void daWanwan2_c::OnPendingDestroy()
    the six link models are drawn. */
 int daWanwan2_c::Render()
 {
-    mModelAnim.Render(&mScale);
+    mAnmModel.Render(&mScale);
     for (int i = 0; i < 5; i++)
         mModels[i].Render(0);
     return 1;
@@ -629,7 +622,7 @@ int daWanwan2_c::Behavior()
     DecIfAbove0_Short((unsigned short *)&mCoinTimer);
     DecIfAbove0_Short((unsigned short *)&unk_6a8);
     if (DecIfAbove0_Short((unsigned short *)&mHaltTimer) != 0) {
-        _Z14ApproachLinearRiii(mScaleX, 0x1000, 0x500);
+        ApproachLinear(mScaleX, 0x1000, 0x500);
         mScaleZ = mScaleX;
         mScaleY = mScaleZ;
         func_ov100_02143b68((char *)this);
@@ -694,12 +687,11 @@ int daWanwan2_c::Behavior()
     }
 
     {
-        char path[8];
         Vector3 node;
         Vector3 diff;
-        _ZN7PathPtrC1Ev(path);
-        ((PathPtr *)path)->FromID(mPathID);
-        ((PathPtr *)path)->GetNode(node, mPathNodeIndex);
+        PathPtr path;
+        path.FromID(mPathID);
+        path.GetNode(node, mPathNodeIndex);
 
         Vec3_Sub(&diff, &mPos, &node);
 
@@ -708,7 +700,7 @@ int daWanwan2_c::Behavior()
             if (mPathNodeIndex >= mNumPathNodes) {
                 mPathNodeIndex = 0;
             }
-            ((PathPtr *)path)->GetNode(node, mPathNodeIndex);
+            path.GetNode(node, mPathNodeIndex);
         }
 
         short ang = Vec3_HorzAngle(&mPos, &node);
@@ -732,7 +724,7 @@ int daWanwan2_c::Behavior()
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN11daWanwan2_c13InitResourcesEv
 /* Loads the files (data_ov100_021486bc is the body model, loaded into
-   mModelAnim; data_ov100_021486a4 the link model, set on each mModels[i];
+   mAnmModel; data_ov100_021486a4 the link model, set on each mModels[i];
    data_ov100_021486ac the walk animation the enter member plays;
    data_ov100_021486b4 is loaded and released here and used nowhere else in
    this source; data_ov002_0211092c is not identified), sets up the shadows,
@@ -742,7 +734,7 @@ int daWanwan2_c::Behavior()
 int daWanwan2_c::InitResources()
 {
     dExtSimpleModel_c::LoadFile(data_ov002_0211092c);
-    mModelAnim.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(data_ov100_021486bc), 1, -1);
+    mAnmModel.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(data_ov100_021486bc), 1, -1);
     dExtSimpleModel_c::LoadFile(data_ov100_021486a4);
     dExtFrameCtrl_c::LoadFile(data_ov100_021486ac);
     dExtFrameCtrl_c::LoadFile(data_ov100_021486b4);
@@ -789,9 +781,8 @@ int daWanwan2_c::InitResources()
         offset.x = data_ov100_02148008[0];
         offset.y = data_ov100_02148008[1];
         offset.z = data_ov100_02148008[2];
-        _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
-            &mdCcAcPos_c, this, offset,
-            0xaa000, 0x140000, 0x200004, 0x6010);   /* radius 170, height 320 units */
+        mdCcAcPos_c.Init(this, offset, 0xaa000, 0x140000, 0x200004,
+                         0x6010); /* radius 170, height 320 units */
     }
 
     unk_6c9 = 0x1f;

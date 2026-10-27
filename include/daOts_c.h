@@ -139,7 +139,7 @@ struct daOts_c : dEnemyBase_c {
     /* The object viewed as a Tail. */
     Tail &tail() { return *(Tail *)this; }
 
-    dExtAnmModel_c mModelAnim;                /* 0x110 */
+    dExtAnmModel_c mAnmModel;                 /* 0x110 */
     dBgCh_Actr        mWithMeshClsn;          /* 0x174 */
     /* Pointer to a per-variant config block (this TU reads it through CONFIG()). All
        three children declare a field here, which is what makes it the base's
@@ -211,7 +211,7 @@ struct daOts_c : dEnemyBase_c {
     int func_ov064_0211616c();
     void func_ov064_02116220();
     void func_ov064_02116460();
-    int func_ov064_02116560();
+    void func_ov064_02116560();
     void func_ov064_021165d8();
     int func_ov064_021166f0();
     void func_ov064_02116754();

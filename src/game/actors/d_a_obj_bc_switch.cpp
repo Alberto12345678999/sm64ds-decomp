@@ -88,7 +88,6 @@
  * - data_ov002_0210d6f4 CLPS handle: this TU claims .text only.
  * - InitResources 0x32a: named mCoinTimerSeed CSE's the field address.
  *   Keep (u16*)(c+0x300)[0x15] / ((int)c+0x32a).
- * - Event::SetBit stays mangled: no Event header.
  *
  * Consolidated from these legacy one-function sources (ROM address order):
  *   [0] 0x020f11b0  src/_ZN16daObjBC_Switch_cD1Ev.cpp
@@ -113,6 +112,7 @@ enum d_a_obj_bc_switch_AssetId {
 #include "daObjBC_Switch_c.h"
 #include "SharedFilePtr.h"
 #include "decl_common.h"
+#include "Event.h"
 
 /* File 1084 / 1085 resource handles. The static initializer registers
  * their destructors; the spellings are this TU's, mapped onto
@@ -136,7 +136,6 @@ extern "C" {
 extern BcSwitchCollisionFilePtr daObjBC_Switch_c_ClsnFile;
 extern BcSwitchModelFilePtr daObjBC_Switch_c_ModelFile;
 extern u8 IsAreaShowing(s32 idx);
-extern void _ZN5Event6SetBitEj(u32 bit);
 extern u16 DecIfAbove0_Short(u16 *p);
 /* dBgActor_c::IsClsnInRange(Fix12<int>, Fix12<int>) -- wall 6az on Behavior. */
 /* dBgW_KcMbg::SetFile -- wall 6az on InitResources. */
@@ -309,7 +308,7 @@ s32 daObjBC_Switch_c::Behavior()
             mPosY = mPosY - 0x14000;
             if (mPosY <= mStopPosY) {
                 mPosY = mStopPosY;
-                _ZN5Event6SetBitEj(mEventBit);
+                Event::SetBit(mEventBit);
                 mCoinTimer = mCoinTimerSeed;
                 mMeshCollider.Disable();
                 PoofDust();

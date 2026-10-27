@@ -10,9 +10,9 @@
  * (see the comment above the dispatch). EDGE_FILTER keeps the
  * `(const dBgCh_SphCrr &)` view on the flags read; the plain read is a
  * different load.
- * DetectClsn(dBgCh_Lin&) keeps info, normal and pos at function scope with
- * an explicit dBgPc ctor and dtor (a block-scope dBgPc moves the frame),
- * declares the leaf pointer among the cell temps, and dots the edge normals
+ * DetectClsn(dBgCh_Lin&) declares its dBgPc and normal in the hit block and
+ * pos in the result block, which is where the cartridge's frame puts them;
+ * it declares the leaf pointer among the cell temps, and dots the edge normals
  * inline. The func_01ffb0* helpers stay address names.
  */
 /* dBgW_Kc_itcm: the ITCM half of dBgW_Kc (static-mesh collider, vtable
@@ -62,13 +62,6 @@ int func_02039794(int x);                       /* slope-band classify */
    local extern: no header in include/ declares them. */
 void func_020381cc(void *block, int idx, void **out);
 void func_02037eb0(SurfaceInfo *info, CLPS clps, Vector3 *normal);
-
-/* local extern: dBgPc's real ctor/dtor (include/dBgPc.h), called explicitly
-   against SurfaceInfo-shaped storage the way the cartridge does it. C++ can
-   only spell the constructor call as placement new, which adds a null test,
-   and a block-scope dBgPc local moves the frame. */
-void _ZN5dBgPcC1Ev(dBgPc *info);
-void _ZN5dBgPcD1Ev(dBgPc *info);
 
 /* local extern: the ROM reads s16 normals through an s32* view. */
 s32 DotVec3(const s32 *a, const Vector3 *b);
@@ -1012,8 +1005,11 @@ s32 dBgW_Kc::DetectClsn(dBgCh_SphCrr &sphere)
  * leaf shared across row cells is walked once; rowStep/rowLeaf track the row's
  * first leaf.
  *
- * info, normal and pos stay at function scope, with the dBgPc ctor and
- * dtor spelled on info. The leaf pointer is declared among the cell temps
+ * The accepted-hit record is a block-scope dBgPc, constructed and destroyed
+ * once per tested prism. It and normal are declared in that block, and pos in
+ * the result block. mwccarm gives function-scope locals their slots first,
+ * then block-scope locals in declaration order, and that order reproduces the
+ * cartridge's frame. The leaf pointer is declared among the cell temps
  * and walked with *++leaf. The edge-normal dots stay inline; a named local
  * for them spills the leaf pointer.
  */
@@ -1034,9 +1030,6 @@ s32 dBgW_Kc::DetectClsn(dBgCh_Lin &ray)
     Vector3 e, min, max, best;
     Vector3 d0, d1, delta, scaled, rel;
     Vector3 hit;
-    SurfaceInfo info;
-    Vector3 normal;
-    Vector3 pos;
 
     const Vector3 *lineStart = &ray.start;
     const Vector3 *lineEnd = &ray.lineEnd;
@@ -1199,20 +1192,20 @@ s32 dBgW_Kc::DetectClsn(dBgCh_Lin &ray)
                             continue;
 
                         {
-                            _ZN5dBgPcC1Ev((dBgPc *)&info);
+                            dBgPc pc;
+                            Vector3 normal;
                             triIdx = func_020396dc(this, prism);
-                            GetSurfaceInfo(triIdx, info);
-                            info.CopyNormalTo(normal);
-                            if (!dBgCh::ShouldPassThroughImpl(this, info.clps, ray,
+                            GetSurfaceInfo(triIdx, pc.surface);
+                            pc.surface.CopyNormalTo(normal);
+                            if (!dBgCh::ShouldPassThroughImpl(this, pc.surface.clps, ray,
                                                               func_020397b8(normal.y))) {
                                 best.x = hit.x;
                                 best.y = hit.y;
                                 best.z = hit.z;
                                 bestDist = dist;
-                                ((dBgPi &)ray).RecordHit(triIdx, &info);
+                                ((dBgPi &)ray).RecordHit(triIdx, &pc.surface);
                                 found = true;
                             }
-                            _ZN5dBgPcD1Ev((dBgPc *)&info);
                         }
                     }
                 }
@@ -1228,6 +1221,7 @@ s32 dBgW_Kc::DetectClsn(dBgCh_Lin &ray)
 
     ray.clsnDist = bestDist << 6;
     {
+        Vector3 pos;
         pos.x = best.x << 6;
         pos.y = best.y << 6;
         pos.z = best.z << 6;

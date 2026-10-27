@@ -48,8 +48,7 @@ struct Callback;
  *   data_0209d660, data_0209d6bc and data_0209f284, the Player::Hurt
  *   arguments after the first two, and what the player-side calls
  *   func_ov002_020bec84 and func_ov002_020bec9c test and start.
- * - dCcAc_c::Init, dBgCh_Actr::Init, DropShadow, Particle::New and the
- *   Player/Sound helpers stay mangled scalar externs (Fix12<int>-by-value
+ * - The Player helpers stay mangled scalar externs (Fix12<int>-by-value
  *   member form is the 6az wall).
  * - SignPost_ClsnFile / SignPost_ModelFile keep their coined BSS names
  *   (historical, like the Spawn aliases).
@@ -80,6 +79,7 @@ enum daObjTatefuda_c_AssetId {
 #include "dExtSimpleModel_c.h"
 #include "dBgCh_Actr.h"
 #include "dCc_c.h"
+#include "math/Approach.h"
 
 /* Local shadow declarations carried from the legacy files verbatim.
  * NOT reconciled against real project headers -- check include/*.h for
@@ -144,7 +144,6 @@ enum {
 };
 
 extern "C" {
-extern void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *thiz, void *actor, int b, int d, unsigned int e, unsigned int f);
 extern void Matrix4x3_FromRotationY(void *, int);
 extern void Vec3_Asr(struct Vector3* d, struct Vector3* s, int sh);
 extern void Matrix4x3_FromTranslation(struct Matrix4x3* m, Fix12i x, Fix12i y, Fix12i z);
@@ -176,20 +175,14 @@ extern u8 data_0209d6bc;
 extern u8 data_0209f284;
 extern s32 Vec3_HorzDist(struct Vector3 *a, struct Vector3 *b);
 extern int func_ov002_020bec84(void *player, unsigned int i);
-extern int func_ov002_020bec9c(void *player, unsigned int a, int b, int d, unsigned short e);
-extern void _ZN6Player12ShowMessage2ER7fBase_cjPK7Vector3hh( void *player, void *actor, unsigned int msg, struct Vector3 *pos, unsigned int a, unsigned int b);
-extern void _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void* thiz, void* v, unsigned a, int b, unsigned c, unsigned d, unsigned e);
-extern void _Z14ApproachLinearRiii(int* p, int a, int b);
+extern void func_ov002_020bec9c(void *player, unsigned int a, int b, int d, unsigned short e);
 extern "C" unsigned int data_0209b454;
 extern "C" void AttachToHolder(struct daObjTatefuda_c *self);
 extern "C" u8 DecIfAbove0_Byte(u8 *p);
-extern "C" int _ZN10dBgActor_c20UpdateKillByMegaCharEsss5Fix12IiE(void *self, short a, short b, short c, int fix);
 extern "C" void *d_a_obj_tatefudaNewHold(u32 a, u32 b, int c, int d, int e, const void *v,
                                          void *cb);
 extern "C" u32 d_a_obj_tatefudaNewUnkCallback818Hold(u32 a, u32 b, int c, int d, int e,
                                                      const Vector3_16f *v);
-extern "C" void _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_S5_j(
-    void *self, void *sm, void *m, int a, int b, int c, u32 j);
 extern "C" void RebuildModelMatrix(struct daObjTatefuda_c *self);
 extern "C" void hold_d_a_obj_tatefuda(void *self, KCL_File *f, const Matrix4x3 &m, s32 fix, s16 sh,
                                       CLPS_Block &b);
@@ -243,10 +236,7 @@ extern "C" daObjTatefuda_c *daObjTatefuda_c_classInit(void)
                            and so emitted a `bl` to
                            ..._Matrix4x3isR10CLPS_Block, which exists nowhere.
                            match.py compares relocated words as wildcards, so
-                           nothing caught it.
-
-   The remaining ABI-only calls are dCcAc_c::Init and dBgCh_Actr::Init; they
-   have the same Fix12<int> problem with no collision forcing the issue yet. */
+                           nothing caught it. */
 /* dBgCh_Actr is the real class now, through this actor's header, and it
    declares StartDetectingWater itself. */
 int daObjTatefuda_c::InitResources()
@@ -273,8 +263,7 @@ int daObjTatefuda_c::InitResources()
     ((dBgW_KcMbg *)(&mMeshCollider))
         ->dBgW_KcMbg::SetFile((KCL_File *)kf, mClsnMat, 0x199, mAngleY, data_ov002_0210d714);
 
-    _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(
-        &mdCcAc_c, (dActor_c*)((char *)this), 0x64000, 0x64000, 0x4800002, 0x41000);
+    mdCcAc_c.Init((dActor_c *)((char *)this), 0x64000, 0x64000, 0x4800002, 0x41000);
 
     mPoundsLeft = 2;
     mHomePosX = mPosX;
@@ -377,13 +366,13 @@ int daObjTatefuda_c::Behavior()
         }
     }
 
-    if (_ZN10dBgActor_c20UpdateKillByMegaCharEsss5Fix12IiE(this, -0x2000, 0, 0, 0x46000))
+    if (UpdateKillByMegaChar(-0x2000, 0, 0, 0x46000))
         return 1;
 
     if (mBreakTimer != 0) {
         int x, y, z;
-        if (_ZN4dBgW9IsEnabledEv(&mMeshCollider))
-            _ZN4dBgW7DisableEv(&mMeshCollider);
+        if (((dBgW *)&mMeshCollider)->IsEnabled())
+            ((dBgW *)&mMeshCollider)->Disable();
         x = mPosX;
         z = mPosZ;
         y = mPosY + 0x50000;
@@ -408,8 +397,7 @@ int daObjTatefuda_c::Behavior()
             Reset();
             return 1;
         }
-        _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_S5_j(
-            this, &mShadowModel, &mShadowMat, 0x50000, 0x28000, 0x28000, 0xf);
+        DropShadowScaleXYZ(mShadowModel, mShadowMat, 0x50000, 0x28000, 0x28000, 0xf);
         return 1;
     }
 
@@ -424,8 +412,7 @@ int daObjTatefuda_c::Behavior()
         if (s == STATE_THROWN) {
             RebuildModelMatrix(this);
         } else if (mPoundsLeft == 2 && (u32)s <= 1) {  /* STATE_IDLE or STATE_TALK */
-            _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_S5_j(
-                this, &mShadowModel, &mShadowMat, 0x50000, 0x28000, 0x28000, 0xf);
+            DropShadowScaleXYZ(mShadowModel, mShadowMat, 0x50000, 0x28000, 0x28000, 0xf);
         }
     }
     return 1;
@@ -581,13 +568,13 @@ void daObjTatefuda_c::Thrown()
                     vec.x = mPosX;
                     vec.y = mPosY;
                     vec.z = mPosZ;
-                    _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(found, &vec, 1, 0xc000, 1, 0, 1);
+                    ((Player *)found)->Hurt(vec, 1, 0xc000, 1, 0, 1);
                 }
             }
         }
     }
 
-    _Z14ApproachLinearRiii(&mHorzSpeed, 0, 0x555);
+    ApproachLinear(mHorzSpeed, 0, 0x555);
 
     if (((dBgW *)&mMeshCollider)->IsEnabled() != 0) {
         ((dBgW *)&mMeshCollider)->Disable();
@@ -625,7 +612,6 @@ void daObjTatefuda_c::InitDropped()
 }
 
 // @symbol _ZN15daObjTatefuda_c7DroppedEv
-bool ApproachLinear(short &value, short target, short step);
 
 /* DROPPED, update: turn the X angle toward 0x4000 (a quarter turn) by at most
  * 0x1000 per frame, move, and Kill the sign if it touched the ground, a wall or
@@ -807,13 +793,11 @@ void daObjTatefuda_c::Talk()
                     } else if (func_ov002_020bec84(player, 2) != 0 && player->FinishedAnim() != 0) {
                         func_ov002_020bec9c(player, 3, 0x40000000, 0x1000, 0);
                     } else if (func_ov002_020bec84(player, 3) != 0 && player->FinishedAnim() != 0) {
-                        _ZN6Player12ShowMessage2ER7fBase_cjPK7Vector3hh(
-                            player, this, (s16)msgId, &msgPos, 0, 1);
+                        player->ShowMessage2(*this, (s16)msgId, &msgPos, 0, 1);
                     }
                 } else {
                     func_ov002_020bec9c(player, 0, 0, 0x1000, 0);
-                    _ZN6Player12ShowMessage2ER7fBase_cjPK7Vector3hh(
-                        player, this, (s16)msgId, &msgPos, 0, 1);
+                    player->ShowMessage2(*this, (s16)msgId, &msgPos, 0, 1);
                 }
             }
             break;
@@ -1174,10 +1158,9 @@ void daObjTatefuda_c::Reset()
   UpdateShadowMatrix();
   SetState(STATE_IDLE);
   mMegaKnockback = 0;
-  _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, this, 0x64000, 0x64000, 0x4800002, 0x41000);
-  if (_ZN4dBgW9IsEnabledEv(&mMeshCollider))
-  {
-    _ZN4dBgW7DisableEv(&mMeshCollider);
+  mdCcAc_c.Init(this, 0x64000, 0x64000, 0x4800002, 0x41000);
+  if (((dBgW *)&mMeshCollider)->IsEnabled()) {
+      ((dBgW *)&mMeshCollider)->Disable();
   }
   mdCcAc_c.Clear();
 }

@@ -12,9 +12,8 @@
  * They used to keep the shards' extern "C" spellings of mangled names
  * carrying Fix12<int> by value, on the grounds that such a parameter is
  * stack-homed when the body reads it (wall 6az). The Fix12<int> in those
- * names was ours, not the ROM's: under the honest scalar Fix12i they mangle
- * as _ZN4cstd10fdiv_asyncEii and _ZN4cstd16reciprocal_asyncEi and reproduce
- * exactly. See notes/mwccarm-codegen.md 6az, MEASURED 2026-10-22.
+ * names was ours, not the ROM's: declared with the honest scalar Fix12i
+ * (plain int) parameters they reproduce exactly. See notes/mwccarm-codegen.md 6az, MEASURED 2026-10-22.
  *
  * leftovers:
  * - src/InvMat4x3.c is C and cannot name a C++ namespaced function, so it
@@ -22,21 +21,9 @@
  */
 #include "types.h"
 #include "nitro/hw/registers.h"
-
-namespace cstd {
-int mod(int a, int b);
-int div(int a, int b);
-int fdiv_result(void);
-long long ldiv_result(void);
-long long ldiv(int a, int b);
-int fdiv(int numerator, int denominator);
-void fdiv_async(Fix12i a, Fix12i b);
-void reciprocal_async(Fix12i a);
-}
+#include "cstd.h"
 
 extern "C" {
-int _ZN4cstd11fdiv_resultEv(void);
-long long _ZN4cstd11ldiv_resultEv(void);
 int func_02052fdc(void);
 void func_02053008(int n);
 }
@@ -77,7 +64,7 @@ namespace cstd {
 s32 fdiv(s32 numerator, s32 denominator)
 {
     fdiv_async(numerator, denominator);
-    return _ZN4cstd11fdiv_resultEv();
+    return fdiv_result();
 }
 
 }
@@ -100,7 +87,7 @@ extern "C" {
 s32 func_02053200(s32 x)
 {
     cstd::reciprocal_async(x);
-    return _ZN4cstd11fdiv_resultEv();
+    return cstd::fdiv_result();
 }
 }
 
@@ -132,7 +119,7 @@ s32 func_02053130(s32 x)
     if (x > 0) {
         cstd::reciprocal_async(x);
         func_02053008(x);
-        quotient = _ZN4cstd11ldiv_resultEv();
+        quotient = cstd::ldiv_result();
 
         while (REG_SQRTCNT & SQRT_CONTROL_BUSY)
             ;

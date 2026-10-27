@@ -18,7 +18,7 @@
  *
  * deslop leftovers:
  * - cstd::atan2 6az (Fix12<int> by value): mangled extern.
- * - Vec3_Sub / Vec3_HorzLen / LenVec3 / ApproachLinear: no shared header
+ * - Vec3_Sub / Vec3_HorzLen / LenVec3: no shared header
  *   this TU can take without a campaign.
  * - data_02082214 sine table stays an extern s16[].
  */
@@ -27,11 +27,11 @@
 #include "daSBird_c.h"
 #include "common.h"
 #include "nitro/fx/fx.h"
+#include "math/Approach.h"
 namespace cstd {
 s16 atan2(s32, s32);
 }
 
-bool ApproachLinear(short &value, short target, short step);
 
 extern "C" {
 extern s16 data_02082214[];
@@ -41,7 +41,7 @@ extern s32 LenVec3(void *v);
 extern s16 atan2_hold_d_a_s_bird_head_1(s32 y, s32 x);
 }
 
-/* Empty body: mShadowModel then mModelAnim teardown, the vptr store and
+/* Empty body: mShadowModel then mAnmModel teardown, the vptr store and
    dActor_c's teardown are synthesised. */
 // @symbol _ZN9daSBird_cD1Ev
 // @symbol _ZN9daSBird_cD0Ev

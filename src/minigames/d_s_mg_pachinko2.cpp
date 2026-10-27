@@ -44,28 +44,12 @@ enum dScMgPachinko2_c_AssetId {
 #pragma defer_codegen off
 
 #include "types.h"
+#include "cstd.h"
 #include "dScMgPachinko2_c.h"
 #include "PlayerInput.h"
 #include "nitro/fx/fx.h"
-namespace cstd {
-s16 atan2(s32, s32);
-}
-
-namespace G2S {
-unsigned GetBG2CharPtr(void);
-unsigned GetBG2ScrPtr(void);
-unsigned GetBG3CharPtr(void);
-}
-
-namespace GX {
-void LoadBGPltt(const void *p, u32 a, u32 b);
-void LoadOBJPltt(const void *p, u32 a, u32 b);
-}
-
-namespace GXS {
-void LoadBGPltt(const void *p, u32 a, u32 b);
-void LoadOBJPltt(const void *p, u32 a, u32 b);
-}
+#include "GX.h"
+#include "G2.h"
 
 namespace Sound {
 void PlayBank2_2D(unsigned int id);
@@ -104,7 +88,6 @@ extern int Sound_PlayIfNotActive(int a, int b, int c, int d);
 extern int func_020126e8(int a);
 extern int func_02012468(int a, int b, int c, int d, int e, int f, int g, short h);
 extern void func_02012718(int, int);
-extern int _ZN4cstd4sqrtEy(u64 x);
 extern s16 atan2_hold_d_s_mg_pachinko2_1(s32 y, s32 x);
 extern int LoadFile(int handle);
 extern void Deallocate(void *);
@@ -115,6 +98,9 @@ extern void func_02056314(void *, u32, u32);
 extern void func_020562b4(const void *, u32, u32);
 extern void func_020564f4(const void *, int, int);
 
+/* local extern: the hand-built factory runs dScMgBase_c's base-object
+   constructor on raw storage, which C++ spells only inside a derived
+   class's own constructor. */
 extern void *_ZN11dScMgBase_cC2Ev(void *);
 
 /* --- ROM data this TU reads --- */
@@ -2097,7 +2083,7 @@ void dScMgPachinko2_c::Ball_StateAim(int i) {
         dy = 0x80 - (this->mBalls[i].x >> 12);
         dx = 0x20 - (this->mBalls[i].y >> 12);
         dist = dy * dy + dx * dx;
-        sq = _ZN4cstd4sqrtEy(dist);
+        sq = cstd::sqrt(dist);
         prev = this->mBalls[i].prevDist;
         this->mBalls[i].prevDist = sq;
         if (sq > prev) {
@@ -2117,10 +2103,10 @@ void dScMgPachinko2_c::Ball_StateAim(int i) {
         dy = 0x80 - (this->mBalls[i].x >> 12);
         dx = 0x20 - (this->mBalls[i].y >> 12);
         dist = dy * dy + dx * dx;
-        sq = _ZN4cstd4sqrtEy(dist);
+        sq = cstd::sqrt(dist);
         if (sq >= 0x10) {
             this->mBalls[i].angle = cstd::atan2(dx, dy);
-            this->mBalls[i].speed = _ZN4cstd4sqrtEy(dist) << 8;
+            this->mBalls[i].speed = cstd::sqrt(dist) << 8;
             this->mBalls[i].speed += this->mBalls[i].speed >> 3;
             this->mBalls[i].speed += 0x1800;
             if (this->mBalls[i].speed >= 0x9400) {

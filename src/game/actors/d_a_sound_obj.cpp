@@ -69,8 +69,9 @@ bool PlaySub(u32, u32, u32, int, bool);
 }
 
 extern "C" {
-/* Same function as Sound::PlaySub. The C identifier is the linker symbol.
-   Last parameter stays int: bool would convert mLoop. */
+/* local extern: Sound.h's PlaySub takes a bool loop flag, and passing the u8
+   mLoop to it emits a conversion the ROM lacks (func_ov002_020f9468 grows
+   from 0x94 to 0xac). The last parameter stays int. */
 extern int _ZN5Sound7PlaySubEjjjib(u32 soundID, u32 volume, u32 pan, Fix12i distance, int loop);
 extern SoundObjectCallback data_ov002_0211110c[];
 extern SoundObjRow data_ov002_0210c080[];  /* 7 rows; row 7 is the _ZTV12daSoundObj_c header */

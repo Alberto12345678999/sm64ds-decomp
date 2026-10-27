@@ -34,8 +34,6 @@
  * - OAM::EnableSubOAM keeps its legacy call-site declaration: Render
  *   passes the address of a stack slot in r0 even though the canonical
  *   static function takes no arguments. This is a call-site ABI leftover.
- * - The GX/G2 shadow namespaces have no header in the tree yet; they are
- *   carried from the legacy InitResources source unchanged.
  */
 
 #include "dScTitle_c.h"
@@ -44,6 +42,8 @@
 #include "Sound.h"
 #include "PlayerInput.h"
 #include "dFdBrightness_c.h"
+#include "G2.h"
+#include "GX.h"
 
 /* SetFaders stores the fade controller here; slot 5 waits for the entrance fade. */
 
@@ -57,24 +57,6 @@ void EnableSubOAM(OamTmp *);
 /* local extern: the matched Render passes &tmp in r0; the header's
    static EnableSubOAM() takes no argument */
 extern "C" void _ZN3OAM12EnableSubOAMEv(OamTmp *);
-}
-
-/* No header in the tree declares this namespace yet. Carried from the
- * legacy InitResources source unchanged. Its sibling `namespace G2` could
- * NOT be carried: decl_common.h:395 declares a real ROM symbol
- * `extern int G2[];`, and a variable-hides-a-tag lookup turns the namespace
- * into `illegal namespace` / `undefined identifier 'G2'` the moment this TU
- * includes that header. G2::GetBG0ScrPtr is therefore spelt by its final
- * mangled name in the block below, the way the rest of the tree spells it. */
-namespace GX {
-void DisableAllBanks();
-void SetBankForBG(unsigned short);
-void SetBankForOBJ(unsigned short);
-void SetGraphicsMode(int, int, int);
-void LoadBG0Char(void const *, unsigned int, unsigned int);
-void LoadBGPltt(void const *, unsigned int, unsigned int);
-void LoadOBJ(void const *, unsigned int, unsigned int);
-void LoadOBJPltt(void const *, unsigned int, unsigned int);
 }
 
 /* ROM symbols this TU references that no header in the tree declares yet,
@@ -140,7 +122,6 @@ extern const TitleLevelEntry sTitleLevelEntries[] = {
 /* `void *` is the tree's plurality spelling for this one (it is declared
  * five different ways across five files); the cast at the one call site is
  * free. */
-void *_ZN2G212GetBG0ScrPtrEv(void);
 /* RECONCILED: the two legacy call sites spelt the parameter `int` and
  * `char *`; the body ignores it. `void *` is the spelling neither call site
  * has to cast away from. */
@@ -169,7 +150,7 @@ extern "C" void func_ov003_020adcbc(int level, int row, int col) {
     volatile u16 t0, t1, t2, t3, t4;
     int tens = level / 10;
     int ones = level % 10;
-    short *scr = (short *)_ZN2G212GetBG0ScrPtrEv();
+    short *scr = (short *)G2::GetBG0ScrPtr();
     short *d = scr + (col + (row << 5));
     t0 = tens == 0 ? 0xff : tens + 0x30;
     MultiStore16(t0, (char *)d, 2);
@@ -201,7 +182,7 @@ extern "C" void func_ov003_020adcbc(int level, int row, int col) {
  * func_ov003_020ad6ec, for the caption. */
 // @symbol func_ov003_020adc74
 extern "C" void func_ov003_020adc74(signed char *s, int row, int col) {
-    short *p = (short *)_ZN2G212GetBG0ScrPtrEv() + (col + (row << 5));
+    short *p = (short *)G2::GetBG0ScrPtr() + (col + (row << 5));
     if (*s == 0)
         return;
     do {
@@ -245,7 +226,7 @@ s32 dScTitle_c::InitResources() {
     GX::LoadBG0Char(data_0208a178, 0, 0x2000);
     GX::LoadBGPltt(data_0208c178, 0, 0x200);
     {
-        u16 *scr = (u16 *)_ZN2G212GetBG0ScrPtrEv();
+        u16 *scr = (u16 *)G2::GetBG0ScrPtr();
         int i = 0;
         do {
             *scr++ = 0xff;

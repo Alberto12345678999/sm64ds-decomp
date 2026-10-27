@@ -16,7 +16,7 @@
  *     0x1a8 dCcAcPos_c  0x40   -> 0x1e8
  *
  * Typing them absorbed these markers, which were a member's insides:
- *   - 0x160 mAnimation   = the dExtFrameCtrl_c base of mModelAnim
+ *   - 0x160 mAnimation   = the dExtFrameCtrl_c base of mAnmModel
  *   - 0x178 unk_178      = mdCcAc_c.radius (+0x04)
  *   - 0x17c unk_17c      = mdCcAc_c.height (+0x08)
  *   - 0x1ac unk_1ac      = mdCcAcPos_c.radius (+0x04)
@@ -46,7 +46,7 @@
 #include "dBgCh_Actr.h"
 
 struct daFPkn_c : dEnemyBase_c {
-    dExtAnmModel_c mModelAnim;    /* 0x110 */
+    dExtAnmModel_c mAnmModel;     /* 0x110 */
     dCcAc_c           mdCcAc_c;   /* 0x174 */
     dCcAcPos_c    mdCcAcPos_c; /* 0x1a8 */
     s32                          mRespawnMode;          /* 0x1e8 */

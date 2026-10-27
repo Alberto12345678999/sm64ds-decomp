@@ -17,9 +17,6 @@ struct System {
  * appended last.
  *
  * deslop leftovers:
- * - cstd::atan2, Particle::System::New, dCcAc_c::Init and
- *   dBgCh_Actr::Init take
- *   Fix12<int> by value and stay mangled extern "C" calls.
  * - dBgCh_Actr_UpdateContinuous_Veneer is the ROM's own tail-call thunk, not
  *   UpdateContinuous itself: the reloc points at the veneer symbol.
  * - The GetWallResult +4 in State1 is the unrecovered result struct's
@@ -43,6 +40,7 @@ enum daTor_c_AssetId {
 #include "Sound.h"
 #include "SurfaceInfo.h"
 #include "nitro/fx/fx.h"
+#include "math/Approach.h"
 namespace cstd {
 s16 atan2(s32, s32);
 }
@@ -61,8 +59,6 @@ void Matrix4x3_FromTranslation(Matrix4x3 *m, int x, int y, int z);
 s16 atan2_hold_d_a_tor_1(s32 y, s32 x);
 u32 d_a_torNewHold(u32 handle, u32 effect, s32 x, s32 y, s32 z, const void *direction,
                    void *callback);
-void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(
-    void *self, void *actor, int radius, int height, unsigned int flags, unsigned int vuln);
 /* Parameter names keep this TU's @NNN. */
 typedef void BgchInitAt_(void *self, void *actor, int radius, int height, void *a, int b);
 }
@@ -93,7 +89,6 @@ struct TorAnimationFileHandle : SharedFilePtr {
 TorModelFilePtr   gSandTornadoModelFile(ASSET_SAND_TORNADO_BMD);   /* model */
 TorAnimationFileHandle gSandTornadoAnimationFile(ASSET_SAND_TORNADO_BCA);   /* anim  */
 
-bool ApproachLinear(short &value, short target, short step);
 
 // @symbol _ZN7daTor_cD1Ev
 // @symbol _ZN7daTor_cD0Ev
@@ -255,8 +250,8 @@ int daTor_c::CleanupResources()
 // @symbol _ZN7daTor_c6RenderEv
 int daTor_c::Render()
 {
-    mTextureTransformer.Update(mModelAnim.data);
-    mModelAnim.Render(&mScale);
+    mTextureTransformer.Update(mAnmModel.data);
+    mAnmModel.Render(&mScale);
     return 1;
 }
 
@@ -289,8 +284,8 @@ int daTor_c::Behavior()
     }
     mdCcAc_c.Clear();
     mdCcAc_c.Update();
-    Matrix4x3_FromTranslation(&mModelAnim.mat4x3, mPosX >> 3, mPosY >> 3, mPosZ >> 3);
-    mModelAnim.dExtFrameCtrl_c::Advance();
+    Matrix4x3_FromTranslation(&mAnmModel.mat4x3, mPosX >> 3, mPosY >> 3, mPosZ >> 3);
+    mAnmModel.dExtFrameCtrl_c::Advance();
     mTextureTransformer.Advance();
     return 1;
 }
@@ -298,15 +293,14 @@ int daTor_c::Behavior()
 // @symbol _ZN7daTor_c13InitResourcesEv
 int daTor_c::InitResources()
 {
-    /* The dCcAc_c::Init call below stays mangled (file header leftovers). */
-    mModelAnim.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(gSandTornadoModelFile), 1, 0x15);
+    mAnmModel.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(gSandTornadoModelFile), 1, 0x15);
     dExtFrameCtrl_c::LoadFile(gSandTornadoAnimationFile);
-    func_02016aac(&mModelAnim, 0x16, 1);
-    mModelAnim.SetAnim((BCA_File *)((void *)gSandTornadoAnimationFile.filePtr), 0, 0x1000, 0);
+    func_02016aac(&mAnmModel, 0x16, 1);
+    mAnmModel.SetAnim((BCA_File *)((void *)gSandTornadoAnimationFile.filePtr), 0, 0x1000, 0);
     dExtAnmTexSRT_c::Prepare(*(BMD_File *)gSandTornadoModelFile.filePtr,
                              *(BTA_File *)data_ov024_02112968);
     mTextureTransformer.SetFile(*(BTA_File *)data_ov024_02112968, 0, 0x1000, 0);
-    _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, this, 0, 0, 0x200002, 0);
+    mdCcAc_c.Init(this, 0, 0, 0x200002, 0);
     mWithMeshClsn.Init(this, 0x50000, 0x50000, 0, 0);
 
     mHomePosX = mPosX;

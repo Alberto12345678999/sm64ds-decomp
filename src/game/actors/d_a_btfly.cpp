@@ -40,16 +40,8 @@
  * - Behavior scratch matrix: Matrix4x3 assignment is 0x264 vs 0x22c.
  *   Flat Mtx copy is the ROM ldm/stm; the real type's translation is a
  *   Vector3 and runs ~Vector3.
- * - InitResources dExtAnmModel_c::SetAnim: method form is 0x244 vs 0x238
- *   (+0xc). Fix12<int> speed.
- * - InitResources dBgCh_Actr::Init: header Fix12i mangles as cii. ROM
- *   symbol is 5Fix12IiES3_.
- * - InitResources dCcAcPos_c::Init: method form is 0x248 vs 0x238
- *   (+0x10). Fix12<int> by value, and a stack Vector3 emits ~Vector3, so
- *   the offset stays a destructor-free Vec3.
  * - State0: building the angle triple before reading param1 differs by
  *   10 words.
- * - State6 SetRanges stays the scalar symbol. dActor_c does not declare it.
  * - daBtfly_c_classInit and g_profile_BUTTERFLY sit past this text run.
  */
 
@@ -67,8 +59,7 @@ enum daBtfly_c_AssetId {
 #include "SharedFilePtr.h"
 #include "Player.h"
 #include "nitro/fx/fx.h"
-
-bool ApproachLinear(short &value, short target, short step);
+#include "math/Approach.h"
 
 /* Makes the per-member `#pragma opt_common_subs` bracket around State2 bind.
  * Without it mwccarm defers codegen and the last file-global state wins. */
@@ -101,7 +92,6 @@ struct BtflyAnimationFilePtr : SharedFilePtr {
 #define L(p) ((int)(p))
 
 extern "C" {
-void _Z14ApproachLinearRiii(int *p, int target, int step);
 s16 Vec3_VertAngle(const Vector3 *v1, const Vector3 *v0);
 s16 Vec3_HorzAngle(const void *a, const void *b);
 void Vec3_Sub(Vector3 *out, void *a, void *b);
@@ -123,14 +113,8 @@ extern ButterflyState data_ov100_02148628[];
 
 /* Fix12<int> by value. The header method form homes those arguments on the
  * stack; these scalar entries are the ROM calls. */
-void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
-    void *actor, void *shadow, void *mtx, int radius, int height, unsigned int opacity);
 /* Parameter names keep this TU's @NNN. */
 typedef void BgchInitAt_(void *w, void *actor, int radius, int height, void *a, void *b);
-void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
-    void *c, void *actor, void *pos, int radius, int height, u32 flags, u32 vuln);
-void _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(
-    void *player, Vector3 *pos, unsigned int a, int damage, unsigned int c, unsigned int d, unsigned int e);
 }
 
 // @symbol _ZN9daBtfly_cD1Ev
@@ -163,7 +147,7 @@ void daBtfly_c::State7()
         mScale += v;
     }
 
-    _Z14ApproachLinearRiii(&mHorzSpeed, 0x14000, 0x1000);
+    ApproachLinear(mHorzSpeed, 0x14000, 0x1000);
 
     Player *player = ClosestPlayer();
     if (player != 0) {
@@ -198,7 +182,7 @@ void daBtfly_c::State7()
                 pos.x = mPosX;
                 pos.y = mPosY;
                 pos.z = mPosZ;
-                _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(hit, &pos, 2, 0xc000, 1, 0, 1);
+                ((Player *)hit)->Hurt(pos, 2, 0xc000, 1, 0, 1);
             }
         }
     }
@@ -259,7 +243,7 @@ void daBtfly_c::State5()
         mState = 6;
         mFlags &= ~0x10000;
     } else {
-        _Z14ApproachLinearRiii(&mHorzSpeed, 0x8000, 0x800);
+        ApproachLinear(mHorzSpeed, 0x8000, 0x800);
     }
 
     if (mStateTimer >= 0x3c)
@@ -486,7 +470,7 @@ int daBtfly_c::Render()
     if (mState == 4)
         return 1;
     if (mUseAnimModel != 0)
-        mModelAnim.Render(0);
+        mAnmModel.Render(0);
     else
         mModel.Render((Vector3 *)&mScaleX);
     return 1;
@@ -527,14 +511,12 @@ int daBtfly_c::Behavior()
         mAngleY = mPrevAngleY;
         Matrix4x3_ApplyInPlaceToRotationY(&data_020a0e68, mAngleY);
         if (mUseAnimModel != 0) {
-            *(Mtx *)&mModelAnim.mat4x3 = *(Mtx *)&data_020a0e68;
-            _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
-                this, &mShadowModel1, &mModelAnim.mat4x3, 0x14000, 0x12c000, 0xf);
-            mModelAnim.Advance();
+            *(Mtx *)&mAnmModel.mat4x3 = *(Mtx *)&data_020a0e68;
+            DropShadowRadHeight(mShadowModel1, mAnmModel.mat4x3, 0x14000, 0x12c000, 0xf);
+            mAnmModel.Advance();
         } else {
             *(Mtx *)&mModel.mat4x3 = *(Mtx *)&data_020a0e68;
-            _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
-                this, &mShadowModel2, &mModel.mat4x3, 0x64000, 0x12c000, 0xf);
+            DropShadowRadHeight(mShadowModel2, mModel.mat4x3, 0x64000, 0x12c000, 0xf);
         }
     }
     return 1;
@@ -548,9 +530,9 @@ int daBtfly_c::InitResources()
     dExtSimpleModel_c::LoadFile(data_ov100_02148668);
     void *bmd = dExtSimpleModel_c::LoadFile(gButterflyModelFile);
 
-    if (mModelAnim.SetFile((BMD_File *)bmd, 1, 1) == 0)
+    if (mAnmModel.SetFile((BMD_File *)bmd, 1, 1) == 0)
         return 0;
-    mModelAnim.SetAnim((BCA_File *)gButterflyFlyAnimationFile.filePtr, 0, 0x1000, 0);
+    mAnmModel.SetAnim((BCA_File *)gButterflyFlyAnimationFile.filePtr, 0, 0x1000, 0);
     if (mShadowModel1.InitCylinder() == 0)
         return 0;
     if (mModel.SetFile((BMD_File *)data_ov100_02148668.filePtr, 1, 1) == 0)
@@ -564,8 +546,7 @@ int daBtfly_c::InitResources()
     v.x = 0;
     v.y = -0x32000;
     v.z = 0;
-    _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
-        &mdCcAcPos_c, this, &v, 0x32000, 0x64000, 0x200000, 0);
+    mdCcAcPos_c.Init(this, *(Vector3 *)&v, 0x32000, 0x64000, 0x200000, 0);
 
     int sub = (int)(u8)(param1 & 0x30);
     if (sub != 0x10 && sub != 0x20) {
@@ -585,9 +566,9 @@ int daBtfly_c::InitResources()
     mHomePosZ = mPosZ;
 
     int r = RandomIntInternal(&data_0209e650);
-    int fc = mModelAnim.GetFrameCount();
+    int fc = mAnmModel.GetFrameCount();
     u32 rem = (u32)r % (u32)fc;
-    mModelAnim.currFrame = (rem << 16) >> 4;
+    mAnmModel.currFrame = (rem << 16) >> 4;
 
     mScale = 0x1000;
     s32 spd = mScale;

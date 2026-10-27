@@ -20,8 +20,6 @@
  * where the cartridge has it.
  *
  * Leftover:
- * - dCcAc_c::Init stays the scalar mangled ABI (InitResources). A real member
- *   call homes Fix12<int> by value onto the stack (notes/mwccarm-codegen.md 6az).
  * - data_ov029_02114270 is the model SharedFilePtr, defined here; symbols.txt
  *   has no recovered name, so it is not coined.
  * - Matrix4x3_FromRotationY stays an extern "C" free function
@@ -60,10 +58,6 @@ enum d_a_obj_wc_obj03_AssetId {
 #include "Sound.h"
 
 extern "C" {
-/* dCcAc_c::Init's true signature takes Fix12<int> by value. A faithful C++
- * call homes those arguments to the stack and grows InitResources. */
-void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(
-    void *, dActor_c *, Fix12i, Fix12i, u32, u32);
 void Matrix4x3_FromRotationY(Matrix4x3 *, int);
 
 /* 8-byte file handle. The model uses func_02017acc / func_02017ab4. The
@@ -113,8 +107,7 @@ extern "C" daObjWc_Obj03_c *daObjWc_Obj03_c_classInit()
 int daObjWc_Obj03_c::InitResources()
 {
     mModel.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(data_ov029_02114270), 1, -1);
-    _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(
-        &mCylinder, this, 0x32000, 0x64000, 0x800002, 0);
+    mCylinder.Init(this, 0x32000, 0x64000, 0x800002, 0);
     mWaterID = 0;
     mWaterParam = param1 & 1;
     mActive = 0;

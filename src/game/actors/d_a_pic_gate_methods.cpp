@@ -67,6 +67,7 @@ enum daPicGate_c_AssetId {
 #include "daPicGate_c.h"
 #include "SharedFilePtr.h"
 #include "common.h"
+#include "math/Approach.h"
 
 /* Geometry command ports. Plain stores, not volatile: a volatile port
  * reloads where the cartridge keeps the value in a register. */
@@ -112,7 +113,7 @@ extern u8 data_ov080_02127714[];
 extern void func_020553a4(void *mtx);
 extern void *data_ov080_02127834;
 extern void func_0203cbc0(void *a);
-/* daPicGate_c_classInit builds the object by hand; see the note above it. */
+/* local extern: daPicGate_c_classInit builds the object by hand; see the note above it. */
 extern void *_ZN8dActor_cC2Ev(void *self);
 }
 
@@ -140,7 +141,6 @@ namespace Memory { void *operator_new2(unsigned int size); }
 #define kDefaultWave data_ov080_02127834
 
 extern daPicGate_c::State data_ov080_02128628[];
-int ApproachLinear(int &ref, int target, int step);
 
 /* A picture's texture/collision handle. The nineteen instances below are
    constructed by __sinit_d_a_pic_gate_methods.cpp and reached through the rodata

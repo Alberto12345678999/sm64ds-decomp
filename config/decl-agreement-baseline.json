@@ -259,7 +259,7 @@
       ]
     },
     "Color_Interp": {
-      "src/unnamed/ov002/func_ov002_020e6a78.c": [
+      "src/unnamed/ov002/func_ov002_020e6a78.cpp": [
         "param:#1 void *",
         "param:#2 unsigned short",
         "param:#3 unsigned short",
@@ -361,10 +361,10 @@
       "src/unnamed/arm9/0206/func_0206062c.cpp": [
         "arity:3"
       ],
-      "src/unnamed/arm9/0206/func_0206071c.c": [
+      "src/unnamed/arm9/0206/func_0206071c.cpp": [
         "arity:3"
       ],
-      "src/unnamed/arm9/0206/func_02061e38.c": [
+      "src/unnamed/arm9/0206/func_02061e38.cpp": [
         "arity:3"
       ],
       "src/unnamed/arm9/0206/func_02063ea8.c": [
@@ -412,7 +412,7 @@
       "src/unnamed/arm9/0206/func_020656d4.c": [
         "arity:3"
       ],
-      "src/unnamed/arm9/0206/func_020658c0.c": [
+      "src/unnamed/arm9/0206/func_020658c0.cpp": [
         "arity:3"
       ],
       "src/unnamed/arm9/0206/func_02065c2c.c": [
@@ -430,7 +430,7 @@
       "src/unnamed/arm9/0206/func_0206655c.c": [
         "arity:3"
       ],
-      "src/unnamed/arm9/0206/func_020671b4.c": [
+      "src/unnamed/arm9/0206/func_020671b4.cpp": [
         "arity:3"
       ],
       "src/unnamed/arm9/0206/func_020672d0.c": [
@@ -442,11 +442,11 @@
       "src/unnamed/arm9/0206/func_02067b68.c": [
         "arity:3"
       ],
-      "src/unnamed/arm9/0206/func_02067bfc.c": [
+      "src/unnamed/arm9/0206/func_02067bfc.cpp": [
         "arity:3",
         "return:int"
       ],
-      "src/unnamed/arm9/0206/func_02068e4c.c": [
+      "src/unnamed/arm9/0206/func_02068e4c.cpp": [
         "arity:3"
       ]
     },
@@ -523,7 +523,7 @@
       ]
     },
     "DMASyncFillTransfer": {
-      "src/unnamed/arm9/0206/func_020616e8.c": [
+      "src/unnamed/arm9/0206/func_020616e8.cpp": [
         "param:#1 int",
         "param:#3 int",
         "param:#4 int"
@@ -536,7 +536,7 @@
       ]
     },
     "DMASyncWordTransfer": {
-      "src/WM_SendCommand.c": [
+      "src/WM_SendCommand.cpp": [
         "param:#1 int"
       ],
       "src/engine/gx/GX.cpp": [
@@ -667,7 +667,7 @@
       ]
     },
     "DotVec3": {
-      "src/Quaternion_FromVector3.c": [
+      "src/Quaternion_FromVector3.cpp": [
         "param:#1 const Vec3 *",
         "param:#2 const Vec3 *"
       ],
@@ -741,7 +741,7 @@
         "param:#1 Obj *",
         "return:void"
       ],
-      "src/unnamed/arm9/0201/func_020184e0.c": [
+      "src/unnamed/arm9/0201/func_020184e0.cpp": [
         "return:void"
       ],
       "src/unnamed/arm9/0201/func_02018934.c": [
@@ -758,7 +758,7 @@
       ]
     },
     "FS_ReadFile": {
-      "src/unnamed/arm9/0204/func_02042254.c": [
+      "src/unnamed/arm9/0204/func_02042254.cpp": [
         "param:#1 char *",
         "param:#2 char *"
       ],
@@ -880,7 +880,7 @@
         "param:#2 int",
         "param:#3 int"
       ],
-      "src/unnamed/arm9/0201/func_02019f10.c": [
+      "src/unnamed/arm9/0201/func_02019f10.cpp": [
         "return:IPCStatus"
       ],
       "src/unnamed/arm9/0205/func_02059dd4.c": [
@@ -889,6 +889,11 @@
         "param:#3 int"
       ],
       "src/unnamed/arm9/0205/func_0205edd8.cpp": [
+        "param:#1 int",
+        "param:#2 int",
+        "param:#3 int"
+      ],
+      "src/unnamed/arm9/0205/func_0205f040.cpp": [
         "param:#1 int",
         "param:#2 int",
         "param:#3 int"
@@ -936,11 +941,11 @@
         "param:#2 Matrix4x3 *",
         "return:void"
       ],
-      "src/unnamed/ov007/func_ov007_020bfbdc.c": [
+      "src/unnamed/ov007/func_ov007_020bfbdc.cpp": [
         "param:#2 Mtx43 *",
         "return:void"
       ],
-      "src/unnamed/ov007/func_ov007_020bfe4c.c": [
+      "src/unnamed/ov007/func_ov007_020bfe4c.cpp": [
         "return:void"
       ],
       "src/unnamed/ov075/func_ov075_0211aa00.c": [
@@ -1055,7 +1060,7 @@
       "src/unnamed/arm9/0200/func_02009138.c": [
         "param:#1 Vector3 *"
       ],
-      "src/unnamed/arm9/0200/func_020092c4.c": [
+      "src/unnamed/arm9/0200/func_020092c4.cpp": [
         "param:#1 Vector3 *"
       ],
       "src/unnamed/arm9/0200/func_02009e70.cpp": [
@@ -1517,7 +1522,7 @@
       "src/unnamed/arm9/0204/func_02044efc.c": [
         "arity:1"
       ],
-      "src/unnamed/ov007/func_ov007_020b0da0.c": [
+      "src/unnamed/ov007/func_ov007_020b0da0.cpp": [
         "arity:1"
       ],
       "src/unnamed/ov007/func_ov007_020bc968.c": [
@@ -1727,7 +1732,7 @@
         "param:#2 int *",
         "param:#3 Vec3 *"
       ],
-      "src/unnamed/ov007/func_ov007_020bfbdc.c": [
+      "src/unnamed/ov007/func_ov007_020bfbdc.cpp": [
         "param:#1 Vec3 *",
         "param:#2 Mtx43 *"
       ]
@@ -1739,13 +1744,13 @@
       "src/unnamed/arm9/0205/func_02059eb0.c": [
         "param:#3 unsigned int"
       ],
-      "src/unnamed/arm9/0206/func_0206116c.c": [
+      "src/unnamed/arm9/0206/func_0206116c.cpp": [
         "param:#3 unsigned int"
       ],
       "src/unnamed/arm9/0206/func_02062aa4.cpp": [
         "param:#3 unsigned int"
       ],
-      "src/unnamed/arm9/0206/func_02062df0.c": [
+      "src/unnamed/arm9/0206/func_02062df0.cpp": [
         "param:#3 unsigned int"
       ],
       "src/unnamed/arm9/0206/func_02068680.c": [
@@ -1785,10 +1790,10 @@
       "src/minigames/d_s_mg_snowball.cpp": [
         "param:#1 int"
       ],
-      "src/unnamed/arm9/0204/func_02049c48.c": [
+      "src/unnamed/arm9/0204/func_02049c48.cpp": [
         "param:#3 unsigned int"
       ],
-      "src/unnamed/arm9/0206/func_02068e4c.c": [
+      "src/unnamed/arm9/0206/func_02068e4c.cpp": [
         "param:#1 int"
       ],
       "src/unnamed/ov003/func_ov003_020adcbc.cpp": [
@@ -1811,7 +1816,7 @@
       "src/Entry.c": [
         "arity:0"
       ],
-      "src/unnamed/arm9/0201/func_02017fd0.c": [
+      "src/unnamed/arm9/0201/func_02017fd0.cpp": [
         "param:#1 unsigned int",
         "param:#3 unsigned int"
       ]
@@ -1884,7 +1889,7 @@
       ]
     },
     "NormalizeVec3IfNonZero": {
-      "src/Quaternion_FromVector3.c": [
+      "src/Quaternion_FromVector3.cpp": [
         "param:#1 Vec3 *"
       ],
       "src/minigames/d_mg3d_heyho_obj_adapter.cpp": [
@@ -1916,7 +1921,7 @@
       ]
     },
     "OSReadROMArea": {
-      "src/unnamed/arm9/01ff/func_01ffdd08.c": [
+      "src/unnamed/arm9/01ff/func_01ffdd08.cpp": [
         "param:#2 unsigned int",
         "param:#3 unsigned int"
       ]
@@ -1936,10 +1941,10 @@
       "src/unnamed/arm9/0205/func_02058a44.c": [
         "arity:0"
       ],
-      "src/unnamed/arm9/0205/func_02058a94.c": [
+      "src/unnamed/arm9/0205/func_02058a94.cpp": [
         "param:#1 char *"
       ],
-      "src/unnamed/arm9/0206/func_0206081c.c": [
+      "src/unnamed/arm9/0206/func_0206081c.cpp": [
         "param:#1 char *"
       ],
       "src/IRQ2.cpp": [
@@ -2166,19 +2171,11 @@
       "src/unnamed/ov002/__sinit_ov002_02107298.c": [
         "return:void"
       ],
-      "src/unnamed/ov002/__sinit_ov002_02107370.c": [
-        "param:#2 int",
-        "return:int"
-      ],
       "src/unnamed/ov006/__sinit_ov006_02130a08.c": [
         "param:#2 int",
         "return:int"
       ],
       "src/unnamed/ov018/__sinit_ov018_02112c80.cpp": [
-        "return:int"
-      ],
-      "src/unnamed/ov019/__sinit_ov019_021127a4.c": [
-        "param:#2 int",
         "return:int"
       ],
       "src/unnamed/ov027/__sinit_ov027_02112df8.cpp": [
@@ -2256,20 +2253,12 @@
         "arity:0",
         "return:void"
       ],
-      "src/unnamed/ov002/__sinit_ov002_02107370.c": [
-        "arity:0",
-        "return:void"
-      ],
       "src/unnamed/ov006/__sinit_ov006_0212f4c4.c": [
         "arity:0",
         "return:void"
       ],
       "src/unnamed/ov006/__sinit_ov006_0212f52c.c": [
         "kind:data"
-      ],
-      "src/unnamed/ov006/__sinit_ov006_0212f6b4.c": [
-        "arity:0",
-        "return:void"
       ],
       "src/unnamed/ov006/__sinit_ov006_02130a08.c": [
         "arity:0",
@@ -2284,20 +2273,12 @@
       "src/unnamed/ov018/__sinit_ov018_02112c80.cpp": [
         "kind:data"
       ],
-      "src/unnamed/ov019/__sinit_ov019_021127a4.c": [
-        "arity:0",
-        "return:void"
-      ],
       "src/unnamed/ov026/__sinit_ov026_02112c94.c": [
         "arity:0",
         "return:void"
       ],
       "src/unnamed/ov027/__sinit_ov027_02112df8.cpp": [
         "kind:data"
-      ],
-      "src/unnamed/ov030/__sinit_ov030_02114924.c": [
-        "arity:0",
-        "return:void"
       ],
       "src/unnamed/ov032/__sinit_ov032_02112c10.c": [
         "arity:0",
@@ -2312,10 +2293,6 @@
         "return:void"
       ],
       "src/unnamed/ov060/__sinit_ov060_0211a428.c": [
-        "arity:0",
-        "return:void"
-      ],
-      "src/unnamed/ov062/__sinit_ov062_0211cf30.c": [
         "arity:0",
         "return:void"
       ],
@@ -2347,9 +2324,6 @@
       ],
       "src/unnamed/ov064/__sinit_ov064_0211b698.c": [
         "kind:data"
-      ],
-      "src/unnamed/ov065/__sinit_ov065_0211c110.c": [
-        "return:void"
       ],
       "src/unnamed/ov065/__sinit_ov065_0211c2a8.c": [
         "return:void"
@@ -2392,15 +2366,7 @@
         "arity:0",
         "return:void"
       ],
-      "src/unnamed/ov077/__sinit_ov077_0212749c.c": [
-        "arity:0",
-        "return:void"
-      ],
       "src/unnamed/ov077/__sinit_ov077_021275fc.c": [
-        "return:void"
-      ],
-      "src/unnamed/ov078/__sinit_ov078_02126660.c": [
-        "arity:0",
         "return:void"
       ],
       "src/unnamed/ov079/__sinit_ov079_02127618.c": [
@@ -2422,22 +2388,6 @@
         "return:void"
       ],
       "src/unnamed/ov084/__sinit_ov084_0213035c.c": [
-        "arity:0",
-        "return:void"
-      ],
-      "src/unnamed/ov084/__sinit_ov084_02130558.c": [
-        "arity:0",
-        "return:void"
-      ],
-      "src/unnamed/ov084/__sinit_ov084_02130654.c": [
-        "arity:0",
-        "return:void"
-      ],
-      "src/unnamed/ov085/__sinit_ov085_0212f2a8.c": [
-        "arity:0",
-        "return:void"
-      ],
-      "src/unnamed/ov085/__sinit_ov085_0212f3a0.c": [
         "arity:0",
         "return:void"
       ],
@@ -2488,9 +2438,6 @@
       ],
       "src/unnamed/ov102/__sinit_ov102_0214d908.c": [
         "arity:0",
-        "return:void"
-      ],
-      "src/unnamed/ov102/__sinit_ov102_0214de70.c": [
         "return:void"
       ]
     },
@@ -2857,20 +2804,12 @@
       "src/unnamed/ov002/__sinit_ov002_02107298.c": [
         "kind:data"
       ],
-      "src/unnamed/ov002/__sinit_ov002_02107370.c": [
-        "arity:0",
-        "return:void"
-      ],
       "src/unnamed/ov006/__sinit_ov006_02130a08.c": [
         "arity:0",
         "return:void"
       ],
       "src/unnamed/ov018/__sinit_ov018_02112c80.cpp": [
         "kind:data"
-      ],
-      "src/unnamed/ov019/__sinit_ov019_021127a4.c": [
-        "arity:0",
-        "return:void"
       ],
       "src/unnamed/ov027/__sinit_ov027_02112df8.cpp": [
         "kind:data"
@@ -3164,7 +3103,7 @@
       "src/minigames/unit020cd744.cpp": [
         "param:#1 int *"
       ],
-      "src/unnamed/arm9/0203/func_0203d480.c": [
+      "src/unnamed/arm9/0203/func_0203d480.cpp": [
         "param:#1 int *"
       ]
     },
@@ -3244,7 +3183,7 @@
         "param:#2 const Vector3 *",
         "param:#3 const Vector3 *"
       ],
-      "src/unnamed/arm9/0200/func_020092c4.c": [
+      "src/unnamed/arm9/0200/func_020092c4.cpp": [
         "param:#1 Vector3 *",
         "param:#2 Vector3 *",
         "param:#3 Vector3 *"
@@ -3502,7 +3441,7 @@
         "param:#1 Vector3 *",
         "param:#2 Vector3 *"
       ],
-      "src/unnamed/arm9/0200/func_02005110.c": [
+      "src/unnamed/arm9/0200/func_02005110.cpp": [
         "param:#1 const Vec3 *",
         "param:#2 const Vec3 *"
       ],
@@ -3534,7 +3473,7 @@
         "param:#1 const Vector3 *",
         "param:#2 const Vector3 *"
       ],
-      "src/unnamed/ov002/func_ov002_020effb8.c": [
+      "src/unnamed/ov002/func_ov002_020effb8.cpp": [
         "param:#1 Vector3 *",
         "param:#2 Vector3 *"
       ]
@@ -3655,7 +3594,7 @@
         "param:#1 const TrapVector3 *",
         "param:#2 const TrapVector3 *"
       ],
-      "src/unnamed/arm9/0200/func_02005110.c": [
+      "src/unnamed/arm9/0200/func_02005110.cpp": [
         "param:#1 const Vec3 *",
         "param:#2 const Vec3 *"
       ],
@@ -4002,7 +3941,7 @@
       ]
     },
     "Vec3_Sub": {
-      "src/Vec3_VertAngle.c": [
+      "src/Vec3_VertAngle.cpp": [
         "param:#1 Vector3 *",
         "param:#2 const Vector3 *",
         "param:#3 const Vector3 *"
@@ -4137,7 +4076,7 @@
         "param:#2 Vector3 *",
         "param:#3 Vector3 *"
       ],
-      "src/unnamed/arm9/0200/func_020092c4.c": [
+      "src/unnamed/arm9/0200/func_020092c4.cpp": [
         "param:#1 Vector3 *",
         "param:#2 Vector3 *",
         "param:#3 Vector3 *"
@@ -4217,7 +4156,7 @@
         "param:#1 const void *",
         "param:#2 const void *"
       ],
-      "src/unnamed/arm9/0200/func_02005110.c": [
+      "src/unnamed/arm9/0200/func_02005110.cpp": [
         "param:#1 const Vec3 *",
         "param:#2 const Vec3 *"
       ],
@@ -4234,19 +4173,19 @@
       "src/unnamed/arm9/0206/func_02061674.c": [
         "param:#2 int"
       ],
-      "src/unnamed/arm9/0206/func_02061b9c.c": [
+      "src/unnamed/arm9/0206/func_02061b9c.cpp": [
         "arity:3"
       ],
-      "src/unnamed/arm9/0206/func_02061d30.c": [
+      "src/unnamed/arm9/0206/func_02061d30.cpp": [
         "arity:6"
       ],
-      "src/unnamed/arm9/0206/func_02061e38.c": [
+      "src/unnamed/arm9/0206/func_02061e38.cpp": [
         "param:#2 int"
       ],
       "src/unnamed/arm9/0206/func_02061fdc.c": [
         "param:#2 int"
       ],
-      "src/unnamed/arm9/0206/func_020620b0.c": [
+      "src/unnamed/arm9/0206/func_020620b0.cpp": [
         "param:#2 int"
       ],
       "src/unnamed/arm9/0206/func_020621b8.c": [
@@ -4267,7 +4206,7 @@
       "src/unnamed/arm9/0206/func_0206259c.c": [
         "param:#2 int"
       ],
-      "src/unnamed/arm9/0206/func_020625fc.c": [
+      "src/unnamed/arm9/0206/func_020625fc.cpp": [
         "arity:3"
       ],
       "src/unnamed/arm9/0206/func_020634fc.c": [
@@ -4275,22 +4214,22 @@
       ]
     },
     "WM_GetSystemWork": {
-      "src/unnamed/arm9/0206/func_020618b8.c": [
+      "src/unnamed/arm9/0206/func_020618b8.cpp": [
         "return:void *"
       ],
-      "src/unnamed/arm9/0206/func_02061960.c": [
+      "src/unnamed/arm9/0206/func_02061960.cpp": [
         "return:void *"
       ],
-      "src/unnamed/arm9/0206/func_02061b9c.c": [
+      "src/unnamed/arm9/0206/func_02061b9c.cpp": [
         "return:int *"
       ],
-      "src/unnamed/arm9/0206/func_02061c88.c": [
+      "src/unnamed/arm9/0206/func_02061c88.cpp": [
         "return:char *"
       ],
-      "src/unnamed/arm9/0206/func_02061ce4.c": [
+      "src/unnamed/arm9/0206/func_02061ce4.cpp": [
         "return:void *"
       ],
-      "src/unnamed/arm9/0206/func_02061e38.c": [
+      "src/unnamed/arm9/0206/func_02061e38.cpp": [
         "return:int *"
       ],
       "src/unnamed/arm9/0206/func_02061ee4.cpp": [
@@ -4302,10 +4241,10 @@
       "src/unnamed/arm9/0206/func_02062380.c": [
         "return:int *"
       ],
-      "src/unnamed/arm9/0206/func_02062428.c": [
+      "src/unnamed/arm9/0206/func_02062428.cpp": [
         "return:int *"
       ],
-      "src/unnamed/arm9/0206/func_020625fc.c": [
+      "src/unnamed/arm9/0206/func_020625fc.cpp": [
         "return:int *"
       ],
       "src/unnamed/arm9/0206/func_02062d10.cpp": [
@@ -4316,12 +4255,12 @@
       ]
     },
     "WM_SendCommand": {
-      "src/unnamed/arm9/0206/func_02061d30.c": [
+      "src/unnamed/arm9/0206/func_02061d30.cpp": [
         "param:#1 int",
         "param:#2 int",
         "param:#3 int"
       ],
-      "src/unnamed/arm9/0206/func_02061e38.c": [
+      "src/unnamed/arm9/0206/func_02061e38.cpp": [
         "arity:2"
       ],
       "src/unnamed/arm9/0206/func_02061ee4.cpp": [
@@ -4330,7 +4269,7 @@
       "src/unnamed/arm9/0206/func_02061fdc.c": [
         "arity:2"
       ],
-      "src/unnamed/arm9/0206/func_020620b0.c": [
+      "src/unnamed/arm9/0206/func_020620b0.cpp": [
         "param:#1 int",
         "param:#2 int",
         "param:#3 void *"
@@ -4356,7 +4295,7 @@
       "src/unnamed/arm9/0206/func_02062380.c": [
         "arity:5"
       ],
-      "src/unnamed/arm9/0206/func_02062428.c": [
+      "src/unnamed/arm9/0206/func_02062428.cpp": [
         "arity:9"
       ],
       "src/unnamed/arm9/0206/func_0206259c.c": [
@@ -4364,7 +4303,7 @@
         "param:#2 int",
         "param:#3 int"
       ],
-      "src/unnamed/arm9/0206/func_020625fc.c": [
+      "src/unnamed/arm9/0206/func_020625fc.cpp": [
         "arity:12"
       ],
       "src/unnamed/arm9/0206/func_020634fc.c": [
@@ -4378,7 +4317,7 @@
         "param:#2 int",
         "param:#3 int"
       ],
-      "src/unnamed/arm9/0206/func_02063648.c": [
+      "src/unnamed/arm9/0206/func_02063648.cpp": [
         "arity:8"
       ]
     },
@@ -4386,10 +4325,10 @@
       "src/unnamed/arm9/0206/func_0206a318.c": [
         "arity:1"
       ],
-      "src/unnamed/arm9/0206/func_0206a3a4.c": [
+      "src/unnamed/arm9/0206/func_0206a3a4.cpp": [
         "arity:1"
       ],
-      "src/unnamed/arm9/0206/func_0206a6d0.c": [
+      "src/unnamed/arm9/0206/func_0206a6d0.cpp": [
         "arity:1"
       ]
     },
@@ -5365,74 +5304,6 @@
         "param:#2 const void *"
       ]
     },
-    "_ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj": {
-      "src/game/actors/d_a_bakubaku.cpp": [
-        "param:#3 const Vector3 &"
-      ],
-      "src/game/actors/d_a_bg_snwmn.cpp": [
-        "param:#3 const void *"
-      ],
-      "src/game/actors/d_a_bombking.cpp": [
-        "param:#3 Vector3 *"
-      ],
-      "src/game/actors/d_a_brq.cpp": [
-        "param:#3 const Vector3 &"
-      ],
-      "src/game/actors/d_a_ey_bm.cpp": [
-        "return:int"
-      ],
-      "src/game/actors/d_a_hanachan.cpp": [
-        "param:#5 unsigned int"
-      ],
-      "src/game/actors/d_a_iwante.cpp": [
-        "param:#3 Vector3 *"
-      ],
-      "src/game/actors/d_a_jgm.cpp": [
-        "return:int"
-      ],
-      "src/game/actors/d_a_king_donketu.cpp": [
-        "param:#3 Vector3 *"
-      ],
-      "src/game/actors/d_a_kirai.cpp": [
-        "param:#3 const Vector3 &"
-      ],
-      "src/game/actors/d_a_manta.cpp": [
-        "param:#3 const Vector3 &"
-      ],
-      "src/game/actors/d_a_obj_kanban.cpp": [
-        "param:#1 char *",
-        "param:#2 char *",
-        "param:#5 unsigned int"
-      ],
-      "src/game/actors/d_a_owl.cpp": [
-        "param:#3 int *"
-      ],
-      "src/game/actors/d_a_pukupuku.cpp": [
-        "param:#3 const Vector3 &"
-      ],
-      "src/game/actors/d_a_snowman.cpp": [
-        "param:#3 const void *"
-      ],
-      "src/game/actors/d_a_star.cpp": [
-        "param:#3 const void *"
-      ],
-      "src/game/actors/d_a_wanwan2.cpp": [
-        "param:#3 const Vector3 &"
-      ],
-      "src/game/actors/d_a_water_suikomi.cpp": [
-        "param:#3 V3 *"
-      ],
-      "src/unnamed/ov002/func_ov002_020dc174.c": [
-        "param:#6 int",
-        "param:#7 int",
-        "return:int"
-      ],
-      "src/unnamed/ov002/func_ov002_020e63a4.c": [
-        "param:#6 int",
-        "param:#7 int",
-        "return:int"
-      ]
-    },
     "_ZN10dCcAcPos_cD1Ev": {
       "src/d_a_kuri_king_kuriking.cpp": [
         "return:void"
@@ -5484,63 +5355,6 @@
         "param:#2 char *"
       ]
     },
-    "_ZN12dEnemyBase_c20KillByInvincibleCharERK10Vector3_16R6Player5Fix12IiE": {
-      "include/decl_Enemy.h": [
-        "param:#2 Vector3_16 *",
-        "param:#3 void *",
-        "param:#4 int"
-      ],
-      "src/game/actors/d_a_basabasa.cpp": [
-        "arity:3"
-      ],
-      "src/game/actors/d_a_bmb.cpp": [
-        "param:#2 void *",
-        "param:#3 void *",
-        "param:#4 unsigned int"
-      ],
-      "src/game/actors/d_a_holhei.cpp": [
-        "param:#2 void *",
-        "param:#3 void *",
-        "param:#4 int"
-      ],
-      "src/game/actors/d_a_ibl.cpp": [
-        "param:#2 Vector3_16 *",
-        "param:#3 void *",
-        "param:#4 int"
-      ],
-      "src/game/actors/d_a_krb.cpp": [
-        "param:#2 short *",
-        "param:#3 void *",
-        "param:#4 int"
-      ],
-      "src/game/actors/d_a_menbo.cpp": [
-        "param:#2 void *",
-        "param:#3 void *",
-        "param:#4 int"
-      ],
-      "src/game/actors/d_a_ots.cpp": [
-        "param:#2 void *",
-        "param:#3 void *",
-        "param:#4 int",
-        "return:int"
-      ],
-      "src/game/actors/d_a_shl.cpp": [
-        "param:#4 int"
-      ],
-      "src/game/actors/d_a_snowman.cpp": [
-        "arity:3"
-      ],
-      "src/game/actors/d_a_trs.cpp": [
-        "param:#2 void *",
-        "param:#3 void *",
-        "param:#4 int"
-      ],
-      "src/game/actors/d_a_yurei_mucho.cpp": [
-        "param:#2 const void *",
-        "param:#3 void *",
-        "param:#4 int"
-      ]
-    },
     "_ZN12dEnemyBase_c27SpawnParticlesIfHitOtherObjER5dCc_c": {
       "include/decl_Enemy.h": [
         "param:#2 void *"
@@ -5582,18 +5396,10 @@
         "param:#2 int",
         "return:int"
       ],
-      "src/unnamed/ov002/__sinit_ov002_02107370.c": [
-        "param:#2 int",
-        "return:int"
-      ],
       "src/unnamed/ov006/__sinit_ov006_0212f4c4.c": [
         "return:int"
       ],
       "src/unnamed/ov006/__sinit_ov006_0212f52c.c": [
-        "return:void"
-      ],
-      "src/unnamed/ov006/__sinit_ov006_0212f6b4.c": [
-        "param:#2 int",
         "return:void"
       ],
       "src/unnamed/ov006/__sinit_ov006_02130a08.c": [
@@ -5606,16 +5412,8 @@
       "src/unnamed/ov016/__sinit_ov016_021136ec.c": [
         "return:void"
       ],
-      "src/unnamed/ov019/__sinit_ov019_021127a4.c": [
-        "param:#2 int",
-        "return:int"
-      ],
       "src/unnamed/ov026/__sinit_ov026_02112c94.c": [
         "return:void"
-      ],
-      "src/unnamed/ov030/__sinit_ov030_02114924.c": [
-        "param:#2 int",
-        "return:int"
       ],
       "src/unnamed/ov032/__sinit_ov032_02112c10.c": [
         "return:void"
@@ -5629,10 +5427,6 @@
         "return:int"
       ],
       "src/unnamed/ov060/__sinit_ov060_0211a428.c": [
-        "param:#2 int",
-        "return:int"
-      ],
-      "src/unnamed/ov062/__sinit_ov062_0211cf30.c": [
         "param:#2 int",
         "return:int"
       ],
@@ -5658,9 +5452,6 @@
         "return:void"
       ],
       "src/unnamed/ov064/__sinit_ov064_0211b698.c": [
-        "return:void"
-      ],
-      "src/unnamed/ov065/__sinit_ov065_0211c110.c": [
         "return:void"
       ],
       "src/unnamed/ov065/__sinit_ov065_0211c2a8.c": [
@@ -5703,15 +5494,8 @@
         "param:#2 int",
         "return:int"
       ],
-      "src/unnamed/ov077/__sinit_ov077_0212749c.c": [
-        "return:int"
-      ],
       "src/unnamed/ov077/__sinit_ov077_021275fc.c": [
         "return:void"
-      ],
-      "src/unnamed/ov078/__sinit_ov078_02126660.c": [
-        "param:#2 int",
-        "return:int"
       ],
       "src/unnamed/ov079/__sinit_ov079_02127618.c": [
         "param:#2 int",
@@ -5731,18 +5515,6 @@
         "return:void"
       ],
       "src/unnamed/ov084/__sinit_ov084_0213035c.c": [
-        "return:int"
-      ],
-      "src/unnamed/ov084/__sinit_ov084_02130558.c": [
-        "return:void"
-      ],
-      "src/unnamed/ov084/__sinit_ov084_02130654.c": [
-        "return:int"
-      ],
-      "src/unnamed/ov085/__sinit_ov085_0212f2a8.c": [
-        "return:int"
-      ],
-      "src/unnamed/ov085/__sinit_ov085_0212f3a0.c": [
         "return:int"
       ],
       "src/unnamed/ov085/__sinit_ov085_0212f5ec.c": [
@@ -5786,9 +5558,6 @@
       "src/unnamed/ov102/__sinit_ov102_0214d908.c": [
         "param:#2 int",
         "return:int"
-      ],
-      "src/unnamed/ov102/__sinit_ov102_0214de70.c": [
-        "return:void"
       ]
     },
     "_ZN19dExtBlendAnmModel_c7SetAnimER8BCA_Fileiiit": {
@@ -5818,11 +5587,6 @@
       ],
       "src/game/player/Player.cpp": [
         "return:void"
-      ]
-    },
-    "_ZN15dExtAnmTexPat_c17UpdateFileOffsetsER8BTP_File": {
-      "src/unnamed/ov007/func_ov007_020b3f20.c": [
-        "param:#1 void *"
       ]
     },
     "_ZN15dExtAnmTexPat_c6UpdateER15ModelComponents": {
@@ -5874,9 +5638,6 @@
     "_ZN15dExtFrameCtrl_c17UpdateFileOffsetsER8BCA_File": {
       "include/decl_Animation.h": [
         "param:#1 char *"
-      ],
-      "src/unnamed/ov007/func_ov007_020b3f20.c": [
-        "param:#1 void *"
       ]
     },
     "_ZN15dExtFrameCtrl_c4CopyERKS_": {
@@ -5933,18 +5694,6 @@
       ],
       "src/unnamed/ov002/func_ov002_020e5948.c": [
         "return:void"
-      ]
-    },
-    "_ZN17dExtShadowModel_c9InitModelEP9Matrix4x35Fix12IiES3_S3_j": {
-      "src/game/stages/d_ent_obj.cpp": [
-        "param:#2 Matrix4x3 *"
-      ],
-      "src/minigames/unit020bfec0.cpp": [
-        "param:#2 void *",
-        "param:#6 unsigned int"
-      ],
-      "src/runtime/actor/d_actor.cpp": [
-        "param:#2 Matrix4x3 *"
       ]
     },
     "_ZN17dExtShadowModel_cD1Ev": {
@@ -6154,36 +5903,6 @@
         "return:int"
       ]
     },
-    "_ZN2GX13SetBankForTexEt": {
-      "src/engine/gx/GX.cpp": [
-        "param:#1 unsigned int"
-      ]
-    },
-    "_ZN2GX15SetBankForSubBGEt": {
-      "src/minigames/d_s_mg_d3d_base.cpp": [
-        "param:#1 unsigned int"
-      ]
-    },
-    "_ZN2GX16SetBankForSubOBJEt": {
-      "src/minigames/d_s_mg_d3d_base.cpp": [
-        "param:#1 unsigned int"
-      ]
-    },
-    "_ZN2GX17SetBankForTexPlttEt": {
-      "src/engine/gx/GX.cpp": [
-        "param:#1 unsigned int"
-      ]
-    },
-    "_ZN2GX22SetBankForSubBGExtPlttEt": {
-      "src/engine/gx/GXS.cpp": [
-        "param:#1 unsigned int"
-      ]
-    },
-    "_ZN2GX23SetBankForSubOBJExtPlttEt": {
-      "src/engine/gx/GXS.cpp": [
-        "param:#1 unsigned int"
-      ]
-    },
     "_ZN2GX7LoadTexEPKvjj": {
       "src/engine/particle/Particle_Manager.cpp": [
         "return:unsigned int"
@@ -6207,9 +5926,6 @@
       ],
       "src/unnamed/arm9/0203/func_02033e50.c": [
         "return:int"
-      ],
-      "src/unnamed/ov075/func_ov075_021188b4.c": [
-        "return:void *"
       ]
     },
     "_ZN3G2S12GetBG1ScrPtrEv": {
@@ -6280,12 +5996,6 @@
       ],
       "src/unnamed/arm9/0200/func_0200f220.c": [
         "return:char *"
-      ],
-      "src/unnamed/ov075/func_ov075_02118378.c": [
-        "return:void *"
-      ],
-      "src/unnamed/ov075/func_ov075_021188b4.c": [
-        "return:void *"
       ],
       "src/_ZN10dScEntry_c17EnterCourseSelectEv.cpp": [
         "return:void *"
@@ -6363,94 +6073,6 @@
         "return:char *"
       ]
     },
-    "_ZN3G2x13SetBlendAlphaEPVttttj": {
-      "src/game/actors/d_a_demo.cpp": [
-        "param:#1 volatile void *",
-        "param:#4 int",
-        "param:#5 int"
-      ],
-      "src/minigames/d_mg3d_esp_anim_set.cpp": [
-        "param:#2 int",
-        "param:#3 int",
-        "param:#4 int",
-        "param:#5 int"
-      ],
-      "src/minigames/d_s_mg_amida.cpp": [
-        "param:#5 unsigned short"
-      ],
-      "src/minigames/d_s_mg_curling.cpp": [
-        "param:#5 unsigned short"
-      ],
-      "src/minigames/d_s_mg_slots.cpp": [
-        "param:#5 unsigned short"
-      ],
-      "src/minigames/d_s_mg_smartball.cpp": [
-        "param:#1 volatile void *",
-        "param:#5 unsigned short"
-      ],
-      "src/minigames/d_s_mg_teresa.cpp": [
-        "param:#2 int",
-        "param:#3 int",
-        "param:#4 int",
-        "param:#5 int"
-      ],
-      "src/minigames/d_s_mg_trampoline2.cpp": [
-        "param:#1 volatile void *",
-        "param:#5 unsigned short"
-      ],
-      "src/ui/hud/d_map.cpp": [
-        "param:#5 unsigned short"
-      ],
-      "src/unnamed/ov007/func_ov007_020bd648.cpp": [
-        "param:#5 unsigned short"
-      ],
-      "src/unnamed/ov007/func_ov007_020c86c4.c": [
-        "param:#1 volatile void *",
-        "param:#2 int",
-        "param:#3 int",
-        "param:#4 int",
-        "param:#5 int"
-      ],
-      "src/unnamed/ov075/func_ov075_02118378.c": [
-        "param:#1 volatile void *",
-        "param:#5 unsigned short"
-      ]
-    },
-    "_ZN3G2x18SetBlendBrightnessEPVtts": {
-      "src/game/stages/d_s_stage_methods.cpp": [
-        "param:#2 int"
-      ],
-      "src/runtime/graphics/fader/d_fader.cpp": [
-        "param:#3 int"
-      ],
-      "src/runtime/graphics/fader/d_wipe.cpp": [
-        "param:#3 int"
-      ],
-      "src/unnamed/ov007/func_ov007_020c86c4.c": [
-        "param:#2 int",
-        "param:#3 int"
-      ],
-      "src/unnamed/ov075/func_ov075_021173a8.c": [
-        "param:#3 unsigned short"
-      ],
-      "src/unnamed/ov075/func_ov075_02117ac4.c": [
-        "arity:4"
-      ],
-      "src/unnamed/ov075/func_ov075_02119d3c.c": [
-        "arity:4"
-      ],
-      "src/game/stages/d_s_entry_methods.cpp": [
-        "arity:4"
-      ],
-      "src/Message.cpp": [
-        "param:#2 int",
-        "param:#3 int"
-      ],
-      "src/Message3.cpp": [
-        "param:#2 int",
-        "param:#3 int"
-      ]
-    },
     "_ZN3G3X13SetClearColorEtiiib": {
       "include/decl_common.h": [
         "param:#5 int"
@@ -6458,42 +6080,8 @@
       "src/unnamed/ov007/func_ov007_020b6c54.cpp": [
         "param:#5 int"
       ],
-      "src/unnamed/ov007/func_ov007_020bcf90.c": [
-        "param:#1 int",
-        "param:#5 int"
-      ],
       "src/engine/model/Model4.cpp": [
         "param:#5 int"
-      ]
-    },
-    "_ZN3G3X6SetFogEbiii": {
-      "include/decl_common.h": [
-        "param:#1 int"
-      ],
-      "src/game/stages/d_s_stage_methods.cpp": [
-        "param:#1 int"
-      ],
-      "src/minigames/d_mg3d_esp_anim_set.cpp": [
-        "param:#1 int"
-      ]
-    },
-    "_ZN3G3i13PerspectiveW_E5Fix12IiES1_S1_S1_S1_S1_bP9Matrix4x3": {
-      "src/engine/view/d_camera.cpp": [
-        "param:#7 bool",
-        "param:#8 Matrix4x3 *"
-      ],
-      "src/func_ov007_020c0078.c": [
-        "param:#8 Matrix4x3 *"
-      ],
-      "src/game/stages/d_ent_obj.cpp": [
-        "param:#7 bool",
-        "param:#8 Matrix4x3 *"
-      ],
-      "src/minigames/unit020bfec0.cpp": [
-        "return:int"
-      ],
-      "src/unnamed/ov007/func_ov007_020b2160.c": [
-        "param:#8 Matrix4x3 *"
       ]
     },
     "_ZN3G3i7LookAt_EPK7Vector3S2_S2_bP9Matrix4x3": {
@@ -6506,15 +6094,6 @@
       "src/minigames/unit020bfec0.cpp": [
         "param:#4 int",
         "return:int"
-      ],
-      "src/unnamed/ov007/func_ov007_020b1fa4.c": [
-        "param:#4 int"
-      ],
-      "src/unnamed/ov007/func_ov007_020b20e8.c": [
-        "param:#4 int"
-      ],
-      "src/unnamed/ov007/func_ov007_020b2160.c": [
-        "param:#4 int"
       ]
     },
     "_ZN3GXS10LoadBGPlttEPKvjj": {
@@ -6529,27 +6108,27 @@
       "src/unnamed/arm9/0201/func_0201a054.c": [
         "return:void"
       ],
-      "src/unnamed/arm9/0204/func_0204175c.c": [
+      "src/unnamed/arm9/0204/func_0204175c.cpp": [
         "return:void"
       ],
-      "src/unnamed/arm9/0205/func_02059788.c": [
+      "src/unnamed/arm9/0205/func_02059788.cpp": [
         "return:void"
       ],
-      "src/unnamed/arm9/0205/func_02059c18.c": [
+      "src/unnamed/arm9/0205/func_02059c18.cpp": [
         "return:void"
       ],
       "src/unnamed/arm9/0205/func_0205a358.cpp": [
         "return:void"
       ],
-      "src/unnamed/arm9/0206/func_02060b64.c": [
+      "src/unnamed/arm9/0206/func_02060b64.cpp": [
         "return:void"
       ]
     },
     "_ZN3IRQ10RestoreAllEj": {
-      "src/unnamed/arm9/0205/func_02057198.c": [
+      "src/unnamed/arm9/0205/func_02057198.cpp": [
         "return:void"
       ],
-      "src/unnamed/arm9/0205/func_02057228.c": [
+      "src/unnamed/arm9/0205/func_02057228.cpp": [
         "return:void"
       ]
     },
@@ -6560,10 +6139,10 @@
       "src/unnamed/arm9/0201/func_0201a054.c": [
         "return:void"
       ],
-      "src/unnamed/arm9/0205/func_02059834.c": [
+      "src/unnamed/arm9/0205/func_02059834.cpp": [
         "return:void"
       ],
-      "src/unnamed/arm9/0205/func_02059bc0.c": [
+      "src/unnamed/arm9/0205/func_02059bc0.cpp": [
         "return:void"
       ],
       "src/unnamed/arm9/0205/func_02059cb4.c": [
@@ -6572,7 +6151,7 @@
       "src/unnamed/arm9/0205/func_0205a21c.c": [
         "return:void"
       ],
-      "src/unnamed/arm9/0206/func_02060cac.c": [
+      "src/unnamed/arm9/0206/func_02060cac.cpp": [
         "return:void"
       ]
     },
@@ -6588,7 +6167,7 @@
       "src/unnamed/arm9/0201/func_0201a4e4.c": [
         "param:#2 void (*)(void)"
       ],
-      "src/unnamed/arm9/0205/func_02059788.c": [
+      "src/unnamed/arm9/0205/func_02059788.cpp": [
         "param:#2 void (*)(void)"
       ],
       "src/unnamed/arm9/0205/func_0205a21c.c": [
@@ -6597,7 +6176,7 @@
       "src/unnamed/arm9/0205/func_0205a358.cpp": [
         "param:#2 void (*)(void)"
       ],
-      "src/unnamed/arm9/0206/func_02060b64.c": [
+      "src/unnamed/arm9/0206/func_02060b64.cpp": [
         "param:#2 void (*)(void)"
       ],
       "src/IRQ2.cpp": [
@@ -6608,10 +6187,10 @@
       "src/func_0205a290.c": [
         "return:void"
       ],
-      "src/unnamed/arm9/0206/func_02060b64.c": [
+      "src/unnamed/arm9/0206/func_02060b64.cpp": [
         "return:void"
       ],
-      "src/unnamed/arm9/0206/func_02060cac.c": [
+      "src/unnamed/arm9/0206/func_02060cac.cpp": [
         "return:void"
       ]
     },
@@ -6619,15 +6198,15 @@
       "src/unnamed/arm9/0201/func_0201a054.c": [
         "return:void"
       ],
-      "src/unnamed/arm9/0205/func_02057e34.c": [
+      "src/unnamed/arm9/0205/func_02057e34.cpp": [
         "return:void"
       ]
     },
     "_ZN3IRQ7DisableEv": {
-      "src/Crash.c": [
+      "src/Crash.cpp": [
         "return:void"
       ],
-      "src/unnamed/arm9/0201/func_02019f10.c": [
+      "src/unnamed/arm9/0201/func_02019f10.cpp": [
         "return:void"
       ],
       "src/unnamed/arm9/0204/func_02040c34.c": [
@@ -6636,10 +6215,10 @@
       "src/unnamed/arm9/0205/func_020581a8.cpp": [
         "return:void"
       ],
-      "src/unnamed/arm9/0205/func_02059040.c": [
+      "src/unnamed/arm9/0205/func_02059040.cpp": [
         "return:int"
       ],
-      "src/unnamed/arm9/0205/func_02059950.c": [
+      "src/unnamed/arm9/0205/func_02059950.cpp": [
         "return:int"
       ],
       "src/unnamed/arm9/0205/func_0205a358.cpp": [
@@ -6648,130 +6227,130 @@
       "src/unnamed/arm9/0205/func_0205c528.cpp": [
         "return:int"
       ],
-      "src/unnamed/arm9/0205/func_0205c864.c": [
+      "src/unnamed/arm9/0205/func_0205c864.cpp": [
         "return:int"
       ],
-      "src/unnamed/arm9/0205/func_0205caa8.c": [
+      "src/unnamed/arm9/0205/func_0205caa8.cpp": [
         "return:int"
       ],
-      "src/unnamed/arm9/0206/func_02060b64.c": [
+      "src/unnamed/arm9/0206/func_02060b64.cpp": [
         "return:int"
       ],
-      "src/unnamed/arm9/0206/func_02061c88.c": [
+      "src/unnamed/arm9/0206/func_02061c88.cpp": [
         "return:int"
       ],
-      "src/unnamed/arm9/0206/func_02061ce4.c": [
+      "src/unnamed/arm9/0206/func_02061ce4.cpp": [
         "return:int"
       ],
-      "src/unnamed/arm9/0206/func_02065170.c": [
+      "src/unnamed/arm9/0206/func_02065170.cpp": [
         "return:int"
       ],
-      "src/unnamed/arm9/0206/func_020657fc.c": [
+      "src/unnamed/arm9/0206/func_020657fc.cpp": [
         "return:int"
       ],
-      "src/unnamed/arm9/0206/func_02065af0.c": [
+      "src/unnamed/arm9/0206/func_02065af0.cpp": [
         "return:int"
       ],
       "src/unnamed/arm9/0206/func_0206703c.cpp": [
         "return:int"
       ],
-      "src/unnamed/arm9/0206/func_02068e4c.c": [
+      "src/unnamed/arm9/0206/func_02068e4c.cpp": [
         "return:int"
       ],
-      "src/unnamed/arm9/0206/func_0206a3a4.c": [
+      "src/unnamed/arm9/0206/func_0206a3a4.cpp": [
         "return:int"
       ]
     },
     "_ZN3IRQ7RestoreEj": {
-      "src/DMAStartTransfer.c": [
+      "src/DMAStartTransfer.cpp": [
         "return:void"
       ],
-      "src/DMAStartTransferFB.c": [
+      "src/DMAStartTransferFB.cpp": [
         "return:void"
       ],
-      "src/unnamed/arm9/0201/func_0201a96c.c": [
+      "src/unnamed/arm9/0201/func_0201a96c.cpp": [
         "return:void"
       ],
-      "src/unnamed/arm9/0204/func_02040a5c.c": [
+      "src/unnamed/arm9/0204/func_02040a5c.cpp": [
         "return:void"
       ],
-      "src/unnamed/arm9/0204/func_02040aa4.c": [
+      "src/unnamed/arm9/0204/func_02040aa4.cpp": [
         "return:void"
       ],
       "src/unnamed/arm9/0204/func_02040c34.c": [
         "param:#1 int",
         "return:void"
       ],
-      "src/unnamed/arm9/0204/func_02041224.c": [
+      "src/unnamed/arm9/0204/func_02041224.cpp": [
         "return:void"
       ],
-      "src/unnamed/arm9/0204/func_020412f0.c": [
+      "src/unnamed/arm9/0204/func_020412f0.cpp": [
         "return:void"
       ],
-      "src/unnamed/arm9/0204/func_0204175c.c": [
+      "src/unnamed/arm9/0204/func_0204175c.cpp": [
         "return:void"
       ],
-      "src/unnamed/arm9/0204/func_02041a94.c": [
+      "src/unnamed/arm9/0204/func_02041a94.cpp": [
         "return:void"
       ],
-      "src/unnamed/arm9/0204/func_02041d28.c": [
+      "src/unnamed/arm9/0204/func_02041d28.cpp": [
         "return:void"
       ],
-      "src/unnamed/arm9/0204/func_02042254.c": [
+      "src/unnamed/arm9/0204/func_02042254.cpp": [
         "return:void"
       ],
-      "src/unnamed/arm9/0204/func_020424c0.c": [
+      "src/unnamed/arm9/0204/func_020424c0.cpp": [
         "return:void"
       ],
-      "src/unnamed/arm9/0204/func_02049c48.c": [
+      "src/unnamed/arm9/0204/func_02049c48.cpp": [
         "return:void"
       ],
-      "src/unnamed/arm9/0205/func_02057198.c": [
+      "src/unnamed/arm9/0205/func_02057198.cpp": [
         "return:void"
       ],
-      "src/unnamed/arm9/0205/func_02057228.c": [
+      "src/unnamed/arm9/0205/func_02057228.cpp": [
         "return:void"
       ],
-      "src/unnamed/arm9/0205/func_02057e48.c": [
+      "src/unnamed/arm9/0205/func_02057e48.cpp": [
         "return:void"
       ],
-      "src/unnamed/arm9/0205/func_02057e84.c": [
+      "src/unnamed/arm9/0205/func_02057e84.cpp": [
         "return:void"
       ],
-      "src/unnamed/arm9/0205/func_02058200.c": [
+      "src/unnamed/arm9/0205/func_02058200.cpp": [
         "return:void"
       ],
-      "src/unnamed/arm9/0205/func_0205865c.c": [
+      "src/unnamed/arm9/0205/func_0205865c.cpp": [
         "return:void"
       ],
-      "src/unnamed/arm9/0205/func_02058894.c": [
+      "src/unnamed/arm9/0205/func_02058894.cpp": [
         "return:void"
       ],
-      "src/unnamed/arm9/0205/func_020589d4.c": [
+      "src/unnamed/arm9/0205/func_020589d4.cpp": [
         "return:void"
       ],
-      "src/unnamed/arm9/0205/func_02058a94.c": [
+      "src/unnamed/arm9/0205/func_02058a94.cpp": [
         "return:void"
       ],
-      "src/unnamed/arm9/0205/func_02058b08.c": [
+      "src/unnamed/arm9/0205/func_02058b08.cpp": [
         "return:void"
       ],
-      "src/unnamed/arm9/0205/func_02059040.c": [
+      "src/unnamed/arm9/0205/func_02059040.cpp": [
         "return:void"
       ],
-      "src/unnamed/arm9/0205/func_020590fc.c": [
+      "src/unnamed/arm9/0205/func_020590fc.cpp": [
         "return:void"
       ],
-      "src/unnamed/arm9/0205/func_02059170.c": [
+      "src/unnamed/arm9/0205/func_02059170.cpp": [
         "return:void"
       ],
-      "src/unnamed/arm9/0205/func_02059650.c": [
+      "src/unnamed/arm9/0205/func_02059650.cpp": [
         "return:void"
       ],
-      "src/unnamed/arm9/0205/func_02059950.c": [
+      "src/unnamed/arm9/0205/func_02059950.cpp": [
         "return:void"
       ],
-      "src/unnamed/arm9/0205/func_02059f58.c": [
+      "src/unnamed/arm9/0205/func_02059f58.cpp": [
         "return:void"
       ],
       "src/unnamed/arm9/0205/func_0205a358.cpp": [
@@ -6781,126 +6360,126 @@
       "src/unnamed/arm9/0205/func_0205c528.cpp": [
         "return:void"
       ],
-      "src/unnamed/arm9/0205/func_0205c5e4.c": [
+      "src/unnamed/arm9/0205/func_0205c5e4.cpp": [
         "return:void"
       ],
-      "src/unnamed/arm9/0205/func_0205c7e4.c": [
+      "src/unnamed/arm9/0205/func_0205c7e4.cpp": [
         "return:void"
       ],
-      "src/unnamed/arm9/0205/func_0205c864.c": [
+      "src/unnamed/arm9/0205/func_0205c864.cpp": [
         "return:void"
       ],
-      "src/unnamed/arm9/0205/func_0205caa8.c": [
+      "src/unnamed/arm9/0205/func_0205caa8.cpp": [
         "return:void"
       ],
-      "src/unnamed/arm9/0205/func_0205cbe4.c": [
+      "src/unnamed/arm9/0205/func_0205cbe4.cpp": [
         "return:void"
       ],
-      "src/unnamed/arm9/0205/func_0205cc80.c": [
+      "src/unnamed/arm9/0205/func_0205cc80.cpp": [
         "return:void"
       ],
-      "src/unnamed/arm9/0205/func_0205cd5c.c": [
+      "src/unnamed/arm9/0205/func_0205cd5c.cpp": [
         "return:void"
       ],
       "src/unnamed/arm9/0205/func_0205cdf4.cpp": [
         "return:void"
       ],
-      "src/unnamed/arm9/0205/func_0205cfa4.c": [
+      "src/unnamed/arm9/0205/func_0205cfa4.cpp": [
         "return:void"
       ],
-      "src/unnamed/arm9/0205/func_0205d044.c": [
+      "src/unnamed/arm9/0205/func_0205d044.cpp": [
         "return:void"
       ],
-      "src/unnamed/arm9/0205/func_0205d3e4.c": [
+      "src/unnamed/arm9/0205/func_0205d3e4.cpp": [
         "return:void"
       ],
-      "src/unnamed/arm9/0205/func_0205eb58.c": [
+      "src/unnamed/arm9/0205/func_0205eb58.cpp": [
         "return:void"
       ],
-      "src/unnamed/arm9/0205/func_0205f0e0.c": [
+      "src/unnamed/arm9/0205/func_0205f0e0.cpp": [
         "return:void"
       ],
-      "src/unnamed/arm9/0205/func_0205ff20.c": [
+      "src/unnamed/arm9/0205/func_0205ff20.cpp": [
         "return:void"
       ],
-      "src/unnamed/arm9/0205/func_0205ffd0.c": [
+      "src/unnamed/arm9/0205/func_0205ffd0.cpp": [
         "return:void"
       ],
       "src/unnamed/arm9/0206/func_020602bc.cpp": [
         "return:void"
       ],
-      "src/unnamed/arm9/0206/func_02060484.c": [
+      "src/unnamed/arm9/0206/func_02060484.cpp": [
         "return:void"
       ],
-      "src/unnamed/arm9/0206/func_0206081c.c": [
+      "src/unnamed/arm9/0206/func_0206081c.cpp": [
         "return:void"
       ],
-      "src/unnamed/arm9/0206/func_02060918.c": [
+      "src/unnamed/arm9/0206/func_02060918.cpp": [
         "return:void"
       ],
-      "src/unnamed/arm9/0206/func_02060b64.c": [
+      "src/unnamed/arm9/0206/func_02060b64.cpp": [
         "param:#1 int",
         "return:void"
       ],
-      "src/unnamed/arm9/0206/func_02061c88.c": [
+      "src/unnamed/arm9/0206/func_02061c88.cpp": [
         "param:#1 int",
         "return:void"
       ],
-      "src/unnamed/arm9/0206/func_02061ce4.c": [
+      "src/unnamed/arm9/0206/func_02061ce4.cpp": [
         "param:#1 int",
         "return:void"
       ],
-      "src/unnamed/arm9/0206/func_020627e8.c": [
+      "src/unnamed/arm9/0206/func_020627e8.cpp": [
         "return:void"
       ],
-      "src/unnamed/arm9/0206/func_02062990.c": [
+      "src/unnamed/arm9/0206/func_02062990.cpp": [
         "return:void"
       ],
-      "src/unnamed/arm9/0206/func_02065170.c": [
+      "src/unnamed/arm9/0206/func_02065170.cpp": [
         "return:void"
       ],
-      "src/unnamed/arm9/0206/func_02065234.c": [
+      "src/unnamed/arm9/0206/func_02065234.cpp": [
         "return:void"
       ],
-      "src/unnamed/arm9/0206/func_020652fc.c": [
+      "src/unnamed/arm9/0206/func_020652fc.cpp": [
         "return:void"
       ],
-      "src/unnamed/arm9/0206/func_020657fc.c": [
+      "src/unnamed/arm9/0206/func_020657fc.cpp": [
         "return:void"
       ],
-      "src/unnamed/arm9/0206/func_020658c0.c": [
+      "src/unnamed/arm9/0206/func_020658c0.cpp": [
         "return:void"
       ],
-      "src/unnamed/arm9/0206/func_02065af0.c": [
+      "src/unnamed/arm9/0206/func_02065af0.cpp": [
         "return:void"
       ],
       "src/unnamed/arm9/0206/func_0206703c.cpp": [
         "param:#1 int",
         "return:void"
       ],
-      "src/unnamed/arm9/0206/func_020671b4.c": [
+      "src/unnamed/arm9/0206/func_020671b4.cpp": [
         "return:void"
       ],
-      "src/unnamed/arm9/0206/func_020672a4.c": [
+      "src/unnamed/arm9/0206/func_020672a4.cpp": [
         "return:void"
       ],
-      "src/unnamed/arm9/0206/func_02067928.c": [
+      "src/unnamed/arm9/0206/func_02067928.cpp": [
         "return:void"
       ],
-      "src/unnamed/arm9/0206/func_02068a54.c": [
+      "src/unnamed/arm9/0206/func_02068a54.cpp": [
         "return:void"
       ],
-      "src/unnamed/arm9/0206/func_02068ae8.c": [
+      "src/unnamed/arm9/0206/func_02068ae8.cpp": [
         "return:void"
       ],
-      "src/unnamed/arm9/0206/func_02068e4c.c": [
+      "src/unnamed/arm9/0206/func_02068e4c.cpp": [
         "param:#1 int",
         "return:void"
       ],
-      "src/unnamed/arm9/0206/func_0206a37c.c": [
+      "src/unnamed/arm9/0206/func_0206a37c.cpp": [
         "return:void"
       ],
-      "src/unnamed/arm9/0206/func_0206a3a4.c": [
+      "src/unnamed/arm9/0206/func_0206a3a4.cpp": [
         "return:void"
       ]
     },
@@ -6998,9 +6577,6 @@
       "src/unnamed/ov075/func_ov075_0211621c.c": [
         "return:int *"
       ],
-      "src/unnamed/ov075/func_ov075_02117fe4.c": [
-        "return:int *"
-      ],
       "src/unnamed/ov075/func_ov075_021184b0.cpp": [
         "return:int"
       ],
@@ -7060,7 +6636,7 @@
         "param:#1 int",
         "param:#2 int"
       ],
-      "src/unnamed/arm9/0204/func_020499bc.c": [
+      "src/unnamed/arm9/0204/func_020499bc.cpp": [
         "param:#1 void *"
       ]
     },
@@ -7114,7 +6690,7 @@
       ]
     },
     "_ZN4cstd3divEii": {
-      "src/unnamed/ov007/func_ov007_020cbbb0.c": [
+      "src/unnamed/ov007/func_ov007_020cbbb0.cpp": [
         "return:long long"
       ]
     },
@@ -7181,16 +6757,11 @@
       ]
     },
     "_ZN4cstd6strlenEPKc": {
-      "src/nds_printt.c": [
+      "src/nds_printt.cpp": [
         "return:int"
       ],
       "src/unnamed/arm9/0206/func_0206e4a4.c": [
         "return:int"
-      ]
-    },
-    "_ZN4cstd7strncpyEPcPKcj": {
-      "src/cstd4.cpp": [
-        "return:void"
       ]
     },
     "_ZN4dBgW16UpdatePosAndAngsERS_P8dActor_cR5dBgPiR7Vector3P10Vector3_16S8_": {
@@ -7234,11 +6805,6 @@
       ],
       "src/unnamed/ov007/func_ov007_020bc47c.cpp": [
         "param:#1 BMD_File *"
-      ]
-    },
-    "_ZN17dExtSimpleModel_c17UpdateFileOffsetsER8BMD_File": {
-      "src/unnamed/ov007/func_ov007_020b3f20.c": [
-        "param:#1 void *"
       ]
     },
     "_ZN17dExtSimpleModel_c23AddToCommonModelDataArrER8BMD_File": {
@@ -7477,11 +7043,6 @@
       ],
       "src/game/actors/d_a_kpa.cpp": [
         "param:#3 void *"
-      ]
-    },
-    "_ZN5Sound6Play2DEjj": {
-      "src/engine/sound/Sound.cpp": [
-        "return:unsigned int"
       ]
     },
     "_ZN5Sound6Player19SetPlayableSeqCountEii": {
@@ -8852,14 +8413,6 @@
         "return:Player *"
       ]
     },
-    "_ZN7Message11DisplayTextEt": {
-      "src/game/stages/d_s_stage_methods.cpp": [
-        "param:#1 int"
-      ],
-      "src/Message.cpp": [
-        "param:#1 void *"
-      ]
-    },
     "_ZN7Message16DisplayPauseTextEth": {
       "src/game/stages/d_s_stage_methods.cpp": [
         "param:#1 int"
@@ -8880,18 +8433,7 @@
         "param:#1 int"
       ]
     },
-    "_ZN7Message21DisplayLevelClearTextEta": {
-      "src/game/stages/d_s_stage_methods.cpp": [
-        "param:#1 int",
-        "param:#2 unsigned char"
-      ]
-    },
     "_ZN7Message21DisplaySaveStatusTextEt": {
-      "src/game/stages/d_s_stage_methods.cpp": [
-        "param:#1 int"
-      ]
-    },
-    "_ZN7Message22DisplayOptionsMenuTextEt": {
       "src/game/stages/d_s_stage_methods.cpp": [
         "param:#1 int"
       ]
@@ -8899,19 +8441,6 @@
     "_ZN7Message25DisplayControllerModeTextEt": {
       "src/game/stages/d_s_stage_methods.cpp": [
         "param:#1 int"
-      ]
-    },
-    "_ZN7Message7AddCharEc": {
-      "src/Message.cpp": [
-        "param:#1 int"
-      ],
-      "src/Message2.cpp": [
-        "param:#1 int"
-      ]
-    },
-    "_ZN7Message7DisplayEj": {
-      "src/game/stages/d_s_stage_methods.cpp": [
-        "arity:1"
       ]
     },
     "_ZN7Vector3D1Ev": {
@@ -8936,7 +8465,7 @@
       "src/unnamed/ov071/__sinit_ov071_02122a1c.c": [
         "kind:data"
       ],
-      "src/unnamed/ov102/__sinit_ov102_0214de70.c": [
+      "src/unnamed/ov102/__sinit_ov102_0214de70.cpp": [
         "kind:data"
       ]
     },
@@ -8973,20 +8502,6 @@
       "include/decl_dCcAc_c.h": [
         "arity:0",
         "return:void"
-      ]
-    },
-    "_ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj": {
-      "src/game/actors/d_a_kpa.cpp": [
-        "return:int"
-      ],
-      "src/game/actors/d_a_obj_abuku.cpp": [
-        "return:int"
-      ],
-      "src/game/actors/d_a_propeller_heyho_fire.cpp": [
-        "param:#1 char *"
-      ],
-      "src/game/actors/d_a_yegg.cpp": [
-        "param:#4 unsigned int"
       ]
     },
     "_ZN7dCcAc_cD1Ev": {
@@ -9533,15 +9048,6 @@
         "return:void"
       ]
     },
-    "_ZN8SaveData21SetCoinRecordIfHigherEah": {
-      "src/game/actors/d_a_star.cpp": [
-        "param:#1 int"
-      ],
-      "src/game/stages/d_s_stage_methods.cpp": [
-        "param:#1 int",
-        "param:#2 int"
-      ]
-    },
     "_ZN8SaveData26CountStarsCollectedInLevelEj": {
       "include/decl_SaveData.h": [
         "return:unsigned int"
@@ -9657,83 +9163,10 @@
         "param:#2 const void *"
       ]
     },
-    "_ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs": {
-      "src/_ZN6Player19St_CrazedCrate_MainEv.cpp": [
-        "param:#2 const Vector3 &",
-        "param:#3 unsigned int"
-      ],
-      "src/game/actors/d_a_basabasa.cpp": [
-        "param:#2 Vector3 *",
-        "param:#3 unsigned int"
-      ],
-      "src/game/actors/d_a_btn.cpp": [
-        "param:#2 const void *",
-        "param:#3 unsigned int"
-      ],
-      "src/game/actors/d_a_btt_bk.cpp": [
-        "param:#2 const Vector3 &",
-        "param:#3 unsigned int"
-      ],
-      "src/game/actors/d_a_f_pkn.cpp": [
-        "param:#2 const void *",
-        "param:#3 unsigned int"
-      ],
-      "src/game/actors/d_a_gmch.cpp": [
-        "param:#2 const Vector3 &",
-        "param:#3 unsigned int"
-      ],
-      "src/game/actors/d_a_holhei.cpp": [
-        "param:#2 Vector3 *",
-        "param:#3 unsigned int",
-        "return:int"
-      ],
-      "src/game/actors/d_a_huwa.cpp": [
-        "param:#2 Vector3 *",
-        "param:#3 unsigned int",
-        "return:int"
-      ],
-      "src/game/actors/d_a_jgm.cpp": [
-        "param:#2 const DaJgmVector3Words *",
-        "param:#3 unsigned int"
-      ],
-      "src/game/actors/d_a_menbo.cpp": [
-        "param:#2 const void *",
-        "param:#3 unsigned int"
-      ],
-      "src/game/actors/d_a_obj_block_l.cpp": [
-        "param:#2 const Vector3 &",
-        "param:#3 unsigned int"
-      ],
-      "src/game/actors/d_a_obj_block_s.cpp": [
-        "param:#3 unsigned int"
-      ],
+    "_ZN8dActor_c10SpawnCoinsERK7Vector3iis": {
       "src/game/actors/d_a_obj_pile.cpp": [
         "param:#2 V3",
         "param:#3 unsigned int"
-      ],
-      "src/game/actors/d_a_propeller_heyho.cpp": [
-        "param:#2 const Vector3 &",
-        "param:#3 unsigned int"
-      ],
-      "src/game/actors/d_a_snowman.cpp": [
-        "param:#2 Vector3 *",
-        "param:#3 unsigned int",
-        "return:int"
-      ],
-      "src/game/actors/d_a_spd.cpp": [
-        "param:#2 const void *",
-        "param:#3 unsigned int"
-      ],
-      "src/game/actors/d_a_tgz.cpp": [
-        "param:#3 unsigned int"
-      ],
-      "src/game/actors/d_a_yegg.cpp": [
-        "param:#2 const void *",
-        "param:#3 unsigned int"
-      ],
-      "src/game/actors/d_a_yurei_mucho.cpp": [
-        "param:#3 unsigned int",
-        "return:int"
       ]
     },
     "_ZN8dActor_c11LandingDustEb": {
@@ -9751,12 +9184,6 @@
       ],
       "src/game/actors/d_a_yegg.cpp": [
         "param:#2 signed char *"
-      ]
-    },
-    "_ZN8dActor_c12ReflectAngleE5Fix12IiES1_s": {
-      "src/game/actors/d_a_ibl.cpp": [
-        "param:#4 int",
-        "return:int"
       ]
     },
     "_ZN8dActor_c13ClosestPlayerEv": {
@@ -9779,28 +9206,6 @@
     "_ZN8dActor_c13LandingDustAtER7Vector3b": {
       "src/game/actors/d_a_kpa.cpp": [
         "param:#3 int"
-      ]
-    },
-    "_ZN8dActor_c13SpawnFireballERK7Vector3PK10Vector3_165Fix12IiES7_j": {
-      "include/decl_Actor.h": [
-        "param:#2 const void *",
-        "param:#3 const void *"
-      ],
-      "src/game/actors/d_a_f_pkn.cpp": [
-        "param:#2 const void *",
-        "param:#3 const void *"
-      ],
-      "src/game/actors/d_a_kpa.cpp": [
-        "param:#2 const void *",
-        "param:#3 const void *"
-      ],
-      "src/game/actors/d_a_propeller_heyho.cpp": [
-        "return:void *"
-      ],
-      "src/game/actors/d_a_trs.cpp": [
-        "param:#2 const void *",
-        "param:#3 const void *",
-        "return:char *"
       ]
     },
     "_ZN8dActor_c13SpawnSoundObjEj": {
@@ -9867,67 +9272,30 @@
         "param:#3 int"
       ]
     },
-    "_ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_S5_j": {
-      "src/game/actors/d_a_btn.cpp": [
-        "param:#7 unsigned int"
-      ],
-      "src/game/actors/d_a_btt_bk.cpp": [
-        "param:#7 unsigned int"
-      ],
-      "src/game/actors/d_a_dsn_base.cpp": [
-        "param:#7 unsigned int"
-      ],
-      "src/game/actors/d_a_obj_bk_lift.cpp": [
-        "param:#7 unsigned int"
-      ],
-      "src/game/actors/d_a_obj_block_s.cpp": [
-        "param:#7 unsigned int"
-      ],
-      "src/game/actors/d_a_obj_ct_mecha03.cpp": [
-        "param:#7 unsigned int"
-      ],
-      "src/game/actors/d_a_obj_ct_mecha04.cpp": [
-        "param:#7 unsigned int"
-      ],
-      "src/game/actors/d_a_obj_ct_mecha05.cpp": [
-        "param:#7 unsigned int"
-      ],
-      "src/game/actors/d_a_obj_ct_mecha09.cpp": [
-        "param:#7 unsigned int"
-      ],
+    "_ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x3iiih": {
       "src/game/actors/d_a_obj_ct_mecha11.cpp": [
+        "param:#2 void *",
+        "param:#3 void *",
         "param:#7 unsigned int",
         "return:int"
       ],
       "src/game/actors/d_a_obj_ct_rotate_block.cpp": [
+        "param:#2 void *",
+        "param:#3 void *",
         "param:#7 unsigned int",
         "return:int"
       ],
       "src/game/actors/d_a_obj_fm_battan.cpp": [
+        "param:#2 dExtShadowModel_c *",
+        "param:#3 Matrix4x3 *",
         "param:#7 unsigned int",
         "return:int"
-      ],
-      "src/game/actors/d_a_obj_hatena_block.cpp": [
-        "param:#7 unsigned int"
-      ],
-      "src/game/actors/d_a_obj_path_lift.cpp": [
-        "param:#7 unsigned int"
       ],
       "src/game/actors/d_a_obj_rotate_updown_lift.cpp": [
+        "param:#2 void *",
+        "param:#3 void *",
         "param:#7 unsigned int",
         "return:int"
-      ],
-      "src/game/actors/d_a_obj_tatefuda.cpp": [
-        "param:#7 unsigned int"
-      ],
-      "src/game/actors/d_a_obj_wl_polelift.cpp": [
-        "param:#7 unsigned int"
-      ],
-      "src/game/actors/d_a_obj_yajirusi.cpp": [
-        "param:#7 unsigned int"
-      ],
-      "src/game/actors/d_a_yegg.cpp": [
-        "param:#7 unsigned int"
       ]
     },
     "_ZN8dActor_c18FindExplosionActorER5dCc_c": {
@@ -9944,171 +9312,18 @@
         "param:#2 const Vector3 *"
       ]
     },
-    "_ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j": {
-      "src/game/actors/d_a_bakubaku.cpp": [
-        "param:#6 unsigned int"
-      ],
-      "src/game/actors/d_a_basabasa.cpp": [
-        "param:#6 unsigned int"
-      ],
-      "src/game/actors/d_a_bg_snm_bdy.cpp": [
-        "param:#6 unsigned int"
-      ],
-      "src/game/actors/d_a_bg_snwmn.cpp": [
-        "param:#6 unsigned int"
-      ],
-      "src/game/actors/d_a_bombking.cpp": [
-        "param:#6 unsigned int"
-      ],
-      "src/game/actors/d_a_brq.cpp": [
-        "param:#6 unsigned int"
-      ],
-      "src/game/actors/d_a_btfly.cpp": [
-        "param:#6 unsigned int"
-      ],
-      "src/game/actors/d_a_c_jugem.cpp": [
-        "param:#6 unsigned int"
-      ],
-      "src/game/actors/d_a_chair.cpp": [
-        "param:#6 unsigned int"
-      ],
-      "src/game/actors/d_a_ey_bm.cpp": [
-        "param:#6 unsigned int"
-      ],
-      "src/game/actors/d_a_eykn.cpp": [
-        "param:#6 unsigned int"
-      ],
-      "src/game/actors/d_a_f_pkn_ball.cpp": [
-        "param:#6 unsigned int"
-      ],
-      "src/game/actors/d_a_gmch.cpp": [
-        "param:#6 unsigned int"
-      ],
+    "_ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x3iih": {
       "src/game/actors/d_a_grock.cpp": [
+        "param:#2 void *",
+        "param:#3 void *",
         "param:#6 unsigned int",
         "return:int"
-      ],
-      "src/game/actors/d_a_holhei.cpp": [
-        "param:#2 dExtShadowModel_c &",
-        "param:#3 Matrix4x3 &",
-        "param:#6 unsigned int"
-      ],
-      "src/game/actors/d_a_huwa.cpp": [
-        "param:#2 dExtShadowModel_c &",
-        "param:#3 Matrix4x3 &",
-        "param:#6 unsigned int"
-      ],
-      "src/game/actors/d_a_ibl.cpp": [
-        "param:#6 unsigned int"
-      ],
-      "src/game/actors/d_a_iwante.cpp": [
-        "param:#6 unsigned int"
-      ],
-      "src/game/actors/d_a_jango.cpp": [
-        "param:#6 unsigned int"
-      ],
-      "src/game/actors/d_a_jgm.cpp": [
-        "param:#6 unsigned int"
-      ],
-      "src/game/actors/d_a_king_donketu.cpp": [
-        "param:#6 unsigned int"
-      ],
-      "src/game/actors/d_a_kinopio.cpp": [
-        "param:#6 unsigned int"
-      ],
-      "src/game/actors/d_a_kp_fr.cpp": [
-        "param:#6 unsigned int"
-      ],
-      "src/game/actors/d_a_kpa.cpp": [
-        "param:#6 unsigned int"
-      ],
-      "src/game/actors/d_a_kpa_fire.cpp": [
-        "param:#6 unsigned int"
-      ],
-      "src/game/actors/d_a_krb.cpp": [
-        "param:#6 unsigned int"
-      ],
-      "src/game/actors/d_a_krpa.cpp": [
-        "param:#6 unsigned int"
-      ],
-      "src/game/actors/d_a_kuri_king.cpp": [
-        "param:#6 unsigned int"
-      ],
-      "src/game/actors/d_a_mip.cpp": [
-        "param:#6 unsigned int"
-      ],
-      "src/game/actors/d_a_obj_ct_kaitendai.cpp": [
-        "param:#6 unsigned int"
-      ],
-      "src/game/actors/d_a_obj_key.cpp": [
-        "param:#6 unsigned int"
-      ],
-      "src/game/actors/d_a_obj_mario_cap.cpp": [
-        "param:#6 int"
       ],
       "src/game/actors/d_a_obj_power_up_item.cpp": [
-        "param:#1 char *",
+        "param:#2 dExtShadowModel_c *",
+        "param:#3 Matrix4x3 *",
         "param:#6 unsigned int",
         "return:int"
-      ],
-      "src/game/actors/d_a_ots.cpp": [
-        "param:#6 unsigned int"
-      ],
-      "src/game/actors/d_a_owl.cpp": [
-        "param:#6 unsigned int"
-      ],
-      "src/game/actors/d_a_peach.cpp": [
-        "param:#6 unsigned int"
-      ],
-      "src/game/actors/d_a_pg_bby.cpp": [
-        "param:#6 unsigned int"
-      ],
-      "src/game/actors/d_a_pg_mthr.cpp": [
-        "param:#2 dExtShadowModel_c &",
-        "param:#3 Matrix4x3 &",
-        "param:#6 unsigned int"
-      ],
-      "src/game/actors/d_a_pg_rcer.cpp": [
-        "param:#6 unsigned int"
-      ],
-      "src/game/actors/d_a_propeller_heyho.cpp": [
-        "param:#6 unsigned int"
-      ],
-      "src/game/actors/d_a_s_bird.cpp": [
-        "param:#6 unsigned int",
-        "return:int"
-      ],
-      "src/game/actors/d_a_sanbo.cpp": [
-        "param:#6 unsigned int"
-      ],
-      "src/game/actors/d_a_snowman.cpp": [
-        "param:#6 unsigned int"
-      ],
-      "src/game/actors/d_a_spd.cpp": [
-        "param:#6 unsigned int"
-      ],
-      "src/game/actors/d_a_star.cpp": [
-        "param:#1 char *",
-        "param:#6 unsigned int",
-        "return:int"
-      ],
-      "src/game/actors/d_a_trs.cpp": [
-        "param:#6 unsigned int"
-      ],
-      "src/game/actors/d_a_wanwan.cpp": [
-        "param:#6 unsigned int"
-      ],
-      "src/game/actors/d_a_wanwan2.cpp": [
-        "param:#6 unsigned int"
-      ],
-      "src/game/actors/d_a_yegg.cpp": [
-        "param:#6 unsigned int"
-      ],
-      "src/game/actors/d_a_yurei_mucho.cpp": [
-        "param:#6 unsigned int"
-      ],
-      "src/unnamed/ov002/func_ov002_020e444c.c": [
-        "param:#6 unsigned int"
       ]
     },
     "_ZN8dActor_c19MakeVanishLuigiWorkER5dCc_c": {
@@ -10199,6 +9414,9 @@
         "param:#3 const Vector3 &",
         "param:#4 const void *",
         "return:char *"
+      ],
+      "src/unnamed/arm9/0200/func_0200e5fc.c": [
+        "return:void *"
       ]
     },
     "_ZN8dActor_c7FindEggER5dCc_c": {
@@ -10223,17 +9441,6 @@
     "_ZN8dClipper13Func_020150E8ER7Vector35Fix12IiEPh": {
       "src/runtime/actor/d_actor.cpp": [
         "param:#1 char *"
-      ]
-    },
-    "_ZN8dClipper13Func_020156DCEitii": {
-      "src/engine/view/d_camera.cpp": [
-        "param:#3 int"
-      ],
-      "src/minigames/unit020bfec0.cpp": [
-        "param:#3 int"
-      ],
-      "src/unnamed/arm9/0200/func_0200af20.c": [
-        "param:#3 int"
       ]
     },
     "_ZN8dFader_c13AdvanceInterpEv": {
@@ -10425,9 +9632,6 @@
       "src/game/actors/d_a_pg_mthr.cpp": [
         "return:dBgPiRaw *"
       ],
-      "src/runtime/actor/d_enemy_base.cpp": [
-        "return:SurfaceInfo *"
-      ],
       "src/unnamed/ov002/func_ov002_020eea84.c": [
         "return:char *"
       ]
@@ -10456,9 +9660,6 @@
       ],
       "src/game/actors/d_a_star.cpp": [
         "return:char *"
-      ],
-      "src/runtime/actor/d_enemy_base.cpp": [
-        "return:SurfaceInfo *"
       ],
       "src/unnamed/ov002/func_ov002_020e2ea0.cpp": [
         "return:dBgPi *"
@@ -10912,7 +10113,7 @@
       ]
     },
     "data_02082158": {
-      "src/unnamed/arm9/0204/func_02041d28.c": [
+      "src/unnamed/arm9/0204/func_02041d28.cpp": [
         "return:int"
       ]
     },
@@ -10933,7 +10134,7 @@
       ]
     },
     "data_02086214": {
-      "src/unnamed/arm9/0205/func_020538b8.c": [
+      "src/unnamed/arm9/0205/func_020538b8.cpp": [
         "return:short []"
       ]
     },
@@ -11139,7 +10340,7 @@
       ]
     },
     "data_02099e6c": {
-      "src/unnamed/arm9/0204/func_02042254.c": [
+      "src/unnamed/arm9/0204/func_02042254.cpp": [
         "return:char []"
       ]
     },
@@ -11237,6 +10438,51 @@
     "func_0203b9b4": {
       "src/game/player/Player.cpp": [
         "linkage:bare extern in a C++ TU"
+      ]
+    },
+    "func_0205b470": {
+      "src/unnamed/arm9/0205/func_0205aed0.cpp": [
+        "param:#1 void *"
+      ]
+    },
+    "func_0205b78c": {
+      "src/engine/sound/SoundEngine.cpp": [
+        "param:#1 struct Node *",
+        "param:#3 struct Node *"
+      ]
+    },
+    "func_0205de9c": {
+      "src/unnamed/arm9/0205/func_0205db88.cpp": [
+        "param:#1 Obj *",
+        "param:#2 void *",
+        "param:#3 void *",
+        "return:unsigned int"
+      ]
+    },
+    "func_0205e904": {
+      "src/unnamed/arm9/0205/func_0205db88.cpp": [
+        "param:#1 unsigned int",
+        "return:unsigned int"
+      ]
+    },
+    "func_0206062c": {
+      "src/unnamed/arm9/0206/func_02060484.cpp": [
+        "return:int"
+      ]
+    },
+    "func_02060a30": {
+      "src/unnamed/arm9/0206/func_02060918.cpp": [
+        "arity:1"
+      ]
+    },
+    "func_02060b64": {
+      "src/unnamed/arm9/0206/func_02060918.cpp": [
+        "param:#1 char *"
+      ]
+    },
+    "func_0206cf98": {
+      "src/unnamed/arm9/0205/func_0205dc7c.cpp": [
+        "return:void"
       ]
     },
     "func_020731dc": {
@@ -11431,7 +10677,7 @@
       "src/minigames/d_s_mg_smartball.cpp": [
         "return:unsigned char []"
       ],
-      "src/unnamed/ov075/func_ov075_02117918.c": [
+      "src/unnamed/ov075/func_ov075_02117918.cpp": [
         "return:unsigned char []"
       ],
       "src/unnamed/ov075/func_ov075_0211919c.c": [
@@ -11456,7 +10702,7 @@
       "src/minigames/d_s_mg_bsc.cpp": [
         "return:unsigned char []"
       ],
-      "src/unnamed/ov075/func_ov075_02117918.c": [
+      "src/unnamed/ov075/func_ov075_02117918.cpp": [
         "return:unsigned char []"
       ],
       "src/unnamed/ov075/func_ov075_02117bc4.c": [
@@ -12588,7 +11834,7 @@
       ]
     },
     "data_020a0f38": {
-      "src/unnamed/arm9/0204/func_0204175c.c": [
+      "src/unnamed/arm9/0204/func_0204175c.cpp": [
         "return:unsigned int"
       ]
     },
@@ -12748,20 +11994,23 @@
       "src/unnamed/arm9/0204/func_020418f0.c": [
         "return:unsigned int []"
       ],
-      "src/unnamed/arm9/0204/func_02041d28.c": [
+      "src/unnamed/arm9/0204/func_02041d28.cpp": [
         "return:int"
       ],
       "src/unnamed/arm9/0204/func_02041e14.c": [
         "return:Globals"
       ],
-      "src/unnamed/arm9/0204/func_02042254.c": [
+      "src/unnamed/arm9/0204/func_02042254.cpp": [
         "return:int"
       ],
-      "src/unnamed/arm9/0204/func_020424c0.c": [
+      "src/unnamed/arm9/0204/func_020424c0.cpp": [
         "return:WorkInfo"
       ]
     },
     "data_020a3fc0": {
+      "src/unnamed/arm9/0204/func_02040a5c.cpp": [
+        "return:UnkStruct_020a3fc0"
+      ],
       "src/unnamed/arm9/0204/func_02040a84.c": [
         "return:int []"
       ]
@@ -12846,6 +12095,9 @@
       ]
     },
     "data_020a4c70": {
+      "src/unnamed/arm9/0204/func_02049c48.cpp": [
+        "return:unsigned short []"
+      ],
       "src/unnamed/arm9/0204/func_02049cd8.c": [
         "return:char []"
       ]
@@ -12861,10 +12113,10 @@
       ]
     },
     "data_020a6134": {
-      "src/unnamed/arm9/0205/func_02057e48.c": [
+      "src/unnamed/arm9/0205/func_02057e48.cpp": [
         "return:IRQState"
       ],
-      "src/unnamed/arm9/0205/func_02057e84.c": [
+      "src/unnamed/arm9/0205/func_02057e84.cpp": [
         "return:ListHead"
       ],
       "src/unnamed/arm9/0205/func_02058308.c": [
@@ -12878,6 +12130,9 @@
       ]
     },
     "data_020a6188": {
+      "src/unnamed/arm9/0205/func_02057e84.cpp": [
+        "return:Node"
+      ],
       "src/unnamed/arm9/0205/func_02058308.c": [
         "return:char []"
       ]
@@ -12893,11 +12148,14 @@
       ]
     },
     "data_020a637c": {
-      "src/unnamed/arm9/0205/func_02059170.c": [
+      "src/unnamed/arm9/0205/func_02059170.cpp": [
         "return:int * []"
       ]
     },
     "data_020a63a0": {
+      "src/unnamed/arm9/0205/func_0205950c.cpp": [
+        "return:MPUFunc"
+      ],
       "src/unnamed/arm9/0205/func_02059578.c": [
         "return:int []"
       ],
@@ -12906,6 +12164,9 @@
       ]
     },
     "data_020a63a4": {
+      "src/unnamed/arm9/0205/func_0205950c.cpp": [
+        "return:unsigned int"
+      ],
       "src/unnamed/arm9/0205/func_02059578.c": [
         "return:int []"
       ]
@@ -12916,24 +12177,30 @@
       ]
     },
     "data_020a63ac": {
-      "src/unnamed/arm9/0205/func_0205950c.c": [
+      "src/unnamed/arm9/0205/func_0205950c.cpp": [
         "return:unsigned int"
       ]
     },
     "data_020a6438": {
+      "src/unnamed/arm9/0205/func_02059650.cpp": [
+        "return:volatile unsigned int []"
+      ],
       "src/unnamed/arm9/0205/func_02059700.c": [
         "return:volatile unsigned long long"
       ],
-      "src/unnamed/arm9/0205/func_02059788.c": [
+      "src/unnamed/arm9/0205/func_02059788.cpp": [
         "return:int"
       ]
     },
     "data_020a6440": {
-      "src/unnamed/arm9/0205/func_02059bc0.c": [
+      "src/unnamed/arm9/0205/func_02059bc0.cpp": [
         "return:volatile unsigned short"
       ]
     },
     "data_020a645c": {
+      "src/unnamed/arm9/01ff/func_01ffdd08.cpp": [
+        "return:volatile unsigned short"
+      ],
       "src/unnamed/arm9/0205/func_02059e04.c": [
         "return:char []"
       ]
@@ -12955,7 +12222,7 @@
       ]
     },
     "data_020a648c": {
-      "src/func_0205b070.c": [
+      "src/func_0205b070.cpp": [
         "return:volatile int"
       ],
       "src/unnamed/arm9/0205/func_0205b358.c": [
@@ -12993,12 +12260,12 @@
       ]
     },
     "data_020a8048": {
-      "src/unnamed/arm9/0205/func_0205cc80.c": [
+      "src/unnamed/arm9/0205/func_0205cc80.cpp": [
         "return:Node *"
       ]
     },
     "data_020a804c": {
-      "src/unnamed/arm9/0205/func_0205cbe4.c": [
+      "src/unnamed/arm9/0205/func_0205cbe4.cpp": [
         "return:Mgr"
       ]
     },
@@ -13025,10 +12292,10 @@
       "src/unnamed/arm9/0205/func_0205edc8.c": [
         "return:unsigned short []"
       ],
-      "src/unnamed/arm9/0205/func_0205f040.c": [
+      "src/unnamed/arm9/0205/func_0205f040.cpp": [
         "return:G_t"
       ],
-      "src/unnamed/arm9/0205/func_0205f0e0.c": [
+      "src/unnamed/arm9/0205/func_0205f0e0.cpp": [
         "return:Glob"
       ],
       "src/unnamed/arm9/0205/func_0205f270.c": [
@@ -13047,7 +12314,7 @@
       "src/unnamed/arm9/0205/func_0205ff08.c": [
         "return:int"
       ],
-      "src/unnamed/arm9/0205/func_0205ff20.c": [
+      "src/unnamed/arm9/0205/func_0205ff20.cpp": [
         "return:unsigned int"
       ]
     },
@@ -13057,10 +12324,10 @@
       ]
     },
     "data_020a8180": {
-      "src/unnamed/arm9/0206/func_020600e0.c": [
+      "src/unnamed/arm9/0206/func_020600e0.cpp": [
         "return:G"
       ],
-      "src/unnamed/arm9/0206/func_02060188.c": [
+      "src/unnamed/arm9/0206/func_02060188.cpp": [
         "return:G"
       ],
       "src/unnamed/arm9/0206/func_02060310.c": [
@@ -13069,10 +12336,10 @@
       "src/unnamed/arm9/0206/func_02060a64.c": [
         "return:CardXferState"
       ],
-      "src/unnamed/arm9/0206/func_02060cac.c": [
+      "src/unnamed/arm9/0206/func_02060cac.cpp": [
         "return:G"
       ],
-      "src/unnamed/arm9/0206/func_02060e38.c": [
+      "src/unnamed/arm9/0206/func_02060e38.cpp": [
         "return:G"
       ],
       "src/unnamed/arm9/0206/func_02060ebc.c": [
@@ -13080,12 +12347,12 @@
       ]
     },
     "data_020a8760": {
-      "src/unnamed/arm9/0206/func_0206002c.c": [
+      "src/unnamed/arm9/0206/func_0206002c.cpp": [
         "return:char"
       ]
     },
     "data_020a8780": {
-      "src/unnamed/arm9/0206/func_02060918.c": [
+      "src/unnamed/arm9/0206/func_02060918.cpp": [
         "return:char"
       ],
       "src/unnamed/arm9/0206/func_02060a30.c": [
@@ -13099,7 +12366,7 @@
       "src/WM_GetSystemWork.c": [
         "return:int"
       ],
-      "src/WM_SendCommand.c": [
+      "src/WM_SendCommand.cpp": [
         "return:Ctx *"
       ],
       "src/WM_SetCallbackTable.c": [
@@ -13108,12 +12375,12 @@
       "src/unnamed/arm9/0206/func_02061674.c": [
         "return:int"
       ],
-      "src/unnamed/arm9/0206/func_020616e8.c": [
+      "src/unnamed/arm9/0206/func_020616e8.cpp": [
         "return:int *"
       ]
     },
     "data_020a89b0": {
-      "src/unnamed/arm9/0206/func_020616e8.c": [
+      "src/unnamed/arm9/0206/func_020616e8.cpp": [
         "return:int"
       ]
     },
@@ -13138,6 +12405,9 @@
       ]
     },
     "data_020a9570": {
+      "src/unnamed/arm9/0206/func_02065af0.cpp": [
+        "return:int"
+      ],
       "src/unnamed/arm9/0206/func_02065b88.c": [
         "return:unsigned char []"
       ]
@@ -13151,7 +12421,7 @@
       ]
     },
     "data_020a9db0": {
-      "src/unnamed/arm9/0206/func_02068e4c.c": [
+      "src/unnamed/arm9/0206/func_02068e4c.cpp": [
         "return:short"
       ]
     },
@@ -13171,7 +12441,7 @@
       "src/unnamed/arm9/0206/func_020688e4.c": [
         "return:unsigned short *"
       ],
-      "src/unnamed/arm9/0206/func_02068e4c.c": [
+      "src/unnamed/arm9/0206/func_02068e4c.cpp": [
         "return:int"
       ]
     },
@@ -13200,13 +12470,13 @@
       "src/unnamed/arm9/0206/func_02067250.c": [
         "return:int *"
       ],
-      "src/unnamed/arm9/0206/func_020672a4.c": [
+      "src/unnamed/arm9/0206/func_020672a4.cpp": [
         "return:SomeObj *"
       ],
       "src/unnamed/arm9/0206/func_02067604.c": [
         "return:void *"
       ],
-      "src/unnamed/arm9/0206/func_02067928.c": [
+      "src/unnamed/arm9/0206/func_02067928.cpp": [
         "return:void *"
       ]
     },
@@ -13222,7 +12492,7 @@
       "src/unnamed/arm9/0206/func_0206a694.c": [
         "return:short"
       ],
-      "src/unnamed/arm9/0206/func_0206a6d0.c": [
+      "src/unnamed/arm9/0206/func_0206a6d0.cpp": [
         "return:unsigned short"
       ]
     },
@@ -13244,7 +12514,7 @@
       "src/unnamed/arm9/0205/func_02058df4.c": [
         "return:char"
       ],
-      "src/unnamed/arm9/0205/func_02059834.c": [
+      "src/unnamed/arm9/0205/func_02059834.cpp": [
         "return:int"
       ],
       "src/IRQ2.cpp": [
@@ -14455,77 +13725,77 @@
       ]
     },
     "data_ov002_02110b50": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.c": [
+      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
         "return:void *"
       ]
     },
     "data_ov002_02110b70": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.c": [
+      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
         "return:void *"
       ]
     },
     "data_ov002_02110b78": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.c": [
+      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
         "return:void *"
       ]
     },
     "data_ov002_02110b98": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.c": [
+      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
         "return:void *"
       ]
     },
     "data_ov002_02110c18": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.c": [
+      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
         "return:void *"
       ]
     },
     "data_ov002_02110e24": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.c": [
+      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
         "return:S16 []"
       ]
     },
     "data_ov002_02110e34": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.c": [
+      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
         "return:S16 []"
       ]
     },
     "data_ov002_02110e4c": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.c": [
+      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
         "return:S16 []"
       ]
     },
     "data_ov002_02110e64": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.c": [
+      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
         "return:S16 []"
       ]
     },
     "data_ov002_02110e7c": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.c": [
+      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
         "return:S16 []"
       ]
     },
     "data_ov002_02110e9c": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.c": [
+      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
         "return:S16 []"
       ]
     },
     "data_ov002_02110ebc": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.c": [
+      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
         "return:S16 []"
       ]
     },
     "data_ov002_02110eec": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.c": [
+      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
         "return:S16 []"
       ]
     },
     "data_ov002_02110f34": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.c": [
+      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
         "return:S16 []"
       ]
     },
     "data_ov002_02110f9c": {
-      "src/unnamed/ov002/__sinit_ov002_02107370.c": [
+      "src/unnamed/ov002/__sinit_ov002_02107370.cpp": [
         "return:S16 []"
       ]
     },
@@ -14811,7 +14081,7 @@
       "src/minigames/d_mg_trmpln2_mario.cpp": [
         "return:int"
       ],
-      "src/unnamed/ov006/__sinit_ov006_0212f6b4.c": [
+      "src/unnamed/ov006/__sinit_ov006_0212f6b4.cpp": [
         "return:int"
       ]
     },
@@ -14923,78 +14193,13 @@
         "return:void * []"
       ]
     },
-    "sTrmpMarioDoubleJump1AnimFile": {
-      "src/unnamed/ov006/__sinit_ov006_0212f6b4.c": [
-        "return:int []"
-      ]
-    },
-    "sTrmpMarioRollJumpAnimFile": {
-      "src/unnamed/ov006/__sinit_ov006_0212f6b4.c": [
-        "return:int []"
-      ]
-    },
-    "sTrmpMarioTurnAnimFile": {
-      "src/unnamed/ov006/__sinit_ov006_0212f6b4.c": [
-        "return:int []"
-      ]
-    },
-    "sTrmpMarioDoubleJump2AnimFile": {
-      "src/unnamed/ov006/__sinit_ov006_0212f6b4.c": [
-        "return:int []"
-      ]
-    },
-    "sTrmpMarioWalkAnimFile": {
-      "src/unnamed/ov006/__sinit_ov006_0212f6b4.c": [
-        "return:int []"
-      ]
-    },
     "sTrmpMarioModelFile": {
-      "src/unnamed/ov006/__sinit_ov006_0212f6b4.c": [
-        "return:int []"
-      ]
-    },
-    "sTrmpMarioJumpEndAnimFile": {
-      "src/unnamed/ov006/__sinit_ov006_0212f6b4.c": [
-        "return:int []"
-      ]
-    },
-    "sTrmpMarioJumpAnimFile": {
-      "src/unnamed/ov006/__sinit_ov006_0212f6b4.c": [
-        "return:int []"
-      ]
-    },
-    "sTrmpMarioTurnEndAnimFile": {
-      "src/unnamed/ov006/__sinit_ov006_0212f6b4.c": [
-        "return:int []"
-      ]
-    },
-    "sTrmpMarioHangUpAnimFile": {
-      "src/unnamed/ov006/__sinit_ov006_0212f6b4.c": [
-        "return:int []"
-      ]
-    },
-    "sTrmpMarioStruggleAnimFile": {
-      "src/unnamed/ov006/__sinit_ov006_0212f6b4.c": [
-        "return:int []"
-      ]
-    },
-    "sTrmpMarioWallJumpAnimFile": {
-      "src/unnamed/ov006/__sinit_ov006_0212f6b4.c": [
-        "return:int []"
-      ]
-    },
-    "sTrmpMarioSdownAnimFile": {
-      "src/unnamed/ov006/__sinit_ov006_0212f6b4.c": [
-        "return:int []"
-      ]
-    },
-    "sTrmpMarioRollJumpEndAnimFile": {
-      "src/unnamed/ov006/__sinit_ov006_0212f6b4.c": [
+      "src/unnamed/ov006/__sinit_ov006_0212f6b4.cpp": [
         "return:int []"
       ]
     },
     "sTrmpGoalSlots": {
-      "src/unnamed/ov006/__sinit_ov006_0212f6b4.c": [
+      "src/unnamed/ov006/__sinit_ov006_0212f6b4.cpp": [
         "return:Vector3"
       ]
     },
@@ -15269,10 +14474,10 @@
       "src/unnamed/ov007/func_ov007_020b2cdc.c": [
         "return:int *"
       ],
-      "src/unnamed/ov007/func_ov007_020b2cf0.c": [
+      "src/unnamed/ov007/func_ov007_020b2cf0.cpp": [
         "return:S *"
       ],
-      "src/unnamed/ov007/func_ov007_020b2e64.c": [
+      "src/unnamed/ov007/func_ov007_020b2e64.cpp": [
         "return:int *"
       ],
       "src/unnamed/ov007/func_ov007_020b30b0.c": [
@@ -15283,7 +14488,7 @@
       ]
     },
     "data_ov007_02103368": {
-      "src/unnamed/ov007/func_ov007_020b3f20.c": [
+      "src/unnamed/ov007/func_ov007_020b3f20.cpp": [
         "return:void * (*)(unsigned short)"
       ]
     },
@@ -15291,12 +14496,12 @@
       "src/unnamed/ov007/func_ov007_020b3edc.cpp": [
         "return:int []"
       ],
-      "src/unnamed/ov007/func_ov007_020b3f20.c": [
+      "src/unnamed/ov007/func_ov007_020b3f20.cpp": [
         "return:void * (*)(void *)"
       ]
     },
     "data_ov007_02103370": {
-      "src/unnamed/ov007/func_ov007_020b3f20.c": [
+      "src/unnamed/ov007/func_ov007_020b3f20.cpp": [
         "return:void * []"
       ]
     },
@@ -15309,7 +14514,7 @@
       "include/decl_common.h": [
         "return:void *"
       ],
-      "src/unnamed/ov007/func_ov007_020ad660.c": [
+      "src/unnamed/ov007/func_ov007_020ad660.cpp": [
         "return:unsigned char []"
       ],
       "src/unnamed/ov007/func_ov007_020ada70.cpp": [
@@ -15327,7 +14532,7 @@
       "src/unnamed/ov007/func_ov007_020ae070.c": [
         "return:unsigned char []"
       ],
-      "src/unnamed/ov007/func_ov007_020ae2d0.c": [
+      "src/unnamed/ov007/func_ov007_020ae2d0.cpp": [
         "return:unsigned char []"
       ],
       "src/unnamed/ov007/func_ov007_020ae558.c": [
@@ -15357,7 +14562,7 @@
       "src/unnamed/ov007/func_ov007_020b0548.c": [
         "return:int"
       ],
-      "src/unnamed/ov007/func_ov007_020b0a20.c": [
+      "src/unnamed/ov007/func_ov007_020b0a20.cpp": [
         "return:Game *"
       ],
       "src/unnamed/ov007/func_ov007_020b10dc.c": [
@@ -15387,10 +14592,10 @@
       "src/unnamed/ov007/func_ov007_020b2728.c": [
         "return:int *"
       ],
-      "src/unnamed/ov007/func_ov007_020b2cf0.c": [
+      "src/unnamed/ov007/func_ov007_020b2cf0.cpp": [
         "return:G2 *"
       ],
-      "src/unnamed/ov007/func_ov007_020b2e64.c": [
+      "src/unnamed/ov007/func_ov007_020b2e64.cpp": [
         "return:int *"
       ],
       "src/unnamed/ov007/func_ov007_020b3e84.c": [
@@ -15408,7 +14613,7 @@
       "src/unnamed/ov007/func_ov007_020b58e4.c": [
         "return:unsigned char []"
       ],
-      "src/unnamed/ov007/func_ov007_020b5bf0.c": [
+      "src/unnamed/ov007/func_ov007_020b5bf0.cpp": [
         "return:unsigned char []"
       ],
       "src/unnamed/ov007/func_ov007_020b5f64.c": [
@@ -15432,10 +14637,10 @@
       "src/unnamed/ov007/func_ov007_020b7090.c": [
         "return:S *"
       ],
-      "src/unnamed/ov007/func_ov007_020ba368.c": [
+      "src/unnamed/ov007/func_ov007_020ba368.cpp": [
         "return:unsigned char []"
       ],
-      "src/unnamed/ov007/func_ov007_020bb4b0.c": [
+      "src/unnamed/ov007/func_ov007_020bb4b0.cpp": [
         "return:unsigned char []"
       ],
       "src/unnamed/ov007/func_ov007_020bca40.c": [
@@ -15450,10 +14655,10 @@
       "src/unnamed/ov007/func_ov007_020be50c.c": [
         "return:int *"
       ],
-      "src/unnamed/ov007/func_ov007_020bed60.c": [
+      "src/unnamed/ov007/func_ov007_020bed60.cpp": [
         "return:int *"
       ],
-      "src/unnamed/ov007/func_ov007_020beeb0.c": [
+      "src/unnamed/ov007/func_ov007_020beeb0.cpp": [
         "return:unsigned char []"
       ],
       "src/unnamed/ov007/func_ov007_020bf304.c": [
@@ -15585,10 +14790,10 @@
       "src/unnamed/ov007/func_ov007_020b9f0c.c": [
         "return:int *"
       ],
-      "src/unnamed/ov007/func_ov007_020b9fc0.c": [
+      "src/unnamed/ov007/func_ov007_020b9fc0.cpp": [
         "return:void *"
       ],
-      "src/unnamed/ov007/func_ov007_020ba368.c": [
+      "src/unnamed/ov007/func_ov007_020ba368.cpp": [
         "return:unsigned char []"
       ],
       "src/unnamed/ov007/func_ov007_020bbd24.cpp": [
@@ -15620,19 +14825,19 @@
       "src/unnamed/ov007/func_ov007_020b9f0c.c": [
         "return:char * *"
       ],
-      "src/unnamed/ov007/func_ov007_020b9fc0.c": [
+      "src/unnamed/ov007/func_ov007_020b9fc0.cpp": [
         "return:void *"
       ],
       "src/unnamed/ov007/func_ov007_020ba2e0.c": [
         "return:G *"
       ],
-      "src/unnamed/ov007/func_ov007_020ba368.c": [
+      "src/unnamed/ov007/func_ov007_020ba368.cpp": [
         "return:unsigned char []"
       ],
-      "src/unnamed/ov007/func_ov007_020bad8c.c": [
+      "src/unnamed/ov007/func_ov007_020bad8c.cpp": [
         "return:unsigned char []"
       ],
-      "src/unnamed/ov007/func_ov007_020bb4b0.c": [
+      "src/unnamed/ov007/func_ov007_020bb4b0.cpp": [
         "return:unsigned char []"
       ],
       "src/unnamed/ov007/func_ov007_020bbd24.cpp": [
@@ -15648,7 +14853,7 @@
       "src/unnamed/ov007/func_ov007_020bda38.c": [
         "return:char *"
       ],
-      "src/unnamed/ov007/func_ov007_020bda8c.c": [
+      "src/unnamed/ov007/func_ov007_020bda8c.cpp": [
         "return:char *"
       ],
       "src/unnamed/ov007/func_ov007_020bdf60.cpp": [
@@ -15659,18 +14864,18 @@
       ]
     },
     "data_ov007_02104bc0": {
-      "src/unnamed/ov007/func_ov007_020be0dc.c": [
+      "src/unnamed/ov007/func_ov007_020be0dc.cpp": [
         "return:char * *"
       ],
       "src/unnamed/ov007/func_ov007_020be47c.c": [
         "return:char *"
       ],
-      "src/unnamed/ov007/func_ov007_020be8b8.c": [
+      "src/unnamed/ov007/func_ov007_020be8b8.cpp": [
         "return:char *"
       ]
     },
     "data_ov007_02104bd4": {
-      "src/unnamed/ov007/func_ov007_020beeb0.c": [
+      "src/unnamed/ov007/func_ov007_020beeb0.cpp": [
         "return:unsigned char []"
       ],
       "src/unnamed/ov007/func_ov007_020bf304.c": [
@@ -15690,14 +14895,11 @@
       "src/unnamed/ov007/func_ov007_020bfaf0.cpp": [
         "return:void *"
       ],
-      "src/unnamed/ov007/func_ov007_020bfbdc.c": [
+      "src/unnamed/ov007/func_ov007_020bfbdc.cpp": [
         "return:void *"
       ]
     },
     "data_ov007_02104bdc": {
-      "src/unnamed/ov007/func_ov007_020c14b8.c": [
-        "return:unsigned int"
-      ],
       "src/unnamed/ov007/func_ov007_020c1804.cpp": [
         "return:int []"
       ],
@@ -15716,9 +14918,6 @@
       ]
     },
     "data_ov007_02104be8": {
-      "src/unnamed/ov007/func_ov007_020c14b8.c": [
-        "return:unsigned int"
-      ],
       "src/unnamed/ov007/func_ov007_020c17f4.cpp": [
         "return:int []"
       ],
@@ -16395,20 +15594,20 @@
       ]
     },
     "data_ov030_02115cf0": {
-      "src/unnamed/ov030/__sinit_ov030_02114924.c": [
-        "return:void *"
+      "src/unnamed/ov030/__sinit_ov030_02114924.cpp": [
+        "return:SharedFilePtr"
       ]
     },
     "data_ov030_02115d00": {
       "src/game/actors/d_a_mky.cpp": [
         "return:SharedFilePtr"
       ],
-      "src/unnamed/ov030/__sinit_ov030_02114924.c": [
+      "src/unnamed/ov030/__sinit_ov030_02114924.cpp": [
         "return:void *"
       ]
     },
     "data_ov030_02115ddc": {
-      "src/unnamed/ov030/__sinit_ov030_02114924.c": [
+      "src/unnamed/ov030/__sinit_ov030_02114924.cpp": [
         "return:void *"
       ]
     },
@@ -16870,27 +16069,27 @@
       ]
     },
     "data_ov062_0211dde8": {
-      "src/unnamed/ov062/__sinit_ov062_0211cf30.c": [
-        "return:void *"
+      "src/unnamed/ov062/__sinit_ov062_0211cf30.cpp": [
+        "return:SharedFilePtr"
       ]
     },
     "data_ov062_0211ddf0": {
-      "src/unnamed/ov062/__sinit_ov062_0211cf30.c": [
+      "src/unnamed/ov062/__sinit_ov062_0211cf30.cpp": [
         "return:void *"
       ]
     },
     "data_ov062_0211de00": {
-      "src/unnamed/ov062/__sinit_ov062_0211cf30.c": [
-        "return:void *"
+      "src/unnamed/ov062/__sinit_ov062_0211cf30.cpp": [
+        "return:SharedFilePtr"
       ]
     },
     "data_ov062_0211de08": {
-      "src/unnamed/ov062/__sinit_ov062_0211cf30.c": [
-        "return:void *"
+      "src/unnamed/ov062/__sinit_ov062_0211cf30.cpp": [
+        "return:SharedFilePtr"
       ]
     },
     "data_ov062_0211df10": {
-      "src/unnamed/ov062/__sinit_ov062_0211cf30.c": [
+      "src/unnamed/ov062/__sinit_ov062_0211cf30.cpp": [
         "return:Vector3"
       ]
     },
@@ -17104,46 +16303,36 @@
         "return:KaitendaiResources []"
       ]
     },
-    "data_ov065_0211d600": {
-      "src/unnamed/ov065/__sinit_ov065_0211c110.c": [
-        "return:S8"
-      ]
-    },
-    "data_ov065_0211d608": {
-      "src/unnamed/ov065/__sinit_ov065_0211c110.c": [
-        "return:S8"
-      ]
-    },
     "data_ov065_0211d610": {
       "src/game/actors/d_a_propeller_heyho_fire.cpp": [
         "return:int []"
       ],
-      "src/unnamed/ov065/__sinit_ov065_0211c110.c": [
+      "src/unnamed/ov065/__sinit_ov065_0211c110.cpp": [
         "return:S8"
       ]
     },
     "data_ov065_0211d618": {
-      "src/unnamed/ov065/__sinit_ov065_0211c110.c": [
+      "src/unnamed/ov065/__sinit_ov065_0211c110.cpp": [
         "return:S8"
       ]
     },
     "data_ov065_0211d650": {
-      "src/unnamed/ov065/__sinit_ov065_0211c110.c": [
+      "src/unnamed/ov065/__sinit_ov065_0211c110.cpp": [
         "return:S8 []"
       ]
     },
     "data_ov065_0211d660": {
-      "src/unnamed/ov065/__sinit_ov065_0211c110.c": [
+      "src/unnamed/ov065/__sinit_ov065_0211c110.cpp": [
         "return:S8 []"
       ]
     },
     "data_ov065_0211d670": {
-      "src/unnamed/ov065/__sinit_ov065_0211c110.c": [
+      "src/unnamed/ov065/__sinit_ov065_0211c110.cpp": [
         "return:S8 []"
       ]
     },
     "data_ov065_0211d680": {
-      "src/unnamed/ov065/__sinit_ov065_0211c110.c": [
+      "src/unnamed/ov065/__sinit_ov065_0211c110.cpp": [
         "return:S8 []"
       ]
     },
@@ -17886,13 +17075,13 @@
       "src/unnamed/ov075/__sinit_ov075_0211bb00.c": [
         "return:char []"
       ],
-      "src/unnamed/ov075/func_ov075_021173a8.c": [
+      "src/unnamed/ov075/func_ov075_021173a8.cpp": [
         "return:int"
       ],
       "src/unnamed/ov075/func_ov075_02117d80.cpp": [
         "return:int"
       ],
-      "src/unnamed/ov075/func_ov075_02118378.c": [
+      "src/unnamed/ov075/func_ov075_02118378.cpp": [
         "return:int"
       ],
       "src/_ZN10dScEntry_c17EnterCourseSelectEv.cpp": [
@@ -18024,11 +17213,6 @@
         "return:V3"
       ]
     },
-    "data_ov077_02127c14": {
-      "src/unnamed/ov077/__sinit_ov077_0212749c.c": [
-        "return:char []"
-      ]
-    },
     "data_ov077_02127c88": {
       "src/unnamed/ov077/__sinit_ov077_021275fc.c": [
         "return:S8"
@@ -18072,71 +17256,6 @@
     "data_ov077_02127d18": {
       "src/unnamed/ov077/__sinit_ov077_021275fc.c": [
         "return:S8 []"
-      ]
-    },
-    "data_ov078_02126ee0": {
-      "src/unnamed/ov078/__sinit_ov078_02126660.c": [
-        "return:void *"
-      ]
-    },
-    "data_ov078_02126ee8": {
-      "src/unnamed/ov078/__sinit_ov078_02126660.c": [
-        "return:void *"
-      ]
-    },
-    "data_ov078_02126ef0": {
-      "src/unnamed/ov078/__sinit_ov078_02126660.c": [
-        "return:void *"
-      ]
-    },
-    "data_ov078_02126ef8": {
-      "src/unnamed/ov078/__sinit_ov078_02126660.c": [
-        "return:void *"
-      ]
-    },
-    "data_ov078_02126f00": {
-      "src/unnamed/ov078/__sinit_ov078_02126660.c": [
-        "return:void *"
-      ]
-    },
-    "data_ov078_02126f08": {
-      "src/unnamed/ov078/__sinit_ov078_02126660.c": [
-        "return:void *"
-      ]
-    },
-    "data_ov078_02126f10": {
-      "src/unnamed/ov078/__sinit_ov078_02126660.c": [
-        "return:void *"
-      ]
-    },
-    "data_ov078_02126f18": {
-      "src/unnamed/ov078/__sinit_ov078_02126660.c": [
-        "return:void *"
-      ]
-    },
-    "data_ov078_02126f20": {
-      "src/unnamed/ov078/__sinit_ov078_02126660.c": [
-        "return:void *"
-      ]
-    },
-    "data_ov078_02126f28": {
-      "src/unnamed/ov078/__sinit_ov078_02126660.c": [
-        "return:void *"
-      ]
-    },
-    "data_ov078_02126f30": {
-      "src/unnamed/ov078/__sinit_ov078_02126660.c": [
-        "return:void *"
-      ]
-    },
-    "data_ov078_02126f38": {
-      "src/unnamed/ov078/__sinit_ov078_02126660.c": [
-        "return:void *"
-      ]
-    },
-    "data_ov078_02126f40": {
-      "src/unnamed/ov078/__sinit_ov078_02126660.c": [
-        "return:void *"
       ]
     },
     "data_ov079_02127ba0": {
@@ -18346,64 +17465,38 @@
       ]
     },
     "data_ov084_02130d9c": {
-      "src/game/actors/d_a_red_bombhei.cpp": [
-        "return:SharedFilePtr"
-      ],
-      "src/unnamed/ov084/__sinit_ov084_02130558.c": [
-        "return:int []"
+      "include/decl_common.h": [
+        "return:void *"
       ]
     },
     "data_ov084_02130da4": {
       "src/game/actors/d_a_red_bombhei.cpp": [
         "return:SharedFilePtr"
       ],
-      "src/unnamed/ov084/__sinit_ov084_02130558.c": [
+      "src/unnamed/ov084/__sinit_ov084_02130558.cpp": [
         "return:int []"
-      ]
-    },
-    "data_ov084_02130df4": {
-      "src/unnamed/ov084/__sinit_ov084_02130654.c": [
-        "return:char []"
       ]
     },
     "data_ov084_02130dfc": {
       "src/game/actors/d_a_f_pkn.cpp": [
         "return:SharedFilePtr"
       ],
-      "src/unnamed/ov084/__sinit_ov084_02130654.c": [
-        "return:char []"
-      ]
-    },
-    "data_ov084_02130e04": {
-      "src/unnamed/ov084/__sinit_ov084_02130654.c": [
+      "src/unnamed/ov084/__sinit_ov084_02130654.cpp": [
         "return:char []"
       ]
     },
     "data_ov084_02130e0c": {
-      "src/game/actors/d_a_pkn.cpp": [
-        "return:PknSharedFile"
-      ],
-      "src/unnamed/ov084/__sinit_ov084_02130654.c": [
-        "return:char []"
-      ]
-    },
-    "data_ov084_02130e14": {
-      "src/unnamed/ov084/__sinit_ov084_02130654.c": [
-        "return:char []"
+      "src/unnamed/ov084/__sinit_ov084_02130654.cpp": [
+        "return:SharedFilePtr"
       ]
     },
     "data_ov084_02130e1c": {
-      "src/unnamed/ov084/__sinit_ov084_02130654.c": [
-        "return:char []"
-      ]
-    },
-    "data_ov084_02130e24": {
-      "src/unnamed/ov084/__sinit_ov084_02130654.c": [
-        "return:char []"
+      "src/unnamed/ov084/__sinit_ov084_02130654.cpp": [
+        "return:SharedFilePtr"
       ]
     },
     "data_ov085_0212fe88": {
-      "src/unnamed/ov085/__sinit_ov085_0212f2a8.c": [
+      "src/unnamed/ov085/__sinit_ov085_0212f2a8.cpp": [
         "return:D"
       ]
     },
@@ -18413,53 +17506,47 @@
       ]
     },
     "data_ov085_02130480": {
-      "src/unnamed/ov085/__sinit_ov085_0212f2a8.c": [
+      "src/unnamed/ov085/__sinit_ov085_0212f2a8.cpp": [
         "return:char []"
       ]
     },
     "data_ov085_02130488": {
-      "src/game/actors/d_a_kinopio.cpp": [
-        "return:SharedFilePtr"
-      ],
-      "src/unnamed/ov085/__sinit_ov085_0212f2a8.c": [
-        "return:char []"
+      "include/decl_common.h": [
+        "return:int []"
       ]
     },
     "data_ov085_02130490": {
-      "src/game/actors/d_a_kinopio.cpp": [
-        "return:SharedFilePtr"
-      ],
-      "src/unnamed/ov085/__sinit_ov085_0212f2a8.c": [
-        "return:char []"
+      "include/decl_common.h": [
+        "return:int []"
       ]
     },
     "data_ov085_021304bc": {
-      "src/unnamed/ov085/__sinit_ov085_0212f3a0.c": [
-        "return:char []"
+      "src/unnamed/ov085/__sinit_ov085_0212f3a0.cpp": [
+        "return:SharedFilePtr"
       ]
     },
     "data_ov085_021304c4": {
-      "src/unnamed/ov085/__sinit_ov085_0212f3a0.c": [
-        "return:char []"
+      "src/unnamed/ov085/__sinit_ov085_0212f3a0.cpp": [
+        "return:SharedFilePtr"
       ]
     },
     "data_ov085_021304d4": {
-      "src/unnamed/ov085/__sinit_ov085_0212f3a0.c": [
-        "return:char []"
+      "src/unnamed/ov085/__sinit_ov085_0212f3a0.cpp": [
+        "return:SharedFilePtr"
       ]
     },
     "data_ov085_021304e4": {
-      "src/unnamed/ov085/__sinit_ov085_0212f3a0.c": [
-        "return:char []"
+      "src/unnamed/ov085/__sinit_ov085_0212f3a0.cpp": [
+        "return:SharedFilePtr"
       ]
     },
     "data_ov085_021304ec": {
-      "src/unnamed/ov085/__sinit_ov085_0212f3a0.c": [
-        "return:char []"
+      "src/unnamed/ov085/__sinit_ov085_0212f3a0.cpp": [
+        "return:SharedFilePtr"
       ]
     },
     "data_ov085_021304f4": {
-      "src/unnamed/ov085/__sinit_ov085_0212f3a0.c": [
+      "src/unnamed/ov085/__sinit_ov085_0212f3a0.cpp": [
         "return:char []"
       ]
     },
@@ -18966,16 +18053,6 @@
         "return:S16 []"
       ]
     },
-    "data_ov102_0214e9c0": {
-      "src/unnamed/ov102/__sinit_ov102_0214de70.c": [
-        "return:int []"
-      ]
-    },
-    "data_ov102_0214e9c8": {
-      "src/unnamed/ov102/__sinit_ov102_0214de70.c": [
-        "return:int []"
-      ]
-    },
     "data_ov102_0214ea48": {
       "include/decl_common.h": [
         "return:char"
@@ -18992,6 +18069,9 @@
       ]
     },
     "func_01ff8000": {
+      "src/unnamed/arm9/0206/func_02060b64.cpp": [
+        "kind:data"
+      ],
       "src/unnamed/arm9/0207/func_020708b4.c": [
         "kind:function"
       ]
@@ -19160,7 +18240,7 @@
       ]
     },
     "func_020091f8": {
-      "src/unnamed/arm9/0200/func_02005110.c": [
+      "src/unnamed/arm9/0200/func_02005110.cpp": [
         "param:#2 void *"
       ],
       "src/unnamed/arm9/0200/func_02009540.c": [
@@ -19334,6 +18414,9 @@
         "return:short"
       ],
       "src/game/actors/d_a_obj_mario_cap.cpp": [
+        "return:short"
+      ],
+      "src/game/actors/d_a_yegg.cpp": [
         "return:short"
       ]
     },
@@ -19573,10 +18656,6 @@
       "src/unnamed/ov075/func_ov075_02117f5c.c": [
         "param:#1 int",
         "return:void"
-      ],
-      "src/unnamed/ov075/func_ov075_02118378.c": [
-        "param:#1 int",
-        "return:void"
       ]
     },
     "func_02012dd0": {
@@ -19713,7 +18792,7 @@
       "src/unnamed/ov006/__sinit_ov006_0212f52c.c": [
         "kind:data"
       ],
-      "src/unnamed/ov006/__sinit_ov006_0212f6b4.c": [
+      "src/unnamed/ov006/__sinit_ov006_0212f6b4.cpp": [
         "arity:0",
         "return:void"
       ],
@@ -19729,7 +18808,7 @@
       "src/unnamed/ov006/__sinit_ov006_0212f52c.c": [
         "return:void"
       ],
-      "src/unnamed/ov006/__sinit_ov006_0212f6b4.c": [
+      "src/unnamed/ov006/__sinit_ov006_0212f6b4.cpp": [
         "param:#2 int",
         "return:void"
       ],
@@ -19780,10 +18859,6 @@
       ],
       "src/unnamed/ov002/__sinit_ov002_02107304.c": [
         "kind:data"
-      ],
-      "src/unnamed/ov002/__sinit_ov002_02107370.c": [
-        "arity:0",
-        "return:void"
       ],
       "src/unnamed/ov006/__sinit_ov006_0212f4c4.c": [
         "arity:0",
@@ -19875,10 +18950,6 @@
       ],
       "src/unnamed/ov018/__sinit_ov018_02112e00.c": [
         "kind:data"
-      ],
-      "src/unnamed/ov019/__sinit_ov019_021127a4.c": [
-        "arity:0",
-        "return:void"
       ],
       "src/unnamed/ov020/__sinit_ov020_0211372c.c": [
         "kind:data"
@@ -19983,10 +19054,6 @@
       "src/unnamed/ov030/__sinit_ov030_021148b8.c": [
         "kind:data"
       ],
-      "src/unnamed/ov030/__sinit_ov030_02114924.c": [
-        "arity:0",
-        "return:void"
-      ],
       "src/unnamed/ov031/__sinit_ov031_02111434.c": [
         "kind:data"
       ],
@@ -20089,10 +19156,6 @@
         "arity:0",
         "return:void"
       ],
-      "src/unnamed/ov062/__sinit_ov062_0211cf30.c": [
-        "arity:0",
-        "return:void"
-      ],
       "src/unnamed/ov062/__sinit_ov062_0211d4a0.c": [
         "arity:0",
         "return:void"
@@ -20138,9 +19201,6 @@
       ],
       "src/unnamed/ov064/__sinit_ov064_0211b698.c": [
         "kind:data"
-      ],
-      "src/unnamed/ov065/__sinit_ov065_0211c110.c": [
-        "return:void"
       ],
       "src/unnamed/ov065/__sinit_ov065_0211c2a8.c": [
         "return:void"
@@ -20227,10 +19287,6 @@
       "src/unnamed/ov077/__sinit_ov077_021275fc.c": [
         "return:void"
       ],
-      "src/unnamed/ov078/__sinit_ov078_02126660.c": [
-        "arity:0",
-        "return:void"
-      ],
       "src/unnamed/ov079/__sinit_ov079_02127618.c": [
         "arity:0",
         "return:void"
@@ -20259,22 +19315,6 @@
         "kind:data"
       ],
       "src/unnamed/ov084/__sinit_ov084_0213035c.c": [
-        "arity:0",
-        "return:void"
-      ],
-      "src/unnamed/ov084/__sinit_ov084_02130558.c": [
-        "arity:0",
-        "return:void"
-      ],
-      "src/unnamed/ov084/__sinit_ov084_02130654.c": [
-        "arity:0",
-        "return:void"
-      ],
-      "src/unnamed/ov085/__sinit_ov085_0212f2a8.c": [
-        "arity:0",
-        "return:void"
-      ],
-      "src/unnamed/ov085/__sinit_ov085_0212f3a0.c": [
         "arity:0",
         "return:void"
       ],
@@ -20412,10 +19452,6 @@
       "src/unnamed/ov002/__sinit_ov002_02107304.c": [
         "return:void"
       ],
-      "src/unnamed/ov002/__sinit_ov002_02107370.c": [
-        "param:#2 int",
-        "return:int"
-      ],
       "src/unnamed/ov006/__sinit_ov006_0212f4c4.c": [
         "return:int"
       ],
@@ -20504,10 +19540,6 @@
       ],
       "src/unnamed/ov018/__sinit_ov018_02112e00.c": [
         "return:void"
-      ],
-      "src/unnamed/ov019/__sinit_ov019_021127a4.c": [
-        "param:#2 int",
-        "return:int"
       ],
       "src/unnamed/ov020/__sinit_ov020_0211372c.c": [
         "param:#2 int",
@@ -20615,10 +19647,6 @@
       "src/unnamed/ov030/__sinit_ov030_021148b8.c": [
         "return:void"
       ],
-      "src/unnamed/ov030/__sinit_ov030_02114924.c": [
-        "param:#2 int",
-        "return:int"
-      ],
       "src/unnamed/ov031/__sinit_ov031_02111434.c": [
         "return:void"
       ],
@@ -20725,10 +19753,6 @@
         "param:#2 int",
         "return:int"
       ],
-      "src/unnamed/ov062/__sinit_ov062_0211cf30.c": [
-        "param:#2 int",
-        "return:int"
-      ],
       "src/unnamed/ov062/__sinit_ov062_0211d4a0.c": [
         "return:int"
       ],
@@ -20769,9 +19793,6 @@
         "return:void"
       ],
       "src/unnamed/ov064/__sinit_ov064_0211b698.c": [
-        "return:void"
-      ],
-      "src/unnamed/ov065/__sinit_ov065_0211c110.c": [
         "return:void"
       ],
       "src/unnamed/ov065/__sinit_ov065_0211c2a8.c": [
@@ -20853,10 +19874,6 @@
       "src/unnamed/ov077/__sinit_ov077_021275fc.c": [
         "return:void"
       ],
-      "src/unnamed/ov078/__sinit_ov078_02126660.c": [
-        "param:#2 int",
-        "return:int"
-      ],
       "src/unnamed/ov079/__sinit_ov079_02127618.c": [
         "param:#2 int",
         "return:int"
@@ -20885,18 +19902,6 @@
         "return:void"
       ],
       "src/unnamed/ov084/__sinit_ov084_0213035c.c": [
-        "return:int"
-      ],
-      "src/unnamed/ov084/__sinit_ov084_02130558.c": [
-        "return:void"
-      ],
-      "src/unnamed/ov084/__sinit_ov084_02130654.c": [
-        "return:int"
-      ],
-      "src/unnamed/ov085/__sinit_ov085_0212f2a8.c": [
-        "return:int"
-      ],
-      "src/unnamed/ov085/__sinit_ov085_0212f3a0.c": [
         "return:int"
       ],
       "src/unnamed/ov085/__sinit_ov085_0212f5ec.c": [
@@ -21382,7 +20387,7 @@
       "src/unnamed/arm9/0201/func_0201834c.c": [
         "param:#1 void *"
       ],
-      "src/unnamed/arm9/0201/func_020184e0.c": [
+      "src/unnamed/arm9/0201/func_020184e0.cpp": [
         "param:#1 unsigned int"
       ]
     },
@@ -21448,7 +20453,7 @@
         "param:#2 void *",
         "param:#3 unsigned int"
       ],
-      "src/unnamed/arm9/0201/func_020184e0.c": [
+      "src/unnamed/arm9/0201/func_020184e0.cpp": [
         "param:#1 void *",
         "param:#2 unsigned int",
         "param:#3 unsigned int"
@@ -21505,7 +20510,7 @@
       ]
     },
     "func_0201a03c": {
-      "src/Crash.c": [
+      "src/Crash.cpp": [
         "arity:2"
       ],
       "src/main.c": [
@@ -21552,7 +20557,7 @@
       ]
     },
     "func_0201a8b4": {
-      "src/unnamed/arm9/0201/func_0201a96c.c": [
+      "src/unnamed/arm9/0201/func_0201a96c.cpp": [
         "arity:0"
       ]
     },
@@ -21607,7 +20612,7 @@
         "param:#3 unsigned int",
         "param:#5 void *"
       ],
-      "src/unnamed/arm9/0201/func_0201a96c.c": [
+      "src/unnamed/arm9/0201/func_0201a96c.cpp": [
         "param:#2 unsigned int",
         "param:#3 unsigned int",
         "param:#5 Struct_0201a96c *",
@@ -21615,7 +20620,7 @@
       ]
     },
     "func_0201aaa4": {
-      "src/unnamed/arm9/0201/func_0201a96c.c": [
+      "src/unnamed/arm9/0201/func_0201a96c.cpp": [
         "arity:1"
       ],
       "src/unnamed/arm9/0201/func_0201aab0.c": [
@@ -21715,7 +20720,7 @@
       ]
     },
     "func_02020820": {
-      "src/unnamed/ov075/func_ov075_021188b4.c": [
+      "src/unnamed/ov075/func_ov075_021188b4.cpp": [
         "param:#5 int",
         "param:#6 int"
       ]
@@ -21829,7 +20834,7 @@
       "src/unnamed/ov075/func_ov075_02116ebc.c": [
         "param:#3 int"
       ],
-      "src/unnamed/ov075/func_ov075_02117ac4.c": [
+      "src/unnamed/ov075/func_ov075_02117ac4.cpp": [
         "param:#3 int"
       ],
       "src/unnamed/ov075/func_ov075_02117f5c.c": [
@@ -21852,7 +20857,7 @@
       "src/unnamed/ov075/func_ov075_0211705c.cpp": [
         "return:int"
       ],
-      "src/unnamed/ov075/func_ov075_021173a8.c": [
+      "src/unnamed/ov075/func_ov075_021173a8.cpp": [
         "return:int"
       ]
     },
@@ -22306,7 +21311,7 @@
       ]
     },
     "func_0203cebc": {
-      "src/Quaternion_FromVector3.c": [
+      "src/Quaternion_FromVector3.cpp": [
         "param:#1 Vec3 *",
         "param:#2 Vec3 *",
         "param:#3 Vec3 *",
@@ -22586,7 +21591,7 @@
       ]
     },
     "func_02041a00": {
-      "src/unnamed/arm9/0204/func_02040f30.c": [
+      "src/unnamed/arm9/0204/func_02040f30.cpp": [
         "param:#1 int"
       ],
       "src/unnamed/arm9/0204/func_02042668.c": [
@@ -22594,22 +21599,22 @@
       ]
     },
     "func_02041c2c": {
-      "src/unnamed/arm9/0204/func_020412f0.c": [
+      "src/unnamed/arm9/0204/func_020412f0.cpp": [
         "return:void *"
       ]
     },
     "func_02041c64": {
-      "src/unnamed/arm9/0204/func_020412f0.c": [
+      "src/unnamed/arm9/0204/func_020412f0.cpp": [
         "return:void *"
       ]
     },
     "func_02041ce0": {
-      "src/unnamed/arm9/0204/func_020412f0.c": [
+      "src/unnamed/arm9/0204/func_020412f0.cpp": [
         "return:void *"
       ]
     },
     "func_02041d28": {
-      "src/unnamed/arm9/0204/func_02042254.c": [
+      "src/unnamed/arm9/0204/func_02042254.cpp": [
         "arity:3"
       ]
     },
@@ -22673,7 +21678,6 @@
     "func_02043f4c": {
       "include/decl_common.h": [
         "param:#1 int *",
-        "param:#2 unsigned int",
         "param:#3 int",
         "return:int *"
       ]
@@ -23100,7 +22104,7 @@
       ]
     },
     "func_0204dcc0": {
-      "src/unnamed/arm9/0204/func_0204dab4.c": [
+      "src/unnamed/arm9/0204/func_0204dab4.cpp": [
         "param:#2 struct Entry *"
       ]
     },
@@ -23128,7 +22132,7 @@
       "src/unnamed/ov007/func_ov007_020bda38.c": [
         "param:#1 char *"
       ],
-      "src/unnamed/ov007/func_ov007_020bdbcc.c": [
+      "src/unnamed/ov007/func_ov007_020bdbcc.cpp": [
         "param:#1 int *"
       ]
     },
@@ -23160,7 +22164,7 @@
       "src/unnamed/arm9/0204/func_02048c30.c": [
         "param:#2 int"
       ],
-      "src/unnamed/ov007/func_ov007_020bdbcc.c": [
+      "src/unnamed/ov007/func_ov007_020bdbcc.cpp": [
         "param:#1 int *",
         "param:#2 int"
       ]
@@ -23433,7 +22437,7 @@
       ]
     },
     "func_02057014": {
-      "src/unnamed/arm9/0206/func_0206a37c.c": [
+      "src/unnamed/arm9/0206/func_0206a37c.cpp": [
         "arity:1"
       ],
       "src/unnamed/arm9/0206/func_0206ce90.c": [
@@ -23469,7 +22473,7 @@
       ]
     },
     "func_02057158": {
-      "src/unnamed/arm9/0206/func_0206a3a4.c": [
+      "src/unnamed/arm9/0206/func_0206a3a4.cpp": [
         "param:#1 void *"
       ],
       "src/unnamed/arm9/0206/func_0206cee0.c": [
@@ -23589,12 +22593,12 @@
       ]
     },
     "func_02058048": {
-      "src/unnamed/arm9/0206/func_0206081c.c": [
+      "src/unnamed/arm9/0206/func_0206081c.cpp": [
         "param:#1 char *"
       ]
     },
     "func_02058200": {
-      "src/unnamed/arm9/0201/func_02019f10.c": [
+      "src/unnamed/arm9/0201/func_02019f10.cpp": [
         "param:#2 void *",
         "param:#4 void *"
       ],
@@ -23603,39 +22607,39 @@
         "param:#3 void *",
         "param:#4 void *"
       ],
-      "src/unnamed/arm9/0206/func_0206002c.c": [
+      "src/unnamed/arm9/0206/func_0206002c.cpp": [
         "param:#2 void *",
         "param:#4 void *"
       ]
     },
     "func_02058568": {
-      "src/unnamed/arm9/0205/func_02058200.c": [
+      "src/unnamed/arm9/0205/func_02058200.cpp": [
         "param:#2 int",
         "param:#3 int"
       ]
     },
     "func_020587e4": {
-      "src/WM_SendCommand.c": [
+      "src/WM_SendCommand.cpp": [
         "param:#2 void * *",
         "return:void"
       ]
     },
     "func_02058894": {
-      "src/WM_SendCommand.c": [
+      "src/WM_SendCommand.cpp": [
         "param:#2 void *",
         "return:void"
       ],
-      "src/unnamed/arm9/0206/func_020616e8.c": [
+      "src/unnamed/arm9/0206/func_020616e8.cpp": [
         "param:#2 void *"
       ]
     },
     "func_02058940": {
-      "src/unnamed/arm9/0206/func_020616e8.c": [
+      "src/unnamed/arm9/0206/func_020616e8.cpp": [
         "param:#2 int *"
       ]
     },
     "func_02058988": {
-      "src/unnamed/arm9/0205/func_02058a94.c": [
+      "src/unnamed/arm9/0205/func_02058a94.cpp": [
         "param:#2 char *"
       ]
     },
@@ -23660,7 +22664,7 @@
       ]
     },
     "func_02058df4": {
-      "src/unnamed/arm9/0205/func_02058ec8.c": [
+      "src/unnamed/arm9/0205/func_02058ec8.cpp": [
         "param:#1 int",
         "return:unsigned int"
       ]
@@ -23691,7 +22695,7 @@
       ]
     },
     "func_0205938c": {
-      "src/unnamed/arm9/0205/func_02059170.c": [
+      "src/unnamed/arm9/0205/func_02059170.cpp": [
         "return:void *"
       ]
     },
@@ -23701,7 +22705,7 @@
       ]
     },
     "func_02059624": {
-      "src/unnamed/arm9/0205/func_02059bc0.c": [
+      "src/unnamed/arm9/0205/func_02059bc0.cpp": [
         "param:#1 unsigned int"
       ]
     },
@@ -23712,13 +22716,13 @@
       "src/unnamed/arm9/0204/func_020427c4.c": [
         "return:unsigned long long"
       ],
-      "src/unnamed/arm9/0205/func_02059834.c": [
+      "src/unnamed/arm9/0205/func_02059834.cpp": [
         "return:unsigned long long"
       ],
       "src/unnamed/arm9/0205/func_02059a60.c": [
         "return:unsigned long long"
       ],
-      "src/unnamed/arm9/0205/func_02059c18.c": [
+      "src/unnamed/arm9/0205/func_02059c18.cpp": [
         "arity:1"
       ]
     },
@@ -23739,7 +22743,7 @@
       ]
     },
     "func_02059c18": {
-      "src/unnamed/arm9/0205/func_02059950.c": [
+      "src/unnamed/arm9/0205/func_02059950.cpp": [
         "param:#1 Node *"
       ],
       "src/unnamed/arm9/0205/func_02059a60.c": [
@@ -23770,7 +22774,7 @@
       "src/unnamed/arm9/0203/func_0203db64.c": [
         "param:#1 void *"
       ],
-      "src/unnamed/arm9/0206/func_02068e4c.c": [
+      "src/unnamed/arm9/0206/func_02068e4c.cpp": [
         "param:#1 void *"
       ]
     },
@@ -23811,7 +22815,10 @@
       "src/unnamed/arm9/0205/func_0205dd9c.c": [
         "arity:3"
       ],
-      "src/unnamed/arm9/0206/func_02061e38.c": [
+      "src/unnamed/arm9/0205/func_0205e0b0.cpp": [
+        "arity:3"
+      ],
+      "src/unnamed/arm9/0206/func_02061e38.cpp": [
         "arity:3"
       ],
       "src/unnamed/arm9/0206/func_020647fc.c": [
@@ -23826,7 +22833,7 @@
       "src/unnamed/arm9/0206/func_02067b68.c": [
         "arity:3"
       ],
-      "src/unnamed/arm9/0206/func_02068ae8.c": [
+      "src/unnamed/arm9/0206/func_02068ae8.cpp": [
         "arity:3"
       ],
       "src/unnamed/ov007/func_ov007_020c3d40.cpp": [
@@ -23834,13 +22841,13 @@
       ]
     },
     "func_0205a74c": {
-      "src/unnamed/arm9/0205/func_02057198.c": [
+      "src/unnamed/arm9/0205/func_02057198.cpp": [
         "arity:2",
         "return:unsigned int"
       ]
     },
     "func_0205a8c4": {
-      "src/unnamed/arm9/0204/func_02049c48.c": [
+      "src/unnamed/arm9/0204/func_02049c48.cpp": [
         "param:#1 int"
       ]
     },
@@ -23898,7 +22905,7 @@
       ]
     },
     "func_0205b274": {
-      "src/func_0205b070.c": [
+      "src/func_0205b070.cpp": [
         "return:int"
       ],
       "src/unnamed/arm9/0205/func_0205afe0.c": [
@@ -23939,13 +22946,13 @@
       ]
     },
     "func_0205c788": {
-      "src/unnamed/arm9/0205/func_0205caa8.c": [
+      "src/unnamed/arm9/0205/func_0205caa8.cpp": [
         "param:#1 int *"
       ],
       "src/unnamed/arm9/0205/func_0205cf5c.c": [
         "param:#1 int"
       ],
-      "src/unnamed/arm9/0205/func_0205d044.c": [
+      "src/unnamed/arm9/0205/func_0205d044.cpp": [
         "param:#1 Node *"
       ]
     },
@@ -23960,7 +22967,7 @@
       ]
     },
     "func_0205c864": {
-      "src/unnamed/arm9/0205/func_0205caa8.c": [
+      "src/unnamed/arm9/0205/func_0205caa8.cpp": [
         "return:void"
       ]
     },
@@ -23984,7 +22991,7 @@
       ]
     },
     "func_0205cdf4": {
-      "src/unnamed/arm9/0205/func_0205d3e4.c": [
+      "src/unnamed/arm9/0205/func_0205d3e4.cpp": [
         "param:#1 UnkStruct_0205d4a0 *",
         "return:void"
       ],
@@ -23999,12 +23006,12 @@
       "src/unnamed/arm9/0205/func_0205cdf4.cpp": [
         "param:#1 char *"
       ],
-      "src/unnamed/arm9/0205/func_0205d3e4.c": [
+      "src/unnamed/arm9/0205/func_0205d3e4.cpp": [
         "param:#1 struct Obj *"
       ]
     },
     "func_0205cfa4": {
-      "src/unnamed/arm9/0205/func_0205cd5c.c": [
+      "src/unnamed/arm9/0205/func_0205cd5c.cpp": [
         "param:#1 int"
       ],
       "src/unnamed/arm9/0205/func_0205cdf4.cpp": [
@@ -24015,7 +23022,7 @@
       ]
     },
     "func_0205d044": {
-      "src/unnamed/arm9/0205/func_0205cd5c.c": [
+      "src/unnamed/arm9/0205/func_0205cd5c.cpp": [
         "return:int"
       ],
       "src/unnamed/arm9/0205/func_0205cf5c.c": [
@@ -24027,23 +23034,23 @@
       "src/func_0201a2f8.c": [
         "return:void *"
       ],
-      "src/unnamed/arm9/0204/func_02042254.c": [
+      "src/unnamed/arm9/0204/func_02042254.cpp": [
         "return:void *"
       ],
       "src/unnamed/arm9/0204/func_020423dc.c": [
         "return:void *"
       ],
-      "src/unnamed/arm9/0204/func_020424c0.c": [
+      "src/unnamed/arm9/0204/func_020424c0.cpp": [
         "return:void *"
       ],
-      "src/unnamed/arm9/0205/func_0205cc80.c": [
+      "src/unnamed/arm9/0205/func_0205cc80.cpp": [
         "return:void *"
       ],
       "src/unnamed/arm9/0205/func_0205d714.c": [
         "param:#1 char *",
         "return:Obj *"
       ],
-      "src/unnamed/arm9/0206/func_02067bfc.c": [
+      "src/unnamed/arm9/0206/func_02067bfc.cpp": [
         "param:#1 int *",
         "return:void *"
       ]
@@ -24066,7 +23073,7 @@
       ]
     },
     "func_0205d304": {
-      "src/unnamed/arm9/0205/func_0205cc80.c": [
+      "src/unnamed/arm9/0205/func_0205cc80.cpp": [
         "param:#2 void *",
         "return:void *"
       ]
@@ -24101,7 +23108,7 @@
       "src/FS_ReadFile.c": [
         "param:#1 int"
       ],
-      "src/unnamed/arm9/0205/func_0205d3e4.c": [
+      "src/unnamed/arm9/0205/func_0205d3e4.cpp": [
         "return:void"
       ]
     },
@@ -24230,7 +23237,7 @@
       ]
     },
     "func_0205f5c0": {
-      "src/unnamed/arm9/0201/func_02019f10.c": [
+      "src/unnamed/arm9/0201/func_02019f10.cpp": [
         "return:void"
       ]
     },
@@ -24256,7 +23263,7 @@
       ]
     },
     "func_0205f958": {
-      "src/unnamed/arm9/0201/func_02019f10.c": [
+      "src/unnamed/arm9/0201/func_02019f10.cpp": [
         "return:void"
       ]
     },
@@ -24274,7 +23281,7 @@
       ]
     },
     "func_0205fa78": {
-      "src/unnamed/arm9/0201/func_02019f10.c": [
+      "src/unnamed/arm9/0201/func_02019f10.cpp": [
         "return:void"
       ]
     },
@@ -24380,7 +23387,7 @@
       ]
     },
     "func_02060310": {
-      "src/unnamed/arm9/0206/func_0206002c.c": [
+      "src/unnamed/arm9/0206/func_0206002c.cpp": [
         "arity:0"
       ]
     },
@@ -24434,7 +23441,7 @@
       ]
     },
     "func_02061188": {
-      "src/unnamed/arm9/0206/func_020616e8.c": [
+      "src/unnamed/arm9/0206/func_020616e8.cpp": [
         "arity:0"
       ]
     },
@@ -24459,7 +23466,7 @@
       ]
     },
     "func_02061b9c": {
-      "src/unnamed/arm9/0206/func_020625fc.c": [
+      "src/unnamed/arm9/0206/func_020625fc.cpp": [
         "return:int"
       ]
     },
@@ -24500,7 +23507,7 @@
       ]
     },
     "func_02062024": {
-      "src/unnamed/arm9/0206/func_020620b0.c": [
+      "src/unnamed/arm9/0206/func_020620b0.cpp": [
         "return:void"
       ]
     },
@@ -24553,13 +23560,13 @@
       "src/unnamed/arm9/0204/func_02041930.c": [
         "return:int"
       ],
-      "src/unnamed/arm9/0206/func_020627e8.c": [
+      "src/unnamed/arm9/0206/func_020627e8.cpp": [
         "return:int"
       ],
-      "src/unnamed/arm9/0206/func_02062df0.c": [
+      "src/unnamed/arm9/0206/func_02062df0.cpp": [
         "return:int"
       ],
-      "src/unnamed/arm9/0206/func_020631dc.c": [
+      "src/unnamed/arm9/0206/func_020631dc.cpp": [
         "param:#1 void (*)(void *)",
         "return:int"
       ],
@@ -24597,7 +23604,7 @@
       ]
     },
     "func_02062734": {
-      "src/unnamed/arm9/0206/func_02062990.c": [
+      "src/unnamed/arm9/0206/func_02062990.cpp": [
         "param:#3 void *",
         "return:void *"
       ]
@@ -24614,18 +23621,18 @@
         "param:#2 unsigned int",
         "param:#3 unsigned int"
       ],
-      "src/unnamed/arm9/0206/func_02062df0.c": [
+      "src/unnamed/arm9/0206/func_02062df0.cpp": [
         "param:#2 unsigned int",
         "param:#3 unsigned int"
       ]
     },
     "func_02062aa4": {
-      "src/unnamed/arm9/0206/func_020631dc.c": [
+      "src/unnamed/arm9/0206/func_020631dc.cpp": [
         "arity:0"
       ]
     },
     "func_02062bdc": {
-      "src/unnamed/arm9/0206/func_020631dc.c": [
+      "src/unnamed/arm9/0206/func_020631dc.cpp": [
         "arity:0"
       ]
     },
@@ -24851,7 +23858,7 @@
       ]
     },
     "func_020657fc": {
-      "src/unnamed/arm9/0204/func_020412f0.c": [
+      "src/unnamed/arm9/0204/func_020412f0.cpp": [
         "param:#1 int",
         "return:void"
       ]
@@ -24865,7 +23872,7 @@
       "src/unnamed/arm9/0206/func_02064888.c": [
         "return:Node *"
       ],
-      "src/unnamed/arm9/0206/func_020657fc.c": [
+      "src/unnamed/arm9/0206/func_020657fc.cpp": [
         "return:int *"
       ],
       "src/unnamed/arm9/0206/func_02065a94.c": [
@@ -24885,18 +23892,18 @@
       ]
     },
     "func_02065b88": {
-      "src/unnamed/arm9/0206/func_02065af0.c": [
+      "src/unnamed/arm9/0206/func_02065af0.cpp": [
         "return:int *"
       ]
     },
     "func_02065b94": {
-      "src/unnamed/arm9/0206/func_02065170.c": [
+      "src/unnamed/arm9/0206/func_02065170.cpp": [
         "return:char *"
       ],
-      "src/unnamed/arm9/0206/func_02065234.c": [
+      "src/unnamed/arm9/0206/func_02065234.cpp": [
         "return:char *"
       ],
-      "src/unnamed/arm9/0206/func_020652fc.c": [
+      "src/unnamed/arm9/0206/func_020652fc.cpp": [
         "return:char *"
       ],
       "src/unnamed/arm9/0206/func_020653cc.c": [
@@ -25013,12 +24020,12 @@
       ]
     },
     "func_02068680": {
-      "src/unnamed/arm9/0206/func_02067928.c": [
+      "src/unnamed/arm9/0206/func_02067928.cpp": [
         "param:#3 void *"
       ]
     },
     "func_020688fc": {
-      "src/unnamed/arm9/0206/func_02067f2c.c": [
+      "src/unnamed/arm9/0206/func_02067f2c.cpp": [
         "param:#1 unsigned int",
         "param:#2 unsigned int",
         "param:#3 unsigned int",
@@ -25032,7 +24039,7 @@
       ]
     },
     "func_02068a74": {
-      "src/unnamed/arm9/0206/func_02068a54.c": [
+      "src/unnamed/arm9/0206/func_02068a54.cpp": [
         "return:void"
       ]
     },
@@ -25068,7 +24075,7 @@
       "src/unnamed/arm9/0206/func_0206a4a0.c": [
         "param:#1 int"
       ],
-      "src/unnamed/arm9/0206/func_0206a6d0.c": [
+      "src/unnamed/arm9/0206/func_0206a6d0.cpp": [
         "param:#1 int"
       ]
     },
@@ -25911,7 +24918,6 @@
     },
     "func_ov002_020f0918": {
       "src/runtime/actor/d_actor.cpp": [
-        "param:#1 dActor_c *",
         "return:dActor_c *"
       ]
     },
@@ -26677,7 +25683,7 @@
       ]
     },
     "func_ov007_020af260": {
-      "src/unnamed/ov007/func_ov007_020aefb4.c": [
+      "src/unnamed/ov007/func_ov007_020aefb4.cpp": [
         "return:int"
       ]
     },
@@ -26695,7 +25701,7 @@
       ]
     },
     "func_ov007_020b0da0": {
-      "src/unnamed/ov007/func_ov007_020b0a20.c": [
+      "src/unnamed/ov007/func_ov007_020b0a20.cpp": [
         "arity:0"
       ]
     },
@@ -26737,7 +25743,7 @@
       "src/unnamed/ov007/func_ov007_020b1224.c": [
         "return:char *"
       ],
-      "src/unnamed/ov007/func_ov007_020beeb0.c": [
+      "src/unnamed/ov007/func_ov007_020beeb0.cpp": [
         "return:char *"
       ]
     },
@@ -26747,12 +25753,12 @@
       ]
     },
     "func_ov007_020b3190": {
-      "src/unnamed/ov007/func_ov007_020b2e64.c": [
+      "src/unnamed/ov007/func_ov007_020b2e64.cpp": [
         "return:int"
       ]
     },
     "func_ov007_020b3360": {
-      "src/unnamed/ov007/func_ov007_020b2e64.c": [
+      "src/unnamed/ov007/func_ov007_020b2e64.cpp": [
         "return:int"
       ]
     },
@@ -26782,7 +25788,7 @@
       ]
     },
     "func_ov007_020b413c": {
-      "src/unnamed/ov007/func_ov007_020bcf90.c": [
+      "src/unnamed/ov007/func_ov007_020bcf90.cpp": [
         "param:#1 int"
       ]
     },
@@ -26792,7 +25798,7 @@
       ]
     },
     "func_ov007_020b4464": {
-      "src/unnamed/ov007/func_ov007_020bcf90.c": [
+      "src/unnamed/ov007/func_ov007_020bcf90.cpp": [
         "param:#1 int"
       ]
     },
@@ -26817,7 +25823,7 @@
       ]
     },
     "func_ov007_020b6208": {
-      "src/unnamed/ov007/func_ov007_020b50e8.c": [
+      "src/unnamed/ov007/func_ov007_020b50e8.cpp": [
         "return:void"
       ]
     },
@@ -26854,7 +25860,7 @@
       ]
     },
     "func_ov007_020b7658": {
-      "src/unnamed/ov007/func_ov007_020bcf90.c": [
+      "src/unnamed/ov007/func_ov007_020bcf90.cpp": [
         "param:#1 int"
       ]
     },
@@ -26915,7 +25921,7 @@
       ]
     },
     "func_ov007_020b8548": {
-      "src/unnamed/ov007/func_ov007_020bcba8.c": [
+      "src/unnamed/ov007/func_ov007_020bcba8.cpp": [
         "param:#1 int",
         "param:#2 void *",
         "param:#5 unsigned int",
@@ -26980,7 +25986,7 @@
       ]
     },
     "func_ov007_020b9640": {
-      "src/unnamed/ov007/func_ov007_020aefb4.c": [
+      "src/unnamed/ov007/func_ov007_020aefb4.cpp": [
         "return:int"
       ]
     },
@@ -27038,10 +26044,10 @@
       ]
     },
     "func_ov007_020bce70": {
-      "src/unnamed/ov007/func_ov007_020b1718.c": [
+      "src/unnamed/ov007/func_ov007_020b1718.cpp": [
         "param:#1 int"
       ],
-      "src/unnamed/ov007/func_ov007_020beeb0.c": [
+      "src/unnamed/ov007/func_ov007_020beeb0.cpp": [
         "param:#1 int"
       ]
     },
@@ -27055,13 +26061,13 @@
       "src/unnamed/ov007/func_ov007_020b0834.c": [
         "arity:1"
       ],
-      "src/unnamed/ov007/func_ov007_020b0a20.c": [
+      "src/unnamed/ov007/func_ov007_020b0a20.cpp": [
         "arity:1"
       ],
       "src/unnamed/ov007/func_ov007_020b10dc.c": [
         "arity:1"
       ],
-      "src/unnamed/ov007/func_ov007_020b1718.c": [
+      "src/unnamed/ov007/func_ov007_020b1718.cpp": [
         "arity:1"
       ],
       "src/unnamed/ov007/func_ov007_020b3190.c": [
@@ -27080,20 +26086,20 @@
       "src/unnamed/ov007/func_ov007_020b7a78.c": [
         "arity:1"
       ],
-      "src/unnamed/ov007/func_ov007_020b9ca8.c": [
+      "src/unnamed/ov007/func_ov007_020b9ca8.cpp": [
         "arity:1"
       ],
-      "src/unnamed/ov007/func_ov007_020ba368.c": [
+      "src/unnamed/ov007/func_ov007_020ba368.cpp": [
         "arity:1"
       ],
       "src/unnamed/ov007/func_ov007_020bb09c.c": [
         "arity:1",
         "return:int"
       ],
-      "src/unnamed/ov007/func_ov007_020bb4b0.c": [
+      "src/unnamed/ov007/func_ov007_020bb4b0.cpp": [
         "arity:1"
       ],
-      "src/unnamed/ov007/func_ov007_020bf790.c": [
+      "src/unnamed/ov007/func_ov007_020bf790.cpp": [
         "arity:1"
       ]
     },
@@ -27119,7 +26125,7 @@
       ]
     },
     "func_ov007_020be964": {
-      "src/unnamed/ov007/func_ov007_020b0a20.c": [
+      "src/unnamed/ov007/func_ov007_020b0a20.cpp": [
         "param:#1 Sub100 *"
       ],
       "src/unnamed/ov007/func_ov007_020b2614.c": [
@@ -27127,7 +26133,7 @@
       ]
     },
     "func_ov007_020be980": {
-      "src/unnamed/ov007/func_ov007_020b0a20.c": [
+      "src/unnamed/ov007/func_ov007_020b0a20.cpp": [
         "param:#1 Sub100 *"
       ]
     },
@@ -27147,12 +26153,12 @@
       ]
     },
     "func_ov007_020bf630": {
-      "src/unnamed/ov007/func_ov007_020bed60.c": [
+      "src/unnamed/ov007/func_ov007_020bed60.cpp": [
         "return:int"
       ]
     },
     "func_ov007_020bfaf0": {
-      "src/unnamed/ov007/func_ov007_020bcf90.c": [
+      "src/unnamed/ov007/func_ov007_020bcf90.cpp": [
         "param:#1 int"
       ]
     },
@@ -27163,7 +26169,7 @@
       ]
     },
     "func_ov007_020bfe4c": {
-      "src/unnamed/ov007/func_ov007_020b9ca8.c": [
+      "src/unnamed/ov007/func_ov007_020b9ca8.cpp": [
         "param:#5 int *"
       ],
       "src/unnamed/ov007/func_ov007_020bf630.c": [
@@ -27181,12 +26187,12 @@
       ]
     },
     "func_ov007_020bff38": {
-      "src/unnamed/ov007/func_ov007_020b2160.c": [
+      "src/unnamed/ov007/func_ov007_020b2160.cpp": [
         "param:#1 char *"
       ]
     },
     "func_ov007_020c0128": {
-      "src/unnamed/ov007/func_ov007_020b1fa4.c": [
+      "src/unnamed/ov007/func_ov007_020b1fa4.cpp": [
         "return:int"
       ]
     },
@@ -27226,7 +26232,7 @@
       ]
     },
     "func_ov007_020c0638": {
-      "src/unnamed/ov007/func_ov007_020ad660.c": [
+      "src/unnamed/ov007/func_ov007_020ad660.cpp": [
         "param:#4 int"
       ],
       "src/unnamed/ov007/func_ov007_020afc44.c": [
@@ -27241,7 +26247,7 @@
         "param:#1 int",
         "param:#4 int"
       ],
-      "src/unnamed/ov007/func_ov007_020b0a20.c": [
+      "src/unnamed/ov007/func_ov007_020b0a20.cpp": [
         "param:#1 int",
         "param:#4 int"
       ],
@@ -27339,7 +26345,7 @@
         "param:#4 int",
         "param:#5 int"
       ],
-      "src/unnamed/ov007/func_ov007_020ca5f0.c": [
+      "src/unnamed/ov007/func_ov007_020ca5f0.cpp": [
         "param:#2 int",
         "param:#3 int",
         "param:#4 int",
@@ -27427,12 +26433,12 @@
       ]
     },
     "func_ov007_020c232c": {
-      "src/unnamed/ov007/func_ov007_020bcf90.c": [
+      "src/unnamed/ov007/func_ov007_020bcf90.cpp": [
         "param:#1 int"
       ]
     },
     "func_ov007_020c2390": {
-      "src/unnamed/ov007/func_ov007_020bcf90.c": [
+      "src/unnamed/ov007/func_ov007_020bcf90.cpp": [
         "param:#1 int"
       ]
     },
@@ -27449,7 +26455,7 @@
       ]
     },
     "func_ov007_020c24d0": {
-      "src/unnamed/ov007/func_ov007_020c281c.c": [
+      "src/unnamed/ov007/func_ov007_020c281c.cpp": [
         "param:#1 char *",
         "return:int"
       ]
@@ -27498,7 +26504,7 @@
         "param:#5 int",
         "return:void"
       ],
-      "src/unnamed/ov007/func_ov007_020c9d90.c": [
+      "src/unnamed/ov007/func_ov007_020c9d90.cpp": [
         "param:#1 Vec3 *",
         "param:#3 Vec3 *"
       ]
@@ -27549,7 +26555,7 @@
       ]
     },
     "func_ov007_020c3be0": {
-      "src/unnamed/ov007/func_ov007_020b1718.c": [
+      "src/unnamed/ov007/func_ov007_020b1718.cpp": [
         "return:int"
       ],
       "src/unnamed/ov007/func_ov007_020b2764.c": [
@@ -27558,7 +26564,7 @@
         "param:#3 unsigned short",
         "return:short"
       ],
-      "src/unnamed/ov007/func_ov007_020b91b4.c": [
+      "src/unnamed/ov007/func_ov007_020b91b4.cpp": [
         "return:int"
       ],
       "src/unnamed/ov007/func_ov007_020c93c4.c": [
@@ -27671,7 +26677,7 @@
       "src/unnamed/ov007/func_ov007_020c9fa0.cpp": [
         "return:int"
       ],
-      "src/unnamed/ov007/func_ov007_020ca1d4.c": [
+      "src/unnamed/ov007/func_ov007_020ca1d4.cpp": [
         "return:int"
       ]
     },
@@ -27825,11 +26831,11 @@
         "param:#2 unsigned int",
         "return:void *"
       ],
-      "src/unnamed/ov007/func_ov007_020ca1d4.c": [
+      "src/unnamed/ov007/func_ov007_020ca1d4.cpp": [
         "param:#2 int",
         "return:void *"
       ],
-      "src/unnamed/ov007/func_ov007_020cbbb0.c": [
+      "src/unnamed/ov007/func_ov007_020cbbb0.cpp": [
         "param:#2 int",
         "return:void *"
       ],
@@ -27848,7 +26854,7 @@
       "src/unnamed/ov007/func_ov007_020b2728.c": [
         "param:#1 int"
       ],
-      "src/unnamed/ov007/func_ov007_020b2cf0.c": [
+      "src/unnamed/ov007/func_ov007_020b2cf0.cpp": [
         "param:#1 Obj *"
       ],
       "src/unnamed/ov007/func_ov007_020b4464.c": [
@@ -27862,7 +26868,7 @@
       "src/unnamed/ov007/func_ov007_020b2998.c": [
         "param:#1 Widget *"
       ],
-      "src/unnamed/ov007/func_ov007_020b2cf0.c": [
+      "src/unnamed/ov007/func_ov007_020b2cf0.cpp": [
         "param:#1 Obj *",
         "param:#2 void *"
       ],
@@ -27929,12 +26935,12 @@
       ]
     },
     "func_ov007_020c4e98": {
-      "src/unnamed/ov007/func_ov007_020b91b4.c": [
+      "src/unnamed/ov007/func_ov007_020b91b4.cpp": [
         "param:#6 int"
       ]
     },
     "func_ov007_020c4f50": {
-      "src/unnamed/ov007/func_ov007_020b91b4.c": [
+      "src/unnamed/ov007/func_ov007_020b91b4.cpp": [
         "arity:5"
       ]
     },
@@ -27944,13 +26950,13 @@
       ]
     },
     "func_ov007_020c55bc": {
-      "src/unnamed/ov007/func_ov007_020ba368.c": [
+      "src/unnamed/ov007/func_ov007_020ba368.cpp": [
         "param:#1 int"
       ],
-      "src/unnamed/ov007/func_ov007_020bad8c.c": [
+      "src/unnamed/ov007/func_ov007_020bad8c.cpp": [
         "param:#1 int"
       ],
-      "src/unnamed/ov007/func_ov007_020bb4b0.c": [
+      "src/unnamed/ov007/func_ov007_020bb4b0.cpp": [
         "param:#1 int"
       ],
       "src/unnamed/ov007/func_ov007_020bbc08.c": [
@@ -27958,7 +26964,7 @@
       ]
     },
     "func_ov007_020c5854": {
-      "src/unnamed/ov007/func_ov007_020ba368.c": [
+      "src/unnamed/ov007/func_ov007_020ba368.cpp": [
         "param:#1 int",
         "param:#3 int",
         "param:#4 int",
@@ -27966,7 +26972,7 @@
       ]
     },
     "func_ov007_020c5948": {
-      "src/unnamed/ov007/func_ov007_020b9ca8.c": [
+      "src/unnamed/ov007/func_ov007_020b9ca8.cpp": [
         "param:#2 int *"
       ]
     },
@@ -27977,7 +26983,7 @@
       ]
     },
     "func_ov007_020c6174": {
-      "src/unnamed/ov007/func_ov007_020bb4b0.c": [
+      "src/unnamed/ov007/func_ov007_020bb4b0.cpp": [
         "param:#1 char *"
       ]
     },
@@ -28047,7 +27053,7 @@
       ]
     },
     "func_ov007_020c73f0": {
-      "src/unnamed/ov007/func_ov007_020cbbb0.c": [
+      "src/unnamed/ov007/func_ov007_020cbbb0.cpp": [
         "return:void *"
       ]
     },
@@ -28088,7 +27094,7 @@
       ]
     },
     "func_ov007_020c8010": {
-      "src/unnamed/ov007/func_ov007_020c9d90.c": [
+      "src/unnamed/ov007/func_ov007_020c9d90.cpp": [
         "param:#1 int",
         "param:#2 int",
         "param:#3 Cell *"
@@ -28185,7 +27191,7 @@
       ]
     },
     "func_ov007_020c8f98": {
-      "src/unnamed/ov007/func_ov007_020b5bf0.c": [
+      "src/unnamed/ov007/func_ov007_020b5bf0.cpp": [
         "param:#1 int",
         "return:void"
       ],
@@ -28244,7 +27250,7 @@
       "src/unnamed/ov007/func_ov007_020aed98.cpp": [
         "param:#1 int"
       ],
-      "src/unnamed/ov007/func_ov007_020b2e64.c": [
+      "src/unnamed/ov007/func_ov007_020b2e64.cpp": [
         "param:#1 int"
       ],
       "src/unnamed/ov007/func_ov007_020b9640.c": [
@@ -28254,7 +27260,7 @@
       "src/unnamed/ov007/func_ov007_020bce70.cpp": [
         "param:#1 Sub *"
       ],
-      "src/unnamed/ov007/func_ov007_020ca1d4.c": [
+      "src/unnamed/ov007/func_ov007_020ca1d4.cpp": [
         "param:#1 int"
       ]
     },
@@ -28301,7 +27307,7 @@
       ]
     },
     "func_ov007_020c93b4": {
-      "src/unnamed/ov007/func_ov007_020bcf90.c": [
+      "src/unnamed/ov007/func_ov007_020bcf90.cpp": [
         "return:void"
       ]
     },
@@ -28340,14 +27346,14 @@
       ]
     },
     "func_ov007_020c9a84": {
-      "src/unnamed/ov007/func_ov007_020beeb0.c": [
+      "src/unnamed/ov007/func_ov007_020beeb0.cpp": [
         "param:#2 char *",
         "param:#3 char *",
         "param:#4 char *"
       ]
     },
     "func_ov007_020c9c24": {
-      "src/unnamed/ov007/func_ov007_020beeb0.c": [
+      "src/unnamed/ov007/func_ov007_020beeb0.cpp": [
         "param:#1 char *"
       ]
     },
@@ -28362,12 +27368,12 @@
       ]
     },
     "func_ov007_020ca308": {
-      "src/unnamed/ov007/func_ov007_020ca1d4.c": [
+      "src/unnamed/ov007/func_ov007_020ca1d4.cpp": [
         "param:#2 int"
       ]
     },
     "func_ov007_020ca578": {
-      "src/unnamed/ov007/func_ov007_020bed60.c": [
+      "src/unnamed/ov007/func_ov007_020bed60.cpp": [
         "param:#1 int *"
       ]
     },
@@ -28378,13 +27384,13 @@
       ]
     },
     "func_ov007_020ca86c": {
-      "src/unnamed/ov007/func_ov007_020ca5f0.c": [
+      "src/unnamed/ov007/func_ov007_020ca5f0.cpp": [
         "param:#1 int",
         "param:#2 int"
       ]
     },
     "func_ov007_020caeac": {
-      "src/unnamed/ov007/func_ov007_020ca5f0.c": [
+      "src/unnamed/ov007/func_ov007_020ca5f0.cpp": [
         "arity:13"
       ]
     },
@@ -28578,7 +27584,7 @@
         "param:#4 int",
         "param:#5 int"
       ],
-      "src/unnamed/ov075/func_ov075_02118378.c": [
+      "src/unnamed/ov075/func_ov075_02118378.cpp": [
         "param:#4 int",
         "param:#5 int"
       ],
@@ -28595,7 +27601,7 @@
       "src/unnamed/ov075/func_ov075_02116818.cpp": [
         "param:#1 char *"
       ],
-      "src/unnamed/ov075/func_ov075_02117fe4.c": [
+      "src/unnamed/ov075/func_ov075_02117fe4.cpp": [
         "param:#1 char *"
       ]
     },
@@ -28868,6 +27874,118 @@
       ],
       "src/unnamed/ov002/func_ov002_020d8a50.c": [
         "return:int"
+      ]
+    },
+    "Allocate": {
+      "include/Memory.h": [
+        "arity:2",
+        "arity:1"
+      ]
+    },
+    "Deallocate": {
+      "include/Memory.h": [
+        "arity:2"
+      ]
+    },
+    "FlushAndInvalidateDataCache": {
+      "include/CP15.h": [
+        "arity:2"
+      ]
+    },
+    "FlushDataCache": {
+      "include/CP15.h": [
+        "arity:2"
+      ]
+    },
+    "SetGraphicsMode": {
+      "include/GX.h": [
+        "arity:1"
+      ]
+    },
+    "_ZN3OAM6RenderEbP7OamAttriiiiiiii": {
+      "src/unnamed/arm9/0203/func_0203083c.c": [
+        "param:#1 int"
+      ]
+    },
+    "_ZN3G3i13PerspectiveW_EiiiiiiiP9Matrix4x3": {
+      "src/func_ov007_020c0078.c": [
+        "param:#8 int *"
+      ]
+    },
+    "gBombkingDamageAnimationFile": {
+      "src/unnamed/ov078/__sinit_ov078_02126660.cpp": [
+        "return:SharedFilePtr"
+      ]
+    },
+    "gBombkingWalk2AnimationFile": {
+      "src/unnamed/ov078/__sinit_ov078_02126660.cpp": [
+        "return:SharedFilePtr"
+      ]
+    },
+    "func_02045ad8": {
+      "src/unnamed/ov075/func_ov075_0211aa94.cpp": [
+        "arity:1",
+        "return:int"
+      ]
+    },
+    "gBombkingThrowAnimationFile": {
+      "src/unnamed/ov078/__sinit_ov078_02126660.cpp": [
+        "return:SharedFilePtr"
+      ]
+    },
+    "gBombkingWait1AnimationFile": {
+      "src/unnamed/ov078/__sinit_ov078_02126660.cpp": [
+        "return:SharedFilePtr"
+      ]
+    },
+    "gBombkingStartAnimationFile": {
+      "src/unnamed/ov078/__sinit_ov078_02126660.cpp": [
+        "return:SharedFilePtr"
+      ]
+    },
+    "gBombkingLiftAnimationFile": {
+      "src/unnamed/ov078/__sinit_ov078_02126660.cpp": [
+        "return:SharedFilePtr"
+      ]
+    },
+    "gBombkingJumpAnimationFile": {
+      "src/unnamed/ov078/__sinit_ov078_02126660.cpp": [
+        "return:SharedFilePtr"
+      ]
+    },
+    "gBombkingWait2AnimationFile": {
+      "src/unnamed/ov078/__sinit_ov078_02126660.cpp": [
+        "return:SharedFilePtr"
+      ]
+    },
+    "gBombkingWalk1AnimationFile": {
+      "src/unnamed/ov078/__sinit_ov078_02126660.cpp": [
+        "return:SharedFilePtr"
+      ]
+    },
+    "gBombkingStruggleAnimationFile": {
+      "src/unnamed/ov078/__sinit_ov078_02126660.cpp": [
+        "return:SharedFilePtr"
+      ]
+    },
+    "gHoruheiLiftLoopAnimationFile": {
+      "src/unnamed/ov062/__sinit_ov062_0211cf30.cpp": [
+        "return:SharedFilePtr"
+      ]
+    },
+    "gBombkingJumpedAnimationFile": {
+      "src/unnamed/ov078/__sinit_ov078_02126660.cpp": [
+        "return:SharedFilePtr"
+      ]
+    },
+    "gBombkingGetupAnimationFile": {
+      "src/unnamed/ov078/__sinit_ov078_02126660.cpp": [
+        "return:SharedFilePtr"
+      ]
+    },
+    "gHoruheiWalkAnimationFile": {
+      "src/unnamed/ov062/__sinit_ov062_0211cf30.cpp": [
+        "return:SharedFilePtr"
       ]
     }
   },

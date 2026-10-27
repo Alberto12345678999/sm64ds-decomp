@@ -21,6 +21,7 @@ enum d_s_mg_m_carlo_AssetId { ASSET_D_2D_MG_CARD_NCL_BIN = 0x00bb };
 #include "dScMgCard_c.h"
 #include "PlayerInput.h"
 #include "Sound.h"
+#include "math/Approach.h"
 
 /* Coined from the card transitions in DealIn and Update. The byte-sized
  * mState field retains its existing layout. */
@@ -38,8 +39,6 @@ enum CardState {
 namespace GXS {
 void LoadOBJPltt(void const *, unsigned int, unsigned int);
 }
-int ApproachLinear(int &value, int target, int step);
-int ApproachLinear2(s16 &value, s16 target, s16 step);
 
 extern "C" {
 extern dMgMCarloCardObj_c *sMCarloFirstPick;  /* first pick */

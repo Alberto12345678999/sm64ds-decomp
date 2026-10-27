@@ -44,15 +44,13 @@
  * Leftover: func_ov094_02136024 stores mPos into `d` and then overwrites all
  *   three fields. Dropping those three stores shrank the method from ROM
  *   0x12c to object 0x114. The stores stay.
- * Leftover: dExtAnmModel_c::SetAnim, dCcAcPos_c::Init, dBgCh_Actr::Init and
- *   dActor_c::DropShadowRadHeight take Fix12<int> by value, so they stay
- *   mangled calls. dBgCh_Actr::Unk_0203589c has no member
- *   declaration in a shared header.
+ * Leftover: dBgCh_Actr::Unk_0203589c has no member declaration in a shared
+ *   header.
  * Leftover: unk_3e8 is scratch that each state uses differently (fade phase,
  *   sound latch, bobbing phase). It stays unnamed.
  * Leftover: the rider matrix pointer at +0xc8, and the model matrix at +0x328
  *   and bone-matrix pointer at +0x320, stay raw offsets from the actor.
- *   Writing them as mModelAnim members hoists the base.
+ *   Writing them as mAnmModel members hoists the base.
  * Leftover: state-timer reads use a u16 cast. mStateTimer is s16; the ROM
  *   loads it unsigned.
  * Leftover: RandomIntInternal stays unsigned so func_ov094_02135e64 keeps its
@@ -75,6 +73,7 @@ enum daOwl_c_AssetId {
 #include "SharedFilePtr.h"
 #include "Player.h"
 #include "nitro/fx/fx.h"
+#include "math/Approach.h"
 
 /* Resource handles the static initializer constructs. The wrapper spellings
  * are reconstructed; the constructor and destructor addresses, the file IDs
@@ -145,7 +144,7 @@ enum {
 #define OWL_TIMER(o)        (*(u16 *)&(o)->mStateTimer)
 
 /* Whole animation frame of the dExtAnmModel_c, as the ROM extracts it. */
-#define OWL_FRAME(o)        ((u16)((o)->mModelAnim.currFrame >> 12))
+#define OWL_FRAME(o)        ((u16)((o)->mAnmModel.currFrame >> 12))
 
 namespace Sound {
 /* local extern: including Sound.h renumbers @NNN. */
@@ -165,14 +164,12 @@ void d_a_owlPlayLongHold(unsigned int a, unsigned int b, unsigned int cc, void *
                          unsigned int d);
 int func_ov002_020df7f4(void *c);
 int func_ov002_020df7ac(void *thiz);
-void _ZN10dBgCh_Actr12Unk_0203589cEv(void *self);
 int func_02012694(int a, void *pos);
 int ApproachAngle(short *p, int target, int a, int b, int c);
 int Vec3_Dist(const void *a, const void *b);
 short Vec3_HorzAngle(const void *a, const void *b);
 short Vec3_VertAngle(const void *a, const void *b);
 unsigned int RandomIntInternal(void *seed);
-void _Z14ApproachLinearRiii(int *x, int target, int step);
 void Matrix4x3_FromRotationY(void *m, int angle);
 void MulVec3Mat4x3(void *dst, void *mat, void *src);
 void Vec3_Sub(OwlVec *out, OwlVec *a, OwlVec *b);
@@ -182,10 +179,6 @@ void Matrix4x3_FromTranslation(Matrix4x3 *m, Fix12i x, Fix12i y, Fix12i z);
 void Matrix4x3_ApplyInPlaceToRotationXYZExt(void *m, int x, int y, int z);
 void Matrix4x3_ApplyInPlaceToTranslation(Matrix4x3 *m, Fix12i x, Fix12i y, Fix12i z);
 void MulMat4x3Mat4x3(const int *a, const int *b, int *dst);
-void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
-    void *self, void *sm, Matrix4x3 *m, Fix12i fx, int t, unsigned int u);
-void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
-    void *, void *, int *, int, int, unsigned int, unsigned int);
 int IsStarCollectedInCurLevel(int);
 void DecIfAbove0_Short(void *);
 }
@@ -285,7 +278,7 @@ int daOwl_c::func_ov094_0213598c()
     unk_3e8 = 0;
     mStateTimer = 0;
     mAnimSpeed = 0x2000;
-    mModelAnim.SetAnim((BCA_File *)data_ov094_02136af8.filePtr, 0, 0x1000, 0);
+    mAnmModel.SetAnim((BCA_File *)data_ov094_02136af8.filePtr, 0, 0x1000, 0);
     return 1;
 }
 
@@ -299,7 +292,7 @@ int daOwl_c::func_ov094_021359d8()
     Player *rider;
 
     if (OWL_TIMER(this) == 1) {
-        mModelAnim.SetAnim((BCA_File *)data_ov094_02136ae8.filePtr, 0, 0x1000, 0);
+        mAnmModel.SetAnim((BCA_File *)data_ov094_02136ae8.filePtr, 0, 0x1000, 0);
         mAnimSpeed = 0x1000;
     }
 
@@ -320,7 +313,7 @@ int daOwl_c::func_ov094_021359d8()
     rider = mRider;
     if (rider != 0 && func_ov002_020df7f4(rider) == 1) {
         OWL_TIMER(this) = 0xa;
-        mModelAnim.SetAnim((BCA_File *)data_ov094_02136af8.filePtr, 0, 0x1000, 0);
+        mAnmModel.SetAnim((BCA_File *)data_ov094_02136af8.filePtr, 0, 0x1000, 0);
     }
 
     ApproachAngle(&mPrevAngleX, 0, 0xa, 0x200, 0x100);
@@ -328,7 +321,7 @@ int daOwl_c::func_ov094_021359d8()
     if (mWithMeshClsn.IsOnWall() != 0 || func_02035638((u8 *)&mWithMeshClsn) != 0) {
         rider = mRider;
         if (rider != 0 && func_ov002_020df7ac(rider) != 0) {
-            _ZN10dBgCh_Actr12Unk_0203589cEv(&mWithMeshClsn);
+            mWithMeshClsn.Unk_0203589c();
             mRider = 0;
             unk_3e8 = 0;
             mStateTimer = 0;
@@ -354,7 +347,7 @@ int daOwl_c::func_ov094_02135bd4()
 {
     mStateTimer = 0x1e;
     unk_3e8 = 0;
-    mModelAnim.SetAnim((BCA_File *)data_ov094_02136af8.filePtr, 0, 0x1000, 0);
+    mAnmModel.SetAnim((BCA_File *)data_ov094_02136af8.filePtr, 0, 0x1000, 0);
     mAnimSpeed = 0x2000;
     return 1;
 }
@@ -416,7 +409,7 @@ int daOwl_c::func_ov094_02135c28()
     idx = ((u16)(short)ang >> 4) * 2;
     tbl = data_02082214[idx];
     result = FX_MUL(tbl, 0x64000);
-    _Z14ApproachLinearRiii(&mPosY, mAnchorY + result, 0x3000);
+    ApproachLinear(mPosY, mAnchorY + result, 0x3000);
 
     Matrix4x3_FromRotationY(&data_020a0e68, mPrevAngleY);
     MulVec3Mat4x3(&buf, &data_020a0e68, &mSpeedX);
@@ -428,7 +421,7 @@ int daOwl_c::func_ov094_02135c28()
  * 50..113 frame wander timer. */
 int daOwl_c::func_ov094_02135e64()
 {
-    mModelAnim.SetAnim((BCA_File *)data_ov094_02136af0.filePtr, 0, 0x1000, 0);
+    mAnmModel.SetAnim((BCA_File *)data_ov094_02136af0.filePtr, 0, 0x1000, 0);
     mWanderAngleY = (short)((RandomIntInternal(data_0209e650) >> 8) << 0xc);
     mStateTimer = (short)(((RandomIntInternal(data_0209e650) >> 8) & 0x3f) + 0x32);
     mAnimSpeed = 0x1000;
@@ -471,7 +464,7 @@ int daOwl_c::func_ov094_02135fe0()
     mSpeedX = 0;
     mVertSpeed = 0;
     mSpeedZ = 0;
-    mModelAnim.SetAnim((BCA_File *)data_ov094_02136af0.filePtr, 0, 0x1000, 0);
+    mAnmModel.SetAnim((BCA_File *)data_ov094_02136af0.filePtr, 0, 0x1000, 0);
     return 1;
 }
 
@@ -524,7 +517,7 @@ int daOwl_c::func_ov094_02136024()
 /* Enter of the dormant state: animation data_ov094_02136af0[1]. */
 int daOwl_c::func_ov094_02136150()
 {
-    mModelAnim.SetAnim((BCA_File *)data_ov094_02136af0.filePtr, 0, 0x1000, 0);
+    mAnmModel.SetAnim((BCA_File *)data_ov094_02136af0.filePtr, 0, 0x1000, 0);
     return 1;
 }
 
@@ -550,17 +543,16 @@ void daOwl_c::func_ov094_021361d8()
     Matrix4x3_FromTranslation(&data_020a0e68, v.x, v.y, v.z);
     Matrix4x3_ApplyInPlaceToRotationXYZExt(&data_020a0e68,
         mAngleX, mAngleY, mAngleZ);
-    mModelAnim.ApplyOpacity(mOpacity, 1);
-    mModelAnim.mat4x3 = data_020a0e68;
-    MulMat4x3Mat4x3((const int *)&mModelAnim.data.transforms[1], (const int *)&mModelAnim.mat4x3,
+    mAnmModel.ApplyOpacity(mOpacity, 1);
+    mAnmModel.mat4x3 = data_020a0e68;
+    MulMat4x3Mat4x3((const int *)&mAnmModel.data.transforms[1], (const int *)&mAnmModel.mat4x3,
                     out.m);
     Matrix4x3_FromTranslation(&data_020a0e68,
         mPosX >> 3,
         (mPosY - 0x38000) >> 3,
         mPosZ >> 3);
     mShadowMat = data_020a0e68;
-    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
-        this, &mShadowModel, &mShadowMat, 0x64000, 0x320000, 0xf);
+    DropShadowRadHeight(mShadowModel, mShadowMat, 0x64000, 0x320000, 0xf);
 }
 
 // @symbol _ZN7daOwl_c19func_ov094_021362e0Ev
@@ -589,7 +581,7 @@ void daOwl_c::func_ov094_021362e0()
     mPosZ = v.z << 3;
     mPrevAngleY = mRider->mAngleY;
     mPrevAngleX = (s16)z;
-    mModelAnim.mat4x3 = data_020a0e68;
+    mAnmModel.mat4x3 = data_020a0e68;
 }
 
 // @symbol _ZN7daOwl_c16CleanupResourcesEv
@@ -612,7 +604,7 @@ int daOwl_c::Render()
 {
     if (mCurrentState == OWL_STATE_DORMANT)
         return 1;
-    mModelAnim.Render(0);
+    mAnmModel.Render(0);
     return 1;
 }
 
@@ -628,13 +620,13 @@ int daOwl_c::Behavior()
     }
     if (mCurrentState == OWL_STATE_DORMANT)
         return 1;
-    mModelAnim.speed = mAnimSpeed;
-    mModelAnim.Advance();
+    mAnmModel.speed = mAnimSpeed;
+    mAnmModel.Advance();
     {
         State *m = mCurrentState;
         if ((m == OWL_STATE_TALK || m == OWL_STATE_HOVER ||
              m == OWL_STATE_RETURN) &&
-            (unsigned short)(mModelAnim.currFrame >> 0xc) == 0) {
+            (unsigned short)(mAnmModel.currFrame >> 0xc) == 0) {
             func_02012694(0x139, &mCamSpacePosX);
         }
     }
@@ -680,7 +672,7 @@ int daOwl_c::InitResources()
     void *f;
 
     f = dExtSimpleModel_c::LoadFile(data_ov094_02136ae0);
-    mModelAnim.SetFile((BMD_File *)f, 1, -1);
+    mAnmModel.SetFile((BMD_File *)f, 1, -1);
     mShadowModel.InitCylinder();
     dExtFrameCtrl_c::LoadFile(data_ov094_02136af8);
     dExtFrameCtrl_c::LoadFile(data_ov094_02136ae8);
@@ -688,7 +680,7 @@ int daOwl_c::InitResources()
     v0[0] = data_ov094_02136a1c[0];
     v0[1] = data_ov094_02136a1c[1];
     v0[2] = data_ov094_02136a1c[2];
-    _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(&mdCcAcPos_c, this, v0, 0x64000, 0x64000, 0x800004, 0);
+    mdCcAcPos_c.Init(this, *(Vector3 *)v0, 0x64000, 0x64000, 0x800004, 0);
 
     mRider = 0;
     mdCcAcPos_c.flags |= 2;

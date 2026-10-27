@@ -9,10 +9,8 @@
 /* leftovers: the chain helpers and the twelve state handlers stay extern "C"
  * free functions under their func_ov014_* address names; the rows of
  * data_ov014_0211476c reach the handlers through 8-byte PMF descriptors.
- * g_profile_WANWAN is not this file's data. dExtAnmModel_c::SetAnim,
- * dCcAcPos_c::Init, DropShadowRadHeight, Player::Hurt and cstd::atan2
- * stay mangled: this file calls them, and each takes Fix12<int> by
- * value. The factory constructs the real class, including its two
+ * g_profile_WANWAN is not this file's data. Player::Hurt stays mangled:
+ * it takes Fix12<int> by value. The factory constructs the real class, including its two
  * Vector3[7] arrays. The four resource handles keep address names;
  * their definitions drive this file's static initializer.
  */
@@ -28,6 +26,7 @@
 #include "dCc_c.h"
 #include "dExtFrameCtrl_c.h"
 #include "nitro/fx/fx.h"
+#include "math/Approach.h"
 
 enum {
     kYoshiEggId = 9,
@@ -45,7 +44,7 @@ enum {
  * and destroy through SharedFilePtr_Destruct_Anim. The manifest aliases those
  * undefined members onto the ROM symbols. filePtr is the BMD or BCA the load
  * just filled in.
- *   02114968  body BMD   sinit 0x9c02, dExtSimpleModel_c::LoadFile, mModelAnim
+ *   02114968  body BMD   sinit 0x9c02, dExtSimpleModel_c::LoadFile, mAnmModel
  *   02114978  link BMD   sinit 0x9c01, dExtSimpleModel_c::LoadFile, mLinkModels
  *   02114980  idle BCA   sinit 0x9c04, dExtFrameCtrl_c::LoadFile
  *   02114970  lunge BCA  sinit 0x9c03, dExtFrameCtrl_c::LoadFile
@@ -81,16 +80,6 @@ void func_ov014_02112788(daWanwan_c *c);
 void func_ov014_02112ea8(void *fence);
 void func_ov102_0214ae1c(void *bomb);
 
-/* Scalar stand-ins. The header methods take Fix12<int> by value. */
-void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
-    dCcAcPos_c *self, dActor_c *actor, const Vector3 *pos, int radius, int height,
-    unsigned flags, unsigned vuln);
-void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
-    dActor_c *self, dExtShadowModel_c *shadow, Matrix4x3 *mtx, int radius, int depth,
-    unsigned opacity);
-/* local extern: Fix12<int> by value; this scalar bridge follows the definition. */
-int _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(
-    Player *player, void *pos, unsigned kind, int power, u8 a, u8 b, u8 c);
 short atan2_hold_d_a_wanwan_1(int y, int x);
 
 void MulVec3Mat4x3(void *v, void *m, void *dst);
@@ -111,8 +100,6 @@ unsigned short DecIfAbove0_Short(unsigned short *p);
 int Math_Function_0203b14c(void *p, int a, int b, int c, int d);
 }
 
-int ApproachLinear(int &value, int target, int step);
-bool ApproachLinear(short &value, short target, short step);
 
 namespace cstd {
 s16 atan2(s32, s32);
@@ -124,7 +111,7 @@ extern "C" int func_0201267c(int id, void *pos, int unused);
 }
 
 #define SetChompAnim(self, bca) \
-    (self)->mModelAnim.SetAnim((BCA_File *)(bca).filePtr, 0, 0x1000, 0)
+    (self)->mAnmModel.SetAnim((BCA_File *)(bca).filePtr, 0, 0x1000, 0)
 
 // @symbol daWanwan_c_classInit
 extern "C" daWanwan_c *daWanwan_c_classInit()
@@ -136,7 +123,7 @@ extern "C" daWanwan_c *daWanwan_c_classInit()
 int daWanwan_c::InitResources()
 {
     void *f = dExtSimpleModel_c::LoadFile(data_ov014_02114968);
-    mModelAnim.SetFile((BMD_File *)f, 1, 1);
+    mAnmModel.SetFile((BMD_File *)f, 1, 1);
     dExtSimpleModel_c::LoadFile(data_ov014_02114978);
     dExtFrameCtrl_c::LoadFile(data_ov014_02114980);
     dExtFrameCtrl_c::LoadFile(data_ov014_02114970);
@@ -170,9 +157,7 @@ int daWanwan_c::InitResources()
         v[0] = data_ov014_02114700[0];
         v[1] = data_ov014_02114700[1];
         v[2] = data_ov014_02114700[2];
-        /* dCcAcPos_c::Init takes Fix12<int> by value. */
-        _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
-            &mdCcAcPos_c, this, (Vector3 *)v, 0x96000, 0x12c000, 0x200004, 0x26ff0);
+        mdCcAcPos_c.Init(this, *((Vector3 *)v), 0x96000, 0x12c000, 0x200004, 0x26ff0);
     }
 
     func_ov014_02111ebc(1);
@@ -258,7 +243,7 @@ int daWanwan_c::Behavior()
 // @symbol _ZN10daWanwan_c6RenderEv
 int daWanwan_c::Render()
 {
-    mModelAnim.Render(&mScale);
+    mAnmModel.Render(&mScale);
 
     int j = 0;
     dExtSimpleModel_c *p = mLinkModels;
@@ -300,16 +285,16 @@ void func_ov014_02112788(daWanwan_c *c)
     daWanwan_c *e;
     daWanwan_c *o;
     dExtShadowModel_c *sm;
-    Matrix4x3_FromRotationXYZExt(&c->mModelAnim.mat4x3, c->mAngleX, c->mAngleY, c->mAngleZ);
-    c->mModelAnim.mat4x3.m[9] = c->mPosX >> 3;
-    c->mModelAnim.mat4x3.m[10] = c->mPosY >> 3;
-    c->mModelAnim.mat4x3.m[11] = c->mPosZ >> 3;
+    Matrix4x3_FromRotationXYZExt(&c->mAnmModel.mat4x3, c->mAngleX, c->mAngleY, c->mAngleZ);
+    c->mAnmModel.mat4x3.m[9] = c->mPosX >> 3;
+    c->mAnmModel.mat4x3.m[10] = c->mPosY >> 3;
+    c->mAnmModel.mat4x3.m[11] = c->mPosZ >> 3;
     t = c->mPosY - c->mSpawnPosY;
     if (t <= 0x1000)
         t = 0x1000;
     /* DropShadowRadHeight takes Fix12<int> by value. */
-    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
-        c, &c->mShadowModel, &c->mModelAnim.mat4x3, 0x15e000 - FX_MUL(t, 0x180), t + 0x28000, 0xf);
+    c->DropShadowRadHeight(c->mShadowModel, c->mAnmModel.mat4x3, 0x15e000 - FX_MUL(t, 0x180),
+                           t + 0x28000, 0xf);
     tmp = IDENTITY_MATRIX4X3;
     sm = c->mLinkShadows;
     i = 0;
@@ -324,8 +309,7 @@ void func_ov014_02112788(daWanwan_c *c)
         t = e->mLinkPos[0].y - c->mSpawnPosY;
         if (t <= 0x1000)
             t = 0x1000;
-        _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
-            c, sm, &m->mat4x3, 0x78000 - FX_MUL(t, 0x180), t + 0x28000, 0xf);
+        c->DropShadowRadHeight(*sm, m->mat4x3, 0x78000 - FX_MUL(t, 0x180), t + 0x28000, 0xf);
         m++;
         e = (daWanwan_c *)((char *)e + sizeof(Vector3));
         o = (daWanwan_c *)((char *)o + sizeof(dExtSimpleModel_c));
@@ -599,8 +583,7 @@ void func_ov014_02112114(daWanwan_c *c)
             v.x = c->mPosX;
             v.y = c->mPosY;
             v.z = c->mPosZ;
-            _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(
-                (Player *)other, &v, 3, 0xc000, 1, 0, 1);
+            ((Player *)other)->Hurt(v, 3, 0xc000, 1, 0, 1);
         }
     }
 
@@ -788,7 +771,7 @@ extern "C" void func_ov014_02111ca8(daWanwan_c *c)
             c->func_ov014_02111ebc(2);
         }
     }
-    static_cast<dExtFrameCtrl_c &>(c->mModelAnim).Advance();
+    static_cast<dExtFrameCtrl_c &>(c->mAnmModel).Advance();
 }
 
 // @symbol func_ov014_02111b70
@@ -844,7 +827,7 @@ extern "C" int func_ov014_02111af0(daWanwan_c *c)
         goto adv;
     c->func_ov014_02111ebc(1);
 adv:
-    static_cast<dExtFrameCtrl_c &>(c->mModelAnim).Advance();
+    static_cast<dExtFrameCtrl_c &>(c->mAnmModel).Advance();
 }
 
 // @symbol func_ov014_02111a6c
@@ -1005,7 +988,7 @@ extern "C" void func_ov014_021115ec(daWanwan_c *self)
             self->MarkForDestruction();
         break;
     }
-    static_cast<dExtFrameCtrl_c &>(self->mModelAnim).Advance();
+    static_cast<dExtFrameCtrl_c &>(self->mAnmModel).Advance();
 }
 
 // @symbol func_ov014_021115c0
