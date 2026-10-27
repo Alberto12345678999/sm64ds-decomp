@@ -8779,3 +8779,87 @@ and the Vec2 unit (NullDestructor_0203d47c), and its `.bss` follows Heap's. That
 likely owner, but it is about 21 one-function shards with no manifest, and in arm9 only the
 sinit itself references the object (the readers are ov002, ov006 and ov100). It can move once
 that run is promoted as a TU.
+
+## 6dg. arm9 static initializers folded into their owners (2026-10-27)
+
+Seven of the 23 handwritten arm9 `__sinit_0207xxxx` shards are now emitted by their owner TU.
+Each owner defines the object instead of declaring it `extern`, following the §6df recipe.
+arm9 `.init`/`.ctor` and `.bss` follow `.text` TU order, so each initializer's owner sits
+between its neighbours' owners. The object's readers confirm it.
+
+| shard | owner | object |
+|---|---|---|
+| `__sinit_02074d90` | `d_actor.cpp` | `data_0209b468`, the actor list (`ActorList`, first/last) |
+| `__sinit_02074da8` | `Sound.cpp` | `data_0209b53c`, the sound registry (`SndRegTable`) |
+| `__sinit_02074edc` | `d_scene.cpp` | `data_0209f5e8`/`data_0209f5d0`, the scene faders |
+| `__sinit_02074f80` | `d_wipe.cpp` | `data_0209f61c`, the `dWipe_c` singleton |
+| `__sinit_02074fb8` | `d_s_mb.cpp` | `data_020a0c68`, `dScMB_c::graphCallback_c` |
+| `__sinit_02074fe4` | `d_bg_w_kc.cpp` | `data_020a0cec`, the `dBgPc` the ITCM DetectClsn fills |
+| `__sinit_0207501c` | `d_bg_w_kc_mbg.cpp` | `data_020a0d0c`, the shared `dBgCh_Lin` scratch line |
+
+Each object keeps its address name wherever another file declares it under that name, so
+those files did not change.
+
+What each one needed beyond §6df:
+
+- **No destructor means no registration.** The graph callback, the actor list and the sound
+  registry have no destructor. mwcc emits the sinit and its `.ctor` word with no
+  `__register_global_object` call and no `@NNN` node. The manifest therefore needs no alias
+  row and no node binding rewrite.
+- **The constructor does exactly what the retail initializer does.** `__sinit_02074fb8` stores
+  two vptrs and zeroes only `+4`, so `graphCallback_c` gets `graphCallback_c() : mOwner(0) {}`.
+  `func_02034b1c` sets the other fields later. `__sinit_02074d90` zeroes two words, which is
+  an inline `ActorList() : first(0), last(0) {}`.
+- **A tail call through `ip`.** Retail `__sinit_02074da8` is `ldr ip,=func_02011a5c;
+  ldr r0,=data_0209b53c; bx ip`. mwcc emits exactly that for an inline constructor whose
+  whole body is a call to the extern "C" `func_02011a5c` (`SndRegTable() { func_02011a5c(this); }`).
+- **Node numbers collide across modules.** The node takes the next per-TU `@NNN`, and every
+  `@NNN` in every `symbols.txt` is unique, so where the definition sits decides whether the
+  node's name is free. Defined at the old extern, the `dWipe_c` node is `@75`, which ov064
+  already uses. Defined directly above `func_0202ed48`, its only arm9 reader, it gets the
+  free `@335`. In `d_bg_w_kc.cpp` every position gives a taken number (`@101`..`@147`), so a
+  `defined_symbol_renames` row maps `@101` back to the configured `data_020a0ce0`.
+  Strict `build_pin.verify` checks the raw object, so it reports `@101` as WRONG-DEST (it
+  resolves to ov095's `@101`). After the rename, the object as the build links it
+  (`reloc_audit._as_the_build_links_it`) checks clean, and so do `tubuild verify` and
+  linkcheck.
+- **Claim only the object.** The actor list, the scratch line and the registry sit among
+  `.bss` words that are still `extern` in their TUs. The `.bss` claim covers only the node and
+  the object, so the rest of the TU's `.bss` stays unclaimed. Configured names inside the
+  object (`data_020a0d1c` and `data_020a0d60`, the scratch line's `dBgPi` base and
+  `lineEnd`) do not get in the way.
+- **A claim end needs a configured anchor.** tubuild accepts a `.bss` claim only if both
+  ends are a `symbols.txt` address or a delinks bound. The registry ends at 0x0209ba84.
+  After it comes an unreferenced 0x1c-byte gap, then `data_0209baa0`, the 32-byte-aligned
+  sound heap. A `kind:bss(size=0x548)` on the object does not count as an anchor, so
+  `data_0209ba84` now labels the gap.
+
+**Not done.** For each shard: the owner evidence, then what is missing.
+
+- `__sinit_02073a24` (0x448) fills `dCamera_c`'s state tables (read by `func_0200d3f8`..
+  `func_0200d7a4`) from `.rodata` PMF constants at 0x02086bc8... Folding it means modelling
+  the tables as pointer-to-member statics with named `dCamera_c` methods, and claiming the
+  `.rodata` constants.
+- `__sinit_02073e6c` (0xf24) builds the KuppaScript tables (`data_0209b2a4` readers
+  `EndKuppaScript`/`ResetKuppaScript`). Those are not a TU in `src/`.
+- Three owners are unpromoted shard runs:
+  - `__sinit_02074dc4`: the Timer neighbour (`func_0201964c`/`func_0201973c`).
+  - `__sinit_02074e0c`: `func_0201aa18`/`func_0201aaec`, between IRQ2 and Message2.
+  - `__sinit_02074e44`: `data_0209e650`, next to `data_0209e64c` of the unpromoted
+    0x0201fec8..0x02020820 run.
+- `__sinit_02074e84` (`dScStage_c`'s graph callback `data_0209f3c4` and the `dClipper`
+  `data_0209f43c`) is interleaved with six other `dScStage_c` statics (0x0209f394..0x0209f40c).
+  A single `.bss` claim would have to define all of them in order.
+- Four belong to the unpromoted math runs around 0x0203adbc..0x0203d47c:
+  - `__sinit_02075054`: two two-short objects with `NoOpDestructor`.
+  - `__sinit_020750b8`: see §6df.
+  - `__sinit_020750ec`: Vec2, `NullDestructor_0203d47c`.
+  - `__sinit_0207511c`: `Vector3s`.
+- `__sinit_02075154` fills `fBase_c`'s five process lists (`data_020a4b6c`..`data_020a4ba8`,
+  read by ActorBase.cpp and fListNode.cpp) from PMF constants at 0x02099f48... Two things
+  are missing. The PMF targets (`func_0204322c`..`func_0204335c`) are unpromoted shards below
+  ActorBase. The constants also need claiming, and they are interleaved with the PMFs of the
+  `.rodata` table `data_02082178`.
+- `__sinit_02074dbc`, `02074dc0`, `02074e80`, `020750b4` and `02075150` are each a bare
+  `bx lr` with no relocations. Only TU order locates them, and none of the promoted
+  candidates emits an initializer.
