@@ -21,6 +21,11 @@
       "name": ".data",
       "start": "0x0210b940",
       "end": "0x0210b958"
+    },
+    {
+      "name": ".bss",
+      "start": "0x02110afc",
+      "end": "0x02110e24"
     }
   ],
   "functions": [
@@ -1075,8 +1080,584 @@
       "evidence": "compiler-emitted single-inheritance RTTI record matches retail and points to the ROM-proven dActor_c base identity"
     }
   ],
-  "bss": [],
+  "bss": [
+    {
+      "symbol": "_ZGVsViewEnd$3750",
+      "address": "0x02110afc",
+      "size": "0x4",
+      "binding": "STB_GLOBAL",
+      "evidence": "guard word of func_ov002_020f7538's function-local static sViewEnd; the function tests and sets bit 0 exactly as retail"
+    },
+    {
+      "symbol": "data_ov002_02110b00",
+      "address": "0x02110b00",
+      "size": "0x4",
+      "binding": "STB_GLOBAL",
+      "evidence": "bss object inside 0x02110afc..0x02110e24, defined here so the four function-local Vector3 statics keep their retail addresses"
+    },
+    {
+      "symbol": "_ZGVsViewStart$3746",
+      "address": "0x02110b04",
+      "size": "0x4",
+      "binding": "STB_GLOBAL",
+      "evidence": "guard word of func_ov002_020f7538's function-local static sViewStart; the function tests and sets bit 0 exactly as retail"
+    },
+    {
+      "symbol": "_ZGVsViewIdle$3754",
+      "address": "0x02110b08",
+      "size": "0x4",
+      "binding": "STB_GLOBAL",
+      "evidence": "guard word of func_ov002_020f7538's function-local static sViewIdle; the function tests and sets bit 0 exactly as retail"
+    },
+    {
+      "symbol": "_ZGVsLookTarget$3570",
+      "address": "0x02110b0c",
+      "size": "0x4",
+      "binding": "STB_GLOBAL",
+      "evidence": "guard word of func_ov002_020f6c60's function-local static sLookTarget; the function tests and sets bit 0 exactly as retail"
+    },
+    {
+      "symbol": "data_ov002_02110b10",
+      "address": "0x02110b10",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "bss object inside 0x02110afc..0x02110e24, defined here so the four function-local Vector3 statics keep their retail addresses"
+    },
+    {
+      "symbol": "data_ov002_02110b18",
+      "address": "0x02110b18",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "bss object inside 0x02110afc..0x02110e24, defined here so the four function-local Vector3 statics keep their retail addresses"
+    },
+    {
+      "symbol": "data_ov002_02110b20",
+      "address": "0x02110b20",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "bss object inside 0x02110afc..0x02110e24, defined here so the four function-local Vector3 statics keep their retail addresses"
+    },
+    {
+      "symbol": "data_ov002_02110b28",
+      "address": "0x02110b28",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "bss object inside 0x02110afc..0x02110e24, defined here so the four function-local Vector3 statics keep their retail addresses"
+    },
+    {
+      "symbol": "data_ov002_02110b30",
+      "address": "0x02110b30",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "bss object inside 0x02110afc..0x02110e24, defined here so the four function-local Vector3 statics keep their retail addresses"
+    },
+    {
+      "symbol": "data_ov002_02110b38",
+      "address": "0x02110b38",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "bss object inside 0x02110afc..0x02110e24, defined here so the four function-local Vector3 statics keep their retail addresses"
+    },
+    {
+      "symbol": "data_ov002_02110b40",
+      "address": "0x02110b40",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "bss object inside 0x02110afc..0x02110e24, defined here so the four function-local Vector3 statics keep their retail addresses"
+    },
+    {
+      "symbol": "data_ov002_02110b48",
+      "address": "0x02110b48",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "bss object inside 0x02110afc..0x02110e24, defined here so the four function-local Vector3 statics keep their retail addresses"
+    },
+    {
+      "symbol": "data_ov002_02110b50",
+      "address": "0x02110b50",
+      "size": "0x1",
+      "binding": "STB_GLOBAL",
+      "evidence": "char-sized bss object; the following symbol is 8-aligned so the retail 8-byte slot stays inside this contiguous .bss claim"
+    },
+    {
+      "symbol": "data_ov002_02110b58",
+      "address": "0x02110b58",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "bss object inside 0x02110afc..0x02110e24, defined here so the four function-local Vector3 statics keep their retail addresses"
+    },
+    {
+      "symbol": "data_ov002_02110b60",
+      "address": "0x02110b60",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "bss object inside 0x02110afc..0x02110e24, defined here so the four function-local Vector3 statics keep their retail addresses"
+    },
+    {
+      "symbol": "data_ov002_02110b68",
+      "address": "0x02110b68",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "bss object inside 0x02110afc..0x02110e24, defined here so the four function-local Vector3 statics keep their retail addresses"
+    },
+    {
+      "symbol": "data_ov002_02110b70",
+      "address": "0x02110b70",
+      "size": "0x1",
+      "binding": "STB_GLOBAL",
+      "evidence": "char-sized bss object; the following symbol is 8-aligned so the retail 8-byte slot stays inside this contiguous .bss claim"
+    },
+    {
+      "symbol": "data_ov002_02110b78",
+      "address": "0x02110b78",
+      "size": "0x1",
+      "binding": "STB_GLOBAL",
+      "evidence": "char-sized bss object; the following symbol is 8-aligned so the retail 8-byte slot stays inside this contiguous .bss claim"
+    },
+    {
+      "symbol": "data_ov002_02110b80",
+      "address": "0x02110b80",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "bss object inside 0x02110afc..0x02110e24, defined here so the four function-local Vector3 statics keep their retail addresses"
+    },
+    {
+      "symbol": "data_ov002_02110b88",
+      "address": "0x02110b88",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "bss object inside 0x02110afc..0x02110e24, defined here so the four function-local Vector3 statics keep their retail addresses"
+    },
+    {
+      "symbol": "data_ov002_02110b90",
+      "address": "0x02110b90",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "bss object inside 0x02110afc..0x02110e24, defined here so the four function-local Vector3 statics keep their retail addresses"
+    },
+    {
+      "symbol": "data_ov002_02110b98",
+      "address": "0x02110b98",
+      "size": "0x1",
+      "binding": "STB_GLOBAL",
+      "evidence": "char-sized bss object; the following symbol is 8-aligned so the retail 8-byte slot stays inside this contiguous .bss claim"
+    },
+    {
+      "symbol": "data_ov002_02110ba0",
+      "address": "0x02110ba0",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "bss object inside 0x02110afc..0x02110e24, defined here so the four function-local Vector3 statics keep their retail addresses"
+    },
+    {
+      "symbol": "data_ov002_02110ba8",
+      "address": "0x02110ba8",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "bss object inside 0x02110afc..0x02110e24, defined here so the four function-local Vector3 statics keep their retail addresses"
+    },
+    {
+      "symbol": "data_ov002_02110bb0",
+      "address": "0x02110bb0",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "bss object inside 0x02110afc..0x02110e24, defined here so the four function-local Vector3 statics keep their retail addresses"
+    },
+    {
+      "symbol": "data_ov002_02110bb8",
+      "address": "0x02110bb8",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "bss object inside 0x02110afc..0x02110e24, defined here so the four function-local Vector3 statics keep their retail addresses"
+    },
+    {
+      "symbol": "data_ov002_02110bc0",
+      "address": "0x02110bc0",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "bss object inside 0x02110afc..0x02110e24, defined here so the four function-local Vector3 statics keep their retail addresses"
+    },
+    {
+      "symbol": "data_ov002_02110bc8",
+      "address": "0x02110bc8",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "bss object inside 0x02110afc..0x02110e24, defined here so the four function-local Vector3 statics keep their retail addresses"
+    },
+    {
+      "symbol": "data_ov002_02110bd0",
+      "address": "0x02110bd0",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "bss object inside 0x02110afc..0x02110e24, defined here so the four function-local Vector3 statics keep their retail addresses"
+    },
+    {
+      "symbol": "data_ov002_02110bd8",
+      "address": "0x02110bd8",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "bss object inside 0x02110afc..0x02110e24, defined here so the four function-local Vector3 statics keep their retail addresses"
+    },
+    {
+      "symbol": "data_ov002_02110be0",
+      "address": "0x02110be0",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "bss object inside 0x02110afc..0x02110e24, defined here so the four function-local Vector3 statics keep their retail addresses"
+    },
+    {
+      "symbol": "data_ov002_02110be8",
+      "address": "0x02110be8",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "bss object inside 0x02110afc..0x02110e24, defined here so the four function-local Vector3 statics keep their retail addresses"
+    },
+    {
+      "symbol": "data_ov002_02110bf0",
+      "address": "0x02110bf0",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "bss object inside 0x02110afc..0x02110e24, defined here so the four function-local Vector3 statics keep their retail addresses"
+    },
+    {
+      "symbol": "data_ov002_02110bf8",
+      "address": "0x02110bf8",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "bss object inside 0x02110afc..0x02110e24, defined here so the four function-local Vector3 statics keep their retail addresses"
+    },
+    {
+      "symbol": "data_ov002_02110c00",
+      "address": "0x02110c00",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "bss object inside 0x02110afc..0x02110e24, defined here so the four function-local Vector3 statics keep their retail addresses"
+    },
+    {
+      "symbol": "data_ov002_02110c08",
+      "address": "0x02110c08",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "bss object inside 0x02110afc..0x02110e24, defined here so the four function-local Vector3 statics keep their retail addresses"
+    },
+    {
+      "symbol": "data_ov002_02110c10",
+      "address": "0x02110c10",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "bss object inside 0x02110afc..0x02110e24, defined here so the four function-local Vector3 statics keep their retail addresses"
+    },
+    {
+      "symbol": "data_ov002_02110c18",
+      "address": "0x02110c18",
+      "size": "0x1",
+      "binding": "STB_GLOBAL",
+      "evidence": "char-sized bss object; the following symbol is 8-aligned so the retail 8-byte slot stays inside this contiguous .bss claim"
+    },
+    {
+      "symbol": "sLookTarget$3570",
+      "address": "0x02110c20",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "func_ov002_020f6c60's function-local static Vector3(0xffdd6000, 0xbe4000, 0x2ae000); retail stores the three words under the guard and registers ~Vector3() for it"
+    },
+    {
+      "symbol": "data_ov002_02110c2c",
+      "address": "0x02110c2c",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "bss object inside 0x02110afc..0x02110e24, defined here so the four function-local Vector3 statics keep their retail addresses"
+    },
+    {
+      "symbol": "data_ov002_02110c38",
+      "address": "0x02110c38",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "bss object inside 0x02110afc..0x02110e24, defined here so the four function-local Vector3 statics keep their retail addresses"
+    },
+    {
+      "symbol": "data_ov002_02110c44",
+      "address": "0x02110c44",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "bss object inside 0x02110afc..0x02110e24, defined here so the four function-local Vector3 statics keep their retail addresses"
+    },
+    {
+      "symbol": "data_ov002_02110c50",
+      "address": "0x02110c50",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "bss object inside 0x02110afc..0x02110e24, defined here so the four function-local Vector3 statics keep their retail addresses"
+    },
+    {
+      "symbol": "data_ov002_02110c5c",
+      "address": "0x02110c5c",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "bss object inside 0x02110afc..0x02110e24, defined here so the four function-local Vector3 statics keep their retail addresses"
+    },
+    {
+      "symbol": "data_ov002_02110c68",
+      "address": "0x02110c68",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "bss object inside 0x02110afc..0x02110e24, defined here so the four function-local Vector3 statics keep their retail addresses"
+    },
+    {
+      "symbol": "data_ov002_02110c74",
+      "address": "0x02110c74",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "bss object inside 0x02110afc..0x02110e24, defined here so the four function-local Vector3 statics keep their retail addresses"
+    },
+    {
+      "symbol": "data_ov002_02110c80",
+      "address": "0x02110c80",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "bss object inside 0x02110afc..0x02110e24, defined here so the four function-local Vector3 statics keep their retail addresses"
+    },
+    {
+      "symbol": "data_ov002_02110c8c",
+      "address": "0x02110c8c",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "bss object inside 0x02110afc..0x02110e24, defined here so the four function-local Vector3 statics keep their retail addresses"
+    },
+    {
+      "symbol": "data_ov002_02110c98",
+      "address": "0x02110c98",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "bss object inside 0x02110afc..0x02110e24, defined here so the four function-local Vector3 statics keep their retail addresses"
+    },
+    {
+      "symbol": "data_ov002_02110ca4",
+      "address": "0x02110ca4",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "bss object inside 0x02110afc..0x02110e24, defined here so the four function-local Vector3 statics keep their retail addresses"
+    },
+    {
+      "symbol": "data_ov002_02110cb0",
+      "address": "0x02110cb0",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "bss object inside 0x02110afc..0x02110e24, defined here so the four function-local Vector3 statics keep their retail addresses"
+    },
+    {
+      "symbol": "data_ov002_02110cbc",
+      "address": "0x02110cbc",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "bss object inside 0x02110afc..0x02110e24, defined here so the four function-local Vector3 statics keep their retail addresses"
+    },
+    {
+      "symbol": "data_ov002_02110cc8",
+      "address": "0x02110cc8",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "bss object inside 0x02110afc..0x02110e24, defined here so the four function-local Vector3 statics keep their retail addresses"
+    },
+    {
+      "symbol": "data_ov002_02110cd4",
+      "address": "0x02110cd4",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "bss object inside 0x02110afc..0x02110e24, defined here so the four function-local Vector3 statics keep their retail addresses"
+    },
+    {
+      "symbol": "data_ov002_02110ce0",
+      "address": "0x02110ce0",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "bss object inside 0x02110afc..0x02110e24, defined here so the four function-local Vector3 statics keep their retail addresses"
+    },
+    {
+      "symbol": "data_ov002_02110cec",
+      "address": "0x02110cec",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "bss object inside 0x02110afc..0x02110e24, defined here so the four function-local Vector3 statics keep their retail addresses"
+    },
+    {
+      "symbol": "data_ov002_02110cf8",
+      "address": "0x02110cf8",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "bss object inside 0x02110afc..0x02110e24, defined here so the four function-local Vector3 statics keep their retail addresses"
+    },
+    {
+      "symbol": "data_ov002_02110d04",
+      "address": "0x02110d04",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "bss object inside 0x02110afc..0x02110e24, defined here so the four function-local Vector3 statics keep their retail addresses"
+    },
+    {
+      "symbol": "data_ov002_02110d10",
+      "address": "0x02110d10",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "bss object inside 0x02110afc..0x02110e24, defined here so the four function-local Vector3 statics keep their retail addresses"
+    },
+    {
+      "symbol": "data_ov002_02110d1c",
+      "address": "0x02110d1c",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "bss object inside 0x02110afc..0x02110e24, defined here so the four function-local Vector3 statics keep their retail addresses"
+    },
+    {
+      "symbol": "data_ov002_02110d28",
+      "address": "0x02110d28",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "bss object inside 0x02110afc..0x02110e24, defined here so the four function-local Vector3 statics keep their retail addresses"
+    },
+    {
+      "symbol": "data_ov002_02110d34",
+      "address": "0x02110d34",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "bss object inside 0x02110afc..0x02110e24, defined here so the four function-local Vector3 statics keep their retail addresses"
+    },
+    {
+      "symbol": "data_ov002_02110d40",
+      "address": "0x02110d40",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "bss object inside 0x02110afc..0x02110e24, defined here so the four function-local Vector3 statics keep their retail addresses"
+    },
+    {
+      "symbol": "data_ov002_02110d4c",
+      "address": "0x02110d4c",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "bss object inside 0x02110afc..0x02110e24, defined here so the four function-local Vector3 statics keep their retail addresses"
+    },
+    {
+      "symbol": "data_ov002_02110d58",
+      "address": "0x02110d58",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "bss object inside 0x02110afc..0x02110e24, defined here so the four function-local Vector3 statics keep their retail addresses"
+    },
+    {
+      "symbol": "data_ov002_02110d64",
+      "address": "0x02110d64",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "bss object inside 0x02110afc..0x02110e24, defined here so the four function-local Vector3 statics keep their retail addresses"
+    },
+    {
+      "symbol": "data_ov002_02110d70",
+      "address": "0x02110d70",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "bss object inside 0x02110afc..0x02110e24, defined here so the four function-local Vector3 statics keep their retail addresses"
+    },
+    {
+      "symbol": "data_ov002_02110d7c",
+      "address": "0x02110d7c",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "bss object inside 0x02110afc..0x02110e24, defined here so the four function-local Vector3 statics keep their retail addresses"
+    },
+    {
+      "symbol": "data_ov002_02110d88",
+      "address": "0x02110d88",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "bss object inside 0x02110afc..0x02110e24, defined here so the four function-local Vector3 statics keep their retail addresses"
+    },
+    {
+      "symbol": "data_ov002_02110d94",
+      "address": "0x02110d94",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "bss object inside 0x02110afc..0x02110e24, defined here so the four function-local Vector3 statics keep their retail addresses"
+    },
+    {
+      "symbol": "data_ov002_02110da0",
+      "address": "0x02110da0",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "bss object inside 0x02110afc..0x02110e24, defined here so the four function-local Vector3 statics keep their retail addresses"
+    },
+    {
+      "symbol": "@3757",
+      "address": "0x02110dac",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "compiler-generated destructor-registration node for sViewIdle; func_ov002_020f7538 passes it as the third __register_global_object argument exactly as retail"
+    },
+    {
+      "symbol": "@3573",
+      "address": "0x02110db8",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "compiler-generated destructor-registration node for sLookTarget; func_ov002_020f6c60 passes it as the third __register_global_object argument exactly as retail"
+    },
+    {
+      "symbol": "data_ov002_02110dc4",
+      "address": "0x02110dc4",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "bss object inside 0x02110afc..0x02110e24, defined here so the four function-local Vector3 statics keep their retail addresses"
+    },
+    {
+      "symbol": "data_ov002_02110dd0",
+      "address": "0x02110dd0",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "bss object inside 0x02110afc..0x02110e24, defined here so the four function-local Vector3 statics keep their retail addresses"
+    },
+    {
+      "symbol": "data_ov002_02110ddc",
+      "address": "0x02110ddc",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "bss object inside 0x02110afc..0x02110e24, defined here so the four function-local Vector3 statics keep their retail addresses"
+    },
+    {
+      "symbol": "@3749",
+      "address": "0x02110de8",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "compiler-generated destructor-registration node for sViewStart; func_ov002_020f7538 passes it as the third __register_global_object argument exactly as retail"
+    },
+    {
+      "symbol": "sViewStart$3746",
+      "address": "0x02110df4",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "func_ov002_020f7538's function-local static Vector3(0x2800, 0xfffee900, -0x4200); retail stores the three words under the guard and registers ~Vector3() for it"
+    },
+    {
+      "symbol": "@3753",
+      "address": "0x02110e00",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "compiler-generated destructor-registration node for sViewEnd; func_ov002_020f7538 passes it as the third __register_global_object argument exactly as retail"
+    },
+    {
+      "symbol": "sViewEnd$3750",
+      "address": "0x02110e0c",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "func_ov002_020f7538's function-local static Vector3(0x3300, 0xfffee900, -0x5e00); retail stores the three words under the guard and registers ~Vector3() for it"
+    },
+    {
+      "symbol": "sViewIdle$3754",
+      "address": "0x02110e18",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "func_ov002_020f7538's function-local static Vector3(0x4c00, -0xf200, -0xff00); retail stores the three words under the guard and registers ~Vector3() for it"
+    }
+  ],
   "notes": [
+    "Four function-local Vector3 statics (sLookTarget in func_ov002_020f6c60, sViewStart/sViewEnd/sViewIdle in func_ov002_020f7538) replace the handwritten guard, stores and func_020731dc registration. mwcc emits the guard test, the stores and the registration inline, byte- and relocation-identical. No __sinit. Their .bss is interleaved with the cutscene file handles, so this TU claims 0x02110afc..0x02110e24 and defines every object in that span.",
     "LOCAL WORKER NOTE: this machine's stock dump is the EU image (gamecode ASMP), so the scratch link built ROM sha256 ddab9300b24aeae254192c2a30d812b07ece3adff83230e75c865ed915c9de40 -- byte-identical to this tree's stock build -- while the recorded rom.sha256 carries the fleet-canonical stock SHA-256 that every other intact entry on main shares (d1506e90...c478e8). The divergent bytes are NDS container/packaging fields outside every module range; the content proof is identical either way (moduleSetSha256 f9852ffaf80ef19662ab5535df4b13b935188ac3087b5b1d4561c089e4dd802b, symbol inventory and tuRanges equal the canonical records, and the linked TU range 0x020f1f70..0x020f8858 was identical).",
     "Generated by tools/tubuild.py create. See the file's own header comment for what was and was not reconciled, and notes/translation-unit-reconstruction-plan.md section 7.3 for what this generator does and does not attempt to resolve automatically.",
     "tubuild create warning: RAW: src/func_ov002_020f3978.cpp (func_ov002_020f3978) did not split (the definition is inside the extern \"C\" block opened on line 2, so it was consumed as a declaration -- tubuild cannot place a block-scoped member in a TU); carried verbatim -- its own includes/declarations stay inside its member block",
@@ -1758,7 +2339,28 @@
       "canonical_module": "ov002",
       "canonical_address": "0x0210bcc4",
       "evidence": "anmModel_c vtable import; secondary vptr references carry nonzero addends, so the import must resolve through a non-_ZTV configured name to stay addend-exact under the preamble-normalizing intact path; daDemo_anmModel_vtbl names the same address and preserves every linked byte."
+    },
+    {
+      "symbol": "__register_global_object",
+      "canonical_symbol": "func_020731dc",
+      "canonical_module": "arm9",
+      "canonical_address": "0x020731dc",
+      "evidence": "compiler-generated function-local static registration in func_ov002_020f6c60 and func_ov002_020f7538; retail calls func_020731dc with the Vector3, ~Vector3() and the registration node"
     }
+  ],
+  "symbol_binding_rewrites": [
+    {"symbol": "_ZGVsLookTarget$3570", "from": "STB_LOCAL", "to": "STB_GLOBAL", "evidence": "function-local static guard; DSD requires a configured global symbol at 0x02110b0c"},
+    {"symbol": "@3573", "from": "STB_LOCAL", "to": "STB_GLOBAL", "evidence": "compiler-local destructor-registration node for sLookTarget; DSD requires a configured global symbol at 0x02110db8"},
+    {"symbol": "sLookTarget$3570", "from": "STB_LOCAL", "to": "STB_GLOBAL", "evidence": "function-local static Vector3; DSD requires a configured global symbol at 0x02110c20"},
+    {"symbol": "_ZGVsViewStart$3746", "from": "STB_LOCAL", "to": "STB_GLOBAL", "evidence": "function-local static guard; DSD requires a configured global symbol at 0x02110b04"},
+    {"symbol": "@3749", "from": "STB_LOCAL", "to": "STB_GLOBAL", "evidence": "compiler-local destructor-registration node for sViewStart; DSD requires a configured global symbol at 0x02110de8"},
+    {"symbol": "sViewStart$3746", "from": "STB_LOCAL", "to": "STB_GLOBAL", "evidence": "function-local static Vector3; DSD requires a configured global symbol at 0x02110df4"},
+    {"symbol": "_ZGVsViewEnd$3750", "from": "STB_LOCAL", "to": "STB_GLOBAL", "evidence": "function-local static guard; DSD requires a configured global symbol at 0x02110afc"},
+    {"symbol": "@3753", "from": "STB_LOCAL", "to": "STB_GLOBAL", "evidence": "compiler-local destructor-registration node for sViewEnd; DSD requires a configured global symbol at 0x02110e00"},
+    {"symbol": "sViewEnd$3750", "from": "STB_LOCAL", "to": "STB_GLOBAL", "evidence": "function-local static Vector3; DSD requires a configured global symbol at 0x02110e0c"},
+    {"symbol": "_ZGVsViewIdle$3754", "from": "STB_LOCAL", "to": "STB_GLOBAL", "evidence": "function-local static guard; DSD requires a configured global symbol at 0x02110b08"},
+    {"symbol": "@3757", "from": "STB_LOCAL", "to": "STB_GLOBAL", "evidence": "compiler-local destructor-registration node for sViewIdle; DSD requires a configured global symbol at 0x02110dac"},
+    {"symbol": "sViewIdle$3754", "from": "STB_LOCAL", "to": "STB_GLOBAL", "evidence": "function-local static Vector3; DSD requires a configured global symbol at 0x02110e18"}
   ],
   "production_mode": "intact-object",
   "relocations": [
