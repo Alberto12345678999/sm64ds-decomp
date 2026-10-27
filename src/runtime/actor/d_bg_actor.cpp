@@ -125,7 +125,7 @@ struct ClsnHitCopy {
 // @symbol func_ov002_020ef2a4
 extern "C" int func_ov002_020ef2a4(dBgCh_Actr *clsn, dActor_c *other) {
     if (clsn->IsOnGround()) {
-        dBgPi *hit = (dBgPi *)clsn->GetFloorResult();
+        dBgPi *hit = clsn->GetFloorResult();
         if (hit->GetClsnID() != -1) {
             dActor_c *owner = dActor_c::FindWithID(hit->GetClsnID());
             if (owner != 0) {
@@ -141,7 +141,7 @@ extern "C" int func_ov002_020ef2a4(dBgCh_Actr *clsn, dActor_c *other) {
 extern "C" int func_ov002_020ef228(dBgCh_Actr *clsn, int otherArg) {
     dActor_c *other = (dActor_c *)otherArg;
     if (clsn->IsOnWall()) {
-        dBgPi *hit = (dBgPi *)clsn->GetWallResult();
+        dBgPi *hit = clsn->GetWallResult();
         if (hit->GetClsnID() != -1) {
             dActor_c *owner = dActor_c::FindWithID(hit->GetClsnID());
             if (owner != 0) {
@@ -283,7 +283,7 @@ extern "C" int func_ov002_020eee3c(char *clsnArg, char *otherArg) {
     dBgCh_Actr *clsn = (dBgCh_Actr *)clsnArg;
     dActor_c *other = (dActor_c *)otherArg;
     if (clsn->IsOnWall()) {
-        dBgPi *hit = (dBgPi *)clsn->GetWallResult();
+        dBgPi *hit = clsn->GetWallResult();
         if (hit->GetClsnID() != -1) {
             dActor_c *owner = dActor_c::FindWithID(hit->GetClsnID());
             if (owner != 0) {
@@ -298,7 +298,7 @@ extern "C" int func_ov002_020eee3c(char *clsnArg, char *otherArg) {
 // @symbol func_ov002_020eedc0
 extern "C" int func_ov002_020eedc0(dBgCh_Actr *clsn, dActor_c *other) {
     if (clsn->IsOnWall()) {
-        dBgPi *hit = (dBgPi *)clsn->GetWallResult();
+        dBgPi *hit = clsn->GetWallResult();
         if (hit->GetClsnID() != -1) {
             dActor_c *owner = dActor_c::FindWithID(hit->GetClsnID());
             if (owner != 0) {
@@ -392,7 +392,7 @@ extern "C" int func_ov002_020eea84(dBgCh_Actr *clsn, dActor_c *player) {
     }
 
     if (clsn->IsOnWall()) {
-        dBgPi *wallHit = (dBgPi *)clsn->GetWallResult();
+        dBgPi *wallHit = clsn->GetWallResult();
         if (wallHit->GetClsnID() != -1) {
             owner = dActor_c::FindWithID(wallHit->GetClsnID());
             if (owner != 0 && IsActorID(owner, 0x139)) {

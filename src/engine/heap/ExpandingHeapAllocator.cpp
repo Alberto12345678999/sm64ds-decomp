@@ -57,6 +57,8 @@
 #include "cstd.h"
 
 extern "C" void MultiStore_Int(int val, void *dst, int len);
+/* local extern: both constructors run over storage that already exists (see
+   the leftovers above); a placement new would add a null test. */
 extern "C" ExpandingHeapAllocator *_ZN22ExpandingHeapAllocatorC1EPvj(
     ExpandingHeapAllocator *self, void *heapEnd, u32 flags);
 extern "C" void _ZN10MemoryNode6TargetC1EPS_(MemoryNode::Target *t, MemoryNode *node);

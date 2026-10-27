@@ -11,9 +11,6 @@
  * - Sound::ChangeMusicVolume and OAM::Render stay extern "C" free functions.
  *   Each takes a Fix12<int> by value; a method with that parameter homes
  *   r0-r3 to the stack.
- * - Callers reach Message::AddChar through its mangled name taking an int.
- *   Through the char signature every caller narrows the byte first, and
- *   the ROM callers pass it untruncated.
  * - The G2/G2S getters are declared locally in their namespaces. No
  *   header declares them yet.
  * - data_0209d6f4 is u8 * here. Message.cpp spells the same word volatile int
@@ -108,11 +105,6 @@ extern int func_0201fb4c(void);
 extern u8 NumStars(void);
 extern int func_020138dc(void);
 extern int __aeabi_idiv(int, int);
-/* local extern: byte-forced spelling -- the definition below is
-   Message::AddChar(char); a char parameter makes every caller narrow the
-   byte it passes, and the ROM callers pass it untruncated. Message.cpp
-   spells it the same way. */
-extern void _ZN7Message7AddCharEc(int c);
 }
 extern "C" {
 void OamRender10_Message2(int a, void *b, int c, int d, int e, int f, int g, int h, int i, int j);
@@ -175,21 +167,21 @@ void func_0201ab6c(void) {
         idx = data_0209d68c;
         data_0209d68c = idx + 1;
         data_0209d6e4[idx] = data_0209d6b0;
-        _ZN7Message7AddCharEc(0x4d);
+        Message::AddChar(0x4d);
         data_0209d694 = 1;
         break;
     case 2:
         idx = data_0209d68c;
         data_0209d68c = idx + 1;
         data_0209d6e4[idx] = data_0209d6b4;
-        _ZN7Message7AddCharEc(0x4d);
+        Message::AddChar(0x4d);
         data_0209d694 = 2;
         break;
     case 3:
         idx = data_0209d68c;
         data_0209d68c = idx + 1;
         data_0209d6e4[idx] = data_0209d6b4;
-        _ZN7Message7AddCharEc(0x4d);
+        Message::AddChar(0x4d);
         data_0209d694 = 3;
         break;
     }
@@ -231,7 +223,7 @@ void func_0201aca4(void) {
         for (i = 0; i < 3; i++) {
             int q = __aeabi_idiv(num, data_0208ee64[i]);
             if (q != 0 || leading != 0 || i == 2) {
-                _ZN7Message7AddCharEc(data_0208ee74[q]);
+                Message::AddChar(data_0208ee74[q]);
                 leading = 1;
             }
             num = num % data_0208ee64[i];
@@ -257,8 +249,8 @@ void func_0201adac(void) {
     };
     struct MsgTextChar *state = (struct MsgTextChar *)data_0209d6f4;
     u16 idx = state->indexLo | (state->indexHi << 8);
-    _ZN7Message7AddCharEc(data_0208ee6c[idx]);
-    _ZN7Message7AddCharEc((data_0208ee6c[idx] + 1) & 0xff);
+    Message::AddChar(data_0208ee6c[idx]);
+    Message::AddChar((data_0208ee6c[idx] + 1) & 0xff);
 }
 
 // @symbol func_0201adfc
@@ -481,8 +473,8 @@ void func_0201b388(int a0) {
 #pragma pop
 }
 
-// @symbol _ZN7Message7AddCharEc
-void Message::AddChar(char c) {
+// @symbol _ZN7Message7AddCharEh
+void Message::AddChar(u8 c) {
     int i;
     int *ip;
     unsigned int word;
@@ -664,7 +656,7 @@ void func_0201b7cc(void) {
             }
 
         default:
-            _ZN7Message7AddCharEc(c);
+            Message::AddChar(c);
             added = 1;
             data_0209d6f4 = data_0209d6f4 + 1;
         }

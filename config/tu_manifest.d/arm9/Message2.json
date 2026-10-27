@@ -75,7 +75,7 @@
       "ordinal": 7
     },
     {
-      "symbol": "_ZN7Message7AddCharEc",
+      "symbol": "_ZN7Message7AddCharEh",
       "address": "0x0201b5a8",
       "size": "0x00000150",
       "legacy_source": "src/_ZN7Message7AddCharEc.cpp",

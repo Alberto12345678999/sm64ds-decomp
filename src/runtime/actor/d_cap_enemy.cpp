@@ -31,6 +31,8 @@
 #include "decl_common.h"
 #include "Memory.h"
 
+/* local extern: the base-object (D2) destructor has no call spelling; a
+   qualified self->dEnemyBase_c::~dEnemyBase_c() emits D1 (see leftovers). */
 extern "C" void _ZN12dEnemyBase_cD2Ev(void *);
 
 // @symbol _ZN11dCapEnemy_cD0Ev

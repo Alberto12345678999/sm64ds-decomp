@@ -16,10 +16,10 @@ extern char data_0208e4b8[];
 extern char _ZTV8dScene_c[];
 extern char _ZTV10dScEntry_c[];
 extern struct P2 data_02086b58;
-extern dScEntry_c::icon_c *_ZN10dScEntry_c6icon_cD1Ev(dScEntry_c::icon_c *object);
-extern dScEntry_c::icon_c *_ZN10dScEntry_c6icon_cC1Ev(dScEntry_c::icon_c *object);
 /* local extern: __cxa_vec_ctor takes the element constructor and destructor
    by address, and C++ cannot take a constructor's or destructor's address. */
+extern dScEntry_c::icon_c *_ZN10dScEntry_c6icon_cD1Ev(dScEntry_c::icon_c *object);
+extern dScEntry_c::icon_c *_ZN10dScEntry_c6icon_cC1Ev(dScEntry_c::icon_c *object);
 extern OamAnimation *_ZN12OamAnimationD1Ev(OamAnimation *object);
 extern OamAnimation *_ZN12OamAnimationC1Ev(OamAnimation *object);
 

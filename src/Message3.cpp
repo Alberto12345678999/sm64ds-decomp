@@ -5,9 +5,8 @@
  * leftovers:
  * - defer_codegen is off so this file emits in source order. The per-function
  *   optimization pragmas are brackets.
- * - OAM::Render and G2x::SetBlendBrightness stay local externs. Render's
- *   scale arguments are Fix12<int> by value, and SetBlendBrightness's u16
- *   parameters would emit a narrow.
+ * - OAM::Render stays a local extern. Its scale arguments are Fix12<int> by
+ *   value.
  * - data_0209fc78 is a volatile macro in func_02033464 only. decl_common.h
  *   spells that byte plain, and the other functions in this file read it plain.
  * - data_0209f4a4 is s16[] in decl_common.h. func_020326ac indexes it with a
@@ -22,6 +21,7 @@
 #include "decl_common.h"
 #include "PlayerInput.h"
 #include "Message.h"
+#include "G2x.h"
 #include "G2.h"
 
 struct OamAttr;
@@ -109,10 +109,6 @@ extern void OamRender10_Message3(int sub, struct OamAttr *attr_, int xOff, int y
 struct OAM {
     static void Render(bool, OamAttr *, int, int, int, int, int, int, int, int);
 };
-/* local extern: byte-forced spelling -- the definition is
-   (volatile u16*, u16, s16); u16/s16 parameters would emit an explicit narrow
-   the ROM lacks. */
-extern void _ZN3G2x18SetBlendBrightnessEPVtts(volatile u16 *p, int a, int b);
 
 void func_02031b84(int c);
 void func_02031cd4(void *arg);
@@ -1447,7 +1443,7 @@ extern "C" void func_020345b0(int arg0)
     }
     data_0209fcb4 = t;
 
-    _ZN3G2x18SetBlendBrightnessEPVtts((volatile u16 *)0x4000050, (data_0209d45c ^ 0x10) | 0x20, -8);
+    G2x::SetBlendBrightness((volatile u16 *)0x4000050, (data_0209d45c ^ 0x10) | 0x20, -8);
 
     *(volatile u16 *)0x4000048 = (*(volatile u16 *)0x4000048 & ~0x3f) | (data_0209d45c | 8) | 0x20;
     *(volatile u16 *)0x400004a = (*(volatile u16 *)0x400004a & ~0x3f) | 0x17;

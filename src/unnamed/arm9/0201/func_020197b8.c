@@ -11,7 +11,7 @@ extern int data_0209d514;
 extern unsigned char data_0209b480;
 extern unsigned char data_0209e64c;
 
-void _ZN3G2x18SetBlendBrightnessEPVtts(void* p, unsigned short a, unsigned short b);
+void _ZN3G2x18SetBlendBrightnessEPVtii(void *p, unsigned short a, unsigned short b);
 void func_02019ac4(void);
 void func_02019390(void);
 void func_0203bb60(void);
@@ -30,8 +30,8 @@ unsigned short func_0203da80(unsigned short);
 int func_02030e4c(void);
 
 void func_020197b8(void) {
-    _ZN3G2x18SetBlendBrightnessEPVtts((void*)0x4000050, 0x3f, 0x1f);
-    _ZN3G2x18SetBlendBrightnessEPVtts((void*)0x4001050, 0x3f, 0x1f);
+    _ZN3G2x18SetBlendBrightnessEPVtii((void *)0x4000050, 0x3f, 0x1f);
+    _ZN3G2x18SetBlendBrightnessEPVtii((void *)0x4001050, 0x3f, 0x1f);
     do {
         unsigned short v;
         data_0209d50c = 0xb; func_02019ac4();

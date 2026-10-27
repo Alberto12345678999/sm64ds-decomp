@@ -26,9 +26,8 @@
 // - OAM::Render, OAM::RenderSub, Sound::PlaySub and cstd::atan2
 //   stay mangled (Fix12 by value). Fog::Init is the scalar Fix12i method.
 //   RenderNumber keeps a local extern spelled over the member's mask-emitting
-//   parameter conversions; G2x::SetBlendBrightness and G3X::SetFog stay
-//   mangled where the ROM passes a raw int the header's u16/bool parameter
-//   would narrow. InitResources calls LoadGraphics2D with the comparison
+//   parameter conversions; G3X::SetFog stays mangled where the ROM passes
+//   a raw int the header's bool parameter would narrow. InitResources calls LoadGraphics2D with the comparison
 //   itself as the bool, which is what the ROM passes.
 // - LoadTextureTransformers spells `new` as an explicit operator new call
 //   plus a null-guarded constructor call, a form from before the allocator
@@ -149,20 +148,9 @@ void TurnBacklightOn(void);
 void TurnBacklightOff(void);
 int IsStarCollected(int lv, int star);
 
-// local extern: Message.h's s8 level parameter re-narrows the SublevelToLevel result (LC_Update differs).
-void _ZN7Message21DisplayLevelClearTextEta(int m, unsigned char lvl);
-// local extern: Message::Display is a non-static member; this call passes the message id in r0 with no receiver.
-void _ZN7Message7DisplayEj(int m);
-// local extern: Message.h's u16 parameter re-narrows the s16 table entry (PS_Update differs by one word).
-void _ZN7Message11DisplayTextEt(int m);
-// local extern: Message.h's u16 parameter changes the sign-extended (s16) argument codegen (PS_Update differs).
-void _ZN7Message22DisplayOptionsMenuTextEt(int m);
 bool d_s_stage_methodsPlaySubHold(unsigned int a, unsigned int b, unsigned int c, int fix, int e);
 // local extern: SaveData.h's (s8, u8) parameters re-narrow both arguments (LC_Update differs).
 void _ZN8SaveData21SetCoinRecordIfHigherEah(int a, int b);
-// local extern: G2x.h's u16 brightness parameter narrows the `targets | 0x20` int
-// the ROM passes through (PS_Init, VE_Init and LC_Update each grow 16 bytes).
-void _ZN3G2x18SetBlendBrightnessEPVtts(volatile unsigned short *p, int val, short amt);
 
 void OamRender10_d_s_stage_methods(int sub, void *attr, int x, int y, int a, int cc, int fx, int fy,
                                    int rot, int mode);
@@ -623,8 +611,8 @@ void dScStage_c::VE_Init() {
     data_0209b464 = data_0209b454;
     data_0209f294 = 1;
     data_0209f290 = 0;
-    _ZN3G2x18SetBlendBrightnessEPVtts((volatile unsigned short *)0x4000050, a | 0x20, -7);
-    _ZN3G2x18SetBlendBrightnessEPVtts((volatile unsigned short *)0x4001050, b | 0x20, -7);
+    G2x::SetBlendBrightness((volatile unsigned short *)0x4000050, a | 0x20, -7);
+    G2x::SetBlendBrightness((volatile unsigned short *)0x4001050, b | 0x20, -7);
 }
 // @symbol _ZN10dScStage_c20RenderBouncingArrowsEv
 void dScStage_c::RenderBouncingArrows() {
@@ -734,7 +722,7 @@ void dScStage_c::LC_Update() {
     switch (data_0209f2d4) {
     case 0:
         REG16(0x400100a) = (REG16(0x400100a) & 0x43) | 0xd00;
-        _ZN7Message21DisplayLevelClearTextEta(0x27a, SublevelToLevel(data_02092124));
+        Message::DisplayLevelClearText(0x27a, SublevelToLevel(data_02092124));
         data_0209f360[0] = 0xa0;
         data_0209f360[1] = 0x140;
         data_0209f360[2] = 0x1e0;
@@ -815,8 +803,8 @@ void dScStage_c::LC_Update() {
         SetSubBg1Offset(0, 0);
         data_0209d45c |= 4;
         data_0209d454 |= 3;
-        _ZN3G2x18SetBlendBrightnessEPVtts((volatile u16 *)0x4000050, t6 | 0x20, -7);
-        _ZN3G2x18SetBlendBrightnessEPVtts((volatile u16 *)0x4001050, t5 | 0x20, -7);
+        G2x::SetBlendBrightness((volatile u16 *)0x4000050, t6 | 0x20, -7);
+        G2x::SetBlendBrightness((volatile u16 *)0x4001050, t5 | 0x20, -7);
         data_0209f2d4 = 3;
         return;
     }
@@ -1510,7 +1498,7 @@ void dScStage_c::PS_Update() {
             }
             data_0209f2f0 = 0;
         }
-        _ZN7Message7DisplayEj(data_020756d0[data_0209f2c8]);
+        Message::Display(data_020756d0[data_0209f2c8]);
         data_0209f360[0] = 0x80;
         data_0209f360[1] = 0x120;
         data_0209f360[2] = 0x1c0;
@@ -1690,7 +1678,7 @@ void dScStage_c::PS_Update() {
         }
         if (var_fp == 0)
             return;
-        _ZN7Message11DisplayTextEt(data_020756d0[data_0209f2c8]);
+        Message::DisplayText(data_020756d0[data_0209f2c8]);
         return;
     }
     case 2: {
@@ -2126,7 +2114,7 @@ void dScStage_c::PS_Update() {
         data_0209f2ec = data_0208ee3c ^ 1;
         data_0209f1fc = data_0208ee40;
         data_0209f238 = 0;
-        _ZN7Message22DisplayOptionsMenuTextEt((s16)(data_0209f234 + 0x284));
+        Message::DisplayOptionsMenuText(data_0209f234 + 0x284);
         data_0209f2b4 = 2;
         data_0209f2e0 = 0;
         dScStage_c::PS_UpdateOptionsMenu();
@@ -2191,7 +2179,7 @@ void dScStage_c::PS_Update() {
                 data_0209f238 = 2;
                 data_0209f210 = data_0208ee44 * 3;
                 data_0209f2e0 = 0;
-                _ZN7Message22DisplayOptionsMenuTextEt((s16)(data_0209f234 + 0x284));
+                Message::DisplayOptionsMenuText(data_0209f234 + 0x284);
                 data_0209f2e4 = 8;
                 dScStage_c::PS_UpdateOptionsMenu();
                 SetSoundMode(data_0209f234);
@@ -2232,7 +2220,7 @@ void dScStage_c::PS_Update() {
                 func_02012790(0x64);
                 data_0209f2e4 = 8;
                 dScStage_c::PS_UpdateOptionsMenu();
-                _ZN7Message22DisplayOptionsMenuTextEt((s16)(data_0209f234 + 0x284));
+                Message::DisplayOptionsMenuText(data_0209f234 + 0x284);
                 {
                     u8 s3 = gActivePlayerSlot;
                     u8 x3 = gTouchX[s3 * 4];
@@ -2633,8 +2621,7 @@ extern "C" int func_02029408(void) {
 /* Open the pause screen: clear the pause-menu state, pick the first page from
  * the level-clear/VS/castle situation, pause the music and darken both
  * screens. Static, like the rest of the pause-screen family -- dScStage_c::
- * Behavior calls it with nothing in r0. SetBlendBrightness is reached through
- * its mangled symbol `_ZN3G2x18SetBlendBrightnessEPVtts` (declared above). */
+ * Behavior calls it with nothing in r0. */
 void dScStage_c::PS_Init() {
     int isVsMode;
     u8 specialPauseState;
@@ -2689,8 +2676,8 @@ void dScStage_c::PS_Init() {
     }
 
     Sound::PauseMusic();
-    _ZN3G2x18SetBlendBrightnessEPVtts((volatile u16 *)0x04000050, mainBlendTargets | 0x20, -7);
-    _ZN3G2x18SetBlendBrightnessEPVtts((volatile u16 *)0x04001050, subBlendTargets | 0x20, -7);
+    G2x::SetBlendBrightness((volatile u16 *)0x04000050, mainBlendTargets | 0x20, -7);
+    G2x::SetBlendBrightness((volatile u16 *)0x04001050, subBlendTargets | 0x20, -7);
 }
 
 // @symbol func_02029600
@@ -4470,7 +4457,7 @@ extern "C" void ResetInput(void) {
 }
 
 // @symbol _ZN10dScStage_c16CleanupResourcesEv
-/* _ZN10dScStage_c16CleanupResourcesEv @ 0x0202c9a8 (arm9, size 0x264)
+/* dScStage_c::CleanupResources() @ 0x0202c9a8 (arm9, size 0x264)
  * Releases the level file handles, tears down fader/mesh-collider/message
  * state and unloads the level overlays/archive. Returns 1.
  */

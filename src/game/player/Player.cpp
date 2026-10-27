@@ -1370,8 +1370,9 @@ int func_ov002_020bec9c(void*c,unsigned int a,int b,int d,unsigned short e){
  * flag is consulted depends on the second argument -- mIsMetal for the live
  * state, mDrawnIsMetal (func_ov002_020e4bb8's blinked copy) for drawing.
  *
- * const, and the _ZNK in the symbol is what says so: declared without it the
- * compiler emits _ZN..., which names a symbol that does not exist.
+ * const, and the K in the mangled name is what says so: declared without it
+ * the compiler emits the non-const name, which names a symbol that does not
+ * exist.
  */
 unsigned int Player::GetBodyModelID(unsigned int a, bool b_) const
 {
@@ -1462,7 +1463,7 @@ int Player::IsAnim(unsigned int a)
 /* mwccarm rejects a linkage-spec inside a function, and these six names are
    redeclared with other types elsewhere in the TU, so they cannot be hoisted.
    The block stays so the hand-spelled callees keep C linkage. The method
-   itself still mangles as _ZN6Player7SetAnimEjiit. */
+   itself still mangles as the Player member. */
 extern "C" {
 #pragma opt_propagation off
 void Player::SetAnim(u32 animId, int flags, Fix12i speed, u16 startFrame) {
@@ -2342,7 +2343,7 @@ int Player::func_ov002_020c06fc(int arg)
        Vec3 is a MEMBER of the local struct Frame below, so a non-POD element
        gives Frame an implicit destructor, and mwccarm emits that as a new
        compiler-numbered local-class symbol -- measured as
-       _ZN6Player20Frame$2583Player_cppD1Ev. This TU emits no @NNNN/$NNN symbols
+       a D1 for Player::Frame$2583Player_cpp. This TU emits no @NNNN/$NNN symbols
        at all today, and such a name depends on declaration order (compare
        Bundle$902d_a_mky_cpp in AGENTS.md). Frame has to stay POD. */
     struct Vec3 { s32 x, y, z; };
@@ -2959,7 +2960,6 @@ void func_ov002_020c18b0(char *self, int p1)
 extern "C" {
 int Player::func_ov002_020c19d0(int arg1, int arg2) {
     char* self = (char*)this;
-    extern void _ZNK11SurfaceInfo12CopyNormalToER7Vector3(void*, void*);
     extern s16 data_02082214[];
     int angle = (unsigned short)mAngleY;
     dBgCh_Lin line;
@@ -2973,7 +2973,7 @@ int Player::func_ov002_020c19d0(int arg1, int arg2) {
     if (!line.DetectClsn()) {
         return 0;
     }
-    _ZNK11SurfaceInfo12CopyNormalToER7Vector3(&line.surface, &nrm);
+    line.surface.CopyNormalTo(nrm);
     if (nrm.y != 0) {
         return 0;
     }
@@ -2982,7 +2982,7 @@ int Player::func_ov002_020c19d0(int arg1, int arg2) {
 }
 
 // @symbol _ZN6Player19func_ov002_020c1ad8Ei
-/* _ZN6Player19func_ov002_020c1ad8Ei at 0x020c1ad8 (ov002)
+/* Player::func_ov002_020c1ad8(int) at 0x020c1ad8 (ov002)
  * Matched byte-for-byte with mwccarm 1.2/sp2p3.
  */
 extern "C" {
@@ -3338,7 +3338,6 @@ int Player::func_ov002_020c25a8(int arg1)
     extern void func_ov002_020eed24(void*, void*);
     extern int func_02035638(void*);
     extern void func_020371fc(void *);
-    extern void _ZNK11SurfaceInfo12CopyNormalToER7Vector3(void*, void*);
     extern int func_020356c8(void*);
     extern void func_ov002_020cef84(void*);
     extern int func_ov002_020d0580(void*);
@@ -3421,7 +3420,7 @@ int Player::func_ov002_020c25a8(int arg1)
         func_020371fc(&mMeshClsn);
 
     if (mClsnFlags & 1) {
-        fr = (dBgPi *)mMeshClsn.GetFloorResult();
+        fr = mMeshClsn.GetFloorResult();
         dst = &tmp.f04;
 
         {
@@ -3447,7 +3446,7 @@ int Player::func_ov002_020c25a8(int arg1)
         ret = fr->surface.clps.GetFloorClass();
 
         if (mIsUnderwater == 0 && ret != 1) {
-            _ZNK11SurfaceInfo12CopyNormalToER7Vector3(&fr->surface, &v);
+            fr->surface.CopyNormalTo(v);
             if (v.y != 0) {
                 int t = cstd::fdiv(FX_MUL(v.x, mSpeedX) + FX_MUL(v.z, mSpeedZ), v.y);
                 t = -(t + 0x8000);
@@ -3479,7 +3478,7 @@ int Player::func_ov002_020c25a8(int arg1)
             return wallFlag;
     }
 
-    _ZNK11SurfaceInfo12CopyNormalToER7Vector3(&((dBgPi *)mMeshClsn.GetWallResult())->surface, &wn);
+    mMeshClsn.GetWallResult()->surface.CopyNormalTo(wn);
     mWallNormalX = wn.x;
     mWallNormalY = wn.y;
     mWallNormalZ = wn.z;
@@ -3526,7 +3525,7 @@ void Player::func_ov002_020c29d4()
         mQuicksandRunFlags = 0x80;
     } else if (flags & 0x80) {
         if (mMeshClsn.IsOnGround()) {
-            int r = ((dBgPi *)mMeshClsn.GetFloorResult())->surface.clps.GetSurfaceType();
+            int r = mMeshClsn.GetFloorResult()->surface.clps.GetSurfaceType();
             if (r >= 6 && r <= 9) return;
             mQuicksandRunFlags = 0;
             mQuicksandRunTimer = 0;
@@ -3559,7 +3558,7 @@ void Player::func_ov002_020c2b08()
 
         if (!mMeshClsn.IsOnGround())
             return;
-        if (!SurfaceInfo_TestFlag0x20((int *)&((dBgPi *)mMeshClsn.GetFloorResult())->surface.clps))
+        if (!SurfaceInfo_TestFlag0x20((int *)&mMeshClsn.GetFloorResult()->surface.clps))
             return;
 
         limit = Player_ScaleByCharFactor(c, 0x20000);
@@ -3574,7 +3573,7 @@ void Player::func_ov002_020c2b08()
     if (mWaterRunTimer != 0) {
         if (!mMeshClsn.IsOnGround())
             goto clear_timer;
-        if (!SurfaceInfo_TestFlag0x20((int *)&((dBgPi *)mMeshClsn.GetFloorResult())->surface.clps))
+        if (!SurfaceInfo_TestFlag0x20((int *)&mMeshClsn.GetFloorResult()->surface.clps))
             goto clear_timer;
 
         mIsInShallowWater = 1;
@@ -3637,7 +3636,7 @@ void Player::func_ov002_020c2b08()
     mDetectWater = 0;
     if (!mMeshClsn.IsOnGround())
         return;
-    if (SurfaceInfo_TestFlag0x20((int *)&((dBgPi *)mMeshClsn.GetFloorResult())->surface.clps) != 0)
+    if (SurfaceInfo_TestFlag0x20((int *)&mMeshClsn.GetFloorResult()->surface.clps) != 0)
         return;
     if (mIsInShallowWater != 0)
         return;
@@ -3702,8 +3701,8 @@ void Player::func_ov002_020c2e78(){
 /* recovered: named members + shared header, real C++ method
  *
  * Warping is allowed from exactly two states. One of them is now spelt as the
- * static member it is -- Player::ST_WAIT, which the compiler mangles to
- * _ZN6Player7ST_WAITE for us -- instead of a hand-written extern. The other is
+ * static member it is -- Player::ST_WAIT, which the compiler mangles for us --
+ * instead of a hand-written extern. The other is
  * still reached by its ov002 address; it has no recovered name yet.
  *
  * The file's own `struct State;` stand-in is gone with it: IsState really
@@ -4412,6 +4411,7 @@ int Player::func_ov002_020c44c4()
     extern int data_0209caa0[];
     extern s8 data_0209f2f8;
     extern u8 data_0209f264;
+    /* local extern: the registrar takes this D1 by address, which C++ cannot spell. */
     extern void *_ZN7Vector3D1Ev(void *object);
     extern void func_020731dc(void *object, void *destructor, void *node);
     extern void Vec3_RotateYAndTranslate(void*, void*, short angle, void*);
@@ -4748,6 +4748,7 @@ int Player::ShowMessage2(fBase_c & actor_, unsigned int msg, const Vector3 * pos
     extern int data_ov002_0210e15c;
     extern int data_ov002_0210f224[3];
     extern int data_ov002_0210f1ac;
+    /* local extern: the registrar takes this D1 by address, which C++ cannot spell. */
     extern void *_ZN7Vector3D1Ev(void *object);
     extern void *data_0209f318;
     fBase_c *actor = &actor_;
@@ -5342,7 +5343,7 @@ int Player::St_DeadPit_Init()
 
 // @symbol _ZN6Player14EnterWhirlpoolEv
 /* recovered: named members + shared header, real C++ method */
-/* _ZN6Player14EnterWhirlpoolEv @ 0x20c5cc8 (ov002) -- tail-call veneer to _ZN6Player19func_ov002_020c5decEi (0x20c5dec) with r1=9.
+/* Player::EnterWhirlpool() @ 0x20c5cc8 (ov002) -- tail-call veneer to Player::func_ov002_020c5dec(int) (0x20c5dec) with r1=9.
  */
 void Player::EnterWhirlpool()
 {
@@ -6994,6 +6995,7 @@ int Player::func_ov002_020c8a4c() {
     extern short Vec3_HorzAngle(const Vector3*, const Vector3*);
     extern void func_020731dc(void*, void*, void*);
     extern void Vec3_RotateYAndTranslate(void*, const Vector3*, int, const Vector3*);
+    /* local extern: the registrar takes this D1 by address, which C++ cannot spell. */
     extern void *_ZN7Vector3D1Ev(void *object);
     extern int func_02053274(const Vector3*, const Vector3*);
     extern int data_ov002_0210e150;
@@ -7040,6 +7042,7 @@ extern "C" {
 int Player::func_ov002_020c8b78() {
     extern void PlayerChangeMusicVolumeHold3(unsigned int, int);
     extern void func_020731dc(void*, void*, void*);
+    /* local extern: the registrar takes this D1 by address, which C++ cannot spell. */
     extern void *_ZN7Vector3D1Ev(void *object);
     extern void Vec3_RotateYAndTranslate(void*, void*, int, void*);
     extern int data_ov002_0210e154;
@@ -7469,7 +7472,7 @@ done:
 }
 
 // @symbol _ZN6Player19func_ov002_020c9718Ev
-/* _ZN6Player19func_ov002_020c9718Ev at 0x020c9718
+/* Player::func_ov002_020c9718() at 0x020c9718
  *
  * Matched byte-for-byte with mwccarm 1.2/sp2p3 (overlay ov002).
  */
@@ -8018,7 +8021,7 @@ int Player::TryTalkToKeyDoor()
 
 // @symbol _ZN6Player12Unk_020ca488Ev
 /* recovered: named members + shared header, real C++ method */
-/* _ZN6Player12Unk_020ca488Ev @ 0x20ca488 (ov002) -- tail-call veneer to _ZN6Player12Unk_020c9e5cEh (0x20c9e5c) with r1=11.
+/* Player::Unk_020ca488() @ 0x20ca488 (ov002) -- tail-call veneer to Player::Unk_020c9e5c(unsigned char) (0x20c9e5c) with r1=11.
  */
 extern "C" {
 int Player::Unk_020ca488() {
@@ -8043,6 +8046,7 @@ int Player::TryEnterStarDoor(Vector3 & pos_, short kind)
     extern int data_ov002_0210e164;
     extern int data_ov002_0210f344[3];
     extern int data_ov002_0210f308;
+    /* local extern: the registrar takes this D1 by address, which C++ cannot spell. */
     extern void *_ZN7Vector3D1Ev(void *object);
     extern void func_020731dc(void *object, void *destructor, void *node);
     extern void Vec3_RotateYAndTranslate(void*, void*, short angle, void*);
@@ -9219,7 +9223,7 @@ int Player::St_Shell_Main()
     if (mMeshClsn.IsOnWall()) {
         int ang = cstd::atan2(mWallNormalX, mWallNormalZ);
         if (AngleDiff(ang, mPrevAngleY) > 0x6000) {
-            if (((dBgPi *)mMeshClsn.GetWallResult())->surface.clps.GetFloorClass() != 1) {
+            if (mMeshClsn.GetWallResult()->surface.clps.GetFloorClass() != 1) {
                 flag = 1;
             }
         }
@@ -9995,7 +9999,7 @@ int Player::St_Swim_Main()
     }
 
     if (mPrevVertSpeed == 0 && mMeshClsn.IsOnGround() != 0) {
-        fr = (int *)func_02037dc4(&((dBgPi *)mMeshClsn.GetFloorResult())->surface);
+        fr = (int *)func_02037dc4(&mMeshClsn.GetFloorResult()->surface);
         ang = fr[1];
         if (ang < 0x720 && ang > 0x400 && mPosY >= mWaterSurfaceY - 0xc8000) {
             int at;
@@ -10213,7 +10217,6 @@ int func_ov002_020ce324(char* c)
     extern short data_02082214[];
     extern Player::State data_ov002_02110694;
     extern int func_ov002_020ceb54(void*);
-    extern void _ZNK11SurfaceInfo12CopyNormalToER7Vector3(const void* self, void*);
     extern int atan2_hold_Player_11(int a, int b);
     extern int AngleDiff(int a, int b);
     extern int func_ov002_020ce324(void*);
@@ -10259,7 +10262,7 @@ int func_ov002_020ce324(char* c)
         b2.z = bz;
         rl2.SetObjAndLine(b1, b2, (dActor_c *)c);
         if (rl2.DetectClsn()) {
-            _ZNK11SurfaceInfo12CopyNormalToER7Vector3(&rl2.surface, &nrm);
+            rl2.surface.CopyNormalTo(nrm);
             if (nrm.y == 0) {
                 if (AngleDiff(cstd::atan2(nrm.x, nrm.z), player->mAngleY) >= 0x5000)
                     ok = 1;
@@ -11127,7 +11130,7 @@ int func_ov002_020cfbdc(char *self)
     if (player->mStateWaitTimer == 0) {
         if ((player->mClsnFlags & 2) != 0) {
             if (player->mMeshClsn.IsOnGround() != 0) {
-                dBgPi *fr = (dBgPi *)player->mMeshClsn.GetFloorResult();
+                dBgPi *fr = player->mMeshClsn.GetFloorResult();
                 if (fr->GetClsnID() != -1) {
                     if (dActor_c::FindWithID((unsigned int)fr->GetClsnID()) != 0) {
                         func_ov002_020d0948(self);
@@ -11238,7 +11241,7 @@ int func_ov002_020cfea4(char *self)
     int idx, dx, dz;
     if (p->mStateWaitTimer == 0 && (p->mClsnFlags & 2) != 0) {
         if (p->mMeshClsn.IsOnGround() != 0) {
-            fr = (dBgPi *)p->mMeshClsn.GetFloorResult();
+            fr = p->mMeshClsn.GetFloorResult();
             if (fr->GetClsnID() != -1) {
                 other = dActor_c::FindWithID((unsigned int)fr->GetClsnID());
                 if (other != 0) {
@@ -11248,7 +11251,7 @@ int func_ov002_020cfea4(char *self)
             }
         }
         if (p->mMeshClsn.IsOnWall() != 0) {
-            fr = (dBgPi *)p->mMeshClsn.GetWallResult();
+            fr = p->mMeshClsn.GetWallResult();
             if (fr->GetClsnID() != -1) {
                 other = dActor_c::FindWithID((unsigned int)fr->GetClsnID());
                 if (other != 0)
@@ -11330,7 +11333,6 @@ int func_ov002_020cfea4(char *self)
 extern "C" {
 int func_ov002_020d0178(char* c, int arg1, int flag)
 {
-    extern void _ZNK11SurfaceInfo12CopyNormalToER7Vector3(void *self, Vector3 *out);
     extern int atan2_hold_Player_9(int x, int z);
     extern int AngleDiff(int a, int b);
     extern s16 data_02082214[];
@@ -11392,7 +11394,7 @@ int func_ov002_020d0178(char* c, int arg1, int flag)
             return 0;
         }
     }
-    _ZNK11SurfaceInfo12CopyNormalToER7Vector3(&rg.surface, &normal);
+    rg.surface.CopyNormalTo(normal);
     if (normal.y < 0xf04) {
         return 0;
     }
@@ -11409,7 +11411,7 @@ int func_ov002_020d0178(char* c, int arg1, int flag)
     if (!rl.DetectClsn()) {
         return 0;
     }
-    _ZNK11SurfaceInfo12CopyNormalToER7Vector3(&rl.surface, &normal);
+    rl.surface.CopyNormalTo(normal);
     if (normal.y >= 0x2c7) {
         return 0;
     }
@@ -15366,7 +15368,6 @@ int func_ov002_020d6dac(char *self)
     extern void MulVec3Mat4x3(void *v, void *m, void *dst);
     extern void Vec3_MulScalarInPlace(int *v, int s);
     extern int func_02053274(int *a, int *b);
-    extern void _ZNK11SurfaceInfo12CopyNormalToER7Vector3(void *thiz, void *out);
     extern short atan2_hold_Player_8(int a, int b);
     extern u32 PlayerNewHold11(u32 handle, u32 kind, Fix12i x, Fix12i y, Fix12i z, const void *dir,
                                void *callback);
@@ -15432,7 +15433,7 @@ int func_ov002_020d6dac(char *self)
     ::Vector3 clsnPos = rl.GetClsnPos();
     player->mTongueHitDist = func_02053274((int *)&p1, (int *)&clsnPos);
     Vector3 normal;
-    _ZNK11SurfaceInfo12CopyNormalToER7Vector3(&rl.surface, &normal);
+    rl.surface.CopyNormalTo(normal);
     ang = cstd::atan2(normal.x, normal.z);
     idx = (u16)ang >> 4;
     dir.x = data_02082214[idx * 2];
@@ -16461,7 +16462,6 @@ void func_ov002_020d8a50(char* self, int which)
 {
     Player *player = (Player *)self;
     extern void func_ov002_020dbf4c(char* c);
-    extern void _ZNK11SurfaceInfo12CopyNormalToER7Vector3(void *s, Vector3 *n);
     extern s16 data_02082214[];
     extern u16 data_ov002_0210a5cc[];
     extern void func_ov002_020d8854(char*);
@@ -16551,7 +16551,7 @@ void func_ov002_020d8a50(char* self, int which)
         v2.z += data_02082214[idx * 2 + 1] * 0x64;
         ray.SetObjAndLine(v1, v2, (dActor_c *)self);
         if (ray.DetectClsn()) {
-            _ZNK11SurfaceInfo12CopyNormalToER7Vector3(&ray.surface, &normal);
+            ray.surface.CopyNormalTo(normal);
             if (normal.y == 0) {
                 player->mHorzSpeed = 0xa000;
                 player->mPrevAngleY = player->mAngleY + 0x8000;
@@ -18077,7 +18077,7 @@ int Player::St_Thrown_Init()
  *
  * Clears bit 1 of the body-collision flags, then if something is holding the
  * player at +0x35c and its actorID is 0xbf, tells it to drop and clears the
- * slot. Note the callee is _ZN6Player9DropActorEv -- Player::DropActor() --
+ * slot. Note the callee is Player::DropActor() --
  * invoked with THAT actor as its this, not the player's: whatever occupies
  * 0x35c is itself a Player. Kept as an extern "C" call rather than a method
  * call so the source does not assert a type this function cannot evidence.
@@ -18702,9 +18702,8 @@ void func_ov002_020dc09c(char *c) {
 // @symbol func_ov002_020dc174
 extern "C" {
 /* The attack collision's offset, reach and height. pos is a const Vector3 *: it
-   goes straight to dCcAcPos_c::Init, whose ROM symbol is
-   _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector3iijj -- RK7Vector3, a
-   const Vector3 &. Eleven callers in this file each used to spell it void *. */
+   goes straight to dCcAcPos_c::Init, whose ROM symbol mangles that
+   parameter as RK7Vector3, a const Vector3 &. Eleven callers in this file each used to spell it void *. */
 void func_ov002_020dc174(char *c, const Vector3 *pos, Fix12i reach, Fix12i height, u32 flags,
                          u32 a6) {
     Player *player = (Player *)c;
@@ -21525,7 +21524,7 @@ void func_ov002_020e0f38(char* c, int a){
 // @symbol _ZN6Player19St_CrazedCrate_InitEv
 /* recovered: named members + shared header, real C++ method, declarations from a shared header */
 /* recovered: named members + shared header, real C++ method */
-/* _ZN6Player19St_CrazedCrate_InitEv at 0x020e0fac (ov002), size 0x74
+/* Player::St_CrazedCrate_Init() at 0x020e0fac (ov002), size 0x74
  * Matched byte-for-byte with mwccarm 1.2/sp2p3.
  * flags: -O4,p -enum int -lang c++ -char signed -interworking -proc arm946e -gccext,on -msgstyle gcc
  */
@@ -22722,7 +22721,7 @@ extern "C" int func_ov002_020e2ea0(Player *self) {
         return 0;
     }
 
-    dBgPi *cr = (dBgPi *)p->mMeshClsn.GetFloorResult();
+    dBgPi *cr = p->mMeshClsn.GetFloorResult();
     if (cr->GetClsnID() != -1) {
         if (dActor_c::FindWithID((unsigned int)cr->GetClsnID()) != 0) {
             return 0;
@@ -22938,6 +22937,7 @@ int Player::CleanupResources()
     enum { false_, true_ };
     struct VB { virtual void v0(); virtual void v1(); };
     void func_0203cbc0(void *p);
+    /* local extern: the registrar takes this D1 by address, which C++ cannot spell. */
     void *_ZN7Vector3D1Ev(void *self);
     void func_ov002_020bebd4(char *c);
     void UnloadSilverStarAndNumber(void);
@@ -23663,7 +23663,7 @@ void func_ov002_020e444c(char *c)
         player->mHideShadow = 1;
 
     if (player->mMeshClsn.IsOnGround() != 0) {
-        dBgPi *fr = (dBgPi *)player->mMeshClsn.GetFloorResult();
+        dBgPi *fr = player->mMeshClsn.GetFloorResult();
         if (fr->GetClsnID() != -1) {
             void *a = dActor_c::FindWithID(fr->GetClsnID());
             if (a != 0) {
@@ -24197,6 +24197,7 @@ s32 Player::InitResources()
     void LoadSilverStarAndNumber(void);
     void func_02013a00(void);
     int StartWithFarCamera(void);
+    /* local extern: the registrar takes this D1 by address, which C++ cannot spell. */
     void *_ZN7Vector3D1Ev(void *object);
     void func_0203d384(void);
     extern u8 data_0209f2d8;
