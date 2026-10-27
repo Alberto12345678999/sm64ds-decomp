@@ -1,11 +1,14 @@
+//cpp
 #include "types.h"
-extern void *_ZN2G212GetBG1ScrPtrEv(void);
+#include "G2.h"
+#include "Heap.h"
+
+extern "C" {
+
 extern u64 func_020427c4(void);
 extern void *func_0202e118(void);
 extern int func_020441bc(int i);
 extern int GetActorDebugName(unsigned int i);
-extern int _ZN5mHeap6Heap_t6IntactEv(void *heap);
-extern int _ZN5mHeap6Heap_t21MaxAllocationUnitSizeEv(void *heap);
 
 extern void nds_printt(void *dst, const char *fmt, u32 v);
 extern void nds_print(void *dst, const void *str);
@@ -25,7 +28,7 @@ extern int *data_0209cddc;
 extern int data_0209cde0;
 extern int data_0209cdd8;
 extern void *data_0209cdd4;
-extern void *data_020a0e9c;
+extern mHeap::Heap_t *data_020a0e9c;
 extern void *data_020a0eac;
 extern u8 data_0209cdd0;
 
@@ -40,7 +43,7 @@ extern Buf52 data_0208e504;
 
 void ShowCrashScreen(void)
 {
-    char *scr = (char *)_ZN2G212GetBG1ScrPtrEv();
+    char *scr = (char *)G2::GetBG1ScrPtr();
     int hp;
     int rr;
     int cc;
@@ -97,16 +100,16 @@ void ShowCrashScreen(void)
         nds_print(scr + 0x400, (const void *)data_0209cdd4);
     }
 
-    if (_ZN5mHeap6Heap_t6IntactEv(data_020a0e9c)) {
-        int mx = _ZN5mHeap6Heap_t21MaxAllocationUnitSizeEv(data_020a0e9c);
+    if (data_020a0e9c->Intact()) {
+        int mx = data_020a0e9c->MaxAllocationUnitSize();
         nds_printf(scr + 0x500, data_0208e610,
             (*(int *)((char *)data_020a0e9c + 8) - mx) / 1024, mx / 1024);
     } else {
         nds_print(scr + 0x500, data_0208e624);
     }
 
-    if (_ZN5mHeap6Heap_t6IntactEv(data_020a0eac)) {
-        int mx = _ZN5mHeap6Heap_t21MaxAllocationUnitSizeEv(data_020a0eac);
+    if (((mHeap::Heap_t *)data_020a0eac)->Intact()) {
+        int mx = ((mHeap::Heap_t *)data_020a0eac)->MaxAllocationUnitSize();
         nds_printf(scr + 0x540, data_0208e634,
             (*(int *)((char *)data_020a0eac + 8) - mx) / 1024, mx / 1024);
     } else {
@@ -114,4 +117,5 @@ void ShowCrashScreen(void)
     }
 
     data_0209cdd0 = 1;
+}
 }

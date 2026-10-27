@@ -1,17 +1,15 @@
-#include "nitro/fx/fx.h"
-typedef long long s64;
+//cpp
+#include "types.h"
+#include "cstd.h"
+#include "dBgCh_Gnd.h"
 
-typedef struct Vector3 { int x, y, z; } Vector3;
-typedef struct dBgCh_Gnd { int _[0x15]; } dBgCh_Gnd;
+extern "C" {
+
+#include "nitro/fx/fx.h"
 typedef struct Entry3 { int a, b, c; } Entry3;
 
-extern void *_ZN9dBgCh_GndC1Ev(dBgCh_Gnd *t);
-extern void _ZN9dBgCh_Gnd12SetObjAndPosERK7Vector3P8dActor_c(dBgCh_Gnd *t, const Vector3 *pos, void *actor);
-extern int _ZN9dBgCh_Gnd10DetectClsnEv(dBgCh_Gnd *t);
-extern void _ZN9dBgCh_GndD1Ev(dBgCh_Gnd *t);
 extern int LenVec3(Vector3 *v);
 extern void Vec3_Sub(Vector3 *out, Vector3 *a, Vector3 *b);
-extern int _ZN4cstd4fdivEii(int a, int b);
 extern void Vec3_MulScalarInPlace(int *v, int s);
 extern void Vec3_Add(Vector3 *out, Vector3 *a, Vector3 *b);
 extern int func_020092c4(int self, Vector3 *out, Vector3 *target);
@@ -36,7 +34,6 @@ typedef struct {
 void func_0200b798(char *self, short *a1, int arg2)
 {
     CameraView *cam = (CameraView *)self;
-    dBgCh_Gnd ray;
     Vector3 pos;
     Vector3 v1;
     Vector3 v2;
@@ -63,10 +60,10 @@ void func_0200b798(char *self, short *a1, int arg2)
         pos.z = tz;
     }
 
-    _ZN9dBgCh_GndC1Ev(&ray);
-    _ZN9dBgCh_Gnd12SetObjAndPosERK7Vector3P8dActor_c(&ray, &pos, 0);
-    if (_ZN9dBgCh_Gnd10DetectClsnEv(&ray) != 0) {
-        pos.y -= ray._[0x11];
+    dBgCh_Gnd ray;
+    ray.SetObjAndPos(pos, 0);
+    if (ray.DetectClsn() != 0) {
+        pos.y -= ray.clsnY;
     }
 
     sum = arg2 + pos.y;
@@ -101,7 +98,7 @@ void func_0200b798(char *self, short *a1, int arg2)
         limit = e->b;
 
     if (len > limit) {
-        scale = _ZN4cstd4fdivEii(limit, len);
+        scale = cstd::fdiv(limit, len);
         Vec3_MulScalarInPlace((int *)&v1, scale);
         Vec3_Add(&v4, &cam->lookAt, &v1);
         v2.x = v4.x;
@@ -118,6 +115,5 @@ void func_0200b798(char *self, short *a1, int arg2)
     }
 
     cam->mAngleY = Vec3_HorzAngle(&cam->lookAt, &cam->pos);
-
-    _ZN9dBgCh_GndD1Ev(&ray);
+}
 }

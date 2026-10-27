@@ -1,10 +1,15 @@
+//cpp
 #include "types.h"
+#include "Heap.h"
+
+extern "C" {
+
 /* func_02018908 at 0x02018908 */
 extern void func_0204ee10(void *self);
-extern void _ZN5mHeap6Heap_t11_DeallocateEPv(void *heap, void *ptr);
 
 void func_02018908(void *self, void *heap)
 {
     func_0204ee10(self);
-    _ZN5mHeap6Heap_t11_DeallocateEPv(heap, self);
+    ((mHeap::Heap_t *)heap)->_Deallocate(self);
+}
 }

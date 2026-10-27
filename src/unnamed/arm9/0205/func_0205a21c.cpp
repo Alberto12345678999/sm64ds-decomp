@@ -1,6 +1,8 @@
+//cpp
 #include "types.h"
-extern void _ZN3IRQ11DisableIRQsEj(u32 mask);
-extern void _ZN3IRQ13SetIRQHandlerEjPFvvE(u32 mask, void *handler);
+#include "IRQ.h"
+
+extern "C" {
 
 typedef void (*IrqFn)(int);
 
@@ -18,12 +20,13 @@ void func_0205a21c(void)
 {
     IrqFn h;
     int arg;
-    _ZN3IRQ11DisableIRQsEj(0x200000);
+    IRQ::DisableIRQs(0x200000);
     *(volatile u32*)0x4000600 = (data_020a6460.f18 << 30) | (*(volatile u32*)0x4000600 & ~0xc0000000u);
-    _ZN3IRQ13SetIRQHandlerEjPFvvE(0x200000, data_020a6460.f1c);
+    IRQ::SetIRQHandler(0x200000, (IRQ::Handler)data_020a6460.f1c);
     data_020a6460.f0 = 0;
     h = data_020a6460.f10;
     arg = data_020a6460.f14;
     if (h != 0)
         h(arg);
+}
 }

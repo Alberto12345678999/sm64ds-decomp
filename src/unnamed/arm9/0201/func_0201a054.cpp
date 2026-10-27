@@ -1,4 +1,11 @@
+//cpp
 #include "types.h"
+#include "Heap.h"
+#include "IRQ.h"
+#include "dScene_c.h"
+
+extern "C" {
+
 extern void func_020427f8(void);
 extern u32 func_02042784(void);
 extern void func_02053a8c(void);
@@ -7,23 +14,18 @@ extern void func_0205b858(void);
 extern void func_0203d740(void);
 extern void func_02013e64(void);
 extern void func_0201a4e4(void);
-extern void _ZN3IRQ10EnableIRQsEj(u32 m);
-extern void _ZN3IRQ6EnableEv(void);
 extern int func_02053be0(int enable);
 extern void func_0203bbc0(void);
 extern void func_0203bb5c(void);
 extern void func_0201fec8(void);
 extern void func_02042f68(int a0, void* src);
 extern void func_02018aa4(void);
-extern void _ZN3IRQ11DisableIRQsEj(u32 m);
 extern void func_0203ad84(void);
 extern void func_0201a9fc(void* c);
-extern void _ZN5mHeap6Heap_t18InitializeGameHeapEjPS0_(u32 sz, void* p);
 extern void func_02019440(void);
 extern void func_020134c8(void);
 extern void func_0203b684(void);
 extern void func_020233f0(void);
-extern void _ZN8dScene_c18PrepareToSpawnBootEv(void);
 extern void func_020196cc(void);
 extern void func_0201a5cc(void);
 
@@ -44,13 +46,13 @@ void func_0201a054(void){
   func_0203d740();
   func_02013e64();
   func_0201a4e4();
-  _ZN3IRQ10EnableIRQsEj(1);
+  IRQ::EnableIRQs(1);
   {
     volatile u16* p = (volatile u16*)0x4000208;
     u16 old = *p;
     *p = 1;
   }
-  _ZN3IRQ6EnableEv();
+  IRQ::Enable();
   func_02053be0(1);
   func_0203bbc0();
   func_0203bb5c();
@@ -60,11 +62,11 @@ void func_0201a054(void){
   if (!r4)
     func_02018aa4();
   if (r4)
-    _ZN3IRQ11DisableIRQsEj(0x100000);
+      IRQ::DisableIRQs(0x100000);
   if (!r4)
     func_0203ad84();
   func_0201a9fc(data_0209d574);
-  _ZN5mHeap6Heap_t18InitializeGameHeapEjPS0_(0x3b000, 0);
+  mHeap::Heap_t::InitializeGameHeap(0x3b000, 0);
   func_0201a9fc(data_0209d574);
   func_02019440();
   if (!r4)
@@ -72,7 +74,7 @@ void func_0201a054(void){
   func_0203b684();
   data_020a4bb8 = ACTOR_SPAWN_TABLE;
   func_020233f0();
-  _ZN8dScene_c18PrepareToSpawnBootEv();
+  dScene_c::PrepareToSpawnBoot();
   func_020196cc();
   data_0209ee90.f44 = 0x100;
   *(volatile u32*)0x40004c8 = 0x296a5800;
@@ -80,4 +82,5 @@ void func_0201a054(void){
   *(volatile u32*)0x40004c0 = 0x7fff;
   *(volatile u32*)0x40004c4 = 0;
   func_0201a5cc();
+}
 }

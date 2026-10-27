@@ -1,5 +1,8 @@
+//cpp
 #include "types.h"
-extern void _Z14ApproachLinearRiii(int *p, int value, int speed);
+#include "math/Approach.h"
+
+extern "C" {
 
 /* File-local view of dCamera_c (include/dCamera_c.h is C++), with its names. */
 typedef struct {
@@ -20,12 +23,13 @@ typedef char
 int func_020072c4(char *self)
 {
     CameraView *cam = (CameraView *)self;
-    _Z14ApproachLinearRiii(&cam->mRampSpeed, 0xf000, 0x199);
-    _Z14ApproachLinearRiii(&cam->savedLookAt.x, 0x7d0000, cam->mRampSpeed);
-    _Z14ApproachLinearRiii(&cam->savedLookAt.y, 0x4b0000, cam->mRampSpeed / 10);
-    _Z14ApproachLinearRiii(&cam->savedLookAt.z, 0x3e8000, cam->mRampSpeed / 10);
-    _Z14ApproachLinearRiii(&cam->savedPos.x, 0, cam->mRampSpeed);
-    _Z14ApproachLinearRiii(&cam->savedPos.y, 0x4b0000, cam->mRampSpeed >> 1);
-    _Z14ApproachLinearRiii(&cam->savedPos.z, 0x3e8000, cam->mRampSpeed * 10 / 15);
+    ApproachLinear(cam->mRampSpeed, 0xf000, 0x199);
+    ApproachLinear(cam->savedLookAt.x, 0x7d0000, cam->mRampSpeed);
+    ApproachLinear(cam->savedLookAt.y, 0x4b0000, cam->mRampSpeed / 10);
+    ApproachLinear(cam->savedLookAt.z, 0x3e8000, cam->mRampSpeed / 10);
+    ApproachLinear(cam->savedPos.x, 0, cam->mRampSpeed);
+    ApproachLinear(cam->savedPos.y, 0x4b0000, cam->mRampSpeed >> 1);
+    ApproachLinear(cam->savedPos.z, 0x3e8000, cam->mRampSpeed * 10 / 15);
     return 1;
+}
 }

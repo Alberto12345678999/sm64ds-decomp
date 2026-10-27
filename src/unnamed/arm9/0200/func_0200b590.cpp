@@ -1,4 +1,9 @@
+//cpp
 #include "types.h"
+#include "dBgCh_Gnd.h"
+
+extern "C" {
+
 #include "nitro/fx/fx.h"
 
 extern short Vec3_HorzAngle(const Vector3 *v0, const Vector3 *v1);
@@ -6,11 +11,6 @@ extern void Vec3_RotateYAndTranslate(int *out, int *in, short angle, int *src);
 extern int Vec3_HorzDist(const Vector3 *a, const Vector3 *b);
 extern void func_0200897c(void *self, void *arg);
 extern int func_020092c4(int arg0, Vector3 *out, Vector3 *target);
-
-extern void *_ZN9dBgCh_GndC1Ev(void *self);
-extern void _ZN9dBgCh_Gnd12SetObjAndPosERK7Vector3P8dActor_c(void *self, const Vector3 *pos, void *actor);
-extern int _ZN9dBgCh_Gnd10DetectClsnEv(void *self);
-extern void _ZN9dBgCh_GndD1Ev(void *self);
 
 extern Vector3 data_02086e84;
 
@@ -39,7 +39,6 @@ void func_0200b590(char *c, short *a1, int arg2)
     short newAngle;
     Vector3 pos;
     Vector3 base;
-    char rg[0x50];
     int dx, dz;
     int hitY;
     int dist;
@@ -80,11 +79,11 @@ void func_0200b590(char *c, short *a1, int arg2)
     pos.x = selfX + FX_MUL(dx, 0xb33);
     pos.z = selfZ + FX_MUL(dz, 0xb33);
 
-    _ZN9dBgCh_GndC1Ev(rg);
-    func_0200897c(c, rg);
-    _ZN9dBgCh_Gnd12SetObjAndPosERK7Vector3P8dActor_c(rg, &pos, 0);
-    if (_ZN9dBgCh_Gnd10DetectClsnEv(rg)) {
-        hitY = *(int *)(rg + 0x44);
+    dBgCh_Gnd rg;
+    func_0200897c(c, &rg);
+    rg.SetObjAndPos(pos, 0);
+    if (rg.DetectClsn()) {
+        hitY = rg.clsnY;
         rotated.y = hitY;
         if (hitY < arg2)
             rotated.y = arg2;
@@ -103,5 +102,5 @@ void func_0200b590(char *c, short *a1, int arg2)
     }
 
     cam->mAngleY = Vec3_HorzAngle(&cam->lookAt, &cam->pos);
-    _ZN9dBgCh_GndD1Ev(rg);
+}
 }

@@ -1,10 +1,16 @@
+//cpp
 #include "types.h"
-// @symbol func_0200bb28
 /* recovered: shared common types, declarations from a shared header */
 #include "decl_common.h"
 /* recovered: shared common types */
 #include "common.h"
 #include "PlayerInput.h"
+#include "cstd.h"
+#include "math/Approach.h"
+
+extern "C" {
+
+// @symbol func_0200bb28
 #include "nitro/fx/fx.h"
 extern u16 data_0209f49c[];
 extern u16 data_0209f49e[];
@@ -12,9 +18,11 @@ extern u16 data_0209f49e[];
 extern u32 func_02012790(u32 a);
 extern s32 ApproachAngle(s16* cur, s16 target, s32 div, s32 band, s32 step);
 extern u16 DecIfAbove0_Short(u16* p);
-extern int _Z14ApproachLinearRsss(short *value, short target, short step);
 extern void Vec3_RotateYAndTranslate(s32* out, s32* in, s16 ang, s32* src);
 extern s32 Math_Function_0203b14c(s32* p, s32 tgt, s32 rate, s32 lim, s32 step);
+/* local extern: ApproachLinear(Vector3 &, const Vector3 &, Fix12<int>) takes
+ * its Fix12<int> by value, which changes this call site; the scalar spelling
+ * keeps the matched ABI. */
 extern s32 _Z14ApproachLinearR7Vector3RKS_5Fix12IiE(s32* v, s32* t, s32 rate);
 
 /* File-local views (the class headers are C++): only the fields this state
@@ -137,8 +145,7 @@ void func_0200bb28(char* c, char* a1)
                 }
             }
         }
-        _Z14ApproachLinearRsss(&cam->mEasedAngleY, (s16)(cam->mBaseAngleY + cam->mBaseAngleOffset),
-                               0x800);
+        ApproachLinear(cam->mEasedAngleY, (s16)(cam->mBaseAngleY + cam->mBaseAngleOffset), 0x800);
     }
 
     tbl = (cam->mFlags & 2) ? data_02086d50 : data_02086cc8;
@@ -150,7 +157,7 @@ void func_0200bb28(char* c, char* a1)
     vsrc.y = comp;
     {
         s32 t0 = tbl[0];
-        vsrc.z = _ZN4cstd4sqrtEy((s64)t0 * t0 - (s64)comp * comp);
+        vsrc.z = cstd::sqrt((s64)t0 * t0 - (s64)comp * comp);
     }
     {
         s32 tz = cam->mTargetPos.z;
@@ -174,4 +181,5 @@ void func_0200bb28(char* c, char* a1)
         cam->mFlags &= ~0x60;
     }
     cam->mAngleY = cam->mEasedAngleY;
+}
 }

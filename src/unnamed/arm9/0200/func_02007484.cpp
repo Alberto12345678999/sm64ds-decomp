@@ -1,5 +1,9 @@
+//cpp
 #include "types.h"
-extern void _Z14ApproachLinearRiii(int *v, int target, int rate);
+#include "math/Approach.h"
+
+extern "C" {
+
 extern void Math_Function_0203b0fc(int *p, int target, int scale, int max);
 
 /* File-local views (the class headers are C++): only the fields this state
@@ -22,7 +26,7 @@ typedef struct {
 int func_02007484(char *self)
 {
     CameraView *cam = (CameraView *)self;
-    _Z14ApproachLinearRiii(&cam->savedLookAt.z, 0, 0x2000);
+    ApproachLinear(cam->savedLookAt.z, 0, 0x2000);
 
     cam->savedLookAt.x = 0;
 
@@ -32,4 +36,5 @@ int func_02007484(char *self)
     Math_Function_0203b0fc(&cam->pos.z, target->z, 0x28, 0x7fffffff);
 
     return 1;
+}
 }

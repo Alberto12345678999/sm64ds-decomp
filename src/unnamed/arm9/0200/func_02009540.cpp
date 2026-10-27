@@ -1,8 +1,15 @@
+//cpp
+
+extern "C" {
+
 struct dCamera_c;
 
 extern int func_020091f8(struct dCamera_c *, struct dCamera_c *, int, int);
 extern void Vec3_RotateYAndTranslate(void *out, int src, short angle,
                                     const int *data);
+/* local extern: ApproachLinear(Vector3 &, const Vector3 &, Fix12<int>) takes
+ * its Fix12<int> by value, which changes this call site; the scalar spelling
+ * keeps the matched ABI. */
 extern void _Z14ApproachLinearR7Vector3RKS_5Fix12IiE(void *dest, const void *src, int factor);
 extern void func_02009138(struct dCamera_c *, int);
 extern const int data_02086ea8[];
@@ -44,4 +51,5 @@ int func_02009540(struct dCamera_c *cam)
     func_02009138(cam, 0x300000);
 
     return 1;
+}
 }

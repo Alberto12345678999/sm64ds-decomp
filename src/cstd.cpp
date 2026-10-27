@@ -14,10 +14,6 @@
  * stack-homed when the body reads it (wall 6az). The Fix12<int> in those
  * names was ours, not the ROM's: declared with the honest scalar Fix12i
  * (plain int) parameters they reproduce exactly. See notes/mwccarm-codegen.md 6az, MEASURED 2026-10-22.
- *
- * leftovers:
- * - src/InvMat4x3.cpp is C and cannot name a C++ namespaced function, so it
- *   keeps a mangled extern for reciprocal_async under the new spelling.
  */
 #include "types.h"
 #include "nitro/hw/registers.h"

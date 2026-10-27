@@ -1,6 +1,10 @@
+//cpp
+#include "OAM.h"
+
+extern "C" {
+
 extern void func_0202345c(void);
 extern void func_02018efc(void);
-extern void _ZN3OAM5ResetEv(void);
 extern int func_02019018(void);
 extern void func_0200f4b4(void);
 extern void func_0200f468(void);
@@ -23,7 +27,7 @@ void func_02019390(void)
             return;
         }
     }
-    _ZN3OAM5ResetEv();
+    OAM::Reset();
     if (func_02019018() != 0) {
         func_0200f4b4();
     }
@@ -31,4 +35,5 @@ void func_02019390(void)
     func_0202345c();
     func_02018efc();
     func_02018ec0();
+}
 }

@@ -1,3 +1,8 @@
+//cpp
+#include "Heap.h"
+
+extern "C" {
+
 /* func_0201a458 -- create the root heap over 0x0211d9c0..0x02140d80 and store it in
  * data_0209d524. Both callers (func_02034fbc in d_s_mb.cpp and dScDSMT_c's result-6
  * path) load overlays 100 and 102 right after, and 0x02140d80 is where ov100 is
@@ -8,14 +13,12 @@
  * overlays(62,65) and overlays(6,100)), and the names dsd invents for them
  * (data_ov062_0211d9c0, data_ov006_02140d80) are `ambiguous` placeholders.
  * local extern: linker-defined symbols; no header declares them. */
-extern void *_ZN5mHeap6Heap_t14CreateRootHeapEPvj(void *start, unsigned int size);
 extern char OV075_BSS_END;
 extern char OV100_TEXT_START;
 extern void *data_0209d524; /* global: void* (Heap*) */
-extern void _ZN5mHeap6Heap_t7DestroyEv(void *);
 
 void func_0201a458(void) {
-    data_0209d524 = _ZN5mHeap6Heap_t14CreateRootHeapEPvj(
+    data_0209d524 = mHeap::Heap_t::CreateRootHeap(
         &OV075_BSS_END, (unsigned int)(&OV100_TEXT_START - &OV075_BSS_END));
 }
 
@@ -23,6 +26,7 @@ void func_0201a458(void) {
  * Destroys a heap referenced by global pointer and nulls the pointer.
  */
 void func_0201a428(void) {
-    _ZN5mHeap6Heap_t7DestroyEv(data_0209d524);
+    ((mHeap::Heap_t *)data_0209d524)->Destroy();
     data_0209d524 = 0;
+}
 }

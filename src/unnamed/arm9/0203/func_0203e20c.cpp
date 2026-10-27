@@ -1,4 +1,9 @@
+//cpp
 #include "types.h"
+#include "Memory.h"
+
+extern "C" {
+
 extern u8 data_020a0f04;
 extern u8 data_020a0f08;
 extern u8 data_020a0f0c;
@@ -27,8 +32,6 @@ extern s32 data_020a1680;
 extern u8 data_020a1780[];
 
 extern int func_02067194(void);
-extern void *_ZN6Memory8AllocateEji(unsigned int size, int align);
-extern void _ZN6Memory10DeallocateEPv(void *ptr);
 extern void func_0203f9d4(int a0, int a1);
 extern void func_0203e978(void);
 extern int func_02059640(void);
@@ -67,7 +70,7 @@ void func_0203e20c(void)
 
     switch (data_020a0f50) {
     case 0: {
-        void *ptr = _ZN6Memory8AllocateEji(0xB000, 0x20);
+        void *ptr = Memory::Allocate(0xB000, 0x20);
         data_020a0f3c = ptr;
         data_020a0f0c = 0;
         func_0203f9d4((int)ptr, (int)func_0203e978);
@@ -91,7 +94,7 @@ void func_0203e20c(void)
         func_020672a4((u32)func_0203e9a8);
         func_02068ae8(data_020a0f28);
         size = func_02067e70(0);
-        p = _ZN6Memory8AllocateEji(size, 0x20);
+        p = Memory::Allocate(size, 0x20);
         data_020a0f7c = p;
         if (func_02067bfc(0, p, size) != 0) {
             func_02067928(data_020a0fec, data_020a0f7c);
@@ -231,8 +234,8 @@ void func_0203e20c(void)
     default:
         data_020a0f50 = 0;
         data_020a0f04 = 0;
-        _ZN6Memory10DeallocateEPv(data_020a0f3c);
-        _ZN6Memory10DeallocateEPv(data_020a0f7c);
+        Memory::Deallocate(data_020a0f3c);
+        Memory::Deallocate(data_020a0f7c);
         if (data_020a0f40 != 0) {
             u8 *p9d = &data_020a0f9d;
             u8 *p1112 = data_020a1112;
@@ -330,4 +333,5 @@ void func_0203e20c(void)
             p1154 += 1;
         } while (i < 0x11);
     }
+}
 }

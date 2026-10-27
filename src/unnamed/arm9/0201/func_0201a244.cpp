@@ -1,6 +1,10 @@
+//cpp
 #include "types.h"
 #include "AsyncJob.h"
-extern int _ZN6Memory8AllocateEji(u32 sz, int align);
+#include "Memory.h"
+
+extern "C" {
+
 extern void func_02058200(void *c, int f, int a, int p, int s, int x);
 extern void func_02057f38(void *c, int v);
 extern void func_02058048(void *c);
@@ -22,7 +26,7 @@ int func_0201a244(AsyncJobCallback callback, int argument, int priority, int sta
     size = stackSize;
     stack = stackBase;
     if (stackBase == 0) {
-        stack = _ZN6Memory8AllocateEji(size, -4);
+        stack = (int)Memory::Allocate(size, -4);
         data_0209d518 = stack;
     }
     /* The unreconstructed OS thread API still takes its entry as a 32-bit address. */
@@ -30,4 +34,5 @@ int func_0201a244(AsyncJobCallback callback, int argument, int priority, int sta
     func_02057f38(data_0209d5b8, 0x400);
     func_02058048(data_0209d5b8);
     return 0;
+}
 }

@@ -1,15 +1,19 @@
+//cpp
 #include "types.h"
+#include "Heap.h"
+
+extern "C" {
+
 extern u32 data_0209cde4;
 extern u8 data_0209cdcc;
-extern void* data_020a0e9c;
-extern void* data_020a0ea0;
-extern void* data_020a0eac;
+extern mHeap::Heap_t *data_020a0e9c;
+extern void *data_020a0ea0;
+extern void *data_020a0eac;
 
 extern void InitCrashScreen(void);
 extern void ShowCrashScreen(void);
 extern void func_01ffdd98(int a);
 extern int func_0205f958(void);
-extern void _ZN5mHeap6Heap_t6RescueEv(void* self);
 
 void func_02013f4c(void)
 {
@@ -71,15 +75,15 @@ void func_02013f4c(void)
         }
         if (old & 1) {
             if (cur & 4) {
-                void* pa = data_020a0e9c;
-                void* pb = data_020a0ea0;
-                void* pc = data_020a0eac;
+                mHeap::Heap_t *pa = data_020a0e9c;
+                mHeap::Heap_t *pb = (mHeap::Heap_t *)data_020a0ea0;
+                mHeap::Heap_t *pc = (mHeap::Heap_t *)data_020a0eac;
                 if (cur & 0x20) {
-                    _ZN5mHeap6Heap_t6RescueEv(pa);
+                    pa->Rescue();
                 } else if (cur & 0x10) {
-                    _ZN5mHeap6Heap_t6RescueEv(pc);
+                    pc->Rescue();
                 } else if (cur & 0x40) {
-                    _ZN5mHeap6Heap_t6RescueEv(pb);
+                    pb->Rescue();
                 }
             }
         }
@@ -88,4 +92,5 @@ void func_02013f4c(void)
 
     while ((int)*(volatile u16*)0x4000006 >= 0xc0) {}
     while ((int)*(volatile u16*)0x4000006 < 0xc0) {}
+}
 }

@@ -1,9 +1,14 @@
-extern volatile void* _ZN2G212GetBG1ScrPtrEv(void);
+//cpp
+#include "G2.h"
+
+extern "C" {
+
 extern void MultiStore16(unsigned short value, volatile void* dst, int count);
 
 void ResetCrashScreen(void)
 {
-    volatile void* ptr = _ZN2G212GetBG1ScrPtrEv();
+    volatile void *ptr = G2::GetBG1ScrPtr();
     volatile unsigned short val = 0xff;
     MultiStore16(val, ptr, 0x800);
+}
 }

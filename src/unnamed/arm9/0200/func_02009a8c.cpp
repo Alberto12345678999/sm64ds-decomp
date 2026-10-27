@@ -1,8 +1,12 @@
-extern void _ZN9dCamera_c25SaveCameraStateBeforeTalkEv(void *thiz);
+//cpp
+#include "dCamera_c.h"
+
+extern "C" {
+
 extern int func_02009d30(int arg);
 
-int func_02009a8c(int arg)
-{
-    _ZN9dCamera_c25SaveCameraStateBeforeTalkEv((void *)arg);
+int func_02009a8c(int arg) {
+    ((dCamera_c *)arg)->SaveCameraStateBeforeTalk();
     return func_02009d30(arg);
+}
 }

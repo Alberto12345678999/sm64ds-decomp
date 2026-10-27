@@ -1,7 +1,12 @@
-extern int _ZN5Sound6Player19SetPlayableSeqCountEii(int a, int b);
+//cpp
+#include "Sound.h"
+
+extern "C" {
+
 extern int data_02099fb0;
 
-int func_02048e94(void) {
+void func_02048e94(void) {
     data_02099fb0 = 4;
-    return _ZN5Sound6Player19SetPlayableSeqCountEii(9, 4);
+    Sound::Player::SetPlayableSeqCount(9, 4);
+}
 }

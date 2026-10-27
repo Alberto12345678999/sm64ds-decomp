@@ -1,4 +1,9 @@
+//cpp
 #include "types.h"
+#include "IRQ.h"
+
+extern "C" {
+
 typedef void (*IrqFn)(int);
 
 struct G6460 {
@@ -16,7 +21,6 @@ extern struct G6460 data_020a6460;
 extern void func_0205a21c(void);
 extern void func_02056e98(int a, void *cb, int c);
 extern void DMAStartTransfer(int src, int dst, int ctrl0, int ctrl1);
-extern void _ZN3IRQ15ClearInterruptsEj(unsigned int mask);
 
 void func_0205a290(void)
 {
@@ -33,9 +37,10 @@ void func_0205a290(void)
     if (rem == 0) {
         func_02056e98(data_020a6460.f4, func_0205a21c, 0);
         DMAStartTransfer(data_020a6460.f4, base, 0x4000400, -0x3bc00000 | (len >> 2));
-        _ZN3IRQ15ClearInterruptsEj(0x200000);
+        IRQ::ClearInterrupts(0x200000);
     } else {
         DMAStartTransfer(data_020a6460.f4, base, 0x4000400, 0x84400000 | (len >> 2));
-        _ZN3IRQ15ClearInterruptsEj(0x200000);
+        IRQ::ClearInterrupts(0x200000);
     }
+}
 }

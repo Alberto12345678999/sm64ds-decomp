@@ -1,7 +1,9 @@
+//cpp
 // Vec3_Dist: 3D distance between two Vector3 points
 #include "common.h"
+#include "cstd.h"
 
-extern Fix12i _ZN4cstd4sqrtEy(u64 val);
+extern "C" {
 
 Fix12i Vec3_Dist(const Vector3 *a, const Vector3 *b) {
     Fix12i dx = a->x - b->x;
@@ -14,5 +16,6 @@ Fix12i Vec3_Dist(const Vector3 *a, const Vector3 *b) {
     sq += (long long)ay * ay;
     ay = az - bz;
     sq += (long long)ay * ay;
-    return _ZN4cstd4sqrtEy((u64)sq);
+    return cstd::sqrt((u64)sq);
+}
 }

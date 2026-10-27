@@ -1,10 +1,13 @@
-typedef int s32;
+//cpp
+#include "types.h"
+#include "Sound.h"
 
-extern void _ZN5Sound6Player19SetPlayableSeqCountEii(s32 playerID, s32 maxSeq);
+extern "C" {
+
 extern s32 data_02099fb0;
 
-void func_02048e74(void)
-{
+void func_02048e74(void) {
     data_02099fb0 = 4;
-    _ZN5Sound6Player19SetPlayableSeqCountEii(9, 4);
+    Sound::Player::SetPlayableSeqCount(9, 4);
+}
 }

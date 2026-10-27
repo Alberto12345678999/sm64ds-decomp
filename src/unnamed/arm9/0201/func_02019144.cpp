@@ -1,3 +1,8 @@
+//cpp
+#include "OAM.h"
+
+extern "C" {
+
 typedef volatile unsigned int vu32;
 
 typedef struct UnkObj UnkObj;
@@ -30,8 +35,6 @@ extern short data_0209d470;
 extern short data_0209d474;
 extern short data_0209d488;
 
-void _ZN3OAM5FlushEv(void);
-void _ZN3OAM4LoadEv(void);
 void func_02055454(int v);
 
 void func_02019144(void)
@@ -41,8 +44,8 @@ void func_02019144(void)
         if (p->vt->func8(p) == 0)
             return;
     }
-    _ZN3OAM5FlushEv();
-    _ZN3OAM4LoadEv();
+    OAM::Flush();
+    OAM::Load();
     *(vu32 *)0x4000000 = (*(vu32 *)0x4000000 & ~0x1f00) | (data_0209d45c << 8);
     *(vu32 *)0x4001000 = (*(vu32 *)0x4001000 & ~0x1f00) | (data_0209d454 << 8);
     if (!(*(vu32 *)0x4000000 & 8)) {
@@ -58,4 +61,5 @@ void func_02019144(void)
     *(vu32 *)0x4001014 = (data_0209d484 & 0x1ff) | (0x1ff0000 & (data_0209d480 << 16));
     *(vu32 *)0x4001018 = (data_0209d47c & 0x1ff) | (0x1ff0000 & (data_0209d470 << 16));
     *(vu32 *)0x400101c = (data_0209d474 & 0x1ff) | (0x1ff0000 & (data_0209d488 << 16));
+}
 }

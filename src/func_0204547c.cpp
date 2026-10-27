@@ -1,10 +1,14 @@
+//cpp
 #include "types.h"
+#include "cstd.h"
+
+extern "C" {
 
 typedef struct {
     unsigned char b[3];
 } B3;
 
-struct B3 {
+struct B3c {
     unsigned char b[3];
 };
 
@@ -56,8 +60,7 @@ typedef struct {
 } Ctx;
 
 extern B3 data_02099f80;
-extern int _ZN4cstd3absEi(int x);
-extern const struct B3 data_02099f84;
+extern const struct B3c data_02099f84;
 
 int func_020457f0(int v, int idx, int shift, int flag, int *tbl) {
     B3 buf;
@@ -100,7 +103,7 @@ int func_020457f0(int v, int idx, int shift, int flag, int *tbl) {
 unsigned short func_020456a0(int a0, int a1, int shift, int a3, short *tbl) {
     int i, frac;
     short lo, hi, srange, sfrac;
-    struct B3 buf;
+    struct B3c buf;
 
     if (a3 == 0)
         return ((unsigned short *)tbl)[0];
@@ -126,7 +129,7 @@ unsigned short func_020456a0(int a0, int a1, int shift, int a3, short *tbl) {
     if (sfrac == 0)
         return (unsigned short)lo;
 
-    if (_ZN4cstd3absEi(lo - hi) >= 0x800) {
+    if (cstd::abs(lo - hi) >= 0x800) {
         if (lo > hi)
             hi = (short)(hi + 0x1000);
         else
@@ -166,4 +169,5 @@ void func_0204547c(Ctx *ctx, Src *s, int a2, Dst *d) {
     d->f20 = func_020457f0(v, a2, s->b18, s->b19, ctx->p10 + s->h1A);
     d->f24 = func_020457f0(v, a2, s->b1C, s->b1D, ctx->p10 + s->h1E);
     d->f28 = func_020457f0(v, a2, s->b20, s->b21, ctx->p10 + s->h22);
+}
 }
