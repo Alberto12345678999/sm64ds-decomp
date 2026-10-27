@@ -32,7 +32,9 @@ typedef struct dBgPi dBgPi;
 struct dActor_c;
 struct dBgW;
 
-extern "C" void _ZN6Memory16operator_delete2EPv(void *);
+namespace Memory {
+void operator_delete2(void *);
+}
 
 struct dBgPi : dBgPc {
     /* 0x00 is the vptr; the dBgPc base occupies 0x04..0x17. */
@@ -70,7 +72,9 @@ struct dBgPi : dBgPc {
        deallocation. Inline, in the class itself -- mwcc inlines it only when
        it finds it in the class or one level up. No layout effect: a
        non-virtual inline member adds no field and no vtable slot. */
-    void operator delete(void *ptr) { _ZN6Memory16operator_delete2EPv(ptr); }
+    void operator delete(void *ptr) {
+        Memory::operator_delete2(ptr);
+    }
 
     /* Defined out of line; objisolate retains the enrolled C1/D1 variants and
        the compiler-generated siblings remain separately enrolled shells. */
