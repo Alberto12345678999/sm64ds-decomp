@@ -16,7 +16,7 @@
  * (plain int) parameters they reproduce exactly. See notes/mwccarm-codegen.md 6az, MEASURED 2026-10-22.
  *
  * leftovers:
- * - src/InvMat4x3.c is C and cannot name a C++ namespaced function, so it
+ * - src/InvMat4x3.cpp is C and cannot name a C++ namespaced function, so it
  *   keeps a mangled extern for reciprocal_async under the new spelling.
  */
 #include "types.h"

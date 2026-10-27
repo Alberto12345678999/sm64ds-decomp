@@ -31,7 +31,7 @@ extern void OSReadROMArea(u32 romOffset, u32 dest, u32 size);
  * Names, and where each one comes from:
  *   Crash            0x02019740, already named in config/arm9/symbols.txt (src/Crash.cpp).
  *                    Reached when the boot-info halfword is 2, i.e. this build refuses to
- *                    soft reset in that boot mode. src/func_02013f4c.c makes the same test
+ *                    soft reset in that boot mode. src/func_02013f4c.cpp makes the same test
  *                    and routes the ==2 case to func_0205f958 instead of calling here.
  *   func_02059dd4    unnamed. src/unnamed/arm9/0205/func_02059dd4.c is IPCSend(0xc, param << 8, 0) retried
  *                    until it returns 0, so this is IPC command 0xc, subcommand 0x10.
@@ -50,13 +50,13 @@ extern void OSReadROMArea(u32 romOffset, u32 dest, u32 size);
  *   0x04000208       REG_IME, the interrupt master enable (GBATEK). Written as this bare
  *                    literal in ~20 existing files under src/.
  *   0x027ffc40       boot-info halfword in main RAM's 0x027ffc00 block. Deliberately left
- *                    unnamed: src/func_02013f4c.c already tests this exact literal, and no
+ *                    unnamed: src/func_02013f4c.cpp already tests this exact literal, and no
  *                    name for the field is recoverable from ROM bytes or public docs here.
  *   0x027ffc20       word in the same block. This is its only reference anywhere in the
  *                    ARM9 (searched every extracted binary for the pool constant), so it is
  *                    a message left for the reloaded code. Left unnamed for the same reason.
  *
- * Sole caller: src/func_02013f4c.c at 0x02014090 (the only reloc targeting 0x01ffdd98),
+ * Sole caller: src/func_02013f4c.cpp at 0x02014090 (the only reloc targeting 0x01ffdd98),
  * which passes 0. Its forward declaration spells the parameter `int`; the store is a plain
  * word either way.
  */

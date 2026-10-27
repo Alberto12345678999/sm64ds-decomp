@@ -219,7 +219,7 @@ Three things this batch adds to the recipe:
   the namespace, so their calls need `cstd::` qualification -- an unqualified
   call compiles nowhere and the error (`undefined identifier`) is the only
   symptom.
-- **A `.c` caller cannot follow at all.** `src/InvMat4x3.c` is C and cannot name
+- **A `.c` caller cannot follow at all.** `src/InvMat4x3.cpp` is C and cannot name
   a C++ namespaced function, so it keeps a mangled extern under the new spelling
   with a `local extern:` reason. This is a third category alongside shadow
   scaffolds and raw-offset TUs.
