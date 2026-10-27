@@ -3201,7 +3201,7 @@ matched: yes</title></rect><rect x="218.83" y="211.15" width="51.11" height="7.1
 module: arm9
 addr: 0x0201b388
 size: 544 bytes
-matched: yes</title></rect><rect x="269.94" y="211.15" width="31.57" height="7.14" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7Message7AddCharEc
+matched: yes</title></rect><rect x="269.94" y="211.15" width="31.57" height="7.14" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7Message7AddCharEh
 module: arm9
 addr: 0x0201b5a8
 size: 336 bytes
@@ -3241,7 +3241,7 @@ matched: yes</title></rect><rect x="248.83" y="218.29" width="8.14" height="16.1
 module: arm9
 addr: 0x0201cebc
 size: 196 bytes
-matched: yes</title></rect><rect x="256.97" y="218.29" width="2.33" height="16.15" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7Message21DisplayLevelClearTextEta
+matched: yes</title></rect><rect x="256.97" y="218.29" width="2.33" height="16.15" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7Message21DisplayLevelClearTextEth
 module: arm9
 addr: 0x0201cf80
 size: 56 bytes
@@ -3249,7 +3249,7 @@ matched: yes</title></rect><rect x="259.30" y="218.29" width="3.99" height="16.1
 module: arm9
 addr: 0x0201cfb8
 size: 96 bytes
-matched: yes</title></rect><rect x="263.28" y="218.29" width="9.30" height="16.15" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7Message22DisplayOptionsMenuTextEt
+matched: yes</title></rect><rect x="263.28" y="218.29" width="9.30" height="16.15" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7Message22DisplayOptionsMenuTextEs
 module: arm9
 addr: 0x0201d018
 size: 224 bytes
@@ -3293,7 +3293,7 @@ matched: yes</title></rect><rect x="171.69" y="234.44" width="4.24" height="13.9
 module: arm9
 addr: 0x0201e314
 size: 88 bytes
-matched: yes</title></rect><rect x="175.93" y="234.44" width="25.05" height="13.92" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7Message11DisplayTextEt
+matched: yes</title></rect><rect x="175.93" y="234.44" width="25.05" height="13.92" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7Message11DisplayTextEi
 module: arm9
 addr: 0x0201e36c
 size: 520 bytes
@@ -9069,7 +9069,7 @@ matched: yes</title></rect><rect x="278.89" y="694.42" width="5.00" height="9.65
 module: arm9
 addr: 0x020551f0
 size: 72 bytes
-matched: yes</title></rect><rect x="283.90" y="694.42" width="2.50" height="9.65" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN3G2x18SetBlendBrightnessEPVtts
+matched: yes</title></rect><rect x="283.90" y="694.42" width="2.50" height="9.65" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN3G2x18SetBlendBrightnessEPVtii
 module: arm9
 addr: 0x02055238
 size: 36 bytes
