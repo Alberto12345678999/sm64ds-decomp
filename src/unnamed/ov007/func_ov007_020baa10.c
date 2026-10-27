@@ -61,10 +61,13 @@ void func_ov007_020baa10(void)
     case 1:
     case 2: {
         int v;
-        int m = _ZN4cstd3modEii(counter, 0x3c);
-        if (m <= 0) v = 0;
-        else if (m >= 0x3c) v = 0x1000;
-        else v = _ZN4cstd3divEii(m << 12, 0x3c);
+        int m = mod(counter, 0x3c);
+        if (m <= 0)
+            v = 0;
+        else if (m >= 0x3c)
+            v = 0x1000;
+        else
+            v = div(m << 12, 0x3c);
         s = data_02082214[((u16)((v * 0xffff) >> 12) >> 4) * 2];
         if (state == 2) {
             a->posOffset.x = -dx / 48 + func_ov007_020c3ba8(dx / 48 - -dx / 48);
@@ -79,10 +82,13 @@ void func_ov007_020baa10(void)
     case 4: {
         int v;
         int idx;
-        int m = _ZN4cstd3modEii(counter, 0x3c);
-        if (m <= 0) v = 0;
-        else if (m >= 0x3c) v = 0x1000;
-        else v = _ZN4cstd3divEii(m << 12, 0x3c);
+        int m = mod(counter, 0x3c);
+        if (m <= 0)
+            v = 0;
+        else if (m >= 0x3c)
+            v = 0x1000;
+        else
+            v = div(m << 12, 0x3c);
         if (SCENE->states[3]->currentState == 4)
             v = 0x1000 - v;
         idx = ((u16)((v * 0xffff) >> 12) >> 4) * 2;

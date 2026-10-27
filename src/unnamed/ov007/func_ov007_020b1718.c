@@ -69,7 +69,7 @@ typedef struct Ov007Light {
     u16 color; /* 0x22 */
 } Ov007Light;
 
-extern int _ZN4cstd3divEii(int a, int b);
+extern int div(int a, int b);
 extern void func_ov007_020bdeb0(int a);
 extern void func_ov007_020b257c(void);
 extern void func_ov007_020b2454(void* a, void* b);
@@ -114,7 +114,8 @@ void func_ov007_020b1718(void)
         if (v < 0xc) {
             if (v <= 0) q = 0;
             else if (v >= 0xc) q = 0x1000;
-            else q = _ZN4cstd3divEii(v << 0xc, 0xc);
+            else
+                q = div(v << 0xc, 0xc);
             r3 = q << 2;
 
             if (r3 <= 0x1000)
@@ -159,7 +160,8 @@ void func_ov007_020b1718(void)
 
         if (v <= 0) q = 0;
         else if (v >= 0x1e) q = 0x1000;
-        else q = _ZN4cstd3divEii(v << 0xc, 0x1e);
+        else
+            q = div(v << 0xc, 0x1e);
 
         t = (int)(((s64)q * (0x2000 - q)) >> 12);
         u = (int)(((s64)t * (0x2000 - t)) >> 12);
@@ -203,7 +205,8 @@ void func_ov007_020b1718(void)
         w = WORK->paletteState->stateTicks;
         if (w <= 0) qq = 0;
         else if (w >= 0xf) qq = 0x1000;
-        else qq = _ZN4cstd3divEii(w << 0xc, 0xf);
+        else
+            qq = div(w << 0xc, 0xf);
         WORK->lights[1]->color = func_ov007_020c3be0(qq, WORK->lights[1]->color, 0);
     }
 
@@ -211,7 +214,8 @@ void func_ov007_020b1718(void)
         int qq2;
         if (v <= 0) qq2 = 0;
         else if (v >= divisor) qq2 = 0x1000;
-        else qq2 = _ZN4cstd3divEii(v << 0xc, divisor);
+        else
+            qq2 = div(v << 0xc, divisor);
         func_ov007_020b2764(0x1000 - qq2);
     }
 }

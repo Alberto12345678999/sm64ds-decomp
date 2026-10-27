@@ -9,8 +9,8 @@
  * nothing from types.h. Parameters stay unnamed: a name here takes an @NNN in
  * every includer. */
 namespace cstd {
-int mod(int, int);
-int div(int, int);
+extern "C" int mod(int, int);
+extern "C" int div(int, int);
 long long ldiv(int, int);
 int fdiv(int, int);
 int fdiv_result();

@@ -1,4 +1,4 @@
-extern int _ZN4cstd3divEii(int, int);
+extern int div(int, int);
 extern void func_ov007_020c9110(void* p);
 extern void _ZN15ModelComponents11UpdateBonesEP8BCA_Filei(void* model, void* bca, int frame);
 extern void func_0204531c(void* model, int x);
@@ -42,7 +42,7 @@ void func_ov007_020bc7dc(char* c)
     void *model = m->model;
     Ov007AnimPlayer *p = m->blendAnim;
     void *entry = m->boneAnims[p->anim];
-    int quot = _ZN4cstd3divEii(m->blendFrames << 12, m->blendFrameCount);
+    int quot = div(m->blendFrames << 12, m->blendFrameCount);
 
     if (m->animTick != 0)
         func_ov007_020c9110(m->blendAnim);
