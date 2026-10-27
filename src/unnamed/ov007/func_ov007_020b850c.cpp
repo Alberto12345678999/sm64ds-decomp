@@ -1,7 +1,8 @@
 //cpp
 
 namespace GX {
-void LoadBGPltt(const void *, unsigned int, unsigned int);
+/* local extern: GX.h is not included in this TU. */
+extern "C" void LoadBGPltt(const void *, unsigned int, unsigned int);
 }
 namespace GXS {
 void LoadBGPltt(const void *, unsigned int, unsigned int);

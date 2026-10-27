@@ -77,8 +77,10 @@ char *GetBG2ScrPtr();
 char *GetBG3CharPtr();
 }
 namespace GX {
-void LoadBGPltt(const void *src, u32 offset, u32 size);
-void LoadOBJPltt(const void *src, u32 offset, u32 size);
+/* local extern: GX.h is not included in this TU. */
+extern "C" void LoadBGPltt(const void *src, u32 offset, u32 size);
+/* local extern: GX.h is not included in this TU. */
+extern "C" void LoadOBJPltt(const void *src, u32 offset, u32 size);
 }
 namespace GXS {
 void LoadBGPltt(const void *src, u32 offset, u32 size);

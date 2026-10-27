@@ -36,7 +36,7 @@
       "ordinal": 1
     },
     {
-      "symbol": "_ZN2GX15SetGraphicsModeEiii",
+      "symbol": "SetGraphicsMode",
       "address": "0x02053ad8",
       "size": "0x00000074",
       "legacy_source": "src/_ZN2GX15SetGraphicsModeEiii.cpp",

@@ -53,7 +53,8 @@ unsigned GetBG2CharPtr();
 }
 
 namespace GX {
-void LoadOBJPltt(const void *data, u32 offset, u32 size);
+/* local extern: GX.h is not included in this TU. */
+extern "C" void LoadOBJPltt(const void *data, u32 offset, u32 size);
 }
 
 namespace GXS {

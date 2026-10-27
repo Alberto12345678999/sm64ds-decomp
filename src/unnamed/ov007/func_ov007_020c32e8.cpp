@@ -1,8 +1,10 @@
 //cpp
 
 namespace GX {
-void LoadBGPltt(const void *p, unsigned int a, unsigned int b);
-void LoadOBJPltt(const void *p, unsigned int a, unsigned int b);
+/* local extern: GX.h is not included in this TU. */
+extern "C" void LoadBGPltt(const void *p, unsigned int a, unsigned int b);
+/* local extern: GX.h is not included in this TU. */
+extern "C" void LoadOBJPltt(const void *p, unsigned int a, unsigned int b);
 }
 
 namespace GXS {

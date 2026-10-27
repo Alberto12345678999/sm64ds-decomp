@@ -80,8 +80,8 @@ void LoadBGPltt(const void *src, unsigned int offset, unsigned int size) {
 namespace GX {
 
 // Loads OBJ palette data to main screen (GX) palette VRAM at 0x05000200.
-// @symbol _ZN2GX11LoadOBJPlttEPKvjj
-void LoadOBJPltt(const void *src, unsigned int offset, unsigned int size) {
+// @symbol LoadOBJPltt
+extern "C" void LoadOBJPltt(const void *src, unsigned int offset, unsigned int size) {
     int channel = data_02099fd0;
     if (channel != -1) {
         DMASyncHalfTransfer(channel, src, (void *)((char *)0x05000200 + offset), size);
@@ -140,8 +140,8 @@ namespace GX {
 // Copies count words from src to VRAM address (0x6400000 + offset) -- main
 // OBJ VRAM. Needs opt_propagation off: the constant is kept out of the
 // address arithmetic.
-// @symbol _ZN2GX7LoadOBJEPKvjj
-void LoadOBJ(const void *src, unsigned int offset, unsigned int count) {
+// @symbol LoadOBJ
+extern "C" void LoadOBJ(const void *src, unsigned int offset, unsigned int count) {
     unsigned int channel = data_02099fd0;
     unsigned int base = 0x6400000;
     if (channel != (unsigned int)-1) {
@@ -275,8 +275,8 @@ void func_020562b4(const void *src, u32 offset, u32 count) {
 namespace GX {
 
 // Loads character data into MAIN BG0 VRAM (G2::GetBG0CharPtr, 0x2054efc).
-// @symbol _ZN2GX11LoadBG0CharEPKvjj
-void LoadBG0Char(const void *src, unsigned int offset, unsigned int count) {
+// @symbol LoadBG0Char
+extern "C" void LoadBG0Char(const void *src, unsigned int offset, unsigned int count) {
     void *base = func_02054efc();
     unsigned int channel = data_02099fd0;
     if (channel != (unsigned int)-1) {
@@ -305,8 +305,8 @@ void LoadBG0Char(const void *src, u32 offset, u32 size) {
 namespace GX {
 
 // Loads character data into MAIN BG1 VRAM (G2::GetBG1CharPtr, 0x2054ea8).
-// @symbol _ZN2GX11LoadBG1CharEPKvjj
-void LoadBG1Char(const void *src, unsigned int offset, unsigned int count) {
+// @symbol LoadBG1Char
+extern "C" void LoadBG1Char(const void *src, unsigned int offset, unsigned int count) {
     void *base = func_02054ea8();
     unsigned int channel = data_02099fd0;
     if (channel != (unsigned int)-1) {

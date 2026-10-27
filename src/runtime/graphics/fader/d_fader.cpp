@@ -34,7 +34,8 @@ namespace CP15 {
 void FlushAndInvalidateDataCache(u32 addr, u32 len);
 }
 namespace GX {
-void LoadBGPltt(const void *src, u32 offset, u32 len);
+/* local extern: GX.h is not included in this TU. */
+extern "C" void LoadBGPltt(const void *src, u32 offset, u32 len);
 }
 namespace GXS {
 void LoadBGPltt(const void *src, u32 offset, u32 len);

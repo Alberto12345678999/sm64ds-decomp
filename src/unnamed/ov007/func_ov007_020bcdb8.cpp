@@ -6,6 +6,8 @@ extern "C" void func_ov007_020c32e8(void* c, int sel, unsigned int n, int off);
 extern "C" void func_ov007_020b3f20(void* p);
 extern "C" void* func_ov007_020c99d8(void);
 struct GX { static void LoadOBJ(void const*, unsigned int, unsigned int); };
+/* local extern: struct GX here shadows namespace GX, so GX.h cannot be included. */
+extern "C" void LoadOBJ(void const *, unsigned int, unsigned int);
 extern "C" void func_ov007_020c3544(void* p);
 extern "C" void func_ov007_020b3edc(int r0);
 extern "C" char* data_ov007_0210342c;
@@ -50,7 +52,7 @@ extern "C" void func_ov007_020bcdb8(int idx)
     func_ov007_020b3f20(obj);
     void* m = func_ov007_020c99d8();
     func_ov007_020c33d0(m, 5, 0);
-    GX::LoadOBJ(*(void**)m, 0, 0x2000);
+    LoadOBJ(*(void **)m, 0, 0x2000);
     func_ov007_020c3544(m);
     func_ov007_020b3edc((int)obj);
 }

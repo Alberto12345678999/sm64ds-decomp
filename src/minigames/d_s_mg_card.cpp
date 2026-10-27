@@ -110,7 +110,10 @@ extern "C" void* dScMgCard_c_classInit()
 /* Engine calls by their C++ names. The parameter types are read off the
    ROM's mangled names: `j` unsigned int, `t` unsigned short, `s` short,
    `Riii` int reference, `Rsss` short reference. */
-namespace GX { void LoadOBJPltt(const void *plt, u32 base, u32 size); }
+namespace GX {
+/* local extern: GX.h is not included in this TU. */
+extern "C" void LoadOBJPltt(const void *plt, u32 base, u32 size);
+}
 namespace GXS { void LoadOBJPltt(const void *plt, u32 base, u32 size); }
 namespace G2x {
 void SetBlendAlpha(volatile u16 *reg, int a, int b, int c, int d);

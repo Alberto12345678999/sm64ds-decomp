@@ -1270,7 +1270,7 @@ extern void _ZN4dBgW7DisableEv(void*);
 extern void EndLoadTex(void);
 extern void BeginLoadTex(void);
 extern void DisableAllBanks(void);
-extern void _ZN2GX15SetGraphicsModeEiii(int, int, int);
+extern void SetGraphicsMode(int, int, int);
 extern void DispOn(void);
 extern void LoadTex(const void *, u32, u32);
 extern void _ZN3G3X13SetClearColorEtiiib(u16, int, int, int, int);

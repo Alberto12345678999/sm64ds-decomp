@@ -19,7 +19,7 @@
  * unnamed: a name here takes an @NNN in every includer. */
 namespace GX {
 extern "C" void DispOn(void);
-void SetGraphicsMode(int, int, int);
+extern "C" void SetGraphicsMode(int, int, int);
 extern "C" void DisableAllBanks(void);
 extern "C" void SetBankForBG(int);
 extern "C" void SetBankForOBJ(int);
@@ -35,11 +35,11 @@ extern "C" void EndLoadTex(void);
 extern "C" void BeginLoadTexPltt(void);
 extern "C" void LoadTexPltt(const void *, unsigned int, unsigned int);
 extern "C" void EndLoadTexPltt(void);
-void LoadBGPltt(const void *, unsigned int, unsigned int);
-void LoadOBJPltt(const void *, unsigned int, unsigned int);
-void LoadOBJ(const void *, unsigned int, unsigned int);
-void LoadBG0Char(const void *, unsigned int, unsigned int);
-void LoadBG1Char(const void *, unsigned int, unsigned int);
+extern "C" void LoadBGPltt(const void *, unsigned int, unsigned int);
+extern "C" void LoadOBJPltt(const void *, unsigned int, unsigned int);
+extern "C" void LoadOBJ(const void *, unsigned int, unsigned int);
+extern "C" void LoadBG0Char(const void *, unsigned int, unsigned int);
+extern "C" void LoadBG1Char(const void *, unsigned int, unsigned int);
 }
 
 namespace GXS {

@@ -36,7 +36,7 @@ enum d_s_mg_single3_d_base_AssetId {
 /* SDK calls this file makes. */
 namespace GX {
 void SetGraphicsMode(int, int, int);
-void LoadOBJPltt(const void*, u32, u32);
+void LoadOBJPltt(const void *, u32, u32);
 }
 namespace GXS {
 void LoadBGPltt(const void*, u32, u32);

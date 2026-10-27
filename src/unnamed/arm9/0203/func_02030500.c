@@ -5,13 +5,15 @@ void SetBankForBG(int);
 void SetBankForOBJ(int);
 void SetBankForSubBG(int);
 void SetBankForSubOBJ(int);
-extern void _ZN2GX15SetGraphicsModeEiii(int a, int b, int c);
+/* local extern: C file cannot include GX.h. */
+extern void SetGraphicsMode(int a, int b, int c);
 extern void _ZN3GXS15SetGraphicsModeEi(int a);
 extern s32 func_02030fa8(void);
 extern void* func_02054ea8(void);
 extern void* _ZN3G2S13GetBG1CharPtrEv(void);
 extern void DecompressLZ16(const void* src, void* dst);
-extern void _ZN2GX10LoadBGPlttEPKvjj(const void* p, u32 a, u32 b);
+/* local extern: C file cannot include GX.h. */
+extern void LoadBGPltt(const void *p, u32 a, u32 b);
 extern void _ZN3GXS10LoadBGPlttEPKvjj(const void* p, u32 a, u32 b);
 extern void* _ZN2G212GetBG1ScrPtrEv(void);
 extern void* _ZN3G2S12GetBG1ScrPtrEv(void);
@@ -53,7 +55,7 @@ void func_02030500(void)
     tmp = *(volatile u32*)0x4000000 & ~0xe000;
     *(volatile u32*)0x4000000 = tmp;
     *(volatile u32*)0x4001000 &= ~0xe000;
-    _ZN2GX15SetGraphicsModeEiii(1, 0, 0);
+    SetGraphicsMode(1, 0, 0);
 
     *(volatile u32*)0x4000000 &= 0xffcfffef;
     *(volatile u16*)0x400000a = (*(volatile u16*)0x400000a & 0x43) | 8;
@@ -67,7 +69,7 @@ void func_02030500(void)
     DecompressLZ16(data_020927b0[func_02030fa8()], func_02054ea8());
     DecompressLZ16(data_020927b0[func_02030fa8()], _ZN3G2S13GetBG1CharPtrEv());
 
-    _ZN2GX10LoadBGPlttEPKvjj(&data_0209440c, 0, 0x40);
+    LoadBGPltt(&data_0209440c, 0, 0x40);
     _ZN3GXS10LoadBGPlttEPKvjj(&data_0209440c, 0, 0x40);
 
     if (data_0209fc58 & 0x30) {

@@ -130,8 +130,8 @@ extern "C" void EndLoadTexPltt() {
 }
 
 // Loads BG palette data to main-screen (GX) palette VRAM at 0x05000000.
-// @symbol _ZN2GX10LoadBGPlttEPKvjj
-void LoadBGPltt(const void* src, unsigned int offset, unsigned int size){
+// @symbol LoadBGPltt
+extern "C" void LoadBGPltt(const void *src, unsigned int offset, unsigned int size) {
     int channel = data_02099fd0;
     if (channel != -1) {
         DMASyncHalfTransfer(channel, (void*)src, (void*)(offset + 0x05000000), size);
@@ -139,5 +139,4 @@ void LoadBGPltt(const void* src, unsigned int offset, unsigned int size){
         MultiCopyHalf(src, (void*)(offset + 0x05000000), size);
     }
 }
-
 }

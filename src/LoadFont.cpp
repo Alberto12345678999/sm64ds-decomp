@@ -20,6 +20,9 @@ extern "C" void DecompressLZ16(void *dst, void *src);
 struct GX  { static void LoadBGPltt(void const *p, unsigned a, unsigned b); };
 struct GXS { static void LoadBGPltt(void const *p, unsigned a, unsigned b); };
 
+/* local extern: struct GX here shadows namespace GX, so GX.h cannot be included. */
+extern "C" void LoadBGPltt(void const *, unsigned, unsigned);
+
 extern unsigned char data_0209d698;
 extern int data_0209d6f8;
 extern unsigned char data_0209d660;
@@ -36,7 +39,7 @@ extern "C" void LoadFont(unsigned char arg)
         LoadFileAt(0x980e, Mg_GetWorkBuffer());
         data_0209d6f8 = Mg_GetWorkBuffer();
         file = LoadFile(ASSET_D_2D_MARIO_3DFONT_NCL_BIN);
-        GX::LoadBGPltt((void *)(file + 2), 2, 0x20);
+        LoadBGPltt((void *)(file + 2), 2, 0x20);
         Deallocate((void *)file);
     } else if (data_0209d698 == 1) {
         MultiCopy_Int((int *)r4, (int *)G2S::GetBG1CharPtr(), 0x4000);

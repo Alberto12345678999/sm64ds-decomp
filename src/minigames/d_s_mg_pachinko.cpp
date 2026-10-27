@@ -55,8 +55,10 @@
 #include "dScMgPachinko_c.h"
 
 namespace GX {
-void LoadBGPltt(const void *p, u32 a, u32 b);
-void LoadOBJPltt(const void *p, u32 a, u32 b);
+/* local extern: GX.h is not included in this TU. */
+extern "C" void LoadBGPltt(const void *p, u32 a, u32 b);
+/* local extern: GX.h is not included in this TU. */
+extern "C" void LoadOBJPltt(const void *p, u32 a, u32 b);
 }
 
 namespace GXS {

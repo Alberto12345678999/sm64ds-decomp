@@ -20,7 +20,7 @@
   ],
   "functions": [
     {
-      "symbol": "_ZN2GX10LoadBGPlttEPKvjj",
+      "symbol": "LoadBGPltt",
       "address": "0x02056870",
       "size": "0x0000005c",
       "legacy_source": "src/_ZN2GX10LoadBGPlttEPKvjj.cpp",

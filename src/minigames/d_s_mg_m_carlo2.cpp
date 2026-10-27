@@ -75,7 +75,10 @@ int  Dealer_Load(void* t);
 
 }
 
-namespace GX { void LoadOBJPltt(const void*, unsigned int, unsigned int); }
+namespace GX {
+/* local extern: GX.h is not included in this TU. */
+extern "C" void LoadOBJPltt(const void *, unsigned int, unsigned int);
+}
 namespace GXS { void LoadOBJPltt(const void*, unsigned int, unsigned int); }
 
 /* C++ linkage: the reference parameters are part of the ROM names. */

@@ -8,8 +8,10 @@ void *GetBG2ScrPtr(void);
 }
 
 namespace GX {
-void LoadBGPltt(const void *p, u32 a, u32 b);
-void LoadOBJPltt(const void *p, u32 a, u32 b);
+/* local extern: GX.h is not included in this TU. */
+extern "C" void LoadBGPltt(const void *p, u32 a, u32 b);
+/* local extern: GX.h is not included in this TU. */
+extern "C" void LoadOBJPltt(const void *p, u32 a, u32 b);
 }
 
 extern dScEntry_c::StepSet data_ov075_0211d888;

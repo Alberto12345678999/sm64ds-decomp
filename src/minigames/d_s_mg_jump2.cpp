@@ -151,7 +151,8 @@ extern s16 data_02082614;
 }
 
 namespace GX {
-void LoadOBJPltt(const void *src, unsigned int offset, unsigned int size);
+/* local extern: GX.h is not included in this TU. */
+extern "C" void LoadOBJPltt(const void *src, unsigned int offset, unsigned int size);
 }
 namespace G3X {
 void SetFog(int enable, int mode, int slope, int offset);

@@ -6,7 +6,8 @@ void SetBankForBG(int);
 void SetBankForOBJ(int);
 void SetBankForSubBG(int);
 void SetBankForSubOBJ(int);
-extern void _ZN2GX15SetGraphicsModeEiii(int a, int b, int c);
+/* local extern: C file cannot include GX.h. */
+extern void SetGraphicsMode(int a, int b, int c);
 extern void _ZN3GXS15SetGraphicsModeEi(int a);
 
 void func_0200f2cc(void)
@@ -22,7 +23,7 @@ void func_0200f2cc(void)
     *(volatile u32 *)0x4000000 &= ~0x7000000;
     *(volatile u32 *)0x4000000 &= ~0x38000000;
     *(volatile u16 *)0x4000304 |= 0x8000;
-    _ZN2GX15SetGraphicsModeEiii(1, 0, 1);
+    SetGraphicsMode(1, 0, 1);
 
     *(volatile u32 *)0x4000000 &= 0xffcfffef;
     *(volatile u16 *)0x400000e = (u16)((*(volatile u16 *)0x400000e & 0x43) | 0x10);

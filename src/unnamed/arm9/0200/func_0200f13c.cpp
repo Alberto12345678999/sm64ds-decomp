@@ -7,7 +7,10 @@ void *LoadFile(u16 fileID);
 void Deallocate(void *ptr);
 }
 namespace G2 { void *GetBG2CharPtr(); void *GetBG2ScrPtr(); }
-namespace GX { void LoadOBJPltt(void const *, unsigned int, unsigned int); }
+namespace GX {
+/* local extern: GX.h is not included in this TU. */
+extern "C" void LoadOBJPltt(void const *, unsigned int, unsigned int);
+}
 namespace GXS { void LoadOBJPltt(void const *, unsigned int, unsigned int); }
 extern unsigned int data_0208a148[];
 extern unsigned int data_0208a15c[];
