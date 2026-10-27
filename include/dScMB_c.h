@@ -100,6 +100,10 @@ public:
     u8 mEnabled;    /* 0x0d -- nothing draws while 0 */
     u8 mAdvancing;  /* 0x0e -- gates the spin advance */
 
+    /* Clears only the owner; InitResources fills in the rest through
+       func_02034b1c. The global's static initializer runs this. */
+    graphCallback_c() : mOwner(0) {}
+
     virtual int GraphCallback0(); /* slot 0 */
     virtual int GraphCallback2(); /* slot 2 */
     virtual int GraphCallback3(); /* slot 3 */

@@ -43,14 +43,19 @@ void func_01ffb0b0(dBgW_Kc *self);
 void func_01ffb0bc(dBgW_Kc *self);
 void func_020396d0(int *p, int v);
 
-/* The shared scratch line (in collider space), its lineEnd and dBgPi base, and
-   the scratch scaled matrix.
+/* The scratch line's lineEnd and dBgPi base (both inside data_020a0d0c,
+   below), and the scratch scaled matrix.
    local extern: no header in include/ declares them. */
-extern dBgCh_Lin data_020a0d0c;
 extern Vector3 data_020a0d60;
 extern dBgPi data_020a0d1c;
 extern Matrix4x3 data_020a0e68;
 }
+
+/* The shared scratch line, in collider space. A namespace-scope dBgCh_Lin,
+   so mwcc emits __sinit_d_bg_w_kc_mbg.cpp to construct it and register
+   ~dBgCh_Lin() (was the handwritten __sinit_0207501c). dBgW_KcMbgSclY
+   borrows it by this address name. */
+dBgCh_Lin data_020a0d0c;
 
 /* Flat storage for matrix/vector copies in SetFile and Transform. The shared
  * Matrix4x3 contains a Vector3 with a destructor; copying its words through
