@@ -75,7 +75,9 @@ struct SurfaceInfo;
 struct Vector3_16 { s16 x, y, z; };
 #endif
 
-extern "C" void _ZN6Memory16operator_delete2EPv(void *);
+namespace Memory {
+void operator_delete2(void *);
+}
 
 struct dBgW;
 /* dBgW::BeforeClsn's hook. Its parameters stay named: each name is one of every
@@ -151,7 +153,9 @@ struct dBgW {
        every relocated word -- while calling the wrong function; only the
        reloc-destination check sees it. No layout effect: a non-virtual
        inline member adds no field and no vtable slot. */
-    void operator delete(void *ptr) { _ZN6Memory16operator_delete2EPv(ptr); }
+    void operator delete(void *ptr) {
+        Memory::operator_delete2(ptr);
+    }
 };
 
 /* The enabled-collider table: Enable puts a collider in the first free
