@@ -116,7 +116,7 @@ struct daBombking_c : dEnemyBase_c {
     int Render();
 
     /* State-record {enter, tick} handlers and their helpers, in ROM order. The
-       ov078 sinit copies PMF pairs into data_ov078_021270* records. */
+       static initializer copies PMF pairs into the data_ov078_* records. */
     int func_ov078_02123804();
     void func_ov078_02123864();
     int func_ov078_021238ac();
@@ -131,6 +131,7 @@ struct daBombking_c : dEnemyBase_c {
     int func_ov078_02123fb4();
     int func_ov078_02124000();
     int func_ov078_02124060();
+    int func_ov078_021240a0();
     int func_ov078_021243c0();
     int func_ov078_02124470();
     int func_ov078_021244d0();
