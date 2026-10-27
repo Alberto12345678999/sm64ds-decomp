@@ -219,10 +219,11 @@ Three things this batch adds to the recipe:
   the namespace, so their calls need `cstd::` qualification -- an unqualified
   call compiles nowhere and the error (`undefined identifier`) is the only
   symptom.
-- **A `.c` caller cannot follow at all.** `src/InvMat4x3.c` is C and cannot name
-  a C++ namespaced function, so it keeps a mangled extern under the new spelling
-  with a `local extern:` reason. This is a third category alongside shadow
-  scaffolds and raw-offset TUs.
+- **A `.c` caller cannot follow at all.** `src/InvMat4x3.cpp` was still C then
+  and could not name a C++ namespaced function, so it kept a mangled extern under
+  the new spelling with a `local extern:` reason. This is a third category
+  alongside shadow scaffolds and raw-offset TUs. (A later batch made it C++, and
+  it now calls `cstd::reciprocal_async` by name.)
 - **The scalar name can FIX a recorded name defect.** `fdiv_async`'s old name
   was in `config/name-roundtrip-baseline.json` as a MISMATCH, because a
   hand-derived name spelled the second `Fix12<int>` out in full where the
