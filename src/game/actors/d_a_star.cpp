@@ -205,8 +205,6 @@ extern int IsStarCollectedInCurLevel(int starID);
 extern int data_0209f40c[];
 extern u8 data_0209f208;
 extern unsigned char data_0209f264;
-// local extern: Player.h's u8 parameters re-narrow the arguments (func_ov002_020e8ef0 differs).
-int _ZN6Player17SetNoControlStateEhih(void* p, int a, int b, int d);
 void GiveVsStars(int idx, int delta);
 void CollectStarInCurLevel(int i);
 int SublevelToLevel(int i);
@@ -1309,8 +1307,6 @@ int daStar_c::func_ov002_020ea3a4() {
  * otherwise, in a VS match, it takes one star off the player's VS count
  * (GiveVsStars -1, when the count is not zero) and bounces away. */
 extern "C" {
-// local extern: Player.h's u8 parameter re-narrows the state (func_ov002_020e9d18 and 020ea100 differ).
-extern int _ZN6Player12Unk_020c9e5cEh(void *thisPtr, int state);
 extern int func_ov002_020ca0f4(void *player);
 
 
@@ -1322,13 +1318,13 @@ struct VObj {
 
 void daStar_c::func_ov002_020ea100() {
     Player *common;
-    int state;
+    u8 state;
 
     common = mPlayer;
     state = func_ov002_020e73ac();
 
-    if (_ZN6Player12Unk_020c9e5cEh(common, state)) {
-        if (state == 1 || state == 2) {
+    if (common->Unk_020c9e5c(state)) {
+        if ((int)state == 1 || (int)state == 2) {
             func_ov002_020e6fbc(0x14);
             mSoundObjMode = 1;
         } else if (state != 3) {
@@ -1519,7 +1515,7 @@ modes:
     }
 big_else:
     {
-        u32 st2;
+        u8 st2;
         if (mKind == KIND_9) {
             st2 = 0x11;
 LA:
@@ -1539,7 +1535,7 @@ LA:
             }
         }
         mSeqTimer = 0xa;
-        if (_ZN6Player12Unk_020c9e5cEh((void *)mPlayer, st2) == 0) {
+        if (mPlayer->Unk_020c9e5c(st2) == 0) {
             mTalkStep = 2;
             mState = STATE_SAVE_MESSAGE;
             mSeqTimer = 0;
@@ -1940,7 +1936,7 @@ void daStar_c::func_ov002_020e930c() {
 int daStar_c::func_ov002_020e8ef0(void* p) {
     void* found;
     int r5;
-    int r4;
+    u8 r4;
     int sb;
 
     mState = STATE_TOUCHED;
@@ -1977,22 +1973,22 @@ int daStar_c::func_ov002_020e8ef0(void* p) {
                 if (!t2) {
                     if (mHomeState != STATE_WAIT_MARKER) {
                         if (mStarID == 0) {
-                            sb = _ZN6Player17SetNoControlStateEhih(p, r4, 0x186, 0);
+                            sb = ((Player *)p)->SetNoControlState(r4, 0x186, 0);
                             Message::PrepareTalk();
                             r5 = 1;
                         } else if (func_ov002_020e9630() != 0) {
-                            sb = _ZN6Player17SetNoControlStateEhih(p, r4, 0x187, 0);
+                            sb = ((Player *)p)->SetNoControlState(r4, 0x187, 0);
                             Message::PrepareTalk();
                             r5 = 1;
                         } else {
-                            sb = _ZN6Player17SetNoControlStateEhih(p, r4, -1, 0);
+                            sb = ((Player *)p)->SetNoControlState(r4, -1, 0);
                         }
                         goto after_sc;
                     }
                 }
             }
         }
-        sb = _ZN6Player17SetNoControlStateEhih(p, r4, -1, 0);
+        sb = ((Player *)p)->SetNoControlState(r4, -1, 0);
     after_sc:;
 
         if (sb == 0) {
@@ -3031,7 +3027,7 @@ void daStar_c::func_ov002_020e7454() {
 /* The talk state the player is put in when it takes this star: 3 for star id
  * 8; 2 in a VS match, for the silver star and for a marker-placed star; 1 for
  * star id 0 and the levels func_ov002_020e9630 accepts; 0 otherwise. */
-int daStar_c::func_ov002_020e73ac() {
+u8 daStar_c::func_ov002_020e73ac() {
     int c, a, b;
     unsigned char r2 = mStarID;
     if (r2 == 8) {
