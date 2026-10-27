@@ -98,11 +98,6 @@ extern void func_02056314(void *, u32, u32);
 extern void func_020562b4(const void *, u32, u32);
 extern void func_020564f4(const void *, int, int);
 
-/* local extern: the hand-built factory runs dScMgBase_c's base-object
-   constructor on raw storage, which C++ spells only inside a derived
-   class's own constructor. */
-extern void *_ZN11dScMgBase_cC2Ev(void *);
-
 /* --- ROM data this TU reads --- */
 extern int data_0209d4b8;
 extern u8 data_0209d45c;
@@ -131,7 +126,6 @@ extern unsigned short *sPachinko2CupWaitFramesPerCup[];
 extern int *sPachinko2PaddleDescendLimits[];
 extern int *sPachinko2PaddleSweepLimits[];
 extern int *sPachinko2PaddleGatherTargets[];
-extern int data_ov006_0213dbbc[];
 
 /* The three pointer-to-member tables the helpers dispatch through. */
 extern Entry sPachinko2CupStateTable[];
@@ -2653,17 +2647,12 @@ s32 dScMgPachinko2_c::InitResources() {
 }
 
 // @symbol dScMgPachinko2_c_classInit
-/* The MG_TAMAIRE factory, kept hand-built: fBase_c::operator new for
-   0x567c bytes, the base constructor, then the vtable address point
-   0x0213dbbc stored as data. The classInit spelling follows later EAD
-   lineage; the historical alias is MgLakituLaunch_Spawn. */
-extern "C" int *dScMgPachinko2_c_classInit(void) {
-    int *p = (int *)fBase_c::operator new(22140);
-    if (p) {
-        _ZN11dScMgBase_cC2Ev(p);
-        p[0] = (int)data_ov006_0213dbbc;
-    }
-    return p;
+/* `new` inlines the constructor: fBase_c::operator new for the 0x567c
+   bytes, dScMgBase_c's C2, then this class's vtable. The classInit
+   spelling follows later EAD lineage; the historical alias is
+   MgLakituLaunch_Spawn. */
+extern "C" dScMgPachinko2_c *dScMgPachinko2_c_classInit(void) {
+    return new dScMgPachinko2_c;
 }
 
 /* The three state tables, defined in retail copy order: the 8-row ball

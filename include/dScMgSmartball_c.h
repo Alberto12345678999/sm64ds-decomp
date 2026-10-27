@@ -83,6 +83,9 @@ struct SmartballSpark {
 
 struct dScMgSmartball_c : dScMgBase_c {
     virtual ~dScMgSmartball_c();
+    /* Defined inline in the TU so classInit's `new` holds it. The four
+       arrays stay explicit __cxa_vec_ctor calls: they are not element types. */
+    dScMgSmartball_c();
 
     /* This class's own overrides, read off the ROM's vtable: the slots where the
        table differs from dScMgBase_c's. Spelled WITHOUT the `virtual` keyword, the
