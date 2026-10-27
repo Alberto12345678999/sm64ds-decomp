@@ -18,7 +18,7 @@
  *   labels are named for the offset in the ROM function (L274 is +0x274).
  * - Vtbl/VtblOwner stay a file-local slice: the object data_0209f5bc points
  *   at is reached through vtable slot 5 alone (dMeter_c cuts the same slice).
- * - The camera's follow word is mTargetPlayer in dCamera_c.h, typed s32;
+ * - The camera's follow word is mTargetPlayer in dCamera_c.h, a dActor_c *;
  *   this TU reads it as the object the map follows.
  * - The player-list copy keeps an (int) launder on &o->mPos: the ROM
  *   forms the copy source with `add r, o, #0x5c` plus three offset loads;
@@ -670,7 +670,7 @@ L3a4:
 
 L3e0:
     /* The camera's target player is what the map follows. */
-    focus = (dActor_c *)cam->mTargetPlayer;
+    focus = cam->mTargetPlayer;
 
 L3e8:
     if (focus == 0) goto Lae4;

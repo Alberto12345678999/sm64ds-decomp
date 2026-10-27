@@ -66,7 +66,10 @@ struct dCamera_c : dView_c {
     s32 mInvCosFov; /* 0x108 */
     /* Render packs these four bytes into the VIEWPORT register (0x04000580). */
     u8 mViewport[4];              /* 0x10c */
-    s32 mTargetPlayer;            /* 0x110 */
+    /* The actor the camera follows: InitResources stores the current
+       player-list entry here. Readers test actorID == 0xbf before treating it
+       as a Player, so it is declared as the dActor_c it is checked as. */
+    dActor_c *mTargetPlayer;      /* 0x110 */
     /* King Bob-omb, King Whomp, Chief Chilly, Goomboss, Bowser and the
        mirror-room Luigi store themselves here every frame; Behavior clears it
        at the end of each frame. In a type-7 camera area func_0200c394 aims
