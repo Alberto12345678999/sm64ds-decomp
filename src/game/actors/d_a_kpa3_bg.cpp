@@ -34,11 +34,11 @@
  * - The three handlers keep their address names.
  * - func_ov060_02117db8 parses as C (cplusplus off): the same body as
  *   C++ DIFFs. It reaches the members through a struct daKpa3Bg_c *.
- *   Earthquake and PoofDustAt go through kpaCallEarthquake and
- *   kpaCallPoof. A member call in the C body DIFFs; the bridges inline
- *   to the same calls. MarkForDestruction stays mangled. func_02012694
- *   plays bank-3 sound 0xbc at a point written into mCamSpacePos,
- *   restored afterwards.
+ *   Earthquake, PoofDustAt and MarkForDestruction go through
+ *   kpaCallEarthquake, kpaCallPoof and kpaCallDestroy. A member call in
+ *   the C body DIFFs; the bridges inline to the same calls.
+ *   func_02012694 plays bank-3 sound 0xbc at a point written into
+ *   mCamSpacePos, restored afterwards.
  * - dBgW_KcMbg::SetFile is called through its mangled name, with the
  *   Fix12<int> argument passed as a raw int.
  * - func_020393d4 stores dBgW::UpdatePosWithTransform.
@@ -66,8 +66,6 @@ void Vec3_AsrInPlace(Vec3 *v, int n);
 void MulVec3Mat4x3(Vec3 *, void *, void *);
 void func_02012694(int, void *);
 void CopyTexPalFromLevelModel(void *);
-// local extern: the C body calls it. Earthquake and PoofDustAt do not.
-void _ZN7fBase_c18MarkForDestructionEv(void *self);
 
 extern u16 data_ov060_0211956c[];
 extern s16 data_02082214[];
@@ -80,7 +78,8 @@ extern SharedFilePtr *data_ov060_0211953c[];
 extern CLPS_Block *data_ov060_0211a980[];
 extern int data_0208e738;
 
-extern void hold_d_a_kpa3_bg(void *self, KCL_File *f, const Matrix4x3 &m, int fix, short sh,
+/* Three parameter names dropped: kpaCallDestroy took those @NNN slots. */
+extern void hold_d_a_kpa3_bg(void *, KCL_File *, const Matrix4x3 &, int fix, short sh,
                              CLPS_Block &b);
 void func_020393d4(void *p, void *v);
 void func_020393c4(void *p, void *v);
@@ -245,6 +244,9 @@ static inline void kpaCallEarthquake(daKpa3Bg_c *self, Vec3 *v, int fix) {
 static inline void kpaCallPoof(daKpa3Bg_c *self, Vec3 *v) {
     self->PoofDustAt(*(const Vector3 *)v);
 }
+static inline void kpaCallDestroy(daKpa3Bg_c *self) {
+    self->MarkForDestruction();
+}
 
 // @symbol _ZN10daKpa3Bg_c19func_ov060_02117db8Ev
 /* mState 2: the platform lifts, then falls away. On mPhase 0 and 0x16 it
@@ -354,7 +356,7 @@ void _ZN10daKpa3Bg_c19func_ov060_02117db8Ev(struct daKpa3Bg_c *self) {
         *posY += self->mVertSpeed;
     }
     if (self->mPhase > 0x12cu)
-        _ZN7fBase_c18MarkForDestructionEv(self);
+        kpaCallDestroy(self);
     self->mPhase++;
 }
 #pragma cplusplus on
