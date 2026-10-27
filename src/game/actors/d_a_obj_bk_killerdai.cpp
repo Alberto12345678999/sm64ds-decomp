@@ -46,10 +46,36 @@
 #include "Sound.h"
 #include "Player.h"
 
-/* Launcher model, mesh, and the two shared files the bill itself uses.
- * The table is three pointers: model, collision, CLPS block. */
-extern SharedFilePtr data_ov079_02128300;
-extern SharedFilePtr data_ov079_021282f0;
+/* Runtime asset handles, distinct from the NitroFS file IDs. */
+enum daObjBkKillerdai_c_AssetId {
+    ASSET_KILLER_BODY_BMD = 0x0352,
+    ASSET_KILLER_FACE_BMD = 0x0353,
+    ASSET_BK_KILLER_DAI_BMD = 0x0597,
+    ASSET_BK_KILLER_DAI_KCL = 0x0598
+};
+
+/* The handles reach their files through these wrappers' constructor and
+ * destructor veneers; the manifest maps each to the retail destination.
+ * Descriptive local types, not recovered spellings. */
+struct BkKillerdaiModelFile : SharedFilePtr {
+    BkKillerdaiModelFile(u32 fileID);
+    ~BkKillerdaiModelFile();
+};
+
+struct BkKillerdaiCollisionFile : SharedFilePtr {
+    BkKillerdaiCollisionFile(u32 fileID);
+    ~BkKillerdaiCollisionFile();
+};
+
+/* This TU's statics, in the order the retail initializer (0x02127a10)
+ * builds them: the bill's face and body models (d_a_klr.cpp reads both
+ * through externs), then the launcher model and mesh. */
+BkKillerdaiModelFile data_ov079_021282f0(ASSET_KILLER_FACE_BMD);
+BkKillerdaiModelFile data_ov079_02128300(ASSET_KILLER_BODY_BMD);
+BkKillerdaiModelFile gBkKillerDaiModelFile(ASSET_BK_KILLER_DAI_BMD);
+BkKillerdaiCollisionFile gBkKillerDaiCollisionFile(ASSET_BK_KILLER_DAI_KCL);
+
+/* Launcher model, mesh, and CLPS block: three pointers. */
 extern void *data_ov079_02127f64[];
 
 extern "C" {
