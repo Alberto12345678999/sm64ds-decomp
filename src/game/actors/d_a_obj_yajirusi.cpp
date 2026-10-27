@@ -21,8 +21,7 @@
  * _ZN10dBgActor_cD2Ev (licensed deadstrip). The "// address (size)" line
  * above each definition is its ROM location.
  *
- * Leftover: dBgW_KcMbg::SetFile, dBgActor_c::UpdateKillByMegaChar,
- *   dBgActor_c::IsClsnInRangeOnScreen, dActor_c::DropShadowScaleXYZ and
+ * Leftover: dBgW_KcMbg::SetFile, dBgActor_c::IsClsnInRangeOnScreen, dActor_c::DropShadowScaleXYZ and
  *   Particle::System::NewSimple stay mangled extern "C" calls. Each takes
  *   Fix12<int> by value, and a typed method call changes the caller's size.
  *   Fix12<int>{0} does not compile.
@@ -84,7 +83,6 @@ struct System {
 };
 }
 int func_02012694(int id, void *pos);
-int _ZN10dBgActor_c20UpdateKillByMegaCharEsss5Fix12IiE(void *self, short a, short b, short c, int d);
 void func_02039394(int *collider, int v);
 void func_020393a4(int *collider, int v);
 extern void hold_d_a_obj_yajirusi(void *self, void *kcl, void *mtx, int scale, short angle,
@@ -151,7 +149,7 @@ int daObjYajirusi_c::InitResources()
 // @symbol _ZN15daObjYajirusi_c8BehaviorEv
 int daObjYajirusi_c::Behavior()
 {
-    if (_ZN10dBgActor_c20UpdateKillByMegaCharEsss5Fix12IiE(this, -0x2000, 0, 0, 0x96000))
+    if (UpdateKillByMegaChar(-0x2000, 0, 0, 0x96000))
         return 1;
     func_02039394((int *)&mMeshCollider, 0xc0000);
     func_020393a4((int *)&mMeshCollider, 0xe0000);

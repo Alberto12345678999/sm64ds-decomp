@@ -71,10 +71,11 @@ struct dBgActor_c : dActor_c {
     int IsClsnInRange(Fix12i, Fix12i);
     int IsClsnInRangeOnScreen(Fix12i, Fix12i);
 
-    /* MEASURED, AND STILL TRUE: the by-value Fix12<int> here is confirmed by
-       the body at ov002 0x020ee674, not inferred from the mangled name, so
-       this one is a genuine wall-6az symbol and keeps its spelling. */
-    int UpdateKillByMegaChar(s16 a, s16 b, s16 c, Fix12<int> d);
+    /* Takes the scalar Fix12i, under _ZN10dBgActor_c20UpdateKillByMegaCharEsssi.
+       The body at ov002 0x020ee674 only forwards the pivot height in a
+       register, so the scalar reproduces it (2026-10-26), and callers can
+       call it as a method. notes/mwccarm-codegen.md 6az. */
+    int UpdateKillByMegaChar(s16 a, s16 b, s16 c, Fix12i d);
 };
 
 #ifndef SM64DS_PLATFORM_PC

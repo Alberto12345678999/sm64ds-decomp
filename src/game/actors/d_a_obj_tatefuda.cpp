@@ -179,7 +179,6 @@ extern void _Z14ApproachLinearRiii(int* p, int a, int b);
 extern "C" unsigned int data_0209b454;
 extern "C" void AttachToHolder(struct daObjTatefuda_c *self);
 extern "C" u8 DecIfAbove0_Byte(u8 *p);
-extern "C" int _ZN10dBgActor_c20UpdateKillByMegaCharEsss5Fix12IiE(void *self, short a, short b, short c, int fix);
 extern "C" void *d_a_obj_tatefudaNewHold(u32 a, u32 b, int c, int d, int e, const void *v,
                                          void *cb);
 extern "C" u32 d_a_obj_tatefudaNewUnkCallback818Hold(u32 a, u32 b, int c, int d, int e,
@@ -367,7 +366,7 @@ int daObjTatefuda_c::Behavior()
         }
     }
 
-    if (_ZN10dBgActor_c20UpdateKillByMegaCharEsss5Fix12IiE(this, -0x2000, 0, 0, 0x46000))
+    if (UpdateKillByMegaChar(-0x2000, 0, 0, 0x46000))
         return 1;
 
     if (mBreakTimer != 0) {

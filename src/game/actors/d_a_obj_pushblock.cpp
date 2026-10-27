@@ -20,8 +20,6 @@
  * - Particle::System::NewSimple 6az (Kill; notes/mwccarm-codegen.md 6az).
  * - dBgActor_c::IsClsnInRangeOnScreen 6az (Behavior; header method form
  *   refused).
- * - dBgActor_c::UpdateKillByMegaChar stays mangled at the call site
- *   (Fix12<int> by value, 6az; include/dBgActor_c.h).
  * - dBgCh_Actr_UpdateContinuous_Veneer: named UpdateContinuous misses the
  *   veneer dest (Behavior).
  * - (Vector3 *)&mHomePosX: the class stores that triple as scalars, and the
@@ -171,7 +169,7 @@ int daObjPushblock_c::Behavior()
     Vector3 pos;
     dActor_c *q;
 
-    if (_ZN10dBgActor_c20UpdateKillByMegaCharEsss5Fix12IiE(this, 0x1800, 0, 0, 0x96000) != 0) {
+    if (UpdateKillByMegaChar(0x1800, 0, 0, 0x96000) != 0) {
         return 1;
     }
 
