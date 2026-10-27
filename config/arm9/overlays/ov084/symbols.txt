@@ -126,10 +126,10 @@ data_ov084_0213030c kind:data(any) addr:0x0213030c
 data_ov084_02130320 kind:data(any) addr:0x02130320 ambiguous
 data_ov084_02130334 kind:data(any) addr:0x02130334
 __sinit_d_a_krb.cpp kind:function(arm,size=0x1fc) addr:0x0213035c
-__sinit_ov084_02130558 kind:function(arm,size=0xfc) addr:0x02130558
+__sinit_d_a_red_bombhei.cpp kind:function(arm,size=0xfc) addr:0x02130558
 __sinit_ov084_02130654 kind:function(arm,size=0x20c) addr:0x02130654
 .p__sinit_d_a_krb.cpp kind:data(word) addr:0x02130860
-.p__sinit_ov084_02130558 kind:data(word) addr:0x02130864
+.p__sinit_d_a_red_bombhei.cpp kind:data(word) addr:0x02130864
 .p__sinit_ov084_02130654 kind:data(word) addr:0x02130868
 data_ov084_02130880 kind:data(any) addr:0x02130880
 data_ov084_0213088c kind:data(any) addr:0x0213088c
@@ -193,8 +193,8 @@ gKuriboLowModelModelFile kind:bss addr:0x02130d00
 @1950 kind:bss addr:0x02130d5c
 @1951 kind:bss addr:0x02130d68
 data_ov084_02130d74 kind:bss addr:0x02130d74
-data_ov084_02130d9c kind:bss addr:0x02130d9c
-data_ov084_02130da4 kind:bss addr:0x02130da4
+gRedBombheiWaitAnimFile kind:bss addr:0x02130d9c
+gRedBombheiModelFile kind:bss addr:0x02130da4
 data_ov084_02130dac kind:bss addr:0x02130dac
 data_ov084_02130db8 kind:bss addr:0x02130db8
 data_ov084_02130dc4 kind:bss addr:0x02130dc4
