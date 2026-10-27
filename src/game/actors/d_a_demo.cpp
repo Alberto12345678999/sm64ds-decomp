@@ -405,12 +405,6 @@ struct JugemModelFile : SharedFilePtr {
 };
 
 extern "C" {
-/* local extern: the fades pass a computed alpha and 0x10 minus it; the real
-   unsigned short parameters (G2x.h) narrow both, which the ROM does not
-   (measured: +8 bytes in each of the three fading functions). The fixed-alpha
-   calls use G2x::SetBlendAlpha. */
-extern void _ZN3G2x13SetBlendAlphaEPVttttj(volatile void *reg, unsigned short a, unsigned short b,
-                                           int c, int d);
 extern unsigned char data_0209d454;
 extern int RandomIntInternal(int *seed);
 extern int data_0209e650;
@@ -591,8 +585,8 @@ extern unsigned char data_0209f2d8;
 extern char data_ov002_0211094c;
 extern JugemModelFile data_ov085_0213074c;
 /* TUBUILD CONFLICT -- alternate declaration of data_0209d454, from the legacy file for func_ov002_020f23f0, NOT applied: extern u8 data_0209d454; */
-/* TUBUILD CONFLICT -- alternate declaration of _ZN3G2x13SetBlendAlphaEPVttttj, from the legacy file for func_ov002_020f2aec, NOT applied: extern void _ZN3G2x13SetBlendAlphaEPVttttj(volatile void *p, unsigned short a, unsigned short b, unsigned short c, int d); */
-/* TUBUILD CONFLICT -- alternate declaration of _ZN3G2x13SetBlendAlphaEPVttttj, from the legacy file for func_ov002_020f2bf4, NOT applied: extern void _ZN3G2x13SetBlendAlphaEPVttttj(volatile void *p, unsigned short a, unsigned short b, int c, unsigned short d); */
+/* TUBUILD CONFLICT -- alternate declaration of _ZN3G2x13SetBlendAlphaEPVtiiii, from the legacy file for func_ov002_020f2aec, NOT applied: extern void _ZN3G2x13SetBlendAlphaEPVtiiii(volatile void *p, unsigned short a, unsigned short b, unsigned short c, int d); */
+/* TUBUILD CONFLICT -- alternate declaration of _ZN3G2x13SetBlendAlphaEPVtiiii, from the legacy file for func_ov002_020f2bf4, NOT applied: extern void _ZN3G2x13SetBlendAlphaEPVtiiii(volatile void *p, unsigned short a, unsigned short b, int c, unsigned short d); */
 /* TUBUILD CONFLICT -- alternate declaration of func_0201ef50, from the legacy file for func_ov002_020f2e30, NOT applied: extern void func_0201ef50(unsigned int x); */
 /* TUBUILD CONFLICT -- alternate declaration of func_ov002_020f5a94, from the legacy file for func_ov002_020f3de4, NOT applied: extern int func_ov002_020f5a94(char *c); */
 /* TUBUILD CONFLICT -- alternate declaration of func_ov002_020f5a94, from the legacy file for func_ov002_020f40fc, NOT applied: extern int func_ov002_020f5a94(char *c); */
@@ -630,7 +624,7 @@ extern JugemModelFile data_ov085_0213074c;
 /* TUBUILD CONFLICT -- alternate declaration of MulVec3Mat4x3, from the legacy file for func_ov002_020f7410, NOT applied: extern void MulVec3Mat4x3(void *out, void *m, void *v); */
 /* TUBUILD CONFLICT -- alternate declaration of Vec3_LslInPlace, from the legacy file for func_ov002_020f7410, NOT applied: extern void Vec3_LslInPlace(void *v, int sh); */
 /* TUBUILD CONFLICT -- alternate declaration of _Z14ApproachLinearRiii, from the legacy file for func_ov002_020f7410, NOT applied: extern int _Z14ApproachLinearRiii(int *p, int target, int step); */
-/* TUBUILD CONFLICT -- alternate declaration of _ZN3G2x13SetBlendAlphaEPVttttj, from the legacy file for func_ov002_020f7410, NOT applied: extern void _ZN3G2x13SetBlendAlphaEPVttttj(volatile void *reg, unsigned short a, unsigned short b, int c, int d); */
+/* TUBUILD CONFLICT -- alternate declaration of _ZN3G2x13SetBlendAlphaEPVtiiii, from the legacy file for func_ov002_020f7410, NOT applied: extern void _ZN3G2x13SetBlendAlphaEPVtiiii(volatile void *reg, unsigned short a, unsigned short b, int c, int d); */
 /* TUBUILD CONFLICT -- alternate declaration of MulVec3Mat4x3, from the legacy file for func_ov002_020f7538, NOT applied: extern void MulVec3Mat4x3(void* a, void* b, void* c); */
 /* TUBUILD CONFLICT -- alternate declaration of Vec3_LslInPlace, from the legacy file for func_ov002_020f7538, NOT applied: extern void Vec3_LslInPlace(void* v, int n); */
 /* TUBUILD CONFLICT -- alternate declaration of _Z14ApproachLinearRiii, from the legacy file for func_ov002_020f7538, NOT applied: extern int _Z14ApproachLinearRiii(int* dst, int target, int step); */
@@ -701,8 +695,7 @@ void daDemo_c::func_ov002_020f1fcc()
     mScroll->fadeLevel--;
     v = mScroll->fadeLevel;
     if (v != 0) {
-        _ZN3G2x13SetBlendAlphaEPVttttj(
-            (volatile void *)0x4001050, 4, 0x28, v, 0x10 - v);
+        G2x::SetBlendAlpha((volatile u16 *)0x4001050, 4, 0x28, v, 0x10 - v);
         return;
     }
     data_0209d454 &= ~4;
@@ -1209,7 +1202,7 @@ void func_ov002_020f2aec(char *c, int idx)
         *(unsigned short *)(c + idx * 8 + CREDIT_OFF(blendTimer)) = 0;
         *(unsigned char *)(c + CREDIT_OFF(blend) + idx * 8) += 1;
         cnt = *(unsigned char *)(c + idx * 8 + CREDIT_OFF(blend));
-        _ZN3G2x13SetBlendAlphaEPVttttj((volatile void *)0x4001050, 1, 0x36, cnt, 0x10 - cnt);
+        G2x::SetBlendAlpha((volatile u16 *)0x4001050, 1, 0x36, cnt, 0x10 - cnt);
     }
 
     if (*(unsigned short *)(c + idx * 8 + CREDIT_OFF(timer)) < 30) {
@@ -1239,7 +1232,7 @@ void func_ov002_020f2bf4(char *c, int idx)
         *(unsigned short *)(c + idx * 8 + CREDIT_OFF(blendTimer)) = 0;
         *(unsigned char *)(c + CREDIT_OFF(blend) + idx * 8) += 1;
         cnt = *(unsigned char *)(c + idx * 8 + CREDIT_OFF(blend));
-        _ZN3G2x13SetBlendAlphaEPVttttj((volatile void *)0x4001050, 1, 0x36, 0x10 - cnt, cnt);
+        G2x::SetBlendAlpha((volatile u16 *)0x4001050, 1, 0x36, 0x10 - cnt, cnt);
     }
 
     if (*(unsigned short *)(c + idx * 8 + CREDIT_OFF(timer)) < 30) {
@@ -4221,7 +4214,7 @@ int daDemo_c::func_ov002_020f7410(unsigned char *in, int sel)
         if (r != 0 || a != 0) {
             t = (r * 0xa00) >> 12;
             if (t > 0x10) t = 0x10;
-            _ZN3G2x13SetBlendAlphaEPVttttj((volatile void *)0x4000050, 8, 1, t, 0x10 - t);
+            G2x::SetBlendAlpha((volatile u16 *)0x4000050, 8, 1, t, 0x10 - t);
         }
     }
     return 1;

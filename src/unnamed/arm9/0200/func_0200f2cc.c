@@ -1,23 +1,23 @@
 #include "types.h"
 extern void _ZN2GX15DisableAllBanksEv(void);
-extern void _ZN2GX13SetBankForTexEt(u16 v);
-extern void _ZN2GX17SetBankForTexPlttEt(u16 v);
-extern void _ZN2GX12SetBankForBGEt(u16 v);
-extern void _ZN2GX13SetBankForOBJEt(u16 v);
-extern void _ZN2GX15SetBankForSubBGEt(u16 v);
-extern void _ZN2GX16SetBankForSubOBJEt(u16 v);
+extern void _ZN2GX13SetBankForTexEi(int v);
+extern void _ZN2GX17SetBankForTexPlttEi(int v);
+extern void _ZN2GX12SetBankForBGEi(int v);
+extern void _ZN2GX13SetBankForOBJEi(int v);
+extern void _ZN2GX15SetBankForSubBGEi(int v);
+extern void _ZN2GX16SetBankForSubOBJEi(int v);
 extern void _ZN2GX15SetGraphicsModeEiii(int a, int b, int c);
 extern void _ZN3GXS15SetGraphicsModeEi(int a);
 
 void func_0200f2cc(void)
 {
     _ZN2GX15DisableAllBanksEv();
-    _ZN2GX13SetBankForTexEt(3);
-    _ZN2GX17SetBankForTexPlttEt(0x10);
-    _ZN2GX12SetBankForBGEt(4);
-    _ZN2GX13SetBankForOBJEt(0x60);
-    _ZN2GX15SetBankForSubBGEt(0x180);
-    _ZN2GX16SetBankForSubOBJEt(8);
+    _ZN2GX13SetBankForTexEi(3);
+    _ZN2GX17SetBankForTexPlttEi(0x10);
+    _ZN2GX12SetBankForBGEi(4);
+    _ZN2GX13SetBankForOBJEi(0x60);
+    _ZN2GX15SetBankForSubBGEi(0x180);
+    _ZN2GX16SetBankForSubOBJEi(8);
 
     *(volatile u32 *)0x4000000 &= ~0x7000000;
     *(volatile u32 *)0x4000000 &= ~0x38000000;

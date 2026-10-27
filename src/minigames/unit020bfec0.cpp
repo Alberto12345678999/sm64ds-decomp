@@ -28,6 +28,7 @@
 #include "SharedFilePtr.h"
 #include "PlayerInput.h"
 #include "G3i.h"
+#include "dClipper.h"
 #include "MascotWalker.h"
 #include "Presenter.h"
 #include "Dealer.h"
@@ -85,10 +86,6 @@ void SharedFilePtr_Construct_TexSeq(void *, unsigned int);
 void SharedFilePtr_Destruct_Anim(void *);
 void SharedFilePtr_Destruct_TexSeq(void *);
 
-/* local extern: dClipper.h's Func_020156DC takes the fov angle as u16, and passing
-   the short camera angle through it loads it with ldrh where the ROM has ldrsh
-   (Camera_UpdateMatrices +0x104), so the call keeps int parameters. */
-void _ZN8dClipper13Func_020156DCEitii(void *, int, int, int, int);
 void *_ZN7Vector3D1Ev(void *);
 void *__cxa_vec_ctor(void *, int, int, void *, void *);
 void func_02012174(int, int);
@@ -2596,7 +2593,7 @@ struct dCamera_c {
 };
 
 extern short data_02082214[];
-extern char data_0209f43c[];
+extern dClipper data_0209f43c;
 
 void Camera_UpdateMatrices(struct dCamera_c *self) {
     struct Vector3 up;
@@ -2630,7 +2627,7 @@ void Camera_UpdateMatrices(struct dCamera_c *self) {
 
     _Z13CopyToViewMatPK9Matrix4x3(&self->viewMat);
 
-    _ZN8dClipper13Func_020156DCEitii(data_0209f43c, 0x1555, self->angle, 0x1000, 0x1388000);
+    data_0209f43c.Func_020156DC(0x1555, self->angle, 0x1000, 0x1388000);
 }
 }
 }

@@ -1354,11 +1354,9 @@ int func_ov002_020bec84(void* p, unsigned int i) {
 
 // @symbol func_ov002_020bec9c
 extern "C" {
-int func_ov002_020bec9c(void*c,unsigned int a,int b,int d,unsigned short e){
+void func_ov002_020bec9c(void *c, unsigned int a, int b, int d, unsigned short e) {
     extern int data_ov002_020ff220[];
-    /* local extern: tail-forwards SetAnim's r0 as this function's int result. */
-    extern int _ZN6Player7SetAnimEjiit(void *, unsigned int, int, int, unsigned short);
-    return _ZN6Player7SetAnimEjiit(c, data_ov002_020ff220[a], b, d, e);
+    ((Player *)c)->SetAnim(data_ov002_020ff220[a], b, d, e);
 }
 }
 
@@ -12417,9 +12415,6 @@ void func_ov002_020d1f78(void *selfPtr, u32 param)
     extern Rec18 data_0209f49c[];
     extern Rec18 data_0209f4a0[];
     extern int data_0209f32c;
-    /* local extern: non-constant startFrame (w << 4) >> 16 narrows to u16 and costs +8. */
-    extern void _ZN6Player7SetAnimEjiit(void *self, unsigned int a, int b, Fix12i c,
-                                        unsigned int d);
     extern u32 func_02022d00(u32 uniqueID, u32 effectID, Fix12i x, Fix12i y, Fix12i z, void *dir);
     extern void func_0201251c(int a, int b, int c, int d);
     extern void PlayerNewSimpleHold8(unsigned int id, Fix12i a, Fix12i b, Fix12i c);
@@ -12448,7 +12443,9 @@ void func_ov002_020d1f78(void *selfPtr, u32 param)
         id = ((Player *)self)->GetBodyModelID(p->param1 & 0xff, 0);
         anim = (char *)((long long)(int)&(dExtFrameCtrl_c &)*p->mModels.mBodyModels[id]);
         w = ((dExtFrameCtrl_c *)anim)->currFrame;
-        _ZN6Player7SetAnimEjiit(self, 0x3f, 0, 0x2800, (w << 4) >> 16);
+        /* The whole frame of the 20.12 counter; the u16 parameter's narrowing
+           folds with the shift into the ROM's lsl #4 / lsr #16. */
+        p->SetAnim(0x3f, 0, 0x2800, w >> 12);
     } else {
         int v = p->mHorzSpeed;
         int shift = v >> 3;
@@ -13819,14 +13816,11 @@ static inline int* GetAnim(char* c)
                    .mBodyModels[((Player *)c)->GetBodyModelID((unsigned char)player->param1, 0)] +
                0x50);
 }
-static inline unsigned int AnimSpeed(char* c)
-{
-    return (unsigned short)(GetAnim(c)[2] >> 12);
+static inline u16 AnimSpeed(char *c) {
+    return GetAnim(c)[2] >> 12;
 }
 void Player::func_ov002_020d4748()
 {
-    /* local extern: AnimSpeed/s5 are wider than u16; each narrowed call costs +8. */
-    void _ZN6Player7SetAnimEjiit(void *, unsigned int, int, int, unsigned int);
     int Player_ScaleByCharFactor(void*, int);
     void func_ov002_020d4c30(void*);
     extern unsigned char data_0209f4ac;
@@ -13903,21 +13897,21 @@ void Player::func_ov002_020d4748()
         }
 
         if (this->mSinkDepth > 0x32000) {
-            _ZN6Player7SetAnimEjiit(c, 0x7e, 0,
-                                    *(short *)((char *)&data_0209f4a0 + gActivePlayerSlot * 0x18),
-                                    AnimSpeed(c));
+            ((Player *)c)
+                ->SetAnim(0x7e, 0, *(short *)((char *)&data_0209f4a0 + gActivePlayerSlot * 0x18),
+                          AnimSpeed(c));
         } else if (this->mStateStep >= 0x17) {
             this->mStateStep = 0x17;
-            _ZN6Player7SetAnimEjiit(c, 0x61, 0, 0x1000, AnimSpeed(c));
+            ((Player *)c)->SetAnim(0x61, 0, 0x1000, AnimSpeed(c));
         } else if (this->mFloorClass == 4 && *(short*)((char*)&data_0209f4a0 + gActivePlayerSlot * 0x18) == 0) {
             Particle::RunningSlidingDustAt(this->mPosX, this->mPosY, this->mPosZ);
             ((Player *)c)->SetAnim(0x47, 0, 0x1000, 0);
         } else if (this->mIsWalkPace != 0) {
-            unsigned int s5 = AnimSpeed(c);
+            u16 s5 = AnimSpeed(c);
             int spd = this->mHorzSpeed >> 3;
             if (spd < 0x400)
                 spd = 0x400;
-            _ZN6Player7SetAnimEjiit(c, 0x48, 0, spd, s5);
+            ((Player *)c)->SetAnim(0x48, 0, spd, s5);
         } else {
             int t = 0x1000 - this->mFloorNormalY;
             int f = (int)((((long long)t << 10) + 0x800) >> 12);
@@ -13926,7 +13920,7 @@ void Player::func_ov002_020d4748()
             v = FX_MUL(diff, f);
             if (v < 0)
                 v = 0;
-            _ZN6Player7SetAnimEjiit(c, 0x3f, 0, v + 0x2800, AnimSpeed(c));
+            ((Player *)c)->SetAnim(0x3f, 0, v + 0x2800, AnimSpeed(c));
         }
 
         if (((dExtFrameCtrl_c *)(GetAnim(c)))->WillHitFrame(4) != 0 ||
@@ -15651,12 +15645,6 @@ struct PVec { int x, y, z; PVec() {} ~PVec() {} };
 extern "C" {
 int Player::St_YoshiPower_Main()
 {
-    /* local extern: this body is the only caller that passes a NON-CONSTANT
-       startFrame. dExtAnmModel_c::SetAnim's real parameter is u16, and narrowing
-       `(currFrame << 4) >> 0x10` to it costs +0x10 here, so this body keeps the
-       scalar unsigned-int spelling the ROM call uses -- the per-body declaration
-       policy this file's header states. */
-    extern void _ZN14dExtAnmModel_c7SetAnimEP8BCA_Fileiit(void *, void *, int, int, unsigned int);
     extern void func_ov002_020d71ec(char*, int);
     extern void MulVec3Mat4x3(void*, void*, void*);
     extern void Vec3_MulScalarInPlace(void*, int);
@@ -15844,9 +15832,11 @@ int Player::St_YoshiPower_Main()
                 int id6 = this->GetBodyModelID(this->param1 & 0xff, z);
                 int *a50c = (int *)((
                     long long)(int)((char *)&(dExtFrameCtrl_c &)*mModels.mBodyModels[id6]));
-                _ZN14dExtAnmModel_c7SetAnimEP8BCA_Fileiit(
-                    mModels.mHeadModels[3], (void *)data_ov002_0210e3d8[1], 0x40000000, 0x1000,
-                    (unsigned int)(((dExtFrameCtrl_c *)a50c)->currFrame << 4) >> 0x10);
+                /* The u16 startFrame takes the whole frame, currFrame >> 12;
+                   its narrowing folds into the ROM's lsl #4 / lsr #16. */
+                ((dExtAnmModel_c *)mModels.mHeadModels[3])
+                    ->SetAnim((BCA_File *)data_ov002_0210e3d8[1], 0x40000000, 0x1000,
+                              ((dExtFrameCtrl_c *)a50c)->currFrame >> 12);
             }
         }
         int id7 = this->GetBodyModelID(this->param1 & 0xff, 0);
@@ -15901,9 +15891,9 @@ int Player::St_YoshiPower_Main()
                     int id9 = this->GetBodyModelID(this->param1 & 0xff, z2);
                     int *a50e = (int *)((
                         long long)(int)((char *)&(dExtFrameCtrl_c &)*mModels.mBodyModels[id9]));
-                    _ZN14dExtAnmModel_c7SetAnimEP8BCA_Fileiit(
-                        mModels.mHeadModels[3], (void *)data_ov002_0210e3d8[1], 0x40000000, 0x1000,
-                        (unsigned int)(((dExtFrameCtrl_c *)a50e)->currFrame << 4) >> 0x10);
+                    ((dExtAnmModel_c *)mModels.mHeadModels[3])
+                        ->SetAnim((BCA_File *)data_ov002_0210e3d8[1], 0x40000000, 0x1000,
+                                  ((dExtFrameCtrl_c *)a50e)->currFrame >> 12);
                 }
                 return 1;
             }

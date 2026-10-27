@@ -26,8 +26,7 @@
 // - OAM::Render, OAM::RenderSub, Sound::PlaySub and cstd::atan2
 //   stay mangled (Fix12 by value). Fog::Init is the scalar Fix12i method.
 //   RenderNumber keeps a local extern spelled over the member's mask-emitting
-//   parameter conversions; G3X::SetFog stays mangled where the ROM passes
-//   a raw int the header's bool parameter would narrow. InitResources calls LoadGraphics2D with the comparison
+//   parameter conversions. InitResources calls LoadGraphics2D with the comparison
 //   itself as the bool, which is what the ROM passes.
 // - LoadTextureTransformers spells `new` as an explicit operator new call
 //   plus a null-guarded constructor call, a form from before the allocator
@@ -149,8 +148,6 @@ void TurnBacklightOff(void);
 int IsStarCollected(int lv, int star);
 
 bool d_s_stage_methodsPlaySubHold(unsigned int a, unsigned int b, unsigned int c, int fix, int e);
-// local extern: SaveData.h's (s8, u8) parameters re-narrow both arguments (LC_Update differs).
-void _ZN8SaveData21SetCoinRecordIfHigherEah(int a, int b);
 
 void OamRender10_d_s_stage_methods(int sub, void *attr, int x, int y, int a, int cc, int fx, int fy,
                                    int rot, int mode);
@@ -761,7 +758,7 @@ void dScStage_c::LC_Update() {
                     u8 coins = data_0209f260;
                     if (SaveData::GetCoinRecord(level) >= coins)
                         return;
-                    _ZN8SaveData21SetCoinRecordIfHigherEah(level, coins);
+                    SaveData::SetCoinRecordIfHigher(level, coins);
                     data_0209f2b0 = 1;
                     func_02012790(0x22);
                     return;
@@ -3890,8 +3887,6 @@ void dScStage_c::LoadModel() {
 // @symbol _ZN10dScStage_c9RenderFogEv
 extern "C" {
 void *func_ov002_020f1c20(void);
-// local extern: G3X::SetFog takes a bool, and the ROM passes the raw byte with no conversion
-void _ZN3G3X6SetFogEbiii(int b, int a1, int a2, int a3);
 }
 
 void dScStage_c::RenderFog() {
@@ -3904,7 +3899,7 @@ void dScStage_c::RenderFog() {
         if (camera->IsUnderwater())
             fog++;
     }
-    _ZN3G3X6SetFogEbiii(fog->mEnabled, 0, fog->mShift, fog->mOffset);
+    G3X::SetFog(fog->mEnabled, 0, fog->mShift, fog->mOffset);
     *(volatile unsigned int *)0x4000358 = fog->mColor | 0x1f0000;
     G3X::SetFogTable(fog);
 }

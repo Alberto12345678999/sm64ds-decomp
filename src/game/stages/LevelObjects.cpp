@@ -6,8 +6,9 @@
  * - DoorEntry and LVL_Overlay_Layout stay in this file. LVL_Overlay.h
  *   still has no data members, and adding a record type there reaches
  *   the other loaders.
- * - dActor_c::Spawn stays the hand-spelled form. The header's s8/s16
- *   tail truncates areaID and grows LoadStandardObjects by 4 bytes.
+ * - areaID is s8 down the whole chain: LoadClsnAndObjects counts areas in
+ *   a signed char, LoadObjects and the fifteen category loaders take it as
+ *   s8, and dActor_c::Spawn's s8 area tail receives it unconverted.
  * - LoadMinimapChangeObject stays mangled. It takes Fix12<int> by value.
  * - LoadTeleportSourceObjects stays a bottom-tested loop. A for
  *   reorders the compare.
@@ -53,14 +54,6 @@ extern u8 data_ov002_0210cb70[];
 extern u16 data_ov002_0210cb88[];
 extern u16 data_ov002_0210cbf4[];
 
-/* local extern: the header's s8/s16 tail truncates the int areaID these two
- * loaders pass straight through (LoadSimpleObjects and LoadStandardObjects
- * each grow). The other spawn sites pass constants or an (s8) value and use
- * dActor_c::Spawn. */
-void *_ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as(u32 actorID, u32 spawnParam,
-                                                      const Vector3 *pos, const Vector3_16 *rot,
-                                                      s32 areaID, s32 deathTableID);
-
 void _Z23LoadMinimapChangeObjecti5Fix12IiEh(int areaID, Fix12i y, s8 h);
 
 void func_0202af80(void *entries, u32 count);
@@ -78,7 +71,7 @@ KCL_File *LoadFile(int handle);
 
 /* LoadObjects dispatches through this table. Its entries are the
  * category loaders. This text-only TU does not define it. */
-extern void (*data_ov002_0210cbb8[])(void *, int, unsigned int);
+extern void (*data_ov002_0210cbb8[])(void *, s8, unsigned int);
 
 } /* extern "C" */
 
@@ -127,8 +120,8 @@ static inline int IntroAllowed() {
  *
  * LoadMinimapChangeObject stays hand-spelled: it takes a by-value Fix12<int>,
  * which is a runbook section 7 dead end for a real declaration at the call site. */
-// @symbol _Z17LoadSimpleObjectsRN11LVL_Overlay11ObjSubTableEij
-void LoadSimpleObjects(LVL_Overlay::ObjSubTable &table, int areaID, u32 param) {
+// @symbol _Z17LoadSimpleObjectsRN11LVL_Overlay11ObjSubTableEaj
+void LoadSimpleObjects(LVL_Overlay::ObjSubTable &table, s8 areaID, u32 param) {
     LVL_Overlay::SimpleEntry *entry = (LVL_Overlay::SimpleEntry *)table.entries;
     int objectIndex;
     for (objectIndex = 0; objectIndex < (int)table.count; objectIndex++, entry++) {
@@ -150,8 +143,8 @@ void LoadSimpleObjects(LVL_Overlay::ObjSubTable &table, int areaID, u32 param) {
         } else {
             s16 deathTableID = data_ov002_0211118c;
             data_ov002_0211118c = (s16)(deathTableID + 1);
-            _ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as(
-                data_ov002_0210cbf4[actorIndex], actorParam, &position, 0, areaID, deathTableID);
+            dActor_c::Spawn(data_ov002_0210cbf4[actorIndex], actorParam, position, 0, areaID,
+                            deathTableID);
         }
     }
 }
@@ -161,8 +154,8 @@ void LoadSimpleObjects(LVL_Overlay::ObjSubTable &table, int areaID, u32 param) {
  * Vector3s rotation, u16 param. data_ov002_0211118c is a running death-table /
  * spawn-order counter incremented per spawn. The third parameter is part of the
  * shared loader signature and unused here. */
-// @symbol _Z19LoadStandardObjectsRN11LVL_Overlay11ObjSubTableEij
-void LoadStandardObjects(LVL_Overlay::ObjSubTable &table, int areaID, u32 param) {
+// @symbol _Z19LoadStandardObjectsRN11LVL_Overlay11ObjSubTableEaj
+void LoadStandardObjects(LVL_Overlay::ObjSubTable &table, s8 areaID, u32 param) {
     LVL_Overlay::StandardEntry *entry = (LVL_Overlay::StandardEntry *)table.entries;
     int objectIndex;
     for (objectIndex = 0; objectIndex < (int)table.count; objectIndex++, entry++) {
@@ -176,9 +169,8 @@ void LoadStandardObjects(LVL_Overlay::ObjSubTable &table, int areaID, u32 param)
         position.z = z;
         s16 deathTableID = data_ov002_0211118c;
         data_ov002_0211118c = (s16)(deathTableID + 1);
-        _ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as(actorID, entry->param, &position,
-                                                        (const Vector3_16 *)&entry->rot, areaID,
-                                                        deathTableID);
+        dActor_c::Spawn(actorID, entry->param, position, (const Vector3_16 *)&entry->rot, areaID,
+                        deathTableID);
     }
 }
 
@@ -186,8 +178,8 @@ void LoadStandardObjects(LVL_Overlay::ObjSubTable &table, int areaID, u32 param)
  * StandardEntry records like LoadStandardObjects, but the third argument is an
  * entry index OFFSET into the table rather than a free parameter: the walk
  * starts at `entries + entranceIndex` and runs for data_0209f21c iterations, not table.count. */
-// @symbol _Z19LoadEntranceObjectsRN11LVL_Overlay11ObjSubTableEij
-void LoadEntranceObjects(LVL_Overlay::ObjSubTable &table, int areaID, u32 entranceIndex) {
+// @symbol _Z19LoadEntranceObjectsRN11LVL_Overlay11ObjSubTableEaj
+void LoadEntranceObjects(LVL_Overlay::ObjSubTable &table, s8 areaID, u32 entranceIndex) {
     u32 entranceKind;
     LVL_Overlay::StandardEntry *entry = (LVL_Overlay::StandardEntry *)table.entries;
     func_0202b0e0(entry, table.count);
@@ -249,18 +241,18 @@ void LoadEntranceObjects(LVL_Overlay::ObjSubTable &table, int areaID, u32 entran
     StartEntranceFaderWipe(wipeType);
 }
 
-// @symbol _Z19LoadPathNodeObjectsRN11LVL_Overlay11ObjSubTableEij
-void LoadPathNodeObjects(LVL_Overlay::ObjSubTable &table, int areaID, u32 param) {
+// @symbol _Z19LoadPathNodeObjectsRN11LVL_Overlay11ObjSubTableEaj
+void LoadPathNodeObjects(LVL_Overlay::ObjSubTable &table, s8 areaID, u32 param) {
     PathPtr::SetNodeTable(table.entries);
 }
 
-// @symbol _Z15LoadPathObjectsRN11LVL_Overlay11ObjSubTableEij
-void LoadPathObjects(LVL_Overlay::ObjSubTable &table, int areaID, u32 param) {
+// @symbol _Z15LoadPathObjectsRN11LVL_Overlay11ObjSubTableEaj
+void LoadPathObjects(LVL_Overlay::ObjSubTable &table, s8 areaID, u32 param) {
     PathPtr::SetPathTable((PathDef *)table.entries, table.count);
 }
 
-// @symbol _Z15LoadViewObjectsRN11LVL_Overlay11ObjSubTableEij
-void LoadViewObjects(LVL_Overlay::ObjSubTable &table, int areaID, u32 param) {
+// @symbol _Z15LoadViewObjectsRN11LVL_Overlay11ObjSubTableEaj
+void LoadViewObjects(LVL_Overlay::ObjSubTable &table, s8 areaID, u32 param) {
     func_0202b0c4(table.entries, table.count);
 }
 
@@ -272,8 +264,8 @@ void LoadViewObjects(LVL_Overlay::ObjSubTable &table, int areaID, u32 param) {
  * The loop is bottom-tested with a guard rather than top-tested, and that shape
  * is load-bearing: it is what the ROM emits, and a plain `for` reorders the
  * compare. */
-// @symbol _Z25LoadTeleportSourceObjectsRN11LVL_Overlay11ObjSubTableEij
-void LoadTeleportSourceObjects(LVL_Overlay::ObjSubTable &table, int areaID, u32 param) {
+// @symbol _Z25LoadTeleportSourceObjectsRN11LVL_Overlay11ObjSubTableEaj
+void LoadTeleportSourceObjects(LVL_Overlay::ObjSubTable &table, s8 areaID, u32 param) {
     LVL_Overlay::TeleportSourceEntry *entry = (LVL_Overlay::TeleportSourceEntry *)table.entries;
 
     s32 objectIndex = 0;
@@ -296,13 +288,13 @@ void LoadTeleportSourceObjects(LVL_Overlay::ObjSubTable &table, int areaID, u32 
     } while (objectIndex < (int)table.count);
 }
 
-// @symbol _Z23LoadTeleportDestObjectsRN11LVL_Overlay11ObjSubTableEij
-void LoadTeleportDestObjects(LVL_Overlay::ObjSubTable &table, int areaID, u32 param) {
+// @symbol _Z23LoadTeleportDestObjectsRN11LVL_Overlay11ObjSubTableEaj
+void LoadTeleportDestObjects(LVL_Overlay::ObjSubTable &table, s8 areaID, u32 param) {
     func_0202b090(table.entries, table.count);
 }
 
-// @symbol _Z14LoadFogObjectsRN11LVL_Overlay11ObjSubTableEij
-void LoadFogObjects(LVL_Overlay::ObjSubTable &table, int areaID, u32 param) {
+// @symbol _Z14LoadFogObjectsRN11LVL_Overlay11ObjSubTableEaj
+void LoadFogObjects(LVL_Overlay::ObjSubTable &table, s8 areaID, u32 param) {
     func_0202b060(table.entries, table.count);
 }
 
@@ -310,8 +302,8 @@ void LoadFogObjects(LVL_Overlay::ObjSubTable &table, int areaID, u32 param) {
  * out of two small ov002 tables indexed by the low five bits of the record's
  * last halfword; the rotation is unpacked from two nibbles of param plus the
  * stored angle. */
-// @symbol _Z15LoadDoorObjectsRN11LVL_Overlay11ObjSubTableEij
-void LoadDoorObjects(LVL_Overlay::ObjSubTable &table, int areaID, u32 param) {
+// @symbol _Z15LoadDoorObjectsRN11LVL_Overlay11ObjSubTableEaj
+void LoadDoorObjects(LVL_Overlay::ObjSubTable &table, s8 areaID, u32 param) {
     DoorEntry *entry = (DoorEntry *)table.entries;
     for (int objectIndex = 0; objectIndex < table.count; objectIndex++) {
         Vector3 pos;
@@ -344,8 +336,8 @@ void LoadDoorObjects(LVL_Overlay::ObjSubTable &table, int areaID, u32 param) {
  * `(b[0] << 24) | (b[1] << 16) | (b[2] << 8) | b[3]`, which on a little-endian
  * machine is the reverse of a plain load. The ROM really does shift 0x0a by 24,
  * which is why the header keeps the field a four-byte array. */
-// @symbol _Z15LoadExitObjectsRN11LVL_Overlay11ObjSubTableEij
-void LoadExitObjects(LVL_Overlay::ObjSubTable &table, int areaID, u32 param) {
+// @symbol _Z15LoadExitObjectsRN11LVL_Overlay11ObjSubTableEaj
+void LoadExitObjects(LVL_Overlay::ObjSubTable &table, s8 areaID, u32 param) {
     LVL_Overlay::ExitEntry *entry = (LVL_Overlay::ExitEntry *)table.entries;
 
     for (int objectIndex = 0; objectIndex < (int)table.count; objectIndex++) {
@@ -370,13 +362,13 @@ void LoadExitObjects(LVL_Overlay::ObjSubTable &table, int areaID, u32 param) {
     }
 }
 
-// @symbol _Z22LoadMinimapTileObjectsRN11LVL_Overlay11ObjSubTableEij
-void LoadMinimapTileObjects(LVL_Overlay::ObjSubTable &table, int areaID, u32 param) {
+// @symbol _Z22LoadMinimapTileObjectsRN11LVL_Overlay11ObjSubTableEaj
+void LoadMinimapTileObjects(LVL_Overlay::ObjSubTable &table, s8 areaID, u32 param) {
     func_0202b044(table.entries, table.count);
 }
 
-// @symbol _Z23LoadMinimapScaleObjectsRN11LVL_Overlay11ObjSubTableEij
-void LoadMinimapScaleObjects(LVL_Overlay::ObjSubTable &table, int areaID, u32 param) {
+// @symbol _Z23LoadMinimapScaleObjectsRN11LVL_Overlay11ObjSubTableEaj
+void LoadMinimapScaleObjects(LVL_Overlay::ObjSubTable &table, s8 areaID, u32 param) {
     func_0202af80(table.entries, table.count);
 }
 
@@ -384,15 +376,15 @@ void LoadMinimapScaleObjects(LVL_Overlay::ObjSubTable &table, int areaID, u32 pa
  * recovery: the ROM really does store the pointer rather than walk it. Object
  * type 13 is unused in the shipped game, so the loader was reduced to a stub
  * that keeps the table around, which also explains why it reads no count. */
-// @symbol _Z23LoadUnusedType13ObjectsRN11LVL_Overlay11ObjSubTableEij
-void LoadUnusedType13Objects(LVL_Overlay::ObjSubTable &table, int areaID, u32 param) {
+// @symbol _Z23LoadUnusedType13ObjectsRN11LVL_Overlay11ObjSubTableEaj
+void LoadUnusedType13Objects(LVL_Overlay::ObjSubTable &table, s8 areaID, u32 param) {
     data_0209f338[0] = (int)table.entries;
 }
 
 /* Take the first word of the star-camera table and publish it. Reads no count,
  * unlike most of this family: it wants one value, not a list. */
-// @symbol _Z21LoadStarCameraObjectsRN11LVL_Overlay11ObjSubTableEij
-void LoadStarCameraObjects(LVL_Overlay::ObjSubTable &table, int areaID, u32 param) {
+// @symbol _Z21LoadStarCameraObjectsRN11LVL_Overlay11ObjSubTableEaj
+void LoadStarCameraObjects(LVL_Overlay::ObjSubTable &table, s8 areaID, u32 param) {
     data_02092134 = *(int *)table.entries;
 }
 
@@ -404,15 +396,15 @@ void LoadStarCameraObjects(LVL_Overlay::ObjSubTable &table, int areaID, u32 para
  * is 8 bytes; byte 0 packs a star filter in the top three bits and a handler index in
  * the low five. The entry is skipped unless the filter is 0 or equal to the
  * selected star at data_0209f220. */
-// @symbol _Z11LoadObjectsRN11LVL_Overlay8ObjTableEij
-void LoadObjects(LVL_Overlay::ObjTable &table, int areaID, u32 param) {
+// @symbol _Z11LoadObjectsRN11LVL_Overlay8ObjTableEaj
+void LoadObjects(LVL_Overlay::ObjTable &table, s8 areaID, u32 param) {
     u8 *entry = (u8 *)table.entries;
     int tableIndex;
     for (tableIndex = 0; tableIndex < (int)table.count; tableIndex++) {
         u8 categoryAndStar = *entry;
         int starFilter = (categoryAndStar >> 5) & 7;
         if (starFilter == 0 || starFilter == data_0209f220) {
-            void (*loader)(void *, int, unsigned int) = data_ov002_0210cbb8[categoryAndStar & 0x1f];
+            void (*loader)(void *, s8, unsigned int) = data_ov002_0210cbb8[categoryAndStar & 0x1f];
             if (loader != 0)
                 loader(entry, areaID, param);
         }
