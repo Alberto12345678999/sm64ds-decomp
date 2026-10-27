@@ -169,8 +169,8 @@ u32 SysTracker::Contents::Create(
             if (mLastUniqueID == 0)
                 ++mLastUniqueID;
 
-            if (!mEntries[mCurrentIndex].Initialise(
-                    mLastUniqueID, definitionID, position, direction, callback))
+            if (!mEntries[mCurrentIndex].Initialise(mLastUniqueID, definitionID, position,
+                                                    direction, callback))
                 return 0;
 
             Link(mEntries[mCurrentIndex]);

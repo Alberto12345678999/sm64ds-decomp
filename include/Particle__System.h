@@ -61,7 +61,7 @@ struct System {
     u8 pad_02c[0x0c];
     /* func_0204a730 advances it; the update walk retires the system once it
        passes the definition's callbackValue. */
-    u16 age;                       /* 0x38 */
+    u16 age; /* 0x38 */
     /* simpleCallback_c copies this value in both directions. */
     s16 callbackValue;             /* 0x3a */
     Vector3_16f direction;         /* 0x3c */

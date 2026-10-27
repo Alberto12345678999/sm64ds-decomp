@@ -76,7 +76,7 @@ struct SysTracker {
 
         /* Create pre-increments this for each new entry and skips 0, which
            FindData treats as "no system". */
-        u32   mLastUniqueID;
+        u32 mLastUniqueID;
         u8    mCurrentIndex;
         u8    pad_005[0x3];
         Entry mEntries[0x40];
