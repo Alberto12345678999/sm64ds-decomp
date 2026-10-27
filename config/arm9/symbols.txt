@@ -3087,7 +3087,7 @@ __sinit_02074e0c kind:function(arm,size=0x38) addr:0x02074e0c
 __sinit_02074e44 kind:function(arm,size=0x3c) addr:0x02074e44
 __sinit_02074e80 kind:function(arm,size=0x4) addr:0x02074e80
 __sinit_02074e84 kind:function(arm,size=0x58) addr:0x02074e84
-__sinit_02074edc kind:function(arm,size=0xa4) addr:0x02074edc
+__sinit_d_scene.cpp kind:function(arm,size=0xa4) addr:0x02074edc
 __sinit_d_wipe.cpp kind:function(arm,size=0x38) addr:0x02074f80
 __sinit_02074fb8 kind:function(arm,size=0x2c) addr:0x02074fb8
 __sinit_02074fe4 kind:function(arm,size=0x38) addr:0x02074fe4
@@ -3218,7 +3218,7 @@ __ptmf_null kind:data(any) addr:0x02086b58
 .p__sinit_02074e44 kind:data(word) addr:0x02086b80
 .p__sinit_02074e80 kind:data(word) addr:0x02086b84
 .p__sinit_02074e84 kind:data(word) addr:0x02086b88
-.p__sinit_02074edc kind:data(word) addr:0x02086b8c
+.p__sinit_d_scene.cpp kind:data(word) addr:0x02086b8c
 .p__sinit_d_wipe.cpp kind:data(word) addr:0x02086b90
 .p__sinit_02074fb8 kind:data(word) addr:0x02086b94
 .p__sinit_02074fe4 kind:data(word) addr:0x02086b98
@@ -4846,9 +4846,9 @@ data_0209f4f8 kind:bss addr:0x0209f4f8
 data_0209f5b8 kind:bss addr:0x0209f5b8
 data_0209f5bc kind:bss addr:0x0209f5bc
 data_0209f5c0 kind:bss addr:0x0209f5c0
-data_0209f5c4 kind:bss addr:0x0209f5c4
+@330 kind:bss addr:0x0209f5c4
 data_0209f5d0 kind:bss addr:0x0209f5d0
-data_0209f5dc kind:bss addr:0x0209f5dc
+@329 kind:bss addr:0x0209f5dc
 data_0209f5e8 kind:bss addr:0x0209f5e8
 data_0209f5f8 kind:bss addr:0x0209f5f8
 data_0209f5fc kind:bss addr:0x0209f5fc

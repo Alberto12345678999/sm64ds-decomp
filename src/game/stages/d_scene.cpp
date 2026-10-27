@@ -82,8 +82,6 @@ extern void Initialise3dGraphics(int arg);
 
 extern fBase_c *data_0209f5c0;
 
-extern dFdColor_c data_0209f5e8;
-
 extern void *data_0209f1e4;
 extern void func_02011b7c(void);
 
@@ -95,7 +93,6 @@ extern u8 data_02092660;
 extern u8   data_0209f1e0;
 
 extern dFdBrightness_c *data_0209f5bc;
-extern dFdBrightness_c data_0209f5d0;
 extern u16  data_02092664;
 
 extern void func_02023544(void);
@@ -109,6 +106,16 @@ extern int func_02013edc(u32 sceneID, u32 param, int a);
 
 extern dFdBrightness_c *data_0209d4ac;
 }
+
+/* The scene's two global faders: the colour fade every scene change runs
+   (SetAndStopColorFader, StartSceneFade) and the plain brightness fade
+   BeforeBehavior falls back to. Namespace-scope objects with inline
+   constructors and real destructors, so mwcc emits __sinit_d_scene.cpp to
+   build them in this order and register their destructors (was the
+   handwritten __sinit_02074edc). Other TUs reach them by these address
+   names. */
+dFdColor_c      data_0209f5e8;
+dFdBrightness_c data_0209f5d0;
 
 // @symbol _ZN8dScene_c22ResetHardwareRegistersEv
 void dScene_c::ResetHardwareRegisters()

@@ -1211,6 +1211,9 @@ src/unnamed/arm9/0202/func_0202e118.c:
 src/game/stages/d_scene.cpp:
     complete
     .text start:0x0202e140 end:0x0202ec9c
+    .init start:0x02074edc end:0x02074f80
+    .ctor start:0x02086b8c end:0x02086b90
+    .bss start:0x0209f5c4 end:0x0209f5f8
 
 src/runtime/graphics/fader/d_wipe.cpp:
     complete
@@ -5235,10 +5238,6 @@ src/unnamed/arm9/0207/__sinit_02074e80.c:
 src/unnamed/arm9/0207/__sinit_02074e84.cpp:
     complete
     .init start:0x02074e84 end:0x02074edc
-
-src/unnamed/arm9/0207/__sinit_02074edc.c:
-    complete
-    .init start:0x02074edc end:0x02074f80
 
 src/unnamed/arm9/0207/__sinit_02074fb8.c:
     complete
