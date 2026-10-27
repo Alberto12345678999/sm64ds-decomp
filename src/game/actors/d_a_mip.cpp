@@ -12,10 +12,6 @@ struct System {
  * is the key function: the cartridge has D1 below D0 and no D2.
  *
  * leftovers:
- * - dExtAnmModel_c::SetAnim, dCcAc_c::Init, dBgCh_Actr::Init,
- *   DropShadowRadHeight, Sound::PlaySub and Particle::System::New
- *   stay mangled. They take Fix12 by value. dBgCh_Actr::Init's
- *   header spells Fix12i, which mangles as int.
  * - g_profile_MIP stays outside this TU. The file handles, the eight
  *   state records, the carry offsets and the rabbit-count int are
  *   the folded sinit objects at the end of this file.
@@ -52,15 +48,13 @@ enum daMip_c_AssetId {
 #include "Player.h"
 #include "PathPtr.h"
 #include "decl_Message.h"
-#include "decl_PathPtr.h"
 #include "Message.h"
 #include "SaveData.h"
 #include "dBgCh_Gnd.h"
 #include "daObj_Mip_Key_c.h"
 #include "Sound.h"
 #include "cstd.h"
-
-bool ApproachLinear(short &value, short target, short step);
+#include "math/Approach.h"
 
 namespace Sound {
 bool PlaySub(u32, u32, u32, int, bool);
@@ -69,10 +63,7 @@ bool PlaySub(u32, u32, u32, int, bool);
 extern "C" {
 
 /* ground probe / collision */
-void *_ZN9dBgCh_GndC1Ev(void *);
-void  _ZN9dBgCh_GndD1Ev(void *);
 int   SurfaceInfo_TestFlag0x20(void *);
-void  _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *, void *, s32, s32, u32, u32);
 
 /* dActor_c / dEnemyBase_c, reached by their ROM names.
    dActor_c::ClosestPlayer and dActor_c::FindWithID are deliberately NOT here:
@@ -82,7 +73,6 @@ void  _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *, void *, s32, s32, u32, u
    under, because DropShadowRadHeight and Spawn take Fix12<int> and s8/s16 BY
    VALUE in their real declarations and mwccarm passes those differently at the
    call site. */
-void  _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(void *, void *, void *, int, int, u32);
 
 /* Player / Message / Sound / SaveData */
 /* The return type is load-bearing: StateTalkMain tests it in an `if`, so the
@@ -90,8 +80,6 @@ void  _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiE
 
 /* model / animation / shadow */
 
-/* path, particle, construction */
-void *_ZN7PathPtrC1Ev(void *);
 
 /* maths and the still-unnamed helpers */
 s16   Vec3_HorzAngle(const void *, const void *);
@@ -253,13 +241,12 @@ daMip_c::~daMip_c()
    water flag to pick splash over dust. */
 int daMip_c::TestWaterBelow()
 {
+    /* A POD twin: a real Vector3 local emits the vague-linkage ~Vector3. */
     typedef struct Vector3 { int x, y, z; } Vector3;
-    struct RG { char a[0x14]; int detect[16]; };
 
-    struct RG rg;
+    dBgCh_Gnd rg;
     Vector3 v;
-    _ZN9dBgCh_GndC1Ev(&rg);
-    ((dBgCh *)&rg)->StartDetectingWater();
+    rg.StartDetectingWater();
     int x = mPosX;
     int y = mPosY;
     int z = mPosZ;
@@ -267,15 +254,12 @@ int daMip_c::TestWaterBelow()
     v.x = x;
     v.y = yk;
     v.z = z;
-    ((dBgCh_Gnd *)&rg)->SetObjAndPos(*(::Vector3 *)&v, this);
-    if (((dBgCh_Gnd *)&rg)->dBgCh_Gnd::DetectClsn()) {
-        mFloorY = rg.detect[12];
-        if (SurfaceInfo_TestFlag0x20(rg.detect)) {
-            _ZN9dBgCh_GndD1Ev(&rg);
+    rg.SetObjAndPos(*(::Vector3 *)&v, this);
+    if (rg.DetectClsn()) {
+        mFloorY = rg.clsnY;
+        if (SurfaceInfo_TestFlag0x20(&rg.surface))
             return 1;
-        }
     }
-    _ZN9dBgCh_GndD1Ev(&rg);
     return 0;
 }
 
@@ -784,7 +768,6 @@ int daMip_c::StateFleeMain() {
     extern MipStatePair data_ov085_0213069c;
 
     Player *pl;
-    char pathptr[8];
     struct V3Blk v;
     struct Vector3 pos;
     struct Vector3 node;
@@ -832,9 +815,9 @@ int daMip_c::StateFleeMain() {
         }
     }
 
-    _ZN7PathPtrC1Ev(pathptr);
-    ((PathPtr *)pathptr)->FromID(mPathId);
-    ((PathPtr *)pathptr)->GetNode(*(::Vector3 *)&node, mPathNodeIndex);
+    PathPtr pathptr;
+    pathptr.FromID(mPathId);
+    pathptr.GetNode(*(::Vector3 *)&node, mPathNodeIndex);
     ang = Vec3_HorzAngle(&mPos, &node);
     ApproachAngle(&mPrevAngleY, ang, 1, 0x1000, 0x1000);
     idx = mPathNodeIndex + mPathDir;
@@ -844,7 +827,7 @@ int daMip_c::StateFleeMain() {
     if (idx >= mNumPathNodes) {
         idx = 0;
     }
-    ((PathPtr *)pathptr)->GetNode(*(::Vector3 *)&node2, (u32)idx);
+    pathptr.GetNode(*(::Vector3 *)&node2, (u32)idx);
     lim = 0x26000;
     if (mRabbitId == 7) {
         lim = lim >> 1;
@@ -903,8 +886,6 @@ int daMip_c::StateFleeInit()
     } Vector3;
     extern DaMipAnimationFilePtr gMipRunAnimationFile;
 
-    char pathptr[8];
-    int indices[2];
     struct Vector3 v;
     struct Vector3 nodes[2];
     int i;
@@ -916,8 +897,9 @@ int daMip_c::StateFleeInit()
     if (p) {
         src = (struct Vector3 *)&p->mPosX;
         v = *src;
-        _ZN7PathPtrC1Ev(pathptr);
-        ((PathPtr *)pathptr)->FromID(mPathId);
+        PathPtr pathptr;
+        int indices[2];
+        pathptr.FromID(mPathId);
 
         indices[0] = mPathNodeIndex - 1;
         if (mPathNodeIndex - 1 < 0)
@@ -927,7 +909,7 @@ int daMip_c::StateFleeInit()
             indices[1] = 0;
 
         for (i = 0; i < 2; i++)
-            ((PathPtr *)pathptr)->GetNode(*(::Vector3 *)&nodes[i], indices[i]);
+            pathptr.GetNode(*(::Vector3 *)&nodes[i], indices[i]);
 
         mPathDir = 1;
         d0 = Vec3_Dist(&v, &nodes[0]);
@@ -1104,8 +1086,7 @@ void daMip_c::UpdateMatrixAndShadow()
         (mPosY - 0xe000) >> 3,
         mPosZ >> 3);
     *(struct Mtx43 *)mShadowMtx = data_020a0e68;
-    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
-        this, &mShadowModel1, mShadowMtx, 0x46000, 0x258000, 0xf);
+    DropShadowRadHeight(mShadowModel1, *(Matrix4x3 *)mShadowMtx, 0x46000, 0x258000, 0xf);
 }
 
 // @symbol _ZN7daMip_c19UpdateCarriedMatrixEv
@@ -1133,8 +1114,7 @@ void daMip_c::UpdateCarriedMatrix()
     *(struct Mtx43 *)&mAnmModel.mat4x3 = *(struct Mtx43 *)res;
     Matrix4x3_FromTranslation(data_020a0e68, mPosX >> 3, (mPosY - 0xc000) >> 3, mPosZ >> 3);
     *(struct Mtx43 *)mShadowMtx = *(struct Mtx43 *)data_020a0e68;
-    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
-        this, &mShadowModel1, mShadowMtx, 0x46000, 0x258000, 0xf);
+    DropShadowRadHeight(mShadowModel1, *(Matrix4x3 *)mShadowMtx, 0x46000, 0x258000, 0xf);
 }
 
 // @symbol _ZN7daMip_c18UpdateMirrorShadowEv
@@ -1183,7 +1163,9 @@ void daMip_c::UpdateMirrorShadow()
         Matrix4x3_FromTranslation(&data_020a0e68, vd.x >> 3, (t - 0xc000) >> 3, vd.z >> 3);
     }
     c->mtx = data_020a0e68;
-    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(c, &c->shadowmodel, &c->mtx, 0x46000, 0x258000, 0xf);
+    ((dActor_c *)c)
+        ->DropShadowRadHeight(*(dExtShadowModel_c *)&c->shadowmodel, *(Matrix4x3 *)&c->mtx, 0x46000,
+                              0x258000, 0xf);
 }
 
 // @symbol _ZN7daMip_c16CleanupResourcesEv
@@ -1545,7 +1527,7 @@ int daMip_c::InitResources()
 
     mVertAccel = -0x1000;
     mTerminalVelocity = -0x1e000;
-    _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, this, 0x50000, 0x64000, 0xb00004, 0x9000);
+    mdCcAc_c.Init(this, 0x50000, 0x64000, 0xb00004, 0x9000);
     mTalkingPlayer = 0;
     mAnmModel.speed = 0x1000;
     mWithMeshClsn.Init(this, 0x28000, 0x28000, 0, 0);

@@ -48,6 +48,8 @@ struct System {
 #include "nitro/fx/fx.h"
 #include "SpawnInfo.h"
 #include "Sound.h"
+#include "G3X.h"
+#include "math/Approach.h"
 
 struct BMD_File;
 struct BTP_File;
@@ -62,9 +64,8 @@ namespace G3i {
 void LookAt_(const Vector3 *camPos, const Vector3 *up, const Vector3 *target, bool draw,
              Matrix4x3 *m);
 void PerspectiveW_(Fix12i sinFov, Fix12i cosFov, Fix12i aspect, Fix12i nearZ, Fix12i farZ,
-                   Fix12i scaleW, bool load, Matrix4x3 *m);
+                   Fix12i scaleW, int load, Matrix4x3 *m);
 }
-bool ApproachLinear(short &value, short target, short step);
 void CopyToViewMat(const Matrix4x3 *m);
 
 /* The resource handles as the ROM lays them out: {id, loaded file}. The
@@ -94,9 +95,6 @@ struct EntObjTextureSequenceFileHandle : SharedFilePtr {
  * class type, mwccarm homes the register arguments and the callers grow, so
  * the measured scalar views stay. */
 extern "C" {
-void _ZN17dExtShadowModel_c9InitModelEP9Matrix4x35Fix12IiES3_S3_j(void *shadow, Matrix4x3 *mat,
-                                                                  int radius, int height, int depth,
-                                                                  unsigned char flags);
 int d_ent_objNewHold(unsigned handle, unsigned id, int x, int y, int z, const Vector3_16 *dir,
                      void *callback);
 
@@ -648,8 +646,7 @@ void UnknownVsPlayer::func_ov075_02114cd8() {
     (this->*data_ov075_0211d53c[mAnimState].state)();
     mModel.Advance();
     mTextureSequence.Advance();
-    _ZN17dExtShadowModel_c9InitModelEP9Matrix4x35Fix12IiES3_S3_j(&mShadow, &mModel.mat4x3, 0x50000,
-                                                                 0x1f4000, 0x50000, 0xf);
+    mShadow.InitModel(&mModel.mat4x3, 0x50000, 0x1f4000, 0x50000, 0xf);
 }
 
 // @symbol _ZN15UnknownVsPlayer19func_ov075_02114ddcEhhi
@@ -991,7 +988,7 @@ int dEntObj_c::InitResources() {
 
     dExtAnmTexPat_c::LoadFile(data_ov075_0211d40c);
 
-    _ZN3G3X6SetFogEbiii(0, 0, 2, 0x1000);
+    G3X::SetFog(false, 0, 2, 0x1000);
     dExtShadowModel_c::CleanAll();
 
     mModel.SetFile((BMD_File *)data_ov075_0211d3fc.filePtr, 1, -1);

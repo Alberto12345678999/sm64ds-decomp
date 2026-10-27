@@ -27,10 +27,9 @@
  *   member is byte-identical to dropping it).
  * - OAM::Render's Fix12 overload stays mangled: OAM.h excludes the by-value
  *   Fix12<int> overloads (codegen wall, pinned in
- *   notes/experiments/gameover-2711-oam-render-fix12.md). The G2/GX/Sound
- *   decls below have no header; _ZN3G2S12GetBG1ScrPtrEv keeps the u16*
- *   spelling for 0730's pointer arithmetic (typing ergonomics, not a codegen
- *   wall -- void* compiles identically, see
+ *   notes/experiments/gameover-2711-oam-render-fix12.md). G2S::GetBG1ScrPtr
+ *   comes from G2.h as `void *` and 0730 casts it to u16* for its pointer
+ *   arithmetic (typing ergonomics, not a codegen wall -- see
  *   notes/experiments/gameover-2711-bg1scrptr-u16.md).
  * - data_0209f5bc (the active scene) gates Behavior through a plain virtual
  *   call on slot 5; the tree's spellings disagree with each other
@@ -53,42 +52,18 @@ enum dScGameOver_c_AssetId {
 };
 
 #include "dScGameOver_c.h"
+#include "G2.h"
+#include "GX.h"
 #include "dScStage_c.h"
 #include "OamAttr.h"
 struct OAM {
     static void Render(bool, OamAttr *, int, int, int, int, int, int, int, int);
 };
 #include "SpawnInfo.h"
-/* decl_common.h's `extern int G2[]` hides namespace G2. This TU does not
- * reference that data symbol. */
-#define G2 G2_decl_common_shadow
 #include "decl_common.h"
-#undef G2
 #include "PlayerInput.h"
 #include "dFdBrightness_c.h"
 #include "Sound.h"
-
-namespace G2 {
-void *GetBG2ScrPtr();
-}
-namespace G2S {
-u32 GetBG1CharPtr(void);
-unsigned short *GetBG1ScrPtr(void);
-void *GetBG2ScrPtr(void);
-}
-
-namespace GX {
-void LoadBGPltt(const void *p, u32 a, u32 b);
-void LoadOBJPltt(const void *p, u32 a, u32 b);
-void SetBankForBG(u16 v);
-void SetBankForOBJ(u16 v);
-void SetBankForSubBG(u16 v);
-void SetBankForSubOBJ(u16 v);
-}
-
-namespace GXS {
-void LoadBGPltt(const void *p, u32 a, u32 b);
-}
 
 /* File scope is the only place this pragma works. 0x020b060c needs
  * `#pragma opt_strength_reduction off`: it walks the eight glyphs with an
@@ -152,9 +127,6 @@ extern u8 data_0209f204;
  * at both consumers (see notes/experiments/gameover-2711-bg1scrptr-u16.md).
  * Init passes the result to DecompressLZ16's void* param either way. */
 
-void *_ZN2G213GetBG2CharPtrEv(void);
-void *_ZN2G212GetBG0ScrPtrEv(void);
-
 void OamRender10_d_s_game_over(s32 sub, OamAttr *data, s32 x, s32 y, s32 palette, s32 priority,
                                Fix12i scaleX, Fix12i scaleY, s32 rotation, s32 mode);
 int LoadFile(int handle);
@@ -197,7 +169,7 @@ s32 dScGameOver_c::InitResources() {
     int f;
 
     func_02019028();
-    _ZN2GX15DisableAllBanksEv();
+    GX::DisableAllBanks();
     GX::SetBankForBG(1);
     GX::SetBankForOBJ(0x40);
     GX::SetBankForSubBG(4);
@@ -205,12 +177,12 @@ s32 dScGameOver_c::InitResources() {
 
     *(volatile u32 *)0x4000000 &= 0xffcfffef;
     *(volatile u32 *)0x4001000 &= 0xffcfffef;
-    _ZN2GX15SetGraphicsModeEiii(1, 0, 0);
-    _ZN3GXS15SetGraphicsModeEi(3);
+    GX::SetGraphicsMode(1, 0, 0);
+    GXS::SetGraphicsMode(3);
 
     *(volatile u32 *)0x4000000 = (*(volatile u32 *)0x4000000 & ~0x38000000) | 0x8000000;
     *(volatile u16 *)0x4000304 = (*(volatile u16 *)0x4000304 & ~0x20e) | 0x20e;
-    _ZN2GX6DispOnEv();
+    GX::DispOn();
 
     *(volatile u32 *)0x4001000 |= 0x10000;
 
@@ -242,7 +214,7 @@ s32 dScGameOver_c::InitResources() {
     } else {
         f = LoadFile(0xa00c);
     }
-    DecompressLZ16(f, _ZN2G213GetBG2CharPtrEv());
+    DecompressLZ16(f, G2::GetBG2CharPtr());
     Deallocate((void *)f);
 
     f = LoadFile(ASSET_D_2D_GAME_OVER_BG_NCL_BIN);
@@ -254,7 +226,7 @@ s32 dScGameOver_c::InitResources() {
     Deallocate((void *)f);
 
     f = LoadFile(ASSET_D_2D_UPR_TOUCH_TO_SELECT_NSC_BIN);
-    DecompressLZ16(f, _ZN2G212GetBG0ScrPtrEv());
+    DecompressLZ16(f, G2::GetBG0ScrPtr());
     Deallocate((void *)f);
 
     *(volatile u16 *)0x400000e &= ~3;
@@ -443,7 +415,7 @@ void dScGameOver_c::func_ov003_020b0730(int arg) {
     for (i = 0; i < 2; i++) {
         unsigned int v;
         int j;
-        unsigned short *p = G2S::GetBG1ScrPtr();
+        unsigned short *p = (unsigned short *)G2S::GetBG1ScrPtr();
         p += sGameOverPromptTileOffsets[i];
         if (arg) {
             v = 0x1000;

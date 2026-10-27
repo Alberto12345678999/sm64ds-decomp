@@ -720,24 +720,24 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@667",
+      "from": "@655",
       "to": "@931",
-      "evidence": "Compiler-local destructor-registration node at 0x0213c820; retain its original ROM address under the fleet-unique short label @931."
+      "evidence": "Compiler-local destructor-registration node at 0x0213c820; retain its original ROM address under the fleet-unique short label @931. | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az) | compiler temp; wave 3 of the mangled-call cleanup deletes this TU's local _ZN externs ahead of it, lowering the per-TU @NNN uniquifier"
     },
     {
-      "from": "@668",
+      "from": "@656",
       "to": "@932",
-      "evidence": "Compiler-local destructor-registration node at 0x0213c844; retain its original ROM address under the fleet-unique short label @932."
+      "evidence": "Compiler-local destructor-registration node at 0x0213c844; retain its original ROM address under the fleet-unique short label @932. | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az) | compiler temp; wave 3 of the mangled-call cleanup deletes this TU's local _ZN externs ahead of it, lowering the per-TU @NNN uniquifier"
     },
     {
-      "from": "@669",
+      "from": "@657",
       "to": "@933",
-      "evidence": "Compiler-local destructor-registration node at 0x0213c838; retain its original ROM address under the fleet-unique short label @933."
+      "evidence": "Compiler-local destructor-registration node at 0x0213c838; retain its original ROM address under the fleet-unique short label @933. | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az) | compiler temp; wave 3 of the mangled-call cleanup deletes this TU's local _ZN externs ahead of it, lowering the per-TU @NNN uniquifier"
     },
     {
-      "from": "@670",
+      "from": "@658",
       "to": "@937",
-      "evidence": "Compiler-local destructor-registration node at 0x0213c82c; retain its original ROM address under the fleet-unique short label @937."
+      "evidence": "Compiler-local destructor-registration node at 0x0213c82c; retain its original ROM address under the fleet-unique short label @937. | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az) | compiler temp; wave 3 of the mangled-call cleanup deletes this TU's local _ZN externs ahead of it, lowering the per-TU @NNN uniquifier"
     }
   ],
   "symbol_binding_rewrites": [

@@ -12,10 +12,6 @@
  *   bits 12+   warp destination step; WarpPlayer gets ((param1 >> 12) + 1) & 0xff
  *
  * deslop
- * Leftover: SetRanges / dCcAc_c::Init stay TU-local mangled scalar wrappers
- *   (Fix12i): dActor_c.h documents SetRanges but declares no member -- a
- *   typed extern "C" there is overload poison (S13) -- and dCcAc_c::Init's
- *   header form takes Fix12<int> by value (6az).
  * Leftover: g_profile_WARPKUN stays outside the TU (S14): this entry owns
  *   .text only.
  */
@@ -36,9 +32,6 @@ static inline int IsPlayerActor(dActor_c *actor) {
    from decl_common.h; these two wrappers stay TU-local per S13. */
 extern "C" {
 extern int _ZTV11daWarpkun_c[];
-extern void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(
-    dCcAc_c *clsn, dActor_c *actor, Fix12i radius, Fix12i height,
-    u32 flags, u32 vulnFlags);
 }
 
 extern "C" {
@@ -67,8 +60,7 @@ s32 daWarpkun_c::InitResources()
     Fix12i radius = ((param1 & 0xf) + 1) << 0x12;
     SetRanges(0, radius, radius + 0x7d0000, 0);
     Fix12i height = (((spawnParam >> 4) & 0xf) + 1) << 0x12;
-    _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(
-        &mdCcAc_c, this, radius, height, 2, 0x400000);
+    mdCcAc_c.Init(this, radius, height, 2, 0x400000);
     return 1;
 }
 

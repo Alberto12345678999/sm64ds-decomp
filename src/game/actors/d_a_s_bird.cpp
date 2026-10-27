@@ -18,7 +18,7 @@
  * - dExtAnmModel_c::SetAnim / DropShadowRadHeight 6az: this TU passes Fix12<int>
  *   by value; the header method form size-DIFFs.
  * - cstd::atan2 6az (Fix12<int> by value) in func_ov009_02111234.
- * - Vec3_Asr / Vec3_Sub / Vec3_HorzLen / LenVec3 / ApproachLinear: no shared
+ * - Vec3_Asr / Vec3_Sub / Vec3_HorzLen / LenVec3: no shared
  *   header this TU can take without a campaign.
  * - data_ov009_02113c20 / 02113c28 SharedFilePtr handles: sinit constructs
  *   them as file IDs 1080 / 1081; overlay .bss owns them. symbols.txt has
@@ -47,6 +47,7 @@
 #include "common.h"
 #include "SharedFilePtr.h"
 #include "Sound.h"
+#include "math/Approach.h"
 namespace cstd {
 s16 atan2(s32, s32);
 }
@@ -64,7 +65,6 @@ struct SBirdAnimationFilePtr : SharedFilePtr {
     ~SBirdAnimationFilePtr();
 };
 
-bool ApproachLinear(short &value, short target, short step);
 
 typedef void (daSBird_c::*BirdState)();
 
@@ -120,8 +120,6 @@ extern void func_ov009_0211145c(daSBird_c *bird);
 /* dExtAnmModel_c::SetAnim -- wall 6az. */
 
 /* dActor_c::DropShadowRadHeight -- wall 6az. */
-int _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
-    dActor_c *self, dExtShadowModel_c *sm, Matrix4x3 *m, int rad, int h, unsigned u);
 }
 
 extern int _ZTV9daSBird_c[];
@@ -168,8 +166,7 @@ s32 daSBird_c::Behavior()
     Matrix4x3_ApplyInPlaceToRotationZ(&data_020a0e68, mAngleZ);
     Matrix4x3_ApplyInPlaceToRotationY(&data_020a0e68, mAngleY);
     *(BirdMtx *)((char *)&mAnmModel.mat4x3) = data_020a0e68;
-    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
-        this, &mShadowModel, &mAnmModel.mat4x3, 0x1e000, 0x7d0000, 0xf);
+    DropShadowRadHeight(mShadowModel, mAnmModel.mat4x3, 0x1e000, 0x7d0000, 0xf);
     mAnmModel.Advance();
     return 1;
 }

@@ -56,8 +56,8 @@ struct Vector3_16f;
  *
  * deslop leftovers:
  * - the callees with Fix12<int> parameters (dExtAnmModel_c::SetAnim,
- *   dCcAc_c::Init, dBgCh_Actr::Init, the shadow drops, Particle::System::New)
- *   stay spelled as mangled extern-C free functions. A real method call homes
+ *   dBgCh_Actr::Init, Particle::System::New) stay spelled as mangled
+ *   extern-C free functions. A real method call homes
  *   a class-typed by-value argument and size-DIFFs the caller
  *   (notes/mwccarm-codegen.md 6az).
  * - the DOSUN byte at +0x3a2 in func_ov002_020ec670 remains a raw offset.
@@ -93,6 +93,9 @@ struct Vector3_16f;
 #include "dCc_c.h"
 #include "Sound.h"
 #include "cstd.h"
+#include "daStar_c.h"
+#include "daBtn_c.h"
+#include "math/Approach.h"
 
 struct dBgPi;
 
@@ -137,18 +140,16 @@ extern "C" {
 void func_ov002_020ed63c(daYegg_c *c, int i);
 void func_ov002_020edca4(daYegg_c *self);
 
-/* Data. 0x0210e6b0 and 0x0210eb78 are the two shared animation files; +4 of
-   each is the file the shared loader put there. */
-extern char data_ov002_0210e6b0[];
-extern char data_ov002_0210eb78[];
+/* Data. 0x0210e6b0 and 0x0210eb78 are the two shared animation file
+   handles; Player.cpp's static initializer constructs both. */
+extern SharedFilePtr data_ov002_0210e6b0;
+extern SharedFilePtr data_ov002_0210eb78;
 extern s16 data_ov002_021000a8[];
 extern s16 data_02082214[];
 extern int data_0209e650;
 extern M48 data_020a0e68;
 
 extern int func_02035638(u8 *p);
-/* local extern: daStar_c::func_ov002_020e7218. This TU does not include daStar_c.h. */
-extern void _ZN8daStar_c19func_ov002_020e7218EPci(char *a, char *b, int c);
 extern char *data_ov002_021000a0[];
 extern void Matrix4x3_FromRotationZXYExt(void *m, int x, int y, int z);
 /* Was spelled `func_02123804`, a name no symbols.txt defines. ov002's relocs
@@ -157,11 +158,7 @@ extern void Matrix4x3_FromRotationZXYExt(void *m, int x, int y, int z);
    types 0xa4 and 0xa5, BATAN and BATANKING, both daBtn_c in ov079, and
    ov079's function there is daBtn_c's hit reaction, which takes the body and
    the actor that hit it -- the call's (actor, egg). */
-/* local extern: daBtn_c::func_ov079_02123804. This TU does not include daBtn_c.h. */
-extern void _ZN7daBtn_c19func_ov079_02123804EP8dActor_c(struct daBtn_c *self, dActor_c *other);
-extern void _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs(void *thiz, const void *v, unsigned int n, Fix12i f, short s);
 extern int RandomIntInternal(int *seed);
-extern void _Z15ApproachLinear2Rsss(s16 *p, short a, short b);
 /* Numbering pins: func_ov002_020d5f98/020d6048 are now Player members (see
    Player.h) and no call in this TU uses these free spellings anymore. The
    declarations stay, spelled exactly as they were, because each named
@@ -187,14 +184,12 @@ extern int Vec3_Dist(const void *a, const void *b);
 extern void Vec3_Add(void *out, const void *a, const void *b);
 extern void MulVec3Mat4x3(const void *in, const void *m, void *out);
 extern void func_0203568c(void *p, int v);
-extern void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *mc, void *a, Fix12i r, unsigned int h, unsigned int x, unsigned int y);
 /* Parameter names keep this TU's @NNN. */
 typedef void BgchInitAt_(void *self, void *actor, int radius, int height, void *a, void *b);
 extern unsigned char DecIfAbove0_Byte(unsigned char *p);
 extern void Math_Function_0203b14c(void *ptr, int target, int rate, int limit, int step);
 extern void ApproachAngle(void *cur, short target, int divisor, int band, int maxStep);
-extern void _Z11UpdateAngleRssis(short *a, int b, int c, short d);
-extern int func_02010844(void *unused, void *v, short angle);
+extern short func_02010844(void *unused, void *v, short angle);
 extern void Matrix4x3_FromRotationY(void *m, int angle);
 extern void Matrix4x3_FromTranslation(M48 *m, int x, int y, int z);
 extern void Matrix4x3_ApplyInPlaceToTranslation(M48 *m, int x, int y, int z);
@@ -202,9 +197,6 @@ extern void Matrix4x3_ApplyInPlaceToRotationZXYExt(M48 *m, int x, int y, int z);
 extern void Matrix4x3_ApplyInPlaceToRotationXYZExt(M48 *m, int x, int y, int z);
 extern int func_ov002_020cf700(void *g);
 extern int func_ov002_020d0d2c(void *g);
-extern void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(void *self, void *shadow, void *mtx, int fix, int t, unsigned int n);
-extern void _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_S5_j(void *self, void *shadow, void *mtx, int fix, int t1, int t2, unsigned int n);
-extern void _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void *self, const void *pos, u32 a, int fix, u32 b, u32 c, u32 d);
 extern void LoadBlueCoinModel(void *self);
 extern void UnloadBlueCoinModel(void *self);
 }
@@ -322,7 +314,7 @@ void daYegg_c::func_ov002_020ec670(int arg)
         if (t == 0) return;
     }
 docall:
-    _ZN7daBtn_c19func_ov079_02123804EP8dActor_c((struct daBtn_c *)actor, this);
+    ((daBtn_c *)actor)->func_ov079_02123804(this);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -358,7 +350,7 @@ void daYegg_c::func_ov002_020ec728()
         v2.x = vec.x;
         v2.y = vec.y;
         v2.z = vec.z;
-        _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs(this, &v2, n, 0x2000, 0);
+        SpawnCoins(v2, n, 0x2000, 0);
     }
     if (func_ov002_020ec628()) {
         struct Vector3 v3;
@@ -441,7 +433,7 @@ void daYegg_c::func_ov002_020ec938(){
  * speed, zeroes the horizontal speed and sets gravity to -0x2000 (-2 units
  * per frame squared). */
 void daYegg_c::func_ov002_020ec978() {
-    mAnmModel.SetAnim((BCA_File *)(*(void **)(data_ov002_0210eb78 + 4)), 0, 0x1000, 0);
+    mAnmModel.SetAnim((BCA_File *)data_ov002_0210eb78.filePtr, 0, 0x1000, 0);
     mHorzSpeed = 0;
     mVertAccel = -0x2000;
 }
@@ -459,32 +451,32 @@ void daYegg_c::func_ov002_020ec978() {
  * func_ov002_020d6048 says no for the Player, clears and updates the
  * cylinder, moves the egg when it is not on the ground, and runs the ground
  * collision. */
-void daYegg_c::func_ov002_020ec9c4(){
-  if (mWobbling != 0){
-    _Z15ApproachLinear2Rsss(&mAngleX, 0, 0x400);
-    _Z15ApproachLinear2Rsss(&mAngleZ, 0, 0x400);
-    if (mAngleX == 0){
-      if (mAngleY == 0)
-        mWobbling = 0;
+void daYegg_c::func_ov002_020ec9c4() {
+    if (mWobbling != 0) {
+        ApproachLinear2(mAngleX, 0, 0x400);
+        ApproachLinear2(mAngleZ, 0, 0x400);
+        if (mAngleX == 0) {
+            if (mAngleY == 0)
+                mWobbling = 0;
+        }
+    } else {
+        unsigned char a, b;
+        if (mPlayer->func_ov002_020d5f98(&a, &b)) {
+            unsigned char ip;
+            a = a * 2;
+            ip = a;
+            mAngleX = b * data_ov002_021000a8[ip];
+            mAngleZ = b * data_ov002_021000a8[ip + 1];
+            mWobbling = 1;
+        }
     }
-  } else {
-    unsigned char a, b;
-    if (mPlayer->func_ov002_020d5f98(&a, &b)){
-      unsigned char ip;
-      a = a * 2;
-      ip = a;
-      mAngleX = b * data_ov002_021000a8[ip];
-      mAngleZ = b * data_ov002_021000a8[ip + 1];
-      mWobbling = 1;
-    }
-  }
-  if (!mPlayer->func_ov002_020d6048())
-      MarkForDestruction();
-  mdCcAc_c.Clear();
-  mdCcAc_c.Update();
-  if (!mWithMeshClsn.IsOnGround())
-      UpdatePos(&mdCcAc_c);
-  dBgCh_Actr_UpdateContinuous_Veneer(&mWithMeshClsn);
+    if (!mPlayer->func_ov002_020d6048())
+        MarkForDestruction();
+    mdCcAc_c.Clear();
+    mdCcAc_c.Update();
+    if (!mWithMeshClsn.IsOnGround())
+        UpdatePos(&mdCcAc_c);
+    dBgCh_Actr_UpdateContinuous_Veneer(&mWithMeshClsn);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -495,7 +487,7 @@ void daYegg_c::func_ov002_020ec9c4(){
  * animation (file 0x0210eb78) at normal speed. */
 void daYegg_c::func_ov002_020ecad4() {
     mHorzSpeed = 0;
-    mAnmModel.SetAnim((BCA_File *)(*(void **)(data_ov002_0210eb78 + 4)), 0, 0x1000, 0);
+    mAnmModel.SetAnim((BCA_File *)data_ov002_0210eb78.filePtr, 0, 0x1000, 0);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -722,7 +714,7 @@ void daYegg_c::func_ov002_020ecf94()
 void daYegg_c::func_ov002_020ecfc8() {
     dActor_c *r5;
     mTargetId = 0;
-    mAnmModel.SetAnim((BCA_File *)(*(void **)(data_ov002_0210e6b0 + 4)), 0, 0x1000, 0);
+    mAnmModel.SetAnim((BCA_File *)data_ov002_0210e6b0.filePtr, 0, 0x1000, 0);
     mHorzSpeed = 0x64000;
     if (!func_ov002_020ec654()) {
         mVertAccel = 0;
@@ -740,7 +732,7 @@ void daYegg_c::func_ov002_020ecfc8() {
                 func_ov002_020edca4(this);
         }
     }
-    _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, this, 0x64000, 0xc8000, 0x202000, 0);
+    mdCcAc_c.Init(this, 0x64000, 0xc8000, 0x202000, 0);
     mPrevAngleY = mAngleY;
 }
 
@@ -878,9 +870,9 @@ void daYegg_c::func_ov002_020ed0d4()
         int speed = idx << 8;
         if (mPlayer->mIsAirborne != 0) speed = 0;
         if (v98 != 0) {
-            mAnmModel.SetAnim((BCA_File *)(*(void **)(data_ov002_0210e6b0 + 4)), 0, speed, 0);
+            mAnmModel.SetAnim((BCA_File *)data_ov002_0210e6b0.filePtr, 0, speed, 0);
         } else {
-            mAnmModel.SetAnim((BCA_File *)(*(void **)(data_ov002_0210eb78 + 4)), 0, speed, 0);
+            mAnmModel.SetAnim((BCA_File *)data_ov002_0210eb78.filePtr, 0, speed, 0);
         }
     }
 
@@ -1017,8 +1009,8 @@ ret0:
  * quarter turn). In the air it is the Player's own X and Z angles when mState
  * is 0 and there is a Player, and 0 otherwise. */
 void daYegg_c::func_ov002_020ed738() {
-    int e4 = 0;
-    int e6 = 0;
+    short e4 = 0;
+    short e6 = 0;
     if (mWithMeshClsn.IsOnGround()) {
         struct Vector3 n;
         dBgPi *fr = static_cast<dBgPi *>(mWithMeshClsn.GetFloorResult());
@@ -1034,8 +1026,8 @@ void daYegg_c::func_ov002_020ed738() {
             }
         }
     }
-    _Z11UpdateAngleRssis(&mAngleX, e4, 4, 0x1000);
-    _Z11UpdateAngleRssis(&mAngleZ, e6, 4, 0x1000);
+    UpdateAngle(mAngleX, e4, 4, 0x1000);
+    UpdateAngle(mAngleZ, e6, 4, 0x1000);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -1084,11 +1076,9 @@ void daYegg_c::func_ov002_020ed7f8()
     if (b == 0 && mPlayer->mClimbClsn == 0 && !func_ov002_020cf700(mPlayer) &&
         !func_ov002_020d0d2c(mPlayer)) {
         if (func_ov002_020ec654() == 0) {
-            _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
-                this, &mShadowModel, mShadowMtx, r4, r5 + 0x28000, 0xf);
+            DropShadowRadHeight(mShadowModel, *(Matrix4x3 *)mShadowMtx, r4, r5 + 0x28000, 0xf);
         } else {
-            _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_S5_j(
-                this, &mShadowModel, mShadowMtx, r4, r5 + 0x28000, r4, 0xf);
+            DropShadowScaleXYZ(mShadowModel, *(Matrix4x3 *)mShadowMtx, r4, r5 + 0x28000, r4, 0xf);
         }
     }
 }
@@ -1249,7 +1239,7 @@ void func_ov002_020edca4(daYegg_c* self)
         spawned =
             (char *)dActor_c::Spawn(ACTOR_SILVER_STAR, 0x10, pos, 0, self->mPlayer->mAreaId, -1);
         if (spawned != 0) {
-            _ZN8daStar_c19func_ov002_020e7218EPci((char*)spawned, (char*)self->mPlayer, 1);
+            ((daStar_c *)spawned)->func_ov002_020e7218((char *)self->mPlayer, 1);
         }
     }
 
@@ -1315,7 +1305,7 @@ int daYegg_c::func_ov002_020eddc4()
                 pos.x = mPosX;
                 pos.y = mPosY;
                 pos.z = mPosZ;
-                _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(actor, &pos, 1, 0xc000, 1, 0, 1);
+                ((Player *)actor)->Hurt(pos, 1, 0xc000, 1, 0, 1);
             }
         }
     }
@@ -1353,11 +1343,11 @@ fail:
    unloads the blue-coin model InitResources loaded. */
 int daYegg_c::CleanupResources()
 {
-  ((SharedFilePtr *)(&data_ov002_0210e6b0))->Release();
-  ((SharedFilePtr *)(&data_ov002_0210eb78))->Release();
-  if (func_ov002_020ec628() != 0)
-    UnloadBlueCoinModel(((void*)this));
-  return 1;
+    data_ov002_0210e6b0.Release();
+    data_ov002_0210eb78.Release();
+    if (func_ov002_020ec628() != 0)
+        UnloadBlueCoinModel(((void *)this));
+    return 1;
 }
 
 // @symbol _ZN8daYegg_c6RenderEv
@@ -1472,8 +1462,8 @@ int daYegg_c::InitResources()
     if (func_ov002_020ec654() != 0)
         idx = 1;
 
-    dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)data_ov002_0210e6b0);
-    dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)data_ov002_0210eb78);
+    dExtFrameCtrl_c::LoadFile(data_ov002_0210e6b0);
+    dExtFrameCtrl_c::LoadFile(data_ov002_0210eb78);
     if (mAnmModel.SetFile(*(BMD_File **)(data_ov002_021000a0[idx] + 4), 1, -1) == 0)
         return 0;
 
@@ -1487,7 +1477,7 @@ int daYegg_c::InitResources()
             return 0;
     }
 
-    mAnmModel.SetAnim((BCA_File *)(*(void **)(data_ov002_0210eb78 + 4)), 0, 0x1000, 0);
+    mAnmModel.SetAnim((BCA_File *)data_ov002_0210eb78.filePtr, 0, 0x1000, 0);
 
     mAreaId = -1;
     mSpawnPosX = mPosX;
@@ -1503,16 +1493,14 @@ int daYegg_c::InitResources()
         mScaleX = 0x1000;
         mScaleY = 0x1000;
         mScaleZ = 0x1000;
-        _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(
-            &mdCcAc_c, this, 0x46000, 0x8c000, 0x200002, 0xa08000);
+        mdCcAc_c.Init(this, 0x46000, 0x8c000, 0x200002, 0xa08000);
         mWithMeshClsn.Init(this, 0x28000, 0x28000, 0, 0);
         break;
     case 2:
         mScaleX = 0x2000;
         mScaleY = 0x2000;
         mScaleZ = 0x2000;
-        _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(
-            &mdCcAc_c, this, 0x78000, 0xa0000, 0x200002, 0xa08000);
+        mdCcAc_c.Init(this, 0x78000, 0xa0000, 0x200002, 0xa08000);
         mWithMeshClsn.Init(this, 0x64000, 0x64000, 0, 0);
         break;
     default:

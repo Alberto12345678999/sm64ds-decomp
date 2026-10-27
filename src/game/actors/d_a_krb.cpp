@@ -14,9 +14,6 @@
  * ledge check, collision, and the stuck check.
  *
  * leftovers:
- * - dCcAc_c::Init, DropShadowRadHeight and KillByInvincibleChar take
- *   Fix12<int> by value. The header calls size-DIFF their callers. The bridges pass those bits as
- *   scalars and still name the 5Fix12IiE symbols.
  * - dBgCh_Actr::Init stays mangled. Fix12i is a plain s32, so the
  *   header method mangles as int.
  * - Player::Hurt, Player::Bounce and dActor_c::IsTooFarAwayFromPlayer
@@ -82,6 +79,8 @@ enum daKrb_c_AssetId {
 #include "dExtAnmMaterial_c.h"
 #include "Player.h"
 #include "daKuriKing_c.h"
+#include "daStarBase_c.h"
+#include "math/Approach.h"
 
 /* daStar_c::mMarkerID (daStar_c.h, 0x434), seen through a local view:
    including daStar_c.h renumbers this TU's @NNN labels. */
@@ -93,7 +92,6 @@ typedef char SilverStarView_size_must_be_0x438[sizeof(SilverStarView) == 0x438 ?
 
 namespace cstd { int fdiv(int a, int b); }
 
-bool ApproachLinear(short &value, short target, short step);
 
 typedef struct {
     unsigned char b0 : 1;
@@ -203,10 +201,7 @@ extern StateHandler data_ov084_02130d74[];
 int func_02037e20(int* p);
 extern void func_02012694(unsigned int id, const Vector3 *pos);
 extern int SurfaceInfo_TestFlag0x20(int* p);
-extern void _ZN5dBgPiD1Ev(void*);
 extern int data_02099368[];
-/* local extern: daStarBase_c::LinkSilverStarAndStarMarker. This TU does not include daStarBase_c.h. */
-extern void _ZN12daStarBase_c27LinkSilverStarAndStarMarkerEPc(char *a, char *b);
 extern u8 data_0209f208[];
 extern u8 *data_0209f344;
 /* Three-register reconstructed interface; death-state stores also use r3. */
@@ -215,16 +210,11 @@ extern int *data_ov084_0213088c;
 extern int data_ov084_02130248[];
 extern Fix12i Vec3_Dist(const struct Vector3 *a, const struct Vector3 *b);
 extern short Vec3_HorzAngle(const struct Vector3 *a, const struct Vector3 *b);
-extern void _ZN12dEnemyBase_c20KillByInvincibleCharERK10Vector3_16R6Player5Fix12IiE(void* thiz, s16* v, void* r6, s32 flag);
-extern void _ZN6Player6BounceE5Fix12IiE(void* p, s32 f);
-extern int _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void* p, const Vector3* v, u32 a, s32 f, u8 b, u8 cc, u8 d);
 
 extern u8 data_ov084_02130204[];
 extern void Matrix4x3_FromRotationY(void* m, int angle);
-extern void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(void* self, void* sm, void* mtx, int fix, int t, unsigned int j);
 extern short data_02082214[];
 extern char data_ov084_0213089c;
-extern int _Z14ApproachLinearRiii(int *a, int b, int c);
 extern int RandomIntInternal(int *seed);
 extern int data_ov084_02130228[];
 extern int data_ov084_02130268[];
@@ -240,7 +230,6 @@ extern void UnloadBlueCoinModel(void* p);
 extern s8 data_0209f2f8;
 void LoadSilverStarAndNumber(void);
 void LoadBlueCoinModel(void* c);
-void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void* self, void* a, Fix12i r, Fix12i h, unsigned int e, unsigned int g);
 /* Parameter names keep this TU's @NNN. */
 typedef void BgchInitAt_(void *self, void *a, Fix12i b, Fix12i cc, void *d, Fix12i e);
 extern SharedFilePtr *const sKuriboAnimationFiles[7];
@@ -540,7 +529,7 @@ action:
         goomba->RespawnIfHasCap();
     }
 dtor:
-    _ZN5dBgPiD1Ev(obj);
+    ((dBgPi *)obj)->dBgPi::~dBgPi();
 }
 
 // @symbol func_ov084_021296b0
@@ -581,7 +570,7 @@ void daKrb_c::func_ov084_021296cc() {
             (char *)dActor_c::Spawn(ACTOR_SILVER_STAR, 0x10, goomba->mPos, 0, goomba->mAreaId, -1);
         if (starMarker != 0 && silverStar != 0) {
             ((SilverStarView *)silverStar)->mMarkerID = ((dActor_c *)starMarker)->uniqueID;
-            _ZN12daStarBase_c27LinkSilverStarAndStarMarkerEPc(starMarker, silverStar);
+            ((daStarBase_c *)starMarker)->LinkSilverStarAndStarMarker(silverStar);
             goomba->SpawnSoundObj(1);
         }
         /* The (int) cast on the load is load-bearing: a plain
@@ -939,11 +928,13 @@ void daKrb_c::func_ov084_02129ed4() {
         typeMatch = (s32)(goomba->actorID == ACTOR_KURIBO);
         if (typeMatch != 0) {
             killDirNormal[0] = -0x2000; killDirNormal[1] = 0; killDirNormal[2] = 0;
-            _ZN12dEnemyBase_c20KillByInvincibleCharERK10Vector3_16R6Player5Fix12IiE(goomba, killDirNormal, other, 0x41000);     /* 65.0 */
+            goomba->KillByInvincibleChar(*(Vector3_16 *)killDirNormal, *(Player *)other,
+                                         0x41000); /* 65.0 */
             return;
         }
         killDirVariant[0] = -0x1800; killDirVariant[1] = 0; killDirVariant[2] = 0;
-        _ZN12dEnemyBase_c20KillByInvincibleCharERK10Vector3_16R6Player5Fix12IiE(goomba, killDirVariant, other, 0x96000);     /* 150.0 */
+        goomba->KillByInvincibleChar(*(Vector3_16 *)killDirVariant, *(Player *)other,
+                                     0x96000); /* 150.0 */
         return;
     }
 
@@ -1007,7 +998,8 @@ void daKrb_c::func_ov084_02129ed4() {
                     capReleaseOnKill.x = 0; capReleaseOnKill.y = 0x6c000; capReleaseOnKill.z = 0;     /* 108.0 */
                     goomba->ReleaseCap(capReleaseOnKill);
                     killDirPlayer[0] = 0x2000; killDirPlayer[1] = 0; killDirPlayer[2] = 0;
-                    _ZN12dEnemyBase_c20KillByInvincibleCharERK10Vector3_16R6Player5Fix12IiE(goomba, killDirPlayer, other, 0x41000);     /* 65.0 */
+                    goomba->KillByInvincibleChar(*(Vector3_16 *)killDirPlayer, *(Player *)other,
+                                                 0x41000); /* 65.0 */
                     return;
                 }
                 {
@@ -1024,7 +1016,7 @@ void daKrb_c::func_ov084_02129ed4() {
                     goto block_68;
                 }
                 if (((dActor_c *)goomba)->JumpedOnByPlayer(*(dCc_c *)&goomba->mdCcAc_c, *(Player *)other) != 0) {
-                    _ZN6Player6BounceE5Fix12IiE(other, 0x28000);     /* 40.0 */
+                    ((Player *)other)->Bounce(0x28000); /* 40.0 */
                     func_02012694(SND_STOMPED, &goomba->mCamSpacePos);
                     goomba->mDeathState = daKrb_c::DEATH_STOMPED;
                     goomba->mScaleX = 0x1000;     /* 1.0 */
@@ -1037,14 +1029,16 @@ void daKrb_c::func_ov084_02129ed4() {
                     if (goomba->mGoombaType == daKrb_c::GOOMBA_SMALL) {
                         ((dActor_c *)goomba)->SmallPoofDust();
                         hurtOriginFirstHit.x = goomba->mPosX; hurtOriginFirstHit.y = goomba->mPosY; hurtOriginFirstHit.z = goomba->mPosZ;
-                        _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(other, &hurtOriginFirstHit, 0, hurtKnockback, 1, 0, 1);
+                        ((Player *)other)->Hurt(hurtOriginFirstHit, 0, hurtKnockback, 1, 0, 1);
                         goomba->func_ov084_02129498();
                         func_02012694(SND_DEATH_SMALL, &goomba->mCamSpacePos);
                         return;
                     }
                     if ((goomba->mdCcAc_c.hitFlags & HIT_PLAYER) == 0) return;
                     hurtOriginRepeat.x = goomba->mPosX; hurtOriginRepeat.y = goomba->mPosY; hurtOriginRepeat.z = goomba->mPosZ;
-                    _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(other, &hurtOriginRepeat, data_ov084_02130204[goomba->mGoombaType], hurtKnockback, 1, 0, 1);
+                    ((Player *)other)
+                        ->Hurt(hurtOriginRepeat, data_ov084_02130204[goomba->mGoombaType],
+                               hurtKnockback, 1, 0, 1);
                     goomba->mState = daKrb_c::STATE_HOP_START;
                     return;
                 }
@@ -1064,7 +1058,7 @@ void daKrb_c::func_ov084_02129ed4() {
             playerPosJump.z = pp->z;
         }
         if (((dActor_c *)goomba)->JumpedOnByPlayer(*(dCc_c *)&goomba->mdCcAc_c, *(Player *)other) != 0) {
-            _ZN6Player6BounceE5Fix12IiE(other, 0x28000);     /* 40.0 */
+            ((Player *)other)->Bounce(0x28000); /* 40.0 */
             func_02012694(SND_STOMPED, &goomba->mCamSpacePos);
             goomba->mDeathState = daKrb_c::DEATH_STOMPED;
             goomba->mScaleX = 0x1000;     /* 1.0 */
@@ -1077,7 +1071,9 @@ void daKrb_c::func_ov084_02129ed4() {
             goomba->mState = daKrb_c::STATE_HOP_START;
             if ((goomba->mdCcAc_c.hitFlags & HIT_PLAYER) == 0) return;
             hurtOriginJumped.x = goomba->mPosX; hurtOriginJumped.y = goomba->mPosY; hurtOriginJumped.z = goomba->mPosZ;
-            _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(other, &hurtOriginJumped, data_ov084_02130204[goomba->mGoombaType], hurtKnockback, 1, 0, 1);
+            ((Player *)other)
+                ->Hurt(hurtOriginJumped, data_ov084_02130204[goomba->mGoombaType], hurtKnockback, 1,
+                       0, 1);
             return;
         }
         goto block_68;
@@ -1128,11 +1124,11 @@ void daKrb_c::func_ov084_0212a580() {
     rotation.z = mAngleZ;
     if ((mFlags & 0x40000 ? 1 : 0) == 0) {
         if (mWithMeshClsn.IsOnGround()) {
-            _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
-                (char *)this, &mShadowModel, &mAnmModel.mat4x3, mScaleX * 0x50, 0x1e000, 0xf);
+            ((dActor_c *)this)
+                ->DropShadowRadHeight(mShadowModel, mAnmModel.mat4x3, mScaleX * 0x50, 0x1e000, 0xf);
         } else {
-            _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
-                (char *)this, &mShadowModel, &mAnmModel.mat4x3, mScaleX * 0x50, 0x96000, 0xf);
+            ((dActor_c *)this)
+                ->DropShadowRadHeight(mShadowModel, mAnmModel.mat4x3, mScaleX * 0x50, 0x96000, 0xf);
         }
     }
     pos.x = 0;
@@ -1354,7 +1350,7 @@ void daKrb_c::func_ov084_0212abd4() {
     daKrb_c *goomba = this;
     short step = 0x200;
     func_ov084_02129cf4(0x3e8000);
-    _Z14ApproachLinearRiii((int *)&goomba->mHorzSpeed, goomba->mTargetHorzSpeed, 0x500);
+    ApproachLinear(*(int *)&goomba->mHorzSpeed, goomba->mTargetHorzSpeed, 0x500);
     if (((Flags *)&goomba->mMoveFlags)->b0) {
         if (ApproachLinear(*(short *)&goomba->mPrevAngleY, goomba->mInitAngleY, step)) {
             *(unsigned char *)(((int)&goomba->mMoveFlags)) &= ~daKrb_c::MOVE_AVOIDING;
@@ -1528,7 +1524,7 @@ void daKrb_c::func_ov084_0212af74() {
                 goomba->mTargetHorzSpeed = 0;
             }
             if (flag != 0) {
-                _Z14ApproachLinearRiii((int *)&goomba->mHorzSpeed, goomba->mTargetHorzSpeed, 0x500);
+                ApproachLinear(*(int *)&goomba->mHorzSpeed, goomba->mTargetHorzSpeed, 0x500);
             }
         } else {
             goomba->mInitAngleY = Vec3_HorzAngle(&goomba->mPos, &targetPos);
@@ -1972,8 +1968,8 @@ int daKrb_c::InitResources() {
         mScaleY = scale;
         mScaleZ = scale;
     }
-    _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, c, mScaleX * 0x3c,
-                                              data_ov084_02130208[mGoombaType], 0x200000, 0xa6efe0);
+    mdCcAc_c.Init((dActor_c *)c, mScaleX * 0x3c, data_ov084_02130208[mGoombaType], 0x200000,
+                  0xa6efe0);
 
     if (mGoombaType == GOOMBA_LARGE)
         *(int *)(((int)&mdCcAc_c.vulnFlags) & 0xFFFFFFFFFFFFFFFF) &= ~HIT_YOSHI_TONGUE;

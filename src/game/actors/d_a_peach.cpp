@@ -21,8 +21,7 @@
 #include "types.h"
 #include "dBgCh_Actr.h"
 #include "cstd.h"
-
-bool ApproachLinear(short &value, short target, short step);
+#include "math/Approach.h"
 
 struct BMD_File;
 struct Vector3_16;
@@ -52,12 +51,6 @@ extern void Matrix4x3_FromRotationY(void *m, int angle);
 extern void Matrix4x3_ApplyInPlaceToRotationY(void *m, short angY);
 extern void Matrix4x3_ApplyInPlaceToRotationZ(void *m, short angZ);
 extern int data_020a0e68[];
-
-/* actor plumbing */
-extern void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
-    void *thiz, void *sm, void *mtx, int f, int g, unsigned int h);
-extern void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(
-    void *self, dActor_c *a, int b, int c, unsigned int d, unsigned int e);
 
 /* model / animation */
 
@@ -197,8 +190,7 @@ void daPeach_c::UpdateModel()
     Matrix4x3_ApplyInPlaceToRotationY(data_020a0e68, mLookHorzAngle);
     Matrix4x3_ApplyInPlaceToRotationZ(data_020a0e68, mLookVertAngle);
     *(PeachM48 *)(*(char **)(c + 0xe8) + 0x360) = *(PeachM48 *)data_020a0e68;
-    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
-        this, &mShadowModel, &mAnmModel.mat4x3, 0x8c000, 0x32000, 0xf);
+    DropShadowRadHeight(mShadowModel, mAnmModel.mat4x3, 0x8c000, 0x32000, 0xf);
 }
 
 // @symbol _ZN9daPeach_c10InitState0Ev
@@ -405,8 +397,7 @@ int daPeach_c::InitResources()
         dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)data_ov085_0212f280[i]);
     if (mShadowModel.InitCylinder() == 0)
         return 0;
-    _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(
-        &mCylinder, this, 0x90000, 0xc0000, 0x4800004, 0);
+    mCylinder.Init(this, 0x90000, 0xc0000, 0x4800004, 0);
     mWithMeshClsn.Init(this, 0x40000, 0x40000, (Vector3_16 *)0, (Vector3_16 *)0);
     mVertAccel = -0x2000;
     mTerminalVelocity = -0x3c000;

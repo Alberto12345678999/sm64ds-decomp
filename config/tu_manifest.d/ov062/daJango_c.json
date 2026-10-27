@@ -1437,44 +1437,44 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@1146",
+      "from": "@1123",
       "to": "@1115",
-      "evidence": "Measured compiler-local input after adding the existing cap header: exact section index, offset, size, binding, bytes and complete incoming/outgoing typed graph preserve this canonical destination."
+      "evidence": "Measured compiler-local input after adding the existing cap header: exact section index, offset, size, binding, bytes and complete incoming/outgoing typed graph preserve this canonical destination. | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     },
     {
-      "from": "@1147",
+      "from": "@1124",
       "to": "@1116",
-      "evidence": "Measured compiler-local input after adding the existing cap header: exact section index, offset, size, binding, bytes and complete incoming/outgoing typed graph preserve this canonical destination."
+      "evidence": "Measured compiler-local input after adding the existing cap header: exact section index, offset, size, binding, bytes and complete incoming/outgoing typed graph preserve this canonical destination. | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     },
     {
-      "from": "@1148",
+      "from": "@1125",
       "to": "@1117",
-      "evidence": "Measured compiler-local input after adding the existing cap header: exact section index, offset, size, binding, bytes and complete incoming/outgoing typed graph preserve this canonical destination."
+      "evidence": "Measured compiler-local input after adding the existing cap header: exact section index, offset, size, binding, bytes and complete incoming/outgoing typed graph preserve this canonical destination. | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     },
     {
-      "from": "@1149",
+      "from": "@1126",
       "to": "@1118",
-      "evidence": "Measured compiler-local input after adding the existing cap header: exact section index, offset, size, binding, bytes and complete incoming/outgoing typed graph preserve this canonical destination."
+      "evidence": "Measured compiler-local input after adding the existing cap header: exact section index, offset, size, binding, bytes and complete incoming/outgoing typed graph preserve this canonical destination. | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     },
     {
-      "from": "@1151",
+      "from": "@1128",
       "to": "@1120",
-      "evidence": "Measured compiler-local input after adding the existing cap header: exact section index, offset, size, binding, bytes and complete incoming/outgoing typed graph preserve this canonical destination."
+      "evidence": "Measured compiler-local input after adding the existing cap header: exact section index, offset, size, binding, bytes and complete incoming/outgoing typed graph preserve this canonical destination. | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     },
     {
-      "from": "@1153",
+      "from": "@1130",
       "to": "@1122",
-      "evidence": "Measured compiler-local input after adding the existing cap header: exact section index, offset, size, binding, bytes and complete incoming/outgoing typed graph preserve this canonical destination."
+      "evidence": "Measured compiler-local input after adding the existing cap header: exact section index, offset, size, binding, bytes and complete incoming/outgoing typed graph preserve this canonical destination. | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     },
     {
-      "from": "@1155",
+      "from": "@1132",
       "to": "@1124",
-      "evidence": "Measured compiler-local input after adding the existing cap header: exact section index, offset, size, binding, bytes and complete incoming/outgoing typed graph preserve this canonical destination."
+      "evidence": "Measured compiler-local input after adding the existing cap header: exact section index, offset, size, binding, bytes and complete incoming/outgoing typed graph preserve this canonical destination. | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     },
     {
-      "from": "@1157",
+      "from": "@1134",
       "to": "@1126",
-      "evidence": "Measured compiler-local input after adding the existing cap header: exact section index, offset, size, binding, bytes and complete incoming/outgoing typed graph preserve this canonical destination."
+      "evidence": "Measured compiler-local input after adding the existing cap header: exact section index, offset, size, binding, bytes and complete incoming/outgoing typed graph preserve this canonical destination. | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     },
     {
       "from": "@561",
@@ -1482,24 +1482,24 @@
       "evidence": "Measured compiler-local input after adding the existing cap header: exact section index, offset, size, binding, bytes and complete incoming/outgoing typed graph preserve this canonical destination."
     },
     {
-      "from": "@1159",
+      "from": "@1136",
       "to": "@690",
-      "evidence": "Measured compiler-local input after adding the existing cap header: exact section index, offset, size, binding, bytes and complete incoming/outgoing typed graph preserve this canonical destination."
+      "evidence": "Measured compiler-local input after adding the existing cap header: exact section index, offset, size, binding, bytes and complete incoming/outgoing typed graph preserve this canonical destination. | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     },
     {
-      "from": "@1161",
+      "from": "@1138",
       "to": "@189",
-      "evidence": "Measured compiler-local input after adding the existing cap header: exact section index, offset, size, binding, bytes and complete incoming/outgoing typed graph preserve this canonical destination."
+      "evidence": "Measured compiler-local input after adding the existing cap header: exact section index, offset, size, binding, bytes and complete incoming/outgoing typed graph preserve this canonical destination. | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     },
     {
-      "from": "@1163",
+      "from": "@1140",
       "to": "@197",
-      "evidence": "Measured compiler-local input after adding the existing cap header: exact section index, offset, size, binding, bytes and complete incoming/outgoing typed graph preserve this canonical destination."
+      "evidence": "Measured compiler-local input after adding the existing cap header: exact section index, offset, size, binding, bytes and complete incoming/outgoing typed graph preserve this canonical destination. | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     },
     {
-      "from": "@1165",
+      "from": "@1142",
       "to": "@198",
-      "evidence": "Measured compiler-local input after adding the existing cap header: exact section index, offset, size, binding, bytes and complete incoming/outgoing typed graph preserve this canonical destination."
+      "evidence": "Measured compiler-local input after adding the existing cap header: exact section index, offset, size, binding, bytes and complete incoming/outgoing typed graph preserve this canonical destination. | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     }
   ]
 }

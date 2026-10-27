@@ -90,14 +90,12 @@
  *   dActor_c::SetRanges is not on the header (notes/mwccarm-codegen.md 6az).
  *   dExtAnmModel_c::SetAnim / DropShadowRadHeight / ReflectAngle take Fix12<int>
  *   by value, which has no implicit int conversion (notes/mwccarm-codegen.md
- *   6az). dBgCh_Actr::GetFloorResult / GetWallResult are not declared.
+ *   6az).
  *
  * leftovers:
  *   InitResources keeps two `(u32)param1` read-side casts; spelled plainly,
  *   2004/b56 materialises the param1 address once for each read-modify-write
  *   and the body grows from 0x4c8 to 0x4d0 (see the comments at both sites).
- *   It also keeps the dCcAc_c::Init / dBgCh_Actr::Init calls mangled: both
- *   take Fix12<int> by value.
  *   The data_ov002_0210de* / 0210df* handles have no recovered names in
  *   symbols.txt, so none are coined; the sixteen-byte state records are only
  *   described above.
@@ -129,6 +127,7 @@ enum daObjMarioCap_c_AssetId {
 };
 
 #include "common.h"
+#include "cstd.h"
 #include "nitro/fx/fx.h"
 #include "daObjMarioCap_c.h"
 #include "decl_common.h"
@@ -139,7 +138,7 @@ enum daObjMarioCap_c_AssetId {
 #include "SurfaceInfo.h"
 #include "dBgCh_Gnd.h"
 #include "dBgCh_Actr.h"
-#include "cstd.h"
+#include "math/Approach.h"
 
 /* --------------------------------------------------------------------------
  * Local shapes the merged members need.
@@ -242,26 +241,13 @@ void  Matrix4x3_FromTranslation(Matrix4x3 *m, int x, int y, int z);
 void  Matrix4x3_ApplyInPlaceToRotationXYZExt(Matrix4x3 *m, int x, int y, int z);
 void  Matrix4x3_FromRotationY(void *m, int angle);
 
-void  _Z11UpdateAngleRssis(void *p, short target, int step, short limit);
-void  _Z14ApproachLinearRiii(int *x, int target, int step);
 
 short atan2_hold_d_a_obj_mario_cap_1(int y, int x);
 
 
-/* dCcAc_c::Init and dBgCh_Actr::Init take Fix12<int> by value, which has no
-   implicit int conversion (notes/mwccarm-codegen.md 6az). */
-extern void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *thiz, void *actor, s32 f1, s32 f2, u32 a, u32 b);
 /* Parameter names keep this TU's @NNN. */
 typedef void BgchInitAt_(void *thiz, void *actor, s32 f1, s32 f2, void *v, void *w);
 
-void *_ZN9dBgCh_GndC1Ev(dBgCh_Gnd *ray);
-void  _ZN9dBgCh_GndD1Ev(dBgCh_Gnd *ray);
-
-/* SetRanges carries Fix12<int> by value; dActor_c.h deliberately omits it
-   (notes/mwccarm-codegen.md 6az). A call is unaffected. */
-void  _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
-          void *self, void *shadow, void *matrix, int radius, int depth, int opacity);
-short _ZN8dActor_c12ReflectAngleE5Fix12IiES1_s(void *self, int nx, int nz, short ang);
 
 /* -- data -- */
 extern Matrix4x3      data_020a0e68;
@@ -385,7 +371,7 @@ int daObjMarioCap_c::InitResources()
 
     /* dCcAc_c collider: radius and height 30 units, flags 0x800002, vulnFlags 0.
        dBgCh_Actr level-collision: radius 30 units, height 22 units. */
-    _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, this, kClsnSizeSmall, kClsnSizeSmall, 0x800002, 0);
+    mdCcAc_c.Init(this, kClsnSizeSmall, kClsnSizeSmall, 0x800002, 0);
     mWithMeshClsn.Init(this, kClsnSizeSmall, 0x16000, 0, 0);
 
     /* Remember where the cap was placed. */
@@ -549,8 +535,8 @@ int daObjMarioCap_c::Behavior()
     /* Pop-in: the target eases from 2.0 to 1.0 by 0.125 a frame, the scale
        follows it by 0.25 a frame, and the cap moves and collides meanwhile. */
     if (mIconKind != 0xff && mPopIn != 0) {
-        _Z14ApproachLinearRiii(&mPopScale, 0x1000, 0x200);
-        _Z14ApproachLinearRiii(&mScaleX, mPopScale, 0x400);
+        ApproachLinear(mPopScale, 0x1000, 0x200);
+        ApproachLinear(mScaleX, mPopScale, 0x400);
         mScaleZ = mScaleX;
         mScaleY = mScaleZ;
         UpdatePos(&mdCcAc_c);
@@ -714,7 +700,6 @@ void daObjMarioCap_c::UpdateMatrix()
 {
     int probe[3];
     int v[3];
-    char ray[0x50];
     int m = mType;
     if (m != 5 && m != 0x12 && m != 0x10 && m != 0xb && m != 7 && m != 9 &&
         m != 0x14 && m != 0x15 && m != 0x16) {
@@ -758,12 +743,11 @@ void daObjMarioCap_c::UpdateMatrix()
             probe[1] = mPosY;
             probe[2] = mPosZ;
             probe[1] = probe[1] + 0x28000;
-            _ZN9dBgCh_GndC1Ev((dBgCh_Gnd *)ray);
-            ((dBgCh_Gnd *)ray)->SetObjAndPos(*(Vector3 *)probe, 0);
+            dBgCh_Gnd ray;
+            ray.SetObjAndPos(*(Vector3 *)probe, 0);
             y = probe[1];
-            if (((dBgCh_Gnd *)ray)->DetectClsn() != 0)
-                y = ((dBgCh_Gnd *)ray)->clsnY;
-            _ZN9dBgCh_GndD1Ev((dBgCh_Gnd *)ray);
+            if (ray.DetectClsn() != 0)
+                y = ray.clsnY;
         }
 
         off = 0;
@@ -781,8 +765,7 @@ void daObjMarioCap_c::UpdateMatrix()
         mShadowMat.m[9] = mPosX >> 3;
         mShadowMat.m[10] = (y + (off << 12)) >> 3;
         mShadowMat.m[11] = mPosZ >> 3;
-        _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
-            this, &mShadowModel, &mShadowMat, 0x50000, 0x32000, 0xf);
+        DropShadowRadHeight(mShadowModel, mShadowMat, 0x50000, 0x32000, 0xf);
     }
 }
 
@@ -1079,8 +1062,8 @@ int daObjMarioCap_c::Slide()
         0x8000);
     pitch = func_02010844(this, &mFloorNormalX, mAngleY);
     roll = func_02010844(this, &mFloorNormalX, mAngleY - 0x4000);
-    _Z11UpdateAngleRssis(&mAngleX, pitch, 4, 0x1000);
-    _Z11UpdateAngleRssis(&mAngleZ, roll, 4, 0x1000);
+    UpdateAngle(mAngleX, pitch, 4, 0x1000);
+    UpdateAngle(mAngleZ, roll, 4, 0x1000);
     return 1;
 }
 
@@ -1360,8 +1343,7 @@ void daObjMarioCap_c::CheckTouch()
     if (mWithMeshClsn.IsOnWall() != 0) {
         void *wr = mWithMeshClsn.GetWallResult();
         ((SurfaceInfo *)((char*)wr + 4))->CopyNormalTo(*(Vector3 *)&normal[0]);
-        mPrevAngleY = _ZN8dActor_c12ReflectAngleE5Fix12IiES1_s(
-            this, normal[0], normal[2], mPrevAngleY);
+        mPrevAngleY = ReflectAngle(normal[0], normal[2], mPrevAngleY);
     }
 
     if (mdCcAc_c.otherOwner == 0) return;

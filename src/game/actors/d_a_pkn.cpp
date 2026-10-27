@@ -16,10 +16,8 @@ struct Vector3_16f;
  * D1 and D0 pair; `new` odr-uses the class so that pair is emitted here.
  *
  * deslop leftovers:
- * - dExtAnmModel_c::SetAnim, dCcAc_c::Init, dCcAcPos_c::Init, dBgCh_Actr::Init,
- *   Particle::System::New and NewSimple, Sound::PlaySub, Player::Hurt and
- *   Player::Bounce stay mangled extern "C" calls: each takes a Fix12<int>
- *   by value (the measured alternatives are noted at their declarations).
+ * - Player::Hurt and Player::Bounce stay mangled extern "C" calls: each
+ *   takes a Fix12<int> by value.
  * - UpdatePose still walks the PknMtx43/PknVec3 views: spelling the copies
  *   as Vector3/Matrix4x3 is emitted differently.
  * - The shared files keep their address names; the state table at
@@ -36,6 +34,7 @@ struct Vector3_16f;
 #include "SharedFilePtr.h"
 #include "Player.h"
 #include "Sound.h"
+#include "math/Approach.h"
 
 /* The six shared files this actor claims. */
 extern SharedFilePtr data_ov084_02130dfc; /* the plant's own model */
@@ -61,7 +60,6 @@ struct PknMtx43 { int w[12]; };
    records at 0x02130ba4. */
 typedef void (daPkn_c::*PknStatePMF)();
 
-bool ApproachLinear(short &value, short target, short step);
 
 /* C-linkage declarations for the remaining raw entry points and shared data. */
 extern "C" {
@@ -75,17 +73,6 @@ void  UnloadBlueCoinModel(void *c);
 void  func_02012694(u32 id, void *pos);
 void  func_020105cc(void *thiz, u32 flags);
 
-void  _ZN6Player6BounceE5Fix12IiE(void *player, int fix);
-int   _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void *player, const void *pos, u32 a, int fix, u32 b, u32 c, u32 d);
-
-/* Measured remaining call seams in InitResources (mwccarm 2004/b56): real
-   SetAnim and dCcAc/dCcAcPos Init calls with local Fix12<int> arguments change
-   the instructions.  dBgCh_Actr's current scalar Init declaration instead names
-   an unresolved symbol.  These results do not establish the original Fix12
-   parameter types or a different caller ABI.  Exact alternatives and results:
-   notes/agents/handoffs/pr-2450-source-review-fixes.md, compiler experiments. */
-void  _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *self, void *a, int r, int h, u32 e, u32 g);
-void  _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(void *self, void *a, const Vector3 *v, int r, int h, u32 e, u32 g);
 
 /* -- shared tables -- */
 extern s16 data_02082214[];              /* the sin/cos table, two shorts a step */
@@ -150,10 +137,10 @@ int daPkn_c::InitResources()
         return 0;
     if (mModel.SetFile((BMD_File *)data_ov002_0210da38.filePtr, 1, -1) == 0)
         return 0;
-    _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c1, this, 0x32000, 0x64000, 0x200004, 0x423e0);
-    _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c2, this, 0x82000, 0x64000, 2, 0x423e0);
+    mdCcAc_c1.Init(this, 0x32000, 0x64000, 0x200004, 0x423e0);
+    mdCcAc_c2.Init(this, 0x82000, 0x64000, 2, 0x423e0);
     v.x = 0; v.y = 0; v.z = 0;
-    _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(&mdCcAcPos_c, this, &v, 0x46000, 0x64000, 0x200002, 0);
+    mdCcAcPos_c.Init(this, v, 0x46000, 0x64000, 0x200002, 0);
     mScaleX = 0x1000;
     mScaleY = 0x1000;
     mScaleZ = 0x1000;
@@ -392,7 +379,7 @@ void daPkn_c::StateBite()
                     pos1.x = mPosX;
                     pos1.y = mPosY;
                     pos1.z = mPosZ;
-                    _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(actor, &pos1, 3, 0xc000, 1, 0, 1);
+                    ((Player *)actor)->Hurt(pos1, 3, 0xc000, 1, 0, 1);
                     return;
                 }
                 if ((flags & 0x40000) == 0)
@@ -463,7 +450,7 @@ void daPkn_c::StateBite()
     pos2.x = mPosX;
     pos2.y = mPosY;
     pos2.z = mPosZ;
-    _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(actor, &pos2, 3, 0xc000, 1, 0, 1);
+    ((Player *)actor)->Hurt(pos2, 3, 0xc000, 1, 0, 1);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -654,7 +641,7 @@ int daPkn_c::CheckHits()
                     func_020105cc(this, flags);
                     Die();
                 } else if (JumpedOnByPlayer(mdCcAc_c1, *(Player *)actor) != 0) {
-                    _ZN6Player6BounceE5Fix12IiE(actor, 0x28000);
+                    ((Player *)actor)->Bounce(0x28000);
                     Die();
                 } else if (mdCcAc_c1.hitFlags & 0x40000) {
                     Die();
@@ -663,7 +650,7 @@ int daPkn_c::CheckHits()
                     v.x = mPosX;
                     v.y = mPosY;
                     v.z = mPosZ;
-                    _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(actor, &v, 3, 0xc000, 1, 0, 1);
+                    ((Player *)actor)->Hurt(v, 3, 0xc000, 1, 0, 1);
                     mAnmModel.SetAnim(
                         (BCA_File *)(((SharedFilePtr *)&data_ov084_02130e0c)->filePtr), 0, 0x1000,
                         0);
@@ -701,7 +688,7 @@ int daPkn_c::CheckHits()
                     return 1;
                 }
                 if (JumpedOnByPlayer(mdCcAc_c1, *(Player *)actor) != 0) {
-                    _ZN6Player6BounceE5Fix12IiE(actor, 0x28000);
+                    ((Player *)actor)->Bounce(0x28000);
                     Die();
                     return 1;
                 }

@@ -12,10 +12,8 @@
 
 // leftovers:
 // - Particle::System::New / SetSelfDestructFlag, dExtAnmModel_c::SetAnim,
-//   dCcAc_c::Init, dBgCh_Actr::Init, dActor_c::ReflectAngle /
-//   DropShadowRadHeight / IsTooFarAwayFromPlayer,
-//   dEnemyBase_c::KillByInvincibleChar, Player::Bounce / Hurt and
-//   Particle::RunningSlidingDustAt stay mangled. Each passes Fix12<int>
+//   dBgCh_Actr::Init, dActor_c::IsTooFarAwayFromPlayer, Player::Bounce /
+//   Hurt and Particle::RunningSlidingDustAt stay mangled. Each passes Fix12<int>
 //   by value (notes/mwccarm-codegen.md 6az), or the header declaration
 //   does not mangle to the ROM symbol. func_0201267c is the bank-3
 //   Sound::Play wrapper.
@@ -60,12 +58,11 @@ enum d_a_nknk_AssetId {
 #include "decl_dCcAc_c.h"
 #include "decl_ShadowModel.h"
 #include "Particle__System.h"
+#include "Particle__Manager.h"
 #include "dBgPi.h"
 #include "nitro/fx/fx.h"
 #include "Sound.h"
-
-int ApproachLinear(int &value, int target, int step);
-bool ApproachLinear(short &value, short target, short step);
+#include "math/Approach.h"
 
 /* File-scope resource handles: the ctor/dtor are the ROM's SharedFilePtr
  * veneer pairs (func_02017acc / func_02017ab4 for the two models,
@@ -92,7 +89,6 @@ struct V3 { int x, y, z; };
 extern "C" {
 extern int d_a_nknkNewHold(u32 uniqueID, u32 effectID, s32 x, s32 y, s32 z, const void *dir,
                            void *callback);
-extern void _ZN8Particle19SetSelfDestructFlagEj(u32 id);
 extern s16 data_02082214[];         /* SINE_TABLE: sin, cos pairs */
 extern NknkAnimationFileHandle *data_ov062_0211cee8[];
 extern int data_ov062_0211cf0c[];
@@ -102,18 +98,14 @@ extern int Vec3_Dist(void* a, void* b);
 /* Reconstructed receiver/attacker/nullable collision interface; the original
  * source prototype is not uniquely recoverable from the register traffic. */
 extern void func_ov002_020aea30(void* self, void* attacker, dBgCh_Actr* collision);
-extern void _ZN6Player6BounceE5Fix12IiE(void* p, int f);
-extern int _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(Player* p, void* v, u32 a, int f, u8 b, u8 c, u8 d);
 extern "C" void d_a_nknkRunningSlidingDustAtHold(int a, int b, int c);
 extern int RandomIntInternal(int *seed);
 extern int data_0209e650;
 extern short Vec3_HorzAngle(const Vector3* a, const Vector3* b);
-extern s16 _ZN8dActor_c12ReflectAngleE5Fix12IiES1_s(void *self, int a, int b, s16 ang);
 
 extern SharedFilePtr* data_ov062_0211ced8[2];
 extern SharedFilePtr* data_ov062_0211cee0[2];
 
-extern void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void* self, dActor_c* a, int r, int h, unsigned int e, unsigned int g);
 /* Parameter names keep this TU's @NNN. */
 typedef void BgchInitAt_(void *self, dActor_c *a, int r, int h, Vector3_16 *p, int q);
 extern void LoadBlueCoinModel(void* c);
@@ -122,7 +114,6 @@ extern void UnloadBlueCoinModel(void *c);
 extern void Vec3_Asr(struct Vec3 *d, struct Vec3 *s, int sh);
 extern void Matrix4x3_FromTranslation(struct Matrix4x3 *m, int x, int y, int z);
 extern void Matrix4x3_ApplyInPlaceToRotationY(struct Matrix4x3 *m, short angY);
-extern void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(void *thiz, void *sm, struct Matrix4x3 *m, int radHeight, int a, u8 b);
 extern struct Matrix4x3 data_020a0e68; /* MATRIX_SCRATCH_PAPER */
 inline struct Matrix4x3 *inline_fn()
 {
@@ -226,7 +217,7 @@ int daNknk_c::InitResources()
         dExtSimpleModel_c::LoadFile(*data_ov062_0211cee0[mModelIndex]);
     }
 
-    _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCc_c, this, r, h, 0x200000, 0xb6efe0);
+    mdCc_c.Init(this, r, h, 0x200000, 0xb6efe0);
 
     mStateTimer = 0;
     mWalkState = 0;
@@ -508,10 +499,9 @@ void daNknk_c::func_ov062_02118a50()
 {
     if (mHorzSpeed != 0) {
         if (mWithMeshClsn.IsOnWall() != 0) {
-            dBgPi *wall = (dBgPi *)mWithMeshClsn.GetWallResult();
+            dBgPi *wall = mWithMeshClsn.GetWallResult();
             wall->surface.CopyNormalTo(*(Vector3*)&mWallNormalX);
-            mPrevAngleY = _ZN8dActor_c12ReflectAngleE5Fix12IiES1_s(
-                this, mWallNormalX, mWallNormalZ, mPrevAngleY);
+            mPrevAngleY = ReflectAngle(mWallNormalX, mWallNormalZ, mPrevAngleY);
         }
         func_ov062_02118004(0x4cc);
         return;
@@ -732,8 +722,7 @@ void daNknk_c::func_ov062_02118334()
             }
         }
     }
-    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
-        this, &mShadowModel, &mAnmModel.mat4x3, 0x50000, 0x50000, 0xf);
+    DropShadowRadHeight(mShadowModel, mAnmModel.mat4x3, 0x50000, 0x50000, 0xf);
 }
 
 // @symbol _ZN8daNknk_c19func_ov062_02118258Ei
@@ -853,10 +842,7 @@ void daNknk_c::func_ov062_02117c98()
         v.x = (s16)-0x2000;
         v.y = (s16)turnAround;
         v.z = (s16)turnAround;
-        // The member's unused Fix12<int> argument is one raw register word.
-        // Native aggregate passing adds a load/copy here under 2004/b56;
-        // retain decl_Enemy.h's scalar ABI bridge to the actual member symbol.
-        _ZN12dEnemyBase_c20KillByInvincibleCharERK10Vector3_16R6Player5Fix12IiE(this, &v, found, 0x46000);
+        KillByInvincibleChar(v, *(Player *)found, 0x46000);
         return;
     }
     if (flags & 0x22400) {
@@ -933,7 +919,7 @@ void daNknk_c::func_ov062_02117c98()
                 mScaleZ = 0x1000;
                 func_0201267c(0x113, &mCamSpacePos);
             }
-            _ZN6Player6BounceE5Fix12IiE(found, 0x28000);
+            ((Player *)found)->Bounce(0x28000);
             return;
         }
         if (player->mIsVanish != 0)
@@ -950,7 +936,7 @@ void daNknk_c::func_ov062_02117c98()
             pw = mHorzSpeed;
             if (pw < 0xf000)
                 pw = 0xf000;
-            _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(player, &L.hv, 0, pw, 1, 0, 1);
+            player->Hurt(*(Vector3 *)&L.hv, 0, pw, 1, 0, 1);
             func_ov062_02117b48();
             if (mKoopaVariant == 2) {
                 PoofDust();
@@ -1107,7 +1093,7 @@ void daNknk_c::func_ov062_02117724(unsigned int a1, unsigned int a2, unsigned in
             pos.z = k * *(short *)((char *)data_02082214 + i1) + pos.z;
         }
         uid = Particle::System::New(0, 0xf9, pos.x, pos.y, pos.z, 0, 0);
-        _ZN8Particle19SetSelfDestructFlagEj(0xf9);
+        Particle::SetSelfDestructFlag(0xf9);
         if (uid == 0) return;
         ps = Particle::System::FromUniqueID(uid);
         if (ps == 0) return;
@@ -1150,7 +1136,7 @@ void daNknk_c::func_ov062_021175c0()
                                   (Particle::Callback *)((void *)0));
     }
 
-    _ZN8Particle19SetSelfDestructFlagEj(0xb2);
+    Particle::SetSelfDestructFlag(0xb2);
 
     mLandingDustTimer = 0xa;
     if (spawned == 0) return;
@@ -1177,7 +1163,7 @@ void daNknk_c::func_ov062_021175c0()
 /* Standing on a water floor: drop a coin and die. */
 void daNknk_c::func_ov062_02117570() {
     if (!mWithMeshClsn.IsOnGround()) return;
-    dBgPi *floor = (dBgPi *)mWithMeshClsn.GetFloorResult();
+    dBgPi *floor = mWithMeshClsn.GetFloorResult();
     if (!SurfaceInfo_TestFlag0x20((int *)&floor->surface)) return;
     SpawnCoin();
     KillAndTrackInDeathTable();

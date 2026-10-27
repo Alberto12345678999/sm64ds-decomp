@@ -37,6 +37,9 @@
 #include "decl_common.h"
 
 extern "C" {
+/* local extern: the failed-load path tail-calls Release and returns whatever
+   it leaves in r0; SharedFilePtr::Release is void, so the member call cannot
+   say that. */
 extern int _ZN13SharedFilePtr7ReleaseEv(void *sfp);
 extern SharedFilePtr *data_ov002_020ff028[];
 

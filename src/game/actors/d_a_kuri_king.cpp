@@ -97,6 +97,7 @@ enum daKuriKing_c_AssetId {
 #include "dCamera_c.h"
 #include "Message.h"
 #include "nitro/fx/fx.h"
+#include "cstd.h"
 
 /* Resource handles this TU's static initializer constructs. The wrapper
  * spellings are reconstructed; constructor and destructor addresses, file
@@ -158,11 +159,6 @@ extern "C" int AngleDiff(int a, int b);
 extern "C" int func_01ffa594(int a, int b);
 extern "C" int func_01ffa4bc(int a);
 extern "C" int func_01ff9378(int a, int b);
-/* local extern: no header declares cstd::fdiv (daBgSnmBdy_c spells it the same way). */
-namespace cstd {
-s16 atan2(s32, s32);
-int fdiv(int numerator, int denominator);
-}
 extern "C" int Math_Function_0203b14c(int* p, int a, int b, int d, int e);
 extern "C" unsigned short data_ov074_02122dfc[];
 extern "C" int data_ov074_0212291c[];
@@ -172,19 +168,14 @@ extern "C" void Vec3_Sub(Vector3 *out, const Vector3 *a, const Vector3 *b);
 extern "C" s32 Vec3_HorzLen(const Vector3 *v);
 extern "C" s16 atan2_hold_d_a_kuri_king_1(s32 y, s32 x);
 extern "C" unsigned char DecIfAbove0_Byte(unsigned char *p);
-extern "C" void _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(char *p, const struct Vector3 *v, unsigned int a, int b, unsigned int c, unsigned int d, unsigned int e);
 extern "C" s16 Vec3_HorzAngle(const struct Vector3 *v0, const struct Vector3 *v1);
 extern "C" void MulMat4x3Mat4x3(void* out, void* a, void* b);
 extern "C" void Vec3_LslInPlace(void* v, int n);
 extern "C" struct Matrix4x3 data_020a0e68;
 extern "C" struct Matrix4x3 IDENTITY_MATRIX4X3;
-extern "C" void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
-    void *self, void *actor, void *pos, s32 fx, s32 fy, u32 a, u32 b);
 /* Parameter names keep this TU's @NNN. */
 typedef void BgchInitAt_(void *self, void *actor, s32 fa, s32 fb, void *v0, void *v1);
 extern "C" void d_a_kuri_kingEarthquakeHold(void *thiz, void *v, int f);
-extern "C" void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
-    void *self, void *shadow, void *mat, int rad, int hgt, u32 flags);
 extern "C" int data_ov074_02122e24[];
 extern "C" char data_ov074_02122f3c[];
 extern "C" char data_ov074_02122f38[];
@@ -1243,8 +1234,7 @@ void daKuriKing_c::func_ov074_02120d74() {
                             v1.x = this->mPosX;
                             v1.y = this->mPosY;
                             v1.z = this->mPosZ;
-                            _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj((char *)pl, &v1, 1, 0x5000, 1,
-                                                                    0, 1);
+                            pl->Hurt(v1, 1, 0x5000, 1, 0, 1);
                         }
                     } else if (cur == &this->mdCc_cs[3]) {
                         if (this->mWalkSpeed != 0) {
@@ -1254,15 +1244,13 @@ void daKuriKing_c::func_ov074_02120d74() {
                             v2.x = this->mPosX;
                             v2.y = this->mPosY;
                             v2.z = this->mPosZ;
-                            _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj((char *)pl, &v2, 1, 0x5000, 1,
-                                                                    0, 1);
+                            pl->Hurt(v2, 1, 0x5000, 1, 0, 1);
                         }
                     } else {
                         v3.x = this->mPosX;
                         v3.y = this->mPosY;
                         v3.z = this->mPosZ;
-                        _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj((char *)pl, &v3, 1, 0x5000, 1, 0,
-                                                                1);
+                        pl->Hurt(v3, 1, 0x5000, 1, 0, 1);
                         this->mHurtTimer = 0x10;
                     }
                 }
@@ -1522,8 +1510,7 @@ void daKuriKing_c::func_ov074_02121800()
         height += 0x28000;
         ((daKuriKing_c *)self)->mShadowMatrices[0][11] =
             ((daKuriKing_c *)src)->mCylClsnPos[0].z >> 3;
-        _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
-            this, shadow, m, radius, height, 0xf);
+        DropShadowRadHeight(*shadow, *(Matrix4x3 *)m, radius, height, 0xf);
         self += 0x30;
         src += 0xc;
         m += 0x30;
@@ -1767,8 +1754,7 @@ int daKuriKing_c::InitResources()
 
     k = 0;
     do {
-        _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
-            &mdCc_cs[k], this, &mPosX, mScaleX * 0xa, mScaleY * 0xa, 0x200004, 0x26fe0);
+        mdCc_cs[k].Init(this, *(Vector3 *)&mPosX, mScaleX * 0xa, mScaleY * 0xa, 0x200004, 0x26fe0);
         k++;
     } while (k < 4);
 
@@ -1941,8 +1927,8 @@ int daKuriKing_c::func_ov074_021223bc()
     mShadowMatrices[0][10] = this->mPosY >> 3;
     mShadowMatrices[0][11] = this->mPosZ >> 3;
 
-    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
-        this, &this->mShadowModels[0], mShadowMatrices[0], 0x8c000, 0x3e8000, 0xf);
+    DropShadowRadHeight(this->mShadowModels[0], *(Matrix4x3 *)mShadowMatrices[0], 0x8c000, 0x3e8000,
+                        0xf);
 
     return 1;
 }

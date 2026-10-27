@@ -26,12 +26,7 @@
 // leftovers:
 // - func_ov002_020feb50, 020fec94, 020fed18, 020fed2c and 020fed7c stay
 //   free functions with C linkage and retain current configured linker names.
-// - dCcAc_c::Init, dBgCh_Actr::Init and Player::Hurt stay mangled.
-//   dCcAc_c.h's Init takes Fix12<int> by value, and every spelling tried
-//   grows InitResources: `Fix12<int> r = { 0xa000 };` passed twice gives
-//   0xd8 -> 0xec plus a .rodata word, `r.val = 0xa000;` gives 0xe4 and no
-//   .rodata. dBgCh_Actr.h's Init spells Fix12i, which mangles as `i`, not as
-//   the ROM's 5Fix12IiE. Player.h declares no Hurt.
+// - Player::Hurt stays mangled. Player.h declares no Hurt.
 // - func_ov002_020fed7c copies the scratch matrix as twelve plain words.
 
 #pragma defer_codegen off
@@ -79,14 +74,10 @@ struct HeyhoStateTable {
 extern HeyhoStateTable data_ov002_02111190;
 
 extern void func_02012694(unsigned int a, Vector3 const &v);
-/* local extern: the retail Hurt symbol takes Fix12<int> by value. This
-   scalar bridge follows Player.cpp: int result, Player receiver and u8 flags. */
-extern int _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(Player *self, void *position, u32 kind, int damage, u8 arg4, u8 arg5, u8 arg6);
 extern void Vec3_Asr(void *dst, void *src, int n);
 extern void Matrix4x3_FromTranslation(void *m, int x, int y, int z);
 extern void Matrix4x3_ApplyInPlaceToRotationXYZExt(void *m, short rx, short ry, short rz);
 extern unsigned short DecIfAbove0_Short(unsigned short *p);
-extern void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(char *self, dActor_c *a, int r, int h, u32 f1, u32 f2);
 }
 
 // @symbol _ZN24daPropeller_Heyho_Fire_cD1Ev
@@ -162,7 +153,7 @@ extern "C" void func_ov002_020feb50(daPropeller_Heyho_Fire_c *self) {
     v.x = self->mPosX;
     v.y = self->mPosY;
     v.z = self->mPosZ;
-    _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(player, &v, 1, 0xc000, 1, 0, 1);
+    player->Hurt(v, 1, 0xc000, 1, 0, 1);
 }
 
 // @symbol func_ov002_020fec94
@@ -273,7 +264,7 @@ int daPropeller_Heyho_Fire_c::InitResources()
     unk_358 = param1 & 0xff;
     if (unk_358 > 1) unk_358 = 0;
     mTerminalVelocity = -0x64000;
-    _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj((char *)&mdCcAc_c, this, 0xa000, 0xa000, 0x200004, 0);
+    mdCcAc_c.Init(this, 0xa000, 0xa000, 0x200004, 0);
     mAngleY = mPrevAngleY;
     mWithMeshClsn.Init(this, 0xa000, 0xa000, 0, 0);
     func_ov002_020fed2c(this, (State *)&data_ov002_02111190);

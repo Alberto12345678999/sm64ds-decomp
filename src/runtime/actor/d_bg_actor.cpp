@@ -33,6 +33,7 @@
 #include "dBgW.h"
 #include "dBgCh_Lin.h"
 #include "dBgCh_Actr.h"
+#include "Player.h"
 #include "Sound.h"
 
 /* ROM symbols with no header of their own. Spelled to agree with their
@@ -124,7 +125,7 @@ struct ClsnHitCopy {
 // @symbol func_ov002_020ef2a4
 extern "C" int func_ov002_020ef2a4(dBgCh_Actr *clsn, dActor_c *other) {
     if (clsn->IsOnGround()) {
-        dBgPi *hit = (dBgPi *)clsn->GetFloorResult();
+        dBgPi *hit = clsn->GetFloorResult();
         if (hit->GetClsnID() != -1) {
             dActor_c *owner = dActor_c::FindWithID(hit->GetClsnID());
             if (owner != 0) {
@@ -140,7 +141,7 @@ extern "C" int func_ov002_020ef2a4(dBgCh_Actr *clsn, dActor_c *other) {
 extern "C" int func_ov002_020ef228(dBgCh_Actr *clsn, int otherArg) {
     dActor_c *other = (dActor_c *)otherArg;
     if (clsn->IsOnWall()) {
-        dBgPi *hit = (dBgPi *)clsn->GetWallResult();
+        dBgPi *hit = clsn->GetWallResult();
         if (hit->GetClsnID() != -1) {
             dActor_c *owner = dActor_c::FindWithID(hit->GetClsnID());
             if (owner != 0) {
@@ -282,7 +283,7 @@ extern "C" int func_ov002_020eee3c(char *clsnArg, char *otherArg) {
     dBgCh_Actr *clsn = (dBgCh_Actr *)clsnArg;
     dActor_c *other = (dActor_c *)otherArg;
     if (clsn->IsOnWall()) {
-        dBgPi *hit = (dBgPi *)clsn->GetWallResult();
+        dBgPi *hit = clsn->GetWallResult();
         if (hit->GetClsnID() != -1) {
             dActor_c *owner = dActor_c::FindWithID(hit->GetClsnID());
             if (owner != 0) {
@@ -297,7 +298,7 @@ extern "C" int func_ov002_020eee3c(char *clsnArg, char *otherArg) {
 // @symbol func_ov002_020eedc0
 extern "C" int func_ov002_020eedc0(dBgCh_Actr *clsn, dActor_c *other) {
     if (clsn->IsOnWall()) {
-        dBgPi *hit = (dBgPi *)clsn->GetWallResult();
+        dBgPi *hit = clsn->GetWallResult();
         if (hit->GetClsnID() != -1) {
             dActor_c *owner = dActor_c::FindWithID(hit->GetClsnID());
             if (owner != 0) {
@@ -352,9 +353,6 @@ typedef struct { int w[2]; } ClsnHitHead;
 
 // @symbol func_ov002_020eea84
 extern "C" int func_ov002_020eea84(dBgCh_Actr *clsn, dActor_c *player) {
-    /* local extern: scalar Fix12 ABI preserves the retail call
-       (notes/mwccarm-codegen.md 6az). */
-    extern int _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void *self, void *v, unsigned int a, int fix, unsigned int b, unsigned int d, unsigned int e);
     struct ClsnHitCopy hit;
     Vector3 hurtFrom;
     Vector3 hurtFrom2;
@@ -385,7 +383,7 @@ extern "C" int func_ov002_020eea84(dBgCh_Actr *clsn, dActor_c *player) {
                     hurtFrom.y = from->y;
                     hurtFrom.z = from->z;
                 }
-                _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(player, &hurtFrom, 3, 0xc000, 1, 0, 1);
+                ((Player *)player)->Hurt(hurtFrom, 3, 0xc000, 1, 0, 1);
                 ((dBgPi *)&hit)->dBgPi::~dBgPi();
                 return 1;
             }
@@ -394,7 +392,7 @@ extern "C" int func_ov002_020eea84(dBgCh_Actr *clsn, dActor_c *player) {
     }
 
     if (clsn->IsOnWall()) {
-        dBgPi *wallHit = (dBgPi *)clsn->GetWallResult();
+        dBgPi *wallHit = clsn->GetWallResult();
         if (wallHit->GetClsnID() != -1) {
             owner = dActor_c::FindWithID(wallHit->GetClsnID());
             if (owner != 0 && IsActorID(owner, 0x139)) {
@@ -404,8 +402,7 @@ extern "C" int func_ov002_020eea84(dBgCh_Actr *clsn, dActor_c *player) {
                     hurtFrom2.y = from->y;
                     hurtFrom2.z = from->z;
                 }
-                if (_ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(player, &hurtFrom2, 1, 0xc000, 1, 0,
-                                                            1) != 0)
+                if (((Player *)player)->Hurt(hurtFrom2, 1, 0xc000, 1, 0, 1) != 0)
                     Sound::PlayBank0(0xb5, owner->mCamSpacePos);
                 return 1;
             }
@@ -512,9 +509,8 @@ void dBgActor_c::UpdateClsnPosAndRot()
  * the per-frame angle steps, integrate, and Kill() when the fuse runs out.
  * Callers (pushblock, signpost, ski lift, Bill Blaster) pass the X step and a
  * model-pivot height; nonzero return means "still flying". */
-// @symbol _ZN10dBgActor_c20UpdateKillByMegaCharEsss5Fix12IiE
-int dBgActor_c::UpdateKillByMegaChar(s16 angStepX, s16 angStepY, s16 angStepZ, Fix12<int> pivotY)
-{
+// @symbol _ZN10dBgActor_c20UpdateKillByMegaCharEsssi
+int dBgActor_c::UpdateKillByMegaChar(s16 angStepX, s16 angStepY, s16 angStepZ, Fix12i pivotY) {
     Vector3 probe;
     Vector3 rayEnd;
     Vector3 sum;
@@ -543,7 +539,7 @@ int dBgActor_c::UpdateKillByMegaChar(s16 angStepX, s16 angStepY, s16 angStepZ, F
     UpdatePos(0);
     if (DecIfAbove0_Byte(&mMegaKnockbackTimer) == 0)
         Kill();
-    func_ov002_020ee5d0(this, pivotY.val);
+    func_ov002_020ee5d0(this, pivotY);
     return 1;
 }
 

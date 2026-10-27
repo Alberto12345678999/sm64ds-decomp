@@ -26,6 +26,9 @@ unsigned int strlen(const char *);
 char *strncpy(char *, const char *, unsigned int);
 int strcmp(const char *, const char *);
 char *strchr(const char *, char);
+
+/* Assertion failure (src/cstd3.cpp): file, expression, function, line. */
+void __assert(const char *, const char *, const char *, int);
 }
 
 #endif

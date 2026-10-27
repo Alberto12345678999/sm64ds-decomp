@@ -158,8 +158,11 @@ struct dBgCh_Actr : dBgCh {
     s32 JustHitGround() const;     /* mFlags & 0x20 */
     s32 ShouldUpdatePos() const;   /* !(mFlags & 0x2000) */
     s32 ShouldUpdatePosY() const;  /* !(mFlags & 0x1000) */
-    void *GetFloorResult() const;  /* func_02037938(&mSphereClsn) -- mClsnResult1 */
-    void *GetWallResult() const;   /* func_020378dc(&mSphereClsn) -- mClsnResult2 */
+    /* Both forward mSphereClsn's own accessor, which returns the dBgPi hit
+       record, so they return it typed too. The return type is not in the
+       mangled name and a pointer return is the same `bx lr` either way. */
+    dBgPi *GetFloorResult() const; /* func_02037938(&mSphereClsn) -- mClsnResult1 */
+    dBgPi *GetWallResult() const;  /* func_020378dc(&mSphereClsn) -- mClsnResult2 */
     s32 TouchesWater() const;      /* SurfaceInfo flag 0x20 on mSphereClsn.surface */
 };
 

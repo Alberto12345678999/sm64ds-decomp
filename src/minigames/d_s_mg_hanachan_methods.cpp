@@ -91,6 +91,7 @@ enum dScMgHanachan_c_AssetId {
 #include "nitro/fx/fx.h"
 #include "SpawnInfo.h"
 #include "Sound.h"
+#include "math/Approach.h"
 
 struct OamAttr;
 struct OAM {
@@ -163,10 +164,6 @@ struct SelfV {
 /* ROM symbols this TU calls or reads. decl_common.h's declarations are not
    repeated. The C++ helpers must stay outside the extern "C" block so that
    they mangle. */
-extern int ApproachLinear(int &, int, int);
-extern void UpdateAngle(short &, short, int, short);
-extern int ApproachLinear2(short &, short, short);
-bool ApproachLinear(short &value, short target, short step);
 namespace Sound {
 u32 PlayBank2_2D(u32 id);
 }

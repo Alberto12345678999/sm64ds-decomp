@@ -26,8 +26,6 @@ struct Vector3_16f;
  *   manifest ordinals 2-3 of this TU, no other src/ consumer; kept as
  *   C-linkage ROM labels with TU-local (daObjAbuku_c *) decls. This TU
  *   does not include decl_common.h's (char *) spellings.
- * - dCcAc_c::Init stays TU-local mangled (see extern block: Fix12i
- *   by-value homes on the stack, 6az).
  * - Particle::System::New / NewSimple stay TU-local mangled:
  *   Particle__System.h declares neither.
  * - data_02082214 is the link name (arm9 symbols.txt kind:data(any));
@@ -47,6 +45,7 @@ struct Vector3_16f;
 #include "Player.h"
 #include "Sound.h"
 #include "nitro/fx/fx.h"
+#include "math/Approach.h"
 
 /* POD stand-in: a real Vector3 local emits vague-linkage ~Vector3 into this
  * text-only TU. */
@@ -55,12 +54,8 @@ struct AbukuVector3 { int x, y, z; };
 extern "C" {
 void func_ov002_020b330c(daObjAbuku_c *);
 int func_ov002_020b3344(daObjAbuku_c *);
-/* Fix12i-by-value Init homes on the stack (6az); keep the scalar ABI. */
-int _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(
-    dCcAc_c *, dActor_c *, Fix12i, Fix12i, unsigned int, unsigned int);
 int SurfaceInfo_TestFlag0x20(int* p);
 extern short data_02082214[];
-void _Z14ApproachLinearRiii(int *p, int b, int c);
 unsigned short DecIfAbove0_Short(unsigned short *p);
 namespace Particle {
 struct System {
@@ -94,10 +89,9 @@ extern "C" SpawnInfo<daObjAbuku_c> g_profile_OBJ_ABUKU = {
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN12daObjAbuku_c13InitResourcesEv
 int daObjAbuku_c::InitResources() {
-  _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(
-      &mdCcAc_c, this, 0x96000, 0x96000, 0x100002, 0);
-  mLifeTimer = 0x12c;
-  return 1;
+    mdCcAc_c.Init(this, 0x96000, 0x96000, 0x100002, 0);
+    mLifeTimer = 0x12c;
+    return 1;
 }
 
 /* -------------------------------------------------------------------------- */
@@ -110,7 +104,7 @@ int daObjAbuku_c::Behavior()
     int x = v >> 4;
     short tv = data_02082214[2*x + 1];
     mHorzSpeed = FX_MUL(mDriftSpeed, tv);
-    _Z14ApproachLinearRiii(&mDriftSpeed, 0x6000, 0x332);
+    ApproachLinear(mDriftSpeed, 0x6000, 0x332);
     UpdatePos((dCc_c *)0);
     unsigned int id = mdCcAc_c.otherOwner;
     if (id) {

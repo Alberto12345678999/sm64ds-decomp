@@ -840,34 +840,33 @@ int dExtShadowModel_c::InitCylinder() {
     return SetFile(&data_ov000_020ad560, 1, -1);
 }
 
-#pragma cplusplus off
-/* The mangled name is dExtShadowModel_c::InitModel(Matrix4x3 *, Fix12<int>,
- * Fix12<int>, Fix12<int>, u32) and include/dExtShadowModel_c.h declares exactly
- * that. The DEFINITION stays in the C front end because of wall 6az in
- * notes/mwccarm-codegen.md: CW homes class-typed by-value parameters to the
- * stack, so a real method body with the true Fix12<int> signature comes out
- * 0x14 bytes bigger than the ROM. Scalar args here keep the bytes.
+/* MEASURED 2026-10-26: a real method reproduces 0x02015e64/0x58 exactly. The
+ * old note here said the definition had to stay in the C front end because
+ * wall 6az homes class-typed by-value parameters -- but the by-value class was
+ * never in the ROM. The stripped cartridge carries no _Z strings at all, so
+ * the 5Fix12IiE in the old symbol was OUR spelling of a 20.12 scalar, and
+ * nothing about the bytes asked for it. Scalars, a real method, same bytes.
  */
-// @symbol _ZN17dExtShadowModel_c9InitModelEP9Matrix4x35Fix12IiES3_S3_j
-void _ZN17dExtShadowModel_c9InitModelEP9Matrix4x35Fix12IiES3_S3_j(struct dExtShadowModel_c *self,
-                                                                  int a1, int a2, int a3, int a4,
-                                                                  unsigned char a5) {
-    *(int *)((char *)&self->mat) = a1;
-    *(int *)((char *)&self->scale.x) = a2;
-    *(int *)((char *)&self->scale.y) = a3;
-    *(int *)((char *)&self->scale.z) = a4;
-    *(unsigned char *)((char *)&self->opacity) = a5;
+// @symbol _ZN17dExtShadowModel_c9InitModelEP9Matrix4x3iiih
+void dExtShadowModel_c::InitModel(Matrix4x3 *m, Fix12i sx, Fix12i sy, Fix12i sz, u8 opacity) {
+    mat = m;
+    scale.x = sx;
+    scale.y = sy;
+    scale.z = sz;
+    this->opacity = opacity;
     if (data_0209ceec)
         return;
-    *(void **)((char *)&self->next) = *(void *volatile *)&data_0209cef4;
+    /* The ROM loads the list head TWICE -- once for the store into next, once
+       for the back-link test -- instead of keeping it in a register, so the
+       first read is volatile. */
+    next = *(dExtShadowModel_c *volatile *)&data_0209cef4;
     {
-        void *head = (void *)data_0209cef4;
+        dExtShadowModel_c *head = data_0209cef4;
         if (head)
-            ((struct dExtShadowModel_c *)head)->prev = self;
+            head->prev = this;
     }
-    data_0209cef4 = self;
+    data_0209cef4 = this;
 }
-#pragma cplusplus on
 
 // @symbol _ZN17dExtShadowModel_c8CleanAllEv
 void dExtShadowModel_c::CleanAll() {

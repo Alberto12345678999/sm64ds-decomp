@@ -4,7 +4,7 @@ extern int LoadFile(int handle);
 extern void func_ov075_02116030(void *c, int v);
 extern int GetSoundMode(void);
 extern int func_02033ae0(int a);
-extern void _ZN3G2x18SetBlendBrightnessEPVtts(void *p, u16 a, u16 b);
+extern void _ZN3G2x18SetBlendBrightnessEPVtii(void *p, u16 a, u16 b);
 extern void func_ov075_02115e8c(char *self, int a, int b, s16 c, s16 e);
 extern void func_02020304(void);
 
@@ -45,7 +45,7 @@ void func_ov075_021173a8(char *c) {
     func_02033ae0((s16)(GetSoundMode() + 9));
 
     data_0209d454 |= 5;
-    _ZN3G2x18SetBlendBrightnessEPVtts((void *)0x4000050, 0xb, (double)(~5));
+    _ZN3G2x18SetBlendBrightnessEPVtii((void *)0x4000050, 0xb, (double)(~5));
 
     scene->mSelectedIcon = 0;
 

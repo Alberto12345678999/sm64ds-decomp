@@ -16,21 +16,15 @@
  * 814); this TU only loads and releases them.
  *
  * deslop leftovers:
- * - func_ov081_021237ec SpawnCoins as dActor_c::SpawnCoins: 0x124 -> 0x130 (+12).
- *   Particle::System::NewSimple with Fix12<int> x/y/z: 0x124 -> 0x148 (+36).
- * - func_ov081_02123910 KillByInvincibleChar as the method: 0x210 -> 0x218 (+8).
- *   Player::Hurt with Fix12<int> knockback: 0x210 -> 0x21c (+12). SpinBounce
+ * - func_ov081_021237ec Particle::System::NewSimple with Fix12<int> x/y/z:
+ *   0x124 -> 0x148 (+36).
+ * - func_ov081_02123910 Player::Hurt with Fix12<int> knockback: 0x210 -> 0x21c (+12). SpinBounce
  *   with Fix12<int>: 0x210 -> 0x21c (+12).
- * - func_ov081_02123b20 each DropShadowRadHeight method call: 0xcc -> 0xdc (+16).
  * - The 0/1 the ROM materializes in func_ov081_02123910, func_ov081_02123b20
  *   and Render comes from the int-returning IsPlayerActor / IsInYoshiMouth
  *   inlines. A direct `!=` or bit test is 16 / 12 / 12 bytes short.
  * - Behavior copying player->mPosX/Y/Z instead of int* at player+0x5c: 0x264 -> 0x260
  *   (-4).
- * - InitResources dExtAnmModel_c::SetAnim: 0x108 -> 0x114 (+12). dCcAc_c::Init:
- *   0x108 -> 0x120 (+24). dBgCh_Actr::Init stays 0x108 but the header's Fix12i
- *   parameters mangle to _ZN10dBgCh_Actr4InitEP8dActor_ciiP10Vector3_16S3_,
- *   not the ROM's 5Fix12IiE symbol.
  */
 
 /* Runtime asset handles resolved through the overlay 0 file table. */
@@ -47,6 +41,7 @@ enum daHuwa_c_AssetId {
 #include "Player.h"
 #include "SharedFilePtr.h"
 #include "Sound.h"
+#include "math/Approach.h"
 
 /* The resource handles as the ROM lays them out: {id, loaded file}. The
    model handle constructs through func_02017acc and destroys through
@@ -82,28 +77,15 @@ short Vec3_HorzAngle(const Vector3 *a, const Vector3 *b);
 
 /* Scalar stand-ins for Fix12<int> by-value callees. The header methods
  * mangle to these same symbols and home the argument. */
-int _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs(void *self, Vector3 *pos, unsigned int count, int spread, short angle);
 namespace Particle {
 struct System {
     static void NewSimple(unsigned int id, int x, int y, int z);
 };
 }
-void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
-    void *self, dExtShadowModel_c &shadow, Matrix4x3 &mtx, int radius, int height,
-    unsigned int opacity);
-void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *self, dActor_c *actor, int radius, int height, unsigned int flags, unsigned int vulnFlags);
 /* Parameter names keep this TU's @NNN. */
 typedef void BgchInitAt_(void *self, dActor_c *actor, int radius, int height, void *a, void *b);
-/* dEnemyBase_c::KillByInvincibleChar takes a Fix12<int> by value, so the header
-   member form size-DIFFs (0x210 -> 0x218, see the leftover note). decl_Enemy.h
-   already declares the ROM symbol with plain scalars; use that one spelling
-   rather than adding a third local copy. */
-void _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void *player, void *pos, unsigned int n, int knockback, unsigned int a, unsigned int b, unsigned int c);
-void _ZN6Player10SpinBounceE5Fix12IiE(void *player, int speed);
 }
 
-int ApproachLinear(int &value, int target, int step);
-bool ApproachLinear(short &value, short target, short step);
 
 /* dCc_c hitFlags bits this actor tests. 0x10 / 0x2000 / 0x4000 / 0x40000 /
  * 0x400000 are the names in dCc_c.h. 0x20000 is not in that table; this
@@ -166,7 +148,7 @@ extern "C" void func_ov081_021237ec(daHuwa_c *self)
     coins.x = self->mPosX;
     coins.y = self->mPosY;
     coins.z = self->mPosZ;
-    _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs(self, &coins, 3, 0xa000, 0);
+    self->SpawnCoins(coins, 3, 0xa000, 0);
 
     Matrix4x3_FromTranslation(&data_020a0e68, self->mPosX, self->mPosY, self->mPosZ);
     MulMat4x3Mat4x3((const int *)(self->mAnmModel.data.transforms + 1), data_020a0e68.m,
@@ -211,7 +193,7 @@ extern "C" void func_ov081_02123910(daHuwa_c *self)
         knock.y = 0;
         knock.z = 0;
         height = ((dActor_c *)self)->OnAimedAtWithEgg();
-        _ZN12dEnemyBase_c20KillByInvincibleCharERK10Vector3_16R6Player5Fix12IiE(self, &knock, other, height);
+        self->KillByInvincibleChar(knock, *(Player *)other, height);
         return;
     }
 
@@ -238,7 +220,7 @@ extern "C" void func_ov081_02123910(daHuwa_c *self)
     }
 
     if (self->JumpedOnByPlayer(self->mdCcAc_c, *player) != 0) {
-        _ZN6Player10SpinBounceE5Fix12IiE(player, 0x28000);
+        player->SpinBounce(0x28000);
         func_ov081_021237ec(self);
         return;
     }
@@ -261,7 +243,7 @@ extern "C" void func_ov081_02123910(daHuwa_c *self)
     pos.x = self->mPosX;
     pos.y = self->mPosY;
     pos.z = self->mPosZ;
-    _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(player, &pos, 2, 0xc000, 1, 0, 1);
+    player->Hurt(pos, 2, 0xc000, 1, 0, 1);
 }
 
 /* Yaw the model, plant its translation at pos>>3, then the drop shadow.
@@ -276,11 +258,11 @@ extern "C" void func_ov081_02123b20(daHuwa_c *self)
     if (IsInYoshiMouth(self))
         return;
     if (self->mWithMeshClsn.IsOnGround() != 0) {
-        _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
-            self, self->mShadowModel, self->mAnmModel.mat4x3, 0x50000, 0x1e000, 0xf);
+        self->DropShadowRadHeight(self->mShadowModel, self->mAnmModel.mat4x3, 0x50000, 0x1e000,
+                                  0xf);
     } else {
-        _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
-            self, self->mShadowModel, self->mAnmModel.mat4x3, 0x50000, 0x96000, 0xf);
+        self->DropShadowRadHeight(self->mShadowModel, self->mAnmModel.mat4x3, 0x50000, 0x96000,
+                                  0xf);
     }
 }
 
@@ -377,7 +359,7 @@ int daHuwa_c::InitResources()
     mAnmModel.SetAnim((BCA_File *)gHuwahuwaMoveAnimationFile.filePtr, 0, 0x1000, 0);
     if (mShadowModel.InitCylinder() == 0)
         return 0;
-    _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, this, 0x3c000, 0x78000, 0x200000, 0xa6efe0);
+    mdCcAc_c.Init(this, 0x3c000, 0x78000, 0x200000, 0xa6efe0);
     mWithMeshClsn.Init(this, 0x3c000, 0x3c000, 0, 0);
     mWithMeshClsn.StartDetectingWater();
     mHomePosX = mPosX;

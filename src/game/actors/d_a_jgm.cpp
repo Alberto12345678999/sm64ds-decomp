@@ -23,13 +23,10 @@
  * - mSpawnPosX stays punned: daJgm_c stores it as three scalars.
  * - dBgCh_Actr_UpdateDiscreteNoLava_veneer stays: the named
  *   UpdateDiscreteNoLava method is WRONG-DEST (ROM 0x02038420).
- * - Fix12<int>-by-value callees stay mangled (6az): dCcAcPos_c::Init,
- *   dBgCh_Actr::Init (whose header mangles Fix12i as `i`, not the ROM's
- *   5Fix12IiE), DropShadowRadHeight, SpawnCoins, Player::Bounce / Hurt and
- *   Particle::System::NewSimple (Particle__System.h lacks it).
- * - dActor_c::IsTooFarAwayFromPlayer, ApproachLinear and cstd::fdiv have
- *   no header decl, so they are declared locally;
- *   ApproachLinear2 keeps C++ linkage (_Z15ApproachLinear2Rsss).
+ * - Player::Bounce / Hurt stay mangled: each takes Fix12<int> by value
+ *   (6az).
+ * - dActor_c::IsTooFarAwayFromPlayer and cstd::fdiv have no header decl,
+ *   so they are declared locally.
  * - Sound::PlayLong is the Sound.h call. d_a_jgmPlayLongHold keeps the five
  *   named parameters that hold the @NNN count. Unnaming them gives -5.
  * - The manifest pins eight @NNN statics, so every named local, named
@@ -74,12 +71,8 @@ enum d_a_jgm_AssetId {
 #include "Sound.h"
 #include "SurfaceInfo.h"
 #include "nitro/fx/fx.h"
-
-/* local extern: no header declares ApproachLinear or cstd::fdiv. */
-int ApproachLinear(int &value, int target, int step);
-bool ApproachLinear(short &value, short target, short step);
-
-namespace cstd { int fdiv(int numerator, int denominator); }
+#include "cstd.h"
+#include "math/Approach.h"
 
 /* Local three-word ABI value. Vector3 has a genuine non-trivial destructor;
  * these stack values are plain fixed-point words and must not instantiate its
@@ -172,31 +165,15 @@ extern void MulMat4x3Mat4x3(void *a, void *b, void *out);
 extern void Vec3_LslInPlace(void *v, int sh);
 extern void Vec3_Asr(void *d, void *s, int sh);
 
-extern int _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
-    dCcAcPos_c *collision, dActor_c *actor, const Vector3 *offset,
-    Fix12i radius, Fix12i height, u32 flags, u32 vulnFlags);
 /* Parameter names keep this TU's @NNN. */
 typedef int BgchInitAt_(dBgCh_Actr *collision, dActor_c *actor, Fix12i radius, Fix12i height,
                         void *a, void *b);
-extern void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
-    dActor_c *actor, dExtShadowModel_c *shadow, Matrix4x3 *matrix,
-    Fix12i radius, Fix12i depth, u32 opacity);
-extern void _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs(
-    dActor_c *actor, const DaJgmVector3Words *pos, unsigned int count,
-    int spread, short angle);
-extern void _ZN6Player6BounceE5Fix12IiE(Player *player, int vel);
-extern void _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(
-    Player *player, const DaJgmVector3Words *pos, unsigned int a, int vel,
-    unsigned int b, unsigned int c, unsigned int d);
 /* local extern: kept as a count holder: its five named parameters hold
  * the @NNN count. Sound.h's PlayLong emits the same bytes. */
 extern void d_a_jgmPlayLongHold(unsigned int handle, unsigned int a, unsigned int id,
                                 const Vector3 *pos, unsigned int e);
 extern void d_a_jgmNewSimpleHold(unsigned int n, int x, int y, int z);
 }
-
-/* C++ linkage on purpose: mangles as _Z15ApproachLinear2Rsss. */
-void ApproachLinear2(short &v, short t, short step);
 
 // @symbol daJgm_c_classInit
 extern "C" daJgm_c *daJgm_c_classInit()
@@ -243,9 +220,7 @@ s32 daJgm_c::InitResources()
     }
     if (mShadowModel.InitCylinder() == 0)
         return 0;
-    _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
-        &mdCcAcPos_c, this, (Vector3 *)&data_ov077_02127b88,
-        0x41000, 0x78000, 0x200002, 0x6eff0);
+    mdCcAcPos_c.Init(this, *((Vector3 *)&data_ov077_02127b88), 0x41000, 0x78000, 0x200002, 0x6eff0);
     mWithMeshClsn.Init(this, 0x2d000, 0x2d000, 0, 0);
 
     mVertAccel = 0;
@@ -574,8 +549,7 @@ void daJgm_c::UpdateModels()
     mMatrix.m[10] = mPosY >> 3;
     mMatrix.m[11] = mPosZ >> 3;
 
-    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
-        this, &mShadowModel, &mMatrix, 0x5a000, 0x320000, 0xf);
+    DropShadowRadHeight(mShadowModel, mMatrix, 0x5a000, 0x320000, 0xf);
 
     if (mState != 1)
         return;
@@ -688,7 +662,7 @@ void daJgm_c::HandlePlayerCollision()
     }
 
     if (JumpedOnByPlayer(mdCcAcPos_c, *player) != 0) {
-        _ZN6Player6BounceE5Fix12IiE(player, 0x28000);
+        player->Bounce(0x28000);
         DieAndDropCoins();
         return;
     }
@@ -701,8 +675,7 @@ void daJgm_c::HandlePlayerCollision()
         v.x = mPosX;
         v.y = mPosY;
         v.z = mPosZ;
-        _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(
-            player, &v, 2, 0xc000, 1, 0, 1);
+        player->Hurt(*(Vector3 *)&v, 2, 0xc000, 1, 0, 1);
     }
 }
 
@@ -713,7 +686,7 @@ void daJgm_c::DieAndDropCoins()
     t.x = mPosX;
     t.y = mPosY;
     t.z = mPosZ;
-    _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs(this, &t, 5, 0x3000, 0);
+    SpawnCoins(*(const Vector3 *)&t, 5, 0x3000, 0);
     PoofDust();
     KillAndTrackInDeathTable();
 }

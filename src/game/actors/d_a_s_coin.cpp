@@ -10,8 +10,6 @@
  * D0 0x020f03f4 size 0x44; no destructor body in this TU (@symbol only).
  *
  * deslop leftovers:
- * - dCcAc_c::Init stays a scalar extern: it takes Fix12<int> by value and
- *   the member form size-DIFFs (mwccarm-codegen wall 6az).
  * - SpawnStar copies the marker's position through an int * at its mPosX:
  *   member reads (marker->mPos.x or marker->mPosX, ...) size-DIFF.
  * - LinkToBlock's ID tests go through the int-returning HasActorID: a
@@ -33,10 +31,6 @@
 extern "C" {
 int Vec3_Dist(const Vector3 *a, const Vector3 *b);
 unsigned char DecIfAbove0_Byte(unsigned char *p);
-void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *self, void *actor,
-                                              int radius, int height,
-                                              unsigned int flags,
-                                              unsigned int vulnFlags);
 extern SharedFilePtr data_ov002_0210d9a8;
 }
 
@@ -61,8 +55,7 @@ extern "C" SpawnInfo<daSCoin_c> g_profile_SECRET_COIN = {
 // @symbol _ZN9daSCoin_c13InitResourcesEv
 s32 daSCoin_c::InitResources()
 {
-    _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, this, 0x64000,
-                                              0x40000, 0x800002, 0);
+    mdCcAc_c.Init(this, 0x64000, 0x40000, 0x800002, 0);
     mStarID = param1 & 0xf;
     mGroupId = (param1 >> 8) & 0xf;
     mGroupRole = 0;

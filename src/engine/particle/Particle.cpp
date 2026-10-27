@@ -48,6 +48,8 @@
 #include "Particle__Texture.h"
 #include "Particle__Manager.h"
 #include "Particle__System.h"
+#include "CP15.h"
+#include "Memory.h"
 
 extern "C" {
 void func_0203cbc0(void *p);
@@ -94,7 +96,7 @@ SysTracker::~SysTracker()
         data_0209ee80 = 0;
     }
     if (mResourceFile != (void *)data_02075f14) {
-        _ZN6Memory10DeallocateEPv(mResourceFile);
+        Memory::Deallocate(mResourceFile);
     }
     data_0209ee74 = 0;
 }
@@ -159,7 +161,7 @@ void SysTracker::Initialise()
     }
 
     {
-        char* base = (char*)_ZN6Memory13operator_new2Ej(allocSize);
+        char *base = (char *)Memory::operator_new2(allocSize);
         char* end = base + allocSize;
         data_0209ee80 = base;
         data_0209ee78 = base;
@@ -180,9 +182,9 @@ void SysTracker::Initialise()
     } else {
         char* hdr = (char*)(int)M(data_02075f14);
         unsigned int size = (unsigned int)M(*(unsigned int*)(hdr + 4) >> 8);
-        void* dst = _ZN6Memory8AllocateEj(size);
+        void *dst = Memory::Allocate(size);
         DecompressLZ16(hdr + 4, dst);
-        _ZN4CP1514FlushDataCacheEjj((unsigned int)dst, size);
+        CP15::FlushDataCache((unsigned int)dst, size);
         mResourceFile = dst;
     }
 

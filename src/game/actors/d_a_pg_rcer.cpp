@@ -29,10 +29,7 @@ struct System {
 #include "Sound.h"
 #include "nitro/fx/fx.h"
 #include "cstd.h"
-
-bool ApproachLinear(short &value, short target, short step);
-int ApproachLinear(int &value, int target, int step);
-void UpdateAngle(short &angle, short target, int divisor, short maxStep);
+#include "math/Approach.h"
 
 extern "C" {
 
@@ -62,9 +59,6 @@ extern short Vec3_HorzAngle(const Vector3 *a, const Vector3 *b);
 extern int Vec3_Dist(const Vector3 *a, const Vector3 *b);
 extern void Matrix4x3_FromRotationY(Matrix4x3 *m, short angle);
 
-extern void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *clsn, void *actor, int radius, int height, unsigned int flags, unsigned int vuln);
-extern void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
-    void *self, void *shadow, void *mtx, int rad, int height, unsigned int opacity);
 
 extern void d_a_pg_rcerPlaySubHold(unsigned int a, unsigned int b, unsigned int c, int d, int e);
 extern void *d_a_pg_rcerNewHold(u32 handle, u32 effect, int x, int y, int z, void *dir, void *cb);
@@ -103,14 +97,14 @@ int daPgRcer_c::InitResources()
         return 0;
 
     if (NumStars() == 0x96) {
-        _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, this, 0xd0000, 0x12c000, 0x800004, 0);
+        mdCcAc_c.Init(this, 0xd0000, 0x12c000, 0x800004, 0);
         mScaleX = 0x1999;
         mScaleY = 0x1000;
         mScaleZ = 0x1999;
         mWithMeshClsn.Init(this, 0xd0000, 0xd0000, 0, 0);
         SetRanges(0xf0000, 0xf0000, 0x1c20000, 0x1c20000);
     } else {
-        _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, this, 0x82000, 0x12c000, 0x800004, 0);
+        mdCcAc_c.Init(this, 0x82000, 0x12c000, 0x800004, 0);
         mScaleX = 0x1000;
         mScaleY = 0x1000;
         mScaleZ = 0x1000;
@@ -592,8 +586,7 @@ void func_ov019_021114ec(daPgRcer_c *self)
     self->mAnmModel.mat4x3.t.x = self->mPosX >> 3;
     self->mAnmModel.mat4x3.t.y = self->mPosY >> 3;
     self->mAnmModel.mat4x3.t.z = self->mPosZ >> 3;
-    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
-        self, &self->mShadowModel, &self->mAnmModel.mat4x3, 0x140000, 0x50000, 0xf);
+    self->DropShadowRadHeight(self->mShadowModel, self->mAnmModel.mat4x3, 0x140000, 0x50000, 0xf);
 }
 
 // @symbol func_ov019_0211140c
@@ -603,7 +596,7 @@ int func_ov019_0211140c(daPgRcer_c *self, dBgCh_Actr *clsn)
     Vector3 wallNormal;
     func_02038414(clsn);
     if (clsn->IsOnGround()) {
-        ((dBgPi *)clsn->GetFloorResult())->surface.CopyNormalTo(floorNormal);
+        clsn->GetFloorResult()->surface.CopyNormalTo(floorNormal);
         if (floorNormal.y != 0) {
             int x = FX_MUL(floorNormal.x, self->mSpeedX);
             int y = FX_MUL(floorNormal.z, self->mSpeedZ);
@@ -613,7 +606,7 @@ int func_ov019_0211140c(daPgRcer_c *self, dBgCh_Actr *clsn)
         }
     }
     if (clsn->IsOnWall()) {
-        ((dBgPi *)clsn->GetWallResult())->surface.CopyNormalTo(wallNormal);
+        clsn->GetWallResult()->surface.CopyNormalTo(wallNormal);
     }
 }
 

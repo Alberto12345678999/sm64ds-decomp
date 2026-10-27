@@ -11,8 +11,6 @@
  * own vtable slot.
  *
  * deslop leftovers:
- * - dCamera_c::SetFlag_3 / LookAtExit stay mangled: dCamera_c.h has no LookAtExit,
- *   and dCamera_c.h is out of scope.
  * - func_ov002_020b0a0c writes the exit band and calls LoadLevel; a member
  *   spelling would change the ROM symbol.
  * - LoadLevel / StartExitFaderWipe / func_02012790 / IsStarCollectedInLevel

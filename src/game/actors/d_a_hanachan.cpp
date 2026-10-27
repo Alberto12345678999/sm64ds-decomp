@@ -20,8 +20,7 @@ void RunningSlidingDustAt(int, int, int);
  *   InitResources walk segment rows through char* bases. Indexing
  *   mSegmentPos[seg] / &mAnmModels[i].mat4x3 changes those sizes, and
  *   UpdateSegments' NormalizeVec3IfNonZero relocation moves with them.
- * - func_ov002_020c51d0 is ov002's. dCcAcPos_c::Init,
- *   dBgCh_Actr::Init, Player::Hurt and Particle::System::New
+ * - func_ov002_020c51d0 is ov002's. Player::Hurt and Player::Bounce
  *   stay mangled (Fix12<int> by value).
  */
 
@@ -77,9 +76,7 @@ enum daHanachan_c_AssetId {
 #include "Vector3s.h"
 #include "nitro/fx/fx.h"
 #include "Sound.h"
-
-void ApproachLinear(int &value, int target, int step);
-bool ApproachLinear(short &value, short target, short step);
+#include "math/Approach.h"
 
 /* The file-scope resource handles. The model five use the plain SharedFilePtr
  * pair (func_02017acc / func_02017ab4), the animation twenty-five use
@@ -120,7 +117,6 @@ extern char data_020a0e68[];
 extern void Matrix4x3_FromRotationY(void *m, int angle);
 extern void MulVec3Mat4x3(void *in, void *m, void *out);
 extern void Vec3_Add(void *out, void *a, void *b);
-extern void _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void *self, struct Vector3 *v, unsigned int b, int c, unsigned int d, unsigned int e, unsigned int f);
 extern int NormalizeVec3IfNonZero(void *v);
 extern void Vec3_MulScalarInPlace(void *v, int s);
 extern SharedFilePtr *data_ov034_02113838[];
@@ -135,7 +131,6 @@ extern void func_020092c4(void *arg0, void *out, void *target);
 extern u32 data_ov034_02113828[];
 extern s16 data_02082214[];
 extern void *data_0209f318;
-extern void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(void *self, void *actor, void *pos, int fix, u32 a, u32 b, u32 cc);
 /* Parameter names keep this TU's @NNN. */
 typedef void BgchInitAt_(void *self, void *actor, int fix1, int fix2, void *v, int t);
 }
@@ -804,7 +799,7 @@ void daHanachan_c::HandlePlayerHits()
         playerPos.y = src->y;
         playerPos.z = src->z;
         if (IsStompedBy(cyl, a) != 0) {
-            _ZN6Player6BounceE5Fix12IiE(a, 0x28000);
+            ((Player *)a)->Bounce(0x28000);
             func_0201267c(0x11c, &mCamSpacePos);
             if ((unsigned int)i > 1) {
                 mSegmentBounceTimer[i] = 0x1e;
@@ -819,7 +814,7 @@ void daHanachan_c::HandlePlayerHits()
             v.x = mPosX;
             v.y = mPosY;
             v.z = mPosZ;
-            _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(a, &v, 2, 0xc000, 1, 0, 1);
+            ((Player *)a)->Hurt(v, 2, 0xc000, 1, 0, 1);
             SetState(8);
         }
     }
@@ -842,7 +837,7 @@ void daHanachan_c::HandlePlayerHits()
             hv.x = mPosX;
             hv.y = mPosY;
             hv.z = mPosZ;
-            _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(a, &hv, 0, 0x5000, 1, 0, 1);
+            ((Player *)a)->Hurt(hv, 0, 0x5000, 1, 0, 1);
         }
     }
 }
@@ -1228,8 +1223,8 @@ int daHanachan_c::InitResources()
         ((daHanachan_c *)posRow)->mSegmentScale[0].y = 0x1000;
         ((daHanachan_c *)posRow)->mSegmentScale[0].z = 0x1000;
         radius = data_ov034_021138d8[i];
-        _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(cyl1, this, segPos, radius + 0xA000, cyl1Height, cyl1Flags, 0x26FE0);
-        _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(cyl2, this, segPos, radius, cyl2Height, 0x200004, 0x26FE0);
+        cyl1->Init(this, *segPos, radius + 0xA000, cyl1Height, cyl1Flags, 0x26FE0);
+        cyl2->Init(this, *segPos, radius, cyl2Height, 0x200004, 0x26FE0);
         texRow += 0x14;
         animRow++;
         cyl1++;

@@ -12,10 +12,10 @@
  * unnamed mFlags plumbing, sub-object accessors, and step helpers; the ROM
  * gives them no member name, so they stay extern "C" free functions taking
  * the object by raw pointer. */
-// leftovers: the checker-family helpers stay local externs (no non-generated
-// header declares them). The func_0203* workers keep address names (no member
-// evidence names them); five of them keep raw-pointer params because other TUs
-// declare them with int/char pointer types.
+// leftovers: the checker-family helpers stay local
+// externs (no non-generated header declares them). The func_0203* workers keep
+// address names (no member evidence names them); five of them keep raw-pointer
+// params because other TUs declare them with int/char pointer types.
 
 #include "types.h"
 #include "common.h"
@@ -1061,15 +1061,13 @@ extern "C" dBgPi *func_0203567c(dBgCh_Actr *self) {
 }
 
 // @symbol _ZNK10dBgCh_Actr14GetFloorResultEv
-void *dBgCh_Actr::GetFloorResult() const
-{
-    return (void *)const_cast<dBgCh_SphCrr &>(mSphereClsn).GetFloorResult();
+dBgPi *dBgCh_Actr::GetFloorResult() const {
+    return const_cast<dBgCh_SphCrr &>(mSphereClsn).GetFloorResult();
 }
 
 // @symbol _ZNK10dBgCh_Actr13GetWallResultEv
-void *dBgCh_Actr::GetWallResult() const
-{
-    return (void *)(int)const_cast<dBgCh_SphCrr &>(mSphereClsn).GetWallResult();
+dBgPi *dBgCh_Actr::GetWallResult() const {
+    return const_cast<dBgCh_SphCrr &>(mSphereClsn).GetWallResult();
 }
 
 // @symbol func_0203564c

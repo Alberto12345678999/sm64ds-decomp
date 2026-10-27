@@ -33,9 +33,8 @@
 // - data_ov065_* keep their address names, including the state table
 //   data_ov065_0211d7fc.
 // - func_ov065_021195bc and func_ov065_021195d0 are veneers. The first
-//   argument is not the actor. Each one calls the method on the second
-//   argument with the third. An explicit cast of &daDossy_c::method to a
-//   function pointer is rejected; the member call is the tail call.
+//   argument is not the actor: each veneer calls the method on its second
+//   argument, passing the third.
 // - The BOOL/TRUE/FALSE spelling in func_ov065_02119594 and
 //   func_ov065_0211956c stays. `bool isPlayer = other->actorID == 0xbf`
 //   shrinks each function 0x28 to 0x1c: the ROM keeps the ternary 0/1
@@ -68,6 +67,7 @@ enum daDossy_c_AssetId {
 #include "Vector3s.h"
 #include "nitro/fx/fx.h"
 #include "Sound.h"
+#include "math/Approach.h"
 namespace cstd {
 s16 atan2(s32, s32);
 }
@@ -155,10 +155,7 @@ extern void hold_d_a_dossy(void *self, void *kcl, void *mtx, Fix12i r, short s, 
 extern void func_020393d4(void* p, void* v);
 extern void func_020393c4(void* p, void* v);
 /* Parameter names keep this TU's @NNN. */
-typedef void BgchInitAt_(void *self, void *a, Fix12i r, Fix12i h, void *p, void *q, void *holdA,
-                         void *holdB, void *holdC, void *holdD);
-extern void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void* self, void* a, Fix12i r, Fix12i h, unsigned int e, unsigned int g);
-extern void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(void* self, void* a, void* pos, Fix12i r, Fix12i h, unsigned int e, unsigned int g);
+typedef void BgchInitAt_(void *self, void *a, Fix12i r, Fix12i h, void *p, void *q);
 extern int Vec3_HorzDist(void* a, void* b);
 extern short Vec3_HorzAngle(void* a, void* b);
 extern int AngleDiff(int a, int b);
@@ -167,12 +164,10 @@ extern u16 DecIfAbove0_Short(void *counter);
 int func_ov065_021180d4(char* self);
 void func_ov065_02118c4c(char* c);
 int func_ov065_02119210(unsigned char* c);
-int func_ov065_021195bc(void *a, void *b, void *c);
-int func_ov065_021195d0(void *a, void *b, void *c);
+void func_ov065_021195bc(void *a, void *b, void *c);
+void func_ov065_021195d0(void *a, void *b, void *c);
 }
 
-int ApproachLinear(int &value, int target, int step);
-bool ApproachLinear(short &value, short target, short step);
 
 typedef void (daDossy_c::*StateFunc)();
 extern "C" StateFunc data_ov065_0211d7fc[];
@@ -202,15 +197,15 @@ int daDossyCap_c::OnYoshiTryEat()
 
 #pragma long_calls on
 // @symbol func_ov065_021195d0
-extern "C" int func_ov065_021195d0(void *a, void *b, void *c) {
-    ((daDossy_c *)b)->func_ov065_02119594((dActor_c *)c);
+extern "C" void func_ov065_021195d0(void *a, void *b, void *c) {
+    static_cast<daDossy_c *>(b)->func_ov065_02119594(static_cast<dActor_c *>(c));
 }
 #pragma long_calls off
 
 #pragma long_calls on
 // @symbol func_ov065_021195bc
-extern "C" int func_ov065_021195bc(void *a, void *b, void *c) {
-    ((daDossy_c *)b)->func_ov065_0211956c((dActor_c *)c);
+extern "C" void func_ov065_021195bc(void *a, void *b, void *c) {
+    static_cast<daDossy_c *>(b)->func_ov065_0211956c(static_cast<dActor_c *>(c));
 }
 #pragma long_calls off
 
@@ -239,7 +234,7 @@ int daDossyCap_c::InitResources()
 {
     mModel.SetFile((BMD_File *)data_ov002_0210d9c0.filePtr, 1, -1);
     mCapIcon.func_ov001_020ab228((char *)this, 2, 2, 0);
-    _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, this, 0x96000, 0x96000, 0x100002, 0x8000);
+    mdCcAc_c.Init(this, 0x96000, 0x96000, 0x100002, 0x8000);
     mCarrier = 0;
     return 1;
 }
@@ -284,15 +279,13 @@ int daDossy_c::InitResources()
     mSpawnPosZ = mPosZ;
     mPosX += 0x7d0000;
     mWithMeshClsn.Init(this, 0x1e0000, 0xa0000, 0, 0);
-    _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(
-        &mCylClsn1, this, 0xdc000, 0xfa000, 2, 0x20);
+    mCylClsn1.Init(this, 0xdc000, 0xfa000, 2, 0x20);
     {
         int v[3];
         v[0] = 0;
         v[1] = 0x50000;
         v[2] = 0x150000;
-        _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
-            &mCylClsn2, this, v, 0x60000, 0x1b0000, 2, 0x400000);
+        mCylClsn2.Init(this, *(Vector3 *)v, 0x60000, 0x1b0000, 2, 0x400000);
     }
     {
         mHomePosX = mPosX;

@@ -33,10 +33,8 @@
  * not reorder.
  *
  * leftovers:
- * - dCcAc_c::Init, dBgCh_Actr::Init, dActor_c::DropShadowRadHeight,
- *   Player::Hurt and Particle::System::NewSimple stay mangled. Each takes
- *   Fix12<int> by value (wall 6az): passing a Fix12<int> local to
- *   mdCcAc_c.Init makes InitResources 0x20 bytes longer.
+ * - Player::Hurt and Particle::System::NewSimple stay mangled. Each takes
+ *   Fix12<int> by value (wall 6az).
  * - The hit check and the placement helper are members but keep their
  *   func_ov098_* address names.
  * - The fragment angle table (data_ov098_0213bf90) is an unnamed ov098 row
@@ -59,6 +57,7 @@ enum daWbm_c_AssetId {
 #include "Player.h"
 #include "nitro/fx/fx.h"
 #include "Sound.h"
+#include "math/Approach.h"
 
 typedef void (daWbm_c::*State)();
 
@@ -69,7 +68,6 @@ enum {
     ACTOR_WATERBOMB = 208
 };
 
-int ApproachLinear(int &value, int target, int step);
 namespace cstd {
 s32 fdiv(s32 numerator, s32 denominator);
 }
@@ -91,16 +89,9 @@ s16 Vec3_HorzAngle(const Vector3 *from, const Vector3 *to);
 s32 Vec3_HorzDist(const Vector3 *a, const Vector3 *b);
 u16 DecIfAbove0_Short(u16 *counter);
 
-void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(dCcAc_c *self, dActor_c *actor,
-    s32 radius, s32 height, u32 flags, u32 unk);
 /* Parameter names keep this TU's @NNN. */
 typedef void BgchInitAt_(dBgCh_Actr *self, dActor_c *actor, s32 radius, s32 height, Vector3_16 *a,
                          Vector3_16 *b);
-void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
-    dActor_c *self, dExtShadowModel_c *shadow, Matrix4x3 *matrix, s32 radius,
-    s32 depth, u8 opacity);
-int _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(Player *self, const Vector3 *from,
-    u32 a, s32 b, u8 c, u8 d, u8 e);
 namespace Particle {
 struct System {
     static void *NewSimple(u32 id, s32 x, s32 y, s32 z);
@@ -185,7 +176,7 @@ int daWbm_c::InitResources()
             mScaleX = 0x800;
             mScaleY = 0x800;
             mScaleZ = 0x800;
-            _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, this, 0x14000, 0x28000, 0x200004, 0);
+            mdCcAc_c.Init(this, 0x14000, 0x28000, 0x200004, 0);
             mWithMeshClsn.Init(this, 0x1e000, 0x1e000, 0, 0);
         }
         else
@@ -193,7 +184,7 @@ int daWbm_c::InitResources()
             mScaleX = 0x1000;
             mScaleY = 0x1000;
             mScaleZ = 0x1000;
-            _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, this, 0x28000, 0x50000, 0x204004, 0);
+            mdCcAc_c.Init(this, 0x28000, 0x50000, 0x204004, 0);
             mWithMeshClsn.Init(this, 0x32000, 0x32000, 0, 0);
         }
     }
@@ -418,7 +409,7 @@ int daWbm_c::func_ov098_0213b6e0()
                 pos.x = mPosX;
                 pos.y = mPosY;
                 pos.z = mPosZ;
-                _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj((Player *)other, &pos, 1, 0xc000, 1, 0, 1);
+                ((Player *)other)->Hurt(pos, 1, 0xc000, 1, 0, 1);
                 if (mVariant == 1) {
                     Particle::System::NewSimple(0x1c, mPosX, mPosY, mPosZ);
                     Particle::System::NewSimple(0x1d, mPosX, mPosY, mPosZ);
@@ -469,9 +460,7 @@ void daWbm_c::func_ov098_0213b584()
     mShadowMat = data_020a0e68;
     Matrix4x3_ApplyInPlaceToRotationY(&data_020a0e68, mAngleY);
     mModel.mat4x3 = data_020a0e68;
-    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
-        this, &mShadowModel, &mShadowMat,
-        mScaleX * 0xa0, 0x3e8000, 6);
+    DropShadowRadHeight(mShadowModel, mShadowMat, mScaleX * 0xa0, 0x3e8000, 6);
 }
 
 // @symbol _ZN7daWbm_c4LandEv

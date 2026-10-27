@@ -47,6 +47,7 @@ enum daMoray_c_AssetId {
 #include "dExtFrameCtrl_c.h"
 #include "dExtSimpleModel_c.h"
 #include "Player.h"
+#include "math/Approach.h"
 
 #pragma defer_codegen off
 
@@ -124,12 +125,10 @@ void Matrix4x3_ApplyInPlaceToRotationZXYExt(Matrix4x3 *m, int x, int y, int z);
 void Matrix4x3_ApplyInPlaceToRotationXYZExt(Matrix4x3 *m, int x, int y, int z);
 void MulVec3Mat4x3(Vector3 *v, Matrix4x3 *m, Vector3 *out);
 void MulMat4x3Mat4x3(void *m1, void *m0, void *mF);
-void _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void *self, Vector3 *v, u32 a, int fix, u32 b, u32 d, u32 e);
 
 /* Header methods take Fix12<int> by value. Brace-init compiles and homes
    the argument (see Known limits). These scalars are the calls that
    match. */
-void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(dCcAcPos_c *self, dActor_c *actor, const Vector3 *offset, int radius, int height, u32 flags, u32 vulnFlags);
 int _Z14ApproachLinearR7Vector3RKS_5Fix12IiE(Vector3 &cur, const Vector3 &target, int step);
 }
 
@@ -161,7 +160,6 @@ struct MorayStarCarrier {
 
 extern "C" MorayRenderStep data_ov016_02114908[];
 
-bool ApproachLinear(short &value, short target, short step);
 namespace cstd { int fdiv(int a, int b); }
 
 /* Out of line, and FIRST in this ROM-ascending file: that puts D1 and D0 at
@@ -300,7 +298,7 @@ void daMoray_c::func_ov016_02111284()
     hv.x = this->mPosX;
     hv.y = this->mPosY;
     hv.z = this->mPosZ;
-    _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(p, &hv, 3, 0xc000, 1, 0, 1);
+    ((Player *)p)->Hurt(hv, 3, 0xc000, 1, 0, 1);
 }
 
 /* Retreat execute. When the timer set by the retreat init runs out, stops,
@@ -790,11 +788,11 @@ s32 daMoray_c::InitResources()
     cylOffset1.x = data_ov016_02114d4c.x;
     cylOffset1.y = data_ov016_02114d4c.y;
     cylOffset1.z = data_ov016_02114d4c.z;
-    _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(&mdCcAcPos_c1, this, &cylOffset1, 0x32000, 0x50000, 0x200004, 0);
+    mdCcAcPos_c1.Init(this, cylOffset1, 0x32000, 0x50000, 0x200004, 0);
     cylOffset2.x = data_ov016_02114d4c.x;
     cylOffset2.y = data_ov016_02114d4c.y;
     cylOffset2.z = data_ov016_02114d4c.z;
-    _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(&mdCcAcPos_c2, this, &cylOffset2, 0x32000, 0x50000, 0x200000, 0);
+    mdCcAcPos_c2.Init(this, cylOffset2, 0x32000, 0x50000, 0x200000, 0);
 
     /* Second bind is unused. Dropping the constructor and FromID shrinks
        InitResources by 0x14, so the ROM really does call them. */

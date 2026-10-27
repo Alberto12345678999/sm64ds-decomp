@@ -51,8 +51,7 @@ enum daC_Jugem_c_AssetId {
 #include "SharedFilePtr.h"
 #include "Sound.h"
 #include "nitro/fx/fx.h"
-
-bool ApproachLinear(short &value, short target, short step);
+#include "math/Approach.h"
 
 /* File-scope objects at the end of this file construct the three resource
  * handles (model file 0x2d7, animation file 0x2d8, texture-sequence file
@@ -103,7 +102,6 @@ extern "C" {
 
 /* math / vector helpers -- no shared header declares these */
 void  _Z14ApproachLinearR7Vector3RKS_5Fix12IiE(void *cur, const void *tgt, int step);
-void  _Z14ApproachLinearRiii(int *cur, int tgt, int step);
 int   Vec3_Dist(const void *a, const void *b);
 int   Vec3_HorzDist(const void *a, const void *b);
 s16   Vec3_HorzAngle(const void *a, const void *b);
@@ -125,8 +123,6 @@ void  MulVec3Mat4x3(const void *v, const void *m, void *out);
    spelling -- the mangled spelling is the one that matches. Sound.h covers
    PlayLong, so only PlaySub stays. */
 int d_a_c_jugemPlaySubHold(u32 a, u32 b, u32 c, Fix12i d, bool loop);
-void  _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
-         void *thiz, void *sm, void *mtx, int rad, int height, u32 flags);
 
 /* other overlays / arm9 */
 void  func_ov002_020c3e8c(void *player);
@@ -276,7 +272,7 @@ int daC_Jugem_c::StateApproachMain()
     mSfxHandle = Sound::PlayLong(mSfxHandle, 3, 0x182, mCamSpacePos, 0);
     ApproachLinear(mAngleY, Vec3_HorzAngle(&mPosX, &data_ov085_0213084c), 0x200);
     ApproachLinear(mAngleX, Vec3_VertAngle(&mPosX, &data_ov085_0213084c), 0x200);
-    _Z14ApproachLinearRiii(&mHorzSpeed, 0x28000, 0x2000);
+    ApproachLinear(mHorzSpeed, 0x28000, 0x2000);
     ApproachLinear(mPrevAngleY, Vec3_HorzAngle(&mPosX, &data_ov085_0213084c), (s16)mAuxCounter);
     mAngleY = mPrevAngleY;
     mAuxCounter += 5;
@@ -342,7 +338,7 @@ int daC_Jugem_c::StateBobMain()
         int v = (short)mAuxCounter;
         int idx = (int)((unsigned int)(v << 16) >> 16) >> 4;
         short e = data_02082214[idx * 2];
-        _Z14ApproachLinearRiii(&mPosY, FX_MUL(e, 0x1a000) + mTargetY, 0x10000000);
+        ApproachLinear(mPosY, FX_MUL(e, 0x1a000) + mTargetY, 0x10000000);
     }
 
     if (mTimer == 0x32) {
@@ -353,7 +349,7 @@ int daC_Jugem_c::StateBobMain()
     {
         int a1 = 0x4000;
         if (mTimer >= 0x4b) a1 = 0x8000;
-        _Z14ApproachLinearRiii(&mHorzSpeed, a1, 0x1000);
+        ApproachLinear(mHorzSpeed, a1, 0x1000);
     }
 
     mSfxHandle = Sound::PlayLong(mSfxHandle, 3, 0x182, mCamSpacePos, 0);
@@ -580,7 +576,7 @@ int daC_Jugem_c::StateLeaveMain()
     mSfxHandle = Sound::PlayLong(mSfxHandle, 3, 0x182, mCamSpacePos, 0);
     if (AngleDiff(mPrevAngleY, Vec3_HorzAngle(&mPosX, &mTargetX)) < 0x2000) {
         Vec3_ApproachHorz(&mPosX, &mTargetX, 0x1e000);
-        _Z14ApproachLinearRiii(&mPosY, mTargetY, 0x1e000);
+        ApproachLinear(mPosY, mTargetY, 0x1e000);
     }
     if (*(unsigned short *)&mStateTimer == 0) {
         if (Sound::PlaySub(0x4a, 0x7f, 0, 0x7222, 0) != 0) {
@@ -821,8 +817,7 @@ void daC_Jugem_c::UpdateShadow()
     *(M48 *)&mAnmModel1.mat4x3 = *(M48 *)&data_020a0e68;
     Matrix4x3_FromTranslation(&data_020a0e68, mPosX >> 3, (mPosY - 0x38000) >> 3, mPosZ >> 3);
     *(M48 *)&mShadowMat1 = *(M48 *)&data_020a0e68;
-    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
-        this, &mShadowModel1, &mShadowMat1, 0x46000, 0x258000, 0xf);
+    DropShadowRadHeight(mShadowModel1, *(Matrix4x3 *)&mShadowMat1, 0x46000, 0x258000, 0xf);
 }
 
 // @symbol _ZN11daC_Jugem_c18UpdateShadowPlayerEv
@@ -853,8 +848,7 @@ void daC_Jugem_c::UpdateShadowPlayer()
         mPosZ >> 3);
     *(M48 *)&mShadowMat1 = *(M48 *)&data_020a0e68;
 
-    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
-        this, &mShadowModel1, &mShadowMat1, 0x46000, 0x258000, 0xf);
+    DropShadowRadHeight(mShadowModel1, *(Matrix4x3 *)&mShadowMat1, 0x46000, 0x258000, 0xf);
 
     pl = ClosestPlayer();
     if (pl == 0) return;
@@ -897,8 +891,7 @@ void daC_Jugem_c::UpdateShadowPlayer()
     func_ov002_020e4374(pl, &p1, &p2);
 
     *(M48 *)&mShadowMat2 = *(M48 *)&data_020a0e68;
-    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
-        this, &mShadowModel2, &mShadowMat2, p2, p1, 0xf);
+    DropShadowRadHeight(mShadowModel2, *(Matrix4x3 *)&mShadowMat2, p2, p1, 0xf);
 }
 
 // @symbol _ZN11daC_Jugem_c16CleanupResourcesEv

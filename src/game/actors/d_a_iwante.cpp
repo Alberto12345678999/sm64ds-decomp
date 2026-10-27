@@ -105,6 +105,7 @@ enum Eyerok_AssetId {
 #include "Message.h"
 #include "dCamera_c.h"
 #include "Sound.h"
+#include "math/Approach.h"
 
 /* Actor ids, from symbols/actor_debug_names.tsv. */
 enum {
@@ -374,9 +375,6 @@ extern void func_020398fc(void *p);
 /* ---- arm9 / ov002 methods, mangled ROM spelling ---- */
 extern void _Z14ApproachLinearR7Vector3RKS_5Fix12IiE(void *out, void *tgt, int step);
 extern void hold_d_a_iwante(void *self, void *kcl, void *mtx, int fix, short s, void *clps);
-extern void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(void *self, void *actor,
-                                                                    Vector3 *v, s32 f1, s32 f2,
-                                                                    u32 a, u32 b);
 }
 extern "C" {
 namespace Particle {
@@ -387,14 +385,12 @@ struct System {
 };
 }
 extern u32 d_a_iwanteNewHold(u32 a, u32 b, int x, int y, int z, const void *v, void *cb);
-extern void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(void *self, void *sm, void *m, int rad, int h, unsigned int u);
 
 /* ---- the dBgW callback veneer (0x0211a35c), defined at the bottom of this
  *      file; seven call sites pass its address to func_020393c4 ---- */
 extern void func_ov066_0211a35c(void *a, void *b, void *c);
 }
 
-int ApproachLinear(int &value, int target, int step);
 
 typedef struct { int w[12]; } M48;
 
@@ -2394,8 +2390,7 @@ void Eyerok::func_ov066_021194fc()
             (mPosZ + 0xa0000) >> 3);
     }
     *(M48 *)mShadowMtx = *(M48*)data_020a0e68;
-    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
-        this, &mShadowModel, mShadowMtx, 0x140000, 0x258000, 0xf);
+    DropShadowRadHeight(mShadowModel, *(Matrix4x3 *)mShadowMtx, 0x140000, 0x258000, 0xf);
 }
 
 // @symbol _ZN6Eyerok16CleanupResourcesEv
@@ -2716,7 +2711,7 @@ int Eyerok::InitResources()
         w.x = data_ov066_0211ad18[0];
         w.y = data_ov066_0211ad18[1];
         w.z = data_ov066_0211ad18[2];
-        _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(&mdCcAcPos_c, c, &w, 0x64000, 0x64000, 0x200002, 0);
+        mdCcAcPos_c.Init((dActor_c *)c, w, 0x64000, 0x64000, 0x200002, 0);
     }
 
     {

@@ -12,21 +12,18 @@ struct System {
  * the ROM. Do not reorder. The inline destructor in include/daBbl_c.h emits
  * D1 then D0 and no D2.
  */
-/* leftovers: Particle::System::New, dActor_c::IsTooFarAwayFromPlayer,
- * dCcAc_c::Init and dBgCh_Actr::Init stay C-ABI externs. This file calls
- * them, and each definition passes Fix12<int> by value. The five state
- * hooks keep address names; the ROM records no English name. The State
- * tables at 0x0211c7b8 and 0x0211c7c8 are filled from this file's static
- * initializer. func_ov064_02118760 stores the spawn words y, z, x through
+/* leftovers: the five state hooks keep address names; the ROM records no
+ * English name. The State tables at 0x0211c7b8 and 0x0211c7c8 are filled
+ * from this file's static initializer. func_ov064_02118760 stores the spawn words y, z, x through
  * a volatile array; a plain Vector3 lets the compiler reorder those stores.
  */
 
 #include "daBbl_c.h"
 #include "Player.h"
+#include "math/Approach.h"
 
 /* Ramp `value` toward `target` by at most `step`. The mangled name this
  * declaration produces is the compiler's own answer, not a hand-mangle. */
-void ApproachLinear(int &value, int target, int step);
 
 extern "C" {
 /* Counts a halfword timer down and returns what it was; a short* helper, so
@@ -39,15 +36,6 @@ u16 DecIfAbove0_Short(u16 *timer);
  * two parameters are spelt as its definition spells them. */
 struct Vec3;
 int d_a_bblNewHold(u32 handle, u32 effectID, int x, int y, int z, const Vec3 *rot, void *callback);
-
-/* True while the player is further than `dist` away. Fix12<int> by value
- * again. */
-
-/* The actor-collision cylinder's own initialiser; two more Fix12<int> by
- * value, so it stays at its C ABI spelling too. */
-void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(
-    dCcAc_c *self, dActor_c *actor, int radius, int height,
-    u32 flags, u32 vulnFlags);
 
 /* The mesh collider's initialiser. include/dBgCh_Actr.h declares it with the
  * scalar Fix12i spelling for readers, but the definition the cartridge links
@@ -95,10 +83,9 @@ int daBbl_c::InitResources()
 {
     mJumps = (param1 & 1) ^ 1;
     if (mJumps == 0) {
-        _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, this, 0, 0, 1, 0);
+        mdCcAc_c.Init(this, 0, 0, 1, 0);
     } else {
-        _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(
-            &mdCcAc_c, this, 0x32000, 0x50000, 0x200002, 0x8000);
+        mdCcAc_c.Init(this, 0x32000, 0x50000, 0x200002, 0x8000);
     }
     mSpawnPosX = mPosX;
     mSpawnPosY = mPosY;

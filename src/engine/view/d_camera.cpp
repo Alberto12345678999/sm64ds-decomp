@@ -8,8 +8,10 @@
  *
  * leftovers:
  * - The func_0200* handlers retain their existing C linkage. The three
- *   line-query handlers use C++ for native collision-result initialization;
- *   other handlers remain in cplusplus-off regions.
+ *   line-query handlers use C++ for native collision-result initialization,
+ *   and the state-change, shake and FOV handlers use C++ so they can call
+ *   ChangeState and cstd::fdiv directly; other handlers remain in
+ *   cplusplus-off regions.
  * - Vec3 remains the POD scratch triple in the older handlers. Native
  *   collision results use Vector3 and its empty destructor.
  * - The state records in the 0x0209b008 table stay int. These bodies
@@ -23,11 +25,13 @@
 #include "dCamera_c.h"
 #include "Player.h"
 #include "dBgCh_Lin.h"
+#include "dBgCh_Gnd.h"
 #include "Memory.h"
 #include "decl_common.h"
 #include "decl_Particle.h"
 #include "dClipper.h"
 #include "cstd.h"
+#include "math/Approach.h"
 struct Vector3_16f;
 namespace Particle {
 struct System {
@@ -127,20 +131,8 @@ extern void Matrix4x3_FromRotationZ(void *m, int angle);
 extern void MulMat4x3Mat4x3(void *dst, const void *a, void *b);
 extern void Matrix4x3_LoadIdentity(Matrix4x3 *matrix);
 
-extern int _ZN4cstd4fdivEii(int a, int b);
-extern void _Z14ApproachLinearRiii(int *r, int b, int c);
-extern int _Z15ApproachLinear2Rsss(short *dst, short target, short step);
-/* local extern: dClipper::Func_020156DC takes a by-value Fix12<int> (the Fix12
-   wall), so it stays spelled out with scalar arguments. */
-extern void _ZN8dClipper13Func_020156DCEitii(void *self, int a, int b, int c, int d);
-extern void *_ZN9dBgCh_GndC1Ev(void *self);
-extern void _ZN9dBgCh_GndD1Ev(void *self);
-extern int _ZN9dBgCh_Gnd10DetectClsnEv(void *self);
-extern void _ZN9dBgCh_Gnd12SetObjAndPosERK7Vector3P8dActor_c(void *self, const void *pos, void *actor);
-/* The C bodies spell the member by its mangled name (C cannot write `this->ChangeState`). */
-/* local extern: dCamera_c.h declares the same symbol as a member. */
-extern int _ZN9dCamera_c11ChangeStateEPNS_5StateE(void *thiz, void *state);
-
+/* local extern: the factory runs the base constructor over fresh operator new
+   storage and stores the vptrs itself; C++ has no call spelling for a C2. */
 extern void *_ZN7fBase_cC2Ev(void *self);
 /* _ZTV7dBase_c/_ZTV7dView_c/_ZTV9dCamera_c come from decl_common.h (int[]/u32
    spellings); the stores below take their addresses explicitly. */
@@ -156,16 +148,9 @@ extern int func_0200d0ac(int a, unsigned int b);
 extern void func_0200d954(char *c, short arg);
 }
 
-/* Opaque camera-side records used by the older handlers. The ground-query
-   shadow retains its measured 0x54-byte frame; clsnY at 0x44 is the floor
-   height, as in dBgCh_Gnd.h, and the words from 0x14 are the hit record
-   CLPS::func_02037e48/func_02037e68 read. Line queries use the real dBgCh_Lin class
-   above. The remaining records are typedef'd for the cplusplus-off regions. */
-typedef struct dBgCh_Gnd {
-    int _[0x11];
-    Fix12i clsnY;
-    int pad48[3];
-} dBgCh_Gnd;
+/* Opaque camera-side records used by the older handlers. Ground and line
+   queries use the real dBgCh_Gnd and dBgCh_Lin classes above. The remaining
+   records are typedef'd for the cplusplus-off regions. */
 typedef struct dBgCh_LinHit { char pad[0x14]; char surf[0x64]; } dBgCh_LinHit;   /* func_0200b990's variant */
 typedef struct Entry3 { int a, b, c; } Entry3;                      /* data_02086f58 rows */
 extern Entry3 data_02086f58[];
@@ -223,15 +208,15 @@ struct OAM {
     static void Render(bool, OamAttr *, int, int, int, int, int, int, int, int);
 };
 struct G2x {
-    static void SetBlendAlpha(volatile unsigned short *, u16, u16, u16, u32);
+    static void SetBlendAlpha(volatile unsigned short *, int, int, int, int);
 };
 struct G3i {
-    static void PerspectiveW_(Fix12i, Fix12i, Fix12i, Fix12i, Fix12i, Fix12i, bool, Matrix4x3 *);
+    static void PerspectiveW_(Fix12i, Fix12i, Fix12i, Fix12i, Fix12i, Fix12i, int, Matrix4x3 *);
     static void LookAt_(const Vector3 *, const Vector3 *, const Vector3 *, bool, Matrix4x3 *);
 };
 
 /* @symbol dCamera_c_classInit
- * Allocation factory historically labelled _ZN9dCamera_cC1Ev. Its first action
+ * Allocation factory historically labelled as the dCamera_c constructor. Its first action
  * overwrites r0 with fBase_c::operator new(sizeof(dCamera_c)); a real
  * constructor must consume the incoming storage pointer. The three vptr
  * transitions are dBase_c -> dView_c -> dCamera_c, and the Matrix4x3 at +0x50
@@ -322,11 +307,11 @@ block_7:
             }
             func_0200ca50(c);
             if (mShakeY != 0) {
-                _Z14ApproachLinearRiii((int *)&mShakeY, 0, 0x1000);
+                ApproachLinear(*(int *)&mShakeY, 0, 0x1000);
                 mShakeY = 0 - mShakeY;
             }
             if (mRollShake != 0) {
-                if (_Z15ApproachLinear2Rsss(&mRollShake, 0, 0x10) != 0) {
+                if (ApproachLinear2(mRollShake, 0, 0x10) != 0) {
                     mRollShakePhase = 0;
                 } else {
                     *(s16 *)((long long)(int)&mRollShakePhase) =
@@ -337,7 +322,7 @@ block_7:
         if (mFovShake != 0) {
             *(s16 *)((long long)(int)&mFovShakePhase) =
                 (s16)(*(s16 *)((long long)(int)&mFovShakePhase) + mFovShakePhaseStep);
-            _Z15ApproachLinear2Rsss(&mFovShake, 0, mFovShakeDecay);
+            ApproachLinear2(mFovShake, 0, mFovShakeDecay);
         }
         {
             int condA = 1;
@@ -405,7 +390,7 @@ block_7:
     }
     mFramedActor = 0;
     func_0203dafc((short)(mAngleY + mInputYawLag));
-    _Z15ApproachLinear2Rsss(&mInputYawLag, 0, 0x400);
+    ApproachLinear2(mInputYawLag, 0, 0x400);
     return 1;
 }
 
@@ -546,7 +531,7 @@ int dCamera_c::CleanupResources()
     return 1;
 }
 
-#pragma cplusplus off
+extern "C" {
 // @symbol func_0200d954
 void func_0200d954(char *c, short arg) {
     int i = (int)(unsigned short)arg >> 4;
@@ -554,7 +539,7 @@ void func_0200d954(char *c, short arg) {
     struct dCamera_c *cam = (struct dCamera_c *)c;
     cam->mInvSinFov = func_02053200(data_02082214[j]);
     cam->mInvCosFov = func_02053200(data_02082214[j + 1]);
-    _ZN8dClipper13Func_020156DCEitii(&data_0209f43c, cam->mAspect, arg, cam->mNear, cam->mFar);
+    data_0209f43c.Func_020156DC(cam->mAspect, arg, cam->mNear, cam->mFar);
 }
 
 // @symbol func_0200d8c8
@@ -568,7 +553,7 @@ void func_0200d8c8(struct dCamera_c *cam, const struct Vector3 *v, int strength)
     if (strength <= dist)
         return;
 
-    offset = FX_MUL(_ZN4cstd4fdivEii(strength, dist), 0x9000);
+    offset = FX_MUL(cstd::fdiv(strength, dist), 0x9000);
 
     if (offset <= cam->mShakeY)
         return;
@@ -598,7 +583,7 @@ void func_0200d89c(char *p)
 {
     ((struct dCamera_c *)p)->mRollShake = 384;
 }
-#pragma cplusplus on
+}
 
 // @symbol _ZNK9dCamera_c12IsUnderwaterEv
 /* Returns the under-water bit of mFlags MASKED, not normalised to 0/1 -- the
@@ -608,7 +593,7 @@ int dCamera_c::IsUnderwater() const
     return mFlags & 1;
 }
 
-#pragma cplusplus off
+extern "C" {
 // @symbol func_0200d858
 void func_0200d858(void *self, const struct Vector3 *offset)
 {
@@ -622,7 +607,7 @@ void func_0200d81c(void *thiz, int playerID)
 {
     if (playerID != (int)data_0209f250)
         return;
-    _ZN9dCamera_c11ChangeStateEPNS_5StateE(thiz, &data_0209b008);
+    ((dCamera_c *)thiz)->ChangeState((dCamera_c::State *)&data_0209b008);
 }
 
 // @symbol func_0200d7e0
@@ -630,29 +615,28 @@ void func_0200d7e0(void *thiz, int playerID)
 {
     if (playerID != (int)data_0209f250)
         return;
-    _ZN9dCamera_c11ChangeStateEPNS_5StateE(thiz, &data_0209b098);
+    ((dCamera_c *)thiz)->ChangeState((dCamera_c::State *)&data_0209b098);
 }
 
 // @symbol func_0200d7a4
 void func_0200d7a4(void *thiz, u8 playerID) {
     if (playerID != *(unsigned char *)&data_0209f250)
         return;
-    _ZN9dCamera_c11ChangeStateEPNS_5StateE(thiz, (void *)&data_0209b108);
+    ((dCamera_c *)thiz)->ChangeState((dCamera_c::State *)&data_0209b108);
 }
 
 // @symbol func_0200d768
 void func_0200d768(void *thiz, unsigned char playerID) {
     if (playerID != *(unsigned char *)&data_0209f250)
         return;
-    _ZN9dCamera_c11ChangeStateEPNS_5StateE(thiz, (void *)&data_0209b018);
+    ((dCamera_c *)thiz)->ChangeState((dCamera_c::State *)&data_0209b018);
 }
 
 // @symbol func_0200d72c
 void func_0200d72c(void *thiz, unsigned char playerID)
 {
     if (playerID == *(unsigned char *)&data_0209f250)
-        _ZN9dCamera_c11ChangeStateEPNS_5StateE(thiz,
-                                            (void *)&data_0209b028);
+        ((dCamera_c *)thiz)->ChangeState((dCamera_c::State *)&data_0209b028);
 }
 
 // @symbol func_0200d6f0
@@ -660,7 +644,7 @@ void func_0200d6f0(void *thiz, unsigned char playerID)
 {
     if (playerID == *(unsigned char *)&data_0209f250)
     {
-        _ZN9dCamera_c11ChangeStateEPNS_5StateE(thiz, (void *)&data_0209b038);
+        ((dCamera_c *)thiz)->ChangeState((dCamera_c::State *)&data_0209b038);
     }
 }
 
@@ -668,14 +652,14 @@ void func_0200d6f0(void *thiz, unsigned char playerID)
 void func_0200d6b4(void *thiz, unsigned char playerID) {
     if (playerID != *(unsigned char *)&data_0209f250)
         return;
-    _ZN9dCamera_c11ChangeStateEPNS_5StateE(thiz, (void *)&data_0209b048);
+    ((dCamera_c *)thiz)->ChangeState((dCamera_c::State *)&data_0209b048);
 }
 
 // @symbol func_0200d678
 void func_0200d678(void *thiz, unsigned char playerID) {
     if (playerID != *(unsigned char *)&data_0209f250)
         return;
-    _ZN9dCamera_c11ChangeStateEPNS_5StateE(thiz, (void *)&data_0209b058);
+    ((dCamera_c *)thiz)->ChangeState((dCamera_c::State *)&data_0209b058);
 }
 
 // @symbol func_0200d63c
@@ -683,14 +667,14 @@ void func_0200d63c(void *thiz, unsigned char playerID)
 {
     if (playerID != *(unsigned char *)&data_0209f250)
         return;
-    _ZN9dCamera_c11ChangeStateEPNS_5StateE(thiz, (void *)&data_0209b068);
+    ((dCamera_c *)thiz)->ChangeState((dCamera_c::State *)&data_0209b068);
 }
 
 // @symbol func_0200d5fc
 void func_0200d5fc(void *thiz, int playerID)
 {
     if (playerID == data_0209f250) {
-        _ZN9dCamera_c11ChangeStateEPNS_5StateE(thiz, &data_0209b078);
+        ((dCamera_c *)thiz)->ChangeState((dCamera_c::State *)&data_0209b078);
         func_0200cb58(thiz, 5);
     }
 }
@@ -699,7 +683,7 @@ void func_0200d5fc(void *thiz, int playerID)
 void func_0200d5c0(void *thiz, unsigned char playerID) {
     if (playerID != *(unsigned char *)&data_0209f250)
         return;
-    _ZN9dCamera_c11ChangeStateEPNS_5StateE(thiz, (void *)&data_0209b078);
+    ((dCamera_c *)thiz)->ChangeState((dCamera_c::State *)&data_0209b078);
 }
 
 // @symbol func_0200d580
@@ -707,7 +691,7 @@ void func_0200d580(void *thiz, int playerID)
 {
     if (playerID != data_0209f250)
         return;
-    _ZN9dCamera_c11ChangeStateEPNS_5StateE(thiz, &data_0209b078);
+    ((dCamera_c *)thiz)->ChangeState((dCamera_c::State *)&data_0209b078);
     func_0200cb58(thiz, 8);
 }
 
@@ -715,14 +699,14 @@ void func_0200d580(void *thiz, int playerID)
 void func_0200d544(void *thiz, unsigned char playerID) {
     if (playerID != *(unsigned char *)&data_0209f250)
         return;
-    _ZN9dCamera_c11ChangeStateEPNS_5StateE(thiz, (void *)&data_0209b088);
+    ((dCamera_c *)thiz)->ChangeState((dCamera_c::State *)&data_0209b088);
 }
 
 // @symbol func_0200d508
 void func_0200d508(void *thiz, unsigned char playerID) {
     if (playerID != *(unsigned char *)&data_0209f250)
         return;
-    _ZN9dCamera_c11ChangeStateEPNS_5StateE(thiz, (void *)&data_0209b0a8);
+    ((dCamera_c *)thiz)->ChangeState((dCamera_c::State *)&data_0209b0a8);
 }
 
 // @symbol func_0200d4b0
@@ -744,14 +728,14 @@ void func_0200d4b0(char* self, unsigned int playerID, int arg2)
 void func_0200d474(void *thiz, unsigned char playerID) {
     if (playerID != *(unsigned char *)&data_0209f250)
         return;
-    _ZN9dCamera_c11ChangeStateEPNS_5StateE(thiz, (void *)&data_0209b0b8);
+    ((dCamera_c *)thiz)->ChangeState((dCamera_c::State *)&data_0209b0b8);
 }
 
 // @symbol func_0200d438
 void func_0200d438(void *thiz, unsigned char playerID) {
     if (playerID != *(unsigned char *)&data_0209f250)
         return;
-    _ZN9dCamera_c11ChangeStateEPNS_5StateE(thiz, (void *)&data_0209b0c8);
+    ((dCamera_c *)thiz)->ChangeState((dCamera_c::State *)&data_0209b0c8);
 }
 
 // @symbol func_0200d3f8
@@ -761,9 +745,9 @@ void func_0200d3f8(void *thiz, unsigned char playerID, void *ptr)
     if (playerID != tmp)
         return;
     ((struct dCamera_c *)thiz)->mLookTarget = (s32 *)ptr;
-    _ZN9dCamera_c11ChangeStateEPNS_5StateE(thiz, (void *)&data_0209b0d8);
+    ((dCamera_c *)thiz)->ChangeState((dCamera_c::State *)&data_0209b0d8);
 }
-#pragma cplusplus on
+}
 
 // @symbol _ZN9dCamera_c14GoBehindPlayerEj
 void dCamera_c::GoBehindPlayer(unsigned int j)
@@ -861,19 +845,19 @@ void dCamera_c::LookAtExit(dActor_c &actor)
     mFlags |= 0x10;
 }
 
-#pragma cplusplus off
+extern "C" {
 // @symbol func_0200d148
 void func_0200d148(void *thiz, unsigned char playerID) {
     if (playerID != *(unsigned char *)&data_0209f250)
         return;
-    _ZN9dCamera_c11ChangeStateEPNS_5StateE(thiz, (void *)&data_0209b118);
+    ((dCamera_c *)thiz)->ChangeState((dCamera_c::State *)&data_0209b118);
 }
 
 // @symbol func_0200d10c
 void func_0200d10c(void *thiz, unsigned char playerID) {
     if (playerID != *(unsigned char *)&data_0209f250)
         return;
-    _ZN9dCamera_c11ChangeStateEPNS_5StateE(thiz, (void *)&data_0209b128);
+    ((dCamera_c *)thiz)->ChangeState((dCamera_c::State *)&data_0209b128);
 }
 
 // @symbol func_0200d0ac
@@ -901,7 +885,7 @@ void func_0200d064(void *param_1, unsigned char param_2) {
         func_02012790(6);
     }
 }
-#pragma cplusplus on
+}
 
 // @symbol _ZN9dCamera_c9SetFlag_3Ev
 void dCamera_c::SetFlag_3()
@@ -1014,10 +998,9 @@ extern "C" void func_0200cce4(char* cam)
             vec.z = cp.z;
         }
         dBgCh_Gnd ground;
-        _ZN9dBgCh_GndC1Ev(&ground);
         func_0200897c(cam, &ground);
-        _ZN9dBgCh_Gnd12SetObjAndPosERK7Vector3P8dActor_c(&ground, &vec, 0);
-        if (_ZN9dBgCh_Gnd10DetectClsnEv(&ground) != 0) {
+        ground.SetObjAndPos(*(Vector3 *)&vec, 0);
+        if (ground.DetectClsn() != 0) {
             self->pos.y = d + ground.clsnY;
         }
         self->pos.y += func_020093d4(cam, 0x3c286);
@@ -1042,7 +1025,6 @@ extern "C" void func_0200cce4(char* cam)
         }
         func_0200928c(cam);
         ChangeArea(((dActor_c *)self->mTargetPlayer)->mAreaId);
-        _ZN9dBgCh_GndD1Ev(&ground);
     }
     self->mFlags |= 4;
 }
@@ -1157,7 +1139,7 @@ extern "C" int func_0200ca50(void *self)
     int r5;
     {
         CamMode *p = cam->mMode;
-        _Z15ApproachLinear2Rsss(&cam->mFovAngle, p->fovAngle, 0x80);
+        ApproachLinear2(cam->mFovAngle, p->fovAngle, 0x80);
     }
     r5 = 1;
     flags = cam->mFlags;
@@ -1257,19 +1239,17 @@ extern "C" int func_0200c66c(void *self_, void *pos_, int *out2_, int *out1_, in
             tmp.z = clsn.z;
         }
         dBgCh_Gnd ground;
-        _ZN9dBgCh_GndC1Ev(&ground);
         func_0200897c(self, &ground);
-        _ZN9dBgCh_Gnd12SetObjAndPosERK7Vector3P8dActor_c(&ground, &tmp, 0);
-        if (_ZN9dBgCh_Gnd10DetectClsnEv(&ground) == 0) {
+        ground.SetObjAndPos(*(Vector3 *)&tmp, 0);
+        if (ground.DetectClsn() == 0) {
             hval = pos->y;
             col1 = 0;
             col2 = 0x3f;
         } else {
             hval = ground.clsnY;
-            col1 = ((const CLPS *)&ground._[5])->func_02037e48() & 0xff;
-            col2 = ((const CLPS *)&ground._[5])->func_02037e68() & 0xff;
+            col1 = ((const CLPS *)&ground.surface)->func_02037e48() & 0xff;
+            col2 = ((const CLPS *)&ground.surface)->func_02037e68() & 0xff;
         }
-        _ZN9dBgCh_GndD1Ev(&ground);
 
     }
 
@@ -1330,7 +1310,7 @@ extern "C" int func_0200c66c(void *self_, void *pos_, int *out2_, int *out1_, in
 
     return res;
 }
-#pragma cplusplus off
+extern "C" {
 
 // @symbol func_0200c394
 int func_0200c394(void *self_, int a1, void *a2_, void *a3, void **a5, int *a6)
@@ -1392,7 +1372,7 @@ body:
                     cam->mFocusDist = FX_MUL(cam->mFocusDist, 0x1800);
                 }
                 if (g == 0x2f && cam->mFocusDist > 0xc0000) {
-                    int s = _ZN4cstd4fdivEii(0xc0000, cam->mFocusDist << 1);
+                    int s = cstd::fdiv(0xc0000, cam->mFocusDist << 1);
                     Vec3_MulScalarInPlace(&local, s);
                     Vec3_Add(&local2, a3, &local);
                     cam->mLookTargetPos.x = local2.x;
@@ -1425,7 +1405,7 @@ body:
 }
 
 // @symbol func_0200bec4
-#pragma cplusplus on
+}
 extern "C" int func_0200bec4(char *self, int *arg1, int arg2, char *arg3, int arg4)
 {
     dCamera_c *cam = (dCamera_c *)self;
@@ -1476,14 +1456,13 @@ extern "C" int func_0200bec4(char *self, int *arg1, int arg2, char *arg3, int ar
         sp2C.y = sp5C.y;
         sp2C.z = sp5C.z;
     }
-    char spEC[0x54];
-    _ZN9dBgCh_GndC1Ev(spEC);
-    func_0200897c(self, spEC);
-    _ZN9dBgCh_Gnd12SetObjAndPosERK7Vector3P8dActor_c(spEC, &sp2C, 0);
+    dBgCh_Gnd spEC;
+    func_0200897c(self, &spEC);
+    spEC.SetObjAndPos(*(Vector3 *)&sp2C, 0);
     r4 = sp8.y;
-    if (_ZN9dBgCh_Gnd10DetectClsnEv(spEC) != 0) {
+    if (spEC.DetectClsn() != 0) {
         int d;
-        r4 = ((dBgCh_Gnd *)spEC)->clsnY;
+        r4 = spEC.clsnY;
         d = r4 - sp8.y;
         if (d > 0) {
             if (d > 0x30000)
@@ -1530,8 +1509,6 @@ extern "C" int func_0200bec4(char *self, int *arg1, int arg2, char *arg3, int ar
             cam->mLookAtOffset.y = sp8.y - FX_MUL(diff, 0xf80);
         }
         if (cam->mFlags & 0x400) {
-            _ZN9dBgCh_GndD1Ev(spEC);
-
             return r4;
         }
     }
@@ -1541,7 +1518,7 @@ extern "C" int func_0200bec4(char *self, int *arg1, int arg2, char *arg3, int ar
         int sl2 = arg1[1] + cam->mLookAtOffset.y;
         int r5b = sl2 - cam->lookAt.y;
         if (r5b < (int)func_020093d4(self, ((CamMode *)arg3)->followRise)) {
-            _Z14ApproachLinearRiii((int *)&cam->lookAt.y, sl2, 0x64000);
+            ApproachLinear(*(int *)&cam->lookAt.y, sl2, 0x64000);
         } else {
             int r6 = arg2 - arg1[1];
             if (r6 >= 0) {
@@ -1559,8 +1536,6 @@ extern "C" int func_0200bec4(char *self, int *arg1, int arg2, char *arg3, int ar
             }
         }
     }
-    _ZN9dBgCh_GndD1Ev(spEC);
-
     return r4;
 }
 #pragma cplusplus on

@@ -14,11 +14,8 @@ struct System {
  * func_ov070_0211f100 sorts contact. Source order is the reverse of the
  * ROM, so the one .text section emits ascending.
  */
-/* leftovers: dCcAc_c::Init and dBgCh_Actr::Init stay mangled.
- * InitResources calls them, and each takes Fix12<int> by value; the
- * header spells Fix12i. dExtAnmModel_c::SetAnim, DropShadowRadHeight,
- * SpawnCoins, SpawnFireball, Particle::System::New, NewUnkCallback818,
- * Player::SpinBounce and Player::Hurt stay mangled for the same reason.
+/* leftovers: Player::SpinBounce and Player::Hurt stay mangled: each takes
+ * Fix12<int> by value.
  * Finished and WillHitFrame stay qualified through mAnmModel; a char*
  * view of that member moves a word in func_ov070_0211f48c,
  * func_ov070_0211f62c and func_ov070_0211f6e0. Player-position reads
@@ -46,6 +43,7 @@ enum d_a_propeller_heyho_AssetId {
 
 #include "daPropeller_Heyho_c.h"
 #include "SpawnInfo.h"
+#include "math/Approach.h"
 
 /* The cartridge preserves this descriptor's C-ABI symbol but not its source
  * spelling.  Keep that evidence-bounded alias; all seven scalar words and
@@ -204,7 +202,6 @@ extern void (daPropeller_Heyho_c::*data_ov070_021230e0)();
 extern int (daPropeller_Heyho_c::*data_ov070_021230f8)();
 extern void (daPropeller_Heyho_c::*data_ov070_02123100)();
 extern "C" {
-extern void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void* self, dActor_c* a, int r, int h, unsigned int e, unsigned int g);
 /* Parameter names keep this TU's @NNN. */
 typedef void BgchInitAt_(void *self, dActor_c *a, int r, int h, Vector3_16 *p, Vector3_16 *q);
 extern int FlyGuy_ChangeState(daPropeller_Heyho_c* c, daPropeller_Heyho_c::State* p);
@@ -228,7 +225,7 @@ int daPropeller_Heyho_c::InitResources()
     mCanSpitFire = param1 & 0xff;
     if (mCanSpitFire == 0xff) mCanSpitFire = 0;
     mTerminalVelocity = -0x1e000; /* -30.0 units/frame */
-    _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, this, 0x3c000, 0x32000, 0x200000, 0x7eff0);
+    mdCcAc_c.Init(this, 0x3c000, 0x32000, 0x200000, 0x7eff0);
     mWithMeshClsn.Init(this, 0x50000, 0x3c000, 0, 0);
     mCoinType = 1;
     mExtraCoinCount = 1;
@@ -375,13 +372,11 @@ int daPropeller_Heyho_c::CleanupResources()
 // @symbol func_ov070_02120070
 #include "common.h"
 
-bool ApproachLinear(short &value, short target, short step);
 extern "C" {
 
 extern void Vec3_Asr(void* d, void* s, int sh);
 extern void Matrix4x3_FromTranslation(void* m, int x, int y, int z);
 extern void Matrix4x3_ApplyInPlaceToRotationXYZExt(void* m, int x, int y, int z);
-extern void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(void* thiz, void* sm, void* mtx, int f, int g, unsigned int h);
 extern int data_020a0e68[];
 
 typedef struct { int w[12]; } M48;
@@ -399,8 +394,7 @@ void func_ov070_02120070(daPropeller_Heyho_c* c)
     *(M48 *)&c->mAnmModel.mat4x3 = *(M48 *)data_020a0e68;
     Matrix4x3_FromTranslation(data_020a0e68, c->mPosX >> 3, (c->mPosY - 0xa000) >> 3, c->mPosZ >> 3);
     *(M48*)c->mShadowMatrix = *(M48*)data_020a0e68;
-    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
-        c, &c->mShadowModel, c->mShadowMatrix, 0x76000, 0x320000, 0xf);
+    c->DropShadowRadHeight(c->mShadowModel, *(Matrix4x3 *)c->mShadowMatrix, 0x76000, 0x320000, 0xf);
 }
 }
 
@@ -445,7 +439,6 @@ extern short Vec3_VertAngle(void *a, void *b);
 extern void Matrix4x3_FromRotationY(void *m, int angle);
 extern void Matrix4x3_ApplyInPlaceToRotationX(void *m, short ang);
 extern void MulVec3Mat4x3(void *in, void *m, void *out);
-extern void _Z14ApproachLinearRiii(void *dst, int a, int b);
 extern int FlyGuy_ChangeState(daPropeller_Heyho_c *c, daPropeller_Heyho_c::State *p);
 
 extern int data_020a0e68[];
@@ -489,9 +482,9 @@ int func_ov070_0211fd98(daPropeller_Heyho_c *c)
     Matrix4x3_ApplyInPlaceToRotationX(data_020a0e68, c->mPrevAngleX);
     MulVec3Mat4x3(in, data_020a0e68, out);
 
-    _Z14ApproachLinearRiii(&c->mSpeedX, out[0], 0x1000);
-    _Z14ApproachLinearRiii(&c->mVertSpeed, out[1], 0x800);
-    _Z14ApproachLinearRiii(&c->mSpeedZ, out[2], 0x1000);
+    ApproachLinear(c->mSpeedX, out[0], 0x1000);
+    ApproachLinear(c->mVertSpeed, out[1], 0x800);
+    ApproachLinear(c->mSpeedZ, out[2], 0x1000);
 
     if ((u16)c->mStateTimer == 0) {
         FlyGuy_ChangeState(c, &data_ov070_0212359c);
@@ -874,7 +867,6 @@ extern "C" {
 short Vec3_HorzAngle(void* a, void* b);
 /* (ApproachAngle: this file's own int-target view, namespace ApproachAngleInt above) */
 short Vec3_VertAngle(void* a, void* b);
-void* _ZN8dActor_c13SpawnFireballERK7Vector3PK10Vector3_165Fix12IiES7_j(void* self, void* pos, void* vel, int a, int b, unsigned int d);
 void func_02012694(int a, void* p);
 int FlyGuy_ChangeState(daPropeller_Heyho_c* c, daPropeller_Heyho_c::State* p);
 extern daPropeller_Heyho_c::State data_ov070_0212359c;
@@ -919,7 +911,7 @@ int daPropeller_Heyho_c::func_ov070_0211f48c() {
             fp.z = base[2];
             vel.x = Vec3_VertAngle(&mPosX, &fp);
         }
-        _ZN8dActor_c13SpawnFireballERK7Vector3PK10Vector3_165Fix12IiES7_j(this, &mPosX, &vel, 0x1e000, 0xa000, 1);
+        SpawnFireball(*(const Vector3 *)&mPosX, &vel, 0x1e000, 0xa000, 1);
         func_02012694(kSndFireSpit, &mCamSpacePosX);
     }
     if (mAnmModel.dExtFrameCtrl_c::Finished() != 0) {
@@ -1003,10 +995,7 @@ extern daPropeller_Heyho_c::State data_ov070_021235cc;
 extern "C" {
 extern int FlyGuy_ChangeState(daPropeller_Heyho_c* c, daPropeller_Heyho_c::State* p);
 extern void func_ov002_020aea30(void *self, void *actor, void *collision);
-extern void _ZN6Player10SpinBounceE5Fix12IiE(void* p, s32 f);
 extern void func_02012694(int a, void* b);
-extern void _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void *p, const Vector3 *v, u32 a, s32 f, u32 b,
-                                                    u32 c, u32 d);
 }
 
 /* Hit reaction, run once per frame outside the knocked state. Takes the colliding
@@ -1056,7 +1045,7 @@ extern "C" void func_ov070_0211f100(daPropeller_Heyho_c* c)
         return;
 
     if (c->JumpedOnByPlayer(c->mdCcAc_c, *hitPlayer)) {
-        _ZN6Player10SpinBounceE5Fix12IiE(hitPlayer, 0x28000);
+        hitPlayer->SpinBounce(0x28000);
         c->mDeathState = 1;
         func_ov002_020aea30(c, hitPlayer, 0);
         return;
@@ -1081,7 +1070,7 @@ extern "C" void func_ov070_0211f100(daPropeller_Heyho_c* c)
         v.x = c->mPosX;
         v.y = c->mPosY;
         v.z = c->mPosZ;
-        _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(hitPlayer, &v, 2, 0xc000, 1, 0, 1);
+        hitPlayer->Hurt(v, 2, 0xc000, 1, 0, 1);
     }
     if (c->mHitDuringAttack != 0)
         return;
@@ -1099,7 +1088,6 @@ extern "C" void func_ov070_0211f100(daPropeller_Heyho_c* c)
 
 /* (dActor_c: real header type in scope; SpawnCoins goes through the mangled extern below) */
 /* SpawnCoins takes Fix12<int> by value, so this call stays the mangled extern. */
-extern "C" void _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs(void *, Vector3 const &, unsigned int, int, short);
 
 /* Defeat helper: a small puff of dust, then mExtraCoinCount + 1 coins spread
  * 10.0 units from the actor, then the actor is killed and recorded in the
@@ -1111,7 +1099,7 @@ extern "C" int func_ov070_0211f0a4(daPropeller_Heyho_c *c) {
     pos.y = c->mPosY;
     pos.z = c->mPosZ;
     unsigned int coins = (unsigned char)c->mExtraCoinCount + 1;
-    _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs(c, pos, coins, 0xa000, 0);
+    c->SpawnCoins(pos, coins, 0xa000, 0);
     c->KillAndTrackInDeathTable();
 }
 

@@ -28,6 +28,7 @@
 #include "SharedFilePtr.h"
 #include "PlayerInput.h"
 #include "G3i.h"
+#include "dClipper.h"
 #include "MascotWalker.h"
 #include "Presenter.h"
 #include "Dealer.h"
@@ -37,6 +38,8 @@
 #include "dExtAnmTexPat_c.h"
 #include "dExtAnmTexSRT_c.h"
 #include "cstd.h"
+#include "G2.h"
+#include "math/Approach.h"
 /* Typed access to a MascotWalker record from the char* helpers below. */
 #define WALKER(p) ((MascotWalker *)(p))
 /* Typed access to a Presenter record from the char* helpers below. */
@@ -52,9 +55,6 @@
 struct Sound {
     static void PlayBank2_2D(unsigned int);
 };
-void UpdateAngle(short &, short, int, short);
-int ApproachLinear(int &, int, int);
-int ApproachLinear2(short &, short, short);
 extern "C" {
 void MulVec3Mat4x3(void *, void *, void *);
 void Matrix4x3_ApplyInPlaceToRotationZ(void *, short);
@@ -64,8 +64,6 @@ void MulMat4x3Mat4x3(void *, void *, void *);
 void *__cxa_vec_cleanup(void *, int, int, void *);
 void func_020169d8(void *, int, unsigned int);
 void func_0203cebc(void *, void *, void *, void *);
-void _ZN17dExtShadowModel_c8CleanAllEv(
-    void); // local extern: raw char*/void* view of the actor memory; the class header declares the typed form and would change call-site codegen
 void AddVec3(void *, void *, void *);
 int DotVec3(void *, void *);
 void Matrix4x3_ApplyInPlaceToRotationX(void *, short);
@@ -83,19 +81,11 @@ short Vec3_VertAngle(const void *, const void *);
 void Vec3_MulScalar(void *, void *, int);
 void Vec3_MulScalarInPlace(int *, int);
 void Vec3_Sub(void *, void *, void *);
-void _Z11UpdateAngleRssis(short *, short, int, short);
-int _Z14ApproachLinearRiii(int *, int, int);
-int _Z15ApproachLinear2Rsss(short *, short, short);
 void _Z13CopyToViewMatPK9Matrix4x3(void *);
 void SharedFilePtr_Construct_TexSeq(void *, unsigned int);
 void SharedFilePtr_Destruct_Anim(void *);
 void SharedFilePtr_Destruct_TexSeq(void *);
-void _ZN17dExtShadowModel_c9InitModelEP9Matrix4x35Fix12IiES3_S3_j(void *, void *, int, int, int,
-                                                                  unsigned int);
 
-/* local extern: dClipper::Func_020156DC takes a by-value Fix12<int> (the Fix12 wall), so it stays spelled out with scalar arguments. */
-void _ZN8dClipper13Func_020156DCEitii(void *, int, int, int, int);
-void *_ZN7Vector3D1Ev(void *);
 void *__cxa_vec_ctor(void *, int, int, void *, void *);
 void func_02012174(int, int);
 void func_02016a04(void *, int);
@@ -106,7 +96,6 @@ void *func_02017acc(void *, unsigned int);
 void func_0202ffec(void *, void *, void *);
 void func_0203ccd4(void *, short);
 void func_0203cd80(void *, short);
-void func_020731dc(void *, void *, void **);
 void Camera_ProjectToScreen16(char *r4, void *r1, short *r5);
 void Camera_ProjectToScreen(char *r4, void *r1, int *r6, int *r5);
 void Camera_UpdateMatrices(void *self);
@@ -599,15 +588,6 @@ void FallingPetal_SetModel(char *t, int a1) {
 namespace s020c3754 {
 extern "C" {
 extern "C" {
-extern int sFallingPetal_Spawn_UnitYGuard;
-}
-extern "C" {
-extern int sFallingPetal_Spawn_UnitYDtorRec;
-}
-extern "C" {
-extern int sFallingPetalAxis[3];
-}
-extern "C" {
 extern int data_0209e650;
 }
 extern "C" {
@@ -615,15 +595,10 @@ extern int data_02092768[4];
 }
 
 void FallingPetal_Spawn(int *r6, int *r5, int *r4) {
-    int *n;
-    if (!(sFallingPetal_Spawn_UnitYGuard & 1)) {
-        n = sFallingPetalAxis;
-        n[0] = 0;
-        n[1] = 0x1000;
-        n[2] = 0;
-        func_020731dc(n, (void *)_ZN7Vector3D1Ev, (void **)&sFallingPetal_Spawn_UnitYDtorRec);
-        sFallingPetal_Spawn_UnitYGuard |= 1;
-    }
+    /* Every petal spins about +Y. Constructed on the first spawn: mwcc emits
+       the guard test, the three stores and the ~Vector3() registration here. */
+    static Vector3 sAxis(0, 0x1000, 0);
+
     r6[0] = r5[0];
     r6[1] = r5[1];
     r6[2] = r5[2];
@@ -634,15 +609,15 @@ void FallingPetal_Spawn(int *r6, int *r5, int *r4) {
     r6[7] = -0x40;
     r6[8] = 0;
     PETAL(r6)->mLife = 0xb4;
-    r6[9] = sFallingPetalAxis[0];
-    r6[10] = sFallingPetalAxis[1];
-    r6[11] = sFallingPetalAxis[2];
+    r6[9] = sAxis.x;
+    r6[10] = sAxis.y;
+    r6[11] = sAxis.z;
     func_0203cd80(&PETAL(r6)->mAxis, (short)RandomIntInternal(&data_0209e650));
     r6[12] = data_02092768[0];
     r6[13] = data_02092768[1];
     r6[14] = data_02092768[2];
     r6[15] = data_02092768[3];
-    Quaternion_FromVector3(PETAL(r6)->mRot, sFallingPetalAxis, (int *)&PETAL(r6)->mAxis);
+    Quaternion_FromVector3(PETAL(r6)->mRot, &sAxis, (int *)&PETAL(r6)->mAxis);
     PETAL(r6)->mActive = 1;
 }
 }
@@ -673,7 +648,7 @@ void FallingPetal_Update(char *self) {
     int val;
     int dot;
 
-    if (_Z15ApproachLinear2Rsss(&PETAL(self)->mLife, 0, 1) != 0) {
+    if (ApproachLinear2(PETAL(self)->mLife, 0, 1) != 0) {
         PETAL(self)->mActive = 0;
         return;
     }
@@ -707,7 +682,6 @@ void FallingPetal_Update(char *self) {
 
 namespace s020c35a8 {
 // @symbol FallingPetal_Draw
-extern "C" {}
 
 extern "C" void FallingPetal_Draw(char *c) {
     FallingPetal_UpdateMatrix(c);
@@ -1551,7 +1525,7 @@ int Dealer_Load(char *c) {
     void *f;
     void *ip;
 
-    _ZN17dExtShadowModel_c8CleanAllEv();
+    dExtShadowModel_c::CleanAll();
     DEALER(c)->mModelData = (int)dExtSimpleModel_c::LoadFile(DEALER(c)->mModelFile);
     DEALER(c)->mTableData = (int)dExtSimpleModel_c::LoadFile(DEALER(c)->mTableFile);
     f = ((void *)DEALER(c)->mModelData);
@@ -1616,7 +1590,7 @@ extern "C" void Dealer_Update(char *thiz) {
         (o->*(o->pmf))();
     }
     DEALER(c)->mModel.Advance();
-    if (_Z15ApproachLinear2Rsss(&DEALER(c)->mLampTimer, 0, 1) != 0) {
+    if (ApproachLinear2(DEALER(c)->mLampTimer, 0, 1) != 0) {
         short *p = &DEALER(c)->mLampPattern;
         *p = *p + 1;
         if (DEALER(c)->mLampPattern > 7)
@@ -1632,7 +1606,6 @@ extern "C" void Dealer_Update(char *thiz) {
 namespace s020c1804 {
 // @symbol Dealer_Draw
 
-extern "C" {}
 
 extern "C" void Dealer_Draw(void *self) {
     char *c = (char *)self;
@@ -1767,7 +1740,7 @@ void Dealer_StartShuffle(char *c, int unused, short a2, int a3) {
         DEALER(c)->mShuffleLeft = 1;
         DEALER(c)->mDealDoneAt = 1;
     }
-    if (_Z15ApproachLinear2Rsss(&DEALER(c)->mShuffleRound, 5, 1) != 0) {
+    if (ApproachLinear2(DEALER(c)->mShuffleRound, 5, 1) != 0) {
         DEALER(c)->mShuffleRound = 0;
     }
     DEALER(c)->mDealSoundPlayed = 0;
@@ -1965,7 +1938,6 @@ void Dealer_StartReveal(int *t, int a1, int a2) {
 }
 
 namespace s020c0f9c {
-extern "C" {}
 
 extern "C" void Dealer_StateReveal(void *cc) {
     char *c = (char *)cc;
@@ -2337,7 +2309,7 @@ extern "C" void MascotWalker_Update(C *c) {
             d = -0x3000;
         else if (d > 0x3000)
             d = 0x3000;
-        _Z11UpdateAngleRssis(&c->mHeadAngle, d, 8, 0x200);
+        UpdateAngle(c->mHeadAngle, d, 8, 0x200);
 
         {
             int *p = (int *)&c->pmf;
@@ -2350,9 +2322,9 @@ extern "C" void MascotWalker_Update(C *c) {
             }
         }
         d = (short)(ang - d);
-        _Z11UpdateAngleRssis(&c->mAngleY, d, 8, 0x200);
+        UpdateAngle(c->mAngleY, d, 8, 0x200);
     } else {
-        _Z11UpdateAngleRssis(&c->mHeadAngle, 0, 8, 0x200);
+        UpdateAngle(c->mHeadAngle, 0, 8, 0x200);
     }
 }
 }
@@ -2361,8 +2333,7 @@ namespace s020c07a0 {
 extern "C" {
 void MascotWalker_Draw(char *t) {
     MascotWalker_UpdateMatrix(t);
-    _ZN17dExtShadowModel_c9InitModelEP9Matrix4x35Fix12IiES3_S3_j(
-        &WALKER(t)->mShadow, &WALKER(t)->mModel.mat4x3, 0x3c000, 0x14000, 0x3c000, 0xc);
+    (&WALKER(t)->mShadow)->InitModel(&WALKER(t)->mModel.mat4x3, 0x3c000, 0x14000, 0x3c000, 0xc);
     /* dExtSimpleModel_c's own render, called directly (0x02016b78), as Mascot_Draw does. */
     WALKER(t)->mModel.dExtSimpleModel_c::Render(0);
 }
@@ -2464,7 +2435,7 @@ void MascotWalker_StateWalk(char *c) {
     int t1, t2;
     int r1, r2;
 
-    _Z11UpdateAngleRssis(&WALKER(c)->mAngleY, WALKER(c)->mTargetAngle, 8, 0x100);
+    UpdateAngle(WALKER(c)->mAngleY, WALKER(c)->mTargetAngle, 8, 0x100);
 
     a = WALKER(c)->mDir.x;
     if (a < 0)
@@ -2478,14 +2449,14 @@ void MascotWalker_StateWalk(char *c) {
     idx = WALKER(c)->mPathPoint * 0xc;
     path = (char *)WALKER(c)->mPath;
     arr = *(char **)(path + 4);
-    r1 = _Z14ApproachLinearRiii(&WALKER(c)->mPos.x, *(int *)(arr + idx), t1);
+    r1 = ApproachLinear(WALKER(c)->mPos.x, *(int *)(arr + idx), t1);
 
     t2 = FX_MUL(b, 0x1a9);
 
     idx = WALKER(c)->mPathPoint * 0xc;
     path = (char *)WALKER(c)->mPath;
     arr = *(char **)(path + 4);
-    r2 = _Z14ApproachLinearRiii(&WALKER(c)->mPos.z, *(int *)(arr + idx + 8), t2);
+    r2 = ApproachLinear(WALKER(c)->mPos.z, *(int *)(arr + idx + 8), t2);
 
     if (r1 != 0 && r2 != 0) {
         if (WALKER(c)->mPathPoint < *(int *)WALKER(c)->mPath - 1) {
@@ -2526,7 +2497,7 @@ void MascotWalker_StateWalk(char *c) {
         return;
     }
 
-    if (_Z15ApproachLinear2Rsss(&WALKER(c)->mStateTimer, 0, 1) == 0)
+    if (ApproachLinear2(WALKER(c)->mStateTimer, 0, 1) == 0)
         return;
 
     if (WALKER(c)->mModel.WillHitFrame(0) == 0)
@@ -2606,7 +2577,7 @@ struct dCamera_c {
 };
 
 extern short data_02082214[];
-extern char data_0209f43c[];
+extern dClipper data_0209f43c;
 
 void Camera_UpdateMatrices(struct dCamera_c *self) {
     struct Vector3 up;
@@ -2640,7 +2611,7 @@ void Camera_UpdateMatrices(struct dCamera_c *self) {
 
     _Z13CopyToViewMatPK9Matrix4x3(&self->viewMat);
 
-    _ZN8dClipper13Func_020156DCEitii(data_0209f43c, 0x1555, self->angle, 0x1000, 0x1388000);
+    data_0209f43c.Func_020156DC(0x1555, self->angle, 0x1000, 0x1388000);
 }
 }
 }

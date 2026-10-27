@@ -4,9 +4,8 @@
 // hit and mClsnResult1/2/3 holding the floor / wall / underneath hits.
 // DetectClsn and the two registry scans live in d_bg_ch_sph_crr_query.cpp.
 //
-// leftovers:
-//   - The hit-record forwarders call dBgPi::RecordHit by its mangled name:
-//     they take int triID, and the member's s16 parameter emits an sxth.
+// leftovers: the hit-record forwarders call dBgPi::RecordHit by its mangled
+// name: they take int triID, and the member's s16 parameter emits an sxth.
 #include "dBgCh_SphCrr.h"
 
 extern "C" {
@@ -33,9 +32,9 @@ void dBgCh_SphCrr::SetObjAndSphere(const Vector3 &pos, Fix12i radius, dActor_c *
     /* through the REFERENCE: a pointer-level upcast makes mwcc emit the
        null-checked MI adjustment (movs/addne), the ROM's is unconditional */
     ((dM3dGSph &)*this).Set(pos, radius);
-    this->SetActor(actor);
-    this->func_02037b5c();
-    this->mMaxNormalY = 0x1000;
+    SetActor(actor);
+    func_02037b5c();
+    mMaxNormalY = 0x1000;
 }
 
 /* Reset the whole query state: bounds, every flag bit, the base record and

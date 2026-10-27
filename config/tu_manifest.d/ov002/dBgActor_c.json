@@ -55,7 +55,7 @@
       "ordinal": 4
     },
     {
-      "symbol": "_ZN10dBgActor_c20UpdateKillByMegaCharEsss5Fix12IiE",
+      "symbol": "_ZN10dBgActor_c20UpdateKillByMegaCharEsssi",
       "address": "0x020ee674",
       "size": "0x00000158",
       "legacy_source": "src/_ZN10dBgActor_c20UpdateKillByMegaCharEsss5Fix12IiE.cpp",

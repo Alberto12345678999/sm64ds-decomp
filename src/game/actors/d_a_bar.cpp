@@ -7,18 +7,9 @@
  * daBar_c_classInit and g_profile_BAR are reconstructed from RTTI daBar_c
  * and the BAR registry. Retail does not store those spellings.
  */
-/* leftovers: dActor_c::SetRanges and dCcAc_c::Init stay TU-local externs.
- * InitResources calls both. A member call changes that function's size
- * because each definition takes Fix12<int> by value.
- */
 
 #include "daBar_c.h"
 #include "SpawnInfo.h"
-
-extern "C" {
-extern void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(
-    dCcAc_c *self, dActor_c *actor, int radius, int height, u32 flags, u32 vulnFlags);
-}
 
 enum {
     kHeightParamBias = 10,        /* subtracted from the param byte first */
@@ -59,9 +50,8 @@ s32 daBar_c::InitResources()
     s32 halfHeight = height >> 1;
 
     SetRanges(halfHeight, halfHeight, halfHeight + kClipPadFix12, 0);
-    _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(
-        &mClsn, this, kCylinderRadiusFix12, height,
-        (param1 & kParamHurtBit) ? kClsnFlagsHurt : kClsnFlags, 0);
+    mClsn.Init(this, kCylinderRadiusFix12, height,
+               (param1 & kParamHurtBit) ? kClsnFlagsHurt : kClsnFlags, 0);
     return 1;
 }
 

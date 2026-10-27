@@ -33,15 +33,8 @@
  * - func_ov090_02133190 and func_ov090_02133200: `mStateTimer == 0` is
  *   ldrsh. The ROM is ldrh, so the test is
  *   `*(unsigned short *)&mStateTimer`. One word in 02133190.
- * - InitResources dCcAcPos_c::Init: a Fix12<int> temporary grows the
- *   function 0x104 -> 0x114. A bare int does not compile (no conversion
- *   to Fix12<int>). The scalar extern keeps the ROM symbol.
  * - InitResources dExtAnmModel_c::SetAnim: a Fix12<int> speed temporary grows
  *   it 0x104 -> 0x110. Same symbol, bigger body.
- * - InitResources dBgCh_Actr::Init: the header method (Fix12i) relocates
- *   to _ZN10dBgCh_Actr4InitEP8dActor_ciiP10Vector3_16S3_. The ROM symbol
- *   is _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_. The
- *   instruction bytes stay 0x104; the destination does not.
  */
 
 
@@ -100,7 +93,6 @@ extern PukuStateRow data_ov090_02134594;
 extern PukuStateRow data_ov090_02134584;
 
 extern "C" {
-extern "C" void _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj( Player*, const Vector3&, unsigned int, Fix12i, unsigned int, unsigned int, unsigned int);
 extern Vector3 data_ov090_021342d8;
 extern int RandomIntInternal(void*);
 extern int data_0209e650[];
@@ -112,8 +104,6 @@ extern void Matrix4x3_FromTranslation(void *m, int x, int y, int z);
 extern void Matrix4x3_ApplyInPlaceToRotationXYZExt(void *m, short rx, short ry, short rz);
 extern struct Matrix4x3 data_020a0e68;
 extern unsigned short DecIfAbove0_Short(unsigned short *p);
-extern void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
-void *thisp, struct dActor_c *, struct Vector3 const &, int, int, unsigned int, unsigned int);
 /* Parameter names keep this TU's @NNN. */
 typedef void BgchInitAt_(void *thisp, struct dActor_c *, int, int, struct Vector3_16 *, int);
 }
@@ -138,8 +128,7 @@ int daPukupuku_c::InitResources()
     dExtFrameCtrl_c::LoadFile(*(struct SharedFilePtr *)&data_ov090_0213455c);
 
     v = data_ov090_021342d8;
-    _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
-        &mdCcAcPos_c, this, v, 0x32000, 0x3c000, 0x200004, 0x8000);
+    mdCcAcPos_c.Init(this, v, 0x32000, 0x3c000, 0x200004, 0x8000);
 
     mHomePosX = mPosX;
     mHomePosY = mPosY;
@@ -302,7 +291,7 @@ extern "C" void func_ov090_021330c8(char* thiz)
                 hv.x = c->mPosX;
                 hv.y = c->mPosY;
                 hv.z = c->mPosZ;
-                _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(a, hv, 1, 0xc000, 1, 0, 1);
+                a->Hurt(hv, 1, 0xc000, 1, 0, 1);
             }
         }
     }

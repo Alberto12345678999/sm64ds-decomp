@@ -39,6 +39,7 @@
 #include "daLuigi_c.h"
 #include "SharedFilePtr.h"
 #include "Player.h"
+#include "math/Approach.h"
 
 /* Twelve-word copy. Assigning Matrix4x3 itself is a different sequence. */
 struct Mtx { int m[12]; };
@@ -65,7 +66,6 @@ struct Obj;
 #define kAppearSound 0x179
 #define kMirrorSx (-0x1000)
 
-int ApproachLinear(int &value, int target, int step);
 
 extern "C" {
 /* Reflection state in this overlay. b68 is the request: bit 0 resets, bit 1
@@ -113,9 +113,6 @@ void Vec3_Asr(Vec3 *dst, Vec3 *src, int shift);
 void Matrix4x3_ApplyInPlaceToRotationY(Matrix4x3 *m, short angY);
 
 /* Fix12<int> by value. The method form homes that argument on the stack. */
-void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
-    dActor_c *self, dExtShadowModel_c *shadow, Matrix4x3 *mat, int radius, int depth,
-    unsigned char opacity);
 }
 
 /* Reconstructed source-style name: SM64DS proves daLuigi_c through RTTI,
@@ -186,8 +183,7 @@ int daLuigi_c::Behavior()
         (this->*mState->execute)(player);
     Matrix4x3_FromTranslation(&mShadowMatrix, mPosX >> 3, mPosY >> 3, mPosZ >> 3);
     func_ov002_020e4374((char *)player, &depth, &radius);
-    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
-        this, &mShadowModel, &mShadowMatrix, radius, depth, kShadowOpacity);
+    DropShadowRadHeight(mShadowModel, mShadowMatrix, radius, depth, kShadowOpacity);
     /* dCamera_c::mFramedActor; this file does not include dCamera_c.h. */
     *(daLuigi_c **)((char *)data_0209f318 + 0x114) = this;
     return 1;

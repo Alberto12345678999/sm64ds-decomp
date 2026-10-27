@@ -108,13 +108,6 @@ struct System {
 };
 }
 extern "C" {
-extern short _ZN8dActor_c12ReflectAngleE5Fix12IiES1_s(void*, int, int, short);
-extern void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
-    void *c, void *sm, void *mtx, int a, int b, unsigned char u);
-extern void *_ZN9dBgCh_LinC1Ev(dBgCh_Lin* self);
-extern dBgCh_Lin *_ZN9dBgCh_LinD1Ev(void* self);
-extern void *_ZN5dBgPiC1Ev(void* self);
-extern void _ZN5dBgPiD1Ev(void* self);
 extern void Matrix4x3_FromRotationY(void *m, int angle);
 extern short atan2_hold_d_a_coin_1(int a, int b);
 }
@@ -200,11 +193,9 @@ void daCoin_c::func_ov002_020b10e4()
     }
 
     {
-        char ray[0x78];
-        char hit[0x28];
+        dBgCh_Lin ray;
+        dBgPi hit;
         Vector3 rayTop, rayBottom;
-        _ZN9dBgCh_LinC1Ev((dBgCh_Lin*)ray);
-        _ZN5dBgPiC1Ev(hit);
         rayBottom.x = mPosX;
         rayBottom.y = mPosY;
         rayBottom.z = mPosZ;
@@ -213,20 +204,17 @@ void daCoin_c::func_ov002_020b10e4()
         rayTop.z = rayBottom.z;
         rayTop.y += 0x14000;
         rayBottom.y -= 0x1f4000;
-        ((dBgCh_Lin*)ray)->SetObjAndLine(rayTop, rayBottom, this);
-        if (((dBgCh_Lin*)ray)->DetectClsn()) {
-            ((dBgPi*)(ray + 0x10))->CopyTo(*(dBgPi*)hit);
-            if (((dBgPi*)hit)->GetClsnID() != (u32)-1 &&
-                dActor_c::FindWithID(((dBgPi*)hit)->GetClsnID()) != 0) {
+        ray.SetObjAndLine(rayTop, rayBottom, this);
+        if (ray.DetectClsn()) {
+            ray.CopyTo(hit);
+            if (hit.GetClsnID() != (u32)-1 && dActor_c::FindWithID(hit.GetClsnID()) != 0) {
                 ((CoinFlagBits*)((long long)&mCoinFlags))->floorState = FLOOR_DYNAMIC;
             } else {
-                Vector3 pos = ((dBgCh_Lin*)ray)->GetClsnPos();
+                Vector3 pos = ray.GetClsnPos();
                 mFloorPosY = pos.y;
                 ((CoinFlagBits*)((long long)&mCoinFlags))->floorState = FLOOR_FIXED;
             }
         }
-        _ZN5dBgPiD1Ev(hit);
-        _ZN9dBgCh_LinD1Ev(ray);
     }
 }
 
@@ -284,7 +272,7 @@ void daCoin_c::func_ov002_020b1384()
     int normal[3];
     void *wall = mWithMeshClsn.GetWallResult();
     ((SurfaceInfo*)((char*)wall + 4))->CopyNormalTo(*(Vector3*)normal);
-    mPrevAngleY = _ZN8dActor_c12ReflectAngleE5Fix12IiES1_s(this, normal[0], normal[2], mPrevAngleY);
+    mPrevAngleY = ReflectAngle(normal[0], normal[2], mPrevAngleY);
 }
 
 /* Shared per-frame tail of the movement handlers. Counts down the no-collision
@@ -355,8 +343,7 @@ void daCoin_c::func_ov002_020b14d8()
 
     floorState = ((CoinFlagBits*)&mCoinFlags)->floorState;
     if (floorState == FLOOR_DYNAMIC) {
-        _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
-            this, &mShadowModel, &mShadowMat, 0x50000, 0x1f4000, 0xf);
+        DropShadowRadHeight(mShadowModel, mShadowMat, 0x50000, 0x1f4000, 0xf);
         mClipRadius = 0x3e800;
         return;
     }
@@ -365,8 +352,7 @@ void daCoin_c::func_ov002_020b14d8()
     {
         int depth = mPosY - mFloorPosY;
         mClipRadius = (depth + 0x50000) >> 3;
-        _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
-            this, &mShadowModel, &mShadowMat, 0x50000, depth + 0x28000, 0xf);
+        DropShadowRadHeight(mShadowModel, mShadowMat, 0x50000, depth + 0x28000, 0xf);
     }
 }
 
@@ -886,7 +872,6 @@ int daCoin_c::Behavior()
 extern "C" {
 extern int SublevelToLevel(int i);
 extern void SetStarMarker(int i, void* actor, int v2);
-extern void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void* thiz, void* actor, s32 f1, s32 f2, u32 a, u32 b);
 /* Parameter names keep this TU's @NNN. */
 typedef void BgchInitAt_(void *thiz, void *actor, s32 f1, s32 f2, void *v, s32 f3);
 }
@@ -1039,7 +1024,7 @@ common:;
         return 0;
     }
 
-    _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCc_c, this, ccRadius, ccHeight, 0x100002, 0x8000);
+    mdCc_c.Init(this, ccRadius, ccHeight, 0x100002, 0x8000);
     mWithMeshClsn.Init(this, 0x3c000, 0x3c000, 0, 0);
     mWithMeshClsn.SetLimMovFlag();
     mWithMeshClsn.StartDetectingWater();

@@ -56,16 +56,18 @@ struct SaveData {
        instead of each file spelling them by hand.
 
        Every parameter type below is read off the mangled name, not chosen:
-       `Ej` is u32, `Ei` is s32, `Eah` is (s8, u8), `EPc` is char*. Widening
-       SetCoinRecordIfHigher's first parameter to int would spell `Ei` and name
-       a different function. */
+       `Ej` is u32, `Ei` is s32, `EPc` is char*. SetCoinRecordIfHigher is
+       (int, u8), `Eih`: its body compiles alike with an s8 or an int course,
+       and both callers pass a level index wider than s8 with no narrowing in
+       the ROM; the coin count is u8 because the body compares it unextended
+       (an int there changes the bytes). */
     static int CanPlayerHaveCap();
     static void PlayerLoseCap();
     static int HasPlayerLostCap();
     static u8 GetCoinRecord(u32 courseID);
     static s32 IsCharacterUnlocked(u32 character);
     static void SetCharacterIntro(s32 character);
-    static void SetCoinRecordIfHigher(s8 courseID, u8 coins);
+    static void SetCoinRecordIfHigher(int courseID, u8 coins);
     static u8 CountStarsCollectedInLevel(u32 courseID);
     static int NumGlowingRabbitsFound();
 

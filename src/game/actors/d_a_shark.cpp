@@ -31,8 +31,6 @@
  *   0x114. The int temporary stays.
  * - func_ov090_0213387c: dExtAnmModel_c::SetAnim with a Fix12<int> speed is
  *   size 0x38 to 0x44. The int-parameter call stays.
- * - InitResources: dCcAcPos_c::Init with Fix12<int> radius and height is
- *   size 0x108 to 0x118. The int-parameter call stays.
  * - Behavior: clamping with `speed < mTerminalVelocity` and dropping the
  *   mSpeedZ copy is size 0x1c0 to 0x1b8 and shifts the calls
  *   (WRONG-DEST, func_ov090_02133904 against 0x02010d40). The
@@ -52,6 +50,7 @@ enum daShark_c_AssetId {
 #include "PathPtr.h"
 #include "SharedFilePtr.h"
 #include "Player.h"
+#include "math/Approach.h"
 
 /* Scratch matrix, owned by the overlay. */
 
@@ -71,14 +70,8 @@ extern s16 Vec3_VertAngle(Vector3 *a, Vector3 *b);
 extern void Matrix4x3_FromRotationY(void *matrix, s32 angle);
 extern void Matrix4x3_ApplyInPlaceToRotationX(void *matrix, s16 angle);
 extern void MulVec3Mat4x3(void *a, void *matrix, void *b);
-extern void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
-    void *thiz, void *actor, void *pos, int f, int g,
-    unsigned int h, unsigned int i);
-extern void _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(
-    void *, void *, unsigned int, int, unsigned int, unsigned int, unsigned int);
 }
 
-bool ApproachLinear(short &value, short target, short step);
 
 typedef int (daShark_c::*SharkFn)();
 
@@ -165,7 +158,7 @@ extern "C" void func_ov090_02133710(daShark_c *self)
     pos.x = self->mPosX;
     pos.y = self->mPosY;
     pos.z = self->mPosZ;
-    _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(hit, &pos, 3, 0xc000, 1, 0, 1);
+    ((Player *)hit)->Hurt(pos, 3, 0xc000, 1, 0, 1);
 }
 
 // @symbol func_ov090_02133830
@@ -313,8 +306,7 @@ int daShark_c::InitResources()
     mClsnOffset.x = 0;
     mClsnOffset.y = 0;
     mClsnOffset.z = 0;
-    _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
-        &mdCcAcPos_c, this, &mClsnOffset, 0x42000, 0x6e000, 0x200004, 0);
+    mdCcAcPos_c.Init(this, mClsnOffset, 0x42000, 0x6e000, 0x200004, 0);
     {
         PathPtr path;
         path.FromID(mPathID);

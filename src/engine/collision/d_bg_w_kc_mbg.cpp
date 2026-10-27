@@ -1,7 +1,8 @@
 //cpp
 /* The constructor/destructor order retains all five lifecycle variants used
  * by dBgW_KcMbgSclY. The func_02039* transform workers retain C linkage.
- * SetFile is the scalar method. Flat matrix copies use RawMatrix4x3;
+ * SetFile and dBgCh_SphCrr::SetObjAndSphere are scalar Fix12i methods.
+ * Flat matrix copies use RawMatrix4x3;
  * the shared Matrix4x3 copy changes the retail instruction sequence.
  */
 /* dBgW_KcMbg: KCL mesh under a Matrix4x3, with a uniform scale.

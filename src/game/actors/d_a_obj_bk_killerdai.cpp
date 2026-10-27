@@ -25,9 +25,9 @@
  * identical sequence.
  *
  * leftovers:
- * - Particle::System::NewSimple, dBgActor_c::UpdateKillByMegaChar,
- *   dBgActor_c::IsClsnInRange and dBgW_KcMbg::SetFile take Fix12<int> by
- *   value, so the calls stay on the mangled spelling.
+ * - Particle::System::NewSimple, dBgActor_c::IsClsnInRange and
+ *   dBgW_KcMbg::SetFile take Fix12<int> by value, so the calls stay on the
+ *   mangled spelling.
  * - Kill stores pos and dustPos memberwise; a Vector3 assignment does not
  *   match. Behavior widens mPosY through `long long` before the
  *   spawn-height add.
@@ -58,8 +58,6 @@ struct System {
     static void NewSimple(u32 id, int x, int y, int z);
 };
 }
-extern int _ZN10dBgActor_c20UpdateKillByMegaCharEsss5Fix12IiE(void *self, short a, short b, short c,
-                                                              int d);
 
 extern int IsStarCollectedInCurLevel(int starID);
 extern s8 data_0209f2f8;
@@ -128,12 +126,11 @@ s32 daObjBkKillerdai_c::Render()
 }
 
 // @symbol _ZN18daObjBkKillerdai_c8BehaviorEv
-/* dBgActor_c::UpdateKillByMegaChar and dBgActor_c::IsClsnInRange take
- * Fix12<int> by value, so they stay mangled. mPosY is widened through a
- * long long before the spawn-height add; a plain add misses. */
+/* mPosY is widened through a long long before the spawn-height add; a
+ * plain add misses. */
 s32 daObjBkKillerdai_c::Behavior()
 {
-    if (_ZN10dBgActor_c20UpdateKillByMegaCharEsss5Fix12IiE(this, 0x2000, 0, 0, 0xc8000))
+    if (UpdateKillByMegaChar(0x2000, 0, 0, 0xc8000))
         return 1;
     if (!dActor_c::FindWithID(mSpawnedUniqueID)) {
         Player *player = ClosestPlayer();

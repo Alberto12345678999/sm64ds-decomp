@@ -26,12 +26,7 @@
  *
  * Source order is the reverse of the ROM. The factory is written first.
  */
-/* leftovers: dExtAnmModel_c::SetAnim, dCcAc_c::Init and
- * dActor_c::DropShadowRadHeight stay mangled. This file calls them, and
- * each takes Fix12<int> by value. Player::ShowMessage stays a local
- * extern: the member re-masks the flag bytes and func_ov084_0212c9f0
- * grows. dCamera_c::SetFlag_3 has no declaration in dCamera_c.h.
- * data_ov084_02130da4, data_ov084_02130d9c and data_ov084_02130dc4 keep
+/* leftovers: data_ov084_02130da4, data_ov084_02130d9c and data_ov084_02130dc4 keep
  * address names. This text-only TU does not own that .bss. The state
  * bodies stay address-named members; the table reaches them by address.
  */
@@ -42,10 +37,11 @@
 #include "Player.h"
 #include "dCamera_c.h"
 #include "dBgCh_Gnd.h"
-#include "decl_SaveData.h"
+#include "SaveData.h"
 #include "daObjCannonShutter_c.h"
 #include "Sound.h"
 #include "cstd.h"
+#include "math/Approach.h"
 
 struct BCA_File;
 
@@ -87,7 +83,6 @@ struct RedBombheiState {
     RedBombheiStatePMF update;
 };
 
-bool ApproachLinear(short &value, short target, short step);
 
 extern SharedFilePtr data_ov084_02130da4;   /* the model */
 extern SharedFilePtr data_ov084_02130d9c;   /* the idle animation */
@@ -129,15 +124,6 @@ void  MulVec3Mat4x3(Vector3 *v, Matrix4x3 *m, Vector3 *out);
 void  Matrix4x3_FromRotationY(void *m, int angle);
 int   Math_Function_0203b14c(int *value, int target, int a, int b, int c);
 
-/* Player::ShowMessage takes the two flag bytes as unsigned char. The
-   member re-masks the caller's word and func_ov084_0212c9f0 grows. */
-int _ZN6Player11ShowMessageER7fBase_cjPK7Vector3hh(Player *self, fBase_c *actor, unsigned int msgID, const Vector3 *pos, unsigned int a, unsigned int b);
-
-/* local extern: dCamera_c.h does not declare this member. */
-void _ZN9dCamera_c9SetFlag_3Ev(dCamera_c *cam);
-
-void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(dCcAc_c *self, dActor_c *actor, int radius, int height, unsigned int flags, unsigned int vulnFlags);
-void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(dActor_c *self, dExtShadowModel_c *shadow, Matrix4x3 *mtx, int radius, int depth, unsigned char opacity);
 
 }
 
@@ -162,7 +148,7 @@ s32 daRedBombhei_c::InitResources()
     mAnmModel.SetFile(modelFile, 1, -1);
     mShadowModel.InitCylinder();
     dExtFrameCtrl_c::LoadFile(data_ov084_02130d9c);
-    _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, this, 0x8c000, 0x8c000, 0x4200004, 0);
+    mdCcAc_c.Init(this, 0x8c000, 0x8c000, 0x4200004, 0);
     func_ov084_0212c960(0);
     mShutterID = 0;
 
@@ -183,8 +169,7 @@ s32 daRedBombhei_c::InitResources()
         u8 character = ClosestPlayer()->mCharacter;
         if ((character == 0 && param1 == kParamMario) ||
             (character == 1 && param1 == kParamLuigi) ||
-            (character == 2 && param1 == kParamWario) ||
-            _ZN8SaveData16HasPlayerLostCapEv())
+            (character == 2 && param1 == kParamWario) || SaveData::HasPlayerLostCap())
             return 0;
     }
 
@@ -247,7 +232,7 @@ void daRedBombhei_c::func_ov084_0212ce50()
     this->mShadowMat.t.x = this->mPosX >> 3;
     this->mShadowMat.t.y = (this->mPosY - 0x8000) >> 3;
     this->mShadowMat.t.z = this->mPosZ >> 3;
-    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(this, &this->mShadowModel, &this->mShadowMat, 0x64000, 0x32000, 0xf);
+    DropShadowRadHeight(this->mShadowModel, this->mShadowMat, 0x64000, 0x32000, 0xf);
 }
 
 // @symbol _ZN14daRedBombhei_c19func_ov084_0212cda0EP7Vector3S1_
@@ -423,10 +408,9 @@ int daRedBombhei_c::func_ov084_0212ca60()
     return result;
 }
 
-// @symbol _ZN14daRedBombhei_c19func_ov084_0212c9f0Eij
+// @symbol _ZN14daRedBombhei_c19func_ov084_0212c9f0Eih
 /* Opens message msgID on the talking player's screen, with the talk sound. */
-void daRedBombhei_c::func_ov084_0212c9f0(int msgID, unsigned int msgFlag)
-{
+void daRedBombhei_c::func_ov084_0212c9f0(int msgID, u8 msgFlag) {
     Player *player = this->mTalkPlayer;
     Vector3 pos;
     int x = this->mPosX;
@@ -436,7 +420,7 @@ void daRedBombhei_c::func_ov084_0212c9f0(int msgID, unsigned int msgFlag)
     pos.y = y;
     pos.z = z;
     func_02012694(0x108, &this->mCamSpacePos);
-    _ZN6Player11ShowMessageER7fBase_cjPK7Vector3hh(player, this, (s16)msgID, &pos, msgFlag, 0);
+    player->ShowMessage(*this, (s16)msgID, &pos, msgFlag, 0);
 }
 
 // @symbol _ZN14daRedBombhei_c19func_ov084_0212c9a8Ev
@@ -669,7 +653,7 @@ void daRedBombhei_c::func_ov084_0212c1a0()
             this->mSavedCamPos.x = pos[0];
             this->mSavedCamPos.y = pos[1];
             this->mSavedCamPos.z = pos[2];
-            _ZN9dCamera_c9SetFlag_3Ev(cam);
+            cam->SetFlag_3();
             this->mFlags &= ~1;
             this->mCutsceneStep += 1;
             return;

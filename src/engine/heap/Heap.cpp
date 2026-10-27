@@ -481,7 +481,7 @@ void ExpHeap_t::VDestroy()
  * SolidHeap function at all. */
 
 /* 0x0204ebb8, twelve bytes and still unnamed. It is almost certainly
-   SolidHeapAllocator::Destroy -- _ZN13HeapAllocator7DestroyEv at 0x0204e3b4 is
+   SolidHeapAllocator::Destroy -- HeapAllocator::Destroy() at 0x0204e3b4 is
    the same size and shape -- but "almost certainly" is not evidence, and minting
    a mangled symbol is a claim with its own gate (see the naming rule in
    notes/plan-cpp-language-mode.md section 4). The call stays raw until then;
@@ -536,9 +536,9 @@ void* ExpHeap_t::VAllocate(u32 size, int align)
  * instructions: load the allocator from this+0x14 and tail-call it, passing
  * r1 and r2 through untouched.
  *
- * THE SYMBOL WAS _ZN9SolidHeap9VAllocateEjj AND THAT WAS WRONG. `Ejj' claims
+ * THE SYMBOL WAS SolidHeap::VAllocate(u32, u32) AND THAT WAS WRONG. `Ejj' claims
  * (u32, u32); ExpandingHeap's override of the SAME SLOT is
- * _ZN5mHeap9ExpHeap_t9VAllocateEji, which claims (u32, int). Two overrides of
+ * mHeap::ExpHeap_t::VAllocate(u32, int), which claims (u32, int). Two overrides of
  * one slot cannot have different parameter types, so one import was wrong, and
  * nothing in the tree could tell which -- a caller cannot observe a parameter's
  * signedness through a virtual call, and until SolidHeap actually derived from
@@ -861,8 +861,9 @@ void SolidHeap_t::VDeallocate(void* ptr)
  * block).
  *
  * Deallocate is now a real member call, replacing the hand-spelled
- * `extern void _ZN22ExpandingHeapAllocator10DeallocateEPv(void*, void*)` -- which in a
- * C++ TU would have mangled a second time.
+ * extern spelling of ExpandingHeapAllocator::Deallocate(void*) as a free
+ * function taking (void*, void*) -- which in a C++ TU would have mangled a
+ * second time.
  */
 void ExpandingHeapAllocator::InvokeDeallocate(void* p, ExpandingHeapAllocator* alloc, u32 size)
 {

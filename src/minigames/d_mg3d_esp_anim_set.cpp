@@ -43,6 +43,9 @@ struct System {
 #pragma defer_codegen off
 
 #include "common.h"
+#include "G2.h"
+#include "G2x.h"
+#include "GX.h"
 #include "types.h"
 #include "nitro/fx/fx.h"
 #include "SharedFilePtr.h"
@@ -56,9 +59,8 @@ struct System {
 #include "Sound.h"
 #include "PlayerInput.h"
 #include "dExtSimpleModel_c.h"
-namespace cstd {
-s16 atan2(s32, s32);
-}
+#include "cstd.h"
+#include "math/Approach.h"
 
 struct BMD_File;
 struct BTP_File;
@@ -85,11 +87,6 @@ struct EspAnimSetTexSequenceFilePtr : SharedFilePtr {
     ~EspAnimSetTexSequenceFilePtr();
 };
 
-struct G2x {
-    static void SetBlendBrightness(volatile unsigned short *, unsigned short, short);
-    static void SetBlendAlpha(volatile unsigned short *, unsigned short, unsigned short,
-                              unsigned short, unsigned int);
-};
 extern "C" {
 /* The file handles: word 1 of a SharedFilePtr is its loaded file. */
 extern EspAnimSetModelFilePtr gEspCardModelFile;
@@ -105,12 +102,8 @@ extern EspAnimSetModelFilePtr gEspIrieModelFile;
 
 extern Matrix4x3 data_020a0e68;
 void Matrix4x3_FromTranslation(void* m, int x, int y, int z);
-int _Z15ApproachLinear2Rsss(short* p, short a, short b);
 void func_02046208(char* a, int b, int c);
 int func_020179b4(void* r0, void* r1, int r2);
-/* RowFade passes 0x10 - n, which the real unsigned short parameter would
-   truncate. That call stays on the spelled name. */
-void _ZN3G2x13SetBlendAlphaEPVttttj(volatile unsigned short *p, int a, int b, int c, int d);
 s16 atan2_hold_d_mg3d_esp_anim_set_1(s32 y, s32 x);
 int RandomIntInternal(int *seed);
 extern int data_0209d4b8;
@@ -127,10 +120,7 @@ void Mg_SetTopScreenYOffset(int);
 void InitialiseVramGlobals(void);
 void Deallocate(void*);
 int LoadFile(int handle);
-unsigned _ZN3G2S13GetBG2CharPtrEv(void);
 void DecompressLZ16(void *src, void *dst);
-void _ZN3GXS10LoadBGPlttEPKvjj(const void* p, unsigned int a, unsigned int b);
-void _ZN3GXS11LoadOBJPlttEPKvjj(const void* p, unsigned int a, unsigned int b);
 void func_02056374(const void*, u32, u32);
 
 extern int sEsp3DMaterialAnim;
@@ -209,7 +199,7 @@ void dMg3DEspAnimSet_c::Behavior() {
     char *self = (char *)this;
     int sb = 0;
     if (mRepeats != 0) {
-        if (_Z15ApproachLinear2Rsss(&mPhase, 0, 1)) {
+        if (ApproachLinear2(mPhase, 0, 1)) {
             mPhase = mPeriod;
             sb = 1;
             if (mRepeats > 0) {
@@ -902,9 +892,7 @@ void dScMg3DEsp_c::RowFade(int i)
     mFade += 1;
     {
         unsigned char ip = mFade;
-        _ZN3G2x13SetBlendAlphaEPVttttj(
-            (volatile unsigned short *)0x4001050, 0, 4,
-            0x10 - ip, ip);
+        G2x::SetBlendAlpha((volatile unsigned short *)0x4001050, 0, 4, 0x10 - ip, ip);
     }
     if (mFade < 0x10)
         return;
@@ -1550,11 +1538,11 @@ s32 dScMg3DEsp_c::InitResources()
     *(volatile unsigned short*)0x400100c = (*(volatile unsigned short*)0x400100c & 0x43) | 0x210;
 
     f = LoadFile(0x12);
-    DecompressLZ16((void*)f, (void*)(_ZN3G2S13GetBG2CharPtrEv() + 0x4000));
+    DecompressLZ16((void *)f, (void *)((unsigned)G2S::GetBG2CharPtr() + 0x4000));
     Deallocate((void*)f);
 
     f = LoadFile(0x13);
-    _ZN3GXS10LoadBGPlttEPKvjj((const void*)f, 0x1e0, 0x20);
+    GXS::LoadBGPltt((const void *)f, 0x1e0, 0x20);
     Deallocate((void*)f);
 
     f = LoadFile(0x14);
@@ -1564,7 +1552,7 @@ s32 dScMg3DEsp_c::InitResources()
     r5v = LoadFile(8);
     r4v = LoadFile(9);
     DecompressLZ16((void*)r5v, (void*)0x6600000);
-    _ZN3GXS11LoadOBJPlttEPKvjj((const void*)r4v, 0, 0x100);
+    GXS::LoadOBJPltt((const void *)r4v, 0, 0x100);
     Deallocate((void*)r5v);
     Deallocate((void*)r4v);
 

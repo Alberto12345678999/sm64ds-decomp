@@ -51,12 +51,10 @@ struct Vector3_16f;
 #include "SharedFilePtr.h"
 #include "Sound.h"
 #include "dBgCh_Gnd.h"
-#include "decl_dBgCh_Actr.h"
 #include "decl_Particle.h"
 #include "dBgCh_Actr.h"
 #include "cstd.h"
-
-bool ApproachLinear(short &value, short target, short step);
+#include "math/Approach.h"
 
 #pragma defer_codegen off
 
@@ -88,16 +86,13 @@ void func_ov077_02125e94(daTgz_c *self, int state);
 int SurfaceInfo_TestFlag0x20(int *p);
 void func_02012694(unsigned int id, const Vector3 *pos);
 s32 func_02010844(void *unused, Vector3 *v, s16 angle);
-void _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs(void *self, const Vector3 *pos, unsigned int count, int spread, short angle);
 short Vec3_HorzAngle(void *a, void *b);
-int _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void *self, const Vector3 *pos, unsigned int a, int fix, u8 b, u8 c, u8 d);
 void Vec3_Asr(void *dst, void *src, int sh);
 void Matrix4x3_FromTranslation(void *m, int x, int y, int z);
 void Matrix4x3_ApplyInPlaceToTranslation(void *m, int x, int y, int z);
 void Matrix4x3_ApplyInPlaceToRotationZXYExt(void *m, int x, int y, int z);
 void Matrix4x3_FromRotationZXYExt(void *m, int x, int y, int z);
 extern Matrix4x3 data_020a0e68;
-void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(void *self, void *shadow, void *mtx, int rad, int depth, u8 opacity);
 unsigned char DecIfAbove0_Byte(unsigned char *p);
 namespace Particle {
 struct System {
@@ -113,7 +108,6 @@ extern int data_0209e650;
 unsigned int d_a_tgzNewHold(unsigned int uniqueID, unsigned int effectID, int x, int y, int z,
                             const void *dir, void *callback);
 extern int data_0209f32c;
-void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *self, dActor_c *actor, int radius, int height, unsigned int flags, unsigned int vulnFlags);
 extern char IDENTITY_MATRIX4X3;
 extern signed char data_0209f2f8;
 }
@@ -210,7 +204,7 @@ extern "C" void func_ov077_02124d08(daTgz_c *self, dBgCh_Actr *clsn)
                 return;
             }
             {
-                dBgPi *fr = (dBgPi *)clsn->GetFloorResult();
+                dBgPi *fr = clsn->GetFloorResult();
                 fr->surface.CopyNormalTo(normal);
             }
             if (normal.y != 0) {
@@ -224,7 +218,7 @@ extern "C" void func_ov077_02124d08(daTgz_c *self, dBgCh_Actr *clsn)
         }
     }
     if (clsn->IsOnWall()) {
-        dBgPi *wr = (dBgPi *)_ZNK10dBgCh_Actr13GetWallResultEv(clsn);
+        dBgPi *wr = clsn->GetWallResult();
         wr->surface.CopyNormalTo(wallnormal);
     }
 }
@@ -243,7 +237,7 @@ extern "C" void func_ov077_02124eb0(void *vc)
         v[0] = self->mPosX;
         v[1] = self->mPosY;
         v[2] = self->mPosZ;
-        _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs(self, (const Vector3 *)v, 1, 0x2000, 0);
+        self->SpawnCoins(*(const Vector3 *)v, 1, 0x2000, 0);
         self->PoofDust();
         func_02012694(0xc4, &self->mCamSpacePos);
         self->MarkForDestruction();
@@ -296,7 +290,7 @@ extern "C" void func_ov077_02124eb0(void *vc)
         v[0] = self->mPosX;
         v[1] = self->mPosY;
         v[2] = self->mPosZ;
-        _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(player, (const Vector3 *)v, 2, 0xc000, 1, 0, 1);
+        player->Hurt(*(const Vector3 *)v, 2, 0xc000, 1, 0, 1);
     }
 }
 
@@ -334,7 +328,7 @@ extern "C" void func_ov077_021250a8(void *vc)
     v.x = self->mPosX;
     v.y = self->mPosY;
     v.z = self->mPosZ;
-    _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(player, &v, 2, 0xc000, 1, 0, 1);
+    player->Hurt(v, 2, 0xc000, 1, 0, 1);
 }
 
 // @symbol func_ov077_021251d0
@@ -387,8 +381,8 @@ extern "C" void func_ov077_02125304(char *vc)
     self->mShadowMatrix[9] = self->mPosX >> 3;
     self->mShadowMatrix[10] = self->mPosY >> 3;
     self->mShadowMatrix[11] = self->mPosZ >> 3;
-    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
-        self, &self->mShadowModel, self->mShadowMatrix, 0x50000, 0x320000, 0xf);
+    self->DropShadowRadHeight(self->mShadowModel, *(Matrix4x3 *)self->mShadowMatrix, 0x50000,
+                              0x320000, 0xf);
 }
 
 // @symbol func_ov077_021253a4
@@ -409,7 +403,7 @@ extern "C" int func_ov077_021253a4(daTgz_c *self)
         v.x = self->mPosX;
         v.y = self->mPosY;
         v.z = self->mPosZ;
-        _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs(self, &v, 1, 0x2000, 0);
+        self->SpawnCoins(v, 1, 0x2000, 0);
         self->PoofDust();
         func_02012694(0xc4, &self->mCamSpacePos);
         self->MarkForDestruction();
@@ -839,7 +833,7 @@ int daTgz_c::InitResources()
     mAnmModel.SetAnim((BCA_File *)TGZ_BCA, 0, 0x1000, 0);
     if (!mShadowModel.InitCylinder())
         return 0;
-    _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, this, 0x2d000, 0x3c000, 0x200000, 0x4a3d0);
+    mdCcAc_c.Init(this, 0x2d000, 0x3c000, 0x200000, 0x4a3d0);
     mWithMeshClsn.Init(this, 0x2d000, 0, &mPrevAngle, &mAngle);
     mScaleX = 0x1000;
     mScaleY = 0x1000;

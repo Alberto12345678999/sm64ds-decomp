@@ -20,8 +20,7 @@ struct Vector3_16f;
 // leftovers:
 // - func_ov080_02124418 stays free. Its first argument is a daChoro_Rock_c,
 //   so it is not a daChoropu_c method.
-// - dExtAnmModel_c::SetAnim, dCcAc_c::Init, dBgCh_Actr::Init, Player::Hurt,
-//   Particle::System::New/NewSimple retain scalar mangled declarations for
+// - Player::Hurt and Player::Bounce retain scalar mangled declarations for
 //   their by-value Fix12 parameters. Throw's spawn id stays
 //   `py ? 0x137 : 0x137`.
 // - LAUND() in func_ov080_02124088 keeps the cylinder flags, mFlags and
@@ -99,10 +98,6 @@ struct System {
 }
 unsigned int d_a_choropuNewHold(unsigned int a, unsigned int b, int x, int y, int z, void *vel,
                                 void *cb);
-void  _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void *player, void *pos, unsigned int a, int b,
-    unsigned int d, unsigned int e, unsigned int f);
-void  _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *self, void *actor, int r, int h,
-    unsigned int e, unsigned int g);
 /* Parameter names keep this TU's @NNN. */
 typedef int BgchInitAt_(void *self, void *actor, int radius, int height, Vector3_16 *a,
                         Vector3_16 *b);
@@ -585,7 +580,7 @@ void daChoropu_c::func_ov080_02124208()
 
     if (JumpedOnByPlayer(mdCcAc_c, *p)) {
         func_ov080_02124088();
-        _ZN6Player6BounceE5Fix12IiE(p, 0x28000);
+        p->Bounce(0x28000);
         return;
     }
 
@@ -609,7 +604,7 @@ void daChoropu_c::func_ov080_02124208()
         pos.x = mPosX;
         pos.y = mPosY;
         pos.z = mPosZ;
-        _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(p, &pos, 2, 0xc000, 1, 0, 1);
+        p->Hurt(pos, 2, 0xc000, 1, 0, 1);
     }
 }
 
@@ -747,13 +742,13 @@ s32 daChoro_Rock_c::Behavior()
                 pos.x = mPosX;
                 pos.y = mPosY;
                 pos.z = mPosZ;
-                _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(player, &pos, 1, 0xc000, 1, 0, 1);
+                player->Hurt(pos, 1, 0xc000, 1, 0, 1);
             } else if (!player->mIsVanish) {
                 Vector3 pos;
                 pos.x = mPosX;
                 pos.y = mPosY;
                 pos.z = mPosZ;
-                _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(player, &pos, 1, 0xc000, 1, 0, 1);
+                player->Hurt(pos, 1, 0xc000, 1, 0, 1);
             }
         }
     }
@@ -814,7 +809,7 @@ s32 daChoropu_c::InitResources()
     dExtSimpleModel_c::LoadFile(data_ov080_021283c8);
     mAnmModel.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(data_ov080_021283c0), 1, -1);
     mAnmModel.SetAnim((BCA_File *)data_ov080_021283d8.filePtr, 0, 0x1000, 0);
-    _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, this, 0x50000, 0x64000, 0x200000, 0x66fe0);
+    mdCcAc_c.Init(this, 0x50000, 0x64000, 0x200000, 0x66fe0);
     mGroupMode = param1 & 0xf;
     mState = daChoropu_ST_SETUP;
     if (mGroupMode == daChoropu_GROUP_SOLO) mHasTurn = 1;
@@ -838,7 +833,7 @@ s32 daChoro_Rock_c::InitResources()
 {
     if (!mModel.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(data_ov080_021283c8), 1, -1))
         return 0;
-    _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, this, 0x1e000, 0x1e000, 0x200004, 0);
+    mdCcAc_c.Init(this, 0x1e000, 0x1e000, 0x200004, 0);
     mIsSmall = param1 & 1;
     mWithMeshClsn.Init(this, 0x1e000, 0x1e000, 0, 0);
     mVertAccel = -0x2000;

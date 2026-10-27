@@ -258,7 +258,7 @@ struct Player : dActor_c {
     s32 mFloorNormalZ;            /* 0x55c */
     /* Wall normal, fx12, and the exact counterpart of the floor normal above.
      * func_ov002_020c25a8 writes all three from
-     * SurfaceInfo::CopyNormalTo(dBgCh_Actr::GetWallResult(&mMeshClsn) + 4, &wn)
+     * mMeshClsn.GetWallResult()->surface.CopyNormalTo(wn)
      * -- the same helper, the same shape, one surface over. It then pushes the
      * actor out along it (`mPosX -= mWallNormalX * 2`, `mPosZ -= mWallNormalZ * 2`).
      * Seven bodies read the pair back as `cstd::atan2(mWallNormalX, mWallNormalZ)`
@@ -785,6 +785,8 @@ struct Player : dActor_c {
     int HasFinishedTalking();
     int HasNoCap();
     int Heal(int amt);
+    /* Unnamed parameters: a named one advances @NNN in every Player.h consumer. */
+    int Hurt(const Vector3 &, u32, Fix12i, u8, u8, u8);
     int IsAnim(unsigned int a);
     int IsBeingShotOutOfCannon();
     int IsCollectingCap();
@@ -1006,6 +1008,9 @@ struct Player : dActor_c {
     s32 St_Null_Main();
     unsigned int GetBodyModelID(unsigned int a, bool b_) const;
     void BlowAway(short v);
+    /* Unnamed parameters: a named one advances @NNN in every Player.h consumer. */
+    void Bounce(Fix12i);
+    void SpinBounce(Fix12i);
     void EnterWhirlpool();
     void IncMegaKillCount();
     void InitBalloonMario();
@@ -1021,7 +1026,7 @@ struct Player : dActor_c {
     void SetNewHatCharacter(unsigned int p1, unsigned int p2, bool p3);
     void SetRealCharacter(unsigned int chr_);
     void TurnOffToonShading(unsigned int j);
-    void Unk_020ca488();
+    int Unk_020ca488();
 
     /* Player commands of the Kuppa script (ov002 0x020bccfc..0x020bd828).
        func_ov002_020bd664 dispatches a command record to one of fourteen of

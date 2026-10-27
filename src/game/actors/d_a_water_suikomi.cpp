@@ -35,10 +35,6 @@
  * - The helpers keep their func_ov026_* names and C linkage: the static
  *   initializer and the state record name them by address, and none has a
  *   recovered name.
- * - dCcAcPos_c::Init stays the mangled extern (InitResources): the real
- *   member takes its radius and height as Fix12<int> by value and mwccarm
- *   homes both in stack temporaries; measured 0x88 -> 0x98 with a 0x20
- *   frame instead of 0x18.
  */
 #include "decl_common.h"
 #include "daWater_Suikomi_c.h"
@@ -76,7 +72,6 @@ extern unsigned short DecIfAbove0_Short(unsigned short *p);
 struct V3 {
     int x, y, z;
 };
-extern void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(void *thiz, void *actor, V3 *vec, int a, int b, unsigned int cc, unsigned int d);
 extern V3 data_ov026_02113f4c;
 }
 
@@ -189,9 +184,7 @@ int daWater_Suikomi_c::InitResources()
     V3 vec;
     unk_314 = param1 & 0xff;
     vec = data_ov026_02113f4c;
-    /* See leftovers: the mangled extern stands in for the Fix12-by-value
-       member. */
-    _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(&mdCcAcPos_c, this, &vec, 0x64000, 0xa4000, 0x800006, 0);
+    mdCcAcPos_c.Init(this, *(Vector3 *)&vec, 0x64000, 0xa4000, 0x800006, 0);
     func_ov026_021122d4(this, &data_ov026_02113f58);
     return 1;
 }

@@ -14,8 +14,10 @@
 
 #include "dScMgD3DBase_c.h"
 #include "decl_common.h"
-#include "decl_Particle.h"
 #include "types.h"
+#include "GX.h"
+#include "G2.h"
+#include "CP15.h"
 
 /* An OAM entry, with attributes 0 and 1 stored as one word the way this
  * code writes them. */
@@ -67,12 +69,6 @@ void  Ov004_Deallocate(void *x);
 struct dCamera_c;
 void  Camera_UpdateMatrices(dCamera_c *camera);
 
-/* The same for the saved-bank restores: GX takes u16, and passing the saved
- * s32 through the real declaration adds 16 bytes each to InitSubScreenBg and
- * RestoreScreenFromMenu. Constant banks use the GX namespace below. */
-void  _ZN2GX15SetBankForSubBGEt(unsigned int x);
-void  _ZN2GX16SetBankForSubOBJEt(unsigned int x);
-
 /* Defined below. */
 void D3D_InitDualScreen(void);
 void D3D_ClearCaptureTable(void);
@@ -84,20 +80,6 @@ int  D3D_PanForX(int a);
 
 }
 
-namespace GX {
-void LoadOBJPltt(const void*, u32, u32);
-void SetBankForBG(u16);
-void SetBankForOBJ(u16);
-void SetBankForSubBG(u16);
-void SetBankForSubOBJ(u16);
-void DisableAllBanks();
-void SetBankForTex(u16);
-void SetBankForTexPltt(u16);
-void SetGraphicsMode(int, int, int);
-}
-namespace GXS { void LoadOBJPltt(const void*, u32, u32); void SetGraphicsMode(int); }
-namespace G2S { u32 GetBG1CharPtr(); u32 GetBG1ScrPtr(); }
-namespace CP15 { void FlushAndInvalidateDataCache(u32, u32); }
 namespace Particle { void RenderAll(); }
 
 // @symbol D3D_CaptureToMain
@@ -201,7 +183,7 @@ int dScMgD3DBase_c::InitSubScreenBg()
         char *dst = (char*)0x6600000; dst += 0x2000;
         DecompressLZ16((void *)sD3DSubScreenBgByLanguage[GetGameLanguage()], dst);
     }
-    _ZN2GX16SetBankForSubOBJEt(mSavedSubObjBank);
+    GX::SetBankForSubOBJ(mSavedSubObjBank);
     mSubBgBank = func_02053eb0();
     GX::SetBankForSubBG(0x80);
     {
@@ -217,7 +199,7 @@ int dScMgD3DBase_c::InitSubScreenBg()
         LoadCompressedFileAt(sD3DOptionNcgByLanguage[language], (void *)G2S::GetBG1CharPtr());
     }
     LoadCompressedFileAt(0x5b, (void*)G2S::GetBG1ScrPtr());
-    _ZN2GX15SetBankForSubBGEt(mSubBgBank);
+    GX::SetBankForSubBG(mSubBgBank);
 }
 
 // @symbol _ZN14dScMgD3DBase_c11InitEnginesEv
@@ -286,7 +268,7 @@ bool dScMgD3DBase_c::BeforeInitResources()
 void dScMgD3DBase_c::AfterInitResources(unsigned int vfSuccess)
 {
     dScMgBase_c::AfterInitResources(vfSuccess);
-    _ZN8Particle10SysTracker10InitialiseEv(&mSysTracker);
+    mSysTracker.Initialise();
 }
 
 // @symbol _ZN14dScMgD3DBase_c14BeforeBehaviorEv
@@ -443,8 +425,8 @@ int dScMgD3DBase_c::SaveScreenForMenu()
 /* Slot 30: gives the banks back around the base's menu teardown. */
 void dScMgD3DBase_c::RestoreScreenFromMenu()
 {
-    _ZN2GX15SetBankForSubBGEt(mSubBgBank);
-    _ZN2GX16SetBankForSubOBJEt(mSavedSubObjBank);
+    GX::SetBankForSubBG(mSubBgBank);
+    GX::SetBankForSubOBJ(mSavedSubObjBank);
     data_0209e660 = 1;
     D3D_ClearCaptureTable();
     dScMgBase_c::RestoreScreenFromMenu();

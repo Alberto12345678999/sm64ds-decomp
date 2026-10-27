@@ -75,6 +75,7 @@ enum daObjBlockS_c_AssetId {
 };
 
 #include "decl_Actor.h"
+#include "cstd.h"
 #include "nitro/fx/fx.h"
 #include "decl_common.h"
 #include "daObjBlockS_c.h"
@@ -87,7 +88,7 @@ enum daObjBlockS_c_AssetId {
 #include "SurfaceInfo.h"
 #include "dCc_c.h"
 #include "Sound.h"
-#include "cstd.h"
+#include "math/Approach.h"
 
 struct Vector3_16f;
 
@@ -154,12 +155,6 @@ extern void hold_d_a_obj_block_s(char *thiz, int f, char *m, int fix, short s, i
 /* Parameter names keep this TU's @NNN. */
 typedef void BgchInitAt_(char *thiz, char *actor, int b, int d, void *v, int f);
 
-extern void _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs(void *self, void *pos, unsigned int n, int speed, short ang);
-extern short _ZN8dActor_c12ReflectAngleE5Fix12IiES1_s(void *self, int a, int b, short c);
-extern void _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_S5_j(
-    void *self, void *shadow, void *mtx, int fix, int t1, int t2, unsigned int n);
-extern void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
-    void *thiz, void *actor, void *vec, int fix, int t, unsigned u1, unsigned u2);
 
 extern int SurfaceInfo_TestFlag0x20(int *p);
 extern int func_ov002_020ef228(void *c, int arg);
@@ -167,12 +162,9 @@ extern int func_ov002_020f030c(int x);
 extern int func_ov002_020e496c(char *c);
 extern s16 func_02010844(void *unused, Vector3 *v, s16 angle);
 
-extern void _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void *p, struct Vector3 *pos, u32 a, int b, u32 d, u32 e, u32 f);
 
 extern void d_a_obj_block_sPlayLongHold(u32 a, u32 b, u32 c, const Vector3 *pos, u32 e);
 
-extern int _Z14ApproachLinearRiii(int *a, int b, int c);
-extern void _Z11UpdateAngleRssis(s16 *a, s16 b, int c, s16 d);
 extern s16 atan2_hold_d_a_obj_block_s_1(s32 y, s32 x);
 extern s32 Vec3_HorzLen(const Vector3 *v0);
 extern void Vec3_MulScalarInPlace(int *v, int s);
@@ -351,7 +343,7 @@ void daObjBlockS_c::func_ov098_02138344()
 {
     UpdatePos(&mdCcAcPos_c1);
     dBgCh_Actr_UpdateContinuous_Veneer(&mWithMeshClsn);
-    _Z14ApproachLinearRiii(&mHorzSpeed, 0, 0x555);
+    ApproachLinear(mHorzSpeed, 0, 0x555);
     if (mWithMeshClsn.IsOnGround() != 0) {
         Sound::PlayBank3(0x51, mCamSpacePos);
         DecIfAbove0_Byte(&mBounceCount);
@@ -411,7 +403,7 @@ void daObjBlockS_c::func_ov098_021384fc()
         Crate_SetState(this, daObjBlockS_c::STATE_IDLE);
         return;
     }
-    _Z14ApproachLinearRiii(&mHorzSpeed, 0, 0x555);
+    ApproachLinear(mHorzSpeed, 0, 0x555);
     func_ov098_02138e6c();
     func_ov098_021390ec();
     if (func_ov098_02138bb8()) {
@@ -493,7 +485,7 @@ void daObjBlockS_c::func_ov098_02138734()
         Crate_SetState(this, daObjBlockS_c::STATE_IDLE);
         return;
     }
-    _Z14ApproachLinearRiii(&mHorzSpeed, 0, 0x555);
+    ApproachLinear(mHorzSpeed, 0, 0x555);
     func_ov098_02138e6c();
     func_ov098_021390ec();
     if (func_ov098_02138bb8()) {
@@ -757,14 +749,12 @@ void daObjBlockS_c::func_ov098_02138ce0()
     a1.x = zero.x;
     a1.y = zero.y;
     a1.z = zero.z;
-    _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
-        &mdCcAcPos_c1, this, &a1, 0x3c000, 0x6e000, 0x200002, 0x4d390);
+    mdCcAcPos_c1.Init(this, a1, 0x3c000, 0x6e000, 0x200002, 0x4d390);
 
     a2.x = zero.x;
     a2.y = zero.y;
     a2.z = zero.z;
-    _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
-        &mdCcAcPos_c2, this, &a2, 0x3c000, 0x1e000, 0x800004, 0);
+    mdCcAcPos_c2.Init(this, a2, 0x3c000, 0x1e000, 0x800004, 0);
 }
 
 // @symbol _ZN13daObjBlockS_c19func_ov098_02138e08Ev
@@ -777,7 +767,7 @@ void daObjBlockS_c::func_ov098_02138e08()
     v[0] = mPosX;
     v[1] = mPosY;
     v[2] = mPosZ;
-    _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs(this, v, 3, 0xf000, 0);
+    SpawnCoins(*(const Vector3 *)v, 3, 0xf000, 0);
     mCoinsPaid = 1;
 }
 
@@ -864,7 +854,7 @@ void daObjBlockS_c::func_ov098_02138e6c()
         v.x = mPosX;
         v.y = mPosY;
         v.z = mPosZ;
-        _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(a, &v, 1, 0xc000, 1, 0, 1);
+        ((Player *)a)->Hurt(v, 1, 0xc000, 1, 0, 1);
     }
 }
 
@@ -910,7 +900,7 @@ void daObjBlockS_c::func_ov098_021390ec()
     if (DecIfAbove0_Byte(&mWallCooldown) != 0)
         return;
     if (mWithMeshClsn.IsOnWall() != 0) {
-        dBgPi *wr = (dBgPi *)mWithMeshClsn.GetWallResult();
+        dBgPi *wr = mWithMeshClsn.GetWallResult();
         if (wr->GetClsnID() != -1) {
             dActor_c *a = dActor_c::FindWithID((u32)wr->GetClsnID());
             if (a != 0) {
@@ -934,8 +924,7 @@ void daObjBlockS_c::func_ov098_021390ec()
     }
     Vector3 v;
     ((SurfaceInfo *)((char *)mWithMeshClsn.GetWallResult() + 4))->CopyNormalTo(v);
-    mPrevAngleY =
-        _ZN8dActor_c12ReflectAngleE5Fix12IiES1_s(this, v.x, v.z, mPrevAngleY);
+    mPrevAngleY = ReflectAngle(v.x, v.z, mPrevAngleY);
 }
 
 #pragma push
@@ -1012,7 +1001,7 @@ int daObjBlockS_c::func_ov098_02139228()
         break;
     }
 
-    _Z14ApproachLinearRiii(&mClsnYOffset, mClsnYOffsetTarget, 0x800);
+    ApproachLinear(mClsnYOffset, mClsnYOffsetTarget, 0x800);
 
     if ((mFloorNormalY | mHorzSpeed) == 0) {
         u32 *p = &mdCcAcPos_c1.flags;
@@ -1086,9 +1075,8 @@ int daObjBlockS_c::func_ov098_02139228()
         }
     }
 
-    if (_Z14ApproachLinearRiii(&mHorzSpeed, 0, 0x800) == 0
-        && mClsnYOffsetTarget != 0xa0
-        && mHorzSpeed > 0xa000) {
+    if (ApproachLinear(mHorzSpeed, 0, 0x800) == 0 && mClsnYOffsetTarget != 0xa0 &&
+        mHorzSpeed > 0xa000) {
         Particle::RunningSlidingDustAt(mPosX, mPosY, mPosZ);
         mSlideSoundHandle =
             Sound::PlayLong(mSlideSoundHandle, 3, 0x93, *(Vector3 *)&mCamSpacePos, 0);
@@ -1097,8 +1085,8 @@ int daObjBlockS_c::func_ov098_02139228()
     {
         s16 r5 = func_02010844(this, (Vector3 *)&mFloorNormalX, mAngleY);
         s16 r4 = func_02010844(this, (Vector3 *)&mFloorNormalX, (s16)(mAngleY - 0x4000));
-        _Z11UpdateAngleRssis(&mAngleX, r5, 4, 0x1000);
-        _Z11UpdateAngleRssis(&mAngleZ, r4, 4, 0x1000);
+        UpdateAngle(mAngleX, r5, 4, 0x1000);
+        UpdateAngle(mAngleZ, r4, 4, 0x1000);
     }
     return 1 | (base & 0);
 }
@@ -1139,8 +1127,7 @@ void daObjBlockS_c::func_ov098_021396a4()
     mShadowMtx.m[9] = mPosX >> 3;
     mShadowMtx.m[10] = (mPosY - 0x14000) >> 3;
     mShadowMtx.m[11] = mPosZ >> 3;
-    _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_S5_j(
-        this, &mShadowModel, &mShadowMtx, r4, r5 + 0x28000, r4, 0xf);
+    DropShadowScaleXYZ(mShadowModel, mShadowMtx, r4, r5 + 0x28000, r4, 0xf);
 }
 
 // @symbol _ZN13daObjBlockS_c19func_ov098_021397c8Ev

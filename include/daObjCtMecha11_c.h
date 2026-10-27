@@ -52,7 +52,7 @@ struct daObjCtMecha11_c : dBgActor_c {
     virtual int Behavior();         /* slot  6 */
     virtual int Render();           /* slot  9 */
 
-    int UpdateShadow();
+    void UpdateShadow();
     void UpdateModel();
 };
 

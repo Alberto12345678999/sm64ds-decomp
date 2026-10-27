@@ -49,10 +49,7 @@ struct Vector3_16f;
 
 extern "C" {
 
-/* daObj_volcanoCannon_c's collaborators. The dCcAc_c::Init signature is
-   deliberately the local spelling: the ROM name carries by-value class
-   parameters (Fix12<int>), which mwccarm passes differently at the call site,
-   so declaring the true types breaks the byte match. */
+/* daObj_volcanoCannon_c's collaborators. */
 unsigned short DecIfAbove0_Short(unsigned short *p);
 }
 namespace Particle {
@@ -62,8 +59,6 @@ struct System {
 };
 }
 extern "C" {
-void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(
-    void *, dActor_c *a, int b, int c, unsigned int d, unsigned int e);
 
 /* daObjFlMaruta_c's collaborators. */
 void func_020393a4(dBgW_KcMbg *p, int v);
@@ -239,7 +234,7 @@ int daObj_volcanoCannon_c::Behavior()
 int daObj_volcanoCannon_c::InitResources()
 {
     mTerminalVelocity = -0xc8000;
-    _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mCylinderClsn, this, 0x1e000, 0x1e000, 0x200002, 0);
+    mCylinderClsn.Init(this, 0x1e000, 0x1e000, 0x200002, 0);
     ChangeState((State *)&data_ov022_02114690);
     return 1;
 }

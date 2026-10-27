@@ -42,8 +42,7 @@ enum daBakubaku_c_AssetId {
 #include "SpawnInfo.h"
 #include "Player.h"
 #include "SharedFilePtr.h"
-
-bool ApproachLinear(short &value, short target, short step);
+#include "math/Approach.h"
 
 /* dCc_c bit table: flags/vulnFlags/hitFlags share it. */
 enum {
@@ -108,17 +107,9 @@ void Matrix4x3_ApplyInPlaceToRotationX(void *m, s16 angX);
 void MulVec3Mat4x3(void *in, void *m, void *out);
 
 /* local extern: retain the matched scalar ABI; native Fix12<int> calls remain pending. */
-void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
-    dCcAcPos_c *self, dActor_c *actor, const Vector3 &offset,
-    int radius, int height, u32 d, u32 e);
 /* Parameter names keep this TU's @NNN. */
 typedef void BgchInitAt_(dBgCh_Actr *self, dActor_c *actor, int radius, int height, void *a,
                          void *b);
-void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
-    void *self, void *sm, void *mtx, int f, int g, unsigned int h);
-/* local extern: native Hurt takes Fix12<int> by value; retain the current
- * definition's scalar ABI while that call reconstruction remains pending. */
-int _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(Player *p, void *v, u32 a, int f, u8 c, u8 d, u8 e);
 /* Sets Player::mStateStep to 6 and stores this fish in mAttachedActor. */
 int func_ov002_020c5cd8(void *a, void *self);
 /* Sound::Play with bank 3. */
@@ -127,7 +118,6 @@ void func_02012694(int a, void *p);
    +0x800 and +0x7f4. */
 u32 func_02022c80(u32, u32, Fix12i, Fix12i, Fix12i, const void *);
 u32 func_02022d00(u32, u32, Fix12i, Fix12i, Fix12i, void *);
-void _Z14ApproachLinearRiii(int *p, int t, int s);
 }
 
 /* Both predicates are int-returning, as the ROM materializes the 0/1
@@ -181,16 +171,12 @@ s32 daBakubaku_c::InitResources()
     bodyOffset.x = data_ov032_021137cc.x;
     bodyOffset.y = data_ov032_021137cc.y;
     bodyOffset.z = data_ov032_021137cc.z;
-    _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
-        &mBodyClsn, this, bodyOffset, 0x64000, 0x64000,
-        kCcEnemy | kCcCharProjectile, kCcMega);
+    mBodyClsn.Init(this, bodyOffset, 0x64000, 0x64000, kCcEnemy | kCcCharProjectile, kCcMega);
 
     headOffset.x = data_ov032_021137d8.x;
     headOffset.y = data_ov032_021137d8.y;
     headOffset.z = data_ov032_021137d8.z;
-    _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
-        &mHeadClsn, this, headOffset, 0x64000, 0x8c000,
-        kCcEnemy | kCcCharProjectile, 0);
+    mHeadClsn.Init(this, headOffset, 0x64000, 0x8c000, kCcEnemy | kCcCharProjectile, 0);
 
     mSpawnPosX = mPosX;
     mSpawnPosY = mPosY;
@@ -283,8 +269,7 @@ void daBakubaku_c::func_ov032_02112044()
         &data_020a0e68, mPosX >> 3,
         (mPosY - 0x5a000) >> 3, mPosZ >> 3);
     mShadowMat = data_020a0e68;
-    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
-        this, &mShadowModel, &mShadowMat, 0xfa000, 0x258000, 0xf);
+    DropShadowRadHeight(mShadowModel, mShadowMat, 0xfa000, 0x258000, 0xf);
 }
 
 /* Install mState and run its enter hook. The StateFn * read-back of
@@ -319,7 +304,7 @@ int daBakubaku_c::func_ov032_02111e24()
     Vector3 out;
     short ang;
 
-    _Z14ApproachLinearRiii(&mHorzSpeed, 0x5000, 0x333);
+    ApproachLinear(mHorzSpeed, 0x5000, 0x333);
     if (func_ov032_02111350() == 1) {
         mStateTimer = 0x28;
         mChaseCooldown = 0x28;
@@ -669,7 +654,7 @@ void daBakubaku_c::func_ov032_021113fc()
     hv.x = mPosX;
     hv.y = mPosY;
     hv.z = mPosZ;
-    _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(f2, &hv, 2, 0xc000, 1, 0, 1);
+    f2->Hurt(hv, 2, 0xc000, 1, 0, 1);
 }
 
 /* Abort the chase: no player, a wall or floor, or too far from home.

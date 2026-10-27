@@ -28,7 +28,7 @@ struct daObjFm_Battan_c : dBgActor_c {
 private:
     /* The class ownership and call targets are proven. These readable private
      * spellings are inferred aliases; no original symbol strings survive. */
-    int UpdateShadow();
+    void UpdateShadow();
     void UpdateModelTransform();
 };
 

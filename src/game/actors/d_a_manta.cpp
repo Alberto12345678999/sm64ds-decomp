@@ -18,9 +18,6 @@
  *   ring's uniqueID in cartridge order (cmp r0, r1). Swapping the
  *   operands DIFFs. The 0x3ac/+4 dance stays; uniqueID is the word
  *   at +4 of that ring.
- * - dExtAnmModel_c::SetAnim and dCcAcPos_c::Init stay the scalar
- *   Fix12<int> externs. The member calls grow those functions and
- *   move InitResources' reloc off data_ov090_02134524.
  * - Behavior keeps the mSpeedZ copy after the terminal clamp.
  *   Dropping it loses the reload of dActor_c's z speed.
  * - Matrix4x3 stays decl_common.h's flat s32[12].
@@ -36,8 +33,10 @@
 #include "daManta_c.h"
 #include "daWater_Ring_c.h"
 #include "PathPtr.h"
+#include "Player.h"
 #include "SharedFilePtr.h"
 #include "Sound.h"
+#include "math/Approach.h"
 
 /* init at +0, execute at +8. Same shape as daWater_Ring_c::State.
  * The overlay image stores each as (function, this-delta) with delta 0. */
@@ -86,9 +85,6 @@ extern MantaAnimationFilePtr data_ov090_0213452c;
 extern unsigned char data_0209f2d8;
 extern Matrix4x3 data_020a0e68;
 
-void _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(
-    Player *, const Vector3 &, unsigned int, Fix12i, unsigned int,
-    unsigned int, unsigned int);
 void Vec3_Asr(Vector3 *d, Vector3 *s, int sh);
 void Matrix4x3_FromTranslation(Matrix4x3 *m, Fix12i x, Fix12i y, Fix12i z);
 void Matrix4x3_ApplyInPlaceToRotationXYZExt(void *m, int x, int y, int z);
@@ -101,12 +97,8 @@ short Vec3_VertAngle(const Vector3 *v0, const Vector3 *v1);
 void Matrix4x3_FromRotationY(void *m, int angle);
 void Matrix4x3_ApplyInPlaceToRotationX(void *m, short angle);
 void MulVec3Mat4x3(Vector3 *v, void *m, Vector3 *out);
-void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(void *self, dActor_c *a,
-                                                             const Vector3 &v, int b, int c,
-                                                             unsigned int d, unsigned int e);
 }
 
-bool ApproachLinear(short &value, short target, short step);
 
 extern MantaState data_ov090_0213454c;
 
@@ -140,8 +132,7 @@ void daManta_c::func_ov090_02132730()
         hit.x = mPosX;
         hit.y = mPosY;
         hit.z = mPosZ;
-        _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(
-            (Player *)actor, hit, 1, 0xc000, 1, 0, 1);
+        ((Player *)actor)->Hurt(hit, 1, 0xc000, 1, 0, 1);
     }
 }
 
@@ -374,8 +365,7 @@ int daManta_c::InitResources()
         offset.x = data_ov090_02134200.x;
         offset.y = data_ov090_02134200.y;
         offset.z = data_ov090_02134200.z;
-        _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
-            &mdCcAcPos_c, this, offset, 0x150000, 0xc8000, 0x200004, 0);
+        mdCcAcPos_c.Init(this, offset, 0x150000, 0xc8000, 0x200004, 0);
     }
 
     {

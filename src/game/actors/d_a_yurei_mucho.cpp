@@ -34,8 +34,7 @@
 #include "SharedFilePtr.h"
 #include "Player.h"
 #include "nitro/fx/fx.h"
-
-bool ApproachLinear(short &value, short target, short step);
+#include "math/Approach.h"
 
 /* POD views preserve the retail aggregate copies. Matrix4x3 and Vector3 are
    available, but their non-POD copies change these two helpers' codegen; see
@@ -61,21 +60,9 @@ struct V3Quint {
 extern "C" {
 
 /* arm9 scalar ABI and unnamed helpers; see the remaining work above. */
-extern int _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs(void *self, const Vector3 *pos,
-                                                          unsigned int n, int f, short s);
-extern void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
-    void *self, void *shadow, void *mtx, int rad, int height, unsigned int flags);
-extern void _ZN6Player6BounceE5Fix12IiE(void *p, int f);
-/* local extern: retain the current scalar definition; native Fix12<int>
-   call reconstruction remains separate work. The return value is discarded. */
-extern int _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(Player *p, void *v, unsigned int a, int b, u8 d,
-                                                   u8 e, u8 f);
-extern void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *self, dActor_c *a, int r, int h,
-                                                      unsigned int e, unsigned int g);
 extern unsigned int RandomIntInternal(void *seed);
 extern unsigned short DecIfAbove0_Short(unsigned short *p);
 extern void ApproachAngle(void *p, short target, int a, int b, int limit);
-extern void _Z14ApproachLinearRiii(int *x, int target, int step);
 extern short Vec3_HorzAngle(const void *a, const void *b);
 extern short Vec3_VertAngle(const void *a, const void *b);
 extern int Vec3_Dist(const void *a, const void *b);
@@ -91,9 +78,7 @@ extern int data_020a0e68[];
 extern int data_0209e650[];
 extern short data_02082214[];
 
-/* ov002 -- 6az KillByInvincibleChar; unnamed particle helper. */
-extern void _ZN12dEnemyBase_c20KillByInvincibleCharERK10Vector3_16R6Player5Fix12IiE(
-    void *self, const void *v, void *p, int a);
+/* ov002 -- unnamed particle helper. */
 extern void func_ov002_020aea30(void *self, void *actor, void *collision);
 
 /* The four shared-file handles and four State records remain ROM-supplied BSS.
@@ -164,7 +149,7 @@ int daYurei_Mucho_c::InitResources()
     dExtFrameCtrl_c::LoadFile(data_ov065_0211d600);
     dExtFrameCtrl_c::LoadFile(data_ov065_0211d608);
     mTerminalVelocity = -0x1e000;
-    _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, this, 0x38000, 0x7e000, 0x200000, 0x7eff0);
+    mdCcAc_c.Init(this, 0x38000, 0x7e000, 0x200000, 0x7eff0);
     mAngleY = mPrevAngleY;
     mWithMeshClsn.Init(this, 0x46000, 0, 0, 0);
     mCoinType = 1;
@@ -239,7 +224,7 @@ int daYurei_Mucho_c::Behavior()
         idx = ((unsigned short)(short)ang >> 4) * 2;
         tbl = data_02082214[idx];
         result = FX_MUL(tbl, 0x46000);
-        _Z14ApproachLinearRiii(&mPosY, mHomePosY + (result + 0xb4000), 0x3000);
+        ApproachLinear(mPosY, mHomePosY + (result + 0xb4000), 0x3000);
     }
     UpdatePosWithOnlySpeed(&mdCcAc_c);
     UpdateWMClsn(mWithMeshClsn, 0);
@@ -331,8 +316,7 @@ void daYurei_Mucho_c::func_ov065_0211696c()
 
     *(Mtx43 *)mShadowMat = *(Mtx43 *)data_020a0e68;
 
-    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
-        this, &mShadowModel, mShadowMat, 0x64000, 0x258000, 0xf);
+    DropShadowRadHeight(mShadowModel, *(Matrix4x3 *)mShadowMat, 0x64000, 0x258000, 0xf);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -629,7 +613,7 @@ void daYurei_Mucho_c::func_ov065_02115ff0()
         v.x = -0x2000;
         v.y = 0;
         v.z = 0;
-        _ZN12dEnemyBase_c20KillByInvincibleCharERK10Vector3_16R6Player5Fix12IiE(this, &v, p, 0);
+        KillByInvincibleChar(v, *p, 0);
         func_02012694(0x11e, &mCamSpacePosX);
         return;
     }
@@ -654,7 +638,7 @@ void daYurei_Mucho_c::func_ov065_02115ff0()
         return;
     }
     if (JumpedOnByPlayer(mdCcAc_c, *p)) {
-        _ZN6Player6BounceE5Fix12IiE(p, 0x28000);
+        p->Bounce(0x28000);
         mDeathState = 1;
         func_ov002_020aea30(this, p, 0);
         func_02012694(0x11e, &mCamSpacePosX);
@@ -663,7 +647,7 @@ void daYurei_Mucho_c::func_ov065_02115ff0()
     hv.x = mPosX;
     hv.y = mPosY;
     hv.z = mPosZ;
-    _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(p, &hv, 2, 0xc000, 1, 0, 1);
+    p->Hurt(hv, 2, 0xc000, 1, 0, 1);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -676,7 +660,7 @@ int daYurei_Mucho_c::func_ov065_02115f84()
     v.x = mPosX;
     v.y = mPosY;
     v.z = mPosZ;
-    _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs(this, &v, mExtraCoinCount + 1, 0xa000, 0);
+    SpawnCoins(v, mExtraCoinCount + 1, 0xa000, 0);
     KillAndTrackInDeathTable();
     return func_02012694(0x11e, &mCamSpacePosX);
 }

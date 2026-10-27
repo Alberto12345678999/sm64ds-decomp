@@ -27,6 +27,7 @@
 #include "SharedFilePtr.h"
 #include "TrmpLine.h"
 #include "TrmpItem.h"
+#include "math/Approach.h"
 /* Typed access to a TrmpLine slot from the char* helpers below. */
 #define TRMPLINE(p) ((TrmpLine *)(p))
 /* Typed access to a TrmpItem record from the char* helpers below. */
@@ -34,7 +35,6 @@
 
 #pragma defer_codegen off
 
-extern int ApproachLinear(int &, int, int);
 #include "dExtSimpleModel_c.h"
 #include "dExtAnmTexSRT_c.h"
 #include "SharedFilePtr.h"
@@ -63,20 +63,18 @@ struct TrampolineJumperCounts : TrampolineObjectCallbacks {
 }
 
 namespace s020cd744 {
-extern "C" extern void _Z14ApproachLinearRiii(int *a, int b, int c);
-extern "C" extern int _Z15ApproachLinear2Riii(int *a, int b, int c);
 extern "C" {
 extern int sTrmpItemsActive;
 }
 
 extern "C" void TrmpItem_GrowScale(char *c) {
-    _Z14ApproachLinearRiii(&TRMPITEM(c)->mScale.x, 0x1200, 0x80);
-    _Z14ApproachLinearRiii(&TRMPITEM(c)->mScale.z, 0x1200, 0x80);
-    _Z14ApproachLinearRiii(&TRMPITEM(c)->mScale.y, 0x20000, 0x400);
-    if (_Z15ApproachLinear2Riii((int *)&TRMPITEM(c)->mAlpha, 0, 1) == 0)
+    ApproachLinear(TRMPITEM(c)->mScale.x, 0x1200, 0x80);
+    ApproachLinear(TRMPITEM(c)->mScale.z, 0x1200, 0x80);
+    ApproachLinear(TRMPITEM(c)->mScale.y, 0x20000, 0x400);
+    if (ApproachLinear2(*(int *)&TRMPITEM(c)->mAlpha, 0, 1) == 0)
         return;
     TRMPITEM(c)->mActive = 0;
-    _Z14ApproachLinearRiii(&sTrmpItemsActive, 0, 1);
+    ApproachLinear(sTrmpItemsActive, 0, 1);
 }
 }
 
@@ -112,6 +110,7 @@ extern "C" void TrmpItem_ProjectToScreen(char *c, int scoreValue) {
 
 namespace s020cd864 {
 // @symbol TrmpItem_MotionSpinHover
+/* local extern: C++ cannot take ~Vector3()'s address */
 extern "C" extern void *_ZN7Vector3D1Ev(void *object);
 
 extern "C" extern void func_020731dc(void *object, void *destructor, void **node);
@@ -173,6 +172,7 @@ extern "C" extern void func_0203ce80(Vec3 *dst, Vec3 *src);
 extern "C" extern void func_0203cf00(Vec3 *out, Vec3 *a, Vec3 *b);
 extern "C" extern void Quaternion_FromVector3(int *q, Vec3 *axis, Vec3 *v);
 extern "C" extern void Quaternion_Normalize(int *q);
+/* local extern: C++ cannot take ~Vector3()'s address */
 extern "C" extern void *_ZN7Vector3D1Ev(void *object);
 
 extern "C" {
@@ -240,6 +240,7 @@ extern "C" void TrmpItem_SetMotionSpinDrift(char *p) {
 
 namespace s020cdaec {
 // @symbol TrmpItem_MotionSpinSway
+/* local extern: C++ cannot take ~Vector3()'s address */
 extern "C" extern void *_ZN7Vector3D1Ev(void *object);
 
 extern "C" extern void func_020731dc(void *object, void *destructor, void **node);
@@ -363,6 +364,7 @@ extern "C" extern void func_0203ce80(Vec3 *dst, Vec3 *src);
 extern "C" extern void func_0203cf00(Vec3 *out, Vec3 *a, Vec3 *b);
 extern "C" extern void Quaternion_FromVector3(int *q, Vec3 *axis, Vec3 *v);
 extern "C" extern void Quaternion_Normalize(int *q);
+/* local extern: C++ cannot take ~Vector3()'s address */
 extern "C" extern void *_ZN7Vector3D1Ev(void *object);
 
 extern "C" {
@@ -511,7 +513,6 @@ namespace s020cdf3c {
  *
  * Matched byte-for-byte with mwccarm 1.2/sp2p3 (ov006).
  */
-extern "C" extern int _Z14ApproachLinearRiii(int *a, int b, int c);
 extern "C" extern void TrmpItem_SetMotionPatrol(char *c);
 extern "C" extern void TrmpItem_SetMotionBob(char *c);
 extern "C" extern void TrmpItem_SetMotionSpin(char *c);
@@ -523,10 +524,10 @@ extern "C" extern void TrmpItem_SetMotionSpinSway(char *c);
 extern "C" extern void TrmpItem_SetMotionSpinHover(char *c);
 
 extern "C" void TrmpItem_StateAppear(char *c) {
-    int yScaleReady = _Z14ApproachLinearRiii(&TRMPITEM(c)->mScale.y, 0x1000, 0xc0);
-    int xScaleReady = _Z14ApproachLinearRiii(&TRMPITEM(c)->mScale.x, 0x1000, 0x180);
-    int zScaleReady = _Z14ApproachLinearRiii(&TRMPITEM(c)->mScale.z, 0x1000, 0x180);
-    int responseScaleReady = _Z14ApproachLinearRiii(&TRMPITEM(c)->mAppearScale, 0x800, 0x60);
+    int yScaleReady = ApproachLinear(TRMPITEM(c)->mScale.y, 0x1000, 0xc0);
+    int xScaleReady = ApproachLinear(TRMPITEM(c)->mScale.x, 0x1000, 0x180);
+    int zScaleReady = ApproachLinear(TRMPITEM(c)->mScale.z, 0x1000, 0x180);
+    int responseScaleReady = ApproachLinear(TRMPITEM(c)->mAppearScale, 0x800, 0x60);
     if (yScaleReady == 0)
         return;
     if (xScaleReady == 0)
@@ -740,7 +741,6 @@ extern int sTrmp2Score;
 
 extern "C" extern void TrmpItem_ReflectOffLine(char *a, void *o);
 extern "C" extern int TrmpItem_HitTest2D(char *a, void *o, int arg1);
-extern "C" extern void _Z14ApproachLinearRiii(int *p, int target, int step);
 extern "C" extern void D3D_PlaySeAtX(int a, int b);
 extern "C" extern void Trmp2Spinner_InitAll(int c);
 extern "C" extern void TrmpItem_ProjectToScreen(char *c, unsigned short arg1);
@@ -765,7 +765,7 @@ extern "C" void TrmpItem_UpdateWithJumper(void *object, int arg1) {
         TrmpItem_ReflectOffLine(ELEM, sb);
         if (TrmpItem_HitTest2D(ELEM, sb, arg1) == 0)
             continue;
-        _Z14ApproachLinearRiii(&sTrmpItemsHit, 0x270f, 1);
+        ApproachLinear(sTrmpItemsHit, 0x270f, 1);
         hitCount = ((TrampolineJumperCounts *)sb)->mItemHitCount;
         // Double the award for each prior hit, up to six doublings.
         scoreIncrement = 100;
@@ -790,7 +790,7 @@ extern "C" void TrmpItem_UpdateWithJumper(void *object, int arg1) {
             D3D_PlaySeAtX(0x135, TRMPITEM(ELEM)->mPos.x);
             break;
         }
-        _Z14ApproachLinearRiii(&sTrmp2Score, 0xf423f, scoreIncrement);
+        ApproachLinear(sTrmp2Score, 0xf423f, scoreIncrement);
         Trmp2Spinner_InitAll(((TrampolineJumperCounts *)sb)->mItemHitCount);
         TrmpItem_ProjectToScreen(ELEM, (short)scoreIncrement);
         ((TrampolineJumperCounts *)sb)->mItemHitCount++;
@@ -997,6 +997,7 @@ extern int data_02092768[4];
 extern "C" {
 extern int data_020a0ebc[3];
 }
+/* local extern: C++ cannot take ~Vector3()'s address */
 extern "C" extern void *_ZN7Vector3D1Ev(void *object);
 extern "C" extern void func_020731dc(void *object, void *destructor, void **node);
 extern "C" extern void func_0203cc28(int *p, int angle);
@@ -1544,12 +1545,11 @@ extern "C" void TrmpLine_Update(C *c) {
 }
 
 namespace s020cf790 {
-extern "C" extern int _Z15ApproachLinear2Riii(int *a, int b, int c);
 extern "C" extern void TrmpLine_ComputeNormals(char *c);
 
 // @symbol TrmpLine_StateFade
 extern "C" void TrmpLine_StateFade(char *c) {
-    if (_Z15ApproachLinear2Riii((int *)&TRMPLINE(c)->mAlpha, 0, 1) != 0) {
+    if (ApproachLinear2(*(int *)&TRMPLINE(c)->mAlpha, 0, 1) != 0) {
         TRMPLINE(c)->mStatus = 0;
         return;
     }
@@ -1574,8 +1574,6 @@ extern "C" void TrmpLine_SetStateFade(char *p) {
 }
 
 namespace s020cf820 {
-extern "C" extern int _Z15ApproachLinear2Riii(int *p, int a, int b);
-extern "C" extern int _Z14ApproachLinearRiii(int *p, int a, int b);
 extern "C" extern void TrmpLine_ComputeNormals(char *c);
 extern "C" {
 extern int data_020a0db0;
@@ -1595,7 +1593,7 @@ extern "C" void TrmpLine_StateSettle(char *c) {
     int *restPosition, *position, *amplitude;
 
     if ((data_020a0db0 & 1) != 0) {
-        if (_Z15ApproachLinear2Riii((int *)&TRMPLINE(c)->mAlpha, 0, 1) != 0) {
+        if (ApproachLinear2(*(int *)&TRMPLINE(c)->mAlpha, 0, 1) != 0) {
             TRMPLINE(c)->mStatus = 0;
         }
     }
@@ -1628,7 +1626,7 @@ extern "C" void TrmpLine_StateSettle(char *c) {
             position[2] = restPosition[2];
             position[0] = position[0] + FX_MUL(*amplitude, deflectionX);
             position[1] = position[1] + FX_MUL(*amplitude, deflectionY);
-            _Z14ApproachLinearRiii(amplitude, targetAmplitude, decayStep);
+            ApproachLinear(*amplitude, targetAmplitude, decayStep);
             restPosition += 3;
             position += 3;
             amplitude += 1;
@@ -1661,8 +1659,6 @@ extern "C" {
 extern s16 data_02082214[];
 }
 extern "C" extern int TrmpLine_PushJumper(char *o);
-extern "C" extern int _Z14ApproachLinearRiii(int *cur, int target, int step);
-extern "C" extern int _Z15ApproachLinear2Rsss(short *cur, short target, short step);
 extern "C" extern void TrmpLine_ComputeNormals(char *o);
 extern "C" extern void TrmpLine_SetStateFade(char *o);
 
@@ -1714,7 +1710,7 @@ extern "C" void TrmpLine_StateFlex(char *o) {
             position->x += FX_MUL(*amplitude, deflectionX);
             position->y += FX_MUL(*amplitude, deflectionY);
 
-            _Z14ApproachLinearRiii(amplitude, targetAmplitude, decayStep);
+            ApproachLinear(*amplitude, targetAmplitude, decayStep);
             restPosition++;
             position++;
             amplitude++;
@@ -1726,7 +1722,7 @@ extern "C" void TrmpLine_StateFlex(char *o) {
     if (TRMPLINE(o)->mSlotIndex == 3)
         return;
 
-    if (_Z15ApproachLinear2Rsss(&TRMPLINE(o)->mLifeTimer, 0, 1) == 0)
+    if (ApproachLinear2(TRMPLINE(o)->mLifeTimer, 0, 1) == 0)
         return;
 
     TrmpLine_SetStateFade(o);

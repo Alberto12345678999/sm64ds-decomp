@@ -77,12 +77,12 @@
  *   takes C*. The sixteen state labels are descriptions; the sinit owns
  *   the records. The header's 0x504 size wrap stays.
  * - dExtBlendAnmModel_c::SetAnim, Particle::System::New / NewSimple,
- *   RunningSlidingDustAt, Player::Hurt, Sound::ChangeMusicVolume,
- *   DropShadowRadHeight and cstd::atan2 stay mangled (Fix12<int> by value).
+ *   RunningSlidingDustAt, Player::Hurt, Sound::ChangeMusicVolume and
+ *   DropShadowRadHeight stay mangled (Fix12<int> by value).
  *   NewSimple and the layer-3 sound calls retain their local declarations.
  *   FromUniqueID is followed by a store at sys+0x44, which is still pad_042
  *   on Particle::System.
- * - Vec3_* / Matrix4x3_* / ApproachLinear have no shared header this TU
+ * - Vec3_* / Matrix4x3_* have no shared header this TU
  *   can include alone. data_02082214 is the sine table func_ov073_0211f494
  *   indexes. data_0209f318, data_020a0e68 and data_0209e650 are arm9
  *   globals. data_ov002_0210da30 is ov002's; Cleanup only Releases it.
@@ -120,7 +120,6 @@ enum daKing_Donketu_c_AssetId {
 #include "common.h"
 #include "daKing_Donketu_c.h"
 #include "decl_common.h"
-#include "decl_Message.h"
 #include "types.h"
 #include "SharedFilePtr.h"
 #include "Particle__System.h"
@@ -131,11 +130,8 @@ enum daKing_Donketu_c_AssetId {
 #include "dBgCh_Lin.h"
 #include "nitro/fx/fx.h"
 #include "Sound.h"
-namespace cstd {
-s16 atan2(s32, s32);
-}
-
-bool ApproachLinear(short &value, short target, short step);
+#include "cstd.h"
+#include "math/Approach.h"
 
 /* Actor ids (symbols/actor_debug_names.tsv gives them in decimal) that this
    boss looks up or spawns. */
@@ -251,9 +247,6 @@ extern u16 data_0209e650;
 extern u16 DecIfAbove0_Short(void* p);
 extern void func_02012694(int a, void* b);
 extern int RandomIntInternal(u16* seed);
-extern int _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void *p, const Vector3 *v, u32 a, Fix12i f,
-                                                   u32 b, u32 c, u32 d);
-extern void _Z14ApproachLinearRiii(int* p, int t, int s);
 }
 extern "C" {
 extern void d_a_king_donketuPlayLongHold(unsigned int a, unsigned int b, unsigned int c,
@@ -264,7 +257,6 @@ extern void d_a_king_donketuRunningSlidingDustAtHold(int a, int b, int c);
 extern void Vec3_Asr(Vec3* d, Vec3* s, int sh);
 extern void Matrix4x3_FromTranslation(struct Matrix4x3 *m, int x, int y, int z);
 extern void Matrix4x3_ApplyInPlaceToRotationXYZExt(void* m, int x, int y, int z);
-extern void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(void* thiz, void* sm, void* m, int rad, int h, unsigned int u);
 extern void UnloadKeyModels(int i);
 }
 
@@ -616,7 +608,7 @@ s32 daKing_Donketu_c::func_ov073_0211f61c()
         v2.x = c->mPosX;
         v2.y = c->mPosY;
         v2.z = c->mPosZ;
-        if (_ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(target, &v2, 0, 0x14000, 1, 0, 1) == 0)
+        if (((Player *)target)->Hurt(v2, 0, 0x14000, 1, 0, 1) == 0)
             goto done0;
     }
     {
@@ -661,7 +653,7 @@ int daKing_Donketu_c::func_ov073_0211fa74() {
     struct Vector3 pos;
     cam = data_0209f318;
     ((dCamera_c *)cam)->SetFlag_3();
-    _Z14ApproachLinearRiii((int*)&c->mScaleX, 0, 0x80);
+    ApproachLinear(*(int *)&c->mScaleX, 0, 0x80);
     c->mScaleZ = c->mScaleX;
     c->mScaleY = c->mScaleZ;
     c->func_ov073_0211f144();
@@ -795,7 +787,7 @@ int daKing_Donketu_c::func_ov073_0211fc78() {
         c->mTalkPlayer = player;
         msg = (short)(c->mTalkPlayer->param1 + 0xe7);
         Sound::ChangeMusicVolume(0x14, 0x15666);
-        _ZN7Message11PrepareTalkEv();
+        Message::PrepareTalk();
         if (c->mTalkPlayer->StartTalk(*c, 1)) {
             ((dCamera_c *)cam)->SetFlag_3();
             if (c->mTalkPlayer->ShowMessage(*c, msg, &msgpos[1], 0, 2)) {
@@ -1382,7 +1374,7 @@ int daKing_Donketu_c::func_ov073_02120c7c()
             ChiefChilly_ChangeState((C *)(c), (PMF *)&data_ov073_021233d0);
         return 1;
     }
-    _Z14ApproachLinearRiii((int *)&c->mHorzSpeed, 0, 0x1000);
+    ApproachLinear(*(int *)&c->mHorzSpeed, 0, 0x1000);
     if (c->mBlendAnmModel.Finished()) {
         int b = c->mHorzSpeed; if (b < 0) b = -b;
         if (b < 0xa) {
@@ -1493,7 +1485,7 @@ int daKing_Donketu_c::func_ov073_02120ed0() {
                 break;
             }
         } else {
-            _Z14ApproachLinearRiii((int *)&c->mHorzSpeed, 0x1e000, 0x3000);
+            ApproachLinear(*(int *)&c->mHorzSpeed, 0x1e000, 0x3000);
             if (c->mStateScratch == 0) {
                 if (c->DistToCPlayer() < 0x1f4000) {
                     c->mStateScratch = 1;
@@ -1534,7 +1526,7 @@ int daKing_Donketu_c::func_ov073_02120ed0() {
                 i++;
             } while (i < 2);
         }
-        _Z14ApproachLinearRiii((int *)&c->mHorzSpeed, 0, c->mStateParam);
+        ApproachLinear(*(int *)&c->mHorzSpeed, 0, c->mStateParam);
         if (c->mPhase == 1) {
             c->mTargetAngle = c->HorzAngleToCPlayer();
             ApproachLinear(c->mAngleY, c->mTargetAngle, 0x500);
@@ -1786,8 +1778,7 @@ void daKing_Donketu_c::func_ov073_021215cc()
 
     Matrix4x3_FromTranslation(&data_020a0e68, c->mPosX >> 3, (c->mPosY - 0xa000) >> 3, c->mPosZ >> 3);
     c->mShadowMtx = data_020a0e68;
-    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
-        c, &c->mShadowModel, &c->mShadowMtx, 0x12c000, 0x3e8000, 0xf);
+    c->DropShadowRadHeight(c->mShadowModel, c->mShadowMtx, 0x12c000, 0x3e8000, 0xf);
 }
 
 // @symbol _ZN16daKing_Donketu_c16CleanupResourcesEv
@@ -1986,7 +1977,6 @@ int daKing_Donketu_c::Behavior()
 
 extern "C" {
 extern void LoadKeyModels(int idx);
-extern void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(void* self, dActor_c* a, Vector3* v, Fix12i r, Fix12i h, unsigned int e, unsigned int g);
 /* Parameter names keep this TU's @NNN. */
 typedef void BgchInitAt_(void *self, dActor_c *a, Fix12i r, Fix12i h, Vector3_16 *p, Vector3_16 *q);
 }
@@ -2016,7 +2006,7 @@ int daKing_Donketu_c::InitResources()
     v.x = data_ov073_02123040.x;
     v.y = data_ov073_02123040.y;
     v.z = data_ov073_02123040.z;
-    _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(&mdCcAcPos_c, this, &v, 0xa4000, 0x1e4000, 0x200000, 0x567f0);
+    mdCcAcPos_c.Init(this, v, 0xa4000, 0x1e4000, 0x200000, 0x567f0);
     mBlendAnmModel.speed = 0x2000;
     mWithMeshClsn.Init(this, 0x96000, 0x94000, 0, 0);
     mSpawnPosX = mPosX;

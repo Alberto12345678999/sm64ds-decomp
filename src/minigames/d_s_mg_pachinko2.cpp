@@ -44,26 +44,12 @@ enum dScMgPachinko2_c_AssetId {
 #pragma defer_codegen off
 
 #include "types.h"
+#include "cstd.h"
 #include "dScMgPachinko2_c.h"
 #include "PlayerInput.h"
 #include "nitro/fx/fx.h"
-#include "cstd.h"
-
-namespace G2S {
-unsigned GetBG2CharPtr(void);
-unsigned GetBG2ScrPtr(void);
-unsigned GetBG3CharPtr(void);
-}
-
-namespace GX {
-void LoadBGPltt(const void *p, u32 a, u32 b);
-void LoadOBJPltt(const void *p, u32 a, u32 b);
-}
-
-namespace GXS {
-void LoadBGPltt(const void *p, u32 a, u32 b);
-void LoadOBJPltt(const void *p, u32 a, u32 b);
-}
+#include "GX.h"
+#include "G2.h"
 
 namespace Sound {
 void PlayBank2_2D(unsigned int id);
@@ -112,6 +98,9 @@ extern void func_02056314(void *, u32, u32);
 extern void func_020562b4(const void *, u32, u32);
 extern void func_020564f4(const void *, int, int);
 
+/* local extern: the hand-built factory runs dScMgBase_c's base-object
+   constructor on raw storage, which C++ spells only inside a derived
+   class's own constructor. */
 extern void *_ZN11dScMgBase_cC2Ev(void *);
 
 /* --- ROM data this TU reads --- */

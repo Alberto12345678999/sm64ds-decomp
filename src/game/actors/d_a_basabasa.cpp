@@ -5,10 +5,8 @@
  * off emits D1, D0, then a D2 with no ROM home, in source order. The factory
  * (was Swoop_Spawn) is `new daBasabasa_c()`.
  */
-/* leftovers: dExtAnmModel_c::SetAnim, dCcAc_c::Init, dBgCh_Actr::Init,
- * dEnemyBase_c::KillByInvincibleChar, dActor_c::SpawnCoins,
- * dActor_c::DropShadowRadHeight, Player::Hurt and Player::Bounce stay
- * mangled. This file calls them, and each symbol takes Fix12<int> by value.
+/* leftovers: Player::Hurt and Player::Bounce stay mangled. This file calls
+ * them, and each symbol takes Fix12<int> by value.
  * The shared file handles and the four state records keep address names;
  * their definitions at the bottom are this file's static initializer.
  * actorID and mFlags are tested through an int. ExecutePerch keeps its base
@@ -30,6 +28,7 @@ enum daBasabasa_c_AssetId {
 #include "daBasabasa_c.h"
 #include "SharedFilePtr.h"
 #include "Player.h"
+#include "math/Approach.h"
 
 /* EnterDrop's unused stack temporary. The three-int constructor is what
  * schedules the stores; a plain Vector3 assignment does not. */
@@ -56,10 +55,6 @@ struct BasabasaAnimationFileHandle : SharedFilePtr {
 extern "C" {
 extern void func_ov002_020aea30(void *self, void *actor, void *collision);
 extern void func_02012694(int a, void* b);
-extern void _ZN12dEnemyBase_c20KillByInvincibleCharERK10Vector3_16R6Player5Fix12IiE(dEnemyBase_c* self, short* v, Player* p);
-extern void _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs(dActor_c* self, Vector3* pos, unsigned n, int fix, short s);
-extern void _ZN6Player6BounceE5Fix12IiE(Player* p, int fix);
-extern void _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(Player* p, Vector3* pos, unsigned a, int fix, unsigned b, unsigned d, unsigned e);
 int Vec3_Dist(const void* a, const void* b);
 short Vec3_HorzAngle(const Vector3* a, const Vector3* b);
 void Matrix4x3_FromRotationY(void* m, int angle);
@@ -72,18 +67,15 @@ extern void Matrix4x3_ApplyInPlaceToRotationX(void* m, short ang);
 extern void Vec3_Asr(Vector3* d, Vector3* s, int sh);
 extern void Matrix4x3_FromTranslation(Matrix4x3* m, int x, int y, int z);
 extern void Matrix4x3_ApplyInPlaceToRotationXYZExt(void* m, int x, int y, int z);
-extern void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(void* self, void* sm, Matrix4x3* m, int fx, int t, unsigned int u);
 extern unsigned short DecIfAbove0_Short(unsigned short *p);
 extern BasabasaAnimationFileHandle data_ov065_0211d690;   /* flying animation */
 extern BasabasaModelFilePtr data_ov065_0211d698;   /* flying model */
 extern BasabasaAnimationFileHandle data_ov065_0211d6a0;   /* hanging animation */
 extern BasabasaModelFilePtr data_ov065_0211d6a8;   /* hanging model */
-extern void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void* self, dActor_c* a, int r, int h, unsigned int e, unsigned int g);
 /* Parameter names keep this TU's @NNN. */
 typedef void BgchInitAt_(void *self, dActor_c *a, int r, int h, Vector3_16 *p, Vector3_16 *q);
 }
 
-bool ApproachLinear(short &value, short target, short step);
 
 /* The four states, by the address of their .bss record. */
 extern daBasabasa_c::State data_ov065_0211d6e0;   /* chase */
@@ -125,7 +117,7 @@ void daBasabasa_c::func_ov065_0211704c()
         v[0] = -0x2000;
         v[1] = 0;
         v[2] = 0;
-        _ZN12dEnemyBase_c20KillByInvincibleCharERK10Vector3_16R6Player5Fix12IiE(this, v, p);
+        KillByInvincibleChar(*(Vector3_16 *)v, *p, 0);
         func_02012694(0x112, &mCamSpacePosX);
         return;
     }
@@ -173,12 +165,12 @@ void daBasabasa_c::func_ov065_0211704c()
         pos.x = mPosX;
         pos.y = mPosY;
         pos.z = mPosZ;
-        _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs(this, &pos, mExtraCoinCount + 1, 0xa000, 0);
+        SpawnCoins(pos, mExtraCoinCount + 1, 0xa000, 0);
         return;
     }
 
     if (JumpedOnByPlayer(mdCcAc_c, *p) != 0) {
-        _ZN6Player6BounceE5Fix12IiE(p, 0x28000);
+        p->Bounce(0x28000);
         mDeathState = 1;
         func_ov002_020aea30(this, p, 0);
         func_02012694(0x112, &mCamSpacePosX);
@@ -188,7 +180,7 @@ void daBasabasa_c::func_ov065_0211704c()
     pos.x = mPosX;
     pos.y = mPosY;
     pos.z = mPosZ;
-    _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(p, &pos, 1, 0xc000, 1, 0, 1);
+    p->Hurt(pos, 1, 0xc000, 1, 0, 1);
     if (mCurrentState != &data_ov065_0211d6e0)
         return;
     mPerchTimer = 0;
@@ -375,8 +367,7 @@ void daBasabasa_c::func_ov065_02117994()
         (mPosY - 0x18000) >> 3,
         mPosZ >> 3);
     mShadowMatrix = data_020a0e68;
-    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
-        this, &mShadowModel, &mShadowMatrix, 0x32000, 0x258000, 0xf);
+    DropShadowRadHeight(mShadowModel, mShadowMatrix, 0x32000, 0x258000, 0xf);
 }
 
 // @symbol _ZN12daBasabasa_c16CleanupResourcesEv
@@ -486,7 +477,7 @@ int daBasabasa_c::InitResources()
     dExtFrameCtrl_c::LoadFile(data_ov065_0211d690);
     dExtFrameCtrl_c::LoadFile(data_ov065_0211d6a0);
     mTerminalVelocity = -0xa000;
-    _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, this, 0x28000, 0x28000, 0x200000, 0x7eff0);
+    mdCcAc_c.Init(this, 0x28000, 0x28000, 0x200000, 0x7eff0);
     mAngleY = mPrevAngleY;
     mPrevAngleX = -0x8000;
     mAngleX = mPrevAngleX;

@@ -24,8 +24,6 @@
  *   dBgW callback address, so it cannot be a non-static member.
  * Leftover: dBgW_KcMbg::SetFile 6az: InitResources passes Fix12<int> by
  *   value; the header method form size-DIFFs.
- * Leftover: dBgActor_c::UpdateKillByMegaChar 6az: Behavior passes
- *   Fix12<int> by value; a method call homes the argument.
  * Leftover: dBgActor_c::IsClsnInRange / IsClsnInRangeOnScreen 6az
  *   (Behavior; header method form refused).
  * Leftover: func_020393d4 / func_020393c4 are 4-byte stores into dBgW+0x18
@@ -75,8 +73,6 @@ int AngleDiff(int a, int b);
 void Vec3_Sub(void *out, void *a, void *b);
 int LenVec3(void *v);
 u16 DecIfAbove0_Short(u16 *p);
-int _ZN10dBgActor_c20UpdateKillByMegaCharEsss5Fix12IiE(dBgActor_c *self, s16 a, s16 b, s16 c,
-                                                       int d);
 
 void func_020393d4(int *p, int v);
 void func_020393c4(int *p, int v);
@@ -177,8 +173,7 @@ extern "C" int func_ov080_0212714c(daObjMaruta_c *self, int *maxDist)
     s16 v;
     int horz;
 
-    if (_ZN10dBgActor_c20UpdateKillByMegaCharEsss5Fix12IiE(
-            self, (s16)-0x1500, 0, 0, 0) != 0)
+    if (self->UpdateKillByMegaChar((s16)-0x1500, 0, 0, 0) != 0)
         return 1;
     if ((int)((self->mFlags & 8) != 0) != 0)
         return 1;

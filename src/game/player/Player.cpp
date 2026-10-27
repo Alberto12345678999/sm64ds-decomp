@@ -27,8 +27,10 @@
  *   return type or argument order hides.
  * - func_020731dc is __register_global_object. The relocation rows name the
  *   retail symbol.
- * - The static initializer is compiled as C, so SharedFilePtr::Construct
- *   stays that C call.
+ * - The static initializer is still written out by hand. Its objects keep
+ *   their ROM-owned .bss homes, so it constructs each handle in place and
+ *   registers its destructor with __register_global_object, as the
+ *   compiler-emitted one did.
  * - Helpers that take the player as char * or void * and cast it stay free
  *   functions, including func_ov002_020e6780 (decl_common.h spells the
  *   parameter char *) and func_ov002_020bcdf0. func_ov002_020e69c0 rotates
@@ -54,16 +56,22 @@
 #include "dBgCh_Actr.h"
 #include "Sound.h"
 #include "dCamera_c.h"
+#include "SaveData.h"
+#include "Timer.h"
 #include "daObj1UpLogo_c.h"
 #include "daOwl_c.h"
 #include "daShl_c.h"
 #include "daSoundObj_c.h"
 #include "daTor_c.h"
 #include "daYegg_c.h"
+#include "daObjKey_c.h"
+#include "daStar_c.h"
+#include "dScene_c.h"
 #include "nitro/fx/fx.h"
+#include "G2x.h"
+#include "Memory.h"
 #include "cstd.h"
-
-bool ApproachLinear(short &value, short target, short step);
+#include "math/Approach.h"
 
 /* ---------------------------------------------------------------------------
  * Shadow types and ABI stand-ins that cannot live inside a function body.
@@ -272,8 +280,6 @@ particle:
 extern "C" {
 void Player::func_ov002_020bd06c(unsigned int state2)
 {
-    extern void _ZN7fBase_c18MarkForDestructionEv(void *thiz);
-
     extern Player::State data_ov002_02110154;
     char *self = (char *)this;
     int flag;
@@ -289,7 +295,7 @@ void Player::func_ov002_020bd06c(unsigned int state2)
     case 9:
     case 10:
         if (this->mCapActor != 0) {
-            _ZN7fBase_c18MarkForDestructionEv(this->mCapActor);
+            this->mCapActor->MarkForDestruction();
             this->mCapActor = 0;
         }
         break;
@@ -369,11 +375,6 @@ int Player::func_ov002_020bd20c(unsigned char *params, int beginFrame, int endFr
 extern "C" {
 int Player::func_ov002_020bd250(unsigned char *params, int beginFrame, int endFrame)
 {
-    /* Signature deliberately kept from the shard: the ROM name carries by-value
-       class parameters (Fix12<int>), which mwccarm passes differently at the
-       call site, so declaring the true types breaks the byte match. See
-       notes/mwccarm-codegen.md 6az. */
-    extern void _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void *, const Vector3&, unsigned int, int, unsigned int, unsigned int, unsigned int);
     extern void PlayerNewSimpleHold1(unsigned int, int, int, int);
     extern short ReadUnalignedShort(unsigned char* p);
     extern void Vec3_RotateYAndTranslate(Vector3* out, const Vector3* base, int angle, const Vector3* off);
@@ -389,7 +390,7 @@ int Player::func_ov002_020bd250(unsigned char *params, int beginFrame, int endFr
     v.x = out1.x;
     v.y = out1.y;
     v.z = out1.z;
-    _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(this, v, 0, 0xc000, 1, 0, 1);
+    this->Hurt(v, 0, 0xc000, 1, 0, 1);
     this->mVertSpeed = 0x20000;
     this->mHorzSpeed = 0xc000;
     if (param1 == 1) {
@@ -725,7 +726,6 @@ int Player::HasNoCap()
 {
     extern signed char data_0209f2f8;
     extern unsigned char data_0209f2d8;
-    extern int _ZN8SaveData16HasPlayerLostCapEv(void);
     extern Player::State data_ov002_0211058c;
     if(data_0209f2f8 == 0x1f) return 0;
     int r = (data_0209f2d8 == 2);
@@ -733,7 +733,8 @@ int Player::HasNoCap()
         if(!this->IsState(data_ov002_0211058c)){
             r = (data_0209f2d8 == 1);
             if(!r){
-                if(_ZN8SaveData16HasPlayerLostCapEv()) return 1;
+                if (SaveData::HasPlayerLostCap())
+                    return 1;
             }
         }
     }
@@ -870,7 +871,6 @@ extern "C" {
 void Player::InitMetalWario()
 {
     extern SharedFilePtr *data_ov002_020ff480[];
-    extern void _ZN6Player18TurnOffToonShadingEj(void*, u32);
     u32 v;
     u32 id;
 
@@ -879,8 +879,8 @@ void Player::InitMetalWario()
         u32 b = mHatCharacter;
         if (b != 2)
             return;
-        _ZN6Player18TurnOffToonShadingEj(((char *)this), b);
-        _ZN6Player18TurnOffToonShadingEj(((char *)this), mPrevCharacter);
+        this->TurnOffToonShading(b);
+        this->TurnOffToonShading(mPrevCharacter);
         mCapFlags = 0;
         param1 = mHatCharacter;
         mHasNoCap = 0;
@@ -934,13 +934,12 @@ void Player::InitVanishLuigi()
 // @symbol _ZN6Player19func_ov002_020bdf8cEv
 extern "C" {
 void Player::func_ov002_020bdf8c(){
-    extern void _ZN6Player17SetNoControlStateEhih(void*, unsigned char a, int b, unsigned char d);
     extern char* data_0209f318;
   func_ov002_020bda48();
   mScaleAnimStep = 0;
   if(mIsMega == 0){
-    _ZN6Player17SetNoControlStateEhih(this, 0xd, -1, 0);
-    func_02012790(0x2e);
+      this->SetNoControlState(0xd, -1, 0);
+      func_02012790(0x2e);
   }
   mIsMega = 1;
   mMegaTimer = 0x258;
@@ -956,8 +955,6 @@ void func_ov002_020be008(char* self){
     extern int data_ov002_021104b4;
     extern signed char data_02092114;
     extern int func_ov002_020e3078(void*, void*);
-    extern void _ZN6Player18SetNewHatCharacterEjjb(void*, unsigned int a, unsigned int b, int c);
-    extern void _ZN6Player17SetNoControlStateEhih(void*, unsigned char a, int b, unsigned char c);
     Player *player = (Player *)self;
     int b = (int)(data_0209f2d8 == 1);
     if (b != 0)
@@ -970,8 +967,8 @@ void func_ov002_020be008(char* self){
             return;
         if (r5 == player->param1)
             return;
-        _ZN6Player18SetNewHatCharacterEjjb(self, r5 & 0xff, 0, 0);
-        _ZN6Player17SetNoControlStateEhih(self, 8, -1, 0);
+        ((Player *)self)->SetNewHatCharacter(r5 & 0xff, 0, 0);
+        ((Player *)self)->SetNoControlState(8, -1, 0);
         dActor_c::Spawn(0x10d, (r5 << 8) | 0xa, player->mPos, 0, player->mAreaId, -1);
         data_02092114 = -1;
     }
@@ -1021,7 +1018,6 @@ void Player::SetNewHatCharacter(unsigned int p1, unsigned int p2, bool p3)
 extern "C" {
 void Player::SetRealCharacter(unsigned int chr_)
 {
-    extern void _ZN6Player18SetNewHatCharacterEjjb(void*, u32 a, u32 b, bool c);
     extern SharedFilePtr *data_ov002_020ff480[];
     extern u8 data_02092128[];
     extern u8 data_0209caa0[];
@@ -1033,7 +1029,7 @@ void Player::SetRealCharacter(unsigned int chr_)
     u32 m1, m2;
 
     ((SharedFilePtr *)(data_ov002_020ff480[base + (cur & 3)]))->Release();
-    _ZN6Player18SetNewHatCharacterEjjb(((char *)this), chr, 0, 1);
+    this->SetNewHatCharacter(chr, 0, 1);
     param1 = chr;
     mCharacter = (u8)chr;
     data_02092128[mPlayerNo] = (u8)param1;
@@ -1080,7 +1076,6 @@ void Player::func_ov002_020be3b0()
 {
     extern void func_ov002_020e6b74(void*, void*);
     extern void func_ov002_020d80d0(void*);
-    extern void _ZN13SharedFilePtr7ReleaseEv(void*);
     extern SharedFilePtr *data_ov002_020ff480[];
     extern u8 data_02092128[];
     extern Player::State data_ov002_021104b4;
@@ -1088,7 +1083,6 @@ void Player::func_ov002_020be3b0()
     extern void func_ov002_020e6b3c(void*);
     extern void*data_ov002_020ff790[];
     extern int __aeabi_idiv(int, int);
-    extern void _ZN6Player18TurnOffToonShadingEj(void*, u32);
     extern char data_ov002_02110804[];
     extern void func_ov002_020e69c0(void*);
     extern void func_ov002_020e6a78(void*, int);
@@ -1215,7 +1209,7 @@ void Player::func_ov002_020be3b0()
             mm = this->param1;
             mModels.mBodyModels[this->GetBodyModelID((u8)mm, 0)]->Func_020162C4(
                 (u32)((SharedFilePtr *)data_ov002_020ff790[mm])->filePtr, 0, 0x1000, 0);
-            _ZN13SharedFilePtr7ReleaseEv(data_ov002_020ff480[mCharFileBase + mPrevCharacter]);
+            data_ov002_020ff480[mCharFileBase + mPrevCharacter]->Release();
             mLoadedResourceFlags &= ~0x40;
             func_ov002_020bdb50(0);
         } else {
@@ -1257,8 +1251,8 @@ void Player::func_ov002_020be3b0()
         break;
     }
     case 7:
-        _ZN6Player18TurnOffToonShadingEj(this, mHatCharacter);
-        _ZN6Player18TurnOffToonShadingEj(this, mPrevCharacter);
+        this->TurnOffToonShading(mHatCharacter);
+        this->TurnOffToonShading(mPrevCharacter);
         mCapFlags = 0;
         break;
     }
@@ -1353,19 +1347,16 @@ void func_ov002_020bec2c(void){
 // @symbol func_ov002_020bec84
 extern "C" {
 int func_ov002_020bec84(void* p, unsigned int i) {
-    extern int _ZN6Player6IsAnimEj(void*, unsigned int);
     extern unsigned int data_ov002_020ff220[];
-    return _ZN6Player6IsAnimEj(p, data_ov002_020ff220[i]);
+    return ((Player *)p)->IsAnim(data_ov002_020ff220[i]);
 }
 }
 
 // @symbol func_ov002_020bec9c
 extern "C" {
-int func_ov002_020bec9c(void*c,unsigned int a,int b,int d,unsigned short e){
+void func_ov002_020bec9c(void *c, unsigned int a, int b, int d, unsigned short e) {
     extern int data_ov002_020ff220[];
-    /* local extern: tail-forwards SetAnim's r0 as this function's int result. */
-    extern int _ZN6Player7SetAnimEjiit(void *, unsigned int, int, int, unsigned short);
-    return _ZN6Player7SetAnimEjiit(c, data_ov002_020ff220[a], b, d, e);
+    ((Player *)c)->SetAnim(data_ov002_020ff220[a], b, d, e);
 }
 }
 
@@ -1376,8 +1367,9 @@ int func_ov002_020bec9c(void*c,unsigned int a,int b,int d,unsigned short e){
  * flag is consulted depends on the second argument -- mIsMetal for the live
  * state, mDrawnIsMetal (func_ov002_020e4bb8's blinked copy) for drawing.
  *
- * const, and the _ZNK in the symbol is what says so: declared without it the
- * compiler emits _ZN..., which names a symbol that does not exist.
+ * const, and the K in the mangled name is what says so: declared without it
+ * the compiler emits the non-const name, which names a symbol that does not
+ * exist.
  */
 unsigned int Player::GetBodyModelID(unsigned int a, bool b_) const
 {
@@ -1468,11 +1460,10 @@ int Player::IsAnim(unsigned int a)
 /* mwccarm rejects a linkage-spec inside a function, and these six names are
    redeclared with other types elsewhere in the TU, so they cannot be hoisted.
    The block stays so the hand-spelled callees keep C linkage. The method
-   itself still mangles as _ZN6Player7SetAnimEjiit. */
+   itself still mangles as the Player member. */
 extern "C" {
 #pragma opt_propagation off
 void Player::SetAnim(u32 animId, int flags, Fix12i speed, u16 startFrame) {
-    extern int _ZNK6Player14GetBodyModelIDEjb(void *, u32 a, int b);
     extern u8 data_0209f2d8;
     extern SharedFilePtr *data_ov002_020ff480[];
     extern SharedFilePtr *data_ov002_020ff2f0[];
@@ -1502,7 +1493,7 @@ void Player::SetAnim(u32 animId, int flags, Fix12i speed, u16 startFrame) {
         data_ov002_020ff480[player->mCharFileBase + (player->param1 & 3)]->Release();
         dExtFrameCtrl_c::LoadFile(*data_ov002_020ff480[newVal + (player->param1 & 3)]);
 
-        id = _ZNK6Player14GetBodyModelIDEjb(self, player->param1 & 0xff, 0);
+        id = this->GetBodyModelID(player->param1 & 0xff, 0);
         modelPtr = player->mModels.mBodyModels[id];
         ((dExtAnmModel_c *)modelPtr)->file = 0;
 
@@ -1515,7 +1506,7 @@ void Player::SetAnim(u32 animId, int flags, Fix12i speed, u16 startFrame) {
             sfp = data_ov002_020ff480[newVal + charId];
             dExtFrameCtrl_c::LoadFile(*sfp);
 
-            id = _ZNK6Player14GetBodyModelIDEjb(self, charId & 0xff, 0);
+            id = this->GetBodyModelID(charId & 0xff, 0);
             player->mModels.mBodyModels[id]->SetAnim((BCA_File *)sfp->filePtr, flags, speed,
                                                      startFrame);
             {
@@ -1527,7 +1518,7 @@ void Player::SetAnim(u32 animId, int flags, Fix12i speed, u16 startFrame) {
 
     field8 = player->param1;
     sl = animId * 4;
-    id = _ZNK6Player14GetBodyModelIDEjb(self, (u32)(field8 & 0xff), 0);
+    id = this->GetBodyModelID((u32)(field8 & 0xff), 0);
     player->mModels.mBodyModels[id]->SetAnim(
         (BCA_File *)data_ov002_020ff480[(field8 & 3) + (animId * 4)]->filePtr, flags, speed,
         startFrame);
@@ -1689,28 +1680,20 @@ void Player::func_ov002_020bf36c(void* arg){
 /* recovered: shared common types */
 extern "C" {
 int Player::func_ov002_020bf40c() {
-    struct dBgCh_Gnd {
-        char pad[0x50];
-    };
     extern unsigned char NumStars(void);
     extern void AddVec3(void *, void *, void *);
-    extern void *_ZN9dBgCh_GndC1Ev(void *);
-    extern void _ZN9dBgCh_Gnd12SetObjAndPosERK7Vector3P8dActor_c(void *, void *, void *);
-    extern int _ZN9dBgCh_Gnd10DetectClsnEv(void *);
-    extern void _ZN9dBgCh_GndD1Ev(void *);
     extern void *data_0209f318;
     extern Vector3 data_ov002_0210a590;
     extern void func_0200d858(void *, const Vector3 *);
     Vector3 pos;
     Vector3 off;
-    struct dBgCh_Gnd rg;
     if (NumStars() < 0x50 || param1 != 0) {
         AddVec3(&mPos, &data_ov002_0210a590, &mPos);
         off.x = data_ov002_0210a590.x;
         off.y = data_ov002_0210a590.y;
         off.z = data_ov002_0210a590.z;
         func_0200d858(data_0209f318, &off);
-        _ZN9dBgCh_GndC1Ev(&rg);
+        dBgCh_Gnd rg;
         {
             int py = this->mPosY;
             int pz = this->mPosZ;
@@ -1718,11 +1701,10 @@ int Player::func_ov002_020bf40c() {
             pos.y = py + 0xa0000;
             pos.z = pz;
         }
-        _ZN9dBgCh_Gnd12SetObjAndPosERK7Vector3P8dActor_c(&rg, &pos, this);
-        if (_ZN9dBgCh_Gnd10DetectClsnEv(&rg)) {
-            mGroundY = ((::dBgCh_Gnd *)&rg)->clsnY;
+        rg.SetObjAndPos(pos, this);
+        if (rg.DetectClsn()) {
+            mGroundY = rg.clsnY;
         }
-        _ZN9dBgCh_GndD1Ev(&rg);
         return 1;
     }
     return 0;
@@ -2134,12 +2116,6 @@ int Player::func_ov002_020c0108(int p1)
     typedef short s16;
     typedef unsigned int u32;
     typedef int s32;
-    typedef struct { void *a; u32 b; } PathPtr;
-    extern void *_ZN7PathPtrC1Ev(void*);
-    extern void _ZN7PathPtr6FromIDEj(void*, u32 id);
-    extern int _ZNK7PathPtr8NumNodesEv(void*);
-    extern void _ZNK7PathPtr7GetNodeER7Vector3j(void*, void*, u32 idx);
-    extern u32 _ZNK7PathPtr9GetUnk004Ev(void*);
     extern int Vec3_HorzAngle(const Vector3 *v0, const Vector3 *v1);
     extern int Vec3_VertAngle(const Vector3 *v1, const Vector3 *v0);
     extern Player::State data_ov002_02110304;
@@ -2163,15 +2139,14 @@ int Player::func_ov002_020c0108(int p1)
         Vector3 nodes[3];
         PathPtr path;
 
-        _ZN7PathPtrC1Ev(&path);
-        _ZN7PathPtr6FromIDEj(&path, mClpsWord1Lo);
-        numNodes = _ZNK7PathPtr8NumNodesEv(&path);
+        path.FromID(mClpsWord1Lo);
+        numNodes = path.NumNodes();
 
         for (i = 0; i < numNodes; i++) {
-            _ZNK7PathPtr7GetNodeER7Vector3j(&path, &nodes[i], i);
+            path.GetNode(nodes[i], i);
         }
 
-        idx = _ZNK7PathPtr9GetUnk004Ev((unsigned char **)&path) & 0xff;
+        idx = path.GetUnk004() & 0xff;
         if ((u32)idx >= 4)
             idx = 1;
 
@@ -2365,7 +2340,7 @@ int Player::func_ov002_020c06fc(int arg)
        Vec3 is a MEMBER of the local struct Frame below, so a non-POD element
        gives Frame an implicit destructor, and mwccarm emits that as a new
        compiler-numbered local-class symbol -- measured as
-       _ZN6Player20Frame$2583Player_cppD1Ev. This TU emits no @NNNN/$NNN symbols
+       a D1 for Player::Frame$2583Player_cpp. This TU emits no @NNNN/$NNN symbols
        at all today, and such a name depends on declaration order (compare
        Bundle$902d_a_mky_cpp in AGENTS.md). Frame has to stay POD. */
     struct Vec3 { s32 x, y, z; };
@@ -2375,10 +2350,6 @@ int Player::func_ov002_020c06fc(int arg)
     extern int Vec3_HorzLen(void*);
     extern int atan2_hold_Player_18(int x, int z);
     extern int AngleDiff(int a, int b);
-    extern void *_ZN9dBgCh_LinC1Ev(void*);
-    extern void _ZN9dBgCh_Lin13SetObjAndLineERK7Vector3S2_P8dActor_c(void*, void*, void*, void*);
-    extern int _ZN9dBgCh_Lin10DetectClsnEv(void*);
-    extern void _ZN9dBgCh_LinD1Ev(void*);
     extern void ApproachAngle(void*, short target, int divisor, int band, int maxStep);
     extern short data_0209f4a0[];
     extern char data_0209f4ac[];
@@ -2388,7 +2359,6 @@ int Player::func_ov002_020c06fc(int arg)
         struct Vec3 v1;
         struct Vec3 v2;
         struct Vec3 v3;
-        char ray[0x78];
     } f;
     int a;
     int t;
@@ -2456,7 +2426,7 @@ int Player::func_ov002_020c06fc(int arg)
 
     if ((this->mClsnFlags & 2) != 0 && (u16)(this->mStateFlags & 1) == 0 && this->mHorzSpeed <= 0x10000) {
         int r6b = cstd::atan2(f.v0.x, f.v0.z);
-        _ZN9dBgCh_LinC1Ev(f.ray);
+        dBgCh_Lin ray;
         {
             int tz, ty, tx;
             int p5c = this->mPosX;
@@ -2471,12 +2441,11 @@ int Player::func_ov002_020c06fc(int arg)
             ty = this->mPosY + 0x32000;
             f.v2.x = tx; f.v2.y = ty; f.v2.z = tz;
         }
-        _ZN9dBgCh_Lin13SetObjAndLineERK7Vector3S2_P8dActor_c(f.ray, &f.v1, &f.v2, c);
-        if (_ZN9dBgCh_Lin10DetectClsnEv(f.ray) != 0) {
+        ray.SetObjAndLine(*(const Vector3 *)&f.v1, *(const Vector3 *)&f.v2, this);
+        if (ray.DetectClsn() != 0) {
             f.v0.x = 0;
             f.v0.z = 0;
         }
-        _ZN9dBgCh_LinD1Ev(f.ray);
     }
 
     {
@@ -2602,13 +2571,9 @@ extern "C" {
 int Player::func_ov002_020c0fb4() {
     char *c = (char *)this;
     extern int func_ov002_020dec70(void *);
-    extern void _ZN5Timer10ResetTimerEv(void *);
-    extern void _ZN5Timer10StartTimerEv(void *);
-    extern void _ZN5Timer9StopTimerEv(void *);
-    extern unsigned long long _ZN5Timer7GetTimeEv(void *);
     extern int func_ov002_020d06c0(void *);
     extern unsigned char data_ov002_02111184[];
-    extern unsigned char data_0209d4c8[];
+    extern Timer data_0209d4c8;
     extern signed char data_0209f2f8;
     int r;
     switch (this->mSurfaceType) {
@@ -2639,18 +2604,18 @@ int Player::func_ov002_020c0fb4() {
         if (data_ov002_02111184[0] != 0) {
             break;
         }
-        _ZN5Timer10ResetTimerEv(data_0209d4c8);
+        data_0209d4c8.ResetTimer();
         data_ov002_02111184[0] = 1;
-        _ZN5Timer10StartTimerEv(data_0209d4c8);
+        data_0209d4c8.StartTimer();
         break;
 
     case 16:
-        if (data_0209d4c8[8] == 0) {
+        if (data_0209d4c8.mIsRunning == 0) {
             break;
         }
-        _ZN5Timer9StopTimerEv(data_0209d4c8);
+        data_0209d4c8.StopTimer();
         {
-            unsigned long long t = _ZN5Timer7GetTimeEv(data_0209d4c8);
+            unsigned long long t = data_0209d4c8.GetTime();
             if (((t << 6) / 0x1ff6210) > 0x14) {
                 break;
             }
@@ -2755,9 +2720,6 @@ void Player::func_ov002_020c133c()
     extern int func_ov002_020d82f0(void*);
     extern void PlayerPlayLongHold_c133c(unsigned int a, unsigned int b, unsigned int c,
                                          Vector3 const *v, unsigned int d);
-    extern int _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void *, Vector3 const *v, unsigned int b,
-                                                       int c, unsigned int d, unsigned int e,
-                                                       unsigned int f);
     extern int func_ov002_020d91e0(void*, int damage, int doPre);
     if (mIsMetal != 0) return;
     {
@@ -2779,7 +2741,8 @@ void Player::func_ov002_020c133c()
         v.x = this->mPosX;
         v.y = this->mPosY;
         v.z = this->mPosZ;
-        if (!_ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(this, &v, 0, 0, 1, 0, 0)) return;
+        if (!this->Hurt(v, 0, 0, 1, 0, 0))
+            return;
     }
     Sound::PlayCharVoice(mCharacter, 6, mCamSpacePos);
     if (func_ov002_020d91e0(this, 0x100, 0) != 0 && this->GetHealth() == 0)
@@ -2803,8 +2766,6 @@ void Player::func_ov002_020c14b8()
         unsigned short f18, f1a;
         int f1c, f20, f24;
     } ClsnResultTmp;
-    extern int _ZN6Player12Unk_020c9e5cEh(void *, unsigned char state);
-    extern void _ZN5dBgPiD1Ev(void *);
     extern int SurfaceInfo_TestFlag0x20(void*);
     extern int func_02037e20(void *);
     extern int data_02099368;
@@ -2816,7 +2777,8 @@ void Player::func_ov002_020c14b8()
     int savedY;
 
     savedY = 0x80000000;
-    if (_ZN6Player12Unk_020c9e5cEh(c, 7) || _ZN6Player12Unk_020c9e5cEh(c, 0xa) || _ZN6Player12Unk_020c9e5cEh(c, 0xb) || _ZN6Player12Unk_020c9e5cEh(c, 0xe))
+    if (((Player *)c)->Unk_020c9e5c(7) || ((Player *)c)->Unk_020c9e5c(0xa) ||
+        ((Player *)c)->Unk_020c9e5c(0xb) || ((Player *)c)->Unk_020c9e5c(0xe))
         savedY = mPosY;
     mProbedGroundY = 0x80000000;
     mGroundY = mProbedGroundY;
@@ -2856,7 +2818,7 @@ void Player::func_ov002_020c14b8()
         tmp.f20 = (int)rg.owner;
         tmp.f24 = (int)rg.collider;
         SetFloorSurfaceInfo((const dBgPi &)tmp);
-        _ZN5dBgPiD1Ev(&tmp);
+        ((dBgPi *)&tmp)->dBgPi::~dBgPi();
         mProbedGroundY = rg.clsnY;
         mGroundY = mProbedGroundY;
         mProbedSurfaceType = mSurfaceType;
@@ -2995,7 +2957,6 @@ void func_ov002_020c18b0(char *self, int p1)
 extern "C" {
 int Player::func_ov002_020c19d0(int arg1, int arg2) {
     char* self = (char*)this;
-    extern void _ZNK11SurfaceInfo12CopyNormalToER7Vector3(void*, void*);
     extern s16 data_02082214[];
     int angle = (unsigned short)mAngleY;
     dBgCh_Lin line;
@@ -3009,7 +2970,7 @@ int Player::func_ov002_020c19d0(int arg1, int arg2) {
     if (!line.DetectClsn()) {
         return 0;
     }
-    _ZNK11SurfaceInfo12CopyNormalToER7Vector3(&line.surface, &nrm);
+    line.surface.CopyNormalTo(nrm);
     if (nrm.y != 0) {
         return 0;
     }
@@ -3018,7 +2979,7 @@ int Player::func_ov002_020c19d0(int arg1, int arg2) {
 }
 
 // @symbol _ZN6Player19func_ov002_020c1ad8Ei
-/* _ZN6Player19func_ov002_020c1ad8Ei at 0x020c1ad8 (ov002)
+/* Player::func_ov002_020c1ad8(int) at 0x020c1ad8 (ov002)
  * Matched byte-for-byte with mwccarm 1.2/sp2p3.
  */
 extern "C" {
@@ -3182,7 +3143,6 @@ int Player::func_ov002_020c200c(int arg)
 {
     char* self = (char*)this;
     extern int func_ov002_020c1e44(void*, int x);
-    extern int _ZN6Player22IsBeingShotOutOfCannonEv(void*);
     extern void func_ov002_020eedc0(void*, void*);
     extern Player::State data_ov002_021105bc;
     extern Player::State data_ov002_0211031c;
@@ -3195,16 +3155,15 @@ int Player::func_ov002_020c200c(int arg)
     if (this->mIsNoControl)
         return 0;
 
-    if (this->IsState(data_ov002_021105bc) || this->IsState(data_ov002_0211031c) || this->IsState(data_ov002_02110334) || this->IsState(data_ov002_0211055c) || _ZN6Player22IsBeingShotOutOfCannonEv(self) || this->IsState(data_ov002_02110214))
-    {
+    if (this->IsState(data_ov002_021105bc) || this->IsState(data_ov002_0211031c) ||
+        this->IsState(data_ov002_02110334) || this->IsState(data_ov002_0211055c) ||
+        this->IsBeingShotOutOfCannon() || this->IsState(data_ov002_02110214)) {
         if (this->mHorzSpeed <= 0x10000)
             return 0;
 
-        if (_ZN6Player22IsBeingShotOutOfCannonEv(self))
+        if (this->IsBeingShotOutOfCannon())
             func_ov002_020eedc0(&mMeshClsn, self);
-    }
-    else
-    {
+    } else {
         return 0;
     }
 
@@ -3363,35 +3322,25 @@ int Player::func_ov002_020c25a8(int arg1)
         int f24;
     } ClsnResultTmp;
     extern void func_02037318(void*);
-    extern void _ZN10dBgCh_Actr18StopDetectingWaterEv(void*);
-    extern void _ZN10dBgCh_Actr19StartDetectingWaterEv(void*);
     extern void func_020357e0(void*);
     extern void func_02035800(void*);
     extern void func_02035770(void*);
     extern void func_02035784(void*);
     extern void func_020357a0(void*);
-    extern int _ZN6Player7IsStateERNS_5StateE(void*, void*);
     extern void func_020357c0(void*);
     extern void func_020355e8(void*);
     extern void func_020355fc(void*);
-    extern void _ZN10dBgCh_Actr15ClearLimMovFlagEv(void*);
-    extern void _ZN10dBgCh_Actr13SetLimMovFlagEv(void*);
     extern void func_020355c8(void*);
     extern void func_020355b4(void*);
     extern void func_ov002_020eed24(void*, void*);
-    extern void _ZN10dBgCh_Actr15ClearGroundFlagEv(void*);
-    extern int _ZNK10dBgCh_Actr8IsOnWallEv(void*);
     extern int func_02035638(void*);
     extern void func_020371fc(void *);
-    extern void _ZN5dBgPiD1Ev(void*);
-    extern void _ZNK11SurfaceInfo12CopyNormalToER7Vector3(void*, void*);
     extern int func_020356c8(void*);
     extern void func_ov002_020cef84(void*);
-    extern void *_ZNK10dBgCh_Actr13GetWallResultEv(void*);
     extern int func_ov002_020d0580(void*);
-    extern char data_ov002_02110514;
-    extern char data_ov002_021100f4;
-    extern char data_ov002_021102ec;
+    extern Player::State data_ov002_02110514;
+    extern Player::State data_ov002_021100f4;
+    extern Player::State data_ov002_021102ec;
     extern int data_02099368;
     char *c = (char*)arg0;
     int ret;
@@ -3402,14 +3351,14 @@ int Player::func_ov002_020c25a8(int arg1)
     int *dst;
 
     func_02037318(&mMeshClsn);
-    _ZN10dBgCh_Actr18StopDetectingWaterEv(&mMeshClsn);
+    mMeshClsn.StopDetectingWater();
 
     {
         int b1;
         b1 = mRidingShell;
         b1 = (b1 != 0);
         if (b1 || mDetectWater || mIsBalloon)
-            _ZN10dBgCh_Actr19StartDetectingWaterEv(&mMeshClsn);
+            mMeshClsn.StartDetectingWater();
     }
 
     func_020357e0(&mMeshClsn);
@@ -3424,7 +3373,7 @@ int Player::func_ov002_020c25a8(int arg1)
 
     func_020357a0(&mMeshClsn);
 
-    if (_ZN6Player7IsStateERNS_5StateE(c, &data_ov002_02110514))
+    if (((Player *)c)->IsState(data_ov002_02110514))
         func_020357c0(&mMeshClsn);
 
     func_020355e8(&mMeshClsn);
@@ -3437,14 +3386,14 @@ int Player::func_ov002_020c25a8(int arg1)
             func_020355fc(&mMeshClsn);
     }
 
-    _ZN10dBgCh_Actr15ClearLimMovFlagEv(&mMeshClsn);
+    mMeshClsn.ClearLimMovFlag();
 
-    if (_ZN6Player7IsStateERNS_5StateE(c, &data_ov002_021100f4) && mVertSpeed > 0)
-        _ZN10dBgCh_Actr13SetLimMovFlagEv(&mMeshClsn);
+    if (((Player *)c)->IsState(data_ov002_021100f4) && mVertSpeed > 0)
+        mMeshClsn.SetLimMovFlag();
 
     func_020355c8(&mMeshClsn);
 
-    if (_ZN6Player7IsStateERNS_5StateE(c, &data_ov002_021102ec))
+    if (((Player *)c)->IsState(data_ov002_021102ec))
         func_020355b4(&mMeshClsn);
 
     func_020383e4(&mMeshClsn);
@@ -3453,12 +3402,12 @@ int Player::func_ov002_020c25a8(int arg1)
         func_ov002_020eed24(&mMeshClsn, c);
 
     if (mVertSpeed > 0x1e000)
-        _ZN10dBgCh_Actr15ClearGroundFlagEv(&mMeshClsn);
+        mMeshClsn.ClearGroundFlag();
 
     if (mMeshClsn.IsOnGround())
         mClsnFlags |= 1;
 
-    if (_ZNK10dBgCh_Actr8IsOnWallEv(&mMeshClsn))
+    if (mMeshClsn.IsOnWall())
         mClsnFlags |= 2;
 
     if (func_02035638(&mMeshClsn))
@@ -3468,7 +3417,7 @@ int Player::func_ov002_020c25a8(int arg1)
         func_020371fc(&mMeshClsn);
 
     if (mClsnFlags & 1) {
-        fr = (dBgPi *)mMeshClsn.GetFloorResult();
+        fr = mMeshClsn.GetFloorResult();
         dst = &tmp.f04;
 
         {
@@ -3488,13 +3437,13 @@ int Player::func_ov002_020c25a8(int arg1)
         tmp.f24 = (int)fr->collider;
 
         SetFloorSurfaceInfo((const dBgPi &)tmp);
-        _ZN5dBgPiD1Ev(&tmp);
+        ((dBgPi *)&tmp)->dBgPi::~dBgPi();
 
         mGroundY = mPosY;
         ret = fr->surface.clps.GetFloorClass();
 
         if (mIsUnderwater == 0 && ret != 1) {
-            _ZNK11SurfaceInfo12CopyNormalToER7Vector3(&fr->surface, &v);
+            fr->surface.CopyNormalTo(v);
             if (v.y != 0) {
                 int t = cstd::fdiv(FX_MUL(v.x, mSpeedX) + FX_MUL(v.z, mSpeedZ), v.y);
                 t = -(t + 0x8000);
@@ -3526,8 +3475,7 @@ int Player::func_ov002_020c25a8(int arg1)
             return wallFlag;
     }
 
-    _ZNK11SurfaceInfo12CopyNormalToER7Vector3(
-        &((dBgPi *)_ZNK10dBgCh_Actr13GetWallResultEv(&mMeshClsn))->surface, &wn);
+    mMeshClsn.GetWallResult()->surface.CopyNormalTo(wn);
     mWallNormalX = wn.x;
     mWallNormalY = wn.y;
     mWallNormalZ = wn.z;
@@ -3556,7 +3504,6 @@ extern "C" {
 void Player::func_ov002_020c29d4()
 {
     extern int Player_ScaleByCharFactor(void*, int a);
-    extern dBgPi *_ZNK10dBgCh_Actr14GetFloorResultEv(const dBgCh_Actr *self);
     extern Player::State data_ov002_0211013c;
     extern Player::State data_ov002_021101b4;
     char *base = (char *)this;
@@ -3575,7 +3522,7 @@ void Player::func_ov002_020c29d4()
         mQuicksandRunFlags = 0x80;
     } else if (flags & 0x80) {
         if (mMeshClsn.IsOnGround()) {
-            int r = _ZNK10dBgCh_Actr14GetFloorResultEv(&mMeshClsn)->surface.clps.GetSurfaceType();
+            int r = mMeshClsn.GetFloorResult()->surface.clps.GetSurfaceType();
             if (r >= 6 && r <= 9) return;
             mQuicksandRunFlags = 0;
             mQuicksandRunTimer = 0;
@@ -3592,15 +3539,9 @@ extern "C" {
 void Player::func_ov002_020c2b08()
 {
     void *arg0 = (void *)this;
-    extern void *_ZNK10dBgCh_Actr14GetFloorResultEv(void*);
     extern int SurfaceInfo_TestFlag0x20(void*);
     extern int Player_ScaleByCharFactor(void*, int a);
-    extern void *_ZN9dBgCh_GndC1Ev(void*);
-    extern void _ZN9dBgCh_Gnd12SetObjAndPosERK7Vector3P8dActor_c(void*, void*, void*);
-    extern int _ZN9dBgCh_Gnd10DetectClsnEv(void*);
-    extern void _ZN9dBgCh_GndD1Ev(void*);
-    extern int _ZN6Player7IsStateERNS_5StateE(void*, void*);
-    extern char data_ov002_0211013c;
+    extern Player::State data_ov002_0211013c;
     char *c = (char *)arg0;
     int v[3];
 
@@ -3614,8 +3555,7 @@ void Player::func_ov002_020c2b08()
 
         if (!mMeshClsn.IsOnGround())
             return;
-        if (!SurfaceInfo_TestFlag0x20(
-                (int *)&((dBgPi *)_ZNK10dBgCh_Actr14GetFloorResultEv(&mMeshClsn))->surface.clps))
+        if (!SurfaceInfo_TestFlag0x20((int *)&mMeshClsn.GetFloorResult()->surface.clps))
             return;
 
         limit = Player_ScaleByCharFactor(c, 0x20000);
@@ -3630,8 +3570,7 @@ void Player::func_ov002_020c2b08()
     if (mWaterRunTimer != 0) {
         if (!mMeshClsn.IsOnGround())
             goto clear_timer;
-        if (!SurfaceInfo_TestFlag0x20(
-                (int *)&((dBgPi *)_ZNK10dBgCh_Actr14GetFloorResultEv(&mMeshClsn))->surface.clps))
+        if (!SurfaceInfo_TestFlag0x20((int *)&mMeshClsn.GetFloorResult()->surface.clps))
             goto clear_timer;
 
         mIsInShallowWater = 1;
@@ -3675,9 +3614,9 @@ void Player::func_ov002_020c2b08()
 
             {
                 dBgCh_Gnd rg;
-                _ZN9dBgCh_Gnd12SetObjAndPosERK7Vector3P8dActor_c(&rg, v, c);
+                rg.SetObjAndPos(*(const Vector3 *)v, (dActor_c *)c);
 
-                if (_ZN9dBgCh_Gnd10DetectClsnEv(&rg) != 0) {
+                if (rg.DetectClsn() != 0) {
                     mGroundY = rg.clsnY;
                     if (mPosY + mModelOffsetY < rg.clsnY)
                         mWaterRunTimer = 0;
@@ -3694,13 +3633,12 @@ void Player::func_ov002_020c2b08()
     mDetectWater = 0;
     if (!mMeshClsn.IsOnGround())
         return;
-    if (SurfaceInfo_TestFlag0x20(
-            (int *)&((dBgPi *)_ZNK10dBgCh_Actr14GetFloorResultEv(&mMeshClsn))->surface.clps) != 0)
+    if (SurfaceInfo_TestFlag0x20((int *)&mMeshClsn.GetFloorResult()->surface.clps) != 0)
         return;
     if (mIsInShallowWater != 0)
         return;
 
-    if (_ZN6Player7IsStateERNS_5StateE(c, &data_ov002_0211013c)) {
+    if (((Player *)c)->IsState(data_ov002_0211013c)) {
         mWaterRunLatch = 0;
         mDetectWater = 1;
     }
@@ -3760,8 +3698,8 @@ void Player::func_ov002_020c2e78(){
 /* recovered: named members + shared header, real C++ method
  *
  * Warping is allowed from exactly two states. One of them is now spelt as the
- * static member it is -- Player::ST_WAIT, which the compiler mangles to
- * _ZN6Player7ST_WAITE for us -- instead of a hand-written extern. The other is
+ * static member it is -- Player::ST_WAIT, which the compiler mangles for us --
+ * instead of a hand-written extern. The other is
  * still reached by its ov002 address; it has no recovered name yet.
  *
  * The file's own `struct State;` stand-in is gone with it: IsState really
@@ -3959,7 +3897,6 @@ void Player::func_ov002_020c38a0()
 {
     extern int Vec3_HorzLen(void*);
     extern int atan2_hold_Player_14(int a, int b);
-    extern void _Z15ApproachLinear2Rsss(void*, short a, short b);
     V3Quad s;
     int hlen;
     int ang;
@@ -3998,7 +3935,7 @@ void Player::func_ov002_020c38a0()
             return;
         }
         this->mAngleX = -cstd::atan2(s.e.y, hlen);
-        _Z15ApproachLinear2Rsss(&this->mAngleZ, 0x2000, 0x10);
+        ApproachLinear2(this->mAngleZ, 0x2000, 0x10);
         this->mAngleY = ang;
         break;
     case 2:
@@ -4341,10 +4278,7 @@ int Player::func_ov002_020c4188()
     extern short data_ov002_020ff26c[];
     extern unsigned char data_0209d660;
     extern void func_0200d3f8(void*, unsigned char playerID, void*);
-    extern void _ZN9dCamera_c9SetFlag_3Ev(void*);
     extern void func_0201f32c(int arg0);
-    /* local extern: dActor_c.h declares SpawnSoundObj void; its result is stored here. */
-    extern void* _ZN8dActor_c13SpawnSoundObjEj(void*, unsigned int a);
     extern void func_0200d81c(void*, int playerID);
     extern void func_ov002_020e444c(void*);
     int* p;
@@ -4364,7 +4298,7 @@ int Player::func_ov002_020c4188()
         if (mEventId < 7) {
             func_0200d3f8(p, mPlayerNo, 0);
         } else {
-            _ZN9dCamera_c9SetFlag_3Ev(p);
+            ((dCamera_c *)p)->SetFlag_3();
         }
         mEventStep++;
         if (mEventId >= 7) {
@@ -4385,7 +4319,7 @@ int Player::func_ov002_020c4188()
         }
         func_0201f32c(data_ov002_020ff26c[mEventId - 1]);
         if (mEventId == 6) {
-            mAttachedActor = (s32)_ZN8dActor_c13SpawnSoundObjEj(this, 5);
+            mAttachedActor = (s32)SpawnSoundObj(5);
         }
         mEventStep++;
         break;
@@ -4473,12 +4407,11 @@ int Player::func_ov002_020c44c4()
     extern int data_0209caa0[];
     extern s8 data_0209f2f8;
     extern u8 data_0209f264;
+    /* local extern: the registrar takes this D1 by address, which C++ cannot spell. */
     extern void *_ZN7Vector3D1Ev(void *object);
     extern void func_020731dc(void *object, void *destructor, void *node);
     extern void Vec3_RotateYAndTranslate(void*, void*, short angle, void*);
-    extern int _ZN6Player11ShowMessageER7fBase_cjPK7Vector3hh(void*, void*, unsigned int id, const void* pos, unsigned int a, unsigned int b);
     extern void func_02012694(unsigned int id, const Vector3 *v);
-    extern unsigned int _ZN8SaveData26CountStarsCollectedInLevelEj(unsigned int);
     extern int SublevelToLevel(int);
     extern u32 data_ov002_0210e14c;
     extern Vector3 data_ov002_0210f3b0;
@@ -4508,7 +4441,7 @@ ret0:
     return 0;
 
 cont:
-    if (_ZN8SaveData26CountStarsCollectedInLevelEj(SublevelToLevel(data_0209f2f8)) != 0) {
+    if (SaveData::CountStarsCollectedInLevel(SublevelToLevel(data_0209f2f8)) != 0) {
         return 0;
     }
 
@@ -4526,7 +4459,7 @@ cont:
                 data_ov002_0210e14c |= 1;
             }
             Vec3_RotateYAndTranslate((int*)&pos, &this->mPosX, this->mAngleY, (int*)&data_ov002_0210f3b0);
-            _ZN6Player11ShowMessageER7fBase_cjPK7Vector3hh(this, this, 0x177, &pos, 2, 2);
+            this->ShowMessage(*this, 0x177, &pos, 2, 2);
             func_ov100_02145070(0x1e);
             func_ov100_02145014();
             func_02012694(0xb8, &mCamSpacePos);
@@ -4614,7 +4547,6 @@ int Player::func_ov002_020c47f4()
 {
     typedef int Fix12i;
     extern short Vec3_VertAngle(const Vector3* v1, const Vector3* v0);
-    extern int _Z15ApproachLinear2Rsss(short& dst, short to, short step);
     extern short Vec3_HorzAngle(const Vector3* v0, const Vector3* v1);
     extern int ApproachAngle(void*, short targetAngle, short invFactor, short maxDelta, short minDelta);
     Vector3 vec;
@@ -4627,8 +4559,8 @@ int Player::func_ov002_020c47f4()
     vec.y = y + 0x64000;
     mHeadRot[0] = 0;
     mHeadRot[1] = 0;
-    r = _Z15ApproachLinear2Rsss(mAngleYSpeed,
-                                (short)(-Vec3_VertAngle((Vector3 *)&mStateTargetX, &vec)), 0x200);
+    r = ApproachLinear2(mAngleYSpeed, (short)(-Vec3_VertAngle((Vector3 *)&mStateTargetX, &vec)),
+                        0x200);
     mHeadRot[0] = mAngleYSpeed;
     a = ApproachAngle(&this->mAngleY,
                       (short)(Vec3_HorzAngle((Vector3 *)&mStateTargetX, &vec) + 0x8000), 4, 0x1000,
@@ -4650,7 +4582,6 @@ int Player::St_Talk_Main()
     extern int PlayerChangeMusicVolumeHold(u32 vol, int t);
     extern void func_0201f32c(s16 a);
     extern void func_0200d3f8(void*, u8 playerID, void*);
-    extern int _Z15ApproachLinear2Rsss(void*, s16 target, s16 step);
     extern void func_0200d81c(void*, u8 playerID);
     extern void Player_AdvanceAnims(void*);
     extern int data_0209b454;
@@ -4724,7 +4655,7 @@ int Player::St_Talk_Main()
         break;
     case 4:
     case 5:
-        if (_Z15ApproachLinear2Rsss(&mHeadRot[0], 0, 0x200) != 0) {
+        if (ApproachLinear2(mHeadRot[0], 0, 0x200) != 0) {
             if (mStateStep != 5)
                 mStateStep = 6;
             else
@@ -4799,7 +4730,6 @@ int Player::ShowMessage2(fBase_c & actor_, unsigned int msg, const Vector3 * pos
 {
     extern void func_020731dc(void*, void*, void*);
     extern void Vec3_RotateYAndTranslate(void*, const Vector3 *in, int angle, const Vector3 *src);
-    extern void _ZN9dCamera_c9SetFlag_3Ev(void*);
     extern Player::State data_ov002_0211046c;
     extern Player::State data_ov002_0211013c;
     extern Player::State data_ov002_02110364;
@@ -4812,6 +4742,7 @@ int Player::ShowMessage2(fBase_c & actor_, unsigned int msg, const Vector3 * pos
     extern int data_ov002_0210e15c;
     extern int data_ov002_0210f224[3];
     extern int data_ov002_0210f1ac;
+    /* local extern: the registrar takes this D1 by address, which C++ cannot spell. */
     extern void *_ZN7Vector3D1Ev(void *object);
     extern void *data_0209f318;
     fBase_c *actor = &actor_;
@@ -4868,7 +4799,7 @@ finish:
     *(unsigned int*)&mAttachOffsetY = msg;
 
     if (e == 2) {
-        _ZN9dCamera_c9SetFlag_3Ev(data_0209f318);
+        ((dCamera_c *)data_0209f318)->SetFlag_3();
     }
 
     return 1;
@@ -4889,8 +4820,7 @@ finish:
 extern "C" {
 int Player::ShowMessage(fBase_c & a_, unsigned int b, const Vector3 * v, unsigned char d_, unsigned char e_)
 {
-    extern int _ZN6Player12ShowMessage2ER7fBase_cjPK7Vector3hh(void*, void*, unsigned int b, const Vector3* v, unsigned int d, unsigned int e);
-    if (_ZN6Player12ShowMessage2ER7fBase_cjPK7Vector3hh(this, &a_, b, v, d_, e_)) {
+    if (this->ShowMessage2(a_, b, v, d_, e_)) {
         mStateWork = 1;
         return 1;
     }
@@ -4995,10 +4925,9 @@ extern "C" {
 /* The look-at target: daTrs_c passes its own mPos with x negated and y raised
    by 0xc8000, and daHanachan_c passes the segment it wants Mario to face. */
 int func_ov002_020c51d0(char *c, Vector3 *st) {
-    extern int _ZN6Player7IsStateERNS_5StateE(void*, void*);
     extern Player::State data_ov002_0211046c;
     Player *player = (Player *)c;
-    if (!_ZN6Player7IsStateERNS_5StateE(c, &data_ov002_0211046c))
+    if (!((Player *)c)->IsState(data_ov002_0211046c))
         return 0;
     if (player->mStateStep != 0)
         return 0;
@@ -5133,12 +5062,11 @@ int Player::St_StuckInGround_Init()
 extern "C" {
 int Player::St_BowserEarthquake_Main()
 {
-    extern void _Z14ApproachLinearRiii(void*, int value, int speed);
     extern void Player_AdvanceAnims(void*);
     extern short data_02082214[];
     extern Player::State data_ov002_0211013c;
     if (mStateStep == 0) {
-        _Z14ApproachLinearRiii((int*)((char*)&mHorzSpeed), 0, 0x1800);
+        ApproachLinear(*((int *)((char *)&mHorzSpeed)), 0, 0x1800);
         if (this->FinishedAnim()) {
             this->ChangeState(data_ov002_0211013c);
         }
@@ -5192,17 +5120,16 @@ int func_ov002_020c56f0(unsigned char* c, unsigned char arg)
 {
     extern int func_ov002_020d82f0(void*);
     extern int func_ov002_020d91e0(void*, int a, int b);
-    extern void _ZN6Player11ChangeStateERNS_5StateE(void*, void*);
-    extern int data_ov002_0211010c;
-    extern int data_ov002_021103c4;
+    extern Player::State data_ov002_0211010c;
+    extern Player::State data_ov002_021103c4;
     extern int func_ov002_020c56f0(void*, int);
     if (func_ov002_020d82f0(c) == 0) return 0;
     c[0x6e3] = arg;
     if (c[0x6e3] == 0 && func_ov002_020d91e0((char*)c, 0x300, 1) != 0) {
-        _ZN6Player11ChangeStateERNS_5StateE((char*)c, &data_ov002_0211010c);
+        ((Player *)c)->ChangeState(data_ov002_0211010c);
         return 1;
     }
-    _ZN6Player11ChangeStateERNS_5StateE((char*)c, &data_ov002_021103c4);
+    ((Player *)c)->ChangeState(data_ov002_021103c4);
     return 1;
 }
 }
@@ -5409,7 +5336,7 @@ int Player::St_DeadPit_Init()
 
 // @symbol _ZN6Player14EnterWhirlpoolEv
 /* recovered: named members + shared header, real C++ method */
-/* _ZN6Player14EnterWhirlpoolEv @ 0x20c5cc8 (ov002) -- tail-call veneer to _ZN6Player19func_ov002_020c5decEi (0x20c5dec) with r1=9.
+/* Player::EnterWhirlpool() @ 0x20c5cc8 (ov002) -- tail-call veneer to Player::func_ov002_020c5dec(int) (0x20c5dec) with r1=9.
  */
 void Player::EnterWhirlpool()
 {
@@ -5476,7 +5403,6 @@ int Player::func_ov002_020c5dec(int r1){
 extern "C" {
 int Player::St_DeadHit_Main()
 {
-    extern void _Z14ApproachLinearRiii(void*, int a, int b);
     extern void Player_AdvanceAnims(void*);
     extern u8 data_ov002_0211117c;
     extern u8 data_ov002_02109db8[];
@@ -5498,7 +5424,7 @@ int Player::St_DeadHit_Main()
             Sound::PlayCharVoice(mCharacter, 0x11, mCamSpacePos);
             mStateArg = 1;
         }
-        _Z14ApproachLinearRiii((int *)((char *)&mHorzSpeed), 0, 0x1800);
+        ApproachLinear(*((int *)((char *)&mHorzSpeed)), 0, 0x1800);
     }
 
     switch (mStateWork) {
@@ -5590,7 +5516,6 @@ int Player::func_ov002_020c607c(int p1, int p2, int *outptr)
 extern "C" {
 int Player::func_ov002_020c61ac() {
     extern void func_ov002_020de968(void *);
-    extern void _ZN9dBgCh_Gnd12SetObjAndPosERK7Vector3P8dActor_c(void *, void *, void *);
     extern Player::State data_ov002_021102ec;
     extern Player::State data_ov002_021106dc;
     extern Player::State data_ov002_021106f4;
@@ -5624,7 +5549,7 @@ int Player::func_ov002_020c61ac() {
             v[2] = zv;
             dBgCh_Gnd obj;
             obj.StartDetectingWater();
-            _ZN9dBgCh_Gnd12SetObjAndPosERK7Vector3P8dActor_c(&obj, v, this);
+            obj.SetObjAndPos(*(const Vector3 *)v, this);
             if (obj.DetectClsn()) {
                 mGroundY = obj.clsnY;
                 this->mPosY = mGroundY;
@@ -5954,11 +5879,6 @@ int Player::St_Teleport_Main()
 {
     extern ObjTeleport* GetTeleportDestObj(int i);
     extern void func_02035860(void*, void*);
-    extern void *_ZN9dBgCh_GndC1Ev(void*);
-    extern void _ZN9dBgCh_Gnd12SetObjAndPosERK7Vector3P8dActor_c(void*, void*, void*);
-    extern int _ZN9dBgCh_Gnd10DetectClsnEv(void*);
-    extern void _ZN9dBgCh_GndD1Ev(void*);
-    extern void _ZN3G2x18SetBlendBrightnessEPVtts(volatile u16* p, u16 a, s16 b);
     extern void Player_AdvanceAnims(void*);
     extern char* data_0209f318;
     extern int data_0209f32c;
@@ -6011,8 +5931,7 @@ int Player::St_Teleport_Main()
             mOpacity = 0x1f;
             if (data_0209f32c >= mPosY + 0x64000) {
                 Vector3 v;
-                char rc[0x50];
-                _ZN9dBgCh_GndC1Ev(rc);
+                dBgCh_Gnd rc;
                 {
                     int vz = mPosZ;
                     int vy = data_0209f32c + 0x64000;
@@ -6021,10 +5940,9 @@ int Player::St_Teleport_Main()
                     v.y = vy;
                     v.z = vz;
                 }
-                _ZN9dBgCh_Gnd12SetObjAndPosERK7Vector3P8dActor_c(rc, &v, ((char*)this));
-                if (_ZN9dBgCh_Gnd10DetectClsnEv(rc))
+                rc.SetObjAndPos(v, this);
+                if (rc.DetectClsn())
                     hit = 1;
-                _ZN9dBgCh_GndD1Ev(rc);
             }
             if (hit)
                 this->ChangeState(data_ov002_0211067c);
@@ -6036,7 +5954,7 @@ int Player::St_Teleport_Main()
         }
         break;
     }
-    _ZN3G2x18SetBlendBrightnessEPVtts((volatile u16*)0x4000050, 0x3f, mStateWork);
+    G2x::SetBlendBrightness((volatile u16 *)0x4000050, 0x3f, mStateWork);
     Player_AdvanceAnims(((char*)this));
     return 1;
 }
@@ -6070,8 +5988,6 @@ int func_ov002_020c6e14(void* actor)
     extern short data_ov002_020ff1a0[];
     extern void* data_0209f318[];
     extern int NumStars(void);
-    extern int _ZN6Player11ShowMessageER7fBase_cjPK7Vector3hh(void*, void*, unsigned int msg, const void* pos, unsigned int a, unsigned int b);
-    extern void _ZN9dCamera_c9SetFlag_3Ev(void*);
     int idx;
 
     if (data_0209f2ac != 0) {
@@ -6089,8 +6005,8 @@ int func_ov002_020c6e14(void* actor)
         if (idx == -1)
             return 0;
 
-        if (_ZN6Player11ShowMessageER7fBase_cjPK7Vector3hh(actor, actor, data_ov002_020ff1a0[idx], 0, 0, 2)) {
-            _ZN9dCamera_c9SetFlag_3Ev(data_0209f318[0]);
+        if (((Player *)actor)->ShowMessage(*(fBase_c *)actor, data_ov002_020ff1a0[idx], 0, 0, 2)) {
+            ((dCamera_c *)(data_0209f318[0]))->SetFlag_3();
             return 1;
         }
     }
@@ -6280,7 +6196,6 @@ void Player::func_ov002_020c7350()
     typedef unsigned short u16;
     typedef unsigned int u32;
     typedef signed char s8;
-    extern void _ZN10daObjKey_c19func_ov089_0213115cEi(void*, int i);
     extern u8 data_0209f20c;
     extern u8 data_0209f2d8;
     extern char data_0209caa0[];
@@ -6327,9 +6242,9 @@ void Player::func_ov002_020c7350()
             this->SetAnim(0x94, 0x40000000, 0x1000, 0);
             actor = Spawn(0x11a, mKeyModelId, mPos, &mAngle, this->mAreaId, -1);
             if (param1 == 2) {
-                _ZN10daObjKey_c19func_ov089_0213115cEi(actor, 4);
+                ((daObjKey_c *)actor)->func_ov089_0213115c(4);
             } else {
-                _ZN10daObjKey_c19func_ov089_0213115cEi(actor, 1);
+                ((daObjKey_c *)actor)->func_ov089_0213115c(1);
             }
             mStateWork = 6;
             return;
@@ -6445,29 +6360,16 @@ void Player::func_ov002_020c75f0()
 extern "C" {
 int Player::St_LevelEnter_Init()
 {
-    typedef struct dBgCh_Gnd {
-        char pre[0x10];
-        char result[0x34];
-        int clsnY;
-        char post[0x8];
-    } dBgCh_Gnd;
-    extern int _ZN8SaveData16HasPlayerLostCapEv(void);
     extern void Player_DisableInteraction(void*);
-    extern void *_ZN9dBgCh_GndC1Ev(void*);
-    extern void _ZN9dBgCh_Gnd12SetObjAndPosERK7Vector3P8dActor_c(void*, void*, void*);
-    extern int _ZN9dBgCh_Gnd10DetectClsnEv(void*);
-    extern void _ZN6Player16InitWingFeathersEb(void*, int b);
-    extern void _ZN9dBgCh_GndD1Ev(void*);
     extern u8 data_0209f2d8;
     extern s16 data_02082214[];
     extern signed char data_0209f2f8;
     extern u8 data_0209f264;
     extern u8 data_0209f2fc;
     extern u32 data_ov002_0210a7e8[];
-    dBgCh_Gnd rg;
 
     u32 anim = data_ov002_0210a7e8[mStateStep];
-    if (_ZN8SaveData16HasPlayerLostCapEv() != 0) {
+    if (SaveData::HasPlayerLostCap() != 0) {
         if (anim == 0x85) anim = 0xa5;
     }
     this->SetAnim(anim, 0, 0x1000, 0);
@@ -6489,7 +6391,7 @@ int Player::St_LevelEnter_Init()
     mStateArg = 0;
     mPrevAngleY = mAngleY;
     mStateWork = 0;
-    _ZN9dBgCh_GndC1Ev(&rg);
+    dBgCh_Gnd rg;
 
     switch (mStateStep) {
     case 0: {
@@ -6502,9 +6404,10 @@ int Player::St_LevelEnter_Init()
         pos.x = x;
         pos.y = w;
         pos.z = z;
-        _ZN9dBgCh_Gnd12SetObjAndPosERK7Vector3P8dActor_c(&rg, &pos, ((char*)this));
+        rg.SetObjAndPos(pos, this);
         hit = 0x80000000;
-        if (_ZN9dBgCh_Gnd10DetectClsnEv(&rg) != 0) hit = rg.clsnY;
+        if (rg.DetectClsn() != 0)
+            hit = rg.clsnY;
         mPosY = hit;
         mStateWork = 2;
         {
@@ -6565,7 +6468,7 @@ int Player::St_LevelEnter_Init()
             mStateStep = 0xa;
             this->SetAnim(data_ov002_0210a7e8[mStateStep], 0, 0x1000, 0);
         } else {
-            _ZN6Player16InitWingFeathersEb(((char*)this), 0);
+            this->InitWingFeathers(0);
             mStateWork = 3;
             mVertSpeed = 0;
             mVertAccel = 0;
@@ -6588,7 +6491,6 @@ int Player::St_LevelEnter_Init()
         }
     }
 
-    _ZN9dBgCh_GndD1Ev(&rg);
     return 1;
 }
 }
@@ -6892,7 +6794,6 @@ extern "C" {
 unsigned char Player::func_ov002_020c84b0() {
     char *c = (char *)this;
     extern short Vec3_VertAngle(const Vector3 *v1, const Vector3 *v0);
-    extern void _Z15ApproachLinear2Rsss(void *, short t, short s);
     Vector3 v;
     short ang;
 dummy_label_675641:;
@@ -6901,7 +6802,7 @@ dummy_label_675641:;
     v.z = this->mPosZ;
     v.y += 0x64000;
     ang = Vec3_VertAngle((Vector3 *)&mStateTargetX, &v);
-    _Z15ApproachLinear2Rsss(&this->mAngleYSpeed, -ang, 0x400);
+    ApproachLinear2(this->mAngleYSpeed, -ang, 0x400);
     mHeadRot[0] = 0;
     mHeadRot[1] = 0;
     mHeadRot[0] = this->mAngleYSpeed;
@@ -6988,7 +6889,6 @@ int Player::func_ov002_020c8714()
     extern void PlayerChangeMusicVolumeHold2(int, int);
     extern u32 PlayerNewHold5(u32 handle, u32 kind, Fix12i x, Fix12i y, Fix12i z, const void *dir,
                               void *callback);
-    extern void _ZN8daStar_c19func_ov002_020e7090Ei(int, void*);
     volatile int v[3];
 
     if (mStateArg == 0) {
@@ -7042,7 +6942,7 @@ int Player::func_ov002_020c8714()
             func_ov002_020c7ff8();
             st = (int)Spawn(0xb2, 0x6f, mPos, &mAngle, this->mAreaId, -1);
             if (st != 0)
-                _ZN8daStar_c19func_ov002_020e7090Ei(st, this);
+                ((daStar_c *)st)->func_ov002_020e7090((int)this);
         }
         mStateArg = 0;
     }
@@ -7086,6 +6986,7 @@ int Player::func_ov002_020c8a4c() {
     extern short Vec3_HorzAngle(const Vector3*, const Vector3*);
     extern void func_020731dc(void*, void*, void*);
     extern void Vec3_RotateYAndTranslate(void*, const Vector3*, int, const Vector3*);
+    /* local extern: the registrar takes this D1 by address, which C++ cannot spell. */
     extern void *_ZN7Vector3D1Ev(void *object);
     extern int func_02053274(const Vector3*, const Vector3*);
     extern int data_ov002_0210e150;
@@ -7132,6 +7033,7 @@ extern "C" {
 int Player::func_ov002_020c8b78() {
     extern void PlayerChangeMusicVolumeHold3(unsigned int, int);
     extern void func_020731dc(void*, void*, void*);
+    /* local extern: the registrar takes this D1 by address, which C++ cannot spell. */
     extern void *_ZN7Vector3D1Ev(void *object);
     extern void Vec3_RotateYAndTranslate(void*, void*, int, void*);
     extern int data_ov002_0210e154;
@@ -7312,12 +7214,11 @@ int Player::func_ov002_020c904c() {
     typedef unsigned int u32;
     typedef int s32;
     typedef unsigned char u8;
-    extern void _Z14ApproachLinearRiii(void *, int target, int step);
     extern int Math_Function_0203b14c(void *, int a, int b, int c, int d);
     int mid;
     char *anim;
-    _Z14ApproachLinearRiii(&this->mPosX, this->mStateTargetX, 0x8000);
-    _Z14ApproachLinearRiii(&this->mPosZ, this->mStateTargetZ, 0x8000);
+    ApproachLinear(this->mPosX, this->mStateTargetX, 0x8000);
+    ApproachLinear(this->mPosZ, this->mStateTargetZ, 0x8000);
     if (Math_Function_0203b14c(&mPosY, (this->mGroundY) + 0x190000, 0x200, 0x64000, 0x10000) == 0) {
         this->mStateStep = 0xc;
         ((Player *)c)->SetAnim(0x56, 0, 0x1000, 0);
@@ -7335,23 +7236,22 @@ int Player::func_ov002_020c904c() {
 
 // @symbol _ZN6Player19func_ov002_020c9128Ev
 extern "C" {
-int Player::func_ov002_020c9128(){
+int Player::func_ov002_020c9128() {
 
     extern Player::State data_ov002_0211013c;
-    extern short _Z15ApproachLinear2Rsss(short& v, short t, short s);
-  if (mStateStep == 4) {
-    _Z15ApproachLinear2Rsss(mAngleYSpeed, 0x1000, 0x400);
-  } else {
-    if (_Z15ApproachLinear2Rsss(mAngleYSpeed, 0x4000, 0x100)) {
-      this->ChangeState(data_ov002_0211013c);
-      return 1;
+    if (mStateStep == 4) {
+        ApproachLinear2(mAngleYSpeed, 0x1000, 0x400);
+    } else {
+        if (ApproachLinear2(mAngleYSpeed, 0x4000, 0x100)) {
+            this->ChangeState(data_ov002_0211013c);
+            return 1;
+        }
     }
-  }
-  mHeadRot[0] = 0;
-  mHeadRot[1] = 0;
-  mHeadRot[2] = mAngleYSpeed;
-  mHeadRotMode = 2;
-  return 0;
+    mHeadRot[0] = 0;
+    mHeadRot[1] = 0;
+    mHeadRot[2] = mAngleYSpeed;
+    mHeadRotMode = 2;
+    return 0;
 }
 }
 
@@ -7413,7 +7313,6 @@ int Player::func_ov002_020c9288(){
 extern "C" {
 int Player::func_ov002_020c92fc()
 {
-    extern int _ZN8SaveData19IsCharacterUnlockedEj(unsigned int a);
     extern void func_0200d3f8(void*, unsigned char playerID, void*);
     extern int data_0209b454;
     extern unsigned char data_0209f2d8;
@@ -7446,7 +7345,8 @@ int Player::func_ov002_020c92fc()
     if (this->FinishedAnim()) {
         if (mStateStep == 9) {
             if ((int)(data_0209f2d8 == 1) == 0) {
-                if ((data_0209caa0[2] & 0x10000000) == 0 && _ZN8SaveData19IsCharacterUnlockedEj(0) == 0 && mHatCharacter == 0 && mPrevCharacter == 3) {
+                if ((data_0209caa0[2] & 0x10000000) == 0 && SaveData::IsCharacterUnlocked(0) == 0 &&
+                    mHatCharacter == 0 && mPrevCharacter == 3) {
                     mStateStep = 0xa;
                     mStatePhase = 0;
                     func_0200d3f8(data_0209f318, mPlayerNo, 0);
@@ -7561,7 +7461,7 @@ done:
 }
 
 // @symbol _ZN6Player19func_ov002_020c9718Ev
-/* _ZN6Player19func_ov002_020c9718Ev at 0x020c9718
+/* Player::func_ov002_020c9718() at 0x020c9718
  *
  * Matched byte-for-byte with mwccarm 1.2/sp2p3 (overlay ov002).
  */
@@ -8053,13 +7953,13 @@ int func_ov002_020ca270(char* c){
 extern "C" {
 int Player::JumpIntoBooCage(Vector3 & v_)
 {
-    extern int _ZN6Player17SetNoControlStateEhih(void*, unsigned char, int, unsigned char);
     extern short Vec3_HorzAngle(const Vector3*, const Vector3*);
     Vector3 *v = &v_;
     if (mIsAirborne) {
         if (mVertSpeed < 0) return 0;
     }
-    if (!_ZN6Player17SetNoControlStateEhih(this, 9, -1, 0)) return 0;
+    if (!this->SetNoControlState(9, -1, 0))
+        return 0;
     mStateTargetX = v->x;
     mStateTargetY = v->y;
     mStateTargetZ = v->z;
@@ -8073,12 +7973,11 @@ int Player::JumpIntoBooCage(Vector3 & v_)
 extern "C" {
 int Player::TryTalkToDoor(unsigned char a)
 {
-    extern int _ZN6Player17SetNoControlStateEhih(void*, unsigned char, int, unsigned char);
     extern Player::State data_ov002_0211013c;
     extern Player::State data_ov002_0211043c;
   if(this->IsState(data_ov002_0211013c) || this->IsState(ST_WAIT) || this->IsState(data_ov002_0211043c)){
     *(unsigned char*)((char*)&mStateArg)=a;
-    _ZN6Player17SetNoControlStateEhih(((void*)this),0xe,-1,0);
+    this->SetNoControlState(0xe, -1, 0);
     return 1;
   }
   return 0;
@@ -8090,8 +7989,7 @@ int Player::TryTalkToDoor(unsigned char a)
 extern "C" {
 int Player::IsOpeningDoorWithStar()
 {
-    extern int _ZN6Player12Unk_020c9e5cEh(void*, unsigned char a);
-  return _ZN6Player12Unk_020c9e5cEh(((void *)this),0xe) || this->GetTalkState() > 0;
+    return this->Unk_020c9e5c(0xe) || this->GetTalkState() > 0;
 }
 }
 
@@ -8100,12 +7998,11 @@ int Player::IsOpeningDoorWithStar()
 extern "C" {
 int Player::TryTalkToKeyDoor()
 {
-    extern int _ZN6Player17SetNoControlStateEhih(void*, unsigned char, int, unsigned char);
     extern Player::State data_ov002_0211013c;
     extern Player::State data_ov002_0211043c;
   if(this->IsState(data_ov002_0211013c) || this->IsState(ST_WAIT) || this->IsState(data_ov002_0211043c)){
-    _ZN6Player17SetNoControlStateEhih(((void*)this),0xb,-1,0);
-    return 1;
+      this->SetNoControlState(0xb, -1, 0);
+      return 1;
   }
   return 0;
 }
@@ -8113,13 +8010,11 @@ int Player::TryTalkToKeyDoor()
 
 // @symbol _ZN6Player12Unk_020ca488Ev
 /* recovered: named members + shared header, real C++ method */
-/* _ZN6Player12Unk_020ca488Ev @ 0x20ca488 (ov002) -- tail-call veneer to _ZN6Player12Unk_020c9e5cEh (0x20c9e5c) with r1=11.
+/* Player::Unk_020ca488() @ 0x20ca488 (ov002) -- tail-call veneer to Player::Unk_020c9e5c(unsigned char) (0x20c9e5c) with r1=11.
  */
 extern "C" {
-void Player::Unk_020ca488()
-{
-    extern void _ZN6Player12Unk_020c9e5cEh(void*, int);
-    _ZN6Player12Unk_020c9e5cEh(((void*)this), 11);
+int Player::Unk_020ca488() {
+    return this->Unk_020c9e5c(11);
 }
 }
 
@@ -8140,14 +8035,14 @@ int Player::TryEnterStarDoor(Vector3 & pos_, short kind)
     extern int data_ov002_0210e164;
     extern int data_ov002_0210f344[3];
     extern int data_ov002_0210f308;
+    /* local extern: the registrar takes this D1 by address, which C++ cannot spell. */
     extern void *_ZN7Vector3D1Ev(void *object);
-    extern int _ZN6Player17SetNoControlStateEhih(void*, unsigned char a, int b, unsigned char d);
     extern void func_020731dc(void *object, void *destructor, void *node);
     extern void Vec3_RotateYAndTranslate(void*, void*, short angle, void*);
     extern short Vec3_HorzAngle(const void *v0, const void *v1);
     int *pos = (int *)&pos_;
     if (IsState(data_ov002_0211013c) || IsState(data_ov002_02110154) || IsState(data_ov002_0211043c)) {
-        if (_ZN6Player17SetNoControlStateEhih(this, 0xa, -1, 0)) {
+        if (this->SetNoControlState(0xa, -1, 0)) {
             mStateAnchorX = pos[0];
             mStateAnchorY = pos[1];
             mStateAnchorZ = pos[2];
@@ -8180,7 +8075,6 @@ int Player::TryEnterStarDoor(Vector3 & pos_, short kind)
 // notes/mwccarm-codegen.md 6bc.
 extern "C" {
 int Player::CanEnterDoor(unsigned char door) {
-    extern int _ZN6Player17SetNoControlStateEhih(void *, unsigned char, int, unsigned char);
     extern int data_ov002_0211022c[];
     extern int data_ov002_0211013c[];
     extern int data_ov002_02110154[];
@@ -8205,7 +8099,7 @@ int Player::CanEnterDoor(unsigned char door) {
             return 0;
         }
         mStateStep = door;
-        if (_ZN6Player17SetNoControlStateEhih(this, 7, -1, 1) != 0)
+        if (this->SetNoControlState(7, -1, 1) != 0)
             return 1;
     }
     return 0;
@@ -8226,27 +8120,24 @@ void Player::PlayMammaMiaSound()
 extern "C" {
 int Player::TryExitWhiteDoorWithStar()
 {
-    extern int _ZN6Player17SetNoControlStateEhih(void*, unsigned char a, int b, unsigned char d);
     extern Player::State data_ov002_0211022c;
   if(IsState(data_ov002_0211022c)){
     if(*(unsigned char*)((char*)&mStateStep)!=0x13 || *(unsigned char*)((char*)&mIsOpeningBigDoor)==0) return 0;
   }
-  return _ZN6Player17SetNoControlStateEhih(((void *)this),0x11,-1,1)!=0;
+  return this->SetNoControlState(0x11, -1, 1) != 0;
 }
 }
 
 // @symbol func_ov002_020ca78c
 extern "C" {
 int func_ov002_020ca78c(void *c) {
-    extern int _ZN6Player7IsStateERNS_5StateE(void *, void *);
-    extern int _ZN6Player17SetNoControlStateEhih(void *, unsigned char a, int b, unsigned char d);
-    extern struct State2i data_ov002_0211022c;
+    extern Player::State data_ov002_0211022c;
     Player *player = (Player *)c;
-    if (_ZN6Player7IsStateERNS_5StateE(c, &data_ov002_0211022c)) {
+    if (((Player *)c)->IsState(data_ov002_0211022c)) {
         if (player->mStateStep != 0x13 || player->mIsOpeningBigDoor == 0)
             return 0;
     }
-    return _ZN6Player17SetNoControlStateEhih(c, 0x10, -1, 1) != 0;
+    return ((Player *)c)->SetNoControlState(0x10, -1, 1) != 0;
 }
 }
 
@@ -8476,7 +8367,6 @@ int func_ov002_020cac60(char *self)
     extern unsigned char NumStars(void);
     extern short GetAngleToCamera(int i);
     extern void LoadLevel(int a, int b, int c, int d, int e);
-    extern void _ZN8dScene_c20SetAndStopColorFaderEv(void);
     extern short data_0209f5e8;
     short ang;
     short angle;
@@ -8485,7 +8375,7 @@ int func_ov002_020cac60(char *self)
         angle = GetAngleToCamera(player->mPlayerNo);
         if (ang <= 0x1c00 && angle >= -0x1000 && angle <= 0x1000) {
             LoadLevel(0x1f, 0, 1, 0, 0xe);
-            _ZN8dScene_c20SetAndStopColorFaderEv();
+            dScene_c::SetAndStopColorFader();
             *(short *)((char *)&data_0209f5e8 + 0xc) = 0x7fff;
             func_02012790(0x1e);
             return 1;
@@ -8735,13 +8625,11 @@ int Player::St_Headstand_Init()
 extern "C" {
 int func_ov002_020cb354(void* thisptr)
 {
-    extern int _ZN6Player6IsAnimEj(void*, unsigned int);
-    extern int _ZNK6Player14GetBodyModelIDEjb(void*, unsigned int, bool);
     unsigned char* p = (unsigned char*)thisptr;
     Player *player = (Player *)p;
-    int a = _ZN6Player6IsAnimEj(thisptr, 0x24);
+    int a = ((Player *)thisptr)->IsAnim(0x24);
     if (a == 0) return a;
-    int idx = _ZNK6Player14GetBodyModelIDEjb(thisptr, player->param1 & 0xff, 0);
+    int idx = ((Player *)thisptr)->GetBodyModelID(player->param1 & 0xff, 0);
     dExtAnmModel_c *m = player->mModels.mBodyModels[idx];
     /* q is the frame controller (+0x50); m->currFrame would fold +0x50 and +8. */
     int* q = (int*)(((int)m + 0x50));
@@ -9237,8 +9125,7 @@ int Player::IsOnShell()
 extern "C" {
 int func_ov002_020cc16c(void *c, void *state) {
     extern void func_ov002_020d80d0(void *);
-    extern int _ZN6Player11ChangeStateERNS_5StateE(void *, void *);
-    extern void *data_ov002_02110304;
+    extern Player::State data_ov002_02110304;
     Player *player = (Player *)c;
     if (player->mRidingShell != 0)
         return 0;
@@ -9249,7 +9136,7 @@ int func_ov002_020cc16c(void *c, void *state) {
     if (player->mIsFire != 0)
         func_ov002_020d80d0(c);
     player->mRidingShell = (s32)state;
-    _ZN6Player11ChangeStateERNS_5StateE(c, &data_ov002_02110304);
+    ((Player *)c)->ChangeState(data_ov002_02110304);
     return 1;
 }
 }
@@ -9258,10 +9145,9 @@ int func_ov002_020cc16c(void *c, void *state) {
 extern "C" {
 void func_ov002_020cc1f4(char *c) {
     Player *self = (Player *)c;
-    extern void _ZN6Player16St_Shell_CleanupEv(void*);
     extern Player::State data_ov002_0211013c;
     if (self->mRidingShell == 0) return;
-    _ZN6Player16St_Shell_CleanupEv(c);
+    ((Player *)c)->St_Shell_Cleanup();
     self->ChangeState(data_ov002_0211013c);
 }
 }
@@ -9289,10 +9175,8 @@ extern "C" {
 int Player::St_Shell_Main()
 {
     extern void func_ov002_020eeca8(void*, int arg);
-    extern int _ZNK10dBgCh_Actr8IsOnWallEv(void*);
     extern int atan2_hold_Player_13(int a, int b);
     extern void ApproachAngle(void*, short target, int divisor, int band, int maxStep);
-    extern void _Z14ApproachLinearRiii(void*, int b, int c);
     extern void func_ov002_020e25f0(void*, int a);
     extern void func_ov002_020e28d4(void*, int a, int b);
     extern void Player_AdvanceAnims(void*);
@@ -9303,9 +9187,7 @@ int Player::St_Shell_Main()
     extern Player::State data_ov002_021104e4;
     extern int func_02035638(void*);
     extern int func_0203564c(int);
-    extern int _ZNK5dBgPi9GetClsnIDEv(void*);
     extern int AngleDiff(int, int);
-    extern void*_ZNK10dBgCh_Actr13GetWallResultEv(void*);
     extern void func_ov002_020cc660(void*, int);
     extern int func_ov002_020d674c(void*);
     int flag = 0;
@@ -9314,8 +9196,8 @@ int Player::St_Shell_Main()
     if (func_02035638((u8*)((char*)&mMeshClsn))) {
         flag = 1;
         res = (void*)func_0203564c((int)((char*)&mMeshClsn));
-        if (_ZNK5dBgPi9GetClsnIDEv(res) != -1) {
-            void *a = dActor_c::FindWithID((u32)_ZNK5dBgPi9GetClsnIDEv(res));
+        if (((dBgPi *)res)->GetClsnID() != -1) {
+            void *a = dActor_c::FindWithID((u32)((dBgPi *)res)->GetClsnID());
             if (a) {
                 u16 type = ((dActor_c *)a)->actorID;
                 if ((type == 0x14 ? flag : 0) || (type == 0x15 ? 1 : 0)) {
@@ -9326,11 +9208,10 @@ int Player::St_Shell_Main()
         }
     }
 
-    if (_ZNK10dBgCh_Actr8IsOnWallEv((void*)((char*)&mMeshClsn))) {
+    if (mMeshClsn.IsOnWall()) {
         int ang = cstd::atan2(mWallNormalX, mWallNormalZ);
         if (AngleDiff(ang, mPrevAngleY) > 0x6000) {
-            if (((dBgPi *)_ZNK10dBgCh_Actr13GetWallResultEv((void *)((char *)&mMeshClsn)))
-                    ->surface.clps.GetFloorClass() != 1) {
+            if (mMeshClsn.GetWallResult()->surface.clps.GetFloorClass() != 1) {
                 flag = 1;
             }
         }
@@ -9359,7 +9240,7 @@ int Player::St_Shell_Main()
             int spd = mHorzSpeed;
             int step = 0x1100;
             if (spd > 0) step = 0x600;
-            _Z14ApproachLinearRiii((int*)((char*)&mHorzSpeed), accel, step);
+            ApproachLinear(*((int *)((char *)&mHorzSpeed)), accel, step);
         }
         func_ov002_020c04e0();
         if (mIsAirborne != 0) {
@@ -9466,48 +9347,47 @@ int Player::St_Shell_Init()
 // @symbol _ZN6Player17St_HurtWater_MainEv
 /* recovered: named members + shared header, real C++ method */
 extern "C" {
-int Player::St_HurtWater_Main()
-{
-    extern int func_ov002_020cec2c(void*);
-    extern void _Z14ApproachLinearRiii(void*, int, int);
-    extern int func_ov002_020ceaf4(void*);
-    extern int func_ov002_020ceb7c(void*);
-    extern int Player_AdvanceAnims(void*);
+int Player::St_HurtWater_Main() {
+    extern int func_ov002_020cec2c(void *);
+    extern int func_ov002_020ceaf4(void *);
+    extern int func_ov002_020ceb7c(void *);
+    extern int Player_AdvanceAnims(void *);
     extern Player::State data_ov002_0211067c;
     extern Player::State data_ov002_021106ac;
     extern int data_0209f32c[];
-  if(func_ov002_020cec2c(((char*)this))) return 1;
-  _Z14ApproachLinearRiii((int*)((char*)&mHorzSpeed),0,0x800);
-  int t=func_ov002_020ceaf4(((char*)this));
-  _Z14ApproachLinearRiii((int*)((char*)&mVertSpeed),t,0x800);
-  if(this->FinishedAnim()){
-    if((mStateStep&1)==0){
-      mPrevAngleY=mPrevAngleY+0x8000;
-      mAngleY=mPrevAngleY;
+    if (func_ov002_020cec2c(((char *)this)))
+        return 1;
+    ApproachLinear(*((int *)((char *)&mHorzSpeed)), 0, 0x800);
+    int t = func_ov002_020ceaf4(((char *)this));
+    ApproachLinear(*((int *)((char *)&mVertSpeed)), t, 0x800);
+    if (this->FinishedAnim()) {
+        if ((mStateStep & 1) == 0) {
+            mPrevAngleY = mPrevAngleY + 0x8000;
+            mAngleY = mPrevAngleY;
+        }
+        if (this->GetHealth()) {
+            if (mIsMetal == 0)
+                this->ChangeState(data_ov002_0211067c);
+            else
+                this->ChangeState(data_ov002_021106ac);
+            mIsTakingDamage = 0;
+            if (mHurtDamage)
+                mInvincibleTimer = 0x24;
+        } else {
+            func_ov002_020c5dec(8);
+            return 1;
+        }
     }
-    if(this->GetHealth()){
-      if(mIsMetal==0)
-        this->ChangeState(data_ov002_0211067c);
-      else
-        this->ChangeState(data_ov002_021106ac);
-      mIsTakingDamage=0;
-      if(mHurtDamage)
-        mInvincibleTimer=0x24;
-    }else{
-      func_ov002_020c5dec(8);
-      return 1;
+    int lim = *(int *)data_0209f32c - 0x50000;
+    if (mPosY >= lim && (mClsnFlags & 1) == 0) {
+        if (mVertSpeed >= 0) {
+            mPosY = lim;
+            mVertSpeed = 0;
+        }
     }
-  }
-  int lim=*(int*)data_0209f32c-0x50000;
-  if(mPosY>=lim && (mClsnFlags&1)==0){
-    if(mVertSpeed>=0){
-      mPosY=lim;
-      mVertSpeed=0;
-    }
-  }
-  func_ov002_020ceb7c(((char*)this));
-  Player_AdvanceAnims(((char*)this));
-  return 1;
+    func_ov002_020ceb7c(((char *)this));
+    Player_AdvanceAnims(((char *)this));
+    return 1;
 }
 }
 
@@ -9557,7 +9437,6 @@ int Player::St_MetalWaterWater_Main()
     extern int func_ov002_020eeca8(void*, void*);
     extern int func_ov002_020bf224(void*, int a, int b);
     extern void ApproachAngle(void*, int target, int a, int b, int d);
-    extern void _Z14ApproachLinearRiii(void*, int a, int b);
     extern void PlayerNewSimpleHold7(u32 id, int x, int y, int z);
     extern void Player_AdvanceAnims(void*);
     extern struct S18b2 data_0209f4a0[];
@@ -9587,7 +9466,7 @@ int Player::St_MetalWaterWater_Main()
             ApproachAngle(&mPrevAngleY, mDesiredAngleY, 0x20, 0x1000, 0x10);
         }
         mAngleY = mPrevAngleY;
-        _Z14ApproachLinearRiii(&mHorzSpeed, v, 0x400);
+        ApproachLinear(mHorzSpeed, v, 0x400);
         py = mPosY;
     lim = py + 0x46000;
     if (mIsMega != 0) lim = py + 0xd2000;
@@ -9667,7 +9546,6 @@ int Player::St_MetalWaterGround_Main()
     extern int func_ov002_020cec2c(void*);
     extern void ApproachAngle(void*, short, int, int, int);
     extern int func_ov002_020bf224(void*, int, int);
-    extern void _Z14ApproachLinearRiii(void*, int, int);
     extern void func_0201251c(int, int, void*, int);
     extern void Player_AdvanceAnims(void*);
     extern int data_0209f32c;
@@ -9704,7 +9582,7 @@ int Player::St_MetalWaterGround_Main()
         ApproachAngle((short*)((char*)&mPrevAngleY), mDesiredAngleY, 8, 0x1000, 0x80);
         approach = func_ov002_020bf224(((char*)this), 0x14000, 0x1000);
     }
-    _Z14ApproachLinearRiii((int*)((char*)&mHorzSpeed), approach, 0x1000);
+    ApproachLinear(*((int *)((char *)&mHorzSpeed)), approach, 0x1000);
     mAngleY = mPrevAngleY;
     if(mIsMega != 0){
         if(mHorzSpeed == 0){
@@ -9883,7 +9761,6 @@ extern "C" {
 void func_ov002_020cd448(char* self) {
     Player *player = (Player *)self;
     extern int func_ov002_020c18b0(void*, int x);
-    extern void _Z15ApproachLinear2Rsss(short&, short, short);
     extern short data_0209f4a4;
     extern void func_ov002_020cd448(void*);
     unsigned char fl;
@@ -9895,7 +9772,7 @@ void func_ov002_020cd448(char* self) {
         before = player->mAngleX;
         func_ov002_020c18b0(self, 0);
         if (before < player->mAngleX) goto tail;
-        _Z15ApproachLinear2Rsss(player->mPrevAngleX, player->mAngleX, 0x200);
+        ApproachLinear2(player->mPrevAngleX, player->mAngleX, 0x200);
         goto tail;
     }
     if (fl & 2) {
@@ -9911,7 +9788,7 @@ void func_ov002_020cd448(char* self) {
         }
     }
 tail:
-    _Z15ApproachLinear2Rsss(player->mAngleXSpeed, player->mAngleZ, 0x200);
+    ApproachLinear2(player->mAngleXSpeed, player->mAngleZ, 0x200);
     player->mAngleZ = player->mAngleXSpeed;
 }
 }
@@ -9971,7 +9848,6 @@ void func_ov002_020cd71c(char *self)
     typedef short s16;
     extern int data_ov002_020ff1f0[];
     extern short data_0209f4a2[];
-    extern void _Z15ApproachLinear2Rsss(void*, short t, short s);
     extern void func_ov002_020cd71c(void*);
     int ip = data_ov002_020ff1f0[player->param1];
     int a = FX_MUL(ip, 0x320);
@@ -9993,7 +9869,7 @@ void func_ov002_020cd71c(char *self)
             if (player->mAngleYSpeed > c)
                 player->mAngleYSpeed = c;
         } else {
-            _Z15ApproachLinear2Rsss(&player->mAngleYSpeed, target, step);
+            ApproachLinear2(player->mAngleYSpeed, target, step);
         }
     } else if (target < 0) {
         if (player->mAngleYSpeed > 0) {
@@ -10002,10 +9878,10 @@ void func_ov002_020cd71c(char *self)
             if (player->mAngleYSpeed < -c)
                 player->mAngleYSpeed = -c;
         } else {
-            _Z15ApproachLinear2Rsss(&player->mAngleYSpeed, target, step);
+            ApproachLinear2(player->mAngleYSpeed, target, step);
         }
     } else {
-        _Z15ApproachLinear2Rsss(&player->mAngleYSpeed, 0, 0x40);
+        ApproachLinear2(player->mAngleYSpeed, 0, 0x40);
     }
 
     {
@@ -10034,11 +9910,9 @@ int Player::St_Swim_Main()
     extern void func_ov002_020cd71c(void*);
     extern void func_ov002_020cd550(void*);
     extern unsigned int func_02022d44(unsigned int, unsigned int, int, int, int, void*);
-    extern void* _ZNK10dBgCh_Actr14GetFloorResultEv(void*);
     extern void* func_02037dc4(void*);
     extern int atan2_hold_Player_12(int, int);
     extern void Vec3_RotateYAndTranslate(void*, void*, short, void*);
-    extern void _Z14ApproachLinearRiii(void*, int, int);
     extern int func_ov002_020ce324(void*);
     extern void func_ov002_020cd364(void*);
     extern void func_ov002_020cd3e0(void*);
@@ -10107,8 +9981,7 @@ int Player::St_Swim_Main()
     }
 
     if (mPrevVertSpeed == 0 && mMeshClsn.IsOnGround() != 0) {
-        fr = (int *)func_02037dc4(
-            &((dBgPi *)_ZNK10dBgCh_Actr14GetFloorResultEv(&mMeshClsn))->surface);
+        fr = (int *)func_02037dc4(&mMeshClsn.GetFloorResult()->surface);
         ang = fr[1];
         if (ang < 0x720 && ang > 0x400 && mPosY >= mWaterSurfaceY - 0xc8000) {
             int at;
@@ -10133,7 +10006,7 @@ int Player::St_Swim_Main()
         mAngleX = 0;
         mAngleZ = 0;
         mAngleYSpeed = 0;
-        _Z14ApproachLinearRiii((int*)(&mPrevVertSpeed), 0, 0x5000);
+        ApproachLinear(*((int *)(&mPrevVertSpeed)), 0, 0x5000);
         if (this->IsAnim(0xa8) == 0 && this->FinishedAnim() != 0) {
             this->SetAnim(0xa8, 0, 0x1000, 0);
         }
@@ -10146,7 +10019,7 @@ int Player::St_Swim_Main()
     case 1:
         var_r2 = 0x800;
         if (mStateTimer != 0) var_r2 = 0x200;
-        _Z14ApproachLinearRiii((int*)(&mPrevVertSpeed), 0, var_r2);
+        ApproachLinear(*((int *)(&mPrevVertSpeed)), 0, var_r2);
         if (this->IsAnim(0xa8) == 0) {
             if (this->FinishedAnim() != 0) {
                 this->SetAnim(0xa8, 0, 0x1000, 0);
@@ -10188,7 +10061,7 @@ int Player::St_Swim_Main()
         if (a4 >= 0xa) var_r6 = 0x800;
         else if (a4 <= 4) var_r6 = 0x1800;
         else var_r6 = 0;
-        _Z14ApproachLinearRiii((int*)(&mPrevVertSpeed), func_ov002_020cedb0(this, 0x10000), var_r6);
+        ApproachLinear(*((int *)(&mPrevVertSpeed)), func_ov002_020cedb0(this, 0x10000), var_r6);
         if (mStateTimer < 0xa && t4 == 0) {
             mStateWork |= 1;
         }
@@ -10201,8 +10074,9 @@ int Player::St_Swim_Main()
         }
         break;
     case 3:
-        _Z14ApproachLinearRiii((int*)(&mPrevVertSpeed), func_ov002_020cedb0(this, 0xc000), 0x200);
-        if (func_ov002_020ce324(this) != 0) return 1;
+        ApproachLinear(*((int *)(&mPrevVertSpeed)), func_ov002_020cedb0(this, 0xc000), 0x200);
+        if (func_ov002_020ce324(this) != 0)
+            return 1;
         if (t4 != 0) {
             this->SetAnim(0xa6, 0, 0x1000, 0);
             if (mModels.mBodyModels[this->GetBodyModelID((unsigned char)param1, 0)]->WillHitFrame(
@@ -10214,8 +10088,9 @@ int Player::St_Swim_Main()
         }
         break;
     case 4:
-        _Z14ApproachLinearRiii((int*)(&mPrevVertSpeed), 0, 0x400);
-        if (func_ov002_020ce324(this) != 0) return 1;
+        ApproachLinear(*((int *)(&mPrevVertSpeed)), 0, 0x400);
+        if (func_ov002_020ce324(this) != 0)
+            return 1;
         if (mStateTimer == 0 && t4 != 0) {
             func_ov002_020cd3e0(this);
         }
@@ -10235,7 +10110,7 @@ int Player::St_Swim_Main()
         if (a4 >= 5) var_r2 = 0x1000;
         else if (a4 == 0) { var_r2 = 0x800; var_r1 = 0; }
         else var_r2 = 0;
-        _Z14ApproachLinearRiii((int*)(&mPrevVertSpeed), var_r1, var_r2);
+        ApproachLinear(*((int *)(&mPrevVertSpeed)), var_r1, var_r2);
         if (this->FinishedAnim() != 0) {
             has = (mHeldObj != 0) ? 1 : 0;
             if (has != 0) {
@@ -10270,8 +10145,8 @@ int Player::St_Swim_Main()
         }
         break;
     case 8:
-        _Z14ApproachLinearRiii((int*)(&mPrevVertSpeed), func_ov002_020cedb0(this, 0x1e000), 0x400);
-        if ((*(unsigned short*)((char*)&data_0209f49e + gActivePlayerSlot * 0x18)) & 1) {
+        ApproachLinear(*((int *)(&mPrevVertSpeed)), func_ov002_020cedb0(this, 0x1e000), 0x400);
+        if ((*(unsigned short *)((char *)&data_0209f49e + gActivePlayerSlot * 0x18)) & 1) {
             this->SetAnim(0xb1, 0x40000000, 0x1000, 0);
             mStateStep = 9;
             EndStateMusic(0x33);
@@ -10326,23 +10201,16 @@ int func_ov002_020ce324(char* c)
     extern short data_02082214[];
     extern Player::State data_ov002_02110694;
     extern int func_ov002_020ceb54(void*);
-    extern void *_ZN9dBgCh_LinC1Ev(void*);
-    extern void _ZN9dBgCh_LinD1Ev(void*);
-    extern void _ZN9dBgCh_Lin13SetObjAndLineERK7Vector3S2_P8dActor_c(void *, const Vector3 *a,
-                                                                     const Vector3 *b, void *);
-    extern int _ZN9dBgCh_Lin10DetectClsnEv(void*);
-    extern void _ZNK11SurfaceInfo12CopyNormalToER7Vector3(const void* self, void*);
     extern int atan2_hold_Player_11(int a, int b);
     extern int AngleDiff(int a, int b);
     extern int func_ov002_020ce324(void*);
     Vector3 a1, a2, b1, b2, nrm;
-    char rl1[0x78];
     int ok;
 
     if (!(data_0209f49e[gActivePlayerSlot].f0 & 2)) return 0;
     if (func_ov002_020ceb54(c)) return 0;
 
-    _ZN9dBgCh_LinC1Ev(rl1);
+    dBgCh_Lin rl1;
     a1.x = player->mPosX;
     a1.y = player->mPosY;
     a1.z = player->mPosZ;
@@ -10351,9 +10219,8 @@ int func_ov002_020ce324(char* c)
     a2.z = player->mPosZ;
     a1.y += 0x50000;
     a2.y += 0x96000;
-    _ZN9dBgCh_Lin13SetObjAndLineERK7Vector3S2_P8dActor_c(rl1, &a1, &a2, (dActor_c*)c);
-    if (_ZN9dBgCh_Lin10DetectClsnEv(rl1)) {
-        _ZN9dBgCh_LinD1Ev(rl1);
+    rl1.SetObjAndLine(a1, a2, (dActor_c *)c);
+    if (rl1.DetectClsn()) {
         return 0;
     }
 
@@ -10361,11 +10228,10 @@ int func_ov002_020ce324(char* c)
     if (data_0209f4a4[gActivePlayerSlot].f0 >= 0xa00) {
         ok = 1;
     } else {
-        char rl2[0x78];
         int ax, bz, bx, az, by, ay;
         u16 ang = player->mAngleY;
 
-        _ZN9dBgCh_LinC1Ev(rl2);
+        dBgCh_Lin rl2;
         ax = player->mPosX;
         az = player->mPosZ;
         ay = player->mPosY + 0x32000;
@@ -10378,24 +10244,21 @@ int func_ov002_020ce324(char* c)
         b2.x = bx;
         b2.y = by;
         b2.z = bz;
-        _ZN9dBgCh_Lin13SetObjAndLineERK7Vector3S2_P8dActor_c(rl2, &b1, &b2, (dActor_c*)c);
-        if (_ZN9dBgCh_Lin10DetectClsnEv(rl2)) {
-            _ZNK11SurfaceInfo12CopyNormalToER7Vector3(rl2 + 0x14, &nrm);
+        rl2.SetObjAndLine(b1, b2, (dActor_c *)c);
+        if (rl2.DetectClsn()) {
+            rl2.surface.CopyNormalTo(nrm);
             if (nrm.y == 0) {
                 if (AngleDiff(cstd::atan2(nrm.x, nrm.z), player->mAngleY) >= 0x5000)
                     ok = 1;
             }
         }
-        _ZN9dBgCh_LinD1Ev(rl2);
     }
 
     if (ok == 1) {
         player->mIsUnderwater = 0;
         player->ChangeState(data_ov002_02110694);
-        _ZN9dBgCh_LinD1Ev(rl1);
         return 1;
     }
-    _ZN9dBgCh_LinD1Ev(rl1);
     return 0;
 }
 }
@@ -10507,15 +10370,12 @@ void func_ov002_020ce798(char* c)
 {
     typedef struct dActor_c dActor_c;
     extern int data_0209f32c;
-    extern char data_ov002_0211067c;
-    extern int _ZN6Player7IsStateERNS_5StateE(void*, void*);
-    extern void _ZN9dBgCh_Lin13SetObjAndLineERK7Vector3S2_P8dActor_c(void *, const Vector3 *a,
-                                                                     const Vector3 *b, void *);
-    extern int _ZN9dBgCh_Lin10DetectClsnEv(void*);
+    extern Player::State data_ov002_0211067c;
     Player *player = (Player *)c;
     Vector3 v1, v2;
 
-    if (!_ZN6Player7IsStateERNS_5StateE(c, &data_ov002_0211067c)) return;
+    if (!((Player *)c)->IsState(data_ov002_0211067c))
+        return;
 
     if (player->mPosY >= data_0209f32c - 0x50000) {
         if (!player->mMeshClsn.IsOnGround())
@@ -10531,8 +10391,8 @@ void func_ov002_020ce798(char* c)
     v2.z = player->mPosZ;
     v1.y += 0x50000;
     v2.y += 0x96000;
-    _ZN9dBgCh_Lin13SetObjAndLineERK7Vector3S2_P8dActor_c(&rl, &v1, &v2, (dActor_c *)c);
-    if (_ZN9dBgCh_Lin10DetectClsnEv(&rl)) {
+    rl.SetObjAndLine(v1, v2, (dActor_c *)c);
+    if (rl.DetectClsn()) {
         ::Vector3 cp = rl.GetClsnPos();
         if (player->mPosY >= cp.y - 0x82000) {
             LDR_I(&player->mPosY) -= 0x4000;
@@ -10814,19 +10674,14 @@ int func_ov002_020cef84(char *self)
         unsigned short f18, f1a;
         int f1c, f20, f24;
     } ClsnResultTmp;
-    extern int _ZN6Player7IsInAirEv(void*);
-    extern int _ZN6Player7IsStateERNS_5StateE(void*, void*);
-    extern void _ZN6Player11ChangeStateERNS_5StateE(void*, void*);
-    extern unsigned _ZNK5dBgPi9GetClsnIDEv(void*);
-    extern void _ZN5dBgPiD1Ev(void*);
-    extern char data_ov002_0211001c;
+    extern Player::State data_ov002_0211001c;
     extern int data_02099368;
     Vector3 v1, v2;
     int lim;
 
     dBgCh_Lin line;
-    if (!_ZN6Player7IsInAirEv(self) || p->mIsUnderwater != 0 || p->mVertSpeed <= 0 ||
-        _ZN6Player7IsStateERNS_5StateE(self, &data_ov002_0211001c) || p->mIsMega != 0 ||
+    if (!((Player *)self)->IsInAir() || p->mIsUnderwater != 0 || p->mVertSpeed <= 0 ||
+        ((Player *)self)->IsState(data_ov002_0211001c) || p->mIsMega != 0 ||
         p->mIsTakingDamage != 0 || p->mIsNoControl != 0) {
         return 0;
     }
@@ -10860,7 +10715,7 @@ int func_ov002_020cef84(char *self)
         if (line.surface.clps.GetSurfaceType() == 3) {
             int t2 = p->mHeldObj != 0;
             if (t2 == false) {
-                _ZN6Player11ChangeStateERNS_5StateE(self, &data_ov002_0211001c);
+                ((Player *)self)->ChangeState(data_ov002_0211001c);
                 p->mPosY = cp.y - 0x78000;
                 return 1;
             }
@@ -10888,10 +10743,10 @@ int func_ov002_020cef84(char *self)
                 tmp.f1c = line.clsnID;
                 tmp.f20 = (int)line.owner;
                 tmp.f24 = (int)line.collider;
-                a = dActor_c::FindWithID(_ZNK5dBgPi9GetClsnIDEv(&tmp));
+                a = dActor_c::FindWithID(((dBgPi *)&tmp)->GetClsnID());
                 if (a)
                     ((dActor_c *)a)->OnHitFromUnderneath(*(dActor_c *)self);
-                _ZN5dBgPiD1Ev(&tmp);
+                ((dBgPi *)&tmp)->dBgPi::~dBgPi();
             }
         }
     }
@@ -10939,17 +10794,17 @@ int func_ov002_020cf20c(char* c) {
 
 // @symbol func_ov002_020cf2f8
 extern "C" {
-void func_ov002_020cf2f8(void* c) {
-    extern int _Z14ApproachLinearRiii(void*, int, int);
-    extern int ApproachAngle(void*, int, int, int, int);
-    extern int func_ov002_020bf224(void*, int, int);
+void func_ov002_020cf2f8(void *c) {
+    extern int ApproachAngle(void *, int, int, int, int);
+    extern int func_ov002_020bf224(void *, int, int);
     extern short data_0209f4a0[];
-    extern void func_ov002_020cf2f8(void*);
-  if (*(short*)((char*)data_0209f4a0 + gActivePlayerSlot*0x18) == 0) return;
-  Player *p = (Player *)c;
-  _Z14ApproachLinearRiii(&p->mHorzSpeed, func_ov002_020bf224(c, 0x8000, 0x2000), 0x1000);
-  ApproachAngle(&p->mPrevAngleY, p->mDesiredAngleY, 0x10, 0x1000, 0x200);
-  p->mAngleY = p->mPrevAngleY;
+    extern void func_ov002_020cf2f8(void *);
+    if (*(short *)((char *)data_0209f4a0 + gActivePlayerSlot * 0x18) == 0)
+        return;
+    Player *p = (Player *)c;
+    ApproachLinear(p->mHorzSpeed, func_ov002_020bf224(c, 0x8000, 0x2000), 0x1000);
+    ApproachAngle(&p->mPrevAngleY, p->mDesiredAngleY, 0x10, 0x1000, 0x200);
+    p->mAngleY = p->mPrevAngleY;
 }
 }
 
@@ -11106,7 +10961,6 @@ int Player::St_OnWall_Main()
     extern s16 data_0209f4a0[];
     extern Player::State data_ov002_0211013c;
     extern int AngleDiff(int, int);
-    extern void _ZN6Player14St_OnWall_InitEv(void*);
     extern void func_ov002_020eee3c(void*, void*);
     u16 f = mStateFlags;
     u16 b0 = f & 1;
@@ -11144,7 +10998,7 @@ int Player::St_OnWall_Main()
             mStateStep = 0;
             if ((s16)a == (s16)(mDesiredAngleY + d))
                 mStateStep = 1;
-            _ZN6Player14St_OnWall_InitEv(((char*)this));
+            this->St_OnWall_Init();
             return 1;
         }
         ApproachLinear(*(short *)((char*)&mAngleY), (s16)a, 0x800);
@@ -11161,7 +11015,7 @@ int Player::St_OnWall_Main()
             }
             if (d < 0x1555) {
                 mStateStep = 2;
-                _ZN6Player14St_OnWall_InitEv(((char*)this));
+                this->St_OnWall_Init();
                 return 1;
             }
             int a2 = ang + 0x8000;
@@ -11249,11 +11103,9 @@ int func_ov002_020cfbdc(char *self)
 {
     Player *player = (Player *)self;
     extern void func_ov002_020d0948(void*);
-    extern void *_ZNK10dBgCh_Actr14GetFloorResultEv(void*);
     extern short data_02082214[];
     extern Player::State data_ov002_021101b4;
     extern int func_ov002_020cfbdc(void*);
-    extern int _ZNK5dBgPi9GetClsnIDEv(void*);
     Vector3 pts[3];
     int idx = (unsigned short)(short)(player->mAngleY + 0x8000) >> 4;
     int r6 = data_02082214[idx * 2];
@@ -11262,9 +11114,9 @@ int func_ov002_020cfbdc(char *self)
     if (player->mStateWaitTimer == 0) {
         if ((player->mClsnFlags & 2) != 0) {
             if (player->mMeshClsn.IsOnGround() != 0) {
-                void *fr = _ZNK10dBgCh_Actr14GetFloorResultEv(&player->mMeshClsn);
-                if (_ZNK5dBgPi9GetClsnIDEv(fr) != -1) {
-                    if (dActor_c::FindWithID((unsigned int)_ZNK5dBgPi9GetClsnIDEv(fr)) != 0) {
+                dBgPi *fr = player->mMeshClsn.GetFloorResult();
+                if (fr->GetClsnID() != -1) {
+                    if (dActor_c::FindWithID((unsigned int)fr->GetClsnID()) != 0) {
                         func_ov002_020d0948(self);
                         return 1;
                     }
@@ -11363,37 +11215,29 @@ extern "C" {
 int func_ov002_020cfea4(char *self)
 {
     Player *p = (Player *)self;
-    extern void *_ZNK10dBgCh_Actr14GetFloorResultEv(void *self);
-    extern int _ZNK5dBgPi9GetClsnIDEv(void *self);
     extern int AngleDiff(int a, int b);
-    extern int _ZNK10dBgCh_Actr8IsOnWallEv(void *self);
-    extern void *_ZNK10dBgCh_Actr13GetWallResultEv(void *self);
-    extern void *_ZN9dBgCh_GndC1Ev(void *self);
-    extern void _ZN9dBgCh_Gnd12SetObjAndPosERK7Vector3P8dActor_c(void *self, const Vector3 *pos, void *actor);
-    extern int _ZN9dBgCh_Gnd10DetectClsnEv(void *self);
-    extern void _ZN9dBgCh_GndD1Ev(void *self);
     extern int func_ov002_020cfd84(void *actor, const Vector3 *a, const Vector3 *b);
     extern short data_02082214[];
 
     Vector3 pts[8];
-    void *fr;
+    dBgPi *fr;
     void *other;
     int idx, dx, dz;
     if (p->mStateWaitTimer == 0 && (p->mClsnFlags & 2) != 0) {
         if (p->mMeshClsn.IsOnGround() != 0) {
-            fr = _ZNK10dBgCh_Actr14GetFloorResultEv(&p->mMeshClsn);
-            if (_ZNK5dBgPi9GetClsnIDEv(fr) != -1) {
-                other = dActor_c::FindWithID((unsigned int)_ZNK5dBgPi9GetClsnIDEv(fr));
+            fr = p->mMeshClsn.GetFloorResult();
+            if (fr->GetClsnID() != -1) {
+                other = dActor_c::FindWithID((unsigned int)fr->GetClsnID());
                 if (other != 0) {
                     if (AngleDiff(p->mAngleY, ((dActor_c *)other)->mAngleY) >= 0x4000)
                         return 1;
                 }
             }
         }
-        if (_ZNK10dBgCh_Actr8IsOnWallEv(&p->mMeshClsn) != 0) {
-            fr = _ZNK10dBgCh_Actr13GetWallResultEv(&p->mMeshClsn);
-            if (_ZNK5dBgPi9GetClsnIDEv(fr) != -1) {
-                other = dActor_c::FindWithID((unsigned int)_ZNK5dBgPi9GetClsnIDEv(fr));
+        if (p->mMeshClsn.IsOnWall() != 0) {
+            fr = p->mMeshClsn.GetWallResult();
+            if (fr->GetClsnID() != -1) {
+                other = dActor_c::FindWithID((unsigned int)fr->GetClsnID());
                 if (other != 0)
                     return 1;
             }
@@ -11420,8 +11264,8 @@ int func_ov002_020cfea4(char *self)
             pts[1].z = pz;
         }
     }
-    _ZN9dBgCh_Gnd12SetObjAndPosERK7Vector3P8dActor_c(&rg, &pts[1], self);
-    if (_ZN9dBgCh_Gnd10DetectClsnEv(&rg) != 0) {
+    rg.SetObjAndPos(pts[1], (dActor_c *)self);
+    if (rg.DetectClsn() != 0) {
         if (rg.clsnY >= p->mPosY - 0x50000) {
             return 1;
         }
@@ -11473,13 +11317,6 @@ int func_ov002_020cfea4(char *self)
 extern "C" {
 int func_ov002_020d0178(char* c, int arg1, int flag)
 {
-    extern void _ZN9dBgCh_Gnd12SetObjAndPosERK7Vector3P8dActor_c(void *self, Vector3 *pos,
-                                                                 void *actor);
-    extern int _ZN9dBgCh_Gnd10DetectClsnEv(void *self);
-    extern void _ZN9dBgCh_Lin13SetObjAndLineERK7Vector3S2_P8dActor_c(void *self, Vector3 *a,
-                                                                     Vector3 *b, void *actor);
-    extern int _ZN9dBgCh_Lin10DetectClsnEv(void* self);
-    extern void _ZNK11SurfaceInfo12CopyNormalToER7Vector3(void *self, Vector3 *out);
     extern int atan2_hold_Player_9(int x, int z);
     extern int AngleDiff(int a, int b);
     extern s16 data_02082214[];
@@ -11524,8 +11361,8 @@ int func_ov002_020d0178(char* c, int arg1, int flag)
             pos1.z = tz;
         }
     }
-    _ZN9dBgCh_Gnd12SetObjAndPosERK7Vector3P8dActor_c(&rg, &pos1, c);
-    if (!_ZN9dBgCh_Gnd10DetectClsnEv(&rg)) {
+    rg.SetObjAndPos(pos1, (dActor_c *)c);
+    if (!rg.DetectClsn()) {
         return 0;
     }
     gy = rg.clsnY;
@@ -11541,7 +11378,7 @@ int func_ov002_020d0178(char* c, int arg1, int flag)
             return 0;
         }
     }
-    _ZNK11SurfaceInfo12CopyNormalToER7Vector3(&rg.surface, &normal);
+    rg.surface.CopyNormalTo(normal);
     if (normal.y < 0xf04) {
         return 0;
     }
@@ -11554,11 +11391,11 @@ int func_ov002_020d0178(char* c, int arg1, int flag)
         lineStart.y = arg1;
         lineStart.z = tz;
     }
-    _ZN9dBgCh_Lin13SetObjAndLineERK7Vector3S2_P8dActor_c(&rl, &lineStart, &pos1, c);
-    if (!_ZN9dBgCh_Lin10DetectClsnEv(&rl)) {
+    rl.SetObjAndLine(lineStart, pos1, (dActor_c *)c);
+    if (!rl.DetectClsn()) {
         return 0;
     }
-    _ZNK11SurfaceInfo12CopyNormalToER7Vector3(&rl.surface, &normal);
+    rl.surface.CopyNormalTo(normal);
     if (normal.y >= 0x2c7) {
         return 0;
     }
@@ -11582,8 +11419,8 @@ int func_ov002_020d0178(char* c, int arg1, int flag)
     ::Vector3 clsnPos = rl.GetClsnPos();
     lineStart.y += 0x64000;
     pos1.y += 0x64000;
-    _ZN9dBgCh_Lin13SetObjAndLineERK7Vector3S2_P8dActor_c(&rl, &lineStart, &pos1, c);
-    if (_ZN9dBgCh_Lin10DetectClsnEv(&rl)) {
+    rl.SetObjAndLine(lineStart, pos1, (dActor_c *)c);
+    if (rl.DetectClsn()) {
         return 0;
     }
     lineStart.y = p->mPosY;
@@ -11592,8 +11429,8 @@ int func_ov002_020d0178(char* c, int arg1, int flag)
     line2.y = p->mPosY;
     line2.z = p->mPosZ;
     line2.y = gy + 0xa000;
-    _ZN9dBgCh_Lin13SetObjAndLineERK7Vector3S2_P8dActor_c(&rl, &lineStart, &line2, c);
-    if (_ZN9dBgCh_Lin10DetectClsnEv(&rl)) {
+    rl.SetObjAndLine(lineStart, line2, (dActor_c *)c);
+    if (rl.DetectClsn()) {
         return 0;
     }
     p->mPosX = clsnPos.x - normal.x;
@@ -11752,7 +11589,6 @@ void func_ov002_020d0948(char* self)
 {
     extern short data_02082214[];
     extern int data_ov002_021101b4[];
-    extern void _ZN6Player11ChangeStateERNS_5StateE(char* self, int state);
     Player *p = (Player *)self;
 
     /* The two header reads go through a byte pointer: with the int-typed
@@ -11779,7 +11615,7 @@ void func_ov002_020d0948(char* self)
         *p2 = *p2 + (data_02082214[idx * 2 + 1] << 6);
     }
     p->mHorzSpeed = -0x8000;
-    _ZN6Player11ChangeStateERNS_5StateE(self, (int)data_ov002_021101b4);
+    ((Player *)self)->ChangeState(*(Player::State *)((int)data_ov002_021101b4));
 }
 }
 
@@ -11866,7 +11702,6 @@ int Player::St_LedgeHang_Init() {
     struct Vec3 {
         int x, y, z;
     };
-    extern void _ZN10dCcAcPos_c21SetPosRelativeToActorERK7Vector3(char *o, struct Vec3 *p);
 
     mStateWaitTimer = 0;
     if (mStateStep == 0) {
@@ -11887,7 +11722,7 @@ int Player::St_LedgeHang_Init() {
         off.x = z3.x;
         off.y = z3.y;
         off.z = z3.z;
-        _ZN10dCcAcPos_c21SetPosRelativeToActorERK7Vector3((char *)&mdCcAcPos_c, &off);
+        mdCcAcPos_c.SetPosRelativeToActor(*(Vector3 *)&off);
     }
     mStatePhase = 0;
     return 1;
@@ -11898,13 +11733,12 @@ int Player::St_LedgeHang_Init() {
 extern "C" {
 int func_ov002_020d0d2c(void* c)
 {
-    struct State;
-    extern State data_ov002_0210ffec;
-    extern State data_ov002_02110004;
-    extern int _ZN6Player7IsStateERNS_5StateE(void* c, State* st);
+    extern Player::State data_ov002_0210ffec;
+    extern Player::State data_ov002_02110004;
 
-  if(_ZN6Player7IsStateERNS_5StateE(c, &data_ov002_0210ffec) || _ZN6Player7IsStateERNS_5StateE(c, &data_ov002_02110004)) return 1;
-  return 0;
+    if (((Player *)c)->IsState(data_ov002_0210ffec) || ((Player *)c)->IsState(data_ov002_02110004))
+        return 1;
+    return 0;
 }
 }
 
@@ -12097,24 +11931,22 @@ int func_ov002_020d1164(char* c)
 extern "C" {
 int func_ov002_020d1204(void* thisptr)
 {
-    struct State;
-    extern void _ZN6Player11ChangeStateERNS_5StateE(void*, State&);
     extern unsigned char data_0209f49e[];
-    extern State data_ov002_0211052c;
-    extern State data_ov002_0211055c;
-    extern State data_ov002_0211019c;
+    extern Player::State data_ov002_0211052c;
+    extern Player::State data_ov002_0211055c;
+    extern Player::State data_ov002_0211019c;
 
     unsigned char* p = (unsigned char*)thisptr;
     Player *player = (Player *)p;
     if (*(unsigned short*)(data_0209f49e + gActivePlayerSlot * 0x18) & 2) {
         int v = player->mHorzSpeed;
         if (v == 0) {
-            _ZN6Player11ChangeStateERNS_5StateE(thisptr, data_ov002_0211052c);
+            ((Player *)thisptr)->ChangeState(data_ov002_0211052c);
         } else if (player->mStateTimer != 0 && v > 0xa000) {
-            _ZN6Player11ChangeStateERNS_5StateE(thisptr, data_ov002_0211055c);
+            ((Player *)thisptr)->ChangeState(data_ov002_0211055c);
             return 1;
         } else {
-            _ZN6Player11ChangeStateERNS_5StateE(thisptr, data_ov002_0211019c);
+            ((Player *)thisptr)->ChangeState(data_ov002_0211019c);
         }
         return 1;
     }
@@ -12127,23 +11959,21 @@ extern "C" {
 int func_ov002_020d12b0(u8 *self)
 {
     Player *player = (Player *)self;
-    struct State;
     extern u8 data_0209f49e[];
-    extern State data_ov002_02110574;
-    extern State data_ov002_02110634;
-    extern State data_ov002_0211061c;
-    extern void _ZN6Player11ChangeStateERNS_5StateE(void *self, State &s);
+    extern Player::State data_ov002_02110574;
+    extern Player::State data_ov002_02110634;
+    extern Player::State data_ov002_0211061c;
     extern int Player_ScaleByCharFactor(void *c, int a);
 
     if ((*(u16 *)(data_0209f49e + gActivePlayerSlot * 0x18) & 1) == 0) goto ret0;
     if (self[0x703] != 0) {
         self[0x6e2] = 2;
-        _ZN6Player11ChangeStateERNS_5StateE(self, data_ov002_02110574);
+        ((Player *)self)->ChangeState(data_ov002_02110574);
     } else {
         if (player->mHorzSpeed >= Player_ScaleByCharFactor(self, 0xa000)) {
-            _ZN6Player11ChangeStateERNS_5StateE(self, data_ov002_02110634);
+            ((Player *)self)->ChangeState(data_ov002_02110634);
         } else {
-            _ZN6Player11ChangeStateERNS_5StateE(self, data_ov002_0211061c);
+            ((Player *)self)->ChangeState(data_ov002_0211061c);
         }
     }
     return 1;
@@ -12264,7 +12094,6 @@ int Player::St_HoldHeavy_Main()
     extern void func_ov002_020d1f78(void*, u32);
     extern int data_ov002_020ff254[];
     extern int data_ov002_020ff1d0[];
-    extern void _Z14ApproachLinearRiii(int* a, int b, int c);
     extern void func_ov002_020da9d4(void* c);
     extern void ApproachAngle(short* cur, short target, int divisor, int band, int maxStep);
     extern int func_ov002_020bf224(void* c, int a, int b);
@@ -12301,7 +12130,7 @@ int Player::St_HoldHeavy_Main()
                 }
             }
         }
-        _Z14ApproachLinearRiii((int*)((char*)&mHorzSpeed), 0, 0x1000);
+        ApproachLinear(*((int *)((char *)&mHorzSpeed)), 0, 0x1000);
         goto end;
     }
 
@@ -12401,7 +12230,6 @@ int Player::St_HoldLight_Main()
     extern Player::State data_ov002_0211019c;
     extern int func_ov002_020d9dcc(void*);
     extern void func_ov002_020d1f78(void*, u32);
-    extern void _Z14ApproachLinearRiii(int* a, int b, int c);
     extern int func_ov002_020e0ccc(void* c, short* st);
     extern int func_ov002_020c5244(void* c);
     extern int Player_ReleaseHeldActor(void* c);
@@ -12427,7 +12255,7 @@ int Player::St_HoldLight_Main()
     }
 
     if (mStateStep == 0) {
-        _Z14ApproachLinearRiii((int*)((char*)&mHorzSpeed), 0, 0x800);
+        ApproachLinear(*((int *)((char *)&mHorzSpeed)), 0, 0x800);
         if (this->IsAnim(0x2f) || this->IsAnim(0x86)) {
             if (this->FinishedAnim()) {
                 if (func_ov002_020e0ccc(((char*)this), *(short**)((char*)&mHeldObj))) {
@@ -12587,10 +12415,6 @@ void func_ov002_020d1f78(void *selfPtr, u32 param)
     extern Rec18 data_0209f49c[];
     extern Rec18 data_0209f4a0[];
     extern int data_0209f32c;
-    extern int _ZNK6Player14GetBodyModelIDEjb(void *self, unsigned int a, int b);
-    /* local extern: non-constant startFrame (w << 4) >> 16 narrows to u16 and costs +8. */
-    extern void _ZN6Player7SetAnimEjiit(void *self, unsigned int a, int b, Fix12i c,
-                                        unsigned int d);
     extern u32 func_02022d00(u32 uniqueID, u32 effectID, Fix12i x, Fix12i y, Fix12i z, void *dir);
     extern void func_0201251c(int a, int b, int c, int d);
     extern void PlayerNewSimpleHold8(unsigned int id, Fix12i a, Fix12i b, Fix12i c);
@@ -12616,10 +12440,12 @@ void func_ov002_020d1f78(void *selfPtr, u32 param)
     }
 
     if (p->param1 == 2 && flag == 0) {
-        id = _ZNK6Player14GetBodyModelIDEjb(self, p->param1 & 0xff, 0);
+        id = ((Player *)self)->GetBodyModelID(p->param1 & 0xff, 0);
         anim = (char *)((long long)(int)&(dExtFrameCtrl_c &)*p->mModels.mBodyModels[id]);
         w = ((dExtFrameCtrl_c *)anim)->currFrame;
-        _ZN6Player7SetAnimEjiit(self, 0x3f, 0, 0x2800, (w << 4) >> 16);
+        /* The whole frame of the 20.12 counter; the u16 parameter's narrowing
+           folds with the shift into the ROM's lsl #4 / lsr #16. */
+        p->SetAnim(0x3f, 0, 0x2800, w >> 12);
     } else {
         int v = p->mHorzSpeed;
         int shift = v >> 3;
@@ -12628,9 +12454,9 @@ void func_ov002_020d1f78(void *selfPtr, u32 param)
         ((Player *)self)->SetAnim(param, 0, shift, 0);
     }
 
-    id = _ZNK6Player14GetBodyModelIDEjb(self, p->param1 & 0xff, 0);
+    id = ((Player *)self)->GetBodyModelID(p->param1 & 0xff, 0);
     if (!p->mModels.mBodyModels[id]->WillHitFrame(4)) {
-        id = _ZNK6Player14GetBodyModelIDEjb(self, p->param1 & 0xff, 0);
+        id = ((Player *)self)->GetBodyModelID(p->param1 & 0xff, 0);
         if (!p->mModels.mBodyModels[id]->WillHitFrame(0x13))
             return;
     }
@@ -12737,15 +12563,14 @@ void func_ov002_020d228c(char* c)
 extern "C" {
 int func_ov002_020d22ec(char* c, int arg)
 {
-    extern void _ZN6Player11ChangeStateERNS_5StateE(char* c, void* st);
     extern void func_ov002_020cabe0(char* c);
     extern int func_ov002_020d36d8(char* c, int x);
     extern char data_0209f4a0[];
-    extern int data_ov002_0211013c;
+    extern Player::State data_ov002_0211013c;
     Player *player = (Player *)c;
 
     if (*(short*)(data_0209f4a0 + gActivePlayerSlot * 0x18) > arg) {
-        _ZN6Player11ChangeStateERNS_5StateE(c, &data_ov002_0211013c);
+        ((Player *)c)->ChangeState(data_ov002_0211013c);
         return 1;
     }
     if ((unsigned short)(player->mStateFlags & 4)) {
@@ -13097,8 +12922,7 @@ int func_ov002_020d2da0(char *c) {
     extern struct E18 data_0209f4a0[];
     extern struct E18 data_0209f49e[];
     extern char *data_0209f318;
-    extern char data_ov002_021101b4;
-    extern void _ZN6Player11ChangeStateERNS_5StateE(char *c, void *s);
+    extern Player::State data_ov002_021101b4;
 
     unsigned char idx = gActivePlayerSlot;
     char *p = data_0209f318;
@@ -13111,7 +12935,7 @@ int func_ov002_020d2da0(char *c) {
     if (player->mIsAirborne == 0)
         return 0;
     ((dCamera_c *)p)->mFlags &= ~0x2000;
-    _ZN6Player11ChangeStateERNS_5StateE(c, &data_ov002_021101b4);
+    ((Player *)c)->ChangeState(data_ov002_021101b4);
     return 2;
 }
 }
@@ -13145,7 +12969,6 @@ void func_ov002_020d2e74(Player *p) {
 extern "C" {
 void func_ov002_020d2f24(char* thiz)
 {
-    extern int _ZNK6Player14GetBodyModelIDEjb(void* thiz, u32 a, int b);
     Player *player = (Player *)thiz;
 
     int v;
@@ -13156,7 +12979,7 @@ void func_ov002_020d2f24(char* thiz)
     if (id != 3) return;
 
     r4 = player->mSleepBubbleScaleX;
-    id = _ZNK6Player14GetBodyModelIDEjb(thiz, id & 0xff, 0);
+    id = ((Player *)thiz)->GetBodyModelID(id & 0xff, 0);
     {
         /* q is the frame controller; m->currFrame would fold the split +0x50. */
         int *q = (int *)((int)player->mModels.mBodyModels[id] + 0x50);
@@ -13197,7 +13020,6 @@ int func_ov002_020d2fdc(char *self)
     extern u8 data_0209f2d8;
     extern char data_0209f2f8;
     extern void *data_0209f318;
-    extern int _ZNK6Player14GetBodyModelIDEjb(void *thiz, unsigned int a, int b);
     extern void func_ov002_020d4c30(void *self);
     Player *p = (Player *)self;
 
@@ -13227,9 +13049,9 @@ int func_ov002_020d2fdc(char *self)
 
         ((Player *)self)->SetAnim(0x3f, 0, r5, 0);
 
-        id = _ZNK6Player14GetBodyModelIDEjb(self, p->param1 & 0xff, 0);
+        id = ((Player *)self)->GetBodyModelID(p->param1 & 0xff, 0);
         if (p->mModels.mBodyModels[id]->WillHitFrame(4) ||
-            (id = _ZNK6Player14GetBodyModelIDEjb(self, p->param1 & 0xff, 0),
+            (id = ((Player *)self)->GetBodyModelID(p->param1 & 0xff, 0),
              p->mModels.mBodyModels[id]->WillHitFrame(0x13))) {
             func_ov002_020d4c30(self);
         }
@@ -13354,7 +13176,6 @@ int Player::St_TurnAround_Main()
     extern Player::State data_ov002_021101e4;
     extern void ApproachAngle(s16* cur, s16 target, int divisor, int band, int maxStep);
     extern Fix12i Player_ScaleByCharFactor(void* c, Fix12i a);
-    extern void _Z14ApproachLinearRiii(int* a, int b, int c);
     extern int func_0201226c(int a0, int a1, int a2, int a3, int a4, s16 a5);
     extern void Player_AdvanceAnims(void* c);
     extern u16 data_0209f49e[];
@@ -13375,7 +13196,7 @@ int Player::St_TurnAround_Main()
         r5v = func_ov002_020bf56c(((char*)this), sel);
         ApproachAngle((s16*)((char*)&mPrevAngleY), angle, 0x10, 0x1000, 0x200);
         tmp = Player_ScaleByCharFactor(((char*)this), 0x28000);
-        _Z14ApproachLinearRiii((int*)((char*)&mHorzSpeed), -tmp, r5v);
+        ApproachLinear(*((int *)((char *)&mHorzSpeed)), -tmp, r5v);
     } else {
         this->ChangeState(data_ov002_0211013c);
         return 1;
@@ -13424,14 +13245,13 @@ int func_ov002_020d36d8(char* c, int arg)
     extern int func_ov002_020d5c6c(char* c);
     extern int func_ov002_020dde74(char* c);
     extern int func_ov002_020d674c(char* c);
-    extern void _ZN6Player11ChangeStateERNS_5StateE(char* c, void* st);
     extern int func_ov002_020d1204(char* c);
     extern unsigned char data_0209f49e[];
     extern unsigned char data_0209f49c[];
-    extern int data_ov002_0211004c;
-    extern int data_ov002_021104e4;
-    extern int data_ov002_0211019c;
-    extern int data_ov002_021101b4;
+    extern Player::State data_ov002_0211004c;
+    extern Player::State data_ov002_021104e4;
+    extern Player::State data_ov002_0211019c;
+    extern Player::State data_ov002_021101b4;
     Player *player = (Player *)c;
 
     if ((unsigned short)(player->mStateFlags & 0x40))
@@ -13452,16 +13272,16 @@ int func_ov002_020d36d8(char* c, int arg)
         }
         if ((*(unsigned short*)(data_0209f49c + idx) & 0x400) && (arg & 1) == 0) {
             if (func_ov002_020d674c(c) != 0) {
-                _ZN6Player11ChangeStateERNS_5StateE(c, &data_ov002_0211004c);
+                ((Player *)c)->ChangeState(data_ov002_0211004c);
             } else {
                 player->mStateStep = 0;
-                _ZN6Player11ChangeStateERNS_5StateE(c, &data_ov002_021104e4);
+                ((Player *)c)->ChangeState(data_ov002_021104e4);
             }
             return 1;
         }
         if (f49e & 2) {
             if (player->mCrouchTimer == 0) {
-                _ZN6Player11ChangeStateERNS_5StateE(c, &data_ov002_0211019c);
+                ((Player *)c)->ChangeState(data_ov002_0211019c);
                 return 1;
             }
             if (func_ov002_020d1204(c) != 0) return 1;
@@ -13470,7 +13290,7 @@ int func_ov002_020d36d8(char* c, int arg)
 
     if (player->mIsAirborne != 0) {
         if (player->mPosY - player->mGroundY >= 0x28000) {
-            _ZN6Player11ChangeStateERNS_5StateE(c, &data_ov002_021101b4);
+            ((Player *)c)->ChangeState(data_ov002_021101b4);
             return 1;
         }
     }
@@ -13613,13 +13433,10 @@ int func_ov002_020d3b9c(char *c)
     extern int Player_ScaleByCharFactor(void *c, int a);
     extern int func_ov002_020bf224(int c, int a, int b);
     extern int func_ov002_020bf56c(void *c, int b);
-    extern void _ZN6Player19func_ov002_020bf88cEv(void *c);
-    extern int _ZN6Player19func_ov002_020c031cEv(void *c);
     extern int func_ov002_020f035c(unsigned int sel, int r1);
     extern int AngleDiff(int a, int b);
     extern int __aeabi_idiv(int a, int b);
     extern int ApproachAngle(short *cur, short target, int divisor, int band, int maxStep);
-    extern void _ZN6Player11ChangeStateERNS_5StateE(void *c, void *s);
     extern void Player_AdvanceAnims(void *c);
     extern void func_ov002_020d4540(void *c);
     extern void func_ov002_020d454c(void *c);
@@ -13629,7 +13446,7 @@ int func_ov002_020d3b9c(char *c)
     extern char data_0209f49c[];
     extern unsigned char data_0209f4ac[];
     extern unsigned char data_0209f4ae[];
-    extern char data_ov002_02110184;
+    extern Player::State data_ov002_02110184;
     Player *player = (Player *)c;
     int spd;
     int acc;
@@ -13674,7 +13491,7 @@ int func_ov002_020d3b9c(char *c)
                 *p = (u8)((*p) - 1);
                 spd = FX_MUL(spd, 0x1333);
                 acc = 0x1e000;
-                _ZN6Player19func_ov002_020bf88cEv(c);
+                ((Player *)c)->func_ov002_020bf88c();
             } else {
                 player->mDashBoostTimer = 0;
             }
@@ -13705,7 +13522,7 @@ int func_ov002_020d3b9c(char *c)
                 }
             }
         }
-        if (func_ov002_020f035c(_ZN6Player19func_ov002_020c031cEv(c), player->mFloorNormalY) != 0) {
+        if (func_ov002_020f035c(((Player *)c)->func_ov002_020c031c(), player->mFloorNormalY) != 0) {
             acc = 0x1000;
         }
         targ = player->mDesiredAngleY;
@@ -13716,7 +13533,7 @@ int func_ov002_020d3b9c(char *c)
         if (diff > 0x6000) {
             int cur = player->mHorzSpeed;
             if ((cur >= Player_ScaleByCharFactor(c, 0x1c000)) && (player->mIsMega == 0)) {
-                _ZN6Player11ChangeStateERNS_5StateE(c, &data_ov002_02110184);
+                ((Player *)c)->ChangeState(data_ov002_02110184);
                 Player_AdvanceAnims(c);
                 return 1;
             }
@@ -13759,7 +13576,7 @@ int func_ov002_020d3b9c(char *c)
         player->mDashBoostTimer = 0;
         if (player->mIsBraking != 0) {
             acc = func_ov002_020bf56c(c, 0x2000);
-            _ZN6Player19func_ov002_020bf88cEv(c);
+            ((Player *)c)->func_ov002_020bf88c();
         } else if (player->mStickGraceTimer == 0) {
             if (player->mIsMega == 0)
                 acc = 0x1000;
@@ -13830,7 +13647,6 @@ int Player::St_Walk_Init()
     extern void func_ov002_020caf68(void *self);
     extern int func_ov002_020e3078(void *self, void *s);
     extern int RandomIntInternal(int *seed);
-    extern void _ZN6Player17SetNoControlStateEhih(void *c, unsigned char a, int b, unsigned char d);
     extern short data_0209f4a0;
     extern unsigned char data_0209f2d8;
     extern int data_0209caa0[3];
@@ -13914,7 +13730,7 @@ merge:
     }
 
     if (mIsMega != 0 && mScaleX != 0x3000) {
-        _ZN6Player17SetNoControlStateEhih(((char *)this), 0xd, -1, 0);
+        this->SetNoControlState(0xd, -1, 0);
     }
     return 1;
 }
@@ -13994,22 +13810,17 @@ void func_ov002_020d45c0(char* self)
 extern "C" {
 static inline int* GetAnim(char* c)
 {
-    int _ZNK6Player14GetBodyModelIDEjb(void*, unsigned int, int);
     Player *player = (Player *)c;
-    return (int *)((char *)player->mModels.mBodyModels[_ZNK6Player14GetBodyModelIDEjb(
-                       c, (unsigned char)player->param1, 0)] +
-                   0x50);
+    return (
+        int *)((char *)player->mModels
+                   .mBodyModels[((Player *)c)->GetBodyModelID((unsigned char)player->param1, 0)] +
+               0x50);
 }
-static inline unsigned int AnimSpeed(char* c)
-{
-    return (unsigned short)(GetAnim(c)[2] >> 12);
+static inline u16 AnimSpeed(char *c) {
+    return GetAnim(c)[2] >> 12;
 }
 void Player::func_ov002_020d4748()
 {
-    int _ZN6Player6IsAnimEj(void*, unsigned int);
-    /* local extern: AnimSpeed/s5 are wider than u16; each narrowed call costs +8. */
-    void _ZN6Player7SetAnimEjiit(void *, unsigned int, int, int, unsigned int);
-    int _ZNK6Player14GetBodyModelIDEjb(void*, unsigned int, int);
     int Player_ScaleByCharFactor(void*, int);
     void func_ov002_020d4c30(void*);
     extern unsigned char data_0209f4ac;
@@ -14086,21 +13897,21 @@ void Player::func_ov002_020d4748()
         }
 
         if (this->mSinkDepth > 0x32000) {
-            _ZN6Player7SetAnimEjiit(c, 0x7e, 0,
-                                    *(short *)((char *)&data_0209f4a0 + gActivePlayerSlot * 0x18),
-                                    AnimSpeed(c));
+            ((Player *)c)
+                ->SetAnim(0x7e, 0, *(short *)((char *)&data_0209f4a0 + gActivePlayerSlot * 0x18),
+                          AnimSpeed(c));
         } else if (this->mStateStep >= 0x17) {
             this->mStateStep = 0x17;
-            _ZN6Player7SetAnimEjiit(c, 0x61, 0, 0x1000, AnimSpeed(c));
+            ((Player *)c)->SetAnim(0x61, 0, 0x1000, AnimSpeed(c));
         } else if (this->mFloorClass == 4 && *(short*)((char*)&data_0209f4a0 + gActivePlayerSlot * 0x18) == 0) {
             Particle::RunningSlidingDustAt(this->mPosX, this->mPosY, this->mPosZ);
             ((Player *)c)->SetAnim(0x47, 0, 0x1000, 0);
         } else if (this->mIsWalkPace != 0) {
-            unsigned int s5 = AnimSpeed(c);
+            u16 s5 = AnimSpeed(c);
             int spd = this->mHorzSpeed >> 3;
             if (spd < 0x400)
                 spd = 0x400;
-            _ZN6Player7SetAnimEjiit(c, 0x48, 0, spd, s5);
+            ((Player *)c)->SetAnim(0x48, 0, spd, s5);
         } else {
             int t = 0x1000 - this->mFloorNormalY;
             int f = (int)((((long long)t << 10) + 0x800) >> 12);
@@ -14109,7 +13920,7 @@ void Player::func_ov002_020d4748()
             v = FX_MUL(diff, f);
             if (v < 0)
                 v = 0;
-            _ZN6Player7SetAnimEjiit(c, 0x3f, 0, v + 0x2800, AnimSpeed(c));
+            ((Player *)c)->SetAnim(0x3f, 0, v + 0x2800, AnimSpeed(c));
         }
 
         if (((dExtFrameCtrl_c *)(GetAnim(c)))->WillHitFrame(4) != 0 ||
@@ -14178,12 +13989,10 @@ extern "C" void func_ov002_020d4c30(Player *self) {
 extern "C" {
 int func_ov002_020d4d88(char *self, int a, int b, int c)
 {
-    extern int _Z14ApproachLinearRiii(int *, int, int);
-    extern int _ZN6Player19func_ov002_020c04e0Ev(void *);
     Player *player = (Player *)self;
-    _Z14ApproachLinearRiii(&player->mHorzSpeed, a, b);
+    ApproachLinear(player->mHorzSpeed, a, b);
     if (a != 0 || (unsigned short)(player->mStateFlags & 1)) {
-        _ZN6Player19func_ov002_020c04e0Ev(self);
+        ((Player *)self)->func_ov002_020c04e0();
         return 1;
     }
     return 0;
@@ -14197,7 +14006,6 @@ extern "C" {
 int Player::St_Bonk_Main()
 {
     struct dCamera_c;
-    extern void _Z14ApproachLinearRiii(int* a, int b, int c);
     extern void Player_AdvanceAnims(void* c);
     extern void func_0200d8c8(struct dCamera_c * cam, const Vector3 *v, int strength);
     extern struct dCamera_c* data_0209f318;
@@ -14233,7 +14041,7 @@ int Player::St_Bonk_Main()
         rate = 0x1800;
     }
 
-    _Z14ApproachLinearRiii((int*)((char*)&mHorzSpeed), 0, rate);
+    ApproachLinear(*((int *)((char *)&mHorzSpeed)), 0, rate);
 
     if (mHorzSpeed != 0) {
         goto willhit;
@@ -14466,7 +14274,6 @@ int Player::St_BurnFire_Main()
     extern void PlayerPlayLongHold_burnfire(unsigned int handle, unsigned int id, unsigned int vol,
                                             const void *vec, unsigned int flags);
     extern void ApproachAngle(short *cur, short target, int divisor, int band, int maxStep);
-    extern void _Z14ApproachLinearRiii(int *cur, int target, int step);
     extern void Player_AdvanceAnims(void *c);
     int speed = 0;
 
@@ -14564,7 +14371,7 @@ int Player::St_BurnFire_Main()
         break;
     }
 
-    _Z14ApproachLinearRiii(&mHorzSpeed, speed, 0x1000);
+    ApproachLinear(mHorzSpeed, speed, 0x1000);
     Player_AdvanceAnims(this);
     return 1;
 }
@@ -14738,8 +14545,7 @@ extern "C" {
 int func_ov002_020d5ab4(char *self)
 {
     typedef long long s64;
-    extern int _ZN6Player7IsStateERNS_5StateE(char *self, void *state);
-    extern char data_ov002_02110064;
+    extern Player::State data_ov002_02110064;
     extern short data_02082214[];
     Player *p = (Player *)self;
     Vector3 pos;
@@ -14748,7 +14554,7 @@ int func_ov002_020d5ab4(char *self)
     int *pp;
     int a;
 
-    if (_ZN6Player7IsStateERNS_5StateE(self, &data_ov002_02110064) == 0) {
+    if (((Player *)self)->IsState(data_ov002_02110064) == 0) {
         return 0;
     }
 
@@ -14996,7 +14802,6 @@ int Player::St_InYoshiMouth_Main()
     extern int func_ov002_020d5cec(char *c);
     extern void Vec3_RotateYAndTranslate(Vector3 *res, Vector3 *trans, short angY, Vector3 *add);
     extern void Player_AdvanceAnims(char *c);
-    extern void _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void *thiz, void *v, u32 a, int b, u32 cc, u32 d, u32 e);
     extern Player::State data_ov002_02110094;
     extern Player::State data_ov002_0211007c;
     extern Player::State data_ov002_0211019c;
@@ -15038,8 +14843,7 @@ int Player::St_InYoshiMouth_Main()
                 hv.x = res.x;
                 hv.y = res.y;
                 hv.z = res.z;
-                _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(r4, &hv, 1, 0, 0,
-                                                        (eater->param1 + 1) & 0xff, 1);
+                ((Player *)r4)->Hurt(hv, 1, 0, 0, (eater->param1 + 1) & 0xff, 1);
                 this->ChangeState(data_ov002_0211019c);
                 eater->mObjInMouth = 0;
                 mEatingPlayer = 0;
@@ -15279,16 +15083,14 @@ extern "C" {
 int func_ov002_020d6790(char* self)
 {
     Player *p = (Player *)self;
-    extern void _ZN6Player11ChangeStateERNS_5StateE(char* c, void* s);
-    extern int _ZN6Player7IsStateERNS_5StateE(char* c, void* s);
     extern void Player_DisableInteraction(char* c);
     extern void func_ov002_020d7430(Player& player);
     extern void func_ov002_020d8118(char* c);
-    extern char data_ov002_02110034;
-    extern char data_ov002_0211013c;
-    extern char data_ov002_02110154;
-    extern char data_ov002_0211067c;
-    extern char data_ov002_0211004c;
+    extern Player::State data_ov002_02110034;
+    extern Player::State data_ov002_0211013c;
+    extern Player::State data_ov002_02110154;
+    extern Player::State data_ov002_0211067c;
+    extern Player::State data_ov002_0211004c;
     if (p->mMouthHoldTimer != 0)
         return 0;
 
@@ -15301,16 +15103,17 @@ int func_ov002_020d6790(char* self)
             goto isbf_ret0;
         if (p->mIsTakingDamage != 0)
             goto isbf_ret0;
-        _ZN6Player11ChangeStateERNS_5StateE(self, &data_ov002_02110034);
+        ((Player *)self)->ChangeState(data_ov002_02110034);
         Player_DisableInteraction(self);
         return 1;
 isbf_ret0:
         return 0;
     }
 
-    if (!_ZN6Player7IsStateERNS_5StateE(self, &data_ov002_0211013c)) {
-        if (!_ZN6Player7IsStateERNS_5StateE(self, &data_ov002_02110154)) {
-            if (!_ZN6Player7IsStateERNS_5StateE(self, &data_ov002_0211067c)) return 0;
+    if (!((Player *)self)->IsState(data_ov002_0211013c)) {
+        if (!((Player *)self)->IsState(data_ov002_02110154)) {
+            if (!((Player *)self)->IsState(data_ov002_0211067c))
+                return 0;
         }
     }
 
@@ -15331,11 +15134,11 @@ isbf_ret0:
         goto ret0;
     }
     case 3:
-        _ZN6Player11ChangeStateERNS_5StateE(self, &data_ov002_02110034);
+        ((Player *)self)->ChangeState(data_ov002_02110034);
         return 1;
     case 1:
     case 6:
-        _ZN6Player11ChangeStateERNS_5StateE(self, &data_ov002_0211004c);
+        ((Player *)self)->ChangeState(data_ov002_0211004c);
         return 1;
     case 7:
         if (p->mUseAltBodyModel != 0)
@@ -15471,8 +15274,6 @@ fail:
 extern "C" {
 extern "C" int func_ov002_020d6c60(char *p0, void *p1v) {
     extern void func_ov002_020d7030(void *c, void *d);
-    extern void _ZN6Player18SetNewHatCharacterEjjb(void *self, unsigned int j1, unsigned int j2,
-                                                   int b);
     extern void Player_DisableInteraction(void *c);
     extern void func_ov002_020d71ec(void *c, int x);
     extern int func_ov002_020d5f34(char *, void *);
@@ -15505,7 +15306,7 @@ l48:
     if (sp == 0)
         goto ret0b;
     func_ov002_020d7030(p0, sp);
-    _ZN6Player18SetNewHatCharacterEjjb(p1, ((Player *)p0)->mCharacter, 0, 0);
+    ((Player *)p1)->SetNewHatCharacter(((Player *)p0)->mCharacter, 0, 0);
     Player_DisableInteraction(p0);
     return 1;
 leq:
@@ -15532,16 +15333,15 @@ int func_ov002_020d6dac(char *self)
 {
     Player *player = (Player *)self;
     typedef struct P2 { int w[2]; } P2;
-    typedef struct dBgPi { void *vtb; int s0, s1, s2, s3, s4; u16 f, g; int h, i, j; } dBgPi;
-    extern int _ZNK6Player14GetBodyModelIDEjb(void *thiz, unsigned int a, int b);
+    typedef struct dBgPiCopy {
+        void *vtb;
+        int s0, s1, s2, s3, s4;
+        u16 f, g;
+        int h, i, j;
+    } dBgPiCopy;
     extern void MulVec3Mat4x3(void *v, void *m, void *dst);
     extern void Vec3_MulScalarInPlace(int *v, int s);
-    extern void _ZN9dBgCh_Lin13SetObjAndLineERK7Vector3S2_P8dActor_c(void *self, void *a, void *b, void *act);
-    extern int _ZN9dBgCh_Lin10DetectClsnEv(void *self);
-    extern int _ZNK5dBgPi9GetClsnIDEv(void *r);
-    extern void _ZN5dBgPiD1Ev(void *r);
     extern int func_02053274(int *a, int *b);
-    extern void _ZNK11SurfaceInfo12CopyNormalToER7Vector3(void *thiz, void *out);
     extern short atan2_hold_Player_8(int a, int b);
     extern u32 PlayerNewHold11(u32 handle, u32 kind, Fix12i x, Fix12i y, Fix12i z, const void *dir,
                                void *callback);
@@ -15550,7 +15350,7 @@ int func_ov002_020d6dac(char *self)
     Vector3_16f dir;
     Vector3 p1;
     Vector3 p2;
-    dBgPi res;
+    dBgPiCopy res;
     dBgCh_Lin rl;
     int *d;
     char *actor;
@@ -15562,7 +15362,7 @@ int func_ov002_020d6dac(char *self)
         u8 b = player->mUseAltBodyModel;
         int model;
         Matrix4x3 *m1 = player->mModels.mHeadModels[(b << 2) + 3]->data.transforms;
-        model = _ZNK6Player14GetBodyModelIDEjb(self, player->param1 & 0xff, 0);
+        model = ((Player *)self)->GetBodyModelID(player->param1 & 0xff, 0);
         MulVec3Mat4x3(&m1->m[9], &player->mModels.mBodyModels[model]->mat4x3, &p1);
         Vec3_MulScalarInPlace((int *)&p1, 0x8000);
     }
@@ -15570,7 +15370,7 @@ int func_ov002_020d6dac(char *self)
     {
         u8 b2 = player->mUseAltBodyModel;
         Matrix4x3 *m2i = &player->mModels.mHeadModels[(b2 << 2) + 3]->data.transforms[3];
-        int model2 = _ZNK6Player14GetBodyModelIDEjb(self, player->param1 & 0xff, 0);
+        int model2 = ((Player *)self)->GetBodyModelID(player->param1 & 0xff, 0);
         void *a0, *a1, *a2;
         a1 = player->mModels.mBodyModels[model2];
         a0 = &m2i->m[9];
@@ -15580,9 +15380,9 @@ int func_ov002_020d6dac(char *self)
         Vec3_MulScalarInPlace((int *)&p2, 0x8000);
     }
 
-    _ZN9dBgCh_Lin13SetObjAndLineERK7Vector3S2_P8dActor_c(&rl, &p1, &p2, self);
+    rl.SetObjAndLine(p1, p2, (dActor_c *)self);
 
-    if (_ZN9dBgCh_Lin10DetectClsnEv(&rl) == 0) {
+    if (rl.DetectClsn() == 0) {
         return 0;
     }
 
@@ -15598,16 +15398,16 @@ int func_ov002_020d6dac(char *self)
     res.i = (int)rl.owner;
     res.j = (int)rl.collider;
 
-    actor = (char *)dActor_c::FindWithID(_ZNK5dBgPi9GetClsnIDEv(&res));
+    actor = (char *)dActor_c::FindWithID(((dBgPi *)&res)->GetClsnID());
     if (actor != 0 && (t = (int)(((dActor_c *)actor)->actorID == 0xc2)) != 0) {
-        _ZN5dBgPiD1Ev(&res);
+        ((dBgPi *)&res)->dBgPi::~dBgPi();
         return 0;
     }
 
     ::Vector3 clsnPos = rl.GetClsnPos();
     player->mTongueHitDist = func_02053274((int *)&p1, (int *)&clsnPos);
     Vector3 normal;
-    _ZNK11SurfaceInfo12CopyNormalToER7Vector3(&rl.surface, &normal);
+    rl.surface.CopyNormalTo(normal);
     ang = cstd::atan2(normal.x, normal.z);
     idx = (u16)ang >> 4;
     dir.x = data_02082214[idx * 2];
@@ -15618,7 +15418,7 @@ int func_ov002_020d6dac(char *self)
     Particle::System::New(0, 0x13f, clsnPos.x, clsnPos.y, clsnPos.z, (const Vector3_16f *)(&dir),
                           0);
 
-    _ZN5dBgPiD1Ev(&res);
+    ((dBgPi *)&res)->dBgPi::~dBgPi();
     return 1;
 }
 }
@@ -15717,7 +15517,6 @@ void func_ov002_020d71ec(char* p, int arg1)
 {
     Player *player = (Player *)p;
     struct P2 { int w[2]; };
-    extern int _ZNK6Player14GetBodyModelIDEjb(void* self, u32 a, int b);
     extern struct P2 data_ov002_0210a34c;
     extern struct P2 data_ov002_0210a084;
     extern struct P2 data_ov002_0210eb88;
@@ -15728,8 +15527,7 @@ void func_ov002_020d71ec(char* p, int arg1)
 
     if (arg1 != 2) {
         dExtFrameCtrl_c &anim =
-            *player->mModels
-                 .mBodyModels[_ZNK6Player14GetBodyModelIDEjb(p, player->param1 & 0xff, 0)];
+            *player->mModels.mBodyModels[((Player *)p)->GetBodyModelID(player->param1 & 0xff, 0)];
         shifted = ((u32)anim.currFrame << 4) >> 0x10;
         *(struct P2*)&arr[0] = data_ov002_0210a34c;
         *(struct P2*)&arr[2] = data_ov002_0210a084;
@@ -15745,7 +15543,7 @@ void func_ov002_020d71ec(char* p, int arg1)
             val = data_ov002_020ff0f8[shifted];
             dExtFrameCtrl_c &body =
                 *player->mModels
-                     .mBodyModels[_ZNK6Player14GetBodyModelIDEjb(p, player->param1 & 0xff, 0)];
+                     .mBodyModels[((Player *)p)->GetBodyModelID(player->param1 & 0xff, 0)];
             val = ((u32)val << 0x10) >> 4;
             body.currFrame = val;
             ((dExtAnmModel_c *)player->mModels.mHeadModels[3])->currFrame = val;
@@ -15806,13 +15604,8 @@ end:
 extern "C" {
 void func_ov002_020d7430(Player& player)
 {
-    void _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(char* player, Vector3* pos,
-        unsigned int damage, int knockback, unsigned int arg4,
-        unsigned int arg5, unsigned int arg6);
-    int _ZN6Player7IsStateERNS_5StateE(char* player, void* state);
-    void _ZN6Player11ChangeStateERNS_5StateE(char* player, void* state);
-    extern char data_ov002_02110034;
-    extern char data_ov002_0211013c;
+    extern Player::State data_ov002_02110034;
+    extern Player::State data_ov002_0211013c;
     char* c = reinterpret_cast<char*>(&player);
     dActor_c* mouthActor = reinterpret_cast<dActor_c*>(player.mObjInMouth);
     if (mouthActor->OnYoshiTryEat() == 2) {
@@ -15820,14 +15613,14 @@ void func_ov002_020d7430(Player& player)
         pos.x = player.mPosX;
         pos.y = player.mPosY;
         pos.z = player.mPosZ;
-        _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(c, &pos, 1, 0xc000, 1, 0, 0);
+        ((Player *)c)->Hurt(pos, 1, 0xc000, 1, 0, 0);
         return;
     }
     player.func_ov002_020c9e18();
     mouthActor = reinterpret_cast<dActor_c*>(player.mObjInMouth);
     mouthActor->OnTurnIntoEgg(player);
-    if (_ZN6Player7IsStateERNS_5StateE(c, &data_ov002_02110034)) {
-        _ZN6Player11ChangeStateERNS_5StateE(c, &data_ov002_0211013c);
+    if (((Player *)c)->IsState(data_ov002_02110034)) {
+        ((Player *)c)->ChangeState(data_ov002_0211013c);
     }
     player.func_ov002_020d718c();
     Sound::PlayCharVoice(0, 0xfd, player.mCamSpacePos);
@@ -15852,15 +15645,7 @@ struct PVec { int x, y, z; PVec() {} ~PVec() {} };
 extern "C" {
 int Player::St_YoshiPower_Main()
 {
-    /* local extern: this body is the only caller that passes a NON-CONSTANT
-       startFrame. dExtAnmModel_c::SetAnim's real parameter is u16, and narrowing
-       `(currFrame << 4) >> 0x10` to it costs +0x10 here, so this body keeps the
-       scalar unsigned-int spelling the ROM call uses -- the per-body declaration
-       policy this file's header states. */
-    extern void _ZN14dExtAnmModel_c7SetAnimEP8BCA_Fileiit(void *, void *, int, int, unsigned int);
-    extern void _Z14ApproachLinearRiii(int*, int, int);
     extern void func_ov002_020d71ec(char*, int);
-    extern void _Z15ApproachLinear2Rsss(short*, short, short);
     extern void MulVec3Mat4x3(void*, void*, void*);
     extern void Vec3_MulScalarInPlace(void*, int);
     extern void func_ov002_020d8118(char*);
@@ -15889,7 +15674,7 @@ int Player::St_YoshiPower_Main()
     char* dp;
 
     if (mIsAirborne == 0) {
-        _Z14ApproachLinearRiii((int*)(&mHorzSpeed), 0, 0x1000);
+        ApproachLinear(*((int *)(&mHorzSpeed)), 0, 0x1000);
         this->func_ov002_020c2f64();
     }
 
@@ -15914,8 +15699,8 @@ int Player::St_YoshiPower_Main()
     }
 
     case 1: {
-        _Z15ApproachLinear2Rsss(&mHeadRot[1], 0, 0x200);
-        _Z15ApproachLinear2Rsss(&mHeadRot[2], 0, 0x200);
+        ApproachLinear2(mHeadRot[1], 0, 0x200);
+        ApproachLinear2(mHeadRot[2], 0, 0x200);
         int flag = 1;
         mHeadRotMode = flag;
         if (*(void**)(&mObjInMouth) != 0) {
@@ -16003,8 +15788,8 @@ int Player::St_YoshiPower_Main()
     }
 
     case 2: {
-        _Z15ApproachLinear2Rsss(&mHeadRot[1], 0, 0x200);
-        _Z15ApproachLinear2Rsss(&mHeadRot[2], 0, 0x200);
+        ApproachLinear2(mHeadRot[1], 0, 0x200);
+        ApproachLinear2(mHeadRot[2], 0, 0x200);
         mHeadRotMode = 1;
         if (mStateTimer != 0) {
             return 1;
@@ -16047,9 +15832,11 @@ int Player::St_YoshiPower_Main()
                 int id6 = this->GetBodyModelID(this->param1 & 0xff, z);
                 int *a50c = (int *)((
                     long long)(int)((char *)&(dExtFrameCtrl_c &)*mModels.mBodyModels[id6]));
-                _ZN14dExtAnmModel_c7SetAnimEP8BCA_Fileiit(
-                    mModels.mHeadModels[3], (void *)data_ov002_0210e3d8[1], 0x40000000, 0x1000,
-                    (unsigned int)(((dExtFrameCtrl_c *)a50c)->currFrame << 4) >> 0x10);
+                /* The u16 startFrame takes the whole frame, currFrame >> 12;
+                   its narrowing folds into the ROM's lsl #4 / lsr #16. */
+                ((dExtAnmModel_c *)mModels.mHeadModels[3])
+                    ->SetAnim((BCA_File *)data_ov002_0210e3d8[1], 0x40000000, 0x1000,
+                              ((dExtFrameCtrl_c *)a50c)->currFrame >> 12);
             }
         }
         int id7 = this->GetBodyModelID(this->param1 & 0xff, 0);
@@ -16104,9 +15891,9 @@ int Player::St_YoshiPower_Main()
                     int id9 = this->GetBodyModelID(this->param1 & 0xff, z2);
                     int *a50e = (int *)((
                         long long)(int)((char *)&(dExtFrameCtrl_c &)*mModels.mBodyModels[id9]));
-                    _ZN14dExtAnmModel_c7SetAnimEP8BCA_Fileiit(
-                        mModels.mHeadModels[3], (void *)data_ov002_0210e3d8[1], 0x40000000, 0x1000,
-                        (unsigned int)(((dExtFrameCtrl_c *)a50e)->currFrame << 4) >> 0x10);
+                    ((dExtAnmModel_c *)mModels.mHeadModels[3])
+                        ->SetAnim((BCA_File *)data_ov002_0210e3d8[1], 0x40000000, 0x1000,
+                                  ((dExtFrameCtrl_c *)a50e)->currFrame >> 12);
                 }
                 return 1;
             }
@@ -16228,13 +16015,11 @@ void func_ov002_020d80d0(char* c){
 extern "C" {
 void func_ov002_020d8118(char* c)
 {
-    extern void _ZN6Player19func_ov002_020bda48Ev(char* c);
-    extern void _ZN6Player19func_ov002_020c43c4Ej(char* c, int v);
     Player *player = (Player *)c;
-    _ZN6Player19func_ov002_020bda48Ev(c);
+    ((Player *)c)->func_ov002_020bda48();
     player->mFireTimer = 0x258;
     player->StartPowerupMusic(0x32);
-    _ZN6Player19func_ov002_020c43c4Ej(c, 5);
+    ((Player *)c)->func_ov002_020c43c4(5);
     player->mIsFire = 1;
 }
 }
@@ -16244,7 +16029,6 @@ extern "C" {
 void func_ov002_020d8158(char* c)
 {
     extern void func_ov002_020d8118(char* c);
-    extern void _ZN6Player19func_ov002_020bdc18Ev(char* c);
     extern Player::State data_ov002_02110034;
     extern Player::State data_ov002_0211004c;
     Player *p = (Player *)c;
@@ -16262,7 +16046,7 @@ void func_ov002_020d8158(char* c)
         return;
     func_ov002_020d8118(c);
     p->mFireBreaths = 1;
-    _ZN6Player19func_ov002_020bdc18Ev(c);
+    ((Player *)c)->func_ov002_020bdc18();
     *(u16 *)(int)(&p->mStateFlags) &= ~0x1000;
     p->mUseAltBodyModel = 1;
 }
@@ -16352,7 +16136,6 @@ int func_ov002_020d8360(void *self, void *other, unsigned int flags)
     extern int func_ov002_020d82f0(void *c);
     extern int func_ov002_020d853c(char *c, char *o);
     extern int func_ov002_020d8944(void *self, char *enemy, char *v1);
-    extern int _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void *self, Vector3 const *v, unsigned int b, int c, unsigned int d, unsigned int e, unsigned int f);
     extern void Vec3_RotateYAndTranslate(int *out, int *in, short angle, int *src);
     extern void func_ov002_020d8d10(void *self, Vector3 *pos);
     extern void func_020105cc(void *thiz, unsigned int flags);
@@ -16399,8 +16182,7 @@ int func_ov002_020d8360(void *self, void *other, unsigned int flags)
             v.y = p[1];
             v.z = p[2];
             {
-                int hr = _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(
-                    c, &v, 1, 0, 0, (((dActor_c *)o)->param1 + 1) & 0xff, 1);
+                int hr = ((Player *)c)->Hurt(v, 1, 0, 0, (((dActor_c *)o)->param1 + 1) & 0xff, 1);
                 if (!hr) return hr;
             }
             tr.x = 0;
@@ -16441,7 +16223,6 @@ int func_ov002_020d8360(void *self, void *other, unsigned int flags)
 // @symbol func_ov002_020d853c
 extern "C" {
 int func_ov002_020d853c(char *c, char *o) {
-    extern unsigned _ZNK6Player14GetBodyModelIDEjb(void *self, unsigned a, int b);
     extern short Vec3_HorzAngle(void *v0, void *v1);
     extern int AngleDiff(int a, int b);
     extern Player::State data_ov002_02110574;
@@ -16449,7 +16230,7 @@ int func_ov002_020d853c(char *c, char *o) {
     Player *player = (Player *)c;
     if (((Player *)c)->IsState(data_ov002_02110574)) {
         int j = (player->mPunchKickStep << 1) & 0xff;
-        unsigned idx = _ZNK6Player14GetBodyModelIDEjb(c, player->param1 & 0xff, 0);
+        unsigned idx = ((Player *)c)->GetBodyModelID(player->param1 & 0xff, 0);
         dExtAnmModel_c *mp = player->mModels.mBodyModels[idx];
         int v = ((dExtFrameCtrl_c *)((long long)(int)&(dExtFrameCtrl_c &)*mp))->currFrame;
         int k = (unsigned short)(v >> 12);
@@ -16466,15 +16247,13 @@ int func_ov002_020d853c(char *c, char *o) {
 // @symbol func_ov002_020d85fc
 extern "C" {
 extern "C" int func_ov002_020d85fc(char* self, char* arg, int flags){
-    extern int _ZN6Player7IsStateERNS_5StateE(void* self, void* state);
     extern int func_ov002_020db5f4(void* self, void* arg);
-    extern char data_ov002_0211034c;
-    extern char data_ov002_02110094;
+    extern Player::State data_ov002_0211034c;
+    extern Player::State data_ov002_02110094;
     Player *player = (Player *)self;
     if ((flags & 0x1000) && ((Player *)arg)->param1 == 2 &&
-        (_ZN6Player7IsStateERNS_5StateE(self, &data_ov002_0211034c) ||
-         (_ZN6Player7IsStateERNS_5StateE(self, &data_ov002_02110094) &&
-          player->mStateTimer != 0)) &&
+        (((Player *)self)->IsState(data_ov002_0211034c) ||
+         (((Player *)self)->IsState(data_ov002_02110094) && player->mStateTimer != 0)) &&
         ((Player *)arg)->TryGrab(*(dActor_c *)self)) {
         func_ov002_020db5f4(self, arg);
         return 1;
@@ -16490,7 +16269,6 @@ extern "C" int func_ov002_020d869c(char *c)
 {
     extern int func_ov002_020d85fc(char *self, char *arg, int flags);
     extern int func_ov002_020d8360(void *self, void *other, u32 flags);
-    extern int _ZN6Player7IsInAirEv(char *p);
     extern int func_ov002_020d9298(char *c);
     extern void func_ov002_020db8bc(u8 *p, u8 val);
     extern void PlayerNewSimpleHold11(u32 id, Fix12i x, Fix12i y, Fix12i z);
@@ -16526,7 +16304,7 @@ extern "C" int func_ov002_020d869c(char *c)
         if (pl->mIsNoControl != 0)
             return 0;
         if (pl->JumpedOnByPlayer(pl->mdCcAcPos_c, *(Player *)r6) != 0) {
-            if (_ZN6Player7IsInAirEv(r6) == 0)
+            if (((Player *)r6)->IsInAir() == 0)
                 return 0;
             if (func_ov002_020d9298(r6) != 0) {
                 func_ov002_020db8bc((u8 *)c, 0);
@@ -16651,15 +16429,7 @@ extern "C" {
 void func_ov002_020d8a50(char* self, int which)
 {
     Player *player = (Player *)self;
-    struct dBgCh_Lin { int head[5]; int surf; int rest[25]; };
-    extern int _ZNK6Player14GetBodyModelIDEjb(char* p, unsigned int j, int b);
     extern void func_ov002_020dbf4c(char* c);
-    extern void *_ZN9dBgCh_LinC1Ev(struct dBgCh_Lin* r);
-    extern void _ZN9dBgCh_Lin13SetObjAndLineERK7Vector3S2_P8dActor_c(
-        struct dBgCh_Lin * r, Vector3 * a, Vector3 * b, void *actor);
-    extern int _ZN9dBgCh_Lin10DetectClsnEv(struct dBgCh_Lin* r);
-    extern void _ZNK11SurfaceInfo12CopyNormalToER7Vector3(void *s, Vector3 *n);
-    extern void _ZN9dBgCh_LinD1Ev(struct dBgCh_Lin* r);
     extern s16 data_02082214[];
     extern u16 data_ov002_0210a5cc[];
     extern void func_ov002_020d8854(char*);
@@ -16675,8 +16445,7 @@ void func_ov002_020d8a50(char* self, int which)
     dExtFrameCtrl_c *anim;
     int frame;
 
-    model =
-        player->mModels.mBodyModels[_ZNK6Player14GetBodyModelIDEjb(self, player->param1 & 0xff, 0)];
+    model = player->mModels.mBodyModels[((Player *)self)->GetBodyModelID(player->param1 & 0xff, 0)];
     /* Launder kept: reading model->currFrame directly moves bytes. */
     anim = reinterpret_cast<dExtFrameCtrl_c *>(
         (long long)(int)&static_cast<dExtFrameCtrl_c &>(*model));
@@ -16706,8 +16475,7 @@ void func_ov002_020d8a50(char* self, int which)
     if (flag == 1)
         player->mAttackClsn.Update();
 
-    model =
-        player->mModels.mBodyModels[_ZNK6Player14GetBodyModelIDEjb(self, player->param1 & 0xff, 0)];
+    model = player->mModels.mBodyModels[((Player *)self)->GetBodyModelID(player->param1 & 0xff, 0)];
     if (!model->WillHitFrame(data_ov002_0210a5cc[i2]))
         return;
 
@@ -16733,13 +16501,12 @@ void func_ov002_020d8a50(char* self, int which)
 
     {
         u16 ang = (u16)player->mAngleY;
-        struct dBgCh_Lin ray;
+        dBgCh_Lin ray;
         Vector3 v1;
         Vector3 v2;
         Vector3 normal;
         int idx;
 
-        _ZN9dBgCh_LinC1Ev(&ray);
         idx = ang >> 4;
         v1.x = player->mPosX;
         v1.y = player->mPosY;
@@ -16750,17 +16517,16 @@ void func_ov002_020d8a50(char* self, int which)
         v2.z = v1.z;
         v2.x += data_02082214[idx * 2] * 0x64;
         v2.z += data_02082214[idx * 2 + 1] * 0x64;
-        _ZN9dBgCh_Lin13SetObjAndLineERK7Vector3S2_P8dActor_c(&ray, &v1, &v2, self);
-        if (_ZN9dBgCh_Lin10DetectClsnEv(&ray)) {
-            _ZNK11SurfaceInfo12CopyNormalToER7Vector3(&ray.surf, &normal);
+        ray.SetObjAndLine(v1, v2, (dActor_c *)self);
+        if (ray.DetectClsn()) {
+            ray.surface.CopyNormalTo(normal);
             if (normal.y == 0) {
                 player->mHorzSpeed = 0xa000;
                 player->mPrevAngleY = player->mAngleY + 0x8000;
-                ::Vector3 clsnPos = ((::dBgCh_Lin*)&ray)->GetClsnPos();
+                ::Vector3 clsnPos = ray.GetClsnPos();
                 func_ov002_020d8d10(self, &clsnPos);
             }
         }
-        _ZN9dBgCh_LinD1Ev(&ray);
     }
 }
 }
@@ -16795,29 +16561,27 @@ void func_ov002_020d8d10(struct Self *self, Vector3 *pos) {
 }
 }
 
-// @symbol _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj
+// @symbol _ZN6Player4HurtERK7Vector3jihhh
 /* recovered: named members + shared header, declarations from a shared header */
 /* recovered: named members + shared header */
 extern "C" {
-extern "C" int _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(struct Player *self, void* a, u32 b, int dmg, u8 arg4, u8 arg5, u8 arg6) {
-    extern int _ZN6Player8HasNoCapEv(char* c);
+int Player::Hurt(const Vector3 &a, u32 b, Fix12i dmg, u8 arg4, u8 arg5, u8 arg6) {
     extern void func_ov002_020d5cec(char* c);
     extern s16 Vec3_HorzAngle(const void* v0, const void* v1);
     extern void PlayerNewSimpleHold13(u32 id, int a, int b, int cc);
-    extern void _ZN6Player11ChangeStateERNS_5StateE(char* c, void* st);
     extern int func_ov002_020d91e0(char* thiz, int damage, int doPre);
-    extern int data_ov002_02110094;
-    extern int data_ov002_0211010c;
+    extern Player::State data_ov002_02110094;
+    extern Player::State data_ov002_0211010c;
     extern int AngleDiff(int, int);
     extern u16 data_ov002_020ff128[];
-    extern int data_ov002_021100ac;
+    extern Player::State data_ov002_021100ac;
     extern int func_ov002_020d82f0(void*);
     extern void func_ov002_020d91b8(char*, int);
     s16 ang;
     void* p360;
     int hasCap;
 
-    if (func_ov002_020d82f0(((char*)self)) == 0) {
+    if (func_ov002_020d82f0(((char *)this)) == 0) {
         return 0;
     }
 
@@ -16827,101 +16591,105 @@ extern "C" int _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(struct Player *self, void
         }
     }
 
-    hasCap = _ZN6Player8HasNoCapEv(((char*)self));
+    hasCap = this->HasNoCap();
     if (hasCap != 0) goto L88;
-    if (self->mCharacter == self->param1) goto L88;
-    if (self->mIsMetal != 0) goto L88;
+    if (this->mCharacter == this->param1)
+        goto L88;
+    if (this->mIsMetal != 0)
+        goto L88;
     if (b == 0) goto L88;
 
-    Sound::PlayCharVoice(self->mCharacter, 0x22, self->mCamSpacePos);
+    Sound::PlayCharVoice(this->mCharacter, 0x22, this->mCamSpacePos);
     goto L9c;
 
 L88:
     {
         int t = 0;
         if ((int)b > 1) t = 1;
-        func_ov002_020d91b8(((char*)self), t);
+        func_ov002_020d91b8(((char *)this), t);
     }
 
 L9c:
-    if (self->mIsMetal != 0) {
+    if (this->mIsMetal != 0) {
         b = 0;
     }
-    p360 = *(void**)((char*)&self->mObjInMouth);
+    p360 = *(void **)((char *)&this->mObjInMouth);
     if (p360 != 0) {
         int match = (((dActor_c *)p360)->actorID == 0xbf);
         if (match) {
             func_ov002_020d5cec((char*)p360);
-            *(u16*)((char*)&self->mStateFlags) &= ~2;
+            *(u16 *)((char *)&this->mStateFlags) &= ~2;
         }
-        self->mUseAltBodyModel = 0;
+        this->mUseAltBodyModel = 0;
         {
-            int *p = (int *)&((dActor_c *)self->mObjInMouth)->mFlags;
+            int *p = (int *)&((dActor_c *)this->mObjInMouth)->mFlags;
             *p |= 0x80000;
         }
         {
-            int *p = (int *)&((dActor_c *)self->mObjInMouth)->mFlags;
+            int *p = (int *)&((dActor_c *)this->mObjInMouth)->mFlags;
             *p &= ~0x40000;
         }
         {
-            int *p = (int *)&((dActor_c *)self->mObjInMouth)->mFlags;
+            int *p = (int *)&((dActor_c *)this->mObjInMouth)->mFlags;
             *p &= ~0x20000;
         }
-        *(void**)((char*)&self->mObjInMouth) = 0;
+        *(void **)((char *)&this->mObjInMouth) = 0;
     }
 
-    self->mStateStep = 0;
+    this->mStateStep = 0;
 
     if (b != 0) {
         int neq = 0;
-        if (self->mCharacter != self->param1) neq = 1;
-        if (neq) self->mStateStep = 2;
+        if (this->mCharacter != this->param1)
+            neq = 1;
+        if (neq)
+            this->mStateStep = 2;
     }
     if ((int)b > 1) {
-        self->mStateStep = 2;
+        this->mStateStep = 2;
     }
-    if (self->mIsAirborne != 0) {
-        self->mStateStep = 4;
+    if (this->mIsAirborne != 0) {
+        this->mStateStep = 4;
     }
 
-    ang = Vec3_HorzAngle(&self->mPos, a);
-    if (AngleDiff(self->mAngleY, ang) > 0x4000) {
-        *(u8*)((char*)&self->mStateStep) += 1;
+    ang = Vec3_HorzAngle(&this->mPos, &a);
+    if (AngleDiff(this->mAngleY, ang) > 0x4000) {
+        *(u8 *)((char *)&this->mStateStep) += 1;
     }
-    self->mPrevAngleY = ang + 0x8000;
-    if (self->mStateStep & 1) {
-        self->mAngleY = self->mPrevAngleY;
+    this->mPrevAngleY = ang + 0x8000;
+    if (this->mStateStep & 1) {
+        this->mAngleY = this->mPrevAngleY;
     } else {
-        self->mAngleY = ang;
+        this->mAngleY = ang;
     }
 
     if (arg4 == 1) {
-        u16 tv = data_ov002_020ff128[self->param1];
+        u16 tv = data_ov002_020ff128[this->param1];
         dmg = (dmg * tv) / 100;
     }
-    self->mHorzSpeed = dmg;
+    this->mHorzSpeed = dmg;
 
     if (arg5 != 0) {
         u8 t = arg5 - 1;
-        *(u8*)((char*)&self->mStateStep) |= 0x10;
-        self->mStateWork = t;
+        *(u8 *)((char *)&this->mStateStep) |= 0x10;
+        this->mStateWork = t;
     }
 
-    self->mAttackClsn.Unlink();
-    self->mHurtDamage = b;
+    this->mAttackClsn.Unlink();
+    this->mHurtDamage = b;
 
-    if (self->mIsUnderwater == 0) {
-        if (self->mHurtDamage != 0) {
+    if (this->mIsUnderwater == 0) {
+        if (this->mHurtDamage != 0) {
             if (arg6 != 0) {
                 volatile struct { int x, y, z; } v;
-                int y = self->mPosY;
-                int z = self->mPosZ;
-                int x = self->mPosX;
+                int y = this->mPosY;
+                int z = this->mPosZ;
+                int x = this->mPosX;
                 y = y + 0x50000;
                 v.x = x;
                 v.y = y;
                 v.z = z;
-                if (*(volatile int*)((char*)&self->mHurtDamage) == 1) {
+                if (*(volatile int *)((char *)&this->mHurtDamage) == 1) {
                     Particle::System::NewSimple(0xcb, x, y, z);
                     Particle::System::NewSimple(0xcc, v.x, v.y, v.z);
                 } else {
@@ -16931,14 +16699,14 @@ L9c:
             }
         }
 
-        _ZN6Player11ChangeStateERNS_5StateE(((char*)self), &data_ov002_02110094);
-        if (func_ov002_020d91e0(((char*)self), b << 8, 1) != 0) {
-            *(u8*)((char*)&self->mStateStep) &= 1;
-            _ZN6Player11ChangeStateERNS_5StateE(((char*)self), &data_ov002_0211010c);
+        this->ChangeState(data_ov002_02110094);
+        if (func_ov002_020d91e0(((char *)this), b << 8, 1) != 0) {
+            *(u8 *)((char *)&this->mStateStep) &= 1;
+            this->ChangeState(data_ov002_0211010c);
         }
     } else {
-        _ZN6Player11ChangeStateERNS_5StateE(((char*)self), &data_ov002_021100ac);
-        func_ov002_020d91e0(((char*)self), b << 8, 1);
+        this->ChangeState(data_ov002_021100ac);
+        func_ov002_020d91e0(((char *)this), b << 8, 1);
     }
 
     return 1;
@@ -16959,13 +16727,12 @@ extern "C" {
 int func_ov002_020d91e0(char* thiz, int damage, int doPre)
 {
     extern void func_ov002_020da9d4(void* p);
-    extern int _ZN8SaveData16HasPlayerLostCapEv(void);
     extern u8 data_0209f2d8;
     extern char data_0209ee90[];
     Player *player = (Player *)thiz;
     if (doPre != 0) func_ov002_020da9d4(thiz);
 
-    if (_ZN8SaveData16HasPlayerLostCapEv()) {
+    if (SaveData::HasPlayerLostCap()) {
         if (player->mHasWings == 0)
             damage = damage + (damage >> 1);
     }
@@ -17008,22 +16775,21 @@ int func_ov002_020d9298(char *c) {
 }
 }
 
-// @symbol _ZN6Player6BounceE5Fix12IiE
+// @symbol _ZN6Player6BounceEi
 /* recovered: named members + shared header, declarations from a shared header */
 /* recovered: named members + shared header */
 extern "C" {
-void _ZN6Player6BounceE5Fix12IiE(struct Player *self, int f) {
-    extern int _ZN6Player7IsStateERNS_5StateE(void*,void*);
-    extern int _ZN6Player11ChangeStateERNS_5StateE(void*,void*);
-    extern int data_ov002_021105a4[];
-    extern int data_ov002_0211019c[];
-  if(_ZN6Player7IsStateERNS_5StateE(((char*)self), data_ov002_021105a4)) return;
-  if (((Player *)self)->GetHealth() == 0)
-      return;
-  _ZN6Player11ChangeStateERNS_5StateE(((char*)self), data_ov002_0211019c);
-  self->mVertSpeed = f;
-  Sound::PlayCharVoice(self->mCharacter, 0x14, self->mCamSpacePos);
-  Sound::PlayBank0(0xb6, self->mCamSpacePos);
+void Player::Bounce(Fix12i f) {
+    extern Player::State data_ov002_021105a4;
+    extern Player::State data_ov002_0211019c;
+    if (this->IsState(data_ov002_021105a4))
+        return;
+    if (this->GetHealth() == 0)
+        return;
+    this->ChangeState(data_ov002_0211019c);
+    this->mVertSpeed = f;
+    Sound::PlayCharVoice(this->mCharacter, 0x14, this->mCamSpacePos);
+    Sound::PlayBank0(0xb6, this->mCamSpacePos);
 }
 }
 
@@ -17034,7 +16800,6 @@ int Player::func_ov002_020d93ac()
 {
     short GetAngleToCamera(int i);
     extern u8 data_0209f2d8;
-    extern void _ZN6Player18SetNewHatCharacterEjjb(char *self, u32 a, u32 b, bool c);
     char *self = (char*)this;
     Vector3 pos;
     char *spawned;
@@ -17049,7 +16814,7 @@ int Player::func_ov002_020d93ac()
     if (this->mCharacter == chr) goto fail;
     if (chr == 3) goto fail;
 
-    _ZN6Player18SetNewHatCharacterEjjb(self, this->mCharacter, 0, false);
+    this->SetNewHatCharacter(this->mCharacter, 0, false);
     this->mHasNoCap = 1;
 
     yv = this->mPosY;
@@ -17085,20 +16850,16 @@ fail:
 
 // @symbol _ZN6Player19func_ov002_020d94ccEv
 /* recovered: shared common types */
-/* local extern: daStar_c::func_ov002_020e7218. This TU does not include daStar_c.h. */
 extern "C" {
 int Player::func_ov002_020d94cc()
 {
     short GetAngleToCamera(int i);
     void GiveVsStars(int idx, int delta);
-    void _ZN8daStar_c19func_ov002_020e7218EPci(char *a, char *b, int gate);
     extern u8 data_0209f2d8;
     extern s8 data_0209f310;
-    /* local extern: dActor_c.h declares SpawnSoundObj void; its result is tested here. */
-    extern char *_ZN8dActor_c13SpawnSoundObjEj(char *self, u32 a);
     char *self = (char*)this;
     Vector3 pos;
-    char *sndobj;
+    dActor_c *sndobj;
     char *spawned;
     int ang, xx, zz;
     int xv, yv, sum, zv;
@@ -17106,7 +16867,7 @@ int Player::func_ov002_020d94cc()
 
     if ((&data_0209f310)[this->mPlayerNo] <= 0) goto fail;
 
-    sndobj = _ZN8dActor_c13SpawnSoundObjEj(self, 3);
+    sndobj = SpawnSoundObj(3);
     b = (data_0209f2d8 == 1);
     if (b) {
         if (sndobj != 0)
@@ -17131,7 +16892,7 @@ int Player::func_ov002_020d94cc()
 
     if (spawned == 0) goto fail;
 
-    _ZN8daStar_c19func_ov002_020e7218EPci(spawned, self, 0);
+    ((daStar_c *)spawned)->func_ov002_020e7218(self, 0);
 
     b = (data_0209f2d8 == 1);
     if (!b) {
@@ -17319,10 +17080,9 @@ void func_ov002_020d99a4(unsigned char *self)
 // @symbol func_ov002_020d9a4c
 extern "C" {
 void func_ov002_020d9a4c(char *c) {
-    extern int _ZNK6Player14GetBodyModelIDEjb(void *self, unsigned int a, int b);
     extern u8 data_ov002_02109dc4[];
     Player *player = (Player *)c;
-    int idx = _ZNK6Player14GetBodyModelIDEjb(c, player->param1 & 0xff, 0);
+    int idx = ((Player *)c)->GetBodyModelID(player->param1 & 0xff, 0);
     dExtAnmModel_c *anim = player->mModels.mBodyModels[idx];
     if (anim->WillHitFrame(data_ov002_02109dc4[player->mStateStep & 7]) != 0)
         player->mStateWork |= 1;
@@ -17333,7 +17093,6 @@ void func_ov002_020d9a4c(char *c) {
 extern "C" {
 void func_ov002_020d9aac(char* c)
 {
-    extern void _Z14ApproachLinearRiii(int* v, int target, int step);
     Player *p = (Player *)c;
     int v;
 
@@ -17355,9 +17114,9 @@ void func_ov002_020d9aac(char* c)
     }
 
     if ((p->mStateStep & 7) < 2) {
-        _Z14ApproachLinearRiii(&p->mHorzSpeed, 0, 0x800);
+        ApproachLinear(p->mHorzSpeed, 0, 0x800);
     } else {
-        _Z14ApproachLinearRiii(&p->mHorzSpeed, 0, 0x1800);
+        ApproachLinear(p->mHorzSpeed, 0, 0x1800);
     }
 }
 }
@@ -17571,7 +17330,6 @@ int Player::St_SwingPlayer_Main()
     extern void func_ov002_020d9c70(char* c);
     extern int func_ov002_020da95c(char* c);
     extern int func_ov002_020da9d4(char* c);
-    extern int _Z15ApproachLinear2Rsss(s16* ref, s16 target, s16 step);
     extern u32 PlayerNewHold15(u32 handle, u32 kind, Fix12i x, Fix12i y, Fix12i z, const void *dir,
                                void *callback);
     extern void PlayerPlayLongHold_swing(u32 h, u32 a, u32 b, void *v, u32 d);
@@ -17619,10 +17377,10 @@ int Player::St_SwingPlayer_Main()
                 else if (this->mAngleYSpeed <= -0x1800)
                     this->mAngleYSpeed = -0x1800;
             } else {
-                _Z15ApproachLinear2Rsss(&this->mAngleYSpeed, 0, 0x20);
+                ApproachLinear2(this->mAngleYSpeed, 0, 0x20);
             }
         } else {
-            _Z15ApproachLinear2Rsss(&this->mAngleYSpeed, 0, 0x80);
+            ApproachLinear2(this->mAngleYSpeed, 0, 0x80);
         }
         {
             s16 a2 = this->mAngleYSpeed;
@@ -17708,7 +17466,6 @@ int Player::St_GrabBowserTail_Cleanup()
 extern "C" {
 int Player::St_GrabBowserTail_Main()
 {
-    extern void _Z15ApproachLinear2Rsss(s16* ref, s16 target, s16 step);
     extern void func_02012694(u32 id, void* v);
     extern void Player_AdvanceAnims(char* c);
     extern u16 data_0209f49e[];
@@ -17769,7 +17526,7 @@ int Player::St_GrabBowserTail_Main()
             }
         } else {
             mStateArg = 0;
-            _Z15ApproachLinear2Rsss(&this->mAngleYSpeed, 0, 0x40);
+            ApproachLinear2(this->mAngleYSpeed, 0, 0x40);
         }
         {
             s16 before = mAngleY;
@@ -18016,14 +17773,11 @@ bd:
 extern "C" {
 int func_ov002_020dacb4(char *p, char *actor)
 {
-    extern int _ZN6Player7IsStateERNS_5StateE(void *p, void *st);
-    extern int _ZN6Player11ChangeStateERNS_5StateE(void *p, void *st);
-    extern int _ZNK6Player14GetBodyModelIDEjb(void *p, unsigned int a, unsigned char b);
     extern int func_ov002_020cd28c(void *c);
-    extern char data_ov002_021105ec;
-    extern char data_ov002_021105bc;
-    extern char data_ov002_02110394;
-    extern char data_ov002_02110364;
+    extern Player::State data_ov002_021105ec;
+    extern Player::State data_ov002_021105bc;
+    extern Player::State data_ov002_02110394;
+    extern Player::State data_ov002_02110364;
     extern SharedFilePtr *data_ov002_020ff480[];
     int t;
 
@@ -18041,10 +17795,10 @@ int func_ov002_020dacb4(char *p, char *actor)
             t = 1;
         if (t != 0) {
             ((Player *)p)->mStateStep = 0;
-            _ZN6Player11ChangeStateERNS_5StateE(p, &data_ov002_021105ec);
+            ((Player *)p)->ChangeState(data_ov002_021105ec);
             return 1;
         }
-        if (!_ZN6Player7IsStateERNS_5StateE(p, &data_ov002_021105bc)) {
+        if (!((Player *)p)->IsState(data_ov002_021105bc)) {
             unsigned short fc;
             int u;
             ((Player *)p)->mStateStep = 0;
@@ -18056,10 +17810,10 @@ int func_ov002_020dacb4(char *p, char *actor)
             u = u == 0xbe;
             if (u == false) goto chg364;
         chg394:
-            _ZN6Player11ChangeStateERNS_5StateE(p, &data_ov002_02110394);
+            ((Player *)p)->ChangeState(data_ov002_02110394);
             goto after;
         chg364:
-            _ZN6Player11ChangeStateERNS_5StateE(p, &data_ov002_02110364);
+            ((Player *)p)->ChangeState(data_ov002_02110364);
         after: ;
         }
     }
@@ -18079,7 +17833,7 @@ int func_ov002_020dacb4(char *p, char *actor)
         }
         {
             int player_var = ((Player *)p)->param1;
-            int model_idx = _ZNK6Player14GetBodyModelIDEjb(p, player_var & 0xff, 0);
+            int model_idx = ((Player *)p)->GetBodyModelID(player_var & 0xff, 0);
             dExtAnm2Model_c *model = ((Player *)p)->mModels.mBodyModels[model_idx];
             int j = (int)data_ov002_020ff480[offset + player_var]->filePtr;
             model->Func_020162C4(j, 0, 0x1000, 0);
@@ -18095,12 +17849,11 @@ int func_ov002_020dacb4(char *p, char *actor)
 // Matched byte-for-byte with mwccarm 1.2/sp2p3 (ov002).
 extern "C" {
 int Player::St_Throw_Main() {
-    extern int _Z14ApproachLinearRiii(int &, int, int);
     extern void func_ov002_020da9d4(void *);
     extern void Player_AdvanceAnims(void *);
     extern Player::State data_ov002_0211013c;
     if (mIsAirborne == 0) {
-        _Z14ApproachLinearRiii(mHorzSpeed, 0, 0x1000);
+        ApproachLinear(mHorzSpeed, 0, 0x1000);
     }
     if (*(char **)((char *)&mHeldObj)) {
         int r4 = 5;
@@ -18193,7 +17946,6 @@ extern "C" {
 int Player::St_Thrown_Main()
 {
     extern int atan2_hold_Player_7(Fix12i a, int b);
-    extern void _Z15ApproachLinear2Rsss(s16* v, s16 target, s16 step);
     extern void Player_AdvanceAnims(char* c);
     extern Player::State data_ov002_0211031c;
     extern Player::State data_ov002_0211010c;
@@ -18240,7 +17992,7 @@ int Player::St_Thrown_Main()
             if (b > 0x3000) b = 0x3000;
             mAngleX = b;
         } else {
-            _Z15ApproachLinear2Rsss((s16*)((char*)&mAngleX), 0, 0x400);
+            ApproachLinear2(*((s16 *)((char *)&mAngleX)), 0, 0x400);
         }
         break;
     case 1:
@@ -18288,7 +18040,7 @@ int Player::St_Thrown_Init()
  *
  * Clears bit 1 of the body-collision flags, then if something is holding the
  * player at +0x35c and its actorID is 0xbf, tells it to drop and clears the
- * slot. Note the callee is _ZN6Player9DropActorEv -- Player::DropActor() --
+ * slot. Note the callee is Player::DropActor() --
  * invoked with THAT actor as its this, not the player's: whatever occupies
  * 0x35c is itself a Player. Kept as an extern "C" call rather than a method
  * call so the source does not assert a type this function cannot evidence.
@@ -18299,14 +18051,13 @@ int Player::St_Thrown_Init()
 extern "C" {
 int Player::St_Grabbed_Cleanup()
 {
-    extern void _ZN6Player9DropActorEv(void* a);
     void* a;
     *(u32*)&mdCcAcPos_c.flags &= ~2;
     a = (void*)mGrabbedByActor;
     if (a) {
         int isBob = ((dActor_c *)a)->actorID == 0xbf;
         if (isBob) {
-            _ZN6Player9DropActorEv(a);
+            ((Player *)a)->DropActor();
             mGrabbedByActor = 0;
         }
     }
@@ -18321,7 +18072,6 @@ extern "C" {
 int Player::St_Grabbed_Main()
 {
     extern void Player_AdvanceAnims(char* self);
-    extern void _ZN6Player9DropActorEv(char* a);
     extern void func_ov002_020db54c(char*, int, int, int);
     char* grab;
     u8* p;
@@ -18341,7 +18091,7 @@ int Player::St_Grabbed_Main()
                 *p = (u8)(*p + ret);
                 mStateTimer = 6;
                 if ((s16)(mStateStep - ret) < 0) {
-                    _ZN6Player9DropActorEv(*(char**)((char*)&mGrabbedByActor));
+                    ((Player *)*(char **)((char *)&mGrabbedByActor))->DropActor();
                     func_ov002_020db54c(((char*)this), 0x10000, 0x10000, mAngleY);
                     return 1;
                 }
@@ -18444,8 +18194,7 @@ extern "C" {
 int func_ov002_020db674(char* c, int a1, int a2, int a3)
 {
     extern int func_ov002_020d82f0(void* c);
-    extern void _ZN6Player11ChangeStateERNS_5StateE(char* c, void* st);
-    extern int data_ov002_02110094;
+    extern Player::State data_ov002_02110094;
     Player *p = (Player *)c;
     if (func_ov002_020d82f0(c) == 0) return 0;
     Sound::PlayCharVoice(p->mCharacter, 0x1d, p->mCamSpacePos);
@@ -18457,7 +18206,7 @@ int func_ov002_020db674(char* c, int a1, int a2, int a3)
     c[0x6e3] = 4;
     c[0x6de] = 1;
     c[0x6df] = 0;
-    _ZN6Player11ChangeStateERNS_5StateE(c, &data_ov002_02110094);
+    ((Player *)c)->ChangeState(data_ov002_02110094);
     return 1;
 }
 }
@@ -18465,7 +18214,6 @@ int func_ov002_020db674(char* c, int a1, int a2, int a3)
 // @symbol func_ov002_020db704
 extern "C" {
 void func_ov002_020db704(Player *self) {
-    extern int _Z14ApproachLinearRiii(int *p, int value, int speed);
     extern int data_ov002_020ff230[];
     extern int data_ov002_020ff2c0[];
     int s;
@@ -18486,8 +18234,8 @@ void func_ov002_020db704(Player *self) {
         if (self->mScaleAnimTimer == 0) {
             if (s == 1)
                 i++;
-            if (_Z14ApproachLinearRiii(&self->mScaleY, data_ov002_020ff2c0[s - 1 + j],
-                                       data_ov002_020ff230[i])) {
+            if (ApproachLinear(self->mScaleY, data_ov002_020ff2c0[s - 1 + j],
+                               data_ov002_020ff230[i])) {
                 if (self->mScaleAnimStep == 1 || self->mScaleAnimStep == 6) {
                     self->mScaleAnimTimer = 10;
                 } else {
@@ -18512,14 +18260,14 @@ void func_ov002_020db704(Player *self) {
         self->mScaleX = self->mScaleZ;
         return;
     case 2:
-        if (_Z14ApproachLinearRiii(&self->mScaleY, 0x3000, 0x200)) {
+        if (ApproachLinear(self->mScaleY, 0x3000, 0x200)) {
             self->mScaleAnimStep = 0;
         }
         self->mScaleZ = self->mScaleY;
         self->mScaleX = self->mScaleZ;
         return;
     case 3:
-        if (_Z14ApproachLinearRiii(&self->mScaleY, 0x1000, 0x200)) {
+        if (ApproachLinear(self->mScaleY, 0x1000, 0x200)) {
             self->mScaleAnimStep = 0;
         }
         self->mScaleZ = self->mScaleY;
@@ -18916,18 +18664,13 @@ void func_ov002_020dc09c(char *c) {
 // @symbol func_ov002_020dc174
 extern "C" {
 /* The attack collision's offset, reach and height. pos is a const Vector3 *: it
-   goes straight to dCcAcPos_c::Init, whose ROM symbol is
-   _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj -- RK7Vector3, a
-   const Vector3 &. Eleven callers in this file each used to spell it void *. */
+   goes straight to dCcAcPos_c::Init, whose ROM symbol mangles that
+   parameter as RK7Vector3, a const Vector3 &. Eleven callers in this file each used to spell it void *. */
 void func_ov002_020dc174(char *c, const Vector3 *pos, Fix12i reach, Fix12i height, u32 flags,
                          u32 a6) {
-    extern int _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
-        void *thiz, void *actor, const Vector3 *pos, Fix12i reach, Fix12i height, u32 flags,
-        u32 a6);
     Player *player = (Player *)c;
     int f = player->mIsMega ? 0x10 : 0;
-    _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(&player->mAttackClsn, c, pos, reach,
-                                                            height, flags | 2 | f, a6);
+    player->mAttackClsn.Init((dActor_c *)c, *pos, reach, height, flags | 2 | f, a6);
 }
 }
 
@@ -19091,7 +18834,6 @@ int Player::St_SweepKick_Init()
 extern "C" {
 void func_ov002_020dc560(char *self)
 {
-    extern void _Z14ApproachLinearRiii(int *ref, int a, int b);
     extern int func_01ffa344(int a, int b);
     extern int AngleDiff(int a, int b);
     extern void ApproachAngle(short *cur, short target, int divisor, int band, int maxStep);
@@ -19101,7 +18843,7 @@ void func_ov002_020dc560(char *self)
     extern char data_0209f4a0[];
     extern short data_02082214[];
     Player *player = (Player *)self;
-    _Z14ApproachLinearRiii(&player->mHorzSpeed, 0, 0x599);
+    ApproachLinear(player->mHorzSpeed, 0, 0x599);
 
     {
         int tblval = *(short *)(data_0209f4a0 + gActivePlayerSlot * 0x18);
@@ -19112,7 +18854,7 @@ void func_ov002_020dc560(char *self)
             int sinv = data_02082214[idx2 + 1];
             int scaled = FX_MUL(sinv, 0x1800);
             int combined = FX_MUL(scaled, tblval);
-            _Z14ApproachLinearRiii(&player->mHorzSpeed, r1, combined);
+            ApproachLinear(player->mHorzSpeed, r1, combined);
 
             {
                 short *p94 = (short *)ADDR(&player->mPrevAngleY);
@@ -19321,7 +19063,6 @@ int Player::St_StomachSlide_Main()
     extern void func_ov002_020dc560(void* c);
     extern int func_ov002_020e0ccc(void* c, short* st);
     extern Fix12i atan2_hold_Player_6(Fix12i a, Fix12i b);
-    extern void _Z15ApproachLinear2Rsss(short* cur, short target, short step);
     extern void Player_AdvanceAnims(void* c);
     extern u16 data_0209f49e[];
     extern u8 data_0209ee90;
@@ -19477,7 +19218,7 @@ end:
         s16 v = cstd::atan2(mHorzSpeed >> 8, mVertSpeed >> 8) - 0x4000;
         if (v < 0) v = 0;
         if (v >= 0x2aaa) v = 0x2aaa;
-        _Z15ApproachLinear2Rsss((short*)((char*)&mAngleX), v, 0x200);
+        ApproachLinear2(*((short *)((char *)&mAngleX)), v, 0x200);
     }
     Player_AdvanceAnims(((char*)this));
     mStateArg = mSlideType;
@@ -19542,7 +19283,6 @@ int Player::IsDiving()
 {
 
     extern Player::State data_ov002_021105bc;
-    int _ZN6Player7IsStateERNS_5StateE(void*, void*);
   return this->IsState(data_ov002_021105bc) != 0;
 }
 }
@@ -19567,7 +19307,6 @@ int func_ov002_020dd2f4(char* c)
 {
     extern int atan2_hold_Player_5(Fix12i y, Fix12i x);
     extern int AngleDiff(int a, int b);
-    extern int _ZN6Player19func_ov002_020c0cbcEv(void* c);
     Player *p = (Player *)c;
     int atan;
 
@@ -19578,7 +19317,7 @@ int func_ov002_020dd2f4(char* c)
     if (AngleDiff(atan, p->mPrevAngleY) < 0x6000)
         return 0;
 
-    if (_ZN6Player19func_ov002_020c0cbcEv(c) != 0) {
+    if (((Player *)c)->func_ov002_020c0cbc() != 0) {
         p->mHorzSpeed = FX_MUL(p->mHorzSpeed, 0xe66);
         if (p->mHorzSpeed < 0x4000)
             p->mHorzSpeed = 0x4000;
@@ -19595,12 +19334,10 @@ extern "C" {
 int Player::St_PunchKick_Main()
 {
     extern void func_ov002_020d8a50(void* c, u32 a);
-    extern void _Z14ApproachLinearRiii(int* a, int b, int c);
     extern void Player_AdvanceAnims(char* self);
     extern u16 data_0209f49e[];
     extern s16 data_0209f4a0[];
     extern Player::State data_ov002_0211013c;
-    extern void _ZN6Player17St_PunchKick_InitEv(void*);
     extern void func_ov002_020dd5ec(void*);
     extern int func_ov002_020e2c84(char*);
     u16 st = mStateTimer;
@@ -19616,7 +19353,7 @@ int Player::St_PunchKick_Main()
             if ((flags & 1) != 0 && mPunchKickStep < 2) {
                 u8* p = (u8*)((char*)&mPunchKickStep);
                 (*p)++;
-                _ZN6Player17St_PunchKick_InitEv(((char*)this));
+                this->St_PunchKick_Init();
                 return 1;
             }
         }
@@ -19632,7 +19369,7 @@ int Player::St_PunchKick_Main()
                 return 1;
         }
 
-        _Z14ApproachLinearRiii((int*)((char*)&mHorzSpeed), 0, 0x800);
+        ApproachLinear(*((int *)((char *)&mHorzSpeed)), 0, 0x800);
         func_ov002_020c2f64();
 
         if (func_ov002_020c0434() != 0) {
@@ -19680,7 +19417,6 @@ end:
 // @symbol func_ov002_020dd5ec
 extern "C" {
 void func_ov002_020dd5ec(char *c) {
-    extern int _ZNK6Player14GetBodyModelIDEjb(void *c, u32 id, int b);
     extern int RandomIntInternal(int *seed);
     extern u16 data_0209f49c[];
     extern int data_ov002_0210a5c0[];
@@ -19699,7 +19435,7 @@ void func_ov002_020dd5ec(char *c) {
         player->mPunchKickStep = 2;
     }
     ((Player *)c)->SetAnim(data_ov002_0210a5c0[player->mPunchKickStep], 0x40000000, 0x1000, 0);
-    model = _ZNK6Player14GetBodyModelIDEjb(c, player->param1 & 0xff, 0);
+    model = ((Player *)c)->GetBodyModelID(player->param1 & 0xff, 0);
     new_var2 = -0x4000;
     new_var = (int *)&player->mModels.mBodyModels[model];
     new_var3 = (int *)&(dExtFrameCtrl_c &)*(dExtAnmModel_c *)*new_var;
@@ -19744,13 +19480,13 @@ void func_ov002_020dd5ec(char *c) {
 extern "C" {
 int Player::St_PunchKick_Init()
 {
-    extern int _ZN6Player15IsCollectingCapEv(void*);
     extern void func_ov002_020dc020(void*);
   *(int*)((char*)&mPeakY)=*(int*)((char*)&mPosY);
   mAttackClashed = 0;
   *(short*)((char*)&mStateTimer)=2;
   *(char*)((char*)&mStatePhase)=0;
-  if(*(unsigned char*)((char*)&mPunchKickStep)==2 || _ZN6Player15IsCollectingCapEv(((void*)this))) return 1;
+  if (*(unsigned char *)((char *)&mPunchKickStep) == 2 || this->IsCollectingCap())
+      return 1;
   if(*(unsigned char*)((char*)&mIsMega)==0){
     func_ov002_020dc020(((void*)this));
     mAttackClsn.Clear();
@@ -19868,7 +19604,6 @@ int Player::St_GroundPound_Main()
     void PlayerNewSimpleHold14(unsigned int id, int x, int y, int z);
     void func_0200d8c8(void* cam, const void* v, int strength);
     void func_ov002_020dbc94(void* c);
-    void _ZN6Player11ChangeStateERNS_5StateE(void* self, void* state);
     int func_ov002_020d36d8(void* c, int arg);
     void Player_AdvanceAnims(void* self);
     extern void* data_0209f318;
@@ -20015,8 +19750,6 @@ int Player::St_GroundPound_Init()
 // @symbol func_ov002_020dde74
 extern "C" {
 extern "C" int func_ov002_020dde74(char *thiz) {
-    extern int _ZN6Player11ChangeStateERNS_5StateE(Player * thiz, Player::State * s);
-    extern int _ZN6Player7IsStateERNS_5StateE(Player * thiz, Player::State * s);
     extern int Player_ScaleByCharFactor(Player * c, int a);
     extern Player::State data_ov002_021105d4;
     extern Player::State data_ov002_02110034;
@@ -20028,20 +19761,20 @@ extern "C" int func_ov002_020dde74(char *thiz) {
     Player *p = (Player *)thiz;
     int b = (p->mHeldObj != 0);
     if (b) {
-        _ZN6Player11ChangeStateERNS_5StateE((Player *)thiz, &data_ov002_021105d4);
+        ((Player *)thiz)->ChangeState(data_ov002_021105d4);
         return 1;
     }
     if (p->param1 == 3 && p->mIsMega == 0) {
-        _ZN6Player11ChangeStateERNS_5StateE((Player *)thiz, &data_ov002_02110034);
+        ((Player *)thiz)->ChangeState(data_ov002_02110034);
         return 1;
     }
     if ((*(u16 *)(data_0209f49c + (u8)gActivePlayerSlot * 0x18) & 2) || p->mIsMega != 0)
         goto change574;
 
     if (p->mHorzSpeed < Player_ScaleByCharFactor((Player *)thiz, 0x20000)) {
-        if (_ZN6Player7IsStateERNS_5StateE((Player *)thiz, &data_ov002_021101e4))
+        if (((Player *)thiz)->IsState(data_ov002_021101e4))
             goto change5bc;
-        if (!_ZN6Player7IsStateERNS_5StateE((Player *)thiz, &data_ov002_0211019c))
+        if (!((Player *)thiz)->IsState(data_ov002_0211019c))
             goto change574;
         if (p->mJumpComboStage != 2)
             goto change574;
@@ -20049,14 +19782,14 @@ extern "C" int func_ov002_020dde74(char *thiz) {
 change5bc:
     if (p->mHorzSpeed < Player_ScaleByCharFactor((Player *)thiz, 0x24000))
         p->mHorzSpeed = Player_ScaleByCharFactor((Player *)thiz, 0x24000);
-    return _ZN6Player11ChangeStateERNS_5StateE((Player *)thiz, &data_ov002_021105bc);
+    return ((Player *)thiz)->ChangeState(data_ov002_021105bc);
 
 change574:
     if (p->mIsAirborne != 0)
         p->mPunchKickStep = 2;
     else
         p->mPunchKickStep = 0;
-    return _ZN6Player11ChangeStateERNS_5StateE((Player *)thiz, &data_ov002_02110574);
+    return ((Player *)thiz)->ChangeState(data_ov002_02110574);
 }
 }
 
@@ -20073,17 +19806,11 @@ change574:
 extern "C" {
 int Player::St_TornadoSpin_Main()
 {
-    struct dBgCh_Gnd { int filler[21]; };
-    extern void *_ZN9dBgCh_GndC1Ev(struct dBgCh_Gnd* self);
-    extern void _ZN9dBgCh_Gnd12SetObjAndPosERK7Vector3P8dActor_c(struct dBgCh_Gnd* self, const Vector3* pos, void* actor);
-    extern int _ZN9dBgCh_Gnd10DetectClsnEv(struct dBgCh_Gnd* self);
     extern void Player_AdvanceAnims(void* self);
-    extern void _ZN9dBgCh_GndD1Ev(struct dBgCh_Gnd* self);
     extern Player::State data_ov002_02110454;
     extern short data_02082214[];
     Vector3 pos;
     Vector3 clsnPos;
-    struct dBgCh_Gnd rc;
     int dx = mPosX - ((dActor_c*)mAttachedActor)->mPosX;
     int dz = mPosZ - ((dActor_c*)mAttachedActor)->mPosZ;
     int sx = FX_MUL(dx, 0xf33);
@@ -20123,11 +19850,11 @@ int Player::St_TornadoSpin_Main()
             ((int*)&pos)[1] = mAttachOffsetY + ((dActor_c*)mAttachedActor)->mPosY;
         }
     }
-    _ZN9dBgCh_GndC1Ev(&rc);
+    dBgCh_Gnd rc;
     clsnPos = pos;
     clsnPos.y += 0x64000;
-    _ZN9dBgCh_Gnd12SetObjAndPosERK7Vector3P8dActor_c(&rc, &clsnPos, this);
-    if (_ZN9dBgCh_Gnd10DetectClsnEv(&rc) != 0) {
+    rc.SetObjAndPos(clsnPos, this);
+    if (rc.DetectClsn() != 0) {
         mPosX = pos.x;
         mPosY = pos.y;
         mPosZ = pos.z;
@@ -20138,7 +19865,6 @@ int Player::St_TornadoSpin_Main()
             mPosY = mGroundY;
     }
     Player_AdvanceAnims(this);
-    _ZN9dBgCh_GndD1Ev(&rc);
     return 1;
 }
 }
@@ -20244,14 +19970,12 @@ void func_ov002_020de428(struct dActor_ce428 *thiz)
 extern "C" {
 s32 Player::St_Balloon_Main()
 {
-    extern void _Z14ApproachLinearRiii(s32 &, s32, s32);
     extern void func_ov002_020de968(void *);
     extern s16 atan2_hold_Player_4(s32, s32);
     extern int AngleDiff(s32, s16);
     extern void func_ov002_020de428(void *);
     extern void ApproachAngle(void *, s16, s16, s16, s32);
     extern s32 func_ov002_020bf224(void *, s32, s32);
-    extern void _Z15ApproachLinear2Rsss(s16 &, s16, s16);
     extern void func_ov002_020de3d0(void *, s16 *, s16 *);
     extern s16 data_0209f49e[];
     extern s16 data_0209f4a0[];
@@ -20264,7 +19988,7 @@ s32 Player::St_Balloon_Main()
     mPeakY = mPosY;
     mVertAccel = 0;
     mTerminalVelocity = -0xc000;
-    _Z14ApproachLinearRiii(mVertSpeed, -0x6000, 0x800);
+    ApproachLinear(mVertSpeed, -0x6000, 0x800);
 
     if (mBalloonTimer == 0) {
         func_ov002_020de968(this);
@@ -20342,8 +20066,8 @@ s32 Player::St_Balloon_Main()
         ApproachAngle(&mPrevAngleY, mDesiredAngleY, 0x20, 0x2000, 0x10);
         r4 = 0x10000;
     }
-    _Z15ApproachLinear2Rsss(mAngleY, mPrevAngleY, 0x200);
-    _Z14ApproachLinearRiii(mHorzSpeed, func_ov002_020bf224(this, r4, 0), 0x100);
+    ApproachLinear2(mAngleY, mPrevAngleY, 0x200);
+    ApproachLinear(mHorzSpeed, func_ov002_020bf224(this, r4, 0), 0x100);
     func_ov002_020de3d0(this, &mAngleZ, &mAngleYSpeed);
     func_ov002_020de3d0(this, &mAngleX, &mAngleXSpeed);
     mPrevVertSpeed = mVertSpeed;
@@ -20513,12 +20237,10 @@ extern "C" int func_ov002_020dec70(char *c)
     Player *p = (Player *)c;
     void func_ov002_020bf800(char *c, Vector3_16f v);
     void PlayerPlayLongHold_dec70(u32 a, u32 b, u32 c, Vector3 * v, u32 d);
-    int _ZN6Player7IsStateERNS_5StateE(char *c, void *st);
     int func_ov002_020e0478(void *c);
-    void _ZN6Player11ChangeStateERNS_5StateE(char *c, void *st);
-    extern char data_ov002_02110274;
-    extern char data_ov002_021102d4;
-    extern char data_ov002_02110244;
+    extern Player::State data_ov002_02110274;
+    extern Player::State data_ov002_021102d4;
+    extern Player::State data_ov002_02110244;
     int t = p->mPosY + 0x514000;
     if (t < (int)0xfdecc000) return 0;
     {
@@ -20530,9 +20252,9 @@ extern "C" int func_ov002_020dec70(char *c)
     }
     p->mSurfaceSoundHandle =
         Sound::PlayLong((u32)p->mSurfaceSoundHandle, 3, 0x90, *(Vector3 *)&p->mCamSpacePos, 0);
-    if (_ZN6Player7IsStateERNS_5StateE(c, &data_ov002_02110274) ||
-        _ZN6Player7IsStateERNS_5StateE(c, &data_ov002_021102d4) ||
-        _ZN6Player7IsStateERNS_5StateE(c, &data_ov002_02110244) || p->mIsMetal || p->mIsMega ||
+    if (((Player *)c)->IsState(data_ov002_02110274) ||
+        ((Player *)c)->IsState(data_ov002_021102d4) ||
+        ((Player *)c)->IsState(data_ov002_02110244) || p->mIsMetal || p->mIsMega ||
         p->mIsNoControl || p->mIsAirborne == 0)
         return 0;
     if (func_ov002_020e0478(c) != 0 || p->mIsBalloon != 0) {
@@ -20540,7 +20262,7 @@ extern "C" int func_ov002_020dec70(char *c)
             p->mPosY += 0x8000;
         return 0;
     }
-    _ZN6Player11ChangeStateERNS_5StateE(c, &data_ov002_02110274);
+    ((Player *)c)->ChangeState(data_ov002_02110274);
     return 1;
 }
 }
@@ -20782,7 +20504,6 @@ int Player::St_Owl_Cleanup()
 extern "C" {
 int Player::St_Owl_Main()
 {
-    extern void _Z14ApproachLinearRiii(int* p, int value, int speed);
     extern int ApproachAngle(short* cur, short target, int divisor, int band, int maxStep);
     extern void func_0201f32c(int a);
     extern void func_0200d3f8(void* thiz, unsigned char playerID, void* ptr);
@@ -20816,9 +20537,9 @@ int Player::St_Owl_Main()
         }
         if (mIsAirborne != 0) {
             if (mVertSpeed < 0) {
-                _Z14ApproachLinearRiii((int*)((char*)&mVertSpeed), 0x3c000, 0x8000);
+                ApproachLinear(*((int *)((char *)&mVertSpeed)), 0x3c000, 0x8000);
             } else {
-                _Z14ApproachLinearRiii((int*)((char*)&mVertSpeed), 0x3c000, 0x2000);
+                ApproachLinear(*((int *)((char *)&mVertSpeed)), 0x3c000, 0x2000);
             }
         } else {
             mVertSpeed = 0x8000;
@@ -20912,12 +20633,11 @@ int Player::St_Owl_Init()
 // @symbol func_ov002_020df7ac
 extern "C" {
 int func_ov002_020df7ac(void* thiz){
-    extern void _ZN6Player14St_Owl_CleanupEv(void* thiz);
     extern Player::State data_ov002_02110244;
     extern Player::State data_ov002_021101b4;
     if (((Player *)thiz)->IsState(data_ov002_02110244) == 0)
         return 0;
-    _ZN6Player14St_Owl_CleanupEv(thiz);
+    ((Player *)thiz)->St_Owl_Cleanup();
     ((Player *)thiz)->ChangeState(data_ov002_021101b4);
     return 1;
 }
@@ -20963,7 +20683,6 @@ extern "C" {
 void func_ov002_020df8f0(char* c)
 {
     typedef unsigned long long u64;
-    extern void _Z15ApproachLinear2Rsss(s16* p, s16 target, s16 step);
     extern s16 data_0209f4a2[];
     extern s16 data_0209f4a4[];
     extern s16 data_02082214[];
@@ -20995,7 +20714,7 @@ void func_ov002_020df8f0(char* c)
                     step = 0x20;
                 else
                     step = 0x40;
-                _Z15ApproachLinear2Rsss(&player->mAngleXSpeed, (s16)v, step);
+                ApproachLinear2(player->mAngleXSpeed, (s16)v, step);
             }
         } else if (v < 0) {
             if (player->mAngleXSpeed > 0) {
@@ -21008,10 +20727,10 @@ void func_ov002_020df8f0(char* c)
                     step = 0x40;
                 else
                     step = 0x20;
-                _Z15ApproachLinear2Rsss(&player->mAngleXSpeed, (s16)v, step);
+                ApproachLinear2(player->mAngleXSpeed, (s16)v, step);
             }
         } else {
-            _Z15ApproachLinear2Rsss(&player->mAngleXSpeed, 0, 0x40);
+            ApproachLinear2(player->mAngleXSpeed, 0, 0x40);
         }
     }
 
@@ -21035,7 +20754,7 @@ void func_ov002_020df8f0(char* c)
                     step = 0x10;
                 else
                     step = 0x20;
-                _Z15ApproachLinear2Rsss(&player->mAngleYSpeed, (s16)v2, step);
+                ApproachLinear2(player->mAngleYSpeed, (s16)v2, step);
             }
         } else if (v2 < 0) {
             if (player->mAngleYSpeed > 0) {
@@ -21048,10 +20767,10 @@ void func_ov002_020df8f0(char* c)
                     step = 0x20;
                 else
                     step = 0x10;
-                _Z15ApproachLinear2Rsss(&player->mAngleYSpeed, (s16)v2, step);
+                ApproachLinear2(player->mAngleYSpeed, (s16)v2, step);
             }
         } else {
-            _Z15ApproachLinear2Rsss(&player->mAngleYSpeed, 0, 0x40);
+            ApproachLinear2(player->mAngleYSpeed, 0, 0x40);
         }
     }
 
@@ -21334,7 +21053,6 @@ void Player::InitWingFeathers(bool b_)
 extern "C" {
 int func_ov002_020e0478(void* c){
     extern Player::State data_ov002_02110214;
-    int _ZN6Player7IsStateERNS_5StateE(void*, void*);
     return ((Player *)c)->IsState(data_ov002_02110214) != 0;
 }
 }
@@ -21346,10 +21064,9 @@ int func_ov002_020e0478(void* c){
  */
 extern "C" {
 void func_ov002_020e04a4(char* c) {
-    extern void _ZN6Player19func_ov002_020bf88cEv(char* c);
     extern short data_0209f4a0[];
   if (*(short*)((char*)data_0209f4a0 + gActivePlayerSlot*0x18) < 0x600) return;
-  _ZN6Player19func_ov002_020bf88cEv(c);
+  ((Player *)c)->func_ov002_020bf88c();
 }
 }
 
@@ -21362,7 +21079,6 @@ int Player::St_Land_Main()
     extern int func_ov002_020e3078(void* c, void* s);
     extern int Player_ScaleByCharFactor(void* c, int a);
     extern int func_ov002_020bf224(void* c, int a, int b);
-    extern void _Z14ApproachLinearRiii(int* a, int b, int c);
     extern void Player_AdvanceAnims(void* c);
     extern u16 data_0209f49e[];
     extern u16 data_0209f49c[];
@@ -21414,8 +21130,9 @@ int Player::St_Land_Main()
         *(u16*)((char*)&mStateFlags) &= ~0x100;
     }
 
-    _Z14ApproachLinearRiii((int*)((char*)&mHorzSpeed),
-        func_ov002_020bf224(((char*)this), Player_ScaleByCharFactor(((char*)this), 0x20000), 0),
+    ApproachLinear(
+        *((int *)((char *)&mHorzSpeed)),
+        func_ov002_020bf224(((char *)this), Player_ScaleByCharFactor(((char *)this), 0x20000), 0),
         0x4000);
 
     if (func_ov002_020e3078(((char*)this), data_ov002_0211052c) != 0) {
@@ -21547,10 +21264,9 @@ int Player::St_Land_Init()
 // @symbol func_ov002_020e0a64
 extern "C" {
 int func_ov002_020e0a64(char* c){
-    extern int _ZN6Player6IsAnimEj(void*, unsigned int);
     extern int data_ov002_0210a5b4[];
     Player *player = (Player *)c;
-    if (_ZN6Player6IsAnimEj(c, 0x54) == 0)
+    if (((Player *)c)->IsAnim(0x54) == 0)
         player->mJumpComboTimer = 8;
     if (player->mIsMega != 0)
         return 0x9b;
@@ -21598,30 +21314,28 @@ int Player::St_SmallLaunchUp_Init()
 // @symbol _ZN6Player17St_SlopeJump_MainEv
 /* recovered: named members + shared header, real C++ method */
 extern "C" {
-int Player::St_SlopeJump_Main()
-{
-    extern void _Z14ApproachLinearRiii(int*,int,int);
-    extern int Player_AdvanceAnims(void*);
+int Player::St_SlopeJump_Main() {
+    extern int Player_AdvanceAnims(void *);
     extern Player::State data_ov002_0211013c;
     extern Player::State data_ov002_02110034;
     extern Player::State data_ov002_021105bc;
     extern unsigned short data_0209f49e[];
-  _Z14ApproachLinearRiii((int*)((char*)&mHorzSpeed),0,0x800);
-  if(mIsAirborne==0){
-    this->ChangeState(data_ov002_0211013c);
-  }
-  if(*(unsigned short*)((char*)data_0209f49e + gActivePlayerSlot*0x18) & 1){
-    mPrevAngleY=mAngleY;
-    if(mIsMega==0){
-      if(param1==3){
-        this->ChangeState(data_ov002_02110034);
-      }else{
-        this->ChangeState(data_ov002_021105bc);
-      }
+    ApproachLinear(*((int *)((char *)&mHorzSpeed)), 0, 0x800);
+    if (mIsAirborne == 0) {
+        this->ChangeState(data_ov002_0211013c);
     }
-  }
-  Player_AdvanceAnims(((char*)this));
-  return 1;
+    if (*(unsigned short *)((char *)data_0209f49e + gActivePlayerSlot * 0x18) & 1) {
+        mPrevAngleY = mAngleY;
+        if (mIsMega == 0) {
+            if (param1 == 3) {
+                this->ChangeState(data_ov002_02110034);
+            } else {
+                this->ChangeState(data_ov002_021105bc);
+            }
+        }
+    }
+    Player_AdvanceAnims(((char *)this));
+    return 1;
 }
 }
 
@@ -21682,8 +21396,6 @@ int Player::St_CrazedCrate_Main() {
     extern int atan2_hold_Player_2(int, int);
     extern int AngleDiff(int, int);
     extern void func_ov002_020e0f38(void*, int);
-    extern void _ZN7fBase_c18MarkForDestructionEv(void*);
-    extern void _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs(void*, const Vector3&, unsigned int, int, short);
     extern void Player_ReleaseHeldActor(void*);
     extern Player::State data_ov002_0211031c;
     char* self = (char*)this;
@@ -21720,13 +21432,13 @@ int Player::St_CrazedCrate_Main() {
         } else {
             if (param1 == 3) {
                 if ((void *)mObjInMouth != 0) {
-                    _ZN7fBase_c18MarkForDestructionEv((void *)mObjInMouth);
+                    ((fBase_c *)mObjInMouth)->MarkForDestruction();
                 }
                 Vector3 pos;
                 pos.x = mPosX;
                 pos.y = mPosY;
                 pos.z = mPosZ;
-                _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs(self, pos, 5, 0xf000, 0);
+                ((dActor_c *)self)->SpawnCoins(pos, 5, 0xf000, 0);
                 func_ov002_020d718c();
             } else {
                 Player_ReleaseHeldActor(self);
@@ -21765,7 +21477,7 @@ void func_ov002_020e0f38(char* c, int a){
 // @symbol _ZN6Player19St_CrazedCrate_InitEv
 /* recovered: named members + shared header, real C++ method, declarations from a shared header */
 /* recovered: named members + shared header, real C++ method */
-/* _ZN6Player19St_CrazedCrate_InitEv at 0x020e0fac (ov002), size 0x74
+/* Player::St_CrazedCrate_Init() at 0x020e0fac (ov002), size 0x74
  * Matched byte-for-byte with mwccarm 1.2/sp2p3.
  * flags: -O4,p -enum int -lang c++ -char signed -interworking -proc arm946e -gccext,on -msgstyle gcc
  */
@@ -21787,22 +21499,21 @@ int Player::St_CrazedCrate_Init()
 }
 }
 
-// @symbol _ZN6Player10SpinBounceE5Fix12IiE
+// @symbol _ZN6Player10SpinBounceEi
 /* recovered: named members + shared header */
 extern "C" {
-void _ZN6Player10SpinBounceE5Fix12IiE(struct Player *self, int f) {
-    extern int _ZN6Player7IsStateERNS_5StateE(void*,void*);
-    extern int _ZN6Player11ChangeStateERNS_5StateE(void*,void*);
-    extern int data_ov002_021105a4[];
-    extern int data_ov002_02110454[];
-  if(_ZN6Player7IsStateERNS_5StateE(((char*)self), data_ov002_021105a4)) return;
-  if (((Player *)self)->GetHealth() == 0)
-      return;
-  self->mVertSpeed = f;
-  Sound::PlayCharVoice(self->mCharacter, 0x28, self->mCamSpacePos);
-  Sound::PlayBank0(0xb6, self->mCamSpacePos);
-  self->mStatePhase=1;
-  _ZN6Player11ChangeStateERNS_5StateE(((char*)self), data_ov002_02110454);
+void Player::SpinBounce(Fix12i f) {
+    extern Player::State data_ov002_021105a4;
+    extern Player::State data_ov002_02110454;
+    if (this->IsState(data_ov002_021105a4))
+        return;
+    if (this->GetHealth() == 0)
+        return;
+    this->mVertSpeed = f;
+    Sound::PlayCharVoice(this->mCharacter, 0x28, this->mCamSpacePos);
+    Sound::PlayBank0(0xb6, this->mCamSpacePos);
+    this->mStatePhase = 1;
+    this->ChangeState(data_ov002_02110454);
 }
 }
 
@@ -21810,7 +21521,6 @@ void _ZN6Player10SpinBounceE5Fix12IiE(struct Player *self, int f) {
 extern "C" {
 int func_ov002_020e10a8(void* c){
     extern Player::State data_ov002_02110454;
-    int _ZN6Player7IsStateERNS_5StateE(void*, void*);
     return ((Player *)c)->IsState(data_ov002_02110454) != 0;
 }
 }
@@ -22292,16 +22002,14 @@ int Player::St_Fall_Init()
 // @symbol func_ov002_020e1c20
 extern "C" {
 void func_ov002_020e1c20(char *c) {
-    extern void _ZN6Player11ChangeStateERNS_5StateE(void *p, void *state);
-    extern int _ZNK6Player14GetBodyModelIDEjb(void *p, unsigned int a, int b);
     extern int func_02012120(unsigned int p0, unsigned int p1, unsigned int p2, const Vector3 *p3,
                              short p4);
     extern int func_ov002_020bf27c(char *c, int r1);
     extern unsigned char data_0209f49c[];
-    extern int data_ov002_021101b4;
+    extern Player::State data_ov002_021101b4;
     Player *player = (Player *)c;
     if ((player->mClsnFlags) & 0xc) {
-        _ZN6Player11ChangeStateERNS_5StateE(c, &data_ov002_021101b4);
+        ((Player *)c)->ChangeState(data_ov002_021101b4);
         return;
     }
 
@@ -22351,7 +22059,7 @@ void func_ov002_020e1c20(char *c) {
             ((Player *)c)->SetAnim(0x3f, 0, 0x1000, 0);
             dExtFrameCtrl_c &anim =
                 *player->mModels
-                     .mBodyModels[_ZNK6Player14GetBodyModelIDEjb(c, player->param1 & 0xff, 0)];
+                     .mBodyModels[((Player *)c)->GetBodyModelID(player->param1 & 0xff, 0)];
             anim.speed = 0x4000;
         }
     }
@@ -22361,11 +22069,9 @@ void func_ov002_020e1c20(char *c) {
 // @symbol func_ov002_020e1e70
 extern "C" {
 void func_ov002_020e1e70(char *c) {
-    extern int _ZNK6Player14GetBodyModelIDEjb(void *p, unsigned int a, int b);
     extern int func_02012120(unsigned int p0, unsigned int p1, unsigned int p2, const Vector3 *p3,
                              short p4);
     extern int func_ov002_020bf27c(char *c, int r1);
-    extern int _ZN6Player6IsAnimEj(void *p, unsigned int a);
     extern unsigned char data_0209f49c[];
     Player *player = (Player *)c;
     player->mVertAccel = -0x4000;
@@ -22382,8 +22088,7 @@ void func_ov002_020e1e70(char *c) {
     if ((*((unsigned short *)(&data_0209f49c[gActivePlayerSlot * 0x18]))) & 2) {
         ((Player *)c)->SetAnim(0x3f, 0, 0x1000, 0);
         dExtFrameCtrl_c &anim =
-            *player->mModels
-                 .mBodyModels[_ZNK6Player14GetBodyModelIDEjb(c, player->param1 & 0xff, 0)];
+            *player->mModels.mBodyModels[((Player *)c)->GetBodyModelID(player->param1 & 0xff, 0)];
         anim.speed = 0x4000;
         player->mLoopingSoundHandle =
             func_02012120(player->mLoopingSoundHandle, player->mCharacter, 0x18,
@@ -22394,7 +22099,7 @@ void func_ov002_020e1e70(char *c) {
         } else {
             player->mVertAccel = func_ov002_020bf27c(c, -0x4000);
         }
-    } else if (_ZN6Player6IsAnimEj(c, 0x3f) != 0) {
+    } else if (((Player *)c)->IsAnim(0x3f) != 0) {
         ((Player *)c)->SetAnim(0x54, 0, 0x1000, 0);
     }
 }
@@ -22637,25 +22342,23 @@ extern "C" {
 int func_ov002_020e2664(char* self)
 {
     extern int func_ov002_020d5c6c(char* c);
-    extern int _ZN6Player7IsStateERNS_5StateE(char* self, void* st);
     extern int func_ov002_020d674c(char* c);
-    extern void _ZN6Player11ChangeStateERNS_5StateE(char* self, void* st);
     extern int func_ov002_020dde74(char* thiz);
     extern u16 data_0209f49e[];
-    extern int data_ov002_021101e4;
-    extern int data_ov002_0211004c;
-    extern int data_ov002_021105a4;
-    extern int data_ov002_021105d4;
-    extern int data_ov002_0211019c;
-    extern int data_ov002_021101b4;
-    extern int data_ov002_02110724;
-    extern int data_ov002_021101fc;
-    extern int data_ov002_0211052c;
-    extern int data_ov002_0211055c;
-    extern int data_ov002_02110694;
-    extern int data_ov002_02110034;
-    extern int data_ov002_021105bc;
-    extern int data_ov002_02110574;
+    extern Player::State data_ov002_021101e4;
+    extern Player::State data_ov002_0211004c;
+    extern Player::State data_ov002_021105a4;
+    extern Player::State data_ov002_021105d4;
+    extern Player::State data_ov002_0211019c;
+    extern Player::State data_ov002_021101b4;
+    extern Player::State data_ov002_02110724;
+    extern Player::State data_ov002_021101fc;
+    extern Player::State data_ov002_0211052c;
+    extern Player::State data_ov002_0211055c;
+    extern Player::State data_ov002_02110694;
+    extern Player::State data_ov002_02110034;
+    extern Player::State data_ov002_021105bc;
+    extern Player::State data_ov002_02110574;
     Player *p = (Player *)self;
     u16 flags;
     int ptr;
@@ -22666,13 +22369,13 @@ int func_ov002_020e2664(char* self)
 
     flags = *(u16*)((char*)data_0209f49e + gActivePlayerSlot * 0x18);
     if (flags & 0x400) {
-        if (_ZN6Player7IsStateERNS_5StateE(self, &data_ov002_021101e4)) {
+        if (((Player *)self)->IsState(data_ov002_021101e4)) {
             p->mAngleY = p->mAngleY + 0x8000;
         }
         if (func_ov002_020d674c(self)) {
-            _ZN6Player11ChangeStateERNS_5StateE(self, &data_ov002_0211004c);
+            ((Player *)self)->ChangeState(data_ov002_0211004c);
         } else {
-            _ZN6Player11ChangeStateERNS_5StateE(self, &data_ov002_021105a4);
+            ((Player *)self)->ChangeState(data_ov002_021105a4);
         }
         return 1;
     }
@@ -22685,38 +22388,38 @@ int func_ov002_020e2664(char* self)
         b2 = ((dActor_c *)ptr)->mFlags;
         b2 = ((b2 & 0x200) != 0);
         if (b2 == false) {
-            _ZN6Player11ChangeStateERNS_5StateE(self, &data_ov002_021105d4);
+            ((Player *)self)->ChangeState(data_ov002_021105d4);
         }
         return 1;
     }
 
-    if (_ZN6Player7IsStateERNS_5StateE(self, &data_ov002_0211019c) && p->mJumpComboStage != 2) {
+    if (((Player *)self)->IsState(data_ov002_0211019c) && p->mJumpComboStage != 2) {
         if (func_ov002_020dde74(self)) return 1;
         goto ret0;
     }
 
-    if (_ZN6Player7IsStateERNS_5StateE(self, &data_ov002_021101b4) ||
-        _ZN6Player7IsStateERNS_5StateE(self, &data_ov002_02110724) ||
-        _ZN6Player7IsStateERNS_5StateE(self, &data_ov002_021101fc) ||
-        _ZN6Player7IsStateERNS_5StateE(self, &data_ov002_0211052c) ||
-        _ZN6Player7IsStateERNS_5StateE(self, &data_ov002_0211055c) ||
-        _ZN6Player7IsStateERNS_5StateE(self, &data_ov002_02110694))
+    if (((Player *)self)->IsState(data_ov002_021101b4) ||
+        ((Player *)self)->IsState(data_ov002_02110724) ||
+        ((Player *)self)->IsState(data_ov002_021101fc) ||
+        ((Player *)self)->IsState(data_ov002_0211052c) ||
+        ((Player *)self)->IsState(data_ov002_0211055c) ||
+        ((Player *)self)->IsState(data_ov002_02110694))
         return 0;
 
-    if (_ZN6Player7IsStateERNS_5StateE(self, &data_ov002_021101e4)) {
+    if (((Player *)self)->IsState(data_ov002_021101e4)) {
         p->mAngleY = p->mAngleY + 0x8000;
     }
     p->mPrevAngleY = p->mAngleY;
 
     if (p->mIsMega == 0) {
         if (p->param1 == 3) {
-            _ZN6Player11ChangeStateERNS_5StateE(self, &data_ov002_02110034);
+            ((Player *)self)->ChangeState(data_ov002_02110034);
         } else {
-            _ZN6Player11ChangeStateERNS_5StateE(self, &data_ov002_021105bc);
+            ((Player *)self)->ChangeState(data_ov002_021105bc);
         }
     } else {
         p->mPunchKickStep = 2;
-        _ZN6Player11ChangeStateERNS_5StateE(self, &data_ov002_02110574);
+        ((Player *)self)->ChangeState(data_ov002_02110574);
     }
 
     p->mAngleY = p->mPrevAngleY;
@@ -22734,7 +22437,6 @@ void func_ov002_020e28d4(char* c, int a, int b)
     extern int atan2_hold_Player_1(Fix12i a, int b);
     extern int AngleDiff(int a, int b);
     extern void ApproachAngle(s16* cur, s16 target, int divisor, int band, int maxStep);
-    extern void _Z14ApproachLinearRiii(int* a, int b, int c);
     extern int Player_ScaleByCharFactor(void* c, int a);
     extern int func_ov002_020bf224(void* c, int a, int b);
     extern s16 data_0209f4a0[];
@@ -22783,7 +22485,7 @@ void func_ov002_020e28d4(char* c, int a, int b)
         a = b;
     }
 
-    _Z14ApproachLinearRiii(&p->mHorzSpeed, r4, a);
+    ApproachLinear(p->mHorzSpeed, r4, a);
 
     if (AngleDiff(p->mPrevAngleY, p->mAngleY) < 0x4000)
         return;
@@ -22838,8 +22540,7 @@ int func_ov002_020e2ba8(char* c){
 // @symbol func_ov002_020e2be4
 extern "C" {
 extern "C" int func_ov002_020e2be4(char* self){
-    extern void _ZN6Player11ChangeStateERNS_5StateE(void* self, void* state);
-    extern char data_ov002_021103f4;
+    extern Player::State data_ov002_021103f4;
     Player *player = (Player *)self;
     int thr;
     if (((Player *)(self))->func_ov002_020c04ac())
@@ -22862,7 +22563,7 @@ extern "C" int func_ov002_020e2be4(char* self){
     }
     if (player->mFloorNormalY > thr)
         return 0;
-    _ZN6Player11ChangeStateERNS_5StateE(self, &data_ov002_021103f4);
+    ((Player *)self)->ChangeState(data_ov002_021103f4);
     return 1;
 }
 }
@@ -22875,18 +22576,14 @@ int func_ov002_020e2c84(char *self)
 {
     Player *player = (Player *)self;
     struct dCamera_c;
-    extern int _ZN6Player19func_ov002_020c0cbcEv(void *self);
     extern int func_ov002_020e3078(char *self, void *s);
     extern int func_ov002_020e2ea0(char *self);
-    extern void _ZN6Player11ChangeStateERNS_5StateE(char *self, void *state);
     extern int func_ov002_020d91e0(char *thiz, int damage, int doPre);
     extern void func_0200d8c8(struct dCamera_c * cam, const Vector3 *v, int strength);
-    extern int _ZN6Player7IsStateERNS_5StateE(char *self, void *state);
-    extern int _ZN6Player19func_ov002_020c5decEi(char *c, int r1);
     extern void func_ov002_020db8bc(unsigned char *p, unsigned char val);
     extern char data_ov002_02110454;
-    extern char data_ov002_02110094;
-    extern char data_ov002_0211010c;
+    extern Player::State data_ov002_02110094;
+    extern Player::State data_ov002_0211010c;
     extern struct dCamera_c *data_0209f318;
     extern char data_ov002_02110484;
     extern int func_ov002_020e2c84(char*);
@@ -22906,14 +22603,14 @@ int func_ov002_020e2c84(char *self)
     if (diff > 0xbb8000) {
         player->mStateStep = 2;
         player->mHurtDamage = 0;
-        _ZN6Player11ChangeStateERNS_5StateE(self, &data_ov002_02110094);
+        ((Player *)self)->ChangeState(data_ov002_02110094);
 
         if (func_ov002_020d91e0(self, 0x400, 1) != 0) {
             {
                 u8 *p = &player->mStateStep;
                 *p &= 1;
             }
-            _ZN6Player11ChangeStateERNS_5StateE(self, &data_ov002_0211010c);
+            ((Player *)self)->ChangeState(data_ov002_0211010c);
             return 1;
         }
 
@@ -22921,16 +22618,16 @@ int func_ov002_020e2c84(char *self)
         player->mIsFallScreaming = 0;
         Sound::PlayCharVoice(player->mCharacter, 7, player->mCamSpacePos);
     } else if (diff > 0x47e000) {
-        if (_ZN6Player19func_ov002_020c0cbcEv(self) == 0) {
+        if (((Player *)self)->func_ov002_020c0cbc() == 0) {
             if (func_ov002_020d91e0(self, 0x200, 1) != 0) {
-                if (_ZN6Player7IsStateERNS_5StateE(self, &data_ov002_02110094) != 0) {
+                if (((Player *)self)->IsState(data_ov002_02110094) != 0) {
                     {
                         u8 *p = &player->mStateStep;
                         *p &= 1;
                     }
-                    _ZN6Player11ChangeStateERNS_5StateE(self, &data_ov002_0211010c);
+                    ((Player *)self)->ChangeState(data_ov002_0211010c);
                 } else {
-                    _ZN6Player19func_ov002_020c5decEi(self, 2);
+                    ((Player *)self)->func_ov002_020c5dec(2);
                 }
                 return 1;
             }
@@ -22952,7 +22649,6 @@ int func_ov002_020e2c84(char *self)
 extern "C" {
 extern "C" int func_ov002_020e2ea0(Player *self) {
     int func_ov002_020e3078(Player *self, Player::State *s);
-    dBgPi *_ZNK10dBgCh_Actr14GetFloorResultEv(const dBgCh_Actr *self);
     extern signed char data_0209f2f8;
     extern Player::State data_ov002_021105bc;
     extern Player::State data_ov002_021105a4;
@@ -22977,7 +22673,7 @@ extern "C" int func_ov002_020e2ea0(Player *self) {
         return 0;
     }
 
-    dBgPi *cr = _ZNK10dBgCh_Actr14GetFloorResultEv(&p->mMeshClsn);
+    dBgPi *cr = p->mMeshClsn.GetFloorResult();
     if (cr->GetClsnID() != -1) {
         if (dActor_c::FindWithID((unsigned int)cr->GetClsnID()) != 0) {
             return 0;
@@ -23193,6 +22889,7 @@ int Player::CleanupResources()
     enum { false_, true_ };
     struct VB { virtual void v0(); virtual void v1(); };
     void func_0203cbc0(void *p);
+    /* local extern: the registrar takes this D1 by address, which C++ cannot spell. */
     void *_ZN7Vector3D1Ev(void *self);
     void func_ov002_020bebd4(char *c);
     void UnloadSilverStarAndNumber(void);
@@ -23721,15 +23418,12 @@ extern "C" {
 int func_ov002_020e3f90(char* self) {
     Player *player = (Player *)self;
     struct M48 { int w[12]; };
-    extern void _Z14ApproachLinearRiii(int* v, int target, int step);
     extern void ApproachAngle(short* v, int target, int a, int b, int c);
     extern void Matrix4x3_ApplyInPlaceToTranslation(struct M48* m, int x, int y, int z);
     extern void Matrix4x3_ApplyInPlaceToRotationX(struct M48* m, int a);
     extern void Matrix4x3_ApplyInPlaceToRotationY(struct M48* m, int a);
     extern void Matrix4x3_ApplyInPlaceToRotationZ(struct M48* m, int a);
     extern void Matrix4x3_ApplyInPlaceToRotationXYZExt(struct M48* m, int x, int y, int z);
-    extern unsigned int _ZNK6Player14GetBodyModelIDEjb(void* self, unsigned int j, int b);
-    extern int _ZN6Player19func_ov002_020becf4Eii(void* self, unsigned int j, int b);
     extern struct M48 data_020a0e68;
     struct S { short angs[3]; volatile int v[3]; int tgt[3]; } s;
     int b;
@@ -23775,9 +23469,9 @@ int func_ov002_020e3f90(char* self) {
             s.angs[1] = 0x7000;
             s.angs[2] = 0;
         }
-        _Z14ApproachLinearRiii(&((Player *)self)->mStateTargetX, s.tgt[0], 0x400);
-        _Z14ApproachLinearRiii(&((Player *)self)->mStateTargetY, s.tgt[1], 0x400);
-        _Z14ApproachLinearRiii(&((Player *)self)->mStateTargetZ, s.tgt[2], 0x400);
+        ApproachLinear(((Player *)self)->mStateTargetX, s.tgt[0], 0x400);
+        ApproachLinear(((Player *)self)->mStateTargetY, s.tgt[1], 0x400);
+        ApproachLinear(((Player *)self)->mStateTargetZ, s.tgt[2], 0x400);
         ApproachAngle(&player->mAngleX, s.angs[0], 0x10, 0x1000, 0x100);
         ApproachAngle(&player->mAngleY, s.angs[1], 0x10, 0x1000, 0x100);
         ApproachAngle(&player->mAngleZ, s.angs[2], 0x10, 0x1000, 0x100);
@@ -23808,11 +23502,11 @@ int func_ov002_020e3f90(char* self) {
     player->mPosY = s.v[1] << 3;
     player->mPosZ = s.v[2] << 3;
     player->mPrevAngleY = ((dActor_c *)player->mGrabbedByActor)->mAngleY;
-    n = _ZNK6Player14GetBodyModelIDEjb(self, player->param1 & 0xff, 0);
+    n = ((Player *)self)->GetBodyModelID(player->param1 & 0xff, 0);
     m = (char *)player->mModels.mBodyModels[n];
     *(struct M48 *)&((dExtSimpleModel_c *)m)->mat4x3 = data_020a0e68;
     *(struct M48 *)&player->mModels.mAnmModel2.mat4x3 = data_020a0e68;
-    n = _ZN6Player19func_ov002_020becf4Eii(self, player->param1 & 0xff, 0);
+    n = ((Player *)self)->func_ov002_020becf4(player->param1 & 0xff, 0);
     if (n != 9 && n != 8) {
         m = (char *)player->mModels.mHeadModels[n];
         if (m != 0) {
@@ -23858,15 +23552,10 @@ void func_ov002_020e444c(char *c)
     extern void Matrix4x3_ApplyInPlaceToRotationY(struct Matrix4x3 *mF, s16 angY);
     extern void Matrix4x3_ApplyInPlaceToRotationX(struct Matrix4x3 *mF, s16 angX);
     extern void Matrix4x3_ApplyInPlaceToRotationZ(struct Matrix4x3 *mF, s16 angZ);
-    extern int _ZNK6Player14GetBodyModelIDEjb(void *self, u32 unk, int b);
-    extern int _ZN6Player19func_ov002_020becf4Eii(void *self, u32 v, int arg2);
     extern int func_ov002_020d225c(void *o);
     extern void Matrix4x3_ApplyInPlaceToTranslation(struct Matrix4x3 *mF, Fix12i x, Fix12i y, Fix12i z);
     extern void func_ov002_020e4374(void *c, int *p1, int *p2);
-    extern void *_ZNK10dBgCh_Actr14GetFloorResultEv(void *self);
-    extern void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(void *self, void *sm, void *mtx, Fix12i a, Fix12i b, u32 flags);
     extern struct Matrix4x3 data_020a0e68;
-    extern int _ZNK5dBgPi9GetClsnIDEv(void*);
     extern int func_ov002_020e3f90(char*);
     Player *player = (Player *)c;
     int sp8, spC;
@@ -23895,7 +23584,7 @@ void func_ov002_020e444c(char *c)
         Matrix4x3_ApplyInPlaceToRotationZ(&data_020a0e68, player->mAngleZ);
 
         if (player->mIsBalloon == 0) {
-            int bodyID = _ZNK6Player14GetBodyModelIDEjb(c, player->param1 & 0xff, 0);
+            int bodyID = ((Player *)c)->GetBodyModelID(player->param1 & 0xff, 0);
             player->mModels.mBodyModels[bodyID]->mat4x3 = data_020a0e68;
             player->mModels.mAnmModel2.mat4x3 = data_020a0e68;
         } else {
@@ -23903,7 +23592,7 @@ void func_ov002_020e444c(char *c)
         }
 
         {
-            int r0 = _ZN6Player19func_ov002_020becf4Eii(c, player->param1 & 0xff, 0);
+            int r0 = ((Player *)c)->func_ov002_020becf4(player->param1 & 0xff, 0);
             if (r0 != 9 && r0 != 8) {
                 dExtSimpleModel_c *q = player->mModels.mHeadModels[r0];
                 if (q != 0) {
@@ -23925,9 +23614,9 @@ void func_ov002_020e444c(char *c)
         player->mHideShadow = 1;
 
     if (player->mMeshClsn.IsOnGround() != 0) {
-        void *fr = _ZNK10dBgCh_Actr14GetFloorResultEv(&player->mMeshClsn);
-        if (_ZNK5dBgPi9GetClsnIDEv(fr) != -1) {
-            void *a = dActor_c::FindWithID(_ZNK5dBgPi9GetClsnIDEv(fr));
+        dBgPi *fr = player->mMeshClsn.GetFloorResult();
+        if (fr->GetClsnID() != -1) {
+            void *a = dActor_c::FindWithID(fr->GetClsnID());
             if (a != 0) {
                 b = (int)(((dActor_c *)a)->actorID == 0xa1);
                 if (b != 0) {
@@ -23940,8 +23629,8 @@ void func_ov002_020e444c(char *c)
     if (player->mHideShadow != 0)
         return;
 
-    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
-        c, &player->mShadowModel, c + 0x5bc, spC, sp8, 0xf);
+    ((dActor_c *)c)
+        ->DropShadowRadHeight(player->mShadowModel, *(Matrix4x3 *)(c + 0x5bc), spC, sp8, 0xf);
 }
 }
 
@@ -23959,30 +23648,28 @@ extern "C" void func_ov002_020e4768(char* self)
         virtual void DoThing(int arg);
     };
     typedef struct { int w[12]; } Mat43;
-    extern unsigned int _ZNK6Player14GetBodyModelIDEjb(void* self, unsigned int idx, int flag);
     extern void func_020167a4(void* p);
     extern void func_ov002_020e640c(void* self);
-    extern int _ZN6Player19func_ov002_020becf4Eii(void* self, unsigned int idx, int flag);
     extern void MulMat4x3Mat4x3(void* dst, void* a, void* b);
     extern int data_020a0e68[12];
     unsigned int mid;
     dExtAnm2Model_c *comp;
     int idx;
 
-    mid = _ZNK6Player14GetBodyModelIDEjb(self, player->param1 & 0xff, 0);
+    mid = ((Player *)self)->GetBodyModelID(player->param1 & 0xff, 0);
     comp = player->mModels.mBodyModels[mid];
     func_020167a4(comp);
 
     func_ov002_020e640c(self);
 
-    mid = _ZNK6Player14GetBodyModelIDEjb(self, player->param1 & 0xff, 0);
+    mid = ((Player *)self)->GetBodyModelID(player->param1 & 0xff, 0);
     comp = player->mModels.mBodyModels[mid];
     comp->data.UpdateVertsUsingBones();
 
-    idx = _ZN6Player19func_ov002_020becf4Eii(self, player->param1 & 0xff, 0);
+    idx = ((Player *)self)->func_ov002_020becf4(player->param1 & 0xff, 0);
 
     if (idx == 3) {
-        unsigned int m2 = _ZNK6Player14GetBodyModelIDEjb(self, player->param1 & 0xff, 0);
+        unsigned int m2 = ((Player *)self)->GetBodyModelID(player->param1 & 0xff, 0);
         int a1 = (int)&player->mModels.mBodyModels[m2]->data.transforms[15];
         a1 = idx ? a1 : a1;
         ((VTable4 **)player->mModels.mHeadModels)[idx]->DoThing(a1);
@@ -23991,11 +23678,11 @@ extern "C" void func_ov002_020e4768(char* self)
     {
         int hasFlag = (player->mHeldObj != 0);
         if (hasFlag) {
-            mid = _ZNK6Player14GetBodyModelIDEjb(self, player->param1 & 0xff, 0);
+            mid = ((Player *)self)->GetBodyModelID(player->param1 & 0xff, 0);
             comp = player->mModels.mBodyModels[mid];
             *(Mat43 *)data_020a0e68 = *(Mat43 *)&comp->mat4x3;
 
-            mid = _ZNK6Player14GetBodyModelIDEjb(self, player->param1 & 0xff, 0);
+            mid = ((Player *)self)->GetBodyModelID(player->param1 & 0xff, 0);
             comp = player->mModels.mBodyModels[mid];
             MulMat4x3Mat4x3(&comp->data.transforms[14], data_020a0e68, data_020a0e68);
 
@@ -24004,11 +23691,11 @@ extern "C" void func_ov002_020e4768(char* self)
         }
     }
 
-    mid = _ZNK6Player14GetBodyModelIDEjb(self, player->param1 & 0xff, 0);
+    mid = ((Player *)self)->GetBodyModelID(player->param1 & 0xff, 0);
     comp = player->mModels.mBodyModels[mid];
     *(Mat43 *)data_020a0e68 = *(Mat43 *)&comp->mat4x3;
 
-    mid = _ZNK6Player14GetBodyModelIDEjb(self, player->param1 & 0xff, 0);
+    mid = ((Player *)self)->GetBodyModelID(player->param1 & 0xff, 0);
     comp = player->mModels.mBodyModels[mid];
     MulMat4x3Mat4x3(&comp->data.transforms[15], data_020a0e68, data_020a0e68);
 
@@ -24020,9 +23707,8 @@ extern "C" void func_ov002_020e4768(char* self)
 extern "C" {
 int func_ov002_020e496c(char* c)
 {
-    extern int _ZNK6Player14GetBodyModelIDEjb(void* thiz, unsigned int a, int b);
     Player *player = (Player *)c;
-    int id = _ZNK6Player14GetBodyModelIDEjb(c, player->mBodyModelId, 1);
+    int id = ((Player *)c)->GetBodyModelID(player->mBodyModelId, 1);
     return ((int *)player->mModels.mBodyModels)[id];
 }
 }
@@ -24031,31 +23717,25 @@ int func_ov002_020e496c(char* c)
 extern "C" {
 int func_ov002_020e4990(char* c)
 {
-    extern int _ZNK6Player14GetBodyModelIDEjb(void* thiz, unsigned int a, int b);
-    extern int _ZN6Player6IsAnimEj(void* thiz, unsigned int a);
     extern void func_0201628c(int a, int b);
     extern void func_020162a4(int a, int b);
     Player *player = (Player *)c;
     int id;
     int b;
-    id = _ZNK6Player14GetBodyModelIDEjb(c, player->param1 & 0xff, 0);
+    id = ((Player *)c)->GetBodyModelID(player->param1 & 0xff, 0);
     func_0201628c(((int *)player->mModels.mBodyModels)[id], 8);
     b = player->mHeldObj ? 1 : 0;
     if (b == 0)
         return 0;
-    if (_ZN6Player6IsAnimEj(c, 0x30) || _ZN6Player6IsAnimEj(c, 0x2f) ||
-        _ZN6Player6IsAnimEj(c, 0x33) || _ZN6Player6IsAnimEj(c, 0x18) ||
-        _ZN6Player6IsAnimEj(c, 0x8a) || _ZN6Player6IsAnimEj(c, 0x87) ||
-        _ZN6Player6IsAnimEj(c, 0x8b) || _ZN6Player6IsAnimEj(c, 0x6d) ||
-        _ZN6Player6IsAnimEj(c, 0x6f) || _ZN6Player6IsAnimEj(c, 0x6c) ||
-        _ZN6Player6IsAnimEj(c, 0x91) || _ZN6Player6IsAnimEj(c, 0x8e) ||
-        _ZN6Player6IsAnimEj(c, 0x90) || _ZN6Player6IsAnimEj(c, 0x8f) ||
-        _ZN6Player6IsAnimEj(c, 0x43) || _ZN6Player6IsAnimEj(c, 0x5b) ||
-        _ZN6Player6IsAnimEj(c, 0x58) || _ZN6Player6IsAnimEj(c, 0x81) ||
-        _ZN6Player6IsAnimEj(c, 0x80) || _ZN6Player6IsAnimEj(c, 0xaf) ||
-        _ZN6Player6IsAnimEj(c, 0xb0))
+    if (((Player *)c)->IsAnim(0x30) || ((Player *)c)->IsAnim(0x2f) || ((Player *)c)->IsAnim(0x33) ||
+        ((Player *)c)->IsAnim(0x18) || ((Player *)c)->IsAnim(0x8a) || ((Player *)c)->IsAnim(0x87) ||
+        ((Player *)c)->IsAnim(0x8b) || ((Player *)c)->IsAnim(0x6d) || ((Player *)c)->IsAnim(0x6f) ||
+        ((Player *)c)->IsAnim(0x6c) || ((Player *)c)->IsAnim(0x91) || ((Player *)c)->IsAnim(0x8e) ||
+        ((Player *)c)->IsAnim(0x90) || ((Player *)c)->IsAnim(0x8f) || ((Player *)c)->IsAnim(0x43) ||
+        ((Player *)c)->IsAnim(0x5b) || ((Player *)c)->IsAnim(0x58) || ((Player *)c)->IsAnim(0x81) ||
+        ((Player *)c)->IsAnim(0x80) || ((Player *)c)->IsAnim(0xaf) || ((Player *)c)->IsAnim(0xb0))
         return 0;
-    id = _ZNK6Player14GetBodyModelIDEjb(c, player->param1 & 0xff, 0);
+    id = ((Player *)c)->GetBodyModelID(player->param1 & 0xff, 0);
     func_020162a4(((int *)player->mModels.mBodyModels)[id], 8);
     return 1;
 }
@@ -24065,12 +23745,9 @@ int func_ov002_020e4990(char* c)
 extern "C" {
 void func_ov002_020e4bb8(char* self)
 {
-    extern void _ZN6Player19func_ov002_020be3b0Ev(char* c);
-    extern u32 _ZNK6Player14GetBodyModelIDEjb(char* c, u32 a, char b);
     extern void func_ov002_020e444c(char* c);
     extern int func_ov002_020e4990(char* c);
     extern void func_ov002_020e4768(char* c);
-    extern u32 _ZN6Player8HasNoCapEv(char* c);
     extern SharedFilePtr *data_ov002_020ff480[];
     Player *player = (Player *)self;
     u8 save_6fd;
@@ -24078,7 +23755,7 @@ void func_ov002_020e4bb8(char* self)
     u8 save_6fb;
     u8 save_6ff;
 
-    _ZN6Player19func_ov002_020be3b0Ev(self);
+    ((Player *)self)->func_ov002_020be3b0();
 
     save_6fd = player->mIsBalloon;
     save_6f9 = player->mIsMetal;
@@ -24103,7 +23780,7 @@ void func_ov002_020e4bb8(char* self)
 
                 player->mIsMetal = 0;
                 v = player->param1;
-                id = _ZNK6Player14GetBodyModelIDEjb(self, (u8)v, 0);
+                id = ((Player *)self)->GetBodyModelID((u8)v, 0);
                 dst = player->mModels.mBodyModels[id];
                 src = player->mModels.mBodyModels[4];
                 poolEntry = data_ov002_020ff480[player->mCharFileBase + v];
@@ -24134,7 +23811,7 @@ void func_ov002_020e4bb8(char* self)
     player->mDrawnIsMetal = player->mIsMetal;
     player->mPlayerTexFrame = player->mIsVanish;
     player->mDrawnHasWings = player->mHasWings;
-    player->mDrawnHasNoCap = (u8)_ZN6Player8HasNoCapEv(self);
+    player->mDrawnHasNoCap = (u8)((Player *)self)->HasNoCap();
 
     player->mIsBalloon = save_6fd;
     player->mIsMetal = save_6f9;
@@ -24159,7 +23836,6 @@ int Player::Behavior()
     };
     extern u16 DecIfAbove0_Short(u16 *p);
     extern s16 GetAngleToCamera(u8 playerID);
-    extern void _ZN10dCcAcPos_c21SetPosRelativeToActorERK7Vector3(void *self, const Vector3 *v);
     extern void func_02035684(void *p, s32 v);
     extern void func_0203568c(void *p, s32 v);
     extern void func_ov002_020ce8bc(void *self, s32 arg);
@@ -24387,7 +24063,7 @@ after_player_slot:
     v1.x = v0.x;
     v1.y = v0.y;
     v1.z = v0.z;
-    _ZN10dCcAcPos_c21SetPosRelativeToActorERK7Vector3(&mdCcAcPos_c, &v1);
+    mdCcAcPos_c.SetPosRelativeToActor(v1);
     func_ov002_020c2db8();
 
     if (mIsInShallowWater != 0)
@@ -24466,18 +24142,13 @@ s32 Player::InitResources()
     void func_ov002_020e6350(void* p);
     void func_ov002_020e5948(void* p);
     void* func_02073470(int a, int b, int c, void* d, void* e);
-    void* _ZN6Memory13operator_new2Ej(unsigned int sz);
     void func_ov002_020e63a4(void* p);
     void func_02035644(void* p, int a);
     void func_ov002_020d6368(void* p);
     void LoadSilverStarAndNumber(void);
-    int _ZN8SaveData16HasPlayerLostCapEv(void);
     void func_02013a00(void);
-    void *_ZN9dBgCh_GndC1Ev(void* p);
-    void _ZN9dBgCh_Gnd12SetObjAndPosERK7Vector3P8dActor_c(void* p, void* v, void* a);
-    void _ZN5dBgCh19StartDetectingWaterEv(void* p);
     int StartWithFarCamera(void);
-    void _ZN9dBgCh_GndD1Ev(void* p);
+    /* local extern: the registrar takes this D1 by address, which C++ cannot spell. */
     void *_ZN7Vector3D1Ev(void *object);
     void func_0203d384(void);
     extern u8 data_0209f2d8;
@@ -24498,7 +24169,6 @@ s32 Player::InitResources()
     void* self = (void*)this;
     char* c = (char*)self;
     Vector3 pos;
-    char rc[0x50];
     unsigned int a, b;
     u8 n8;
     u8 sub;
@@ -24552,8 +24222,8 @@ Ld0:
     if (changed != 0) ((Player *)(c))->func_ov002_020beabc();
     mTrailPos =
         (Vector3 *)func_02073470(0x32, 0xc, 8, (void *)func_0203d384, (void *)_ZN7Vector3D1Ev);
-    mTrailFlags = (u8 *)_ZN6Memory13operator_new2Ej(0x32);
-    *(void**)(&mHeldObjQueue) = _ZN6Memory13operator_new2Ej(0x14);
+    mTrailFlags = (u8 *)Memory::operator_new2(0x32);
+    *(void **)(&mHeldObjQueue) = Memory::operator_new2(0x14);
     __builtin__clear((void*)mHeldObjQueue, 0x14);
     mScaleX = 0x1000;
     mScaleY = 0x1000;
@@ -24587,26 +24257,26 @@ Ld0:
     }
     data_0209f254 = 0;
     if (data_0209f2fc == 1) {
-        if (_ZN8SaveData16HasPlayerLostCapEv() != 0) func_02013a00();
+        if (SaveData::HasPlayerLostCap() != 0)
+            func_02013a00();
     }
     ((Player *)(c))->func_ov002_020c7dd0(n8);
-    _ZN9dBgCh_GndC1Ev(rc);
+    dBgCh_Gnd rc;
     tz = mPosZ;
     tx = mPosX;
     td = data_0209212c;
     pos.x = tx;
     pos.y = td;
     pos.z = tz;
-    ((dBgCh_Gnd *)rc)->mProbeHeight = td * 2;
-    _ZN9dBgCh_Gnd12SetObjAndPosERK7Vector3P8dActor_c(rc, &pos, c);
-    _ZN5dBgCh19StartDetectingWaterEv(rc);
+    rc.mProbeHeight = td * 2;
+    rc.SetObjAndPos(pos, (dActor_c *)c);
+    rc.StartDetectingWater();
     if (data_0209f2f8 == 0x1d) {
         data_0209211c = 2;
         data_0209f200 = 0xe;
     }
     if (StartWithFarCamera() != 0) mUseFarCamera = 1;
     mPeakY = mPosY;
-    _ZN9dBgCh_GndD1Ev(rc);
     return 1;
 }
 }
@@ -24625,7 +24295,6 @@ void func_ov002_020e5948(void* arg0)
     extern void func_ov002_020bec2c(void* p);
     extern s32 func_ov002_020e6bb0(void* p);
     extern void func_ov002_020e6780(void* p);
-    extern s32 _ZNK6Player14GetBodyModelIDEjb(void* thiz, u32 a, s32 b);
     extern s8 data_0209f310[];
     extern u8 data_0209f2d8;
     extern s8 data_0209f2f8;
@@ -24949,7 +24618,7 @@ void func_ov002_020e5948(void* arg0)
 
     player->mShadowModel.InitCylinder();
 
-    bodyId = _ZNK6Player14GetBodyModelIDEjb(c, 3, 0);
+    bodyId = ((Player *)c)->GetBodyModelID(3, 0);
     ma = player->mModels.mBodyModels[bodyId];
     {
         u8 pid = player->mPlayerNo;
@@ -25023,15 +24692,13 @@ void func_ov002_020e6350(char* c){
 // @symbol func_ov002_020e63a4
 extern "C" {
 void func_ov002_020e63a4(char* c){
-    extern int _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(void*,void*,void*,int,int,int,int);
     extern int data_ov002_0210f92c[];
     Player *player = (Player *)c;
     int v[3];
     v[0] = data_ov002_0210f92c[0];
     v[1] = data_ov002_0210f92c[1];
     v[2] = data_ov002_0210f92c[2];
-    _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(&player->mdCcAcPos_c, c, v, 0x28000,
-                                                            0x96000, 0x400008, 0x4f3ffe0);
+    player->mdCcAcPos_c.Init((dActor_c *)c, *(Vector3 *)v, 0x28000, 0x96000, 0x400008, 0x4f3ffe0);
 }
 }
 
@@ -25072,8 +24739,6 @@ typedef char PlayerFileBone_size_must_be_0x40[sizeof(PlayerFileBone) == 0x40 ? 1
 extern "C" {
 void func_ov002_020e640c(char *c)
 {
-    extern int _ZNK6Player14GetBodyModelIDEjb(void *p, u32 a, int b);
-    extern int _Z15ApproachLinear2Rsss(s16 *p, s16 t, s16 step);
     extern void Vec3_RotateYAndTranslate(Vector3 *dst, const Vector3 *src, s16 ang, const Vector3 *t);
     Player *player = (Player *)c;
     char *md;
@@ -25082,7 +24747,7 @@ void func_ov002_020e640c(char *c)
     int id;
     Vector3 d;
 
-    id = _ZNK6Player14GetBodyModelIDEjb(c, player->param1 & 0xff, 0);
+    id = ((Player *)c)->GetBodyModelID(player->param1 & 0xff, 0);
     {
         int *p = (int *)(int)&player->mModels.mBodyModels[id]->data;
         md = (char *)p[2];
@@ -25112,10 +24777,10 @@ void func_ov002_020e640c(char *c)
             ((PlayerBone *)md)[8].rotX = player->mSpineRot[1];
             ((PlayerBone *)md)[8].rotY = player->mSpineRot[2];
         } else if (b == 4) {
-            _Z15ApproachLinear2Rsss(player->mHeadRot, (s16)(((PlayerBone *)md)[15].rotZ - 0x4000),
-                                    0x400);
-            _Z15ApproachLinear2Rsss(&player->mHeadRot[1], ((PlayerBone *)md)[15].rotY, 0x400);
-            _Z15ApproachLinear2Rsss(&player->mHeadRot[2], ((PlayerBone *)md)[15].rotX, 0x400);
+            ApproachLinear2(player->mHeadRot[0], (s16)(((PlayerBone *)md)[15].rotZ - 0x4000),
+                            0x400);
+            ApproachLinear2(player->mHeadRot[1], ((PlayerBone *)md)[15].rotY, 0x400);
+            ApproachLinear2(player->mHeadRot[2], ((PlayerBone *)md)[15].rotX, 0x400);
             ((PlayerBone *)md)[15].rotZ = (s16)(*player->mHeadRot + 0x4000);
             ((PlayerBone *)md)[15].rotY = player->mHeadRot[1];
             ((PlayerBone *)md)[15].rotX = player->mHeadRot[2];
@@ -25248,17 +24913,11 @@ void func_ov002_020e69c0(void *unused)
 }
 }
 
-
-
-/* Static initializer __sinit_ov002_021019d0. define_section puts this
- * function in .init; under cplusplus off the body matches the enrolled
- * C translation unit. */
+/* Static initializer __sinit_ov002_021019d0, placed in .init by define_section.
+ * Still written by hand: the objects it builds keep their ROM-owned .bss
+ * homes, so a compiler-emitted initializer has nothing to define. */
 #pragma define_section initsec ".init" ".init" ".init" far_absolute RX
 #pragma section initsec begin
-#pragma cplusplus off
-/* SharedFilePtr is opaque to this C initializer. It only passes these objects
- * by address; their storage and layout are not defined here. The method-bearing
- * SharedFilePtr.h interface is C++ only. */
 /* Runtime asset handles resolved through the overlay 0 file table. */
 enum sinit_ov002_021019d0_AssetId {
     ASSET_B_MARIO_ALL_BMD = 0x04be,
@@ -25464,2203 +25123,2134 @@ enum sinit_ov002_021019d0_AssetId {
     ASSET_Y_TX_SLEEP_TO_LIE_BTP = 0x0586
 };
 
-struct SharedFilePtr;
-struct P2 { int a, b; };
-struct P4 { struct P2 lo, hi; };
-struct P6 { struct P2 lo, hi, tail; };
-extern int _ZN13SharedFilePtr9ConstructEj(void *, int);
-extern int SharedFilePtr_Construct_TexSeq(void *, int);
-extern int func_02017acc(void *, int);
-extern void func_0203b9b4(int *, int);
-extern void func_020731dc(void *, void *, void **);
-extern struct P2 data_02086b58;
-extern struct P2 data_ov002_02109dd4;
-extern struct P2 data_ov002_02109ddc;
-extern struct P2 data_ov002_02109de4;
-extern struct P2 data_ov002_02109dec;
-extern struct P2 data_ov002_02109df4;
-extern struct P2 data_ov002_02109dfc;
-extern struct P2 data_ov002_02109e04;
-extern struct P2 data_ov002_02109e0c;
-extern struct P2 data_ov002_02109e14;
-extern struct P2 data_ov002_02109e1c;
-extern struct P2 data_ov002_02109e24;
-extern struct P2 data_ov002_02109e2c;
-extern struct P2 data_ov002_02109e34;
-extern struct P2 data_ov002_02109e3c;
-extern struct P2 data_ov002_02109e44;
-extern struct P2 data_ov002_02109e4c;
-extern struct P2 data_ov002_02109e54;
-extern struct P2 data_ov002_02109e5c;
-extern struct P2 data_ov002_02109e64;
-extern struct P2 data_ov002_02109e6c;
-extern struct P2 data_ov002_02109e74;
-extern struct P2 data_ov002_02109e7c;
-extern struct P2 data_ov002_02109e84;
-extern struct P2 data_ov002_02109e8c;
-extern struct P2 data_ov002_02109e94;
-extern struct P2 data_ov002_02109e9c;
-extern struct P2 data_ov002_02109ea4;
-extern struct P2 data_ov002_02109eac;
-extern struct P2 data_ov002_02109eb4;
-extern struct P2 data_ov002_02109ebc;
-extern struct P2 data_ov002_02109ec4;
-extern struct P2 data_ov002_02109ecc;
-extern struct P2 data_ov002_02109ed4;
-extern struct P2 data_ov002_02109edc;
-extern struct P2 data_ov002_02109ee4;
-extern struct P2 data_ov002_02109eec;
-extern struct P2 data_ov002_02109ef4;
-extern struct P2 data_ov002_02109efc;
-extern struct P2 data_ov002_02109f04;
-extern struct P2 data_ov002_02109f0c;
-extern struct P2 data_ov002_02109f14;
-extern struct P2 data_ov002_02109f1c;
-extern struct P2 data_ov002_02109f24;
-extern struct P2 data_ov002_02109f2c;
-extern struct P2 data_ov002_02109f34;
-extern struct P2 data_ov002_02109f3c;
-extern struct P2 data_ov002_02109f44;
-extern struct P2 data_ov002_02109f4c;
-extern struct P2 data_ov002_02109f54;
-extern struct P2 data_ov002_02109f5c;
-extern struct P2 data_ov002_02109f64;
-extern struct P2 data_ov002_02109f6c;
-extern struct P2 data_ov002_02109f74;
-extern struct P2 data_ov002_02109f7c;
-extern struct P2 data_ov002_02109f84;
-extern struct P2 data_ov002_02109f8c;
-extern struct P2 data_ov002_02109f94;
-extern struct P2 data_ov002_02109f9c;
-extern struct P2 data_ov002_02109fa4;
-extern struct P2 data_ov002_02109fac;
-extern struct P2 data_ov002_02109fb4;
-extern struct P2 data_ov002_02109fbc;
-extern struct P2 data_ov002_02109fc4;
-extern struct P2 data_ov002_02109fcc;
-extern struct P2 data_ov002_02109fd4;
-extern struct P2 data_ov002_02109fdc;
-extern struct P2 data_ov002_02109fec;
-extern struct P2 data_ov002_02109ffc;
-extern struct P2 data_ov002_0210a004;
-extern struct P2 data_ov002_0210a00c;
-extern struct P2 data_ov002_0210a014;
-extern struct P2 data_ov002_0210a01c;
-extern struct P2 data_ov002_0210a024;
-extern struct P2 data_ov002_0210a02c;
-extern struct P2 data_ov002_0210a034;
-extern struct P2 data_ov002_0210a03c;
-extern struct P2 data_ov002_0210a044;
-extern struct P2 data_ov002_0210a04c;
-extern struct P2 data_ov002_0210a05c;
-extern struct P2 data_ov002_0210a06c;
-extern struct P2 data_ov002_0210a074;
-extern struct P2 data_ov002_0210a08c;
-extern struct P2 data_ov002_0210a09c;
-extern struct P2 data_ov002_0210a0a4;
-extern struct P2 data_ov002_0210a0ac;
-extern struct P2 data_ov002_0210a0bc;
-extern struct P2 data_ov002_0210a0c4;
-extern struct P2 data_ov002_0210a0cc;
-extern struct P2 data_ov002_0210a0d4;
-extern struct P2 data_ov002_0210a0e4;
-extern struct P2 data_ov002_0210a0ec;
-extern struct P2 data_ov002_0210a0f4;
-extern struct P2 data_ov002_0210a0fc;
-extern struct P2 data_ov002_0210a104;
-extern struct P2 data_ov002_0210a10c;
-extern struct P2 data_ov002_0210a114;
-extern struct P2 data_ov002_0210a11c;
-extern struct P2 data_ov002_0210a12c;
-extern struct P2 data_ov002_0210a134;
-extern struct P2 data_ov002_0210a13c;
-extern struct P2 data_ov002_0210a144;
-extern struct P2 data_ov002_0210a154;
-extern struct P2 data_ov002_0210a15c;
-extern struct P2 data_ov002_0210a164;
-extern struct P2 data_ov002_0210a16c;
-extern struct P2 data_ov002_0210a174;
-extern struct P2 data_ov002_0210a17c;
-extern struct P2 data_ov002_0210a184;
-extern struct P2 data_ov002_0210a18c;
-extern struct P2 data_ov002_0210a194;
-extern struct P2 data_ov002_0210a19c;
-extern struct P2 data_ov002_0210a1a4;
-extern struct P2 data_ov002_0210a1ac;
-extern struct P2 data_ov002_0210a1b4;
-extern struct P2 data_ov002_0210a1bc;
-extern struct P2 data_ov002_0210a1c4;
-extern struct P2 data_ov002_0210a1cc;
-extern struct P2 data_ov002_0210a1dc;
-extern struct P2 data_ov002_0210a1e4;
-extern struct P2 data_ov002_0210a1ec;
-extern struct P2 data_ov002_0210a1f4;
-extern struct P2 data_ov002_0210a1fc;
-extern struct P2 data_ov002_0210a204;
-extern struct P2 data_ov002_0210a20c;
-extern struct P2 data_ov002_0210a214;
-extern struct P2 data_ov002_0210a21c;
-extern struct P2 data_ov002_0210a224;
-extern struct P2 data_ov002_0210a22c;
-extern struct P2 data_ov002_0210a234;
-extern struct P2 data_ov002_0210a23c;
-extern struct P2 data_ov002_0210a244;
-extern struct P2 data_ov002_0210a24c;
-extern struct P2 data_ov002_0210a254;
-extern struct P2 data_ov002_0210a25c;
-extern struct P2 data_ov002_0210a264;
-extern struct P2 data_ov002_0210a26c;
-extern struct P2 data_ov002_0210a274;
-extern struct P2 data_ov002_0210a27c;
-extern struct P2 data_ov002_0210a284;
-extern struct P2 data_ov002_0210a28c;
-extern struct P2 data_ov002_0210a294;
-extern struct P2 data_ov002_0210a29c;
-extern struct P2 data_ov002_0210a2a4;
-extern struct P2 data_ov002_0210a2ac;
-extern struct P2 data_ov002_0210a2b4;
-extern struct P2 data_ov002_0210a2bc;
-extern struct P2 data_ov002_0210a2c4;
-extern struct P2 data_ov002_0210a2cc;
-extern struct P2 data_ov002_0210a2d4;
-extern struct P2 data_ov002_0210a2dc;
-extern struct P2 data_ov002_0210a2e4;
-extern struct P2 data_ov002_0210a2ec;
-extern struct P2 data_ov002_0210a2f4;
-extern struct P2 data_ov002_0210a2fc;
-extern struct P2 data_ov002_0210a304;
-extern struct P2 data_ov002_0210a30c;
-extern struct P2 data_ov002_0210a314;
-extern struct P2 data_ov002_0210a31c;
-extern struct P2 data_ov002_0210a324;
-extern struct P2 data_ov002_0210a32c;
-extern struct P2 data_ov002_0210a334;
-extern struct P2 data_ov002_0210a33c;
-extern struct P2 data_ov002_0210a344;
-extern struct P2 data_ov002_0210a354;
-extern struct P2 data_ov002_0210a35c;
-extern struct P2 data_ov002_0210a364;
-extern struct P2 data_ov002_0210a374;
-extern struct P2 data_ov002_0210a37c;
-extern struct P2 data_ov002_0210a384;
-extern struct P2 data_ov002_0210a38c;
-extern struct P2 data_ov002_0210a394;
-extern struct P2 data_ov002_0210a39c;
-extern struct P2 data_ov002_0210a3a4;
-extern struct P2 data_ov002_0210a3ac;
-extern struct P2 data_ov002_0210a3b4;
-extern struct P2 data_ov002_0210a3bc;
-extern struct P2 data_ov002_0210a3cc;
-extern struct P2 data_ov002_0210a3d4;
-extern struct P2 data_ov002_0210a3e4;
-extern struct P2 data_ov002_0210a3ec;
-extern struct P2 data_ov002_0210a3f4;
-extern struct P2 data_ov002_0210a404;
-extern struct P2 data_ov002_0210a414;
-extern struct P2 data_ov002_0210a41c;
-extern struct P2 data_ov002_0210a42c;
-extern struct P2 data_ov002_0210a43c;
-extern struct P2 data_ov002_0210a444;
-extern struct P2 data_ov002_0210a454;
-extern struct P2 data_ov002_0210a45c;
-extern struct P2 data_ov002_0210a464;
-extern struct P2 data_ov002_0210a46c;
-extern struct P2 data_ov002_0210a47c;
-extern struct P2 data_ov002_0210a484;
-extern struct P2 data_ov002_0210a48c;
-extern struct P2 data_ov002_0210a494;
-extern struct P2 data_ov002_0210a49c;
-extern struct P2 data_ov002_0210a4a4;
-extern struct P2 data_ov002_0210a4ac;
-extern struct P2 data_ov002_0210a4b4;
-extern struct P2 data_ov002_0210a4c4;
-extern struct P2 data_ov002_0210a4cc;
-extern struct P2 data_ov002_0210a4d4;
-extern struct P2 data_ov002_0210a4dc;
-extern struct P2 data_ov002_0210a4e4;
-extern struct P2 data_ov002_0210a4ec;
-extern struct P2 data_ov002_0210a4f4;
-extern struct P2 data_ov002_0210a4fc;
-extern struct P2 data_ov002_0210a504;
-extern struct P2 data_ov002_0210a50c;
-extern struct P2 data_ov002_0210a514;
-extern struct P2 data_ov002_0210a51c;
-extern struct P2 data_ov002_0210a524;
-extern struct P2 data_ov002_0210a52c;
-extern struct P2 data_ov002_0210a53c;
-extern struct P2 data_ov002_0210a544;
-extern struct P2 data_ov002_0210a54c;
-extern char data_ov002_0210e160[];
-extern char data_ov002_0210e168[];
-extern char data_ov002_0210e170[];
-extern char data_ov002_0210e178[];
-extern char data_ov002_0210e180[];
-extern char data_ov002_0210e188[];
-extern char data_ov002_0210e190[];
-extern char data_ov002_0210e198[];
-extern char data_ov002_0210e1a0[];
-extern char data_ov002_0210e1a8[];
-extern char data_ov002_0210e1b0[];
-extern char data_ov002_0210e1b8[];
-extern char data_ov002_0210e1c0[];
-extern char data_ov002_0210e1c8[];
-extern char data_ov002_0210e1d0[];
-extern char data_ov002_0210e1d8[];
-extern char data_ov002_0210e1e0[];
-extern char data_ov002_0210e1e8[];
-extern char data_ov002_0210e1f0[];
-extern char data_ov002_0210e1f8[];
-extern char data_ov002_0210e200[];
-extern char data_ov002_0210e208[];
-extern char data_ov002_0210e210[];
-extern char data_ov002_0210e218[];
-extern char data_ov002_0210e220[];
-extern char data_ov002_0210e228[];
-extern char data_ov002_0210e230[];
-extern char data_ov002_0210e238[];
-extern char data_ov002_0210e240[];
-extern char data_ov002_0210e248[];
-extern char data_ov002_0210e250[];
-extern char data_ov002_0210e258[];
-extern char data_ov002_0210e260[];
-extern char data_ov002_0210e268[];
-extern char data_ov002_0210e270[];
-extern char data_ov002_0210e278[];
-extern char data_ov002_0210e280[];
-extern char data_ov002_0210e288[];
-extern char data_ov002_0210e290[];
-extern char data_ov002_0210e298[];
-extern char data_ov002_0210e2a0[];
-extern char data_ov002_0210e2a8[];
-extern char data_ov002_0210e2b0[];
-extern char data_ov002_0210e2b8[];
-extern char data_ov002_0210e2c0[];
-extern char data_ov002_0210e2c8[];
-extern char data_ov002_0210e2d0[];
-extern char data_ov002_0210e2d8[];
-extern char data_ov002_0210e2e0[];
-extern char data_ov002_0210e2e8[];
-extern char data_ov002_0210e2f0[];
-extern char data_ov002_0210e2f8[];
-extern char data_ov002_0210e300[];
-extern char data_ov002_0210e308[];
-extern char data_ov002_0210e310[];
-extern char data_ov002_0210e318[];
-extern char data_ov002_0210e320[];
-extern char data_ov002_0210e328[];
-extern char data_ov002_0210e330[];
-extern char data_ov002_0210e338[];
-extern char data_ov002_0210e340[];
-extern char data_ov002_0210e348[];
-extern char data_ov002_0210e350[];
-extern char data_ov002_0210e358[];
-extern char data_ov002_0210e360[];
-extern char data_ov002_0210e368[];
-extern char data_ov002_0210e370[];
-extern char data_ov002_0210e378[];
-extern char data_ov002_0210e380[];
-extern char data_ov002_0210e388[];
-extern char data_ov002_0210e390[];
-extern char data_ov002_0210e398[];
-extern char data_ov002_0210e3a0[];
-extern char data_ov002_0210e3a8[];
-extern char data_ov002_0210e3b0[];
-extern char data_ov002_0210e3b8[];
-extern char data_ov002_0210e3c0[];
-extern char data_ov002_0210e3c8[];
-extern char data_ov002_0210e3d0[];
-extern char data_ov002_0210e3d8[];
-extern char data_ov002_0210e3e0[];
-extern char data_ov002_0210e3e8[];
-extern char data_ov002_0210e3f0[];
-extern char data_ov002_0210e3f8[];
-extern char data_ov002_0210e400[];
-extern char data_ov002_0210e408[];
-extern char data_ov002_0210e410[];
-extern char data_ov002_0210e418[];
-extern char data_ov002_0210e420[];
-extern char data_ov002_0210e428[];
-extern char data_ov002_0210e430[];
-extern char data_ov002_0210e438[];
-extern char data_ov002_0210e440[];
-extern char data_ov002_0210e448[];
-extern char data_ov002_0210e450[];
-extern char data_ov002_0210e458[];
-extern char data_ov002_0210e460[];
-extern char data_ov002_0210e468[];
-extern char data_ov002_0210e470[];
-extern char data_ov002_0210e478[];
-extern char data_ov002_0210e480[];
-extern char data_ov002_0210e488[];
-extern char data_ov002_0210e490[];
-extern char data_ov002_0210e498[];
-extern char data_ov002_0210e4a0[];
-extern char data_ov002_0210e4a8[];
-extern char data_ov002_0210e4b0[];
-extern char data_ov002_0210e4b8[];
-extern char data_ov002_0210e4c0[];
-extern char data_ov002_0210e4c8[];
-extern char data_ov002_0210e4d0[];
-extern char data_ov002_0210e4d8[];
-extern char data_ov002_0210e4e0[];
-extern char data_ov002_0210e4e8[];
-extern char data_ov002_0210e4f0[];
-extern char data_ov002_0210e4f8[];
-extern char data_ov002_0210e500[];
-extern char data_ov002_0210e508[];
-extern char data_ov002_0210e510[];
-extern char data_ov002_0210e518[];
-extern char data_ov002_0210e520[];
-extern char data_ov002_0210e528[];
-extern char data_ov002_0210e530[];
-extern char data_ov002_0210e538[];
-extern char data_ov002_0210e540[];
-extern char data_ov002_0210e548[];
-extern char data_ov002_0210e550[];
-extern char data_ov002_0210e558[];
-extern char data_ov002_0210e560[];
-extern char data_ov002_0210e568[];
-extern char data_ov002_0210e570[];
-extern char data_ov002_0210e578[];
-extern char data_ov002_0210e580[];
-extern char data_ov002_0210e588[];
-extern char data_ov002_0210e590[];
-extern char data_ov002_0210e598[];
-extern char data_ov002_0210e5a0[];
-extern char data_ov002_0210e5a8[];
-extern char data_ov002_0210e5b0[];
-extern char data_ov002_0210e5b8[];
-extern char data_ov002_0210e5c0[];
-extern char data_ov002_0210e5c8[];
-extern char data_ov002_0210e5d0[];
-extern char data_ov002_0210e5d8[];
-extern char data_ov002_0210e5e0[];
-extern char data_ov002_0210e5e8[];
-extern char data_ov002_0210e5f0[];
-extern char data_ov002_0210e5f8[];
-extern char data_ov002_0210e600[];
-extern char data_ov002_0210e608[];
-extern char data_ov002_0210e610[];
-extern char data_ov002_0210e618[];
-extern char data_ov002_0210e620[];
-extern char data_ov002_0210e628[];
-extern char data_ov002_0210e630[];
-extern char data_ov002_0210e638[];
-extern char data_ov002_0210e640[];
-extern char data_ov002_0210e648[];
-extern char data_ov002_0210e650[];
-extern char data_ov002_0210e658[];
-extern char data_ov002_0210e660[];
-extern char data_ov002_0210e668[];
-extern char data_ov002_0210e670[];
-extern char data_ov002_0210e678[];
-extern char data_ov002_0210e680[];
-extern char data_ov002_0210e688[];
-extern char data_ov002_0210e690[];
-extern char data_ov002_0210e698[];
-extern char data_ov002_0210e6a0[];
-extern char data_ov002_0210e6a8[];
-extern char data_ov002_0210e6b0[];
-extern char data_ov002_0210e6b8[];
-extern char data_ov002_0210e6c0[];
-extern char data_ov002_0210e6c8[];
-extern char data_ov002_0210e6d0[];
-extern char data_ov002_0210e6d8[];
-extern char data_ov002_0210e6e0[];
-extern char data_ov002_0210e6e8[];
-extern char data_ov002_0210e6f0[];
-extern char data_ov002_0210e6f8[];
-extern char data_ov002_0210e700[];
-extern char data_ov002_0210e708[];
-extern char data_ov002_0210e710[];
-extern char data_ov002_0210e718[];
-extern char data_ov002_0210e720[];
-extern char data_ov002_0210e728[];
-extern char data_ov002_0210e730[];
-extern char data_ov002_0210e738[];
-extern char data_ov002_0210e740[];
-extern char data_ov002_0210e748[];
-extern char data_ov002_0210e750[];
-extern char data_ov002_0210e758[];
-extern char data_ov002_0210e760[];
-extern char data_ov002_0210e768[];
-extern char data_ov002_0210e770[];
-extern char data_ov002_0210e778[];
-extern char data_ov002_0210e780[];
-extern char data_ov002_0210e788[];
-extern char data_ov002_0210e790[];
-extern char data_ov002_0210e798[];
-extern char data_ov002_0210e7a0[];
-extern char data_ov002_0210e7a8[];
-extern char data_ov002_0210e7b0[];
-extern char data_ov002_0210e7c0[];
-extern char data_ov002_0210e7c8[];
-extern char data_ov002_0210e7d0[];
-extern char data_ov002_0210e7d8[];
-extern char data_ov002_0210e7e0[];
-extern char data_ov002_0210e7e8[];
-extern char data_ov002_0210e7f0[];
-extern char data_ov002_0210e7f8[];
-extern char data_ov002_0210e800[];
-extern char data_ov002_0210e808[];
-extern char data_ov002_0210e810[];
-extern char data_ov002_0210e818[];
-extern char data_ov002_0210e820[];
-extern char data_ov002_0210e828[];
-extern char data_ov002_0210e830[];
-extern char data_ov002_0210e838[];
-extern char data_ov002_0210e840[];
-extern char data_ov002_0210e848[];
-extern char data_ov002_0210e850[];
-extern char data_ov002_0210e858[];
-extern char data_ov002_0210e860[];
-extern char data_ov002_0210e868[];
-extern char data_ov002_0210e870[];
-extern char data_ov002_0210e878[];
-extern char data_ov002_0210e880[];
-extern char data_ov002_0210e888[];
-extern char data_ov002_0210e890[];
-extern char data_ov002_0210e898[];
-extern char data_ov002_0210e8a0[];
-extern char data_ov002_0210e8a8[];
-extern char data_ov002_0210e8b0[];
-extern char data_ov002_0210e8b8[];
-extern char data_ov002_0210e8c0[];
-extern char data_ov002_0210e8c8[];
-extern struct SharedFilePtr data_ov002_0210e8d0;
-extern char data_ov002_0210e8d8[];
-extern char data_ov002_0210e8e0[];
-extern char data_ov002_0210e8e8[];
-extern char data_ov002_0210e8f0[];
-extern char data_ov002_0210e8f8[];
-extern char data_ov002_0210e900[];
-extern char data_ov002_0210e908[];
-extern char data_ov002_0210e910[];
-extern char data_ov002_0210e918[];
-extern char data_ov002_0210e920[];
-extern char data_ov002_0210e928[];
-extern char data_ov002_0210e930[];
-extern char data_ov002_0210e938[];
-extern char data_ov002_0210e940[];
-extern char data_ov002_0210e948[];
-extern char data_ov002_0210e950[];
-extern char data_ov002_0210e958[];
-extern char data_ov002_0210e960[];
-extern char data_ov002_0210e968[];
-extern char data_ov002_0210e970[];
-extern char data_ov002_0210e978[];
-extern char data_ov002_0210e980[];
-extern char data_ov002_0210e988[];
-extern char data_ov002_0210e990[];
-extern char data_ov002_0210e998[];
-extern char data_ov002_0210e9a0[];
-extern char data_ov002_0210e9a8[];
-extern char data_ov002_0210e9b0[];
-extern char data_ov002_0210e9b8[];
-extern char data_ov002_0210e9c0[];
-extern char data_ov002_0210e9c8[];
-extern char data_ov002_0210e9d0[];
-extern char data_ov002_0210e9d8[];
-extern char data_ov002_0210e9e0[];
-extern char data_ov002_0210e9e8[];
-extern char data_ov002_0210e9f0[];
-extern char data_ov002_0210e9f8[];
-extern char data_ov002_0210ea00[];
-extern char data_ov002_0210ea08[];
-extern char data_ov002_0210ea10[];
-extern char data_ov002_0210ea18[];
-extern char data_ov002_0210ea20[];
-extern char data_ov002_0210ea28[];
-extern char data_ov002_0210ea30[];
-extern char data_ov002_0210ea38[];
-extern char data_ov002_0210ea40[];
-extern char data_ov002_0210ea48[];
-extern char data_ov002_0210ea50[];
-extern char data_ov002_0210ea58[];
-extern char data_ov002_0210ea60[];
-extern char data_ov002_0210ea68[];
-extern char data_ov002_0210ea70[];
-extern char data_ov002_0210ea78[];
-extern char data_ov002_0210ea80[];
-extern char data_ov002_0210ea88[];
-extern char data_ov002_0210ea90[];
-extern char data_ov002_0210ea98[];
-extern char data_ov002_0210eaa0[];
-extern char data_ov002_0210eaa8[];
-extern char data_ov002_0210eab0[];
-extern char data_ov002_0210eab8[];
-extern char data_ov002_0210eac0[];
-extern char data_ov002_0210eac8[];
-extern char data_ov002_0210ead0[];
-extern char data_ov002_0210ead8[];
-extern char data_ov002_0210eae0[];
-extern char data_ov002_0210eae8[];
-extern char data_ov002_0210eaf0[];
-extern char data_ov002_0210eaf8[];
-extern char data_ov002_0210eb00[];
-extern char data_ov002_0210eb08[];
-extern char data_ov002_0210eb10[];
-extern char data_ov002_0210eb18[];
-extern struct SharedFilePtr data_ov002_0210eb20;
-extern char data_ov002_0210eb28[];
-extern char data_ov002_0210eb30[];
-extern char data_ov002_0210eb38[];
-extern char data_ov002_0210eb40[];
-extern char data_ov002_0210eb48[];
-extern char data_ov002_0210eb50[];
-extern char data_ov002_0210eb58[];
-extern char data_ov002_0210eb60[];
-extern char data_ov002_0210eb68[];
-extern char data_ov002_0210eb70[];
-extern char data_ov002_0210eb78[];
-extern char data_ov002_0210eb80[];
-extern char data_ov002_0210eb88[];
-extern char data_ov002_0210eb90[];
-extern char data_ov002_0210eb98[];
-extern char data_ov002_0210eba0[];
-extern char data_ov002_0210eba8[];
-extern char data_ov002_0210ebb0[];
-extern struct SharedFilePtr data_ov002_0210ebb8;
-extern char data_ov002_0210ebc0[];
-extern char data_ov002_0210ebc8[];
-extern char data_ov002_0210ebd0[];
-extern struct SharedFilePtr data_ov002_0210ebd8;
-extern char data_ov002_0210ebe0[];
-extern char data_ov002_0210ebe8[];
-extern char data_ov002_0210ebf0[];
-extern char data_ov002_0210ebf8[];
-extern char data_ov002_0210ec00[];
-extern char data_ov002_0210ec08[];
-extern char data_ov002_0210ec10[];
-extern char data_ov002_0210ec18[];
-extern char data_ov002_0210ec20[];
-extern char data_ov002_0210ec28[];
-extern char data_ov002_0210ec30[];
-extern char data_ov002_0210ec38[];
-extern char data_ov002_0210ec40[];
-extern char data_ov002_0210ec48[];
-extern char data_ov002_0210ec50[];
-extern char data_ov002_0210ec58[];
-extern char data_ov002_0210ec60[];
-extern char data_ov002_0210ec68[];
-extern char data_ov002_0210ec70[];
-extern char data_ov002_0210ec78[];
-extern char data_ov002_0210ec80[];
-extern char data_ov002_0210ec88[];
-extern char data_ov002_0210ec90[];
-extern char data_ov002_0210ec98[];
-extern char data_ov002_0210eca0[];
-extern char data_ov002_0210eca8[];
-extern char data_ov002_0210ecb0[];
-extern char data_ov002_0210ecb8[];
-extern char data_ov002_0210ecc0[];
-extern char data_ov002_0210ecc8[];
-extern char data_ov002_0210ecd0[];
-extern char data_ov002_0210ecd8[];
-extern char data_ov002_0210ece0[];
-extern char data_ov002_0210ece8[];
-extern char data_ov002_0210ecf0[];
-extern char data_ov002_0210ecf8[];
-extern char data_ov002_0210ed00[];
-extern char data_ov002_0210ed08[];
-extern char data_ov002_0210ed10[];
-extern char data_ov002_0210ed18[];
-extern char data_ov002_0210ed20[];
-extern char data_ov002_0210ed28[];
-extern char data_ov002_0210ed30[];
-extern char data_ov002_0210ed38[];
-extern char data_ov002_0210ed40[];
-extern char data_ov002_0210ed48[];
-extern char data_ov002_0210ed50[];
-extern char data_ov002_0210ed58[];
-extern char data_ov002_0210ed60[];
-extern char data_ov002_0210ed68[];
-extern char data_ov002_0210ed74[];
-extern char data_ov002_0210ed80[];
-extern char data_ov002_0210ed8c[];
-extern char data_ov002_0210ed98[];
-extern char data_ov002_0210eda4[];
-extern char data_ov002_0210edb0[];
-extern char data_ov002_0210edbc[];
-extern char data_ov002_0210edc8[];
-extern char data_ov002_0210edd4[];
-extern char data_ov002_0210ede0[];
-extern char data_ov002_0210edec[];
-extern char data_ov002_0210edf8[];
-extern char data_ov002_0210ee04[];
-extern char data_ov002_0210ee10[];
-extern char data_ov002_0210ee1c[];
-extern char data_ov002_0210ee28[];
-extern char data_ov002_0210ee34[];
-extern char data_ov002_0210ee40[];
-extern char data_ov002_0210ee4c[];
-extern char data_ov002_0210ee58[];
-extern char data_ov002_0210ee64[];
-extern char data_ov002_0210ee70[];
-extern char data_ov002_0210ee7c[];
-extern char data_ov002_0210ee88[];
-extern char data_ov002_0210ee94[];
-extern char data_ov002_0210eea0[];
-extern char data_ov002_0210eeac[];
-extern char data_ov002_0210eeb8[];
-extern char data_ov002_0210eec4[];
-extern char data_ov002_0210eed0[];
-extern char data_ov002_0210eedc[];
-extern char data_ov002_0210eee8[];
-extern char data_ov002_0210eef4[];
-extern char data_ov002_0210ef00[];
-extern char data_ov002_0210ef0c[];
-extern char data_ov002_0210ef18[];
-extern char data_ov002_0210ef24[];
-extern char data_ov002_0210ef30[];
-extern char data_ov002_0210ef3c[];
-extern char data_ov002_0210ef48[];
-extern char data_ov002_0210ef54[];
-extern char data_ov002_0210ef60[];
-extern char data_ov002_0210ef6c[];
-extern char data_ov002_0210ef78[];
-extern char data_ov002_0210ef84[];
-extern char data_ov002_0210ef90[];
-extern char data_ov002_0210ef9c[];
-extern char data_ov002_0210efa8[];
-extern char data_ov002_0210efb4[];
-extern char data_ov002_0210efc0[];
-extern char data_ov002_0210efcc[];
-extern char data_ov002_0210efd8[];
-extern char data_ov002_0210efe4[];
-extern char data_ov002_0210eff0[];
-extern char data_ov002_0210effc[];
-extern char data_ov002_0210f008[];
-extern char data_ov002_0210f014[];
-extern char data_ov002_0210f020[];
-extern char data_ov002_0210f02c[];
-extern char data_ov002_0210f038[];
-extern char data_ov002_0210f044[];
-extern char data_ov002_0210f050[];
-extern char data_ov002_0210f05c[];
-extern char data_ov002_0210f068[];
-extern char data_ov002_0210f074[];
-extern char data_ov002_0210f080[];
-extern char data_ov002_0210f08c[];
-extern char data_ov002_0210f098[];
-extern char data_ov002_0210f0a4[];
-extern char data_ov002_0210f0b0[];
-extern char data_ov002_0210f0bc[];
-extern char data_ov002_0210f0c8[];
-extern char data_ov002_0210f0d4[];
-extern char data_ov002_0210f0e0[];
-extern char data_ov002_0210f0ec[];
-extern char data_ov002_0210f0f8[];
-extern char data_ov002_0210f104[];
-extern char data_ov002_0210f110[];
-extern char data_ov002_0210f11c[];
-extern char data_ov002_0210f128[];
-extern char data_ov002_0210f134[];
-extern char data_ov002_0210f140[];
-extern char data_ov002_0210f14c[];
-extern char data_ov002_0210f158[];
-extern char data_ov002_0210f164[];
-extern char data_ov002_0210f170[];
-extern char data_ov002_0210f17c[];
-extern char data_ov002_0210f188[];
-extern char data_ov002_0210f194[];
-extern char data_ov002_0210f1a0[];
-extern char data_ov002_0210f1b8[];
-extern char data_ov002_0210f1c4[];
-extern char data_ov002_0210f1d0[];
-extern char data_ov002_0210f1dc[];
-extern char data_ov002_0210f1e8[];
-extern char data_ov002_0210f1f4[];
-extern char data_ov002_0210f200[];
-extern char data_ov002_0210f20c[];
-extern char data_ov002_0210f218[];
-extern char data_ov002_0210f230[];
-extern char data_ov002_0210f23c[];
-extern char data_ov002_0210f248[];
-extern char data_ov002_0210f254[];
-extern char data_ov002_0210f260[];
-extern char data_ov002_0210f26c[];
-extern char data_ov002_0210f278[];
-extern char data_ov002_0210f284[];
-extern char data_ov002_0210f290[];
-extern char data_ov002_0210f29c[];
-extern char data_ov002_0210f2a8[];
-extern char data_ov002_0210f2b4[];
-extern char data_ov002_0210f2c0[];
-extern char data_ov002_0210f2cc[];
-extern char data_ov002_0210f2d8[];
-extern char data_ov002_0210f2e4[];
-extern char data_ov002_0210f2f0[];
-extern char data_ov002_0210f2fc[];
-extern char data_ov002_0210f314[];
-extern char data_ov002_0210f320[];
-extern char data_ov002_0210f32c[];
-extern char data_ov002_0210f338[];
-extern char data_ov002_0210f35c[];
-extern char data_ov002_0210f368[];
-extern char data_ov002_0210f374[];
-extern char data_ov002_0210f380[];
-extern char data_ov002_0210f38c[];
-extern char data_ov002_0210f398[];
-extern char data_ov002_0210f3a4[];
-extern char data_ov002_0210f3bc[];
-extern char data_ov002_0210f3c8[];
-extern char data_ov002_0210f3d4[];
-extern char data_ov002_0210f3e0[];
-extern char data_ov002_0210f3ec[];
-extern char data_ov002_0210f3f8[];
-extern char data_ov002_0210f404[];
-extern char data_ov002_0210f410[];
-extern char data_ov002_0210f41c[];
-extern char data_ov002_0210f428[];
-extern char data_ov002_0210f434[];
-extern char data_ov002_0210f440[];
-extern char data_ov002_0210f44c[];
-extern char data_ov002_0210f458[];
-extern char data_ov002_0210f464[];
-extern char data_ov002_0210f470[];
-extern char data_ov002_0210f47c[];
-extern char data_ov002_0210f488[];
-extern char data_ov002_0210f494[];
-extern char data_ov002_0210f4a0[];
-extern char data_ov002_0210f4ac[];
-extern char data_ov002_0210f4b8[];
-extern char data_ov002_0210f4c4[];
-extern char data_ov002_0210f4d0[];
-extern char data_ov002_0210f4dc[];
-extern char data_ov002_0210f4e8[];
-extern char data_ov002_0210f4f4[];
-extern char data_ov002_0210f500[];
-extern char data_ov002_0210f50c[];
-extern char data_ov002_0210f518[];
-extern char data_ov002_0210f524[];
-extern char data_ov002_0210f530[];
-extern char data_ov002_0210f53c[];
-extern char data_ov002_0210f548[];
-extern char data_ov002_0210f554[];
-extern char data_ov002_0210f560[];
-extern char data_ov002_0210f56c[];
-extern char data_ov002_0210f578[];
-extern char data_ov002_0210f584[];
-extern char data_ov002_0210f590[];
-extern char data_ov002_0210f59c[];
-extern char data_ov002_0210f5a8[];
-extern char data_ov002_0210f5b4[];
-extern char data_ov002_0210f5c0[];
-extern char data_ov002_0210f5cc[];
-extern char data_ov002_0210f5d8[];
-extern char data_ov002_0210f5e4[];
-extern char data_ov002_0210f5f0[];
-extern char data_ov002_0210f5fc[];
-extern char data_ov002_0210f608[];
-extern char data_ov002_0210f614[];
-extern char data_ov002_0210f620[];
-extern char data_ov002_0210f62c[];
-extern char data_ov002_0210f638[];
-extern char data_ov002_0210f644[];
-extern char data_ov002_0210f650[];
-extern char data_ov002_0210f65c[];
-extern char data_ov002_0210f668[];
-extern char data_ov002_0210f674[];
-extern char data_ov002_0210f680[];
-extern char data_ov002_0210f68c[];
-extern char data_ov002_0210f698[];
-extern char data_ov002_0210f6a4[];
-extern char data_ov002_0210f6b0[];
-extern char data_ov002_0210f6bc[];
-extern char data_ov002_0210f6c8[];
-extern char data_ov002_0210f6d4[];
-extern char data_ov002_0210f6e0[];
-extern char data_ov002_0210f6ec[];
-extern char data_ov002_0210f6f8[];
-extern char data_ov002_0210f704[];
-extern char data_ov002_0210f710[];
-extern char data_ov002_0210f71c[];
-extern char data_ov002_0210f728[];
-extern char data_ov002_0210f734[];
-extern char data_ov002_0210f740[];
-extern char data_ov002_0210f74c[];
-extern char data_ov002_0210f758[];
-extern char data_ov002_0210f764[];
-extern char data_ov002_0210f770[];
-extern char data_ov002_0210f77c[];
-extern char data_ov002_0210f788[];
-extern char data_ov002_0210f794[];
-extern char data_ov002_0210f7a0[];
-extern char data_ov002_0210f7ac[];
-extern char data_ov002_0210f7b8[];
-extern char data_ov002_0210f7c4[];
-extern char data_ov002_0210f7d0[];
-extern char data_ov002_0210f7dc[];
-extern char data_ov002_0210f7e8[];
-extern char data_ov002_0210f800[];
-extern char data_ov002_0210f80c[];
-extern char data_ov002_0210f818[];
-extern char data_ov002_0210f830[];
-extern char data_ov002_0210f83c[];
-extern char data_ov002_0210f848[];
-extern char data_ov002_0210f854[];
-extern char data_ov002_0210f860[];
-extern char data_ov002_0210f86c[];
-extern char data_ov002_0210f878[];
-extern char data_ov002_0210f884[];
-extern char data_ov002_0210f890[];
-extern char data_ov002_0210f8a8[];
-extern char data_ov002_0210f8b4[];
-extern char data_ov002_0210f8c0[];
-extern char data_ov002_0210f8d8[];
-extern char data_ov002_0210f8e4[];
-extern char data_ov002_0210f8f0[];
-extern char data_ov002_0210f8fc[];
-extern char data_ov002_0210f908[];
-extern char data_ov002_0210f914[];
-extern char data_ov002_0210f920[];
-extern char data_ov002_0210f938[];
-extern char data_ov002_0210f944[];
-extern char data_ov002_0210f950[];
-extern char data_ov002_0210f95c[];
-extern char data_ov002_0210f968[];
-extern char data_ov002_0210f974[];
-extern char data_ov002_0210f980[];
-extern char data_ov002_0210f98c[];
-extern char data_ov002_0210f998[];
-extern char data_ov002_0210f9a4[];
-extern char data_ov002_0210f9b0[];
-extern char data_ov002_0210f9bc[];
-extern char data_ov002_0210f9c8[];
-extern char data_ov002_0210f9d4[];
-extern char data_ov002_0210f9e0[];
-extern char data_ov002_0210f9ec[];
-extern char data_ov002_0210f9f8[];
-extern char data_ov002_0210fa04[];
-extern char data_ov002_0210fa10[];
-extern char data_ov002_0210fa1c[];
-extern char data_ov002_0210fa28[];
-extern char data_ov002_0210fa34[];
-extern char data_ov002_0210fa40[];
-extern char data_ov002_0210fa4c[];
-extern char data_ov002_0210fa58[];
-extern char data_ov002_0210fa64[];
-extern char data_ov002_0210fa70[];
-extern char data_ov002_0210fa7c[];
-extern char data_ov002_0210fa88[];
-extern char data_ov002_0210fa94[];
-extern char data_ov002_0210faa0[];
-extern char data_ov002_0210faac[];
-extern char data_ov002_0210fab8[];
-extern char data_ov002_0210fac4[];
-extern char data_ov002_0210fad0[];
-extern char data_ov002_0210fadc[];
-extern char data_ov002_0210fae8[];
-extern char data_ov002_0210faf4[];
-extern char data_ov002_0210fb00[];
-extern char data_ov002_0210fb0c[];
-extern char data_ov002_0210fb18[];
-extern char data_ov002_0210fb24[];
-extern char data_ov002_0210fb30[];
-extern char data_ov002_0210fb3c[];
-extern char data_ov002_0210fb48[];
-extern char data_ov002_0210fb54[];
-extern char data_ov002_0210fb60[];
-extern char data_ov002_0210fb6c[];
-extern char data_ov002_0210fb78[];
-extern char data_ov002_0210fb84[];
-extern char data_ov002_0210fb90[];
-extern char data_ov002_0210fb9c[];
-extern char data_ov002_0210fba8[];
-extern char data_ov002_0210fbb4[];
-extern char data_ov002_0210fbc0[];
-extern char data_ov002_0210fbcc[];
-extern char data_ov002_0210fbd8[];
-extern char data_ov002_0210fbe4[];
-extern char data_ov002_0210fbf0[];
-extern char data_ov002_0210fbfc[];
-extern char data_ov002_0210fc08[];
-extern char data_ov002_0210fc14[];
-extern char data_ov002_0210fc20[];
-extern char data_ov002_0210fc2c[];
-extern char data_ov002_0210fc38[];
-extern char data_ov002_0210fc44[];
-extern char data_ov002_0210fc50[];
-extern char data_ov002_0210fc5c[];
-extern char data_ov002_0210fc68[];
-extern char data_ov002_0210fc74[];
-extern char data_ov002_0210fc80[];
-extern char data_ov002_0210fc8c[];
-extern char data_ov002_0210fc98[];
-extern char data_ov002_0210fca4[];
-extern char data_ov002_0210fcb0[];
-extern char data_ov002_0210fcbc[];
-extern char data_ov002_0210fcc8[];
-extern char data_ov002_0210fcd4[];
-extern char data_ov002_0210fce0[];
-extern char data_ov002_0210fcec[];
-extern char data_ov002_0210fcf8[];
-extern char data_ov002_0210fd04[];
-extern char data_ov002_0210fd10[];
-extern char data_ov002_0210fd1c[];
-extern char data_ov002_0210fd28[];
-extern char data_ov002_0210fd34[];
-extern char data_ov002_0210fd40[];
-extern char data_ov002_0210fd4c[];
-extern char data_ov002_0210fd58[];
-extern char data_ov002_0210fd64[];
-extern char data_ov002_0210fd70[];
-extern char data_ov002_0210fd7c[];
-extern char data_ov002_0210fd88[];
-extern char data_ov002_0210fd94[];
-extern char data_ov002_0210fda0[];
-extern char data_ov002_0210fdac[];
-extern char data_ov002_0210fdb8[];
-extern char data_ov002_0210fdc4[];
-extern char data_ov002_0210fdd0[];
-extern char data_ov002_0210fddc[];
-extern char data_ov002_0210fde8[];
-extern char data_ov002_0210fdf4[];
-extern char data_ov002_0210fe00[];
-extern char data_ov002_0210fe0c[];
-extern char data_ov002_0210fe18[];
-extern char data_ov002_0210fe24[];
-extern char data_ov002_0210fe30[];
-extern char data_ov002_0210fe3c[];
-extern char data_ov002_0210fe48[];
-extern char data_ov002_0210fe54[];
-extern char data_ov002_0210fe60[];
-extern char data_ov002_0210fe6c[];
-extern char data_ov002_0210fe78[];
-extern char data_ov002_0210fe84[];
-extern char data_ov002_0210fe90[];
-extern char data_ov002_0210fe9c[];
-extern char data_ov002_0210fea8[];
-extern char data_ov002_0210feb4[];
-extern char data_ov002_0210fec0[];
-extern char data_ov002_0210fecc[];
-extern char data_ov002_0210fed8[];
-extern char data_ov002_0210fee4[];
-extern char data_ov002_0210fef0[];
-extern char data_ov002_0210fefc[];
-extern char data_ov002_0210ff08[];
-extern char data_ov002_0210ff14[];
-extern char data_ov002_0210ff20[];
-extern char data_ov002_0210ff2c[];
-extern char data_ov002_0210ff38[];
-extern char data_ov002_0210ff44[];
-extern char data_ov002_0210ff50[];
-extern char data_ov002_0210ff5c[];
-extern char data_ov002_0210ff68[];
-extern char data_ov002_0210ff74[];
-extern char data_ov002_0210ff80[];
-extern char data_ov002_0210ff8c[];
-extern char data_ov002_0210ff98[];
-extern char data_ov002_0210ffa4[];
-extern char data_ov002_0210ffb0[];
-extern char data_ov002_0210ffbc[];
-extern char data_ov002_0210ffc8[];
-extern char data_ov002_0210ffd4[];
-extern char data_ov002_0210ffe0[];
-extern struct P6 data_ov002_0210ffec;
-extern struct P6 data_ov002_02110004;
-extern struct P6 data_ov002_0211001c;
-extern struct P6 data_ov002_02110034;
-extern struct P6 data_ov002_0211004c;
-extern struct P6 data_ov002_02110064;
-extern struct P6 data_ov002_0211007c;
-extern struct P6 data_ov002_02110094;
-extern struct P6 data_ov002_021100ac;
-extern struct P6 data_ov002_021100c4;
-extern struct P6 data_ov002_021100dc;
-extern struct P6 data_ov002_021100f4;
-extern struct P6 data_ov002_0211010c;
-extern struct P6 data_ov002_02110124;
-extern struct P6 data_ov002_0211013c;
-extern struct P6 data_ov002_02110154;
-extern struct P6 data_ov002_0211016c;
-extern struct P6 data_ov002_02110184;
-extern struct P6 data_ov002_0211019c;
-extern struct P6 data_ov002_021101b4;
-extern struct P6 data_ov002_021101cc;
-extern struct P6 data_ov002_021101e4;
-extern struct P6 data_ov002_021101fc;
-extern struct P6 data_ov002_02110214;
-extern struct P6 data_ov002_0211022c;
-extern struct P6 data_ov002_02110244;
-extern struct P6 data_ov002_0211025c;
-extern struct P6 data_ov002_02110274;
-extern struct P6 data_ov002_0211028c;
-extern struct P6 data_ov002_021102a4;
-extern struct P6 data_ov002_021102bc;
-extern struct P6 data_ov002_021102d4;
-extern struct P6 data_ov002_021102ec;
-extern struct P6 data_ov002_02110304;
-extern struct P6 data_ov002_0211031c;
-extern struct P6 data_ov002_02110334;
-extern struct P6 data_ov002_0211034c;
-extern struct P6 data_ov002_02110364;
-extern struct P6 data_ov002_0211037c;
-extern struct P6 data_ov002_02110394;
-extern struct P6 data_ov002_021103ac;
-extern struct P6 data_ov002_021103c4;
-extern struct P6 data_ov002_021103dc;
-extern struct P6 data_ov002_021103f4;
-extern struct P6 data_ov002_0211040c;
-extern struct P6 data_ov002_02110424;
-extern struct P6 data_ov002_0211043c;
-extern struct P6 data_ov002_02110454;
-extern struct P6 data_ov002_0211046c;
-extern struct P6 data_ov002_02110484;
-extern struct P6 data_ov002_0211049c;
-extern struct P6 data_ov002_021104b4;
-extern struct P6 data_ov002_021104cc;
-extern struct P6 data_ov002_021104e4;
-extern struct P6 data_ov002_021104fc;
-extern struct P6 data_ov002_02110514;
-extern struct P6 data_ov002_0211052c;
-extern struct P6 data_ov002_02110544;
-extern struct P6 data_ov002_0211055c;
-extern struct P6 data_ov002_02110574;
-extern struct P6 data_ov002_0211058c;
-extern struct P6 data_ov002_021105a4;
-extern struct P6 data_ov002_021105bc;
-extern struct P6 data_ov002_021105d4;
-extern struct P6 data_ov002_021105ec;
-extern struct P6 data_ov002_02110604;
-extern struct P6 data_ov002_0211061c;
-extern struct P6 data_ov002_02110634;
-extern struct P6 data_ov002_0211064c;
-extern struct P6 data_ov002_02110664;
-extern struct P6 data_ov002_0211067c;
-extern struct P6 data_ov002_02110694;
-extern struct P6 data_ov002_021106ac;
-extern struct P6 data_ov002_021106c4;
-extern struct P6 data_ov002_021106dc;
-extern struct P6 data_ov002_021106f4;
-extern struct P6 data_ov002_0211070c;
-extern struct P6 data_ov002_02110724;
-extern struct P6 data_ov002_0211073c;
-extern struct P6 data_ov002_0211075c;
-extern struct P6 data_ov002_02110804;
-extern struct P6 data_ov002_02110884;
-extern void SharedFilePtr_Destruct_TexSeq(void);
-extern void SharedFilePtr_Destruct_Anim(void);
-extern void func_02017ab4(void);
-extern void func_0201973c(void);
+// @symbol __sinit_ov002_021019d0
+extern "C" {
+void func_0203b9b4(int *p, int v);
+/* __register_global_object */
+void func_020731dc(void *object, void *destructor, void **node);
+void *func_02017acc(void *self, unsigned int fileID);
+int func_02017ab4(int self);
+int SharedFilePtr_Destruct_Anim(int self);
+void *SharedFilePtr_Construct_TexSeq(void *self, unsigned int fileID);
+int SharedFilePtr_Destruct_TexSeq(int self);
+void func_0201973c(void);
+unsigned short *func_ov002_020e6ad4(unsigned short *p);
+
+/* The random-number seed RandomIntInternal draws from. */
+extern int data_ov002_0210e160;
+
+/* Model, animation and texture-sequence file handles, by address. */
+extern SharedFilePtr data_ov002_0210e168;
+extern SharedFilePtr data_ov002_0210e170;
+extern SharedFilePtr data_ov002_0210e178;
+extern SharedFilePtr data_ov002_0210e180;
+extern SharedFilePtr data_ov002_0210e188;
+extern SharedFilePtr data_ov002_0210e190;
+extern SharedFilePtr data_ov002_0210e198;
+extern SharedFilePtr data_ov002_0210e1a0;
+extern SharedFilePtr data_ov002_0210e1a8;
+extern SharedFilePtr data_ov002_0210e1b0;
+extern SharedFilePtr data_ov002_0210e1b8;
+extern SharedFilePtr data_ov002_0210e1c0;
+extern SharedFilePtr data_ov002_0210e1c8;
+extern SharedFilePtr data_ov002_0210e1d0;
+extern SharedFilePtr data_ov002_0210e1d8;
+extern SharedFilePtr data_ov002_0210e1e0;
+extern SharedFilePtr data_ov002_0210e1e8;
+extern SharedFilePtr data_ov002_0210e1f0;
+extern SharedFilePtr data_ov002_0210e1f8;
+extern SharedFilePtr data_ov002_0210e200;
+extern SharedFilePtr data_ov002_0210e208;
+extern SharedFilePtr data_ov002_0210e210;
+extern SharedFilePtr data_ov002_0210e218;
+extern SharedFilePtr data_ov002_0210e220;
+extern SharedFilePtr data_ov002_0210e228;
+extern SharedFilePtr data_ov002_0210e230;
+extern SharedFilePtr data_ov002_0210e238;
+extern SharedFilePtr data_ov002_0210e240;
+extern SharedFilePtr data_ov002_0210e248;
+extern SharedFilePtr data_ov002_0210e250;
+extern SharedFilePtr data_ov002_0210e258;
+extern SharedFilePtr data_ov002_0210e260;
+extern SharedFilePtr data_ov002_0210e268;
+extern SharedFilePtr data_ov002_0210e270;
+extern SharedFilePtr data_ov002_0210e278;
+extern SharedFilePtr data_ov002_0210e280;
+extern SharedFilePtr data_ov002_0210e288;
+extern SharedFilePtr data_ov002_0210e290;
+extern SharedFilePtr data_ov002_0210e298;
+extern SharedFilePtr data_ov002_0210e2a0;
+extern SharedFilePtr data_ov002_0210e2a8;
+extern SharedFilePtr data_ov002_0210e2b0;
+extern SharedFilePtr data_ov002_0210e2b8;
+extern SharedFilePtr data_ov002_0210e2c0;
+extern SharedFilePtr data_ov002_0210e2c8;
+extern SharedFilePtr data_ov002_0210e2d0;
+extern SharedFilePtr data_ov002_0210e2d8;
+extern SharedFilePtr data_ov002_0210e2e0;
+extern SharedFilePtr data_ov002_0210e2e8;
+extern SharedFilePtr data_ov002_0210e2f0;
+extern SharedFilePtr data_ov002_0210e2f8;
+extern SharedFilePtr data_ov002_0210e300;
+extern SharedFilePtr data_ov002_0210e308;
+extern SharedFilePtr data_ov002_0210e310;
+extern SharedFilePtr data_ov002_0210e318;
+extern SharedFilePtr data_ov002_0210e320;
+extern SharedFilePtr data_ov002_0210e328;
+extern SharedFilePtr data_ov002_0210e330;
+extern SharedFilePtr data_ov002_0210e338;
+extern SharedFilePtr data_ov002_0210e340;
+extern SharedFilePtr data_ov002_0210e348;
+extern SharedFilePtr data_ov002_0210e350;
+extern SharedFilePtr data_ov002_0210e358;
+extern SharedFilePtr data_ov002_0210e360;
+extern SharedFilePtr data_ov002_0210e368;
+extern SharedFilePtr data_ov002_0210e370;
+extern SharedFilePtr data_ov002_0210e378;
+extern SharedFilePtr data_ov002_0210e380;
+extern SharedFilePtr data_ov002_0210e388;
+extern SharedFilePtr data_ov002_0210e390;
+extern SharedFilePtr data_ov002_0210e398;
+extern SharedFilePtr data_ov002_0210e3a0;
+extern SharedFilePtr data_ov002_0210e3a8;
+extern SharedFilePtr data_ov002_0210e3b0;
+extern SharedFilePtr data_ov002_0210e3b8;
+extern SharedFilePtr data_ov002_0210e3c0;
+extern SharedFilePtr data_ov002_0210e3c8;
+extern SharedFilePtr data_ov002_0210e3d0;
+extern SharedFilePtr data_ov002_0210e3d8;
+extern SharedFilePtr data_ov002_0210e3e0;
+extern SharedFilePtr data_ov002_0210e3e8;
+extern SharedFilePtr data_ov002_0210e3f0;
+extern SharedFilePtr data_ov002_0210e3f8;
+extern SharedFilePtr data_ov002_0210e400;
+extern SharedFilePtr data_ov002_0210e408;
+extern SharedFilePtr data_ov002_0210e410;
+extern SharedFilePtr data_ov002_0210e418;
+extern SharedFilePtr data_ov002_0210e420;
+extern SharedFilePtr data_ov002_0210e428;
+extern SharedFilePtr data_ov002_0210e430;
+extern SharedFilePtr data_ov002_0210e438;
+extern SharedFilePtr data_ov002_0210e440;
+extern SharedFilePtr data_ov002_0210e448;
+extern SharedFilePtr data_ov002_0210e450;
+extern SharedFilePtr data_ov002_0210e458;
+extern SharedFilePtr data_ov002_0210e460;
+extern SharedFilePtr data_ov002_0210e468;
+extern SharedFilePtr data_ov002_0210e470;
+extern SharedFilePtr data_ov002_0210e478;
+extern SharedFilePtr data_ov002_0210e480;
+extern SharedFilePtr data_ov002_0210e488;
+extern SharedFilePtr data_ov002_0210e490;
+extern SharedFilePtr data_ov002_0210e498;
+extern SharedFilePtr data_ov002_0210e4a0;
+extern SharedFilePtr data_ov002_0210e4a8;
+extern SharedFilePtr data_ov002_0210e4b0;
+extern SharedFilePtr data_ov002_0210e4b8;
+extern SharedFilePtr data_ov002_0210e4c0;
+extern SharedFilePtr data_ov002_0210e4c8;
+extern SharedFilePtr data_ov002_0210e4d0;
+extern SharedFilePtr data_ov002_0210e4d8;
+extern SharedFilePtr data_ov002_0210e4e0;
+extern SharedFilePtr data_ov002_0210e4e8;
+extern SharedFilePtr data_ov002_0210e4f0;
+extern SharedFilePtr data_ov002_0210e4f8;
+extern SharedFilePtr data_ov002_0210e500;
+extern SharedFilePtr data_ov002_0210e508;
+extern SharedFilePtr data_ov002_0210e510;
+extern SharedFilePtr data_ov002_0210e518;
+extern SharedFilePtr data_ov002_0210e520;
+extern SharedFilePtr data_ov002_0210e528;
+extern SharedFilePtr data_ov002_0210e530;
+extern SharedFilePtr data_ov002_0210e538;
+extern SharedFilePtr data_ov002_0210e540;
+extern SharedFilePtr data_ov002_0210e548;
+extern SharedFilePtr data_ov002_0210e550;
+extern SharedFilePtr data_ov002_0210e558;
+extern SharedFilePtr data_ov002_0210e560;
+extern SharedFilePtr data_ov002_0210e568;
+extern SharedFilePtr data_ov002_0210e570;
+extern SharedFilePtr data_ov002_0210e578;
+extern SharedFilePtr data_ov002_0210e580;
+extern SharedFilePtr data_ov002_0210e588;
+extern SharedFilePtr data_ov002_0210e590;
+extern SharedFilePtr data_ov002_0210e598;
+extern SharedFilePtr data_ov002_0210e5a0;
+extern SharedFilePtr data_ov002_0210e5a8;
+extern SharedFilePtr data_ov002_0210e5b0;
+extern SharedFilePtr data_ov002_0210e5b8;
+extern SharedFilePtr data_ov002_0210e5c0;
+extern SharedFilePtr data_ov002_0210e5c8;
+extern SharedFilePtr data_ov002_0210e5d0;
+extern SharedFilePtr data_ov002_0210e5d8;
+extern SharedFilePtr data_ov002_0210e5e0;
+extern SharedFilePtr data_ov002_0210e5e8;
+extern SharedFilePtr data_ov002_0210e5f0;
+extern SharedFilePtr data_ov002_0210e5f8;
+extern SharedFilePtr data_ov002_0210e600;
+extern SharedFilePtr data_ov002_0210e608;
+extern SharedFilePtr data_ov002_0210e610;
+extern SharedFilePtr data_ov002_0210e618;
+extern SharedFilePtr data_ov002_0210e620;
+extern SharedFilePtr data_ov002_0210e628;
+extern SharedFilePtr data_ov002_0210e630;
+extern SharedFilePtr data_ov002_0210e638;
+extern SharedFilePtr data_ov002_0210e640;
+extern SharedFilePtr data_ov002_0210e648;
+extern SharedFilePtr data_ov002_0210e650;
+extern SharedFilePtr data_ov002_0210e658;
+extern SharedFilePtr data_ov002_0210e660;
+extern SharedFilePtr data_ov002_0210e668;
+extern SharedFilePtr data_ov002_0210e670;
+extern SharedFilePtr data_ov002_0210e678;
+extern SharedFilePtr data_ov002_0210e680;
+extern SharedFilePtr data_ov002_0210e688;
+extern SharedFilePtr data_ov002_0210e690;
+extern SharedFilePtr data_ov002_0210e698;
+extern SharedFilePtr data_ov002_0210e6a0;
+extern SharedFilePtr data_ov002_0210e6a8;
+extern SharedFilePtr data_ov002_0210e6b0;
+extern SharedFilePtr data_ov002_0210e6b8;
+extern SharedFilePtr data_ov002_0210e6c0;
+extern SharedFilePtr data_ov002_0210e6c8;
+extern SharedFilePtr data_ov002_0210e6d0;
+extern SharedFilePtr data_ov002_0210e6d8;
+extern SharedFilePtr data_ov002_0210e6e0;
+extern SharedFilePtr data_ov002_0210e6e8;
+extern SharedFilePtr data_ov002_0210e6f0;
+extern SharedFilePtr data_ov002_0210e6f8;
+extern SharedFilePtr data_ov002_0210e700;
+extern SharedFilePtr data_ov002_0210e708;
+extern SharedFilePtr data_ov002_0210e710;
+extern SharedFilePtr data_ov002_0210e718;
+extern SharedFilePtr data_ov002_0210e720;
+extern SharedFilePtr data_ov002_0210e728;
+extern SharedFilePtr data_ov002_0210e730;
+extern SharedFilePtr data_ov002_0210e738;
+extern SharedFilePtr data_ov002_0210e740;
+extern SharedFilePtr data_ov002_0210e748;
+extern SharedFilePtr data_ov002_0210e750;
+extern SharedFilePtr data_ov002_0210e758;
+extern SharedFilePtr data_ov002_0210e760;
+extern SharedFilePtr data_ov002_0210e768;
+extern SharedFilePtr data_ov002_0210e770;
+extern SharedFilePtr data_ov002_0210e778;
+extern SharedFilePtr data_ov002_0210e780;
+extern SharedFilePtr data_ov002_0210e788;
+extern SharedFilePtr data_ov002_0210e790;
+extern SharedFilePtr data_ov002_0210e798;
+extern SharedFilePtr data_ov002_0210e7a0;
+extern SharedFilePtr data_ov002_0210e7a8;
+extern SharedFilePtr data_ov002_0210e7b0;
+extern SharedFilePtr data_ov002_0210e7c0;
+extern SharedFilePtr data_ov002_0210e7c8;
+extern SharedFilePtr data_ov002_0210e7d0;
+extern SharedFilePtr data_ov002_0210e7d8;
+extern SharedFilePtr data_ov002_0210e7e0;
+extern SharedFilePtr data_ov002_0210e7e8;
+extern SharedFilePtr data_ov002_0210e7f0;
+extern SharedFilePtr data_ov002_0210e7f8;
+extern SharedFilePtr data_ov002_0210e800;
+extern SharedFilePtr data_ov002_0210e808;
+extern SharedFilePtr data_ov002_0210e810;
+extern SharedFilePtr data_ov002_0210e818;
+extern SharedFilePtr data_ov002_0210e820;
+extern SharedFilePtr data_ov002_0210e828;
+extern SharedFilePtr data_ov002_0210e830;
+extern SharedFilePtr data_ov002_0210e838;
+extern SharedFilePtr data_ov002_0210e840;
+extern SharedFilePtr data_ov002_0210e848;
+extern SharedFilePtr data_ov002_0210e850;
+extern SharedFilePtr data_ov002_0210e858;
+extern SharedFilePtr data_ov002_0210e860;
+extern SharedFilePtr data_ov002_0210e868;
+extern SharedFilePtr data_ov002_0210e870;
+extern SharedFilePtr data_ov002_0210e878;
+extern SharedFilePtr data_ov002_0210e880;
+extern SharedFilePtr data_ov002_0210e888;
+extern SharedFilePtr data_ov002_0210e890;
+extern SharedFilePtr data_ov002_0210e898;
+extern SharedFilePtr data_ov002_0210e8a0;
+extern SharedFilePtr data_ov002_0210e8a8;
+extern SharedFilePtr data_ov002_0210e8b0;
+extern SharedFilePtr data_ov002_0210e8b8;
+extern SharedFilePtr data_ov002_0210e8c0;
+extern SharedFilePtr data_ov002_0210e8c8;
+extern SharedFilePtr data_ov002_0210e8d0;
+extern SharedFilePtr data_ov002_0210e8d8;
+extern SharedFilePtr data_ov002_0210e8e0;
+extern SharedFilePtr data_ov002_0210e8e8;
+extern SharedFilePtr data_ov002_0210e8f0;
+extern SharedFilePtr data_ov002_0210e8f8;
+extern SharedFilePtr data_ov002_0210e900;
+extern SharedFilePtr data_ov002_0210e908;
+extern SharedFilePtr data_ov002_0210e910;
+extern SharedFilePtr data_ov002_0210e918;
+extern SharedFilePtr data_ov002_0210e920;
+extern SharedFilePtr data_ov002_0210e928;
+extern SharedFilePtr data_ov002_0210e930;
+extern SharedFilePtr data_ov002_0210e938;
+extern SharedFilePtr data_ov002_0210e940;
+extern SharedFilePtr data_ov002_0210e948;
+extern SharedFilePtr data_ov002_0210e950;
+extern SharedFilePtr data_ov002_0210e958;
+extern SharedFilePtr data_ov002_0210e960;
+extern SharedFilePtr data_ov002_0210e968;
+extern SharedFilePtr data_ov002_0210e970;
+extern SharedFilePtr data_ov002_0210e978;
+extern SharedFilePtr data_ov002_0210e980;
+extern SharedFilePtr data_ov002_0210e988;
+extern SharedFilePtr data_ov002_0210e990;
+extern SharedFilePtr data_ov002_0210e998;
+extern SharedFilePtr data_ov002_0210e9a0;
+extern SharedFilePtr data_ov002_0210e9a8;
+extern SharedFilePtr data_ov002_0210e9b0;
+extern SharedFilePtr data_ov002_0210e9b8;
+extern SharedFilePtr data_ov002_0210e9c0;
+extern SharedFilePtr data_ov002_0210e9c8;
+extern SharedFilePtr data_ov002_0210e9d0;
+extern SharedFilePtr data_ov002_0210e9d8;
+extern SharedFilePtr data_ov002_0210e9e0;
+extern SharedFilePtr data_ov002_0210e9e8;
+extern SharedFilePtr data_ov002_0210e9f0;
+extern SharedFilePtr data_ov002_0210e9f8;
+extern SharedFilePtr data_ov002_0210ea00;
+extern SharedFilePtr data_ov002_0210ea08;
+extern SharedFilePtr data_ov002_0210ea10;
+extern SharedFilePtr data_ov002_0210ea18;
+extern SharedFilePtr data_ov002_0210ea20;
+extern SharedFilePtr data_ov002_0210ea28;
+extern SharedFilePtr data_ov002_0210ea30;
+extern SharedFilePtr data_ov002_0210ea38;
+extern SharedFilePtr data_ov002_0210ea40;
+extern SharedFilePtr data_ov002_0210ea48;
+extern SharedFilePtr data_ov002_0210ea50;
+extern SharedFilePtr data_ov002_0210ea58;
+extern SharedFilePtr data_ov002_0210ea60;
+extern SharedFilePtr data_ov002_0210ea68;
+extern SharedFilePtr data_ov002_0210ea70;
+extern SharedFilePtr data_ov002_0210ea78;
+extern SharedFilePtr data_ov002_0210ea80;
+extern SharedFilePtr data_ov002_0210ea88;
+extern SharedFilePtr data_ov002_0210ea90;
+extern SharedFilePtr data_ov002_0210ea98;
+extern SharedFilePtr data_ov002_0210eaa0;
+extern SharedFilePtr data_ov002_0210eaa8;
+extern SharedFilePtr data_ov002_0210eab0;
+extern SharedFilePtr data_ov002_0210eab8;
+extern SharedFilePtr data_ov002_0210eac0;
+extern SharedFilePtr data_ov002_0210eac8;
+extern SharedFilePtr data_ov002_0210ead0;
+extern SharedFilePtr data_ov002_0210ead8;
+extern SharedFilePtr data_ov002_0210eae0;
+extern SharedFilePtr data_ov002_0210eae8;
+extern SharedFilePtr data_ov002_0210eaf0;
+extern SharedFilePtr data_ov002_0210eaf8;
+extern SharedFilePtr data_ov002_0210eb00;
+extern SharedFilePtr data_ov002_0210eb08;
+extern SharedFilePtr data_ov002_0210eb10;
+extern SharedFilePtr data_ov002_0210eb18;
+extern SharedFilePtr data_ov002_0210eb20;
+extern SharedFilePtr data_ov002_0210eb28;
+extern SharedFilePtr data_ov002_0210eb30;
+extern SharedFilePtr data_ov002_0210eb38;
+extern SharedFilePtr data_ov002_0210eb40;
+extern SharedFilePtr data_ov002_0210eb48;
+extern SharedFilePtr data_ov002_0210eb50;
+extern SharedFilePtr data_ov002_0210eb58;
+extern SharedFilePtr data_ov002_0210eb60;
+extern SharedFilePtr data_ov002_0210eb68;
+extern SharedFilePtr data_ov002_0210eb70;
+extern SharedFilePtr data_ov002_0210eb78;
+extern SharedFilePtr data_ov002_0210eb80;
+extern SharedFilePtr data_ov002_0210eb88;
+extern SharedFilePtr data_ov002_0210eb90;
+extern SharedFilePtr data_ov002_0210eb98;
+extern SharedFilePtr data_ov002_0210eba0;
+extern SharedFilePtr data_ov002_0210eba8;
+extern SharedFilePtr data_ov002_0210ebb0;
+extern SharedFilePtr data_ov002_0210ebb8;
+extern SharedFilePtr data_ov002_0210ebc0;
+extern SharedFilePtr data_ov002_0210ebc8;
+extern SharedFilePtr data_ov002_0210ebd0;
+extern SharedFilePtr data_ov002_0210ebd8;
+extern SharedFilePtr data_ov002_0210ebe0;
+extern SharedFilePtr data_ov002_0210ebe8;
+extern SharedFilePtr data_ov002_0210ebf0;
+extern SharedFilePtr data_ov002_0210ebf8;
+extern SharedFilePtr data_ov002_0210ec00;
+extern SharedFilePtr data_ov002_0210ec08;
+extern SharedFilePtr data_ov002_0210ec10;
+extern SharedFilePtr data_ov002_0210ec18;
+extern SharedFilePtr data_ov002_0210ec20;
+extern SharedFilePtr data_ov002_0210ec28;
+extern SharedFilePtr data_ov002_0210ec30;
+extern SharedFilePtr data_ov002_0210ec38;
+extern SharedFilePtr data_ov002_0210ec40;
+extern SharedFilePtr data_ov002_0210ec48;
+extern SharedFilePtr data_ov002_0210ec50;
+extern SharedFilePtr data_ov002_0210ec58;
+extern SharedFilePtr data_ov002_0210ec60;
+extern SharedFilePtr data_ov002_0210ec68;
+extern SharedFilePtr data_ov002_0210ec70;
+extern SharedFilePtr data_ov002_0210ec78;
+extern SharedFilePtr data_ov002_0210ec80;
+extern SharedFilePtr data_ov002_0210ec88;
+extern SharedFilePtr data_ov002_0210ec90;
+extern SharedFilePtr data_ov002_0210ec98;
+extern SharedFilePtr data_ov002_0210eca0;
+extern SharedFilePtr data_ov002_0210eca8;
+extern SharedFilePtr data_ov002_0210ecb0;
+extern SharedFilePtr data_ov002_0210ecb8;
+extern SharedFilePtr data_ov002_0210ecc0;
+extern SharedFilePtr data_ov002_0210ecc8;
+extern SharedFilePtr data_ov002_0210ecd0;
+extern SharedFilePtr data_ov002_0210ecd8;
+extern SharedFilePtr data_ov002_0210ece0;
+extern SharedFilePtr data_ov002_0210ece8;
+extern SharedFilePtr data_ov002_0210ecf0;
+extern SharedFilePtr data_ov002_0210ecf8;
+extern SharedFilePtr data_ov002_0210ed00;
+extern SharedFilePtr data_ov002_0210ed08;
+extern SharedFilePtr data_ov002_0210ed10;
+extern SharedFilePtr data_ov002_0210ed18;
+extern SharedFilePtr data_ov002_0210ed20;
+extern SharedFilePtr data_ov002_0210ed28;
+extern SharedFilePtr data_ov002_0210ed30;
+extern SharedFilePtr data_ov002_0210ed38;
+extern SharedFilePtr data_ov002_0210ed40;
+extern SharedFilePtr data_ov002_0210ed48;
+extern SharedFilePtr data_ov002_0210ed50;
+extern SharedFilePtr data_ov002_0210ed58;
+extern SharedFilePtr data_ov002_0210ed60;
+
+/* __register_global_object chain nodes, one per handle. */
+extern void *data_ov002_0210ed68[3];
+extern void *data_ov002_0210ed74[3];
+extern void *data_ov002_0210ed80[3];
+extern void *data_ov002_0210ed8c[3];
+extern void *data_ov002_0210ed98[3];
+extern void *data_ov002_0210eda4[3];
+extern void *data_ov002_0210edb0[3];
+extern void *data_ov002_0210edbc[3];
+extern void *data_ov002_0210edc8[3];
+extern void *data_ov002_0210edd4[3];
+extern void *data_ov002_0210ede0[3];
+extern void *data_ov002_0210edec[3];
+extern void *data_ov002_0210edf8[3];
+extern void *data_ov002_0210ee04[3];
+extern void *data_ov002_0210ee10[3];
+extern void *data_ov002_0210ee1c[3];
+extern void *data_ov002_0210ee28[3];
+extern void *data_ov002_0210ee34[3];
+extern void *data_ov002_0210ee40[3];
+extern void *data_ov002_0210ee4c[3];
+extern void *data_ov002_0210ee58[3];
+extern void *data_ov002_0210ee64[3];
+extern void *data_ov002_0210ee70[3];
+extern void *data_ov002_0210ee7c[3];
+extern void *data_ov002_0210ee88[3];
+extern void *data_ov002_0210ee94[3];
+extern void *data_ov002_0210eea0[3];
+extern void *data_ov002_0210eeac[3];
+extern void *data_ov002_0210eeb8[3];
+extern void *data_ov002_0210eec4[3];
+extern void *data_ov002_0210eed0[3];
+extern void *data_ov002_0210eedc[3];
+extern void *data_ov002_0210eee8[3];
+extern void *data_ov002_0210eef4[3];
+extern void *data_ov002_0210ef00[3];
+extern void *data_ov002_0210ef0c[3];
+extern void *data_ov002_0210ef18[3];
+extern void *data_ov002_0210ef24[3];
+extern void *data_ov002_0210ef30[3];
+extern void *data_ov002_0210ef3c[3];
+extern void *data_ov002_0210ef48[3];
+extern void *data_ov002_0210ef54[3];
+extern void *data_ov002_0210ef60[3];
+extern void *data_ov002_0210ef6c[3];
+extern void *data_ov002_0210ef78[3];
+extern void *data_ov002_0210ef84[3];
+extern void *data_ov002_0210ef90[3];
+extern void *data_ov002_0210ef9c[3];
+extern void *data_ov002_0210efa8[3];
+extern void *data_ov002_0210efb4[3];
+extern void *data_ov002_0210efc0[3];
+extern void *data_ov002_0210efcc[3];
+extern void *data_ov002_0210efd8[3];
+extern void *data_ov002_0210efe4[3];
+extern void *data_ov002_0210eff0[3];
+extern void *data_ov002_0210effc[3];
+extern void *data_ov002_0210f008[3];
+extern void *data_ov002_0210f014[3];
+extern void *data_ov002_0210f020[3];
+extern void *data_ov002_0210f02c[3];
+extern void *data_ov002_0210f038[3];
+extern void *data_ov002_0210f044[3];
+extern void *data_ov002_0210f050[3];
+extern void *data_ov002_0210f05c[3];
+extern void *data_ov002_0210f068[3];
+extern void *data_ov002_0210f074[3];
+extern void *data_ov002_0210f080[3];
+extern void *data_ov002_0210f08c[3];
+extern void *data_ov002_0210f098[3];
+extern void *data_ov002_0210f0a4[3];
+extern void *data_ov002_0210f0b0[3];
+extern void *data_ov002_0210f0bc[3];
+extern void *data_ov002_0210f0c8[3];
+extern void *data_ov002_0210f0d4[3];
+extern void *data_ov002_0210f0e0[3];
+extern void *data_ov002_0210f0ec[3];
+extern void *data_ov002_0210f0f8[3];
+extern void *data_ov002_0210f104[3];
+extern void *data_ov002_0210f110[3];
+extern void *data_ov002_0210f11c[3];
+extern void *data_ov002_0210f128[3];
+extern void *data_ov002_0210f134[3];
+extern void *data_ov002_0210f140[3];
+extern void *data_ov002_0210f14c[3];
+extern void *data_ov002_0210f158[3];
+extern void *data_ov002_0210f164[3];
+extern void *data_ov002_0210f170[3];
+extern void *data_ov002_0210f17c[3];
+extern void *data_ov002_0210f188[3];
+extern void *data_ov002_0210f194[3];
+extern void *data_ov002_0210f1a0[3];
+extern void *data_ov002_0210f1b8[3];
+extern void *data_ov002_0210f1c4[3];
+extern void *data_ov002_0210f1d0[3];
+extern void *data_ov002_0210f1dc[3];
+extern void *data_ov002_0210f1e8[3];
+extern void *data_ov002_0210f1f4[3];
+extern void *data_ov002_0210f200[3];
+extern void *data_ov002_0210f20c[3];
+extern void *data_ov002_0210f218[3];
+extern void *data_ov002_0210f230[3];
+extern void *data_ov002_0210f23c[3];
+extern void *data_ov002_0210f248[3];
+extern void *data_ov002_0210f254[3];
+extern void *data_ov002_0210f260[3];
+extern void *data_ov002_0210f26c[3];
+extern void *data_ov002_0210f278[3];
+extern void *data_ov002_0210f284[3];
+extern void *data_ov002_0210f290[3];
+extern void *data_ov002_0210f29c[3];
+extern void *data_ov002_0210f2a8[3];
+extern void *data_ov002_0210f2b4[3];
+extern void *data_ov002_0210f2c0[3];
+extern void *data_ov002_0210f2cc[3];
+extern void *data_ov002_0210f2d8[3];
+extern void *data_ov002_0210f2e4[3];
+extern void *data_ov002_0210f2f0[3];
+extern void *data_ov002_0210f2fc[3];
+extern void *data_ov002_0210f314[3];
+extern void *data_ov002_0210f320[3];
+extern void *data_ov002_0210f32c[3];
+extern void *data_ov002_0210f338[3];
+extern void *data_ov002_0210f35c[3];
+extern void *data_ov002_0210f368[3];
+extern void *data_ov002_0210f374[3];
+extern void *data_ov002_0210f380[3];
+extern void *data_ov002_0210f38c[3];
+extern void *data_ov002_0210f398[3];
+extern void *data_ov002_0210f3a4[3];
+extern void *data_ov002_0210f3bc[3];
+extern void *data_ov002_0210f3c8[3];
+extern void *data_ov002_0210f3d4[3];
+extern void *data_ov002_0210f3e0[3];
+extern void *data_ov002_0210f3ec[3];
+extern void *data_ov002_0210f3f8[3];
+extern void *data_ov002_0210f404[3];
+extern void *data_ov002_0210f410[3];
+extern void *data_ov002_0210f41c[3];
+extern void *data_ov002_0210f428[3];
+extern void *data_ov002_0210f434[3];
+extern void *data_ov002_0210f440[3];
+extern void *data_ov002_0210f44c[3];
+extern void *data_ov002_0210f458[3];
+extern void *data_ov002_0210f464[3];
+extern void *data_ov002_0210f470[3];
+extern void *data_ov002_0210f47c[3];
+extern void *data_ov002_0210f488[3];
+extern void *data_ov002_0210f494[3];
+extern void *data_ov002_0210f4a0[3];
+extern void *data_ov002_0210f4ac[3];
+extern void *data_ov002_0210f4b8[3];
+extern void *data_ov002_0210f4c4[3];
+extern void *data_ov002_0210f4d0[3];
+extern void *data_ov002_0210f4dc[3];
+extern void *data_ov002_0210f4e8[3];
+extern void *data_ov002_0210f4f4[3];
+extern void *data_ov002_0210f500[3];
+extern void *data_ov002_0210f50c[3];
+extern void *data_ov002_0210f518[3];
+extern void *data_ov002_0210f524[3];
+extern void *data_ov002_0210f530[3];
+extern void *data_ov002_0210f53c[3];
+extern void *data_ov002_0210f548[3];
+extern void *data_ov002_0210f554[3];
+extern void *data_ov002_0210f560[3];
+extern void *data_ov002_0210f56c[3];
+extern void *data_ov002_0210f578[3];
+extern void *data_ov002_0210f584[3];
+extern void *data_ov002_0210f590[3];
+extern void *data_ov002_0210f59c[3];
+extern void *data_ov002_0210f5a8[3];
+extern void *data_ov002_0210f5b4[3];
+extern void *data_ov002_0210f5c0[3];
+extern void *data_ov002_0210f5cc[3];
+extern void *data_ov002_0210f5d8[3];
+extern void *data_ov002_0210f5e4[3];
+extern void *data_ov002_0210f5f0[3];
+extern void *data_ov002_0210f5fc[3];
+extern void *data_ov002_0210f608[3];
+extern void *data_ov002_0210f614[3];
+extern void *data_ov002_0210f620[3];
+extern void *data_ov002_0210f62c[3];
+extern void *data_ov002_0210f638[3];
+extern void *data_ov002_0210f644[3];
+extern void *data_ov002_0210f650[3];
+extern void *data_ov002_0210f65c[3];
+extern void *data_ov002_0210f668[3];
+extern void *data_ov002_0210f674[3];
+extern void *data_ov002_0210f680[3];
+extern void *data_ov002_0210f68c[3];
+extern void *data_ov002_0210f698[3];
+extern void *data_ov002_0210f6a4[3];
+extern void *data_ov002_0210f6b0[3];
+extern void *data_ov002_0210f6bc[3];
+extern void *data_ov002_0210f6c8[3];
+extern void *data_ov002_0210f6d4[3];
+extern void *data_ov002_0210f6e0[3];
+extern void *data_ov002_0210f6ec[3];
+extern void *data_ov002_0210f6f8[3];
+extern void *data_ov002_0210f704[3];
+extern void *data_ov002_0210f710[3];
+extern void *data_ov002_0210f71c[3];
+extern void *data_ov002_0210f728[3];
+extern void *data_ov002_0210f734[3];
+extern void *data_ov002_0210f740[3];
+extern void *data_ov002_0210f74c[3];
+extern void *data_ov002_0210f758[3];
+extern void *data_ov002_0210f764[3];
+extern void *data_ov002_0210f770[3];
+extern void *data_ov002_0210f77c[3];
+extern void *data_ov002_0210f788[3];
+extern void *data_ov002_0210f794[3];
+extern void *data_ov002_0210f7a0[3];
+extern void *data_ov002_0210f7ac[3];
+extern void *data_ov002_0210f7b8[3];
+extern void *data_ov002_0210f7c4[3];
+extern void *data_ov002_0210f7d0[3];
+extern void *data_ov002_0210f7dc[3];
+extern void *data_ov002_0210f7e8[3];
+extern void *data_ov002_0210f800[3];
+extern void *data_ov002_0210f80c[3];
+extern void *data_ov002_0210f818[3];
+extern void *data_ov002_0210f830[3];
+extern void *data_ov002_0210f83c[3];
+extern void *data_ov002_0210f848[3];
+extern void *data_ov002_0210f854[3];
+extern void *data_ov002_0210f860[3];
+extern void *data_ov002_0210f86c[3];
+extern void *data_ov002_0210f878[3];
+extern void *data_ov002_0210f884[3];
+extern void *data_ov002_0210f890[3];
+extern void *data_ov002_0210f8a8[3];
+extern void *data_ov002_0210f8b4[3];
+extern void *data_ov002_0210f8c0[3];
+extern void *data_ov002_0210f8d8[3];
+extern void *data_ov002_0210f8e4[3];
+extern void *data_ov002_0210f8f0[3];
+extern void *data_ov002_0210f8fc[3];
+extern void *data_ov002_0210f908[3];
+extern void *data_ov002_0210f914[3];
+extern void *data_ov002_0210f920[3];
+extern void *data_ov002_0210f938[3];
+extern void *data_ov002_0210f944[3];
+extern void *data_ov002_0210f950[3];
+extern void *data_ov002_0210f95c[3];
+extern void *data_ov002_0210f968[3];
+extern void *data_ov002_0210f974[3];
+extern void *data_ov002_0210f980[3];
+extern void *data_ov002_0210f98c[3];
+extern void *data_ov002_0210f998[3];
+extern void *data_ov002_0210f9a4[3];
+extern void *data_ov002_0210f9b0[3];
+extern void *data_ov002_0210f9bc[3];
+extern void *data_ov002_0210f9c8[3];
+extern void *data_ov002_0210f9d4[3];
+extern void *data_ov002_0210f9e0[3];
+extern void *data_ov002_0210f9ec[3];
+extern void *data_ov002_0210f9f8[3];
+extern void *data_ov002_0210fa04[3];
+extern void *data_ov002_0210fa10[3];
+extern void *data_ov002_0210fa1c[3];
+extern void *data_ov002_0210fa28[3];
+extern void *data_ov002_0210fa34[3];
+extern void *data_ov002_0210fa40[3];
+extern void *data_ov002_0210fa4c[3];
+extern void *data_ov002_0210fa58[3];
+extern void *data_ov002_0210fa64[3];
+extern void *data_ov002_0210fa70[3];
+extern void *data_ov002_0210fa7c[3];
+extern void *data_ov002_0210fa88[3];
+extern void *data_ov002_0210fa94[3];
+extern void *data_ov002_0210faa0[3];
+extern void *data_ov002_0210faac[3];
+extern void *data_ov002_0210fab8[3];
+extern void *data_ov002_0210fac4[3];
+extern void *data_ov002_0210fad0[3];
+extern void *data_ov002_0210fadc[3];
+extern void *data_ov002_0210fae8[3];
+extern void *data_ov002_0210faf4[3];
+extern void *data_ov002_0210fb00[3];
+extern void *data_ov002_0210fb0c[3];
+extern void *data_ov002_0210fb18[3];
+extern void *data_ov002_0210fb24[3];
+extern void *data_ov002_0210fb30[3];
+extern void *data_ov002_0210fb3c[3];
+extern void *data_ov002_0210fb48[3];
+extern void *data_ov002_0210fb54[3];
+extern void *data_ov002_0210fb60[3];
+extern void *data_ov002_0210fb6c[3];
+extern void *data_ov002_0210fb78[3];
+extern void *data_ov002_0210fb84[3];
+extern void *data_ov002_0210fb90[3];
+extern void *data_ov002_0210fb9c[3];
+extern void *data_ov002_0210fba8[3];
+extern void *data_ov002_0210fbb4[3];
+extern void *data_ov002_0210fbc0[3];
+extern void *data_ov002_0210fbcc[3];
+extern void *data_ov002_0210fbd8[3];
+extern void *data_ov002_0210fbe4[3];
+extern void *data_ov002_0210fbf0[3];
+extern void *data_ov002_0210fbfc[3];
+extern void *data_ov002_0210fc08[3];
+extern void *data_ov002_0210fc14[3];
+extern void *data_ov002_0210fc20[3];
+extern void *data_ov002_0210fc2c[3];
+extern void *data_ov002_0210fc38[3];
+extern void *data_ov002_0210fc44[3];
+extern void *data_ov002_0210fc50[3];
+extern void *data_ov002_0210fc5c[3];
+extern void *data_ov002_0210fc68[3];
+extern void *data_ov002_0210fc74[3];
+extern void *data_ov002_0210fc80[3];
+extern void *data_ov002_0210fc8c[3];
+extern void *data_ov002_0210fc98[3];
+extern void *data_ov002_0210fca4[3];
+extern void *data_ov002_0210fcb0[3];
+extern void *data_ov002_0210fcbc[3];
+extern void *data_ov002_0210fcc8[3];
+extern void *data_ov002_0210fcd4[3];
+extern void *data_ov002_0210fce0[3];
+extern void *data_ov002_0210fcec[3];
+extern void *data_ov002_0210fcf8[3];
+extern void *data_ov002_0210fd04[3];
+extern void *data_ov002_0210fd10[3];
+extern void *data_ov002_0210fd1c[3];
+extern void *data_ov002_0210fd28[3];
+extern void *data_ov002_0210fd34[3];
+extern void *data_ov002_0210fd40[3];
+extern void *data_ov002_0210fd4c[3];
+extern void *data_ov002_0210fd58[3];
+extern void *data_ov002_0210fd64[3];
+extern void *data_ov002_0210fd70[3];
+extern void *data_ov002_0210fd7c[3];
+extern void *data_ov002_0210fd88[3];
+extern void *data_ov002_0210fd94[3];
+extern void *data_ov002_0210fda0[3];
+extern void *data_ov002_0210fdac[3];
+extern void *data_ov002_0210fdb8[3];
+extern void *data_ov002_0210fdc4[3];
+extern void *data_ov002_0210fdd0[3];
+extern void *data_ov002_0210fddc[3];
+extern void *data_ov002_0210fde8[3];
+extern void *data_ov002_0210fdf4[3];
+extern void *data_ov002_0210fe00[3];
+extern void *data_ov002_0210fe0c[3];
+extern void *data_ov002_0210fe18[3];
+extern void *data_ov002_0210fe24[3];
+extern void *data_ov002_0210fe30[3];
+extern void *data_ov002_0210fe3c[3];
+extern void *data_ov002_0210fe48[3];
+extern void *data_ov002_0210fe54[3];
+extern void *data_ov002_0210fe60[3];
+extern void *data_ov002_0210fe6c[3];
+extern void *data_ov002_0210fe78[3];
+extern void *data_ov002_0210fe84[3];
+extern void *data_ov002_0210fe90[3];
+extern void *data_ov002_0210fe9c[3];
+extern void *data_ov002_0210fea8[3];
+extern void *data_ov002_0210feb4[3];
+extern void *data_ov002_0210fec0[3];
+extern void *data_ov002_0210fecc[3];
+extern void *data_ov002_0210fed8[3];
+extern void *data_ov002_0210fee4[3];
+extern void *data_ov002_0210fef0[3];
+extern void *data_ov002_0210fefc[3];
+extern void *data_ov002_0210ff08[3];
+extern void *data_ov002_0210ff14[3];
+extern void *data_ov002_0210ff20[3];
+extern void *data_ov002_0210ff2c[3];
+extern void *data_ov002_0210ff38[3];
+extern void *data_ov002_0210ff44[3];
+extern void *data_ov002_0210ff50[3];
+extern void *data_ov002_0210ff5c[3];
+extern void *data_ov002_0210ff68[3];
+extern void *data_ov002_0210ff74[3];
+extern void *data_ov002_0210ff80[3];
+extern void *data_ov002_0210ff8c[3];
+extern void *data_ov002_0210ff98[3];
+extern void *data_ov002_0210ffa4[3];
+extern void *data_ov002_0210ffb0[3];
+extern void *data_ov002_0210ffbc[3];
+extern void *data_ov002_0210ffc8[3];
+extern void *data_ov002_0210ffd4[3];
+extern void *data_ov002_0210ffe0[3];
+
+/* Pointer-to-member constants in ov002 .data, copied into the states below. */
+extern int (Player::*data_ov002_02109dd4)();
+extern int (Player::*data_ov002_02109ddc)();
+extern int (Player::*data_ov002_02109de4)();
+extern int (Player::*data_ov002_02109dec)();
+extern int (Player::*data_ov002_02109df4)();
+extern int (Player::*data_ov002_02109e04)();
+extern int (Player::*data_ov002_02109e0c)();
+extern int (Player::*data_ov002_02109e14)();
+extern int (Player::*data_ov002_02109e1c)();
+extern int (Player::*data_ov002_02109e24)();
+extern int (Player::*data_ov002_02109e34)();
+extern int (Player::*data_ov002_02109e3c)();
+extern int (Player::*data_ov002_02109e44)();
+extern int (Player::*data_ov002_02109e4c)();
+extern int (Player::*data_ov002_02109e54)();
+extern int (Player::*data_ov002_02109e5c)();
+extern int (Player::*data_ov002_02109e64)();
+extern int (Player::*data_ov002_02109e6c)();
+extern int (Player::*data_ov002_02109e74)();
+extern int (Player::*data_ov002_02109e7c)();
+extern int (Player::*data_ov002_02109e84)();
+extern int (Player::*data_ov002_02109e8c)();
+extern int (Player::*data_ov002_02109e94)();
+extern int (Player::*data_ov002_02109e9c)();
+extern int (Player::*data_ov002_02109ea4)();
+extern int (Player::*data_ov002_02109eac)();
+extern int (Player::*data_ov002_02109eb4)();
+extern int (Player::*data_ov002_02109ebc)();
+extern int (Player::*data_ov002_02109ec4)();
+extern int (Player::*data_ov002_02109ecc)();
+extern int (Player::*data_ov002_02109ed4)();
+extern int (Player::*data_ov002_02109edc)();
+extern int (Player::*data_ov002_02109ee4)();
+extern int (Player::*data_ov002_02109eec)();
+extern int (Player::*data_ov002_02109ef4)();
+extern int (Player::*data_ov002_02109efc)();
+extern int (Player::*data_ov002_02109f04)();
+extern int (Player::*data_ov002_02109f14)();
+extern int (Player::*data_ov002_02109f1c)();
+extern int (Player::*data_ov002_02109f24)();
+extern int (Player::*data_ov002_02109f2c)();
+extern int (Player::*data_ov002_02109f34)();
+extern int (Player::*data_ov002_02109f3c)();
+extern int (Player::*data_ov002_02109f4c)();
+extern int (Player::*data_ov002_02109f5c)();
+extern int (Player::*data_ov002_02109f64)();
+extern int (Player::*data_ov002_02109f6c)();
+extern int (Player::*data_ov002_02109f74)();
+extern int (Player::*data_ov002_02109f7c)();
+extern int (Player::*data_ov002_02109f84)();
+extern int (Player::*data_ov002_02109f8c)();
+extern int (Player::*data_ov002_02109f94)();
+extern int (Player::*data_ov002_02109f9c)();
+extern int (Player::*data_ov002_02109fa4)();
+extern int (Player::*data_ov002_02109fac)();
+extern int (Player::*data_ov002_02109fb4)();
+extern int (Player::*data_ov002_02109fbc)();
+extern int (Player::*data_ov002_02109fc4)();
+extern int (Player::*data_ov002_02109fcc)();
+extern int (Player::*data_ov002_02109fd4)();
+extern int (Player::*data_ov002_02109fdc)();
+extern int (Player::*data_ov002_02109fec)();
+extern int (Player::*data_ov002_02109ffc)();
+extern int (Player::*data_ov002_0210a004)();
+extern int (Player::*data_ov002_0210a00c)();
+extern int (Player::*data_ov002_0210a014)();
+extern int (Player::*data_ov002_0210a01c)();
+extern int (Player::*data_ov002_0210a024)();
+extern int (Player::*data_ov002_0210a02c)();
+extern int (Player::*data_ov002_0210a034)();
+extern int (Player::*data_ov002_0210a03c)();
+extern int (Player::*data_ov002_0210a044)();
+extern int (Player::*data_ov002_0210a04c)();
+extern int (Player::*data_ov002_0210a05c)();
+extern int (Player::*data_ov002_0210a06c)();
+extern int (Player::*data_ov002_0210a08c)();
+extern int (Player::*data_ov002_0210a09c)();
+extern int (Player::*data_ov002_0210a0a4)();
+extern int (Player::*data_ov002_0210a0ac)();
+extern int (Player::*data_ov002_0210a0bc)();
+extern int (Player::*data_ov002_0210a0c4)();
+extern int (Player::*data_ov002_0210a0cc)();
+extern int (Player::*data_ov002_0210a0d4)();
+extern int (Player::*data_ov002_0210a0e4)();
+extern int (Player::*data_ov002_0210a0ec)();
+extern int (Player::*data_ov002_0210a0f4)();
+extern int (Player::*data_ov002_0210a0fc)();
+extern int (Player::*data_ov002_0210a104)();
+extern int (Player::*data_ov002_0210a114)();
+extern int (Player::*data_ov002_0210a11c)();
+extern int (Player::*data_ov002_0210a13c)();
+extern int (Player::*data_ov002_0210a15c)();
+extern int (Player::*data_ov002_0210a164)();
+extern int (Player::*data_ov002_0210a16c)();
+extern int (Player::*data_ov002_0210a17c)();
+extern int (Player::*data_ov002_0210a184)();
+extern int (Player::*data_ov002_0210a18c)();
+extern int (Player::*data_ov002_0210a194)();
+extern int (Player::*data_ov002_0210a19c)();
+extern int (Player::*data_ov002_0210a1a4)();
+extern int (Player::*data_ov002_0210a1ac)();
+extern int (Player::*data_ov002_0210a1bc)();
+extern int (Player::*data_ov002_0210a1c4)();
+extern int (Player::*data_ov002_0210a1dc)();
+extern int (Player::*data_ov002_0210a1e4)();
+extern int (Player::*data_ov002_0210a1f4)();
+extern int (Player::*data_ov002_0210a204)();
+extern int (Player::*data_ov002_0210a20c)();
+extern int (Player::*data_ov002_0210a214)();
+extern int (Player::*data_ov002_0210a21c)();
+extern int (Player::*data_ov002_0210a224)();
+extern int (Player::*data_ov002_0210a234)();
+extern int (Player::*data_ov002_0210a24c)();
+extern int (Player::*data_ov002_0210a254)();
+extern int (Player::*data_ov002_0210a25c)();
+extern int (Player::*data_ov002_0210a26c)();
+extern int (Player::*data_ov002_0210a27c)();
+extern int (Player::*data_ov002_0210a284)();
+extern int (Player::*data_ov002_0210a28c)();
+extern int (Player::*data_ov002_0210a294)();
+extern int (Player::*data_ov002_0210a2a4)();
+extern int (Player::*data_ov002_0210a2ac)();
+extern int (Player::*data_ov002_0210a2b4)();
+extern int (Player::*data_ov002_0210a2bc)();
+extern int (Player::*data_ov002_0210a2c4)();
+extern int (Player::*data_ov002_0210a2cc)();
+extern int (Player::*data_ov002_0210a2d4)();
+extern int (Player::*data_ov002_0210a2dc)();
+extern int (Player::*data_ov002_0210a2e4)();
+extern int (Player::*data_ov002_0210a2ec)();
+extern int (Player::*data_ov002_0210a2f4)();
+extern int (Player::*data_ov002_0210a2fc)();
+extern int (Player::*data_ov002_0210a304)();
+extern int (Player::*data_ov002_0210a314)();
+extern int (Player::*data_ov002_0210a31c)();
+extern int (Player::*data_ov002_0210a324)();
+extern int (Player::*data_ov002_0210a32c)();
+extern int (Player::*data_ov002_0210a33c)();
+extern int (Player::*data_ov002_0210a344)();
+extern int (Player::*data_ov002_0210a354)();
+extern int (Player::*data_ov002_0210a35c)();
+extern int (Player::*data_ov002_0210a364)();
+extern int (Player::*data_ov002_0210a374)();
+extern int (Player::*data_ov002_0210a37c)();
+extern int (Player::*data_ov002_0210a384)();
+extern int (Player::*data_ov002_0210a38c)();
+extern int (Player::*data_ov002_0210a394)();
+extern int (Player::*data_ov002_0210a39c)();
+extern int (Player::*data_ov002_0210a3a4)();
+extern int (Player::*data_ov002_0210a3b4)();
+extern int (Player::*data_ov002_0210a3bc)();
+extern int (Player::*data_ov002_0210a3cc)();
+extern int (Player::*data_ov002_0210a3d4)();
+extern int (Player::*data_ov002_0210a3e4)();
+extern int (Player::*data_ov002_0210a3ec)();
+extern int (Player::*data_ov002_0210a414)();
+extern int (Player::*data_ov002_0210a41c)();
+extern int (Player::*data_ov002_0210a42c)();
+extern int (Player::*data_ov002_0210a43c)();
+extern int (Player::*data_ov002_0210a444)();
+extern int (Player::*data_ov002_0210a454)();
+extern int (Player::*data_ov002_0210a464)();
+extern int (Player::*data_ov002_0210a484)();
+extern int (Player::*data_ov002_0210a494)();
+extern int (Player::*data_ov002_0210a49c)();
+extern int (Player::*data_ov002_0210a4a4)();
+extern int (Player::*data_ov002_0210a4ac)();
+extern int (Player::*data_ov002_0210a4b4)();
+extern int (Player::*data_ov002_0210a4c4)();
+extern int (Player::*data_ov002_0210a4cc)();
+extern int (Player::*data_ov002_0210a4d4)();
+extern int (Player::*data_ov002_0210a4dc)();
+extern int (Player::*data_ov002_0210a4e4)();
+extern int (Player::*data_ov002_0210a4ec)();
+extern int (Player::*data_ov002_0210a4f4)();
+extern int (Player::*data_ov002_0210a4fc)();
+extern int (Player::*data_ov002_0210a504)();
+extern int (Player::*data_ov002_0210a50c)();
+extern int (Player::*data_ov002_0210a514)();
+extern int (Player::*data_ov002_0210a51c)();
+extern int (Player::*data_ov002_0210a524)();
+extern int (Player::*data_ov002_0210a52c)();
+extern int (Player::*data_ov002_0210a53c)();
+extern int (Player::*data_ov002_0210a544)();
+extern int (Player::*data_ov002_0210a54c)();
+extern void (Player::*data_ov002_02109dfc)();
+extern void (Player::*data_ov002_02109e2c)();
+extern void (Player::*data_ov002_02109f0c)();
+extern void (Player::*data_ov002_02109f44)();
+extern void (Player::*data_ov002_02109f54)();
+extern void (Player::*data_ov002_0210a074)();
+extern void (Player::*data_ov002_0210a10c)();
+extern void (Player::*data_ov002_0210a12c)();
+extern void (Player::*data_ov002_0210a134)();
+extern void (Player::*data_ov002_0210a144)();
+extern void (Player::*data_ov002_0210a154)();
+extern void (Player::*data_ov002_0210a174)();
+extern void (Player::*data_ov002_0210a1b4)();
+extern void (Player::*data_ov002_0210a1cc)();
+extern void (Player::*data_ov002_0210a1ec)();
+extern void (Player::*data_ov002_0210a1fc)();
+extern void (Player::*data_ov002_0210a22c)();
+extern void (Player::*data_ov002_0210a23c)();
+extern void (Player::*data_ov002_0210a244)();
+extern void (Player::*data_ov002_0210a264)();
+extern void (Player::*data_ov002_0210a274)();
+extern void (Player::*data_ov002_0210a29c)();
+extern void (Player::*data_ov002_0210a30c)();
+extern void (Player::*data_ov002_0210a334)();
+extern void (Player::*data_ov002_0210a3ac)();
+extern void (Player::*data_ov002_0210a3f4)();
+extern void (Player::*data_ov002_0210a404)();
+extern void (Player::*data_ov002_0210a45c)();
+extern void (Player::*data_ov002_0210a46c)();
+extern void (Player::*data_ov002_0210a47c)();
+extern void (Player::*data_ov002_0210a48c)();
+
+/* The player states: init, main and cleanup handlers. */
+extern Player::State data_ov002_0210ffec;
+extern Player::State data_ov002_02110004;
+extern Player::State data_ov002_0211001c;
+extern Player::State data_ov002_02110034;
+extern Player::State data_ov002_0211004c;
+extern Player::State data_ov002_02110064;
+extern Player::State data_ov002_0211007c;
+extern Player::State data_ov002_02110094;
+extern Player::State data_ov002_021100ac;
+extern Player::State data_ov002_021100c4;
+extern Player::State data_ov002_021100dc;
+extern Player::State data_ov002_021100f4;
+extern Player::State data_ov002_0211010c;
+extern Player::State data_ov002_02110124;
+extern Player::State data_ov002_0211013c;
+extern Player::State data_ov002_0211016c;
+extern Player::State data_ov002_02110184;
+extern Player::State data_ov002_0211019c;
+extern Player::State data_ov002_021101b4;
+extern Player::State data_ov002_021101cc;
+extern Player::State data_ov002_021101e4;
+extern Player::State data_ov002_021101fc;
+extern Player::State data_ov002_02110214;
+extern Player::State data_ov002_0211022c;
+extern Player::State data_ov002_0211025c;
+extern Player::State data_ov002_02110274;
+extern Player::State data_ov002_0211028c;
+extern Player::State data_ov002_021102a4;
+extern Player::State data_ov002_021102bc;
+extern Player::State data_ov002_021102d4;
+extern Player::State data_ov002_021102ec;
+extern Player::State data_ov002_02110304;
+extern Player::State data_ov002_0211031c;
+extern Player::State data_ov002_02110334;
+extern Player::State data_ov002_0211034c;
+extern Player::State data_ov002_02110364;
+extern Player::State data_ov002_0211037c;
+extern Player::State data_ov002_02110394;
+extern Player::State data_ov002_021103ac;
+extern Player::State data_ov002_021103c4;
+extern Player::State data_ov002_021103dc;
+extern Player::State data_ov002_021103f4;
+extern Player::State data_ov002_0211040c;
+extern Player::State data_ov002_02110424;
+extern Player::State data_ov002_0211043c;
+extern Player::State data_ov002_02110454;
+extern Player::State data_ov002_0211046c;
+extern Player::State data_ov002_02110484;
+extern Player::State data_ov002_0211049c;
+extern Player::State data_ov002_021104b4;
+extern Player::State data_ov002_021104cc;
+extern Player::State data_ov002_021104e4;
+extern Player::State data_ov002_021104fc;
+extern Player::State data_ov002_02110514;
+extern Player::State data_ov002_0211052c;
+extern Player::State data_ov002_02110544;
+extern Player::State data_ov002_0211055c;
+extern Player::State data_ov002_02110574;
+extern Player::State data_ov002_0211058c;
+extern Player::State data_ov002_021105a4;
+extern Player::State data_ov002_021105bc;
+extern Player::State data_ov002_021105d4;
+extern Player::State data_ov002_021105ec;
+extern Player::State data_ov002_02110604;
+extern Player::State data_ov002_0211061c;
+extern Player::State data_ov002_02110634;
+extern Player::State data_ov002_0211064c;
+extern Player::State data_ov002_02110664;
+extern Player::State data_ov002_0211067c;
+extern Player::State data_ov002_02110694;
+extern Player::State data_ov002_021106ac;
+extern Player::State data_ov002_021106c4;
+extern Player::State data_ov002_021106dc;
+extern Player::State data_ov002_021106f4;
+extern Player::State data_ov002_0211070c;
+extern Player::State data_ov002_02110724;
+
+/* Player handler tables; the second is indexed by mNoCtrlKind, the third by mStateWork. */
+extern void (Player::*data_ov002_0211073c[4])();
+extern void (Player::*data_ov002_02110884[20])();
+extern void (Player::*data_ov002_0211075c[7])();
+
+/* The two 32-entry palette ramps func_ov002_020e69c0 and func_ov002_020e6a78 work on. */
+extern unsigned short data_ov002_02110804[];
+
 void __sinit_ov002_021019d0(void)
 {
-    struct P2 tmp;
-    int ta, tb;
-
-    func_0203b9b4((int *)&data_ov002_0210e160, 0x4d2);
-    func_020731dc(&data_ov002_0210e160, (void *)&func_0201973c, (void **)&data_ov002_0210f9b0);
-    func_02017acc(data_ov002_0210e6f8, ASSET_B_MARIO_ALL_BMD);
-    func_020731dc(&data_ov002_0210e6f8, (void *)&func_02017ab4, (void **)&data_ov002_0210f9c8);
-    func_02017acc(data_ov002_0210e648, ASSET_B_MARIO_BODY_BMD);
-    func_020731dc(&data_ov002_0210e648, (void *)&func_02017ab4, (void **)&data_ov002_0210f9d4);
-    func_02017acc(data_ov002_0210eae8, ASSET_B_MARIO_HEAD_CAP_BMD);
-    func_020731dc(&data_ov002_0210eae8, (void *)&func_02017ab4, (void **)&data_ov002_0210f9e0);
+    func_0203b9b4(&data_ov002_0210e160, 0x4d2);
+    func_020731dc(&data_ov002_0210e160, (void *)func_0201973c, data_ov002_0210f9b0);
+    func_02017acc(&data_ov002_0210e6f8, ASSET_B_MARIO_ALL_BMD);
+    func_020731dc(&data_ov002_0210e6f8, (void *)func_02017ab4, data_ov002_0210f9c8);
+    func_02017acc(&data_ov002_0210e648, ASSET_B_MARIO_BODY_BMD);
+    func_020731dc(&data_ov002_0210e648, (void *)func_02017ab4, data_ov002_0210f9d4);
+    func_02017acc(&data_ov002_0210eae8, ASSET_B_MARIO_HEAD_CAP_BMD);
+    func_020731dc(&data_ov002_0210eae8, (void *)func_02017ab4, data_ov002_0210f9e0);
     func_02017acc(&data_ov002_0210eb20, 0x807e);
-    func_020731dc(&data_ov002_0210eb20, (void *)&func_02017ab4, (void **)&data_ov002_0210f9f8);
-    func_02017acc(data_ov002_0210eb00, 0x807f);
-    func_020731dc(&data_ov002_0210eb00, (void *)&func_02017ab4, (void **)&data_ov002_0210fa04);
+    func_020731dc(&data_ov002_0210eb20, (void *)func_02017ab4, data_ov002_0210f9f8);
+    func_02017acc(&data_ov002_0210eb00, 0x807f);
+    func_020731dc(&data_ov002_0210eb00, (void *)func_02017ab4, data_ov002_0210fa04);
     func_02017acc(&data_ov002_0210ebb8, 0x8080);
-    func_020731dc(&data_ov002_0210ebb8, (void *)&func_02017ab4, (void **)&data_ov002_0210fa1c);
-    func_02017acc(data_ov002_0210e690, 0x8081);
-    func_020731dc(&data_ov002_0210e690, (void *)&func_02017ab4, (void **)&data_ov002_0210fa28);
-    func_02017acc(data_ov002_0210ec38, 0x8082);
-    func_020731dc(&data_ov002_0210ec38, (void *)&func_02017ab4, (void **)&data_ov002_0210fa40);
-    func_02017acc(data_ov002_0210ec50, 0x8083);
-    func_020731dc(&data_ov002_0210ec50, (void *)&func_02017ab4, (void **)&data_ov002_0210fa4c);
-    func_02017acc(data_ov002_0210e758, 0x80b8);
-    func_020731dc(&data_ov002_0210e758, (void *)&func_02017ab4, (void **)&data_ov002_0210fa64);
-    func_02017acc(data_ov002_0210e790, 0x80b9);
-    func_020731dc(&data_ov002_0210e790, (void *)&func_02017ab4, (void **)&data_ov002_0210fa70);
-    func_02017acc(data_ov002_0210e780, ASSET_WARIO_METAL_MODEL_BMD);
-    func_020731dc(&data_ov002_0210e780, (void *)&func_02017ab4, (void **)&data_ov002_0210fa94);
-    func_02017acc(data_ov002_0210ec60, 0x80ba);
-    func_020731dc(&data_ov002_0210ec60, (void *)&func_02017ab4, (void **)&data_ov002_0210faa0);
-    func_02017acc(data_ov002_0210e7b0, 0x80bd);
-    func_020731dc(&data_ov002_0210e7b0, (void *)&func_02017ab4, (void **)&data_ov002_0210fab8);
-    func_02017acc(data_ov002_0210e3a0, 0x80c0);
-    func_020731dc(&data_ov002_0210e3a0, (void *)&func_02017ab4, (void **)&data_ov002_0210fac4);
-    func_02017acc(data_ov002_0210e7d8, 0x80c1);
-    func_020731dc(&data_ov002_0210e7d8, (void *)&func_02017ab4, (void **)&data_ov002_0210fadc);
-    func_02017acc(data_ov002_0210e7a8, 0x80c2);
-    func_020731dc(&data_ov002_0210e7a8, (void *)&func_02017ab4, (void **)&data_ov002_0210fae8);
-    func_02017acc(data_ov002_0210e7f0, 0x80c3);
-    func_020731dc(&data_ov002_0210e7f0, (void *)&func_02017ab4, (void **)&data_ov002_0210fb00);
-    func_02017acc(data_ov002_0210e818, 0x80c4);
-    func_020731dc(&data_ov002_0210e818, (void *)&func_02017ab4, (void **)&data_ov002_0210fb0c);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e490, 0x801d);
-    func_020731dc(&data_ov002_0210e490, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210fb24);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e838, 0x801e);
-    func_020731dc(&data_ov002_0210e838, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210fb30);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e848, 0x801f);
-    func_020731dc(&data_ov002_0210e848, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210fb48);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e2c0, ASSET_L_ED_AMAZED_BCA);
-    func_020731dc(&data_ov002_0210e2c0, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210fb54);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e860, ASSET_L_ED_CAP_OFF_BCA);
-    func_020731dc(&data_ov002_0210e860, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210fb6c);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e4f8, ASSET_L_ED_CAP_OFF_WAIT_BCA);
-    func_020731dc(&data_ov002_0210e4f8, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210fb78);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e888, ASSET_L_ED_LOOK_M_WAIT_BCA);
-    func_020731dc(&data_ov002_0210e888, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210fb90);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e868, ASSET_L_ED_LOOK_MARIO_BCA);
-    func_020731dc(&data_ov002_0210e868, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210fb9c);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e7c0, ASSET_L_ED_LOOKUP_WAIT_BCA);
-    func_020731dc(&data_ov002_0210e7c0, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210fbb4);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e8b0, ASSET_L_ED_WAIT_BCA);
-    func_020731dc(&data_ov002_0210e8b0, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210fbc0);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e8b8, ASSET_L_ENTRY_WAIT_BCA);
-    func_020731dc(&data_ov002_0210e8b8, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210fbe4);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e518, ASSET_L_ENTRY_WAIT_END_BCA);
-    func_020731dc(&data_ov002_0210e518, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210fbf0);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e8d8, ASSET_L_FIRST_CHANGE_BCA);
-    func_020731dc(&data_ov002_0210e8d8, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210fc08);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e8f0, ASSET_L_LIE_END_BCA);
-    func_020731dc(&data_ov002_0210e8f0, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210fc14);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e900, ASSET_L_LIE_WAIT_BCA);
-    func_020731dc(&data_ov002_0210e900, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210fc2c);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e548, ASSET_L_OP_LOOK_WARIO_BCA);
-    func_020731dc(&data_ov002_0210e548, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210fc38);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e530, ASSET_L_OP_NOD_BCA);
-    func_020731dc(&data_ov002_0210e530, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210fc50);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e528, ASSET_L_OP_TURN_BCA);
-    func_020731dc(&data_ov002_0210e528, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f380);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e4b0, 0x8020);
-    func_020731dc(&data_ov002_0210e4b0, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210fc68);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e550, ASSET_L_SLEEP_END_BCA);
-    func_020731dc(&data_ov002_0210e550, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210fc74);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e748, ASSET_L_SLEEP_START_BCA);
-    func_020731dc(&data_ov002_0210e748, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210fc8c);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e5c0, ASSET_L_SLEEP_TO_LIE_BCA);
-    func_020731dc(&data_ov002_0210e5c0, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210fc98);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e998, ASSET_L_SLEEP_WAIT_BCA);
-    func_020731dc(&data_ov002_0210e998, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210fcb0);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210eaa0, 0x8029);
-    func_020731dc(&data_ov002_0210eaa0, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210fcbc);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210ea50, 0x802a);
-    func_020731dc(&data_ov002_0210ea50, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210fcd4);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e8c8, ASSET_M_ENTRY_WAIT_BCA);
-    func_020731dc(&data_ov002_0210e8c8, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210fce0);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e778, ASSET_M_ENTRY_WAIT_END_BCA);
-    func_020731dc(&data_ov002_0210e778, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210fcf8);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210ebe0, 0x802b);
-    func_020731dc(&data_ov002_0210ebe0, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210fd04);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e4f0, 0x802c);
-    func_020731dc(&data_ov002_0210e4f0, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210fd1c);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e4c8, 0x802d);
-    func_020731dc(&data_ov002_0210e4c8, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210fd28);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210eb30, 0x802e);
-    func_020731dc(&data_ov002_0210eb30, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210fd40);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e510, 0x802f);
-    func_020731dc(&data_ov002_0210e510, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210fd4c);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e970, ASSET_W_ED_AMAZED_WAIR_BCA);
-    func_020731dc(&data_ov002_0210e970, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210fd64);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e558, ASSET_W_ED_CAP_OFF_BCA);
-    func_020731dc(&data_ov002_0210e558, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210fd70);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e9c0, ASSET_W_ED_CAP_OFF_WAIT_BCA);
-    func_020731dc(&data_ov002_0210e9c0, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210fd88);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210ea20, ASSET_W_ED_LOOKUP_WAIT_BCA);
-    func_020731dc(&data_ov002_0210ea20, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210fd94);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e5b0, ASSET_W_ED_WAIT_BCA);
-    func_020731dc(&data_ov002_0210e5b0, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210fdac);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e5d0, ASSET_W_ED_WAVE_BCA);
-    func_020731dc(&data_ov002_0210e5d0, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210fdb8);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e5f0, ASSET_W_ENTRY_WAIT_BCA);
-    func_020731dc(&data_ov002_0210e5f0, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210fdd0);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e9a0, ASSET_W_ENTRY_WAIT_END_BCA);
-    func_020731dc(&data_ov002_0210e9a0, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210fddc);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e520, ASSET_W_FIRST_CHANGE_BCA);
-    func_020731dc(&data_ov002_0210e520, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210fdf4);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210eab8, 0x8030);
-    func_020731dc(&data_ov002_0210eab8, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210fe00);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210ead0, 0x8031);
-    func_020731dc(&data_ov002_0210ead0, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210fe18);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210eac0, 0x8032);
-    func_020731dc(&data_ov002_0210eac0, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210fe24);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e9f0, 0x8033);
-    func_020731dc(&data_ov002_0210e9f0, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210fe3c);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210eae0, ASSET_W_KEY_GET_BCA);
-    func_020731dc(&data_ov002_0210eae0, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210fe48);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210ea08, ASSET_W_LIE_END_BCA);
-    func_020731dc(&data_ov002_0210ea08, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210fe60);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e990, ASSET_W_LIE_WAIT_BCA);
-    func_020731dc(&data_ov002_0210e990, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210fe6c);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210eaf8, ASSET_W_OP_LOOK_LUIGI_BCA);
-    func_020731dc(&data_ov002_0210eaf8, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210fe84);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e9b8, ASSET_W_OP_NOD_BCA);
-    func_020731dc(&data_ov002_0210e9b8, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210fe90);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210ecb0, ASSET_W_OP_POINT_BCA);
-    func_020731dc(&data_ov002_0210ecb0, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210fea8);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210eb08, ASSET_W_OP_TURN_BCA);
-    func_020731dc(&data_ov002_0210eb08, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210feb4);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e668, 0x8034);
-    func_020731dc(&data_ov002_0210e668, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210fecc);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e650, ASSET_W_SLEEP_END_BCA);
-    func_020731dc(&data_ov002_0210e650, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210fed8);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210eb18, ASSET_W_SLEEP_START_BCA);
-    func_020731dc(&data_ov002_0210eb18, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210fef0);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e658, ASSET_W_SLEEP_TO_LIE_BCA);
-    func_020731dc(&data_ov002_0210e658, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210fefc);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e678, ASSET_W_SLEEP_WAIT_BCA);
-    func_020731dc(&data_ov002_0210e678, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210ff14);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210eb28, 0x803b);
-    func_020731dc(&data_ov002_0210eb28, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210ff20);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e638, 0x803c);
-    func_020731dc(&data_ov002_0210e638, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210ff38);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e688, 0x803d);
-    func_020731dc(&data_ov002_0210e688, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210ff44);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210eb40, 0x803e);
-    func_020731dc(&data_ov002_0210eb40, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210ff5c);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e630, 0x803f);
-    func_020731dc(&data_ov002_0210e630, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210ff68);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e930, 0x8040);
-    func_020731dc(&data_ov002_0210e930, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210ff80);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210eb50, ASSET_Y_ED_LOOK_CAM_BCA);
-    func_020731dc(&data_ov002_0210eb50, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210ff8c);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e698, ASSET_Y_ED_LOOKUP_WAIT_BCA);
-    func_020731dc(&data_ov002_0210e698, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210ffa4);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210eb60, ASSET_Y_ED_SHY_TO_WAIT_BCA);
-    func_020731dc(&data_ov002_0210eb60, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210ffb0);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210eb68, ASSET_Y_ED_SHY_WAIT_BCA);
-    func_020731dc(&data_ov002_0210eb68, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210ffc8);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e6a8, ASSET_Y_ED_TURN_BCA);
-    func_020731dc(&data_ov002_0210e6a8, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210ffd4);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e618, ASSET_Y_ED_WAIT_BCA);
-    func_020731dc(&data_ov002_0210e618, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210ed68);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e6b0, ASSET_Y_EGG_RUN_BCA);
-    func_020731dc(&data_ov002_0210e6b0, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210ed74);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210eb78, ASSET_Y_EGG_WAIT_BCA);
-    func_020731dc(&data_ov002_0210eb78, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210ed8c);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e3d0, 0x8041);
-    func_020731dc(&data_ov002_0210e3d0, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210ed98);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210eb80, 0x8042);
-    func_020731dc(&data_ov002_0210eb80, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210edb0);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210eb88, 0x8043);
-    func_020731dc(&data_ov002_0210eb88, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210edbc);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e6c0, 0x8044);
-    func_020731dc(&data_ov002_0210e6c0, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210edd4);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e3d8, 0x8045);
-    func_020731dc(&data_ov002_0210e3d8, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210ede0);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210eb98, 0x8046);
-    func_020731dc(&data_ov002_0210eb98, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210edf8);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e6c8, 0x8047);
-    func_020731dc(&data_ov002_0210e6c8, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210ee04);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210eba0, ASSET_Y_LIE_END_BCA);
-    func_020731dc(&data_ov002_0210eba0, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210ee1c);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e6d0, ASSET_Y_LIE_WAIT_BCA);
-    func_020731dc(&data_ov002_0210e6d0, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210ee28);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210ebb0, ASSET_Y_OP_LIE_TO_SIT_BCA);
-    func_020731dc(&data_ov002_0210ebb0, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210ee40);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e3f0, ASSET_Y_OP_SIT_TO_STAND_BCA);
-    func_020731dc(&data_ov002_0210e3f0, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210ee4c);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e6d8, ASSET_Y_OP_SIT_WAIT_BCA);
-    func_020731dc(&data_ov002_0210e6d8, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210ee64);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210ebc0, ASSET_Y_OP_STAND_WAIT_BCA);
-    func_020731dc(&data_ov002_0210ebc0, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210ee70);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e3f8, 0x8048);
-    func_020731dc(&data_ov002_0210e3f8, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210ee88);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e6e8, ASSET_Y_SLEEP_END_BCA);
-    func_020731dc(&data_ov002_0210e6e8, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210ee94);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210ebd0, ASSET_Y_SLEEP_START_BCA);
-    func_020731dc(&data_ov002_0210ebd0, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210eeac);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e6f0, ASSET_Y_SLEEP_TO_LIE_BCA);
-    func_020731dc(&data_ov002_0210e6f0, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210fbcc);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e3c0, ASSET_Y_SLEEP_WAIT_BCA);
-    func_020731dc(&data_ov002_0210e3c0, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210eec4);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e628, 0x8419);
-    func_020731dc(&data_ov002_0210e628, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210eed0);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e700, 0x841a);
-    func_020731dc(&data_ov002_0210e700, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210eee8);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210ebe8, 0x841b);
-    func_020731dc(&data_ov002_0210ebe8, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210eef4);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210ebf0, 0x841c);
-    func_020731dc(&data_ov002_0210ebf0, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210ef0c);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e710, 0x841d);
-    func_020731dc(&data_ov002_0210e710, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210ef18);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e3a8, 0x841e);
-    func_020731dc(&data_ov002_0210e3a8, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210ef30);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210ebf8, 0x841f);
-    func_020731dc(&data_ov002_0210ebf8, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210ef3c);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e718, 0x8420);
-    func_020731dc(&data_ov002_0210e718, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210ef54);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210ec08, 0x8421);
-    func_020731dc(&data_ov002_0210ec08, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210ef60);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e720, 0x8422);
-    func_020731dc(&data_ov002_0210e720, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210ef78);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210ec20, 0x8423);
-    func_020731dc(&data_ov002_0210ec20, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210ef84);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e410, 0x8424);
-    func_020731dc(&data_ov002_0210e410, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210ef9c);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e260, 0x8425);
-    func_020731dc(&data_ov002_0210e260, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210fa88);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e730, 0x8426);
-    func_020731dc(&data_ov002_0210e730, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210efb4);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210ec30, 0x8050);
-    func_020731dc(&data_ov002_0210ec30, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210efc0);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e418, 0x8051);
-    func_020731dc(&data_ov002_0210e418, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210efd8);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e740, 0x8052);
-    func_020731dc(&data_ov002_0210e740, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210efe4);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210ec48, 0x8053);
-    func_020731dc(&data_ov002_0210ec48, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210effc);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e420, 0x8054);
-    func_020731dc(&data_ov002_0210e420, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f008);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e750, ASSET_B_MARIO_START_BCA);
-    func_020731dc(&data_ov002_0210e750, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f020);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e760, 0x8055);
-    func_020731dc(&data_ov002_0210e760, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f02c);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e428, 0x8056);
-    func_020731dc(&data_ov002_0210e428, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f044);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e258, 0x8057);
-    func_020731dc(&data_ov002_0210e258, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f050);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e268, 0x8058);
-    func_020731dc(&data_ov002_0210e268, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f068);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e440, 0x8059);
-    func_020731dc(&data_ov002_0210e440, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f074);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e9e0, 0x805a);
-    func_020731dc(&data_ov002_0210e9e0, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f08c);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e240, 0x805b);
-    func_020731dc(&data_ov002_0210e240, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f098);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e448, 0x805c);
-    func_020731dc(&data_ov002_0210e448, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f0b0);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e798, 0x805d);
-    func_020731dc(&data_ov002_0210e798, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f0bc);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e7a0, 0x805e);
-    func_020731dc(&data_ov002_0210e7a0, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f0d4);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e278, 0x805f);
-    func_020731dc(&data_ov002_0210e278, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f0e0);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e238, 0x8060);
-    func_020731dc(&data_ov002_0210e238, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f0f8);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e248, 0x8061);
-    func_020731dc(&data_ov002_0210e248, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f104);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e468, ASSET_COLD_WAIT_BCA);
-    func_020731dc(&data_ov002_0210e468, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f11c);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e470, ASSET_COLD_WAIT_END_BCA);
-    func_020731dc(&data_ov002_0210e470, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f128);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e280, ASSET_COLD_WAIT_START_BCA);
-    func_020731dc(&data_ov002_0210e280, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f140);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e7d0, 0x8062);
-    func_020731dc(&data_ov002_0210e7d0, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f14c);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e290, 0x8063);
-    func_020731dc(&data_ov002_0210e290, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f164);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e480, 0x8064);
-    func_020731dc(&data_ov002_0210e480, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f170);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e488, ASSET_DAMAGE_START_BCA);
-    func_020731dc(&data_ov002_0210e488, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f188);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e228, ASSET_DAMAGE_WAIT_BCA);
-    func_020731dc(&data_ov002_0210e228, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f194);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e498, ASSET_DOOR_PULL_BCA);
-    func_020731dc(&data_ov002_0210e498, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f1b8);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e4a0, ASSET_DOOR_PUSH_BCA);
-    func_020731dc(&data_ov002_0210e4a0, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f1c4);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e808, ASSET_DROWN_DIE_BCA);
-    func_020731dc(&data_ov002_0210e808, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f1dc);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e298, ASSET_E_DOWN_BCA);
-    func_020731dc(&data_ov002_0210e298, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f1e8);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e810, 0x8065);
-    func_020731dc(&data_ov002_0210e810, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f200);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e2a0, ASSET_ED_CAP_OFF_BCA);
-    func_020731dc(&data_ov002_0210e2a0, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f20c);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e820, ASSET_ED_CAP_OFF_WAIT_BCA);
-    func_020731dc(&data_ov002_0210e820, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f230);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e2a8, ASSET_ED_FLY_BCA);
-    func_020731dc(&data_ov002_0210e2a8, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f23c);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e1d8, ASSET_ED_FLY_START_BCA);
-    func_020731dc(&data_ov002_0210e1d8, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f254);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e2b0, ASSET_ED_KISS_TO_POSE_BCA);
-    func_020731dc(&data_ov002_0210e2b0, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f260);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e840, ASSET_ED_KISS_WAIT_BCA);
-    func_020731dc(&data_ov002_0210e840, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f278);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e2b8, ASSET_ED_LOOK_LEFT_BCA);
-    func_020731dc(&data_ov002_0210e2b8, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f284);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e850, ASSET_ED_LOOK_LEFT_END_BCA);
-    func_020731dc(&data_ov002_0210e850, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f29c);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e4e0, ASSET_ED_LOOK_LEFT_WAIT_BCA);
-    func_020731dc(&data_ov002_0210e4e0, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f2a8);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e858, ASSET_ED_NOD_BCA);
-    func_020731dc(&data_ov002_0210e858, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f2c0);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e2c8, ASSET_ED_PUTUP_WAIT_BCA);
-    func_020731dc(&data_ov002_0210e2c8, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f2cc);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e948, ASSET_ED_WAIT_BCA);
-    func_020731dc(&data_ov002_0210e948, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f2e4);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e2d0, ASSET_ED_WAVE_BCA);
-    func_020731dc(&data_ov002_0210e2d0, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f2f0);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e870, 0x8066);
-    func_020731dc(&data_ov002_0210e870, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f314);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e2d8, 0x8067);
-    func_020731dc(&data_ov002_0210e2d8, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f320);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e880, ASSET_FALL_DIE_BCA);
-    func_020731dc(&data_ov002_0210e880, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f32c);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e508, ASSET_FALL_SAND_BCA);
-    func_020731dc(&data_ov002_0210e508, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f338);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e2e0, 0x8068);
-    func_020731dc(&data_ov002_0210e2e0, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f5e4);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e890, ASSET_FIRST_CHANGE_BCA);
-    func_020731dc(&data_ov002_0210e890, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f35c);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e2e8, 0x8069);
-    func_020731dc(&data_ov002_0210e2e8, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f368);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e1f0, 0x806a);
-    func_020731dc(&data_ov002_0210e1f0, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f374);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e1b8, ASSET_GAS_DIE_BCA);
-    func_020731dc(&data_ov002_0210e1b8, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f38c);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e8a0, ASSET_GAS_WAIT_BCA);
-    func_020731dc(&data_ov002_0210e8a0, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f398);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e2f8, ASSET_H_CARRY_START_BCA);
-    func_020731dc(&data_ov002_0210e2f8, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f3a4);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e8a8, ASSET_H_CARRY_THROW_BCA);
-    func_020731dc(&data_ov002_0210e8a8, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f3bc);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e300, ASSET_H_CARRY_WAIT_BCA);
-    func_020731dc(&data_ov002_0210e300, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f3c8);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e8c0, ASSET_H_CARRY_WALK_BCA);
-    func_020731dc(&data_ov002_0210e8c0, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f3d4);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e308, 0x806b);
-    func_020731dc(&data_ov002_0210e308, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f3e0);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e1a8, 0x806c);
-    func_020731dc(&data_ov002_0210e1a8, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f3ec);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e310, 0x806d);
-    func_020731dc(&data_ov002_0210e310, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f3f8);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e8e0, 0x806e);
-    func_020731dc(&data_ov002_0210e8e0, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f404);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e318, 0x806f);
-    func_020731dc(&data_ov002_0210e318, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f410);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e8f8, 0x8070);
-    func_020731dc(&data_ov002_0210e8f8, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f41c);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e320, 0x8071);
-    func_020731dc(&data_ov002_0210e320, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f428);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e908, 0x8072);
-    func_020731dc(&data_ov002_0210e908, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f434);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e328, 0x8073);
-    func_020731dc(&data_ov002_0210e328, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f440);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e1a0, 0x8074);
-    func_020731dc(&data_ov002_0210e1a0, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f44c);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e330, 0x8075);
-    func_020731dc(&data_ov002_0210e330, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f458);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e918, 0x8076);
-    func_020731dc(&data_ov002_0210e918, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f464);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e560, 0x8077);
-    func_020731dc(&data_ov002_0210e560, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f470);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e338, 0x8078);
-    func_020731dc(&data_ov002_0210e338, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f47c);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e928, 0x8079);
-    func_020731dc(&data_ov002_0210e928, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f488);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e568, ASSET_KEY_GET_BCA);
-    func_020731dc(&data_ov002_0210e568, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f494);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e938, ASSET_KEY_OPEN_BCA);
-    func_020731dc(&data_ov002_0210e938, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f4a0);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e940, 0x807a);
-    func_020731dc(&data_ov002_0210e940, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f4ac);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e340, 0x807b);
-    func_020731dc(&data_ov002_0210e340, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f4b8);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e1f8, ASSET_LIE_END_BCA);
-    func_020731dc(&data_ov002_0210e1f8, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f4c4);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e950, ASSET_LIE_WAIT_BCA);
-    func_020731dc(&data_ov002_0210e950, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f4d0);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e570, 0x807c);
-    func_020731dc(&data_ov002_0210e570, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f4dc);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e960, 0x807d);
-    func_020731dc(&data_ov002_0210e960, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f4e8);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e968, 0x8084);
-    func_020731dc(&data_ov002_0210e968, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f4f4);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e578, 0x8085);
-    func_020731dc(&data_ov002_0210e578, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f500);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e208, 0x8086);
-    func_020731dc(&data_ov002_0210e208, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f50c);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e978, 0x8087);
-    func_020731dc(&data_ov002_0210e978, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f518);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e580, 0x8088);
-    func_020731dc(&data_ov002_0210e580, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f524);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e980, ASSET_N_CARRY_LOST_BCA);
-    func_020731dc(&data_ov002_0210e980, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f530);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e588, ASSET_N_CARRY_POSE_BCA);
-    func_020731dc(&data_ov002_0210e588, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f53c);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e988, ASSET_N_CARRY_PUT_BCA);
-    func_020731dc(&data_ov002_0210e988, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f548);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e348, ASSET_N_CARRY_START_BCA);
-    func_020731dc(&data_ov002_0210e348, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f554);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e178, ASSET_N_CARRY_WAIT_BCA);
-    func_020731dc(&data_ov002_0210e178, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f560);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e200, ASSET_N_CARRY_WALK_BCA);
-    func_020731dc(&data_ov002_0210e200, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f56c);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e590, ASSET_OP_GO_BCA);
-    func_020731dc(&data_ov002_0210e590, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f578);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e9a8, ASSET_OP_WAIT_BCA);
-    func_020731dc(&data_ov002_0210e9a8, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f584);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e9b0, ASSET_P_KOOPA_H_WAIT_BCA);
-    func_020731dc(&data_ov002_0210e9b0, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f590);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e598, ASSET_P_KOOPA_HOLD_BCA);
-    func_020731dc(&data_ov002_0210e598, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f59c);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e188, ASSET_P_KOOPA_THROW_BCA);
-    func_020731dc(&data_ov002_0210e188, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f5a8);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e5a0, ASSET_PADDLE_1_BCA);
-    func_020731dc(&data_ov002_0210e5a0, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f5b4);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e9c8, ASSET_PADDLE_2_BCA);
-    func_020731dc(&data_ov002_0210e9c8, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f5c0);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e350, ASSET_PADDLE_CARRY_BCA);
-    func_020731dc(&data_ov002_0210e350, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f5cc);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e5a8, ASSET_PADDLE_END_BCA);
-    func_020731dc(&data_ov002_0210e5a8, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f5d8);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e9d8, 0x8089);
-    func_020731dc(&data_ov002_0210e9d8, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f5f0);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e358, 0x808a);
-    func_020731dc(&data_ov002_0210e358, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f5fc);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e170, ASSET_PUTON_T_CAP_BCA);
-    func_020731dc(&data_ov002_0210e170, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f608);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e9f8, ASSET_RETURN_DOWN_BCA);
-    func_020731dc(&data_ov002_0210e9f8, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f614);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e360, ASSET_RETURN_NOCAP_BCA);
-    func_020731dc(&data_ov002_0210e360, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f620);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e5b8, ASSET_RETURN_STAR_BCA);
-    func_020731dc(&data_ov002_0210e5b8, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f62c);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210ea00, 0x808b);
-    func_020731dc(&data_ov002_0210ea00, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f638);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e368, 0x808c);
-    func_020731dc(&data_ov002_0210e368, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f644);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e370, 0x808d);
-    func_020731dc(&data_ov002_0210e370, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f650);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210ea18, 0x808e);
-    func_020731dc(&data_ov002_0210ea18, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f65c);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e210, 0x808f);
-    func_020731dc(&data_ov002_0210e210, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f668);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e5c8, 0x8090);
-    func_020731dc(&data_ov002_0210e5c8, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f674);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210ea28, 0x8091);
-    func_020731dc(&data_ov002_0210ea28, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f680);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e378, ASSET_S_DIE_BCA);
-    func_020731dc(&data_ov002_0210e378, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f68c);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e190, ASSET_SCALE_UP_BCA);
-    func_020731dc(&data_ov002_0210e190, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f698);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210ea38, 0x8092);
-    func_020731dc(&data_ov002_0210ea38, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f6a4);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e380, ASSET_SDROP_HEAD_BCA);
-    func_020731dc(&data_ov002_0210e380, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f6b0);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210ea40, ASSET_SDROP_HEAD_END_BCA);
-    func_020731dc(&data_ov002_0210ea40, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f6bc);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210ea48, ASSET_SDROP_HEAD_WAIT_BCA);
-    func_020731dc(&data_ov002_0210ea48, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f6c8);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e5d8, ASSET_SDROP_HIP_BCA);
-    func_020731dc(&data_ov002_0210e5d8, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f6d4);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e218, ASSET_SDROP_HIP_END_BCA);
-    func_020731dc(&data_ov002_0210e218, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f6e0);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210ea58, ASSET_SDROP_HIP_WAIT_BCA);
-    func_020731dc(&data_ov002_0210ea58, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f6ec);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e5e0, ASSET_SDROP_LEG_BCA);
-    func_020731dc(&data_ov002_0210e5e0, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f6f8);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210ea60, ASSET_SDROP_LEG_END_BCA);
-    func_020731dc(&data_ov002_0210ea60, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f704);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e5e8, ASSET_SDROP_LEG_WAIT_BCA);
-    func_020731dc(&data_ov002_0210e5e8, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f710);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210ea68, ASSET_SDROP_WAIT_BCA);
-    func_020731dc(&data_ov002_0210ea68, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f71c);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e388, ASSET_SDROP_WALK_BCA);
-    func_020731dc(&data_ov002_0210e388, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f728);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e198, 0x8093);
-    func_020731dc(&data_ov002_0210e198, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f734);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210ea78, 0x8094);
-    func_020731dc(&data_ov002_0210ea78, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f740);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e390, ASSET_SHF_DIE_BCA);
-    func_020731dc(&data_ov002_0210e390, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f74c);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e5f8, 0x8095);
-    func_020731dc(&data_ov002_0210e5f8, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f758);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210ea80, ASSET_SHOOT_BCA);
-    func_020731dc(&data_ov002_0210ea80, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f764);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e398, ASSET_SHOOT_TO_FLY_BCA);
-    func_020731dc(&data_ov002_0210e398, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f770);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210ea90, 0x8096);
-    func_020731dc(&data_ov002_0210ea90, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f77c);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210ea98, ASSET_SLEEP_END_BCA);
-    func_020731dc(&data_ov002_0210ea98, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f788);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e608, ASSET_SLEEP_START_BCA);
-    func_020731dc(&data_ov002_0210e608, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f794);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210eaa8, ASSET_SLEEP_TO_LIE_BCA);
-    func_020731dc(&data_ov002_0210eaa8, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f7a0);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210eab0, ASSET_SLEEP_WAIT_BCA);
-    func_020731dc(&data_ov002_0210eab0, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f7ac);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e610, 0x8097);
-    func_020731dc(&data_ov002_0210e610, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f7b8);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e220, 0x8098);
-    func_020731dc(&data_ov002_0210e220, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f7c4);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e168, 0x8099);
-    func_020731dc(&data_ov002_0210e168, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f7d0);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e180, 0x809a);
-    func_020731dc(&data_ov002_0210e180, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f7dc);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e3b8, 0x809b);
-    func_020731dc(&data_ov002_0210e3b8, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f7e8);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e1b0, 0x809c);
-    func_020731dc(&data_ov002_0210e1b0, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f800);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e1c0, 0x809d);
-    func_020731dc(&data_ov002_0210e1c0, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f80c);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210ed58, 0x809e);
-    func_020731dc(&data_ov002_0210ed58, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f818);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210ed60, 0x809f);
-    func_020731dc(&data_ov002_0210ed60, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f830);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210ed50, 0x80a0);
-    func_020731dc(&data_ov002_0210ed50, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f83c);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210ed48, 0x80a1);
-    func_020731dc(&data_ov002_0210ed48, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f848);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210ed40, 0x80a2);
-    func_020731dc(&data_ov002_0210ed40, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f854);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210ed38, 0x80a3);
-    func_020731dc(&data_ov002_0210ed38, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f860);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210ed30, ASSET_STAR_OPEN_BCA);
-    func_020731dc(&data_ov002_0210ed30, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f86c);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210ed28, 0x80a4);
-    func_020731dc(&data_ov002_0210ed28, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f878);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210ed20, ASSET_SU_HIPAT_BCA);
-    func_020731dc(&data_ov002_0210ed20, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f884);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210ed18, ASSET_SU_HIPED_BCA);
-    func_020731dc(&data_ov002_0210ed18, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f890);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210ed10, ASSET_SU_HIPSR_BCA);
-    func_020731dc(&data_ov002_0210ed10, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f8a8);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210ed08, ASSET_SU_JUMP_BCA);
-    func_020731dc(&data_ov002_0210ed08, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f8b4);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210ecf8, ASSET_SU_JUMP_END_BCA);
-    func_020731dc(&data_ov002_0210ecf8, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f8c0);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210ecf0, ASSET_SU_RUN_BCA);
-    func_020731dc(&data_ov002_0210ecf0, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f8d8);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210ece8, ASSET_SU_WAIT_BCA);
-    func_020731dc(&data_ov002_0210ece8, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f8e4);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210ece0, ASSET_SU_WALK_BCA);
-    func_020731dc(&data_ov002_0210ece0, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f8f0);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210ecd8, ASSET_SU_WALK_END_BCA);
-    func_020731dc(&data_ov002_0210ecd8, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f8fc);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210ecd0, ASSET_SU_WALK_START_BCA);
-    func_020731dc(&data_ov002_0210ecd0, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f908);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210ecc8, ASSET_SWIM_BCA);
-    func_020731dc(&data_ov002_0210ecc8, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f914);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210ecc0, ASSET_SWIM_ATTACK_BCA);
-    func_020731dc(&data_ov002_0210ecc0, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f920);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e768, ASSET_SWIM_CARRY_BCA);
-    func_020731dc(&data_ov002_0210e768, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f938);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210eca0, ASSET_SWIM_DAMAGE_BCA);
-    func_020731dc(&data_ov002_0210eca0, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f944);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210ec90, ASSET_SWIM_DIE_BCA);
-    func_020731dc(&data_ov002_0210ec90, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f950);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210ec88, ASSET_SWIM_IN_BCA);
-    func_020731dc(&data_ov002_0210ec88, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f95c);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210ec80, ASSET_SWIM_STAR_GET_BCA);
-    func_020731dc(&data_ov002_0210ec80, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f968);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210ec78, ASSET_SWIM_THROW_BCA);
-    func_020731dc(&data_ov002_0210ec78, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f974);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210ec70, ASSET_SWIM_WAIT_BCA);
-    func_020731dc(&data_ov002_0210ec70, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f980);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210ec68, 0x80a5);
-    func_020731dc(&data_ov002_0210ec68, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f98c);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e4d8, 0x80a6);
-    func_020731dc(&data_ov002_0210e4d8, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f998);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e920, 0x80a7);
-    func_020731dc(&data_ov002_0210e920, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f9a4);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e7c8, 0x80a8);
-    func_020731dc(&data_ov002_0210e7c8, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f9bc);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210ead8, 0x80a9);
-    func_020731dc(&data_ov002_0210ead8, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210f9ec);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210eb48, 0x80aa);
-    func_020731dc(&data_ov002_0210eb48, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210fa10);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210ec18, 0x80ab);
-    func_020731dc(&data_ov002_0210ec18, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210fa34);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210ec58, 0x80ac);
-    func_020731dc(&data_ov002_0210ec58, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210fa58);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210ed00, 0x80b3);
-    func_020731dc(&data_ov002_0210ed00, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210fa7c);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210ec28, 0x80b4);
-    func_020731dc(&data_ov002_0210ec28, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210faac);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e7e0, 0x80b5);
-    func_020731dc(&data_ov002_0210e7e0, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210fad0);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e7f8, 0x80b6);
-    func_020731dc(&data_ov002_0210e7f8, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210faf4);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e4a8, 0x80b7);
-    func_020731dc(&data_ov002_0210e4a8, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210fb18);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e828, 0x80bb);
-    func_020731dc(&data_ov002_0210e828, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210fb3c);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e4c0, 0x80bc);
-    func_020731dc(&data_ov002_0210e4c0, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210fb60);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e878, 0x80be);
-    func_020731dc(&data_ov002_0210e878, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210fb84);
-    _ZN13SharedFilePtr9ConstructEj(&data_ov002_0210e830, 0x80bf);
-    func_020731dc(&data_ov002_0210e830, (void *)&SharedFilePtr_Destruct_Anim, (void **)&data_ov002_0210fba8);
+    func_020731dc(&data_ov002_0210ebb8, (void *)func_02017ab4, data_ov002_0210fa1c);
+    func_02017acc(&data_ov002_0210e690, 0x8081);
+    func_020731dc(&data_ov002_0210e690, (void *)func_02017ab4, data_ov002_0210fa28);
+    func_02017acc(&data_ov002_0210ec38, 0x8082);
+    func_020731dc(&data_ov002_0210ec38, (void *)func_02017ab4, data_ov002_0210fa40);
+    func_02017acc(&data_ov002_0210ec50, 0x8083);
+    func_020731dc(&data_ov002_0210ec50, (void *)func_02017ab4, data_ov002_0210fa4c);
+    func_02017acc(&data_ov002_0210e758, 0x80b8);
+    func_020731dc(&data_ov002_0210e758, (void *)func_02017ab4, data_ov002_0210fa64);
+    func_02017acc(&data_ov002_0210e790, 0x80b9);
+    func_020731dc(&data_ov002_0210e790, (void *)func_02017ab4, data_ov002_0210fa70);
+    func_02017acc(&data_ov002_0210e780, ASSET_WARIO_METAL_MODEL_BMD);
+    func_020731dc(&data_ov002_0210e780, (void *)func_02017ab4, data_ov002_0210fa94);
+    func_02017acc(&data_ov002_0210ec60, 0x80ba);
+    func_020731dc(&data_ov002_0210ec60, (void *)func_02017ab4, data_ov002_0210faa0);
+    func_02017acc(&data_ov002_0210e7b0, 0x80bd);
+    func_020731dc(&data_ov002_0210e7b0, (void *)func_02017ab4, data_ov002_0210fab8);
+    func_02017acc(&data_ov002_0210e3a0, 0x80c0);
+    func_020731dc(&data_ov002_0210e3a0, (void *)func_02017ab4, data_ov002_0210fac4);
+    func_02017acc(&data_ov002_0210e7d8, 0x80c1);
+    func_020731dc(&data_ov002_0210e7d8, (void *)func_02017ab4, data_ov002_0210fadc);
+    func_02017acc(&data_ov002_0210e7a8, 0x80c2);
+    func_020731dc(&data_ov002_0210e7a8, (void *)func_02017ab4, data_ov002_0210fae8);
+    func_02017acc(&data_ov002_0210e7f0, 0x80c3);
+    func_020731dc(&data_ov002_0210e7f0, (void *)func_02017ab4, data_ov002_0210fb00);
+    func_02017acc(&data_ov002_0210e818, 0x80c4);
+    func_020731dc(&data_ov002_0210e818, (void *)func_02017ab4, data_ov002_0210fb0c);
+    data_ov002_0210e490.Construct(0x801d);
+    func_020731dc(&data_ov002_0210e490, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210fb24);
+    data_ov002_0210e838.Construct(0x801e);
+    func_020731dc(&data_ov002_0210e838, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210fb30);
+    data_ov002_0210e848.Construct(0x801f);
+    func_020731dc(&data_ov002_0210e848, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210fb48);
+    data_ov002_0210e2c0.Construct(ASSET_L_ED_AMAZED_BCA);
+    func_020731dc(&data_ov002_0210e2c0, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210fb54);
+    data_ov002_0210e860.Construct(ASSET_L_ED_CAP_OFF_BCA);
+    func_020731dc(&data_ov002_0210e860, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210fb6c);
+    data_ov002_0210e4f8.Construct(ASSET_L_ED_CAP_OFF_WAIT_BCA);
+    func_020731dc(&data_ov002_0210e4f8, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210fb78);
+    data_ov002_0210e888.Construct(ASSET_L_ED_LOOK_M_WAIT_BCA);
+    func_020731dc(&data_ov002_0210e888, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210fb90);
+    data_ov002_0210e868.Construct(ASSET_L_ED_LOOK_MARIO_BCA);
+    func_020731dc(&data_ov002_0210e868, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210fb9c);
+    data_ov002_0210e7c0.Construct(ASSET_L_ED_LOOKUP_WAIT_BCA);
+    func_020731dc(&data_ov002_0210e7c0, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210fbb4);
+    data_ov002_0210e8b0.Construct(ASSET_L_ED_WAIT_BCA);
+    func_020731dc(&data_ov002_0210e8b0, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210fbc0);
+    data_ov002_0210e8b8.Construct(ASSET_L_ENTRY_WAIT_BCA);
+    func_020731dc(&data_ov002_0210e8b8, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210fbe4);
+    data_ov002_0210e518.Construct(ASSET_L_ENTRY_WAIT_END_BCA);
+    func_020731dc(&data_ov002_0210e518, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210fbf0);
+    data_ov002_0210e8d8.Construct(ASSET_L_FIRST_CHANGE_BCA);
+    func_020731dc(&data_ov002_0210e8d8, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210fc08);
+    data_ov002_0210e8f0.Construct(ASSET_L_LIE_END_BCA);
+    func_020731dc(&data_ov002_0210e8f0, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210fc14);
+    data_ov002_0210e900.Construct(ASSET_L_LIE_WAIT_BCA);
+    func_020731dc(&data_ov002_0210e900, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210fc2c);
+    data_ov002_0210e548.Construct(ASSET_L_OP_LOOK_WARIO_BCA);
+    func_020731dc(&data_ov002_0210e548, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210fc38);
+    data_ov002_0210e530.Construct(ASSET_L_OP_NOD_BCA);
+    func_020731dc(&data_ov002_0210e530, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210fc50);
+    data_ov002_0210e528.Construct(ASSET_L_OP_TURN_BCA);
+    func_020731dc(&data_ov002_0210e528, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f380);
+    data_ov002_0210e4b0.Construct(0x8020);
+    func_020731dc(&data_ov002_0210e4b0, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210fc68);
+    data_ov002_0210e550.Construct(ASSET_L_SLEEP_END_BCA);
+    func_020731dc(&data_ov002_0210e550, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210fc74);
+    data_ov002_0210e748.Construct(ASSET_L_SLEEP_START_BCA);
+    func_020731dc(&data_ov002_0210e748, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210fc8c);
+    data_ov002_0210e5c0.Construct(ASSET_L_SLEEP_TO_LIE_BCA);
+    func_020731dc(&data_ov002_0210e5c0, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210fc98);
+    data_ov002_0210e998.Construct(ASSET_L_SLEEP_WAIT_BCA);
+    func_020731dc(&data_ov002_0210e998, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210fcb0);
+    data_ov002_0210eaa0.Construct(0x8029);
+    func_020731dc(&data_ov002_0210eaa0, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210fcbc);
+    data_ov002_0210ea50.Construct(0x802a);
+    func_020731dc(&data_ov002_0210ea50, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210fcd4);
+    data_ov002_0210e8c8.Construct(ASSET_M_ENTRY_WAIT_BCA);
+    func_020731dc(&data_ov002_0210e8c8, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210fce0);
+    data_ov002_0210e778.Construct(ASSET_M_ENTRY_WAIT_END_BCA);
+    func_020731dc(&data_ov002_0210e778, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210fcf8);
+    data_ov002_0210ebe0.Construct(0x802b);
+    func_020731dc(&data_ov002_0210ebe0, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210fd04);
+    data_ov002_0210e4f0.Construct(0x802c);
+    func_020731dc(&data_ov002_0210e4f0, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210fd1c);
+    data_ov002_0210e4c8.Construct(0x802d);
+    func_020731dc(&data_ov002_0210e4c8, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210fd28);
+    data_ov002_0210eb30.Construct(0x802e);
+    func_020731dc(&data_ov002_0210eb30, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210fd40);
+    data_ov002_0210e510.Construct(0x802f);
+    func_020731dc(&data_ov002_0210e510, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210fd4c);
+    data_ov002_0210e970.Construct(ASSET_W_ED_AMAZED_WAIR_BCA);
+    func_020731dc(&data_ov002_0210e970, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210fd64);
+    data_ov002_0210e558.Construct(ASSET_W_ED_CAP_OFF_BCA);
+    func_020731dc(&data_ov002_0210e558, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210fd70);
+    data_ov002_0210e9c0.Construct(ASSET_W_ED_CAP_OFF_WAIT_BCA);
+    func_020731dc(&data_ov002_0210e9c0, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210fd88);
+    data_ov002_0210ea20.Construct(ASSET_W_ED_LOOKUP_WAIT_BCA);
+    func_020731dc(&data_ov002_0210ea20, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210fd94);
+    data_ov002_0210e5b0.Construct(ASSET_W_ED_WAIT_BCA);
+    func_020731dc(&data_ov002_0210e5b0, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210fdac);
+    data_ov002_0210e5d0.Construct(ASSET_W_ED_WAVE_BCA);
+    func_020731dc(&data_ov002_0210e5d0, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210fdb8);
+    data_ov002_0210e5f0.Construct(ASSET_W_ENTRY_WAIT_BCA);
+    func_020731dc(&data_ov002_0210e5f0, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210fdd0);
+    data_ov002_0210e9a0.Construct(ASSET_W_ENTRY_WAIT_END_BCA);
+    func_020731dc(&data_ov002_0210e9a0, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210fddc);
+    data_ov002_0210e520.Construct(ASSET_W_FIRST_CHANGE_BCA);
+    func_020731dc(&data_ov002_0210e520, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210fdf4);
+    data_ov002_0210eab8.Construct(0x8030);
+    func_020731dc(&data_ov002_0210eab8, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210fe00);
+    data_ov002_0210ead0.Construct(0x8031);
+    func_020731dc(&data_ov002_0210ead0, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210fe18);
+    data_ov002_0210eac0.Construct(0x8032);
+    func_020731dc(&data_ov002_0210eac0, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210fe24);
+    data_ov002_0210e9f0.Construct(0x8033);
+    func_020731dc(&data_ov002_0210e9f0, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210fe3c);
+    data_ov002_0210eae0.Construct(ASSET_W_KEY_GET_BCA);
+    func_020731dc(&data_ov002_0210eae0, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210fe48);
+    data_ov002_0210ea08.Construct(ASSET_W_LIE_END_BCA);
+    func_020731dc(&data_ov002_0210ea08, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210fe60);
+    data_ov002_0210e990.Construct(ASSET_W_LIE_WAIT_BCA);
+    func_020731dc(&data_ov002_0210e990, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210fe6c);
+    data_ov002_0210eaf8.Construct(ASSET_W_OP_LOOK_LUIGI_BCA);
+    func_020731dc(&data_ov002_0210eaf8, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210fe84);
+    data_ov002_0210e9b8.Construct(ASSET_W_OP_NOD_BCA);
+    func_020731dc(&data_ov002_0210e9b8, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210fe90);
+    data_ov002_0210ecb0.Construct(ASSET_W_OP_POINT_BCA);
+    func_020731dc(&data_ov002_0210ecb0, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210fea8);
+    data_ov002_0210eb08.Construct(ASSET_W_OP_TURN_BCA);
+    func_020731dc(&data_ov002_0210eb08, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210feb4);
+    data_ov002_0210e668.Construct(0x8034);
+    func_020731dc(&data_ov002_0210e668, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210fecc);
+    data_ov002_0210e650.Construct(ASSET_W_SLEEP_END_BCA);
+    func_020731dc(&data_ov002_0210e650, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210fed8);
+    data_ov002_0210eb18.Construct(ASSET_W_SLEEP_START_BCA);
+    func_020731dc(&data_ov002_0210eb18, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210fef0);
+    data_ov002_0210e658.Construct(ASSET_W_SLEEP_TO_LIE_BCA);
+    func_020731dc(&data_ov002_0210e658, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210fefc);
+    data_ov002_0210e678.Construct(ASSET_W_SLEEP_WAIT_BCA);
+    func_020731dc(&data_ov002_0210e678, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210ff14);
+    data_ov002_0210eb28.Construct(0x803b);
+    func_020731dc(&data_ov002_0210eb28, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210ff20);
+    data_ov002_0210e638.Construct(0x803c);
+    func_020731dc(&data_ov002_0210e638, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210ff38);
+    data_ov002_0210e688.Construct(0x803d);
+    func_020731dc(&data_ov002_0210e688, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210ff44);
+    data_ov002_0210eb40.Construct(0x803e);
+    func_020731dc(&data_ov002_0210eb40, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210ff5c);
+    data_ov002_0210e630.Construct(0x803f);
+    func_020731dc(&data_ov002_0210e630, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210ff68);
+    data_ov002_0210e930.Construct(0x8040);
+    func_020731dc(&data_ov002_0210e930, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210ff80);
+    data_ov002_0210eb50.Construct(ASSET_Y_ED_LOOK_CAM_BCA);
+    func_020731dc(&data_ov002_0210eb50, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210ff8c);
+    data_ov002_0210e698.Construct(ASSET_Y_ED_LOOKUP_WAIT_BCA);
+    func_020731dc(&data_ov002_0210e698, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210ffa4);
+    data_ov002_0210eb60.Construct(ASSET_Y_ED_SHY_TO_WAIT_BCA);
+    func_020731dc(&data_ov002_0210eb60, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210ffb0);
+    data_ov002_0210eb68.Construct(ASSET_Y_ED_SHY_WAIT_BCA);
+    func_020731dc(&data_ov002_0210eb68, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210ffc8);
+    data_ov002_0210e6a8.Construct(ASSET_Y_ED_TURN_BCA);
+    func_020731dc(&data_ov002_0210e6a8, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210ffd4);
+    data_ov002_0210e618.Construct(ASSET_Y_ED_WAIT_BCA);
+    func_020731dc(&data_ov002_0210e618, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210ed68);
+    data_ov002_0210e6b0.Construct(ASSET_Y_EGG_RUN_BCA);
+    func_020731dc(&data_ov002_0210e6b0, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210ed74);
+    data_ov002_0210eb78.Construct(ASSET_Y_EGG_WAIT_BCA);
+    func_020731dc(&data_ov002_0210eb78, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210ed8c);
+    data_ov002_0210e3d0.Construct(0x8041);
+    func_020731dc(&data_ov002_0210e3d0, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210ed98);
+    data_ov002_0210eb80.Construct(0x8042);
+    func_020731dc(&data_ov002_0210eb80, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210edb0);
+    data_ov002_0210eb88.Construct(0x8043);
+    func_020731dc(&data_ov002_0210eb88, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210edbc);
+    data_ov002_0210e6c0.Construct(0x8044);
+    func_020731dc(&data_ov002_0210e6c0, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210edd4);
+    data_ov002_0210e3d8.Construct(0x8045);
+    func_020731dc(&data_ov002_0210e3d8, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210ede0);
+    data_ov002_0210eb98.Construct(0x8046);
+    func_020731dc(&data_ov002_0210eb98, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210edf8);
+    data_ov002_0210e6c8.Construct(0x8047);
+    func_020731dc(&data_ov002_0210e6c8, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210ee04);
+    data_ov002_0210eba0.Construct(ASSET_Y_LIE_END_BCA);
+    func_020731dc(&data_ov002_0210eba0, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210ee1c);
+    data_ov002_0210e6d0.Construct(ASSET_Y_LIE_WAIT_BCA);
+    func_020731dc(&data_ov002_0210e6d0, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210ee28);
+    data_ov002_0210ebb0.Construct(ASSET_Y_OP_LIE_TO_SIT_BCA);
+    func_020731dc(&data_ov002_0210ebb0, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210ee40);
+    data_ov002_0210e3f0.Construct(ASSET_Y_OP_SIT_TO_STAND_BCA);
+    func_020731dc(&data_ov002_0210e3f0, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210ee4c);
+    data_ov002_0210e6d8.Construct(ASSET_Y_OP_SIT_WAIT_BCA);
+    func_020731dc(&data_ov002_0210e6d8, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210ee64);
+    data_ov002_0210ebc0.Construct(ASSET_Y_OP_STAND_WAIT_BCA);
+    func_020731dc(&data_ov002_0210ebc0, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210ee70);
+    data_ov002_0210e3f8.Construct(0x8048);
+    func_020731dc(&data_ov002_0210e3f8, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210ee88);
+    data_ov002_0210e6e8.Construct(ASSET_Y_SLEEP_END_BCA);
+    func_020731dc(&data_ov002_0210e6e8, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210ee94);
+    data_ov002_0210ebd0.Construct(ASSET_Y_SLEEP_START_BCA);
+    func_020731dc(&data_ov002_0210ebd0, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210eeac);
+    data_ov002_0210e6f0.Construct(ASSET_Y_SLEEP_TO_LIE_BCA);
+    func_020731dc(&data_ov002_0210e6f0, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210fbcc);
+    data_ov002_0210e3c0.Construct(ASSET_Y_SLEEP_WAIT_BCA);
+    func_020731dc(&data_ov002_0210e3c0, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210eec4);
+    data_ov002_0210e628.Construct(0x8419);
+    func_020731dc(&data_ov002_0210e628, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210eed0);
+    data_ov002_0210e700.Construct(0x841a);
+    func_020731dc(&data_ov002_0210e700, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210eee8);
+    data_ov002_0210ebe8.Construct(0x841b);
+    func_020731dc(&data_ov002_0210ebe8, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210eef4);
+    data_ov002_0210ebf0.Construct(0x841c);
+    func_020731dc(&data_ov002_0210ebf0, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210ef0c);
+    data_ov002_0210e710.Construct(0x841d);
+    func_020731dc(&data_ov002_0210e710, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210ef18);
+    data_ov002_0210e3a8.Construct(0x841e);
+    func_020731dc(&data_ov002_0210e3a8, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210ef30);
+    data_ov002_0210ebf8.Construct(0x841f);
+    func_020731dc(&data_ov002_0210ebf8, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210ef3c);
+    data_ov002_0210e718.Construct(0x8420);
+    func_020731dc(&data_ov002_0210e718, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210ef54);
+    data_ov002_0210ec08.Construct(0x8421);
+    func_020731dc(&data_ov002_0210ec08, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210ef60);
+    data_ov002_0210e720.Construct(0x8422);
+    func_020731dc(&data_ov002_0210e720, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210ef78);
+    data_ov002_0210ec20.Construct(0x8423);
+    func_020731dc(&data_ov002_0210ec20, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210ef84);
+    data_ov002_0210e410.Construct(0x8424);
+    func_020731dc(&data_ov002_0210e410, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210ef9c);
+    data_ov002_0210e260.Construct(0x8425);
+    func_020731dc(&data_ov002_0210e260, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210fa88);
+    data_ov002_0210e730.Construct(0x8426);
+    func_020731dc(&data_ov002_0210e730, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210efb4);
+    data_ov002_0210ec30.Construct(0x8050);
+    func_020731dc(&data_ov002_0210ec30, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210efc0);
+    data_ov002_0210e418.Construct(0x8051);
+    func_020731dc(&data_ov002_0210e418, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210efd8);
+    data_ov002_0210e740.Construct(0x8052);
+    func_020731dc(&data_ov002_0210e740, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210efe4);
+    data_ov002_0210ec48.Construct(0x8053);
+    func_020731dc(&data_ov002_0210ec48, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210effc);
+    data_ov002_0210e420.Construct(0x8054);
+    func_020731dc(&data_ov002_0210e420, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f008);
+    data_ov002_0210e750.Construct(ASSET_B_MARIO_START_BCA);
+    func_020731dc(&data_ov002_0210e750, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f020);
+    data_ov002_0210e760.Construct(0x8055);
+    func_020731dc(&data_ov002_0210e760, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f02c);
+    data_ov002_0210e428.Construct(0x8056);
+    func_020731dc(&data_ov002_0210e428, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f044);
+    data_ov002_0210e258.Construct(0x8057);
+    func_020731dc(&data_ov002_0210e258, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f050);
+    data_ov002_0210e268.Construct(0x8058);
+    func_020731dc(&data_ov002_0210e268, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f068);
+    data_ov002_0210e440.Construct(0x8059);
+    func_020731dc(&data_ov002_0210e440, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f074);
+    data_ov002_0210e9e0.Construct(0x805a);
+    func_020731dc(&data_ov002_0210e9e0, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f08c);
+    data_ov002_0210e240.Construct(0x805b);
+    func_020731dc(&data_ov002_0210e240, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f098);
+    data_ov002_0210e448.Construct(0x805c);
+    func_020731dc(&data_ov002_0210e448, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f0b0);
+    data_ov002_0210e798.Construct(0x805d);
+    func_020731dc(&data_ov002_0210e798, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f0bc);
+    data_ov002_0210e7a0.Construct(0x805e);
+    func_020731dc(&data_ov002_0210e7a0, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f0d4);
+    data_ov002_0210e278.Construct(0x805f);
+    func_020731dc(&data_ov002_0210e278, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f0e0);
+    data_ov002_0210e238.Construct(0x8060);
+    func_020731dc(&data_ov002_0210e238, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f0f8);
+    data_ov002_0210e248.Construct(0x8061);
+    func_020731dc(&data_ov002_0210e248, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f104);
+    data_ov002_0210e468.Construct(ASSET_COLD_WAIT_BCA);
+    func_020731dc(&data_ov002_0210e468, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f11c);
+    data_ov002_0210e470.Construct(ASSET_COLD_WAIT_END_BCA);
+    func_020731dc(&data_ov002_0210e470, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f128);
+    data_ov002_0210e280.Construct(ASSET_COLD_WAIT_START_BCA);
+    func_020731dc(&data_ov002_0210e280, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f140);
+    data_ov002_0210e7d0.Construct(0x8062);
+    func_020731dc(&data_ov002_0210e7d0, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f14c);
+    data_ov002_0210e290.Construct(0x8063);
+    func_020731dc(&data_ov002_0210e290, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f164);
+    data_ov002_0210e480.Construct(0x8064);
+    func_020731dc(&data_ov002_0210e480, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f170);
+    data_ov002_0210e488.Construct(ASSET_DAMAGE_START_BCA);
+    func_020731dc(&data_ov002_0210e488, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f188);
+    data_ov002_0210e228.Construct(ASSET_DAMAGE_WAIT_BCA);
+    func_020731dc(&data_ov002_0210e228, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f194);
+    data_ov002_0210e498.Construct(ASSET_DOOR_PULL_BCA);
+    func_020731dc(&data_ov002_0210e498, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f1b8);
+    data_ov002_0210e4a0.Construct(ASSET_DOOR_PUSH_BCA);
+    func_020731dc(&data_ov002_0210e4a0, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f1c4);
+    data_ov002_0210e808.Construct(ASSET_DROWN_DIE_BCA);
+    func_020731dc(&data_ov002_0210e808, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f1dc);
+    data_ov002_0210e298.Construct(ASSET_E_DOWN_BCA);
+    func_020731dc(&data_ov002_0210e298, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f1e8);
+    data_ov002_0210e810.Construct(0x8065);
+    func_020731dc(&data_ov002_0210e810, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f200);
+    data_ov002_0210e2a0.Construct(ASSET_ED_CAP_OFF_BCA);
+    func_020731dc(&data_ov002_0210e2a0, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f20c);
+    data_ov002_0210e820.Construct(ASSET_ED_CAP_OFF_WAIT_BCA);
+    func_020731dc(&data_ov002_0210e820, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f230);
+    data_ov002_0210e2a8.Construct(ASSET_ED_FLY_BCA);
+    func_020731dc(&data_ov002_0210e2a8, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f23c);
+    data_ov002_0210e1d8.Construct(ASSET_ED_FLY_START_BCA);
+    func_020731dc(&data_ov002_0210e1d8, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f254);
+    data_ov002_0210e2b0.Construct(ASSET_ED_KISS_TO_POSE_BCA);
+    func_020731dc(&data_ov002_0210e2b0, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f260);
+    data_ov002_0210e840.Construct(ASSET_ED_KISS_WAIT_BCA);
+    func_020731dc(&data_ov002_0210e840, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f278);
+    data_ov002_0210e2b8.Construct(ASSET_ED_LOOK_LEFT_BCA);
+    func_020731dc(&data_ov002_0210e2b8, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f284);
+    data_ov002_0210e850.Construct(ASSET_ED_LOOK_LEFT_END_BCA);
+    func_020731dc(&data_ov002_0210e850, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f29c);
+    data_ov002_0210e4e0.Construct(ASSET_ED_LOOK_LEFT_WAIT_BCA);
+    func_020731dc(&data_ov002_0210e4e0, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f2a8);
+    data_ov002_0210e858.Construct(ASSET_ED_NOD_BCA);
+    func_020731dc(&data_ov002_0210e858, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f2c0);
+    data_ov002_0210e2c8.Construct(ASSET_ED_PUTUP_WAIT_BCA);
+    func_020731dc(&data_ov002_0210e2c8, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f2cc);
+    data_ov002_0210e948.Construct(ASSET_ED_WAIT_BCA);
+    func_020731dc(&data_ov002_0210e948, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f2e4);
+    data_ov002_0210e2d0.Construct(ASSET_ED_WAVE_BCA);
+    func_020731dc(&data_ov002_0210e2d0, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f2f0);
+    data_ov002_0210e870.Construct(0x8066);
+    func_020731dc(&data_ov002_0210e870, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f314);
+    data_ov002_0210e2d8.Construct(0x8067);
+    func_020731dc(&data_ov002_0210e2d8, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f320);
+    data_ov002_0210e880.Construct(ASSET_FALL_DIE_BCA);
+    func_020731dc(&data_ov002_0210e880, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f32c);
+    data_ov002_0210e508.Construct(ASSET_FALL_SAND_BCA);
+    func_020731dc(&data_ov002_0210e508, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f338);
+    data_ov002_0210e2e0.Construct(0x8068);
+    func_020731dc(&data_ov002_0210e2e0, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f5e4);
+    data_ov002_0210e890.Construct(ASSET_FIRST_CHANGE_BCA);
+    func_020731dc(&data_ov002_0210e890, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f35c);
+    data_ov002_0210e2e8.Construct(0x8069);
+    func_020731dc(&data_ov002_0210e2e8, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f368);
+    data_ov002_0210e1f0.Construct(0x806a);
+    func_020731dc(&data_ov002_0210e1f0, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f374);
+    data_ov002_0210e1b8.Construct(ASSET_GAS_DIE_BCA);
+    func_020731dc(&data_ov002_0210e1b8, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f38c);
+    data_ov002_0210e8a0.Construct(ASSET_GAS_WAIT_BCA);
+    func_020731dc(&data_ov002_0210e8a0, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f398);
+    data_ov002_0210e2f8.Construct(ASSET_H_CARRY_START_BCA);
+    func_020731dc(&data_ov002_0210e2f8, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f3a4);
+    data_ov002_0210e8a8.Construct(ASSET_H_CARRY_THROW_BCA);
+    func_020731dc(&data_ov002_0210e8a8, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f3bc);
+    data_ov002_0210e300.Construct(ASSET_H_CARRY_WAIT_BCA);
+    func_020731dc(&data_ov002_0210e300, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f3c8);
+    data_ov002_0210e8c0.Construct(ASSET_H_CARRY_WALK_BCA);
+    func_020731dc(&data_ov002_0210e8c0, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f3d4);
+    data_ov002_0210e308.Construct(0x806b);
+    func_020731dc(&data_ov002_0210e308, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f3e0);
+    data_ov002_0210e1a8.Construct(0x806c);
+    func_020731dc(&data_ov002_0210e1a8, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f3ec);
+    data_ov002_0210e310.Construct(0x806d);
+    func_020731dc(&data_ov002_0210e310, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f3f8);
+    data_ov002_0210e8e0.Construct(0x806e);
+    func_020731dc(&data_ov002_0210e8e0, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f404);
+    data_ov002_0210e318.Construct(0x806f);
+    func_020731dc(&data_ov002_0210e318, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f410);
+    data_ov002_0210e8f8.Construct(0x8070);
+    func_020731dc(&data_ov002_0210e8f8, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f41c);
+    data_ov002_0210e320.Construct(0x8071);
+    func_020731dc(&data_ov002_0210e320, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f428);
+    data_ov002_0210e908.Construct(0x8072);
+    func_020731dc(&data_ov002_0210e908, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f434);
+    data_ov002_0210e328.Construct(0x8073);
+    func_020731dc(&data_ov002_0210e328, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f440);
+    data_ov002_0210e1a0.Construct(0x8074);
+    func_020731dc(&data_ov002_0210e1a0, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f44c);
+    data_ov002_0210e330.Construct(0x8075);
+    func_020731dc(&data_ov002_0210e330, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f458);
+    data_ov002_0210e918.Construct(0x8076);
+    func_020731dc(&data_ov002_0210e918, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f464);
+    data_ov002_0210e560.Construct(0x8077);
+    func_020731dc(&data_ov002_0210e560, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f470);
+    data_ov002_0210e338.Construct(0x8078);
+    func_020731dc(&data_ov002_0210e338, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f47c);
+    data_ov002_0210e928.Construct(0x8079);
+    func_020731dc(&data_ov002_0210e928, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f488);
+    data_ov002_0210e568.Construct(ASSET_KEY_GET_BCA);
+    func_020731dc(&data_ov002_0210e568, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f494);
+    data_ov002_0210e938.Construct(ASSET_KEY_OPEN_BCA);
+    func_020731dc(&data_ov002_0210e938, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f4a0);
+    data_ov002_0210e940.Construct(0x807a);
+    func_020731dc(&data_ov002_0210e940, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f4ac);
+    data_ov002_0210e340.Construct(0x807b);
+    func_020731dc(&data_ov002_0210e340, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f4b8);
+    data_ov002_0210e1f8.Construct(ASSET_LIE_END_BCA);
+    func_020731dc(&data_ov002_0210e1f8, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f4c4);
+    data_ov002_0210e950.Construct(ASSET_LIE_WAIT_BCA);
+    func_020731dc(&data_ov002_0210e950, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f4d0);
+    data_ov002_0210e570.Construct(0x807c);
+    func_020731dc(&data_ov002_0210e570, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f4dc);
+    data_ov002_0210e960.Construct(0x807d);
+    func_020731dc(&data_ov002_0210e960, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f4e8);
+    data_ov002_0210e968.Construct(0x8084);
+    func_020731dc(&data_ov002_0210e968, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f4f4);
+    data_ov002_0210e578.Construct(0x8085);
+    func_020731dc(&data_ov002_0210e578, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f500);
+    data_ov002_0210e208.Construct(0x8086);
+    func_020731dc(&data_ov002_0210e208, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f50c);
+    data_ov002_0210e978.Construct(0x8087);
+    func_020731dc(&data_ov002_0210e978, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f518);
+    data_ov002_0210e580.Construct(0x8088);
+    func_020731dc(&data_ov002_0210e580, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f524);
+    data_ov002_0210e980.Construct(ASSET_N_CARRY_LOST_BCA);
+    func_020731dc(&data_ov002_0210e980, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f530);
+    data_ov002_0210e588.Construct(ASSET_N_CARRY_POSE_BCA);
+    func_020731dc(&data_ov002_0210e588, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f53c);
+    data_ov002_0210e988.Construct(ASSET_N_CARRY_PUT_BCA);
+    func_020731dc(&data_ov002_0210e988, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f548);
+    data_ov002_0210e348.Construct(ASSET_N_CARRY_START_BCA);
+    func_020731dc(&data_ov002_0210e348, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f554);
+    data_ov002_0210e178.Construct(ASSET_N_CARRY_WAIT_BCA);
+    func_020731dc(&data_ov002_0210e178, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f560);
+    data_ov002_0210e200.Construct(ASSET_N_CARRY_WALK_BCA);
+    func_020731dc(&data_ov002_0210e200, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f56c);
+    data_ov002_0210e590.Construct(ASSET_OP_GO_BCA);
+    func_020731dc(&data_ov002_0210e590, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f578);
+    data_ov002_0210e9a8.Construct(ASSET_OP_WAIT_BCA);
+    func_020731dc(&data_ov002_0210e9a8, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f584);
+    data_ov002_0210e9b0.Construct(ASSET_P_KOOPA_H_WAIT_BCA);
+    func_020731dc(&data_ov002_0210e9b0, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f590);
+    data_ov002_0210e598.Construct(ASSET_P_KOOPA_HOLD_BCA);
+    func_020731dc(&data_ov002_0210e598, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f59c);
+    data_ov002_0210e188.Construct(ASSET_P_KOOPA_THROW_BCA);
+    func_020731dc(&data_ov002_0210e188, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f5a8);
+    data_ov002_0210e5a0.Construct(ASSET_PADDLE_1_BCA);
+    func_020731dc(&data_ov002_0210e5a0, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f5b4);
+    data_ov002_0210e9c8.Construct(ASSET_PADDLE_2_BCA);
+    func_020731dc(&data_ov002_0210e9c8, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f5c0);
+    data_ov002_0210e350.Construct(ASSET_PADDLE_CARRY_BCA);
+    func_020731dc(&data_ov002_0210e350, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f5cc);
+    data_ov002_0210e5a8.Construct(ASSET_PADDLE_END_BCA);
+    func_020731dc(&data_ov002_0210e5a8, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f5d8);
+    data_ov002_0210e9d8.Construct(0x8089);
+    func_020731dc(&data_ov002_0210e9d8, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f5f0);
+    data_ov002_0210e358.Construct(0x808a);
+    func_020731dc(&data_ov002_0210e358, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f5fc);
+    data_ov002_0210e170.Construct(ASSET_PUTON_T_CAP_BCA);
+    func_020731dc(&data_ov002_0210e170, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f608);
+    data_ov002_0210e9f8.Construct(ASSET_RETURN_DOWN_BCA);
+    func_020731dc(&data_ov002_0210e9f8, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f614);
+    data_ov002_0210e360.Construct(ASSET_RETURN_NOCAP_BCA);
+    func_020731dc(&data_ov002_0210e360, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f620);
+    data_ov002_0210e5b8.Construct(ASSET_RETURN_STAR_BCA);
+    func_020731dc(&data_ov002_0210e5b8, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f62c);
+    data_ov002_0210ea00.Construct(0x808b);
+    func_020731dc(&data_ov002_0210ea00, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f638);
+    data_ov002_0210e368.Construct(0x808c);
+    func_020731dc(&data_ov002_0210e368, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f644);
+    data_ov002_0210e370.Construct(0x808d);
+    func_020731dc(&data_ov002_0210e370, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f650);
+    data_ov002_0210ea18.Construct(0x808e);
+    func_020731dc(&data_ov002_0210ea18, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f65c);
+    data_ov002_0210e210.Construct(0x808f);
+    func_020731dc(&data_ov002_0210e210, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f668);
+    data_ov002_0210e5c8.Construct(0x8090);
+    func_020731dc(&data_ov002_0210e5c8, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f674);
+    data_ov002_0210ea28.Construct(0x8091);
+    func_020731dc(&data_ov002_0210ea28, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f680);
+    data_ov002_0210e378.Construct(ASSET_S_DIE_BCA);
+    func_020731dc(&data_ov002_0210e378, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f68c);
+    data_ov002_0210e190.Construct(ASSET_SCALE_UP_BCA);
+    func_020731dc(&data_ov002_0210e190, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f698);
+    data_ov002_0210ea38.Construct(0x8092);
+    func_020731dc(&data_ov002_0210ea38, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f6a4);
+    data_ov002_0210e380.Construct(ASSET_SDROP_HEAD_BCA);
+    func_020731dc(&data_ov002_0210e380, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f6b0);
+    data_ov002_0210ea40.Construct(ASSET_SDROP_HEAD_END_BCA);
+    func_020731dc(&data_ov002_0210ea40, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f6bc);
+    data_ov002_0210ea48.Construct(ASSET_SDROP_HEAD_WAIT_BCA);
+    func_020731dc(&data_ov002_0210ea48, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f6c8);
+    data_ov002_0210e5d8.Construct(ASSET_SDROP_HIP_BCA);
+    func_020731dc(&data_ov002_0210e5d8, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f6d4);
+    data_ov002_0210e218.Construct(ASSET_SDROP_HIP_END_BCA);
+    func_020731dc(&data_ov002_0210e218, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f6e0);
+    data_ov002_0210ea58.Construct(ASSET_SDROP_HIP_WAIT_BCA);
+    func_020731dc(&data_ov002_0210ea58, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f6ec);
+    data_ov002_0210e5e0.Construct(ASSET_SDROP_LEG_BCA);
+    func_020731dc(&data_ov002_0210e5e0, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f6f8);
+    data_ov002_0210ea60.Construct(ASSET_SDROP_LEG_END_BCA);
+    func_020731dc(&data_ov002_0210ea60, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f704);
+    data_ov002_0210e5e8.Construct(ASSET_SDROP_LEG_WAIT_BCA);
+    func_020731dc(&data_ov002_0210e5e8, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f710);
+    data_ov002_0210ea68.Construct(ASSET_SDROP_WAIT_BCA);
+    func_020731dc(&data_ov002_0210ea68, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f71c);
+    data_ov002_0210e388.Construct(ASSET_SDROP_WALK_BCA);
+    func_020731dc(&data_ov002_0210e388, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f728);
+    data_ov002_0210e198.Construct(0x8093);
+    func_020731dc(&data_ov002_0210e198, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f734);
+    data_ov002_0210ea78.Construct(0x8094);
+    func_020731dc(&data_ov002_0210ea78, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f740);
+    data_ov002_0210e390.Construct(ASSET_SHF_DIE_BCA);
+    func_020731dc(&data_ov002_0210e390, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f74c);
+    data_ov002_0210e5f8.Construct(0x8095);
+    func_020731dc(&data_ov002_0210e5f8, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f758);
+    data_ov002_0210ea80.Construct(ASSET_SHOOT_BCA);
+    func_020731dc(&data_ov002_0210ea80, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f764);
+    data_ov002_0210e398.Construct(ASSET_SHOOT_TO_FLY_BCA);
+    func_020731dc(&data_ov002_0210e398, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f770);
+    data_ov002_0210ea90.Construct(0x8096);
+    func_020731dc(&data_ov002_0210ea90, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f77c);
+    data_ov002_0210ea98.Construct(ASSET_SLEEP_END_BCA);
+    func_020731dc(&data_ov002_0210ea98, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f788);
+    data_ov002_0210e608.Construct(ASSET_SLEEP_START_BCA);
+    func_020731dc(&data_ov002_0210e608, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f794);
+    data_ov002_0210eaa8.Construct(ASSET_SLEEP_TO_LIE_BCA);
+    func_020731dc(&data_ov002_0210eaa8, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f7a0);
+    data_ov002_0210eab0.Construct(ASSET_SLEEP_WAIT_BCA);
+    func_020731dc(&data_ov002_0210eab0, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f7ac);
+    data_ov002_0210e610.Construct(0x8097);
+    func_020731dc(&data_ov002_0210e610, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f7b8);
+    data_ov002_0210e220.Construct(0x8098);
+    func_020731dc(&data_ov002_0210e220, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f7c4);
+    data_ov002_0210e168.Construct(0x8099);
+    func_020731dc(&data_ov002_0210e168, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f7d0);
+    data_ov002_0210e180.Construct(0x809a);
+    func_020731dc(&data_ov002_0210e180, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f7dc);
+    data_ov002_0210e3b8.Construct(0x809b);
+    func_020731dc(&data_ov002_0210e3b8, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f7e8);
+    data_ov002_0210e1b0.Construct(0x809c);
+    func_020731dc(&data_ov002_0210e1b0, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f800);
+    data_ov002_0210e1c0.Construct(0x809d);
+    func_020731dc(&data_ov002_0210e1c0, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f80c);
+    data_ov002_0210ed58.Construct(0x809e);
+    func_020731dc(&data_ov002_0210ed58, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f818);
+    data_ov002_0210ed60.Construct(0x809f);
+    func_020731dc(&data_ov002_0210ed60, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f830);
+    data_ov002_0210ed50.Construct(0x80a0);
+    func_020731dc(&data_ov002_0210ed50, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f83c);
+    data_ov002_0210ed48.Construct(0x80a1);
+    func_020731dc(&data_ov002_0210ed48, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f848);
+    data_ov002_0210ed40.Construct(0x80a2);
+    func_020731dc(&data_ov002_0210ed40, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f854);
+    data_ov002_0210ed38.Construct(0x80a3);
+    func_020731dc(&data_ov002_0210ed38, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f860);
+    data_ov002_0210ed30.Construct(ASSET_STAR_OPEN_BCA);
+    func_020731dc(&data_ov002_0210ed30, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f86c);
+    data_ov002_0210ed28.Construct(0x80a4);
+    func_020731dc(&data_ov002_0210ed28, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f878);
+    data_ov002_0210ed20.Construct(ASSET_SU_HIPAT_BCA);
+    func_020731dc(&data_ov002_0210ed20, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f884);
+    data_ov002_0210ed18.Construct(ASSET_SU_HIPED_BCA);
+    func_020731dc(&data_ov002_0210ed18, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f890);
+    data_ov002_0210ed10.Construct(ASSET_SU_HIPSR_BCA);
+    func_020731dc(&data_ov002_0210ed10, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f8a8);
+    data_ov002_0210ed08.Construct(ASSET_SU_JUMP_BCA);
+    func_020731dc(&data_ov002_0210ed08, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f8b4);
+    data_ov002_0210ecf8.Construct(ASSET_SU_JUMP_END_BCA);
+    func_020731dc(&data_ov002_0210ecf8, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f8c0);
+    data_ov002_0210ecf0.Construct(ASSET_SU_RUN_BCA);
+    func_020731dc(&data_ov002_0210ecf0, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f8d8);
+    data_ov002_0210ece8.Construct(ASSET_SU_WAIT_BCA);
+    func_020731dc(&data_ov002_0210ece8, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f8e4);
+    data_ov002_0210ece0.Construct(ASSET_SU_WALK_BCA);
+    func_020731dc(&data_ov002_0210ece0, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f8f0);
+    data_ov002_0210ecd8.Construct(ASSET_SU_WALK_END_BCA);
+    func_020731dc(&data_ov002_0210ecd8, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f8fc);
+    data_ov002_0210ecd0.Construct(ASSET_SU_WALK_START_BCA);
+    func_020731dc(&data_ov002_0210ecd0, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f908);
+    data_ov002_0210ecc8.Construct(ASSET_SWIM_BCA);
+    func_020731dc(&data_ov002_0210ecc8, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f914);
+    data_ov002_0210ecc0.Construct(ASSET_SWIM_ATTACK_BCA);
+    func_020731dc(&data_ov002_0210ecc0, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f920);
+    data_ov002_0210e768.Construct(ASSET_SWIM_CARRY_BCA);
+    func_020731dc(&data_ov002_0210e768, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f938);
+    data_ov002_0210eca0.Construct(ASSET_SWIM_DAMAGE_BCA);
+    func_020731dc(&data_ov002_0210eca0, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f944);
+    data_ov002_0210ec90.Construct(ASSET_SWIM_DIE_BCA);
+    func_020731dc(&data_ov002_0210ec90, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f950);
+    data_ov002_0210ec88.Construct(ASSET_SWIM_IN_BCA);
+    func_020731dc(&data_ov002_0210ec88, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f95c);
+    data_ov002_0210ec80.Construct(ASSET_SWIM_STAR_GET_BCA);
+    func_020731dc(&data_ov002_0210ec80, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f968);
+    data_ov002_0210ec78.Construct(ASSET_SWIM_THROW_BCA);
+    func_020731dc(&data_ov002_0210ec78, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f974);
+    data_ov002_0210ec70.Construct(ASSET_SWIM_WAIT_BCA);
+    func_020731dc(&data_ov002_0210ec70, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f980);
+    data_ov002_0210ec68.Construct(0x80a5);
+    func_020731dc(&data_ov002_0210ec68, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f98c);
+    data_ov002_0210e4d8.Construct(0x80a6);
+    func_020731dc(&data_ov002_0210e4d8, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f998);
+    data_ov002_0210e920.Construct(0x80a7);
+    func_020731dc(&data_ov002_0210e920, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f9a4);
+    data_ov002_0210e7c8.Construct(0x80a8);
+    func_020731dc(&data_ov002_0210e7c8, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f9bc);
+    data_ov002_0210ead8.Construct(0x80a9);
+    func_020731dc(&data_ov002_0210ead8, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210f9ec);
+    data_ov002_0210eb48.Construct(0x80aa);
+    func_020731dc(&data_ov002_0210eb48, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210fa10);
+    data_ov002_0210ec18.Construct(0x80ab);
+    func_020731dc(&data_ov002_0210ec18, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210fa34);
+    data_ov002_0210ec58.Construct(0x80ac);
+    func_020731dc(&data_ov002_0210ec58, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210fa58);
+    data_ov002_0210ed00.Construct(0x80b3);
+    func_020731dc(&data_ov002_0210ed00, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210fa7c);
+    data_ov002_0210ec28.Construct(0x80b4);
+    func_020731dc(&data_ov002_0210ec28, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210faac);
+    data_ov002_0210e7e0.Construct(0x80b5);
+    func_020731dc(&data_ov002_0210e7e0, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210fad0);
+    data_ov002_0210e7f8.Construct(0x80b6);
+    func_020731dc(&data_ov002_0210e7f8, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210faf4);
+    data_ov002_0210e4a8.Construct(0x80b7);
+    func_020731dc(&data_ov002_0210e4a8, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210fb18);
+    data_ov002_0210e828.Construct(0x80bb);
+    func_020731dc(&data_ov002_0210e828, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210fb3c);
+    data_ov002_0210e4c0.Construct(0x80bc);
+    func_020731dc(&data_ov002_0210e4c0, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210fb60);
+    data_ov002_0210e878.Construct(0x80be);
+    func_020731dc(&data_ov002_0210e878, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210fb84);
+    data_ov002_0210e830.Construct(0x80bf);
+    func_020731dc(&data_ov002_0210e830, (void *)SharedFilePtr_Destruct_Anim, data_ov002_0210fba8);
     SharedFilePtr_Construct_TexSeq(&data_ov002_0210e538, 0x8021);
-    func_020731dc(&data_ov002_0210e538, (void *)&SharedFilePtr_Destruct_TexSeq, (void **)&data_ov002_0210fbd8);
+    func_020731dc(&data_ov002_0210e538, (void *)SharedFilePtr_Destruct_TexSeq, data_ov002_0210fbd8);
     SharedFilePtr_Construct_TexSeq(&data_ov002_0210e8d0, 0x8022);
-    func_020731dc(&data_ov002_0210e8d0, (void *)&SharedFilePtr_Destruct_TexSeq, (void **)&data_ov002_0210fbfc);
+    func_020731dc(&data_ov002_0210e8d0, (void *)SharedFilePtr_Destruct_TexSeq, data_ov002_0210fbfc);
     SharedFilePtr_Construct_TexSeq(&data_ov002_0210e8e8, ASSET_L_TX_DAMAGE_START_BTP);
-    func_020731dc(&data_ov002_0210e8e8, (void *)&SharedFilePtr_Destruct_TexSeq, (void **)&data_ov002_0210fc20);
+    func_020731dc(&data_ov002_0210e8e8, (void *)SharedFilePtr_Destruct_TexSeq, data_ov002_0210fc20);
     SharedFilePtr_Construct_TexSeq(&data_ov002_0210e540, ASSET_L_TX_DAMAGE_WAIT_BTP);
-    func_020731dc(&data_ov002_0210e540, (void *)&SharedFilePtr_Destruct_TexSeq, (void **)&data_ov002_0210fc44);
+    func_020731dc(&data_ov002_0210e540, (void *)SharedFilePtr_Destruct_TexSeq, data_ov002_0210fc44);
     SharedFilePtr_Construct_TexSeq(&data_ov002_0210e958, ASSET_L_TX_ED_AMAZED_BTP);
-    func_020731dc(&data_ov002_0210e958, (void *)&SharedFilePtr_Destruct_TexSeq, (void **)&data_ov002_0210fc5c);
+    func_020731dc(&data_ov002_0210e958, (void *)SharedFilePtr_Destruct_TexSeq, data_ov002_0210fc5c);
     SharedFilePtr_Construct_TexSeq(&data_ov002_0210e898, 0x8023);
-    func_020731dc(&data_ov002_0210e898, (void *)&SharedFilePtr_Destruct_TexSeq, (void **)&data_ov002_0210fc80);
+    func_020731dc(&data_ov002_0210e898, (void *)SharedFilePtr_Destruct_TexSeq, data_ov002_0210fc80);
     SharedFilePtr_Construct_TexSeq(&data_ov002_0210e9e8, 0x8024);
-    func_020731dc(&data_ov002_0210e9e8, (void *)&SharedFilePtr_Destruct_TexSeq, (void **)&data_ov002_0210fca4);
+    func_020731dc(&data_ov002_0210e9e8, (void *)SharedFilePtr_Destruct_TexSeq, data_ov002_0210fca4);
     SharedFilePtr_Construct_TexSeq(&data_ov002_0210ea70, ASSET_L_TX_GAS_WAIT_BTP);
-    func_020731dc(&data_ov002_0210ea70, (void *)&SharedFilePtr_Destruct_TexSeq, (void **)&data_ov002_0210fcc8);
+    func_020731dc(&data_ov002_0210ea70, (void *)SharedFilePtr_Destruct_TexSeq, data_ov002_0210fcc8);
     SharedFilePtr_Construct_TexSeq(&data_ov002_0210ebd8, 0x8025);
-    func_020731dc(&data_ov002_0210ebd8, (void *)&SharedFilePtr_Destruct_TexSeq, (void **)&data_ov002_0210fcec);
+    func_020731dc(&data_ov002_0210ebd8, (void *)SharedFilePtr_Destruct_TexSeq, data_ov002_0210fcec);
     SharedFilePtr_Construct_TexSeq(&data_ov002_0210eac8, 0x8026);
-    func_020731dc(&data_ov002_0210eac8, (void *)&SharedFilePtr_Destruct_TexSeq, (void **)&data_ov002_0210fd10);
+    func_020731dc(&data_ov002_0210eac8, (void *)SharedFilePtr_Destruct_TexSeq, data_ov002_0210fd10);
     SharedFilePtr_Construct_TexSeq(&data_ov002_0210e460, ASSET_L_TX_LIE_END_BTP);
-    func_020731dc(&data_ov002_0210e460, (void *)&SharedFilePtr_Destruct_TexSeq, (void **)&data_ov002_0210fd34);
+    func_020731dc(&data_ov002_0210e460, (void *)SharedFilePtr_Destruct_TexSeq, data_ov002_0210fd34);
     SharedFilePtr_Construct_TexSeq(&data_ov002_0210e910, ASSET_L_TX_LIE_WAIT_BTP);
-    func_020731dc(&data_ov002_0210e910, (void *)&SharedFilePtr_Destruct_TexSeq, (void **)&data_ov002_0210fd58);
+    func_020731dc(&data_ov002_0210e910, (void *)SharedFilePtr_Destruct_TexSeq, data_ov002_0210fd58);
     SharedFilePtr_Construct_TexSeq(&data_ov002_0210e2f0, ASSET_L_TX_RETURN_DOWN_BTP);
-    func_020731dc(&data_ov002_0210e2f0, (void *)&SharedFilePtr_Destruct_TexSeq, (void **)&data_ov002_0210fd7c);
+    func_020731dc(&data_ov002_0210e2f0, (void *)SharedFilePtr_Destruct_TexSeq, data_ov002_0210fd7c);
     SharedFilePtr_Construct_TexSeq(&data_ov002_0210ea10, 0x8027);
-    func_020731dc(&data_ov002_0210ea10, (void *)&SharedFilePtr_Destruct_TexSeq, (void **)&data_ov002_0210fda0);
+    func_020731dc(&data_ov002_0210ea10, (void *)SharedFilePtr_Destruct_TexSeq, data_ov002_0210fda0);
     SharedFilePtr_Construct_TexSeq(&data_ov002_0210e600, ASSET_L_TX_SLEEP_END_BTP);
-    func_020731dc(&data_ov002_0210e600, (void *)&SharedFilePtr_Destruct_TexSeq, (void **)&data_ov002_0210fdc4);
+    func_020731dc(&data_ov002_0210e600, (void *)SharedFilePtr_Destruct_TexSeq, data_ov002_0210fdc4);
     SharedFilePtr_Construct_TexSeq(&data_ov002_0210ec98, ASSET_L_TX_SLEEP_START_BTP);
-    func_020731dc(&data_ov002_0210ec98, (void *)&SharedFilePtr_Destruct_TexSeq, (void **)&data_ov002_0210fde8);
+    func_020731dc(&data_ov002_0210ec98, (void *)SharedFilePtr_Destruct_TexSeq, data_ov002_0210fde8);
     SharedFilePtr_Construct_TexSeq(&data_ov002_0210ea88, ASSET_L_TX_SLEEP_TO_LIE_BTP);
-    func_020731dc(&data_ov002_0210ea88, (void *)&SharedFilePtr_Destruct_TexSeq, (void **)&data_ov002_0210fe0c);
+    func_020731dc(&data_ov002_0210ea88, (void *)SharedFilePtr_Destruct_TexSeq, data_ov002_0210fe0c);
     SharedFilePtr_Construct_TexSeq(&data_ov002_0210eca8, ASSET_L_TX_SLEEP_WAIT_BTP);
-    func_020731dc(&data_ov002_0210eca8, (void *)&SharedFilePtr_Destruct_TexSeq, (void **)&data_ov002_0210fe30);
+    func_020731dc(&data_ov002_0210eca8, (void *)SharedFilePtr_Destruct_TexSeq, data_ov002_0210fe30);
     SharedFilePtr_Construct_TexSeq(&data_ov002_0210e9d0, 0x8028);
-    func_020731dc(&data_ov002_0210e9d0, (void *)&SharedFilePtr_Destruct_TexSeq, (void **)&data_ov002_0210fe54);
+    func_020731dc(&data_ov002_0210e9d0, (void *)SharedFilePtr_Destruct_TexSeq, data_ov002_0210fe54);
     SharedFilePtr_Construct_TexSeq(&data_ov002_0210eaf0, 0x8035);
-    func_020731dc(&data_ov002_0210eaf0, (void *)&SharedFilePtr_Destruct_TexSeq, (void **)&data_ov002_0210fe78);
+    func_020731dc(&data_ov002_0210eaf0, (void *)SharedFilePtr_Destruct_TexSeq, data_ov002_0210fe78);
     SharedFilePtr_Construct_TexSeq(&data_ov002_0210ea30, ASSET_W_TX_DAMAGE_START_BTP);
-    func_020731dc(&data_ov002_0210ea30, (void *)&SharedFilePtr_Destruct_TexSeq, (void **)&data_ov002_0210fe9c);
+    func_020731dc(&data_ov002_0210ea30, (void *)SharedFilePtr_Destruct_TexSeq, data_ov002_0210fe9c);
     SharedFilePtr_Construct_TexSeq(&data_ov002_0210e660, ASSET_W_TX_DAMAGE_WAIT_BTP);
-    func_020731dc(&data_ov002_0210e660, (void *)&SharedFilePtr_Destruct_TexSeq, (void **)&data_ov002_0210fec0);
+    func_020731dc(&data_ov002_0210e660, (void *)SharedFilePtr_Destruct_TexSeq, data_ov002_0210fec0);
     SharedFilePtr_Construct_TexSeq(&data_ov002_0210eb10, ASSET_W_TX_ED_AMAZED_BTP);
-    func_020731dc(&data_ov002_0210eb10, (void *)&SharedFilePtr_Destruct_TexSeq, (void **)&data_ov002_0210fee4);
+    func_020731dc(&data_ov002_0210eb10, (void *)SharedFilePtr_Destruct_TexSeq, data_ov002_0210fee4);
     SharedFilePtr_Construct_TexSeq(&data_ov002_0210e670, 0x8036);
-    func_020731dc(&data_ov002_0210e670, (void *)&SharedFilePtr_Destruct_TexSeq, (void **)&data_ov002_0210ff08);
+    func_020731dc(&data_ov002_0210e670, (void *)SharedFilePtr_Destruct_TexSeq, data_ov002_0210ff08);
     SharedFilePtr_Construct_TexSeq(&data_ov002_0210e680, 0x8037);
-    func_020731dc(&data_ov002_0210e680, (void *)&SharedFilePtr_Destruct_TexSeq, (void **)&data_ov002_0210ff2c);
+    func_020731dc(&data_ov002_0210e680, (void *)SharedFilePtr_Destruct_TexSeq, data_ov002_0210ff2c);
     SharedFilePtr_Construct_TexSeq(&data_ov002_0210eb38, ASSET_W_TX_GAS_WAIT_BTP);
-    func_020731dc(&data_ov002_0210eb38, (void *)&SharedFilePtr_Destruct_TexSeq, (void **)&data_ov002_0210ff50);
+    func_020731dc(&data_ov002_0210eb38, (void *)SharedFilePtr_Destruct_TexSeq, data_ov002_0210ff50);
     SharedFilePtr_Construct_TexSeq(&data_ov002_0210e640, 0x8038);
-    func_020731dc(&data_ov002_0210e640, (void *)&SharedFilePtr_Destruct_TexSeq, (void **)&data_ov002_0210ff74);
+    func_020731dc(&data_ov002_0210e640, (void *)SharedFilePtr_Destruct_TexSeq, data_ov002_0210ff74);
     SharedFilePtr_Construct_TexSeq(&data_ov002_0210eb58, ASSET_W_TX_LIE_END_BTP);
-    func_020731dc(&data_ov002_0210eb58, (void *)&SharedFilePtr_Destruct_TexSeq, (void **)&data_ov002_0210ff98);
+    func_020731dc(&data_ov002_0210eb58, (void *)SharedFilePtr_Destruct_TexSeq, data_ov002_0210ff98);
     SharedFilePtr_Construct_TexSeq(&data_ov002_0210e6a0, ASSET_W_TX_LIE_WAIT_BTP);
-    func_020731dc(&data_ov002_0210e6a0, (void *)&SharedFilePtr_Destruct_TexSeq, (void **)&data_ov002_0210ffbc);
+    func_020731dc(&data_ov002_0210e6a0, (void *)SharedFilePtr_Destruct_TexSeq, data_ov002_0210ffbc);
     SharedFilePtr_Construct_TexSeq(&data_ov002_0210e3e0, ASSET_W_TX_RETURN_DOWN_BTP);
-    func_020731dc(&data_ov002_0210e3e0, (void *)&SharedFilePtr_Destruct_TexSeq, (void **)&data_ov002_0210ffe0);
+    func_020731dc(&data_ov002_0210e3e0, (void *)SharedFilePtr_Destruct_TexSeq, data_ov002_0210ffe0);
     SharedFilePtr_Construct_TexSeq(&data_ov002_0210eb70, 0x8039);
-    func_020731dc(&data_ov002_0210eb70, (void *)&SharedFilePtr_Destruct_TexSeq, (void **)&data_ov002_0210ed80);
+    func_020731dc(&data_ov002_0210eb70, (void *)SharedFilePtr_Destruct_TexSeq, data_ov002_0210ed80);
     SharedFilePtr_Construct_TexSeq(&data_ov002_0210e6b8, ASSET_W_TX_SLEEP_END_BTP);
-    func_020731dc(&data_ov002_0210e6b8, (void *)&SharedFilePtr_Destruct_TexSeq, (void **)&data_ov002_0210eda4);
+    func_020731dc(&data_ov002_0210e6b8, (void *)SharedFilePtr_Destruct_TexSeq, data_ov002_0210eda4);
     SharedFilePtr_Construct_TexSeq(&data_ov002_0210eb90, ASSET_W_TX_SLEEP_START_BTP);
-    func_020731dc(&data_ov002_0210eb90, (void *)&SharedFilePtr_Destruct_TexSeq, (void **)&data_ov002_0210edc8);
+    func_020731dc(&data_ov002_0210eb90, (void *)SharedFilePtr_Destruct_TexSeq, data_ov002_0210edc8);
     SharedFilePtr_Construct_TexSeq(&data_ov002_0210e620, ASSET_W_TX_SLEEP_TO_LIE_BTP);
-    func_020731dc(&data_ov002_0210e620, (void *)&SharedFilePtr_Destruct_TexSeq, (void **)&data_ov002_0210edec);
+    func_020731dc(&data_ov002_0210e620, (void *)SharedFilePtr_Destruct_TexSeq, data_ov002_0210edec);
     SharedFilePtr_Construct_TexSeq(&data_ov002_0210e3e8, ASSET_W_TX_SLEEP_WAIT_BTP);
-    func_020731dc(&data_ov002_0210e3e8, (void *)&SharedFilePtr_Destruct_TexSeq, (void **)&data_ov002_0210ee10);
+    func_020731dc(&data_ov002_0210e3e8, (void *)SharedFilePtr_Destruct_TexSeq, data_ov002_0210ee10);
     SharedFilePtr_Construct_TexSeq(&data_ov002_0210eba8, 0x803a);
-    func_020731dc(&data_ov002_0210eba8, (void *)&SharedFilePtr_Destruct_TexSeq, (void **)&data_ov002_0210ee34);
+    func_020731dc(&data_ov002_0210eba8, (void *)SharedFilePtr_Destruct_TexSeq, data_ov002_0210ee34);
     SharedFilePtr_Construct_TexSeq(&data_ov002_0210e3c8, 0x8049);
-    func_020731dc(&data_ov002_0210e3c8, (void *)&SharedFilePtr_Destruct_TexSeq, (void **)&data_ov002_0210ee58);
+    func_020731dc(&data_ov002_0210e3c8, (void *)SharedFilePtr_Destruct_TexSeq, data_ov002_0210ee58);
     SharedFilePtr_Construct_TexSeq(&data_ov002_0210e6e0, ASSET_Y_TX_DAMAGE_START_BTP);
-    func_020731dc(&data_ov002_0210e6e0, (void *)&SharedFilePtr_Destruct_TexSeq, (void **)&data_ov002_0210ee7c);
+    func_020731dc(&data_ov002_0210e6e0, (void *)SharedFilePtr_Destruct_TexSeq, data_ov002_0210ee7c);
     SharedFilePtr_Construct_TexSeq(&data_ov002_0210ebc8, ASSET_Y_TX_DAMAGE_WAIT_BTP);
-    func_020731dc(&data_ov002_0210ebc8, (void *)&SharedFilePtr_Destruct_TexSeq, (void **)&data_ov002_0210eea0);
+    func_020731dc(&data_ov002_0210ebc8, (void *)SharedFilePtr_Destruct_TexSeq, data_ov002_0210eea0);
     SharedFilePtr_Construct_TexSeq(&data_ov002_0210e400, 0x804a);
-    func_020731dc(&data_ov002_0210e400, (void *)&SharedFilePtr_Destruct_TexSeq, (void **)&data_ov002_0210eeb8);
+    func_020731dc(&data_ov002_0210e400, (void *)SharedFilePtr_Destruct_TexSeq, data_ov002_0210eeb8);
     SharedFilePtr_Construct_TexSeq(&data_ov002_0210ecb8, 0x804b);
-    func_020731dc(&data_ov002_0210ecb8, (void *)&SharedFilePtr_Destruct_TexSeq, (void **)&data_ov002_0210eedc);
+    func_020731dc(&data_ov002_0210ecb8, (void *)SharedFilePtr_Destruct_TexSeq, data_ov002_0210eedc);
     SharedFilePtr_Construct_TexSeq(&data_ov002_0210e708, ASSET_Y_TX_GAS_WAIT_BTP);
-    func_020731dc(&data_ov002_0210e708, (void *)&SharedFilePtr_Destruct_TexSeq, (void **)&data_ov002_0210ef00);
+    func_020731dc(&data_ov002_0210e708, (void *)SharedFilePtr_Destruct_TexSeq, data_ov002_0210ef00);
     SharedFilePtr_Construct_TexSeq(&data_ov002_0210e408, 0x804c);
-    func_020731dc(&data_ov002_0210e408, (void *)&SharedFilePtr_Destruct_TexSeq, (void **)&data_ov002_0210ef24);
+    func_020731dc(&data_ov002_0210e408, (void *)SharedFilePtr_Destruct_TexSeq, data_ov002_0210ef24);
     SharedFilePtr_Construct_TexSeq(&data_ov002_0210ec00, ASSET_Y_TX_LIE_END_BTP);
-    func_020731dc(&data_ov002_0210ec00, (void *)&SharedFilePtr_Destruct_TexSeq, (void **)&data_ov002_0210ef48);
+    func_020731dc(&data_ov002_0210ec00, (void *)SharedFilePtr_Destruct_TexSeq, data_ov002_0210ef48);
     SharedFilePtr_Construct_TexSeq(&data_ov002_0210ec10, ASSET_Y_TX_LIE_WAIT_BTP);
-    func_020731dc(&data_ov002_0210ec10, (void *)&SharedFilePtr_Destruct_TexSeq, (void **)&data_ov002_0210ef6c);
+    func_020731dc(&data_ov002_0210ec10, (void *)SharedFilePtr_Destruct_TexSeq, data_ov002_0210ef6c);
     SharedFilePtr_Construct_TexSeq(&data_ov002_0210e728, ASSET_Y_TX_RETURN_DOWN_BTP);
-    func_020731dc(&data_ov002_0210e728, (void *)&SharedFilePtr_Destruct_TexSeq, (void **)&data_ov002_0210ef90);
+    func_020731dc(&data_ov002_0210e728, (void *)SharedFilePtr_Destruct_TexSeq, data_ov002_0210ef90);
     SharedFilePtr_Construct_TexSeq(&data_ov002_0210e3b0, 0x804d);
-    func_020731dc(&data_ov002_0210e3b0, (void *)&SharedFilePtr_Destruct_TexSeq, (void **)&data_ov002_0210efa8);
+    func_020731dc(&data_ov002_0210e3b0, (void *)SharedFilePtr_Destruct_TexSeq, data_ov002_0210efa8);
     SharedFilePtr_Construct_TexSeq(&data_ov002_0210e738, ASSET_Y_TX_SLEEP_END_BTP);
-    func_020731dc(&data_ov002_0210e738, (void *)&SharedFilePtr_Destruct_TexSeq, (void **)&data_ov002_0210efcc);
+    func_020731dc(&data_ov002_0210e738, (void *)SharedFilePtr_Destruct_TexSeq, data_ov002_0210efcc);
     SharedFilePtr_Construct_TexSeq(&data_ov002_0210ec40, ASSET_Y_TX_SLEEP_START_BTP);
-    func_020731dc(&data_ov002_0210ec40, (void *)&SharedFilePtr_Destruct_TexSeq, (void **)&data_ov002_0210eff0);
+    func_020731dc(&data_ov002_0210ec40, (void *)SharedFilePtr_Destruct_TexSeq, data_ov002_0210eff0);
     SharedFilePtr_Construct_TexSeq(&data_ov002_0210e250, ASSET_Y_TX_SLEEP_TO_LIE_BTP);
-    func_020731dc(&data_ov002_0210e250, (void *)&SharedFilePtr_Destruct_TexSeq, (void **)&data_ov002_0210f014);
+    func_020731dc(&data_ov002_0210e250, (void *)SharedFilePtr_Destruct_TexSeq, data_ov002_0210f014);
     SharedFilePtr_Construct_TexSeq(&data_ov002_0210e430, 0x804e);
-    func_020731dc(&data_ov002_0210e430, (void *)&SharedFilePtr_Destruct_TexSeq, (void **)&data_ov002_0210f038);
+    func_020731dc(&data_ov002_0210e430, (void *)SharedFilePtr_Destruct_TexSeq, data_ov002_0210f038);
     SharedFilePtr_Construct_TexSeq(&data_ov002_0210e438, 0x804f);
-    func_020731dc(&data_ov002_0210e438, (void *)&SharedFilePtr_Destruct_TexSeq, (void **)&data_ov002_0210f05c);
+    func_020731dc(&data_ov002_0210e438, (void *)SharedFilePtr_Destruct_TexSeq, data_ov002_0210f05c);
     SharedFilePtr_Construct_TexSeq(&data_ov002_0210e770, 0x80ad);
-    func_020731dc(&data_ov002_0210e770, (void *)&SharedFilePtr_Destruct_TexSeq, (void **)&data_ov002_0210f080);
+    func_020731dc(&data_ov002_0210e770, (void *)SharedFilePtr_Destruct_TexSeq, data_ov002_0210f080);
     SharedFilePtr_Construct_TexSeq(&data_ov002_0210e788, ASSET_TX_DAMAGE_START_BTP);
-    func_020731dc(&data_ov002_0210e788, (void *)&SharedFilePtr_Destruct_TexSeq, (void **)&data_ov002_0210f0a4);
+    func_020731dc(&data_ov002_0210e788, (void *)SharedFilePtr_Destruct_TexSeq, data_ov002_0210f0a4);
     SharedFilePtr_Construct_TexSeq(&data_ov002_0210e450, ASSET_TX_DAMAGE_WAIT_BTP);
-    func_020731dc(&data_ov002_0210e450, (void *)&SharedFilePtr_Destruct_TexSeq, (void **)&data_ov002_0210f0c8);
+    func_020731dc(&data_ov002_0210e450, (void *)SharedFilePtr_Destruct_TexSeq, data_ov002_0210f0c8);
     SharedFilePtr_Construct_TexSeq(&data_ov002_0210e270, ASSET_TX_ED_KISS_TO_POSE_BTP);
-    func_020731dc(&data_ov002_0210e270, (void *)&SharedFilePtr_Destruct_TexSeq, (void **)&data_ov002_0210f0ec);
+    func_020731dc(&data_ov002_0210e270, (void *)SharedFilePtr_Destruct_TexSeq, data_ov002_0210f0ec);
     SharedFilePtr_Construct_TexSeq(&data_ov002_0210e458, ASSET_TX_ED_KISS_WAIT_BTP);
-    func_020731dc(&data_ov002_0210e458, (void *)&SharedFilePtr_Destruct_TexSeq, (void **)&data_ov002_0210f110);
+    func_020731dc(&data_ov002_0210e458, (void *)SharedFilePtr_Destruct_TexSeq, data_ov002_0210f110);
     SharedFilePtr_Construct_TexSeq(&data_ov002_0210e288, 0x80ae);
-    func_020731dc(&data_ov002_0210e288, (void *)&SharedFilePtr_Destruct_TexSeq, (void **)&data_ov002_0210f134);
+    func_020731dc(&data_ov002_0210e288, (void *)SharedFilePtr_Destruct_TexSeq, data_ov002_0210f134);
     SharedFilePtr_Construct_TexSeq(&data_ov002_0210e478, 0x80af);
-    func_020731dc(&data_ov002_0210e478, (void *)&SharedFilePtr_Destruct_TexSeq, (void **)&data_ov002_0210f158);
+    func_020731dc(&data_ov002_0210e478, (void *)SharedFilePtr_Destruct_TexSeq, data_ov002_0210f158);
     SharedFilePtr_Construct_TexSeq(&data_ov002_0210e7e8, ASSET_TX_GAS_WAIT_BTP);
-    func_020731dc(&data_ov002_0210e7e8, (void *)&SharedFilePtr_Destruct_TexSeq, (void **)&data_ov002_0210f17c);
+    func_020731dc(&data_ov002_0210e7e8, (void *)SharedFilePtr_Destruct_TexSeq, data_ov002_0210f17c);
     SharedFilePtr_Construct_TexSeq(&data_ov002_0210e230, 0x80b0);
-    func_020731dc(&data_ov002_0210e230, (void *)&SharedFilePtr_Destruct_TexSeq, (void **)&data_ov002_0210f1a0);
+    func_020731dc(&data_ov002_0210e230, (void *)SharedFilePtr_Destruct_TexSeq, data_ov002_0210f1a0);
     SharedFilePtr_Construct_TexSeq(&data_ov002_0210e800, ASSET_TX_LIE_END_BTP);
-    func_020731dc(&data_ov002_0210e800, (void *)&SharedFilePtr_Destruct_TexSeq, (void **)&data_ov002_0210f1d0);
+    func_020731dc(&data_ov002_0210e800, (void *)SharedFilePtr_Destruct_TexSeq, data_ov002_0210f1d0);
     SharedFilePtr_Construct_TexSeq(&data_ov002_0210e1d0, ASSET_TX_LIE_WAIT_BTP);
-    func_020731dc(&data_ov002_0210e1d0, (void *)&SharedFilePtr_Destruct_TexSeq, (void **)&data_ov002_0210f1f4);
+    func_020731dc(&data_ov002_0210e1d0, (void *)SharedFilePtr_Destruct_TexSeq, data_ov002_0210f1f4);
     SharedFilePtr_Construct_TexSeq(&data_ov002_0210e4b8, ASSET_TX_RETURN_DOWN_BTP);
-    func_020731dc(&data_ov002_0210e4b8, (void *)&SharedFilePtr_Destruct_TexSeq, (void **)&data_ov002_0210f218);
+    func_020731dc(&data_ov002_0210e4b8, (void *)SharedFilePtr_Destruct_TexSeq, data_ov002_0210f218);
     SharedFilePtr_Construct_TexSeq(&data_ov002_0210e1c8, 0x80b1);
-    func_020731dc(&data_ov002_0210e1c8, (void *)&SharedFilePtr_Destruct_TexSeq, (void **)&data_ov002_0210f248);
+    func_020731dc(&data_ov002_0210e1c8, (void *)SharedFilePtr_Destruct_TexSeq, data_ov002_0210f248);
     SharedFilePtr_Construct_TexSeq(&data_ov002_0210e4d0, ASSET_TX_SLEEP_END_BTP);
-    func_020731dc(&data_ov002_0210e4d0, (void *)&SharedFilePtr_Destruct_TexSeq, (void **)&data_ov002_0210f26c);
+    func_020731dc(&data_ov002_0210e4d0, (void *)SharedFilePtr_Destruct_TexSeq, data_ov002_0210f26c);
     SharedFilePtr_Construct_TexSeq(&data_ov002_0210e1e0, ASSET_TX_SLEEP_START_BTP);
-    func_020731dc(&data_ov002_0210e1e0, (void *)&SharedFilePtr_Destruct_TexSeq, (void **)&data_ov002_0210f290);
+    func_020731dc(&data_ov002_0210e1e0, (void *)SharedFilePtr_Destruct_TexSeq, data_ov002_0210f290);
     SharedFilePtr_Construct_TexSeq(&data_ov002_0210e4e8, ASSET_TX_SLEEP_TO_LIE_BTP);
-    func_020731dc(&data_ov002_0210e4e8, (void *)&SharedFilePtr_Destruct_TexSeq, (void **)&data_ov002_0210f2b4);
+    func_020731dc(&data_ov002_0210e4e8, (void *)SharedFilePtr_Destruct_TexSeq, data_ov002_0210f2b4);
     SharedFilePtr_Construct_TexSeq(&data_ov002_0210e1e8, ASSET_TX_SLEEP_WAIT_BTP);
-    func_020731dc(&data_ov002_0210e1e8, (void *)&SharedFilePtr_Destruct_TexSeq, (void **)&data_ov002_0210f2d8);
+    func_020731dc(&data_ov002_0210e1e8, (void *)SharedFilePtr_Destruct_TexSeq, data_ov002_0210f2d8);
     SharedFilePtr_Construct_TexSeq(&data_ov002_0210e500, 0x80b2);
-    func_020731dc(&data_ov002_0210e500, (void *)&SharedFilePtr_Destruct_TexSeq, (void **)&data_ov002_0210f2fc);
-    data_ov002_0211013c.lo = data_ov002_02109e0c;
-    data_ov002_0211013c.hi = data_ov002_02109f74;
-    tmp = data_02086b58;
-    ta = tmp.a;
-    tb = tmp.b;
-    data_ov002_0211013c.tail.a = tb ? ta : ta;
-    data_ov002_0211013c.tail.b = tb;
-    data_ov002_02110154.lo = data_ov002_0210a25c;
-    data_ov002_02110154.hi = data_ov002_02109e14;
-    data_ov002_02110154.tail = data_ov002_02109f84;
-    data_ov002_02110184.tail.a = tb ? ta : ta;
-    data_ov002_02110184.tail.b = tb;
-    data_ov002_02110184.lo = data_ov002_02109f94;
-    data_ov002_02110184.hi = data_ov002_02109e1c;
-    data_ov002_0211019c.lo = data_ov002_02109fa4;
-    data_ov002_0211019c.tail.a = tb ? ta : ta;
-    data_ov002_0211019c.tail.b = tb;
-    data_ov002_0211019c.hi = data_ov002_02109fac;
-    data_ov002_021101b4.tail.a = tb ? ta : ta;
-    data_ov002_021101b4.tail.b = tb;
-    data_ov002_021101b4.lo = data_ov002_02109dec;
-    data_ov002_021101b4.hi = data_ov002_0210a26c;
-    data_ov002_021101e4.lo = data_ov002_02109fb4;
-    data_ov002_021101e4.tail.a = tb ? ta : ta;
-    data_ov002_021101e4.tail.b = tb;
-    data_ov002_021101e4.hi = data_ov002_0210a27c;
-    data_ov002_021101fc.tail.a = tb ? ta : ta;
-    data_ov002_021101fc.tail.b = tb;
-    data_ov002_021101fc.lo = data_ov002_02109fbc;
-    data_ov002_021101fc.hi = data_ov002_02109fc4;
-    data_ov002_02110214.lo = data_ov002_0210a214;
-    data_ov002_02110214.tail.a = tb ? ta : ta;
-    data_ov002_02110214.tail.b = tb;
-    data_ov002_02110214.hi = data_ov002_02109fd4;
-    data_ov002_02110244.lo = data_ov002_02109e9c;
-    data_ov002_02110244.hi = data_ov002_02109fdc;
-    data_ov002_02110244.tail = data_ov002_0210a2a4;
-    data_ov002_02110274.tail.a = tb ? ta : ta;
-    data_ov002_02110274.tail.b = tb;
-    data_ov002_02110274.lo = data_ov002_02109eac;
-    data_ov002_02110274.hi = data_ov002_0210a2b4;
-    data_ov002_0211028c.lo = data_ov002_0210a2bc;
-    data_ov002_0211028c.hi = data_ov002_02109fec;
-    data_ov002_0211028c.tail = data_ov002_0210a1e4;
-    data_ov002_021102bc.tail.a = tb ? ta : ta;
-    data_ov002_021102bc.tail.b = tb;
-    data_ov002_021102bc.lo = data_ov002_02109e94;
-    data_ov002_021102bc.hi = data_ov002_0210a2cc;
-    data_ov002_021102d4.lo = data_ov002_02109ffc;
-    data_ov002_021102d4.hi = data_ov002_0210a1c4;
-    data_ov002_021102d4.tail = data_ov002_02109ebc;
-    data_ov002_02110304.lo = data_ov002_0210a2e4;
-    data_ov002_02110304.hi = data_ov002_0210a004;
-    data_ov002_02110304.tail = data_ov002_0210a2f4;
-    data_ov002_0211031c.tail.a = tb ? ta : ta;
-    data_ov002_0211031c.tail.b = tb;
-    data_ov002_0211031c.lo = data_ov002_0210a00c;
-    data_ov002_0211031c.hi = data_ov002_02109e3c;
-    data_ov002_02110334.lo = data_ov002_0210a18c;
-    data_ov002_02110334.tail.a = tb ? ta : ta;
-    data_ov002_02110334.tail.b = tb;
-    data_ov002_02110334.hi = data_ov002_0210a304;
-    data_ov002_02110364.lo = data_ov002_0210a01c;
-    data_ov002_02110364.hi = data_ov002_02109e44;
-    data_ov002_02110364.tail = data_ov002_0210a314;
-    data_ov002_02110394.tail.a = tb ? ta : ta;
-    data_ov002_02110394.tail.b = tb;
-    data_ov002_02110394.lo = data_ov002_0210a31c;
-    data_ov002_02110394.hi = data_ov002_0210a324;
-    data_ov002_021103ac.lo = data_ov002_0210a164;
-    data_ov002_021103ac.tail.a = tb ? ta : ta;
-    data_ov002_021103ac.tail.b = tb;
-    data_ov002_021103ac.hi = data_ov002_02109dd4;
-    data_ov002_021103dc.tail.a = tb ? ta : ta;
-    data_ov002_021103dc.tail.b = tb;
-    data_ov002_021103dc.lo = data_ov002_0210a33c;
-    data_ov002_021103dc.hi = data_ov002_0210a034;
-    data_ov002_021103f4.lo = data_ov002_02109ec4;
-    data_ov002_021103f4.tail.a = tb ? ta : ta;
-    data_ov002_021103f4.tail.b = tb;
-    data_ov002_021103f4.hi = data_ov002_0210a03c;
-    data_ov002_02110424.tail.a = tb ? ta : ta;
-    data_ov002_02110424.tail.b = tb;
-    data_ov002_02110424.lo = data_ov002_02109ecc;
-    data_ov002_02110424.hi = data_ov002_0210a35c;
-    data_ov002_0211043c.lo = data_ov002_0210a044;
-    data_ov002_0211043c.tail.a = tb ? ta : ta;
-    data_ov002_0211043c.tail.b = tb;
-    data_ov002_0211043c.hi = data_ov002_02109e4c;
-    data_ov002_02110454.lo = data_ov002_0210a04c;
-    data_ov002_02110454.hi = data_ov002_0210a37c;
-    data_ov002_02110454.tail = data_ov002_0210a384;
-    data_ov002_02110484.lo = data_ov002_02109e54;
-    data_ov002_02110484.hi = data_ov002_02109ed4;
-    data_ov002_02110484.tail = data_ov002_0210a38c;
-    data_ov002_0211049c.tail.a = tb ? ta : ta;
-    data_ov002_0211049c.tail.b = tb;
-    data_ov002_0211049c.lo = data_ov002_0210a05c;
-    data_ov002_0211049c.hi = data_ov002_0210a394;
-    data_ov002_021104cc.lo = data_ov002_02109ddc;
-    data_ov002_021104cc.tail.a = tb ? ta : ta;
-    data_ov002_021104cc.tail.b = tb;
-    data_ov002_021104cc.hi = data_ov002_0210a0f4;
-    data_ov002_021104e4.tail.a = tb ? ta : ta;
-    data_ov002_021104e4.tail.b = tb;
-    data_ov002_021104e4.lo = data_ov002_02109de4;
-    data_ov002_021104e4.hi = data_ov002_0210a54c;
-    data_ov002_02110514.lo = data_ov002_02109df4;
-    data_ov002_02110514.tail.a = tb ? ta : ta;
-    data_ov002_02110514.tail.b = tb;
-    data_ov002_02110514.hi = data_ov002_0210a0d4;
-    data_ov002_0211052c.tail.a = tb ? ta : ta;
-    data_ov002_0211052c.tail.b = tb;
-    data_ov002_0211052c.lo = data_ov002_0210a544;
-    data_ov002_0211052c.hi = data_ov002_0210a53c;
-    data_ov002_0211055c.lo = data_ov002_0210a52c;
-    data_ov002_0211055c.tail.a = tb ? ta : ta;
-    data_ov002_0211055c.tail.b = tb;
-    data_ov002_0211055c.hi = data_ov002_0210a524;
-    data_ov002_02110574.tail.a = tb ? ta : ta;
-    data_ov002_02110574.tail.b = tb;
-    data_ov002_02110574.lo = data_ov002_0210a514;
-    data_ov002_02110574.hi = data_ov002_0210a50c;
-    data_ov002_021105a4.lo = data_ov002_0210a504;
-    data_ov002_021105a4.hi = data_ov002_0210a4fc;
-    data_ov002_021105a4.tail = data_ov002_0210a4f4;
-    data_ov002_021105bc.tail.a = tb ? ta : ta;
-    data_ov002_021105bc.tail.b = tb;
-    data_ov002_021105bc.lo = data_ov002_0210a4ec;
-    data_ov002_021105bc.hi = data_ov002_0210a4e4;
-    data_ov002_021105d4.lo = data_ov002_0210a0ac;
-    data_ov002_021105d4.tail.a = tb ? ta : ta;
-    data_ov002_021105d4.tail.b = tb;
-    data_ov002_021105d4.hi = data_ov002_02109f14;
-    data_ov002_021105ec.lo = data_ov002_0210a4d4;
-    data_ov002_021105ec.hi = data_ov002_0210a4cc;
-    data_ov002_021105ec.tail = data_ov002_0210a4c4;
-    data_ov002_02110604.lo = data_ov002_0210a4b4;
-    data_ov002_02110604.hi = data_ov002_0210a494;
-    data_ov002_02110604.tail = data_ov002_0210a414;
-    data_ov002_0211061c.tail.a = tb ? ta : ta;
-    data_ov002_0211061c.tail.b = tb;
-    data_ov002_0211061c.lo = data_ov002_0210a1dc;
-    data_ov002_0211061c.hi = data_ov002_0210a3cc;
-    data_ov002_02110634.lo = data_ov002_0210a49c;
-    data_ov002_02110634.tail.a = tb ? ta : ta;
-    data_ov002_02110634.tail.b = tb;
-    data_ov002_02110634.hi = data_ov002_0210a09c;
-    data_ov002_0211064c.lo = data_ov002_02109e6c;
-    data_ov002_0211064c.hi = data_ov002_0210a0e4;
-    data_ov002_0211064c.tail = data_ov002_0210a13c;
-    data_ov002_02110664.lo = data_ov002_0210a17c;
-    data_ov002_02110664.hi = data_ov002_0210a1a4;
-    data_ov002_02110664.tail = data_ov002_02109f5c;
-    data_ov002_0211067c.lo = data_ov002_0210a204;
-    data_ov002_0211067c.hi = data_ov002_0210a224;
-    data_ov002_0211067c.tail = data_ov002_0210a24c;
-    data_ov002_02110694.tail.a = tb ? ta : ta;
-    data_ov002_02110694.tail.b = tb;
-    data_ov002_02110694.lo = data_ov002_0210a42c;
-    data_ov002_02110694.hi = data_ov002_0210a2fc;
-    data_ov002_021106ac.lo = data_ov002_0210a2ec;
-    data_ov002_021106ac.hi = data_ov002_0210a0a4;
-    data_ov002_021106ac.tail = data_ov002_0210a194;
-    data_ov002_021106c4.lo = data_ov002_0210a294;
-    data_ov002_021106c4.hi = data_ov002_02109eb4;
-    data_ov002_021106c4.tail = data_ov002_02109e84;
-    data_ov002_021106dc.lo = data_ov002_0210a3a4;
-    data_ov002_021106dc.hi = data_ov002_0210a39c;
-    data_ov002_021106dc.tail = data_ov002_0210a3bc;
-    data_ov002_021106f4.lo = data_ov002_0210a2c4;
-    data_ov002_021106f4.hi = data_ov002_0210a3d4;
-    data_ov002_021106f4.tail = data_ov002_0210a3e4;
-    data_ov002_0211070c.tail.a = tb ? ta : ta;
-    data_ov002_0211070c.tail.b = tb;
-    data_ov002_0211070c.lo = data_ov002_0210a3ec;
-    data_ov002_0211070c.hi = data_ov002_0210a3b4;
-    data_ov002_02110724.lo = data_ov002_0210a2ac;
-    data_ov002_02110724.tail.a = tb ? ta : ta;
-    data_ov002_02110724.tail.b = tb;
-    data_ov002_02110724.hi = data_ov002_02109ef4;
-    data_ov002_0210ffec.lo = data_ov002_0210a41c;
-    data_ov002_0210ffec.hi = data_ov002_0210a06c;
-    data_ov002_0210ffec.tail = data_ov002_02109eec;
-    data_ov002_02110004.tail.a = tb ? ta : ta;
-    data_ov002_02110004.tail.b = tb;
-    data_ov002_02110004.lo = data_ov002_0210a43c;
-    data_ov002_02110004.hi = data_ov002_0210a444;
-    data_ov002_0211001c.lo = data_ov002_0210a454;
-    data_ov002_0211001c.tail.a = tb ? ta : ta;
-    data_ov002_0211001c.tail.b = tb;
-    data_ov002_0211001c.hi = data_ov002_0210a464;
-    data_ov002_02110034.lo = data_ov002_02109ee4;
-    data_ov002_02110034.hi = data_ov002_02109efc;
-    data_ov002_02110034.tail = data_ov002_0210a484;
-    data_ov002_0211004c.tail.a = tb ? ta : ta;
-    data_ov002_0211004c.tail.b = tb;
-    data_ov002_0211004c.lo = data_ov002_02109f04;
-    data_ov002_0211004c.hi = data_ov002_0210a32c;
-    data_ov002_02110064.lo = data_ov002_0210a4a4;
-    data_ov002_02110064.hi = data_ov002_0210a4ac;
-    data_ov002_02110064.tail = data_ov002_0210a08c;
-    data_ov002_0211007c.tail.a = tb ? ta : ta;
-    data_ov002_0211007c.tail.b = tb;
-    data_ov002_0211007c.lo = data_ov002_02109e74;
-    data_ov002_0211007c.hi = data_ov002_02109e7c;
-    data_ov002_02110094.lo = data_ov002_02109f1c;
-    data_ov002_02110094.hi = data_ov002_02109f24;
-    data_ov002_02110094.tail = data_ov002_02109edc;
-    data_ov002_021100ac.tail.a = tb ? ta : ta;
-    data_ov002_021100ac.tail.b = tb;
-    data_ov002_021100ac.lo = data_ov002_02109f2c;
-    data_ov002_021100ac.hi = data_ov002_0210a2d4;
-    data_ov002_021100c4.lo = data_ov002_02109e8c;
-    data_ov002_021100c4.tail.a = tb ? ta : ta;
-    data_ov002_021100c4.tail.b = tb;
-    data_ov002_021100c4.hi = data_ov002_02109f34;
-    data_ov002_021100dc.tail.a = tb ? ta : ta;
-    data_ov002_021100dc.tail.b = tb;
-    data_ov002_021100dc.lo = data_ov002_02109f3c;
-    data_ov002_021100dc.hi = data_ov002_02109e5c;
-    data_ov002_021100f4.lo = data_ov002_0210a16c;
-    data_ov002_021100f4.tail.a = tb ? ta : ta;
-    data_ov002_021100f4.tail.b = tb;
-    data_ov002_021100f4.hi = data_ov002_02109f4c;
-    data_ov002_0211010c.tail.a = tb ? ta : ta;
-    data_ov002_0211010c.tail.b = tb;
-    data_ov002_0211010c.lo = data_ov002_0210a28c;
-    data_ov002_0211010c.hi = data_ov002_0210a1bc;
-    data_ov002_02110124.lo = data_ov002_02109e04;
-    data_ov002_02110124.tail.a = tb ? ta : ta;
-    data_ov002_02110124.tail.b = tb;
-    data_ov002_02110124.hi = data_ov002_0210a4dc;
-    data_ov002_0211016c.lo = data_ov002_02109f7c;
-    data_ov002_0211016c.hi = data_ov002_0210a254;
-    data_ov002_0211016c.tail = data_ov002_02109f8c;
-    data_ov002_021101cc.lo = data_ov002_02109f9c;
-    data_ov002_021101cc.hi = data_ov002_02109e24;
-    data_ov002_021101cc.tail = data_ov002_0210a234;
-    data_ov002_0211022c.lo = data_ov002_0210a284;
-    data_ov002_0211022c.hi = data_ov002_0210a21c;
-    data_ov002_0211022c.tail = data_ov002_02109fcc;
-    data_ov002_0211025c.tail.a = tb ? ta : ta;
-    data_ov002_0211025c.tail.b = tb;
-    data_ov002_0211025c.lo = data_ov002_0210a20c;
-    data_ov002_0211025c.hi = data_ov002_02109ea4;
-    data_ov002_021102a4.lo = data_ov002_0210a1f4;
-    data_ov002_021102a4.tail.a = tb ? ta : ta;
-    data_ov002_021102a4.tail.b = tb;
-    data_ov002_021102a4.hi = data_ov002_02109f6c;
-    data_ov002_021102ec.lo = data_ov002_02109e34;
-    data_ov002_021102ec.hi = data_ov002_02109f64;
-    data_ov002_021102ec.tail = data_ov002_0210a2dc;
-    data_ov002_0211034c.lo = data_ov002_0210a1ac;
-    data_ov002_0211034c.hi = data_ov002_0210a19c;
-    data_ov002_0211034c.tail = data_ov002_0210a014;
-    data_ov002_0211037c.tail.a = tb ? ta : ta;
-    data_ov002_0211037c.tail.b = tb;
-    data_ov002_0211037c.lo = data_ov002_0210a184;
-    data_ov002_0211037c.hi = data_ov002_0210a024;
-    data_ov002_021103c4.lo = data_ov002_0210a02c;
-    data_ov002_021103c4.tail.a = tb ? ta : ta;
-    data_ov002_021103c4.tail.b = tb;
-    data_ov002_021103c4.hi = data_ov002_0210a15c;
-    data_ov002_0211040c.tail.a = tb ? ta : ta;
-    data_ov002_0211040c.tail.b = tb;
-    data_ov002_0211040c.lo = data_ov002_0210a344;
-    data_ov002_0211040c.hi = data_ov002_0210a354;
-    data_ov002_0211046c.lo = data_ov002_0210a364;
-    data_ov002_0211046c.hi = data_ov002_0210a374;
-    data_ov002_0211046c.tail = data_ov002_0210a11c;
-    data_ov002_021104b4.lo = data_ov002_0210a114;
-    data_ov002_021104b4.hi = data_ov002_0210a104;
-    data_ov002_021104b4.tail = data_ov002_0210a0fc;
-    data_ov002_021104fc.tail.a = tb ? ta : ta;
-    data_ov002_021104fc.tail.b = tb;
-    data_ov002_021104fc.lo = data_ov002_02109e64;
-    data_ov002_021104fc.hi = data_ov002_0210a0ec;
-    data_ov002_02110544.lo = data_ov002_0210a0cc;
-    data_ov002_02110544.tail.a = tb ? ta : ta;
-    data_ov002_02110544.tail.b = tb;
-    data_ov002_02110544.hi = data_ov002_0210a0c4;
-    data_ov002_0211058c.lo = data_ov002_0210a51c;
-    data_ov002_0211058c.tail.a = tb ? ta : ta;
-    data_ov002_0211058c.tail.b = tb;
-    data_ov002_0211058c.hi = data_ov002_0210a0bc;
-    func_ov002_020e6ad4(&data_ov002_02110804);
-    data_ov002_0211073c.lo = data_ov002_02109f0c;
-    data_ov002_0211073c.hi = data_ov002_0210a47c;
-    ((int *)&data_ov002_0211073c)[4] = ((int *)&data_ov002_0210a10c)[0];
-    ((int *)&data_ov002_0211073c)[5] = ((int *)&data_ov002_0210a10c)[1];
-    ((int *)&data_ov002_0211073c)[6] = ((int *)&data_ov002_0210a45c)[0];
-    ((int *)&data_ov002_0211073c)[7] = ((int *)&data_ov002_0210a45c)[1];
-    data_ov002_02110884.lo = data_ov002_02109dfc;
-    data_ov002_02110884.hi = data_ov002_0210a264;
-    ((int *)&data_ov002_02110884)[4] = ((int *)&data_ov002_0210a244)[0];
-    ((int *)&data_ov002_02110884)[5] = ((int *)&data_ov002_0210a244)[1];
-    ((int *)&data_ov002_02110884)[6] = ((int *)&data_ov002_0210a23c)[0];
-    ((int *)&data_ov002_02110884)[7] = ((int *)&data_ov002_0210a23c)[1];
-    ((int *)&data_ov002_02110884)[8] = ((int *)&data_ov002_0210a274)[0];
-    ((int *)&data_ov002_02110884)[9] = ((int *)&data_ov002_0210a274)[1];
-    ((int *)&data_ov002_02110884)[10] = ((int *)&data_ov002_0210a22c)[0];
-    ((int *)&data_ov002_02110884)[11] = ((int *)&data_ov002_0210a22c)[1];
-    ((int *)&data_ov002_02110884)[12] = ((int *)&data_ov002_0210a29c)[0];
-    ((int *)&data_ov002_02110884)[13] = ((int *)&data_ov002_0210a29c)[1];
-    ((int *)&data_ov002_02110884)[14] = ((int *)&data_ov002_0210a1fc)[0];
-    ((int *)&data_ov002_02110884)[15] = ((int *)&data_ov002_0210a1fc)[1];
-    ((int *)&data_ov002_02110884)[16] = ((int *)&data_ov002_0210a1ec)[0];
-    ((int *)&data_ov002_02110884)[17] = ((int *)&data_ov002_0210a1ec)[1];
-    ((int *)&data_ov002_02110884)[18] = ((int *)&data_ov002_02109e2c)[0];
-    ((int *)&data_ov002_02110884)[19] = ((int *)&data_ov002_02109e2c)[1];
-    ((int *)&data_ov002_02110884)[20] = ((int *)&data_ov002_0210a1cc)[0];
-    ((int *)&data_ov002_02110884)[21] = ((int *)&data_ov002_0210a1cc)[1];
-    ((int *)&data_ov002_02110884)[22] = ((int *)&data_ov002_0210a1b4)[0];
-    ((int *)&data_ov002_02110884)[23] = ((int *)&data_ov002_0210a1b4)[1];
-    ((int *)&data_ov002_02110884)[24] = ((int *)&data_ov002_02109f54)[0];
-    ((int *)&data_ov002_02110884)[25] = ((int *)&data_ov002_02109f54)[1];
-    ((int *)&data_ov002_02110884)[26] = ((int *)&data_ov002_0210a30c)[0];
-    ((int *)&data_ov002_02110884)[27] = ((int *)&data_ov002_0210a30c)[1];
-    ((int *)&data_ov002_02110884)[28] = ((int *)&data_ov002_0210a174)[0];
-    ((int *)&data_ov002_02110884)[29] = ((int *)&data_ov002_0210a174)[1];
-    ((int *)&data_ov002_02110884)[30] = ((int *)&data_ov002_02109f44)[0];
-    ((int *)&data_ov002_02110884)[31] = ((int *)&data_ov002_02109f44)[1];
-    ((int *)&data_ov002_02110884)[32] = ((int *)&data_ov002_0210a154)[0];
-    ((int *)&data_ov002_02110884)[33] = ((int *)&data_ov002_0210a154)[1];
-    ((int *)&data_ov002_02110884)[34] = ((int *)&data_ov002_0210a144)[0];
-    ((int *)&data_ov002_02110884)[35] = ((int *)&data_ov002_0210a144)[1];
-    ((int *)&data_ov002_02110884)[36] = ((int *)&data_ov002_0210a134)[0];
-    ((int *)&data_ov002_02110884)[37] = ((int *)&data_ov002_0210a134)[1];
-    ((int *)&data_ov002_02110884)[38] = ((int *)&data_ov002_0210a12c)[0];
-    ((int *)&data_ov002_02110884)[39] = ((int *)&data_ov002_0210a12c)[1];
-    data_ov002_0211075c.lo = data_ov002_0210a48c;
-    data_ov002_0211075c.hi = data_ov002_0210a46c;
-    ((int *)&data_ov002_0211075c)[4] = ((int *)&data_ov002_0210a3ac)[0];
-    ((int *)&data_ov002_0211075c)[5] = ((int *)&data_ov002_0210a3ac)[1];
-    ((int *)&data_ov002_0211075c)[6] = ((int *)&data_ov002_0210a074)[0];
-    ((int *)&data_ov002_0211075c)[7] = ((int *)&data_ov002_0210a074)[1];
-    ((int *)&data_ov002_0211075c)[8] = ((int *)&data_ov002_0210a334)[0];
-    ((int *)&data_ov002_0211075c)[9] = ((int *)&data_ov002_0210a334)[1];
-    ((int *)&data_ov002_0211075c)[10] = ((int *)&data_ov002_0210a404)[0];
-    ((int *)&data_ov002_0211075c)[11] = ((int *)&data_ov002_0210a404)[1];
-    ((int *)&data_ov002_0211075c)[12] = ((int *)&data_ov002_0210a3f4)[0];
-    ((int *)&data_ov002_0211075c)[13] = ((int *)&data_ov002_0210a3f4)[1];
+    func_020731dc(&data_ov002_0210e500, (void *)SharedFilePtr_Destruct_TexSeq, data_ov002_0210f2fc);
+    data_ov002_0211013c.mInit = data_ov002_02109e0c;
+    data_ov002_0211013c.mMain = data_ov002_02109f74;
+    data_ov002_0211013c.mCleanup = 0;
+    Player::ST_WAIT.mInit = data_ov002_0210a25c;
+    Player::ST_WAIT.mMain = data_ov002_02109e14;
+    Player::ST_WAIT.mCleanup = data_ov002_02109f84;
+    data_ov002_02110184.mCleanup = 0;
+    data_ov002_02110184.mInit = data_ov002_02109f94;
+    data_ov002_02110184.mMain = data_ov002_02109e1c;
+    data_ov002_0211019c.mInit = data_ov002_02109fa4;
+    data_ov002_0211019c.mCleanup = 0;
+    data_ov002_0211019c.mMain = data_ov002_02109fac;
+    data_ov002_021101b4.mCleanup = 0;
+    data_ov002_021101b4.mInit = data_ov002_02109dec;
+    data_ov002_021101b4.mMain = data_ov002_0210a26c;
+    data_ov002_021101e4.mInit = data_ov002_02109fb4;
+    data_ov002_021101e4.mCleanup = 0;
+    data_ov002_021101e4.mMain = data_ov002_0210a27c;
+    data_ov002_021101fc.mCleanup = 0;
+    data_ov002_021101fc.mInit = data_ov002_02109fbc;
+    data_ov002_021101fc.mMain = data_ov002_02109fc4;
+    data_ov002_02110214.mInit = data_ov002_0210a214;
+    data_ov002_02110214.mCleanup = 0;
+    data_ov002_02110214.mMain = data_ov002_02109fd4;
+    Player::ST_OWL.mInit = data_ov002_02109e9c;
+    Player::ST_OWL.mMain = data_ov002_02109fdc;
+    Player::ST_OWL.mCleanup = data_ov002_0210a2a4;
+    data_ov002_02110274.mCleanup = 0;
+    data_ov002_02110274.mInit = data_ov002_02109eac;
+    data_ov002_02110274.mMain = data_ov002_0210a2b4;
+    data_ov002_0211028c.mInit = data_ov002_0210a2bc;
+    data_ov002_0211028c.mMain = data_ov002_02109fec;
+    data_ov002_0211028c.mCleanup = data_ov002_0210a1e4;
+    data_ov002_021102bc.mCleanup = 0;
+    data_ov002_021102bc.mInit = data_ov002_02109e94;
+    data_ov002_021102bc.mMain = data_ov002_0210a2cc;
+    data_ov002_021102d4.mInit = data_ov002_02109ffc;
+    data_ov002_021102d4.mMain = data_ov002_0210a1c4;
+    data_ov002_021102d4.mCleanup = data_ov002_02109ebc;
+    data_ov002_02110304.mInit = data_ov002_0210a2e4;
+    data_ov002_02110304.mMain = data_ov002_0210a004;
+    data_ov002_02110304.mCleanup = data_ov002_0210a2f4;
+    data_ov002_0211031c.mCleanup = 0;
+    data_ov002_0211031c.mInit = data_ov002_0210a00c;
+    data_ov002_0211031c.mMain = data_ov002_02109e3c;
+    data_ov002_02110334.mInit = data_ov002_0210a18c;
+    data_ov002_02110334.mCleanup = 0;
+    data_ov002_02110334.mMain = data_ov002_0210a304;
+    data_ov002_02110364.mInit = data_ov002_0210a01c;
+    data_ov002_02110364.mMain = data_ov002_02109e44;
+    data_ov002_02110364.mCleanup = data_ov002_0210a314;
+    data_ov002_02110394.mCleanup = 0;
+    data_ov002_02110394.mInit = data_ov002_0210a31c;
+    data_ov002_02110394.mMain = data_ov002_0210a324;
+    data_ov002_021103ac.mInit = data_ov002_0210a164;
+    data_ov002_021103ac.mCleanup = 0;
+    data_ov002_021103ac.mMain = data_ov002_02109dd4;
+    data_ov002_021103dc.mCleanup = 0;
+    data_ov002_021103dc.mInit = data_ov002_0210a33c;
+    data_ov002_021103dc.mMain = data_ov002_0210a034;
+    data_ov002_021103f4.mInit = data_ov002_02109ec4;
+    data_ov002_021103f4.mCleanup = 0;
+    data_ov002_021103f4.mMain = data_ov002_0210a03c;
+    data_ov002_02110424.mCleanup = 0;
+    data_ov002_02110424.mInit = data_ov002_02109ecc;
+    data_ov002_02110424.mMain = data_ov002_0210a35c;
+    data_ov002_0211043c.mInit = data_ov002_0210a044;
+    data_ov002_0211043c.mCleanup = 0;
+    data_ov002_0211043c.mMain = data_ov002_02109e4c;
+    data_ov002_02110454.mInit = data_ov002_0210a04c;
+    data_ov002_02110454.mMain = data_ov002_0210a37c;
+    data_ov002_02110454.mCleanup = data_ov002_0210a384;
+    data_ov002_02110484.mInit = data_ov002_02109e54;
+    data_ov002_02110484.mMain = data_ov002_02109ed4;
+    data_ov002_02110484.mCleanup = data_ov002_0210a38c;
+    data_ov002_0211049c.mCleanup = 0;
+    data_ov002_0211049c.mInit = data_ov002_0210a05c;
+    data_ov002_0211049c.mMain = data_ov002_0210a394;
+    data_ov002_021104cc.mInit = data_ov002_02109ddc;
+    data_ov002_021104cc.mCleanup = 0;
+    data_ov002_021104cc.mMain = data_ov002_0210a0f4;
+    data_ov002_021104e4.mCleanup = 0;
+    data_ov002_021104e4.mInit = data_ov002_02109de4;
+    data_ov002_021104e4.mMain = data_ov002_0210a54c;
+    data_ov002_02110514.mInit = data_ov002_02109df4;
+    data_ov002_02110514.mCleanup = 0;
+    data_ov002_02110514.mMain = data_ov002_0210a0d4;
+    data_ov002_0211052c.mCleanup = 0;
+    data_ov002_0211052c.mInit = data_ov002_0210a544;
+    data_ov002_0211052c.mMain = data_ov002_0210a53c;
+    data_ov002_0211055c.mInit = data_ov002_0210a52c;
+    data_ov002_0211055c.mCleanup = 0;
+    data_ov002_0211055c.mMain = data_ov002_0210a524;
+    data_ov002_02110574.mCleanup = 0;
+    data_ov002_02110574.mInit = data_ov002_0210a514;
+    data_ov002_02110574.mMain = data_ov002_0210a50c;
+    data_ov002_021105a4.mInit = data_ov002_0210a504;
+    data_ov002_021105a4.mMain = data_ov002_0210a4fc;
+    data_ov002_021105a4.mCleanup = data_ov002_0210a4f4;
+    data_ov002_021105bc.mCleanup = 0;
+    data_ov002_021105bc.mInit = data_ov002_0210a4ec;
+    data_ov002_021105bc.mMain = data_ov002_0210a4e4;
+    data_ov002_021105d4.mInit = data_ov002_0210a0ac;
+    data_ov002_021105d4.mCleanup = 0;
+    data_ov002_021105d4.mMain = data_ov002_02109f14;
+    data_ov002_021105ec.mInit = data_ov002_0210a4d4;
+    data_ov002_021105ec.mMain = data_ov002_0210a4cc;
+    data_ov002_021105ec.mCleanup = data_ov002_0210a4c4;
+    data_ov002_02110604.mInit = data_ov002_0210a4b4;
+    data_ov002_02110604.mMain = data_ov002_0210a494;
+    data_ov002_02110604.mCleanup = data_ov002_0210a414;
+    data_ov002_0211061c.mCleanup = 0;
+    data_ov002_0211061c.mInit = data_ov002_0210a1dc;
+    data_ov002_0211061c.mMain = data_ov002_0210a3cc;
+    data_ov002_02110634.mInit = data_ov002_0210a49c;
+    data_ov002_02110634.mCleanup = 0;
+    data_ov002_02110634.mMain = data_ov002_0210a09c;
+    data_ov002_0211064c.mInit = data_ov002_02109e6c;
+    data_ov002_0211064c.mMain = data_ov002_0210a0e4;
+    data_ov002_0211064c.mCleanup = data_ov002_0210a13c;
+    data_ov002_02110664.mInit = data_ov002_0210a17c;
+    data_ov002_02110664.mMain = data_ov002_0210a1a4;
+    data_ov002_02110664.mCleanup = data_ov002_02109f5c;
+    data_ov002_0211067c.mInit = data_ov002_0210a204;
+    data_ov002_0211067c.mMain = data_ov002_0210a224;
+    data_ov002_0211067c.mCleanup = data_ov002_0210a24c;
+    data_ov002_02110694.mCleanup = 0;
+    data_ov002_02110694.mInit = data_ov002_0210a42c;
+    data_ov002_02110694.mMain = data_ov002_0210a2fc;
+    data_ov002_021106ac.mInit = data_ov002_0210a2ec;
+    data_ov002_021106ac.mMain = data_ov002_0210a0a4;
+    data_ov002_021106ac.mCleanup = data_ov002_0210a194;
+    data_ov002_021106c4.mInit = data_ov002_0210a294;
+    data_ov002_021106c4.mMain = data_ov002_02109eb4;
+    data_ov002_021106c4.mCleanup = data_ov002_02109e84;
+    data_ov002_021106dc.mInit = data_ov002_0210a3a4;
+    data_ov002_021106dc.mMain = data_ov002_0210a39c;
+    data_ov002_021106dc.mCleanup = data_ov002_0210a3bc;
+    data_ov002_021106f4.mInit = data_ov002_0210a2c4;
+    data_ov002_021106f4.mMain = data_ov002_0210a3d4;
+    data_ov002_021106f4.mCleanup = data_ov002_0210a3e4;
+    data_ov002_0211070c.mCleanup = 0;
+    data_ov002_0211070c.mInit = data_ov002_0210a3ec;
+    data_ov002_0211070c.mMain = data_ov002_0210a3b4;
+    data_ov002_02110724.mInit = data_ov002_0210a2ac;
+    data_ov002_02110724.mCleanup = 0;
+    data_ov002_02110724.mMain = data_ov002_02109ef4;
+    data_ov002_0210ffec.mInit = data_ov002_0210a41c;
+    data_ov002_0210ffec.mMain = data_ov002_0210a06c;
+    data_ov002_0210ffec.mCleanup = data_ov002_02109eec;
+    data_ov002_02110004.mCleanup = 0;
+    data_ov002_02110004.mInit = data_ov002_0210a43c;
+    data_ov002_02110004.mMain = data_ov002_0210a444;
+    data_ov002_0211001c.mInit = data_ov002_0210a454;
+    data_ov002_0211001c.mCleanup = 0;
+    data_ov002_0211001c.mMain = data_ov002_0210a464;
+    data_ov002_02110034.mInit = data_ov002_02109ee4;
+    data_ov002_02110034.mMain = data_ov002_02109efc;
+    data_ov002_02110034.mCleanup = data_ov002_0210a484;
+    data_ov002_0211004c.mCleanup = 0;
+    data_ov002_0211004c.mInit = data_ov002_02109f04;
+    data_ov002_0211004c.mMain = data_ov002_0210a32c;
+    data_ov002_02110064.mInit = data_ov002_0210a4a4;
+    data_ov002_02110064.mMain = data_ov002_0210a4ac;
+    data_ov002_02110064.mCleanup = data_ov002_0210a08c;
+    data_ov002_0211007c.mCleanup = 0;
+    data_ov002_0211007c.mInit = data_ov002_02109e74;
+    data_ov002_0211007c.mMain = data_ov002_02109e7c;
+    data_ov002_02110094.mInit = data_ov002_02109f1c;
+    data_ov002_02110094.mMain = data_ov002_02109f24;
+    data_ov002_02110094.mCleanup = data_ov002_02109edc;
+    data_ov002_021100ac.mCleanup = 0;
+    data_ov002_021100ac.mInit = data_ov002_02109f2c;
+    data_ov002_021100ac.mMain = data_ov002_0210a2d4;
+    data_ov002_021100c4.mInit = data_ov002_02109e8c;
+    data_ov002_021100c4.mCleanup = 0;
+    data_ov002_021100c4.mMain = data_ov002_02109f34;
+    data_ov002_021100dc.mCleanup = 0;
+    data_ov002_021100dc.mInit = data_ov002_02109f3c;
+    data_ov002_021100dc.mMain = data_ov002_02109e5c;
+    data_ov002_021100f4.mInit = data_ov002_0210a16c;
+    data_ov002_021100f4.mCleanup = 0;
+    data_ov002_021100f4.mMain = data_ov002_02109f4c;
+    data_ov002_0211010c.mCleanup = 0;
+    data_ov002_0211010c.mInit = data_ov002_0210a28c;
+    data_ov002_0211010c.mMain = data_ov002_0210a1bc;
+    data_ov002_02110124.mInit = data_ov002_02109e04;
+    data_ov002_02110124.mCleanup = 0;
+    data_ov002_02110124.mMain = data_ov002_0210a4dc;
+    data_ov002_0211016c.mInit = data_ov002_02109f7c;
+    data_ov002_0211016c.mMain = data_ov002_0210a254;
+    data_ov002_0211016c.mCleanup = data_ov002_02109f8c;
+    data_ov002_021101cc.mInit = data_ov002_02109f9c;
+    data_ov002_021101cc.mMain = data_ov002_02109e24;
+    data_ov002_021101cc.mCleanup = data_ov002_0210a234;
+    data_ov002_0211022c.mInit = data_ov002_0210a284;
+    data_ov002_0211022c.mMain = data_ov002_0210a21c;
+    data_ov002_0211022c.mCleanup = data_ov002_02109fcc;
+    data_ov002_0211025c.mCleanup = 0;
+    data_ov002_0211025c.mInit = data_ov002_0210a20c;
+    data_ov002_0211025c.mMain = data_ov002_02109ea4;
+    data_ov002_021102a4.mInit = data_ov002_0210a1f4;
+    data_ov002_021102a4.mCleanup = 0;
+    data_ov002_021102a4.mMain = data_ov002_02109f6c;
+    data_ov002_021102ec.mInit = data_ov002_02109e34;
+    data_ov002_021102ec.mMain = data_ov002_02109f64;
+    data_ov002_021102ec.mCleanup = data_ov002_0210a2dc;
+    data_ov002_0211034c.mInit = data_ov002_0210a1ac;
+    data_ov002_0211034c.mMain = data_ov002_0210a19c;
+    data_ov002_0211034c.mCleanup = data_ov002_0210a014;
+    data_ov002_0211037c.mCleanup = 0;
+    data_ov002_0211037c.mInit = data_ov002_0210a184;
+    data_ov002_0211037c.mMain = data_ov002_0210a024;
+    data_ov002_021103c4.mInit = data_ov002_0210a02c;
+    data_ov002_021103c4.mCleanup = 0;
+    data_ov002_021103c4.mMain = data_ov002_0210a15c;
+    data_ov002_0211040c.mCleanup = 0;
+    data_ov002_0211040c.mInit = data_ov002_0210a344;
+    data_ov002_0211040c.mMain = data_ov002_0210a354;
+    data_ov002_0211046c.mInit = data_ov002_0210a364;
+    data_ov002_0211046c.mMain = data_ov002_0210a374;
+    data_ov002_0211046c.mCleanup = data_ov002_0210a11c;
+    data_ov002_021104b4.mInit = data_ov002_0210a114;
+    data_ov002_021104b4.mMain = data_ov002_0210a104;
+    data_ov002_021104b4.mCleanup = data_ov002_0210a0fc;
+    data_ov002_021104fc.mCleanup = 0;
+    data_ov002_021104fc.mInit = data_ov002_02109e64;
+    data_ov002_021104fc.mMain = data_ov002_0210a0ec;
+    data_ov002_02110544.mInit = data_ov002_0210a0cc;
+    data_ov002_02110544.mCleanup = 0;
+    data_ov002_02110544.mMain = data_ov002_0210a0c4;
+    data_ov002_0211058c.mInit = data_ov002_0210a51c;
+    data_ov002_0211058c.mCleanup = 0;
+    data_ov002_0211058c.mMain = data_ov002_0210a0bc;
+    func_ov002_020e6ad4(data_ov002_02110804);
+    data_ov002_0211073c[0] = data_ov002_02109f0c;
+    data_ov002_0211073c[1] = data_ov002_0210a47c;
+    data_ov002_0211073c[2] = data_ov002_0210a10c;
+    data_ov002_0211073c[3] = data_ov002_0210a45c;
+    data_ov002_02110884[0] = data_ov002_02109dfc;
+    data_ov002_02110884[1] = data_ov002_0210a264;
+    data_ov002_02110884[2] = data_ov002_0210a244;
+    data_ov002_02110884[3] = data_ov002_0210a23c;
+    data_ov002_02110884[4] = data_ov002_0210a274;
+    data_ov002_02110884[5] = data_ov002_0210a22c;
+    data_ov002_02110884[6] = data_ov002_0210a29c;
+    data_ov002_02110884[7] = data_ov002_0210a1fc;
+    data_ov002_02110884[8] = data_ov002_0210a1ec;
+    data_ov002_02110884[9] = data_ov002_02109e2c;
+    data_ov002_02110884[10] = data_ov002_0210a1cc;
+    data_ov002_02110884[11] = data_ov002_0210a1b4;
+    data_ov002_02110884[12] = data_ov002_02109f54;
+    data_ov002_02110884[13] = data_ov002_0210a30c;
+    data_ov002_02110884[14] = data_ov002_0210a174;
+    data_ov002_02110884[15] = data_ov002_02109f44;
+    data_ov002_02110884[16] = data_ov002_0210a154;
+    data_ov002_02110884[17] = data_ov002_0210a144;
+    data_ov002_02110884[18] = data_ov002_0210a134;
+    data_ov002_02110884[19] = data_ov002_0210a12c;
+    data_ov002_0211075c[0] = data_ov002_0210a48c;
+    data_ov002_0211075c[1] = data_ov002_0210a46c;
+    data_ov002_0211075c[2] = data_ov002_0210a3ac;
+    data_ov002_0211075c[3] = data_ov002_0210a074;
+    data_ov002_0211075c[4] = data_ov002_0210a334;
+    data_ov002_0211075c[5] = data_ov002_0210a404;
+    data_ov002_0211075c[6] = data_ov002_0210a3f4;
+}
 }
 
-#pragma cplusplus on
 #pragma section initsec end

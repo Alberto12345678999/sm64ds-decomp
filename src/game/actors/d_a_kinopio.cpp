@@ -20,9 +20,7 @@
  * - The opt_propagation off brackets on St_Talk_Main and InitResources
  *   and the qualified `mAnmModel.dExtSimpleModel_c::Render(0)` are the matched
  *   form.
- * - dCcAc_c::Init, dExtAnmModel_c::SetAnim, DropShadowRadHeight and
- *   Sound::PlaySub stay mangled: by-value Fix12<int> is wall 6az. The
- *   companion Spawn passes mPos itself (a real Vector3 local changes
+ * - The companion Spawn passes mPos itself (a real Vector3 local changes
  *   codegen, unlike the star Spawn's).
  * - Vec3_* helpers, func_020138dc / func_02013a44,
  *   ObjectMessageIDToActualMessageID, IsStarCollectedInCurLevel,
@@ -48,8 +46,7 @@
 #include "Message.h"
 #include "dCc_c.h"
 #include "dBgCh_Gnd.h"
-
-bool ApproachLinear(short &value, short target, short step);
+#include "math/Approach.h"
 
 struct BCA_File;
 struct BMD_File;
@@ -81,14 +78,13 @@ extern int data_0209caa0[];
 extern Matrix4x3 data_020a0e68;
 extern Matrix4x3 IDENTITY_MATRIX4X3;
 
-/* math / vector helpers.
-   ApproachLinear returns whether it arrived, and that is load-bearing: St_Talk_Main
-   tests the result to decide whether the turn has finished. */
+/* math / vector helpers. (ApproachLinear, from math/Approach.h, returns whether
+   it arrived, and that is load-bearing: St_Talk_Main tests the result to decide
+   whether the turn has finished.) */
 s16 Vec3_HorzAngle(const void *a, const void *b);
 s16 Vec3_VertAngle(const void *a, const void *b);
 s32 Vec3_HorzDist(const void *a, const void *b);
 s32 AngleDiff(s32 a, s32 b);
-void _Z15ApproachLinear2Riii(s32 *cur, s32 tgt, s32 step);
 void Matrix4x3_FromRotationY(void *m, int angY);
 void Matrix4x3_ApplyInPlaceToRotationY(Matrix4x3 *m, s16 ang);
 void Matrix4x3_ApplyInPlaceToRotationX(Matrix4x3 *m, s16 ang);
@@ -108,13 +104,6 @@ u8 NumStars(void);
    Fix12<int> BY VALUE, because mwccarm passes those differently at
    the call site than a loose spelling would. */
 int d_a_kinopioPlaySubHold(u32 a, u32 b, u32 c, int d, int e);
-void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
-    void *thiz, void *sm, void *mtx, int rad, int height, u32 flags);
-
-/* model / collision / shadow */
-void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(
-    void *thiz, void *actor, Fix12i a, Fix12i b, u32 c, u32 d);
-
 }
 
 /* St_Talk_Main's legacy source used this to keep an address computation from
@@ -385,8 +374,9 @@ void daKinopio_c::UpdateModelPose()
     *(s32 *)(c + 0x1e8) = mPosX >> 3;
     *(s32 *)(c + 0x1ec) = (mPosY - 0x8000) >> 3;
     *(s32 *)(c + 0x1f0) = mPosZ >> 3;
-    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
-        c, c + 0x16c, c + 0x1c4, 0x50000, 0x64000, 0xf);
+    ((dActor_c *)c)
+        ->DropShadowRadHeight(*(dExtShadowModel_c *)(c + 0x16c), *(Matrix4x3 *)(c + 0x1c4), 0x50000,
+                              0x64000, 0xf);
 }
 
 // @symbol _ZN11daKinopio_c16CleanupResourcesEv
@@ -504,7 +494,7 @@ int daKinopio_c::Behavior()
     ApproachLinear(mHeadYaw, mHeadYawTarget, 0x250);
     ApproachLinear(mHeadPitch, mHeadPitchTarget, 0x100);
 
-    _Z15ApproachLinear2Riii((s32 *)&mOpacity, mTargetOpacity, 6);
+    ApproachLinear2(*(s32 *)&mOpacity, mTargetOpacity, 6);
 
     mAnmModel.Advance();
 
@@ -551,8 +541,7 @@ int daKinopio_c::InitResources()
     dExtFrameCtrl_c::LoadFile(data_ov085_02130490);
     mAnmModel.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(data_ov085_02130480), 1, 0x16);
     mShadowModel.InitCylinder();
-    _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mCollider, this,
-        0x78000, 0x8c000, 0x4200004, 0);
+    mCollider.Init(this, 0x78000, 0x8c000, 0x4200004, 0);
     mOpacity = 0xff;
     mTargetOpacity = 0xff;
     mMessageID = param1;

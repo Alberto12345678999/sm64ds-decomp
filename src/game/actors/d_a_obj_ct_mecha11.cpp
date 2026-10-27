@@ -22,10 +22,7 @@
  * unit and ov035's .text.
  */
 
-// leftovers: dBgW_KcMbg::SetFile, dActor_c::DropShadowScaleXYZ and
-// dBgActor_c::IsClsnInRange take Fix12<int> by value, so they stay mangled
-// (the method spelling homes that argument and changes the ROM ABI -- this
-// TU's InitResources/Behavior/UpdateShadow calls). func_020393a4 /
+// leftovers: func_020393a4 /
 // func_02039394 / func_020393d4 / func_020396c0 are small stores into dBgW's
 // fields and callback slots; naming belongs with dBgW in arm9.
 
@@ -77,8 +74,6 @@ extern void hold_d_a_obj_ct_mecha11(void *self, KCL_File *f, const Matrix4x3 &m,
 extern void func_020393d4(void *p, void *v);
 extern void func_020396c0(void *p, int value);
 extern CLPS_Block data_ov035_02112238;
-extern int _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_S5_j(
-    void *self, void *sm, void *mtx, int a, int b, int d, unsigned int e);
 }
 
 // @symbol _ZN16daObjCtMecha11_cD1Ev
@@ -88,11 +83,11 @@ daObjCtMecha11_c::~daObjCtMecha11_c()
 }
 
 // @symbol _ZN16daObjCtMecha11_c12UpdateShadowEv
-int daObjCtMecha11_c::UpdateShadow()
-{
+void daObjCtMecha11_c::UpdateShadow() {
     int d1 = mPosY - mFloorPosY;
     int ad = d1 < 0 ? -d1 : d1;
-    if (ad > 0x7d0000) return ad;
+    if (ad > 0x7d0000)
+        return;
     int clipD = ad + 0x350000;
     int half = ad / 2;
     if (clipD < 0x350000) clipD = 0x350000;
@@ -106,9 +101,7 @@ int daObjCtMecha11_c::UpdateShadow()
     int s = data_02082214[(idx << 1) + 1];
     int sa = s < 0 ? -s : s;
     int scaled = FX_MUL(sa, 0x26c000);
-    return _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_S5_j(
-        this, &mShadowModel, &mShadowMat, 0x12c000, 0x32000,
-        scaled + 0x50000, 0xf);
+    DropShadowScaleXYZ(mShadowModel, mShadowMat, 0x12c000, 0x32000, scaled + 0x50000, 0xf);
 }
 
 // @symbol _ZN16daObjCtMecha11_c11UpdateModelEv

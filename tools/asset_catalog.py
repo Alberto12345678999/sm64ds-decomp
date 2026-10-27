@@ -201,7 +201,7 @@ ROM_HEADER_FAT = 0x48
 # And the overlay half of the same header, at 0x50 arm9_ovt_offset, 0x54
 # arm9_ovt_size, 0x58 arm7_ovt_offset, 0x5c arm7_ovt_size.  The ROM mirrors
 # these two pairs at 0x027FFE50 and 0x027FFE58, which is where
-# src/unnamed/arm9/0201/func_02018c00.c, src/unnamed/arm9/0205/func_0205df40.c and src/unnamed/arm9/0204/func_020424c0.c read them
+# src/unnamed/arm9/0201/func_02018c00.c, src/unnamed/arm9/0205/func_0205df40.c and src/unnamed/arm9/0204/func_020424c0.cpp read them
 # when the overlay table has not been cached in RAM.  Unlike the FNT and FAT
 # pair a ZERO PAIR IS LEGAL and means "this processor has no overlays": SM64DS
 # has 103 ARM9 overlays and no ARM7 overlay at all, so 0x58 really does read
