@@ -295,7 +295,7 @@
       "ordinal": 38
     },
     {
-      "symbol": "_ZN2GX12SetBankForBGEi",
+      "symbol": "SetBankForBG",
       "address": "0x020549c8",
       "size": "0x000002b8",
       "legacy_source": "src/_ZN2GX12SetBankForBGEt.cpp",

@@ -24,7 +24,7 @@ extern void _ZN2GX7LoadTexEPKvjj(const void *src, u32 slot, u32 size);
 extern void _ZN2GX10EndLoadTexEv(void);
 extern u32 data_ov007_02104be8;
 extern u32 data_ov007_02104be0;
-extern void _ZN2GX16BeginLoadTexPlttEv(void);
+void BeginLoadTexPltt(void);
 extern void _ZN2GX11LoadTexPlttEPKvjj(const void *src, u32 slot, u32 size);
 extern void _ZN2GX14EndLoadTexPlttEv(void);
 
@@ -61,7 +61,7 @@ void func_ov007_020c14d4(struct Tex *t) {
     end = data_ov007_02104be0;
 
     if (slot + t->plttSize <= end) {
-        _ZN2GX16BeginLoadTexPlttEv();
+        BeginLoadTexPltt();
         _ZN2GX11LoadTexPlttEPKvjj(t->plttSrc, data_ov007_02104be8, t->plttSize);
         _ZN2GX14EndLoadTexPlttEv();
 

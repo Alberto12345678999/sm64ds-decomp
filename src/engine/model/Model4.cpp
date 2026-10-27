@@ -554,6 +554,9 @@ struct GX {
     static void EndLoadTex();
 };
 
+/* local extern: struct GX here shadows namespace GX, so GX.h cannot be included. */
+extern "C" void BeginLoadTexPltt(void);
+
 // @symbol _ZN17dExtSimpleModel_c13GetVramOffsetEj
 u32 dExtSimpleModel_c::GetVramOffset(u32 size) {
     u32 *p;
@@ -614,7 +617,7 @@ extern "C" u32 func_02045ad8(const void *src, u32 size)
     if (slot + size > end)
         Crash();
 
-    GX::BeginLoadTexPltt();
+    BeginLoadTexPltt();
     GX::LoadTexPltt(src, data_020a4bcc, size);
     GX::EndLoadTexPltt();
 
@@ -639,7 +642,7 @@ extern "C" u32 func_02045a50(const void *src, u32 size)
 
     data_020a4bd8 -= (size + 0xf) & 0xfff0;
 
-    GX::BeginLoadTexPltt();
+    BeginLoadTexPltt();
     GX::LoadTexPltt(src, data_020a4bd8, size);
     GX::EndLoadTexPltt();
 
@@ -675,7 +678,7 @@ void dExtSimpleModel_c::LoadTexAndPal(BMD_File &file) {
         } while (i < file.numTextures);
     }
 
-    GX::BeginLoadTexPltt();
+    BeginLoadTexPltt();
 
     j = 0;
     if (j < file.numPalettes) {

@@ -80,8 +80,8 @@ void Vram__Map(int mask) {
 
 namespace GX {
 
-// @symbol _ZN2GX12SetBankForBGEi
-void SetBankForBG(int bg) {
+// @symbol SetBankForBG
+extern "C" void SetBankForBG(int bg) {
     data_020a6088.lcdc = (u16)((data_020a6088.lcdc | data_020a6088.bg) & ~bg);
     data_020a6088.bg = bg;
     switch (bg) {

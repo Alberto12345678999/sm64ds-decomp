@@ -21,7 +21,7 @@ namespace GX {
 void DispOn(void);
 void SetGraphicsMode(int, int, int);
 void DisableAllBanks(void);
-void SetBankForBG(int);
+extern "C" void SetBankForBG(int);
 void SetBankForOBJ(int);
 void SetBankForTex(int);
 void SetBankForTexPltt(int);
@@ -32,7 +32,7 @@ void SetBankForSubOBJExtPltt(int);
 void BeginLoadTex(void);
 void LoadTex(const void *, unsigned int, unsigned int);
 void EndLoadTex(void);
-void BeginLoadTexPltt(void);
+extern "C" void BeginLoadTexPltt(void);
 void LoadTexPltt(const void *, unsigned int, unsigned int);
 void EndLoadTexPltt(void);
 void LoadBGPltt(const void *, unsigned int, unsigned int);

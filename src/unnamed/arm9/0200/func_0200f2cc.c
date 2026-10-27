@@ -2,7 +2,7 @@
 extern void _ZN2GX15DisableAllBanksEv(void);
 extern void _ZN2GX13SetBankForTexEi(int v);
 extern void _ZN2GX17SetBankForTexPlttEi(int v);
-extern void _ZN2GX12SetBankForBGEi(int v);
+void SetBankForBG(int);
 extern void _ZN2GX13SetBankForOBJEi(int v);
 extern void _ZN2GX15SetBankForSubBGEi(int v);
 extern void _ZN2GX16SetBankForSubOBJEi(int v);
@@ -14,7 +14,7 @@ void func_0200f2cc(void)
     _ZN2GX15DisableAllBanksEv();
     _ZN2GX13SetBankForTexEi(3);
     _ZN2GX17SetBankForTexPlttEi(0x10);
-    _ZN2GX12SetBankForBGEi(4);
+    SetBankForBG(4);
     _ZN2GX13SetBankForOBJEi(0x60);
     _ZN2GX15SetBankForSubBGEi(0x180);
     _ZN2GX16SetBankForSubOBJEi(8);

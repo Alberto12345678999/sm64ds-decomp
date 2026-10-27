@@ -41,7 +41,7 @@
       "ordinal": 2
     },
     {
-      "symbol": "_ZN2GX16BeginLoadTexPlttEv",
+      "symbol": "BeginLoadTexPltt",
       "address": "0x02056998",
       "size": "0x00000048",
       "legacy_source": "src/_ZN2GX16BeginLoadTexPlttEv.cpp",

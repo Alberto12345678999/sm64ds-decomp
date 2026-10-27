@@ -99,8 +99,8 @@ void EndLoadTex()
     data_020a60b8 = 0;
 }
 
-// @symbol _ZN2GX16BeginLoadTexPlttEv
-void BeginLoadTexPltt() {
+// @symbol BeginLoadTexPltt
+extern "C" void BeginLoadTexPltt() {
     int r = func_02054168();
     data_020a60b4 = r;
     data_020a60b0 = (int)data_02086314[r >> 4] << 12;

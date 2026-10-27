@@ -1,7 +1,7 @@
 #include "types.h"
 extern void func_02019028(void);
 extern void _ZN2GX15DisableAllBanksEv(void);
-extern void _ZN2GX12SetBankForBGEi(int b);
+void SetBankForBG(int);
 extern void _ZN2GX13SetBankForOBJEi(int b);
 extern void _ZN2GX15SetBankForSubBGEi(int b);
 extern void _ZN2GX16SetBankForSubOBJEi(int b);
@@ -38,7 +38,7 @@ void func_02030500(void)
 
     func_02019028();
     _ZN2GX15DisableAllBanksEv();
-    _ZN2GX12SetBankForBGEi(1);
+    SetBankForBG(1);
     _ZN2GX13SetBankForOBJEi(2);
     _ZN2GX15SetBankForSubBGEi(4);
     _ZN2GX16SetBankForSubOBJEi(8);

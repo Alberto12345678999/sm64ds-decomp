@@ -55,6 +55,9 @@ struct GX {
     static void EndLoadTex();
 };
 
+/* local extern: struct GX here shadows namespace GX, so GX.h cannot be included. */
+extern "C" void BeginLoadTexPltt(void);
+
 struct Vector3;
 
 namespace Particle {
@@ -367,7 +370,7 @@ typedef struct {
 int func_0204a028(Holder *thiz, unsigned int (*cb)(unsigned int, unsigned int)) {
     int i;
 
-    GX::BeginLoadTexPltt();
+    BeginLoadTexPltt();
 
     for (i = 0; i < thiz->count; i++) {
         TexEntry *entry = (TexEntry *)((char *)thiz->list + i * 0x14);
