@@ -138,8 +138,7 @@ void dEnemyBase_c::UpdateWMClsn(dBgCh_Actr &clsn, unsigned int sel) {
         break;
     }
     if (clsn.IsOnGround()) {
-        static_cast<dBgPi *>(clsn.GetFloorResult())
-            ->surface.CopyNormalTo(*(Vector3 *)&mFloorNormalX);
+        clsn.GetFloorResult()->surface.CopyNormalTo(*(Vector3 *)&mFloorNormalX);
         if (clsn.GetLimMovFlag() == 0) {
             int dz = mFloorNormalY;
             if (dz != 0) {
@@ -156,7 +155,7 @@ void dEnemyBase_c::UpdateWMClsn(dBgCh_Actr &clsn, unsigned int sel) {
         }
     }
     if (clsn.IsOnWall()) {
-        static_cast<dBgPi *>(clsn.GetWallResult())->surface.CopyNormalTo(*(Vector3 *)&mWallNormalX);
+        clsn.GetWallResult()->surface.CopyNormalTo(*(Vector3 *)&mWallNormalX);
     }
 }
 
@@ -669,7 +668,7 @@ int dEnemyBase_c::UpdateYoshiEat(dBgCh_Actr &clsn) {
         UpdatePos(0);
         dBgCh_Actr_UpdateContinuous_Veneer(&clsn);
         if (clsn.IsOnGround() != 0) {
-            dBgPi *fr = (dBgPi *)clsn.GetFloorResult();
+            dBgPi *fr = clsn.GetFloorResult();
             fr->surface.CopyNormalTo(*(Vector3 *)&mFloorNormalX);
             if (clsn.JustHitGround() == 0) {
                 mVertSpeed = 0;

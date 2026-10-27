@@ -13,7 +13,7 @@
    dCcAcPos_c (_ZTV10dCcAcPos_c at 0x0208e704, si_class on this class) is
    this same TU, lifecycle included. ~dCcAcPos_c() is the key function, so
    the vtable emits here; slot 3 is the veneer below, not
-   _ZN7dCcAc_c10GetOwnerIDEv. D2 and C2 have no cartridge home. TU claims
+   dCcAc_c::GetOwnerID(). D2 and C2 have no cartridge home. TU claims
    0x0201489c..0x02014aa8. Written back-to-front: mwccarm emits .text in
    reverse source order under default deferred codegen. */
 #include "dCcAc_c.h"
@@ -42,7 +42,7 @@ Vector3 &dCcAcPos_c::GetPos()
 // @symbol _ZN10dCcAcPos_c10GetOwnerIDEv
 /* Vtable slot 3. The body is the qualified base call, not a copy of the
    base body: -interworking lowers it to the 12-byte veneer
-   `ldr ip,[pc]; bx ip; .word _ZN7dCcAc_c10GetOwnerIDEv`. Declaring the
+   `ldr ip,[pc]; bx ip; .word <dCcAc_c::GetOwnerID()>`. Declaring the
    override is what makes the emitted vtable relocate this slot here.
    Leaving it inherited would point the slot at 0x0201493c. */
 u32 dCcAcPos_c::GetOwnerID() {

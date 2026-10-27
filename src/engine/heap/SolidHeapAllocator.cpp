@@ -46,6 +46,8 @@
 #include "cstd.h"
 
 extern "C" void MultiStore_Int(s32 val, int *dst, s32 count);
+/* local extern: the factory runs the constructor over an already-aligned
+   address; a placement new would add a null test the ROM does not make. */
 extern "C" SolidHeapAllocator* _ZN18SolidHeapAllocatorC1EPvj(
     SolidHeapAllocator* self, void* heapEnd, u32 flags);
 

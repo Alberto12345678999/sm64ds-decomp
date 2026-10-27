@@ -53,14 +53,13 @@ void G2x::SetBlendAlpha(volatile u16 *reg, u16 firstTarget,
         ((firstAlpha | (secondAlpha << 8)) << 16);
 }
 
-// @symbol _ZN3G2x18SetBlendBrightnessEPVtts
+// @symbol _ZN3G2x18SetBlendBrightnessEPVtii
 /* Writes the hardware brightness registers behind `p`. The SIGN of `amt`
  * selects the mode rather than a separate flag: negative sets bits 0xc0
  * (fade to black) and writes the magnitude, positive sets 0x80 (fade to
  * white) and writes the value as-is. So one signed argument carries both
  * "which way" and "how much". */
-void G2x::SetBlendBrightness(volatile unsigned short *p, unsigned short val, short amt)
-{
+void G2x::SetBlendBrightness(volatile unsigned short *p, int val, int amt) {
     if (amt < 0) {
         p[0] = val | 0xc0;
         p[2] = -amt;

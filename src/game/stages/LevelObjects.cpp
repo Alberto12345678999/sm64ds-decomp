@@ -21,6 +21,7 @@
 
 #include "LVL_Overlay.h"
 #include "dScStage_c.h"
+#include "dActor_c.h"
 #include "dBgW.h"
 #include "PathPtr.h"
 #include "Vector3s.h"
@@ -52,9 +53,10 @@ extern u8 data_ov002_0210cb70[];
 extern u16 data_ov002_0210cb88[];
 extern u16 data_ov002_0210cbf4[];
 
-/* The header's s8/s16 tail truncates areaID and adds 4 bytes to
- * LoadStandardObjects. All five call sites use this spelling.
- * local extern: s32 areaID/deathTableID, see above. */
+/* local extern: the header's s8/s16 tail truncates the int areaID these two
+ * loaders pass straight through (LoadSimpleObjects and LoadStandardObjects
+ * each grow). The other spawn sites pass constants or an (s8) value and use
+ * dActor_c::Spawn. */
 void *_ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as(u32 actorID, u32 spawnParam,
                                                       const Vector3 *pos, const Vector3_16 *rot,
                                                       s32 areaID, s32 deathTableID);
@@ -217,9 +219,8 @@ void LoadEntranceObjects(LVL_Overlay::ObjSubTable &table, int areaID, u32 entran
             u32 spawnParam =
                 savedCharacter | (playerCharacter << 3) | (playerIndex << 6) | (entranceKind << 8);
 
-            void *player = _ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as(
-                data_ov002_0210cbf4[entry->raw], spawnParam, &pos, (const Vector3_16 *)&entry->rot,
-                (s8)(param & 7), -1);
+            void *player = dActor_c::Spawn(data_ov002_0210cbf4[entry->raw], spawnParam, pos,
+                                           (const Vector3_16 *)&entry->rot, (s8)(param & 7), -1);
 
             if (data_0209fc5c[playerIndex] == 0)
                 data_0209f394[playerIndex] = 0;
@@ -288,8 +289,7 @@ void LoadTeleportSourceObjects(LVL_Overlay::ObjSubTable &table, int areaID, u32 
         pos.y = vy;
         pos.z = vz;
 
-        _ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as(0x15b, entry->param, &pos,
-                                                        (const Vector3_16 *)0, 0, -1);
+        dActor_c::Spawn(0x15b, entry->param, pos, (const Vector3_16 *)0, 0, -1);
 
         objectIndex++;
         entry++;
@@ -331,7 +331,7 @@ void LoadDoorObjects(LVL_Overlay::ObjSubTable &table, int areaID, u32 param) {
         int doorType = entry->type & 0x1f;
         u32 actorID = data_ov002_0210cb88[doorType];
         u32 spawnParam = entry->param | (data_ov002_0210cb70[doorType] << 16);
-        _ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as(actorID, spawnParam, &pos, &rot, -1, -1);
+        dActor_c::Spawn(actorID, spawnParam, pos, &rot, -1, -1);
         entry++;
     }
 }
@@ -361,11 +361,10 @@ void LoadExitObjects(LVL_Overlay::ObjSubTable &table, int areaID, u32 param) {
         rot.x = -entry->rotX;
         rot.y = -entry->rotY;
 
-        _ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as(
-            0x15d,
-            ((u32)entry->param[0] << 24) | ((u32)entry->param[1] << 16) |
-                ((u32)entry->param[2] << 8) | (u32)entry->param[3],
-            &pos, (const Vector3_16 *)&rot, -1, -1);
+        dActor_c::Spawn(0x15d,
+                        ((u32)entry->param[0] << 24) | ((u32)entry->param[1] << 16) |
+                            ((u32)entry->param[2] << 8) | (u32)entry->param[3],
+                        pos, (const Vector3_16 *)&rot, -1, -1);
 
         entry++;
     }

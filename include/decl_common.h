@@ -1293,7 +1293,7 @@ extern void _ZN5Sound22LoadAndSetMusic_Layer2Ej(u32);
 extern void _ZN5Sound22LoadAndSetMusic_Layer3Ej(unsigned int);
 extern void _ZN5Sound22StopLoadedMusic_Layer2Ev(void);
 extern void _ZN5Sound22StopLoadedMusic_Layer3Ev(void);
-extern void _ZN5Sound6Play2DEjj(unsigned int, unsigned int);
+extern unsigned int _ZN5Sound6Play2DEjj(unsigned int, unsigned int);
 extern void _ZN5Sound6Player19SetPlayableSeqCountEii(int, int);
 extern void _ZN6Memory10DeallocateEPv(void*);
 extern void _ZN6Memory10DeallocateEPvPN5mHeap6Heap_tE(void*, void*);

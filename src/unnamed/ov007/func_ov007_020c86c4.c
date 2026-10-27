@@ -19,7 +19,7 @@ typedef struct S {
 } S;
 
 extern void _ZN3G2x13SetBlendAlphaEPVttttj(volatile void *p, int a, int b, int c, int d);
-extern void _ZN3G2x18SetBlendBrightnessEPVtts(void *p, int a, int b);
+extern void _ZN3G2x18SetBlendBrightnessEPVtii(void *p, int a, int b);
 
 void func_ov007_020c86c4(S *p)
 {
@@ -64,13 +64,11 @@ void func_ov007_020c86c4(S *p)
 
     case 4:
         if (p->flags & 1) {
-            _ZN3G2x18SetBlendBrightnessEPVtts((void *)0x4000050, p->f28,
-                p->cond ? p->f30 : p->f2c);
+            _ZN3G2x18SetBlendBrightnessEPVtii((void *)0x4000050, p->f28, p->cond ? p->f30 : p->f2c);
         }
         if (!(p->flags & 2))
             return;
-        _ZN3G2x18SetBlendBrightnessEPVtts((void *)0x4001050, p->f28,
-            p->cond ? p->f30 : p->f2c);
+        _ZN3G2x18SetBlendBrightnessEPVtii((void *)0x4001050, p->f28, p->cond ? p->f30 : p->f2c);
         return;
     }
 }

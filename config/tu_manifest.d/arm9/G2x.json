@@ -19,7 +19,7 @@
   ],
   "functions": [
     {
-      "symbol": "_ZN3G2x18SetBlendBrightnessEPVtts",
+      "symbol": "_ZN3G2x18SetBlendBrightnessEPVtii",
       "address": "0x02055238",
       "size": "0x00000024",
       "legacy_source": "src/_ZN3G2x18SetBlendBrightnessEPVtts.cpp",

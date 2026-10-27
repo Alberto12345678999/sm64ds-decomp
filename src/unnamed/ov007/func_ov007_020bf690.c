@@ -1,6 +1,6 @@
 extern void func_ov007_020bf790(void);
 extern void func_ov007_020c8498(void *o);
-extern void _ZN3G2x18SetBlendBrightnessEPVtts(void *p, unsigned short a, short b);
+extern void _ZN3G2x18SetBlendBrightnessEPVtii(void *p, unsigned short a, short b);
 
 struct Obj6 { char _0[8]; int f8; char _c[8]; int f14; char _18[4]; int f1c; };
 struct Sub { char _0[0x40]; int f40; char _44[4]; int f48; char _4c[0x48]; int f94; };
@@ -22,7 +22,7 @@ void func_ov007_020bf690(void)
     if ((flags & 1) == 0) return;
     int v = obj6->f14;
     if (did == 0 && (flags & 2) != 0) {
-        _ZN3G2x18SetBlendBrightnessEPVtts((void*)0x4000050, 0x3f, 0);
+        _ZN3G2x18SetBlendBrightnessEPVtii((void *)0x4000050, 0x3f, 0);
     }
     if (obj6->f1c != 0) v = 0x1000 - v;
     data_ov007_02104bd8->sub->f48 = v;
@@ -34,5 +34,5 @@ void func_ov007_020bf690(void)
         data_ov007_02104bd8->flags = gr->flags & ~1;
     }
     if (obj6->f1c == 0) return;
-    _ZN3G2x18SetBlendBrightnessEPVtts((void*)0x4000050, 0x3f, -0x10);
+    _ZN3G2x18SetBlendBrightnessEPVtii((void *)0x4000050, 0x3f, -0x10);
 }

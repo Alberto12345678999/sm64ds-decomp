@@ -8,8 +8,10 @@
  * include/Sound.h models the namespace.
  *
  * leftovers:
- * - Sound::Play and Sound::Play2D are defined void; callers that harvest r0
- *   keep the mangled spelling (the same return-split the shards carried).
+ * - Sound::Play is defined void; PlayBank0's caller harvests r0 through a
+ *   cast of its address (the same return-split the shards carried).
+ *   Play2D returns Player_PlaySoundEffect's result, which its tail call
+ *   leaves in r0.
  * - ChangeMusicVolume is Sound::ChangeMusicVolume(unsigned int, int). The
  *   second value is a 0x1000-scaled volume, spelled Fix12i in the header.
  * - Sound_PlayIfNotActive calls func_0201186c through an int-arity pointer:
@@ -85,10 +87,6 @@ extern void func_02048f14(void);
 extern void func_02048f24(void);
 extern void func_0204efe0(void);
 extern void func_0204effc(void);
-/* Callers that consume r0 from the void-declared Sound::Play2D keep the
- * mangled spelling; the extern "C" name is not type-checked across the seam.
- * Members reach the same symbol by casting Play2D/Play's address instead. */
-extern unsigned int _ZN5Sound6Play2DEjj(unsigned int a, unsigned int b);
 
 /* In-TU functions, declared once so callers ahead of their definitions link. */
 extern void func_02013524(int fileRef, int vol, int mode);
@@ -434,7 +432,7 @@ void SetMusic(unsigned int j1, unsigned int j2)
     func_02011dcc(data_0209b4a0, j2);
 }
 
-/* ONE parameter, although this symbol used to be spelled _ZN5Sound8EndMusicEjj.
+/* ONE parameter, although this symbol used to be spelled with two (`...Ejj`).
    The second was never read here, and every ROM call site passes a single
    argument -- `LDRB r0, [...]; BL`, r1 untouched. The extra `j` kept the symbol
    unspellable from C++: a truthful declaration mangled to ...Ej and matched
@@ -490,11 +488,9 @@ extern "C" void func_02012860(void *a, int flags, int c, int d, int e)
 namespace Sound {
 
 // @symbol _ZN5Sound6Play2DEjj
-void Play2D(unsigned int j1, unsigned int j2)
-{
-    Player_PlaySoundEffect((int)data_0209b4a4, j1, j2);
+unsigned int Play2D(unsigned int j1, unsigned int j2) {
+    return Player_PlaySoundEffect((int)data_0209b4a4, j1, j2);
 }
-
 }
 
 // @symbol func_020127ec
@@ -514,13 +510,13 @@ extern "C" void func_020127a4(int r0, int r1, int r2, int r3)
 // @symbol func_02012790
 extern "C" unsigned int func_02012790(unsigned int a)
 {
-    return _ZN5Sound6Play2DEjj(2, a);
+    return Sound::Play2D(2, a);
 }
 
 // @symbol func_0201277c
 extern "C" unsigned int func_0201277c(unsigned int a)
 {
-    return _ZN5Sound6Play2DEjj(3, a);
+    return Sound::Play2D(3, a);
 }
 
 namespace Sound {
@@ -528,13 +524,13 @@ namespace Sound {
 // @symbol _ZN5Sound12PlayBank3_2DEj
 unsigned int PlayBank3_2D(unsigned int a)
 {
-    return ((unsigned int (*)(unsigned int, unsigned int))Play2D)(3, a);
+    return Play2D(3, a);
 }
 
 // @symbol _ZN5Sound12PlayBank2_2DEj
 unsigned int PlayBank2_2D(unsigned int a)
 {
-    return ((unsigned int (*)(unsigned int, unsigned int))Play2D)(2, a);
+    return Play2D(2, a);
 }
 
 }
@@ -726,7 +722,7 @@ extern "C" int func_02012194(char *c, int a1, int a2, int a3, int s0, int s1, sh
 // @symbol func_02012174
 extern "C" unsigned int func_02012174(unsigned int a, unsigned int b)
 {
-    return _ZN5Sound6Play2DEjj(1, b + data_02075250[a]);
+    return Sound::Play2D(1, b + data_02075250[a]);
 }
 
 namespace Sound {
