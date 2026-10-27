@@ -61,8 +61,7 @@ enum daSnowman_c_AssetId {
 #include "SaveData.h"
 #include "Player.h"
 #include "Sound.h"
-
-int ApproachLinear(int &ref, int target, int step);
+#include "math/Approach.h"
 
 namespace cstd {
 s16 atan2(s32, s32);

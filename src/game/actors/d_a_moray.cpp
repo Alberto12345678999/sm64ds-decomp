@@ -47,6 +47,7 @@ enum daMoray_c_AssetId {
 #include "dExtFrameCtrl_c.h"
 #include "dExtSimpleModel_c.h"
 #include "Player.h"
+#include "math/Approach.h"
 
 #pragma defer_codegen off
 
@@ -159,7 +160,6 @@ struct MorayStarCarrier {
 
 extern "C" MorayRenderStep data_ov016_02114908[];
 
-bool ApproachLinear(short &value, short target, short step);
 namespace cstd { int fdiv(int a, int b); }
 
 /* Out of line, and FIRST in this ROM-ascending file: that puts D1 and D0 at

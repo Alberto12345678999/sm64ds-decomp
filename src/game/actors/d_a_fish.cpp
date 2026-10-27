@@ -54,8 +54,7 @@ enum d_a_fish_AssetId {
 #include "Player.h"
 #include "SharedFilePtr.h"
 #include "Sound.h"
-
-bool ApproachLinear(short &value, short target, short step);
+#include "math/Approach.h"
 
 struct daFishState {
     void (daFish_c::*func)();

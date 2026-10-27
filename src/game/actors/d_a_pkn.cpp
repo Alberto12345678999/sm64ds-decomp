@@ -34,6 +34,7 @@ struct Vector3_16f;
 #include "SharedFilePtr.h"
 #include "Player.h"
 #include "Sound.h"
+#include "math/Approach.h"
 
 /* The six shared files this actor claims. */
 extern SharedFilePtr data_ov084_02130dfc; /* the plant's own model */
@@ -59,7 +60,6 @@ struct PknMtx43 { int w[12]; };
    records at 0x02130ba4. */
 typedef void (daPkn_c::*PknStatePMF)();
 
-bool ApproachLinear(short &value, short target, short step);
 
 /* C-linkage declarations for the remaining raw entry points and shared data. */
 extern "C" {

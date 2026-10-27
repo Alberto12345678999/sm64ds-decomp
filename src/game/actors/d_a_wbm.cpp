@@ -57,6 +57,7 @@ enum daWbm_c_AssetId {
 #include "Player.h"
 #include "nitro/fx/fx.h"
 #include "Sound.h"
+#include "math/Approach.h"
 
 typedef void (daWbm_c::*State)();
 
@@ -67,7 +68,6 @@ enum {
     ACTOR_WATERBOMB = 208
 };
 
-int ApproachLinear(int &value, int target, int step);
 namespace cstd {
 s32 fdiv(s32 numerator, s32 denominator);
 }

@@ -40,6 +40,7 @@ enum daDkk_c_AssetId {
 #include "dBgCh_Lin.h"
 #include "SharedFilePtr.h"
 #include "Sound.h"
+#include "math/Approach.h"
 
 /* The model handle constructs through func_02017acc and destroys through
  * func_02017ab4. The collision handle constructs through func_02017b4c and
@@ -56,7 +57,6 @@ struct DkkClsnFileHandler : SharedFilePtr {
 typedef char DkkModelFilePtr_size_must_be_8[sizeof(DkkModelFilePtr) == 8 ? 1 : -1];
 typedef char DkkClsnFileHandler_size_must_be_8[sizeof(DkkClsnFileHandler) == 8 ? 1 : -1];
 
-bool ApproachLinear(short &value, short target, short step);
 
 /* decl_common.h already declares the three daDsnBase_c C helpers and
  * data_ov025_02113814. func_0201267c's definition takes (unsigned, const

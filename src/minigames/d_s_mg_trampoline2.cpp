@@ -4,6 +4,7 @@
 #include "G2x.h"
 #include "GX.h"
 #include "cstd.h"
+#include "math/Approach.h"
 /* Runtime asset handles resolved through the overlay 0 file table. */
 enum d_s_mg_trampoline2_AssetId {
     ASSET_D_2D_MG_BG_TRAMPOLINE_HARD_NCG_BIN = 0x00a2,
@@ -270,8 +271,6 @@ int *sTrmp2TextSpritesByLanguage[] = {sMgTextSpritesEnglish, sMgTextSpritesSpani
 }
 
 /* This overload is C++, unlike the address-spelled C ABI declarations above. */
-extern int ApproachLinear(int &x, int target, int step);
-short ApproachLinear2(short &value, short target, short step);
 namespace G3X {
 void SetFog(bool enable, int mode, int slope, int offset);
 }

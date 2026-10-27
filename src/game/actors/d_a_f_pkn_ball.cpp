@@ -37,9 +37,7 @@ struct Callback;
 #include "Sound.h"
 #include "daFPknBall_c.h"
 #include "dBgCh_Actr.h"
-
-bool ApproachLinear(short &value, short target, short step);
-int ApproachLinear(int &value, int target, int step);
+#include "math/Approach.h"
 
 typedef struct { s32 x, y, z; } Vec3;
 

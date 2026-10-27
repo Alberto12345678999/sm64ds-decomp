@@ -10,14 +10,13 @@
  * leftovers:
  * - Draw, update and clear use the existing record fields. Their public
  *   pointer signatures stay unchanged for the pool callers.
- * - ApproachLinear and ApproachLinear2 stay local externs. They
- *   take the value by reference.
  * - The pool, the counter and the sprite table are overlay data,
  *   not this TU's.
  */
 #include "nitro/fx/fx.h"
 
 #include "nitro/fx/fx.h"
+#include "math/Approach.h"
 
 typedef long long s64;
 
@@ -34,8 +33,6 @@ struct Ent_ov006 {
     short mTimer;
 };
 
-extern int ApproachLinear(int &, int, int);
-extern int ApproachLinear2(short &, short, short);
 
 extern "C" {
 int GetGameLanguage(void);

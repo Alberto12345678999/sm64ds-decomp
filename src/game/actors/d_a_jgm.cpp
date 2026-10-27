@@ -25,9 +25,8 @@
  *   UpdateDiscreteNoLava method is WRONG-DEST (ROM 0x02038420).
  * - Player::Bounce / Hurt stay mangled: each takes Fix12<int> by value
  *   (6az).
- * - dActor_c::IsTooFarAwayFromPlayer, ApproachLinear and cstd::fdiv have
- *   no header decl, so they are declared locally;
- *   ApproachLinear2 keeps C++ linkage (_Z15ApproachLinear2Rsss).
+ * - dActor_c::IsTooFarAwayFromPlayer and cstd::fdiv have no header decl,
+ *   so they are declared locally.
  * - Sound::PlayLong is the Sound.h call. d_a_jgmPlayLongHold keeps the five
  *   named parameters that hold the @NNN count. Unnaming them gives -5.
  * - The manifest pins eight @NNN statics, so every named local, named
@@ -73,10 +72,7 @@ enum d_a_jgm_AssetId {
 #include "SurfaceInfo.h"
 #include "nitro/fx/fx.h"
 #include "cstd.h"
-
-/* local extern: no header declares ApproachLinear. */
-int ApproachLinear(int &value, int target, int step);
-bool ApproachLinear(short &value, short target, short step);
+#include "math/Approach.h"
 
 /* Local three-word ABI value. Vector3 has a genuine non-trivial destructor;
  * these stack values are plain fixed-point words and must not instantiate its
@@ -178,9 +174,6 @@ extern void d_a_jgmPlayLongHold(unsigned int handle, unsigned int a, unsigned in
                                 const Vector3 *pos, unsigned int e);
 extern void d_a_jgmNewSimpleHold(unsigned int n, int x, int y, int z);
 }
-
-/* C++ linkage on purpose: mangles as _Z15ApproachLinear2Rsss. */
-void ApproachLinear2(short &v, short t, short step);
 
 // @symbol daJgm_c_classInit
 extern "C" daJgm_c *daJgm_c_classInit()

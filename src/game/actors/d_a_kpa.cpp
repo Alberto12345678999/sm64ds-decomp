@@ -138,6 +138,7 @@ enum daKpa_c_AssetId {
 #include "Message.h"
 #include "nitro/fx/fx.h"
 #include "cstd.h"
+#include "math/Approach.h"
 
 /* -------------------------------------------------------------------------- */
 /* Names for the numbers this file uses. The values are the ROM's; the names are
@@ -326,10 +327,8 @@ struct Obj { virtual void v0(); virtual void v1(); virtual void v2(); virtual vo
 
 /* 0x0203adec; called by the turn-to-target and charge handlers on mAngleY,
  * which both ignore the result. */
-bool ApproachLinear(short &value, short target, short step);
 /* 0x0203ae58 (ApproachAngle.cpp); steps mHorzSpeed and the cutscene camera
  * points toward their targets. */
-int ApproachLinear(int &value, int target, int step);
 
 extern "C" {
 /* The dCamera_c; Bowser publishes himself into its mFramedActor. */

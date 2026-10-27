@@ -28,6 +28,7 @@ enum daBasabasa_c_AssetId {
 #include "daBasabasa_c.h"
 #include "SharedFilePtr.h"
 #include "Player.h"
+#include "math/Approach.h"
 
 /* EnterDrop's unused stack temporary. The three-int constructor is what
  * schedules the stores; a plain Vector3 assignment does not. */
@@ -75,7 +76,6 @@ extern BasabasaModelFilePtr data_ov065_0211d6a8;   /* hanging model */
 typedef void BgchInitAt_(void *self, dActor_c *a, int r, int h, Vector3_16 *p, Vector3_16 *q);
 }
 
-bool ApproachLinear(short &value, short target, short step);
 
 /* The four states, by the address of their .bss record. */
 extern daBasabasa_c::State data_ov065_0211d6e0;   /* chase */

@@ -60,6 +60,7 @@ struct System {
 #include "Sound.h"
 #include "dMgTrmpln2Mario_c.h"
 #include "dMgTrmpln3DMario_c.h"
+#include "math/Approach.h"
 /* Typed access to the Mario records from the char* helpers below. */
 #define MARIO2(p) ((dMgTrmpln2Mario_c *)(p))
 #define MARIO3D(p) ((dMgTrmpln3DMario_c *)(p))
@@ -73,8 +74,6 @@ extern "C" BCA_File **sTrmpBounceAnimTable[];
 struct W2 {
     int w[2];
 };
-bool ApproachLinear(short &value, short target, short step);
-int ApproachLinear(int &r, int b, int c);
 namespace cstd {
 int fdiv(s32, s32);
 }
@@ -233,11 +232,10 @@ extern "C" void Trmp2Mario_Update(char *o) {
 namespace ns_020c9024 {
 extern "C" {
 extern int sTrmp2FallSpeed[];
-int _Z14ApproachLinearRiii(int *a, int b, int c);
 void AddVec3(void *dst, void *a, void *b);
 // @symbol Trmp2Mario_ApplyGravity
 void Trmp2Mario_ApplyGravity(char *o) {
-    _Z14ApproachLinearRiii(&MARIO2(o)->mVel.y, sTrmp2FallSpeed[0], MARIO2(o)->mGravityStep);
+    ApproachLinear(MARIO2(o)->mVel.y, sTrmp2FallSpeed[0], MARIO2(o)->mGravityStep);
     AddVec3(&MARIO2(o)->mPos, &MARIO2(o)->mVel, &MARIO2(o)->mPos);
 }
 }
@@ -313,7 +311,6 @@ extern "C" {
 void Trmp2Mario_EnterFall(void *c);
 void D3D_PlaySeAtX(int a0, int a1);
 void Camera_ProjectToScreen16(void *a0, void *a1, short *a2);
-int _Z14ApproachLinearRiii(int *v, int step, int rate);
 void Sound_PlayBank1Panned(int a0, int a1, int a2);
 }
 
@@ -364,7 +361,7 @@ L70: {
 
     if (MARIO2(c)->mItemPushCount != 0)
         goto L1a4;
-    if (_Z14ApproachLinearRiii(&MARIO2(c)->mWallBumpTimer, 5, 1) != 0)
+    if (ApproachLinear(MARIO2(c)->mWallBumpTimer, 5, 1) != 0)
         goto L1a4;
     {
         int t;
@@ -549,7 +546,6 @@ namespace ns_020c97bc {
 extern "C" {
 void Trmp2Mario_EnterFall(void *c);
 void Camera_ProjectToScreen16(void *a0, void *a1, short *a2);
-int _Z14ApproachLinearRiii(int *v, int step, int rate);
 void Sound_PlayBank1Panned(int a0, int a1, int a2);
 }
 
@@ -593,7 +589,7 @@ L70: {
 
     if (MARIO2(c)->mItemPushCount != 0)
         goto L1a4;
-    if (_Z14ApproachLinearRiii(&MARIO2(c)->mWallBumpTimer, 5, 1) != 0)
+    if (ApproachLinear(MARIO2(c)->mWallBumpTimer, 5, 1) != 0)
         goto L1a4;
     {
         int t = FX_MUL(-MARIO2(c)->mVel.x, 0x1200);
@@ -909,7 +905,6 @@ extern "C" {
 void Trmp2Mario_BounceOffLineB(char *c);
 void Trmp2Mario_BounceOffLineA(char *c);
 void Camera_ProjectToScreen16(void *a0, void *a1, short *a2);
-int _Z14ApproachLinearRiii(int *v, int step, int rate);
 void Sound_PlayBank1Panned(int a0, int a1, int a2);
 void Trmp2Mario_EnterMissed(char *c);
 }
@@ -965,7 +960,7 @@ L70: {
 
     if (MARIO2(c)->mItemPushCount != 0)
         goto L1a4;
-    if (_Z14ApproachLinearRiii(&MARIO2(c)->mWallBumpTimer, 5, 1) != 0)
+    if (ApproachLinear(MARIO2(c)->mWallBumpTimer, 5, 1) != 0)
         goto L1a4;
     {
         MARIO2(c)->mVel.y = 0x800;
@@ -1039,11 +1034,10 @@ void Trmp2Mario_EnterFall(void *self) {
 }
 // ---- Trmp2Mario_StateAppearWait
 namespace ns_020ca310 {
-extern "C" int _Z15ApproachLinear2Rsss(short &, short, short);
 extern "C" void Trmp2Mario_EnterBounce(char *, int);
 // @symbol Trmp2Mario_StateAppearWait
 extern "C" void Trmp2Mario_StateAppearWait(char *c) {
-    if (_Z15ApproachLinear2Rsss(MARIO2(c)->mTimer, 0, 1) == 0) {
+    if (ApproachLinear2(MARIO2(c)->mTimer, 0, 1) == 0) {
         MARIO2(c)->mPos.y = 0;
         return;
     }
@@ -1296,7 +1290,6 @@ extern "C" int sTrmp2MarioCount;
 extern "C" char *sTrmp2Marios;
 extern "C" int pmf_Trmp2Mario_StateHidden[2];
 extern "C" int sTrmp2DriftScale;
-extern "C" void _Z14ApproachLinearRiii(int &ref, int to, int step);
 extern "C" void Trmp2Mario_EnterAppearWait(char *o, short v);
 extern "C" void Trmp2Mario_UpdateMatrix(char *o);
 
@@ -1308,7 +1301,7 @@ extern "C" void Trmp2Mario_MoveToStart(void) {
     int q0;
     int count;
 
-    _Z14ApproachLinearRiii(sTrmp2MarioCount, sTrmp2MarioTarget, 1);
+    ApproachLinear(sTrmp2MarioCount, sTrmp2MarioTarget, 1);
     i = 0;
     count = sTrmp2MarioCount;
     if (count <= 0)
@@ -1676,11 +1669,10 @@ extern "C" void Trmp3DMario_Update(char *o) {
 namespace ns_020cb134 {
 extern "C" {
 extern int sTrmp3DFallSpeed[];
-int _Z14ApproachLinearRiii(int *a, int b, int c);
 void AddVec3(void *dst, void *a, void *b);
 // @symbol Trmp3DMario_ApplyGravity
 void Trmp3DMario_ApplyGravity(char *o) {
-    _Z14ApproachLinearRiii(&MARIO3D(o)->mVel.y, sTrmp3DFallSpeed[0], MARIO3D(o)->mGravityStep);
+    ApproachLinear(MARIO3D(o)->mVel.y, sTrmp3DFallSpeed[0], MARIO3D(o)->mGravityStep);
     AddVec3(&MARIO3D(o)->mPos, &MARIO3D(o)->mVel, &MARIO3D(o)->mPos);
 }
 }
@@ -1763,9 +1755,6 @@ extern "C" int sTrmpGoalSlotCursor;
 extern "C" Triple sTrmpGoalSlots[];
 extern "C" Triple data_020a0ebc;
 
-extern void _Z11UpdateAngleRssis(short *, short, int, short);
-extern void _Z14ApproachLinearRiii(int *, int, int);
-extern void _Z15ApproachLinear2Rsss(short *, short, short);
 extern void func_02012718(int, int);
 extern void Camera_ProjectToScreen(char *, void *, int *, int *);
 extern int Mg_GetTopScreenYOffset(void);
@@ -1789,7 +1778,7 @@ void Trmp3DMario_StateGoal(void *self) {
     }
 
     if (MARIO3D(c)->mAnmModel.file == sTrmpAnimRollJumpEnd) {
-        _Z11UpdateAngleRssis(&MARIO3D(c)->mRotY, 0, 2, 0x1000);
+        UpdateAngle(MARIO3D(c)->mRotY, 0, 2, 0x1000);
         if (MARIO3D(c)->mAnmModel.Finished() == 0)
             return;
         MARIO3D(c)->mAnmModel.SetAnim(sTrmpAnimWalk, 0, 0x800, 0);
@@ -1797,11 +1786,11 @@ void Trmp3DMario_StateGoal(void *self) {
     }
 
     if (MARIO3D(c)->mPos.x > 0) {
-        _Z14ApproachLinearRiii(&MARIO3D(c)->mVel.x, 0x4000, 0x800);
-        _Z15ApproachLinear2Rsss(&MARIO3D(c)->mRotY, 0x4000, 0x1000);
+        ApproachLinear(MARIO3D(c)->mVel.x, 0x4000, 0x800);
+        ApproachLinear2(MARIO3D(c)->mRotY, 0x4000, 0x1000);
     } else {
-        _Z14ApproachLinearRiii(&MARIO3D(c)->mVel.x, -0x4000, 0x800);
-        _Z15ApproachLinear2Rsss(&MARIO3D(c)->mRotY, -0x4000, 0x1000);
+        ApproachLinear(MARIO3D(c)->mVel.x, -0x4000, 0x800);
+        ApproachLinear2(MARIO3D(c)->mRotY, -0x4000, 0x1000);
     }
 
     u = MARIO3D(c)->mPos.x;
@@ -1809,7 +1798,7 @@ void Trmp3DMario_StateGoal(void *self) {
         return;
 
     func_02012718(0x1be, 0x100000);
-    _Z14ApproachLinearRiii(&sTrmpComboCount, 0x270f, 1);
+    ApproachLinear(sTrmpComboCount, 0x270f, 1);
     sTrmpMariosInPlay -= 1;
     sTrmpMariosOnLedges -= 1;
 
@@ -1873,18 +1862,16 @@ namespace ns_020cb5c4 {
 extern "C" {
 extern "C" int sTrmpRowHeights[];
 extern "C" short sTrmpGoalRow;
-extern void _Z14ApproachLinearRiii(int *p, int b, int c);
-extern int _Z14ApproachLinearRsss(short *value, short target, short step);
 extern void Trmp3DMario_EnterGoal(char *c);
 extern void Trmp3DMario_EnterOnLedge(char *c);
 
 // @symbol Trmp3DMario_StateLand
 void Trmp3DMario_StateLand(char *c) {
-    _Z14ApproachLinearRiii(&MARIO3D(c)->mPos.y, sTrmpRowHeights[MARIO3D(c)->mHeightRow], 0x4000);
+    ApproachLinear(MARIO3D(c)->mPos.y, sTrmpRowHeights[MARIO3D(c)->mHeightRow], 0x4000);
     if (MARIO3D(c)->mPos.x > 0)
-        _Z14ApproachLinearRsss(&MARIO3D(c)->mRotY, 0x4000, 0x1000);
+        ApproachLinear(MARIO3D(c)->mRotY, 0x4000, 0x1000);
     else
-        _Z14ApproachLinearRsss(&MARIO3D(c)->mRotY, -0x4000, 0x1000);
+        ApproachLinear(MARIO3D(c)->mRotY, -0x4000, 0x1000);
     MARIO3D(c)->mVel.x = 0;
     MARIO3D(c)->mVel.y = 0;
     if (MARIO3D(c)->mAnmModel.file != sTrmpAnimHangUp)
@@ -2492,7 +2479,6 @@ namespace ns_020cc2ac {
 extern "C" {
 typedef short s16;
 extern void Puff_Spawn(int a, int b);
-extern void _Z14ApproachLinearRiii(int *ref, int target, int step);
 extern void Trmp3DMario_EnterOffstage(char *c);
 extern "C" int sTrmpMariosInPlay;
 extern "C" int sTrmp3DLives;
@@ -2504,7 +2490,7 @@ void Trmp3DMario_StateMissed(char *c) {
     if (MARIO3D(c)->mTimer == 0) {
         Puff_Spawn(MARIO3D(c)->mScreenPos[0], 0xc0);
         sTrmpMariosInPlay -= 1;
-        _Z14ApproachLinearRiii(&sTrmp3DLives, 0, 1);
+        ApproachLinear(sTrmp3DLives, 0, 1);
         Sound::PlayBank2_2D(0x130);
         Trmp3DMario_EnterOffstage(c);
         return;
@@ -2715,7 +2701,6 @@ void Trmp3DMario_EnterWalkBack(char *c) {
 // ---- Trmp3DMario_StateOnLedge
 namespace ns_020cc724 {
 extern "C" {
-extern int _Z14ApproachLinearRsss(short *value, short target, short step);
 extern void Trmp3DMario_EnterWalkBack(char *c);
 
 extern "C" void *sTrmpRowHeights[];
@@ -2740,7 +2725,7 @@ void Trmp3DMario_StateOnLedge(char *c) {
             }
             return;
         }
-        if (_Z14ApproachLinearRsss(&MARIO3D(c)->mRotY, 0x4000, 0x800) != 0)
+        if (ApproachLinear(MARIO3D(c)->mRotY, 0x4000, 0x800) != 0)
             MARIO3D(c)->mVel.x = 0x1000;
         return;
     }
@@ -2851,7 +2836,6 @@ extern "C" void Trmp3DMario_EnterWalkIn(char *c) {
 // ---- Trmp3DMario_StateOnGround
 namespace ns_020ccae0 {
 extern "C" {
-extern int _Z14ApproachLinearRsss(short *value, short target, short step);
 extern void Trmp3DMario_EnterWalkIn(char *c);
 
 extern "C" void *sTrmpRowHeights;
@@ -2876,7 +2860,7 @@ void Trmp3DMario_StateOnGround(char *c) {
             }
             return;
         }
-        if (_Z14ApproachLinearRsss(&MARIO3D(c)->mRotY, -0x4000, 0x800) != 0)
+        if (ApproachLinear(MARIO3D(c)->mRotY, -0x4000, 0x800) != 0)
             MARIO3D(c)->mVel.x = -0x1000;
         return;
     }

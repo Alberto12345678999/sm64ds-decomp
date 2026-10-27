@@ -41,8 +41,8 @@
  * two function-local Vector2 statics (Banner_StartWaveBurst,
  * Banner_SetupZoomBurst) are renamed the same way, onto the ov004 .bss names
  * at 0x020bf3ec..0x020bf41c that this unit owns. The named
- * parameters on the ApproachLinear2 and __cxa_vec_cleanup prototypes stand
- * in for names removed elsewhere, and the
+ * parameters on the __cxa_vec_cleanup prototype stand in for names
+ * removed elsewhere, and the
  * six record copies in Banner_StartSpin, Banner_StartWaveBurst and
  * Banner_Press stay W2 (int[2]) copies: assigning the records as
  * ElemFn emits the same code but moves the counter by 8 (measured).
@@ -102,6 +102,7 @@
 #include "nitro/fx/fx.h"
 #include "Vector2.h"
 #include "Sound.h"
+#include "math/Approach.h"
 
 struct M { int _00, _01, _10, _11; };
 struct Pair { int a, b; };
@@ -156,8 +157,6 @@ struct MgBanner {
     ~MgBanner() {}
 };
 
-extern int ApproachLinear(int &, int, int);
-extern int ApproachLinear2(short &value, short target, short step);
 
 namespace cstd {
 int fdiv(s32 a, s32 b);

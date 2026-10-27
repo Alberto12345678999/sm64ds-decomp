@@ -45,6 +45,7 @@ struct Vector3_16f;
 #include "Player.h"
 #include "Sound.h"
 #include "nitro/fx/fx.h"
+#include "math/Approach.h"
 
 /* POD stand-in: a real Vector3 local emits vague-linkage ~Vector3 into this
  * text-only TU. */
@@ -55,7 +56,6 @@ void func_ov002_020b330c(daObjAbuku_c *);
 int func_ov002_020b3344(daObjAbuku_c *);
 int SurfaceInfo_TestFlag0x20(int* p);
 extern short data_02082214[];
-void _Z14ApproachLinearRiii(int *p, int b, int c);
 unsigned short DecIfAbove0_Short(unsigned short *p);
 namespace Particle {
 struct System {
@@ -104,7 +104,7 @@ int daObjAbuku_c::Behavior()
     int x = v >> 4;
     short tv = data_02082214[2*x + 1];
     mHorzSpeed = FX_MUL(mDriftSpeed, tv);
-    _Z14ApproachLinearRiii(&mDriftSpeed, 0x6000, 0x332);
+    ApproachLinear(mDriftSpeed, 0x6000, 0x332);
     UpdatePos((dCc_c *)0);
     unsigned int id = mdCcAc_c.otherOwner;
     if (id) {

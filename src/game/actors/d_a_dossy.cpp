@@ -67,6 +67,7 @@ enum daDossy_c_AssetId {
 #include "Vector3s.h"
 #include "nitro/fx/fx.h"
 #include "Sound.h"
+#include "math/Approach.h"
 namespace cstd {
 s16 atan2(s32, s32);
 }
@@ -167,8 +168,6 @@ void func_ov065_021195bc(void *a, void *b, void *c);
 void func_ov065_021195d0(void *a, void *b, void *c);
 }
 
-int ApproachLinear(int &value, int target, int step);
-bool ApproachLinear(short &value, short target, short step);
 
 typedef void (daDossy_c::*StateFunc)();
 extern "C" StateFunc data_ov065_0211d7fc[];

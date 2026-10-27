@@ -36,6 +36,7 @@
 #include "Player.h"
 #include "SharedFilePtr.h"
 #include "Sound.h"
+#include "math/Approach.h"
 
 /* init at +0, execute at +8. Same shape as daWater_Ring_c::State.
  * The overlay image stores each as (function, this-delta) with delta 0. */
@@ -98,7 +99,6 @@ void Matrix4x3_ApplyInPlaceToRotationX(void *m, short angle);
 void MulVec3Mat4x3(Vector3 *v, void *m, Vector3 *out);
 }
 
-bool ApproachLinear(short &value, short target, short step);
 
 extern MantaState data_ov090_0213454c;
 

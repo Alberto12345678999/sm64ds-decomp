@@ -46,6 +46,7 @@ enum daObjCtRotateBlock_c_AssetId {
 #include "dBgW.h"
 #include "Sound.h"
 #include "nitro/fx/fx.h"
+#include "math/Approach.h"
 
 /* Per-variant records are 0xc bytes. The first word is a SharedFilePtr. */
 extern char data_ov065_0211cfd0[];
@@ -84,7 +85,6 @@ extern int data_0209e650;
 extern s32 data_020a0e68[];
 }
 
-bool ApproachLinear(short &value, short target, short step);
 
 #pragma defer_codegen off
 

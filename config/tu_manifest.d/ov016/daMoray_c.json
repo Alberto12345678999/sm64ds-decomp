@@ -1395,72 +1395,72 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@1055",
+      "from": "@1052",
       "to": "@1090",
       "evidence": "Compiler temporary identity established by exact initializer relocation position and complete owned-object bytes/relocations versus unchanged TU baseline."
     },
     {
-      "from": "@1056",
+      "from": "@1053",
       "to": "@1091",
       "evidence": "Compiler temporary identity established by exact initializer relocation position and complete owned-object bytes/relocations versus unchanged TU baseline."
     },
     {
-      "from": "@1057",
+      "from": "@1054",
       "to": "@1092",
       "evidence": "Compiler temporary identity established by exact initializer relocation position and complete owned-object bytes/relocations versus unchanged TU baseline."
     },
     {
-      "from": "@1058",
+      "from": "@1055",
       "to": "@1093",
       "evidence": "Compiler temporary identity established by exact initializer relocation position and complete owned-object bytes/relocations versus unchanged TU baseline."
     },
     {
-      "from": "@1060",
+      "from": "@1057",
       "to": "@1095",
       "evidence": "Compiler temporary identity established by exact initializer relocation position and complete owned-object bytes/relocations versus unchanged TU baseline."
     },
     {
-      "from": "@1062",
+      "from": "@1059",
       "to": "@1097",
       "evidence": "Compiler temporary identity established by exact initializer relocation position and complete owned-object bytes/relocations versus unchanged TU baseline."
     },
     {
-      "from": "@1064",
+      "from": "@1061",
       "to": "@1099",
       "evidence": "Compiler temporary identity established by exact initializer relocation position and complete owned-object bytes/relocations versus unchanged TU baseline."
     },
     {
-      "from": "@1066",
+      "from": "@1063",
       "to": "@1101",
       "evidence": "Compiler temporary identity established by exact initializer relocation position and complete owned-object bytes/relocations versus unchanged TU baseline."
     },
     {
-      "from": "@1068",
+      "from": "@1065",
       "to": "@1103",
       "evidence": "Compiler temporary identity established by exact initializer relocation position and complete owned-object bytes/relocations versus unchanged TU baseline."
     },
     {
-      "from": "@1070",
+      "from": "@1067",
       "to": "@1105",
       "evidence": "Compiler temporary identity established by exact initializer relocation position and complete owned-object bytes/relocations versus unchanged TU baseline."
     },
     {
-      "from": "@1072",
+      "from": "@1069",
       "to": "@1107",
       "evidence": "Compiler temporary identity established by exact initializer relocation position and complete owned-object bytes/relocations versus unchanged TU baseline."
     },
     {
-      "from": "@1074",
+      "from": "@1071",
       "to": "@1109",
       "evidence": "Compiler temporary identity established by exact initializer relocation position and complete owned-object bytes/relocations versus unchanged TU baseline."
     },
     {
-      "from": "@1076",
+      "from": "@1073",
       "to": "@1111",
       "evidence": "Compiler temporary identity established by exact initializer relocation position and complete owned-object bytes/relocations versus unchanged TU baseline."
     },
     {
-      "from": "@1078",
+      "from": "@1075",
       "to": "@1113",
       "evidence": "Compiler temporary identity established by exact initializer relocation position and complete owned-object bytes/relocations versus unchanged TU baseline."
     }
