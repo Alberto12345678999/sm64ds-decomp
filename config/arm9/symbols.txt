@@ -3078,7 +3078,7 @@ data_02073794 kind:data(any) addr:0x02073794
 data_020737a8 kind:data(any) addr:0x020737a8
 __sinit_02073a24 kind:function(arm,size=0x448) addr:0x02073a24
 __sinit_02073e6c kind:function(arm,size=0xf24) addr:0x02073e6c
-__sinit_02074d90 kind:function(arm,size=0x18) addr:0x02074d90
+__sinit_d_actor.cpp kind:function(arm,size=0x18) addr:0x02074d90
 __sinit_02074da8 kind:function(arm,size=0x14) addr:0x02074da8
 __sinit_02074dbc kind:function(arm,size=0x4) addr:0x02074dbc
 __sinit_02074dc0 kind:function(arm,size=0x4) addr:0x02074dc0
@@ -3209,7 +3209,7 @@ data_02086b58 kind:data(any) addr:0x02086b58
 __ptmf_null kind:data(any) addr:0x02086b58
 .p__sinit_02073a24 kind:data(word) addr:0x02086b60
 .p__sinit_02073e6c kind:data(word) addr:0x02086b64
-.p__sinit_02074d90 kind:data(word) addr:0x02086b68
+.p__sinit_d_actor.cpp kind:data(word) addr:0x02086b68
 .p__sinit_02074da8 kind:data(word) addr:0x02086b6c
 .p__sinit_02074dbc kind:data(word) addr:0x02086b70
 .p__sinit_02074dc0 kind:data(word) addr:0x02086b74

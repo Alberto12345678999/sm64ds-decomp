@@ -556,6 +556,9 @@ src/engine/view/Graphics3D.cpp:
 src/runtime/actor/d_actor.cpp:
     complete
     .text start:0x0200f658 end:0x02011654
+    .init start:0x02074d90 end:0x02074da8
+    .ctor start:0x02086b68 end:0x02086b6c
+    .bss start:0x0209b468 end:0x0209b470
 
 src/engine/sound/Sound.cpp:
     complete
@@ -5211,10 +5214,6 @@ src/unnamed/arm9/0207/__sinit_02073a24.c:
 src/unnamed/arm9/0207/__sinit_02073e6c.c:
     complete
     .init start:0x02073e6c end:0x02074d90
-
-src/unnamed/arm9/0207/__sinit_02074d90.c:
-    complete
-    .init start:0x02074d90 end:0x02074da8
 
 src/unnamed/arm9/0207/__sinit_02074da8.c:
     complete

@@ -42,9 +42,8 @@
  *    Field names follow: deathTableId -> mDeathTableID, flags -> mFlags, camSpacePos
  *    -> mCamSpacePosX, pos -> mPosX, speed -> mSpeedX, areaID -> mAreaId.
  *  - One spelling per global, chosen for what the ROM's use of it supports:
- *    data_0209b468 is an ADDRESS, not a value -- the ROM readers pass
- *    `&data_0209b468` as the list head's address, matching the plurality
- *    `extern void*` spelling the ctor/dtor shards already carry.
+ *    data_0209b468, the global actor list, is defined below; the list
+ *    helpers take its address, and Next() reads its first link.
  *  - One prototype per function, taken from whichever file had recovered the
  *    most: func_02010e78's caller knew (const Vector3*, const Vector3_16*, s8,
  *    s16) where its own file only knew (int, int, uchar, short);
@@ -98,7 +97,6 @@ s16 atan2(s32, s32);
    func_02010e78 already uses; a second void* declaration in this TU is
    rejected. */
 extern "C" {
-extern void *data_0209b468;
 extern s16 *data_0209b460;
 extern s16 *data_0209b45c;
 extern s16 data_0208e378;
@@ -123,6 +121,19 @@ extern "C" dActor_c *_ZN8dActor_cD0Ev(dActor_c *thiz) {
     return thiz;
 }
 #endif
+
+/* The global actor list every dActor_c links its mActorListNode into: the
+   first and last nodes. Its inline constructor empties it, so mwcc emits
+   __sinit_d_actor.cpp to run that (was the handwritten __sinit_02074d90).
+   The list helpers (func_0203b244 links, func_0203b27c unlinks, the
+   ActorBase.cpp searches) take its address. */
+struct ActorList {
+    fLiNdBa_c *first;
+    fLiNdBa_c *last;
+
+    ActorList() : first(0), last(0) {}
+};
+ActorList data_0209b468;
 
 /* Constructor first in source so reverse emission puts C1/C2 above the
    destructor. Both variants are this one body. */
@@ -353,7 +364,6 @@ void dActor_c::AfterRender(u32 vfSuccess)
 extern "C" {
 /* local extern: defined in ActorBase.cpp, which has no header. */
 extern fLiNdBa_c *func_02043f98(fLiNdBa_c **head, unsigned int key);
-extern void *data_0209b468; /* the global actor list -- callers use &name */
 }
 dActor_c *dActor_c::FindWithID(u32 id)
 {
