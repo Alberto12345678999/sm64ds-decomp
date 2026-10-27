@@ -134,7 +134,8 @@ typedef struct RacerScene {
 
 
 namespace cstd {
-int fdiv(int a, int b);
+/* local extern: kept off cstd.h so this TU's codegen stays put. */
+extern "C" int fdiv(int a, int b);
 }
 
 namespace G2S {

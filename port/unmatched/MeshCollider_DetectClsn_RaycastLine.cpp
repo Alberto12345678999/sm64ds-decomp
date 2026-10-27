@@ -30,6 +30,10 @@ struct dBgCh_Lin {
     Fix12i  clsnDist;       /* 0x60 */
 };
 
+namespace cstd {
+extern "C" s32 fdiv(s32, s32);
+}
+
 extern "C" {
 bool func_020397dc(s32 x);
 bool func_020397b8(s32 x);
@@ -40,7 +44,6 @@ u32  func_020396dc(dBgW_Kc *self, KCL_Tri *prism);
 int  _ZN5dBgCh21ShouldPassThroughImplEPvRK4CLPSRKS_b(void *self, SurfaceInfo *surf,
                                                     dBgCh_Lin *ray, int isSteep);
 Fix12i Vec3_Dist(const Vector3 *a, const Vector3 *b);
-s32  _ZN4cstd4fdivEii(s32 a, s32 b);
 void _ZNK11SurfaceInfo12CopyNormalToER7Vector3(SurfaceInfo *self, Vector3 *out);
 }
 
@@ -184,7 +187,7 @@ s32 dBgW_Kc::DetectClsn(dBgCh_Lin &ray)
                     denom = (dotS - dotE) >> 4;
                     if (denom <= 0) { ++g_walk_dbg[9]; continue; }
                     if (func_020397dc(denom)) { ++g_walk_dbg[10]; continue; }
-                    t = _ZN4cstd4fdivEii(dotS >> 4, denom) << 4;
+                    t = cstd::fdiv(dotS >> 4, denom) << 4;
 
                     delta.x = d1.x - d0.x;
                     scaled.x = (s32)(((s64)delta.x * t) >> 16);

@@ -56,7 +56,10 @@ enum daSlide_Box_c_AssetId {
 #include "dBgPi.h"
 #include "dBgCh_Actr.h"
 
-namespace cstd { int fdiv(int a, int b); }
+namespace cstd {
+/* local extern: kept off cstd.h so this TU's codegen stays put. */
+extern "C" int fdiv(int a, int b);
+}
 
 /* File 1605 / 1606 resource handles. The static initializer registers
  * their destructors; the spellings are this TU's, mapped onto

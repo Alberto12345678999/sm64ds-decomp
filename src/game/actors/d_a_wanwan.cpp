@@ -103,7 +103,8 @@ int Math_Function_0203b14c(void *p, int a, int b, int c, int d);
 
 namespace cstd {
 s16 atan2(s32, s32);
-int fdiv(int a, int b);
+/* local extern: kept off cstd.h so this TU's codegen stays put. */
+extern "C" int fdiv(int a, int b);
 }
 
 namespace call3_267c {

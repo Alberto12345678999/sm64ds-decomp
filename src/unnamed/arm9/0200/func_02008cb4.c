@@ -7,7 +7,7 @@ typedef struct dBgCh_Lin { char pad[0x14]; char surf[0x64]; } dBgCh_Lin;
 extern int func_ov002_020ca270(char* p);
 extern void Vec3_Sub(Vec3* out, Vec3* a, Vec3* b);
 extern int LenVec3(Vec3* v);
-extern int _ZN4cstd4fdivEii(int a, int b);
+extern int fdiv(int a, int b);
 extern void Vec3_MulScalarInPlace(Vec3* v, int s);
 extern void Vec3_Add(Vec3* out, Vec3* a, Vec3* b);
 extern void *_ZN9dBgCh_LinC1Ev(dBgCh_Lin* rc);
@@ -112,7 +112,7 @@ int func_02008cb4(char* c)
         Vec3_Sub(&dir1, &cam->pos, &v0);
         len = LenVec3(&dir1);
         if (len != 0) {
-            Vec3_MulScalarInPlace(&dir1, _ZN4cstd4fdivEii(0x100000, len));
+            Vec3_MulScalarInPlace(&dir1, fdiv(0x100000, len));
             Vec3_Add(&end1, &cam->pos, &dir1);
             _ZN9dBgCh_LinC1Ev(&rc1);
             func_0200897c(c, &rc1);
@@ -170,7 +170,7 @@ int func_02008cb4(char* c)
         cam->mFlags &= ~0x80000;
         return 0;
     }
-    Vec3_MulScalarInPlace(&dir2, _ZN4cstd4fdivEii(0x60000, len));
+    Vec3_MulScalarInPlace(&dir2, fdiv(0x60000, len));
     Vec3_Add(&end2, &cam->pos, &dir2);
     _ZN9dBgCh_LinC1Ev(&rc2);
     func_0200897c(c, &rc2);
@@ -199,7 +199,7 @@ int func_02008cb4(char* c)
     cam->pos.z = np.z;
     Vec3_Sub(&diff, &cam->pos, &cam->lookAt);
     if (LenVec3(&diff) >= d) {
-        Vec3_MulScalarInPlace(&diff, _ZN4cstd4fdivEii(d, LenVec3(&diff)));
+        Vec3_MulScalarInPlace(&diff, fdiv(d, LenVec3(&diff)));
         Vec3_Add(&cl, &cam->lookAt, &diff);
         cam->pos.x = cl.x;
         cam->pos.y = cl.y;

@@ -65,7 +65,8 @@
  * other spellings of these symbols collide with this TU. */
 
 namespace cstd {
-int fdiv(int numerator, int denominator);
+/* local extern: kept off cstd.h so this TU's codegen stays put. */
+extern "C" int fdiv(int numerator, int denominator);
 }
 
 /* Shared ABI seams, kept above the first `// @symbol` marker so no member is

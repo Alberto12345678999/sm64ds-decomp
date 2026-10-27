@@ -103,7 +103,7 @@
       "ordinal": 11
     },
     {
-      "symbol": "_ZN4cstd4fdivEii",
+      "symbol": "fdiv",
       "address": "0x02053258",
       "size": "0x0000001c",
       "legacy_source": "src/_ZN4cstd4fdivEii.cpp",

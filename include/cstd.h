@@ -12,7 +12,7 @@ namespace cstd {
 extern "C" int mod(int, int);
 extern "C" int div(int, int);
 long long ldiv(int, int);
-int fdiv(int, int);
+extern "C" int fdiv(int, int);
 int fdiv_result();
 long long ldiv_result();
 void fdiv_async(int, int);

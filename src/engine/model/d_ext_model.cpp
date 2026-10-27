@@ -162,7 +162,8 @@ void func_02046e28(ModelComponents *model, BMA_File *file, int frame);
 }
 
 namespace cstd {
-int fdiv(int a, int b);
+/* local extern: kept off cstd.h so this TU's codegen stays put. */
+extern "C" int fdiv(int a, int b);
 }
 
 /* Only the header word the SetAnim paths read; dExtFrameCtrl_c::UpdateFileOffsets'

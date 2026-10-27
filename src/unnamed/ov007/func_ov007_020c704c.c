@@ -2,7 +2,7 @@
 #include "nitro/fx/fx.h"
 
 extern int func_020531a4(int a);
-extern int _ZN4cstd4fdivEii(int a, int b);
+extern int fdiv(int a, int b);
 
 typedef struct S {
     Vector3 *p;
@@ -37,7 +37,7 @@ int func_ov007_020c704c(S *self, Vector3 *b, int r2arg, int r3arg, int radius) {
 
     if (sum <= FX_MUL(r3arg, r3arg)) {
         spd = func_020531a4(sum);
-        ratio = _ZN4cstd4fdivEii(r2arg, spd);
+        ratio = fdiv(r2arg, spd);
 
         self->f10 += FX_MUL(ratio, sdx);
         self->f14 += FX_MUL(ratio, sdy);

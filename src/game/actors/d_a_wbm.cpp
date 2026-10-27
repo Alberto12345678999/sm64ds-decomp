@@ -69,7 +69,8 @@ enum {
 };
 
 namespace cstd {
-s32 fdiv(s32 numerator, s32 denominator);
+/* local extern: kept off cstd.h so this TU's codegen stays put. */
+extern "C" s32 fdiv(s32 numerator, s32 denominator);
 }
 
 extern "C" {

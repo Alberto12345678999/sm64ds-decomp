@@ -13,7 +13,7 @@ extern void Vec3_Sub(struct Vector3 *out, struct Vector3 *a, struct Vector3 *b);
 extern int LenVec3(struct Vector3 *v);
 extern int NormalizeVec3IfNonZero(struct Vector3 *v);
 extern int DotVec3(const struct Vector3 *a, const struct Vector3 *b);
-extern int _ZN4cstd4fdivEii(int a, int b);
+extern int fdiv(int a, int b);
 extern void Vec3_MulScalarInPlace(int *v, int s);
 extern void Vec3_Add(struct Vector3 *out, struct Vector3 *a, struct Vector3 *b);
 extern void Vec3_MulScalar(struct Vector3 *out, const struct Vector3 *in, int scale);
@@ -122,7 +122,7 @@ void func_0200b0fc(char *c, char *a)
     if (idx + 1 < _ZNK7PathPtr8NumNodesEv(path)) {
         _ZNK7PathPtr7GetNodeER7Vector3j(path, &node2, idx + 1);
         Vec3_Sub(&tmp, &node2, &node1);
-        Vec3_MulScalarInPlace((int*)&tmp, _ZN4cstd4fdivEii(0x190000, LenVec3(&tmp)));
+        Vec3_MulScalarInPlace((int *)&tmp, fdiv(0x190000, LenVec3(&tmp)));
         Vec3_Add(&farPoint, &node1, &tmp);
         Vec3_Sub(&diffFar, &farPoint, &cam->lookAt);
         tmp.x = diffFar.x;
@@ -149,7 +149,7 @@ void func_0200b0fc(char *c, char *a)
 
         _ZNK7PathPtr7GetNodeER7Vector3j(path, &prevNode, cam->mPathNode - 1);
         Vec3_Sub(&diffPrev, &prevNode, &node0);
-        Vec3_MulScalarInPlace((int*)&diffPrev, _ZN4cstd4fdivEii(0x190000, LenVec3(&diffPrev)));
+        Vec3_MulScalarInPlace((int *)&diffPrev, fdiv(0x190000, LenVec3(&diffPrev)));
         Vec3_Add(&farPrev, &node0, &diffPrev);
         Vec3_Sub(&diffFarPrev, &farPrev, &cam->lookAt);
         diffPrev.x = diffFarPrev.x;

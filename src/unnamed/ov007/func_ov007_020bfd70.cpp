@@ -39,7 +39,8 @@ struct Ov007Camera {
 typedef char Ov007Camera_fovy_must_be_at_0xd4[(int)&((Ov007Camera *)0)->fovy == 0xd4 ? 1 : -1];
 
 namespace cstd {
-int fdiv(int, int);
+/* local extern: kept off cstd.h so this TU's codegen stays put. */
+extern "C" int fdiv(int, int);
 }
 
 extern "C" {

@@ -77,7 +77,7 @@ extern SurfaceInfo data_020a0cec;
 
 namespace cstd {
 /* local extern: no header in include/ declares it. */
-int fdiv(int a, int b);
+extern "C" int fdiv(int a, int b);
 }
 
 /* The ROM inlines a RAW hardware sqrt at four sites -- NOT cstd::sqrt(u64)

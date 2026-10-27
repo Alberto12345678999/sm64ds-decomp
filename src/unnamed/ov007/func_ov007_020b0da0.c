@@ -11,7 +11,7 @@
 #include "Ov007Work.h"
 extern short data_02082214[];
 
-extern int _ZN4cstd4fdivEii(int a, int b);
+extern int fdiv(int a, int b);
 extern void Matrix4x3_LoadIdentity(void* mat);
 
 /* Reconstructed layouts and names, not recovered class identity; only the
@@ -161,7 +161,7 @@ void func_ov007_020b0da0(void* arg0) {
             } else if (diff >= 0x50) {
                 ratio = 0x1000;
             } else {
-                ratio = _ZN4cstd4fdivEii(diff, 0x50);
+                ratio = fdiv(diff, 0x50);
             }
             sq = (int)(((s64)ratio * ratio) >> 12);
             out.y = sq * 30;

@@ -43,7 +43,8 @@ enum d_s_mg_trampoline_AssetId {
 #define TOUCH_REC(lane) ((unsigned char (*)[4])(lane))
 
 namespace cstd {
-int fdiv(int numerator, int denominator);
+/* local extern: kept off cstd.h so this TU's codegen stays put. */
+extern "C" int fdiv(int numerator, int denominator);
 }
 namespace G2 {
 void *GetBG0ScrPtr();

@@ -2,7 +2,8 @@
 #include "types.h"
 #include "nitro/fx/fx.h"
 namespace cstd {
-int fdiv(s32, s32);
+/* local extern: kept off cstd.h so this TU's codegen stays put. */
+extern "C" int fdiv(s32, s32);
 }
 extern s16 data_02082214[];
 

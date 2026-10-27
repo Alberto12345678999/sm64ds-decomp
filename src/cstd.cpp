@@ -58,15 +58,13 @@ int func_02053274(int *a, int *b)
 }
 }
 
-// @symbol _ZN4cstd4fdivEii
+// @symbol fdiv
 namespace cstd {
 
-s32 fdiv(s32 numerator, s32 denominator)
-{
+extern "C" s32 fdiv(s32 numerator, s32 denominator) {
     fdiv_async(numerator, denominator);
     return fdiv_result();
 }
-
 }
 
 // @symbol _ZN4cstd4ldivEii

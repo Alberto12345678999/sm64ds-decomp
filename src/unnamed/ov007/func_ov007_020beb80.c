@@ -5,7 +5,7 @@
 extern int func_020538b8(int a, int b);
 extern void *func_ov007_020b7690(int i);
 extern int func_02053644(s16 *v);
-extern int _ZN4cstd4fdivEii(int a, int b);
+extern int fdiv(int a, int b);
 extern void func_02053380(s16 *in, s16 *out);
 
 /* The 0x1c-byte animation player; names as in func_ov007_020bc02c. */
@@ -89,10 +89,12 @@ void func_ov007_020beb80(char *self) {
                 int t;
                 if (mag <= 0) sc = 0;
                 else if (mag >= 0xfa0) sc = 0x1000;
-                else sc = _ZN4cstd4fdivEii(mag, 0xfa0);
+                else
+                    sc = fdiv(mag, 0xfa0);
                 if (mag <= 0x1f4) t = 0;
                 else if (mag >= 0x3e8) t = 0x1000;
-                else t = _ZN4cstd4fdivEii(mag - 0x1f4, 0x1f4);
+                else
+                    t = fdiv(mag - 0x1f4, 0x1f4);
                 frames -= t;
                 func_02053380((s16 *)&dd, (s16 *)&dd);
                 e->delta = dd;

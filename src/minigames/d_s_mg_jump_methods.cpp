@@ -123,7 +123,10 @@ namespace GX   { void LoadOBJPltt(const void *src, unsigned int offset, unsigned
 namespace G3X {
 void SetFog(int enable, int mode, int slope, int offset);
 }
-namespace cstd { s32 fdiv(s32 a, s32 b); }
+namespace cstd {
+/* local extern: kept off cstd.h so this TU's codegen stays put. */
+extern "C" s32 fdiv(s32 a, s32 b);
+}
 
 // @symbol _ZN11dScMgJump_c10StartRoundEi
 /* Slot 18. 0 is an eat (one more egg, capped like the HUD score), 0x12 a
