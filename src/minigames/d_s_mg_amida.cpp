@@ -86,12 +86,8 @@ enum dScMgAmida_c_AssetId {
 #include "Sound.h"
 #include "CP15.h"
 #include "GX.h"
+#include "G2x.h"
 
-struct G2x {
-    static void SetBlendBrightness(volatile unsigned short *, unsigned short, short);
-    static void SetBlendAlpha(volatile unsigned short *, unsigned short, unsigned short,
-                              unsigned short, unsigned int);
-};
 extern "C" {
 /* --- shared ov004 and main helpers --- */
 extern void Mg_RenderSpriteBoth(void *a0, int a1, int a2, int a3, int a4);
