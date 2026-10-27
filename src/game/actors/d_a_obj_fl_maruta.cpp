@@ -29,10 +29,6 @@
 //   this TU).
 // - dBgW_KcMbg::SetFile keeps its mangled spelling (by-value Fix12<int>
 //   parameters, wall 6az).
-// - daObjFlMaruta_c_classInit stays hand-spelled. `new daObjFlMaruta_c`
-//   compiles to the same bytes, but the inline daObjMaruta_c constructor
-//   stores `_ZTV13daObjMaruta_c+8` where the ROM stores that ov080 table's
-//   configured address (addend 0), so the linked word would differ.
 
 #include "decl_Actor.h"
 #include "decl_ActorBase.h"
@@ -123,13 +119,7 @@ int daObjFlMaruta_c::InitResources()
 // @symbol daObjFlMaruta_c_classInit
 extern "C" int *daObjFlMaruta_c_classInit(void)
 {
-    int *p = (int *)fBase_c::operator new(836);
-    if (p) {
-        _ZN10dBgActor_cC2Ev(p);
-        p[0] = (int)_ZTV13daObjMaruta_c;
-        p[0] = (int)&_ZTV15daObjFlMaruta_c[2];
-    }
-    return p;
+    return (int *)new daObjFlMaruta_c;
 }
 
 // @symbol _ZN21daObj_volcanoCannon_cD1Ev

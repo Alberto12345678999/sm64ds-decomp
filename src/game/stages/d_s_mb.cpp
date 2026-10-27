@@ -18,9 +18,7 @@
 // leftovers: OAM::Render stays mangled (Fix12 by value -- this TU's render
 // calls). func_02034b1c initialises the global graph callback, retaining
 // the raw store to its unmodelled byte at +0x0f. func_02034fbc stays free
-// (no receiver). classInit keeps the literal construction sequence
-// (`return new` inlines a different fader
-// constructor).
+// (no receiver).
 #include "dScMB_c.h"
 #include "AsyncJob.h"
 #include "decl_common.h"
@@ -52,15 +50,6 @@ extern u8 data_0209d45c;
 extern u8 data_0209d454;
 extern void *data_0209d4a8;
 extern int data_0208ee44;
-
-/* local extern: the factory runs the base constructor over fresh operator new
-   storage and stores the vptrs itself; C++ has no call spelling for a C2. */
-void *_ZN7fBase_cC2Ev(void *);
-extern int data_0208e4b8[];
-extern int data_020943c4[];
-extern int _ZTV8dFader_c[];
-extern int _ZTV15dFdBrightness_c[];
-extern int _ZTV10dFdColor_c[];
 }
 
 #pragma defer_codegen off
@@ -317,26 +306,5 @@ s32 dScMB_c::InitResources() {
 
 // @symbol dScMB_c_classInit
 extern "C" void *dScMB_c_classInit(void) {
-    char *p = (char *)fBase_c::operator new(0x68);
-    if (p) {
-        _ZN7fBase_cC2Ev(p);
-        *(int **)p = data_0208e4b8;
-        *(int **)p = _ZTV8dScene_c;
-        {
-            u8 *bp = &((dScMB_c *)p)->pauseFlags;
-            *bp |= 1;
-            *bp |= 4;
-        }
-        *(int **)p = data_020943c4;
-        {
-            dFdColor_c *fader = &((dScMB_c *)p)->fader;
-            *(int **)fader = _ZTV8dFader_c;
-            *(int **)fader = _ZTV15dFdBrightness_c;
-            fader->currInterp = 0x1000;
-            fader->speed = 0;
-            *(int **)fader = _ZTV10dFdColor_c;
-            fader->color = 0;
-        }
-    }
-    return p;
+    return new dScMB_c;
 }
