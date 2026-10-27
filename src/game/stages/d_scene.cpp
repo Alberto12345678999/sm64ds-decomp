@@ -117,7 +117,7 @@ extern dFdBrightness_c *data_0209d4ac;
    build them in this order and register their destructors (was the
    handwritten __sinit_02074edc). Other TUs reach them by these address
    names. */
-dFdColor_c      data_0209f5e8;
+dFdColor_c data_0209f5e8;
 dFdBrightness_c data_0209f5d0;
 
 // @symbol _ZN8dScene_c22ResetHardwareRegistersEv

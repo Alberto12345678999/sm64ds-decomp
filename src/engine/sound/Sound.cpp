@@ -185,7 +185,9 @@ typedef struct SndRegTable {
     SndRegEntry entries[0x40];   /* 0x08 */
     SndRegEntry *buckets[16];    /* 0x508 - chain heads by id&0xf */
 
-    SndRegTable() { func_02011a5c(this); }
+    SndRegTable() {
+        func_02011a5c(this);
+    }
 } SndRegTable;
 
 SndRegTable data_0209b53c;

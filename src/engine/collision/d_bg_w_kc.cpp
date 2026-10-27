@@ -99,4 +99,3 @@ extern "C" unsigned func_020396dc(dBgW_Kc *self, KCL_Tri *tri) {
 
 // @symbol _ZN7dBgW_Kc9Virtual08Ev
 void dBgW_Kc::Virtual08() {}
-
