@@ -4380,9 +4380,9 @@ sFlowerBgUpNclPath kind:data(any) addr:0x02140260
 sFlowerBgDownNclPath kind:data(any) addr:0x02140284
 sFlowerNcgPath kind:data(any) addr:0x021402a8
 sFlowerNclPath kind:data(any) addr:0x021402c4
-sFallingPetal_Spawn_UnitYGuard kind:bss addr:0x021402e0
-sFallingPetal_Spawn_UnitYDtorRec kind:bss addr:0x021402e4
-sFallingPetalAxis kind:bss addr:0x021402f0
+_ZGVsAxis$543 kind:bss addr:0x021402e0
+@546 kind:bss addr:0x021402e4
+sAxis$543 kind:bss addr:0x021402f0
 data_ov006_021402fc kind:bss addr:0x021402fc
 sHeyho_React_Left256Guard kind:bss addr:0x02140300
 sHeyhoUnsettledCount kind:bss addr:0x02140304
@@ -4862,9 +4862,9 @@ sTrmp2Spinners kind:bss addr:0x02142f7c
 sTrmp2StarModelFile kind:bss addr:0x02142f80
 @1086 kind:bss addr:0x02142f88
 sBSCStateTable kind:bss addr:0x02142f94
-sSnowball_ResetScene_UnitYGuard kind:bss addr:0x02143004
-sSnowball_ResetScene_UnitYDtorRec kind:bss addr:0x02143008
-sSnowball_ResetScene_UnitY kind:bss addr:0x02143014
+_ZGVsUnitY$1570 kind:bss addr:0x02143004
+@1573 kind:bss addr:0x02143008
+sUnitY$1570 kind:bss addr:0x02143014
 sSnowballBitStateTable kind:bss addr:0x02143020
 sSnowballBitKindTable kind:bss addr:0x02143038
 sSnowballBitBStateTable kind:bss addr:0x02143050
