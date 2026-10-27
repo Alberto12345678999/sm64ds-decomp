@@ -20,11 +20,6 @@
 extern "C" {
 #endif
 
-extern u32 _ZN8Particle7Texture12AllocTexVramEjb(const void*, u32);
-extern unsigned int _ZN8Particle7Texture12AllocPalVramEjb(unsigned int, unsigned int);
-extern void _ZN8Particle10SysTracker10InitialiseEv(void*);
-extern void *_ZN5dPa_c7level_c16simpleCallback_cC1Ev(char*);
-extern void _ZN8Particle9RenderAllEv(void);
 
 
 #ifdef __cplusplus
