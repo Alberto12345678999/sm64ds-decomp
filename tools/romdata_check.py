@@ -354,6 +354,11 @@ def emitted_data_symbols(raw):
     Every one of these is a section `objisolate` drops, because it keeps exactly one
     `.text` and zeroes the rest. Locals are skipped: a static table has no ROM symbol
     to be compared against and never collides with one.
+
+    `.bss` (SHT_NOBITS) objects are skipped too: they carry no initial bytes, and the
+    cartridge holds nothing for them either. arm9 makes comparing them actively wrong:
+    the file bytes at its `.bss` addresses are the ITCM/DTCM autoload payloads, copied
+    out at boot before `.bss` is cleared, so every arm9 `.bss` object "differed".
     """
     elf = ELFFile(io.BytesIO(raw))
     symtab = elf.get_section_by_name(".symtab")
@@ -366,6 +371,8 @@ def emitted_data_symbols(raw):
         if s["st_info"]["type"] != "STT_OBJECT" or not s["st_size"]:
             continue
         if s["st_info"]["bind"] == "STB_LOCAL":
+            continue
+        if elf.get_section(s["st_shndx"])["sh_type"] == "SHT_NOBITS":
             continue
         out.append((s.name, s["st_shndx"], s["st_value"], s["st_size"]))
     return out
