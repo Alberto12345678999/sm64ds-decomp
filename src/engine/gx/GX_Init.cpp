@@ -142,8 +142,8 @@ void func_02053b98(void) {
 
 namespace GX {
 
-// @symbol _ZN2GX6DispOnEv
-void DispOn() {
+// @symbol DispOn
+extern "C" void DispOn() {
     data_02099fcc = 1;
     if (data_020a6084 != 0)
         REG_DISPCNT =

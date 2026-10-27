@@ -19,14 +19,19 @@ struct Tex {
 extern u32 data_ov007_02104bdc;
 extern u32 data_ov007_02104be4;
 extern void Crash(void);
-extern void _ZN2GX12BeginLoadTexEv(void);
-extern void _ZN2GX7LoadTexEPKvjj(const void *src, u32 slot, u32 size);
-extern void _ZN2GX10EndLoadTexEv(void);
+/* local extern: C file cannot include GX.h. */
+extern void BeginLoadTex(void);
+/* local extern: C file cannot include GX.h. */
+extern void LoadTex(const void *src, u32 slot, u32 size);
+/* local extern: C file cannot include GX.h. */
+extern void EndLoadTex(void);
 extern u32 data_ov007_02104be8;
 extern u32 data_ov007_02104be0;
 void BeginLoadTexPltt(void);
-extern void _ZN2GX11LoadTexPlttEPKvjj(const void *src, u32 slot, u32 size);
-extern void _ZN2GX14EndLoadTexPlttEv(void);
+/* local extern: C file cannot include GX.h. */
+extern void LoadTexPltt(const void *src, u32 slot, u32 size);
+/* local extern: C file cannot include GX.h. */
+extern void EndLoadTexPltt(void);
 
 void func_ov007_020c1560(struct Tex *t) {
     u32 slot;
@@ -39,9 +44,9 @@ void func_ov007_020c1560(struct Tex *t) {
     end = data_ov007_02104be4;
 
     if (slot + t->texSize <= end) {
-        _ZN2GX12BeginLoadTexEv();
-        _ZN2GX7LoadTexEPKvjj(t->texSrc, data_ov007_02104bdc, t->texSize);
-        _ZN2GX10EndLoadTexEv();
+        BeginLoadTex();
+        LoadTex(t->texSrc, data_ov007_02104bdc, t->texSize);
+        EndLoadTex();
 
         t->texDest = data_ov007_02104bdc;
         data_ov007_02104bdc += t->texSize;
@@ -62,8 +67,8 @@ void func_ov007_020c14d4(struct Tex *t) {
 
     if (slot + t->plttSize <= end) {
         BeginLoadTexPltt();
-        _ZN2GX11LoadTexPlttEPKvjj(t->plttSrc, data_ov007_02104be8, t->plttSize);
-        _ZN2GX14EndLoadTexPlttEv();
+        LoadTexPltt(t->plttSrc, data_ov007_02104be8, t->plttSize);
+        EndLoadTexPltt();
 
         t->plttDest = data_ov007_02104be8;
         data_ov007_02104be8 += t->plttSize;

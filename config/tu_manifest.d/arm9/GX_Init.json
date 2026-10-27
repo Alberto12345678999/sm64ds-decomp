@@ -43,7 +43,7 @@
       "ordinal": 2
     },
     {
-      "symbol": "_ZN2GX6DispOnEv",
+      "symbol": "DispOn",
       "address": "0x02053b4c",
       "size": "0x0000004c",
       "legacy_source": "src/_ZN2GX6DispOnEv.cpp",

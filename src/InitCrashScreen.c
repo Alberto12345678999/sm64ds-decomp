@@ -4,7 +4,8 @@ extern void _ZN2GX11LoadBG1CharEPKvjj(const void *p, unsigned int a, unsigned in
 extern void _ZN2GX10LoadBGPlttEPKvjj(const void *p, unsigned int a, unsigned int b);
 extern void ResetCrashScreen(void);
 extern void ShowCrashScreen(void);
-extern void _ZN2GX6DispOnEv(void);
+/* local extern: C file cannot include GX.h. */
+extern void DispOn(void);
 extern char data_0208a178;
 extern char data_0208c178;
 
@@ -21,6 +22,6 @@ void InitCrashScreen(void)
     _ZN2GX10LoadBGPlttEPKvjj(&data_0208c178, 0x1a0, 0x60);
     ResetCrashScreen();
     ShowCrashScreen();
-    _ZN2GX6DispOnEv();
+    DispOn();
     *(volatile int *)0x4001000 = *(volatile int *)0x4001000 & ~0x10000;
 }

@@ -18,7 +18,7 @@
  * parameter inserted an lsl/lsr pair at each of them. Parameters stay
  * unnamed: a name here takes an @NNN in every includer. */
 namespace GX {
-void DispOn(void);
+extern "C" void DispOn(void);
 void SetGraphicsMode(int, int, int);
 extern "C" void DisableAllBanks(void);
 extern "C" void SetBankForBG(int);
@@ -29,12 +29,12 @@ extern "C" void SetBankForSubBG(int);
 extern "C" void SetBankForSubOBJ(int);
 extern "C" void SetBankForSubBGExtPltt(int);
 extern "C" void SetBankForSubOBJExtPltt(int);
-void BeginLoadTex(void);
-void LoadTex(const void *, unsigned int, unsigned int);
-void EndLoadTex(void);
+extern "C" void BeginLoadTex(void);
+extern "C" void LoadTex(const void *, unsigned int, unsigned int);
+extern "C" void EndLoadTex(void);
 extern "C" void BeginLoadTexPltt(void);
-void LoadTexPltt(const void *, unsigned int, unsigned int);
-void EndLoadTexPltt(void);
+extern "C" void LoadTexPltt(const void *, unsigned int, unsigned int);
+extern "C" void EndLoadTexPltt(void);
 void LoadBGPltt(const void *, unsigned int, unsigned int);
 void LoadOBJPltt(const void *, unsigned int, unsigned int);
 void LoadOBJ(const void *, unsigned int, unsigned int);

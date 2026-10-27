@@ -57,6 +57,16 @@ struct GX {
 
 /* local extern: struct GX here shadows namespace GX, so GX.h cannot be included. */
 extern "C" void BeginLoadTexPltt(void);
+/* local extern: shadow struct GX blocks GX.h. */
+extern "C" void BeginLoadTex(void);
+/* local extern: shadow struct GX blocks GX.h. */
+extern "C" void LoadTex(const void *, unsigned int, unsigned int);
+/* local extern: shadow struct GX blocks GX.h. */
+extern "C" void EndLoadTex(void);
+/* local extern: shadow struct GX blocks GX.h. */
+extern "C" void LoadTexPltt(const void *, unsigned int, unsigned int);
+/* local extern: shadow struct GX blocks GX.h. */
+extern "C" void EndLoadTexPltt(void);
 
 struct Vector3;
 
@@ -330,16 +340,16 @@ typedef struct TexHolder {
 // @symbol func_0204a0dc
 int func_0204a0dc(TexHolder *thiz, u32 (*cb)(const void *, u32)) {
     int i;
-    GX::BeginLoadTex();
+    BeginLoadTex();
     for (i = 0; i < thiz->count; i++) {
         Elem *e = (Elem *)((char *)thiz->list + i * 0x14);
         TexData *t = e->tex;
         u32 flag = (t->f4lo == 5) ? 1 : 0;
         u32 r = cb((const void *)t->f8, flag);
-        GX::LoadTex((const void *)((char *)e->tex + 0x20), r, (u32)t->f8);
+        LoadTex((const void *)((char *)e->tex + 0x20), r, (u32)t->f8);
         e->result = r;
     }
-    GX::EndLoadTex();
+    EndLoadTex();
     return 1;
 }
 
@@ -380,12 +390,12 @@ int func_0204a028(Holder *thiz, unsigned int (*cb)(unsigned int, unsigned int)) 
         if (p->field_10 != 0) {
             unsigned int arg = ((unsigned)(p->field_4 << 0x1c) >> 0x1c) == 2 ? 1 : 0;
             r6 = cb(p->field_10, arg);
-            GX::LoadTexPltt((void *)((char *)entry->field_0 + p->field_c), r6, p->field_10);
+            LoadTexPltt((void *)((char *)entry->field_0 + p->field_c), r6, p->field_10);
         }
         entry->field_8 = r6;
     }
 
-    GX::EndLoadTexPltt();
+    EndLoadTexPltt();
     return 1;
 }
 

@@ -27,14 +27,14 @@
       "ordinal": 0
     },
     {
-      "symbol": "_ZN2GX14EndLoadTexPlttEv",
+      "symbol": "EndLoadTexPltt",
       "address": "0x020568cc",
       "size": "0x00000058",
       "legacy_source": "src/_ZN2GX14EndLoadTexPlttEv.cpp",
       "ordinal": 1
     },
     {
-      "symbol": "_ZN2GX11LoadTexPlttEPKvjj",
+      "symbol": "LoadTexPltt",
       "address": "0x02056924",
       "size": "0x00000074",
       "legacy_source": "src/_ZN2GX11LoadTexPlttEPKvjj.cpp",
@@ -48,21 +48,21 @@
       "ordinal": 3
     },
     {
-      "symbol": "_ZN2GX10EndLoadTexEv",
+      "symbol": "EndLoadTex",
       "address": "0x020569e0",
       "size": "0x00000070",
       "legacy_source": "src/_ZN2GX10EndLoadTexEv.cpp",
       "ordinal": 4
     },
     {
-      "symbol": "_ZN2GX7LoadTexEPKvjj",
+      "symbol": "LoadTex",
       "address": "0x02056a50",
       "size": "0x0000014c",
       "legacy_source": "src/_ZN2GX7LoadTexEPKvjj.cpp",
       "ordinal": 5
     },
     {
-      "symbol": "_ZN2GX12BeginLoadTexEv",
+      "symbol": "BeginLoadTex",
       "address": "0x02056b9c",
       "size": "0x00000080",
       "legacy_source": "src/_ZN2GX12BeginLoadTexEv.cpp",

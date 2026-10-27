@@ -556,6 +556,16 @@ struct GX {
 
 /* local extern: struct GX here shadows namespace GX, so GX.h cannot be included. */
 extern "C" void BeginLoadTexPltt(void);
+/* local extern: shadow struct GX blocks GX.h. */
+extern "C" void BeginLoadTex(void);
+/* local extern: shadow struct GX blocks GX.h. */
+extern "C" void LoadTex(const void *, unsigned int, unsigned int);
+/* local extern: shadow struct GX blocks GX.h. */
+extern "C" void EndLoadTex(void);
+/* local extern: shadow struct GX blocks GX.h. */
+extern "C" void LoadTexPltt(const void *, unsigned int, unsigned int);
+/* local extern: shadow struct GX blocks GX.h. */
+extern "C" void EndLoadTexPltt(void);
 
 // @symbol _ZN17dExtSimpleModel_c13GetVramOffsetEj
 u32 dExtSimpleModel_c::GetVramOffset(u32 size) {
@@ -576,10 +586,10 @@ u32 dExtSimpleModel_c::GetVramOffset(u32 size) {
 // @symbol _ZN17dExtSimpleModel_c17LoadTextureToVramEPcj
 u32 dExtSimpleModel_c::LoadTextureToVram(char *texData, u32 size) {
     u32 vramOffset = GetVramOffset(size);
-    GX::BeginLoadTex();
-    GX::LoadTex(texData, vramOffset, size);
+    BeginLoadTex();
+    LoadTex(texData, vramOffset, size);
     data_020a4be4 += size;
-    GX::EndLoadTex();
+    EndLoadTex();
     return vramOffset;
 }
 
@@ -592,12 +602,12 @@ u32 dExtSimpleModel_c::LoadCompressedTextureToVram(char *src, u32 size, char *ds
 
     if ((data_020a4be8 - data_020a4bc8) < size)
         Crash();
-    GX::BeginLoadTex();
-    GX::LoadTex(src, data_020a4bc8, size);
+    BeginLoadTex();
+    LoadTex(src, data_020a4bc8, size);
     data_020a4be4 += size;
-    GX::LoadTex(dst, data_020a4be0, size >> 1);
+    LoadTex(dst, data_020a4be0, size >> 1);
     data_020a4be4 += size >> 1;
-    GX::EndLoadTex();
+    EndLoadTex();
     vramOffset = data_020a4bc8;
     data_020a4bc8 += size;
     data_020a4be0 += size >> 1;
@@ -618,8 +628,8 @@ extern "C" u32 func_02045ad8(const void *src, u32 size)
         Crash();
 
     BeginLoadTexPltt();
-    GX::LoadTexPltt(src, data_020a4bcc, size);
-    GX::EndLoadTexPltt();
+    LoadTexPltt(src, data_020a4bcc, size);
+    EndLoadTexPltt();
 
     slot = data_020a4bcc;
     data_020a4bcc = slot + ((size + 0xf) & 0xfff0);
@@ -643,8 +653,8 @@ extern "C" u32 func_02045a50(const void *src, u32 size)
     data_020a4bd8 -= (size + 0xf) & 0xfff0;
 
     BeginLoadTexPltt();
-    GX::LoadTexPltt(src, data_020a4bd8, size);
-    GX::EndLoadTexPltt();
+    LoadTexPltt(src, data_020a4bd8, size);
+    EndLoadTexPltt();
 
     return data_020a4bd8;
 }
@@ -688,12 +698,12 @@ void dExtSimpleModel_c::LoadTexAndPal(BMD_File &file) {
             sz = p->size;
             if (data_020a4bcc + sz > data_020a4bd8) Crash();
             if (sz <= 8) {
-                GX::LoadTexPltt(p->data, data_020a4bcc, sz);
+                LoadTexPltt(p->data, data_020a4bcc, sz);
                 p->vramOffset = data_020a4bcc;
                 data_020a4bcc = data_020a4bcc + ((sz + 7) & 0xfff8);
             } else {
                 data_020a4bd8 = data_020a4bd8 - ((sz + 0xf) & 0xfff0);
-                GX::LoadTexPltt(p->data, data_020a4bd8, sz);
+                LoadTexPltt(p->data, data_020a4bd8, sz);
                 p->vramOffset = data_020a4bd8;
             }
             j++;
@@ -701,5 +711,5 @@ void dExtSimpleModel_c::LoadTexAndPal(BMD_File &file) {
         } while (j < file.numPalettes);
     }
 
-    GX::EndLoadTexPltt();
+    EndLoadTexPltt();
 }
