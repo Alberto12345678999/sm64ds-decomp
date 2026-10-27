@@ -77,25 +77,18 @@ struct DefinitionFlags {
     unsigned : 2;
 };
 
-/* Particle::System as the two list walks below read it. The word at 0x00 is
-   the link func_0204d958/func_0204d9a0 maintain and the walks follow, which
-   Particle__System.h spells `previous`; that header also keeps the u16 at
-   0x38 (func_0204a730's age) in a pad and the flag word at 0x1c as a plain
-   u32. */
-struct SystemView {
-    SystemView *next; /* 0x00 */
-    u8 pad_004[4];
-    Particle::ParticleList particles;        /* 0x08 */
-    Particle::ParticleList particles2;       /* 0x10 */
-    Particle::SystemDefinition *mDefinition; /* 0x18 */
-    u32 stop : 1;                            /* 0x1c - retire once empty */
+/* Particle::System::callbackFlags as the update and draw walks test it. */
+struct SystemState {
+    u32 stop : 1;
     u32 : 1;
-    u32 skipUpdate : 1; /* skips func_0204a730 */
-    u32 skipDraw : 1;   /* skips func_0204a5c8 */
+    u32 skipUpdate : 1;
+    u32 skipDraw : 1;
     u32 : 28;
-    u8 pad_020[0x18];
-    u16 age; /* 0x38 */
 };
+
+static inline SystemState &StateOf(Particle::System *system) {
+    return *(SystemState *)&system->callbackFlags;
+}
 
 extern "C" {
 
@@ -291,19 +284,19 @@ int func_0204a028(Particle::Manager *manager,
 
 // @symbol func_02049f58
 void func_02049f58(Particle::Manager *manager) {
-    SystemView *system = (SystemView *)manager->mActiveSystems.head;
-    SystemView *next;
+    Particle::System *system = manager->mActiveSystems.head;
+    Particle::System *next;
     if (system == 0)
         return;
     do {
         Particle::SystemDefinition::Data *data = system->mDefinition->data;
         next = system->next;
-        if (system->skipUpdate == 0) {
+        if (StateOf(system).skipUpdate == 0) {
             func_0204a730(manager, system);
         }
         if (((data->flags << 17) >> 31 != 0 && data->callbackValue != 0 &&
              system->age > data->callbackValue) ||
-            system->stop != 0) {
+            StateOf(system).stop != 0) {
             if (system->particles.count == 0 && system->particles2.count == 0) {
                 func_0204d9a0(&manager->mFreeSystems,
                               func_0204d8e8(&manager->mActiveSystems, system));
@@ -315,16 +308,16 @@ void func_02049f58(Particle::Manager *manager) {
 
 // @symbol func_02049ee8
 void func_02049ee8(Particle::Manager *manager, Matrix4x3 *matrix) {
-    SystemView *system;
+    Particle::System *system;
     u16 control = REG_DISP3DCNT;
     REG_DISP3DCNT = (control & ~0x3000) | 8;
     manager->mDrawMatrix = matrix;
-    system = (SystemView *)manager->mActiveSystems.head;
+    system = manager->mActiveSystems.head;
     if (system == 0)
         return;
     do {
-        manager->mCurrentSystem = (Particle::System *)system;
-        if (system->skipDraw == 0) {
+        manager->mCurrentSystem = system;
+        if (StateOf(system).skipDraw == 0) {
             func_0204a5c8(manager);
         }
         system = system->next;

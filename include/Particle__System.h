@@ -45,15 +45,23 @@ struct System {
         u32 unused  : 14;
     };
 
-    void *previous;              /* 0x00 */
-    void *next;                  /* 0x04 */
+    /* The manager's free/active list link: func_0204d958/func_0204d9a0
+       maintain it and the update and draw walks follow it. */
+    System *next;                /* 0x00 */
+    System *previous;            /* 0x04 */
     ParticleList particles;      /* 0x08 */
     ParticleList particles2;     /* 0x10 */
     SystemDefinition *mDefinition; /* 0x18 */
-    /* Callback virtuals toggle bit 1 while spawning or suppressing particles. */
+    /* Bit 0 retires the system once both particle lists are empty, bit 2
+       skips its update (func_0204a730) and bit 3 its draw (func_0204a5c8).
+       Callback virtuals toggle bit 1 while spawning or suppressing
+       particles. */
     u32 callbackFlags;             /* 0x1c */
     Vector3 position;              /* 0x20 */
-    u8 pad_02c[0x0e];
+    u8 pad_02c[0x0c];
+    /* func_0204a730 advances it; the update walk retires the system once it
+       passes the definition's callbackValue. */
+    u16 age;                       /* 0x38 */
     /* simpleCallback_c copies this value in both directions. */
     s16 callbackValue;             /* 0x3a */
     Vector3_16f direction;         /* 0x3c */

@@ -167,8 +167,7 @@ void SysTracker::Initialise()
 
     mManager = (Manager*)func_0204a4c8(
         func_02023178, countA, countB, 0x1a, 0x3e);
-    /* Manager +0x30 sits in its unnamed pad_030; nothing else reaches it. */
-    *(int*)((char*)mManager + 0x30) = 0x8000;
+    mManager->mPolygonAttr = 0x8000;
 
     if (func_0206e28c((u8*)data_02075f14, data_0208f668, 4) != 0) {
         mResourceFile = data_02075f14;
