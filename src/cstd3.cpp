@@ -82,12 +82,11 @@ namespace cstd {
 
 void __builtin_trap();
 
-// @symbol _ZN4cstd8__assertEPKcS1_S1_i
+// @symbol __assert
 // Assertion failure path for the game's cstd helpers: with a nonzero `line`
 // print through the data_020868a0 format and trap forever; with zero, print
 // through data_020868d4 and return.
-void __assert(const char* file, const char* expr, const char* func, int line)
-{
+extern "C" void __assert(const char *file, const char *expr, const char *func, int line) {
     if (line) {
         func_0206ccd8((int)&data_020868a0, file, expr, func);
         __builtin_trap();
