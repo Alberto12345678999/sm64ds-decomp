@@ -79,6 +79,7 @@ enum daObjKey_c_AssetId {
 #include "SharedFilePtr.h"
 #include "Message.h"
 #include "cstd.h"
+#include "math/Approach.h"
 
 #pragma defer_codegen off
 
@@ -238,7 +239,6 @@ extern short Vec3_HorzAngle(const Vector3 *a, const Vector3 *b);
 extern ObjKeyFile *data_ov089_02132880[];
 /* Names stay on this unused prototype so this file's @NNN numbers do not move. */
 extern int d_a_obj_keyChangeMusicVolumeHold(unsigned int id, int vol);
-extern int _Z14ApproachLinearR7Vector3RKS_5Fix12IiE(Vector3 &value, const Vector3 &target, int step);
 /* Level-overlay BSS: ov089 relocs record the store as claimed by fourteen
    overlays, and ov055 is the one that names 0x02111b68 unambiguous kind:bss
    (the func_ov002_020e3e00 precedent for its neighbours 0x02111b64/6c). */
@@ -392,7 +392,7 @@ void daObjKey_c::StateFlyToCenter()
         v.y = mPosY;
         v.z = mPosZ;
         v.y = v.y + Y_LOOK;
-        _Z14ApproachLinearR7Vector3RKS_5Fix12IiE(mCamLookAt, v, CAM_STEP);
+        ApproachLinear(mCamLookAt, v, CAM_STEP);
         cam->SetLookAt(mCamLookAt);
         center2.x = 0;
         center2.y = 0;

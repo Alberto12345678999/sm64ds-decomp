@@ -4360,36 +4360,6 @@
         "param:#1 short *"
       ]
     },
-    "_Z14ApproachLinearR7Vector3RKS_5Fix12IiE": {
-      "src/game/actors/d_a_c_jugem.cpp": [
-        "param:#1 void *",
-        "param:#2 const void *",
-        "return:void"
-      ],
-      "src/game/actors/d_a_iwante.cpp": [
-        "param:#1 void *",
-        "param:#2 void *",
-        "return:void"
-      ],
-      "src/game/actors/d_a_owl.cpp": [
-        "param:#1 Vector3 *",
-        "param:#2 const Vector3 *",
-        "return:void"
-      ],
-      "src/game/actors/d_a_yegg.cpp": [
-        "param:#1 void *",
-        "param:#2 const void *"
-      ],
-      "src/unnamed/arm9/0200/func_02009540.cpp": [
-        "param:#1 void *",
-        "param:#2 const void *",
-        "return:void"
-      ],
-      "src/unnamed/arm9/0200/func_0200bb28.cpp": [
-        "param:#1 int *",
-        "param:#2 int *"
-      ]
-    },
     "_Z14ApproachLinearRiii": {
       "src/_ZN6Player11St_Owl_MainEv.cpp": [
         "param:#1 int *",
@@ -4720,11 +4690,6 @@
       ],
       "src/unnamed/ov002/func_ov002_020e640c.c": [
         "param:#1 short *"
-      ]
-    },
-    "_Z23LoadMinimapChangeObjecti5Fix12IiEh": {
-      "src/game/stages/LevelObjects.cpp": [
-        "param:#3 signed char"
       ]
     },
     "_ZN10dBgActor_c14KillByMegaCharER6Player": {
@@ -11099,9 +11064,6 @@
       ],
       "src/unnamed/arm9/0207/__sinit_02074e84.cpp": [
         "return:char"
-      ],
-      "src/unnamed/arm9/0200/func_0200af20.cpp": [
-        "return:char []"
       ]
     },
     "data_0209f49c": {

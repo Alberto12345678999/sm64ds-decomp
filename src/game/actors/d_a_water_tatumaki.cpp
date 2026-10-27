@@ -131,11 +131,9 @@ extern Matrix4x3 data_020a0e68;
 /* Fix12<int> by value. The int parameter is the matching call. */
 extern int d_a_water_tatumakiNewHold(unsigned int uniqueID, unsigned int effectID, int x, int y,
                                      int z, void *dir, void *callback);
-extern int _Z14ApproachLinearR7Vector3RKS_5Fix12IiE(Vector3 &value, const Vector3 &target, int step);
 }
 
 #define Particle_System_New Particle::System::New
-#define ApproachLinearVec _Z14ApproachLinearR7Vector3RKS_5Fix12IiE
 
 
 extern "C" int func_ov026_02111ee0(daWater_Tatumaki_c *self, const daWater_Tatumaki_c::State *state);
@@ -180,7 +178,7 @@ int daWater_Tatumaki_c::func_ov026_02111b24()
         target.y = this->mPullHeight;
         target.x += offset.x;
         target.z += offset.z;
-        ApproachLinearVec(this->mPullPos, target, kChaseStep);
+        ApproachLinear(this->mPullPos, target, kChaseStep);
         player->mPosX = this->mPullPos.x;
         player->mPosY = this->mPullPos.y;
         player->mPosZ = this->mPullPos.z;

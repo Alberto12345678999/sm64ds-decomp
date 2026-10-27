@@ -101,7 +101,6 @@ struct JugemVec3 {
 extern "C" {
 
 /* math / vector helpers -- no shared header declares these */
-void  _Z14ApproachLinearR7Vector3RKS_5Fix12IiE(void *cur, const void *tgt, int step);
 int   Vec3_Dist(const void *a, const void *b);
 int   Vec3_HorzDist(const void *a, const void *b);
 s16   Vec3_HorzAngle(const void *a, const void *b);
@@ -220,7 +219,7 @@ int daC_Jugem_c::StateIntroMain() {
     r.px = -0x4b0000;
     r.py = 0x250000;
     r.pz = 0x1d4c000;
-    _Z14ApproachLinearR7Vector3RKS_5Fix12IiE(&mCamLookX, &r, 0x70000);
+    ApproachLinear(*(Vector3 *)&mCamLookX, *(Vector3 *)&r, 0x70000);
     cam->SetLookAt(*(Vector3 *)&mCamLookX);
     cam->SetPos(*(Vector3 *)&mCamPosX);
     Vec3_Dist(&mCamLookX, &r);
@@ -285,8 +284,8 @@ int daC_Jugem_c::StateApproachMain()
     v[1].y = 0x115000;
     v[1].z = 0x1d15000;
     spd = mHorzSpeed >> 1;
-    _Z14ApproachLinearR7Vector3RKS_5Fix12IiE(&mCamLookX, &mPosX, spd);
-    _Z14ApproachLinearR7Vector3RKS_5Fix12IiE(&mCamPosX, &v[1], spd);
+    ApproachLinear(*(::Vector3 *)&mCamLookX, mPos, spd);
+    ApproachLinear(*(::Vector3 *)&mCamPosX, *(::Vector3 *)&v[1], spd);
     cam->SetLookAt(*(::Vector3 *)&mCamLookX);
     cam->SetPos(*(::Vector3 *)&mCamPosX);
     Vec3_Sub(&v[2], &mPosX, &data_ov085_0213084c);
@@ -681,7 +680,7 @@ int daC_Jugem_c::StateFlyToPlayerMain()
     out.y += p->mPosY + 0x70000;
     out.z += p->mPosZ;
 
-    _Z14ApproachLinearR7Vector3RKS_5Fix12IiE(&mPosX, &out, 0x14000);
+    ApproachLinear(mPos, *(::Vector3 *)&out, 0x14000);
     ApproachLinear(mPrevAngleY, Vec3_HorzAngle(&mPosX, &out), 0x800);
     mAngleY = mPrevAngleY;
 
