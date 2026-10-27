@@ -274,13 +274,14 @@ void daMip_c::UpdateGrab()
 
     unsigned int id = mdCcAc_c.otherOwner;
     if (id == 0) return;
-    dActor_c *o = dActor_c::FindWithID(id);
+    Player *o = static_cast<Player *>(dActor_c::FindWithID(id));
     if (o == 0) return;
     if (!IsPlayerActor(o))
         return;
     if ((mdCcAc_c.hitFlags & 0x1000) == 0) return;
-    if (((Player *)o)->TryGrab(*this) == 0) return;
-    mTalkingPlayer = (Player *)o;
+    if (o->TryGrab(*this) == 0)
+        return;
+    mTalkingPlayer = o;
     mdCcAc_c.flags |= 2;
     if (mCatchState == 0) {
         SetState(&data_ov085_021306ac);
@@ -433,7 +434,7 @@ int daMip_c::StateReleasedMain()
     extern MipStatePair data_ov085_021306dc;
 
     unsigned short h;
-    dActor_c *o;
+    Player *o;
     Player *cp;
     int a;
     int flags;
@@ -471,12 +472,12 @@ int daMip_c::StateReleasedMain()
     }
 
     if ((mdCcAc_c.hitFlags & 0x8000000) != 0) {
-        o = dActor_c::FindWithID(mdCcAc_c.otherOwner);
+        o = static_cast<Player *>(dActor_c::FindWithID(mdCcAc_c.otherOwner));
         if (o != 0) {
             if (IsPlayerActor(o)) {
-                mSaveTalkPlayer = (Player *)o;
-                o = mSaveTalkPlayer;
-                if (((Player *)o)->StartTalk(*this, 0) != 0) {
+                mSaveTalkPlayer = o;
+                o = static_cast<Player *>(mSaveTalkPlayer);
+                if (o->StartTalk(*this, 0) != 0) {
                     SetState(&data_ov085_021306dc);
                 }
             }
@@ -1304,7 +1305,7 @@ int daMip_c::Behavior()
     extern MipStatePair data_ov085_021306dc;
 
     char* c = (char*)this;
-    void* player;
+    Player *player;
 
     if (data_0209f2f8 != 0x32) {
         if (mIsDisabled == 1) {
@@ -1316,7 +1317,7 @@ int daMip_c::Behavior()
         player = ClosestPlayer();
         if (player == 0)
             return 1;
-        if (!(data_0209caa0[2] & 0x20000) || mCharacterId != ((Player *)player)->mCharacter) {
+        if (!(data_0209caa0[2] & 0x20000) || mCharacterId != player->mCharacter) {
             mIsDisabled = 1;
             return 1;
         }
@@ -1340,7 +1341,7 @@ int daMip_c::Behavior()
         u32 talkStep = mTalkState;
         if (talkStep < 2) {
             if (IsInYoshiMouth(this) == 1) {
-                void* talker = *(void**)&mTalkingPlayer;
+                Player *talker = mTalkingPlayer;
                 if (talker != 0) {
                     if (talkStep == 0) {
                         Vec3Scratch pos;
@@ -1353,7 +1354,7 @@ int daMip_c::Behavior()
                         Message::PrepareTalk();
                         t = mRabbitId;
                         if (t != 7) {
-                            if (func_02013890(t, (s32)((Player *)talker)->param1) == 0) {
+                            if (func_02013890(t, (s32)talker->param1) == 0) {
                                 Sound::PlaySub(0x27, 0x12, 0x7f, 0x15ccc, 0);
                                 if (mRabbitId != 6) { soundId = 0x162; messageId = 0x11e; }
                                 else { soundId = 0x160; messageId = 0x126; }
@@ -1371,14 +1372,14 @@ int daMip_c::Behavior()
                             messageId = 0x13b; soundId = 0x160;
                         }
                         pos.y += 0x64000;
-                        if (((Player *)talker)->ShowMessage(*(fBase_c *)c, messageId, 0, 0, 0) == 1) {
+                        if (talker->ShowMessage(*(fBase_c *)c, messageId, 0, 0, 0) == 1) {
                             func_02012694(soundId, &mCamSpacePos);
                             mTalkState = 1;
                         }
-                    } else if (talkStep == 1 && ((Player *)talker)->GetTalkState() == -1) {
-                        ((Player *)talker)->DropActor();
+                    } else if (talkStep == 1 && talker->GetTalkState() == -1) {
+                        talker->DropActor();
                         mTalkState = 2;
-                        ((Player *)talker)->mStateFlags |= 0x800;
+                        talker->mStateFlags |= 0x800;
                     }
                 }
             }

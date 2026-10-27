@@ -102,8 +102,8 @@ void func_ov001_020aaf40(void)
     }
 
     {
-        char *pl = (char *)data_0209f394[0];
-        if (((Player *)pl)->HasNoCap() && !((Player *)pl)->IsCollectingCap()) {
+        Player *pl = (Player *)data_0209f394[0];
+        if (pl->HasNoCap() && !pl->IsCollectingCap()) {
             func_ov001_020aadac();
             gCapIconDispatchLocked = 1;
             return;
@@ -175,7 +175,7 @@ void func_ov001_020aaa54(void)
     unsigned sp4;
     int typ;
     int spc;
-    void* player = data_0209f394[0];
+    Player *player = (Player *)data_0209f394[0];
     int zero = 0;
     int three = 3;
     void* z1 = 0;
@@ -189,7 +189,7 @@ void func_ov001_020aaa54(void)
     int fp;
     u8* flagp;
 
-    if (((Player *)player)->IsCollectingCap() != 0) {
+    if (player->IsCollectingCap() != 0) {
         unsigned i = 0;
         do {
             u8 v = gCapIconRequestFlags[i];
@@ -277,7 +277,7 @@ void func_ov001_020aaa54(void)
                 func_ov001_020aa6b0((int *)sb, 1);
                 func_ov001_020aa6e4(r6, sb->mIconKind, (int *)sb);
             } else {
-                if (r7 != 0 && (((Player *)player)->IsCollectingCap() != 0 || (*flagp & 0x40) != 0)) {
+                if (r7 != 0 && (player->IsCollectingCap() != 0 || (*flagp & 0x40) != 0)) {
                     if (spc != 0) {
                         func_ov001_020aa6e4(r6, three, (int *)z1);
                     } else {

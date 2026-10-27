@@ -309,7 +309,7 @@ void daPiano_c::func_ov063_0211d8cc()
 {
     extern s16 data_02082214[];   /* sine table: (angle >> 4) * 2 taps sin/cos */
 
-    dActor_c* victim;
+    Player *victim;
     int i;
     volatile Vector3 proj;
     Vector3 hurtPos;
@@ -339,7 +339,7 @@ void daPiano_c::func_ov063_0211d8cc()
     for (; i < 2; i++) {
         int id = this->mCylinderClsn[i].otherOwner;
         if (id != 0) {
-            victim = dActor_c::FindWithID((unsigned int)id);
+            victim = static_cast<Player *>(dActor_c::FindWithID((unsigned int)id));
             if (victim != 0) {
                 /* The actor profile is PLAYER before the Player-specific call. */
                 int isPlayer = (victim->actorID == 0xbf);
@@ -347,7 +347,7 @@ void daPiano_c::func_ov063_0211d8cc()
                     hurtPos.x = this->mPosX;
                     hurtPos.y = this->mPosY;
                     hurtPos.z = this->mPosZ;
-                    ((Player *)victim)->Hurt(hurtPos, three, knock, one, zero, one);
+                    victim->Hurt(hurtPos, three, knock, one, zero, one);
                 }
             }
         }

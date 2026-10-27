@@ -790,7 +790,7 @@ void daObjBlockS_c::func_ov098_02138e08()
  *   1, 0, 1; what those arguments select is not recovered here. */
 void daObjBlockS_c::func_ov098_02138e6c()
 {
-    void *a;
+    Player *a;
     u32 fl;
     int b;
 
@@ -820,7 +820,7 @@ void daObjBlockS_c::func_ov098_02138e6c()
         Kill();
     }
 
-    a = dActor_c::FindWithID(mdCcAcPos_c1.otherOwner);
+    a = static_cast<Player *>(dActor_c::FindWithID(mdCcAcPos_c1.otherOwner));
     if (a == 0) return;
     {
         int bf = (int)(((dActor_c *)a)->actorID == ACTOR_PLAYER);
@@ -837,9 +837,9 @@ void daObjBlockS_c::func_ov098_02138e6c()
         return;
     }
     if ((fl & CC_HIT_GRAB) != 0) {
-        if (((Player *)a)->TryGrab(*this) == 0)
+        if (a->TryGrab(*this) == 0)
             return;
-        mHoldingPlayer = (Player *)a;
+        mHoldingPlayer = a;
         Crate_SetState(this, daObjBlockS_c::STATE_CARRIED);
         return;
     }
@@ -854,7 +854,7 @@ void daObjBlockS_c::func_ov098_02138e6c()
         v.x = mPosX;
         v.y = mPosY;
         v.z = mPosZ;
-        ((Player *)a)->Hurt(v, 1, 0xc000, 1, 0, 1);
+        a->Hurt(v, 1, 0xc000, 1, 0, 1);
     }
 }
 
@@ -1408,10 +1408,9 @@ int daObjBlockS_c::OnYoshiTryEat()
  * result. */
 void daObjBlockS_c::OnTurnIntoEgg(Player &player)
 {
-    char *r4 = (char *)&player;
-    if (((Player *)r4)->IsCollectingCap()) {
+    if (player.IsCollectingCap()) {
         if (mCoinsPaid != 1) {
-            ((dActor_c *)this)->GivePlayerCoins(*(Player *)r4, 3, 0);
+            ((dActor_c *)this)->GivePlayerCoins(player, 3, 0);
             mCoinsPaid = 1;
         }
     } else {
@@ -1420,7 +1419,7 @@ void daObjBlockS_c::OnTurnIntoEgg(Player &player)
             mCoinsPaid = 1;
             count = 3;
         }
-        ((Player *)r4)->RegisterEggCoinCount(count, 0, 0);
+        player.RegisterEggCoinCount(count, 0, 0);
     }
     Crate_SetState(this, STATE_BROKEN);
 }

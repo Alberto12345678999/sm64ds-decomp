@@ -220,14 +220,14 @@ int daObjShell_c::Behavior()
     mStateTimer++;
 
     if (mdCcAc_c.otherOwner != 0) {
-        dActor_c *touched = dActor_c::FindWithID(mdCcAc_c.otherOwner);
+        Player *touched = static_cast<Player *>(dActor_c::FindWithID(mdCcAc_c.otherOwner));
         if (touched != 0) {
             int isPlayer = (int)(touched->actorID == ACTOR_PLAYER);
             if (isPlayer != 0) {
                 u.hurtFrom[0] = mPosX;
                 u.hurtFrom[1] = mPosY;
                 u.hurtFrom[2] = mPosZ;
-                ((Player *)touched)->Hurt(*(Vector3 *)u.hurtFrom, 2, 0xc000, 1, 0, 1);
+                touched->Hurt(*(Vector3 *)u.hurtFrom, 2, 0xc000, 1, 0, 1);
             }
         }
     }
