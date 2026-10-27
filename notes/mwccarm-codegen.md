@@ -8752,7 +8752,28 @@ compiler-emitted sinit (1UpLogo, brq and snowball on main print it too). That's 
 limitation, not a regression. A function-local static emits no sinit, so unit020bfec0 verifies
 with no EXTRA lines. linkcheck is the gate here, and all three TUs are SCRATCH-DATA-VERIFIED.
 
+**Heyho (dMg3DHeyhoObjAdapter_c, 2026-10-27).** Six separate function-local statics, not one
+array: `static Vector3 sHeyho_StartMotionFlyIn_Left256(-0x100000, 0, 0)` and the Right256,
+Regroup left/right, and React left/right twins (`+0x100000`). Declared where the hand-written
+guard blocks were, including after `Heyho_React`'s two early returns. Sizes stayed
+`Heyho_StartMotionFlyIn` `0x1a8`, `Heyho_StartMotionRegroup` `0x1a8`, `Heyho_React` `0x1d8`.
+The guards sit between this TU's own counters (`sHeyhoUnsettledCount`, `sJumpComboCount`,
+`sHeyhoScorePopups`, `sHeyhoLayout`, `sHeyhos`, `sHeyhoCount`). Node and storage then run
+through `data_ov006_021403b8` (3 ints) to `sJumpAdapters` (`char *[3]`). That whole window,
+`0x02140300..0x02140400`, is this TU's; `dMgJump3DMario` starts at `0x02140400`. Claim the
+span. Define the plain globals with no initializer. An initializer would grow the file-handle
+`__sinit`, which stayed `0x68` and still relocates to `@1287` / `@1288` (pins `@1336` /
+`@1337`). The six statics did not move those nodes. Map each `@NNN` from the function's pool
+relocation, not by adding a constant. `@167`, `@171`, `@225`, and `@229` were already defined
+in ov064, ov100, ov080, and ov070, so `defined_symbol_renames` sends them to the unused
+same-length `@174`, `@175`, `@235`, and `@236`. `@320` and `@324` were free and stay.
+`Heyho_CheckHitA` matched only as `((Obj **)sJumpAdapters)[i]`; a local `Obj **` was 4 bytes
+short.
+
 **Not done:** `unit020cd744` (TrmpItem). Its nine function-local unit vectors' `.bss` is
-interleaved with file globals and ring-model handles, so they can only move as one
-whole-TU `.bss` claim. The ov019/ov062/ov072/ov078 `.c` sinit shards mix resource handles and PMF tables and need an
-owner TU first.
+interleaved with file globals and ring-model handles that are not one window ending at the
+next TU, so they can only move as one whole-TU `.bss` claim. The ov019/ov062/ov072/ov078 `.c`
+sinit shards mix resource handles and PMF tables and need an owner TU first. A `symbols.txt`
+edit can make an unrelated vtable TU report `baseline content fingerprint differs`. Report
+that line. Do not edit that TU's manifest to silence it, and do not regenerate the baseline
+from the worker.

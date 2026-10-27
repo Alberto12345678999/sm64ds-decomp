@@ -21,9 +21,10 @@ struct System {
      used to reach the matrix and the frame controller as separate byte views
      were reading inside that one object). Heyho's own constructor and
      destructor (ROM 0x020c6f70 and 0x020c6f3c) construct and destroy it.
-   - _ZN7Vector3D1Ev and __register_global_object are dtor/atexit ABI calls,
-     spelled as free functions because the bodies are the compiler's own sinit
-     glue.
+   - The model and animation handles are file-scope objects; mwcc emits their
+     sinit and destructor registration. The six ±256 side offsets are
+     function-local static Vector3s, so their guards and registrations are
+     inline in the three starters.
    - Volatile and long-long launders (e.g. Heyho_SeparateAll's (long long)(int)
      cast) are codegen-pinned; Heyho_MotionHover's const view is kept only for
      the TU's @NNN numbering. The inline comments at each site say what the
@@ -124,37 +125,15 @@ typedef struct { int w[3]; } Blk3;
 typedef struct { int w[4]; } Blk4;
 typedef struct { int x, y, z, w; } Vec4;
 
-extern void __register_global_object(void *object, void *destructor, void **node);
 extern void AddVec3(Vec3 *a, Vec3 *b, Vec3 *c);
-/* local extern: C++ cannot take ~Vector3()'s address */
-extern void *_ZN7Vector3D1Ev(void *object);
-
-extern int sHeyho_StartMotionFlyIn_Left256Guard;
-extern Vec3 sHeyho_StartMotionFlyIn_Left256;
-extern int sHeyho_StartMotionFlyIn_Left256DtorRec;
-extern int sHeyho_StartMotionFlyIn_Right256Guard;
-extern Vec3 sHeyho_StartMotionFlyIn_Right256;
-extern int sHeyho_StartMotionFlyIn_Right256DtorRec;
 typedef struct { int w[2]; } Pair;
 extern Pair pmf_Heyho_MotionFlyIn;
 
 void Heyho_StartMotionFlyIn(char *dst, char *src) {
-    if (!(sHeyho_StartMotionFlyIn_Left256Guard & 1)) {
-        sHeyho_StartMotionFlyIn_Left256.x = -0x100000;
-        sHeyho_StartMotionFlyIn_Left256.y = 0;
-        sHeyho_StartMotionFlyIn_Left256.z = 0;
-        __register_global_object(&sHeyho_StartMotionFlyIn_Left256, (void *)&_ZN7Vector3D1Ev,
-                                 (void **)&sHeyho_StartMotionFlyIn_Left256DtorRec);
-        sHeyho_StartMotionFlyIn_Left256Guard |= 1;
-    }
-    if (!(sHeyho_StartMotionFlyIn_Right256Guard & 1)) {
-        sHeyho_StartMotionFlyIn_Right256.x = 0x100000;
-        sHeyho_StartMotionFlyIn_Right256.y = 0;
-        sHeyho_StartMotionFlyIn_Right256.z = 0;
-        __register_global_object(&sHeyho_StartMotionFlyIn_Right256, (void *)&_ZN7Vector3D1Ev,
-                                 (void **)&sHeyho_StartMotionFlyIn_Right256DtorRec);
-        sHeyho_StartMotionFlyIn_Right256Guard |= 1;
-    }
+    /* First call builds the ±256 offsets. mwcc emits each guard, the three
+       stores and the ~Vector3() registration here. */
+    static Vector3 sHeyho_StartMotionFlyIn_Left256(-0x100000, 0, 0);
+    static Vector3 sHeyho_StartMotionFlyIn_Right256(0x100000, 0, 0);
 
     HEYHO(dst)->mBaseSize = HEYHO(src)->mBaseSize;
     *(Blk3 *)&HEYHO(dst)->mStartVel = *(Blk3 *)&HEYHO(src)->mStartVel;
@@ -167,13 +146,13 @@ void Heyho_StartMotionFlyIn(char *dst, char *src) {
         HEYHO(dst)->mPos.x = HEYHO(dst)->mGoal.x;
         HEYHO(dst)->mPos.y = HEYHO(dst)->mGoal.y;
         HEYHO(dst)->mPos.z = HEYHO(dst)->mGoal.z;
-        AddVec3(p, &sHeyho_StartMotionFlyIn_Right256, p);
+        AddVec3(p, (Vec3 *)&sHeyho_StartMotionFlyIn_Right256, p);
     } else {
         Vec3 *q = (Vec3 *)&HEYHO(dst)->mPos;
         HEYHO(dst)->mPos.x = HEYHO(dst)->mGoal.x;
         HEYHO(dst)->mPos.y = HEYHO(dst)->mGoal.y;
         HEYHO(dst)->mPos.z = HEYHO(dst)->mGoal.z;
-        AddVec3(q, &sHeyho_StartMotionFlyIn_Left256, q);
+        AddVec3(q, (Vec3 *)&sHeyho_StartMotionFlyIn_Left256, q);
     }
 
     HEYHO(dst)->mScale.x = 0x1400;
@@ -265,37 +244,14 @@ typedef struct { int w[3]; } Blk3;
 typedef struct { int w[4]; } Blk4;
 typedef struct { int x, y, z, w; } Vec4;
 
-extern void __register_global_object(void *object, void *destructor, void **node);
 extern void AddVec3(Vec3 *a, Vec3 *b, Vec3 *c);
-/* local extern: C++ cannot take ~Vector3()'s address */
-extern void *_ZN7Vector3D1Ev(void *object);
-
-extern int sHeyho_StartMotionRegroup_Left256Guard;
-extern Vec3 sHeyho_StartMotionRegroup_Left256;
-extern int sHeyho_StartMotionRegroup_Left256DtorRec;
-extern int sHeyho_StartMotionRegroup_Right256Guard;
-extern Vec3 sHeyho_StartMotionRegroup_Right256;
-extern int sHeyho_StartMotionRegroup_Right256DtorRec;
 typedef struct { int w[2]; } Pair;
 extern Pair pmf_Heyho_MotionRegroup;
 
 void Heyho_StartMotionRegroup(char *dst, char *src) {
-    if (!(sHeyho_StartMotionRegroup_Left256Guard & 1)) {
-        sHeyho_StartMotionRegroup_Left256.x = -0x100000;
-        sHeyho_StartMotionRegroup_Left256.y = 0;
-        sHeyho_StartMotionRegroup_Left256.z = 0;
-        __register_global_object(&sHeyho_StartMotionRegroup_Left256, (void *)&_ZN7Vector3D1Ev,
-                                 (void **)&sHeyho_StartMotionRegroup_Left256DtorRec);
-        sHeyho_StartMotionRegroup_Left256Guard |= 1;
-    }
-    if (!(sHeyho_StartMotionRegroup_Right256Guard & 1)) {
-        sHeyho_StartMotionRegroup_Right256.x = 0x100000;
-        sHeyho_StartMotionRegroup_Right256.y = 0;
-        sHeyho_StartMotionRegroup_Right256.z = 0;
-        __register_global_object(&sHeyho_StartMotionRegroup_Right256, (void *)&_ZN7Vector3D1Ev,
-                                 (void **)&sHeyho_StartMotionRegroup_Right256DtorRec);
-        sHeyho_StartMotionRegroup_Right256Guard |= 1;
-    }
+    /* Same ±256 offsets as FlyIn, registered on the first regroup. */
+    static Vector3 sHeyho_StartMotionRegroup_Left256(-0x100000, 0, 0);
+    static Vector3 sHeyho_StartMotionRegroup_Right256(0x100000, 0, 0);
 
     HEYHO(dst)->mBaseSize = HEYHO(src)->mBaseSize;
     *(Blk3 *)&HEYHO(dst)->mStartVel = *(Blk3 *)&HEYHO(src)->mStartVel;
@@ -308,13 +264,13 @@ void Heyho_StartMotionRegroup(char *dst, char *src) {
         HEYHO(dst)->mPos.x = HEYHO(dst)->mGoal.x;
         HEYHO(dst)->mPos.y = HEYHO(dst)->mGoal.y;
         HEYHO(dst)->mPos.z = HEYHO(dst)->mGoal.z;
-        AddVec3(p, &sHeyho_StartMotionRegroup_Right256, p);
+        AddVec3(p, (Vec3 *)&sHeyho_StartMotionRegroup_Right256, p);
     } else {
         Vec3 *q = (Vec3 *)&HEYHO(dst)->mPos;
         HEYHO(dst)->mPos.x = HEYHO(dst)->mGoal.x;
         HEYHO(dst)->mPos.y = HEYHO(dst)->mGoal.y;
         HEYHO(dst)->mPos.z = HEYHO(dst)->mGoal.z;
-        AddVec3(q, &sHeyho_StartMotionRegroup_Left256, q);
+        AddVec3(q, (Vec3 *)&sHeyho_StartMotionRegroup_Left256, q);
     }
 
     HEYHO(dst)->mDelay = 8;
@@ -442,20 +398,11 @@ extern "C" {
 typedef struct { int x, y, z; } Vec3;
 typedef struct { int w[2]; } W2;
 
-extern void __register_global_object(void *object, void *destructor, void **node);
 extern void Vec3_Add(Vec3 *out, Vec3 *a, Vec3 *b);
-/* local extern: C++ cannot take ~Vector3()'s address */
-extern void *_ZN7Vector3D1Ev(void *object);
 
 extern int pmf_Heyho_StateIdle[2];
 extern int pmf_Heyho_MotionHitSpin_2[2];
 extern W2 pmf_Heyho_MotionLeave_2;
-extern int sHeyho_React_Left256Guard;
-extern int sHeyho_React_Right256Guard;
-extern Vec3 sHeyho_React_Left256;
-extern Vec3 sHeyho_React_Right256;
-extern void *sHeyho_React_Left256DtorRec;
-extern void *sHeyho_React_Right256DtorRec;
 
 void Heyho_React(char *c)
 {
@@ -475,30 +422,17 @@ void Heyho_React(char *c)
     if (v[0] == pmf_Heyho_MotionHitSpin_2[0] && (v[1] == q[1] || HEYHO(c)->mMotion[0] == 0))
         return;
 
-    if ((sHeyho_React_Left256Guard & 1) == 0) {
-        sHeyho_React_Left256.x = -0x100000;
-        sHeyho_React_Left256.y = 0;
-        sHeyho_React_Left256.z = 0;
-        __register_global_object(&sHeyho_React_Left256, (void *)&_ZN7Vector3D1Ev,
-                                 &sHeyho_React_Left256DtorRec);
-        sHeyho_React_Left256Guard |= 1;
-    }
-    if ((sHeyho_React_Right256Guard & 1) == 0) {
-        sHeyho_React_Right256.x = 0x100000;
-        sHeyho_React_Right256.y = 0;
-        sHeyho_React_Right256.z = 0;
-        __register_global_object(&sHeyho_React_Right256, (void *)&_ZN7Vector3D1Ev,
-                                 &sHeyho_React_Right256DtorRec);
-        sHeyho_React_Right256Guard |= 1;
-    }
+    /* Same ±256 offsets, registered after the idle and hit-spin early outs. */
+    static Vector3 sHeyho_React_Left256(-0x100000, 0, 0);
+    static Vector3 sHeyho_React_Right256(0x100000, 0, 0);
 
     if (HEYHO(c)->mPos.x > 0) {
-        Vec3_Add(&locals[1], (Vec3 *)&HEYHO(c)->mPos, &sHeyho_React_Right256);
+        Vec3_Add(&locals[1], (Vec3 *)&HEYHO(c)->mPos, (Vec3 *)&sHeyho_React_Right256);
         HEYHO(c)->mWaypoint.x = locals[1].x;
         HEYHO(c)->mWaypoint.y = locals[1].y;
         HEYHO(c)->mWaypoint.z = locals[1].z;
     } else {
-        Vec3_Add(&locals[2], (Vec3 *)&HEYHO(c)->mPos, &sHeyho_React_Left256);
+        Vec3_Add(&locals[2], (Vec3 *)&HEYHO(c)->mPos, (Vec3 *)&sHeyho_React_Left256);
         HEYHO(c)->mWaypoint.x = locals[2].x;
         HEYHO(c)->mWaypoint.y = locals[2].y;
         HEYHO(c)->mWaypoint.z = locals[2].z;
@@ -1326,7 +1260,7 @@ extern int LenVec3(Vec3 *v);
 extern int DotVec3(Vec3 *a, Vec3 *b);
 extern void Heyho_CheckHitB(char *c);
 extern int data_0209e650;
-extern VB *sJumpAdapters[];
+extern char *sJumpAdapters[];
 }
 
 extern "C" void Heyho_MotionChase(char *c) {
@@ -1368,13 +1302,13 @@ extern "C" void Heyho_MotionChase(char *c) {
         best = 0;
         bm = 0x20000;
         for (i = 0; i < 3; i++) {
-            if (sJumpAdapters[i]->m2() != 0) {
+            if (((VB *)sJumpAdapters[i])->m2() != 0) {
                 int *v;
                 int dot;
-                v = sJumpAdapters[i]->m0();
+                v = ((VB *)sJumpAdapters[i])->m0();
                 op.x = v[0]; op.y = v[1]; op.z = v[2];
                 Vec3_Sub(&delta, (Vec3 *)&HEYHO(c)->mPos, &op);
-                v = sJumpAdapters[i]->m1();
+                v = ((VB *)sJumpAdapters[i])->m1();
                 nrm.x = v[0]; nrm.y = v[1]; nrm.z = v[2];
                 if (NormalizeVec3IfNonZero(&nrm) != 0) {
                     dot = DotVec3(&nrm, &delta);
@@ -1385,7 +1319,7 @@ extern "C" void Heyho_MotionChase(char *c) {
                         cand.x = proj.x; cand.y = proj.y; cand.z = proj.z;
                         d = Vec3_Dist((Vec3 *)&HEYHO(c)->mPos, &cand);
                         if (d < bm) {
-                            best = sJumpAdapters[i];
+                            best = (VB *)sJumpAdapters[i];
                             bp = cand;
                             bm = d;
                         }
@@ -1498,7 +1432,7 @@ extern int Mg_GetTopScreenYOffset(void);
 extern void Jump2Popup_Spawn(int a, int b, int c);
 extern void Heyho_SetIdle(char* p);
 
-extern int sHeyhoUnsettledCount[];
+extern int sHeyhoUnsettledCount;
 extern int sJumpComboCount;
 extern int sHeyhoScorePopups;
 extern void *sMgSubCamera;
@@ -1530,7 +1464,7 @@ void Heyho_Settle(char* c)
     if (b)
         ((ParticleSystemView *)a)->callbackScale = t;
 
-    ApproachLinear(*sHeyhoUnsettledCount, 0, 1);
+    ApproachLinear(sHeyhoUnsettledCount, 0, 1);
     ApproachLinear(sJumpComboCount, 0x270f, 1);
 
     if (sHeyhoScorePopups != 0) {
@@ -1739,7 +1673,7 @@ typedef struct Self {
     int size;                 /* 0xd8 -- Heyho::mSize */
 } Self;
 
-extern Obj *sJumpAdapters[3];
+extern char *sJumpAdapters[];
 extern void Vec3_Sub(Vec3 *out, Vec3 *a, Vec3 *b);
 extern void Vec3_Add(Vec3 *out, Vec3 *a, Vec3 *b);
 extern Fix12 DotVec3(const Vec3 *a, const Vec3 *b);
@@ -1757,10 +1691,10 @@ void Heyho_CheckHitA(Self *self)
         Vec3 *p, *q;
         Obj *o;
 
-        if (sJumpAdapters[i]->vt->f2(sJumpAdapters[i]) == 0)
+        if (((Obj **)sJumpAdapters)[i]->vt->f2(((Obj **)sJumpAdapters)[i]) == 0)
             continue;
 
-        p = sJumpAdapters[i]->vt->f0(sJumpAdapters[i]);
+        p = ((Obj **)sJumpAdapters)[i]->vt->f0(((Obj **)sJumpAdapters)[i]);
         Vec3_Sub(&disp, p, &self->pos);
 
         disp.y -= thresh >> 1;
@@ -1778,7 +1712,7 @@ void Heyho_CheckHitA(Self *self)
                 disp.x = 0;
         }
 
-        q = sJumpAdapters[i]->vt->f1(sJumpAdapters[i]);
+        q = ((Obj **)sJumpAdapters)[i]->vt->f1(((Obj **)sJumpAdapters)[i]);
         Vec3_Sub(&rel, q, &self->vel);
         Vec3_Add(&sum, &disp, &rel);
 
@@ -1786,8 +1720,8 @@ void Heyho_CheckHitA(Self *self)
             continue;
 
         if (NormalizeVec3IfNonZero(&disp) == 0) {
-            sJumpAdapters[i]->command = 1;
-            o = sJumpAdapters[i];
+            ((Obj **)sJumpAdapters)[i]->command = 1;
+            o = ((Obj **)sJumpAdapters)[i];
             o->anchor.x = self->pos.x;
             o->anchor.y = self->pos.y;
             o->anchor.z = self->pos.z;
@@ -1803,8 +1737,8 @@ void Heyho_CheckHitA(Self *self)
         if (rel.y >= 0)
             continue;
 
-        sJumpAdapters[i]->command = 1;
-        o = sJumpAdapters[i];
+        ((Obj **)sJumpAdapters)[i]->command = 1;
+        o = ((Obj **)sJumpAdapters)[i];
         o->anchor.x = self->pos.x;
         o->anchor.y = self->pos.y;
         o->anchor.z = self->pos.z;
@@ -2010,7 +1944,7 @@ struct Obj {
     char pade4[0xf0 - 0xe4]; /* 0xe4 */
 };
 
-extern struct Obj *sHeyhos;
+extern char *sHeyhos;
 extern int sHeyhoCount;
 
 extern void Heyho_Update(struct Obj* o);
@@ -2033,19 +1967,19 @@ void Heyho_SeparateAll(void)
     Vec3* ai;
 
     for (i = 0; i < sHeyhoCount; i++) {
-        Heyho_Update(&sHeyhos[i]);
+        Heyho_Update(&((struct Obj *)sHeyhos)[i]);
     }
     for (k = 0; k < sHeyhoCount; k++) {
-        sHeyhos[k].separated = 0;
+        ((struct Obj *)sHeyhos)[k].separated = 0;
     }
     for (t = 0; t < sHeyhoCount; t++) {
-        if (Heyho_IsChasing(&sHeyhos[t]) != 0) {
-            oi = &sHeyhos[t];
+        if (Heyho_IsChasing(&((struct Obj *)sHeyhos)[t]) != 0) {
+            oi = &((struct Obj *)sHeyhos)[t];
             pi = &oi->pos;
             ai = &oi->vel;
             for (j = t + 1; j < sHeyhoCount; j++) {
-                if (Heyho_IsChasing(&sHeyhos[j]) != 0) {
-                    oj = (struct Obj *)((long long)(int)&sHeyhos[j]);
+                if (Heyho_IsChasing(&((struct Obj *)sHeyhos)[j]) != 0) {
+                    oj = (struct Obj *)((long long)(int)&((struct Obj *)sHeyhos)[j]);
                     pj = &oj->pos;
                     Vec3_Sub(&v1, pi, pj);
                     Vec3_Sub(&v2, ai, &oj->vel);
@@ -2054,8 +1988,8 @@ void Heyho_SeparateAll(void)
                     if (NormalizeVec3IfNonZero(&v1) == 0) continue;
                     AddVec3(pi, &v1, pi);
                     SubVec3(pj, &v1, pj);
-                    sHeyhos[t].separated = 1;
-                    sHeyhos[j].separated = 1;
+                    ((struct Obj *)sHeyhos)[t].separated = 1;
+                    ((struct Obj *)sHeyhos)[j].separated = 1;
                 }
             }
         }
@@ -2069,13 +2003,13 @@ namespace n020c425c {
 extern "C" {
 extern void Heyho_Draw(int);
 extern int sHeyhoCount;
-extern int sHeyhos;
+extern char *sHeyhos;
 void Heyho_DrawAll(void){
   int i = 0;
   if (sHeyhoCount > 0) {
       int off = 0;
       do {
-          Heyho_Draw(sHeyhos + off);
+          Heyho_Draw((int)(sHeyhos + off));
           i++;
           off += 0xf0;
       } while (i < sHeyhoCount);
@@ -2096,7 +2030,7 @@ typedef struct Ent {
 } Ent;
 
 extern int sHeyhoCount;
-extern Ent *sHeyhos;
+extern char *sHeyhos;
 extern int data_ov006_0213afc8[2];
 extern char sHeyhoSettlePaths;
 extern int sHeyhoUnsettledCount;
@@ -2109,9 +2043,9 @@ void Heyho_SettleAll(void)
 {
     int i;
     for (i = 0; i < sHeyhoCount; i++) {
-        int *v = (int *)(&sHeyhos[i].x);
+        int *v = (int *)(&((Ent *)sHeyhos)[i].x);
         volatile int *q = (volatile int *)data_ov006_0213afc8;
-        if (v[0] != data_ov006_0213afc8[0] || (v[1] != q[1] && sHeyhos[i].x != 0))
+        if (v[0] != data_ov006_0213afc8[0] || (v[1] != q[1] && ((Ent *)sHeyhos)[i].x != 0))
             continue;
         {
             int r1 = RandomIntInternal(&data_0209e650);
@@ -2135,13 +2069,13 @@ namespace n020c40e8 {
 extern "C" {
 extern void Heyho_React(int);
 extern int sHeyhoCount;
-extern int sHeyhos;
+extern char *sHeyhos;
 void Heyho_ReactAll(void){
   int i = 0;
   if (sHeyhoCount > 0) {
       int off = 0;
       do {
-          Heyho_React(sHeyhos + off);
+          Heyho_React((int)(sHeyhos + off));
           i++;
           off += 0xf0;
       } while (i < sHeyhoCount);
@@ -2165,15 +2099,15 @@ typedef struct Ent {
 } Ent;
 
 extern int sHeyhoCount;
-extern Ent *sHeyhos;
+extern char *sHeyhos;
 extern int pmf_Heyho_StateIdle_4[2];
 
 int Heyho_AllIdle(void) {
     int i;
     for (i = 0; i < sHeyhoCount; i++) {
-        int *v = (int *)(&sHeyhos[i].x);
+        int *v = (int *)(&((Ent *)sHeyhos)[i].x);
         volatile int* q = (volatile int*)pmf_Heyho_StateIdle_4;
-        if (v[0] != pmf_Heyho_StateIdle_4[0] || (v[1] != q[1] && sHeyhos[i].x != 0))
+        if (v[0] != pmf_Heyho_StateIdle_4[0] || (v[1] != q[1] && ((Ent *)sHeyhos)[i].x != 0))
             return 0;
     }
     return 1;
@@ -2189,6 +2123,18 @@ dMg3DHeyhoObjAdapter_c::dMg3DHeyhoObjAdapter_c() : mCommand(0)
 
 /* Definitions stay after the last .text function so they do not insert
  * a function into the reverse-emitted .text run. Construction order is
- * the model handle, then the animation handle. */
+ * the model handle, then the animation handle. The plain counters have
+ * no initializer: one would grow the sinit. */
+extern "C" {
+int sHeyhoUnsettledCount;
+int sJumpComboCount;
+int sHeyhoScorePopups;
+int sHeyhoLayout;
+char *sHeyhos;
+int sHeyhoCount;
+int data_ov006_021403b8[3];
+char *sJumpAdapters[3];
+}
+
 HeyhoAdapterModelFilePtr gMgPHeyhoMiniModelFile(0x217);
 HeyhoAdapterAnimationFileHandle gMgPHeyhoWaitAnimFile(0x218);
