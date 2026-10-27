@@ -57,7 +57,7 @@ void LoadBGPltt(const void *src, u32 offset, u32 size);
 void LoadOBJPltt(const void *src, u32 offset, u32 size);
 }
 namespace G3X {
-void SetFog(bool enable, int blend, int slope, int offset);
+void SetFog(int enable, int blend, int slope, int offset);
 }
 
 /* Local stand-ins for types no header declares yet. */

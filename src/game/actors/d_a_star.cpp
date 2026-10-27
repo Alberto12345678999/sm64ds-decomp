@@ -210,9 +210,6 @@ void GiveVsStars(int idx, int delta);
 void CollectStarInCurLevel(int i);
 int SublevelToLevel(int i);
 s16 NumCoins(void);
-// local extern: SaveData.h's s8 level parameter re-narrows the argument
-// (func_ov002_020e8ef0 grows from 0x41c to 0x420).
-void _ZN8SaveData21SetCoinRecordIfHigherEah(int a, u8 b);
 extern u8 data_0209f228;
 extern u8 data_0209f2ac;
 extern s16 data_0209f358[];
@@ -2029,7 +2026,7 @@ int daStar_c::func_ov002_020e8ef0(void* p) {
                 if (lvl <= 0xe) {
                     int rec = SaveData::GetCoinRecord(lvl);
                     if (rec < NumCoins()) {
-                        _ZN8SaveData21SetCoinRecordIfHigherEah(
+                        SaveData::SetCoinRecordIfHigher(
                             lvl,
                             (u8)(data_0209f358[((Player *)p)->mPlayerNo] & 0xff));
                     }

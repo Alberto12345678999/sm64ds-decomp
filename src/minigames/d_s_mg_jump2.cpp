@@ -154,7 +154,7 @@ namespace GX {
 void LoadOBJPltt(const void *src, unsigned int offset, unsigned int size);
 }
 namespace G3X {
-void SetFog(bool enable, int mode, int slope, int offset);
+void SetFog(int enable, int mode, int slope, int offset);
 }
 namespace cstd {
 s32 fdiv(s32 a, s32 b);

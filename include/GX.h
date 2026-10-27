@@ -11,22 +11,24 @@
  * extended-palette loads of both engines) and src/game/stages/d_scene.cpp
  * (DisableAllBanks).
  *
- * The SetBankFor* banks are u16 because the definitions take u16: a caller
- * passing a wider non-constant value pays a narrowing the ROM may not have,
- * which is why a few callers keep a local u32 spelling. Parameters stay
+ * The SetBankFor* banks are int, the Nitro SDK's GXVRamBG/GXVRamOBJ/... enum
+ * parameters. Every definition compiles to the same bytes with int as with
+ * u16, and the callers that pass a saved bank word (GX/GXS EndLoad*, the
+ * d3d minigame base's restores) do so with no narrowing in the ROM; a u16
+ * parameter inserted an lsl/lsr pair at each of them. Parameters stay
  * unnamed: a name here takes an @NNN in every includer. */
 namespace GX {
 void DispOn(void);
 void SetGraphicsMode(int, int, int);
 void DisableAllBanks(void);
-void SetBankForBG(u16);
-void SetBankForOBJ(u16);
-void SetBankForTex(u16);
-void SetBankForTexPltt(u16);
-void SetBankForSubBG(u16);
-void SetBankForSubOBJ(u16);
-void SetBankForSubBGExtPltt(u16);
-void SetBankForSubOBJExtPltt(u16);
+void SetBankForBG(int);
+void SetBankForOBJ(int);
+void SetBankForTex(int);
+void SetBankForTexPltt(int);
+void SetBankForSubBG(int);
+void SetBankForSubOBJ(int);
+void SetBankForSubBGExtPltt(int);
+void SetBankForSubOBJExtPltt(int);
 void BeginLoadTex(void);
 void LoadTex(const void *, unsigned int, unsigned int);
 void EndLoadTex(void);

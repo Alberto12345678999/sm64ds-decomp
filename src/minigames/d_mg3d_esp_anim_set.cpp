@@ -104,9 +104,6 @@ extern Matrix4x3 data_020a0e68;
 void Matrix4x3_FromTranslation(void* m, int x, int y, int z);
 void func_02046208(char* a, int b, int c);
 int func_020179b4(void* r0, void* r1, int r2);
-/* local extern: RowFade passes 0x10 - n, which the real unsigned short parameter would
-   truncate. That call stays on the spelled name. */
-void _ZN3G2x13SetBlendAlphaEPVttttj(volatile unsigned short *p, int a, int b, int c, int d);
 s16 atan2_hold_d_mg3d_esp_anim_set_1(s32 y, s32 x);
 int RandomIntInternal(int *seed);
 extern int data_0209d4b8;
@@ -895,9 +892,7 @@ void dScMg3DEsp_c::RowFade(int i)
     mFade += 1;
     {
         unsigned char ip = mFade;
-        _ZN3G2x13SetBlendAlphaEPVttttj(
-            (volatile unsigned short *)0x4001050, 0, 4,
-            0x10 - ip, ip);
+        G2x::SetBlendAlpha((volatile unsigned short *)0x4001050, 0, 4, 0x10 - ip, ip);
     }
     if (mFade < 0x10)
         return;

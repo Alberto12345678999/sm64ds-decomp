@@ -68,14 +68,6 @@
     {
       "path": "src/game/stages/d_s_stage_methods.cpp",
       "rule": "handspelled-member",
-      "match": "_ZN3G3X6SetFogEbiii",
-      "count": 2,
-      "reason": "RenderFog passes the fog record's enable byte as a raw int; G3X.h's `bool enable` normalises it and RenderFog stops matching (measured: G3X::SetFog(fog->mEnabled, ...) DIFFs), so the call keeps the mangled spelling.",
-      "evidence": "include/G3X.h:18; arm9/dScStage_c 123/123 TEXT-VERIFIED (tubuild verify); carried from the standalone shards this fold absorbs (0x02029408..0x0202e118)"
-    },
-    {
-      "path": "src/game/stages/d_s_stage_methods.cpp",
-      "rule": "handspelled-member",
       "match": "_ZN10dScStage_c14LoadGraphics2DEbi",
       "count": 2,
       "reason": "InitResources passes a raw int as the bool parameter; through the header's `bool e3d` InitResources stops matching (measured: dScStage_c::LoadGraphics2D(v0_6, data_0209f2f8) DIFFs), so the call keeps the mangled spelling (the member definition itself is a real dScStage_c::LoadGraphics2D).",
@@ -362,14 +354,6 @@
       "evidence": "Retired src/unnamed/ov002/__sinit_ov002_021019d0.c, folded into src/game/player/Player.cpp; ov002/Player .init 0x021019d0 size 0x5470 TEXT-VERIFIED"
     },
     {
-      "path": "src/game/player/Player.cpp",
-      "rule": "handspelled-member",
-      "match": "_ZN6Player7SetAnimEjiit",
-      "count": 9,
-      "reason": "Six call sites stay on the scalar symbol. func_ov002_020bec9c tail-forwards the callee's r0 as its own int result, so the call cannot be a void method return. func_ov002_020d1f78 passes (w << 4) >> 16, and narrowing that to u16 grew the function by 8 bytes. func_ov002_020d4748 passes AnimSpeed() three times and s5 once; each narrowing cost 8 bytes (0x4e8 to 0x508). The other three occurrences are the local externs those calls need. The definition itself is Player::SetAnim.",
-      "evidence": "ov002/Player 618/618 TEXT-VERIFIED on cpp/player-setanim-1023; SetAnim remains 0x020bef2c size 0x210"
-    },
-    {
       "path": "src/_ZN10dScEntry_c17RenderWaitingTextEv.cpp",
       "rule": "handspelled-member",
       "match": "_ZN3OAM6RenderEbP7OamAttriiii5Fix12IiEi",
@@ -640,14 +624,6 @@
       "count": 2,
       "reason": "func_ov064_02116560 tail-forwards SetAnim's r0 as its own int result. A return on the void member does not compile, and splitting it into call-then-return loses the tail call. The two occurrences are the int-returning local extern and its single call.",
       "evidence": "src/engine/model/d_ext_anm_model.cpp: void dExtAnmModel_c::SetAnim(BCA_File *, int, Fix12i, u16) at 0x02016748 size 0x5c MATCH under 2004/b56; func_ov064_02116560 byte-matched with the int-returning spelling; the local extern carries a 'local extern:' reason at d_a_ots.cpp:230."
-    },
-    {
-      "path": "src/game/player/Player.cpp",
-      "rule": "handspelled-member",
-      "match": "_ZN14dExtAnmModel_c7SetAnimEP8BCA_Fileiit",
-      "count": 3,
-      "reason": "St_YoshiPower_Main is the only caller that passes a non-constant startFrame ((currFrame << 4) >> 0x10). Narrowing it to the member's real u16 costs +0x10, so this body keeps the scalar unsigned int spelling, per this file's per-body declaration policy. The three occurrences are the block-scope declaration and its two calls.",
-      "evidence": "src/engine/model/d_ext_anm_model.cpp: void dExtAnmModel_c::SetAnim(BCA_File *, int, Fix12i, u16) at 0x02016748 size 0x5c MATCH under 2004/b56; St_YoshiPower_Main MATCH with the scalar unsigned int startFrame, +0x10 with the u16 member call (PR #4290 measurement)."
     },
     {
       "path": "src/InvMat4x3.c",
@@ -1132,7 +1108,7 @@
     {
       "path": "src/func_ov007_020c0078.c",
       "rule": "handspelled-member",
-      "match": "_ZN3G3i13PerspectiveW_EiiiiiibP9Matrix4x3",
+      "match": "_ZN3G3i13PerspectiveW_EiiiiiiiP9Matrix4x3",
       "count": 2,
       "reason": "func_ov007_020c0078 is a C translation unit, so it cannot name the G3i::PerspectiveW_ method; it spells the mangled name once in the extern declaration and once at the call. Follow-up: retire with the C++ migration of this file.",
       "evidence": "Symbol renamed from the Fix12<int> mangling to the Fix12i (plain int) one in config/arm9/symbols.txt and config/tu_manifest.d/arm9/G3i.json; arm9 0x02055bfc and the callers still byte-match (rombuild 106/106 exact)."
@@ -1140,7 +1116,7 @@
     {
       "path": "src/unnamed/ov007/func_ov007_020b2160.c",
       "rule": "handspelled-member",
-      "match": "_ZN3G3i13PerspectiveW_EiiiiiibP9Matrix4x3",
+      "match": "_ZN3G3i13PerspectiveW_EiiiiiiiP9Matrix4x3",
       "count": 3,
       "reason": "func_ov007_020b2160 is a C translation unit, so it cannot name the G3i::PerspectiveW_ method; it spells the mangled name once in the extern declaration and at each of its two calls. Follow-up: retire with the C++ migration of this file.",
       "evidence": "Symbol renamed from the Fix12<int> mangling to the Fix12i (plain int) one in config/arm9/symbols.txt and config/tu_manifest.d/arm9/G3i.json; arm9 0x02055bfc and the callers still byte-match (rombuild 106/106 exact)."
@@ -1304,6 +1280,118 @@
       "count": 1,
       "reason": "Carried unchanged from src/unnamed/ov075/func_ov075_0211aeb8.c by the .c -> .cpp migration. Git no longer pairs the rename once the 7-line file gains its //cpp marker, the cstd.h include and the extern \"C\" block, so the gate reads the whole file as new. The cast is not new. Follow-up: type the argument when its class is identified.",
       "evidence": "origin/main:src/unnamed/ov075/func_ov075_0211aeb8.c carries the same *(short*)(c+0xa0) read; tools/source_style.py --base origin/main"
+    },
+    {
+      "path": "src/InitCrashScreen.c",
+      "rule": "handspelled-member",
+      "match": "_ZN2GX12SetBankForBGEi",
+      "count": 2,
+      "reason": "Respelled by the GX::SetBankFor* parameter correction (u16 -> int, the Nitro SDK enum parameter; the definitions compile alike and no ROM caller narrows the bank): src/InitCrashScreen.c on main carries the same 2 occurrence(s) as _ZN2GX12SetBankForBGEt. This is a C shard, which cannot spell a member call, so no new hand-spelled binding is added. Follow-up: convert to GX::SetBankForBG when this shard is folded into a C++ TU.",
+      "evidence": "origin/main:src/InitCrashScreen.c 2x _ZN2GX12SetBankForBGEt; head 2x _ZN2GX12SetBankForBGEi; tools/source_style.py --base origin/main"
+    },
+    {
+      "path": "src/unnamed/arm9/0200/func_0200f2cc.c",
+      "rule": "handspelled-member",
+      "match": "_ZN2GX12SetBankForBGEi",
+      "count": 2,
+      "reason": "Respelled by the GX::SetBankFor* parameter correction (u16 -> int, the Nitro SDK enum parameter; the definitions compile alike and no ROM caller narrows the bank): src/unnamed/arm9/0200/func_0200f2cc.c on main carries the same 2 occurrence(s) as _ZN2GX12SetBankForBGEt. This is a C shard, which cannot spell a member call, so no new hand-spelled binding is added. Follow-up: convert to GX::SetBankForBG when this shard is folded into a C++ TU.",
+      "evidence": "origin/main:src/unnamed/arm9/0200/func_0200f2cc.c 2x _ZN2GX12SetBankForBGEt; head 2x _ZN2GX12SetBankForBGEi; tools/source_style.py --base origin/main"
+    },
+    {
+      "path": "src/unnamed/arm9/0200/func_0200f2cc.c",
+      "rule": "handspelled-member",
+      "match": "_ZN2GX13SetBankForOBJEi",
+      "count": 2,
+      "reason": "Respelled by the GX::SetBankFor* parameter correction (u16 -> int, the Nitro SDK enum parameter; the definitions compile alike and no ROM caller narrows the bank): src/unnamed/arm9/0200/func_0200f2cc.c on main carries the same 2 occurrence(s) as _ZN2GX13SetBankForOBJEt. This is a C shard, which cannot spell a member call, so no new hand-spelled binding is added. Follow-up: convert to GX::SetBankForOBJ when this shard is folded into a C++ TU.",
+      "evidence": "origin/main:src/unnamed/arm9/0200/func_0200f2cc.c 2x _ZN2GX13SetBankForOBJEt; head 2x _ZN2GX13SetBankForOBJEi; tools/source_style.py --base origin/main"
+    },
+    {
+      "path": "src/unnamed/arm9/0200/func_0200f2cc.c",
+      "rule": "handspelled-member",
+      "match": "_ZN2GX13SetBankForTexEi",
+      "count": 2,
+      "reason": "Respelled by the GX::SetBankFor* parameter correction (u16 -> int, the Nitro SDK enum parameter; the definitions compile alike and no ROM caller narrows the bank): src/unnamed/arm9/0200/func_0200f2cc.c on main carries the same 2 occurrence(s) as _ZN2GX13SetBankForTexEt. This is a C shard, which cannot spell a member call, so no new hand-spelled binding is added. Follow-up: convert to GX::SetBankForTex when this shard is folded into a C++ TU.",
+      "evidence": "origin/main:src/unnamed/arm9/0200/func_0200f2cc.c 2x _ZN2GX13SetBankForTexEt; head 2x _ZN2GX13SetBankForTexEi; tools/source_style.py --base origin/main"
+    },
+    {
+      "path": "src/unnamed/arm9/0200/func_0200f2cc.c",
+      "rule": "handspelled-member",
+      "match": "_ZN2GX15SetBankForSubBGEi",
+      "count": 2,
+      "reason": "Respelled by the GX::SetBankFor* parameter correction (u16 -> int, the Nitro SDK enum parameter; the definitions compile alike and no ROM caller narrows the bank): src/unnamed/arm9/0200/func_0200f2cc.c on main carries the same 2 occurrence(s) as _ZN2GX15SetBankForSubBGEt. This is a C shard, which cannot spell a member call, so no new hand-spelled binding is added. Follow-up: convert to GX::SetBankForSubBG when this shard is folded into a C++ TU.",
+      "evidence": "origin/main:src/unnamed/arm9/0200/func_0200f2cc.c 2x _ZN2GX15SetBankForSubBGEt; head 2x _ZN2GX15SetBankForSubBGEi; tools/source_style.py --base origin/main"
+    },
+    {
+      "path": "src/unnamed/arm9/0200/func_0200f2cc.c",
+      "rule": "handspelled-member",
+      "match": "_ZN2GX16SetBankForSubOBJEi",
+      "count": 2,
+      "reason": "Respelled by the GX::SetBankFor* parameter correction (u16 -> int, the Nitro SDK enum parameter; the definitions compile alike and no ROM caller narrows the bank): src/unnamed/arm9/0200/func_0200f2cc.c on main carries the same 2 occurrence(s) as _ZN2GX16SetBankForSubOBJEt. This is a C shard, which cannot spell a member call, so no new hand-spelled binding is added. Follow-up: convert to GX::SetBankForSubOBJ when this shard is folded into a C++ TU.",
+      "evidence": "origin/main:src/unnamed/arm9/0200/func_0200f2cc.c 2x _ZN2GX16SetBankForSubOBJEt; head 2x _ZN2GX16SetBankForSubOBJEi; tools/source_style.py --base origin/main"
+    },
+    {
+      "path": "src/unnamed/arm9/0200/func_0200f2cc.c",
+      "rule": "handspelled-member",
+      "match": "_ZN2GX17SetBankForTexPlttEi",
+      "count": 2,
+      "reason": "Respelled by the GX::SetBankFor* parameter correction (u16 -> int, the Nitro SDK enum parameter; the definitions compile alike and no ROM caller narrows the bank): src/unnamed/arm9/0200/func_0200f2cc.c on main carries the same 2 occurrence(s) as _ZN2GX17SetBankForTexPlttEt. This is a C shard, which cannot spell a member call, so no new hand-spelled binding is added. Follow-up: convert to GX::SetBankForTexPltt when this shard is folded into a C++ TU.",
+      "evidence": "origin/main:src/unnamed/arm9/0200/func_0200f2cc.c 2x _ZN2GX17SetBankForTexPlttEt; head 2x _ZN2GX17SetBankForTexPlttEi; tools/source_style.py --base origin/main"
+    },
+    {
+      "path": "src/unnamed/arm9/0203/func_02030500.c",
+      "rule": "handspelled-member",
+      "match": "_ZN2GX12SetBankForBGEi",
+      "count": 2,
+      "reason": "Respelled by the GX::SetBankFor* parameter correction (u16 -> int, the Nitro SDK enum parameter; the definitions compile alike and no ROM caller narrows the bank): src/unnamed/arm9/0203/func_02030500.c on main carries the same 2 occurrence(s) as _ZN2GX12SetBankForBGEt. This is a C shard, which cannot spell a member call, so no new hand-spelled binding is added. Follow-up: convert to GX::SetBankForBG when this shard is folded into a C++ TU.",
+      "evidence": "origin/main:src/unnamed/arm9/0203/func_02030500.c 2x _ZN2GX12SetBankForBGEt; head 2x _ZN2GX12SetBankForBGEi; tools/source_style.py --base origin/main"
+    },
+    {
+      "path": "src/unnamed/arm9/0203/func_02030500.c",
+      "rule": "handspelled-member",
+      "match": "_ZN2GX13SetBankForOBJEi",
+      "count": 2,
+      "reason": "Respelled by the GX::SetBankFor* parameter correction (u16 -> int, the Nitro SDK enum parameter; the definitions compile alike and no ROM caller narrows the bank): src/unnamed/arm9/0203/func_02030500.c on main carries the same 2 occurrence(s) as _ZN2GX13SetBankForOBJEt. This is a C shard, which cannot spell a member call, so no new hand-spelled binding is added. Follow-up: convert to GX::SetBankForOBJ when this shard is folded into a C++ TU.",
+      "evidence": "origin/main:src/unnamed/arm9/0203/func_02030500.c 2x _ZN2GX13SetBankForOBJEt; head 2x _ZN2GX13SetBankForOBJEi; tools/source_style.py --base origin/main"
+    },
+    {
+      "path": "src/unnamed/arm9/0203/func_02030500.c",
+      "rule": "handspelled-member",
+      "match": "_ZN2GX15SetBankForSubBGEi",
+      "count": 2,
+      "reason": "Respelled by the GX::SetBankFor* parameter correction (u16 -> int, the Nitro SDK enum parameter; the definitions compile alike and no ROM caller narrows the bank): src/unnamed/arm9/0203/func_02030500.c on main carries the same 2 occurrence(s) as _ZN2GX15SetBankForSubBGEt. This is a C shard, which cannot spell a member call, so no new hand-spelled binding is added. Follow-up: convert to GX::SetBankForSubBG when this shard is folded into a C++ TU.",
+      "evidence": "origin/main:src/unnamed/arm9/0203/func_02030500.c 2x _ZN2GX15SetBankForSubBGEt; head 2x _ZN2GX15SetBankForSubBGEi; tools/source_style.py --base origin/main"
+    },
+    {
+      "path": "src/unnamed/arm9/0203/func_02030500.c",
+      "rule": "handspelled-member",
+      "match": "_ZN2GX16SetBankForSubOBJEi",
+      "count": 2,
+      "reason": "Respelled by the GX::SetBankFor* parameter correction (u16 -> int, the Nitro SDK enum parameter; the definitions compile alike and no ROM caller narrows the bank): src/unnamed/arm9/0203/func_02030500.c on main carries the same 2 occurrence(s) as _ZN2GX16SetBankForSubOBJEt. This is a C shard, which cannot spell a member call, so no new hand-spelled binding is added. Follow-up: convert to GX::SetBankForSubOBJ when this shard is folded into a C++ TU.",
+      "evidence": "origin/main:src/unnamed/arm9/0203/func_02030500.c 2x _ZN2GX16SetBankForSubOBJEt; head 2x _ZN2GX16SetBankForSubOBJEi; tools/source_style.py --base origin/main"
+    },
+    {
+      "path": "src/unnamed/ov007/func_ov007_020c86c4.c",
+      "rule": "handspelled-member",
+      "match": "_ZN3G2x13SetBlendAlphaEPVtiiii",
+      "count": 3,
+      "reason": "Respelled by the G2x::SetBlendAlpha parameter correction (u16 -> int, the Nitro SDK's G2x_SetBlendAlpha_ signature; no ROM caller narrows a computed alpha): src/unnamed/ov007/func_ov007_020c86c4.c on main carries the same 3 occurrence(s) as _ZN3G2x13SetBlendAlphaEPVttttj. This is a C shard, which cannot spell a member call, so no new hand-spelled binding is added. Follow-up: convert to G2x::SetBlendAlpha when this shard is folded into a C++ TU.",
+      "evidence": "origin/main:src/unnamed/ov007/func_ov007_020c86c4.c 3x _ZN3G2x13SetBlendAlphaEPVttttj; head 3x _ZN3G2x13SetBlendAlphaEPVtiiii; tools/source_style.py --base origin/main"
+    },
+    {
+      "path": "src/unnamed/ov075/func_ov075_02118378.c",
+      "rule": "handspelled-member",
+      "match": "_ZN3G2x13SetBlendAlphaEPVtiiii",
+      "count": 2,
+      "reason": "Respelled by the G2x::SetBlendAlpha parameter correction (u16 -> int, the Nitro SDK's G2x_SetBlendAlpha_ signature; no ROM caller narrows a computed alpha): src/unnamed/ov075/func_ov075_02118378.c on main carries the same 2 occurrence(s) as _ZN3G2x13SetBlendAlphaEPVttttj. This is a C shard, which cannot spell a member call, so no new hand-spelled binding is added. Follow-up: convert to G2x::SetBlendAlpha when this shard is folded into a C++ TU.",
+      "evidence": "origin/main:src/unnamed/ov075/func_ov075_02118378.c 2x _ZN3G2x13SetBlendAlphaEPVttttj; head 2x _ZN3G2x13SetBlendAlphaEPVtiiii; tools/source_style.py --base origin/main"
+    },
+    {
+      "path": "src/unnamed/arm9/0200/func_0200af20.c",
+      "rule": "handspelled-member",
+      "match": "_ZN8dClipper13Func_020156DCEisii",
+      "count": 2,
+      "reason": "Respelled by the dClipper::Func_020156DC parameter correction (u16 -> s16 fov angle; both ROM callers pass a short angle loaded with ldrsh and unconverted): src/unnamed/arm9/0200/func_0200af20.c on main carries the same 2 occurrence(s) as _ZN8dClipper13Func_020156DCEitii. This is a C shard, which cannot spell a member call, so no new hand-spelled binding is added. Follow-up: convert to dClipper::Func_020156DC when this shard is folded into a C++ TU.",
+      "evidence": "origin/main:src/unnamed/arm9/0200/func_0200af20.c 2x _ZN8dClipper13Func_020156DCEitii; head 2x _ZN8dClipper13Func_020156DCEisii; tools/source_style.py --base origin/main"
     }
   ]
 }
