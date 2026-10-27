@@ -147,11 +147,11 @@ int daBbl_c::Behavior()
         u32 otherID = mdCcAc_c.otherOwner;
         if (otherID != 0) {
             if ((mdCcAc_c.hitFlags & 0x8000) == 0) {
-                dActor_c *other = dActor_c::FindWithID(otherID);
+                Player *other = static_cast<Player *>(dActor_c::FindWithID(otherID));
                 if (other != 0) {
                     int isPlayer = (other->actorID == 0xbf);
                     if (isPlayer)
-                        ((Player *)other)->Burn();
+                        other->Burn();
                 }
             } else {
                 mdCcAc_c.flags |= 1;

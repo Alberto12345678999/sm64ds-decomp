@@ -265,7 +265,7 @@ enum Bool { FALSE, TRUE };
 extern "C" void func_ov100_0214344c(daWanwan2_c *self)
 {
     Vector3 v;
-    dActor_c *other;
+    Player *other;
 
     int flags;
     u32 id;
@@ -276,7 +276,7 @@ extern "C" void func_ov100_0214344c(daWanwan2_c *self)
     self->mdCcAcPos_c.SetPosRelativeToActor(v);
     id = self->mdCcAcPos_c.otherOwner;
     if (id == 0) return;
-    other = dActor_c::FindWithID(id);
+    other = static_cast<Player *>(dActor_c::FindWithID(id));
     if (other == 0) return;
     flags = self->mdCcAcPos_c.hitFlags;
     if (flags & daWanwan2_HIT_EXPLOSION) {
@@ -308,13 +308,14 @@ extern "C" void func_ov100_0214344c(daWanwan2_c *self)
         enum Bool b = (enum Bool)(other->actorID == daWanwan2_ACTOR_PLAYER);
         if (b == FALSE) return;
     }
-    if (((Player *)other)->mIsVanish != 0) return;
+    if (other->mIsVanish != 0)
+        return;
     {
         Vec3i pos;
         pos.x = self->mPosX;
         pos.y = self->mPosY;
         pos.z = self->mPosZ;
-        ((Player *)other)->Hurt(*(Vector3 *)&pos, 2, 0xc000, 1, 0, 1);
+        other->Hurt(*(Vector3 *)&pos, 2, 0xc000, 1, 0, 1);
     }
 }
 
@@ -713,8 +714,8 @@ int daWanwan2_c::Behavior()
         func_ov100_02143b68((char *)this);
         mdCcAcPos_c.Clear();
 
-        dActor_c *p = ClosestPlayer();
-        if (p != 0 && ((Player *)p)->mIsVanish == 0) {
+        Player *p = ClosestPlayer();
+        if (p != 0 && p->mIsVanish == 0) {
             mdCcAcPos_c.Update();
         }
         return 1;

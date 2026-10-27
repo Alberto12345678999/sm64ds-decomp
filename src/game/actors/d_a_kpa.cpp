@@ -959,7 +959,7 @@ and Bowser in BOWSER_HOLD_RELEASE_AFTER_ANIM. Every other path ends by switching
 the tail's collider off. */
 void daKpaTail_c::func_ov060_02115c1c(){
     daKpa_c *bowser;
-    dActor_c *held;
+    Player *held;
     int cond;
 
     bowser = (daKpa_c *)dActor_c::FindWithID(this->mBowserUniqueID);
@@ -977,13 +977,14 @@ void daKpaTail_c::func_ov060_02115c1c(){
         return;
     }
 
-    held = this->mHeldPlayer;
+    held = static_cast<Player *>(this->mHeldPlayer);
     if (held == 0) goto tail;
 
-    cond = (int)(((Player *)held)->mHeldObj != 0);
+    cond = (int)(held->mHeldObj != 0);
     if (cond == 0) goto do_drop;
 
-    if (((Player *)held)->mAngleYSpeed != 0) goto set_default;
+    if (held->mAngleYSpeed != 0)
+        goto set_default;
     if (this->mHoldCountdown == 0) goto tail;
     this->mHoldCountdown -= 1;
     if (this->mHoldCountdown != 0) goto tail;
@@ -3096,7 +3097,7 @@ void daKpa_c::func_ov060_021128c0(){
     this->mHoldStep = 0;
     u32 id;
     if (this->mState != BOWSER_STATE_DEFEATED && (id = this->mdCcAcPos_c.otherOwner) != 0) {
-        void* f = (void *)dActor_c::FindWithID(id);
+        Player *f = static_cast<Player *>(dActor_c::FindWithID(id));
         if (f != 0) {
             int b = (((dActor_c *)f)->actorID == BOWSER_ACTOR_PLAYER);
             if (b) {
@@ -3104,7 +3105,7 @@ void daKpa_c::func_ov060_021128c0(){
                 v.x = this->mPosX;
                 v.y = this->mPosY;
                 v.z = this->mPosZ;
-                ((Player *)f)->Hurt(v, 2, 0x8000, 1, 0, 1);
+                f->Hurt(v, 2, 0x8000, 1, 0, 1);
             }
         }
     }

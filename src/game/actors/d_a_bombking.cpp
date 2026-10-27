@@ -547,13 +547,13 @@ int func_ov078_021240a0(char* c)
         if (k->mVertSpeed < 0) {
             unsigned int id = k->mdCcAcPos_c.otherOwner;
             if (id != 0) {
-                dActor_c *a = dActor_c::FindWithID(id);
+                Player *a = static_cast<Player *>(dActor_c::FindWithID(id));
                 if (a != 0) {
                     int b = (int)(a->actorID == 0xbf);
                     if (b != 0) {
                         Vec3 v = *(const Vec3 *)&a->mPosX;
                         if (k->mPosY > v.y)
-                            ((Player *)a)->Unk_020c6a10(1);
+                            a->Unk_020c6a10(1);
                     }
                 }
             }

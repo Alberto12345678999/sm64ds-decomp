@@ -540,7 +540,7 @@ void daObjTatefuda_c::Thrown()
 {
     int b;
     struct Vector3 vec;
-    void* found;
+    Player *found;
     unsigned id;
 
     {
@@ -559,7 +559,7 @@ void daObjTatefuda_c::Thrown()
     /* otherOwner: the uniqueID of the actor whose collider this one touched. */
     id = mdCcAc_c.otherOwner;
     if (id != 0) {
-        found = dActor_c::FindWithID(id);
+        found = static_cast<Player *>(dActor_c::FindWithID(id));
         if (found != 0) {
             if (found != mLastHolder) {
                 b = ((dActor_c *)found)->actorID;
@@ -568,7 +568,7 @@ void daObjTatefuda_c::Thrown()
                     vec.x = mPosX;
                     vec.y = mPosY;
                     vec.z = mPosZ;
-                    ((Player *)found)->Hurt(vec, 1, 0xc000, 1, 0, 1);
+                    found->Hurt(vec, 1, 0xc000, 1, 0, 1);
                 }
             }
         }
@@ -847,7 +847,7 @@ int daObjTatefuda_c::TryStartTalk() {
     if (mPoundsLeft == 0)
         return 0;
     {
-        dActor_c *other = dActor_c::FindWithID(id);
+        Player *other = static_cast<Player *>(dActor_c::FindWithID(id));
         if (other == 0)
             goto fail;
         {
@@ -861,8 +861,8 @@ int daObjTatefuda_c::TryStartTalk() {
         int ang = Vec3_HorzAngle(&mPos, &other->mPos);
         if (AngleDiff(ang, mAngleY) > 0x4000)
             return 0;
-        mTalkingPlayer = (Player *)other;
-        if (((Player *)other)->StartTalk(*this, false) == 0)
+        mTalkingPlayer = other;
+        if (other->StartTalk(*this, false) == 0)
             return 0;
         SetState(STATE_TALK);
         return 1;
@@ -883,11 +883,11 @@ int daObjTatefuda_c::TryStartTalk() {
  * Player::TryGrab must accept; then the player becomes mHoldingPlayer and the
  * sign enters CARRIED. */
 void daObjTatefuda_c::CheckGrabOrBreak() {
-    dActor_c *other;
+    Player *other;
     unsigned int id = mdCcAc_c.otherOwner;
     if (id == 0)
         return;
-    other = dActor_c::FindWithID(id);
+    other = static_cast<Player *>(dActor_c::FindWithID(id));
     if (other == 0)
         return;
     {
@@ -908,9 +908,9 @@ void daObjTatefuda_c::CheckGrabOrBreak() {
     }
     if ((mdCcAc_c.hitFlags & 0x1000) == 0)
         return;
-    if (((Player *)other)->TryGrab(*this) == 0)
+    if (other->TryGrab(*this) == 0)
         return;
-    mHoldingPlayer = (Player *)other;
+    mHoldingPlayer = other;
     SetState(STATE_CARRIED);
 }
 

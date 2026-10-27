@@ -399,7 +399,7 @@ int daWbm_c::func_ov098_0213b6e0()
     Vector3 pos;
     u32 otherID = mdCcAc_c.otherOwner;
     if (otherID != 0) {
-        dActor_c *other = dActor_c::FindWithID(otherID);
+        Player *other = static_cast<Player *>(dActor_c::FindWithID(otherID));
         if (other != 0) {
             u16 actorID = other->actorID;
             /* Tested as a flag first: tested inline, or as a switch, the
@@ -409,7 +409,7 @@ int daWbm_c::func_ov098_0213b6e0()
                 pos.x = mPosX;
                 pos.y = mPosY;
                 pos.z = mPosZ;
-                ((Player *)other)->Hurt(pos, 1, 0xc000, 1, 0, 1);
+                other->Hurt(pos, 1, 0xc000, 1, 0, 1);
                 if (mVariant == 1) {
                     Particle::System::NewSimple(0x1c, mPosX, mPosY, mPosZ);
                     Particle::System::NewSimple(0x1d, mPosX, mPosY, mPosZ);

@@ -620,14 +620,14 @@ int daPkn_c::PlayerMovingFast()
    `type == 0xbf` directly changes the code. */
 int daPkn_c::CheckHits()
 {
-    dActor_c *actor;
+    Player *actor;
     u32 flags;
     u16 type;
     u32 id;
 
     id = mdCcAc_c1.otherOwner;
     if (id != 0) {
-        actor = dActor_c::FindWithID(id);
+        actor = static_cast<Player *>(dActor_c::FindWithID(id));
         if (actor != 0) {
             type = actor->actorID;
             int t = (int)(type == 0xbf);
@@ -635,13 +635,13 @@ int daPkn_c::CheckHits()
                 flags = mdCcAc_c1.hitFlags & 0x26ff0;
                 if (flags != 0) {
                     if (flags & 0x10) {
-                        ((Player *)actor)->IncMegaKillCount();
+                        actor->IncMegaKillCount();
                         func_02012694(0x1d, &mCamSpacePosX);
                     }
                     func_020105cc(this, flags);
                     Die();
-                } else if (JumpedOnByPlayer(mdCcAc_c1, *(Player *)actor) != 0) {
-                    ((Player *)actor)->Bounce(0x28000);
+                } else if (JumpedOnByPlayer(mdCcAc_c1, *actor) != 0) {
+                    actor->Bounce(0x28000);
                     Die();
                 } else if (mdCcAc_c1.hitFlags & 0x40000) {
                     Die();
@@ -650,7 +650,7 @@ int daPkn_c::CheckHits()
                     v.x = mPosX;
                     v.y = mPosY;
                     v.z = mPosZ;
-                    ((Player *)actor)->Hurt(v, 3, 0xc000, 1, 0, 1);
+                    actor->Hurt(v, 3, 0xc000, 1, 0, 1);
                     mAnmModel.SetAnim(
                         (BCA_File *)(((SharedFilePtr *)&data_ov084_02130e0c)->filePtr), 0, 0x1000,
                         0);
@@ -672,7 +672,7 @@ int daPkn_c::CheckHits()
 
     id = mdCcAc_c2.otherOwner;
     if (id != 0) {
-        actor = dActor_c::FindWithID(id);
+        actor = static_cast<Player *>(dActor_c::FindWithID(id));
         if (actor != 0) {
             type = actor->actorID;
             int t = (int)(type == 0xbf);
@@ -680,15 +680,15 @@ int daPkn_c::CheckHits()
                 flags = mdCcAc_c2.hitFlags & 0x26ff0;
                 if (flags != 0) {
                     if (flags & 0x10) {
-                        ((Player *)actor)->IncMegaKillCount();
+                        actor->IncMegaKillCount();
                         func_02012694(0x1d, &mCamSpacePosX);
                     }
                     func_020105cc(this, flags);
                     Die();
                     return 1;
                 }
-                if (JumpedOnByPlayer(mdCcAc_c1, *(Player *)actor) != 0) {
-                    ((Player *)actor)->Bounce(0x28000);
+                if (JumpedOnByPlayer(mdCcAc_c1, *actor) != 0) {
+                    actor->Bounce(0x28000);
                     Die();
                     return 1;
                 }
