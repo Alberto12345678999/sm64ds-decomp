@@ -112,7 +112,7 @@ extern PgMthrTexSeqFileHandle gPenguinAngryTextureSequenceFile;
 extern void Matrix4x3_FromTranslation(void *m, int x, int y, int z);
 extern void Matrix4x3_ApplyInPlaceToTranslation(void *m, int x, int y, int z);
 extern unsigned char DecIfAbove0_Byte(unsigned char *p);
-extern dActor_c *func_ov018_021118fc(char *c);
+extern Player *func_ov018_021118fc(daPgMthr_c *self);
 extern PgMthrTexSeqFileHandle gPenguinWait1TextureSequenceFile;
 extern PgMthrAnimFileResHandle gPenguinWait1AnimationFile;
 extern PgMthrState data_ov018_02113c4c[3];
@@ -253,7 +253,7 @@ int daPgMthr_c::func_ov018_02112234()
 
     if (mGaveStar != 0)
         func_ov018_02111b3c();
-    toucher = (Player *)func_ov018_021118fc((char *)this);
+    toucher = func_ov018_021118fc(this);
     held = 0;
     if (toucher != 0) {
         /* Yoshi's baby is in his mouth; this path does not count it. */
@@ -573,17 +573,16 @@ talk:
 }
 
 extern "C" {
-struct dActor_c *func_ov018_021118fc(char *c)
+Player *func_ov018_021118fc(daPgMthr_c *self)
 {
-    daPgMthr_c *self = (daPgMthr_c *)c;
-    struct dActor_c *newToucher = 0;
+    Player *newToucher = 0;
     if (self->mdCcAc_c.hitFlags & HIT_TOUCH) {
         struct dActor_c *a = dActor_c::FindWithID(self->mdCcAc_c.otherOwner);
         if (a) {
             int ok = (a->actorID == ACTOR_PLAYER) ? 1 : (int)newToucher;
             if (ok) {
                 if (a != self->mLastPlayer)
-                    newToucher = a;
+                    newToucher = static_cast<Player *>(a);
                 self->mLastPlayer = a;
             }
         }

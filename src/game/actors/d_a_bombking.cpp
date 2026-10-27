@@ -267,7 +267,7 @@ int daBombking_c::func_ov078_02123aa0()
 {
     short ang = Vec3_HorzAngle(&this->mPosX, &this->mHomePosX);
     if (func_ov078_02123804() == 1) return 1;
-    Player *p = (Player *)this->ClosestPlayer();
+    Player *p = this->ClosestPlayer();
     if (p != 0) {
         struct Vec3 v = *(struct Vec3 *)&p->mPosX;
         if (Vec3_Dist(&this->mArenaPosX, &v) < 0x640000) {
@@ -756,7 +756,7 @@ int daBombking_c::func_ov078_021247bc()
     }
 
     if (this->mWithMeshClsn.IsOnGround() != 0) {
-        Player *pl = (Player *)this->ClosestPlayer();
+        Player *pl = this->ClosestPlayer();
         if (pl != 0) {
             *(struct M3 *)&D = *(struct M3 *)&pl->mPosX;
             if (Vec3_Dist(&this->mArenaPosX, &D) > 0x640000 ||
@@ -1051,7 +1051,7 @@ int daBombking_c::func_ov078_021250f8()
                 in.x = 0; in.y = 0; in.z = 0x28000;
                 out.x = 0; out.y = 0; out.z = 0;
                 v[0].x = 0; v[0].y = 0; v[0].z = 0;
-                player = (Player *)this->ClosestPlayer();
+                player = this->ClosestPlayer();
                 if (player != 0) {
                     int *q = &player->mPosX;
                     v[1].x = q[0];
@@ -1083,7 +1083,7 @@ int daBombking_c::func_ov078_021250f8()
     }
 
     if (((dExtFrameCtrl_c *)&this->mBlendAnmModel)->Finished() != 0) {
-        player = (Player *)this->ClosestPlayer();
+        player = this->ClosestPlayer();
         if (player != 0) {
             if (player->param1 != 3) {
                 this->mThrowCooldown = 0x64;
@@ -1153,7 +1153,7 @@ int daBombking_c::func_ov078_02125448()
         return 1;
     }
 
-    p = (Player *)this->ClosestPlayer();
+    p = this->ClosestPlayer();
     if (p != 0) {
         Vec3 v = *(const Vec3 *)&p->mPosX;
         if (Vec3_Dist(&this->mArenaPosX, &v) > 0x640000
@@ -1363,7 +1363,7 @@ int daBombking_c::func_ov078_021259ec()
         return 1;
     }
 
-    player = (Player *)this->ClosestPlayer();
+    player = this->ClosestPlayer();
     if (player != 0) {
         *(struct M3 *)&ppos = *(struct M3 *)&player->mPosX;
 
