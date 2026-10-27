@@ -47,7 +47,7 @@ struct daKinopio_c : dActor_c {
     struct State {
         StateFunc init;
         StateFunc main;
-        u32 unk_10;
+        const char *name;
     };
 
     u8 mPadD0[0x4];               /* 0x0d0 */

@@ -55,11 +55,12 @@ struct Vector3_16f;
 #include "dBgCh_Actr.h"
 #include "cstd.h"
 #include "math/Approach.h"
+#include "SpawnInfo.h"
 
 #pragma defer_codegen off
 
-/* The BCA data_ov077_02127c14 has loaded. */
-#define TGZ_BCA (data_ov077_02127c14.filePtr)
+/* The BCA gTgzWalkAnimFile has loaded. */
+#define TGZ_BCA (gTgzWalkAnimFile.filePtr)
 
 /* Lakitu's model-file handles, owned and constructed by d_a_jgm.cpp's static
  * init. Same TU-local wrapper spelling as the owning TU. */
@@ -68,7 +69,37 @@ struct DaJgmModelFile : SharedFilePtr {
     ~DaJgmModelFile();
 };
 
-extern SharedFilePtr data_ov077_02127c14;
+/* Runtime asset handle, distinct from the NitroFS file ID. */
+enum daTgz_c_AssetId { ASSET_TOGEZO_WALK_BCA = 0x042b };
+
+/* The handle reaches its file through this wrapper's constructor and
+ * destructor veneers; the manifest maps each to the retail destination.
+ * Descriptive local type, not a recovered spelling. */
+struct TgzAnimFile : SharedFilePtr {
+    TgzAnimFile(u32 fileID);
+    ~TgzAnimFile();
+};
+
+TgzAnimFile gTgzWalkAnimFile(ASSET_TOGEZO_WALK_BCA);
+
+/* One {enter, update} record per state; func_ov077_02125e94 selects one and
+ * func_ov077_02125e5c / 02125e20 call through it. State 1's entry returns
+ * nothing, so its pointer is cast to the shared record type. */
+typedef int (daTgz_c::*TgzState)();
+
+struct TgzStateRecord {
+    TgzState enter;
+    TgzState update;
+};
+
+TgzStateRecord gTgzStates[6] = {
+    {&daTgz_c::func_ov077_02125dd4, &daTgz_c::func_ov077_02125bb4},
+    {(TgzState)&daTgz_c::func_ov077_02125b1c, &daTgz_c::func_ov077_02125a54},
+    {&daTgz_c::func_ov077_02125a0c, &daTgz_c::func_ov077_02125908},
+    {&daTgz_c::func_ov077_021258dc, &daTgz_c::func_ov077_02125830},
+    {&daTgz_c::func_ov077_021256b4, &daTgz_c::func_ov077_02125550},
+    {&daTgz_c::func_ov077_02125480, &daTgz_c::func_ov077_021253a4},
+};
 
 extern "C" {
 extern DaJgmModelFile data_ov077_02127b48;
@@ -385,104 +416,100 @@ extern "C" void func_ov077_02125304(char *vc)
                               0x320000, 0xf);
 }
 
-// @symbol func_ov077_021253a4
+// @symbol _ZN7daTgz_c19func_ov077_021253a4Ev
 /* State 5 update: tumble backward until the ground or the 45-frame timer. */
-extern "C" int func_ov077_021253a4(daTgz_c *self)
-{
-    self->mAngleX = self->mAngleX - 0x1000;
-    self->mAnmModel.dExtFrameCtrl_c::Advance();
-    self->UpdatePos(&self->mdCcAc_c);
+int daTgz_c::func_ov077_021253a4() {
+    mAngleX = mAngleX - 0x1000;
+    mAnmModel.dExtFrameCtrl_c::Advance();
+    UpdatePos(&mdCcAc_c);
 
-    if (self->mHorzSpeed >= self->mWithMeshClsn.mRadius || self->mVertSpeed >= self->mWithMeshClsn.mRadius)
-        dBgCh_Actr_UpdateContinuous_Veneer(&self->mWithMeshClsn);
+    if (mHorzSpeed >= mWithMeshClsn.mRadius || mVertSpeed >= mWithMeshClsn.mRadius)
+        dBgCh_Actr_UpdateContinuous_Veneer(&mWithMeshClsn);
     else
-        dBgCh_Actr_UpdateDiscreteNoLava_veneer(&self->mWithMeshClsn);
+        dBgCh_Actr_UpdateDiscreteNoLava_veneer(&mWithMeshClsn);
 
-    if (self->mWithMeshClsn.JustHitGround() || DecIfAbove0_Byte(&self->mActionTimer) == 0) {
+    if (mWithMeshClsn.JustHitGround() || DecIfAbove0_Byte(&mActionTimer) == 0) {
         Vector3 v;
-        v.x = self->mPosX;
-        v.y = self->mPosY;
-        v.z = self->mPosZ;
-        self->SpawnCoins(v, 1, 0x2000, 0);
-        self->PoofDust();
-        func_02012694(0xc4, &self->mCamSpacePos);
-        self->MarkForDestruction();
+        v.x = mPosX;
+        v.y = mPosY;
+        v.z = mPosZ;
+        SpawnCoins(v, 1, 0x2000, 0);
+        PoofDust();
+        func_02012694(0xc4, &mCamSpacePos);
+        MarkForDestruction();
     }
     return 1;
 }
 
-// @symbol func_ov077_02125480
+// @symbol _ZN7daTgz_c19func_ov077_02125480Ev
 /* State 5 entry: launch upward at 40.0 and arm the 45-frame tumble. */
-extern "C" int func_ov077_02125480(daTgz_c *self)
-{
-    Sound::PlayBank0(9, self->mCamSpacePos);
-    self->mHorzSpeed = 0xa000;
-    self->mVertSpeed = 0x28000;
-    self->mAngleX = 0;
-    self->mAngleZ = 0;
-    self->mActionTimer = 0x2d;
-    self->mAnmModel.SetAnim((BCA_File *)TGZ_BCA, 0, 0x1000, 0);
-    self->mAnmModel.speed = 0x4000;
-    int aimHeight = self->OnAimedAtWithEgg();
-    Particle::System::NewSimple(0x43, self->mPosX, self->mPosY + aimHeight, self->mPosZ);
-    int aimHeightAgain = self->OnAimedAtWithEgg();
-    Particle::System::NewSimple(0x44, self->mPosX, self->mPosY + aimHeightAgain, self->mPosZ);
-    self->mState = 5;
+int daTgz_c::func_ov077_02125480() {
+    Sound::PlayBank0(9, mCamSpacePos);
+    mHorzSpeed = 0xa000;
+    mVertSpeed = 0x28000;
+    mAngleX = 0;
+    mAngleZ = 0;
+    mActionTimer = 0x2d;
+    mAnmModel.SetAnim((BCA_File *)TGZ_BCA, 0, 0x1000, 0);
+    mAnmModel.speed = 0x4000;
+    int aimHeight = OnAimedAtWithEgg();
+    Particle::System::NewSimple(0x43, mPosX, mPosY + aimHeight, mPosZ);
+    int aimHeightAgain = OnAimedAtWithEgg();
+    Particle::System::NewSimple(0x44, mPosX, mPosY + aimHeightAgain, mPosZ);
+    mState = 5;
     return 1;
 }
 
-// @symbol func_ov077_02125550
+// @symbol _ZN7daTgz_c19func_ov077_02125550Ev
 /* State 4 update: the same spin as state 0, after the carrier lets go. */
-extern "C" int func_ov077_02125550(daTgz_c *self)
-{
+int daTgz_c::func_ov077_02125550() {
     Vector3 vec;
     int x, y, z;
     int d;
 
-    self->mAngleX = self->mAngleX + 0x4e20;
+    mAngleX = mAngleX + 0x4e20;
 
-    if (self->mHorzSpeed >= self->mWithMeshClsn.mRadius || self->mVertSpeed >= self->mWithMeshClsn.mRadius)
-        dBgCh_Actr_UpdateContinuous_Veneer(&self->mWithMeshClsn);
+    if (mHorzSpeed >= mWithMeshClsn.mRadius || mVertSpeed >= mWithMeshClsn.mRadius)
+        dBgCh_Actr_UpdateContinuous_Veneer(&mWithMeshClsn);
     else
-        dBgCh_Actr_UpdateDiscreteNoLava_veneer(&self->mWithMeshClsn);
+        dBgCh_Actr_UpdateDiscreteNoLava_veneer(&mWithMeshClsn);
 
-    if (self->mWithMeshClsn.JustHitGround()) {
-        self->mVertSpeed = self->mVertSpeed * -0x3c / 100;
-        if (self->mVertSpeed > 0x8000) {
-            x = self->mPosX;
-            y = self->mPosY + 0x28000;
-            z = self->mPosZ;
+    if (mWithMeshClsn.JustHitGround()) {
+        mVertSpeed = mVertSpeed * -0x3c / 100;
+        if (mVertSpeed > 0x8000) {
+            x = mPosX;
+            y = mPosY + 0x28000;
+            z = mPosZ;
             ((int *)&vec)[0] = x;
             ((int *)&vec)[1] = y;
             ((int *)&vec)[2] = z;
             Particle::System::NewSimple(0xb2, vec.x, vec.y, vec.z);
-            func_0201267c(0x109, &self->mCamSpacePos);
+            func_0201267c(0x109, &mCamSpacePos);
         } else {
-            self->mVertSpeed = 0;
-            self->mAngleX = 0;
-            self->mWithMeshClsn.ClearLimMovFlag();
-            func_ov077_02125e94(self, 1);
+            mVertSpeed = 0;
+            mAngleX = 0;
+            mWithMeshClsn.ClearLimMovFlag();
+            func_ov077_02125e94(this, 1);
         }
     }
 
-    d = self->mWaterY ? self->mPosY - self->mWaterY : 0;
+    d = mWaterY ? mPosY - mWaterY : 0;
     if (d < -0xc8000) {
-        self->PoofDust();
-        func_02012694(0x166, &self->mCamSpacePos);
-        self->MarkForDestruction();
+        PoofDust();
+        func_02012694(0x166, &mCamSpacePos);
+        MarkForDestruction();
     }
 
-    self->UpdatePos(&self->mdCcAc_c);
-    func_ov077_02124eb0(self);
-    self->mdCcAc_c.Clear();
-    self->mdCcAc_c.Update();
+    UpdatePos(&mdCcAc_c);
+    func_ov077_02124eb0(this);
+    mdCcAc_c.Clear();
+    mdCcAc_c.Update();
     return 1;
 }
 
-// @symbol func_ov077_021256b4
+// @symbol _ZN7daTgz_c19func_ov077_021256b4Ev
 /* State 4 entry: leave the carrier, pop up in front of it, and start spinning. */
-extern "C" int func_ov077_021256b4(daTgz_c *self)
-{
+int daTgz_c::func_ov077_021256b4() {
     dActor_c *carrier;
     int idx;
     s16 sinv;
@@ -491,34 +518,34 @@ extern "C" int func_ov077_021256b4(daTgz_c *self)
     Vector3 v;
     int one;
 
-    self->mFlags &= ~0x80000;
-    self->mHorzSpeed = 0xa000;
-    self->mVertSpeed = 0;
+    mFlags &= ~0x80000;
+    mHorzSpeed = 0xa000;
+    mVertSpeed = 0;
 
-    carrier = self->mCarrier;
+    carrier = mCarrier;
     carrierYaw = carrier->mAngleY;
-    self->mAngleX = 0;
-    self->mAngleY = carrierYaw;
-    self->mAngleZ = 0;
+    mAngleX = 0;
+    mAngleY = carrierYaw;
+    mAngleZ = 0;
 
-    self->mPrevAngleY = self->mAngleY;
+    mPrevAngleY = mAngleY;
 
-    carrier = self->mCarrier;
+    carrier = mCarrier;
     one = 1;
     int *src = (int *)(int)&carrier->mPosX;
-    self->mPosX = src[0];
-    self->mPosY = src[1];
-    self->mPosZ = src[2];
+    mPosX = src[0];
+    mPosY = src[1];
+    mPosZ = src[2];
 
-    idx = ((int)(u16)self->mAngleY) >> 4;
+    idx = ((int)(u16)mAngleY) >> 4;
     sinv = data_02082214[idx * 2];
-    self->mPosX = self->mPosX + FX_MUL(sinv, 0x3c000);
-    self->mPosY = self->mPosY + 0x85000;
-    idx = ((int)(u16)self->mAngleY) >> 4;
+    mPosX = mPosX + FX_MUL(sinv, 0x3c000);
+    mPosY = mPosY + 0x85000;
+    idx = ((int)(u16)mAngleY) >> 4;
     cosv = data_02082214[idx * 2 + 1];
-    self->mPosZ = self->mPosZ + FX_MUL(cosv, 0x3c000);
+    mPosZ = mPosZ + FX_MUL(cosv, 0x3c000);
 
-    carrier = self->mCarrier;
+    carrier = mCarrier;
     {
         int ty = carrier->mPosY;
         int tz = carrier->mPosZ;
@@ -529,221 +556,210 @@ extern "C" int func_ov077_021256b4(daTgz_c *self)
         v.z = tz;
     }
 
-    self->DetectRaycastClsn(v, self->mPos, one);
+    DetectRaycastClsn(v, mPos, one);
 
-    self->mCarrier = 0;
-    self->mWithMeshClsn.SetLimMovFlag();
+    mCarrier = 0;
+    mWithMeshClsn.SetLimMovFlag();
 
-    self->mState = 4;
+    mState = 4;
     return 1;
 }
 
-// @symbol func_ov077_02125830
+// @symbol _ZN7daTgz_c19func_ov077_02125830Ev
 /* Held update: stick to the carrier, or on release enter state 4 / the walk. */
-extern "C" int func_ov077_02125830(daTgz_c *self)
-{
-    if (((self->mFlags & 0x40000) ? 1 : 0) != 0) {
-        dActor_c *carrier = self->mCarrier;
+int daTgz_c::func_ov077_02125830() {
+    if (((mFlags & 0x40000) ? 1 : 0) != 0) {
+        dActor_c *carrier = mCarrier;
         /* Address of the triple, then [0]/[4]/[8]. Three field loads fold the
            0x5c into the ldr and drop the add the ROM kept. */
         int *src = (int *)(int)&carrier->mPosX;
-        self->mPosX = src[0];
-        self->mPosY = src[1];
-        self->mPosZ = src[2];
+        mPosX = src[0];
+        mPosY = src[1];
+        mPosZ = src[2];
     }
     {
-        int flags = self->mFlags;
+        int flags = mFlags;
         if (((flags & 0x80000) ? 1 : 0) != 0)
-            func_ov077_02125e94(self, 4);
+            func_ov077_02125e94(this, 4);
         else if (((flags & 0x20000) ? 1 : 0) == 0 && ((flags & 0x40000) ? 1 : 0) == 0) {
-            self->mCarrier = 0;
-            func_ov077_02125e94(self, 1);
+            mCarrier = 0;
+            func_ov077_02125e94(this, 1);
         }
     }
     return 1;
 }
 
-// @symbol func_ov077_021258dc
-/* State 3 entry. */
-extern "C" int func_ov077_021258dc(daTgz_c *self)
-{
-    self->mHorzSpeed = 0;
-    self->mdCcAc_c.Clear();
-    self->mState = 3;
+// @symbol _ZN7daTgz_c19func_ov077_021258dcEv
+/* State 3 (held) entry. */
+int daTgz_c::func_ov077_021258dc() {
+    mHorzSpeed = 0;
+    mdCcAc_c.Clear();
+    mState = 3;
     return 1;
 }
 
-// @symbol func_ov077_02125908
-/* State 3 update: bounce, then stand up into the walk. */
-extern "C" int func_ov077_02125908(daTgz_c *self)
-{
+// @symbol _ZN7daTgz_c19func_ov077_02125908Ev
+/* State 2 update: bounce, then stand up into the walk. */
+int daTgz_c::func_ov077_02125908() {
     int v;
 
-    dBgCh_Actr_UpdateDiscreteNoLava_veneer(&self->mWithMeshClsn);
-    if (self->mWithMeshClsn.JustHitGround() != 0)
-        self->mVertSpeed = self->mVertSpeed * -50 / 100;
-    else if (self->mWithMeshClsn.IsOnGround() != 0) {
-        self->mVertSpeed = 0;
-        self->mWithMeshClsn.ClearLimMovFlag();
-        self->mChasePlayer = 0;
-        self->mPrevAngleY = self->mAngleY;
-        func_ov077_02125e94(self, 1);
+    dBgCh_Actr_UpdateDiscreteNoLava_veneer(&mWithMeshClsn);
+    if (mWithMeshClsn.JustHitGround() != 0)
+        mVertSpeed = mVertSpeed * -50 / 100;
+    else if (mWithMeshClsn.IsOnGround() != 0) {
+        mVertSpeed = 0;
+        mWithMeshClsn.ClearLimMovFlag();
+        mChasePlayer = 0;
+        mPrevAngleY = mAngleY;
+        func_ov077_02125e94(this, 1);
     }
 
-    if (self->mWaterY != 0)
-        v = self->mPosY - self->mWaterY;
+    if (mWaterY != 0)
+        v = mPosY - mWaterY;
     else
         v = 0;
 
     if (v < -0xc8000) {
-        self->PoofDust();
-        func_02012694(0x166, &self->mCamSpacePos);
-        self->MarkForDestruction();
+        PoofDust();
+        func_02012694(0x166, &mCamSpacePos);
+        MarkForDestruction();
     }
 
-    self->mAnmModel.dExtFrameCtrl_c::Advance();
-    self->UpdatePos(&self->mdCcAc_c);
-    func_ov077_02124eb0(self);
-    self->mdCcAc_c.Clear();
-    self->mdCcAc_c.Update();
+    mAnmModel.dExtFrameCtrl_c::Advance();
+    UpdatePos(&mdCcAc_c);
+    func_ov077_02124eb0(this);
+    mdCcAc_c.Clear();
+    mdCcAc_c.Update();
     return 1;
 }
 
-// @symbol func_ov077_02125a0c
+// @symbol _ZN7daTgz_c19func_ov077_02125a0cEv
 /* State 2 entry: hop toward the player that just hit us. */
-extern "C" int func_ov077_02125a0c(daTgz_c *self)
-{
-    self->mHorzSpeed = 0x5000;
-    self->mVertSpeed = 0xd000;
-    short ang = (short)Vec3_HorzAngle(&self->mChasePlayer->mPosX, &self->mPosX);
-    self->mPrevAngleY = ang;
-    self->mWithMeshClsn.SetLimMovFlag();
-    self->mState = 2;
+int daTgz_c::func_ov077_02125a0c() {
+    mHorzSpeed = 0x5000;
+    mVertSpeed = 0xd000;
+    short ang = (short)Vec3_HorzAngle(&mChasePlayer->mPosX, &mPosX);
+    mPrevAngleY = ang;
+    mWithMeshClsn.SetLimMovFlag();
+    mState = 2;
     return 1;
 }
 
-// @symbol func_ov077_02125a54
+// @symbol _ZN7daTgz_c19func_ov077_02125a54Ev
 /* State 1 update: walk, turning toward mTurnTarget, until the timer expires. */
-extern "C" int func_ov077_02125a54(daTgz_c *self)
-{
+int daTgz_c::func_ov077_02125a54() {
     int d;
-    ApproachLinear(self->mAngleY, self->mTurnTarget, 0x64);
-    self->mPrevAngleY = self->mAngleY;
-    self->mAnmModel.dExtFrameCtrl_c::Advance();
-    func_ov077_02124eb0(self);
-    if (self->mWaterY)
-        d = self->mPosY - self->mWaterY;
+    ApproachLinear(mAngleY, mTurnTarget, 0x64);
+    mPrevAngleY = mAngleY;
+    mAnmModel.dExtFrameCtrl_c::Advance();
+    func_ov077_02124eb0(this);
+    if (mWaterY)
+        d = mPosY - mWaterY;
     else
         d = 0;
     if (d < -0xc8000) {
-        self->PoofDust();
-        func_02012694(0x166, &self->mCamSpacePos);
-        self->MarkForDestruction();
+        PoofDust();
+        func_02012694(0x166, &mCamSpacePos);
+        MarkForDestruction();
     }
-    self->UpdatePos(&self->mdCcAc_c);
-    func_ov077_02124d08(self, &self->mWithMeshClsn);
-    self->mdCcAc_c.Clear();
-    self->mdCcAc_c.Update();
-    if (DecIfAbove0_Byte(&self->mActionTimer) == 0)
-        func_ov077_02125e94(self, 1);
+    UpdatePos(&mdCcAc_c);
+    func_ov077_02124d08(this, &mWithMeshClsn);
+    mdCcAc_c.Clear();
+    mdCcAc_c.Update();
+    if (DecIfAbove0_Byte(&mActionTimer) == 0)
+        func_ov077_02125e94(this, 1);
     return 1;
 }
 
-// @symbol func_ov077_02125b1c
+// @symbol _ZN7daTgz_c19func_ov077_02125b1cEv
 /* State 1 entry. func_02035684 stores its second argument at int offset 7,
  * which is dBgCh_Actr::mHeight. */
-extern "C" void func_ov077_02125b1c(daTgz_c *self)
-{
-    self->mVertAccel = -0x2000;
-    self->mTerminalVelocity = -0x3c000;
-    self->mAnmModel.SetAnim((BCA_File *)TGZ_BCA, 0, 0x1000, 0);
-    self->mAnmModel.speed = 0x1000;
-    func_02035684((int *)&self->mWithMeshClsn, 0x28000);
-    self->mHorzSpeed = 0x1b33;
-    self->mTurnTarget = RandomIntInternal(&data_0209e650);
-    self->mActionTimer = RandomIntInternal(&data_0209e650);
-    self->mState = 1;
+void daTgz_c::func_ov077_02125b1c() {
+    mVertAccel = -0x2000;
+    mTerminalVelocity = -0x3c000;
+    mAnmModel.SetAnim((BCA_File *)TGZ_BCA, 0, 0x1000, 0);
+    mAnmModel.speed = 0x1000;
+    func_02035684((int *)&mWithMeshClsn, 0x28000);
+    mHorzSpeed = 0x1b33;
+    mTurnTarget = RandomIntInternal(&data_0209e650);
+    mActionTimer = RandomIntInternal(&data_0209e650);
+    mState = 1;
 }
 
-// @symbol func_ov077_02125bb4
+// @symbol _ZN7daTgz_c19func_ov077_02125bb4Ev
 /* State 0 update: spin, splash, and settle into the walk. */
-extern "C" int func_ov077_02125bb4(daTgz_c *self)
-{
+int daTgz_c::func_ov077_02125bb4() {
     int underwater;
     int d;
     int x, y, z;
     Vector3 vec;
 
-    self->mAngleX = self->mAngleX + 0x4e20;
-    self->UpdatePos(&self->mdCcAc_c);
-    func_ov077_021250a8(self);
-    self->mWithMeshClsn.SetLimMovFlag();
-    dBgCh_Actr_UpdateContinuous_Veneer(&self->mWithMeshClsn);
+    mAngleX = mAngleX + 0x4e20;
+    UpdatePos(&mdCcAc_c);
+    func_ov077_021250a8(this);
+    mWithMeshClsn.SetLimMovFlag();
+    dBgCh_Actr_UpdateContinuous_Veneer(&mWithMeshClsn);
 
-    underwater = func_ov077_02124ce4(self);
+    underwater = func_ov077_02124ce4(this);
     if (underwater) {
-        if (self->mInWater == 0) {
-            func_02012694(0xe2, &self->mCamSpacePos);
-            Particle::System::NewBigSplash(self->mPosX, data_0209f32c, self->mPosZ);
-            self->mRippleId = Particle::System::New(self->mRippleId, 0x109, self->mPosX,
-                                                    data_0209f32c, self->mPosZ, 0, 0);
+        if (mInWater == 0) {
+            func_02012694(0xe2, &mCamSpacePos);
+            Particle::System::NewBigSplash(mPosX, data_0209f32c, mPosZ);
+            mRippleId = Particle::System::New(mRippleId, 0x109, mPosX, data_0209f32c, mPosZ, 0, 0);
         }
-        self->mVertAccel = -0x400;
-        self->mTerminalVelocity = -0x5000;
-        self->mHorzSpeed = 0x2000;
+        mVertAccel = -0x400;
+        mTerminalVelocity = -0x5000;
+        mHorzSpeed = 0x2000;
     } else {
-        self->mVertAccel = -0x2000;
-        self->mTerminalVelocity = -0x3c000;
-        self->mHorzSpeed = 0x4000;
+        mVertAccel = -0x2000;
+        mTerminalVelocity = -0x3c000;
+        mHorzSpeed = 0x4000;
     }
-    self->mInWater = (unsigned char)underwater;
+    mInWater = (unsigned char)underwater;
 
-    if (self->mWithMeshClsn.JustHitGround()) {
-        self->mVertSpeed = (self->mVertSpeed * -0x3c) / 100;
-        d = self->mWaterY ? self->mPosY - self->mWaterY : 0;
+    if (mWithMeshClsn.JustHitGround()) {
+        mVertSpeed = (mVertSpeed * -0x3c) / 100;
+        d = mWaterY ? mPosY - mWaterY : 0;
         if (d < -0xc8000) {
-            self->PoofDust();
-            func_02012694(0x166, &self->mCamSpacePos);
-            self->MarkForDestruction();
-        } else if (self->mVertSpeed < 0xa000) {
-            self->mVertSpeed = 0;
-            self->mAngleX = self->mPrevAngleX;
-            self->mAngleY = self->mPrevAngleY;
-            self->mAngleZ = self->mPrevAngleZ;
-            self->mWithMeshClsn.ClearLimMovFlag();
-            self->mFlags |= 0x10000000u;
-            func_ov077_02125e94(self, 1);
+            PoofDust();
+            func_02012694(0x166, &mCamSpacePos);
+            MarkForDestruction();
+        } else if (mVertSpeed < 0xa000) {
+            mVertSpeed = 0;
+            mAngleX = mPrevAngleX;
+            mAngleY = mPrevAngleY;
+            mAngleZ = mPrevAngleZ;
+            mWithMeshClsn.ClearLimMovFlag();
+            mFlags |= 0x10000000u;
+            func_ov077_02125e94(this, 1);
         } else {
-            x = self->mPosX;
-            y = self->mPosY + 0x28000;
-            z = self->mPosZ;
+            x = mPosX;
+            y = mPosY + 0x28000;
+            z = mPosZ;
             ((int *)&vec)[0] = x;
             ((int *)&vec)[1] = y;
             ((int *)&vec)[2] = z;
             Particle::System::NewSimple(0xb2, vec.x, vec.y, vec.z);
-            func_0201267c(0x109, &self->mCamSpacePos);
+            func_0201267c(0x109, &mCamSpacePos);
         }
     }
 
-    self->mdCcAc_c.Clear();
-    self->mdCcAc_c.Update();
+    mdCcAc_c.Clear();
+    mdCcAc_c.Update();
     return 1;
 }
 
-// @symbol func_ov077_02125dd4
+// @symbol _ZN7daTgz_c19func_ov077_02125dd4Ev
 /* State 0 entry. */
-extern "C" int func_ov077_02125dd4(daTgz_c *self)
-{
-    self->mVertAccel = -0x2000;
-    self->mTerminalVelocity = -0x3c000;
-    self->mHorzSpeed = 0x4000;
-    self->mVertSpeed = 0x19000;
-    self->mWithMeshClsn.SetLimMovFlag();
-    self->mState = 0;
+int daTgz_c::func_ov077_02125dd4() {
+    mVertAccel = -0x2000;
+    mTerminalVelocity = -0x3c000;
+    mHorzSpeed = 0x4000;
+    mVertSpeed = 0x19000;
+    mWithMeshClsn.SetLimMovFlag();
+    mState = 0;
     return 1;
 }
-
-typedef void (daTgz_c::*TgzState)();
 
 // @symbol func_ov077_02125e20
 extern "C" void func_ov077_02125e20(daTgz_c *self)
@@ -762,8 +778,7 @@ extern "C" void func_ov077_02125e5c(daTgz_c *self)
 // @symbol func_ov077_02125e94
 extern "C" void func_ov077_02125e94(daTgz_c *self, int i)
 {
-    extern char data_ov077_02127c28[];
-    self->mStateDesc = data_ov077_02127c28 + (i << 4);
+    self->mStateDesc = &gTgzStates[i];
     func_ov077_02125e5c(self);
 }
 
@@ -772,7 +787,7 @@ int daTgz_c::CleanupResources()
 {
     data_ov077_02127b48.Release();
     data_ov077_02127b38.Release();
-    data_ov077_02127c14.Release();
+    gTgzWalkAnimFile.Release();
     return 1;
 }
 
@@ -829,7 +844,7 @@ int daTgz_c::InitResources()
     mModel.SetFile(bmd, 1, -1);
     bmd = (BMD_File *)dExtSimpleModel_c::LoadFile(data_ov077_02127b38);
     mAnmModel.SetFile(bmd, 1, -1);
-    dExtFrameCtrl_c::LoadFile(data_ov077_02127c14);
+    dExtFrameCtrl_c::LoadFile(gTgzWalkAnimFile);
     mAnmModel.SetAnim((BCA_File *)TGZ_BCA, 0, 0x1000, 0);
     if (!mShadowModel.InitCylinder())
         return 0;
@@ -858,7 +873,19 @@ void daTgz_c::OnTurnIntoEgg(Player &player)
 }
 
 // @symbol daTgz_c_classInit
-extern "C" int *daTgz_c_classInit(void)
-{
-    return (int *)new daTgz_c;
+extern "C" daTgz_c *daTgz_c_classInit() {
+    return new daTgz_c;
 }
+
+/* The actor profile, in SpawnInfo's layout (include/SpawnInfo.h). The
+ * retail values are unchanged. */
+SpawnInfo<daTgz_c> g_profile_TOGEZO = {
+    daTgz_c_classInit, /* classInit */
+    0x0104,            /* behaviorPriority */
+    0x0076,            /* renderPriority */
+    0x10000002,        /* actorFlags */
+    0,                 /* clipOffsetY */
+    0x3c000,           /* clipRadius */
+    0x01000000,        /* clipDistance */
+    0x007d0000         /* farDistance */
+};

@@ -14,8 +14,8 @@
  */
 /* leftovers:
  * - The eight helpers stay func_ov100_02141fb0 .. 02142b90. Behavior
- *   reads data_ov100_0214867c by hand: the table is .bss the startup
- *   code fills with two-word pointer-to-member records.
+ *   reads gIblKindHandlers by hand, through two-word records, rather
+ *   than calling a pointer-to-member.
  * - Player::Hurt stays mangled: it takes Fix12<int> by value. The local
  *   Hurt declaration agrees with the current scalar definition.
  * - The spawner copies Player position through a byte view of the whole object
@@ -38,6 +38,7 @@
 #include "nitro/fx/fx.h"
 #include "common.h"
 #include "SharedFilePtr.h"
+#include "SpawnInfo.h"
 #include "Player.h"
 #include "dExtSimpleModel_c.h"
 #include "dActor_c.h"
@@ -80,7 +81,7 @@ enum { daIbl_PTCL_BREAK = 0xf };
    Matrix4x3 DIFFs. */
 struct M48 { int w[12]; };
 
-/* Behavior's handler table at data_ov100_0214867c: one pointer-to-member
+/* Behavior's handler table, gIblKindHandlers: one pointer-to-member
    per kind, as the two words mwcc lays one out in (function or vtable
    offset, then this-adjustment doubled with the virtual bit in bit 0). */
 struct VtEntry {
@@ -117,8 +118,26 @@ extern int IDENTITY_MATRIX4X3[];
 extern signed char data_0209f2f8;
 extern int data_02092138;
 extern s16 data_02082214[];
-extern char data_ov100_02148668;
-extern struct VtEntry data_ov100_0214867c[];
+
+/* The model handle reaches its file through this wrapper's constructor and
+ * destructor veneers; the manifest maps each to the retail destination.
+ * A descriptive local type, not a recovered spelling. */
+struct IblModelFile : SharedFilePtr {
+    IblModelFile(u32 fileID);
+    ~IblModelFile();
+};
+
+typedef void (daIbl_c::*IblKindHandler)();
+
+/* This TU's statics, in the order the retail initializer (0x021474e8)
+ * builds them: the ball's model handle (d_a_btfly.cpp also reads it,
+ * through an extern), then one handler per kind. */
+IblModelFile data_ov100_02148668(0x9c00);
+
+IblKindHandler gIblKindHandlers[5] = {
+    &daIbl_c::func_ov100_02142b90, &daIbl_c::func_ov100_02142918, &daIbl_c::func_ov100_021424c0,
+    &daIbl_c::func_ov100_0214272c, &daIbl_c::func_ov100_021424c0,
+};
 
 // @symbol _ZN7daIbl_cD1Ev
 // @symbol _ZN7daIbl_cD0Ev
@@ -727,7 +746,7 @@ int daIbl_c::CleanupResources()
         (dispenser->mLiveBalls)--;
     }
 
-    ((SharedFilePtr *)(&data_ov100_02148668))->Release();
+    data_ov100_02148668.Release();
     return 1;
 }
 
@@ -745,11 +764,11 @@ int daIbl_c::Render()
 
 // @symbol _ZN7daIbl_c8BehaviorEv
 /* Calls the pointer-to-member handler for this ball's kind from the table at
-   data_ov100_0214867c, on this actor. */
+   gIblKindHandlers, on this actor. */
 int daIbl_c::Behavior()
 {
     unsigned char idx = mVariant;
-    struct VtEntry *e = (struct VtEntry *)((char *)data_ov100_0214867c + ((int)idx << 3));
+    struct VtEntry *e = (struct VtEntry *)((char *)gIblKindHandlers + ((int)idx << 3));
     int f1 = e->field1;
     void *obj = (void *)((char *)((void *)this) + (f1 >> 1));
     FnPtr fn;
@@ -774,8 +793,7 @@ int daIbl_c::InitResources()
     int kind;
     int d;
 
-    mModel.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(*(SharedFilePtr *)&data_ov100_02148668),
-                   1, -1);
+    mModel.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(data_ov100_02148668), 1, -1);
     if (mShadowModel.InitCylinder() == 0)
         return 0;
     mVertAccel = -0x4000;
@@ -896,3 +914,16 @@ extern "C" daIbl_c *daIbl_c_classInit(void)
 {
     return new daIbl_c;
 }
+
+/* The actor profile, in SpawnInfo's layout (include/SpawnInfo.h). The
+ * retail values are unchanged. */
+SpawnInfo<daIbl_c> g_profile_IRONBALL = {
+    daIbl_c_classInit, /* classInit */
+    0x00dc,            /* behaviorPriority: the IRONBALL registry id */
+    0x0045,            /* renderPriority */
+    2,                 /* actorFlags */
+    0x64000,           /* clipOffsetY */
+    0x7d0000,          /* clipRadius */
+    0x01800000,        /* clipDistance */
+    0x01800000         /* farDistance */
+};

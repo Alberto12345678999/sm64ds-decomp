@@ -34,8 +34,7 @@
  * - MainMeshCallback and Platform0Callback: testing actorID == 0xbf
  *   inline is 0x34 against 0x40. The int temporary stays on all five
  *   callbacks.
- * - data_ov021_* handles, data_02092768, data_020a0e68 and data_02082214
- *   stay address names (__sinit_ov021_02113500 owns the handles).
+ * - data_02092768, data_020a0e68 and data_02082214 stay address names.
  */
 
 #include "daObjCvNewsLift_c.h"
@@ -49,12 +48,42 @@
 
 struct Quaternion;
 
-/* Four SharedFilePtr handles, declared the way include/decl_common.h
- * declares them and read through a SharedFilePtr cast. */
-extern int data_ov021_021149a0[];
-extern int data_ov021_021149a8[];
-extern int data_ov021_021149b0[];
-extern int data_ov021_021149b8[];
+/* Runtime asset handles, distinct from the NitroFS file IDs. */
+enum daObjCvNewsLift_c_AssetId {
+    ASSET_CV_LIFT_BTN_BMD = 0x05d5,
+    ASSET_CV_LIFT_BTN_KCL = 0x05d6,
+    ASSET_CV_NEWS_LIFT_BMD = 0x05d7,
+    ASSET_CV_NEWS_LIFT_KCL = 0x05d8
+};
+
+/* The handles reach their files through these wrappers' constructor and
+   destructor veneers; the manifest maps each to the retail destination.
+   Descriptive local types, not recovered spellings. */
+struct CvNewsLiftModelFile : SharedFilePtr {
+    CvNewsLiftModelFile(u32 fileID);
+    ~CvNewsLiftModelFile();
+};
+
+struct CvNewsLiftCollisionFile : SharedFilePtr {
+    CvNewsLiftCollisionFile(u32 fileID);
+    ~CvNewsLiftCollisionFile();
+};
+
+/* This TU's file handles and platform offsets, in the order the retail
+   initializer (0x02113500) builds them. */
+CvNewsLiftModelFile gCvNewsLiftModelFile(ASSET_CV_NEWS_LIFT_BMD);
+CvNewsLiftCollisionFile gCvNewsLiftCollisionFile(ASSET_CV_NEWS_LIFT_KCL);
+CvNewsLiftModelFile gCvLiftButtonModelFile(ASSET_CV_LIFT_BTN_BMD);
+CvNewsLiftCollisionFile gCvLiftButtonCollisionFile(ASSET_CV_LIFT_BTN_KCL);
+
+/* Where each platform hangs from the main mesh: +Z, -Z, +X and -X. */
+Vector3 gNewsLiftPlatformOffsets[4] = {
+    Vector3(0, 0x32000, 0xc8000),
+    Vector3(0, 0x32000, -0xc8000),
+    Vector3(0xc8000, 0x32000, 0),
+    Vector3(-0xc8000, 0x32000, 0),
+};
+
 extern CLPS_Block data_ov021_02113a60;
 extern CLPS_Block data_ov021_02113a80;
 
@@ -85,7 +114,6 @@ void func_020393c4(dBgW *collider, void *callback);
 extern struct Matrix4x3 data_020a0e68;
 extern s32 data_02092768[];
 extern s16 data_02082214[];
-extern const Vector3 data_ov021_02114a20[4];
 /* Yaw for the +Z, -Z, +X and -X platforms, in the transform loops' order. */
 extern const u16 sNewsLiftPlatformYaws[4] = {0, 0x8000, 0x4000, 0xc000};
 }
@@ -199,30 +227,29 @@ void daObjCvNewsLift_c::OnPlatform3Ride(dActor_c *player)
 // @symbol _ZN17daObjCvNewsLift_c13InitResourcesEv
 s32 daObjCvNewsLift_c::InitResources()
 {
-    dExtSimpleModel_c::LoadFile(*(SharedFilePtr *)data_ov021_021149a0);
-    dBgW_Kc::LoadFile(*(SharedFilePtr *)data_ov021_021149a8);
-    dExtSimpleModel_c::LoadFile(*(SharedFilePtr *)data_ov021_021149b0);
-    dBgW_Kc::LoadFile(*(SharedFilePtr *)data_ov021_021149b8);
+    dExtSimpleModel_c::LoadFile(gCvNewsLiftModelFile);
+    dBgW_Kc::LoadFile(gCvNewsLiftCollisionFile);
+    dExtSimpleModel_c::LoadFile(gCvLiftButtonModelFile);
+    dBgW_Kc::LoadFile(gCvLiftButtonCollisionFile);
 
-    mModel.SetFile((BMD_File *)((SharedFilePtr *)data_ov021_021149a0)->filePtr, 1, -1);
+    mModel.SetFile((BMD_File *)gCvNewsLiftModelFile.filePtr, 1, -1);
     for (int i = 0; i < 4; i++)
-        mPlatformModels[i].SetFile((BMD_File *)((SharedFilePtr *)data_ov021_021149b0)->filePtr, 1,
-                                   -1);
+        mPlatformModels[i].SetFile((BMD_File *)gCvLiftButtonModelFile.filePtr, 1, -1);
 
     mLoweredPlatform = -1;
     UpdateModelTransforms();
     UpdateClsnTransforms();
 
     ((dBgW_KcMbg *)(&mMeshCollider))
-        ->dBgW_KcMbg::SetFile((KCL_File *)((SharedFilePtr *)data_ov021_021149a8)->filePtr,
-                              *(&mClsnMat), 0x199, mAngleY, *(&data_ov021_02113a60));
+        ->dBgW_KcMbg::SetFile((KCL_File *)gCvNewsLiftCollisionFile.filePtr, *(&mClsnMat), 0x199,
+                              mAngleY, *(&data_ov021_02113a60));
     func_020393d4(&mMeshCollider, (void *)&dBgW::UpdatePosWithTransform);
     func_020393c4(&mMeshCollider, (void *)&MainMeshCallback);
     mMeshCollider.Enable(this);
 
     for (int i = 0; i < 4; i++) {
         ((dBgW_KcMbg *)(&mPlatformColliders[i]))
-            ->dBgW_KcMbg::SetFile((KCL_File *)((SharedFilePtr *)data_ov021_021149b8)->filePtr,
+            ->dBgW_KcMbg::SetFile((KCL_File *)gCvLiftButtonCollisionFile.filePtr,
                                   *(&mPlatformMats[i]), 0x199, mAngleY, *(&data_ov021_02113a80));
         func_020393d4(&mPlatformColliders[i], (void *)&dBgW::UpdatePosWithTransform);
     }
@@ -426,10 +453,10 @@ s32 daObjCvNewsLift_c::CleanupResources()
     mMeshCollider.Disable();
     for (int i = 0; i < 4; i++)
         mPlatformColliders[i].Disable();
-    ((SharedFilePtr *)data_ov021_021149b0)->Release();
-    ((SharedFilePtr *)data_ov021_021149b8)->Release();
-    ((SharedFilePtr *)data_ov021_021149a0)->Release();
-    ((SharedFilePtr *)data_ov021_021149a8)->Release();
+    gCvLiftButtonModelFile.Release();
+    gCvLiftButtonCollisionFile.Release();
+    gCvNewsLiftModelFile.Release();
+    gCvNewsLiftCollisionFile.Release();
     return 1;
 }
 
@@ -455,7 +482,7 @@ void daObjCvNewsLift_c::UpdateModelTransforms()
     Matrix4x3_ApplyInPlaceToRotationY(&data_020a0e68, mAngleY);
     mModel.mat4x3 = data_020a0e68;
     mainMat = &mModel.mat4x3;
-    offset = data_ov021_02114a20;
+    offset = gNewsLiftPlatformOffsets;
     for (i = 0; i < 4; i++) {
         hang = *offset;
         if (mLoweredPlatform == i && !mBumped)
@@ -496,7 +523,7 @@ void daObjCvNewsLift_c::UpdateClsnTransforms()
     mClsnMat = data_020a0e68;
     mMeshCollider.Transform(mClsnMat, mAngleY);
 
-    offset = data_ov021_02114a20;
+    offset = gNewsLiftPlatformOffsets;
     i = 0;
     cursor = this;
     platformMat = mPlatformMats;

@@ -22,6 +22,7 @@
 #include "dBgCh_Actr.h"
 #include "cstd.h"
 #include "math/Approach.h"
+#include "SpawnInfo.h"
 
 struct BMD_File;
 struct Vector3_16;
@@ -54,18 +55,55 @@ extern int data_020a0e68[];
 
 /* model / animation */
 
-/* ov085 statics. data_ov085_0212f280 and data_ov085_021304f4 keep
- * include/decl_common.h's spelling, so this file adds no new reading of
- * either symbol. */
+/* ov085 statics. data_ov085_0212f280 keeps include/decl_common.h's
+ * spelling, so this file adds no new reading of it. */
 extern int data_ov085_0212f280[];      /* the seven animation files */
-extern char data_ov085_021304f4;       /* the model file */
-extern void *data_ov085_021304bc[];
-extern int data_ov085_021304c4[];
-extern void *data_ov085_021304d4[];
-extern int data_ov085_021304e4[];
-extern void *data_ov085_021304ec[];
-extern daPeach_c::StateEntry data_ov085_0213055c[];
 }
+
+/* Runtime asset handles, distinct from the NitroFS file IDs. */
+enum daPeach_c_AssetId {
+    ASSET_PEACH_JUMP_BCA = 0x03f0,
+    ASSET_PEACH_JUMP_END_BCA = 0x03f1,
+    ASSET_PEACH_JUMP_LOOP_BCA = 0x03f2,
+    ASSET_PEACH_LOW_BMD = 0x03f3,
+    ASSET_PEACH_OP_WAIT_BCA = 0x03f4,
+    ASSET_PEACH_RUN_BCA = 0x03f6,
+    ASSET_PEACH_WAIT_BCA = 0x03f7,
+    ASSET_PEACH_WALK_BCA = 0x03f9
+};
+
+/* The handles reach their files through these wrappers' constructor and
+   destructor veneers; the manifest maps each to the retail destination.
+   Descriptive local types, not recovered spellings. */
+struct PeachModelFile : SharedFilePtr {
+    PeachModelFile(u32 fileID);
+    ~PeachModelFile();
+};
+
+struct PeachAnimFile : SharedFilePtr {
+    PeachAnimFile(u32 fileID);
+    ~PeachAnimFile();
+};
+
+/* This TU's file handles, in the order the retail initializer (0x0212f3a0)
+   builds them. */
+PeachModelFile gPeachModelFile(ASSET_PEACH_LOW_BMD);
+PeachAnimFile gPeachWaitAnimationFile(ASSET_PEACH_WAIT_BCA);
+PeachAnimFile gPeachWalkAnimationFile(ASSET_PEACH_WALK_BCA);
+PeachAnimFile gPeachRunAnimationFile(ASSET_PEACH_RUN_BCA);
+PeachAnimFile gPeachJumpAnimationFile(ASSET_PEACH_JUMP_BCA);
+PeachAnimFile gPeachJumpEndAnimationFile(ASSET_PEACH_JUMP_END_BCA);
+PeachAnimFile gPeachJumpLoopAnimationFile(ASSET_PEACH_JUMP_LOOP_BCA);
+PeachAnimFile gPeachOpWaitAnimationFile(ASSET_PEACH_OP_WAIT_BCA);
+
+/* SetState indexes this by state. Each record is {init, behavior} as SetState
+   and Behavior call it; the member names predate this table and do not
+   follow the record order. */
+daPeach_c::StateEntry data_ov085_0213055c[5] = {
+    {&daPeach_c::State4, &daPeach_c::InitState3}, {&daPeach_c::InitState1, &daPeach_c::State3},
+    {&daPeach_c::State1, &daPeach_c::InitState4}, {&daPeach_c::InitState2, &daPeach_c::State2},
+    {&daPeach_c::State0, &daPeach_c::InitState0},
+};
 
 #pragma defer_codegen off
 
@@ -205,7 +243,7 @@ int daPeach_c::InitState0()
 // @symbol _ZN9daPeach_c6State0Ev
 int daPeach_c::State0()
 {
-    mAnmModel.SetAnim((BCA_File *)data_ov085_021304ec[1], 0, 0x1000, 0);
+    mAnmModel.SetAnim((BCA_File *)gPeachJumpAnimationFile.filePtr, 0, 0x1000, 0);
     ((dExtFrameCtrl_c *)&mAnmModel)->SetFlags(0x40000000);
     mHorzSpeed = 0x4000;
     mVertSpeed = 0xa000;
@@ -222,7 +260,7 @@ int daPeach_c::State2()
 // @symbol _ZN9daPeach_c10InitState2Ev
 int daPeach_c::InitState2()
 {
-    mAnmModel.SetAnim((BCA_File *)((void *)data_ov085_021304e4[1]), 0, 0x1000, 0);
+    mAnmModel.SetAnim((BCA_File *)gPeachRunAnimationFile.filePtr, 0, 0x1000, 0);
     mHorzSpeed = 0x4000;
     mStateValue = 3;
     return 1;
@@ -242,7 +280,7 @@ int daPeach_c::InitState4()
 // @symbol _ZN9daPeach_c6State1Ev
 int daPeach_c::State1()
 {
-    mAnmModel.SetAnim((BCA_File *)((void *)data_ov085_021304c4[1]), 0, 0x1000, 0);
+    mAnmModel.SetAnim((BCA_File *)gPeachWalkAnimationFile.filePtr, 0, 0x1000, 0);
     mHorzSpeed = 0x1800;
     mStateValue = 2;
     return 1;
@@ -281,7 +319,7 @@ int daPeach_c::State3()
 // @symbol _ZN9daPeach_c10InitState1Ev
 int daPeach_c::InitState1()
 {
-    mAnmModel.SetAnim((BCA_File *)data_ov085_021304d4[1], 0, 0x1000, 0);
+    mAnmModel.SetAnim((BCA_File *)gPeachWaitAnimationFile.filePtr, 0, 0x1000, 0);
     ((dExtFrameCtrl_c *)&mAnmModel)->currFrame = 0;
     ((dExtFrameCtrl_c *)&mAnmModel)->Advance();
     mTalkState = 1;
@@ -312,7 +350,7 @@ int daPeach_c::InitState3()
 // @symbol _ZN9daPeach_c6State4Ev
 int daPeach_c::State4()
 {
-    mAnmModel.SetAnim((BCA_File *)((void *)data_ov085_021304bc[1]), 0, 0x1000, 0);
+    mAnmModel.SetAnim((BCA_File *)gPeachOpWaitAnimationFile.filePtr, 0, 0x1000, 0);
     mStateValue = 0;
     return 1;
 }
@@ -345,7 +383,7 @@ void daPeach_c::SetState(int state)
  * freed by index. Seven is the count the ROM's `blt` tests against. */
 int daPeach_c::CleanupResources()
 {
-    ((SharedFilePtr *)(&data_ov085_021304f4))->Release();
+    gPeachModelFile.Release();
     s32 i = 0;
     do {
         ((SharedFilePtr *)data_ov085_0212f280[i])->Release();
@@ -391,7 +429,7 @@ int daPeach_c::Behavior()
  * pointer type, it is not an int. */
 int daPeach_c::InitResources()
 {
-    void *f = dExtSimpleModel_c::LoadFile(*(SharedFilePtr *)&data_ov085_021304f4);
+    void *f = dExtSimpleModel_c::LoadFile(gPeachModelFile);
     ((dExtModel_c *)&mAnmModel)->SetFile((BMD_File *)f, 1, -1);
     for (int i = 0; i < 7; i++)
         dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)data_ov085_0212f280[i]);
@@ -415,3 +453,16 @@ extern "C" daPeach_c *daPeach_c_classInit(void)
 {
     return new daPeach_c();
 }
+
+/* The actor profile, in SpawnInfo's layout (include/SpawnInfo.h). The
+ * retail values are unchanged. */
+SpawnInfo<daPeach_c> g_profile_PEACH_PRINCESS = {
+    daPeach_c_classInit, /* classInit */
+    0x00ba,              /* behaviorPriority */
+    0x00ac,              /* renderPriority */
+    0x00000003,          /* actorFlags */
+    0x64000,             /* clipOffsetY */
+    0x64000,             /* clipRadius */
+    0x01000000,          /* clipDistance */
+    0x01000000           /* farDistance */
+};

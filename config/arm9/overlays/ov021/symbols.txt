@@ -55,10 +55,10 @@ data_ov021_021132ec kind:data(any) addr:0x021132ec ambiguous
 data_ov021_02113344 kind:data(any) addr:0x02113344 ambiguous
 data_ov021_021133a8 kind:data(any) addr:0x021133a8 ambiguous
 data_ov021_02113434 kind:data(any) addr:0x02113434 ambiguous
-__sinit_ov021_02113500 kind:function(arm,size=0x188) addr:0x02113500
+__sinit_d_a_obj_cv_news_lift.cpp kind:function(arm,size=0x188) addr:0x02113500
 __sinit_d_a_grock.cpp kind:function(arm,size=0x40) addr:0x02113688
 __sinit_d_a_obj_cv_shutter.cpp kind:function(arm,size=0x6c) addr:0x021136c8
-.p__sinit_ov021_02113500 kind:data(word) addr:0x02113734
+.p__sinit_d_a_obj_cv_news_lift.cpp kind:data(word) addr:0x02113734
 .p__sinit_d_a_grock.cpp kind:data(word) addr:0x02113738
 .p__sinit_d_a_obj_cv_shutter.cpp kind:data(word) addr:0x0211373c
 data_ov021_02113760 kind:data(any) addr:0x02113760
@@ -213,10 +213,10 @@ _ZTS16daObjCvShutter_c kind:data(any) addr:0x021148dc
 data_ov021_021148e0 kind:data(any) addr:0x021148e0 ambiguous
 g_profile_CV_SHUTTER kind:data(any) addr:0x021148f0 ambiguous
 _ZTV16daObjCvShutter_c kind:data(any) addr:0x02114914
-data_ov021_021149a0 kind:bss addr:0x021149a0
-data_ov021_021149a8 kind:bss addr:0x021149a8
-data_ov021_021149b0 kind:bss addr:0x021149b0
-data_ov021_021149b8 kind:bss addr:0x021149b8
+gCvNewsLiftModelFile kind:bss addr:0x021149a0
+gCvNewsLiftCollisionFile kind:bss addr:0x021149a8
+gCvLiftButtonModelFile kind:bss addr:0x021149b0
+gCvLiftButtonCollisionFile kind:bss addr:0x021149b8
 data_ov021_021149c0 kind:bss addr:0x021149c0
 data_ov021_021149cc kind:bss addr:0x021149cc
 data_ov021_021149d8 kind:bss addr:0x021149d8
@@ -226,7 +226,7 @@ data_ov021_021149fc kind:bss addr:0x021149fc
 data_ov021_02114a08 kind:bss addr:0x02114a08
 data_ov021_02114a14 kind:bss addr:0x02114a14
 data_ov021_02114a18 kind:bss addr:0x02114a18 ambiguous
-data_ov021_02114a20 kind:bss addr:0x02114a20
+gNewsLiftPlatformOffsets kind:bss addr:0x02114a20
 data_ov021_02114a2c kind:bss addr:0x02114a2c
 data_ov021_02114a38 kind:bss addr:0x02114a38
 data_ov021_02114a44 kind:bss addr:0x02114a44

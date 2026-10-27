@@ -8780,6 +8780,26 @@ likely owner, but it is about 21 one-function shards with no manifest, and in ar
 sinit itself references the object (the readers are ov002, ov006 and ov100). It can move once
 that run is promoted as a TU.
 
+**Overlay batch 2 (2026-10-27):** 13 more overlay shards fold into their owner TUs by the recipe
+above: ov009 McWater, ov021 CvNewsLift, ov022 Fl_UkiKi, ov065 Yurei_Mucho, ov077 Tgz, ov079
+BkKillerdai, ov084 RedBombhei and Pkn, ov085 Kinopio and Peach, ov100 Ibl, ov102 Bmb and ov002
+Kurumajiku. Three things were new. First, a TU that keeps a PMF table and has non-PMF fields in
+the same record (Kinopio's state name) puts the record in `.data`, not `.bss`. A TU whose PMF
+literals become its own then has to claim its whole contiguous `.data` run: literals, strings,
+`_ZTS`/`_ZTI`, a typed `SpawnInfo<T>` profile and the vtable (`emitted_storage_address` =
+address point - 8). Second, a TU at the end of a module's `.data` or `.bss` (Pkn) needs a
+terminator row in `symbols.txt` at its section end, as ov072/ov078 already have. Without it
+dsd sizes its last symbol to the section end and refuses the delink. Third, a handle that
+another TU reads by its address name keeps that name (Pkn's seven, which d_a_f_pkn.cpp reads).
+dsd's interior labels inside a `Vector3` array (Kurumajiku) must stay in `symbols.txt`, because
+`dsd delink` needs a symbol at every relocation target. The manifest's `.init` relocations then
+read as table + offset, as mwcc emits them.
+Still shards, with the reason in the PR body: ov002 (three: an owner with no `.text`, the ending
+demo's ~40-literal PMF run, and an 8-byte `{fn, 0}` table of non-member functions), ov004 and
+ov006 (array-ctor TUs, the bomroom and roulette scenes, the trampoline Mario handles and an
+empty 4-byte sinit), ov022 FlMaruta (its merged TU already emits a sinit), ov030 Mky, and
+ov075 (two).
+
 ## 6dg. arm9 static initializers folded into their owners (2026-10-27)
 
 Seven of the 23 handwritten arm9 `__sinit_0207xxxx` shards are now emitted by their owner TU.
