@@ -1408,6 +1408,9 @@ src/engine/collision/d_bg_w.cpp:
 src/engine/collision/d_bg_w_kc.cpp:
     complete
     .text start:0x020396d8 end:0x020398fc
+    .init start:0x02074fe4 end:0x0207501c
+    .ctor start:0x02086b98 end:0x02086b9c
+    .bss start:0x020a0ce0 end:0x020a0d00
 
 src/engine/collision/d_bg_w_kc_mbg.cpp:
     complete
@@ -5244,10 +5247,6 @@ src/unnamed/arm9/0207/__sinit_02074e80.c:
 src/unnamed/arm9/0207/__sinit_02074e84.cpp:
     complete
     .init start:0x02074e84 end:0x02074edc
-
-src/unnamed/arm9/0207/__sinit_02074fe4.c:
-    complete
-    .init start:0x02074fe4 end:0x0207501c
 
 src/unnamed/arm9/0207/__sinit_02075054.c:
     complete
