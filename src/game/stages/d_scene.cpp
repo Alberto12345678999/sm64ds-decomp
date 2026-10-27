@@ -85,7 +85,10 @@ extern fBase_c *data_0209f5c0;
 extern void *data_0209f1e4;
 extern void func_02011b7c(void);
 
-extern char data_0209b53c[];
+/* Sound.cpp's sound-object registry; only its address is needed here.
+   local extern: SndRegTable is Sound.cpp's own type, no header declares it. */
+struct SndRegTable;
+extern SndRegTable data_0209b53c;
 extern void func_02011974(void *object);
 
 extern u8 data_02092660;
@@ -287,7 +290,7 @@ int dScene_c::BeforeCleanupResources()
 {
     if (!fBase_c::BeforeCleanupResources())
         return 0;
-    func_02011974(data_0209b53c);
+    func_02011974(&data_0209b53c);
     return 1;
 }
 
