@@ -146,7 +146,7 @@ data_ov065_0211c0b8 kind:data(any) addr:0x0211c0b8
 data_ov065_0211c0c8 kind:data(any) addr:0x0211c0c8
 data_ov065_0211c0d0 kind:data(any) addr:0x0211c0d0
 data_ov065_0211c0d4 kind:data(any) addr:0x0211c0d4
-__sinit_ov065_0211c110 kind:function(arm,size=0x198) addr:0x0211c110
+__sinit_d_a_yurei_mucho.cpp kind:function(arm,size=0x198) addr:0x0211c110
 __sinit_d_a_basabasa.cpp kind:function(arm,size=0x198) addr:0x0211c2a8
 __sinit_d_a_dossy.cpp kind:function(arm,size=0x220) addr:0x0211c440
 __sinit_d_a_obj_ct_rotate_block.cpp kind:function(arm,size=0x10c) addr:0x0211c660
@@ -156,7 +156,7 @@ __sinit_d_a_obj_ct_mecha05.cpp kind:function(arm,size=0x6c) addr:0x0211c890
 __sinit_d_a_obj_ct_kaitendai.cpp kind:function(arm,size=0xbc) addr:0x0211c8fc
 __sinit_d_a_obj_ct_mecha08.cpp kind:function(arm,size=0xbc) addr:0x0211c9b8
 __sinit_d_a_obj_ct_mecha09.cpp kind:function(arm,size=0x6c) addr:0x0211ca74
-.p__sinit_ov065_0211c110 kind:data(word) addr:0x0211cae0
+.p__sinit_d_a_yurei_mucho.cpp kind:data(word) addr:0x0211cae0
 .p__sinit_d_a_basabasa.cpp kind:data(word) addr:0x0211cae4
 .p__sinit_d_a_dossy.cpp kind:data(word) addr:0x0211cae8
 .p__sinit_d_a_obj_ct_rotate_block.cpp kind:data(word) addr:0x0211caec
@@ -256,10 +256,10 @@ data_ov065_0211d520 kind:data(any) addr:0x0211d520
 _ZTS16daObjCtMecha09_c kind:data(any) addr:0x0211d530
 g_profile_CT_MECHA09 kind:data(any) addr:0x0211d544 ambiguous
 _ZTV16daObjCtMecha09_c kind:data(any) addr:0x0211d568
-data_ov065_0211d600 kind:bss addr:0x0211d600
-data_ov065_0211d608 kind:bss addr:0x0211d608
+gYureiMuchoWaitAnimFile kind:bss addr:0x0211d600
+gYureiMuchoAttackAnimFile kind:bss addr:0x0211d608
 data_ov065_0211d610 kind:bss addr:0x0211d610
-data_ov065_0211d618 kind:bss addr:0x0211d618
+gYureiMuchoModelFile kind:bss addr:0x0211d618
 data_ov065_0211d620 kind:bss addr:0x0211d620
 data_ov065_0211d62c kind:bss addr:0x0211d62c
 data_ov065_0211d638 kind:bss addr:0x0211d638
