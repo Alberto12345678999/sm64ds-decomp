@@ -16,6 +16,7 @@
 #include "dExtAnmTexPat_c.h"
 #include "dBgCh_Gnd.h"
 #include "Sound.h"
+#include "math/Approach.h"
 
 struct BMD_File;
 struct BTP_File;
@@ -42,7 +43,6 @@ int Vec3_HorzDist(const void *a, const void *b);
 short Vec3_HorzAngle(const void *a, const void *b);
 }
 
-bool ApproachLinear(short &value, short target, short step);
 
 // @symbol _ZN12daBgSnmHed_cD1Ev
 // @symbol _ZN12daBgSnmHed_cD0Ev

@@ -67,6 +67,7 @@ enum daWater_Tatumaki_c_AssetId {
 #include "SharedFilePtr.h"
 #include "dExtAnmTexSRT_c.h"
 #include "private/mtx43.h"
+#include "math/Approach.h"
 
 /* 20.12 distances and s16 angles used by the funnel. Same numeric value can
    be a fix12 step and an angle; the names stay with the call that uses them. */
@@ -136,8 +137,6 @@ extern int _Z14ApproachLinearR7Vector3RKS_5Fix12IiE(Vector3 &value, const Vector
 #define Particle_System_New Particle::System::New
 #define ApproachLinearVec _Z14ApproachLinearR7Vector3RKS_5Fix12IiE
 
-void ApproachLinear2(s16 &value, s16 target, s16 step);
-void ApproachLinear(int &value, int target, int step);
 
 extern "C" int func_ov026_02111ee0(daWater_Tatumaki_c *self, const daWater_Tatumaki_c::State *state);
 

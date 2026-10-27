@@ -20,6 +20,7 @@
 #include "dCamera_c.h"
 #include "Message.h"
 #include "Sound.h"
+#include "math/Approach.h"
 
 namespace Sound {
 bool PlaySub(u32, u32, u32, int, bool);
@@ -72,7 +73,6 @@ extern MipKeyPMF data_ov085_02130174;
 
 }
 
-int ApproachLinear(int &cur, int tgt, int step);
 
 #pragma defer_codegen off
 

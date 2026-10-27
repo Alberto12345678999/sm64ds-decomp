@@ -34,6 +34,7 @@
 #include "Particle__System.h"
 #include "Player.h"
 #include "SurfaceInfo.h"
+#include "math/Approach.h"
 
 /* The registry factory behind the KERONPA_FIRE profile.
  * `return new daKpFr_c()` emits 0x48 with the synthesized ctor storing
@@ -158,7 +159,6 @@ int daKpFr_c::func_ov070_02121fb0()
     return 1;
 }
 
-bool ApproachLinear(short &value, short target, short step);
 
 extern "C" {
 extern unsigned char DecIfAbove0_Byte(unsigned char* p);

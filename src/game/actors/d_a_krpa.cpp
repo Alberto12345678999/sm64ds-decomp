@@ -45,6 +45,7 @@ enum d_a_krpa_AssetId {
 #include "SharedFilePtr.h"
 #include "nitro/fx/fx.h"
 #include "Sound.h"
+#include "math/Approach.h"
 
 // @symbol daKrpa_c_classInit
 /* `return new daKrpa_c()` emits 0x50, calling the inherited
@@ -367,7 +368,6 @@ void daKrpa_c::func_ov070_02121310()
                         this->mGroundDistance, 0xf);
 }
 
-bool ApproachLinear(short &value, short target, short step);
 extern "C" {
 extern int Vec3_Dist(void* a, void* b);
 extern short Vec3_HorzAngle(void* a, void* b);

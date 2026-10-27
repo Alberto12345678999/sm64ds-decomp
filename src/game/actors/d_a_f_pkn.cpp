@@ -36,6 +36,7 @@
 #include "Sound.h"
 #include "Particle__System.h"
 #include "nitro/fx/fx.h"
+#include "math/Approach.h"
 
 #pragma defer_codegen off
 
@@ -100,8 +101,6 @@ enum {
     SND_HIT = 0x1e               /* FIREPAKUN is hit */
 };
 
-int ApproachLinear(int &value, int target, int step);
-bool ApproachLinear(short &value, short target, short step);
 
 /* daPkn_c::EnterLunge, declared on the class's own header: hands the
    spawned PAKUN the grow-in frame. */

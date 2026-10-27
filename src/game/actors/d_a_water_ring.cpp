@@ -22,6 +22,7 @@
 #include "SharedFilePtr.h"
 #include "dExtAnmTexSRT_c.h"
 #include "Player.h"
+#include "math/Approach.h"
 
 extern "C" {
 /* The two state tables, ov064 .bss; the definitions at the end of this
@@ -50,7 +51,6 @@ void Matrix4x3_ApplyInPlaceToRotationXYZExt(void *m, int x, int y, int z);
 
 extern SharedFilePtr data_ov002_0210da10;   /* the ring's BMD */
 
-void ApproachLinear(int &value, int target, int step);
 
 // @symbol _ZN14daWater_Ring_cD1Ev
 // @symbol _ZN14daWater_Ring_cD0Ev

@@ -62,9 +62,7 @@ enum d_a_nknk_AssetId {
 #include "dBgPi.h"
 #include "nitro/fx/fx.h"
 #include "Sound.h"
-
-int ApproachLinear(int &value, int target, int step);
-bool ApproachLinear(short &value, short target, short step);
+#include "math/Approach.h"
 
 /* File-scope resource handles: the ctor/dtor are the ROM's SharedFilePtr
  * veneer pairs (func_02017acc / func_02017ab4 for the two models,

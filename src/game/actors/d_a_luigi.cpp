@@ -39,6 +39,7 @@
 #include "daLuigi_c.h"
 #include "SharedFilePtr.h"
 #include "Player.h"
+#include "math/Approach.h"
 
 /* Twelve-word copy. Assigning Matrix4x3 itself is a different sequence. */
 struct Mtx { int m[12]; };
@@ -65,7 +66,6 @@ struct Obj;
 #define kAppearSound 0x179
 #define kMirrorSx (-0x1000)
 
-int ApproachLinear(int &value, int target, int step);
 
 extern "C" {
 /* Reflection state in this overlay. b68 is the request: bit 0 resets, bit 1

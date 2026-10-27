@@ -41,6 +41,7 @@ struct System {
 #include "SharedFilePtr.h"
 #include "dMgJump3DMario_c.h"
 #include "Heyho.h"
+#include "math/Approach.h"
 /* Typed access to a Heyho record from the char* helpers below. */
 #define HEYHO(p) ((Heyho *)(p))
 
@@ -192,7 +193,6 @@ namespace n020c6a9c {
 extern "C" {
 // @symbol Heyho_MotionFlyIn
 extern void AddVec3(struct Vector3 *a, struct Vector3 *b, struct Vector3 *c);
-extern int _Z15ApproachLinear2Rsss(short *v, short target, short step);
 
 void Heyho_MotionFlyIn(char *c) {
     short *ang = &HEYHO(c)->mPhase;
@@ -249,7 +249,7 @@ void Heyho_MotionFlyIn(char *c) {
         }
     }
 
-    _Z15ApproachLinear2Rsss(&HEYHO(c)->mDelay, 0, 1);
+    ApproachLinear2(HEYHO(c)->mDelay, 0, 1);
     if (HEYHO(c)->mDelay != 1)
         return;
     D3D_PlaySeAtX(0x1c5, HEYHO(c)->mPos.x);
@@ -338,7 +338,6 @@ struct Obj;
 
 extern void AddVec3(Vec3 *a, Vec3 *b, Vec3 *c);
 extern int LenVec3(Vec3 *v);
-extern void _Z15ApproachLinear2Rsss(short *v, short t, short s);
 extern int D3D_PlaySeAtX(int a, int b);
 extern void Heyho_StartMotionHover(char *p);
 extern void Heyho_StartMotionPatrolBob(int *c);
@@ -422,7 +421,7 @@ void Heyho_MotionRegroup(char *c) {
         }
     }
 
-    _Z15ApproachLinear2Rsss(&HEYHO(c)->mDelay, 0, 1);
+    ApproachLinear2(HEYHO(c)->mDelay, 0, 1);
 
     if (HEYHO(c)->mDelay == 1) {
         D3D_PlaySeAtX(0x1c5, HEYHO(c)->mPos.x);
@@ -522,7 +521,6 @@ typedef struct { int x, y, z; } Vec3;
 extern void Vec3_Sub(Vec3 *out, Vec3 *a, Vec3 *b);
 extern void Vec3_MulScalar(Vec3 *out, const Vec3 *in, int scale);
 extern void AddVec3(Vec3 *a, Vec3 *b, Vec3 *c);
-extern int _Z14ApproachLinearRsss(short *value, short target, short step);
 extern void Heyho_SetIdle(char *self);
 
 void Heyho_MotionLeave(char *self) {
@@ -539,9 +537,9 @@ void Heyho_MotionLeave(char *self) {
     HEYHO(self)->mVel.z = scaled.z;
     AddVec3((Vec3 *)&HEYHO(self)->mPos, (Vec3 *)&HEYHO(self)->mVel, (Vec3 *)&HEYHO(self)->mPos);
     if (HEYHO(self)->mVel.x > 0)
-        _Z14ApproachLinearRsss(&HEYHO(self)->mLean, 0x3000, 0x200);
+        ApproachLinear(HEYHO(self)->mLean, 0x3000, 0x200);
     else
-        _Z14ApproachLinearRsss(&HEYHO(self)->mLean, -0x3000, 0x200);
+        ApproachLinear(HEYHO(self)->mLean, -0x3000, 0x200);
     x = HEYHO(self)->mVel.x;
     if (x < 0) x = -x;
     if (x >= 0x20) return;
@@ -609,7 +607,6 @@ void Heyho_StartMotionPatrolBob(int *c) {
 namespace n020c627c {
 extern "C" {
 extern void AddVec3(void* a, void* b, void* c);
-extern int _Z14ApproachLinearRsss(short *value, short target, short step);
 extern void Heyho_CheckHitB(void* c);
 extern short data_02082214[];
 
@@ -635,9 +632,9 @@ void Heyho_MotionPatrolBob(char *c) {
 skip_else_if:
     w = HEYHO(c)->mVel.x;
     if (w > 0)
-        _Z14ApproachLinearRsss(&HEYHO(c)->mLean, 0x3000, 0x200);
+        ApproachLinear(HEYHO(c)->mLean, 0x3000, 0x200);
     else
-        _Z14ApproachLinearRsss(&HEYHO(c)->mLean, -0x3000, 0x200);
+        ApproachLinear(HEYHO(c)->mLean, -0x3000, 0x200);
     Heyho_CheckHitB(c);
 }
 }
@@ -701,7 +698,6 @@ namespace n020c6088 {
 extern "C" {
 // @symbol Heyho_MotionBounceNear
 extern void AddVec3(struct Vector3 *a, struct Vector3 *b, struct Vector3 *c);
-extern int _Z14ApproachLinearRsss(short *value, short target, short step);
 
 void Heyho_MotionBounceNear(char *c) {
     int base_y = HEYHO(c)->mGoal.y;
@@ -745,9 +741,9 @@ after_y:;
 
     AddVec3(&HEYHO(c)->mPos, &HEYHO(c)->mVel, &HEYHO(c)->mPos);
     if (HEYHO(c)->mVel.x > 0)
-        _Z14ApproachLinearRsss(&HEYHO(c)->mLean, 0x3000, 0x200);
+        ApproachLinear(HEYHO(c)->mLean, 0x3000, 0x200);
     else
-        _Z14ApproachLinearRsss(&HEYHO(c)->mLean, -0x3000, 0x200);
+        ApproachLinear(HEYHO(c)->mLean, -0x3000, 0x200);
     Heyho_CheckHitB(c);
 }
 }
@@ -840,11 +836,9 @@ void Heyho_StartMotionVShape(char *self) {
 namespace n020c5d28 {
 extern "C" {
 typedef struct { int x, y, z; } Vec3;
-extern int _Z14ApproachLinearRiii(int* v, int target, int step);
 extern void Vec3_Sub(Vec3* out, Vec3* a, Vec3* b);
 extern void func_0203ce80(Vec3* dst, Vec3* src);
 extern void Vec3_MulScalarInPlace(int* v, int s);
-extern int _Z14ApproachLinearRsss(short *value, short target, short step);
 extern void Heyho_CheckHitB(void* c);
 
 void Heyho_MotionVShape(char *c) {
@@ -853,9 +847,9 @@ void Heyho_MotionVShape(char *c) {
     int t;
 
     t = HEYHO(c)->mVel.x;
-    r5 = _Z14ApproachLinearRiii(&HEYHO(c)->mPos.x, HEYHO(c)->mWaypoint.x, t < 0 ? -t : t);
+    r5 = ApproachLinear(HEYHO(c)->mPos.x, HEYHO(c)->mWaypoint.x, t < 0 ? -t : t);
     t = HEYHO(c)->mVel.y;
-    r0v = _Z14ApproachLinearRiii(&HEYHO(c)->mPos.y, HEYHO(c)->mWaypoint.y, t < 0 ? -t : t);
+    r0v = ApproachLinear(HEYHO(c)->mPos.y, HEYHO(c)->mWaypoint.y, t < 0 ? -t : t);
 
     if (r5 != 0 && r0v != 0 && HEYHO(c)->mWaypoint.y == HEYHO(c)->mRangeBottom) {
         int c_a8 = HEYHO(c)->mVel.x;
@@ -886,9 +880,9 @@ void Heyho_MotionVShape(char *c) {
     }
 
     if (HEYHO(c)->mVel.x > 0)
-        _Z14ApproachLinearRsss(&HEYHO(c)->mLean, 0x3000, 0x200);
+        ApproachLinear(HEYHO(c)->mLean, 0x3000, 0x200);
     else
-        _Z14ApproachLinearRsss(&HEYHO(c)->mLean, -0x3000, 0x200);
+        ApproachLinear(HEYHO(c)->mLean, -0x3000, 0x200);
 
     Heyho_CheckHitB(c);
 }
@@ -916,7 +910,6 @@ namespace n020c5bf8 {
 extern "C" {
 // @symbol Heyho_MotionBounceInRange
 extern void AddVec3(struct Vector3 *a, struct Vector3 *b, struct Vector3 *c);
-extern int _Z14ApproachLinearRsss(short *value, short target, short step);
 
 void Heyho_MotionBounceInRange(char *c) {
     int a8 = HEYHO(c)->mVel.x;
@@ -933,9 +926,9 @@ void Heyho_MotionBounceInRange(char *c) {
     }
     AddVec3(&HEYHO(c)->mPos, &HEYHO(c)->mVel, &HEYHO(c)->mPos);
     if (HEYHO(c)->mVel.x > 0)
-        _Z14ApproachLinearRsss(&HEYHO(c)->mLean, 0x3000, 0x200);
+        ApproachLinear(HEYHO(c)->mLean, 0x3000, 0x200);
     else
-        _Z14ApproachLinearRsss(&HEYHO(c)->mLean, -0x3000, 0x200);
+        ApproachLinear(HEYHO(c)->mLean, -0x3000, 0x200);
     Heyho_CheckHitB(c);
 }
 }
@@ -1018,11 +1011,9 @@ void Heyho_StartMotionDiagonal(struct Obj *o) {
 namespace n020c5928 {
 extern "C" {
 typedef struct { int x, y, z; } Vec3;
-extern int _Z14ApproachLinearRiii(int* v, int target, int step);
 extern void Vec3_Sub(Vec3* out, Vec3* a, Vec3* b);
 extern void func_0203ce80(Vec3* dst, Vec3* src);
 extern void Vec3_MulScalarInPlace(int* v, int s);
-extern int _Z14ApproachLinearRsss(short *value, short target, short step);
 extern void Heyho_CheckHitB(void* c);
 
 void Heyho_MotionDiagonal(char *c) {
@@ -1031,9 +1022,9 @@ void Heyho_MotionDiagonal(char *c) {
     int t;
 
     t = HEYHO(c)->mVel.x;
-    r5 = _Z14ApproachLinearRiii(&HEYHO(c)->mPos.x, HEYHO(c)->mWaypoint.x, t < 0 ? -t : t);
+    r5 = ApproachLinear(HEYHO(c)->mPos.x, HEYHO(c)->mWaypoint.x, t < 0 ? -t : t);
     t = HEYHO(c)->mVel.y;
-    r0v = _Z14ApproachLinearRiii(&HEYHO(c)->mPos.y, HEYHO(c)->mWaypoint.y, t < 0 ? -t : t);
+    r0v = ApproachLinear(HEYHO(c)->mPos.y, HEYHO(c)->mWaypoint.y, t < 0 ? -t : t);
 
     if (r5 != 0 && r0v != 0 && HEYHO(c)->mWaypoint.y == HEYHO(c)->mRangeBottom) {
         HEYHO(c)->mWaypoint.x = HEYHO(c)->mRangeLeft;
@@ -1058,9 +1049,9 @@ void Heyho_MotionDiagonal(char *c) {
     }
 
     if (HEYHO(c)->mVel.x > 0)
-        _Z14ApproachLinearRsss(&HEYHO(c)->mLean, 0x3000, 0x200);
+        ApproachLinear(HEYHO(c)->mLean, 0x3000, 0x200);
     else
-        _Z14ApproachLinearRsss(&HEYHO(c)->mLean, -0x3000, 0x200);
+        ApproachLinear(HEYHO(c)->mLean, -0x3000, 0x200);
 
     Heyho_CheckHitB(c);
 }
@@ -1144,11 +1135,9 @@ void Heyho_StartMotionDiagonalMirror(struct Obj *o) {
 namespace n020c5658 {
 extern "C" {
 typedef struct { int x, y, z; } Vec3;
-extern int _Z14ApproachLinearRiii(int* v, int target, int step);
 extern void Vec3_Sub(Vec3* out, Vec3* a, Vec3* b);
 extern void func_0203ce80(Vec3* dst, Vec3* src);
 extern void Vec3_MulScalarInPlace(int* v, int s);
-extern int _Z14ApproachLinearRsss(short *value, short target, short step);
 extern void Heyho_CheckHitB(void* c);
 
 void Heyho_MotionDiagonalMirror(char *c) {
@@ -1157,9 +1146,9 @@ void Heyho_MotionDiagonalMirror(char *c) {
     int t;
 
     t = HEYHO(c)->mVel.x;
-    r5 = _Z14ApproachLinearRiii(&HEYHO(c)->mPos.x, HEYHO(c)->mWaypoint.x, t < 0 ? -t : t);
+    r5 = ApproachLinear(HEYHO(c)->mPos.x, HEYHO(c)->mWaypoint.x, t < 0 ? -t : t);
     t = HEYHO(c)->mVel.y;
-    r0v = _Z14ApproachLinearRiii(&HEYHO(c)->mPos.y, HEYHO(c)->mWaypoint.y, t < 0 ? -t : t);
+    r0v = ApproachLinear(HEYHO(c)->mPos.y, HEYHO(c)->mWaypoint.y, t < 0 ? -t : t);
 
     if (r5 != 0 && r0v != 0 && HEYHO(c)->mWaypoint.y == HEYHO(c)->mRangeBottom) {
         HEYHO(c)->mWaypoint.x = HEYHO(c)->mRangeRight;
@@ -1184,9 +1173,9 @@ void Heyho_MotionDiagonalMirror(char *c) {
     }
 
     if (HEYHO(c)->mVel.x > 0)
-        _Z14ApproachLinearRsss(&HEYHO(c)->mLean, 0x3000, 0x200);
+        ApproachLinear(HEYHO(c)->mLean, 0x3000, 0x200);
     else
-        _Z14ApproachLinearRsss(&HEYHO(c)->mLean, -0x3000, 0x200);
+        ApproachLinear(HEYHO(c)->mLean, -0x3000, 0x200);
 
     Heyho_CheckHitB(c);
 }
@@ -1213,7 +1202,6 @@ namespace n020c5530 {
 extern "C" {
 // @symbol Heyho_MotionCircleUpper
 extern void AddVec3(struct Vector3 *a, struct Vector3 *b, struct Vector3 *c);
-extern int _Z14ApproachLinearRsss(short *value, short target, short step);
 
 void Heyho_MotionCircleUpper(char *c) {
     int a8 = HEYHO(c)->mVel.x;
@@ -1234,9 +1222,9 @@ void Heyho_MotionCircleUpper(char *c) {
     }
     AddVec3(&HEYHO(c)->mPos, &HEYHO(c)->mVel, &HEYHO(c)->mPos);
     if (HEYHO(c)->mVel.x > 0)
-        _Z14ApproachLinearRsss(&HEYHO(c)->mLean, 0x3000, 0x200);
+        ApproachLinear(HEYHO(c)->mLean, 0x3000, 0x200);
     else
-        _Z14ApproachLinearRsss(&HEYHO(c)->mLean, -0x3000, 0x200);
+        ApproachLinear(HEYHO(c)->mLean, -0x3000, 0x200);
     Heyho_CheckHitB(c);
 }
 }
@@ -1262,7 +1250,6 @@ namespace n020c53f8 {
 extern "C" {
 // @symbol Heyho_MotionCircleLower
 extern void AddVec3(struct Vector3 *a, struct Vector3 *b, struct Vector3 *c);
-extern int _Z14ApproachLinearRsss(short *value, short target, short step);
 
 void Heyho_MotionCircleLower(char *c) {
     int a8 = HEYHO(c)->mVel.x;
@@ -1283,9 +1270,9 @@ void Heyho_MotionCircleLower(char *c) {
     }
     AddVec3(&HEYHO(c)->mPos, &HEYHO(c)->mVel, &HEYHO(c)->mPos);
     if (HEYHO(c)->mVel.x > 0)
-        _Z14ApproachLinearRsss(&HEYHO(c)->mLean, 0x3000, 0x200);
+        ApproachLinear(HEYHO(c)->mLean, 0x3000, 0x200);
     else
-        _Z14ApproachLinearRsss(&HEYHO(c)->mLean, -0x3000, 0x200);
+        ApproachLinear(HEYHO(c)->mLean, -0x3000, 0x200);
     Heyho_CheckHitB(c);
 }
 }
@@ -1318,7 +1305,6 @@ void Heyho_StartMotionChase(char *c) {
 }
 
 /* ---- Heyho_MotionChase ---- */
-bool ApproachLinear(short &value, short target, short step);
 namespace n020c4fa4 {
 
 typedef struct Vec3 { int x, y, z; } Vec3;
@@ -1330,8 +1316,6 @@ struct VB {
 };
 
 extern "C" {
-extern int _Z14ApproachLinearRiii(int *p, int t, int r);
-extern int _Z15ApproachLinear2Rsss(short *p, short t, short r);
 extern int RandomIntInternal(int *seed);
 extern int NormalizeVec3IfNonZero(Vec3 *v);
 extern int Vec3_Dist(Vec3 *a, Vec3 *b);
@@ -1362,25 +1346,25 @@ extern "C" void Heyho_MotionChase(char *c) {
     int bm, i, ra, rb;
 
     if (HEYHO(c)->mSeparated != 0) {
-        _Z14ApproachLinearRiii(&HEYHO(c)->mWaypoint.x, HEYHO(c)->mPos.x, 0x1000);
-        _Z14ApproachLinearRiii(&HEYHO(c)->mWaypoint.y, HEYHO(c)->mPos.y, 0x1000);
+        ApproachLinear(HEYHO(c)->mWaypoint.x, HEYHO(c)->mPos.x, 0x1000);
+        ApproachLinear(HEYHO(c)->mWaypoint.y, HEYHO(c)->mPos.y, 0x1000);
     }
     {
         int t = HEYHO(c)->mVel.x;
         if (t < 0) t = -t;
-        ra = _Z14ApproachLinearRiii(&HEYHO(c)->mPos.x, HEYHO(c)->mWaypoint.x, t);
+        ra = ApproachLinear(HEYHO(c)->mPos.x, HEYHO(c)->mWaypoint.x, t);
     }
     {
         int t = HEYHO(c)->mVel.y;
         if (t < 0) t = -t;
-        rb = _Z14ApproachLinearRiii(&HEYHO(c)->mPos.y, HEYHO(c)->mWaypoint.y, t);
+        rb = ApproachLinear(HEYHO(c)->mPos.y, HEYHO(c)->mWaypoint.y, t);
     }
     if (ra != 0)
         HEYHO(c)->mVel.x = 0;
     if (rb != 0)
         HEYHO(c)->mVel.y = 0;
     if (ra != 0 && rb != 0 && ApproachLinear(HEYHO(c)->mLean, 0, 0x200) != 0 &&
-        _Z15ApproachLinear2Rsss(&HEYHO(c)->mDelay, 0, 1) != 0) {
+        ApproachLinear2(HEYHO(c)->mDelay, 0, 1) != 0) {
         best = 0;
         bm = 0x20000;
         for (i = 0; i < 3; i++) {
@@ -1509,7 +1493,6 @@ namespace n020c4d3c {
 extern "C" {
 typedef int Fix12;
 extern void *d_mg3d_heyho_obj_adapterNewSimpleHold(unsigned int id, Fix12 x, Fix12 y, Fix12 z);
-extern void _Z14ApproachLinearRiii(int* p, int a, int b);
 extern void Camera_ProjectToScreen(void* a, void* b, int* c, int* d);
 extern int Mg_GetTopScreenYOffset(void);
 extern void Jump2Popup_Spawn(int a, int b, int c);
@@ -1547,8 +1530,8 @@ void Heyho_Settle(char* c)
     if (b)
         ((ParticleSystemView *)a)->callbackScale = t;
 
-    _Z14ApproachLinearRiii(sHeyhoUnsettledCount, 0, 1);
-    _Z14ApproachLinearRiii(&sJumpComboCount, 0x270f, 1);
+    ApproachLinear(*sHeyhoUnsettledCount, 0, 1);
+    ApproachLinear(sJumpComboCount, 0x270f, 1);
 
     if (sHeyhoScorePopups != 0) {
         if (HEYHO(c)->mPos.y > 0) {
@@ -2121,7 +2104,6 @@ extern int data_0209e650;
 
 extern int RandomIntInternal(int *seed);
 extern void Heyho_StartMotionRegroup(char *a, char *b);
-extern void _Z14ApproachLinearRiii(int *x, int target, int step);
 
 void Heyho_SettleAll(void)
 {
@@ -2139,7 +2121,7 @@ void Heyho_SettleAll(void)
             Heyho_StartMotionRegroup((char *)sHeyhos + i * 0xf0,
                                      &sHeyhoSettlePaths + (((int)(v0 * 9)) >> 0xc) * 0xf0 +
                                          (((int)(u0 * 5)) >> 0xc) * 0x30);
-            _Z14ApproachLinearRiii(&sHeyhoUnsettledCount, sHeyhoCount, 1);
+            ApproachLinear(sHeyhoUnsettledCount, sHeyhoCount, 1);
             return;
         }
     }

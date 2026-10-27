@@ -138,6 +138,7 @@ enum daObjMarioCap_c_AssetId {
 #include "SurfaceInfo.h"
 #include "dBgCh_Gnd.h"
 #include "dBgCh_Actr.h"
+#include "math/Approach.h"
 
 /* --------------------------------------------------------------------------
  * Local shapes the merged members need.
@@ -240,8 +241,6 @@ void  Matrix4x3_FromTranslation(Matrix4x3 *m, int x, int y, int z);
 void  Matrix4x3_ApplyInPlaceToRotationXYZExt(Matrix4x3 *m, int x, int y, int z);
 void  Matrix4x3_FromRotationY(void *m, int angle);
 
-void  _Z11UpdateAngleRssis(void *p, short target, int step, short limit);
-void  _Z14ApproachLinearRiii(int *x, int target, int step);
 
 short atan2_hold_d_a_obj_mario_cap_1(int y, int x);
 
@@ -536,8 +535,8 @@ int daObjMarioCap_c::Behavior()
     /* Pop-in: the target eases from 2.0 to 1.0 by 0.125 a frame, the scale
        follows it by 0.25 a frame, and the cap moves and collides meanwhile. */
     if (mIconKind != 0xff && mPopIn != 0) {
-        _Z14ApproachLinearRiii(&mPopScale, 0x1000, 0x200);
-        _Z14ApproachLinearRiii(&mScaleX, mPopScale, 0x400);
+        ApproachLinear(mPopScale, 0x1000, 0x200);
+        ApproachLinear(mScaleX, mPopScale, 0x400);
         mScaleZ = mScaleX;
         mScaleY = mScaleZ;
         UpdatePos(&mdCcAc_c);
@@ -1063,8 +1062,8 @@ int daObjMarioCap_c::Slide()
         0x8000);
     pitch = func_02010844(this, &mFloorNormalX, mAngleY);
     roll = func_02010844(this, &mFloorNormalX, mAngleY - 0x4000);
-    _Z11UpdateAngleRssis(&mAngleX, pitch, 4, 0x1000);
-    _Z11UpdateAngleRssis(&mAngleZ, roll, 4, 0x1000);
+    UpdateAngle(mAngleX, pitch, 4, 0x1000);
+    UpdateAngle(mAngleZ, roll, 4, 0x1000);
     return 1;
 }
 

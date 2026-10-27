@@ -16,6 +16,7 @@
 #include "types.h"
 #include "decl_common.h"
 #include "Sound.h"
+#include "math/Approach.h"
 extern "C" {
 // local extern: PlayerInput.h cannot be included here, its flat gTouchX/gTouchY spelling does not reproduce dMgCardObj_c::Update.
 extern unsigned char gActivePlayerSlot;
@@ -112,8 +113,6 @@ extern "C" void* dScMgCard_c_classInit()
 namespace GX { void LoadOBJPltt(const void *plt, u32 base, u32 size); }
 namespace GXS { void LoadOBJPltt(const void *plt, u32 base, u32 size); }
 namespace G2x { void SetBlendAlpha(volatile u16 *reg, u16 a, u16 b, u16 c, u32 d); }
-int  ApproachLinear(int &value, int target, int step);
-int  ApproachLinear2(s16 &value, s16 target, s16 step);
 
 // @symbol _ZN11dScMgCard_c13InitResourcesEv
 /* Slot 0. Loads and decompresses the OBJ tiles and palettes for both

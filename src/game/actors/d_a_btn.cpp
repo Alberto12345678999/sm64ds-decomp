@@ -72,8 +72,8 @@ enum d_a_btn_AssetId {
 #include "dCamera_c.h"
 #include "nitro/fx/fx.h"
 #include "Sound.h"
+#include "math/Approach.h"
 
-bool ApproachLinear(short &value, short target, short step);
 /* local extern: include/Sound.h does not declare the layer-3 pair yet. It
    sits outside the extern "C" block below, where the names would come out
    unmangled. */

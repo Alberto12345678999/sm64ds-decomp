@@ -54,8 +54,7 @@ enum daMip_c_AssetId {
 #include "daObj_Mip_Key_c.h"
 #include "Sound.h"
 #include "cstd.h"
-
-bool ApproachLinear(short &value, short target, short step);
+#include "math/Approach.h"
 
 namespace Sound {
 bool PlaySub(u32, u32, u32, int, bool);

@@ -20,10 +20,10 @@ struct System {
 
 #include "daBbl_c.h"
 #include "Player.h"
+#include "math/Approach.h"
 
 /* Ramp `value` toward `target` by at most `step`. The mangled name this
  * declaration produces is the compiler's own answer, not a hand-mangle. */
-void ApproachLinear(int &value, int target, int step);
 
 extern "C" {
 /* Counts a halfword timer down and returns what it was; a short* helper, so

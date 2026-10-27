@@ -585,7 +585,7 @@ def _nested_names(all_lines):
     """
     out = set()
     for line in all_lines:
-        m = re.match(r"^[ \t]+(?:struct|union|class) (\w+)\s*(?::\s*(?:public\s+)?\w+\s*)?\{", line)
+        m = re.match(r"^[ \t]+(?:struct|union|class) (\w+)\s*(?::\s*(?:public\s+)?[\w:]+\s*)?\{", line)
         if m:
             out.add(m.group(1))
     return out
@@ -859,7 +859,7 @@ def main(argv, repo=None):
                 continue
             if re.match(r"^\s*(?:struct|union|class)\s+\w+\s*;\s*$", line):
                 continue
-            if re.match(r"^\s*struct \w+\s*(?::\s*(?:public\s+)?\w+\s*)?\{", line):
+            if re.match(r"^\s*(?:struct|class) \w+\s*(?::\s*(?:public\s+)?[\w:]+\s*)?\{", line):
                 nested = True
                 continue
             # A nested ENUM is a type too -- it names constants and occupies nothing --

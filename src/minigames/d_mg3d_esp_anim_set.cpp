@@ -60,6 +60,7 @@ struct System {
 #include "PlayerInput.h"
 #include "dExtSimpleModel_c.h"
 #include "cstd.h"
+#include "math/Approach.h"
 
 struct BMD_File;
 struct BTP_File;
@@ -101,7 +102,6 @@ extern EspAnimSetModelFilePtr gEspIrieModelFile;
 
 extern Matrix4x3 data_020a0e68;
 void Matrix4x3_FromTranslation(void* m, int x, int y, int z);
-int _Z15ApproachLinear2Rsss(short* p, short a, short b);
 void func_02046208(char* a, int b, int c);
 int func_020179b4(void* r0, void* r1, int r2);
 /* local extern: RowFade passes 0x10 - n, which the real unsigned short parameter would
@@ -202,7 +202,7 @@ void dMg3DEspAnimSet_c::Behavior() {
     char *self = (char *)this;
     int sb = 0;
     if (mRepeats != 0) {
-        if (_Z15ApproachLinear2Rsss(&mPhase, 0, 1)) {
+        if (ApproachLinear2(mPhase, 0, 1)) {
             mPhase = mPeriod;
             sb = 1;
             if (mRepeats > 0) {

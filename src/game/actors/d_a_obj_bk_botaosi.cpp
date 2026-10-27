@@ -18,11 +18,10 @@
  * each function as it is parsed, so this file is written ROM-ascending: the
  * out-of-line destructor first (D1 0x02111314, then D0 0x02111360; the D2
  * it also produces has no cartridge home and is deadstripped), the factory
- * last. Immediate codegen is also what lets the two per-member settings
- * below -- opt_foldconstants off on func_ov015_021114f0, opt_propagation
- * off on InitResources -- bind to their own member through push/pop. Under
- * the default deferred codegen both are file-global, last one wins, and no
- * single setting matches both members (measured; see the TU manifest).
+ * last. Immediate codegen is also what lets the per-member setting below
+ * -- opt_foldconstants off on func_ov015_021114f0 -- bind to its own member
+ * through push/pop. Under the default deferred codegen it is file-global
+ * (measured; see the TU manifest).
  * Same arrangement as src/game/actors/d_a_btt_bk.cpp.
  *
  * deslop
@@ -31,8 +30,6 @@
  *   mangled extern-C free functions. Each takes Fix12<int> by value, and a
  *   real method call homes the argument and size-DIFFs the caller
  *   (notes/mwccarm-codegen.md 6az) -- the wall d_a_obj_bk_lift.cpp keeps.
- * Leftover: InitResources calls dBgCh_Gnd's C1/D1 by hand on word storage;
- *   see the comment there.
  * Leftover: OnKicked and OnAttacked2 keep #pragma long_calls: the ROM
  *   veneers are the pooled `ldr ip,[pc]; bx ip` absolute tail call (0xc
  *   each); a near `b` to func_ov015_02111414 in this same TU is 4. The
@@ -105,10 +102,6 @@ void func_ov015_0211166c(daObjBk_Botaosi_c *plank);
 void d_a_obj_bk_botaosiEarthquakeHold(dActor_c *self, const Vector3 *pos, Fix12i strength);
 extern void hold_d_a_obj_bk_botaosi(void *self, void *file, void *mat, int scale, s16 angle,
                                     void *clps);
-/* local extern: a real dBgCh_Gnd local keeps InitResources' return value live
-   across the scope-exit destructor (r4 instead of r0, 520 -> 528 bytes), and
-   the tree has no placement new, so the constructor is called by name. */
-void *_ZN9dBgCh_GndC1Ev(dBgCh_Gnd *self);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -343,18 +336,10 @@ int daObjBk_Botaosi_c::Behavior()
 
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN17daObjBk_Botaosi_c13InitResourcesEv
-#pragma push
-#pragma opt_propagation off
 int daObjBk_Botaosi_c::InitResources()
 {
-    /* Word storage, not a typed local: a dBgCh_Gnd local synthesizes its
-       constructor at the declaration and its destructor at scope exit, and
-       under opt_propagation off that reorders the whole body. The ROM
-       constructs the probe after the model and collider are set up and
-       destroys it on each return, so the calls are written by hand. */
-    u32 rg[sizeof(dBgCh_Gnd) / sizeof(u32)];
     Vector3 a, b, c, d;
-    int zero, one;
+    int one;
 
     mModel.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(data_ov015_0211497c), 1, -1);
     mShadowModel.InitCuboid();
@@ -366,21 +351,31 @@ int daObjBk_Botaosi_c::InitResources()
                               *(CLPS_Block *)(&data_ov015_02113574));
 
     mAngleY += 0x8000;
-    zero = 0;
-    a.z = -0xfa000; a.x = zero; a.y = zero; b.x = zero; b.y = zero; b.z = zero;
+    a.x = 0;
+    a.y = 0;
+    a.z = -0xfa000;
+    b.x = 0;
+    b.y = 0;
+    b.z = 0;
 
     Matrix4x3_FromRotationY(&data_020a0e68, mAngleY);
     MulVec3Mat4x3(&a, &data_020a0e68, &b);
     Vec3_Add(&c, &b, &mPos);
     c.y += 0x14000;
-    _ZN9dBgCh_GndC1Ev((dBgCh_Gnd *)rg);
-    ((dBgCh_Gnd *)rg)->SetObjAndPos(c, 0);
+    /* The floor probe under the swing's far end. The ROM destroys it on
+       each return, which is the scope-exit destructor of this local. */
+    dBgCh_Gnd gnd;
+    gnd.SetObjAndPos(c, 0);
     mFrontFloorY = c.y;
-    if (((dBgCh_Gnd *)rg)->DetectClsn() != 0)
-        mFrontFloorY = ((dBgCh_Gnd *)rg)->clsnY;
+    if (gnd.DetectClsn() != 0)
+        mFrontFloorY = gnd.clsnY;
 
-    zero = 0;
-    a.z = 0x32000; a.x = zero; a.y = zero; b.x = zero; b.y = zero; b.z = zero;
+    a.x = 0;
+    a.y = 0;
+    a.z = 0x32000;
+    b.x = 0;
+    b.y = 0;
+    b.z = 0;
 
     Matrix4x3_FromRotationY(&data_020a0e68, mAngleY);
     MulVec3Mat4x3(&a, &data_020a0e68, &b);
@@ -396,13 +391,10 @@ int daObjBk_Botaosi_c::InitResources()
     if (data_0209f2f8 == 7 && (data_0209f220 == 1 || IsStarCollectedInCurLevel(one) == 0)
         && mPosY >= 0xdac000)
     {
-        ((dBgCh_Gnd *)rg)->dBgCh_Gnd::~dBgCh_Gnd();
         return 0;
     }
-    ((dBgCh_Gnd *)rg)->dBgCh_Gnd::~dBgCh_Gnd();
     return 1;
 }
-#pragma pop
 
 /* -------------------------------------------------------------------------- */
 // @symbol daObjBk_Botaosi_c_classInit

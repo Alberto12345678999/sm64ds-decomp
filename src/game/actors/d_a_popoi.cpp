@@ -60,6 +60,7 @@ enum daPopoi_c_AssetId {
 #include "SharedFilePtr.h"
 #include "Sound.h"
 #include "decl_common.h"
+#include "math/Approach.h"
 
 /* Static-init ownership (was the handwritten __sinit_ov077_021275fc shard).
  * The file-scope objects at the end of this file construct the four
@@ -352,7 +353,6 @@ int daPopoi_c::func_ov077_02126cd4(){
     return 1;
 }
 
-bool ApproachLinear(short &value, short target, short step);
 
 // @symbol _ZN9daPopoi_c19func_ov077_02126ad0Ev
 
