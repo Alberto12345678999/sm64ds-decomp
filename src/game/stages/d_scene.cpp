@@ -23,15 +23,9 @@
 #include "dScStage_c.h"
 #include "dFdColor_c.h"
 #include "G2x.h"
+#include "GX.h"
 
 namespace GX {
-void SetBankForBG(u16);
-void SetBankForOBJ(u16);
-void SetBankForSubBG(u16);
-void SetBankForSubBGExtPltt(u16);
-void SetBankForSubOBJ(u16);
-void SetBankForTex(u16);
-void SetBankForTexPltt(u16);
 void SetGraphicsMode(int a, int b, int c);
 }
 

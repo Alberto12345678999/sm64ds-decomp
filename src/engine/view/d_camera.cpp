@@ -131,11 +131,6 @@ extern void Matrix4x3_FromRotationZ(void *m, int angle);
 extern void MulMat4x3Mat4x3(void *dst, const void *a, void *b);
 extern void Matrix4x3_LoadIdentity(Matrix4x3 *matrix);
 
-/* local extern: dClipper.h's u16 fovAngle parameter re-narrows func_0200d954's
-   raw short argument; the ROM passes it unconverted (the member call is one
-   word short). */
-extern void _ZN8dClipper13Func_020156DCEitii(void *self, int a, int b, int c, int d);
-
 /* local extern: the factory runs the base constructor over fresh operator new
    storage and stores the vptrs itself; C++ has no call spelling for a C2. */
 extern void *_ZN7fBase_cC2Ev(void *self);
@@ -213,10 +208,10 @@ struct OAM {
     static void Render(bool, OamAttr *, int, int, int, int, int, int, int, int);
 };
 struct G2x {
-    static void SetBlendAlpha(volatile unsigned short *, u16, u16, u16, u32);
+    static void SetBlendAlpha(volatile unsigned short *, int, int, int, int);
 };
 struct G3i {
-    static void PerspectiveW_(Fix12i, Fix12i, Fix12i, Fix12i, Fix12i, Fix12i, bool, Matrix4x3 *);
+    static void PerspectiveW_(Fix12i, Fix12i, Fix12i, Fix12i, Fix12i, Fix12i, int, Matrix4x3 *);
     static void LookAt_(const Vector3 *, const Vector3 *, const Vector3 *, bool, Matrix4x3 *);
 };
 
@@ -544,7 +539,7 @@ void func_0200d954(char *c, short arg) {
     struct dCamera_c *cam = (struct dCamera_c *)c;
     cam->mInvSinFov = func_02053200(data_02082214[j]);
     cam->mInvCosFov = func_02053200(data_02082214[j + 1]);
-    _ZN8dClipper13Func_020156DCEitii(&data_0209f43c, cam->mAspect, arg, cam->mNear, cam->mFar);
+    data_0209f43c.Func_020156DC(cam->mAspect, arg, cam->mNear, cam->mFar);
 }
 
 // @symbol func_0200d8c8

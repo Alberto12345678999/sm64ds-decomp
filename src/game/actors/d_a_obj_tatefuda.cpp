@@ -175,7 +175,7 @@ extern u8 data_0209d6bc;
 extern u8 data_0209f284;
 extern s32 Vec3_HorzDist(struct Vector3 *a, struct Vector3 *b);
 extern int func_ov002_020bec84(void *player, unsigned int i);
-extern int func_ov002_020bec9c(void *player, unsigned int a, int b, int d, unsigned short e);
+extern void func_ov002_020bec9c(void *player, unsigned int a, int b, int d, unsigned short e);
 extern "C" unsigned int data_0209b454;
 extern "C" void AttachToHolder(struct daObjTatefuda_c *self);
 extern "C" u8 DecIfAbove0_Byte(u8 *p);

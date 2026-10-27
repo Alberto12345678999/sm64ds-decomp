@@ -167,11 +167,14 @@ void dClipper::Func_0201559C() {
     NormalizeVec3((Vector3 *)&mPlaneNormals[3], (Vector3 *)&mPlaneNormals[3]);
 }
 
-// @symbol _ZN8dClipper13Func_020156DCEitii
+// @symbol _ZN8dClipper13Func_020156DCEisii
 /* The former `Ev` spelling claimed this method took no arguments, contradicting
    every call site and the register/stack reads in the ROM. Scalar parameter
-   types reproduce both the observed ABI and the complete function bytes. */
-void dClipper::Func_020156DC(Fix12i aspectRatio, u16 fovAngle, Fix12i nearZ, Fix12i farZ) {
+   types reproduce both the observed ABI and the complete function bytes. The
+   fov angle is signed: both callers pass a short camera angle unconverted
+   (Camera_UpdateMatrices loads it with ldrsh), which a u16 parameter would
+   re-narrow; the body only stores it, so s16 and u16 compile alike here. */
+void dClipper::Func_020156DC(Fix12i aspectRatio, s16 fovAngle, Fix12i nearZ, Fix12i farZ) {
     mAspectRatio = aspectRatio;
     mFovAngle = fovAngle;
     mNearZ = nearZ;
