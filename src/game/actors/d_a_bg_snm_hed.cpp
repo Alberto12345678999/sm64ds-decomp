@@ -6,9 +6,6 @@
  * with no ROM home. Source order is ROM order. The factory was
  * SnowmanHead_Spawn; `new daBgSnmHed_c()` is the same sequence.
  */
-/* leftovers: dCcAc_c::Init and dBgCh_Actr::Init stay mangled. Both
- * definitions take Fix12<int> by value.
- */
 
 #pragma defer_codegen off
 
@@ -43,8 +40,6 @@ int d_a_bg_snm_hedPlaySubHold(unsigned int soundID, unsigned int volume, unsigne
 unsigned char DecIfAbove0_Byte(unsigned char *value);
 int Vec3_HorzDist(const void *a, const void *b);
 short Vec3_HorzAngle(const void *a, const void *b);
-void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(
-    void *t, void *a, int b, int c, unsigned int d, unsigned int e);
 }
 
 bool ApproachLinear(short &value, short target, short step);
@@ -303,8 +298,7 @@ int daBgSnmHed_c::InitResources()
                                  *(BTP_File *)((void **)tex)[1]);
     }
 
-    _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(
-        &mCylinder, this, 0x96000, 0x12c000, 0x800004, 0);
+    mCylinder.Init(this, 0x96000, 0x12c000, 0x800004, 0);
     mScaleX = 0x1800;
     mScaleY = 0x1800;
     mScaleZ = 0x1800;

@@ -363,7 +363,6 @@ struct System {
 };
 }
 extern int Vec3_HorzLen(const Vector3* v);
-extern void _ZN8dActor_c13SpawnFireballERK7Vector3PK10Vector3_165Fix12IiES7_j( void* self, const void* pos, const void* rot, int speed, int gravity, u32 flags);
 extern int RandomIntInternal(int* seed);
 extern int data_0209e650;
 extern KpaAnimationFileHandle data_ov060_0211abe0;
@@ -382,7 +381,6 @@ extern void Matrix4x3_ApplyInPlaceToRotationX(Matrix4x3 *m, s16 angX);
 extern void Matrix4x3_ApplyInPlaceToRotationZ(Matrix4x3 *m, s16 angZ);
 extern void MulMat4x3Mat4x3(void *dst, void *a, void *b);
 extern void Vec3_LslInPlace(void *v, int sh);
-extern void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(void *c, void *sm, void *mtx, int rad, int h, unsigned int flags);
 extern Matrix4x3 data_020a0e68;
 void d_a_kpaEarthquakeHold(void *self, struct Vector3 *v, int f);
 extern "C" void func_02011cfc(void);
@@ -424,11 +422,9 @@ extern KpaAnimationFileHandle data_ov060_0211ac90;
 extern short data_ov060_02119294[];
 extern short data_ov060_02119296[];
 extern short data_ov060_02119298[];
-extern void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(void *self, void *act, void *pos, int c3, int d, unsigned int e, unsigned int f);
 /* Parameter names keep this TU's @NNN. */
 typedef void BgchInitAt_(void *self, void *act, int a, int b, void *d1, void *d2);
 extern void func_02011d50(void *a);
-int _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *self, void *actor, int fix, int t, unsigned int e, unsigned int f);
 /* TUBUILD CONFLICT -- alternate declaration of Vec3_HorzDist, from the legacy file for func_ov060_02112434, NOT applied: int Vec3_HorzDist(const Vector3* a, const Vector3* b); */
 /* TUBUILD CONFLICT -- alternate declaration of Vec3_HorzAngle, from the legacy file for func_ov060_02112434, NOT applied: short Vec3_HorzAngle(const Vector3* a, const Vector3* b); */
 /* TUBUILD CONFLICT -- alternate declaration of func_ov060_02111cc0, from the legacy file for func_ov060_021125f0, NOT applied: extern int func_ov060_02111cc0(char *c, int a, int b); */
@@ -618,7 +614,7 @@ the grab bit of dCc_c's hit-flag table (that table is a best-effort reading, see
 include/dCc_c.h). Always returns 1. */
 int daKpaTail_c::InitResources()
 {
-    _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, this, 0x32000, 0x50000, 0x800000, 0x1000);
+    mdCcAc_c.Init(this, 0x32000, 0x50000, 0x800000, 0x1000);
     return 1;
 }
 
@@ -678,8 +674,7 @@ int daKpa_c::InitResources()
     pos.x = 0;
     pos.y = 0;
     pos.z = 0;
-    _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
-        &this->mdCcAcPos_c, this, &pos, 0x78000, 0x118000, 0x200004, 0);
+    this->mdCcAcPos_c.Init(this, pos, 0x78000, 0x118000, 0x200004, 0);
 
     this->mHomePosX = this->mPosX;
     this->mHomePosY = this->mPosY;
@@ -1172,7 +1167,8 @@ skip_angles:
         Vec3_Asr(&v2, &pos, 3);
         Matrix4x3_FromTranslation(&data_020a0e68, v2.x, v2.y, v2.z);
         *(Matrix4x3 *)(&this->mShadowMtx) = data_020a0e68;
-        _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(this, &this->mShadowModel, &this->mShadowMtx, 0x140000, 0x64000, 0xf);
+        DropShadowRadHeight(this->mShadowModel, *(Matrix4x3 *)&this->mShadowMtx, 0x140000, 0x64000,
+                            0xf);
     }
 }
 
@@ -2184,8 +2180,7 @@ void daKpa_c::func_ov060_021140c0(){
             pos.y = new_var;
             dir[0] = 0x1000;
             grav = 0xa000;
-            _ZN8dActor_c13SpawnFireballERK7Vector3PK10Vector3_165Fix12IiES7_j(
-                this, &pos, dp, 0x1e000, grav, 0);
+            SpawnFireball(pos, (const Vector3_16 *)dp, 0x1e000, grav, 0);
             func_02012694(BOWSER_SND_FIREBALL, (const Vector3 *)(&this->mCamSpacePosX));
         }
     }

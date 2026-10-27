@@ -260,7 +260,6 @@ extern void d_a_king_donketuRunningSlidingDustAtHold(int a, int b, int c);
 extern void Vec3_Asr(Vec3* d, Vec3* s, int sh);
 extern void Matrix4x3_FromTranslation(struct Matrix4x3 *m, int x, int y, int z);
 extern void Matrix4x3_ApplyInPlaceToRotationXYZExt(void* m, int x, int y, int z);
-extern void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(void* thiz, void* sm, void* m, int rad, int h, unsigned int u);
 extern void UnloadKeyModels(int i);
 }
 
@@ -1782,8 +1781,7 @@ void daKing_Donketu_c::func_ov073_021215cc()
 
     Matrix4x3_FromTranslation(&data_020a0e68, c->mPosX >> 3, (c->mPosY - 0xa000) >> 3, c->mPosZ >> 3);
     c->mShadowMtx = data_020a0e68;
-    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
-        c, &c->mShadowModel, &c->mShadowMtx, 0x12c000, 0x3e8000, 0xf);
+    c->DropShadowRadHeight(c->mShadowModel, c->mShadowMtx, 0x12c000, 0x3e8000, 0xf);
 }
 
 // @symbol _ZN16daKing_Donketu_c16CleanupResourcesEv
@@ -1982,7 +1980,6 @@ int daKing_Donketu_c::Behavior()
 
 extern "C" {
 extern void LoadKeyModels(int idx);
-extern void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(void* self, dActor_c* a, Vector3* v, Fix12i r, Fix12i h, unsigned int e, unsigned int g);
 /* Parameter names keep this TU's @NNN. */
 typedef void BgchInitAt_(void *self, dActor_c *a, Fix12i r, Fix12i h, Vector3_16 *p, Vector3_16 *q);
 }
@@ -2012,7 +2009,7 @@ int daKing_Donketu_c::InitResources()
     v.x = data_ov073_02123040.x;
     v.y = data_ov073_02123040.y;
     v.z = data_ov073_02123040.z;
-    _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(&mdCcAcPos_c, this, &v, 0xa4000, 0x1e4000, 0x200000, 0x567f0);
+    mdCcAcPos_c.Init(this, v, 0xa4000, 0x1e4000, 0x200000, 0x567f0);
     mBlendAnmModel.speed = 0x2000;
     mWithMeshClsn.Init(this, 0x96000, 0x94000, 0, 0);
     mSpawnPosX = mPosX;

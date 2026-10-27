@@ -12,10 +12,6 @@ struct System {
  * is the key function: the cartridge has D1 below D0 and no D2.
  *
  * leftovers:
- * - dExtAnmModel_c::SetAnim, dCcAc_c::Init, dBgCh_Actr::Init,
- *   DropShadowRadHeight, Sound::PlaySub and Particle::System::New
- *   stay mangled. They take Fix12 by value. dBgCh_Actr::Init's
- *   header spells Fix12i, which mangles as int.
  * - g_profile_MIP stays outside this TU. The file handles, the eight
  *   state records, the carry offsets and the rabbit-count int are
  *   the folded sinit objects at the end of this file.
@@ -72,7 +68,6 @@ extern "C" {
 void *_ZN9dBgCh_GndC1Ev(void *);
 void  _ZN9dBgCh_GndD1Ev(void *);
 int   SurfaceInfo_TestFlag0x20(void *);
-void  _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *, void *, s32, s32, u32, u32);
 
 /* dActor_c / dEnemyBase_c, reached by their ROM names.
    dActor_c::ClosestPlayer and dActor_c::FindWithID are deliberately NOT here:
@@ -82,7 +77,6 @@ void  _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *, void *, s32, s32, u32, u
    under, because DropShadowRadHeight and Spawn take Fix12<int> and s8/s16 BY
    VALUE in their real declarations and mwccarm passes those differently at the
    call site. */
-void  _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(void *, void *, void *, int, int, u32);
 
 /* Player / Message / Sound / SaveData */
 /* The return type is load-bearing: StateTalkMain tests it in an `if`, so the
@@ -1104,8 +1098,7 @@ void daMip_c::UpdateMatrixAndShadow()
         (mPosY - 0xe000) >> 3,
         mPosZ >> 3);
     *(struct Mtx43 *)mShadowMtx = data_020a0e68;
-    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
-        this, &mShadowModel1, mShadowMtx, 0x46000, 0x258000, 0xf);
+    DropShadowRadHeight(mShadowModel1, *(Matrix4x3 *)mShadowMtx, 0x46000, 0x258000, 0xf);
 }
 
 // @symbol _ZN7daMip_c19UpdateCarriedMatrixEv
@@ -1133,8 +1126,7 @@ void daMip_c::UpdateCarriedMatrix()
     *(struct Mtx43 *)&mAnmModel.mat4x3 = *(struct Mtx43 *)res;
     Matrix4x3_FromTranslation(data_020a0e68, mPosX >> 3, (mPosY - 0xc000) >> 3, mPosZ >> 3);
     *(struct Mtx43 *)mShadowMtx = *(struct Mtx43 *)data_020a0e68;
-    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
-        this, &mShadowModel1, mShadowMtx, 0x46000, 0x258000, 0xf);
+    DropShadowRadHeight(mShadowModel1, *(Matrix4x3 *)mShadowMtx, 0x46000, 0x258000, 0xf);
 }
 
 // @symbol _ZN7daMip_c18UpdateMirrorShadowEv
@@ -1183,7 +1175,9 @@ void daMip_c::UpdateMirrorShadow()
         Matrix4x3_FromTranslation(&data_020a0e68, vd.x >> 3, (t - 0xc000) >> 3, vd.z >> 3);
     }
     c->mtx = data_020a0e68;
-    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(c, &c->shadowmodel, &c->mtx, 0x46000, 0x258000, 0xf);
+    ((dActor_c *)c)
+        ->DropShadowRadHeight(*(dExtShadowModel_c *)&c->shadowmodel, *(Matrix4x3 *)&c->mtx, 0x46000,
+                              0x258000, 0xf);
 }
 
 // @symbol _ZN7daMip_c16CleanupResourcesEv
@@ -1545,7 +1539,7 @@ int daMip_c::InitResources()
 
     mVertAccel = -0x1000;
     mTerminalVelocity = -0x1e000;
-    _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, this, 0x50000, 0x64000, 0xb00004, 0x9000);
+    mdCcAc_c.Init(this, 0x50000, 0x64000, 0xb00004, 0x9000);
     mTalkingPlayer = 0;
     mAnmModel.speed = 0x1000;
     mWithMeshClsn.Init(this, 0x28000, 0x28000, 0, 0);

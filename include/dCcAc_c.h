@@ -55,7 +55,7 @@ struct dCcAc_c : dCc_c {
     dCcAc_c();
 
     /* --- non-virtual --- */
-    void Init(dActor_c *actor, Fix12<int> radius, Fix12<int> height, u32 flags, u32 vulnFlags);
+    void Init(dActor_c *actor, Fix12i radius, Fix12i height, u32 flags, u32 vulnFlags);
 
     /* WHAT LETS A REAL `~Class()` REPRODUCE THE ROM'S DELETING DESTRUCTOR.
        The compiler generates D0 as "run the destructor body, then call operator

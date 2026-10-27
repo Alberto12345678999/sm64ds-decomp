@@ -73,7 +73,6 @@ struct System {
     static void NewSimple(u32 id, Fix12i x, Fix12i y, Fix12i z);
 };
 }
-void _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs( void *self, const Vector3 &pos, u32 count, s32 speed, s16 delay);
 extern BigBrickBlockFileRow data_ov002_02108ab0[];
 extern BigBrickBlockFileRow data_ov002_02108ab4[];
 extern Vector3 data_ov002_021089e0;
@@ -284,7 +283,7 @@ void daObjBlockL_c::Kill()
                 coinPos.x = mPosX;
                 coinPos.y = mPosY;
                 coinPos.z = mPosZ;
-                _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs(this, coinPos, 3, 0xf000, 0);
+                SpawnCoins(coinPos, 3, 0xf000, 0);
             }
         }
     }

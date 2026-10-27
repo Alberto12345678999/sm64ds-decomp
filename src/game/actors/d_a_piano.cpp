@@ -60,7 +60,6 @@ extern char data_ov063_0211ecb8;
  * linkage specifications, so everything they call lives here. */
 struct Vec3;
 extern "C" {
-extern void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(dCcAcPos_c *, dActor_c *, const Vector3 *, Fix12i, Fix12i, unsigned int, unsigned int);
 
 extern void func_ov063_0211d88c(daPiano_c *self);
 extern void func_ov063_0211d828(daPiano_c *self);
@@ -113,8 +112,7 @@ int daPiano_c::InitResources()
         /* Sensor cylinders, 155.0 radius by 250.0 tall, tracking mPos.
          * 0x200004 is enemy | char-projectile: what can hit the piano.
          * Players are Hurt manually (func_ov063_0211d8cc), not via dCc. */
-        _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(cylinder, this, &mPos, 0x9b000,
-                                                                0xfa000, 0x200004, 0);
+        cylinder->Init(this, mPos, 0x9b000, 0xfa000, 0x200004, 0);
         cylinder++;
     }
     f = dBgW_Kc::LoadFile(gPianoCollisionFile);
@@ -445,10 +443,6 @@ void func_ov063_0211d5f4(daPiano_c *self)
     extern void Matrix4x3_FromRotationY(Matrix4x3* m, int angle);
     extern void MulVec3Mat4x3(Vector3* in, Matrix4x3* m, Vector3* out);
     extern void AddVec3(Vector3* a, Vector3* b, Vector3* c);
-    extern void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
-        dActor_c* self, dExtShadowModel_c* sm, Matrix4x3* mtx, Fix12i fx, Fix12i t, unsigned int u);
-    extern void _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_S5_j(
-        dActor_c* self, dExtShadowModel_c* sm, Matrix4x3* mtx, Fix12i fx, Fix12i t1, Fix12i t2, unsigned int u);
 
     extern Matrix4x3 data_020a0e68;   /* shared scratch matrix */
 
@@ -496,12 +490,11 @@ void func_ov063_0211d5f4(daPiano_c *self)
     self->mShadowMats[1].m[10] = self->mPosY >> 3;
     self->mShadowMats[1].m[11] = out.z >> 3;
 
-    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
-        self, &self->mShadowModel3, &self->mShadowMats[2], 0xf0000, 0x50000, 0xf);
-    _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_S5_j(
-        self, &self->mShadowModel1, &self->mShadowMats[0], 0xa0000, 0x50000, 0x110000, 0xf);
-    _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_S5_j(
-        self, &self->mShadowModel2, &self->mShadowMats[1], 0x80000, 0x50000, 0xf0000, 0xf);
+    self->DropShadowRadHeight(self->mShadowModel3, self->mShadowMats[2], 0xf0000, 0x50000, 0xf);
+    self->DropShadowScaleXYZ(self->mShadowModel1, self->mShadowMats[0], 0xa0000, 0x50000, 0x110000,
+                             0xf);
+    self->DropShadowScaleXYZ(self->mShadowModel2, self->mShadowMats[1], 0x80000, 0x50000, 0xf0000,
+                             0xf);
 }
 }
 

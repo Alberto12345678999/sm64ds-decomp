@@ -682,14 +682,6 @@
       "evidence": "origin/main:include/dScMgRoulette_c.h 3x _ZN5ModelD1Ev; head 3x _ZN17dExtSimpleModel_cD1Ev; tools/source_style.py --base origin/main"
     },
     {
-      "path": "src/engine/model/d_ext_model.cpp",
-      "rule": "handspelled-member",
-      "match": "_ZN17dExtShadowModel_c9InitModelEP9Matrix4x35Fix12IiES3_S3_j",
-      "count": 1,
-      "reason": "dExtShadowModel_c::InitModel takes three Fix12<int> by value. Its definition stays in the C front end (#pragma cplusplus off) because a real method body with that signature homes the class-typed parameters to the stack and comes out 0x14 bytes larger than the ROM (wall 6az), so the definition keeps the linker spelling. include/dExtShadowModel_c.h declares the true member for callers. Follow-up: write it as a member once a Fix12 spelling that passes in registers exists.",
-      "evidence": "carried verbatim from src/engine/model/d_ext_shadow_model.cpp at c6430d512f, which this PR folds into d_ext_model.cpp; notes/mwccarm-codegen.md wall 6az; arm9/dExtModel_c 115/115 TEXT-VERIFIED"
-    },
-    {
       "path": "src/game/actors/d_a_dp_lift.cpp",
       "rule": "handspelled-member",
       "match": "_ZN17dExtSimpleModel_cC1Ev",
@@ -1256,6 +1248,86 @@
       "count": 3,
       "reason": "func_ov007_020b2160 is a C translation unit, so it cannot name the G3i::PerspectiveW_ method; it spells the mangled name once in the extern declaration and at each of its two calls. Follow-up: retire with the C++ migration of this file.",
       "evidence": "Symbol renamed from the Fix12<int> mangling to the Fix12i (plain int) one in config/arm9/symbols.txt and config/tu_manifest.d/arm9/G3i.json; arm9 0x02055bfc and the callers still byte-match (rombuild 106/106 exact)."
+    },
+    {
+      "path": "src/game/actors/d_a_grock.cpp",
+      "rule": "handspelled-member",
+      "match": "_ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x3iih",
+      "count": 2,
+      "reason": "Kept on purpose: this caller is int-returning and ends in a tail call, `return <callee>(...)`, so the callee's r0 flows out as its result. dActor_c::DropShadowRadHeight is void, so the member form cannot express that without inventing a return value, which changes the bytes. The local extern therefore declares an int return. Every other site of this symbol is a real member call (notes/mwccarm-codegen.md 6az, batch 5). Follow-up: retire when this caller's own return type is settled.",
+      "evidence": "src/game/actors/d_a_grock.cpp: `return _ZN8dActor_c19DropShadowRadHeightER17dEx...(...)` in an int-returning caller; tubuild verify TEXT-VERIFIED"
+    },
+    {
+      "path": "src/game/actors/d_a_obj_ct_mecha11.cpp",
+      "rule": "handspelled-member",
+      "match": "_ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x3iiih",
+      "count": 2,
+      "reason": "Kept on purpose: this caller is int-returning and ends in a tail call, `return <callee>(...)`, so the callee's r0 flows out as its result. dActor_c::DropShadowScaleXYZ is void, so the member form cannot express that without inventing a return value, which changes the bytes. The local extern therefore declares an int return. Every other site of this symbol is a real member call (notes/mwccarm-codegen.md 6az, batch 5). Follow-up: retire when this caller's own return type is settled.",
+      "evidence": "src/game/actors/d_a_obj_ct_mecha11.cpp: `return _ZN8dActor_c18DropShadowScaleXYZER17dExt...(...)` in an int-returning caller; tubuild verify TEXT-VERIFIED"
+    },
+    {
+      "path": "src/game/actors/d_a_obj_ct_rotate_block.cpp",
+      "rule": "handspelled-member",
+      "match": "_ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x3iiih",
+      "count": 2,
+      "reason": "Kept on purpose: this caller is int-returning and ends in a tail call, `return <callee>(...)`, so the callee's r0 flows out as its result. dActor_c::DropShadowScaleXYZ is void, so the member form cannot express that without inventing a return value, which changes the bytes. The local extern therefore declares an int return. Every other site of this symbol is a real member call (notes/mwccarm-codegen.md 6az, batch 5). Follow-up: retire when this caller's own return type is settled.",
+      "evidence": "src/game/actors/d_a_obj_ct_rotate_block.cpp: `return _ZN8dActor_c18DropShadowScaleXYZER17dExt...(...)` in an int-returning caller; tubuild verify TEXT-VERIFIED"
+    },
+    {
+      "path": "src/game/actors/d_a_obj_fm_battan.cpp",
+      "rule": "handspelled-member",
+      "match": "_ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x3iiih",
+      "count": 2,
+      "reason": "Kept on purpose: this caller is int-returning and ends in a tail call, `return <callee>(...)`, so the callee's r0 flows out as its result. dActor_c::DropShadowScaleXYZ is void, so the member form cannot express that without inventing a return value, which changes the bytes. The local extern therefore declares an int return. Every other site of this symbol is a real member call (notes/mwccarm-codegen.md 6az, batch 5). Follow-up: retire when this caller's own return type is settled.",
+      "evidence": "src/game/actors/d_a_obj_fm_battan.cpp: `return _ZN8dActor_c18DropShadowScaleXYZER17dExt...(...)` in an int-returning caller; tubuild verify TEXT-VERIFIED"
+    },
+    {
+      "path": "src/game/actors/d_a_obj_pile.cpp",
+      "rule": "handspelled-member",
+      "match": "_ZN8dActor_c10SpawnCoinsERK7Vector3iis",
+      "count": 3,
+      "reason": "Kept on purpose: daObjPile_c calls SpawnCoins once through a function-pointer cast and passes its position as a by-value V3 (r1-r3), which the member's const Vector3 & cannot express byte-identically. Follow-up: retire with daObjPile_c's position layout.",
+      "evidence": "tools/tubuild.py verify ov091/daObjPile_c TEXT-VERIFIED with the extern kept"
+    },
+    {
+      "path": "src/game/actors/d_a_obj_power_up_item.cpp",
+      "rule": "handspelled-member",
+      "match": "_ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x3iih",
+      "count": 2,
+      "reason": "Kept on purpose: this caller is int-returning and ends in a tail call, `return <callee>(...)`, so the callee's r0 flows out as its result. dActor_c::DropShadowRadHeight is void, so the member form cannot express that without inventing a return value, which changes the bytes. The local extern therefore declares an int return. Every other site of this symbol is a real member call (notes/mwccarm-codegen.md 6az, batch 5). Follow-up: retire when this caller's own return type is settled.",
+      "evidence": "src/game/actors/d_a_obj_power_up_item.cpp: `return _ZN8dActor_c19DropShadowRadHeightER17dEx...(...)` in an int-returning caller; tubuild verify TEXT-VERIFIED"
+    },
+    {
+      "path": "src/game/actors/d_a_obj_rotate_updown_lift.cpp",
+      "rule": "handspelled-member",
+      "match": "_ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x3iiih",
+      "count": 2,
+      "reason": "Kept on purpose: this caller is int-returning and ends in a tail call, `return <callee>(...)`, so the callee's r0 flows out as its result. dActor_c::DropShadowScaleXYZ is void, so the member form cannot express that without inventing a return value, which changes the bytes. The local extern therefore declares an int return. Every other site of this symbol is a real member call (notes/mwccarm-codegen.md 6az, batch 5). Follow-up: retire when this caller's own return type is settled.",
+      "evidence": "src/game/actors/d_a_obj_rotate_updown_lift.cpp: `return _ZN8dActor_c18DropShadowScaleXYZER17dExt...(...)` in an int-returning caller; tubuild verify TEXT-VERIFIED"
+    },
+    {
+      "path": "src/game/player/Player.cpp",
+      "rule": "raw-offset",
+      "match": "(Matrix4x3*)(c+0x5bc",
+      "count": 1,
+      "reason": "func_ov002_020e444c is still a char *c offset-view function, and Player declares no member at 0x5bc (the drop-shadow matrix). The member call needs a Matrix4x3 &, so the view is cast at the call; the offset was already spelled `c + 0x5bc` on main. Follow-up: name the Matrix4x3 at Player+0x5bc in the layout pass, then this becomes `player->DropShadowRadHeight(player->mShadowModel, player->m<name>, ...)`.",
+      "evidence": "origin/main:src/game/player/Player.cpp passes `c + 0x5bc` to the mangled extern; batch 5 member call"
+    },
+    {
+      "path": "src/game/actors/d_a_kinopio.cpp",
+      "rule": "raw-offset",
+      "match": "(dExtShadowModel_c*)(c+0x16c",
+      "count": 1,
+      "reason": "daKinopio_c::UpdateModelPose addresses its shadow model (0x16c) and shadow transform (0x1c4) through `char *c = (char *)this`, as the file header records the ROM reading this block with ldm/stm. Spelling the member call with the declared members mShadowModel/mShadowTransform was measured: UpdateModelPose stops matching (tubuild verify ov085/daKinopio_c 14/15). So the call casts the same offsets the old extern call passed as `c + 0x16c`/`c + 0x1c4`. Follow-up: retire with the rest of this function's offset view.",
+      "evidence": "tools/tubuild.py verify ov085/daKinopio_c: cast form TEXT-VERIFIED, member-name form 14/15"
+    },
+    {
+      "path": "src/game/actors/d_a_kinopio.cpp",
+      "rule": "raw-offset",
+      "match": "(Matrix4x3*)(c+0x1c4",
+      "count": 1,
+      "reason": "daKinopio_c::UpdateModelPose addresses its shadow model (0x16c) and shadow transform (0x1c4) through `char *c = (char *)this`, as the file header records the ROM reading this block with ldm/stm. Spelling the member call with the declared members mShadowModel/mShadowTransform was measured: UpdateModelPose stops matching (tubuild verify ov085/daKinopio_c 14/15). So the call casts the same offsets the old extern call passed as `c + 0x16c`/`c + 0x1c4`. Follow-up: retire with the rest of this function's offset view.",
+      "evidence": "tools/tubuild.py verify ov085/daKinopio_c: cast form TEXT-VERIFIED, member-name form 14/15"
     }
   ]
 }

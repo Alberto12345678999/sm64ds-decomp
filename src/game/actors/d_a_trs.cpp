@@ -129,8 +129,6 @@ s32 Vec3_HorzDist(const void *a, const void *b);
 u16 DecIfAbove0_Short(void *p);
 
 /* ABI seams whose header member forms do not reproduce the ROM (see notes) */
-void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(void *self, void *actor, void *pos, int r, int h, unsigned int e, unsigned int g);
-void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *self, dActor_c *actor, Fix12i radius, Fix12i height, unsigned int flags, unsigned int vulnFlags);
 /* Parameter names keep this TU's @NNN. */
 typedef void BgchInitAt_(void *self, dActor_c *actor, Fix12i radius, Fix12i height, Vector3_16 *a,
                          Vector3_16 *b);
@@ -188,7 +186,6 @@ int RandomIntInternal(int *seed);
 void Vec3_Asr(void *d, const void *s, int sh);
 void _Z14ApproachLinearRiii(int *p, int target, int step);
 int d_a_trsPlaySubHold(unsigned int a, unsigned int b, unsigned int c, s32 d, int e);
-void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(void *self, void *sm, void *m, int rad, int h, u32 a);
 int func_020092c4(void *cam, void *out, void *target);
 int func_02012694(int a, void *p, ...);
 u16 func_0201277c(int a);
@@ -221,12 +218,10 @@ extern int data_ov008_02111b6c;
 extern int data_0209caa0[];
 extern s16 data_ov063_0211e1dc[];
 extern s16 data_ov063_0211e1e4[];
-extern char* _ZN8dActor_c13SpawnFireballERK7Vector3PK10Vector3_165Fix12IiES7_j(void* self, const void * v, const void* p, s32 a, s32 b, unsigned int n);
 extern s16 data_ov063_0211e1c0[];
 extern int data_ov063_0211e1d0[];
 extern int data_0209b490[];
 extern u8 data_0209d660;
-extern void _ZN12dEnemyBase_c20KillByInvincibleCharERK10Vector3_16R6Player5Fix12IiE(void* c, void* v, void* r4, s32 flag);
 extern short data_ov063_0211e7e0[];
 extern int data_ov063_0211edc0;
 extern struct Vec3 data_ov063_0211ee74;
@@ -454,8 +449,8 @@ void daTrs_c::func_ov063_0211640c() {
         Matrix4x3_FromTranslation(&data_020a0e68,
             pos.x >> 3, pos.y >> 3, pos.z >> 3);
         *(struct Matrix4x3 *)&this->mShadowMtx[0] = data_020a0e68;
-        _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
-            this, &this->mShadowModel1, &this->mShadowMtx[0], 0x12c000, 0xc8000, 0xf);
+        DropShadowRadHeight(this->mShadowModel1, *(Matrix4x3 *)&this->mShadowMtx[0], 0x12c000,
+                            0xc8000, 0xf);
 
         if (this->mBooFlags.mirrored) {
             int px = pos.x;
@@ -464,8 +459,7 @@ void daTrs_c::func_ov063_0211640c() {
             Matrix4x3_FromTranslation(&data_020a0e68,
                 pos.x >> 3, pos.y >> 3, pos.z >> 3);
             this->mShadowMtx2 = data_020a0e68;
-            _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
-                this, &this->mShadowModel2, &this->mShadowMtx2, 0x12c000, 0xc8000, 0xf);
+            DropShadowRadHeight(this->mShadowModel2, this->mShadowMtx2, 0x12c000, 0xc8000, 0xf);
         }
     }
 
@@ -526,9 +520,11 @@ void daTrs_c::func_ov063_021166ac() {
     {
         int big = (this->actorID == TRS_ID_BOSS_TERESA);
         if (big)
-            _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(this, &this->mShadowModel1, &this->mShadowMtx[0], 0x12c000, 0xc8000, 0xf);
+            DropShadowRadHeight(this->mShadowModel1, *(Matrix4x3 *)&this->mShadowMtx[0], 0x12c000,
+                                0xc8000, 0xf);
         else
-            _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(this, &this->mShadowModel1, &this->mShadowMtx[0], 0x64000, 0xc8000, 0xf);
+            DropShadowRadHeight(this->mShadowModel1, *(Matrix4x3 *)&this->mShadowMtx[0], 0x64000,
+                                0xc8000, 0xf);
     }
     this->mCapPosY = this->mClsnOffY + FX_MUL(this->mScaleX, 0x60000);
     pos.x = this->mCapPosX;
@@ -556,7 +552,7 @@ void daTrs_c::func_ov063_021166ac() {
 void daTBasket_c::func_ov063_021169c4() {
 
     Matrix4x3_FromTranslation(&this->mModel.mat4x3, this->mPosX>>3, this->mPosY>>3, this->mPosZ>>3);
-    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(this, &this->mShadowModel, &this->mModel.mat4x3, 0x64000, 0x64000, 0xf);
+    DropShadowRadHeight(this->mShadowModel, this->mModel.mat4x3, 0x64000, 0x64000, 0xf);
 }
 
 
@@ -1485,11 +1481,11 @@ void daTrs_c::func_ov063_02118458() {
             v.z = this->mPosZ;
             v.x = data_02082214[(*(u16 *)&this->mAngleY >> 4) * 2] * m + v.x;
             v.z = data_02082214[(*(u16 *)&this->mAngleY >> 4) * 2 + 1] * m + v.z;
-            char* fb;
+            dActor_c *fb;
             this->mAngleX = 0x1000;
             func_02012694(0x156, &this->mCamSpacePos);
-            fb = _ZN8dActor_c13SpawnFireballERK7Vector3PK10Vector3_165Fix12IiES7_j(
-                this, &v, (const void*)&this->mAngleX, 0x14000, 0x6999, 4);
+            fb = SpawnFireball(*(const Vector3 *)&v, (const Vector3_16 *)&this->mAngleX, 0x14000,
+                               0x6999, 4);
             this->mAngleX = 0;
             if (this->mBooFlags.mirrored)
                 ((daFPknBallView *)fb)->mMirrored = 1;
@@ -2570,7 +2566,7 @@ found_kind:
             v[0] = -0x2000;
             v[1] = 0;
             v[2] = 0;
-            _ZN12dEnemyBase_c20KillByInvincibleCharERK10Vector3_16R6Player5Fix12IiE(this, v, found2, 0);
+            KillByInvincibleChar(*(Vector3_16 *)v, *(Player *)found2, 0);
 
             {
                 s16* ap = (s16*)&this->mAngleY;
@@ -3439,7 +3435,8 @@ int daTrs_c::InitResources()
         mClsnOffX = 0;
         mClsnOffY = 0;
         mClsnOffZ = tmp598;
-        _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(&mdCcAcPos_c, this, &mClsnOffX, mClsnRadius << 0xc, mClsnHeight << 0xc, 0x200000, 0x207e0);
+        mdCcAcPos_c.Init(this, *(Vector3 *)&mClsnOffX, mClsnRadius << 0xc, mClsnHeight << 0xc,
+                         0x200000, 0x207e0);
         if (mVariant != 0xf) {
             mWithMeshClsn.Init(this, 0xdc000, 0xdc000, 0, 0);
         } else {
@@ -3468,7 +3465,8 @@ int daTrs_c::InitResources()
             mClsnRadius = 0x4a;
             mClsnHeight = 0x64;
         }
-        _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(&mdCcAcPos_c, this, &mClsnOffX, mClsnRadius << 0xc, mClsnHeight << 0xc, 0x200000, 0x207e0);
+        mdCcAcPos_c.Init(this, *(Vector3 *)&mClsnOffX, mClsnRadius << 0xc, mClsnHeight << 0xc,
+                         0x200000, 0x207e0);
         if (data_0209f2f8 == 0xc && mPosX == 0xbb8000 && mAreaId == 2) {
             mBooFlags.limitZ = 1;
         }
@@ -3649,7 +3647,7 @@ int daTBasket_c::InitResources()
         return 0;
     mVertAccel = -0x4000;
     mTerminalVelocity = -0x46000;
-    _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, this, 0x64000, 0x64000, 0x200004, 0);
+    mdCcAc_c.Init(this, 0x64000, 0x64000, 0x200004, 0);
     mWithMeshClsn.Init(this, 0x64000, 0x64000, 0, 0);
     mWithMeshClsn.SetLimMovFlag();
     mParticleID = 0;

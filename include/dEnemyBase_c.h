@@ -185,12 +185,14 @@ struct dEnemyBase_c : dActor_c {
            form and still matched: at those sites the `mov r3, #0` doubles as the
            source of the following `strh`, so the argument setup is invisible.
 
-           Its type is `Fix12<int>`, by the sibling: the ROM's
+           It is a fixed-point value, by the sibling:
            `dBgActor_c::UpdateKillByMegaChar(s16, s16, s16, Fix12<int>)` is the
            background-actor form of the same operation and ends in the same
-           parameter. The mangled name below is the compiler's own answer for the
-           declaration, not a hand-mangle. */
-    void KillByInvincibleChar(const Vector3_16 &spin_, Player &player_, Fix12<int> unused_);
+           parameter. It is the scalar Fix12i here: the body never reads r3, so
+           the bytes cannot tell a by-value Fix12<int> from a scalar, and the
+           scalar lets the definition be a real method (notes/mwccarm-codegen.md
+           6az). */
+    void KillByInvincibleChar(const Vector3_16 &spin_, Player &player_, Fix12i unused_);
 };
 
 /* Makes dEnemyBase_c's size a claim the compiler enforces, and makes every header

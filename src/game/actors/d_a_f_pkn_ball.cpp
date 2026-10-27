@@ -16,9 +16,7 @@ struct Callback;
  * common.h is first so the particle helper copies the flat Matrix4x3.
  */
 // leftovers:
-// - Particle::System::New, NewSimple and NewUnkCallback818, dCcAc_c::Init,
-//   dBgCh_Actr::Init and DropShadowRadHeight stay mangled (Fix12<int> by
-//   value). UpdateContinuous's veneer, TouchesWater,
+// - UpdateContinuous's veneer, TouchesWater,
 //   SaveData::IsCharacterUnlocked, func_02012694 and func_ov002_020ad660
 //   have no header declaration.
 // - Behavior's position copies use the file-local POD Vec3F. types.h's
@@ -97,7 +95,6 @@ extern void *d_a_f_pkn_ballNewHold(u32 a, u32 b, Fix12i c, Fix12i d, Fix12i e, c
                                    void *g);
 extern void Vec3_Asr(Vec3* d, Vec3* s, int sh);
 extern void Matrix4x3_FromTranslation(Matrix4x3* m, s32 x, s32 y, s32 z);
-extern void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(void* thiz, void* sm, void* mtx, Fix12i f, Fix12i a, u32 b);
 extern s32 data_ov002_02100320[];
 extern s32 data_ov002_02100334[];
 extern s32 data_ov002_02100348[];
@@ -115,7 +112,6 @@ struct System {
 }
 void func_02012694(u32 id, const void* v);
 extern s16 data_02082214[];
-extern void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void* thiz, void* actor, int fix12, int t, unsigned int a, unsigned int b);
 }
 
 // @symbol _ZN12daFPknBall_cD1Ev
@@ -225,8 +221,7 @@ void daFPknBall_c::func_ov002_020f8b24()
     Vec3_Asr(&shadowPos, &pos, 3);
     Matrix4x3_FromTranslation(&data_020a0e68, shadowPos.x, shadowPos.y, shadowPos.z);
     mShadowMat = data_020a0e68;
-    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
-        this, &mShadowModel, &mShadowMat, 0x28000, 0x64000, 0xf);
+    DropShadowRadHeight(mShadowModel, mShadowMat, 0x28000, 0x64000, 0xf);
 }
 
 // @symbol _ZN12daFPknBall_c6RenderEv
@@ -423,7 +418,7 @@ int daFPknBall_c::InitResources()
 {
     if (mShadowModel.InitCylinder() == 0)
         return 0;
-    _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, this, 0x28000, 0x50000, 0x200002, 0);
+    mdCcAc_c.Init(this, 0x28000, 0x50000, 0x200002, 0);
     mWithMeshClsn.Init(this, 0x32000, 0x32000, 0, 0);
     mWithMeshClsn.StartDetectingWater();
     mStateTimer = 0;

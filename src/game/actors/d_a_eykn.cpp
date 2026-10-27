@@ -6,13 +6,7 @@
  * gEyknStates.
  *
  * deslop leftovers:
- * - DropShadowRadHeight as a member: UpdateModelTransform 0xa0->0xb0.
- * - dCcAcPos_c::Init as a member, both call sites: InitResources
- *   0x298->0x2b8.
- * - Particle::System::New, NewUnkCallback818, and NewSimple, and
- *   Player::Hurt, stay scalar externs. System does not declare the
- *   three New* calls, and Player.h does not declare Hurt. A Fix12<int>
- *   parameter is the caller cost measured on DropShadow and Init above.
+ * - Player::Hurt stays a scalar extern; Player.h does not declare it.
  * - func_0201267c is the bank-3 veneer around Sound::Play. Sound::Play(3,
  *   id, Vector3 &) is +4 a call: St_Die_Init 0xd4->0xd8, St_Attack_Main
  *   0x314->0x318, St_Die_Main (two calls) 0x3dc->0x3e4. &mCamSpacePosX
@@ -132,10 +126,6 @@ int d_a_eyknNewHold(u32 uniqueID, u32 effectID, int x, int y, int z, const void 
 u32 d_a_eyknNewUnkCallback818Hold(u32 uniqueID, u32 effectID, int x, int y, int z,
                                   const Vector3_16f *dir);
 void d_a_eyknNewSimpleHold(u32 effectID, int x, int y, int z);
-void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
-    dCcAcPos_c *clsn, dActor_c *actor, const Vector3 *offset, int radius, int height, u32 flags, u32 vulnFlags);
-void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
-    dActor_c *actor, dExtShadowModel_c *shadow, Matrix4x3 *matrix, int radius, int depth, u32 opacity);
 
 /* Sine and cosine pairs indexed by (angle >> 4) * 2. */
 extern s16 data_02082214[];
@@ -376,7 +366,7 @@ void daEykn_c::UpdateModelTransform()
     mShadowMat[9] = mPosX >> 3;
     mShadowMat[10] = mPosY >> 3;
     mShadowMat[11] = mPosZ >> 3;
-    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(this, &mShadowModel, (Matrix4x3 *)mShadowMat, mScale * 0xb4, mShadowHeight, 0xf);
+    DropShadowRadHeight(mShadowModel, *(Matrix4x3 *)mShadowMat, mScale * 0xb4, mShadowHeight, 0xf);
 }
 
 
@@ -797,7 +787,7 @@ s32 daEykn_c::InitResources()
         v.x = 0;
         v.y = -0x4b000;
         v.z = 0;
-        _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(&mdCcAcPos_c, this, &v, 0x55000, 0x96000, 0x200004, 0x42000);
+        mdCcAcPos_c.Init(this, v, 0x55000, 0x96000, 0x200004, 0x42000);
         mScaleX = 0x1000;
         mScaleY = 0x1000;
         mScaleZ = 0x1000;
@@ -809,7 +799,7 @@ s32 daEykn_c::InitResources()
             v.x = 0;
             v.y = -0x96000;
             v.z = 0;
-            _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(&mdCcAcPos_c, this, &v, 0xaa000, 0x12c000, 0x200004, 0);
+            mdCcAcPos_c.Init(this, v, 0xaa000, 0x12c000, 0x200004, 0);
             mScaleX = 0x2000;
             mScaleY = 0x2000;
             mScaleZ = 0x2000;

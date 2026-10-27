@@ -18,9 +18,6 @@
  *   ring's uniqueID in cartridge order (cmp r0, r1). Swapping the
  *   operands DIFFs. The 0x3ac/+4 dance stays; uniqueID is the word
  *   at +4 of that ring.
- * - dExtAnmModel_c::SetAnim and dCcAcPos_c::Init stay the scalar
- *   Fix12<int> externs. The member calls grow those functions and
- *   move InitResources' reloc off data_ov090_02134524.
  * - Behavior keeps the mSpeedZ copy after the terminal clamp.
  *   Dropping it loses the reload of dActor_c's z speed.
  * - Matrix4x3 stays decl_common.h's flat s32[12].
@@ -99,9 +96,6 @@ short Vec3_VertAngle(const Vector3 *v0, const Vector3 *v1);
 void Matrix4x3_FromRotationY(void *m, int angle);
 void Matrix4x3_ApplyInPlaceToRotationX(void *m, short angle);
 void MulVec3Mat4x3(Vector3 *v, void *m, Vector3 *out);
-void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(void *self, dActor_c *a,
-                                                             const Vector3 &v, int b, int c,
-                                                             unsigned int d, unsigned int e);
 }
 
 bool ApproachLinear(short &value, short target, short step);
@@ -371,8 +365,7 @@ int daManta_c::InitResources()
         offset.x = data_ov090_02134200.x;
         offset.y = data_ov090_02134200.y;
         offset.z = data_ov090_02134200.z;
-        _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
-            &mdCcAcPos_c, this, offset, 0x150000, 0xc8000, 0x200004, 0);
+        mdCcAcPos_c.Init(this, offset, 0x150000, 0xc8000, 0x200004, 0);
     }
 
     {

@@ -173,13 +173,9 @@ extern "C" void MulMat4x3Mat4x3(void* out, void* a, void* b);
 extern "C" void Vec3_LslInPlace(void* v, int n);
 extern "C" struct Matrix4x3 data_020a0e68;
 extern "C" struct Matrix4x3 IDENTITY_MATRIX4X3;
-extern "C" void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
-    void *self, void *actor, void *pos, s32 fx, s32 fy, u32 a, u32 b);
 /* Parameter names keep this TU's @NNN. */
 typedef void BgchInitAt_(void *self, void *actor, s32 fa, s32 fb, void *v0, void *v1);
 extern "C" void d_a_kuri_kingEarthquakeHold(void *thiz, void *v, int f);
-extern "C" void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
-    void *self, void *shadow, void *mat, int rad, int hgt, u32 flags);
 extern "C" int data_ov074_02122e24[];
 extern "C" char data_ov074_02122f3c[];
 extern "C" char data_ov074_02122f38[];
@@ -1514,8 +1510,7 @@ void daKuriKing_c::func_ov074_02121800()
         height += 0x28000;
         ((daKuriKing_c *)self)->mShadowMatrices[0][11] =
             ((daKuriKing_c *)src)->mCylClsnPos[0].z >> 3;
-        _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
-            this, shadow, m, radius, height, 0xf);
+        DropShadowRadHeight(*shadow, *(Matrix4x3 *)m, radius, height, 0xf);
         self += 0x30;
         src += 0xc;
         m += 0x30;
@@ -1759,8 +1754,7 @@ int daKuriKing_c::InitResources()
 
     k = 0;
     do {
-        _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
-            &mdCc_cs[k], this, &mPosX, mScaleX * 0xa, mScaleY * 0xa, 0x200004, 0x26fe0);
+        mdCc_cs[k].Init(this, *(Vector3 *)&mPosX, mScaleX * 0xa, mScaleY * 0xa, 0x200004, 0x26fe0);
         k++;
     } while (k < 4);
 
@@ -1933,8 +1927,8 @@ int daKuriKing_c::func_ov074_021223bc()
     mShadowMatrices[0][10] = this->mPosY >> 3;
     mShadowMatrices[0][11] = this->mPosZ >> 3;
 
-    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
-        this, &this->mShadowModels[0], mShadowMatrices[0], 0x8c000, 0x3e8000, 0xf);
+    DropShadowRadHeight(this->mShadowModels[0], *(Matrix4x3 *)mShadowMatrices[0], 0x8c000, 0x3e8000,
+                        0xf);
 
     return 1;
 }

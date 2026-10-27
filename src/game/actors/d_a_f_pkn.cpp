@@ -20,9 +20,7 @@
  * and RTTI.
  */
 /* leftovers:
- * - dExtAnmModel_c::SetAnim, dCcAc_c::Init, dCcAcPos_c::Init,
- *   Particle::System::New, dActor_c::SpawnFireball / SpawnCoins and
- *   Player::Hurt / Bounce stay mangled. Each takes Fix12<int> by value
+ * - Player::Hurt / Bounce stay mangled. Each takes Fix12<int> by value
  *   and the member spelling of those calls stops matching.
  * - CheckClsnHits, StateGrow and StateSpit keep their int locals and
  *   gotos. The direct spelling at each of those sites stops matching.
@@ -124,12 +122,7 @@ void UnloadBlueCoinModel(void *);
 
 /* Called by their mangled names: each carries a Fix12<int> by value and
    the member spelling DIFFs. */
-void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *self, void *a, int r, int h, u32 e, u32 g);
-void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(void *self, void *a, const Vector3 *v, int r, int h, u32 e, u32 g);
 u32 d_a_f_pknNewHold(u32 a, u32 b, Fix12i c, Fix12i d, Fix12i e, const void *f, void *g);
-void _ZN8dActor_c13SpawnFireballERK7Vector3PK10Vector3_165Fix12IiES7_j(
-    void *self, const void *pos, const void *v16, int a, int b, u32 g);
-void _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs(void *self, const void *pos, u32 a, int b, short c);
 
 extern SharedFilePtr data_ov084_02130dfc;   /* the plant's model */
 extern SharedFilePtr *data_ov084_021302f4[];/* the six shared animation handles */
@@ -501,8 +494,7 @@ void daFPkn_c::StateSpit()
     pos.y += mMaxScale * 0x5a;
     mAngleX = 0x1000;
 
-    _ZN8dActor_c13SpawnFireballERK7Vector3PK10Vector3_165Fix12IiES7_j(
-        this, &pos, &mAngleX, 0x1e000, 0xa000, 3);
+    SpawnFireball(pos, (const Vector3_16 *)(&mAngleX), 0x1e000, 0xa000, 3);
     return;
 
 cold:
@@ -561,7 +553,7 @@ void daFPkn_c::StateWait()
                 coinPos.x = mPosX;
                 coinPos.y = mPosY;
                 coinPos.z = mPosZ;
-                _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs(this, &coinPos, 2, 0xa000, 0);
+                SpawnCoins(coinPos, 2, 0xa000, 0);
             }
             if (leader->mGroupDefeatedCount == 5) {
                 dActor_c::Spawn(ACTOR_STAR, mStarID | 0x40, mPos, 0, mAreaId, -1);
@@ -586,7 +578,7 @@ void daFPkn_c::StateWait()
         coinPos2.x = mPosX;
         coinPos2.y = mPosY;
         coinPos2.z = mPosZ;
-        _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs(this, &coinPos2, 1, 0xa000, 0);
+        SpawnCoins(coinPos2, 1, 0xa000, 0);
         KillAndTrackInDeathTable();
         return;
     }
@@ -769,14 +761,12 @@ int daFPkn_c::InitResources()
     /* A real SetAnim call with a Fix12<int> speed DIFFs; see the file header. */
     mAnmModel.SetAnim((BCA_File *)data_ov084_02130df4.filePtr, 0x40000000, 0x1000, 0);
 
-    _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(
-        &mdCcAc_c, this, 0, 0, 0x200001, HIT_DAMAGE & ~HIT_MEGA_CHARACTER);
+    mdCcAc_c.Init(this, 0, 0, 0x200001, HIT_DAMAGE & ~HIT_MEGA_CHARACTER);
 
     clsnPos.x = 0;
     clsnPos.y = 0;
     clsnPos.z = 0;
-    _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
-        &mdCcAcPos_c, this, &clsnPos, 0x4b000, 0x64000, 0x200002, HIT_DAMAGE & ~HIT_MEGA_CHARACTER);
+    mdCcAcPos_c.Init(this, clsnPos, 0x4b000, 0x64000, 0x200002, HIT_DAMAGE & ~HIT_MEGA_CHARACTER);
 
     mScale = 0;
     mRespawnMode = 0;

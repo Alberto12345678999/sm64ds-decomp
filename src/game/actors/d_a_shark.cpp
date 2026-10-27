@@ -31,8 +31,6 @@
  *   0x114. The int temporary stays.
  * - func_ov090_0213387c: dExtAnmModel_c::SetAnim with a Fix12<int> speed is
  *   size 0x38 to 0x44. The int-parameter call stays.
- * - InitResources: dCcAcPos_c::Init with Fix12<int> radius and height is
- *   size 0x108 to 0x118. The int-parameter call stays.
  * - Behavior: clamping with `speed < mTerminalVelocity` and dropping the
  *   mSpeedZ copy is size 0x1c0 to 0x1b8 and shifts the calls
  *   (WRONG-DEST, func_ov090_02133904 against 0x02010d40). The
@@ -71,9 +69,6 @@ extern s16 Vec3_VertAngle(Vector3 *a, Vector3 *b);
 extern void Matrix4x3_FromRotationY(void *matrix, s32 angle);
 extern void Matrix4x3_ApplyInPlaceToRotationX(void *matrix, s16 angle);
 extern void MulVec3Mat4x3(void *a, void *matrix, void *b);
-extern void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
-    void *thiz, void *actor, void *pos, int f, int g,
-    unsigned int h, unsigned int i);
 }
 
 bool ApproachLinear(short &value, short target, short step);
@@ -311,8 +306,7 @@ int daShark_c::InitResources()
     mClsnOffset.x = 0;
     mClsnOffset.y = 0;
     mClsnOffset.z = 0;
-    _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
-        &mdCcAcPos_c, this, &mClsnOffset, 0x42000, 0x6e000, 0x200004, 0);
+    mdCcAcPos_c.Init(this, mClsnOffset, 0x42000, 0x6e000, 0x200004, 0);
     {
         PathPtr path;
         path.FromID(mPathID);

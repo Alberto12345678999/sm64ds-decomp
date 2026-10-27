@@ -56,8 +56,8 @@ struct Vector3_16f;
  *
  * deslop leftovers:
  * - the callees with Fix12<int> parameters (dExtAnmModel_c::SetAnim,
- *   dCcAc_c::Init, dBgCh_Actr::Init, the shadow drops, Particle::System::New)
- *   stay spelled as mangled extern-C free functions. A real method call homes
+ *   dBgCh_Actr::Init, Particle::System::New) stay spelled as mangled
+ *   extern-C free functions. A real method call homes
  *   a class-typed by-value argument and size-DIFFs the caller
  *   (notes/mwccarm-codegen.md 6az).
  * - the DOSUN byte at +0x3a2 in func_ov002_020ec670 remains a raw offset.
@@ -157,7 +157,6 @@ extern void Matrix4x3_FromRotationZXYExt(void *m, int x, int y, int z);
    types 0xa4 and 0xa5, BATAN and BATANKING, both daBtn_c in ov079, and
    ov079's function there is daBtn_c's hit reaction, which takes the body and
    the actor that hit it -- the call's (actor, egg). */
-extern void _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs(void *thiz, const void *v, unsigned int n, Fix12i f, short s);
 extern int RandomIntInternal(int *seed);
 extern void _Z15ApproachLinear2Rsss(s16 *p, short a, short b);
 /* Numbering pins: func_ov002_020d5f98/020d6048 are now Player members (see
@@ -185,7 +184,6 @@ extern int Vec3_Dist(const void *a, const void *b);
 extern void Vec3_Add(void *out, const void *a, const void *b);
 extern void MulVec3Mat4x3(const void *in, const void *m, void *out);
 extern void func_0203568c(void *p, int v);
-extern void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *mc, void *a, Fix12i r, unsigned int h, unsigned int x, unsigned int y);
 /* Parameter names keep this TU's @NNN. */
 typedef void BgchInitAt_(void *self, void *actor, int radius, int height, void *a, void *b);
 extern unsigned char DecIfAbove0_Byte(unsigned char *p);
@@ -200,8 +198,6 @@ extern void Matrix4x3_ApplyInPlaceToRotationZXYExt(M48 *m, int x, int y, int z);
 extern void Matrix4x3_ApplyInPlaceToRotationXYZExt(M48 *m, int x, int y, int z);
 extern int func_ov002_020cf700(void *g);
 extern int func_ov002_020d0d2c(void *g);
-extern void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(void *self, void *shadow, void *mtx, int fix, int t, unsigned int n);
-extern void _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_S5_j(void *self, void *shadow, void *mtx, int fix, int t1, int t2, unsigned int n);
 extern void LoadBlueCoinModel(void *self);
 extern void UnloadBlueCoinModel(void *self);
 }
@@ -355,7 +351,7 @@ void daYegg_c::func_ov002_020ec728()
         v2.x = vec.x;
         v2.y = vec.y;
         v2.z = vec.z;
-        _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs(this, &v2, n, 0x2000, 0);
+        SpawnCoins(v2, n, 0x2000, 0);
     }
     if (func_ov002_020ec628()) {
         struct Vector3 v3;
@@ -737,7 +733,7 @@ void daYegg_c::func_ov002_020ecfc8() {
                 func_ov002_020edca4(this);
         }
     }
-    _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, this, 0x64000, 0xc8000, 0x202000, 0);
+    mdCcAc_c.Init(this, 0x64000, 0xc8000, 0x202000, 0);
     mPrevAngleY = mAngleY;
 }
 
@@ -1081,11 +1077,9 @@ void daYegg_c::func_ov002_020ed7f8()
     if (b == 0 && mPlayer->mClimbClsn == 0 && !func_ov002_020cf700(mPlayer) &&
         !func_ov002_020d0d2c(mPlayer)) {
         if (func_ov002_020ec654() == 0) {
-            _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
-                this, &mShadowModel, mShadowMtx, r4, r5 + 0x28000, 0xf);
+            DropShadowRadHeight(mShadowModel, *(Matrix4x3 *)mShadowMtx, r4, r5 + 0x28000, 0xf);
         } else {
-            _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_S5_j(
-                this, &mShadowModel, mShadowMtx, r4, r5 + 0x28000, r4, 0xf);
+            DropShadowScaleXYZ(mShadowModel, *(Matrix4x3 *)mShadowMtx, r4, r5 + 0x28000, r4, 0xf);
         }
     }
 }
@@ -1500,16 +1494,14 @@ int daYegg_c::InitResources()
         mScaleX = 0x1000;
         mScaleY = 0x1000;
         mScaleZ = 0x1000;
-        _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(
-            &mdCcAc_c, this, 0x46000, 0x8c000, 0x200002, 0xa08000);
+        mdCcAc_c.Init(this, 0x46000, 0x8c000, 0x200002, 0xa08000);
         mWithMeshClsn.Init(this, 0x28000, 0x28000, 0, 0);
         break;
     case 2:
         mScaleX = 0x2000;
         mScaleY = 0x2000;
         mScaleZ = 0x2000;
-        _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(
-            &mdCcAc_c, this, 0x78000, 0xa0000, 0x200002, 0xa08000);
+        mdCcAc_c.Init(this, 0x78000, 0xa0000, 0x200002, 0xa08000);
         mWithMeshClsn.Init(this, 0x64000, 0x64000, 0, 0);
         break;
     default:

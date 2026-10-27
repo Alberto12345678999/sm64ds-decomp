@@ -105,8 +105,6 @@ struct System {
 }
 extern void hold_d_a_obj_bk_lift(dBgW_KcMbg *self, KCL_File *file, const Matrix4x3 *mat,
                                  Fix12i scale, s16 angle, CLPS_Block *clps);
-void _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_S5_j(
-    void *self, void *shadow, void *mat, int a, int b, int c, unsigned flags);
 }
 
 // @symbol daObjBk_Lift_c_classInit
@@ -295,8 +293,7 @@ void daObjBk_Lift_c::func_ov015_021123c8()
     mShadowMat.m[9] = (mPosX - mShadowOffsetX) >> 3;
     mShadowMat.m[10] = mFloorPosY >> 3;
     mShadowMat.m[11] = (mPosZ - mShadowOffsetY) >> 3;
-    _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_S5_j(
-        this, &mShadowModel, &mShadowMat, 0x190000, 0x28000, 0x258000, 0xf);
+    DropShadowScaleXYZ(mShadowModel, mShadowMat, 0x190000, 0x28000, 0x258000, 0xf);
 }
 
 // @symbol _ZN14daObjBk_Lift_c15OnHitByMegaCharER6Player

@@ -27,17 +27,6 @@
  * mShadowMat, and only common.h's flat s32 m[12] is that twelve-word copy.
  *
  * deslop leftovers:
- * - dCcAc_c::Init (InitResources): the header method, called with
- *   Fix12<int> temporaries, is 0x188 -> 0x198 (4 words).
- * - dBgCh_Actr::Init (InitResources): the header spells Fix12i, so the
- *   call mangles as _ZN10dBgCh_Actr4InitEP8dActor_ciiP10Vector3_16S3_.
- *   That symbol is not in the map (UNRESOLVED). Retail is the
- *   Fix12<int> spelling at 0x02037388.
- * - DropShadowRadHeight (UpdateModel): the header method is 0xa8 -> 0xb8
- *   (4 words). SetRanges (InitState0, State2) and Earthquake (State3)
- *   are not methods on dActor_c.h; same by-value Fix12 wall.
- * - Particle::RunningSlidingDustAt (State4): Fix12<int> parameters are
- *   0xa4 -> 0xc8 (9 words). State2 and State3 use the same scalar extern.
  * - Player::Hurt (HurtPlayer): not declared on Player.h.
  * - dBgCh_Actr_UpdateContinuous_Veneer (UpdateGroundCollision): retail
  *   bl is 0x020383fc, the veneer, not UpdateContinuous at 0x020366b4.
@@ -94,13 +83,7 @@ void  Matrix4x3_FromRotationXYZExt(void *m, int x, int y, int z);
 void  func_0203568c(int *clsn, int radius);
 void  func_02035684(int *clsn, int height);
 
-void      _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
-              void *self, void *shadow, void *matrix, int radius, int height,
-              u32 flags);
 
-void  _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *self, void *actor,
-                                                int radius, int height,
-                                                u32 flags, u32 vulnFlags);
 }
 namespace Particle {
 void RunningSlidingDustAt(int x, int y, int z);
@@ -186,8 +169,7 @@ int daBgSnmBdy_c::InitResources()
     mModel.SetFile((BMD_File *)file, 1, 1);
     if (mShadowModel.InitCylinder() == 0)
         return 0;
-    _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mCylinder, this, 0x82000,
-                                             0x104000, 0x800004, 0);
+    mCylinder.Init(this, 0x82000, 0x104000, 0x800004, 0);
     mWithMeshClsn.Init(this, 0x82000, 0x82000, 0, 0);
     pos.x = mPosX;
     pos.y = mPosY;
@@ -515,8 +497,7 @@ void daBgSnmBdy_c::UpdateModel()
     mShadowMat.m[9] = mPosX >> 3;
     mShadowMat.m[10] = (mPosY + mRadius) >> 3;
     mShadowMat.m[11] = mPosZ >> 3;
-    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
-        this, &mShadowModel, &mShadowMat, mRadius << 1, mRadius << 1, 0xf);
+    DropShadowRadHeight(mShadowModel, mShadowMat, mRadius << 1, mRadius << 1, 0xf);
 }
 
 // @symbol _ZN12daBgSnmBdy_c21UpdateGroundCollisionEP10dBgCh_Actr

@@ -168,16 +168,12 @@ extern void DeathTable_ClearBit(int);
 extern void FUN_0202a130(void);
 extern void UnloadSilverStarAndNumber(void);
 extern StarAnimationFileHandle data_ov002_02110934;
-extern void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(void *self, void *actor, const void *v, int d, int e, u32 f, u32 g);
 extern int Vec3_Dist(void*, void*);
 extern unsigned int data_0209b454;
 extern int data_ov002_0210da28[];
 extern signed char data_0209f310[];
 extern "C" signed char NumRedCoins(void);
 extern unsigned char data_0209f2d8;
-/* local extern: dActor_c.h declares SpawnSoundObj void, but it returns Spawn's
-   result in r0 and two callers here test it. */
-extern char *_ZN8dActor_c13SpawnSoundObjEj(void *thiz, unsigned int id);
 extern void func_02035860(void* o, void* src);
 extern int RandomIntInternal(int* seed);
 extern int data_0209e650;
@@ -202,7 +198,6 @@ extern void MulMat4x3Mat4x3(void* out, void* a, void* b);
 extern void Vec3_LslInPlace(void* v, int sh);
 extern struct M48 data_020a0e68;
 extern Mtx IDENTITY_MATRIX4X3;
-extern int _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(char *self, struct dExtShadowModel_c *sm, struct Matrix4x3 *m, int fix, int t, u32 f);
 extern void Vec3_Asr(struct Vector3* d, struct Vector3* s, int sh);
 extern void Matrix4x3_FromRotationY(void* m, int angle);
 extern void _ZN5Event8ClearBitEj(unsigned int b);
@@ -233,7 +228,6 @@ extern int _ZN5Event6GetBitEj(unsigned int bit);
 extern int Vec3_HorzDist(const Vec3* a, const Vec3* b);
 extern s16 GetAngleToCamera(int i);
 extern u8 *data_0209f344;
-extern short _ZN8dActor_c12ReflectAngleE5Fix12IiES1_s(void* c, Fix12i a, Fix12i b, short ang);
 }
 extern "C" {
 extern int func_ov002_020c6e14(void*);
@@ -338,7 +332,6 @@ extern s32 IsStarCollected(s32 level, s32 idx);
 /* TUBUILD CONFLICT -- alternate declaration of func_ov002_020e8dd8, from the legacy file for func_ov002_020ea9d0, NOT applied: extern s32 func_ov002_020e8dd8(void *self); */
 /* TUBUILD CONFLICT -- alternate declaration of Matrix4x3_FromTranslation, from the legacy file for _ZN12daStarBase_c8BehaviorEv, NOT applied: extern void Matrix4x3_FromTranslation(void *m, int x, int y, int z); */
 /* TUBUILD CONFLICT -- alternate declaration of Matrix4x3_FromRotationY, from the legacy file for _ZN12daStarBase_c8BehaviorEv, NOT applied: extern void Matrix4x3_FromRotationY(void *m, int ang); */
-/* TUBUILD CONFLICT -- alternate declaration of _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j, from the legacy file for _ZN12daStarBase_c8BehaviorEv, NOT applied: extern void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j( */
 /* TUBUILD CONFLICT -- alternate declaration of _ZN5dCc_c5ClearEv, from the legacy file for _ZN12daStarBase_c8BehaviorEv, NOT applied: extern void _ZN5dCc_c5ClearEv(void *p); */
 /* TUBUILD CONFLICT -- alternate declaration of data_0209f208, from the legacy file for _ZN12daStarBase_c8BehaviorEv, NOT applied: extern unsigned char data_0209f208; */
 /* TUBUILD CONFLICT -- alternate declaration of data_0209f344, from the legacy file for _ZN12daStarBase_c8BehaviorEv, NOT applied: extern unsigned char *data_0209f344; */
@@ -524,8 +517,7 @@ s32 daStar_c::InitResources()
     v2.x = data_ov002_0210aa0c[0];
     v2.y = data_ov002_0210aa0c[1];
     v2.z = data_ov002_0210aa0c[2];
-    _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
-        &mdCc_c, this, &v2, 0x64000, 0x96000, 0x100002, 0x8000);
+    mdCc_c.Init(this, *(Vector3 *)&v2, 0x64000, 0x96000, 0x100002, 0x8000);
     mWithMeshClsn.Init(this, 0x50000, 0, 0, 0);
     mWithMeshClsn.SetLimMovFlag();
     mStarID = (u8)(param1 & 0xf);
@@ -670,7 +662,7 @@ int daStarBase_c::InitResources()
     v0.x = 0;
     v0.y = -0x50000;
     v0.z = 0;
-    _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(&mdCcAcPos_c, this, &v0, 0x50000, 0xa0000, 0x100002, 0x8000);
+    mdCcAcPos_c.Init(this, v0, 0x50000, 0xa0000, 0x100002, 0x8000);
     dBgCh_Gnd ground;
     ground.StartDetectingWater();
 
@@ -707,14 +699,14 @@ int daStarBase_c::InitResources()
         v4.x = 0;
         v4.y = -0x50000;
         v4.z = 0;
-        _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(&mdCcAcPos_c, this, &v4, 0x50000, 0xa0000, 0x100004, 0);
+        mdCcAcPos_c.Init(this, v4, 0x50000, 0xa0000, 0x100004, 0);
         mAppearTimer = 0;
     } else if (kind == 5) {
         mState = 3;
         v5.x = 0;
         v5.y = -0x50000;
         v5.z = 0;
-        _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(&mdCcAcPos_c, this, &v5, 0x50000, 0xa0000, 1, 0);
+        mdCcAcPos_c.Init(this, v5, 0x50000, 0xa0000, 1, 0);
     } else if (kind & 1) {
         mState = 1;
         if (kind & 2) {
@@ -875,8 +867,9 @@ int daStarBase_c::Behavior()
             int rad = 0xa0000;
             if (mState != 0)
                 rad = 0xc8000;
-            _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
-                (char *)this, (struct dExtShadowModel_c *)&mShadowModel, (struct Matrix4x3 *)&mShadowMtx, rad, d + 0x28000, 0xf);
+            ((dActor_c *)this)
+                ->DropShadowRadHeight(*(dExtShadowModel_c *)&mShadowModel,
+                                      *(Matrix4x3 *)&mShadowMtx, rad, d + 0x28000, 0xf);
         }
     }
     if (mState != 0) {
@@ -1650,13 +1643,13 @@ void daStar_c::func_ov002_020e99e8() {
     mPrevPosY = mPosY;
     UpdateWMClsn(mWithMeshClsn, 2);
     if (mWithMeshClsn.IsOnWall()) {
-        mPrevAngleY = _ZN8dActor_c12ReflectAngleE5Fix12IiES1_s(c, mWallNormalX, mWallNormalZ, mPrevAngleY);
+        mPrevAngleY = ((dActor_c *)c)->ReflectAngle(mWallNormalX, mWallNormalZ, mPrevAngleY);
     }
     func_ov002_020e86ec();
     if (mWithMeshClsn.JustHitGround()) {
         func_ov002_020e88a8();
     } else if (mWithMeshClsn.IsOnGround()) {
-        mPrevAngleY = _ZN8dActor_c12ReflectAngleE5Fix12IiES1_s(c, mWallNormalX, mWallNormalZ, mPrevAngleY);
+        mPrevAngleY = ((dActor_c *)c)->ReflectAngle(mWallNormalX, mWallNormalZ, mPrevAngleY);
         if (mBits.water == WATER_IN)
             mVertSpeed = 0xe000;
         else
@@ -2531,8 +2524,9 @@ void daStar_c::func_ov002_020e8398() {
     mShadowMtx.ty = mPosY >> 3;
     mShadowMtx.tz = mPosZ >> 3;
 
-    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
-        c, (struct dExtShadowModel_c *)&mShadowModel, (struct Matrix4x3 *)&mShadowMtx, r8, t, 0xf);
+    ((dActor_c *)c)
+        ->DropShadowRadHeight(*(dExtShadowModel_c *)&mShadowModel, *(Matrix4x3 *)&mShadowMtx, r8, t,
+                              0xf);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -2729,7 +2723,7 @@ void daStar_c::func_ov002_020e7e58() {
 void daStar_c::func_ov002_020e7e24() {
     if (mSoundObj6State != 0xff)
         return;
-    if (_ZN8dActor_c13SpawnSoundObjEj(this, 6))
+    if (SpawnSoundObj(6))
         mSoundObj6State = 0x78;
 }
 
@@ -2787,8 +2781,6 @@ void daStar_c::func_ov002_020e7d08() {
 /* Camera placement from a StarCamera marker (actor 0xb1): looks at the star
  * from the position of the marker whose star id matches. Returns 1 when one
  * was found. */
-extern "C" {
-}
 
 int daStar_c::func_ov002_020e7c90(void* cam) {
     dActor_c *a = 0;
@@ -3246,7 +3238,7 @@ void daStar_c::func_ov002_020e700c() {
  * sound id func_ov002_020ea3a4 picks at volume arg. */
 void daStar_c::func_ov002_020e6fbc(int arg) {
   if (mSoundObjID != 0) return;
-  daSoundObj_c *s = (daSoundObj_c *)_ZN8dActor_c13SpawnSoundObjEj((char *)this, 4);
+  daSoundObj_c *s = (daSoundObj_c *)SpawnSoundObj(4);
   if (s == 0) return;
   mSoundObjID = s->uniqueID;
   s->mSoundID = func_ov002_020ea3a4();
@@ -3267,7 +3259,7 @@ void daStar_c::func_ov002_020e6edc() {
     v.x = data_ov002_0210aa0c[0];
     v.y = data_ov002_0210aa0c[1];
     v.z = data_ov002_0210aa0c[2];
-    _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(&mdCc_c, this, &v, 0x64000, 0x96000, 1, 0);
+    mdCc_c.Init(this, v, 0x64000, 0x96000, 1, 0);
     mState = STATE_PLAY_AND_END;
     mBits.noSpin = 1;
     mBits.visible = 1;
@@ -3288,8 +3280,7 @@ void daStar_c::func_ov002_020e6df8() {
         v.x = data_ov002_0210aa0c[0];
         v.y = data_ov002_0210aa0c[1];
         v.z = data_ov002_0210aa0c[2];
-        _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(&mdCc_c, this, &v, 0x64000, 0x96000,
-                                                                1, 0);
+        mdCc_c.Init(this, v, 0x64000, 0x96000, 1, 0);
     }
     mBits.noSpin = 1;
     mBits.visible = 1;

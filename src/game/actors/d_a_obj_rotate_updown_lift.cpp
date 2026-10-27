@@ -157,8 +157,11 @@ struct System {
     static void *NewSimple(unsigned int id, int x, int y, int z);
 };
 }
-int _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_S5_j(
-    void *self, void *shadow, void *mat, int sx, int sy, int sz, unsigned int opacity);
+/* local extern: int return -- `return` forwards the callee's r0 (a tail call). */
+int _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x3iiih(void *self, void *shadow,
+                                                                         void *mat, int sx, int sy,
+                                                                         int sz,
+                                                                         unsigned int opacity);
 extern void hold_d_a_obj_rotate_updown_lift(dBgW_KcMbg *self, KCL_File *file, const Matrix4x3 *mat,
                                             int scale, s16 angY, CLPS_Block *clps);
 }
@@ -284,7 +287,7 @@ int daObjRotateUpdownLift_c::func_ov091_02131160()
     int fac = 0xa0000 - shr;
     if (cosine < 0)
         cosine = -cosine;
-    return _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_S5_j(
+    return _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x3iiih(
         c, &mShadowModel, mShadowMat, sx, h, shadowSizeZ.v[variantC] + FX_MUL(fac, cosine), 0xf);
 }
 

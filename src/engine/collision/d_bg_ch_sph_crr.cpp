@@ -4,12 +4,8 @@
 // hit and mClsnResult1/2/3 holding the floor / wall / underneath hits.
 // DetectClsn and the two registry scans live in d_bg_ch_sph_crr_query.cpp.
 //
-// leftovers:
-//   - SetObjAndSphere is defined by its mangled name: the real signature
-//     carries Fix12<int> by value and the member form changes codegen under
-//     2004/b56. The header declaration is the real one; callers use it.
-//   - The hit-record forwarders call dBgPi::RecordHit by its mangled name:
-//     they take int triID, and the member's s16 parameter emits an sxth.
+// leftovers: the hit-record forwarders call dBgPi::RecordHit by its mangled
+// name: they take int triID, and the member's s16 parameter emits an sxth.
 #include "dBgCh_SphCrr.h"
 
 extern "C" {
@@ -31,15 +27,14 @@ dBgCh_SphCrr::~dBgCh_SphCrr()
 {
 }
 
-extern "C" void _ZN12dBgCh_SphCrr15SetObjAndSphereERK7Vector35Fix12IiEP8dActor_c(
-    dBgCh_SphCrr *self, const Vector3 *pos, int radius, dActor_c *actor)
-{
+// @symbol _ZN12dBgCh_SphCrr15SetObjAndSphereERK7Vector3iP8dActor_c
+void dBgCh_SphCrr::SetObjAndSphere(const Vector3 &pos, Fix12i radius, dActor_c *actor) {
     /* through the REFERENCE: a pointer-level upcast makes mwcc emit the
        null-checked MI adjustment (movs/addne), the ROM's is unconditional */
-    ((dM3dGSph &)*self).Set(*pos, radius);
-    self->SetActor(actor);
-    self->func_02037b5c();
-    self->mMaxNormalY = 0x1000;
+    ((dM3dGSph &)*this).Set(pos, radius);
+    SetActor(actor);
+    func_02037b5c();
+    mMaxNormalY = 0x1000;
 }
 
 /* Reset the whole query state: bounds, every flag bit, the base record and

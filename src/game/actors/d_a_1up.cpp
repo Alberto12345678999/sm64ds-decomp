@@ -96,8 +96,6 @@ struct System {
  *   it `int` so func_ov002_020af218 could tail-return it costs four of its
  *   five words; af218 instead tail-returns it through an
  *   `int (*)(void *)` cast of its name (folds to the same `bl`).
- * - dBgCh_Actr::Init / dCcAc_c::Init / DropShadowRadHeight / ReflectAngle 6az
- *   (Fix12i mangles as i; ROM is Fix12<int> -- method form Undefined)
  * - Particle::System::New: no method declaration in include/
  * - Behavior 0x100: named ++mStateTimer size-DIFF vs unsigned-short launder
  *   (the u16 casts of dEnemyBase_c::mStateTimer at 0x100 stay everywhere they
@@ -206,8 +204,6 @@ void Matrix4x3_FromRotationY(void*, int);
 void Matrix4x3_FromTranslation(void*, int, int, int);
 void GiveCoins(int, int);
 short atan2_hold_d_a_1up_1(int, int);
-short _ZN8dActor_c12ReflectAngleE5Fix12IiES1_s(void*, int, int, short);
-void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(void*, void*, void*, int, int, unsigned char);
 }
 // @symbol _ZN7da1up_cD1Ev
 // @symbol _ZN7da1up_cD0Ev
@@ -290,10 +286,9 @@ void func_ov002_020aefa4(char *raw)
    non-virtual methods. The merged TU has both real classes complete through
    da1up_c.h, so the shadows are gone and the calls go through the real types --
    which mangle identically, the class name being the whole of the difference.
-   _ZN8dActor_c12ReflectAngleE5Fix12IiES1_s stays spelt out. Its reconstructed
-   symbol encodes by-value Fix12<int> parameters; the recorded typed-call
-   experiment changed the bytes. This bridge remains pending further
-   signature/codegen work. */
+   ReflectAngle is a real member call: the by-value Fix12<int> its old
+   mangled name claimed was never in the ROM, and with scalar parameters the
+   typed call costs nothing (notes/mwccarm-codegen.md 6az, batch 5). */
 void da1up_c::func_ov002_020aefb8() {
 
     UpdatePosWithHorzSpeedAndAng();
@@ -313,7 +308,7 @@ void da1up_c::func_ov002_020aefb8() {
     UpdatePosWithOnlySpeed((dCc_c*)&mdCcAc_c);
     UpdateWMClsn(mWithMeshClsn, 0);
     if (!mWithMeshClsn.IsOnWall()) return;
-    mPrevAngleY = _ZN8dActor_c12ReflectAngleE5Fix12IiES1_s(this, mWallNormalX, mWallNormalZ, mPrevAngleY);
+    mPrevAngleY = ReflectAngle(mWallNormalX, mWallNormalZ, mPrevAngleY);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -602,7 +597,7 @@ void da1up_c::func_ov002_020af4ec() {
         radius = (mdCcAc_c.radius - 0xa000) * 2;
     }
 
-    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(this, &mShadowModel, &mModel.mat4x3, radius, depth, 0xf);
+    DropShadowRadHeight(mShadowModel, mModel.mat4x3, radius, depth, 0xf);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -1062,7 +1057,6 @@ struct SystemHold {
     static void NewSimple(unsigned int id, int x, int y, int z);
 };
 }
-void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void* thiz, dActor_c* a, int r, int h, unsigned int e, unsigned int g);
 /* Parameter names keep this TU's @NNN. */
 typedef void BgchInitAt_(void *thiz, dActor_c *a, int r, int h, Vector3_16 *p, int q);
 int IsStarCollectedInCurLevel(int a);
@@ -1220,16 +1214,16 @@ int da1up_c::InitResources()
         return 0;
 
     if (mMushroomType == 6 || mMushroomType == 8 || (unsigned int)(mMushroomType - 0xb) <= 1) {
-        _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, (dActor_c*)this, 0x64000, 0x40000, 0x100002, 0);
+        mdCcAc_c.Init((dActor_c *)this, 0x64000, 0x40000, 0x100002, 0);
         if ((unsigned int)(mMushroomType - 0xb) <= 1) {
             mdCcAc_c.vulnFlags |= CC_VULN_YOSHI_TONGUE;
         }
     } else {
         isMega = (actorID == ACTOR_SCALEUP_KINOKO);
         if (isMega) {
-            _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, (dActor_c*)this, 0x41000, 0x41000, 0x100002, 0);
+            mdCcAc_c.Init((dActor_c *)this, 0x41000, 0x41000, 0x100002, 0);
         } else {
-            _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, (dActor_c*)this, 0x32000, 0x32000, 0x100002, 0);
+            mdCcAc_c.Init((dActor_c *)this, 0x32000, 0x32000, 0x100002, 0);
         }
     }
 

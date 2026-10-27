@@ -16,8 +16,6 @@
  * retail D1/D0 plus the class RTTI, type name, and vtable.
  *
  * deslop leftovers:
- * - dCcAc_c::Init 6az: InitResources passes Fix12<int> by value; the header
- *   method form size-DIFFs (notes/mwccarm-codegen.md 6az).
  * - KinokoPositionWords: a local Vector3 would emit vague-linkage ~Vector3.
  * - data_ov002_0210da30 is the ov002 SharedFilePtr handle; symbols.txt has
  *   no recovered name, so it is not coined.
@@ -45,12 +43,6 @@ typedef char KinokoPositionWords_size_must_be_0xc[
 extern "C" {
 extern SharedFilePtr data_ov002_0210da30;
 extern Fix12i Vec3_Dist(const Vector3 *, const Vector3 *);
-
-/* dCcAc_c::Init takes Fix12<int> values by value. Spelling those parameters
- * naturally makes mwccarm home the register arguments and grows this caller,
- * so this one measured scalar declaration remains a narrow ABI seam. */
-extern void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(
-    dCcAc_c *, dActor_c *, Fix12i, Fix12i, u32, u32);
 }
 
 // @symbol daObjKinokoTag_c_classInit_KINOKO_TAG
@@ -92,9 +84,7 @@ extern "C" SpawnInfo<daObjKinokoTag_c> g_profile_KINOKO_CREATE_TAG = {
 // @symbol _ZN16daObjKinokoTag_c13InitResourcesEv
 s32 daObjKinokoTag_c::InitResources()
 {
-    _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(
-        &mMovingCylinderClsn, this,
-        0x12c000, 0x32000, 0x800002, 0x20);
+    mMovingCylinderClsn.Init(this, 0x12c000, 0x32000, 0x800002, 0x20);
     mGroupId = param1;
     dExtSimpleModel_c::LoadFile(data_ov002_0210da30);
     return 1;

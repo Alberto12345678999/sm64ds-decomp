@@ -46,10 +46,8 @@
  *
  * deslop leftovers:
  * - SetAnim 6az: helpers pass Fix12<int> by value; header method form size-DIFFs.
- * - DropShadowRadHeight 6az: func_ov064_02116bac.
  * - IsTooFarAwayFromPlayer / IsPlayerInRange(Fix12,Fix12,Fix12,s32) 6az:
  *   func_ov064_021165d8 / 02116560. Header methods carry Fix12<int>.
- * - KillByInvincibleChar 6az: func_ov064_02116754.
  * - Particle::System::New / NewSimple 6az: func_ov064_0211616c / 02115f98.
  * - _Z14ApproachLinearRiii stays mangled; no header method form here.
  * - func_0201267c: PlayStepSound / PlayHitSound / PlayDeathSound at mCamSpacePosX.
@@ -61,8 +59,7 @@
  *   identifiers). InitResourcesCommon / BehaviorCommon are the two that
  *   were leftover shards; names describe the children's slot-0 / slot-6
  *   wrappers.
- * - InitResourcesCommon 6az: dCcAc_c::Init / dBgCh_Actr::Init / SetAnim
- *   keep mangled forms (Fix12<int> by value).
+ * - InitResourcesCommon 6az: dBgCh_Actr::Init / SetAnim keep mangled forms (Fix12<int> by value).
  * - BehaviorCommon: the mStateTimer increment stays unsigned short (ldrh).
  * - daOts_c.h first: nested Matrix4x3 for mAnmModel.mat4x3.t (02116bac).
  *   common.h's flat m[12] would stand down if it came first.
@@ -243,9 +240,6 @@ extern "C" int _ZN14dExtAnmModel_c7SetAnimEP8BCA_Fileiit(dExtAnmModel_c *, BCA_F
                                                          u16);
 int _Z14ApproachLinearRiii(int *dst, int target, int rate);
 
-void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(void* a, void* sm, void* mtx, int rad, int h, unsigned int x);
-int _ZN12dEnemyBase_c20KillByInvincibleCharERK10Vector3_16R6Player5Fix12IiE(void* c, void* v, void* player, s32 flag);
-void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *self, dActor_c *a, int r, int h, unsigned int d, unsigned int e);
 
 void func_ov064_021163c0(daOts_c *c);
 }
@@ -277,7 +271,8 @@ int daOts_c::InitResourcesCommon()
     if (mShadowModel.InitCylinder() == 0)
         return 0;
     mAnmModel.SetAnim((BCA_File *)(CONFIG_BCA(this, kAnimWalk)), 0, kAnimSpeedNormal, 0);
-    _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, this, CONFIG(this)->cylinderRadius, CONFIG(this)->cylinderHeight, 0x200000, kHitAttackMask | kHitEgg);
+    mdCcAc_c.Init(this, CONFIG(this)->cylinderRadius, CONFIG(this)->cylinderHeight, 0x200000,
+                  kHitAttackMask | kHitEgg);
     {
         int isD9 = (int)(actorID == kChillBullyActorId);
         if (isD9) {
@@ -449,8 +444,7 @@ void daOts_c::func_ov064_02116bac(){
     tail().mShadowMtx.t.x = this->mPosX >> 3;
     tail().mShadowMtx.t.y = this->mPosY >> 3;
     tail().mShadowMtx.t.z = this->mPosZ >> 3;
-    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
-        this, &this->mShadowModel, &tail().mShadowMtx, h, d + 0x28000, 0xf);
+    DropShadowRadHeight(this->mShadowModel, tail().mShadowMtx, h, d + 0x28000, 0xf);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -533,7 +527,8 @@ void daOts_c::func_ov064_02116754()
             v[0] = 0x2000;
             v[1] = 0;
             v[2] = 0;
-            _ZN12dEnemyBase_c20KillByInvincibleCharERK10Vector3_16R6Player5Fix12IiE(this, v, hitPlayer, CONFIG(this)->eggAimHeight);
+            KillByInvincibleChar(*(Vector3_16 *)v, *(Player *)hitPlayer,
+                                 CONFIG(this)->eggAimHeight);
             this->PlayHitSound();
             return;
         }

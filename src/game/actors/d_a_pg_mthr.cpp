@@ -1,8 +1,5 @@
 //cpp
 /* leftovers:
- * - dCcAc_c::Init and DropShadowRadHeight stay scalar externs. The
- *   Fix12<int> method form grows those bodies and emits an unlicensed
- *   .data word.
  * - dBgCh_Actr::Init's member call mangles with int. The ROM row is
  *   Fix12<int>. GetFloorResult and GetWallResult are not on the header.
  * - func_0201267c is Sound::Play(3, id, pos). The state helpers stay
@@ -107,7 +104,6 @@ extern s16 Vec3_VertAngle(const Vector3 *v1, const Vector3 *v0);
 /* 0x0201267c plays Sound::Play(3, id, pos). Sound::PlayBank3 is the
    previous function (0x02012664); this TU's bl is not that one. */
 extern int Vec3_Dist(const struct Vector3 *a, const struct Vector3 *b);
-extern void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(void *, dExtShadowModel_c &sm, Matrix4x3 &mf, int c, int d, unsigned int e);
 extern void Matrix4x3_FromRotationY(void *m, int angle);
 extern void Matrix4x3_ApplyInPlaceToRotationY(Matrix4x3 *mf, short angY);
 extern void Matrix4x3_ApplyInPlaceToRotationX(Matrix4x3 *mf, short angX);
@@ -126,7 +122,6 @@ extern void func_ov018_02112398(daPgMthr_c *self);
 extern void func_ov018_0211235c(daPgMthr_c *self);
 extern PgMthrModelFileHandle data_ov018_02113c00;
 extern SharedFilePtr *data_ov018_02112c04[2];
-extern void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *self, void *act, int a, int b, unsigned int c2, unsigned int d);
 /* Parameter names keep this TU's @NNN. */
 typedef void BgchInitAt_(void *self, void *act, int a, int b, void *c2, void *d);
 }
@@ -152,7 +147,7 @@ int daPgMthr_c::InitResources()
     if (mShadowModel.InitCylinder() == 0)
         return 0;
     /* Cylinder 260 x 300. Flags 0x4800004 / vuln 0x900000. */
-    _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, this, 0x104000, 0x12c000, 0x4800004, 0x900000);
+    mdCcAc_c.Init(this, 0x104000, 0x12c000, 0x4800004, 0x900000);
     func_ov018_021123d0(0);
     mVertAccel = -0x2000;
     mTerminalVelocity = -0x3c000;
@@ -401,8 +396,7 @@ void daPgMthr_c::func_ov018_02111d28()
     mAnmModel.mat4x3.m[9] = mPosX >> 3;
     mAnmModel.mat4x3.m[10] = mPosY >> 3;
     mAnmModel.mat4x3.m[11] = mPosZ >> 3;
-    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
-        this, mShadowModel, mAnmModel.mat4x3, 0x140000, 0x50000, 0xf);
+    DropShadowRadHeight(mShadowModel, mAnmModel.mat4x3, 0x140000, 0x50000, 0xf);
     if (mLookAngX != 0 || mLookAngY != 0) {
         Matrix4x3 *bone = &mAnmModel.data.transforms[LOOK_BONE];
         data_020a0e68 = *bone;

@@ -1,8 +1,5 @@
 //cpp
 /* leftovers:
- * - SetAnim, DropShadowRadHeight, IsTooFarAwayFromPlayer,
- *   dCcAc_c::Init and dBgCh_Actr::Init stay
- *   mangled. Each takes Fix12<int> by value.
  * - The local file-handle wrappers' constructor/destructor veneers are
  *   mapped to the retail destinations in this TU's manifest.
  * - The state steps stay func_ov072_*. The cartridge has no names
@@ -46,12 +43,8 @@ typedef char PgBbyModelFile_size_must_be_0x08[sizeof(PgBbyModelFile) == 0x08 ? 1
 typedef char PgBbyAnimationFile_size_must_be_0x08[sizeof(PgBbyAnimationFile) == 0x08 ? 1 : -1];
 
 extern "C" {
-/* Fix12<int> by-value walls (notes/mwccarm-codegen.md 6az). */
-void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *thiz, void *actor, int r, int h, unsigned int a, unsigned int b);
 /* Parameter names keep this TU's @NNN. */
 typedef void BgchInitAt_(void *thiz, void *actor, int r, int h, void *v, int b);
-void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
-    void *self, void *shadow, void *mtx, int radius, int height, unsigned int flags);
 
 int Vec3_Dist(const Vector3 *a, const Vector3 *b);
 short Vec3_HorzAngle(const Vector3 *v0, const Vector3 *v1);
@@ -96,7 +89,7 @@ s32 daPgBby_c::InitResources()
         dExtFrameCtrl_c::LoadFile(*gPenguinBabyAnimationFiles[i]);
     }
     if (mShadowModel.InitCylinder() == 0) return 0;
-    _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mCylClsn, this, 0x28000, 0x50000, 0x800004, 0x9000);
+    mCylClsn.Init(this, 0x28000, 0x50000, 0x800004, 0x9000);
     mVertAccel = -0x2000;
     mTerminalVelocity = -0x3c000;
     mSpawnPosX = mPosX;
@@ -606,8 +599,7 @@ void daPgBby_c::func_ov072_021210c4()
         }
     }
 
-    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
-        this, &mShadowModel, &mAnmModel.mat4x3, shadowRadius, shadowHeight, 0xf);
+    DropShadowRadHeight(mShadowModel, mAnmModel.mat4x3, shadowRadius, shadowHeight, 0xf);
 }
 
 // @symbol _ZN9daPgBby_c19func_ov072_02120fd4EP10dBgCh_Actr

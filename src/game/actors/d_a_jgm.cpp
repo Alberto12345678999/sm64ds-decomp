@@ -23,10 +23,8 @@
  * - mSpawnPosX stays punned: daJgm_c stores it as three scalars.
  * - dBgCh_Actr_UpdateDiscreteNoLava_veneer stays: the named
  *   UpdateDiscreteNoLava method is WRONG-DEST (ROM 0x02038420).
- * - Fix12<int>-by-value callees stay mangled (6az): dCcAcPos_c::Init,
- *   dBgCh_Actr::Init (whose header mangles Fix12i as `i`, not the ROM's
- *   5Fix12IiE), DropShadowRadHeight, SpawnCoins, Player::Bounce / Hurt and
- *   Particle::System::NewSimple (Particle__System.h lacks it).
+ * - Player::Bounce / Hurt stay mangled: each takes Fix12<int> by value
+ *   (6az).
  * - dActor_c::IsTooFarAwayFromPlayer, ApproachLinear and cstd::fdiv have
  *   no header decl, so they are declared locally;
  *   ApproachLinear2 keeps C++ linkage (_Z15ApproachLinear2Rsss).
@@ -171,18 +169,9 @@ extern void MulMat4x3Mat4x3(void *a, void *b, void *out);
 extern void Vec3_LslInPlace(void *v, int sh);
 extern void Vec3_Asr(void *d, void *s, int sh);
 
-extern int _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
-    dCcAcPos_c *collision, dActor_c *actor, const Vector3 *offset,
-    Fix12i radius, Fix12i height, u32 flags, u32 vulnFlags);
 /* Parameter names keep this TU's @NNN. */
 typedef int BgchInitAt_(dBgCh_Actr *collision, dActor_c *actor, Fix12i radius, Fix12i height,
                         void *a, void *b);
-extern void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
-    dActor_c *actor, dExtShadowModel_c *shadow, Matrix4x3 *matrix,
-    Fix12i radius, Fix12i depth, u32 opacity);
-extern void _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs(
-    dActor_c *actor, const DaJgmVector3Words *pos, unsigned int count,
-    int spread, short angle);
 /* local extern: kept as a count holder: its five named parameters hold
  * the @NNN count. Sound.h's PlayLong emits the same bytes. */
 extern void d_a_jgmPlayLongHold(unsigned int handle, unsigned int a, unsigned int id,
@@ -238,9 +227,7 @@ s32 daJgm_c::InitResources()
     }
     if (mShadowModel.InitCylinder() == 0)
         return 0;
-    _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
-        &mdCcAcPos_c, this, (Vector3 *)&data_ov077_02127b88,
-        0x41000, 0x78000, 0x200002, 0x6eff0);
+    mdCcAcPos_c.Init(this, *((Vector3 *)&data_ov077_02127b88), 0x41000, 0x78000, 0x200002, 0x6eff0);
     mWithMeshClsn.Init(this, 0x2d000, 0x2d000, 0, 0);
 
     mVertAccel = 0;
@@ -569,8 +556,7 @@ void daJgm_c::UpdateModels()
     mMatrix.m[10] = mPosY >> 3;
     mMatrix.m[11] = mPosZ >> 3;
 
-    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
-        this, &mShadowModel, &mMatrix, 0x5a000, 0x320000, 0xf);
+    DropShadowRadHeight(mShadowModel, mMatrix, 0x5a000, 0x320000, 0xf);
 
     if (mState != 1)
         return;
@@ -707,7 +693,7 @@ void daJgm_c::DieAndDropCoins()
     t.x = mPosX;
     t.y = mPosY;
     t.z = mPosZ;
-    _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs(this, &t, 5, 0x3000, 0);
+    SpawnCoins(*(const Vector3 *)&t, 5, 0x3000, 0);
     PoofDust();
     KillAndTrackInDeathTable();
 }

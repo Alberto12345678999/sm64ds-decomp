@@ -52,8 +52,8 @@ struct System {
  *     its unused second argument; the one-argument form comes out 0x50
  *     against the ROM's 0x5c (measured note in place).
  *   - Computed-spelling externs stay where a member form changes codegen:
- *     _ZN8dActor_c12ReflectAngleE5Fix12IiES1_s and the Particle::System
- *     wrappers take Fix12<int> by value (runbook section 7).
+ *     the Particle::System wrappers take Fix12<int> by value (runbook
+ *     section 7). dActor_c::ReflectAngle is a member call since batch 5.
  *     cstd::atan2 is the scalar call.
  *   - func_ov002_020ae4cc passes its particle position as
  *     `*(int *)((char *)v + N)`; indexing v[] directly comes out 0xd4 against
@@ -556,14 +556,12 @@ int dEnemyBase_c::IsGoingOffCliff(dBgCh_Actr &clsn, Fix12i down, s16 maxSlope, b
 extern "C" {
 /* ReflectAngle takes Fix12<int> by value -- the mwccarm 6az wall, runbook
    section 7 -- so it stays extern "C" with scalars in those slots. */
-extern short _ZN8dActor_c12ReflectAngleE5Fix12IiES1_s(void *actor, int a, int b, short c);
 }
 
 // @symbol _ZN12dEnemyBase_c24AngleAwayFromWallOrCliffER10dBgCh_ActrRs
 int dEnemyBase_c::AngleAwayFromWallOrCliff(dBgCh_Actr &clsn, short &outAngle) {
     if (clsn.IsOnWall()) {
-        outAngle =
-            _ZN8dActor_c12ReflectAngleE5Fix12IiES1_s(this, mWallNormalX, mWallNormalZ, outAngle);
+        outAngle = ReflectAngle(mWallNormalX, mWallNormalZ, outAngle);
     } else if (mCliffState) {
         outAngle = (short)(mPrevAngleY + 0x8000);
     } else {
@@ -813,8 +811,8 @@ struct SystemHold {
 }
 }
 
-// @symbol _ZN12dEnemyBase_c20KillByInvincibleCharERK10Vector3_16R6Player5Fix12IiE
-void dEnemyBase_c::KillByInvincibleChar(const Vector3_16 &spin, Player &player, Fix12<int>) {
+// @symbol _ZN12dEnemyBase_c20KillByInvincibleCharERK10Vector3_16R6Playeri
+void dEnemyBase_c::KillByInvincibleChar(const Vector3_16 &spin, Player &player, Fix12i) {
     mFlags &= ~0x10000001;
     mPrevAngleY = Vec3_HorzAngle(&player.mPos, &mPos);
     mHorzSpeed = 0xa000;
@@ -880,8 +878,7 @@ int dEnemyBase_c::UpdateKillByInvincibleChar(dBgCh_Actr &clsn, dExtAnmModel_c &a
     if (&clsn != 0) {
         UpdateWMClsn(clsn, 0);
         if (clsn.IsOnWall() != 0)
-            mPrevAngleY = _ZN8dActor_c12ReflectAngleE5Fix12IiES1_s(
-                this, mWallNormalX, mWallNormalZ, mPrevAngleY);
+            mPrevAngleY = ReflectAngle(mWallNormalX, mWallNormalZ, mPrevAngleY);
     }
 
     if (&anim != 0) {

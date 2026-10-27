@@ -35,9 +35,7 @@ struct System {
  * section per function in the reverse of source order.
  *
  * Known limits:
- * - dCcAc_c::Init, dBgCh_Actr::Init, dActor_c::DropShadowRadHeight,
- *   dEnemyBase_c::KillByInvincibleChar, Player::Hurt and
- *   Particle::System::New stay mangled: each takes Fix12<int> by value
+ * - Player::Hurt and Particle::System::New stay mangled: each takes Fix12<int> by value
  *   (notes/mwccarm-codegen.md 6az). Particle::System::New is declared
  *   with the seven arguments its call sites pass.
  * - data_ov102_0214d70c is this TU's .rodata pair of model-file handles
@@ -126,18 +124,9 @@ int d_a_shlNewHold(u32 uniqueID, u32 effectID, Fix12i x, Fix12i y, Fix12i z, voi
 /* local extern: these five names hold the @NNN count. Sound::PlayLong is the call. */
 void d_a_shlPlayLongHold(u32 handle, u32 a, u32 soundID, const Vector3 &pos, s16 e);
 
-void _ZN12dEnemyBase_c20KillByInvincibleCharERK10Vector3_16R6Player5Fix12IiE(
-         void *self, const Vector3_16 &dir, Player &player, s32 speed);
-void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *self, dActor_c *owner,
-                                              Fix12i radius, Fix12i height,
-                                              unsigned int d, unsigned int e);
 /* Parameter names keep this TU's @NNN. */
 typedef void BgchInitAt_(void *self, dActor_c *owner, Fix12i radius, Fix12i height, Vector3_16 *d,
                          int e);
-void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
-         void *self, dExtShadowModel_c *sm, Matrix4x3 *m, Fix12i radius,
-         int height, u8 flags);
-
 }
 
 /* Plain three-word position: Vector3 members here emit an extra
@@ -175,7 +164,7 @@ s32 daShl_c::InitResources()
         return 0;
     if (mShadowModel.InitCylinder() == 0)
         return 0;
-    _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCc_c, this, 0x3c000, 0x46000, 0x100004, 0xa083c0);
+    mdCc_c.Init(this, 0x3c000, 0x46000, 0x100004, 0xa083c0);
     mSpawnPosX = mPosX;
     mSpawnPosY = mPosY;
     mSpawnPosZ = mPosZ;
@@ -351,7 +340,7 @@ int daShl_c::func_ov102_0214d148()
     mAngleY = mPrevAngleY;
     mHorzSpeed = 0x1e000;
     mVertAccel = -0x2000;
-    _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCc_c2, this, 0x28000, 0x3c000, 0x102002, 0);
+    mdCc_c2.Init(this, 0x28000, 0x3c000, 0x102002, 0);
     return 1;
 }
 
@@ -369,7 +358,7 @@ int daShl_c::func_ov102_0214d114()
 /* Ridden: enter. The body cylinder is re-initialised with no extent. */
 int daShl_c::func_ov102_0214d0bc()
 {
-    _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCc_c, this, 0, 0, 0x100002, 0);
+    mdCc_c.Init(this, 0, 0, 0x100002, 0);
     mFlags &= ~3;
     mDespawnTimer = 100;
     return 1;
@@ -467,7 +456,7 @@ void daShl_c::func_ov102_0214ce60()
     int hidden = (mFlags & 0x40000) != 0;
     if (hidden)
         return;
-    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(this, &mShadowModel, &mModel.mat4x3, 0x50000, 0x50000, 0xf);
+    DropShadowRadHeight(mShadowModel, mModel.mat4x3, 0x50000, 0x50000, 0xf);
 }
 
 // @symbol _ZN7daShl_c19func_ov102_0214cbecEv
@@ -506,7 +495,7 @@ void daShl_c::func_ov102_0214cbec()
         dir.x = 0x2000;
         dir.y = 0;
         dir.z = 0;
-        _ZN12dEnemyBase_c20KillByInvincibleCharERK10Vector3_16R6Player5Fix12IiE(this, dir, *(Player *)player, mdCc_c.height >> 1);
+        KillByInvincibleChar(dir, *(Player *)player, mdCc_c.height >> 1);
         return;
     }
 

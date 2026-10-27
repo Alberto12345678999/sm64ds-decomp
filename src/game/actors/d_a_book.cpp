@@ -23,10 +23,8 @@
  * emits D1 then D0; D2 has no ROM home. Both vtables are keyed here.
  * common.h comes first so InitResources' mShadowMat copy stays twelve words.
  */
-/* leftovers: dExtAnmModel_c::SetAnim, dBgCh_Actr::Init, dCcAcPos_c::Init,
- * Player::Hurt, Player::Bounce, DropShadowRadHeight and cstd::atan2 stay
- * mangled externs. This file calls them. The headers spell Fix12i, which
- * does not mangle to the Fix12<int> symbols the ROM has. GetWallResult is
+/* leftovers: Player::Hurt and Player::Bounce stay mangled externs. This file
+ * calls them, and each symbol takes Fix12<int> by value. GetWallResult is
  * not a dBgCh_Actr method; the call is dBgCh_Actr_UpdateContinuous_Veneer,
  * not UpdateContinuous. data_ov020_02114aa0 and 02114ab8 are model handles,
  * 02114aa8 and 02114ab0 animation handles; filePtr is the loaded file.
@@ -104,16 +102,12 @@ int  RandomIntInternal(void *p);
 void func_ov063_0211cae8(void *found, unsigned int mask);
 void func_0203568c(int *p, int v);
 void Matrix4x3_FromRotationZXYExt(void *m, int x, int y, int z);
-void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(dActor_c *thiz, dExtShadowModel_c *sm, Matrix4x3 *mtx, int radius, int depth, u8 opacity);
 void UnloadBlueCoinModel(void *);
 void LoadBlueCoinModel(void *c);
 void func_0200f760(void *a, void *b);
 /* Parameter names keep this TU's @NNN. */
 typedef void BgchInitAt_(dBgCh_Actr *self, dActor_c *actor, int radius, int height,
                          Vector3_16 *first, Vector3_16 *second);
-void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
-    dCcAcPos_c *self, dActor_c *actor, const Vector3 *offset,
-    int radius, int height, u32 flags, u32 vulnFlags);
 }
 
 extern int data_0209e650[];     /* the random number generator's state */
@@ -723,8 +717,7 @@ void daBook_c::func_ov020_0211216c()
     mShadowMat.m[9] = mPosX >> 3;
     mShadowMat.m[10] = mHomePosY >> 3;
     mShadowMat.m[11] = mPosZ >> 3;
-    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
-        this, &mShadowModel, &mShadowMat, mScaleX * 0x64, 0x12c000, 0xf);
+    DropShadowRadHeight(mShadowModel, mShadowMat, mScaleX * 0x64, 0x12c000, 0xf);
 }
 
 // @symbol _ZN8daBook_c16CleanupResourcesEv
@@ -852,7 +845,7 @@ int daBook_c::InitResources()
     mClsnOffset.x = 0;
     mClsnOffset.y = 0;
     mClsnOffset.z = 0;
-    _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(&mdCcAcPos_c, this, &mClsnOffset, 0x19000, 0x32000, 0x200001, 0);
+    mdCcAcPos_c.Init(this, mClsnOffset, 0x19000, 0x32000, 0x200001, 0);
 
     mLinkedActorID = 0;
     mTouchedPlayer = 0;

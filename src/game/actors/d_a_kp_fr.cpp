@@ -22,13 +22,6 @@
  *   matching form.
  *   func_ov070_02121d50 calls dBgCh_Actr_UpdateContinuous_Veneer, as the
  *   ROM does, not UpdateContinuous.
- *
- * WHY SOME CALLS ARE SPELLED AS MANGLED SYMBOLS (Fix12<int> by value, see
- * notes/mwccarm-codegen.md 6az, unless noted):
- *   dCcAc_c::Init, DropShadowRadHeight and
- *   Particle::System::NewUnkCallback818.
- *   dBgCh_Actr::Init: its header's Fix12i mangles as int.
- *   dBgCh_Actr::GetFloorResult: not in dBgCh_Actr.h yet.
  */
 
 // leftovers:
@@ -74,9 +67,6 @@ extern "C" SpawnInfo<daKpFr_c> g_profile_KERONPA_FIRE = {
  * Nested math/Matrix.h spelling (via dExtShadowModel_c.h) scalarizes otherwise. */
 struct M48 { int w[12]; };
 extern "C" {
-/* Fix12-by-value, notes/mwccarm-codegen.md 6az. dBgCh_Actr::Init header Fix12i
-   mangles as int. */
-extern void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(dCcAc_c*, dActor_c*, Fix12i, Fix12i, unsigned int, unsigned int);
 extern int IDENTITY_MATRIX4X3[];
 }
 
@@ -84,7 +74,7 @@ int daKpFr_c::InitResources()
 {
     if (mShadowModel.InitCylinder() == 0)
         return 0;
-    _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, this, 0x37000, 0x78000, 0x200002, 0x8000);
+    mdCcAc_c.Init(this, 0x37000, 0x78000, 0x200002, 0x8000);
     mWithMeshClsn.Init(this, 0x32000, 0x32000, 0, 0);
     mVertAccel = -0x400;
     mTerminalVelocity = -0x5000;
@@ -217,9 +207,6 @@ int daKpFr_c::func_ov070_02121eb0() {
 extern "C" {
 /* Fix12-by-value, notes/mwccarm-codegen.md 6az -- header method form homes the
    class args. */
-extern void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
-    dActor_c *actor, dExtShadowModel_c *shadow, Matrix4x3 *matrix,
-    Fix12i radius, Fix12i depth, u32 opacity);
 }
 // @symbol _ZN8daKpFr_c19func_ov070_02121e14Ev
 void daKpFr_c::func_ov070_02121e14() {
@@ -233,8 +220,7 @@ void daKpFr_c::func_ov070_02121e14() {
     shadowDepth = (mPosY - ground.clsnY) + 0x1e000;
   else
     shadowDepth = 0x12c000;
-  _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
-      this, &mShadowModel, &mMatrix, 0x64000, shadowDepth, 0xf);
+  DropShadowRadHeight(mShadowModel, mMatrix, 0x64000, shadowDepth, 0xf);
 }
 
 // @symbol _ZN8daKpFr_c19func_ov070_02121d50EPv

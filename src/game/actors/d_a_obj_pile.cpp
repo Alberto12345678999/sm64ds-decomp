@@ -81,7 +81,8 @@ struct PileCollisionFilePtr : SharedFilePtr {
 
 extern "C" {
 extern unsigned char DecIfAbove0_Byte(unsigned char *p);
-extern void _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs(void *c, V3 v, unsigned int n, int f, short s);
+/* local extern: called via a function-pointer cast with a by-value V3. */
+extern void _ZN8dActor_c10SpawnCoinsERK7Vector3iis(void *c, V3 v, unsigned int n, int f, short s);
 extern void hold_d_a_obj_pile(void *self, void *kcl, void *mtx, int fix, short s, void *clps);
 extern int func_02012694(int a, void *b);
 
@@ -154,8 +155,8 @@ void daObjPile_c::func_ov091_021334b8(int flag)
             st.v2y = st.vy;
             st.v2z = st.vz;
             typedef void (*SpawnRef)(void *, Vector3 const &, unsigned int, int, short);
-            ((SpawnRef)_ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs)(
-                this, *(Vector3 *)&st.v2x, 5, 0x5000, 0);
+            ((SpawnRef)_ZN8dActor_c10SpawnCoinsERK7Vector3iis)(this, *(Vector3 *)&st.v2x, 5, 0x5000,
+                                                               0);
         }
     }
     TrackInDeathTable();
@@ -247,7 +248,7 @@ s32 daObjPile_c::Behavior()
                     v.y = mPosY;
                     v.z = mPosZ;
                     v.y += 0xc8000;
-                    _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs(this, v, 5, 0x5000, 0);
+                    _ZN8dActor_c10SpawnCoinsERK7Vector3iis(this, v, 5, 0x5000, 0);
                     TrackInDeathTable();
                 }
             }

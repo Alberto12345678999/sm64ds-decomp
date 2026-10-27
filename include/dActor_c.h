@@ -309,7 +309,9 @@ struct dActor_c : dBase_c {
     void KillAndTrackInDeathTable();
     void TrackInDeathTable();
     void UntrackInDeathTable();
-    void SpawnSoundObj(u32 soundObjParam);
+    /* Returns the spawned daSoundObj_c: r0 is Spawn's result at the return,
+       and daStar_c and Player keep or test it. */
+    dActor_c *SpawnSoundObj(u32 soundObjParam);
     s32  GetWaterHeightWDW();
     bool DetectRaycastClsn(Vector3 &start, Vector3 &end, bool storeHitPos);
 
@@ -341,18 +343,28 @@ struct dActor_c : dBase_c {
     static dActor_c *Spawn(u32 actorID, u32 spawnParam, const Vector3 &pos,
                         const Vector3_16 *rot, s8 areaID, s16 deathTableID);
 
-    /* Declared for callers only. Methods whose mangled names carry a by-value
-       class parameter must never be DEFINED as methods -- CW homes those to the
-       stack, costing +0x14. See notes/mwccarm-codegen.md 6az. */
-    void SpawnFireball(const Vector3 &pos, const Vector3_16 *rot, Fix12<int> horzSpeed,
-                       Fix12<int> targetSpeed, u32 param1);
+    /* MEASURED 2026-10-26: the five Fix12 declarations below -- SpawnFireball,
+       DropShadowScaleXYZ, ReflectAngle, SpawnCoins, DropShadowRadHeight -- are
+       real methods now, bytes unchanged (IsPlayerInRange was already scalar).
+       They used to be "declared for callers only" on the rule that a mangled
+       name carrying a by-value class parameter can never be DEFINED as a
+       method, because CW homes such a parameter to the stack (+0x14). The
+       by-value class was never in the ROM -- it was our own spelling of a
+       20.12 scalar -- so with Fix12i the rule does not apply. The parameter
+       NAMES here are load-bearing: a class-scope named parameter consumes an
+       @NNN number in every consumer, so they must not be dropped.
+       notes/mwccarm-codegen.md 6az. */
+    /* Returns the spawned ball; see the definition. */
+    dActor_c *SpawnFireball(const Vector3 &pos, const Vector3_16 *rot, Fix12i horzSpeed,
+                            Fix12i targetSpeed, u32 param1);
     bool IsPlayerInRange(Fix12i posX, Fix12i posY, Fix12i posZ, s32 maxDist);
-    void DropShadowScaleXYZ(dExtShadowModel_c &, Matrix4x3 &matrix, Fix12<int> scaleX,
-                            Fix12<int> scaleY, Fix12<int> scaleZ, u32 opacity);
-    s16  ReflectAngle(Fix12<int> normalX, Fix12<int> normalZ, s16 angToReflect);
-    void SpawnCoins(const Vector3 &pos, u32 count, Fix12<int> spread, s16 angle);
-    void DropShadowRadHeight(dExtShadowModel_c &, Matrix4x3 &matrix, Fix12<int> radius,
-                             Fix12<int> depth, u32 opacity);
+    void DropShadowScaleXYZ(dExtShadowModel_c &, Matrix4x3 &matrix, Fix12i scaleX, Fix12i scaleY,
+                            Fix12i scaleZ, u8 opacity);
+    s16 ReflectAngle(Fix12i normalX, Fix12i normalZ, s16 angToReflect);
+    /* count is signed; see the branch evidence at the definition. */
+    void SpawnCoins(const Vector3 &pos, s32 count, Fix12i spread, s16 angle);
+    void DropShadowRadHeight(dExtShadowModel_c &, Matrix4x3 &matrix, Fix12i radius, Fix12i depth,
+                             u8 opacity);
 
     /* INLINE, AND ON THIS CLASS RATHER THAN A BASE -- both are load-bearing.
        CW builds D0 (slot 17) as "run the destructor, then call operator delete",

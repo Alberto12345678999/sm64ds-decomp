@@ -84,11 +84,6 @@ void  Matrix4x3_ApplyInPlaceToRotationX(void *m, s16 angX);
 
 void  func_02012694(int id, void *pos);
 
-void  _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs(void *self, const void *pos,
-                                                     unsigned int count,
-                                                     int value, short s);
-void  _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
-          void *self, void *shadow, void *mtx, int radius, int height, u32 flags);
 
 namespace Particle {
 struct System {
@@ -96,15 +91,8 @@ struct System {
 };
 }
 
-
-
-/* Declared by final name rather than as members: both take Fix12<int> where
- * these call sites pass int literals, and dBgCh_Actr::Init's last two
- * parameters are Vector3_16* (the S5_ back-references the pointer type). */
-void  _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *self, dActor_c *actor,
-                                                int radius, int height,
-                                                unsigned int flags,
-                                                unsigned int vulnFlags);
+/* dBgCh_Actr::Init's last two parameters are Vector3_16* (the S5_
+ * back-references the pointer type). */
 /* Parameter names keep this TU's @NNN. */
 typedef void BgchInitAt_(void *self, dActor_c *actor, int radius, int height, Vector3_16 *a,
                          Vector3_16 *b);
@@ -215,8 +203,7 @@ int Scuttlebug::InitResources()
     dExtFrameCtrl_c::LoadFile(gSpiderWalkAnimationFile);
     if (((dExtShadowModel_c *)(&mShadowModel))->InitCylinder() == 0)
         return 0;
-    _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(
-        &mdCcAc_c, ((dActor_c *)this), 0x46000, 0x64000, 0x200000, 0x6eff0);
+    mdCcAc_c.Init(((dActor_c *)this), 0x46000, 0x64000, 0x200000, 0x6eff0);
     mWithMeshClsn.Init(((dActor_c *)this), 0x50000, 0x50000, (Vector3_16 *)0, (Vector3_16 *)0);
     mWithMeshClsn.StartDetectingWater();
     mHomeX = mPosX;
@@ -742,8 +729,7 @@ void Scuttlebug::func_ov071_0211f524()
     mShadowMtx[11] = mPosZ >> 3;
 
     int dh = (mState == 8) ? 0x190000 : 0xc8000;
-    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
-        this, &mShadowModel, mShadowMtx, 0xa0000, dh, 0xf);
+    DropShadowRadHeight(mShadowModel, *(Matrix4x3 *)mShadowMtx, 0xa0000, dh, 0xf);
 }
 
 // @symbol _ZN10Scuttlebug19func_ov071_0211f498Ev
@@ -753,7 +739,7 @@ void Scuttlebug::func_ov071_0211f498()
     v.x = mPosX;
     v.y = mPosY;
     v.z = mPosZ;
-    _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs(this, &v, mCoinCount, 0xf000, 0);
+    SpawnCoins(*(const Vector3 *)&v, mCoinCount, 0xf000, 0);
     PoofDust();
     func_02012694(0xc4, &mCamSpacePosX);
     if (param1) {

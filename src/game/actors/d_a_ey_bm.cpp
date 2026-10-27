@@ -23,12 +23,8 @@
  * - DaEyBmVector3Words, not Vector3: a Vector3 stack local would
  *   instantiate its vague-linkage D1 into this TU. EyBmVec3's
  *   declared-not-defined destructor is that D1's alias.
- * - dCcAcPos_c::Init, dBgCh_Actr::Init, DropShadowRadHeight and
- *   Player::Hurt stay mangled: by-value Fix12<int> is wall 6az, and
- *   dBgCh_Actr::Init's header also mangles Fix12i as `i` where the ROM
- *   has 5Fix12IiE.
- * - Particle::System::New / NewUnkCallback818 stay mangled: no shared
- *   header declares them. The UpdateDiscreteNoLava veneer stays because
+ * - Player::Hurt stays mangled: by-value Fix12<int> is wall 6az.
+ * - The UpdateDiscreteNoLava veneer stays because
  *   the named method is WRONG-DEST (ROM 0x02038420).
  * - data_ov071_021230b8 is this TU's sinit-constructed bss;
  *   g_profile_EYEKUN_BEAM is overlay data outside its .text.
@@ -104,9 +100,6 @@ extern "C" SpawnInfo<daEyBm_c> g_profile_EYEKUN_BEAM = {
 extern "C" {
 /* Known by-value Fix12 compiler walls: these exact ABI imports preserve the
  * retail register calling convention while the owned objects remain typed. */
-extern int _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
-    dCcAcPos_c *collision, dActor_c *actor, const Vector3 *offset,
-    Fix12i radius, Fix12i height, u32 flags, u32 vulnFlags);
 /* Parameter names keep this TU's @NNN. */
 typedef int BgchInitAt_(dBgCh_Actr *collision, dActor_c *actor, Fix12i radius, Fix12i height,
                         void *a, void *b);
@@ -118,9 +111,8 @@ int daEyBm_c::InitResources()
     if (!mShadowModel.InitCylinder())
         return 0;
 
-    _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
-        &mdCcAcPos_c, this, (const Vector3 *)&data_ov071_021230b8,
-        0x23000, 0x3c000, 0x200002, 0x8000);
+    mdCcAcPos_c.Init(this, *((const Vector3 *)&data_ov071_021230b8), 0x23000, 0x3c000, 0x200002,
+                     0x8000);
     mScaleX = 0x1000;
     mScaleY = 0x1000;
     mScaleZ = 0x1000;
@@ -201,9 +193,6 @@ int daEyBm_c::CleanupResources()
     return 1;
 }
 // @symbol _ZN8daEyBm_c12UpdateShadowEv
-extern "C" void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
-    dActor_c *actor, dExtShadowModel_c *shadow, Matrix4x3 *matrix,
-    Fix12i radius, Fix12i depth, u32 opacity);
 
 void daEyBm_c::UpdateShadow()
 {
@@ -218,8 +207,7 @@ void daEyBm_c::UpdateShadow()
         depth = (mPosY - ground.clsnY) + 0x1e000;
     else
         depth = 0x1f4000;
-    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
-        this, &mShadowModel, &mMatrix, 0x50000, depth, 0xf);
+    DropShadowRadHeight(mShadowModel, mMatrix, 0x50000, depth, 0xf);
 }
 
 /*

@@ -16,11 +16,6 @@ struct System {
  * math/Matrix.h's nested Matrix4x3 scalarizes that copy (Vector3 is non-POD).
  *
  * Leftovers, remeasured in this file:
- * - dExtAnmModel_c::SetAnim, dCcAc_c::Init and DropShadowRadHeight: the header
- *   methods take Fix12<int> by value and the call grows. dBgCh_Actr::Init's
- *   header is Fix12i (mangles as i); this TU's call is Fix12<int>.
- *   The 4-arg KillByInvincibleChar stays a scalar extern; Behavior already
- *   calls the 3-arg method.
  * - Behavior skips 4 bytes past GetFloorResult's dBgPi to the SurfaceInfo
  *   and tests CLPS bit 0x20 (water).
  * - States 0, 1 and 3 advance the dExtFrameCtrl_c base of mAnmModel
@@ -90,14 +85,8 @@ void  func_ov102_0214c0b8(void *self);
 void  GiveCoins(int who, int count);
 int   SurfaceInfo_TestFlag0x20(int *si);
 
-void  _ZN12dEnemyBase_c20KillByInvincibleCharERK10Vector3_16R6Player5Fix12IiE(void *, void *, void *, unsigned int);
 
 
-
-/* dCcAc_c::Init / dBgCh_Actr::Init stay scalar: they carry Fix12<int> BY
-   VALUE (6az). dBgCh_Actr::Init's header is Fix12i, which mangles as i;
-   ROM is Fix12<int>. */
-void  _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *, dActor_c *a, Fix12i r, Fix12i h, unsigned int d, unsigned int e);
 
 /* Hoisted out of four member bodies.  A class member function may not sit in a
    block-scope linkage specification, so daBmb_c::State1/3/4/5 cannot carry their
@@ -190,7 +179,7 @@ int daBmb_c::InitResources()
     mVariant = (unsigned char)(param1 & 7);
     mNoticeAngle = 0x2000;
     func_ov102_0214c0b8(this);
-    _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCc_c, this, 0x3c000, 0x50000, 0x200004, 0xa6d380);
+    mdCc_c.Init(this, 0x3c000, 0x50000, 0x200004, 0xa6d380);
     mTerminalVelocity = -0x37000;
 
     if (mVariant == 2) {
@@ -282,7 +271,7 @@ int daBmb_c::Behavior()
                 v[0] = -0x2000;
                 v[1] = 0;
                 v[2] = 0;
-                _ZN12dEnemyBase_c20KillByInvincibleCharERK10Vector3_16R6Player5Fix12IiE(this, v, other, 0x32000);
+                KillByInvincibleChar(*(Vector3_16 *)v, *(Player *)other, 0x32000);
                 UpdatePos(&mdCc_c);
                 UpdateWMClsn(mWithMeshClsn, 0);
                 mdCc_c.Clear();
@@ -949,8 +938,6 @@ extern "C" {
 // @symbol func_ov102_0214b444
 void func_ov102_0214b444(void *cv)
 {
-    extern void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
-        int self, int sm, int mat, int fix, int t, unsigned int j);
 
     daBmb_c *self = (daBmb_c *)cv;
     int c = (int)self;
@@ -982,8 +969,10 @@ void func_ov102_0214b444(void *cv)
     self->mMatrix[10] = v >> 3;
     self->mMatrix[11] = self->mPosZ >> 3;
 
-    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
-        c, (int)&self->mShadowModel, (int)self->mMatrix, self->mScaleX * 0x50, 0x1e000, 0xf);
+    ((dActor_c *)c)
+        ->DropShadowRadHeight(*(dExtShadowModel_c *)((int)&self->mShadowModel),
+                              *(Matrix4x3 *)((int)self->mMatrix), self->mScaleX * 0x50, 0x1e000,
+                              0xf);
 }
 
 }

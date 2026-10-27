@@ -96,13 +96,9 @@ extern int AngleDiff(int a, int b);
 extern void func_ov002_020aea30(void *self, void *actor, void *collision);
 /* Sound::Play(3, id, pos) — PlayBank3. This TU calls the wrapper. */
 extern void func_02012694(int a, void *p);
-extern void _ZN12dEnemyBase_c20KillByInvincibleCharERK10Vector3_16R6Player5Fix12IiE(
-    void *self, void *v, void *a);
 extern Vector3 data_ov081_02128998; /* cylinder offset (0, 0x1e000, 0) */
 extern unsigned char data_0209f21c[];
 extern void *data_0209f394[];
-extern int _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs(
-    void *a, Vector3 *v, unsigned n, Fix12i f, short s);
 extern unsigned d_a_snowmanNewHold(unsigned a, unsigned b, int c, int d, int e, const void *f,
                                    void *g);
 extern void Vec3_Sub(struct Vector3 *out, struct Vector3 *a, struct Vector3 *b);
@@ -115,12 +111,8 @@ extern void Matrix4x3_FromTranslation(void *m, int x, int y, int z);
 extern void Matrix4x3_ApplyInPlaceToRotationXYZExt(void *m, int x, int y, int z);
 extern void MulMat4x3Mat4x3(void *dst, void *a, void *b);
 extern void Matrix4x3_ApplyInPlaceToTranslation(void *m, int x, int y, int z);
-extern void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
-    void *self, void *sm, void *mtx, int a, int b, unsigned int g);
 extern struct Matrix4x3 data_020a0e68;
 extern unsigned short DecIfAbove0_Short(unsigned short *p);
-extern void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
-    void *self, void *actor, const void *v, int d, int e, u32 f, u32 g);
 /* Parameter names keep this TU's @NNN. */
 typedef void BgchInitAt_(void *self, void *actor, int b, int c, void *v16, int e);
 extern int atan2_hold_d_a_snowman_1(int a, int b);
@@ -321,7 +313,7 @@ void daSnowman_c::func_ov081_021243cc()
             vv.x = (s16)-0x1200;
             vv.y = 0;
             vv.z = 0;
-            _ZN12dEnemyBase_c20KillByInvincibleCharERK10Vector3_16R6Player5Fix12IiE(this, &vv, found);
+            KillByInvincibleChar(vv, *(Player *)found, 0);
             func_02012694(0x1d, &this->mCamSpacePosX);
             hit = 1;
         }
@@ -392,8 +384,7 @@ int daSnowman_c::func_ov081_021246a0()
                 v.x = this->mPosX;
                 v.y = this->mPosY;
                 v.z = this->mPosZ;
-                _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs(this, &v, this->mExtraCoinCount + 1,
-                                                               0xa000, 0);
+                SpawnCoins(v, this->mExtraCoinCount + 1, 0xa000, 0);
             }
             func_ov081_02124134();
             this->KillAndTrackInDeathTable();
@@ -453,8 +444,7 @@ int daSnowman_c::func_ov081_02124894()
             v.x = this->mPosX;
             v.y = this->mPosY;
             v.z = this->mPosZ;
-            _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs(this, &v, this->mExtraCoinCount + 1,
-                                                           0xa000, 0);
+            SpawnCoins(v, this->mExtraCoinCount + 1, 0xa000, 0);
         }
         func_ov081_02124134();
         this->KillAndTrackInDeathTable();
@@ -899,8 +889,7 @@ void daSnowman_c::func_ov081_021254d8()
         (this->mPosY - 0xe000) >> 3,
         this->mPosZ >> 3);
     this->mShadowMatrix = data_020a0e68;
-    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
-        this, &this->mShadowModel, &this->mShadowMatrix, 0x78000, 0xc8000, 0xf);
+    DropShadowRadHeight(this->mShadowModel, this->mShadowMatrix, 0x78000, 0xc8000, 0xf);
 }
 
 // @symbol _ZN11daSnowman_c16CleanupResourcesEv
@@ -1066,8 +1055,7 @@ int daSnowman_c::InitResources()
     mTerminalVelocity = -0xc8000;
 
     v = data_ov081_02128998;
-    _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
-        &mdCcAcPos_c, this, &v, 0x3c000, 0x96000, 0x200004, 0x42050);
+    mdCcAcPos_c.Init(this, v, 0x3c000, 0x96000, 0x200004, 0x42050);
 
     mAngleY = mPrevAngleY;
     mInitAngleY = mAngleY;

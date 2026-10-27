@@ -1210,64 +1210,64 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@1094",
+      "from": "@1081",
       "to": "@1128",
-      "evidence": "Compiler-local identity retained by section, offset, size, binding, bytes and relocation edges; native C++ helper calls shift the per-TU temporary names. Ordinary production preparation yields the same complete ELF as the prior source under 2004/b56."
+      "evidence": "Compiler-local identity retained by section, offset, size, binding, bytes and relocation edges; native C++ helper calls shift the per-TU temporary names. Ordinary production preparation yields the same complete ELF as the prior source under 2004/b56. | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     },
     {
-      "from": "@1095",
+      "from": "@1082",
       "to": "@1129",
-      "evidence": "Compiler-local identity retained by section, offset, size, binding, bytes and relocation edges; native C++ helper calls shift the per-TU temporary names. Ordinary production preparation yields the same complete ELF as the prior source under 2004/b56."
+      "evidence": "Compiler-local identity retained by section, offset, size, binding, bytes and relocation edges; native C++ helper calls shift the per-TU temporary names. Ordinary production preparation yields the same complete ELF as the prior source under 2004/b56. | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     },
     {
-      "from": "@1097",
+      "from": "@1084",
       "to": "@1131",
-      "evidence": "Compiler-local identity retained by section, offset, size, binding, bytes and relocation edges; native C++ helper calls shift the per-TU temporary names. Ordinary production preparation yields the same complete ELF as the prior source under 2004/b56."
+      "evidence": "Compiler-local identity retained by section, offset, size, binding, bytes and relocation edges; native C++ helper calls shift the per-TU temporary names. Ordinary production preparation yields the same complete ELF as the prior source under 2004/b56. | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     },
     {
-      "from": "@1099",
+      "from": "@1086",
       "to": "@1133",
-      "evidence": "Compiler-local identity retained by section, offset, size, binding, bytes and relocation edges; native C++ helper calls shift the per-TU temporary names. Ordinary production preparation yields the same complete ELF as the prior source under 2004/b56."
+      "evidence": "Compiler-local identity retained by section, offset, size, binding, bytes and relocation edges; native C++ helper calls shift the per-TU temporary names. Ordinary production preparation yields the same complete ELF as the prior source under 2004/b56. | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     },
     {
-      "from": "@1101",
+      "from": "@1088",
       "to": "@2760",
-      "evidence": "Compiler-local identity retained by section, offset, size, binding, bytes and relocation edges; native C++ helper calls shift the per-TU temporary names. Ordinary production preparation yields the same complete ELF as the prior source under 2004/b56."
+      "evidence": "Compiler-local identity retained by section, offset, size, binding, bytes and relocation edges; native C++ helper calls shift the per-TU temporary names. Ordinary production preparation yields the same complete ELF as the prior source under 2004/b56. | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     },
     {
-      "from": "@1103",
+      "from": "@1090",
       "to": "@2156",
-      "evidence": "Compiler-local identity retained by section, offset, size, binding, bytes and relocation edges; native C++ helper calls shift the per-TU temporary names. Ordinary production preparation yields the same complete ELF as the prior source under 2004/b56."
+      "evidence": "Compiler-local identity retained by section, offset, size, binding, bytes and relocation edges; native C++ helper calls shift the per-TU temporary names. Ordinary production preparation yields the same complete ELF as the prior source under 2004/b56. | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     },
     {
-      "from": "@1105",
+      "from": "@1092",
       "to": "@2155",
-      "evidence": "Compiler-local identity retained by section, offset, size, binding, bytes and relocation edges; native C++ helper calls shift the per-TU temporary names. Ordinary production preparation yields the same complete ELF as the prior source under 2004/b56."
+      "evidence": "Compiler-local identity retained by section, offset, size, binding, bytes and relocation edges; native C++ helper calls shift the per-TU temporary names. Ordinary production preparation yields the same complete ELF as the prior source under 2004/b56. | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     },
     {
-      "from": "@1107",
+      "from": "@1094",
       "to": "@2161",
-      "evidence": "Compiler-local identity retained by section, offset, size, binding, bytes and relocation edges; native C++ helper calls shift the per-TU temporary names. Ordinary production preparation yields the same complete ELF as the prior source under 2004/b56."
+      "evidence": "Compiler-local identity retained by section, offset, size, binding, bytes and relocation edges; native C++ helper calls shift the per-TU temporary names. Ordinary production preparation yields the same complete ELF as the prior source under 2004/b56. | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     },
     {
-      "from": "@1109",
+      "from": "@1096",
       "to": "@2158",
-      "evidence": "Compiler-local identity retained by section, offset, size, binding, bytes and relocation edges; native C++ helper calls shift the per-TU temporary names. Ordinary production preparation yields the same complete ELF as the prior source under 2004/b56."
+      "evidence": "Compiler-local identity retained by section, offset, size, binding, bytes and relocation edges; native C++ helper calls shift the per-TU temporary names. Ordinary production preparation yields the same complete ELF as the prior source under 2004/b56. | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     },
     {
-      "from": "@1111",
+      "from": "@1098",
       "to": "@2159",
-      "evidence": "Compiler-local identity retained by section, offset, size, binding, bytes and relocation edges; native C++ helper calls shift the per-TU temporary names. Ordinary production preparation yields the same complete ELF as the prior source under 2004/b56."
+      "evidence": "Compiler-local identity retained by section, offset, size, binding, bytes and relocation edges; native C++ helper calls shift the per-TU temporary names. Ordinary production preparation yields the same complete ELF as the prior source under 2004/b56. | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     },
     {
-      "from": "@1113",
+      "from": "@1100",
       "to": "@2160",
-      "evidence": "Compiler-local identity retained by section, offset, size, binding, bytes and relocation edges; native C++ helper calls shift the per-TU temporary names. Ordinary production preparation yields the same complete ELF as the prior source under 2004/b56."
+      "evidence": "Compiler-local identity retained by section, offset, size, binding, bytes and relocation edges; native C++ helper calls shift the per-TU temporary names. Ordinary production preparation yields the same complete ELF as the prior source under 2004/b56. | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     },
     {
-      "from": "@1115",
+      "from": "@1102",
       "to": "@2157",
-      "evidence": "Compiler-local identity retained by section, offset, size, binding, bytes and relocation edges; native C++ helper calls shift the per-TU temporary names. Ordinary production preparation yields the same complete ELF as the prior source under 2004/b56."
+      "evidence": "Compiler-local identity retained by section, offset, size, binding, bytes and relocation edges; native C++ helper calls shift the per-TU temporary names. Ordinary production preparation yields the same complete ELF as the prior source under 2004/b56. | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     }
   ]
 }

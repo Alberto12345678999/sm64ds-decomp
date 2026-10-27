@@ -27,10 +27,9 @@ struct Callback;
  * __sinit from six descriptor records.
  *
  * leftovers:
- *  - DropShadow and InitResources keep their mangled `_ZN` spellings for
- *    DropShadowRadHeight, dCcAc_c::Init and dBgCh_Actr::Init: those take
- *    Fix12<int> by value, and Fix12<int> has no int conversion (the Fix12
- *    wall the rest of the tree banks on too).
+ *  - DropShadow keeps DropShadowRadHeight's mangled `_ZN` spelling: it
+ *    returns an int its early exit computes, and the member is void (see
+ *    the local extern).
  *  - dBgCh_Actr_UpdateContinuous_Veneer is a real ROM symbol callers name
  *    directly, not a wrapper to collapse into UpdateContinuous.
  *  - StateOpening still writes mWobbleAngle through a `short*` pun:
@@ -117,13 +116,12 @@ extern void *data_0209f318;
 extern void func_0203568c(int *p, int v);
 extern void func_02035684(int *p, int v);
 extern int func_0200fccc(char* s, int r1);
-extern int _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
-    char* self, dExtShadowModel_c* sm, struct Matrix4x3* m, int fix, int t, u32 f);
+/* local extern: int return -- `return` forwards the callee's r0 (a tail call). */
+extern int _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x3iih(
+    char *self, dExtShadowModel_c *sm, struct Matrix4x3 *m, int fix, int t, u32 f);
 extern void Matrix4x3_FromRotationY(void* m, int angle);
 extern void *gPFlowerCloseModelFile[];
 extern void *gPFlowerOpenModelFile[];
-extern void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(
-    void *self, void *act, Fix12i a, Fix12i b, unsigned int c2, unsigned int d);
 /* Parameter names keep this TU's @NNN. */
 typedef void BgchInitAt_(void *self, void *act, Fix12i a, Fix12i b, void *d, void *e);
 }
@@ -416,7 +414,8 @@ int daObjPowerUpItem_c::DropShadow()
         r3 = 0x64000 - FX_MUL(d, 0x180);
         if (r3 < 0x3c000) r3 = 0x3c000;
     }
-    return _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j((char*)this, &mShadowModel, &mShadowMat, r3, 0x3c000, 0xf);
+    return _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x3iih(
+        (char *)this, &mShadowModel, &mShadowMat, r3, 0x3c000, 0xf);
 }
 
 /* dExtSimpleModel_c matrices: rotates mOpenModel's matrix by mAngleY, sets its translation
@@ -503,7 +502,7 @@ int daObjPowerUpItem_c::InitResources()
     mScaleY = 0xfa0;
     mScaleZ = 0xfa0;
 
-    _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, this, 0x32000, 0x64000, 0x800002, 0x8000);
+    mdCcAc_c.Init(this, 0x32000, 0x64000, 0x800002, 0x8000);
     mWithMeshClsn.Init(this, 0x3c000, 0x3c000, 0, 0);
     mWithMeshClsn.StartDetectingWater();
 

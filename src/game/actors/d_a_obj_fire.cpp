@@ -15,8 +15,6 @@
  * FUNCTION ORDER IS DELIBERATELY THE REVERSE OF THE ROM'S.
  *
  * deslop leftovers:
- * - dCcAc_c::Init 6az: InitResources passes Fix12<int> by value; the
- *   header method form size-DIFFs.
  * - func_020228dc / func_0202293c: blue/red flame particle wrappers
  *   (effects 0x117 / 0x118). No recovered names.
  */
@@ -34,9 +32,6 @@ struct System {
     static void NewSimple(u32 id, Fix12i x, Fix12i y, Fix12i z);
 };
 }
-void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(
-    void *self, dActor_c *actor, Fix12i radius, Fix12i height,
-    u32 flags, u32 vulnFlags);
 }
 
 /* Actor ID 0x13d is BLUE_FLAME, 0xbf is PLAYER. dActor_c::mFlags bit
@@ -105,8 +100,7 @@ void daObjFire_c::OnTurnIntoEgg(Player &player)
 // @symbol _ZN11daObjFire_c13InitResourcesEv
 int daObjFire_c::InitResources()
 {
-    _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(
-        &mdCcAc_c, this, 0x41000, 0x41000, 0x200002, 0x8000);
+    mdCcAc_c.Init(this, 0x41000, 0x41000, 0x200002, 0x8000);
     mFlamePos.x = mPosX;
     mFlamePos.y = mPosY;
     mFlamePos.z = mPosZ;

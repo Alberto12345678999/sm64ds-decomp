@@ -26,11 +26,8 @@
  *
  * Source order is the reverse of the ROM. The factory is written first.
  */
-/* leftovers: dExtAnmModel_c::SetAnim, dCcAc_c::Init and
- * dActor_c::DropShadowRadHeight stay mangled. This file calls them, and
- * each takes Fix12<int> by value. Player::ShowMessage stays a local
- * extern: the member re-masks the flag bytes and func_ov084_0212c9f0
- * grows. dCamera_c::SetFlag_3 has no declaration in dCamera_c.h.
+/* leftovers: Player::ShowMessage stays a local extern: the member re-masks
+ * the flag bytes and func_ov084_0212c9f0 grows. dCamera_c::SetFlag_3 has no declaration in dCamera_c.h.
  * data_ov084_02130da4, data_ov084_02130d9c and data_ov084_02130dc4 keep
  * address names. This text-only TU does not own that .bss. The state
  * bodies stay address-named members; the table reaches them by address.
@@ -136,10 +133,6 @@ int _ZN6Player11ShowMessageER7fBase_cjPK7Vector3hh(Player *self, fBase_c *actor,
 
 /* local extern: dCamera_c.h does not declare this member. */
 void _ZN9dCamera_c9SetFlag_3Ev(dCamera_c *cam);
-
-void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(dCcAc_c *self, dActor_c *actor, int radius, int height, unsigned int flags, unsigned int vulnFlags);
-void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(dActor_c *self, dExtShadowModel_c *shadow, Matrix4x3 *mtx, int radius, int depth, unsigned char opacity);
-
 }
 
 /* This int-returning predicate is what makes the ROM materialize 0/1
@@ -163,7 +156,7 @@ s32 daRedBombhei_c::InitResources()
     mAnmModel.SetFile(modelFile, 1, -1);
     mShadowModel.InitCylinder();
     dExtFrameCtrl_c::LoadFile(data_ov084_02130d9c);
-    _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, this, 0x8c000, 0x8c000, 0x4200004, 0);
+    mdCcAc_c.Init(this, 0x8c000, 0x8c000, 0x4200004, 0);
     func_ov084_0212c960(0);
     mShutterID = 0;
 
@@ -248,7 +241,7 @@ void daRedBombhei_c::func_ov084_0212ce50()
     this->mShadowMat.t.x = this->mPosX >> 3;
     this->mShadowMat.t.y = (this->mPosY - 0x8000) >> 3;
     this->mShadowMat.t.z = this->mPosZ >> 3;
-    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(this, &this->mShadowModel, &this->mShadowMat, 0x64000, 0x32000, 0xf);
+    DropShadowRadHeight(this->mShadowModel, this->mShadowMat, 0x64000, 0x32000, 0xf);
 }
 
 // @symbol _ZN14daRedBombhei_c19func_ov084_0212cda0EP7Vector3S1_

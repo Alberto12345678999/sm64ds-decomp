@@ -41,14 +41,7 @@ struct Vector3_16f;
  * - func_ov021_021122fc: DropShadowRadHeight is void in dActor_c.h and
  *   takes Fix12<int> by value. This function returns the scalar call;
  *   the method form does not compile.
- * - InitResources: dCcAcPos_c::Init with Fix12<int> by value size-DIFFs
- *   (999 words). The scalar extern matches. dBgCh_Actr::Init is called by
- *   its ROM symbol: the header's Fix12i (= s32) mangles the radii as `i`
- *   and names a symbol no object defines, so the member form linked to
- *   nothing.
- * - Particle::System::New and NewSimple are not declared on
- *   Particle::System (include/Particle__System.h). Player::Hurt is not
- *   declared on Player. Those 5Fix12IiE externs stay.
+ * - Player::Hurt is not declared on Player; its 5Fix12IiE extern stays.
  */
 
 /* Runtime asset handles resolved through the overlay 0 file table. */
@@ -115,8 +108,11 @@ typedef void BgchInitAt_(dBgCh_Actr *self, int actor, Fix12i radius, Fix12i heig
 extern void Vec3_Asr(void *dst, void *src, int n);
 extern void Matrix4x3_FromTranslation(void *m, int x, int y, int z);
 extern void Matrix4x3_ApplyInPlaceToRotationXYZExt(void *m, short a, short b, short c);
-extern int _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
-    void *thiz, void *sm, void *m, int rad, int h, unsigned u);
+/* local extern: int return -- `return` forwards the callee's r0 (a tail call). */
+extern int _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x3iih(void *thiz,
+                                                                                void *sm, void *m,
+                                                                                int rad, int h,
+                                                                                unsigned u);
 extern struct Matrix4x3 data_020a0e68;
 /* Same body as Sound::PlayBank3 (0x02012664). The ROM calls these copies. */
 extern void func_02012694(int id, void *pos);
@@ -131,7 +127,6 @@ extern void *d_a_grockNewHold(unsigned int prev, unsigned int effect, int x, int
                               void *dir, void *cb);
 extern int Vec3_HorzLen(void *v);
 extern int atan2_hold_d_a_grock_1(int y, int x);
-extern s16 _ZN8dActor_c12ReflectAngleE5Fix12IiES1_s(void *a, int x, int y, s16 ang);
 extern s16 data_02082214[];
 extern void AddVec3(struct Vector3 *dst, struct Vector3 *a, struct Vector3 *b);
 /* Clears the cylinder flags bit 2, then sets it when the closest player
@@ -139,8 +134,6 @@ extern void AddVec3(struct Vector3 *dst, struct Vector3 *a, struct Vector3 *b);
 extern void func_0200f760(void *self, void *cyl);
 extern int RandomIntInternal(int *seed);
 extern int data_0209e650;
-extern void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
-    void *clsn, void *actor, void *offset, int radius, int height, u32 flags, u32 vuln);
 extern GrockModelFilePtr data_ov021_02114a50;
 }
 
@@ -188,7 +181,7 @@ extern "C" int func_ov021_021122fc(char *raw)
     Matrix4x3_ApplyInPlaceToRotationXYZExt(&data_020a0e68,
                                             rock->mAngleX, rock->mAngleY, rock->mAngleZ);
     rock->mModel.mat4x3 = data_020a0e68;
-    return _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
+    return _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x3iih(
         rock, &rock->mShadowModel, rock->pad_188, 0x1f4000, 0x1f4000, 0xf);
 }
 
@@ -307,8 +300,7 @@ extern "C" void func_ov021_02112544(char *raw)
         short wallAngle = cstd::atan2(wallNormal.x, wallNormal.z);
         if (rock->GetSubtraction(rock->mPrevAngleY, wallAngle) <= 0x1000)
             return;
-        rock->mPrevAngleY = _ZN8dActor_c12ReflectAngleE5Fix12IiES1_s(
-            rock, wallNormal.x, wallNormal.z, rock->mPrevAngleY);
+        rock->mPrevAngleY = rock->ReflectAngle(wallNormal.x, wallNormal.z, rock->mPrevAngleY);
         rock->UpdatePosWithHorzSpeedAndAng();
     }
 }
@@ -458,15 +450,13 @@ int daGrock_c::InitResources()
             offset.x = 0;
             offset.y = 0;
             offset.z = 0;
-            _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
-                &mdCcAcPos_c, this, &offset, 0x10e000, 0x226000, 0x200004, 0x3c0);
+            mdCcAcPos_c.Init(this, *(Vector3 *)&offset, 0x10e000, 0x226000, 0x200004, 0x3c0);
         } else {
             Vec3 offset;
             offset.x = 0;
             offset.y = 0;
             offset.z = 0;
-            _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
-                &mdCcAcPos_c, this, &offset, 0xf3000, 0x226000, 0x200004, 0x3c0);
+            mdCcAcPos_c.Init(this, *(Vector3 *)&offset, 0xf3000, 0x226000, 0x200004, 0x3c0);
 
             if (mType == kGrockStar)
                 mStarID = (u8)((param1 >> 8) & 0xf);

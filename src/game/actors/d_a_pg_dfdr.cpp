@@ -18,8 +18,6 @@
  * - dExtAnmModel_c::SetAnim as a method homes Fix12<int> (str, add, ldm; +12
  *   bytes per call). func_ov027_02111ca8 0x54 -> 0x60. func_ov027_02111b2c
  *   0x11c -> 0x134 (+24, two calls). The scalar extern "C" stays.
- * - dBgW_KcMbg::SetFile as a method homes one Fix12<int> (+12), and
- *   dCcAc_c::Init homes two (+24).
  * - dBgActor_c::IsClsnInRangeOnScreen(Fix12, Fix12) homes both zeros.
  *   Behavior 0x80 -> 0x9c. The scalar extern "C" stays.
  * - Sound::Play(3, 0xf3, pos) is +8 bytes in func_ov027_02111a28
@@ -76,8 +74,6 @@ int DecIfAbove0_Byte(void *p);
 /* Stores dBgW::beforeClsnCallback (p[6]). dBgW.h has no setter. */
 void func_020393d4(int *collider, int callback);
 extern void hold_d_a_pg_dfdr(void *self, void *kcl, void *mat, int scale, short angY, void *clps);
-void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *self, void *actor, int radius, int height,
-                                               unsigned flags, unsigned vuln);
 
 void func_ov027_02111994(daPgDfdr_c *self);
 void func_ov027_02111b2c(daPgDfdr_c *self);
@@ -178,7 +174,7 @@ s32 daPgDfdr_c::InitResources()
 
     mVertAccel = 0;
     mTerminalVelocity = 0;
-    _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, this, 0x82000, 0xc8000, 0x800004, 0);
+    mdCcAc_c.Init(this, 0x82000, 0xc8000, 0x800004, 0);
     func_ov027_02111d70(kStateWalk);
 
     pos.x = mPosX;

@@ -267,24 +267,24 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@542",
+      "from": "@535",
       "to": "@50",
-      "evidence": "mwcc numbers this model registration node @541 per TU and the in-flight ov060 fring fold already uses @541, so the batch link would multiply-define it"
+      "evidence": "mwcc numbers this model registration node @541 per TU and the in-flight ov060 fring fold already uses @541, so the batch link would multiply-define it | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     },
     {
-      "from": "@543",
+      "from": "@536",
       "to": "@51",
-      "evidence": "mwcc numbers this model registration node @542 per TU and ov080 already defines @542, so the link would multiply-define it"
+      "evidence": "mwcc numbers this model registration node @542 per TU and ov080 already defines @542, so the link would multiply-define it | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     },
     {
-      "from": "@544",
+      "from": "@537",
       "to": "@52",
-      "evidence": "mwcc numbers this collision registration node @543 per TU and the in-flight ov060 fring fold already uses @543, so the batch link would multiply-define it"
+      "evidence": "mwcc numbers this collision registration node @543 per TU and the in-flight ov060 fring fold already uses @543, so the batch link would multiply-define it | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     },
     {
-      "from": "@545",
+      "from": "@538",
       "to": "@53",
-      "evidence": "mwcc numbers this collision registration node @544 per TU and ov080 already defines @544, so the link would multiply-define it"
+      "evidence": "mwcc numbers this collision registration node @544 per TU and ov080 already defines @544, so the link would multiply-define it | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
     }
   ],
   "relocations": [
