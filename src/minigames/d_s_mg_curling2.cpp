@@ -42,6 +42,7 @@ enum dScMgCurling2_c_AssetId {
 #include "dScMgCurling2_c.h"
 #include "PlayerInput.h"
 #include "nitro/fx/fx.h"
+#include "G2x.h"
 
 namespace G2 {
 void *GetBG0ScrPtr(void);
@@ -72,11 +73,6 @@ typedef void (C::*PMF1)(int);
 
 /* Everything this file calls or reads that no included header declares.
  * Keep it above the first function. */
-struct G2x {
-    static void SetBlendBrightness(volatile unsigned short *, unsigned short, short);
-    static void SetBlendAlpha(volatile unsigned short *, unsigned short, unsigned short,
-                              unsigned short, unsigned int);
-};
 extern "C" {
 
 extern int Mg_GetSubmittedScore(void);

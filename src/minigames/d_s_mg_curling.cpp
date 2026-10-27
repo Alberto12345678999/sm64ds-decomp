@@ -42,6 +42,7 @@ enum dScMgCurling_c_AssetId {
 #include "dScMgCurling_c.h"
 #include "PlayerInput.h"
 #include "nitro/fx/fx.h"
+#include "G2x.h"
 
 namespace G2 {
 void *GetBG2CharPtr(void);
@@ -87,11 +88,6 @@ struct B4 {
 
 /* Everything this file calls or reads. Class members cannot go inside an
  * `extern "C"` block, so the C-linkage names are collected here in one. */
-struct G2x {
-    static void SetBlendBrightness(volatile unsigned short *, unsigned short, short);
-    static void SetBlendAlpha(volatile unsigned short *, unsigned short, unsigned short,
-                              unsigned short, unsigned int);
-};
 extern "C" {
 
 extern int Mg_GetSubmittedScore(void);
