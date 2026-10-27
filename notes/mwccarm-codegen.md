@@ -8704,3 +8704,53 @@ a `.bss` no TU owns. `StarCamera_Spawn` is a real new-expression: `new dActor_c`
 except for the size, 0xd0 against 0xd4. An inline `operator new(size_t, int extra)` with
 `::new (4) dActor_c` matches it whole, but that overload is coined, so the site stays on
 #3198.
+
+## 6df. A hand-written `__register_global_object` call is a static `Vector3` the source hasn't declared; mwcc emits the guard, the stores, the registration and `__sinit_<file>.cpp` byte-identical (dMap_c, dScMgSnowball_c, 2026-10-27)
+
+Some sources built a static by hand: three stores, then
+`func_020731dc(&obj, _ZN7Vector3D1Ev, &node)`, either in a separate `__sinit_<addr>.c` shard
+or under a hand-tested guard word. `include/types.h` gives `Vector3` a non-trivial
+`~Vector3() {}` and a `(Fix12i, Fix12i, Fix12i)` constructor, so declaring the object does
+the same thing:
+
+- **File scope:** `static Vector3 sMapScreenCenter(0x80000, 0, 0x60000);`. mwcc emits
+  `__sinit_d_map.cpp` (0x48, identical to retail `__sinit_ov002_0210804c`), its `.ctor` word,
+  and a 12-byte `@NNN` registration node in `.bss`.
+- **Function scope:** `static Vector3 sUnitY(0, 0x1000, 0);` inside the function. mwcc emits
+  the guard test (`_ZGVsUnitY$NNN`, 4 bytes), the stores, the registration call and
+  `guard |= 1` inline, in the same place the hand-written block had them.
+
+Both are byte- and relocation-identical, and the hand-written guard, the node extern, and the
+`_ZN7Vector3D1Ev` extern all go away. Under `-O4,p` mwcc orders the `.bss` objects by size,
+then by name. Retail matches that order (`@NNN` node before `sMapScreenCenter`; guard, node,
+then storage), and objisolate reorders `.bss` sections to the manifest addresses anyway.
+
+Bookkeeping, following daObj1UpLogo_c and dMgState_c:
+
+1. The TU's manifest becomes `intact-object` and claims `.init`/`.ctor` (file scope) and the
+   `.bss` range, with `bss`/`init`/`ctor` rows, STB_LOCAL->STB_GLOBAL
+   `symbol_binding_rewrites` for the sinit, `.p__sinit`, node and statics, and an
+   `undefined_symbol_aliases` row `__register_global_object` -> `func_020731dc`. Without the
+   alias the scratch link fails with `Undefined : "__register_global_object"`. A file-scope
+   sinit also needs explicit `relocations` rows for its `.init`/`.ctor` words.
+2. Rename `symbols.txt` rows to the compiled names (`__sinit_d_map.cpp`, `sUnitY$1570`,
+   `_ZGVsUnitY$1570`, `@NNN`). An emitted `@NNN` that another module already defines takes a
+   `defined_symbol_renames` row onto an unused name of the same length.
+3. The new objects take uniquifiers ahead of every later `@NNN` in the TU. Snowball's 14 PMF
+   descriptors all moved +2, so every `defined_symbol_renames[].from` moved +2. Map the shift
+   by each descriptor's relocation targets, not by guessing; `to` and everything keyed on it
+   stays put.
+4. Move `delinks.txt` `.init`/`.ctor`/`.bss` into the TU entry and retire the shard.
+5. `tubuild linkcheck` needs a fresh `linkcheck --baseline` after every `config/arm9` edit.
+   Otherwise unrelated vtable-policy TUs fail with `baseline content fingerprint differs`.
+
+`tubuild verify` still prints `EXTRA .text __sinit_<file>.cpp ... not in manifest` for every
+compiler-emitted sinit (1UpLogo, brq and snowball on main print it too). That's a verify
+limitation, not a regression. linkcheck is the gate here, and both TUs are
+SCRATCH-DATA-VERIFIED.
+
+**Not done:** `unit020cd744` (TrmpItem). Its nine function-local unit vectors' `.bss` is
+interleaved with file globals and ring-model handles, so they can only move as one
+whole-TU `.bss` claim. `unit020bfec0` (FallingPetal) is open in #4392. The
+ov019/ov062/ov072/ov078 `.c` sinit shards mix resource handles and PMF tables and need an
+owner TU first.

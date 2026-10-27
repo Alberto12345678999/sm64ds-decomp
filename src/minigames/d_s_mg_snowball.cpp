@@ -147,13 +147,7 @@ extern void SetBg2Offset(int, int);
 extern void SetBg3Offset(int, int);
 extern void SetSubBg2Offset(int, int);
 extern void SetSubBg3Offset(int, int);
-extern void func_020731dc(void *, void *, void **);
 extern void Quaternion_Normalize(s32 *);
-/* local extern: C++ cannot take ~Vector3()'s address */
-extern void *_ZN7Vector3D1Ev(void *object);
-extern u32 sSnowball_ResetScene_UnitYGuard;
-extern void *sSnowball_ResetScene_UnitYDtorRec;
-extern s32 sSnowball_ResetScene_UnitY[3];
 extern s32 data_02092768[4];
 void Mg_RenderSpriteBoth(void *a0, int a1, int a2, int a3, int a4);
 void func_0203cd80(int *m, short angle);
@@ -1329,26 +1323,20 @@ void dScMgSnowball_c::ResetScene() {
     mPrevAngleY = 0;
     mPrevHeadingAngle = 0;
 
-    if (!(sSnowball_ResetScene_UnitYGuard & 1)) {
-        sSnowball_ResetScene_UnitY[0] = 0;
-        sSnowball_ResetScene_UnitY[1] = 0x1000;
-        sSnowball_ResetScene_UnitY[2] = 0;
-        func_020731dc(sSnowball_ResetScene_UnitY, (void *)&_ZN7Vector3D1Ev,
-                      &sSnowball_ResetScene_UnitYDtorRec);
-        sSnowball_ResetScene_UnitYGuard |= 1;
-    }
+    /* Constructed on the first call: mwcc emits the guard test, the three
+       stores and the ~Vector3() registration inline here. */
+    static Vector3 sUnitY(0, 0x1000, 0);
 
-    mSpinAxis[0] = sSnowball_ResetScene_UnitY[0];
-    mSpinAxis[1] = sSnowball_ResetScene_UnitY[1];
-    mSpinAxis[2] = sSnowball_ResetScene_UnitY[2];
+    mSpinAxis[0] = sUnitY.x;
+    mSpinAxis[1] = sUnitY.y;
+    mSpinAxis[2] = sUnitY.z;
     func_0203ce80((struct Vector3 *)tmp, (struct Vector3 *)mSpinAxis);
 
     mSpinQuat[0] = data_02092768[0];
     mSpinQuat[1] = data_02092768[1];
     mSpinQuat[2] = data_02092768[2];
     mSpinQuat[3] = data_02092768[3];
-    Quaternion_FromVector3(mSpinQuat, (struct Vector3 *)sSnowball_ResetScene_UnitY,
-                           (struct Vector3 *)mSpinAxis);
+    Quaternion_FromVector3(mSpinQuat, &sUnitY, (struct Vector3 *)mSpinAxis);
     Quaternion_Normalize(mSpinQuat);
 
     Snowball_UpdateCamera(c);
