@@ -223,21 +223,6 @@ extern void *d_a_otsNewHold(u32 id, u32 param, Fix12i x, Fix12i y, Fix12i z, con
 extern void Matrix4x3_FromRotationY(void* m, short angle);
 short Vec3_HorzAngle(const Vector3 *a, const Vector3 *b);
 
-/* ONE SPELLING FOR ONE SYMBOL, with one exception. The shards carried four
- * declarations of dExtAnmModel_c::SetAnim that differed only in parameter spelling
- * and return type; the old name's by-value Fix12<int> was ours, not the ROM's,
- * so five of the six call sites now call the real method (which returns void).
- * See notes/mwccarm-codegen.md 6az, MEASURED 2026-10-22.
- *
- * local extern: func_ov064_02116560 TAIL-FORWARDS SetAnim's r0 as its own int
- * result, so that one site needs the int-returning spelling -- `return` on a
- * void method does not compile, and splitting it into a call plus a separate
- * return costs the tail call. Byte-proved: 0x02116560/0x74 reproduces with this
- * declaration and not without it. The return-type disagreement against the
- * void definition is deliberate and banked. */
-/* local extern: func_ov064_02116560 tail-forwards SetAnim r0 as its own int result, so the int-returning spelling is load-bearing; byte-proved */
-extern "C" int _ZN14dExtAnmModel_c7SetAnimEP8BCA_Fileiit(dExtAnmModel_c *, BCA_File *, int, Fix12i,
-                                                         u16);
 int _Z14ApproachLinearRiii(int *dst, int target, int rate);
 
 
@@ -670,16 +655,14 @@ int daOts_c::UpdateRunState()
 // @symbol _ZN7daOts_c19func_ov064_02116560Ev
 /* STATE_CHASE's body: runs the child's UpdateRunState, then, unless the player is
  * within 1000 units of mHomePos (measured at the actor's own height), drops back
- * to STATE_RETURN_HOME and restarts the walk animation. Returns the range test's
- * result, or SetAnim's when it gave up the chase. */
-int daOts_c::func_ov064_02116560(){
+ * to STATE_RETURN_HOME and restarts the walk animation. The caller ignores the
+ * result, so this is void; the ROM's tail call to SetAnim needs nothing more. */
+void daOts_c::func_ov064_02116560(){
     this->UpdateRunState();
-    int r = IsPlayerInRange(tail().mHomePosX, this->mPosY, tail().mHomePosZ, kKeepChaseRange);
-    if (r)
-        return r;
+    if (IsPlayerInRange(tail().mHomePosX, this->mPosY, tail().mHomePosZ, kKeepChaseRange))
+        return;
     tail().mState = STATE_RETURN_HOME;
-    return _ZN14dExtAnmModel_c7SetAnimEP8BCA_Fileiit(
-        &this->mAnmModel, (BCA_File *)(CONFIG_BCA(this, kAnimWalk)), 0, kAnimSpeedNormal, 0);
+    mAnmModel.SetAnim((BCA_File *)(CONFIG_BCA(this, kAnimWalk)), 0, kAnimSpeedNormal, 0);
 }
 
 /* -------------------------------------------------------------------------- */

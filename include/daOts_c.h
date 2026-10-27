@@ -211,7 +211,7 @@ struct daOts_c : dEnemyBase_c {
     int func_ov064_0211616c();
     void func_ov064_02116220();
     void func_ov064_02116460();
-    int func_ov064_02116560();
+    void func_ov064_02116560();
     void func_ov064_021165d8();
     int func_ov064_021166f0();
     void func_ov064_02116754();

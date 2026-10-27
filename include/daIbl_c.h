@@ -159,7 +159,7 @@ struct daIbl_c : dEnemyBase_c {
     void func_ov100_02142130();
     void func_ov100_02142264();
     int  func_ov100_0214233c();
-    int  func_ov100_021424c0();
+    void func_ov100_021424c0();
     void func_ov100_0214272c();
     void func_ov100_02142918();
     void func_ov100_02142b90();
