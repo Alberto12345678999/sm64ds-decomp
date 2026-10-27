@@ -268,8 +268,7 @@ void daObjFm_Battan_c::UpdateModelTransform()
 }
 
 // @symbol _ZN16daObjFm_Battan_c12UpdateShadowEv
-void daObjFm_Battan_c::UpdateShadow()
-{
+void daObjFm_Battan_c::UpdateShadow() {
     int tableIndex = (u16)mAngleX >> 4;
     int sinX = data_02082214[tableIndex * 2];
     int depth = FX_MUL(sinX, 0x49c000);

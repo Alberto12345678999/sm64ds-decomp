@@ -657,7 +657,7 @@ int daOts_c::UpdateRunState()
  * within 1000 units of mHomePos (measured at the actor's own height), drops back
  * to STATE_RETURN_HOME and restarts the walk animation. The caller ignores the
  * result, so this is void; the ROM's tail call to SetAnim needs nothing more. */
-void daOts_c::func_ov064_02116560(){
+void daOts_c::func_ov064_02116560() {
     this->UpdateRunState();
     if (IsPlayerInRange(tail().mHomePosX, this->mPosY, tail().mHomePosZ, kKeepChaseRange))
         return;

@@ -393,11 +393,11 @@ void daObjPowerUpItem_c::CheckPickup() {
  * 0x3c000); otherwise it is 0x78000. Does nothing while the 0x40000 yoshi-mouth
  * bit is set. */
 // @symbol _ZN18daObjPowerUpItem_c10DropShadowEv
-void daObjPowerUpItem_c::DropShadow()
-{
+void daObjPowerUpItem_c::DropShadow() {
     int r3;
     int b = (int)((mFlags & 0x40000) != 0);
-    if (b != 0) return;
+    if (b != 0)
+        return;
     *(struct Matrix4x3*)&mShadowMat = *(struct Matrix4x3*)&mOpenModel.mat4x3;
     mShadowMat.m[10] = mGroundY >> 3;
     r3 = 0x78000;

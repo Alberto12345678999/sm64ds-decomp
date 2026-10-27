@@ -416,7 +416,8 @@ int daBombking_c::func_ov078_02123f1c()
 {
     if (func_ov078_02123804() != 1) {
         if (this->mHeldActor == 0) goto L6c;
-        if (this->mHeldActor->GetHealth() != 0) goto L6c;
+        if (this->mHeldActor->GetHealth() != 0)
+            goto L6c;
     }
     func_ov078_02123864();
     if (this->mHeldActor != 0) {

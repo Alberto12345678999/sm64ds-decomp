@@ -112,7 +112,8 @@ extern "C" void TrmpItem_ProjectToScreen(char *c, int scoreValue) {
 
 namespace s020cd864 {
 // @symbol TrmpItem_MotionSpinHover
-extern "C" extern void *_ZN7Vector3D1Ev(void *object); /* local extern: C++ cannot take ~Vector3()'s address */
+/* local extern: C++ cannot take ~Vector3()'s address */
+extern "C" extern void *_ZN7Vector3D1Ev(void *object);
 
 extern "C" extern void func_020731dc(void *object, void *destructor, void **node);
 
@@ -173,7 +174,8 @@ extern "C" extern void func_0203ce80(Vec3 *dst, Vec3 *src);
 extern "C" extern void func_0203cf00(Vec3 *out, Vec3 *a, Vec3 *b);
 extern "C" extern void Quaternion_FromVector3(int *q, Vec3 *axis, Vec3 *v);
 extern "C" extern void Quaternion_Normalize(int *q);
-extern "C" extern void *_ZN7Vector3D1Ev(void *object); /* local extern: C++ cannot take ~Vector3()'s address */
+/* local extern: C++ cannot take ~Vector3()'s address */
+extern "C" extern void *_ZN7Vector3D1Ev(void *object);
 
 extern "C" {
 extern int sTrmpItem_MotionSpinDrift_UnitYGuard;
@@ -240,7 +242,8 @@ extern "C" void TrmpItem_SetMotionSpinDrift(char *p) {
 
 namespace s020cdaec {
 // @symbol TrmpItem_MotionSpinSway
-extern "C" extern void *_ZN7Vector3D1Ev(void *object); /* local extern: C++ cannot take ~Vector3()'s address */
+/* local extern: C++ cannot take ~Vector3()'s address */
+extern "C" extern void *_ZN7Vector3D1Ev(void *object);
 
 extern "C" extern void func_020731dc(void *object, void *destructor, void **node);
 
@@ -363,7 +366,8 @@ extern "C" extern void func_0203ce80(Vec3 *dst, Vec3 *src);
 extern "C" extern void func_0203cf00(Vec3 *out, Vec3 *a, Vec3 *b);
 extern "C" extern void Quaternion_FromVector3(int *q, Vec3 *axis, Vec3 *v);
 extern "C" extern void Quaternion_Normalize(int *q);
-extern "C" extern void *_ZN7Vector3D1Ev(void *object); /* local extern: C++ cannot take ~Vector3()'s address */
+/* local extern: C++ cannot take ~Vector3()'s address */
+extern "C" extern void *_ZN7Vector3D1Ev(void *object);
 
 extern "C" {
 extern int sTrmpItem_MotionSpin_UnitYGuard;
@@ -997,7 +1001,8 @@ extern int data_02092768[4];
 extern "C" {
 extern int data_020a0ebc[3];
 }
-extern "C" extern void *_ZN7Vector3D1Ev(void *object); /* local extern: C++ cannot take ~Vector3()'s address */
+/* local extern: C++ cannot take ~Vector3()'s address */
+extern "C" extern void *_ZN7Vector3D1Ev(void *object);
 extern "C" extern void func_020731dc(void *object, void *destructor, void **node);
 extern "C" extern void func_0203cc28(int *p, int angle);
 extern "C" extern void Quaternion_FromVector3(int *q, Vec3 *a, Vec3 *b);

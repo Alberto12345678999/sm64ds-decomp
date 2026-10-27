@@ -510,8 +510,7 @@ void dBgActor_c::UpdateClsnPosAndRot()
  * Callers (pushblock, signpost, ski lift, Bill Blaster) pass the X step and a
  * model-pivot height; nonzero return means "still flying". */
 // @symbol _ZN10dBgActor_c20UpdateKillByMegaCharEsssi
-int dBgActor_c::UpdateKillByMegaChar(s16 angStepX, s16 angStepY, s16 angStepZ, Fix12i pivotY)
-{
+int dBgActor_c::UpdateKillByMegaChar(s16 angStepX, s16 angStepY, s16 angStepZ, Fix12i pivotY) {
     Vector3 probe;
     Vector3 rayEnd;
     Vector3 sum;

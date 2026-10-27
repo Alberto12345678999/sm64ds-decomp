@@ -95,14 +95,14 @@ daObjCtRotateBlock_c::~daObjCtRotateBlock_c()
 }
 
 // @symbol _ZN20daObjCtRotateBlock_c12UpdateShadowEv
-void daObjCtRotateBlock_c::UpdateShadow()
-{
+void daObjCtRotateBlock_c::UpdateShadow() {
     int d, b;
     int bval = mFloorY;
     int aval = mPosY;
     int diff = aval - bval;
     if (diff < 0) diff = -diff;
-    if (diff > 0x9c4000) return;
+    if (diff > 0x9c4000)
+        return;
     b = 0x32000;
     d = 0x190000;
     if (mUnevenGround) { b = 0x17c000; d = b; }

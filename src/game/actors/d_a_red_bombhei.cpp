@@ -410,8 +410,7 @@ int daRedBombhei_c::func_ov084_0212ca60()
 
 // @symbol _ZN14daRedBombhei_c19func_ov084_0212c9f0Eih
 /* Opens message msgID on the talking player's screen, with the talk sound. */
-void daRedBombhei_c::func_ov084_0212c9f0(int msgID, u8 msgFlag)
-{
+void daRedBombhei_c::func_ov084_0212c9f0(int msgID, u8 msgFlag) {
     Player *player = this->mTalkPlayer;
     Vector3 pos;
     int x = this->mPosX;

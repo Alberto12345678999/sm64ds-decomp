@@ -1456,6 +1456,7 @@ void daStar_c::func_ov002_020e9d18() {
     Vec3 t1;
     Vec3 t2;
     int *src;
+    u8 st2;
 
     src = (int *)&mPlayer->mPosX;
     mPosX = src[0];
@@ -1515,7 +1516,6 @@ modes:
     }
 big_else:
     {
-        u8 st2;
         if (mKind == KIND_9) {
             st2 = 0x11;
 LA:

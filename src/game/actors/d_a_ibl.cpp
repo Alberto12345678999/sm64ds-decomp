@@ -406,8 +406,7 @@ int daIbl_c::func_ov100_0214233c()
  * 4 ramps toward it by 0x400 (0.25 units/frame) a frame, and kind 2 adds
  * the floor normal's X and Z to its velocity. Last comes the collision
  * update. */
-void daIbl_c::func_ov100_021424c0()
-{
+void daIbl_c::func_ov100_021424c0() {
     int r;
     int vy;
 

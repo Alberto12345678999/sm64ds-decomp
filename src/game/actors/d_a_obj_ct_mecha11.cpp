@@ -83,11 +83,11 @@ daObjCtMecha11_c::~daObjCtMecha11_c()
 }
 
 // @symbol _ZN16daObjCtMecha11_c12UpdateShadowEv
-void daObjCtMecha11_c::UpdateShadow()
-{
+void daObjCtMecha11_c::UpdateShadow() {
     int d1 = mPosY - mFloorPosY;
     int ad = d1 < 0 ? -d1 : d1;
-    if (ad > 0x7d0000) return;
+    if (ad > 0x7d0000)
+        return;
     int clipD = ad + 0x350000;
     int half = ad / 2;
     if (clipD < 0x350000) clipD = 0x350000;

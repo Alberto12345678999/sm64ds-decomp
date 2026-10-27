@@ -125,7 +125,8 @@ typedef struct { int x, y, z, w; } Vec4;
 
 extern void __register_global_object(void *object, void *destructor, void **node);
 extern void AddVec3(Vec3 *a, Vec3 *b, Vec3 *c);
-extern void *_ZN7Vector3D1Ev(void *object); /* local extern: C++ cannot take ~Vector3()'s address */
+/* local extern: C++ cannot take ~Vector3()'s address */
+extern void *_ZN7Vector3D1Ev(void *object);
 
 extern int sHeyho_StartMotionFlyIn_Left256Guard;
 extern Vec3 sHeyho_StartMotionFlyIn_Left256;
@@ -266,7 +267,8 @@ typedef struct { int x, y, z, w; } Vec4;
 
 extern void __register_global_object(void *object, void *destructor, void **node);
 extern void AddVec3(Vec3 *a, Vec3 *b, Vec3 *c);
-extern void *_ZN7Vector3D1Ev(void *object); /* local extern: C++ cannot take ~Vector3()'s address */
+/* local extern: C++ cannot take ~Vector3()'s address */
+extern void *_ZN7Vector3D1Ev(void *object);
 
 extern int sHeyho_StartMotionRegroup_Left256Guard;
 extern Vec3 sHeyho_StartMotionRegroup_Left256;
@@ -443,7 +445,8 @@ typedef struct { int w[2]; } W2;
 
 extern void __register_global_object(void *object, void *destructor, void **node);
 extern void Vec3_Add(Vec3 *out, Vec3 *a, Vec3 *b);
-extern void *_ZN7Vector3D1Ev(void *object); /* local extern: C++ cannot take ~Vector3()'s address */
+/* local extern: C++ cannot take ~Vector3()'s address */
+extern void *_ZN7Vector3D1Ev(void *object);
 
 extern int pmf_Heyho_StateIdle[2];
 extern int pmf_Heyho_MotionHitSpin_2[2];

@@ -237,8 +237,7 @@ void daObjRotateUpdownLift_c::OnHitByMegaChar(Player &player)
 // @symbol func_ov091_02131160
 /* Aim the cuboid shadow and the clip volume. Called every frame except
    for HS_UPDOWN_LIFT. */
-void daObjRotateUpdownLift_c::func_ov091_02131160()
-{
+void daObjRotateUpdownLift_c::func_ov091_02131160() {
     /* Holding mShadowMat in a Matrix4x3 * local steals r4 from `this` and
        the function grows. The three translation words are stored from
        `this`, not from that pointer. */

@@ -234,7 +234,8 @@ unsigned char IsAreaShowing(int idx);
 void SetTouchScreenDelay(void);
 void LoadKeyModels(int idx);
 void UnloadKeyModels(int idx);
-void *_ZN7Vector3D1Ev(void *object); /* local extern: C++ cannot take ~Vector3()'s address */
+/* local extern: C++ cannot take ~Vector3()'s address */
+void *_ZN7Vector3D1Ev(void *object);
 
 extern DoorEntry data_ov100_02148204[];
 /* Indexed by mKeyModelIdx - 1: the character func_ov100_02144528 switches the
