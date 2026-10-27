@@ -20011,7 +20011,7 @@
       "type": "R_ARM_ABS32",
       "kind": "load",
       "addend": 0,
-      "symbol": "data_02086b58",
+      "symbol": "__ptmf_null",
       "target_module": "arm9",
       "target_address": "0x02086b58"
     },
@@ -20021,7 +20021,7 @@
       "type": "R_ARM_ABS32",
       "kind": "load",
       "addend": 0,
-      "symbol": "data_ov002_02110154",
+      "symbol": "_ZN6Player7ST_WAITE",
       "target_module": "ov002",
       "target_address": "0x02110154"
     },
@@ -20241,7 +20241,7 @@
       "type": "R_ARM_ABS32",
       "kind": "load",
       "addend": 0,
-      "symbol": "data_ov002_02110244",
+      "symbol": "_ZN6Player6ST_OWLE",
       "target_module": "ov002",
       "target_address": "0x02110244"
     },
