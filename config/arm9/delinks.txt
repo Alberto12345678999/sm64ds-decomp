@@ -1215,7 +1215,10 @@ src/game/stages/d_scene.cpp:
 src/runtime/graphics/fader/d_wipe.cpp:
     complete
     .text start:0x0202ec9c end:0x0202fc98
+    .init start:0x02074f80 end:0x02074fb8
+    .ctor start:0x02086b90 end:0x02086b94
     .data start:0x020926d0 end:0x02092718
+    .bss start:0x0209f610 end:0x0209f648
 
 src/engine/view/d_view.cpp:
     complete
@@ -5236,10 +5239,6 @@ src/unnamed/arm9/0207/__sinit_02074e84.cpp:
 src/unnamed/arm9/0207/__sinit_02074edc.c:
     complete
     .init start:0x02074edc end:0x02074f80
-
-src/unnamed/arm9/0207/__sinit_02074f80.c:
-    complete
-    .init start:0x02074f80 end:0x02074fb8
 
 src/unnamed/arm9/0207/__sinit_02074fb8.c:
     complete

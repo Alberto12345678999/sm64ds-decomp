@@ -41,8 +41,7 @@ void MultiStore_Int(int val, int *dst, int len);
 void func_0202f2c4(void);
 }
 
-extern dWipe_c      data_0209f61c;   /* the wipe singleton */
-extern u8           data_0209f5f8;   /* which display engine the wipe covers */
+extern u8          data_0209f5f8;   /* which display engine the wipe covers */
 extern volatile u8  data_0209f5fc;   /* the next HBlank has a fresh line */
 extern volatile u32 data_0209f608;   /* table index the IRQ reads */
 extern volatile u32 data_0209f60c;   /* table index the CPU fills */
@@ -557,6 +556,12 @@ int dWipe_c::IsBetweenStartAndEnd()
     }
     return 0;
 }
+
+/* The wipe singleton. A namespace-scope object with a constructor and a
+   destructor, so mwcc emits __sinit_d_wipe.cpp to build it and register
+   ~dWipe_c() (was the handwritten __sinit_02074f80). The minigame
+   overlays still reach it by this address name. */
+dWipe_c data_0209f61c;
 
 /* Scene-side wipe reset: cancel a live capture, then return the singleton to
    its idle state. */
