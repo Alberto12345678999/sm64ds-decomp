@@ -88,14 +88,14 @@ src/OSReadROMArea.c:
     complete
     .text start:0x01ffdbd8 end:0x01ffdd08
 
-src/unnamed/arm9/01ff/func_01ffdd08.c:
+src/unnamed/arm9/01ff/func_01ffdd08.cpp:
     complete
     .text start:0x01ffdd08 end:0x01ffde00
-src/DMAStartTransferFB.c:
+src/DMAStartTransferFB.cpp:
     complete
     .text start:0x01ffde00 end:0x01ffde50
 
-src/DMAStartTransfer.c:
+src/DMAStartTransfer.cpp:
     complete
     .text start:0x01ffde50 end:0x01ffde98
 
