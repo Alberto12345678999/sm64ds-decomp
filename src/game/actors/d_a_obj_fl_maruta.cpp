@@ -147,11 +147,11 @@ daObj_volcanoCannon_c::~daObj_volcanoCannon_c()
 extern "C" void func_ov022_02112654(daObj_volcanoCannon_c *c) {
     if (c->mCylinderClsn.otherOwner == 0)
         return;
-    void *a = dActor_c::FindWithID(c->mCylinderClsn.otherOwner);
+    Player *a = static_cast<Player *>(dActor_c::FindWithID(c->mCylinderClsn.otherOwner));
     if (a == 0) return;
     unsigned int b = ((dActor_c *)a)->actorID == 0xbf;
     if (b == 0) return;
-    ((Player *)a)->Burn();
+    a->Burn();
     c->MarkForDestruction();
 }
 

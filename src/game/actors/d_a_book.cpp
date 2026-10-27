@@ -290,7 +290,7 @@ int daBook_c::func_ov020_02111418()
 int daBook_c::func_ov020_021115ac()
 {
     u32 id;
-    dActor_c *found;
+    Player *found;
     int t;
     volatile int t1, t2;
     (void)&t1; (void)&t2;
@@ -298,7 +298,7 @@ int daBook_c::func_ov020_021115ac()
     id = mdCcAcPos_c.otherOwner;
     if (id == 0)
         return HIT_NONE;
-    found = dActor_c::FindWithID(id);
+    found = static_cast<Player *>(dActor_c::FindWithID(id));
     if (found == 0)
         return HIT_NONE;
 
@@ -310,19 +310,19 @@ int daBook_c::func_ov020_021115ac()
     if ((mdCcAcPos_c.hitFlags & 0x8000) != 0)
         return HIT_NONE;
 
-    if (((Player *)found)->mIsVanish != 0) {
+    if (found->mIsVanish != 0) {
         t = (int)(actorID == kShootBookActorId);
         if (t != 0)
             return HIT_NONE;
     }
 
-    mTouchedPlayer = (Player *)found;
+    mTouchedPlayer = found;
 
     /* the attack bits the profile made the collider vulnerable to */
     if ((mdCcAcPos_c.hitFlags & 0x26fe0) != 0)
         return HIT_ATTACKED;
 
-    if (BumpedUnderneathByPlayer(*(Player *)found) != 0) {
+    if (BumpedUnderneathByPlayer(*found) != 0) {
         /* the bump also cancels the player's vertical speed */
         Vec3 *p = (Vec3 *)&found->mSpeedX;
         Vec3 v;
@@ -332,19 +332,19 @@ int daBook_c::func_ov020_021115ac()
         found->mSpeedX = v.x;
         found->mVertSpeed = v.y;
         found->mSpeedZ = v.z;
-        mTouchedPlayer = (Player *)found;
+        mTouchedPlayer = found;
         return HIT_ATTACKED;
     }
 
-    if (JumpedOnByPlayer(mdCcAcPos_c, *(Player *)found) != 0) {
-        mTouchedPlayer = (Player *)found;
+    if (JumpedOnByPlayer(mdCcAcPos_c, *found) != 0) {
+        mTouchedPlayer = found;
         return HIT_STOMPED;
     }
 
-    if (((Player *)found)->mIsMetal != 0)
+    if (found->mIsMetal != 0)
         return HIT_METAL_PLAYER;
 
-    if (((Player *)found)->mIsVanish != 0) {
+    if (found->mIsVanish != 0) {
         t = (int)(actorID == kKillerBookActorId);
         if (t != 0)
             return HIT_NONE;

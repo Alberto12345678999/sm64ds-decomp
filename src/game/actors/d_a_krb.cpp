@@ -900,7 +900,7 @@ void daKrb_c::func_ov084_02129ed4() {
     Vector3 hurtOriginRepeat;
     Vector3 hurtOriginJumped;
     Vector3 capReleaseOnExit;
-    void* other;
+    Player *other;
     u32 flags;
     s32 turnAround;
     s32 hurtKnockback;
@@ -911,7 +911,7 @@ void daKrb_c::func_ov084_02129ed4() {
 
     id = goomba->mdCcAc_c.otherOwner;
     if (id == 0) return;
-    other = dActor_c::FindWithID(id);
+    other = static_cast<Player *>(dActor_c::FindWithID(id));
     if (other == 0) return;
 
     flags = goomba->mdCcAc_c.hitFlags;
@@ -928,13 +928,11 @@ void daKrb_c::func_ov084_02129ed4() {
         typeMatch = (s32)(goomba->actorID == ACTOR_KURIBO);
         if (typeMatch != 0) {
             killDirNormal[0] = -0x2000; killDirNormal[1] = 0; killDirNormal[2] = 0;
-            goomba->KillByInvincibleChar(*(Vector3_16 *)killDirNormal, *(Player *)other,
-                                         0x41000); /* 65.0 */
+            goomba->KillByInvincibleChar(*(Vector3_16 *)killDirNormal, *other, 0x41000); /* 65.0 */
             return;
         }
         killDirVariant[0] = -0x1800; killDirVariant[1] = 0; killDirVariant[2] = 0;
-        goomba->KillByInvincibleChar(*(Vector3_16 *)killDirVariant, *(Player *)other,
-                                     0x96000); /* 150.0 */
+        goomba->KillByInvincibleChar(*(Vector3_16 *)killDirVariant, *other, 0x96000); /* 150.0 */
         return;
     }
 
@@ -994,11 +992,11 @@ void daKrb_c::func_ov084_02129ed4() {
         if (!(flags & HIT_YOSHI_TONGUE)) {
             typeMatch = (s32)(((dActor_c *)other)->actorID == ACTOR_PLAYER);
             if (typeMatch != 0) {
-                if (((Player *)other)->mIsMetal != 0) {
+                if (other->mIsMetal != 0) {
                     capReleaseOnKill.x = 0; capReleaseOnKill.y = 0x6c000; capReleaseOnKill.z = 0;     /* 108.0 */
                     goomba->ReleaseCap(capReleaseOnKill);
                     killDirPlayer[0] = 0x2000; killDirPlayer[1] = 0; killDirPlayer[2] = 0;
-                    goomba->KillByInvincibleChar(*(Vector3_16 *)killDirPlayer, *(Player *)other,
+                    goomba->KillByInvincibleChar(*(Vector3_16 *)killDirPlayer, *other,
                                                  0x41000); /* 65.0 */
                     return;
                 }
@@ -1008,15 +1006,16 @@ void daKrb_c::func_ov084_02129ed4() {
                     playerPos.y = pp->y;
                     playerPos.z = pp->z;
                 }
-                if (((Player *)other)->IsOnShell() != 0) {
+                if (other->IsOnShell() != 0) {
                     goomba->mDeathState = daKrb_c::DEATH_DIVE_OR_EGG;
                     turnAround = 1;
                     goomba->mAnmModel.SetAnim((BCA_File *)data_ov084_02130ce0.filePtr, 0x40000000,
                                               0x1000, 0);
                     goto block_68;
                 }
-                if (((dActor_c *)goomba)->JumpedOnByPlayer(*(dCc_c *)&goomba->mdCcAc_c, *(Player *)other) != 0) {
-                    ((Player *)other)->Bounce(0x28000); /* 40.0 */
+                if (((dActor_c *)goomba)->JumpedOnByPlayer(*(dCc_c *)&goomba->mdCcAc_c, *other) !=
+                    0) {
+                    other->Bounce(0x28000); /* 40.0 */
                     func_02012694(SND_STOMPED, &goomba->mCamSpacePos);
                     goomba->mDeathState = daKrb_c::DEATH_STOMPED;
                     goomba->mScaleX = 0x1000;     /* 1.0 */
@@ -1024,21 +1023,21 @@ void daKrb_c::func_ov084_02129ed4() {
                     goomba->mScaleZ = 0x1000;
                     goto block_68;
                 }
-                if (((Player *)other)->mIsVanish != 0) return;
+                if (other->mIsVanish != 0)
+                    return;
                 if (goomba->mState == daKrb_c::STATE_WALK) {
                     if (goomba->mGoombaType == daKrb_c::GOOMBA_SMALL) {
                         ((dActor_c *)goomba)->SmallPoofDust();
                         hurtOriginFirstHit.x = goomba->mPosX; hurtOriginFirstHit.y = goomba->mPosY; hurtOriginFirstHit.z = goomba->mPosZ;
-                        ((Player *)other)->Hurt(hurtOriginFirstHit, 0, hurtKnockback, 1, 0, 1);
+                        other->Hurt(hurtOriginFirstHit, 0, hurtKnockback, 1, 0, 1);
                         goomba->func_ov084_02129498();
                         func_02012694(SND_DEATH_SMALL, &goomba->mCamSpacePos);
                         return;
                     }
                     if ((goomba->mdCcAc_c.hitFlags & HIT_PLAYER) == 0) return;
                     hurtOriginRepeat.x = goomba->mPosX; hurtOriginRepeat.y = goomba->mPosY; hurtOriginRepeat.z = goomba->mPosZ;
-                    ((Player *)other)
-                        ->Hurt(hurtOriginRepeat, data_ov084_02130204[goomba->mGoombaType],
-                               hurtKnockback, 1, 0, 1);
+                    other->Hurt(hurtOriginRepeat, data_ov084_02130204[goomba->mGoombaType],
+                                hurtKnockback, 1, 0, 1);
                     goomba->mState = daKrb_c::STATE_HOP_START;
                     return;
                 }
@@ -1057,8 +1056,8 @@ void daKrb_c::func_ov084_02129ed4() {
             playerPosJump.y = pp->y;
             playerPosJump.z = pp->z;
         }
-        if (((dActor_c *)goomba)->JumpedOnByPlayer(*(dCc_c *)&goomba->mdCcAc_c, *(Player *)other) != 0) {
-            ((Player *)other)->Bounce(0x28000); /* 40.0 */
+        if (((dActor_c *)goomba)->JumpedOnByPlayer(*(dCc_c *)&goomba->mdCcAc_c, *other) != 0) {
+            other->Bounce(0x28000); /* 40.0 */
             func_02012694(SND_STOMPED, &goomba->mCamSpacePos);
             goomba->mDeathState = daKrb_c::DEATH_STOMPED;
             goomba->mScaleX = 0x1000;     /* 1.0 */
@@ -1066,14 +1065,14 @@ void daKrb_c::func_ov084_02129ed4() {
             goomba->mScaleZ = 0x1000;
             goto block_68;
         }
-        if (((Player *)other)->mIsVanish != 0) return;
+        if (other->mIsVanish != 0)
+            return;
         if (goomba->mState == daKrb_c::STATE_WALK) {
             goomba->mState = daKrb_c::STATE_HOP_START;
             if ((goomba->mdCcAc_c.hitFlags & HIT_PLAYER) == 0) return;
             hurtOriginJumped.x = goomba->mPosX; hurtOriginJumped.y = goomba->mPosY; hurtOriginJumped.z = goomba->mPosZ;
-            ((Player *)other)
-                ->Hurt(hurtOriginJumped, data_ov084_02130204[goomba->mGoombaType], hurtKnockback, 1,
-                       0, 1);
+            other->Hurt(hurtOriginJumped, data_ov084_02130204[goomba->mGoombaType], hurtKnockback,
+                        1, 0, 1);
             return;
         }
         goto block_68;

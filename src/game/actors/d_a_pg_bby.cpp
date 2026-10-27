@@ -661,18 +661,18 @@ int daPgBby_c::func_ov072_02120f14()
    state 2 when the player grabs it. */
 int daPgBby_c::func_ov072_02120e50()
 {
-    dActor_c *a;
+    Player *a;
     int isType;
     int flag;
     if (mCylClsn.otherOwner == 0) return 0;
-    a = dActor_c::FindWithID(mCylClsn.otherOwner);
+    a = static_cast<Player *>(dActor_c::FindWithID(mCylClsn.otherOwner));
     if (a == 0 || (isType = (a->actorID == 0xbf)) == 0) return 0;
     flag = ((mFlags & 0x20000) != 0);
     if (flag) {
-        mCarrier = (Player *)a;
+        mCarrier = a;
         func_ov072_02121d50(4);
-    } else if ((mCylClsn.hitFlags & 0x1000) && ((Player *)a)->TryGrab(*this)) {
-        mCarrier = (Player *)a;
+    } else if ((mCylClsn.hitFlags & 0x1000) && a->TryGrab(*this)) {
+        mCarrier = a;
         func_ov072_02121d50(2);
     }
     return 1;
