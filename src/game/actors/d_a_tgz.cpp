@@ -56,7 +56,6 @@ struct Vector3_16f;
 #include "cstd.h"
 #include "math/Approach.h"
 
-
 #pragma defer_codegen off
 
 /* The BCA data_ov077_02127c14 has loaded. */

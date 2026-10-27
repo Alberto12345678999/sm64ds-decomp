@@ -40,7 +40,6 @@ enum d_a_pg_mthr_AssetId {
 #include "cstd.h"
 #include "math/Approach.h"
 
-
 enum {
     ACTOR_PLAYER = 0xbf,
     ACTOR_BABY_PENGUIN = 0x100,

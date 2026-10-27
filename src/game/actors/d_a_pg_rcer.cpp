@@ -31,7 +31,6 @@ struct System {
 #include "cstd.h"
 #include "math/Approach.h"
 
-
 extern "C" {
 
 extern SharedFilePtr data_ov019_02113498;          /* model, file 0x3fb */

@@ -49,7 +49,6 @@ struct System {
 #include "dExtFrameCtrl_c.h"
 #include "math/Approach.h"
 
-
 #pragma opt_strength_reduction off
 #pragma opt_common_subs off
 

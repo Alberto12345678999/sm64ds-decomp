@@ -53,7 +53,6 @@ enum daC_Jugem_c_AssetId {
 #include "nitro/fx/fx.h"
 #include "math/Approach.h"
 
-
 /* File-scope objects at the end of this file construct the three resource
  * handles (model file 0x2d7, animation file 0x2d8, texture-sequence file
  * 0x2d9), fill the eleven state pairs and build the two carry-offset

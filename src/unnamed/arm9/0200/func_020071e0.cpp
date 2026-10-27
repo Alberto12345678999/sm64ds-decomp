@@ -46,7 +46,7 @@ extern "C" int func_020071e0(char *self) {
     short ang, angY;
     /* Camera word 0x170 stays raw: other states read it as a height
        (func_020080b0), so it has no one role. Here it is a speed. */
-    ApproachLinear(*((int*)(self + 0x170)), 0x5a000, 0x2800);
+    ApproachLinear(*((int *)(self + 0x170)), 0x5a000, 0x2800);
     {
         PlayerView *o = cam->mTargetPlayer;
         short a = (short)(o->mAngleY + 0x8000);
@@ -55,7 +55,7 @@ extern "C" int func_020071e0(char *self) {
         Vec3_RotateYAndTranslate(&vb, trans, a, &cam->savedPos);
     }
     func_02007c9c(&va, &cam->pos, &dist, &ang, &angY);
-    ApproachLinear(dist, 0, *(int*)(self + 0x170));
+    ApproachLinear(dist, 0, *(int *)(self + 0x170));
     func_02007c14(&cam->pos, &va, dist, ang, angY);
     func_02007cec(&cam->pos, &va, 0x28);
     func_02007d0c(&cam->lookAt, &vb, 0x800, 0xccc, 0x800);

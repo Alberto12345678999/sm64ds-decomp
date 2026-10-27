@@ -65,7 +65,6 @@ enum daObjKi_Hasira_c_AssetId {
 #include "Sound.h"
 #include "math/Approach.h"
 
-
 typedef long long s64;
 
 /* 8-byte file handles. The model uses func_02017acc / func_02017ab4 and the

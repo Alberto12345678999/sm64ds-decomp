@@ -78,7 +78,6 @@ enum daHanachan_c_AssetId {
 #include "Sound.h"
 #include "math/Approach.h"
 
-
 /* The file-scope resource handles. The model five use the plain SharedFilePtr
  * pair (func_02017acc / func_02017ab4), the animation twenty-five use
  * SharedFilePtr::Construct / SharedFilePtr_Destruct_Anim, and the texture

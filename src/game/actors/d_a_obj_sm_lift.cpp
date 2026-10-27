@@ -37,7 +37,6 @@ enum daObjSm_Lift_c_AssetId {
 #include "cstd.h"
 #include "math/Approach.h"
 
-
 namespace Sound {
 /* local extern: including Sound.h renumbers @NNN. */
 int PlayLong(u32, u32, u32, const Vector3 &, s16);

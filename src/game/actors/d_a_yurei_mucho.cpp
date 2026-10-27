@@ -36,7 +36,6 @@
 #include "nitro/fx/fx.h"
 #include "math/Approach.h"
 
-
 /* POD views preserve the retail aggregate copies. Matrix4x3 and Vector3 are
    available, but their non-POD copies change these two helpers' codegen; see
    the measured alternatives in the handoff. */

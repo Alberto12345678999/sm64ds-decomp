@@ -29,7 +29,6 @@ enum daObjKanban_c_AssetId {
 #include "nitro/fx/fx.h"
 #include "math/Approach.h"
 
-
 /* 8-byte file handle. The model uses func_02017acc / func_02017ab4. The
  * spelling is local; the manifest aliases the generated names to those ROM
  * symbols. */

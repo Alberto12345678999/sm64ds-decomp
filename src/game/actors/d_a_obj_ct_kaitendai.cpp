@@ -63,7 +63,6 @@ enum daObjCtKaitendai_c_AssetId {
 #include "dBgW.h"
 #include "math/Approach.h"
 
-
 struct CLPS_Block;
 
 /* One row is {model, collision, clps}. InitResources indexes it by

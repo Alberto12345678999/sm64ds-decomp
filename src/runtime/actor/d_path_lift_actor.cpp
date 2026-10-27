@@ -41,7 +41,6 @@
 #include "cstd.h"
 #include "math/Approach.h"
 
-
 typedef void (dPathLiftActor_c::*PathLiftStateFn)();
 
 struct PathLiftState {

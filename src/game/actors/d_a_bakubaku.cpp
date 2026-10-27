@@ -44,7 +44,6 @@ enum daBakubaku_c_AssetId {
 #include "SharedFilePtr.h"
 #include "math/Approach.h"
 
-
 /* dCc_c bit table: flags/vulnFlags/hitFlags share it. */
 enum {
     kCcCharMove = 0x2,

@@ -70,7 +70,6 @@ enum dScMgSnowball_c_AssetId {
 #include "nitro/fx/fx.h"
 #include "math/Approach.h"
 
-
 /* Declarations the recovered sources need that no project header supplies.
  * Each one was checked against include/*.h first; these are the residue. */
 typedef struct Vec3 {

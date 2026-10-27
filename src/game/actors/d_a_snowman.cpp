@@ -63,7 +63,6 @@ enum daSnowman_c_AssetId {
 #include "Sound.h"
 #include "math/Approach.h"
 
-
 namespace cstd {
 s16 atan2(s32, s32);
 int fdiv(int numerator, int denominator);

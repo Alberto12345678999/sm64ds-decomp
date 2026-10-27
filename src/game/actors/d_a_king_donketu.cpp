@@ -133,7 +133,6 @@ enum daKing_Donketu_c_AssetId {
 #include "cstd.h"
 #include "math/Approach.h"
 
-
 /* Actor ids (symbols/actor_debug_names.tsv gives them in decimal) that this
    boss looks up or spawns. */
 enum KingDonketuActorID {

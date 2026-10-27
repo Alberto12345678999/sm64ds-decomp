@@ -1075,9 +1075,8 @@ int daObjBlockS_c::func_ov098_02139228()
         }
     }
 
-    if (ApproachLinear(mHorzSpeed, 0, 0x800) == 0
-        && mClsnYOffsetTarget != 0xa0
-        && mHorzSpeed > 0xa000) {
+    if (ApproachLinear(mHorzSpeed, 0, 0x800) == 0 && mClsnYOffsetTarget != 0xa0 &&
+        mHorzSpeed > 0xa000) {
         Particle::RunningSlidingDustAt(mPosX, mPosY, mPosZ);
         mSlideSoundHandle =
             Sound::PlayLong(mSlideSoundHandle, 3, 0x93, *(Vector3 *)&mCamSpacePos, 0);

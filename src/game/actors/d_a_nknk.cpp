@@ -64,7 +64,6 @@ enum d_a_nknk_AssetId {
 #include "Sound.h"
 #include "math/Approach.h"
 
-
 /* File-scope resource handles: the ctor/dtor are the ROM's SharedFilePtr
  * veneer pairs (func_02017acc / func_02017ab4 for the two models,
  * SharedFilePtr::Construct / SharedFilePtr_Destruct_Anim for the nine

@@ -73,7 +73,6 @@
 #include "cstd.h"
 #include "math/Approach.h"
 
-
 /* ---------------------------------------------------------------------------
  * Shadow types and ABI stand-ins that cannot live inside a function body.
  *
@@ -4562,8 +4561,8 @@ int Player::func_ov002_020c47f4()
     vec.y = y + 0x64000;
     mHeadRot[0] = 0;
     mHeadRot[1] = 0;
-    r = ApproachLinear2(mAngleYSpeed,
-                                (short)(-Vec3_VertAngle((Vector3 *)&mStateTargetX, &vec)), 0x200);
+    r = ApproachLinear2(mAngleYSpeed, (short)(-Vec3_VertAngle((Vector3 *)&mStateTargetX, &vec)),
+                        0x200);
     mHeadRot[0] = mAngleYSpeed;
     a = ApproachAngle(&this->mAngleY,
                       (short)(Vec3_HorzAngle((Vector3 *)&mStateTargetX, &vec) + 0x8000), 4, 0x1000,
@@ -5068,7 +5067,7 @@ int Player::St_BowserEarthquake_Main()
     extern short data_02082214[];
     extern Player::State data_ov002_0211013c;
     if (mStateStep == 0) {
-        ApproachLinear(*((int*)((char*)&mHorzSpeed)), 0, 0x1800);
+        ApproachLinear(*((int *)((char *)&mHorzSpeed)), 0, 0x1800);
         if (this->FinishedAnim()) {
             this->ChangeState(data_ov002_0211013c);
         }
@@ -7236,22 +7235,22 @@ int Player::func_ov002_020c904c() {
 
 // @symbol _ZN6Player19func_ov002_020c9128Ev
 extern "C" {
-int Player::func_ov002_020c9128(){
+int Player::func_ov002_020c9128() {
 
     extern Player::State data_ov002_0211013c;
-  if (mStateStep == 4) {
-    ApproachLinear2(mAngleYSpeed, 0x1000, 0x400);
-  } else {
-    if (ApproachLinear2(mAngleYSpeed, 0x4000, 0x100)) {
-      this->ChangeState(data_ov002_0211013c);
-      return 1;
+    if (mStateStep == 4) {
+        ApproachLinear2(mAngleYSpeed, 0x1000, 0x400);
+    } else {
+        if (ApproachLinear2(mAngleYSpeed, 0x4000, 0x100)) {
+            this->ChangeState(data_ov002_0211013c);
+            return 1;
+        }
     }
-  }
-  mHeadRot[0] = 0;
-  mHeadRot[1] = 0;
-  mHeadRot[2] = mAngleYSpeed;
-  mHeadRotMode = 2;
-  return 0;
+    mHeadRot[0] = 0;
+    mHeadRot[1] = 0;
+    mHeadRot[2] = mAngleYSpeed;
+    mHeadRotMode = 2;
+    return 0;
 }
 }
 
@@ -9239,7 +9238,7 @@ int Player::St_Shell_Main()
             int spd = mHorzSpeed;
             int step = 0x1100;
             if (spd > 0) step = 0x600;
-            ApproachLinear(*((int*)((char*)&mHorzSpeed)), accel, step);
+            ApproachLinear(*((int *)((char *)&mHorzSpeed)), accel, step);
         }
         func_ov002_020c04e0();
         if (mIsAirborne != 0) {
@@ -9346,47 +9345,47 @@ int Player::St_Shell_Init()
 // @symbol _ZN6Player17St_HurtWater_MainEv
 /* recovered: named members + shared header, real C++ method */
 extern "C" {
-int Player::St_HurtWater_Main()
-{
-    extern int func_ov002_020cec2c(void*);
-    extern int func_ov002_020ceaf4(void*);
-    extern int func_ov002_020ceb7c(void*);
-    extern int Player_AdvanceAnims(void*);
+int Player::St_HurtWater_Main() {
+    extern int func_ov002_020cec2c(void *);
+    extern int func_ov002_020ceaf4(void *);
+    extern int func_ov002_020ceb7c(void *);
+    extern int Player_AdvanceAnims(void *);
     extern Player::State data_ov002_0211067c;
     extern Player::State data_ov002_021106ac;
     extern int data_0209f32c[];
-  if(func_ov002_020cec2c(((char*)this))) return 1;
-  ApproachLinear(*((int*)((char*)&mHorzSpeed)),0,0x800);
-  int t=func_ov002_020ceaf4(((char*)this));
-  ApproachLinear(*((int*)((char*)&mVertSpeed)),t,0x800);
-  if(this->FinishedAnim()){
-    if((mStateStep&1)==0){
-      mPrevAngleY=mPrevAngleY+0x8000;
-      mAngleY=mPrevAngleY;
+    if (func_ov002_020cec2c(((char *)this)))
+        return 1;
+    ApproachLinear(*((int *)((char *)&mHorzSpeed)), 0, 0x800);
+    int t = func_ov002_020ceaf4(((char *)this));
+    ApproachLinear(*((int *)((char *)&mVertSpeed)), t, 0x800);
+    if (this->FinishedAnim()) {
+        if ((mStateStep & 1) == 0) {
+            mPrevAngleY = mPrevAngleY + 0x8000;
+            mAngleY = mPrevAngleY;
+        }
+        if (this->GetHealth()) {
+            if (mIsMetal == 0)
+                this->ChangeState(data_ov002_0211067c);
+            else
+                this->ChangeState(data_ov002_021106ac);
+            mIsTakingDamage = 0;
+            if (mHurtDamage)
+                mInvincibleTimer = 0x24;
+        } else {
+            func_ov002_020c5dec(8);
+            return 1;
+        }
     }
-    if(this->GetHealth()){
-      if(mIsMetal==0)
-        this->ChangeState(data_ov002_0211067c);
-      else
-        this->ChangeState(data_ov002_021106ac);
-      mIsTakingDamage=0;
-      if(mHurtDamage)
-        mInvincibleTimer=0x24;
-    }else{
-      func_ov002_020c5dec(8);
-      return 1;
+    int lim = *(int *)data_0209f32c - 0x50000;
+    if (mPosY >= lim && (mClsnFlags & 1) == 0) {
+        if (mVertSpeed >= 0) {
+            mPosY = lim;
+            mVertSpeed = 0;
+        }
     }
-  }
-  int lim=*(int*)data_0209f32c-0x50000;
-  if(mPosY>=lim && (mClsnFlags&1)==0){
-    if(mVertSpeed>=0){
-      mPosY=lim;
-      mVertSpeed=0;
-    }
-  }
-  func_ov002_020ceb7c(((char*)this));
-  Player_AdvanceAnims(((char*)this));
-  return 1;
+    func_ov002_020ceb7c(((char *)this));
+    Player_AdvanceAnims(((char *)this));
+    return 1;
 }
 }
 
@@ -9581,7 +9580,7 @@ int Player::St_MetalWaterGround_Main()
         ApproachAngle((short*)((char*)&mPrevAngleY), mDesiredAngleY, 8, 0x1000, 0x80);
         approach = func_ov002_020bf224(((char*)this), 0x14000, 0x1000);
     }
-    ApproachLinear(*((int*)((char*)&mHorzSpeed)), approach, 0x1000);
+    ApproachLinear(*((int *)((char *)&mHorzSpeed)), approach, 0x1000);
     mAngleY = mPrevAngleY;
     if(mIsMega != 0){
         if(mHorzSpeed == 0){
@@ -10005,7 +10004,7 @@ int Player::St_Swim_Main()
         mAngleX = 0;
         mAngleZ = 0;
         mAngleYSpeed = 0;
-        ApproachLinear(*((int*)(&mPrevVertSpeed)), 0, 0x5000);
+        ApproachLinear(*((int *)(&mPrevVertSpeed)), 0, 0x5000);
         if (this->IsAnim(0xa8) == 0 && this->FinishedAnim() != 0) {
             this->SetAnim(0xa8, 0, 0x1000, 0);
         }
@@ -10018,7 +10017,7 @@ int Player::St_Swim_Main()
     case 1:
         var_r2 = 0x800;
         if (mStateTimer != 0) var_r2 = 0x200;
-        ApproachLinear(*((int*)(&mPrevVertSpeed)), 0, var_r2);
+        ApproachLinear(*((int *)(&mPrevVertSpeed)), 0, var_r2);
         if (this->IsAnim(0xa8) == 0) {
             if (this->FinishedAnim() != 0) {
                 this->SetAnim(0xa8, 0, 0x1000, 0);
@@ -10060,7 +10059,7 @@ int Player::St_Swim_Main()
         if (a4 >= 0xa) var_r6 = 0x800;
         else if (a4 <= 4) var_r6 = 0x1800;
         else var_r6 = 0;
-        ApproachLinear(*((int*)(&mPrevVertSpeed)), func_ov002_020cedb0(this, 0x10000), var_r6);
+        ApproachLinear(*((int *)(&mPrevVertSpeed)), func_ov002_020cedb0(this, 0x10000), var_r6);
         if (mStateTimer < 0xa && t4 == 0) {
             mStateWork |= 1;
         }
@@ -10073,8 +10072,9 @@ int Player::St_Swim_Main()
         }
         break;
     case 3:
-        ApproachLinear(*((int*)(&mPrevVertSpeed)), func_ov002_020cedb0(this, 0xc000), 0x200);
-        if (func_ov002_020ce324(this) != 0) return 1;
+        ApproachLinear(*((int *)(&mPrevVertSpeed)), func_ov002_020cedb0(this, 0xc000), 0x200);
+        if (func_ov002_020ce324(this) != 0)
+            return 1;
         if (t4 != 0) {
             this->SetAnim(0xa6, 0, 0x1000, 0);
             if (mModels.mBodyModels[this->GetBodyModelID((unsigned char)param1, 0)]->WillHitFrame(
@@ -10086,8 +10086,9 @@ int Player::St_Swim_Main()
         }
         break;
     case 4:
-        ApproachLinear(*((int*)(&mPrevVertSpeed)), 0, 0x400);
-        if (func_ov002_020ce324(this) != 0) return 1;
+        ApproachLinear(*((int *)(&mPrevVertSpeed)), 0, 0x400);
+        if (func_ov002_020ce324(this) != 0)
+            return 1;
         if (mStateTimer == 0 && t4 != 0) {
             func_ov002_020cd3e0(this);
         }
@@ -10107,7 +10108,7 @@ int Player::St_Swim_Main()
         if (a4 >= 5) var_r2 = 0x1000;
         else if (a4 == 0) { var_r2 = 0x800; var_r1 = 0; }
         else var_r2 = 0;
-        ApproachLinear(*((int*)(&mPrevVertSpeed)), var_r1, var_r2);
+        ApproachLinear(*((int *)(&mPrevVertSpeed)), var_r1, var_r2);
         if (this->FinishedAnim() != 0) {
             has = (mHeldObj != 0) ? 1 : 0;
             if (has != 0) {
@@ -10142,8 +10143,8 @@ int Player::St_Swim_Main()
         }
         break;
     case 8:
-        ApproachLinear(*((int*)(&mPrevVertSpeed)), func_ov002_020cedb0(this, 0x1e000), 0x400);
-        if ((*(unsigned short*)((char*)&data_0209f49e + gActivePlayerSlot * 0x18)) & 1) {
+        ApproachLinear(*((int *)(&mPrevVertSpeed)), func_ov002_020cedb0(this, 0x1e000), 0x400);
+        if ((*(unsigned short *)((char *)&data_0209f49e + gActivePlayerSlot * 0x18)) & 1) {
             this->SetAnim(0xb1, 0x40000000, 0x1000, 0);
             mStateStep = 9;
             EndStateMusic(0x33);
@@ -10792,16 +10793,17 @@ int func_ov002_020cf20c(char* c) {
 
 // @symbol func_ov002_020cf2f8
 extern "C" {
-void func_ov002_020cf2f8(void* c) {
-    extern int ApproachAngle(void*, int, int, int, int);
-    extern int func_ov002_020bf224(void*, int, int);
+void func_ov002_020cf2f8(void *c) {
+    extern int ApproachAngle(void *, int, int, int, int);
+    extern int func_ov002_020bf224(void *, int, int);
     extern short data_0209f4a0[];
-    extern void func_ov002_020cf2f8(void*);
-  if (*(short*)((char*)data_0209f4a0 + gActivePlayerSlot*0x18) == 0) return;
-  Player *p = (Player *)c;
-  ApproachLinear(p->mHorzSpeed, func_ov002_020bf224(c, 0x8000, 0x2000), 0x1000);
-  ApproachAngle(&p->mPrevAngleY, p->mDesiredAngleY, 0x10, 0x1000, 0x200);
-  p->mAngleY = p->mPrevAngleY;
+    extern void func_ov002_020cf2f8(void *);
+    if (*(short *)((char *)data_0209f4a0 + gActivePlayerSlot * 0x18) == 0)
+        return;
+    Player *p = (Player *)c;
+    ApproachLinear(p->mHorzSpeed, func_ov002_020bf224(c, 0x8000, 0x2000), 0x1000);
+    ApproachAngle(&p->mPrevAngleY, p->mDesiredAngleY, 0x10, 0x1000, 0x200);
+    p->mAngleY = p->mPrevAngleY;
 }
 }
 
@@ -12128,7 +12130,7 @@ int Player::St_HoldHeavy_Main()
                 }
             }
         }
-        ApproachLinear(*((int*)((char*)&mHorzSpeed)), 0, 0x1000);
+        ApproachLinear(*((int *)((char *)&mHorzSpeed)), 0, 0x1000);
         goto end;
     }
 
@@ -12253,7 +12255,7 @@ int Player::St_HoldLight_Main()
     }
 
     if (mStateStep == 0) {
-        ApproachLinear(*((int*)((char*)&mHorzSpeed)), 0, 0x800);
+        ApproachLinear(*((int *)((char *)&mHorzSpeed)), 0, 0x800);
         if (this->IsAnim(0x2f) || this->IsAnim(0x86)) {
             if (this->FinishedAnim()) {
                 if (func_ov002_020e0ccc(((char*)this), *(short**)((char*)&mHeldObj))) {
@@ -13195,7 +13197,7 @@ int Player::St_TurnAround_Main()
         r5v = func_ov002_020bf56c(((char*)this), sel);
         ApproachAngle((s16*)((char*)&mPrevAngleY), angle, 0x10, 0x1000, 0x200);
         tmp = Player_ScaleByCharFactor(((char*)this), 0x28000);
-        ApproachLinear(*((int*)((char*)&mHorzSpeed)), -tmp, r5v);
+        ApproachLinear(*((int *)((char *)&mHorzSpeed)), -tmp, r5v);
     } else {
         this->ChangeState(data_ov002_0211013c);
         return 1;
@@ -14043,7 +14045,7 @@ int Player::St_Bonk_Main()
         rate = 0x1800;
     }
 
-    ApproachLinear(*((int*)((char*)&mHorzSpeed)), 0, rate);
+    ApproachLinear(*((int *)((char *)&mHorzSpeed)), 0, rate);
 
     if (mHorzSpeed != 0) {
         goto willhit;
@@ -15683,7 +15685,7 @@ int Player::St_YoshiPower_Main()
     char* dp;
 
     if (mIsAirborne == 0) {
-        ApproachLinear(*((int*)(&mHorzSpeed)), 0, 0x1000);
+        ApproachLinear(*((int *)(&mHorzSpeed)), 0, 0x1000);
         this->func_ov002_020c2f64();
     }
 
@@ -18000,7 +18002,7 @@ int Player::St_Thrown_Main()
             if (b > 0x3000) b = 0x3000;
             mAngleX = b;
         } else {
-            ApproachLinear2(*((s16*)((char*)&mAngleX)), 0, 0x400);
+            ApproachLinear2(*((s16 *)((char *)&mAngleX)), 0, 0x400);
         }
         break;
     case 1:
@@ -18243,7 +18245,7 @@ void func_ov002_020db704(Player *self) {
             if (s == 1)
                 i++;
             if (ApproachLinear(self->mScaleY, data_ov002_020ff2c0[s - 1 + j],
-                                       data_ov002_020ff230[i])) {
+                               data_ov002_020ff230[i])) {
                 if (self->mScaleAnimStep == 1 || self->mScaleAnimStep == 6) {
                     self->mScaleAnimTimer = 10;
                 } else {
@@ -19227,7 +19229,7 @@ end:
         s16 v = cstd::atan2(mHorzSpeed >> 8, mVertSpeed >> 8) - 0x4000;
         if (v < 0) v = 0;
         if (v >= 0x2aaa) v = 0x2aaa;
-        ApproachLinear2(*((short*)((char*)&mAngleX)), v, 0x200);
+        ApproachLinear2(*((short *)((char *)&mAngleX)), v, 0x200);
     }
     Player_AdvanceAnims(((char*)this));
     mStateArg = mSlideType;
@@ -19378,7 +19380,7 @@ int Player::St_PunchKick_Main()
                 return 1;
         }
 
-        ApproachLinear(*((int*)((char*)&mHorzSpeed)), 0, 0x800);
+        ApproachLinear(*((int *)((char *)&mHorzSpeed)), 0, 0x800);
         func_ov002_020c2f64();
 
         if (func_ov002_020c0434() != 0) {
@@ -20546,9 +20548,9 @@ int Player::St_Owl_Main()
         }
         if (mIsAirborne != 0) {
             if (mVertSpeed < 0) {
-                ApproachLinear(*((int*)((char*)&mVertSpeed)), 0x3c000, 0x8000);
+                ApproachLinear(*((int *)((char *)&mVertSpeed)), 0x3c000, 0x8000);
             } else {
-                ApproachLinear(*((int*)((char*)&mVertSpeed)), 0x3c000, 0x2000);
+                ApproachLinear(*((int *)((char *)&mVertSpeed)), 0x3c000, 0x2000);
             }
         } else {
             mVertSpeed = 0x8000;
@@ -21139,8 +21141,9 @@ int Player::St_Land_Main()
         *(u16*)((char*)&mStateFlags) &= ~0x100;
     }
 
-    ApproachLinear(*((int*)((char*)&mHorzSpeed)),
-        func_ov002_020bf224(((char*)this), Player_ScaleByCharFactor(((char*)this), 0x20000), 0),
+    ApproachLinear(
+        *((int *)((char *)&mHorzSpeed)),
+        func_ov002_020bf224(((char *)this), Player_ScaleByCharFactor(((char *)this), 0x20000), 0),
         0x4000);
 
     if (func_ov002_020e3078(((char*)this), data_ov002_0211052c) != 0) {
@@ -21322,29 +21325,28 @@ int Player::St_SmallLaunchUp_Init()
 // @symbol _ZN6Player17St_SlopeJump_MainEv
 /* recovered: named members + shared header, real C++ method */
 extern "C" {
-int Player::St_SlopeJump_Main()
-{
-    extern int Player_AdvanceAnims(void*);
+int Player::St_SlopeJump_Main() {
+    extern int Player_AdvanceAnims(void *);
     extern Player::State data_ov002_0211013c;
     extern Player::State data_ov002_02110034;
     extern Player::State data_ov002_021105bc;
     extern unsigned short data_0209f49e[];
-  ApproachLinear(*((int*)((char*)&mHorzSpeed)),0,0x800);
-  if(mIsAirborne==0){
-    this->ChangeState(data_ov002_0211013c);
-  }
-  if(*(unsigned short*)((char*)data_0209f49e + gActivePlayerSlot*0x18) & 1){
-    mPrevAngleY=mAngleY;
-    if(mIsMega==0){
-      if(param1==3){
-        this->ChangeState(data_ov002_02110034);
-      }else{
-        this->ChangeState(data_ov002_021105bc);
-      }
+    ApproachLinear(*((int *)((char *)&mHorzSpeed)), 0, 0x800);
+    if (mIsAirborne == 0) {
+        this->ChangeState(data_ov002_0211013c);
     }
-  }
-  Player_AdvanceAnims(((char*)this));
-  return 1;
+    if (*(unsigned short *)((char *)data_0209f49e + gActivePlayerSlot * 0x18) & 1) {
+        mPrevAngleY = mAngleY;
+        if (mIsMega == 0) {
+            if (param1 == 3) {
+                this->ChangeState(data_ov002_02110034);
+            } else {
+                this->ChangeState(data_ov002_021105bc);
+            }
+        }
+    }
+    Player_AdvanceAnims(((char *)this));
+    return 1;
 }
 }
 
@@ -24785,7 +24787,7 @@ void func_ov002_020e640c(char *c)
             ((PlayerBone *)md)[8].rotY = player->mSpineRot[2];
         } else if (b == 4) {
             ApproachLinear2(player->mHeadRot[0], (s16)(((PlayerBone *)md)[15].rotZ - 0x4000),
-                                    0x400);
+                            0x400);
             ApproachLinear2(player->mHeadRot[1], ((PlayerBone *)md)[15].rotY, 0x400);
             ApproachLinear2(player->mHeadRot[2], ((PlayerBone *)md)[15].rotX, 0x400);
             ((PlayerBone *)md)[15].rotZ = (s16)(*player->mHeadRot + 0x4000);

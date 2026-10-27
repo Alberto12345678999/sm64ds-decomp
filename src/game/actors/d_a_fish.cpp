@@ -56,7 +56,6 @@ enum d_a_fish_AssetId {
 #include "Sound.h"
 #include "math/Approach.h"
 
-
 struct daFishState {
     void (daFish_c::*func)();
 };

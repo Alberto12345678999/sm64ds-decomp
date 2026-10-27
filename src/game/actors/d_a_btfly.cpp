@@ -61,7 +61,6 @@ enum daBtfly_c_AssetId {
 #include "nitro/fx/fx.h"
 #include "math/Approach.h"
 
-
 /* Makes the per-member `#pragma opt_common_subs` bracket around State2 bind.
  * Without it mwccarm defers codegen and the last file-global state wins. */
 #pragma defer_codegen off

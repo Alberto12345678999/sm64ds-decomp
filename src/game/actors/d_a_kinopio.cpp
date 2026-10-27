@@ -48,7 +48,6 @@
 #include "dBgCh_Gnd.h"
 #include "math/Approach.h"
 
-
 struct BCA_File;
 struct BMD_File;
 

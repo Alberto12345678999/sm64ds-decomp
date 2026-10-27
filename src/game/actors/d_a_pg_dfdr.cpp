@@ -50,7 +50,6 @@ enum daPgDfdr_c_AssetId {
 #include "Sound.h"
 #include "math/Approach.h"
 
-
 struct BMD_File;
 struct BTP_File;
 

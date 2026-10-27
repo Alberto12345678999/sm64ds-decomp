@@ -140,7 +140,6 @@ struct System {
 #include "nitro/fx/fx.h"
 #include "math/Approach.h"
 
-
 /* Actor IDs, from the profile ids in symbols/actor_debug_names.tsv: 276 and
    277 are this class's two profiles, 331 is the 1UP logo it spawns. */
 enum {

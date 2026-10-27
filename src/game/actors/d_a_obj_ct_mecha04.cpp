@@ -40,7 +40,6 @@ enum daObjCtMecha04_c_AssetId {
 #include "nitro/fx/fx.h"
 #include "math/Approach.h"
 
-
 enum {
     ACTOR_CT_MECHA04L = 0x6f,
     ACTOR_CT_MECHA04S = 0x70,

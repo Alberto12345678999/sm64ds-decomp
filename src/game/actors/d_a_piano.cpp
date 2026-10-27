@@ -32,7 +32,6 @@
 #include "Sound.h"
 #include "math/Approach.h"
 
-
 /* The TU's three resource handles, defined at file end so mwcc emits their
  * constructor calls, destructor registrations, and the PMF-table copy into
  * __sinit_d_a_piano.cpp. Each flavor binds the constructor/destructor veneer

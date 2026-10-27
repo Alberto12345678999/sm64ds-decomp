@@ -121,35 +121,35 @@ int daObjFl_Amilift_c::func_ov064_02117a44() {
   UpdatePos(0);
   r = (Vec3_HorzDist(&mPosX, &mToX) < 0x69000) ? 0 : 0xa000;
   if (ApproachLinear(mHorzSpeed, r, 0x800) != 0 && r == 0) {
-    mFromX = mToX;
-    mFromY = mToY;
-    mFromZ = mToZ;
-    mPosX = mFromX;
-    mPosY = mFromY;
-    mPosZ = mFromZ;
-    r = 1;
-    if (mState == daObjFl_Amilift_c::STATE_FORWARD) {
-      ++mNodeIndex;
-      if (mNodeIndex >= mNodeCount) {
-        mNodeIndex = mNodeCount - 2;
-        r = -1;
+      mFromX = mToX;
+      mFromY = mToY;
+      mFromZ = mToZ;
+      mPosX = mFromX;
+      mPosY = mFromY;
+      mPosZ = mFromZ;
+      r = 1;
+      if (mState == daObjFl_Amilift_c::STATE_FORWARD) {
+          ++mNodeIndex;
+          if (mNodeIndex >= mNodeCount) {
+              mNodeIndex = mNodeCount - 2;
+              r = -1;
+          }
+      } else {
+          --mNodeIndex;
+          if (mNodeIndex < 0) {
+              mNodeIndex = r;
+              r = -1;
+          }
       }
-    } else {
-      --mNodeIndex;
-      if (mNodeIndex < 0) {
-        mNodeIndex = r;
-        r = -1;
-      }
-    }
-    mPathPtr.GetNode(*(Vector3 *)&mToX, mNodeIndex);
-    a.x = mToX;
-    a.y = mToY;
-    a.z = mToZ;
-    b.x = mFromX;
-    b.y = mFromY;
-    b.z = mFromZ;
-    func_ov064_02117a14(&a, &b);
-    return r;
+      mPathPtr.GetNode(*(Vector3 *)&mToX, mNodeIndex);
+      a.x = mToX;
+      a.y = mToY;
+      a.z = mToZ;
+      b.x = mFromX;
+      b.y = mFromY;
+      b.z = mFromZ;
+      func_ov064_02117a14(&a, &b);
+      return r;
   }
   return 0;
 }

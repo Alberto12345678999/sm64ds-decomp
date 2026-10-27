@@ -21,7 +21,6 @@
 #include "cstd.h"
 #include "math/Approach.h"
 
-
 /* A plain twelve-word copy of the carry matrix. */
 struct PgBbyMtx {
     s32 m[12];

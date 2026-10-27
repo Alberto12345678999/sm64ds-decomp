@@ -39,7 +39,6 @@ struct Callback;
 #include "dBgCh_Actr.h"
 #include "math/Approach.h"
 
-
 typedef struct { s32 x, y, z; } Vec3;
 
 struct Vector3_16f;

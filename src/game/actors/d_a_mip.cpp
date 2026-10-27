@@ -56,7 +56,6 @@ enum daMip_c_AssetId {
 #include "cstd.h"
 #include "math/Approach.h"
 
-
 namespace Sound {
 bool PlaySub(u32, u32, u32, int, bool);
 }

@@ -62,7 +62,6 @@ enum daObjCtMecha10_c_AssetId {
 #include "dBgW.h"
 #include "math/Approach.h"
 
-
 /* Actor ids are the registry profile ids. Clock settings are the byte at
  * data_0209f2c0: 2 re-rolls the dwell, 3 holds the cog still. */
 enum {

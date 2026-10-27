@@ -23,7 +23,6 @@
 #include "cstd.h"
 #include "math/Approach.h"
 
-
 struct BMD_File;
 struct Vector3_16;
 

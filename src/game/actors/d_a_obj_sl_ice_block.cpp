@@ -110,37 +110,36 @@ int daObjSlIceBlock_c::Render()
 }
 
 // @symbol _ZN17daObjSlIceBlock_c8BehaviorEv
-int daObjSlIceBlock_c::Behavior()
-{
-  int isType = (actorID == 0x5d);
-  if(isType){
-    if(DecIfAbove0_Short(&mDelayTimer) == 0){
-      ApproachLinear(mHorzSpeed, 0, 0x3000);
-      if(ApproachLinear(mPosY, mMinPosY, 0xa000) != 0){
-        MarkForDestruction();
-      }
+int daObjSlIceBlock_c::Behavior() {
+    int isType = (actorID == 0x5d);
+    if (isType) {
+        if (DecIfAbove0_Short(&mDelayTimer) == 0) {
+            ApproachLinear(mHorzSpeed, 0, 0x3000);
+            if (ApproachLinear(mPosY, mMinPosY, 0xa000) != 0) {
+                MarkForDestruction();
+            }
+        }
+        UpdatePos(0);
+        mSoundID = Sound::PlayLong(mSoundID, 3, 0x98, mCamSpacePos, 0);
+    } else {
+        if (DecIfAbove0_Short(&mDelayTimer) == 0) {
+            V3 pos;
+            pos.x = mPosX;
+            pos.y = mPosY;
+            pos.z = mPosZ;
+            int spawnType = 1;
+            if (DecIfAbove0_Byte(&mNumToBigIce) == 0) {
+                mNumToBigIce = 5;
+                spawnType = 2;
+            } else {
+                pos.y -= 0x50000;
+            }
+            unsigned char cnt = mNumToBigIce;
+            mDelayTimer = (cnt + 1) * 0x14;
+            dActor_c::Spawn(0x5d, spawnType, *(Vector3 *)&pos, &mAngle, mAreaId, -1);
+        }
     }
-    UpdatePos(0);
-    mSoundID = Sound::PlayLong(mSoundID, 3, 0x98, mCamSpacePos, 0);
-  } else {
-    if(DecIfAbove0_Short(&mDelayTimer) == 0){
-      V3 pos;
-      pos.x = mPosX;
-      pos.y = mPosY;
-      pos.z = mPosZ;
-      int spawnType = 1;
-      if(DecIfAbove0_Byte(&mNumToBigIce) == 0){
-        mNumToBigIce = 5;
-        spawnType = 2;
-      } else {
-        pos.y -= 0x50000;
-      }
-      unsigned char cnt = mNumToBigIce;
-      mDelayTimer = (cnt + 1) * 0x14;
-      dActor_c::Spawn(0x5d, spawnType, *(Vector3 *)&pos, &mAngle, mAreaId, -1);
-    }
-  }
-  return 1;
+    return 1;
 }
 
 // @symbol _ZN17daObjSlIceBlock_c13InitResourcesEv

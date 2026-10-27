@@ -451,32 +451,32 @@ void daYegg_c::func_ov002_020ec978() {
  * func_ov002_020d6048 says no for the Player, clears and updates the
  * cylinder, moves the egg when it is not on the ground, and runs the ground
  * collision. */
-void daYegg_c::func_ov002_020ec9c4(){
-  if (mWobbling != 0){
-    ApproachLinear2(mAngleX, 0, 0x400);
-    ApproachLinear2(mAngleZ, 0, 0x400);
-    if (mAngleX == 0){
-      if (mAngleY == 0)
-        mWobbling = 0;
+void daYegg_c::func_ov002_020ec9c4() {
+    if (mWobbling != 0) {
+        ApproachLinear2(mAngleX, 0, 0x400);
+        ApproachLinear2(mAngleZ, 0, 0x400);
+        if (mAngleX == 0) {
+            if (mAngleY == 0)
+                mWobbling = 0;
+        }
+    } else {
+        unsigned char a, b;
+        if (mPlayer->func_ov002_020d5f98(&a, &b)) {
+            unsigned char ip;
+            a = a * 2;
+            ip = a;
+            mAngleX = b * data_ov002_021000a8[ip];
+            mAngleZ = b * data_ov002_021000a8[ip + 1];
+            mWobbling = 1;
+        }
     }
-  } else {
-    unsigned char a, b;
-    if (mPlayer->func_ov002_020d5f98(&a, &b)){
-      unsigned char ip;
-      a = a * 2;
-      ip = a;
-      mAngleX = b * data_ov002_021000a8[ip];
-      mAngleZ = b * data_ov002_021000a8[ip + 1];
-      mWobbling = 1;
-    }
-  }
-  if (!mPlayer->func_ov002_020d6048())
-      MarkForDestruction();
-  mdCcAc_c.Clear();
-  mdCcAc_c.Update();
-  if (!mWithMeshClsn.IsOnGround())
-      UpdatePos(&mdCcAc_c);
-  dBgCh_Actr_UpdateContinuous_Veneer(&mWithMeshClsn);
+    if (!mPlayer->func_ov002_020d6048())
+        MarkForDestruction();
+    mdCcAc_c.Clear();
+    mdCcAc_c.Update();
+    if (!mWithMeshClsn.IsOnGround())
+        UpdatePos(&mdCcAc_c);
+    dBgCh_Actr_UpdateContinuous_Veneer(&mWithMeshClsn);
 }
 
 /* -------------------------------------------------------------------------- */

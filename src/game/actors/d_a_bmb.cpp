@@ -50,7 +50,6 @@ struct System {
 #include "dBgCh_Actr.h"
 #include "math/Approach.h"
 
-
 /* The three shared files this actor claims.  InitResources loads them and
    CleanupResources releases them, so both C++-named members need one agreed
    spelling; the members below that read the loaded handle out of the same bytes

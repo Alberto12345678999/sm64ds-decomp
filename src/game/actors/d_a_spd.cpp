@@ -44,7 +44,6 @@ enum Scuttlebug_AssetId {
 #include "cstd.h"
 #include "math/Approach.h"
 
-
 /* ------------------------------------------------------------------------
  * Local value shapes carried from the legacy one-function files.
  * ------------------------------------------------------------------------ */
