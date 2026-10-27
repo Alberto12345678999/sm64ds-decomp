@@ -573,8 +573,7 @@ talk:
 }
 
 extern "C" {
-Player *func_ov018_021118fc(daPgMthr_c *self)
-{
+Player *func_ov018_021118fc(daPgMthr_c *self) {
     Player *newToucher = 0;
     if (self->mdCcAc_c.hitFlags & HIT_TOUCH) {
         struct dActor_c *a = dActor_c::FindWithID(self->mdCcAc_c.otherOwner);

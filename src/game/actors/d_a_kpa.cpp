@@ -910,8 +910,10 @@ skip_13:
     if (!(this->mdCcAc_c.hitFlags & 0x1000)) return;
     Player *player = static_cast<Player *>(dActor_c::FindWithID(this->mdCcAc_c.otherOwner));
     if (!player) return;
-    if (player->IsCollectingCap()) return;
-    if (!player->TryGrab(*this)) return;
+    if (player->IsCollectingCap())
+        return;
+    if (!player->TryGrab(*this))
+        return;
     /* Read through one pointer on purpose: copying bowser->mAngleX/Y/Z member
      * by member builds 4 bytes shorter (measured). */
     s16 *ip = &bowser->mAngleX;
@@ -1240,8 +1242,7 @@ void daKpa_c::func_ov060_02115518(){
     switch (this->mTalkStep)
     {
         case 0:
-            if (player->StartTalk(*this, 1) == 0)
-            {
+            if (player->StartTalk(*this, 1) == 0) {
                 return;
             }
             this->mState = BOWSER_STATE_INTRO;
@@ -1249,8 +1250,7 @@ void daKpa_c::func_ov060_02115518(){
             return;
 
         case 1:
-            if (player->GetTalkState() != 0)
-            {
+            if (player->GetTalkState() != 0) {
                 return;
             }
             {
@@ -1289,8 +1289,8 @@ void daKpa_c::func_ov060_02115518(){
                 pos[1] = y2;
                 pos[2] = sz * scale + z;
                 msg = (s16) msgs[this->mVariantID];
-                if (this->mTargetPlayer->ShowMessage(*this, msg, reinterpret_cast<const Vector3*>(pos), zero, zero) == 0)
-                {
+                if (this->mTargetPlayer->ShowMessage(
+                        *this, msg, reinterpret_cast<const Vector3 *>(pos), zero, zero) == 0) {
                     return;
                 }
             }
@@ -1299,8 +1299,7 @@ void daKpa_c::func_ov060_02115518(){
             return;
 
         case 2:
-            if (player->GetTalkState() != (-1))
-            {
+            if (player->GetTalkState() != (-1)) {
                 return;
             }
             if ((this->mVariantID) == 1)
@@ -1972,7 +1971,7 @@ int daKpa_c::func_ov060_021145d4(){
         func_02012694(BOWSER_SND_LAND, (const Vector3 *)(&this->mCamSpacePosX));
         if(this->mVariantID == 0){
             b = (this->mDistToTarget >= 0x352000);
-            if(!this->mTargetPlayer->IsInAir())
+            if (!this->mTargetPlayer->IsInAir())
                 func_ov002_020c56f0((unsigned char *)this->mTargetPlayer, b);
         }
         return 1;
@@ -2849,7 +2848,8 @@ int daKpa_c::func_ov060_021130c0(){
         case 1:
             if (this->mTargetPlayer->GetTalkState() == 0) {
                 int msg = (this->mVariantID == 0) ? 0xcd : 0xcf;
-                if (this->mTargetPlayer->ShowMessage(*this, msg, reinterpret_cast<const Vector3*>(&this->mPosX), 0, 2))
+                if (this->mTargetPlayer->ShowMessage(
+                        *this, msg, reinterpret_cast<const Vector3 *>(&this->mPosX), 0, 2))
                     this->mTalkStep++;
             }
             break;
@@ -2908,7 +2908,8 @@ int daKpa_c::func_ov060_02112ee0(){
         case 1:
             if (this->mTargetPlayer->GetTalkState() == 0) {
                 unsigned m = (NumStars() != 0x96) ? 0xd1 : 0xd2;
-                if (this->mTargetPlayer->ShowMessage(*this, m, reinterpret_cast<const Vector3*>(&this->mPosX), 0, 2)) {
+                if (this->mTargetPlayer->ShowMessage(
+                        *this, m, reinterpret_cast<const Vector3 *>(&this->mPosX), 0, 2)) {
                     this->mTalkStep++;
                     Message::PrepareTalk();
                 }

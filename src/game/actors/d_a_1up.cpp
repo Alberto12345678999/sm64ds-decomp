@@ -364,11 +364,11 @@ void da1up_c::func_ov002_020af0c0() {
    include/dCc_c.h, a best-effort reading there that the callers' use of the
    result as a Player agrees with. */
 Player *da1up_c::func_ov002_020af1dc() {
-  Player* r=0;
-  unsigned int id=mdCcAc_c.otherOwner;
-  if(id && (r=(Player*)dActor_c::FindWithID(id)) && (mdCcAc_c.hitFlags&CC_HIT_PLAYER))
-    return r;
-  return 0;
+    Player *r = 0;
+    unsigned int id = mdCcAc_c.otherOwner;
+    if (id && (r = (Player *)dActor_c::FindWithID(id)) && (mdCcAc_c.hitFlags & CC_HIT_PLAYER))
+        return r;
+    return 0;
 }
 
 /* -------------------------------------------------------------------------- */
@@ -478,7 +478,7 @@ s32 da1up_c::OnYoshiTryEat()
    above itself; either way the mushroom then removes itself. */
 void da1up_c::func_ov002_020af3a8() {
 
-    Player* r = func_ov002_020af1dc();
+    Player *r = func_ov002_020af1dc();
     if (r == 0)
         return;
 
@@ -729,9 +729,10 @@ void da1up_c::func_ov002_020af908() {
    hands off to func_ov002_020af684 with target 7 (a waiting type 7 loses one
    from its mUnlockCount). */
 void da1up_c::func_ov002_020af924() {
-  Player* r=func_ov002_020af1dc();
-  if(!r) return;
-  func_ov002_020af684(7, r);
+    Player *r = func_ov002_020af1dc();
+    if (!r)
+        return;
+    func_ov002_020af684(7, r);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -797,9 +798,10 @@ void da1up_c::func_ov002_020afa50() {
    hands off to func_ov002_020af684 with target 5 (a waiting type 5 loses one
    from its mUnlockCount). */
 void da1up_c::func_ov002_020afa6c() {
-  Player* r=func_ov002_020af1dc();
-  if(!r) return;
-  func_ov002_020af684(5, r);
+    Player *r = func_ov002_020af1dc();
+    if (!r)
+        return;
+    func_ov002_020af684(5, r);
 }
 
 /* -------------------------------------------------------------------------- */

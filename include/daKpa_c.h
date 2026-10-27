@@ -64,8 +64,8 @@ struct daKpa_c : dActor_c {
     /* A POINTER, not an s32. daKpa_c::Behavior assigns it straight from
        dActor_c::ClosestPlayer(), so it is a Player *; dActor_c.h's forward
        declaration of Player is enough for the member. */
-    Player *mTargetPlayer;        /* 0x3a0 */
-    Player *mGrabbedPlayer;       /* 0x3a4 -- the Player holding the tail; null when nobody does */
+    Player *mTargetPlayer;  /* 0x3a0 */
+    Player *mGrabbedPlayer; /* 0x3a4 -- the Player holding the tail; null when nobody does */
     /* uniqueID of the KOOPATAIL actor (ID 278) that InitResources spawns. */
     s32 mTailUniqueID;            /* 0x3a8 */
     /* uniqueID of the KOOPA2BG actor (ID 166) found with FindWithActorID. The

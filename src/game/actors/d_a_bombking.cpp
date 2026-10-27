@@ -147,7 +147,7 @@ extern void func_0200fa8c(void *c, int a);
 extern void func_ov102_0214b384(void* a, int b);
 extern int atan2_hold_d_a_bombking_1(int a, int b);
 extern int Vec3_HorzLen(void* v);
-extern int func_ov002_020db5f4(Player* c, dActor_c* arg);
+extern int func_ov002_020db5f4(Player *c, dActor_c *arg);
 extern void func_0200d8c8(void* cam, void* v, int strength);
 extern Matrix4x3 IDENTITY_MATRIX4X3;
 extern void Matrix4x3_ApplyInPlaceToTranslation(void *m, int x, int y, int z);

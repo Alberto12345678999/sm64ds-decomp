@@ -14655,7 +14655,7 @@ int Player::func_ov002_020d5ed0(){
 
 // @symbol func_ov002_020d5f34
 extern "C" {
-int func_ov002_020d5f34(Player* c, void* st){
+int func_ov002_020d5f34(Player *c, void *st) {
     extern Player::State data_ov002_02110064;
     Player *player = (Player *)c;
     if (player->mEatingPlayer != 0)
@@ -15038,7 +15038,7 @@ int func_ov002_020d6790(char* self)
     Player *p = (Player *)self;
     extern void Player_DisableInteraction(char* c);
     extern void func_ov002_020d7430(Player& player);
-    extern void func_ov002_020d8118(Player* c);
+    extern void func_ov002_020d8118(Player * c);
     extern Player::State data_ov002_02110034;
     extern Player::State data_ov002_0211013c;
     extern Player::State data_ov002_02110154;
@@ -15114,7 +15114,7 @@ extern "C" {
 int Player::func_ov002_020d6998()
 {
     typedef int (*VFunc)(void*);
-    extern int func_ov002_020d6dac(Player* self);
+    extern int func_ov002_020d6dac(Player * self);
     extern void func_ov002_020d71ec(char* self, int arg1);
     extern int func_ov002_020d6c60(char* self, void* other);
     extern s16 Vec3_HorzAngle(const Vector3 *v0, const Vector3 *v1);
@@ -15282,8 +15282,7 @@ ret0b:
  * load/store/load/store, 10 words off the ROM's load/load/store/store;
  * the array-wrapper view restores it, as in func_ov002_020c14b8. */
 extern "C" {
-int func_ov002_020d6dac(Player *self)
-{
+int func_ov002_020d6dac(Player *self) {
     Player *player = (Player *)self;
     typedef struct P2 { int w[2]; } P2;
     typedef struct dBgPiCopy {
@@ -15597,7 +15596,7 @@ int Player::St_YoshiPower_Main()
     extern void func_ov002_020d71ec(char*, int);
     extern void MulVec3Mat4x3(void*, void*, void*);
     extern void Vec3_MulScalarInPlace(void*, int);
-    extern void func_ov002_020d8118(Player*);
+    extern void func_ov002_020d8118(Player *);
     extern int func_ov002_020e0ccc(char*, void*);
     extern void func_ov002_020d7430(Player & player);
     extern void func_ov002_020d5cec(void*);
@@ -15962,8 +15961,7 @@ void func_ov002_020d80d0(char* c){
 
 // @symbol func_ov002_020d8118
 extern "C" {
-void func_ov002_020d8118(Player* c)
-{
+void func_ov002_020d8118(Player *c) {
     Player *player = (Player *)c;
     ((Player *)c)->func_ov002_020bda48();
     player->mFireTimer = 0x258;
@@ -15977,7 +15975,7 @@ void func_ov002_020d8118(Player* c)
 extern "C" {
 void func_ov002_020d8158(char* c)
 {
-    extern void func_ov002_020d8118(Player* c);
+    extern void func_ov002_020d8118(Player * c);
     extern Player::State data_ov002_02110034;
     extern Player::State data_ov002_0211004c;
     Player *p = (Player *)c;
@@ -16195,7 +16193,7 @@ int func_ov002_020d853c(Player *player, char *o) {
 // @symbol func_ov002_020d85fc
 extern "C" {
 extern "C" int func_ov002_020d85fc(Player *player, Player *arg, int flags) {
-    extern int func_ov002_020db5f4(Player *player, dActor_c *arg);
+    extern int func_ov002_020db5f4(Player * player, dActor_c * arg);
     extern Player::State data_ov002_0211034c;
     extern Player::State data_ov002_02110094;
     if ((flags & 0x1000) && arg->param1 == 2 &&
@@ -16885,8 +16883,8 @@ int Player::St_Hurt_Cleanup()
 extern "C" {
 int Player::St_Hurt_Main()
 {
-    extern void func_ov002_020d9a4c(Player *c);
-    extern void func_ov002_020d99a4(Player *self);
+    extern void func_ov002_020d9a4c(Player * c);
+    extern void func_ov002_020d99a4(Player * self);
     extern void func_ov002_020d9aac(void* c);
     extern void Player_AdvanceAnims(void* c);
     extern int func_ov002_020e2c84(void *self);
@@ -17004,8 +17002,7 @@ void Player::func_ov002_020d98b4() {
 
 // @symbol func_ov002_020d99a4
 extern "C" {
-void func_ov002_020d99a4(Player *self)
-{
+void func_ov002_020d99a4(Player *self) {
     extern u8 data_ov002_02109dcc[];
     extern int data_ov002_0210a6ec[];
     Player *player = (Player *)self;
@@ -18111,9 +18108,9 @@ extern "C" void func_ov002_020db54c(Player *p, int a, int b, short c) {
 
 // @symbol func_ov002_020db5f4
 extern "C" {
-int func_ov002_020db5f4(Player* c, dActor_c* arg){
+int func_ov002_020db5f4(Player *c, dActor_c *arg) {
     extern Player::State data_ov002_0211016c;
-    extern int func_ov002_020d82f0(void* c);
+    extern int func_ov002_020d82f0(void *c);
     Player *player = (Player *)c;
     int b = (((dActor_c *)arg)->actorID == 0xbf);
     if (b == 0) {
@@ -19466,7 +19463,7 @@ int func_ov002_020dd8b8(Player *player) {
 
 // @symbol func_ov002_020dd8f4
 extern "C" {
-void func_ov002_020dd8f4(Player* player) {
+void func_ov002_020dd8f4(Player *player) {
     extern Player::State data_ov002_021101b4;
     ((Player *)player)->ChangeState(data_ov002_021101b4);
 }
@@ -23631,8 +23628,7 @@ extern "C" void func_ov002_020e4768(char* self)
 
 // @symbol func_ov002_020e496c
 extern "C" {
-int func_ov002_020e496c(Player* c)
-{
+int func_ov002_020e496c(Player *c) {
     Player *player = (Player *)c;
     int id = ((Player *)c)->GetBodyModelID(player->mBodyModelId, 1);
     return ((int *)player->mModels.mBodyModels)[id];

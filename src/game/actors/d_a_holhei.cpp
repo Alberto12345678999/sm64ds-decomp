@@ -277,7 +277,7 @@ extern "C" void func_ov062_02116edc(daHolhei_c *self) {
     Math_Function_0203b14c(&self->mCarryOffsX, *(int*)((char*)data_ov062_0211df10 + k), 0x800, 0x3e8000, 4);
     Math_Function_0203b14c(&self->mCarryOffsY, *(int*)((char*)data_ov062_0211df14 + k), 0x800, 0x3e8000, 4);
     Math_Function_0203b14c(&self->mCarryOffsZ, *(int*)((char*)data_ov062_0211df18 + k), 0x800, 0x3e8000, 4);
-    void* r = self->UpdateCarry(*self->mHeld, *(Vector3 *)&self->mCarryOffsX);
+    void *r = self->UpdateCarry(*self->mHeld, *(Vector3 *)&self->mCarryOffsX);
     struct M12w { int w[12]; };
     *(M12w *)&self->mModel.mat4x3 = *(M12w *)r;
 }
