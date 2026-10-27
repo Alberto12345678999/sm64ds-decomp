@@ -12,9 +12,6 @@
  * the vtable/RTTI records land in .data at 0x020926d0..0x02092718.
  *
  * leftovers:
- * - SetBackwardTime keeps its 3-argument extern-C form: the ROM entry
- *   forwards r2 untouched, which the header's 2-param member would drop
- *   (vtable slot 3 still binds through the header decl).
  * - opt_strength_reduction off runs to end of file: its reset reaches
  *   backward, so it cannot be restored between the two table builders
  *   (measured). func_0202f2c4, func_0202f3a4, func_02053c10, the
@@ -31,12 +28,6 @@
 #include "G2x.h"
 
 extern "C" {
-/* The ROM's SetBackwardTime entry point reads a third argument in r2 and
-   forwards it untouched; the header's 2-param member call would drop the
-   forwarded register.
-   local extern: byte-required arity, banked in decl-agreement-baseline.json */
-int  _ZN15dFdBrightness_c15SetBackwardTimeEj(dFdBrightness_c *self, u32 time, u32 extra);
-
 void MultiStore_Int(int val, int *dst, int len);
 void func_0202f2c4(void);
 }
@@ -88,20 +79,16 @@ void dWipe_c::func_0202fb30()
     }
 }
 
-/* Vtable slot 3, spelled as the ROM built it: a two-argument entry point under
-   the member's mangled name. The extra parameter arrives in r2 and is
-   forwarded to the base call with zero instructions, which is what keeps the
-   cached `type` in r3 as in the cartridge; a real one-argument member fixes
-   the arity and misses by three words (measured, notes/scene-provenance.md).
-   The header still declares slot 3 so the emitted vtable binds here. */
-// @symbol _ZN7dWipe_c15SetBackwardTimeEj
-extern "C" int _ZN7dWipe_c15SetBackwardTimeEj(dWipe_c *self, u32 frames, u32 extra)
-{
+/* Opening half of a wipe. Type 1 is the plain colour fade and the base owns
+   it. `extra` is forwarded and not read; callers pass 0. */
+// @symbol _ZN7dWipe_c15SetBackwardTimeEjj
+int dWipe_c::SetBackwardTime(u32 frames, u32 extra) {
+    dWipe_c *self = this;
     s32 type = self->type;
     s32 state;
 
     if (type == 1)
-        return _ZN15dFdBrightness_c15SetBackwardTimeEj(self, frames, extra);
+        return dFdBrightness_c::SetBackwardTime(frames, extra);
 
     state = self->state;
     if (state == 0 || state == 4) {
