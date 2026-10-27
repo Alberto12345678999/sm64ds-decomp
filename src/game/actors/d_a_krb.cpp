@@ -90,8 +90,10 @@ struct SilverStarView {
 };
 typedef char SilverStarView_size_must_be_0x438[sizeof(SilverStarView) == 0x438 ? 1 : -1];
 
-namespace cstd { int fdiv(int a, int b); }
-
+namespace cstd {
+/* local extern: kept off cstd.h so this TU's codegen stays put. */
+extern "C" int fdiv(int a, int b);
+}
 
 typedef struct {
     unsigned char b0 : 1;

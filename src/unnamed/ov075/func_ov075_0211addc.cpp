@@ -4,7 +4,10 @@
 typedef long long s64;
 extern "C" short func_ov075_0211aeb8(char* c, int x);
 extern "C" int func_ov075_0211aea4(int unused, int a);
-namespace cstd { int fdiv(int, int); }
+namespace cstd {
+/* local extern: kept off cstd.h so this TU's codegen stays put. */
+extern "C" int fdiv(int, int);
+}
 
 extern short data_02082214[];
 

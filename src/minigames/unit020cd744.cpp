@@ -43,7 +43,8 @@
 // implement these five slots through dMgTrmpObjAdapter_c and its children.
 // No destructor slots or complete actor layout are implied by this view.
 namespace cstd {
-int fdiv(s32, s32);
+/* local extern: kept off cstd.h so this TU's codegen stays put. */
+extern "C" int fdiv(s32, s32);
 }
 namespace {
 struct TrampolineObjectCallbacks {

@@ -1,7 +1,10 @@
 //cpp
 #include "types.h"
 #include "nitro/fx/fx.h"
-namespace cstd { int fdiv(int a, int b); }
+namespace cstd {
+/* local extern: kept off cstd.h so this TU's codegen stays put. */
+extern "C" int fdiv(int a, int b);
+}
 extern "C" void func_ov007_020bc02c(void* a, void* b);
 extern "C" void func_ov007_020bbff0(void* c);
 extern void* data_ov007_02104bd8;

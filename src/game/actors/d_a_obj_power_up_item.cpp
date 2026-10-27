@@ -93,7 +93,10 @@ enum {
     CHARACTER_YOSHI = 3
 };
 
-namespace cstd { int fdiv(int, int); }
+namespace cstd {
+/* local extern: kept off cstd.h so this TU's codegen stays put. */
+extern "C" int fdiv(int, int);
+}
 
 extern "C" {
 extern u8 DecIfAbove0_Byte(u8* p);

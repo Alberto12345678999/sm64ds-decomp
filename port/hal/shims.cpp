@@ -3,14 +3,10 @@
 #include "dFader_c.h"
 #include "dFdBrightness_c.h"
 
-// Native fader callers use the namespace interface. Keep the existing C
-// divider as the host implementation shared with older callers.
-extern "C" Fix12i _ZN4cstd4fdivEii(Fix12i numerator, Fix12i denominator);
+// Native fader callers use the namespace interface. cstd_div.c defines that
+// function with C linkage, so the symbol is fdiv.
 namespace cstd {
-Fix12i fdiv(Fix12i numerator, Fix12i denominator)
-{
-    return _ZN4cstd4fdivEii(numerator, denominator);
-}
+extern "C" Fix12i fdiv(s32, s32);
 }
 
 // The *D0Ev/*D1Ev translation units define Itanium-mangled destructor names

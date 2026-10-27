@@ -94,7 +94,8 @@ typedef char PicGateMaterial_size_must_be_0x30[sizeof(PicGateMaterial) == 0x30 ?
 #endif
 
 namespace cstd {
-Fix12i fdiv(s32, s32);
+/* local extern: kept off cstd.h so this TU's codegen stays put. */
+extern "C" Fix12i fdiv(s32, s32);
 }
 
 extern "C" {

@@ -11,7 +11,7 @@ extern int _ZN9dBgCh_Gnd10DetectClsnEv(dBgCh_Gnd *t);
 extern void _ZN9dBgCh_GndD1Ev(dBgCh_Gnd *t);
 extern int LenVec3(Vector3 *v);
 extern void Vec3_Sub(Vector3 *out, Vector3 *a, Vector3 *b);
-extern int _ZN4cstd4fdivEii(int a, int b);
+extern int fdiv(int a, int b);
 extern void Vec3_MulScalarInPlace(int *v, int s);
 extern void Vec3_Add(Vector3 *out, Vector3 *a, Vector3 *b);
 extern int func_020092c4(int self, Vector3 *out, Vector3 *target);
@@ -101,7 +101,7 @@ void func_0200b798(char *self, short *a1, int arg2)
         limit = e->b;
 
     if (len > limit) {
-        scale = _ZN4cstd4fdivEii(limit, len);
+        scale = fdiv(limit, len);
         Vec3_MulScalarInPlace((int *)&v1, scale);
         Vec3_Add(&v4, &cam->lookAt, &v1);
         v2.x = v4.x;
