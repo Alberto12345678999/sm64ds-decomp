@@ -2313,6 +2313,51 @@ class NativeFreeOverloadTests(unittest.TestCase):
         self.assertEqual([f["kind"] for f in findings], ["param"])
 
 
+class MarkedOverloadTests(unittest.TestCase):
+    """One file defining an overload set under `@symbol` lines, declared from a header.
+
+    src/ApproachAngle.cpp is that shape: its definitions are keyed by their `_Z`
+    names, while a native declaration is keyed by the bare name it spells.
+    """
+
+    def fixture(self, header, user=None):
+        def tree(t):
+            t.write("src/ApproachAngle.cpp",
+                    "// @symbol _Z14ApproachLinearRiii\n"
+                    "int ApproachLinear(int &x, int target, int step) { return 0; }\n"
+                    "// @symbol _Z14ApproachLinearRsss\n"
+                    "bool ApproachLinear(short &x, short target, short step) { return 1; }\n")
+            t.write("include/CalcLib.h", header)
+            if user:
+                t.write("src/user.cpp", user)
+        findings, _, _, _ = build(tree)
+        return findings
+
+    def test_header_reference_overloads_select_their_marked_definitions(self):
+        findings = self.fixture("int ApproachLinear(int &, int, int);\n"
+                                "bool ApproachLinear(short &, short, short);\n")
+        self.assertEqual(findings, [])
+
+    def test_source_overloads_select_their_marked_definitions(self):
+        findings = self.fixture("", "int ApproachLinear(int &, int, int);\n"
+                                    "bool ApproachLinear(short &, short, short);\n")
+        self.assertEqual(findings, [])
+
+    def test_header_wrong_return_is_compared_to_the_selected_definition(self):
+        findings = self.fixture("int ApproachLinear(int &, int, int);\n"
+                                "int ApproachLinear(short &, short, short);\n")
+        self.assertEqual([(f["kind"], f["got"], f["want"]) for f in findings],
+                         [("return", "int", "bool")])
+
+    def test_header_without_a_reference_keeps_unknown_linkage(self):
+        decls, _, _ = CDA.parse_file(
+            "include/CalcLib.h", "int ApproachLinear(int *, int, int);\n", {})
+        self.assertFalse(CDA._cxx_linkage(decls[0]))
+        decls, _, _ = CDA.parse_file(
+            "include/CalcLib.h", "int ApproachLinear(int &, int, int);\n", {})
+        self.assertTrue(CDA._cxx_linkage(decls[0]))
+
+
 class NativeDestructorTests(unittest.TestCase):
     """Source syntax and a precisely mapped direct Arm ABI entry stay distinct."""
 
