@@ -25,18 +25,15 @@
 #include "dBgW.h"
 #include "dActor_c.h"
 #include "SurfaceInfo.h"
-#include "common.h"
+#include "math/CalcLib.h"
 
 extern "C" {
-Fix12i Vec3_Dist(const Vector3 *a, const Vector3 *b);
-int Vec3_HorzDist(const Vector3 *a, const Vector3 *b);
 int func_020393b4(void *p);
 int func_020393ac(void *p);
 int func_0203939c(void *p);
 int func_0203938c(void *p);
 int func_020393cc(void *p);
 int func_020393bc(void *p);
-void func_02037464(void *c);
 void func_02037e9c(CLPS *clps);
 void func_02037de8(SurfaceInfo *dst, const SurfaceInfo *src);
 int func_02038298(void *arg);
@@ -58,7 +55,7 @@ typedef void (*PFN)(int self, int arg, int b);
 int dBgCh_Gnd::DetectClsn()
 {
     int ret = 0;
-    func_02037464(this);
+    ResetResult();
     dBgW *o = data_020a0c80[0];
     if (o != 0 && !IsOwnedBy((dActor_c *)func_020393b4(o)) && o->DetectClsn(*this) != 0) {
         dBgPi::SetCollider(0, func_020393ac(o), (dActor_c *)func_020393b4(o), o);
@@ -103,7 +100,7 @@ int dBgCh_Gnd::DetectClsn()
 int dBgCh_Gnd::DetectClsnSlot0() {
     int r = 0;
     dBgW *o;
-    func_02037464(this);
+    ResetResult();
     o = data_020a0c80[0];
     if (o != 0) {
         if (!IsOwnedBy((dActor_c *)func_020393b4(o))) {
@@ -721,9 +718,9 @@ int CLPS::GetSurfaceType() const {
     return (w0 >> 19) & 0x1f;
 }
 
-// @symbol func_02037e2c
-extern "C" int func_02037e2c(int *p) {
-    return p[0] & 0x1000000;
+// @symbol _ZNK4CLPS19IsCameraPassThroughEv
+int CLPS::IsCameraPassThrough() const {
+    return w0 & 0x1000000;
 }
 
 // @symbol func_02037e20
@@ -731,9 +728,9 @@ extern "C" int func_02037e20(int *p) {
     return p[0] & 0x2000000;
 }
 
-// @symbol func_02037e14
-extern "C" int func_02037e14(int *p) {
-    return p[0] & 0x4000000;
+// @symbol _ZNK4CLPS12IsCameraOnlyEv
+int CLPS::IsCameraOnly() const {
+    return w0 & 0x4000000;
 }
 
 // @symbol func_02037de8

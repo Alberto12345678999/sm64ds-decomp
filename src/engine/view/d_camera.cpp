@@ -3511,7 +3511,7 @@ void func_020089d8(dCamera_c *cam) {
 // @symbol func_0200897c
 /* Prepare a collision query for the camera. It always stops ignoring
  * vanish surfaces, then starts again if the target is a vanished Player,
- * and finally runs func_02035468 on the query.
+ * and finally enables camera mode on the query.
  *
  * Codegen note: the (actorID == 0xbf) test is held in an enum-typed boolean.
  * Under -O4 -enum int this materializes the comparison as a full 32-bit 0/1
@@ -3529,7 +3529,7 @@ void func_0200897c(void *self, void *arg) {
     if (isType && owner->mIsVanish != 0) {
         ((dBgCh *)arg)->StartIgnoringVanishSurfaces();
     }
-    func_02035468((char *)arg);
+    ((dBgCh *)arg)->EnableCameraMode();
 }
 }
 

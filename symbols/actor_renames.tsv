@@ -7171,3 +7171,16 @@ arm9	0x0201b7cc	func_0201b7cc	_ZN7Message10LayoutLineEv	Message::LayoutLine: lay
 arm9	0x02031e00	func_02031e00	_ZN7Message12LayoutLineVSEv	Message::LayoutLineVS: the VS build's twin of Message::LayoutLine (word-identical with relocations masked); now a static member in Message3.cpp; same address, same body
 arm9	0x0201d590	func_0201d590	Message_DrawLineBG2	Message_DrawLineBG2: lays out the current message line into the main-screen BG2 tiles and advances the tile cursor; the BG2 sibling of Message_DrawCenteredLine; same address, same body
 arm9	0x02034098	func_02034098	Message_DrawLineBG2VS	Message_DrawLineBG2VS: the VS build's twin of Message_DrawLineBG2 (word-identical with relocations masked); same address, same body
+arm9	0x020354b0	func_020354b0	_ZNK5dBgCh19IsDetectingOrdinaryEv	inferred query flag reader; dBgCh::ShouldPassThroughImpl tests the corresponding surface group; returns the original mask
+arm9	0x0203547c	func_0203547c	_ZNK5dBgCh16IsDetectingWaterEv	inferred query flag reader; dBgCh::ShouldPassThroughImpl tests the corresponding surface group; returns the original mask
+arm9	0x0203545c	func_0203545c	_ZNK5dBgCh12IsCameraModeEv	inferred query flag reader; dBgCh::ShouldPassThroughImpl tests the corresponding surface group; returns the original mask
+arm9	0x0203543c	func_0203543c	_ZNK5dBgCh16IsDetectingToxicEv	inferred query flag reader; dBgCh::ShouldPassThroughImpl tests the corresponding surface group; returns the original mask
+arm9	0x02035468	func_02035468	_ZN5dBgCh16EnableCameraModeEv	inferred from camera query setup at 0x0200897c and paired CLPS bits 24/26 in ShouldPassThroughImpl
+arm9	0x02037464	func_02037464	_ZN9dBgCh_Gnd11ResetResultEv	inferred result reset; both ground registry scans call it before visiting colliders; clears hit record, height and hit byte
+arm9	0x02037608	_ZN9dBgCh_Lin13func_02037608Ev	_ZN9dBgCh_Lin11ResetResultEv	inferred from query initialization and body: line restores endpoint/distance and clears hit; sphere clears flags, hits, displacement and floor normal
+arm9	0x02037b5c	_ZN12dBgCh_SphCrr13func_02037b5cEv	_ZN12dBgCh_SphCrr10ResetQueryEv	inferred from query initialization and body: line restores endpoint/distance and clears hit; sphere clears flags, hits, displacement and floor normal
+arm9	0x02037e2c	func_02037e2c	_ZNK4CLPS19IsCameraPassThroughEv	inferred from ShouldPassThroughImpl and camera mode set by the camera query initializer
+arm9	0x02037e14	func_02037e14	_ZNK4CLPS12IsCameraOnlyEv	inferred from ShouldPassThroughImpl and camera mode set by the camera query initializer
+ov002	0x020fea4c	func_ov002_020fea4c	_ZNK8dM3dGLin6GetEndEv	inferred endpoint getter; Vector3 return uses hidden result buffer in r0 and this in r1; called by dBgCh_Lin::ResetResult
+ov002	0x020fea68	func_ov002_020fea68	_ZNK8dM3dGLin8GetStartEv	inferred endpoint getter; Vector3 return uses hidden result buffer in r0 and this in r1; called by dBgCh_Lin::ResetResult
+arm9	0x02037940	_ZN12dBgCh_SphCrr13func_02037940Eh	_ZN12dBgCh_SphCrr13SetQueryFlagsEh	inferred from KcMbg and KcMbgSclY local sphere setup: copy query flags while clearing floor/wall/under contact bits (0x1c)

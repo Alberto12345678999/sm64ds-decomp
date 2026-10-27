@@ -6,10 +6,6 @@
  * plain members follow in reverse ROM order, so the earliest (IsOwnedBy)
  * lands last.
  */
-// leftovers: the five func_020354xx flag helpers stay extern "C" free
-// functions taking the object by pointer (renaming them is a symbols.txt
-// change, per include/dBgCh.h); their parameter spellings follow the
-// declarations callers already use (include/decl_common.h).
 
 #include "dBgCh.h"
 #include "dActor_c.h"
@@ -35,9 +31,9 @@ void dBgCh::StopDetectingOrdinary()
     mDetectFlags &= ~1;
 }
 
-// @symbol func_020354b0
-extern "C" int func_020354b0(unsigned char *query) {
-    return reinterpret_cast<dBgCh *>(query)->mDetectFlags & 1;
+// @symbol _ZNK5dBgCh19IsDetectingOrdinaryEv
+int dBgCh::IsDetectingOrdinary() const {
+    return mDetectFlags & 1;
 }
 
 // @symbol _ZN5dBgCh19StartDetectingWaterEv
@@ -52,19 +48,19 @@ void dBgCh::StopDetectingWater()
     mDetectFlags &= ~2;
 }
 
-// @symbol func_0203547c
-extern "C" int func_0203547c(unsigned char *query) {
-    return reinterpret_cast<dBgCh *>(query)->mDetectFlags & 2;
+// @symbol _ZNK5dBgCh16IsDetectingWaterEv
+int dBgCh::IsDetectingWater() const {
+    return mDetectFlags & 2;
 }
 
-// @symbol func_02035468
-extern "C" void func_02035468(char *query) {
-    reinterpret_cast<dBgCh *>(query)->mDetectFlags |= 4;
+// @symbol _ZN5dBgCh16EnableCameraModeEv
+void dBgCh::EnableCameraMode() {
+    mDetectFlags |= 4;
 }
 
-// @symbol func_0203545c
-extern "C" int func_0203545c(unsigned char *query) {
-    return reinterpret_cast<dBgCh *>(query)->mDetectFlags & 4;
+// @symbol _ZNK5dBgCh12IsCameraModeEv
+int dBgCh::IsCameraMode() const {
+    return mDetectFlags & 4;
 }
 
 // @symbol _ZN5dBgCh19StartDetectingToxicEv
@@ -73,9 +69,9 @@ void dBgCh::StartDetectingToxic()
     mDetectFlags |= 8;
 }
 
-// @symbol func_0203543c
-extern "C" int func_0203543c(unsigned char *query) {
-    return reinterpret_cast<dBgCh *>(query)->mDetectFlags & 8;
+// @symbol _ZNK5dBgCh16IsDetectingToxicEv
+int dBgCh::IsDetectingToxic() const {
+    return mDetectFlags & 8;
 }
 
 // @symbol _ZN5dBgCh27StartIgnoringVanishSurfacesEv

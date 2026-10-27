@@ -33,8 +33,9 @@
  *
  * mDetectFlags bits, as ShouldPassThroughImpl (src/engine/collision/d_bg_w.cpp)
  * reads them against a surface's CLPS: 1 = ordinary surfaces,
- * 2 = water (StartDetectingWater), 8 = toxic (StartDetectingToxic); 4 gates
- * a further surface class whose name is not settled.
+ * 2 = water (StartDetectingWater), 8 = toxic (StartDetectingToxic).
+ * The camera setup at 0x0200897c sets 4: camera mode ignores CLPS bit 24
+ * surfaces and detects CLPS bit 26 surfaces. These names are inferred.
  *
  * 0x20 and 0x40 run the other way: SET, they let the query pass through a
  * surface. 0x20 covers CLPS surface type 0x11. Every setter is a vanish
@@ -71,9 +72,7 @@
 
 #include "types.h"
 
-namespace Memory {
-void operator_delete2(void *ptr);
-}
+#include "Memory.h"
 
 struct CLPS;
 struct dActor_c;
@@ -143,6 +142,13 @@ struct dBgCh {
     int IsIgnoringType14Walls() const;
     void StopIgnoringType14Walls();
     void StartIgnoringType14Walls();
+    /* Inferred from the surface filter and camera query setup. Keep int:
+       each reader returns the mask itself, not a normalized boolean. */
+    int IsDetectingOrdinary() const;
+    int IsDetectingWater() const;
+    int IsDetectingToxic() const;
+    int IsCameraMode() const;
+    void EnableCameraMode();
     void StartDetectingToxic();
     void StartDetectingWater();
     void StopDetectingOrdinary();

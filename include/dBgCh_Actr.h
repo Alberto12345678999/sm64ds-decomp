@@ -132,7 +132,7 @@ struct dBgCh_Actr : dBgCh {
     void UpdateExtraContinous();  /* sic -- the ROM name is missing a 'u' */
     void UpdateDiscreteNoLava();
     void UpdateDiscreteNoLava_2();
-    void Unk_0203589c();           /* func_02037b5c(&mSphereClsn) */
+    void Unk_0203589c(); /* ResetQuery(&mSphereClsn) */
 
     /* --- const accessors, 0x02035564..0x02035727. `const` is not a style
            choice here: these mangle _ZNK, and without it the compiler emits

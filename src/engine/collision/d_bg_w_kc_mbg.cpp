@@ -291,7 +291,7 @@ int dBgW_KcMbg::DetectClsn(dBgCh_SphCrr &sphere) {
     func_02039e48(this, &sphere.centre, &localCentre);
     localSphere.SetObjAndSphere(localCentre, FX_MUL(sphere.radius, invScale), 0);
     localSphere.mWallRejectHalfExtent = FX_MUL(sphere.mWallRejectHalfExtent, invScale);
-    localSphere.func_02037940(sphere.flags);
+    localSphere.SetQueryFlags(sphere.flags);
     (dBgCh &)localSphere = sphere;
     hit = dBgW_Kc::DetectClsn(localSphere);
     if (hit) {

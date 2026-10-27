@@ -4,8 +4,8 @@
  * retain their existing free-function interfaces for the query TUs and
  * derived colliders. Their original member/free-function form is not
  * established by the address names. Definitions retain their source order.
- * ShouldPassThroughImpl keeps the int* view of CLPS and the unsigned char*
- * view of the query for the flag tests that are still free functions.
+ * ShouldPassThroughImpl keeps the int* CLPS view for the water and toxic
+ * tests that are still free functions.
  * data_020a0c80 (declared in dBgW.h) is the 0x18-entry enabled-collider
  * table Enable fills and dScStage_c::ResetMeshColliders clears.
  */
@@ -95,30 +95,29 @@ bool dBgCh::ShouldPassThroughImpl(void *unused, const CLPS &surfaceProperties, c
        (2), CLPS bit 0x02000000 needs the toxic bit (8). Surface types 0x11
        and 0x14 run the other way: the query passes through them when it is
        ignoring them. A surface no rule covers stops only queries that detect
-       ordinary ground (bit 1). The CLPS predicates and the remaining flag
-       tests are C helpers taking raw word and byte views. */
+       ordinary ground (bit 1). Camera mode skips camera-pass-through
+       surfaces and enables camera-only surfaces. */
     int *clpsWords = (int *)&surfaceProperties;
-    unsigned char *queryBytes = (unsigned char *)&query;
     bool ruleApplies = false;
 
     if (SurfaceInfo_TestFlag0x20(clpsWords)) {
         ruleApplies = true;
-        if (func_0203547c(queryBytes) == 0)
+        if (query.IsDetectingWater() == 0)
             return true;
     }
     if (func_02037e20(clpsWords)) {
         ruleApplies = true;
-        if (func_0203543c(queryBytes) == 0)
+        if (query.IsDetectingToxic() == 0)
             return true;
     }
-    if (func_02037e2c(clpsWords)) {
+    if (surfaceProperties.IsCameraPassThrough()) {
         ruleApplies = true;
-        if (func_0203545c(queryBytes) != 0)
+        if (query.IsCameraMode() != 0)
             return true;
     }
-    if (func_02037e14(clpsWords)) {
+    if (surfaceProperties.IsCameraOnly()) {
         ruleApplies = true;
-        if (func_0203545c(queryBytes) == 0)
+        if (query.IsCameraMode() == 0)
             return true;
     }
     if (surfaceProperties.GetSurfaceType() == 0x11) {
@@ -131,7 +130,7 @@ bool dBgCh::ShouldPassThroughImpl(void *unused, const CLPS &surfaceProperties, c
         if (query.IsIgnoringType14Walls())
             return true;
     }
-    if (!ruleApplies && func_020354b0(queryBytes) == 0)
+    if (!ruleApplies && query.IsDetectingOrdinary() == 0)
         return true;
     return false;
 }

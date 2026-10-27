@@ -25,7 +25,7 @@
   ],
   "functions": [
     {
-      "symbol": "func_02037464",
+      "symbol": "_ZN9dBgCh_Gnd11ResetResultEv",
       "address": "0x02037464",
       "size": "0x00000028",
       "legacy_source": "src/unnamed/arm9/0203/func_02037464.c",

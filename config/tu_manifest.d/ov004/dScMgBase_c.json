@@ -1023,7 +1023,8 @@
     "The D2 and D0 shards carried _MSC_VER arms giving the host the flat D2 and D0 names. They are kept as one #ifdef _MSC_VER block after the destructor; mwccarm never defines _MSC_VER.",
     "The file-global #pragma opt_strength_reduction off the eight-member TU carried is gone: BeforeBehavior matches without it once the file is ROM-ascending under defer_codegen off.",
     "Static-initializer fold: __sinit_ov004_020b948c retired; the unit now emits it from the static state -- the graphCallback_c registry object, the 0x40-entry Ent pool (__cxa_vec_ctor + __arraydtor$328 cleanup registration), and the two PMF state tables. func_ov004_020ae104 is the graphCallback_c complete-object ctor; func_ov004_020b2c58 is the array cleanup thunk; func_ov004_020b2c7c/020b2c80 are Ent's trivial dtor/ctor; the four state handlers memberized onto Ent.",
-    "Local scratch link built ROM sha256 ddab9300b24aeae254192c2a30d812b07ece3adff83230e75c865ed915c9de40, identical to this machine's stock control (EU ASMP dump; the divergent bytes are NDS container/packaging fields outside every module range). The recorded rom.sha256 is the fleet SHA every other intact entry shares. Module set, symbol inventory, and the five owned ranges matched."
+    "Local scratch link built ROM sha256 ddab9300b24aeae254192c2a30d812b07ece3adff83230e75c865ed915c9de40, identical to this machine's stock control (EU ASMP dump; the divergent bytes are NDS container/packaging fields outside every module range). The recorded rom.sha256 is the fleet SHA every other intact entry shares. Module set, symbol inventory, and the five owned ranges matched.",
+    "Collision header now includes Memory.h: compiler-local source identities reconciled against before/after complete objects; allocated section bytes/types/flags/sizes/alignments, defined symbol attributes/order and typed relocation destinations are unchanged. 158 allocated sections, 658 relocations; see notes/collision-readability-1027.md."
   ],
   "verification": {
     "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",
@@ -1683,32 +1684,32 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@330",
+      "from": "@328",
       "to": "@315",
       "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin. Re-keyed +6 (from @324) when dScMgBase_c.h gained Mg_DrawLine."
     },
     {
-      "from": "@332",
+      "from": "@330",
       "to": "@317",
       "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin. Re-keyed +6 (from @326) when dScMgBase_c.h gained Mg_DrawLine."
     },
     {
-      "from": "@334",
+      "from": "@332",
       "to": "@319",
       "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin. Re-keyed +6 (from @328) when dScMgBase_c.h gained Mg_DrawLine."
     },
     {
-      "from": "@336",
+      "from": "@334",
       "to": "@321",
       "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin. Re-keyed +6 (from @330) when dScMgBase_c.h gained Mg_DrawLine."
     },
     {
-      "from": "@338",
+      "from": "@336",
       "to": "@323",
       "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin. Re-keyed +6 (from @332) when dScMgBase_c.h gained Mg_DrawLine."
     },
     {
-      "from": "__arraydtor$329",
+      "from": "__arraydtor$327",
       "to": "__arraydtor$328",
       "owned_function": {
         "module": "ov004",
