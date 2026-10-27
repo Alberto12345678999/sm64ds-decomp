@@ -43,11 +43,11 @@
 #include "Message.h"
 #include "nitro/fx/fx.h"
 #include "Sound.h"
+#include "math/Approach.h"
 namespace cstd {
 s16 atan2(s32, s32);
 }
 
-bool ApproachLinear(short &value, short target, short step);
 
 /* Remaining reconstruction views. Reconciled by hand against include/: every type
  * the real headers already define (Vector3, Matrix4x3, Fix12<int>, u8/u16/s16,

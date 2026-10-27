@@ -29,10 +29,7 @@ struct System {
 #include "Sound.h"
 #include "nitro/fx/fx.h"
 #include "cstd.h"
-
-bool ApproachLinear(short &value, short target, short step);
-int ApproachLinear(int &value, int target, int step);
-void UpdateAngle(short &angle, short target, int divisor, short maxStep);
+#include "math/Approach.h"
 
 extern "C" {
 

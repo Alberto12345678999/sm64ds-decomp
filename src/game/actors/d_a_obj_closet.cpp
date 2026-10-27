@@ -38,8 +38,7 @@
 #include "Player.h"
 #include "Message.h"
 #include "Sound.h"
-
-bool ApproachLinear(short &value, short target, short step);
+#include "math/Approach.h"
 
 /* include/types.h's Vector3 declares a destructor. Under that type the
    five locals below grow the frame by 0x10. The ROM copies are a plain

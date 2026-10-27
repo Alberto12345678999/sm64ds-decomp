@@ -43,6 +43,7 @@
 #include "GX.h"
 #include "Memory.h"
 #include "cstd.h"
+#include "math/Approach.h"
 
 #pragma defer_codegen off
 
@@ -94,8 +95,6 @@ struct SceneVCall6 {
     virtual int v3(); virtual int v4(); virtual int IsActive();
 };
 
-int ApproachLinear(int &value, int target, int step);
-int ApproachLinear2(short &value, short target, short step);
 
 extern "C" {
 extern void *sMgWorkBuffer;

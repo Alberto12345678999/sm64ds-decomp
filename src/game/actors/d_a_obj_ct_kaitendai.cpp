@@ -61,8 +61,7 @@ enum daObjCtKaitendai_c_AssetId {
 #include "dBgCh_Gnd.h"
 #include "SharedFilePtr.h"
 #include "dBgW.h"
-
-bool ApproachLinear(short &value, short target, short step);
+#include "math/Approach.h"
 
 struct CLPS_Block;
 

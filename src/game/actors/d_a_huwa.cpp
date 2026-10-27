@@ -41,6 +41,7 @@ enum daHuwa_c_AssetId {
 #include "Player.h"
 #include "SharedFilePtr.h"
 #include "Sound.h"
+#include "math/Approach.h"
 
 /* The resource handles as the ROM lays them out: {id, loaded file}. The
    model handle constructs through func_02017acc and destroys through
@@ -85,8 +86,6 @@ struct System {
 typedef void BgchInitAt_(void *self, dActor_c *actor, int radius, int height, void *a, void *b);
 }
 
-int ApproachLinear(int &value, int target, int step);
-bool ApproachLinear(short &value, short target, short step);
 
 /* dCc_c hitFlags bits this actor tests. 0x10 / 0x2000 / 0x4000 / 0x40000 /
  * 0x400000 are the names in dCc_c.h. 0x20000 is not in that table; this

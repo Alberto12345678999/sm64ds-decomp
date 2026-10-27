@@ -19,6 +19,7 @@ enum d_s_mg_bsc_AssetId { ASSET_D_2D_MG_BIG_SMALL_NCL_BIN = 0x00b3 };
 #include "types.h"
 #include "decl_common.h"
 #include "PlayerInput.h"
+#include "math/Approach.h"
 
 /* The state table: one pointer-to-member per state, indexed by mState.
  * Declared outside extern "C" it still links by its plain name. */
@@ -90,7 +91,6 @@ void LoadOBJPltt(const void *plt, u32 base, u32 size);
 }
 
 /* Moves value toward target by step; nonzero once it gets there. */
-int ApproachLinear(int &value, int target, int step);
 
 // @symbol dScMgBSC_c_classInit
 /* `new` inlines the implicit constructor: the base chain, this class's

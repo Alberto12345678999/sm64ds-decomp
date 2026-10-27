@@ -54,8 +54,7 @@ struct Vector3_16f;
 #include "decl_Particle.h"
 #include "dBgCh_Actr.h"
 #include "cstd.h"
-
-bool ApproachLinear(short &value, short target, short step);
+#include "math/Approach.h"
 
 #pragma defer_codegen off
 

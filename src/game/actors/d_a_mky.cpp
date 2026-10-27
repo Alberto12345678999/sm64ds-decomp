@@ -74,11 +74,6 @@ extern "C" {
 void  Vec3_Asr(void *d, void *s, int sh);
 }
 
-/* Overloaded (short and int, src/ApproachAngle.cpp), so it stays out of
- * math/CalcLib.h: the declaration-agreement gate gives a .h declaration
- * unknown linkage and cannot pick the overload it names. */
-bool ApproachLinear(short &value, short target, short step);
-
 /* Actor IDs 0xbf, 0x10b and 0x10c are PLAYER, UKIKI_THIEF and UKIKI_STAR.
  * dActor_c::mFlags bits 0x20000 and 0x40000 are the two yoshi-mouth states.
  * These int-returning predicates are what make the ROM materialize 0/1

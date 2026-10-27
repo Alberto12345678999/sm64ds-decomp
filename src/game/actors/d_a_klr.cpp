@@ -43,6 +43,7 @@ struct Vector3_16f;
 #include "Sound.h"
 #include "dBgPi.h"
 #include "dBgCh_Actr.h"
+#include "math/Approach.h"
 
 struct BMD_File;
 
@@ -68,7 +69,6 @@ typedef void BgchInitAt_(dBgCh_Actr *self, dActor_c *actor, int radius, int heig
 void func_ov079_02126704(daKlr_c *self);
 }
 
-bool ApproachLinear(short &value, short target, short step);
 
 /* Indexed by mState: [0] func_ov079_0212682c, [1] func_ov079_02126794.
    Defined at the end of this file so it does not insert a function into .text. */

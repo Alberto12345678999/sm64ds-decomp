@@ -59,11 +59,10 @@
 #include "dBgPi.h"
 #include "Sound.h"
 #include "dClipper.h"
+#include "math/Approach.h"
 
 /* Real C++ names. Declared here, not via decl_common.h: that header's
  * other spellings of these symbols collide with this TU. */
-void UpdateAngle(short &angle, short target, int shift, short maxStep);
-int ApproachLinear(int &value, int target, int step);
 
 namespace cstd {
 int fdiv(int numerator, int denominator);

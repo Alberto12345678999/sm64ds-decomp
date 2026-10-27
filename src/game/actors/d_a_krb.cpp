@@ -80,6 +80,7 @@ enum daKrb_c_AssetId {
 #include "Player.h"
 #include "daKuriKing_c.h"
 #include "daStarBase_c.h"
+#include "math/Approach.h"
 
 /* daStar_c::mMarkerID (daStar_c.h, 0x434), seen through a local view:
    including daStar_c.h renumbers this TU's @NNN labels. */
@@ -91,7 +92,6 @@ typedef char SilverStarView_size_must_be_0x438[sizeof(SilverStarView) == 0x438 ?
 
 namespace cstd { int fdiv(int a, int b); }
 
-bool ApproachLinear(short &value, short target, short step);
 
 typedef struct {
     unsigned char b0 : 1;
@@ -215,7 +215,6 @@ extern u8 data_ov084_02130204[];
 extern void Matrix4x3_FromRotationY(void* m, int angle);
 extern short data_02082214[];
 extern char data_ov084_0213089c;
-extern int _Z14ApproachLinearRiii(int *a, int b, int c);
 extern int RandomIntInternal(int *seed);
 extern int data_ov084_02130228[];
 extern int data_ov084_02130268[];
@@ -1351,7 +1350,7 @@ void daKrb_c::func_ov084_0212abd4() {
     daKrb_c *goomba = this;
     short step = 0x200;
     func_ov084_02129cf4(0x3e8000);
-    _Z14ApproachLinearRiii((int *)&goomba->mHorzSpeed, goomba->mTargetHorzSpeed, 0x500);
+    ApproachLinear(*(int *)&goomba->mHorzSpeed, goomba->mTargetHorzSpeed, 0x500);
     if (((Flags *)&goomba->mMoveFlags)->b0) {
         if (ApproachLinear(*(short *)&goomba->mPrevAngleY, goomba->mInitAngleY, step)) {
             *(unsigned char *)(((int)&goomba->mMoveFlags)) &= ~daKrb_c::MOVE_AVOIDING;
@@ -1525,7 +1524,7 @@ void daKrb_c::func_ov084_0212af74() {
                 goomba->mTargetHorzSpeed = 0;
             }
             if (flag != 0) {
-                _Z14ApproachLinearRiii((int *)&goomba->mHorzSpeed, goomba->mTargetHorzSpeed, 0x500);
+                ApproachLinear(*(int *)&goomba->mHorzSpeed, goomba->mTargetHorzSpeed, 0x500);
             }
         } else {
             goomba->mInitAngleY = Vec3_HorzAngle(&goomba->mPos, &targetPos);

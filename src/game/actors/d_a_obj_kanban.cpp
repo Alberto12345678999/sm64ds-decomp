@@ -27,8 +27,7 @@ enum daObjKanban_c_AssetId {
 #include "SharedFilePtr.h"
 #include "Player.h"
 #include "nitro/fx/fx.h"
-
-bool ApproachLinear(short &value, short target, short step);
+#include "math/Approach.h"
 
 /* 8-byte file handle. The model uses func_02017acc / func_02017ab4. The
  * spelling is local; the manifest aliases the generated names to those ROM

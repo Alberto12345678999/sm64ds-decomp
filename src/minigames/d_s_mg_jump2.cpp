@@ -35,6 +35,7 @@ enum d_s_mg_jump2_AssetId {
 #include "types.h"
 #include "decl_common.h"
 #include "Particle__System.h"
+#include "math/Approach.h"
 
 /* The list link at the head of each Jump2Popup. Its two methods link `this` into
  * and back out of the live list at sJump2PopupList. */
@@ -158,8 +159,6 @@ void SetFog(bool enable, int mode, int slope, int offset);
 namespace cstd {
 s32 fdiv(s32 a, s32 b);
 }
-short ApproachLinear2(short &value, short target, short step);
-int ApproachLinear(int &value, int target, int step);
 
 // @symbol _ZN10Jump2PopupC1Ev
 /* Empty and out of line: mPopups' element constructor, which the factory

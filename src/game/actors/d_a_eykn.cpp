@@ -64,6 +64,7 @@
 #include "Particle__System.h"
 #include "dBgCh_Gnd.h"
 #include "nitro/fx/fx.h"
+#include "math/Approach.h"
 
 /* Twelve plain words: assigning a Matrix4x3 copies it member by member,
    0x1c bytes longer than the cartridge's block copy. */
@@ -104,9 +105,6 @@ daEykn_c::State gEyknStates[3] = {
     {&daEykn_c::St_Die_Init, &daEykn_c::St_Die_Main},
 };
 
-int ApproachLinear(int &value, int target, int step);
-bool ApproachLinear(short &value, short target, short step);
-void UpdateAngle(s16 &angle, s16 target, int div, s16 maxStep);
 
 extern "C" {
 int AngleDiff(int a, int b);

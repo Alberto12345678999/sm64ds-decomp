@@ -67,10 +67,10 @@ enum d_a_cnn_AssetId {
 #include "SharedFilePtr.h"
 #include "Player.h"
 #include "Sound.h"
+#include "math/Approach.h"
 
 typedef void (daCnn_c::*State)();
 
-bool ApproachLinear(short &value, short target, short step);
 
 /* One 0x34-byte runtime bone of mModel.data.bones (ModelComponents types the
    array as BMD_Bone, but the pose pass fills these). Extends

@@ -50,6 +50,7 @@ enum daShark_c_AssetId {
 #include "PathPtr.h"
 #include "SharedFilePtr.h"
 #include "Player.h"
+#include "math/Approach.h"
 
 /* Scratch matrix, owned by the overlay. */
 
@@ -71,7 +72,6 @@ extern void Matrix4x3_ApplyInPlaceToRotationX(void *matrix, s16 angle);
 extern void MulVec3Mat4x3(void *a, void *matrix, void *b);
 }
 
-bool ApproachLinear(short &value, short target, short step);
 
 typedef int (daShark_c::*SharkFn)();
 

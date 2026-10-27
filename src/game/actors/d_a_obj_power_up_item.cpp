@@ -52,6 +52,7 @@ struct Callback;
 #include "dBgCh_Gnd.h"
 #include "Player.h"
 #include "nitro/fx/fx.h"
+#include "math/Approach.h"
 
 struct Vector3_16f;
 struct Callback;
@@ -92,7 +93,6 @@ enum {
     CHARACTER_YOSHI = 3
 };
 
-int ApproachLinear(int&, int, int);
 namespace cstd { int fdiv(int, int); }
 
 extern "C" {

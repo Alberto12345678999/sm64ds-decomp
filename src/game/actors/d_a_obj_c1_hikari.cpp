@@ -35,6 +35,7 @@ enum d_a_obj_c1_hikari_AssetId {
 #include "Message.h"
 #include "Player.h"
 #include "SharedFilePtr.h"
+#include "math/Approach.h"
 
 /* POD copies of the two world-space offsets this Behavior rotates through
  * data_020a0e68. The shared Vector3 has an empty destructor, which would add
@@ -75,7 +76,6 @@ namespace Sound {
 int PlaySmallSecretSound(dActor_c *actor, u16 *counter);
 }
 
-bool ApproachLinear(short &value, short target, short step);
 
 extern int _ZTV15daObjC1Hikari_c[];
 

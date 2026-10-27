@@ -68,8 +68,7 @@ enum dScMgSnowball_c_AssetId {
 #include "Particle__System.h"
 #include "PlayerInput.h"
 #include "nitro/fx/fx.h"
-
-bool ApproachLinear(short &value, short target, short step);
+#include "math/Approach.h"
 
 /* Declarations the recovered sources need that no project header supplies.
  * Each one was checked against include/*.h first; these are the residue. */

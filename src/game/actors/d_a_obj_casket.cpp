@@ -41,8 +41,8 @@
  *   defined at the end of this file so their dynamic init stays out of
  *   .text.
  * - Matrix4x3_FromRotationXYZExt, Matrix4x3_FromRotationY,
- *   MulVec3Mat4x3, Vec3_Add, AddVec3, Vec3_HorzDist, DecIfAbove0_Short
- *   and ApproachLinear stay local externs; no shared header owns them.
+ *   MulVec3Mat4x3, Vec3_Add, AddVec3, Vec3_HorzDist and DecIfAbove0_Short
+ *   stay local externs; no shared header owns them.
  */
 
 /* Runtime asset handles resolved through the overlay 0 file table. */
@@ -55,6 +55,7 @@ enum daObjCasket_c_AssetId {
 #include "SharedFilePtr.h"
 #include "Sound.h"
 #include "Player.h"
+#include "math/Approach.h"
 
 typedef void (daObjCasket_c::*StateFunc)();
 
@@ -64,7 +65,6 @@ struct CasketState {
     const char *name;
 };
 
-bool ApproachLinear(short &value, short target, short step);
 
 /* Resource handles this TU's static initializer constructs. File IDs and
  * widths are the ROM's; constructor/destructor addresses are aliased in
