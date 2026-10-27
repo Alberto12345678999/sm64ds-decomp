@@ -40,6 +40,7 @@ enum daTor_c_AssetId {
 #include "Sound.h"
 #include "SurfaceInfo.h"
 #include "nitro/fx/fx.h"
+#include "math/Approach.h"
 namespace cstd {
 s16 atan2(s32, s32);
 }
@@ -88,7 +89,6 @@ struct TorAnimationFileHandle : SharedFilePtr {
 TorModelFilePtr   gSandTornadoModelFile(ASSET_SAND_TORNADO_BMD);   /* model */
 TorAnimationFileHandle gSandTornadoAnimationFile(ASSET_SAND_TORNADO_BCA);   /* anim  */
 
-bool ApproachLinear(short &value, short target, short step);
 
 // @symbol _ZN7daTor_cD1Ev
 // @symbol _ZN7daTor_cD0Ev

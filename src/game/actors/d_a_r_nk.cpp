@@ -40,6 +40,7 @@ enum daRNk_c_AssetId {
 #include "SharedFilePtr.h"
 #include "nitro/fx/fx.h"
 #include "Sound.h"
+#include "math/Approach.h"
 namespace cstd {
 s16 atan2(s32, s32);
 }
@@ -137,8 +138,6 @@ struct RNkAnimationFileHandle : SharedFilePtr {
 #define SET_ANIM(this, bca, flags) \
     (this)->mAnmModel.SetAnim((BCA_File *)(bca), (flags), 0x1000, 0)
 
-bool ApproachLinear(short &value, short target, short step);
-int ApproachLinear(int &value, int target, int step);
 
 /* func_ov062_02119af0's result. */
 enum {

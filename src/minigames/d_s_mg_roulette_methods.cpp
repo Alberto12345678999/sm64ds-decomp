@@ -47,6 +47,7 @@ enum dScMgRoulette_c_AssetId {
 #include "PlayerInput.h"
 #include "nitro/fx/fx.h"
 #include "Sound.h"
+#include "math/Approach.h"
 
 /* Local views of the records the helpers walk. */
 
@@ -151,7 +152,6 @@ void LoadBGPltt(const void *data, unsigned int offset, unsigned int size);
 void LoadOBJPltt(const void *data, unsigned int offset, unsigned int size);
 }
 
-int ApproachLinear(int &value, int target, int step);
 
 extern "C" {
 

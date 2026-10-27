@@ -42,8 +42,7 @@ enum daBakubaku_c_AssetId {
 #include "SpawnInfo.h"
 #include "Player.h"
 #include "SharedFilePtr.h"
-
-bool ApproachLinear(short &value, short target, short step);
+#include "math/Approach.h"
 
 /* dCc_c bit table: flags/vulnFlags/hitFlags share it. */
 enum {
@@ -119,7 +118,6 @@ void func_02012694(int a, void *p);
    +0x800 and +0x7f4. */
 u32 func_02022c80(u32, u32, Fix12i, Fix12i, Fix12i, const void *);
 u32 func_02022d00(u32, u32, Fix12i, Fix12i, Fix12i, void *);
-void _Z14ApproachLinearRiii(int *p, int t, int s);
 }
 
 /* Both predicates are int-returning, as the ROM materializes the 0/1
@@ -306,7 +304,7 @@ int daBakubaku_c::func_ov032_02111e24()
     Vector3 out;
     short ang;
 
-    _Z14ApproachLinearRiii(&mHorzSpeed, 0x5000, 0x333);
+    ApproachLinear(mHorzSpeed, 0x5000, 0x333);
     if (func_ov032_02111350() == 1) {
         mStateTimer = 0x28;
         mChaseCooldown = 0x28;

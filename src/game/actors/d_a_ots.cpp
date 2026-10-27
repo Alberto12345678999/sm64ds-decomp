@@ -49,7 +49,6 @@
  * - IsTooFarAwayFromPlayer / IsPlayerInRange(Fix12,Fix12,Fix12,s32) 6az:
  *   func_ov064_021165d8 / 02116560. Header methods carry Fix12<int>.
  * - Particle::System::New / NewSimple 6az: func_ov064_0211616c / 02115f98.
- * - _Z14ApproachLinearRiii stays mangled; no header method form here.
  * - func_0201267c: PlayStepSound / PlayHitSound / PlayDeathSound at mCamSpacePosX.
  * - 0x398..0x3f9 stay children's padding (annexing them as members would move
  *   the fields the children declare from 0x3fa on); the helpers reach them
@@ -104,11 +103,11 @@
 #include "Player.h"
 #include "nitro/fx/fx.h"
 #include "Sound.h"
+#include "math/Approach.h"
 namespace cstd {
 s16 atan2(s32, s32);
 }
 
-bool ApproachLinear(short &value, short target, short step);
 
 /* Actor IDs (symbols/actor_debug_names.tsv). */
 enum {
@@ -222,8 +221,6 @@ extern void *d_a_otsNewHold(u32 id, u32 param, Fix12i x, Fix12i y, Fix12i z, con
                             struct Callback *cb);
 extern void Matrix4x3_FromRotationY(void* m, short angle);
 short Vec3_HorzAngle(const Vector3 *a, const Vector3 *b);
-
-int _Z14ApproachLinearRiii(int *dst, int target, int rate);
 
 
 void func_ov064_021163c0(daOts_c *c);
@@ -676,7 +673,7 @@ void daOts_c::func_ov064_02116560() {
  * animation at double speed. */
 void daOts_c::func_ov064_02116460()
 {
-    if (_Z14ApproachLinearRiii(&this->mHorzSpeed, 0, tail().mHorzDecel) != 0) {
+    if (ApproachLinear(this->mHorzSpeed, 0, tail().mHorzDecel) != 0) {
         int b = (this->actorID == kBigBullyActorId);
         int lim = b ? 0x14 : 0xa;
         if (tail().mHopCount < 2) {

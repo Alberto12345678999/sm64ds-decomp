@@ -49,6 +49,7 @@ struct System {
 #include "SpawnInfo.h"
 #include "Sound.h"
 #include "G3X.h"
+#include "math/Approach.h"
 
 struct BMD_File;
 struct BTP_File;
@@ -63,9 +64,8 @@ namespace G3i {
 void LookAt_(const Vector3 *camPos, const Vector3 *up, const Vector3 *target, bool draw,
              Matrix4x3 *m);
 void PerspectiveW_(Fix12i sinFov, Fix12i cosFov, Fix12i aspect, Fix12i nearZ, Fix12i farZ,
-                   Fix12i scaleW, bool load, Matrix4x3 *m);
+                   Fix12i scaleW, int load, Matrix4x3 *m);
 }
-bool ApproachLinear(short &value, short target, short step);
 void CopyToViewMat(const Matrix4x3 *m);
 
 /* The resource handles as the ROM lays them out: {id, loaded file}. The

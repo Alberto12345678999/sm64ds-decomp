@@ -43,6 +43,7 @@ enum d_a_propeller_heyho_AssetId {
 
 #include "daPropeller_Heyho_c.h"
 #include "SpawnInfo.h"
+#include "math/Approach.h"
 
 /* The cartridge preserves this descriptor's C-ABI symbol but not its source
  * spelling.  Keep that evidence-bounded alias; all seven scalar words and
@@ -371,7 +372,6 @@ int daPropeller_Heyho_c::CleanupResources()
 // @symbol func_ov070_02120070
 #include "common.h"
 
-bool ApproachLinear(short &value, short target, short step);
 extern "C" {
 
 extern void Vec3_Asr(void* d, void* s, int sh);
@@ -439,7 +439,6 @@ extern short Vec3_VertAngle(void *a, void *b);
 extern void Matrix4x3_FromRotationY(void *m, int angle);
 extern void Matrix4x3_ApplyInPlaceToRotationX(void *m, short ang);
 extern void MulVec3Mat4x3(void *in, void *m, void *out);
-extern void _Z14ApproachLinearRiii(void *dst, int a, int b);
 extern int FlyGuy_ChangeState(daPropeller_Heyho_c *c, daPropeller_Heyho_c::State *p);
 
 extern int data_020a0e68[];
@@ -483,9 +482,9 @@ int func_ov070_0211fd98(daPropeller_Heyho_c *c)
     Matrix4x3_ApplyInPlaceToRotationX(data_020a0e68, c->mPrevAngleX);
     MulVec3Mat4x3(in, data_020a0e68, out);
 
-    _Z14ApproachLinearRiii(&c->mSpeedX, out[0], 0x1000);
-    _Z14ApproachLinearRiii(&c->mVertSpeed, out[1], 0x800);
-    _Z14ApproachLinearRiii(&c->mSpeedZ, out[2], 0x1000);
+    ApproachLinear(c->mSpeedX, out[0], 0x1000);
+    ApproachLinear(c->mVertSpeed, out[1], 0x800);
+    ApproachLinear(c->mSpeedZ, out[2], 0x1000);
 
     if ((u16)c->mStateTimer == 0) {
         FlyGuy_ChangeState(c, &data_ov070_0212359c);

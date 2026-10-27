@@ -258,7 +258,7 @@ struct Player : dActor_c {
     s32 mFloorNormalZ;            /* 0x55c */
     /* Wall normal, fx12, and the exact counterpart of the floor normal above.
      * func_ov002_020c25a8 writes all three from
-     * SurfaceInfo::CopyNormalTo(dBgCh_Actr::GetWallResult(&mMeshClsn) + 4, &wn)
+     * mMeshClsn.GetWallResult()->surface.CopyNormalTo(wn)
      * -- the same helper, the same shape, one surface over. It then pushes the
      * actor out along it (`mPosX -= mWallNormalX * 2`, `mPosZ -= mWallNormalZ * 2`).
      * Seven bodies read the pair back as `cstd::atan2(mWallNormalX, mWallNormalZ)`

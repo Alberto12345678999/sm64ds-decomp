@@ -45,6 +45,7 @@
 #include "dCc_c.h"
 #include "Sound.h"
 #include "cstd.h"
+#include "math/Approach.h"
 
 /* Actor IDs from symbols/actor_debug_names.tsv. */
 enum {
@@ -106,8 +107,6 @@ void d_a_iblPlayLongHold(u32 a, u32 b, u32 c, void *v, u32 d);
 void func_02038414(void *p);
 int atan2_hold_d_a_ibl_1(int y, int x);
 int func_ov002_020ad660(void *a, void *b, void *d, int e);
-int _Z14ApproachLinearRsss(short *value, short target, short step);
-void _Z14ApproachLinearRiii(int *value, int target, int step);
 int Vec3_HorzLen(void *v);
 int Vec3_HorzDist(const void *a, const void *b);
 int Vec3_Equal(void *a, void *b);
@@ -425,7 +424,7 @@ void daIbl_c::func_ov100_021424c0() {
         return;
 
     r = func_ov100_0214233c();
-    _Z14ApproachLinearRsss(&mPrevAngleY, mHeadingToNode, 0x800);
+    ApproachLinear(mPrevAngleY, mHeadingToNode, 0x800);
 
     if (r == -1) {
         mVariant = daIbl_KIND_ROLL_OFF;
@@ -457,7 +456,7 @@ void daIbl_c::func_ov100_021424c0() {
             if (mHorzSpeed >= 0x23000) {
                 mHorzSpeed = 0x23000;
             } else if (mVariant == daIbl_KIND_PATH_RAMP) {
-                _Z14ApproachLinearRiii(&mHorzSpeed, 0x23000, 0x400);
+                ApproachLinear(mHorzSpeed, 0x23000, 0x400);
             } else {
                 mSpeedX += mFloorNormalX;
                 mSpeedZ += mFloorNormalZ;

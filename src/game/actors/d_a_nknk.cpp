@@ -62,9 +62,7 @@ enum d_a_nknk_AssetId {
 #include "dBgPi.h"
 #include "nitro/fx/fx.h"
 #include "Sound.h"
-
-int ApproachLinear(int &value, int target, int step);
-bool ApproachLinear(short &value, short target, short step);
+#include "math/Approach.h"
 
 /* File-scope resource handles: the ctor/dtor are the ROM's SharedFilePtr
  * veneer pairs (func_02017acc / func_02017ab4 for the two models,
@@ -501,7 +499,7 @@ void daNknk_c::func_ov062_02118a50()
 {
     if (mHorzSpeed != 0) {
         if (mWithMeshClsn.IsOnWall() != 0) {
-            dBgPi *wall = (dBgPi *)mWithMeshClsn.GetWallResult();
+            dBgPi *wall = mWithMeshClsn.GetWallResult();
             wall->surface.CopyNormalTo(*(Vector3*)&mWallNormalX);
             mPrevAngleY = ReflectAngle(mWallNormalX, mWallNormalZ, mPrevAngleY);
         }
@@ -1165,7 +1163,7 @@ void daNknk_c::func_ov062_021175c0()
 /* Standing on a water floor: drop a coin and die. */
 void daNknk_c::func_ov062_02117570() {
     if (!mWithMeshClsn.IsOnGround()) return;
-    dBgPi *floor = (dBgPi *)mWithMeshClsn.GetFloorResult();
+    dBgPi *floor = mWithMeshClsn.GetFloorResult();
     if (!SurfaceInfo_TestFlag0x20((int *)&floor->surface)) return;
     SpawnCoin();
     KillAndTrackInDeathTable();

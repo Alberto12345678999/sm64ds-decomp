@@ -14,6 +14,7 @@
  */
 #include "common.h"
 #include "G3X.h"
+#include "GX.h"
 
 #define REG_DISP3DCNT (*(volatile u16 *)0x04000060)
 #define REG_MTX_MODE (*(volatile u32 *)0x04000440)
@@ -25,12 +26,6 @@
 #define MTX_MODE_POSITION_VECTOR 2
 #define MTX_MODE_TEXTURE 3
 
-namespace GX {
-
-void SetBankForTex(u16 banks);
-void SetBankForTexPltt(u16 banks);
-
-}
 
 extern "C" {
 extern Matrix4x3 data_0209b3ec; /* the view matrix */
@@ -45,7 +40,7 @@ void func_02045d9c(void);
 }
 
 struct G3i {
-    static void PerspectiveW_(Fix12i, Fix12i, Fix12i, Fix12i, Fix12i, Fix12i, bool, Matrix4x3 *);
+    static void PerspectiveW_(Fix12i, Fix12i, Fix12i, Fix12i, Fix12i, Fix12i, int, Matrix4x3 *);
 };
 
 extern "C" {

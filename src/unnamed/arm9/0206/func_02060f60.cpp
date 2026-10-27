@@ -15,13 +15,13 @@ namespace IRQ {
 }
 
 /* The request block shared with ARM7 (NitroSDK CARDiCommandArg); the name
- * of its first field follows func_02060484.c's view. */
+ * of its first field follows func_02060484.cpp's view. */
 struct ChunkRequest {
     int mResult; /* 0x00 -- 0 (CARD_RESULT_SUCCESS), 4 (TIMEOUT) retried */
 };
 
 /* The card access state block data_020a8180 (NitroSDK CARDiCommon), the
- * fields this function touches; names as func_02060484.c spells them. */
+ * fields this function touches; names as func_02060484.cpp spells them. */
 struct CardCommon {
     ChunkRequest *mRequest; /* 0x00 */
     /* 0x04 -- the request type sent to ARM7 (NitroSDK command): stored here

@@ -71,8 +71,7 @@
 #include "G2x.h"
 #include "Memory.h"
 #include "cstd.h"
-
-bool ApproachLinear(short &value, short target, short step);
+#include "math/Approach.h"
 
 /* ---------------------------------------------------------------------------
  * Shadow types and ABI stand-ins that cannot live inside a function body.
@@ -1355,11 +1354,9 @@ int func_ov002_020bec84(void* p, unsigned int i) {
 
 // @symbol func_ov002_020bec9c
 extern "C" {
-int func_ov002_020bec9c(void*c,unsigned int a,int b,int d,unsigned short e){
+void func_ov002_020bec9c(void *c, unsigned int a, int b, int d, unsigned short e) {
     extern int data_ov002_020ff220[];
-    /* local extern: tail-forwards SetAnim's r0 as this function's int result. */
-    extern int _ZN6Player7SetAnimEjiit(void *, unsigned int, int, int, unsigned short);
-    return _ZN6Player7SetAnimEjiit(c, data_ov002_020ff220[a], b, d, e);
+    ((Player *)c)->SetAnim(data_ov002_020ff220[a], b, d, e);
 }
 }
 
@@ -1370,8 +1367,9 @@ int func_ov002_020bec9c(void*c,unsigned int a,int b,int d,unsigned short e){
  * flag is consulted depends on the second argument -- mIsMetal for the live
  * state, mDrawnIsMetal (func_ov002_020e4bb8's blinked copy) for drawing.
  *
- * const, and the _ZNK in the symbol is what says so: declared without it the
- * compiler emits _ZN..., which names a symbol that does not exist.
+ * const, and the K in the mangled name is what says so: declared without it
+ * the compiler emits the non-const name, which names a symbol that does not
+ * exist.
  */
 unsigned int Player::GetBodyModelID(unsigned int a, bool b_) const
 {
@@ -1462,7 +1460,7 @@ int Player::IsAnim(unsigned int a)
 /* mwccarm rejects a linkage-spec inside a function, and these six names are
    redeclared with other types elsewhere in the TU, so they cannot be hoisted.
    The block stays so the hand-spelled callees keep C linkage. The method
-   itself still mangles as _ZN6Player7SetAnimEjiit. */
+   itself still mangles as the Player member. */
 extern "C" {
 #pragma opt_propagation off
 void Player::SetAnim(u32 animId, int flags, Fix12i speed, u16 startFrame) {
@@ -2342,7 +2340,7 @@ int Player::func_ov002_020c06fc(int arg)
        Vec3 is a MEMBER of the local struct Frame below, so a non-POD element
        gives Frame an implicit destructor, and mwccarm emits that as a new
        compiler-numbered local-class symbol -- measured as
-       _ZN6Player20Frame$2583Player_cppD1Ev. This TU emits no @NNNN/$NNN symbols
+       a D1 for Player::Frame$2583Player_cpp. This TU emits no @NNNN/$NNN symbols
        at all today, and such a name depends on declaration order (compare
        Bundle$902d_a_mky_cpp in AGENTS.md). Frame has to stay POD. */
     struct Vec3 { s32 x, y, z; };
@@ -2959,7 +2957,6 @@ void func_ov002_020c18b0(char *self, int p1)
 extern "C" {
 int Player::func_ov002_020c19d0(int arg1, int arg2) {
     char* self = (char*)this;
-    extern void _ZNK11SurfaceInfo12CopyNormalToER7Vector3(void*, void*);
     extern s16 data_02082214[];
     int angle = (unsigned short)mAngleY;
     dBgCh_Lin line;
@@ -2973,7 +2970,7 @@ int Player::func_ov002_020c19d0(int arg1, int arg2) {
     if (!line.DetectClsn()) {
         return 0;
     }
-    _ZNK11SurfaceInfo12CopyNormalToER7Vector3(&line.surface, &nrm);
+    line.surface.CopyNormalTo(nrm);
     if (nrm.y != 0) {
         return 0;
     }
@@ -2982,7 +2979,7 @@ int Player::func_ov002_020c19d0(int arg1, int arg2) {
 }
 
 // @symbol _ZN6Player19func_ov002_020c1ad8Ei
-/* _ZN6Player19func_ov002_020c1ad8Ei at 0x020c1ad8 (ov002)
+/* Player::func_ov002_020c1ad8(int) at 0x020c1ad8 (ov002)
  * Matched byte-for-byte with mwccarm 1.2/sp2p3.
  */
 extern "C" {
@@ -3338,7 +3335,6 @@ int Player::func_ov002_020c25a8(int arg1)
     extern void func_ov002_020eed24(void*, void*);
     extern int func_02035638(void*);
     extern void func_020371fc(void *);
-    extern void _ZNK11SurfaceInfo12CopyNormalToER7Vector3(void*, void*);
     extern int func_020356c8(void*);
     extern void func_ov002_020cef84(void*);
     extern int func_ov002_020d0580(void*);
@@ -3421,7 +3417,7 @@ int Player::func_ov002_020c25a8(int arg1)
         func_020371fc(&mMeshClsn);
 
     if (mClsnFlags & 1) {
-        fr = (dBgPi *)mMeshClsn.GetFloorResult();
+        fr = mMeshClsn.GetFloorResult();
         dst = &tmp.f04;
 
         {
@@ -3447,7 +3443,7 @@ int Player::func_ov002_020c25a8(int arg1)
         ret = fr->surface.clps.GetFloorClass();
 
         if (mIsUnderwater == 0 && ret != 1) {
-            _ZNK11SurfaceInfo12CopyNormalToER7Vector3(&fr->surface, &v);
+            fr->surface.CopyNormalTo(v);
             if (v.y != 0) {
                 int t = cstd::fdiv(FX_MUL(v.x, mSpeedX) + FX_MUL(v.z, mSpeedZ), v.y);
                 t = -(t + 0x8000);
@@ -3479,7 +3475,7 @@ int Player::func_ov002_020c25a8(int arg1)
             return wallFlag;
     }
 
-    _ZNK11SurfaceInfo12CopyNormalToER7Vector3(&((dBgPi *)mMeshClsn.GetWallResult())->surface, &wn);
+    mMeshClsn.GetWallResult()->surface.CopyNormalTo(wn);
     mWallNormalX = wn.x;
     mWallNormalY = wn.y;
     mWallNormalZ = wn.z;
@@ -3526,7 +3522,7 @@ void Player::func_ov002_020c29d4()
         mQuicksandRunFlags = 0x80;
     } else if (flags & 0x80) {
         if (mMeshClsn.IsOnGround()) {
-            int r = ((dBgPi *)mMeshClsn.GetFloorResult())->surface.clps.GetSurfaceType();
+            int r = mMeshClsn.GetFloorResult()->surface.clps.GetSurfaceType();
             if (r >= 6 && r <= 9) return;
             mQuicksandRunFlags = 0;
             mQuicksandRunTimer = 0;
@@ -3559,7 +3555,7 @@ void Player::func_ov002_020c2b08()
 
         if (!mMeshClsn.IsOnGround())
             return;
-        if (!SurfaceInfo_TestFlag0x20((int *)&((dBgPi *)mMeshClsn.GetFloorResult())->surface.clps))
+        if (!SurfaceInfo_TestFlag0x20((int *)&mMeshClsn.GetFloorResult()->surface.clps))
             return;
 
         limit = Player_ScaleByCharFactor(c, 0x20000);
@@ -3574,7 +3570,7 @@ void Player::func_ov002_020c2b08()
     if (mWaterRunTimer != 0) {
         if (!mMeshClsn.IsOnGround())
             goto clear_timer;
-        if (!SurfaceInfo_TestFlag0x20((int *)&((dBgPi *)mMeshClsn.GetFloorResult())->surface.clps))
+        if (!SurfaceInfo_TestFlag0x20((int *)&mMeshClsn.GetFloorResult()->surface.clps))
             goto clear_timer;
 
         mIsInShallowWater = 1;
@@ -3637,7 +3633,7 @@ void Player::func_ov002_020c2b08()
     mDetectWater = 0;
     if (!mMeshClsn.IsOnGround())
         return;
-    if (SurfaceInfo_TestFlag0x20((int *)&((dBgPi *)mMeshClsn.GetFloorResult())->surface.clps) != 0)
+    if (SurfaceInfo_TestFlag0x20((int *)&mMeshClsn.GetFloorResult()->surface.clps) != 0)
         return;
     if (mIsInShallowWater != 0)
         return;
@@ -3702,8 +3698,8 @@ void Player::func_ov002_020c2e78(){
 /* recovered: named members + shared header, real C++ method
  *
  * Warping is allowed from exactly two states. One of them is now spelt as the
- * static member it is -- Player::ST_WAIT, which the compiler mangles to
- * _ZN6Player7ST_WAITE for us -- instead of a hand-written extern. The other is
+ * static member it is -- Player::ST_WAIT, which the compiler mangles for us --
+ * instead of a hand-written extern. The other is
  * still reached by its ov002 address; it has no recovered name yet.
  *
  * The file's own `struct State;` stand-in is gone with it: IsState really
@@ -3901,7 +3897,6 @@ void Player::func_ov002_020c38a0()
 {
     extern int Vec3_HorzLen(void*);
     extern int atan2_hold_Player_14(int a, int b);
-    extern void _Z15ApproachLinear2Rsss(void*, short a, short b);
     V3Quad s;
     int hlen;
     int ang;
@@ -3940,7 +3935,7 @@ void Player::func_ov002_020c38a0()
             return;
         }
         this->mAngleX = -cstd::atan2(s.e.y, hlen);
-        _Z15ApproachLinear2Rsss(&this->mAngleZ, 0x2000, 0x10);
+        ApproachLinear2(this->mAngleZ, 0x2000, 0x10);
         this->mAngleY = ang;
         break;
     case 2:
@@ -4412,6 +4407,7 @@ int Player::func_ov002_020c44c4()
     extern int data_0209caa0[];
     extern s8 data_0209f2f8;
     extern u8 data_0209f264;
+    /* local extern: the registrar takes this D1 by address, which C++ cannot spell. */
     extern void *_ZN7Vector3D1Ev(void *object);
     extern void func_020731dc(void *object, void *destructor, void *node);
     extern void Vec3_RotateYAndTranslate(void*, void*, short angle, void*);
@@ -4551,7 +4547,6 @@ int Player::func_ov002_020c47f4()
 {
     typedef int Fix12i;
     extern short Vec3_VertAngle(const Vector3* v1, const Vector3* v0);
-    extern int _Z15ApproachLinear2Rsss(short& dst, short to, short step);
     extern short Vec3_HorzAngle(const Vector3* v0, const Vector3* v1);
     extern int ApproachAngle(void*, short targetAngle, short invFactor, short maxDelta, short minDelta);
     Vector3 vec;
@@ -4564,8 +4559,8 @@ int Player::func_ov002_020c47f4()
     vec.y = y + 0x64000;
     mHeadRot[0] = 0;
     mHeadRot[1] = 0;
-    r = _Z15ApproachLinear2Rsss(mAngleYSpeed,
-                                (short)(-Vec3_VertAngle((Vector3 *)&mStateTargetX, &vec)), 0x200);
+    r = ApproachLinear2(mAngleYSpeed, (short)(-Vec3_VertAngle((Vector3 *)&mStateTargetX, &vec)),
+                        0x200);
     mHeadRot[0] = mAngleYSpeed;
     a = ApproachAngle(&this->mAngleY,
                       (short)(Vec3_HorzAngle((Vector3 *)&mStateTargetX, &vec) + 0x8000), 4, 0x1000,
@@ -4587,7 +4582,6 @@ int Player::St_Talk_Main()
     extern int PlayerChangeMusicVolumeHold(u32 vol, int t);
     extern void func_0201f32c(s16 a);
     extern void func_0200d3f8(void*, u8 playerID, void*);
-    extern int _Z15ApproachLinear2Rsss(void*, s16 target, s16 step);
     extern void func_0200d81c(void*, u8 playerID);
     extern void Player_AdvanceAnims(void*);
     extern int data_0209b454;
@@ -4661,7 +4655,7 @@ int Player::St_Talk_Main()
         break;
     case 4:
     case 5:
-        if (_Z15ApproachLinear2Rsss(&mHeadRot[0], 0, 0x200) != 0) {
+        if (ApproachLinear2(mHeadRot[0], 0, 0x200) != 0) {
             if (mStateStep != 5)
                 mStateStep = 6;
             else
@@ -4748,6 +4742,7 @@ int Player::ShowMessage2(fBase_c & actor_, unsigned int msg, const Vector3 * pos
     extern int data_ov002_0210e15c;
     extern int data_ov002_0210f224[3];
     extern int data_ov002_0210f1ac;
+    /* local extern: the registrar takes this D1 by address, which C++ cannot spell. */
     extern void *_ZN7Vector3D1Ev(void *object);
     extern void *data_0209f318;
     fBase_c *actor = &actor_;
@@ -5067,12 +5062,11 @@ int Player::St_StuckInGround_Init()
 extern "C" {
 int Player::St_BowserEarthquake_Main()
 {
-    extern void _Z14ApproachLinearRiii(void*, int value, int speed);
     extern void Player_AdvanceAnims(void*);
     extern short data_02082214[];
     extern Player::State data_ov002_0211013c;
     if (mStateStep == 0) {
-        _Z14ApproachLinearRiii((int*)((char*)&mHorzSpeed), 0, 0x1800);
+        ApproachLinear(*((int *)((char *)&mHorzSpeed)), 0, 0x1800);
         if (this->FinishedAnim()) {
             this->ChangeState(data_ov002_0211013c);
         }
@@ -5342,7 +5336,7 @@ int Player::St_DeadPit_Init()
 
 // @symbol _ZN6Player14EnterWhirlpoolEv
 /* recovered: named members + shared header, real C++ method */
-/* _ZN6Player14EnterWhirlpoolEv @ 0x20c5cc8 (ov002) -- tail-call veneer to _ZN6Player19func_ov002_020c5decEi (0x20c5dec) with r1=9.
+/* Player::EnterWhirlpool() @ 0x20c5cc8 (ov002) -- tail-call veneer to Player::func_ov002_020c5dec(int) (0x20c5dec) with r1=9.
  */
 void Player::EnterWhirlpool()
 {
@@ -5409,7 +5403,6 @@ int Player::func_ov002_020c5dec(int r1){
 extern "C" {
 int Player::St_DeadHit_Main()
 {
-    extern void _Z14ApproachLinearRiii(void*, int a, int b);
     extern void Player_AdvanceAnims(void*);
     extern u8 data_ov002_0211117c;
     extern u8 data_ov002_02109db8[];
@@ -5431,7 +5424,7 @@ int Player::St_DeadHit_Main()
             Sound::PlayCharVoice(mCharacter, 0x11, mCamSpacePos);
             mStateArg = 1;
         }
-        _Z14ApproachLinearRiii((int *)((char *)&mHorzSpeed), 0, 0x1800);
+        ApproachLinear(*((int *)((char *)&mHorzSpeed)), 0, 0x1800);
     }
 
     switch (mStateWork) {
@@ -6801,7 +6794,6 @@ extern "C" {
 unsigned char Player::func_ov002_020c84b0() {
     char *c = (char *)this;
     extern short Vec3_VertAngle(const Vector3 *v1, const Vector3 *v0);
-    extern void _Z15ApproachLinear2Rsss(void *, short t, short s);
     Vector3 v;
     short ang;
 dummy_label_675641:;
@@ -6810,7 +6802,7 @@ dummy_label_675641:;
     v.z = this->mPosZ;
     v.y += 0x64000;
     ang = Vec3_VertAngle((Vector3 *)&mStateTargetX, &v);
-    _Z15ApproachLinear2Rsss(&this->mAngleYSpeed, -ang, 0x400);
+    ApproachLinear2(this->mAngleYSpeed, -ang, 0x400);
     mHeadRot[0] = 0;
     mHeadRot[1] = 0;
     mHeadRot[0] = this->mAngleYSpeed;
@@ -6994,6 +6986,7 @@ int Player::func_ov002_020c8a4c() {
     extern short Vec3_HorzAngle(const Vector3*, const Vector3*);
     extern void func_020731dc(void*, void*, void*);
     extern void Vec3_RotateYAndTranslate(void*, const Vector3*, int, const Vector3*);
+    /* local extern: the registrar takes this D1 by address, which C++ cannot spell. */
     extern void *_ZN7Vector3D1Ev(void *object);
     extern int func_02053274(const Vector3*, const Vector3*);
     extern int data_ov002_0210e150;
@@ -7040,6 +7033,7 @@ extern "C" {
 int Player::func_ov002_020c8b78() {
     extern void PlayerChangeMusicVolumeHold3(unsigned int, int);
     extern void func_020731dc(void*, void*, void*);
+    /* local extern: the registrar takes this D1 by address, which C++ cannot spell. */
     extern void *_ZN7Vector3D1Ev(void *object);
     extern void Vec3_RotateYAndTranslate(void*, void*, int, void*);
     extern int data_ov002_0210e154;
@@ -7220,12 +7214,11 @@ int Player::func_ov002_020c904c() {
     typedef unsigned int u32;
     typedef int s32;
     typedef unsigned char u8;
-    extern void _Z14ApproachLinearRiii(void *, int target, int step);
     extern int Math_Function_0203b14c(void *, int a, int b, int c, int d);
     int mid;
     char *anim;
-    _Z14ApproachLinearRiii(&this->mPosX, this->mStateTargetX, 0x8000);
-    _Z14ApproachLinearRiii(&this->mPosZ, this->mStateTargetZ, 0x8000);
+    ApproachLinear(this->mPosX, this->mStateTargetX, 0x8000);
+    ApproachLinear(this->mPosZ, this->mStateTargetZ, 0x8000);
     if (Math_Function_0203b14c(&mPosY, (this->mGroundY) + 0x190000, 0x200, 0x64000, 0x10000) == 0) {
         this->mStateStep = 0xc;
         ((Player *)c)->SetAnim(0x56, 0, 0x1000, 0);
@@ -7243,23 +7236,22 @@ int Player::func_ov002_020c904c() {
 
 // @symbol _ZN6Player19func_ov002_020c9128Ev
 extern "C" {
-int Player::func_ov002_020c9128(){
+int Player::func_ov002_020c9128() {
 
     extern Player::State data_ov002_0211013c;
-    extern short _Z15ApproachLinear2Rsss(short& v, short t, short s);
-  if (mStateStep == 4) {
-    _Z15ApproachLinear2Rsss(mAngleYSpeed, 0x1000, 0x400);
-  } else {
-    if (_Z15ApproachLinear2Rsss(mAngleYSpeed, 0x4000, 0x100)) {
-      this->ChangeState(data_ov002_0211013c);
-      return 1;
+    if (mStateStep == 4) {
+        ApproachLinear2(mAngleYSpeed, 0x1000, 0x400);
+    } else {
+        if (ApproachLinear2(mAngleYSpeed, 0x4000, 0x100)) {
+            this->ChangeState(data_ov002_0211013c);
+            return 1;
+        }
     }
-  }
-  mHeadRot[0] = 0;
-  mHeadRot[1] = 0;
-  mHeadRot[2] = mAngleYSpeed;
-  mHeadRotMode = 2;
-  return 0;
+    mHeadRot[0] = 0;
+    mHeadRot[1] = 0;
+    mHeadRot[2] = mAngleYSpeed;
+    mHeadRotMode = 2;
+    return 0;
 }
 }
 
@@ -7469,7 +7461,7 @@ done:
 }
 
 // @symbol _ZN6Player19func_ov002_020c9718Ev
-/* _ZN6Player19func_ov002_020c9718Ev at 0x020c9718
+/* Player::func_ov002_020c9718() at 0x020c9718
  *
  * Matched byte-for-byte with mwccarm 1.2/sp2p3 (overlay ov002).
  */
@@ -8018,7 +8010,7 @@ int Player::TryTalkToKeyDoor()
 
 // @symbol _ZN6Player12Unk_020ca488Ev
 /* recovered: named members + shared header, real C++ method */
-/* _ZN6Player12Unk_020ca488Ev @ 0x20ca488 (ov002) -- tail-call veneer to _ZN6Player12Unk_020c9e5cEh (0x20c9e5c) with r1=11.
+/* Player::Unk_020ca488() @ 0x20ca488 (ov002) -- tail-call veneer to Player::Unk_020c9e5c(unsigned char) (0x20c9e5c) with r1=11.
  */
 extern "C" {
 int Player::Unk_020ca488() {
@@ -8043,6 +8035,7 @@ int Player::TryEnterStarDoor(Vector3 & pos_, short kind)
     extern int data_ov002_0210e164;
     extern int data_ov002_0210f344[3];
     extern int data_ov002_0210f308;
+    /* local extern: the registrar takes this D1 by address, which C++ cannot spell. */
     extern void *_ZN7Vector3D1Ev(void *object);
     extern void func_020731dc(void *object, void *destructor, void *node);
     extern void Vec3_RotateYAndTranslate(void*, void*, short angle, void*);
@@ -9184,7 +9177,6 @@ int Player::St_Shell_Main()
     extern void func_ov002_020eeca8(void*, int arg);
     extern int atan2_hold_Player_13(int a, int b);
     extern void ApproachAngle(void*, short target, int divisor, int band, int maxStep);
-    extern void _Z14ApproachLinearRiii(void*, int b, int c);
     extern void func_ov002_020e25f0(void*, int a);
     extern void func_ov002_020e28d4(void*, int a, int b);
     extern void Player_AdvanceAnims(void*);
@@ -9219,7 +9211,7 @@ int Player::St_Shell_Main()
     if (mMeshClsn.IsOnWall()) {
         int ang = cstd::atan2(mWallNormalX, mWallNormalZ);
         if (AngleDiff(ang, mPrevAngleY) > 0x6000) {
-            if (((dBgPi *)mMeshClsn.GetWallResult())->surface.clps.GetFloorClass() != 1) {
+            if (mMeshClsn.GetWallResult()->surface.clps.GetFloorClass() != 1) {
                 flag = 1;
             }
         }
@@ -9248,7 +9240,7 @@ int Player::St_Shell_Main()
             int spd = mHorzSpeed;
             int step = 0x1100;
             if (spd > 0) step = 0x600;
-            _Z14ApproachLinearRiii((int*)((char*)&mHorzSpeed), accel, step);
+            ApproachLinear(*((int *)((char *)&mHorzSpeed)), accel, step);
         }
         func_ov002_020c04e0();
         if (mIsAirborne != 0) {
@@ -9355,48 +9347,47 @@ int Player::St_Shell_Init()
 // @symbol _ZN6Player17St_HurtWater_MainEv
 /* recovered: named members + shared header, real C++ method */
 extern "C" {
-int Player::St_HurtWater_Main()
-{
-    extern int func_ov002_020cec2c(void*);
-    extern void _Z14ApproachLinearRiii(void*, int, int);
-    extern int func_ov002_020ceaf4(void*);
-    extern int func_ov002_020ceb7c(void*);
-    extern int Player_AdvanceAnims(void*);
+int Player::St_HurtWater_Main() {
+    extern int func_ov002_020cec2c(void *);
+    extern int func_ov002_020ceaf4(void *);
+    extern int func_ov002_020ceb7c(void *);
+    extern int Player_AdvanceAnims(void *);
     extern Player::State data_ov002_0211067c;
     extern Player::State data_ov002_021106ac;
     extern int data_0209f32c[];
-  if(func_ov002_020cec2c(((char*)this))) return 1;
-  _Z14ApproachLinearRiii((int*)((char*)&mHorzSpeed),0,0x800);
-  int t=func_ov002_020ceaf4(((char*)this));
-  _Z14ApproachLinearRiii((int*)((char*)&mVertSpeed),t,0x800);
-  if(this->FinishedAnim()){
-    if((mStateStep&1)==0){
-      mPrevAngleY=mPrevAngleY+0x8000;
-      mAngleY=mPrevAngleY;
+    if (func_ov002_020cec2c(((char *)this)))
+        return 1;
+    ApproachLinear(*((int *)((char *)&mHorzSpeed)), 0, 0x800);
+    int t = func_ov002_020ceaf4(((char *)this));
+    ApproachLinear(*((int *)((char *)&mVertSpeed)), t, 0x800);
+    if (this->FinishedAnim()) {
+        if ((mStateStep & 1) == 0) {
+            mPrevAngleY = mPrevAngleY + 0x8000;
+            mAngleY = mPrevAngleY;
+        }
+        if (this->GetHealth()) {
+            if (mIsMetal == 0)
+                this->ChangeState(data_ov002_0211067c);
+            else
+                this->ChangeState(data_ov002_021106ac);
+            mIsTakingDamage = 0;
+            if (mHurtDamage)
+                mInvincibleTimer = 0x24;
+        } else {
+            func_ov002_020c5dec(8);
+            return 1;
+        }
     }
-    if(this->GetHealth()){
-      if(mIsMetal==0)
-        this->ChangeState(data_ov002_0211067c);
-      else
-        this->ChangeState(data_ov002_021106ac);
-      mIsTakingDamage=0;
-      if(mHurtDamage)
-        mInvincibleTimer=0x24;
-    }else{
-      func_ov002_020c5dec(8);
-      return 1;
+    int lim = *(int *)data_0209f32c - 0x50000;
+    if (mPosY >= lim && (mClsnFlags & 1) == 0) {
+        if (mVertSpeed >= 0) {
+            mPosY = lim;
+            mVertSpeed = 0;
+        }
     }
-  }
-  int lim=*(int*)data_0209f32c-0x50000;
-  if(mPosY>=lim && (mClsnFlags&1)==0){
-    if(mVertSpeed>=0){
-      mPosY=lim;
-      mVertSpeed=0;
-    }
-  }
-  func_ov002_020ceb7c(((char*)this));
-  Player_AdvanceAnims(((char*)this));
-  return 1;
+    func_ov002_020ceb7c(((char *)this));
+    Player_AdvanceAnims(((char *)this));
+    return 1;
 }
 }
 
@@ -9446,7 +9437,6 @@ int Player::St_MetalWaterWater_Main()
     extern int func_ov002_020eeca8(void*, void*);
     extern int func_ov002_020bf224(void*, int a, int b);
     extern void ApproachAngle(void*, int target, int a, int b, int d);
-    extern void _Z14ApproachLinearRiii(void*, int a, int b);
     extern void PlayerNewSimpleHold7(u32 id, int x, int y, int z);
     extern void Player_AdvanceAnims(void*);
     extern struct S18b2 data_0209f4a0[];
@@ -9476,7 +9466,7 @@ int Player::St_MetalWaterWater_Main()
             ApproachAngle(&mPrevAngleY, mDesiredAngleY, 0x20, 0x1000, 0x10);
         }
         mAngleY = mPrevAngleY;
-        _Z14ApproachLinearRiii(&mHorzSpeed, v, 0x400);
+        ApproachLinear(mHorzSpeed, v, 0x400);
         py = mPosY;
     lim = py + 0x46000;
     if (mIsMega != 0) lim = py + 0xd2000;
@@ -9556,7 +9546,6 @@ int Player::St_MetalWaterGround_Main()
     extern int func_ov002_020cec2c(void*);
     extern void ApproachAngle(void*, short, int, int, int);
     extern int func_ov002_020bf224(void*, int, int);
-    extern void _Z14ApproachLinearRiii(void*, int, int);
     extern void func_0201251c(int, int, void*, int);
     extern void Player_AdvanceAnims(void*);
     extern int data_0209f32c;
@@ -9593,7 +9582,7 @@ int Player::St_MetalWaterGround_Main()
         ApproachAngle((short*)((char*)&mPrevAngleY), mDesiredAngleY, 8, 0x1000, 0x80);
         approach = func_ov002_020bf224(((char*)this), 0x14000, 0x1000);
     }
-    _Z14ApproachLinearRiii((int*)((char*)&mHorzSpeed), approach, 0x1000);
+    ApproachLinear(*((int *)((char *)&mHorzSpeed)), approach, 0x1000);
     mAngleY = mPrevAngleY;
     if(mIsMega != 0){
         if(mHorzSpeed == 0){
@@ -9772,7 +9761,6 @@ extern "C" {
 void func_ov002_020cd448(char* self) {
     Player *player = (Player *)self;
     extern int func_ov002_020c18b0(void*, int x);
-    extern void _Z15ApproachLinear2Rsss(short&, short, short);
     extern short data_0209f4a4;
     extern void func_ov002_020cd448(void*);
     unsigned char fl;
@@ -9784,7 +9772,7 @@ void func_ov002_020cd448(char* self) {
         before = player->mAngleX;
         func_ov002_020c18b0(self, 0);
         if (before < player->mAngleX) goto tail;
-        _Z15ApproachLinear2Rsss(player->mPrevAngleX, player->mAngleX, 0x200);
+        ApproachLinear2(player->mPrevAngleX, player->mAngleX, 0x200);
         goto tail;
     }
     if (fl & 2) {
@@ -9800,7 +9788,7 @@ void func_ov002_020cd448(char* self) {
         }
     }
 tail:
-    _Z15ApproachLinear2Rsss(player->mAngleXSpeed, player->mAngleZ, 0x200);
+    ApproachLinear2(player->mAngleXSpeed, player->mAngleZ, 0x200);
     player->mAngleZ = player->mAngleXSpeed;
 }
 }
@@ -9860,7 +9848,6 @@ void func_ov002_020cd71c(char *self)
     typedef short s16;
     extern int data_ov002_020ff1f0[];
     extern short data_0209f4a2[];
-    extern void _Z15ApproachLinear2Rsss(void*, short t, short s);
     extern void func_ov002_020cd71c(void*);
     int ip = data_ov002_020ff1f0[player->param1];
     int a = FX_MUL(ip, 0x320);
@@ -9882,7 +9869,7 @@ void func_ov002_020cd71c(char *self)
             if (player->mAngleYSpeed > c)
                 player->mAngleYSpeed = c;
         } else {
-            _Z15ApproachLinear2Rsss(&player->mAngleYSpeed, target, step);
+            ApproachLinear2(player->mAngleYSpeed, target, step);
         }
     } else if (target < 0) {
         if (player->mAngleYSpeed > 0) {
@@ -9891,10 +9878,10 @@ void func_ov002_020cd71c(char *self)
             if (player->mAngleYSpeed < -c)
                 player->mAngleYSpeed = -c;
         } else {
-            _Z15ApproachLinear2Rsss(&player->mAngleYSpeed, target, step);
+            ApproachLinear2(player->mAngleYSpeed, target, step);
         }
     } else {
-        _Z15ApproachLinear2Rsss(&player->mAngleYSpeed, 0, 0x40);
+        ApproachLinear2(player->mAngleYSpeed, 0, 0x40);
     }
 
     {
@@ -9926,7 +9913,6 @@ int Player::St_Swim_Main()
     extern void* func_02037dc4(void*);
     extern int atan2_hold_Player_12(int, int);
     extern void Vec3_RotateYAndTranslate(void*, void*, short, void*);
-    extern void _Z14ApproachLinearRiii(void*, int, int);
     extern int func_ov002_020ce324(void*);
     extern void func_ov002_020cd364(void*);
     extern void func_ov002_020cd3e0(void*);
@@ -9995,7 +9981,7 @@ int Player::St_Swim_Main()
     }
 
     if (mPrevVertSpeed == 0 && mMeshClsn.IsOnGround() != 0) {
-        fr = (int *)func_02037dc4(&((dBgPi *)mMeshClsn.GetFloorResult())->surface);
+        fr = (int *)func_02037dc4(&mMeshClsn.GetFloorResult()->surface);
         ang = fr[1];
         if (ang < 0x720 && ang > 0x400 && mPosY >= mWaterSurfaceY - 0xc8000) {
             int at;
@@ -10020,7 +10006,7 @@ int Player::St_Swim_Main()
         mAngleX = 0;
         mAngleZ = 0;
         mAngleYSpeed = 0;
-        _Z14ApproachLinearRiii((int*)(&mPrevVertSpeed), 0, 0x5000);
+        ApproachLinear(*((int *)(&mPrevVertSpeed)), 0, 0x5000);
         if (this->IsAnim(0xa8) == 0 && this->FinishedAnim() != 0) {
             this->SetAnim(0xa8, 0, 0x1000, 0);
         }
@@ -10033,7 +10019,7 @@ int Player::St_Swim_Main()
     case 1:
         var_r2 = 0x800;
         if (mStateTimer != 0) var_r2 = 0x200;
-        _Z14ApproachLinearRiii((int*)(&mPrevVertSpeed), 0, var_r2);
+        ApproachLinear(*((int *)(&mPrevVertSpeed)), 0, var_r2);
         if (this->IsAnim(0xa8) == 0) {
             if (this->FinishedAnim() != 0) {
                 this->SetAnim(0xa8, 0, 0x1000, 0);
@@ -10075,7 +10061,7 @@ int Player::St_Swim_Main()
         if (a4 >= 0xa) var_r6 = 0x800;
         else if (a4 <= 4) var_r6 = 0x1800;
         else var_r6 = 0;
-        _Z14ApproachLinearRiii((int*)(&mPrevVertSpeed), func_ov002_020cedb0(this, 0x10000), var_r6);
+        ApproachLinear(*((int *)(&mPrevVertSpeed)), func_ov002_020cedb0(this, 0x10000), var_r6);
         if (mStateTimer < 0xa && t4 == 0) {
             mStateWork |= 1;
         }
@@ -10088,8 +10074,9 @@ int Player::St_Swim_Main()
         }
         break;
     case 3:
-        _Z14ApproachLinearRiii((int*)(&mPrevVertSpeed), func_ov002_020cedb0(this, 0xc000), 0x200);
-        if (func_ov002_020ce324(this) != 0) return 1;
+        ApproachLinear(*((int *)(&mPrevVertSpeed)), func_ov002_020cedb0(this, 0xc000), 0x200);
+        if (func_ov002_020ce324(this) != 0)
+            return 1;
         if (t4 != 0) {
             this->SetAnim(0xa6, 0, 0x1000, 0);
             if (mModels.mBodyModels[this->GetBodyModelID((unsigned char)param1, 0)]->WillHitFrame(
@@ -10101,8 +10088,9 @@ int Player::St_Swim_Main()
         }
         break;
     case 4:
-        _Z14ApproachLinearRiii((int*)(&mPrevVertSpeed), 0, 0x400);
-        if (func_ov002_020ce324(this) != 0) return 1;
+        ApproachLinear(*((int *)(&mPrevVertSpeed)), 0, 0x400);
+        if (func_ov002_020ce324(this) != 0)
+            return 1;
         if (mStateTimer == 0 && t4 != 0) {
             func_ov002_020cd3e0(this);
         }
@@ -10122,7 +10110,7 @@ int Player::St_Swim_Main()
         if (a4 >= 5) var_r2 = 0x1000;
         else if (a4 == 0) { var_r2 = 0x800; var_r1 = 0; }
         else var_r2 = 0;
-        _Z14ApproachLinearRiii((int*)(&mPrevVertSpeed), var_r1, var_r2);
+        ApproachLinear(*((int *)(&mPrevVertSpeed)), var_r1, var_r2);
         if (this->FinishedAnim() != 0) {
             has = (mHeldObj != 0) ? 1 : 0;
             if (has != 0) {
@@ -10157,8 +10145,8 @@ int Player::St_Swim_Main()
         }
         break;
     case 8:
-        _Z14ApproachLinearRiii((int*)(&mPrevVertSpeed), func_ov002_020cedb0(this, 0x1e000), 0x400);
-        if ((*(unsigned short*)((char*)&data_0209f49e + gActivePlayerSlot * 0x18)) & 1) {
+        ApproachLinear(*((int *)(&mPrevVertSpeed)), func_ov002_020cedb0(this, 0x1e000), 0x400);
+        if ((*(unsigned short *)((char *)&data_0209f49e + gActivePlayerSlot * 0x18)) & 1) {
             this->SetAnim(0xb1, 0x40000000, 0x1000, 0);
             mStateStep = 9;
             EndStateMusic(0x33);
@@ -10213,7 +10201,6 @@ int func_ov002_020ce324(char* c)
     extern short data_02082214[];
     extern Player::State data_ov002_02110694;
     extern int func_ov002_020ceb54(void*);
-    extern void _ZNK11SurfaceInfo12CopyNormalToER7Vector3(const void* self, void*);
     extern int atan2_hold_Player_11(int a, int b);
     extern int AngleDiff(int a, int b);
     extern int func_ov002_020ce324(void*);
@@ -10259,7 +10246,7 @@ int func_ov002_020ce324(char* c)
         b2.z = bz;
         rl2.SetObjAndLine(b1, b2, (dActor_c *)c);
         if (rl2.DetectClsn()) {
-            _ZNK11SurfaceInfo12CopyNormalToER7Vector3(&rl2.surface, &nrm);
+            rl2.surface.CopyNormalTo(nrm);
             if (nrm.y == 0) {
                 if (AngleDiff(cstd::atan2(nrm.x, nrm.z), player->mAngleY) >= 0x5000)
                     ok = 1;
@@ -10807,17 +10794,17 @@ int func_ov002_020cf20c(char* c) {
 
 // @symbol func_ov002_020cf2f8
 extern "C" {
-void func_ov002_020cf2f8(void* c) {
-    extern int _Z14ApproachLinearRiii(void*, int, int);
-    extern int ApproachAngle(void*, int, int, int, int);
-    extern int func_ov002_020bf224(void*, int, int);
+void func_ov002_020cf2f8(void *c) {
+    extern int ApproachAngle(void *, int, int, int, int);
+    extern int func_ov002_020bf224(void *, int, int);
     extern short data_0209f4a0[];
-    extern void func_ov002_020cf2f8(void*);
-  if (*(short*)((char*)data_0209f4a0 + gActivePlayerSlot*0x18) == 0) return;
-  Player *p = (Player *)c;
-  _Z14ApproachLinearRiii(&p->mHorzSpeed, func_ov002_020bf224(c, 0x8000, 0x2000), 0x1000);
-  ApproachAngle(&p->mPrevAngleY, p->mDesiredAngleY, 0x10, 0x1000, 0x200);
-  p->mAngleY = p->mPrevAngleY;
+    extern void func_ov002_020cf2f8(void *);
+    if (*(short *)((char *)data_0209f4a0 + gActivePlayerSlot * 0x18) == 0)
+        return;
+    Player *p = (Player *)c;
+    ApproachLinear(p->mHorzSpeed, func_ov002_020bf224(c, 0x8000, 0x2000), 0x1000);
+    ApproachAngle(&p->mPrevAngleY, p->mDesiredAngleY, 0x10, 0x1000, 0x200);
+    p->mAngleY = p->mPrevAngleY;
 }
 }
 
@@ -11127,7 +11114,7 @@ int func_ov002_020cfbdc(char *self)
     if (player->mStateWaitTimer == 0) {
         if ((player->mClsnFlags & 2) != 0) {
             if (player->mMeshClsn.IsOnGround() != 0) {
-                dBgPi *fr = (dBgPi *)player->mMeshClsn.GetFloorResult();
+                dBgPi *fr = player->mMeshClsn.GetFloorResult();
                 if (fr->GetClsnID() != -1) {
                     if (dActor_c::FindWithID((unsigned int)fr->GetClsnID()) != 0) {
                         func_ov002_020d0948(self);
@@ -11238,7 +11225,7 @@ int func_ov002_020cfea4(char *self)
     int idx, dx, dz;
     if (p->mStateWaitTimer == 0 && (p->mClsnFlags & 2) != 0) {
         if (p->mMeshClsn.IsOnGround() != 0) {
-            fr = (dBgPi *)p->mMeshClsn.GetFloorResult();
+            fr = p->mMeshClsn.GetFloorResult();
             if (fr->GetClsnID() != -1) {
                 other = dActor_c::FindWithID((unsigned int)fr->GetClsnID());
                 if (other != 0) {
@@ -11248,7 +11235,7 @@ int func_ov002_020cfea4(char *self)
             }
         }
         if (p->mMeshClsn.IsOnWall() != 0) {
-            fr = (dBgPi *)p->mMeshClsn.GetWallResult();
+            fr = p->mMeshClsn.GetWallResult();
             if (fr->GetClsnID() != -1) {
                 other = dActor_c::FindWithID((unsigned int)fr->GetClsnID());
                 if (other != 0)
@@ -11330,7 +11317,6 @@ int func_ov002_020cfea4(char *self)
 extern "C" {
 int func_ov002_020d0178(char* c, int arg1, int flag)
 {
-    extern void _ZNK11SurfaceInfo12CopyNormalToER7Vector3(void *self, Vector3 *out);
     extern int atan2_hold_Player_9(int x, int z);
     extern int AngleDiff(int a, int b);
     extern s16 data_02082214[];
@@ -11392,7 +11378,7 @@ int func_ov002_020d0178(char* c, int arg1, int flag)
             return 0;
         }
     }
-    _ZNK11SurfaceInfo12CopyNormalToER7Vector3(&rg.surface, &normal);
+    rg.surface.CopyNormalTo(normal);
     if (normal.y < 0xf04) {
         return 0;
     }
@@ -11409,7 +11395,7 @@ int func_ov002_020d0178(char* c, int arg1, int flag)
     if (!rl.DetectClsn()) {
         return 0;
     }
-    _ZNK11SurfaceInfo12CopyNormalToER7Vector3(&rl.surface, &normal);
+    rl.surface.CopyNormalTo(normal);
     if (normal.y >= 0x2c7) {
         return 0;
     }
@@ -12108,7 +12094,6 @@ int Player::St_HoldHeavy_Main()
     extern void func_ov002_020d1f78(void*, u32);
     extern int data_ov002_020ff254[];
     extern int data_ov002_020ff1d0[];
-    extern void _Z14ApproachLinearRiii(int* a, int b, int c);
     extern void func_ov002_020da9d4(void* c);
     extern void ApproachAngle(short* cur, short target, int divisor, int band, int maxStep);
     extern int func_ov002_020bf224(void* c, int a, int b);
@@ -12145,7 +12130,7 @@ int Player::St_HoldHeavy_Main()
                 }
             }
         }
-        _Z14ApproachLinearRiii((int*)((char*)&mHorzSpeed), 0, 0x1000);
+        ApproachLinear(*((int *)((char *)&mHorzSpeed)), 0, 0x1000);
         goto end;
     }
 
@@ -12245,7 +12230,6 @@ int Player::St_HoldLight_Main()
     extern Player::State data_ov002_0211019c;
     extern int func_ov002_020d9dcc(void*);
     extern void func_ov002_020d1f78(void*, u32);
-    extern void _Z14ApproachLinearRiii(int* a, int b, int c);
     extern int func_ov002_020e0ccc(void* c, short* st);
     extern int func_ov002_020c5244(void* c);
     extern int Player_ReleaseHeldActor(void* c);
@@ -12271,7 +12255,7 @@ int Player::St_HoldLight_Main()
     }
 
     if (mStateStep == 0) {
-        _Z14ApproachLinearRiii((int*)((char*)&mHorzSpeed), 0, 0x800);
+        ApproachLinear(*((int *)((char *)&mHorzSpeed)), 0, 0x800);
         if (this->IsAnim(0x2f) || this->IsAnim(0x86)) {
             if (this->FinishedAnim()) {
                 if (func_ov002_020e0ccc(((char*)this), *(short**)((char*)&mHeldObj))) {
@@ -12431,9 +12415,6 @@ void func_ov002_020d1f78(void *selfPtr, u32 param)
     extern Rec18 data_0209f49c[];
     extern Rec18 data_0209f4a0[];
     extern int data_0209f32c;
-    /* local extern: non-constant startFrame (w << 4) >> 16 narrows to u16 and costs +8. */
-    extern void _ZN6Player7SetAnimEjiit(void *self, unsigned int a, int b, Fix12i c,
-                                        unsigned int d);
     extern u32 func_02022d00(u32 uniqueID, u32 effectID, Fix12i x, Fix12i y, Fix12i z, void *dir);
     extern void func_0201251c(int a, int b, int c, int d);
     extern void PlayerNewSimpleHold8(unsigned int id, Fix12i a, Fix12i b, Fix12i c);
@@ -12462,7 +12443,9 @@ void func_ov002_020d1f78(void *selfPtr, u32 param)
         id = ((Player *)self)->GetBodyModelID(p->param1 & 0xff, 0);
         anim = (char *)((long long)(int)&(dExtFrameCtrl_c &)*p->mModels.mBodyModels[id]);
         w = ((dExtFrameCtrl_c *)anim)->currFrame;
-        _ZN6Player7SetAnimEjiit(self, 0x3f, 0, 0x2800, (w << 4) >> 16);
+        /* The whole frame of the 20.12 counter; the u16 parameter's narrowing
+           folds with the shift into the ROM's lsl #4 / lsr #16. */
+        p->SetAnim(0x3f, 0, 0x2800, w >> 12);
     } else {
         int v = p->mHorzSpeed;
         int shift = v >> 3;
@@ -13193,7 +13176,6 @@ int Player::St_TurnAround_Main()
     extern Player::State data_ov002_021101e4;
     extern void ApproachAngle(s16* cur, s16 target, int divisor, int band, int maxStep);
     extern Fix12i Player_ScaleByCharFactor(void* c, Fix12i a);
-    extern void _Z14ApproachLinearRiii(int* a, int b, int c);
     extern int func_0201226c(int a0, int a1, int a2, int a3, int a4, s16 a5);
     extern void Player_AdvanceAnims(void* c);
     extern u16 data_0209f49e[];
@@ -13214,7 +13196,7 @@ int Player::St_TurnAround_Main()
         r5v = func_ov002_020bf56c(((char*)this), sel);
         ApproachAngle((s16*)((char*)&mPrevAngleY), angle, 0x10, 0x1000, 0x200);
         tmp = Player_ScaleByCharFactor(((char*)this), 0x28000);
-        _Z14ApproachLinearRiii((int*)((char*)&mHorzSpeed), -tmp, r5v);
+        ApproachLinear(*((int *)((char *)&mHorzSpeed)), -tmp, r5v);
     } else {
         this->ChangeState(data_ov002_0211013c);
         return 1;
@@ -13834,14 +13816,11 @@ static inline int* GetAnim(char* c)
                    .mBodyModels[((Player *)c)->GetBodyModelID((unsigned char)player->param1, 0)] +
                0x50);
 }
-static inline unsigned int AnimSpeed(char* c)
-{
-    return (unsigned short)(GetAnim(c)[2] >> 12);
+static inline u16 AnimSpeed(char *c) {
+    return GetAnim(c)[2] >> 12;
 }
 void Player::func_ov002_020d4748()
 {
-    /* local extern: AnimSpeed/s5 are wider than u16; each narrowed call costs +8. */
-    void _ZN6Player7SetAnimEjiit(void *, unsigned int, int, int, unsigned int);
     int Player_ScaleByCharFactor(void*, int);
     void func_ov002_020d4c30(void*);
     extern unsigned char data_0209f4ac;
@@ -13918,21 +13897,21 @@ void Player::func_ov002_020d4748()
         }
 
         if (this->mSinkDepth > 0x32000) {
-            _ZN6Player7SetAnimEjiit(c, 0x7e, 0,
-                                    *(short *)((char *)&data_0209f4a0 + gActivePlayerSlot * 0x18),
-                                    AnimSpeed(c));
+            ((Player *)c)
+                ->SetAnim(0x7e, 0, *(short *)((char *)&data_0209f4a0 + gActivePlayerSlot * 0x18),
+                          AnimSpeed(c));
         } else if (this->mStateStep >= 0x17) {
             this->mStateStep = 0x17;
-            _ZN6Player7SetAnimEjiit(c, 0x61, 0, 0x1000, AnimSpeed(c));
+            ((Player *)c)->SetAnim(0x61, 0, 0x1000, AnimSpeed(c));
         } else if (this->mFloorClass == 4 && *(short*)((char*)&data_0209f4a0 + gActivePlayerSlot * 0x18) == 0) {
             Particle::RunningSlidingDustAt(this->mPosX, this->mPosY, this->mPosZ);
             ((Player *)c)->SetAnim(0x47, 0, 0x1000, 0);
         } else if (this->mIsWalkPace != 0) {
-            unsigned int s5 = AnimSpeed(c);
+            u16 s5 = AnimSpeed(c);
             int spd = this->mHorzSpeed >> 3;
             if (spd < 0x400)
                 spd = 0x400;
-            _ZN6Player7SetAnimEjiit(c, 0x48, 0, spd, s5);
+            ((Player *)c)->SetAnim(0x48, 0, spd, s5);
         } else {
             int t = 0x1000 - this->mFloorNormalY;
             int f = (int)((((long long)t << 10) + 0x800) >> 12);
@@ -13941,7 +13920,7 @@ void Player::func_ov002_020d4748()
             v = FX_MUL(diff, f);
             if (v < 0)
                 v = 0;
-            _ZN6Player7SetAnimEjiit(c, 0x3f, 0, v + 0x2800, AnimSpeed(c));
+            ((Player *)c)->SetAnim(0x3f, 0, v + 0x2800, AnimSpeed(c));
         }
 
         if (((dExtFrameCtrl_c *)(GetAnim(c)))->WillHitFrame(4) != 0 ||
@@ -14010,9 +13989,8 @@ extern "C" void func_ov002_020d4c30(Player *self) {
 extern "C" {
 int func_ov002_020d4d88(char *self, int a, int b, int c)
 {
-    extern int _Z14ApproachLinearRiii(int *, int, int);
     Player *player = (Player *)self;
-    _Z14ApproachLinearRiii(&player->mHorzSpeed, a, b);
+    ApproachLinear(player->mHorzSpeed, a, b);
     if (a != 0 || (unsigned short)(player->mStateFlags & 1)) {
         ((Player *)self)->func_ov002_020c04e0();
         return 1;
@@ -14028,7 +14006,6 @@ extern "C" {
 int Player::St_Bonk_Main()
 {
     struct dCamera_c;
-    extern void _Z14ApproachLinearRiii(int* a, int b, int c);
     extern void Player_AdvanceAnims(void* c);
     extern void func_0200d8c8(struct dCamera_c * cam, const Vector3 *v, int strength);
     extern struct dCamera_c* data_0209f318;
@@ -14064,7 +14041,7 @@ int Player::St_Bonk_Main()
         rate = 0x1800;
     }
 
-    _Z14ApproachLinearRiii((int*)((char*)&mHorzSpeed), 0, rate);
+    ApproachLinear(*((int *)((char *)&mHorzSpeed)), 0, rate);
 
     if (mHorzSpeed != 0) {
         goto willhit;
@@ -14297,7 +14274,6 @@ int Player::St_BurnFire_Main()
     extern void PlayerPlayLongHold_burnfire(unsigned int handle, unsigned int id, unsigned int vol,
                                             const void *vec, unsigned int flags);
     extern void ApproachAngle(short *cur, short target, int divisor, int band, int maxStep);
-    extern void _Z14ApproachLinearRiii(int *cur, int target, int step);
     extern void Player_AdvanceAnims(void *c);
     int speed = 0;
 
@@ -14395,7 +14371,7 @@ int Player::St_BurnFire_Main()
         break;
     }
 
-    _Z14ApproachLinearRiii(&mHorzSpeed, speed, 0x1000);
+    ApproachLinear(mHorzSpeed, speed, 0x1000);
     Player_AdvanceAnims(this);
     return 1;
 }
@@ -15366,7 +15342,6 @@ int func_ov002_020d6dac(char *self)
     extern void MulVec3Mat4x3(void *v, void *m, void *dst);
     extern void Vec3_MulScalarInPlace(int *v, int s);
     extern int func_02053274(int *a, int *b);
-    extern void _ZNK11SurfaceInfo12CopyNormalToER7Vector3(void *thiz, void *out);
     extern short atan2_hold_Player_8(int a, int b);
     extern u32 PlayerNewHold11(u32 handle, u32 kind, Fix12i x, Fix12i y, Fix12i z, const void *dir,
                                void *callback);
@@ -15432,7 +15407,7 @@ int func_ov002_020d6dac(char *self)
     ::Vector3 clsnPos = rl.GetClsnPos();
     player->mTongueHitDist = func_02053274((int *)&p1, (int *)&clsnPos);
     Vector3 normal;
-    _ZNK11SurfaceInfo12CopyNormalToER7Vector3(&rl.surface, &normal);
+    rl.surface.CopyNormalTo(normal);
     ang = cstd::atan2(normal.x, normal.z);
     idx = (u16)ang >> 4;
     dir.x = data_02082214[idx * 2];
@@ -15670,15 +15645,7 @@ struct PVec { int x, y, z; PVec() {} ~PVec() {} };
 extern "C" {
 int Player::St_YoshiPower_Main()
 {
-    /* local extern: this body is the only caller that passes a NON-CONSTANT
-       startFrame. dExtAnmModel_c::SetAnim's real parameter is u16, and narrowing
-       `(currFrame << 4) >> 0x10` to it costs +0x10 here, so this body keeps the
-       scalar unsigned-int spelling the ROM call uses -- the per-body declaration
-       policy this file's header states. */
-    extern void _ZN14dExtAnmModel_c7SetAnimEP8BCA_Fileiit(void *, void *, int, int, unsigned int);
-    extern void _Z14ApproachLinearRiii(int*, int, int);
     extern void func_ov002_020d71ec(char*, int);
-    extern void _Z15ApproachLinear2Rsss(short*, short, short);
     extern void MulVec3Mat4x3(void*, void*, void*);
     extern void Vec3_MulScalarInPlace(void*, int);
     extern void func_ov002_020d8118(char*);
@@ -15707,7 +15674,7 @@ int Player::St_YoshiPower_Main()
     char* dp;
 
     if (mIsAirborne == 0) {
-        _Z14ApproachLinearRiii((int*)(&mHorzSpeed), 0, 0x1000);
+        ApproachLinear(*((int *)(&mHorzSpeed)), 0, 0x1000);
         this->func_ov002_020c2f64();
     }
 
@@ -15732,8 +15699,8 @@ int Player::St_YoshiPower_Main()
     }
 
     case 1: {
-        _Z15ApproachLinear2Rsss(&mHeadRot[1], 0, 0x200);
-        _Z15ApproachLinear2Rsss(&mHeadRot[2], 0, 0x200);
+        ApproachLinear2(mHeadRot[1], 0, 0x200);
+        ApproachLinear2(mHeadRot[2], 0, 0x200);
         int flag = 1;
         mHeadRotMode = flag;
         if (*(void**)(&mObjInMouth) != 0) {
@@ -15821,8 +15788,8 @@ int Player::St_YoshiPower_Main()
     }
 
     case 2: {
-        _Z15ApproachLinear2Rsss(&mHeadRot[1], 0, 0x200);
-        _Z15ApproachLinear2Rsss(&mHeadRot[2], 0, 0x200);
+        ApproachLinear2(mHeadRot[1], 0, 0x200);
+        ApproachLinear2(mHeadRot[2], 0, 0x200);
         mHeadRotMode = 1;
         if (mStateTimer != 0) {
             return 1;
@@ -15865,9 +15832,11 @@ int Player::St_YoshiPower_Main()
                 int id6 = this->GetBodyModelID(this->param1 & 0xff, z);
                 int *a50c = (int *)((
                     long long)(int)((char *)&(dExtFrameCtrl_c &)*mModels.mBodyModels[id6]));
-                _ZN14dExtAnmModel_c7SetAnimEP8BCA_Fileiit(
-                    mModels.mHeadModels[3], (void *)data_ov002_0210e3d8[1], 0x40000000, 0x1000,
-                    (unsigned int)(((dExtFrameCtrl_c *)a50c)->currFrame << 4) >> 0x10);
+                /* The u16 startFrame takes the whole frame, currFrame >> 12;
+                   its narrowing folds into the ROM's lsl #4 / lsr #16. */
+                ((dExtAnmModel_c *)mModels.mHeadModels[3])
+                    ->SetAnim((BCA_File *)data_ov002_0210e3d8[1], 0x40000000, 0x1000,
+                              ((dExtFrameCtrl_c *)a50c)->currFrame >> 12);
             }
         }
         int id7 = this->GetBodyModelID(this->param1 & 0xff, 0);
@@ -15922,9 +15891,9 @@ int Player::St_YoshiPower_Main()
                     int id9 = this->GetBodyModelID(this->param1 & 0xff, z2);
                     int *a50e = (int *)((
                         long long)(int)((char *)&(dExtFrameCtrl_c &)*mModels.mBodyModels[id9]));
-                    _ZN14dExtAnmModel_c7SetAnimEP8BCA_Fileiit(
-                        mModels.mHeadModels[3], (void *)data_ov002_0210e3d8[1], 0x40000000, 0x1000,
-                        (unsigned int)(((dExtFrameCtrl_c *)a50e)->currFrame << 4) >> 0x10);
+                    ((dExtAnmModel_c *)mModels.mHeadModels[3])
+                        ->SetAnim((BCA_File *)data_ov002_0210e3d8[1], 0x40000000, 0x1000,
+                                  ((dExtFrameCtrl_c *)a50e)->currFrame >> 12);
                 }
                 return 1;
             }
@@ -16461,7 +16430,6 @@ void func_ov002_020d8a50(char* self, int which)
 {
     Player *player = (Player *)self;
     extern void func_ov002_020dbf4c(char* c);
-    extern void _ZNK11SurfaceInfo12CopyNormalToER7Vector3(void *s, Vector3 *n);
     extern s16 data_02082214[];
     extern u16 data_ov002_0210a5cc[];
     extern void func_ov002_020d8854(char*);
@@ -16551,7 +16519,7 @@ void func_ov002_020d8a50(char* self, int which)
         v2.z += data_02082214[idx * 2 + 1] * 0x64;
         ray.SetObjAndLine(v1, v2, (dActor_c *)self);
         if (ray.DetectClsn()) {
-            _ZNK11SurfaceInfo12CopyNormalToER7Vector3(&ray.surface, &normal);
+            ray.surface.CopyNormalTo(normal);
             if (normal.y == 0) {
                 player->mHorzSpeed = 0xa000;
                 player->mPrevAngleY = player->mAngleY + 0x8000;
@@ -17125,7 +17093,6 @@ void func_ov002_020d9a4c(char *c) {
 extern "C" {
 void func_ov002_020d9aac(char* c)
 {
-    extern void _Z14ApproachLinearRiii(int* v, int target, int step);
     Player *p = (Player *)c;
     int v;
 
@@ -17147,9 +17114,9 @@ void func_ov002_020d9aac(char* c)
     }
 
     if ((p->mStateStep & 7) < 2) {
-        _Z14ApproachLinearRiii(&p->mHorzSpeed, 0, 0x800);
+        ApproachLinear(p->mHorzSpeed, 0, 0x800);
     } else {
-        _Z14ApproachLinearRiii(&p->mHorzSpeed, 0, 0x1800);
+        ApproachLinear(p->mHorzSpeed, 0, 0x1800);
     }
 }
 }
@@ -17363,7 +17330,6 @@ int Player::St_SwingPlayer_Main()
     extern void func_ov002_020d9c70(char* c);
     extern int func_ov002_020da95c(char* c);
     extern int func_ov002_020da9d4(char* c);
-    extern int _Z15ApproachLinear2Rsss(s16* ref, s16 target, s16 step);
     extern u32 PlayerNewHold15(u32 handle, u32 kind, Fix12i x, Fix12i y, Fix12i z, const void *dir,
                                void *callback);
     extern void PlayerPlayLongHold_swing(u32 h, u32 a, u32 b, void *v, u32 d);
@@ -17411,10 +17377,10 @@ int Player::St_SwingPlayer_Main()
                 else if (this->mAngleYSpeed <= -0x1800)
                     this->mAngleYSpeed = -0x1800;
             } else {
-                _Z15ApproachLinear2Rsss(&this->mAngleYSpeed, 0, 0x20);
+                ApproachLinear2(this->mAngleYSpeed, 0, 0x20);
             }
         } else {
-            _Z15ApproachLinear2Rsss(&this->mAngleYSpeed, 0, 0x80);
+            ApproachLinear2(this->mAngleYSpeed, 0, 0x80);
         }
         {
             s16 a2 = this->mAngleYSpeed;
@@ -17500,7 +17466,6 @@ int Player::St_GrabBowserTail_Cleanup()
 extern "C" {
 int Player::St_GrabBowserTail_Main()
 {
-    extern void _Z15ApproachLinear2Rsss(s16* ref, s16 target, s16 step);
     extern void func_02012694(u32 id, void* v);
     extern void Player_AdvanceAnims(char* c);
     extern u16 data_0209f49e[];
@@ -17561,7 +17526,7 @@ int Player::St_GrabBowserTail_Main()
             }
         } else {
             mStateArg = 0;
-            _Z15ApproachLinear2Rsss(&this->mAngleYSpeed, 0, 0x40);
+            ApproachLinear2(this->mAngleYSpeed, 0, 0x40);
         }
         {
             s16 before = mAngleY;
@@ -17884,12 +17849,11 @@ int func_ov002_020dacb4(char *p, char *actor)
 // Matched byte-for-byte with mwccarm 1.2/sp2p3 (ov002).
 extern "C" {
 int Player::St_Throw_Main() {
-    extern int _Z14ApproachLinearRiii(int &, int, int);
     extern void func_ov002_020da9d4(void *);
     extern void Player_AdvanceAnims(void *);
     extern Player::State data_ov002_0211013c;
     if (mIsAirborne == 0) {
-        _Z14ApproachLinearRiii(mHorzSpeed, 0, 0x1000);
+        ApproachLinear(mHorzSpeed, 0, 0x1000);
     }
     if (*(char **)((char *)&mHeldObj)) {
         int r4 = 5;
@@ -17982,7 +17946,6 @@ extern "C" {
 int Player::St_Thrown_Main()
 {
     extern int atan2_hold_Player_7(Fix12i a, int b);
-    extern void _Z15ApproachLinear2Rsss(s16* v, s16 target, s16 step);
     extern void Player_AdvanceAnims(char* c);
     extern Player::State data_ov002_0211031c;
     extern Player::State data_ov002_0211010c;
@@ -18029,7 +17992,7 @@ int Player::St_Thrown_Main()
             if (b > 0x3000) b = 0x3000;
             mAngleX = b;
         } else {
-            _Z15ApproachLinear2Rsss((s16*)((char*)&mAngleX), 0, 0x400);
+            ApproachLinear2(*((s16 *)((char *)&mAngleX)), 0, 0x400);
         }
         break;
     case 1:
@@ -18077,7 +18040,7 @@ int Player::St_Thrown_Init()
  *
  * Clears bit 1 of the body-collision flags, then if something is holding the
  * player at +0x35c and its actorID is 0xbf, tells it to drop and clears the
- * slot. Note the callee is _ZN6Player9DropActorEv -- Player::DropActor() --
+ * slot. Note the callee is Player::DropActor() --
  * invoked with THAT actor as its this, not the player's: whatever occupies
  * 0x35c is itself a Player. Kept as an extern "C" call rather than a method
  * call so the source does not assert a type this function cannot evidence.
@@ -18251,7 +18214,6 @@ int func_ov002_020db674(char* c, int a1, int a2, int a3)
 // @symbol func_ov002_020db704
 extern "C" {
 void func_ov002_020db704(Player *self) {
-    extern int _Z14ApproachLinearRiii(int *p, int value, int speed);
     extern int data_ov002_020ff230[];
     extern int data_ov002_020ff2c0[];
     int s;
@@ -18272,8 +18234,8 @@ void func_ov002_020db704(Player *self) {
         if (self->mScaleAnimTimer == 0) {
             if (s == 1)
                 i++;
-            if (_Z14ApproachLinearRiii(&self->mScaleY, data_ov002_020ff2c0[s - 1 + j],
-                                       data_ov002_020ff230[i])) {
+            if (ApproachLinear(self->mScaleY, data_ov002_020ff2c0[s - 1 + j],
+                               data_ov002_020ff230[i])) {
                 if (self->mScaleAnimStep == 1 || self->mScaleAnimStep == 6) {
                     self->mScaleAnimTimer = 10;
                 } else {
@@ -18298,14 +18260,14 @@ void func_ov002_020db704(Player *self) {
         self->mScaleX = self->mScaleZ;
         return;
     case 2:
-        if (_Z14ApproachLinearRiii(&self->mScaleY, 0x3000, 0x200)) {
+        if (ApproachLinear(self->mScaleY, 0x3000, 0x200)) {
             self->mScaleAnimStep = 0;
         }
         self->mScaleZ = self->mScaleY;
         self->mScaleX = self->mScaleZ;
         return;
     case 3:
-        if (_Z14ApproachLinearRiii(&self->mScaleY, 0x1000, 0x200)) {
+        if (ApproachLinear(self->mScaleY, 0x1000, 0x200)) {
             self->mScaleAnimStep = 0;
         }
         self->mScaleZ = self->mScaleY;
@@ -18702,9 +18664,8 @@ void func_ov002_020dc09c(char *c) {
 // @symbol func_ov002_020dc174
 extern "C" {
 /* The attack collision's offset, reach and height. pos is a const Vector3 *: it
-   goes straight to dCcAcPos_c::Init, whose ROM symbol is
-   _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector3iijj -- RK7Vector3, a
-   const Vector3 &. Eleven callers in this file each used to spell it void *. */
+   goes straight to dCcAcPos_c::Init, whose ROM symbol mangles that
+   parameter as RK7Vector3, a const Vector3 &. Eleven callers in this file each used to spell it void *. */
 void func_ov002_020dc174(char *c, const Vector3 *pos, Fix12i reach, Fix12i height, u32 flags,
                          u32 a6) {
     Player *player = (Player *)c;
@@ -18873,7 +18834,6 @@ int Player::St_SweepKick_Init()
 extern "C" {
 void func_ov002_020dc560(char *self)
 {
-    extern void _Z14ApproachLinearRiii(int *ref, int a, int b);
     extern int func_01ffa344(int a, int b);
     extern int AngleDiff(int a, int b);
     extern void ApproachAngle(short *cur, short target, int divisor, int band, int maxStep);
@@ -18883,7 +18843,7 @@ void func_ov002_020dc560(char *self)
     extern char data_0209f4a0[];
     extern short data_02082214[];
     Player *player = (Player *)self;
-    _Z14ApproachLinearRiii(&player->mHorzSpeed, 0, 0x599);
+    ApproachLinear(player->mHorzSpeed, 0, 0x599);
 
     {
         int tblval = *(short *)(data_0209f4a0 + gActivePlayerSlot * 0x18);
@@ -18894,7 +18854,7 @@ void func_ov002_020dc560(char *self)
             int sinv = data_02082214[idx2 + 1];
             int scaled = FX_MUL(sinv, 0x1800);
             int combined = FX_MUL(scaled, tblval);
-            _Z14ApproachLinearRiii(&player->mHorzSpeed, r1, combined);
+            ApproachLinear(player->mHorzSpeed, r1, combined);
 
             {
                 short *p94 = (short *)ADDR(&player->mPrevAngleY);
@@ -19103,7 +19063,6 @@ int Player::St_StomachSlide_Main()
     extern void func_ov002_020dc560(void* c);
     extern int func_ov002_020e0ccc(void* c, short* st);
     extern Fix12i atan2_hold_Player_6(Fix12i a, Fix12i b);
-    extern void _Z15ApproachLinear2Rsss(short* cur, short target, short step);
     extern void Player_AdvanceAnims(void* c);
     extern u16 data_0209f49e[];
     extern u8 data_0209ee90;
@@ -19259,7 +19218,7 @@ end:
         s16 v = cstd::atan2(mHorzSpeed >> 8, mVertSpeed >> 8) - 0x4000;
         if (v < 0) v = 0;
         if (v >= 0x2aaa) v = 0x2aaa;
-        _Z15ApproachLinear2Rsss((short*)((char*)&mAngleX), v, 0x200);
+        ApproachLinear2(*((short *)((char *)&mAngleX)), v, 0x200);
     }
     Player_AdvanceAnims(((char*)this));
     mStateArg = mSlideType;
@@ -19375,7 +19334,6 @@ extern "C" {
 int Player::St_PunchKick_Main()
 {
     extern void func_ov002_020d8a50(void* c, u32 a);
-    extern void _Z14ApproachLinearRiii(int* a, int b, int c);
     extern void Player_AdvanceAnims(char* self);
     extern u16 data_0209f49e[];
     extern s16 data_0209f4a0[];
@@ -19411,7 +19369,7 @@ int Player::St_PunchKick_Main()
                 return 1;
         }
 
-        _Z14ApproachLinearRiii((int*)((char*)&mHorzSpeed), 0, 0x800);
+        ApproachLinear(*((int *)((char *)&mHorzSpeed)), 0, 0x800);
         func_ov002_020c2f64();
 
         if (func_ov002_020c0434() != 0) {
@@ -20012,14 +19970,12 @@ void func_ov002_020de428(struct dActor_ce428 *thiz)
 extern "C" {
 s32 Player::St_Balloon_Main()
 {
-    extern void _Z14ApproachLinearRiii(s32 &, s32, s32);
     extern void func_ov002_020de968(void *);
     extern s16 atan2_hold_Player_4(s32, s32);
     extern int AngleDiff(s32, s16);
     extern void func_ov002_020de428(void *);
     extern void ApproachAngle(void *, s16, s16, s16, s32);
     extern s32 func_ov002_020bf224(void *, s32, s32);
-    extern void _Z15ApproachLinear2Rsss(s16 &, s16, s16);
     extern void func_ov002_020de3d0(void *, s16 *, s16 *);
     extern s16 data_0209f49e[];
     extern s16 data_0209f4a0[];
@@ -20032,7 +19988,7 @@ s32 Player::St_Balloon_Main()
     mPeakY = mPosY;
     mVertAccel = 0;
     mTerminalVelocity = -0xc000;
-    _Z14ApproachLinearRiii(mVertSpeed, -0x6000, 0x800);
+    ApproachLinear(mVertSpeed, -0x6000, 0x800);
 
     if (mBalloonTimer == 0) {
         func_ov002_020de968(this);
@@ -20110,8 +20066,8 @@ s32 Player::St_Balloon_Main()
         ApproachAngle(&mPrevAngleY, mDesiredAngleY, 0x20, 0x2000, 0x10);
         r4 = 0x10000;
     }
-    _Z15ApproachLinear2Rsss(mAngleY, mPrevAngleY, 0x200);
-    _Z14ApproachLinearRiii(mHorzSpeed, func_ov002_020bf224(this, r4, 0), 0x100);
+    ApproachLinear2(mAngleY, mPrevAngleY, 0x200);
+    ApproachLinear(mHorzSpeed, func_ov002_020bf224(this, r4, 0), 0x100);
     func_ov002_020de3d0(this, &mAngleZ, &mAngleYSpeed);
     func_ov002_020de3d0(this, &mAngleX, &mAngleXSpeed);
     mPrevVertSpeed = mVertSpeed;
@@ -20548,7 +20504,6 @@ int Player::St_Owl_Cleanup()
 extern "C" {
 int Player::St_Owl_Main()
 {
-    extern void _Z14ApproachLinearRiii(int* p, int value, int speed);
     extern int ApproachAngle(short* cur, short target, int divisor, int band, int maxStep);
     extern void func_0201f32c(int a);
     extern void func_0200d3f8(void* thiz, unsigned char playerID, void* ptr);
@@ -20582,9 +20537,9 @@ int Player::St_Owl_Main()
         }
         if (mIsAirborne != 0) {
             if (mVertSpeed < 0) {
-                _Z14ApproachLinearRiii((int*)((char*)&mVertSpeed), 0x3c000, 0x8000);
+                ApproachLinear(*((int *)((char *)&mVertSpeed)), 0x3c000, 0x8000);
             } else {
-                _Z14ApproachLinearRiii((int*)((char*)&mVertSpeed), 0x3c000, 0x2000);
+                ApproachLinear(*((int *)((char *)&mVertSpeed)), 0x3c000, 0x2000);
             }
         } else {
             mVertSpeed = 0x8000;
@@ -20728,7 +20683,6 @@ extern "C" {
 void func_ov002_020df8f0(char* c)
 {
     typedef unsigned long long u64;
-    extern void _Z15ApproachLinear2Rsss(s16* p, s16 target, s16 step);
     extern s16 data_0209f4a2[];
     extern s16 data_0209f4a4[];
     extern s16 data_02082214[];
@@ -20760,7 +20714,7 @@ void func_ov002_020df8f0(char* c)
                     step = 0x20;
                 else
                     step = 0x40;
-                _Z15ApproachLinear2Rsss(&player->mAngleXSpeed, (s16)v, step);
+                ApproachLinear2(player->mAngleXSpeed, (s16)v, step);
             }
         } else if (v < 0) {
             if (player->mAngleXSpeed > 0) {
@@ -20773,10 +20727,10 @@ void func_ov002_020df8f0(char* c)
                     step = 0x40;
                 else
                     step = 0x20;
-                _Z15ApproachLinear2Rsss(&player->mAngleXSpeed, (s16)v, step);
+                ApproachLinear2(player->mAngleXSpeed, (s16)v, step);
             }
         } else {
-            _Z15ApproachLinear2Rsss(&player->mAngleXSpeed, 0, 0x40);
+            ApproachLinear2(player->mAngleXSpeed, 0, 0x40);
         }
     }
 
@@ -20800,7 +20754,7 @@ void func_ov002_020df8f0(char* c)
                     step = 0x10;
                 else
                     step = 0x20;
-                _Z15ApproachLinear2Rsss(&player->mAngleYSpeed, (s16)v2, step);
+                ApproachLinear2(player->mAngleYSpeed, (s16)v2, step);
             }
         } else if (v2 < 0) {
             if (player->mAngleYSpeed > 0) {
@@ -20813,10 +20767,10 @@ void func_ov002_020df8f0(char* c)
                     step = 0x20;
                 else
                     step = 0x10;
-                _Z15ApproachLinear2Rsss(&player->mAngleYSpeed, (s16)v2, step);
+                ApproachLinear2(player->mAngleYSpeed, (s16)v2, step);
             }
         } else {
-            _Z15ApproachLinear2Rsss(&player->mAngleYSpeed, 0, 0x40);
+            ApproachLinear2(player->mAngleYSpeed, 0, 0x40);
         }
     }
 
@@ -21125,7 +21079,6 @@ int Player::St_Land_Main()
     extern int func_ov002_020e3078(void* c, void* s);
     extern int Player_ScaleByCharFactor(void* c, int a);
     extern int func_ov002_020bf224(void* c, int a, int b);
-    extern void _Z14ApproachLinearRiii(int* a, int b, int c);
     extern void Player_AdvanceAnims(void* c);
     extern u16 data_0209f49e[];
     extern u16 data_0209f49c[];
@@ -21177,8 +21130,9 @@ int Player::St_Land_Main()
         *(u16*)((char*)&mStateFlags) &= ~0x100;
     }
 
-    _Z14ApproachLinearRiii((int*)((char*)&mHorzSpeed),
-        func_ov002_020bf224(((char*)this), Player_ScaleByCharFactor(((char*)this), 0x20000), 0),
+    ApproachLinear(
+        *((int *)((char *)&mHorzSpeed)),
+        func_ov002_020bf224(((char *)this), Player_ScaleByCharFactor(((char *)this), 0x20000), 0),
         0x4000);
 
     if (func_ov002_020e3078(((char*)this), data_ov002_0211052c) != 0) {
@@ -21360,30 +21314,28 @@ int Player::St_SmallLaunchUp_Init()
 // @symbol _ZN6Player17St_SlopeJump_MainEv
 /* recovered: named members + shared header, real C++ method */
 extern "C" {
-int Player::St_SlopeJump_Main()
-{
-    extern void _Z14ApproachLinearRiii(int*,int,int);
-    extern int Player_AdvanceAnims(void*);
+int Player::St_SlopeJump_Main() {
+    extern int Player_AdvanceAnims(void *);
     extern Player::State data_ov002_0211013c;
     extern Player::State data_ov002_02110034;
     extern Player::State data_ov002_021105bc;
     extern unsigned short data_0209f49e[];
-  _Z14ApproachLinearRiii((int*)((char*)&mHorzSpeed),0,0x800);
-  if(mIsAirborne==0){
-    this->ChangeState(data_ov002_0211013c);
-  }
-  if(*(unsigned short*)((char*)data_0209f49e + gActivePlayerSlot*0x18) & 1){
-    mPrevAngleY=mAngleY;
-    if(mIsMega==0){
-      if(param1==3){
-        this->ChangeState(data_ov002_02110034);
-      }else{
-        this->ChangeState(data_ov002_021105bc);
-      }
+    ApproachLinear(*((int *)((char *)&mHorzSpeed)), 0, 0x800);
+    if (mIsAirborne == 0) {
+        this->ChangeState(data_ov002_0211013c);
     }
-  }
-  Player_AdvanceAnims(((char*)this));
-  return 1;
+    if (*(unsigned short *)((char *)data_0209f49e + gActivePlayerSlot * 0x18) & 1) {
+        mPrevAngleY = mAngleY;
+        if (mIsMega == 0) {
+            if (param1 == 3) {
+                this->ChangeState(data_ov002_02110034);
+            } else {
+                this->ChangeState(data_ov002_021105bc);
+            }
+        }
+    }
+    Player_AdvanceAnims(((char *)this));
+    return 1;
 }
 }
 
@@ -21525,7 +21477,7 @@ void func_ov002_020e0f38(char* c, int a){
 // @symbol _ZN6Player19St_CrazedCrate_InitEv
 /* recovered: named members + shared header, real C++ method, declarations from a shared header */
 /* recovered: named members + shared header, real C++ method */
-/* _ZN6Player19St_CrazedCrate_InitEv at 0x020e0fac (ov002), size 0x74
+/* Player::St_CrazedCrate_Init() at 0x020e0fac (ov002), size 0x74
  * Matched byte-for-byte with mwccarm 1.2/sp2p3.
  * flags: -O4,p -enum int -lang c++ -char signed -interworking -proc arm946e -gccext,on -msgstyle gcc
  */
@@ -22485,7 +22437,6 @@ void func_ov002_020e28d4(char* c, int a, int b)
     extern int atan2_hold_Player_1(Fix12i a, int b);
     extern int AngleDiff(int a, int b);
     extern void ApproachAngle(s16* cur, s16 target, int divisor, int band, int maxStep);
-    extern void _Z14ApproachLinearRiii(int* a, int b, int c);
     extern int Player_ScaleByCharFactor(void* c, int a);
     extern int func_ov002_020bf224(void* c, int a, int b);
     extern s16 data_0209f4a0[];
@@ -22534,7 +22485,7 @@ void func_ov002_020e28d4(char* c, int a, int b)
         a = b;
     }
 
-    _Z14ApproachLinearRiii(&p->mHorzSpeed, r4, a);
+    ApproachLinear(p->mHorzSpeed, r4, a);
 
     if (AngleDiff(p->mPrevAngleY, p->mAngleY) < 0x4000)
         return;
@@ -22722,7 +22673,7 @@ extern "C" int func_ov002_020e2ea0(Player *self) {
         return 0;
     }
 
-    dBgPi *cr = (dBgPi *)p->mMeshClsn.GetFloorResult();
+    dBgPi *cr = p->mMeshClsn.GetFloorResult();
     if (cr->GetClsnID() != -1) {
         if (dActor_c::FindWithID((unsigned int)cr->GetClsnID()) != 0) {
             return 0;
@@ -22938,6 +22889,7 @@ int Player::CleanupResources()
     enum { false_, true_ };
     struct VB { virtual void v0(); virtual void v1(); };
     void func_0203cbc0(void *p);
+    /* local extern: the registrar takes this D1 by address, which C++ cannot spell. */
     void *_ZN7Vector3D1Ev(void *self);
     void func_ov002_020bebd4(char *c);
     void UnloadSilverStarAndNumber(void);
@@ -23466,7 +23418,6 @@ extern "C" {
 int func_ov002_020e3f90(char* self) {
     Player *player = (Player *)self;
     struct M48 { int w[12]; };
-    extern void _Z14ApproachLinearRiii(int* v, int target, int step);
     extern void ApproachAngle(short* v, int target, int a, int b, int c);
     extern void Matrix4x3_ApplyInPlaceToTranslation(struct M48* m, int x, int y, int z);
     extern void Matrix4x3_ApplyInPlaceToRotationX(struct M48* m, int a);
@@ -23518,9 +23469,9 @@ int func_ov002_020e3f90(char* self) {
             s.angs[1] = 0x7000;
             s.angs[2] = 0;
         }
-        _Z14ApproachLinearRiii(&((Player *)self)->mStateTargetX, s.tgt[0], 0x400);
-        _Z14ApproachLinearRiii(&((Player *)self)->mStateTargetY, s.tgt[1], 0x400);
-        _Z14ApproachLinearRiii(&((Player *)self)->mStateTargetZ, s.tgt[2], 0x400);
+        ApproachLinear(((Player *)self)->mStateTargetX, s.tgt[0], 0x400);
+        ApproachLinear(((Player *)self)->mStateTargetY, s.tgt[1], 0x400);
+        ApproachLinear(((Player *)self)->mStateTargetZ, s.tgt[2], 0x400);
         ApproachAngle(&player->mAngleX, s.angs[0], 0x10, 0x1000, 0x100);
         ApproachAngle(&player->mAngleY, s.angs[1], 0x10, 0x1000, 0x100);
         ApproachAngle(&player->mAngleZ, s.angs[2], 0x10, 0x1000, 0x100);
@@ -23663,7 +23614,7 @@ void func_ov002_020e444c(char *c)
         player->mHideShadow = 1;
 
     if (player->mMeshClsn.IsOnGround() != 0) {
-        dBgPi *fr = (dBgPi *)player->mMeshClsn.GetFloorResult();
+        dBgPi *fr = player->mMeshClsn.GetFloorResult();
         if (fr->GetClsnID() != -1) {
             void *a = dActor_c::FindWithID(fr->GetClsnID());
             if (a != 0) {
@@ -24197,6 +24148,7 @@ s32 Player::InitResources()
     void LoadSilverStarAndNumber(void);
     void func_02013a00(void);
     int StartWithFarCamera(void);
+    /* local extern: the registrar takes this D1 by address, which C++ cannot spell. */
     void *_ZN7Vector3D1Ev(void *object);
     void func_0203d384(void);
     extern u8 data_0209f2d8;
@@ -24787,7 +24739,6 @@ typedef char PlayerFileBone_size_must_be_0x40[sizeof(PlayerFileBone) == 0x40 ? 1
 extern "C" {
 void func_ov002_020e640c(char *c)
 {
-    extern int _Z15ApproachLinear2Rsss(s16 *p, s16 t, s16 step);
     extern void Vec3_RotateYAndTranslate(Vector3 *dst, const Vector3 *src, s16 ang, const Vector3 *t);
     Player *player = (Player *)c;
     char *md;
@@ -24826,10 +24777,10 @@ void func_ov002_020e640c(char *c)
             ((PlayerBone *)md)[8].rotX = player->mSpineRot[1];
             ((PlayerBone *)md)[8].rotY = player->mSpineRot[2];
         } else if (b == 4) {
-            _Z15ApproachLinear2Rsss(player->mHeadRot, (s16)(((PlayerBone *)md)[15].rotZ - 0x4000),
-                                    0x400);
-            _Z15ApproachLinear2Rsss(&player->mHeadRot[1], ((PlayerBone *)md)[15].rotY, 0x400);
-            _Z15ApproachLinear2Rsss(&player->mHeadRot[2], ((PlayerBone *)md)[15].rotX, 0x400);
+            ApproachLinear2(player->mHeadRot[0], (s16)(((PlayerBone *)md)[15].rotZ - 0x4000),
+                            0x400);
+            ApproachLinear2(player->mHeadRot[1], ((PlayerBone *)md)[15].rotY, 0x400);
+            ApproachLinear2(player->mHeadRot[2], ((PlayerBone *)md)[15].rotX, 0x400);
             ((PlayerBone *)md)[15].rotZ = (s16)(*player->mHeadRot + 0x4000);
             ((PlayerBone *)md)[15].rotY = player->mHeadRot[1];
             ((PlayerBone *)md)[15].rotX = player->mHeadRot[2];

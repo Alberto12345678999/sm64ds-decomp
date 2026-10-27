@@ -53,7 +53,7 @@ Note what this does **not** say: [ov000](../config/arm9/overlays/ov000/symbols.t
 
 ## 3. [ov000](../config/arm9/overlays/ov000/symbols.txt) is a boot overlay (**E1**)
 
-`src/func_0201a2f8.c` -- loaded, entered at its own base address, unloaded, all
+`src/func_0201a2f8.cpp` -- loaded, entered at its own base address, unloaded, all
 before anything else exists:
 
 ```c
@@ -203,8 +203,8 @@ ambiguity -- and it is now the biggest single block of work left.
 | `src/_ZN8CapEnemy6AddCapEj.c` | [arm9](../config/arm9/symbols.txt) | [ov002](../config/arm9/overlays/ov002/symbols.txt) vs [ov007](../config/arm9/overlays/ov007/symbols.txt); arm9 spans both. |
 | `src/unnamed/arm9/0200/func_02008b4c.c` | [arm9](../config/arm9/symbols.txt) | [ov002](../config/arm9/overlays/ov002/symbols.txt) vs [ov006](../config/arm9/overlays/ov006/symbols.txt); both hold a real function. |
 | `func_02029408` (in `src/game/stages/d_s_stage_methods.cpp`) | [arm9](../config/arm9/symbols.txt) | [ov002](../config/arm9/overlays/ov002/symbols.txt) `_ZN6Player8CanPauseEv` vs [ov004](../config/arm9/overlays/ov004/symbols.txt) (see below). |
-| `src/unnamed/arm9/0201/func_0201a428.c` | [arm9](../config/arm9/symbols.txt) | [ov062](../config/arm9/overlays/ov062/symbols.txt) vs [ov065](../config/arm9/overlays/ov065/symbols.txt), and [ov006](../config/arm9/overlays/ov006/symbols.txt) vs [ov100](../config/arm9/overlays/ov100/symbols.txt) (see below). |
-| `src/func_0201a2f8.c` | [arm9](../config/arm9/symbols.txt) | the one place [ov000](../config/arm9/overlays/ov000/symbols.txt) *is* the answer. The tool refuses instead of answering ov001, which is the point of passing the function; the source above settles it by inspection. |
+| `src/unnamed/arm9/0201/func_0201a428.cpp` | [arm9](../config/arm9/symbols.txt) | [ov062](../config/arm9/overlays/ov062/symbols.txt) vs [ov065](../config/arm9/overlays/ov065/symbols.txt), and [ov006](../config/arm9/overlays/ov006/symbols.txt) vs [ov100](../config/arm9/overlays/ov100/symbols.txt) (see below). |
+| `src/func_0201a2f8.cpp` | [arm9](../config/arm9/symbols.txt) | the one place [ov000](../config/arm9/overlays/ov000/symbols.txt) *is* the answer. The tool refuses instead of answering ov001, which is the point of passing the function; the source above settles it by inspection. |
 
 Four of these have a second, weaker line of evidence available. **dsd flags a symbol
 `ambiguous` in `symbols.txt` when it invented it only to have a name for a possible

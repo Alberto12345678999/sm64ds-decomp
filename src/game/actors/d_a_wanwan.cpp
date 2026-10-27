@@ -26,6 +26,7 @@
 #include "dCc_c.h"
 #include "dExtFrameCtrl_c.h"
 #include "nitro/fx/fx.h"
+#include "math/Approach.h"
 
 enum {
     kYoshiEggId = 9,
@@ -99,8 +100,6 @@ unsigned short DecIfAbove0_Short(unsigned short *p);
 int Math_Function_0203b14c(void *p, int a, int b, int c, int d);
 }
 
-int ApproachLinear(int &value, int target, int step);
-bool ApproachLinear(short &value, short target, short step);
 
 namespace cstd {
 s16 atan2(s32, s32);

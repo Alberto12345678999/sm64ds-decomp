@@ -132,6 +132,7 @@ enum daDemo_c_AssetId {
 #include "dExtAnmTexPat_c.h"
 #include "dCamera_c.h"
 #include "cstd.h"
+#include "math/Approach.h"
 
 struct OamAttr;
 
@@ -404,12 +405,6 @@ struct JugemModelFile : SharedFilePtr {
 };
 
 extern "C" {
-/* local extern: the fades pass a computed alpha and 0x10 minus it; the real
-   unsigned short parameters (G2x.h) narrow both, which the ROM does not
-   (measured: +8 bytes in each of the three fading functions). The fixed-alpha
-   calls use G2x::SetBlendAlpha. */
-extern void _ZN3G2x13SetBlendAlphaEPVttttj(volatile void *reg, unsigned short a, unsigned short b,
-                                           int c, int d);
 extern unsigned char data_0209d454;
 extern int RandomIntInternal(int *seed);
 extern int data_0209e650;
@@ -528,7 +523,6 @@ extern int data_ov002_0210b958;
 /* local extern dropped: decl_common.h declares data_0209b41c */
 extern s16 Vec3_VertAngle(const struct Vector3* v1, const struct Vector3* v0);
 extern void ApproachAngle(s16* cur, s16 target, int divisor, int band, int maxStep);
-extern int _Z14ApproachLinearRiii(int* p, int a, int b);
 extern void func_0201f138(void);
 extern void func_0201ef38(void);
 extern void Math_Function_0203b0fc(int* p, int target, int scale, int max);
@@ -550,9 +544,6 @@ extern int data_ov002_0210b970[3];
 extern unsigned char data_0209f250;
 extern void *data_0209f394[];
 extern void Vec3_RotateYAndTranslate(int *out, int *in, short angle, int *src);
-extern void _Z15ApproachLinear2Rsss(short *v, short t, short s);
-extern void _Z11UpdateAngleRssis(void *p, short a, int step, short d);
-extern int _Z14ApproachLinearRsss(short *value, short target, short step);
 extern int data_ov002_0210b964[3];
 extern int data_ov002_02110ddc[3];
 /* local extern dropped: decl_common.h declares func_02008b4c(void*,void*,void*,void*) */
@@ -704,8 +695,7 @@ void daDemo_c::func_ov002_020f1fcc()
     mScroll->fadeLevel--;
     v = mScroll->fadeLevel;
     if (v != 0) {
-        _ZN3G2x13SetBlendAlphaEPVttttj(
-            (volatile void *)0x4001050, 4, 0x28, v, 0x10 - v);
+        G2x::SetBlendAlpha((volatile u16 *)0x4001050, 4, 0x28, v, 0x10 - v);
         return;
     }
     data_0209d454 &= ~4;
@@ -1212,7 +1202,7 @@ void func_ov002_020f2aec(char *c, int idx)
         *(unsigned short *)(c + idx * 8 + CREDIT_OFF(blendTimer)) = 0;
         *(unsigned char *)(c + CREDIT_OFF(blend) + idx * 8) += 1;
         cnt = *(unsigned char *)(c + idx * 8 + CREDIT_OFF(blend));
-        _ZN3G2x13SetBlendAlphaEPVttttj((volatile void *)0x4001050, 1, 0x36, cnt, 0x10 - cnt);
+        G2x::SetBlendAlpha((volatile u16 *)0x4001050, 1, 0x36, cnt, 0x10 - cnt);
     }
 
     if (*(unsigned short *)(c + idx * 8 + CREDIT_OFF(timer)) < 30) {
@@ -1242,7 +1232,7 @@ void func_ov002_020f2bf4(char *c, int idx)
         *(unsigned short *)(c + idx * 8 + CREDIT_OFF(blendTimer)) = 0;
         *(unsigned char *)(c + CREDIT_OFF(blend) + idx * 8) += 1;
         cnt = *(unsigned char *)(c + idx * 8 + CREDIT_OFF(blend));
-        _ZN3G2x13SetBlendAlphaEPVttttj((volatile void *)0x4001050, 1, 0x36, 0x10 - cnt, cnt);
+        G2x::SetBlendAlpha((volatile u16 *)0x4001050, 1, 0x36, 0x10 - cnt, cnt);
     }
 
     if (*(unsigned short *)(c + idx * 8 + CREDIT_OFF(timer)) < 30) {
@@ -4121,7 +4111,7 @@ int daDemo_c::func_ov002_020f71c4(int a, int arg)
         if (arg == data_0209b274) {
             this->mMagnitude = 0x10000;
         }
-        _Z14ApproachLinearRiii(&this->mMagnitude, 0x1f000, 0x3e3);
+        ApproachLinear(this->mMagnitude, 0x1f000, 0x3e3);
         this->mOpacity = this->mMagnitude >> 12;
     }
     {
@@ -4176,11 +4166,11 @@ int daDemo_c::func_ov002_020f7384(unsigned char *flag, int val)
 {
     if (*flag != 0) {
         if (val == data_0209b274) func_02012790(0x17);
-        _Z14ApproachLinearRiii(&this->mPosY, 0xfa000, 0xa000);
+        ApproachLinear(this->mPosY, 0xfa000, 0xa000);
         this->mOpacity = 0x1f;
     } else {
         if (val == data_0209b274) func_02012790(0x16);
-        if (_Z14ApproachLinearRiii(&this->mPosY, 0x32000, 0x5000) != 0)
+        if (ApproachLinear(this->mPosY, 0x32000, 0x5000) != 0)
             this->mOpacity = 0;
     }
     return 1;
@@ -4216,7 +4206,7 @@ int daDemo_c::func_ov002_020f7410(unsigned char *in, int sel)
     MulVec3Mat4x3(((param_c &)*(simpleModel_c *)this->mModel).mScale, (Matrix4x3 *)&data_0209b41c,
                   (&this->mPos));
     Vec3_LslInPlace(&this->mPosX, 3);
-    if (_Z14ApproachLinearRiii(&this->mMagnitude, a, b) != 0 && a == 0 && b != 0)
+    if (ApproachLinear(this->mMagnitude, a, b) != 0 && a == 0 && b != 0)
         func_0201ef38();
     *(char *)(&this->mOpacity) = *(int *)(&this->mMagnitude) >> 12;
     {
@@ -4224,7 +4214,7 @@ int daDemo_c::func_ov002_020f7410(unsigned char *in, int sel)
         if (r != 0 || a != 0) {
             t = (r * 0xa00) >> 12;
             if (t > 0x10) t = 0x10;
-            _ZN3G2x13SetBlendAlphaEPVttttj((volatile void *)0x4000050, 8, 1, t, 0x10 - t);
+            G2x::SetBlendAlpha((volatile u16 *)0x4000050, 8, 1, t, 0x10 - t);
         }
     }
     return 1;
@@ -4306,7 +4296,7 @@ int daDemo_c::func_ov002_020f7538(unsigned char *arg1, int arg2)
     MulVec3Mat4x3(((param_c &)*(anmModel_c *)this->mAnmModel).mScale, (Matrix4x3 *)&data_0209b41c,
                   &this->mPos);
     Vec3_LslInPlace((int *)(&this->mPosX), 3);
-    _Z14ApproachLinearRiii(&this->mMagnitude, f1, f2);
+    ApproachLinear(this->mMagnitude, f1, f2);
     this->mOpacity = this->mMagnitude >> 0xc;
     return 1;
 }
@@ -4356,7 +4346,7 @@ int daDemo_c::func_ov002_020f7780(void *unused, int mode)
                 *p92 = *p92 + 0x40;
 
                 short h = Vec3_HorzAngle((&this->mPos), &cam->pos);
-                _Z15ApproachLinear2Rsss(&this->mAngleY, h, 0x200);
+                ApproachLinear2(this->mAngleY, h, 0x200);
             }
 
             state = *&this->mPhase;
@@ -4367,13 +4357,13 @@ int daDemo_c::func_ov002_020f7780(void *unused, int mode)
             Math_Function_0203b0fc(&this->mMagnitude, 0x3c000, 0xcc, 0x7fffffff);
 
             short h = Vec3_HorzAngle((&this->mPos), &cam->pos);
-            _Z15ApproachLinear2Rsss(&this->mAngleY, h, 0x200);
+            ApproachLinear2(this->mAngleY, h, 0x200);
 
             state = *&this->mPhase;
             if (state < 0xa9) {
-                _Z11UpdateAngleRssis(((void *)&this->mPrevAngleY), 0x1800, 0x1e, 0x4000);
+                UpdateAngle(*(short *)&this->mPrevAngleY, 0x1800, 0x1e, 0x4000);
             }
-            _Z14ApproachLinearRsss(&this->mPrevAngleX, -0x3000, 0x70);
+            ApproachLinear(this->mPrevAngleX, -0x3000, 0x70);
         }
     }
 

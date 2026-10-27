@@ -75,6 +75,7 @@ enum daStar_c_AssetId {
 #include "Sound.h"
 #include "cstd.h"
 #include "Event.h"
+#include "math/Approach.h"
 
 /* Plain-data stand-ins. Vector3 and Matrix4x3 carry declared destructors, so
  * a local or a struct copy of either one adds cleanup code the cartridge does
@@ -209,9 +210,6 @@ void GiveVsStars(int idx, int delta);
 void CollectStarInCurLevel(int i);
 int SublevelToLevel(int i);
 s16 NumCoins(void);
-// local extern: SaveData.h's s8 level parameter re-narrows the argument
-// (func_ov002_020e8ef0 grows from 0x41c to 0x420).
-void _ZN8SaveData21SetCoinRecordIfHigherEah(int a, u8 b);
 extern u8 data_0209f228;
 extern u8 data_0209f2ac;
 extern s16 data_0209f358[];
@@ -227,7 +225,6 @@ extern void EndKuppaScript(void);
 extern s8 data_0209f310[];
 extern "C" signed char data_0209f310[];
 extern int NumVsStarsObtained(void);
-extern int _Z14ApproachLinearRiii(int *v, int target, int step);
 extern StarModelFilePtr data_ov002_0211092c;
 extern StarModelFilePtr data_ov002_0211093c;
 extern StarAnimationFileHandle data_ov002_02110924;
@@ -1191,7 +1188,7 @@ void daStar_c::func_ov002_020ea420() {
             } else if (mScaleX != 0x1000) {
                 spd = mScaleX;
                 if (mAppearTimer >= lim + 0xa) {
-                    if (_Z14ApproachLinearRiii(&spd, 0x1000, step) != 0) {
+                    if (ApproachLinear(spd, 0x1000, step) != 0) {
                         AddStarMarker();
                         mdCc_c.flags &= ~1;
                     }
@@ -1231,7 +1228,7 @@ void daStar_c::func_ov002_020ea420() {
                 } else {
                     step2 = 0x100;
                 }
-                if (_Z14ApproachLinearRiii(&spd2, 0, step2) != 0) {
+                if (ApproachLinear(spd2, 0, step2) != 0) {
                     mBits.appeared = 0;
                     UntrackStar(mMarkerSlot);
                 }
@@ -2029,7 +2026,7 @@ int daStar_c::func_ov002_020e8ef0(void* p) {
                 if (lvl <= 0xe) {
                     int rec = SaveData::GetCoinRecord(lvl);
                     if (rec < NumCoins()) {
-                        _ZN8SaveData21SetCoinRecordIfHigherEah(
+                        SaveData::SetCoinRecordIfHigher(
                             lvl,
                             (u8)(data_0209f358[((Player *)p)->mPlayerNo] & 0xff));
                     }
@@ -2298,7 +2295,7 @@ void daStar_c::func_ov002_020e88a8() {
         mHorzSpeed = 0xc000;
         mVertSpeed = 0x17000;
     }
-    r = ((dBgPi *)mWithMeshClsn.GetFloorResult())->surface.clps.GetSurfaceType();
+    r = mWithMeshClsn.GetFloorResult()->surface.clps.GetSurfaceType();
     if (r == 1 || r == 9) {
         w.x = mSafePosX;
         w.y = mSafePosY;
@@ -2326,7 +2323,7 @@ void daStar_c::func_ov002_020e88a8() {
         mPrevAngleY = Vec3_HorzAngle(&v, &mPos);
         if (mFloorNormalY >= *(short*)(data_02082714 + 0x56)) {
             if (data_0209f2f8 != 0x1d) return;
-            if (((dBgPi *)mWithMeshClsn.GetFloorResult())->surface.clps.GetFloorClass() != 5)
+            if (mWithMeshClsn.GetFloorResult()->surface.clps.GetFloorClass() != 5)
                 return;
         }
         {

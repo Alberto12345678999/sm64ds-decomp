@@ -60,6 +60,7 @@ struct System {
 #include "PlayerInput.h"
 #include "dExtSimpleModel_c.h"
 #include "cstd.h"
+#include "math/Approach.h"
 
 struct BMD_File;
 struct BTP_File;
@@ -101,12 +102,8 @@ extern EspAnimSetModelFilePtr gEspIrieModelFile;
 
 extern Matrix4x3 data_020a0e68;
 void Matrix4x3_FromTranslation(void* m, int x, int y, int z);
-int _Z15ApproachLinear2Rsss(short* p, short a, short b);
 void func_02046208(char* a, int b, int c);
 int func_020179b4(void* r0, void* r1, int r2);
-/* local extern: RowFade passes 0x10 - n, which the real unsigned short parameter would
-   truncate. That call stays on the spelled name. */
-void _ZN3G2x13SetBlendAlphaEPVttttj(volatile unsigned short *p, int a, int b, int c, int d);
 s16 atan2_hold_d_mg3d_esp_anim_set_1(s32 y, s32 x);
 int RandomIntInternal(int *seed);
 extern int data_0209d4b8;
@@ -202,7 +199,7 @@ void dMg3DEspAnimSet_c::Behavior() {
     char *self = (char *)this;
     int sb = 0;
     if (mRepeats != 0) {
-        if (_Z15ApproachLinear2Rsss(&mPhase, 0, 1)) {
+        if (ApproachLinear2(mPhase, 0, 1)) {
             mPhase = mPeriod;
             sb = 1;
             if (mRepeats > 0) {
@@ -895,9 +892,7 @@ void dScMg3DEsp_c::RowFade(int i)
     mFade += 1;
     {
         unsigned char ip = mFade;
-        _ZN3G2x13SetBlendAlphaEPVttttj(
-            (volatile unsigned short *)0x4001050, 0, 4,
-            0x10 - ip, ip);
+        G2x::SetBlendAlpha((volatile unsigned short *)0x4001050, 0, 4, 0x10 - ip, ip);
     }
     if (mFade < 0x10)
         return;

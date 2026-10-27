@@ -36,6 +36,7 @@
 #include "nitro/fx/fx.h"
 #include "SpawnInfo.h"
 #include "SharedFilePtr.h"
+#include "math/Approach.h"
 
 /* Inferred eight-byte resource-family ABI views, not recovered original
  * type names. Exact manifest aliases bind each C1/D1 to its retail helper. */
@@ -276,7 +277,6 @@ s32 daBrq_c::EnterActiveState()
     return 1;
 }
 
-void ApproachLinear(s32 &value, s32 target, s32 step);
 extern "C" void AddVec3(Vector3 *a, Vector3 *b, Vector3 *c);
 namespace Sound {
 u32 PlayLong(u32 handle, u32 bank, u32 soundId,

@@ -27,8 +27,7 @@ enum daObjKanban_c_AssetId {
 #include "SharedFilePtr.h"
 #include "Player.h"
 #include "nitro/fx/fx.h"
-
-bool ApproachLinear(short &value, short target, short step);
+#include "math/Approach.h"
 
 /* 8-byte file handle. The model uses func_02017acc / func_02017ab4. The
  * spelling is local; the manifest aliases the generated names to those ROM
@@ -57,8 +56,7 @@ extern s16 data_02082214[];
 /* model loading */
 
 /* the player side of the conversation */
-extern int func_ov002_020bec9c(void *c, unsigned int a, int b, int d, unsigned short e);
-
+extern void func_ov002_020bec9c(void *c, unsigned int a, int b, int d, unsigned short e);
 }
 
 #pragma defer_codegen off

@@ -188,13 +188,13 @@ static inline int StarCountVisible(void) {
  * allocation size, vtable identity, and the METER registry profile;
  * later EAD lineage supplies classInit. Exact original spelling is not
  * preserved. Historical alias: HUD_Spawn. It was once labelled
- * _ZN8dMeter_cC1Ev, but it takes no `this`: it is the registry factory. */
+ * the dMeter_c constructor, but it takes no `this`: it is the registry factory. */
 // @symbol dMeter_c_classInit
 extern "C" dMeter_c *dMeter_c_classInit() {
     return new dMeter_c();
 }
 
-/* ROM ordinal 18 -- _ZN8dMeter_c13InitResourcesEv, 0x020fda04, size 0x750 */
+/* ROM ordinal 18 -- dMeter_c::InitResources(), 0x020fda04, size 0x750 */
 // @symbol _ZN8dMeter_c13InitResourcesEv
 int dMeter_c::InitResources() {
     /* Main and sub engine OBJ VRAM. */
@@ -381,7 +381,7 @@ int dMeter_c::InitResources() {
     return 1;
 }
 
-/* ROM ordinal 17 -- _ZN8dMeter_c8BehaviorEv, 0x020fd7a4, size 0x260 */
+/* ROM ordinal 17 -- dMeter_c::Behavior(), 0x020fd7a4, size 0x260 */
 // @symbol _ZN8dMeter_c8BehaviorEv
 int dMeter_c::Behavior() {
     int vs;
@@ -477,7 +477,7 @@ int dMeter_c::Behavior() {
     return 1;
 }
 
-/* ROM ordinal 16 -- _ZN8dMeter_c6RenderEv, 0x020fd5e0, size 0x1c4 */
+/* ROM ordinal 16 -- dMeter_c::Render(), 0x020fd5e0, size 0x1c4 */
 // @symbol _ZN8dMeter_c6RenderEv
 int dMeter_c::Render() {
     if (IsVsMode()) {
@@ -522,7 +522,7 @@ int dMeter_c::Render() {
     return 1;
 }
 
-/* ROM ordinal 15 -- _ZN8dMeter_c16OnPendingDestroyEv, 0x020fd5dc, size 0x4 */
+/* ROM ordinal 15 -- dMeter_c::OnPendingDestroy(), 0x020fd5dc, size 0x4 */
 // @symbol _ZN8dMeter_c16OnPendingDestroyEv
 /* dMeter_c::OnPendingDestroy() at 0x020fd5dc (ov002) -- vtable slot 12.
  * Empty override; the dMeter_c does nothing when marked for destruction.
@@ -531,7 +531,7 @@ void dMeter_c::OnPendingDestroy() {
     (void)this;
 }
 
-/* ROM ordinal 14 -- _ZN8dMeter_c16CleanupResourcesEv, 0x020fd5d4, size 0x8 */
+/* ROM ordinal 14 -- dMeter_c::CleanupResources(), 0x020fd5d4, size 0x8 */
 // @symbol _ZN8dMeter_c16CleanupResourcesEv
 /* dMeter_c::CleanupResources() at 0x020fd5d4 (ov002) -- vtable slot 3.
  * Returns VS_FAIL (1); the dMeter_c holds no SharedFilePtr/heap resources to
@@ -542,7 +542,7 @@ s32 dMeter_c::CleanupResources() {
     return 1;
 }
 
-/* ROM ordinal 13 -- _ZN8dMeter_c17UpdateHealthMeterEv, 0x020fd218, size 0x3bc */
+/* ROM ordinal 13 -- dMeter_c::UpdateHealthMeter(), 0x020fd218, size 0x3bc */
 // @symbol _ZN8dMeter_c17UpdateHealthMeterEv
 void dMeter_c::UpdateHealthMeter() {
     int chr = data_0209f250;
@@ -665,7 +665,7 @@ void dMeter_c::UpdateHealthMeter() {
     }
 }
 
-/* ROM ordinal 12 -- _ZN8dMeter_c17RenderHealthMeterEv, 0x020fcfec, size 0x22c */
+/* ROM ordinal 12 -- dMeter_c::RenderHealthMeter(), 0x020fcfec, size 0x22c */
 // @symbol _ZN8dMeter_c17RenderHealthMeterEv
 void dMeter_c::RenderHealthMeter() {
     if (((Player *)data_0209f394[data_0209f250])->IsInsideOfCannon())
@@ -688,7 +688,7 @@ void dMeter_c::RenderHealthMeter() {
     GX::LoadOBJPltt(&data_ov002_0210c310[data_ov002_0210c29c[data_ov002_0211117c[0]]], 0x60, 0x20);
 }
 
-/* ROM ordinal 11 -- _ZN8dMeter_c13UpdateVsTimerEv, 0x020fce9c, size 0x150 */
+/* ROM ordinal 11 -- dMeter_c::UpdateVsTimer(), 0x020fce9c, size 0x150 */
 // @symbol _ZN8dMeter_c13UpdateVsTimerEv
 void dMeter_c::UpdateVsTimer() {
     unsigned int v;
@@ -727,7 +727,7 @@ void dMeter_c::UpdateVsTimer() {
     }
 }
 
-/* ROM ordinal 10 -- _ZN8dMeter_c13RenderVsTimerEv, 0x020fca18, size 0x484 */
+/* ROM ordinal 10 -- dMeter_c::RenderVsTimer(), 0x020fca18, size 0x484 */
 // @symbol _ZN8dMeter_c13RenderVsTimerEv
 /* The VS-mode countdown: a localised "TIME" caption, and below it either the
  * remaining seconds or a localised "TIME UP".
@@ -794,7 +794,7 @@ void dMeter_c::RenderVsTimer() {
     }
 }
 
-/* ROM ordinal 9 -- _ZN8dMeter_c15RenderCoinCountEv, 0x020fc81c, size 0x1fc */
+/* ROM ordinal 9 -- dMeter_c::RenderCoinCount(), 0x020fc81c, size 0x1fc */
 // @symbol _ZN8dMeter_c15RenderCoinCountEv
 void dMeter_c::RenderCoinCount() {
     if (IsVsMode()) {
@@ -827,7 +827,7 @@ void dMeter_c::RenderCoinCount() {
     }
 }
 
-/* ROM ordinal 8 -- _ZN8dMeter_c14RenderRedCoinsEv, 0x020fc77c, size 0xa0 */
+/* ROM ordinal 8 -- dMeter_c::RenderRedCoins(), 0x020fc77c, size 0xa0 */
 // @symbol _ZN8dMeter_c14RenderRedCoinsEv
 /* Draws one sprite per red coin still to collect, stepping 0xb across from
  * x=0x10. Both the count (data_0209f30c) and the row selector (data_0209f310)
@@ -855,7 +855,7 @@ void dMeter_c::RenderRedCoins() {
     }
 }
 
-/* ROM ordinal 7 -- _ZN8dMeter_c15RenderStarCountEv, 0x020fc458, size 0x324 */
+/* ROM ordinal 7 -- dMeter_c::RenderStarCount(), 0x020fc458, size 0x324 */
 // @symbol _ZN8dMeter_c15RenderStarCountEv
 /* Draws the star counter: the star icon, an "x", and up to three digits laid
  * out RIGHT to LEFT from mStarCountX, skipping the -1 slots CalculateDigits
@@ -926,7 +926,7 @@ void dMeter_c::RenderStarCount() {
     OAM::Render(true, &OAM::POWER_STAR, x - 16, 10, -1, 1, 0);
 }
 
-/* ROM ordinal 6 -- _ZN8dMeter_c17RenderSilverStarsEv, 0x020fc3c4, size 0x94 */
+/* ROM ordinal 6 -- dMeter_c::RenderSilverStars(), 0x020fc3c4, size 0x94 */
 // @symbol _ZN8dMeter_c17RenderSilverStarsEv
 /* Draws one sprite per silver star collected, in a row starting at x=0x10 and
  * stepping 0x11 across at y=0xa. The count comes from data_0209f310 indexed by
@@ -953,7 +953,7 @@ void dMeter_c::RenderSilverStars() {
     }
 }
 
-/* ROM ordinal 5 -- _ZN8dMeter_c19RenderCameraButtonsEv, 0x020fc04c, size 0x378 */
+/* ROM ordinal 5 -- dMeter_c::RenderCameraButtons(), 0x020fc04c, size 0x378 */
 // @symbol _ZN8dMeter_c19RenderCameraButtonsEv
 /* Takes the object only because its caller in this TU passes it; the body
  * never reads it, which is why the legacy source could spell it static. */
@@ -1020,7 +1020,7 @@ void dMeter_c::RenderCameraButtons() {
     OAM::RenderSub(&OAM::S_CAM_ZOOM_BUTTON, 0xe7, y, -1, 1);
 }
 
-/* ROM ordinal 4 -- _ZN8dMeter_c15RenderLifeCountEv, 0x020fbe38, size 0x214 */
+/* ROM ordinal 4 -- dMeter_c::RenderLifeCount(), 0x020fbe38, size 0x214 */
 // @symbol _ZN8dMeter_c15RenderLifeCountEv
 void dMeter_c::RenderLifeCount() {
     unsigned char idx = data_0209f250;
@@ -1056,7 +1056,7 @@ void dMeter_c::RenderLifeCount() {
     }
 }
 
-/* ROM ordinal 3 -- _ZN8dMeter_c15CalculateDigitsEt, 0x020fbdac, size 0x8c */
+/* ROM ordinal 3 -- dMeter_c::CalculateDigits(unsigned short), 0x020fbdac, size 0x8c */
 // @symbol _ZN8dMeter_c15CalculateDigitsEt
 /* Splits a count into the three decimal digits the dMeter_c draws, most significant
  * first, and blanks leading zeros by writing -1 rather than a digit.
@@ -1084,7 +1084,7 @@ void dMeter_c::CalculateDigits(unsigned short value) {
     }
 }
 
-/* ROM ordinal 2 -- _ZN8dMeter_c15RenderTimeTimerEv, 0x020fb96c, size 0x440 */
+/* ROM ordinal 2 -- dMeter_c::RenderTimeTimer(), 0x020fb96c, size 0x440 */
 // @symbol _ZN8dMeter_c15RenderTimeTimerEv
 void dMeter_c::RenderTimeTimer() {
     unsigned long long t;
@@ -1131,7 +1131,7 @@ void dMeter_c::RenderTimeTimer() {
     OAM::Render(false, OAM::NUMBERS[centi % 10], 0xf0, 0x16, -1, 1, 0);
 }
 
-/* ROM ordinal 1 -- _ZN8dMeter_cD0Ev, 0x020fb928, size 0x44 */
+/* ROM ordinal 1 -- dMeter_c::~dMeter_c() (deleting, D0), 0x020fb928, size 0x44 */
 // @symbol _ZN8dMeter_cD0Ev
 /* No body here, and none is possible: D0 is the deleting destructor and the
  * compiler writes all of it. The inline `~dMeter_c() {}` in include/dMeter_c.h
@@ -1140,13 +1140,13 @@ void dMeter_c::RenderTimeTimer() {
  *
  * What the cartridge's 0x44 bytes do: the same two vptr stores and the same
  * fBase_c chain call as D1 below, then `ldr r1, =GAME_HEAP_PTR; ldr r1, [r1]`
- * and `bl _ZN6Memory10DeallocateEPvPN5mHeap6Heap_tE` (arm9 0x0203c1e8) before returning
+ * and `bl Memory::Deallocate(void*, mHeap::Heap_t*)` (arm9 0x0203c1e8) before returning
  * the object in r0. So the deallocation is fBase_c's operator delete inlined
  * here, and it does name a heap -- the global game heap, loaded from
  * arm9 0x020a0eac.
  */
 
-/* ROM ordinal 0 -- _ZN8dMeter_cD1Ev, 0x020fb8f8, size 0x30 */
+/* ROM ordinal 0 -- dMeter_c::~dMeter_c() (complete, D1), 0x020fb8f8, size 0x30 */
 // @symbol _ZN8dMeter_cD1Ev
 /* No body here either, for the same reason. The cartridge's 0x30 bytes are two
  * vtable stores and one call, and every one of the three follows from
@@ -1154,7 +1154,7 @@ void dMeter_c::RenderTimeTimer() {
  *
  *     str r2, [r4]     ; _ZTV8dMeter_c   0x0210c2c8
  *     str r1, [r4]     ; _ZTV7dBase_c    0x0208e4b8  -- dBase_c's dtor, INLINED
- *     bl  0x02043d48   ; _ZN7fBase_cD2Ev
+ *     bl  0x02043d48   ; fBase_c::~fBase_c() (base, D2)
  *
  * The second store is there because include/dBase_c.h defines that class's
  * destructor in its class body, so it inlines into every derived destructor.

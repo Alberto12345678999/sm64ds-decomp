@@ -20,6 +20,7 @@
 #include "decl_common.h"
 #include "PlayerInput.h"
 #include "Sound.h"
+#include "math/Approach.h"
 
 /* sMCarlo2Cards is the head of the live card list and _02142568 its
  * tail (SetupBoard builds it); _0214256c heads the list of cleared cards,
@@ -78,8 +79,6 @@ namespace GX { void LoadOBJPltt(const void*, unsigned int, unsigned int); }
 namespace GXS { void LoadOBJPltt(const void*, unsigned int, unsigned int); }
 
 /* C++ linkage: the reference parameters are part of the ROM names. */
-int ApproachLinear(int& value, int target, int step);
-int ApproachLinear2(s16& value, s16 target, s16 step);
 
 // @symbol _ZN19dMgMCarlo2CardObj_cC1Ev
 dMgMCarlo2CardObj_c::dMgMCarlo2CardObj_c()

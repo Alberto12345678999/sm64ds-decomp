@@ -82,11 +82,6 @@ extern int   Mg_IsNewRecord(void);
 extern int   func_020126e8(int a);
 extern int   func_02012468(int a, int b, int c, int d, int e, int f, int g, short h);
 extern void  MultiStore16(u16 val, void *dst, int nbytes);
-/* local extern: Boo_StateFadeAway and 0211f224 pass `0x10 - alpha` as computed: the
-   cartridge does not narrow it to 16 bits at either call, which G2x.h's
-   unsigned short parameters would. So those two call the mangled name. */
-extern void  _ZN3G2x13SetBlendAlphaEPVttttj(volatile unsigned short *reg, int a, int b,
-                                            int c, int d);
 struct OAM {
     static void Render(bool, OamAttr *, int, int, int, int, int, int, int, int);
 };
@@ -1236,8 +1231,7 @@ void dScMgTeresa_c::Boo_StateFadeAway(int i) {
         *fade = *fade + 1;
         *p6e = 0;
         if (i == mLastSettledBoo) {
-            _ZN3G2x13SetBlendAlphaEPVttttj((volatile unsigned short *)0x4001050, 0, 4,
-                0x10 - *fade, 0x10);
+            G2x::SetBlendAlpha((volatile unsigned short *)0x4001050, 0, 4, 0x10 - *fade, 0x10);
         }
         if (*fade >= 0x10) {
             *(u8 *)((char *)&mBoos[0].mInPlay + o) = 0;
@@ -1358,8 +1352,7 @@ void dScMgTeresa_c::Boo_StateFadeOut(int i) {
     mBoos[i].mFade++;
     mBoos[i].mTimer = 0;
     if (i == 0)
-        _ZN3G2x13SetBlendAlphaEPVttttj((volatile unsigned short *)0x4001050, 0, 1,
-            0x10 - mBoos[i].mFade, 0x10);
+        G2x::SetBlendAlpha((volatile unsigned short *)0x4001050, 0, 1, 0x10 - mBoos[i].mFade, 0x10);
     if (mBoos[i].mFade < 0x10)
         return;
     mBoos[i].mFade = 0;

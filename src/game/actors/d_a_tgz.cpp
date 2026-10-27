@@ -54,8 +54,7 @@ struct Vector3_16f;
 #include "decl_Particle.h"
 #include "dBgCh_Actr.h"
 #include "cstd.h"
-
-bool ApproachLinear(short &value, short target, short step);
+#include "math/Approach.h"
 
 #pragma defer_codegen off
 
@@ -205,7 +204,7 @@ extern "C" void func_ov077_02124d08(daTgz_c *self, dBgCh_Actr *clsn)
                 return;
             }
             {
-                dBgPi *fr = (dBgPi *)clsn->GetFloorResult();
+                dBgPi *fr = clsn->GetFloorResult();
                 fr->surface.CopyNormalTo(normal);
             }
             if (normal.y != 0) {
@@ -219,7 +218,7 @@ extern "C" void func_ov077_02124d08(daTgz_c *self, dBgCh_Actr *clsn)
         }
     }
     if (clsn->IsOnWall()) {
-        dBgPi *wr = (dBgPi *)clsn->GetWallResult();
+        dBgPi *wr = clsn->GetWallResult();
         wr->surface.CopyNormalTo(wallnormal);
     }
 }

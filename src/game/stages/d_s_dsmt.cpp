@@ -20,9 +20,9 @@
  * emits one .text section per function in reverse source order. Do not
  * reorder.
  *
- * classInit stays a literal construction bridge: the fader member's
- * constructor is the out-of-line arm9 _ZN10dFdDummy_cC1Ev, so
- * `new dScDSMT_c` would not spell the same call.
+ * classInit is `return new dScDSMT_c`: the implicit constructor inlines the
+ * fBase_c/dBase_c/dScene_c chain and mGraphCallback's vptr pair, and calls
+ * the out-of-line arm9 dFdDummy_c::dFdDummy_c() on the fader member.
  */
 
 // leftovers: the four func_ov007_* helpers, the dispatcher and the wrappers
@@ -71,10 +71,6 @@ extern u8 data_0209f1e0;
 extern void *data_0209d4a8;
 extern int data_0208ee44;
 extern void *data_020a0ea0;
-extern int data_0208e4b8[];
-extern int data_0208ee14[];
-extern int data_ov007_021032e8[];
-extern int data_ov007_021032b0[];
 /* Linker-defined overlay IDs: the address is the overlay number. */
 extern int OVERLAY_100_ID;
 extern int OVERLAY_102_ID;
@@ -94,35 +90,12 @@ void StartMinigameMenu(u8 returnToRecRoom);
 void SetSoundMode(int mode);
 void TurnBacklightOn(void);
 void TurnBacklightOff(void);
-/* local extern: the factory runs the base constructor over fresh operator new
-   storage and stores the vptrs itself; C++ has no call spelling for a C2. */
-void *_ZN7fBase_cC2Ev(void *p);
-/* local extern: the factory below constructs the fader member in place;
-   C++ has no constructor call on existing storage, and placement new adds a
-   null test the ROM does not make. */
-struct dFdDummy_c *_ZN10dFdDummy_cC1Ev(struct dFdDummy_c *p);
 }
 
-/* Factory: literal construction bridge (fBase chain, vtable aliasing, spawn-flag
- * bits, graphCallback vptr pair, dFdDummy_c member). `new` would not spell
- * the same arm9 C1 call. */
+/* Factory: the registry's spawn entry point. */
 // @symbol dScDSMT_c_classInit
 extern "C" dScDSMT_c *dScDSMT_c_classInit(void) {
-    int *p = (int *)fBase_c::operator new(0x64);
-    if (p) {
-        unsigned char *f;
-        _ZN7fBase_cC2Ev(p);
-        p[0] = (int)data_0208e4b8;
-        p[0] = (int)_ZTV8dScene_c;
-        f = &((dScDSMT_c *)p)->pauseFlags;
-        *f |= 1;
-        *f |= 4;
-        p[0] = (int)data_ov007_021032e8;
-        p[0x50 / 4] = (int)data_0208ee14;
-        p[0x50 / 4] = (int)data_ov007_021032b0;
-        _ZN10dFdDummy_cC1Ev(&((dScDSMT_c *)p)->fader);
-    }
-    return (dScDSMT_c *)p;
+    return new dScDSMT_c;
 }
 
 /* Heap thunks onto the game heap; `bx ip` sibcalls. */

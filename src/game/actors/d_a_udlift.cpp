@@ -76,6 +76,7 @@ enum daUdlift_c_AssetId {
 #include "SharedFilePtr.h"
 #include "Player.h"
 #include "Sound.h"
+#include "math/Approach.h"
 
 typedef void (daUdlift_c::*State)();
 
@@ -86,7 +87,6 @@ enum {
     RC_RIFT02 = 0x83      /* Rainbow Ride */
 };
 
-void ApproachLinear(int &value, int target, int step);
 
 /* File-scope objects at the end of this file construct the six resource
  * handles (model files 0x6bf/0x5db/0x6ab, collision files 0x6c0/0x5dc/0x6ac)

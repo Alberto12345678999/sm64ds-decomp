@@ -19,8 +19,7 @@
 #include "nitro/fx/fx.h"
 #include "Sound.h"
 #include "cstd.h"
-
-bool ApproachLinear(short &value, short target, short step);
+#include "math/Approach.h"
 
 /* A plain twelve-word copy of the carry matrix. */
 struct PgBbyMtx {

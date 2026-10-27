@@ -1,9 +1,5 @@
 //cpp
-
-namespace GX {
-void SetBankForSubBG(unsigned short a);
-void SetBankForSubOBJ(unsigned short a);
-}
+#include "GX.h"
 
 namespace GXS {
 void SetGraphicsMode(int a);

@@ -79,6 +79,7 @@ enum daObjTatefuda_c_AssetId {
 #include "dExtSimpleModel_c.h"
 #include "dBgCh_Actr.h"
 #include "dCc_c.h"
+#include "math/Approach.h"
 
 /* Local shadow declarations carried from the legacy files verbatim.
  * NOT reconciled against real project headers -- check include/*.h for
@@ -174,8 +175,7 @@ extern u8 data_0209d6bc;
 extern u8 data_0209f284;
 extern s32 Vec3_HorzDist(struct Vector3 *a, struct Vector3 *b);
 extern int func_ov002_020bec84(void *player, unsigned int i);
-extern int func_ov002_020bec9c(void *player, unsigned int a, int b, int d, unsigned short e);
-extern void _Z14ApproachLinearRiii(int* p, int a, int b);
+extern void func_ov002_020bec9c(void *player, unsigned int a, int b, int d, unsigned short e);
 extern "C" unsigned int data_0209b454;
 extern "C" void AttachToHolder(struct daObjTatefuda_c *self);
 extern "C" u8 DecIfAbove0_Byte(u8 *p);
@@ -574,7 +574,7 @@ void daObjTatefuda_c::Thrown()
         }
     }
 
-    _Z14ApproachLinearRiii(&mHorzSpeed, 0, 0x555);
+    ApproachLinear(mHorzSpeed, 0, 0x555);
 
     if (((dBgW *)&mMeshCollider)->IsEnabled() != 0) {
         ((dBgW *)&mMeshCollider)->Disable();
@@ -612,7 +612,6 @@ void daObjTatefuda_c::InitDropped()
 }
 
 // @symbol _ZN15daObjTatefuda_c7DroppedEv
-bool ApproachLinear(short &value, short target, short step);
 
 /* DROPPED, update: turn the X angle toward 0x4000 (a quarter turn) by at most
  * 0x1000 per frame, move, and Kill the sign if it touched the ground, a wall or

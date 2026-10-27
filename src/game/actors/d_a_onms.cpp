@@ -241,7 +241,7 @@ void daOnms_c::StateKnocked()
     /* The wrapper returns the sphere query's dBgPi. Its dBgPc base owns
        the surface. Keep each CLPS address at its call site; the earlier
        hoisted-address probe differed by 13 words. */
-    dBgPi *floor = (dBgPi *)mWithMeshClsn.GetFloorResult();
+    dBgPi *floor = mWithMeshClsn.GetFloorResult();
 
     if (floor->surface.clps.GetSurfaceType() == 9) {
         mMoveDir = kDirSink;

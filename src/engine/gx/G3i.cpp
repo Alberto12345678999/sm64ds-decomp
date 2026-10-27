@@ -7,28 +7,24 @@
  * projection and streams it to the projection port. Both are static (no this)
  * and both optionally mirror the matrix into a caller's Matrix4x3.
  */
-// leftovers: a real G3i::PerspectiveW_ method does not reproduce this body, so
-// the definition stays C linkage under the Fix12i mangling, with an int *
-// matrix. func_02055998 keeps its address name (no recovered name exists).
+// leftovers: func_02055998 keeps its address name (no recovered name exists).
 #include "G3i.h"
 #include "math/Matrix.h"
 #include "nitro/fx/fx.h"
+#include "cstd.h"
 
 extern "C" {
 void NormalizeVec3(Vector3 *v, Vector3 *out);
 void CrossVec3(const Vector3 *a, const Vector3 *b, Vector3 *out);
 Fix12i DotVec3(const Vector3 *a, const Vector3 *b);
-/* local extern: every caller is inside the `#pragma cplusplus off` body
-   below, where cstd.h's namespace cannot be named. */
-int _ZN4cstd4fdivEii(int, int);
-int _ZN4cstd11fdiv_resultEv(void);
-s64 _ZN4cstd11ldiv_resultEv(void);
 }
 
-// @symbol _ZN3G3i13PerspectiveW_EiiiiiibP9Matrix4x3
-#pragma cplusplus off
-void _ZN3G3i13PerspectiveW_EiiiiiibP9Matrix4x3(int sinF, int cosF, int aspect, int n, int f,
-                                               int scaleW, int flag, int *mtx) {
+// @symbol _ZN3G3i13PerspectiveW_EiiiiiiiP9Matrix4x3
+/* The Nitro SDK's G3i_PerspectiveW_: the load flag is a BOOL. Spelled bool,
+   the body tests it differently from the ROM; int reproduces it. */
+void G3i::PerspectiveW_(Fix12i sinF, Fix12i cosF, Fix12i aspect, Fix12i n, Fix12i f, Fix12i scaleW,
+                        int flag, Matrix4x3 *mtxp) {
+    int *mtx = (int *)mtxp;
     int tmp;
     volatile int *port;
     int xx;
@@ -37,7 +33,7 @@ void _ZN3G3i13PerspectiveW_EiiiiiibP9Matrix4x3(int sinF, int cosF, int aspect, i
     int v;
     int wz;
 
-    tmp = _ZN4cstd4fdivEii(cosF, sinF);
+    tmp = cstd::fdiv(cosF, sinF);
     if (scaleW != 0x1000)
         tmp = tmp * scaleW / 0x1000;
 
@@ -61,7 +57,7 @@ void _ZN3G3i13PerspectiveW_EiiiiiibP9Matrix4x3(int sinF, int cosF, int aspect, i
         mtx[13] = 0;
         mtx[15] = 0;
     }
-    xx = _ZN4cstd11fdiv_resultEv();
+    xx = cstd::fdiv_result();
     *(volatile u64 *)0x4000290 = (u64)0x1000 << 32;
     *(volatile u64 *)0x4000298 = (unsigned)(n - f);
     if (flag) {
@@ -80,7 +76,7 @@ void _ZN3G3i13PerspectiveW_EiiiiiibP9Matrix4x3(int sinF, int cosF, int aspect, i
         mtx[0] = xx;
         mtx[5] = tmp;
     }
-    q = _ZN4cstd11ldiv_resultEv();
+    q = cstd::ldiv_result();
     if (scaleW != 0x1000)
         q = q * scaleW / 0x1000;
     zz = (int)(((f + n) * q + 0x80000000LL) >> 32);
@@ -99,7 +95,6 @@ void _ZN3G3i13PerspectiveW_EiiiiiibP9Matrix4x3(int sinF, int cosF, int aspect, i
         mtx[14] = wz;
     }
 }
-#pragma cplusplus on
 
 // @symbol _ZN3G3i7LookAt_EPK7Vector3S2_S2_bP9Matrix4x3
 void G3i::LookAt_(const Vector3 *camPos, const Vector3 *up, const Vector3 *target, bool draw,

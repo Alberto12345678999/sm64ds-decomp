@@ -131,8 +131,13 @@ extern void UpdateMinimap(s32 *a, s32 b, s32 c, s32 d, s32 e);
 void Vec3_DivScalarInPlace(struct Vec3* v, int s);
 void Vec3_MulScalarInPlace(struct Vec3* v, int s);
 void Vec3_RotateYAndTranslate(struct Vec3* out, struct Vec3* in, short ang, struct Vec3* t);
-extern struct Vec3 data_ov002_0211116c;
 }
+
+/* The centre of the 256x192 touch screen, (128, 96) in 20.12 fixed point:
+ * the screen point the minimap is drawn around. A file-scope Vector3 with a
+ * non-trivial destructor, so mwcc emits __sinit_d_map.cpp to construct it
+ * and register ~Vector3() (was the handwritten __sinit_ov002_0210804c). */
+static Vector3 sMapScreenCenter(0x80000, 0, 0x60000);
 
 // @symbol _ZN6dMap_cD1Ev
 /* The complete-object destructor: store this class's vptr and chain to
@@ -1024,7 +1029,7 @@ int dMap_c::InitResources()
 // @symbol _ZN6dMap_c20GetPosFromMinimapPosER7Vector3S1_isS1_
 void dMap_c::GetPosFromMinimapPos(Vector3 &a, Vector3 &b, Fix12i c, short d, Vector3 &e) {
     struct Vec3 local;
-    Vec3_Sub((Vector3 *)&local, &a, (Vector3 *)&data_ov002_0211116c);
+    Vec3_Sub((Vector3 *)&local, &a, &sMapScreenCenter);
     Vec3_DivScalarInPlace(&local, c);
     Vec3_RotateYAndTranslate((struct Vec3 *)&e, (struct Vec3 *)&b, d, &local);
 }
@@ -1034,14 +1039,15 @@ void dMap_c::GetPosOnMinimap(Vector3 *out, Vector3 *a, Fix12i s, short ang, Vect
     struct Vec3 v;
     Vec3_Sub((Vector3*)&v, out, a);
     Vec3_MulScalarInPlace(&v, s);
-    Vec3_RotateYAndTranslate((struct Vec3*)res, &data_ov002_0211116c, (short)(-ang), &v);
+    Vec3_RotateYAndTranslate((struct Vec3 *)res, (struct Vec3 *)&sMapScreenCenter, (short)(-ang),
+                             &v);
 }
 
 /* Reconstructed source-style name: SM64DS proves dMap_c through RTTI,
  * allocation size, vtable identity, and the MAP registry profile;
  * later EAD lineage supplies classInit. Exact original spelling is not
  * preserved. Historical alias: Minimap_Spawn. It was once labelled
- * _ZN6dMap_cC1Ev, but it takes no `this`: it is the registry factory. */
+ * the dMap_c constructor, but it takes no `this`: it is the registry factory. */
 // @symbol dMap_c_classInit
 extern "C" dMap_c *dMap_c_classInit()
 {

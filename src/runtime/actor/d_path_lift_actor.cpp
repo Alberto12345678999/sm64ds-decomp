@@ -39,8 +39,7 @@
 #include "decl_common.h"
 #include "common.h"
 #include "cstd.h"
-
-bool ApproachLinear(short &value, short target, short step);
+#include "math/Approach.h"
 
 typedef void (dPathLiftActor_c::*PathLiftStateFn)();
 

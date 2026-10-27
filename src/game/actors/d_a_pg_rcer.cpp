@@ -29,10 +29,7 @@ struct System {
 #include "Sound.h"
 #include "nitro/fx/fx.h"
 #include "cstd.h"
-
-bool ApproachLinear(short &value, short target, short step);
-int ApproachLinear(int &value, int target, int step);
-void UpdateAngle(short &angle, short target, int divisor, short maxStep);
+#include "math/Approach.h"
 
 extern "C" {
 
@@ -599,7 +596,7 @@ int func_ov019_0211140c(daPgRcer_c *self, dBgCh_Actr *clsn)
     Vector3 wallNormal;
     func_02038414(clsn);
     if (clsn->IsOnGround()) {
-        ((dBgPi *)clsn->GetFloorResult())->surface.CopyNormalTo(floorNormal);
+        clsn->GetFloorResult()->surface.CopyNormalTo(floorNormal);
         if (floorNormal.y != 0) {
             int x = FX_MUL(floorNormal.x, self->mSpeedX);
             int y = FX_MUL(floorNormal.z, self->mSpeedZ);
@@ -609,7 +606,7 @@ int func_ov019_0211140c(daPgRcer_c *self, dBgCh_Actr *clsn)
         }
     }
     if (clsn->IsOnWall()) {
-        ((dBgPi *)clsn->GetWallResult())->surface.CopyNormalTo(wallNormal);
+        clsn->GetWallResult()->surface.CopyNormalTo(wallNormal);
     }
 }
 

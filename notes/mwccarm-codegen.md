@@ -219,10 +219,11 @@ Three things this batch adds to the recipe:
   the namespace, so their calls need `cstd::` qualification -- an unqualified
   call compiles nowhere and the error (`undefined identifier`) is the only
   symptom.
-- **A `.c` caller cannot follow at all.** `src/InvMat4x3.c` is C and cannot name
-  a C++ namespaced function, so it keeps a mangled extern under the new spelling
-  with a `local extern:` reason. This is a third category alongside shadow
-  scaffolds and raw-offset TUs.
+- **A `.c` caller cannot follow at all.** `src/InvMat4x3.cpp` was still C then
+  and could not name a C++ namespaced function, so it kept a mangled extern under
+  the new spelling with a `local extern:` reason. This is a third category
+  alongside shadow scaffolds and raw-offset TUs. (A later batch made it C++, and
+  it now calls `cstd::reciprocal_async` by name.)
 - **The scalar name can FIX a recorded name defect.** `fdiv_async`'s old name
   was in `config/name-roundtrip-baseline.json` as a MISMATCH, because a
   hand-derived name spelled the second `Fix12<int>` out in full where the
@@ -4969,7 +4970,7 @@ the lever should not be re-tried.
 **51 committed sources carry it right now** (`grep -rl '#pragma long_calls' src/`) -- 50 of
 them overlay files (19 in ov007, the rest spread over
 ov002/006/014/015/016/022/029/030/036/063/064/065/066/073/079/080/091/095/098) and exactly
-ONE arm9 file, `src/unnamed/arm9/0205/func_0205d3e4.c`. Most sit under a header comment that says the pragma
+ONE arm9 file, `src/unnamed/arm9/0205/func_0205d3e4.cpp`. Most sit under a header comment that says the pragma
 is what emits the pooled veneer. They all still byte-match, because the pragma is inert, but
 the comment is wrong and every one of those compiles now prints `warning: illegal #pragma`
 under the `-w illpragmas` in `DEFAULT_FLAGS`. Deleting the line from those files is a no-op
@@ -8653,3 +8654,106 @@ in the call argument, so it is not a later live range; 265). About 1,030 cells.
 local reaches, assign the value into a DEAD earlier local whose first assignment has the rank
 you need. With 6dc this makes one rule: in b56, colour rank comes from the order of FIRST
 assignment, and reused locals inherit it.
+
+## 6de. Placement new always null-tests in 2004/b56; build the object as what it really is, a member or a block-scope local, and the mangled C1 call goes away (2026-10-27)
+
+Several sources called a constructor by its mangled C1 name on storage that already existed,
+because `new (p) T(...)` adds a `cmp r0,#0` the ROM does not have. The null test cannot be
+switched off. Measured on `mHeap::Heap_t::CreateSolidHeapAllocator` (target 0x4c), and the
+test survived every variant:
+
+| spelling | size |
+|---|---|
+| inline global or class-scope `operator new(size_t, void*)`, with or without `throw()`, `throw(bad_alloc)`, `#pragma exceptions on`, `-Cpp_exceptions on` (`.exceptix` appears: the flag took), `__attribute__((nothrow))`, `__attribute__((pure))` | 0x5c (+16) |
+| declared-only placement `operator new` | 0x70 (+36) |
+| placement on `&global` or on an array global | +24 |
+| an explicit `if (start == 0) return 0;` first | +36 (the test is duplicated) |
+| `p->T::T()`, with or without `#pragma cpp_extensions on` | "illegal use of type-name" |
+| `__declspec(nothrow)` | "illegal type qualifier" |
+
+The positive control for the attribute rows is `__attribute__((never_inline))`, which did take
+effect (+36).
+
+**Lever.** Don't construct on raw storage. Find what the object really is:
+
+- **A member built by its owner's implicit constructor.** `dScDSMT_c::mGraphCallback` was
+  `u8[4]`, so classInit wrote both vptrs and called `_ZN10dFdDummy_cC1Ev` by hand. Typed as
+  `graphCallback_c`, with the nested class defined before the member, classInit becomes
+  `return new dScDSMT_c;` and matches. It emits the `_ZN8dScene_cD2Ev` / `_ZN7dBase_cD2Ev`
+  helpers, which are deadstripped the same way as in dScGameOver_c.
+- **A block-scope local.** The ROM frames follow one rule. Function-scope locals get slots
+  first, in declaration order. Block-scope locals follow, in textual declaration order. A
+  local of an inlined static helper comes after all of the caller's locals. So declare the
+  object in the block where the ROM constructs it, and its destructor runs at scope exit,
+  where the ROM's explicit D1 call was. That closed `ExpandingHeapAllocator::Reallocate`
+  (`MemoryNode::Target tgt(block)`), `dBgW_Kc::DetectClsn(dBgCh_Lin&)` (`dBgPc pc` in the hit
+  block, `pos` in the result block) and `daObjBk_Botaosi_c::InitResources` (`dBgCh_Gnd gnd`).
+  Reallocate's `volatile int` fill zero has to sit below both Targets, so it moves into a
+  `FillZero` inline. A placement new there costs +8, and block locals without the helper
+  give 5 to 15 frame-word diffs.
+- **Drop `opt_propagation off` when a scope-exit destructor follows the return constant.**
+  Under the pragma, botaosi's typed local kept `return 1` live in r4 across the destructor
+  (+8 bytes, the reason for the old word storage). Without it the constant rematerializes
+  after the call. The two Vector3 zero blocks then need x, y, z order with literal zeros
+  (`a = b = 0` chains store right to left).
+
+**Still held.** The factory C1 calls on a computed, aligned address
+(`CreateSolidHeapAllocator`, `CreateExpandingHeapAllocator`, +16 as placement new). The
+`NestedHeapIterator` "C1" calls in NestedHeapIterator.cpp and SoundEngine.cpp are NitroSDK
+`NNS_FndInitList` on existing storage. The `__sinit_02074e84` dClipper global is defined in
+a `.bss` no TU owns. `StarCamera_Spawn` is a real new-expression: `new dActor_c` matches
+except for the size, 0xd0 against 0xd4. An inline `operator new(size_t, int extra)` with
+`::new (4) dActor_c` matches it whole, but that overload is coined, so the site stays on
+#3198.
+
+## 6df. A hand-written `__register_global_object` call is a static `Vector3` the source hasn't declared; mwcc emits the guard, the stores, the registration and `__sinit_<file>.cpp` byte-identical (dMap_c, dScMgSnowball_c, unit020bfec0, 2026-10-27)
+
+Some sources built a static by hand: three stores, then
+`func_020731dc(&obj, _ZN7Vector3D1Ev, &node)`, either in a separate `__sinit_<addr>.c` shard
+or under a hand-tested guard word. `include/types.h` gives `Vector3` a non-trivial
+`~Vector3() {}` and a `(Fix12i, Fix12i, Fix12i)` constructor, so declaring the object does
+the same thing:
+
+- **File scope:** `static Vector3 sMapScreenCenter(0x80000, 0, 0x60000);`. mwcc emits
+  `__sinit_d_map.cpp` (0x48, identical to retail `__sinit_ov002_0210804c`), its `.ctor` word,
+  and a 12-byte `@NNN` registration node in `.bss`.
+- **Function scope:** `static Vector3 sUnitY(0, 0x1000, 0);` inside the function
+  (dScMgSnowball_c::ResetScene, and `sAxis` in unit020bfec0's FallingPetal_Spawn). mwcc emits
+  the guard test (`_ZGVsUnitY$NNN`, 4 bytes), the stores, the registration call and
+  `guard |= 1` inline, in the same place the hand-written block had them.
+
+Both are byte- and relocation-identical, and the hand-written guard, the node extern, and the
+`_ZN7Vector3D1Ev` extern all go away. Under `-O4,p` mwcc orders the `.bss` objects by size,
+then by name. Retail matches that order (`@NNN` node before `sMapScreenCenter`; guard, node,
+then storage), and objisolate reorders `.bss` sections to the manifest addresses anyway.
+
+Bookkeeping, following daObj1UpLogo_c and dMgState_c:
+
+1. The TU's manifest becomes `intact-object` and claims `.init`/`.ctor` (file scope) and the
+   `.bss` range, with `bss`/`init`/`ctor` rows, STB_LOCAL->STB_GLOBAL
+   `symbol_binding_rewrites` for the sinit, `.p__sinit`, node and statics, and an
+   `undefined_symbol_aliases` row `__register_global_object` -> `func_020731dc`. Without the
+   alias the scratch link fails with `Undefined : "__register_global_object"`. A file-scope
+   sinit also needs explicit `relocations` rows for its `.init`/`.ctor` words. A text-only
+   TU (unit020bfec0) can go intact-object with only `.text` plus the new `.bss` claim, as
+   long as verify shows nothing else unlicensed.
+2. Rename `symbols.txt` rows to the compiled names (`__sinit_d_map.cpp`, `sUnitY$1570`,
+   `_ZGVsUnitY$1570`, `@NNN`). An emitted `@NNN` that another module already defines takes a
+   `defined_symbol_renames` row onto an unused name of the same length.
+3. The new objects take uniquifiers ahead of every later `@NNN` in the TU. Snowball's 14 PMF
+   descriptors all moved +2, so every `defined_symbol_renames[].from` moved +2. Map the shift
+   by each descriptor's relocation targets, not by guessing; `to` and everything keyed on it
+   stays put.
+4. Move `delinks.txt` `.init`/`.ctor`/`.bss` into the TU entry and retire the shard.
+5. `tubuild linkcheck` needs a fresh `linkcheck --baseline` after every `config/arm9` edit.
+   Otherwise unrelated vtable-policy TUs fail with `baseline content fingerprint differs`.
+
+`tubuild verify` still prints `EXTRA .text __sinit_<file>.cpp ... not in manifest` for every
+compiler-emitted sinit (1UpLogo, brq and snowball on main print it too). That's a verify
+limitation, not a regression. A function-local static emits no sinit, so unit020bfec0 verifies
+with no EXTRA lines. linkcheck is the gate here, and all three TUs are SCRATCH-DATA-VERIFIED.
+
+**Not done:** `unit020cd744` (TrmpItem). Its nine function-local unit vectors' `.bss` is
+interleaved with file globals and ring-model handles, so they can only move as one
+whole-TU `.bss` claim. The ov019/ov062/ov072/ov078 `.c` sinit shards mix resource handles and PMF tables and need an
+owner TU first.
