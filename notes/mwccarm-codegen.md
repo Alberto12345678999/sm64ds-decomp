@@ -8753,7 +8753,22 @@ compiler-emitted sinit (1UpLogo, brq and snowball on main print it too). That's 
 limitation, not a regression. A function-local static emits no sinit, so unit020bfec0 verifies
 with no EXTRA lines. linkcheck is the gate here, and all three TUs are SCRATCH-DATA-VERIFIED.
 
-**Not done:** `unit020cd744` (TrmpItem). Its nine function-local unit vectors' `.bss` is
-interleaved with file globals and ring-model handles, so they can only move as one
-whole-TU `.bss` claim. The ov019/ov062/ov072/ov078 `.c` sinit shards mix resource handles and PMF tables and need an
+`unit020cd744` (TrmpItem) went the whole-TU way, because its nine function-local unit
+vectors' `.bss` is interleaved with file globals and ring-model handles.
+The file defines its globals, `TrmpLine sTrmpLines[4]` (mwcc emits the old
+`TrmpLine_CleanupAll` as `__arraydtor$N`) and the ring handles through a local `SharedFilePtr`
+wrapper aliased to func_02017acc/ab4. That folds `__sinit_ov006_0212fc7c` and claims .bss
+0x02140808..0x02141640 in one entry. One new lever: `__arraydtor` is emitted at the end of the
+object, after the sinit. ROM has it ahead of D1/C1, so `TrmpLine`'s ctor and dtor are defined
+`inline` in the .cpp; used inline bodies are emitted after it, in the ROM order, and leave no
+C2/D2 behind.
+
+**Not done:** The ov019/ov062/ov072/ov078 `.c` sinit shards mix resource handles and PMF tables and need an
 owner TU first.
+arm9 `__sinit_020750b8` (the zero Vector3 at data_020a0ebc, node data_020a0eb0) stays a shard.
+arm9 `.init` follows `.text` TU order, which puts its owner between NoOpDestructor (0x0203b98c)
+and the Vec2 unit (NullDestructor_0203d47c), and its `.bss` follows Heap's. That leaves Heap
+(0x0203c1b4..0x0203cc28) or the Vec3 math run (0x0203cc28..0x0203d47c). The Vec3 run is the
+likely owner, but it is about 21 one-function shards with no manifest, and in arm9 only the
+sinit itself references the object (the readers are ov002, ov006 and ov100). It can move once
+that run is promoted as a TU.
