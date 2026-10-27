@@ -18661,7 +18661,7 @@ matched: yes</title></rect><rect x="596.60" y="970.93" width="9.07" height="14.3
 module: ov002
 addr: 0x02107f88
 size: 196 bytes
-matched: yes</title></rect><rect x="596.60" y="985.31" width="9.07" height="5.28" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_ov002_0210804c
+matched: yes</title></rect><rect x="596.60" y="985.31" width="9.07" height="5.28" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_d_map.cpp
 module: ov002
 addr: 0x0210804c
 size: 72 bytes
