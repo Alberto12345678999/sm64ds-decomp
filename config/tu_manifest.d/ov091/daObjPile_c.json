@@ -356,13 +356,13 @@
     "compilerOnlyOutput": {
       "requested": [
         "_ZN11daObjPile_cD2Ev",
-        "_ZN2V3D1Ev",
+        "_ZN7Vector3D1Ev",
         "_ZN10dBgActor_cD2Ev"
       ],
       "deadstripped": [
         "_ZN10dBgActor_cD2Ev",
         "_ZN11daObjPile_cD2Ev",
-        "_ZN2V3D1Ev"
+        "_ZN7Vector3D1Ev"
       ],
       "droppedSections": [
         9,
@@ -646,9 +646,11 @@
       "reason": "compiler-emitted base-object destructor helper has no configured ROM symbol and no inbound relocation after the licensed leaf D1/D0 pair is retained"
     },
     {
-      "symbol": "_ZN2V3D1Ev",
-      "disposition": "deadstrip",
-      "reason": "Behavior's by-value SpawnCoins argument is a local non-trivial copy; its empty destructor is not in the ROM"
+      "symbol": "_ZN7Vector3D1Ev",
+      "disposition": "deadstrip-duplicate",
+      "canonical_module": "arm9",
+      "canonical_address": "0x020072c0",
+      "reason": "Vector3's four-byte inline destructor, emitted as vague linkage because Behavior passes SpawnCoins a Vector3(x, y, z) temporary. The cartridge owns it at arm9:0x020072c0, so this object's copy is a duplicate that production isolation discards."
     },
     {
       "symbol": "_ZN10dBgActor_cD2Ev",
@@ -658,14 +660,14 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@781",
+      "from": "@766",
       "to": "@783",
-      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
+      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin | compiler temp; wave 3 of the mangled-call cleanup deletes this TU's local _ZN externs ahead of it, lowering the per-TU @NNN uniquifier"
     },
     {
-      "from": "@782",
+      "from": "@767",
       "to": "@784",
-      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
+      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin | compiler temp; wave 3 of the mangled-call cleanup deletes this TU's local _ZN externs ahead of it, lowering the per-TU @NNN uniquifier"
     }
   ]
 }
