@@ -134,24 +134,42 @@ Vec3 data_ov078_02126e00 = {0, 0x3c000, 0};
 /* State records: {enter, tick}. KingBobOmb_SetState runs the first and
  * Behavior the second. The handlers keep their address names, so the
  * records keep theirs. */
-PMF data_ov078_0212710c[2] = {&daBombking_c::func_ov078_02125bc8, &daBombking_c::func_ov078_021259ec};
-PMF data_ov078_0212700c[2] = {&daBombking_c::func_ov078_021259e4, &daBombking_c::func_ov078_02125950};
-PMF data_ov078_0212701c[2] = {&daBombking_c::func_ov078_021258e4, &daBombking_c::func_ov078_02125790};
-PMF data_ov078_0212703c[2] = {&daBombking_c::func_ov078_02125734, &daBombking_c::func_ov078_02125448};
-PMF data_ov078_0212704c[2] = {&daBombking_c::func_ov078_02125350, &daBombking_c::func_ov078_021250f8};
-PMF data_ov078_0212707c[2] = {&daBombking_c::func_ov078_021250d0, &daBombking_c::func_ov078_02124f28};
-PMF data_ov078_0212708c[2] = {&daBombking_c::func_ov078_02124e9c, &daBombking_c::func_ov078_02124cf4};
-PMF data_ov078_021270ac[2] = {&daBombking_c::func_ov078_02124c94, &daBombking_c::func_ov078_02124bc4};
-PMF data_ov078_021270bc[2] = {&daBombking_c::func_ov078_02124b40, &daBombking_c::func_ov078_021247bc};
-PMF data_ov078_021270dc[2] = {&daBombking_c::func_ov078_02124778, &daBombking_c::func_ov078_02124520};
-PMF data_ov078_021270ec[2] = {&daBombking_c::func_ov078_021244d0, &daBombking_c::func_ov078_02124470};
-PMF data_ov078_02126ffc[2] = {&daBombking_c::func_ov078_021243c0, &daBombking_c::func_ov078_021240a0};
-PMF data_ov078_0212702c[2] = {&daBombking_c::func_ov078_02124060, &daBombking_c::func_ov078_02124000};
-PMF data_ov078_0212706c[2] = {&daBombking_c::func_ov078_02123fb4, &daBombking_c::func_ov078_02123f1c};
-PMF data_ov078_0212709c[2] = {&daBombking_c::func_ov078_02123eb8, &daBombking_c::func_ov078_02123d3c};
-PMF data_ov078_021270cc[2] = {&daBombking_c::func_ov078_02123cf0, &daBombking_c::func_ov078_02123c20};
-PMF data_ov078_021270fc[2] = {&daBombking_c::func_ov078_02123bc4, &daBombking_c::func_ov078_02123aa0};
-PMF data_ov078_0212705c[2] = {&daBombking_c::func_ov078_02123a3c, &daBombking_c::func_ov078_021238ac};
+PMF data_ov078_0212710c[2] = {&daBombking_c::func_ov078_02125bc8,
+                              &daBombking_c::func_ov078_021259ec};
+PMF data_ov078_0212700c[2] = {&daBombking_c::func_ov078_021259e4,
+                              &daBombking_c::func_ov078_02125950};
+PMF data_ov078_0212701c[2] = {&daBombking_c::func_ov078_021258e4,
+                              &daBombking_c::func_ov078_02125790};
+PMF data_ov078_0212703c[2] = {&daBombking_c::func_ov078_02125734,
+                              &daBombking_c::func_ov078_02125448};
+PMF data_ov078_0212704c[2] = {&daBombking_c::func_ov078_02125350,
+                              &daBombking_c::func_ov078_021250f8};
+PMF data_ov078_0212707c[2] = {&daBombking_c::func_ov078_021250d0,
+                              &daBombking_c::func_ov078_02124f28};
+PMF data_ov078_0212708c[2] = {&daBombking_c::func_ov078_02124e9c,
+                              &daBombking_c::func_ov078_02124cf4};
+PMF data_ov078_021270ac[2] = {&daBombking_c::func_ov078_02124c94,
+                              &daBombking_c::func_ov078_02124bc4};
+PMF data_ov078_021270bc[2] = {&daBombking_c::func_ov078_02124b40,
+                              &daBombking_c::func_ov078_021247bc};
+PMF data_ov078_021270dc[2] = {&daBombking_c::func_ov078_02124778,
+                              &daBombking_c::func_ov078_02124520};
+PMF data_ov078_021270ec[2] = {&daBombking_c::func_ov078_021244d0,
+                              &daBombking_c::func_ov078_02124470};
+PMF data_ov078_02126ffc[2] = {&daBombking_c::func_ov078_021243c0,
+                              &daBombking_c::func_ov078_021240a0};
+PMF data_ov078_0212702c[2] = {&daBombking_c::func_ov078_02124060,
+                              &daBombking_c::func_ov078_02124000};
+PMF data_ov078_0212706c[2] = {&daBombking_c::func_ov078_02123fb4,
+                              &daBombking_c::func_ov078_02123f1c};
+PMF data_ov078_0212709c[2] = {&daBombking_c::func_ov078_02123eb8,
+                              &daBombking_c::func_ov078_02123d3c};
+PMF data_ov078_021270cc[2] = {&daBombking_c::func_ov078_02123cf0,
+                              &daBombking_c::func_ov078_02123c20};
+PMF data_ov078_021270fc[2] = {&daBombking_c::func_ov078_02123bc4,
+                              &daBombking_c::func_ov078_02123aa0};
+PMF data_ov078_0212705c[2] = {&daBombking_c::func_ov078_02123a3c,
+                              &daBombking_c::func_ov078_021238ac};
 
 extern "C" {
 /* Canonical single declaration per ROM data symbol -- the generated
@@ -292,7 +310,8 @@ int daBombking_c::func_ov078_02123a3c()
     this->mHorzSpeed = 0;
     this->mStateTimer = 0x32;
     func_ov078_02123864();
-    this->mBlendAnmModel.SetAnim(*(BCA_File *)gBombkingDamageAnimationFile.filePtr, 0, 0, 0x1000, 0);
+    this->mBlendAnmModel.SetAnim(*(BCA_File *)gBombkingDamageAnimationFile.filePtr, 0, 0, 0x1000,
+                                 0);
     return 1;
 }
 
@@ -510,8 +529,7 @@ int daBombking_c::func_ov078_02124060()
 #pragma opt_propagation off
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN12daBombking_c19func_ov078_021240a0Ev
-int daBombking_c::func_ov078_021240a0()
-{
+int daBombking_c::func_ov078_021240a0() {
     char *c = (char *)this;
     daBombking_c *k = (daBombking_c *)c;
     short msg;
@@ -609,7 +627,8 @@ int daBombking_c::func_ov078_021240a0()
 
 int daBombking_c::func_ov078_021243c0()
 {
-    this->mBlendAnmModel.SetAnim(*(BCA_File *)gBombkingDamageAnimationFile.filePtr, 0, 0, 0x1000, 0);
+    this->mBlendAnmModel.SetAnim(*(BCA_File *)gBombkingDamageAnimationFile.filePtr, 0, 0, 0x1000,
+                                 0);
     this->mStateTimer = 0xc8;
     this->mTargetAngY = Vec3_HorzAngle(&this->mPosX, &this->mArenaPosX);
     this->mHealth -= 1;
@@ -642,7 +661,8 @@ int daBombking_c::func_ov078_02124470()
 
 int daBombking_c::func_ov078_021244d0()
 {
-    this->mBlendAnmModel.SetAnim(*(BCA_File *)gBombkingDamageAnimationFile.filePtr, 0, 0, 0x1000, 0);
+    this->mBlendAnmModel.SetAnim(*(BCA_File *)gBombkingDamageAnimationFile.filePtr, 0, 0, 0x1000,
+                                 0);
     this->mStateTimer = 0x32;
     return 1;
 }
@@ -955,7 +975,8 @@ done:
 
 int daBombking_c::func_ov078_02124e9c()
 {
-    this->mBlendAnmModel.SetAnim(*(BCA_File *)gBombkingDamageAnimationFile.filePtr, 0, 0, 0x1000, 0);
+    this->mBlendAnmModel.SetAnim(*(BCA_File *)gBombkingDamageAnimationFile.filePtr, 0, 0, 0x1000,
+                                 0);
     if (this->mHealth <= 0)
         this->mFlags = 0x10000000;
     this->mWithMeshClsn.ClearGroundFlag();

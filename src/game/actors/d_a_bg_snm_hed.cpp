@@ -134,7 +134,8 @@ int daBgSnmHed_c::State3()
 // @symbol _ZN12daBgSnmHed_c10InitState3Ev
 int daBgSnmHed_c::InitState3()
 {
-    mTextureSequence.SetFile(*(BTP_File *)gBigSnowmanSmileTextureSequenceFile.filePtr, 0, 0x1000, 0);
+    mTextureSequence.SetFile(*(BTP_File *)gBigSnowmanSmileTextureSequenceFile.filePtr, 0, 0x1000,
+                             0);
     mVertAccel = 0;
     mTerminalVelocity = 0;
     mSubstate = 0;
@@ -318,8 +319,7 @@ int daBgSnmHed_c::InitResources()
     struct Vector3 pos;
     int i;
 
-    mModel.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(gBgSnmHedModelFile),
-                   1, -1);
+    mModel.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(gBgSnmHedModelFile), 1, -1);
 
     for (i = 0; i < 2; i++) {
         void *tex = ((void **)&data_ov072_02121ffc)[i];
@@ -362,12 +362,4 @@ extern "C" daBgSnmHed_c *daBgSnmHed_c_classInit()
  * radius, clip distance and far distance passed to SetRanges. The retail
  * values are unchanged. */
 SpawnInfo<daBgSnmHed_c> g_profile_BIG_SNOWMAN_HEAD = {
-    daBgSnmHed_c_classInit,
-    0x0111,
-    0x0084,
-    3,
-    0x96000,
-    0x96000,
-    0x01194000,
-    0x00bb8000
-};
+    daBgSnmHed_c_classInit, 0x0111, 0x0084, 3, 0x96000, 0x96000, 0x01194000, 0x00bb8000};

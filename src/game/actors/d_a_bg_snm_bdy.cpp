@@ -103,9 +103,7 @@ struct BgSnmBdyModelFile : SharedFilePtr {
 };
 
 /* Runtime asset handle, distinct from the NitroFS file ID. */
-enum BgSnmBdyAssetId {
-    ASSET_BIG_SNOWMAN_BODY_BMD = 0x02ad
-};
+enum BgSnmBdyAssetId { ASSET_BIG_SNOWMAN_BODY_BMD = 0x02ad };
 
 /* This TU's statics, in the order the retail initializer builds them. */
 BgSnmBdyModelFile gBgSnmBdyModelFile(ASSET_BIG_SNOWMAN_BODY_BMD);
@@ -406,29 +404,24 @@ int daBgSnmBdy_c::InitState3()
 }
 
 // @symbol _ZN12daBgSnmBdy_c6State3Ev
-int daBgSnmBdy_c::State3()
-{
+int daBgSnmBdy_c::State3() {
     switch (mSubstate) {
-    case 0:
-        {
-            int distToLanding = Vec3_HorzDist(&gBgSnmBdyLandingPoint, &mPosX);
-            UpdateAngle(mAngleY,
-                Vec3_HorzAngle(&mPosX, &gBgSnmBdyLandingPoint),
-                2, 0x600);
-            mPrevAngleY = mAngleY;
-            Particle::RunningSlidingDustAt(mPosX, mPosY, mPosZ);
-            mSoundID = Sound::PlayLong(mSoundID, 3, 0x8a, mCamSpacePos, 0);
-            if (distToLanding < 0x17c000) {
-                daBgSnmHed_c *head =
-                    (daBgSnmHed_c *)dActor_c::FindWithActorID(0x111, 0); /* BIG_SNOWMAN_HEAD */
-                head->mBodyArriving = 1;
-                func_0201267c(0x114, &mCamSpacePos);
-                mVertSpeed = 0x1d000;
-                mHorzSpeed = 0xe000;
-                mSubstate++;
-            }
+    case 0: {
+        int distToLanding = Vec3_HorzDist(&gBgSnmBdyLandingPoint, &mPosX);
+        UpdateAngle(mAngleY, Vec3_HorzAngle(&mPosX, &gBgSnmBdyLandingPoint), 2, 0x600);
+        mPrevAngleY = mAngleY;
+        Particle::RunningSlidingDustAt(mPosX, mPosY, mPosZ);
+        mSoundID = Sound::PlayLong(mSoundID, 3, 0x8a, mCamSpacePos, 0);
+        if (distToLanding < 0x17c000) {
+            daBgSnmHed_c *head =
+                (daBgSnmHed_c *)dActor_c::FindWithActorID(0x111, 0); /* BIG_SNOWMAN_HEAD */
+            head->mBodyArriving = 1;
+            func_0201267c(0x114, &mCamSpacePos);
+            mVertSpeed = 0x1d000;
+            mHorzSpeed = 0xe000;
+            mSubstate++;
         }
-        break;
+    } break;
     case 1:
         if (mWithMeshClsn.JustHitGround() != 0) {
             Vector3 landPos;

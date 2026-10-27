@@ -8763,9 +8763,16 @@ object, after the sinit. ROM has it ahead of D1/C1, so `TrmpLine`'s ctor and dto
 `inline` in the .cpp; used inline bodies are emitted after it, in the ROM order, and leave no
 C2/D2 behind.
 
-**Not done:** The ov019/ov062/ov072/ov078 `.c` sinit shards mix resource handles and PMF tables and need an
-owner TU first.
-arm9 `__sinit_020750b8` (the zero Vector3 at data_020a0ebc, node data_020a0eb0) stays a shard.
+The ov019/ov062/ov072/ov078 sinit shards are folded into daPgRcer_c, daHolhei_c,
+daBgSnmBdy_c, daBgSnmHed_c and daBombking_c. Each resource handle is a
+`struct X : SharedFilePtr` with a declared, undefined `X(u32)`/`~X()` that
+`undefined_symbol_aliases` maps to the retail veneer. Each PMF table is a defined array of
+member pointers, and each TU is intact-object with its literals, RTTI, a typed `g_profile_*`
+and its vtable. A free `extern "C"` handler can't be named in a table, and objisolate won't
+alias a member onto a definition in the same object, so those handlers became members. All
+of them still match.
+
+**Not done:** arm9 `__sinit_020750b8` (the zero Vector3 at data_020a0ebc, node data_020a0eb0) stays a shard.
 arm9 `.init` follows `.text` TU order, which puts its owner between NoOpDestructor (0x0203b98c)
 and the Vec2 unit (NullDestructor_0203d47c), and its `.bss` follows Heap's. That leaves Heap
 (0x0203c1b4..0x0203cc28) or the Vec3 math run (0x0203cc28..0x0203d47c). The Vec3 run is the

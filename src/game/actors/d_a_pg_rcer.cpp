@@ -95,16 +95,16 @@ enum PgRcerAssetId {
 /* This TU's statics, in the order the retail initializer (0x021127a4)
    builds them. */
 PgRcerModelFile gOV019PenguinModelFile(ASSET_PENGUIN_BMD);
-PgRcerAnimFile gOV019PenguinWait1AnimationFile(ASSET_PENGUIN_WAIT1_BCA);     /* idle */
+PgRcerAnimFile gOV019PenguinWait1AnimationFile(ASSET_PENGUIN_WAIT1_BCA); /* idle */
 PgRcerAnimFile gOV019PenguinWalkAnimationFile(ASSET_PENGUIN_WALK_BCA);
-PgRcerAnimFile gPenguinJumpStAnimationFile(ASSET_PENGUIN_JUMP_ST_BCA);       /* jump */
-PgRcerAnimFile gPenguinJumpEdAnimationFile(ASSET_PENGUIN_JUMP_ED_BCA);       /* land */
-PgRcerAnimFile gPenguinDiveAnimationFile(ASSET_PENGUIN_DIVE_BCA);            /* race start */
-PgRcerAnimFile gPenguinSliderAnimationFile(ASSET_PENGUIN_SLIDER_BCA);        /* race */
-PgRcerAnimFile gPenguinStandUpAnimationFile(ASSET_PENGUIN_STAND_UP_BCA);     /* near finish */
-PgRcerTexSeqFile gOV019PenguinAngryTextureSequenceFile(ASSET_PENGUIN_ANGRY_BTP);   /* lost */
-PgRcerTexSeqFile gPenguinSliderTextureSequenceFile(ASSET_PENGUIN_SLIDER_BTP);      /* race */
-PgRcerTexSeqFile gOV019PenguinWait1TextureSequenceFile(ASSET_PENGUIN_WAIT1_BTP);   /* neutral */
+PgRcerAnimFile gPenguinJumpStAnimationFile(ASSET_PENGUIN_JUMP_ST_BCA);           /* jump */
+PgRcerAnimFile gPenguinJumpEdAnimationFile(ASSET_PENGUIN_JUMP_ED_BCA);           /* land */
+PgRcerAnimFile gPenguinDiveAnimationFile(ASSET_PENGUIN_DIVE_BCA);                /* race start */
+PgRcerAnimFile gPenguinSliderAnimationFile(ASSET_PENGUIN_SLIDER_BCA);            /* race */
+PgRcerAnimFile gPenguinStandUpAnimationFile(ASSET_PENGUIN_STAND_UP_BCA);         /* near finish */
+PgRcerTexSeqFile gOV019PenguinAngryTextureSequenceFile(ASSET_PENGUIN_ANGRY_BTP); /* lost */
+PgRcerTexSeqFile gPenguinSliderTextureSequenceFile(ASSET_PENGUIN_SLIDER_BTP);    /* race */
+PgRcerTexSeqFile gOV019PenguinWait1TextureSequenceFile(ASSET_PENGUIN_WAIT1_BTP); /* neutral */
 
 /* The six states, {init, behavior}; func_ov019_021122dc installs one. */
 daPgRcerState data_ov019_0211356c[6] = {
@@ -113,8 +113,7 @@ daPgRcerState data_ov019_0211356c[6] = {
     {&daPgRcer_c::func_ov019_02111f54, &daPgRcer_c::func_ov019_02111dec},
     {&daPgRcer_c::func_ov019_02111d58, &daPgRcer_c::func_ov019_0211197c},
     {&daPgRcer_c::func_ov019_02111904, &daPgRcer_c::func_ov019_021117a8},
-    {&daPgRcer_c::func_ov019_02111754, &daPgRcer_c::func_ov019_02111558}
-};
+    {&daPgRcer_c::func_ov019_02111754, &daPgRcer_c::func_ov019_02111558}};
 
 /* The finish volume and the cheat volume. */
 Vector3 data_ov019_021134e8(-0x18c28a1, -0x164c644, -0x18f1a11);
@@ -132,15 +131,7 @@ extern "C" daPgRcer_c *daPgRcer_c_classInit()
    radius, clip distance and far distance passed to SetRanges. The retail
    values are unchanged. */
 SpawnInfo<daPgRcer_c> g_profile_PENGUIN_RACER = {
-    daPgRcer_c_classInit,
-    0x0103,
-    0x0075,
-    2,
-    0x96000,
-    0x96000,
-    0x02648000,
-    0x02648000
-};
+    daPgRcer_c_classInit, 0x0103, 0x0075, 2, 0x96000, 0x96000, 0x02648000, 0x02648000};
 
 // @symbol _ZN10daPgRcer_c13InitResourcesEv
 int daPgRcer_c::InitResources()
@@ -155,7 +146,8 @@ int daPgRcer_c::InitResources()
     for (int j = 0; j < 3; j++) {
         SharedFilePtr *t = data_ov019_0211277c[j];
         dExtAnmTexPat_c::LoadFile(*t);
-        dExtAnmTexPat_c::Prepare(*(BMD_File *)gOV019PenguinModelFile.filePtr, *(BTP_File *)t->filePtr);
+        dExtAnmTexPat_c::Prepare(*(BMD_File *)gOV019PenguinModelFile.filePtr,
+                                 *(BTP_File *)t->filePtr);
     }
 
     if (mShadowModel.InitCylinder() == 0)
@@ -245,14 +237,13 @@ void daPgRcer_c::func_ov019_02112268()
 
 /* State 0: idle. */
 // @symbol _ZN10daPgRcer_c19func_ov019_021121f8Ev
-int daPgRcer_c::func_ov019_021121f8()
-{
+int daPgRcer_c::func_ov019_021121f8() {
     mVertAccel = 0;
     mTerminalVelocity = 0;
     mAnmModel.SetAnim((BCA_File *)gOV019PenguinWait1AnimationFile.filePtr, 0, 0x1000, 0);
     mAnmModel.speed = 0x1000;
-    mTextureSequence.SetFile(*(BTP_File *)gOV019PenguinWait1TextureSequenceFile.filePtr, 0,
-                                   0x1000, 0);
+    mTextureSequence.SetFile(*(BTP_File *)gOV019PenguinWait1TextureSequenceFile.filePtr, 0, 0x1000,
+                             0);
     mAction = 0;
     return 1;
 }
@@ -277,8 +268,7 @@ int daPgRcer_c::func_ov019_02112168()
 
 /* State 1: invite. */
 // @symbol _ZN10daPgRcer_c19func_ov019_0211213cEv
-int daPgRcer_c::func_ov019_0211213c()
-{
+int daPgRcer_c::func_ov019_0211213c() {
     mActionStep = 0;
     func_0201267c(0xdf, &mCamSpacePos);
     mAction = 1;
@@ -286,8 +276,7 @@ int daPgRcer_c::func_ov019_0211213c()
 }
 
 // @symbol _ZN10daPgRcer_c19func_ov019_02111fecEv
-int daPgRcer_c::func_ov019_02111fec()
-{
+int daPgRcer_c::func_ov019_02111fec() {
     switch (mActionStep) {
     case 0: {
         short ang = Vec3_HorzAngle(&mPos, &mTalkPlayer->mPos);
@@ -334,8 +323,7 @@ int daPgRcer_c::func_ov019_02111fec()
 
 /* State 2: jump into the countdown. */
 // @symbol _ZN10daPgRcer_c19func_ov019_02111f54Ev
-int daPgRcer_c::func_ov019_02111f54()
-{
+int daPgRcer_c::func_ov019_02111f54() {
     mAnmModel.SetAnim((BCA_File *)gPenguinJumpStAnimationFile.filePtr, 0x40000000, 0x1000, 0);
     mVertAccel = -0x2000;
     mTerminalVelocity = -0x3c000;
@@ -348,8 +336,7 @@ int daPgRcer_c::func_ov019_02111f54()
 }
 
 // @symbol _ZN10daPgRcer_c19func_ov019_02111decEv
-int daPgRcer_c::func_ov019_02111dec()
-{
+int daPgRcer_c::func_ov019_02111dec() {
     switch (mActionStep) {
     case 0:
         if (mTalkPlayer->Unk_020c4f40(0x5a) != 0) {
@@ -362,15 +349,14 @@ int daPgRcer_c::func_ov019_02111dec()
         UpdatePos(&mdCcAc_c);
         func_ov019_0211140c(this, &mWithMeshClsn);
         if (mWithMeshClsn.JustHitGround() != 0) {
-            mAnmModel.SetAnim((BCA_File *)gPenguinJumpEdAnimationFile.filePtr, 0x40000000,
-                                    0x1000, 0);
+            mAnmModel.SetAnim((BCA_File *)gPenguinJumpEdAnimationFile.filePtr, 0x40000000, 0x1000,
+                              0);
             ++mActionStep;
         }
         break;
     case 2:
         if (mAnmModel.dExtFrameCtrl_c::Finished() != 0) {
-            mAnmModel.SetAnim((BCA_File *)gOV019PenguinWait1AnimationFile.filePtr, 0, 0x1000,
-                                    0);
+            mAnmModel.SetAnim((BCA_File *)gOV019PenguinWait1AnimationFile.filePtr, 0, 0x1000, 0);
         }
         if (mTalkPlayer->GetTalkState() == -1) {
             Sound::PlaySub(0x1f, 0x7f, 0, 0x15666, 0);
@@ -384,13 +370,11 @@ int daPgRcer_c::func_ov019_02111dec()
 
 /* State 3: the race. */
 // @symbol _ZN10daPgRcer_c19func_ov019_02111d58Ev
-int daPgRcer_c::func_ov019_02111d58()
-{
+int daPgRcer_c::func_ov019_02111d58() {
     mVertAccel = -0x2000;
     mTerminalVelocity = -0x3c000;
     mAnmModel.SetAnim((BCA_File *)gPenguinDiveAnimationFile.filePtr, 0x40000000, 0x1000, 0);
-    mTextureSequence.SetFile(*(BTP_File *)gPenguinSliderTextureSequenceFile.filePtr, 0,
-                                   0x1000, 0);
+    mTextureSequence.SetFile(*(BTP_File *)gPenguinSliderTextureSequenceFile.filePtr, 0, 0x1000, 0);
     mHorzSpeed = 0x30000;
     mActionStep = 0;
     mPlayerFinished = 0;
@@ -399,8 +383,7 @@ int daPgRcer_c::func_ov019_02111d58()
 }
 
 // @symbol _ZN10daPgRcer_c19func_ov019_0211197cEv
-int daPgRcer_c::func_ov019_0211197c()
-{
+int daPgRcer_c::func_ov019_0211197c() {
     switch (mActionStep) {
     case 0:
         if (func_ov019_0211131c()) {
@@ -440,8 +423,8 @@ int daPgRcer_c::func_ov019_0211197c()
     case 1:
         if (func_ov019_0211131c()) {
             if (mPathNodeIndex >= (int)mPath.NumNodes() - 2) {
-                mAnmModel.SetAnim((BCA_File *)gPenguinStandUpAnimationFile.filePtr,
-                                        0x40000000, 0x1000, 0);
+                mAnmModel.SetAnim((BCA_File *)gPenguinStandUpAnimationFile.filePtr, 0x40000000,
+                                  0x1000, 0);
                 mActionStep++;
             } else {
                 func_ov019_021113b0();
@@ -479,8 +462,7 @@ int daPgRcer_c::func_ov019_0211197c()
             }
             ApproachLinear(mHorzSpeed, val, 0x800);
         }
-        if (mPenguinFinished == 0 &&
-            Vec3_Dist(&data_ov019_021134e8, &mPos) < 0x190000) {
+        if (mPenguinFinished == 0 && Vec3_Dist(&data_ov019_021134e8, &mPos) < 0x190000) {
             if (mPlayerFinished != 0) {
                 mPenguinWon = 0;
             } else {
@@ -489,8 +471,8 @@ int daPgRcer_c::func_ov019_0211197c()
             mPenguinFinished = 1;
         }
         mSlideSound = Sound::PlayLong(mSlideSound, 3, 0x185, mCamSpacePos, 0);
-        mDustParticle = (u32)Particle::System::New(mDustParticle, 0x101, mPosX,
-                                                         mPosY + 0x32000, mPosZ, 0, 0);
+        mDustParticle =
+            (u32)Particle::System::New(mDustParticle, 0x101, mPosX, mPosY + 0x32000, mPosZ, 0, 0);
         break;
 
     case 2:
@@ -512,12 +494,11 @@ int daPgRcer_c::func_ov019_0211197c()
 
 /* State 4: walk up to the player. */
 // @symbol _ZN10daPgRcer_c19func_ov019_02111904Ev
-int daPgRcer_c::func_ov019_02111904()
-{
+int daPgRcer_c::func_ov019_02111904() {
     mAnmModel.SetAnim((BCA_File *)gOV019PenguinWalkAnimationFile.filePtr, 0, 0x1000, 0);
     mAnmModel.speed = 0x1000;
-    mTextureSequence.SetFile(*(BTP_File *)gOV019PenguinWait1TextureSequenceFile.filePtr, 0,
-                                   0x1000, 0);
+    mTextureSequence.SetFile(*(BTP_File *)gOV019PenguinWait1TextureSequenceFile.filePtr, 0, 0x1000,
+                             0);
     mActionStep = 0;
     mHorzSpeed = 0x5000;
     mAction = 4;
@@ -525,8 +506,7 @@ int daPgRcer_c::func_ov019_02111904()
 }
 
 // @symbol _ZN10daPgRcer_c19func_ov019_021117a8Ev
-int daPgRcer_c::func_ov019_021117a8()
-{
+int daPgRcer_c::func_ov019_021117a8() {
     Vector3 node;
     switch (mActionStep) {
     case 0: {
@@ -569,8 +549,7 @@ int daPgRcer_c::func_ov019_021117a8()
 
 /* State 5: result, and the star if the penguin did not win. */
 // @symbol _ZN10daPgRcer_c19func_ov019_02111754Ev
-int daPgRcer_c::func_ov019_02111754()
-{
+int daPgRcer_c::func_ov019_02111754() {
     mAnmModel.SetAnim((BCA_File *)gOV019PenguinWait1AnimationFile.filePtr, 0, 0x1000, 0);
     mAnmModel.speed = 0x1000;
     mActionStep = 0;
@@ -579,8 +558,7 @@ int daPgRcer_c::func_ov019_02111754()
 }
 
 // @symbol _ZN10daPgRcer_c19func_ov019_02111558Ev
-int daPgRcer_c::func_ov019_02111558()
-{
+int daPgRcer_c::func_ov019_02111558() {
     switch (mActionStep) {
     case 0: {
         int radius = mdCcAc_c.radius;
@@ -605,8 +583,8 @@ int daPgRcer_c::func_ov019_02111558()
             v.z = z;
             if (mPlayerCheated != 0) {
                 id = 0xa9;
-                mTextureSequence.SetFile(
-                    *(BTP_File *)gOV019PenguinAngryTextureSequenceFile.filePtr, 0, 0x1000, 0);
+                mTextureSequence.SetFile(*(BTP_File *)gOV019PenguinAngryTextureSequenceFile.filePtr,
+                                         0, 0x1000, 0);
                 mPenguinWon = 1;
             } else {
                 if (mPenguinWon != 0)
@@ -625,12 +603,11 @@ int daPgRcer_c::func_ov019_02111558()
         if (mTalkPlayer->GetTalkState() == 2) {
             if (mPenguinWon == 0) {
                 UntrackAndSpawnStar(*(s8 *)&mStarSlot,
-                                          (unsigned int)(unsigned char)((param1 >> 8) & 0xf),
-                                          mPos, 4);
+                                    (unsigned int)(unsigned char)((param1 >> 8) & 0xf), mPos, 4);
             }
             mTalkPlayer->HasFinishedTalking();
-            mTextureSequence.SetFile(
-                *(BTP_File *)gOV019PenguinWait1TextureSequenceFile.filePtr, 0, 0x1000, 0);
+            mTextureSequence.SetFile(*(BTP_File *)gOV019PenguinWait1TextureSequenceFile.filePtr, 0,
+                                     0x1000, 0);
             ++mActionStep;
         }
         break;
@@ -670,7 +647,6 @@ int func_ov019_0211140c(daPgRcer_c *self, dBgCh_Actr *clsn)
         clsn->GetWallResult()->surface.CopyNormalTo(wallNormal);
     }
 }
-
 }
 
 // @symbol _ZN10daPgRcer_c19func_ov019_021113b0Ev

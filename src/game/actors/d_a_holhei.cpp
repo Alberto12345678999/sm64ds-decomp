@@ -44,8 +44,8 @@
    Behavior calls a non-null update. Every handler returns 1. */
 typedef int (daHolhei_c::*HolheiStateFn)();
 struct HolheiState {
-    HolheiStateFn enter;   /* 0x0 */
-    HolheiStateFn update;  /* 0x8 */
+    HolheiStateFn enter;  /* 0x0 */
+    HolheiStateFn update; /* 0x8 */
 };
 
 
@@ -120,16 +120,26 @@ Vector3 data_ov062_0211df10[2] = {
 
 /* State records: {enter, update}. The handlers keep their address names,
    so the records keep theirs. */
-HolheiState data_ov062_0211ded0 = {&daHolhei_c::func_ov062_02116c78, &daHolhei_c::func_ov062_02116bf8};
-HolheiState data_ov062_0211dee0 = {&daHolhei_c::func_ov062_02116b80, &daHolhei_c::func_ov062_02116a08};
-HolheiState data_ov062_0211df00 = {&daHolhei_c::func_ov062_02116980, &daHolhei_c::func_ov062_02116894};
-HolheiState data_ov062_0211de70 = {&daHolhei_c::func_ov062_02116850, &daHolhei_c::func_ov062_021167c0};
-HolheiState data_ov062_0211de90 = {&daHolhei_c::func_ov062_02116784, &daHolhei_c::func_ov062_021165e8};
-HolheiState data_ov062_0211dea0 = {&daHolhei_c::func_ov062_021165e0, &daHolhei_c::func_ov062_021164e8};
-HolheiState data_ov062_0211dec0 = {&daHolhei_c::func_ov062_02116498, &daHolhei_c::func_ov062_021163b0};
-HolheiState data_ov062_0211def0 = {&daHolhei_c::func_ov062_02116368, &daHolhei_c::func_ov062_0211632c};
-HolheiState data_ov062_0211de80 = {&daHolhei_c::func_ov062_021162b8, &daHolhei_c::func_ov062_02116274};
-HolheiState data_ov062_0211deb0 = {&daHolhei_c::func_ov062_02116238, &daHolhei_c::func_ov062_021161a8};
+HolheiState data_ov062_0211ded0 = {&daHolhei_c::func_ov062_02116c78,
+                                   &daHolhei_c::func_ov062_02116bf8};
+HolheiState data_ov062_0211dee0 = {&daHolhei_c::func_ov062_02116b80,
+                                   &daHolhei_c::func_ov062_02116a08};
+HolheiState data_ov062_0211df00 = {&daHolhei_c::func_ov062_02116980,
+                                   &daHolhei_c::func_ov062_02116894};
+HolheiState data_ov062_0211de70 = {&daHolhei_c::func_ov062_02116850,
+                                   &daHolhei_c::func_ov062_021167c0};
+HolheiState data_ov062_0211de90 = {&daHolhei_c::func_ov062_02116784,
+                                   &daHolhei_c::func_ov062_021165e8};
+HolheiState data_ov062_0211dea0 = {&daHolhei_c::func_ov062_021165e0,
+                                   &daHolhei_c::func_ov062_021164e8};
+HolheiState data_ov062_0211dec0 = {&daHolhei_c::func_ov062_02116498,
+                                   &daHolhei_c::func_ov062_021163b0};
+HolheiState data_ov062_0211def0 = {&daHolhei_c::func_ov062_02116368,
+                                   &daHolhei_c::func_ov062_0211632c};
+HolheiState data_ov062_0211de80 = {&daHolhei_c::func_ov062_021162b8,
+                                   &daHolhei_c::func_ov062_02116274};
+HolheiState data_ov062_0211deb0 = {&daHolhei_c::func_ov062_02116238,
+                                   &daHolhei_c::func_ov062_021161a8};
 
 /* Actor ID 0xbf is PLAYER. The mFlags bits this file tests (0x100, 0x400,
    0x2000, 0x4000) are undocumented, so they go through IsFlagSet. Both are
@@ -157,15 +167,7 @@ extern "C" daHolhei_c *daHolhei_c_classInit(void)
    clip distance and far distance passed to SetRanges. The retail values are
    unchanged. */
 SpawnInfo<daHolhei_c> g_profile_HOLHEI = {
-    daHolhei_c_classInit,
-    0x00be,
-    0x0064,
-    0x10000003,
-    0xc8000,
-    0x320000,
-    0x01000000,
-    0x01000000
-};
+    daHolhei_c_classInit, 0x00be, 0x0064, 0x10000003, 0xc8000, 0x320000, 0x01000000, 0x01000000};
 
 // @symbol _ZN10daHolhei_c16OnAimedAtWithEggEv
 s32 daHolhei_c::OnAimedAtWithEgg() {
@@ -177,8 +179,7 @@ s32 daHolhei_c::OnAimedAtWithEgg() {
    home and previous positions, then the starting state. */
 int daHolhei_c::InitResources()
 {
-    mModel.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(gHoruheiModelFile),
-                   1, -1);
+    mModel.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(gHoruheiModelFile), 1, -1);
     mShadowModel.InitCylinder();
     dExtFrameCtrl_c::LoadFile(gHoruheiLiftAnimationFile);
     dExtFrameCtrl_c::LoadFile(gHoruheiLiftLoopAnimationFile);
@@ -224,8 +225,7 @@ int daHolhei_c::Behavior()
     UpdatePos((dCc_c*)&mdCc_c);
 
     if (mState != &data_ov062_0211dea0) {
-        if (mState != &data_ov062_0211dec0
-            && mState != &data_ov062_0211de70) {
+        if (mState != &data_ov062_0211dec0 && mState != &data_ov062_0211de70) {
             int atEdge = 0;
             signed char t = data_0209f2f8;
             if (t == 0x16) {
@@ -254,10 +254,8 @@ int daHolhei_c::Behavior()
         UpdateWMClsn(mMeshClsn, 3);
     }
 
-    if (mState == &data_ov062_0211ded0
-        || mState == &data_ov062_0211dee0
-        || mState == &data_ov062_0211de90
-        || mState == &data_ov062_0211df00) {
+    if (mState == &data_ov062_0211ded0 || mState == &data_ov062_0211dee0 ||
+        mState == &data_ov062_0211de90 || mState == &data_ov062_0211df00) {
         func_ov062_02116010(this);
     }
 
@@ -381,8 +379,7 @@ int daHolhei_c::func_ov062_02116c78() {
     mTurnWait = 0x3c;
     mChargeStep = 0;
     mModel.speed = 0x1000;
-    mModel.SetAnim((BCA_File *)(gHoruheiWalkAnimationFile.filePtr), 0, 0x1000,
-                   0);
+    mModel.SetAnim((BCA_File *)(gHoruheiWalkAnimationFile.filePtr), 0, 0x1000, 0);
     mTargetAngY = Vec3_HorzAngle(&mPosX, &mHomePosX);
     return 1;
 }
@@ -405,16 +402,14 @@ int daHolhei_c::func_ov062_02116b80() {
     mTargetAngY = (short)((RandomIntInternal(data_0209e650) >> 8) << 0xc);
     mStateTimer = (short)(((RandomIntInternal(data_0209e650) >> 8) & 0x3f) + 0x64);
     mModel.speed = 0x1000;
-    mModel.SetAnim((BCA_File *)(gHoruheiWalkAnimationFile.filePtr), 0,
-                         0x1000, 0);
+    mModel.SetAnim((BCA_File *)(gHoruheiWalkAnimationFile.filePtr), 0, 0x1000, 0);
     return 1;
 }
 
 /* Walk. A wall or the edge bails out; a player near home pulls Chuckya off
    the path once the chase cooldown has run out. */
 // @symbol _ZN10daHolhei_c19func_ov062_02116a08Ev
-int daHolhei_c::func_ov062_02116a08()
-{
+int daHolhei_c::func_ov062_02116a08() {
     struct { int vd0[3]; int vd1[3]; } L;
     int r;
     dActor_c *pl;
@@ -527,8 +522,7 @@ int daHolhei_c::func_ov062_021167c0() {
 // @symbol _ZN10daHolhei_c19func_ov062_02116784Ev
 int daHolhei_c::func_ov062_02116784() {
     mChargeStep = 0;
-    mModel.SetAnim((BCA_File *)(gHoruheiWalkAnimationFile.filePtr), 0,
-                         0x1000, 0);
+    mModel.SetAnim((BCA_File *)(gHoruheiWalkAnimationFile.filePtr), 0, 0x1000, 0);
     return 1;
 }
 
@@ -590,8 +584,7 @@ int daHolhei_c::func_ov062_021165e8()
 }
 
 // @symbol _ZN10daHolhei_c19func_ov062_021165e0Ev
-int daHolhei_c::func_ov062_021165e0()
-{
+int daHolhei_c::func_ov062_021165e0() {
     return 1;
 }
 
@@ -632,8 +625,7 @@ int daHolhei_c::func_ov062_02116498() {
 
 /* Below the death plane, or on landing: poof, shake, drop coins, die. */
 // @symbol _ZN10daHolhei_c19func_ov062_021163b0Ev
-int daHolhei_c::func_ov062_021163b0()
-{
+int daHolhei_c::func_ov062_021163b0() {
     Vector3 v[2];
     if (data_02092138 > mPosY) {
         KillAndTrackInDeathTable();
@@ -658,8 +650,7 @@ int daHolhei_c::func_ov062_021163b0()
 
 // @symbol _ZN10daHolhei_c19func_ov062_02116368Ev
 int daHolhei_c::func_ov062_02116368() {
-    mModel.SetAnim((BCA_File *)(gHoruheiLiftAnimationFile.filePtr), 0x40000000,
-                         0x1000, 0);
+    mModel.SetAnim((BCA_File *)(gHoruheiLiftAnimationFile.filePtr), 0x40000000, 0x1000, 0);
     mChargeStep = 0;
     return 1;
 }
@@ -677,8 +668,7 @@ int daHolhei_c::func_ov062_0211632c() {
 /* Start an animation, then wait a random few frames facing a random way. */
 // @symbol _ZN10daHolhei_c19func_ov062_021162b8Ev
 int daHolhei_c::func_ov062_021162b8() {
-    mModel.SetAnim((BCA_File *)(gHoruheiLiftLoopAnimationFile.filePtr),
-                         0, 0x1000, 0);
+    mModel.SetAnim((BCA_File *)(gHoruheiLiftLoopAnimationFile.filePtr), 0, 0x1000, 0);
     mStateTimer = (short)(((RandomIntInternal(data_0209e650) >> 8) & 0x1f) + 0x14);
     mTargetAngY = (short)((RandomIntInternal(data_0209e650) >> 8) << 0xc);
     return 1;
@@ -686,8 +676,7 @@ int daHolhei_c::func_ov062_021162b8() {
 
 /* Spin, and leave once the timer reaches zero. */
 // @symbol _ZN10daHolhei_c19func_ov062_02116274Ev
-int daHolhei_c::func_ov062_02116274()
-{
+int daHolhei_c::func_ov062_02116274() {
     mPrevAngleY += 0x500;
     if (*(unsigned short *)&mStateTimer == 0)
         ::daHolhei_c_ChangeState(this, &data_ov062_0211deb0);
@@ -696,16 +685,14 @@ int daHolhei_c::func_ov062_02116274()
 
 // @symbol _ZN10daHolhei_c19func_ov062_02116238Ev
 int daHolhei_c::func_ov062_02116238() {
-    mModel.SetAnim((BCA_File *)(gHoruheiThrowAnimationFile.filePtr), 0x40000000,
-                         0x1000, 0);
+    mModel.SetAnim((BCA_File *)(gHoruheiThrowAnimationFile.filePtr), 0x40000000, 0x1000, 0);
     return 1;
 }
 
 /* On frame 0x14 of the throw animation, launch whoever is held. When the
    animation finishes, clear the cylinder bit and leave. */
 // @symbol _ZN10daHolhei_c19func_ov062_021161a8Ev
-int daHolhei_c::func_ov062_021161a8()
-{
+int daHolhei_c::func_ov062_021161a8() {
     if (mHeld != 0 && mModel.WillHitFrame(0x14)) {
         func_ov002_020db54c((int)mHeld, 0x28000, 0x50000, mAngleY);
         mHeld = 0;
