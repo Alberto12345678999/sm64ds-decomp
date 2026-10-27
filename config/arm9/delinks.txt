@@ -1367,6 +1367,9 @@ src/Message3.cpp:
 src/game/stages/d_s_mb.cpp:
     complete
     .text start:0x02034a78 end:0x02035354
+    .init start:0x02074fb8 end:0x02074fe4
+    .ctor start:0x02086b94 end:0x02086b98
+    .bss start:0x020a0c68 end:0x020a0c78
 
 src/engine/collision/d_bg_ch.cpp:
     complete
@@ -5238,10 +5241,6 @@ src/unnamed/arm9/0207/__sinit_02074e80.c:
 src/unnamed/arm9/0207/__sinit_02074e84.cpp:
     complete
     .init start:0x02074e84 end:0x02074edc
-
-src/unnamed/arm9/0207/__sinit_02074fb8.c:
-    complete
-    .init start:0x02074fb8 end:0x02074fe4
 
 src/unnamed/arm9/0207/__sinit_02074fe4.c:
     complete
