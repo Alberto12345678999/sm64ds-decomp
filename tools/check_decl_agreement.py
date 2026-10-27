@@ -2267,6 +2267,19 @@ def _reference(symbol, decls, defs):
     return best[0], "plurality"
 
 
+def _cxx_linkage(decl):
+    """True when `decl` can only have C++ linkage.
+
+    A bare `.h` declaration is read with unknown linkage, because the includer
+    decides. A reference parameter settles it: no C compiler accepts `int &`, so a
+    header spelling one is only ever included from C++ and names the C++ overload.
+    """
+    if decl.linkage == "C++":
+        return True
+    return (decl.linkage == "?" and decl.params is not UNSPECIFIED
+            and any(p.endswith("&") for p in decl.params))
+
+
 def _overload_reference(decl, definitions, unmangled, fallback):
     """Select an existing native C++ overload without guessing its signature.
 
@@ -2275,7 +2288,7 @@ def _overload_reference(decl, definitions, unmangled, fallback):
     C linkage, explicit linker names, unknown signatures, and unmatched types;
     none of those can be excused merely by another overload's existence.
     """
-    if (not decl.is_function or decl.linkage != "C++" or decl.is_member
+    if (not decl.is_function or not _cxx_linkage(decl) or decl.is_member
             or decl.this_unknown
             or decl.symbol.startswith("_Z") or decl.symbol in unmangled
             or decl.params is UNSPECIFIED):
@@ -2330,6 +2343,17 @@ def disagreements(decls, defs, unmangled, root=REPO):
     defs_by_symbol = {}
     for d in defs:
         defs_by_symbol.setdefault(d.symbol, []).append(d)
+    # A marked overload definition is keyed by its `_Z` name, while a native call
+    # site's declaration is keyed by the bare name it spells. Index the free C++
+    # definitions by that bare name too, so a declaration can find its overload.
+    defs_by_bare = {}
+    for d in defs:
+        if (d.symbol.startswith("_Z") and d.is_function and d.linkage == "C++"
+                and not d.is_member):
+            info = _demangled(d.symbol, root)
+            bare = info.get("qualified")
+            if bare and not info.get("class") and "::" not in bare:
+                defs_by_bare.setdefault(bare, []).append(d)
 
     out = []
     for symbol in sorted(by_symbol):
@@ -2338,7 +2362,8 @@ def disagreements(decls, defs, unmangled, root=REPO):
         default_reference = _reference(symbol, group, own)
         want_arity = demangled_arity(symbol, root)
         for d in group:
-            ref, basis = _overload_reference(d, own, unmangled, default_reference)
+            ref, basis = _overload_reference(d, own or defs_by_bare.get(symbol, []),
+                                             unmangled, default_reference)
             if d is not ref and d.is_function != ref.is_function:
                 out.append(_finding(symbol, "kind", d, ref, basis,
                                     "function" if d.is_function else "data",
