@@ -1202,7 +1202,6 @@ dMgTrmpln2Mario_c::~dMgTrmpln2Mario_c() {
     sTrmpAnimSdown = 0;
 }
 // ---- Trmp2Mario_Construct
-namespace ns__ZN6Player29TryExitCharacterDoorWithIntroEv {
 /* dMgTrmpln2Mario_c's constructor, ov006 0x020ca78c. It was filed as
  * _ZN6Player29TryExitCharacterDoorWithIntroEv; it is not a Player method.
  *
@@ -1223,7 +1222,6 @@ namespace ns__ZN6Player29TryExitCharacterDoorWithIntroEv {
  *
  * Detached from Player.h; see SlotB2_Hide.cpp.
  */
-}
 
 /* The ring adapter base and mAnmModel are constructed before the (empty) body. */
 // @symbol _ZN17dMgTrmpln2Mario_cC1Ev

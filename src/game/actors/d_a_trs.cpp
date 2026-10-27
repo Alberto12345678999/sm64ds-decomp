@@ -231,7 +231,7 @@ extern struct Vec3 data_ov063_0211ee8c;
 extern void* data_ov063_0211ee20[3];
 extern void* data_ov063_0211edfc[3];
 extern void* data_ov063_0211ee08[3];
-extern void *_ZN7Vector3D1Ev(void *object);
+extern void *_ZN7Vector3D1Ev(void *object); /* local extern: C++ cannot take ~Vector3()'s address */
 /* __register_global_object is the compiler's own name for func_020731dc:
    the initializer's registrations and the lazy ones below share the one
    import, which the manifest aliases to the configured symbol. */
