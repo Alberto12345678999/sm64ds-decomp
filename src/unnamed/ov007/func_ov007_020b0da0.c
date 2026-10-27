@@ -103,15 +103,15 @@ void func_ov007_020b0da0(void* arg0) {
 
         if (st->stateWork & OV007_FIGURE_SWAY) {
             int var_r4;
-            _ZN4cstd3modEii(counter, 0x28);
+            mod(counter, 0x28);
             {
-                int m1 = _ZN4cstd3modEii(counter, 0x28);
+                int m1 = mod(counter, 0x28);
                 if (m1 <= 0) {
                     var_r4 = 0;
                 } else if (m1 >= 0x28) {
                     var_r4 = 0x1000;
                 } else {
-                    var_r4 = _ZN4cstd3divEii(m1 << 12, 0x28);
+                    var_r4 = div(m1 << 12, 0x28);
                 }
             }
 
@@ -122,13 +122,13 @@ void func_ov007_020b0da0(void* arg0) {
 
             {
                 int var_r8;
-                int m2 = _ZN4cstd3modEii(counter, 0xa0);
+                int m2 = mod(counter, 0xa0);
                 if (m2 <= 0) {
                     var_r8 = 0;
                 } else if (m2 >= 0xa0) {
                     var_r8 = 0x1000;
                 } else {
-                    var_r8 = _ZN4cstd3divEii(m2 << 12, 0xa0);
+                    var_r8 = div(m2 << 12, 0xa0);
                 }
 
                 Matrix4x3_LoadIdentity(mat);

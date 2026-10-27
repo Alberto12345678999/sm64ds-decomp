@@ -1,7 +1,6 @@
 //cpp
 #include "Ov007Sprite.h"
-
-namespace cstd { int div(int, int); }
+#include "cstd.h"
 
 extern "C" {
 extern int func_ov007_020c5014(void *, int);

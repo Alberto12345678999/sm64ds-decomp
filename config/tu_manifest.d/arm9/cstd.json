@@ -19,14 +19,14 @@
   ],
   "functions": [
     {
-      "symbol": "_ZN4cstd3modEii",
+      "symbol": "mod",
       "address": "0x02052ef4",
       "size": "0x00000058",
       "legacy_source": "src/_ZN4cstd3modEii.cpp",
       "ordinal": 0
     },
     {
-      "symbol": "_ZN4cstd3divEii",
+      "symbol": "div",
       "address": "0x02052f4c",
       "size": "0x00000058",
       "legacy_source": "src/_ZN4cstd3divEii.cpp",
