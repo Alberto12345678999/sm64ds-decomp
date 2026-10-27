@@ -7,7 +7,7 @@ extern int LoadFile(int handle);
 extern void func_ov075_02116030(void *c, int v);
 extern void SetBg2Offset(int a, int b);
 extern void func_02033bb8(int a);
-extern void _ZN3G2x18SetBlendBrightnessEPVtts(void *p, unsigned short a, s16 b);
+extern void _ZN3G2x18SetBlendBrightnessEPVtii(void *p, unsigned short a, s16 b);
 extern void func_02020304(void);
 
 extern unsigned char data_0209f4ae[];
@@ -81,7 +81,7 @@ void func_ov075_02117918(char *self)
     func_02033bb8(5);
     data_0209d45c[0] |= 4;
     data_0209d454[0] |= 5;
-    _ZN3G2x18SetBlendBrightnessEPVtts((void *)0x4000050, 0xb, ~5);
+    _ZN3G2x18SetBlendBrightnessEPVtii((void *)0x4000050, 0xb, ~5);
 
     scene->mStepWork[0] = scene->mSelectedIcon;
     func_02020304();

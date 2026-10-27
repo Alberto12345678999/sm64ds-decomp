@@ -15,9 +15,6 @@
  * port/hal/shims.cpp already arrange.
  *
  * leftovers:
- * - Runtime blend amounts stay on the wide-argument bridge below: a short
- *   parameter sign-extends them (+8 bytes in each AdvanceFade). The constant
- *   -0x10 call is G2x::SetBlendBrightness and does not grow.
  * - The 0x400xxxx MMIO addresses stay literal; no shared register-name
  *   header owns them.
  */
@@ -26,6 +23,7 @@
 #include "dFdWipe_c.h"
 #include "dFdDummy_c.h"
 #include "decl_common.h"
+#include "G2x.h"
 #include "dExtModel_c.h"
 
 // These helpers have native definitions but no shared declaration yet.
@@ -43,16 +41,8 @@ void LoadBGPltt(const void *src, u32 offset, u32 len);
 }
 int ApproachLinear(Fix12i &value, Fix12i target, Fix12i step);
 
-struct G2x {
-    static void SetBlendBrightness(volatile unsigned short *, unsigned short, short);
-    static void SetBlendAlpha(volatile unsigned short *, unsigned short, unsigned short,
-                              unsigned short, unsigned int);
-};
 extern "C" {
 void func_02053a90(u16 *reg, int value);
-// local extern: a short amount sign-extends the runtime value under 2004/b56
-// (+8 bytes in each AdvanceFade). The constant -0x10 call does not.
-void _ZN3G2x18SetBlendBrightnessEPVtts(volatile u16 *p, u16 a, int b);
 void Matrix4x3_FromTranslation(Matrix4x3 *m, int x, int y, int z);
 void Matrix4x3_ApplyInPlaceToScale(Matrix4x3 *m, Fix12i x, Fix12i y, Fix12i z);
 void Matrix4x3_ApplyInPlaceToRotationX(Matrix4x3 *m, short ang);
@@ -193,8 +183,8 @@ void dFdColor_c::AdvanceFade()
         int m = color ? 0x10 : -0x10;
         int r = (currInterp * m) >> 12;
         if (r != 0) {
-            _ZN3G2x18SetBlendBrightnessEPVtts((volatile unsigned short*)0x4000050, 0x3f, r);
-            _ZN3G2x18SetBlendBrightnessEPVtts((volatile unsigned short*)0x4001050, 0x3f, r);
+            G2x::SetBlendBrightness((volatile unsigned short *)0x4000050, 0x3f, r);
+            G2x::SetBlendBrightness((volatile unsigned short *)0x4001050, 0x3f, r);
         } else {
             *(unsigned short*)0x4000050 = 0;
             *(unsigned short*)0x4001050 = 0;
@@ -251,7 +241,7 @@ void dFdWipe_c::AdvanceFade()
         int prod = currInterp * m;
         int r = prod >> 12;
         if (r != 0) {
-            _ZN3G2x18SetBlendBrightnessEPVtts((volatile u16*)0x4001050, 0x3f, r);
+            G2x::SetBlendBrightness((volatile u16 *)0x4001050, 0x3f, r);
         } else {
             *(u16*)0x4000050 = 0;
             *(u16*)0x4001050 = 0;

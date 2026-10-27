@@ -97,7 +97,7 @@ struct Player {
    PlaySub's parameters stay unnamed: a name here takes an @NNN in every includer. */
 
 void Play(u32, u32, const Vector3 &v);
-void Play2D(u32, u32);
+u32 Play2D(u32, u32);
 void PlayBank0(u32 id, const Vector3 &pos);
 u32  PlayBank2_2D(u32);
 u32 PlayBank3_2D(u32);
