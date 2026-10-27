@@ -48,6 +48,7 @@
 #include "fBase_c.h"
 #include "Sound.h"
 #include "nitro/fx/fx.h"
+#include "math/Approach.h"
 
 static const int kWallX = 0x6c000;   /* mPos.x clamp: the arena walls */
 static const int kScreenYMax = 0xbc; /* past this mScreenY the Mario damps out */
@@ -180,9 +181,6 @@ extern fBase_c *data_0209f5c0;
 
 }  /* extern "C" */
 
-void  UpdateAngle(short &angle, short target, int speed, short maxStep);
-short ApproachLinear2(short &value, short target, short step);
-void  ApproachLinear(int &value, int target, int step);
 
 
 // @symbol Jump3D_SetTuning

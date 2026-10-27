@@ -38,8 +38,8 @@ enum d_a_pg_mthr_AssetId {
 #include "dBgCh_Actr.h"
 #include "Sound.h"
 #include "cstd.h"
+#include "math/Approach.h"
 
-bool ApproachLinear(short &value, short target, short step);
 
 enum {
     ACTOR_PLAYER = 0xbf,

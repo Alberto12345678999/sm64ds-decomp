@@ -25,6 +25,7 @@
 #include "SharedFilePtr.h"
 #include "types.h"
 #include "Sound.h"
+#include "math/Approach.h"
 
 /* `C` stands in for the receiver of the state pointer-to-member at 0x5004.
  * It must stay non-polymorphic: mwccarm lays out a pointer-to-member of a
@@ -121,7 +122,6 @@ extern dScMgJump_c::StatePmf pmf_dScMgJump_c_State_Play;
 namespace GX   { void LoadOBJPltt(const void *src, unsigned int offset, unsigned int size); }
 namespace G3X  { void SetFog(bool enable, int mode, int slope, int offset); }
 namespace cstd { s32 fdiv(s32 a, s32 b); }
-short ApproachLinear2(short &value, short target, short step);
 
 // @symbol _ZN11dScMgJump_c10StartRoundEi
 /* Slot 18. 0 is an eat (one more egg, capped like the HUD score), 0x12 a

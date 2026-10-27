@@ -73,6 +73,7 @@ enum daOwl_c_AssetId {
 #include "SharedFilePtr.h"
 #include "Player.h"
 #include "nitro/fx/fx.h"
+#include "math/Approach.h"
 
 /* Resource handles the static initializer constructs. The wrapper spellings
  * are reconstructed; the constructor and destructor addresses, the file IDs
@@ -169,7 +170,6 @@ int Vec3_Dist(const void *a, const void *b);
 short Vec3_HorzAngle(const void *a, const void *b);
 short Vec3_VertAngle(const void *a, const void *b);
 unsigned int RandomIntInternal(void *seed);
-void _Z14ApproachLinearRiii(int *x, int target, int step);
 void Matrix4x3_FromRotationY(void *m, int angle);
 void MulVec3Mat4x3(void *dst, void *mat, void *src);
 void Vec3_Sub(OwlVec *out, OwlVec *a, OwlVec *b);
@@ -409,7 +409,7 @@ int daOwl_c::func_ov094_02135c28()
     idx = ((u16)(short)ang >> 4) * 2;
     tbl = data_02082214[idx];
     result = FX_MUL(tbl, 0x64000);
-    _Z14ApproachLinearRiii(&mPosY, mAnchorY + result, 0x3000);
+    ApproachLinear(mPosY, mAnchorY + result, 0x3000);
 
     Matrix4x3_FromRotationY(&data_020a0e68, mPrevAngleY);
     MulVec3Mat4x3(&buf, &data_020a0e68, &mSpeedX);

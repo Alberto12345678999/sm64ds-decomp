@@ -82,7 +82,7 @@
  *   NewSimple and the layer-3 sound calls retain their local declarations.
  *   FromUniqueID is followed by a store at sys+0x44, which is still pad_042
  *   on Particle::System.
- * - Vec3_* / Matrix4x3_* / ApproachLinear have no shared header this TU
+ * - Vec3_* / Matrix4x3_* have no shared header this TU
  *   can include alone. data_02082214 is the sine table func_ov073_0211f494
  *   indexes. data_0209f318, data_020a0e68 and data_0209e650 are arm9
  *   globals. data_ov002_0210da30 is ov002's; Cleanup only Releases it.
@@ -131,8 +131,8 @@ enum daKing_Donketu_c_AssetId {
 #include "nitro/fx/fx.h"
 #include "Sound.h"
 #include "cstd.h"
+#include "math/Approach.h"
 
-bool ApproachLinear(short &value, short target, short step);
 
 /* Actor ids (symbols/actor_debug_names.tsv gives them in decimal) that this
    boss looks up or spawns. */
@@ -248,7 +248,6 @@ extern u16 data_0209e650;
 extern u16 DecIfAbove0_Short(void* p);
 extern void func_02012694(int a, void* b);
 extern int RandomIntInternal(u16* seed);
-extern void _Z14ApproachLinearRiii(int* p, int t, int s);
 }
 extern "C" {
 extern void d_a_king_donketuPlayLongHold(unsigned int a, unsigned int b, unsigned int c,
@@ -655,7 +654,7 @@ int daKing_Donketu_c::func_ov073_0211fa74() {
     struct Vector3 pos;
     cam = data_0209f318;
     ((dCamera_c *)cam)->SetFlag_3();
-    _Z14ApproachLinearRiii((int*)&c->mScaleX, 0, 0x80);
+    ApproachLinear(*(int *)&c->mScaleX, 0, 0x80);
     c->mScaleZ = c->mScaleX;
     c->mScaleY = c->mScaleZ;
     c->func_ov073_0211f144();
@@ -1376,7 +1375,7 @@ int daKing_Donketu_c::func_ov073_02120c7c()
             ChiefChilly_ChangeState((C *)(c), (PMF *)&data_ov073_021233d0);
         return 1;
     }
-    _Z14ApproachLinearRiii((int *)&c->mHorzSpeed, 0, 0x1000);
+    ApproachLinear(*(int *)&c->mHorzSpeed, 0, 0x1000);
     if (c->mBlendAnmModel.Finished()) {
         int b = c->mHorzSpeed; if (b < 0) b = -b;
         if (b < 0xa) {
@@ -1487,7 +1486,7 @@ int daKing_Donketu_c::func_ov073_02120ed0() {
                 break;
             }
         } else {
-            _Z14ApproachLinearRiii((int *)&c->mHorzSpeed, 0x1e000, 0x3000);
+            ApproachLinear(*(int *)&c->mHorzSpeed, 0x1e000, 0x3000);
             if (c->mStateScratch == 0) {
                 if (c->DistToCPlayer() < 0x1f4000) {
                     c->mStateScratch = 1;
@@ -1528,7 +1527,7 @@ int daKing_Donketu_c::func_ov073_02120ed0() {
                 i++;
             } while (i < 2);
         }
-        _Z14ApproachLinearRiii((int *)&c->mHorzSpeed, 0, c->mStateParam);
+        ApproachLinear(*(int *)&c->mHorzSpeed, 0, c->mStateParam);
         if (c->mPhase == 1) {
             c->mTargetAngle = c->HorzAngleToCPlayer();
             ApproachLinear(c->mAngleY, c->mTargetAngle, 0x500);

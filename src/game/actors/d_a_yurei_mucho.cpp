@@ -34,8 +34,8 @@
 #include "SharedFilePtr.h"
 #include "Player.h"
 #include "nitro/fx/fx.h"
+#include "math/Approach.h"
 
-bool ApproachLinear(short &value, short target, short step);
 
 /* POD views preserve the retail aggregate copies. Matrix4x3 and Vector3 are
    available, but their non-POD copies change these two helpers' codegen; see
@@ -64,7 +64,6 @@ extern "C" {
 extern unsigned int RandomIntInternal(void *seed);
 extern unsigned short DecIfAbove0_Short(unsigned short *p);
 extern void ApproachAngle(void *p, short target, int a, int b, int limit);
-extern void _Z14ApproachLinearRiii(int *x, int target, int step);
 extern short Vec3_HorzAngle(const void *a, const void *b);
 extern short Vec3_VertAngle(const void *a, const void *b);
 extern int Vec3_Dist(const void *a, const void *b);
@@ -226,7 +225,7 @@ int daYurei_Mucho_c::Behavior()
         idx = ((unsigned short)(short)ang >> 4) * 2;
         tbl = data_02082214[idx];
         result = FX_MUL(tbl, 0x46000);
-        _Z14ApproachLinearRiii(&mPosY, mHomePosY + (result + 0xb4000), 0x3000);
+        ApproachLinear(mPosY, mHomePosY + (result + 0xb4000), 0x3000);
     }
     UpdatePosWithOnlySpeed(&mdCcAc_c);
     UpdateWMClsn(mWithMeshClsn, 0);

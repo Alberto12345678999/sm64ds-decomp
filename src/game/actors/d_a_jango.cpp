@@ -60,6 +60,7 @@ enum daJango_c_AssetId {
 #include "types.h"
 #include "common.h"
 #include "cstd.h"
+#include "math/Approach.h"
 /* decl_common.h deliberately NOT included; the three names this TU needs
    from it are declared locally instead. */
 extern "C" int AngleDiff(int a, int b);
@@ -128,7 +129,6 @@ extern JangoPMF data_ov062_0211e14c[2];
 extern JangoPMF data_ov062_0211e16c[2];
 extern JangoSwoopRec data_ov062_0211e18c;
 
-bool ApproachLinear(short &value, short target, short step);
 
 /* Local shadow declarations carried from the legacy files verbatim.
  * NOT reconciled against real project headers -- check include/*.h for

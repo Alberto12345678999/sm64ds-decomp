@@ -61,6 +61,7 @@ enum daSanbo_c_AssetId {
 #include "Player.h"
 #include "Particle__System.h"
 #include "nitro/fx/fx.h"
+#include "math/Approach.h"
 
 enum { SANBO_HEAD = 0xf0, SANBO_BODY = 0xf1 };
 
@@ -277,8 +278,6 @@ int daSanbo_c::func_ov096_021368a4()
 
 namespace Sound { void PlayBank0(unsigned int id, const Vector3 &pos); }
 
-void ApproachLinear(int &dst, int target, int step);
-bool ApproachLinear(short &value, short target, short step);
 
 extern "C" {
 void d_a_sanboRunningSlidingDustAtHold(int x, int y, int z);

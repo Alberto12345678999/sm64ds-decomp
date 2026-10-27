@@ -76,9 +76,8 @@ enum daHanachan_c_AssetId {
 #include "Vector3s.h"
 #include "nitro/fx/fx.h"
 #include "Sound.h"
+#include "math/Approach.h"
 
-void ApproachLinear(int &value, int target, int step);
-bool ApproachLinear(short &value, short target, short step);
 
 /* The file-scope resource handles. The model five use the plain SharedFilePtr
  * pair (func_02017acc / func_02017ab4), the animation twenty-five use

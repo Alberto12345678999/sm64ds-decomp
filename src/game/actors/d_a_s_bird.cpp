@@ -18,7 +18,7 @@
  * - dExtAnmModel_c::SetAnim / DropShadowRadHeight 6az: this TU passes Fix12<int>
  *   by value; the header method form size-DIFFs.
  * - cstd::atan2 6az (Fix12<int> by value) in func_ov009_02111234.
- * - Vec3_Asr / Vec3_Sub / Vec3_HorzLen / LenVec3 / ApproachLinear: no shared
+ * - Vec3_Asr / Vec3_Sub / Vec3_HorzLen / LenVec3: no shared
  *   header this TU can take without a campaign.
  * - data_ov009_02113c20 / 02113c28 SharedFilePtr handles: sinit constructs
  *   them as file IDs 1080 / 1081; overlay .bss owns them. symbols.txt has
@@ -47,6 +47,7 @@
 #include "common.h"
 #include "SharedFilePtr.h"
 #include "Sound.h"
+#include "math/Approach.h"
 namespace cstd {
 s16 atan2(s32, s32);
 }
@@ -64,7 +65,6 @@ struct SBirdAnimationFilePtr : SharedFilePtr {
     ~SBirdAnimationFilePtr();
 };
 
-bool ApproachLinear(short &value, short target, short step);
 
 typedef void (daSBird_c::*BirdState)();
 

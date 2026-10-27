@@ -48,8 +48,8 @@ enum daPgDfdr_c_AssetId {
 #include "dBgCh_Gnd.h"
 #include "nitro/fx/fx.h"
 #include "Sound.h"
+#include "math/Approach.h"
 
-bool ApproachLinear(short &value, short target, short step);
 
 struct BMD_File;
 struct BTP_File;

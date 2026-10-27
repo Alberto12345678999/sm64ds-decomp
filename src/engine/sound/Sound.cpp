@@ -26,6 +26,7 @@
 #include "types.h"
 #include "Sound.h"
 #include "Memory.h"
+#include "math/Approach.h"
 
 extern "C" {
 
@@ -158,10 +159,6 @@ extern unsigned char data_02075258[];
 extern char data_0208e498[];
 
 }
-
-/* ApproachLinear(int&, int, int) is _Z14ApproachLinearRiii -- a C++ symbol,
- * so it is declared as one rather than by its mangled name. */
-void ApproachLinear(int &val, int target, int step);
 
 typedef struct {
     int playerID;

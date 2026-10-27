@@ -69,13 +69,13 @@
 #include "OAM.h"
 #include "OamAttr.h"
 #include "G2.h"
+#include "math/Approach.h"
 
 extern "C" {
 
 void DecompressLZ16(void *, void *);
 void Deallocate(void *);
 
-int _Z15ApproachLinear2Rsss(short *, short, short);
 extern unsigned char data_0209b2e4;
 
 extern void OamRender10_d_s_entry(int a, void *oam, int b, int c, int d, int e, int f, int g, int h,
@@ -233,9 +233,9 @@ void dScEntry_c::icon_c::Render() {
 void dScEntry_c::icon_c::Behavior() {
     if (unk_01c == 0xd) {
         if (unk_020 == data_0209b2e4) {
-            _Z15ApproachLinear2Rsss(&mY, 0x14, 8);
+            ApproachLinear2(mY, 0x14, 8);
         } else {
-            if (_Z15ApproachLinear2Rsss(&mY, -0x24, 8) != 0)
+            if (ApproachLinear2(mY, -0x24, 8) != 0)
                 unk_020 = data_0209b2e4;
         }
     }

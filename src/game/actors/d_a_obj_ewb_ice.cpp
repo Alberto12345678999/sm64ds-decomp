@@ -41,6 +41,7 @@ enum daObjEwbIce_c_AssetId {
 #include "SharedFilePtr.h"
 #include "Sound.h"
 #include "nitro/fx/fx.h"
+#include "math/Approach.h"
 
 struct CLPS_Block;
 
@@ -149,8 +150,6 @@ void func_ov073_021227d0(void *collider, daObjEwbIce_c *ice, dActor_c *other);
 void Matrix4x3_FromRotationXYZExt(Matrix4x3 *mat, int x, int y, int z);
 }
 
-int ApproachLinear(int &value, int target, int step);
-bool ApproachLinear(short &value, short target, short step);
 
 // @symbol _ZN13daObjEwbIce_cD1Ev
 // @symbol _ZN13daObjEwbIce_cD0Ev

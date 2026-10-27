@@ -48,8 +48,8 @@ struct System {
 #include "SharedFilePtr.h"
 #include "dBgCh_Gnd.h"
 #include "dBgCh_Actr.h"
+#include "math/Approach.h"
 
-bool ApproachLinear(short &value, short target, short step);
 
 /* The three shared files this actor claims.  InitResources loads them and
    CleanupResources releases them, so both C++-named members need one agreed
@@ -397,7 +397,6 @@ extern "C" {
 void func_ov102_0214bf64(void *ov)
 {
     extern unsigned short DecIfAbove0_Short(unsigned short* p);
-    extern void _Z14ApproachLinearRiii(int& v, int target, int step);
     extern short Vec3_HorzAngle(const Vector3* v0, const Vector3* v1);
     extern int Vec3_Dist(const Vector3* a, const Vector3* b);
     extern void func_ov102_0214b988(void* c);
@@ -407,7 +406,7 @@ void func_ov102_0214bf64(void *ov)
     DecIfAbove0_Short(&o->mTurnTimer);
     if (o->mVariant != 1) {
         if (o->mChasePlayer == 0) {
-            _Z14ApproachLinearRiii(o->mHorzSpeed, 0x5000, 0x2aa);
+            ApproachLinear(o->mHorzSpeed, 0x5000, 0x2aa);
             func_ov102_0214b988(o);
             if (o->mChasePlayer != 0) {
                 o->mHorzSpeed = 0;
@@ -427,7 +426,7 @@ void func_ov102_0214bf64(void *ov)
                 }
             }
         } else {
-            _Z14ApproachLinearRiii(o->mHorzSpeed, 0x10000, 0x1000);
+            ApproachLinear(o->mHorzSpeed, 0x10000, 0x1000);
             s16 target = Vec3_HorzAngle(&o->mPos, &o->mChasePlayer->mPos);
             if (o->mVariant == 3) {
                 /* Player::mGrabbedByActor: stop turning toward a held player. */

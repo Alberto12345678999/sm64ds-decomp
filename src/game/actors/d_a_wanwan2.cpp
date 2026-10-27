@@ -1,5 +1,6 @@
 //cpp
 #include "Vector3s.h"
+#include "math/Approach.h"
 /* daWanwan2_c -- the unchained Chain Chomp (registry profile WANWAN2).
  *
  * The chomp walks a path (param1's low byte is the path ID, mPathID) and
@@ -158,7 +159,6 @@ struct dCc_c;
 
 extern "C" {
 unsigned short DecIfAbove0_Short(unsigned short *p);
-void _Z14ApproachLinearRiii(int &x, int target, int step);
 int __aeabi_idiv(int, int);
 int func_02012694(int, void *);
 void Matrix4x3_FromRotationXYZExt(void *m, int x, int y, int z);
@@ -622,7 +622,7 @@ int daWanwan2_c::Behavior()
     DecIfAbove0_Short((unsigned short *)&mCoinTimer);
     DecIfAbove0_Short((unsigned short *)&unk_6a8);
     if (DecIfAbove0_Short((unsigned short *)&mHaltTimer) != 0) {
-        _Z14ApproachLinearRiii(mScaleX, 0x1000, 0x500);
+        ApproachLinear(mScaleX, 0x1000, 0x500);
         mScaleZ = mScaleX;
         mScaleY = mScaleZ;
         func_ov100_02143b68((char *)this);

@@ -59,8 +59,8 @@ enum daBtfly_c_AssetId {
 #include "SharedFilePtr.h"
 #include "Player.h"
 #include "nitro/fx/fx.h"
+#include "math/Approach.h"
 
-bool ApproachLinear(short &value, short target, short step);
 
 /* Makes the per-member `#pragma opt_common_subs` bracket around State2 bind.
  * Without it mwccarm defers codegen and the last file-global state wins. */
@@ -93,7 +93,6 @@ struct BtflyAnimationFilePtr : SharedFilePtr {
 #define L(p) ((int)(p))
 
 extern "C" {
-void _Z14ApproachLinearRiii(int *p, int target, int step);
 s16 Vec3_VertAngle(const Vector3 *v1, const Vector3 *v0);
 s16 Vec3_HorzAngle(const void *a, const void *b);
 void Vec3_Sub(Vector3 *out, void *a, void *b);
@@ -149,7 +148,7 @@ void daBtfly_c::State7()
         mScale += v;
     }
 
-    _Z14ApproachLinearRiii(&mHorzSpeed, 0x14000, 0x1000);
+    ApproachLinear(mHorzSpeed, 0x14000, 0x1000);
 
     Player *player = ClosestPlayer();
     if (player != 0) {
@@ -245,7 +244,7 @@ void daBtfly_c::State5()
         mState = 6;
         mFlags &= ~0x10000;
     } else {
-        _Z14ApproachLinearRiii(&mHorzSpeed, 0x8000, 0x800);
+        ApproachLinear(mHorzSpeed, 0x8000, 0x800);
     }
 
     if (mStateTimer >= 0x3c)

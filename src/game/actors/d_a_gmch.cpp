@@ -16,7 +16,7 @@
  *   UpdateState6.
  * - UpdateState0 keeps mPhase++. mPhase = (u8)(mPhase + 1) is 0x144
  *   against 0x158, and mSpinAngleY += 0xc00 is four words off.
- * - ApproachLinear2 takes &mState as int* because mState, mPhase and
+ * - ApproachLinear2 steps *(int *)&mState because mState, mPhase and
  *   mTimer share one word. State numbers, mFlags bit 0x80000 and hit
  *   mask 0x66fe0 stay numeric.
  * - The loaded BCA is data_ov081_02128edc.filePtr. GmchDrawReg is the
@@ -35,6 +35,7 @@ enum daGmch_c_AssetId {
 #pragma defer_codegen off
 
 #include "types.h"
+#include "math/Approach.h"
 /* BEFORE daGmch_c.h, and load-bearing: common.h and math/Matrix.h both define
    Matrix4x3 under one guard and whichever is seen FIRST stands.  InitResources
    assigns IDENTITY_MATRIX4X3 whole into mMatrix; under common.h flat s32[12]
@@ -53,7 +54,6 @@ enum daGmch_c_AssetId {
 #include "SpawnInfo.h"
 #include "nitro/fx/fx.h"
 
-bool ApproachLinear(short &value, short target, short step);
 
 /* Actor ids are from symbols/actor_debug_names.tsv. */
 enum {
@@ -163,7 +163,6 @@ struct System {
     static void NewSimple(unsigned int n, int a, int b, int c);
 };
 }
-extern int    _Z15ApproachLinear2Riii(int *p, int target, int step);
 /* Parameter names keep this TU's @NNN. */
 typedef void BgchInitAt_(void *self, void *actor, int a, int b, void *v, int c);
 }
@@ -713,7 +712,7 @@ int daGmch_c::UpdateState0()
 {
     switch (mPhase) {
     case 0:
-        if (_Z15ApproachLinear2Riii((int *)&mState, 1, 2) != 0) {
+        if (ApproachLinear2(*(int *)&mState, 1, 2) != 0) {
             mdCcAc_c.Init(this, 0x4b000, 0x73000, 0x200000, 0);
             mFlags &= ~0x10000000;
             mPhase++;
@@ -727,7 +726,7 @@ int daGmch_c::UpdateState0()
         }
         break;
     case 2:
-        if (_Z15ApproachLinear2Riii((int *)&mState, 0x1f, 2) != 0) {
+        if (ApproachLinear2(*(int *)&mState, 0x1f, 2) != 0) {
             mdCcAc_c.Init(this, 0x4b000, 0x73000, 0x200000, 0x6eff0);
             SetState(3);
         }

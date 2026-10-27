@@ -63,8 +63,8 @@ enum daObjKi_Hasira_c_AssetId {
 #include "SharedFilePtr.h"
 #include "Player.h"
 #include "Sound.h"
+#include "math/Approach.h"
 
-bool ApproachLinear(short &value, short target, short step);
 
 typedef long long s64;
 

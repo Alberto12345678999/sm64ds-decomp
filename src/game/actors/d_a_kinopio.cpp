@@ -46,8 +46,8 @@
 #include "Message.h"
 #include "dCc_c.h"
 #include "dBgCh_Gnd.h"
+#include "math/Approach.h"
 
-bool ApproachLinear(short &value, short target, short step);
 
 struct BCA_File;
 struct BMD_File;
@@ -79,14 +79,13 @@ extern int data_0209caa0[];
 extern Matrix4x3 data_020a0e68;
 extern Matrix4x3 IDENTITY_MATRIX4X3;
 
-/* math / vector helpers.
-   ApproachLinear returns whether it arrived, and that is load-bearing: St_Talk_Main
-   tests the result to decide whether the turn has finished. */
+/* math / vector helpers. (ApproachLinear, from math/Approach.h, returns whether
+   it arrived, and that is load-bearing: St_Talk_Main tests the result to decide
+   whether the turn has finished.) */
 s16 Vec3_HorzAngle(const void *a, const void *b);
 s16 Vec3_VertAngle(const void *a, const void *b);
 s32 Vec3_HorzDist(const void *a, const void *b);
 s32 AngleDiff(s32 a, s32 b);
-void _Z15ApproachLinear2Riii(s32 *cur, s32 tgt, s32 step);
 void Matrix4x3_FromRotationY(void *m, int angY);
 void Matrix4x3_ApplyInPlaceToRotationY(Matrix4x3 *m, s16 ang);
 void Matrix4x3_ApplyInPlaceToRotationX(Matrix4x3 *m, s16 ang);
@@ -496,7 +495,7 @@ int daKinopio_c::Behavior()
     ApproachLinear(mHeadYaw, mHeadYawTarget, 0x250);
     ApproachLinear(mHeadPitch, mHeadPitchTarget, 0x100);
 
-    _Z15ApproachLinear2Riii((s32 *)&mOpacity, mTargetOpacity, 6);
+    ApproachLinear2(*(s32 *)&mOpacity, mTargetOpacity, 6);
 
     mAnmModel.Advance();
 

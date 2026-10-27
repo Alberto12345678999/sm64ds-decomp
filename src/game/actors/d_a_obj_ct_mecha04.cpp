@@ -38,8 +38,8 @@ enum daObjCtMecha04_c_AssetId {
 #include "dBgW.h"
 #include "dBgCh_Gnd.h"
 #include "nitro/fx/fx.h"
+#include "math/Approach.h"
 
-int ApproachLinear(int &value, int target, int step);
 
 enum {
     ACTOR_CT_MECHA04L = 0x6f,

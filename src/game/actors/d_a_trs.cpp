@@ -69,6 +69,7 @@ enum daTrs_c_AssetId {
 #include "dCamera_c.h"
 #include "dBgCh_Gnd.h"
 #include "nitro/fx/fx.h"
+#include "math/Approach.h"
 
 /* Views of three classes this Boo reaches through other actors' pointers.
    Their headers are not included because each one renumbers this file's
@@ -108,7 +109,6 @@ struct TrsBone {
 typedef char TrsBone_size_must_be_0x34[sizeof(TrsBone) == 0x34 ? 1 : -1];
 #endif
 
-bool ApproachLinear(short &value, short target, short step);
 
 extern "C" {
 /* shared engine entry points without a header declaration */
@@ -184,7 +184,6 @@ extern "C" {
 void Matrix4x3_ApplyInPlaceToRotationY(void *m, s16 angY);
 int RandomIntInternal(int *seed);
 void Vec3_Asr(void *d, const void *s, int sh);
-void _Z14ApproachLinearRiii(int *p, int target, int step);
 int d_a_trsPlaySubHold(unsigned int a, unsigned int b, unsigned int c, s32 d, int e);
 int func_020092c4(void *cam, void *out, void *target);
 int func_02012694(int a, void *p, ...);
@@ -601,7 +600,7 @@ void daTrs_c::func_ov063_02116a1c() {
         this->mHorzSpeed = 0;
     } else {
         int t;
-        _Z14ApproachLinearRiii((int *)&this->mHorzSpeed, 0x30000, 0x1800);
+        ApproachLinear(*(int *)&this->mHorzSpeed, 0x30000, 0x1800);
         t = 0x3e8000;
         v.x = -t;
         v.z = (int)0xfdcd8000;
@@ -813,7 +812,7 @@ void daTrs_c::func_ov063_02116fac() {
         this->mHorzSpeed = 0;
         break;
     case 2:
-        _Z14ApproachLinearRiii((int*)&this->mHorzSpeed, 0x3a000, 0x1800);
+        ApproachLinear(*(int *)&this->mHorzSpeed, 0x3a000, 0x1800);
         fr.v.x = -0x3e8000;
         fr.v.y = 0;
         fr.v.z = 0xfea84000;
@@ -823,7 +822,7 @@ void daTrs_c::func_ov063_02116fac() {
         }
         break;
     case 3:
-        _Z14ApproachLinearRiii((int*)&this->mHorzSpeed, 0, 0x9000);
+        ApproachLinear(*(int *)&this->mHorzSpeed, 0, 0x9000);
         fr.v.x = -0x3e8000;
         fr.v.y = 0;
         fr.v.z = -0xfa0000;
@@ -849,7 +848,7 @@ void daTrs_c::func_ov063_02116fac() {
         }
         break;
     case 5:
-        _Z14ApproachLinearRiii((int*)&this->mHorzSpeed, 0x3a000, 0x1800);
+        ApproachLinear(*(int *)&this->mHorzSpeed, 0x3a000, 0x1800);
         fr.v.x = -0x3e8000;
         fr.v.y = 0;
         fr.v.z = 0xfea84000;

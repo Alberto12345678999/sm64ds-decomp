@@ -42,8 +42,8 @@ enum Scuttlebug_AssetId {
 #include "nitro/fx/fx.h"
 #include "Sound.h"
 #include "cstd.h"
+#include "math/Approach.h"
 
-bool ApproachLinear(short &value, short target, short step);
 
 /* ------------------------------------------------------------------------
  * Local value shapes carried from the legacy one-function files.

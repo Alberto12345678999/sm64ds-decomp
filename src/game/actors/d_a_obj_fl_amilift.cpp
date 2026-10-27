@@ -44,6 +44,7 @@ enum daObjFl_Amilift_c_AssetId {
 #include "daObjFl_Amilift_c.h"
 #include "common.h"
 #include "SharedFilePtr.h"
+#include "math/Approach.h"
 namespace cstd {
 s16 atan2(s32, s32);
 }
@@ -75,7 +76,6 @@ struct CLPS_Block;
 
 extern "C" {
 int Vec3_HorzDist(const void* a, const void* b);
-int _Z14ApproachLinearRiii(int* v, int target, int step);
 extern LiftState data_ov064_0211c750[];
 extern short data_02082214[];
 extern void hold_d_a_obj_fl_amilift(void *self, KCL_File *k, Matrix4x3 *m, int fix, short s,
@@ -120,7 +120,7 @@ int daObjFl_Amilift_c::func_ov064_02117a44() {
   int r;
   UpdatePos(0);
   r = (Vec3_HorzDist(&mPosX, &mToX) < 0x69000) ? 0 : 0xa000;
-  if (_Z14ApproachLinearRiii(&mHorzSpeed, r, 0x800) != 0 && r == 0) {
+  if (ApproachLinear(mHorzSpeed, r, 0x800) != 0 && r == 0) {
     mFromX = mToX;
     mFromY = mToY;
     mFromZ = mToZ;
@@ -242,7 +242,7 @@ s32 daObjFl_Amilift_c::Behavior() {
         mStateFrames = 0;
     }
     int target = mRiderOn ? -0x28000 : 0;
-    if (_Z14ApproachLinearRiii(&mSinkOffset, target, 0x5000)) {
+    if (ApproachLinear(mSinkOffset, target, 0x5000)) {
         short* pAng = &mBobPhase;
         *pAng = (short)(*pAng + 0xa00);
         unsigned short h = *(unsigned short *)&mBobPhase;

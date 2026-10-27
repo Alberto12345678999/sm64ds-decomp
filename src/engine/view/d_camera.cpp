@@ -29,6 +29,7 @@
 #include "decl_Particle.h"
 #include "dClipper.h"
 #include "cstd.h"
+#include "math/Approach.h"
 struct Vector3_16f;
 namespace Particle {
 struct System {
@@ -131,8 +132,6 @@ extern void Matrix4x3_LoadIdentity(Matrix4x3 *matrix);
 /* local extern: two callers are inside `#pragma cplusplus off` regions, where
    cstd::fdiv cannot be named; the C++ caller uses cstd.h. */
 extern int _ZN4cstd4fdivEii(int a, int b);
-extern void _Z14ApproachLinearRiii(int *r, int b, int c);
-extern int _Z15ApproachLinear2Rsss(short *dst, short target, short step);
 /* local extern: the only caller, func_0200d954, is in a cplusplus-off region
    and cannot make the member call. */
 extern void _ZN8dClipper13Func_020156DCEitii(void *self, int a, int b, int c, int d);
@@ -316,11 +315,11 @@ block_7:
             }
             func_0200ca50(c);
             if (mShakeY != 0) {
-                _Z14ApproachLinearRiii((int *)&mShakeY, 0, 0x1000);
+                ApproachLinear(*(int *)&mShakeY, 0, 0x1000);
                 mShakeY = 0 - mShakeY;
             }
             if (mRollShake != 0) {
-                if (_Z15ApproachLinear2Rsss(&mRollShake, 0, 0x10) != 0) {
+                if (ApproachLinear2(mRollShake, 0, 0x10) != 0) {
                     mRollShakePhase = 0;
                 } else {
                     *(s16 *)((long long)(int)&mRollShakePhase) =
@@ -331,7 +330,7 @@ block_7:
         if (mFovShake != 0) {
             *(s16 *)((long long)(int)&mFovShakePhase) =
                 (s16)(*(s16 *)((long long)(int)&mFovShakePhase) + mFovShakePhaseStep);
-            _Z15ApproachLinear2Rsss(&mFovShake, 0, mFovShakeDecay);
+            ApproachLinear2(mFovShake, 0, mFovShakeDecay);
         }
         {
             int condA = 1;
@@ -399,7 +398,7 @@ block_7:
     }
     mFramedActor = 0;
     func_0203dafc((short)(mAngleY + mInputYawLag));
-    _Z15ApproachLinear2Rsss(&mInputYawLag, 0, 0x400);
+    ApproachLinear2(mInputYawLag, 0, 0x400);
     return 1;
 }
 
@@ -1149,7 +1148,7 @@ extern "C" int func_0200ca50(void *self)
     int r5;
     {
         CamMode *p = cam->mMode;
-        _Z15ApproachLinear2Rsss(&cam->mFovAngle, p->fovAngle, 0x80);
+        ApproachLinear2(cam->mFovAngle, p->fovAngle, 0x80);
     }
     r5 = 1;
     flags = cam->mFlags;
@@ -1528,7 +1527,7 @@ extern "C" int func_0200bec4(char *self, int *arg1, int arg2, char *arg3, int ar
         int sl2 = arg1[1] + cam->mLookAtOffset.y;
         int r5b = sl2 - cam->lookAt.y;
         if (r5b < (int)func_020093d4(self, ((CamMode *)arg3)->followRise)) {
-            _Z14ApproachLinearRiii((int *)&cam->lookAt.y, sl2, 0x64000);
+            ApproachLinear(*(int *)&cam->lookAt.y, sl2, 0x64000);
         } else {
             int r6 = arg2 - arg1[1];
             if (r6 >= 0) {

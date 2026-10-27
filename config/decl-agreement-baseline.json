@@ -18888,6 +18888,9 @@
       ],
       "src/game/actors/d_a_obj_mario_cap.cpp": [
         "return:short"
+      ],
+      "src/game/actors/d_a_yegg.cpp": [
+        "return:short"
       ]
     },
     "func_02011d14": {

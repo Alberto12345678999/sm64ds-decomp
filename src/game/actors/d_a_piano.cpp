@@ -30,8 +30,8 @@
 #include "Player.h"
 #include "nitro/fx/fx.h"
 #include "Sound.h"
+#include "math/Approach.h"
 
-bool ApproachLinear(short &value, short target, short step);
 
 /* The TU's three resource handles, defined at file end so mwcc emits their
  * constructor calls, destructor registrations, and the PMF-table copy into

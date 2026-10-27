@@ -42,12 +42,11 @@
 #include "dCc_c.h"
 #include "Sound.h"
 #include "dBgCh_Actr.h"
+#include "math/Approach.h"
 namespace cstd {
 s16 atan2(s32, s32);
 }
 
-int ApproachLinear(int &value, int target, int step);
-int ApproachLinear(short &value, short target, short step);
 
 /* Actor IDs from the ROM's actor table (symbols/actor_debug_names.tsv). */
 enum {

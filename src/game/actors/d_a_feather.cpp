@@ -18,8 +18,8 @@ struct Vector3_16f;
  *
  * deslop leftovers:
  * - dBgCh_Actr_UpdateContinuous_Veneer: arm9's own 0x020383fc tail; no method.
- * - Vec3_Asr / Matrix4x3_* / ApproachLinear / ApproachLinear2 /
- *   DecIfAbove0_Byte: no header declares them; TU-local extern "C".
+ * - Vec3_Asr / Matrix4x3_* / DecIfAbove0_Byte: no header declares them;
+ *   TU-local extern "C".
  * - The *(short*)&mSwayAngle increment: the cartridge sign-extends it
  *   (ldrsh) while the index below zero-extends (ldrh). The plain u16
  *   re-read holds the reload (volatile disproved, FEATHER-2713-01).
@@ -39,6 +39,7 @@ struct Vector3_16f;
 #include "SharedFilePtr.h"
 #include "dBgCh_Gnd.h"
 #include "nitro/fx/fx.h"
+#include "math/Approach.h"
 
 /* --------------------------------------------------------------------------
  * The one file-scope extern "C" region. Everything here is reached from a
@@ -52,8 +53,6 @@ void func_ov002_020b2c44(daFeather_c *c);
 
 /* -- other modules -- */
 u32 d_a_featherNewHold(u32 kind, u32 sub, int x, int y, int z, const Vector3_16 *vec, void *cb);
-int _Z15ApproachLinear2Rsss(short* ref, short target, short rate);
-void _Z14ApproachLinearRiii(int* ref, int target, int rate);
 u8 DecIfAbove0_Byte(u8* p);
 namespace Particle {
 struct System {
@@ -160,8 +159,8 @@ int daFeather_c::Behavior()
     dBgCh_Actr_UpdateContinuous_Veneer(&mWithMeshClsn);
 
     if (mWithMeshClsn.IsOnGround() != 0) {
-        _Z15ApproachLinear2Rsss((short*)&mSwayAngle, 0, 0x50);
-        _Z14ApproachLinearRiii(&mHorzSpeed, 0, 0x555);
+        ApproachLinear2(*(short *)&mSwayAngle, 0, 0x50);
+        ApproachLinear(mHorzSpeed, 0, 0x555);
         if (DecIfAbove0_Byte(&mLifeTimer) == 0) {
             Particle::System::NewSimple(0xd2, mPosX, mPosY, mPosZ);
             MarkForDestruction();
@@ -177,7 +176,7 @@ int daFeather_c::Behavior()
         mHorzSpeed = FX_MUL(mDriftSpeed, data_02082214[idx]);
     }
 
-    _Z14ApproachLinearRiii(&mDriftSpeed, 0x10000, 0x332);
+    ApproachLinear(mDriftSpeed, 0x10000, 0x332);
 
     {
         int idx2 = (mSwayAngle >> 4) << 1;

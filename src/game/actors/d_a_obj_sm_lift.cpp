@@ -35,8 +35,8 @@ enum daObjSm_Lift_c_AssetId {
 #include "PathPtr.h"
 #include "nitro/fx/fx.h"
 #include "cstd.h"
+#include "math/Approach.h"
 
-bool ApproachLinear(short &value, short target, short step);
 
 namespace Sound {
 /* local extern: including Sound.h renumbers @NNN. */

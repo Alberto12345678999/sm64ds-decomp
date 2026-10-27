@@ -15,8 +15,10 @@
  *
  * Only the helpers d_a_mky.cpp calls are declared so far. Vec3_Asr is not:
  * its definition takes a file-local struct Vec3, so no spelling here agrees
- * with it yet. Nor is ApproachLinear: it is overloaded, and
- * check_decl_agreement cannot resolve an overload declared in a .h. */
+ * with it yet. The C++ steppers (UpdateAngle, ApproachLinear) are in
+ * math/Approach.h. */
+#include "math/Approach.h"
+
 extern "C" {
 
 /* Decrement *p unless it is already 0; return the new value. */
@@ -26,8 +28,5 @@ short Vec3_HorzAngle(const Vector3 *, const Vector3 *);
 int Vec3_Dist(const Vector3 *, const Vector3 *);
 int Vec3_HorzDist(const Vector3 *, const Vector3 *);
 }
-
-/* Turn angle toward target by 1/divisor of the gap, at most maxStep. */
-void UpdateAngle(short &, short, int, short);
 
 #endif

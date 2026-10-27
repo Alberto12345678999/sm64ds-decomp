@@ -35,6 +35,7 @@ enum d_a_obj_rc_carpet_AssetId {
 #include "SpawnInfo.h"
 #include "SharedFilePtr.h"
 #include "dBgW.h"
+#include "math/Approach.h"
 
 struct FlyingCarpetResources {
     SharedFilePtr *model;
@@ -85,7 +86,6 @@ extern void Matrix4x3_FromRotationXYZExt(
     Matrix4x3 *matrix, s16 x, s16 y, s16 z);
 }
 
-int ApproachLinear(int &value, int target, int step);
 
 extern "C" void func_ov036_021122c0(daObjRcCarpet_c *self);
 extern "C" void func_ov036_0211224c(daObjRcCarpet_c *self);

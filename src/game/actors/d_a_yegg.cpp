@@ -95,6 +95,7 @@ struct Vector3_16f;
 #include "cstd.h"
 #include "daStar_c.h"
 #include "daBtn_c.h"
+#include "math/Approach.h"
 
 struct dBgPi;
 
@@ -158,7 +159,6 @@ extern void Matrix4x3_FromRotationZXYExt(void *m, int x, int y, int z);
    ov079's function there is daBtn_c's hit reaction, which takes the body and
    the actor that hit it -- the call's (actor, egg). */
 extern int RandomIntInternal(int *seed);
-extern void _Z15ApproachLinear2Rsss(s16 *p, short a, short b);
 /* Numbering pins: func_ov002_020d5f98/020d6048 are now Player members (see
    Player.h) and no call in this TU uses these free spellings anymore. The
    declarations stay, spelled exactly as they were, because each named
@@ -189,8 +189,7 @@ typedef void BgchInitAt_(void *self, void *actor, int radius, int height, void *
 extern unsigned char DecIfAbove0_Byte(unsigned char *p);
 extern void Math_Function_0203b14c(void *ptr, int target, int rate, int limit, int step);
 extern void ApproachAngle(void *cur, short target, int divisor, int band, int maxStep);
-extern void _Z11UpdateAngleRssis(short *a, int b, int c, short d);
-extern int func_02010844(void *unused, void *v, short angle);
+extern short func_02010844(void *unused, void *v, short angle);
 extern void Matrix4x3_FromRotationY(void *m, int angle);
 extern void Matrix4x3_FromTranslation(M48 *m, int x, int y, int z);
 extern void Matrix4x3_ApplyInPlaceToTranslation(M48 *m, int x, int y, int z);
@@ -454,8 +453,8 @@ void daYegg_c::func_ov002_020ec978() {
  * collision. */
 void daYegg_c::func_ov002_020ec9c4(){
   if (mWobbling != 0){
-    _Z15ApproachLinear2Rsss(&mAngleX, 0, 0x400);
-    _Z15ApproachLinear2Rsss(&mAngleZ, 0, 0x400);
+    ApproachLinear2(mAngleX, 0, 0x400);
+    ApproachLinear2(mAngleZ, 0, 0x400);
     if (mAngleX == 0){
       if (mAngleY == 0)
         mWobbling = 0;
@@ -1010,8 +1009,8 @@ ret0:
  * quarter turn). In the air it is the Player's own X and Z angles when mState
  * is 0 and there is a Player, and 0 otherwise. */
 void daYegg_c::func_ov002_020ed738() {
-    int e4 = 0;
-    int e6 = 0;
+    short e4 = 0;
+    short e6 = 0;
     if (mWithMeshClsn.IsOnGround()) {
         struct Vector3 n;
         dBgPi *fr = static_cast<dBgPi *>(mWithMeshClsn.GetFloorResult());
@@ -1027,8 +1026,8 @@ void daYegg_c::func_ov002_020ed738() {
             }
         }
     }
-    _Z11UpdateAngleRssis(&mAngleX, e4, 4, 0x1000);
-    _Z11UpdateAngleRssis(&mAngleZ, e6, 4, 0x1000);
+    UpdateAngle(mAngleX, e4, 4, 0x1000);
+    UpdateAngle(mAngleZ, e6, 4, 0x1000);
 }
 
 /* -------------------------------------------------------------------------- */

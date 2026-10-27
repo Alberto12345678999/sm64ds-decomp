@@ -113,8 +113,8 @@
 #include "dWipe_c.h"
 #include "PlayerInput.h"
 #include "Sound.h"
+#include "math/Approach.h"
 
-extern int ApproachLinear(s32 &value, s32 target, s32 step);
 /* local extern: including Sound.h renumbers SetState's local static. */
 namespace Sound {
 u32 PlayBank2_2D(u32);

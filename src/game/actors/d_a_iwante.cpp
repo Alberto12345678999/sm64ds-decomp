@@ -105,6 +105,7 @@ enum Eyerok_AssetId {
 #include "Message.h"
 #include "dCamera_c.h"
 #include "Sound.h"
+#include "math/Approach.h"
 
 /* Actor ids, from symbols/actor_debug_names.tsv. */
 enum {
@@ -390,7 +391,6 @@ extern u32 d_a_iwanteNewHold(u32 a, u32 b, int x, int y, int z, const void *v, v
 extern void func_ov066_0211a35c(void *a, void *b, void *c);
 }
 
-int ApproachLinear(int &value, int target, int step);
 
 typedef struct { int w[12]; } M48;
 

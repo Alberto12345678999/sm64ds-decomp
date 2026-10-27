@@ -47,8 +47,8 @@ struct System {
 #include "SharedFilePtr.h"
 #include "Player.h"
 #include "dExtFrameCtrl_c.h"
+#include "math/Approach.h"
 
-bool ApproachLinear(short &value, short target, short step);
 
 #pragma opt_strength_reduction off
 #pragma opt_common_subs off
@@ -96,7 +96,6 @@ int   Vec3_HorzDist(const Vector3 *a, const Vector3 *b);
 s16   Vec3_HorzAngle(const Vector3 *v0, const Vector3 *v1);
 int   AngleDiff(int a, int b);
 int   ApproachAngle(s16 *cur, int target, int divisor, int band, int maxStep);
-void  _Z14ApproachLinearRiii(int &cur, int target, int step);
 u16   DecIfAbove0_Short(u16 *p);
 int   RandomIntInternal(int *seed);
 void  func_02012694(int id, const Vector3 *pos);
@@ -562,7 +561,7 @@ int daMenbo_c::func_ov090_02131a74()
  * easing either way. */
 int daMenbo_c::func_ov090_02131ac4()
 {
-    _Z14ApproachLinearRiii(mHorzSpeed, 0, 0x1000);
+    ApproachLinear(mHorzSpeed, 0, 0x1000);
     if (mHorzSpeed > 0) return 1;
     if (mOnWater == 0) {
         mAnchorPosX = mPosX;

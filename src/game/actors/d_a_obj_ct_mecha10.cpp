@@ -60,8 +60,8 @@ enum daObjCtMecha10_c_AssetId {
 #include "daObjCtMecha10_c.h"
 #include "SharedFilePtr.h"
 #include "dBgW.h"
+#include "math/Approach.h"
 
-bool ApproachLinear(short &value, short target, short step);
 
 /* Actor ids are the registry profile ids. Clock settings are the byte at
  * data_0209f2c0: 2 re-rolls the dwell, 3 holds the cog still. */

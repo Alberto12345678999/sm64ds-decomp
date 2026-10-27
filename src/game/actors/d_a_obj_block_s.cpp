@@ -88,6 +88,7 @@ enum daObjBlockS_c_AssetId {
 #include "SurfaceInfo.h"
 #include "dCc_c.h"
 #include "Sound.h"
+#include "math/Approach.h"
 
 struct Vector3_16f;
 
@@ -164,8 +165,6 @@ extern s16 func_02010844(void *unused, Vector3 *v, s16 angle);
 
 extern void d_a_obj_block_sPlayLongHold(u32 a, u32 b, u32 c, const Vector3 *pos, u32 e);
 
-extern int _Z14ApproachLinearRiii(int *a, int b, int c);
-extern void _Z11UpdateAngleRssis(s16 *a, s16 b, int c, s16 d);
 extern s16 atan2_hold_d_a_obj_block_s_1(s32 y, s32 x);
 extern s32 Vec3_HorzLen(const Vector3 *v0);
 extern void Vec3_MulScalarInPlace(int *v, int s);
@@ -344,7 +343,7 @@ void daObjBlockS_c::func_ov098_02138344()
 {
     UpdatePos(&mdCcAcPos_c1);
     dBgCh_Actr_UpdateContinuous_Veneer(&mWithMeshClsn);
-    _Z14ApproachLinearRiii(&mHorzSpeed, 0, 0x555);
+    ApproachLinear(mHorzSpeed, 0, 0x555);
     if (mWithMeshClsn.IsOnGround() != 0) {
         Sound::PlayBank3(0x51, mCamSpacePos);
         DecIfAbove0_Byte(&mBounceCount);
@@ -404,7 +403,7 @@ void daObjBlockS_c::func_ov098_021384fc()
         Crate_SetState(this, daObjBlockS_c::STATE_IDLE);
         return;
     }
-    _Z14ApproachLinearRiii(&mHorzSpeed, 0, 0x555);
+    ApproachLinear(mHorzSpeed, 0, 0x555);
     func_ov098_02138e6c();
     func_ov098_021390ec();
     if (func_ov098_02138bb8()) {
@@ -486,7 +485,7 @@ void daObjBlockS_c::func_ov098_02138734()
         Crate_SetState(this, daObjBlockS_c::STATE_IDLE);
         return;
     }
-    _Z14ApproachLinearRiii(&mHorzSpeed, 0, 0x555);
+    ApproachLinear(mHorzSpeed, 0, 0x555);
     func_ov098_02138e6c();
     func_ov098_021390ec();
     if (func_ov098_02138bb8()) {
@@ -1002,7 +1001,7 @@ int daObjBlockS_c::func_ov098_02139228()
         break;
     }
 
-    _Z14ApproachLinearRiii(&mClsnYOffset, mClsnYOffsetTarget, 0x800);
+    ApproachLinear(mClsnYOffset, mClsnYOffsetTarget, 0x800);
 
     if ((mFloorNormalY | mHorzSpeed) == 0) {
         u32 *p = &mdCcAcPos_c1.flags;
@@ -1076,7 +1075,7 @@ int daObjBlockS_c::func_ov098_02139228()
         }
     }
 
-    if (_Z14ApproachLinearRiii(&mHorzSpeed, 0, 0x800) == 0
+    if (ApproachLinear(mHorzSpeed, 0, 0x800) == 0
         && mClsnYOffsetTarget != 0xa0
         && mHorzSpeed > 0xa000) {
         Particle::RunningSlidingDustAt(mPosX, mPosY, mPosZ);
@@ -1087,8 +1086,8 @@ int daObjBlockS_c::func_ov098_02139228()
     {
         s16 r5 = func_02010844(this, (Vector3 *)&mFloorNormalX, mAngleY);
         s16 r4 = func_02010844(this, (Vector3 *)&mFloorNormalX, (s16)(mAngleY - 0x4000));
-        _Z11UpdateAngleRssis(&mAngleX, r5, 4, 0x1000);
-        _Z11UpdateAngleRssis(&mAngleZ, r4, 4, 0x1000);
+        UpdateAngle(mAngleX, r5, 4, 0x1000);
+        UpdateAngle(mAngleZ, r4, 4, 0x1000);
     }
     return 1 | (base & 0);
 }

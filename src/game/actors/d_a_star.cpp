@@ -75,6 +75,7 @@ enum daStar_c_AssetId {
 #include "Sound.h"
 #include "cstd.h"
 #include "Event.h"
+#include "math/Approach.h"
 
 /* Plain-data stand-ins. Vector3 and Matrix4x3 carry declared destructors, so
  * a local or a struct copy of either one adds cleanup code the cartridge does
@@ -227,7 +228,6 @@ extern void EndKuppaScript(void);
 extern s8 data_0209f310[];
 extern "C" signed char data_0209f310[];
 extern int NumVsStarsObtained(void);
-extern int _Z14ApproachLinearRiii(int *v, int target, int step);
 extern StarModelFilePtr data_ov002_0211092c;
 extern StarModelFilePtr data_ov002_0211093c;
 extern StarAnimationFileHandle data_ov002_02110924;
@@ -1191,7 +1191,7 @@ void daStar_c::func_ov002_020ea420() {
             } else if (mScaleX != 0x1000) {
                 spd = mScaleX;
                 if (mAppearTimer >= lim + 0xa) {
-                    if (_Z14ApproachLinearRiii(&spd, 0x1000, step) != 0) {
+                    if (ApproachLinear(spd, 0x1000, step) != 0) {
                         AddStarMarker();
                         mdCc_c.flags &= ~1;
                     }
@@ -1231,7 +1231,7 @@ void daStar_c::func_ov002_020ea420() {
                 } else {
                     step2 = 0x100;
                 }
-                if (_Z14ApproachLinearRiii(&spd2, 0, step2) != 0) {
+                if (ApproachLinear(spd2, 0, step2) != 0) {
                     mBits.appeared = 0;
                     UntrackStar(mMarkerSlot);
                 }

@@ -21,8 +21,8 @@
 #include "types.h"
 #include "dBgCh_Actr.h"
 #include "cstd.h"
+#include "math/Approach.h"
 
-bool ApproachLinear(short &value, short target, short step);
 
 struct BMD_File;
 struct Vector3_16;

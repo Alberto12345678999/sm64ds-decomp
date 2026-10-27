@@ -41,6 +41,7 @@ enum d_a_star_gate_AssetId {
 #include "SharedFilePtr.h"
 #include "dExtSimpleModel_c.h"
 #include "dCamera_c.h"
+#include "math/Approach.h"
 
 struct dCamera_c;
 
@@ -62,7 +63,6 @@ u8 IsAreaShowing(int areaID);
 void Matrix4x3_FromRotationY(Matrix4x3 *matrix, int angle);
 }
 
-int ApproachLinear(int &x, int a, int b);
 
 extern u8 data_0209f250;
 extern dCamera_c *data_0209f318;

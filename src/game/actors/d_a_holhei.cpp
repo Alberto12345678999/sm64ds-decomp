@@ -38,6 +38,7 @@
 #include "SurfaceInfo.h"
 #include "dBgPi.h"
 #include "Sound.h"
+#include "math/Approach.h"
 
 /* A state record: daHolhei_c_ChangeState stores its address in mState
    and calls a non-null enter; past the UpdateKillByInvincibleChar check,
@@ -50,7 +51,6 @@ struct HolheiState {
     HolheiUpdate update;  /* 0x8 */
 };
 
-int ApproachLinear(int &ref, int target, int step);
 
 extern "C" {
 extern short func_02010844(void* unused, Vector3* v, short angle);

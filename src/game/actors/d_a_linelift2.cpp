@@ -52,6 +52,7 @@ enum d_a_linelift2_AssetId {
 #include "SharedFilePtr.h"
 #include "dBgW.h"
 #include "nitro/fx/fx.h"
+#include "math/Approach.h"
 namespace cstd {
 short atan2(int, int);
 }
@@ -88,7 +89,6 @@ void AddVec3(Vec3 *a, Vec3 *b, Vec3 *out);
 int Vec3_Dist(const Vector3 *a, const Vector3 *b);
 int Vec3_Equal(void *a, void *b);
 s16 atan2_hold_d_a_linelift2_1(s32 y, s32 x);
-void _Z14ApproachLinearRiii(int *value, int target, int step);
 void func_02010da4(void *actor);
 void func_020393d4(int *collider, int callback);
 void func_020393c4(int *collider, int callback);
@@ -190,7 +190,7 @@ int daLinelift2_c::Behavior()
     }
     if (mVariant == 0) {
         int saved = mPosY;
-        _Z14ApproachLinearRiii(&mSinkOffsetY, mIsPressed ? cSinkDepth : 0, cSinkRate);
+        ApproachLinear(mSinkOffsetY, mIsPressed ? cSinkDepth : 0, cSinkRate);
         mPosY -= mSinkOffsetY;
         mPosY = saved;
     }
