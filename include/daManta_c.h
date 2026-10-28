@@ -40,8 +40,8 @@ struct daManta_c : dEnemyBase_c {
     s32 mStarDelay; /* 0x38c -- frames after the fifth ring, before the star */
     u8 pad_390[0xc];  /* 0x390 */
     Vector3 mRingPos; /* 0x39c -- bone 3's translation, where the next WATER_RING spawns */
-    dActor_c
-        *mHitRing; /* 0x3a8 -- ring whose cylinder just reported a hit; cleared after scoring */
+    /* ring whose cylinder just reported a hit; cleared after scoring */
+    dActor_c *mHitRing; /* 0x3a8 */
     s32 mRingIDs[0x14]; /* 0x3ac -- uniqueIDs of the rings spawned this lap */
     s32 mRingWrite;     /* 0x3fc */
     s32 mRingRead;      /* 0x400 */

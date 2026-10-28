@@ -56,8 +56,8 @@ struct daFPknBall_c : dEnemyBase_c {
     u8 mMirrored; /* 0x36e -- when set, the effect and dust position uses -x; never written by this class (daTrs_c sets it from its own mirrored flag) */
     u8 pad_36f[0x1];
     u32 mTrailEffect; /* 0x370 -- last result of Particle::System::NewUnkCallback818, passed back in each frame */
-    void *
-        mSparkEffect; /* 0x374 -- last result of Particle::System::New, passed back in each frame */
+    /* last result of Particle::System::New, passed back in each frame */
+    void *mSparkEffect; /* 0x374 */
 
     /* --- vtable --- */
     virtual ~daFPknBall_c();
