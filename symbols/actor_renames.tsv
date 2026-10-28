@@ -6886,3 +6886,32 @@ ov065	0x0211ac0c	func_ov065_0211ac0c	_ZN16daObjCtMecha05_c12UpdateShadowEv	daObj
 ov065	0x0211ad70	func_ov065_0211ad70	_ZN16daObjCtMecha05_c11ResetToHomeEv	daObjCtMecha05_c::ResetToHome: returns to state 0 at the home position with zero travel and speed and reloads the clock setting's wait (random in setting 2); was an extern "C" free function taking the class pointer, now a member; same address, same body
 ov065	0x0211d98c	TtcRotatingGear_ModelFile	gCtMechaObj08aModelFile	daObjCtMecha08_c CT_MECHA08A model handle (file 0x5c8), named like its 08B sibling; the class is a lift block, not a rotating gear
 ov065	0x0211d97c	TtcRotatingGear_ClsnFile	gCtMechaObj08aCollisionFile	daObjCtMecha08_c CT_MECHA08A collision handle (file 0x5c9), named like its 08B sibling; the class is a lift block, not a rotating gear
+ov073	0x0212202c	func_ov073_0212202c	_ZN13daObjEwbIce_c19StateSettled_UpdateEv	state-table entry 0's update half (ov073 relocs 0x0212310c..0x02123144); free function taking the ice block made a member; byte-identical
+ov073	0x02122034	func_ov073_02122034	_ZN13daObjEwbIce_c18StateSettled_EnterEv	state-table entry 0's enter half; member conversion; byte-identical
+ov073	0x021220c0	func_ov073_021220c0	_ZN13daObjEwbIce_c17StateArena_UpdateEv	state-table entry 1's update half; member conversion; byte-identical
+ov073	0x021221e0	func_ov073_021221e0	_ZN13daObjEwbIce_c16StateArena_EnterEv	state-table entry 1's enter half; member conversion; byte-identical
+ov073	0x02122200	func_ov073_02122200	_ZN13daObjEwbIce_c16StateSink_UpdateEv	state-table entry 2's update half; member conversion; byte-identical
+ov073	0x021222c8	func_ov073_021222c8	_ZN13daObjEwbIce_c15StateSink_EnterEv	state-table entry 2's enter half; member conversion; byte-identical
+ov073	0x021222ec	func_ov073_021222ec	_ZN13daObjEwbIce_c18StateReport_UpdateEv	state-table entry 3's update half; member conversion; byte-identical
+ov073	0x0212239c	func_ov073_0212239c	_ZN13daObjEwbIce_c17StateReport_EnterEv	state-table entry 3's enter half; member conversion; byte-identical
+ov073	0x021223a4	func_ov073_021223a4	_ZN13daObjEwbIce_c8SetStateEP17daObjEwbIce_State	stores the next state-table entry and runs its enter half; member conversion; byte-identical
+ov073	0x02122730	func_ov073_02122730	_ZN13daObjEwbIce_c9OnStoodOnEP8dActor_c	the touch helper the collision callback forwards to; member conversion; byte-identical
+ov073	0x021227d0	func_ov073_021227d0	_ZN13daObjEwbIce_c15StoodOnCallbackEP4dBgWPS_P8dActor_c	the dBgW stood-on callback veneer; static member; byte-identical
+ov098	0x0213a00c	daObjFallBlock_c_LinkGroup	_ZN16daObjFallBlock_c9LinkGroupEv	free function taking the block made a member; byte-identical
+ov098	0x0213a0a8	daObjFallBlock_c_PollLinkedStar	_ZN16daObjFallBlock_c14PollLinkedStarEv	member conversion; byte-identical
+ov098	0x0213a0e8	daObjFallBlock_c_FindLinkedStar	_ZN16daObjFallBlock_c14FindLinkedStarEv	member conversion; byte-identical
+ov098	0x0213a148	daObjFallBlock_c_ResetMotion	_ZN16daObjFallBlock_c11ResetMotionEv	member conversion; byte-identical
+ov098	0x0213a23c	daObjFallBlock_c_ApplyModelXyz	_ZN16daObjFallBlock_c13ApplyModelXyzEv	member conversion; byte-identical
+ov098	0x0213a2cc	func_ov098_0213a2cc	_ZN16daObjFallBlock_c20CleanupResourcesFromEP18ResourceDescriptor	the shared CleanupResources body the four leaves call with their descriptor; member conversion; byte-identical
+ov098	0x0213a794	daObjFallBlock_c_InitResources	_ZN16daObjFallBlock_c17InitResourcesFromEP18ResourceDescriptor	the shared InitResources body the four leaves call with their descriptor; member conversion; byte-identical
+ov098	0x0213a8e0	daObjFallBlock_c_RequestShake	_ZN16daObjFallBlock_c12RequestShakeEP8dActor_c	member conversion; byte-identical
+ov098	0x0213a8ec	daObjFallBlock_c_OnStoodOn	_ZN16daObjFallBlock_c15StoodOnCallbackEP4dBgWPS_P8dActor_c	the dBgW stood-on callback veneer; static member; byte-identical
+ov064	0x02117a14	_ZN17daObjFl_Amilift_c19func_ov064_02117a14EP7Vector3S1_	_ZN17daObjFl_Amilift_c10FaceTowardEP7Vector3S1_	sets mPrevAngleY to the atan2 heading from node b toward node a; byte-identical
+ov064	0x02117a44	_ZN17daObjFl_Amilift_c19func_ov064_02117a44Ev	_ZN17daObjFl_Amilift_c13MoveAlongPathEv	advances one frame along the path and steps mNodeIndex at a node; byte-identical
+ov064	0x02117b8c	_ZN17daObjFl_Amilift_c19func_ov064_02117b8cEv	_ZN17daObjFl_Amilift_c13StateBackwardEv	state-table entry 2 (STATE_BACKWARD); byte-identical
+ov064	0x02117bdc	_ZN17daObjFl_Amilift_c19func_ov064_02117bdcEv	_ZN17daObjFl_Amilift_c12StateForwardEv	state-table entry 1 (STATE_FORWARD); byte-identical
+ov064	0x02117c24	_ZN17daObjFl_Amilift_c19func_ov064_02117c24Ev	_ZN17daObjFl_Amilift_c9StateWaitEv	state-table entry 0 (STATE_WAIT); byte-identical
+ov064	0x02117fb4	func_ov064_02117fb4	_ZN17daObjFl_Amilift_c9OnStoodOnEP8dActor_c	the touch helper the collision callback forwards to; member conversion; byte-identical
+ov064	0x02117fd4	func_ov064_02117fd4	_ZN17daObjFl_Amilift_c15StoodOnCallbackEP4dBgWPS_P8dActor_c	the dBgW stood-on callback veneer; static member; byte-identical
+ov022	0x0211191c	func_ov022_0211191c	_ZN15daObjFl_Block_c9OnStoodOnEP8dActor_c	the touch helper the collision callback forwards to; member conversion; byte-identical
+ov022	0x0211193c	func_ov022_0211193c	_ZN15daObjFl_Block_c15StoodOnCallbackEP4dBgWPS_P8dActor_c	the dBgW stood-on callback veneer; static member; byte-identical

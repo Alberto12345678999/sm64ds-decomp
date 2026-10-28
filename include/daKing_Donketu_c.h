@@ -66,7 +66,7 @@ struct daKing_Donketu_c : dEnemyBase_c {
        it for its talk state. */
     Player *mTalkPlayer;                                   /* 0x3e4 */
     /* Two eight-entry waypoint sets, both seeded with the boss's own position by
-       InitResources and refilled by func_ov073_021222ec. The steering helpers
+       InitResources and refilled by daObjEwbIce_c::StateReport_Update. The steering helpers
        (func_ov073_021203ac / _02120610) index one of them with mWaypointCursor
        and hand the element to Vec3_HorzAngle/Vec3_VertAngle as the point to
        turn towards -- set B while mHitsRemaining reads 2, set A otherwise. */
@@ -108,7 +108,7 @@ struct daKing_Donketu_c : dEnemyBase_c {
     /* InitResources stores 0xff, several state handlers store 0xff, ..3340's wait stores 0, and the
        two hop-landing handlers (func_ov073_021203ac / _02120610) copy
        mWaypointCursor into it; nothing in this file reads it. The reader
-       is d_a_obj_ewb_ice.cpp's touch helper (func_ov073_02122730): a rink
+       is d_a_obj_ewb_ice.cpp's touch helper (daObjEwbIce_c::OnStoodOn): a rink
        ice piece touched by the boss moves on to its next state only when
        its spawn index equals this, i.e. the waypoint he just landed on
        (0xff: none). */

@@ -5,7 +5,7 @@
  * No fields. InitResources / CleanupResources hand this overlay's
  * model and collision files to daObjFallBlock_c's shared ov098
  * helpers.
- * daObjFallBlock_c_InitResources loads slot 0 with dExtSimpleModel_c::LoadFile,
+ * InitResourcesFrom loads slot 0 with dExtSimpleModel_c::LoadFile,
  * slot 1 with dBgW_Kc::LoadFile, slot 2 as CLPS into SetFile. ov015
  * sinit constructs those SharedFilePtrs as file IDs 1423 / 1424.
  *
@@ -13,13 +13,9 @@
  * daObjBk_Fall_Block_c, BK_DOWN_B registry). Retail does not store
  * that spelling.
  *
- * What stays, and why:
- * - func_ov098_0213a2cc is still the linker name of daObjFallBlock_c's
- *   Cleanup (the base leaves that slot pure virtual). Naming it, and
- *   giving the two ov098 helpers a header, belongs in ov098's TU.
- * - data_ov015_02114880 is overlay .data this TU does not own; the
- *   BMD/KCL SharedFilePtrs and CLPS_Block are still data_ov015_*.
- * - g_profile_BK_DOWN_B lives outside this TU (S14).
+ * data_ov015_02114880 is overlay .data this TU does not own; the
+ * CLPS_Block it points at is still data_ov015_*. g_profile_BK_DOWN_B
+ * lives outside this TU (S14).
  */
 
 /* Runtime asset handles resolved through the overlay 0 file table. */
@@ -53,13 +49,6 @@ typedef char ResourceDescriptor_size_must_be_0x0c[sizeof(ResourceDescriptor) == 
 
 extern ResourceDescriptor data_ov015_02114880;
 
-/* local extern: daObjFallBlock_c's shared ov098 helpers; ov098 has no
-   header for them yet. */
-extern "C" {
-int daObjFallBlock_c_InitResources(daObjFallBlock_c *self, ResourceDescriptor *descriptor);
-int func_ov098_0213a2cc(daObjBk_Fall_Block_c *self, ResourceDescriptor *descriptor);
-}
-
 // @symbol daObjBk_Fall_Block_c_classInit
 extern "C" daObjBk_Fall_Block_c *daObjBk_Fall_Block_c_classInit() {
     return new daObjBk_Fall_Block_c();
@@ -67,12 +56,12 @@ extern "C" daObjBk_Fall_Block_c *daObjBk_Fall_Block_c_classInit() {
 
 // @symbol _ZN20daObjBk_Fall_Block_c13InitResourcesEv
 s32 daObjBk_Fall_Block_c::InitResources() {
-    return daObjFallBlock_c_InitResources(this, &data_ov015_02114880);
+    return InitResourcesFrom(&data_ov015_02114880);
 }
 
 // @symbol _ZN20daObjBk_Fall_Block_c16CleanupResourcesEv
 s32 daObjBk_Fall_Block_c::CleanupResources() {
-    return func_ov098_0213a2cc(this, &data_ov015_02114880);
+    return CleanupResourcesFrom(&data_ov015_02114880);
 }
 
 /* Retail construction order: model 1423, then collision 1424.

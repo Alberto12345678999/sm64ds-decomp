@@ -6,7 +6,7 @@
   "status": "promoted",
   "boundary_confidence": "medium",
   "boundary_evidence": [
-    "contiguous linker run: 0x213a900..0x213b47c, 13 function(s): the twelve class members and helpers from build/tu_map.json (tools/tu_map.py), extended over the zero-gap daCnn_c_classInit factory tu_map cannot label because it cuts on symbol name; daObjFallBlock_c_OnStoodOn ends at 0x213a900 and daWbm_c D1 starts at 0x213b47c",
+    "contiguous linker run: 0x213a900..0x213b47c, 13 function(s): the twelve class members and helpers from build/tu_map.json (tools/tu_map.py), extended over the zero-gap daCnn_c_classInit factory tu_map cannot label because it cuts on symbol name; daObjFallBlock_c::StoodOnCallback ends at 0x213a900 and daWbm_c D1 starts at 0x213b47c",
     "class label(s): daCnn_c",
     "module sinit corroboration: 4 sinit(s) / 4 .ctor entries, sinit_vs_tu=ok, corroborated=False (module-wide, NOT narrowed to this one TU -- see notes/tu-reconstruction-pilot-report.md sec 2 for the by-hand narrowing step)"
   ],
