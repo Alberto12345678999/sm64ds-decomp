@@ -14668,15 +14668,13 @@
    "end": "0x20ab54c",
    "classes": [],
    "n_functions_map": 4,
-   "n_files": 4,
+   "n_files": 2,
    "files": [
     "src/func_ov001_020ab3c4.c",
-    "src/unnamed/ov001/func_ov001_020ab3f0.c",
-    "src/unnamed/ov001/func_ov001_020ab41c.c",
-    "src/TouchArea_Update.c"
+    "src/unnamed/ov001/func_ov001_020ab3f0.c"
    ],
    "ext_mix": {
-    ".c": 4
+    ".c": 2
    },
    "ext_kind": "c",
    "n_asm_files": 0,
@@ -16005,7 +16003,7 @@
     "Player"
    ],
    "n_functions_map": 617,
-   "n_files": 613,
+   "n_files": 607,
    "files": [
     "src/unnamed/ov002/func_ov002_020bcdf0.c",
     "src/_ZN6Player8CanPauseEv.cpp",
@@ -16604,12 +16602,6 @@
     "src/_ZN6PlayerC1Ev.cpp",
     "src/_ZN6Player13OnYoshiTryEatEv.cpp",
     "src/unnamed/ov002/func_ov002_020e69c0.c",
-    "src/Color_Interp.c",
-    "src/unnamed/ov002/func_ov002_020e6a78.c",
-    "src/unnamed/ov002/func_ov002_020e6ad4.c",
-    "src/unnamed/ov002/func_ov002_020e6b3c.c",
-    "src/unnamed/ov002/func_ov002_020e6b74.c",
-    "src/unnamed/ov002/func_ov002_020e6bb0.c",
     "src/_ZN6PlayerC3Ev.cpp",
     "src/unnamed/ov002/func_ov002_020eea84.c",
     "src/unnamed/ov002/func_ov002_020eeca8.cpp",
@@ -16622,7 +16614,7 @@
     "src/unnamed/ov002/func_ov002_020f035c.c"
    ],
    "ext_mix": {
-    ".c": 232,
+    ".c": 226,
     ".cpp": 381
    },
    "ext_kind": "mixed",

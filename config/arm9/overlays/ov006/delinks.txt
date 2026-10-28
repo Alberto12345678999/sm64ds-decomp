@@ -32,6 +32,9 @@ src/minigames/d_mg_jump3d_mario.cpp:
 src/minigames/unit020c8a30.cpp:
     complete
     .text start:0x020c8a30 end:0x020c8dd4
+    .init start:0x0212f660 end:0x0212f6b4
+    .ctor start:0x02133574 end:0x02133578
+    .bss start:0x021404c4 end:0x02140538
 
 src/minigames/d_mg_trmpln2_mario.cpp:
     complete
@@ -263,10 +266,6 @@ src/minigames/d_s_mg_snowball.cpp:
 src/minigames/d_s_mg_flower.cpp:
     complete
     .text start:0x0212a554 end:0x0212b890
-
-src/unnamed/ov006/__sinit_ov006_0212f660.c:
-    complete
-    .init start:0x0212f660 end:0x0212f6b4
 
 src/unnamed/ov006/__sinit_ov006_0212f6b4.cpp:
     complete

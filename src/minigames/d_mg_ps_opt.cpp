@@ -22,9 +22,9 @@
 /* The blitter's 2x2 matrix. This panel always passes none. */
 struct M;
 
-/* {halfW, halfH} records laid down by __sinit_ov004_020b9b24, stride 4.
-   Width and height are two linker symbols two bytes apart, and the ROM
-   loads each base on its own. */
+/* {halfW, halfH} records, stride 4. The ROM reads the width through the
+   array's own symbol and the height through a second linker symbol two
+   bytes in (sPsOptIconPosAY and friends), and loads each base on its own. */
 #define HALF_AT(base, i) (*(short *)((char *)(base) + (i) * 4))
 
 /* dThIcon_c leaves these two unk_. The other derived icons do not agree
@@ -81,12 +81,6 @@ extern u16 data_ov004_020bca60[];
 extern int GetGameLanguage(void);
 /* Writes the icon center, half extents, touch kind, and clears the blink. */
 extern void func_ov001_020ab5b0(char *icon, int kind, short x, short y, short halfW, short halfH);
-extern short sPsOptIconPosA[];
-extern short sPsOptIconPosAY[];
-extern short sPsOptIconPosB[];
-extern short sPsOptIconPosBY[];
-extern short sPsOptStylePos[];
-extern short sPsOptStylePosY[];
 int TouchArea_Update(void *icon, int touch);
 /* Toggles mOn, drops mReady, and reloads mPressTimer from mPressTime. */
 void func_ov001_020ab3f0(void *icon);
@@ -107,6 +101,38 @@ void PsOpt_PlaceIcon(dMgPsOpt_c::TouchIcon_c *icon, int style, int variant, shor
 
 namespace G2S { u16 *GetBG1ScrPtr(); }
 
+/* One icon's half extents. The destructor is the shared empty arm9 one
+   (NoOpDestructor, 0x0203b98c), so it is declared here and not defined. */
+struct PsOptHalfSize {
+    PsOptHalfSize(short w, short h) : mHalfW(w), mHalfH(h) {}
+    ~PsOptHalfSize();
+
+    short mHalfW;
+    short mHalfH;
+};
+
+/* Half extents per language: the sound-mode caption (sPsOptIconPosA), the
+   backlight caption (sPsOptIconPosB), and per style for every other icon
+   (sPsOptStylePos). mwcc builds and registers each element in this file's
+   static initializer (retail 0x020b9b24). */
+PsOptHalfSize sPsOptIconPosA[5] = {
+    PsOptHalfSize(0x20, 0x10), PsOptHalfSize(0x20, 0x10), PsOptHalfSize(0x18, 0x10),
+    PsOptHalfSize(0x1c, 0x10), PsOptHalfSize(0x1c, 0x10),
+};
+PsOptHalfSize sPsOptIconPosB[5] = {
+    PsOptHalfSize(0x30, 0x10), PsOptHalfSize(0x18, 0x10), PsOptHalfSize(0x30, 0x10),
+    PsOptHalfSize(0x30, 0x10), PsOptHalfSize(0x30, 0x10),
+};
+PsOptHalfSize sPsOptStylePos[7] = {
+    PsOptHalfSize(0x3c, 0x10), PsOptHalfSize(0x1c, 0x10), PsOptHalfSize(0x08, 0x10),
+    PsOptHalfSize(0x08, 0x10), PsOptHalfSize(0x18, 0x10), PsOptHalfSize(0x28, 0x10),
+    PsOptHalfSize(0x20, 0x10),
+};
+/* The heights, two bytes into each array. */
+extern short sPsOptIconPosAY[];
+extern short sPsOptIconPosBY[];
+extern short sPsOptStylePosY[];
+
 // @symbol _ZN10dMgPsOpt_c11TouchIcon_cC1Ev
 dMgPsOpt_c::TouchIcon_c::TouchIcon_c()
 {
@@ -119,11 +145,11 @@ dMgPsOpt_c::dMgPsOpt_c()
     PsOpt_PlaceIcon(&mIcons[kIconSoundPrev], kStyleSoundPrev, 0, 0x64, 0x38);
     PsOpt_PlaceIcon(&mIcons[kIconSoundNext], kStyleSoundNext, 0, 0xf4, 0x38);
     PsOpt_PlaceIcon(&mIcons[kIconSoundLabel], kStyleSoundLabel, 0,
-                    sPsOptIconPosA[GetGameLanguage() * 2] + 0x18, 0x38);
+                    sPsOptIconPosA[GetGameLanguage()].mHalfW + 0x18, 0x38);
     PsOpt_PlaceIcon(&mIcons[kIconLightOn], kStyleLight, 0, 0x8c, 0x68);
     PsOpt_PlaceIcon(&mIcons[kIconLightOff], kStyleLight, 0, 0xcc, 0x68);
     PsOpt_PlaceIcon(&mIcons[kIconLightLabel], kStyleLightLabel, 0,
-                    sPsOptIconPosB[GetGameLanguage() * 2] + 0x18, 0x68);
+                    sPsOptIconPosB[GetGameLanguage()].mHalfW + 0x18, 0x68);
     PsOpt_PlaceIcon(&mIcons[kIconBack], kStyleBack, 0, 0x80, 0xa8);
 
     /* The ROM stores the full count and then clears it. Both stores stay. */
