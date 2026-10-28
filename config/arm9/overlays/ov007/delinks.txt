@@ -1065,33 +1065,9 @@ src/unnamed/ov007/func_ov007_020bf630.c:
     complete
     .text start:0x020bf630 end:0x020bf690
 
-src/unnamed/ov007/func_ov007_020bf690.cpp:
+src/ui/menus/unit020bf690.cpp:
     complete
-    .text start:0x020bf690 end:0x020bf790
-
-src/unnamed/ov007/func_ov007_020bf790.cpp:
-    complete
-    .text start:0x020bf790 end:0x020bfacc
-
-src/RequestScreenFade.c:
-    complete
-    .text start:0x020bfacc end:0x020bfaf0
-
-src/unnamed/ov007/func_ov007_020bfaf0.cpp:
-    complete
-    .text start:0x020bfaf0 end:0x020bfbdc
-
-src/unnamed/ov007/func_ov007_020bfbdc.cpp:
-    complete
-    .text start:0x020bfbdc end:0x020bfc54
-
-src/unnamed/ov007/func_ov007_020bfc54.c:
-    complete
-    .text start:0x020bfc54 end:0x020bfcec
-
-src/unnamed/ov007/func_ov007_020bfcec.c:
-    complete
-    .text start:0x020bfcec end:0x020bfd70
+    .text start:0x020bf690 end:0x020bfd70
 
 src/unnamed/ov007/func_ov007_020bfd70.cpp:
     complete

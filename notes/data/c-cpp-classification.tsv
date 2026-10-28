@@ -356,7 +356,6 @@ src/ReadUnalignedShort.c	PURE-C	arm9				1		None		-
 src/ReadUnalignedUshort.c	PURE-C	arm9				1		None		-
 src/d_a_coin_red_coin.c	WEAK-refs-only	ov002				1		None		-
 src/d_a_obj_fire_obj_red_fire.c	WEAK-refs-only	ov002				1		None		-
-src/RequestScreenFade.c	PURE-C	ov007				1		None		-
 src/ResetCrashScreen.c	WEAK-refs-only	arm9				1		None		-
 src/ResetInput.c	PURE-C	arm9				1		None		-
 src/ResetKuppaScript.c	PURE-C	arm9				1		None		-
@@ -5593,8 +5592,6 @@ src/unnamed/ov007/func_ov007_020bf630.c	PURE-C	ov007				1		None		-
 src/unnamed/ov007/func_ov007_020bf690.c	WEAK-refs-only	ov007				1		None		-
 src/unnamed/ov007/func_ov007_020bf790.c	WEAK-refs-only	ov007				1		None		-
 src/unnamed/ov007/func_ov007_020bfbdc.c	WEAK-refs-only	ov007				1		None		-
-src/unnamed/ov007/func_ov007_020bfc54.c	PURE-C	ov007				1		None		-
-src/unnamed/ov007/func_ov007_020bfcec.c	PURE-C	ov007				1		None		-
 src/unnamed/ov007/func_ov007_020bfe4c.c	WEAK-refs-only	ov007				1		None		-
 src/unnamed/ov007/func_ov007_020bff38.c	PURE-C	ov007				1		None		-
 src/unnamed/ov007/func_ov007_020bffb8.c	PURE-C	ov007				1		None		-
