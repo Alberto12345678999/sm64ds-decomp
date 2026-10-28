@@ -24,7 +24,7 @@
  * (ROM-ascending); the two factories append after InitResources, in ROM
  * order (BK_KABE01 then BK_KABE00).
  *
- * deslop leftovers:
+ * What stays, and why (each alternative measured):
  * - Kill: folding the test into `if (actorID == kBreakableActor)` is a
  *   size-DIFF, 0x60 to 0x54. The compare stays a 0/1 local.
  * - Kill: a Vector3 built from mCamSpacePosX/Y/Z for PlayBank3 is a
@@ -83,22 +83,18 @@ struct BkKabeCollisionFilePtr : SharedFilePtr {
     ~BkKabeCollisionFilePtr();
 };
 
-extern "C" {
 extern KabeFiles data_ov079_02128058[];
 
-/* Writes the mesh active range at dBgW+0x0c. The definition is C and
- * takes int *, so this spelling matches it and the call casts. */
-void func_020393a4(int *mesh, int range);
+/* local extern: writes the mesh active range at dBgW+0x0c. The definition
+ * is C and takes int *, so this spelling matches it and the call casts. */
+extern "C" void func_020393a4(int *mesh, int range);
 
-/* Scalar ABI. These members take Fix12<int> by value, and that spelling
- * does not compile against the ints this file actually passes. */
-extern void hold_d_a_obj_bk_kabe(dBgW_KcMbg *self, KCL_File *kcl, const Matrix4x3 *mtx, int scale,
-                                 short angY, CLPS_Block *clps);
+/* Scalar ABI. Particle__System.h's NewSimple takes Fix12<int> by value, and
+ * that spelling does not compile against the ints Kill passes (see above). */
 namespace Particle {
 struct System {
     static void *NewSimple(u32 id, s32 x, s32 y, s32 z);
 };
-}
 }
 
 enum {
@@ -117,13 +113,10 @@ enum {
 
 // @symbol _ZN14daObjBk_Kabe_cD1Ev
 // @symbol _ZN14daObjBk_Kabe_cD0Ev
-daObjBk_Kabe_c::~daObjBk_Kabe_c()
-{
-}
+daObjBk_Kabe_c::~daObjBk_Kabe_c() {}
 
 // @symbol _ZN14daObjBk_Kabe_c4KillEv
-void daObjBk_Kabe_c::Kill()
-{
+void daObjBk_Kabe_c::Kill() {
     Sound::PlayBank3(kBreakSound, mCamSpacePos);
     Particle::System::NewSimple(kBreakParticle, mPosX, mPosY, mPosZ);
     int isBreakable = (actorID == kBreakableActor);
@@ -135,14 +128,12 @@ void daObjBk_Kabe_c::Kill()
 }
 
 // @symbol _ZN14daObjBk_Kabe_c24OnHitByCannonBlastedCharER8dActor_c
-int daObjBk_Kabe_c::OnHitByCannonBlastedChar(dActor_c &other)
-{
+int daObjBk_Kabe_c::OnHitByCannonBlastedChar(dActor_c &other) {
     Kill();
 }
 
 // @symbol _ZN14daObjBk_Kabe_c16CleanupResourcesEv
-int daObjBk_Kabe_c::CleanupResources()
-{
+int daObjBk_Kabe_c::CleanupResources() {
     if (mMeshCollider.IsEnabled())
         mMeshCollider.Disable();
     data_ov079_02128058[mVariant].model->Release();
@@ -151,8 +142,7 @@ int daObjBk_Kabe_c::CleanupResources()
 }
 
 // @symbol _ZN14daObjBk_Kabe_c6RenderEv
-int daObjBk_Kabe_c::Render()
-{
+int daObjBk_Kabe_c::Render() {
     if (mBroken)
         return 1;
     mModel.Render(0);
@@ -160,8 +150,7 @@ int daObjBk_Kabe_c::Render()
 }
 
 // @symbol _ZN14daObjBk_Kabe_c8BehaviorEv
-int daObjBk_Kabe_c::Behavior()
-{
+int daObjBk_Kabe_c::Behavior() {
     int isBreakable = (actorID == kBreakableActor);
     if (isBreakable && mBroken) {
         if (mMeshCollider.IsEnabled())
@@ -172,8 +161,8 @@ int daObjBk_Kabe_c::Behavior()
             pos.y = mPosY;
             pos.z = mPosZ;
             pos.y += kStarPopY;
-            dActor_c::Spawn(kStarActor, mStarId | kStarSpawnFlags, pos,
-                            (Vector3_16 *)0, mAreaId, -1);
+            dActor_c::Spawn(kStarActor, mStarId | kStarSpawnFlags, pos, (Vector3_16 *)0, mAreaId,
+                            -1);
             MarkForDestruction();
         }
         return 1;
@@ -184,8 +173,7 @@ int daObjBk_Kabe_c::Behavior()
 }
 
 // @symbol _ZN14daObjBk_Kabe_c13InitResourcesEv
-int daObjBk_Kabe_c::InitResources()
-{
+int daObjBk_Kabe_c::InitResources() {
     int isBreakable = actorID == kBreakableActor;
     if (isBreakable) {
         mVariant = 0;
@@ -209,14 +197,12 @@ int daObjBk_Kabe_c::InitResources()
 }
 
 // @symbol daObjBk_Kabe_c_classInit_BK_KABE01
-extern "C" daObjBk_Kabe_c *daObjBk_Kabe_c_classInit_BK_KABE01()
-{
+extern "C" daObjBk_Kabe_c *daObjBk_Kabe_c_classInit_BK_KABE01() {
     return new daObjBk_Kabe_c();
 }
 
 // @symbol daObjBk_Kabe_c_classInit_BK_KABE00
-extern "C" daObjBk_Kabe_c *daObjBk_Kabe_c_classInit_BK_KABE00()
-{
+extern "C" daObjBk_Kabe_c *daObjBk_Kabe_c_classInit_BK_KABE00() {
     return new daObjBk_Kabe_c();
 }
 

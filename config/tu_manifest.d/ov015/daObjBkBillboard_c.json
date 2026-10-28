@@ -48,7 +48,7 @@
       "ordinal": 1
     },
     {
-      "symbol": "func_ov015_02111214",
+      "symbol": "_ZN18daObjBkBillboard_c17UpdateModelMatrixEv",
       "address": "0x02111214",
       "size": "0x00000040",
       "legacy_source": "src/func_ov015_02111214.c",
@@ -461,7 +461,7 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@255",
+      "from": "@332",
       "to": "@253",
       "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
     }
