@@ -826,7 +826,6 @@ extern int func_ov002_020b60fc(void*, void*);
 extern int func_ov002_020b6244(void*, void*);
 extern int func_ov002_020b6424(void*, void*);
 extern int func_ov002_020b6584(void*, void*, int);
-extern int func_ov002_020b66a8(void*, void*);
 extern int gMgCoinsShowDelta;
 extern int sMgWinBannerY;
 extern int sMgResultsBannerY;
