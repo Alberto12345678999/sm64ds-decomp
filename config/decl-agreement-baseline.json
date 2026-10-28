@@ -17640,16 +17640,6 @@
         "return:S16"
       ]
     },
-    "data_ov091_02134e5c": {
-      "src/game/actors/d_a_linelift2.cpp": [
-        "return:CLPS_Block * []"
-      ]
-    },
-    "data_ov091_021354e0": {
-      "src/unnamed/ov091/__sinit_ov091_021345dc.c": [
-        "return:Pair []"
-      ]
-    },
     "data_ov091_02135674": {
       "src/unnamed/ov091/__sinit_ov091_02134a30.c": [
         "return:int []"
@@ -27502,11 +27492,6 @@
       ]
     },
     "func_ov080_02127658": {
-      "include/decl_common.h": [
-        "kind:data"
-      ]
-    },
-    "func_ov091_02132380": {
       "include/decl_common.h": [
         "kind:data"
       ]

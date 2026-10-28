@@ -13,17 +13,17 @@ daObjRotateUpdownLift_c_classInit_HS_UPDOWN_LIFT kind:function(arm,size=0x38) ad
 daObjRotateUpdownLift_c_classInit_UPDOWN_LIFT kind:function(arm,size=0x38) addr:0x02131bdc
 _ZN13daLinelift2_cD1Ev kind:function(arm,size=0x44) addr:0x02131c14
 _ZN13daLinelift2_cD0Ev kind:function(arm,size=0x58) addr:0x02131c58
-func_ov091_02131cb0 kind:function(arm,size=0x108) addr:0x02131cb0
-_ZN13daLinelift2_c19func_ov091_02131db8Ev kind:function(arm,size=0x138) addr:0x02131db8
-_ZN13daLinelift2_c19func_ov091_02131ef0Ev kind:function(arm,size=0xac) addr:0x02131ef0
-_ZN13daLinelift2_c19func_ov091_02131f9cEv kind:function(arm,size=0x64) addr:0x02131f9c
-_ZN13daLinelift2_c19func_ov091_02132000Ev kind:function(arm,size=0x9c) addr:0x02132000
+_ZN13daLinelift2_c17SetVelocityTowardEPK7Vector3S2_ kind:function(arm,size=0x108) addr:0x02131cb0
+_ZN13daLinelift2_c13StepAlongPathEv kind:function(arm,size=0x138) addr:0x02131db8
+_ZN13daLinelift2_c11StateReturnEv kind:function(arm,size=0xac) addr:0x02131ef0
+_ZN13daLinelift2_c12StateForwardEv kind:function(arm,size=0x64) addr:0x02131f9c
+_ZN13daLinelift2_c9StateWaitEv kind:function(arm,size=0x9c) addr:0x02132000
 _ZN13daLinelift2_c16CleanupResourcesEv kind:function(arm,size=0x44) addr:0x0213209c
 _ZN13daLinelift2_c6RenderEv kind:function(arm,size=0x28) addr:0x021320e0
 _ZN13daLinelift2_c8BehaviorEv kind:function(arm,size=0x104) addr:0x02132108
 _ZN13daLinelift2_c13InitResourcesEv kind:function(arm,size=0x154) addr:0x0213220c
-_ZN13daLinelift2_c19func_ov091_02132360EP8dActor_c kind:function(arm,size=0x20) addr:0x02132360
-func_ov091_02132380 kind:function(arm,size=0x14) addr:0x02132380
+_ZN13daLinelift2_c9OnStoodOnEP8dActor_c kind:function(arm,size=0x20) addr:0x02132360
+_ZN13daLinelift2_c15StoodOnCallbackEP4dBgWP8dActor_cS3_ kind:function(arm,size=0x14) addr:0x02132380
 daLinelift2_c_classInit_KM2_SUSUMU kind:function(arm,size=0x38) addr:0x02132394
 daLinelift2_c_classInit_KM3_LIFT kind:function(arm,size=0x38) addr:0x021323cc
 _ZN17daObjSimpleLift_cD1Ev kind:function(arm,size=0x44) addr:0x02132404
@@ -90,8 +90,8 @@ _ZN10daHyuhyu_c13OnTurnIntoEggER6Player kind:function(arm,size=0xc) addr:0x02134
 _ZN10daHyuhyu_c13OnYoshiTryEatEv kind:function(arm,size=0x8) addr:0x02134498
 daHyuhyu_c_classInit kind:function(arm,size=0x48) addr:0x021344a0
 data_ov091_021344e8 kind:data(any) addr:0x021344e8
-data_ov091_021344f4 kind:data(any) addr:0x021344f4
-data_ov091_021344fc kind:data(any) addr:0x021344fc
+gLinelift2CollisionFiles kind:data(any) addr:0x021344f4
+gLinelift2ModelFiles kind:data(any) addr:0x021344fc
 data_ov091_02134504 kind:data(any) addr:0x02134504
 data_ov091_02134514 kind:data(any) addr:0x02134514
 __sinit_d_a_obj_rotate_updown_lift.cpp kind:function(arm,size=0xb8) addr:0x02134524
@@ -120,10 +120,10 @@ data_ov091_02134c38 kind:data(any) addr:0x02134c38
 _ZTV23daObjRotateUpdownLift_c kind:data(any) addr:0x02134c5c
 data_ov091_02134cdc kind:data(any) addr:0x02134cdc
 data_ov091_02134d1c kind:data(any) addr:0x02134d1c
-data_ov091_02134e44 kind:data(any) addr:0x02134e44
-data_ov091_02134e4c kind:data(any) addr:0x02134e4c
-data_ov091_02134e54 kind:data(any) addr:0x02134e54
-data_ov091_02134e5c kind:data(any) addr:0x02134e5c
+data_ov091_02134e44 kind:data(any) addr:0x02134e44 local
+data_ov091_02134e4c kind:data(any) addr:0x02134e4c local
+data_ov091_02134e54 kind:data(any) addr:0x02134e54 local
+gLinelift2ClpsBlocks kind:data(any) addr:0x02134e5c
 _ZTI13daLinelift2_c kind:data(any) addr:0x02134e64
 _ZTS13daLinelift2_c kind:data(any) addr:0x02134e70
 g_profile_KM3_LIFT kind:data(any) addr:0x02134e80 ambiguous
@@ -179,7 +179,7 @@ gKm2SusumuModelFile kind:bss addr:0x021354a8
 @511 kind:bss addr:0x021354bc
 @508 kind:bss addr:0x021354c8
 @512 kind:bss addr:0x021354d4
-data_ov091_021354e0 kind:bss addr:0x021354e0
+gLinelift2StateFuncs kind:bss addr:0x021354e0
 gKm3Deru01CollisionFile kind:bss addr:0x021354f8
 gKm2Rift02CollisionFile kind:bss addr:0x02135500
 gBkTransbarModelFile kind:bss addr:0x02135508
