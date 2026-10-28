@@ -8618,9 +8618,6 @@
       "src/game/actors/d_a_obj_bk_lift.cpp": [
         "return:void"
       ],
-      "src/game/actors/d_a_obj_block_l.cpp": [
-        "return:void"
-      ],
       "src/game/actors/d_a_obj_block_s.cpp": [
         "return:void"
       ],
@@ -14660,17 +14657,11 @@
       ]
     },
     "data_ov010_02112d00": {
-      "src/game/actors/d_a_obj_c1_trap.cpp": [
-        "return:SharedFilePtr"
-      ],
       "src/unnamed/ov010/__sinit_ov010_0211203c.c": [
         "return:int []"
       ]
     },
     "data_ov010_02112d08": {
-      "src/game/actors/d_a_obj_c1_trap.cpp": [
-        "return:SharedFilePtr"
-      ],
       "src/unnamed/ov010/__sinit_ov010_0211203c.c": [
         "return:int []"
       ]
@@ -14688,26 +14679,6 @@
     "data_ov012_02111c90": {
       "src/game/actors/d_a_obj_c0_water.cpp": [
         "return:CLPS_Block"
-      ]
-    },
-    "data_ov012_021124a0": {
-      "src/game/actors/d_a_obj_c0_switch.cpp": [
-        "return:SharedFilePtr"
-      ]
-    },
-    "data_ov012_021124a8": {
-      "src/game/actors/d_a_obj_c0_switch.cpp": [
-        "return:SharedFilePtr"
-      ]
-    },
-    "data_ov012_021124c8": {
-      "src/game/actors/d_a_obj_c0_water.cpp": [
-        "return:SharedFilePtr"
-      ]
-    },
-    "data_ov012_021124d0": {
-      "src/game/actors/d_a_obj_c0_water.cpp": [
-        "return:SharedFilePtr"
       ]
     },
     "data_ov013_021116b0": {
@@ -27515,6 +27486,11 @@
     "gHoruheiWalkAnimationFile": {
       "src/unnamed/ov062/__sinit_ov062_0211cf30.cpp": [
         "return:SharedFilePtr"
+      ]
+    },
+    "data_ov012_02111cd0": {
+      "src/game/actors/d_a_obj_c0_switch.cpp": [
+        "return:CLPS_Block"
       ]
     }
   },
