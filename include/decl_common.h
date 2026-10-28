@@ -936,7 +936,6 @@ extern int func_ov100_02143370(char*);
 extern int func_ov100_02144f84(void);
 extern int func_ov100_02144fcc(void);
 extern int func_ov100_02145014(void);
-extern int func_ov100_0214700c(char*);
 extern int func_ov102_0214aa18(void*);
 extern int func_ov102_0214ab1c(void*);
 extern int func_ov102_0214b248(void*);
@@ -1679,7 +1678,6 @@ extern void func_ov100_02143b68(char*);
 extern void func_ov100_02145070(int);
 /* Returns int -- the tree's own definition (in src/game/actors/d_a_door.cpp)
    defines it `extern "C" int`, and its early-out is `return 1`. */
-extern void func_ov100_02146e70(void*);
 extern void func_ov102_0214ad14(void*);
 extern void func_ov102_0214ae1c(void*);
 extern void func_ov102_0214b03c(void*);
