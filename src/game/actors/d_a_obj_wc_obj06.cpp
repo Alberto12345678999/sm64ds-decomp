@@ -10,11 +10,11 @@
  * daObjWcObj06_c_classInit is reconstructed (RTTI daObjWcObj06_c,
  * WC_OBJ06 registry). Retail does not store that spelling.
  *
- * deslop
- * Leftover: startEnd is two Vector3 copies flattened
- *   (start = pos; end = pos; start.y += 20; end.y = waterY); the
- *   extra stores are decompiler dead stores, not an int[6] type.
- * Leftover: g_profile_WC_OBJ06 is ov029 data outside this TU (S14).
+ * What stays:
+ * - startEnd is two Vector3 copies flattened into one int[6]
+ *   (start = pos; end = pos; start.y += 20; end.y = waterY); the store
+ *   order is the ROM's.
+ * - g_profile_WC_OBJ06 is ov029 data outside this TU (S14).
  */
 
 /* Runtime asset handles resolved through the overlay 0 file table. */
@@ -24,7 +24,7 @@ enum d_a_obj_wc_obj06_AssetId { ASSET_WC_OBJ06_BMD = 0x06d5, ASSET_WC_OBJ06_KCL 
 #include "dBgCh_Lin.h"
 #include "SharedFilePtr.h"
 
-extern "C" daObjFloatBoard_c_Resources data_ov029_02113f00;
+extern daObjFloatBoard_c_Resources data_ov029_02113f00;
 
 /* Retail constructs these 8-byte handles in this order and registers
  * their destructors. The wrapper names are local; the ctor/dtor

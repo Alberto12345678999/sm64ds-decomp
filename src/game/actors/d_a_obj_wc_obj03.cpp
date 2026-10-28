@@ -1,6 +1,5 @@
 //cpp
 /* PROMOTED translation unit -- ov029/daObjWc_Obj03_c (10 function(s)).
- * deslop
  *
  * Wet-Dry World's water diamond (profile WATER_DIAMOND, actor 97): a spinning
  * crystal that, when Mario touches it, sets the WDW water (daObjWc_Mizu_c,
@@ -19,11 +18,9 @@
  * include/daObjWc_Obj03_c.h, declared last, and so emits first, which is
  * where the cartridge has it.
  *
- * Leftover:
+ * What stays:
  * - data_ov029_02114270 is the model SharedFilePtr, defined here; symbols.txt
  *   has no recovered name, so it is not coined.
- * - Matrix4x3_FromRotationY stays an extern "C" free function
- *   (UpdateModelTransform).
  * - Address-valued `&mAngleY` in Behavior: a named increment CSEs the field
  *   address. The cartridge keeps r1 as &mAngleY for both the halfword load
  *   and store.
@@ -56,9 +53,7 @@ enum d_a_obj_wc_obj03_AssetId {
 #include "daObjWc_Mizu_c.h"
 #include "SharedFilePtr.h"
 #include "Sound.h"
-
-extern "C" {
-void Matrix4x3_FromRotationY(Matrix4x3 *, int);
+#include "math/MtxStack.h"
 
 /* 8-byte file handle. The model uses func_02017acc / func_02017ab4. The
  * spelling is local; the manifest aliases the generated names to those ROM
@@ -72,7 +67,6 @@ struct WcObj03ModelFilePtr : SharedFilePtr {
  * loads it, CleanupResources releases it. Defined at the end of this file so
  * the constructor does not enter .text. */
 extern WcObj03ModelFilePtr data_ov029_02114270;
-}
 
 /* -------------------------------------------------------------------------- */
 /* -------------------------------------------------------------------------- */

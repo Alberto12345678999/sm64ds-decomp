@@ -43,7 +43,7 @@ struct daObjWc_Obj05_c : dBgActor_c {
     /* Zeroed on entering state 2 (and by InitResources); state 2 counts
      * it up as u16 and starts the ascent once it reaches 0x6e. */
     s16 mDwellTimer; /* 0x328 */
-    /* func_ov029_02111e40, the mesh collider's BeforeClsn callback, sets
+    /* OnStoodOn, called through the mesh collider's stood-on callback, sets
      * it to 1 when the touching actor's actorID is PLAYER (0xbf); Behavior
      * reads it and clears it at the end of every frame. */
     u8 mPlayerOnTop; /* 0x32a */
@@ -57,13 +57,16 @@ struct daObjWc_Obj05_c : dBgActor_c {
 
     /* Inline is load-bearing: out of line mwccarm emits D2, D0, D1, while
      * the ROM has D1 then D0 and no D2. */
-    virtual ~daObjWc_Obj05_c() {}          /* slots 16 (D1), 17 (D0) */
+    virtual ~daObjWc_Obj05_c() {} /* slots 16 (D1), 17 (D0) */
 
     /* Overrides of fBase_c's slots 0, 3, 6 and 9. Virtualness is inherited. */
-    virtual s32   InitResources();         /* slot  0 */
-    virtual s32   CleanupResources();      /* slot  3 */
-    virtual s32   Behavior();              /* slot  6 */
-    virtual s32   Render();                /* slot  9 */
+    virtual s32 InitResources();    /* slot  0 */
+    virtual s32 CleanupResources(); /* slot  3 */
+    virtual s32 Behavior();         /* slot  6 */
+    virtual s32 Render();           /* slot  9 */
+
+    void OnStoodOn(dActor_c *);                                         /* ov029 0x02111e40 */
+    static void StoodOnCallback(void *, daObjWc_Obj05_c *, dActor_c *); /* ov029 0x02111e60 */
 };
 
 #ifndef SM64DS_PLATFORM_PC
