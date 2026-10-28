@@ -65,9 +65,9 @@ struct daDgr_c : dBgActor_c {
     s32 mBasePosY;
     s16 mAngleXSpeed;
     u16 mPhaseTimer;
-    s8  mRollStage;
-    u8  mRollDir;
-    u8  pad_32a[0x2];
+    s8 mRollStage;
+    u8 mRollDir;
+    u8 pad_32a[0x2];
     u32 mDustParticle1;
     u32 mDustParticle2;
 
@@ -99,14 +99,14 @@ struct daDgr_c : dBgActor_c {
 
     /* --- overrides of inherited fBase_c slots. Each takes its base's index
      *     (see include/fBase_c.h for the full 32-slot table). --- */
-    virtual s32 InitResources();       /* slot 0 */
-    virtual s32 CleanupResources();    /* slot 3 */
-    virtual s32 Behavior();            /* slot 6 */
-    virtual s32 Render();              /* slot 9 */
+    virtual s32 InitResources();    /* slot 0 */
+    virtual s32 CleanupResources(); /* slot 3 */
+    virtual s32 Behavior();         /* slot 6 */
+    virtual s32 Render();           /* slot 9 */
 
-    int func_ov025_0211123c();
-    void func_ov025_021112e0();
-    void func_ov025_02111344();
+    int EnableClsnNearEgg();
+    void UpdateClsnMatrix();
+    void UpdateModelMatrix();
 
     /* slot 31 (Kill) is NOT overridden: the vtable word at data_ov025_02113760
        + 0x7c is 0x020ee55c, identical to dBgActor_c's own slot 31 -- confirmed

@@ -63,7 +63,7 @@ struct daChScene_c : dActor_c {
        -mAngleY and X by -mAngleX, then inverts in place -- so every Behavior
        test runs in the door's own frame and the box tests are plain axis
        comparisons. */
-    Matrix4x3 mInvMat;            /* 0x0d4 */
+    Matrix4x3 mInvMat; /* 0x0d4 */
 
     /* MEASURED -- INLINE ON PURPOSE, do not move this body out of line.
      * Out of line, mwcc emits D2, D0, D1; the ROM has D1 at ov002 0x020b09b0
@@ -86,6 +86,9 @@ struct daChScene_c : dActor_c {
     virtual s32 Behavior();
     virtual s32 Render();
     virtual void OnPendingDestroy();
+
+    /* Store the exit band and load the level param1 names. */
+    void LoadDestinationLevel();
 };
 
 #ifndef SM64DS_PLATFORM_PC

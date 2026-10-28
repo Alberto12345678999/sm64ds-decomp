@@ -47,14 +47,14 @@ struct daCnn_c : dActor_c {
     s16 mTargetAngleY;        /* 0x17a */
     s16 mHomeAngleY;          /* 0x17c */
     u8 pad_17e[0x2];
-    s32 mState;               /* 0x180 */
-    u8 mVariant;              /* 0x184 */
-    u8 mLoadStep;             /* 0x185 -- step of the state-3 load sequence */
+    s32 mState;   /* 0x180 */
+    u8 mVariant;  /* 0x184 */
+    u8 mLoadStep; /* 0x185 -- step of the state-3 load sequence */
     u8 pad_186[0x2];
-    s32 mRecoil;              /* 0x188 -- barrel slide, <= 0 */
-    s32 mRecoilSpeed;         /* 0x18c */
+    s32 mRecoil;      /* 0x188 -- barrel slide, <= 0 */
+    s32 mRecoilSpeed; /* 0x18c */
     u8 pad_190[0x4];
-    s32 mBarrelRestY;         /* 0x194 -- the barrel bone's rest offset */
+    s32 mBarrelRestY; /* 0x194 -- the barrel bone's rest offset */
 
     /* Inline and empty, so an out-of-line virtual below is the key function
        and this TU emits the vtable and RTTI. Written out of line, mwccarm emits D0 ahead
@@ -69,12 +69,12 @@ struct daCnn_c : dActor_c {
 
     /* The four state bodies the table at data_ov098_0213c8fc dispatches, plus
        the barrel-pose and next-aim helpers. */
-    void func_ov098_0213a984();
-    void func_ov098_0213aa28();
-    void func_ov098_0213ad08();
-    void func_ov098_0213ade8();
-    void func_ov098_0213b0a4();
-    void func_ov098_0213b15c();
+    void UpdateModel();
+    void StateLoad();
+    void StateWaitForRider();
+    void StateFire();
+    void StateAim();
+    void PickNextAim();
 };
 
 #ifndef SM64DS_PLATFORM_PC

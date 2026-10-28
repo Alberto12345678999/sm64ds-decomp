@@ -48,21 +48,21 @@
       "ordinal": 1
     },
     {
-      "symbol": "_ZN7daDgr_c19func_ov025_0211123cEv",
+      "symbol": "_ZN7daDgr_c17EnableClsnNearEggEv",
       "address": "0x0211123c",
       "size": "0x000000a4",
       "legacy_source": "src/func_ov025_0211123c.cpp",
       "ordinal": 2
     },
     {
-      "symbol": "_ZN7daDgr_c19func_ov025_021112e0Ev",
+      "symbol": "_ZN7daDgr_c16UpdateClsnMatrixEv",
       "address": "0x021112e0",
       "size": "0x00000064",
       "legacy_source": "src/func_ov025_021112e0.cpp",
       "ordinal": 3
     },
     {
-      "symbol": "_ZN7daDgr_c19func_ov025_02111344Ev",
+      "symbol": "_ZN7daDgr_c17UpdateModelMatrixEv",
       "address": "0x02111344",
       "size": "0x00000040",
       "legacy_source": "src/func_ov025_02111344.c",
@@ -477,12 +477,12 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@466",
+      "from": "@510",
       "to": "@147",
       "evidence": "compiler temporary; mwcc numbers it @467 per TU and ov060 daKpa3Bg_c (this batch) also defines a global @467, so the scratch link collides"
     },
     {
-      "from": "@467",
+      "from": "@511",
       "to": "@148",
       "evidence": "compiler temporary; mwcc numbers it @468 per TU and ov060 daKpa3Bg_c (this batch) also defines a global @468, so the scratch link collides"
     }

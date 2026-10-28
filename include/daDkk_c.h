@@ -64,13 +64,13 @@ struct daDkk_c : daDsnBase_c {
     /* The drop shadow's matrix; daDsnBase_c's per-frame shadow refresh
        fills it. Kept as raw bytes: a Matrix4x3 member would add a
        destructor. Nothing in d_a_dkk.cpp touches it. */
-    u8 mShadowMtx[0x30];              /* 0x360 */
-    s32 mRiseY;                       /* 0x390 -- top of the rise (state 0) */
-    s32 mGroundY;                     /* 0x394 -- ground height the falls snap to */
-    s32 mState;                       /* 0x398 */
-    s16 mTurnTargetAngle;             /* 0x39c -- target facing for the turn */
-    u8 mTimer;                        /* 0x39e -- cycle countdown; post-landing pause */
-    u8 mLandCount;                    /* 0x39f -- landings since the last turn */
+    u8 mShadowMtx[0x30];  /* 0x360 */
+    s32 mRiseY;           /* 0x390 -- top of the rise (state 0) */
+    s32 mGroundY;         /* 0x394 -- ground height the falls snap to */
+    s32 mState;           /* 0x398 */
+    s16 mTurnTargetAngle; /* 0x39c -- target facing for the turn */
+    u8 mTimer;            /* 0x39e -- cycle countdown; post-landing pause */
+    u8 mLandCount;        /* 0x39f -- landings since the last turn */
 
     /* --- vtable --- */
     /* INLINE ON PURPOSE, and this is a byte-level requirement rather than a
@@ -100,9 +100,9 @@ struct daDkk_c : daDsnBase_c {
     int Behavior();
     int OnAimedAtWithEgg();
 
-    int func_ov025_021119a4();
-    void func_ov025_021119f4();
-    void func_ov025_02111a84();
+    int StateTurn();
+    void StateLandPause();
+    void StateFall();
 };
 
 #ifndef SM64DS_PLATFORM_PC
