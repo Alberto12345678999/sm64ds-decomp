@@ -9,18 +9,15 @@
  * daObjCvShutter_c_classInit is reconstructed (RTTI daObjCvShutter_c,
  * CV_SHUTTER / SHUTTER_HMC registry). Retail does not store that spelling.
  *
- * What stays, and why:
- * - func_ov002_020bad10 / func_ov002_020baba8 / func_ov002_020bac18
- *   are still the linker names of daObjSwdoor_c setup / teardown / step
- *   (the base leaves those slots pure virtual). Naming them, and giving
- *   them a header, belongs in d_a_obj_swdoor.cpp, which defines them.
+ * Notes:
+ * - daObjSwdoor_c::InitResourcesFrom / CleanupResourcesFrom / UpdateShutter
+ *   are the base's setup / teardown / step (the base leaves those slots
+ *   pure virtual), defined in d_a_obj_swdoor.cpp.
  *   The setup helper loads data_ov021_021148d0 slot 0 with dExtSimpleModel_c::LoadFile,
  *   slot 1 with dBgW_Kc::LoadFile, slot 2 as CLPS into SetFile, and writes
  *   daObjSwdoor_c's four byte fields from param1.
  * - data_ov021_021148d0 is overlay data; this TU is text-only so
  *   the table stays an extern. g_profile_CV_SHUTTER is the same.
- * - IsClsnInRange is a header member call; its Fix12 parameters are
- *   Fix12i, a plain s32 (wall 6az).
  */
 
 /* Runtime asset handles resolved through the overlay 0 file table. */
@@ -39,13 +36,6 @@ struct ResourceDescriptor {
 typedef char ResourceDescriptor_size_must_be_0x0c[sizeof(ResourceDescriptor) == 0x0c ? 1 : -1];
 
 extern ResourceDescriptor data_ov021_021148d0;
-
-/* local extern: daObjSwdoor_c's shared ov002 helpers (see the banner). */
-extern "C" {
-int func_ov002_020bad10(daObjSwdoor_c *self, ResourceDescriptor *descriptor);
-int func_ov002_020baba8(daObjSwdoor_c *self, ResourceDescriptor *descriptor);
-int func_ov002_020bac18(daObjSwdoor_c *self);
-}
 
 /* File 1497 / 1498 resource handles. The static initializer registers
  * their destructors; the spellings are this TU's, mapped onto
@@ -68,12 +58,12 @@ extern "C" daObjCvShutter_c *daObjCvShutter_c_classInit() {
 
 // @symbol _ZN16daObjCvShutter_c13InitResourcesEv
 s32 daObjCvShutter_c::InitResources() {
-    return func_ov002_020bad10(this, &data_ov021_021148d0);
+    return InitResourcesFrom(&data_ov021_021148d0);
 }
 
 // @symbol _ZN16daObjCvShutter_c8BehaviorEv
 s32 daObjCvShutter_c::Behavior() {
-    s32 r = func_ov002_020bac18(this);
+    s32 r = UpdateShutter();
     if (IsClsnInRange(0, 0))
         UpdateClsnPosAndRot();
     return r;
@@ -81,7 +71,7 @@ s32 daObjCvShutter_c::Behavior() {
 
 // @symbol _ZN16daObjCvShutter_c16CleanupResourcesEv
 s32 daObjCvShutter_c::CleanupResources() {
-    return func_ov002_020baba8(this, &data_ov021_021148d0);
+    return CleanupResourcesFrom(&data_ov021_021148d0);
 }
 // @symbol _ZN16daObjCvShutter_cD1Ev
 // @symbol _ZN16daObjCvShutter_cD0Ev

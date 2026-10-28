@@ -834,8 +834,6 @@ extern int func_ov080_021270dc(void*, void*);
 extern int func_ov002_020ad660(char*, char*, char*, int);
 extern int func_ov002_020ae968(void*, void*);
 extern int func_ov002_020baa98;
-extern int func_ov002_020baba8(void*, void*);
-extern int func_ov002_020bac18();
 extern int func_ov002_020bd250(char*, unsigned char*);
 extern int func_ov002_020bf56c(void*, int);
 extern int func_ov002_020c2270(void*, struct Vector3*, struct Vector3*);
@@ -914,7 +912,6 @@ extern int func_ov007_020b6f4c(void);
 extern int func_ov007_020c3ba8(int);
 extern int func_ov007_020c3df4(int, int);
 extern int func_ov010_02111984[];
-extern int func_ov018_02111804[];
 /* Returns nothing: ov018 0x02111d18..0x02111d24 pops straight to bx lr with no
    r0 set. Definition in src/game/actors/d_a_pg_mthr.cpp. */
 extern void func_ov018_02111bf0(void*, void*);

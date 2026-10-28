@@ -6981,3 +6981,9 @@ ov100	0x02146e70	func_ov100_02146e70	_ZN15daObjPathLift_c12UpdateShadowEv	daObjP
 ov091	0x02133498	_ZN11daObjPile_c19func_ov091_02133498Ev	_ZN11daObjPile_c17NotifyTagPileGoneEv	daObjPile_c::NotifyTagPileGone: tells the linked KINOKO_TAG (actor 0x140) its pile is gone; same address, same body
 ov091	0x021334b8	_ZN11daObjPile_c19func_ov091_021334b8Ei	_ZN11daObjPile_c4SinkEi	daObjPile_c::Sink: drops the pile one step (or every step when flag is set), then drops coins and records the death once no steps are left; same address, same body
 ov036	0x0211123c	func_ov036_0211123c	_ZN16daObjRcBuranko_c17UpdateModelMatrixEv	daObjRcBuranko_c::UpdateModelMatrix: model matrix from the three Euler angles plus position >> 3; was an extern "C" free function taking the class pointer, now a member; same address, same body
+ov002	0x020bad10	func_ov002_020bad10	_ZN13daObjSwdoor_c17InitResourcesFromEP18ResourceDescriptor	shared shutter setup from a leaf's file table
+ov002	0x020baba8	func_ov002_020baba8	_ZN13daObjSwdoor_c20CleanupResourcesFromEP18ResourceDescriptor	shared shutter teardown from a leaf's file table
+ov002	0x020bac18	func_ov002_020bac18	_ZN13daObjSwdoor_c13UpdateShutterEv	per-frame shutter state machine both leaves run as Behavior
+ov018	0x02111278	_ZN14daObjSm_Lift_c19func_ov018_02111278Ev	_ZN14daObjSm_Lift_c20UpdateModelTransformEv	place the ski lift model at mPos with its angles
+ov018	0x021117e8	func_ov018_021117e8	_ZN14daObjSm_Lift_c19HandlePlayerContactEP8dActor_c	remember a touching player
+ov018	0x02111804	func_ov018_02111804	_ZN14daObjSm_Lift_c18BeforeClsnCallbackEPvPS_P8dActor_c	dBgW before-collision veneer forwarding to HandlePlayerContact
