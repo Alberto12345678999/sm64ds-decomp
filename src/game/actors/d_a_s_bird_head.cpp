@@ -11,15 +11,13 @@
  * for (manifest: deadstrip), and .text is laid down in source order, so
  * the file is written ROM-ascending.
  *
- * The two helpers are daSBird_c members: 02111234 is ordinal 3 of the
- * data_ov009_02113c48 PMF table (ROM record at 0x02113914), and 02111224
- * is the follower-attach the two spawn loops call on the spawned bird.
- * Helper names are not recovered; the members keep their addresses (S33).
+ * The two helpers are daSBird_c members: StateFly is ordinal 3 of the
+ * data_ov009_02113c48 PMF table (ROM record at 0x02113914), and
+ * AttachToLeader is what the two spawn loops call on the spawned bird.
  *
- * deslop leftovers:
- * - cstd::atan2 6az (Fix12<int> by value): mangled extern.
- * - Vec3_Sub / Vec3_HorzLen / LenVec3: no shared header
- *   this TU can take without a campaign.
+ * NOTES:
+ * - Vec3_Sub / LenVec3 have no shared header; Vec3_HorzLen's
+ *   math/CalcLib.h spelling takes a const Vector3 *.
  * - data_02082214 sine table stays an extern s16[].
  */
 
@@ -28,17 +26,15 @@
 #include "common.h"
 #include "nitro/fx/fx.h"
 #include "math/Approach.h"
-namespace cstd {
-s16 atan2(s32, s32);
-}
+#include "cstd.h"
 
-
-extern "C" {
 extern s16 data_02082214[];
+
+/* local extern: no shared header declares these on void *. */
+extern "C" {
 extern void Vec3_Sub(void *out, void *a, void *b);
 extern s32 Vec3_HorzLen(void *v);
 extern s32 LenVec3(void *v);
-extern s16 atan2_hold_d_a_s_bird_head_1(s32 y, s32 x);
 }
 
 /* Empty body: mShadowModel then mAnmModel teardown, the vptr store and
@@ -50,18 +46,16 @@ daSBird_c::~daSBird_c()
 }
 
 /* Follower attach -- spawn loops store the leader's uniqueID. */
-// @symbol _ZN9daSBird_c19func_ov009_02111224Ei
-void daSBird_c::func_ov009_02111224(int ownerID)
-{
+// @symbol _ZN9daSBird_c14AttachToLeaderEi
+void daSBird_c::AttachToLeader(int ownerID) {
     mIsLeader = 0;
     mOwnerID = ownerID;
 }
 
 /* Fly state -- data_ov009_02113c48[3]. Steers toward the leader's position
    (or the target point when leading) and derives forward/vertical speed. */
-// @symbol _ZN9daSBird_c19func_ov009_02111234Ev
-void daSBird_c::func_ov009_02111234()
-{
+// @symbol _ZN9daSBird_c8StateFlyEv
+void daSBird_c::StateFly() {
     UpdatePos(0);
     dActor_c *f = dActor_c::FindWithID(mOwnerID);
     if (f == 0 || f->mPosY > 0xbb8000) {

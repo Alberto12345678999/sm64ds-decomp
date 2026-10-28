@@ -7007,3 +7007,7 @@ ov029	0x021126dc	func_ov029_021126dc	_ZN15daObjWc_Obj04_c16UpdateClsnMatrixEv	da
 ov029	0x02112710	func_ov029_02112710	_ZN15daObjWc_Obj04_c17UpdateModelMatrixEv	daObjWc_Obj04_c::UpdateModelMatrix: plank model matrix from the yaw plus position >> 3; was an extern "C" free function taking the class pointer, now a member; same address, same body
 ov029	0x02111e40	func_ov029_02111e40	_ZN15daObjWc_Obj05_c9OnStoodOnEP8dActor_c	daObjWc_Obj05_c::OnStoodOn: arms mPlayerOnTop when the player stands on the cage lift; was an extern "C" free function taking the class pointer, now a member; same address, same body
 ov029	0x02111e60	func_ov029_02111e60	_ZN15daObjWc_Obj05_c15StoodOnCallbackEPvPS_P8dActor_c	daObjWc_Obj05_c::StoodOnCallback: the stood-on veneer stored in the mesh collider, forwarding to OnStoodOn; was an extern "C" free function, now a static member; same address, same body
+ov009	0x021116ec	_ZN9daSBird_c19func_ov009_021116ecEv	_ZN9daSBird_c15StateSpawnFlockEv	daSBird_c state 0: leader spawns the flock
+ov009	0x021115d8	_ZN9daSBird_c19func_ov009_021115d8Ev	_ZN9daSBird_c18StateWaitForPlayerEv	daSBird_c state 1: wait for the player, then take off
+ov009	0x02111224	_ZN9daSBird_c19func_ov009_02111224Ei	_ZN9daSBird_c14AttachToLeaderEi	daSBird_c: follower stores its leader's uniqueID
+ov009	0x02111234	_ZN9daSBird_c19func_ov009_02111234Ev	_ZN9daSBird_c8StateFlyEv	daSBird_c state 3: fly and steer
