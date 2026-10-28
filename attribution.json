@@ -6538,7 +6538,7 @@
     "src/game/actors/d_a_moray.cpp#daMoray_c_classInit": "tangosdev",
     "src/game/actors/d_a_pic_gate_methods.cpp#daPicGate_c_classInit": "andrewboudreau",
     "src/game/actors/d_a_water_tatumaki.cpp#daWater_Tatumaki_c_classInit": "tangosdev",
-    "src/game/actors/d_a_obj_ct_mecha09.cpp#_ZN16daObjCtMecha09_c19func_ov065_0211bc88Ev": "tangosdev",
+    "src/game/actors/d_a_obj_ct_mecha09.cpp#_ZN16daObjCtMecha09_c12UpdateShadowEv": "tangosdev",
     "src/game/actors/d_a_obj_ct_mecha09.cpp#_ZN16daObjCtMecha09_c13InitResourcesEv": "tangosdev",
     "src/game/actors/d_a_obj_ct_mecha09.cpp#daObjCtMecha09_c_classInit": "tangosdev",
     "src/game/actors/d_a_obj_ct_mecha09.cpp#__sinit_d_a_obj_ct_mecha09.cpp": "tangosdev",
