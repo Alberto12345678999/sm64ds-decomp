@@ -15,12 +15,10 @@
  * handles are constructed by __sinit_ov081_021280e8 (file ids 813 and
  * 814); this TU only loads and releases them.
  *
- * deslop leftovers:
- * - func_ov081_021237ec Particle::System::NewSimple with Fix12<int> x/y/z:
- *   0x124 -> 0x148 (+36).
- * - func_ov081_02123910 Player::Hurt with Fix12<int> knockback: 0x210 -> 0x21c (+12). SpinBounce
- *   with Fix12<int>: 0x210 -> 0x21c (+12).
- * - The 0/1 the ROM materializes in func_ov081_02123910, func_ov081_02123b20
+ * Notes (measured spellings that do not match):
+ * - HandleCylinderHit: Player::Hurt with Fix12<int> knockback: 0x210 -> 0x21c
+ *   (+12). SpinBounce with Fix12<int>: 0x210 -> 0x21c (+12).
+ * - The 0/1 the ROM materializes in HandleCylinderHit, UpdateModelTransform
  *   and Render comes from the int-returning IsPlayerActor / IsInYoshiMouth
  *   inlines. A direct `!=` or bit test is 16 / 12 / 12 bytes short.
  * - Behavior copying player->mPosX/Y/Z instead of int* at player+0x5c: 0x264 -> 0x260
@@ -28,10 +26,7 @@
  */
 
 /* Runtime asset handles resolved through the overlay 0 file table. */
-enum daHuwa_c_AssetId {
-    ASSET_HUWAHUWA_MODEL_BMD = 0x032d,
-    ASSET_HUWAHUWA_MOVE_BCA = 0x032e
-};
+enum daHuwa_c_AssetId { ASSET_HUWAHUWA_MODEL_BMD = 0x032d, ASSET_HUWAHUWA_MOVE_BCA = 0x032e };
 
 #pragma defer_codegen off
 
@@ -42,6 +37,8 @@ enum daHuwa_c_AssetId {
 #include "SharedFilePtr.h"
 #include "Sound.h"
 #include "math/Approach.h"
+#include "math/MtxStack.h"
+#include "Particle__System.h"
 
 /* The resource handles as the ROM lays them out: {id, loaded file}. The
    model handle constructs through func_02017acc and destroys through
@@ -62,30 +59,17 @@ struct HuwaAnimationFileHandle : SharedFilePtr {
 extern HuwaModelFilePtr gHuwahuwaModelModelFile;
 extern HuwaAnimationFileHandle gHuwahuwaMoveAnimationFile;
 
+/* C helpers with no shared header: the arm9 vector routines and
+ * func_ov002_020e10a8, Player::IsState of the state SpinBounce enters. */
 extern "C" {
-extern struct Matrix4x3 data_020a0e68;
 extern int func_ov002_020e10a8(void *);
 
-void Matrix4x3_FromTranslation(struct Matrix4x3 *m, int x, int y, int z);
-void Matrix4x3_FromRotationY(void *m, int angle);
-void MulMat4x3Mat4x3(const int *a, const int *b, int *dst);
 void SubVec3(Vector3 *a, Vector3 *b, Vector3 *out);
 void AddVec3(Vector3 *a, Vector3 *b, Vector3 *out);
 void Vec3_LslInPlace(Vector3 *v, int shift);
 int Vec3_HorzDist(const Vector3 *a, const Vector3 *b);
 short Vec3_HorzAngle(const Vector3 *a, const Vector3 *b);
-
-/* Scalar stand-ins for Fix12<int> by-value callees. The header methods
- * mangle to these same symbols and home the argument. */
-namespace Particle {
-struct System {
-    static void NewSimple(unsigned int id, int x, int y, int z);
-};
 }
-/* Parameter names keep this TU's @NNN. */
-typedef void BgchInitAt_(void *self, dActor_c *actor, int radius, int height, void *a, void *b);
-}
-
 
 /* dCc_c hitFlags bits this actor tests. 0x10 / 0x2000 / 0x4000 / 0x40000 /
  * 0x400000 are the names in dCc_c.h. 0x20000 is not in that table; this
@@ -117,61 +101,55 @@ static inline int IsInYoshiMouth(dActor_c *actor) {
 
 // @symbol _ZN8daHuwa_cD1Ev
 // @symbol _ZN8daHuwa_cD0Ev
-daHuwa_c::~daHuwa_c()
-{
-}
+daHuwa_c::~daHuwa_c() {}
 
 /* Vtable slot 29. 0x3c000 is 60.0; KillByInvincibleChar receives it and
  * does not read it. */
 // @symbol _ZN8daHuwa_c16OnAimedAtWithEggEv
-s32 daHuwa_c::OnAimedAtWithEgg()
-{
+s32 daHuwa_c::OnAimedAtWithEgg() {
     return 0x3c000;
 }
 
 /* Poof, three coins, bone-1 particle, sound 0xd5, then the death table.
  * func_0201267c is Sound::Play(bank 3, id, pos). */
-// @symbol func_ov081_021237ec
-extern "C" void func_ov081_021237ec(daHuwa_c *self)
-{
+// @symbol _ZN8daHuwa_c13KillWithCoinsEv
+void daHuwa_c::KillWithCoins() {
     Vector3 dust;
     Vector3 dustCopy;
     Vector3 coins;
 
-    dust.x = self->mPosX;
-    dust.y = self->mPosY;
-    dust.z = self->mPosZ;
-    dust.y += self->mdCcAc_c.height - 0x50000;
+    dust.x = mPosX;
+    dust.y = mPosY;
+    dust.z = mPosZ;
+    dust.y += mdCcAc_c.height - 0x50000;
     dustCopy = dust;
-    self->PoofDustAt(dustCopy);
+    PoofDustAt(dustCopy);
 
-    coins.x = self->mPosX;
-    coins.y = self->mPosY;
-    coins.z = self->mPosZ;
-    self->SpawnCoins(coins, 3, 0xa000, 0);
+    coins.x = mPosX;
+    coins.y = mPosY;
+    coins.z = mPosZ;
+    SpawnCoins(coins, 3, 0xa000, 0);
 
-    Matrix4x3_FromTranslation(&data_020a0e68, self->mPosX, self->mPosY, self->mPosZ);
-    MulMat4x3Mat4x3((const int *)(self->mAnmModel.data.transforms + 1), data_020a0e68.m,
-                    data_020a0e68.m);
+    Matrix4x3_FromTranslation(&data_020a0e68, mPosX, mPosY, mPosZ);
+    MulMat4x3Mat4x3((const int *)(mAnmModel.data.transforms + 1), data_020a0e68.m, data_020a0e68.m);
 
     dust.x = data_020a0e68.m[9];
     dust.y = data_020a0e68.m[10];
     dust.z = data_020a0e68.m[11];
-    SubVec3(&dust, &self->mPos, &dust);
+    SubVec3(&dust, &mPos, &dust);
     Vec3_LslInPlace(&dust, 3);
-    AddVec3(&dust, &self->mPos, &dust);
+    AddVec3(&dust, &mPos, &dust);
 
     Particle::System::NewSimple(0x53, dust.x, dust.y, dust.z);
-    func_0201267c(0xd5, &self->mCamSpacePos);
-    self->KillAndTrackInDeathTable();
+    func_0201267c(0xd5, &mCamSpacePos);
+    KillAndTrackInDeathTable();
 }
 
 /* Cylinder hits. Slot 29 is OnAimedAtWithEgg; called through dActor_c so it
  * stays a virtual call. func_ov002_020e10a8 is Player::IsState of the state
  * SpinBounce enters. */
-// @symbol func_ov081_02123910
-extern "C" void func_ov081_02123910(daHuwa_c *self)
-{
+// @symbol _ZN8daHuwa_c17HandleCylinderHitEv
+void daHuwa_c::HandleCylinderHit() {
     dActor_c *other;
     unsigned int id;
     int flags;
@@ -179,26 +157,26 @@ extern "C" void func_ov081_02123910(daHuwa_c *self)
     Vector3_16 knock;
     Vector3 pos;
 
-    id = self->mdCcAc_c.otherOwner;
+    id = mdCcAc_c.otherOwner;
     if (id == 0)
         return;
     other = dActor_c::FindWithID(id);
     if (other == 0)
         return;
 
-    flags = self->mdCcAc_c.hitFlags;
+    flags = mdCcAc_c.hitFlags;
     if ((flags & kHitMega) != 0) {
         int height;
         knock.x = (short)-0x2000;
         knock.y = 0;
         knock.z = 0;
-        height = ((dActor_c *)self)->OnAimedAtWithEgg();
-        self->KillByInvincibleChar(knock, *(Player *)other, height);
+        height = OnAimedAtWithEgg();
+        KillByInvincibleChar(knock, *(Player *)other, height);
         return;
     }
 
     if ((flags & kHitEggOrBlast) != 0) {
-        func_ov081_021237ec(self);
+        KillWithCoins();
         return;
     }
 
@@ -206,77 +184,71 @@ extern "C" void func_ov081_02123910(daHuwa_c *self)
         return;
 
     player = (Player *)other;
-    if (player->mIsMetal != 0 || player->IsOnShell() != 0 ||
-        (self->mdCcAc_c.hitFlags & kHitFire) != 0) {
-        func_ov081_021237ec(self);
+    if (player->mIsMetal != 0 || player->IsOnShell() != 0 || (mdCcAc_c.hitFlags & kHitFire) != 0) {
+        KillWithCoins();
         return;
     }
 
-    if ((self->mdCcAc_c.hitFlags & kHitAttack) != 0) {
+    if ((mdCcAc_c.hitFlags & kHitAttack) != 0) {
         if (func_ov002_020e10a8(player) == 0) {
-            func_ov081_021237ec(self);
+            KillWithCoins();
             return;
         }
     }
 
-    if (self->JumpedOnByPlayer(self->mdCcAc_c, *player) != 0) {
+    if (JumpedOnByPlayer(mdCcAc_c, *player) != 0) {
         player->SpinBounce(0x28000);
-        func_ov081_021237ec(self);
+        KillWithCoins();
         return;
     }
 
     if (player->mIsVanish != 0)
         return;
-    if ((self->mdCcAc_c.hitFlags & kHitPlayer) == 0)
+    if ((mdCcAc_c.hitFlags & kHitPlayer) == 0)
         return;
 
     {
         unsigned char recoil = 1;
         int speed;
-        self->mState = recoil;
+        mState = recoil;
         speed = 0xa000;
-        self->mStateTimer = 0;
-        self->mHorzSpeed = -speed;
+        mStateTimer = 0;
+        mHorzSpeed = -speed;
     }
-    self->mPrevAngleY = Vec3_HorzAngle(&self->mPos, &player->mPos);
+    mPrevAngleY = Vec3_HorzAngle(&mPos, &player->mPos);
 
-    pos.x = self->mPosX;
-    pos.y = self->mPosY;
-    pos.z = self->mPosZ;
+    pos.x = mPosX;
+    pos.y = mPosY;
+    pos.z = mPosZ;
     player->Hurt(pos, 2, 0xc000, 1, 0, 1);
 }
 
 /* Yaw the model, plant its translation at pos>>3, then the drop shadow.
  * In Yoshi's mouth (mFlags 0x40000) neither the shadow nor Render runs. */
-// @symbol func_ov081_02123b20
-extern "C" void func_ov081_02123b20(daHuwa_c *self)
-{
-    Matrix4x3_FromRotationY(&self->mAnmModel.mat4x3, self->mAngleY);
-    self->mAnmModel.mat4x3.m[9] = self->mPosX >> 3;
-    self->mAnmModel.mat4x3.m[10] = self->mPosY >> 3;
-    self->mAnmModel.mat4x3.m[11] = self->mPosZ >> 3;
-    if (IsInYoshiMouth(self))
+// @symbol _ZN8daHuwa_c20UpdateModelTransformEv
+void daHuwa_c::UpdateModelTransform() {
+    Matrix4x3_FromRotationY(&mAnmModel.mat4x3, mAngleY);
+    mAnmModel.mat4x3.m[9] = mPosX >> 3;
+    mAnmModel.mat4x3.m[10] = mPosY >> 3;
+    mAnmModel.mat4x3.m[11] = mPosZ >> 3;
+    if (IsInYoshiMouth(this))
         return;
-    if (self->mWithMeshClsn.IsOnGround() != 0) {
-        self->DropShadowRadHeight(self->mShadowModel, self->mAnmModel.mat4x3, 0x50000, 0x1e000,
-                                  0xf);
+    if (mWithMeshClsn.IsOnGround() != 0) {
+        DropShadowRadHeight(mShadowModel, mAnmModel.mat4x3, 0x50000, 0x1e000, 0xf);
     } else {
-        self->DropShadowRadHeight(self->mShadowModel, self->mAnmModel.mat4x3, 0x50000, 0x96000,
-                                  0xf);
+        DropShadowRadHeight(mShadowModel, mAnmModel.mat4x3, 0x50000, 0x96000, 0xf);
     }
 }
 
 // @symbol _ZN8daHuwa_c16CleanupResourcesEv
-int daHuwa_c::CleanupResources()
-{
+int daHuwa_c::CleanupResources() {
     gHuwahuwaModelModelFile.Release();
     gHuwahuwaMoveAnimationFile.Release();
     return 1;
 }
 
 // @symbol _ZN8daHuwa_c6RenderEv
-int daHuwa_c::Render()
-{
+int daHuwa_c::Render() {
     if (IsInYoshiMouth(this))
         return 1;
     mAnmModel.Render(0);
@@ -284,19 +256,18 @@ int daHuwa_c::Render()
 }
 
 // @symbol _ZN8daHuwa_c8BehaviorEv
-int daHuwa_c::Behavior()
-{
+int daHuwa_c::Behavior() {
     int killed = UpdateKillByInvincibleChar(mWithMeshClsn, mAnmModel, 3);
     if (killed != 0) {
         if (killed == 2)
-            func_ov081_021237ec(this);
+            KillWithCoins();
         return 1;
     }
 
     if (UpdateYoshiEat(mWithMeshClsn) != 0) {
         if (SpawnParticlesIfHitOtherObj(mdCcAc_c) != 0)
-            func_ov081_021237ec(this);
-        func_ov081_02123b20(this);
+            KillWithCoins();
+        UpdateModelTransform();
         mdCcAc_c.Clear();
         if (mEatenByYoshi != 0 && mSpitOutTimer == 0)
             mdCcAc_c.Update();
@@ -304,7 +275,7 @@ int daHuwa_c::Behavior()
     }
 
     MakeVanishLuigiWork(mdCcAc_c);
-    func_ov081_02123910(this);
+    HandleCylinderHit();
 
     switch (mState) {
     case kStateChase: {
@@ -344,15 +315,14 @@ int daHuwa_c::Behavior()
         mPosY = mPrevPosY;
         mPosZ = mPrevPosZ;
     }
-    func_ov081_02123b20(this);
+    UpdateModelTransform();
     mdCcAc_c.Clear();
     mdCcAc_c.Update();
     return 1;
 }
 
 // @symbol _ZN8daHuwa_c13InitResourcesEv
-int daHuwa_c::InitResources()
-{
+int daHuwa_c::InitResources() {
     void *modelFile = dExtSimpleModel_c::LoadFile(gHuwahuwaModelModelFile);
     mAnmModel.dExtModel_c::SetFile((BMD_File *)modelFile, 1, -1);
     dExtFrameCtrl_c::LoadFile(gHuwahuwaMoveAnimationFile);
@@ -372,8 +342,7 @@ int daHuwa_c::InitResources()
 }
 
 // @symbol _ZN8daHuwa_c13OnTurnIntoEggER6Player
-void daHuwa_c::OnTurnIntoEgg(Player &player)
-{
+void daHuwa_c::OnTurnIntoEgg(Player &player) {
     if (!player.IsCollectingCap())
         player.RegisterEggCoinCount(3, 0, 0);
     else
@@ -382,14 +351,12 @@ void daHuwa_c::OnTurnIntoEgg(Player &player)
 }
 
 // @symbol _ZN8daHuwa_c13OnYoshiTryEatEv
-s32 daHuwa_c::OnYoshiTryEat()
-{
+s32 daHuwa_c::OnYoshiTryEat() {
     return 6;
 }
 
 // @symbol daHuwa_c_classInit
-extern "C" daHuwa_c *daHuwa_c_classInit()
-{
+extern "C" daHuwa_c *daHuwa_c_classInit() {
     return new daHuwa_c();
 }
 

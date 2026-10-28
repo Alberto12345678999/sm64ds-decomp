@@ -1,8 +1,4 @@
 //cpp
-namespace Particle {
-struct Callback;
-}
-struct Vector3_16f;
 /* daGrock_c -- Hazy Maze Cave rolling rock (GORO_ROCK 221), ov021.
  *
  * param1's low nibble is the kind. 0 and 1 are invisible spawners: a rock
@@ -32,19 +28,16 @@ struct Vector3_16f;
  * constructor emits exactly that sequence, and the factory is now
  * `return new daGrock_c();`. g_profile_GORO_ROCK is still not in this TU.
  *
- * deslop leftovers:
- * - func_ov021_02112294: one UntrackAndSpawnStar with a chosen mode
- *   size-DIFFs (999 words). The two call sites, mode 2 and mode 4, match.
- * - func_ov021_02112544: ReflectAngle(Fix12<int>, Fix12<int>, s16)
+ * Notes (measured spellings that do not match):
+ * - SpawnStar: one UntrackAndSpawnStar with a chosen mode size-DIFFs
+ *   (999 words). The two call sites, mode 2 and mode 4, match.
+ * - HandleMeshCollision: ReflectAngle(Fix12<int>, Fix12<int>, s16)
  *   size-DIFFs. The wall angle is held in a short so GetSubtraction gets
- *   it without a re-extension. The angle calls are cstd::atan2(s32, s32).
- * - Player::Hurt is not declared on Player; its 5Fix12IiE extern stays.
+ *   it without a re-extension.
  */
 
 /* Runtime asset handles resolved through the overlay 0 file table. */
-enum daGrock_c_AssetId {
-    ASSET_CV_GORO_ROCK_BMD = 0x05d4
-};
+enum daGrock_c_AssetId { ASSET_CV_GORO_ROCK_BMD = 0x05d4 };
 
 #pragma defer_codegen off
 
@@ -54,9 +47,10 @@ enum daGrock_c_AssetId {
 #include "Sound.h"
 #include "dBgPi.h"
 #include "dBgCh_Actr.h"
-namespace cstd {
-s16 atan2(s32, s32);
-}
+#include "SharedFilePtr.h"
+#include "Particle__System.h"
+#include "math/MtxStack.h"
+#include "cstd.h"
 
 /* Kind in param1's low nibble. */
 enum {
@@ -65,15 +59,6 @@ enum {
     kGrockRolling = 2,
     kGrockStar = 3,
     kGrockStill = 4
-};
-
-/* SharedFilePtr as include/SharedFilePtr.h declares it, cut to what this TU
- * uses. Including the header moves the .bss @NNN label by one. */
-struct SharedFilePtr {
-    u16 fileID;
-    u8 numRefs;
-    void *filePtr;
-    void Release();
 };
 
 /* The GORO_ROCK model handle, constructed with file ID 1492 by the
@@ -97,110 +82,88 @@ struct Vec3 {
 /* The copy at mPrevAngleX has to go through a struct whose only member is
  * an array. Vector3_16's s16 members scalarise to LDRSH and interleave the
  * store; an unsigned array keeps the ROM's LDRH load-load-store. */
-struct AngleWords { u16 w[3]; };
-
-extern "C" {
-/* Parameter names keep this TU's @NNN. */
-typedef void BgchInitAt_(dBgCh_Actr *self, int actor, Fix12i radius, Fix12i height, int a, int b);
-extern void Vec3_Asr(void *dst, void *src, int n);
-extern void Matrix4x3_FromTranslation(void *m, int x, int y, int z);
-extern void Matrix4x3_ApplyInPlaceToRotationXYZExt(void *m, short a, short b, short c);
-extern struct Matrix4x3 data_020a0e68;
-/* Same body as Sound::PlayBank3 (0x02012664). The ROM calls these copies. */
-extern void func_02012694(int id, void *pos);
-namespace Particle {
-struct System {
-    static void NewSimple(u32 id, int x, int y, int z);
-
-    static int New(unsigned, unsigned, int, int, int, const ::Vector3_16f *, Callback *);
+struct AngleWords {
+    u16 w[3];
 };
-}
-extern void *d_a_grockNewHold(unsigned int prev, unsigned int effect, int x, int y, int z,
-                              void *dir, void *cb);
+
+/* arm9 C helpers with no shared header. func_02012694 has the same body as
+ * Sound::PlayBank3 (0x02012664); the ROM calls this copy. func_0200f760
+ * clears the cylinder flags bit 2, then sets it when the closest player is
+ * vanish Luigi (MakeVanishLuigiWork is the other copy). */
+extern "C" {
+extern void Vec3_Asr(void *dst, void *src, int n);
+extern void func_02012694(int id, void *pos);
 extern int Vec3_HorzLen(void *v);
-extern int atan2_hold_d_a_grock_1(int y, int x);
-extern s16 data_02082214[];
 extern void AddVec3(struct Vector3 *dst, struct Vector3 *a, struct Vector3 *b);
-/* Clears the cylinder flags bit 2, then sets it when the closest player
- * is vanish Luigi. MakeVanishLuigiWork is the other copy. */
 extern void func_0200f760(void *self, void *cyl);
 extern int RandomIntInternal(int *seed);
+}
+
+extern s16 data_02082214[];
 extern int data_0209e650;
 extern GrockModelFilePtr data_ov021_02114a50;
-}
 
 /* D1 stores this vtable, destroys the members in reverse declaration order,
  * then dEnemyBase_c::~dEnemyBase_c. D0 adds dEnemyBase_c's operator delete. */
 // @symbol _ZN9daGrock_cD1Ev
 // @symbol _ZN9daGrock_cD0Ev
-daGrock_c::~daGrock_c()
-{
-}
+daGrock_c::~daGrock_c() {}
 
 // @symbol _ZN9daGrock_c16OnAimedAtWithEggEv
-s32 daGrock_c::OnAimedAtWithEgg()
-{
+s32 daGrock_c::OnAimedAtWithEgg() {
     return 0;
 }
 
 /* Retire the marker and spawn the star. Still rocks pass spawn mode 2;
  * rolling rocks pass 4. No star (index 0xff) does nothing. */
-// @symbol func_ov021_02112294
-extern "C" void func_ov021_02112294(void *raw)
-{
-    daGrock_c *rock = (daGrock_c *)raw;
-
-    if (rock->mStarID == 0xff)
+// @symbol _ZN9daGrock_c9SpawnStarEv
+void daGrock_c::SpawnStar() {
+    if (mStarID == 0xff)
         return;
-    if (rock->mType == kGrockStill) {
-        rock->UntrackAndSpawnStar(rock->mTrackStarID, rock->mStarID, rock->mPos, 2);
+    if (mType == kGrockStill) {
+        UntrackAndSpawnStar(mTrackStarID, mStarID, mPos, 2);
     } else {
-        rock->UntrackAndSpawnStar(rock->mTrackStarID, rock->mStarID, rock->mPos, 4);
+        UntrackAndSpawnStar(mTrackStarID, mStarID, mPos, 4);
     }
 }
 
 /* Shift the position down 3, build the scratch matrix, keep the unrotated
  * copy in pad_188 for the shadow, then rotate it into the model. */
-// @symbol func_ov021_021122fc
-extern "C" void func_ov021_021122fc(char *raw) {
-    daGrock_c *rock = (daGrock_c *)raw;
+// @symbol _ZN9daGrock_c20UpdateModelTransformEv
+void daGrock_c::UpdateModelTransform() {
     int shifted[3];
 
-    Vec3_Asr(shifted, &rock->mPosX, 3);
+    Vec3_Asr(shifted, &mPos, 3);
     Matrix4x3_FromTranslation(&data_020a0e68, shifted[0], shifted[1], shifted[2]);
-    *(Matrix4x3 *)rock->pad_188 = data_020a0e68;
-    Matrix4x3_ApplyInPlaceToRotationXYZExt(&data_020a0e68,
-                                            rock->mAngleX, rock->mAngleY, rock->mAngleZ);
-    rock->mModel.mat4x3 = data_020a0e68;
-    rock->DropShadowRadHeight(rock->mShadowModel, *(Matrix4x3 *)rock->pad_188, 0x1f4000, 0x1f4000,
-                              0xf);
+    *(Matrix4x3 *)pad_188 = data_020a0e68;
+    Matrix4x3_ApplyInPlaceToRotationXYZExt(&data_020a0e68, mAngleX, mAngleY, mAngleZ);
+    mModel.mat4x3 = data_020a0e68;
+    DropShadowRadHeight(mShadowModel, *(Matrix4x3 *)pad_188, 0x1f4000, 0x1f4000, 0xf);
 }
 
 /* Cylinder hit. Mega always breaks the rock. Punch/kick/breakdance/slide
  * (0x3c0) breaks it only for character 2 (Wario; SaveData's unlock bit 2)
  * and otherwise just plays the bonk. A still rock never hurts the player. */
-// @symbol func_ov021_021123b0
-extern "C" void func_ov021_021123b0(char *raw)
-{
-    daGrock_c *rock = (daGrock_c *)raw;
+// @symbol _ZN9daGrock_c17HandleCylinderHitEv
+void daGrock_c::HandleCylinderHit() {
     dActor_c *other;
     u32 hit;
     int isPlayer;
 
-    if (rock->mdCcAcPos_c.otherOwner == 0)
+    if (mdCcAcPos_c.otherOwner == 0)
         return;
-    other = dActor_c::FindWithID(rock->mdCcAcPos_c.otherOwner);
+    other = dActor_c::FindWithID(mdCcAcPos_c.otherOwner);
     if (other == 0)
         return;
 
-    hit = rock->mdCcAcPos_c.hitFlags;
+    hit = mdCcAcPos_c.hitFlags;
     if ((hit & 0x10) != 0) {
-        func_02012694(0x17a, &rock->mCamSpacePosX);
+        func_02012694(0x17a, &mCamSpacePos);
         ((Player *)other)->IncMegaKillCount();
-        rock->TriplePoofDust();
-        Particle::System::NewSimple(0x67, rock->mPosX, rock->mPosY, rock->mPosZ);
-        func_ov021_02112294(rock);
-        rock->MarkForDestruction();
+        TriplePoofDust();
+        Particle::System::NewSimple(0x67, mPosX, mPosY, mPosZ);
+        SpawnStar();
+        MarkForDestruction();
         return;
     }
 
@@ -212,138 +175,130 @@ extern "C" void func_ov021_021123b0(char *raw)
 
     if ((hit & 0x3c0) != 0) {
         if (other->param1 == 2) {
-            func_02012694(0x17a, &rock->mCamSpacePosX);
-            rock->MarkForDestruction();
-            rock->TriplePoofDust();
-            Particle::System::NewSimple(0x67, rock->mPosX, rock->mPosY, rock->mPosZ);
-            func_ov021_02112294(rock);
+            func_02012694(0x17a, &mCamSpacePos);
+            MarkForDestruction();
+            TriplePoofDust();
+            Particle::System::NewSimple(0x67, mPosX, mPosY, mPosZ);
+            SpawnStar();
             return;
         }
-        Sound::PlayBank0(0xb5, rock->mCamSpacePos);
+        Sound::PlayBank0(0xb5, mCamSpacePos);
         return;
     }
 
-    if (rock->mType == kGrockStill)
+    if (mType == kGrockStill)
         return;
     {
         Vector3 pos;
-        pos.x = rock->mPosX;
-        pos.y = rock->mPosY;
-        pos.z = rock->mPosZ;
+        pos.x = mPosX;
+        pos.y = mPosY;
+        pos.z = mPosZ;
         ((Player *)other)->Hurt(pos, 3, 0xc000, 1, 0, 1);
     }
 }
 
 /* Floor: bounce, dust, and steer the lateral velocity along the normal,
  * then cap it. Wall: reflect the heading when the approach is steep. */
-// @symbol func_ov021_02112544
-extern "C" void func_ov021_02112544(char *raw)
-{
-    daGrock_c *rock = (daGrock_c *)raw;
+// @symbol _ZN9daGrock_c19HandleMeshCollisionEv
+void daGrock_c::HandleMeshCollision() {
     Vec3 normal;
     Vec3 pos;
     Vec3 wallNormal;
     dBgPi *hit;
 
-    dBgCh_Actr_UpdateContinuous_Veneer(&rock->mWithMeshClsn);
-    if (rock->mWithMeshClsn.IsOnGround() != 0) {
-        hit = rock->mWithMeshClsn.GetFloorResult();
+    dBgCh_Actr_UpdateContinuous_Veneer(&mWithMeshClsn);
+    if (mWithMeshClsn.IsOnGround() != 0) {
+        hit = mWithMeshClsn.GetFloorResult();
         hit->surface.CopyNormalTo(*(Vector3 *)&normal);
 
-        pos = *(Vec3 *)&rock->mPosX;
+        pos = *(Vec3 *)&mPos;
         pos.x -= normal.x * 0x12c;
         pos.y -= normal.y * 0x12c;
         pos.z -= normal.z * 0x12c;
 
-        if (rock->mWithMeshClsn.JustHitGround() != 0) {
-            if (rock->mVertSpeed < (rock->mVertAccel << 1) && normal.y >= 0xc00)
-                rock->mVertSpeed = -rock->mVertSpeed * 6 / 10;
+        if (mWithMeshClsn.JustHitGround() != 0) {
+            if (mVertSpeed < (mVertAccel << 1) && normal.y >= 0xc00)
+                mVertSpeed = -mVertSpeed * 6 / 10;
             pos.y += 0x3c000;
             Particle::System::NewSimple(0x68, pos.x, pos.y, pos.z);
-            func_0201267c(0x48, &rock->mCamSpacePos);
+            func_0201267c(0x48, &mCamSpacePos);
         } else {
-            rock->mDustParticleID =
-                (int)Particle::System::New(rock->mDustParticleID, 0x69, pos.x, pos.y, pos.z, 0, 0);
-            rock->mRollSoundID =
-                Sound::PlayLong(rock->mRollSoundID, 3, 0x8a, rock->mCamSpacePos, 0);
+            mDustParticleID =
+                (int)Particle::System::New(mDustParticleID, 0x69, pos.x, pos.y, pos.z, 0, 0);
+            mRollSoundID = Sound::PlayLong(mRollSoundID, 3, 0x8a, mCamSpacePos, 0);
         }
         {
-            int *vx = (int *)(int)&rock->mSpeedX;
-            int *vz = (int *)(int)&rock->mSpeedZ;
+            int *vx = (int *)(int)&mSpeedX;
+            int *vz = (int *)(int)&mSpeedZ;
             *vx = *vx + normal.x * 5;
             *vz = *vz + normal.z * 5;
         }
-        rock->mHorzSpeed = Vec3_HorzLen(&rock->mSpeedX);
-        rock->mPrevAngleY = (s16)cstd::atan2(rock->mSpeedX, rock->mSpeedZ);
-        if (rock->mHorzSpeed >= 0x22000) {
-            rock->mHorzSpeed = 0x22000;
-            rock->mSpeedX = data_02082214[((*(u16 *)&rock->mPrevAngleY >> 4) << 1)] * 0x22;
-            rock->mSpeedZ = data_02082214[((*(u16 *)&rock->mPrevAngleY >> 4) << 1) + 1] * 0x22;
+        mHorzSpeed = Vec3_HorzLen(&mSpeedX);
+        mPrevAngleY = (s16)cstd::atan2(mSpeedX, mSpeedZ);
+        if (mHorzSpeed >= 0x22000) {
+            mHorzSpeed = 0x22000;
+            mSpeedX = data_02082214[((*(u16 *)&mPrevAngleY >> 4) << 1)] * 0x22;
+            mSpeedZ = data_02082214[((*(u16 *)&mPrevAngleY >> 4) << 1) + 1] * 0x22;
         }
     }
 
-    if (rock->mWithMeshClsn.IsOnWall() == 0)
+    if (mWithMeshClsn.IsOnWall() == 0)
         return;
 
-    hit = rock->mWithMeshClsn.GetWallResult();
+    hit = mWithMeshClsn.GetWallResult();
     hit->surface.CopyNormalTo(*(Vector3 *)&wallNormal);
     {
         short wallAngle = cstd::atan2(wallNormal.x, wallNormal.z);
-        if (rock->GetSubtraction(rock->mPrevAngleY, wallAngle) <= 0x1000)
+        if (GetSubtraction(mPrevAngleY, wallAngle) <= 0x1000)
             return;
-        rock->mPrevAngleY = rock->ReflectAngle(wallNormal.x, wallNormal.z, rock->mPrevAngleY);
-        rock->UpdatePosWithHorzSpeedAndAng();
+        mPrevAngleY = ReflectAngle(wallNormal.x, wallNormal.z, mPrevAngleY);
+        UpdatePosWithHorzSpeedAndAng();
     }
 }
 
 /* Gravity, clamped at the terminal velocity, then step by the velocity. */
-// @symbol func_ov021_021127b4
-extern "C" void func_ov021_021127b4(char *raw)
-{
-    daGrock_c *rock = (daGrock_c *)raw;
-    int sum = rock->mVertSpeed + rock->mVertAccel;
-    int clamped = rock->mTerminalVelocity;
+// @symbol _ZN9daGrock_c19ApplyGravityAndMoveEv
+void daGrock_c::ApplyGravityAndMove() {
+    int sum = mVertSpeed + mVertAccel;
+    int clamped = mTerminalVelocity;
 
     if (sum >= clamped)
         clamped = sum;
-    rock->mVertSpeed = clamped;
-    AddVec3(&rock->mPos, (Vector3 *)&rock->mSpeedX, &rock->mPos);
+    mVertSpeed = clamped;
+    AddVec3(&mPos, (Vector3 *)&mSpeedX, &mPos);
 }
 
 // @symbol _ZN9daGrock_c16CleanupResourcesEv
-int daGrock_c::CleanupResources()
-{
+int daGrock_c::CleanupResources() {
     data_ov021_02114a50.Release();
     return 1;
 }
 
 // @symbol _ZN9daGrock_c6RenderEv
-int daGrock_c::Render()
-{
+int daGrock_c::Render() {
     if (mType >= kGrockRolling)
         mModel.Render(0);
     return 1;
 }
 
 // @symbol _ZN9daGrock_c8BehaviorEv
-int daGrock_c::Behavior()
-{
+int daGrock_c::Behavior() {
     if (mType >= kGrockRolling) {
         func_0200f760(this, &mdCcAcPos_c);
-        func_ov021_021123b0((char *)this);
+        HandleCylinderHit();
         if (mDeathState == 8)
             return 1;
 
         if (mType != kGrockStill) {
             s16 *roll;
 
-            func_ov021_021127b4((char *)this);
+            ApplyGravityAndMove();
             roll = (s16 *)(int)&mAngleX;
             *roll = (s16)(*roll + (mHorzSpeed >> 12) * 0x43);
             mAngleY = mPrevAngleY;
-            func_ov021_02112544((char *)this);
+            HandleMeshCollision();
         }
-        func_ov021_021122fc((char *)this);
+        UpdateModelTransform();
         mdCcAcPos_c.Clear();
 
         if (mPosZ >= (int)0xfe82c000) {
@@ -374,7 +329,7 @@ int daGrock_c::Behavior()
                 UntrackStar(mTrackStarID);
                 TriplePoofDust();
                 Particle::System::NewSimple(0x67, mPosX, mPosY, mPosZ);
-                func_02012694(0x17a, &mCamSpacePosX);
+                func_02012694(0x17a, &mCamSpacePos);
             }
         }
     } else {
@@ -414,9 +369,10 @@ int daGrock_c::Behavior()
 }
 
 // @symbol _ZN9daGrock_c13InitResourcesEv
-int daGrock_c::InitResources()
-{
-    struct Vec3 { s32 x, y, z; };
+int daGrock_c::InitResources() {
+    struct Vec3 {
+        s32 x, y, z;
+    };
 
     mType = (u8)(param1 & 0xf);
     mStarID = 0xff;
@@ -431,7 +387,7 @@ int daGrock_c::InitResources()
         if (mShadowModel.InitCylinder() == 0)
             return 0;
 
-        mWithMeshClsn.Init((dActor_c *)(int)this, 0x12c000, 0, 0, 0);
+        mWithMeshClsn.Init(this, 0x12c000, 0, 0, 0);
         mWithMeshClsn.SetLimMovFlag();
         mRollSoundID = 0;
 
@@ -475,8 +431,7 @@ int daGrock_c::InitResources()
  * later EAD lineage supplies classInit. Exact original spelling is not
  * preserved. Historical alias: RollingRock_Spawn. */
 // @symbol daGrock_c_classInit
-extern "C" daGrock_c *daGrock_c_classInit()
-{
+extern "C" daGrock_c *daGrock_c_classInit() {
     return new daGrock_c();
 }
 
