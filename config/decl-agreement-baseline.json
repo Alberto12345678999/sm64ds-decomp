@@ -27037,11 +27037,6 @@
         "arity:1"
       ]
     },
-    "func_ov022_0211193c": {
-      "include/decl_common.h": [
-        "arity:0"
-      ]
-    },
     "func_ov022_02111a1c": {
       "include/decl_common.h": [
         "param:#1 char *"
@@ -27092,11 +27087,6 @@
         "param:#2 unsigned int"
       ]
     },
-    "func_ov064_02117fb4": {
-      "src/unnamed/ov064/func_ov064_02117fd4.c": [
-        "return:int"
-      ]
-    },
     "func_ov064_0211929c": {
       "src/unnamed/ov064/func_ov064_021192bc.c": [
         "param:#1 int",
@@ -27132,22 +27122,6 @@
     "func_ov070_02120070": {
       "include/decl_common.h": [
         "param:#1 char *"
-      ]
-    },
-    "func_ov073_021223a4": {
-      "src/unnamed/ov073/func_ov073_02122730.c": [
-        "param:#1 char *",
-        "return:void"
-      ]
-    },
-    "func_ov073_02122730": {
-      "src/unnamed/ov073/func_ov073_021227d0.c": [
-        "return:int"
-      ]
-    },
-    "func_ov073_021227d0": {
-      "include/decl_common.h": [
-        "kind:data"
       ]
     },
     "func_ov074_0212087c": {
@@ -27292,20 +27266,6 @@
     "func_ov080_02127658": {
       "include/decl_common.h": [
         "kind:data"
-      ]
-    },
-    "func_ov098_0213a2cc": {
-      "src/game/actors/d_a_obj_bk_fall_block.cpp": [
-        "param:#1 daObjBk_Fall_Block_c *"
-      ],
-      "src/game/actors/d_a_obj_fl_fall_block.cpp": [
-        "param:#1 daObjFl_Fall_Block_c *"
-      ],
-      "src/game/actors/d_a_obj_km2_fall_block.cpp": [
-        "param:#1 daObjKm2_Fall_Block_c *"
-      ],
-      "src/game/actors/d_a_obj_th_fall_block.cpp": [
-        "param:#1 daObjTh_Fall_Block_c *"
       ]
     },
     "func_ov100_02144fcc": {
