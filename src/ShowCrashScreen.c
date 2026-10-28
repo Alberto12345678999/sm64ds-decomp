@@ -1,5 +1,5 @@
 #include "types.h"
-extern void *_ZN2G212GetBG1ScrPtrEv(void);
+extern void *GetBG1ScrPtr(void);
 extern u64 func_020427c4(void);
 extern void *func_0202e118(void);
 extern int func_020441bc(int i);
@@ -40,7 +40,7 @@ extern Buf52 data_0208e504;
 
 void ShowCrashScreen(void)
 {
-    char *scr = (char *)_ZN2G212GetBG1ScrPtrEv();
+    char *scr = (char *)GetBG1ScrPtr();
     int hp;
     int rr;
     int cc;

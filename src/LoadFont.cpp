@@ -2,7 +2,8 @@
 /* Runtime asset handles resolved through the overlay 0 file table. */
 
 namespace G2S {
-unsigned int GetBG1CharPtr(void);
+/* local extern: G2.h is not included in this TU. */
+extern "C" void *GetBG1CharPtr(void);
 }
 enum LoadFont_AssetId {
     ASSET_D_2D_MARIO_3DFONT_NCL_BIN = 0x0237

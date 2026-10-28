@@ -155,14 +155,17 @@ struct Matrix2x2 { int _00, _01, _10, _11; };
 #define SCENE_OFF(member) ((int)&((dScMgPachinko_c *)0)->member)
 
 namespace G2 {
-    void *GetBG2CharPtr();
-    void *GetBG2ScrPtr();
+/* local extern: G2.h is not included in this TU. */
+extern "C" void *GetBG2CharPtr();
+/* local extern: G2.h is not included in this TU. */
+extern "C" void *GetBG2ScrPtr();
 }
 
 namespace G2S {
     unsigned GetBG2CharPtr();
     unsigned GetBG2ScrPtr();
-    unsigned GetBG3CharPtr();
+    /* local extern: G2.h is not included in this TU. */
+    extern "C" void *GetBG3CharPtr();
 }
 
 namespace cstd {

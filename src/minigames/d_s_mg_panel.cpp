@@ -70,11 +70,13 @@ enum dScMgPanel_c_AssetId {
 #include "Sound.h"
 
 namespace G2 {
-char *GetBG2ScrPtr();
+/* local extern: G2.h is not included in this TU. */
+extern "C" char *GetBG2ScrPtr();
 }
 namespace G2S {
 char *GetBG2ScrPtr();
-char *GetBG3CharPtr();
+/* local extern: G2.h is not included in this TU. */
+extern "C" char *GetBG3CharPtr();
 }
 namespace GX {
 /* local extern: GX.h is not included in this TU. */

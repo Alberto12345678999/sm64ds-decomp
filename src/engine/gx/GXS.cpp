@@ -16,21 +16,21 @@
 #include "GX.h"
 
 namespace G2 {
-void *GetBG0ScrPtr(void);
-void *GetBG1ScrPtr(void);
-void *GetBG2CharPtr(void);
-void *GetBG2ScrPtr(void);
-void *GetBG3ScrPtr(void);
+extern "C" void *GetBG0ScrPtr(void);
+extern "C" void *GetBG1ScrPtr(void);
+extern "C" void *GetBG2CharPtr(void);
+extern "C" void *GetBG2ScrPtr(void);
+extern "C" void *GetBG3ScrPtr(void);
 }
 
 namespace G2S {
-unsigned int GetBG0CharPtr(void);
+extern "C" void *GetBG0CharPtr(void);
 unsigned int GetBG0ScrPtr(void);
-unsigned int GetBG1CharPtr(void);
+extern "C" void *GetBG1CharPtr(void);
 unsigned int GetBG1ScrPtr(void);
 unsigned int GetBG2CharPtr(void);
 unsigned int GetBG2ScrPtr(void);
-unsigned int GetBG3CharPtr(void);
+extern "C" void *GetBG3CharPtr(void);
 unsigned int GetBG3ScrPtr(void);
 }
 

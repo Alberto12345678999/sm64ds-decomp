@@ -12,11 +12,11 @@
  * decl_common.h no longer declares a data array named G2, which used to hide
  * this namespace in every translation unit that included it. */
 namespace G2 {
-void *GetBG0ScrPtr(void);
-void *GetBG1ScrPtr(void);
-void *GetBG2ScrPtr(void);
-void *GetBG3ScrPtr(void);
-void *GetBG2CharPtr(void);
+extern "C" void *GetBG0ScrPtr(void);
+extern "C" void *GetBG1ScrPtr(void);
+extern "C" void *GetBG2ScrPtr(void);
+extern "C" void *GetBG3ScrPtr(void);
+extern "C" void *GetBG2CharPtr(void);
 }
 
 namespace G2S {
@@ -24,10 +24,10 @@ void *GetBG0ScrPtr(void);
 void *GetBG1ScrPtr(void);
 void *GetBG2ScrPtr(void);
 void *GetBG3ScrPtr(void);
-void *GetBG0CharPtr(void);
-void *GetBG1CharPtr(void);
+extern "C" void *GetBG0CharPtr(void);
+extern "C" void *GetBG1CharPtr(void);
 void *GetBG2CharPtr(void);
-void *GetBG3CharPtr(void);
+extern "C" void *GetBG3CharPtr(void);
 }
 
 #endif

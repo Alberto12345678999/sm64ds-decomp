@@ -46,11 +46,16 @@ namespace cstd {
 int fdiv(int numerator, int denominator);
 }
 namespace G2 {
-void *GetBG0ScrPtr();
-void *GetBG1ScrPtr();
-void *GetBG2ScrPtr();
-void *GetBG3ScrPtr();
-void *GetBG2CharPtr();
+/* local extern: G2.h is not included in this TU. */
+extern "C" void *GetBG0ScrPtr();
+/* local extern: G2.h is not included in this TU. */
+extern "C" void *GetBG1ScrPtr();
+/* local extern: G2.h is not included in this TU. */
+extern "C" void *GetBG2ScrPtr();
+/* local extern: G2.h is not included in this TU. */
+extern "C" void *GetBG3ScrPtr();
+/* local extern: G2.h is not included in this TU. */
+extern "C" void *GetBG2CharPtr();
 }
 namespace GX {
 /* local extern: GX.h is not included in this TU. */

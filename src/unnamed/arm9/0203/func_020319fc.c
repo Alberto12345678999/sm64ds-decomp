@@ -7,7 +7,7 @@ extern unsigned int data_0209fd5c[];
 extern unsigned char data_0209fd20[];
 extern unsigned int data_0209287c[];
 extern unsigned int data_0209283c[];
-extern char *_ZN3G2S13GetBG0CharPtrEv(void);
+extern char *GetBG0CharPtr(void);
 extern char *func_02054d88(void);
 
 void func_020319fc(int n)
@@ -24,7 +24,8 @@ void func_020319fc(int n)
     unsigned char rem;
 
     if (data_0209fc94 != 0)
-        dst = (unsigned int *)(_ZN3G2S13GetBG0CharPtrEv() + (((data_0209fcb0 * data_0209fc78 << 1) + 0x200) << 5));
+        dst = (unsigned int *)(GetBG0CharPtr() +
+                               (((data_0209fcb0 * data_0209fc78 << 1) + 0x200) << 5));
     else
         dst = (unsigned int *)(func_02054d88() + (((data_0209fcb0 * data_0209fc78 << 1) + 0x200) << 5));
 

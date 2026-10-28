@@ -168,7 +168,8 @@ namespace Sound {
 u32 PlayBank2_2D(u32 id);
 }
 namespace G2S {
-char *GetBG3CharPtr();
+/* local extern: G2.h is not included in this TU. */
+extern "C" void *GetBG3CharPtr();
 }
 namespace GX {
 /* local extern: GX.h is not included in this TU. */

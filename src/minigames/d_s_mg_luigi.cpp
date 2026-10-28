@@ -102,9 +102,12 @@ unsigned GetBG2CharPtr();
 char *GetBG3ScrPtr();
 }
 namespace G2 {
-char *GetBG2CharPtr();
-char *GetBG2ScrPtr();
-char *GetBG3ScrPtr();
+/* local extern: G2.h is not included in this TU. */
+extern "C" char *GetBG2CharPtr();
+/* local extern: G2.h is not included in this TU. */
+extern "C" char *GetBG2ScrPtr();
+/* local extern: G2.h is not included in this TU. */
+extern "C" char *GetBG3ScrPtr();
 }
 namespace CP15 {
 void FlushAndInvalidateDataCache(u32 addr, u32 size);

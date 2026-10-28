@@ -4,9 +4,12 @@
 #include "types.h"
 
 namespace G2 {
-void *GetBG1ScrPtr(void);
-void *GetBG2CharPtr(void);
-void *GetBG2ScrPtr(void);
+/* local extern: G2.h is not included in this TU. */
+extern "C" void *GetBG1ScrPtr(void);
+/* local extern: G2.h is not included in this TU. */
+extern "C" void *GetBG2CharPtr(void);
+/* local extern: G2.h is not included in this TU. */
+extern "C" void *GetBG2ScrPtr(void);
 }
 
 namespace GX {

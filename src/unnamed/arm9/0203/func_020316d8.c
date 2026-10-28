@@ -4,8 +4,8 @@ extern u8 data_0209fc78[];
 extern u8 data_0209fc88[];
 extern u8 data_0208f174[];
 
-extern void *_ZN2G213GetBG2CharPtrEv(void);
-extern void *_ZN3G2S13GetBG0CharPtrEv(void);
+extern void *GetBG2CharPtr(void);
+extern void *GetBG0CharPtr(void);
 extern int func_02054d88(void);
 extern void MultiCopy_Int(int *src, int *dst, int len);
 
@@ -14,9 +14,9 @@ void func_020316d8(int screen, int c, u32 x, void *buf)
     u32 *chr;
     int pitch;
     if (screen == 1)
-        chr = (u32 *)((char *)_ZN2G213GetBG2CharPtrEv() + ((data_0209fcdc[0] + 0x280 + (x >> 3)) << 5));
+        chr = (u32 *)((char *)GetBG2CharPtr() + ((data_0209fcdc[0] + 0x280 + (x >> 3)) << 5));
     else if (screen == 0)
-        chr = (u32 *)((char *)_ZN3G2S13GetBG0CharPtrEv() + ((data_0209fc78[0] + 0x200 + (x >> 3)) << 5));
+        chr = (u32 *)((char *)GetBG0CharPtr() + ((data_0209fc78[0] + 0x200 + (x >> 3)) << 5));
     else
         chr = (u32 *)((char *)func_02054d88() + ((data_0209fc78[0] + 0x200 + (x >> 3)) << 5));
 

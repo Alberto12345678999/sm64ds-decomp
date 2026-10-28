@@ -6,7 +6,7 @@
  */
 extern void* func_ov007_020b3f20(int n);
 extern void* func_02054ea8(void);
-extern void *_ZN3G2S13GetBG1CharPtrEv(void);
+extern void *GetBG1CharPtr(void);
 extern int func_02054d88(void);
 extern void func_ov007_020b8548(int a0, void* a1, int a2, void* a3, unsigned int a4, int a5, int a6);
 /* local extern: C file cannot include GX.h. */
@@ -65,7 +65,7 @@ void func_ov007_020bcba8(int idx)
         {
             void* a1 = func_ov007_020b3f20(0x25);
             void* a3 = func_02054ea8();
-            unsigned int a4 = (unsigned int)_ZN3G2S13GetBG1CharPtrEv();
+            unsigned int a4 = (unsigned int)GetBG1CharPtr();
             int a6 = *(int *)(*(char **)((Ov007Work *)g)->settings + 0x9c);
             int idx2;
             func_ov007_020b8548(0, a1, 0, a3, a4, 0, a6);
@@ -93,7 +93,7 @@ void func_ov007_020bcba8(int idx)
         {
             void* a1 = func_ov007_020b3f20(0x25);
             void* a3 = func_02054ea8();
-            unsigned int a4 = (unsigned int)_ZN3G2S13GetBG1CharPtrEv();
+            unsigned int a4 = (unsigned int)GetBG1CharPtr();
             int a5 = func_02054d88();
             int a6 = *(int *)(*(char **)((Ov007Work *)g)->settings + 0x9c);
             func_ov007_020b8548(0, a1, 0, a3, a4, a5, a6);

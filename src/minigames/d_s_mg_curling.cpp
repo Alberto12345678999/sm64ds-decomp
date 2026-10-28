@@ -45,7 +45,8 @@ enum dScMgCurling_c_AssetId {
 #include "G2x.h"
 
 namespace G2 {
-void *GetBG2CharPtr(void);
+/* local extern: G2.h is not included in this TU. */
+extern "C" void *GetBG2CharPtr(void);
 }
 
 namespace G2S {

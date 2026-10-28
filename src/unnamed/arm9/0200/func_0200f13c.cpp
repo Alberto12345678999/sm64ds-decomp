@@ -6,7 +6,12 @@ u32 LoadCompressedFileAt(unsigned int fileID, void *target);
 void *LoadFile(u16 fileID);
 void Deallocate(void *ptr);
 }
-namespace G2 { void *GetBG2CharPtr(); void *GetBG2ScrPtr(); }
+namespace G2 {
+/* local extern: G2.h is not included in this TU. */
+extern "C" void *GetBG2CharPtr();
+/* local extern: G2.h is not included in this TU. */
+extern "C" void *GetBG2ScrPtr();
+}
 namespace GX {
 /* local extern: GX.h is not included in this TU. */
 extern "C" void LoadOBJPltt(void const *, unsigned int, unsigned int);

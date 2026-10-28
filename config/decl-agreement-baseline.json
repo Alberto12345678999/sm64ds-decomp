@@ -784,6 +784,51 @@
         "param:#1 unsigned char"
       ]
     },
+    "GetBG0CharPtr": {
+      "src/Message.cpp": [
+        "return:unsigned int"
+      ],
+      "src/Message2.cpp": [
+        "return:unsigned int"
+      ],
+      "src/unnamed/arm9/0203/func_020319fc.c": [
+        "return:char *"
+      ]
+    },
+    "GetBG1CharPtr": {
+      "src/Message.cpp": [
+        "return:unsigned int"
+      ],
+      "src/Message2.cpp": [
+        "return:unsigned int"
+      ]
+    },
+    "GetBG2CharPtr": {
+      "src/minigames/d_s_mg_luigi.cpp": [
+        "return:char *"
+      ]
+    },
+    "GetBG2ScrPtr": {
+      "src/minigames/d_s_mg_luigi.cpp": [
+        "return:char *"
+      ],
+      "src/minigames/d_s_mg_panel.cpp": [
+        "return:char *"
+      ]
+    },
+    "GetBG3CharPtr": {
+      "src/minigames/d_s_mg_panel.cpp": [
+        "return:char *"
+      ],
+      "src/unnamed/arm9/0200/func_0200f220.c": [
+        "return:char *"
+      ]
+    },
+    "GetBG3ScrPtr": {
+      "src/minigames/d_s_mg_luigi.cpp": [
+        "return:char *"
+      ]
+    },
     "GetLevelPart": {
       "src/game/stages/d_s_stage_methods.cpp": [
         "return:int"
