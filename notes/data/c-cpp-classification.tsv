@@ -478,7 +478,6 @@ src/d_a_obj_tt_futa.c	S1-stores-rom-vptr	ov033			stores _ZTV13daObjTtFuta_c	1		N
 src/d_a_obj_tt_water.c	WEAK-refs-only	ov033				1		None		-
 src/d_a_kinopio.c	WEAK-refs-only	ov085				1		None		-
 src/d_a_tor.c	WEAK-refs-only	ov096				1		None		-
-src/TouchArea_Update.c	PURE-C	ov001				1		None		-
 src/d_a_obj_bk_lift.c	WEAK-refs-only	ov015				1		None		-
 src/Trap_Spawn.c	S1-stores-rom-vptr	ov010			stores _ZTV14daObjC1_Trap_c	1		None	_ZTV14daObjC1_Trap_c	-
 src/d_a_obj_tbox.c	WEAK-refs-only	ov064				1		None		-
@@ -1129,11 +1128,8 @@ src/unnamed/ov002/__sinit_ov002_0210804c.c	WEAK-refs-only	ov002				0		None		extr
 src/unnamed/ov002/__sinit_ov002_02108094.c	PURE-C	ov002				0		None		extra-sections:init
 src/unnamed/ov004/__sinit_ov004_020b948c.c	PURE-C	ov004				0		None		extra-sections:init
 src/unnamed/ov004/__sinit_ov004_020b955c.c	PURE-C	ov004				0		None		extra-sections:init
-src/unnamed/ov004/__sinit_ov004_020b9ad0.c	PURE-C	ov004				0		None		extra-sections:init
-src/unnamed/ov004/__sinit_ov004_020b9b24.c	PURE-C	ov004				0		None		extra-sections:init
 src/unnamed/ov006/__sinit_ov006_0212f4c4.c	WEAK-refs-only	ov006				0		None		extra-sections:init
 src/unnamed/ov006/__sinit_ov006_0212f52c.c	WEAK-refs-only	ov006				0		None		extra-sections:init
-src/unnamed/ov006/__sinit_ov006_0212f660.c	PURE-C	ov006				0		None		extra-sections:init
 src/unnamed/ov006/__sinit_ov006_0212f6b4.c	WEAK-refs-only	ov006				0		None		extra-sections:init
 src/unnamed/ov006/__sinit_ov006_0212fc7c.c	PURE-C	ov006				0		None		extra-sections:init
 src/unnamed/ov006/__sinit_ov006_0212fd48.c	PURE-C	ov006				0		None		extra-sections:init
@@ -3263,7 +3259,6 @@ src/func_ov001_020ab374.c	P2-vtable-only	ov001	dCapIcon_c	dCapIcon_c	vtable dCap
 src/func_ov001_020ab3a0.c	P2-vtable-only	ov001	dCapIcon_c	dCapIcon_c	vtable dCapIcon_c slot 0 @0x20ab3a0	1		False		no-header:dCapIcon_c
 src/func_ov001_020ab3c4.c	PURE-C	ov001				1		None		-
 src/unnamed/ov001/func_ov001_020ab3f0.c	PURE-C	ov001				1		None		-
-src/unnamed/ov001/func_ov001_020ab41c.c	PURE-C	ov001				1		None		-
 src/func_ov001_020ab54c.c	P2-vtable-only	ov001	dThIcon_c	dThIcon_c	vtable dThIcon_c slot 1 @0x20ab54c	1		False		no-header:dThIcon_c
 src/func_ov001_020ab550.c	P2-vtable-only	ov001	dThIcon_c	dThIcon_c	vtable dThIcon_c slot 0 @0x20ab550	1		False		no-header:dThIcon_c
 src/unnamed/ov001/func_ov001_020ab5b0.c	PURE-C	ov001				1		None		-

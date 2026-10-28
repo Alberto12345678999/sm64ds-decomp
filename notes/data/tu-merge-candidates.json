@@ -14668,15 +14668,13 @@
    "end": "0x20ab54c",
    "classes": [],
    "n_functions_map": 4,
-   "n_files": 4,
+   "n_files": 2,
    "files": [
     "src/func_ov001_020ab3c4.c",
-    "src/unnamed/ov001/func_ov001_020ab3f0.c",
-    "src/unnamed/ov001/func_ov001_020ab41c.c",
-    "src/TouchArea_Update.c"
+    "src/unnamed/ov001/func_ov001_020ab3f0.c"
    ],
    "ext_mix": {
-    ".c": 4
+    ".c": 2
    },
    "ext_kind": "c",
    "n_asm_files": 0,
