@@ -10,12 +10,13 @@
  * inline. common.h comes before daChair_c.h so the shadow-matrix copy
  * stays twelve words. opt_common_subs off holds ApproachStateValue.
  */
-// leftovers:
-// - Player::Hurt stays a scalar extern (Fix12<int> by value).
+// What stays, and why:
+// - The extern "C" block holds the arm9 helpers that have no shared header
+//   (func_0200f760, Vec3_Sub, AddVec3, AngleDiff,
+//   Matrix4x3_FromRotationZXYExt).
 // - The ROM calls dBgCh_Actr_UpdateContinuous_Veneer (0x020383fc), not
-//   UpdateContinuous. func_0200f760 (cylinder movement bit from the
-//   vanish flag) and func_0201267c (bank-3 player, one past
-//   Sound::PlayBank3) have no header names.
+//   UpdateContinuous. func_0201267c is Sound.h's bank-3 player, one past
+//   Sound::PlayBank3.
 // - GetWallResult is the member; the +4 SurfaceInfo and the CopyNormalTo
 //   reference pun stay. Vec3 POD twins (player copy, diff, normal, hurt
 //   pos): a Vector3 local emits its destructor call. player->mPosX by
@@ -27,9 +28,7 @@
 //   handle.
 
 /* Runtime asset handles resolved through the overlay 0 file table. */
-enum daChair_c_AssetId {
-    ASSET_CHAIR_BMD = 0x02d0
-};
+enum daChair_c_AssetId { ASSET_CHAIR_BMD = 0x02d0 };
 
 #include "common.h"
 #include "nitro/fx/fx.h"
@@ -39,9 +38,9 @@ enum daChair_c_AssetId {
 #include "Player.h"
 #include "dBgCh_Actr.h"
 #include "Sound.h"
-namespace cstd {
-s16 atan2(s32, s32);
-}
+#include "cstd.h"
+#include "Particle__System.h"
+#include "math/CalcLib.h"
 
 #pragma opt_common_subs off
 
@@ -58,7 +57,9 @@ struct ChairModelFilePtr : SharedFilePtr {
 extern ChairModelFilePtr data_ov020_02114af0;
 extern Matrix4x3 IDENTITY_MATRIX4X3;
 
-typedef struct { s32 x, y, z; } Vec3;
+typedef struct {
+    s32 x, y, z;
+} Vec3;
 
 /* mStateTimer at +0x9e and mActionTimer at +0xa0, addressed from
  * this+0x300 rather than from the fields. */
@@ -87,39 +88,26 @@ enum ChairSfxId {
  * table: one s16 sin, s16 cos pair per 16 angle units. */
 #define SINCOS_INDEX(angle) ((*(u16 *)&(angle) >> 4) * 2)
 
+/* local extern: arm9 C helpers with no shared header yet. Vec3_Sub and
+   AddVec3 take this file's Vec3, as their definitions take a plain triple. */
 extern "C" {
 void func_0200f760(void *self, void *cyl);
 void Vec3_Sub(Vec3 *res, Vec3 *v0, Vec3 *v1);
-s16 atan2_hold_d_a_chair_1(s32 y, s32 x);
-s32 Vec3_HorzLen(const Vector3 *v);
 void AddVec3(Vec3 *dst, Vec3 *add, Vec3 *src);
-int Vec3_Dist(const Vector3 *a, const Vector3 *b);
-short Vec3_HorzAngle(const Vector3 *a, const Vector3 *b);
 int AngleDiff(int a, int b);
 void Matrix4x3_FromRotationZXYExt(void *m, int x, int y, int z);
-
-/* Parameter names keep this TU's @NNN. */
-typedef void BgchInitAt_(void *self, dActor_c *actor, int radius, int height, Vector3_16 *rot,
-                         Vector3_16 *unk);
-namespace Particle {
-struct System {
-    static void *NewSimple(unsigned id, int x, int y, int z);
-};
 }
 
 extern s16 data_02082214[];
-}
 
 // @symbol daChair_c_classInit
 /* CHAIR registry factory. */
-extern "C" daChair_c *daChair_c_classInit(void)
-{
+extern "C" daChair_c *daChair_c_classInit(void) {
     return new daChair_c();
 }
 
 // @symbol _ZN9daChair_c13InitResourcesEv
-s32 daChair_c::InitResources()
-{
+s32 daChair_c::InitResources() {
     BMD_File *file = (BMD_File *)dExtSimpleModel_c::LoadFile(data_ov020_02114af0);
     mModel.SetFile(file, 1, -1);
     mShadowModel.InitCylinder();
@@ -137,14 +125,21 @@ s32 daChair_c::InitResources()
 }
 
 // @symbol _ZN9daChair_c8BehaviorEv
-s32 daChair_c::Behavior()
-{
+s32 daChair_c::Behavior() {
     func_0200f760(this, &mCylinder);
     switch (mState) {
-    case 0: State0(); break;
-    case 1: State1(); break;
-    case 2: State2(); break;
-    case 3: State3(); break;
+    case 0:
+        State0();
+        break;
+    case 1:
+        State1();
+        break;
+    case 2:
+        State2();
+        break;
+    case 3:
+        State3();
+        break;
     }
     UpdateModel();
     mCylinder.Clear();
@@ -154,22 +149,19 @@ s32 daChair_c::Behavior()
 }
 
 // @symbol _ZN9daChair_c6RenderEv
-s32 daChair_c::Render()
-{
+s32 daChair_c::Render() {
     mModel.Render(0);
     return 1;
 }
 
 // @symbol _ZN9daChair_c16CleanupResourcesEv
-s32 daChair_c::CleanupResources()
-{
+s32 daChair_c::CleanupResources() {
     data_ov020_02114af0.Release();
     return 1;
 }
 
 // @symbol _ZN9daChair_c11UpdateModelEv
-void daChair_c::UpdateModel()
-{
+void daChair_c::UpdateModel() {
     Matrix4x3_FromRotationZXYExt(&mModel.mat4x3, mAngleX, mAngleY, mAngleZ);
     mModel.mat4x3.m[9] = mPosX >> 3;
     mModel.mat4x3.m[10] = mPosY >> 3;
@@ -181,8 +173,7 @@ void daChair_c::UpdateModel()
 }
 
 // @symbol _ZN9daChair_c5BreakEv
-void daChair_c::Break()
-{
+void daChair_c::Break() {
     Particle::System::NewSimple(0x25, mPosX, mPosY, mPosZ);
     Particle::System::NewSimple(0x26, mPosX, mPosY, mPosZ);
     PoofDust();
@@ -190,15 +181,12 @@ void daChair_c::Break()
 }
 
 // @symbol _ZN9daChair_c18ApproachStateValueEPsS0_isis
-int daChair_c::ApproachStateValue(s16 *pos, s16 *vel, s32 target,
-                                  s16 thresh, s32 accel, s16 mult)
-{
+int daChair_c::ApproachStateValue(s16 *pos, s16 *vel, s32 target, s16 thresh, s32 accel, s16 mult) {
     short old = pos[0];
     pos[0] = old + vel[0];
     short now = pos[0];
-    if (now == target
-        || ((now - target) * (old - target) < 0
-            && vel[0] > -thresh && vel[0] < thresh)) {
+    if (now == target ||
+        ((now - target) * (old - target) < 0 && vel[0] > -thresh && vel[0] < thresh)) {
         pos[0] = target;
         vel[0] = 0;
         return 1;
@@ -212,8 +200,7 @@ int daChair_c::ApproachStateValue(s16 *pos, s16 *vel, s32 target,
 }
 
 // @symbol _ZN9daChair_c6State0Ev
-void daChair_c::State0()
-{
+void daChair_c::State0() {
     dActor_c *piano;
 
     mState = 1;
@@ -234,8 +221,7 @@ void daChair_c::State0()
 }
 
 // @symbol _ZN9daChair_c6State1Ev
-void daChair_c::State1()
-{
+void daChair_c::State1() {
     int targetPos[4];
     dActor_c *target;
     short delta;
@@ -323,8 +309,7 @@ void daChair_c::State1()
 }
 
 // @symbol _ZN9daChair_c6State2Ev
-void daChair_c::State2()
-{
+void daChair_c::State2() {
     dBgCh_Actr_UpdateContinuous_Veneer(&mWithMeshClsn);
     (*(u16 *)((int)&mStateTimer))++;
 
@@ -412,8 +397,7 @@ void daChair_c::State2()
 }
 
 // @symbol _ZN9daChair_c6State3Ev
-void daChair_c::State3()
-{
+void daChair_c::State3() {
     s16 *tracked = mTrackedAngle;
     int angle;
     s16 *ip;

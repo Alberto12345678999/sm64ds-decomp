@@ -25,33 +25,33 @@
 #include "dActor_c.h"
 
 struct daKirai_c : dActor_c {
-    u8  pad_0d0[0x4];
+    u8 pad_0d0[0x4];
     /* Named by the class's own destructor calling dExtSimpleModel_c's D1 at +0x0d4 -- a
        relocation the ROM build checks. */
-    dExtSimpleModel_c mModel;     /* 0x0d4 */
-    dCcAcPos_c mdCcAcPos_c;       /* 0x124 */
-    u8  pad_164[0xc];
-    s32 mStateIndex;            /* 0x170 */
-    s32 mHomePosX;            /* 0x174 */
-    s32 mHomePosY;            /* 0x178 */
-    s32 mHomePosZ;            /* 0x17c */
+    dExtSimpleModel_c mModel; /* 0x0d4 */
+    dCcAcPos_c mdCcAcPos_c;   /* 0x124 */
+    u8 pad_164[0xc];
+    s32 mStateIndex; /* 0x170 */
+    s32 mHomePosX;   /* 0x174 */
+    s32 mHomePosY;   /* 0x178 */
+    s32 mHomePosZ;   /* 0x17c */
     /* Both taken in InitResources. mHomeHorzDist is Vec3_HorzLen of the spawn
        position -- how far out in XZ the bomb starts from the world origin.
        mHomeYOffset is the constant 0x2ee000, and mHomePosY is raised by
        mHomeYOffset >> 3 right after the home triple is copied.
        [daKirai_c::InitResources] */
-    s32 mHomeHorzDist;            /* 0x180 */
-    s32 mHomeYOffset;            /* 0x184 */
+    s32 mHomeHorzDist; /* 0x180 */
+    s32 mHomeYOffset;  /* 0x184 */
     /* uniqueIDs of the other spike bombs (actor 0x11c), taken when this one
-       disarms; zeroed as each one is found gone. [func_ov060_021184bc] */
-    u32 mOtherBombIDs[8];       /* 0x188 */
-    s32 mSlotIndex;            /* 0x1a8 -- AddSpikeBomb's slot */
-    u16 mTimer;                /* 0x1ac -- frames into the swell/explode states */
-    u8  mOpacity;            /* 0x1ae */
-    u8  pad_1af[0x1];       /* 0x1af, closing on the ROM's 0x1b0 */
+       disarms; zeroed as each one is found gone. [Disarm] */
+    u32 mOtherBombIDs[8]; /* 0x188 */
+    s32 mSlotIndex;       /* 0x1a8 -- AddSpikeBomb's slot */
+    u16 mTimer;           /* 0x1ac -- frames into the swell/explode states */
+    u8 mOpacity;          /* 0x1ae */
+    u8 pad_1af[0x1];      /* 0x1af, closing on the ROM's 0x1b0 */
 
     /* --- vtable, in ROM order. Do not reorder. --- */
-    virtual ~daKirai_c();       /* slots 16 (D1), 17 (D0) */
+    virtual ~daKirai_c(); /* slots 16 (D1), 17 (D0) */
 
     /* --- non-virtual --- */
     int CleanupResources();
@@ -59,18 +59,17 @@ struct daKirai_c : dActor_c {
     int InitResources();
     int Render();
 
-    /* The func_ov060_* methods. r0 is this bomb; the address is the method
-       name. The state table Behavior dispatches stores four of them as
-       member pointers. */
-    void func_ov060_021184bc();
-    int  func_ov060_02118544(Vector3 *pos);
-    void func_ov060_021185c4();
-    void func_ov060_02118690();
-    void func_ov060_021186d8();
-    void func_ov060_02118728();
-    void func_ov060_02118834();
-    void func_ov060_021188e8();
-    void func_ov060_02118970();
+    /* The bomb's helpers. The state table Behavior dispatches stores the four
+       State* members as member pointers. */
+    void Disarm();
+    int IsInTriggerRange(Vector3 *pos);
+    void Explode();
+    void UpdateModelTransform();
+    void Rearm();
+    void StateSpent();
+    void StateExploding();
+    void StateSwelling();
+    void StateArmed();
 };
 
 #ifndef SM64DS_PLATFORM_PC

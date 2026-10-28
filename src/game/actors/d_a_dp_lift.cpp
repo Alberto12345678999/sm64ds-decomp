@@ -5,8 +5,8 @@
  * and one mModel2 copy per marker not yet passed.
  *
  * Nine functions, ov025 .text 0x021120e4..0x02112654: six methods, then
- * the mesh-collider callback pair that sets mHadClsn and the registry
- * factory daDpLift_c_classInit, last. The RTTI string at ov025
+ * OnStoodOn / StoodOnCallback, the mesh-collider callback pair that sets
+ * mHadClsn, and the registry factory daDpLift_c_classInit, last. The RTTI string at ov025
  * 0x021139a0 is "10daDpLift_c".
  *
  * `#pragma defer_codegen off` is file-level and load-bearing. It emits
@@ -14,7 +14,7 @@
  * out D1 then D0, and it lets the opt_strength_reduction bracket around
  * InitResources bind. Do not move either pragma.
  *
- * Leftover:
+ * Notes (measured spellings that do not match):
  * - InitResources walks a copy of this by 0xc. Offsets 0x37c, 0x380 and
  *   0x384 are mMarkerPositions x, y and z. An indexed for-loop
  *   size-DIFF 0x124->0x118. An indexed do-loop size-DIFF 0x124->0x128.
@@ -33,9 +33,7 @@
  *   ("( expected"). The free call with two ints matches.
  * - Render: one Vector3 local then one Matrix4x3_FromTranslation
  *   size-DIFF 0x8c->0xa4.
- * - SetFile as a method with a Fix12<int> scale size-DIFF
- *   0x124->0x130. The free call with int 0x199 matches.
- *   func_020393d4 and func_020393c4 stay int* stores into the mesh
+ * - func_020393d4 and func_020393c4 stay int* stores into the mesh
  *   callback slots. data_02082214 stays the unnamed sine table.
  * - The two file handles live after InitResources; the compiler's
  *   __sinit_d_a_dp_lift.cpp constructs them at overlay load. Their wrapper
@@ -44,14 +42,12 @@
  */
 
 /* Runtime asset handles resolved through the overlay 0 file table. */
-enum daDpLift_c_AssetId {
-    ASSET_DP_LIFT_BMD = 0x05e1,
-    ASSET_DP_LIFT_KCL = 0x05e2
-};
+enum daDpLift_c_AssetId { ASSET_DP_LIFT_BMD = 0x05e1, ASSET_DP_LIFT_KCL = 0x05e2 };
 
 #include "daDpLift_c.h"
 #include "SharedFilePtr.h"
 #include "nitro/fx/fx.h"
+#include "math/MtxStack.h"
 
 #pragma defer_codegen off
 
@@ -68,7 +64,6 @@ struct DpLiftCollisionFilePtr : SharedFilePtr {
     ~DpLiftCollisionFilePtr();
 };
 
-extern "C" {
 /* Lift model, collision file (ov025 .bss) and marker model (ov002 .bss).
  * This TU's two handles are defined at the end of this file so the
  * constructors do not enter .text. */
@@ -79,26 +74,18 @@ extern CLPS_Block data_ov025_02112d08;
 
 extern s16 data_02082214[];
 
-void Matrix4x3_FromTranslation(Matrix4x3 *m, int x, int y, int z);
-
-extern void hold_d_a_dp_lift(void *self, void *kcl, const Matrix4x3 *mtx, int scale, s16 angleY,
-                             void *clps);
-
+/* arm9 C helpers with no shared header: they store dBgW's two callback words. */
+extern "C" {
 void func_020393d4(int *p, int v);
 void func_020393c4(int *p, int v);
-void func_ov025_021125bc(daDpLift_c *self, dActor_c *other);
-void func_ov025_021125dc(void *collider, daDpLift_c *self, dActor_c *other);
 }
 
 // @symbol _ZN10daDpLift_cD1Ev
 // @symbol _ZN10daDpLift_cD0Ev
-daDpLift_c::~daDpLift_c()
-{
-}
+daDpLift_c::~daDpLift_c() {}
 
 // @symbol _ZN10daDpLift_c16CleanupResourcesEv
-s32 daDpLift_c::CleanupResources()
-{
+s32 daDpLift_c::CleanupResources() {
     data_ov002_0210d9f0.Release();
     data_ov025_02113ae0.Release();
     data_ov025_02113ad8.Release();
@@ -106,14 +93,11 @@ s32 daDpLift_c::CleanupResources()
 }
 
 // @symbol _ZN10daDpLift_c6RenderEv
-s32 daDpLift_c::Render()
-{
+s32 daDpLift_c::Render() {
     mModel.Render(0);
     for (int i = mNextMarker; i < 10; i++) {
-        Matrix4x3_FromTranslation(&mModel2.mat4x3,
-                                  mMarkerPositions[i].x >> 3,
-                                  mMarkerPositions[i].y >> 3,
-                                  mMarkerPositions[i].z >> 3);
+        Matrix4x3_FromTranslation(&mModel2.mat4x3, mMarkerPositions[i].x >> 3,
+                                  mMarkerPositions[i].y >> 3, mMarkerPositions[i].z >> 3);
         mModel2.Render(0);
     }
     return 1;
@@ -121,16 +105,10 @@ s32 daDpLift_c::Render()
 
 /* mState: idle until mHadClsn, shake while mShakeTimer counts to 8,
    sink until Y is below 0x80000, then the settling shake. */
-enum {
-    STATE_IDLE,
-    STATE_SHAKE,
-    STATE_SINK,
-    STATE_SETTLE
-};
+enum { STATE_IDLE, STATE_SHAKE, STATE_SINK, STATE_SETTLE };
 
 // @symbol _ZN10daDpLift_c8BehaviorEv
-s32 daDpLift_c::Behavior()
-{
+s32 daDpLift_c::Behavior() {
     switch (mState) {
     case STATE_IDLE:
         if (mHadClsn) {
@@ -182,18 +160,15 @@ s32 daDpLift_c::Behavior()
 // @symbol _ZN10daDpLift_c13InitResourcesEv
 #pragma push
 #pragma opt_strength_reduction off
-s32 daDpLift_c::InitResources()
-{
+s32 daDpLift_c::InitResources() {
     mModel.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(data_ov025_02113ae0), 1, -1);
     mModel2.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(data_ov002_0210d9f0), 1, -1);
     UpdateClsnPosAndRot();
 
     KCL_File *kcl = (KCL_File *)dBgW_Kc::LoadFile(data_ov025_02113ad8);
-    ((dBgW_KcMbg *)(&mMeshCollider))
-        ->dBgW_KcMbg::SetFile((KCL_File *)(kcl), *(&mClsnMat), 0x199, mAngleY,
-                              *(CLPS_Block *)(&data_ov025_02112d08));
+    mMeshCollider.SetFile(kcl, mClsnMat, 0x199, mAngleY, data_ov025_02112d08);
     func_020393d4((int *)&mMeshCollider, (int)&dBgW::UpdatePosWithTransform);
-    func_020393c4((int *)&mMeshCollider, (int)&func_ov025_021125dc);
+    func_020393c4((int *)&mMeshCollider, (int)&StoodOnCallback);
 
     /* Ten markers under the lift, each 0x1cc000 lower than the last.
        The walk is a copy of this; see Leftover. */
@@ -224,22 +199,20 @@ s32 daDpLift_c::InitResources()
 DpLiftModelFilePtr data_ov025_02113ae0(ASSET_DP_LIFT_BMD);
 DpLiftCollisionFilePtr data_ov025_02113ad8(ASSET_DP_LIFT_KCL);
 
-/* Mesh-collider touch callback: remembers that the player (actor 0xbf)
-   touched the lift, for Behavior's idle state. */
-// @symbol func_ov025_021125bc
-extern "C" void func_ov025_021125bc(daDpLift_c *self, dActor_c *other)
-{
-    int isPlayer = other->actorID == 0xbf;
+/* Remembers that the player (actor 0xbf) stood on the lift, for Behavior's
+   idle state. */
+// @symbol _ZN10daDpLift_c9OnStoodOnEP8dActor_c
+void daDpLift_c::OnStoodOn(dActor_c *rider) {
+    int isPlayer = rider->actorID == 0xbf;
     if (isPlayer)
-        self->mHadClsn = true;
+        mHadClsn = true;
 }
 
-/* The callback InitResources installs: drops the collider argument and
-   forwards (lift, other). */
-// @symbol func_ov025_021125dc
-extern "C" void func_ov025_021125dc(void *collider, daDpLift_c *self, dActor_c *other)
-{
-    func_ov025_021125bc(self, other);
+/* The mesh-collider callback InitResources installs: drops the collider
+   argument and forwards to the lift. */
+// @symbol _ZN10daDpLift_c15StoodOnCallbackEP4dBgWP8dActor_cS3_
+void daDpLift_c::StoodOnCallback(dBgW *collider, dActor_c *lift, dActor_c *rider) {
+    ((daDpLift_c *)lift)->OnStoodOn(rider);
 }
 
 // @symbol daDpLift_c_classInit
@@ -251,7 +224,6 @@ extern "C" void func_ov025_021125dc(void *collider, daDpLift_c *self, dActor_c *
  * The inline Vector3 default constructor gives mMarkerPositions the ROM's
  * __cxa_vec_ctor(..., func_0203d384, _ZN7Vector3D1Ev); the manifest binds
  * the emitted _ZN7Vector3C1Ev to that arm9 body. */
-extern "C" daDpLift_c *daDpLift_c_classInit(void)
-{
+extern "C" daDpLift_c *daDpLift_c_classInit(void) {
     return new daDpLift_c;
 }
