@@ -880,6 +880,11 @@ ALL EIGHTEEN ARE DECLARED (2026-08-31). This class and all 32 of
        it.  Reconcile in the same commit, and remember the rename has to reach
        any prose path that names the file. */
 
+    /* Bresenham line from (x0, y0) to (x1, y1), plotted point by point through
+       PaintSquare (slot 34); a zero-length line plots once. The amida, teresa
+       and both trampoline minigames draw their strokes with it. */
+    void Mg_DrawLine(int x0, int y0, int x1, int y1, int colour, int size);
+
     s32 mTallyShown;            /* 0x050 */
     s32 mTallyAnimTimer;            /* 0x054 */
     s32 mTimeLimit;         /* 0x058 -- 60 or 120 from the scene ID */

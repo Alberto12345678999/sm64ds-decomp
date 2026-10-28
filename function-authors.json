@@ -19103,7 +19103,7 @@
     },
     "ov004:0x020ae5c4": {
       "author": "tangosdev",
-      "name": "Mg_DrawLine"
+      "name": "_ZN11dScMgBase_c11Mg_DrawLineEiiiiii"
     },
     "ov004:0x020ae858": {
       "author": "lunavyqo",

@@ -26,10 +26,8 @@ struct System {
  *
  * deslop leftovers:
  * - The scene's cards, rows and slots are the header's Card, Row and Slot
- *   arrays. RenderRows and RenderCards still reach theirs through
- *   EspAt5000, a view of this+0x5000 that keeps the ROM's split base, and
- *   FlashSync keeps the raw this+0x5034; the comments there give the
- *   measured reason.
+ *   arrays. RenderRows indexes mRows directly; RenderCards still reads its
+ *   cards through EspAt5000 and FlashSync keeps the raw this+0x5034.
  * - Ent_8e10 stands in for a card sprite's part record; RenderCards walks
  *   the list until f6 is 0xffff.
  * - Obj_777c is a vtable shim so AnimSet::Render can virtual-call the
@@ -831,18 +829,15 @@ void dScMg3DEsp_c::ResetSlots() {
 }
 #pragma pop
 
-/* RenderRows and RenderCards read their element through a this+0x5000
-   base: the ROM adds 0x5000 to the stepping pointer and loads mRow and
-   mCard's fields off it. Spelling them as dScMg3DEsp_c::mRows/mCards folds
-   that split base into a hoisted element pointer (RenderCards grows from
-   0x104 to 0x118 bytes, RenderRows from 0xb8 to 0xbc), so this view keeps
+/* RenderCards reads its element through a this+0x5000 base: the ROM adds
+   0x5000 to the stepping pointer and loads mCard's fields off it. Spelling
+   them as dScMg3DEsp_c::mCards folds that split base into a hoisted element
+   pointer (RenderCards grows from 0x104 to 0x118 bytes), so this view keeps
    the split and names the fields. */
 struct EspAt5000 {
     char pad[0x208];
     dScMg3DEsp_c::Card mCard; /* 0x5208, mCards[0] */
-    char pad2[0x280 - 0x220];
-    dScMg3DEsp_c::Row mRow; /* 0x5280, mRows[0] */
-    char pad3[0x54e - 0x294];
+    char pad2[0x54e - 0x220];
     u8 mFade; /* 0x554e */
 };
 typedef char EspAt5000_size_must_be_0x550[sizeof(EspAt5000) == 0x550 ? 1 : -1];
@@ -851,35 +846,28 @@ typedef char EspAt5000_size_must_be_0x550[sizeof(EspAt5000) == 0x550 ? 1 : -1];
 
 extern int sEsp3DAnimSetRowsSprites;
 
-inline char *inline_fn_8b18(int *arg0)
-{
-  return (char *) arg0;
-}
-
 // @symbol _ZN12dScMg3DEsp_c10RenderRowsEv
 void dScMg3DEsp_c::RenderRows()
 {
-    char *thiz = (char *)this;
     int i;
     for (i = 0; i < 3; i++) {
-        if (ESP_AT_5000(thiz)->mRow.mVisible != 0) {
-            int x = ESP_AT_5000(thiz)->mRow.mX >> 12;
-            int y = ESP_AT_5000(thiz)->mRow.mY >> 12;
-            int priority = ESP_AT_5000(thiz)->mRow.mPriority;
-            int scale = ESP_AT_5000(thiz)->mRow.mScale;
+        if (mRows[i].mVisible != 0) {
+            int x = mRows[i].mX >> 12;
+            int y = mRows[i].mY >> 12;
+            int priority = mRows[i].mPriority;
+            int scale = mRows[i].mScale;
             int *o = (int *)Mg_RenderSubSpriteScaled(sEsp3DAnimSetRowsSprites, x, y, -1, priority,
                                                      scale, 0);
-            if (ESP_AT_5000(thiz)->mRow.mState == 2) {
+            if (mRows[i].mState == 2) {
 
                 int w0 = o[0];
                 int w1 = o[1];
                 unsigned bits = (((unsigned)w1) << 0x10) >> 0x1c;
                 o[0] = (w0 & (~0xc00)) | 0x400;
                 *((unsigned short *)(((char *)o) + 4)) =
-                    ((*((unsigned short *)(inline_fn_8b18(o) + 4))) & (~0xf000)) | (bits << 12);
+                    ((*((unsigned short *)(((char *)o) + 4))) & (~0xf000)) | (bits << 12);
             }
         }
-        thiz += 0x14;
     }
 }
 
