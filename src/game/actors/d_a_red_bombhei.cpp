@@ -708,7 +708,7 @@ void daRedBombhei_c::func_ov084_0212c1a0()
         shutter = dActor_c::FindWithID(this->mShutterID);
         if (shutter == 0)
             return;
-        ((daObjCannonShutter_c *)shutter)->func_ov002_020bc990();
+        ((daObjCannonShutter_c *)shutter)->StartOpening();
         this->mCutsceneStep += 1;
         return;
     }
