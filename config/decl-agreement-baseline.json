@@ -167,10 +167,6 @@
       "src/_ZN6Player18St_YoshiPower_MainEv.cpp": [
         "return:void"
       ],
-      "src/game/actors/d_a_basabasa.cpp": [
-        "param:#2 int",
-        "return:void"
-      ],
       "src/game/actors/d_a_bombking.cpp": [
         "param:#2 int",
         "return:void"
@@ -2024,9 +2020,6 @@
       ]
     },
     "RandomIntInternal": {
-      "src/game/actors/d_a_basabasa.cpp": [
-        "return:unsigned int"
-      ],
       "src/game/actors/d_a_gmch.cpp": [
         "return:unsigned int"
       ],
@@ -3381,10 +3374,6 @@
         "param:#1 Vec3 *",
         "param:#2 Vec3 *"
       ],
-      "src/game/actors/d_a_basabasa.cpp": [
-        "param:#1 const void *",
-        "param:#2 const void *"
-      ],
       "src/game/actors/d_a_bg_snm_bdy.cpp": [
         "param:#1 const void *",
         "param:#2 const void *"
@@ -3492,10 +3481,6 @@
         "param:#2 const void *"
       ],
       "src/game/actors/d_a_bg_snm_bdy.cpp": [
-        "param:#1 const void *",
-        "param:#2 const void *"
-      ],
-      "src/game/actors/d_a_bg_snm_hed.cpp": [
         "param:#1 const void *",
         "param:#2 const void *"
       ],
@@ -3625,10 +3610,6 @@
         "param:#2 const void *"
       ],
       "src/game/actors/d_a_bg_snm_bdy.cpp": [
-        "param:#1 const void *",
-        "param:#2 const void *"
-      ],
-      "src/game/actors/d_a_bg_snm_hed.cpp": [
         "param:#1 const void *",
         "param:#2 const void *"
       ],
@@ -4796,19 +4777,9 @@
         "param:#5 void *",
         "param:#6 void *"
       ],
-      "src/game/actors/d_a_basabasa.cpp": [
-        "param:#2 dActor_c *",
-        "param:#5 Vector3_16 *",
-        "param:#6 Vector3_16 *"
-      ],
       "src/game/actors/d_a_bg_snm_bdy.cpp": [
         "param:#2 void *",
         "param:#5 void *"
-      ],
-      "src/game/actors/d_a_bg_snm_hed.cpp": [
-        "param:#2 void *",
-        "param:#5 void *",
-        "param:#6 void *"
       ],
       "src/game/actors/d_a_bmb.cpp": [
         "param:#2 dActor_c *",
@@ -6949,9 +6920,6 @@
       ]
     },
     "_ZN5Sound7PlaySubEjjj5Fix12IiEb": {
-      "src/game/actors/d_a_bg_snm_hed.cpp": [
-        "return:int"
-      ],
       "src/game/actors/d_a_c_jugem.cpp": [
         "param:#5 bool",
         "return:int"
@@ -7573,12 +7541,6 @@
         "return:void"
       ],
       "src/game/actors/d_a_bakubaku.cpp": [
-        "param:#5 unsigned int",
-        "param:#6 unsigned int",
-        "param:#7 unsigned int",
-        "return:void"
-      ],
-      "src/game/actors/d_a_basabasa.cpp": [
         "param:#5 unsigned int",
         "param:#6 unsigned int",
         "param:#7 unsigned int",
@@ -8681,9 +8643,6 @@
       "src/game/actors/d_a_1up.cpp": [
         "return:void"
       ],
-      "src/game/actors/d_a_bg_snm_hed.cpp": [
-        "return:void"
-      ],
       "src/game/actors/d_a_bombking.cpp": [
         "return:void"
       ],
@@ -8917,9 +8876,6 @@
     },
     "_ZN8dActor_c10EarthquakeERK7Vector35Fix12IiE": {
       "src/game/actors/d_a_bg_snm_bdy.cpp": [
-        "arity:3"
-      ],
-      "src/game/actors/d_a_bg_snm_hed.cpp": [
         "arity:3"
       ],
       "src/game/actors/d_a_btn.cpp": [
@@ -16178,9 +16134,6 @@
       ]
     },
     "data_ov065_0211d6e0": {
-      "src/game/actors/d_a_basabasa.cpp": [
-        "return:daBasabasa_c::State"
-      ],
       "src/unnamed/ov065/__sinit_ov065_0211c2a8.c": [
         "return:S8 []"
       ]
@@ -18326,9 +18279,6 @@
         "param:#2 const void *"
       ],
       "src/game/actors/d_a_bakubaku.cpp": [
-        "param:#1 int"
-      ],
-      "src/game/actors/d_a_basabasa.cpp": [
         "param:#1 int"
       ],
       "src/game/actors/d_a_bombking.cpp": [
