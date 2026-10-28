@@ -115,7 +115,7 @@ int daObjSm_Lift_c::Behavior() {
     char *self = (char *)this;
     Vector3 nodeA, nodeB, diff, scaled;
     s16 target;
-    char *other;
+    dActor_c *other;
 
     if (UpdateKillByMegaChar(0x2000, 0, 0, 0) != 0)
         return 1;
@@ -123,9 +123,9 @@ int daObjSm_Lift_c::Behavior() {
     if (DecIfAbove0_Byte(&mPauseTimer) == 0)
         mMoving = 1;
 
-    other = (char *)mTouchingPlayer;
+    other = mTouchingPlayer;
     if (other != 0) {
-        Vector3 *otherPos = (Vector3 *)(other + 0x5c);
+        Vector3 *otherPos = &other->mPos;
         int dist = Vec3_HorzDist(&mPos, otherPos);
         target = (s16)(FX_MUL(dist, data_02082214[((u16)(s16)AngleDiff(
                                                        Vec3_HorzAngle(&mPos, otherPos), mAngleY) >>
