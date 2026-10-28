@@ -6919,3 +6919,6 @@ ov024	0x021112c0	func_ov024_021112c0	_ZN16daObjDlPyramid_c13FinishDescentEv	daOb
 ov024	0x02111350	func_ov024_02111350	_ZN16daObjDlPyramid_c7DescendEv	daObjDlPyramid_c::Descend: one frame of the descent: wobbles X off home, bobs up for 60 frames, then spins up and sinks; state 2 at frame 150; was an extern "C" free function taking the class pointer, now a member; same address, same body
 ov024	0x02111480	func_ov024_02111480	_ZN16daObjDlPyramid_c16UpdateClsnMatrixEv	daObjDlPyramid_c::UpdateClsnMatrix: yaw matrix plus position into mClsnMat2, handed to the mesh collider; was an extern "C" free function taking the class pointer, now a member; same address, same body
 ov024	0x021114c4	func_ov024_021114c4	_ZN16daObjDlPyramid_c17UpdateModelMatrixEv	daObjDlPyramid_c::UpdateModelMatrix: yaw matrix plus position >> 3 into mTopModel; was an extern "C" free function taking the class pointer, now a member; same address, same body
+ov036	0x021122c0	func_ov036_021122c0	_ZN15daObjRcCarpet_c20UpdateModelTransformEv	rotate and place the carpet model, dipped by mRideDipY
+ov036	0x0211224c	func_ov036_0211224c	_ZN15daObjRcCarpet_c19UpdateClsnTransformEv	copy the model matrix to the collision matrix and move the mesh
+ov036	0x02111618	func_ov036_02111618	_ZN14daObjRc_Hane_c20UpdateModelTransformEv	compose position and angles into the wing's model matrix

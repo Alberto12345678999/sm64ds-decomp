@@ -26991,11 +26991,6 @@
         "param:#1 char *"
       ]
     },
-    "func_ov036_02111618": {
-      "include/decl_common.h": [
-        "param:#1 char *"
-      ]
-    },
     "func_ov060_021183f4": {
       "src/game/actors/d_a_kpa3_bg.cpp": [
         "arity:0"
