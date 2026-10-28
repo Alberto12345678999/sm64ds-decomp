@@ -25,7 +25,7 @@
  * of `if (p2 != 0) { ... } else { return; }` and the call after the join,
  * the argument setup stays below the stores (the else-return is folded
  * into the conditional epilogue, so the bytes are otherwise identical).
- * The same shape appears at the sibling func_ov009_021115d8's call to
+ * The same shape appears at the sibling StateWaitForPlayer's call to
  * func_0201267c and at dScStage_c::Behavior's StopLoadedMusic call. The
  * body also compiles byte-exact as a daSBird_c member; the free form is
  * kept because the ROM symbol and the descriptor relocation are free.
@@ -69,7 +69,7 @@ extern "C" void func_ov009_0211145c(daSBird_c *self)
                 for (int i = 0; i < n - 1; i++) {
                     void *a = dActor_c::Spawn(0x157, 0x10, self->mPos, 0, self->mAreaId, -1);
                     if (a)
-                        ((daSBird_c *)a)->func_ov009_02111224(self->uniqueID);
+                        ((daSBird_c *)a)->AttachToLeader(self->uniqueID);
                 }
             }
             self->mTargetPos.x = -0x14000;

@@ -14,12 +14,6 @@ struct daSCre_c : dActor_c {
 
     virtual ~daSCre_c() {}
     virtual s32 Behavior();
-
-    /* mPosX/Y/Z at 0x5c are one vector. Reference, not value:
-       Vector3-by-value emits ~Vector3 D1. */
-    const Vector3 &Pos() const {
-        return *reinterpret_cast<const Vector3 *>(&mPosX);
-    }
 };
 
 #ifndef SM64DS_PLATFORM_PC

@@ -21,9 +21,10 @@
  *
  * Behavior indexes data_ov009_02113c48, a 4-entry member-pointer table
  * filled by ov009 sinit from the PMF records at 0x02113914 / 0x0211390c /
- * 0x021138fc / 0x02113904. Those records point at func_ov009_021116ec,
- * 021115d8, 0211145c, 02111234. The helper names are not recovered; the
- * table order and the mState stores in this TU are.
+ * 0x021138fc / 0x02113904. Those records point at StateSpawnFlock,
+ * StateWaitForPlayer, the free function func_ov009_0211145c, and StateFly.
+ * The member names are descriptive (ROM has no symbol names); the table
+ * order and the mState stores in the TU are recovered.
  */
 struct daSBird_c : dActor_c {
     u8          pad_0d0[0x4];
@@ -54,15 +55,15 @@ struct daSBird_c : dActor_c {
     virtual s32 Render();                      /* slot  9 */
     virtual void OnPendingDestroy();           /* slot 12 */
 
-    /* PMF-table members; data_ov009_02113c48 order is 021116ec, 021115d8,
-       0211145c (a free function, its own file), 02111234. 02111224 is
-       the follower-attach the spawn loops call on the child. Names not
-       recovered -- addresses kept (S33). 02111224 / 02111234 live in
-       d_a_s_bird_head.cpp below func_ov009_0211145c. */
-    void func_ov009_021116ec();              /* state 0 -- leader spawn/setup */
-    void func_ov009_021115d8();              /* state 1 -- proximity check */
-    void func_ov009_02111224(int ownerID);   /* follower attach */
-    void func_ov009_02111234();              /* state 3 -- fly/steer */
+    /* PMF-table members; data_ov009_02113c48 order is StateSpawnFlock,
+       StateWaitForPlayer, func_ov009_0211145c (a free function, its own
+       file), StateFly. AttachToLeader is what the spawn loops call on the
+       child. AttachToLeader / StateFly live in d_a_s_bird_head.cpp below
+       func_ov009_0211145c. */
+    void StateSpawnFlock();    /* 0x021116ec, state 0 -- leader spawn/setup */
+    void StateWaitForPlayer(); /* 0x021115d8, state 1 -- proximity check */
+    void AttachToLeader(int);  /* 0x02111224, follower attach */
+    void StateFly();           /* 0x02111234, state 3 -- fly/steer */
 };
 
 #ifndef SM64DS_PLATFORM_PC
