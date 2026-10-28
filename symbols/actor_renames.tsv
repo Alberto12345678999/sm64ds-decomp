@@ -7086,3 +7086,4 @@ ov004	0x020b67bc	MgCoins_Cleanup	__arraydtor$192	compiler-generated array destru
 ov004	0x020b67e0	Coin_Destroy	_ZN6SpriteD1Ev	Sprite::~Sprite: the empty inline element destructor sMgCoins' initializer passes to __cxa_vec_ctor; same address, same body
 ov004	0x020b67e4	Coin_Construct	_ZN6SpriteC1Ev	Sprite::Sprite: the empty inline element constructor sMgCoins' initializer passes to __cxa_vec_ctor; same address, same body
 ov004	0x020b9b24	__sinit_ov004_020b9b24	__sinit_d_mg_ps_opt.cpp	d_mg_ps_opt.cpp's compiler-emitted static initializer for the PsOptHalfSize tables; the shard is folded into the TU; same address, same body
+ov009	0x0211145c	func_ov009_0211145c	_ZN9daSBird_c16StateLaunchFlockEv	daSBird_c::StateLaunchFlock: state 2 of the PMF table, spawns the flock and takes off in one step; was a free function taking the bird pointer, now a member; same address, same body
