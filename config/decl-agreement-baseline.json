@@ -15357,26 +15357,6 @@
         "return:ResourceDescriptor"
       ]
     },
-    "data_ov045_02113180": {
-      "src/game/actors/d_a_obj_km2_agaru.cpp": [
-        "return:SharedFilePtr"
-      ]
-    },
-    "data_ov045_02113188": {
-      "src/game/actors/d_a_obj_km2_agaru.cpp": [
-        "return:SharedFilePtr"
-      ]
-    },
-    "data_ov045_021131a8": {
-      "src/game/actors/d_a_obj_km2_ami_bou.cpp": [
-        "return:SharedFilePtr"
-      ]
-    },
-    "data_ov045_021131b0": {
-      "src/game/actors/d_a_obj_km2_ami_bou.cpp": [
-        "return:SharedFilePtr"
-      ]
-    },
     "data_ov045_021131d0": {
       "src/unnamed/ov045/__sinit_ov045_02112280.c": [
         "return:int []"
