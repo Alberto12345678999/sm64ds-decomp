@@ -69,11 +69,13 @@ extern int data_ov007_02104bb4;
 extern int *data_ov007_02104bb8;
 extern int *data_ov007_02104bbc;
 
+// @symbol func_ov007_020be098
 void func_ov007_020be098(int idx) {
     func_0204f94c(&data_ov007_02104bbc[idx]);
     func_02051f1c(&data_ov007_02104bbc[idx], 2, data_ov007_02103134[idx]);
 }
 
+// @symbol func_ov007_020be00c
 void func_ov007_020be00c(void) {
     int i;
     int j;
@@ -88,6 +90,7 @@ void func_ov007_020be00c(void) {
         data_ov007_02104bb8[j] = 0;
 }
 
+// @symbol func_ov007_020bdf60
 void func_ov007_020bdf60(void) {
     int i = 0;
     int off = 0;
@@ -107,6 +110,7 @@ void func_ov007_020bdf60(void) {
     }
 }
 
+// @symbol func_ov007_020bdebc
 void func_ov007_020bdebc(void) {
     int i;
     int j;
@@ -126,17 +130,20 @@ void func_ov007_020bdebc(void) {
     }
 }
 
+// @symbol func_ov007_020bdeb0
 /* Tail-call veneer: ldr ip, [pc]; bx ip; .word func_ov007_020be098. */
 void func_ov007_020bdeb0(int idx) {
     func_ov007_020be098(idx);
 }
 
+// @symbol func_ov007_020bde70
 void func_ov007_020bde70(int idx, int arg) {
     if (data_ov007_02104bbc[idx] == 0)
         return;
     func_0204fa2c(&data_ov007_02104bbc[idx], arg);
 }
 
+// @symbol func_ov007_020bde2c
 void func_ov007_020bde2c(int idx) {
     if (data_ov007_02104bbc[idx] == 0) {
         func_ov007_020be098(idx);
@@ -144,6 +151,7 @@ void func_ov007_020bde2c(int idx) {
     data_ov007_02104bb8[idx - 0x35] = 1;
 }
 
+// @symbol func_ov007_020bdbcc
 void func_ov007_020bdbcc(int a0, int a1) {
     int stateA = data_ov007_02104bb4;
     int stateB = data_ov007_02104bb0;
@@ -223,6 +231,7 @@ static inline int scale_div(int v, int range, int scale) {
     return (q * scale) >> 12;
 }
 
+// @symbol func_ov007_020bda8c
 void func_ov007_020bda8c(int a, int b) {
     char **obj = (char **)&data_ov007_02104bbc[0x36];
     int r4, r6;
@@ -243,6 +252,7 @@ void func_ov007_020bda8c(int a, int b) {
     func_0204f76c(obj, 0xf, r6);
 }
 
+// @symbol func_ov007_020bda38
 void func_ov007_020bda38(int v) {
     char **r5 = (char **)&data_ov007_02104bbc[0x37];
     func_ov007_020bde2c(0x37);
@@ -251,6 +261,7 @@ void func_ov007_020bda38(int v) {
     func_0204f7fc(r5, 0xf, r4);
 }
 
+// @symbol func_ov007_020bd9e4
 void func_ov007_020bd9e4(int arg) {
     int i;
     for (i = 0; i < 0x39; i++) {
