@@ -61,10 +61,12 @@ namespace Particle {
 void RenderAll();
 }
 namespace G3i {
-void LookAt_(const Vector3 *camPos, const Vector3 *up, const Vector3 *target, bool draw,
-             Matrix4x3 *m);
-void PerspectiveW_(Fix12i sinFov, Fix12i cosFov, Fix12i aspect, Fix12i nearZ, Fix12i farZ,
-                   Fix12i scaleW, int load, Matrix4x3 *m);
+/* local extern: G3i.h is not included in this TU. */
+extern "C" void LookAt_(const Vector3 *camPos, const Vector3 *up, const Vector3 *target, bool draw,
+                        Matrix4x3 *m);
+/* local extern: G3i.h is not included in this TU. */
+extern "C" void PerspectiveW_(Fix12i sinFov, Fix12i cosFov, Fix12i aspect, Fix12i nearZ,
+                              Fix12i farZ, Fix12i scaleW, int load, Matrix4x3 *m);
 }
 void CopyToViewMat(const Matrix4x3 *m);
 

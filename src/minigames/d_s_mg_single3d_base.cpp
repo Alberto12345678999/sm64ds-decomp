@@ -48,7 +48,8 @@ extern "C" void *GetBG3CharPtr();
 }
 namespace CP15 { void FlushAndInvalidateDataCache(u32 address, u32 length); }
 namespace G3X {
-void SetFog(int enable, int, int, int);
+/* local extern: G3X.h is not included in this TU. */
+extern "C" void SetFog(int enable, int, int, int);
 }
 
 extern "C" {

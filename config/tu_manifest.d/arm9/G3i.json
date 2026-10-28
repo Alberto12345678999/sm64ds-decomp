@@ -26,14 +26,14 @@
       "ordinal": 0
     },
     {
-      "symbol": "_ZN3G3i7LookAt_EPK7Vector3S2_S2_bP9Matrix4x3",
+      "symbol": "LookAt_",
       "address": "0x02055a64",
       "size": "0x00000198",
       "legacy_source": "src/_ZN3G3i7LookAt_EPK7Vector3S2_S2_bP9Matrix4x3.cpp",
       "ordinal": 1
     },
     {
-      "symbol": "_ZN3G3i13PerspectiveW_EiiiiiiiP9Matrix4x3",
+      "symbol": "PerspectiveW_",
       "address": "0x02055bfc",
       "size": "0x000001f0",
       "legacy_source": "src/_ZN3G3i13PerspectiveW_E5Fix12IiES1_S1_S1_S1_S1_bP9Matrix4x3.c",

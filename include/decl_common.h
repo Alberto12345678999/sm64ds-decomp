@@ -1273,7 +1273,7 @@ extern void DisableAllBanks(void);
 extern void SetGraphicsMode(int, int, int);
 extern void DispOn(void);
 extern void LoadTex(const void *, u32, u32);
-extern void _ZN3G3X13SetClearColorEtiiib(u16, int, int, int, int);
+extern void SetClearColor(u16, int, int, int, bool);
 extern void LoadOBJExtPltt(const void *, u32, u32);
 extern void _ZN3GXS15SetGraphicsModeEi(int);
 extern void EndLoadOBJExtPltt(void);

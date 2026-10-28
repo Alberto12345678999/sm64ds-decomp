@@ -10,13 +10,13 @@
 #define G3X_H
 #include "types.h"
 
-struct G3X {
+namespace G3X {
 #ifdef __cplusplus
-    /* All static -- see the header note. */
-    static void SetClearColor(unsigned short a, int b, int c, int d, bool e);
-    static void SetFogTable(void *table);
-    static void SetFog(int enable, int a, int b, int c);
+/* All static -- see the header note. */
+extern "C" void SetClearColor(unsigned short a, int b, int c, int d, bool e);
+extern "C" void SetFogTable(void *table);
+extern "C" void SetFog(int enable, int a, int b, int c);
 #endif
-};
+}
 
 #endif

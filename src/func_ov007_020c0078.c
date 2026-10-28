@@ -9,7 +9,7 @@
  */
 typedef int Fix12;
 
-extern void _ZN3G3i13PerspectiveW_EiiiiiiiP9Matrix4x3(Fix12, int, int, int, int, int, int, int *);
+extern void PerspectiveW_(Fix12, int, int, int, int, int, int, int *);
 extern short data_02082214[];
 
 /* The 0xd8-byte camera func_ov007_020c023c allocates; names as in
@@ -45,9 +45,8 @@ void func_ov007_020c0078(char* c)
                         (cam->viewportMaxY << 24);
 
     a = (int)cam->fovy >> 4;
-    _ZN3G3i13PerspectiveW_EiiiiiiiP9Matrix4x3(data_02082214[a * 2], data_02082214[a * 2 + 1],
-                                              (int)(cam->aspect >> 0x14), cam->nearZ, cam->farZ,
-                                              0x1000, 1, cam->projMatrix);
+    PerspectiveW_(data_02082214[a * 2], data_02082214[a * 2 + 1], (int)(cam->aspect >> 0x14),
+                  cam->nearZ, cam->farZ, 0x1000, 1, cam->projMatrix);
 
     *(int*)0x400044c = 0;
 }

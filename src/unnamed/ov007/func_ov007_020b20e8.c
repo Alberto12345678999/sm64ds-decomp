@@ -23,7 +23,7 @@ extern char* data_ov007_0210342c;
 extern void func_ov007_020c0128(char* c);
 extern void func_ov007_020bffb8(char* c);
 extern void func_ov007_020c0078(char* c);
-extern void _ZN3G3i7LookAt_EPK7Vector3S2_S2_bP9Matrix4x3(void* a, void* b, void* c, int d, void* e);
+extern void LookAt_(void *a, void *b, void *c, int d, void *e);
 
 /* The extern keeps the tree's char * spelling; the typed view is reached
  * through a cast macro. */
@@ -38,7 +38,6 @@ void func_ov007_020b20e8(void){
     cam->fovy = 0x4da;
     cam->scaleW = 0x12bb;
     func_ov007_020bffb8((char *)cam);
-    _ZN3G3i7LookAt_EPK7Vector3S2_S2_bP9Matrix4x3(&cam->eye, &cam->up, &cam->target, 1,
-                                                 cam->viewMatrix);
+    LookAt_(&cam->eye, &cam->up, &cam->target, 1, cam->viewMatrix);
     func_ov007_020c0078((char *)cam);
 }

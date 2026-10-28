@@ -210,10 +210,12 @@ struct OAM {
 struct G2x {
     static void SetBlendAlpha(volatile unsigned short *, int, int, int, int);
 };
-struct G3i {
-    static void PerspectiveW_(Fix12i, Fix12i, Fix12i, Fix12i, Fix12i, Fix12i, int, Matrix4x3 *);
-    static void LookAt_(const Vector3 *, const Vector3 *, const Vector3 *, bool, Matrix4x3 *);
-};
+namespace G3i {
+/* local extern: G3i.h is not included in this TU. */
+extern "C" void PerspectiveW_(Fix12i, Fix12i, Fix12i, Fix12i, Fix12i, Fix12i, int, Matrix4x3 *);
+/* local extern: G3i.h is not included in this TU. */
+extern "C" void LookAt_(const Vector3 *, const Vector3 *, const Vector3 *, bool, Matrix4x3 *);
+}
 
 /* @symbol dCamera_c_classInit
  * Allocation factory historically labelled as the dCamera_c constructor. Its first action

@@ -64,7 +64,8 @@ extern "C" void LoadBGPltt(const void *src, u32 offset, u32 size);
 extern "C" void LoadOBJPltt(const void *src, u32 offset, u32 size);
 }
 namespace G3X {
-void SetFog(int enable, int blend, int slope, int offset);
+/* local extern: G3X.h is not included in this TU. */
+extern "C" void SetFog(int enable, int blend, int slope, int offset);
 }
 
 /* Local stand-ins for types no header declares yet. */

@@ -27,7 +27,7 @@
       "ordinal": 0
     },
     {
-      "symbol": "_ZN3G3X13SetClearColorEtiiib",
+      "symbol": "SetClearColor",
       "address": "0x02055574",
       "size": "0x00000030",
       "legacy_source": "src/_ZN3G3X13SetClearColorEtiiib.cpp",
@@ -41,14 +41,14 @@
       "ordinal": 2
     },
     {
-      "symbol": "_ZN3G3X11SetFogTableEPv",
+      "symbol": "SetFogTable",
       "address": "0x020555bc",
       "size": "0x00000014",
       "legacy_source": "src/_ZN3G3X11SetFogTableEPv.cpp",
       "ordinal": 3
     },
     {
-      "symbol": "_ZN3G3X6SetFogEiiii",
+      "symbol": "SetFog",
       "address": "0x020555d0",
       "size": "0x00000054",
       "legacy_source": "src/_ZN3G3X6SetFogEbiii.cpp",

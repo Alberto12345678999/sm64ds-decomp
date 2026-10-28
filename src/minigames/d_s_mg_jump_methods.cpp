@@ -124,7 +124,8 @@ namespace GX {
 extern "C" void LoadOBJPltt(const void *src, unsigned int offset, unsigned int size);
 }
 namespace G3X {
-void SetFog(int enable, int mode, int slope, int offset);
+/* local extern: G3X.h is not included in this TU. */
+extern "C" void SetFog(int enable, int mode, int slope, int offset);
 }
 namespace cstd { s32 fdiv(s32 a, s32 b); }
 
