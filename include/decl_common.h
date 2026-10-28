@@ -914,7 +914,6 @@ extern int func_ov010_02111984[];
    r0 set. Definition in src/game/actors/d_a_pg_mthr.cpp. */
 extern void func_ov018_02111bf0(void*, void*);
 extern int func_ov025_0211123c(char*);
-extern int func_ov029_021116e4;
 extern int func_ov062_02115f84(void*);
 extern void func_ov063_0211ddf4(void*);
 extern int func_ov065_021180d4(char*);
@@ -1612,9 +1611,6 @@ extern int func_ov026_021122d4(void*, void*);
 extern void func_ov026_02112324(void*);
 extern void func_ov027_02111cfc(void*);
 extern void func_ov027_02111d70(void*, int);
-extern int func_ov029_02111e60(void);
-extern void func_ov029_021126dc(char*);
-extern void func_ov029_02112710(char*);
 extern void func_ov030_02111734(char*);
 /* No longer defined (now daObjRc_Tikuwa_c::StoodOnCallback); kept because its
    three named parameters hold @NNN numbers in every includer. */

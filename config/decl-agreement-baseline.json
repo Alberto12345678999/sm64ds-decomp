@@ -5049,18 +5049,6 @@
       "src/game/actors/d_a_obj_wanwan_shutter.cpp": [
         "param:#3 Matrix4x3 *"
       ],
-      "src/game/actors/d_a_obj_wc_obj02.cpp": [
-        "param:#3 Matrix4x3 *",
-        "param:#6 CLPS_Block &"
-      ],
-      "src/game/actors/d_a_obj_wc_obj04.cpp": [
-        "param:#3 Matrix4x3 *",
-        "param:#6 CLPS_Block &"
-      ],
-      "src/game/actors/d_a_obj_wc_obj05.cpp": [
-        "param:#3 Matrix4x3 *",
-        "param:#6 CLPS_Block &"
-      ],
       "src/game/actors/d_a_obj_wl_koopa_shutter.cpp": [
         "param:#2 int",
         "param:#5 int"
@@ -6874,10 +6862,6 @@
         "param:#4 void *",
         "param:#5 unsigned int",
         "return:unsigned int"
-      ],
-      "src/game/actors/d_a_obj_wc_obj05.cpp": [
-        "param:#4 void *",
-        "param:#5 unsigned int"
       ],
       "src/game/actors/d_a_owl.cpp": [
         "param:#4 void *",
@@ -14975,11 +14959,6 @@
         "return:int []"
       ]
     },
-    "data_ov029_02114270": {
-      "src/game/actors/d_a_obj_wc_obj03.cpp": [
-        "return:SharedFilePtr"
-      ]
-    },
     "data_ov029_021142fc": {
       "src/unnamed/ov029/__sinit_ov029_02112d90.c": [
         "return:int []"
@@ -20397,6 +20376,10 @@
       ],
       "src/runtime/actor/d_path_lift_actor.cpp": [
         "param:#1 char *"
+      ],
+      "src/game/actors/d_a_obj_wc_obj02.cpp": [
+        "param:#1 dBgW *",
+        "param:#2 void *"
       ]
     },
     "func_020393d4": {
@@ -20526,6 +20509,14 @@
         "param:#2 void *"
       ],
       "src/game/actors/d_a_udlift.cpp": [
+        "param:#2 void *"
+      ],
+      "src/game/actors/d_a_obj_wc_obj04.cpp": [
+        "param:#1 dBgW *",
+        "param:#2 void *"
+      ],
+      "src/game/actors/d_a_obj_wc_obj02.cpp": [
+        "param:#1 dBgW *",
         "param:#2 void *"
       ]
     },
@@ -26707,36 +26698,6 @@
     "func_ov010_02111984": {
       "include/decl_common.h": [
         "kind:data"
-      ]
-    },
-    "func_ov029_021116c4": {
-      "src/game/actors/d_a_obj_wc_obj02.cpp": [
-        "return:int"
-      ]
-    },
-    "func_ov029_021116e4": {
-      "include/decl_common.h": [
-        "kind:data"
-      ]
-    },
-    "func_ov029_02111e40": {
-      "src/game/actors/d_a_obj_wc_obj05.cpp": [
-        "return:int"
-      ]
-    },
-    "func_ov029_02111e60": {
-      "include/decl_common.h": [
-        "arity:0"
-      ]
-    },
-    "func_ov029_021126dc": {
-      "include/decl_common.h": [
-        "param:#1 char *"
-      ]
-    },
-    "func_ov029_02112710": {
-      "include/decl_common.h": [
-        "param:#1 char *"
       ]
     },
     "func_ov060_021183f4": {
