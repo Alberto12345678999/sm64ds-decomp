@@ -60,14 +60,12 @@ extern "C" daTrsTrap_c *daTrsTrap_c_classInit_TERESAPIT(void)
 }
 
 // @symbol _ZN11daTrsTrap_c15OnMeshClsnTouchEP4dBgWPS_P8dActor_c
-void daTrsTrap_c::OnMeshClsnTouch(dBgW *clsn, daTrsTrap_c *self, dActor_c *actor)
-{
+void daTrsTrap_c::OnMeshClsnTouch(dBgW *clsn, daTrsTrap_c *self, dActor_c *actor) {
     self->LatchStandingActor(actor);
 }
 
 // @symbol _ZN11daTrsTrap_c18LatchStandingActorEP8dActor_c
-void daTrsTrap_c::LatchStandingActor(dActor_c *actor)
-{
+void daTrsTrap_c::LatchStandingActor(dActor_c *actor) {
     int isPlayer = actor->actorID == 0xbf;
     if (isPlayer)
         mStandingActor = actor;

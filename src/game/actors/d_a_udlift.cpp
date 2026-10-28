@@ -148,16 +148,14 @@ extern "C" daUdlift_c *daUdlift_c_classInit_RC_RIFT02()
 /* The mesh collider's touch callback is (collider, owner, other); the lift
  * only needs the back two, so this veneer drops the first argument. Its
  * address is stored at dBgW+0x1c, so it is a static member. */
-void daUdlift_c::OnMeshClsnTouch(void *collider, daUdlift_c *self, Player *player)
-{
+void daUdlift_c::OnMeshClsnTouch(void *collider, daUdlift_c *self, Player *player) {
     self->LatchRider(player);
 }
 
 // @symbol _ZN10daUdlift_c10LatchRiderEP6Player
 /* If the touching actor is the player (0xbf), hold it as mRider and mark
  * the lift ridden this frame. */
-void daUdlift_c::LatchRider(Player *player)
-{
+void daUdlift_c::LatchRider(Player *player) {
     int isPlayer = (int)(player->actorID == 0xbf);
     if (isPlayer) {
         mRider = player;
@@ -184,8 +182,8 @@ int daUdlift_c::InitResources()
 
     mModel.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(*data_ov095_02136f68[mVariant]), 1, -1);
     UpdateClsnPosAndRot();
-    mMeshCollider.SetFile((KCL_File *)dBgW_Kc::LoadFile(*data_ov095_02136f74[mVariant]),
-                          mClsnMat, 0x199, mAngleY, *data_ov095_021375a4[mVariant]);
+    mMeshCollider.SetFile((KCL_File *)dBgW_Kc::LoadFile(*data_ov095_02136f74[mVariant]), mClsnMat,
+                          0x199, mAngleY, *data_ov095_021375a4[mVariant]);
     func_020393d4(&mMeshCollider, (void *)&dBgW::UpdatePosWithTransform);
     func_020393c4(&mMeshCollider, (void *)&daUdlift_c::OnMeshClsnTouch);
     mRider = 0;

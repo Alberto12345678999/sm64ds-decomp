@@ -154,9 +154,8 @@ void daTor_c::State1()
         playerPos.z = pos[2];
     }
 
-    if (Vec3_HorzDist(&mHomePos, &playerPos) < mChaseRange
-        && mTriggerCount == 0
-        && mChaseTimer < 0x384) {
+    if (Vec3_HorzDist(&mHomePos, &playerPos) < mChaseRange && mTriggerCount == 0 &&
+        mChaseTimer < 0x384) {
         angle = Vec3_HorzAngle(&mPos, &playerPos);
         mAngleToPlayer = angle;
         ApproachLinear(mPrevAngleY, mAngleToPlayer, 0x200);
