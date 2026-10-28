@@ -16,7 +16,7 @@
 #include "daObjFloatBoard_c.h"
 
 struct daObjKi_Ita_c : daObjFloatBoard_c {
-    int InitResources();               /* slot  0 */
+    int InitResources(); /* slot  0 */
 
     virtual ~daObjKi_Ita_c() {}
 };

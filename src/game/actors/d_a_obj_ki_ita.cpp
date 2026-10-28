@@ -9,19 +9,16 @@
  * daObjKi_Ita_c_classInit / g_profile_KI_ITA are reconstructed (RTTI
  * daObjKi_Ita_c, KI_ITA registry). Retail does not store those spellings.
  *
- * deslop
- * Leftover: data_ov016_02114b8c is still the linker name of this
- *   overlay's three-word file table. Those words sit between this
- *   class's RTTI and type-name; this TU does not own them.
+ * Note: data_ov016_02114b8c is still the linker name of this
+ * overlay's three-word file table. Those words sit between this
+ * class's RTTI and type-name; this TU does not own them.
  */
 
 #include "daObjKi_Ita_c.h"
 #include "SpawnInfo.h"
 #include "SharedFilePtr.h"
 
-extern "C" {
 extern daObjFloatBoard_c_Resources data_ov016_02114b8c;
-}
 
 /* File 1601 / 1602 resource handles. The static initializer registers
  * their destructors; the spellings are this TU's, mapped onto
