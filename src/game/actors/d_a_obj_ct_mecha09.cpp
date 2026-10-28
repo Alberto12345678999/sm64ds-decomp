@@ -2,7 +2,7 @@
 /* daObjCtMecha09_c, Tick Tock Clock's moving beam (CT_MECHA09).
  *
  * The whole unit, ov065 .text 0x0211bbdc..0x0211c078, 8 functions: the
- * destructor pair, func_ov065_0211bc88, CleanupResources, Render, Behavior,
+ * destructor pair, UpdateShadow, CleanupResources, Render, Behavior,
  * InitResources and the registry factory daObjCtMecha09_c_classInit. The
  * unit is bounded below by daObjCtMecha08_c's classInit pair (ending at
  * 0x0211bbdc) and above by __sinit_ov065_0211c110 in .init; .text ends at
@@ -19,12 +19,8 @@
  * names data_ov035_02112118.
  */
 
-// leftovers: DropShadowScaleXYZ / IsClsnInRange / dBgW_KcMbg::SetFile stay
-// mangled (Fix12<int> by value -- the header forms cannot be called with
-// literals; this TU's func_ov065_0211bc88/Behavior/InitResources calls).
-// func_ov065_0211bc88 keeps its address name (beam shadow helper, no
-// recovered name). The two file-scope handles keep data_ov065_* spellings
-// (only names in the tree).
+// Notes: the two file-scope handles keep data_ov065_* spellings (the only
+// names in the tree).
 
 /* Runtime asset handles resolved through the overlay 0 file table. */
 enum daObjCtMecha09_c_AssetId {
@@ -37,6 +33,7 @@ enum daObjCtMecha09_c_AssetId {
 #include "daObjCtMecha09_c.h"
 #include "SharedFilePtr.h"
 #include "dBgCh_Gnd.h"
+#include "math/MtxStack.h"
 
 /* Resource handles constructed by this TU's static initializer. The
  * constructor and destructor bodies stay out of line; mwcc registers them. */
@@ -50,21 +47,16 @@ struct Mecha09ClsnFilePtr : SharedFilePtr {
     ~Mecha09ClsnFilePtr();
 };
 
-/* Fix12-by-value calls keep their raw ABI declarations (header forms take
- * Fix12<int> by value, which cannot be called with literals; see
- * include/dActor_c.h). */
 extern "C" {
-extern void Matrix4x3_FromRotationY(Matrix4x3 *matrix, int angle);
-extern Mecha09ClsnFilePtr data_ov065_0211d9cc;
-extern Mecha09ModelFilePtr data_ov065_0211d9d4;
 extern u16 DecIfAbove0_Short(u16 *p);
 extern int RandomIntInternal(int *seed);
+}
+
+extern Mecha09ClsnFilePtr data_ov065_0211d9cc;
+extern Mecha09ModelFilePtr data_ov065_0211d9d4;
 extern u8 data_0209f2c0;
 extern s32 data_ov065_0211d520[];
 extern s32 data_0209e650[];
-extern void hold_d_a_obj_ct_mecha09(dBgW_KcMbg *self, KCL_File *file, const Matrix4x3 *mat,
-                                    int scale, s16 angleY, CLPS_Block *clps);
-}
 
 extern CLPS_Block data_ov035_02112118;
 
@@ -72,17 +64,16 @@ extern CLPS_Block data_ov035_02112118;
 // @symbol _ZN16daObjCtMecha09_cD0Ev
 /* The compiler writes the body: this class's vtable, then dBgActor_c's
  * inlined destructor, then the mesh collider and the model. */
-daObjCtMecha09_c::~daObjCtMecha09_c()
-{
-}
+daObjCtMecha09_c::~daObjCtMecha09_c() {}
 
-// @symbol _ZN16daObjCtMecha09_c19func_ov065_0211bc88Ev
+// @symbol _ZN16daObjCtMecha09_c12UpdateShadowEv
 /* Drops the beam's shadow when it is close enough to the ground sample. */
-void daObjCtMecha09_c::func_ov065_0211bc88()
-{
+void daObjCtMecha09_c::UpdateShadow() {
     int d = mPosY - mGroundY;
-    if (d < 0) d = -d;
-    if (d > 0x7d0000) return;
+    if (d < 0)
+        d = -d;
+    if (d > 0x7d0000)
+        return;
     Matrix4x3_FromRotationY(&mShadowMat, mAngleY);
     mShadowMat.t.x = mPosX >> 3;
     mShadowMat.t.y = (mGroundY + 0x1000) >> 3;
@@ -91,8 +82,7 @@ void daObjCtMecha09_c::func_ov065_0211bc88()
 }
 
 // @symbol _ZN16daObjCtMecha09_c16CleanupResourcesEv
-int daObjCtMecha09_c::CleanupResources()
-{
+int daObjCtMecha09_c::CleanupResources() {
     if (mMeshCollider.IsEnabled())
         mMeshCollider.Disable();
     data_ov065_0211d9d4.Release();
@@ -101,8 +91,7 @@ int daObjCtMecha09_c::CleanupResources()
 }
 
 // @symbol _ZN16daObjCtMecha09_c6RenderEv
-int daObjCtMecha09_c::Render()
-{
+int daObjCtMecha09_c::Render() {
     mModel.Render(0);
     return 1;
 }
@@ -111,8 +100,7 @@ int daObjCtMecha09_c::Render()
 /* Clock setting data_0209f2c0 picks a vertical speed from data_ov065_0211d520.
  * Setting 2 rerolls direction and a countdown; the last five frames of a leg
  * hold the beam still. Travel is clamped to [mStartPosY, mEndPosY]. */
-int daObjCtMecha09_c::Behavior()
-{
+int daObjCtMecha09_c::Behavior() {
     u8 setting = data_0209f2c0;
     mVertSpeed = mDirection * data_ov065_0211d520[setting];
 
@@ -146,7 +134,7 @@ int daObjCtMecha09_c::Behavior()
     }
 
     UpdateModelPosAndRotY();
-    func_ov065_0211bc88();
+    UpdateShadow();
     if (IsClsnInRange(0, 0) != 0)
         UpdateClsnPosAndRot();
     return 1;
@@ -156,10 +144,8 @@ int daObjCtMecha09_c::Behavior()
 /* Loads the beam's model and mesh collider, sets the travel range from
  * param1's low byte (0 or 0xff means the default 0x1f4000), and casts a
  * dBgCh_Gnd ray from 0xa000 below the beam for the shadow's ground height.
- * The local dBgCh_Gnd emits the ROM's C1 and D1 calls. dBgW_KcMbg::SetFile
- * stays behind its exact ABI symbol because of its Fix12 by-value parameter. */
-int daObjCtMecha09_c::InitResources()
-{
+ * The local dBgCh_Gnd emits the ROM's C1 and D1 calls. */
+int daObjCtMecha09_c::InitResources() {
     BMD_File *bmd;
     KCL_File *kcl;
     Vector3 pos;
@@ -171,7 +157,7 @@ int daObjCtMecha09_c::InitResources()
     UpdateClsnPosAndRot();
     kcl = (KCL_File *)dBgW_Kc::LoadFile(data_ov065_0211d9cc);
     ((dBgW_KcMbg *)(&mMeshCollider))
-        ->dBgW_KcMbg::SetFile(kcl, *(&mClsnMat), 0x1000, mAngleY, *(&data_ov035_02112118));
+        ->dBgW_KcMbg::SetFile(kcl, mClsnMat, 0x1000, mAngleY, data_ov035_02112118);
 
     mStartPosY = mPosY;
     {
@@ -202,8 +188,7 @@ int daObjCtMecha09_c::InitResources()
  * RTTI, allocation size, vtable identity, and the CT_MECHA09 registry profile;
  * later EAD lineage supplies classInit. Exact original spelling is not
  * preserved. Historical aliases: TTC_MovingBeam, TTC_MovingBeam_Spawn. */
-extern "C" daObjCtMecha09_c *daObjCtMecha09_c_classInit()
-{
+extern "C" daObjCtMecha09_c *daObjCtMecha09_c_classInit() {
     return new daObjCtMecha09_c();
 }
 

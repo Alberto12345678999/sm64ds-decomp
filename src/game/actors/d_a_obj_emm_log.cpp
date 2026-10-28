@@ -11,25 +11,18 @@
  * daObjEmmLog_c_classInit is reconstructed (RTTI daObjEmmLog_c, EMM_LOG
  * registry). Retail does not store that spelling.
  *
- * deslop
- * Leftover: dBgW_KcMbg::SetFile stays mangled (Fix12<int> by value, wall 6az).
- * Leftover: dBgActor_c::IsClsnInRange stays mangled (same 6az claim; header
- *   method form Undefined).
- * Leftover: func_020393a4 is an 8-byte store into dBgW+0x0c. This TU calls
- *   it; naming belongs with dBgW in arm9.
- * Leftover: data_ov052_021124d4 is this overlay's BMD/KCL/CLPS bundle;
+ * What stays, and why:
+ * - func_020393a4 is an 8-byte store into dBgW+0x0c. This TU calls it;
+ *   naming belongs with dBgW in arm9.
+ * - data_ov052_021124d4 is this overlay's BMD/KCL/CLPS bundle;
  *   symbols.txt has no recovered name.
- * Leftover: sine table data_02082214 (arm9).
- * Leftover: inline destructor (out-of-line emits D0 before D1 plus a
- *   homeless D2).
- * Leftover: g_profile_EMM_LOG lives outside this TU (S14).
+ * - Sine table data_02082214 (arm9).
+ * - Inline destructor (out-of-line emits D0 before D1 plus a homeless D2).
+ * - g_profile_EMM_LOG lives outside this TU (S14).
  */
 
 /* Runtime asset handles resolved through the overlay 0 file table. */
-enum d_a_obj_emm_log_AssetId {
-    ASSET_EMM_LOG_BMD = 0x05e3,
-    ASSET_EMM_LOG_KCL = 0x05e4
-};
+enum d_a_obj_emm_log_AssetId { ASSET_EMM_LOG_BMD = 0x05e3, ASSET_EMM_LOG_KCL = 0x05e4 };
 
 #include "daObjEmmLog_c.h"
 #include "SharedFilePtr.h"
@@ -56,32 +49,26 @@ struct EmmLogCollisionFilePtr : SharedFilePtr {
     ~EmmLogCollisionFilePtr();
 };
 
-extern "C" {
-void func_020393a4(dBgW *bgw, int range);
-extern void hold_d_a_obj_emm_log(dBgW_KcMbg *self, KCL_File *kcl, const Matrix4x3 *mtx, int scale,
-                                 s16 angleY, CLPS_Block *clps);
 extern short data_02082214[];
 extern daObjEmmLog_c_Resources data_ov052_021124d4;
-}
+
+/* local extern: writes the mesh active range at dBgW+0x0c; the definition
+   is C and has no shared header. */
+extern "C" void func_020393a4(dBgW *bgw, int range);
 
 // @symbol daObjEmmLog_c_classInit
-extern "C" daObjEmmLog_c *daObjEmmLog_c_classInit()
-{
+extern "C" daObjEmmLog_c *daObjEmmLog_c_classInit() {
     return new daObjEmmLog_c();
 }
 
 // @symbol _ZN13daObjEmmLog_c13InitResourcesEv
-/* dBgW_KcMbg::SetFile takes Fix12<int> by value. An ordinary member call
- * triggers mwccarm's by-value-class parameter homing and changes the ROM ABI. */
-s32 daObjEmmLog_c::InitResources()
-{
+s32 daObjEmmLog_c::InitResources() {
     mModel.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(*data_ov052_021124d4.model), 1, -1);
     UpdateModelPosAndRotY();
     UpdateClsnPosAndRot();
 
-    ((dBgW_KcMbg *)(&mMeshCollider))
-        ->dBgW_KcMbg::SetFile((KCL_File *)dBgW_Kc::LoadFile(*data_ov052_021124d4.collision),
-                              *(&mClsnMat), 0x1000, mAngleY, *(data_ov052_021124d4.clps));
+    mMeshCollider.SetFile((KCL_File *)dBgW_Kc::LoadFile(*data_ov052_021124d4.collision), mClsnMat,
+                          0x1000, mAngleY, *data_ov052_021124d4.clps);
 
     mBasePosY = mPosY;
     u8 amplitude = param1 & 0xff;
@@ -95,8 +82,7 @@ s32 daObjEmmLog_c::InitResources()
 }
 
 // @symbol _ZN13daObjEmmLog_c8BehaviorEv
-s32 daObjEmmLog_c::Behavior()
-{
+s32 daObjEmmLog_c::Behavior() {
     func_020393a4(&mMeshCollider, 0x600000);
 
     int idx = (u16)mBobPhase >> 4;
@@ -113,15 +99,13 @@ s32 daObjEmmLog_c::Behavior()
 }
 
 // @symbol _ZN13daObjEmmLog_c6RenderEv
-s32 daObjEmmLog_c::Render()
-{
+s32 daObjEmmLog_c::Render() {
     mModel.Render(0);
     return 1;
 }
 
 // @symbol _ZN13daObjEmmLog_c16CleanupResourcesEv
-s32 daObjEmmLog_c::CleanupResources()
-{
+s32 daObjEmmLog_c::CleanupResources() {
     if (mMeshCollider.IsEnabled())
         mMeshCollider.Disable();
     data_ov052_021124d4.model->Release();
