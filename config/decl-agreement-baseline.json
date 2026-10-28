@@ -983,9 +983,6 @@
       "src/game/actors/d_a_star.cpp": [
         "param:#1 int"
       ],
-      "src/game/actors/d_a_water_hakidasi.cpp": [
-        "param:#1 int"
-      ],
       "src/game/actors/d_a_red_bombhei.cpp": [
         "param:#1 int"
       ],
@@ -1309,11 +1306,6 @@
         "param:#3 short",
         "param:#4 short"
       ],
-      "src/game/actors/d_a_water_tatumaki.cpp": [
-        "param:#2 short",
-        "param:#3 short",
-        "param:#4 short"
-      ],
       "src/runtime/actor/d_actor.cpp": [
         "param:#2 short",
         "param:#3 short",
@@ -1444,9 +1436,6 @@
         "param:#2 short"
       ],
       "src/game/actors/d_a_trs.cpp": [
-        "param:#2 short"
-      ],
-      "src/game/actors/d_a_water_hakidasi.cpp": [
         "param:#2 short"
       ]
     },
@@ -8219,12 +8208,6 @@
         "param:#6 const void *",
         "return:unsigned int"
       ],
-      "src/game/actors/d_a_water_hakidasi.cpp": [
-        "param:#1 int",
-        "param:#2 int",
-        "param:#6 int",
-        "param:#7 int"
-      ],
       "src/game/actors/d_a_yegg.cpp": [
         "param:#6 Vec3_16f *"
       ],
@@ -11105,9 +11088,6 @@
       ],
       "src/game/actors/d_a_wanwan2.cpp": [
         "return:char []"
-      ],
-      "src/game/actors/d_a_water_hakidasi.cpp": [
-        "return:int"
       ],
       "src/game/actors/d_a_yegg.cpp": [
         "return:M48"
@@ -15509,16 +15489,6 @@
     "data_ov064_0211c904": {
       "src/unnamed/ov064/__sinit_ov064_0211b1d4.c": [
         "return:Big"
-      ]
-    },
-    "data_ov064_0211c944": {
-      "src/game/actors/d_a_water_ring.cpp": [
-        "return:daWater_Ring_c::State []"
-      ]
-    },
-    "data_ov064_0211c954": {
-      "src/game/actors/d_a_water_ring.cpp": [
-        "return:daWater_Ring_c::State []"
       ]
     },
     "data_ov064_0211c964": {
