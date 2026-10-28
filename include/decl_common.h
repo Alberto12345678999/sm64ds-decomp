@@ -1381,7 +1381,6 @@ extern void* func_0206e2f8(void*, int, unsigned int);
 extern void func_02073244(void*, int, int, void (*)(void*));
 extern void data_ov001_020ad494(void);
 extern void func_ov002_020aefa4(char*);
-extern void func_ov002_020b2c44(void*);
 
 extern void func_ov002_020bc488(char*);
 

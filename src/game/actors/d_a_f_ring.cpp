@@ -6,7 +6,7 @@
  * then a deadstripped D2. .text 0x02118cfc..0x02119264 is ROM-ascending
  * under defer_codegen off. daFRing_c_classInit is last. Was BowserShockwaves.
  */
-/* leftovers:
+/* Notes:
  * - data_ov060_0211b208 / 0211b1f8 / 0211b200 are the model, animation and
  *   texture-sequence handles. LoadFile takes the handle and SetAnim /
  *   Prepare read its filePtr.
@@ -29,6 +29,8 @@ enum daFRing_c_AssetId {
 #include "daFRing_c.h"
 #include "Player.h"
 #include "SharedFilePtr.h"
+#include "math/CalcLib.h"
+#include "math/MtxStack.h"
 
 /* The static-init file handles: the model file constructs through
  * func_02017acc and destroys through func_02017ab4, the animation handle
@@ -53,34 +55,26 @@ extern FRingAnimationFileHandle data_ov060_0211b1f8;
 extern FRingTexSequenceFilePtr data_ov060_0211b200;
 extern FRingModelFilePtr data_ov060_0211b208;
 
-extern "C" {
 extern BMA_File data_ov048_021115e4;
 extern BTA_File data_ov048_021115f4;
-void func_02016b24(void *model, unsigned int mask);
-Fix12i Vec3_HorzDist(const Vector3 *a, const Vector3 *b);
-void Matrix4x3_FromTranslation(void *m, int x, int y, int z);
-/* Leftover: these four take Fix12<int> by value, so they stay mangled; the
- * member spelling spills the 0x1000 and InitResources stops matching. */
-}
+
+/* local extern: the model-mask helper has no shared header yet. */
+extern "C" void func_02016b24(void *model, unsigned int mask);
 
 // @symbol _ZN9daFRing_cD1Ev
 // @symbol _ZN9daFRing_cD0Ev
-daFRing_c::~daFRing_c()
-{
-}
+daFRing_c::~daFRing_c() {}
 
 // @symbol _ZN9daFRing_c16CleanupResourcesEv
-s32 daFRing_c::CleanupResources()
-{
-    ((SharedFilePtr *)&data_ov060_0211b208)->Release();
-    ((SharedFilePtr *)&data_ov060_0211b1f8)->Release();
-    ((SharedFilePtr *)&data_ov060_0211b200)->Release();
+s32 daFRing_c::CleanupResources() {
+    data_ov060_0211b208.Release();
+    data_ov060_0211b1f8.Release();
+    data_ov060_0211b200.Release();
     return 1;
 }
 
 // @symbol _ZN9daFRing_c6RenderEv
-s32 daFRing_c::Render()
-{
+s32 daFRing_c::Render() {
     mTextureSequence1.Update(mAnmModel1.data);
     mTextureSequence2.Update(mAnmModel2.data);
     mMaterialChanger1.Update(mAnmModel1.data);
@@ -97,8 +91,7 @@ s32 daFRing_c::Render()
 }
 
 // @symbol _ZN9daFRing_c8BehaviorEv
-s32 daFRing_c::Behavior()
-{
+s32 daFRing_c::Behavior() {
     mFrame++;
     Player *player = ClosestPlayer();
     unsigned int frame = mFrame;
@@ -128,14 +121,12 @@ s32 daFRing_c::Behavior()
 }
 
 // @symbol _ZN9daFRing_c13InitResourcesEv
-s32 daFRing_c::InitResources()
-{
-    mAnmModel1.SetFile(
-        (BMD_File *)dExtSimpleModel_c::LoadFile(*(SharedFilePtr *)&data_ov060_0211b208), 1, 0x13);
+s32 daFRing_c::InitResources() {
+    mAnmModel1.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(data_ov060_0211b208), 1, 0x13);
     mAnmModel2.SetFile((BMD_File *)data_ov060_0211b208.filePtr, 1, 0x13);
 
-    dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)&data_ov060_0211b1f8);
-    dExtAnmTexPat_c::LoadFile(*(SharedFilePtr *)&data_ov060_0211b200);
+    dExtFrameCtrl_c::LoadFile(data_ov060_0211b1f8);
+    dExtAnmTexPat_c::LoadFile(data_ov060_0211b200);
 
     func_02016b24(&mAnmModel1, 0x4000);
     func_02016b24(&mAnmModel2, 0x4000);
@@ -172,7 +163,6 @@ FRingTexSequenceFilePtr data_ov060_0211b200(ASSET_KPA_SHWAVE_BTP);
 
 /* return new builds the ring and its eight animators. */
 // @symbol daFRing_c_classInit
-extern "C" daFRing_c *daFRing_c_classInit(void)
-{
+extern "C" daFRing_c *daFRing_c_classInit(void) {
     return new daFRing_c;
 }
