@@ -154,6 +154,8 @@ extern char data_ov100_02148704;
 extern char data_ov102_0214ea48;
 extern char data_ov102_0214ea58;
 extern char data_ov102_0214ea78;
+/* No longer defined (now daObjFloatBoard_c::StoodOnCallback); kept because its
+   three named parameters hold @NNN numbers in every includer. */
 extern void func_ov002_020b5fc4(void* collider, void* board, void* other);
 extern void func_ov066_0211a35c(void* a, void* b, void* c);
 extern char*_ZN3G2S13GetBG3CharPtrEv(void);
@@ -822,8 +824,6 @@ extern int func_02053274(const Vector3*, const Vector3*);
 extern int func_02053c10(int);
 extern int func_02054d88(void);
 extern int func_0206e28c(const u8*, const u8*, u32);
-extern int func_ov002_020b60fc(void*, void*);
-extern int func_ov002_020b6244(void*, void*);
 extern int func_ov002_020b6424(void*, void*);
 extern int func_ov002_020b6584(void*, void*, int);
 extern int func_ov002_020b66a8(void*, void*);

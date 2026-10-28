@@ -17,10 +17,7 @@
  */
 
 /* Runtime asset handles resolved through the overlay 0 file table. */
-enum d_a_obj_wc_obj01_AssetId {
-    ASSET_WC_OBJ01_BMD = 0x06cc,
-    ASSET_WC_OBJ01_KCL = 0x06cd
-};
+enum d_a_obj_wc_obj01_AssetId { ASSET_WC_OBJ01_BMD = 0x06cc, ASSET_WC_OBJ01_KCL = 0x06cd };
 
 #include "daObjWcObj01_c.h"
 #include "dBgCh_Lin.h"
@@ -46,35 +43,32 @@ enum {
 };
 
 // @symbol daObjWcObj01_c_classInit
-extern "C" daObjWcObj01_c *daObjWcObj01_c_classInit()
-{
+extern "C" daObjWcObj01_c *daObjWcObj01_c_classInit() {
     return new daObjWcObj01_c();
 }
 
 // @symbol _ZN14daObjWcObj01_c13InitResourcesEv
-int daObjWcObj01_c::InitResources()
-{
+int daObjWcObj01_c::InitResources() {
     int startEnd[6]; /* start[3] then end[3] */
     int waterY;
     int x, y, z;
 
-    if (func_ov002_020b5e58(&data_ov029_02113be8) != 0) {
+    if (InitResourcesFrom(&data_ov029_02113be8) != 0) {
         waterY = GetWaterHeightWDW();
         if (mPosY > waterY) {
             dBgCh_Lin line;
             x = mPosX;
-            startEnd[3] = x;                 /* end.x */
+            startEnd[3] = x; /* end.x */
             y = mPosY;
-            startEnd[4] = y;                 /* end.y temp */
+            startEnd[4] = y; /* end.y temp */
             z = mPosZ;
-            startEnd[1] = y;                 /* start.y temp */
-            startEnd[5] = z;                 /* end.z */
-            startEnd[0] = x;                 /* start.x */
-            startEnd[2] = z;                 /* start.z */
+            startEnd[1] = y; /* start.y temp */
+            startEnd[5] = z; /* end.z */
+            startEnd[0] = x; /* start.x */
+            startEnd[2] = z; /* start.z */
             startEnd[1] = y + kRayStartAboveFix12;
             startEnd[4] = waterY;
-            line.SetObjAndLine(*(Vector3 *)&startEnd[0],
-                *(Vector3 *)&startEnd[3], this);
+            line.SetObjAndLine(*(Vector3 *)&startEnd[0], *(Vector3 *)&startEnd[3], this);
             if (line.DetectClsn() == 0) {
                 mPosY = waterY;
             } else {
