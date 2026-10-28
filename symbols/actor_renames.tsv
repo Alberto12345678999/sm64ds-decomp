@@ -6961,3 +6961,14 @@ ov002	0x020b6424	func_ov002_020b6424	_ZN14daObjUkiyuka_c20CleanupResourcesFromEP
 ov002	0x020b6584	func_ov002_020b6584	_ZN14daObjUkiyuka_c17InitResourcesFromEPNS_9ResourcesEi	loads the descendant record's model and collision, then seeds mRestY and mBobAmplitude; member conversion; byte-identical
 ov045	0x021114a8	func_ov045_021114a8	_ZN16daObjKm2_Agaru_c9OnStoodOnEP8dActor_c	daObjKm2_Agaru_c::OnStoodOn: sets mStoodOn when the actor on the mesh is the Player; was an extern "C" free function taking the class pointer, now a member; same address, same body
 ov045	0x021114c8	func_ov045_021114c8	_ZN16daObjKm2_Agaru_c15StoodOnCallbackEPvPS_P8dActor_c	daObjKm2_Agaru_c::StoodOnCallback: the mesh callback installed with func_020393c4; drops the collider and forwards to OnStoodOn; was an extern "C" free function, now a static member; same address, same body
+ov080	0x02127094	_ZN13daObjMaruta_c19func_ov080_02127094Ev	_ZN13daObjMaruta_c20UpdateModelTransformEv	rotate the model and set its translation from mPos
+ov080	0x0212758c	func_ov080_0212758c	_ZN13daObjMaruta_c19HandlePlayerContactEP8dActor_c	record a touching player and shove it along mAngleY
+ov080	0x02127658	func_ov080_02127658	_ZN13daObjMaruta_c18BeforeClsnCallbackEPvS0_S0_	dBgW before-collision veneer forwarding to HandlePlayerContact
+ov009	0x02111b1c	func_ov009_02111b1c	_ZN14daObjMcWater_c15SpawnWaterfallsEv	spawn the seven WATERFALL actors
+ov085	0x0212cd0c	func_ov085_0212cd0c	_ZN15daObj_Mip_Key_c18FinishConversationEv	end the save conversation and retire the key
+ov085	0x0212cd80	func_ov085_0212cd80	_ZN15daObj_Mip_Key_c12StateCarriedEv	carried state update
+ov085	0x0212d038	func_ov085_0212d038	_ZN15daObj_Mip_Key_c17StateCarriedEnterEv	carried state entry
+ov085	0x0212d108	func_ov085_0212d108	_ZN15daObj_Mip_Key_c10StateLooseEv	loose state update
+ov085	0x0212d24c	func_ov085_0212d24c	_ZN15daObj_Mip_Key_c15StateLooseEnterEv	loose state entry
+ov085	0x0212d268	func_ov085_0212d268	_ZN15daObj_Mip_Key_c11ChangeStateEP11MipKeyState	install a state and run its entry
+ov085	0x0212d2b8	func_ov085_0212d2b8	_ZN15daObj_Mip_Key_c20UpdateModelAndShadowEv	build the render matrix and place the shadow
