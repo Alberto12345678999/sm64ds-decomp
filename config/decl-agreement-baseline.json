@@ -13793,13 +13793,8 @@
       "src/unnamed/ov007/func_ov007_020be50c.c": [
         "return:int *"
       ],
-      "src/unnamed/ov007/func_ov007_020bed60.cpp": [
-        "return:int *"
-      ],
-      "src/unnamed/ov007/func_ov007_020beeb0.cpp": [
-        "return:unsigned char []"
-      ],
-      "src/unnamed/ov007/func_ov007_020bf304.c": [
+      "src/ui/menus/unit020bed60.cpp": [
+        "return:int *",
         "return:unsigned char []"
       ]
     },
@@ -14004,16 +13999,9 @@
       ]
     },
     "data_ov007_02104bd4": {
-      "src/unnamed/ov007/func_ov007_020beeb0.cpp": [
-        "return:unsigned char []"
-      ],
-      "src/unnamed/ov007/func_ov007_020bf304.c": [
-        "return:unsigned char []"
-      ],
-      "src/unnamed/ov007/func_ov007_020bf428.c": [
-        "return:int"
-      ],
-      "src/unnamed/ov007/func_ov007_020bf57c.c": [
+      "src/ui/menus/unit020bed60.cpp": [
+        "return:unsigned char []",
+        "return:int",
         "return:char *"
       ]
     },
@@ -24633,7 +24621,7 @@
       "src/unnamed/ov007/func_ov007_020b1224.c": [
         "return:char *"
       ],
-      "src/unnamed/ov007/func_ov007_020beeb0.cpp": [
+      "src/ui/menus/unit020bed60.cpp": [
         "return:char *"
       ]
     },
@@ -24683,7 +24671,7 @@
       ]
     },
     "func_ov007_020b42d8": {
-      "src/unnamed/ov007/func_ov007_020bf428.c": [
+      "src/ui/menus/unit020bed60.cpp": [
         "return:int"
       ]
     },
@@ -24937,7 +24925,7 @@
       "src/unnamed/ov007/func_ov007_020b1718.cpp": [
         "param:#1 int"
       ],
-      "src/unnamed/ov007/func_ov007_020beeb0.cpp": [
+      "src/ui/menus/unit020bed60.cpp": [
         "param:#1 int"
       ]
     },
@@ -25037,7 +25025,7 @@
       ]
     },
     "func_ov007_020bf630": {
-      "src/unnamed/ov007/func_ov007_020bed60.cpp": [
+      "src/ui/menus/unit020bed60.cpp": [
         "return:int"
       ]
     },
@@ -25056,7 +25044,7 @@
       "src/unnamed/ov007/func_ov007_020b9ca8.cpp": [
         "param:#5 int *"
       ],
-      "src/unnamed/ov007/func_ov007_020bf630.c": [
+      "src/ui/menus/unit020bed60.cpp": [
         "param:#1 int"
       ],
       "src/unnamed/ov007/func_ov007_020c4388.cpp": [
@@ -25383,7 +25371,7 @@
       ]
     },
     "func_ov007_020c30ac": {
-      "src/unnamed/ov007/func_ov007_020bf630.c": [
+      "src/ui/menus/unit020bed60.cpp": [
         "param:#1 int",
         "param:#5 int",
         "return:void"
@@ -25612,7 +25600,7 @@
         "param:#2 int",
         "return:void *"
       ],
-      "src/unnamed/ov007/func_ov007_020bf428.c": [
+      "src/ui/menus/unit020bed60.cpp": [
         "param:#2 int"
       ],
       "src/unnamed/ov007/func_ov007_020c023c.c": [
@@ -25762,7 +25750,7 @@
       "src/unnamed/ov007/func_ov007_020b88c0.c": [
         "param:#2 char *"
       ],
-      "src/unnamed/ov007/func_ov007_020bf57c.c": [
+      "src/ui/menus/unit020bed60.cpp": [
         "param:#2 void *"
       ]
     },
@@ -25781,7 +25769,7 @@
       "src/unnamed/ov007/func_ov007_020b9880.c": [
         "param:#2 int"
       ],
-      "src/unnamed/ov007/func_ov007_020bf57c.c": [
+      "src/ui/menus/unit020bed60.cpp": [
         "return:int"
       ],
       "src/unnamed/ov007/func_ov007_020c41dc.c": [
@@ -26230,24 +26218,24 @@
       ]
     },
     "func_ov007_020c9a84": {
-      "src/unnamed/ov007/func_ov007_020beeb0.cpp": [
+      "src/ui/menus/unit020bed60.cpp": [
         "param:#2 char *",
         "param:#3 char *",
         "param:#4 char *"
       ]
     },
     "func_ov007_020c9c24": {
-      "src/unnamed/ov007/func_ov007_020beeb0.cpp": [
+      "src/ui/menus/unit020bed60.cpp": [
         "param:#1 char *"
       ]
     },
     "func_ov007_020ca010": {
-      "src/unnamed/ov007/func_ov007_020bf428.c": [
+      "src/ui/menus/unit020bed60.cpp": [
         "return:int"
       ]
     },
     "func_ov007_020ca2a8": {
-      "src/unnamed/ov007/func_ov007_020bf428.c": [
+      "src/ui/menus/unit020bed60.cpp": [
         "return:int"
       ]
     },
@@ -26257,7 +26245,7 @@
       ]
     },
     "func_ov007_020ca578": {
-      "src/unnamed/ov007/func_ov007_020bed60.cpp": [
+      "src/ui/menus/unit020bed60.cpp": [
         "param:#1 int *"
       ]
     },
@@ -26298,12 +26286,12 @@
       ]
     },
     "func_ov007_020cbbb0": {
-      "src/unnamed/ov007/func_ov007_020bf428.c": [
+      "src/ui/menus/unit020bed60.cpp": [
         "return:int"
       ]
     },
     "func_ov007_020cbf8c": {
-      "src/unnamed/ov007/func_ov007_020bf428.c": [
+      "src/ui/menus/unit020bed60.cpp": [
         "return:int"
       ]
     },
