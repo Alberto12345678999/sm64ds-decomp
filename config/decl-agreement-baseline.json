@@ -9392,18 +9392,6 @@
         "param:#4 void *",
         "param:#5 void *"
       ],
-      "src/unnamed/ov004/__sinit_ov004_020b9ad0.c": [
-        "param:#2 int",
-        "param:#3 int",
-        "param:#4 void *",
-        "param:#5 void *"
-      ],
-      "src/unnamed/ov006/__sinit_ov006_0212f660.c": [
-        "param:#2 int",
-        "param:#3 int",
-        "param:#4 void *",
-        "param:#5 void *"
-      ],
       "src/unnamed/ov006/__sinit_ov006_0212fc7c.c": [
         "param:#2 int",
         "param:#3 int",
@@ -13092,21 +13080,6 @@
       ],
       "src/minigames/d_s_mg_roulette_methods.cpp": [
         "return:unsigned short"
-      ]
-    },
-    "sPsOptIconPosA": {
-      "src/unnamed/ov004/__sinit_ov004_020b9b24.c": [
-        "return:int"
-      ]
-    },
-    "sPsOptIconPosB": {
-      "src/unnamed/ov004/__sinit_ov004_020b9b24.c": [
-        "return:int"
-      ]
-    },
-    "sPsOptStylePos": {
-      "src/unnamed/ov004/__sinit_ov004_020b9b24.c": [
-        "return:int"
       ]
     },
     "sHanaBackgroundParts": {
