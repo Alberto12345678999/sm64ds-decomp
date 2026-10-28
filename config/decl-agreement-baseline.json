@@ -5056,11 +5056,6 @@
       "src/game/actors/d_a_obj_bc_switch.cpp": [
         "param:#3 Matrix4x3 *"
       ],
-      "src/game/actors/d_a_obj_bk_dossunbar.cpp": [
-        "param:#2 int",
-        "param:#5 int",
-        "return:int"
-      ],
       "src/game/actors/d_a_obj_bk_killerdai.cpp": [
         "param:#3 const void *"
       ],
@@ -8617,9 +8612,6 @@
       "src/game/actors/d_a_obj_abuku.cpp": [
         "return:void"
       ],
-      "src/game/actors/d_a_obj_bk_dossunbar.cpp": [
-        "return:void"
-      ],
       "src/game/actors/d_a_obj_bk_killerdai.cpp": [
         "return:void"
       ],
@@ -8796,9 +8788,6 @@
         "arity:3"
       ],
       "src/game/actors/d_a_kuri_king.cpp": [
-        "arity:3"
-      ],
-      "src/game/actors/d_a_obj_bk_botaosi.cpp": [
         "arity:3"
       ],
       "src/game/actors/d_a_obj_casket.cpp": [
@@ -14741,11 +14730,6 @@
         "return:int []"
       ]
     },
-    "data_ov015_02113574": {
-      "src/game/actors/d_a_obj_bk_botaosi.cpp": [
-        "return:CLPS_Block"
-      ]
-    },
     "data_ov015_02113594": {
       "src/game/actors/d_a_obj_bk_lift.cpp": [
         "return:CLPS_Block"
@@ -14772,17 +14756,11 @@
       ]
     },
     "data_ov015_02114974": {
-      "src/game/actors/d_a_obj_bk_botaosi.cpp": [
-        "return:SharedFilePtr"
-      ],
       "src/unnamed/ov015/__sinit_ov015_02112fdc.c": [
         "return:int []"
       ]
     },
     "data_ov015_0211497c": {
-      "src/game/actors/d_a_obj_bk_botaosi.cpp": [
-        "return:SharedFilePtr"
-      ],
       "src/unnamed/ov015/__sinit_ov015_02112fdc.c": [
         "return:int []"
       ]
@@ -27008,11 +26986,6 @@
     "func_ov010_02111984": {
       "include/decl_common.h": [
         "kind:data"
-      ]
-    },
-    "func_ov015_02111214": {
-      "include/decl_common.h": [
-        "param:#1 char *"
       ]
     },
     "func_ov018_021117e8": {
