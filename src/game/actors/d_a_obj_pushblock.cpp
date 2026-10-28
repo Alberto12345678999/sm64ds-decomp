@@ -12,14 +12,7 @@
  * header makes mwccarm emit retail's D1-then-D0 pair with no D2 and no forcing
  * helper. The compiler-owned RTTI and vtable are audited through the manifest.
  *
- * deslop leftovers:
- * - dBgW_KcMbg::SetFile 6az: InitResources passes Fix12<int> by value; the
- *   header method form size-DIFFs.
- * - dBgCh_Actr::Init: header Fix12i mangles as i; ROM is Fix12<int> --
- *   mangled TU-local (InitResources).
- * - Particle::System::NewSimple 6az (Kill; notes/mwccarm-codegen.md 6az).
- * - dBgActor_c::IsClsnInRangeOnScreen 6az (Behavior; header method form
- *   refused).
+ * What stays:
  * - dBgCh_Actr_UpdateContinuous_Veneer: named UpdateContinuous misses the
  *   veneer dest (Behavior).
  * - (Vector3 *)&mHomePosX: the class stores that triple as scalars, and the
@@ -47,6 +40,9 @@ enum daObjPushblock_c_AssetId {
 #include "daSCoin_c.h"
 #include "decl_Platform.h"
 #include "dBgCh_Gnd.h"
+#include "Particle__System.h"
+#include "math/CalcLib.h"
+#include "math/MtxStack.h"
 
 /* The model handle constructs through func_02017acc and destroys through
  * func_02017ab4; the mesh-collision handle constructs through func_02017b4c
@@ -62,30 +58,15 @@ struct PushblockClsnFilePtr : SharedFilePtr {
     ~PushblockClsnFilePtr();
 };
 
-extern "C" PushblockModelFilePtr data_ov002_0210df9c;
-extern "C" PushblockClsnFilePtr data_ov002_0210df94;
+extern PushblockModelFilePtr data_ov002_0210df9c;
+extern PushblockClsnFilePtr data_ov002_0210df94;
 
-/* These seams preserve retail ABI details not expressible through the current
- * typed headers. The Fix12<int>-by-value entries change caller codegen when
- * respelled as C++ calls, and UpdateContinuous must retain the retail veneer.
- * The remaining declarations are untyped engine free functions and globals. */
+/* local extern: no shared header declares these engine free functions. */
 extern "C" {
-namespace Particle {
-struct System {
-    static void NewSimple(u32 id, Fix12i x, Fix12i y, Fix12i z);
-};
-}
-extern Matrix4x3 data_020a0e68;
-extern void Matrix4x3_FromRotationY(Matrix4x3 *m, int angle);
 extern void MulVec3Mat4x3(Vector3 *v, Matrix4x3 *m, Vector3 *dst);
 extern void AddVec3(Vector3 *a, Vector3 *b, Vector3 *c);
 extern void func_020393a4(int *p, int v);
 extern void func_02039394(int *p, int v);
-extern int Vec3_Dist(Vector3 *a, Vector3 *b);
-extern int Vec3_HorzDist(Vector3 *a, Vector3 *b);
-extern void hold_d_a_obj_pushblock(void *self, KCL_File *k, void *m, int fix, short s, void *clps);
-/* Parameter names keep this TU's @NNN. */
-typedef void BgchInitAt_(void *self, void *a, int b, int c, void *d, int e);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -99,8 +80,7 @@ typedef void BgchInitAt_(void *self, void *a, int b, int c, void *d, int e);
  * A natural `new daObjPushblock_c` calls the inherited fBase_c::operator new
  * (_ZN7fBase_cnwEm) and emits the retail allocation/base/member seam
  * (dBgActor_c C2, vptr, dBgCh_Actr C1). */
-extern "C" daObjPushblock_c *daObjPushblock_c_classInit()
-{
+extern "C" daObjPushblock_c *daObjPushblock_c_classInit() {
     return new daObjPushblock_c();
 }
 
@@ -116,8 +96,7 @@ extern "C" daObjPushblock_c *daObjPushblock_c_classInit()
  * A real method over the shared header. It used to be an extern "C" free
  * function over a raw `char *self` reading every field by hand offset; the
  * conversion is byte-exact under the pinned 2004/b56. */
-int daObjPushblock_c::InitResources()
-{
+int daObjPushblock_c::InitResources() {
     Vector3 v;
     BMD_File *bmd;
     KCL_File *kcl;
@@ -127,9 +106,7 @@ int daObjPushblock_c::InitResources()
     UpdateModelPosAndRotY();
     UpdateClsnPosAndRot();
     kcl = (KCL_File *)dBgW_Kc::LoadFile(data_ov002_0210df94);
-    ((dBgW_KcMbg *)(&mMeshCollider))
-        ->dBgW_KcMbg::SetFile(kcl, *(const Matrix4x3 *)(&mClsnMat), 0x1000, mAngleY,
-                              *(CLPS_Block *)(&data_ov002_0210d7b4));
+    mMeshCollider.SetFile(kcl, mClsnMat, 0x1000, mAngleY, *(CLPS_Block *)&data_ov002_0210d7b4);
 
     mVertAccel = -0x2000;
     mTerminalVelocity = -0x3c000;
@@ -162,8 +139,7 @@ int daObjPushblock_c::InitResources()
  * The real member form is byte-exact in this whole-TU context. Keeping the
  * home-coordinate declarations beside their first uses reproduces the retail
  * load/register order without raw field offsets. */
-int daObjPushblock_c::Behavior()
-{
+int daObjPushblock_c::Behavior() {
     Vector3 v;
     Vector3 dst;
     Vector3 pos;
@@ -252,8 +228,7 @@ int daObjPushblock_c::Render() {
 /* recovered: real C++ method */
 /* daObjPushblock_c::CleanupResources() -- takes the block's dBgW collision out of the
  * world if it is still registered, then gives back the two shared files. */
-int daObjPushblock_c::CleanupResources()
-{
+int daObjPushblock_c::CleanupResources() {
     if (mMeshCollider.IsEnabled()) {
         mMeshCollider.Disable();
     }
@@ -293,13 +268,14 @@ int daObjPushblock_c::CleanupResources()
    brace with nothing to return, which is what the host already accepts for the
    rest of this family. Byte-identical under 2004/b56: the compiled object is
    unchanged. */
-int daObjPushblock_c::OnPushed(dActor_c &other)
-{
+int daObjPushblock_c::OnPushed(dActor_c &other) {
     dActor_c *pusher = &other;
     if (pusher != 0) {
         mPrevAngleY = pusher->mAngleY;
-        if (pusher->param1 == 2) mHorzSpeed = 0x8000;
-        else mHorzSpeed = 0x4000;
+        if (pusher->param1 == 2)
+            mHorzSpeed = 0x8000;
+        else
+            mHorzSpeed = 0x4000;
     }
 }
 
@@ -315,8 +291,7 @@ int daObjPushblock_c::OnPushed(dActor_c &other)
  * method, and the trailing unqualified Kill() dispatches virtually through slot
  * 31. daObjPushblock_c does override slot 31 (its own _ZN16daObjPushblock_c4KillEv), so this
  * reaches daObjPushblock_c::Kill through the vtable rather than the base. */
-void daObjPushblock_c::OnHitByMegaChar(Player &player)
-{
+void daObjPushblock_c::OnHitByMegaChar(Player &player) {
     player.IncMegaKillCount();
     Kill();
 }
@@ -333,8 +308,7 @@ void daObjPushblock_c::OnHitByMegaChar(Player &player)
  * Same shape as dBgActor_c::Kill (its base's slot 31): spawn a poof particle
  * above the block, poof-dust at that point, play the break sound at
  * mCamSpacePos, then mark for destruction. */
-void daObjPushblock_c::Kill()
-{
+void daObjPushblock_c::Kill() {
     Vector3 vec;
     Vector3 vec2;
     vec.x = mPosX;

@@ -21,7 +21,7 @@
  * class's own fields -- they are all < 0x450, inside dPathLiftActor_c's own
  * storage. This class's methods reach them as inherited members.
  *
- * mShadowMat is the drop-shadow matrix func_ov100_02146e70 fills and hands
+ * mShadowMat is the drop-shadow matrix UpdateShadow fills and hands
  * to dActor_c::DropShadowScaleXYZ; 0x478 + 0x30 = 0x4a8. Kept as s32[12]:
  * a Matrix4x3 member (Vector3 translation) is non-trivial and changes the
  * factory.
@@ -38,9 +38,9 @@
 struct daObjPathLift_c : dPathLiftActor_c {
     dExtShadowModel_c mShadowModel; /* 0x450 */
     s32 mShadowMat[12];             /* 0x478 -- [9..11] the translation, pos >> 3 */
-    u32         mSoundHandle; /* 0x4a8 */
-    s32         mGroundY;     /* 0x4ac */
-    u8          mTimer;       /* 0x4b0 */
+    u32 mSoundHandle;               /* 0x4a8 */
+    s32 mGroundY;                   /* 0x4ac */
+    u8 mTimer;                      /* 0x4b0 */
 
     virtual ~daObjPathLift_c() {}
 
@@ -48,12 +48,18 @@ struct daObjPathLift_c : dPathLiftActor_c {
     int CleanupResources();
     int Behavior();
     int Render();
+
+    /* ov100 0x0214700c: mModel's matrix from the pitch and yaw plus
+       position >> 3; returns the z word, which no caller reads. */
+    int UpdateModelMatrix();
+    /* ov100 0x02146e70: place mShadowModel under the lift (skipped in
+       level 13 and when the lift is below its ground). */
+    void UpdateShadow();
 };
 
 #ifndef SM64DS_PLATFORM_PC
 /* ROM layout under mwccarm; host ABI divergence is tracked separately. */
-typedef char daObjPathLift_c_size_must_be_0x4b4[
-    sizeof(daObjPathLift_c) == 0x4b4 ? 1 : -1];
+typedef char daObjPathLift_c_size_must_be_0x4b4[sizeof(daObjPathLift_c) == 0x4b4 ? 1 : -1];
 #endif
 
 #endif /* __cplusplus */
