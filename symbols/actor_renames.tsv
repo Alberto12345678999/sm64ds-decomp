@@ -7077,4 +7077,13 @@ ov026	0x02111d4c	_ZN18daWater_Tatumaki_c19func_ov026_02111d4cEv	_ZN18daWater_Tat
 ov026	0x02111ed8	_ZN18daWater_Tatumaki_c19func_ov026_02111ed8Ev	_ZN18daWater_Tatumaki_c13InitStateSpinEv	daWater_Tatumaki_c::InitStateSpin: the spin state's enter routine; member renamed from its address placeholder; same address, same body
 ov026	0x02111ee0	func_ov026_02111ee0	_ZN18daWater_Tatumaki_c8SetStateEPKNS_5StateE	daWater_Tatumaki_c::SetState: installs a state and runs its enter routine; was an extern "C" free function taking the class pointer, now a member; same address, same body
 ov026	0x02111f30	func_ov026_02111f30	_ZN18daWater_Tatumaki_c17UpdateModelMatrixEv	daWater_Tatumaki_c::UpdateModelMatrix: model matrix from position and angles; was an extern "C" free function taking the class pointer, now a member; same address, same body
+ov006	0x0212f660	__sinit_ov006_0212f660	__sinit_unit020c8a30.cpp	unit020c8a30's compiler-emitted static initializer for sPuffs; the shard is folded into the TU; same address, same body
+ov006	0x020c8da8	Puff_CleanupAll	__arraydtor$6	compiler-generated array destructor thunk for sPuffs; __sinit_unit020c8a30.cpp registers it through __register_global_object
+ov006	0x020c8dcc	Puff_ElemDtor	_ZN4PuffD1Ev	Puff::~Puff: the empty inline element destructor sPuffs' initializer passes to __cxa_vec_ctor; same address, same body
+ov006	0x020c8dd0	Puff_Nothing	_ZN4PuffC1Ev	Puff::Puff: the empty inline element constructor sPuffs' initializer passes to __cxa_vec_ctor; same address, same body
+ov004	0x020b9ad0	__sinit_ov004_020b9ad0	__sinit_unit020b4aa4.cpp	unit020b4aa4's compiler-emitted static initializer for sMgCoins; the shard is folded into the TU; same address, same body
+ov004	0x020b67bc	MgCoins_Cleanup	__arraydtor$192	compiler-generated array destructor thunk for sMgCoins; __sinit_unit020b4aa4.cpp registers it through __register_global_object
+ov004	0x020b67e0	Coin_Destroy	_ZN6SpriteD1Ev	Sprite::~Sprite: the empty inline element destructor sMgCoins' initializer passes to __cxa_vec_ctor; same address, same body
+ov004	0x020b67e4	Coin_Construct	_ZN6SpriteC1Ev	Sprite::Sprite: the empty inline element constructor sMgCoins' initializer passes to __cxa_vec_ctor; same address, same body
+ov004	0x020b9b24	__sinit_ov004_020b9b24	__sinit_d_mg_ps_opt.cpp	d_mg_ps_opt.cpp's compiler-emitted static initializer for the PsOptHalfSize tables; the shard is folded into the TU; same address, same body
 ov009	0x0211145c	func_ov009_0211145c	_ZN9daSBird_c16StateLaunchFlockEv	daSBird_c::StateLaunchFlock: state 2 of the PMF table, spawns the flock and takes off in one step; was a free function taking the bird pointer, now a member; same address, same body

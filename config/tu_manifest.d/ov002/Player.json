@@ -22,7 +22,7 @@
     {
       "name": ".text",
       "start": "0x020bccfc",
-      "end": "0x020e6a08"
+      "end": "0x020e6c0c"
     },
     {
       "name": ".init",
@@ -4351,11 +4351,53 @@
       "ordinal": 616
     },
     {
+      "symbol": "Color_Interp",
+      "address": "0x020e6a08",
+      "size": "0x00000070",
+      "legacy_source": "src/Color_Interp.c",
+      "ordinal": 617
+    },
+    {
+      "symbol": "func_ov002_020e6a78",
+      "address": "0x020e6a78",
+      "size": "0x0000005c",
+      "legacy_source": "src/unnamed/ov002/func_ov002_020e6a78.cpp",
+      "ordinal": 618
+    },
+    {
+      "symbol": "func_ov002_020e6ad4",
+      "address": "0x020e6ad4",
+      "size": "0x00000068",
+      "legacy_source": "src/unnamed/ov002/func_ov002_020e6a78.cpp",
+      "ordinal": 619
+    },
+    {
+      "symbol": "func_ov002_020e6b3c",
+      "address": "0x020e6b3c",
+      "size": "0x00000038",
+      "legacy_source": "src/unnamed/ov002/func_ov002_020e6a78.cpp",
+      "ordinal": 620
+    },
+    {
+      "symbol": "func_ov002_020e6b74",
+      "address": "0x020e6b74",
+      "size": "0x0000003c",
+      "legacy_source": "src/unnamed/ov002/func_ov002_020e6a78.cpp",
+      "ordinal": 621
+    },
+    {
+      "symbol": "func_ov002_020e6bb0",
+      "address": "0x020e6bb0",
+      "size": "0x0000005c",
+      "legacy_source": "src/unnamed/ov002/func_ov002_020e6a78.cpp",
+      "ordinal": 622
+    },
+    {
       "symbol": "__sinit_ov002_021019d0",
       "address": "0x021019d0",
       "size": "0x00005470",
       "legacy_source": "src/unnamed/ov002/__sinit_ov002_021019d0.c",
-      "ordinal": 617
+      "ordinal": 623
     }
   ],
   "data": [],
@@ -4445,11 +4487,13 @@
     "flags": "-O4,p -enum int -lang c++ -char signed -interworking -proc arm946e -gccext,on -msgstyle gcc -Cpp_exceptions off",
     "object": "build/tu/ov002-Player/Player.o (gitignored)",
     "comparison": "tools/match.py extract_func+compare (bytes/relocs) AND tools/objisolate.py plan() (relocation type/addend) AND tools/reloc_audit.py check_destinations() (relocation target identity)",
-    "functions_matched": 618,
-    "functions_declared": 618,
+    "functions_matched": 624,
+    "functions_declared": 624,
     "compilerOnlyOutput": {
       "requested": [
         "_ZN6PlayerD2Ev",
+        "_ZN6PlayerC2Ev",
+        "_ZN6Player6ModelsD1Ev",
         "_ZN7Vector3D1Ev",
         "_ZN6V3QuadD1Ev",
         "_ZN4PVecD1Ev",
@@ -4460,6 +4504,8 @@
       "deadstripped": [
         "_ZN11Vector3e968D1Ev",
         "_ZN4PVecD1Ev",
+        "_ZN6Player6ModelsD1Ev",
+        "_ZN6PlayerC2Ev",
         "_ZN6PlayerD2Ev",
         "_ZN6V3QuadD1Ev",
         "_ZN7Vector3D1Ev",
@@ -4475,8 +4521,12 @@
         1002,
         1180,
         1181,
-        1193,
-        1194
+        1188,
+        1189,
+        1190,
+        1191,
+        1205,
+        1206
       ],
       "data": [
         "_ZTV6Player"
@@ -4503,12 +4553,12 @@
         "compile": true,
         "link": true,
         "checkModules": true,
-        "checkSymbols": false,
+        "checkSymbols": true,
         "rom": true
       },
       "tuRange": {
         "start": "0x020bccfc",
-        "end": "0x020e6a08",
+        "end": "0x020e6c0c",
         "differingBytes": 0,
         "firstDiff": null
       },
@@ -4516,7 +4566,7 @@
         {
           "section": ".text",
           "start": "0x020bccfc",
-          "end": "0x020e6a08",
+          "end": "0x020e6c0c",
           "differingBytes": 0,
           "firstDiff": null
         },
@@ -4530,7 +4580,7 @@
       ],
       "objectAudit": {
         "counts": {
-          "LICENSED": 618
+          "LICENSED": 624
         },
         "emittedTextOrderIsRomAscending": true,
         "nonLicensedSymbols": [],
@@ -4541,10 +4591,10 @@
           {
             "section": ".init",
             "original": [
-              1189
+              1203
             ],
             "desired": [
-              1189
+              1203
             ]
           }
         ],

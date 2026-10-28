@@ -193,16 +193,9 @@ src/game/actors/d_a_obj_cannon_shutter.cpp:
 
 src/game/player/Player.cpp:
     complete
-    .text start:0x020bccfc end:0x020e6a08
+    .text start:0x020bccfc end:0x020e6c0c
     .init start:0x021019d0 end:0x02106e40
 
-src/Color_Interp.c:
-    complete
-    .text start:0x020e6a08 end:0x020e6a78
-
-src/unnamed/ov002/func_ov002_020e6a78.cpp:
-    complete
-    .text start:0x020e6a78 end:0x020e6c0c
 src/game/player/d_a_ply.cpp:
     complete
     .text start:0x020e6c0c end:0x020e6c40
@@ -335,7 +328,7 @@ src/game/actors/d_a_propeller_heyho_fire.cpp:
     .ctor start:0x02108134 end:0x02108138
     .bss start:0x02111190 end:0x021111a0
 
-src/unnamed/ov002/__sinit_ov002_02100560.c:
+src/unnamed/ov002/__sinit_ov002_02100560.cpp:
     complete
     .init start:0x02100560 end:0x02100938
 

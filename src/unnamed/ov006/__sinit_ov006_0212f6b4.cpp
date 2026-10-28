@@ -1,22 +1,36 @@
 //cpp
+/* ov006 static initializer at 0x0212f6b4 (0x5c8): the Trampoline minigames'
+ * Mario resources and tuning, all read by d_mg_trmpln2_mario.cpp.
+ *
+ * It loads Mario's model handle and the thirteen animation handles, each
+ * registered for destruction; copies the trampoline row heights and the
+ * 2D/3D speed constants into their .bss working copies; and builds the two
+ * banks of six goal slots, each Vector3 registered with ~Vector3().
+ *
+ * Not folded: its owner is d_mg_trmpln2_mario.cpp (.init and .bss follow that
+ * TU's .text), but compiler emission needs every .bss object in
+ * 0x02140538..0x02140808 defined there in retail order, and the goal slots
+ * only match through unsigned int stores, not through a Vector3 constructor.
+ */
 #include "types.h"
 #include "SharedFilePtr.h"
 
-extern "C" {
-
 /* Runtime asset handles resolved through the overlay 0 file table. */
-enum sinit_ov006_0212f6b4_AssetId {
-    ASSET_MARIO_MODEL_MG_BMD = 0x0216
-};
+enum TrmpMarioAssetId { ASSET_MARIO_MODEL_MG_BMD = 0x0216 };
 
-extern void func_02017a24(void*, int);
-extern void func_020731dc(void *, void *, void **);
-extern void func_02017a0c(void);
-extern int SharedFilePtr_Destruct_Anim(int);
+extern "C" {
+/* local extern: no project header declares these arm9 helpers. */
+void func_02017a24(void *, int);
+void func_020731dc(void *, void *, void **);
+void func_02017a0c(void);
+int SharedFilePtr_Destruct_Anim(int);
 /* local extern: C++ cannot take a destructor's address, so the registrations
    name ~Vector3() by its linker name. */
-extern void *_ZN7Vector3D1Ev(void *object);
+void *_ZN7Vector3D1Ev(void *object);
+}
 
+/* Mario's model and animation handles, each followed by the
+   destructor-registration node (data_ov006_*) the initializer passes. */
 extern int sTrmpMarioModelFile[];
 extern void *data_ov006_021406ac[3];
 extern SharedFilePtr sTrmpMarioJumpAnimFile;
@@ -46,9 +60,10 @@ extern void *data_ov006_02140760[3];
 extern SharedFilePtr sTrmpMarioSdownAnimFile;
 extern void *data_ov006_0214076c[3];
 
-struct P2 { int a, b; };
-extern struct P2 sTrmpRowBaseHeights;
-extern struct P2 sTrmpRowHeights;
+/* Tuning: each .bss working copy takes its .data default. */
+/* The two trampoline row heights, then the speed constants. */
+extern int sTrmpRowBaseHeights[];
+extern int sTrmpRowHeights[];
 extern int data_ov006_0212e000;
 extern int sTrmp3DFallSpeed;
 extern int data_ov006_0212e020;
@@ -73,6 +88,7 @@ extern int sTrmp2RiseSpeedMax;
 extern int data_ov006_0212e01c;
 extern int sTrmp2DriftScale;
 
+/* The first bank of goal slots (sTrmpGoalSlots) and its registration nodes. */
 extern Vector3 sTrmpGoalSlots;
 extern Vector3 data_ov006_02140784;
 extern Vector3 data_ov006_02140790;
@@ -86,6 +102,7 @@ extern void *data_ov006_02140664[3];
 extern void *data_ov006_02140670[3];
 extern void *data_ov006_0214067c[3];
 
+/* The second bank of goal slots and its registration nodes. */
 extern Vector3 data_ov006_021407c0;
 extern Vector3 data_ov006_021407cc;
 extern Vector3 data_ov006_021407d8;
@@ -99,8 +116,7 @@ extern void *data_ov006_021406b8[3];
 extern void *data_ov006_021406dc[3];
 extern void *data_ov006_02140700[3];
 
-void __sinit_ov006_0212f6b4(void)
-{
+extern "C" void __sinit_ov006_0212f6b4(void) {
     func_02017a24(sTrmpMarioModelFile, ASSET_MARIO_MODEL_MG_BMD);
     func_020731dc(sTrmpMarioModelFile, (void *)&func_02017a0c, data_ov006_021406ac);
     sTrmpMarioJumpAnimFile.Construct(0x8078);
@@ -143,8 +159,8 @@ void __sinit_ov006_0212f6b4(void)
     func_020731dc(&sTrmpMarioSdownAnimFile, (void *)SharedFilePtr_Destruct_Anim,
                   data_ov006_0214076c);
 
-    sTrmpRowHeights.a = sTrmpRowBaseHeights.a;
-    sTrmpRowHeights.b = sTrmpRowBaseHeights.b;
+    sTrmpRowHeights[0] = sTrmpRowBaseHeights[0];
+    sTrmpRowHeights[1] = sTrmpRowBaseHeights[1];
     sTrmp3DFallSpeed = data_ov006_0212e000;
     sTrmp3DGravityStep = data_ov006_0212e020;
     sTrmp3DJumpOffSpeed = data_ov006_0212dffc;
@@ -159,43 +175,43 @@ void __sinit_ov006_0212f6b4(void)
     /* The remaining slots are written through an unsigned int*: plain
        .x/.y/.z stores (as above) compile to different code and lose the match. */
     {
-        unsigned int *p = (unsigned int*)&data_ov006_02140784;
+        unsigned int *p = (unsigned int *)&data_ov006_02140784;
         p[0] = (unsigned int)-0x30000;
         p[1] = 0x100000;
         p[2] = 0;
-        func_020731dc(p, (void*)&_ZN7Vector3D1Ev, data_ov006_0214064c);
+        func_020731dc(p, (void *)&_ZN7Vector3D1Ev, data_ov006_0214064c);
     }
 
     {
-        unsigned int *p = (unsigned int*)&data_ov006_02140790;
+        unsigned int *p = (unsigned int *)&data_ov006_02140790;
         p[0] = 0x10000;
         p[1] = 0x100000;
         p[2] = 0;
-        func_020731dc(p, (void*)&_ZN7Vector3D1Ev, data_ov006_02140658);
+        func_020731dc(p, (void *)&_ZN7Vector3D1Ev, data_ov006_02140658);
     }
 
     {
-        unsigned int *p = (unsigned int*)&data_ov006_0214079c;
+        unsigned int *p = (unsigned int *)&data_ov006_0214079c;
         p[0] = 0x10000;
         p[1] = 0x100000;
         p[2] = 0;
-        func_020731dc(p, (void*)&_ZN7Vector3D1Ev, data_ov006_02140664);
+        func_020731dc(p, (void *)&_ZN7Vector3D1Ev, data_ov006_02140664);
     }
 
     {
-        unsigned int *p = (unsigned int*)&data_ov006_021407a8;
+        unsigned int *p = (unsigned int *)&data_ov006_021407a8;
         p[0] = 0x30000;
         p[1] = 0x100000;
         p[2] = 0;
-        func_020731dc(p, (void*)&_ZN7Vector3D1Ev, data_ov006_02140670);
+        func_020731dc(p, (void *)&_ZN7Vector3D1Ev, data_ov006_02140670);
     }
 
     {
-        unsigned int *p = (unsigned int*)&data_ov006_021407b4;
+        unsigned int *p = (unsigned int *)&data_ov006_021407b4;
         p[0] = 0x50000;
         p[1] = 0x100000;
         p[2] = 0;
-        func_020731dc(p, (void*)&_ZN7Vector3D1Ev, data_ov006_0214067c);
+        func_020731dc(p, (void *)&_ZN7Vector3D1Ev, data_ov006_0214067c);
     }
 
     sTrmp2FallSpeed = data_ov006_0212e010;
@@ -208,46 +224,45 @@ void __sinit_ov006_0212f6b4(void)
     data_ov006_021407c0.x = -0x50000;
     data_ov006_021407c0.y = 0x100000;
     data_ov006_021407c0.z = 0;
-    func_020731dc(&data_ov006_021407c0, (void*)&_ZN7Vector3D1Ev, data_ov006_02140688);
+    func_020731dc(&data_ov006_021407c0, (void *)&_ZN7Vector3D1Ev, data_ov006_02140688);
 
     {
-        unsigned int *p = (unsigned int*)&data_ov006_021407cc;
+        unsigned int *p = (unsigned int *)&data_ov006_021407cc;
         p[0] = (unsigned int)-0x30000;
         p[1] = 0x100000;
         p[2] = 0;
-        func_020731dc(p, (void*)&_ZN7Vector3D1Ev, data_ov006_02140694);
+        func_020731dc(p, (void *)&_ZN7Vector3D1Ev, data_ov006_02140694);
     }
 
     {
-        unsigned int *p = (unsigned int*)&data_ov006_021407d8;
+        unsigned int *p = (unsigned int *)&data_ov006_021407d8;
         p[0] = 0x10000;
         p[1] = 0x100000;
         p[2] = 0;
-        func_020731dc(p, (void*)&_ZN7Vector3D1Ev, data_ov006_021406a0);
+        func_020731dc(p, (void *)&_ZN7Vector3D1Ev, data_ov006_021406a0);
     }
 
     {
-        unsigned int *p = (unsigned int*)&data_ov006_021407e4;
+        unsigned int *p = (unsigned int *)&data_ov006_021407e4;
         p[0] = 0x10000;
         p[1] = 0x100000;
         p[2] = 0;
-        func_020731dc(p, (void*)&_ZN7Vector3D1Ev, data_ov006_021406b8);
+        func_020731dc(p, (void *)&_ZN7Vector3D1Ev, data_ov006_021406b8);
     }
 
     {
-        unsigned int *p = (unsigned int*)&data_ov006_021407f0;
+        unsigned int *p = (unsigned int *)&data_ov006_021407f0;
         p[0] = 0x30000;
         p[1] = 0x100000;
         p[2] = 0;
-        func_020731dc(p, (void*)&_ZN7Vector3D1Ev, data_ov006_021406dc);
+        func_020731dc(p, (void *)&_ZN7Vector3D1Ev, data_ov006_021406dc);
     }
 
     {
-        unsigned int *p = (unsigned int*)&data_ov006_021407fc;
+        unsigned int *p = (unsigned int *)&data_ov006_021407fc;
         p[0] = 0x50000;
         p[1] = 0x100000;
         p[2] = 0;
-        func_020731dc(p, (void*)&_ZN7Vector3D1Ev, data_ov006_02140700);
+        func_020731dc(p, (void *)&_ZN7Vector3D1Ev, data_ov006_02140700);
     }
-}
 }

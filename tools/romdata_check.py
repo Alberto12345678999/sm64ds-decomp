@@ -348,12 +348,14 @@ def rom_data_index():
         return _index
 
 
-def emitted_data_symbols(raw):
+def emitted_data_symbols(raw, linked_global=()):
     """[(name, shndx, value, size)] for defined data objects in this object file.
 
     Every one of these is a section `objisolate` drops, because it keeps exactly one
     `.text` and zeroes the rest. Locals are skipped: a static table has no ROM symbol
-    to be compared against and never collides with one.
+    to be compared against and never collides with one. The exception is
+    `linked_global`: locals the manifest's `symbol_binding_rewrites` link
+    STB_GLOBAL, such as a compiler temp renamed to its ROM data name.
 
     `.bss` (SHT_NOBITS) objects are skipped too: they carry no initial bytes, and the
     cartridge holds nothing for them either. arm9 makes comparing them actively wrong:
@@ -370,7 +372,7 @@ def emitted_data_symbols(raw):
             continue
         if s["st_info"]["type"] != "STT_OBJECT" or not s["st_size"]:
             continue
-        if s["st_info"]["bind"] == "STB_LOCAL":
+        if s["st_info"]["bind"] == "STB_LOCAL" and s.name not in linked_global:
             continue
         if elf.get_section(s["st_shndx"])["sh_type"] == "SHT_NOBITS":
             continue
@@ -506,7 +508,11 @@ def check_object(obj_path, rel, names=None):
             # Retain the original measurement as well as the explicit refusal.
             out.append({"src": rel, "symbol": "?", "verdict": UNNAMED,
                         "bytes": 0, "note": f"{type(exc).__name__}: {exc}"})
-        for name, shndx, value, size in emitted_data_symbols(raw):
+        entry = _rename_manifest(rel)
+        linked_global = {row.get("symbol") for row in
+                         (entry or {}).get("symbol_binding_rewrites", []) or []
+                         if isinstance(row, dict) and row.get("to") == "STB_GLOBAL"}
+        for name, shndx, value, size in emitted_data_symbols(raw, linked_global):
             rec = verify_data_symbol(raw, name, shndx, value, size, names)
             rec["src"] = rel
             out.append(rec)
