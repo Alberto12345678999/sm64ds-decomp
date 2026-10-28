@@ -14,9 +14,6 @@
  *   component stores follow the ROM's order, including the y stores that
  *   are overwritten at once.
  * - g_profile_WC_OBJ01 is ov029 data outside this TU (S14).
- * - daObjFloatBoard_c::func_ov002_020b5e58 is the float-board family's
- *   shared resource loader (float_board, ki_ita, wc_obj01, wc_obj06); it
- *   keeps its placeholder name until the family is renamed together.
  */
 
 /* Runtime asset handles resolved through the overlay 0 file table. */
