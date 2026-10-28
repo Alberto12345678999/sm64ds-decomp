@@ -76,7 +76,6 @@ src/d_a_coin_coin.c	WEAK-refs-only	ov002				1		None		-
 src/CollectStar.c	PURE-C	arm9				1		None		-
 src/CollectStarInCurLevel.c	PURE-C	arm9				1		None		-
 src/CollectStarInLevel.c	PURE-C	arm9				1		None		-
-src/Color_Interp.c	PURE-C	ov002				1		None		-
 src/ContinueKuppaScriptIfNecessary.c	WEAK-refs-only	arm9				1		None		-
 src/Copy32Bytes.c	PURE-C	arm9				1		None		-
 src/Copy36Bytes.c	PURE-C	arm9				1		None		-
@@ -1101,7 +1100,6 @@ src/unnamed/arm9/0207/__sinit_020750ec.c	PURE-C	arm9				0		None		extra-sections:
 src/unnamed/arm9/0207/__sinit_0207511c.c	WEAK-refs-only	arm9				0		None		extra-sections:init
 src/unnamed/arm9/0207/__sinit_02075150.c	PURE-C	arm9				0		None		extra-sections:init
 src/unnamed/arm9/0207/__sinit_02075154.c	PURE-C	arm9				0		None		extra-sections:init
-src/unnamed/ov002/__sinit_ov002_02100560.c	PURE-C	ov002				0		None		extra-sections:init
 src/unnamed/ov002/__sinit_ov002_02100938.c	PURE-C	ov002				0		None		extra-sections:init
 src/unnamed/ov002/__sinit_ov002_02100adc.c	PURE-C	ov002				0		None		extra-sections:init
 src/unnamed/ov002/__sinit_ov002_02100c50.c	PURE-C	ov002				0		None		extra-sections:init
@@ -1206,7 +1204,6 @@ src/unnamed/ov022/__sinit_ov022_02112e58.c	PURE-C	ov022				0		None		extra-sectio
 src/unnamed/ov022/__sinit_ov022_02112ec0.c	PURE-C	ov022				0		None		extra-sections:init
 src/unnamed/ov022/__sinit_ov022_02112f78.c	PURE-C	ov022				0		None		extra-sections:init
 src/unnamed/ov022/__sinit_ov022_02112fe4.c	PURE-C	ov022				0		None		extra-sections:init
-src/unnamed/ov022/__sinit_ov022_02113050.c	PURE-C	ov022				0		None		extra-sections:init
 src/unnamed/ov022/__sinit_ov022_021130bc.c	PURE-C	ov022				0		None		extra-sections:init
 src/unnamed/ov023/__sinit_ov023_02111aa8.c	PURE-C	ov023				0		None		extra-sections:init
 src/unnamed/ov024/__sinit_ov024_02112808.c	PURE-C	ov024				0		None		extra-sections:init
@@ -3624,11 +3621,6 @@ src/unnamed/ov002/func_ov002_020e63a4.c	WEAK-refs-only	ov002				1		None		-
 src/unnamed/ov002/func_ov002_020e640c.c	WEAK-refs-only	ov002				1		None		-
 src/unnamed/ov002/func_ov002_020e6780.c	PURE-C	ov002				1		None		-
 src/unnamed/ov002/func_ov002_020e69c0.c	PURE-C	ov002				1		None		-
-src/unnamed/ov002/func_ov002_020e6a78.c	PURE-C	ov002				1		None		-
-src/unnamed/ov002/func_ov002_020e6ad4.c	PURE-C	ov002				1		None		-
-src/unnamed/ov002/func_ov002_020e6b3c.c	PURE-C	ov002				1		None		-
-src/unnamed/ov002/func_ov002_020e6b74.c	PURE-C	ov002				1		None		-
-src/unnamed/ov002/func_ov002_020e6bb0.c	WEAK-refs-only	ov002				1		None		-
 src/func_ov002_020e6d88.c	WEAK-refs-only	ov002				1		None		-
 src/func_ov002_020e6edc.c	WEAK-refs-only	ov002				1		None		-
 src/func_ov002_020e700c.c	WEAK-refs-only	ov002				1		None		-
