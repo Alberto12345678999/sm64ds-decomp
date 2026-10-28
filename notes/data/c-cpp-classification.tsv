@@ -5849,7 +5849,6 @@ src/func_ov007_020cca98.c	WEAK-refs-only	ov007				1		None		-
 src/func_ov007_020ccab4.c	WEAK-refs-only	ov007				1		None		-
 src/d_s_dsmt.c	S1-stores-rom-vptr	ov007			stores _ZTV8dScene_c	1		None	_ZTV8dScene_c	-
 src/func_ov009_02111224.c	PURE-C	ov009				1		None		-
-src/unnamed/ov009/func_ov009_0211145c.c	WEAK-refs-only					0		None		NONMATCHING-draft;not-in-delinks
 src/func_ov009_021115d8.c	WEAK-refs-only	ov009				1		None		-
 src/func_ov010_0211124c.c	PURE-C	ov010				1		None		-
 src/func_ov010_0211125c.c	PURE-C	ov010				1		None		-

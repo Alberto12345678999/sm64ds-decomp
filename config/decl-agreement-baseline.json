@@ -3629,9 +3629,6 @@
       ],
       "src/runtime/actor/d_actor.cpp": [
         "param:#1 Vector3 *"
-      ],
-      "src/unnamed/ov009/func_ov009_0211145c.c": [
-        "param:#1 Vector3 *"
       ]
     },
     "Vec3_Lsl": {
@@ -3987,10 +3984,6 @@
         "param:#1 Vector3 *",
         "param:#2 const Vector3 *",
         "param:#3 const Vector3 *"
-      ],
-      "src/unnamed/ov009/func_ov009_0211145c.c": [
-        "param:#1 Vector3 *",
-        "return:int"
       ],
       "src/unnamed/ov075/func_ov075_0211ab38.c": [
         "param:#1 Vector3 *",
@@ -8625,9 +8618,6 @@
       ],
       "src/runtime/actor/d_cap_enemy_arm9.cpp": [
         "return:int *"
-      ],
-      "src/unnamed/ov009/func_ov009_0211145c.c": [
-        "return:char *"
       ]
     },
     "_ZN8dActor_c13LandingDustAtER7Vector3b": {
@@ -8816,9 +8806,6 @@
       ],
       "src/unnamed/ov002/func_ov002_020d6c60.cpp": [
         "return:int"
-      ],
-      "src/unnamed/ov009/func_ov009_0211145c.c": [
-        "return:char *"
       ],
       "src/_ZN6Player19func_ov002_020d93acEv.cpp": [
         "param:#3 const Vector3 &",
