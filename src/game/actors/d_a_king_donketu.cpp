@@ -893,10 +893,9 @@ int daKing_Donketu_c::func_ov073_0212005c() {
 // @symbol _ZN16daKing_Donketu_c19func_ov073_02120098Ev
 struct BCA_File;
 int daKing_Donketu_c::func_ov073_02120098() {
-    daKing_Donketu_c *c = this;
-    c->mEdgeRecovered = 0;
-    c->mBlendAnmModel.SetAnim(*(BCA_File *)((BCA_File *)gKingIceDonketuJumpEdAnimationFile.filePtr),
-                              4, 0x40000000, 0x1000, 0);
+    mEdgeRecovered = 0;
+    mBlendAnmModel.SetAnim(*(BCA_File *)((BCA_File *)gKingIceDonketuJumpEdAnimationFile.filePtr),
+                           4, 0x40000000, 0x1000, 0);
     return 1;
 }
 
@@ -916,56 +915,55 @@ int daKing_Donketu_c::func_ov073_02120098() {
 // @symbol _ZN16daKing_Donketu_c19func_ov073_021200e0Ev
 int daKing_Donketu_c::func_ov073_021200e0()
 {
-    daKing_Donketu_c *thiz = this;
-    u16 state = thiz->mStateTimer;
+    u16 state = mStateTimer;
     if (state != 0) {
         if (state == 1) {
-            thiz->mBlendAnmModel.SetAnim(
+            mBlendAnmModel.SetAnim(
                 *(BCA_File *)((BCA_File *)gKingIceDonketuJumpStAnimationFile.filePtr), 4,
                 0x40000000, 0x1000, 0);
-            thiz->mBlendAnmModel.speed = 0x1000;
-            thiz->mVertSpeed = 0x46000;
-            thiz->mLandedWaypoint = 0xff;
-            thiz->mVertAccel = -0x3000;
-            if (thiz->mEdgeRecovered != 0) {
-                func_02012694(SND_HOP_LAUNCH, &thiz->mCamSpacePosX);
+            mBlendAnmModel.speed = 0x1000;
+            mVertSpeed = 0x46000;
+            mLandedWaypoint = 0xff;
+            mVertAccel = -0x3000;
+            if (mEdgeRecovered != 0) {
+                func_02012694(SND_HOP_LAUNCH, &mCamSpacePosX);
             }
         }
         return 1;
     }
     /* state == 0 */
-    if (thiz->mStateScratch == 0) {
+    if (mStateScratch == 0) {
         Vec3 offset;
         Vec3 rotated;
         s16 horz;
-        ApproachLinear(thiz->mAngleX, 0, 0x2000);
-        horz = Vec3_HorzAngle(&thiz->mPos, (const Vector3 *)&thiz->mSpawnPosX);
-        Vec3_VertAngle((const void*)&thiz->mPosX, (const void*)&thiz->mSpawnPosX);
-        ApproachLinear(thiz->mPrevAngleY, horz, 0x800);
+        ApproachLinear(mAngleX, 0, 0x2000);
+        horz = Vec3_HorzAngle(&mPos, (const Vector3 *)&mSpawnPosX);
+        Vec3_VertAngle((const void*)&mPosX, (const void*)&mSpawnPosX);
+        ApproachLinear(mPrevAngleY, horz, 0x800);
         offset.x = 0;
         offset.y = 0;
         offset.z = 0;
         rotated.x = 0;
         rotated.y = 0;
         rotated.z = 0;
-        if (thiz->mHitsRemaining == 2) {
+        if (mHitsRemaining == 2) {
             offset.z = 0x32000;
         } else {
             offset.z = 0x1e000;
         }
         Matrix4x3_FromRotationY(&data_020a0e68, horz);
         MulVec3Mat4x3(&offset, &data_020a0e68, &rotated);
-        thiz->mSpeedX = rotated.x;
-        thiz->mSpeedZ = rotated.z;
-        if (thiz->mVertSpeed < 0) {
-            int id = thiz->mdCcAcPos_c.otherOwner;
+        mSpeedX = rotated.x;
+        mSpeedZ = rotated.z;
+        if (mVertSpeed < 0) {
+            int id = mdCcAcPos_c.otherOwner;
             if (id != 0) {
                 dActor_c* actor = dActor_c::FindWithID((u32)id);
                 if (actor != 0) {
                     enum Bool eq = (enum Bool)(actor->actorID == ACTOR_PLAYER);
                     if (eq != FALSE) {
                         Vec3 pos = *(Vec3*)&actor->mPosX;
-                        if (thiz->mPosY > pos.y) {
+                        if (mPosY > pos.y) {
                             ((Player *)actor)->Unk_020c6a10(1);
                         }
                     }
@@ -973,30 +971,30 @@ int daKing_Donketu_c::func_ov073_021200e0()
             }
         }
     }
-    if (thiz->mWithMeshClsn.IsOnGround() != 0) {
-        if (thiz->mStateScratch == 0) {
-            thiz->mHorzSpeed = 0;
-            thiz->mSpeedX = 0;
-            thiz->mVertSpeed = 0;
-            thiz->mSpeedZ = 0;
-            thiz->func_ov073_0211f2c0(0x1388000);
-            func_02012694(SND_HOP_LANDING, &thiz->mCamSpacePosX);
+    if (mWithMeshClsn.IsOnGround() != 0) {
+        if (mStateScratch == 0) {
+            mHorzSpeed = 0;
+            mSpeedX = 0;
+            mVertSpeed = 0;
+            mSpeedZ = 0;
+            func_ov073_0211f2c0(0x1388000);
+            func_02012694(SND_HOP_LANDING, &mCamSpacePosX);
         }
-        if (thiz->mHitsRemaining == 1 && thiz->mEdgeRecovered == 0) {
-            thiz->mLandedWaypoint = 0;
-            if (thiz->mStateScratch == 0) {
-                thiz->mBlendAnmModel.SetAnim(
+        if (mHitsRemaining == 1 && mEdgeRecovered == 0) {
+            mLandedWaypoint = 0;
+            if (mStateScratch == 0) {
+                mBlendAnmModel.SetAnim(
                     *(BCA_File *)((BCA_File *)gKingIceDonketuJumpEdAnimationFile.filePtr), 4,
                     0x40000000, 0x1000, 0);
             }
-            thiz->mStateScratch += 1;
-            if (thiz->mStateScratch < 0x82) {
+            mStateScratch += 1;
+            if (mStateScratch < 0x82) {
                 return 1;
             }
         }
-        ChiefChilly_ChangeState((C *)(thiz), (PMF *)&data_ov073_02123380);
+        ChiefChilly_ChangeState((C *)this, (PMF *)&data_ov073_02123380);
     }
-    thiz->mAngleY = thiz->mPrevAngleY;
+    mAngleY = mPrevAngleY;
     return 1;
 }
 
