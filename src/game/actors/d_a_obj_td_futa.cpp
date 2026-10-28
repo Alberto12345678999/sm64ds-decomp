@@ -7,26 +7,14 @@
  * first), and the destructor stays inline in the header, declared
  * last -- out of line it emits D0 ahead of D1 plus a homeless D2,
  * which the cartridge refuses.
- *
- * deslop
- * Leftover: Event::GetBit has no shared header; every caller
- *   declares it locally (here as Event::GetBit).
- * Leftover: dBgW_KcMbg::SetFile and dBgActor_c::IsClsnInRange keep
- *   computed spellings (by-value Fix12<int> parameters, wall 6az).
  */
 
 /* Runtime asset handles resolved through the overlay 0 file table. */
-enum d_a_obj_td_futa_AssetId {
-    ASSET_TD_OBJ_FUTA_BMD = 0x06b5,
-    ASSET_TD_OBJ_FUTA_KCL = 0x06b6
-};
+enum d_a_obj_td_futa_AssetId { ASSET_TD_OBJ_FUTA_BMD = 0x06b5, ASSET_TD_OBJ_FUTA_KCL = 0x06b6 };
 
 #include "daObjTdFuta_c.h"
 #include "SharedFilePtr.h"
-
-/* Event::GetBit has no shared header anywhere in the tree -- every caller
- * declares it locally. */
-namespace Event { s32 GetBit(u32 bit); }
+#include "Event.h"
 
 struct KCL_File;
 struct CLPS_Block;
@@ -45,19 +33,9 @@ struct TdFutaClsnFileHandle : SharedFilePtr {
     ~TdFutaClsnFileHandle();
 };
 
-extern "C" {
 extern TdFutaClsnFileHandle data_ov032_02113acc;
 extern TdFutaModelFilePtr data_ov032_02113ad4;
 extern CLPS_Block data_ov032_02112f98;
-
-/* dBgActor_c::IsClsnInRange takes two Fix12<int> by value. A real member
- * call homes those arguments to the stack under mwccarm 2004/b56 (wall 6az). */
-
-/* dBgW_KcMbg::SetFile likewise takes Fix12<int> by value. A real member
- * call on this TU's InitResources DIFFs. */
-extern void hold_d_a_obj_td_futa(dBgW_KcMbg *self, KCL_File *file, const Matrix4x3 *mat, int scale,
-                                 s16 angY, CLPS_Block *clps);
-}
 
 // @symbol daObjTdFuta_c_classInit
 /* Every instruction the cartridge has here falls out of the one `new`.
@@ -67,42 +45,36 @@ extern void hold_d_a_obj_td_futa(dBgW_KcMbg *self, KCL_File *file, const Matrix4
  * The implicit constructor is what keeps the intervening dBgActor_c
  * construction inlined; declaring a constructor of our own would emit a `bl`
  * the factory does not have. */
-extern "C" daObjTdFuta_c *daObjTdFuta_c_classInit()
-{
+extern "C" daObjTdFuta_c *daObjTdFuta_c_classInit() {
     return new daObjTdFuta_c();
 }
 
 // @symbol _ZN13daObjTdFuta_c13InitResourcesEv
-s32 daObjTdFuta_c::InitResources()
-{
+s32 daObjTdFuta_c::InitResources() {
     mModel.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(data_ov032_02113ad4), 1, -1);
     UpdateModelPosAndRotY();
     UpdateClsnPosAndRot();
 
     KCL_File *kcl = (KCL_File *)dBgW_Kc::LoadFile(data_ov032_02113acc);
-    ((dBgW_KcMbg *)(&mMeshCollider))
-        ->dBgW_KcMbg::SetFile(kcl, *(&mClsnMat), 0x199, mAngleY, *(&data_ov032_02112f98));
+    mMeshCollider.SetFile(kcl, mClsnMat, 0x199, mAngleY, data_ov032_02112f98);
 
     return Event::GetBit(0xe) == 0;
 }
 
 // @symbol _ZN13daObjTdFuta_c8BehaviorEv
-s32 daObjTdFuta_c::Behavior()
-{
+s32 daObjTdFuta_c::Behavior() {
     IsClsnInRange(0, 0);
     return 1;
 }
 
 // @symbol _ZN13daObjTdFuta_c6RenderEv
-s32 daObjTdFuta_c::Render()
-{
+s32 daObjTdFuta_c::Render() {
     mModel.Render(0);
     return 1;
 }
 
 // @symbol _ZN13daObjTdFuta_c16CleanupResourcesEv
-s32 daObjTdFuta_c::CleanupResources()
-{
+s32 daObjTdFuta_c::CleanupResources() {
     if (mMeshCollider.IsEnabled())
         mMeshCollider.Disable();
 

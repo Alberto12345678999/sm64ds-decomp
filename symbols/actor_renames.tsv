@@ -6919,3 +6919,9 @@ ov024	0x021112c0	func_ov024_021112c0	_ZN16daObjDlPyramid_c13FinishDescentEv	daOb
 ov024	0x02111350	func_ov024_02111350	_ZN16daObjDlPyramid_c7DescendEv	daObjDlPyramid_c::Descend: one frame of the descent: wobbles X off home, bobs up for 60 frames, then spins up and sinks; state 2 at frame 150; was an extern "C" free function taking the class pointer, now a member; same address, same body
 ov024	0x02111480	func_ov024_02111480	_ZN16daObjDlPyramid_c16UpdateClsnMatrixEv	daObjDlPyramid_c::UpdateClsnMatrix: yaw matrix plus position into mClsnMat2, handed to the mesh collider; was an extern "C" free function taking the class pointer, now a member; same address, same body
 ov024	0x021114c4	func_ov024_021114c4	_ZN16daObjDlPyramid_c17UpdateModelMatrixEv	daObjDlPyramid_c::UpdateModelMatrix: yaw matrix plus position >> 3 into mTopModel; was an extern "C" free function taking the class pointer, now a member; same address, same body
+ov002	0x020bad10	func_ov002_020bad10	_ZN13daObjSwdoor_c17InitResourcesFromEP18ResourceDescriptor	shared shutter setup from a leaf's file table
+ov002	0x020baba8	func_ov002_020baba8	_ZN13daObjSwdoor_c20CleanupResourcesFromEP18ResourceDescriptor	shared shutter teardown from a leaf's file table
+ov002	0x020bac18	func_ov002_020bac18	_ZN13daObjSwdoor_c13UpdateShutterEv	per-frame shutter state machine both leaves run as Behavior
+ov018	0x02111278	_ZN14daObjSm_Lift_c19func_ov018_02111278Ev	_ZN14daObjSm_Lift_c20UpdateModelTransformEv	place the ski lift model at mPos with its angles
+ov018	0x021117e8	func_ov018_021117e8	_ZN14daObjSm_Lift_c19HandlePlayerContactEP8dActor_c	remember a touching player
+ov018	0x02111804	func_ov018_02111804	_ZN14daObjSm_Lift_c18BeforeClsnCallbackEPvPS_P8dActor_c	dBgW before-collision veneer forwarding to HandlePlayerContact
