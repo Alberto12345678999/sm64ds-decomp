@@ -6934,3 +6934,6 @@ ov022	0x02111a1c	func_ov022_02111a1c	_ZN16daObjFl_London_c17UpdateModelMatrixEv	
 ov022	0x02111558	func_ov022_02111558	_ZN14daObjFl_Ring_c9OnStoodOnEP8dActor_c	the trigger helper the collision callback forwards to (sets mTriggered); member conversion; byte-identical
 ov022	0x02111564	func_ov022_02111564	_ZN14daObjFl_Ring_c15StoodOnCallbackEP4dBgWPS_P8dActor_c	the dBgW stood-on callback veneer InitResources installs; static member; byte-identical
 ov022	0x02111d48	_ZN16daObjFl_Seesaw_c19func_ov022_02111d48Ev	_ZN16daObjFl_Seesaw_c20UpdateModelTransformEv	writes mModel's transform from mPos and all three angles (UpdateModelPosAndRotY on three axes); byte-identical
+ov031	0x02111214	func_ov031_02111214	_ZN18daObjHsBillboard_c20UpdateModelTransformEv	yaws the model from mAngleY and sets its translation to mPos >> 3; member conversion; byte-identical
+ov081	0x02127be0	func_ov081_02127be0	_ZN15daObjIceBlock_c11ReleaseStarEv	destroys the frozen daStar_c and respawns it free-standing with its star base; member conversion; byte-identical
+ov030	0x0211124c	func_ov030_0211124c	_ZN13daObjHmBskt_c12CheckLandingEP10dBgCh_Actr	steps the falling cage collision and, once grounded, releases the star and destroys the cage; member conversion; byte-identical
