@@ -1413,9 +1413,6 @@
       "src/game/actors/d_a_bg_snwmn.cpp": [
         "param:#2 short"
       ],
-      "src/game/actors/d_a_ey_bm.cpp": [
-        "param:#2 short"
-      ],
       "src/game/actors/d_a_holhei.cpp": [
         "param:#2 short"
       ],
@@ -3511,10 +3508,6 @@
         "param:#1 const void *",
         "param:#2 const void *"
       ],
-      "src/game/actors/d_a_f_pkn_ball.cpp": [
-        "param:#1 const void *",
-        "param:#2 const void *"
-      ],
       "src/game/actors/d_a_gmch.cpp": [
         "param:#1 const void *",
         "param:#2 const void *"
@@ -4447,10 +4440,6 @@
         "param:#1 int *",
         "return:int"
       ],
-      "src/game/actors/d_a_feather.cpp": [
-        "param:#1 int *",
-        "return:void"
-      ],
       "src/game/actors/d_a_ibl.cpp": [
         "param:#1 int *",
         "return:void"
@@ -4677,9 +4666,6 @@
         "param:#1 short *",
         "return:void"
       ],
-      "src/game/actors/d_a_feather.cpp": [
-        "param:#1 short *"
-      ],
       "src/game/actors/d_a_yegg.cpp": [
         "param:#1 short *",
         "return:void"
@@ -4863,21 +4849,6 @@
         "param:#2 void *",
         "param:#5 void *",
         "param:#6 void *"
-      ],
-      "src/game/actors/d_a_ey_bm.cpp": [
-        "param:#2 dActor_c *",
-        "param:#5 void *",
-        "param:#6 void *",
-        "return:int"
-      ],
-      "src/game/actors/d_a_f_pkn_ball.cpp": [
-        "param:#2 void *",
-        "param:#5 void *"
-      ],
-      "src/game/actors/d_a_feather.cpp": [
-        "param:#2 dActor_c *",
-        "param:#5 Vector3_16 *",
-        "param:#6 Vector3_16 *"
       ],
       "src/game/actors/d_a_gmch.cpp": [
         "param:#2 void *",
@@ -7608,12 +7579,6 @@
         "param:#7 unsigned int",
         "return:void"
       ],
-      "src/game/actors/d_a_ey_bm.cpp": [
-        "param:#5 unsigned int",
-        "param:#6 unsigned int",
-        "param:#7 unsigned int",
-        "return:void"
-      ],
       "src/game/actors/d_a_f_pkn.cpp": [
         "param:#5 unsigned int",
         "param:#6 unsigned int",
@@ -8467,10 +8432,6 @@
       "src/game/actors/d_a_eykn.cpp": [
         "param:#6 const void *"
       ],
-      "src/game/actors/d_a_f_pkn_ball.cpp": [
-        "param:#6 const void *",
-        "return:void *"
-      ],
       "src/game/actors/d_a_f_pkn.cpp": [
         "param:#6 const void *",
         "return:unsigned int"
@@ -8564,10 +8525,6 @@
       "src/game/actors/d_a_cnn.cpp": [
         "param:#6 const Vector3_16 *"
       ],
-      "src/game/actors/d_a_ey_bm.cpp": [
-        "param:#6 const Vector3_16f *",
-        "return:unsigned int"
-      ],
       "src/game/actors/d_a_hyuhyu.cpp": [
         "param:#6 const Vector3_16 *"
       ],
@@ -8588,10 +8545,6 @@
         "return:void *"
       ],
       "src/game/actors/d_a_propeller_heyho.cpp": [
-        "return:unsigned int"
-      ],
-      "src/game/actors/d_a_feather.cpp": [
-        "param:#6 const Vector3_16 *",
         "return:unsigned int"
       ],
       "src/unnamed/arm9/0202/func_020226fc.c": [
@@ -8706,9 +8659,6 @@
         "return:void"
       ],
       "src/game/actors/d_a_eykn.cpp": [
-        "return:void"
-      ],
-      "src/game/actors/d_a_f_pkn_ball.cpp": [
         "return:void"
       ],
       "src/game/actors/d_a_gmch.cpp": [
@@ -12512,9 +12462,6 @@
       ]
     },
     "data_ov002_0210da58": {
-      "src/game/actors/d_a_feather.cpp": [
-        "return:SharedFilePtr"
-      ],
       "src/unnamed/ov002/__sinit_ov002_02100560.c": [
         "return:void *"
       ],
@@ -18336,9 +18283,6 @@
       "src/game/actors/d_a_door.cpp": [
         "param:#1 int",
         "return:int"
-      ],
-      "src/game/actors/d_a_f_pkn_ball.cpp": [
-        "param:#2 const void *"
       ],
       "src/game/actors/d_a_grock.cpp": [
         "param:#1 int"

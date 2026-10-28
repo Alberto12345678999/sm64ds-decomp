@@ -6736,3 +6736,17 @@ ov091	0x02131f9c	_ZN13daLinelift2_c19func_ov091_02131f9cEv	_ZN13daLinelift2_c12S
 ov091	0x02132000	_ZN13daLinelift2_c19func_ov091_02132000Ev	_ZN13daLinelift2_c9StateWaitEv	state-0 body of the pointer-to-member state table (constant at ov091 0x02134e54): waits until something stands on the lift for 20 frames; byte-identical
 ov091	0x02132360	_ZN13daLinelift2_c19func_ov091_02132360EP8dActor_c	_ZN13daLinelift2_c9OnStoodOnEP8dActor_c	lift-side half of the dBgW stood-on callback: sets mIsPressed when the rider is the player; byte-identical
 ov091	0x02132380	func_ov091_02132380	_ZN13daLinelift2_c15StoodOnCallbackEP4dBgWP8dActor_cS3_	dBgW stood-on callback word (collider, owner, actor) as a static member; it forwards the rider to OnStoodOn; byte-identical
+ov002	0x020f88ec	_ZN12daFPknBall_c19func_ov002_020f88ecEv	_ZN12daFPknBall_c11TryDropCoinEv	daFPknBall_c::TryDropCoin: rolls 0..9 and on 0..3 spawns a coin at the ball with zeroed velocity; same address, same body
+ov002	0x020f897c	_ZN12daFPknBall_c19func_ov002_020f897cEv	_ZN12daFPknBall_c11TryDropItemEv	daFPknBall_c::TryDropItem: the variant-0 death drop, a cap for an unlocked character or else a coin; same address, same body
+ov002	0x020f8b24	_ZN12daFPknBall_c19func_ov002_020f8b24Ev	_ZN12daFPknBall_c13UpdateVisualsEv	daFPknBall_c::UpdateVisuals: refreshes the trail and spark particles and draws the drop shadow; same address, same body
+ov002	0x020b2c44	func_ov002_020b2c44	_ZN11daFeather_c20UpdateModelAndShadowEv	daFeather_c::UpdateModelAndShadow: rebuilds the model matrix from position and angles and drops the shadow; was an extern "C" free function taking the class pointer, now a member; same address, same body
+ov100	0x02146828	_ZN8daFish_c19func_ov100_02146828Ev	_ZN8daFish_c18StateWaitForPlayerEv	daFish_c::StateWaitForPlayer: state 0 of the spawner: waits for the player to come near, then spawns the school of fish; same address, same body
+ov100	0x021467e8	_ZN8daFish_c19func_ov100_021467e8Ev	_ZN8daFish_c19StateWaitPlayerAwayEv	daFish_c::StateWaitPlayerAway: state 1 of the spawner: waits until the player is more than 6000 units away; same address, same body
+ov100	0x021467d4	_ZN8daFish_c19func_ov100_021467d4Ev	_ZN8daFish_c19StateWaitSchoolGoneEv	daFish_c::StateWaitSchoolGone: state 2 of the spawner: waits until the last spawned fish is gone; same address, same body
+ov100	0x02146640	_ZN8daFish_c19func_ov100_02146640Ev	_ZN8daFish_c9StateIdleEv	daFish_c::StateIdle: state 3 of a fish: idles and turns to face the player; same address, same body
+ov100	0x021464f4	_ZN8daFish_c19func_ov100_021464f4Ev	_ZN8daFish_c9StateFleeEv	daFish_c::StateFlee: state 4 of a fish: swims away from the player; same address, same body
+ov100	0x02146468	_ZN8daFish_c19func_ov100_02146468Ev	_ZN8daFish_c11StateWanderEv	daFish_c::StateWander: state 5 of a fish: wanders; same address, same body
+ov100	0x021463b0	_ZN8daFish_c19func_ov100_021463b0Ev	_ZN8daFish_c14StateTurnAboutEv	daFish_c::StateTurnAbout: state 6 of a fish: turns about; same address, same body
+ov100	0x0214639c	_ZN8daFish_c19func_ov100_0214639cEv	_ZN8daFish_c13IsSpawnerIdleEv	daFish_c::IsSpawnerIdle: returns whether the spawner is back in state 2; same address, same body
+ov100	0x0214629c	_ZN8daFish_c19func_ov100_0214629cEj	_ZN8daFish_c15InitFromSpawnerEj	daFish_c::InitFromSpawner: initializes a spawned fish from its spawner ID; same address, same body
+ov100	0x02146280	_ZN8daFish_c19func_ov100_02146280Ev	_ZN8daFish_c10OnFishGoneEv	daFish_c::OnFishGone: decrements the spawner fish count when a fish is gone; same address, same body
