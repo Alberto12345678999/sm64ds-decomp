@@ -24031,16 +24031,6 @@
         "param:#1 int"
       ]
     },
-    "func_ov002_020b6c54": {
-      "src/game/actors/d_a_obj_km1_kurumajiku.cpp": [
-        "param:#1 daObjKm1_Kurumajiku_c *",
-        "param:#2 ResourceDescriptor *"
-      ],
-      "src/game/actors/d_a_obj_km3_kurumajiku.cpp": [
-        "param:#1 daObjKm3_Kurumajiku_c *",
-        "param:#2 ResourceDescriptor *"
-      ]
-    },
     "func_ov002_020baa98": {
       "include/decl_common.h": [
         "kind:data"

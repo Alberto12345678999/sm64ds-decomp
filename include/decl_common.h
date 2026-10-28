@@ -838,7 +838,6 @@ extern int sMgMainBannerX;
 extern int func_ov080_021270dc(void*, void*);
 extern int func_ov002_020ad660(char*, char*, char*, int);
 extern int func_ov002_020ae968(void*, void*);
-extern int func_ov002_020b6a80(char*);
 extern int func_ov002_020baa98;
 extern int func_ov002_020baba8(void*, void*);
 extern int func_ov002_020bac18();
