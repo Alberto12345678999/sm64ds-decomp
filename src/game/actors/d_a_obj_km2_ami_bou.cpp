@@ -1,7 +1,5 @@
 //cpp
-/* leftovers:
- * - SetFile and IsClsnInRangeOnScreen stay scalar adapters. The
- *   Fix12<int> method calls grew InitResources from 0xd0 to 0xf8.
+/* What stays:
  * - data_ov045_02112510 is the CLPS block, outside this TU. The KCL
  *   and BMD handles are the file-scope objects at the bottom.
  * - data_02082214 is the sine table.
@@ -15,10 +13,7 @@
  * factory. This TU owns g_profile_KM2_AMI_BOU.
  */
 /* Runtime asset handles resolved through the overlay 0 file table. */
-enum d_a_obj_km2_ami_bou_AssetId {
-    ASSET_KM2_AMI_BOU_BMD = 0x065d,
-    ASSET_KM2_AMI_BOU_KCL = 0x065e
-};
+enum d_a_obj_km2_ami_bou_AssetId { ASSET_KM2_AMI_BOU_BMD = 0x065d, ASSET_KM2_AMI_BOU_KCL = 0x065e };
 
 #include "daObjKm2_Ami_Bou_c.h"
 #include "SpawnInfo.h"
@@ -27,15 +22,15 @@ enum d_a_obj_km2_ami_bou_AssetId {
 
 enum {
     kUnsetParam = 0xffff,
-    kLoweredY = 0x12c000,       /* 300.0 */
-    kRiseAmp = 0x7000,          /* 7.0 */
-    kFallAmp = 0x3000,          /* 3.0 */
+    kLoweredY = 0x12c000, /* 300.0 */
+    kRiseAmp = 0x7000,    /* 7.0 */
+    kFallAmp = 0x3000,    /* 3.0 */
     kPhaseStep = 0x100,
     kMeshScale = 0x199,
     kCylinderRadius = 0x35555,
     kCylinderHeight = 0x258000, /* 600.0 */
     kClsnFlags = 0x0280000c,
-    kOnScreenRange = 0x400000   /* 1024.0 */
+    kOnScreenRange = 0x400000 /* 1024.0 */
 };
 
 /* Retail constructs these 8-byte handles in this order and registers
@@ -51,16 +46,14 @@ struct AmiBouCollisionFilePtr : SharedFilePtr {
     ~AmiBouCollisionFilePtr();
 };
 
-extern "C" {
 extern AmiBouCollisionFilePtr data_ov045_021131a8; /* KCL */
 extern AmiBouModelFilePtr data_ov045_021131b0;     /* BMD */
 extern CLPS_Block data_ov045_02112510;
-extern s16 data_02082214[];
-}
+/* local extern: the shared arm9 sine table has no header. */
+extern "C" s16 data_02082214[];
 
 // @symbol daObjKm2_Ami_Bou_c_classInit
-extern "C" daObjKm2_Ami_Bou_c *daObjKm2_Ami_Bou_c_classInit()
-{
+extern "C" daObjKm2_Ami_Bou_c *daObjKm2_Ami_Bou_c_classInit() {
     return new daObjKm2_Ami_Bou_c();
 }
 
@@ -73,12 +66,10 @@ extern "C" SpawnInfo<daObjKm2_Ami_Bou_c> g_profile_KM2_AMI_BOU = {
     0x00100000,
     0x00300000,
     0x01000000,
-    0
-};
+    0};
 
 // @symbol _ZN18daObjKm2_Ami_Bou_c13InitResourcesEv
-s32 daObjKm2_Ami_Bou_c::InitResources()
-{
+s32 daObjKm2_Ami_Bou_c::InitResources() {
     mModel.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(data_ov045_021131b0), 1, -1);
     if (param1 != kUnsetParam)
         mPosY -= kLoweredY;
@@ -86,14 +77,13 @@ s32 daObjKm2_Ami_Bou_c::InitResources()
     UpdateClsnPosAndRot();
 
     KCL_File *kcl = (KCL_File *)dBgW_Kc::LoadFile(data_ov045_021131a8);
-    SetMeshFile(kcl, kMeshScale, &data_ov045_02112510);
-    InitClsn(kCylinderRadius, kCylinderHeight, kClsnFlags, 0);
+    mMeshCollider.SetFile(kcl, mClsnMat, kMeshScale, mAngleY, data_ov045_02112510);
+    mdCcAc_c.Init(this, kCylinderRadius, kCylinderHeight, kClsnFlags, 0);
     return 1;
 }
 
 // @symbol _ZN18daObjKm2_Ami_Bou_c8BehaviorEv
-s32 daObjKm2_Ami_Bou_c::Behavior()
-{
+s32 daObjKm2_Ami_Bou_c::Behavior() {
     mdCcAc_c.Clear();
     mdCcAc_c.Update();
     if (param1 != kUnsetParam) {
@@ -105,21 +95,19 @@ s32 daObjKm2_Ami_Bou_c::Behavior()
     }
     *(s16 *)&mHeightAng += kPhaseStep;
     UpdateModelPosAndRotY();
-    if (ClsnInRangeOnScreen(kOnScreenRange, 0))
+    if (IsClsnInRangeOnScreen(kOnScreenRange, 0))
         UpdateClsnPosAndRot();
     return 1;
 }
 
 // @symbol _ZN18daObjKm2_Ami_Bou_c6RenderEv
-s32 daObjKm2_Ami_Bou_c::Render()
-{
+s32 daObjKm2_Ami_Bou_c::Render() {
     mModel.Render(0);
     return 1;
 }
 
 // @symbol _ZN18daObjKm2_Ami_Bou_c16CleanupResourcesEv
-s32 daObjKm2_Ami_Bou_c::CleanupResources()
-{
+s32 daObjKm2_Ami_Bou_c::CleanupResources() {
     mMeshCollider.Disable();
     data_ov045_021131b0.Release();
     data_ov045_021131a8.Release();
