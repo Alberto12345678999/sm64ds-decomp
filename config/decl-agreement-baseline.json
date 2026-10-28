@@ -1438,9 +1438,6 @@
       "src/game/actors/d_a_obj_cv_news_lift.cpp": [
         "param:#2 short"
       ],
-      "src/game/actors/d_a_obj_fm_battan.cpp": [
-        "param:#2 short"
-      ],
       "src/game/actors/d_a_obj_hs_billboard.cpp": [
         "param:#2 short"
       ],
@@ -3631,10 +3628,6 @@
         "param:#1 const void *",
         "param:#2 const void *"
       ],
-      "src/game/actors/d_a_obj_float_board.cpp": [
-        "param:#1 const void *",
-        "param:#2 const void *"
-      ],
       "src/game/actors/d_a_obj_hatena_block.cpp": [
         "param:#1 const void *",
         "param:#2 const void *"
@@ -5071,16 +5064,6 @@
         "param:#6 CLPS_Block &"
       ],
       "src/game/actors/d_a_obj_fl_amilift.cpp": [
-        "param:#3 Matrix4x3 *"
-      ],
-      "src/game/actors/d_a_obj_float_board.cpp": [
-        "param:#3 const Matrix4x3 &",
-        "param:#6 CLPS_Block &"
-      ],
-      "src/game/actors/d_a_obj_fm_battan.cpp": [
-        "param:#3 Matrix4x3 *"
-      ],
-      "src/game/actors/d_a_obj_hatena_switch.cpp": [
         "param:#3 Matrix4x3 *"
       ],
       "src/game/actors/d_a_obj_mc_metalnet.cpp": [
@@ -6842,10 +6825,6 @@
       "src/game/actors/d_a_mugen_bgm.cpp": [
         "return:int"
       ],
-      "src/game/actors/d_a_obj_hatena_switch.cpp": [
-        "param:#5 bool",
-        "return:void"
-      ],
       "src/game/actors/d_a_pg_rcer.cpp": [
         "return:void"
       ],
@@ -8585,9 +8564,6 @@
       "src/game/actors/d_a_obj_hatena_block.cpp": [
         "return:void"
       ],
-      "src/game/actors/d_a_obj_hatena_switch.cpp": [
-        "return:void"
-      ],
       "src/game/actors/d_a_obj_hm_bskt.cpp": [
         "return:void"
       ],
@@ -8743,9 +8719,6 @@
         "arity:3"
       ],
       "src/game/actors/d_a_obj_casket.cpp": [
-        "arity:3"
-      ],
-      "src/game/actors/d_a_obj_fm_battan.cpp": [
         "arity:3"
       ],
       "src/game/actors/d_a_obj_hatena_block.cpp": [
@@ -8920,12 +8893,6 @@
       "src/game/actors/d_a_obj_ct_rotate_block.cpp": [
         "param:#2 void *",
         "param:#3 void *",
-        "param:#7 unsigned int",
-        "return:int"
-      ],
-      "src/game/actors/d_a_obj_fm_battan.cpp": [
-        "param:#2 dExtShadowModel_c *",
-        "param:#3 Matrix4x3 *",
         "param:#7 unsigned int",
         "return:int"
       ],
@@ -9178,12 +9145,6 @@
         "mangled:2 parameter(s)"
       ],
       "src/game/actors/d_a_coin.cpp": [
-        "mangled:2 parameter(s)"
-      ],
-      "src/game/actors/d_a_obj_wc_obj01.cpp": [
-        "mangled:2 parameter(s)"
-      ],
-      "src/game/actors/d_a_obj_wc_obj06.cpp": [
         "mangled:2 parameter(s)"
       ],
       "src/unnamed/arm9/0200/func_02009e70.cpp": [
@@ -14963,9 +14924,6 @@
       ]
     },
     "data_ov023_02112088": {
-      "src/game/actors/d_a_obj_fm_battan.cpp": [
-        "return:BattanModelFilePtr"
-      ],
       "src/unnamed/ov023/__sinit_ov023_02111aa8.c": [
         "return:int []"
       ]
@@ -15767,7 +15725,7 @@
     },
     "data_ov064_0211ba4c": {
       "src/game/actors/d_a_obj_fm_battan.cpp": [
-        "return:char []"
+        "return:CLPS_Block"
       ]
     },
     "data_ov064_0211ba6c": {
