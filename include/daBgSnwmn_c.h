@@ -40,27 +40,27 @@
  * destructor pair is at slots 16/17.
  */
 struct daBgSnwmn_c : dActor_c {
-    u8  unk_0d0[0x4];              /* 0x0d0 -- opaque; see the note above */
-    dExtSimpleModel_c mModel1;     /* 0x0d4 */
-    dExtSimpleModel_c mModel2;     /* 0x124 */
-    dExtAnmTexPat_c mTexSeq;       /* 0x174 */
-    dExtShadowModel_c mShadow;           /* 0x188 */
-    dCcAcPos_c mCylClsn;           /* 0x1b0 */
+    u8 unk_0d0[0x4];           /* 0x0d0 -- opaque; see the note above */
+    dExtSimpleModel_c mModel1; /* 0x0d4 */
+    dExtSimpleModel_c mModel2; /* 0x124 */
+    dExtAnmTexPat_c mTexSeq;   /* 0x174 */
+    dExtShadowModel_c mShadow; /* 0x188 */
+    dCcAcPos_c mCylClsn;       /* 0x1b0 */
 
     /* --- overrides, in dActor_c's own vtable order. --- */
-    virtual s32  InitResources();                        /* slot  0 */
-    virtual s32  CleanupResources();                     /* slot  3 */
-    virtual s32  Behavior();                              /* slot  6 */
-    virtual s32  Render();                                /* slot  9 */
-    virtual void OnPendingDestroy();                      /* slot 12 */
+    virtual s32 InitResources();     /* slot  0 */
+    virtual s32 CleanupResources();  /* slot  3 */
+    virtual s32 Behavior();          /* slot  6 */
+    virtual s32 Render();            /* slot  9 */
+    virtual void OnPendingDestroy(); /* slot 12 */
 
     /* Builds both model matrices from mAngleY/mPos* and drops the shadow.
        Called once from InitResources. */
-    void func_ov072_021208d8();
+    void UpdateModelTransform();
 
     /* Declared last and inline so class instantiation emits the retail D1/D0
        pair in that order, with no separate D2 body. */
-    virtual ~daBgSnwmn_c() {}                            /* slots 16 (D1), 17 (D0) */
+    virtual ~daBgSnwmn_c() {} /* slots 16 (D1), 17 (D0) */
 };
 
 #ifndef SM64DS_PLATFORM_PC
