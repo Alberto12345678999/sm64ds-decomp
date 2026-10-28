@@ -113,8 +113,6 @@ extern char data_ov015_02114880[];
 extern char data_ov016_02113cac[];
 extern struct daObjFloatBoard_c_Resources data_ov016_02114b8c;
 extern char data_ov024_02112d00[];
-extern char data_ov026_02112f74[];
-extern char data_ov026_02112fd4[];
 extern char data_ov027_021130e8;
 extern char data_ov027_02113108[];
 extern char data_ov030_02115d00;
