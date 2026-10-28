@@ -5073,13 +5073,6 @@
       "src/game/actors/d_a_obj_fl_amilift.cpp": [
         "param:#3 Matrix4x3 *"
       ],
-      "src/game/actors/d_a_obj_fl_coin.cpp": [
-        "param:#3 const Matrix4x3 &",
-        "param:#6 CLPS_Block &"
-      ],
-      "src/game/actors/d_a_obj_fl_london.cpp": [
-        "param:#3 Matrix4x3 *"
-      ],
       "src/game/actors/d_a_obj_float_board.cpp": [
         "param:#3 const Matrix4x3 &",
         "param:#6 CLPS_Block &"
@@ -6624,9 +6617,6 @@
         "param:#1 SharedFilePtr *",
         "return:BMD_File *"
       ],
-      "src/game/actors/d_a_obj_fl_coin.cpp": [
-        "return:BMD_File *"
-      ],
       "src/game/actors/d_a_obj_tatefuda.cpp": [
         "param:#1 void *"
       ],
@@ -7053,9 +7043,6 @@
     },
     "_ZN5Sound9PlayBank3EjRK7Vector3": {
       "src/game/actors/d_a_obj_block_s.cpp": [
-        "param:#2 const Vector3 *"
-      ],
-      "src/game/actors/d_a_obj_fl_coin.cpp": [
         "param:#2 const Vector3 *"
       ]
     },
@@ -8227,9 +8214,6 @@
       "src/game/actors/d_a_obj_fl_amilift.cpp": [
         "return:KCL_File *"
       ],
-      "src/game/actors/d_a_obj_fl_coin.cpp": [
-        "return:KCL_File *"
-      ],
       "src/game/actors/d_a_obj_tatefuda.cpp": [
         "param:#1 void *",
         "return:void *"
@@ -8354,10 +8338,6 @@
       "src/game/actors/d_a_obj_block_s.cpp": [
         "param:#6 const void *",
         "return:void *"
-      ],
-      "src/game/actors/d_a_obj_fl_koma_u.cpp": [
-        "param:#6 const void *",
-        "return:unsigned int"
       ],
       "src/game/actors/d_a_obj_key.cpp": [
         "return:void *"
@@ -8897,9 +8877,6 @@
       "src/game/actors/d_a_kpa_fire.cpp": [
         "return:void *"
       ],
-      "src/game/actors/d_a_obj_fl_coin.cpp": [
-        "return:char *"
-      ],
       "src/game/actors/d_a_star.cpp": [
         "return:void *"
       ]
@@ -9144,9 +9121,6 @@
         "return:void"
       ],
       "src/game/actors/d_a_kpa.cpp": [
-        "return:void"
-      ],
-      "src/game/actors/d_a_obj_fl_coin.cpp": [
         "return:void"
       ],
       "src/minigames/d_mg3d_esp_anim_set.cpp": [
@@ -26954,11 +26928,6 @@
     "func_ov022_02111564": {
       "src/game/actors/d_a_obj_fl_ring.cpp": [
         "arity:1"
-      ]
-    },
-    "func_ov022_02111a1c": {
-      "include/decl_common.h": [
-        "param:#1 char *"
       ]
     },
     "func_ov029_021116c4": {
