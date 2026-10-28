@@ -11,12 +11,10 @@
  * the four virtual overrides, and the registry factory
  * daObjWlKoopaShutter_c_classInit last.
  *
- * deslop
- * Leftover: dBgW_KcMbg::SetFile keeps its mangled spelling (by-value
- *   Fix12<int> parameters, wall 6az).
- * Leftover: data_ov026_02112f74 is the unnamed CLPS home this TU
- *   feeds SetFile; data_0209caa0[1] is the shared system state word
- *   whose 0x204 bit vetoes the enable.
+ * NOTES:
+ * - data_ov026_02112f74 is the unnamed CLPS block this TU feeds SetFile.
+ * - data_0209caa0[1] is SaveData::flags1; either of its unnamed bits
+ *   0x204 keeps the collider disabled.
  */
 
 /* Runtime asset handles resolved through the overlay 0 file table. */
@@ -44,10 +42,8 @@ struct KoopaShutterCollisionFilePtr : SharedFilePtr {
 };
 extern KoopaShutterCollisionFilePtr BowserShutter_ClsnFile;
 
-extern "C" {
-extern char data_ov026_02112f74[];
-extern char data_0209caa0[];
-}
+extern CLPS_Block data_ov026_02112f74;
+extern int data_0209caa0[]; /* SaveData; [1] is flags1 */
 
 /* Emission order is ROM order: the destructor pair must stay first.
  * Do not reorder. */
@@ -58,9 +54,7 @@ extern char data_0209caa0[];
 /* One out-of-line definition; mwccarm emits D1 and D0 from it, in that
  * order: its own vptr, then dBgActor_c's inlined, then dBgActor_c's
  * dExtSimpleModel_c and dBgW_KcMbg, then dActor_c. */
-daObjWlKoopaShutter_c::~daObjWlKoopaShutter_c()
-{
-}
+daObjWlKoopaShutter_c::~daObjWlKoopaShutter_c() {}
 
 // @symbol _ZN21daObjWlKoopaShutter_c16CleanupResourcesEv
 s32 daObjWlKoopaShutter_c::CleanupResources() {
@@ -91,11 +85,9 @@ s32 daObjWlKoopaShutter_c::InitResources() {
     UpdateClsnPosAndRot();
     {
         void *k = dBgW_Kc::LoadFile(BowserShutter_ClsnFile);
-        ((dBgW_KcMbg *)(&mMeshCollider))
-            ->dBgW_KcMbg::SetFile((KCL_File *)((int)k), *(const Matrix4x3 *)(&mClsnMat), 0x199,
-                                  mAngleY, *(CLPS_Block *)((void *)data_ov026_02112f74));
+        mMeshCollider.SetFile((KCL_File *)k, mClsnMat, 0x199, mAngleY, data_ov026_02112f74);
     }
-    if (*(int *)(data_0209caa0 + 4) & 0x204)
+    if (data_0209caa0[1] & 0x204)
         return 0;
     mMeshCollider.Enable(this);
     return 1;
@@ -106,13 +98,12 @@ s32 daObjWlKoopaShutter_c::InitResources() {
  * profile; later EAD lineage supplies classInit. Exact original spelling is
  * not preserved. Historical alias: BowserShutter_Spawn. */
 // @symbol daObjWlKoopaShutter_c_classInit
-extern "C" daObjWlKoopaShutter_c *daObjWlKoopaShutter_c_classInit()
-{
+extern "C" daObjWlKoopaShutter_c *daObjWlKoopaShutter_c_classInit() {
     return new daObjWlKoopaShutter_c();
 }
 
 // @symbol __sinit_d_a_obj_wl_koopa_shutter.cpp
 /* The retail initializer constructs the model first, then the collision
  * file. */
-KoopaShutterModelFilePtr BowserShutter_ModelFile(ASSET_WL_KUPA_SHUTTER_BMD);      /* model */
-KoopaShutterCollisionFilePtr BowserShutter_ClsnFile(ASSET_WL_KUPA_SHUTTER_KCL);   /* collision */
+KoopaShutterModelFilePtr BowserShutter_ModelFile(ASSET_WL_KUPA_SHUTTER_BMD);    /* model */
+KoopaShutterCollisionFilePtr BowserShutter_ClsnFile(ASSET_WL_KUPA_SHUTTER_KCL); /* collision */
