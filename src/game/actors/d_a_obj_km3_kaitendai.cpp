@@ -66,17 +66,15 @@ struct ResourceDescriptor {
 };
 typedef char ResourceDescriptor_size_must_be_0x0c[sizeof(ResourceDescriptor) == 0x0c ? 1 : -1];
 
-extern "C" {
 extern Km3KaitendaiModelFilePtr data_ov047_02112610;
 extern Km3KaitendaiClsnFilePtr data_ov047_02112608;
 /* KCL prism attributes index these two entries. The following ROM bytes
  * have no established type or ownership and are not part of this block. */
 extern const Km3KaitendaiClpsBlock gKm3KaitendaiClps = {
     {'C', 'L', 'P', 'S'}, 8, 2, {{0x00000fc0, 0x000000ff}, {0x00000fc4, 0x000000ff}}};
-}
 
 /* Defined here because this TU owns the descriptor in overlay .data. */
-extern "C" ResourceDescriptor data_ov047_02112334 = {
+ResourceDescriptor data_ov047_02112334 = {
     &data_ov047_02112610, &data_ov047_02112608,
     reinterpret_cast<CLPS_Block *>(const_cast<Km3KaitendaiClpsBlock *>(&gKm3KaitendaiClps))};
 

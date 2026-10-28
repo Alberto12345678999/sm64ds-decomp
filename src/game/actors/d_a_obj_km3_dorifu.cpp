@@ -17,10 +17,9 @@
  * This TU is text-only. Retail overlay data order is typeinfo,
  * type-name, profile, five-entry file table, vtable.
  *
- * deslop
- * Leftover: data_ov047_02112508 and g_profile_KM3_DORIFU are
- *   overlay data this TU does not own; the BMD/KCL SharedFilePtrs
- *   and CLPS_Block are still data_ov047_*.
+ * Note: data_ov047_02112508 and g_profile_KM3_DORIFU are overlay data
+ * this TU does not own; the BMD/KCL SharedFilePtrs and CLPS_Block are
+ * still data_ov047_*.
  */
 
 /* Runtime asset handles resolved through the overlay 0 file table. */
@@ -52,30 +51,23 @@ struct DorifuClsnFileHandle : SharedFilePtr {
     DorifuClsnFileHandle(unsigned int fileId);
     ~DorifuClsnFileHandle();
 };
-typedef char DorifuModelFilePtr_size_must_be_8[
-    sizeof(DorifuModelFilePtr) == 8 ? 1 : -1];
-typedef char DorifuClsnFileHandle_size_must_be_8[
-    sizeof(DorifuClsnFileHandle) == 8 ? 1 : -1];
+typedef char DorifuModelFilePtr_size_must_be_8[sizeof(DorifuModelFilePtr) == 8 ? 1 : -1];
+typedef char DorifuClsnFileHandle_size_must_be_8[sizeof(DorifuClsnFileHandle) == 8 ? 1 : -1];
 
-extern "C" {
 extern daObjDorifuResources data_ov047_02112508[5];
-}
 
 // @symbol daObjKm3_Dorifu_c_classInit
-extern "C" daObjKm3_Dorifu_c *daObjKm3_Dorifu_c_classInit()
-{
+extern "C" daObjKm3_Dorifu_c *daObjKm3_Dorifu_c_classInit() {
     return new daObjKm3_Dorifu_c();
 }
 
 // @symbol _ZN17daObjKm3_Dorifu_c13InitResourcesEv
-s32 daObjKm3_Dorifu_c::InitResources()
-{
+s32 daObjKm3_Dorifu_c::InitResources() {
     return daObjDorifu_c::InitResources(data_ov047_02112508);
 }
 
 // @symbol _ZN17daObjKm3_Dorifu_c16CleanupResourcesEv
-s32 daObjKm3_Dorifu_c::CleanupResources()
-{
+s32 daObjKm3_Dorifu_c::CleanupResources() {
     return daObjDorifu_c::CleanupResources(data_ov047_02112508);
 }
 

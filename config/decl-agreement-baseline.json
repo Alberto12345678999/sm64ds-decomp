@@ -14847,11 +14847,6 @@
         "return:int []"
       ]
     },
-    "data_ov022_021140d4": {
-      "src/game/actors/d_a_obj_fl_ukiyuka.cpp": [
-        "return:ResourceDescriptor []"
-      ]
-    },
     "data_ov022_0211427c": {
       "src/game/actors/d_a_obj_fl_fall_block.cpp": [
         "return:ResourceDescriptor"
@@ -15355,11 +15350,6 @@
     "data_ov045_021125d0": {
       "src/game/actors/d_a_obj_km2_agaru.cpp": [
         "return:CLPS_Block"
-      ]
-    },
-    "data_ov045_02112f08": {
-      "src/game/actors/d_a_obj_km2_ukishima.cpp": [
-        "return:ResourceDescriptor"
       ]
     },
     "data_ov045_021130ac": {
