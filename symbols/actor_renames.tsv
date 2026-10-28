@@ -6973,3 +6973,6 @@ ov085	0x0212d24c	func_ov085_0212d24c	_ZN15daObj_Mip_Key_c15StateLooseEnterEv	loo
 ov085	0x0212d268	func_ov085_0212d268	_ZN15daObj_Mip_Key_c11ChangeStateEP11MipKeyState	install a state and run its entry
 ov085	0x0212d2b8	func_ov085_0212d2b8	_ZN15daObj_Mip_Key_c20UpdateModelAndShadowEv	build the render matrix and place the shadow
 ov039	0x02111214	func_ov039_02111214	_ZN11daObjKumo_c17UpdateModelMatrixEv	daObjKumo_c::UpdateModelMatrix: model matrix from the yaw plus position >> 3; was an extern "C" free function taking the class pointer, now a member; same address, same body
+ov036	0x021122c0	func_ov036_021122c0	_ZN15daObjRcCarpet_c20UpdateModelTransformEv	rotate and place the carpet model, dipped by mRideDipY
+ov036	0x0211224c	func_ov036_0211224c	_ZN15daObjRcCarpet_c19UpdateClsnTransformEv	copy the model matrix to the collision matrix and move the mesh
+ov036	0x02111618	func_ov036_02111618	_ZN14daObjRc_Hane_c20UpdateModelTransformEv	compose position and angles into the wing's model matrix

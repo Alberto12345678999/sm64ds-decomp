@@ -11,9 +11,10 @@
  * daObjRc_Kaitendai_c, RC_KAITEN registry). Retail does not store
  * that spelling.
  *
- * What stays: the two start-angle halfwords 02113b18 / 02113b1c sit
- *   8 bytes before typeinfo at 02113b20; they are not owned here.
- * What stays: g_profile_RC_KAITEN lives outside this TU (S14).
+ * Notes:
+ * - The two start-angle halfwords 02113b18 / 02113b1c sit 8 bytes before
+ *   typeinfo at 02113b20; they are not owned here.
+ * - g_profile_RC_KAITEN lives outside this TU.
  */
 
 /* Runtime asset handles resolved through the overlay 0 file table. */
