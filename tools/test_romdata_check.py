@@ -541,7 +541,7 @@ class EmittedDataSymbols(unittest.TestCase):
         return {"st_shndx": shndx, "st_value": 0, "st_size": 8,
                 "st_info": {"type": "STT_OBJECT", "bind": bind}, "_name": name}
 
-    def emitted(self, symbols, section_types):
+    def emitted(self, symbols, section_types, linked_global=()):
         syms = []
         for raw in symbols:
             s = unittest.mock.MagicMock()
@@ -552,7 +552,7 @@ class EmittedDataSymbols(unittest.TestCase):
         elf.get_section_by_name.return_value.iter_symbols.return_value = syms
         elf.get_section.side_effect = lambda i: {"sh_type": section_types[i]}
         with unittest.mock.patch.object(RDC, "ELFFile", return_value=elf):
-            return [name for name, *_ in RDC.emitted_data_symbols(b"object")]
+            return [name for name, *_ in RDC.emitted_data_symbols(b"object", linked_global)]
 
     def test_bss_objects_are_not_compared(self):
         # arm9's file bytes at .bss addresses are the autoload payloads, not zeros.
@@ -566,6 +566,14 @@ class EmittedDataSymbols(unittest.TestCase):
             self.emitted([self.symbol("local_table", 1, bind="STB_LOCAL")],
                          {1: "SHT_PROGBITS"}),
             [])
+
+    def test_a_local_linked_global_by_the_manifest_is_compared(self):
+        # A compiler temp renamed to its ROM data name and bound STB_GLOBAL at link.
+        self.assertEqual(
+            self.emitted([self.symbol("data_ov009_021138fc", 1, bind="STB_LOCAL"),
+                          self.symbol("local_table", 1, bind="STB_LOCAL")],
+                         {1: "SHT_PROGBITS"}, {"data_ov009_021138fc"}),
+            ["data_ov009_021138fc"])
 
 
 if __name__ == "__main__":
