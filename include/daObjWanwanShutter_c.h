@@ -16,7 +16,7 @@
 #include "dBgActor_c.h"
 
 struct daObjWanwanShutter_c : dBgActor_c {
-    u8 mDisabled;                     /* 0x31e -- Behavior and Render return immediately while it is set; func_ov014_02112ea8 writes 1 when the chomp breaks the fence */
+    u8 mDisabled; /* 0x31e -- Behavior and Render return immediately while it is set; Break writes 1 when the chomp breaks the fence */
 
     /* --- vtable --- */
     /* MEASURED -- INLINE ON PURPOSE, do not move out of line.
@@ -40,7 +40,7 @@ struct daObjWanwanShutter_c : dBgActor_c {
      * dBgActor_c's own inline destructor, which destroys the dExtSimpleModel_c at 0xd4
      * and the dBgW_KcMbg at 0x124. Do not write those members as padding.
      */
-    virtual ~daObjWanwanShutter_c() {}  /* slots 16 (D1), 17 (D0) */
+    virtual ~daObjWanwanShutter_c() {} /* slots 16 (D1), 17 (D0) */
 
     /* Diffed slot by slot against _ZTV10dBgActor_c (ov002 0x0210ae38): of the
      * table's 32 slots only the six declared here differ. Every other slot
@@ -49,15 +49,18 @@ struct daObjWanwanShutter_c : dBgActor_c {
      * In ROM vtable order. Do not reorder, and do not drop the `virtual`:
      * an override that stops being declared virtual silently stops
      * overriding, and the vtable still links. */
-    virtual s32 InitResources();       /* slot  0 -- 0x02112ffc */
-    virtual s32 CleanupResources();    /* slot  3 -- 0x02112f3c */
-    virtual s32 Behavior();            /* slot  6 -- 0x02112fc0 */
-    virtual s32 Render();              /* slot  9 -- 0x02112f80 */
+    virtual s32 InitResources();    /* slot  0 -- 0x02112ffc */
+    virtual s32 CleanupResources(); /* slot  3 -- 0x02112f3c */
+    virtual s32 Behavior();         /* slot  6 -- 0x02112fc0 */
+    virtual s32 Render();           /* slot  9 -- 0x02112f80 */
+
+    void Break(); /* 0x02112ea8 -- called by daWanwan_c */
 };
 
 #ifndef SM64DS_PLATFORM_PC
 /* ROM layout under mwccarm; host ABI divergence is tracked separately. */
-typedef char daObjWanwanShutter_c_size_must_be_0x320[sizeof(daObjWanwanShutter_c) == 0x320 ? 1 : -1];
+typedef char
+    daObjWanwanShutter_c_size_must_be_0x320[sizeof(daObjWanwanShutter_c) == 0x320 ? 1 : -1];
 #endif
 
 #endif /* DAOBJWANWANSHUTTER_C_H */

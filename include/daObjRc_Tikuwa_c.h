@@ -36,25 +36,30 @@
 #include "dBgCh_Actr.h"
 
 struct daObjRc_Tikuwa_c : dBgActor_c {
-    u8 pad_31e[0x2];                 /* 0x31e -- dBgActor_c tail */
-    dBgCh_Actr mWithMeshClsn;        /* 0x320 */
-    s32 mHomePosX;                   /* 0x4dc */
-    s32 mHomePosY;                   /* 0x4e0 */
-    s32 mHomePosZ;                   /* 0x4e4 */
-    u8 mHadClsn;                     /* 0x4e8 */
-    u8 mClsnTimer;                   /* 0x4e9 */
-    u8 mState;                       /* 0x4ea */
+    u8 pad_31e[0x2];          /* 0x31e -- dBgActor_c tail */
+    dBgCh_Actr mWithMeshClsn; /* 0x320 */
+    s32 mHomePosX;            /* 0x4dc */
+    s32 mHomePosY;            /* 0x4e0 */
+    s32 mHomePosZ;            /* 0x4e4 */
+    u8 mHadClsn;              /* 0x4e8 */
+    u8 mClsnTimer;            /* 0x4e9 */
+    u8 mState;                /* 0x4ea */
 
     /* OUT OF LINE, DECLARED FIRST: the key function. The TU defines it first
        under `#pragma defer_codegen off`, which emits D1 then D0 -- the
        cartridge's order -- then a D2 the cartridge has no home for. */
     virtual ~daObjRc_Tikuwa_c();
 
-    virtual s32 InitResources();       /* slot 0 */
-    virtual s32 CleanupResources();    /* slot 3 */
-    virtual s32 Behavior();            /* slot 6 */
-    virtual s32 Render();              /* slot 9 */
-    virtual void OnPendingDestroy();   /* slot 12 -- empty body in the ROM */
+    virtual s32 InitResources();     /* slot 0 */
+    virtual s32 CleanupResources();  /* slot 3 */
+    virtual s32 Behavior();          /* slot 6 */
+    virtual s32 Render();            /* slot 9 */
+    virtual void OnPendingDestroy(); /* slot 12 -- empty body in the ROM */
+
+    /* The mesh's stood-on callback (ov036 0x02111cc4, installed with
+       func_020393c4) and the body it forwards to (0x02111ca4). */
+    void OnStoodOn(dActor_c *);
+    static void StoodOnCallback(void *, daObjRc_Tikuwa_c *, dActor_c *);
 };
 
 #ifndef SM64DS_PLATFORM_PC

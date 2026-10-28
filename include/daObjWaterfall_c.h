@@ -14,9 +14,9 @@
  * field closes on it.
  */
 struct daObjWaterfall_c : dActor_c {
-    u8  pad_0d0[0x4];
-    u16 mParticleID;     /* 0x0d4 */
-    u8  pad_0d6[0x2];
+    u8 pad_0d0[0x4];
+    u16 mParticleID; /* 0x0d4 */
+    u8 pad_0d6[0x2];
     /* Handle, not a pointer: Behavior stores Particle::System::New's
        result and feeds it back as the unique-ID argument next frame.
        Nothing dereferences it. */
@@ -30,8 +30,7 @@ struct daObjWaterfall_c : dActor_c {
 
 #ifndef SM64DS_PLATFORM_PC
 /* ROM layout under mwccarm; host ABI divergence is tracked separately. */
-typedef char daObjWaterfall_c_size_must_be_0xdc[
-    sizeof(daObjWaterfall_c) == 0xdc ? 1 : -1];
+typedef char daObjWaterfall_c_size_must_be_0xdc[sizeof(daObjWaterfall_c) == 0xdc ? 1 : -1];
 #endif
 
 #endif /* DAOBJWATERFALL_C_H */

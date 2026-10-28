@@ -31,19 +31,22 @@
  * inherited, so it is deliberately not redeclared here.
  */
 struct daObjKumo_c : dActor_c {
-    u8    pad_0d0[0x4];
+    u8 pad_0d0[0x4];
     dExtSimpleModel_c mModel; /* 0x0d4 */
 
     /* MEASURED -- INLINE ON PURPOSE. The class TU is the only place these
        two are emitted; with the body out of line mwcc emits D0 ahead of D1
        and the ROM has D1 first (rombuild refuses the object outright). An
        inline body also drops the D2 variant the cartridge never carried. */
-    virtual ~daObjKumo_c() {}          /* slots 16 (D1), 17 (D0) */
+    virtual ~daObjKumo_c() {} /* slots 16 (D1), 17 (D0) */
 
-    virtual int InitResources();       /* slot  0 */
-    virtual int CleanupResources();    /* slot  3 */
-    virtual int Behavior();            /* slot  6 */
-    virtual int Render();              /* slot  9 */
+    virtual int InitResources();    /* slot  0 */
+    virtual int CleanupResources(); /* slot  3 */
+    virtual int Behavior();         /* slot  6 */
+    virtual int Render();           /* slot  9 */
+
+    /* ov039 0x02111214: yaw rotation plus position >> 3 into mModel. */
+    void UpdateModelMatrix();
 };
 
 #ifndef SM64DS_PLATFORM_PC

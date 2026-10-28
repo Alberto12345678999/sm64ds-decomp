@@ -16,7 +16,7 @@
 struct daTrsTrap_c : dActor_c {
     u32 pad_0d0;                 /* 0x0d0 -- dActor_c closes at 0xd0, mModel opens at 0xd4 */
     dExtSimpleModel_c mModel;    /* 0x0d4 */
-    /* Set by the mesh-collision callback (func_ov063_0211d270) while the player
+    /* Set by the mesh-collision callback (LatchStandingActor) while the player
        (actor 0xbf) stands on the trapdoor; cleared every Behavior frame. The
        trapdoor state steers off its position, the merry-go-round off nullness. */
     dActor_c *mStandingActor;    /* 0x124 */
@@ -79,6 +79,12 @@ struct daTrsTrap_c : dActor_c {
     void func_ov063_0211cb54(); /* 1 TERESAPIT -- trapdoor tilt,  0x0211cb54 */
     void func_ov063_0211c89c(); /* 2 BOOKSHELF -- shelf slide,   0x0211c89c */
     void func_ov063_0211c7b0(); /* 3 MERRYGOROUND -- spin,       0x0211c7b0 */
+
+    /* Mesh-collision rider hook, defined in d_a_trs_trap_classinits.cpp.
+       InitResources stores OnMeshClsnTouch as mMovingMeshCollider's
+       callback word; it forwards the colliding actor to LatchStandingActor. */
+    static void OnMeshClsnTouch(dBgW *, daTrsTrap_c *, dActor_c *);
+    void LatchStandingActor(dActor_c *);
 };
 
 #ifndef SM64DS_PLATFORM_PC

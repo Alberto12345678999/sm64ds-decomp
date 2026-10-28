@@ -14,23 +14,22 @@
  * ~daSBird_c(), so that file emits D1/D0 and the class vtable and RTTI.
  * This TU does not.
  *
- * deslop leftovers:
- * - dExtAnmModel_c::SetAnim / DropShadowRadHeight 6az: this TU passes Fix12<int>
- *   by value; the header method form size-DIFFs.
- * - cstd::atan2 6az (Fix12<int> by value) in func_ov009_02111234.
- * - Vec3_Asr / Vec3_Sub / Vec3_HorzLen / LenVec3: no shared
- *   header this TU can take without a campaign.
+ * NOTES:
+ * - Vec3_Asr / Vec3_Sub / LenVec3 have no shared header. Vec3_HorzLen
+ *   and RandomIntInternal are in math/CalcLib.h, but on Vector3 / int *;
+ *   this TU keeps its void * spellings.
  * - data_ov009_02113c20 / 02113c28 SharedFilePtr handles: sinit constructs
  *   them as file IDs 1080 / 1081; overlay .bss owns them. symbols.txt has
  *   no recovered names, so they are not coined.
  * - data_ov009_02113c48 is the 4-state PMF table this Behavior indexes;
- *   overlay .bss owns it. Its members are daSBird_c methods (table order:
- *   021116ec, 021115d8, 0211145c, 02111234); 02111224 is the follower-
- *   attach the two spawn loops call. 0211145c is a free function in ROM.
+ *   overlay .bss owns it. In table order its entries are StateSpawnFlock,
+ *   StateWaitForPlayer, the free function func_ov009_0211145c, and
+ *   StateFly. AttachToLeader is what the two spawn loops call on each
+ *   follower.
  * - func_ov009_0211145c is matched on its own in
  *   src/unnamed/ov009/func_ov009_0211145c.cpp (enrolled complete,
  *   0x0211145c..0x021115d8), outside this TU's delinks span.
- *   D1/D0 and 02111224/02111234 sit below it in
+ *   D1/D0, AttachToLeader and StateFly sit below it in
  *   d_a_s_bird_head.cpp, so this TU's complete range is
  *   0x021115d8..0x02111a70.
  * - Vec3_Asr / Vec3_Sub / func_0201267c are declared with void *, so
@@ -48,9 +47,6 @@
 #include "SharedFilePtr.h"
 #include "Sound.h"
 #include "math/Approach.h"
-namespace cstd {
-s16 atan2(s32, s32);
-}
 
 /* Resource handles this TU's static initializer constructs. The wrapper
  * spellings are reconstructed; constructor and destructor addresses, file
@@ -76,19 +72,17 @@ union SBirdFreeState {
     BirdState pmf;
 };
 
-extern "C" {
 extern SBirdFreeState data_ov009_021138fc;
-}
 
 struct SBirdStateTable {
     BirdState slots[4];
 
     SBirdStateTable()
     {
-        slots[0] = &daSBird_c::func_ov009_021116ec;
-        slots[1] = &daSBird_c::func_ov009_021115d8;
+        slots[0] = &daSBird_c::StateSpawnFlock;
+        slots[1] = &daSBird_c::StateWaitForPlayer;
         slots[2] = data_ov009_021138fc.pmf;
-        slots[3] = &daSBird_c::func_ov009_02111234;
+        slots[3] = &daSBird_c::StateFly;
     }
 };
 
@@ -96,14 +90,17 @@ struct BirdMtx {
     int w[12];
 };
 
-extern "C" {
 extern SBirdModelFilePtr data_ov009_02113c20;
 extern SBirdAnimationFilePtr data_ov009_02113c28;
 extern SBirdStateTable data_ov009_02113c48;
 extern BirdMtx data_020a0e68;
 extern s16 data_02082214[];
-extern unsigned int RandomIntInternal(void *rng);
 extern int data_0209e650;
+
+/* local extern: math/CalcLib.h types these on Vector3 / int *, and this TU
+   passes raw field addresses; RandomIntInternal must stay unsigned here. */
+extern "C" {
+extern unsigned int RandomIntInternal(void *rng);
 extern void Vec3_Asr(void *dst, void *src, int n);
 extern void Vec3_Sub(void *out, void *a, void *b);
 extern s32 Vec3_HorzLen(void *v);
@@ -111,15 +108,10 @@ extern s32 LenVec3(void *v);
 extern void Matrix4x3_FromTranslation(void *m, int x, int y, int z);
 extern void Matrix4x3_ApplyInPlaceToRotationZ(void *m, s16 a);
 extern void Matrix4x3_ApplyInPlaceToRotationY(void *m, s16 a);
-extern s16 atan2_hold_d_a_s_bird_1(s32 y, s32 x);
 
 /* State 2: a free function in ROM (src/unnamed/ov009/func_ov009_0211145c.cpp),
  * called through the state table. */
 extern void func_ov009_0211145c(daSBird_c *bird);
-
-/* dExtAnmModel_c::SetAnim -- wall 6az. */
-
-/* dActor_c::DropShadowRadHeight -- wall 6az. */
 }
 
 extern int _ZTV9daSBird_c[];
@@ -191,9 +183,10 @@ s32 daSBird_c::CleanupResources()
     return 1;
 }
 
-// @symbol _ZN9daSBird_c19func_ov009_021116ecEv
-void daSBird_c::func_ov009_021116ec()
-{
+// @symbol _ZN9daSBird_c15StateSpawnFlockEv
+/* State 0. A leader spawns (param1 & 0xf) - 1 followers scattered around it
+   and aims the flock at the fixed target; every bird then waits in state 1. */
+void daSBird_c::StateSpawnFlock() {
     if (mIsLeader) {
         int n = (int)param1 & 0xf;
         if (n > 1) {
@@ -212,7 +205,7 @@ void daSBird_c::func_ov009_021116ec()
                 void *a = dActor_c::Spawn(
                     0x157, 0, pos, &rot, mAreaId, -1);
                 if (a)
-                    ((daSBird_c *)a)->func_ov009_02111224(uniqueID);
+                    ((daSBird_c *)a)->AttachToLeader(uniqueID);
             }
         }
         mTargetPos.x = -0x14000;
@@ -221,9 +214,11 @@ void daSBird_c::func_ov009_021116ec()
     mState = 1;
 }
 
-// @symbol _ZN9daSBird_c19func_ov009_021115d8Ev
-void daSBird_c::func_ov009_021115d8()
-{
+// @symbol _ZN9daSBird_c18StateWaitForPlayerEv
+/* State 1. The leader waits for the closest player to come within 0x7d0 and
+   chirps; a follower waits for its leader to take off. Then the bird picks a
+   random pitch and enters state 3. */
+void daSBird_c::StateWaitForPlayer() {
     if (mIsLeader) {
         char *p2 = (char *)ClosestPlayer();
         if (p2 != 0) {

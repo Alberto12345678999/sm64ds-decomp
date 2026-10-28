@@ -23,11 +23,11 @@
 
 struct daObjRcCarpet_c : dPathLiftActor_c {
     dExtAnmModel_c mAnmModel; /* 0x450 */
-    u8  pad_4b4[0x8];
+    u8 pad_4b4[0x8];
     /* How far the carpet sags under a rider: Behavior eases it toward
        -0x14000 (20 units down) at 0x5000 a frame while mAfterClsnRan is
-       set and back toward 0 otherwise; func_ov036_021122c0 and
-       func_ov036_0211224c add it to mPosY for the model and collision
+       set and back toward 0 otherwise; UpdateModelTransform and
+       UpdateClsnTransform add it to mPosY for the model and collision
        matrices. Was unk_4bc. */
     s32 mRideDipY; /* 0x4bc */
 
@@ -39,12 +39,18 @@ struct daObjRcCarpet_c : dPathLiftActor_c {
     int CleanupResources();
     int Behavior();
     int Render();
+
+    /* Rotate the model by mAngleX/Y/Z and place it at mPos (dipped by
+       mRideDipY), in model units. */
+    void UpdateModelTransform();
+    /* Copy the model matrix into mClsnMat at world scale and move the
+       collision mesh with it. */
+    void UpdateClsnTransform();
 };
 
 #ifndef SM64DS_PLATFORM_PC
 /* ROM layout under mwccarm; host ABI divergence is tracked separately. */
-typedef char daObjRcCarpet_c_size_must_be_0x4c0[
-    sizeof(daObjRcCarpet_c) == 0x4c0 ? 1 : -1];
+typedef char daObjRcCarpet_c_size_must_be_0x4c0[sizeof(daObjRcCarpet_c) == 0x4c0 ? 1 : -1];
 #endif
 
 #endif /* __cplusplus */

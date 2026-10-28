@@ -13,9 +13,7 @@
  * emits the _ZTV/_ZTI/_ZTS group; the inline destructor in daTree_c.h
  * emits the retail D1/D0 pair and no D2.
  *
- * deslop leftovers:
- * - dCcPos_c::Init takes scalar Fix12i. By-value Fix12<int> homes those
- *   parameters on the stack and size-DIFFs.
+ * NOTES:
  * - InitResources allocates each node with a plain `new TreeNode`: the
  *   null test and dCcPos_c's C1 call the ROM makes are that expression's
  *   own, so the node's collision cylinder needs no explicit construction.
@@ -30,6 +28,7 @@
 #include "dCcPos_c.h"
 #include "dCamera_c.h"
 #include "dClipper.h"
+#include "Memory.h"
 
 /* One tree instance's list node: the billboard/clip center in
  * matrix-shifted units (>> 3, y lifted by kCanopyLift), its cylinder
@@ -64,7 +63,8 @@ enum {
 };
 
 /* Shared ABI seams, kept above the first `// @symbol` marker so no member
- * is charged with their mangled spellings. */
+ * is charged with their mangled spellings. local extern: no shared header
+ * declares either helper. */
 extern "C" {
 void Matrix4x3_FromRotationY(Matrix4x3 *m, short ang);
 /* Spelled Vector3 * for the object actually passed. The definition in
@@ -74,21 +74,13 @@ void Matrix4x3_FromRotationY(Matrix4x3 *m, short ang);
  * other. The disagreement is nominal, not a contract difference, and int * is
  * the slop spelling this cleanup exists to retire. */
 int *Vec3_AsrInPlace(Vector3 *v, int shift);
-/* The shared opacity method preserves the second scalar argument observed at
- * every retail caller. It is unused by this implementation; its source name
- * and unsigned type are reconstruction choices, not recovered ROM spelling.
- * See notes/experiments/applyopacity-api-0920.md. */
+}
 
 extern TreeNode *data_ov002_02110a48[kNumVariants];
 extern u16 data_ov002_0210abb8[];
 extern dClipper data_0209f43c;
 extern Matrix4x3 data_0209b3ec;
 extern dCamera_c *data_0209f318;
-}
-
-namespace Memory {
-void operator_delete2(void *p);
-}
 
 // @symbol daTree_c_classInit
 extern "C" daTree_c *daTree_c_classInit()
@@ -166,6 +158,8 @@ int daTree_c::Render()
                 int opacity = kOpacityFull;
                 if (dist < kFadeDist)
                     opacity = ((dist - kFadeBase) >> 12) & 0xff;
+                /* The second argument is the one every retail caller passes;
+                   see notes/experiments/applyopacity-api-0920.md. */
                 model->ApplyOpacity(opacity, 0);
                 mat->t.x = node->pos.x;
                 mat->t.y = node->pos.y - kCanopyLift;

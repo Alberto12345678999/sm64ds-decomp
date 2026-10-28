@@ -1,11 +1,4 @@
 //cpp
-struct Vector3_16f;
-namespace Particle {
-struct Callback;
-struct System {
-    static int New(unsigned, unsigned, int, int, int, const ::Vector3_16f *, Callback *);
-};
-}
 /* daTor_c -- the sand tornado (registry profile TORNADO).
  * 11 function(s), .text 0x02136db0..0x021376bc.
  *
@@ -16,7 +9,7 @@ struct System {
  * source order -- this file is ROM-ascending, with the classInit factory
  * appended last.
  *
- * deslop leftovers:
+ * NOTES:
  * - dBgCh_Actr_UpdateContinuous_Veneer is the ROM's own tail-call thunk, not
  *   UpdateContinuous itself: the reloc points at the veneer symbol.
  * - The GetWallResult +4 in State1 is the unrecovered result struct's
@@ -41,27 +34,17 @@ enum daTor_c_AssetId {
 #include "SurfaceInfo.h"
 #include "nitro/fx/fx.h"
 #include "math/Approach.h"
-namespace cstd {
-s16 atan2(s32, s32);
-}
+#include "math/CalcLib.h"
+#include "math/MtxStack.h"
+#include "Particle__System.h"
+#include "cstd.h"
 
-extern "C" {
 /* The texture animation InitResources hands to mTextureTransformer lives in
  * the level overlay, not here. ov096 relocs.txt lists the load at 0x021376b0
  * as ambiguous between ten level overlays; tools/overlay_residency.py settles
  * it to ov024, the only level whose tables load ov096. */
 extern int data_ov024_02112968[];
 extern s16 data_02082214[]; /* shared sin/cos lookup table */
-s32 Vec3_HorzDist(const Vector3 *a, const Vector3 *b);
-s16 Vec3_HorzAngle(const Vector3 *a, const Vector3 *b);
-s32 Vec3_Dist(const Vector3 *a, const Vector3 *b);
-void Matrix4x3_FromTranslation(Matrix4x3 *m, int x, int y, int z);
-s16 atan2_hold_d_a_tor_1(s32 y, s32 x);
-u32 d_a_torNewHold(u32 handle, u32 effect, s32 x, s32 y, s32 z, const void *direction,
-                   void *callback);
-/* Parameter names keep this TU's @NNN. */
-typedef void BgchInitAt_(void *self, void *actor, int radius, int height, void *a, int b);
-}
 
 /* The tornado's file-scope SharedFilePtr objects, spelled through the same
    wrapper idiom the landed folds use: the handles' code is the veneer pair
@@ -137,7 +120,7 @@ void daTor_c::State2()
     Player *player = ClosestPlayer();
     if (player) {
         dActor_c *actor = (dActor_c *)player;
-        if (Vec3_HorzDist((const Vector3 *)&mHomePosX, &actor->mPos) > 0x9c4000)
+        if (Vec3_HorzDist(&mHomePos, &actor->mPos) > 0x9c4000)
             mState = 0;
         if (mStateTimer > 0x168)
             mState = 0;
@@ -153,7 +136,7 @@ void daTor_c::State1()
     s16 angle;
     ++mChaseTimer;
 
-    angle = Vec3_HorzAngle(&mPos, (const Vector3 *)&mHomePosX);
+    angle = Vec3_HorzAngle(&mPos, &mHomePos);
     mAngleToHome = angle;
 
     mSoundHandle = Sound::PlayLong(mSoundHandle, 3, 0x85, mCamSpacePos, 0);
@@ -171,9 +154,8 @@ void daTor_c::State1()
         playerPos.z = pos[2];
     }
 
-    if (Vec3_HorzDist((const Vector3 *)&mHomePosX, &playerPos) < mChaseRange
-        && mTriggerCount == 0
-        && mChaseTimer < 0x384) {
+    if (Vec3_HorzDist(&mHomePos, &playerPos) < mChaseRange && mTriggerCount == 0 &&
+        mChaseTimer < 0x384) {
         angle = Vec3_HorzAngle(&mPos, &playerPos);
         mAngleToPlayer = angle;
         ApproachLinear(mPrevAngleY, mAngleToPlayer, 0x200);
@@ -182,7 +164,7 @@ void daTor_c::State1()
             ++mTriggerCount;
     } else {
         ApproachLinear(mPrevAngleY, mAngleToHome, 0x200);
-        if (Vec3_HorzDist((const Vector3 *)&mHomePosX, &mPos) < 0xc8000)
+        if (Vec3_HorzDist(&mHomePos, &mPos) < 0xc8000)
             mState = 2;
     }
     goto cont;
@@ -214,9 +196,9 @@ cont:
 void daTor_c::State0()
 {
     if (mChaseTimer >= 0x384) {
-        mPosX = mHomePosX;
-        mPosY = mHomePosY;
-        mPosZ = mHomePosZ;
+        mPosX = mHomePos.x;
+        mPosY = mHomePos.y;
+        mPosZ = mHomePos.z;
     }
 
     if (mTriggerCount == 0) {
@@ -303,9 +285,9 @@ int daTor_c::InitResources()
     mdCcAc_c.Init(this, 0, 0, 0x200002, 0);
     mWithMeshClsn.Init(this, 0x50000, 0x50000, 0, 0);
 
-    mHomePosX = mPosX;
-    mHomePosY = mPosY;
-    mHomePosZ = mPosZ;
+    mHomePos.x = mPosX;
+    mHomePos.y = mPosY;
+    mHomePos.z = mPosZ;
     mSpinPhase = 0;
     mState = 0;
     mTriggerCount = 0;

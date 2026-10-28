@@ -83,14 +83,14 @@
       "ordinal": 6
     },
     {
-      "symbol": "func_ov036_02111ca4",
+      "symbol": "_ZN16daObjRc_Tikuwa_c9OnStoodOnEP8dActor_c",
       "address": "0x02111ca4",
       "size": "0x00000020",
       "legacy_source": "src/func_ov036_02111ca4.cpp",
       "ordinal": 7
     },
     {
-      "symbol": "func_ov036_02111cc4",
+      "symbol": "_ZN16daObjRc_Tikuwa_c15StoodOnCallbackEPvPS_P8dActor_c",
       "address": "0x02111cc4",
       "size": "0x00000014",
       "legacy_source": "src/func_ov036_02111cc4.c",
@@ -618,12 +618,12 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@568",
+      "from": "@556",
       "to": "@150",
       "evidence": "compiler temporary; mwcc numbers it @571 per TU and ov100 daDoor_c (on main) also defines a global @571, so the scratch link collides"
     },
     {
-      "from": "@569",
+      "from": "@557",
       "to": "@151",
       "evidence": "compiler temporary; mwcc numbers it @572 per TU and ov073 daObjEwbIce_c (this batch) also defines a global @572, so the scratch link collides"
     }

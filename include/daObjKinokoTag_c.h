@@ -30,22 +30,22 @@
  * spelling would collide, so the profile-qualified C ABI aliases remain. */
 
 struct daObjKinokoTag_c : dActor_c {
-    u8       pad_0d0[0x4];
-    dCcAc_c  mMovingCylinderClsn; /* 0x0d4 */
-    u8       mHasLinkedPile;       /* 0x0108 */
-    u8       mGroupId;             /* 0x0109 */
-    u8       mHasMatchingTag;      /* 0x010a */
-    u8       mSearchedForPile;     /* 0x010b */
-    u8       mLinkedPileGone;      /* 0x010c */
+    u8 pad_0d0[0x4];
+    dCcAc_c mMovingCylinderClsn; /* 0x0d4 */
+    u8 mHasLinkedPile;           /* 0x0108 */
+    u8 mGroupId;                 /* 0x0109 */
+    u8 mHasMatchingTag;          /* 0x010a */
+    u8 mSearchedForPile;         /* 0x010b */
+    u8 mLinkedPileGone;          /* 0x010c */
 
     /* InitResources is the first out-of-line virtual/key function. Together
      * with this inline destructor, mwccarm owns the retail D1/D0 pair and the
      * complete class RTTI/vtable group without retaining a D2 body. */
-    virtual ~daObjKinokoTag_c() {}    /* slots 16, 17 */
+    virtual ~daObjKinokoTag_c() {} /* slots 16, 17 */
 
-    virtual s32 InitResources();      /* slot 0 */
-    virtual s32 CleanupResources();   /* slot 3 */
-    virtual s32 Behavior();           /* slot 6 */
+    virtual s32 InitResources();    /* slot 0 */
+    virtual s32 CleanupResources(); /* slot 3 */
+    virtual s32 Behavior();         /* slot 6 */
 
     /* These two names are semantic readings, not cartridge strings. Their
      * ownership is stronger than their spelling: every ROM call passes this
@@ -57,8 +57,7 @@ struct daObjKinokoTag_c : dActor_c {
 
 #ifndef SM64DS_PLATFORM_PC
 /* ROM layout under mwccarm; host ABI divergence is tracked separately. */
-typedef char daObjKinokoTag_c_size_must_be_0x110[
-    sizeof(daObjKinokoTag_c) == 0x110 ? 1 : -1];
+typedef char daObjKinokoTag_c_size_must_be_0x110[sizeof(daObjKinokoTag_c) == 0x110 ? 1 : -1];
 #endif
 
 #endif
