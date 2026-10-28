@@ -69,9 +69,7 @@ struct daTor_c : dActor_c {
        mPos back to it after mChaseTimer runs out, and both other states
        measure their distances from it rather than from where the tornado
        currently is. */
-    s32 mHomePosX;               /* 0x340 */
-    s32 mHomePosY;               /* 0x344 */
-    s32 mHomePosZ;               /* 0x348 */
+    Vector3 mHomePos;            /* 0x340 */
     s32 mChaseRange;             /* 0x34c -- how far from home the player may
                                      be and still be chased. InitResources
                                      builds it out of mParam's low byte:

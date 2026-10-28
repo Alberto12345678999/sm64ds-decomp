@@ -28,14 +28,14 @@
       "legacy_source": "src/unnamed/ov063/func_ov063_0211d270.cpp",
       "ordinal": 0,
       "size": "0x0000001c",
-      "symbol": "func_ov063_0211d270"
+      "symbol": "_ZN11daTrsTrap_c18LatchStandingActorEP8dActor_c"
     },
     {
       "address": "0x0211d28c",
       "legacy_source": "src/unnamed/ov063/func_ov063_0211d28c.c",
       "ordinal": 1,
       "size": "0x00000014",
-      "symbol": "func_ov063_0211d28c"
+      "symbol": "_ZN11daTrsTrap_c15OnMeshClsnTouchEP4dBgWPS_P8dActor_c"
     },
     {
       "address": "0x0211d2a0",

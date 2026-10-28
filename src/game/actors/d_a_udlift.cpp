@@ -27,18 +27,13 @@
  * written from the highest address down. Do not reorder them, and do not
  * write the destructor out of line.
  *
- * leftovers:
+ * NOTES:
  * - InitResources, StateWait, StateMoveDown: the actorID test has to be
  *   `(int)(actorID == id) != 0`. A plain `actorID == id`, and that compare
  *   without the `(int)` cast, both shrink the same three functions.
  *   InitResources 0x18c->0x160, and its LoadFile reloc then names
  *   _ZN7dBgW_Kc8LoadFileER13SharedFilePtr instead of 0x02017a3c.
  *   StateWait 0xf4->0xe8. StateMoveDown 0x120->0x114.
- * - InitResources: mMeshCollider.SetFile with a Fix12<int>{0x199} scale
- *   grows the function 0x18c->0x190, mis-aims three relocs (first
- *   data_ov095_02136f68 vs data_ov095_02136f74) and emits unlicensed @546.
- *   Passing the scale as an int does not compile. The mangled int bridge
- *   stays. IsClsnInRange is the same bridge: dBgActor_c.h has no member.
  * - InitResources: func_020393d4 and func_020393c4 store dBgW+0x18
  *   (beforeClsnCallback) and dBgW+0x1c (the rider callback). Writing those
  *   fields directly shrinks InitResources 0x18c->0x184 and drops the two
@@ -56,10 +51,9 @@
  * - data_ov095_02136f68, data_ov095_02136f74, data_ov095_021375a4 and
  *   data_ov095_02137910 keep the address names. The profiles are not in
  *   this TU.
- * - func_ov095_02136764 / func_ov095_02136788 keep their placeholder
- *   names: the veneer is stored into the mesh collider as a raw address,
- *   so it cannot be a member, and the ROM has no name for the body it
- *   forwards to.
+ * - OnMeshClsnTouch is a static member: the mesh collider stores its raw
+ *   address. LatchRider, the body it forwards to, is an ordinary member.
+ *   The ROM names neither.
  */
 
 /* Runtime asset handles resolved through the overlay 0 file table. */
@@ -111,7 +105,6 @@ extern UdliftCollisionFilePtr gThLiftCollisionFile;
 extern UdliftCollisionFilePtr gCvUdLiftCollisionFile;
 extern UdliftCollisionFilePtr gRcRift02CollisionFile;
 
-extern "C" {
 /* Per-variant model and collision files, and the CLPS block handed to
  * dBgW_KcMbg::SetFile, all indexed by mVariant. */
 extern SharedFilePtr *data_ov095_02136f68[];
@@ -126,16 +119,11 @@ extern State data_ov095_02137584;
 extern State data_ov095_0213758c;
 extern State data_ov095_0213759c;
 
-/* Fix12<int> by value. The member call grows InitResources; see leftovers. */
-extern void hold_d_a_udlift(dBgW_KcMbg *self, KCL_File *file, const Matrix4x3 *mat, int scale,
-                            s16 angleY, CLPS_Block *clps);
-void d_a_udliftEarthquakeHold(void *self, Vector3 *pos, int strength);
-/* dBgW+0x18 and dBgW+0x1c. A direct store shrinks InitResources. */
+/* dBgW+0x18 and dBgW+0x1c. A direct store shrinks InitResources.
+   local extern: no shared header declares these on void *. */
+extern "C" {
 void func_020393d4(void *collider, void *callback);
 void func_020393c4(void *collider, void *callback);
-/* The rider-collision pair defined below. */
-void func_ov095_02136764(daUdlift_c *self, Player *player);
-void func_ov095_02136788(void *collider, daUdlift_c *self, Player *player);
 }
 
 // @symbol daUdlift_c_classInit_UDLIFT_TERESA
@@ -156,24 +144,24 @@ extern "C" daUdlift_c *daUdlift_c_classInit_RC_RIFT02()
     return new daUdlift_c();
 }
 
-// @symbol func_ov095_02136788
+// @symbol _ZN10daUdlift_c15OnMeshClsnTouchEPvPS_P6Player
 /* The mesh collider's touch callback is (collider, owner, other); the lift
  * only needs the back two, so this veneer drops the first argument. Its
- * address is stored at dBgW+0x1c, so it stays a free function. */
-void func_ov095_02136788(void *collider, daUdlift_c *self, Player *player)
+ * address is stored at dBgW+0x1c, so it is a static member. */
+void daUdlift_c::OnMeshClsnTouch(void *collider, daUdlift_c *self, Player *player)
 {
-    func_ov095_02136764(self, player);
+    self->LatchRider(player);
 }
 
-// @symbol func_ov095_02136764
-/* Rider callback: if the touching actor is the player (0xbf), hold it as
- * mRider and mark the lift ridden this frame. */
-void func_ov095_02136764(daUdlift_c *self, Player *player)
+// @symbol _ZN10daUdlift_c10LatchRiderEP6Player
+/* If the touching actor is the player (0xbf), hold it as mRider and mark
+ * the lift ridden this frame. */
+void daUdlift_c::LatchRider(Player *player)
 {
     int isPlayer = (int)(player->actorID == 0xbf);
     if (isPlayer) {
-        self->mRider = player;
-        self->mIsRidden = 1;
+        mRider = player;
+        mIsRidden = 1;
     }
 }
 
@@ -196,11 +184,10 @@ int daUdlift_c::InitResources()
 
     mModel.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(*data_ov095_02136f68[mVariant]), 1, -1);
     UpdateClsnPosAndRot();
-    ((dBgW_KcMbg *)(&mMeshCollider))
-        ->dBgW_KcMbg::SetFile((KCL_File *)dBgW_Kc::LoadFile(*data_ov095_02136f74[mVariant]),
-                              *(&mClsnMat), 0x199, mAngleY, *(data_ov095_021375a4[mVariant]));
+    mMeshCollider.SetFile((KCL_File *)dBgW_Kc::LoadFile(*data_ov095_02136f74[mVariant]),
+                          mClsnMat, 0x199, mAngleY, *data_ov095_021375a4[mVariant]);
     func_020393d4(&mMeshCollider, (void *)&dBgW::UpdatePosWithTransform);
-    func_020393c4(&mMeshCollider, (void *)&func_ov095_02136788);
+    func_020393c4(&mMeshCollider, (void *)&daUdlift_c::OnMeshClsnTouch);
     mRider = 0;
     mState = 0;
 
