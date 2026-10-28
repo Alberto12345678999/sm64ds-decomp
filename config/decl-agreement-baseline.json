@@ -1309,16 +1309,6 @@
         "param:#3 short",
         "param:#4 short"
       ],
-      "src/game/actors/d_a_shark.cpp": [
-        "param:#2 short",
-        "param:#3 short",
-        "param:#4 short"
-      ],
-      "src/game/actors/d_a_snowball.cpp": [
-        "param:#2 short",
-        "param:#3 short",
-        "param:#4 short"
-      ],
       "src/game/actors/d_a_water_tatumaki.cpp": [
         "param:#2 short",
         "param:#3 short",
@@ -3497,10 +3487,6 @@
         "param:#1 const void *",
         "param:#2 const void *"
       ],
-      "src/game/actors/d_a_shark.cpp": [
-        "param:#1 Vector3 *",
-        "param:#2 Vector3 *"
-      ],
       "src/game/actors/d_a_trs.cpp": [
         "arity:3"
       ],
@@ -4924,10 +4910,6 @@
       "src/game/actors/d_a_shl.cpp": [
         "param:#2 dActor_c *",
         "param:#5 Vector3_16 *"
-      ],
-      "src/game/actors/d_a_snowball.cpp": [
-        "param:#2 void *",
-        "param:#5 void *"
       ],
       "src/game/actors/d_a_snowman.cpp": [
         "param:#2 void *",
@@ -7472,18 +7454,6 @@
         "param:#7 unsigned int",
         "return:void"
       ],
-      "src/game/actors/d_a_shark.cpp": [
-        "param:#5 unsigned int",
-        "param:#6 unsigned int",
-        "param:#7 unsigned int",
-        "return:void"
-      ],
-      "src/game/actors/d_a_snowball.cpp": [
-        "param:#5 unsigned int",
-        "param:#6 unsigned int",
-        "param:#7 unsigned int",
-        "return:void"
-      ],
       "src/game/actors/d_a_snowman.cpp": [
         "param:#5 unsigned int",
         "param:#6 unsigned int",
@@ -8476,9 +8446,6 @@
         "return:void"
       ],
       "src/game/actors/d_a_snm_bth.cpp": [
-        "return:void"
-      ],
-      "src/game/actors/d_a_snowball.cpp": [
         "return:void"
       ],
       "src/game/actors/d_a_spd.cpp": [
@@ -11132,9 +11099,6 @@
       ],
       "src/game/actors/d_a_s_bird.cpp": [
         "return:BirdMtx"
-      ],
-      "src/game/actors/d_a_shark.cpp": [
-        "return:char []"
       ],
       "src/game/actors/d_a_spd.cpp": [
         "return:Mtx43"

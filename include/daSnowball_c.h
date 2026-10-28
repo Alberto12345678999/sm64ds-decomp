@@ -51,26 +51,26 @@ struct daSnowball_c;
  * Behavior. */
 typedef int (daSnowball_c::*daSnowball_StateFn)();
 struct daSnowball_StateRec {
-    daSnowball_StateFn enter;   /* +0x00 -- func_ov081_021261b8 */
-    daSnowball_StateFn update;  /* +0x08 -- func_ov081_021260fc */
+    daSnowball_StateFn enter;  /* +0x00 -- InitState0 */
+    daSnowball_StateFn update; /* +0x08 -- State0 */
 };
 
 struct daSnowball_c : dEnemyBase_c {
-    dCcAc_c           mdCcAc_c;   /* 0x110 */
-    dBgCh_Actr                 mWithMeshClsn;         /* 0x144 */
-    dExtSimpleModel_c mModel;                         /* 0x300 */
-    dExtShadowModel_c                  mShadowModel;          /* 0x350 */
-    daSnowball_StateRec         *mStateRec;             /* 0x378 -- installed by func_ov081_021261d4 */
+    dCcAc_c mdCcAc_c;               /* 0x110 */
+    dBgCh_Actr mWithMeshClsn;       /* 0x144 */
+    dExtSimpleModel_c mModel;       /* 0x300 */
+    dExtShadowModel_c mShadowModel; /* 0x350 */
+    daSnowball_StateRec *mStateRec; /* 0x378 -- installed by SetState */
     /* Where the actor was placed: InitResources copies mPosX/Y/Z here before
        lifting the snowball 0x32000 (50 units) above it. */
-    s32                          mSpawnPosX;            /* 0x37c */
-    s32                          mSpawnPosY;            /* 0x380 */
-    s32                          mSpawnPosZ;            /* 0x384 */
+    s32 mSpawnPosX; /* 0x37c */
+    s32 mSpawnPosY; /* 0x380 */
+    s32 mSpawnPosZ; /* 0x384 */
     /* Cleared by the enter helper; set to 1 by the update helper the first time
        the snowball is below mSpawnPosY while mTerminalVelocity still holds its
        initial -0x3c000, at which point that helper also zeroes mVertSpeed and
        mVertAccel. Only those two helpers touch it. */
-    s32                          mReachedSpawnY;        /* 0x388 */
+    s32 mReachedSpawnY; /* 0x388 */
 
     /* --- vtable --- */
     virtual ~daSnowball_c();
@@ -81,9 +81,11 @@ struct daSnowball_c : dEnemyBase_c {
     int CleanupResources();
     void OnPendingDestroy();
 
-    /* State-record targets. The address is the method name. */
-    int func_ov081_021261b8();
-    int func_ov081_021260fc();
+    void HandleContact();                /* ov081 0x02125fb8 */
+    int State0();                        /* ov081 0x021260fc */
+    int InitState0();                    /* ov081 0x021261b8 */
+    int SetState(daSnowball_StateRec *); /* ov081 0x021261d4 */
+    void UpdateModelMatrix();            /* ov081 0x02126224 */
 };
 
 #ifndef SM64DS_PLATFORM_PC
