@@ -928,7 +928,6 @@ extern int func_ov077_02124ce4(void*);
 extern int func_ov080_0212714c(void*, void*);
 extern int func_ov080_021274ac(void*, void*);
 extern int func_ov085_02129f8c(void*);
-extern int func_ov095_0213579c(void*, void*);
 extern int func_ov100_02143370(char*);
 extern int func_ov100_02144f84(void);
 extern int func_ov100_02144fcc(void);
@@ -1620,6 +1619,8 @@ extern int func_ov029_02111e60(void);
 extern void func_ov029_021126dc(char*);
 extern void func_ov029_02112710(char*);
 extern void func_ov030_02111734(char*);
+/* No longer defined (now daObjRc_Tikuwa_c::StoodOnCallback); kept because its
+   three named parameters hold @NNN numbers in every includer. */
 extern void func_ov036_02111cc4(void* dBgW, void* self, void* clsn);
 extern void func_ov060_021183f4();
 extern void func_ov062_02116edc(void*);
@@ -1660,7 +1661,6 @@ extern void func_ov090_02133338(char*);
 extern int func_ov090_021338b4(void*, void*);
 extern void func_ov092_021313b0(void*);
 extern void func_ov092_02131a88(char*);
-extern void func_ov095_0213597c(char*);
 extern void func_ov096_0213585c(void*);
 extern void func_ov096_02135efc(void*);
 extern void func_ov096_021368b4(void*);
