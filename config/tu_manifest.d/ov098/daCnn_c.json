@@ -48,42 +48,42 @@
       "ordinal": 1
     },
     {
-      "symbol": "_ZN7daCnn_c19func_ov098_0213a984Ev",
+      "symbol": "_ZN7daCnn_c11UpdateModelEv",
       "address": "0x0213a984",
       "size": "0x000000a4",
       "legacy_source": "src/func_ov098_0213a984.c",
       "ordinal": 2
     },
     {
-      "symbol": "_ZN7daCnn_c19func_ov098_0213aa28Ev",
+      "symbol": "_ZN7daCnn_c9StateLoadEv",
       "address": "0x0213aa28",
       "size": "0x000002e0",
       "legacy_source": "src/func_ov098_0213aa28.c",
       "ordinal": 3
     },
     {
-      "symbol": "_ZN7daCnn_c19func_ov098_0213ad08Ev",
+      "symbol": "_ZN7daCnn_c17StateWaitForRiderEv",
       "address": "0x0213ad08",
       "size": "0x000000e0",
       "legacy_source": "src/func_ov098_0213ad08.c",
       "ordinal": 4
     },
     {
-      "symbol": "_ZN7daCnn_c19func_ov098_0213ade8Ev",
+      "symbol": "_ZN7daCnn_c9StateFireEv",
       "address": "0x0213ade8",
       "size": "0x000002bc",
       "legacy_source": "src/func_ov098_0213ade8.c",
       "ordinal": 5
     },
     {
-      "symbol": "_ZN7daCnn_c19func_ov098_0213b0a4Ev",
+      "symbol": "_ZN7daCnn_c8StateAimEv",
       "address": "0x0213b0a4",
       "size": "0x000000b8",
       "legacy_source": "src/func_ov098_0213b0a4.cpp",
       "ordinal": 6
     },
     {
-      "symbol": "_ZN7daCnn_c19func_ov098_0213b15cEv",
+      "symbol": "_ZN7daCnn_c11PickNextAimEv",
       "address": "0x0213b15c",
       "size": "0x0000007c",
       "legacy_source": "src/func_ov098_0213b15c.cpp",
@@ -570,7 +570,7 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@482",
+      "from": "@605",
       "to": "@445",
       "evidence": "mwcc numbers this destructor-registration node @483 per TU; another module's emitted object already carries @483 globally, so the scratch link would multiply-define it"
     }

@@ -100,9 +100,9 @@ struct daDkk_c : daDsnBase_c {
     int Behavior();
     int OnAimedAtWithEgg();
 
-    int func_ov025_021119a4();
-    void func_ov025_021119f4();
-    void func_ov025_02111a84();
+    int StateTurn();
+    void StateLandPause();
+    void StateFall();
 };
 
 #ifndef SM64DS_PLATFORM_PC

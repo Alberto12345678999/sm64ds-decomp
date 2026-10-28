@@ -1223,7 +1223,6 @@
     },
     "LoadLevel": {
       "src/game/actors/d_a_ch_scene.cpp": [
-        "param:#4 unsigned int",
         "param:#1 signed char",
         "param:#2 unsigned char",
         "param:#3 signed char"
@@ -4815,11 +4814,6 @@
         "param:#2 void *",
         "param:#5 void *"
       ],
-      "src/game/actors/d_a_chair.cpp": [
-        "param:#2 dActor_c *",
-        "param:#5 Vector3_16 *",
-        "param:#6 Vector3_16 *"
-      ],
       "src/game/actors/d_a_choropu.cpp": [
         "param:#2 void *",
         "param:#5 Vector3_16 *",
@@ -5094,10 +5088,6 @@
       ]
     },
     "_ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block": {
-      "src/game/actors/d_a_dgr.cpp": [
-        "param:#3 const Matrix4x3 &",
-        "param:#6 CLPS_Block &"
-      ],
       "src/game/actors/d_a_kpa2_bg.cpp": [
         "return:int"
       ],
@@ -7559,11 +7549,6 @@
         "param:#7 unsigned int",
         "return:void"
       ],
-      "src/game/actors/d_a_chair.cpp": [
-        "param:#5 unsigned int",
-        "param:#6 unsigned int",
-        "param:#7 unsigned int"
-      ],
       "src/game/actors/d_a_choropu.cpp": [
         "param:#5 unsigned int",
         "param:#6 unsigned int",
@@ -8422,10 +8407,6 @@
       "src/game/actors/d_a_demo.cpp": [
         "return:unsigned int"
       ],
-      "src/game/actors/d_a_dgr.cpp": [
-        "param:#6 const void *",
-        "return:unsigned int"
-      ],
       "src/game/actors/d_a_eykn.cpp": [
         "param:#6 const void *"
       ],
@@ -8522,9 +8503,6 @@
       ],
       "src/game/actors/d_a_yegg.cpp": [
         "param:#6 Vec3_16f *"
-      ],
-      "src/game/actors/d_a_cnn.cpp": [
-        "param:#6 const Vector3_16 *"
       ],
       "src/game/actors/d_a_ey_bm.cpp": [
         "param:#6 const Vector3_16f *",
@@ -8656,9 +8634,6 @@
         "return:void"
       ],
       "src/game/actors/d_a_choropu.cpp": [
-        "return:void"
-      ],
-      "src/game/actors/d_a_dkk.cpp": [
         "return:void"
       ],
       "src/game/actors/d_a_dsn_base.cpp": [
@@ -8879,15 +8854,6 @@
         "arity:3"
       ],
       "src/game/actors/d_a_btn.cpp": [
-        "arity:3"
-      ],
-      "src/game/actors/d_a_cnn.cpp": [
-        "arity:3"
-      ],
-      "src/game/actors/d_a_dgr.cpp": [
-        "arity:3"
-      ],
-      "src/game/actors/d_a_dkk.cpp": [
         "arity:3"
       ],
       "src/game/actors/d_a_dsn_base.cpp": [
@@ -15079,9 +15045,6 @@
       ]
     },
     "data_ov020_02114af0": {
-      "src/game/actors/d_a_chair.cpp": [
-        "return:SharedFilePtr"
-      ],
       "src/unnamed/ov020/__sinit_ov020_0211372c.c": [
         "return:int []"
       ]
@@ -17664,9 +17627,6 @@
       ]
     },
     "data_ov098_0213c8e8": {
-      "src/game/actors/d_a_cnn.cpp": [
-        "return:SharedFilePtr"
-      ],
       "src/unnamed/ov098/__sinit_ov098_0213c214.c": [
         "return:int []"
       ]
@@ -18278,9 +18238,6 @@
         "param:#1 int"
       ],
       "src/game/actors/d_a_choropu.cpp": [
-        "param:#1 int"
-      ],
-      "src/game/actors/d_a_dgr.cpp": [
         "param:#1 int"
       ],
       "src/game/actors/d_a_door.cpp": [
