@@ -13,7 +13,7 @@
  * Parameter types follow each DEFINITION in src/. Parameters stay unnamed: a
  * name here takes an @NNN in every includer.
  *
- * Only the helpers d_a_mky.cpp calls are declared so far. Vec3_Asr is not:
+ * Only the helpers d_a_mky.cpp and d_a_linelift2.cpp call are declared so far. Vec3_Asr is not:
  * its definition takes a file-local struct Vec3, so no spelling here agrees
  * with it yet. The C++ steppers (UpdateAngle, ApproachLinear) are in
  * math/Approach.h. */
@@ -25,7 +25,9 @@ extern "C" {
 unsigned char DecIfAbove0_Byte(unsigned char *);
 
 short Vec3_HorzAngle(const Vector3 *, const Vector3 *);
+Fix12i Vec3_HorzLen(const Vector3 *);
 int Vec3_Dist(const Vector3 *, const Vector3 *);
+int Vec3_Equal(const Vector3 *, const Vector3 *);
 int Vec3_HorzDist(const Vector3 *, const Vector3 *);
 }
 
