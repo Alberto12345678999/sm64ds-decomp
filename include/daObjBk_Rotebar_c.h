@@ -13,22 +13,21 @@
  * `daObjBk_Rotebar_c` is the RTTI name. Direct base is dBgActor_c.
  */
 struct daObjBk_Rotebar_c : dBgActor_c {
-    s8  mPauseTimer;   /* 0x31e -- 0x3c; DecIfAbove0_Byte gates the turn */
-    s32 mTurnSound;    /* 0x320 -- recycled Sound::PlayLong handle */
+    s8 mPauseTimer; /* 0x31e -- 0x3c; DecIfAbove0_Byte gates the turn */
+    s32 mTurnSound; /* 0x320 -- recycled Sound::PlayLong handle */
 
     /* Inline empty dtor: mwccarm emits D1 then D0, no D2. */
     virtual ~daObjBk_Rotebar_c() {}
 
-    s32 InitResources();      /* slot  0 */
-    s32 Behavior();           /* slot  6 */
-    s32 Render();             /* slot  9 */
-    s32 CleanupResources();   /* slot  3 */
+    s32 InitResources();    /* slot  0 */
+    s32 Behavior();         /* slot  6 */
+    s32 Render();           /* slot  9 */
+    s32 CleanupResources(); /* slot  3 */
 };
 
 #ifndef SM64DS_PLATFORM_PC
 /* ROM layout under mwccarm; host ABI divergence is tracked separately. */
-typedef char daObjBk_Rotebar_c_size_must_be_0x324[
-    sizeof(daObjBk_Rotebar_c) == 0x324 ? 1 : -1];
+typedef char daObjBk_Rotebar_c_size_must_be_0x324[sizeof(daObjBk_Rotebar_c) == 0x324 ? 1 : -1];
 #endif
 
 #endif /* DAOBJBK_ROTEBAR_C_H */
