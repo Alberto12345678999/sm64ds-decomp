@@ -95,7 +95,7 @@
   "data": [],
   "bss": [
     {
-      "symbol": "TtcRotatingGear_ClsnFile",
+      "symbol": "gCtMechaObj08aCollisionFile",
       "address": "0x0211d97c",
       "size": "0x8",
       "binding": "STB_GLOBAL",
@@ -109,7 +109,7 @@
       "evidence": "model file handle constructed with file ID 0x5ca"
     },
     {
-      "symbol": "TtcRotatingGear_ModelFile",
+      "symbol": "gCtMechaObj08aModelFile",
       "address": "0x0211d98c",
       "size": "0x8",
       "binding": "STB_GLOBAL",
@@ -662,7 +662,7 @@
       "source": "0x0211ca3c",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "TtcRotatingGear_ModelFile",
+      "symbol": "gCtMechaObj08aModelFile",
       "addend": 0,
       "target_module": "ov065",
       "target_address": "0x0211d98c"
@@ -712,7 +712,7 @@
       "source": "0x0211ca58",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "TtcRotatingGear_ClsnFile",
+      "symbol": "gCtMechaObj08aCollisionFile",
       "addend": 0,
       "target_module": "ov065",
       "target_address": "0x0211d97c"
@@ -760,22 +760,22 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@411",
+      "from": "@401",
       "to": "@409",
       "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @420 now; licensed under the existing pin @409"
     },
     {
-      "from": "@414",
+      "from": "@404",
       "to": "@412",
       "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @423 now; licensed under the existing pin @412"
     },
     {
-      "from": "@413",
+      "from": "@403",
       "to": "@411",
       "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @422 now; licensed under the existing pin @411"
     },
     {
-      "from": "@412",
+      "from": "@402",
       "to": "@410",
       "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @421 now; licensed under the existing pin @410"
     }

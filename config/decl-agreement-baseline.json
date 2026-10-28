@@ -1429,12 +1429,6 @@
       "src/game/actors/d_a_obj_cannon_shutter.cpp": [
         "param:#2 short"
       ],
-      "src/game/actors/d_a_obj_ct_mecha03.cpp": [
-        "param:#2 short"
-      ],
-      "src/game/actors/d_a_obj_ct_mecha04.cpp": [
-        "param:#2 short"
-      ],
       "src/game/actors/d_a_obj_ct_mecha11.cpp": [
         "param:#2 short"
       ],
@@ -5077,21 +5071,6 @@
         "param:#3 const Matrix4x3 &",
         "param:#6 CLPS_Block &"
       ],
-      "src/game/actors/d_a_obj_ct_kaitendai.cpp": [
-        "param:#3 const Matrix4x3 &",
-        "param:#6 CLPS_Block &"
-      ],
-      "src/game/actors/d_a_obj_ct_mecha03.cpp": [
-        "param:#3 const Matrix4x3 &",
-        "param:#6 CLPS_Block &"
-      ],
-      "src/game/actors/d_a_obj_ct_mecha04.cpp": [
-        "param:#3 const Matrix4x3 &",
-        "param:#6 CLPS_Block &"
-      ],
-      "src/game/actors/d_a_obj_ct_mecha05.cpp": [
-        "param:#3 Matrix4x3 *"
-      ],
       "src/game/actors/d_a_obj_ct_mecha11.cpp": [
         "param:#3 const Matrix4x3 &",
         "param:#6 CLPS_Block &"
@@ -6963,10 +6942,6 @@
         "param:#4 const Vector3 *",
         "param:#5 unsigned int",
         "return:unsigned int"
-      ],
-      "src/game/actors/d_a_obj_ct_mecha04.cpp": [
-        "param:#4 void *",
-        "param:#5 unsigned int"
       ],
       "src/game/actors/d_a_obj_ki_fune.cpp": [
         "param:#4 void *",
@@ -27117,11 +27092,6 @@
     "func_ov065_021195d0": {
       "include/decl_common.h": [
         "arity:0"
-      ]
-    },
-    "func_ov065_0211ad70": {
-      "include/decl_common.h": [
-        "param:#1 char *"
       ]
     },
     "func_ov070_0211f100": {
