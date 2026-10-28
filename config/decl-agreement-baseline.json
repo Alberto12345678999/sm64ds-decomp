@@ -27177,11 +27177,6 @@
         "return:Vector3"
       ]
     },
-    "func_ov080_02127658": {
-      "include/decl_common.h": [
-        "kind:data"
-      ]
-    },
     "func_ov100_02144fcc": {
       "src/game/actors/d_a_star_gate.cpp": [
         "arity:1"

@@ -6919,3 +6919,14 @@ ov024	0x021112c0	func_ov024_021112c0	_ZN16daObjDlPyramid_c13FinishDescentEv	daOb
 ov024	0x02111350	func_ov024_02111350	_ZN16daObjDlPyramid_c7DescendEv	daObjDlPyramid_c::Descend: one frame of the descent: wobbles X off home, bobs up for 60 frames, then spins up and sinks; state 2 at frame 150; was an extern "C" free function taking the class pointer, now a member; same address, same body
 ov024	0x02111480	func_ov024_02111480	_ZN16daObjDlPyramid_c16UpdateClsnMatrixEv	daObjDlPyramid_c::UpdateClsnMatrix: yaw matrix plus position into mClsnMat2, handed to the mesh collider; was an extern "C" free function taking the class pointer, now a member; same address, same body
 ov024	0x021114c4	func_ov024_021114c4	_ZN16daObjDlPyramid_c17UpdateModelMatrixEv	daObjDlPyramid_c::UpdateModelMatrix: yaw matrix plus position >> 3 into mTopModel; was an extern "C" free function taking the class pointer, now a member; same address, same body
+ov080	0x02127094	_ZN13daObjMaruta_c19func_ov080_02127094Ev	_ZN13daObjMaruta_c20UpdateModelTransformEv	rotate the model and set its translation from mPos
+ov080	0x0212758c	func_ov080_0212758c	_ZN13daObjMaruta_c19HandlePlayerContactEP8dActor_c	record a touching player and shove it along mAngleY
+ov080	0x02127658	func_ov080_02127658	_ZN13daObjMaruta_c18BeforeClsnCallbackEPvS0_S0_	dBgW before-collision veneer forwarding to HandlePlayerContact
+ov009	0x02111b1c	func_ov009_02111b1c	_ZN14daObjMcWater_c15SpawnWaterfallsEv	spawn the seven WATERFALL actors
+ov085	0x0212cd0c	func_ov085_0212cd0c	_ZN15daObj_Mip_Key_c18FinishConversationEv	end the save conversation and retire the key
+ov085	0x0212cd80	func_ov085_0212cd80	_ZN15daObj_Mip_Key_c12StateCarriedEv	carried state update
+ov085	0x0212d038	func_ov085_0212d038	_ZN15daObj_Mip_Key_c17StateCarriedEnterEv	carried state entry
+ov085	0x0212d108	func_ov085_0212d108	_ZN15daObj_Mip_Key_c10StateLooseEv	loose state update
+ov085	0x0212d24c	func_ov085_0212d24c	_ZN15daObj_Mip_Key_c15StateLooseEnterEv	loose state entry
+ov085	0x0212d268	func_ov085_0212d268	_ZN15daObj_Mip_Key_c11ChangeStateEP11MipKeyState	install a state and run its entry
+ov085	0x0212d2b8	func_ov085_0212d2b8	_ZN15daObj_Mip_Key_c20UpdateModelAndShadowEv	build the render matrix and place the shadow
