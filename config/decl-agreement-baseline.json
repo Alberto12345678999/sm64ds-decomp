@@ -24046,11 +24046,6 @@
         "kind:data"
       ]
     },
-    "func_ov002_020bc488": {
-      "include/decl_common.h": [
-        "param:#1 char *"
-      ]
-    },
     "func_ov002_020bd06c": {
       "src/unnamed/ov002/func_ov002_020bd20c.c": [
         "param:#1 unsigned char *",

@@ -9,24 +9,24 @@
  * daObjWcObj01_c_classInit is reconstructed (RTTI daObjWcObj01_c,
  * WC_OBJ01 registry). Retail does not store that spelling.
  *
- * deslop
- * Leftover: startEnd is two Vector3 copies flattened
- *   (start = pos; end = pos; start.y += 20; end.y = waterY); the
- *   extra stores are decompiler dead stores, not an int[6] type.
- * Leftover: g_profile_WC_OBJ01 is ov029 data outside this TU (S14).
+ * NOTES:
+ * - The ray runs from 20.0 above the board down to the water height. The
+ *   component stores follow the ROM's order, including the y stores that
+ *   are overwritten at once.
+ * - g_profile_WC_OBJ01 is ov029 data outside this TU (S14).
+ * - daObjFloatBoard_c::func_ov002_020b5e58 is the float-board family's
+ *   shared resource loader (float_board, ki_ita, wc_obj01, wc_obj06); it
+ *   keeps its placeholder name until the family is renamed together.
  */
 
 /* Runtime asset handles resolved through the overlay 0 file table. */
-enum d_a_obj_wc_obj01_AssetId {
-    ASSET_WC_OBJ01_BMD = 0x06cc,
-    ASSET_WC_OBJ01_KCL = 0x06cd
-};
+enum d_a_obj_wc_obj01_AssetId { ASSET_WC_OBJ01_BMD = 0x06cc, ASSET_WC_OBJ01_KCL = 0x06cd };
 
 #include "daObjWcObj01_c.h"
 #include "dBgCh_Lin.h"
 #include "SharedFilePtr.h"
 
-extern "C" daObjFloatBoard_c_Resources data_ov029_02113be8;
+extern daObjFloatBoard_c_Resources data_ov029_02113be8;
 
 /* Retail constructs these 8-byte handles in this order and registers
  * their destructors. The wrapper names are local; the ctor/dtor
@@ -46,15 +46,13 @@ enum {
 };
 
 // @symbol daObjWcObj01_c_classInit
-extern "C" daObjWcObj01_c *daObjWcObj01_c_classInit()
-{
+extern "C" daObjWcObj01_c *daObjWcObj01_c_classInit() {
     return new daObjWcObj01_c();
 }
 
 // @symbol _ZN14daObjWcObj01_c13InitResourcesEv
-int daObjWcObj01_c::InitResources()
-{
-    int startEnd[6]; /* start[3] then end[3] */
+int daObjWcObj01_c::InitResources() {
+    Vector3 start, end;
     int waterY;
     int x, y, z;
 
@@ -63,18 +61,17 @@ int daObjWcObj01_c::InitResources()
         if (mPosY > waterY) {
             dBgCh_Lin line;
             x = mPosX;
-            startEnd[3] = x;                 /* end.x */
+            end.x = x;
             y = mPosY;
-            startEnd[4] = y;                 /* end.y temp */
+            end.y = y;
             z = mPosZ;
-            startEnd[1] = y;                 /* start.y temp */
-            startEnd[5] = z;                 /* end.z */
-            startEnd[0] = x;                 /* start.x */
-            startEnd[2] = z;                 /* start.z */
-            startEnd[1] = y + kRayStartAboveFix12;
-            startEnd[4] = waterY;
-            line.SetObjAndLine(*(Vector3 *)&startEnd[0],
-                *(Vector3 *)&startEnd[3], this);
+            start.y = y;
+            end.z = z;
+            start.x = x;
+            start.z = z;
+            start.y = y + kRayStartAboveFix12;
+            end.y = waterY;
+            line.SetObjAndLine(start, end, this);
             if (line.DetectClsn() == 0) {
                 mPosY = waterY;
             } else {
