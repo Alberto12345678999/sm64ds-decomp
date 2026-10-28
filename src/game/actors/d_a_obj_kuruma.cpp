@@ -18,6 +18,7 @@
 #include "SharedFilePtr.h"
 #include "dBgW.h"
 
+/* local extern: no shared header declares it. */
 extern "C" {
 void func_020393d4(dBgW_KcMbg *clsn, void *fn);
 }

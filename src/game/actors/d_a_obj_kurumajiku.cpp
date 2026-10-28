@@ -8,8 +8,7 @@
  * InitResourcesFrom; the discarded class metadata is recorded in the manifest.
  *
  * Note: data_ov002_0210ddd0 (the four rider mount offsets, defined below)
- * and data_020a0e68 (shared arm9 matrix scratch, used tree-wide) keep
- * linker names; naming belongs at a shared home, not this leaf.
+ * keeps its linker name.
  */
 
 #pragma defer_codegen off
@@ -17,6 +16,7 @@
 #include "daObjKurumajiku_c.h"
 #include "SharedFilePtr.h"
 #include "dBgW.h"
+#include "math/MtxStack.h"
 
 typedef char AxleResources_size_must_be_0x0c[sizeof(daObjKurumajiku_c::Resources) == 0x0c ? 1 : -1];
 
@@ -28,8 +28,8 @@ Vector3 data_ov002_0210ddd0[4] = {
     Vector3(0x190000, 0, 0x12c000),
     Vector3(-0x190000, 0, 0x12c000),
 };
-extern char data_020a0e68[0x30];
 
+/* local extern: no shared header declares these. */
 extern "C" {
 void Matrix4x3_FromRotationZXYExt(void *dst, int x, int y, int z);
 void Matrix4x3_FromRotationXYZExt(void *m, int x, int y, int z);
@@ -108,8 +108,8 @@ s32 daObjKurumajiku_c::Behavior() {
                 mid.x = 0;
                 mid.y = 0;
                 mid.z = 0;
-                Matrix4x3_FromRotationXYZExt(data_020a0e68, mAngleX, mAngleY, mAngleZ);
-                MulVec3Mat4x3(&data_ov002_0210ddd0[i], data_020a0e68, &mid);
+                Matrix4x3_FromRotationXYZExt(&data_020a0e68, mAngleX, mAngleY, mAngleZ);
+                MulVec3Mat4x3(&data_ov002_0210ddd0[i], &data_020a0e68, &mid);
                 Vec3_Add(&res, &mPos, &mid);
                 rider->mPosX = res.x;
                 rider->mPosY = res.y;
@@ -139,8 +139,7 @@ int daObjKurumajiku_c::InitResourcesFrom(Resources *resources, unsigned int ride
     UpdateModelTransform();
     UpdateClsnPosAndRot();
     file = dBgW_Kc::LoadFile(*resources->collision);
-    ((dBgW_KcMbg *)(&mMeshCollider))
-        ->dBgW_KcMbg::SetFile((KCL_File *)(file), mClsnMat, 0x199, mAngleY, *resources->clps);
+    mMeshCollider.SetFile((KCL_File *)file, mClsnMat, 0x199, mAngleY, *resources->clps);
     for (i = 0; i < 4; i++) {
         mMountedActorIds[i] = 0;
         dActor_c *rider = dActor_c::Spawn(riderActorID, 0, mPos, 0, mAreaId, -1);

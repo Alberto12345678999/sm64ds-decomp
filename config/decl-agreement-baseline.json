@@ -11240,9 +11240,6 @@
       "src/game/actors/d_a_obj_ct_rotate_block.cpp": [
         "return:int []"
       ],
-      "src/game/actors/d_a_obj_kurumajiku.cpp": [
-        "return:char []"
-      ],
       "src/game/actors/d_a_peach.cpp": [
         "return:int []"
       ],
@@ -14752,11 +14749,6 @@
     "data_ov017_02111c80": {
       "src/unnamed/ov017/__sinit_ov017_0211198c.c": [
         "return:int []"
-      ]
-    },
-    "data_ov017_02111c88": {
-      "src/game/actors/d_a_obj_ks_water.cpp": [
-        "return:SharedFilePtr"
       ]
     },
     "data_ov018_02113c00": {

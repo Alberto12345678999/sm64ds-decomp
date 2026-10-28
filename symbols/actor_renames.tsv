@@ -6972,3 +6972,4 @@ ov085	0x0212d108	func_ov085_0212d108	_ZN15daObj_Mip_Key_c10StateLooseEv	loose st
 ov085	0x0212d24c	func_ov085_0212d24c	_ZN15daObj_Mip_Key_c15StateLooseEnterEv	loose state entry
 ov085	0x0212d268	func_ov085_0212d268	_ZN15daObj_Mip_Key_c11ChangeStateEP11MipKeyState	install a state and run its entry
 ov085	0x0212d2b8	func_ov085_0212d2b8	_ZN15daObj_Mip_Key_c20UpdateModelAndShadowEv	build the render matrix and place the shadow
+ov039	0x02111214	func_ov039_02111214	_ZN11daObjKumo_c17UpdateModelMatrixEv	daObjKumo_c::UpdateModelMatrix: model matrix from the yaw plus position >> 3; was an extern "C" free function taking the class pointer, now a member; same address, same body
