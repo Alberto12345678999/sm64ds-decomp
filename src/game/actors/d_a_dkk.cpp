@@ -20,19 +20,15 @@
 // - InitResources writes the ray's far point before the near point, and
 //   calls GetClsnPos twice. The first result is unread. One call, or
 //   writing the near point first, shrinks the function.
-// - func_ov091_02132ff4, func_ov091_02132e98 and func_ov091_02132e64 stay
-//   C calls into daDsnBase_c. The other four func_ov091_* calls are already
-//   daDsnBase_c methods.
+// - States 0..4 and the shadow/egg tail are daDsnBase_c's members
+//   (src/game/actors/d_a_dsn_base.cpp).
 // - data_ov025_02113814 is the file-table handle. g_profile_DONKAKU stays
 //   overlay data.
 
 /* daDkk_c.h pulls common.h before dExtSimpleModel_c.h, so Matrix4x3 is the flat
  * s32 m[12]. Keep dBgCh_Lin.h below that include. */
 /* Runtime asset handles resolved through the overlay 0 file table. */
-enum daDkk_c_AssetId {
-    ASSET_DONKAKU_BMD = 0x02dc,
-    ASSET_DONKAKU_KCL = 0x02dd
-};
+enum daDkk_c_AssetId { ASSET_DONKAKU_BMD = 0x02dc, ASSET_DONKAKU_KCL = 0x02dd };
 
 #include "daDkk_c.h"
 #include "common.h"
@@ -57,9 +53,7 @@ struct DkkClsnFileHandler : SharedFilePtr {
 typedef char DkkModelFilePtr_size_must_be_8[sizeof(DkkModelFilePtr) == 8 ? 1 : -1];
 typedef char DkkClsnFileHandler_size_must_be_8[sizeof(DkkClsnFileHandler) == 8 ? 1 : -1];
 
-
-/* decl_common.h already declares the three daDsnBase_c C helpers and
- * data_ov025_02113814. func_0201267c's definition takes (unsigned, const
+/* decl_common.h already declares data_ov025_02113814. func_0201267c's definition takes (unsigned, const
  * Vector3 *). This TU's calls do not read a result, so the local extern
  * spells (int, void *). */
 extern "C" {
@@ -73,16 +67,14 @@ struct System {
 
 // @symbol daDkk_c_classInit
 /* DONKAKU factory. The `new` is the whole body. */
-extern "C" daDkk_c *daDkk_c_classInit()
-{
+extern "C" daDkk_c *daDkk_c_classInit() {
     return new daDkk_c();
 }
 
 // @symbol _ZN7daDkk_c13InitResourcesEv
 /* Stores the file table, then either starts already airborne or raycasts
  * up for the ceiling and lowers mRiseY, the top of the rise, under it. */
-int daDkk_c::InitResources()
-{
+int daDkk_c::InitResources() {
     mFileTable = (s32)data_ov025_02113814;
     int r = Init();
     if (param1 & 1) {
@@ -116,21 +108,36 @@ int daDkk_c::InitResources()
 
 // @symbol _ZN7daDkk_c8BehaviorEv
 /* Eight states, then the shared model and collision update. */
-int daDkk_c::Behavior()
-{
+int daDkk_c::Behavior() {
     switch (mState) {
-    case 0: func_ov091_02133020(); break;
-    case 1: func_ov091_02132ff4((char *)this); break;
-    case 2: func_ov091_02132f04(); break;
-    case 3: func_ov091_02132e98((char *)this); break;
-    case 4: func_ov091_02132e64((char *)this); break;
-    case 5: func_ov025_02111a84(); break;
-    case 6: func_ov025_021119f4(); break;
-    case 7: func_ov025_021119a4(); break;
+    case 0:
+        StateRise();
+        break;
+    case 1:
+        StateHover();
+        break;
+    case 2:
+        StateSlam();
+        break;
+    case 3:
+        StateRest();
+        break;
+    case 4:
+        StateRecover();
+        break;
+    case 5:
+        func_ov025_02111a84();
+        break;
+    case 6:
+        func_ov025_021119f4();
+        break;
+    case 7:
+        func_ov025_021119a4();
+        break;
     }
     UpdateModelPosAndRotY();
-    func_ov091_02133098();
-    if (IsClsnInRange(0, 0) != 0 || func_ov091_02132dc0() != 0) {
+    UpdateDropShadow();
+    if (IsClsnInRange(0, 0) != 0 || WakeNearYoshiEgg() != 0) {
         UpdateClsnPosAndRot();
     }
     return 1;
@@ -140,8 +147,7 @@ int daDkk_c::Behavior()
 /* mState 5, the fall. Integrates the drop, and on reaching the stored ground
  * height snaps to it, shakes the camera, spawns the impact particle and hands
  * over to state 6. */
-void daDkk_c::func_ov025_02111a84()
-{
+void daDkk_c::func_ov025_02111a84() {
     Vector3 v[2];
     UpdatePos(0);
     if (mVertSpeed >= 0)
@@ -170,8 +176,7 @@ void daDkk_c::func_ov025_02111a84()
 /* mState 6, the pause after landing. Counts mTimer down; at zero it either
  * starts the next fall (state 5) or, on the fourth pass, turns to face the
  * opposite way (state 7). */
-void daDkk_c::func_ov025_021119f4()
-{
+void daDkk_c::func_ov025_021119f4() {
     mTimer--;
     if (mTimer != 0)
         return;
@@ -189,10 +194,10 @@ void daDkk_c::func_ov025_021119f4()
 /* mState 7, the turn. Steps mAngleY toward mTurnTargetAngle; once
  * ApproachLinear reports it has arrived, copies it into mPrevAngleY, clears the
  * landing counter and goes back to state 6. */
-int daDkk_c::func_ov025_021119a4()
-{
+int daDkk_c::func_ov025_021119a4() {
     int arrived = ApproachLinear(mAngleY, mTurnTargetAngle, 0x400);
-    if (arrived == 0) return arrived;
+    if (arrived == 0)
+        return arrived;
     mPrevAngleY = mAngleY;
     mState = 6;
     mLandCount = 0;
@@ -202,8 +207,7 @@ int daDkk_c::func_ov025_021119a4()
 
 // @symbol _ZN7daDkk_c16OnAimedAtWithEggEv
 /* Egg-aim height, 206 units. The return is added to the egg's Y. */
-int daDkk_c::OnAimedAtWithEgg()
-{
+int daDkk_c::OnAimedAtWithEgg() {
     return 0xce000;
 }
 

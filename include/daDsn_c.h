@@ -86,14 +86,14 @@ struct daDsn_c : daDsnBase_c {
        ground heights at 0x390/0x394, which daDkk_c.h names mShadowMtx, mRiseY
        and mGroundY. d_a_dsn.cpp itself touches none of it, so it stays a pad
        here -- see include/daDsnBase_c.h. */
-    u8  pad_360[0x38];
+    u8 pad_360[0x38];
     /* Field NAMES are placeholders. Offsets, widths and types are observed. */
-    s32 mState;             /* 0x398 */
-    u8  pad_39c[0x2];
-    u8  mRetrigger;         /* 0x39e */
-    u8  pad_39f[0x1];
-    u16 mHoldTimer;         /* 0x3a0 */
-    u8  mTriggered;         /* 0x3a2 */
+    s32 mState; /* 0x398 */
+    u8 pad_39c[0x2];
+    u8 mRetrigger; /* 0x39e */
+    u8 pad_39f[0x1];
+    u16 mHoldTimer; /* 0x3a0 */
+    u8 mTriggered;  /* 0x3a2 */
 
     /* --- vtable --- */
     /* Slots 16 (D1) and 17 (D0), defined in the class body, the way the sibling
@@ -111,14 +111,14 @@ struct daDsn_c : daDsnBase_c {
     virtual ~daDsn_c() {}
 
     /* The two the base declares `= 0`; this class supplies both. */
-    int Behavior();                    /* slot  6 */
-    int InitResources();               /* slot  0 */
+    int Behavior();      /* slot  6 */
+    int InitResources(); /* slot  0 */
 
     /* Slots 3 and 9 are daDsnBase_c's and are declared there -- see the note
        above. This class inherits both words. */
 
     virtual void OnHitByMegaChar(Player &player); /* slot 27 */
-    virtual int  OnAimedAtWithEgg();              /* slot 29 */
+    virtual int OnAimedAtWithEgg();               /* slot 29 */
 };
 
 #ifndef SM64DS_PLATFORM_PC

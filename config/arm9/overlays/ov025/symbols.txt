@@ -32,8 +32,8 @@ _ZN10daDpLift_c16CleanupResourcesEv kind:function(arm,size=0x3c) addr:0x021121c0
 _ZN10daDpLift_c6RenderEv kind:function(arm,size=0x8c) addr:0x021121fc
 _ZN10daDpLift_c8BehaviorEv kind:function(arm,size=0x210) addr:0x02112288
 _ZN10daDpLift_c13InitResourcesEv kind:function(arm,size=0x124) addr:0x02112498
-func_ov025_021125bc kind:function(arm,size=0x20) addr:0x021125bc
-func_ov025_021125dc kind:function(arm,size=0x14) addr:0x021125dc
+_ZN10daDpLift_c9OnStoodOnEP8dActor_c kind:function(arm,size=0x20) addr:0x021125bc
+_ZN10daDpLift_c15StoodOnCallbackEP4dBgWP8dActor_cS3_ kind:function(arm,size=0x14) addr:0x021125dc
 daDpLift_c_classInit kind:function(arm,size=0x64) addr:0x021125f0
 data_ov025_02112654 kind:data(any) addr:0x02112654
 data_ov025_02112658 kind:data(any) addr:0x02112658
