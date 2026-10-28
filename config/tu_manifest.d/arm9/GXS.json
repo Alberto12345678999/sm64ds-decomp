@@ -20,42 +20,42 @@
   ],
   "functions": [
     {
-      "symbol": "_ZN3GXS17EndLoadOBJExtPlttEv",
+      "symbol": "EndLoadOBJExtPltt",
       "address": "0x02055dec",
       "size": "0x0000004c",
       "legacy_source": "src/_ZN3GXS17EndLoadOBJExtPlttEv.cpp",
       "ordinal": 0
     },
     {
-      "symbol": "_ZN3GXS14LoadOBJExtPlttEPKvjj",
+      "symbol": "LoadOBJExtPltt",
       "address": "0x02055e38",
       "size": "0x00000074",
       "legacy_source": "src/_ZN3GXS14LoadOBJExtPlttEPKvjj.cpp",
       "ordinal": 1
     },
     {
-      "symbol": "_ZN3GXS19BeginLoadOBJExtPlttEv",
+      "symbol": "BeginLoadOBJExtPltt",
       "address": "0x02055eac",
       "size": "0x00000024",
       "legacy_source": "src/_ZN3GXS19BeginLoadOBJExtPlttEv.cpp",
       "ordinal": 2
     },
     {
-      "symbol": "_ZN3GXS16EndLoadBGExtPlttEv",
+      "symbol": "EndLoadBGExtPltt",
       "address": "0x02055ed0",
       "size": "0x0000004c",
       "legacy_source": "src/_ZN3GXS16EndLoadBGExtPlttEv.cpp",
       "ordinal": 3
     },
     {
-      "symbol": "_ZN3GXS13LoadBGExtPlttEPKvjj",
+      "symbol": "LoadBGExtPltt",
       "address": "0x02055f1c",
       "size": "0x00000074",
       "legacy_source": "src/_ZN3GXS13LoadBGExtPlttEPKvjj.cpp",
       "ordinal": 4
     },
     {
-      "symbol": "_ZN3GXS18BeginLoadBGExtPlttEv",
+      "symbol": "BeginLoadBGExtPltt",
       "address": "0x02055f90",
       "size": "0x00000024",
       "legacy_source": "src/_ZN3GXS18BeginLoadBGExtPlttEv.cpp",

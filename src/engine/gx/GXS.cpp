@@ -384,15 +384,15 @@ void func_02055fb4(const void *src, u32 offset, u32 size) {
 
 namespace GXS {
 
-// @symbol _ZN3GXS18BeginLoadBGExtPlttEv
+// @symbol BeginLoadBGExtPltt
 // Clears the sub-engine BG ext-palette enable bit and unmaps the bank back to
 // LCDC (func_02054118); the result is held for EndLoadBGExtPltt.
-void BeginLoadBGExtPltt() {
+extern "C" void BeginLoadBGExtPltt() {
     data_020a60a4 = func_02054118();
 }
 
-// @symbol _ZN3GXS13LoadBGExtPlttEPKvjj
-void LoadBGExtPltt(const void *src, u32 destSlotAddr, u32 size) {
+// @symbol LoadBGExtPltt
+extern "C" void LoadBGExtPltt(const void *src, u32 destSlotAddr, u32 size) {
     u32 dmaId = data_02099fd0;
     if (dmaId != (u32)-1) {
         func_02059fd0(dmaId, (int)src, (int)(destSlotAddr + GXS_BG_EXT_PLTT_BASE), size, 0, 0);
@@ -401,8 +401,8 @@ void LoadBGExtPltt(const void *src, u32 destSlotAddr, u32 size) {
     }
 }
 
-// @symbol _ZN3GXS16EndLoadBGExtPlttEv
-void EndLoadBGExtPltt() {
+// @symbol EndLoadBGExtPltt
+extern "C" void EndLoadBGExtPltt() {
     u32 dmaId = data_02099fd0;
     if (dmaId != (u32)-1) {
         func_02059fa8(dmaId);
@@ -411,15 +411,15 @@ void EndLoadBGExtPltt() {
     data_020a60a4 = 0;
 }
 
-// @symbol _ZN3GXS19BeginLoadOBJExtPlttEv
+// @symbol BeginLoadOBJExtPltt
 // The OBJ counterpart (func_020540f0); the result is held for
 // EndLoadOBJExtPltt.
-void BeginLoadOBJExtPltt() {
+extern "C" void BeginLoadOBJExtPltt() {
     data_020a60a8 = func_020540f0();
 }
 
-// @symbol _ZN3GXS14LoadOBJExtPlttEPKvjj
-void LoadOBJExtPltt(const void *src, u32 destSlotAddr, u32 size) {
+// @symbol LoadOBJExtPltt
+extern "C" void LoadOBJExtPltt(const void *src, u32 destSlotAddr, u32 size) {
     u32 dmaId = data_02099fd0;
     if (dmaId != (u32)-1) {
         func_02059fd0(dmaId, (int)src, (int)(destSlotAddr + GXS_OBJ_EXT_PLTT_BASE), size, 0, 0);
@@ -428,8 +428,8 @@ void LoadOBJExtPltt(const void *src, u32 destSlotAddr, u32 size) {
     }
 }
 
-// @symbol _ZN3GXS17EndLoadOBJExtPlttEv
-void EndLoadOBJExtPltt() {
+// @symbol EndLoadOBJExtPltt
+extern "C" void EndLoadOBJExtPltt() {
     u32 dmaId = data_02099fd0;
     if (dmaId != (u32)-1) {
         func_02059fa8(dmaId);

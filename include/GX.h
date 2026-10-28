@@ -48,12 +48,12 @@ void LoadBGPltt(const void *, unsigned int, unsigned int);
 void LoadOBJPltt(const void *, unsigned int, unsigned int);
 void LoadBG0Char(const void *, unsigned int, unsigned int);
 void LoadBG1Char(const void *, unsigned int, unsigned int);
-void BeginLoadBGExtPltt(void);
-void LoadBGExtPltt(const void *, unsigned int, unsigned int);
-void EndLoadBGExtPltt(void);
-void BeginLoadOBJExtPltt(void);
-void LoadOBJExtPltt(const void *, unsigned int, unsigned int);
-void EndLoadOBJExtPltt(void);
+extern "C" void BeginLoadBGExtPltt(void);
+extern "C" void LoadBGExtPltt(const void *, unsigned int, unsigned int);
+extern "C" void EndLoadBGExtPltt(void);
+extern "C" void BeginLoadOBJExtPltt(void);
+extern "C" void LoadOBJExtPltt(const void *, unsigned int, unsigned int);
+extern "C" void EndLoadOBJExtPltt(void);
 }
 
 #endif
