@@ -78,6 +78,7 @@ enum dScStage_c_AssetId { ASSET_D_2D_UPR_COURSE_CLEAR_MESSAGE_NCL_BIN = 0x025a }
 #include "Heap.h"
 #include "GX.h"
 #include "cstd.h"
+#include "daMugenBGM_c.h"
 
 struct OamAttr;
 struct Matrix2x2 {
@@ -3885,14 +3886,11 @@ void dScStage_c::LoadModel() {
 }
 
 // @symbol _ZN10dScStage_c9RenderFogEv
-extern "C" {
-void *func_ov002_020f1c20(void);
-}
 
 void dScStage_c::RenderFog() {
     Fog *fog = 0;
     if (data_0209f2f8 == 5)
-        fog = (Fog *)func_ov002_020f1c20();
+        fog = daMugenBGM_c::GetActiveFog();
     if (fog == 0) {
         dCamera_c *camera = (dCamera_c *)data_0209f318;
         fog = mFog;

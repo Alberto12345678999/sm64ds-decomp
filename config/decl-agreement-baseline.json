@@ -24556,11 +24556,6 @@
         "return:dActor_c *"
       ]
     },
-    "func_ov002_020f1c20": {
-      "src/game/stages/d_s_stage_methods.cpp": [
-        "return:void *"
-      ]
-    },
     "func_ov002_020f7d74": {
       "src/unnamed/arm9/0200/func_0200e494.c": [
         "param:#1 int",
