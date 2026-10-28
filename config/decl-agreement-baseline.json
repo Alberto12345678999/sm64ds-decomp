@@ -24314,16 +24314,6 @@
         "param:#1 int"
       ]
     },
-    "func_ov002_020b330c": {
-      "include/decl_common.h": [
-        "param:#1 char *"
-      ]
-    },
-    "func_ov002_020b3344": {
-      "include/decl_common.h": [
-        "param:#1 char *"
-      ]
-    },
     "func_ov002_020b6c54": {
       "src/game/actors/d_a_obj_km1_kurumajiku.cpp": [
         "param:#1 daObjKm1_Kurumajiku_c *",
