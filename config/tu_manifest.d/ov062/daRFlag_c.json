@@ -49,7 +49,7 @@
       "ordinal": 1
     },
     {
-      "symbol": "func_ov062_0211afbc",
+      "symbol": "_ZN9daRFlag_c17UpdateModelMatrixEv",
       "address": "0x0211afbc",
       "size": "0x00000044",
       "legacy_source": "src/func_ov062_0211afbc.c",
@@ -415,12 +415,12 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@369",
+      "from": "@461",
       "to": "@135",
       "evidence": "compiler-local registration node; @362 is taken on main, renamed to an unused fleet temp of equal length; the first target @402 collides with ov029 daObjWc_Obj04_c's global @402 (this batch), so it lands on @135"
     },
     {
-      "from": "@370",
+      "from": "@462",
       "to": "@136",
       "evidence": "compiler-local registration node; @363 is taken on main, renamed to an unused fleet temp of equal length; the first target @403 collides with ov029 daObjWc_Obj04_c's global @403 (this batch), so it lands on @136"
     }
