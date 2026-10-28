@@ -5069,10 +5069,6 @@
         "param:#3 const Matrix4x3 &",
         "param:#6 CLPS_Block &"
       ],
-      "src/game/actors/d_a_obj_td_water.cpp": [
-        "param:#3 const Matrix4x3 &",
-        "param:#6 CLPS_Block &"
-      ],
       "src/game/actors/d_a_obj_wanwan_shutter.cpp": [
         "param:#3 Matrix4x3 *"
       ],
@@ -8565,9 +8561,6 @@
         "return:int"
       ],
       "src/game/actors/d_a_obj_tatefuda.cpp": [
-        "return:void"
-      ],
-      "src/game/actors/d_a_obj_tt_futa.cpp": [
         "return:void"
       ],
       "src/game/actors/d_a_obj_wanwan_shutter.cpp": [
@@ -15126,26 +15119,6 @@
     "data_ov032_02113afc": {
       "src/unnamed/ov032/__sinit_ov032_02112e28.c": [
         "return:int []"
-      ]
-    },
-    "data_ov033_021124c0": {
-      "src/game/actors/d_a_obj_tt_futa.cpp": [
-        "return:SharedFilePtr"
-      ]
-    },
-    "data_ov033_021124c8": {
-      "src/game/actors/d_a_obj_tt_futa.cpp": [
-        "return:SharedFilePtr"
-      ]
-    },
-    "data_ov033_021124e8": {
-      "src/game/actors/d_a_obj_tt_water.cpp": [
-        "return:SharedFilePtr"
-      ]
-    },
-    "data_ov033_021124f0": {
-      "src/game/actors/d_a_obj_tt_water.cpp": [
-        "return:SharedFilePtr"
       ]
     },
     "data_ov034_02113838": {
