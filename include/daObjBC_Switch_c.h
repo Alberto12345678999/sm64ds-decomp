@@ -18,7 +18,7 @@
  * is the order UpdateClsnPosAndRot refuses.
  *
  * The flat-C `#else` spelling this header used to carry is gone: it existed
- * for the three .c members (D0's neighbours func_ov002_020f1578/020f15b8 and
+ * for the three .c members (D0's neighbours, now OnStoodOn/StoodOnCallback, and
  * the classInit factory), and the promotion folded all of them into the one
  * C++ translation unit, so nothing includes this header from C any more.
  */
@@ -26,14 +26,14 @@
 #include "dBgActor_c.h"
 
 struct daObjBC_Switch_c : dBgActor_c {
-    u8  pad_31e[0x2];
+    u8 pad_31e[0x2];
     s32 mStopPosY;      /* 0x320 */
     s32 mTickSound;     /* 0x324 */
     u16 mCoinTimer;     /* 0x328 */
     u16 mCoinTimerSeed; /* 0x32a */
-    u8  mPressed;       /* 0x32c */
-    u8  mEventBit;      /* 0x32d */
-    u8  mHomeAreaId;    /* 0x32e */
+    u8 mPressed;        /* 0x32c */
+    u8 mEventBit;       /* 0x32d */
+    u8 mHomeAreaId;     /* 0x32e */
 
     /* --- vtable --- */
 
@@ -54,6 +54,10 @@ struct daObjBC_Switch_c : dBgActor_c {
     int CleanupResources();
     int InitResources();
     int Render();
+
+    /* Mesh-collider stood-on callback pair: sets mPressed for a player. */
+    static void StoodOnCallback(dBgW *, dActor_c *, dActor_c *);
+    void OnStoodOn(dActor_c *);
 };
 
 #ifndef SM64DS_PLATFORM_PC
