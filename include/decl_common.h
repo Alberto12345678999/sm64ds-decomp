@@ -925,7 +925,6 @@ extern int func_ov018_02111804[];
 /* Returns nothing: ov018 0x02111d18..0x02111d24 pops straight to bx lr with no
    r0 set. Definition in src/game/actors/d_a_pg_mthr.cpp. */
 extern void func_ov018_02111bf0(void*, void*);
-extern void func_ov021_021122fc(char *);
 extern void func_ov022_0211193c(void);
 extern int func_ov025_0211123c(char*);
 extern int func_ov025_021119a4(char*);
@@ -1638,10 +1637,6 @@ extern void func_ov014_02111ebc(void*, int);
 extern void func_ov015_02111214(char*);
 extern int func_ov015_021128f8();
 extern void func_ov018_021123d0(char*, int);
-extern void func_ov021_02112294(void*);
-extern void func_ov021_021123b0(char*);
-extern void func_ov021_02112544(char*);
-extern void func_ov021_021127b4(char*);
 extern void func_ov022_02111a1c(char*);
 extern void func_ov025_021112e0(char*);
 extern void func_ov025_02111344(char*);
@@ -1699,9 +1694,6 @@ extern void func_ov077_02124eb0(void*);
 extern void func_ov077_021250a8(void*);
 extern void func_ov077_02125304(char*);
 extern void func_ov080_02127094(char*);
-extern void func_ov081_021237ec(void*);
-extern void func_ov081_02123910(void*);
-extern void func_ov081_02123b20(void*);
 extern void func_ov081_02127be0(void*);
 extern void func_ov085_0212cd0c(void*);
 extern void func_ov090_021330c8(char*);

@@ -6,32 +6,27 @@
  *
  * Behavior dispatches mStateIndex through a table of member pointers at
  * data_ov060_0211b1d8, filled at static-init time from {fn, 0} records in
- * .data: armed (func_ov060_02118970), swelling (func_ov060_021188e8),
- * exploding (func_ov060_02118834), spent (func_ov060_02118728).
+ * .data: StateArmed, StateSwelling, StateExploding, StateSpent.
  * The registry factory daKirai_c_classInit closes the file.
  */
-/* leftovers:
- * - Player::Hurt stays mangled: it takes Fix12<int> by value.
+/* Notes:
  * - data_ov060_0211b1c4 is the model handle (LoadFile / Release).
- *   data_ov060_0211b1d8 is the four-state member-pointer table Behavior
- *   dispatches through.
- * - The state helpers keep their func_ov060_* address names.
  * - &mHomePosX stays punned: daKirai_c stores it as three scalars.
  * - The armed state tests IsPlayerActor, an int-returning predicate: a bool
  *   local there misses.
  * - The spent state keeps opt_strength_reduction and opt_common_subs off.
- * - func_02012694 plays sound 0x2f at mCamSpacePosX.
+ * - func_02012694 plays sound 0x2f at mCamSpacePos.
  */
 
 /* Runtime asset handles resolved through the overlay 0 file table. */
-enum daKirai_c_AssetId {
-    ASSET_KOOPA_BOMB_BMD = 0x0382
-};
+enum daKirai_c_AssetId { ASSET_KOOPA_BOMB_BMD = 0x0382 };
 
 #include "daKirai_c.h"
 #include "common.h"
 #include "SharedFilePtr.h"
 #include "Player.h"
+#include "Particle__System.h"
+#include "math/MtxStack.h"
 
 /* Per-member opt brackets bind only when codegen is not deferred, and that
  * also lays .text down in source order. The file is therefore ROM-ascending. */
@@ -47,27 +42,18 @@ struct KiraiModelFilePtr : SharedFilePtr {
     ~KiraiModelFilePtr();
 };
 
+/* arm9 C helpers with no shared header. */
 extern "C" {
 extern void ClearSpikeBomb(int idx);
 extern int AddSpikeBomb(void *p);
 extern int Vec3_HorzLen(const Vector3 *v);
 extern int Vec3_Dist(const Vector3 *a, const Vector3 *b);
 extern short Vec3_HorzAngle(const Vector3 *v0, const Vector3 *v1);
-extern void Matrix4x3_FromTranslation(void *m, int x, int y, int z);
 extern void func_02012694(int a, void *b);
-/* local extern: Particle::System::NewSimple and Player::Hurt take
-   Fix12<int> by value and none of them is declared in
-   include/; the sibling promoted TUs (daDkk_c, daDgr_c) keep the same
-   mangled spelling for the same reason. */
-namespace Particle {
-struct System {
-    static void NewSimple(unsigned int id, int x, int y, int z);
-};
 }
-void d_a_kiraiEarthquakeHold(void *self, Vector3 *v, int f);
+
 extern KiraiModelFilePtr data_ov060_0211b1c4;
 extern KiraiState data_ov060_0211b1d8[4];
-}
 
 /* mFlags 0x08 is the framework's off-screen bit (dActor_c.h bit table). */
 static inline int IsOffScreen(dActor_c *actor) {
@@ -81,15 +67,12 @@ static inline int IsPlayerActor(dActor_c *actor) {
 
 // @symbol _ZN9daKirai_cD1Ev
 // @symbol _ZN9daKirai_cD0Ev
-daKirai_c::~daKirai_c()
-{
-}
+daKirai_c::~daKirai_c() {}
 
 /* Disarm: give up the spike-bomb slot, stop colliding, and remember every
    other bomb still in the level. */
-// @symbol _ZN9daKirai_c19func_ov060_021184bcEv
-void daKirai_c::func_ov060_021184bc()
-{
+// @symbol _ZN9daKirai_c6DisarmEv
+void daKirai_c::Disarm() {
     int i;
     int j;
     unsigned int id;
@@ -117,23 +100,23 @@ void daKirai_c::func_ov060_021184bc()
 }
 
 /* Is `pos` close enough to set this bomb off? */
-// @symbol _ZN9daKirai_c19func_ov060_02118544EP7Vector3
-int daKirai_c::func_ov060_02118544(Vector3 *pos)
-{
+// @symbol _ZN9daKirai_c16IsInTriggerRangeEP7Vector3
+int daKirai_c::IsInTriggerRange(Vector3 *pos) {
     int horz, homeHorz;
-    if (mStateIndex != 0) return 0;
+    if (mStateIndex != 0)
+        return 0;
     horz = Vec3_HorzLen(pos);
     homeHorz = mHomeHorzDist;
     if (horz >= homeHorz - 0x12c000 && horz <= homeHorz + 0x12c000) {
-        if (Vec3_Dist((Vector3 *)&mHomePosX, pos) < mHomeYOffset) return 1;
+        if (Vec3_Dist((Vector3 *)&mHomePosX, pos) < mHomeYOffset)
+            return 1;
     }
     return 0;
 }
 
 /* Explode. */
-// @symbol _ZN9daKirai_c19func_ov060_021185c4Ev
-void daKirai_c::func_ov060_021185c4()
-{
+// @symbol _ZN9daKirai_c7ExplodeEv
+void daKirai_c::Explode() {
     Vector3 v;
     mStateIndex = 1;
     Particle::System::NewSimple(0xa8, mPosX, mPosY, mPosZ);
@@ -141,27 +124,25 @@ void daKirai_c::func_ov060_021185c4()
     Particle::System::NewSimple(0xaa, mPosX, mPosY, mPosZ);
     Particle::System::NewSimple(0xab, mPosX, mPosY, mPosZ);
     Particle::System::NewSimple(0xac, mPosX, mPosY, mPosZ);
-    func_02012694(0x2f, &mCamSpacePosX);
+    func_02012694(0x2f, &mCamSpacePos);
     v.x = mPosX;
     v.y = mPosY;
     v.z = mPosZ;
     Earthquake(v, 0x7d0000);
     mTimer = 0;
-    func_ov060_021184bc();
+    Disarm();
 }
 
 /* Place the model and fade it. */
-// @symbol _ZN9daKirai_c19func_ov060_02118690Ev
-void daKirai_c::func_ov060_02118690()
-{
+// @symbol _ZN9daKirai_c20UpdateModelTransformEv
+void daKirai_c::UpdateModelTransform() {
     Matrix4x3_FromTranslation(&mModel.mat4x3, mPosX >> 3, mPosY >> 3, mPosZ >> 3);
     mModel.ApplyOpacity((u8)(mOpacity >> 3), 1);
 }
 
 /* Re-arm. */
-// @symbol _ZN9daKirai_c19func_ov060_021186d8Ev
-void daKirai_c::func_ov060_021186d8()
-{
+// @symbol _ZN9daKirai_c5RearmEv
+void daKirai_c::Rearm() {
     mScaleX = 0x1000;
     mScaleY = 0x1000;
     mScaleZ = 0x1000;
@@ -176,9 +157,8 @@ void daKirai_c::func_ov060_021186d8()
    (this one or a sibling) is nearest the player. */
 #pragma opt_strength_reduction off
 #pragma opt_common_subs off
-// @symbol _ZN9daKirai_c19func_ov060_02118728Ev
-void daKirai_c::func_ov060_02118728()
-{
+// @symbol _ZN9daKirai_c10StateSpentEv
+void daKirai_c::StateSpent() {
     Vector3 v;
     Player *player;
     daKirai_c *bestActor;
@@ -189,7 +169,8 @@ void daKirai_c::func_ov060_02118728()
     player = ClosestPlayer();
     if (!IsOffScreen(this))
         return;
-    if (player == 0) return;
+    if (player == 0)
+        return;
 
     {
         Vector3 *pp = &player->mPos;
@@ -202,10 +183,12 @@ void daKirai_c::func_ov060_02118728()
 
     for (i = 0; i < 8; i++) {
         int id = mOtherBombIDs[i];
-        if (id == 0) continue;
+        if (id == 0)
+            continue;
         actor = (daKirai_c *)dActor_c::FindWithID(id);
         if (actor != 0) {
-            if (actor->mStateIndex != 3) return;
+            if (actor->mStateIndex != 3)
+                return;
             if (!IsOffScreen(actor))
                 continue;
             {
@@ -219,30 +202,30 @@ void daKirai_c::func_ov060_02118728()
             mOtherBombIDs[i] = 0;
         }
     }
-    bestActor->func_ov060_021186d8();
+    bestActor->Rearm();
 }
 #pragma opt_common_subs on
 #pragma opt_strength_reduction on
 
 /* Exploding: swell, fade and rise for 0x1c frames, then disarm. */
-// @symbol _ZN9daKirai_c19func_ov060_02118834Ev
-void daKirai_c::func_ov060_02118834()
-{
+// @symbol _ZN9daKirai_c14StateExplodingEv
+void daKirai_c::StateExploding() {
     int scale = (mTimer * 9 << 12) / 14 + 0x1000;
     mScaleX = scale;
     mScaleY = scale;
     mScaleZ = scale;
     mOpacity -= 0xa;
-    if (mOpacity < 0xa) mOpacity = 0;
+    if (mOpacity < 0xa)
+        mOpacity = 0;
     mPosY += mVertSpeed;
-    if (mTimer == 0x1c) func_ov060_021184bc();
+    if (mTimer == 0x1c)
+        Disarm();
     mTimer++;
 }
 
 /* Swell for 0x1c frames without colliding, then disarm. */
-// @symbol _ZN9daKirai_c19func_ov060_021188e8Ev
-void daKirai_c::func_ov060_021188e8()
-{
+// @symbol _ZN9daKirai_c13StateSwellingEv
+void daKirai_c::StateSwelling() {
     int scale;
     mdCcAcPos_c.flags |= 1;
     scale = (mTimer * 9 << 12) / 14 + 0x1000;
@@ -250,22 +233,23 @@ void daKirai_c::func_ov060_021188e8()
     mScaleY = scale;
     mScaleZ = scale;
     if (mTimer == 0x1c)
-        func_ov060_021184bc();
+        Disarm();
     mTimer++;
 }
 
 /* Armed: if the thing that touched us is a player (actor 0xbf), blow up in
    its face. */
-// @symbol _ZN9daKirai_c19func_ov060_02118970Ev
-void daKirai_c::func_ov060_02118970()
-{
+// @symbol _ZN9daKirai_c10StateArmedEv
+void daKirai_c::StateArmed() {
     dActor_c *a;
     Vector3 quakePos, hurtPos;
     unsigned int id;
     id = mdCcAcPos_c.otherOwner;
-    if (id == 0) return;
+    if (id == 0)
+        return;
     a = dActor_c::FindWithID(id);
-    if (a == 0) return;
+    if (a == 0)
+        return;
     if (!IsPlayerActor(a))
         return;
     Particle::System::NewSimple(0xa8, mPosX, mPosY, mPosZ);
@@ -273,7 +257,7 @@ void daKirai_c::func_ov060_02118970()
     Particle::System::NewSimple(0xaa, mPosX, mPosY, mPosZ);
     Particle::System::NewSimple(0xab, mPosX, mPosY, mPosZ);
     Particle::System::NewSimple(0xac, mPosX, mPosY, mPosZ);
-    func_02012694(0x2f, &mCamSpacePosX);
+    func_02012694(0x2f, &mCamSpacePos);
     quakePos.x = mPosX;
     quakePos.y = mPosY;
     quakePos.z = mPosZ;
@@ -282,30 +266,29 @@ void daKirai_c::func_ov060_02118970()
     hurtPos.y = mPosY;
     hurtPos.z = mPosZ;
     ((Player *)a)->Hurt(hurtPos, 2, 0xc000, 1, 0, 1);
-    func_ov060_021184bc();
+    Disarm();
 }
 
 // @symbol _ZN9daKirai_c16CleanupResourcesEv
-int daKirai_c::CleanupResources()
-{
+int daKirai_c::CleanupResources() {
     data_ov060_0211b1c4.Release();
     return 1;
 }
 
 // @symbol _ZN9daKirai_c6RenderEv
-int daKirai_c::Render()
-{
-    if (mStateIndex != 0) return 1;
-    if (mOpacity < 8) return 1;
+int daKirai_c::Render() {
+    if (mStateIndex != 0)
+        return 1;
+    if (mOpacity < 8)
+        return 1;
     mModel.Render(0);
     return 1;
 }
 
 // @symbol _ZN9daKirai_c8BehaviorEv
-int daKirai_c::Behavior()
-{
+int daKirai_c::Behavior() {
     (this->*data_ov060_0211b1d8[mStateIndex])();
-    func_ov060_02118690();
+    UpdateModelTransform();
     mdCcAcPos_c.Clear();
     Vector3 v;
     v.x = 0;
@@ -317,8 +300,7 @@ int daKirai_c::Behavior()
 }
 
 // @symbol _ZN9daKirai_c13InitResourcesEv
-int daKirai_c::InitResources()
-{
+int daKirai_c::InitResources() {
     Vector3 v;
     Vector3 z;
 
@@ -352,17 +334,16 @@ int daKirai_c::InitResources()
 KiraiModelFilePtr data_ov060_0211b1c4(ASSET_KOOPA_BOMB_BMD);
 
 KiraiState data_ov060_0211b1d8[4] = {
-    &daKirai_c::func_ov060_02118970,
-    &daKirai_c::func_ov060_021188e8,
-    &daKirai_c::func_ov060_02118834,
-    &daKirai_c::func_ov060_02118728,
+    &daKirai_c::StateArmed,
+    &daKirai_c::StateSwelling,
+    &daKirai_c::StateExploding,
+    &daKirai_c::StateSpent,
 };
 
 /* `new daKirai_c` is the whole sequence the loose factory spelled by hand:
  * fBase_c::operator new(0x1b0), dActor_c's base constructor, the vptr store,
  * then the dExtSimpleModel_c and dCcAcPos_c member constructors. */
 // @symbol daKirai_c_classInit
-extern "C" daKirai_c *daKirai_c_classInit(void)
-{
+extern "C" daKirai_c *daKirai_c_classInit(void) {
     return new daKirai_c;
 }

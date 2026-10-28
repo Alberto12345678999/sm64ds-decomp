@@ -2332,8 +2332,8 @@ void daKpa_c::func_ov060_02113d8c(){
 // @symbol _ZN7daKpa_c19func_ov060_02113d20Ev
 /*
 Bomb hit test: find the closest KIRAI actor (0x11c, daKirai_c); if it reports
-that his position is close enough (func_ov060_02118544), set it off
-(func_ov060_021185c4) and return 1, otherwise return 0. */
+that his position is close enough (IsInTriggerRange), set it off
+(Explode) and return 1, otherwise return 0. */
 // func_ov060_02113d20 at 0x02113d20
 // Matched byte-for-byte with mwccarm 1.2/sp2p3 (ov060).
 int daKpa_c::func_ov060_02113d20(){
@@ -2343,8 +2343,8 @@ int daKpa_c::func_ov060_02113d20(){
         v.x = this->mPosX;
         v.y = this->mPosY;
         v.z = this->mPosZ;
-        if (((daKirai_c *)closest)->func_ov060_02118544(&v)) {
-            ((daKirai_c *)closest)->func_ov060_021185c4();
+        if (((daKirai_c *)closest)->IsInTriggerRange(&v)) {
+            ((daKirai_c *)closest)->Explode();
             return 1;
         }
     }

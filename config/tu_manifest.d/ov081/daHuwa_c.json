@@ -44,21 +44,21 @@
       "ordinal": 2
     },
     {
-      "symbol": "func_ov081_021237ec",
+      "symbol": "_ZN8daHuwa_c13KillWithCoinsEv",
       "address": "0x021237ec",
       "size": "0x00000124",
       "legacy_source": "src/func_ov081_021237ec.cpp",
       "ordinal": 3
     },
     {
-      "symbol": "func_ov081_02123910",
+      "symbol": "_ZN8daHuwa_c17HandleCylinderHitEv",
       "address": "0x02123910",
       "size": "0x00000210",
       "legacy_source": "src/func_ov081_02123910.cpp",
       "ordinal": 4
     },
     {
-      "symbol": "func_ov081_02123b20",
+      "symbol": "_ZN8daHuwa_c20UpdateModelTransformEv",
       "address": "0x02123b20",
       "size": "0x000000cc",
       "legacy_source": "src/func_ov081_02123b20.cpp",
@@ -660,14 +660,14 @@
   "note": " Fold of __sinit_ov081_021280e8 (2026-05-10): two file-scope resource handles defined at EOF -- HuwaModelFilePtr gHuwahuwaModelModelFile(813) (ctor func_02017acc, dtor func_02017ab4) then HuwaAnimationFileHandle gHuwahuwaMoveAnimationFile(814) (ctor SharedFilePtr::Construct, dtor SharedFilePtr_Destruct_Anim); wrapper ctors/dtors materialize through undefined_symbol_aliases. .ctor word 0x02128824 -> sinit; dtor-reg nodes @748 -> 0x02128d7c (model), @749 -> 0x02128d70 (anim).",
   "defined_symbol_renames": [
     {
-      "from": "@734",
+      "from": "@855",
       "to": "@748",
-      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
+      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az) | compiler temp; the three Spindrift helpers becoming members, and including math/MtxStack.h and Particle__System.h in place of the local stubs, move the per-TU @NNN uniquifier, so mwcc emits it under this name now"
     },
     {
-      "from": "@735",
+      "from": "@856",
       "to": "@600",
-      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az)"
+      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az) | compiler temp; the three Spindrift helpers becoming members, and including math/MtxStack.h and Particle__System.h in place of the local stubs, move the per-TU @NNN uniquifier, so mwcc emits it under this name now"
     }
   ]
 }

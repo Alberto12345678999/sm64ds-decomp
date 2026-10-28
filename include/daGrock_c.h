@@ -39,11 +39,11 @@
 #include "dBgCh_Actr.h"
 
 struct daGrock_c : dEnemyBase_c {
-    dExtSimpleModel_c mModel;                                 /* 0x110 */
-    dExtShadowModel_c                  mShadowModel;          /* 0x160 */
-    u8  pad_188[0x30];
-    dCcAcPos_c    mdCcAcPos_c; /* 0x1b8 */
-    dBgCh_Actr                 mWithMeshClsn;         /* 0x1f8 */
+    dExtSimpleModel_c mModel;       /* 0x110 */
+    dExtShadowModel_c mShadowModel; /* 0x160 */
+    u8 pad_188[0x30];
+    dCcAcPos_c mdCcAcPos_c;   /* 0x1b8 */
+    dBgCh_Actr mWithMeshClsn; /* 0x1f8 */
     /* On a star rock, the uniqueID of the spawner that made it (the spawner
        stores it into the child right after Spawn); 0 on everything else.
        When the star rock falls out of the level it looks the spawner up by
@@ -53,7 +53,7 @@ struct daGrock_c : dEnemyBase_c {
        the rock rolls on the ground; InitResources zeroes it. */
     s32 mRollSoundID; /* 0x3b8 */
     u8 pad_3bc[0x2];
-    u8                           mType;                 /* 0x3be */
+    u8 mType; /* 0x3be */
     /* Spawner only: rocks spawned since the last star rock. Kind 1 spawns
        the star rock once this reaches 5, then zeroes it. */
     u8 mSpawnCount; /* 0x3bf */
@@ -76,12 +76,18 @@ struct daGrock_c : dEnemyBase_c {
     /* --- vtable --- */
     virtual ~daGrock_c();
 
-    virtual s32   OnAimedAtWithEgg();      /* slot 29 */
+    virtual s32 OnAimedAtWithEgg(); /* slot 29 */
 
     int Behavior();
     int InitResources();
     int Render();
     int CleanupResources();
+
+    void SpawnStar();
+    void UpdateModelTransform();
+    void HandleCylinderHit();
+    void HandleMeshCollision();
+    void ApplyGravityAndMove();
 };
 
 #ifndef SM64DS_PLATFORM_PC
