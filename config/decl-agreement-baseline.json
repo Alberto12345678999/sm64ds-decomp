@@ -26946,16 +26946,6 @@
         "kind:data"
       ]
     },
-    "func_ov022_02111558": {
-      "src/unnamed/ov022/func_ov022_02111564.c": [
-        "arity:2"
-      ]
-    },
-    "func_ov022_02111564": {
-      "src/game/actors/d_a_obj_fl_ring.cpp": [
-        "arity:1"
-      ]
-    },
     "func_ov022_02111a1c": {
       "include/decl_common.h": [
         "param:#1 char *"
