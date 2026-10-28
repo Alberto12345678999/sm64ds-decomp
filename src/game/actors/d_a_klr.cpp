@@ -1,8 +1,4 @@
 //cpp
-namespace Particle {
-struct Callback;
-}
-struct Vector3_16f;
 /**
  * Bullet Bill (profile KILLER), fired by daObjBkKillerdai_c.
  *
@@ -22,16 +18,10 @@ struct Vector3_16f;
  * FUNCTION ORDER IS THE REVERSE OF THE ROM'S -- mwccarm emits one .text
  * section per function in the reverse of source order.
  *
- * leftovers:
- * - func_ov079_0212682c, func_ov079_02126794 and func_ov079_02126704
- *   keep address names: the two state-table methods have no recovered
- *   name evidence, and the pose helper is a plain free function.
- * - Player::Hurt takes Fix12<int> by value, so it stays mangled
- *   (notes/mwccarm-codegen.md 6az);
- *   dBgCh_Actr::GetWallResult has no header decl.
- * - func_0200f760, func_0201267c, func_02012694 and Vec3_Add keep linker
- *   names. data_ov079_02128300 / 021282f0 are the model handles, in
- *   overlay data this TU does not own.
+ * What stays, and why:
+ * - func_0200f760, func_02012694 and Vec3_Add have no shared header, so
+ *   they keep a local extern "C" block. data_ov079_02128300 / 021282f0 are
+ *   the model handles, in overlay data this TU does not own.
  * - MatrixWords keeps the one 0x30-byte mat4x3 block copy; Matrix4x3's
  *   own memberwise assignment comes out 0x18 bytes longer.
  */
@@ -44,38 +34,28 @@ struct Vector3_16f;
 #include "dBgPi.h"
 #include "dBgCh_Actr.h"
 #include "math/Approach.h"
+#include "Particle__System.h"
 
 struct BMD_File;
 
-extern "C" {
 extern SharedFilePtr data_ov079_02128300;
 extern SharedFilePtr data_ov079_021282f0;
 
+/* local extern: arm9 C helpers with no shared header yet. */
+extern "C" {
 void func_0200f760(dActor_c *self, dCc_c *cc);
 void func_02012694(u32 id, const Vector3 *pos);
 void Vec3_Add(Vector3 *out, const Vector3 *a, const Vector3 *b);
-
-namespace Particle {
-struct System {
-    static void *NewSimple(u32 id, int x, int y, int z);
-    static int New(unsigned, unsigned, int, int, int, const ::Vector3_16f *, Callback *);
-};
-}
-int d_a_klrNewHold(u32 uniqueID, u32 effectID, int x, int y, int z, void *dir, void *callback);
-/* Parameter names keep this TU's @NNN. */
-typedef void BgchInitAt_(dBgCh_Actr *self, dActor_c *actor, int radius, int height, Vector3_16 *a,
-                         Vector3_16 *b);
-
-void func_ov079_02126704(daKlr_c *self);
 }
 
-
-/* Indexed by mState: [0] func_ov079_0212682c, [1] func_ov079_02126794.
+/* Indexed by mState: [0] StateFly, [1] StateShotDown.
    Defined at the end of this file so it does not insert a function into .text. */
 typedef void (daKlr_c::*KlrStateFunc)();
 extern KlrStateFunc data_ov079_021282e0[2];
 
-struct MatrixWords { s32 w[12]; };
+struct MatrixWords {
+    s32 w[12];
+};
 
 enum {
     kPlayerActorID = 0xbf,
@@ -84,14 +64,12 @@ enum {
 };
 
 // @symbol daKlr_c_classInit
-extern "C" daKlr_c *daKlr_c_classInit()
-{
+extern "C" daKlr_c *daKlr_c_classInit() {
     return new daKlr_c();
 }
 
 // @symbol _ZN7daKlr_c13InitResourcesEv
-s32 daKlr_c::InitResources()
-{
+s32 daKlr_c::InitResources() {
     dExtSimpleModel_c::LoadFile(data_ov079_02128300);
     dExtSimpleModel_c::LoadFile(data_ov079_021282f0);
     if (mModel.SetFile((BMD_File *)data_ov079_02128300.filePtr, 1, -1) == 0)
@@ -115,8 +93,7 @@ s32 daKlr_c::InitResources()
 }
 
 // @symbol _ZN7daKlr_c8BehaviorEv
-s32 daKlr_c::Behavior()
-{
+s32 daKlr_c::Behavior() {
     int flags;
     u32 which;
     u32 id;
@@ -166,7 +143,7 @@ s32 daKlr_c::Behavior()
             *timer = 0;
     }
 
-    func_ov079_02126704(this);
+    UpdateModelAndShadow();
 
     mCylClsn.Clear();
     {
@@ -185,25 +162,22 @@ s32 daKlr_c::Behavior()
 }
 
 // @symbol _ZN7daKlr_c6RenderEv
-s32 daKlr_c::Render()
-{
+s32 daKlr_c::Render() {
     mModel.Render(0);
     mModel2.Render(0);
     return 1;
 }
 
 // @symbol _ZN7daKlr_c16CleanupResourcesEv
-s32 daKlr_c::CleanupResources()
-{
+s32 daKlr_c::CleanupResources() {
     data_ov079_02128300.Release();
     data_ov079_021282f0.Release();
     return 1;
 }
 
-// @symbol _ZN7daKlr_c19func_ov079_0212682cEv
+// @symbol _ZN7daKlr_c8StateFlyEv
 /* State 0: wait in the barrel, shiver, then fly. */
-void daKlr_c::func_ov079_0212682c()
-{
+void daKlr_c::StateFly() {
     Vector3 nose;
     u16 timer = this->mStateTimer;
     if (timer < 40) {
@@ -257,10 +231,9 @@ void daKlr_c::func_ov079_0212682c()
     this->MarkForDestruction();
 }
 
-// @symbol _ZN7daKlr_c19func_ov079_02126794Ev
+// @symbol _ZN7daKlr_c13StateShotDownEv
 /* State 1: shot down -- pitch over and climb, then burst after 90 frames. */
-void daKlr_c::func_ov079_02126794()
-{
+void daKlr_c::StateShotDown() {
     if ((u16)this->mStateTimer == 0) {
         this->mHorzSpeed = -0x1e000;
         this->mCylClsn.flags |= 1;
@@ -274,23 +247,21 @@ void daKlr_c::func_ov079_02126794()
     this->MarkForDestruction();
 }
 
-// @symbol func_ov079_02126704
+// @symbol _ZN7daKlr_c20UpdateModelAndShadowEv
 /* Pose both models from the actor and drop the shadow under them. */
-extern "C" void func_ov079_02126704(daKlr_c *self)
-{
-    Matrix4x3_FromRotationXYZExt(&self->mModel.mat4x3, self->mAngleX, self->mAngleY, self->mAngleZ);
-    self->mModel.mat4x3.t.x = self->mPosX >> 3;
-    self->mModel.mat4x3.t.y = self->mPosY >> 3;
-    self->mModel.mat4x3.t.z = self->mPosZ >> 3;
+void daKlr_c::UpdateModelAndShadow() {
+    Matrix4x3_FromRotationXYZExt(&mModel.mat4x3, mAngleX, mAngleY, mAngleZ);
+    mModel.mat4x3.t.x = mPosX >> 3;
+    mModel.mat4x3.t.y = mPosY >> 3;
+    mModel.mat4x3.t.z = mPosZ >> 3;
     /* One 0x30-byte block copy. Matrix4x3's own assignment goes member by
        member through Vector3 and comes out 0x18 bytes longer. */
-    *(MatrixWords *)&self->mModel2.mat4x3 = *(MatrixWords *)&self->mModel.mat4x3;
-    self->DropShadowRadHeight(self->mShadow, self->mModel.mat4x3, 0x50000, 0x50000, 0xf);
+    *(MatrixWords *)&mModel2.mat4x3 = *(MatrixWords *)&mModel.mat4x3;
+    DropShadowRadHeight(mShadow, mModel.mat4x3, 0x50000, 0x50000, 0xf);
 }
 
 // @symbol _ZN7daKlr_c16OnAimedAtWithEggEv
-int daKlr_c::OnAimedAtWithEgg()
-{
+int daKlr_c::OnAimedAtWithEgg() {
     return 0;
 }
 
@@ -302,6 +273,6 @@ int daKlr_c::OnAimedAtWithEgg()
 /* Behavior indexes this by mState. The compiler copies the two
    pointer-to-member descriptors into it at overlay load. */
 KlrStateFunc data_ov079_021282e0[2] = {
-    &daKlr_c::func_ov079_0212682c,
-    &daKlr_c::func_ov079_02126794,
+    &daKlr_c::StateFly,
+    &daKlr_c::StateShotDown,
 };

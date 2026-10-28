@@ -4922,11 +4922,6 @@
         "param:#5 Vector3_16 *",
         "param:#6 Vector3_16 *"
       ],
-      "src/game/actors/d_a_klr.cpp": [
-        "param:#2 dActor_c *",
-        "param:#5 Vector3_16 *",
-        "param:#6 Vector3_16 *"
-      ],
       "src/game/actors/d_a_kp_fr.cpp": [
         "param:#2 dActor_c *",
         "param:#5 void *"
@@ -4943,11 +4938,6 @@
       "src/game/actors/d_a_krb.cpp": [
         "param:#2 void *",
         "param:#5 void *"
-      ],
-      "src/game/actors/d_a_krpa.cpp": [
-        "param:#2 dActor_c *",
-        "param:#5 Vector3_16 *",
-        "param:#6 Vector3_16 *"
       ],
       "src/game/actors/d_a_kuri_king.cpp": [
         "param:#2 void *",
@@ -5126,9 +5116,6 @@
       "src/game/actors/d_a_dgr.cpp": [
         "param:#3 const Matrix4x3 &",
         "param:#6 CLPS_Block &"
-      ],
-      "src/game/actors/d_a_kpa2_bg.cpp": [
-        "return:int"
       ],
       "src/game/actors/d_a_kpa3_bg.cpp": [
         "param:#3 const Matrix4x3 &",
@@ -7684,13 +7671,6 @@
         "param:#7 unsigned int",
         "return:void"
       ],
-      "src/game/actors/d_a_manta.cpp": [
-        "param:#2 const Vector3 &",
-        "param:#5 unsigned int",
-        "param:#6 unsigned int",
-        "param:#7 unsigned int",
-        "return:void"
-      ],
       "src/game/actors/d_a_menbo.cpp": [
         "param:#3 int",
         "param:#5 int",
@@ -8743,9 +8723,6 @@
       ],
       "src/game/actors/d_a_kpa_fire.cpp": [
         "return:void"
-      ],
-      "src/game/actors/d_a_krpa.cpp": [
-        "return:unsigned int"
       ],
       "src/game/actors/d_a_kuri_king.cpp": [
         "return:void"
@@ -12883,9 +12860,6 @@
       ]
     },
     "data_ov002_0210e8d0": {
-      "src/game/actors/d_a_luigi.cpp": [
-        "return:SharedFilePtr"
-      ],
       "src/unnamed/ov002/func_ov002_020e5948.c": [
         "return:int []"
       ]
@@ -12936,9 +12910,6 @@
       ]
     },
     "data_ov002_0210eaa0": {
-      "src/game/actors/d_a_luigi.cpp": [
-        "return:SharedFilePtr"
-      ],
       "src/game/player/Player.cpp": [
         "return:char []"
       ],
@@ -12962,9 +12933,6 @@
       ]
     },
     "data_ov002_0210eb20": {
-      "src/game/actors/d_a_luigi.cpp": [
-        "return:SharedFilePtr"
-      ],
       "src/unnamed/ov002/func_ov002_020e5948.c": [
         "return:int []"
       ]
@@ -13005,9 +12973,6 @@
       ]
     },
     "data_ov002_0210ebb8": {
-      "src/game/actors/d_a_luigi.cpp": [
-        "return:SharedFilePtr"
-      ],
       "src/unnamed/ov002/func_ov002_020e5948.c": [
         "return:int []"
       ]
@@ -13018,9 +12983,6 @@
       ]
     },
     "data_ov002_0210ebd8": {
-      "src/game/actors/d_a_luigi.cpp": [
-        "return:SharedFilePtr"
-      ],
       "src/unnamed/ov002/func_ov002_020e5948.c": [
         "return:int []"
       ]
@@ -15771,11 +15733,6 @@
         "return:int []"
       ]
     },
-    "data_ov055_02111b70": {
-      "src/game/actors/d_a_luigi.cpp": [
-        "return:daLuigiState"
-      ]
-    },
     "data_ov060_0211abe0": {
       "src/unnamed/ov060/__sinit_ov060_021195dc.c": [
         "return:void *"
@@ -18187,11 +18144,6 @@
       "src/unnamed/arm9/0200/func_0200e5ac.cpp": [
         "param:#1 int",
         "return:int"
-      ]
-    },
-    "func_0200f760": {
-      "src/game/actors/d_a_klr.cpp": [
-        "param:#2 dCc_c *"
       ]
     },
     "func_0200fa04": {
