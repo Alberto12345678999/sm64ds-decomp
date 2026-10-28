@@ -19,12 +19,13 @@
  * daObjKm3_Kaitendai_c, KM3_KAITENDAI registry). Retail does not
  * store that spelling.
  *
- * deslop
- * Leftover: func_ov002_020b676c / func_ov002_020b66a8 are still
- *   linker names. Naming belongs in ov002.
- * Leftover: the BMD/KCL handles and descriptor retain their address names.
- *   The shared setup/cleanup interface still takes an opaque mutable
- *   CLPS_Block pointer, although its collision-property consumers only read it.
+ * Notes:
+ * - func_ov002_020b676c / func_ov002_020b66a8 are still the C linker names
+ *   of daObjKaitendai_c's shared setup and teardown. Five descendant
+ *   overlays call them, so they convert together in one family change.
+ * - The BMD/KCL handles and descriptor retain their address names. The
+ *   shared setup/cleanup interface takes a mutable CLPS_Block pointer,
+ *   although its collision-property consumers only read it.
  */
 
 /* Runtime asset handles resolved through the overlay 0 file table. */
@@ -49,8 +50,8 @@ struct Km3KaitendaiClsnFilePtr : SharedFilePtr {
     ~Km3KaitendaiClsnFilePtr();
 };
 
-typedef char Km3KaitendaiModelFilePtr_size_must_be_8[
-    sizeof(Km3KaitendaiModelFilePtr) == 8 ? 1 : -1];
+typedef char
+    Km3KaitendaiModelFilePtr_size_must_be_8[sizeof(Km3KaitendaiModelFilePtr) == 8 ? 1 : -1];
 typedef char Km3KaitendaiClsnFilePtr_size_must_be_8[sizeof(Km3KaitendaiClsnFilePtr) == 8 ? 1 : -1];
 
 struct Km3KaitendaiClpsBlock {
@@ -69,17 +70,15 @@ struct ResourceDescriptor {
 };
 typedef char ResourceDescriptor_size_must_be_0x0c[sizeof(ResourceDescriptor) == 0x0c ? 1 : -1];
 
-extern "C" {
 extern Km3KaitendaiModelFilePtr data_ov047_02112610;
 extern Km3KaitendaiClsnFilePtr data_ov047_02112608;
 /* KCL prism attributes index these two entries. The following ROM bytes
  * have no established type or ownership and are not part of this block. */
 extern const Km3KaitendaiClpsBlock gKm3KaitendaiClps = {
     {'C', 'L', 'P', 'S'}, 8, 2, {{0x00000fc0, 0x000000ff}, {0x00000fc4, 0x000000ff}}};
-}
 
 /* Defined here because this TU owns the descriptor in overlay .data. */
-extern "C" ResourceDescriptor data_ov047_02112334 = {
+ResourceDescriptor data_ov047_02112334 = {
     &data_ov047_02112610, &data_ov047_02112608,
     reinterpret_cast<CLPS_Block *>(const_cast<Km3KaitendaiClpsBlock *>(&gKm3KaitendaiClps))};
 
@@ -90,9 +89,9 @@ extern "C" {
 s32 func_ov002_020b676c(daObjKaitendai_c *self, ResourceDescriptor *descriptor,
                         s16 rotationIncrement);
 s32 func_ov002_020b66a8(daObjKaitendai_c *self, ResourceDescriptor *descriptor);
+}
 s16 gKm3KaitendaiRotationIncrement = 312;
 s16 gKm3KaitendaiAlternateRotationIncrement = 624;
-}
 
 // @symbol daObjKm3_Kaitendai_c_classInit
 extern "C" daObjKm3_Kaitendai_c *daObjKm3_Kaitendai_c_classInit() {
@@ -108,12 +107,10 @@ extern "C" SpawnInfo<daObjKm3_Kaitendai_c> g_profile_KM3_KAITENDAI = {
     0,
     0x00380000,
     0x02000000,
-    0
-};
+    0};
 
 // @symbol _ZN20daObjKm3_Kaitendai_c13InitResourcesEv
-s32 daObjKm3_Kaitendai_c::InitResources()
-{
+s32 daObjKm3_Kaitendai_c::InitResources() {
     s16 rotationIncrement = gKm3KaitendaiRotationIncrement;
     if ((param1 & 0xff) == 1)
         rotationIncrement = gKm3KaitendaiAlternateRotationIncrement;
