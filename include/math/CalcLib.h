@@ -33,7 +33,9 @@ int ApproachAngle(short *, short, int, int, int);
 int RandomIntInternal(int *);
 
 short Vec3_HorzAngle(const Vector3 *, const Vector3 *);
+Fix12i Vec3_HorzLen(const Vector3 *);
 int Vec3_Dist(const Vector3 *, const Vector3 *);
+int Vec3_Equal(const Vector3 *, const Vector3 *);
 int Vec3_HorzDist(const Vector3 *, const Vector3 *);
 }
 

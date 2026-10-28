@@ -12,7 +12,7 @@
  */
 // What stays, and why:
 // - The extern "C" block holds the arm9 helpers that have no shared header
-//   (func_0200f760, Vec3_Sub, Vec3_HorzLen, AddVec3, AngleDiff,
+//   (func_0200f760, Vec3_Sub, AddVec3, AngleDiff,
 //   Matrix4x3_FromRotationZXYExt).
 // - The ROM calls dBgCh_Actr_UpdateContinuous_Veneer (0x020383fc), not
 //   UpdateContinuous. func_0201267c is Sound.h's bank-3 player, one past
@@ -93,7 +93,6 @@ enum ChairSfxId {
 extern "C" {
 void func_0200f760(void *self, void *cyl);
 void Vec3_Sub(Vec3 *res, Vec3 *v0, Vec3 *v1);
-s32 Vec3_HorzLen(const Vector3 *v);
 void AddVec3(Vec3 *dst, Vec3 *add, Vec3 *src);
 int AngleDiff(int a, int b);
 void Matrix4x3_FromRotationZXYExt(void *m, int x, int y, int z);
