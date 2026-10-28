@@ -1051,17 +1051,17 @@ void Player::SetRealCharacter(unsigned int chr_)
 extern "C" {
 void Player::TurnOffToonShading(unsigned int j)
 {
-    extern int func_ov002_020e6b74(void*, int);
+    extern void func_ov002_020e6b74(void *, int *);
     dExtSimpleModel_c *m;
     m = mModels.mBodyModels[this->GetBodyModelID(j, 0)];
     m->SetPolygonMode(0);
-    func_ov002_020e6b74(m, mModels.mBodyTexParams[j]);
+    func_ov002_020e6b74(m, (int *)mModels.mBodyTexParams[j]);
     m = mModels.mHeadModels[j];
     m->SetPolygonMode(0);
-    func_ov002_020e6b74(m, mModels.mHeadTexParams[j]);
+    func_ov002_020e6b74(m, (int *)mModels.mHeadTexParams[j]);
     m = mModels.mHeadModels[j + 4];
     m->SetPolygonMode(0);
-    func_ov002_020e6b74(m, mModels.mHeadTexParams[j + 4]);
+    func_ov002_020e6b74(m, (int *)mModels.mHeadTexParams[j + 4]);
 }
 }
 
@@ -1071,7 +1071,7 @@ void Player::TurnOffToonShading(unsigned int j)
 extern "C" {
 void Player::func_ov002_020be3b0()
 {
-    extern void func_ov002_020e6b74(void*, void*);
+    extern void func_ov002_020e6b74(void *, int *);
     extern void func_ov002_020d80d0(void*);
     extern SharedFilePtr *data_ov002_020ff480[];
     extern u8 data_02092128[];
@@ -24216,7 +24216,7 @@ void func_ov002_020e5948(void* arg0)
 {
     extern void LoadSilverStarAndNumber(void);
     extern void func_ov002_020bec2c(void* p);
-    extern s32 func_ov002_020e6bb0(void* p);
+    extern int *func_ov002_020e6bb0(void *);
     extern void func_ov002_020e6780(void* p);
     extern s8 data_0209f310[];
     extern u8 data_0209f2d8;
@@ -24469,7 +24469,8 @@ void func_ov002_020e5948(void* arg0)
             (BMD_File *)dExtSimpleModel_c::LoadFile(*data_ov002_0210a68c[i]), 1, 1);
         player->mModels.mBodyModels[i]->Func_020162C4((u32)data_ov002_020ff480[i + 0xC4]->filePtr,
                                                       0, 0x1000, 0);
-        player->mModels.mBodyTexParams[i] = func_ov002_020e6bb0(player->mModels.mBodyModels[i]);
+        player->mModels.mBodyTexParams[i] =
+            (s32)func_ov002_020e6bb0(player->mModels.mBodyModels[i]);
         i++;
     } while (i < 4);
 
@@ -24488,7 +24489,8 @@ void func_ov002_020e5948(void* arg0)
             player->mModels.mHeadModels[i]->SetFile(
                 (BMD_File *)dExtSimpleModel_c::LoadFile(*data_ov002_0210a69c[i]), 1, 1);
         }
-        player->mModels.mHeadTexParams[i] = func_ov002_020e6bb0(player->mModels.mHeadModels[i]);
+        player->mModels.mHeadTexParams[i] =
+            (s32)func_ov002_020e6bb0(player->mModels.mHeadModels[i]);
         i++;
     } while (i < 4);
 
@@ -24501,7 +24503,7 @@ void func_ov002_020e5948(void* arg0)
             player->mModels.mHeadModels[idx]->SetFile(
                 (BMD_File *)dExtSimpleModel_c::LoadFile(*data_ov002_0210a6ac[j]), 1, 1);
             player->mModels.mHeadTexParams[idx] =
-                func_ov002_020e6bb0(player->mModels.mHeadModels[idx]);
+                (s32)func_ov002_020e6bb0(player->mModels.mHeadModels[idx]);
         }
         j++;
     } while (j < 4);
@@ -24834,6 +24836,139 @@ void func_ov002_020e69c0(void *unused)
     dst[0] = a;
     dst[1] = b;
 }
+
+/* Blends one RGB555 channel: to * t plus the already-scaled from term. */
+static inline int Color_Lerp(int to, int t, int fromScaled) {
+    return (to * t) + fromScaled;
+}
+
+/* Blends RGB555 colour from toward to by the fx12 weight t (0..0x1000).
+ * The first argument is not read. */
+// @symbol Color_Interp
+int Color_Interp(int unused, int from, int to, int t) {
+    int r;
+    int g;
+    int b;
+    int s;
+    unsigned int out;
+    if (t >= 0x1000) {
+        return to;
+    }
+    if (t <= 0) {
+        return from;
+    }
+    s = 0x1000 - t;
+    r = (from & 0x1f) * s;
+    g = (from & 0x3e0) * s;
+    b = (from & 0x7c00) * s;
+    r = Color_Lerp(to & 0x1f, t, r);
+    g = Color_Lerp(to & 0x3e0, t, g);
+    b = Color_Lerp(to & 0x7c00, t, b);
+    out = ((unsigned int)((r | g) | b)) << 4;
+    return out >> 0x10;
+}
+
+extern void func_020555a4(void *table);
+
+/* A 32-entry RGB555 ramp and the blended copy func_ov002_020e6a78 builds
+ * behind it. */
+struct ColorRamp {
+    unsigned short base[0x20];
+    unsigned short blended[0x20]; /* 0x40 */
+};
+
+/* Blends the 32-entry ramp toward data_ov002_0210a760 (which
+ * func_ov002_020e69c0 rotates) by blend, into the ramp's second half,
+ * and hands that half to func_020555a4. */
+// @symbol func_ov002_020e6a78
+void func_ov002_020e6a78(void *ramp, int blend) {
+    unsigned short *src = ((ColorRamp *)ramp)->base;
+    unsigned short *target = data_ov002_0210a760;
+    unsigned short *dst = ((ColorRamp *)ramp)->blended;
+    int i;
+    for (i = 0; i < 0x20; i++) {
+        *dst++ = Color_Interp((int)ramp, *src++, *target++, blend);
+    }
+    func_020555a4(((ColorRamp *)ramp)->blended);
+}
+
+/* Fills both halves of the ramp with the grey ramp (i, i, i) and clears
+ * DISP3DCNT bits 1, 12 and 13. */
+// @symbol func_ov002_020e6ad4
+unsigned short *func_ov002_020e6ad4(unsigned short *ramp) {
+    unsigned short *dst = ramp;
+    unsigned short *copy = ((ColorRamp *)ramp)->blended;
+    int i = 0;
+    do {
+        unsigned short grey = (i * 0x400) | (i | (i * 0x20));
+        *dst++ = grey;
+        *copy++ = grey;
+        i++;
+    } while (i < 0x20);
+    *(volatile unsigned short *)0x4000060 &= ~0x3002;
+    return ramp;
+}
+
+/* What the three material helpers below read from a model: its resource
+ * at +0x08 (material count at +0x24) and its runtime materials at +0x0c,
+ * 0x30 bytes each with TEXIMAGE_PARAM at +0x1c. */
+struct ModelMaterialRes {
+    char pad[0x24];
+    unsigned int numMaterials; /* 0x24 */
+};
+
+struct ModelMaterial {
+    char pad[0x1c];
+    unsigned int texImageParam; /* 0x1c */
+    char pad2[0x10];
+};
+
+/* Zeroes every material's TEXIMAGE_PARAM (the untextured cap flash). */
+// @symbol func_ov002_020e6b3c
+void func_ov002_020e6b3c(void *model) {
+    void **p = (void **)((char *)model + 8);
+    ModelMaterialRes *res = (ModelMaterialRes *)p[0];
+    unsigned int n = res->numMaterials;
+    ModelMaterial *mat = (ModelMaterial *)p[1];
+    unsigned int i;
+    for (i = 0; i < n; i++, mat++)
+        mat->texImageParam = 0;
+}
+
+/* Writes the words func_ov002_020e6bb0 saved back into the materials. */
+// @symbol func_ov002_020e6b74
+void func_ov002_020e6b74(void *model, int *saved) {
+    void **p = (void **)((char *)model + 8);
+    ModelMaterialRes *res = (ModelMaterialRes *)p[0];
+    unsigned int n = res->numMaterials;
+    ModelMaterial *dst = (ModelMaterial *)p[1];
+    unsigned int i;
+    for (i = 0; i < n; i++, dst++, saved++)
+        dst->texImageParam = *saved;
+}
+
+/* Allocates one word per material and saves each TEXIMAGE_PARAM into it. */
+// @symbol func_ov002_020e6bb0
+int *func_ov002_020e6bb0(void *model) {
+    void **pp;
+    ModelMaterialRes *res;
+    unsigned int count;
+    int *out;
+    int *p;
+    ModelMaterial *src;
+    unsigned int i;
+
+    pp = (void **)(((long long)(int)((char *)model + 8)));
+    res = (ModelMaterialRes *)pp[0];
+    count = res->numMaterials;
+    out = (int *)Memory::operator_new2(count << 2);
+
+    p = out;
+    src = (ModelMaterial *)pp[1];
+    for (i = 0; i < count; i++, src++)
+        *p++ = src->texImageParam;
+    return out;
+}
 }
 
 /* Static initializer __sinit_ov002_021019d0, placed in .init by define_section.
@@ -25057,7 +25192,7 @@ int SharedFilePtr_Destruct_Anim(int self);
 void *SharedFilePtr_Construct_TexSeq(void *self, unsigned int fileID);
 int SharedFilePtr_Destruct_TexSeq(int self);
 void func_0201973c(void);
-unsigned short *func_ov002_020e6ad4(unsigned short *p);
+unsigned short *func_ov002_020e6ad4(unsigned short *);
 
 /* The random-number seed RandomIntInternal draws from. */
 extern int data_ov002_0210e160;
