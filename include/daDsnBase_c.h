@@ -81,9 +81,9 @@
 
 struct daDsnBase_c : dBgActor_c {
     /* Field NAMES are placeholders. Offsets, widths and types are observed. */
-    s32 mFileTable;                     /* 0x320 - a void** in practice */
-    dExtAnmTexPat_c mTextureSequence;   /* 0x324 */
-    dExtShadowModel_c mShadowModel;           /* 0x338 */
+    s32 mFileTable;                   /* 0x320 - a void** in practice */
+    dExtAnmTexPat_c mTextureSequence; /* 0x324 */
+    dExtShadowModel_c mShadowModel;   /* 0x338 */
 
     /* --- vtable --- */
     /* INLINE ON PURPOSE, for the reason include/dBgActor_c.h gives for its own:
@@ -103,8 +103,8 @@ struct daDsnBase_c : dBgActor_c {
        neutral: mwcc then inherits fBase_c's own bodies into both, which is what
        made this vtable and daDkk_c's disagree with the ROM. Each leaf supplies
        both for real (daDsn_c.h, daDkk_c.h). */
-    virtual s32 InitResources() = 0;   /* slot 0 -- null in the ROM */
-    virtual s32 Behavior()      = 0;   /* slot 6 -- null in the ROM */
+    virtual s32 InitResources() = 0; /* slot 0 -- null in the ROM */
+    virtual s32 Behavior() = 0;      /* slot 6 -- null in the ROM */
 
     /* AND IT OWNS SLOTS 3 AND 9, whatever the ROM spelled them. Declaring the two
        here is what puts ov091's own words in those slots instead of fBase_c's --
@@ -114,8 +114,8 @@ struct daDsnBase_c : dBgActor_c {
        declared virtual that is neither inline nor pure, so _ZTV11daDsnBase_c is
        emitted by the TU that defines it rather than weakly by all six TUs that
        merely mention the class. */
-    virtual s32 CleanupResources();    /* slot 3 -- ov091:0x021331b8 */
-    virtual s32 Render();              /* slot 9 -- ov091:0x02133210 */
+    virtual s32 CleanupResources(); /* slot 3 -- ov091:0x021331b8 */
+    virtual s32 Render();           /* slot 9 -- ov091:0x02133210 */
 
     /* Shared resource setup both leaves' InitResources call after storing
        their file table. Not a vtable slot -- InitResources itself is pure
@@ -125,11 +125,15 @@ struct daDsnBase_c : dBgActor_c {
        probe); the ROM has no mangled spelling. */
     s32 Init();
 
-    /* Not virtual. The address is the method name. */
-    int func_ov091_02132dc0();
-    void func_ov091_02132f04();
-    void func_ov091_02133020();
-    void func_ov091_02133098();
+    /* Not virtual: the five cycle states both leaves' Behaviors dispatch on
+       mState, the drop-shadow refresh, and the Yoshi-egg wake. */
+    void StateRise();    /* 0 */
+    void StateHover();   /* 1 */
+    void StateSlam();    /* 2 */
+    void StateRest();    /* 3 */
+    void StateRecover(); /* 4 */
+    void UpdateDropShadow();
+    int WakeNearYoshiEgg();
 };
 
 #ifndef SM64DS_PLATFORM_PC

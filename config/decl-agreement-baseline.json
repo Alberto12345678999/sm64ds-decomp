@@ -27259,11 +27259,6 @@
         "param:#1 char *"
       ]
     },
-    "func_ov025_021125dc": {
-      "include/decl_common.h": [
-        "kind:data"
-      ]
-    },
     "func_ov029_021116c4": {
       "src/game/actors/d_a_obj_wc_obj02.cpp": [
         "return:int"
