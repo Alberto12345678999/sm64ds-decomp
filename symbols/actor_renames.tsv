@@ -7011,3 +7011,7 @@ ov009	0x021116ec	_ZN9daSBird_c19func_ov009_021116ecEv	_ZN9daSBird_c15StateSpawnF
 ov009	0x021115d8	_ZN9daSBird_c19func_ov009_021115d8Ev	_ZN9daSBird_c18StateWaitForPlayerEv	daSBird_c state 1: wait for the player, then take off
 ov009	0x02111224	_ZN9daSBird_c19func_ov009_02111224Ei	_ZN9daSBird_c14AttachToLeaderEi	daSBird_c: follower stores its leader's uniqueID
 ov009	0x02111234	_ZN9daSBird_c19func_ov009_02111234Ev	_ZN9daSBird_c8StateFlyEv	daSBird_c state 3: fly and steer
+ov063	0x0211d28c	func_ov063_0211d28c	_ZN11daTrsTrap_c15OnMeshClsnTouchEP4dBgWPS_P8dActor_c	daTrsTrap_c mesh-collision callback; forwards the colliding actor to LatchStandingActor
+ov063	0x0211d270	func_ov063_0211d270	_ZN11daTrsTrap_c18LatchStandingActorEP8dActor_c	daTrsTrap_c: latch the player into mStandingActor
+ov095	0x02136788	func_ov095_02136788	_ZN10daUdlift_c15OnMeshClsnTouchEPvPS_P6Player	daUdlift_c mesh-collision callback; forwards the colliding player to LatchRider
+ov095	0x02136764	func_ov095_02136764	_ZN10daUdlift_c10LatchRiderEP6Player	daUdlift_c: hold the player as mRider and mark the lift ridden
