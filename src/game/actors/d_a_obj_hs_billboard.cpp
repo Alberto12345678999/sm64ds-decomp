@@ -13,7 +13,6 @@
  * - data_ov031_02111424 is the extern four-variant SharedFilePtr table
  *   InitResources indexes by mVariant (this TU's manifest is text-only);
  *   the individual BMD link names stay data_ov031_*.
- * - Matrix4x3_FromRotationY stays a TU-local extern: no header declares it.
  * - The actorID switch stays defaultless in matched form; the registry
  *   only spawns the four HS_* profiles (0x12e-0x131).
  * - pad_0d0 stays: untouched anywhere in this TU (dExtSimpleModel_c opens at 0x0d4).
@@ -30,6 +29,7 @@ enum d_a_obj_hs_billboard_AssetId {
 #include "daObjHsBillboard_c.h"
 #include "SharedFilePtr.h"
 #include "BMD_File.h"
+#include "math/MtxStack.h"
 
 /* Four model handles. Each constructs through func_02017acc and destroys
  * through func_02017ab4. The four-pointer table stays ROM rodata. */
@@ -40,10 +40,6 @@ struct HsBillboardModelFilePtr : SharedFilePtr {
 typedef char HsBillboardModelFilePtr_size_must_be_8[sizeof(HsBillboardModelFilePtr) == 8 ? 1 : -1];
 
 extern SharedFilePtr *data_ov031_02111424[];
-
-extern "C" {
-void Matrix4x3_FromRotationY(Matrix4x3 *m, s16 angY);
-}
 
 /* Four C-linkage factories: one `new`, four names. The EAD classInit spelling
  * would collide, so each profile keeps its HS_* suffix. */
