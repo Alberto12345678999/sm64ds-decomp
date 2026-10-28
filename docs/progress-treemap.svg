@@ -29741,7 +29741,7 @@ matched: yes</title></rect><rect x="1060.11" y="81.37" width="11.05" height="12.
 module: ov009
 addr: 0x02111234
 size: 552 bytes
-matched: yes</title></rect><rect x="1060.11" y="93.72" width="11.05" height="8.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov009_0211145c
+matched: yes</title></rect><rect x="1060.11" y="93.72" width="11.05" height="8.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN9daSBird_c16StateLaunchFlockEv
 module: ov009
 addr: 0x0211145c
 size: 380 bytes
