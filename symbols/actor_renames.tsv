@@ -6987,3 +6987,7 @@ ov002	0x020bac18	func_ov002_020bac18	_ZN13daObjSwdoor_c13UpdateShutterEv	per-fra
 ov018	0x02111278	_ZN14daObjSm_Lift_c19func_ov018_02111278Ev	_ZN14daObjSm_Lift_c20UpdateModelTransformEv	place the ski lift model at mPos with its angles
 ov018	0x021117e8	func_ov018_021117e8	_ZN14daObjSm_Lift_c19HandlePlayerContactEP8dActor_c	remember a touching player
 ov018	0x02111804	func_ov018_02111804	_ZN14daObjSm_Lift_c18BeforeClsnCallbackEPvPS_P8dActor_c	dBgW before-collision veneer forwarding to HandlePlayerContact
+ov002	0x020bc488	func_ov002_020bc488	_ZN13daObjWakame_c20UpdateModelTransformEv	post the seaweed placement into its model matrix
+ov014	0x02112ea8	func_ov014_02112ea8	_ZN20daObjWanwanShutter_c5BreakEv	the chomp breaks the fence: sound, particle, poof, disable collision
+ov029	0x021122b4	func_ov029_021122b4	_ZN14daObjWc_Mizu_c20UpdateModelTransformEv	place the water model at the bobbing surface height
+ov029	0x02112250	func_ov029_02112250	_ZN14daObjWc_Mizu_c19UpdateClsnTransformEv	copy the model matrix to the collider at full scale and transform it

@@ -54,16 +54,18 @@
  * and whose one base, at subobject offset 0, is arm9 0x0208e390 = _ZTI8dActor_c.
  */
 struct daObjWakame_c : dActor_c {
-    u32       unk_0d0;                  /* 0x0d0 -- not accessed by this TU */
-    dExtAnmModel_c mAnmModel;           /* 0x0d4 -- model and its animation */
+    u32 unk_0d0;              /* 0x0d0 -- not accessed by this TU */
+    dExtAnmModel_c mAnmModel; /* 0x0d4 -- model and its animation */
 
     /* All four are overrides of fBase_c/dActor_c, not new members -- see the
        vtable diff above. `virtual` is redundant to the compiler and costs no
        codegen; it is written so a reader can tell these from a plain member. */
-    virtual s32 InitResources();        /* slot 0 -- 0x020bc540 */
-    virtual s32 CleanupResources();     /* slot 3 -- 0x020bc4c8 */
-    virtual s32 Behavior();             /* slot 6 -- 0x020bc520 */
-    virtual s32 Render();               /* slot 9 -- 0x020bc4f8 */
+    virtual s32 InitResources();    /* slot 0 -- 0x020bc540 */
+    virtual s32 CleanupResources(); /* slot 3 -- 0x020bc4c8 */
+    virtual s32 Behavior();         /* slot 6 -- 0x020bc520 */
+    virtual s32 Render();           /* slot 9 -- 0x020bc4f8 */
+
+    void UpdateModelTransform(); /* 0x020bc488 */
 
     /* INLINE, AND THAT IS WHAT LETS THIS CLASS OWN A TRANSLATION UNIT. Declared
        out of line, mwccarm 2004/b56 emits D0 before D1 -- the reverse of the
@@ -91,13 +93,12 @@ struct daObjWakame_c : dActor_c {
        BECAUSE mAnmModel has a destructor of its own, which is exactly why this
        class's D1 is 0x30 bytes where a scalar-only sibling's is 0x24. Writing
        anything between the braces would add code the cartridge does not have. */
-    virtual ~daObjWakame_c() {}         /* slots 16 (D1), 17 (D0) */
+    virtual ~daObjWakame_c() {} /* slots 16 (D1), 17 (D0) */
 };
 
 #ifndef SM64DS_PLATFORM_PC
 /* ROM layout under mwccarm; host ABI divergence is tracked separately. */
-typedef char daObjWakame_c_size_must_be_0x138[
-    sizeof(daObjWakame_c) == 0x138 ? 1 : -1];
+typedef char daObjWakame_c_size_must_be_0x138[sizeof(daObjWakame_c) == 0x138 ? 1 : -1];
 #endif
 
 #endif /* DAOBJWAKAME_C_H */
