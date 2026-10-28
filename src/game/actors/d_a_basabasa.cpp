@@ -5,14 +5,13 @@
  * off emits D1, D0, then a D2 with no ROM home, in source order. The factory
  * (was Swoop_Spawn) is `new daBasabasa_c()`.
  */
-/* leftovers: Player::Hurt and Player::Bounce stay mangled. This file calls
- * them, and each symbol takes Fix12<int> by value.
- * The shared file handles and the four state records keep address names;
- * their definitions at the bottom are this file's static initializer.
+/* Notes: the shared file handles and the four state records keep address
+ * names; their definitions at the bottom are this file's static initializer.
  * actorID and mFlags are tested through an int. ExecutePerch keeps its base
  * pointer. mSpeedZ is reloaded because a named temporary moves a word.
  * EnterDrop's PoofPos is a three-int constructor; a Vector3 assignment does
- * not schedule the same stores.
+ * not schedule the same stores. mHomePosX..Z stay three words: a Vector3
+ * union member emits a local-class destructor this TU has no home for.
  */
 
 /* Runtime asset handles resolved through the overlay 0 file table. */
@@ -29,6 +28,8 @@ enum daBasabasa_c_AssetId {
 #include "SharedFilePtr.h"
 #include "Player.h"
 #include "math/Approach.h"
+#include "math/CalcLib.h"
+#include "math/MtxStack.h"
 
 /* EnterDrop's unused stack temporary. The three-int constructor is what
  * schedules the stores; a plain Vector3 assignment does not. */
@@ -52,64 +53,54 @@ struct BasabasaAnimationFileHandle : SharedFilePtr {
     ~BasabasaAnimationFileHandle();
 };
 
+/* arm9 C helpers with no shared header. Vec3_Asr's definition takes a
+ * file-local struct, so no shared spelling agrees with it yet. */
 extern "C" {
-extern void func_ov002_020aea30(void *self, void *actor, void *collision);
-extern void func_02012694(int a, void* b);
-int Vec3_Dist(const void* a, const void* b);
-short Vec3_HorzAngle(const Vector3* a, const Vector3* b);
-void Matrix4x3_FromRotationY(void* m, int angle);
-void ApproachAngle(short* a, int b, int c, int d, int e);
-void MulVec3Mat4x3(const void* in, const void* m, void* out);
-extern Matrix4x3 data_020a0e68;
-extern unsigned int RandomIntInternal(int* seed);
-extern int data_0209e650;
-extern void Matrix4x3_ApplyInPlaceToRotationX(void* m, short ang);
-extern void Vec3_Asr(Vector3* d, Vector3* s, int sh);
-extern void Matrix4x3_FromTranslation(Matrix4x3* m, int x, int y, int z);
-extern void Matrix4x3_ApplyInPlaceToRotationXYZExt(void* m, int x, int y, int z);
-extern unsigned short DecIfAbove0_Short(unsigned short *p);
-extern BasabasaAnimationFileHandle data_ov065_0211d690;   /* flying animation */
-extern BasabasaModelFilePtr data_ov065_0211d698;   /* flying model */
-extern BasabasaAnimationFileHandle data_ov065_0211d6a0;   /* hanging animation */
-extern BasabasaModelFilePtr data_ov065_0211d6a8;   /* hanging model */
-/* Parameter names keep this TU's @NNN. */
-typedef void BgchInitAt_(void *self, dActor_c *a, int r, int h, Vector3_16 *p, Vector3_16 *q);
+void func_ov002_020aea30(void *self, void *actor, void *collision);
+void func_02012694(unsigned int id, const Vector3 *pos);
+void MulVec3Mat4x3(const void *in, const void *m, void *out);
+void Vec3_Asr(Vector3 *d, Vector3 *s, int sh);
 }
 
+extern int data_0209e650; /* RandomIntInternal's seed */
+
+extern BasabasaAnimationFileHandle data_ov065_0211d690; /* flying animation */
+extern BasabasaModelFilePtr data_ov065_0211d698;        /* flying model */
+extern BasabasaAnimationFileHandle data_ov065_0211d6a0; /* hanging animation */
+extern BasabasaModelFilePtr data_ov065_0211d6a8;        /* hanging model */
 
 /* The four states, by the address of their .bss record. */
-extern daBasabasa_c::State data_ov065_0211d6e0;   /* chase */
-extern daBasabasa_c::State data_ov065_0211d6f0;   /* return */
-extern daBasabasa_c::State data_ov065_0211d700;   /* perch */
-extern daBasabasa_c::State data_ov065_0211d710;   /* drop */
+extern daBasabasa_c::State data_ov065_0211d6e0; /* chase */
+extern daBasabasa_c::State data_ov065_0211d6f0; /* return */
+extern daBasabasa_c::State data_ov065_0211d700; /* perch */
+extern daBasabasa_c::State data_ov065_0211d710; /* drop */
 
 // @symbol _ZN12daBasabasa_cD1Ev
 // @symbol _ZN12daBasabasa_cD0Ev
 /* The compiler writes the whole body: the vtable store, the dExtShadowModel_c, both
  * dExtAnmModel_c, the dBgCh_Actr and the dCcAc_c in reverse declaration order,
  * then dEnemyBase_c::~dEnemyBase_c. */
-daBasabasa_c::~daBasabasa_c()
-{
-}
+daBasabasa_c::~daBasabasa_c() {}
 
-// @symbol _ZN12daBasabasa_c19func_ov065_0211704cEv
+// @symbol _ZN12daBasabasa_c10CheckTouchEv
 /* Reacts to whatever the collision cylinder touched this frame. */
-void daBasabasa_c::func_ov065_0211704c()
-{
+void daBasabasa_c::CheckTouch() {
     Player *p;
     int flags;
     int isPlayer;
 
-    if (mdCcAc_c.otherOwner == 0) return;
+    if (mdCcAc_c.otherOwner == 0)
+        return;
     p = (Player *)dActor_c::FindWithID(mdCcAc_c.otherOwner);
-    if (p == 0) return;
+    if (p == 0)
+        return;
     flags = mdCcAc_c.hitFlags;
     if (flags & 0x2400) {
         mIsFlying = 1;
         mAnmModel1.SetAnim((BCA_File *)data_ov065_0211d690.filePtr, 0, 0x1000, 0);
         mDeathState = 2;
         func_ov002_020aea30(this, p, 0);
-        func_02012694(0x112, &mCamSpacePosX);
+        func_02012694(0x112, &mCamSpacePos);
         return;
     }
     if (flags & 0x10) {
@@ -118,7 +109,7 @@ void daBasabasa_c::func_ov065_0211704c()
         v[1] = 0;
         v[2] = 0;
         KillByInvincibleChar(*(Vector3_16 *)v, *p, 0);
-        func_02012694(0x112, &mCamSpacePosX);
+        func_02012694(0x112, &mCamSpacePos);
         return;
     }
     if (flags & 0x40000) {
@@ -126,7 +117,7 @@ void daBasabasa_c::func_ov065_0211704c()
         mIsFlying = 1;
         mAnmModel1.SetAnim((BCA_File *)data_ov065_0211d690.filePtr, 0, 0x1000, 0);
         func_ov002_020aea30(this, p, 0);
-        func_02012694(0x112, &mCamSpacePosX);
+        func_02012694(0x112, &mCamSpacePos);
         return;
     }
     if (flags & 0x4380) {
@@ -134,7 +125,7 @@ void daBasabasa_c::func_ov065_0211704c()
         mAnmModel1.SetAnim((BCA_File *)data_ov065_0211d690.filePtr, 0, 0x1000, 0);
         mDeathState = 3;
         func_ov002_020aea30(this, p, 0);
-        func_02012694(0x112, &mCamSpacePosX);
+        func_02012694(0x112, &mCamSpacePos);
         return;
     }
     if (flags & 0x40) {
@@ -142,13 +133,13 @@ void daBasabasa_c::func_ov065_0211704c()
         mAnmModel1.SetAnim((BCA_File *)data_ov065_0211d690.filePtr, 0, 0x1000, 0);
         mDeathState = 2;
         func_ov002_020aea30(this, p, 0);
-        func_02012694(0x112, &mCamSpacePosX);
+        func_02012694(0x112, &mCamSpacePos);
         return;
     }
     if (flags & 0x20) {
         mDeathState = 1;
         func_ov002_020aea30(this, p, 0);
-        func_02012694(0x112, &mCamSpacePosX);
+        func_02012694(0x112, &mCamSpacePos);
         return;
     }
 
@@ -161,7 +152,7 @@ void daBasabasa_c::func_ov065_0211704c()
         Vector3 pos;
         SmallPoofDust();
         KillAndTrackInDeathTable();
-        func_02012694(0x112, &mCamSpacePosX);
+        func_02012694(0x112, &mCamSpacePos);
         pos.x = mPosX;
         pos.y = mPosY;
         pos.z = mPosZ;
@@ -173,7 +164,7 @@ void daBasabasa_c::func_ov065_0211704c()
         p->Bounce(0x28000);
         mDeathState = 1;
         func_ov002_020aea30(this, p, 0);
-        func_02012694(0x112, &mCamSpacePosX);
+        func_02012694(0x112, &mCamSpacePos);
         return;
     }
     Vector3 pos;
@@ -188,17 +179,17 @@ void daBasabasa_c::func_ov065_0211704c()
 }
 
 // @symbol _ZN12daBasabasa_c13ExecuteReturnEv
-int daBasabasa_c::ExecuteReturn()
-{
+int daBasabasa_c::ExecuteReturn() {
     Vector3 v;
     v.x = 0;
     v.y = 0;
     v.z = 0;
-    int dist = Vec3_Dist(&mPosX, &mHomePosX);
+    int dist = Vec3_Dist(&mPos, (Vector3 *)&mHomePosX);
     if (dist > 0x1f4000 || mWithMeshClsn.IsOnWall() != 0) {
         mTargetAngleY = Vec3_HorzAngle(&mPos, (Vector3 *)&mHomePosX);
         /* The states read mStateTimer unsigned (ldrh). */
-        if ((u16)mStateTimer < 0x14) mStateTimer = 0x14;
+        if ((u16)mStateTimer < 0x14)
+            mStateTimer = 0x14;
     }
     if (dist < 0x1f4000 && (mFlags & 8)) {
         mPerchTimer++;
@@ -230,22 +221,20 @@ int daBasabasa_c::ExecuteReturn()
 }
 
 // @symbol _ZN12daBasabasa_c11EnterReturnEv
-int daBasabasa_c::EnterReturn()
-{
+int daBasabasa_c::EnterReturn() {
     unsigned int r;
     r = RandomIntInternal(&data_0209e650);
     mTargetAngleY = ((r >> 8) & 0xf) << 0xc;
     r = RandomIntInternal(&data_0209e650);
     mStateTimer = ((r >> 8) & 0x1f) + 0x32;
-    func_02012694(0xf9, &mCamSpacePosX);
+    func_02012694(0xf9, &mCamSpacePos);
     mAnmModel1.speed = 0x1000;
     mFlags &= ~1;
     return 1;
 }
 
 // @symbol _ZN12daBasabasa_c12ExecuteChaseEv
-int daBasabasa_c::ExecuteChase()
-{
+int daBasabasa_c::ExecuteChase() {
     Vector3 v;
     v.x = 0;
     v.y = 0;
@@ -257,7 +246,7 @@ int daBasabasa_c::ExecuteChase()
     Matrix4x3_FromRotationY(&data_020a0e68, mAngleY);
     Matrix4x3_ApplyInPlaceToRotationX(&data_020a0e68, mPrevAngleX);
     MulVec3Mat4x3(&v, &data_020a0e68, &mSpeedX);
-    if (Vec3_Dist(&mPosX, &mHomePosX) > 0x5dc000 || (u16)mStateTimer == 0) {
+    if (Vec3_Dist(&mPos, (Vector3 *)&mHomePosX) > 0x5dc000 || (u16)mStateTimer == 0) {
         mPerchTimer = 0;
         SetState(&data_ov065_0211d6f0);
     }
@@ -265,21 +254,19 @@ int daBasabasa_c::ExecuteChase()
 }
 
 // @symbol _ZN12daBasabasa_c10EnterChaseEv
-int daBasabasa_c::EnterChase()
-{
+int daBasabasa_c::EnterChase() {
     mVertAccel = 0;
     mIsFlying = 1;
     mFlags = 0x10000003;
     mStateTimer = 0x64;
     mAnmModel1.speed = 0x2000;
     mAnmModel1.SetAnim((BCA_File *)data_ov065_0211d690.filePtr, 0, 0x1000, 0);
-    mTargetAngleY = ((RandomIntInternal(&data_0209e650) >> 8) & 0xf) << 0xc;
+    mTargetAngleY = (((u32)RandomIntInternal(&data_0209e650) >> 8) & 0xf) << 0xc;
     return 1;
 }
 
 // @symbol _ZN12daBasabasa_c11ExecuteDropEv
-int daBasabasa_c::ExecuteDrop()
-{
+int daBasabasa_c::ExecuteDrop() {
     int floorY, posY;
     Player *p;
     mPrevAngleY += 0x1000;
@@ -296,8 +283,7 @@ int daBasabasa_c::ExecuteDrop()
 }
 
 // @symbol _ZN12daBasabasa_c9EnterDropEv
-int daBasabasa_c::EnterDrop()
-{
+int daBasabasa_c::EnterDrop() {
     mVertAccel = -0x1000;
     mTerminalVelocity = -0xa000;
     mIsFlying = 0;
@@ -307,13 +293,12 @@ int daBasabasa_c::EnterDrop()
     mStateTimer = 0x19;
     if (mPosY == 0x898000)
         mStateTimer = 0x32;
-    func_02012694(0xf9, &mCamSpacePosX);
+    func_02012694(0xf9, &mCamSpacePos);
     return 1;
 }
 
 // @symbol _ZN12daBasabasa_c12ExecutePerchEv
-int daBasabasa_c::ExecutePerch()
-{
+int daBasabasa_c::ExecutePerch() {
     Player *p = ClosestNonVanishPlayer();
     if (p) {
         Vector3 v;
@@ -322,7 +307,7 @@ int daBasabasa_c::ExecutePerch()
         v.x = q[0];
         v.y = q[1];
         v.z = q[2];
-        if (Vec3_Dist(&mPosX, &v) < 0x3e8000) {
+        if (Vec3_Dist(&mPos, &v) < 0x3e8000) {
             mStateTimer = 0x14;
             SetState(&data_ov065_0211d710);
         }
@@ -331,8 +316,7 @@ int daBasabasa_c::ExecutePerch()
 }
 
 // @symbol _ZN12daBasabasa_c10EnterPerchEv
-int daBasabasa_c::EnterPerch()
-{
+int daBasabasa_c::EnterPerch() {
     mFlags = 3;
     mIsFlying = 0;
     mAnmModel2.speed = 0x1000;
@@ -341,39 +325,33 @@ int daBasabasa_c::EnterPerch()
 }
 
 // @symbol _ZN12daBasabasa_c8SetStateEPNS_5StateE
-int daBasabasa_c::SetState(State *state)
-{
+int daBasabasa_c::SetState(State *state) {
     mCurrentState = state;
-    if (mCurrentState->enter == 0) return 1;
+    if (mCurrentState->enter == 0)
+        return 1;
     return (this->*mCurrentState->enter)();
 }
 
-// @symbol _ZN12daBasabasa_c19func_ov065_02117994Ev
+// @symbol _ZN12daBasabasa_c20UpdateModelTransformEv
 /* Places both models and the drop shadow at the current position. */
-void daBasabasa_c::func_ov065_02117994()
-{
+void daBasabasa_c::UpdateModelTransform() {
     Vector3 v;
     Vec3_Asr(&v, &mPos, 3);
     Matrix4x3_FromTranslation(&data_020a0e68, v.x, v.y, v.z);
-    Matrix4x3_ApplyInPlaceToRotationXYZExt(&data_020a0e68,
-        mAngleX, mAngleY, mAngleZ);
+    Matrix4x3_ApplyInPlaceToRotationXYZExt(&data_020a0e68, mAngleX, mAngleY, mAngleZ);
     if (mIsFlying == 1) {
         mAnmModel1.mat4x3 = data_020a0e68;
     } else {
         mAnmModel2.mat4x3 = data_020a0e68;
     }
-    Matrix4x3_FromTranslation(&data_020a0e68,
-        mPosX >> 3,
-        (mPosY - 0x18000) >> 3,
-        mPosZ >> 3);
+    Matrix4x3_FromTranslation(&data_020a0e68, mPosX >> 3, (mPosY - 0x18000) >> 3, mPosZ >> 3);
     mShadowMatrix = data_020a0e68;
     DropShadowRadHeight(mShadowModel, mShadowMatrix, 0x32000, 0x258000, 0xf);
 }
 
 // @symbol _ZN12daBasabasa_c16CleanupResourcesEv
 /* Releases the four files InitResources claimed. */
-int daBasabasa_c::CleanupResources()
-{
+int daBasabasa_c::CleanupResources() {
     data_ov065_0211d698.Release();
     data_ov065_0211d6a8.Release();
     data_ov065_0211d690.Release();
@@ -382,16 +360,14 @@ int daBasabasa_c::CleanupResources()
 }
 
 // @symbol _ZN12daBasabasa_c16OnPendingDestroyEv
-void daBasabasa_c::OnPendingDestroy()
-{
-}
+void daBasabasa_c::OnPendingDestroy() {}
 
 // @symbol _ZN12daBasabasa_c6RenderEv
-int daBasabasa_c::Render()
-{
+int daBasabasa_c::Render() {
     /* Through an int: testing mFlags in the `if` compiles differently. */
     int flag = (mFlags & 0x40000) != 0;
-    if (flag != 0) return 1;
+    if (flag != 0)
+        return 1;
     if (mIsFlying == 1) {
         mAnmModel1.Render(0);
     } else {
@@ -401,8 +377,7 @@ int daBasabasa_c::Render()
 }
 
 // @symbol _ZN12daBasabasa_c8BehaviorEv
-int daBasabasa_c::Behavior()
-{
+int daBasabasa_c::Behavior() {
     if (UpdateYoshiEat(mWithMeshClsn) != 0) {
         mdCcAc_c.Clear();
         if (mEatenByYoshi != 0) {
@@ -410,7 +385,7 @@ int daBasabasa_c::Behavior()
                 mdCcAc_c.Update();
             }
         }
-        func_ov065_02117994();
+        UpdateModelTransform();
         return 1;
     }
     if (UpdateKillByInvincibleChar(mWithMeshClsn, mAnmModel1, 3) != 0) {
@@ -418,7 +393,7 @@ int daBasabasa_c::Behavior()
     }
     if (mDeathState != 0) {
         UpdateDeath(mWithMeshClsn);
-        func_ov065_02117994();
+        UpdateModelTransform();
         return 1;
     }
     DecIfAbove0_Short((unsigned short *)&mStateTimer);
@@ -428,7 +403,7 @@ int daBasabasa_c::Behavior()
         /* Three wingbeat frames, one flap sound. */
         if (mAnmModel1.WillHitFrame(3) != 0 || mAnmModel1.WillHitFrame(0xf) != 0 ||
             mAnmModel1.WillHitFrame(0x1b) != 0) {
-            func_02012694(0xe1, &mCamSpacePosX);
+            func_02012694(0xe1, &mCamSpacePos);
         }
     }
     {
@@ -447,9 +422,9 @@ int daBasabasa_c::Behavior()
     mAngleX = mPrevAngleX;
     mAngleY = mPrevAngleY;
     mAngleZ = mPrevAngleZ;
-    func_ov065_02117994();
+    UpdateModelTransform();
     if (mIsFlying == 1) {
-        func_ov065_0211704c();
+        CheckTouch();
     }
     mdCcAc_c.Clear();
     {
@@ -469,8 +444,7 @@ int daBasabasa_c::Behavior()
 // @symbol _ZN12daBasabasa_c13InitResourcesEv
 /* Both dExtAnmModel_c are loaded here, the other half of the evidence that 0x300
  * and 0x364 are two members. */
-int daBasabasa_c::InitResources()
-{
+int daBasabasa_c::InitResources() {
     mAnmModel1.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(data_ov065_0211d698), 1, -1);
     mAnmModel2.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(data_ov065_0211d6a8), 1, -1);
     mShadowModel.InitCylinder();
@@ -494,27 +468,23 @@ int daBasabasa_c::InitResources()
 }
 
 // @symbol _ZN12daBasabasa_c16OnAimedAtWithEggEv
-s32 daBasabasa_c::OnAimedAtWithEgg()
-{
+s32 daBasabasa_c::OnAimedAtWithEgg() {
     return 0;
 }
 
 // @symbol _ZN12daBasabasa_c13OnTurnIntoEggER6Player
-void daBasabasa_c::OnTurnIntoEgg(Player &player)
-{
+void daBasabasa_c::OnTurnIntoEgg(Player &player) {
     GivePlayerCoins(player, (unsigned char)(mExtraCoinCount + 1), 0);
     KillAndTrackInDeathTable();
 }
 
 // @symbol _ZN12daBasabasa_c13OnYoshiTryEatEv
-s32 daBasabasa_c::OnYoshiTryEat()
-{
+s32 daBasabasa_c::OnYoshiTryEat() {
     return 4;
 }
 
 // @symbol daBasabasa_c_classInit
-extern "C" daBasabasa_c *daBasabasa_c_classInit()
-{
+extern "C" daBasabasa_c *daBasabasa_c_classInit() {
     return new daBasabasa_c();
 }
 
@@ -527,15 +497,8 @@ BasabasaModelFilePtr data_ov065_0211d698(ASSET_BASABASA_BMD);
 BasabasaModelFilePtr data_ov065_0211d6a8(ASSET_BASABASA_WAIT_BMD);
 BasabasaAnimationFileHandle data_ov065_0211d690(ASSET_BASABASA_FLY_BCA);
 BasabasaAnimationFileHandle data_ov065_0211d6a0(ASSET_BASABASA_WAIT_BCA);
-daBasabasa_c::State data_ov065_0211d700 = {
-    &daBasabasa_c::EnterPerch, &daBasabasa_c::ExecutePerch
-};
-daBasabasa_c::State data_ov065_0211d710 = {
-    &daBasabasa_c::EnterDrop, &daBasabasa_c::ExecuteDrop
-};
-daBasabasa_c::State data_ov065_0211d6e0 = {
-    &daBasabasa_c::EnterChase, &daBasabasa_c::ExecuteChase
-};
-daBasabasa_c::State data_ov065_0211d6f0 = {
-    &daBasabasa_c::EnterReturn, &daBasabasa_c::ExecuteReturn
-};
+daBasabasa_c::State data_ov065_0211d700 = {&daBasabasa_c::EnterPerch, &daBasabasa_c::ExecutePerch};
+daBasabasa_c::State data_ov065_0211d710 = {&daBasabasa_c::EnterDrop, &daBasabasa_c::ExecuteDrop};
+daBasabasa_c::State data_ov065_0211d6e0 = {&daBasabasa_c::EnterChase, &daBasabasa_c::ExecuteChase};
+daBasabasa_c::State data_ov065_0211d6f0 = {&daBasabasa_c::EnterReturn,
+                                           &daBasabasa_c::ExecuteReturn};

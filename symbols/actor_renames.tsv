@@ -6748,3 +6748,10 @@ ov080	0x0212509c	_ZN9daBttBk_c19func_ov080_0212509cEv	_ZN9daBttBk_c13StateFallIn
 ov080	0x021250c8	_ZN9daBttBk_c19func_ov080_021250c8Ev	_ZN9daBttBk_c11UpdateStateEv	named by behavior: runs the current state row's update function; byte-identical (same address, same body)
 ov080	0x02125104	_ZN9daBttBk_c19func_ov080_02125104Ev	_ZN9daBttBk_c10EnterStateEv	named by behavior: runs the current state row's enter function; byte-identical (same address, same body)
 ov080	0x0212513c	_ZN9daBttBk_c19func_ov080_0212513cEi	_ZN9daBttBk_c8SetStateEi	named by behavior: points mStateRow at state-table row i and enters it; byte-identical (same address, same body)
+ov065	0x0211704c	_ZN12daBasabasa_c19func_ov065_0211704cEv	_ZN12daBasabasa_c10CheckTouchEv	daBasabasa_c::CheckTouch: reacts to what the collision cylinder touched this frame (stomp, shell, hurt, death states); same address, same body
+ov065	0x02117994	_ZN12daBasabasa_c19func_ov065_02117994Ev	_ZN12daBasabasa_c20UpdateModelTransformEv	daBasabasa_c::UpdateModelTransform: places the active model and the drop shadow at the current position; same address, same body
+ov064	0x02118644	_ZN7daBbl_c19func_ov064_02118644Ev	_ZN7daBbl_c11ExecuteJumpEv	daBbl_c::ExecuteJump: execute hook of the jumping state (bounce on landing, roll the fire and smoke particles, destroy at the fuse); same address, same body
+ov064	0x0211873c	_ZN7daBbl_c19func_ov064_0211873cEv	_ZN7daBbl_c9EnterJumpEv	daBbl_c::EnterJump: enter hook of the jumping state (20.0 up, 135-frame fuse); same address, same body
+ov064	0x02118760	_ZN7daBbl_c19func_ov064_02118760Ev	_ZN7daBbl_c15ExecuteFountainEv	daBbl_c::ExecuteFountain: execute hook of the fixed flame, which spawns a jumping bubble (actor 0xd6) every 180 frames; same address, same body
+ov064	0x021187d0	_ZN7daBbl_c19func_ov064_021187d0Ev	_ZN7daBbl_c13EnterFountainEv	daBbl_c::EnterFountain: enter hook of the fixed flame (stop, wait 180 frames); same address, same body
+ov064	0x021187ec	_ZN7daBbl_c19func_ov064_021187ecEPNS_5StateE	_ZN7daBbl_c8SetStateEPNS_5StateE	daBbl_c::SetState: adopts a state table and runs its enter hook once; same address, same body
