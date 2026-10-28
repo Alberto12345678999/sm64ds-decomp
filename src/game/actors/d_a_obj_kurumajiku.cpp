@@ -8,9 +8,9 @@
  * func_ov002_020b6c54; the discarded class metadata is recorded in the manifest.
  *
  * deslop
- * Leftover: data_ov002_0210ddd0 (four rider mount offsets) and
- *   data_020a0e68 (shared arm9 matrix scratch, used tree-wide) keep
- *   linker names; naming belongs at a shared home, not this leaf.
+ * Leftover: data_ov002_0210ddd0 (the four rider mount offsets, defined
+ *   below) and data_020a0e68 (shared arm9 matrix scratch, used tree-wide)
+ *   keep linker names; naming belongs at a shared home, not this leaf.
  * Leftover: func_ov002_020b6a80 keeps its char* entry contract, shared
  *   with the existing setup helper; the C boundary in func_ov002_020b6ac8
  *   stays opaque (both descendants retain their own pointer views).
@@ -26,7 +26,14 @@ typedef char AxleResources_size_must_be_0x0c[
     sizeof(daObjKurumajiku_c::Resources) == 0x0c ? 1 : -1];
 
 extern "C" {
-extern Vector3 data_ov002_0210ddd0[4];
+/* The four rider mount offsets, one per cart: +-0x190000 on y and on x,
+   each 0x12c000 along z. */
+Vector3 data_ov002_0210ddd0[4] = {
+    Vector3(0, 0x190000, 0x12c000),
+    Vector3(0, -0x190000, 0x12c000),
+    Vector3(0x190000, 0, 0x12c000),
+    Vector3(-0x190000, 0, 0x12c000),
+};
 extern char data_020a0e68[0x30];
 
 void Matrix4x3_FromRotationZXYExt(void *dst, int x, int y, int z);

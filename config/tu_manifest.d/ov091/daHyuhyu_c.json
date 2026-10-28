@@ -49,63 +49,63 @@
       "ordinal": 1
     },
     {
-      "symbol": "_ZN10daHyuhyu_c19func_ov091_021339fcEv",
+      "symbol": "_ZN10daHyuhyu_c17HandleCylinderHitEv",
       "address": "0x021339fc",
       "size": "0x00000270",
       "legacy_source": "src/_ZN10daHyuhyu_c19func_ov091_021339fcEv.c",
       "ordinal": 2
     },
     {
-      "symbol": "_ZN10daHyuhyu_c19func_ov091_02133c6cEv",
+      "symbol": "_ZN10daHyuhyu_c16StateGustFlyMainEv",
       "address": "0x02133c6c",
       "size": "0x000000b0",
       "legacy_source": "src/_ZN10daHyuhyu_c19func_ov091_02133c6cEv.cpp",
       "ordinal": 3
     },
     {
-      "symbol": "_ZN10daHyuhyu_c19func_ov091_02133d1cEv",
+      "symbol": "_ZN10daHyuhyu_c16StateGustFlyInitEv",
       "address": "0x02133d1c",
       "size": "0x00000014",
       "legacy_source": "src/_ZN10daHyuhyu_c19func_ov091_02133d1cEv.c",
       "ordinal": 4
     },
     {
-      "symbol": "_ZN10daHyuhyu_c19func_ov091_02133d30Ev",
+      "symbol": "_ZN10daHyuhyu_c13StateBlowMainEv",
       "address": "0x02133d30",
       "size": "0x000001f4",
       "legacy_source": "src/_ZN10daHyuhyu_c19func_ov091_02133d30Ev.cpp",
       "ordinal": 5
     },
     {
-      "symbol": "_ZN10daHyuhyu_c19func_ov091_02133f24Ev",
+      "symbol": "_ZN10daHyuhyu_c13StateBlowInitEv",
       "address": "0x02133f24",
       "size": "0x0000003c",
       "legacy_source": "src/_ZN10daHyuhyu_c19func_ov091_02133f24Ev.c",
       "ordinal": 6
     },
     {
-      "symbol": "_ZN10daHyuhyu_c19func_ov091_02133f60Ev",
+      "symbol": "_ZN10daHyuhyu_c13StateWaitMainEv",
       "address": "0x02133f60",
       "size": "0x000000ac",
       "legacy_source": "src/_ZN10daHyuhyu_c19func_ov091_02133f60Ev.c",
       "ordinal": 7
     },
     {
-      "symbol": "_ZN10daHyuhyu_c19func_ov091_0213400cEv",
+      "symbol": "_ZN10daHyuhyu_c13StateWaitInitEv",
       "address": "0x0213400c",
       "size": "0x00000038",
       "legacy_source": "src/_ZN10daHyuhyu_c19func_ov091_0213400cEv.c",
       "ordinal": 8
     },
     {
-      "symbol": "_ZN10daHyuhyu_c19func_ov091_02134044EP16daHyuhyu_c_State",
+      "symbol": "_ZN10daHyuhyu_c8SetStateEP16daHyuhyu_c_State",
       "address": "0x02134044",
       "size": "0x00000050",
       "legacy_source": "src/_ZN10daHyuhyu_c19func_ov091_02134044EP16daHyuhyu_c_State.cpp",
       "ordinal": 9
     },
     {
-      "symbol": "_ZN10daHyuhyu_c19func_ov091_02134094Ev",
+      "symbol": "_ZN10daHyuhyu_c20UpdateModelTransformEv",
       "address": "0x02134094",
       "size": "0x00000074",
       "legacy_source": "src/_ZN10daHyuhyu_c19func_ov091_02134094Ev.c",
@@ -487,7 +487,7 @@
       "disposition": "deadstrip-duplicate",
       "canonical_module": "arm9",
       "canonical_address": "0x020072c0",
-      "reason": "_ZN10daHyuhyu_c19func_ov091_02133d30Ev builds two Vector3 locals and _ZN10daHyuhyu_c19func_ov091_02133f60Ev, _ZN10daHyuhyu_c19func_ov091_02133c6cEv and _ZN10daHyuhyu_c19func_ov091_02134094Ev one each; destroying them at scope exit re-emits Vector3's empty inline destructor as vague linkage. Every call is inlined away -- all twenty functions byte-match -- and the cartridge owns the four-byte bx lr at arm9:0x020072c0."
+      "reason": "_ZN10daHyuhyu_c13StateBlowMainEv builds two Vector3 locals and _ZN10daHyuhyu_c13StateWaitMainEv, _ZN10daHyuhyu_c16StateGustFlyMainEv and _ZN10daHyuhyu_c20UpdateModelTransformEv one each; destroying them at scope exit re-emits Vector3's empty inline destructor as vague linkage. Every call is inlined away -- all twenty functions byte-match -- and the cartridge owns the four-byte bx lr at arm9:0x020072c0."
     },
     {
       "symbol": "_ZTI7fBase_c",
@@ -899,19 +899,19 @@
   "externalized_output": [],
   "defined_symbol_renames": [
     {
-      "from": "@552",
+      "from": "@669",
       "to": "@547",
-      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
+      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin | compiler temp; dropping the dead named-parameter typedef and hold declarations and including Particle__System.h and math/MtxStack.h in place of the local stubs move the per-TU @NNN uniquifier, so mwcc emits it under this name now"
     },
     {
-      "from": "@553",
+      "from": "@670",
       "to": "@545",
-      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
+      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin | compiler temp; dropping the dead named-parameter typedef and hold declarations and including Particle__System.h and math/MtxStack.h in place of the local stubs move the per-TU @NNN uniquifier, so mwcc emits it under this name now"
     },
     {
-      "from": "@554",
+      "from": "@671",
       "to": "@549",
-      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
+      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin | compiler temp; dropping the dead named-parameter typedef and hold declarations and including Particle__System.h and math/MtxStack.h in place of the local stubs move the per-TU @NNN uniquifier, so mwcc emits it under this name now"
     }
   ]
 }

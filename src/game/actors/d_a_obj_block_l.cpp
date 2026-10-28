@@ -6,11 +6,11 @@
  * The TU is ov002 0x020b35a0..0x020b415c, nineteen functions; it ends
  * with the five per-profile registry factories, each `new daObjBlockL_c()`.
  *
- * leftovers:
+ * Notes:
  * - Particle::System::NewSimple, dActor_c::SpawnCoins,
- *   dBgActor_c::IsClsnInRangeOnScreen and dBgW_KcMbg::SetFile stay
- *   mangled extern-C calls: each takes Fix12<int> by value
- *   (notes/mwccarm-codegen.md 6az).
+ *   dBgActor_c::IsClsnInRangeOnScreen and dBgW_KcMbg::SetFile are member
+ *   calls through their headers, which spell the Fix12 parameters as
+ *   Fix12i, a plain s32 (notes/mwccarm-codegen.md 6az).
  * - the BigBrickBlockFileRow / ClpsRow resource tables stay file-local:
  *   no shared header owns those 0xc-stride rows yet.
  * - linkedActor + 0x3b0 is an unnamed byte on the mega character
@@ -33,10 +33,11 @@
 #include "dExtSimpleModel_c.h"
 #include "Event.h"
 #include "daObjBlockItemTag_c.h"
+#include "Particle__System.h"
 
 /* File-local resource rows (see the header note above). */
 struct BigBrickBlockFileRow {
-    SharedFilePtr* file;
+    SharedFilePtr *file;
     u8 pad[8];
 };
 
@@ -67,23 +68,18 @@ struct daObjBlockLClsnFile : SharedFilePtr {
     ~daObjBlockLClsnFile();
 };
 
-extern "C" {
-namespace Particle {
-struct System {
-    static void NewSimple(u32 id, Fix12i x, Fix12i y, Fix12i z);
-};
-}
 extern BigBrickBlockFileRow data_ov002_02108ab0[];
 extern BigBrickBlockFileRow data_ov002_02108ab4[];
 extern Vector3 data_ov002_021089e0;
-void func_020393a4(dBgW_KcMbg *p, int v);
-void func_02039394(dBgW_KcMbg *p, int v);
-extern ClpsRow data_ov002_02108ab8[];         /* CLPS blocks,       0xc stride */
+extern ClpsRow data_ov002_02108ab8[]; /* CLPS blocks,       0xc stride */
 extern s8 data_0209f2f8;              /* current level */
 extern u8 data_0209f220;
+
+/* local extern: dBgW setters and a coined star helper with no shared header. */
+extern "C" {
+void func_020393a4(dBgW_KcMbg *p, int v);
+void func_02039394(dBgW_KcMbg *p, int v);
 int IsStarCollectedInCurLevel(int star);
-extern void hold_d_a_obj_block_l(dBgW_KcMbg *self, KCL_File *kcl, const Matrix4x3 *mat, int scale,
-                                 s16 angY, CLPS_Block *clps);
 }
 
 /* One class, six actor IDs (see the banner), so most members branch on
@@ -111,16 +107,13 @@ static inline int IsActorID(dActor_c *actor, int id) {
  * code generation off the two variants land in the cartridge's order, D1
  * first at 0x020b35a0 and D0 at 0x020b35e4.
  */
-daObjBlockL_c::~daObjBlockL_c()
-{
-}
+daObjBlockL_c::~daObjBlockL_c() {}
 // @symbol _ZN13daObjBlockL_c17NotifyLinkedActorEv
 /* Called from Kill. Follows mLinkedActor: clears a byte on the mega
    character (actor 0x121), or arms mActionPending on the item tag
    (actors 0x141..0x144) so the tag dispatches its stored action. */
-void daObjBlockL_c::NotifyLinkedActor()
-{
-    dActor_c* linkedActor = mLinkedActor;
+void daObjBlockL_c::NotifyLinkedActor() {
+    dActor_c *linkedActor = mLinkedActor;
     int actorID;
     if (linkedActor == 0)
         return;
@@ -128,7 +121,7 @@ void daObjBlockL_c::NotifyLinkedActor()
     actorID = linkedActor->actorID;
     if (actorID <= 0x121) {
         if (actorID == 0x121)
-            ((u8*)linkedActor)[0x3b0] = 0;
+            ((u8 *)linkedActor)[0x3b0] = 0;
         return;
     }
 
@@ -144,16 +137,14 @@ void daObjBlockL_c::NotifyLinkedActor()
 // @symbol _ZN13daObjBlockL_c16HasNonzeroAngleXEv
 /* Both callers are daObjBlockL_c methods in this TU. The field at 0x8c is the
    inherited dActor_c::mAngleX; no external state participates. */
-bool daObjBlockL_c::HasNonzeroAngleX()
-{
+bool daObjBlockL_c::HasNonzeroAngleX() {
     return mAngleX != 0;
 }
 
 // @symbol _ZN13daObjBlockL_c15OnHitByMegaCharER6Player
 /* Vtable slot 27. player.IncMegaKillCount() then this class's own Kill
  * (slot 31) through an unqualified virtual call. */
-void daObjBlockL_c::OnHitByMegaChar(Player &player)
-{
+void daObjBlockL_c::OnHitByMegaChar(Player &player) {
     player.IncMegaKillCount();
     Kill();
 }
@@ -167,15 +158,16 @@ void daObjBlockL_c::OnHitByMegaChar(Player &player)
  * Every call is this class's own Kill (slot 31) through an unqualified
  * virtual call; the 0x2e branch calls Kill and falls through without
  * returning. */
-void daObjBlockL_c::OnKicked(dActor_c &other)
-{
+void daObjBlockL_c::OnKicked(dActor_c &other) {
     int p1;
     if (IsActorID(this, 0x2e))
         Kill();
     p1 = other.param1;
-    if (p1 == 3) return;
+    if (p1 == 3)
+        return;
     if (IsActorID(this, 0x11)) {
-        if (p1 != 2) return;
+        if (p1 != 2)
+            return;
         Kill();
     } else {
         Kill();
@@ -185,10 +177,10 @@ void daObjBlockL_c::OnKicked(dActor_c &other)
 // @symbol _ZN13daObjBlockL_c11OnAttacked2ER8dActor_c
 /* Vtable slot 23. Both branches call this class's own Kill (slot 31)
  * through an unqualified virtual call. */
-int daObjBlockL_c::OnAttacked2(dActor_c &other)
-{
+int daObjBlockL_c::OnAttacked2(dActor_c &other) {
     if (IsActorID(this, 0x11)) {
-        if (other.param1 != 2) return;
+        if (other.param1 != 2)
+            return;
         Kill();
         return;
     }
@@ -198,8 +190,7 @@ int daObjBlockL_c::OnAttacked2(dActor_c &other)
 // @symbol _ZN13daObjBlockL_c11OnAttacked1ER8dActor_c
 /* Vtable slot 22; `other` is never read. The single call is this class's
  * own Kill (slot 31) through an unqualified virtual call. */
-int daObjBlockL_c::OnAttacked1(dActor_c &other)
-{
+int daObjBlockL_c::OnAttacked1(dActor_c &other) {
     if (IsActorID(this, 0x11))
         return;
     Kill();
@@ -210,11 +201,12 @@ int daObjBlockL_c::OnAttacked1(dActor_c &other)
  * through an unqualified virtual call. Neither branch sets r0, so the bare
  * `return;` in this `void` override compiles to the same bytes as the ROM's
  * stub, which never touches r0 either. */
-void daObjBlockL_c::OnGroundPounded(dActor_c &other)
-{
-    if (other.param1 == 3) return;
+void daObjBlockL_c::OnGroundPounded(dActor_c &other) {
+    if (other.param1 == 3)
+        return;
     if (IsActorID(this, 0x11)) {
-        if (other.param1 != 2) return;
+        if (other.param1 != 2)
+            return;
         Kill();
     } else {
         Kill();
@@ -252,13 +244,12 @@ void daObjBlockL_c::OnGroundPounded(dActor_c &other)
  * (types.h), so a whole-object assignment compiles to an ldm/stm pair, four
  * instructions where the ROM has six.
  *
- * Particle::System::NewSimple and dActor_c::SpawnCoins stay spelled as their
- * mangled names -- both take Fix12<int> BY VALUE and declaring the true types
- * changes how the caller passes them. include/dActor_c.h says the same thing at the
+ * Particle::System::NewSimple and dActor_c::SpawnCoins take their Fix12
+ * arguments as Fix12i (a plain s32): passing Fix12<int> BY VALUE changes how
+ * the caller passes them. include/dActor_c.h says the same thing at the
  * bottom of the class, src/runtime/actor/d_bg_actor.cpp argues it in full, and
  * notes/mwccarm-codegen.md 6az is the rule. */
-void daObjBlockL_c::Kill()
-{
+void daObjBlockL_c::Kill() {
     Vector3 starPos;
     Vector3 pos;
     Vector3 coinPos;
@@ -328,8 +319,7 @@ void daObjBlockL_c::Kill()
 }
 
 // @symbol _ZN13daObjBlockL_c16CleanupResourcesEv
-int daObjBlockL_c::CleanupResources()
-{
+int daObjBlockL_c::CleanupResources() {
     if (mMeshCollider.IsEnabled())
         mMeshCollider.Disable();
     data_ov002_02108ab0[mVariant].file->Release();
@@ -338,8 +328,7 @@ int daObjBlockL_c::CleanupResources()
 }
 
 // @symbol _ZN13daObjBlockL_c6RenderEv
-int daObjBlockL_c::Render()
-{
+int daObjBlockL_c::Render() {
     if (IsActorID(this, 0x13)) {
         if (!(Event::GetBit(mEventID) != 0 && mBroken == 0)) {
             return 1;
@@ -363,11 +352,9 @@ int daObjBlockL_c::Render()
 }
 
 // @symbol _ZN13daObjBlockL_c8BehaviorEv
-/* func_020393a4 and func_02039394 are the ROM's unnamed collision setters;
-   IsClsnInRangeOnScreen takes Fix12 by value, so those calls stay spelled
-   as raw ABI. */
-int daObjBlockL_c::Behavior()
-{
+/* func_020393a4 and func_02039394 are the ROM's unnamed collision setters.
+   IsClsnInRangeOnScreen takes its Fix12 arguments as Fix12i. */
+int daObjBlockL_c::Behavior() {
     if (IsActorID(this, 0x13)) {
         if (mPrevEventBit != Event::GetBit(mEventID))
             mBroken = 0;
@@ -419,21 +406,26 @@ int daObjBlockL_c::Behavior()
  *
  * Each actorID test after the switch re-reads actorID through IsActorID; the
  * switch's own copy is not reused, and folding them changes the compare shape.
- * dBgW_KcMbg::SetFile takes Fix12<int> by value (wall 6az) so it stays an
- * extern-C mangled free function.
+ * dBgW_KcMbg::SetFile's scale is Fix12i, not Fix12<int> by value (wall 6az).
  */
-int daObjBlockL_c::InitResources()
-{
+int daObjBlockL_c::InitResources() {
     u16 id = actorID;
     u8 idx;
 
     switch (id) {
     case 0xf:
     case 0x10:
-    case 0x13: mVariant = 0; break;
-    case 0x11: mVariant = 1; break;
-    case 0x12: break;
-    case 0x2e: mVariant = 2; break;
+    case 0x13:
+        mVariant = 0;
+        break;
+    case 0x11:
+        mVariant = 1;
+        break;
+    case 0x12:
+        break;
+    case 0x2e:
+        mVariant = 2;
+        break;
     }
 
     mModel.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(*data_ov002_02108ab0[mVariant].file), 1,
@@ -476,13 +468,13 @@ int daObjBlockL_c::InitResources()
     mPrevEventBit = Event::GetBit(mEventID);
 
     {
-    Player *pl = ClosestPlayer();
-    if (pl != 0 && pl->IsEnteringLevel() != 0) {
-        if (IsActorID(this, 0x11) && HasNonzeroAngleX()) {
-            if (data_0209f2f8 == 1)
-                return 0;
+        Player *pl = ClosestPlayer();
+        if (pl != 0 && pl->IsEnteringLevel() != 0) {
+            if (IsActorID(this, 0x11) && HasNonzeroAngleX()) {
+                if (data_0209f2f8 == 1)
+                    return 0;
+            }
         }
-    }
     }
 
     if (IsActorID(this, 0x2e) && data_0209f2f8 == 7) {
@@ -502,32 +494,27 @@ int daObjBlockL_c::InitResources()
  * Historical aliases: FortressTowerWall_Spawn, BlackBrickBlock_Spawn,
  * BrickBlockSwitchActivated_Spawn, BigBrickBlock_Spawn, BrickBlock_Spawn. */
 // @symbol daObjBlockL_c_classInit_BK_FUTA
-extern "C" daObjBlockL_c *daObjBlockL_c_classInit_BK_FUTA()
-{
+extern "C" daObjBlockL_c *daObjBlockL_c_classInit_BK_FUTA() {
     return new daObjBlockL_c();
 }
 
 // @symbol daObjBlockL_c_classInit_BLOCK_LL
-extern "C" daObjBlockL_c *daObjBlockL_c_classInit_BLOCK_LL()
-{
+extern "C" daObjBlockL_c *daObjBlockL_c_classInit_BLOCK_LL() {
     return new daObjBlockL_c();
 }
 
 // @symbol daObjBlockL_c_classInit_SW_BLOCK_L
-extern "C" daObjBlockL_c *daObjBlockL_c_classInit_SW_BLOCK_L()
-{
+extern "C" daObjBlockL_c *daObjBlockL_c_classInit_SW_BLOCK_L() {
     return new daObjBlockL_c();
 }
 
 // @symbol daObjBlockL_c_classInit_DP_BLOCK_L
-extern "C" daObjBlockL_c *daObjBlockL_c_classInit_DP_BLOCK_L()
-{
+extern "C" daObjBlockL_c *daObjBlockL_c_classInit_DP_BLOCK_L() {
     return new daObjBlockL_c();
 }
 
 // @symbol daObjBlockL_c_classInit_BLOCK_L
-extern "C" daObjBlockL_c *daObjBlockL_c_classInit_BLOCK_L()
-{
+extern "C" daObjBlockL_c *daObjBlockL_c_classInit_BLOCK_L() {
     return new daObjBlockL_c();
 }
 

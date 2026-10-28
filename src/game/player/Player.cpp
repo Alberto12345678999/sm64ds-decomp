@@ -795,7 +795,6 @@ void Player::func_ov002_020bdc18() {
 extern "C" {
 void Player::IncMegaKillCount() {
     extern void GiveLives(int);
-    extern void func_ov002_020f0e54(void *, void *);
     Vector3 v;
     char *new_var2;
     int new_var3;
@@ -823,7 +822,7 @@ void Player::IncMegaKillCount() {
         return;
     }
     ((daObj1UpLogo_c *)a)->mDelay = 0;
-    func_ov002_020f0e54(a, 0);
+    ((daObj1UpLogo_c *)a)->SetFollowTarget(0);
 }
 }
 

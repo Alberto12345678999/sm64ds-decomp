@@ -44,7 +44,7 @@ struct Vector3_16f;
  *    in func_ov060_02115c1c; the data_ov060_02119294/6/8 + offset reads; and the
  *    `obj` copy of this in Bowser_IsAnimAtLastFrame.
  *  - Callees known only by address, whose purpose this file does not establish:
- *    func_020092c4, func_0200fa04, func_ov002_020c56f0, func_ov060_02117a3c,
+ *    func_020092c4, func_0200fa04, func_ov002_020c56f0,
  *    func_02038408, func_02011d50, func_02011cfc. Likewise the trailing arguments
  *    of Player::Hurt and Sound::ChangeMusicVolume, the KOOPAFIRE spawn-parameter
  *    bits and bit 0x400 of the tail's mFlags are given as numbers.
@@ -2332,8 +2332,8 @@ void daKpa_c::func_ov060_02113d8c(){
 // @symbol _ZN7daKpa_c19func_ov060_02113d20Ev
 /*
 Bomb hit test: find the closest KIRAI actor (0x11c, daKirai_c); if it reports
-that his position is close enough (func_ov060_02118544), set it off
-(func_ov060_021185c4) and return 1, otherwise return 0. */
+that his position is close enough (IsInTriggerRange), set it off
+(Explode) and return 1, otherwise return 0. */
 // func_ov060_02113d20 at 0x02113d20
 // Matched byte-for-byte with mwccarm 1.2/sp2p3 (ov060).
 int daKpa_c::func_ov060_02113d20(){
@@ -2343,8 +2343,8 @@ int daKpa_c::func_ov060_02113d20(){
         v.x = this->mPosX;
         v.y = this->mPosY;
         v.z = this->mPosZ;
-        if (((daKirai_c *)closest)->func_ov060_02118544(&v)) {
-            ((daKirai_c *)closest)->func_ov060_021185c4();
+        if (((daKirai_c *)closest)->IsInTriggerRange(&v)) {
+            ((daKirai_c *)closest)->Explode();
             return 1;
         }
     }
@@ -3008,7 +3008,7 @@ halfwords: sign, scale, end frame; a row with end frame 0 ends it) is walked for
 the first row whose end frame is above mTimer; the tilt speed v is scale times a
 linear ramp in mTimer (counting down to the row's end for a positive sign, up
 from the previous row's end otherwise) and goes to func_ov060_02112d48; on odd
-frames with v non-zero func_ov060_02117a3c is called on the arena. When no row is
+frames with v non-zero the arena plays its tilt sound (PlayTiltSound). When no row is
 left, go to BOWSER_STATE_IDLE and zero the arena's three angular speeds and three
 angles, and mVertSpeed. */
 /* p is volatile so the walk reloads the sentinel for each test -- lifetimes
@@ -3036,7 +3036,9 @@ void daKpa_c::func_ov060_02112bfc(){
                 v = (short)(b * (r1 - *(short*)((char*)data_ov060_02119298 + off)));
             }
             func_ov060_02112d48(v);
-            if (v != 0 && (this->mTimer & 1)) { found->func_ov060_02117a3c(); }
+            if (v != 0 && (this->mTimer & 1)) {
+                found->PlayTiltSound();
+            }
             flag = 0; break;
         }
         p += 3;

@@ -533,5 +533,40 @@ class UndefinedImportAliases(unittest.TestCase):
         self.assertIn("does not resolve exactly", str(caught.exception))
 
 
+class EmittedDataSymbols(unittest.TestCase):
+    """Which defined objects are offered for comparison at all."""
+
+    @staticmethod
+    def symbol(name, shndx, bind="STB_GLOBAL"):
+        return {"st_shndx": shndx, "st_value": 0, "st_size": 8,
+                "st_info": {"type": "STT_OBJECT", "bind": bind}, "_name": name}
+
+    def emitted(self, symbols, section_types):
+        syms = []
+        for raw in symbols:
+            s = unittest.mock.MagicMock()
+            s.name = raw["_name"]
+            s.__getitem__.side_effect = raw.__getitem__
+            syms.append(s)
+        elf = unittest.mock.Mock()
+        elf.get_section_by_name.return_value.iter_symbols.return_value = syms
+        elf.get_section.side_effect = lambda i: {"sh_type": section_types[i]}
+        with unittest.mock.patch.object(RDC, "ELFFile", return_value=elf):
+            return [name for name, *_ in RDC.emitted_data_symbols(b"object")]
+
+    def test_bss_objects_are_not_compared(self):
+        # arm9's file bytes at .bss addresses are the autoload payloads, not zeros.
+        self.assertEqual(
+            self.emitted([self.symbol("data_table", 1), self.symbol("data_0209b468", 2)],
+                         {1: "SHT_PROGBITS", 2: "SHT_NOBITS"}),
+            ["data_table"])
+
+    def test_locals_are_still_skipped(self):
+        self.assertEqual(
+            self.emitted([self.symbol("local_table", 1, bind="STB_LOCAL")],
+                         {1: "SHT_PROGBITS"}),
+            [])
+
+
 if __name__ == "__main__":
     unittest.main()

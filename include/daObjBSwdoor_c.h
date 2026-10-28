@@ -20,9 +20,9 @@
 struct daObjBSwdoor_c : daObjSwdoor_c {
     /* Inline empty dtor: mwccarm emits D1 then D0, no D2. */
     virtual ~daObjBSwdoor_c() {}
-    virtual s32 Behavior();           /* slot 6 */
-    virtual s32 CleanupResources();   /* slot 3 */
-    virtual s32 InitResources();      /* slot 0 */
+    virtual s32 Behavior();         /* slot 6 */
+    virtual s32 CleanupResources(); /* slot 3 */
+    virtual s32 InitResources();    /* slot 0 */
 };
 
 #ifndef SM64DS_PLATFORM_PC

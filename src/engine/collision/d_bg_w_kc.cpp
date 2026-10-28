@@ -14,11 +14,19 @@
  */
 #include "dBgW_Kc.h"
 #include "dBgW.h"
+#include "dBgPc.h"
 
 extern "C" {
 /* Shared base init, defined in its own TU (src/engine/collision/d_bg_w.cpp). */
 void func_02039624(dBgW *self);
 }
+
+/* The surface record the ITCM DetectClsn overrides (d_bg_w_kc_itcm.cpp)
+   fill per triangle. A namespace-scope dBgPc, so mwcc emits
+   __sinit_d_bg_w_kc.cpp to construct it and register ~dBgPc() (was the
+   handwritten __sinit_02074fe4). The ITCM half reaches it by this
+   address name. */
+dBgPc data_020a0cec;
 
 // @symbol _ZN7dBgW_KcC1Ev
 // @symbol _ZN7dBgW_KcC2Ev

@@ -35,19 +35,16 @@
  * func_ov035_0211168c (CT_MECHA12L).
  */
 
-// leftovers (each measured; the noted form size-DIFFs or breaks relocs):
-// the widened int idMatch / isMecha12L stay (folding the actorID tests into
-// the ifs reorders the body). The mangled SetFile call with scalar 0x1000
-// stays (Fix12<int> local grows InitResources and adds .data). The mangled
-// IsClsnInRange (this, 0, 0) stays (no Fix12<int> conversion; Fix12 pair
-// grows Behavior). func_020396c0 / func_020393d4 and the mMeshCollider.edgeToleranceShift
-// / beforeClsnCallback stores stay (dBgW field naming belongs in arm9).
-// Both data_ov035_02111ef0 stores stay (one local shrinks InitResources).
-// unk_326 is written with no reader in this TU. DecIfAbove0_Short,
-// RandomIntInternal, the data_ov035_* files/tables/CLPS block,
-// data_0209f2c0, data_0209e650 keep linker names. The three g_profile_*
-// descriptors live outside this TU. func_ov035_0211168c is the historical
-// alias of classInit_CT_MECHA12L, not a function defined here.
+// Notes (each measured): the widened int idMatch / isMecha12L stay (folding
+// the actorID tests into the ifs reorders the body). func_020396c0 and
+// func_020393d4 are the out-of-line stores into the collider's
+// edgeToleranceShift and beforeClsnCallback; d_bg_w.cpp defines them and no
+// header declares them. Both data_ov035_02111ef0 stores stay (one local
+// shrinks InitResources). unk_326 is written with no reader in this TU.
+// DecIfAbove0_Short, RandomIntInternal, the data_ov035_* files/tables/CLPS
+// block, data_0209f2c0, data_0209e650 keep linker names. The three
+// g_profile_* descriptors live outside this TU. func_ov035_0211168c is the
+// historical alias of classInit_CT_MECHA12L, not a function defined here.
 
 /* Runtime asset handles resolved through the overlay 0 file table. */
 enum daObjCtMecha10_c_AssetId {
@@ -83,45 +80,36 @@ struct Mecha10ClsnFilePtr : SharedFilePtr {
     ~Mecha10ClsnFilePtr();
 };
 
-extern "C" {
-extern Mecha10ModelFilePtr gCtMechaObj12sModelFile;   /* model of the fall-through profile (CT_MECHA12S) */
-extern Mecha10ClsnFilePtr gCtMechaObj10CollisionFile;    /* collision KCL of the id 0x77 cog */
+extern Mecha10ModelFilePtr
+    gCtMechaObj12sModelFile; /* model of the fall-through profile (CT_MECHA12S) */
+extern Mecha10ClsnFilePtr gCtMechaObj10CollisionFile; /* collision KCL of the id 0x77 cog */
 extern Mecha10ModelFilePtr gCtMechaObj12lModelFile;   /* model of id 0x79 (CT_MECHA12L) */
-extern Mecha10ModelFilePtr gCtMechaObj10ModelFile;   /* model of id 0x77 (CT_MECHA10) */
-extern CLPS_Block    data_ov035_021121d8;
-extern s16 data_ov035_02111ef0[];           /* |angle step| by rotation state */
-extern s16 data_ov035_02111ef4[][4];        /* dwell by state, by clock setting */
-extern u8  data_0209f2c0;                  /* arm9 clock setting */
-extern int data_0209e650;                  /* arm9 RNG state */
+extern Mecha10ModelFilePtr gCtMechaObj10ModelFile;    /* model of id 0x77 (CT_MECHA10) */
+extern CLPS_Block data_ov035_021121d8;
+extern s16 data_ov035_02111ef0[];    /* |angle step| by rotation state */
+extern s16 data_ov035_02111ef4[][4]; /* dwell by state, by clock setting */
+extern u8 data_0209f2c0;             /* arm9 clock setting */
+extern int data_0209e650;            /* arm9 RNG state */
 
+extern "C" {
 u16 DecIfAbove0_Short(u16 *p);
 int RandomIntInternal(int *state);
 void func_020393d4(dBgW *collider, void *callback);
 void func_020396c0(dBgW *collider, int v);
-
-/* local extern: not declared on dBgActor_c. int arguments do not convert to
-   Fix12<int>, and a Fix12<int> pair grows Behavior (see the file banner). */
-/* local extern: dBgW_KcMbg::SetFile takes Fix12<int> by value, and a method
-   call homes the scale (see the file banner). The scalar 0x1000 stays. */
-extern void hold_d_a_obj_ct_mecha10(dBgW_KcMbg *self, KCL_File *file, const Matrix4x3 *mat,
-                                    Fix12i scale, s16 angle, CLPS_Block *clps);
 }
 
 // @symbol daObjCtMecha10_c_classInit_CT_MECHA10
-extern "C" daObjCtMecha10_c *daObjCtMecha10_c_classInit_CT_MECHA10()
-{
+extern "C" daObjCtMecha10_c *daObjCtMecha10_c_classInit_CT_MECHA10() {
     return new daObjCtMecha10_c();
 }
 
 // @symbol daObjCtMecha10_c_classInit_CT_MECHA12L
-extern "C" daObjCtMecha10_c *daObjCtMecha10_c_classInit_CT_MECHA12L()
-{
+extern "C" daObjCtMecha10_c *daObjCtMecha10_c_classInit_CT_MECHA12L() {
     return new daObjCtMecha10_c();
 }
 
 // @symbol daObjCtMecha10_c_classInit_CT_MECHA12S
-extern "C" daObjCtMecha10_c *daObjCtMecha10_c_classInit_CT_MECHA12S()
-{
+extern "C" daObjCtMecha10_c *daObjCtMecha10_c_classInit_CT_MECHA12S() {
     return new daObjCtMecha10_c();
 }
 
@@ -130,8 +118,7 @@ extern "C" daObjCtMecha10_c *daObjCtMecha10_c_classInit_CT_MECHA12S()
    collision mesh; the other two profiles are scenery and load a model alone.
    Either way the dwell and the step magnitude come out of the same two tables,
    indexed by the state this function just chose. */
-int daObjCtMecha10_c::InitResources()
-{
+int daObjCtMecha10_c::InitResources() {
     /* Both ID tests are widened into one int and branched on. Folding them
        into the ifs reorders the body (see the file banner). */
     int idMatch;
@@ -142,10 +129,9 @@ int daObjCtMecha10_c::InitResources()
         UpdateClsnPosAndRot();
         ((dBgW_KcMbg *)(&mMeshCollider))
             ->dBgW_KcMbg::SetFile((KCL_File *)dBgW_Kc::LoadFile(gCtMechaObj10CollisionFile),
-                                  *(&mClsnMat), 0x1000, mAngleY, *(&data_ov035_021121d8));
+                                  mClsnMat, 0x1000, mAngleY, data_ov035_021121d8);
         func_020396c0(&mMeshCollider, 0);
-        func_020393d4(&mMeshCollider,
-            (void *)&dBgW::UpdatePosAndAngs);
+        func_020393d4(&mMeshCollider, (void *)&dBgW::UpdatePosAndAngs);
         mRotationState = 0;
     } else {
         idMatch = (actorID == ACTOR_CT_MECHA12L);
@@ -170,8 +156,7 @@ int daObjCtMecha10_c::InitResources()
    at random and, whenever mDirTimer expires, picks the step's direction at
    random: forward two times in three for 0x5a..0x10e frames, otherwise
    reversed for 0x1e frames. */
-int daObjCtMecha10_c::Behavior()
-{
+int daObjCtMecha10_c::Behavior() {
     if (data_0209f2c0 == CLOCK_SETTING_STOPPED) {
         UpdateModelPosAndRotY();
         if (mRotationState == 0 && IsClsnInRange(0, 0))
@@ -207,8 +192,7 @@ int daObjCtMecha10_c::Behavior()
 }
 
 // @symbol _ZN16daObjCtMecha10_c6RenderEv
-int daObjCtMecha10_c::Render()
-{
+int daObjCtMecha10_c::Render() {
     mModel.Render(0);
     return 1;
 }
@@ -216,8 +200,7 @@ int daObjCtMecha10_c::Render()
 // @symbol _ZN16daObjCtMecha10_c16CleanupResourcesEv
 /* Give back exactly what InitResources took: the carrying cog frees its
    collider and both of its files, each decorative gear its one model. */
-int daObjCtMecha10_c::CleanupResources()
-{
+int daObjCtMecha10_c::CleanupResources() {
     if (mRotationState == 0) {
         if (mMeshCollider.IsEnabled())
             mMeshCollider.Disable();

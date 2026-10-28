@@ -58,11 +58,11 @@ data_ov009_02112434 kind:data(any) addr:0x02112434 ambiguous
 data_ov009_02112438 kind:data(any) addr:0x02112438 ambiguous
 data_ov009_0211244c kind:data(any) addr:0x0211244c ambiguous
 __sinit_d_a_s_bird.cpp kind:function(arm,size=0xcc) addr:0x02112458
-__sinit_ov009_02112524 kind:function(arm,size=0x538) addr:0x02112524
+__sinit_d_a_obj_mc_water.cpp kind:function(arm,size=0x538) addr:0x02112524
 __sinit_d_a_obj_mc_metalnet.cpp kind:function(arm,size=0x6c) addr:0x02112a5c
 __sinit_d_a_mc_flag.cpp kind:function(arm,size=0x6c) addr:0x02112ac8
 .p__sinit_d_a_s_bird.cpp kind:data(word) addr:0x02112b34
-.p__sinit_ov009_02112524 kind:data(word) addr:0x02112b38
+.p__sinit_d_a_obj_mc_water.cpp kind:data(word) addr:0x02112b38
 .p__sinit_d_a_obj_mc_metalnet.cpp kind:data(word) addr:0x02112b3c
 .p__sinit_d_a_mc_flag.cpp kind:data(word) addr:0x02112b40
 data_ov009_02112b60 kind:data(any) addr:0x02112b60
@@ -178,8 +178,8 @@ data_ov009_02113c28 kind:bss addr:0x02113c28
 @381 kind:bss addr:0x02113c30
 @382 kind:bss addr:0x02113c3c
 data_ov009_02113c48 kind:bss addr:0x02113c48
-data_ov009_02113c68 kind:bss addr:0x02113c68
-data_ov009_02113c70 kind:bss addr:0x02113c70
+gMcWaterModelFile kind:bss addr:0x02113c68
+gMcWaterCollisionFile kind:bss addr:0x02113c70
 data_ov009_02113c78 kind:bss addr:0x02113c78
 data_ov009_02113c84 kind:bss addr:0x02113c84
 data_ov009_02113c90 kind:bss addr:0x02113c90

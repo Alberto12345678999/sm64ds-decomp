@@ -20,16 +20,16 @@
 #include "dExtShadowModel_c.h"
 
 struct daObjCtMecha09_c : dBgActor_c {
-    u8  pad_31e[0x2];
-    s32 mStartPosY;                   /* 0x320 */
-    s32 mEndPosY;                     /* 0x324 */
-    s8  mDirection;                   /* 0x328 -- +1/-1; Behavior reads it ldrsb and negates it at the travel limits */
-    u8  pad_329[0x1];
-    u16 mLegTimer;                    /* 0x32a -- DecIfAbove0_Short countdown for the current leg (setting 2) */
-    u16 mLegLength;                   /* 0x32c -- the leg's full length; the last five frames hold still */
-    u8  pad_32e[0x2];
-    s32 mGroundY;                     /* 0x330 -- InitResources' dBgCh_Gnd raycast result, falling back to the probe height */
-    dExtShadowModel_c mShadowModel;         /* 0x334 */
+    u8 pad_31e[0x2];
+    s32 mStartPosY; /* 0x320 */
+    s32 mEndPosY;   /* 0x324 */
+    s8 mDirection; /* 0x328 -- +1/-1; Behavior reads it ldrsb and negates it at the travel limits */
+    u8 pad_329[0x1];
+    u16 mLegTimer;  /* 0x32a -- DecIfAbove0_Short countdown for the current leg (setting 2) */
+    u16 mLegLength; /* 0x32c -- the leg's full length; the last five frames hold still */
+    u8 pad_32e[0x2];
+    s32 mGroundY; /* 0x330 -- InitResources' dBgCh_Gnd raycast result, falling back to the probe height */
+    dExtShadowModel_c mShadowModel; /* 0x334 */
 
     /* --- vtable --- */
     virtual ~daObjCtMecha09_c();
@@ -43,14 +43,14 @@ struct daObjCtMecha09_c : dBgActor_c {
     int InitResources();
     int Render();
 
-    /* Helper taking this (S33): the ROM address is the method name. */
-    void func_ov065_0211bc88();
+    /* Drops the cuboid shadow onto mGroundY; ov065 0x0211bc88. */
+    void UpdateShadow();
 
     /* Tail padding. The field span stops short of the real size:
        daObjCtMecha09_c_classInit (historical alias TTC_MovingBeam_Spawn)
        calls fBase_c::operator new(0x38c), read off the retail
        instruction. A span is only a LOWER BOUND. */
-    Matrix4x3 mShadowMat;        /* 0x35c */
+    Matrix4x3 mShadowMat; /* 0x35c */
 };
 
 #ifndef SM64DS_PLATFORM_PC
