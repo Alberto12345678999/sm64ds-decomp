@@ -22,11 +22,8 @@
  * ROM function is written first. Do not reorder.
  */
 
-// leftovers (each measured; the noted form size-DIFFs or breaks the build):
-// SetFile stays the free call with int 0x1000 (method spellings grow
-// InitResources; Fix12<int>{0x1000} does not compile -- this TUs InitResources).
-// IsClsnInRange stays the free call with two ints (method spellings grow
-// Behavior; Fix12<int>{0} does not compile).
+// What stays, and why (each measured; the noted form size-DIFFs or breaks
+// the build):
 // mMeshCollider.beforeClsnCallback goes through func_020393d4 (direct member
 // store does not compile; the C-cast store shrinks InitResources).
 // mClsnMat2 and mStepModel.mat4x3 stay flat s32 m[12] (.t does not compile;
@@ -36,13 +33,11 @@
 // move bytes).
 
 /* Runtime asset handles resolved through the overlay 0 file table. */
-enum daObjDpBrock_c_AssetId {
-    ASSET_DP_BROCK_BMD = 0x05df,
-    ASSET_DP_BROCK_KCL = 0x05e0
-};
+enum daObjDpBrock_c_AssetId { ASSET_DP_BROCK_BMD = 0x05df, ASSET_DP_BROCK_KCL = 0x05e0 };
 
 #include "daObjDpBrock_c.h"
 #include "SharedFilePtr.h"
+#include "math/MtxStack.h"
 
 /* 8-byte file handles. The model uses func_02017acc / func_02017ab4 and the
  * collision file func_02017b4c / SharedFilePtr_Destruct_Clsn. The spellings
@@ -57,18 +52,15 @@ struct BrockCollisionFilePtr : SharedFilePtr {
     ~BrockCollisionFilePtr();
 };
 
-extern "C" {
 /* The block's model file and collision file (ov025 .bss), and the CLPS
    block handed to dBgW_KcMbg::SetFile. */
 extern BrockModelFilePtr data_ov025_02113ab8;
 extern BrockCollisionFilePtr data_ov025_02113ab0;
 extern CLPS_Block data_ov025_02112ce8;
 
-void Matrix4x3_FromRotationY(void *m, int angleY);
-extern void hold_d_a_obj_dp_brock(dBgW_KcMbg *self, KCL_File *file, const Matrix4x3 *mat, int scale,
-                                  s16 angleY, CLPS_Block *clps);
-void func_020393d4(int *p, int v);
-}
+/* local extern: stores the before-collision callback; the definition is C
+   and has no shared header. */
+extern "C" void func_020393d4(int *p, int v);
 
 /* mState values, how long each lasts, and the 20.12 step.
  * kVertStep is 5.0 per frame. A full drop is that times
@@ -92,20 +84,17 @@ enum {
  * out-of-line dBgActor_c base constructor, this class's vptr and the dExtSimpleModel_c
  * constructor for mStepModel all come from the implicit constructor the
  * `new` inlines, and the null check is the one `new` itself emits. */
-extern "C" daObjDpBrock_c *daObjDpBrock_c_classInit()
-{
+extern "C" daObjDpBrock_c *daObjDpBrock_c_classInit() {
     return new daObjDpBrock_c();
 }
 
 // @symbol _ZN14daObjDpBrock_c13InitResourcesEv
-int daObjDpBrock_c::InitResources()
-{
+int daObjDpBrock_c::InitResources() {
     mStepModel.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(data_ov025_02113ab8), 1, -1);
     UpdateStepModelPosAndRotY();
     UpdateStepClsnPosAndRot();
-    ((dBgW_KcMbg *)(&mMeshCollider))
-        ->dBgW_KcMbg::SetFile((KCL_File *)dBgW_Kc::LoadFile(data_ov025_02113ab0), *(&mClsnMat2),
-                              0x1000, mAngleY, *(&data_ov025_02112ce8));
+    mMeshCollider.SetFile((KCL_File *)dBgW_Kc::LoadFile(data_ov025_02113ab0), mClsnMat2, 0x1000,
+                          mAngleY, data_ov025_02112ce8);
     func_020393d4((int *)&mMeshCollider, (int)&dBgW::UpdatePosWithTransform);
 
     int phase = param1 & 3;
@@ -131,8 +120,7 @@ int daObjDpBrock_c::InitResources()
 }
 
 // @symbol _ZN14daObjDpBrock_c8BehaviorEv
-int daObjDpBrock_c::Behavior()
-{
+int daObjDpBrock_c::Behavior() {
     switch (mState) {
     case kSinking:
         if (mStateTimer == kFramesPerState) {
@@ -158,15 +146,13 @@ int daObjDpBrock_c::Behavior()
 }
 
 // @symbol _ZN14daObjDpBrock_c6RenderEv
-int daObjDpBrock_c::Render()
-{
+int daObjDpBrock_c::Render() {
     mStepModel.Render(0);
     return 1;
 }
 
 // @symbol _ZN14daObjDpBrock_c16CleanupResourcesEv
-int daObjDpBrock_c::CleanupResources()
-{
+int daObjDpBrock_c::CleanupResources() {
     mMeshCollider.Disable();
     data_ov025_02113ab8.Release();
     data_ov025_02113ab0.Release();
@@ -177,10 +163,9 @@ int daObjDpBrock_c::CleanupResources()
 /* Puts the block's own model on the actor: heading from mAngleY, and the
  * position scaled down by 8 into model space. dBgActor_c's
  * UpdateModelPosAndRotY does the same for the inherited model. */
-void daObjDpBrock_c::UpdateStepModelPosAndRotY()
-{
+void daObjDpBrock_c::UpdateStepModelPosAndRotY() {
     Matrix4x3_FromRotationY(&mStepModel.mat4x3, mAngleY);
-    mStepModel.mat4x3.m[9]  = mPosX >> 3;
+    mStepModel.mat4x3.m[9] = mPosX >> 3;
     mStepModel.mat4x3.m[10] = mPosY >> 3;
     mStepModel.mat4x3.m[11] = mPosZ >> 3;
 }
@@ -189,10 +174,9 @@ void daObjDpBrock_c::UpdateStepModelPosAndRotY()
 /* Moves the collider with the block: rotation from mAngleY, translation
  * from the actor position, then dBgW_KcMbg::Transform. dBgActor_c's
  * UpdateClsnPosAndRot does the same for the inherited collider. */
-void daObjDpBrock_c::UpdateStepClsnPosAndRot()
-{
+void daObjDpBrock_c::UpdateStepClsnPosAndRot() {
     Matrix4x3_FromRotationY(&mClsnMat2, mAngleY);
-    mClsnMat2.m[9]  = mPosX;
+    mClsnMat2.m[9] = mPosX;
     mClsnMat2.m[10] = mPosY;
     mClsnMat2.m[11] = mPosZ;
     mMeshCollider.Transform(mClsnMat2, mAngleY);

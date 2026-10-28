@@ -692,7 +692,6 @@ extern int data_ov018_02112f48[];
 extern int data_ov021_021148d0[];
 extern int data_ov022_02112c9c[];
 extern int data_ov022_0211427c[];
-extern int data_ov024_021129f0[];
 extern int data_ov025_02112654(void*);
 extern int data_ov025_02113814[];
 /* data_ov026_02113f2c is defined by d_a_water_tatumaki.cpp. */
