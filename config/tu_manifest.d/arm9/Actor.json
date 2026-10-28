@@ -58,14 +58,14 @@
       "ordinal": 4
     },
     {
-      "symbol": "_ZN5Sound20PlaySmallSecretSoundEP8dActor_cPt",
+      "symbol": "PlaySmallSecretSound",
       "address": "0x0200f874",
       "size": "0x00000084",
       "legacy_source": "src/_ZN5Sound20PlaySmallSecretSoundEP8dActor_cPt.cpp",
       "ordinal": 5
     },
     {
-      "symbol": "_ZN5Sound15PlaySecretSoundEP8dActor_cPt",
+      "symbol": "PlaySecretSound",
       "address": "0x0200f8f8",
       "size": "0x00000084",
       "legacy_source": "src/_ZN5Sound15PlaySecretSoundEP8dActor_cPt.cpp",

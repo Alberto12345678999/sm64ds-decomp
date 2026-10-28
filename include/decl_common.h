@@ -196,7 +196,7 @@ extern int _ZN4dBgW9IsEnabledEv(void*);
 extern int _ZN4cstd3absEi(int);
 extern int _ZN4cstd3divEii(int, int);
 extern int _ZN4cstd3modEii(int, int);
-extern int _ZN5Sound20PlaySmallSecretSoundEP8dActor_cPt(void*, u16*);
+extern int PlaySmallSecretSound(void *, u16 *);
 extern int _ZN6Memory25isRootHeapIterInitializedE;
 extern int _ZTV10BigBooIcon[];
 extern int _ZTV11daKpaTail_c[];

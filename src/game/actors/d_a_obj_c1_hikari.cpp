@@ -73,7 +73,8 @@ extern int data_0209caa0[];
 }
 
 namespace Sound {
-int PlaySmallSecretSound(dActor_c *actor, u16 *counter);
+/* local extern: Sound.h has no declaration. decl_common.h spells void *. */
+extern "C" int PlaySmallSecretSound(dActor_c *actor, u16 *counter);
 }
 
 

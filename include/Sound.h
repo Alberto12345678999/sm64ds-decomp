@@ -106,7 +106,7 @@ int  PlayLong(u32 handle, u32, u32, const Vector3 &pos, s16);
 bool PlaySub(u32, u32, u32, Fix12i, bool);
 /* A named parameter here numbers @NNN in every includer. */
 int ChangeMusicVolume(u32, Fix12i);
-int  PlaySecretSound(dActor_c *actor, u16 *counter);
+extern "C" int PlaySecretSound(dActor_c *actor, u16 *counter);
 
 void PauseMusic();
 void UnpauseMusic();

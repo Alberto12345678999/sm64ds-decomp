@@ -1596,7 +1596,7 @@ dActor_c *dActor_c::SpawnSoundObj(u32 soundObjParam) {
 }
 
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN5Sound15PlaySecretSoundEP8dActor_cPt
+// @symbol PlaySecretSound
 /* ROM ordinal 6 -- Sound::PlaySecretSound(dActor_c *, unsigned short *)
  * 0x0200f8f8  size 0x84 */
 extern "C" {
@@ -1607,7 +1607,7 @@ static const int kPoolDist = 0x8777;
 }
 namespace Sound {
 
-int PlaySecretSound(dActor_c *actor, u16 *counter) {
+extern "C" int PlaySecretSound(dActor_c *actor, u16 *counter) {
     if (*counter < 0x4b) {
         Sound::PlaySub(0x20, 0x14, 0x7f, 0x6b000, 0);
         *counter += 1;
@@ -1619,12 +1619,12 @@ int PlaySecretSound(dActor_c *actor, u16 *counter) {
 }
 
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN5Sound20PlaySmallSecretSoundEP8dActor_cPt
+// @symbol PlaySmallSecretSound
 /* ROM ordinal 5 -- Sound::PlaySmallSecretSound(dActor_c *, unsigned short *)
  * 0x0200f874  size 0x84 */
 namespace Sound {
 
-int PlaySmallSecretSound(dActor_c *actor, u16 *counter) {
+extern "C" int PlaySmallSecretSound(dActor_c *actor, u16 *counter) {
     if (*counter < 0x19) {
         Sound::PlaySub(0x29, 0x14, 0x7f, 0x6b000, 0);
         *counter += 1;
