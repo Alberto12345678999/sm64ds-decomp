@@ -30,8 +30,8 @@ extern "C" daSCre_c *daSCre_c_classInit(void)
 s32 daSCre_c::Behavior()
 {
     if (DistToCPlayer() < kPlayerRangeFix12) {
-        Spawn(kStarActorId, (param1 & kStarIndexMask) | kStarSpawnStyle,
-            mPos, 0, mAreaId, -1); /* no rot, no death-table id */
+        Spawn(kStarActorId, (param1 & kStarIndexMask) | kStarSpawnStyle, mPos, 0, mAreaId,
+              -1); /* no rot, no death-table id */
     }
     MarkForDestruction();
     return 1;

@@ -47,8 +47,7 @@ daSBird_c::~daSBird_c()
 
 /* Follower attach -- spawn loops store the leader's uniqueID. */
 // @symbol _ZN9daSBird_c14AttachToLeaderEi
-void daSBird_c::AttachToLeader(int ownerID)
-{
+void daSBird_c::AttachToLeader(int ownerID) {
     mIsLeader = 0;
     mOwnerID = ownerID;
 }
@@ -56,8 +55,7 @@ void daSBird_c::AttachToLeader(int ownerID)
 /* Fly state -- data_ov009_02113c48[3]. Steers toward the leader's position
    (or the target point when leading) and derives forward/vertical speed. */
 // @symbol _ZN9daSBird_c8StateFlyEv
-void daSBird_c::StateFly()
-{
+void daSBird_c::StateFly() {
     UpdatePos(0);
     dActor_c *f = dActor_c::FindWithID(mOwnerID);
     if (f == 0 || f->mPosY > 0xbb8000) {

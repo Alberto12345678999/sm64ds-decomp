@@ -186,8 +186,7 @@ s32 daSBird_c::CleanupResources()
 // @symbol _ZN9daSBird_c15StateSpawnFlockEv
 /* State 0. A leader spawns (param1 & 0xf) - 1 followers scattered around it
    and aims the flock at the fixed target; every bird then waits in state 1. */
-void daSBird_c::StateSpawnFlock()
-{
+void daSBird_c::StateSpawnFlock() {
     if (mIsLeader) {
         int n = (int)param1 & 0xf;
         if (n > 1) {
@@ -219,8 +218,7 @@ void daSBird_c::StateSpawnFlock()
 /* State 1. The leader waits for the closest player to come within 0x7d0 and
    chirps; a follower waits for its leader to take off. Then the bird picks a
    random pitch and enters state 3. */
-void daSBird_c::StateWaitForPlayer()
-{
+void daSBird_c::StateWaitForPlayer() {
     if (mIsLeader) {
         char *p2 = (char *)ClosestPlayer();
         if (p2 != 0) {
