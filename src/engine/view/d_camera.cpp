@@ -1,6 +1,6 @@
 //cpp
 /* dCamera_c, the main camera, with its states and script ops.
- * arm9 .text 0x020073a0..0x0200e494.
+ * arm9 .text 0x020072c4..0x0200e494.
  *
  * _ZTS9dCamera_c is at 0x02086e6c, _ZTI9dCamera_c at 0x02086ee4,
  * _ZTV9dCamera_c at 0x02086f84. ChangeState's mangling names the
@@ -8,7 +8,7 @@
  * (src/engine/view/d_camera_dtor.cpp), outside this run.
  *
  * Below 0x0200bec4 sit the follow modes, states and script ops
- * (func_020073a0..func_0200bb28). They share this file's .data block
+ * (func_020072c4..func_0200bb28). They share this file's .data block
  * (0x02086bc0..0x0208747c: the script-op member-function constants, the
  * mode records and the offset triples) and the controller records at
  * 0x0209f498 with func_0200bec4 and up.
@@ -25,8 +25,6 @@
  *   only take their address.
  * - CleanupResources keeps both null checks. The second is the
  *   inlined deleting destructor.
- * - func_020072c4, the script op just below func_020073a0, stays a shard:
- *   it reads no data, so nothing but call order ties it to this run.
  * - The controller records at 0x0209f498 are read through the separate
  *   data_0209f49c..data_0209f4ae symbols with (char *) stride arithmetic.
  */
@@ -4214,6 +4212,21 @@ int func_020073a0(dCamera_c *cam) {
     func_02007cec(&cam->savedLookAt, (Vector3 *)stackbuf, 0xcc);
     ApproachLinear(cam->savedPos.y, 0, 0x2000);
     ApproachLinear(cam->savedPos.z, -0xc8000, 0x6aaa);
+    return 1;
+}
+
+// @symbol func_020072c4
+/* Script op: ramp mRampSpeed up to 0xf000 and ease savedLookAt and savedPos
+   onto fixed targets, paced by it. Its member-function constant is
+   data_02086ca8. Defined last, so it lands at the run's low edge. */
+int func_020072c4(dCamera_c *cam) {
+    ApproachLinear(cam->mRampSpeed, 0xf000, 0x199);
+    ApproachLinear(cam->savedLookAt.x, 0x7d0000, cam->mRampSpeed);
+    ApproachLinear(cam->savedLookAt.y, 0x4b0000, cam->mRampSpeed / 10);
+    ApproachLinear(cam->savedLookAt.z, 0x3e8000, cam->mRampSpeed / 10);
+    ApproachLinear(cam->savedPos.x, 0, cam->mRampSpeed);
+    ApproachLinear(cam->savedPos.y, 0x4b0000, cam->mRampSpeed >> 1);
+    ApproachLinear(cam->savedPos.z, 0x3e8000, cam->mRampSpeed * 10 / 15);
     return 1;
 }
 }
