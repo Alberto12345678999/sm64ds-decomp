@@ -1878,15 +1878,6 @@ src/unnamed/arm9/0203/func_02030c38.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0203/func_02030ca0.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0203/func_02030dac.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0203/func_02030e4c.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0203/func_02030fa8.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0203/func_02031028.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0203/func_02031154.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0203/func_0203128c.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0203/func_020313d8.c	WEAK-refs-only					0		None		not-in-delinks
-src/unnamed/arm9/0203/func_02031428.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0203/func_020316d8.c	WEAK-refs-only	arm9				1		None		-
-src/unnamed/arm9/0203/func_020318a4.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0203/func_020319fc.c	WEAK-refs-only	arm9				1		None		-
 src/unnamed/arm9/0203/func_02031b84.c	WEAK-refs-only	arm9				1		None		-
 src/unnamed/arm9/0203/func_02031cd4.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0203/func_02031e00.c	PURE-C	arm9				1		None		-

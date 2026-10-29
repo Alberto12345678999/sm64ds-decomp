@@ -10,7 +10,7 @@
  * first). Do not reorder.
  *
  * Note: NumStars is the shared coined star-count helper
- * (src/unnamed/arm9/0203/func_0203128c.c); no header declares it yet.
+ * (src/engine/save/SaveData.cpp); no header declares it yet.
  */
 
 /* daObjMc_Metalnet_c.h FIRST: it pulls in dBgActor_c.h, which must reach

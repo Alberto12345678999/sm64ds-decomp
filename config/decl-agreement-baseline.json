@@ -10628,34 +10628,6 @@
         "return:void *"
       ]
     },
-    "data_0209fc78": {
-      "src/unnamed/arm9/0203/func_020316d8.cpp": [
-        "return:unsigned char []"
-      ]
-    },
-    "data_0209fc88": {
-      "src/unnamed/arm9/0203/func_020316d8.cpp": [
-        "return:unsigned char []"
-      ]
-    },
-    "data_0209fca0": {
-      "src/unnamed/arm9/0203/func_0203128c.c": [
-        "return:unsigned char []"
-      ]
-    },
-    "data_0209fcdc": {
-      "src/unnamed/arm9/0203/func_020316d8.cpp": [
-        "return:unsigned char []"
-      ]
-    },
-    "data_0209fd0c": {
-      "src/unnamed/arm9/0203/func_0203128c.c": [
-        "return:unsigned char *"
-      ],
-      "src/unnamed/arm9/0203/func_020318a4.c": [
-        "return:unsigned char *"
-      ]
-    },
     "data_020a0c68": {
       "src/unnamed/arm9/0207/__sinit_02074fb8.c": [
         "return:void * []"
@@ -19299,20 +19271,6 @@
         "param:#1 int"
       ]
     },
-    "func_020316d8": {
-      "src/unnamed/arm9/0203/func_020318a4.c": [
-        "param:#3 int",
-        "param:#4 int"
-      ]
-    },
-    "func_02031b84": {
-      "src/unnamed/arm9/0203/func_02031154.c": [
-        "param:#1 int"
-      ],
-      "src/unnamed/arm9/0203/func_0203128c.c": [
-        "param:#1 int"
-      ]
-    },
     "func_02033464": {
       "src/unnamed/ov075/func_ov075_02119b34.c": [
         "param:#1 unsigned char",
@@ -20811,9 +20769,6 @@
     "func_02054d88": {
       "src/minigames/d_s_mg_base.cpp": [
         "return:int *"
-      ],
-      "src/unnamed/arm9/0203/func_020319fc.cpp": [
-        "return:char *"
       ]
     },
     "func_02054ea8": {
