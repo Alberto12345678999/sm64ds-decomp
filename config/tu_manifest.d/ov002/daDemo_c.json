@@ -1853,6 +1853,12 @@
           "end": "0x0210b958",
           "differingBytes": 0,
           "firstDiff": null
+        },
+        {
+          "section": ".bss",
+          "start": "0x02110afc",
+          "end": "0x02110e24",
+          "comparison": "NOBITS -- symbol/module gates"
         }
       ],
       "objectAudit": {
