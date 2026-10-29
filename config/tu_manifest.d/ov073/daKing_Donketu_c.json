@@ -3045,12 +3045,12 @@
       "evidence": "Measured native-interface continuation: corresponding raw symbol retains section, offset, size, binding, emitted body and complete relocation graph; only compiler input name @1883 -> @1865 changes. Canonical destination unchanged. | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az) Re-keyed -2 (from @1839) when the thiz alias in func_ov073_021200e0 and the c alias in func_ov073_02120098 were removed."
     },
     {
-      "from": "@1838",
+      "from": "@1843",
       "to": "@1832",
       "evidence": "Measured native-interface continuation: corresponding raw symbol retains section, offset, size, binding, emitted body and complete relocation graph; only compiler input name @1884 -> @1866 changes. Canonical destination unchanged. | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az) Re-keyed -2 (from @1840) when the thiz alias in func_ov073_021200e0 and the c alias in func_ov073_02120098 were removed."
     },
     {
-      "from": "@1839",
+      "from": "@1844",
       "to": "@1833",
       "evidence": "Measured native-interface continuation: corresponding raw symbol retains section, offset, size, binding, emitted body and complete relocation graph; only compiler input name @1885 -> @1867 changes. Canonical destination unchanged. | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az) Re-keyed -2 (from @1841) when the thiz alias in func_ov073_021200e0 and the c alias in func_ov073_02120098 were removed."
     },

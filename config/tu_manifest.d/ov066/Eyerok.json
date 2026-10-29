@@ -3307,17 +3307,17 @@
       "evidence": "Same 12-byte NOBITS registration node at 0x211aec4: unchanged full initializer bytes and R_ARM_ABS32 site 0x211a9e4 (offset 0x5cc), storage value/size/alignment/binding unchanged after the readability pass (dead externs removed, mangled extern calls replaced by member calls, mState typed EyerokState *) moved raw @2179 to @2146; canonical @2176 unchanged; ELF symbol and section indices may shift. | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az) | compiler temp; ApproachLinear's Vector3 overload is now declared in math/Approach.h, retiring this TU's named-parameter local extern, so mwcc emits it under this lower number (re-keyed by address)"
     },
     {
-      "from": "@2124",
+      "from": "@2129",
       "to": "@2177",
       "evidence": "Same 12-byte NOBITS registration node at 0x211afb4: unchanged full initializer bytes and R_ARM_ABS32 site 0x211a9f0 (offset 0x5d8), storage value/size/alignment/binding unchanged after the readability pass (dead externs removed, mangled extern calls replaced by member calls, mState typed EyerokState *) moved raw @2180 to @2147; canonical @2177 unchanged; ELF symbol and section indices may shift. | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az) | compiler temp; ApproachLinear's Vector3 overload is now declared in math/Approach.h, retiring this TU's named-parameter local extern, so mwcc emits it under this lower number (re-keyed by address)"
     },
     {
-      "from": "@2125",
+      "from": "@2130",
       "to": "@2178",
       "evidence": "Same 12-byte NOBITS registration node at 0x211aed0: unchanged full initializer bytes and R_ARM_ABS32 site 0x211a9fc (offset 0x5e4), storage value/size/alignment/binding unchanged after the readability pass (dead externs removed, mangled extern calls replaced by member calls, mState typed EyerokState *) moved raw @2181 to @2148; canonical @2178 unchanged; ELF symbol and section indices may shift. | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az) | compiler temp; ApproachLinear's Vector3 overload is now declared in math/Approach.h, retiring this TU's named-parameter local extern, so mwcc emits it under this lower number (re-keyed by address)"
     },
     {
-      "from": "@2126",
+      "from": "@2131",
       "to": "@2179",
       "evidence": "Same 12-byte NOBITS registration node at 0x211aedc: unchanged full initializer bytes and R_ARM_ABS32 site 0x211aa0c (offset 0x5f4), storage value/size/alignment/binding unchanged after the readability pass (dead externs removed, mangled extern calls replaced by member calls, mState typed EyerokState *) moved raw @2182 to @2149; canonical @2179 unchanged; ELF symbol and section indices may shift. | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az) | compiler temp; ApproachLinear's Vector3 overload is now declared in math/Approach.h, retiring this TU's named-parameter local extern, so mwcc emits it under this lower number (re-keyed by address)"
     },
