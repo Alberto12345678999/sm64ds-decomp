@@ -13526,7 +13526,7 @@
       ]
     },
     "data_ov007_020d7b80": {
-      "src/unnamed/ov007/func_ov007_020ba9bc.c": [
+      "src/ui/menus/unit020b8f50.cpp": [
         "return:char []"
       ]
     },
@@ -13709,10 +13709,7 @@
       "src/unnamed/ov007/func_ov007_020b7090.c": [
         "return:S *"
       ],
-      "src/unnamed/ov007/func_ov007_020ba368.cpp": [
-        "return:unsigned char []"
-      ],
-      "src/unnamed/ov007/func_ov007_020bb4b0.cpp": [
+      "src/ui/menus/unit020b8f50.cpp": [
         "return:unsigned char []"
       ],
       "src/unnamed/ov007/func_ov007_020bca40.c": [
@@ -13856,63 +13853,21 @@
       ]
     },
     "data_ov007_02104b9c": {
-      "src/unnamed/ov007/func_ov007_020b9770.cpp": [
-        "return:int *"
-      ],
-      "src/unnamed/ov007/func_ov007_020b9f0c.c": [
-        "return:int *"
-      ],
-      "src/unnamed/ov007/func_ov007_020b9fc0.cpp": [
-        "return:void *"
-      ],
-      "src/unnamed/ov007/func_ov007_020ba368.cpp": [
-        "return:unsigned char []"
-      ],
-      "src/unnamed/ov007/func_ov007_020bbd24.cpp": [
+      "src/ui/menus/unit020b8f50.cpp": [
+        "return:int *",
+        "return:void *",
+        "return:unsigned char []",
         "return:B9C *"
       ]
     },
     "data_ov007_02104ba0": {
-      "src/unnamed/ov007/func_ov007_020b8f50.c": [
-        "return:int *"
-      ],
-      "src/unnamed/ov007/func_ov007_020b8f64.c": [
-        "return:int *"
-      ],
-      "src/unnamed/ov007/func_ov007_020b8f78.c": [
-        "return:int *"
-      ],
-      "src/unnamed/ov007/func_ov007_020b8f8c.c": [
-        "return:int *"
-      ],
-      "src/unnamed/ov007/func_ov007_020b8fa0.c": [
-        "return:int *"
-      ],
-      "src/unnamed/ov007/func_ov007_020b8fb4.c": [
-        "return:int * []"
-      ],
-      "src/unnamed/ov007/func_ov007_020b9770.cpp": [
-        "return:int *"
-      ],
-      "src/unnamed/ov007/func_ov007_020b9f0c.c": [
-        "return:char * *"
-      ],
-      "src/unnamed/ov007/func_ov007_020b9fc0.cpp": [
-        "return:void *"
-      ],
-      "src/unnamed/ov007/func_ov007_020ba2e0.c": [
-        "return:G *"
-      ],
-      "src/unnamed/ov007/func_ov007_020ba368.cpp": [
-        "return:unsigned char []"
-      ],
-      "src/unnamed/ov007/func_ov007_020bad8c.cpp": [
-        "return:unsigned char []"
-      ],
-      "src/unnamed/ov007/func_ov007_020bb4b0.cpp": [
-        "return:unsigned char []"
-      ],
-      "src/unnamed/ov007/func_ov007_020bbd24.cpp": [
+      "src/ui/menus/unit020b8f50.cpp": [
+        "return:int *",
+        "return:int * []",
+        "return:char * *",
+        "return:void *",
+        "return:G *",
+        "return:unsigned char []",
         "return:BA0 *"
       ]
     },
@@ -24714,12 +24669,12 @@
       ]
     },
     "func_ov007_020baa10": {
-      "src/unnamed/ov007/func_ov007_020ba9bc.c": [
+      "src/ui/menus/unit020b8f50.cpp": [
         "return:int"
       ]
     },
     "func_ov007_020bad8c": {
-      "src/unnamed/ov007/func_ov007_020ba9bc.c": [
+      "src/ui/menus/unit020b8f50.cpp": [
         "return:int"
       ]
     },
@@ -24803,18 +24758,9 @@
       "src/unnamed/ov007/func_ov007_020b7a78.c": [
         "arity:1"
       ],
-      "src/unnamed/ov007/func_ov007_020b9ca8.cpp": [
-        "arity:1"
-      ],
-      "src/unnamed/ov007/func_ov007_020ba368.cpp": [
-        "arity:1"
-      ],
-      "src/unnamed/ov007/func_ov007_020bb09c.c": [
+      "src/ui/menus/unit020b8f50.cpp": [
         "arity:1",
         "return:int"
-      ],
-      "src/unnamed/ov007/func_ov007_020bb4b0.cpp": [
-        "arity:1"
       ],
       "src/ui/menus/unit020bf690.cpp": [
         "arity:1"
@@ -24886,7 +24832,7 @@
       ]
     },
     "func_ov007_020bfe4c": {
-      "src/unnamed/ov007/func_ov007_020b9ca8.cpp": [
+      "src/ui/menus/unit020b8f50.cpp": [
         "param:#5 int *"
       ],
       "src/unnamed/ov007/func_ov007_020bf630.c": [
@@ -25281,7 +25227,7 @@
         "param:#3 unsigned short",
         "return:short"
       ],
-      "src/unnamed/ov007/func_ov007_020b91b4.cpp": [
+      "src/ui/menus/unit020b8f50.cpp": [
         "return:int"
       ],
       "src/unnamed/ov007/func_ov007_020c93c4.c": [
@@ -25433,7 +25379,7 @@
       "src/unnamed/ov007/func_ov007_020b7594.c": [
         "param:#2 int"
       ],
-      "src/unnamed/ov007/func_ov007_020b9880.c": [
+      "src/ui/menus/unit020b8f50.cpp": [
         "param:#2 int",
         "return:void *"
       ],
@@ -25611,7 +25557,7 @@
         "param:#1 char *",
         "param:#2 char *"
       ],
-      "src/unnamed/ov007/func_ov007_020b9880.c": [
+      "src/ui/menus/unit020b8f50.cpp": [
         "param:#2 int"
       ],
       "src/unnamed/ov007/func_ov007_020bf57c.c": [
@@ -25629,7 +25575,7 @@
       "src/unnamed/ov007/func_ov007_020b4bd4.cpp": [
         "param:#1 int"
       ],
-      "src/unnamed/ov007/func_ov007_020b9770.cpp": [
+      "src/ui/menus/unit020b8f50.cpp": [
         "param:#1 int"
       ]
     },
@@ -25647,41 +25593,33 @@
       "src/unnamed/ov007/func_ov007_020b8714.c": [
         "return:Obj *"
       ],
-      "src/unnamed/ov007/func_ov007_020b9880.c": [
+      "src/ui/menus/unit020b8f50.cpp": [
         "return:void *"
       ]
     },
     "func_ov007_020c4e98": {
-      "src/unnamed/ov007/func_ov007_020b91b4.cpp": [
+      "src/ui/menus/unit020b8f50.cpp": [
         "param:#6 int"
       ]
     },
     "func_ov007_020c4f50": {
-      "src/unnamed/ov007/func_ov007_020b91b4.cpp": [
+      "src/ui/menus/unit020b8f50.cpp": [
         "arity:5"
       ]
     },
     "func_ov007_020c5188": {
-      "src/unnamed/ov007/func_ov007_020ba9bc.c": [
+      "src/ui/menus/unit020b8f50.cpp": [
         "return:int"
       ]
     },
     "func_ov007_020c55bc": {
-      "src/unnamed/ov007/func_ov007_020ba368.cpp": [
-        "param:#1 int"
-      ],
-      "src/unnamed/ov007/func_ov007_020bad8c.cpp": [
-        "param:#1 int"
-      ],
-      "src/unnamed/ov007/func_ov007_020bb4b0.cpp": [
-        "param:#1 int"
-      ],
-      "src/unnamed/ov007/func_ov007_020bbc08.c": [
+      "src/ui/menus/unit020b8f50.cpp": [
+        "param:#1 int",
         "param:#1 char *"
       ]
     },
     "func_ov007_020c5854": {
-      "src/unnamed/ov007/func_ov007_020ba368.cpp": [
+      "src/ui/menus/unit020b8f50.cpp": [
         "param:#1 int",
         "param:#3 int",
         "param:#4 int",
@@ -25689,18 +25627,18 @@
       ]
     },
     "func_ov007_020c5948": {
-      "src/unnamed/ov007/func_ov007_020b9ca8.cpp": [
+      "src/ui/menus/unit020b8f50.cpp": [
         "param:#2 int *"
       ]
     },
     "func_ov007_020c5c14": {
-      "src/unnamed/ov007/func_ov007_020bbc08.c": [
+      "src/ui/menus/unit020b8f50.cpp": [
         "param:#1 char *",
         "param:#2 char *"
       ]
     },
     "func_ov007_020c6174": {
-      "src/unnamed/ov007/func_ov007_020bb4b0.cpp": [
+      "src/ui/menus/unit020b8f50.cpp": [
         "param:#1 char *"
       ]
     },
@@ -25715,17 +25653,17 @@
       ]
     },
     "func_ov007_020c6550": {
-      "src/unnamed/ov007/func_ov007_020b9f0c.c": [
+      "src/ui/menus/unit020b8f50.cpp": [
         "return:void"
       ]
     },
     "func_ov007_020c65bc": {
-      "src/unnamed/ov007/func_ov007_020ba05c.c": [
+      "src/ui/menus/unit020b8f50.cpp": [
         "param:#1 char *"
       ]
     },
     "func_ov007_020c6684": {
-      "src/unnamed/ov007/func_ov007_020b9770.cpp": [
+      "src/ui/menus/unit020b8f50.cpp": [
         "param:#1 int"
       ]
     },
@@ -25738,7 +25676,7 @@
       ]
     },
     "func_ov007_020c690c": {
-      "src/unnamed/ov007/func_ov007_020b9880.c": [
+      "src/ui/menus/unit020b8f50.cpp": [
         "param:#5 void *",
         "param:#6 void *"
       ]
@@ -25924,7 +25862,7 @@
         "arity:1",
         "return:void"
       ],
-      "src/unnamed/ov007/func_ov007_020b9770.cpp": [
+      "src/ui/menus/unit020b8f50.cpp": [
         "arity:1",
         "return:void"
       ],
@@ -25970,7 +25908,7 @@
       "src/ui/menus/unit020b2cdc.cpp": [
         "param:#1 int"
       ],
-      "src/unnamed/ov007/func_ov007_020b9640.c": [
+      "src/ui/menus/unit020b8f50.cpp": [
         "param:#1 T *",
         "return:int"
       ],
@@ -26001,7 +25939,7 @@
         "arity:1",
         "return:void"
       ],
-      "src/unnamed/ov007/func_ov007_020b9770.cpp": [
+      "src/ui/menus/unit020b8f50.cpp": [
         "arity:1",
         "return:void"
       ]
@@ -26019,7 +25957,7 @@
         "param:#1 int",
         "return:int"
       ],
-      "src/unnamed/ov007/func_ov007_020b9880.c": [
+      "src/ui/menus/unit020b8f50.cpp": [
         "param:#1 int"
       ]
     },
