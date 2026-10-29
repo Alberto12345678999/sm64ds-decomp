@@ -3221,7 +3221,7 @@ matched: yes</title></rect><rect x="99.84" y="218.29" width="111.12" height="16.
 module: arm9
 addr: 0x0201c0b8
 size: 2676 bytes
-matched: yes</title></rect><rect x="210.96" y="218.29" width="3.32" height="16.15" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0201cb2c
+matched: yes</title></rect><rect x="210.96" y="218.29" width="3.32" height="16.15" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7Message14SetTextGlobalsEv
 module: arm9
 addr: 0x0201cb2c
 size: 80 bytes
@@ -3357,7 +3357,7 @@ matched: yes</title></rect><rect x="209.91" y="248.37" width="18.11" height="11.
 module: arm9
 addr: 0x0201fcd4
 size: 308 bytes
-matched: yes</title></rect><rect x="228.02" y="248.37" width="11.29" height="11.41" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0201fe08
+matched: yes</title></rect><rect x="228.02" y="248.37" width="11.29" height="11.41" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7Message8LoadTextEv
 module: arm9
 addr: 0x0201fe08
 size: 192 bytes
@@ -4685,7 +4685,7 @@ matched: yes</title></rect><rect x="211.76" y="417.40" width="3.91" height="16.4
 module: arm9
 addr: 0x02033a80
 size: 96 bytes
-matched: yes</title></rect><rect x="215.67" y="417.40" width="8.80" height="16.47" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02033ae0
+matched: yes</title></rect><rect x="215.67" y="417.40" width="8.80" height="16.47" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7Message24DisplayOptionsMenuTextVSEs
 module: arm9
 addr: 0x02033ae0
 size: 216 bytes
@@ -4709,7 +4709,7 @@ matched: yes</title></rect><rect x="303.99" y="417.40" width="7.66" height="16.4
 module: arm9
 addr: 0x02034358
 size: 188 bytes
-matched: yes</title></rect><rect x="311.64" y="417.40" width="9.78" height="16.47" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02034414
+matched: yes</title></rect><rect x="311.64" y="417.40" width="9.78" height="16.47" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7Message21DisplayDontSaveTextVSEt
 module: arm9
 addr: 0x02034414
 size: 240 bytes
