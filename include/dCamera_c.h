@@ -242,6 +242,28 @@ struct dCamera_c : dView_c {
     void SetFlag_3();
     void SetLookAt(const Vector3 & lookAt_);
     void SetPos(const Vector3 & pos_);
+
+    /* State changes. Parameter names stay off the declarations: a named
+       parameter in this header renumbers @NNN in every includer. */
+    void func_0200d81c(int);
+    void func_0200d7e0(int);
+    void func_0200d7a4(u8);
+    void func_0200d768(unsigned char);
+    void func_0200d72c(unsigned char);
+    void func_0200d6f0(unsigned char);
+    void func_0200d6b4(unsigned char);
+    void func_0200d678(unsigned char);
+    void func_0200d63c(unsigned char);
+    void func_0200d5fc(int);
+    void func_0200d5c0(unsigned char);
+    void func_0200d580(int);
+    void func_0200d544(unsigned char);
+    void func_0200d508(unsigned char);
+    void func_0200d474(unsigned char);
+    void func_0200d438(unsigned char);
+    void func_0200d3f8(unsigned char, void *);
+    void func_0200d148(unsigned char);
+    void func_0200d10c(unsigned char);
 };
 
 #ifndef SM64DS_PLATFORM_PC

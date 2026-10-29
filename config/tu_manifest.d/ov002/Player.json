@@ -8966,18 +8966,18 @@
       "droppedSections": [
         19,
         214,
-        794,
-        818,
-        824,
-        1002,
-        1180,
-        1181,
-        1188,
-        1189,
-        1190,
-        1191,
+        809,
+        833,
+        839,
+        1017,
+        1195,
+        1196,
+        1203,
+        1204,
         1205,
-        1206
+        1206,
+        1840,
+        1841
       ],
       "data": [
         "_ZTV6Player"
@@ -9170,6 +9170,83 @@
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "mwcc emits the function-local static local; symbols.txt homes it at 0x0210f344"
+    }
+  ],
+  "defined_symbol_renames": [
+    {
+      "from": "_ZGVsLevelIntroOff$4422",
+      "to": "_ZGVsLevelIntroOff$4424",
+      "evidence": "compiler temp; named-parameter dCamera_c externs deleted in Player.cpp lowered this uniquifier by 2 (measured; daBtn_c and daWanwan_c header delta 0)"
+    },
+    {
+      "from": "@4425",
+      "to": "@4427",
+      "evidence": "compiler temp; named-parameter dCamera_c externs deleted in Player.cpp lowered this uniquifier by 2 (measured; daBtn_c and daWanwan_c header delta 0)"
+    },
+    {
+      "from": "sLevelIntroOff$4422",
+      "to": "sLevelIntroOff$4424",
+      "evidence": "compiler temp; named-parameter dCamera_c externs deleted in Player.cpp lowered this uniquifier by 2 (measured; daBtn_c and daWanwan_c header delta 0)"
+    },
+    {
+      "from": "_ZGVsTalkOff$4644",
+      "to": "_ZGVsTalkOff$4648",
+      "evidence": "compiler temp; named-parameter dCamera_c externs deleted in Player.cpp lowered this uniquifier by 4 (measured; daBtn_c and daWanwan_c header delta 0)"
+    },
+    {
+      "from": "@4647",
+      "to": "@4651",
+      "evidence": "compiler temp; named-parameter dCamera_c externs deleted in Player.cpp lowered this uniquifier by 4 (measured; daBtn_c and daWanwan_c header delta 0)"
+    },
+    {
+      "from": "sTalkOff$4644",
+      "to": "sTalkOff$4648",
+      "evidence": "compiler temp; named-parameter dCamera_c externs deleted in Player.cpp lowered this uniquifier by 4 (measured; daBtn_c and daWanwan_c header delta 0)"
+    },
+    {
+      "from": "_ZGVsAnchorOff$6218",
+      "to": "_ZGVsAnchorOff$6223",
+      "evidence": "compiler temp; named-parameter dCamera_c externs deleted in Player.cpp lowered this uniquifier by 5 (measured; daBtn_c and daWanwan_c header delta 0)"
+    },
+    {
+      "from": "@6221",
+      "to": "@6226",
+      "evidence": "compiler temp; named-parameter dCamera_c externs deleted in Player.cpp lowered this uniquifier by 5 (measured; daBtn_c and daWanwan_c header delta 0)"
+    },
+    {
+      "from": "sAnchorOff$6218",
+      "to": "sAnchorOff$6223",
+      "evidence": "compiler temp; named-parameter dCamera_c externs deleted in Player.cpp lowered this uniquifier by 5 (measured; daBtn_c and daWanwan_c header delta 0)"
+    },
+    {
+      "from": "_ZGVsDoorMsgOff$6246",
+      "to": "_ZGVsDoorMsgOff$6251",
+      "evidence": "compiler temp; named-parameter dCamera_c externs deleted in Player.cpp lowered this uniquifier by 5 (measured; daBtn_c and daWanwan_c header delta 0)"
+    },
+    {
+      "from": "@6249",
+      "to": "@6254",
+      "evidence": "compiler temp; named-parameter dCamera_c externs deleted in Player.cpp lowered this uniquifier by 5 (measured; daBtn_c and daWanwan_c header delta 0)"
+    },
+    {
+      "from": "sDoorMsgOff$6246",
+      "to": "sDoorMsgOff$6251",
+      "evidence": "compiler temp; named-parameter dCamera_c externs deleted in Player.cpp lowered this uniquifier by 5 (measured; daBtn_c and daWanwan_c header delta 0)"
+    },
+    {
+      "from": "_ZGVsStarDoorOff$6911",
+      "to": "_ZGVsStarDoorOff$6917",
+      "evidence": "compiler temp; named-parameter dCamera_c externs deleted in Player.cpp lowered this uniquifier by 6 (measured; daBtn_c and daWanwan_c header delta 0)"
+    },
+    {
+      "from": "@6914",
+      "to": "@6920",
+      "evidence": "compiler temp; named-parameter dCamera_c externs deleted in Player.cpp lowered this uniquifier by 6 (measured; daBtn_c and daWanwan_c header delta 0)"
+    },
+    {
+      "from": "sStarDoorOff$6911",
+      "to": "sStarDoorOff$6917",
+      "evidence": "compiler temp; named-parameter dCamera_c externs deleted in Player.cpp lowered this uniquifier by 6 (measured; daBtn_c and daWanwan_c header delta 0)"
     }
   ],
   "relocations": [

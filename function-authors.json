@@ -643,11 +643,11 @@
     },
     "arm9:0x0200d10c": {
       "author": "tangosdev",
-      "name": "func_0200d10c"
+      "name": "_ZN9dCamera_c13func_0200d10cEh"
     },
     "arm9:0x0200d148": {
       "author": "tangosdev",
-      "name": "func_0200d148"
+      "name": "_ZN9dCamera_c13func_0200d148Eh"
     },
     "arm9:0x0200d184": {
       "author": "tangosdev",
@@ -663,15 +663,15 @@
     },
     "arm9:0x0200d3f8": {
       "author": "tangosdev",
-      "name": "func_0200d3f8"
+      "name": "_ZN9dCamera_c13func_0200d3f8EhPv"
     },
     "arm9:0x0200d438": {
       "author": "tangosdev",
-      "name": "func_0200d438"
+      "name": "_ZN9dCamera_c13func_0200d438Eh"
     },
     "arm9:0x0200d474": {
       "author": "tangosdev",
-      "name": "func_0200d474"
+      "name": "_ZN9dCamera_c13func_0200d474Eh"
     },
     "arm9:0x0200d4b0": {
       "author": "tangosdev",
@@ -679,59 +679,59 @@
     },
     "arm9:0x0200d508": {
       "author": "tangosdev",
-      "name": "func_0200d508"
+      "name": "_ZN9dCamera_c13func_0200d508Eh"
     },
     "arm9:0x0200d544": {
       "author": "tangosdev",
-      "name": "func_0200d544"
+      "name": "_ZN9dCamera_c13func_0200d544Eh"
     },
     "arm9:0x0200d580": {
       "author": "tangosdev",
-      "name": "func_0200d580"
+      "name": "_ZN9dCamera_c13func_0200d580Ei"
     },
     "arm9:0x0200d5c0": {
       "author": "tangosdev",
-      "name": "func_0200d5c0"
+      "name": "_ZN9dCamera_c13func_0200d5c0Eh"
     },
     "arm9:0x0200d5fc": {
       "author": "tangosdev",
-      "name": "func_0200d5fc"
+      "name": "_ZN9dCamera_c13func_0200d5fcEi"
     },
     "arm9:0x0200d63c": {
       "author": "tangosdev",
-      "name": "func_0200d63c"
+      "name": "_ZN9dCamera_c13func_0200d63cEh"
     },
     "arm9:0x0200d678": {
       "author": "tangosdev",
-      "name": "func_0200d678"
+      "name": "_ZN9dCamera_c13func_0200d678Eh"
     },
     "arm9:0x0200d6b4": {
       "author": "tangosdev",
-      "name": "func_0200d6b4"
+      "name": "_ZN9dCamera_c13func_0200d6b4Eh"
     },
     "arm9:0x0200d6f0": {
       "author": "tangosdev",
-      "name": "func_0200d6f0"
+      "name": "_ZN9dCamera_c13func_0200d6f0Eh"
     },
     "arm9:0x0200d72c": {
       "author": "tangosdev",
-      "name": "func_0200d72c"
+      "name": "_ZN9dCamera_c13func_0200d72cEh"
     },
     "arm9:0x0200d768": {
       "author": "tangosdev",
-      "name": "func_0200d768"
+      "name": "_ZN9dCamera_c13func_0200d768Eh"
     },
     "arm9:0x0200d7a4": {
       "author": "tangosdev",
-      "name": "func_0200d7a4"
+      "name": "_ZN9dCamera_c13func_0200d7a4Eh"
     },
     "arm9:0x0200d7e0": {
       "author": "tangosdev",
-      "name": "func_0200d7e0"
+      "name": "_ZN9dCamera_c13func_0200d7e0Ei"
     },
     "arm9:0x0200d81c": {
       "author": "tangosdev",
-      "name": "func_0200d81c"
+      "name": "_ZN9dCamera_c13func_0200d81cEi"
     },
     "arm9:0x0200d858": {
       "author": "tangosdev",

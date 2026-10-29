@@ -4272,9 +4272,7 @@ int Player::func_ov002_020c4188()
     extern int data_0209b454;
     extern short data_ov002_020ff26c[];
     extern unsigned char data_0209d660;
-    extern void func_0200d3f8(void*, unsigned char playerID, void*);
     extern void func_0201f32c(int arg0);
-    extern void func_0200d81c(void*, int playerID);
     extern void func_ov002_020e444c(void*);
     int* p;
 
@@ -4291,7 +4289,7 @@ int Player::func_ov002_020c4188()
             goto case1;
         }
         if (mEventId < 7) {
-            func_0200d3f8(p, mPlayerNo, 0);
+            ((::dCamera_c *)p)->func_0200d3f8(mPlayerNo, 0);
         } else {
             ((dCamera_c *)p)->SetFlag_3();
         }
@@ -4328,7 +4326,7 @@ int Player::func_ov002_020c4188()
         if (mEventId >= 7) {
             ((dCamera_c *)p)->mFlags &= ~8;
         }
-        func_0200d81c(p, mPlayerNo);
+        ((::dCamera_c *)p)->func_0200d81c(mPlayerNo);
         if (mEventId == 6) {
             daSoundObj_c *obj = (daSoundObj_c *)mAttachedActor;
             if (obj->mSoundID == 0x2a) {
@@ -4565,8 +4563,6 @@ int Player::St_Talk_Main()
 {
     extern int PlayerChangeMusicVolumeHold(u32 vol, int t);
     extern void func_0201f32c(s16 a);
-    extern void func_0200d3f8(void*, u8 playerID, void*);
-    extern void func_0200d81c(void*, u8 playerID);
     extern void Player_AdvanceAnims(void*);
     extern int data_0209b454;
     extern char* data_0209f318;
@@ -4575,7 +4571,6 @@ int Player::St_Talk_Main()
     extern Player::State data_ov002_02110514;
     extern Player::State data_ov002_0211013c;
     extern void func_0201fc88(s16);
-    extern void func_0200d7a4(void*, u8);
     extern int func_ov100_02144fcc(void);
     if (mRestoreMusicVolume != 0) {
         if (Sound::ChangeMusicVolume(0x7f, 0x7222) != 0)
@@ -4610,10 +4605,10 @@ int Player::St_Talk_Main()
             char* cam = data_0209f318;
             switch ((mStateArg >> 2) & 3) {
             case 0:
-                func_0200d3f8(cam, mPlayerNo, &mStateTargetX);
+                ((::dCamera_c *)cam)->func_0200d3f8(mPlayerNo, &mStateTargetX);
                 break;
             case 1:
-                func_0200d7a4(cam, mPlayerNo);
+                ((::dCamera_c *)cam)->func_0200d7a4(mPlayerNo);
                 break;
             }
         }
@@ -4647,7 +4642,7 @@ int Player::St_Talk_Main()
             mStateWork = 0;
             mPrevAngleY = mAngleY;
             char* cam = data_0209f318;
-            func_0200d81c(cam, mPlayerNo);
+            ((::dCamera_c *)cam)->func_0200d81c(mPlayerNo);
             ((dCamera_c *)cam)->mFlags &= ~8;
             mHeadRotMode = 4;
         }
@@ -6587,7 +6582,6 @@ void Player::func_ov002_020c7ff8()
 {
     extern void *data_0209f318;
     extern void func_0200d4b0(void*, u8 playerID, int x);
-    extern void func_0200d508(void*, u8 playerID);
     u8 s = mNoCtrlKind;
     void *g = data_0209f318;
     if (s == 0 || s == 1 || s == 0x11) {
@@ -6595,7 +6589,7 @@ void Player::func_ov002_020c7ff8()
     } else if (s == 3) {
         func_0200d4b0(g, mPlayerNo, 5);
     } else {
-        func_0200d508(g, mPlayerNo);
+        ((::dCamera_c *)g)->func_0200d508(mPlayerNo);
     }
     if (mIsUnderwater != 0) {
         this->SetAnim(0xac, 0x40000000, 0x1000, 0);
@@ -7256,7 +7250,6 @@ int Player::func_ov002_020c9288(){
 extern "C" {
 int Player::func_ov002_020c92fc()
 {
-    extern void func_0200d3f8(void*, unsigned char playerID, void*);
     extern int data_0209b454;
     extern unsigned char data_0209f2d8;
     extern int data_0209caa0[];
@@ -7292,7 +7285,7 @@ int Player::func_ov002_020c92fc()
                     mHatCharacter == 0 && mPrevCharacter == 3) {
                     mStateStep = 0xa;
                     mStatePhase = 0;
-                    func_0200d3f8(data_0209f318, mPlayerNo, 0);
+                    ((::dCamera_c *)data_0209f318)->func_0200d3f8(mPlayerNo, 0);
                     return 0;
                 }
             }
@@ -7483,7 +7476,6 @@ void Player::func_ov002_020c9840(){
 // @symbol _ZN6Player19func_ov002_020c98a4Ev
 extern "C" {
 void Player::func_ov002_020c98a4(){
-    extern void func_0200d148(void*, unsigned char);
     extern void* data_0209f318[];
   mHasNoCap=0;
   mStateStep=0x18;
@@ -7492,7 +7484,7 @@ void Player::func_ov002_020c98a4(){
   this->mHorzSpeed=0;
   this->mVertSpeed=0;
   mStateArg=0;
-  func_0200d148(data_0209f318[0], mPlayerNo);
+  ((::dCamera_c *)data_0209f318[0])->func_0200d148(mPlayerNo);
 }
 }
 
@@ -8387,7 +8379,6 @@ extern "C" {
 int Player::St_CameraZoom_Init()
 {
     extern int func_0200d064(void*, int playerID);
-    extern void func_0200d7e0(void*, int playerID);
     extern struct CameraRaw* data_0209f318;
     extern unsigned char data_0209f28c;
   *(int*)((char*)&mHorzSpeed)=0;
@@ -8395,7 +8386,7 @@ int Player::St_CameraZoom_Init()
   struct CameraRaw* cam = data_0209f318;
   int pid = *(unsigned char*)((char*)&mPlayerNo);
   func_0200d064(cam, pid);
-  func_0200d7e0(cam, *(unsigned char*)((char*)&mPlayerNo));
+  ((::dCamera_c *)cam)->func_0200d7e0(*(unsigned char*)((char*)&mPlayerNo));
   this->SetAnim(0x47, 0, 0x1000, 0);
   data_0209f28c=0;
   return 1;
@@ -8533,14 +8524,13 @@ int Player::St_Headstand_Main()
 extern "C" {
 int Player::St_Headstand_Init()
 {
-    extern void func_0200d580(void*, int playerID);
     extern struct CameraRaw *data_0209f318;
     this->SetAnim(0x1e, 0x40000000, 0x1000, 0);
     *(unsigned char *)((char *)&mStateStep) = 2;
     *(int *)((char *)&mVertAccel) = 0;
     *(int *)((char *)&mHorzSpeed) = 0;
     *(int *)((char *)&mVertSpeed) = 0;
-    func_0200d580(data_0209f318, *(unsigned char *)((char *)&mPlayerNo));
+    ((::dCamera_c *)data_0209f318)->func_0200d580(*(unsigned char *)((char *)&mPlayerNo));
     *(unsigned char *)((char *)&mHideShadow) = 1;
     return 1;
 }
@@ -8666,8 +8656,6 @@ int Player::St_Climb_Cleanup()
 extern "C" {
 int Player::St_Climb_Main() {
     extern void Vec3_RotateYAndTranslate(void*, void*, s16 angle, void*);
-    extern void func_0200d5c0(void*, u8 playerID);
-    extern void func_0200d5fc(void*, s32 playerID);
     extern void ApproachAngle(void*, s16 target, s32 divisor, s32 band, s32 maxStep);
     extern int func_ov002_020cb354(void*);
     extern s16 GetAngleToCamera(u8 i);
@@ -8709,13 +8697,13 @@ int Player::St_Climb_Main() {
     {
         void* cam = data_0209f318;
         if (mClimbClsn->flags & 0x1000000) {
-            func_0200d5c0(cam, mPlayerNo);
+            ((::dCamera_c *)cam)->func_0200d5c0(mPlayerNo);
         } else {
             s32 v = FX_MUL(mClimbClsn->height, 0xb33);
             if (v <= mAttachOffsetY) {
-                func_0200d5c0(cam, mPlayerNo);
+                ((::dCamera_c *)cam)->func_0200d5c0(mPlayerNo);
             } else {
-                func_0200d5fc(cam, mPlayerNo);
+                ((::dCamera_c *)cam)->func_0200d5fc(mPlayerNo);
             }
         }
     }
@@ -10187,7 +10175,6 @@ int Player::St_Swim_Init()
 {
     extern void Player_ReleaseHeldActor(void*);
     extern int data_0209f318[];
-    extern void func_0200d768(void*, unsigned char);
   Player_ReleaseHeldActor(((char*)this));
   Sound::PlayCharVoice(mCharacter, 0x2e, mCamSpacePos);
   this->SetAnim(0xa7, 0x40000000, 0x1000, 0);
@@ -10195,7 +10182,7 @@ int Player::St_Swim_Init()
   mVertAccel=0;
   mTerminalVelocity=-0xc000;
   mIsUnderwater=1;
-  func_0200d768(*(void**)data_0209f318,mPlayerNo);
+  ((::dCamera_c *)*(void**)data_0209f318)->func_0200d768(mPlayerNo);
   mPrevVertSpeed=mVertSpeed;
   mHorzSpeed=0;
   mVertSpeed=0;
@@ -10425,19 +10412,17 @@ void func_ov002_020ceb7c(struct CameraRaw *c)
     Player *self = (Player *)c;
     extern struct CameraRaw *data_0209f318;
     extern int data_0209f32c;
-    extern void func_0200d768(void*, unsigned char playerID);
-    extern void func_0200d72c(void*, unsigned char playerID);
     struct CameraRaw *g = data_0209f318;
 
     if (self->mStateWork & 2) {
         if (data_0209f32c - 0x50000 - self->mPosY >= 0x64000)
             return;
-        func_0200d768(g, self->mPlayerNo);
+        ((::dCamera_c *)g)->func_0200d768(self->mPlayerNo);
         *LAUNDER_U8(&self->mStateWork) ^= 2;
     } else {
         if (data_0209f32c - 0x50000 - self->mPosY <= 0x12c000)
             return;
-        func_0200d72c(g, self->mPlayerNo);
+        ((::dCamera_c *)g)->func_0200d72c(self->mPlayerNo);
         *LAUNDER_U8(&self->mStateWork) |= 2;
     }
 }
@@ -17437,13 +17422,12 @@ extern "C" {
 int Player::St_GrabBowserTail_Init()
 {
     extern int* data_0209f318;
-    extern void func_0200d10c(void*, unsigned char);
     this->SetAnim(0x81, 0x40000000, 0x1000, 0);
     mStateStep = 0;
     mAngleYSpeed = 0;
     mStateWork = 0;
     mStateArg = 0;
-    func_0200d10c((void *)data_0209f318, mPlayerNo);
+    ((::dCamera_c *)data_0209f318)->func_0200d10c(mPlayerNo);
     return 1;
 }
 }
@@ -18876,11 +18860,10 @@ extern "C" {
 int Player::St_ButtSlide_Init() {
     struct dCamera_c;
     extern struct dCamera_c *data_0209f318;
-    extern void func_0200d544(struct dCamera_c * thiz, unsigned char playerID);
     this->SetAnim(0x41, 0x40000000, 0x1000, 0);
     mStateStep = 0;
     if (mSlideType) {
-        func_0200d544(data_0209f318, mPlayerNo);
+        ((::dCamera_c *)data_0209f318)->func_0200d544(mPlayerNo);
     }
     mStatePhase = 0;
     mStateArg = mSlideType;
@@ -19106,11 +19089,10 @@ extern "C" {
 int Player::St_StomachSlide_Init() {
     struct dCamera_c;
     extern struct dCamera_c *data_0209f318;
-    extern void func_0200d544(struct dCamera_c * thiz, unsigned char playerID);
     this->SetAnim(0x40, 0x40000000, 0x1000, 0);
     mStateStep = 0;
     if (mSlideType) {
-        func_0200d544(data_0209f318, mPlayerNo);
+        ((::dCamera_c *)data_0209f318)->func_0200d544(mPlayerNo);
     }
     mStateWork = 0;
     mStatePhase = 0;
@@ -19744,14 +19726,13 @@ extern "C" {
 int Player::St_TornadoSpin_Init() {
     extern int Player_ReleaseHeldActor(void *);
     extern int data_0209f318[];
-    extern void func_0200d6b4(void *, unsigned char);
     Player_ReleaseHeldActor(((char *)this));
     this->SetAnim(0x5f, 0, 0x1000, 0);
     mVertSpeed = 0;
     mVertAccel = 0;
     mIsAirborne = 1;
     mLandSoundPlayed = 0;
-    func_0200d6b4(*(void **)data_0209f318, mPlayerNo);
+    ((::dCamera_c *)*(void **)data_0209f318)->func_0200d6b4(mPlayerNo);
     mAttachOffsetY = mPosY - ((dActor_c *)mAttachedActor)->mPosY;
     Sound::PlayCharVoice(mCharacter, 0x26, mCamSpacePos);
     return 1;
@@ -19952,7 +19933,6 @@ int Player::St_Balloon_Init() {
     extern int Player_ReleaseHeldActor(void *);
     extern int data_0209f318[];
     extern int data_ov002_0210e750[];
-    extern void func_0200d63c(void *, unsigned char);
     Player_ReleaseHeldActor(((char *)this));
     mIsInAirState = 1;
     mIsFallScreaming = 0;
@@ -19962,7 +19942,7 @@ int Player::St_Balloon_Init() {
         mVertSpeed = -0x10000;
     mHorzSpeed = 0;
     mModelOffsetY = 0x64000;
-    func_0200d63c((void *)data_0209f318[0], mPlayerNo);
+    ((::dCamera_c *)data_0209f318[0])->func_0200d63c(mPlayerNo);
     mAngleYSpeed = 0x100;
     mAngleXSpeed = 0x100;
     mPrevVertSpeed = mVertSpeed;
@@ -20087,13 +20067,12 @@ int Player::St_WindCarry_Init()
 {
     extern int func_ov002_020da9d4(void*);
     extern int data_0209f318[];
-    extern void func_0200d63c(void*, unsigned char);
   func_ov002_020da9d4(((char*)this));
   this->SetAnim(0x4a, 0x40000000, 0x1000, 0);
   mVertSpeed=0;
   mIsAirborne=1;
   mLandSoundPlayed=0;
-  func_0200d63c((void*)data_0209f318[0], mPlayerNo);
+  ((::dCamera_c *)data_0209f318[0])->func_0200d63c(mPlayerNo);
   return 1;
 }
 }
@@ -20190,7 +20169,6 @@ extern "C" {
 int Player::St_Cannon_Main()
 {
     extern short GetAngleToCamera(int i);
-    extern void func_0200d6f0(void* thiz, u8 pid);
     extern void func_02012694(u32 id, void* v);
     extern int atan2_hold_Player_3(int a, int b);
     extern void Player_AdvanceAnims(void* c);
@@ -20219,7 +20197,7 @@ int Player::St_Cannon_Main()
         mOpacity = 0x1f;
         mIsBodyClsnEnabled = 1;
         *(int*)((char*)&mdCcAcPos_c.flags) |= 0x20;
-        func_0200d6f0(p, mPlayerNo);
+        ((::dCamera_c *)p)->func_0200d6f0(mPlayerNo);
         func_02012694(0x14f, &mCamSpacePos);
         Sound::PlayBank0(0xb9, mCamSpacePos);
         Sound::PlayCharVoice(mCharacter, 0xc, mCamSpacePos);
@@ -20321,13 +20299,12 @@ int Player::IsBeingShotOutOfCannon()
 // @symbol func_ov002_020df300
 extern "C" {
 int func_ov002_020df300(char* p) {
-    extern void func_0200d438(int a, unsigned char b);
     extern int data_0209f318;
     Player *player = (Player *)p;
     if (player->mStateStep)
         return 0;
     player->mStateStep = 1;
-    func_0200d438(data_0209f318, player->mPlayerNo);
+    ((::dCamera_c *)data_0209f318)->func_0200d438(player->mPlayerNo);
     return 1;
 }
 }
@@ -20341,7 +20318,6 @@ extern "C" {
 extern "C" int func_ov002_020df34c(Player* self) {
     struct dCamera_c {};
     extern int func_ov002_020e0478(void* c);
-    extern void func_0200d474(dCamera_c* thiz, unsigned char playerID);
     extern Player::State data_ov002_0210ffec;
     extern Player::State data_ov002_021102d4;
     extern dCamera_c* data_0209f318;
@@ -20352,7 +20328,7 @@ extern "C" int func_ov002_020df34c(Player* self) {
     }
     p[0x6e3] = 0;
     self->ChangeState(data_ov002_021102d4);
-    func_0200d474(data_0209f318, p[0x6d8]);
+    ((::dCamera_c *)data_0209f318)->func_0200d474(p[0x6d8]);
     return 1;
 }
 }
@@ -20374,7 +20350,6 @@ int Player::St_Owl_Main()
 {
     extern int ApproachAngle(short* cur, short target, int divisor, int band, int maxStep);
     extern void func_0201f32c(int a);
-    extern void func_0200d3f8(void* thiz, unsigned char playerID, void* ptr);
     extern void Player_DisableInteraction(char* c);
     extern void Player_AdvanceAnims(void* c);
     extern unsigned char data_0209f49c[];
@@ -20383,7 +20358,6 @@ int Player::St_Owl_Main()
     extern short data_02082214[];
     extern char* data_0209f318;
     extern unsigned char data_0209d660;
-    extern void func_0200d6b4(void*, unsigned char);
     unsigned char st;
 
     mPeakY = mPosY;
@@ -20437,7 +20411,7 @@ int Player::St_Owl_Main()
             if (mAttachOffsetY - 0xed8000 > mPosY) {
                 mOwlFarCamera = 1;
                 func_0201f32c(0xa3);
-                func_0200d3f8(data_0209f318, mPlayerNo, 0);
+                ((::dCamera_c *)data_0209f318)->func_0200d3f8(mPlayerNo, 0);
                 mVertAccel = 0;
                 Player_DisableInteraction(((char*)this));
                 mStateStep = 2;
@@ -20456,7 +20430,7 @@ int Player::St_Owl_Main()
         mVertSpeed = mHorzSpeed;
         if (data_0209d660 == 0) {
             mStateStep = 3;
-            func_0200d6b4(data_0209f318, mPlayerNo);
+            ((::dCamera_c *)data_0209f318)->func_0200d6b4(mPlayerNo);
         }
         break;
 
@@ -20486,13 +20460,12 @@ extern "C" {
 int Player::St_Owl_Init()
 {
     extern int data_0209f318[];
-    extern void func_0200d6b4(void*, unsigned char);
   mTerminalVelocity=-0x4b000;
   mVertAccel=0;
   mStateStep=0;
   mHorzSpeed=0;
   this->SetAnim(0x5b, 0x40000000, 0x1000, 0);
-  func_0200d6b4((void*)data_0209f318[0], mPlayerNo);
+  ((::dCamera_c *)data_0209f318[0])->func_0200d6b4(mPlayerNo);
   StartStateMusic(0x2f);
   return 1;
 }
@@ -20850,7 +20823,6 @@ extern "C" {
 int Player::St_Fly_Init() {
     extern int data_0209f318[];
     extern void Player_ReleaseHeldActor(char *);
-    extern void func_0200d6f0(void *, unsigned char);
     mAngleXSpeed = 0;
     mAngleYSpeed = 0;
     mPrevAngleX = 0;
@@ -20865,7 +20837,7 @@ int Player::St_Fly_Init() {
         mVertAccel = 0;
         this->SetAnim(0x49, 0, 0x1000, 0);
     }
-    func_0200d6f0((void *)data_0209f318[0], mPlayerNo);
+    ((::dCamera_c *)data_0209f318[0])->func_0200d6f0(mPlayerNo);
     return 1;
 }
 }
@@ -21440,7 +21412,6 @@ int Player::St_Spin_Init()
     struct dCamera_c;
     extern int* data_0209f318;
     extern void func_ov002_020e25f0(void* c, int i);
-    extern void func_0200d678(dCamera_c* thiz, unsigned char pid);
   mJumpedFromQuicksand = 0;
   mIsInAirState = 1;
   mIsFallScreaming = 0;
@@ -21458,7 +21429,7 @@ int Player::St_Spin_Init()
   int** cam_ptr_ptr = &data_0209f318;
   *p = old | 0x20;
   unsigned char pid = mPlayerNo;
-  func_0200d678((dCamera_c*)*cam_ptr_ptr, pid);
+  ((::dCamera_c *)*cam_ptr_ptr)->func_0200d678(pid);
   return 1;
 }
 }
@@ -22628,7 +22599,6 @@ bool Player::IsState(Player::State &state)
 extern "C" {
 int Player::ChangeState(Player::State &state) {
     extern void func_ov002_020d4540(void *p);
-    extern void func_0200d81c(void *thiz, int playerID);
     extern void *data_0209f318;
     extern Player::State data_ov002_0211022c;
     extern Player::State data_ov002_0211013c;
@@ -22722,7 +22692,7 @@ int Player::ChangeState(Player::State &state) {
     func_ov002_020e6780((char *)this);
 
     if (data_0209f318 != 0) {
-        func_0200d81c(data_0209f318, mPlayerNo);
+        ((::dCamera_c *)data_0209f318)->func_0200d81c(mPlayerNo);
     }
 
     {
