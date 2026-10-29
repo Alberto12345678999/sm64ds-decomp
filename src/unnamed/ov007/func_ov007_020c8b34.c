@@ -1,7 +1,7 @@
 
 typedef long long s64;
-struct S;
-extern void func_020551f0(struct S *s, int v);
+/* The SDK's G2x_ChangeBlendBrightness_ (src/engine/gx/G2x.cpp). */
+extern void func_020551f0(volatile unsigned short *reg, int v);
 inline int inline_fn(int arg0)
 {
   return arg0;
@@ -43,9 +43,9 @@ void func_ov007_020c8b34(char *c, int t)
     }
     if (tr->screens & 1) {
         new_var2 = 0x4000050;
-        func_020551f0((struct S *)new_var2, v);
+        func_020551f0((volatile unsigned short *)new_var2, v);
     }
     if (tr->screens & 2) {
-        func_020551f0((struct S *)0x4001050, v);
+        func_020551f0((volatile unsigned short *)0x4001050, v);
     }
 }

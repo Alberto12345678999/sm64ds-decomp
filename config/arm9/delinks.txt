@@ -2134,13 +2134,9 @@ src/engine/gx/G2.cpp:
     complete
     .text start:0x02054d38 end:0x020551f0
 
-src/unnamed/arm9/0205/func_020551f0.c:
-    complete
-    .text start:0x020551f0 end:0x02055238
-
 src/engine/gx/G2x.cpp:
     complete
-    .text start:0x02055238 end:0x0205532c
+    .text start:0x020551f0 end:0x0205532c
 
 src/unnamed/arm9/0205/func_0205532c.c:
     complete

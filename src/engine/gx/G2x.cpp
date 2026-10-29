@@ -1,10 +1,15 @@
 //cpp
-/* engine/gx/G2x.cpp — G2x TU (arm9 0x02055238..0x0205532c)
+/* engine/gx/G2x.cpp — G2x TU (arm9 0x020551f0..0x0205532c)
  *
  * G2x has no instance state: every member is static and writes the 2D
  * engine's blend/affine registers through the caller's `volatile u16*`
  * (include/G2x.h). The file is written ROM-descending because mwccarm
  * emits .text in reverse source order under default deferred codegen.
+ *
+ * The run is the Nitro SDK's GX_g2.c (pret/pokediamond). Four of its five
+ * functions are here, in the SDK's order and at the SDK's sizes. The fifth,
+ * G2x_SetBlendBrightnessExt_, is not in this ROM: nothing calls it, so the
+ * linker dropped it.
  */
 #include "G2x.h"
 #include "types.h"
@@ -64,5 +69,27 @@ void G2x::SetBlendBrightness(volatile unsigned short *p, int val, int amt) {
     } else {
         p[0] = val | 0x80;
         p[2] = amt;
+    }
+}
+
+/* The Nitro SDK's G2x_ChangeBlendBrightness_, the first function of GX_g2.c;
+ * the ROM puts it directly below SetBlendBrightness. It retunes a fade that
+ * is already set up: the magnitude always goes to p[2], but the direction
+ * bits in p[0] are rewritten only when the sign of `amt` reverses an existing
+ * fade (0x80 to white, 0xc0 to black). A register with no fade selected keeps
+ * its mode. It stays a free C-linkage function under its linker name, which
+ * is how its callers declare it. */
+extern "C" void func_020551f0(volatile unsigned short *p, int amt) {
+    unsigned short h = p[0];
+    if (amt < 0) {
+        if ((h & 0xc0) == 0x80) {
+            p[0] = (h & ~0xc0) | 0xc0;
+        }
+        p[2] = (short)(-amt);
+    } else {
+        if ((h & 0xc0) == 0xc0) {
+            p[0] = (h & ~0xc0) | 0x80;
+        }
+        p[2] = (short)amt;
     }
 }
