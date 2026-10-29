@@ -897,34 +897,34 @@
   },
   "defined_symbol_renames": [
     {
-      "from": "@848",
+      "from": "@845",
       "to": "@742",
-      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
+      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin | compiler temp; ApproachLinear's Vector3 overload is now declared in math/Approach.h, retiring this TU's named-parameter local extern, so mwcc emits it under this lower number (re-keyed by address)"
     },
     {
-      "from": "@849",
+      "from": "@846",
       "to": "@743",
-      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
+      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin | compiler temp; ApproachLinear's Vector3 overload is now declared in math/Approach.h, retiring this TU's named-parameter local extern, so mwcc emits it under this lower number (re-keyed by address)"
     },
     {
-      "from": "@851",
+      "from": "@848",
       "to": "@745",
-      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
+      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin | compiler temp; ApproachLinear's Vector3 overload is now declared in math/Approach.h, retiring this TU's named-parameter local extern, so mwcc emits it under this lower number (re-keyed by address)"
     },
     {
-      "from": "@853",
+      "from": "@850",
       "to": "@747",
-      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
+      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin | compiler temp; ApproachLinear's Vector3 overload is now declared in math/Approach.h, retiring this TU's named-parameter local extern, so mwcc emits it under this lower number (re-keyed by address)"
     },
     {
-      "from": "@855",
+      "from": "@852",
       "to": "@749",
-      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
+      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin | compiler temp; ApproachLinear's Vector3 overload is now declared in math/Approach.h, retiring this TU's named-parameter local extern, so mwcc emits it under this lower number (re-keyed by address)"
     },
     {
-      "from": "@857",
+      "from": "@854",
       "to": "@751",
-      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
+      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin | compiler temp; ApproachLinear's Vector3 overload is now declared in math/Approach.h, retiring this TU's named-parameter local extern, so mwcc emits it under this lower number (re-keyed by address)"
     }
   ]
 }

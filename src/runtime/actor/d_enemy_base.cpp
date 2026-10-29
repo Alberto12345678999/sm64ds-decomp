@@ -611,7 +611,7 @@ int dEnemyBase_c::UpdateYoshiEat(dBgCh_Actr &clsn) {
         if (mEatingPlayer == 0) {
             mFlags &= ~YOSHI_HOLDING;
         } else {
-            Vector3 *o = &((dActor_c *)mEatingPlayer)->mPos;
+            Vector3 *o = &mEatingPlayer->mPos;
             mPosX = o->x;
             mPosY = o->y;
             mPosZ = o->z;
@@ -632,13 +632,13 @@ int dEnemyBase_c::UpdateYoshiEat(dBgCh_Actr &clsn) {
             mSpitOutTimer = 5;
             mFlags &= ~YOSHI_SPAT_OUT;
             if (mEatingPlayer != 0) {
-                Vector3 *o2 = &((dActor_c *)mEatingPlayer)->mPos;
+                Vector3 *o2 = &mEatingPlayer->mPos;
                 mPosX = o2->x;
                 mPosY = o2->y;
                 mPosZ = o2->z;
                 mPosY += 0x32000;
                 {
-                    dActor_c *o3 = (dActor_c *)mEatingPlayer;
+                    dActor_c *o3 = mEatingPlayer;
                     u16 ang = o3->mAngleY;
                     int idx = (ang >> 4) << 1;
                     int dist = 0x32000;
@@ -646,12 +646,12 @@ int dEnemyBase_c::UpdateYoshiEat(dBgCh_Actr &clsn) {
                     mPosZ += FX_MUL(data_02082214[idx + 1], dist);
                 }
                 {
-                    Vector3_16 *p = &((dActor_c *)mEatingPlayer)->mAngle;
+                    Vector3_16 *p = &mEatingPlayer->mAngle;
                     mPrevAngleX = p->x;
                     mPrevAngleY = p->y;
                     mPrevAngleZ = p->z;
                 }
-                v = ((dActor_c *)mEatingPlayer)->mHorzSpeed;
+                v = mEatingPlayer->mHorzSpeed;
             } else {
                 v = 0x14000;
             }

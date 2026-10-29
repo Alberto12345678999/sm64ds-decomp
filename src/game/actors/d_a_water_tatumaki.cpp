@@ -18,7 +18,7 @@
  * What stays:
  * - StateDrag: ApproachLinear on mPullPos with a Fix12<int>
  *   temporary is 0x198 against ROM 0x190 and adds a 4-byte .rodata word.
- *   The int spelling of the mangled symbol keeps the step in a register.
+ *   The int step math/Approach.h declares keeps it in a register.
  * - StateDrag: without volatile, the spilled player position is
  *   0x178 against ROM 0x190. The ROM stores the three words and compares
  *   the y still in the register.
@@ -111,18 +111,12 @@ extern BTA_File data_ov026_02112f40;
 #define STATE_SPIN (&data_ov026_02113f2c)
 #define STATE_DRAG (&data_ov026_02113f3c)
 
-/* local extern: no shared header declares these. The Vector3
- * ApproachLinear takes Fix12<int> by value; the int spelling of its mangled
- * name is the matching call (see What stays). */
+/* local extern: no shared header declares these. */
 extern "C" {
 extern void MulVec3Mat4x3(Vector3 *in, Matrix4x3 *m, Vector3 *out);
 extern void Vec3_Asr(void *dst, void *src, int n);
 extern void KillPlayer(void);
-extern int _Z14ApproachLinearR7Vector3RKS_5Fix12IiE(Vector3 &value, const Vector3 &target,
-                                                    int step);
 }
-
-#define ApproachLinearVec _Z14ApproachLinearR7Vector3RKS_5Fix12IiE
 
 // @symbol _ZN18daWater_Tatumaki_cD1Ev
 daWater_Tatumaki_c::~daWater_Tatumaki_c() {}
@@ -161,7 +155,7 @@ int daWater_Tatumaki_c::StateDrag() {
         target.y = this->mPullHeight;
         target.x += offset.x;
         target.z += offset.z;
-        ApproachLinearVec(this->mPullPos, target, kChaseStep);
+        ApproachLinear(this->mPullPos, target, kChaseStep);
         player->mPosX = this->mPullPos.x;
         player->mPosY = this->mPullPos.y;
         player->mPosZ = this->mPullPos.z;

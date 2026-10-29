@@ -24,10 +24,11 @@ struct System {
  * - dActor_c::mCarryMatrix (0xc8) is the matrix 0214b53c copies into the
  *   model while mVariant is 2; on the carrier it is only tested nonzero.
  * - func_ov102_0214bf64 keeps its existing free-function label over daBmb_c.
- *   func_ov102_0214bd90 and func_ov102_0214b03c are methods:
- *   the first argument is this Bob-omb. Both methods call func_0200fc44 and
- *   func_0201267c through the file-scope extern "C" prototypes: a block-scope
- *   extern inside a member gets C++ linkage and the module stops linking.
+ *   func_ov102_0214bd90, func_ov102_0214b03c and func_ov102_0214b988 are
+ *   methods: the first argument is this Bob-omb. Their C callees come from
+ *   extern "C" file-scope declarations (this block, Sound.h, CalcLib.h):
+ *   a block-scope extern inside a member gets C++ linkage and the module
+ *   stops linking.
  * - func_ov102_0214ad14, 0214ae1c and 0214b384 are called from other overlays,
  *   so those labels stay. data_ov102_* are the file handles; SharedFilePtr
  *   has no fields, so the loaded BCA is still the word at +4.
@@ -49,6 +50,7 @@ struct System {
 #include "dBgCh_Gnd.h"
 #include "dBgCh_Actr.h"
 #include "math/Approach.h"
+#include "math/CalcLib.h"
 
 /* The three shared files this actor claims: ov002's model handle here and the
    two animation handles below.  InitResources loads them and
@@ -108,9 +110,8 @@ void  func_ov102_0214c0b8(void *self);
 /* -- other modules -- */
 void  GiveCoins(int who, int count);
 int   SurfaceInfo_TestFlag0x20(int *si);
-
-
-
+/* 0x0203b0e8. Not declared in math/CalcLib.h (a shared header); callers spell it int, int. */
+int AngleDiff(int, int);
 
 /* Hoisted out of four member bodies.  A class member function may not sit in a
    block-scope linkage specification, so daBmb_c::State1/3/4/5 cannot carry their
@@ -420,18 +421,13 @@ extern "C" {
 // @symbol func_ov102_0214bf64
 void func_ov102_0214bf64(void *ov)
 {
-    extern unsigned short DecIfAbove0_Short(unsigned short* p);
-    extern short Vec3_HorzAngle(const Vector3* v0, const Vector3* v1);
-    extern int Vec3_Dist(const Vector3* a, const Vector3* b);
-    extern void func_ov102_0214b988(void* c);
-
     daBmb_c *o = (daBmb_c *)ov;
 
     DecIfAbove0_Short(&o->mTurnTimer);
     if (o->mVariant != 1) {
         if (o->mChasePlayer == 0) {
             ApproachLinear(o->mHorzSpeed, 0x5000, 0x2aa);
-            func_ov102_0214b988(o);
+            o->func_ov102_0214b988();
             if (o->mChasePlayer != 0) {
                 o->mHorzSpeed = 0;
                 o->mVertSpeed = 0x14000;
@@ -476,9 +472,6 @@ extern "C" {
 // @symbol func_ov102_0214beb4
 void func_ov102_0214beb4(void *cv)
 {
-    extern short Vec3_HorzAngle(const void* a, const void* b);
-    extern int Vec3_Dist(const void* a, const void* b);
-    extern int RandomIntInternal(int* seed);
     extern int data_0209e650;
 
     daBmb_c *self = (daBmb_c *)cv;
@@ -487,13 +480,16 @@ void func_ov102_0214beb4(void *cv)
     self->mTurnCount += 1;
     Player *o = self->mChasePlayer;
     if (o == 0) {
-        *(short *)&self->mTargetAngY = Vec3_HorzAngle(&self->mPosX, &self->mHomePosX);
-        if (Vec3_Dist(&self->mPosX, &self->mHomePosX) >= 0x500000) return;
+        *(short *)&self->mTargetAngY =
+            Vec3_HorzAngle((const Vector3 *)&self->mPosX, (const Vector3 *)&self->mHomePosX);
+        if (Vec3_Dist((const Vector3 *)&self->mPosX, (const Vector3 *)&self->mHomePosX) >= 0x500000)
+            return;
         unsigned int r = RandomIntInternal(&data_0209e650);
         *(short *)&self->mTargetAngY += (short)(r >> 0x10);
         return;
     }
-    *(short *)&self->mTargetAngY = Vec3_HorzAngle(&self->mPosX, &o->mPosX);
+    *(short *)&self->mTargetAngY =
+        Vec3_HorzAngle((const Vector3 *)&self->mPosX, (const Vector3 *)&o->mPosX);
 }
 
 }
@@ -748,23 +744,15 @@ void daBmb_c::State5()
 /* ==========================================================================
  * ======================================================================== */
 
-extern "C" {
-
-// @symbol func_ov102_0214b988
-void func_ov102_0214b988(void *thiz)
-{
-    extern int Vec3_Dist(const struct Vector3 *a, const struct Vector3 *b);
-    extern short Vec3_HorzAngle(const struct Vector3 *a, const struct Vector3 *b);
-    extern int AngleDiff(int, int);
-
-    daBmb_c *self = (daBmb_c *)thiz;
+// @symbol _ZN7daBmb_c19func_ov102_0214b988Ev
+void daBmb_c::func_ov102_0214b988() {
     Player *pl;
     struct Vector3 v;
 
-    self->mChasePlayer = 0;
-    pl = self->ClosestPlayer();
+    mChasePlayer = 0;
+    pl = ClosestPlayer();
     if (!pl) return;
-    if (Vec3_Dist(&self->mPos, &pl->mPos) > 0x190000)
+    if (Vec3_Dist(&mPos, &pl->mPos) > 0x190000)
         return;
     {
         int *src = (int *)&pl->mPosX;
@@ -772,12 +760,10 @@ void func_ov102_0214b988(void *thiz)
         v.y = src[1];
         v.z = src[2];
     }
-    if (AngleDiff(Vec3_HorzAngle(&self->mPos, &v), self->mAngleY) >= self->mNoticeAngle)
+    if (AngleDiff(Vec3_HorzAngle(&mPos, &v), mAngleY) >= mNoticeAngle)
         return;
-    self->mChasePlayer = pl;
-    func_ov102_0214b384(self, 0x96);
-}
-
+    mChasePlayer = pl;
+    func_ov102_0214b384(this, 0x96);
 }
 
 /* ==========================================================================
@@ -791,7 +777,7 @@ extern "C" {
 
 // @symbol func_ov102_0214b53c
 void func_ov102_0214b53c(char *c) {
-    extern void *func_ov002_020e496c(char *c);
+    extern void *func_ov002_020e496c(Player * c);
     extern void Math_Function_0203b14c(void *out, int a1, int a2, int a3, int a4);
     extern void Matrix4x3_FromRotationY(void *m, int angle);
     extern void MulMat4x3Mat4x3(void *a, void *b, void *out);
@@ -820,7 +806,7 @@ void func_ov102_0214b53c(char *c) {
         int haveMtx = (int)((self->mFlags & 0x4000) != 0);
         Player *player0;
         if (((haveMtx != 0) && ((player0 = self->mCarrier) != 0)) && (player0->mCarryMatrix != 0)) {
-            char *ret = (char *)func_ov002_020e496c((char *)player0);
+            char *ret = (char *)func_ov002_020e496c(player0);
             u8 idx = 0;
             if (self->mCarrier->IsFrontSliding() != 0) {
                 idx = 1;
@@ -1062,7 +1048,6 @@ extern "C" {
 // @symbol func_ov102_0214b248
 int func_ov102_0214b248(void *cv)
 {
-    extern unsigned short DecIfAbove0_Short(unsigned short *p);
     extern void func_0203568c(int *p, int v);
     extern void func_02035684(int *p, int v);
     extern void func_ov002_020ef228(void *c, int arg);
@@ -1245,8 +1230,8 @@ void func_ov102_0214ae1c(void *cv) {
         w.x = self->mPosX;
         w.y = self->mPosY;
         w.z = self->mPosZ;
-        ((Player *)self->mEatingPlayer)->Hurt(*(Vector3 *)&w, self->mHurtDamage, 0xc000, 1, 0, 1);
-        ((Player *)self->mEatingPlayer)->func_ov002_020d718c();
+        self->mEatingPlayer->Hurt(*(Vector3 *)&w, self->mHurtDamage, 0xc000, 1, 0, 1);
+        self->mEatingPlayer->func_ov002_020d718c();
         self->mEatingPlayer = 0;
     }
     func_ov102_0214baa0((char *)self);
@@ -1336,7 +1321,7 @@ int func_ov102_0214ab1c(void *selfv) {
 
     self->mFlags &= ~0x10000000u;
 
-    player = (Player *)self->mEatingPlayer;
+    player = self->mEatingPlayer;
     if (player != 0) {
         if (player->IsInsideOfCannon() != 0) {
             goto shocked;

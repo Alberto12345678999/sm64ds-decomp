@@ -77,7 +77,6 @@ extern void  DrawOamSprite(int, int, int, int);
 extern void  Hud_RenderSprite(void *fn, int a, int b, int c, int d);
 extern void  Mg_DrawNumberRotated(int, int, int, int, int, int, int);
 extern void  Mg_DrawScoreTally(void *, int, int, int);
-extern int   Mg_DrawLine(void *a, int b, int c, int d, int e, int f, int g);
 extern int   Mg_IsNewRecord(void);
 extern int   func_020126e8(int a);
 extern int   func_02012468(int a, int b, int c, int d, int e, int f, int g, short h);
@@ -1572,7 +1571,7 @@ void dScMgTeresa_c::UpdateRubbing() {
         if (close == 0) {
             int snd;
             int cur;
-            Mg_DrawLine(this, mRubPrevX, mRubPrevY, mRubX, mRubY, 0, 8);
+            Mg_DrawLine(mRubPrevX, mRubPrevY, mRubX, mRubY, 0, 8);
             snd = func_020126e8(mRubX << 12);
             cur = mRubSound;
             mRubSound = func_02012468(cur, 2, 0x1F8, 4, 0, 0, snd, 0);

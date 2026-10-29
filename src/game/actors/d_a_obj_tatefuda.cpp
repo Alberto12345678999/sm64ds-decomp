@@ -150,7 +150,7 @@ extern void Matrix4x3_FromTranslation(struct Matrix4x3* m, Fix12i x, Fix12i y, F
 extern void Matrix4x3_ApplyInPlaceToTranslation(struct Matrix4x3* m, Fix12i x, Fix12i y, Fix12i z);
 extern void Matrix4x3_ApplyInPlaceToRotationZXYExt(struct Matrix4x3* m, int x, int y, int z);
 extern struct Matrix4x3 data_020a0e68;
-extern char *func_ov002_020e496c(void *p);
+extern char *func_ov002_020e496c(Player *p);
 extern void MulMat4x3Mat4x3(void *a, void *b, void *c);
 extern void Matrix4x3_ApplyInPlaceToRotationXYZExt(void *m, int x, int y, int z);
 extern void Vec3_Lsl(struct Vec3 *d, struct Vec3 *s, int sh);

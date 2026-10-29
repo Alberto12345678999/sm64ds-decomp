@@ -177,7 +177,6 @@ struct System {
 }
 extern void d_a_yeggRunningSlidingDustAtHold(s32 x, s32 y, s32 z);
 extern void d_a_yeggPlayLongHold(u32 a, u32 b, u32 c, void *v, u32 d);
-extern s32 _Z14ApproachLinearR7Vector3RKS_5Fix12IiE(void *dst, const void *src, s32 step);
 extern s16 Vec3_HorzAngle(const void *a, const void *b);
 extern int Vec3_HorzDist(const void *a, const void *b);
 extern int Vec3_Dist(const void *a, const void *b);
@@ -643,8 +642,7 @@ void daYegg_c::func_ov002_020ecd18()
                 }
                 if (o != 0) {
                     Vector3 tmp = o->OnAimedAtWithEggReturnVec();
-                    if (_Z14ApproachLinearR7Vector3RKS_5Fix12IiE(
-                            &mPosX, &tmp, mHorzSpeed) != 0) {
+                    if (ApproachLinear(mPos, tmp, mHorzSpeed) != 0) {
                         switch (o->actorID) {
                         case ACTOR_BOMBKING:
                         case ACTOR_HOLHEI:

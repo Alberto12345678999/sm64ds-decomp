@@ -1672,7 +1672,7 @@
     "tubuild create warning: CONFLICT: extern declaration 'MultiStore16' differs between the legacy file that used to hold func_ov006_02122e20 and the one that held func_ov006_02124088; kept the first, the other is commented out for review",
     "tubuild create warning: CONFLICT: extern declaration 'func_02012718' differs between the legacy file that used to hold _ZN18dScMgTrampoline2_c16OnGraphCallback0Ev and the one that held func_ov006_02124088; kept the first, the other is commented out for review",
     "tubuild create warning: CONFLICT: extern declaration 'func_02012468' differs between the legacy file that used to hold func_ov006_02123938 and the one that held func_ov006_02124088; kept the first, the other is commented out for review",
-    "tubuild create warning: CONFLICT: extern declaration 'Mg_DrawLine' differs between the legacy file that used to hold func_ov006_02123938 and the one that held func_ov006_02124088; kept the first, the other is commented out for review",
+    "tubuild create warning (RESOLVED): CONFLICT: extern declaration 'Mg_DrawLine' differs between the legacy file that used to hold func_ov006_02123938 and the one that held func_ov006_02124088; kept the first, the other is commented out for review",
     "tubuild create warning: CONFLICT: extern declaration 'sTrmpStartTouchY' differs between the legacy file that used to hold func_ov006_02124088 and the one that held func_ov006_02124228; kept the first, the other is commented out for review",
     "tubuild create warning: CONFLICT: extern declaration 'GetGameLanguage' differs between the legacy file that used to hold _ZN18dScMgTrampoline2_c6RenderEv and the one that held _ZN18dScMgTrampoline2_c11CanEndStateEi; kept the first, the other is commented out for review",
     "tubuild create warning: CONFLICT: extern declaration 'GetGameLanguage' differs between the legacy file that used to hold _ZN18dScMgTrampoline2_c6RenderEv and the one that held _ZN18dScMgTrampoline2_c10StartRoundEi; kept the first, the other is commented out for review",
@@ -2600,9 +2600,9 @@
   },
   "defined_symbol_renames": [
     {
-      "from": "@1157",
+      "from": "@1156",
       "to": "@1086",
-      "evidence": "data-trampoline2-wave-tables1017: named local wave-record type shifts compiler-local destructor registration node from@1111 to@1110. Both are unique12-byte local NOBITS objects; identical64-byte initializer references the node at the same relocation offset/type/addend. Its configured canonicalidentity remains@1086. Complete71-definition proof permits only this exactsite-derived bijection and the random-position semanticrename."
+      "evidence": "data-trampoline2-wave-tables1017: named local wave-record type shifts compiler-local destructor registration node from@1111 to@1110. Both are unique12-byte local NOBITS objects; identical64-byte initializer references the node at the same relocation offset/type/addend. Its configured canonicalidentity remains@1086. Complete71-definition proof permits only this exactsite-derived bijection and the random-position semanticrename. Re-keyed -1 (from @1156) when this TU's extern Mg_DrawLine was removed and dScMgBase_c.h gained Mg_DrawLine."
     }
   ],
   "rodata": [

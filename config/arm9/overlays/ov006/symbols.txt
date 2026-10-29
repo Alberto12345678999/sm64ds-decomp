@@ -4862,9 +4862,9 @@ sTrmp2Spinners kind:bss addr:0x02142f7c
 sTrmp2StarModelFile kind:bss addr:0x02142f80
 @1086 kind:bss addr:0x02142f88
 sBSCStateTable kind:bss addr:0x02142f94
-_ZGVsUnitY$1572 kind:bss addr:0x02143004
-@1575 kind:bss addr:0x02143008
-sUnitY$1572 kind:bss addr:0x02143014
+_ZGVsUnitY$1570 kind:bss addr:0x02143004
+@1573 kind:bss addr:0x02143008
+sUnitY$1570 kind:bss addr:0x02143014
 sSnowballBitStateTable kind:bss addr:0x02143020
 sSnowballBitKindTable kind:bss addr:0x02143038
 sSnowballBitBStateTable kind:bss addr:0x02143050
