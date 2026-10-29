@@ -2172,7 +2172,7 @@
       "ordinal": 304
     },
     {
-      "symbol": "func_ov002_020cede0",
+      "symbol": "_ZN6Player19func_ov002_020cede0Ev",
       "address": "0x020cede0",
       "size": "0x000001a4",
       "legacy_source": "src/func_ov002_020cede0.cpp",
@@ -3642,7 +3642,7 @@
       "ordinal": 514
     },
     {
-      "symbol": "func_ov002_020de428",
+      "symbol": "_ZN6Player19func_ov002_020de428Ev",
       "address": "0x020de428",
       "size": "0x00000034",
       "legacy_source": "src/unnamed/ov002/func_ov002_020de428.c",
@@ -3782,7 +3782,7 @@
       "ordinal": 534
     },
     {
-      "symbol": "func_ov002_020df7ac",
+      "symbol": "_ZN6Player19func_ov002_020df7acEv",
       "address": "0x020df7ac",
       "size": "0x00000048",
       "legacy_source": "src/unnamed/ov002/func_ov002_020df7ac.c",
@@ -3796,7 +3796,7 @@
       "ordinal": 536
     },
     {
-      "symbol": "func_ov002_020df840",
+      "symbol": "_ZN6Player19func_ov002_020df840EPvP7Vector3",
       "address": "0x020df840",
       "size": "0x000000b0",
       "legacy_source": "src/unnamed/ov002/func_ov002_020df840.c",

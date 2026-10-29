@@ -158,11 +158,9 @@ extern short data_02082214[];
 extern int data_0209e650[];
 extern Matrix4x3 data_020a0e68;
 
-int func_ov002_020df840(void *a, void *b, void *d);
 void d_a_owlPlayLongHold(unsigned int a, unsigned int b, unsigned int cc, void *pos,
                          unsigned int d);
 int func_ov002_020df7f4(void *c);
-int func_ov002_020df7ac(void *thiz);
 int func_02012694(int a, void *pos);
 int ApproachAngle(short *p, int target, int a, int b, int c);
 int Vec3_Dist(const void *a, const void *b);
@@ -229,7 +227,7 @@ void daOwl_c::func_ov094_021357a4()
     mSpeedX = 0;
     mVertSpeed = 0;
     mSpeedZ = 0;
-    if (func_ov002_020df840(mRider, this, st) != 1) {
+    if (mRider->func_ov002_020df840(this, (Vector3 *)st) != 1) {
         mRider = 0;
         return;
     }
@@ -319,7 +317,7 @@ int daOwl_c::func_ov094_021359d8()
 
     if (mWithMeshClsn.IsOnWall() != 0 || func_02035638((u8 *)&mWithMeshClsn) != 0) {
         rider = mRider;
-        if (rider != 0 && func_ov002_020df7ac(rider) != 0) {
+        if (rider != 0 && rider->func_ov002_020df7ac() != 0) {
             mWithMeshClsn.Unk_0203589c();
             mRider = 0;
             unk_3e8 = 0;

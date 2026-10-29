@@ -15511,7 +15511,7 @@
     },
     "ov002:0x020cede0": {
       "author": "tangosdev",
-      "name": "func_ov002_020cede0"
+      "name": "_ZN6Player19func_ov002_020cede0Ev"
     },
     "ov002:0x020cef84": {
       "author": "tangosdev",
@@ -16351,7 +16351,7 @@
     },
     "ov002:0x020de428": {
       "author": "tangosdev",
-      "name": "func_ov002_020de428"
+      "name": "_ZN6Player19func_ov002_020de428Ev"
     },
     "ov002:0x020de45c": {
       "author": "tangosdev",
@@ -16431,7 +16431,7 @@
     },
     "ov002:0x020df7ac": {
       "author": "tangosdev",
-      "name": "func_ov002_020df7ac"
+      "name": "_ZN6Player19func_ov002_020df7acEv"
     },
     "ov002:0x020df7f4": {
       "author": "tangosdev",
@@ -16439,7 +16439,7 @@
     },
     "ov002:0x020df840": {
       "author": "tangosdev",
-      "name": "func_ov002_020df840"
+      "name": "_ZN6Player19func_ov002_020df840EPvP7Vector3"
     },
     "ov002:0x020df8f0": {
       "author": "lunavyqo",

@@ -9809,7 +9809,6 @@ void func_ov002_020cd71c(char *self)
 extern "C" {
 int Player::St_Swim_Main()
 {
-    extern int func_ov002_020cede0(void*);
     extern int func_ov002_020cec2c(void*);
     extern void func_ov002_020cd71c(void*);
     extern void func_ov002_020cd550(void*);
@@ -9858,7 +9857,7 @@ int Player::St_Swim_Main()
         func_ov002_020c5dec(8);
         return 1;
     }
-    if (func_ov002_020cede0(this) == 0) {
+    if (this->func_ov002_020cede0() == 0) {
         mIsUnderwater = 0;
         this->ChangeState(data_ov002_021101b4);
         return 1;
@@ -10503,17 +10502,16 @@ Fix12i func_ov002_020cedb0(Player *c, Fix12i a) {
 }
 }
 
-// @symbol func_ov002_020cede0
+// @symbol _ZN6Player19func_ov002_020cede0Ev
 /* recovered: shared common types, declarations from a shared header */
 /* recovered: shared common types */
 extern "C" {
-int func_ov002_020cede0(void *thiz_) {
+int Player::func_ov002_020cede0() {
     extern int SurfaceInfo_TestFlag0x20(void *);
     extern int data_0209f32c;
     extern signed char data_0209f2f8;
-    extern int func_ov002_020cede0(void *);
     extern int data_0209212c;
-    char *thiz = (char *)thiz_;
+    char *thiz = (char *)this;
     Player *p = (Player *)thiz;
     Vector3 v;
     int y = p->mPosY;
@@ -19788,22 +19786,15 @@ void func_ov002_020de3d0(int a0, short* r1, short* r2){
 }
 }
 
-// @symbol func_ov002_020de428
-/* recovered: shared common types */
-struct dActor_ce428 {
-    char pad74[0x74];
-    Vector3 vec; /* 0x74 */
-    char pad[0x70c - 0x80];
-    unsigned char flag; /* 0x70c */
-};
-extern "C" {
-void func_ov002_020de428(struct dActor_ce428 *thiz)
+// @symbol _ZN6Player19func_ov002_020de428Ev
+/* 0x74 is mCamSpacePos and 0x70c is mStateArg; St_Balloon_Main counts the
+ * latter down and calls this on a bounce. */
+void Player::func_ov002_020de428()
 {
-    if (thiz->flag)
+    if (mStateArg)
         return;
-    Sound::PlayBank0(0xbd, thiz->vec);
-    thiz->flag = 0x1e;
-}
+    Sound::PlayBank0(0xbd, mCamSpacePos);
+    mStateArg = 0x1e;
 }
 
 // @symbol _ZN6Player15St_Balloon_MainEv
@@ -19822,7 +19813,6 @@ s32 Player::St_Balloon_Main()
     extern void func_ov002_020de968(void *);
     extern s16 atan2_hold_Player_4(s32, s32);
     extern int AngleDiff(s32, s16);
-    extern void func_ov002_020de428(void *);
     extern void ApproachAngle(void *, s16, s16, s16, s32);
     extern s32 func_ov002_020bf224(void *, s32, s32);
     extern void func_ov002_020de3d0(void *, s16 *, s16 *);
@@ -19874,7 +19864,7 @@ s32 Player::St_Balloon_Main()
         s16 ang = cstd::atan2(mWallNormalX, mWallNormalZ);
         s16 diff = AngleDiff(ang, mPrevAngleY);
         if ((s32)diff > 0x4000) {
-            func_ov002_020de428(this);
+            this->func_ov002_020de428();
             mPrevAngleY = (s16)((ang * 2 + 0x8000) - mPrevAngleY);
             mHorzSpeed = FX_MUL(mHorzSpeed, 0x1400);
             if (mHorzSpeed > 0x14000)
@@ -19896,14 +19886,14 @@ s32 Player::St_Balloon_Main()
         s32 g = mPrevVertSpeed;
         if (g < 0) {
             mVertSpeed = -FX_MUL(g, 0x2800);
-            func_ov002_020de428(this);
+            this->func_ov002_020de428();
         }
     } else if (mode & 4) {
         s32 g = mPrevVertSpeed;
         if (g > 0) {
             mVertSpeed = -(s32)((((long long)g << 14) + 0x800) >> 12);
             mStateWaitTimer = 0x1e;
-            func_ov002_020de428(this);
+            this->func_ov002_020de428();
         }
     }
 
@@ -20471,15 +20461,15 @@ int Player::St_Owl_Init()
 }
 }
 
-// @symbol func_ov002_020df7ac
+// @symbol _ZN6Player19func_ov002_020df7acEv
 extern "C" {
-int func_ov002_020df7ac(Player *thiz) {
+int Player::func_ov002_020df7ac() {
     extern Player::State data_ov002_02110244;
     extern Player::State data_ov002_021101b4;
-    if (thiz->IsState(data_ov002_02110244) == 0)
+    if (this->IsState(data_ov002_02110244) == 0)
         return 0;
-    thiz->St_Owl_Cleanup();
-    thiz->ChangeState(data_ov002_021101b4);
+    this->St_Owl_Cleanup();
+    this->ChangeState(data_ov002_021101b4);
     return 1;
 }
 }
@@ -20494,24 +20484,24 @@ int func_ov002_020df7f4(Player *player) {
 }
 }
 
-// @symbol func_ov002_020df840
+// @symbol _ZN6Player19func_ov002_020df840EPvP7Vector3
 /* recovered: shared common types, declarations from a shared header */
 /* recovered: shared common types */
 extern "C" {
-int func_ov002_020df840(Player *thiz, void *arg1, Vector3 *arg2) {
+int Player::func_ov002_020df840(void *arg1, Vector3 *arg2) {
     extern u16 data_0209f49c[];
     extern s16 Vec3_HorzAngle(const Vector3 *v0, const Vector3 *v1);
     extern Player::State data_ov002_02110244;
-    if (thiz->mIsMega != 0 || thiz->mIsBalloon != 0)
+    if (this->mIsMega != 0 || this->mIsBalloon != 0)
         return 0;
     if ((*(u16*)((char*)data_0209f49c + gActivePlayerSlot * 0x18) & 2) == 0)
         return 0;
-    if (thiz->mHeldObj != 0)
+    if (this->mHeldObj != 0)
         return 0;
-    thiz->ChangeState(data_ov002_02110244);
-    thiz->mHeldObj = (int)arg1;
-    thiz->mAttachOffsetY = arg2->y;
-    thiz->mAngleYSpeed = Vec3_HorzAngle(&thiz->mPos, arg2);
+    this->ChangeState(data_ov002_02110244);
+    this->mHeldObj = (int)arg1;
+    this->mAttachOffsetY = arg2->y;
+    this->mAngleYSpeed = Vec3_HorzAngle(&this->mPos, arg2);
     return 1;
 }
 }
