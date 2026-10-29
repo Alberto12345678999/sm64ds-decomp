@@ -1696,13 +1696,13 @@ void daStar_c::func_ov002_020e9840() {
 
     {
         int r0 = (data_0209f2d8 == 1) ? 1 : 0;
-        dActor_c *r3 = actor->mHitActor;
+        Player *r3 = static_cast<Player *>(actor->mHitActor);
         if (r0 == 0) return;
         if (r3 == 0) return;
 
         mBits.noPickup = 1;
         mHorzSpeed = 0xc000;
-        mPrevAngleY = GetAngleToCamera(((Player *)r3)->mPlayerNo) + 0x8000;
+        mPrevAngleY = GetAngleToCamera(r3->mPlayerNo) + 0x8000;
     }
 }
 

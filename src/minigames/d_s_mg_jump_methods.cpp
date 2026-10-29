@@ -124,8 +124,7 @@ namespace G3X {
 void SetFog(int enable, int mode, int slope, int offset);
 }
 namespace cstd {
-/* local extern: kept off cstd.h so this TU's codegen stays put. */
-extern "C" s32 fdiv(s32 a, s32 b);
+s32 fdiv(s32 a, s32 b);
 }
 
 // @symbol _ZN11dScMgJump_c10StartRoundEi

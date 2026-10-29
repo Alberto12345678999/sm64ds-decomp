@@ -55,8 +55,7 @@ struct BMD_File;
 struct BTP_File;
 
 namespace cstd {
-/* local extern: kept off cstd.h so this TU's codegen stays put. */
-extern "C" int fdiv(int a, int b);
+int fdiv(int a, int b);
 }
 namespace Particle {
 void RenderAll();
@@ -111,7 +110,6 @@ unsigned char DecIfAbove0_Byte(unsigned char *p);
 int func_0201251c(int a, int b, void *pos, int c);
 unsigned int func_02012174(unsigned int a, unsigned int b);
 void func_020167a4(void *model);
-int func_ov075_0211b3d8(void *p);
 long long __aeabi_uidiv(unsigned int n, int d);
 
 extern Matrix4x3 data_020a0e68;
@@ -165,7 +163,6 @@ extern const int sVsPlayerStandingX[4][4] = {{0, 1843200, 1843200, 1843200},
 extern const int sVsPlayerExitX[16] = {0,       1843200, 1843200, 1843200, -204800, 204800,
                                        1843200, 1843200, -368640, 0,       368640,  1843200,
                                        -491520, -163840, 163840,  491520};
-
 }
 
 /* A pointer-to-member row: the two per-figure state tables are arrays of
@@ -872,7 +869,7 @@ int dEntObj_c::CleanupResources() {
         data_ov075_0211d3bc.Release();
         data_ov075_0211d3e4.Release();
     }
-    func_ov075_0211b3b8(&mMesh);
+    mMesh.Destroy();
     return 1;
 }
 
@@ -891,7 +888,7 @@ int dEntObj_c::Render() {
     if (mAnimActive) {
         mAnmModel.Render(0);
     }
-    func_ov075_0211b3d8(&mMesh);
+    mMesh.Render();
     Particle::RenderAll();
     return 1;
 }
@@ -913,11 +910,11 @@ int dEntObj_c::Behavior() {
             player->func_ov075_02114cd8();
             if (((dEntObj_c *)walk)->mPlayers[0].mFellOffThisFrame) {
                 Vector3 *playerPosition = &player->mPosition;
-                int position[3];
-                position[0] = playerPosition->x;
-                position[1] = playerPosition->y;
-                position[2] = playerPosition->z;
-                func_ov075_0211ab38(&mMesh, position);
+                Vector3 position;
+                position.x = playerPosition->x;
+                position.y = playerPosition->y;
+                position.z = playerPosition->z;
+                mMesh.TouchAt(&position);
             }
             if (*present) {
                 if (player->func_ov075_021148f0() == 0)
@@ -947,7 +944,7 @@ int dEntObj_c::Behavior() {
             func_ov075_021151b4(localPlayer);
             mAnmModel.Advance();
         }
-        func_ov075_0211b418(&mMesh);
+        mMesh.Behavior();
     }
     return 1;
 }
@@ -1004,7 +1001,7 @@ int dEntObj_c::InitResources() {
         mAnmModel.SetAnim((BCA_File *)((void *)data_ov075_0211d3e4.filePtr), 0, 0x1000, 0);
     }
 
-    func_ov075_0211b458((char *)&mMesh, (int *)&data_ov075_0211c654, 0);
+    mMesh.Init((Vector3 *)&data_ov075_0211c654, 0);
     mParticles.Initialise();
 
     player = mPlayers;

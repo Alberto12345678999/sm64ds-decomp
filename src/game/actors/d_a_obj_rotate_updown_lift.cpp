@@ -130,8 +130,7 @@ extern s16 data_02082214[];
 extern s8 data_0209f2f8;
 
 namespace cstd {
-/* local extern: kept off cstd.h so this TU's codegen stays put. */
-extern "C" int fdiv(int numerator, int denominator);
+int fdiv(int numerator, int denominator);
 }
 
 extern "C" {

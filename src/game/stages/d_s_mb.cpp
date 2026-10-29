@@ -52,6 +52,12 @@ extern void *data_0209d4a8;
 extern int data_0208ee44;
 }
 
+/* The scene's graph callback. A global, not a member: InitResources points
+   it at the scene and hands it to the graph hook. Its constructor is inline,
+   so mwcc emits __sinit_d_s_mb.cpp to run it (was the handwritten
+   __sinit_02074fb8). */
+dScMB_c::graphCallback_c data_020a0c68;
+
 #pragma defer_codegen off
 
 // @symbol _ZN7dScMB_cD1Ev
@@ -290,9 +296,9 @@ s32 dScMB_c::InitResources() {
     GX::DispOn();
 
     *(volatile u32 *)0x4001000 |= 0x10000;
-    func_02034b1c((void *)&data_020a0c68, (int)this);
+    func_02034b1c(&data_020a0c68, (int)this);
 
-    *(void **)&data_0209d4a8 = (void *)&data_020a0c68;
+    *(void **)&data_0209d4a8 = &data_020a0c68;
     mStep = 0;
     mTimeout = 0;
     dScene_c::SetFaders(&fader);

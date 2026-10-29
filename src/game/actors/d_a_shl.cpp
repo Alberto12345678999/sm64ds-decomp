@@ -468,7 +468,7 @@ void daShl_c::func_ov102_0214ce60()
    ridden. */
 void daShl_c::func_ov102_0214cbec()
 {
-    dActor_c *player;
+    Player *player;
     s32 hit;
     u32 id;
     Vector3 v1, v2;
@@ -476,7 +476,7 @@ void daShl_c::func_ov102_0214cbec()
     id = mdCc_c.otherOwner;
     if (id == 0)
         return;
-    player = dActor_c::FindWithID(id);
+    player = static_cast<Player *>(dActor_c::FindWithID(id));
     if (!player)
         return;
 
@@ -495,7 +495,7 @@ void daShl_c::func_ov102_0214cbec()
         dir.x = 0x2000;
         dir.y = 0;
         dir.z = 0;
-        KillByInvincibleChar(dir, *(Player *)player, mdCc_c.height >> 1);
+        KillByInvincibleChar(dir, *player, mdCc_c.height >> 1);
         return;
     }
 
@@ -504,7 +504,7 @@ void daShl_c::func_ov102_0214cbec()
             return;
         if (!(hit & 0x1000))
             return;
-        if (((Player *)player)->TryGrab(*this) == 0)
+        if (player->TryGrab(*this) == 0)
             return;
         mCarrier = player;
         func_ov102_0214d1f8(&data_ov102_0214ea58);
@@ -523,7 +523,7 @@ void daShl_c::func_ov102_0214cbec()
         v1.x = mPosX;
         v1.y = mPosY;
         v1.z = mPosZ;
-        ((Player *)player)->Hurt(v1, 1, 0xc000, 1, 0, 1);
+        player->Hurt(v1, 1, 0xc000, 1, 0, 1);
         return;
     }
 
@@ -531,7 +531,7 @@ void daShl_c::func_ov102_0214cbec()
         v2.x = mPosX;
         v2.y = mPosY;
         v2.z = mPosZ;
-        ((Player *)player)->Hurt(v2, 1, 0xc000, 1, 0, 1);
+        player->Hurt(v2, 1, 0xc000, 1, 0, 1);
         return;
     }
 

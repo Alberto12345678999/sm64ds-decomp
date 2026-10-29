@@ -60,8 +60,7 @@ void SubVec3(void *a, void *b, void *c);
 }
 
 namespace cstd {
-/* local extern: kept off cstd.h so this TU's codegen stays put. */
-extern "C" int fdiv(int a, int b);
+int fdiv(int a, int b);
 }
 
 #pragma defer_codegen off

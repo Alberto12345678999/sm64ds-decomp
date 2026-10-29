@@ -31,7 +31,7 @@ struct dBgCh_Lin {
 };
 
 namespace cstd {
-extern "C" s32 fdiv(s32, s32);
+s32 fdiv(s32, s32);
 }
 
 extern "C" {

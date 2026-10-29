@@ -30,8 +30,7 @@
 /* local extern: no non-generated header declares these vector helpers, the
    cstd fdiv, or the sine/cosine pair table. */
 namespace cstd {
-/* local extern: kept off cstd.h so this TU's codegen stays put. */
-extern "C" int fdiv(s32, s32);
+int fdiv(s32, s32);
 }
 extern "C" {
 void MulVec3Mat4x3(const Vector3 *v, const Matrix4x3 *m, Vector3 *res);

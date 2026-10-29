@@ -43,7 +43,7 @@
       "ordinal": 1
     },
     {
-      "symbol": "func_ov002_020b66a8",
+      "symbol": "_ZN16daObjKaitendai_c20CleanupResourcesFromEP18ResourceDescriptor",
       "address": "0x020b66a8",
       "size": "0x00000048",
       "legacy_source": "src/func_ov002_020b66a8.c",
@@ -64,7 +64,7 @@
       "ordinal": 4
     },
     {
-      "symbol": "func_ov002_020b676c",
+      "symbol": "_ZN16daObjKaitendai_c17InitResourcesFromEP18ResourceDescriptors",
       "address": "0x020b676c",
       "size": "0x000000a8",
       "legacy_source": "src/func_ov002_020b676c.cpp",

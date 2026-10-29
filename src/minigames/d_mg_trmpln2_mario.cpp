@@ -75,8 +75,7 @@ struct W2 {
     int w[2];
 };
 namespace cstd {
-/* local extern: kept off cstd.h so this TU's codegen stays put. */
-extern "C" int fdiv(s32, s32);
+int fdiv(s32, s32);
 }
 
 // ---- Trmp2Mario_GetVelocity

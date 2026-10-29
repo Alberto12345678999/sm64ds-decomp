@@ -7,8 +7,7 @@ typedef int s32;
 typedef short s16;
 
 namespace cstd {
-/* local extern: kept off cstd.h so this TU's codegen stays put. */
-extern "C" s32 fdiv(s32, s32);
+s32 fdiv(s32, s32);
 }
 
 extern "C" {

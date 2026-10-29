@@ -25,7 +25,7 @@
  * - Vec3_* helpers, func_020138dc / func_02013a44,
  *   ObjectMessageIDToActualMessageID, IsStarCollectedInCurLevel,
  *   NumStars and data_0209f2f8 / data_0209caa0 keep linker names; the
- *   ov085/ov002 file handles stay address-named.
+ *   ov002 file handles stay address-named.
  * - MatrixWords keeps UpdateModelPose's aggregate 12-word copies in
  *   ldm/stm form; `char *c` offset spelling stays where the ROM reads
  *   untyped fields (mTalkPlayer, the model internals at +0x11c, the
@@ -47,13 +47,41 @@
 #include "dCc_c.h"
 #include "dBgCh_Gnd.h"
 #include "math/Approach.h"
+#include "SpawnInfo.h"
 
 struct BCA_File;
 struct BMD_File;
 
-/* The pointer-to-member state table at 0x0212fe88. mwccarm leaves a file-scope
-   variable's name unmangled in C++, so this names the ROM symbol as spelled. */
-extern daKinopio_c::State data_ov085_0212fe88[];
+/* The pointer-to-member state table, defined after the profile below.
+   mwccarm leaves a file-scope variable's name unmangled in C++, so this
+   names the ROM symbol as spelled. */
+extern daKinopio_c::State data_ov085_0212fe88[2];
+
+/* Runtime asset handles, distinct from the NitroFS file IDs. */
+enum daKinopio_c_AssetId {
+    ASSET_KINOPIO_BMD = 0x035c,
+    ASSET_KINOPIO_WAIT1_BCA = 0x035d,
+    ASSET_KINOPIO_WAIT2_BCA = 0x035e
+};
+
+/* The handles reach their files through these wrappers' constructor and
+   destructor veneers; the manifest maps each to the retail destination.
+   Descriptive local types, not recovered spellings. */
+struct KinopioModelFile : SharedFilePtr {
+    KinopioModelFile(u32 fileID);
+    ~KinopioModelFile();
+};
+
+struct KinopioAnimFile : SharedFilePtr {
+    KinopioAnimFile(u32 fileID);
+    ~KinopioAnimFile();
+};
+
+/* This TU's file handles, in the order the retail initializer (0x0212f2a8)
+   builds them. */
+KinopioModelFile gKinopioModelFile(ASSET_KINOPIO_BMD);
+KinopioAnimFile gKinopioIdleAnimFile(ASSET_KINOPIO_WAIT1_BCA);
+KinopioAnimFile gKinopioTalkAnimFile(ASSET_KINOPIO_WAIT2_BCA);
 
 namespace Sound {
 bool PlaySub(u32, u32, u32, int, bool);
@@ -63,9 +91,6 @@ extern "C" {
 
 /* ov085 statics */
 extern u8 data_ov085_0212f27c[];           /* star-count requirement table */
-extern SharedFilePtr data_ov085_02130480;  /* body model      */
-extern SharedFilePtr data_ov085_02130488;  /* idle animation  */
-extern SharedFilePtr data_ov085_02130490;  /* talk animation  */
 
 /* ov002 statics -- the three models the variant-1 Toad preloads */
 extern SharedFilePtr data_ov002_0210da40;
@@ -266,7 +291,7 @@ void daKinopio_c::St_Talk_Main()
 void daKinopio_c::St_Talk_Init()
 {
     u32 flags = 0;
-    BCA_File *file = (BCA_File *)data_ov085_02130490.filePtr;
+    BCA_File *file = (BCA_File *)gKinopioTalkAnimFile.filePtr;
     mAnmModel.SetAnim((BCA_File *)file, 0, 0x1000, flags);
 }
 
@@ -294,7 +319,7 @@ void daKinopio_c::St_Idle_Main()
 // @symbol _ZN11daKinopio_c12St_Idle_InitEv
 void daKinopio_c::St_Idle_Init()
 {
-    mAnmModel.SetAnim((BCA_File *)data_ov085_02130488.filePtr, 0, 0x1000, 0);
+    mAnmModel.SetAnim((BCA_File *)gKinopioIdleAnimFile.filePtr, 0, 0x1000, 0);
 }
 
 // @symbol _ZN11daKinopio_c8SetStateEi
@@ -391,9 +416,9 @@ int daKinopio_c::CleanupResources()
         data_ov002_0210d9a0.Release();
         data_ov002_0210d9c0.Release();
     }
-    data_ov085_02130480.Release();
-    data_ov085_02130488.Release();
-    data_ov085_02130490.Release();
+    gKinopioModelFile.Release();
+    gKinopioIdleAnimFile.Release();
+    gKinopioTalkAnimFile.Release();
     return 1;
 }
 
@@ -537,9 +562,9 @@ int daKinopio_c::Behavior()
 int daKinopio_c::InitResources()
 {
     Vector3 objPos;
-    dExtFrameCtrl_c::LoadFile(data_ov085_02130488);
-    dExtFrameCtrl_c::LoadFile(data_ov085_02130490);
-    mAnmModel.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(data_ov085_02130480), 1, 0x16);
+    dExtFrameCtrl_c::LoadFile(gKinopioIdleAnimFile);
+    dExtFrameCtrl_c::LoadFile(gKinopioTalkAnimFile);
+    mAnmModel.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(gKinopioModelFile), 1, 0x16);
     mShadowModel.InitCylinder();
     mCollider.Init(this, 0x78000, 0x8c000, 0x4200004, 0);
     mOpacity = 0xff;
@@ -607,3 +632,22 @@ extern "C" daKinopio_c *daKinopio_c_classInit(void)
 {
     return new daKinopio_c();
 }
+
+/* The actor profile, in SpawnInfo's layout (include/SpawnInfo.h). The
+ * retail values are unchanged. */
+SpawnInfo<daKinopio_c> g_profile_KINOPIO = {
+    daKinopio_c_classInit, /* classInit */
+    0x00b9,                /* behaviorPriority */
+    0x00ab,                /* renderPriority */
+    0x00000003,            /* actorFlags */
+    0x40000,               /* clipOffsetY */
+    0x80000,               /* clipRadius */
+    0x01000000,            /* clipDistance */
+    0x01000000             /* farDistance */
+};
+
+/* SetState and RunState index this by mState: 0 idles, 1 talks. */
+daKinopio_c::State data_ov085_0212fe88[2] = {
+    {&daKinopio_c::St_Idle_Init, &daKinopio_c::St_Idle_Main, "WAIT"},
+    {&daKinopio_c::St_Talk_Init, &daKinopio_c::St_Talk_Main, "TALK"},
+};

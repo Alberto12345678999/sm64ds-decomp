@@ -64,28 +64,28 @@
       "ordinal": 3
     },
     {
-      "symbol": "func_ov024_021112c0",
+      "symbol": "_ZN16daObjDlPyramid_c13FinishDescentEv",
       "address": "0x021112c0",
       "size": "0x00000090",
       "legacy_source": "src/func_ov024_021112c0.c",
       "ordinal": 4
     },
     {
-      "symbol": "func_ov024_02111350",
+      "symbol": "_ZN16daObjDlPyramid_c7DescendEv",
       "address": "0x02111350",
       "size": "0x00000130",
       "legacy_source": "src/func_ov024_02111350.c",
       "ordinal": 5
     },
     {
-      "symbol": "func_ov024_02111480",
+      "symbol": "_ZN16daObjDlPyramid_c16UpdateClsnMatrixEv",
       "address": "0x02111480",
       "size": "0x00000044",
       "legacy_source": "src/func_ov024_02111480.cpp",
       "ordinal": 6
     },
     {
-      "symbol": "func_ov024_021114c4",
+      "symbol": "_ZN16daObjDlPyramid_c17UpdateModelMatrixEv",
       "address": "0x021114c4",
       "size": "0x00000040",
       "legacy_source": "src/func_ov024_021114c4.c",
@@ -735,12 +735,12 @@
   },
   "defined_symbol_renames": [
     {
-      "from": "@589",
+      "from": "@709",
       "to": "@593",
       "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
     },
     {
-      "from": "@590",
+      "from": "@710",
       "to": "@594",
       "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
     }

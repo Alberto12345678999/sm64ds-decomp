@@ -6,9 +6,9 @@
  * frames. State2 rolls along path param1 & 0xff at up to 40.0, growing to
  * scale 1.5, kicking up dust and hurting a Mario it touches while moving.
  * At the path's end it takes State3 if the talker kept up (reached the
- * course point the sinit stores at data_ov072_02122b40, IsPlayerNearCenter);
+ * course point the sinit stores at gBgSnmBdyReachPoint, IsPlayerNearCenter);
  * otherwise State4 rolls on until it falls below Y 0xfe363c80. State3 turns
- * toward the landing point at data_ov072_02122b58, and within 380.0 flags
+ * toward the landing point at gBgSnmBdyLandingPoint, and within 380.0 flags
  * BIG_SNOWMAN_HEAD (0x111, mBodyArriving = 1), jumps, and on landing sets off an
  * Earthquake and snaps onto that point. State5 waits until its home is well
  * away from the camera, then respawns there in State0.
@@ -38,9 +38,9 @@
  *   the calls cast.
  * - func_0201267c (State3): Sound::Play(3, id, pos) at 0x0201267c.
  *   Sound::PlayBank3 is the twin at 0x02012664, a different function.
- * - data_ov072_02122b20 / 02122b40 / 02122b58 / 02122b64: model file,
- *   reach point, landing point, twelve-PMF table. __sinit_ov072_02122018
- *   owns that bss, so the names stay.
+ * - gBgSnmBdyModelFile, gBgSnmBdyStates, gBgSnmBdyReachPoint and
+ *   gBgSnmBdyLandingPoint are descriptive names. Defining them here makes
+ *   mwcc emit the retail initializer (0x02122018) itself.
  * - Vec3_Dist, Vec3_HorzDist and Vec3_HorzAngle are declared here on
  *   const void *, so their calls take the address of the X field.
  *
@@ -65,8 +65,7 @@
  * other spellings of these symbols collide with this TU. */
 
 namespace cstd {
-/* local extern: kept off cstd.h so this TU's codegen stays put. */
-extern "C" int fdiv(int numerator, int denominator);
+int fdiv(int numerator, int denominator);
 }
 
 /* Shared ABI seams, kept above the first `// @symbol` marker so no member is
@@ -90,14 +89,38 @@ void RunningSlidingDustAt(int x, int y, int z);
 }
 extern "C" {
 
-/* ov072 and arm9 statics this TU reads but does not own. */
-extern SharedFilePtr data_ov072_02122b20;
-extern Vector3       data_ov072_02122b40;
-extern Vector3       data_ov072_02122b58;
-extern daBgSnmBdy_c::StateEntry data_ov072_02122b64[];
+/* arm9 statics this TU reads but does not own. */
 extern dClipper data_0209f43c;
 extern Matrix4x3 data_0209b3ec;
 }
+
+/* The model handle. dExtSimpleModel_c reaches its file through this wrapper's
+ * constructor and destructor veneers; the manifest maps both to the retail
+ * destinations. A descriptive local type, not a recovered spelling. */
+struct BgSnmBdyModelFile : SharedFilePtr {
+    BgSnmBdyModelFile(u32);
+    ~BgSnmBdyModelFile();
+};
+
+/* Runtime asset handle, distinct from the NitroFS file ID. */
+enum BgSnmBdyAssetId { ASSET_BIG_SNOWMAN_BODY_BMD = 0x02ad };
+
+/* This TU's statics, in the order the retail initializer builds them. */
+BgSnmBdyModelFile gBgSnmBdyModelFile(ASSET_BIG_SNOWMAN_BODY_BMD);
+
+daBgSnmBdy_c::StateEntry gBgSnmBdyStates[6] = {
+    {&daBgSnmBdy_c::InitState0, &daBgSnmBdy_c::State0},
+    {&daBgSnmBdy_c::InitState1, &daBgSnmBdy_c::State1},
+    {&daBgSnmBdy_c::InitState2, &daBgSnmBdy_c::State2},
+    {&daBgSnmBdy_c::InitState3, &daBgSnmBdy_c::State3},
+    {&daBgSnmBdy_c::InitState4, &daBgSnmBdy_c::State4},
+    {&daBgSnmBdy_c::InitState5, &daBgSnmBdy_c::State5},
+};
+
+/* The course point the talker must reach (State2), and the landing point
+ * State3 turns toward and snaps onto (IsPlayerNearCenter measures from it). */
+Vector3 gBgSnmBdyReachPoint(-0xad0000, 0x290000, -0x9d0000);
+Vector3 gBgSnmBdyLandingPoint(-0x1004000, -0x591000, 0x6fe000);
 
 extern Matrix4x3 IDENTITY_MATRIX4X3;
 
@@ -165,7 +188,7 @@ SpawnInfo<daBgSnmBdy_c> g_profile_BIG_SNOWMAN_BODY = {
 int daBgSnmBdy_c::InitResources()
 {
     Vector3 pos;
-    void *file = dExtSimpleModel_c::LoadFile(data_ov072_02122b20);
+    void *file = dExtSimpleModel_c::LoadFile(gBgSnmBdyModelFile);
     mModel.SetFile((BMD_File *)file, 1, 1);
     if (mShadowModel.InitCylinder() == 0)
         return 0;
@@ -228,7 +251,7 @@ void daBgSnmBdy_c::OnPendingDestroy()
 // @symbol _ZN12daBgSnmBdy_c16CleanupResourcesEv
 int daBgSnmBdy_c::CleanupResources()
 {
-    data_ov072_02122b20.Release();
+    gBgSnmBdyModelFile.Release();
     return 1;
 }
 
@@ -237,7 +260,7 @@ int daBgSnmBdy_c::CleanupResources()
 // @symbol _ZN12daBgSnmBdy_c8SetStateEi
 void daBgSnmBdy_c::SetState(int state)
 {
-    mState = &data_ov072_02122b64[state];
+    mState = &gBgSnmBdyStates[state];
     CallStateInit();
 }
 
@@ -366,7 +389,7 @@ int daBgSnmBdy_c::State2()
     UpdateGroundCollision(&mWithMeshClsn);
     HurtPlayer();
     if (mPlayerReachedPath == 0) {
-        if (Vec3_Dist(&data_ov072_02122b40, &mTalkPlayer->mPosX) < 0x300000)
+        if (Vec3_Dist(&gBgSnmBdyReachPoint, &mTalkPlayer->mPosX) < 0x300000)
             mPlayerReachedPath = 1;
     }
     return 1;
@@ -381,29 +404,24 @@ int daBgSnmBdy_c::InitState3()
 }
 
 // @symbol _ZN12daBgSnmBdy_c6State3Ev
-int daBgSnmBdy_c::State3()
-{
+int daBgSnmBdy_c::State3() {
     switch (mSubstate) {
-    case 0:
-        {
-            int distToLanding = Vec3_HorzDist(&data_ov072_02122b58, &mPosX);
-            UpdateAngle(mAngleY,
-                Vec3_HorzAngle(&mPosX, &data_ov072_02122b58),
-                2, 0x600);
-            mPrevAngleY = mAngleY;
-            Particle::RunningSlidingDustAt(mPosX, mPosY, mPosZ);
-            mSoundID = Sound::PlayLong(mSoundID, 3, 0x8a, mCamSpacePos, 0);
-            if (distToLanding < 0x17c000) {
-                daBgSnmHed_c *head =
-                    (daBgSnmHed_c *)dActor_c::FindWithActorID(0x111, 0); /* BIG_SNOWMAN_HEAD */
-                head->mBodyArriving = 1;
-                func_0201267c(0x114, &mCamSpacePos);
-                mVertSpeed = 0x1d000;
-                mHorzSpeed = 0xe000;
-                mSubstate++;
-            }
+    case 0: {
+        int distToLanding = Vec3_HorzDist(&gBgSnmBdyLandingPoint, &mPosX);
+        UpdateAngle(mAngleY, Vec3_HorzAngle(&mPosX, &gBgSnmBdyLandingPoint), 2, 0x600);
+        mPrevAngleY = mAngleY;
+        Particle::RunningSlidingDustAt(mPosX, mPosY, mPosZ);
+        mSoundID = Sound::PlayLong(mSoundID, 3, 0x8a, mCamSpacePos, 0);
+        if (distToLanding < 0x17c000) {
+            daBgSnmHed_c *head =
+                (daBgSnmHed_c *)dActor_c::FindWithActorID(0x111, 0); /* BIG_SNOWMAN_HEAD */
+            head->mBodyArriving = 1;
+            func_0201267c(0x114, &mCamSpacePos);
+            mVertSpeed = 0x1d000;
+            mHorzSpeed = 0xe000;
+            mSubstate++;
         }
-        break;
+    } break;
     case 1:
         if (mWithMeshClsn.JustHitGround() != 0) {
             Vector3 landPos;
@@ -411,9 +429,9 @@ int daBgSnmBdy_c::State3()
             landPos.y = mPosY;
             landPos.z = mPosZ;
             Earthquake(landPos, 0x5dc000);
-            mPosX = data_ov072_02122b58.x;
-            mPosY = data_ov072_02122b58.y;
-            mPosZ = data_ov072_02122b58.z;
+            mPosX = gBgSnmBdyLandingPoint.x;
+            mPosY = gBgSnmBdyLandingPoint.y;
+            mPosZ = gBgSnmBdyLandingPoint.z;
             mAngleX = 0;
             mAngleY = (short)-0x4000;
             mHorzSpeed = 0;
@@ -570,13 +588,13 @@ void daBgSnmBdy_c::UpdateRollAngle()
 // @symbol _ZN12daBgSnmBdy_c18IsPlayerNearCenterEv
 int daBgSnmBdy_c::IsPlayerNearCenter()
 {
-    int bodyDist = Vec3_Dist(&data_ov072_02122b58, &mPosX);
-    int playerDist = Vec3_Dist(&data_ov072_02122b58, &mTalkPlayer->mPosX);
-    int bodyAngle = Vec3_HorzAngle(&data_ov072_02122b58, &mPosX);
-    int playerAngle = Vec3_HorzAngle(&data_ov072_02122b58, &mTalkPlayer->mPosX);
+    int bodyDist = Vec3_Dist(&gBgSnmBdyLandingPoint, &mPosX);
+    int playerDist = Vec3_Dist(&gBgSnmBdyLandingPoint, &mTalkPlayer->mPosX);
+    int bodyAngle = Vec3_HorzAngle(&gBgSnmBdyLandingPoint, &mPosX);
+    int playerAngle = Vec3_HorzAngle(&gBgSnmBdyLandingPoint, &mTalkPlayer->mPosX);
     int angleDiff = bodyAngle - playerAngle;
     if ((playerDist < bodyDist && AbsAngle((short)angleDiff) < 0x700) ||
-        Vec3_Dist(&data_ov072_02122b58, &mTalkPlayer->mPosX) < 0x300000)
+        Vec3_Dist(&gBgSnmBdyLandingPoint, &mTalkPlayer->mPosX) < 0x300000)
         return 1;
     return 0;
 }

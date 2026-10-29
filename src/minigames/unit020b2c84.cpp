@@ -159,8 +159,7 @@ struct MgBanner {
 
 
 namespace cstd {
-/* local extern: kept off cstd.h so this TU's codegen stays put. */
-extern "C" int fdiv(s32 a, s32 b);
+int fdiv(s32 a, s32 b);
 }
 extern "C" {
 void Deallocate(void *ptr);

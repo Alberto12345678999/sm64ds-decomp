@@ -4,7 +4,9 @@
  * The run sits between dMgTrmpln2Mario_c and dScMgAmida_c. No RTTI
  * in it. A line slot is a 4x4 patch: positions at +0x5c, normals at
  * +0x1dc, packed normals at +0x2dc. Four slots of 0x32c bytes sit at
- * sTrmpLines. defer_codegen off keeps ROM order.
+ * sTrmpLines. defer_codegen off keeps ROM order. The file owns its
+ * static initializer and its .bss: the line slots, the three ring
+ * model handles, the counters and the function-local unit vectors.
  *
  * leftovers:
  * - Address names stay. Each function keeps its namespace, because
@@ -39,12 +41,39 @@
 #include "dExtAnmTexSRT_c.h"
 #include "SharedFilePtr.h"
 
+/* This unit's globals. The per-function namespaces below still re-declare
+   several of them in the spelling each one-function source used. */
+extern "C" {
+void *sTrmpLinePlttAddr;
+void *sTrmpLineTexAddr;
+int sTrmpItemsHit;
+int sTrmpItemsActive;
+char *sTrmpItems;
+int sTrmp2Score;
+int sTrmpItemCount;
+int sTrmp2MarioPtrs[5];
+void *sTrmpJumpers[5];
+}
+
+/* The three ring model handles (files 0x21a..0x21c), defined at the end of
+   the file. The wrapper name is local; its constructor and destructor are
+   the ROM resource-family functions, aliased in the manifest. */
+struct TrmpItemRingModelFile : SharedFilePtr {
+    TrmpItemRingModelFile(u32 fileID);
+    ~TrmpItemRingModelFile();
+};
+extern TrmpItemRingModelFile sTrmpItemRingAModelFile;
+extern TrmpItemRingModelFile sTrmpItemRingBModelFile;
+extern TrmpItemRingModelFile sTrmpItemRingCModelFile;
+
+/* The four line slots, defined beside TrmpLine's constructor below. */
+extern TrmpLine sTrmpLines[4];
+
 // Partial callback interface only. ROM vtables at 0x0213b2c4/0x0213b2e0
 // implement these five slots through dMgTrmpObjAdapter_c and its children.
 // No destructor slots or complete actor layout are implied by this view.
 namespace cstd {
-/* local extern: kept off cstd.h so this TU's codegen stays put. */
-extern "C" int fdiv(s32, s32);
+int fdiv(s32, s32);
 }
 namespace {
 struct TrampolineObjectCallbacks {
@@ -111,40 +140,22 @@ extern "C" void TrmpItem_ProjectToScreen(char *c, int scoreValue) {
 
 namespace s020cd864 {
 // @symbol TrmpItem_MotionSpinHover
-/* local extern: C++ cannot take ~Vector3()'s address */
-extern "C" extern void *_ZN7Vector3D1Ev(void *object);
-
-extern "C" extern void func_020731dc(void *object, void *destructor, void **node);
-
 extern "C" void TrmpItem_MotionSpinHover(char *arg) {
+    /* The spin axis and the reference direction, built on first use. */
+    static Vector3 sUnitY(0, 0x1000, 0);
+    static Vector3 sUnitZ(0, 0, 0x1000);
+
     struct Vector3 normalCopy;
     struct Vector3 tangent;
     struct Vector3 tangentCopy;
-    if ((sTrmpItem_MotionSpinHover_UnitYGuard & 1) == 0) {
-        sTrmpItem_MotionSpinHover_UnitY.x = 0;
-        sTrmpItem_MotionSpinHover_UnitY.y = 0x1000;
-        sTrmpItem_MotionSpinHover_UnitY.z = 0;
-        func_020731dc(&sTrmpItem_MotionSpinHover_UnitY, (void *)_ZN7Vector3D1Ev,
-                      &sTrmpItem_MotionSpinHover_UnitYDtorRec);
-        sTrmpItem_MotionSpinHover_UnitYGuard |= 1;
-    }
-    if ((sTrmpItem_MotionSpinHover_UnitZGuard & 1) == 0) {
-        sTrmpItem_MotionSpinHover_UnitZ.x = 0;
-        sTrmpItem_MotionSpinHover_UnitZ.y = 0;
-        sTrmpItem_MotionSpinHover_UnitZ.z = 0x1000;
-        func_020731dc(&sTrmpItem_MotionSpinHover_UnitZ, (void *)_ZN7Vector3D1Ev,
-                      &sTrmpItem_MotionSpinHover_UnitZDtorRec);
-        sTrmpItem_MotionSpinHover_UnitZGuard |= 1;
-    }
     func_0203cc28((int *)&TRMPITEM(arg)->mForward, 0x100);
     func_0203ce80(&normalCopy, &TRMPITEM(arg)->mForward);
-    func_0203cf00(&tangent, &TRMPITEM(arg)->mForward, &sTrmpItem_MotionSpinHover_UnitZ);
+    func_0203cf00(&tangent, &TRMPITEM(arg)->mForward, &sUnitZ);
     TRMPITEM(arg)->mSide.x = tangent.x;
     TRMPITEM(arg)->mSide.y = tangent.y;
     TRMPITEM(arg)->mSide.z = tangent.z;
     func_0203ce80(&tangentCopy, &TRMPITEM(arg)->mSide);
-    Quaternion_FromVector3(TRMPITEM(arg)->mRotation, &sTrmpItem_MotionSpinHover_UnitY,
-                           &TRMPITEM(arg)->mForward);
+    Quaternion_FromVector3(TRMPITEM(arg)->mRotation, &sUnitY, &TRMPITEM(arg)->mForward);
     Quaternion_Normalize(TRMPITEM(arg)->mRotation);
     TrmpItem_MotionHover(arg);
 }
@@ -167,61 +178,27 @@ namespace s020cd9b0 {
 typedef struct {
     int x, y, z;
 } Vec3;
-extern "C" extern void func_020731dc(void *object, void *destructor, void **node);
 extern "C" extern void func_0203cc28(int *p, int angle);
 extern "C" extern void func_0203ce80(Vec3 *dst, Vec3 *src);
 extern "C" extern void func_0203cf00(Vec3 *out, Vec3 *a, Vec3 *b);
 extern "C" extern void Quaternion_FromVector3(int *q, Vec3 *axis, Vec3 *v);
 extern "C" extern void Quaternion_Normalize(int *q);
-/* local extern: C++ cannot take ~Vector3()'s address */
-extern "C" extern void *_ZN7Vector3D1Ev(void *object);
-
-extern "C" {
-extern int sTrmpItem_MotionSpinDrift_UnitYGuard;
-}
-extern "C" {
-extern Vec3 sTrmpItem_MotionSpinDrift_UnitY;
-}
-extern "C" {
-extern int sTrmpItem_MotionSpinDrift_UnitYDtorRec;
-}
-extern "C" {
-extern int sTrmpItem_MotionSpinDrift_UnitZGuard;
-}
-extern "C" {
-extern Vec3 sTrmpItem_MotionSpinDrift_UnitZ;
-}
-extern "C" {
-extern int sTrmpItem_MotionSpinDrift_UnitZDtorRec;
-}
 
 extern "C" void TrmpItem_MotionSpinDrift(char *self) {
+    /* The spin axis and the reference direction, built on first use. */
+    static Vector3 sUnitY(0, 0x1000, 0);
+    static Vector3 sUnitZ(0, 0, 0x1000);
+
     Vec3 normalCopy, tangent, tangentCopy, unused;
 
-    if (!(sTrmpItem_MotionSpinDrift_UnitYGuard & 1)) {
-        sTrmpItem_MotionSpinDrift_UnitY.x = 0;
-        sTrmpItem_MotionSpinDrift_UnitY.y = 0x1000;
-        sTrmpItem_MotionSpinDrift_UnitY.z = 0;
-        func_020731dc(&sTrmpItem_MotionSpinDrift_UnitY, (void *)&_ZN7Vector3D1Ev,
-                      (void **)&sTrmpItem_MotionSpinDrift_UnitYDtorRec);
-        sTrmpItem_MotionSpinDrift_UnitYGuard |= 1;
-    }
-    if (!(sTrmpItem_MotionSpinDrift_UnitZGuard & 1)) {
-        sTrmpItem_MotionSpinDrift_UnitZ.x = 0;
-        sTrmpItem_MotionSpinDrift_UnitZ.y = 0;
-        sTrmpItem_MotionSpinDrift_UnitZ.z = 0x1000;
-        func_020731dc(&sTrmpItem_MotionSpinDrift_UnitZ, (void *)&_ZN7Vector3D1Ev,
-                      (void **)&sTrmpItem_MotionSpinDrift_UnitZDtorRec);
-        sTrmpItem_MotionSpinDrift_UnitZGuard |= 1;
-    }
     func_0203cc28((int *)&TRMPITEM(self)->mForward, 0x100);
     func_0203ce80(&normalCopy, (Vec3 *)&TRMPITEM(self)->mForward);
-    func_0203cf00(&tangent, (Vec3 *)&TRMPITEM(self)->mForward, &sTrmpItem_MotionSpinDrift_UnitZ);
+    func_0203cf00(&tangent, (Vec3 *)&TRMPITEM(self)->mForward, (Vec3 *)&sUnitZ);
     TRMPITEM(self)->mSide.x = tangent.x;
     TRMPITEM(self)->mSide.y = tangent.y;
     TRMPITEM(self)->mSide.z = tangent.z;
     func_0203ce80(&tangentCopy, (Vec3 *)&TRMPITEM(self)->mSide);
-    Quaternion_FromVector3(TRMPITEM(self)->mRotation, &sTrmpItem_MotionSpinDrift_UnitY,
+    Quaternion_FromVector3(TRMPITEM(self)->mRotation, (Vec3 *)&sUnitY,
                            (Vec3 *)&TRMPITEM(self)->mForward);
     Quaternion_Normalize(TRMPITEM(self)->mRotation);
 }
@@ -241,40 +218,22 @@ extern "C" void TrmpItem_SetMotionSpinDrift(char *p) {
 
 namespace s020cdaec {
 // @symbol TrmpItem_MotionSpinSway
-/* local extern: C++ cannot take ~Vector3()'s address */
-extern "C" extern void *_ZN7Vector3D1Ev(void *object);
-
-extern "C" extern void func_020731dc(void *object, void *destructor, void **node);
-
 extern "C" void TrmpItem_MotionSpinSway(char *arg) {
+    /* The spin axis and the reference direction, built on first use. */
+    static Vector3 sUnitY(0, 0x1000, 0);
+    static Vector3 sUnitZ(0, 0, 0x1000);
+
     struct Vector3 normalCopy;
     struct Vector3 tangent;
     struct Vector3 tangentCopy;
-    if ((sTrmpItem_MotionSpinSway_UnitYGuard & 1) == 0) {
-        sTrmpItem_MotionSpinSway_UnitY.x = 0;
-        sTrmpItem_MotionSpinSway_UnitY.y = 0x1000;
-        sTrmpItem_MotionSpinSway_UnitY.z = 0;
-        func_020731dc(&sTrmpItem_MotionSpinSway_UnitY, (void *)_ZN7Vector3D1Ev,
-                      &sTrmpItem_MotionSpinSway_UnitYDtorRec);
-        sTrmpItem_MotionSpinSway_UnitYGuard |= 1;
-    }
-    if ((sTrmpItem_MotionSpinSway_UnitZGuard & 1) == 0) {
-        sTrmpItem_MotionSpinSway_UnitZ.x = 0;
-        sTrmpItem_MotionSpinSway_UnitZ.y = 0;
-        sTrmpItem_MotionSpinSway_UnitZ.z = 0x1000;
-        func_020731dc(&sTrmpItem_MotionSpinSway_UnitZ, (void *)_ZN7Vector3D1Ev,
-                      &sTrmpItem_MotionSpinSway_UnitZDtorRec);
-        sTrmpItem_MotionSpinSway_UnitZGuard |= 1;
-    }
     func_0203cc28((int *)&TRMPITEM(arg)->mForward, 0x100);
     func_0203ce80(&normalCopy, &TRMPITEM(arg)->mForward);
-    func_0203cf00(&tangent, &TRMPITEM(arg)->mForward, &sTrmpItem_MotionSpinSway_UnitZ);
+    func_0203cf00(&tangent, &TRMPITEM(arg)->mForward, &sUnitZ);
     TRMPITEM(arg)->mSide.x = tangent.x;
     TRMPITEM(arg)->mSide.y = tangent.y;
     TRMPITEM(arg)->mSide.z = tangent.z;
     func_0203ce80(&tangentCopy, &TRMPITEM(arg)->mSide);
-    Quaternion_FromVector3(TRMPITEM(arg)->mRotation, &sTrmpItem_MotionSpinSway_UnitY,
-                           &TRMPITEM(arg)->mForward);
+    Quaternion_FromVector3(TRMPITEM(arg)->mRotation, &sUnitY, &TRMPITEM(arg)->mForward);
     Quaternion_Normalize(TRMPITEM(arg)->mRotation);
     TrmpItem_MotionSway(arg);
 }
@@ -359,61 +318,27 @@ namespace s020cdd08 {
 typedef struct {
     int x, y, z;
 } Vec3;
-extern "C" extern void func_020731dc(void *object, void *destructor, void **node);
 extern "C" extern void func_0203cc28(int *p, int angle);
 extern "C" extern void func_0203ce80(Vec3 *dst, Vec3 *src);
 extern "C" extern void func_0203cf00(Vec3 *out, Vec3 *a, Vec3 *b);
 extern "C" extern void Quaternion_FromVector3(int *q, Vec3 *axis, Vec3 *v);
 extern "C" extern void Quaternion_Normalize(int *q);
-/* local extern: C++ cannot take ~Vector3()'s address */
-extern "C" extern void *_ZN7Vector3D1Ev(void *object);
-
-extern "C" {
-extern int sTrmpItem_MotionSpin_UnitYGuard;
-}
-extern "C" {
-extern Vec3 sTrmpItem_MotionSpin_UnitY;
-}
-extern "C" {
-extern int sTrmpItem_MotionSpin_UnitYDtorRec;
-}
-extern "C" {
-extern int sTrmpItem_MotionSpin_UnitZGuard;
-}
-extern "C" {
-extern Vec3 sTrmpItem_MotionSpin_UnitZ;
-}
-extern "C" {
-extern int sTrmpItem_MotionSpin_UnitZDtorRec;
-}
 
 extern "C" void TrmpItem_MotionSpin(char *self) {
+    /* The spin axis and the reference direction, built on first use. */
+    static Vector3 sUnitY(0, 0x1000, 0);
+    static Vector3 sUnitZ(0, 0, 0x1000);
+
     Vec3 normalCopy, tangent, tangentCopy, d;
 
-    if (!(sTrmpItem_MotionSpin_UnitYGuard & 1)) {
-        sTrmpItem_MotionSpin_UnitY.x = 0;
-        sTrmpItem_MotionSpin_UnitY.y = 0x1000;
-        sTrmpItem_MotionSpin_UnitY.z = 0;
-        func_020731dc(&sTrmpItem_MotionSpin_UnitY, (void *)&_ZN7Vector3D1Ev,
-                      (void **)&sTrmpItem_MotionSpin_UnitYDtorRec);
-        sTrmpItem_MotionSpin_UnitYGuard |= 1;
-    }
-    if (!(sTrmpItem_MotionSpin_UnitZGuard & 1)) {
-        sTrmpItem_MotionSpin_UnitZ.x = 0;
-        sTrmpItem_MotionSpin_UnitZ.y = 0;
-        sTrmpItem_MotionSpin_UnitZ.z = 0x1000;
-        func_020731dc(&sTrmpItem_MotionSpin_UnitZ, (void *)&_ZN7Vector3D1Ev,
-                      (void **)&sTrmpItem_MotionSpin_UnitZDtorRec);
-        sTrmpItem_MotionSpin_UnitZGuard |= 1;
-    }
     func_0203cc28((int *)&TRMPITEM(self)->mForward, 0x100);
     func_0203ce80(&normalCopy, (Vec3 *)&TRMPITEM(self)->mForward);
-    func_0203cf00(&tangent, (Vec3 *)&TRMPITEM(self)->mForward, &sTrmpItem_MotionSpin_UnitZ);
+    func_0203cf00(&tangent, (Vec3 *)&TRMPITEM(self)->mForward, (Vec3 *)&sUnitZ);
     TRMPITEM(self)->mSide.x = tangent.x;
     TRMPITEM(self)->mSide.y = tangent.y;
     TRMPITEM(self)->mSide.z = tangent.z;
     func_0203ce80(&tangentCopy, (Vec3 *)&TRMPITEM(self)->mSide);
-    Quaternion_FromVector3(TRMPITEM(self)->mRotation, &sTrmpItem_MotionSpin_UnitY,
+    Quaternion_FromVector3(TRMPITEM(self)->mRotation, (Vec3 *)&sUnitY,
                            (Vec3 *)&TRMPITEM(self)->mForward);
     Quaternion_Normalize(TRMPITEM(self)->mRotation);
 }
@@ -984,36 +909,20 @@ typedef struct {
 } Vec3;
 
 extern "C" {
-extern int sTrmpItem_Init_UnitYGuard;
-}
-extern "C" {
-extern Vec3 sTrmpItem_Init_UnitY;
-}
-extern "C" {
-extern void *sTrmpItem_Init_UnitYDtorRec;
-}
-extern "C" {
 extern int data_02092768[4];
 }
 extern "C" {
 extern int data_020a0ebc[3];
 }
-/* local extern: C++ cannot take ~Vector3()'s address */
-extern "C" extern void *_ZN7Vector3D1Ev(void *object);
-extern "C" extern void func_020731dc(void *object, void *destructor, void **node);
 extern "C" extern void func_0203cc28(int *p, int angle);
 extern "C" extern void Quaternion_FromVector3(int *q, Vec3 *a, Vec3 *b);
 extern "C" extern void TrmpItem_StartAppear(char *c);
 
 extern "C" void TrmpItem_Init(char *self, int *position, int *normal, int itemType,
                               short motionType) {
-    if ((sTrmpItem_Init_UnitYGuard & 1) == 0) {
-        sTrmpItem_Init_UnitY.x = 0;
-        sTrmpItem_Init_UnitY.y = 0x1000;
-        sTrmpItem_Init_UnitY.z = 0;
-        func_020731dc(&sTrmpItem_Init_UnitY, (void *)_ZN7Vector3D1Ev, &sTrmpItem_Init_UnitYDtorRec);
-        sTrmpItem_Init_UnitYGuard |= 1;
-    }
+    /* The axis the starting rotation is built about, built on first use. */
+    static Vector3 sUnitY(0, 0x1000, 0);
+
     TRMPITEM(self)->mPos.x = position[0];
     TRMPITEM(self)->mPos.y = position[1];
     TRMPITEM(self)->mPos.z = position[2];
@@ -1046,7 +955,7 @@ extern "C" void TrmpItem_Init(char *self, int *position, int *normal, int itemTy
     TRMPITEM(self)->mRotation[1] = data_02092768[1];
     TRMPITEM(self)->mRotation[2] = data_02092768[2];
     TRMPITEM(self)->mRotation[3] = data_02092768[3];
-    Quaternion_FromVector3(TRMPITEM(self)->mRotation, &sTrmpItem_Init_UnitY,
+    Quaternion_FromVector3(TRMPITEM(self)->mRotation, (Vec3 *)&sUnitY,
                            (Vec3 *)&TRMPITEM(self)->mForward);
     TRMPITEM(self)->mSizeIdx = itemType;
     TRMPITEM(self)->mMotionKind = motionType;
@@ -1081,15 +990,6 @@ extern "C" void TrmpItem_Hide(int *p) {
 namespace s020cecc0 {
 extern "C" {
 void TrmpItem_Hide(int *p);
-}
-extern "C" {
-extern SharedFilePtr sTrmpItemRingAModelFile;
-}
-extern "C" {
-extern SharedFilePtr sTrmpItemRingBModelFile;
-}
-extern "C" {
-extern SharedFilePtr sTrmpItemRingCModelFile;
 }
 extern "C" {
 extern BTA_File sTrmpItemTextureAnim;
@@ -1196,15 +1096,6 @@ extern "C" void TrmpItem_HideAll(void) {
 }
 
 namespace s020ceedc {
-extern "C" {
-extern SharedFilePtr sTrmpItemRingAModelFile;
-}
-extern "C" {
-extern SharedFilePtr sTrmpItemRingBModelFile;
-}
-extern "C" {
-extern SharedFilePtr sTrmpItemRingCModelFile;
-}
 extern "C" void TrmpItem_ReleaseFiles(void) {
     sTrmpItemRingAModelFile.Release();
     sTrmpItemRingBModelFile.Release();
@@ -1214,15 +1105,6 @@ extern "C" void TrmpItem_ReleaseFiles(void) {
 
 namespace s020cef14 {
 extern "C" extern void TrmpItem_Load(void *p);
-extern "C" {
-extern SharedFilePtr sTrmpItemRingAModelFile;
-}
-extern "C" {
-extern SharedFilePtr sTrmpItemRingBModelFile;
-}
-extern "C" {
-extern SharedFilePtr sTrmpItemRingCModelFile;
-}
 extern "C" {
 extern char *sTrmpItems[];
 }
@@ -2283,9 +2165,6 @@ extern "C" extern void TrmpLine_Draw(char *p);
 extern "C" {
 extern char data_0209b3ec[];
 }
-extern "C" {
-extern char sTrmpLines[];
-}
 // @symbol TrmpLine_DrawAll
 extern "C" void TrmpLine_DrawAll(void) {
     struct V3 s;
@@ -2299,7 +2178,7 @@ extern "C" void TrmpLine_DrawAll(void) {
                                  ((((short)s.x >> 3) & 0x3ff) << 20) | 0x40000000;
     *(volatile int *)0x40004cc = 0x40007fff;
     int i;
-    char *p = sTrmpLines;
+    char *p = (char *)sTrmpLines;
     for (i = 0; i < 4; i++) {
         if (TRMPLINE(p)->mStatus != 0) {
             TrmpLine_Draw(p);
@@ -2310,14 +2189,11 @@ extern "C" void TrmpLine_DrawAll(void) {
 }
 
 namespace s020d0ac0 {
-extern "C" {
-extern char sTrmpLines[];
-}
 extern "C" extern void TrmpLine_Update(void *c);
 // @symbol TrmpLine_UpdateAll
 extern "C" void TrmpLine_UpdateAll(void) {
     int i = 0;
-    char *p = sTrmpLines;
+    char *p = (char *)sTrmpLines;
     do {
         if (TRMPLINE(p)->mStatus != 0)
             TrmpLine_Update(p);
@@ -2328,14 +2204,11 @@ extern "C" void TrmpLine_UpdateAll(void) {
 }
 
 namespace s020d0b04 {
-extern "C" {
-extern unsigned char sTrmpLines[];
-}
 
 // @symbol TrmpLine_ClearAll
 extern "C" void TrmpLine_ClearAll(void) {
     int i = 0;
-    unsigned char *p = sTrmpLines;
+    unsigned char *p = (unsigned char *)sTrmpLines;
     int r0 = i;
     do {
         i++;
@@ -2434,9 +2307,6 @@ extern "C" extern void func_0203d704(int *o, int *a, int *b);
 extern "C" extern void Vec2_Sub(int *o, int *a, int *b);
 extern "C" extern void TrmpLine_Build(s16 *slot, s16 *a, s16 *b);
 
-extern "C" {
-extern char sTrmpLines[];
-}
 extern "C" {
 extern s16 data_ov006_02140cb4[];
 }
@@ -2537,11 +2407,11 @@ extern "C" int TrmpLine_Create(s16 *startPoint, s16 *endPoint) {
         endPoint[1] = (s16)(adjustedEnd[1] >> 12);
     }
 
-    candidateSlot = sTrmpLines;
+    candidateSlot = (char *)sTrmpLines;
     slotIndex = 0;
     do {
         if (TRMPLINE(candidateSlot)->mStatus == 0) {
-            p = sTrmpLines;
+            p = (char *)sTrmpLines;
             otherSlotIndex = 0;
             do {
                 if (slotIndex != otherSlotIndex) {
@@ -2616,26 +2486,24 @@ extern "C" int TrmpLine_Create(s16 *startPoint, s16 *endPoint) {
 }
 }
 
-namespace s020d0fe4 {
-extern "C" extern int __cxa_vec_cleanup(void *dest, int a, int size, void (*func)(void));
-extern "C" {
-extern char sTrmpLines;
-}
-/* local extern: TrmpLine::~TrmpLine() by its mangled name -- C++ cannot take a
-   destructor's address, and sTrmpLines stays a raw symbol the .c static
-   initializer builds by hand. */
-extern "C" void *_ZN8TrmpLineD1Ev(void *self);
+/* The four line slots. mwcc builds them in this file's static initializer
+   with __cxa_vec_ctor and registers their cleanup thunk, __arraydtor. */
+TrmpLine sTrmpLines[4];
 
-// @symbol TrmpLine_CleanupAll
-extern "C" void TrmpLine_CleanupAll(void) {
-    __cxa_vec_cleanup(&sTrmpLines, 4, 0x32c, (void (*)(void))_ZN8TrmpLineD1Ev);
-}
-}
-
+/* The constructor and destructor are inline: mwcc emits a used inline body
+   at the end of the file, after the static initializer and __arraydtor, which
+   is where the cartridge has D1 and then C1. Out-of-line bodies would come
+   ahead of __arraydtor and bring a D2/C2 pair with no ROM home. */
 // @symbol _ZN8TrmpLineD1Ev
-TrmpLine::~TrmpLine() {}
+inline TrmpLine::~TrmpLine() {}
 
 // @symbol _ZN8TrmpLineC1Ev
-TrmpLine::TrmpLine() {
+inline TrmpLine::TrmpLine() {
     mStatus = 0;
 }
+
+/* The ring model handles. The initializer builds them after sTrmpLines,
+   in this order. */
+TrmpItemRingModelFile sTrmpItemRingAModelFile(0x21a);
+TrmpItemRingModelFile sTrmpItemRingBModelFile(0x21b);
+TrmpItemRingModelFile sTrmpItemRingCModelFile(0x21c);

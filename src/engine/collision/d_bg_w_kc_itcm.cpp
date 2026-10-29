@@ -70,14 +70,15 @@ Fix12i Vec3_Dist(const Vector3 *a, const Vector3 *b);
 
 }
 
-/* The shared scratch SurfaceInfo at 0x020a0cec, filled by GetSurfaceInfo and
-   read straight back by ShouldPassThroughImpl and the hit record.
+/* The shared scratch dBgPc at 0x020a0cec, defined (and constructed) by
+   d_bg_w_kc.cpp. GetSurfaceInfo fills its surface record, which
+   ShouldPassThroughImpl and the hit record read straight back.
    local extern: no header in include/ declares it. */
-extern SurfaceInfo data_020a0cec;
+extern dBgPc data_020a0cec;
 
 namespace cstd {
 /* local extern: no header in include/ declares it. */
-extern "C" int fdiv(int a, int b);
+int fdiv(int a, int b);
 }
 
 /* The ROM inlines a RAW hardware sqrt at four sites -- NOT cstd::sqrt(u64)
@@ -192,7 +193,7 @@ static inline s32 SqrtRaw(u64 x, s32 zval, s32 one)
 #define EDGE_FILTER(d, zval, hypv)                                                 \
     if (!(sphere.flags & 2)) {                                                     \
         if (cls == 1) {                                                            \
-            if (data_020a0cec.clps.GetFloorClass() == 1) {                         \
+            if (data_020a0cec.surface.clps.GetFloorClass() == 1) {                         \
                 if ((d) > (faceDot >> edgeToleranceShift))                         \
                     continue;                                                      \
             } else if (tolerantWallEdges) {                                        \
@@ -358,8 +359,8 @@ int dBgW_Kc::DetectClsn(dBgCh_Gnd &ray)
             if ((s64)dx * normal[0] + (s64)dyv * normal[1]
               + (s64)dz * normal[2] < 0) continue;
 
-            GetSurfaceInfo(func_020396dc(this, tri), data_020a0cec);
-            if (dBgCh::ShouldPassThroughImpl(this, data_020a0cec.clps, ray, false))
+            GetSurfaceInfo(func_020396dc(this, tri), data_020a0cec.surface);
+            if (dBgCh::ShouldPassThroughImpl(this, data_020a0cec.surface.clps, ray, false))
                 continue;
 
             if (dy + vtx[1] < file->origin.y) continue;   /* below the octree */
@@ -371,7 +372,7 @@ int dBgW_Kc::DetectClsn(dBgCh_Gnd &ray)
             /* through the REFERENCE: a pointer-level upcast makes mwcc emit
                the null-checked MI adjustment (movs/addne), the ROM's is
                unconditional */
-            ((dBgPi &)ray).RecordHit(func_020396dc(this, tri), &data_020a0cec);
+            ((dBgPi &)ray).RecordHit(func_020396dc(this, tri), &data_020a0cec.surface);
         }
 
         /* Snap to the bottom of the node just tested and drop one cell. */
@@ -704,8 +705,8 @@ s32 dBgW_Kc::DetectClsn(dBgCh_SphCrr &sphere)
                            dBgW_Kc::GetSurfaceInfo and the dBgCh_Gnd twin:
                            mwccarm's dispatch reads `this` from r0, a hand-rolled
                            one reads it from the callee-saved copy. */
-                        GetSurfaceInfo(triID, data_020a0cec);
-                        data_020a0cec.CopyNormalTo(sn);
+                        GetSurfaceInfo(triID, data_020a0cec.surface);
+                        data_020a0cec.surface.CopyNormalTo(sn);
 
                         /* 0 = floor, 1 = wall, 2 = underside -- and those select
                            the 0x74 / 0x9c / 0xc4 result slots and the 4 / 8 / 0x10
@@ -717,7 +718,7 @@ s32 dBgW_Kc::DetectClsn(dBgCh_SphCrr &sphere)
                            sp+0x28 one instruction after 0x01ffb9c8 zeroed it -- so
                            it is the hoisted constant 0, not a value from anywhere. */
                         contactKind = k0;
-                        if (dBgCh::ShouldPassThroughImpl(this, data_020a0cec.clps, sphere,
+                        if (dBgCh::ShouldPassThroughImpl(this, data_020a0cec.surface.clps, sphere,
                                                          cls == 1))
                             continue;
 
@@ -940,12 +941,12 @@ s32 dBgW_Kc::DetectClsn(dBgCh_SphCrr &sphere)
                         if (!contactKind)
                             contactKind = k1;
 
-                        ((dBgPi &)sphere).RecordHit(triID, &data_020a0cec);
+                        ((dBgPi &)sphere).RecordHit(triID, &data_020a0cec.surface);
                         sphere.flags |= 1;
 
                         if (cls == 0) {
                             if (!(sphere.flags & 4)) {
-                                sphere.RecordFloorHit(triID, &data_020a0cec);
+                                sphere.RecordFloorHit(triID, &data_020a0cec.surface);
                                 hitFlags |= 1;
                             }
                             hitFlags2 = k1;
@@ -955,7 +956,7 @@ s32 dBgW_Kc::DetectClsn(dBgCh_SphCrr &sphere)
                                 sphere.SetFloorNormal((const s32 *)&sn);
                         } else if (cls == 1) {
                             sphere.flags |= 8;
-                            sphere.RecordWallHit(triID, &data_020a0cec);
+                            sphere.RecordWallHit(triID, &data_020a0cec.surface);
                             hitFlags |= 2;
                             if (contactKind == 1) {
                                 WIDEN_PUSH_OUT(loPX, hiPX, sn.x)
@@ -967,7 +968,7 @@ s32 dBgW_Kc::DetectClsn(dBgCh_SphCrr &sphere)
                             }
                         } else {
                             sphere.flags |= 0x10;
-                            sphere.RecordUnderHit(triID, &data_020a0cec);
+                            sphere.RecordUnderHit(triID, &data_020a0cec.surface);
                             hitFlags |= 4;
                             WIDEN_PUSH_OUT(loPX, hiPX, sn.x)
                             WIDEN_PUSH_OUT(loPY, hiPY, sn.y)

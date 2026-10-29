@@ -17,14 +17,13 @@
 struct daObjKm1_Dorifu_c : daObjDorifu_c {
     /* Inline empty dtor: mwccarm emits D1 then D0, no D2. */
     virtual ~daObjKm1_Dorifu_c() {}
-    s32 CleanupResources();                /* slot  3 */
-    s32 InitResources();                   /* slot  0 */
+    s32 CleanupResources(); /* slot  3 */
+    s32 InitResources();    /* slot  0 */
 };
 
 #ifndef SM64DS_PLATFORM_PC
 /* ROM layout under mwccarm; host ABI divergence is tracked separately. */
-typedef char daObjKm1_Dorifu_c_size_must_be_0xdcc[
-    sizeof(daObjKm1_Dorifu_c) == 0xdcc ? 1 : -1];
+typedef char daObjKm1_Dorifu_c_size_must_be_0xdcc[sizeof(daObjKm1_Dorifu_c) == 0xdcc ? 1 : -1];
 #endif
 
 #endif /* DAOBJKM1_DORIFU_C_H */

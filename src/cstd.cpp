@@ -14,10 +14,6 @@
  * stack-homed when the body reads it (wall 6az). The Fix12<int> in those
  * names was ours, not the ROM's: declared with the honest scalar Fix12i
  * (plain int) parameters they reproduce exactly. See notes/mwccarm-codegen.md 6az, MEASURED 2026-10-22.
- *
- * leftovers:
- * - src/InvMat4x3.c is C and cannot name a C++ namespaced function, so it
- *   keeps a mangled extern for reciprocal_async under the new spelling.
  */
 #include "types.h"
 #include "nitro/hw/registers.h"
@@ -58,13 +54,15 @@ int func_02053274(int *a, int *b)
 }
 }
 
-// @symbol fdiv
+// @symbol _ZN4cstd4fdivEii
 namespace cstd {
 
-extern "C" s32 fdiv(s32 numerator, s32 denominator) {
+s32 fdiv(s32 numerator, s32 denominator)
+{
     fdiv_async(numerator, denominator);
     return fdiv_result();
 }
+
 }
 
 // @symbol _ZN4cstd4ldivEii
@@ -207,30 +205,30 @@ void fdiv_async(Fix12i a, Fix12i b) {
 }
 }
 
-// @symbol div
+// @symbol _ZN4cstd3divEii
 namespace cstd {
 
-extern "C" int div(int a, int b) {
-    *(volatile unsigned short *)0x4000280 = 0;
-    *(volatile int *)0x4000290 = a;
-    *(volatile unsigned long long *)0x4000298 = (unsigned)b;
-    while (*(volatile unsigned short *)0x4000280 & 0x8000)
-        ;
-    return *(volatile int *)0x40002a0;
+int div(int a, int b)
+{
+  *(volatile unsigned short*)0x4000280 = 0;
+  *(volatile int*)0x4000290 = a;
+  *(volatile unsigned long long*)0x4000298 = (unsigned)b;
+  while(*(volatile unsigned short*)0x4000280 & 0x8000);
+  return *(volatile int*)0x40002a0;
 }
 
 }
 
-// @symbol mod
+// @symbol _ZN4cstd3modEii
 namespace cstd {
 
-extern "C" int mod(int a, int b) {
-    *(volatile unsigned short *)0x4000280 = 0;
-    *(volatile int *)0x4000290 = a;
-    *(volatile unsigned long long *)0x4000298 = (unsigned)b;
-    while (*(volatile unsigned short *)0x4000280 & 0x8000)
-        ;
-    return *(volatile int *)0x40002a8;
+int mod(int a, int b)
+{
+  *(volatile unsigned short*)0x4000280 = 0;
+  *(volatile int*)0x4000290 = a;
+  *(volatile unsigned long long*)0x4000298 = (unsigned)b;
+  while(*(volatile unsigned short*)0x4000280 & 0x8000);
+  return *(volatile int*)0x40002a8;
 }
 
 }

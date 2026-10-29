@@ -76,14 +76,14 @@
       "ordinal": 5
     },
     {
-      "symbol": "func_ov002_020f1578",
+      "symbol": "_ZN16daObjBC_Switch_c9OnStoodOnEP8dActor_c",
       "address": "0x020f1578",
       "size": "0x00000040",
       "legacy_source": "src/func_ov002_020f1578.c",
       "ordinal": 6
     },
     {
-      "symbol": "func_ov002_020f15b8",
+      "symbol": "_ZN16daObjBC_Switch_c15StoodOnCallbackEP4dBgWP8dActor_cS3_",
       "address": "0x020f15b8",
       "size": "0x00000014",
       "legacy_source": "src/func_ov002_020f15b8.c",
@@ -537,14 +537,14 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@453",
+      "from": "@458",
       "to": "@86",
-      "evidence": "emitted model registration-node temp collides with an existing configured @453; @86 is unused in every module's symbols.txt on origin/main and shorter than the emitted spelling"
+      "evidence": "emitted model registration-node temp collides with an existing configured @453; @86 is unused in every module's symbols.txt on origin/main and shorter than the emitted spelling | compiler temp; the stood-on pair becoming members, Sound.h in place of the local declaration and the dead named-parameter extern going move the per-TU @NNN uniquifier, so mwcc emits it under this name now"
     },
     {
-      "from": "@454",
+      "from": "@459",
       "to": "@87",
-      "evidence": "emitted collision registration-node temp collides with an existing configured @454; @87 is unused in every module's symbols.txt on origin/main and shorter than the emitted spelling"
+      "evidence": "emitted collision registration-node temp collides with an existing configured @454; @87 is unused in every module's symbols.txt on origin/main and shorter than the emitted spelling | compiler temp; the stood-on pair becoming members, Sound.h in place of the local declaration and the dead named-parameter extern going move the per-TU @NNN uniquifier, so mwcc emits it under this name now"
     }
   ],
   "relocations": [

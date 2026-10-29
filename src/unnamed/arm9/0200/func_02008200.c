@@ -1,9 +1,9 @@
 #include "types.h"
 #include "nitro/fx/fx.h"
-extern struct dActor_c *func_0200e6d8(unsigned int arg0);
+extern struct dActor_c *FindScriptPlayer(unsigned int arg0);
 extern void Math_Function_0203b0fc(int *p, int target, int scale, int max);
 
-extern u16 data_0209b274;
+extern u16 gKuppaScriptFrame;
 
 typedef struct dActor_c {
     char pad60[0x60];
@@ -23,9 +23,9 @@ int func_02008200(Self *self, int dummy, int arg2)
 {
     dActor_c *a;
     int diff, val, target;
-    if (arg2 == data_0209b274)
+    if (arg2 == gKuppaScriptFrame)
         self->fb4 = 0x190000;
-    a = func_0200e6d8(0);
+    a = FindScriptPlayer(0);
     diff = a->f60 - a->f644;
     val = FX_MUL(diff, 0x1199);
     target = a->f644 + 0x50000 + val;

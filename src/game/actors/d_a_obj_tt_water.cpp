@@ -8,18 +8,13 @@
  * loads the model and collision files, prepares the texture
  * transformer, and records the drain floor from the spawn height.
  *
- * deslop
- * Leftover: dBgW_KcMbg::SetFile keeps its mangled spelling (by-value
- *   Fix12<int> parameter, wall 6az).
- * Leftover: data_ov033_02111bc8 (BTA) and data_ov033_02111c1c
- *   (CLPS) are unnamed homes this TU feeds Prepare/SetFile.
+ * What stays:
+ * - data_ov033_02111bc8 (BTA) and data_ov033_02111c1c (CLPS) are
+ *   unnamed homes this TU feeds Prepare/SetFile.
  */
 
 /* Runtime asset handles resolved through the overlay 0 file table. */
-enum daObjTtWater_c_AssetId {
-    ASSET_TT_OBJ_WATER_BMD = 0x06c7,
-    ASSET_TT_OBJ_WATER_KCL = 0x06c8
-};
+enum daObjTtWater_c_AssetId { ASSET_TT_OBJ_WATER_BMD = 0x06c7, ASSET_TT_OBJ_WATER_KCL = 0x06c8 };
 
 #include "daObjTtWater_c.h"
 #include "SharedFilePtr.h"
@@ -45,11 +40,8 @@ struct TtWaterCollisionFilePtr : SharedFilePtr {
 extern TtWaterModelFilePtr data_ov033_021124f0;
 extern TtWaterCollisionFilePtr data_ov033_021124e8;
 
-extern "C" {
 extern int data_ov033_02111bc8[];
 extern int data_ov033_02111c1c[];
-extern void hold_d_a_obj_tt_water(void *thiz, void *kcl, void *mtx, int fix, short s, void *clps);
-}
 
 /* Emission order is ROM order: the destructor pair must stay first.
  * Do not reorder. */
@@ -60,13 +52,10 @@ extern void hold_d_a_obj_tt_water(void *thiz, void *kcl, void *mtx, int fix, sho
 /* One out-of-line definition; mwccarm emits D1 and D0 from it, in that
  * order: its own vptr, then dBgActor_c's inlined, then dBgActor_c's
  * dExtSimpleModel_c and dBgW_KcMbg, then dActor_c. */
-daObjTtWater_c::~daObjTtWater_c()
-{
-}
+daObjTtWater_c::~daObjTtWater_c() {}
 
 // @symbol _ZN14daObjTtWater_c16CleanupResourcesEv
-int daObjTtWater_c::CleanupResources()
-{
+int daObjTtWater_c::CleanupResources() {
     if (mMeshCollider.IsEnabled()) {
         mMeshCollider.Disable();
     }
@@ -76,21 +65,17 @@ int daObjTtWater_c::CleanupResources()
 }
 
 // @symbol _ZN14daObjTtWater_c6RenderEv
-int daObjTtWater_c::Render()
-{
-  mTextureTransformer.Update(mModel.data); mModel.Render(0); return 1;
+int daObjTtWater_c::Render() {
+    mTextureTransformer.Update(mModel.data);
+    mModel.Render(0);
+    return 1;
 }
 
 // @symbol _ZN14daObjTtWater_c8BehaviorEv
-/* Sound and Event have no headers in this tree, so those two stay extern-C
- * mangled free functions. dMap_c::UpdateLevelSpecific, dExtFrameCtrl_c::Advance
- * and fBase_c::MarkForDestruction are declared, and are reached as members.
- */
-int daObjTtWater_c::Behavior()
-{
+int daObjTtWater_c::Behavior() {
     if (Event::GetBit(0xe)) {
         if (mPosY <= mMinPosY) {
-            if (Sound::PlaySecretSound((dActor_c *)this, (u16 *)&mSoundTimer))
+            if (Sound::PlaySecretSound(this, &mSoundTimer))
                 MarkForDestruction();
         } else {
             mPosY -= 0x1000;
@@ -109,19 +94,17 @@ int daObjTtWater_c::Behavior()
 }
 
 // @symbol _ZN14daObjTtWater_c13InitResourcesEv
-int daObjTtWater_c::InitResources()
-{
+int daObjTtWater_c::InitResources() {
     void *m = dExtSimpleModel_c::LoadFile(data_ov033_021124f0);
-    mModel.SetFile((BMD_File*)m, 1, 0x14);
-    dExtAnmTexSRT_c::Prepare(**(BMD_File **)((char *)&data_ov033_021124f0 + 4),
+    mModel.SetFile((BMD_File *)m, 1, 0x14);
+    dExtAnmTexSRT_c::Prepare(*(BMD_File *)data_ov033_021124f0.filePtr,
                              *(BTA_File *)data_ov033_02111bc8);
     mTextureTransformer.SetFile(*(BTA_File *)data_ov033_02111bc8, 0, 0x1000, 0);
     UpdateModelPosAndRotY();
     UpdateClsnPosAndRot();
-    void* mc = dBgW_Kc::LoadFile(data_ov033_021124e8);
-    ((dBgW_KcMbg *)(&mMeshCollider))
-        ->dBgW_KcMbg::SetFile((KCL_File *)(mc), *(const Matrix4x3 *)(&mClsnMat), 0x1000, mAngleY,
-                              *(CLPS_Block *)(data_ov033_02111c1c));
+    void *mc = dBgW_Kc::LoadFile(data_ov033_021124e8);
+    mMeshCollider.SetFile((KCL_File *)mc, mClsnMat, 0x1000, mAngleY,
+                          *(CLPS_Block *)data_ov033_02111c1c);
     mMeshCollider.Enable(this);
     mMinPosY = mPosY - 0x3c000;
     return Event::GetBit(0xe) == 0;
@@ -132,8 +115,7 @@ int daObjTtWater_c::InitResources()
  * profile; later EAD lineage supplies classInit. Exact original spelling is
  * not preserved. Historical alias: TinyWater_Spawn. */
 // @symbol daObjTtWater_c_classInit
-extern "C" daObjTtWater_c *daObjTtWater_c_classInit()
-{
+extern "C" daObjTtWater_c *daObjTtWater_c_classInit() {
     return new daObjTtWater_c();
 }
 

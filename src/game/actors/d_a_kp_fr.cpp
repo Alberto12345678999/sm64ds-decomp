@@ -228,8 +228,7 @@ void daKpFr_c::func_ov070_02121e14() {
  * proven typed ABI seam. ROM calls the UpdateContinuous veneer, not the
  * method. FX_MUL's 64-bit product is the smull the ROM uses. */
 namespace cstd {
-/* local extern: kept off cstd.h so this TU's codegen stays put. */
-extern "C" int fdiv(int a, int b);
+int fdiv(int a, int b);
 }
 
 void daKpFr_c::func_ov070_02121d50(void* vclsn) {

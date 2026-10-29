@@ -28,8 +28,7 @@
 
 // These helpers have native definitions but no shared declaration yet.
 namespace cstd {
-/* local extern: kept off cstd.h so this TU's codegen stays put. */
-extern "C" Fix12i fdiv(Fix12i a, Fix12i b);
+Fix12i fdiv(Fix12i a, Fix12i b);
 }
 namespace CP15 {
 void FlushAndInvalidateDataCache(u32 addr, u32 len);

@@ -79,10 +79,9 @@ struct daPeach_c : dActor_c {
 
     void UpdateLookAt();
     void UpdateGroundCollision(dBgCh_Actr *collision);
-    /* The owned player-contact query at 0x02129f8c remains the C symbol
-     * func_ov085_02129f8c. In C++ mode the same source either drops the ROM's
-     * final redundant compare or re-normalizes the already-0/1 result, moving
-     * the body by one or two words; no source-level exact form is known. */
+    /* 0x02129f8c. The body keeps a goto so the ROM's redundant final
+     * compare of the 0/1 result survives. */
+    int IsTouchingPlayer();
     void UpdateModel();
     void CallStateBehavior();
     void CallStateInit();

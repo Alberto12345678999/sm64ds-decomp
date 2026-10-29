@@ -50,21 +50,21 @@
       "ordinal": 1
     },
     {
-      "symbol": "_ZN10daKpa2Bg_c19func_ov060_02117a3cEv",
+      "symbol": "_ZN10daKpa2Bg_c13PlayTiltSoundEv",
       "address": "0x02117a3c",
       "size": "0x00000028",
       "legacy_source": "src/func_ov060_02117a3c.c",
       "ordinal": 2
     },
     {
-      "symbol": "_ZN10daKpa2Bg_c19func_ov060_02117a64Ev",
+      "symbol": "_ZN10daKpa2Bg_c16UpdateClsnMatrixEv",
       "address": "0x02117a64",
       "size": "0x0000007c",
       "legacy_source": "src/func_ov060_02117a64.c",
       "ordinal": 3
     },
     {
-      "symbol": "_ZN10daKpa2Bg_c19func_ov060_02117ae0Ev",
+      "symbol": "_ZN10daKpa2Bg_c17UpdateModelMatrixEv",
       "address": "0x02117ae0",
       "size": "0x00000078",
       "legacy_source": "src/func_ov060_02117ae0.c",
@@ -498,12 +498,12 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@429",
+      "from": "@495",
       "to": "@65",
       "evidence": "emitted destructor-registration node name is contended fleet-wide (three pending-fold pool claims); @65 is unused everywhere on main and shorter than the original"
     },
     {
-      "from": "@430",
+      "from": "@496",
       "to": "@66",
       "evidence": "emitted destructor-registration node name is contended fleet-wide (three pending-fold pool claims); @66 is unused everywhere on main and shorter than the original"
     }

@@ -180,8 +180,7 @@ void LoadOBJPltt(const void *src, u32 offset, u32 size);
 }
 namespace cstd {
 s16 atan2(s32, s32);
-/* local extern: kept off cstd.h so this TU's codegen stays put. */
-extern "C" int fdiv(int numerator, int denominator);
+int fdiv(int numerator, int denominator);
 }
 
 extern "C" {

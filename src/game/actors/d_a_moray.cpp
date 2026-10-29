@@ -161,8 +161,7 @@ struct MorayStarCarrier {
 extern "C" MorayRenderStep data_ov016_02114908[];
 
 namespace cstd {
-/* local extern: kept off cstd.h so this TU's codegen stays put. */
-extern "C" int fdiv(int a, int b);
+int fdiv(int a, int b);
 }
 
 /* Out of line, and FIRST in this ROM-ascending file: that puts D1 and D0 at

@@ -39,8 +39,7 @@ enum daObjC1Peach_c_AssetId {
 #include "nitro/fx/fx.h"
 
 namespace cstd {
-/* local extern: kept off cstd.h so this TU's codegen stays put. */
-extern "C" int fdiv(int a, int b);
+int fdiv(int a, int b);
 }
 
 /* The cartridge's ctor/dtor imports are the functions the wrapper's aliases

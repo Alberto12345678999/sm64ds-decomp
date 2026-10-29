@@ -24,7 +24,7 @@
  * constructs the member arrays through their real class constructors. The
  * Vector3 array uses its empty default constructor at arm9 0x0203d384.
  *
- * deslop leftovers:
+ * Notes (each measured with mwccarm 2004/b56):
  * - InitResources: a Vector3* / dCcPos_c* walk was 0x16c against the
  *   ROM's 0x174. The cartridge keeps a pointer that starts at this
  *   and strides by 0xc, storing through +0x3a4, plus a second pointer
@@ -44,10 +44,13 @@
 #include "Player.h"
 #include "Sound.h"
 #include "nitro/fx/fx.h"
+#include "math/CalcLib.h"
 
 /* Three ints, so the transform helpers can take their address without
  * calling ~Vector3. */
-struct Vec3 { int x, y, z; };
+struct Vec3 {
+    int x, y, z;
+};
 
 /* LEVEL_ID 0xc is Big Boo's Haunt (its course overlay is ov020). */
 enum {
@@ -65,12 +68,12 @@ enum {
     kHeightMul = 0x28
 };
 
-extern "C" {
 extern signed char data_0209f2f8;
 extern short data_02082214[];
 /* Second particle parameter per segment: 0xe61 + i * 0x689. */
 extern short data_ov095_02136f98[];
-extern unsigned short DecIfAbove0_Short(unsigned short *p);
+
+extern "C" {
 extern void MulVec3Mat4x3(int *v, void *m, int *dst);
 extern void Vec3_Add(int *out, int *a, int *b);
 /* Flame particles. 0x4f / 0x50 when param1's low byte is not 0xff;
@@ -92,14 +95,12 @@ extern void func_020227ec(Fix12i x, Fix12i y, Fix12i z, s16 ang1, s16 ang2);
  * flame positions in member order. Vector3's empty default constructor
  * is the original array callback at arm9 0x0203d384. */
 // @symbol daObjFlamethrower_c_classInit
-extern "C" daObjFlamethrower_c *daObjFlamethrower_c_classInit()
-{
+extern "C" daObjFlamethrower_c *daObjFlamethrower_c_classInit() {
     return new daObjFlamethrower_c;
 }
 
 // @symbol _ZN19daObjFlamethrower_c13InitResourcesEv
-int daObjFlamethrower_c::InitResources()
-{
+int daObjFlamethrower_c::InitResources() {
     int count;
     int i;
     int im1;
@@ -160,8 +161,7 @@ int daObjFlamethrower_c::InitResources()
 }
 
 // @symbol _ZN19daObjFlamethrower_c8BehaviorEv
-int daObjFlamethrower_c::Behavior()
-{
+int daObjFlamethrower_c::Behavior() {
     char *self;
     int count;
     int i;

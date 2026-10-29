@@ -25,13 +25,13 @@
  * +0x138. D1/D0 destroy the same subobjects in reverse, independently pinning
  * both the inheritance and owned-member layout. */
 struct daObjShell_c : dActor_c {
-    u8 pad_0d0[0x4];         /* 0x0d0 */
+    u8 pad_0d0[0x4];          /* 0x0d0 */
     dExtAnmModel_c mAnmModel; /* 0x0d4 */
     dCcAc_c mdCcAc_c;         /* 0x138 */
     u8 mState;                /* 0x16c: 0 shut, 1 lunging */
     u8 pad_16d[0x1];
-    u16 mStateTimer;          /* 0x16e */
-    u16 mShutTimer;           /* 0x170 */
+    u16 mStateTimer; /* 0x16e */
+    u16 mShutTimer;  /* 0x170 */
 
     /* Inline empty body on purpose. From an inline destructor mwccarm emits D1
      * and then D0 -- the cartridge's own order at 0x0211a930 and 0x0211a968 --
@@ -41,7 +41,7 @@ struct daObjShell_c : dActor_c {
      * vptr store, then dCcAc_c at 0x138 and dExtAnmModel_c at 0x0d4 in reverse
      * construction order, then the dActor_c base; D0 additionally returns the
      * object to the actor heap. */
-    virtual ~daObjShell_c() {}   /* slots 16, 17 */
+    virtual ~daObjShell_c() {} /* slots 16, 17 */
 
     virtual int InitResources();    /* slot 0 */
     virtual int CleanupResources(); /* slot 3 */
@@ -51,28 +51,28 @@ struct daObjShell_c : dActor_c {
     /* Rebuilds the model's world matrix from the facing angle and position
        (position >> 3), the way every dExtAnmModel_c actor in this overlay poses
        its model. Called once, from InitResources. ROM name unrecovered. */
-    void func_ov064_0211a9b4();
+    void UpdateModelTransform();
 };
 
 #else
 
 /* Flat layout for the remaining C translation units. */
 struct daObjShell_c {
-    u8  pad_000[0x5c];
-    s32 mPosX;            /* 0x05c */
-    s32 mPosY;            /* 0x060 */
-    s32 mPosZ;            /* 0x064 */
-    u8  pad_068[0xc];
+    u8 pad_000[0x5c];
+    s32 mPosX; /* 0x05c */
+    s32 mPosY; /* 0x060 */
+    s32 mPosZ; /* 0x064 */
+    u8 pad_068[0xc];
     /* dActor_c::mCamSpacePos -- dActor_c.h declares s32 here. The sound call in
        Behavior takes its address, which is what pins it. */
-    s32 mCamSpacePosX;            /* 0x074 */
-    u8  pad_078[0x5c];
+    s32 mCamSpacePosX; /* 0x074 */
+    u8 pad_078[0x5c];
     dExtAnmModel_c mAnmModel; /* 0x0d4 */
     dCcAc_c mdCcAc_c;         /* 0x138 */
-    u8  mState;            /* 0x16c */
-    u8  pad_16d[0x1];
-    u16 mStateTimer;            /* 0x16e */
-    u16 mShutTimer;            /* 0x170 */
+    u8 mState;                /* 0x16c */
+    u8 pad_16d[0x1];
+    u16 mStateTimer; /* 0x16e */
+    u16 mShutTimer;  /* 0x170 */
 };
 
 #endif

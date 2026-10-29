@@ -12,7 +12,7 @@
  * order, so the members are written highest address first, starting with
  * the factory.
  *
- * deslop leftovers:
+ * What stays, and why (each alternative measured):
  * - InitResources: a local holding dExtSimpleModel_c::LoadFile's return, reused by
  *   Prepare, differs by 34 words (size stays 0x1ec).
  * - InitResources: dExtAnmModel_c::SetAnim with a Fix12<int> local differs
@@ -40,13 +40,17 @@
 #include "SharedFilePtr.h"
 #include "Player.h"
 #include "math/Approach.h"
+#include "math/MtxStack.h"
 
 /* Twelve-word copy. Assigning Matrix4x3 itself is a different sequence. */
-struct Mtx { int m[12]; };
+struct Mtx {
+    int m[12];
+};
 
 /* Vec3_Asr's definition. Three ints, same layout as mPosX/Y/Z. */
-struct Vec3 { int x, y, z; };
-struct Obj;
+struct Vec3 {
+    int x, y, z;
+};
 
 #define CurrentPlayer() ((Player *)data_0209f394[data_0209f250])
 
@@ -66,8 +70,6 @@ struct Obj;
 #define kAppearSound 0x179
 #define kMirrorSx (-0x1000)
 
-
-extern "C" {
 /* Reflection state in this overlay. b68 is the request: bit 0 resets, bit 1
  * fades in. b6c is the fade, 0 (hidden) to kFadeFull. kHideBit of b64 skips
  * the draw. b70 is the one state record this file defines; the compiler
@@ -81,9 +83,6 @@ extern int data_ov055_02111b68;
 extern int data_ov055_02111b6c;
 extern daLuigiState data_ov055_02111b70;
 
-/* Sound::Play2D(3, id). The ROM calls this wrapper, not Play2D. */
-unsigned int func_0201277c(unsigned int soundID);
-
 /* Body model 0x8080, second model 0x807e, body anim 0x8029, texture
  * patterns 0x8022 (body) and 0x8025 (second model). */
 extern SharedFilePtr data_ov002_0210ebb8;
@@ -94,9 +93,13 @@ extern SharedFilePtr data_ov002_0210ebd8;
 
 extern unsigned char data_0209f250;
 extern void *data_0209f394[];
-extern Matrix4x3 data_020a0e68;
 extern int data_0209caa0[];
 extern void *data_0209f318;
+
+/* local extern: arm9/ov002 C helpers with no shared header yet. */
+extern "C" {
+/* Sound::Play2D(3, id). The ROM calls this wrapper, not Play2D. */
+unsigned int func_0201277c(unsigned int soundID);
 
 /* Depth from mModelOffsetY, mPosY, mSinkDepth and mGroundY; radius from that,
  * mIsBalloon, mIsMega and mScaleY. The definition takes char *. */
@@ -106,13 +109,9 @@ int func_ov002_020e496c(char *player);
 
 void func_0203c178(Matrix4x3 *m, int sx, int sy, int sz);
 void MulMat3x3Mat3x3(const int *a, const int *b, int *dst);
-void Matrix4x3_FromTranslation(Matrix4x3 *m, int x, int y, int z);
 void func_02016acc(dExtSimpleModel_c *model, unsigned int mask);
 void func_02016b24(dExtSimpleModel_c *model, u32 mask);
 void Vec3_Asr(Vec3 *dst, Vec3 *src, int shift);
-void Matrix4x3_ApplyInPlaceToRotationY(Matrix4x3 *m, short angY);
-
-/* Fix12<int> by value. The method form homes that argument on the stack. */
 }
 
 /* Reconstructed source-style name: SM64DS proves daLuigi_c through RTTI,
@@ -120,14 +119,12 @@ void Matrix4x3_ApplyInPlaceToRotationY(Matrix4x3 *m, short angY);
  * later EAD lineage supplies classInit. Exact original spelling is not
  * preserved. Historical alias: MirrorLuigi_Spawn. */
 // @symbol daLuigi_c_classInit
-extern "C" daLuigi_c *daLuigi_c_classInit()
-{
+extern "C" daLuigi_c *daLuigi_c_classInit() {
     return new daLuigi_c();
 }
 
 // @symbol _ZN9daLuigi_c13InitResourcesEv
-int daLuigi_c::InitResources()
-{
+int daLuigi_c::InitResources() {
     Vec3 t;
 
     mAnmModel.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(data_ov002_0210ebb8), 1, -1);
@@ -165,8 +162,7 @@ int daLuigi_c::InitResources()
 }
 
 // @symbol _ZN9daLuigi_c8BehaviorEv
-int daLuigi_c::Behavior()
-{
+int daLuigi_c::Behavior() {
     int depth, radius;
     Player *player;
 
@@ -190,8 +186,7 @@ int daLuigi_c::Behavior()
 }
 
 // @symbol _ZN9daLuigi_c6RenderEv
-int daLuigi_c::Render()
-{
+int daLuigi_c::Render() {
     Player *player;
     dExtSimpleModel_c *body;
     ModelComponents *comps;
@@ -201,7 +196,8 @@ int daLuigi_c::Render()
     Mtx *dst;
     Mtx *src;
 
-    if (data_ov055_02111b6c == 0) return 1;
+    if (data_ov055_02111b6c == 0)
+        return 1;
 
     player = CurrentPlayer();
     body = (dExtSimpleModel_c *)func_ov002_020e496c((char *)player);
@@ -225,7 +221,8 @@ int daLuigi_c::Render()
     MulMat3x3Mat3x3((const int *)mat, (const int *)&data_020a0e68, (int *)mat);
     *(Mtx *)&mModel.mat4x3 = *(Mtx *)mat;
 
-    if (data_ov055_02111b64 & kHideBit) return 1;
+    if (data_ov055_02111b64 & kHideBit)
+        return 1;
 
     mAnmModel.dExtSimpleModel_c::Render(0);
     *(Mtx *)&mModel.data.transforms[0] = *(Mtx *)&mAnmModel.data.transforms[15];
@@ -238,13 +235,10 @@ int daLuigi_c::Render()
 }
 
 // @symbol _ZN9daLuigi_c16OnPendingDestroyEv
-void daLuigi_c::OnPendingDestroy()
-{
-}
+void daLuigi_c::OnPendingDestroy() {}
 
 // @symbol _ZN9daLuigi_c16CleanupResourcesEv
-int daLuigi_c::CleanupResources()
-{
+int daLuigi_c::CleanupResources() {
     data_ov002_0210ebb8.Release();
     data_ov002_0210eb20.Release();
     data_ov002_0210eaa0.Release();
@@ -252,22 +246,20 @@ int daLuigi_c::CleanupResources()
 }
 
 // @symbol _ZN9daLuigi_c8SetStateEP12daLuigiStateP6Player
-int daLuigi_c::SetState(daLuigiState *state, Player *player)
-{
+int daLuigi_c::SetState(daLuigiState *state, Player *player) {
     mState = state;
-    if (mState->enter == 0) return 1;
+    if (mState->enter == 0)
+        return 1;
     return (this->*mState->enter)(player);
 }
 
 // @symbol _ZN9daLuigi_c11EnterMirrorEP6Player
-int daLuigi_c::EnterMirror(Player *player)
-{
+int daLuigi_c::EnterMirror(Player *player) {
     return 1;
 }
 
 // @symbol _ZN9daLuigi_c13ExecuteMirrorEP6Player
-int daLuigi_c::ExecuteMirror(Player *player)
-{
+int daLuigi_c::ExecuteMirror(Player *player) {
     /* One base, read x then z then y. Direct mPosX / mPosZ / mPosY
      * differ (same size). */
     int *pos = &player->mPosX;
@@ -285,8 +277,7 @@ int daLuigi_c::ExecuteMirror(Player *player)
 // @symbol func_ov055_02111264
 /* One candidate caller, ov063 0x02118004, relocates to ov027 or ov055, so
  * the owner is unknown. */
-extern "C" void func_ov055_02111264(void)
-{
+extern "C" void func_ov055_02111264(void) {
     data_ov055_02111b68 = kReqFade;
     func_0201277c(kAppearSound);
 }

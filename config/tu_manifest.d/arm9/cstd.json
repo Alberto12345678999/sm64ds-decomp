@@ -19,14 +19,14 @@
   ],
   "functions": [
     {
-      "symbol": "mod",
+      "symbol": "_ZN4cstd3modEii",
       "address": "0x02052ef4",
       "size": "0x00000058",
       "legacy_source": "src/_ZN4cstd3modEii.cpp",
       "ordinal": 0
     },
     {
-      "symbol": "div",
+      "symbol": "_ZN4cstd3divEii",
       "address": "0x02052f4c",
       "size": "0x00000058",
       "legacy_source": "src/_ZN4cstd3divEii.cpp",
@@ -103,7 +103,7 @@
       "ordinal": 11
     },
     {
-      "symbol": "fdiv",
+      "symbol": "_ZN4cstd4fdivEii",
       "address": "0x02053258",
       "size": "0x0000001c",
       "legacy_source": "src/_ZN4cstd4fdivEii.cpp",

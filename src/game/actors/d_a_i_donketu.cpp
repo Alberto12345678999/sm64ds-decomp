@@ -14,13 +14,12 @@
  *   UpdateRunState reads its timer as `*(u16 *)&mStateTimer`: the member
  *   is s16 and the ROM compares unsigned (blo, not blt).
  *
- * leftovers:
+ * Notes:
  * - The TU is one `complete` delinks span claiming .text only, so the
  *   file-table handle data_ov027_021138f4 and g_profile_ICE_DONKETU stay
  *   outside it.
- * - func_ov064_02116110 (run) and func_ov064_0211616c (death) are
- *   unmatched daOts_c workers with no name evidence; they keep linker
- *   names.
+ * - func_ov064_02116110 (run) and func_ov064_0211616c (death) are daOts_c
+ *   workers in ov064; they keep their labels with that class.
  * - D1/D0 are not written here: the inline destructor in the header
  *   emits them in cartridge order with no homeless D2. Behavior, the
  *   first declared virtual, keeps this TU the key-function TU, so it
@@ -57,9 +56,7 @@ struct IDonketuAnimationFileHandle : SharedFilePtr {
     ~IDonketuAnimationFileHandle();
 };
 
-extern "C" {
 extern int data_ov027_021138f4[];
-}
 
 /* -------------------------------------------------------------------------- */
 // @symbol daIDonketu_c_classInit
@@ -69,8 +66,7 @@ extern int data_ov027_021138f4[];
  * ICE_DONKETU registry profile; later EAD lineage supplies classInit.
  * Exact original spelling is not preserved. Historical alias:
  * daIDonketu_c_Spawn. */
-extern "C" daIDonketu_c *daIDonketu_c_classInit(void)
-{
+extern "C" daIDonketu_c *daIDonketu_c_classInit(void) {
     return new daIDonketu_c();
 }
 
@@ -81,8 +77,7 @@ extern "C" daIDonketu_c *daIDonketu_c_classInit(void)
  * daOts_c leaves slot 0 pure virtual (the word in its vtable is a literal zero), so
  * every one of its three children has to supply this. This one points the shared
  * file table at its own list and then claims a star slot. */
-int daIDonketu_c::InitResources()
-{
+int daIDonketu_c::InitResources() {
     mFileTable = (int)data_ov027_021138f4;
     int r = InitResourcesCommon();
     mStarIdx = param1 & 0xf;
@@ -104,8 +99,7 @@ int daIDonketu_c::InitResources()
  * Every call below is a real method, so the compiler mangles the names and the
  * signatures become falsifiable -- including UntrackAndSpawnStar's `s8 &`, which is
  * why mStarSlot is signed. See the long note on that symbol in dActor_c.h. */
-int daIDonketu_c::Behavior()
-{
+int daIDonketu_c::Behavior() {
     int r = UpdateKillByInvincibleChar(mWithMeshClsn, mAnmModel, 0);
     if (r != 0) {
         if (r == 2) {
@@ -127,8 +121,7 @@ int daIDonketu_c::Behavior()
 /* daIDonketu_c::UpdateDeathState -- vtable slot 32, daOts_c's state-4 hook. The
  * same star drop as Behavior's kill path without the invincible-character test: by
  * the time state 4 runs the death is already decided. */
-void daIDonketu_c::UpdateDeathState()
-{
+void daIDonketu_c::UpdateDeathState() {
     int result = func_ov064_0211616c();
     if (result == 0)
         return;
@@ -150,8 +143,7 @@ void daIDonketu_c::UpdateDeathState()
  * mStateTimer is s16 in dEnemyBase_c.h: a named halfword compare is signed
  * (blt) where the ROM's first arm is unsigned (blo), so the u16* addressing
  * stays. */
-int daIDonketu_c::UpdateRunState()
-{
+int daIDonketu_c::UpdateRunState() {
     if (*(u16 *)&mStateTimer < 0xa) {
         mHorzSpeed = 0;
         int result = func_ov064_02116110(0x700);

@@ -19,14 +19,12 @@
  */
 
 /* Runtime asset handles resolved through the overlay 0 file table. */
-enum daObjKm2_Nobiru_c_AssetId {
-    ASSET_KM2_NOBIRU_BMD = 0x0663,
-    ASSET_KM2_NOBIRU_KCL = 0x0664
-};
+enum daObjKm2_Nobiru_c_AssetId { ASSET_KM2_NOBIRU_BMD = 0x0663, ASSET_KM2_NOBIRU_KCL = 0x0664 };
 
 #include "decl_common.h"
 #include "daObjKm2_Nobiru_c.h"
 #include "SharedFilePtr.h"
+#include "math/MtxStack.h"
 
 #pragma defer_codegen off
 
@@ -44,22 +42,19 @@ struct NobiruClsnFileHandle : SharedFilePtr {
     ~NobiruClsnFileHandle();
 };
 
-extern "C" {
 extern NobiruClsnFileHandle PoleLift_ClsnFile;
 extern NobiruModelFileHandle PoleLift_ModelFile;
+
+extern "C" {
 extern s32 func_0203aad0(dBgW_KcMbgSclY *);
-extern void Matrix4x3_FromRotationY(Matrix4x3 *, s32);
 }
 
 // @symbol _ZN17daObjKm2_Nobiru_cD1Ev
 // @symbol _ZN17daObjKm2_Nobiru_cD0Ev
-daObjKm2_Nobiru_c::~daObjKm2_Nobiru_c()
-{
-}
+daObjKm2_Nobiru_c::~daObjKm2_Nobiru_c() {}
 
 // @symbol _ZN17daObjKm2_Nobiru_c23UpdateColliderTransformEv
-void daObjKm2_Nobiru_c::UpdateColliderTransform()
-{
+void daObjKm2_Nobiru_c::UpdateColliderTransform() {
     Matrix4x3_FromRotationY(&mColliderTransform, mAngleY);
     mColliderTransform.m[9] = mPosX;
     mColliderTransform.m[10] = mPosY;
@@ -67,8 +62,7 @@ void daObjKm2_Nobiru_c::UpdateColliderTransform()
 }
 
 // @symbol _ZN17daObjKm2_Nobiru_c20UpdateModelTransformEv
-void daObjKm2_Nobiru_c::UpdateModelTransform()
-{
+void daObjKm2_Nobiru_c::UpdateModelTransform() {
     Matrix4x3_FromRotationY(&mModel.mat4x3, mAngleY);
     mModel.mat4x3.m[9] = mPosX >> 3;
     mModel.mat4x3.m[10] = mPosY >> 3;
@@ -76,8 +70,7 @@ void daObjKm2_Nobiru_c::UpdateModelTransform()
 }
 
 // @symbol _ZN17daObjKm2_Nobiru_c16CleanupResourcesEv
-int daObjKm2_Nobiru_c::CleanupResources()
-{
+int daObjKm2_Nobiru_c::CleanupResources() {
     mCollider.Disable();
     PoleLift_ModelFile.Release();
     PoleLift_ClsnFile.Release();
@@ -85,16 +78,13 @@ int daObjKm2_Nobiru_c::CleanupResources()
 }
 
 // @symbol _ZN17daObjKm2_Nobiru_c16OnPendingDestroyEv
-void daObjKm2_Nobiru_c::OnPendingDestroy()
-{
-}
+void daObjKm2_Nobiru_c::OnPendingDestroy() {}
 
 // @symbol _ZN17daObjKm2_Nobiru_c6RenderEv
-int daObjKm2_Nobiru_c::Render()
-{
+int daObjKm2_Nobiru_c::Render() {
     Vector3 scale;
     scale.x = 0x1000;
-    /* Leftover: the scale is read through func_0203aad0, because the direct
+    /* The scale is read through func_0203aad0, because the direct
      * mCollider.scaleY load makes Render differ. */
     scale.y = func_0203aad0(&mCollider);
     scale.z = 0x1000;
@@ -103,12 +93,9 @@ int daObjKm2_Nobiru_c::Render()
 }
 
 // @symbol _ZN17daObjKm2_Nobiru_c8BehaviorEv
-int daObjKm2_Nobiru_c::Behavior()
-{
-    /* Leftover: the scale is read through func_0203aad0, because the direct
-     * mCollider.scaleY load makes Behavior differ. SetScaleY is a real method
-     * now: its old name's Fix12<int> was ours, and under the scalar Fix12i the
-     * method call costs nothing here (notes/mwccarm-codegen.md 6az). */
+int daObjKm2_Nobiru_c::Behavior() {
+    /* The scale is read through func_0203aad0, because the direct
+     * mCollider.scaleY load makes Behavior differ. */
     s32 scaleY = func_0203aad0(&mCollider);
     if (mGrowing) {
         mCollider.SetScaleY(scaleY + 8);
@@ -123,8 +110,7 @@ int daObjKm2_Nobiru_c::Behavior()
 }
 
 // @symbol _ZN17daObjKm2_Nobiru_c13InitResourcesEv
-int daObjKm2_Nobiru_c::InitResources()
-{
+int daObjKm2_Nobiru_c::InitResources() {
     mModel.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(PoleLift_ModelFile), 1, -1);
     UpdateModelTransform();
     UpdateColliderTransform();
@@ -145,8 +131,7 @@ int daObjKm2_Nobiru_c::InitResources()
  * profile; later EAD lineage supplies classInit. Exact original spelling is
  * not preserved. Historical alias: ExtendingPlatform_Spawn. */
 // @symbol daObjKm2_Nobiru_c_classInit
-extern "C" daObjKm2_Nobiru_c *daObjKm2_Nobiru_c_classInit()
-{
+extern "C" daObjKm2_Nobiru_c *daObjKm2_Nobiru_c_classInit() {
     return new daObjKm2_Nobiru_c();
 }
 

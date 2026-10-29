@@ -5,17 +5,6 @@
 #include "dBgActor_c.h"
 #include "dCcAc_c.h"
 
-struct KCL_File;
-struct CLPS_Block;
-
-/* Scalar adapter for this class only. The real method takes Fix12<int>
- * by value and homes that argument; this int parameter does not.
- * Do not move the name onto dBgW_KcMbg.h / dBgActor_c.h. */
-extern "C" {
-extern void hold_daObjKm2_Ami_Bou_c(dBgW_KcMbg *self, KCL_File *kcl, const Matrix4x3 *mtx,
-                                    int scale, s16 angleY, CLPS_Block *clps);
-}
-
 /* daKpa_c in the Fire Sea net pole (profile KM2_AMI_BOU).
  * Direct base dBgActor_c. Factory allocates 0x358.
  * mdCcAc_c is the cylinder at 0x320. mHeightAng at 0x354 is the
@@ -35,23 +24,11 @@ struct daObjKm2_Ami_Bou_c : dBgActor_c {
     virtual s32 CleanupResources();
     virtual s32 Behavior();
     virtual s32 Render();
-
-    void SetMeshFile(KCL_File *kcl, int scale, CLPS_Block *clps) {
-        ((dBgW_KcMbg *)(&mMeshCollider))
-            ->dBgW_KcMbg::SetFile(kcl, *(&mClsnMat), scale, mAngleY, *(clps));
-    }
-    void InitClsn(int radius, int height, unsigned flags, unsigned vulnFlags) {
-        mdCcAc_c.Init(this, radius, height, flags, vulnFlags);
-    }
-    int ClsnInRangeOnScreen(int rangeX, int rangeY) {
-        return IsClsnInRangeOnScreen(rangeX, rangeY);
-    }
 };
 
 #ifndef SM64DS_PLATFORM_PC
 /* ROM layout under mwccarm; host ABI divergence is tracked separately. */
-typedef char daObjKm2_Ami_Bou_c_size_must_be_0x358[
-    sizeof(daObjKm2_Ami_Bou_c) == 0x358 ? 1 : -1];
+typedef char daObjKm2_Ami_Bou_c_size_must_be_0x358[sizeof(daObjKm2_Ami_Bou_c) == 0x358 ? 1 : -1];
 #endif
 
 #endif /* DAOBJKM2_AMI_BOU_C_H */

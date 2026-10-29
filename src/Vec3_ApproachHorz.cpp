@@ -15,8 +15,7 @@ struct Vector3 { int x, y, z; };
 typedef struct { int x, y, z; } Vec3_Fix12;
 
 namespace cstd {
-/* local extern: kept off cstd.h so this TU's codegen stays put. */
-extern "C" int fdiv(int, int);
+int fdiv(int, int);
 }
 
 extern "C" {

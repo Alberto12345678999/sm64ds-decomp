@@ -30,16 +30,16 @@ struct daObj1UpLogo_c : dActor_c {
     /* Follow target. Behavior looks this uniqueID up with FindWithID.
        0 means the logo is not following anyone. IncMegaKillCount passes
        a null owner, so a mega-kill logo stays where it spawned. */
-    s32 mOwnerUniqueID;               /* 0x138 */
+    s32 mOwnerUniqueID; /* 0x138 */
     /* Copy of mPos taken in InitResources. Y is the bounce floor. */
-    Vector3 mStartPos;                /* 0x13c */
-    s32 mFollowOffsetY;               /* 0x148 */
+    Vector3 mStartPos;  /* 0x13c */
+    s32 mFollowOffsetY; /* 0x148 */
     /* While nonzero, Behavior returns immediately and Render decrements
        it, so the logo is not drawn yet. */
-    u16 mDelay;                       /* 0x14c */
+    u16 mDelay; /* 0x14c */
     /* 0: rise, snap to mStartPos.y, give mVertSpeed 0xf000, go to 1.
        1: next fall below the floor emits particle 0xd2 and dies. */
-    u8 mState;                        /* 0x14e */
+    u8 mState; /* 0x14e */
     u8 pad_14f;
 
     virtual ~daObj1UpLogo_c();
@@ -48,12 +48,14 @@ struct daObj1UpLogo_c : dActor_c {
     virtual s32 CleanupResources();
     virtual s32 Behavior();
     virtual s32 Render();
+
+    /* Follows owner from now on, keeping the current height offset. */
+    void SetFollowTarget(dActor_c *);
 };
 
 #ifndef SM64DS_PLATFORM_PC
 /* ROM layout under mwccarm; host ABI divergence is tracked separately. */
-typedef char daObj1UpLogo_c_size_must_be_0x150[
-    sizeof(daObj1UpLogo_c) == 0x150 ? 1 : -1];
+typedef char daObj1UpLogo_c_size_must_be_0x150[sizeof(daObj1UpLogo_c) == 0x150 ? 1 : -1];
 #endif
 
 #endif

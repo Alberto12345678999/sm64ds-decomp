@@ -463,14 +463,14 @@ Eyerok::~Eyerok()
  * these apart. */
 int Eyerok::func_ov066_0211603c()
 {
-    dActor_c *actor;
+    Player *actor;
     int flags;
     int hit;
     unsigned int id;
 
     id = mdCcAcPos_c.otherOwner;
     if (id != 0) {
-        actor = dActor_c::FindWithID(id);
+        actor = static_cast<Player *>(dActor_c::FindWithID(id));
         if (actor == 0)
             return 0;
 
@@ -480,14 +480,14 @@ int Eyerok::func_ov066_0211603c()
         hit = 0;
         flags = mdCcAcPos_c.hitFlags;
         if (IsPlayerActor(actor)) {
-            if (((Player *)actor)->mIsMetal == 1) {
+            if (actor->mIsMetal == 1) {
                 (mHitPoints)--;
                 hit = 1;
             }
             if (flags & HIT_MEGA) {
                 (mHitPoints)--;
                 if (mHitPoints <= 0)
-                    ((Player *)actor)->IncMegaKillCount();
+                    actor->IncMegaKillCount();
                 hit = 1;
             }
         }

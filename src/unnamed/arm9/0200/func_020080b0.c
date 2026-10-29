@@ -13,10 +13,10 @@ struct dCamera_c {
     s32 mScriptParam; /* 0x170 */
 };
 
-extern struct dActor_c *func_0200e55c(unsigned int ownerID);
+extern struct dActor_c *FindDemoActor(unsigned int ownerID);
 
 int func_020080b0(struct dCamera_c *c) {
-    struct dActor_c *obj = func_0200e55c(0x13);
+    struct dActor_c *obj = FindDemoActor(0x13);
     Vector3 *base = &obj->mPos;
 
     int z = base->z;

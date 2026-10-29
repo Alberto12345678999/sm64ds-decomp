@@ -8,23 +8,22 @@
  * The destructor is inline in daObjTbox_c.h: D1 then D0, no D2.
  * Highest address first.
  */
-// leftovers:
-// - func_02012790 and func_02012694 stay linker names. State0 calls them
-//   with a sound id, and the second also takes a position.
+// Notes:
+// - func_02012790 (Sound.h) and func_02012694 keep their linker names. State0
+//   calls them with a sound id, and the second also takes a position.
 // - data_ov002_0210d9a8 and data_ov002_0210da38 are ov002 handles this TU
 //   borrows.
 // - g_profile_TREASURE_BOX stays at 0x0211c4e8, outside this text span.
 
 /* Runtime asset handles resolved through the overlay 0 file table. */
-enum daObjTbox_c_AssetId {
-    ASSET_T_BOX_BMD = 0x04a6,
-    ASSET_T_BOX_OPEN_BCA = 0x04a7
-};
+enum daObjTbox_c_AssetId { ASSET_T_BOX_BMD = 0x04a6, ASSET_T_BOX_OPEN_BCA = 0x04a7 };
 
 #include "daObjTbox_c.h"
 #include "Player.h"
 #include "SharedFilePtr.h"
 #include "Sound.h"
+#include "math/CalcLib.h"
+#include "math/MtxStack.h"
 
 /* The resource handles as the ROM lays them out: {id, loaded file}. The
    model handle constructs through func_02017acc and destroys through
@@ -42,16 +41,10 @@ struct TboxAnimationFileHandle : SharedFilePtr {
 };
 
 extern "C" {
-void Matrix4x3_FromRotationY(Matrix4x3 *, s32);
-/* Decrements a u16 in place and yields its new value. The two legacy shards
- * disagreed on the return type -- State0 used it as a statement and declared
- * it void, State2 tests the result. The value-returning form is the more
- * complete observation of the same arm9 routine, and both call sites compile
- * against it unchanged. */
-unsigned short DecIfAbove0_Short(unsigned short *p);
-s16 Vec3_HorzAngle(const Vector3 *from, const Vector3 *to);
 s32 AngleDiff(s32 a, s32 b);
 void func_02012694(u32 code, const Vector3 *pos);
+}
+
 /* The overlay's three {init, behavior} pointer-to-member pairs, filled by the
  * static initializer this TU now carries at 0x0211b59c. */
 extern daObjTbox_c::StateFunc data_ov064_0211c98c[][2];
@@ -59,18 +52,15 @@ extern TboxModelFilePtr data_ov064_0211c96c;
 extern TboxAnimationFileHandle data_ov064_0211c964;
 extern SharedFilePtr data_ov002_0210d9a8;
 extern SharedFilePtr data_ov002_0210da38;
-}
 
 // @symbol daObjTbox_c_classInit
 /* TREASURE_BOX factory. */
-extern "C" daObjTbox_c *daObjTbox_c_classInit()
-{
+extern "C" daObjTbox_c *daObjTbox_c_classInit() {
     return new daObjTbox_c();
 }
 
 // @symbol _ZN11daObjTbox_c13InitResourcesEv
-int daObjTbox_c::InitResources()
-{
+int daObjTbox_c::InitResources() {
     dExtSimpleModel_c::LoadFile(data_ov002_0210d9a8);
     dExtSimpleModel_c::LoadFile(data_ov002_0210da38);
     mAnmModel.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(data_ov064_0211c96c), 1, -1);
@@ -87,8 +77,7 @@ int daObjTbox_c::InitResources()
 }
 
 // @symbol _ZN11daObjTbox_c8BehaviorEv
-int daObjTbox_c::Behavior()
-{
+int daObjTbox_c::Behavior() {
     CallStateBehavior();
     mCylinder.Clear();
     mCylinder.Update();
@@ -96,8 +85,7 @@ int daObjTbox_c::Behavior()
 }
 
 // @symbol _ZN11daObjTbox_c6RenderEv
-int daObjTbox_c::Render()
-{
+int daObjTbox_c::Render() {
     dExtSimpleModel_c *model = &mAnmModel;
     model->Render(0);
     return 1;
@@ -107,8 +95,7 @@ int daObjTbox_c::Render()
 /* Four releases: two handles live in this
  * overlay and two in ov002, borrowed from the always-resident module. The
  * ROM's order is own-first, borrowed-after. */
-int daObjTbox_c::CleanupResources()
-{
+int daObjTbox_c::CleanupResources() {
     data_ov064_0211c96c.Release();
     data_ov064_0211c964.Release();
     data_ov002_0210d9a8.Release();
@@ -117,29 +104,25 @@ int daObjTbox_c::CleanupResources()
 }
 
 // @symbol _ZN11daObjTbox_c17CallStateBehaviorEv
-void daObjTbox_c::CallStateBehavior()
-{
+void daObjTbox_c::CallStateBehavior() {
     s32 index = mState;
     (this->*data_ov064_0211c98c[index][1])();
 }
 
 // @symbol _ZN11daObjTbox_c8SetStateEi
-void daObjTbox_c::SetState(s32 state)
-{
+void daObjTbox_c::SetState(s32 state) {
     mState = state;
     s32 index = mState;
     (this->*data_ov064_0211c98c[index][0])();
 }
 
 // @symbol _ZN11daObjTbox_c10InitState0Ev
-void daObjTbox_c::InitState0()
-{
+void daObjTbox_c::InitState0() {
     mAnmModel.currFrame = 0;
 }
 
 // @symbol _ZN11daObjTbox_c6State0Ev
-void daObjTbox_c::State0()
-{
+void daObjTbox_c::State0() {
     DecIfAbove0_Short(&mStateTimer);
 
     if (mStateTimer == 0x58)
@@ -214,8 +197,7 @@ void daObjTbox_c::State0()
 }
 
 // @symbol _ZN11daObjTbox_c10InitState1Ev
-void daObjTbox_c::InitState1()
-{
+void daObjTbox_c::InitState1() {
     if (mIsLastChest != 0)
         mStateTimer = 0x2d;
 
@@ -223,8 +205,7 @@ void daObjTbox_c::InitState1()
 }
 
 // @symbol _ZN11daObjTbox_c6State1Ev
-void daObjTbox_c::State1()
-{
+void daObjTbox_c::State1() {
     mAnmModel.Advance();
     if (((u32)(mAnmModel.currFrame << 4) >> 0x10) == 0x14) {
         Player *player = ClosestPlayer();
@@ -244,8 +225,7 @@ void daObjTbox_c::State1()
         }
 
         if (player->mIsUnderwater != 0) {
-            dActor_c *bubble = dActor_c::Spawn(
-                0x123, 0, spawnPos, 0, mAreaId, -1);
+            dActor_c *bubble = dActor_c::Spawn(0x123, 0, spawnPos, 0, mAreaId, -1);
             bubble->mSpeedX = 0;
             bubble->mVertSpeed = 0x800;
             bubble->mSpeedZ = 0;
@@ -257,15 +237,13 @@ void daObjTbox_c::State1()
 }
 
 // @symbol _ZN11daObjTbox_c10InitState2Ev
-void daObjTbox_c::InitState2()
-{
+void daObjTbox_c::InitState2() {
     if (mIsLastChest == 0)
         mFlags |= 1;
 }
 
 // @symbol _ZN11daObjTbox_c6State2Ev
-void daObjTbox_c::State2()
-{
+void daObjTbox_c::State2() {
     if (mIsLastChest == 0)
         return;
     if (mStateTimer == 0)
@@ -286,8 +264,7 @@ void daObjTbox_c::State2()
 }
 
 // @symbol _ZN11daObjTbox_c20UpdateModelTransformEv
-void daObjTbox_c::UpdateModelTransform()
-{
+void daObjTbox_c::UpdateModelTransform() {
     Matrix4x3_FromRotationY(&mAnmModel.mat4x3, mAngleY);
     mAnmModel.mat4x3.t.x = mPosX >> 3;
     mAnmModel.mat4x3.t.y = mPosY >> 3;
@@ -309,7 +286,7 @@ TboxAnimationFileHandle data_ov064_0211c964(ASSET_T_BOX_OPEN_BCA);
    link-time-initialize them, so the initializer copies six descriptor
    records in. */
 daObjTbox_c::StateFunc data_ov064_0211c98c[3][2] = {
-    { &daObjTbox_c::InitState0, &daObjTbox_c::State0 },
-    { &daObjTbox_c::InitState1, &daObjTbox_c::State1 },
-    { &daObjTbox_c::InitState2, &daObjTbox_c::State2 },
+    {&daObjTbox_c::InitState0, &daObjTbox_c::State0},
+    {&daObjTbox_c::InitState1, &daObjTbox_c::State1},
+    {&daObjTbox_c::InitState2, &daObjTbox_c::State2},
 };
