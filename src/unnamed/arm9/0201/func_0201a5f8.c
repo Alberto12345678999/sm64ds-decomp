@@ -6,8 +6,7 @@
 extern int func_0201a694(int actorID);
 extern void func_0201a614(int actorID);
 
-void func_0201a5f8(int actorID)
-{
+void func_0201a5f8(int actorID) {
     func_0201a694(actorID);
     func_0201a614(actorID);
 }
