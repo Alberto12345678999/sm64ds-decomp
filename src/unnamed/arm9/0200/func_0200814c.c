@@ -19,7 +19,7 @@ struct dCamera_c {
     Vector3 pos;    /* 0x08c */
 };
 
-extern struct dActor_c *func_0200e6d8(unsigned int arg0);
+extern struct dActor_c *FindScriptPlayer(unsigned int arg0);
 extern void Vec3_RotateYAndTranslate(Vector3 *out, const Vector3 *trans, short ang,
                                      const Vector3 *add);
 
@@ -28,7 +28,7 @@ int func_0200814c(struct dCamera_c *self) {
     int diff, absdiff, val;
     Vector3 v;
 
-    a = func_0200e6d8(0);
+    a = FindScriptPlayer(0);
     diff = a->mPos.y - self->pos.y;
     v.x = 0;
     v.y = 0x50000;

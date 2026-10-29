@@ -151,10 +151,10 @@ int Player::func_ov002_020bcd38(unsigned char *params, int beginFrame, int endFr
     extern s16 ReadUnalignedShort(u8 *p);
     extern int AngleDiff(int a, int b);
     extern int ApproachAngle(s16 *angle, int from, int start, int speed, int max);
-    extern u16 data_0209b274;
+    extern u16 gKuppaScriptFrame;
     s16 cur;
 
-    if (beginFrame == data_0209b274) {
+    if (beginFrame == gKuppaScriptFrame) {
         int dt = endFrame - beginFrame;
         this->mAngleYSpeed = (short)AngleDiff(this->mAngleY, ReadUnalignedShort(params)) / dt;
         this->mStateWork = (u8)dt;
@@ -408,9 +408,9 @@ int Player::func_ov002_020bd250(unsigned char *params, int beginFrame, int endFr
 extern "C" {
 int Player::func_ov002_020bd354(unsigned char *params, int beginFrame, int endFrame)
 {
-    extern unsigned short data_0209b274;
+    extern unsigned short gKuppaScriptFrame;
 
-    if (beginFrame == data_0209b274) {
+    if (beginFrame == gKuppaScriptFrame) {
         this->mHasWings = 1;
         if (this->mPowerupTimer == 0)
             this->mPowerupTimer = 0x198;
@@ -426,12 +426,12 @@ extern "C" {
 int Player::func_ov002_020bd3a0(unsigned char *params, int beginFrame, int endFrame)
 {
     extern u16 ReadUnalignedUshort(u8* p);
-    extern u16 data_0209b274;
+    extern u16 gKuppaScriptFrame;
     extern u16 data_0209f49e;
     extern u16 data_0209f49c;
 
     u16 val = ReadUnalignedUshort(params);
-    if ((unsigned int)beginFrame == data_0209b274) {
+    if ((unsigned int)beginFrame == gKuppaScriptFrame) {
         *(u16*)((char*)&data_0209f49e + (int)(this->mPlayerNo) * 0x18) =
             val | *(u16*)((char*)&data_0209f49e + (int)(gActivePlayerSlot) * 0x18);
     }
@@ -3998,7 +3998,7 @@ int Player::func_ov002_020c3a48()
 extern "C" {
 void Player::func_ov002_020c3bdc(){
     typedef int Fix12i;
-    extern void func_0200eec8(void);
+    extern void StartEndingCutscene(void);
     extern void Player_AdvanceAnims(void*);
   if (mStateWork == 0){
     mHasWings = 1;
@@ -4015,15 +4015,15 @@ void Player::func_ov002_020c3bdc(){
     }
   } else {
     if (this->FinishedAnim()){
-      func_0200eec8();
-      func_ov002_020c3cf0();
-      this->SetAnim(0xc0, 0x40000000, 0x1000, 0);
-      mRootMotionMode = 3;
-      mSkipGroundUpdate = 1;
-      mIsBodyClsnEnabled = 0;
-      this->mVertSpeed = 0;
-      this->mVertAccel = 0;
-      this->mPosY = 0x15e000;
+        StartEndingCutscene();
+        func_ov002_020c3cf0();
+        this->SetAnim(0xc0, 0x40000000, 0x1000, 0);
+        mRootMotionMode = 3;
+        mSkipGroundUpdate = 1;
+        mIsBodyClsnEnabled = 0;
+        this->mVertSpeed = 0;
+        this->mVertAccel = 0;
+        this->mPosY = 0x15e000;
     }
   }
   Player_AdvanceAnims(this);
@@ -6668,10 +6668,10 @@ int Player::St_NoControl_Main()
     extern short GetAngleToCamera(int i);
     extern void Player_AdvanceAnims(void*);
     extern Player::State data_ov002_0211013c;
-    extern int func_0200ee68(void);
+    extern int IsStarCameraScript3Running(void);
     u8 mode = mNoCtrlKind;
     if (mode == 0 || mode == 1 || (mode == 0x11 && mStateStep != 0x18)) {
-        if (func_0200ee68() == 0) {
+        if (IsStarCameraScript3Running() == 0) {
             mAngleY = GetAngleToCamera(mPlayerNo);
             mPrevAngleY = mAngleY;
         }
@@ -23768,7 +23768,7 @@ int Player::Behavior()
     extern s8 data_0209f284;
     extern u8 data_0209f2d8;
     extern s8 data_0209f2f8;
-    extern s32 data_0209fc48;
+    extern s32 gRunningKuppaScript;
     extern u8 data_0209fc5c[];
     extern s32 data_0209fc68;
     extern G_ee90 data_0209ee90;
@@ -23840,7 +23840,7 @@ int Player::Behavior()
         *(u32 *)LAU((char *)&mdCcAcPos_c.flags) &= ~0x10;
 
     if (data_0209fc68 == 0) {
-        if (data_0209fc48 != 0)
+        if (gRunningKuppaScript != 0)
             r0 = 1;
         else
             r0 = 0;
@@ -24080,7 +24080,7 @@ s32 Player::InitResources()
     extern s8 data_02092114;
     extern u8 data_02092128[];
     extern CAA0 data_0209caa0;
-    extern int data_0209fc48;
+    extern int gRunningKuppaScript;
     extern u8 data_0209f250;
     extern u8 data_0209f2fc;
     extern int data_0209212c;
@@ -24133,7 +24133,7 @@ s32 Player::InitResources()
     }
     if (t != 0) goto Lac;
     if ((data_0209caa0.unk8 & 0x80) != 0) goto Lac;
-    t = (unsigned int)(data_0209fc48 != 0);
+    t = (unsigned int)(gRunningKuppaScript != 0);
     if (t == 0) goto Ld0;
 Lac:
     if (mPlayerNo == data_0209f250) {

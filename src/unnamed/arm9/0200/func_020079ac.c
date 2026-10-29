@@ -6,7 +6,7 @@ extern void func_02007c9c(const Vector3 *v0, const Vector3 *v1, int *outDist,
 extern void func_02007c14(Vector3 *res, const Vector3 *trans, int mag,
                           short ang, short angY);
 
-extern u16 data_0209b274;
+extern u16 gKuppaScriptFrame;
 
 /* File-local view of dCamera_c (include/dCamera_c.h is C++): the fields this
  * script op touches. */
@@ -28,7 +28,7 @@ int func_020079ac(char *self, unsigned char *p, int tag) {
     CameraView *cam = (CameraView *)self;
     int dist;
     short vert, horz;
-    if (tag == data_0209b274) {
+    if (tag == gKuppaScriptFrame) {
         cam->savedLookAt.x = cam->lookAt.x;
         cam->savedLookAt.y = cam->lookAt.y;
         cam->savedLookAt.z = cam->lookAt.z;
