@@ -9,19 +9,14 @@
  * new (`_ZN7fBase_cnwEm`). Definitions run in reverse address
  * order for mwccarm 2004/b56. The inline destructor in the header emits the
  * required D1/D0 pair; `new` odr-uses the class so that pair is emitted here.
- *
- * deslop leftovers:
- * - dExtAnmModel_c::SetAnim stays mangled (Fix12<int> by value, wall 6az)
  */
 
 /* Runtime asset handles resolved through the overlay 0 file table. */
-enum d_a_mc_flag_AssetId {
-    ASSET_MC_FLAG_BMD = 0x068d,
-    ASSET_MC_FLAG_WAIT_BCA = 0x068e
-};
+enum d_a_mc_flag_AssetId { ASSET_MC_FLAG_BMD = 0x068d, ASSET_MC_FLAG_WAIT_BCA = 0x068e };
 
 #include "daMcFlag_c.h"
 #include "SharedFilePtr.h"
+#include "math/MtxStack.h"
 
 /* The model handle constructs through func_02017acc and registers
    func_02017ab4; the animation handle constructs through
@@ -37,26 +32,20 @@ struct McFlagAnimResFileHandle : SharedFilePtr {
     ~McFlagAnimResFileHandle();
 };
 
-extern "C" McFlagModelFileHandle data_ov009_02113eb8;
-extern "C" McFlagAnimResFileHandle data_ov009_02113eb0;
-
-extern "C" {
-void Matrix4x3_FromRotationY(void *, s16);
-}
+extern McFlagModelFileHandle data_ov009_02113eb8;
+extern McFlagAnimResFileHandle data_ov009_02113eb0;
 
 /* -------------------------------------------------------------------------- */
 /* -------------------------------------------------------------------------- */
 // @symbol daMcFlag_c_classInit
-extern "C" daMcFlag_c *daMcFlag_c_classInit()
-{
+extern "C" daMcFlag_c *daMcFlag_c_classInit() {
     return new daMcFlag_c();
 }
 
 /* -------------------------------------------------------------------------- */
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN10daMcFlag_c13InitResourcesEv
-s32 daMcFlag_c::InitResources()
-{
+s32 daMcFlag_c::InitResources() {
     mAnmModel.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(data_ov009_02113eb8), 1, -1);
     mAnmModel.SetAnim((BCA_File *)dExtFrameCtrl_c::LoadFile(data_ov009_02113eb0), 0, 0x1000, 0);
     return 1;
@@ -65,8 +54,7 @@ s32 daMcFlag_c::InitResources()
 /* -------------------------------------------------------------------------- */
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN10daMcFlag_c8BehaviorEv
-s32 daMcFlag_c::Behavior()
-{
+s32 daMcFlag_c::Behavior() {
     mAnmModel.Advance();
     Matrix4x3_FromRotationY(&mAnmModel.mat4x3, mAngleY);
     mAnmModel.mat4x3.t.x = mPosX >> 3;
@@ -78,8 +66,7 @@ s32 daMcFlag_c::Behavior()
 /* -------------------------------------------------------------------------- */
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN10daMcFlag_c6RenderEv
-s32 daMcFlag_c::Render()
-{
+s32 daMcFlag_c::Render() {
     mAnmModel.Render(0);
     return 1;
 }
@@ -87,8 +74,7 @@ s32 daMcFlag_c::Render()
 /* -------------------------------------------------------------------------- */
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN10daMcFlag_c16CleanupResourcesEv
-s32 daMcFlag_c::CleanupResources()
-{
+s32 daMcFlag_c::CleanupResources() {
     data_ov009_02113eb8.Release();
     data_ov009_02113eb0.Release();
     return 1;

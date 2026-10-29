@@ -1,73 +1,49 @@
 //cpp
-struct Vector3_16f;
-namespace Particle {
-struct Callback;
-struct System {
-    static int New(unsigned, unsigned, int, int, int, const ::Vector3_16f *, Callback *);
-};
-}
 /* daBbl_c -- Lava Bubble (Podoboo), BUBBLE, ov064 0x021185c0..0x02118b50.
  * The spawn parameter's low bit picks a fixed flame or the jumping bubble.
  * Both use the same two-entry state table. Source order is the reverse of
  * the ROM. Do not reorder. The inline destructor in include/daBbl_c.h emits
  * D1 then D0 and no D2.
  */
-/* leftovers: the five state hooks keep address names; the ROM records no
- * English name. The State tables at 0x0211c7b8 and 0x0211c7c8 are filled
- * from this file's static initializer. func_ov064_02118760 stores the spawn words y, z, x through
- * a volatile array; a plain Vector3 lets the compiler reorder those stores.
+/* Notes: the state tables at 0x0211c7b8 and 0x0211c7c8 are filled from
+ * this file's static initializer, which copies the four pointer-to-member
+ * constants at 0x0211be90..0x0211beb0; those .data words are not claimed by
+ * this TU, so the tables stay {ptr, adj} pairs. ExecuteFountain stores the
+ * spawn words y, z, x through a volatile array; a plain Vector3 lets the
+ * compiler reorder those stores.
  */
 
 #include "daBbl_c.h"
 #include "Player.h"
 #include "math/Approach.h"
-
-/* Ramp `value` toward `target` by at most `step`. The mangled name this
- * declaration produces is the compiler's own answer, not a hand-mangle. */
-
-extern "C" {
-/* Counts a halfword timer down and returns what it was; a short* helper, so
- * the slot it is handed is a HALFWORD. */
-u16 DecIfAbove0_Short(u16 *timer);
-
-/* The six-argument particle spawner: it takes the handle it last returned,
- * rolls it forward and hands back the new one. Kept at its C ABI spelling
- * because its real declaration passes three Fix12<int> by value; the trailing
- * two parameters are spelt as its definition spells them. */
-struct Vec3;
-int d_a_bblNewHold(u32 handle, u32 effectID, int x, int y, int z, const Vec3 *rot, void *callback);
-
-/* The mesh collider's initialiser. include/dBgCh_Actr.h declares it with the
- * scalar Fix12i spelling for readers, but the definition the cartridge links
- * carries Fix12<int> in its own name, so the call site has to spell the ABI
- * seam -- and that definition takes every argument past the receiver as a
- * plain word, which is why the owner is handed over as one. */
+#include "math/CalcLib.h"
+#include "Particle__System.h"
 
 /* Eight-byte pointer-to-member records. The cartridge stores the four
  * constants in .data and copies them into the two .bss tables below. */
-struct BblPmfPair { int ptr; int adj; };
+struct BblPmfPair {
+    int ptr;
+    int adj;
+};
 extern BblPmfPair data_ov064_0211bea0;
 extern BblPmfPair data_ov064_0211be90;
 extern BblPmfPair data_ov064_0211bea8;
 extern BblPmfPair data_ov064_0211be98;
 extern BblPmfPair data_ov064_0211c7b8[2];
 extern BblPmfPair data_ov064_0211c7c8[2];
-}
 
 // @symbol daBbl_c_classInit
 /* The BUBBLE profile's factory. `new` alone reproduces the body: the 0x31c
  * fBase_c::operator new call, the base C2, the vptr store and the two member
  * constructors inline -- a declared constructor would emit a `bl` the
  * factory does not have. */
-extern "C" daBbl_c *daBbl_c_classInit()
-{
+extern "C" daBbl_c *daBbl_c_classInit() {
     return new daBbl_c();
 }
 
 // @symbol _ZN7daBbl_c13OnYoshiTryEatEv
 /* Yoshi is told 5 -- the reply a thing made of fire gives. */
-s32 daBbl_c::OnYoshiTryEat()
-{
+s32 daBbl_c::OnYoshiTryEat() {
     return 5;
 }
 
@@ -79,8 +55,7 @@ s32 daBbl_c::OnYoshiTryEat()
  * pins it in place; the jumper gets a 50.0 x 80.0 cylinder that can be hit
  * (0x200002 / 0x8000) plus gravity and a terminal velocity. Both remember
  * where they started, and both adopt a state table before returning. */
-int daBbl_c::InitResources()
-{
+int daBbl_c::InitResources() {
     mJumps = (param1 & 1) ^ 1;
     if (mJumps == 0) {
         mdCcAc_c.Init(this, 0, 0, 1, 0);
@@ -97,12 +72,12 @@ int daBbl_c::InitResources()
         mTerminalVelocity = -0x3c000;
     }
     mStateTimer = 0;
-    mWithMeshClsn.Init((dActor_c *)(int)this, 0x32000, 0x32000, 0, 0);
+    mWithMeshClsn.Init(this, 0x32000, 0x32000, 0, 0);
     mWithMeshClsn.SetLimMovFlag();
     if (mJumps != 0) {
-        func_ov064_021187ec((State *)data_ov064_0211c7c8);
+        SetState((State *)data_ov064_0211c7c8);
     } else {
-        func_ov064_021187ec((State *)data_ov064_0211c7b8);
+        SetState((State *)data_ov064_0211c7b8);
     }
     return 1;
 }
@@ -118,8 +93,7 @@ int daBbl_c::InitResources()
  * down, burn whatever touched the cylinder if it is the player, run the
  * state hook, integrate position, and -- only for the variant that has
  * gravity -- collide with the mesh. */
-int daBbl_c::Behavior()
-{
+int daBbl_c::Behavior() {
     int flags = mFlags;
     int held = (flags & 0x20000) != 0;
 
@@ -175,31 +149,26 @@ int daBbl_c::Behavior()
 // @symbol _ZN7daBbl_c6RenderEv
 /* A lava bubble has no model of its own; its two particle systems draw it,
  * and the render slot only reports success. */
-int daBbl_c::Render()
-{
+int daBbl_c::Render() {
     return 1;
 }
 
 // @symbol _ZN7daBbl_c16OnPendingDestroyEv
 /* Empty on purpose -- the override suppresses what the base does on pending
  * destroy. */
-void daBbl_c::OnPendingDestroy()
-{
-}
+void daBbl_c::OnPendingDestroy() {}
 
 // @symbol _ZN7daBbl_c16CleanupResourcesEv
 /* `return 1` with no release calls: daBbl_c loads no file at all, so it has
  * nothing to give back. */
-int daBbl_c::CleanupResources()
-{
+int daBbl_c::CleanupResources() {
     return 1;
 }
 
-// @symbol _ZN7daBbl_c19func_ov064_021187ecEPNS_5StateE
+// @symbol _ZN7daBbl_c8SetStateEPNS_5StateE
 /* The state transition: adopt a table and run its enter hook once. Behavior
  * runs the execute hook of whatever table is current. */
-int daBbl_c::func_ov064_021187ec(State *state)
-{
+int daBbl_c::SetState(State *state) {
     mState = state;
 
     State *entered = mState;
@@ -208,21 +177,19 @@ int daBbl_c::func_ov064_021187ec(State *state)
     return (this->*(entered->mEnter))();
 }
 
-// @symbol _ZN7daBbl_c19func_ov064_021187d0Ev
+// @symbol _ZN7daBbl_c13EnterFountainEv
 /* Enter hook of the fountain's waiting state: stop dead and wait 180 frames. */
-int daBbl_c::func_ov064_021187d0()
-{
+int daBbl_c::EnterFountain() {
     mHorzSpeed = 0;
     mStateTimer = 180;
     return 1;
 }
 
-// @symbol _ZN7daBbl_c19func_ov064_02118760Ev
+// @symbol _ZN7daBbl_c15ExecuteFountainEv
 /* Execute hook of the waiting state: once the 180 frames are up, spawn actor
  * 0xd6 -- the bubble that actually jumps -- 120.0 above this one, and start
  * the wait over. This is what makes the fixed flame a flame fountain. */
-int daBbl_c::func_ov064_02118760()
-{
+int daBbl_c::ExecuteFountain() {
     int spawnY;
     int spawnZ;
 
@@ -244,26 +211,24 @@ int daBbl_c::func_ov064_02118760()
     return 1;
 }
 
-// @symbol _ZN7daBbl_c19func_ov064_0211873cEv
+// @symbol _ZN7daBbl_c9EnterJumpEv
 /* Enter hook of the jumping state: no horizontal drift, 20.0 straight up,
  * and a 135-frame fuse. */
-int daBbl_c::func_ov064_0211873c()
-{
+int daBbl_c::EnterJump() {
     mHorzSpeed = 0;
     mVertSpeed = 0x14000;
     mStateTimer = 135;
     return 1;
 }
 
-// @symbol _ZN7daBbl_c19func_ov064_02118644Ev
+// @symbol _ZN7daBbl_c11ExecuteJumpEv
 /* Execute hook of the jumping state. Every landing bounces: the first gives
  * the bubble a little forward drift and a fixed hop, and each one after that
  * ramps the drift toward 8.0 and inverts seven tenths of the vertical speed,
  * so the hops decay. The fire and smoke particles are rolled forward every
  * frame 55.0 above the bubble, and the fuse the enter hook set is what
  * finally destroys it. */
-int daBbl_c::func_ov064_02118644()
-{
+int daBbl_c::ExecuteJump() {
     if (mWithMeshClsn.IsOnGround() != 0) {
         if (mHorzSpeed == 0) {
             mHorzSpeed = 0x16000;
@@ -283,7 +248,5 @@ int daBbl_c::func_ov064_02118644()
 
 /* Declaration order is the retail __sinit order: the fountain table, then
  * the jumping table. Each entry is one pointer-to-member pair. */
-extern "C" {
-BblPmfPair data_ov064_0211c7b8[2] = { data_ov064_0211bea0, data_ov064_0211be90 };
-BblPmfPair data_ov064_0211c7c8[2] = { data_ov064_0211bea8, data_ov064_0211be98 };
-}
+BblPmfPair data_ov064_0211c7b8[2] = {data_ov064_0211bea0, data_ov064_0211be90};
+BblPmfPair data_ov064_0211c7c8[2] = {data_ov064_0211bea8, data_ov064_0211be98};

@@ -27,7 +27,7 @@ struct Player;
  */
 
 struct daPgRcer_c;
-typedef void (daPgRcer_c::*daPgRcerStateMethod)();
+typedef int (daPgRcer_c::*daPgRcerStateMethod)();
 
 struct daPgRcerState {
     daPgRcerStateMethod init;
@@ -79,7 +79,18 @@ struct daPgRcer_c : dActor_c {
     void func_ov019_021112b8();
     int func_ov019_0211131c();
     void func_ov019_021113b0();
+    int func_ov019_02111558();
+    int func_ov019_02111754();
+    int func_ov019_021117a8();
+    int func_ov019_02111904();
+    int func_ov019_0211197c();
+    int func_ov019_02111d58();
+    int func_ov019_02111dec();
+    int func_ov019_02111f54();
+    int func_ov019_02111fec();
+    int func_ov019_0211213c();
     int func_ov019_02112168();
+    int func_ov019_021121f8();
     void func_ov019_02112268();
     void func_ov019_021122a4();
     void func_ov019_021122dc(int state);

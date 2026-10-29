@@ -49,7 +49,7 @@
       "ordinal": 1
     },
     {
-      "symbol": "func_ov002_020f0e54",
+      "symbol": "_ZN14daObj1UpLogo_c15SetFollowTargetEP8dActor_c",
       "address": "0x020f0e54",
       "size": "0x00000024",
       "legacy_source": "src/func_ov002_020f0e54.c",
@@ -655,14 +655,14 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@387",
+      "from": "@517",
       "to": "@383",
-      "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @399 now; licensed under the existing pin @383"
+      "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @399 now; licensed under the existing pin @383 | compiler temp; including Particle__System.h and math/MtxStack.h in place of the local stubs moves the per-TU @NNN uniquifier, so mwcc emits it under this name now"
     },
     {
-      "from": "@388",
+      "from": "@518",
       "to": "@384",
-      "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @400 now; licensed under the existing pin @384"
+      "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @400 now; licensed under the existing pin @384 | compiler temp; including Particle__System.h and math/MtxStack.h in place of the local stubs moves the per-TU @NNN uniquifier, so mwcc emits it under this name now"
     }
   ]
 }

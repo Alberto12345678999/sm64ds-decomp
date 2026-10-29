@@ -54,35 +54,35 @@
       "ordinal": 1
     },
     {
-      "symbol": "_ZN14daObjC1_Trap_c6State4Ev",
+      "symbol": "_ZN14daObjC1_Trap_c13StateHeldOpenEv",
       "address": "0x0211124c",
       "size": "0x00000010",
       "legacy_source": "src/func_ov010_0211124c.c",
       "ordinal": 2
     },
     {
-      "symbol": "_ZN14daObjC1_Trap_c6State3Ev",
+      "symbol": "_ZN14daObjC1_Trap_c12StateClosingEv",
       "address": "0x0211125c",
       "size": "0x00000028",
       "legacy_source": "src/func_ov010_0211125c.c",
       "ordinal": 3
     },
     {
-      "symbol": "_ZN14daObjC1_Trap_c6State2Ev",
+      "symbol": "_ZN14daObjC1_Trap_c9StateOpenEv",
       "address": "0x02111284",
       "size": "0x00000030",
       "legacy_source": "src/func_ov010_02111284.c",
       "ordinal": 4
     },
     {
-      "symbol": "_ZN14daObjC1_Trap_c6State1Ev",
+      "symbol": "_ZN14daObjC1_Trap_c12StateOpeningEv",
       "address": "0x021112b4",
       "size": "0x0000006c",
       "legacy_source": "src/func_ov010_021112b4.c",
       "ordinal": 5
     },
     {
-      "symbol": "_ZN14daObjC1_Trap_c6State0Ev",
+      "symbol": "_ZN14daObjC1_Trap_c11StateClosedEv",
       "address": "0x02111320",
       "size": "0x0000007c",
       "legacy_source": "src/func_ov010_02111320.c",
@@ -290,37 +290,37 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@746",
+      "from": "@803",
       "to": "@744",
       "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
     },
     {
-      "from": "@755",
+      "from": "@812",
       "to": "@753",
       "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
     },
     {
-      "from": "@757",
+      "from": "@814",
       "to": "@755",
       "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
     },
     {
-      "from": "@747",
+      "from": "@804",
       "to": "@993",
       "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
     },
     {
-      "from": "@751",
+      "from": "@808",
       "to": "@994",
       "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
     },
     {
-      "from": "@753",
+      "from": "@810",
       "to": "@995",
       "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
     },
     {
-      "from": "@749",
+      "from": "@806",
       "to": "@996",
       "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
     }
@@ -557,7 +557,7 @@
       "source": "0x02112a78",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "_ZN14daObjC1_Trap_c6State0Ev",
+      "symbol": "_ZN14daObjC1_Trap_c11StateClosedEv",
       "addend": 0,
       "target_module": "ov010",
       "target_address": "0x02111320"
@@ -567,7 +567,7 @@
       "source": "0x02112a80",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "_ZN14daObjC1_Trap_c6State2Ev",
+      "symbol": "_ZN14daObjC1_Trap_c9StateOpenEv",
       "addend": 0,
       "target_module": "ov010",
       "target_address": "0x02111284"
@@ -577,7 +577,7 @@
       "source": "0x02112a88",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "_ZN14daObjC1_Trap_c6State1Ev",
+      "symbol": "_ZN14daObjC1_Trap_c12StateOpeningEv",
       "addend": 0,
       "target_module": "ov010",
       "target_address": "0x021112b4"
@@ -587,7 +587,7 @@
       "source": "0x02112a90",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "_ZN14daObjC1_Trap_c6State4Ev",
+      "symbol": "_ZN14daObjC1_Trap_c13StateHeldOpenEv",
       "addend": 0,
       "target_module": "ov010",
       "target_address": "0x0211124c"
@@ -597,7 +597,7 @@
       "source": "0x02112a98",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "_ZN14daObjC1_Trap_c6State3Ev",
+      "symbol": "_ZN14daObjC1_Trap_c12StateClosingEv",
       "addend": 0,
       "target_module": "ov010",
       "target_address": "0x0211125c"

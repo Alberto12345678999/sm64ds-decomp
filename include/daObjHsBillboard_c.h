@@ -15,9 +15,9 @@
  * InitResources picks the SharedFilePtr in data_ov031_02111424 from actorID. */
 
 struct daObjHsBillboard_c : dActor_c {
-    u8    pad_0d0[0x4];
+    u8 pad_0d0[0x4];
     dExtSimpleModel_c mModel; /* 0x0d4 */
-    u8    mVariant;        /* 0x124 -- index into data_ov031_02111424 */
+    u8 mVariant;              /* 0x124 -- index into data_ov031_02111424 */
 
     /* InitResources is the first out-of-line virtual/key function. The inline
      * destructor lets mwccarm emit the retail D1/D0 pair and class RTTI/vtable. */
@@ -26,12 +26,13 @@ struct daObjHsBillboard_c : dActor_c {
     virtual int InitResources();
     virtual int Render();
     virtual int CleanupResources();
+
+    void UpdateModelTransform();
 };
 
 #ifndef SM64DS_PLATFORM_PC
 /* ROM layout under mwccarm; host ABI divergence is tracked separately. */
-typedef char daObjHsBillboard_c_size_must_be_0x128[
-    sizeof(daObjHsBillboard_c) == 0x128 ? 1 : -1];
+typedef char daObjHsBillboard_c_size_must_be_0x128[sizeof(daObjHsBillboard_c) == 0x128 ? 1 : -1];
 #endif
 
 #endif /* DAOBJHSBILLBOARD_C_H */

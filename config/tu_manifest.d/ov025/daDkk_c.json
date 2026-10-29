@@ -58,21 +58,21 @@
       "ordinal": 2
     },
     {
-      "symbol": "_ZN7daDkk_c19func_ov025_021119a4Ev",
+      "symbol": "_ZN7daDkk_c9StateTurnEv",
       "address": "0x021119a4",
       "size": "0x00000050",
       "legacy_source": "src/func_ov025_021119a4.cpp",
       "ordinal": 3
     },
     {
-      "symbol": "_ZN7daDkk_c19func_ov025_021119f4Ev",
+      "symbol": "_ZN7daDkk_c14StateLandPauseEv",
       "address": "0x021119f4",
       "size": "0x00000090",
       "legacy_source": "src/func_ov025_021119f4.c",
       "ordinal": 4
     },
     {
-      "symbol": "_ZN7daDkk_c19func_ov025_02111a84Ev",
+      "symbol": "_ZN7daDkk_c9StateFallEv",
       "address": "0x02111a84",
       "size": "0x000000e0",
       "legacy_source": "src/func_ov025_02111a84.cpp",
@@ -504,12 +504,12 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@529",
+      "from": "@586",
       "to": "@163",
       "evidence": "mwcc numbers this registration node @521 per TU and another module already defines @521"
     },
     {
-      "from": "@530",
+      "from": "@587",
       "to": "@164",
       "evidence": "mwcc numbers this registration node @522 per TU and another module already defines @522"
     }

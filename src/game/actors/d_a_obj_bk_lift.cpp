@@ -3,29 +3,23 @@
  *
  * param1 & 0xff picks the behaviour: kind 1 flips yaw every 0x87 frames,
  * kind 2 rides between mMinPosY/mMaxPosY with a looping sound, anything
- * else only refreshes the collider. func_ov015_021123c8 re-aims the
- * cuboid shadow every frame.
+ * else only refreshes the collider. UpdateShadow re-aims the cuboid shadow
+ * every frame.
  *
  * The destructor pair comes off the in-class `~daObjBk_Lift_c() {}` in
  * include/daObjBk_Lift_c.h and lands ahead of everything, D1 then D0
  * (0x02112290, then 0x021122dc). Source order is reverse ROM order
  * (2004/b56 emits .text back to front); factory first, Kill() last.
  *
- * leftovers:
- * - dBgW_KcMbg::SetFile, dBgActor_c::IsClsnInRange, dActor_c::UpdatePos,
- *   Particle::System::NewSimple and
- *   dActor_c::DropShadowScaleXYZ stay mangled extern-C free functions:
- *   each takes Fix12<int> by value, and a real method call homes the
- *   argument and size-DIFFs the caller (notes/mwccarm-codegen.md 6az).
+ * Notes:
  * - func_02039394 / func_020393a4 / func_020393c4 / func_020393d4 are
- *   small stores into dBgW. This TU calls them; naming belongs to dBgW.
- * - func_ov015_021128f8 stays a free function: its first argument is the
- *   collider, not the lift. It keeps #pragma long_calls -- the ROM veneer
- *   is the pooled ldr ip,[pc,#8]; bx ip absolute tail-call (size 0x14);
- *   a near b to func_ov015_021128e8 in this same TU is 0xc.
- * - func_ov015_021128e8 keeps a second unused parameter: the veneer
- *   forwards two registers after dropping the collider, and a 1-arg
- *   callee drops mov r1, r2.
+ *   small stores into dBgW (d_bg_w.cpp, no header).
+ * - StoodOnCallback keeps #pragma long_calls -- the ROM veneer is the
+ *   pooled ldr ip,[pc,#8]; bx ip absolute tail-call (size 0x14); a near b
+ *   to OnStoodOn in this same TU is 0xc.
+ * - OnStoodOn takes the rider it ignores: the veneer forwards two
+ *   registers after dropping the collider, and a callee taking only
+ *   `this` drops mov r1, r2.
  * - data_ov015_02114a5c / data_ov015_02114a64 are this class's KCL and
  *   BMD handles, defined at the file end so mwcc emits the .init.
  *   symbols.txt used to coin MovingBarSmall_ClsnFile /
@@ -42,21 +36,18 @@
  *   equal-arm ternary: direct mPosY < mMinPosY / mPosY > mMaxPosY clamps
  *   compile to 0x1a4 against the ROM's 0x1cc.
  * - Vec3_Dist, DecIfAbove0_Byte and IsStarCollectedInCurLevel stay local
- *   externs; Vec3_Dist is called on raw s32 triplets and its header
- *   copies take Vector3 * in unrelated leaf headers.
+ *   externs; Vec3_Dist's header copies take Vector3 * in unrelated leaf
+ *   headers.
  */
 
 /* MEASURED -- MUST STAY AHEAD OF daObjBk_Lift_c.h, which reaches math/Matrix.h
    through dBgW_KcMbg.h. Matrix4x3 has two guarded spellings over the same 0x30
-   bytes and whichever a translation unit sees first stands; func_ov015_021123c8
+   bytes and whichever a translation unit sees first stands; UpdateShadow
    copies one flat, and with math/Matrix.h's structured spelling that copy
    compiles to 0xb4 against the ROM's 0x9c. Same rule, and the same reason, as
    the common.h include in include/dBgActor_c.h. */
 /* Runtime asset handles resolved through the overlay 0 file table. */
-enum daObjBk_Lift_c_AssetId {
-    ASSET_BK_LIFT01_BMD = 0x0599,
-    ASSET_BK_LIFT01_KCL = 0x059a
-};
+enum daObjBk_Lift_c_AssetId { ASSET_BK_LIFT01_BMD = 0x0599, ASSET_BK_LIFT01_KCL = 0x059a };
 
 #include "common.h"
 
@@ -67,6 +58,7 @@ enum daObjBk_Lift_c_AssetId {
 #include "dBgW.h"
 #include "dBgCh_Gnd.h"
 #include "nitro/fx/fx.h"
+#include "Particle__System.h"
 
 /* The constructors and destructors are the ROM resource-family veneers,
  * aliased in the manifest. */
@@ -80,31 +72,22 @@ struct BkLiftCollisionFilePtr : SharedFilePtr {
     ~BkLiftCollisionFilePtr();
 };
 
-extern "C" {
-extern BkLiftCollisionFilePtr data_ov015_02114a5c;   /* collision KCL */
-extern BkLiftModelFilePtr data_ov015_02114a64;       /* step BMD */
-extern CLPS_Block    data_ov015_02113594;
-extern s16 data_02082214[];                 /* arm9 sin/cos table */
-extern s8  data_0209f2f8;
-extern u8  data_0209f220;
+extern BkLiftCollisionFilePtr data_ov015_02114a5c; /* collision KCL */
+extern BkLiftModelFilePtr data_ov015_02114a64;     /* step BMD */
+extern CLPS_Block data_ov015_02113594;
+extern s16 data_02082214[]; /* arm9 sin/cos table */
+extern s8 data_0209f2f8;
+extern u8 data_0209f220;
 
-int  DecIfAbove0_Byte(u8 *p);
-int  IsStarCollectedInCurLevel(int starID);
-int  Vec3_Dist(void *a, void *b);
+/* arm9 C helpers with no shared header. */
+extern "C" {
+int DecIfAbove0_Byte(u8 *p);
+int IsStarCollectedInCurLevel(int starID);
+int Vec3_Dist(void *a, void *b);
 void func_02039394(void *collider, int v);
 void func_020393a4(void *collider, int v);
 void func_020393c4(dBgW *collider, void *callback);
 void func_020393d4(dBgW *collider, void *callback);
-int  func_ov015_021128f8(void *collider, daObjBk_Lift_c *lift, void *unused);
-
-void d_a_obj_bk_liftPlayLongHold(unsigned handle, unsigned a, unsigned id, void *pos, s16 f);
-namespace Particle {
-struct System {
-    static void NewSimple(u32 id, Fix12i x, Fix12i y, Fix12i z);
-};
-}
-extern void hold_d_a_obj_bk_lift(dBgW_KcMbg *self, KCL_File *file, const Matrix4x3 *mat,
-                                 Fix12i scale, s16 angle, CLPS_Block *clps);
 }
 
 // @symbol daObjBk_Lift_c_classInit
@@ -114,37 +97,31 @@ extern void hold_d_a_obj_bk_lift(dBgW_KcMbg *self, KCL_File *file, const Matrix4
    0x320 -- are exactly what the implicit default constructor of
    `struct daObjBk_Lift_c : dBgActor_c` with a dExtShadowModel_c member generates.
    Same shape as daObjBk_Rotebar_c_classInit in this overlay. */
-extern "C" daObjBk_Lift_c *daObjBk_Lift_c_classInit()
-{
+extern "C" daObjBk_Lift_c *daObjBk_Lift_c_classInit() {
     return new daObjBk_Lift_c();
 }
 
-// @symbol func_ov015_021128f8
-/* dBgW callback veneer, armed by func_020393c4 in InitResources. Drops the
-   collider and forwards the lift into func_ov015_021128e8. long_calls is the
+// @symbol _ZN14daObjBk_Lift_c15StoodOnCallbackEP4dBgWP8dActor_cS3_
+/* dBgW stood-on callback, armed by func_020393c4 in InitResources. Drops the
+   collider and forwards (lift, rider) into OnStoodOn. long_calls is the
    ROM's pooled absolute tail-call. */
-extern "C" {
 #pragma long_calls on
-int func_ov015_021128f8(void *collider, daObjBk_Lift_c *lift, void *unused)
-{
-    return lift->func_ov015_021128e8(unused);
+int daObjBk_Lift_c::StoodOnCallback(dBgW *collider, dActor_c *lift, dActor_c *rider) {
+    return ((daObjBk_Lift_c *)lift)->OnStoodOn(rider);
 }
 #pragma long_calls off
-}
 
-// @symbol _ZN14daObjBk_Lift_c19func_ov015_021128e8EPv
+// @symbol _ZN14daObjBk_Lift_c9OnStoodOnEP8dActor_c
 /* Marks the lift as stood on, which is what restarts a kind-2 ride in
-   Behavior. Second parameter is the veneer's extra forwarded register -- a
-   1-arg callee drops `mov r1, r2`. */
-int daObjBk_Lift_c::func_ov015_021128e8(void *unused)
-{
+   Behavior. The rider is the veneer's extra forwarded register -- a
+   callee taking only `this` drops `mov r1, r2`. */
+int daObjBk_Lift_c::OnStoodOn(dActor_c *rider) {
     mJustSteppedOn = 1;
     mMove = 1;
 }
 
 // @symbol _ZN14daObjBk_Lift_c13InitResourcesEv
-int daObjBk_Lift_c::InitResources()
-{
+int daObjBk_Lift_c::InitResources() {
     mModel.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(data_ov015_02114a64), 1, -1);
     mShadowModel.InitCuboid();
     UpdateModelPosAndRotY();
@@ -153,9 +130,8 @@ int daObjBk_Lift_c::InitResources()
     ((dBgW_KcMbg *)(&mMeshCollider))
         ->dBgW_KcMbg::SetFile((KCL_File *)dBgW_Kc::LoadFile(data_ov015_02114a5c), *(&mClsnMat),
                               0x199, mAngleY, *(&data_ov015_02113594));
-    func_020393d4(&mMeshCollider,
-        (void *)&dBgW::UpdatePosWithVelocity);
-    func_020393c4(&mMeshCollider, (void *)&func_ov015_021128f8);
+    func_020393d4(&mMeshCollider, (void *)&dBgW::UpdatePosWithVelocity);
+    func_020393c4(&mMeshCollider, (void *)&StoodOnCallback);
 
     Vector3 probePos;
     probePos.x = mPosX;
@@ -176,7 +152,7 @@ int daObjBk_Lift_c::InitResources()
     int cosine = data_02082214[(angle >> 4) * 2 + 1];
     mShadowOffsetY = FX_MUL(cosine, 0xc8000);
 
-    func_ov015_021123c8();
+    UpdateShadow();
 
     mPrevAngleY = mAngleY + 0x8000;
     mMoveTimer = 0x87;
@@ -191,17 +167,15 @@ int daObjBk_Lift_c::InitResources()
         mVertSpeed = 0xa000;
     }
 
-    if (data_0209f2f8 == 7
-        && (data_0209f220 == 1 || IsStarCollectedInCurLevel(1) == 0)
-        && mPosY >= 0xdac000)
+    if (data_0209f2f8 == 7 && (data_0209f220 == 1 || IsStarCollectedInCurLevel(1) == 0) &&
+        mPosY >= 0xdac000)
         return 0;
 
     return 1;
 }
 
 // @symbol _ZN14daObjBk_Lift_c8BehaviorEv
-int daObjBk_Lift_c::Behavior()
-{
+int daObjBk_Lift_c::Behavior() {
     int kind = param1 & 0xff;
 
     if (kind == 1) {
@@ -249,10 +223,9 @@ int daObjBk_Lift_c::Behavior()
         UpdateModelPosAndRotY();
         if (IsClsnInRange(0x150000, 0x1000) != 0)
             UpdateClsnPosAndRot();
-        if (Vec3_Dist(&mPosX, &mPrevPosX) != 0) {
+        if (Vec3_Dist(&mPos, &mPrevPos) != 0) {
             unsigned z = 0;
-            unsigned r =
-                Sound::PlayLong((unsigned)mSoundID, 3, 0x82, *(Vector3 *)&mCamSpacePosX, (s16)z);
+            unsigned r = Sound::PlayLong((unsigned)mSoundID, 3, 0x82, mCamSpacePos, (s16)z);
             mSoundID = (s32)r;
         }
         mJustSteppedOn = 0;
@@ -262,20 +235,18 @@ int daObjBk_Lift_c::Behavior()
 
     func_020393a4(&mMeshCollider, 0x150000);
     func_02039394(&mMeshCollider, 0x1000);
-    func_ov015_021123c8();
+    UpdateShadow();
     return 1;
 }
 
 // @symbol _ZN14daObjBk_Lift_c6RenderEv
-int daObjBk_Lift_c::Render()
-{
+int daObjBk_Lift_c::Render() {
     mModel.Render(0);
     return 1;
 }
 
 // @symbol _ZN14daObjBk_Lift_c16CleanupResourcesEv
-int daObjBk_Lift_c::CleanupResources()
-{
+int daObjBk_Lift_c::CleanupResources() {
     if (mMeshCollider.IsEnabled())
         mMeshCollider.Disable();
 
@@ -284,11 +255,10 @@ int daObjBk_Lift_c::CleanupResources()
     return 1;
 }
 
-// @symbol _ZN14daObjBk_Lift_c19func_ov015_021123c8Ev
+// @symbol _ZN14daObjBk_Lift_c12UpdateShadowEv
 /* Re-aims the cuboid shadow: the model's matrix, then the step's own position
    biased by mShadowOffsetX / mShadowOffsetY and flattened onto mFloorPosY. */
-void daObjBk_Lift_c::func_ov015_021123c8()
-{
+void daObjBk_Lift_c::UpdateShadow() {
     mShadowMat = mModel.mat4x3;
     mShadowMat.m[9] = (mPosX - mShadowOffsetX) >> 3;
     mShadowMat.m[10] = mFloorPosY >> 3;
@@ -299,8 +269,7 @@ void daObjBk_Lift_c::func_ov015_021123c8()
 // @symbol _ZN14daObjBk_Lift_c15OnHitByMegaCharER6Player
 /* Slot 27. Player::IncMegaKillCount is a real method, and the trailing
    unqualified Kill() reaches this class's own slot-31 override. */
-void daObjBk_Lift_c::OnHitByMegaChar(Player &player)
-{
+void daObjBk_Lift_c::OnHitByMegaChar(Player &player) {
     player.IncMegaKillCount();
     Kill();
 }
@@ -315,8 +284,7 @@ void daObjBk_Lift_c::OnHitByMegaChar(Player &player)
    Particle 0x48 at the step's own position, no vertical offset, then the poof
    at that same position built from the fields a SECOND time: the ROM reloads
    mPos rather than reusing the words it just passed. */
-void daObjBk_Lift_c::Kill()
-{
+void daObjBk_Lift_c::Kill() {
     Vector3 dustPos;
     Particle::System::NewSimple(0x48, mPosX, mPosY, mPosZ);
     dustPos.x = mPosX;

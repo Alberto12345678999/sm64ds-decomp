@@ -38,49 +38,49 @@
       "ordinal": 1
     },
     {
-      "symbol": "_ZN11daDsnBase_c19func_ov091_02132dc0Ev",
+      "symbol": "_ZN11daDsnBase_c16WakeNearYoshiEggEv",
       "address": "0x02132dc0",
       "size": "0x000000a4",
       "legacy_source": "src/func_ov091_02132dc0.cpp",
       "ordinal": 2
     },
     {
-      "symbol": "func_ov091_02132e64",
+      "symbol": "_ZN11daDsnBase_c12StateRecoverEv",
       "address": "0x02132e64",
       "size": "0x00000034",
       "legacy_source": "src/func_ov091_02132e64.c",
       "ordinal": 3
     },
     {
-      "symbol": "func_ov091_02132e98",
+      "symbol": "_ZN11daDsnBase_c9StateRestEv",
       "address": "0x02132e98",
       "size": "0x0000006c",
       "legacy_source": "src/func_ov091_02132e98.c",
       "ordinal": 4
     },
     {
-      "symbol": "_ZN11daDsnBase_c19func_ov091_02132f04Ev",
+      "symbol": "_ZN11daDsnBase_c9StateSlamEv",
       "address": "0x02132f04",
       "size": "0x000000f0",
       "legacy_source": "src/func_ov091_02132f04.cpp",
       "ordinal": 5
     },
     {
-      "symbol": "func_ov091_02132ff4",
+      "symbol": "_ZN11daDsnBase_c10StateHoverEv",
       "address": "0x02132ff4",
       "size": "0x0000002c",
       "legacy_source": "src/func_ov091_02132ff4.c",
       "ordinal": 6
     },
     {
-      "symbol": "_ZN11daDsnBase_c19func_ov091_02133020Ev",
+      "symbol": "_ZN11daDsnBase_c9StateRiseEv",
       "address": "0x02133020",
       "size": "0x00000078",
       "legacy_source": "src/func_ov091_02133020.c",
       "ordinal": 7
     },
     {
-      "symbol": "_ZN11daDsnBase_c19func_ov091_02133098Ev",
+      "symbol": "_ZN11daDsnBase_c16UpdateDropShadowEv",
       "address": "0x02133098",
       "size": "0x00000120",
       "legacy_source": "src/func_ov091_02133098.cpp",

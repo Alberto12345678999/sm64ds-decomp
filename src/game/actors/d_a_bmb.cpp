@@ -50,13 +50,38 @@ struct System {
 #include "dBgCh_Actr.h"
 #include "math/Approach.h"
 
-/* The three shared files this actor claims.  InitResources loads them and
+/* The three shared files this actor claims: ov002's model handle here and the
+   two animation handles below.  InitResources loads them and
    CleanupResources releases them, so both C++-named members need one agreed
    spelling; the members below that read the loaded handle out of the same bytes
    take their own view with a cast rather than a second declaration. */
-extern SharedFilePtr data_ov102_0214e9c0;
-extern SharedFilePtr data_ov102_0214e9c8;
 extern SharedFilePtr data_ov002_0210d9e0;
+
+/* Runtime asset handles, distinct from the NitroFS file IDs. */
+enum daBmb_c_AssetId { ASSET_BOMBHEI_CARRY_BCA = 0x02b7, ASSET_BOMBHEI_WALK_BCA = 0x02b8 };
+
+/* The two animation handles reach their files through this wrapper's
+   constructor and destructor veneers; the manifest maps each to the retail
+   destination.  Descriptive local type, not a recovered spelling. */
+struct BmbAnimFile : SharedFilePtr {
+    BmbAnimFile(u32 fileID);
+    ~BmbAnimFile();
+};
+
+/* This TU's own handles, in the order the retail initializer (0x0214de70)
+   builds them. */
+BmbAnimFile gBmbWalkAnimFile(ASSET_BOMBHEI_WALK_BCA);
+BmbAnimFile gBmbCarryAnimFile(ASSET_BOMBHEI_CARRY_BCA);
+
+/* Carry offsets, indexed by the carrier's pose (bit 0: front-sliding or
+   just lost the grab; bit 1: carrier param1 == 2).  The retail initializer
+   constructs and registers each element in turn. */
+Vector3 gBmbCarryOffsets[4] = {
+    Vector3(0x1c000, -0x14000, 0x28000),
+    Vector3(0x1c000, -0x14000, 0x3c000),
+    Vector3(0x2b000, -0xa000, -0x14000),
+    Vector3(0x30000, -0x1e000, 0x3c000),
+};
 
 extern Matrix4x3 IDENTITY_MATRIX4X3;
 
@@ -167,8 +192,8 @@ int daBmb_c::InitResources()
 {
     BMD_File* bmd;
 
-    dExtFrameCtrl_c::LoadFile(data_ov102_0214e9c0);
-    dExtFrameCtrl_c::LoadFile(data_ov102_0214e9c8);
+    dExtFrameCtrl_c::LoadFile(gBmbWalkAnimFile);
+    dExtFrameCtrl_c::LoadFile(gBmbCarryAnimFile);
     bmd = (BMD_File *)dExtSimpleModel_c::LoadFile(data_ov002_0210d9e0);
     if (mAnmModel.SetFile(bmd, 1, -1) == 0)
         return 0;
@@ -359,8 +384,8 @@ int daBmb_c::Render()
 int daBmb_c::CleanupResources()
 {
     data_ov002_0210d9e0.Release();
-    data_ov102_0214e9c0.Release();
-    data_ov102_0214e9c8.Release();
+    gBmbWalkAnimFile.Release();
+    gBmbCarryAnimFile.Release();
     return 1;
 }
 
@@ -378,7 +403,7 @@ void func_ov102_0214c0b8(void *cv) {
         self->mHorzSpeed = 0;
     else
         self->mHorzSpeed = 0x5000;
-    self->mAnmModel.SetAnim((BCA_File *)data_ov102_0214e9c0.filePtr, 0, 0x1000, 0);
+    self->mAnmModel.SetAnim((BCA_File *)gBmbWalkAnimFile.filePtr, 0, 0x1000, 0);
     self->mTurnTimer = 0x200;
     self->mVertAccel = -0x2000;
     self->mCarrier = 0;
@@ -535,7 +560,7 @@ void func_ov102_0214bd20(char *c) {
     self->mState = 3;
     self->mVertAccel = 0;
     self->mHorzSpeed = 0;
-    self->mAnmModel.SetAnim((BCA_File *)data_ov102_0214e9c8.filePtr, 0, 0x1000, 0);
+    self->mAnmModel.SetAnim((BCA_File *)gBmbCarryAnimFile.filePtr, 0, 0x1000, 0);
     func_ov102_0214b384(c, 0x96);
     self->mdCc_c.flags |= 2;
     self->mdCc_c.flags &= ~4;
@@ -612,7 +637,7 @@ void func_ov102_0214bc20(char *c) {
     self->mHorzSpeed = a1.v[idx];
     self->mVertSpeed = a2.v[idx];
     self->mState = 4;
-    self->mAnmModel.SetAnim((BCA_File *)data_ov102_0214e9c0.filePtr, 0, 0x1000, 0);
+    self->mAnmModel.SetAnim((BCA_File *)gBmbWalkAnimFile.filePtr, 0, 0x1000, 0);
     self->mVertAccel = -0x2000;
 }
 }
@@ -775,9 +800,6 @@ void func_ov102_0214b53c(char *c) {
     extern int d_a_bmbNewHold(int sys, unsigned int kind, int fx, int a1, int a2, const void *v,
                               void *cb);
     extern void func_ov102_0214b444(void *c);
-    extern int data_ov102_0214ea18[];
-    extern int data_ov102_0214ea1c[];
-    extern int data_ov102_0214ea20[];
     extern Matrix4x3 data_020a0e68;
     extern s16 data_02082214[];
 
@@ -810,14 +832,10 @@ void func_ov102_0214b53c(char *c) {
             if (self->mCarrier->param1 == 2) {
                 idx = (u8)(idx + 2);
             }
-            int off = idx * 0xc;
-            Math_Function_0203b14c(self->mCarryOff, *((int *)(((char *)data_ov102_0214ea18) + off)),
-                                   0x800, 0x3e8000, 4);
-            Math_Function_0203b14c(&self->mCarryOff[1],
-                                   *((int *)(((char *)data_ov102_0214ea1c) + off)), 0x800, 0x3e8000,
+            Math_Function_0203b14c(self->mCarryOff, gBmbCarryOffsets[idx].x, 0x800, 0x3e8000, 4);
+            Math_Function_0203b14c(&self->mCarryOff[1], gBmbCarryOffsets[idx].y, 0x800, 0x3e8000,
                                    4);
-            Math_Function_0203b14c(&self->mCarryOff[2],
-                                   *((int *)(((char *)data_ov102_0214ea20) + off)), 0x800, 0x3e8000,
+            Math_Function_0203b14c(&self->mCarryOff[2], gBmbCarryOffsets[idx].z, 0x800, 0x3e8000,
                                    4);
             Matrix4x3 *rmtx = self->UpdateCarry(*self->mCarrier, *(Vector3 *)self->mCarryOff);
             self->mAnmModel.mat4x3 = *rmtx;
@@ -1139,7 +1157,7 @@ void func_ov102_0214b128(void *cv) {
 
 // @symbol _ZN7daBmb_c19func_ov102_0214b03cEv
 void daBmb_c::func_ov102_0214b03c() {
-    if (mState < 2 && mAnmModel.file == (BCA_File *)data_ov102_0214e9c0.filePtr) {
+    if (mState < 2 && mAnmModel.file == (BCA_File *)gBmbWalkAnimFile.filePtr) {
         if (mAnmModel.WillHitFrame(0) != 0 || mAnmModel.WillHitFrame(0x10) != 0) {
             func_0201267c(0x132, &mCamSpacePos);
         }
@@ -1340,7 +1358,7 @@ after_cannon:
     if (self->mVariant == 2) {
         self->mVariant = 3;
         self->mState = 0;
-        self->mAnmModel.SetAnim((BCA_File *)data_ov102_0214e9c0.filePtr, 0, 0x1000, 0);
+        self->mAnmModel.SetAnim((BCA_File *)gBmbWalkAnimFile.filePtr, 0, 0x1000, 0);
         self->mTurnTimer = 0x200;
         self->mVertAccel = -0x2000;
         self->mdCc_c.flags &= ~2u;

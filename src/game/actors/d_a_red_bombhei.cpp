@@ -26,8 +26,7 @@
  *
  * Source order is the reverse of the ROM. The factory is written first.
  */
-/* leftovers: data_ov084_02130da4, data_ov084_02130d9c and data_ov084_02130dc4 keep
- * address names. This text-only TU does not own that .bss. The state
+/* leftovers: data_ov084_02130dc4 keeps its address name. The state
  * bodies stay address-named members; the table reaches them by address.
  */
 
@@ -42,6 +41,7 @@
 #include "Sound.h"
 #include "cstd.h"
 #include "math/Approach.h"
+#include "SpawnInfo.h"
 
 struct BCA_File;
 
@@ -83,14 +83,34 @@ struct RedBombheiState {
     RedBombheiStatePMF update;
 };
 
+/* Runtime asset handles, distinct from the NitroFS file IDs. */
+enum daRedBombhei_c_AssetId { ASSET_RED_BOMBHEI_BMD = 0x02b9, ASSET_RED_WAIT_BCA = 0x02ba };
 
-extern SharedFilePtr data_ov084_02130da4;   /* the model */
-extern SharedFilePtr data_ov084_02130d9c;   /* the idle animation */
+/* The handles reach their files through these wrappers' constructor and
+   destructor veneers; the manifest maps each to the retail destination.
+   Descriptive local types, not recovered spellings. */
+struct RedBombheiModelFile : SharedFilePtr {
+    RedBombheiModelFile(u32 fileID);
+    ~RedBombheiModelFile();
+};
+
+struct RedBombheiAnimFile : SharedFilePtr {
+    RedBombheiAnimFile(u32 fileID);
+    ~RedBombheiAnimFile();
+};
+
+/* This TU's file handles and state table, in the order the retail
+   initializer (0x02130558) builds them. */
+RedBombheiModelFile gRedBombheiModelFile(ASSET_RED_BOMBHEI_BMD);
+RedBombheiAnimFile gRedBombheiWaitAnimFile(ASSET_RED_WAIT_BCA);
+
+RedBombheiState data_ov084_02130dc4[3] = {
+    {&daRedBombhei_c::func_ov084_0212c92c, &daRedBombhei_c::func_ov084_0212c8b0},
+    {&daRedBombhei_c::func_ov084_0212c89c, &daRedBombhei_c::func_ov084_0212c508},
+    {&daRedBombhei_c::func_ov084_0212c4a0, &daRedBombhei_c::func_ov084_0212c1a0},
+};
 
 extern "C" {
-
-/* -- the state table __sinit_ov084_02130558 fills in -- */
-extern RedBombheiState data_ov084_02130dc4[];
 
 /* -- globals -- */
 extern dCamera_c *data_0209f318;           /* the camera */
@@ -139,15 +159,28 @@ extern "C" daRedBombhei_c *daRedBombhei_c_classInit()
     return new daRedBombhei_c();
 }
 
+/* The actor profile, in SpawnInfo's layout (include/SpawnInfo.h). The
+ * retail values are unchanged. */
+SpawnInfo<daRedBombhei_c> g_profile_RED_BOMBHEI = {
+    daRedBombhei_c_classInit, /* classInit */
+    0x00b5,                   /* behaviorPriority */
+    0x002e,                   /* renderPriority */
+    0x00000003,               /* actorFlags */
+    0x40000,                  /* clipOffsetY */
+    0x80000,                  /* clipRadius */
+    0x01000000,               /* clipDistance */
+    0x01000000                /* farDistance */
+};
+
 // @symbol _ZN14daRedBombhei_c13InitResourcesEv
 s32 daRedBombhei_c::InitResources()
 {
     Vector3 pos;
 
-    BMD_File *modelFile = (BMD_File *)dExtSimpleModel_c::LoadFile(data_ov084_02130da4);
+    BMD_File *modelFile = (BMD_File *)dExtSimpleModel_c::LoadFile(gRedBombheiModelFile);
     mAnmModel.SetFile(modelFile, 1, -1);
     mShadowModel.InitCylinder();
-    dExtFrameCtrl_c::LoadFile(data_ov084_02130d9c);
+    dExtFrameCtrl_c::LoadFile(gRedBombheiWaitAnimFile);
     mdCcAc_c.Init(this, 0x8c000, 0x8c000, 0x4200004, 0);
     func_ov084_0212c960(0);
     mShutterID = 0;
@@ -215,8 +248,8 @@ s32 daRedBombhei_c::Render()
 // @symbol _ZN14daRedBombhei_c16CleanupResourcesEv
 s32 daRedBombhei_c::CleanupResources()
 {
-    data_ov084_02130da4.Release();
-    data_ov084_02130d9c.Release();
+    gRedBombheiModelFile.Release();
+    gRedBombheiWaitAnimFile.Release();
     return 1;
 }
 
@@ -442,7 +475,7 @@ void daRedBombhei_c::func_ov084_0212c960(int state)
 void daRedBombhei_c::func_ov084_0212c92c()
 {
     unsigned int flags = 0;
-    BCA_File *file = (BCA_File *)data_ov084_02130d9c.filePtr;
+    BCA_File *file = (BCA_File *)gRedBombheiWaitAnimFile.filePtr;
     this->mAnmModel.SetAnim((BCA_File *)file, 0, 0x1000, flags);
 }
 
@@ -675,7 +708,7 @@ void daRedBombhei_c::func_ov084_0212c1a0()
         shutter = dActor_c::FindWithID(this->mShutterID);
         if (shutter == 0)
             return;
-        ((daObjCannonShutter_c *)shutter)->func_ov002_020bc990();
+        ((daObjCannonShutter_c *)shutter)->StartOpening();
         this->mCutsceneStep += 1;
         return;
     }

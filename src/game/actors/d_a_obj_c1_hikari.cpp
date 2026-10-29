@@ -3,8 +3,6 @@
  * d_a_obj_c1_hikari.cpp
  * Object - Castle light beam
  *
- * deslop
- *
  * Castle light beam (profile C1_HIKARI / LIGHT_BEAM(37)). ov010 also
  * C1_TRAP / C1_PEACH / ROTATING_COG_BIG. RTTI ov010:0x02112b64 names
  * daObjC1Hikari_c as a direct dActor_c subclass; ugly RTTI name is final.
@@ -15,27 +13,29 @@
  * destructor in daObjC1Hikari_c.h, which makes the compiler emit retail's D1
  * then D0 pair without a D2 or a forcing helper.
  *
- * Leftover:
+ * What stays, and why:
  * - HikariVec3 POD locals; Vector3's empty destructor would add
  *   _ZN7Vector3D1Ev to this TU
  * - gC1HikariModelFile is the model SharedFilePtr this Init LoadFile's,
  *   defined at the end of this file (constructed as file ID 1453)
  * - data_0209caa0[1] & 0x80000000; this Init is the consumer, no recovered
  *   name for that save-flag bit
- * - Sound::PlaySmallSecretSound stays TU-local; Sound.h has no declaration
+ * - Sound::PlaySmallSecretSound stays TU-local; Sound.h has no declaration.
+ *   MulVec3Mat4x3, Vec3_Add, AngleDiff and NumStars have no shared header
+ *   either, so they keep a local extern "C" block.
  * - S14 no g_profile_C1_HIKARI (sinit / data outside this .text)
  */
 
 /* Runtime asset handles resolved through the overlay 0 file table. */
-enum d_a_obj_c1_hikari_AssetId {
-    ASSET_C1_HIKARI_BMD = 0x05ad
-};
+enum d_a_obj_c1_hikari_AssetId { ASSET_C1_HIKARI_BMD = 0x05ad };
 
 #include "daObjC1Hikari_c.h"
 #include "Message.h"
 #include "Player.h"
 #include "SharedFilePtr.h"
 #include "math/Approach.h"
+#include "math/CalcLib.h"
+#include "math/MtxStack.h"
 
 /* POD copies of the two world-space offsets this Behavior rotates through
  * data_020a0e68. The shared Vector3 has an empty destructor, which would add
@@ -58,26 +58,21 @@ struct C1HikariModelFilePtr : SharedFilePtr {
     ~C1HikariModelFilePtr();
 };
 
-extern "C" {
-extern void Matrix4x3_FromRotationY(Matrix4x3 *m, int angle);
-extern void MulVec3Mat4x3(Vector3 *v, Matrix4x3 *m, Vector3 *res);
-extern void Vec3_Add(Vec3 *out, Vec3 *a, Vec3 *b);
-extern s16 Vec3_HorzAngle(const Vector3 *v0, const Vector3 *v1);
-extern int AngleDiff(int a, int b);
-extern unsigned char NumStars(void);
-
-extern Matrix4x3 data_020a0e68;
 /* Defined at the end of this file so its constructor does not enter .text. */
 extern C1HikariModelFilePtr gC1HikariModelFile;
 extern int data_0209caa0[];
+
+/* local extern: arm9 math and save helpers with no shared header. */
+extern "C" {
+extern void MulVec3Mat4x3(Vector3 *v, Matrix4x3 *m, Vector3 *res);
+extern void Vec3_Add(Vec3 *out, Vec3 *a, Vec3 *b);
+extern int AngleDiff(int a, int b);
+extern unsigned char NumStars(void);
 }
 
 namespace Sound {
 int PlaySmallSecretSound(dActor_c *actor, u16 *counter);
 }
-
-
-extern int _ZTV15daObjC1Hikari_c[];
 
 /* Reconstructed source-style name: SM64DS proves daObjC1Hikari_c through RTTI,
  * allocation size, vtable identity, and the C1_HIKARI registry profile;
@@ -89,14 +84,12 @@ extern int _ZTV15daObjC1Hikari_c[];
  * _ZN7fBase_cnwEm; without it the call relocates to the unavailable global
  * `_Znwm`. */
 // @symbol daObjC1Hikari_c_classInit
-extern "C" daObjC1Hikari_c *daObjC1Hikari_c_classInit()
-{
+extern "C" daObjC1Hikari_c *daObjC1Hikari_c_classInit() {
     return new daObjC1Hikari_c();
 }
 
 // @symbol _ZN15daObjC1Hikari_c13InitResourcesEv
-int daObjC1Hikari_c::InitResources()
-{
+int daObjC1Hikari_c::InitResources() {
     dExtSimpleModel_c::LoadFile(gC1HikariModelFile);
     if (NumStars() < 0xe)
         return 0;
@@ -109,8 +102,7 @@ int daObjC1Hikari_c::InitResources()
 }
 
 // @symbol _ZN15daObjC1Hikari_c8BehaviorEv
-int daObjC1Hikari_c::Behavior()
-{
+int daObjC1Hikari_c::Behavior() {
     HikariVec3 vIn, vMid, vRes;
     HikariVec3 hv;
     HikariVec3 vIn2, vMid2, vRes2;
@@ -186,22 +178,19 @@ int daObjC1Hikari_c::Behavior()
 }
 
 // @symbol _ZN15daObjC1Hikari_c6RenderEv
-int daObjC1Hikari_c::Render()
-{
+int daObjC1Hikari_c::Render() {
     mModel.Render(0);
     return 1;
 }
 
 // @symbol _ZN15daObjC1Hikari_c16CleanupResourcesEv
-int daObjC1Hikari_c::CleanupResources()
-{
+int daObjC1Hikari_c::CleanupResources() {
     gC1HikariModelFile.Release();
     return 1;
 }
 
 // @symbol _ZN15daObjC1Hikari_c20UpdateModelTransformEv
-void daObjC1Hikari_c::UpdateModelTransform()
-{
+void daObjC1Hikari_c::UpdateModelTransform() {
     Matrix4x3_FromRotationY(&mModel.mat4x3, mAngleY);
     mModel.mat4x3.t.x = mPosX >> 3;
     mModel.mat4x3.t.y = mPosY >> 3;

@@ -13,9 +13,9 @@
  * include/daObjC0Water_c.h emits the retail D1/D0 pair first and emits no
  * D2 body.
  *
- * deslop leftovers:
- * - dBgW_KcMbg::SetFile 6az: InitResources
- *   passes Fix12<int> by value; the header method form size-DIFFs.
+ * Notes:
+ * - dBgW_KcMbg::SetFile is a header member call; its scale is Fix12i, a
+ *   plain s32 (notes/mwccarm-codegen.md 6az).
  * - Sound::PlayLong / Sound::PlaySecretSound come from Sound.h, which now
  *   declares both. The ROM mangle is RK7Vector3 (const Vector3 &); a pointer
  *   argument is byte-identical, so this caller alone does not prove the
@@ -55,18 +55,13 @@ struct C0WaterCollisionFilePtr : SharedFilePtr {
     ~C0WaterCollisionFilePtr();
 };
 
-extern "C" {
-extern void hold_d_a_obj_c0_water(dBgW_KcMbg *self, KCL_File *file, const Matrix4x3 *mat, int scale,
-                                  s16 angY, CLPS_Block *clps);
-
 /* Defined at the end of this file so the constructors do not enter .text. */
-extern C0WaterModelFilePtr     data_ov012_021124d0;
+extern C0WaterModelFilePtr data_ov012_021124d0;
 extern C0WaterCollisionFilePtr data_ov012_021124c8;
-extern BTA_File      data_ov012_02111c24;
-extern CLPS_Block    data_ov012_02111c90;
-extern int           data_0209caa0[];
-extern int           data_0209f32c;
-}
+extern BTA_File data_ov012_02111c24;
+extern CLPS_Block data_ov012_02111c90;
+extern int data_0209caa0[];
+extern int data_0209f32c;
 
 // @symbol daObjC0Water_c_classInit
 /* Reconstructed source-style name; exact original SM64DS spelling is not
@@ -78,14 +73,12 @@ extern int           data_0209f32c;
  * dExtAnmTexSRT_c C1 on the member at 0x320 are the implicit
  * constructor. The null check is the one `new` itself emits. Declaring a
  * constructor of our own would emit a `bl` the factory does not have. */
-extern "C" daObjC0Water_c *daObjC0Water_c_classInit()
-{
+extern "C" daObjC0Water_c *daObjC0Water_c_classInit() {
     return new daObjC0Water_c();
 }
 
 // @symbol _ZN14daObjC0Water_c13InitResourcesEv
-int daObjC0Water_c::InitResources()
-{
+int daObjC0Water_c::InitResources() {
     dExtSimpleModel_c::LoadFile(data_ov012_021124d0);
     dBgW_Kc::LoadFile(data_ov012_021124c8);
     mModel.SetFile((BMD_File *)data_ov012_021124d0.filePtr, 1, 0x14);
@@ -93,10 +86,8 @@ int daObjC0Water_c::InitResources()
     mTextureTransformer.SetFile(data_ov012_02111c24, 0, 0x1000, 0);
     UpdateModelPosAndRotY();
     UpdateClsnPosAndRot();
-    /* 6az: header SetFile takes Fix12<int> by value. */
-    ((dBgW_KcMbg *)(&mMeshCollider))
-        ->dBgW_KcMbg::SetFile((KCL_File *)data_ov012_021124c8.filePtr, *(&mClsnMat), 0x1000,
-                              mAngleY, *(&data_ov012_02111c90));
+    mMeshCollider.SetFile((KCL_File *)data_ov012_021124c8.filePtr, mClsnMat, 0x1000, mAngleY,
+                          data_ov012_02111c90);
     mMeshCollider.Enable(this);
     mLoweredY = mPosY - 0x4b0000;
     if (data_0209caa0[2] & 0x80000) {
@@ -106,8 +97,7 @@ int daObjC0Water_c::InitResources()
 }
 
 // @symbol _ZN14daObjC0Water_c8BehaviorEv
-int daObjC0Water_c::Behavior()
-{
+int daObjC0Water_c::Behavior() {
     if (mWasJustDrained != 0)
         Sound::PlaySecretSound(this, &mSoundTimer);
     if (mPosY <= mLoweredY) {
@@ -130,16 +120,14 @@ int daObjC0Water_c::Behavior()
 }
 
 // @symbol _ZN14daObjC0Water_c6RenderEv
-int daObjC0Water_c::Render()
-{
+int daObjC0Water_c::Render() {
     mTextureTransformer.Update(mModel.data);
     mModel.Render(0);
     return 1;
 }
 
 // @symbol _ZN14daObjC0Water_c16CleanupResourcesEv
-int daObjC0Water_c::CleanupResources()
-{
+int daObjC0Water_c::CleanupResources() {
     if (mMeshCollider.IsEnabled()) {
         mMeshCollider.Disable();
     }
@@ -152,5 +140,5 @@ int daObjC0Water_c::CleanupResources()
  * __sinit_d_a_obj_c0_water.cpp emits both constructions and registers the
  * destructors; the registration nodes are compiler temporaries. */
 // @symbol __sinit_d_a_obj_c0_water.cpp
-C0WaterModelFilePtr     data_ov012_021124d0(1451);
+C0WaterModelFilePtr data_ov012_021124d0(1451);
 C0WaterCollisionFilePtr data_ov012_021124c8(1452);

@@ -51,14 +51,14 @@
       "ordinal": 1
     },
     {
-      "symbol": "_ZN11daObjPile_c19func_ov091_02133498Ev",
+      "symbol": "_ZN11daObjPile_c17NotifyTagPileGoneEv",
       "address": "0x02133498",
       "size": "0x00000020",
       "legacy_source": "src/func_ov091_02133498.c",
       "ordinal": 2
     },
     {
-      "symbol": "_ZN11daObjPile_c19func_ov091_021334b8Ei",
+      "symbol": "_ZN11daObjPile_c4SinkEi",
       "address": "0x021334b8",
       "size": "0x0000011c",
       "legacy_source": "src/func_ov091_021334b8.cpp",
@@ -660,12 +660,12 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@766",
+      "from": "@760",
       "to": "@783",
       "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin | compiler temp; wave 3 of the mangled-call cleanup deletes this TU's local _ZN externs ahead of it, lowering the per-TU @NNN uniquifier"
     },
     {
-      "from": "@767",
+      "from": "@761",
       "to": "@784",
       "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin | compiler temp; wave 3 of the mangled-call cleanup deletes this TU's local _ZN externs ahead of it, lowering the per-TU @NNN uniquifier"
     }
