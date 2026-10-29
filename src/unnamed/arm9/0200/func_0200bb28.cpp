@@ -69,7 +69,6 @@ typedef struct {
     u16 mRecentering;  /* 0x1a0 */
 } CameraView;
 
-#pragma opt_common_subs off
 void func_0200bb28(char* c, char* a1)
 {
     CameraView *cam = (CameraView *)c;
