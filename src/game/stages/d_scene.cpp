@@ -65,21 +65,6 @@ extern void func_02053a90(u16* out, int v);
 
 extern Matrix2x2 data_02092668;
 
-extern u16 func_02053f58(void);
-extern u16 func_02054018(void);
-extern u16 func_02054004(void);
-extern u16 func_02053f6c(void);
-extern u16 func_02053fa8(void);
-extern u16 func_02053f94(void);
-extern u16 func_02053f80(void);
-extern u16 func_02053fe0(void);
-extern u16 func_02053fbc(void);
-extern u16 func_02053f44(void);
-extern u16 func_02053f30(void);
-extern u16 func_02053f08(void);
-extern u16 func_02053ee0(void);
-
-
 extern void func_0205583c(void);
 
 extern void Initialise3dGraphics(int arg);
@@ -229,26 +214,21 @@ void dScene_c::ResetHardwareRegisters()
 
 namespace GX {
 // @symbol _ZN2GX15DisableAllBanksEv
-/* Hand every VRAM user's banks back to the LCDC, in the SDK's own order. Each
- * callee is one GX_DisableBankFor* in src/engine/gx/GX_VramCnt.cpp, where it
- * releases the gGXState (data_020a6088) field named beside it below; that
- * family still carries address names while its GX::SetBankFor* counterparts
- * do not, so the user each call releases is spelled here until the symbols
- * themselves are renamed. */
+/* Hand every VRAM user's banks back to the LCDC, in the SDK's own order. */
 void DisableAllBanks() {
-    func_02053f58(); /* lcdc          */
-    func_02054018(); /* bg            */
-    func_02054004(); /* obj           */
-    func_02053f6c(); /* arm7          */
-    func_02053fa8(); /* tex           */
-    func_02053f94(); /* texPltt       */
-    func_02053f80(); /* clrImg        */
-    func_02053fe0(); /* bgExtPltt     */
-    func_02053fbc(); /* objExtPltt    */
-    func_02053f44(); /* sub_bg        */
-    func_02053f30(); /* sub_obj       */
-    func_02053f08(); /* sub_bgExtPltt */
-    func_02053ee0(); /* sub_objExtPltt */
+    DisableBankForLCDC();
+    DisableBankForBG();
+    DisableBankForOBJ();
+    DisableBankForARM7();
+    DisableBankForTex();
+    DisableBankForTexPltt();
+    DisableBankForClearImage();
+    DisableBankForBGExtPltt();
+    DisableBankForOBJExtPltt();
+    DisableBankForSubBG();
+    DisableBankForSubOBJ();
+    DisableBankForSubBGExtPltt();
+    DisableBankForSubOBJExtPltt();
 }
 }
 

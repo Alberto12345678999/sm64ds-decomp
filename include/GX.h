@@ -29,6 +29,38 @@ void SetBankForSubBG(int);
 void SetBankForSubOBJ(int);
 void SetBankForSubBGExtPltt(int);
 void SetBankForSubOBJExtPltt(int);
+/* Reset gives a user's banks back to the LCDC; Disable switches them off
+   altogether. Both return the banks the user held, and both are one call on
+   ResetVramBanks / DisableVramBanks against a single gGXState field, which is
+   what names them -- see src/engine/gx/GX_VramCnt.cpp. LCDC, ARM7 and
+   ClearImage have no SetBankFor* counterpart above, so those three names are
+   coined from the field each one releases. */
+u16 ResetBankForBG(void);
+u16 ResetBankForOBJ(void);
+u16 ResetBankForTex(void);
+u16 ResetBankForTexPltt(void);
+u16 ResetBankForSubBG(void);
+u16 ResetBankForSubOBJ(void);
+u16 ResetBankForSubBGExtPltt(void);
+u16 ResetBankForSubOBJExtPltt(void);
+u16 DisableBankForBG(void);
+u16 DisableBankForOBJ(void);
+u16 DisableBankForTex(void);
+u16 DisableBankForTexPltt(void);
+u16 DisableBankForBGExtPltt(void);
+u16 DisableBankForOBJExtPltt(void);
+u16 DisableBankForClearImage(void);
+u16 DisableBankForARM7(void);
+u16 DisableBankForLCDC(void);
+u16 DisableBankForSubBG(void);
+u16 DisableBankForSubOBJ(void);
+u16 DisableBankForSubBGExtPltt(void);
+u16 DisableBankForSubOBJExtPltt(void);
+/* The banks a user currently holds. */
+int GetBankForTex(void);
+int GetBankForTexPltt(void);
+int GetBankForSubBG(void);
+int GetBankForSubOBJ(void);
 void BeginLoadTex(void);
 void LoadTex(const void *, unsigned int, unsigned int);
 void EndLoadTex(void);
