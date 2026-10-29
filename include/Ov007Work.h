@@ -12,16 +12,17 @@
  * a name but not a type, the typed pointer is the one kept. Words no file
  * names stay padding. */
 typedef struct Ov007Work {
-    u8 pad_000[4];
+    /* func_ov007_020b7040 adds one per drawn frame */
+    int frameCount; /* 0x000 */
     /* func_ov007_020c9388; func_ov007_020b65e0 frees them with func_ov007_020c937c */
     struct Ov007MenuState *states[3]; /* 0x004 */
     /* the choice func_ov007_020aec94 was last given; func_ov007_020b0834
      * replays it once the state-9 window closes */
     int pendingChoice; /* 0x010 */
-    /* left unnamed: func_ov007_020b0548 sets it in main state 7,
-     * func_ov007_020b1604 and func_ov007_020b6544 clear it, and while it is
-     * set func_ov007_020b7090 returns pendingChoice */
-    u8 pad_014[4];
+    /* func_ov007_020b0548 sets it in main state 7, func_ov007_020b1604 and
+     * func_ov007_020b6544 clear it; while it is set func_ov007_020b7090
+     * returns pendingChoice and func_ov007_020b6f4c fades out to white */
+    int choiceReady; /* 0x014 */
     /* func_ov007_020b6eb4 starts a display capture (func_ov007_020bd4e8
      * writes DISPCAPCNT) while it is set, and clears it */
     int pendingCapture; /* 0x018 */

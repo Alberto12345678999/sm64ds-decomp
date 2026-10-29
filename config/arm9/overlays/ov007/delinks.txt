@@ -467,25 +467,9 @@ src/unnamed/ov007/func_ov007_020b6d40.c:
     complete
     .text start:0x020b6d40 end:0x020b6eb4
 
-src/unnamed/ov007/func_ov007_020b6eb4.c:
+src/ui/menus/unit020b6eb4.cpp:
     complete
-    .text start:0x020b6eb4 end:0x020b6f4c
-
-src/unnamed/ov007/func_ov007_020b6f4c.cpp:
-    complete
-    .text start:0x020b6f4c end:0x020b7040
-
-src/unnamed/ov007/func_ov007_020b7040.c:
-    complete
-    .text start:0x020b7040 end:0x020b7090
-
-src/unnamed/ov007/func_ov007_020b7090.c:
-    complete
-    .text start:0x020b7090 end:0x020b7138
-
-src/unnamed/ov007/func_ov007_020b7138.cpp:
-    complete
-    .text start:0x020b7138 end:0x020b72a0
+    .text start:0x020b6eb4 end:0x020b72a0
 
 src/unnamed/ov007/func_ov007_020b72a0.c:
     complete
