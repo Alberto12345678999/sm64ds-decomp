@@ -99,6 +99,9 @@ public:
                                 single unrotated sprite and count down */
     u8 mEnabled;    /* 0x0d -- nothing draws while 0 */
     u8 mAdvancing;  /* 0x0e -- gates the spin advance */
+    u8 mUnusedFlag; /* 0x0f -- func_02034b1c clears it with the three
+                                above, and nothing in the recovered ROM
+                                reads it; the name is coined. */
 
     /* Clears only the owner; InitResources fills in the rest through
        func_02034b1c. The global's static initializer runs this. */

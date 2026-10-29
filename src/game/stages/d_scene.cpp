@@ -9,11 +9,14 @@
  */
 
 // leftovers:
-// - The transition calls pass a second word to fader slots 3/4, but the
-//   shared fader classes declare only the frame count, so the calls go
-//   through the local FaderVTable/FaderObject view above; typing the second
-//   word on the shared class needs the fader-family contract reconstructed
-//   first (callers: Before/AfterCleanupResources in this TU).
+// - Fader slot 4 only. The scene's three SetForwardTime calls pass a second
+//   word; include/dFader_c.h declares that slot `SetForwardTime(u32 frames)`
+//   while its sibling slot 3 is already `SetBackwardTime(u32 frames, u32)`, so
+//   the one-argument spelling is the odd one out in the family. Correcting it
+//   renames _ZN15dFdBrightness_c14SetForwardTimeEj (and dFdDummy_c's and
+//   dWipe_c's) to the ...Ejj form, a tree-wide symbol rename rather than a
+//   local edit, so the narrow FaderVTable view below stays until that lands.
+//   Every other slot this file touches is a real virtual call on the class.
 // - dScStage_c::SetVramBanks and GX::DisableAllBanks sit between the scene
 //   graphics methods in this span; co-residence is inferred from the
 //   contiguous run, not from an object map.
@@ -35,25 +38,26 @@ void SetGraphicsMode(int a);
 
 struct Matrix2x2 { int m[4]; };
 
-/* The transition calls pass a second word to fader slots 3/4, whereas the
- * shared class currently declares only the frame count. Preserve this local
- * ABI view until the fader-family contract is reconstructed. Direct calls to
- * dFdBrightness_c below use its existing native one-argument methods.
+/* dFdBrightness_c's vtable as far as slot 4, so the two-argument
+ * SetForwardTime the scene emits has something to call. Slots 0..3 are named
+ * only to place slot 4; nothing here dispatches through them. See the slot-4
+ * leftover at the top of the file.
  */
 struct FaderVTable {
-    void (*D1)(void *);
-    void (*D0)(void *);
-    void (*AdvanceFade)(void *);
-    void (*SetBackwardTime)(void *, u32, u32);
+    void (*slot0_D1)(void *);
+    void (*slot1_D0)(void *);
+    void (*slot2_AdvanceFade)(void *);
+    void (*slot3_SetBackwardTime)(void *, u32, u32);
     void (*SetForwardTime)(void *, u32, u32);
-    int  (*IsAtStart)(void *);
-    int  (*IsAtEnd)(void *);
 };
 struct FaderObject { FaderVTable *vt; };
 
 namespace GX { void DisableAllBanks(); }
 
 extern "C" {
+/* src/engine/gx/GX_Init.cpp names these three in comments but they keep their
+   address symbols: the H-blank and V-blank interrupt enables (each returns the
+   previous bit) and the MASTER_BRIGHT writer (negative darkens). */
 extern int  func_02053c10(int enable);
 extern int  func_02053be0(int enable);
 
@@ -225,11 +229,26 @@ void dScene_c::ResetHardwareRegisters()
 
 namespace GX {
 // @symbol _ZN2GX15DisableAllBanksEv
-void DisableAllBanks(){
- func_02053f58(); func_02054018(); func_02054004(); func_02053f6c();
- func_02053fa8(); func_02053f94(); func_02053f80(); func_02053fe0();
- func_02053fbc(); func_02053f44(); func_02053f30(); func_02053f08();
- func_02053ee0();
+/* Hand every VRAM user's banks back to the LCDC, in the SDK's own order. Each
+ * callee is one GX_DisableBankFor* in src/engine/gx/GX_VramCnt.cpp, where it
+ * releases the gGXState (data_020a6088) field named beside it below; that
+ * family still carries address names while its GX::SetBankFor* counterparts
+ * do not, so the user each call releases is spelled here until the symbols
+ * themselves are renamed. */
+void DisableAllBanks() {
+    func_02053f58(); /* lcdc          */
+    func_02054018(); /* bg            */
+    func_02054004(); /* obj           */
+    func_02053f6c(); /* arm7          */
+    func_02053fa8(); /* tex           */
+    func_02053f94(); /* texPltt       */
+    func_02053f80(); /* clrImg        */
+    func_02053fe0(); /* bgExtPltt     */
+    func_02053fbc(); /* objExtPltt    */
+    func_02053f44(); /* sub_bg        */
+    func_02053f30(); /* sub_obj       */
+    func_02053f08(); /* sub_bgExtPltt */
+    func_02053ee0(); /* sub_objExtPltt */
 }
 }
 
@@ -327,9 +346,9 @@ int dScene_c::BeforeBehavior()
     }
 
     if (data_02092664 != 0x187) {
-        if (((FaderObject *)data_0209f5bc)->vt->IsAtStart(data_0209f5bc) != 0) {
+        if (data_0209f5bc->IsAtStart() != 0) {
             ((FaderObject *)data_0209f5bc)->vt->SetForwardTime(data_0209f5bc, 0x1e, 0);
-        } else if (((FaderObject *)data_0209f5bc)->vt->IsAtEnd(data_0209f5bc) != 0) {
+        } else if (data_0209f5bc->IsAtEnd() != 0) {
             MarkForDestruction();
         }
         return 1;
@@ -342,8 +361,8 @@ int dScene_c::BeforeBehavior()
         }
         return 0;
     } else {
-        if (((FaderObject *)data_0209f5bc)->vt->IsAtEnd(data_0209f5bc) != 0) {
-            ((FaderObject *)data_0209f5bc)->vt->SetBackwardTime(data_0209f5bc, 0x1e, 0);
+        if (data_0209f5bc->IsAtEnd() != 0) {
+            data_0209f5bc->SetBackwardTime(0x1e, 0);
         }
         return 1;
     }

@@ -38,7 +38,7 @@
  *   measured inert and dropped for the plain call, so it is no longer a
  *   retained substitution
  *   (notes/experiments/gameover-2711-scenegate-virtual-call.md).
- * - unk_080[8]: zeroed by InitResources, never read back.
+ * - mGlyphUnused[8]: zeroed by InitResources, never read back.
  */
 
 /* Runtime asset handles resolved through the overlay 0 file table. */
@@ -129,8 +129,8 @@ extern u8 data_0209f204;
 
 void OamRender10_d_s_game_over(s32 sub, OamAttr *data, s32 x, s32 y, s32 palette, s32 priority,
                                Fix12i scaleX, Fix12i scaleY, s32 rotation, s32 mode);
-int LoadFile(int handle);
-void DecompressLZ16(int src, void *dst);
+void *LoadFile(int handle);
+void DecompressLZ16(void *src, void *dst);
 }
 
 /* The stylus went down this frame: held, with the held state just changed
@@ -166,7 +166,8 @@ extern "C" dScGameOver_c *dScGameOver_c_classInit(void) {
  * screens), then zeroes the cursor FSM and lays the eight glyphs out along
  * mGlyphX/mGlyphY with a fixed scale and no rotation. */
 s32 dScGameOver_c::InitResources() {
-    int f;
+    void *f;
+    int i;
 
     func_02019028();
     GX::DisableAllBanks();
@@ -215,19 +216,19 @@ s32 dScGameOver_c::InitResources() {
         f = LoadFile(0xa00c);
     }
     DecompressLZ16(f, G2::GetBG2CharPtr());
-    Deallocate((void *)f);
+    Deallocate(f);
 
     f = LoadFile(ASSET_D_2D_GAME_OVER_BG_NCL_BIN);
-    GX::LoadBGPltt((const void *)f, 0, 0x1a0);
-    Deallocate((void *)f);
+    GX::LoadBGPltt(f, 0, 0x1a0);
+    Deallocate(f);
 
     f = LoadFile(ASSET_D_2D_GAME_OVER_BG_NSC_BIN);
     DecompressLZ16(f, G2::GetBG2ScrPtr());
-    Deallocate((void *)f);
+    Deallocate(f);
 
     f = LoadFile(ASSET_D_2D_UPR_TOUCH_TO_SELECT_NSC_BIN);
     DecompressLZ16(f, G2::GetBG0ScrPtr());
-    Deallocate((void *)f);
+    Deallocate(f);
 
     *(volatile u16 *)0x400000e &= ~3;
     *(volatile u16 *)0x400000e = (*(volatile u16 *)0x400000e & 0x43) | 0x1100;
@@ -236,11 +237,11 @@ s32 dScGameOver_c::InitResources() {
 
     f = LoadFile(ASSET_D_2D_GAME_OVER_NCG_BIN);
     DecompressLZ16(f, (void *)0x6400000);
-    Deallocate((void *)f);
+    Deallocate(f);
 
     f = LoadFile(ASSET_D_2D_GAME_OVER_NCL_BIN);
-    GX::LoadOBJPltt((const void *)f, 0, 0x200);
-    Deallocate((void *)f);
+    GX::LoadOBJPltt(f, 0, 0x200);
+    Deallocate(f);
 
     data_0209d45c = 0x14;
 
@@ -266,15 +267,15 @@ s32 dScGameOver_c::InitResources() {
         f = LoadFile(0xa00d);
     }
     DecompressLZ16(f, (void *)G2S::GetBG1CharPtr());
-    Deallocate((void *)f);
+    Deallocate(f);
 
     f = LoadFile(0x9807);
-    GXS::LoadBGPltt((const void *)f, 0, 0x200);
-    Deallocate((void *)f);
+    GXS::LoadBGPltt(f, 0, 0x200);
+    Deallocate(f);
 
     f = LoadFile(0x9801);
     DecompressLZ16(f, G2S::GetBG1ScrPtr());
-    Deallocate((void *)f);
+    Deallocate(f);
 
     *(volatile u16 *)0x400100c &= ~3;
     *(volatile u16 *)0x400100c &= ~0x40;
@@ -283,7 +284,7 @@ s32 dScGameOver_c::InitResources() {
 
     f = LoadFile(ASSET_D_2D_BTM_GAME_OVER_BG_NSC_BIN);
     DecompressLZ16(f, G2S::GetBG2ScrPtr());
-    Deallocate((void *)f);
+    Deallocate(f);
 
     func_0201cebc(0x27d);
     func_ov003_020b0730(1);
@@ -293,11 +294,11 @@ s32 dScGameOver_c::InitResources() {
     mCommitTimer = 0;
     mFlashTimer = 0;
     mIntroPhase = 0;
-    for (f = 0; f < 8; f++) {
-        mGlyphX[f] = data_ov003_020b1764[f];
-        mGlyphY[f] = 0x60;
-        mGlyphDelay[f] = 0x30;
-        unk_080[f] = 0;
+    for (i = 0; i < 8; i++) {
+        mGlyphX[i] = data_ov003_020b1764[i];
+        mGlyphY[i] = 0x60;
+        mGlyphDelay[i] = 0x30;
+        mGlyphUnused[i] = 0;
     }
 
     data_0209d454 = 0x14;
