@@ -8894,6 +8894,11 @@ What each one needed beyond §6df:
 - KuppaScript's `gRunningKuppaScript`/`gSavedKuppaScript` (0x0209fc48/0x0209fc4c) sit in a
   second `.bss` run, apart from the rest of the file's state at 0x0209b270. One object
   cannot place its definitions in two runs, so they stay `extern` and unclaimed.
+  arm9 `.bss` follows `.text` TU order. The pair starts where d_wipe.cpp's scanline tables
+  end (`data_0209f648` + 0x600). Next comes the 0x0209fc50 run, read from 0x0203094c on.
+  Between those, only `func_0202fd2c` in d_view.cpp, which zeroes both words, touches them,
+  so they are that TU's `.bss` and not KuppaScript's. Its manifest is still text-only, with
+  RTTI externalized.
 - Three owners are unpromoted shard runs:
   - `__sinit_02074dc4`: the Timer neighbour (`func_0201964c`/`func_0201973c`).
   - `__sinit_02074e0c`: `func_0201aa18`/`func_0201aaec`, between IRQ2 and Message2.
