@@ -19,6 +19,7 @@
    form, so no declaration here relies on C++ mangling. The remaining 72 resolve
    to neither spelling and are unresolvable with or without this guard. */
 struct Player;
+struct MascotWalker;
 
 #ifdef __cplusplus
 extern "C" {
@@ -1424,7 +1425,7 @@ extern void MiniGm_LoadGroupIcons(void*);
 extern void Camera_ProjectToScreen16(void*, char*, short*);
 extern void MascotWalker_StartNextPath(void*);
 extern void MascotWalker_Draw(char*);
-extern void MascotWalker_Load(char*);
+extern void MascotWalker_Load(struct MascotWalker*);
 extern void Dealer_ResetMatrices(char*);
 extern void Dealer_PlayWin(void*);
 extern void Dealer_PlayLose(void*);
