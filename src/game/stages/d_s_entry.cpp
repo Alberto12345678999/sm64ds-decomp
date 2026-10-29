@@ -22,9 +22,6 @@
  * Leftover: func_ov001_020ab5b0 is still the linker name of the ov001
  *   dThIcon field writer (kind, x, y, w, h). This TU's 02115e8c calls
  *   it. Naming belongs in ov001.
- * Leftover: func_0200f0bc is still the linker name of the arm9 language
- *   mapper (GetOwnerLanguage, then 2..5 -> 1..4). This TU's 02115e8c
- *   indexes the width/height pairs with it.
  * Leftover: func_0203d974 is still the arm9 vs/region gate
  *   (0x27ffc40 == 2, else data_020a0f10). This TU's icon_c::Render
  *   case 13. Naming belongs in arm9.
@@ -82,7 +79,7 @@ extern void OamRender10_d_s_entry(int a, void *oam, int b, int c, int d, int e, 
                                   int i);
 extern int func_0203d974(void);
 
-int func_0200f0bc(void);
+int GetLanguageIndex(void);
 void func_ov001_020ab5b0(char *r0, int r1, short r2, short r3, short s4, short s5);
 
 extern OamAttr *data_ov075_0211cb64[];
@@ -253,18 +250,18 @@ void func_ov075_02115e8c(char *rawIcon, int iconType, int iconIndex, short x, sh
     icon->unk_020 = iconIndex;
     touchKind = (icon->unk_01c < 7) ? 2 : (icon->unk_01c < 0xd) ? 1 : 0;
     if (iconType == 5) {
-        widthLanguage = func_0200f0bc();
-        heightLanguage = func_0200f0bc();
+        widthLanguage = GetLanguageIndex();
+        heightLanguage = GetLanguageIndex();
         func_ov001_020ab5b0(rawIcon, touchKind, x, y, SH(data_ov075_0211d72c, widthLanguage),
                             SH(data_ov075_0211d72e, heightLanguage));
     } else if (iconType == 6) {
-        widthLanguage = func_0200f0bc();
-        heightLanguage = func_0200f0bc();
+        widthLanguage = GetLanguageIndex();
+        heightLanguage = GetLanguageIndex();
         func_ov001_020ab5b0(rawIcon, touchKind, x, y, SH(data_ov075_0211d740, widthLanguage),
                             SH(data_ov075_0211d742, heightLanguage));
     } else if (iconType == 0xb) {
-        widthLanguage = func_0200f0bc();
-        heightLanguage = func_0200f0bc();
+        widthLanguage = GetLanguageIndex();
+        heightLanguage = GetLanguageIndex();
         func_ov001_020ab5b0(rawIcon, touchKind, x, y, SH(data_ov075_0211d754, widthLanguage),
                             SH(data_ov075_0211d756, heightLanguage));
     } else {

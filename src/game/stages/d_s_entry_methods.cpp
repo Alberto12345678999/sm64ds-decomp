@@ -218,7 +218,7 @@ extern void *data_0209f5c0;
 extern int OVERLAY_100_ID;
 extern int OVERLAY_102_ID;
 
-int func_0200f0bc(void);
+int GetLanguageIndex(void);
 void SetBg1Offset(int a, int b);
 void func_ov075_02116128(char *c, int i, int z);
 void func_ov075_0211621c(char *c);
@@ -437,7 +437,7 @@ s32 dScEntry_c::InitResultResources() {
         } while (i < n);
     }
 
-    LoadCompressedFileAt(data_ov075_0211c990[func_0200f0bc()], (void *)0x6400000);
+    LoadCompressedFileAt(data_ov075_0211c990[GetLanguageIndex()], (void *)0x6400000);
     tmp = (void *)LoadFile(0x8415);
     GX::LoadOBJPltt(tmp, 0, 0x140);
     Deallocate(tmp);
@@ -446,7 +446,7 @@ s32 dScEntry_c::InitResultResources() {
     SetBg1Offset(0, 0);
     sub = (char *)0x6600000;
     LoadCompressedFileAt(0x8402, sub);
-    LoadCompressedFileAt(data_ov075_0211c97c[func_0200f0bc()], sub + 0x6000);
+    LoadCompressedFileAt(data_ov075_0211c97c[GetLanguageIndex()], sub + 0x6000);
     tmp = (void *)LoadFile(0x8403);
     GXS::LoadOBJPltt(tmp, 0, 0x200);
     Deallocate(tmp);
@@ -504,9 +504,9 @@ s32 dScEntry_c::InitEntryResources() {
             LoadCompressedFileAt(ASSET_D_2D_BATTLE_FRAMEWORK_GAMESTART_P_NSC_BIN,
                                  G2S::GetBG2ScrPtr());
         }
-        DecompressLZ16(data_0208a0e4[func_0200f0bc()], 0x6600000);
+        DecompressLZ16(data_0208a0e4[GetLanguageIndex()], 0x6600000);
     }
-    LoadCompressedFileAt(data_ov075_0211c9a4[func_0200f0bc()], (void *)0x6400000);
+    LoadCompressedFileAt(data_ov075_0211c9a4[GetLanguageIndex()], (void *)0x6400000);
 
     tmp = (void *)LoadFile(0x8412);
     GX::LoadOBJPltt(tmp, 0, 0xc0);
@@ -649,7 +649,7 @@ void dScEntry_c::RenderSoundSettings() {
         a2 = (short)(idx * 0x30 + 0x38);
         a1 = 0xe;
     } else {
-        int j = func_0200f0bc();
+        int j = GetLanguageIndex();
         a1 = data_ov075_0211b5d4[j];
         a2 = 0xa8;
     }
@@ -785,7 +785,7 @@ void dScEntry_c::UpdateSoundSettings() {
 
 // @symbol _ZN10dScEntry_c18EnterSoundSettingsEv
 void dScEntry_c::EnterSoundSettings() {
-    func_ov075_02116030(&data_ov075_0211d71c, LoadFile(data_ov075_0211ca08[func_0200f0bc()]));
+    func_ov075_02116030(&data_ov075_0211d71c, LoadFile(data_ov075_0211ca08[GetLanguageIndex()]));
 
     Message::DisplayOptionsMenuTextVS((s16)(GetSoundMode() + 9));
 
@@ -795,9 +795,9 @@ void dScEntry_c::EnterSoundSettings() {
     mSelectedIcon = 0;
 
     func_ov075_02115e8c((char *)&mIcons[6], 5, 0,
-                        (s16)(SH(data_ov075_0211d72c, func_0200f0bc()) + 8), 0x38);
+                        (s16)(SH(data_ov075_0211d72c, GetLanguageIndex()) + 8), 0x38);
     func_ov075_02115e8c((char *)&mIcons[7], 6, 0,
-                        (s16)(SH(data_ov075_0211d740, func_0200f0bc()) + 8), 0x68);
+                        (s16)(SH(data_ov075_0211d740, GetLanguageIndex()) + 8), 0x68);
     func_ov075_02115e8c((char *)&mIcons[8], 0xc, 0, 0x56, 0xa8);
     func_ov075_02115e8c((char *)&mIcons[2], 1, 0, 0xac, 0x38);
     func_ov075_02115e8c((char *)&mIcons[0], 3, 0, 0x64, 0x38);
@@ -824,7 +824,7 @@ void dScEntry_c::EnterSoundSettings() {
 
 // @symbol _ZN10dScEntry_c21RenderControlSettingsEv
 void dScEntry_c::RenderControlSettings() {
-    int *tbl = data_ov075_0211c9cc[func_0200f0bc()];
+    int *tbl = data_ov075_0211c9cc[GetLanguageIndex()];
     OamAttr *attr = (OamAttr *)tbl[mStepWork[0]];
     OAM::Render(false, attr, 0x80, 0x60, -1, -1, 0x1000, 0x1000, 0, -1);
 
@@ -834,7 +834,7 @@ void dScEntry_c::RenderControlSettings() {
         a2 = (short)(idx * 0x28 + 0x30);
         a1 = 0x26;
     } else {
-        int j = func_0200f0bc();
+        int j = GetLanguageIndex();
         a1 = data_ov075_0211b5d4[j];
         a2 = 0xa8;
     }
@@ -942,13 +942,13 @@ void dScEntry_c::EnterControlSettings() {
 
     func_ov075_02115e8c((char *)&mIcons[3], 0xb, 0, 0x80, 0xa8);
 
-    r = func_0200f0bc();
+    r = GetLanguageIndex();
     func_ov075_02115e8c((char *)&mIcons[4], 0xc, 0, data_ov075_0211b5d4[r], 0xa8);
 
     mIconCount = 5;
     data_0209d454 &= ~5;
 
-    r = func_0200f0bc();
+    r = GetLanguageIndex();
     func_ov075_02116030(&data_ov075_0211d71c, LoadFile(data_ov075_0211c9b8[r]));
 
     if (mSelectedIcon == 0)
@@ -1243,9 +1243,9 @@ void dScEntry_c::RenderResults() {
     u8 *p = data_0209b2f0 + id;
     OamAttr *sb;
     if (*p != 0)
-        sb = data_ov075_0211c9f4[func_0200f0bc()];
+        sb = data_ov075_0211c9f4[GetLanguageIndex()];
     else
-        sb = data_ov075_0211c9e0[func_0200f0bc()];
+        sb = data_ov075_0211c9e0[GetLanguageIndex()];
 
     {
         int i = 0;
@@ -1638,7 +1638,7 @@ void dScEntry_c::EnterPlayerSelectIntro() {
     u16 *tiles;
     u32 palette;
     data_0209d454 &= ~5;
-    if (func_0200f0bc() == 0)
+    if (GetLanguageIndex() == 0)
         LoadCompressedFileAt(0x840a, G2S::GetBG2ScrPtr());
     else
         LoadCompressedFileAt(0x980c, G2S::GetBG2ScrPtr());
@@ -1735,7 +1735,7 @@ void dScEntry_c::EnterPlayerSync() {
 
 // @symbol _ZN10dScEntry_c17RenderWaitingTextEv
 void dScEntry_c::RenderWaitingText() {
-    OamAttr *glyph = data_0208a0f8[func_0200f0bc()];
+    OamAttr *glyph = data_0208a0f8[GetLanguageIndex()];
 
     if (mWaiting.waveDelay <= 0) {
         int phase;
@@ -1873,7 +1873,7 @@ struct SinePair {
 extern "C" void func_ov075_021199d8(dScEntry_c *self) {
     OamAttr *attr;
 
-    attr = data_ov075_0211c968[func_0200f0bc()];
+    attr = data_ov075_0211c968[GetLanguageIndex()];
 
     if (self->mWaiting.waveDelay <= 0) {
         int ang;
