@@ -51,6 +51,8 @@ typedef void (*Fn)(void *a, int b, int c, int d);
 typedef struct HeapOwner {
     HeapAllocator     *heap;
     NestedHeapIterator iter;
+    void func_02051244();
+    void func_020510a4(int);
 } HeapOwner;
 typedef struct AllocNode {
     u32 unk0;
@@ -222,6 +224,7 @@ struct T {
     int f2c;                
     void (*f30)(int, int, int, int, int);   
     int f34;                
+    void func_020500a4();
 };
 struct Inner {
     char pad8[8];
@@ -253,6 +256,7 @@ struct C {
     /* 0x2c */ int f2c;     /* first argument to func_0205ac28 / func_0205abb8 */
     /* 0x30 */ int chanCount;
     /* 0x34 */ unsigned char chans[1]; /* chanCount channel numbers */
+    void func_0204fce8(void *);
 };
 struct E
 {
@@ -280,6 +284,8 @@ struct E1 {
     /* 0x40 */ unsigned char unk40; /* 0..0x7f, indexes data_02086384 */
     /* 0x41 */ unsigned char unk41; /* 0..0x7f, indexes data_02086384 */
     /* 0x42 */ unsigned char pad_42[2];
+    int func_0204f600(int, int, int);
+    void func_0204f5a0(int);
 };
 struct E2 {
     unsigned char a[0xc];
@@ -375,6 +381,7 @@ struct HeapAllocator_204f460 {
     NestedHeapIterator* owner;  
     char pad2[0x35];             
     unsigned char sortKey;       
+    void func_0204f214(int);
 };
 struct HeapAllocator_204f400 {
     char pad[0x3d];
@@ -385,6 +392,7 @@ struct Elem_204f278 {
     /* 0x08 */ int *heap;       /* func_0205130c's heap, freed by func_020512f0 */
     /* 0x0c */ int *owner;      /* claimant; its word 2 points back here */
     /* 0x10 */ int playerIndex; /* data_020a4d6c slot whose list holds this */
+    void func_0204f278();
 };
 typedef struct Node Node;
 
@@ -497,8 +505,7 @@ extern int func_0204f138(unsigned int mask);
 extern void func_0204f15c(void *node);
 extern int func_0204f194(unsigned int a);
 extern void func_0204f1e8(void);
-extern void func_0204f214(HeapAllocator_204f460 *thiz, int b);
-extern void func_0204f278(Elem_204f278 *thiz);
+extern void _ZN12Elem_204f27813func_0204f278Ev(Elem_204f278 *); /* local extern: PMF -> int */
 extern void func_0204f2d4(HeapObj* obj);
 extern char* func_0204f364(int key);
 extern void func_0204f3e0(unsigned char *c);
@@ -507,8 +514,7 @@ extern void func_0204f460(NestedHeapIterator* self, HeapAllocator_204f460* node)
 extern void func_0204f4bc(struct E1 *obj);
 extern void* func_0204f504(int index, void* unk);
 extern void func_0204f558(struct E1 *self, int val);
-extern void func_0204f5a0(u8 *thiz, int arg1);
-extern int func_0204f600(struct E1 *thiz, int seqData, int seqOffset, int bank);
+extern void _ZN2E113func_0204f5a0Ei(struct E1 *, int); /* local extern: PMF -> int */
 extern void func_0204f630(void);
 extern void *func_0204f63c(void **p, int idx, int r7);
 extern void func_0204f6f8(struct Inner83 **o, short a, short b);
@@ -532,7 +538,6 @@ extern int func_0204fa2c(int *p, int fade);
 extern int func_0204fa3c(int owner, void *b, u32 c);
 extern void func_0204fafc(void);
 extern void func_0204fc40(void);
-extern void func_0204fce8(struct C *thiz, void *arg);
 extern void func_0204fda4(struct C *c);
 extern void func_0204fde8(struct C *obj);
 extern void func_0204fe5c(char *obj, int arg1);
@@ -542,7 +547,7 @@ extern void func_0204ff9c(struct Obj0 *o);
 extern void func_0204ffcc(char *self);
 extern void func_02050008(struct Obj1 *o);
 extern void func_02050038(void);
-extern void func_020500a4(struct T *thiz);
+extern void _ZN1T13func_020500a4Ev(struct T *); /* local extern: PMF -> int */
 extern void func_020501b8(void);
 extern void func_02050258(void);
 extern void func_020502b8(void);
@@ -573,10 +578,8 @@ extern s32 func_02050fd4(struct Obj_2050fd4 *self);
 extern s32 func_02051024(struct SolidHeapWithIter* self, void* allocator);
 extern int func_02051064(int a);
 extern u32 func_02051074(SolidHeapAllocator **pHeap);
-extern void func_020510a4(HeapOwner *thiz, int n);
 extern s32 func_0205117c(struct SolidHeapWithIter* self);
 extern void *func_020511d4(HeapOwner *owner, u32 elemSize, u32 param2, u32 param3, u32 param4);
-extern void func_02051244(HeapOwner *thiz);
 extern void func_020512f0(int *p);
 extern void *func_0205130c(unsigned int addr, unsigned int size);
 extern void func_020513a8(char *a, int b, int c, int d);
@@ -911,8 +914,7 @@ extern "C" int func_02051bd0(void **p, int a1, unsigned int a2, int a3, struct A
         if (np == 0) { ((void(*)(int r7))func_0204f630)(r7); return 0; }
     }
 
-    ((int (*)(int thiz, int p1, int p2, int p3))func_0204f600)(
-        r7, (int)((char *)np + ((struct P5 *)np)->off18), 0, r5);
+    ((struct E1 *)r7)->func_0204f600((int)((char *)np + ((struct P5 *)np)->off18), 0, r5);
     func_0204f914(p, a4->b6);
     ((void(*)(void **c, unsigned char v))func_0204f89c)(p, a4->b7);
     ((void(*)(void *pp, int v))func_0204f720)(p, a5);
@@ -957,7 +959,7 @@ extern "C" int func_02051a98(void *p0, void *p1, unsigned int p2, void *p3,
             ((void(*)(void *base, int index, void *arg))func_0205b78c)(r5, i, node);
         }
     }
-    ((void(*)(void *thiz, void *p, int v, void *node))func_0204f600)(r6, (char *)p5 + p5->off18, p4->f0, r5);
+    ((struct E1 *)r6)->func_0204f600((int)((char *)p5 + p5->off18), p4->f0, (int)r5);
     ((void(*)(void *p, unsigned char v))func_0204f914)(p0, p4->f6);
     ((void(*)(void *p, unsigned char v))func_0204f89c)(p0, p4->f7);
     ((void(*)(void *o, int a, int b))func_0204f6f8)(p0, p6, p7);
@@ -989,7 +991,7 @@ extern "C" void *func_02051a28(int index, void *unk)
 {
     void *p = ((void *(*)(int index, void *unk))func_0204f504)(index, unk);
     if (p) {
-        ((void(*)(void *p))func_02051244)(p);
+        ((HeapOwner *)p)->func_02051244();
     }
     return p;
 }
@@ -1243,15 +1245,15 @@ extern "C" void *func_0205130c(unsigned int addr, unsigned int size)
 
 // @symbol func_020512f0
 extern "C" void func_020512f0(int *p) {
-    ((void(*)(void *p))func_02051244)(p);
+    ((HeapOwner *)p)->func_02051244();
     ((void(*)(void *p))func_0204ebb8)((void*)*p);
 }
 
-// @symbol func_02051244
-extern "C" void func_02051244(HeapOwner *thiz) {
+// @symbol _ZN9HeapOwner13func_02051244Ev
+void HeapOwner::func_02051244() {
     struct Node *r7;
     struct Node *r6;
-    r7 = (struct Node *)(thiz->iter.Previous(0));
+    r7 = (struct Node *)(this->iter.Previous(0));
     if (r7 == 0) goto end;
     do {
         r6 = (struct Node*)(((NestedHeapIterator*)(r7))->Previous(0));
@@ -1261,13 +1263,13 @@ extern "C" void func_02051244(HeapOwner *thiz) {
             }
             r6 = (struct Node*)(((NestedHeapIterator*)(r7))->Previous((HeapAllocator*)(r6)));
         }
-        thiz->iter.Remove((HeapAllocator *)(r7));
-        r7 = (struct Node *)(thiz->iter.Previous(0));
+        this->iter.Remove((HeapAllocator *)(r7));
+        r7 = (struct Node *)(this->iter.Previous(0));
     } while (r7 != 0);
 end:
-    ((SolidHeapAllocator *)(thiz->heap))->Reset(3);
+    ((SolidHeapAllocator *)(this->heap))->Reset(3);
     func_02050fb0();
-    ((void(*)(void *thiz))func_02050fd4)(thiz);
+    ((void(*)(void *thiz))func_02050fd4)(this);
 }
 
 // @symbol func_020511d4
@@ -1305,19 +1307,19 @@ extern "C" s32 func_0205117c(struct SolidHeapWithIter* self)
     return ~0;
 }
 
-// @symbol func_020510a4
-extern "C" void func_020510a4(HeapOwner *thiz, int n) {
+// @symbol _ZN9HeapOwner13func_020510a4Ei
+void HeapOwner::func_020510a4(int n) {
     struct Node *a;
     struct Node *first;
 
     a = 0;
     if (n == 0) {
-        func_02051244(thiz);
+        this->func_02051244();
         return;
     }
-    if (n < thiz->iter.mCount) {
+    if (n < this->iter.mCount) {
         do {
-            first = (struct Node *)(thiz->iter.Previous(0));
+            first = (struct Node *)(this->iter.Previous(0));
             a = (struct Node*)(((NestedHeapIterator*)(first))->Previous((HeapAllocator*)(a)));
             while (a != 0) {
                 if (a->fc != 0) {
@@ -1325,13 +1327,13 @@ extern "C" void func_020510a4(HeapOwner *thiz, int n) {
                 }
                 a = (struct Node*)(((NestedHeapIterator*)(first))->Previous((HeapAllocator*)(a)));
             }
-            thiz->iter.Remove((HeapAllocator *)(first));
-        } while (n < thiz->iter.mCount);
+            this->iter.Remove((HeapAllocator *)(first));
+        } while (n < this->iter.mCount);
     }
-    ((SolidHeapAllocator *)(thiz->heap))->LoadState(n);
+    ((SolidHeapAllocator *)(this->heap))->LoadState(n);
     func_02050fb0();
-    ((SolidHeapAllocator *)(thiz->heap))->SaveState(thiz->iter.mCount);
-    ((void(*)(void *thiz))func_02050fd4)(thiz);
+    ((SolidHeapAllocator *)(this->heap))->SaveState(this->iter.mCount);
+    ((void(*)(void *thiz))func_02050fd4)(this);
 }
 
 // @symbol func_02051074
@@ -1740,7 +1742,7 @@ extern "C" int func_020503a4(int a, int b, int c, int d, int p5, int p6, int p7,
         ((void(*)(int a, int b, int c, int d, int e, u32 f, int g, int h, int i, int j))func_0205aa10)(3, fmt1, c, pp8 != 0 ? 1 : 2, 0, qlen, pp10, 0, align, p12);
         ((void(*)(int a, int b, int c, u32 d, int e, int f, int g))func_0205ab6c)(1, fmt2, c, qlen, pp8, p6, p7);
         if (handle >= 0) {
-            ((void(*)(int a, int b, int c, int d, void *e))func_0205ab28)(handle, total + chunk, total, (int)func_020500a4, g);
+            ((void(*)(int a, int b, int c, int d, void *e))func_0205ab28)(handle, total + chunk, total, (int)_ZN1T13func_020500a4Ev, g);
         }
         if (a == 1) {
             ((void(*)(int a, int b, int c, int d))func_0205a958)(3, 3, 1, 1);
@@ -1833,17 +1835,17 @@ extern "C" void func_020501b8(void)
     }
 }
 
-// @symbol func_020500a4
-extern "C" void func_020500a4(struct T *thiz)
+// @symbol _ZN1T13func_020500a4Ev
+void T::func_020500a4()
 {
-    int quot = thiz->f14 / thiz->f2c;
-    int prod = quot * thiz->f18;
-    int e6 = thiz->fc + prod;
-    int e5 = thiz->f10 + prod;
+    int quot = this->f14 / this->f2c;
+    int prod = quot * this->f18;
+    int e6 = this->fc + prod;
+    int e5 = this->f10 + prod;
 
     if (data_020a55fc != 0) {
         struct Q *slot = &data_020a5718[data_020a55f8];
-        slot->f0 = (int)thiz;
+        slot->f0 = (int)this;
         slot->f4 = quot;
         slot->f8 = prod;
         slot->fc = e6;
@@ -1854,12 +1856,12 @@ extern "C" void func_020500a4(struct T *thiz)
     } else {
         CP15::InvalidateDataCache(e6, quot);
         CP15::InvalidateDataCache(e5, quot);
-        thiz->f30(e6, e5, quot, thiz->f8, thiz->f34);
+        this->f30(e6, e5, quot, this->f8, this->f34);
     }
     {
-        int *pf18 = (int *)((int)&thiz->f18);
+        int *pf18 = (int *)((int)&this->f18);
         *pf18 = *pf18 + 1;
-        if (thiz->f18 >= thiz->f2c) thiz->f18 = 0;
+        if (this->f18 >= this->f2c) this->f18 = 0;
     }
 }
 
@@ -1919,7 +1921,7 @@ extern "C" void func_0204fed0(struct C *c) {
     if (((c->fc << 30) >> 31) == 0) return;
     while (c->f20 != 0) {
         unsigned int saved = IRQ::Disable();
-        ((int(*)(void *c, int b))func_0204fce8)(c, 1);
+        c->func_0204fce8((void *)1);
         IRQ::Restore(saved);
     }
     ((void(*)(int a, int b, int c, int d))func_0205ac28)(c->f2c, 0, 1 << c->f28, 0);
@@ -1968,24 +1970,24 @@ extern "C" void func_0204fda4(struct C *c) {
     *p &= ~2;
 }
 
-// @symbol func_0204fce8
-extern "C" void func_0204fce8(struct C *thiz, void *arg) {
+// @symbol _ZN1C13func_0204fce8EPv
+void C::func_0204fce8(void *arg) {
     int new_var;
     int i;
     int *pcount;
     int q =
-        ((int (*)(unsigned int a, unsigned int b))__aeabi_uidiv)(thiz->bufSize, thiz->blockCount);
-    int scaled = q * thiz->f20;
-    for (i = 0; i < thiz->chanCount; i++) {
-        new_var = ((LL *)data_020a5578)[thiz->chans[i]].lo;
+        ((int (*)(unsigned int a, unsigned int b))__aeabi_uidiv)(this->bufSize, this->blockCount);
+    int scaled = q * this->f20;
+    for (i = 0; i < this->chanCount; i++) {
+        new_var = ((LL *)data_020a5578)[this->chans[i]].lo;
         data_020a5538[i] = new_var + scaled;
     }
 
-    thiz->callback(arg, thiz->chanCount, data_020a5538, q, thiz->unk8, thiz->unk1c);
-    pcount = &thiz->f20;
+    this->callback(arg, this->chanCount, data_020a5538, q, this->unk8, this->unk1c);
+    pcount = &this->f20;
     (*pcount)++;
-    if (thiz->f20 >= thiz->blockCount) {
-        thiz->f20 = 0;
+    if (this->f20 >= this->blockCount) {
+        this->f20 = 0;
     }
 }
 
@@ -2066,7 +2068,7 @@ extern "C" int func_0204fa3c(int owner, void *b, u32 c)
 {
     char *r4;
     void *res;
-    r4 = (char *)((void *(*)(void *a, u32 elemSize, u32 p2, u32 p3, u32 p4))func_020511d4)(b, c + 0x14, (u32)func_0204f278, 0, 0);
+    r4 = (char *)((void *(*)(void *a, u32 elemSize, u32 p2, u32 p3, u32 p4))func_020511d4)(b, c + 0x14, (u32)_ZN12Elem_204f27813func_0204f278Ev, 0, 0);
     if (!r4) return 0;
     ((Elem_204f278 *)r4)->owner = 0;
     ((Elem_204f278 *)r4)->playerIndex = owner;
@@ -2081,7 +2083,7 @@ extern "C" int func_0204fa3c(int owner, void *b, u32 c)
 // @symbol func_0204fa2c
 extern "C" int func_0204fa2c(int *p, int fade)
 {
-    return ((int(*)(u8 *thiz, int fade))func_0204f5a0)((u8 *)*p, fade);
+    return ((int(*)(u8 *thiz, int fade))_ZN2E113func_0204f5a0Ei)((u8 *)*p, fade);
 }
 
 // @symbol func_0204f9c4
@@ -2091,7 +2093,7 @@ extern "C" void func_0204f9c4(int idx, int arg1) {
     u8 *thiz = &((u8*)data_020a4d6c)[idx * 0x1c];
     for (i = 0; i < 16; i++, p++) {
         if (p->active != 0 && p->ptr == thiz) {
-            func_0204f5a0((u8 *)p, arg1);
+            ((struct E1 *)p)->func_0204f5a0(arg1);
         }
     }
 }
@@ -2220,29 +2222,29 @@ extern "C" void func_0204f630(void) {
     ((void(*)(void))func_0204f2d4)();
 }
 
-// @symbol func_0204f600
-extern "C" int func_0204f600(struct E1 *thiz, int seqData, int seqOffset, int bank) {
-    func_0205adc4((void *)thiz->f3c, seqData, seqOffset, bank);
-    ((void(*)(void *thiz))func_0204f4bc)(thiz);
-    thiz->cmdTag = func_0205afb4();
-    thiz->f2c = 1;
+// @symbol _ZN2E113func_0204f600Eiii
+int E1::func_0204f600(int seqData, int seqOffset, int bank) {
+    func_0205adc4((void *)this->f3c, seqData, seqOffset, bank);
+    ((void(*)(void *thiz))func_0204f4bc)(this);
+    this->cmdTag = func_0205afb4();
+    this->f2c = 1;
     return 1;
 }
 
-// @symbol func_0204f5a0
-extern "C" void func_0204f5a0(u8 *thiz, int arg1)
+// @symbol _ZN2E113func_0204f5a0Ei
+void E1::func_0204f5a0(int arg1)
 {
-    struct E1 *e = (struct E1 *)thiz;
-    if (thiz == 0)
+    struct E1 *e = (struct E1 *)this;
+    if (this == 0)
         return;
     if (e->f2c == 0)
         return;
     if (arg1 == 0) {
-        ((void(*)(void *c))func_0204f3e0)(thiz);
+        ((void(*)(void *c))func_0204f3e0)(this);
         return;
     }
     func_02052494(&e->fade, 0, arg1);
-    ((void(*)(void *o, int a))func_0204f214)(thiz, 0);
+    ((HeapAllocator_204f460 *)this)->func_0204f214(0);
     e->f2c = 2;
 }
 
@@ -2357,33 +2359,33 @@ extern "C" void func_0204f2d4(HeapObj* obj) {
     obj->state = 0;
 }
 
-// @symbol func_0204f278
-extern "C" void func_0204f278(Elem_204f278 *thiz) {
-    int *p = thiz->heap;
+// @symbol _ZN12Elem_204f27813func_0204f278Ev
+void Elem_204f278::func_0204f278() {
+    int *p = this->heap;
     if (p == 0) return;
     func_020512f0(p);
-    int *q = thiz->owner;
+    int *q = this->owner;
     if (q != 0) {
         q[2] = 0;
         return;
     }
-    int idx = thiz->playerIndex;
-    data_020a4d6c[idx].mLists[1].Remove((HeapAllocator *)(thiz));
+    int idx = this->playerIndex;
+    data_020a4d6c[idx].mLists[1].Remove((HeapAllocator *)(this));
 }
 
-// @symbol func_0204f214
-extern "C" void func_0204f214(HeapAllocator_204f460 *thiz, int b) {
-    void *node = thiz->owner;
+// @symbol _ZN21HeapAllocator_204f46013func_0204f214Ei
+void HeapAllocator_204f460::func_0204f214(int b) {
+    void *node = this->owner;
     if (node != 0) {
-        ((NestedHeapIterator*)(node))->Remove((HeapAllocator*)(thiz));
-        thiz->owner = 0;
+        ((NestedHeapIterator*)(node))->Remove((HeapAllocator*)(this));
+        this->owner = 0;
     }
-    ((NestedHeapIterator*)(((char*)&data_020a4d60)))->Remove((HeapAllocator*)(thiz));
-    thiz->sortKey = (unsigned char)b;
+    ((NestedHeapIterator*)(((char*)&data_020a4d60)))->Remove((HeapAllocator*)(this));
+    this->sortKey = (unsigned char)b;
     if (node != 0) {
-        ((void(*)(void* node, void* self))func_0204f460)(node, thiz);
+        ((void(*)(void* node, void* self))func_0204f460)(node, this);
     }
-    ((void(*)(void* self))func_0204f400)(thiz);
+    ((void(*)(void* self))func_0204f400)(this);
 }
 
 // @symbol func_0204f1e8
