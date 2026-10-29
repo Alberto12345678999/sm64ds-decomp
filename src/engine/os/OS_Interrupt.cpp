@@ -23,12 +23,14 @@
 
 #define REG_IME (*(volatile u16 *)0x04000208)
 
+// The tables keep C linkage: the PC port links this file, and MSVC
+// mangles C++ data names.
+extern "C" {
 extern IRQ::Handler data_02099fe4[];
 extern IRQ::HandlerEntry data_020a60c4[];
 extern IRQ::HandlerEntry data_020a60f4[];
 extern short data_023c0000[];
 
-extern "C" {
 void func_02057000(void);
 void func_02056e98(u32 idx, u32 handler, u32 arg);
 void func_02056e4c(u32 idx, u32 handler, u32 arg);

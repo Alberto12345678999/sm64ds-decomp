@@ -17,9 +17,11 @@
 
 typedef void (*IrqCallback)(void *);
 
+extern "C" {
 extern IRQ::HandlerEntry data_020a60c4[];
 extern u16 data_02099fd4[];
 extern short data_023c0000[];
+}
 
 namespace IRQ {
 
