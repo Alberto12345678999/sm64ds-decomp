@@ -297,31 +297,31 @@ void func_0206e068(int a, int *b);
 void func_0206e030(char *self);
 typedef int (*Fn)(int, int, int *, int);
 // @symbol func_0206df90
-int func_0206df90(char *thiz, int *out)
+int func_0206df90(char *self, int *out)
 {
   char *new_var;
-  int diff = (*((int *) (thiz + 0x24))) - (*((int *) (thiz + 0x1c)));
+  int diff = (*((int *) (self + 0x24))) - (*((int *) (self + 0x1c)));
   if (diff != 0)
   {
     int r;
-    *((int *) (thiz + 0x28)) = diff;
-    if (((((unsigned int) ((*((unsigned int *) (thiz + 4))) << 0x13)) >> 9) >> 22) == 0)
+    *((int *) (self + 0x28)) = diff;
+    if (((((unsigned int) ((*((unsigned int *) (self + 4))) << 0x13)) >> 9) >> 22) == 0)
     {
-      func_0206e068(*((int *) (thiz + 0x1c)), (int *) (thiz + 0x28));
+      func_0206e068(*((int *) (self + 0x1c)), (int *) (self + 0x28));
     }
-    r = (*((Fn *) (thiz + 0x40)))(*((int *) thiz), *((int *) (thiz + 0x1c)), (int *) (thiz + 0x28), *((int *) (thiz + 0x48)));
+    r = (*((Fn *) (self + 0x40)))(*((int *) self), *((int *) (self + 0x1c)), (int *) (self + 0x28), *((int *) (self + 0x48)));
     if (out != 0)
     {
-      *out = *((int *) (thiz + 0x28));
+      *out = *((int *) (self + 0x28));
     }
     if (r != 0)
     {
       return r;
     }
-    new_var = thiz + 0x18;
-    *(int *)(new_var) += *((int *) (thiz + 0x28));
+    new_var = self + 0x18;
+    *(int *)(new_var) += *((int *) (self + 0x28));
   }
-  func_0206e030(thiz);
+  func_0206e030(self);
   return 0;
 }
 #pragma pop
