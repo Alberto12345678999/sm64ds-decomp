@@ -173,12 +173,11 @@ void func_ov007_020b3e04(int sel, s16 *p1, s16 *p2) {
 }
 
 // @symbol func_ov007_020b3d30
-/* Sets up sprite `thiz` as entry idx of the data_ov007_020d7dc0..
+/* Sets up `sprite` as entry idx of the data_ov007_020d7dc0..
  * data_ov007_020d7dea tables: its texture, texel origin, pixel size, shadow
  * polygon id and shadow offset, and its depth; then sizes it in world space
  * through camera 1 (func_ov007_020c43bc). */
-void func_ov007_020b3d30(char *thiz, int idx) {
-    Ov007Sprite *sprite = (Ov007Sprite *)thiz;
+void func_ov007_020b3d30(Ov007Sprite *sprite, int idx) {
     sprite->frames[0] = WORK->textures[data_ov007_020d7dc8[idx]];
     sprite->texS = data_ov007_020d7dd0[idx * 2];
     sprite->texT = data_ov007_020d7dd1[idx * 2];
@@ -191,7 +190,7 @@ void func_ov007_020b3d30(char *thiz, int idx) {
         sprite->depth = -0x10c0;
     else
         sprite->depth = (int)0xffffef38;
-    func_ov007_020c43bc(thiz, (int)WORK->cameras[1]);
+    func_ov007_020c43bc(sprite, (int)WORK->cameras[1]);
 }
 
 // @symbol func_ov007_020b3c54
@@ -238,7 +237,7 @@ void func_ov007_020b3c54(void) {
         break;
     }
     CURSOR->mode = mode;
-    func_ov007_020b3d30((char *)CURSOR->sprite, mode);
+    func_ov007_020b3d30(CURSOR->sprite, mode);
 }
 
 // @symbol func_ov007_020b3708
