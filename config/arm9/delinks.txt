@@ -1250,45 +1250,9 @@ src/unnamed/arm9/0203/func_02030e4c.c:
     complete
     .text start:0x02030e4c end:0x02030fa8
 
-src/unnamed/arm9/0203/func_02030fa8.c:
-    complete
-    .text start:0x02030fa8 end:0x02031028
-
-src/unnamed/arm9/0203/func_02031028.c:
-    complete
-    .text start:0x02031028 end:0x02031154
-
-src/unnamed/arm9/0203/func_02031154.c:
-    complete
-    .text start:0x02031154 end:0x0203128c
-
-src/unnamed/arm9/0203/func_0203128c.c:
-    complete
-    .text start:0x0203128c end:0x020313d8
-
-src/unnamed/arm9/0203/func_020313d8.c:
-    complete
-    .text start:0x020313d8 end:0x02031428
-
-src/unnamed/arm9/0203/func_02031428.c:
-    complete
-    .text start:0x02031428 end:0x020316d8
-
-src/unnamed/arm9/0203/func_020316d8.cpp:
-    complete
-    .text start:0x020316d8 end:0x020318a4
-
-src/unnamed/arm9/0203/func_020318a4.c:
-    complete
-    .text start:0x020318a4 end:0x020319fc
-
-src/unnamed/arm9/0203/func_020319fc.cpp:
-    complete
-    .text start:0x020319fc end:0x02031b84
-
 src/Message3.cpp:
     complete
-    .text start:0x02031b84 end:0x02034a78
+    .text start:0x02030fa8 end:0x02034a78
 
 src/game/stages/d_s_mb.cpp:
     complete

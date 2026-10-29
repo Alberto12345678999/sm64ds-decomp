@@ -10,7 +10,7 @@ extern void func_ov007_020c3d1c(void *p);
 extern void func_ov007_020c1620(void *tex);
 extern void func_ov007_020b3edc(int a);
 extern void func_ov007_020c9460(int a);
-extern int func_ov007_020b4bd4(int *a);
+extern void func_ov007_020b4bd4(struct Ov007ItemView *view);
 extern void func_ov007_020b6cd0(void);
 extern void func_ov007_020b283c(void);
 extern void func_ov007_020b9770(void);
@@ -100,7 +100,7 @@ void func_ov007_020b65e0(void)
 
     for (i = 0; i < 0x18; i++) {
         if (WORK->itemViews[i] != 0) {
-            func_ov007_020b4bd4((int *)WORK->itemViews[i]);
+            func_ov007_020b4bd4(WORK->itemViews[i]);
             WORK->itemViews[i] = 0;
         }
     }
