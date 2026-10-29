@@ -10,6 +10,8 @@
  *   declares a ctor and dtor under C++, which turns `dst = target` below from
  *   a block move into memberwise stores and loses the match.
  */
+#include "math/Approach.h"
+
 struct Vec3 { int x, y, z; };
 struct Vector3 { int x, y, z; };
 typedef struct { int x, y, z; } Vec3_Fix12;
@@ -25,9 +27,10 @@ extern int LenVec3(struct Vec3* v);
 extern void Vec3_MulScalar(Vec3_Fix12* out, const Vec3_Fix12* in, int scale);
 extern void SubVec3(struct Vec3* a, struct Vec3* b, struct Vec3* c);
 extern int Vec3_Equal(const struct Vector3 *a, const struct Vector3 *b);
+}
 
-int _Z14ApproachLinearR7Vector3RKS_5Fix12IiE(struct Vector3& dst, const struct Vector3& target, int step)
-{
+// @symbol _Z14ApproachLinearR7Vector3RKS_i
+int ApproachLinear(Vector3 &dst, const Vector3 &target, int step) {
     struct Vector3 diff;
     struct Vector3 scaled;
     if (step != 0) {
@@ -45,8 +48,8 @@ int _Z14ApproachLinearR7Vector3RKS_5Fix12IiE(struct Vector3& dst, const struct V
     return 0;
 }
 
-int Vec3_ApproachHorz(struct Vec3* out, struct Vec3* a, int maxStep)
-{
+// @symbol Vec3_ApproachHorz
+extern "C" int Vec3_ApproachHorz(struct Vec3 *out, struct Vec3 *a, int maxStep) {
     struct Vec3 diff;
     struct Vec3 scaled;
     int len;
@@ -68,5 +71,4 @@ int Vec3_ApproachHorz(struct Vec3* out, struct Vec3* a, int maxStep)
         if (len == 0) return 1;
     }
     return 0;
-}
 }

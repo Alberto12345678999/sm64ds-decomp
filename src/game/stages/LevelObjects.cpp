@@ -9,7 +9,6 @@
  * - areaID is s8 down the whole chain: LoadClsnAndObjects counts areas in
  *   a signed char, LoadObjects and the fifteen category loaders take it as
  *   s8, and dActor_c::Spawn's s8 area tail receives it unconverted.
- * - LoadMinimapChangeObject stays mangled. It takes Fix12<int> by value.
  * - LoadTeleportSourceObjects stays a bottom-tested loop. A for
  *   reorders the compare.
  * - LoadExitObjects keeps the big-endian parameter assembly. A plain
@@ -53,8 +52,6 @@ extern s8 data_ov002_0210cb5c[];
 extern u8 data_ov002_0210cb70[];
 extern u16 data_ov002_0210cb88[];
 extern u16 data_ov002_0210cbf4[];
-
-void _Z23LoadMinimapChangeObjecti5Fix12IiEh(int areaID, Fix12i y, s8 h);
 
 void func_0202af80(void *entries, u32 count);
 void func_0202b044(void *entries, u32 count);
@@ -116,10 +113,7 @@ static inline int IntroAllowed() {
  * (low 9 bits = actor-table index, high bits = param) and an s16 position.
  * There is no rotation; spawn passes NULL for it. raw == 0x1ff is the
  * minimap-change special case. The third parameter is part of the shared loader
- * signature and unused here.
- *
- * LoadMinimapChangeObject stays hand-spelled: it takes a by-value Fix12<int>,
- * which is a runbook section 7 dead end for a real declaration at the call site. */
+ * signature and unused here. */
 // @symbol _Z17LoadSimpleObjectsRN11LVL_Overlay11ObjSubTableEaj
 void LoadSimpleObjects(LVL_Overlay::ObjSubTable &table, s8 areaID, u32 param) {
     LVL_Overlay::SimpleEntry *entry = (LVL_Overlay::SimpleEntry *)table.entries;
@@ -139,7 +133,7 @@ void LoadSimpleObjects(LVL_Overlay::ObjSubTable &table, s8 areaID, u32 param) {
         actorIndex = (u16)(raw & 0x1ff);
         actorParam = raw >> 9;
         if (actorIndex == 0x1ff) {
-            _Z23LoadMinimapChangeObjecti5Fix12IiEh(areaID, y, (s8)(actorParam & 0xf));
+            LoadMinimapChangeObject(areaID, y, actorParam & 0xf);
         } else {
             s16 deathTableID = data_ov002_0211118c;
             data_ov002_0211118c = (s16)(deathTableID + 1);

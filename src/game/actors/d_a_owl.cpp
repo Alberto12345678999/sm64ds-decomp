@@ -159,7 +159,6 @@ extern int data_0209e650[];
 extern Matrix4x3 data_020a0e68;
 
 int func_ov002_020df840(void *a, void *b, void *d);
-void _Z14ApproachLinearR7Vector3RKS_5Fix12IiE(Vector3 *a, const Vector3 *b, Fix12i f);
 void d_a_owlPlayLongHold(unsigned int a, unsigned int b, unsigned int cc, void *pos,
                          unsigned int d);
 int func_ov002_020df7f4(void *c);
@@ -259,7 +258,7 @@ int daOwl_c::func_ov094_021358b4()
             mPosY += 0x64000;
         }
     } else {
-        _Z14ApproachLinearR7Vector3RKS_5Fix12IiE(&mPos, (Vector3 *)&mAnchorX, 0x2000);
+        ApproachLinear(mPos, *(Vector3 *)&mAnchorX, 0x2000);
         if (mOpacity < OPACITY_MAX) {
             mOpacity++;
         } else {

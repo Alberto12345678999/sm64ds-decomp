@@ -20,10 +20,6 @@ extern s32 ApproachAngle(s16* cur, s16 target, s32 div, s32 band, s32 step);
 extern u16 DecIfAbove0_Short(u16* p);
 extern void Vec3_RotateYAndTranslate(s32* out, s32* in, s16 ang, s32* src);
 extern s32 Math_Function_0203b14c(s32* p, s32 tgt, s32 rate, s32 lim, s32 step);
-/* local extern: ApproachLinear(Vector3 &, const Vector3 &, Fix12<int>) takes
- * its Fix12<int> by value, which changes this call site; the scalar spelling
- * keeps the matched ABI. */
-extern s32 _Z14ApproachLinearR7Vector3RKS_5Fix12IiE(s32* v, s32* t, s32 rate);
 
 /* File-local views (the class headers are C++): only the fields this state
  * touches. Camera names follow include/dCamera_c.h; the player's follow
@@ -175,9 +171,7 @@ void func_0200bb28(char* c, char* a1)
     }
     Math_Function_0203b14c(&cam->pos.y, vout.y, 0x300, 0x18000, 0x100);
     vout.y = cam->pos.y;
-    if (_Z14ApproachLinearR7Vector3RKS_5Fix12IiE(&cam->pos.x, &vout.x,
-                                                 flag4000 != 0 ? 0xc0000 : 0x40000) != 0 &&
-        flag4000 == 0) {
+    if (ApproachLinear(cam->pos, vout, flag4000 != 0 ? 0xc0000 : 0x40000) != 0 && flag4000 == 0) {
         cam->mFlags &= ~0x60;
     }
     cam->mAngleY = cam->mEasedAngleY;

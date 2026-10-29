@@ -3,6 +3,7 @@
 #include "decl_common.h"
 /* recovered: shared common types */
 #include "common.h"
+#include "dClipper.h"
 
 extern "C" {
 
@@ -11,11 +12,9 @@ extern "C" {
 
 extern signed char data_0209f2f8;
 extern short data_02082214[];
-extern char data_0209f43c[];
+extern dClipper data_0209f43c;
 
 extern short Vec3_HorzAngle(struct Vector3 *v0, struct Vector3 *v1);
-/* local extern: dClipper::Func_020156DC takes a by-value Fix12<int> (the Fix12 wall), so it stays spelled out with scalar arguments. */
-extern void _ZN8dClipper13Func_020156DCEisii(void *self, int a, short b, int c, int d);
 
 /* File-local view of dCamera_c (include/dCamera_c.h is C++): the fields this
  * helper touches. */
@@ -97,7 +96,7 @@ void func_0200af20(char *c, struct Vector3 *v1, struct Vector3 *v2, short *out)
     }
 
     *out = 0xe38;
-    _ZN8dClipper13Func_020156DCEisii(data_0209f43c, cam->mAspect, *out, cam->mNear, cam->mFar);
+    data_0209f43c.Func_020156DC(cam->mAspect, *out, cam->mNear, cam->mFar);
     cam->mFlags &= ~1;
 }
 }
