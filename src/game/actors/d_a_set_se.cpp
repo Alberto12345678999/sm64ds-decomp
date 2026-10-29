@@ -41,7 +41,7 @@ extern s8 data_0209f2f8;           /* LEVEL_ID */
 extern u8 data_0209f220;           /* STAR_ID */
 extern u8 data_0209f2d8;           /* CURRENT_GAMEMODE */
 extern int data_0209caa0[];        /* SAVE_DATA */
-extern int data_0209fc48;          /* RUNNING_KUPPA_SCRIPT */
+extern int gRunningKuppaScript;    /* RUNNING_KUPPA_SCRIPT */
 
 extern "C" int IsStarCollectedInLevel(s8 levelID, int starID);
 
@@ -67,9 +67,8 @@ int daSetSE_c::InitResources()
     /* The (int) casts are load-bearing, not noise: each forces its boolean
        to materialize into a word before the re-test, and spelling the
        tests directly comes out six words short of the ROM. */
-    if ((int)(data_0209f2d8 == 0) != 0
-        && (data_0209caa0[2] & 0x80) == 0
-        && (int)(data_0209fc48 != 0) == 0)
+    if ((int)(data_0209f2d8 == 0) != 0 && (data_0209caa0[2] & 0x80) == 0 &&
+        (int)(gRunningKuppaScript != 0) == 0)
         disabled = 1;
     else
         disabled = 0;

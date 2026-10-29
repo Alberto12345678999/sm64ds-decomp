@@ -8860,8 +8860,15 @@ What each one needed beyond §6df:
   `func_0200d7a4`) from `.rodata` PMF constants at 0x02086bc8... Folding it means modelling
   the tables as pointer-to-member statics with named `dCamera_c` methods, and claiming the
   `.rodata` constants.
-- `__sinit_02073e6c` (0xf24) builds the KuppaScript tables (`data_0209b2a4` readers
-  `EndKuppaScript`/`ResetKuppaScript`). Those are not a TU in `src/`.
+- `__sinit_02073e6c` (0xf24) patches absolute pointers, byte by byte, into the
+  KuppaScript cutscene scripts: about 38 blobs in `.data` 0x020876fc..0x02089dcc,
+  including INTRO_CUTSCENE `data_020890a0`, the staff roll `data_02088fb8`, the ending
+  flight `data_02088610` and FALL_IN_FRONT_OF_CASTLE_CUTSCENE `data_02089608`. It also
+  constructs the `dFdColor_c` fader at `data_0209b294` and registers its destructor
+  (node `data_0209b278`). It does not touch `data_0209b2a4` (the demo actor-ID table).
+  The owner is the KuppaScript interpreter TU. Folding the initializer into it means
+  claiming those script blobs and the `.bss` run, where the fader interleaves with the
+  interpreter's state.
 - Three owners are unpromoted shard runs:
   - `__sinit_02074dc4`: the Timer neighbour (`func_0201964c`/`func_0201973c`).
   - `__sinit_02074e0c`: `func_0201aa18`/`func_0201aaec`, between IRQ2 and Message2.

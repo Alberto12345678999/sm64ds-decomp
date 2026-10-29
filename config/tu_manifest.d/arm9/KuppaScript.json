@@ -1,0 +1,187 @@
+{
+  "id": "arm9/KuppaScript",
+  "module": "arm9",
+  "source": "src/KuppaScript.cpp",
+  "promoted_source": "src/KuppaScript.cpp",
+  "status": "promoted",
+  "boundary_confidence": "high",
+  "boundary_evidence": [
+    "contiguous linker run: 0x0200e494..0x0200f0bc, 19 function(s), gapless in config/arm9/delinks.txt (each entry's end is the next entry's start, all marked `complete`).",
+    "BOTTOM EDGE: src/engine/view/d_camera.cpp ends at 0x0200e494 with dCamera_c_classInit (0x0200e444..0x0200e494), the class factory that closes that TU; its own manifest (arm9/dCamera_c) already names the helpers at 0x0200e494 as a different data table with no camera receiver. The seven functions 0x0200e494..0x0200e748 are not camera code: RunDemoCommand (e494) and RunPlayerCommand (e5ac) are called only from ProcessKuppaScript (bl at 0x0200ed84 for command >= 0x12, bl at 0x0200ed68 for command <= 3) and take the command record plus its first/last frame; SpawnDemoActor/FindDemoActor (e4e4/e55c) walk the 16-word actor-ID table data_0209b2a4 that EndKuppaScript and ResetKuppaScript also clear; SpawnScriptPlayer/FindScriptPlayer (e5fc/e6d8) walk the 4-word data_0209b284 that EndKuppaScript and ResetKuppaScript clear; ReadUnalignedSignedInt (e728) is the signed twin of ReadUnalignedInt (byte-identical body) and opens the four unaligned script-argument readers.",
+    "TOP EDGE: func_0200f0bc (0x0200f0bc) maps GetOwnerLanguage to a localized-asset index for func_0200f13c/func_0200f220 and the d_s_entry/d_s_mb scenes. It touches no script state, so ResetKuppaScript (0x0200f04c..0x0200f0bc) is the last function of this file.",
+    "STATE: every function here reads or writes the script state at data_0209fc48 (running script), data_0209fc4c (saved script), data_0209b274 (frame), data_0209b270 (spawned-player count), data_0209b284 (player IDs) or data_0209b2a4 (cutscene-actor IDs), or is called only by a function that does (ReadUnaligned*, the Find/Spawn helpers). StartIntroCutscene, StartEndingCutscene and RunStarCameraScript are the script entry points that bracket RunKuppaScript.",
+    "NOT CLAIMED: the .bss. data_0209b270..0x0209b2e4 holds this file's state interleaved with the dFdColor_c fader at data_0209b294 and its destructor-chain node at data_0209b278, both set up by __sinit_02073e6c (.init 0x02073e6c..0x02074d90). That initializer also writes the absolute pointers into the script blobs this file runs (data_020890a0, data_02089608, data_02087c00, data_02088fb8, data_02088610, ...), so it is plausibly this TU's, but claiming the .bss means defining the fader here, which emits that initializer, and the .init/.data claim is out of this change's scope (#4470 leaves its owner open)."
+  ],
+  "sections": [
+    {
+      "name": ".text",
+      "start": "0x0200e494",
+      "end": "0x0200f0bc"
+    }
+  ],
+  "functions": [
+    {
+      "symbol": "RunDemoCommand",
+      "address": "0x0200e494",
+      "size": "0x00000050",
+      "legacy_source": "src/unnamed/arm9/0200/func_0200e494.c",
+      "ordinal": 0
+    },
+    {
+      "symbol": "SpawnDemoActor",
+      "address": "0x0200e4e4",
+      "size": "0x00000078",
+      "legacy_source": "src/unnamed/arm9/0200/func_0200e4e4.cpp",
+      "ordinal": 1
+    },
+    {
+      "symbol": "FindDemoActor",
+      "address": "0x0200e55c",
+      "size": "0x00000050",
+      "legacy_source": "src/unnamed/arm9/0200/func_0200e55c.cpp",
+      "ordinal": 2
+    },
+    {
+      "symbol": "RunPlayerCommand",
+      "address": "0x0200e5ac",
+      "size": "0x00000050",
+      "legacy_source": "src/unnamed/arm9/0200/func_0200e5ac.cpp",
+      "ordinal": 3
+    },
+    {
+      "symbol": "SpawnScriptPlayer",
+      "address": "0x0200e5fc",
+      "size": "0x000000dc",
+      "legacy_source": "src/unnamed/arm9/0200/func_0200e5fc.cpp",
+      "ordinal": 4
+    },
+    {
+      "symbol": "FindScriptPlayer",
+      "address": "0x0200e6d8",
+      "size": "0x00000050",
+      "legacy_source": "src/unnamed/arm9/0200/func_0200e6d8.cpp",
+      "ordinal": 5
+    },
+    {
+      "symbol": "ReadUnalignedSignedInt",
+      "address": "0x0200e728",
+      "size": "0x00000020",
+      "legacy_source": "src/unnamed/arm9/0200/func_0200e728.c",
+      "ordinal": 6
+    },
+    {
+      "symbol": "ReadUnalignedInt",
+      "address": "0x0200e748",
+      "size": "0x00000020",
+      "legacy_source": "src/ReadUnalignedInt.c",
+      "ordinal": 7
+    },
+    {
+      "symbol": "ReadUnalignedShort",
+      "address": "0x0200e768",
+      "size": "0x00000018",
+      "legacy_source": "src/ReadUnalignedShort.c",
+      "ordinal": 8
+    },
+    {
+      "symbol": "ReadUnalignedUshort",
+      "address": "0x0200e780",
+      "size": "0x00000018",
+      "legacy_source": "src/ReadUnalignedUshort.c",
+      "ordinal": 9
+    },
+    {
+      "symbol": "EndKuppaScript",
+      "address": "0x0200e798",
+      "size": "0x0000013c",
+      "legacy_source": "src/EndKuppaScript.cpp",
+      "ordinal": 10
+    },
+    {
+      "symbol": "ProcessKuppaScript",
+      "address": "0x0200e8d4",
+      "size": "0x00000594",
+      "legacy_source": "src/ProcessKuppaScript.cpp",
+      "ordinal": 11
+    },
+    {
+      "symbol": "IsStarCameraScript3Running",
+      "address": "0x0200ee68",
+      "size": "0x00000024",
+      "legacy_source": "src/unnamed/arm9/0200/func_0200ee68.c",
+      "ordinal": 12
+    },
+    {
+      "symbol": "RunStarCameraScript",
+      "address": "0x0200ee8c",
+      "size": "0x0000003c",
+      "legacy_source": "src/unnamed/arm9/0200/func_0200ee8c.c",
+      "ordinal": 13
+    },
+    {
+      "symbol": "StartEndingCutscene",
+      "address": "0x0200eec8",
+      "size": "0x00000014",
+      "legacy_source": "src/unnamed/arm9/0200/func_0200eec8.c",
+      "ordinal": 14
+    },
+    {
+      "symbol": "StartIntroCutscene",
+      "address": "0x0200eedc",
+      "size": "0x00000028",
+      "legacy_source": "src/StartIntroCutscene.cpp",
+      "ordinal": 15
+    },
+    {
+      "symbol": "RunKuppaScript",
+      "address": "0x0200ef04",
+      "size": "0x0000007c",
+      "legacy_source": "src/RunKuppaScript.c",
+      "ordinal": 16
+    },
+    {
+      "symbol": "ContinueKuppaScriptIfNecessary",
+      "address": "0x0200ef80",
+      "size": "0x000000cc",
+      "legacy_source": "src/ContinueKuppaScriptIfNecessary.cpp",
+      "ordinal": 17
+    },
+    {
+      "symbol": "ResetKuppaScript",
+      "address": "0x0200f04c",
+      "size": "0x00000070",
+      "legacy_source": "src/ResetKuppaScript.c",
+      "ordinal": 18
+    }
+  ],
+  "data": [],
+  "bss": [],
+  "compiler_only_output": [],
+  "notes": [
+    "HAND-BUILT manifest entry -- the `main` module is unsegmentable, so there is no tubuild create candidate id.",
+    "No ROM RTTI names this code; KuppaScript is the tree's established name for it (RunKuppaScript, EndKuppaScript, ProcessKuppaScript, ...), so the file takes that coined name per AGENTS.md. Every function keeps C linkage: C sources bind FindDemoActor, FindScriptPlayer, ReadUnaligned*, and the rest are declared extern \"C\" by their C++ callers.",
+    "ROM-ascending under `#pragma defer_codegen off`; the opt_common_subs off bracket ProcessKuppaScript needs binds to that function only."
+  ],
+  "verification": {
+    "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",
+    "toolchain": "tools/mwccarm/2004/b56/mwccarm.exe",
+    "flags": "-O4,p -enum int -lang c++ -char signed -interworking -proc arm946e -gccext,on -msgstyle gcc -Cpp_exceptions off",
+    "object": "build/tu/arm9-KuppaScript/KuppaScript.o (gitignored)",
+    "comparison": "tools/match.py extract_func+compare (bytes/relocs) AND tools/objisolate.py plan() (relocation type/addend) AND tools/reloc_audit.py check_destinations() (relocation target identity)",
+    "functions_matched": 19,
+    "functions_declared": 19,
+    "compilerOnlyOutput": {
+      "requested": [],
+      "deadstripped": [],
+      "data": [],
+      "dataExternalized": []
+    },
+    "criteria": {
+      "every_declared_function_defined": "PASS",
+      "every_declared_function_bytes_match": "PASS",
+      "declared_function_set_equals_defined_function_set": "PASS",
+      "functions_occur_in_expected_order": "PASS",
+      "relocation_destinations_verified": "PASS"
+    }
+  }
+}

@@ -105,7 +105,7 @@ extern u8 data_0209f220;
 extern u8 data_0209f228;
 extern u8 data_0209f2d8;
 extern int data_0209caa0[3];
-extern s32 data_0209fc48;
+extern s32 gRunningKuppaScript;
 extern s8 data_02092110;
 extern u32 data_0209b454;
 extern s32 data_0208ee44;
@@ -1382,7 +1382,7 @@ extern "C" void func_0201f32c(int arg0)
     {
         u32 b1 = (f2d8_val == 0);
         if (b1 != 0 && !(data_0209caa0[2] & 0x80)) {
-            u32 b2 = (data_0209fc48 != 0);
+            u32 b2 = (gRunningKuppaScript != 0);
             if (b2 == 0) {
                 data_0209d650 = 0x10;
                 data_0209d6cc = 0x64;

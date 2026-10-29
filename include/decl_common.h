@@ -767,7 +767,7 @@ extern int func_02007cec(void*, const struct Vector3*, int);
 extern int func_02008b4c(void*, void*, void*, void*);
 extern int func_0200ca50(void*);
 extern int func_0200cae4(void*);
-extern int func_0200ee68(void);
+extern int IsStarCameraScript3Running(void);
 extern int func_0200f0bc(void);
 extern int func_02013890(int, int);
 extern int func_02013a44(void);
@@ -1130,7 +1130,7 @@ extern unsigned int func_02022d00(unsigned int, unsigned int, Fix12i, Fix12i, Fi
 extern unsigned int func_02022d44(unsigned int, unsigned int, int, int, int, void*);
 extern unsigned int _ZNK7PathPtr13GetPullFactorEv(void*);
 extern unsigned int _ZNK7PathPtr9GetUnk004Ev(void*);
-extern unsigned short data_0209b274;
+extern unsigned short gKuppaScriptFrame;
 extern unsigned short data_ov002_0210abb8[];
 extern unsigned short data_ov002_0210c088[];
 extern unsigned short sHanaSpinAngle;

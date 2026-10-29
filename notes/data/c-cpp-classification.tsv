@@ -76,7 +76,6 @@ src/d_a_coin_coin.c	WEAK-refs-only	ov002				1		None		-
 src/CollectStar.c	PURE-C	arm9				1		None		-
 src/CollectStarInCurLevel.c	PURE-C	arm9				1		None		-
 src/CollectStarInLevel.c	PURE-C	arm9				1		None		-
-src/ContinueKuppaScriptIfNecessary.c	WEAK-refs-only	arm9				1		None		-
 src/Copy32Bytes.c	PURE-C	arm9				1		None		-
 src/Copy36Bytes.c	PURE-C	arm9				1		None		-
 src/Copy48Bytes.c	PURE-C	arm9				1		None		-
@@ -351,14 +350,10 @@ src/d_a_mip.c	WEAK-refs-only	ov085				1		None		-
 src/d_a_pg_rcer.c	WEAK-refs-only	ov019				1		None		-
 src/RandomIntInternal.c	PURE-C	arm9				1		None		-
 src/ReadSignedVarInt.c	PURE-C	arm9				1		None		-
-src/ReadUnalignedInt.c	PURE-C	arm9				1		None		-
-src/ReadUnalignedShort.c	PURE-C	arm9				1		None		-
-src/ReadUnalignedUshort.c	PURE-C	arm9				1		None		-
 src/d_a_coin_red_coin.c	WEAK-refs-only	ov002				1		None		-
 src/d_a_obj_fire_obj_red_fire.c	WEAK-refs-only	ov002				1		None		-
 src/ResetCrashScreen.c	WEAK-refs-only	arm9				1		None		-
 src/ResetInput.c	PURE-C	arm9				1		None		-
-src/ResetKuppaScript.c	PURE-C	arm9				1		None		-
 src/d_a_obj_km1_kurumajiku.c	S1-stores-rom-vptr	ov043			stores _ZTV11RickshawBdw	1		None	_ZTV11RickshawBdw/_ZTV17daObjKurumajiku_c	-
 src/game/actors/d_a_obj_km3_kurumajiku.cpp	S1-stores-rom-vptr	ov047			stores _ZTV17daObjKurumajiku_c	1		None	_ZTV17daObjKurumajiku_c/_ZTV21daObjKm3_Kurumajiku_c	-
 src/daObjKm1_Kuruma_c_classInit.c	S1-stores-rom-vptr	ov043			stores _ZTV13daObjKuruma_c	1		None	_ZTV13daObjKuruma_c/_ZTV17daObjKm1_Kuruma_c	-
@@ -376,7 +371,6 @@ src/d_a_obj_fl_koma_d.c	S1-stores-rom-vptr	ov022			stores _ZTV16daObjKaitendai_c
 src/game/actors/d_a_obj_wc_obj07.cpp	S1-stores-rom-vptr	ov029			stores _ZTV16daObjKaitendai_c	1		None	_ZTV16daObjKaitendai_c/_ZTV19RotatingPlatformWdw	-
 src/d_a_obj_rotate_updown_lift_hs_updown_lift.c	WEAK-refs-only	ov091				1		None		-
 src/d_a_obj_rotate_updown_lift_updown_lift.c	WEAK-refs-only	ov091				1		None		-
-src/RunKuppaScript.c	PURE-C	arm9				1		None		-
 src/Scuttlebug_SetState.c	PURE-C	ov071				1		None		-
 src/daSpd_c_classInit.c	WEAK-refs-only	ov071				1		None		-
 src/daObjWakame_c_Spawn.c	S1-stores-rom-vptr	ov002			stores _ZTV13daObjWakame_c	1		None	_ZTV13daObjWakame_c	-
@@ -455,7 +449,6 @@ src/game/actors/d_a_star_base.c	WEAK-refs-only	ov002				1		None		-
 src/d_a_obj_switch_star_switch.c	WEAK-refs-only	ov002				1		None		-
 src/StartExitCharacterWipe.c	PURE-C	arm9				1		None		-
 src/StartFile.c	WEAK-refs-only	arm9				1		None		-
-src/StartIntroCutscene.c	WEAK-refs-only	arm9				1		None		-
 src/StartMinigameMenu.c	WEAK-refs-only	arm9				1		None		-
 src/StartWithFarCamera.c	PURE-C	arm9				1		None		-
 src/d_a_obj_simple_bg_ki_iwa.c	WEAK-refs-only	ov102				1		None		-
@@ -1547,16 +1540,6 @@ src/func_0200d89c.c	PURE-C	arm9				1		None		-
 src/func_0200d8ac.c	PURE-C	arm9				1		None		-
 src/func_0200d8c8.c	WEAK-refs-only	arm9				1		None		-
 src/func_0200d954.c	WEAK-refs-only	arm9				1		None		-
-src/unnamed/arm9/0200/func_0200e494.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0200/func_0200e4e4.c	WEAK-refs-only	arm9				1		None		-
-src/unnamed/arm9/0200/func_0200e55c.c	WEAK-refs-only	arm9				1		None		-
-src/unnamed/arm9/0200/func_0200e5ac.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0200/func_0200e5fc.c	WEAK-refs-only	arm9				1		None		-
-src/unnamed/arm9/0200/func_0200e6d8.c	WEAK-refs-only	arm9				1		None		-
-src/unnamed/arm9/0200/func_0200e728.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0200/func_0200ee68.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0200/func_0200ee8c.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0200/func_0200eec8.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0200/func_0200f0bc.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0200/func_0200f220.c	WEAK-refs-only	arm9				1		None		-
 src/unnamed/arm9/0200/func_0200f2cc.c	WEAK-refs-only	arm9				1		None		-
