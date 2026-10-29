@@ -13433,7 +13433,7 @@
       ]
     },
     "data_ov007_02103428": {
-      "src/unnamed/ov007/func_ov007_020b4438.cpp": [
+      "src/ui/menus/unit020b413c.cpp": [
         "return:int []"
       ]
     },
@@ -13524,13 +13524,9 @@
         "return:int *",
         "return:int []"
       ],
-      "src/unnamed/ov007/func_ov007_020b413c.c": [
-        "return:G2 *"
-      ],
-      "src/unnamed/ov007/func_ov007_020b42d8.c": [
-        "return:Base *"
-      ],
-      "src/unnamed/ov007/func_ov007_020b43dc.c": [
+      "src/ui/menus/unit020b413c.cpp": [
+        "return:G2 *",
+        "return:Base *",
         "return:void *"
       ],
       "src/unnamed/ov007/func_ov007_020b58e4.c": [
@@ -24029,7 +24025,7 @@
       ]
     },
     "func_ov007_020aea4c": {
-      "src/unnamed/ov007/func_ov007_020b4bd4.cpp": [
+      "src/ui/menus/unit020b413c.cpp": [
         "param:#1 int"
       ]
     },
@@ -24037,7 +24033,7 @@
       "src/unnamed/ov007/func_ov007_020ade58.c": [
         "param:#1 int"
       ],
-      "src/unnamed/ov007/func_ov007_020b4c04.c": [
+      "src/ui/menus/unit020b413c.cpp": [
         "param:#1 int",
         "return:void *"
       ]
@@ -24183,7 +24179,7 @@
       ]
     },
     "func_ov007_020b45b0": {
-      "src/unnamed/ov007/func_ov007_020b5068.c": [
+      "src/ui/menus/unit020b413c.cpp": [
         "return:int"
       ]
     },
@@ -24198,12 +24194,12 @@
       ]
     },
     "func_ov007_020b6208": {
-      "src/unnamed/ov007/func_ov007_020b50e8.cpp": [
+      "src/ui/menus/unit020b413c.cpp": [
         "return:void"
       ]
     },
     "func_ov007_020b63e4": {
-      "src/unnamed/ov007/func_ov007_020b45b0.c": [
+      "src/ui/menus/unit020b413c.cpp": [
         "return:int"
       ]
     },
@@ -24262,7 +24258,7 @@
       ]
     },
     "func_ov007_020b7d94": {
-      "src/unnamed/ov007/func_ov007_020b43dc.c": [
+      "src/ui/menus/unit020b413c.cpp": [
         "param:#1 void *"
       ]
     },
@@ -24896,7 +24892,7 @@
       ]
     },
     "func_ov007_020c3598": {
-      "src/unnamed/ov007/func_ov007_020b413c.c": [
+      "src/ui/menus/unit020b413c.cpp": [
         "param:#3 signed char *"
       ],
       "src/unnamed/ov007/func_ov007_020b8b00.cpp": [
@@ -24938,7 +24934,7 @@
       "src/unnamed/ov007/func_ov007_020aea4c.c": [
         "return:int"
       ],
-      "src/unnamed/ov007/func_ov007_020b4bd4.cpp": [
+      "src/ui/menus/unit020b413c.cpp": [
         "param:#1 int",
         "return:int"
       ],
@@ -25060,7 +25056,7 @@
       "src/ui/menus/unit020b2cdc.cpp": [
         "param:#2 int"
       ],
-      "src/unnamed/ov007/func_ov007_020b4c04.c": [
+      "src/ui/menus/unit020b413c.cpp": [
         "param:#2 int",
         "return:void *"
       ],
@@ -25211,7 +25207,7 @@
       "src/ui/menus/unit020b2cdc.cpp": [
         "param:#1 Obj *"
       ],
-      "src/unnamed/ov007/func_ov007_020b4464.c": [
+      "src/ui/menus/unit020b413c.cpp": [
         "param:#1 UnkC *"
       ],
       "src/unnamed/ov007/func_ov007_020b7a00.cpp": [
@@ -25226,7 +25222,7 @@
         "param:#1 Obj *",
         "param:#2 void *"
       ],
-      "src/unnamed/ov007/func_ov007_020b4464.c": [
+      "src/ui/menus/unit020b413c.cpp": [
         "param:#1 UnkC *"
       ],
       "src/unnamed/ov007/func_ov007_020b88c0.c": [
@@ -25263,7 +25259,7 @@
         "param:#1 int",
         "return:void"
       ],
-      "src/unnamed/ov007/func_ov007_020b4bd4.cpp": [
+      "src/ui/menus/unit020b413c.cpp": [
         "param:#1 int"
       ],
       "src/ui/menus/unit020b8f50.cpp": [
@@ -25274,10 +25270,8 @@
       "src/unnamed/ov007/func_ov007_020b2998.c": [
         "return:Widget *"
       ],
-      "src/unnamed/ov007/func_ov007_020b42d8.c": [
-        "return:Obj *"
-      ],
-      "src/unnamed/ov007/func_ov007_020b4c04.c": [
+      "src/ui/menus/unit020b413c.cpp": [
+        "return:Obj *",
         "param:#1 unsigned char",
         "return:void *"
       ],
@@ -25546,7 +25540,7 @@
       ]
     },
     "func_ov007_020c9080": {
-      "src/unnamed/ov007/func_ov007_020b4bd4.cpp": [
+      "src/ui/menus/unit020b413c.cpp": [
         "arity:1"
       ],
       "src/unnamed/ov007/func_ov007_020b65e0.c": [
