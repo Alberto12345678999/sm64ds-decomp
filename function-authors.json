@@ -1303,11 +1303,11 @@
     },
     "arm9:0x0201179c": {
       "author": "tangosdev",
-      "name": "func_0201179c"
+      "name": "_ZN11SndRegTable13func_0201179cEiiis"
     },
     "arm9:0x0201186c": {
       "author": "tangosdev",
-      "name": "func_0201186c"
+      "name": "_ZN11SndRegTable13func_0201186cEiis"
     },
     "arm9:0x02011934": {
       "author": "tangosdev",

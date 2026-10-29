@@ -108,8 +108,7 @@ extern int func_02011aa0(void *c);
 extern void func_02011a28(char *c);
 extern void func_020119c8(void *base);
 extern void *func_02011934(char *table, int id);
-extern int func_0201186c(char *thiz, int a1, int a2, short a3);
-extern int func_0201179c(char *thiz, int a1, int a2, int a3, short s1);
+extern int _ZN11SndRegTable13func_0201186cEiis(char *thiz, int a1, int a2, short a3);
 extern int func_020116c4(char *c, int a1, int a2, int a3, int s0, short s1);
 extern void func_02011698(char *table, char *n);
 extern int func_02011654(char *table, char *n);
@@ -184,6 +183,9 @@ typedef struct SndRegTable {
     unsigned char pad5[3];
     SndRegEntry entries[0x40];   /* 0x08 */
     SndRegEntry *buckets[16];    /* 0x508 - chain heads by id&0xf */
+
+    int func_0201186c(int a1, int a2, short a3);
+    int func_0201179c(int a1, int a2, int a3, short s1);
 
     SndRegTable() {
         func_02011a5c(this);
@@ -629,8 +631,11 @@ extern "C" int Sound_PlayIfNotActive(int a, int b, int c, int d)
     }
     /* original TU declared func_0201186c's #4 as int (def is short):
        the call site passes d untruncated -- cast through an int-arity
-       pointer to reproduce it without the narrowing sequence */
-    return ((int (*)(char *, int, int, int))func_0201186c)((char *)&data_0209b53c, b, c, d);
+       pointer to reproduce it without the narrowing sequence.
+       A method call narrows d; the member pointer will not cast to a
+       function pointer, so the cast names the mangled symbol. */
+    return ((int (*)(char *, int, int, int))_ZN11SndRegTable13func_0201186cEiis)(
+        (char *)&data_0209b53c, b, c, d);
 }
 
 // @symbol func_02012468
@@ -680,7 +685,7 @@ int PlayLong(u32 handle, u32 a, u32 b, const Vector3 &pos, s16 e)
         return *(int *)slot;
     }
 
-    return func_0201179c((char *)&data_0209b53c, a, b, (int)&pos, e);
+    return data_0209b53c.func_0201179c(a, b, (int)&pos, e);
 }
 
 }
@@ -718,7 +723,7 @@ extern "C" int func_02012194(char *c, int a1, int a2, int a3, int s0, int s1, sh
         func_0204f7fc(slot, a3, s0);
         return *(int *)e;
     } else {
-        char *n = (char *)func_0201179c((char *)&data_0209b53c, a1, a2, s1, s2);
+        char *n = (char *)data_0209b53c.func_0201179c(a1, a2, s1, s2);
         char *e2 = (char *)func_02011934((char *)&data_0209b53c, (int)n);
         if (e2 != 0)
             func_0204f7fc(e2 + 8, a3, s0);
@@ -1089,10 +1094,9 @@ extern "C" void *func_02011934(char *table, int id)
     return 0;
 }
 
-// @symbol func_0201186c
-extern "C" int func_0201186c(char *thiz, int a1, int a2, short a3)
-{
-    SndRegTable *reg = (SndRegTable *)thiz;
+// @symbol _ZN11SndRegTable13func_0201186cEiis
+int SndRegTable::func_0201186c(int a1, int a2, short a3) {
+    SndRegTable *reg = this;
     int i = 0;
     do {
         if (reg->entries[reg->cursor].id == 0) {
@@ -1101,7 +1105,7 @@ extern "C" int func_0201186c(char *thiz, int a1, int a2, short a3)
                 reg->counter += 1;
             }
             func_02011b38(&reg->entries[reg->cursor], reg->counter, a1, a2, a3);
-            func_02011698(thiz, (char *)&reg->entries[reg->cursor]);
+            func_02011698((char *)this, (char *)&reg->entries[reg->cursor]);
             return reg->counter;
         }
         reg->cursor = (reg->cursor + 1) % 0x40;
@@ -1109,10 +1113,9 @@ extern "C" int func_0201186c(char *thiz, int a1, int a2, short a3)
     return 0;
 }
 
-// @symbol func_0201179c
-extern "C" int func_0201179c(char *thiz, int a1, int a2, int a3, short s1)
-{
-    SndRegTable *reg = (SndRegTable *)thiz;
+// @symbol _ZN11SndRegTable13func_0201179cEiiis
+int SndRegTable::func_0201179c(int a1, int a2, int a3, short s1) {
+    SndRegTable *reg = this;
     int i;
     for (i = 0; i < 0x40; i++) {
         if (reg->entries[reg->cursor].id == 0) {
@@ -1120,7 +1123,7 @@ extern "C" int func_0201179c(char *thiz, int a1, int a2, int a3, short s1)
             if (reg->counter == 0)
                 reg->counter += 1;
             func_02011af8(&reg->entries[reg->cursor], reg->counter, a1, a2, a3, s1);
-            func_02011698(thiz, (char *)&reg->entries[reg->cursor]);
+            func_02011698((char *)this, (char *)&reg->entries[reg->cursor]);
             return reg->counter;
         }
         reg->cursor = (reg->cursor + 1) % 0x40;

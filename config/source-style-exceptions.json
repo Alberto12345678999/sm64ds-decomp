@@ -976,6 +976,14 @@
       "count": 2,
       "reason": "Respelled by the dClipper::Func_020156DC parameter correction (u16 -> s16 fov angle; both ROM callers pass a short angle loaded with ldrsh and unconverted): src/unnamed/arm9/0200/func_0200af20.c on main carried the same 2 occurrence(s) as _ZN8dClipper13Func_020156DCEitii. The shard is C++ now, but the member takes a by-value Fix12<int> (the Fix12 wall), so the call keeps the scalar mangled spelling; see the file's local extern note.",
       "evidence": "origin/main:src/unnamed/arm9/0200/func_0200af20.c 2x _ZN8dClipper13Func_020156DCEitii; head 2x _ZN8dClipper13Func_020156DCEisii; tools/source_style.py --base origin/main"
+    },
+    {
+      "path": "src/engine/sound/Sound.cpp",
+      "rule": "handspelled-member",
+      "match": "_ZN11SndRegTable13func_0201186cEiis",
+      "count": 2,
+      "reason": "SndRegTable::func_0201186c takes short for argument 4, and Sound_PlayIfNotActive passes that word untruncated. A direct method call narrows it and the function no longer matches. mwccarm rejects a cast of the member to a function pointer, so the int-arity cast names the mangled symbol. Follow-up: drop the cast if a direct call can pass the word untruncated.",
+      "evidence": "tubuild verify arm9/Sound: direct call diffs Sound_PlayIfNotActive (0x020124c4, grew past 0x58); the int-arity cast of this symbol is 89/89 MATCH. mwccarm: illegal explicit conversion from the member to int (*)(char *, int, int, int)."
     }
   ]
 }
