@@ -47,9 +47,9 @@
  *   through it.
  * - Wiggler_StateMoveA, Wiggler_StateWait, Wiggler_StateMoveB read their
  *   fields through a `Wiggler *w = this` local; dropping the old char *
- *   local instead renumbers the pinned @NNN labels. Wiggler_UpdateSway reads its
- *   fields through a typed Wiggler local; its state test keeps the (Wiggler *)raw
- *   spelling (thiz->state renumbers the pinned @NNN labels).
+ *   local instead renumbers the pinned @NNN labels. Wiggler_UpdateSway takes
+ *   one Wiggler * and reads state through it; that moved this TU's pinned
+ *   @NNN rows, which are re-keyed to the names mwcc emits.
  * - Wiggler_StepSegmentsA, Wiggler_StepSegmentsB, Wiggler_StepSegmentsC,
  *   Wiggler_MoveBounce, cstd::atan2(Fix12<int>, Fix12<int>), does not link.
  *   cstd::atan2(int, int) mangles Eii, not E5Fix12IiES1_.
@@ -186,7 +186,7 @@ int fdiv(int numerator, int denominator);
 extern "C" {
 /* This TU's own functions. */
 extern void Wiggler_DrawField(void *o_);
-extern void Wiggler_UpdateSway(char *thiz_);
+extern void Wiggler_UpdateSway(Wiggler *thiz);
 extern void Wiggler_Move(char *c);
 extern int Wiggler_HitTest(char *a, const V2 *b);
 extern int Wiggler_IsStarVisible(char *p);
@@ -935,11 +935,8 @@ void dScMgHanachan_c::Wiggler::StateMoveB() {
 }
 
 // @symbol Wiggler_UpdateSway
-/* char* parameter to agree with include/decl_common.h -- see Wiggler_DrawField. */
-extern "C" void Wiggler_UpdateSway(char *raw) {
-    Wiggler *thiz = (Wiggler *)raw;
-    /* thiz->state here renumbers the TU's pinned @NNN member-pointer labels. */
-    if (((Wiggler *)raw)->state == &Wiggler::TurnTowardAim && thiz->decoy == 0) {
+extern "C" void Wiggler_UpdateSway(Wiggler *thiz) {
+    if (thiz->state == &Wiggler::TurnTowardAim && thiz->decoy == 0) {
         short h = thiz->bob;
         if (h < 0 && (short)(h + thiz->bobRate) > 0) {
             Sound::PlayBank2_2D(0x1e8);
@@ -1902,7 +1899,7 @@ s32 dScMgHanachan_c::Behavior() {
     if (sHanaFieldWigglerCount > 0) {
         Thing *base = (Thing *)mWiggler;
         do {
-            Wiggler_UpdateSway((char *)&base[j]);
+            Wiggler_UpdateSway((Wiggler *)&base[j]);
             j++;
         } while (j < sHanaFieldWigglerCount);
     }

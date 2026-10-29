@@ -1498,7 +1498,6 @@ extern void HanaPopup_UpdateAll();
 extern void HanaPopup_ClearAll(void);
 extern void Wiggler_DrawTarget(void *);
 extern void Wiggler_DrawField(void *);
-extern void Wiggler_UpdateSway(char*);
 extern void Wiggler_Move(char*);
 extern void Hana_LoadBackground(void);
 extern void Jump2Popup_DrawAll(void);
