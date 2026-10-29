@@ -186,7 +186,7 @@ int fdiv(int numerator, int denominator);
 extern "C" {
 /* This TU's own functions. */
 extern void Wiggler_DrawField(void *o_);
-extern void Wiggler_UpdateSway(Wiggler *thiz);
+extern void Wiggler_UpdateSway(Wiggler *w);
 extern void Wiggler_Move(char *c);
 extern int Wiggler_HitTest(char *a, const V2 *b);
 extern int Wiggler_IsStarVisible(char *p);
@@ -935,16 +935,16 @@ void dScMgHanachan_c::Wiggler::StateMoveB() {
 }
 
 // @symbol Wiggler_UpdateSway
-extern "C" void Wiggler_UpdateSway(Wiggler *thiz) {
-    if (thiz->state == &Wiggler::TurnTowardAim && thiz->decoy == 0) {
-        short h = thiz->bob;
-        if (h < 0 && (short)(h + thiz->bobRate) > 0) {
+extern "C" void Wiggler_UpdateSway(Wiggler *w) {
+    if (w->state == &Wiggler::TurnTowardAim && w->decoy == 0) {
+        short h = w->bob;
+        if (h < 0 && (short)(h + w->bobRate) > 0) {
             Sound::PlayBank2_2D(0x1e8);
-        } else if (h > 0 && (short)(h + thiz->bobRate) < 0) {
+        } else if (h > 0 && (short)(h + w->bobRate) < 0) {
             Sound::PlayBank2_2D(0x1e7);
         }
     }
-    thiz->bob += thiz->bobRate;
+    w->bob += w->bobRate;
 }
 
 // @symbol Wiggler_Move
