@@ -2154,37 +2154,9 @@ src/unnamed/arm9/0205/func_020553c0.c:
     complete
     .text start:0x020553c0 end:0x02055454
 
-src/unnamed/arm9/0205/func_02055454.c:
-    complete
-    .text start:0x02055454 end:0x02055464
-
-src/unnamed/arm9/0205/func_02055464.c:
-    complete
-    .text start:0x02055464 end:0x02055490
-
-src/unnamed/arm9/0205/func_02055490.c:
-    complete
-    .text start:0x02055490 end:0x020554bc
-
 src/engine/gx/G3X.cpp:
     complete
-    .text start:0x020554bc end:0x020556d0
-
-src/unnamed/arm9/0205/func_020556d0.c:
-    complete
-    .text start:0x020556d0 end:0x02055780
-
-src/func_02055780.c:
-    complete
-    .text start:0x02055780 end:0x020557b4
-
-src/unnamed/arm9/0205/func_020557b4.c:
-    complete
-    .text start:0x020557b4 end:0x0205583c
-
-src/unnamed/arm9/0205/func_0205583c.c:
-    complete
-    .text start:0x0205583c end:0x02055998
+    .text start:0x02055454 end:0x02055998
 
 src/engine/gx/G3i.cpp:
     complete
