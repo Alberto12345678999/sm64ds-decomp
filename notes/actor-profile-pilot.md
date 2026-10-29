@@ -63,7 +63,7 @@ Where a class has more than one live factory, the profile id disambiguates it:
 | one | `<Class>_classInit` |
 | more than one | `<Class>_classInit_<PROFILE_ID>` |
 
-Every component is ROM-proven -- the class from RTTI, the profile id from the arm9
+Every component is ROM-proven -- the class from RTTI, the profile id from the [arm9](../config/arm9/symbols.txt)
 debug table, and the pairing between them from the descriptor's factory pointer --
 so only the convention of joining them is ours, which is why these stay Tier B.
 The suffix is a decomp-local disambiguator, not recovered Nintendo syntax: no
@@ -114,7 +114,7 @@ the dataset's `selection_reason` column.
 | Profile | Why it was selected |
 |---|---|
 | `BOOT` | base process on the scene/process side of the common registry |
-| `STAGE` | ordinary stage scene and an arm9 TU-boundary stress case |
+| `STAGE` | ordinary stage scene and an [arm9](../config/arm9/symbols.txt) TU-boundary stress case |
 | `MINIGAME` | minigame root scene; tracked overlay gloss is stale |
 | `CANNON_SHUTTER` | object actor with existing readable-C++ migration |
 | `C1_TRAP` | true overlay-multiplexed registry pointer |
@@ -141,33 +141,33 @@ columns 3 and 5 remain Tier B.
 
 | ROM profile ID | current descriptor | proposed profile | RTTI class | current factory | direct SM64DS evidence | profile/factory confidence |
 |---|---|---|---|---|---|---|
-| `BOOT` | `data_020914a8` | `g_profile_BOOT` | `dScBoot_c` | `func_02023624` | debug `BOOT` @ `0x0208f698`; descriptor `arm9:0x020914a8` -> factory `0x02023624` -> RTTI `0x020914c8` | `B+ / B+` |
-| `STAGE` | `_ZN10dScStage_c9spawnDataE` | `g_profile_STAGE` | `dScStage_c` | `Stage_Spawn` | debug `STAGE` @ `0x0208f708`; descriptor `arm9:0x0209213c` -> factory `0x0202e088` -> RTTI `0x02092158` | `B+ / B+` |
-| `MINIGAME` | `data_ov005_020c2440` | `g_profile_MINIGAME` | `dScMiniGm_c` | `func_ov005_020c21ec` | debug `MINIGAME` @ `0x0208fabc`; descriptor `ov005:0x020c2440` -> factory `0x020c21ec` -> RTTI `0x020c2448` | `B+ / B+` |
-| `CANNON_SHUTTER` | `daObjCannonShutter_c_SpawnInfo` | `g_profile_CANNON_SHUTTER` | `daObjCannonShutter_c` | `daObjCannonShutter_c_Spawn` | debug @ `0x02090678`; descriptor `ov002:0x02109d14` -> factory `0x020bcccc` -> RTTI `0x02109cf0` | `B+ / B+` |
-| `C1_TRAP` | `Trap_SpawnInfo` | `g_profile_C1_TRAP` | `daObjC1_Trap_c` | `Trap_Spawn` | debug @ `0x0208f958`; `ov010:0x02112ac0` -> `0x02111998` -> RTTI `0x02112aa0`; the same numeric pointer has a second valid ov035 interpretation | `B / B+` |
-| `STAR_CAMERA` | `StarCamera_SpawnInfo` | `g_profile_STAR_CAMERA` | unresolved most-derived class | `StarCamera_Spawn` | debug @ `0x020901f4`; descriptor `ov002:0x0210aa94` -> factory `0x020ebe5c`; allocation is `0xd4`, but only the `dActor_c` vtable survives | `B+ / C` |
-| `PLAYER` | `Player_SpawnInfo` | `g_profile_PLAYER` | `daPly_c` | `Player_Spawn` | debug @ `0x0208f858`; descriptor `ov002:0x0210a704` -> factory `0x020e6c0c` -> RTTI `0x0210a56c` | `B+ / B+` |
-| `WATERFALL` | `WaterfallMist_SpawnInfo` | `g_profile_WATERFALL` | `daObjWaterfall_c` | `WaterfallMist_Spawn` | debug @ `0x0208fd08`; descriptor `ov002:0x0210947c` -> factory `0x020b6ee8` -> RTTI `0x0210945c` | `B+ / B+` |
-| `KURIBO` | `Goomba_SpawnInfo` | `g_profile_KURIBO` | `daKrb_c` | `Goomba_Spawn` | debug @ `0x0208f7d8`; descriptor `ov084:0x021308ec` -> factory `0x0212c0b0` -> RTTI `0x021308e0` | `B+ / B` |
-| `TERESA` | `Boo_SpawnInfo` | `g_profile_TERESA` | `daTrs_c` | `Boo_Spawn` | debug @ `0x0208f7a8`; descriptor `ov063:0x0211e770` -> factory `0x0211c590` -> RTTI `0x0211e738` | `B+ / B` |
-| `BOSS_TERESA` | `BigBoo_SpawnInfo` | `g_profile_BOSS_TERESA` | `daTrs_c` | `BigBoo_Spawn` | debug @ `0x02090284`; descriptor `ov063:0x0211e78c` -> factory `0x0211c520` -> the same RTTI `0x0211e738` | `B+ / B` |
-| `WANWAN` | `ChainChomp_SpawnInfo` | `g_profile_WANWAN` | `daWanwan_c` | `ChainChomp_Spawn` | debug @ `0x0208f810`; descriptor `ov014:0x02114750` -> factory `0x02112d1c` -> RTTI `0x02114718` | `B+ / B+` |
-| `OBJ_MIP_KEY` | `RabbitKey_SpawnInfo` | `g_profile_OBJ_MIP_KEY` | `daObj_Mip_Key_c` | `RabbitKey_Spawn` | debug @ `0x020902d8`; descriptor `ov085:0x021301b4` -> factory `0x0212d4e8` -> RTTI `0x02130194` | `B+ / B+` |
-| `PROPELLER_HEYHO` | `FlyGuy_SpawnInfo` | `g_profile_PROPELLER_HEYHO` | `daPropeller_Heyho_c` | `FlyGuy_Spawn` | debug @ `0x02090748`; descriptor `ov070:0x02123144` -> factory `0x02120520` -> RTTI `0x02123120` | `B+ / B+` |
-| `KINOKO_CREATE_TAG` | `MegaMushroomCreateTag_SpawnInfo` | `g_profile_KINOKO_CREATE_TAG` | `daObjKinokoTag_c` | `daObjKinokoTag_c_Spawn` | debug @ `0x02090824`; descriptor `ov002:0x02108cd0` -> factory `0x020b4a00` -> RTTI `0x02108c94` | `B+ / B` |
-| `SHOOT_BOOK` | `BookShot_SpawnInfo` | `g_profile_SHOOT_BOOK` | `daBook_c` | `BookShot_Spawn` | debug @ `0x02090134`; descriptor `ov020:0x021148b4` -> factory `0x021128dc` -> RTTI `0x02114844` | `B+ / B` |
-| `BOOK_GENERATOR` | `BookShotSpawner_SpawnInfo` | `g_profile_BOOK_GENERATOR` | `daBookGen_c` | `BookShotSpawner_Spawn` | debug @ `0x02090708`; descriptor `ov020:0x0211487c` -> factory `0x02112850` -> RTTI `0x02114838` | `B+ / B+` |
-| `MG_CUP` | `data_ov006_0213c020` | `g_profile_MG_CUP` | `dScMgCup_c` | `func_ov006_020e0574` | debug @ `0x0208f830`; descriptor `ov006:0x0213c020` -> factory `0x020e0574` -> RTTI `0x0213c048` | `B+ / B+` |
-| `MG_CURLING` | `MgShuffleShell_SpawnInfo` | `g_profile_MG_CURLING` | `dScMgCurling_c` | `MgShuffleShell_Spawn` | debug @ `0x0209008c`; descriptor `ov006:0x0213c214` -> factory `0x020e3820` -> RTTI `0x0213c2c4` | `B+ / B+` |
-| `MG_CURLING_J` | `data_ov006_0213c434` | `g_profile_MG_CURLING_J` | `dScMgCurling2_c` | `func_ov006_020e6bf4` | debug @ `0x020904d8`; descriptor `ov006:0x0213c434` -> factory `0x020e6bf4` -> RTTI `0x0213c4bc` | `B+ / B+` |
+| `BOOT` | `data_020914a8` | `g_profile_BOOT` | `dScBoot_c` | `func_02023624` | debug `BOOT` @ `0x0208f698`; descriptor [arm9](../config/arm9/symbols.txt):`0x020914a8` -> factory `0x02023624` -> RTTI `0x020914c8` | `B+ / B+` |
+| `STAGE` | `_ZN10dScStage_c9spawnDataE` | `g_profile_STAGE` | `dScStage_c` | `Stage_Spawn` | debug `STAGE` @ `0x0208f708`; descriptor [arm9](../config/arm9/symbols.txt):`0x0209213c` -> factory `0x0202e088` -> RTTI `0x02092158` | `B+ / B+` |
+| `MINIGAME` | `data_ov005_020c2440` | `g_profile_MINIGAME` | `dScMiniGm_c` | `func_ov005_020c21ec` | debug `MINIGAME` @ `0x0208fabc`; descriptor [ov005](../config/arm9/overlays/ov005/symbols.txt):`0x020c2440` -> factory `0x020c21ec` -> RTTI `0x020c2448` | `B+ / B+` |
+| `CANNON_SHUTTER` | `daObjCannonShutter_c_SpawnInfo` | `g_profile_CANNON_SHUTTER` | `daObjCannonShutter_c` | `daObjCannonShutter_c_Spawn` | debug @ `0x02090678`; descriptor [ov002](../config/arm9/overlays/ov002/symbols.txt):`0x02109d14` -> factory `0x020bcccc` -> RTTI `0x02109cf0` | `B+ / B+` |
+| `C1_TRAP` | `Trap_SpawnInfo` | `g_profile_C1_TRAP` | `daObjC1_Trap_c` | `Trap_Spawn` | debug @ `0x0208f958`; [ov010](../config/arm9/overlays/ov010/symbols.txt):`0x02112ac0` -> `0x02111998` -> RTTI `0x02112aa0`; the same numeric pointer has a second valid [ov035](../config/arm9/overlays/ov035/symbols.txt) interpretation | `B / B+` |
+| `STAR_CAMERA` | `StarCamera_SpawnInfo` | `g_profile_STAR_CAMERA` | unresolved most-derived class | `StarCamera_Spawn` | debug @ `0x020901f4`; descriptor [ov002](../config/arm9/overlays/ov002/symbols.txt):`0x0210aa94` -> factory `0x020ebe5c`; allocation is `0xd4`, but only the `dActor_c` vtable survives | `B+ / C` |
+| `PLAYER` | `Player_SpawnInfo` | `g_profile_PLAYER` | `daPly_c` | `Player_Spawn` | debug @ `0x0208f858`; descriptor [ov002](../config/arm9/overlays/ov002/symbols.txt):`0x0210a704` -> factory `0x020e6c0c` -> RTTI `0x0210a56c` | `B+ / B+` |
+| `WATERFALL` | `WaterfallMist_SpawnInfo` | `g_profile_WATERFALL` | `daObjWaterfall_c` | `WaterfallMist_Spawn` | debug @ `0x0208fd08`; descriptor [ov002](../config/arm9/overlays/ov002/symbols.txt):`0x0210947c` -> factory `0x020b6ee8` -> RTTI `0x0210945c` | `B+ / B+` |
+| `KURIBO` | `Goomba_SpawnInfo` | `g_profile_KURIBO` | `daKrb_c` | `Goomba_Spawn` | debug @ `0x0208f7d8`; descriptor [ov084](../config/arm9/overlays/ov084/symbols.txt):`0x021308ec` -> factory `0x0212c0b0` -> RTTI `0x021308e0` | `B+ / B` |
+| `TERESA` | `Boo_SpawnInfo` | `g_profile_TERESA` | `daTrs_c` | `Boo_Spawn` | debug @ `0x0208f7a8`; descriptor [ov063](../config/arm9/overlays/ov063/symbols.txt):`0x0211e770` -> factory `0x0211c590` -> RTTI `0x0211e738` | `B+ / B` |
+| `BOSS_TERESA` | `BigBoo_SpawnInfo` | `g_profile_BOSS_TERESA` | `daTrs_c` | `BigBoo_Spawn` | debug @ `0x02090284`; descriptor [ov063](../config/arm9/overlays/ov063/symbols.txt):`0x0211e78c` -> factory `0x0211c520` -> the same RTTI `0x0211e738` | `B+ / B` |
+| `WANWAN` | `ChainChomp_SpawnInfo` | `g_profile_WANWAN` | `daWanwan_c` | `ChainChomp_Spawn` | debug @ `0x0208f810`; descriptor [ov014](../config/arm9/overlays/ov014/symbols.txt):`0x02114750` -> factory `0x02112d1c` -> RTTI `0x02114718` | `B+ / B+` |
+| `OBJ_MIP_KEY` | `RabbitKey_SpawnInfo` | `g_profile_OBJ_MIP_KEY` | `daObj_Mip_Key_c` | `RabbitKey_Spawn` | debug @ `0x020902d8`; descriptor [ov085](../config/arm9/overlays/ov085/symbols.txt):`0x021301b4` -> factory `0x0212d4e8` -> RTTI `0x02130194` | `B+ / B+` |
+| `PROPELLER_HEYHO` | `FlyGuy_SpawnInfo` | `g_profile_PROPELLER_HEYHO` | `daPropeller_Heyho_c` | `FlyGuy_Spawn` | debug @ `0x02090748`; descriptor [ov070](../config/arm9/overlays/ov070/symbols.txt):`0x02123144` -> factory `0x02120520` -> RTTI `0x02123120` | `B+ / B+` |
+| `KINOKO_CREATE_TAG` | `MegaMushroomCreateTag_SpawnInfo` | `g_profile_KINOKO_CREATE_TAG` | `daObjKinokoTag_c` | `daObjKinokoTag_c_Spawn` | debug @ `0x02090824`; descriptor [ov002](../config/arm9/overlays/ov002/symbols.txt):`0x02108cd0` -> factory `0x020b4a00` -> RTTI `0x02108c94` | `B+ / B` |
+| `SHOOT_BOOK` | `BookShot_SpawnInfo` | `g_profile_SHOOT_BOOK` | `daBook_c` | `BookShot_Spawn` | debug @ `0x02090134`; descriptor [ov020](../config/arm9/overlays/ov020/symbols.txt):`0x021148b4` -> factory `0x021128dc` -> RTTI `0x02114844` | `B+ / B` |
+| `BOOK_GENERATOR` | `BookShotSpawner_SpawnInfo` | `g_profile_BOOK_GENERATOR` | `daBookGen_c` | `BookShotSpawner_Spawn` | debug @ `0x02090708`; descriptor [ov020](../config/arm9/overlays/ov020/symbols.txt):`0x0211487c` -> factory `0x02112850` -> RTTI `0x02114838` | `B+ / B+` |
+| `MG_CUP` | `data_ov006_0213c020` | `g_profile_MG_CUP` | `dScMgCup_c` | `func_ov006_020e0574` | debug @ `0x0208f830`; descriptor [ov006](../config/arm9/overlays/ov006/symbols.txt):`0x0213c020` -> factory `0x020e0574` -> RTTI `0x0213c048` | `B+ / B+` |
+| `MG_CURLING` | `MgShuffleShell_SpawnInfo` | `g_profile_MG_CURLING` | `dScMgCurling_c` | `MgShuffleShell_Spawn` | debug @ `0x0209008c`; descriptor [ov006](../config/arm9/overlays/ov006/symbols.txt):`0x0213c214` -> factory `0x020e3820` -> RTTI `0x0213c2c4` | `B+ / B+` |
+| `MG_CURLING_J` | `data_ov006_0213c434` | `g_profile_MG_CURLING_J` | `dScMgCurling2_c` | `func_ov006_020e6bf4` | debug @ `0x020904d8`; descriptor [ov006](../config/arm9/overlays/ov006/symbols.txt):`0x0213c434` -> factory `0x020e6bf4` -> RTTI `0x0213c4bc` | `B+ / B+` |
 
 ## WATERFALL worked trace
 
 Tier-A observations:
 
 - actor/process index `197` has literal debug ID `WATERFALL` at `0x0208fd08`;
-- its ov002 descriptor is `0x0210947c`, currently
+- its [ov002](../config/arm9/overlays/ov002/symbols.txt) descriptor is `0x0210947c`, currently
   `WaterfallMist_SpawnInfo`;
 - the 0x1c descriptor contains factory `0x020b6ee8`, profile-index/execute-order
   `197`, draw order `21`, actor flags `0x00800003`, clip offset/radius
@@ -208,8 +208,8 @@ in SM64DS and remain reconstructed.
 The registry is not a simple global `actor_id -> one descriptor object` map.  The full
 extractor pass resolves all 391 indices, but 10 indices have two valid allocating
 interpretations because mutually exclusive overlays reuse the same virtual address.
-For example, pointer `0x02112ac0` means `C1_TRAP`/`daObjC1_Trap_c` in ov010 and a
-different `CT_MECHA12L` profile in ov035.
+For example, pointer `0x02112ac0` means `C1_TRAP`/`daObjC1_Trap_c` in [ov010](../config/arm9/overlays/ov010/symbols.txt) and a
+different `CT_MECHA12L` profile in [ov035](../config/arm9/overlays/ov035/symbols.txt).
 
 ### How the ten are resolved, and what that does not prove
 
@@ -221,14 +221,14 @@ every pair:
    descriptor's factory word equals that overlay's own operator-new factory --
    true for all 20 candidate rows;
 2. each overlay involved carries exactly one Itanium-mangled RTTI name string:
-   `14daObjC1_Trap_c` in ov010 against `16daObjCtMecha10_c` in ov035, and so on
+   `14daObjC1_Trap_c` in [ov010](../config/arm9/overlays/ov010/symbols.txt) against `16daObjCtMecha10_c` in [ov035](../config/arm9/overlays/ov035/symbols.txt), and so on
    for all ten;
-3. the arm9 debug profile-id string transliterates onto that class name
+3. the [arm9](../config/arm9/symbols.txt) debug profile-id string transliterates onto that class name
    (`C1_TRAP`/`daObjC1_Trap_c`, `MC_METALNET`/`daObjMc_Metalnet_c`, ...); and
-4. names already in the tree, applied independently of this table, agree: ov026
-   `g_profile_WL_POLELIFT`, ov033 `g_profile_TT_FUTA`, plus the surviving coined
-   `MetalNet_SpawnInfo` (ov009), `SlidingIce_SpawnInfo` (ov027) and
-   `StairsBdw_SpawnInfo` (ov043).
+4. names already in the tree, applied independently of this table, agree: [ov026](../config/arm9/overlays/ov026/symbols.txt)
+   `g_profile_WL_POLELIFT`, [ov033](../config/arm9/overlays/ov033/symbols.txt) `g_profile_TT_FUTA`, plus the surviving coined
+   `MetalNet_SpawnInfo` ([ov009](../config/arm9/overlays/ov009/symbols.txt)), `SlidingIce_SpawnInfo` ([ov027](../config/arm9/overlays/ov027/symbols.txt)) and
+   `StairsBdw_SpawnInfo` ([ov043](../config/arm9/overlays/ov043/symbols.txt)).
 
 **This is a name-correspondence join over ROM-proven endpoints, not a byte proof
 of overlay selection.**  Both endpoints are Tier A -- the descriptor bytes in each
@@ -250,9 +250,9 @@ never recommended for rename and never disambiguated.  The table is guarded: if 
 regenerated class identity no longer matches it, the tool raises rather than
 silently re-pointing a rename.
 
-This is not the same as the stale ov098 `MgShellSmash_SpawnInfo` alias at
+This is not the same as the stale [ov098](../config/arm9/overlays/ov098/symbols.txt) `MgShellSmash_SpawnInfo` alias at
 `0x0213c434`.  That word points at an ordinary `dActor_c` virtual method, not an
-operator-new factory, so the stricter pilot rejects it.  The ov006 interpretation is
+operator-new factory, so the stricter pilot rejects it.  The [ov006](../config/arm9/overlays/ov006/symbols.txt) interpretation is
 the sole class-initializing candidate for `MG_CURLING_J`.
 
 ## Answers
