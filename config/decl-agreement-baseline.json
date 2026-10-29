@@ -11216,26 +11216,13 @@
       ]
     },
     "data_020a4b48": {
-      "include/decl_common.h": [
-        "return:int"
+      "src/runtime/actor/ActorBase.cpp": [
+        "return:unsigned char"
       ]
     },
     "data_020a4b54": {
       "src/runtime/actor/ActorBase.cpp": [
         "return:unsigned short"
-      ],
-      "src/unnamed/arm9/0204/func_02043180.c": [
-        "return:short"
-      ]
-    },
-    "data_020a4b58": {
-      "src/unnamed/arm9/0204/func_02043060.c": [
-        "return:int (*)(void *)"
-      ]
-    },
-    "data_020a4b5c": {
-      "src/unnamed/arm9/0204/func_0204302c.c": [
-        "return:void (*)(void *)"
       ]
     },
     "data_020a4b60": {
@@ -11264,9 +11251,6 @@
       ],
       "src/runtime/actor/ActorBase.cpp": [
         "return:fBaseActorInfo * *"
-      ],
-      "src/unnamed/arm9/0204/func_02043098.c": [
-        "return:int (*)(void) * *"
       ]
     },
     "data_020a4bd4": {
@@ -20406,27 +20390,9 @@
     },
     "func_02042ffc": {
       "src/runtime/actor/ActorDerived.cpp": [
+        "arity:2",
         "param:#1 unsigned int",
         "return:fBase_c *"
-      ]
-    },
-    "func_0204302c": {
-      "src/unnamed/arm9/0204/func_020432e4.cpp": [
-        "param:#1 int"
-      ]
-    },
-    "func_02043098": {
-      "src/unnamed/arm9/0204/func_02042fe4.c": [
-        "return:void"
-      ],
-      "src/unnamed/arm9/0204/func_02042ffc.c": [
-        "arity:2"
-      ]
-    },
-    "func_02043180": {
-      "src/unnamed/arm9/0204/func_02043098.c": [
-        "param:#1 int",
-        "param:#4 int"
       ]
     },
     "func_0204335c": {
@@ -26501,6 +26467,23 @@
     "func_ov075_02116128": {
       "src/game/stages/d_s_entry_methods.cpp": [
         "param:#1 char *"
+      ]
+    },
+    "func_0203b358": {
+      "src/runtime/actor/ActorBase.cpp": [
+        "param:#1 fBase_c::SceneNode *",
+        "return:fBase_c::SceneNode *"
+      ]
+    },
+    "func_0203b394": {
+      "src/runtime/actor/ActorBase.cpp": [
+        "param:#1 fBase_c::SceneNode *",
+        "return:fBase_c::SceneNode *"
+      ]
+    },
+    "func_02042fe4": {
+      "src/runtime/actor/ActorDerived.cpp": [
+        "param:#2 int"
       ]
     }
   },

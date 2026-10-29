@@ -2216,53 +2216,9 @@ src/unnamed/arm9/0204/func_02042f68.c:
     complete
     .text start:0x02042f68 end:0x02042fe4
 
-src/unnamed/arm9/0204/func_02042fe4.c:
-    complete
-    .text start:0x02042fe4 end:0x02042ffc
-
-src/unnamed/arm9/0204/func_02042ffc.c:
-    complete
-    .text start:0x02042ffc end:0x0204302c
-
-src/unnamed/arm9/0204/func_0204302c.c:
-    complete
-    .text start:0x0204302c end:0x02043060
-
-src/unnamed/arm9/0204/func_02043060.c:
-    complete
-    .text start:0x02043060 end:0x02043098
-
-src/unnamed/arm9/0204/func_02043098.c:
-    complete
-    .text start:0x02043098 end:0x02043180
-
-src/unnamed/arm9/0204/func_02043180.c:
-    complete
-    .text start:0x02043180 end:0x020431c4
-
-src/unnamed/arm9/0204/func_020431c4.c:
-    complete
-    .text start:0x020431c4 end:0x0204322c
-
-src/unnamed/arm9/0204/func_0204322c.cpp:
-    complete
-    .text start:0x0204322c end:0x02043288
-
-src/unnamed/arm9/0204/func_02043288.cpp:
-    complete
-    .text start:0x02043288 end:0x020432e4
-
-src/unnamed/arm9/0204/func_020432e4.cpp:
-    complete
-    .text start:0x020432e4 end:0x0204335c
-
-src/unnamed/arm9/0204/func_0204335c.cpp:
-    complete
-    .text start:0x0204335c end:0x020433b8
-
 src/runtime/actor/ActorBase.cpp:
     complete
-    .text start:0x020433b8 end:0x020440e8
+    .text start:0x02042fe4 end:0x020440e8
 
 src/fListNode.cpp:
     complete

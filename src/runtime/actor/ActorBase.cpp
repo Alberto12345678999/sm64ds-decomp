@@ -17,14 +17,17 @@
  *   the list operations and the four global list heads.
  *
  * fBase_c, the root of the actor hierarchy. arm9 .text
- * 0x020433b8..0x020440e8.
+ * 0x02042fe4..0x020440e8. Below func_020433b8 sit the four Process
+ * wrappers, the child-creation check d_scene.cpp polls, and the create
+ * entry func_02043098 with its hooks and the two creation calls
+ * ActorDerived.cpp makes.
  */
 #include "fBase_c.h"
 #include "Heap.h"
 #include "Memory.h"
 
 struct fBaseActorInfo {
-    u32 unk_000;
+    fBase_c *(*classInit)();
     u16 behaviorPriority;
     u16 renderPriority;
 };
@@ -656,5 +659,146 @@ void func_020433b8(char* self)
         return;
     }
     func_0203b244(data_020a4b88, &actor->manager.behaviorNode);
+}
+}
+
+/* The four Process wrappers below 0x020433b8. Each runs Process with one
+ * triple of fBase_c member-function pointers from .data; the triples are
+ * ROM-owned constants and stay extern. They keep their linker names. */
+extern "C" {
+extern fBase_c::ProcessFunction data_02099ebc;
+extern fBase_c::BeforeProcessFunction data_02099ec4;
+extern fBase_c::AfterProcessFunction data_02099e94;
+extern fBase_c::ProcessFunction data_02099e8c;
+extern fBase_c::BeforeProcessFunction data_02099e7c;
+extern fBase_c::AfterProcessFunction data_02099e84;
+extern fBase_c::ProcessFunction data_02099ea4;
+extern fBase_c::BeforeProcessFunction data_02099eac;
+extern fBase_c::AfterProcessFunction data_02099eb4;
+extern fBase_c::ProcessFunction data_02099ecc;
+extern fBase_c::BeforeProcessFunction data_02099e74;
+extern fBase_c::AfterProcessFunction data_02099e9c;
+/* Defined below; the calls are emitted first. */
+extern void func_0204302c(int actorID);
+extern int func_02043060(int actorID);
+extern void func_02043180(int actorID, void *parentNode, u32 param1, int unk012);
+
+/* The create hooks a scene installs, and the create entry's progress:
+   data_020a4b4c steps 2..5 through func_02043098 and data_020a4b50 holds
+   the profile being created (0xffff when idle). */
+extern void (*data_020a4b5c)(int actorID);
+extern int (*data_020a4b58)(int actorID);
+extern u16 data_020a4b50;
+extern u8 data_020a4b4c;
+
+// @symbol func_0204335c
+int func_0204335c(void *self) {
+    return ((fBase_c *)self)->Process(data_02099ebc, data_02099ec4, data_02099e94);
+}
+
+// @symbol func_020432e4
+int func_020432e4(fBase_c *self) {
+    /* The actor ID is read before Process runs and handed to the
+     * func_0204302c hook on a result of 1. */
+    unsigned short id = self->actorID;
+    int r = self->Process(data_02099e8c, data_02099e7c, data_02099e84);
+    if (r == 1)
+        func_0204302c(id);
+    return r;
+}
+
+// @symbol func_02043288
+int func_02043288(fBase_c *self) {
+    return self->Process(data_02099ea4, data_02099eac, data_02099eb4);
+}
+
+// @symbol func_0204322c
+int func_0204322c(fBase_c *self) {
+    return self->Process(data_02099ecc, data_02099e74, data_02099e9c);
+}
+
+/* Scene-tree walk: func_0203b394 steps to the first child or, failing
+   that, to func_0203b358's next node outside the subtree, which is also
+   where the walk ends. */
+extern fBase_c::SceneNode *func_0203b358(fBase_c::SceneNode *node);
+extern fBase_c::SceneNode *func_0203b394(fBase_c::SceneNode *node);
+
+/* Is any descendant still uncreated (aliveState 0)? d_scene.cpp waits on
+   this before it moves on. */
+// @symbol func_020431c4
+int func_020431c4(fBase_c *self) {
+    fBase_c::SceneNode *base = &self->manager.sceneNode;
+    fBase_c::SceneNode *end = func_0203b358(base);
+    fBase_c::SceneNode *node = base->child;
+    int uncreated;
+    while (node != 0 && node != end) {
+        /* Materialized as 0/1 before the test, as the ROM does. */
+        uncreated = !node->owner->aliveState;
+        if (uncreated != 0)
+            return 1;
+        node = func_0203b394(node);
+    }
+    return 0;
+}
+
+/* Stage the arguments fBase_c::fBase_c reads while the factory runs. */
+// @symbol func_02043180
+void func_02043180(int actorID, void *parentNode, u32 param1, int unk012) {
+    data_020a4b60 = param1;
+    data_020a4b54 = actorID;
+    data_020a4b48 = unk012;
+    data_020a4b64 = parentNode;
+}
+
+/* The create entry: ask the scene's hook, stage the constructor's
+   arguments, run the profile's factory, then link the new process. */
+// @symbol func_02043098
+fBase_c *func_02043098(int actorID, void *parentNode, u32 param1, int unk012) {
+    fBase_c *actor;
+    data_020a4b50 = (u16)actorID;
+    data_020a4b4c = 2;
+    if (func_02043060(actorID) == 3)
+        return 0;
+    data_020a4b4c = 3;
+    func_02043180(actorID, parentNode, param1, unk012);
+    data_020a4b4c = 4;
+    actor = data_020a4bb8[actorID]->classInit();
+    if (actor == 0) {
+        data_020a4b4c = 0;
+        data_020a4b50 = 0xffff;
+        return 0;
+    }
+    data_020a4b4c = 5;
+    func_020433b8((char *)actor);
+    data_020a4b4c = 0;
+    data_020a4b50 = 0xffff;
+    return actor;
+}
+
+// @symbol func_02043060
+int func_02043060(int actorID) {
+    if (data_020a4b58 == 0)
+        return 2;
+    return data_020a4b58(actorID);
+}
+
+// @symbol func_0204302c
+void func_0204302c(int actorID) {
+    if (data_020a4b5c)
+        data_020a4b5c(actorID);
+}
+
+/* Create a child of parent; none without a parent. */
+// @symbol func_02042ffc
+fBase_c *func_02042ffc(u32 actorID, fBase_c *parent, u32 param1, int unk012) {
+    if (parent == 0)
+        return 0;
+    return func_02043098(actorID, &parent->manager.sceneNode, param1, unk012);
+}
+
+/* Create a process at the root of the scene tree. */
+// @symbol func_02042fe4
+void func_02042fe4(int actorID, u32 param1, int unk012) {
+    func_02043098(actorID, 0, param1, unk012);
 }
 }
