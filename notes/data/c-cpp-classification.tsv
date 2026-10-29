@@ -1070,7 +1070,6 @@ src/_ZNK7PathPtr7GetNodeER7Vector3j.c	P3-mangled-method-only	arm9		PathPtr	_ZNK7
 src/_ZNK8Particle10SysTracker8Contents8FindDataEj.c	P3-mangled-method-only	arm9		Contents	_ZNK8Particle10SysTracker8Contents8FindDataEj	1		False		no-header:Contents
 src/__destroy_arr.c	PURE-C					0		None		NONMATCHING-draft;not-in-delinks
 src/unnamed/arm9/0207/__sinit_02073a24.c	PURE-C	arm9				0		None		extra-sections:init
-src/unnamed/arm9/0207/__sinit_02073e6c.c	WEAK-refs-only	arm9				0		None		extra-sections:init
 src/unnamed/arm9/0207/__sinit_02074d90.c	PURE-C	arm9				0		None		extra-sections:init
 src/unnamed/arm9/0207/__sinit_02074da8.c	PURE-C	arm9				0		None		extra-sections:init
 src/unnamed/arm9/0207/__sinit_02074dbc.c	PURE-C	arm9				0		None		extra-sections:init

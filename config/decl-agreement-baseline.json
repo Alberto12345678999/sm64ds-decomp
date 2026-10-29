@@ -9376,31 +9376,6 @@
         "return:int []"
       ]
     },
-    "data_02087c00": {
-      "src/unnamed/arm9/0207/__sinit_02073e6c.c": [
-        "return:unsigned char []"
-      ]
-    },
-    "data_02088610": {
-      "src/unnamed/arm9/0207/__sinit_02073e6c.c": [
-        "return:unsigned char []"
-      ]
-    },
-    "data_02088fb8": {
-      "src/unnamed/arm9/0207/__sinit_02073e6c.c": [
-        "return:unsigned char []"
-      ]
-    },
-    "data_020890a0": {
-      "src/unnamed/arm9/0207/__sinit_02073e6c.c": [
-        "return:unsigned char []"
-      ]
-    },
-    "data_02089608": {
-      "src/unnamed/arm9/0207/__sinit_02073e6c.c": [
-        "return:unsigned char []"
-      ]
-    },
     "data_0208a178": {
       "include/decl_common.h": [
         "return:unsigned char []"
@@ -9572,11 +9547,6 @@
     "data_02099fd0": {
       "src/engine/gx/G3X.cpp": [
         "return:int"
-      ]
-    },
-    "data_0209b294": {
-      "src/unnamed/arm9/0207/__sinit_02073e6c.c": [
-        "return:unsigned char []"
       ]
     },
     "data_0209b2e8": {
