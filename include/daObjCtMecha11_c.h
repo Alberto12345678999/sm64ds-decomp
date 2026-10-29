@@ -34,18 +34,18 @@
  * slots 0, 3, 6, 9, 16 and 17 differ, exactly the overrides declared here.
  */
 struct daObjCtMecha11_c : dBgActor_c {
-    s8  mRandDirection;       /* 0x31e +1 or -1 while the clock setting is random */
-    u8  pad_31f;              /* 0x31f */
-    u16 mRandTimer;           /* 0x320 frames left in this burst */
-    u16 mRandFrames;          /* 0x322 the burst length just rolled */
-    s32 mFloorPosY;           /* 0x324 floor the spawn probe hit, else the probe Y */
+    s8 mRandDirection;              /* 0x31e +1 or -1 while the clock setting is random */
+    u8 pad_31f;                     /* 0x31f */
+    u16 mRandTimer;                 /* 0x320 frames left in this burst */
+    u16 mRandFrames;                /* 0x322 the burst length just rolled */
+    s32 mFloorPosY;                 /* 0x324 floor the spawn probe hit, else the probe Y */
     dExtShadowModel_c mShadowModel; /* 0x328 */
-    Matrix4x3 mShadowMat;     /* 0x350 shadow on the floor, yaw only */
+    Matrix4x3 mShadowMat;           /* 0x350 shadow on the floor, yaw only */
 
     /* OUT OF LINE, DECLARED FIRST: the key function. The TU defines it first
        under `#pragma defer_codegen off`, which emits D1 then D0 -- the
        cartridge's order -- then a D2 the cartridge has no home for. */
-    virtual ~daObjCtMecha11_c();    /* slots 16, 17 */
+    virtual ~daObjCtMecha11_c(); /* slots 16, 17 */
 
     virtual int InitResources();    /* slot  0 */
     virtual int CleanupResources(); /* slot  3 */
@@ -58,8 +58,7 @@ struct daObjCtMecha11_c : dBgActor_c {
 
 #ifndef SM64DS_PLATFORM_PC
 /* ROM layout under mwccarm; host ABI divergence is tracked separately. */
-typedef char daObjCtMecha11_c_size_must_be_0x380[
-    sizeof(daObjCtMecha11_c) == 0x380 ? 1 : -1];
+typedef char daObjCtMecha11_c_size_must_be_0x380[sizeof(daObjCtMecha11_c) == 0x380 ? 1 : -1];
 #endif
 
 #endif

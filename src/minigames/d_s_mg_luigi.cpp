@@ -92,22 +92,17 @@ void LoadBGPltt(const void *src, u32 offset, u32 size);
 void LoadOBJPltt(const void *src, u32 offset, u32 size);
 }
 namespace GX {
-/* local extern: GX.h is not included in this TU. */
-extern "C" void LoadBGPltt(const void *src, u32 offset, u32 size);
-/* local extern: GX.h is not included in this TU. */
-extern "C" void LoadOBJPltt(const void *src, u32 offset, u32 size);
+void LoadBGPltt(const void *src, u32 offset, u32 size);
+void LoadOBJPltt(const void *src, u32 offset, u32 size);
 }
 namespace G2S {
 unsigned GetBG2CharPtr();
 char *GetBG3ScrPtr();
 }
 namespace G2 {
-/* local extern: G2.h is not included in this TU. */
-extern "C" char *GetBG2CharPtr();
-/* local extern: G2.h is not included in this TU. */
-extern "C" char *GetBG2ScrPtr();
-/* local extern: G2.h is not included in this TU. */
-extern "C" char *GetBG3ScrPtr();
+char *GetBG2CharPtr();
+char *GetBG2ScrPtr();
+char *GetBG3ScrPtr();
 }
 namespace CP15 {
 void FlushAndInvalidateDataCache(u32 addr, u32 size);

@@ -1159,64 +1159,64 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@716",
+      "from": "@713",
       "to": "@712",
-      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
+      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin | re-keyed by __sinit relocation-site order after the mesh-callback extern moved into the class and shifted the TU's @NNN uniquifier"
     },
     {
-      "from": "@718",
+      "from": "@715",
       "to": "@714",
-      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
+      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin | re-keyed by __sinit relocation-site order after the mesh-callback extern moved into the class and shifted the TU's @NNN uniquifier"
+    },
+    {
+      "from": "@716",
+      "to": "@715",
+      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin | re-keyed by __sinit relocation-site order after the mesh-callback extern moved into the class and shifted the TU's @NNN uniquifier"
     },
     {
       "from": "@719",
-      "to": "@715",
-      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
-    },
-    {
-      "from": "@722",
       "to": "@718",
-      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
-    },
-    {
-      "from": "@723",
-      "to": "@719",
-      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
-    },
-    {
-      "from": "@725",
-      "to": "@721",
-      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
-    },
-    {
-      "from": "@727",
-      "to": "@723",
-      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
-    },
-    {
-      "from": "@729",
-      "to": "@725",
-      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
-    },
-    {
-      "from": "@731",
-      "to": "@727",
-      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
-    },
-    {
-      "from": "@717",
-      "to": "@990",
-      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
+      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin | re-keyed by __sinit relocation-site order after the mesh-callback extern moved into the class and shifted the TU's @NNN uniquifier"
     },
     {
       "from": "@720",
-      "to": "@991",
-      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
+      "to": "@719",
+      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin | re-keyed by __sinit relocation-site order after the mesh-callback extern moved into the class and shifted the TU's @NNN uniquifier"
     },
     {
-      "from": "@721",
+      "from": "@722",
+      "to": "@721",
+      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin | re-keyed by __sinit relocation-site order after the mesh-callback extern moved into the class and shifted the TU's @NNN uniquifier"
+    },
+    {
+      "from": "@724",
+      "to": "@723",
+      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin | re-keyed by __sinit relocation-site order after the mesh-callback extern moved into the class and shifted the TU's @NNN uniquifier"
+    },
+    {
+      "from": "@726",
+      "to": "@725",
+      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin | re-keyed by __sinit relocation-site order after the mesh-callback extern moved into the class and shifted the TU's @NNN uniquifier"
+    },
+    {
+      "from": "@728",
+      "to": "@727",
+      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin | re-keyed by __sinit relocation-site order after the mesh-callback extern moved into the class and shifted the TU's @NNN uniquifier"
+    },
+    {
+      "from": "@714",
+      "to": "@990",
+      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin | re-keyed by __sinit relocation-site order after the mesh-callback extern moved into the class and shifted the TU's @NNN uniquifier"
+    },
+    {
+      "from": "@717",
+      "to": "@991",
+      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin | re-keyed by __sinit relocation-site order after the mesh-callback extern moved into the class and shifted the TU's @NNN uniquifier"
+    },
+    {
+      "from": "@718",
       "to": "@992",
-      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
+      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin | re-keyed by __sinit relocation-site order after the mesh-callback extern moved into the class and shifted the TU's @NNN uniquifier"
     }
   ],
   "symbol_binding_rewrites": [

@@ -20,9 +20,8 @@ struct Vector3_16f;
  *   takes a Fix12<int> by value.
  * - UpdatePose still walks the PknMtx43/PknVec3 views: spelling the copies
  *   as Vector3/Matrix4x3 is emitted differently.
- * - The shared files keep their address names; the state table at
- *   0x02130e80 also keeps its address name (text-only TU; the static
- *   initializer owns the .bss).
+ * - The shared files keep their address names (d_a_f_pkn.cpp reads them
+ *   too); the state table at 0x02130e80 also keeps its address name.
  *
  * Boundary, layout and compiler experiments are recorded in
  * notes/data/class-facts/daPkn_c.json and
@@ -35,15 +34,44 @@ struct Vector3_16f;
 #include "Player.h"
 #include "Sound.h"
 #include "math/Approach.h"
+#include "SpawnInfo.h"
 
-/* The six shared files this actor claims. */
-extern SharedFilePtr data_ov084_02130dfc; /* the plant's own model */
+/* Runtime asset handles, distinct from the NitroFS file IDs. */
+enum daPkn_c_AssetId {
+    ASSET_PAKKUN_ATTACK_BCA = 0x03cf,
+    ASSET_PAKKUN_DEAD_BCA = 0x03d0,
+    ASSET_PAKKUN_FIRE_BCA = 0x03d1,
+    ASSET_PAKKUN_FIRE_ED_BCA = 0x03d2,
+    ASSET_PAKKUN_MODEL_BMD = 0x03d3,
+    ASSET_PAKKUN_SLEEP_BCA = 0x03d4,
+    ASSET_PAKKUN_SLEEP_LOOP_BCA = 0x03d5
+};
+
+/* The handles reach their files through these wrappers' constructor and
+   destructor veneers; the manifest maps each to the retail destination.
+   Descriptive local types, not recovered spellings. */
+struct PknModelFile : SharedFilePtr {
+    PknModelFile(u32 fileID);
+    ~PknModelFile();
+};
+
+struct PknAnimFile : SharedFilePtr {
+    PknAnimFile(u32 fileID);
+    ~PknAnimFile();
+};
+
+/* The piranha plants' shared files, in the order the retail initializer
+   (0x02130654) builds them. d_a_f_pkn.cpp reads them too. */
+PknModelFile data_ov084_02130dfc(ASSET_PAKKUN_MODEL_BMD);     /* the plant's own model */
+PknAnimFile data_ov084_02130e14(ASSET_PAKKUN_ATTACK_BCA);     /* lunge animation */
+PknAnimFile data_ov084_02130e24(ASSET_PAKKUN_DEAD_BCA);       /* death animation */
+PknAnimFile data_ov084_02130e0c(ASSET_PAKKUN_SLEEP_BCA);      /* recoil animation */
+PknAnimFile data_ov084_02130df4(ASSET_PAKKUN_SLEEP_LOOP_BCA); /* idle animation */
+PknAnimFile data_ov084_02130e04(ASSET_PAKKUN_FIRE_BCA);       /* spit animation */
+PknAnimFile data_ov084_02130e1c(ASSET_PAKKUN_FIRE_ED_BCA);    /* post-spit animation */
+
 extern SharedFilePtr
     data_ov002_0210da38; /* BUBBLE_MODEL_PTR -- sleep bubble, shared out of ov002 */
-extern SharedFilePtr data_ov084_02130df4; /* idle animation */
-extern int *data_ov084_02130e0c;          /* recoil animation; decl_common.h's spelling */
-extern SharedFilePtr data_ov084_02130e14; /* lunge animation */
-extern SharedFilePtr data_ov084_02130e24; /* death animation */
 
 /* Six animation handles, held indirectly: the table is pointers, not objects. */
 extern SharedFilePtr *data_ov084_021302f4[];
@@ -55,17 +83,18 @@ extern SharedFilePtr *data_ov084_021302f4[];
 struct PknVec3 { int x, y, z; };
 struct PknMtx43 { int w[12]; };
 
-/* Behavior calls the current state through this actor's member-pointer table
-   in .bss at 0x02130e80, which __sinit_ov084_02130654 fills from the .data
-   records at 0x02130ba4. */
+/* Behavior calls the current state through this actor's member-pointer
+   table, indexed by state. */
 typedef void (daPkn_c::*PknStatePMF)();
 
+PknStatePMF data_ov084_02130e80[9] = {
+    &daPkn_c::StateWait,   &daPkn_c::StateSleep, &daPkn_c::StateBite,
+    &daPkn_c::StateWake,   &daPkn_c::StateDoze,  &daPkn_c::StateDie,
+    &daPkn_c::StateShrink, &daPkn_c::StateGone,  &daPkn_c::StateRegrow,
+};
 
 /* C-linkage declarations for the remaining raw entry points and shared data. */
 extern "C" {
-
-/* -- the state table __sinit_ov084_02130654 fills in -- */
-extern PknStatePMF data_ov084_02130e80[];
 
 /* -- other modules -- */
 void  LoadBlueCoinModel(void *c);
@@ -113,6 +142,19 @@ extern "C" daPkn_c *daPkn_c_classInit()
 {
     return new daPkn_c();
 }
+
+/* The actor profile, in SpawnInfo's layout (include/SpawnInfo.h). The
+ * retail values are unchanged. */
+SpawnInfo<daPkn_c> g_profile_PAKUN = {
+    daPkn_c_classInit, /* classInit */
+    0x00fa,            /* behaviorPriority */
+    0x006c,            /* renderPriority */
+    0x10000002,        /* actorFlags */
+    0x64000,           /* clipOffsetY */
+    0xc8000,           /* clipRadius */
+    0x1000000,         /* clipDistance */
+    0x1000000          /* farDistance */
+};
 
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN7daPkn_c13InitResourcesEv
@@ -301,8 +343,7 @@ void daPkn_c::StateSleep()
         mAnmModel.SetAnim((BCA_File *)data_ov084_02130df4.filePtr, 0, 0x1000, 0);
     int thr = (mPlayerAirborne != 0) ? 0x12c000 : 0x190000;
     if (mPlayerDist < thr && PlayerMovingFast()) {
-        mAnmModel.SetAnim((BCA_File *)(((SharedFilePtr *)&data_ov084_02130e0c)->filePtr),
-                          0x40000000, 0x1000, 0);
+        mAnmModel.SetAnim((BCA_File *)data_ov084_02130e0c.filePtr, 0x40000000, 0x1000, 0);
         mState = 3;
         func_02012694(0x175, &mCamSpacePosX);
         Particle::System::NewSimple(0xfe, mBubblePos.x, mBubblePos.y, mBubblePos.z);
@@ -473,8 +514,7 @@ void daPkn_c::StateDoze()
 {
     mClsnEnabled = 1;
     if (mAnmModel.Finished()) {
-        mAnmModel.SetAnim((BCA_File *)(((SharedFilePtr *)&data_ov084_02130e0c)->filePtr),
-                          0x40000000, 0x1000, 0);
+        mAnmModel.SetAnim((BCA_File *)data_ov084_02130e0c.filePtr, 0x40000000, 0x1000, 0);
         mState = 1;
     } else {
         int thresh = (mPlayerAirborne != 0) ? 0x12c000 : 0x190000;
@@ -555,7 +595,7 @@ void daPkn_c::StateGone()
     mState = 8;
     mParticleHandle2 = 0;
     mParticleHandle = mParticleHandle2;
-    mAnmModel.SetAnim((BCA_File *)(((SharedFilePtr *)&data_ov084_02130e0c)->filePtr), 0, 0x1000, 0);
+    mAnmModel.SetAnim((BCA_File *)data_ov084_02130e0c.filePtr, 0, 0x1000, 0);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -620,14 +660,14 @@ int daPkn_c::PlayerMovingFast()
    `type == 0xbf` directly changes the code. */
 int daPkn_c::CheckHits()
 {
-    dActor_c *actor;
+    Player *actor;
     u32 flags;
     u16 type;
     u32 id;
 
     id = mdCcAc_c1.otherOwner;
     if (id != 0) {
-        actor = dActor_c::FindWithID(id);
+        actor = static_cast<Player *>(dActor_c::FindWithID(id));
         if (actor != 0) {
             type = actor->actorID;
             int t = (int)(type == 0xbf);
@@ -635,13 +675,13 @@ int daPkn_c::CheckHits()
                 flags = mdCcAc_c1.hitFlags & 0x26ff0;
                 if (flags != 0) {
                     if (flags & 0x10) {
-                        ((Player *)actor)->IncMegaKillCount();
+                        actor->IncMegaKillCount();
                         func_02012694(0x1d, &mCamSpacePosX);
                     }
                     func_020105cc(this, flags);
                     Die();
-                } else if (JumpedOnByPlayer(mdCcAc_c1, *(Player *)actor) != 0) {
-                    ((Player *)actor)->Bounce(0x28000);
+                } else if (JumpedOnByPlayer(mdCcAc_c1, *actor) != 0) {
+                    actor->Bounce(0x28000);
                     Die();
                 } else if (mdCcAc_c1.hitFlags & 0x40000) {
                     Die();
@@ -650,10 +690,8 @@ int daPkn_c::CheckHits()
                     v.x = mPosX;
                     v.y = mPosY;
                     v.z = mPosZ;
-                    ((Player *)actor)->Hurt(v, 3, 0xc000, 1, 0, 1);
-                    mAnmModel.SetAnim(
-                        (BCA_File *)(((SharedFilePtr *)&data_ov084_02130e0c)->filePtr), 0, 0x1000,
-                        0);
+                    actor->Hurt(v, 3, 0xc000, 1, 0, 1);
+                    mAnmModel.SetAnim((BCA_File *)data_ov084_02130e0c.filePtr, 0, 0x1000, 0);
                     mAnmModel.SetFlags(0x40000000);
                     mState = 3;
                     func_02012694(0x175, &mCamSpacePosX);
@@ -672,7 +710,7 @@ int daPkn_c::CheckHits()
 
     id = mdCcAc_c2.otherOwner;
     if (id != 0) {
-        actor = dActor_c::FindWithID(id);
+        actor = static_cast<Player *>(dActor_c::FindWithID(id));
         if (actor != 0) {
             type = actor->actorID;
             int t = (int)(type == 0xbf);
@@ -680,15 +718,15 @@ int daPkn_c::CheckHits()
                 flags = mdCcAc_c2.hitFlags & 0x26ff0;
                 if (flags != 0) {
                     if (flags & 0x10) {
-                        ((Player *)actor)->IncMegaKillCount();
+                        actor->IncMegaKillCount();
                         func_02012694(0x1d, &mCamSpacePosX);
                     }
                     func_020105cc(this, flags);
                     Die();
                     return 1;
                 }
-                if (JumpedOnByPlayer(mdCcAc_c1, *(Player *)actor) != 0) {
-                    ((Player *)actor)->Bounce(0x28000);
+                if (JumpedOnByPlayer(mdCcAc_c1, *actor) != 0) {
+                    actor->Bounce(0x28000);
                     Die();
                     return 1;
                 }

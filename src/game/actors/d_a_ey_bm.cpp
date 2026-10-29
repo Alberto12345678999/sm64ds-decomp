@@ -38,13 +38,15 @@
 #include "dBgCh_Gnd.h"
 #include "Particle__System.h"
 #include "Player.h"
-
-namespace Particle { struct Callback; }
+#include "math/CalcLib.h"
+#include "math/MtxStack.h"
 
 /* Local three-word ABI value. Vector3 has a genuine non-trivial destructor;
  * these stack values are plain fixed-point words and must not instantiate its
  * otherwise unrelated vague-linkage D1 in this class TU. */
-struct DaEyBmVector3Words { Fix12i x, y, z; };
+struct DaEyBmVector3Words {
+    Fix12i x, y, z;
+};
 
 /* Dynamic offset at 0x021230b8. A user constructor keeps the three stores in
  * the sinit (bss, not .data). The undefined destructor is Vector3's D1. */
@@ -59,6 +61,12 @@ struct EyBmVec3 {
 };
 
 extern EyBmVec3 data_ov071_021230b8;
+extern Matrix4x3 IDENTITY_MATRIX4X3;
+
+/* local extern: MulVec3Mat4x3 has no shared header, and this TU spells its
+   vectors as DaEyBmVector3Words. */
+extern "C" void MulVec3Mat4x3(const DaEyBmVector3Words *source, const Matrix4x3 *matrix,
+                              DaEyBmVector3Words *destination);
 
 /* dActor_c::mFlags bits 0x20000 and 0x40000 are the two yoshi-mouth states:
  * Yoshi is eating the actor, then has it in his mouth. Actor ID 0xbf is
@@ -79,35 +87,16 @@ static inline int IsPlayerActor(dActor_c *actor) {
 /* `new` calls the inherited fBase_c::operator new; the implicit constructor
  * emits the measured dActor_c C2, vptr store, and three member C1s. */
 // @symbol daEyBm_c_classInit
-extern "C" daEyBm_c *daEyBm_c_classInit()
-{
+extern "C" daEyBm_c *daEyBm_c_classInit() {
     return new daEyBm_c();
 }
 
 /* The actor-table descriptor, at ov071:0x02122dc4. */
 extern "C" SpawnInfo<daEyBm_c> g_profile_EYEKUN_BEAM = {
-    daEyBm_c_classInit,
-    0x0108,
-    0x007a,
-    0x00000002,
-    0,
-    0x00019000,
-    0x01000000,
-    0x01000000
-};
+    daEyBm_c_classInit, 0x0108, 0x007a, 0x00000002, 0, 0x00019000, 0x01000000, 0x01000000};
 
 // @symbol _ZN8daEyBm_c13InitResourcesEv
-extern "C" {
-/* Known by-value Fix12 compiler walls: these exact ABI imports preserve the
- * retail register calling convention while the owned objects remain typed. */
-/* Parameter names keep this TU's @NNN. */
-typedef int BgchInitAt_(dBgCh_Actr *collision, dActor_c *actor, Fix12i radius, Fix12i height,
-                        void *a, void *b);
-extern Matrix4x3 IDENTITY_MATRIX4X3;
-}
-
-int daEyBm_c::InitResources()
-{
+int daEyBm_c::InitResources() {
     if (!mShadowModel.InitCylinder())
         return 0;
 
@@ -127,18 +116,7 @@ int daEyBm_c::InitResources()
 }
 
 // @symbol _ZN8daEyBm_c8BehaviorEv
-extern "C" {
-extern void Matrix4x3_FromRotationY(Matrix4x3 *matrix, s16 angle);
-extern void Matrix4x3_ApplyInPlaceToRotationX(Matrix4x3 *matrix, s16 angle);
-extern void MulVec3Mat4x3(
-    const DaEyBmVector3Words *source, const Matrix4x3 *matrix,
-    DaEyBmVector3Words *destination);
-extern u16 DecIfAbove0_Short(u16 *value);
-extern Matrix4x3 data_020a0e68;
-}
-
-int daEyBm_c::Behavior()
-{
+int daEyBm_c::Behavior() {
     DaEyBmVector3Words offset;
     DaEyBmVector3Words velocity;
     if (IsInYoshiMouth(this))
@@ -173,29 +151,21 @@ int daEyBm_c::Behavior()
 }
 
 // @symbol _ZN8daEyBm_c6RenderEv
-extern "C" u32 d_a_ey_bmNewUnkCallback818Hold(u32 handle, u32 effectID, Fix12i x, Fix12i y,
-                                              Fix12i z, const Vector3_16f *rotation);
-
-int daEyBm_c::Render()
-{
+int daEyBm_c::Render() {
     mParticle1 = Particle::System::NewUnkCallback818(mParticle1, 0x46, mPosX, mPosY, mPosZ, 0);
     mParticle2 = Particle::System::NewUnkCallback818(mParticle2, 0x47, mPosX, mPosY, mPosZ, 0);
     return 1;
 }
 // @symbol _ZN8daEyBm_c16OnPendingDestroyEv
-void daEyBm_c::OnPendingDestroy()
-{
-}
+void daEyBm_c::OnPendingDestroy() {}
 
 // @symbol _ZN8daEyBm_c16CleanupResourcesEv
-int daEyBm_c::CleanupResources()
-{
+int daEyBm_c::CleanupResources() {
     return 1;
 }
 // @symbol _ZN8daEyBm_c12UpdateShadowEv
 
-void daEyBm_c::UpdateShadow()
-{
+void daEyBm_c::UpdateShadow() {
     mMatrix.m[9] = mPosX >> 3;
     mMatrix.m[10] = mPosY >> 3;
     mMatrix.m[11] = mPosZ >> 3;
@@ -215,8 +185,7 @@ void daEyBm_c::UpdateShadow()
  * ABI seam; Player itself and all accessed fields are the real type. */
 // @symbol _ZN8daEyBm_c10HurtPlayerEv
 
-void daEyBm_c::HurtPlayer()
-{
+void daEyBm_c::HurtPlayer() {
     u32 ownerID = mdCcAcPos_c.otherOwner;
     if (!ownerID)
         return;
@@ -245,29 +214,21 @@ void daEyBm_c::HurtPlayer()
  * would generate identical ARM. The retail caller passes the owned
  * collision subobject explicitly in r1. */
 // @symbol _ZN8daEyBm_c15UpdateCollisionER10dBgCh_Actr
-void daEyBm_c::UpdateCollision(dBgCh_Actr &collision)
-{
+void daEyBm_c::UpdateCollision(dBgCh_Actr &collision) {
     dBgCh_Actr_UpdateDiscreteNoLava_veneer(&collision);
     if (collision.IsOnGround() || collision.IsOnWall())
         SpawnDestroyEffect();
 }
 
-/*
- * 0x02121b08, size 0x48. Particle::System::New is not yet shared-header
- * declared, so this exact typed ABI import remains local. */
+/* 0x02121b08, size 0x48. */
 // @symbol _ZN8daEyBm_c18SpawnDestroyEffectEv
-extern "C" u32 d_a_ey_bmNewHold(u32 uniqueID, u32 effectID, Fix12i x, Fix12i y, Fix12i z,
-                                const Vector3_16f *rotation, Particle::Callback *callback);
-
-void daEyBm_c::SpawnDestroyEffect()
-{
+void daEyBm_c::SpawnDestroyEffect() {
     mParticle1 = Particle::System::New(0, 0x45, mPosX, mPosY, mPosZ, 0, 0);
     MarkForDestruction();
 }
 
 // @symbol _ZN8daEyBm_c13OnYoshiTryEatEv
-int daEyBm_c::OnYoshiTryEat()
-{
+int daEyBm_c::OnYoshiTryEat() {
     return 4;
 }
 

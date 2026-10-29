@@ -219,10 +219,11 @@ Three things this batch adds to the recipe:
   the namespace, so their calls need `cstd::` qualification -- an unqualified
   call compiles nowhere and the error (`undefined identifier`) is the only
   symptom.
-- **A `.c` caller cannot follow at all.** `src/InvMat4x3.c` is C and cannot name
-  a C++ namespaced function, so it keeps a mangled extern under the new spelling
-  with a `local extern:` reason. This is a third category alongside shadow
-  scaffolds and raw-offset TUs.
+- **A `.c` caller cannot follow at all.** `src/InvMat4x3.cpp` was still C then
+  and could not name a C++ namespaced function, so it kept a mangled extern under
+  the new spelling with a `local extern:` reason. This is a third category
+  alongside shadow scaffolds and raw-offset TUs. (A later batch made it C++, and
+  it now calls `cstd::reciprocal_async` by name.)
 - **The scalar name can FIX a recorded name defect.** `fdiv_async`'s old name
   was in `config/name-roundtrip-baseline.json` as a MISMATCH, because a
   hand-derived name spelled the second `Fix12<int>` out in full where the
@@ -8770,10 +8771,166 @@ same-length `@174`, `@175`, `@235`, and `@236`. `@320` and `@324` were free and 
 `Heyho_CheckHitA` matched only as `((Obj **)sJumpAdapters)[i]`; a local `Obj **` was 4 bytes
 short.
 
-**Not done:** `unit020cd744` (TrmpItem). Its nine function-local unit vectors' `.bss` is
-interleaved with file globals and ring-model handles that are not one window ending at the
-next TU, so they can only move as one whole-TU `.bss` claim. The ov019/ov062/ov072/ov078 `.c`
-sinit shards mix resource handles and PMF tables and need an owner TU first. A `symbols.txt`
-edit can make an unrelated vtable TU report `baseline content fingerprint differs`. Report
-that line. Do not edit that TU's manifest to silence it, and do not regenerate the baseline
-from the worker.
+`unit020cd744` (TrmpItem) went the whole-TU way, because its nine function-local unit
+vectors' `.bss` is interleaved with file globals and ring-model handles.
+The file defines its globals, `TrmpLine sTrmpLines[4]` (mwcc emits the old
+`TrmpLine_CleanupAll` as `__arraydtor$N`) and the ring handles through a local `SharedFilePtr`
+wrapper aliased to func_02017acc/ab4. That folds `__sinit_ov006_0212fc7c` and claims .bss
+0x02140808..0x02141640 in one entry. One new lever: `__arraydtor` is emitted at the end of the
+object, after the sinit. ROM has it ahead of D1/C1, so `TrmpLine`'s ctor and dtor are defined
+`inline` in the .cpp; used inline bodies are emitted after it, in the ROM order, and leave no
+C2/D2 behind.
+
+The ov019/ov062/ov072/ov078 sinit shards are folded into daPgRcer_c, daHolhei_c,
+daBgSnmBdy_c, daBgSnmHed_c and daBombking_c. Each resource handle is a
+`struct X : SharedFilePtr` with a declared, undefined `X(u32)`/`~X()` that
+`undefined_symbol_aliases` maps to the retail veneer. Each PMF table is a defined array of
+member pointers, and each TU is intact-object with its literals, RTTI, a typed `g_profile_*`
+and its vtable. A free `extern "C"` handler can't be named in a table, and objisolate won't
+alias a member onto a definition in the same object, so those handlers became members. All
+of them still match.
+
+**Not done:** arm9 `__sinit_020750b8` (the zero Vector3 at data_020a0ebc, node data_020a0eb0) stays a shard.
+arm9 `.init` follows `.text` TU order, which puts its owner between NoOpDestructor (0x0203b98c)
+and the Vec2 unit (NullDestructor_0203d47c), and its `.bss` follows Heap's. That leaves Heap
+(0x0203c1b4..0x0203cc28) or the Vec3 math run (0x0203cc28..0x0203d47c). The Vec3 run is the
+likely owner, but it is about 21 one-function shards with no manifest, and in arm9 only the
+sinit itself references the object (the readers are ov002, ov006 and ov100). It can move once
+that run is promoted as a TU.
+
+**Overlay batch 2 (2026-10-27):** 13 more overlay shards fold into their owner TUs by the recipe
+above: ov009 McWater, ov021 CvNewsLift, ov022 Fl_UkiKi, ov065 Yurei_Mucho, ov077 Tgz, ov079
+BkKillerdai, ov084 RedBombhei and Pkn, ov085 Kinopio and Peach, ov100 Ibl, ov102 Bmb and ov002
+Kurumajiku. Three things were new. First, a TU that keeps a PMF table and has non-PMF fields in
+the same record (Kinopio's state name) puts the record in `.data`, not `.bss`. A TU whose PMF
+literals become its own then has to claim its whole contiguous `.data` run: literals, strings,
+`_ZTS`/`_ZTI`, a typed `SpawnInfo<T>` profile and the vtable (`emitted_storage_address` =
+address point - 8). Second, a TU at the end of a module's `.data` or `.bss` (Pkn) needs a
+terminator row in `symbols.txt` at its section end, as ov072/ov078 already have. Without it
+dsd sizes its last symbol to the section end and refuses the delink. Third, a handle that
+another TU reads by its address name keeps that name (Pkn's seven, which d_a_f_pkn.cpp reads).
+dsd's interior labels inside a `Vector3` array (Kurumajiku) must stay in `symbols.txt`, because
+`dsd delink` needs a symbol at every relocation target. The manifest's `.init` relocations then
+read as table + offset, as mwcc emits them.
+Still shards, with the reason in the PR body: ov002 (three: an owner with no `.text`, the ending
+demo's ~40-literal PMF run, and an 8-byte `{fn, 0}` table of non-member functions), ov004 and
+ov006 (array-ctor TUs, the bomroom and roulette scenes, the trampoline Mario handles and an
+empty 4-byte sinit), ov022 FlMaruta (its merged TU already emits a sinit), ov030 Mky, and
+ov075 (two).
+
+## 6dg. arm9 static initializers folded into their owners (2026-10-27)
+
+Eight of the 23 handwritten arm9 `__sinit_0207xxxx` shards are now emitted by their owner TU.
+Each owner defines the object instead of declaring it `extern`, following the §6df recipe.
+arm9 `.init`/`.ctor` and `.bss` follow `.text` TU order, so each initializer's owner sits
+between its neighbours' owners. The object's readers confirm it.
+
+| shard | owner | object |
+|---|---|---|
+| `__sinit_02073e6c` | `KuppaScript.cpp` | the Kuppa scripts and camera paths (`.data` 0x0208751c..0x0208a0e0), `data_0209b294`, the script fader |
+| `__sinit_02074d90` | `d_actor.cpp` | `data_0209b468`, the actor list (`ActorList`, first/last) |
+| `__sinit_02074da8` | `Sound.cpp` | `data_0209b53c`, the sound registry (`SndRegTable`) |
+| `__sinit_02074edc` | `d_scene.cpp` | `data_0209f5e8`/`data_0209f5d0`, the scene faders |
+| `__sinit_02074f80` | `d_wipe.cpp` | `data_0209f61c`, the `dWipe_c` singleton |
+| `__sinit_02074fb8` | `d_s_mb.cpp` | `data_020a0c68`, `dScMB_c::graphCallback_c` |
+| `__sinit_02074fe4` | `d_bg_w_kc.cpp` | `data_020a0cec`, the `dBgPc` the ITCM DetectClsn fills |
+| `__sinit_0207501c` | `d_bg_w_kc_mbg.cpp` | `data_020a0d0c`, the shared `dBgCh_Lin` scratch line |
+
+Each object keeps its address name wherever another file declares it under that name, so
+those files did not change.
+
+What each one needed beyond §6df:
+
+- **No destructor means no registration.** The graph callback, the actor list and the sound
+  registry have no destructor. mwcc emits the sinit and its `.ctor` word with no
+  `__register_global_object` call and no `@NNN` node. The manifest therefore needs no alias
+  row and no node binding rewrite.
+- **The constructor does exactly what the retail initializer does.** `__sinit_02074fb8` stores
+  two vptrs and zeroes only `+4`, so `graphCallback_c` gets `graphCallback_c() : mOwner(0) {}`.
+  `func_02034b1c` sets the other fields later. `__sinit_02074d90` zeroes two words, which is
+  an inline `ActorList() : first(0), last(0) {}`.
+- **A tail call through `ip`.** Retail `__sinit_02074da8` is `ldr ip,=func_02011a5c;
+  ldr r0,=data_0209b53c; bx ip`. mwcc emits exactly that for an inline constructor whose
+  whole body is a call to the extern "C" `func_02011a5c` (`SndRegTable() { func_02011a5c(this); }`).
+- **Node numbers collide across modules.** The node takes the next per-TU `@NNN`, and every
+  `@NNN` in every `symbols.txt` is unique, so where the definition sits decides whether the
+  node's name is free. Defined at the old extern, the `dWipe_c` node is `@75`, which ov064
+  already uses. Defined directly above `func_0202ed48`, its only arm9 reader, it gets the
+  free `@335`. In `d_bg_w_kc.cpp` every position gives a taken number (`@101`..`@147`), so a
+  `defined_symbol_renames` row maps `@101` back to the configured `data_020a0ce0`.
+  Strict `build_pin.verify` checks the raw object, so it reports `@101` as WRONG-DEST (it
+  resolves to ov095's `@101`). After the rename, the object as the build links it
+  (`reloc_audit._as_the_build_links_it`) checks clean, and so do `tubuild verify` and
+  linkcheck.
+- **Claim only the object.** The actor list, the scratch line and the registry sit among
+  `.bss` words that are still `extern` in their TUs. The `.bss` claim covers only the node and
+  the object, so the rest of the TU's `.bss` stays unclaimed. Configured names inside the
+  object (`data_020a0d1c` and `data_020a0d60`, the scratch line's `dBgPi` base and
+  `lineEnd`) do not get in the way.
+- **Pointer bytes in a byte array are a dynamic initializer.** `__sinit_02073e6c` is the
+  KuppaScript scripts' own initializer. A script is a `u8[]` whose records hold unaligned
+  addresses of other scripts and camera paths, spelled `(u32)&p & 0xff, ((u32)&p >> 8) & 0xff,
+  ...`. Each such byte is not a constant, so mwcc leaves it zero in `.data` and stores it in
+  the TU's sinit, which is how retail's 0xf24 of `strb` comes about. The masks are
+  load-bearing: spelled with `(u8)` casts and no `& 0xff`, the same stores come out 0x5c
+  bytes short (24 fewer `and #0xff`, where retail masks a byte it keeps for a later store).
+  The stores run
+  in definition order, so the 38 patched scripts must be defined in the order retail patches
+  them. The fader's inline constructor and registration come last, from its definition.
+- **`.data` and `.bss` are size-sorted as one list.** mwcc gives each object its own section
+  and orders a TU's `.data` and `.bss` sections together by a heapsort on object size over
+  the reversed definition order (equal sizes are left in whatever order the heap gives). The
+  registration node is created at the object's definition, just before it. KuppaScript's
+  definitions follow its dependencies: each script after what it names, the patched scripts
+  in retail's store order, the fader last. That order gives retail's `.bss` but not its
+  `.data`, so the manifest's addresses order the `.data` sections (tubuild's owned-section
+  reordering).
+- **The last script is declared two bytes long.** `data_02089dcc` is 0x312 bytes and ends
+  at 0x0208a0de; the two zero bytes to 0x0208a0e0 are linker `ALIGN(4)` fill. The claim
+  cannot end at 0x0208a0de (dsd extends the unsized symbol to the next one, and a 2-byte
+  ROM gap there is itself aligned to 0x0208a0e0 by `ALIGNALL(4)`; the baseline link of
+  that trial came out 32 bytes long), and tubuild's `terminal_linker_fill` licenses fill only for a claim that owns a
+  whole module section, which arm9's `.data` is not. The source declares the array `[0x314]`
+  so the object covers the fill; the bytes are unchanged and the `.bss` order holds.
+  A simulated-annealing search found definition orders that give retail's `.data` alone,
+  but none that also gives its `.bss` with the fader after the patched scripts. The
+  original order is not recoverable.
+- **False relocations in data.** dsd had read 11 words of script bytes (frame numbers and
+  arguments such as `00 00 14 02`) as pointers. They are dropped from `config/arm9/relocs.txt`.
+- **A claim end needs a configured anchor.** tubuild accepts a `.bss` claim only if both
+  ends are a `symbols.txt` address or a delinks bound. The registry ends at 0x0209ba84.
+  After it comes an unreferenced 0x1c-byte gap, then `data_0209baa0`, the 32-byte-aligned
+  sound heap. A `kind:bss(size=0x548)` on the object does not count as an anchor, so
+  `data_0209ba84` now labels the gap.
+
+**Not done.** For each shard: the owner evidence, then what is missing.
+
+- `__sinit_02073a24` (0x448) fills `dCamera_c`'s state tables (read by `func_0200d3f8`..
+  `func_0200d7a4`) from `.rodata` PMF constants at 0x02086bc8... Folding it means modelling
+  the tables as pointer-to-member statics with named `dCamera_c` methods, and claiming the
+  `.rodata` constants.
+- KuppaScript's `gRunningKuppaScript`/`gSavedKuppaScript` (0x0209fc48/0x0209fc4c) sit in a
+  second `.bss` run, apart from the rest of the file's state at 0x0209b270. One object
+  cannot place its definitions in two runs, so they stay `extern` and unclaimed.
+- Three owners are unpromoted shard runs:
+  - `__sinit_02074dc4`: the Timer neighbour (`func_0201964c`/`func_0201973c`).
+  - `__sinit_02074e0c`: `func_0201aa18`/`func_0201aaec`, between IRQ2 and Message2.
+  - `__sinit_02074e44`: `data_0209e650`, next to `data_0209e64c` of the unpromoted
+    0x0201fec8..0x02020820 run.
+- `__sinit_02074e84` (`dScStage_c`'s graph callback `data_0209f3c4` and the `dClipper`
+  `data_0209f43c`) is interleaved with six other `dScStage_c` statics (0x0209f394..0x0209f40c).
+  A single `.bss` claim would have to define all of them in order.
+- Four belong to the unpromoted math runs around 0x0203adbc..0x0203d47c:
+  - `__sinit_02075054`: two two-short objects with `NoOpDestructor`.
+  - `__sinit_020750b8`: see §6df.
+  - `__sinit_020750ec`: Vec2, `NullDestructor_0203d47c`.
+  - `__sinit_0207511c`: `Vector3s`.
+- `__sinit_02075154` fills `fBase_c`'s five process lists (`data_020a4b6c`..`data_020a4ba8`,
+  read by ActorBase.cpp and fListNode.cpp) from PMF constants at 0x02099f48... Two things
+  are missing. The PMF targets (`func_0204322c`..`func_0204335c`) are unpromoted shards below
+  ActorBase. The constants also need claiming, and they are interleaved with the PMFs of the
+  `.rodata` table `data_02082178`.
+- `__sinit_02074dbc`, `02074dc0`, `02074e80`, `020750b4` and `02075150` are each a bare
+  `bx lr` with no relocations. Only TU order locates them, and none of the promoted
+  candidates emits an initializer.
+

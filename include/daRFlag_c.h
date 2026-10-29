@@ -14,20 +14,22 @@
 
 struct daRFlag_c : dActor_c {
     u8 pad_0d0[0x4];
-    dCcAc_c mdCcAc_c;       /* 0x0d4 touch cylinder */
+    dCcAc_c mdCcAc_c;         /* 0x0d4 touch cylinder */
     dExtAnmModel_c mAnmModel; /* 0x108 */
-    u16 mVictoryTimer;      /* 0x16c frames since Mario touched the flag */
+    u16 mVictoryTimer;        /* 0x16c frames since Mario touched the flag */
     /* 0xff from InitResources (disarmed); daRNk_c writes 0 when its talk
        begins (STATE_WAIT_FOR_PLAYER); 1 once Mario (Behavior) or Koopa the Quick (daRNk_c) reaches
        the flag. Koopa reads it to decide who won. */
-    u8 mHasTouchedFlag;     /* 0x16e */
-    u8 pad_16f[0x5];        /* nothing in this class reads these */
+    u8 mHasTouchedFlag; /* 0x16e */
+    u8 pad_16f[0x5];    /* nothing in this class reads these */
     virtual ~daRFlag_c();
 
     virtual int InitResources();
     virtual int CleanupResources();
     virtual int Behavior();
     virtual int Render();
+
+    void UpdateModelMatrix(); /* ov062 0x0211afbc */
 };
 
 #ifndef SM64DS_PLATFORM_PC

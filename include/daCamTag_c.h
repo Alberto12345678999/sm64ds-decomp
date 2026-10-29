@@ -29,19 +29,18 @@ struct daCamTag_c : dActor_c {
     /* Inline empty dtor: mwccarm emits D1 then D0, no D2. InitResources is
      * the first out-of-line virtual/key function, so this TU owns the
      * _ZTV/_ZTI/_ZTS group. */
-    virtual ~daCamTag_c() {}            /* slots 16 (D1), 17 (D0) */
+    virtual ~daCamTag_c() {} /* slots 16 (D1), 17 (D0) */
 
-    virtual s32 InitResources();        /* slot 0 */
-    virtual s32 CleanupResources();     /* slot 3 */
-    virtual s32 Behavior();             /* slot 6 */
-    virtual s32 Render();               /* slot 9 */
-    virtual void OnPendingDestroy();    /* slot 12 */
+    virtual s32 InitResources();     /* slot 0 */
+    virtual s32 CleanupResources();  /* slot 3 */
+    virtual s32 Behavior();          /* slot 6 */
+    virtual s32 Render();            /* slot 9 */
+    virtual void OnPendingDestroy(); /* slot 12 */
 };
 
 #ifndef SM64DS_PLATFORM_PC
 /* ROM layout under mwccarm; host ABI divergence is tracked separately. */
-typedef char daCamTag_c_size_must_be_0xd4[
-    sizeof(daCamTag_c) == 0xd4 ? 1 : -1];
+typedef char daCamTag_c_size_must_be_0xd4[sizeof(daCamTag_c) == 0xd4 ? 1 : -1];
 #endif
 
 #endif /* DACAMTAG_C_H */

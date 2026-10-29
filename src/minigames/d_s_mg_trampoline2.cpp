@@ -272,8 +272,7 @@ int *sTrmp2TextSpritesByLanguage[] = {sMgTextSpritesEnglish, sMgTextSpritesSpani
 
 /* This overload is C++, unlike the address-spelled C ABI declarations above. */
 namespace G3X {
-/* local extern: G3X.h is not included in this TU. */
-extern "C" void SetFog(int enable, int mode, int slope, int offset);
+void SetFog(int enable, int mode, int slope, int offset);
 }
 
 /* The three models, mTexAnim and mUnusedVec are all built before the

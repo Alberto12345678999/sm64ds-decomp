@@ -39,10 +39,9 @@ void func_020557b4(void);
 void func_02045d9c(void);
 }
 
-namespace G3i {
-/* local extern: G3i.h is not included in this TU. */
-extern "C" void PerspectiveW_(Fix12i, Fix12i, Fix12i, Fix12i, Fix12i, Fix12i, int, Matrix4x3 *);
-}
+struct G3i {
+    static void PerspectiveW_(Fix12i, Fix12i, Fix12i, Fix12i, Fix12i, Fix12i, int, Matrix4x3 *);
+};
 
 extern "C" {
 

@@ -30,34 +30,34 @@
  */
 struct daFeather_c : dActor_c {
     u8 pad_0d0[0x4];
-    dExtSimpleModel_c mModel;      /* 0x0d4 */
-    dCcAc_c mdCcAc_c;              /* 0x124 */
-    dBgCh_Actr mWithMeshClsn;      /* 0x158 */
-    dExtShadowModel_c mShadowModel;      /* 0x314 */
-    /* The shadow matrix, rebuilt every frame by func_ov002_020b2c44 out of
+    dExtSimpleModel_c mModel;       /* 0x0d4 */
+    dCcAc_c mdCcAc_c;               /* 0x124 */
+    dBgCh_Actr mWithMeshClsn;       /* 0x158 */
+    dExtShadowModel_c mShadowModel; /* 0x314 */
+    /* The shadow matrix, rebuilt every frame by UpdateModelAndShadow out of
        mAngleY and the position and handed to DropShadowRadHeight.
        Only this TU includes this header, and it includes common.h first, so
        the FLAT Matrix4x3 wins here: with math/Matrix.h's nested spelling
        the TU's copies would scalarize (Vector3 is non-POD) and the inline
        destructor below would gain a ~Vector3 call. */
-    Matrix4x3 mShadowMtx;            /* 0x33c */
-    u8  pad_36c[0xc];                /* 0x36c -- unread */
+    Matrix4x3 mShadowMtx; /* 0x33c */
+    u8 pad_36c[0xc];      /* 0x36c -- unread */
     /* The float. mSwayAngle advances 0x400 per airborne frame and eases back
        to 0 on the ground; (mSwayAngle >> 4) * 2 indexes the sin/cos table at
        data_02082214, which drives mAngleX/mAngleZ and, scaled by mDriftSpeed,
        mHorzSpeed. mDriftSpeed itself eases toward 0x10000 every frame. */
-    s32 mDriftSpeed;            /* 0x378 */
-    u16 mSwayAngle;            /* 0x37c */
-    u8  pad_37e[0x2];
+    s32 mDriftSpeed; /* 0x378 */
+    u16 mSwayAngle;  /* 0x37c */
+    u8 pad_37e[0x2];
     /* Particle handle: Behavior passes the previous frame value back into
        Particle::System::New (effect 0x4a) as its first argument and stores the
        result. */
-    u32 mParticle;            /* 0x380 */
+    u32 mParticle; /* 0x380 */
     /* Seeded 0xb4 (180 frames) in InitResources and counted down only while
        the feather is ON THE GROUND; at 0 it emits particle 0xd2 and marks
        itself for destruction. Render skips drawing on odd values below 0x2d, so
        it blinks through its last 45 frames. */
-    u8  mLifeTimer;            /* 0x384 */
+    u8 mLifeTimer; /* 0x384 */
 
     /* INLINE, AND DECLARED FIRST. Out of line, mwcc emits D0 ahead of D1
        and the cartridge has D1 first, plus a homeless D2; inline, this TU
@@ -68,10 +68,13 @@ struct daFeather_c : dActor_c {
        the RTTI group land in the translation unit that defines it. */
     virtual ~daFeather_c() {}
 
-    virtual s32 InitResources();        /* slot  0 */
-    virtual s32 CleanupResources();     /* slot  3 */
-    virtual s32 Behavior();             /* slot  6 */
-    virtual s32 Render();               /* slot  9 */
+    virtual s32 InitResources();    /* slot  0 */
+    virtual s32 CleanupResources(); /* slot  3 */
+    virtual s32 Behavior();         /* slot  6 */
+    virtual s32 Render();           /* slot  9 */
+
+    /* Rebuild the model matrix and drop the shadow. */
+    void UpdateModelAndShadow();
 };
 
 #ifndef SM64DS_PLATFORM_PC

@@ -70,19 +70,15 @@ enum dScMgPanel_c_AssetId {
 #include "Sound.h"
 
 namespace G2 {
-/* local extern: G2.h is not included in this TU. */
-extern "C" char *GetBG2ScrPtr();
+char *GetBG2ScrPtr();
 }
 namespace G2S {
 char *GetBG2ScrPtr();
-/* local extern: G2.h is not included in this TU. */
-extern "C" char *GetBG3CharPtr();
+char *GetBG3CharPtr();
 }
 namespace GX {
-/* local extern: GX.h is not included in this TU. */
-extern "C" void LoadBGPltt(const void *src, u32 offset, u32 size);
-/* local extern: GX.h is not included in this TU. */
-extern "C" void LoadOBJPltt(const void *src, u32 offset, u32 size);
+void LoadBGPltt(const void *src, u32 offset, u32 size);
+void LoadOBJPltt(const void *src, u32 offset, u32 size);
 }
 namespace GXS {
 void LoadBGPltt(const void *src, u32 offset, u32 size);

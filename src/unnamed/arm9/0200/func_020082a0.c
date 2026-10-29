@@ -1,4 +1,4 @@
-extern unsigned short data_0209b274;
+extern unsigned short gKuppaScriptFrame;
 extern int func_020094a8(void *p);
 extern unsigned int ReadUnalignedInt(unsigned char *p);
 extern void func_02009414(void *p);
@@ -16,7 +16,7 @@ typedef struct {
 int func_020082a0(void *self, const void *src, int id)
 {
     CameraView *cam = (CameraView *)self;
-    if (id == data_0209b274) {
+    if (id == gKuppaScriptFrame) {
         func_020094a8(self);
         cam->mLookAtPath = (int)ReadUnalignedInt((unsigned char *)src);
         cam->mPosPath = (int)ReadUnalignedInt((unsigned char *)src + 4);

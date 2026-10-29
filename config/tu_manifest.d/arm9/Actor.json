@@ -12,13 +12,29 @@
     "DESTRUCTOR TAIL: include/dActor_c.h still declares ~dActor_c first, so it is the key function. One out-of-line definition under default codegen (defer_codegen left at its default, which is on) emits D2, D0, D1 in that order -- the cartridge order 0x020112c8, 0x02011314, 0x02011374. The same object emits _ZTV8dActor_c, _ZTI8dActor_c, _ZTS8dActor_c and the ancestor typeinfo records; each is deadstrip-data at its symbols.txt home, so the retail table stays the linked copy and the vtable is not homeless.",
     "CONSTRUCTOR TAIL: one dActor_c::dActor_c() emits C1 (0x020113c0) and C2 (0x0201150c), both byte-identical to the ROM once relocations are applied. mwcc places the class's vague-linkage member dtors between those two variants. An unreachable Vector3s[2] in the constructor body odr-uses _ZN8Vector3sD1Ev into that slot and adds no instructions (both variants stay 0x148). The four union dtors and _ZN7dBase_cD2Ev in the same slot have no ROM home and are deadstripped, leaving the kept order C1, Vector3sD1 (0x02011508), C2. Sound.cpp still begins at 0x02011654.",
     "NEIGHBOURS ARE A DIFFERENT SUBJECT: below, Initialise3dGraphics (0x0200f558..0x0200f658) writes 0x4000060/0x4000580/0x400044c and calls G3X/G3i - 3D hardware setup, no Actor anywhere. Above, func_02011654 and func_02011698 (0x02011654..0x020116c4) are the unlink/link pair of an intrusive hash-bucket list at +0x508, a matched pair of their own.",
-    "IT COMPILES AS ONE OBJECT: all 97 licensed members, including the folded destructor and constructor tail, reproduce the cartridge byte-for-byte from a single compile of this source file."
+    "IT COMPILES AS ONE OBJECT: all 97 licensed members, including the folded destructor and constructor tail, reproduce the cartridge byte-for-byte from a single compile of this source file.",
+    "static initializer: __sinit_02074d90 (.init 0x02074d90..0x02074da8, .ctor word 0x02086b68) is the first arm9 initializer and empties only data_0209b468, the actor list every dActor_c constructor in this TU links into. arm9 .init and .ctor follow .text TU order: the next initializer, 0x02074da8, builds Sound.cpp's data_0209b53c, and Sound.cpp (0x02011654) is the TU directly above this one. The object is the top word pair of this TU's .bss and Sound.cpp's data_0209b470 follows it."
   ],
   "sections": [
     {
       "name": ".text",
       "start": "0x0200f658",
       "end": "0x02011654"
+    },
+    {
+      "name": ".init",
+      "start": "0x02074d90",
+      "end": "0x02074da8"
+    },
+    {
+      "name": ".ctor",
+      "start": "0x02086b68",
+      "end": "0x02086b6c"
+    },
+    {
+      "name": ".bss",
+      "start": "0x0209b468",
+      "end": "0x0209b470"
     }
   ],
   "functions": [
@@ -58,14 +74,14 @@
       "ordinal": 4
     },
     {
-      "symbol": "PlaySmallSecretSound",
+      "symbol": "_ZN5Sound20PlaySmallSecretSoundEP8dActor_cPt",
       "address": "0x0200f874",
       "size": "0x00000084",
       "legacy_source": "src/_ZN5Sound20PlaySmallSecretSoundEP8dActor_cPt.cpp",
       "ordinal": 5
     },
     {
-      "symbol": "PlaySecretSound",
+      "symbol": "_ZN5Sound15PlaySecretSoundEP8dActor_cPt",
       "address": "0x0200f8f8",
       "size": "0x00000084",
       "legacy_source": "src/_ZN5Sound15PlaySecretSoundEP8dActor_cPt.cpp",
@@ -703,7 +719,15 @@
     }
   ],
   "data": [],
-  "bss": [],
+  "bss": [
+    {
+      "symbol": "data_0209b468",
+      "address": "0x0209b468",
+      "size": "0x8",
+      "evidence": "the global actor list (first and last fLiNdBa_c links); retail __sinit_02074d90 zeroes both words and registers nothing. Every arm9 reader is a dActor_c member in this run: the constructor and destructor triple link and unlink mActorListNode through it, FindWithID/FindWithActorID search it, Next reads its first link. The next .bss, 0x0209b470, is Sound.cpp's.",
+      "binding": "STB_GLOBAL"
+    }
+  ],
   "compiler_only_output": [
     {
       "symbol": "_ZN7Vector3D1Ev",
@@ -794,7 +818,8 @@
     "TAIL FOLD: the six shards at 0x020112c8..0x02011654 are this TU. Default codegen emits D2, D0, D1 from one ~dActor_c(). One constructor emits C1 and C2, and an unreachable Vector3s[2] places _ZN8Vector3sD1Ev between them. Union dtors and dBase D2 in that slot are deadstripped. The vtable and RTTI records are deadstrip-data at their existing homes, so the link keeps the retail table.",
     "ONE unlicensed .text body remains: _ZN7Vector3D1Ev, 4 bytes, STB_LOPROC, already defined at arm9:0x020072c0, declared deadstrip-duplicate below. It is emitted because include/types.h gives Vector3 an inline empty destructor and this TU instantiates Vector3 arrays; the same body comes out of the legacy per-function objects today.",
     "include/dActor_c.h's three new declarations were re-verified against the tree: all 1,126 src/ files that transitively include dActor_c.h were rebuilt under build_pin.verify. 1,124 reproduce; the 2 that do not (_ZN15daObjMarioCap_c13InitResourcesEv, _ZN7daIbl_c13InitResourcesEv) fail identically with the header reverted and carry no `complete` marker, so they are neither enrolled nor this change's.",
-    "LINK-VERIFIED on the licensed range 0x0200f658..0x02011654 and byte-identical through production: see verification and the PR description for the recorded numbers."
+    "LINK-VERIFIED on the licensed range 0x0200f658..0x02011654 and byte-identical through production: see verification and the PR description for the recorded numbers.",
+    "Static initializer folded: data_0209b468, the global actor list, is now defined in this TU as an ActorList (first/last links, inline constructor that empties it). It was an extern void* here, built by the handwritten src/unnamed/arm9/0207/__sinit_02074d90.c. mwcc emits __sinit_d_actor.cpp and its .ctor word; both plus the object's .bss are byte- and relocation-identical to retail. ActorList is a file-local coined name: the type has no RTTI, and its list helpers (func_0203b244/func_0203b27c and ActorBase.cpp's searches) are still unnamed."
   ],
   "verification": {
     "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",
@@ -812,9 +837,105 @@
       "relocation_destinations_verified": "PASS"
     },
     "linkcheck": {
-      "round": "tools/prepush_linkcheck.py + tools/rombuild.py on the promoted state",
-      "result": "see PR description for recorded numbers",
-      "note": "tubuild linkcheck <id> routes manifest TUs through the intact-object preparation, which requires a non-text claim -- this entry is text-only (production_mode absent), so that per-TU intact gate does not apply. Production byte-identity is proven by rombuild.py + prepush_linkcheck.py."
+      "round": "tools/tubuild.py linkcheck -- scratch dsd delink+lcf, whole-tree mwccarm, mwldarm link, linked-range and module byte comparison, dsd check symbols --fail, full ROM build",
+      "result": "scratch-data-verified",
+      "scratch": "build/tu/arm9-Actor/link (gitignored)",
+      "phases": {
+        "delink": true,
+        "lcf": true,
+        "compile": true,
+        "link": true,
+        "checkModules": true,
+        "checkSymbols": true,
+        "rom": true
+      },
+      "tuRange": {
+        "start": "0x0200f658",
+        "end": "0x02011654",
+        "differingBytes": 0,
+        "firstDiff": null
+      },
+      "tuRanges": [
+        {
+          "section": ".text",
+          "start": "0x0200f658",
+          "end": "0x02011654",
+          "differingBytes": 0,
+          "firstDiff": null
+        },
+        {
+          "section": ".init",
+          "start": "0x02074d90",
+          "end": "0x02074da8",
+          "differingBytes": 0,
+          "firstDiff": null
+        },
+        {
+          "section": ".ctor",
+          "start": "0x02086b68",
+          "end": "0x02086b6c",
+          "differingBytes": 0,
+          "firstDiff": null
+        },
+        {
+          "section": ".bss",
+          "start": "0x0209b468",
+          "end": "0x0209b470",
+          "comparison": "NOBITS -- symbol/module gates"
+        }
+      ],
+      "objectAudit": {
+        "counts": {
+          "LICENSED": 100
+        },
+        "emittedTextOrderIsRomAscending": true,
+        "nonLicensedSymbols": [],
+        "unlicensedSections": []
+      },
+      "nontextSectionOrder": {
+        "groups": [
+          {
+            "section": ".init",
+            "original": [
+              202
+            ],
+            "desired": [
+              202
+            ]
+          },
+          {
+            "section": ".ctor",
+            "original": [
+              200
+            ],
+            "desired": [
+              200
+            ]
+          },
+          {
+            "section": ".bss",
+            "original": [
+              5
+            ],
+            "desired": [
+              5
+            ]
+          }
+        ],
+        "objisolate": null,
+        "errors": null
+      },
+      "linkedStorageAliases": null,
+      "symbolCheckNewVsBaseline": [],
+      "symbolCheckErrors": [],
+      "symbolCheckBaselineErrors": [],
+      "moduleSetSha256": "f9852ffaf80ef19662ab5535df4b13b935188ac3087b5b1d4561c089e4dd802b",
+      "rom": {
+        "bytes": 16777216,
+        "sha256": "d1506e90efae5e2d2cf119926a4ac2a291bd5ca78349d09d5024e1a918c478e8",
+        "matchesStockRom": true
+      },
+      "linkerOutput": null
     },
     "compilerOnlyOutput": {
       "requested": [
@@ -873,5 +994,60 @@
       ],
       "canonicalDuplicates": []
     }
-  }
+  },
+  "production_mode": "intact-object",
+  "init": [
+    {
+      "symbol": "__sinit_d_actor.cpp",
+      "address": "0x02074d90",
+      "size": "0x18",
+      "binding": "STB_GLOBAL",
+      "evidence": "compiler-generated static initializer for data_0209b468 is raw-byte-identical to retail __sinit_02074d90 (0x18: the inline ActorList constructor's two zero stores and one pool word); there is no destructor to register"
+    }
+  ],
+  "ctor": [
+    {
+      "symbol": ".p__sinit_d_actor.cpp",
+      "address": "0x02086b68",
+      "size": "0x4",
+      "binding": "STB_GLOBAL",
+      "evidence": "compiler-generated constructor-table word relocates to the owned initializer exactly as retail"
+    }
+  ],
+  "symbol_binding_rewrites": [
+    {
+      "symbol": "__sinit_d_actor.cpp",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "mwcc emits the TU initializer local; DSD requires a configured global relocation destination at the same exact address"
+    },
+    {
+      "symbol": ".p__sinit_d_actor.cpp",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "mwcc emits the ctor-table object local; DSD exposes owned symbols globally and cannot encode a local symbols.txt entry"
+    }
+  ],
+  "relocations": [
+    {
+      "section": ".init",
+      "source": "0x02074da4",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_0209b468",
+      "addend": 0,
+      "target_module": "arm9",
+      "target_address": "0x0209b468"
+    },
+    {
+      "section": ".ctor",
+      "source": "0x02086b68",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "__sinit_d_actor.cpp",
+      "addend": 0,
+      "target_module": "arm9",
+      "target_address": "0x02074d90"
+    }
+  ]
 }

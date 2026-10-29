@@ -2,8 +2,7 @@
 /* Runtime asset handles resolved through the overlay 0 file table. */
 
 namespace G2S {
-/* local extern: G2.h is not included in this TU. */
-extern "C" void *GetBG1CharPtr(void);
+unsigned int GetBG1CharPtr(void);
 }
 enum LoadFont_AssetId {
     ASSET_D_2D_MARIO_3DFONT_NCL_BIN = 0x0237
@@ -21,9 +20,6 @@ extern "C" void DecompressLZ16(void *dst, void *src);
 struct GX  { static void LoadBGPltt(void const *p, unsigned a, unsigned b); };
 struct GXS { static void LoadBGPltt(void const *p, unsigned a, unsigned b); };
 
-/* local extern: struct GX here shadows namespace GX, so GX.h cannot be included. */
-extern "C" void LoadBGPltt(void const *, unsigned, unsigned);
-
 extern unsigned char data_0209d698;
 extern int data_0209d6f8;
 extern unsigned char data_0209d660;
@@ -40,7 +36,7 @@ extern "C" void LoadFont(unsigned char arg)
         LoadFileAt(0x980e, Mg_GetWorkBuffer());
         data_0209d6f8 = Mg_GetWorkBuffer();
         file = LoadFile(ASSET_D_2D_MARIO_3DFONT_NCL_BIN);
-        LoadBGPltt((void *)(file + 2), 2, 0x20);
+        GX::LoadBGPltt((void *)(file + 2), 2, 0x20);
         Deallocate((void *)file);
     } else if (data_0209d698 == 1) {
         MultiCopy_Int((int *)r4, (int *)G2S::GetBG1CharPtr(), 0x4000);

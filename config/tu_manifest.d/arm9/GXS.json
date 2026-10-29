@@ -20,42 +20,42 @@
   ],
   "functions": [
     {
-      "symbol": "EndLoadOBJExtPltt",
+      "symbol": "_ZN3GXS17EndLoadOBJExtPlttEv",
       "address": "0x02055dec",
       "size": "0x0000004c",
       "legacy_source": "src/_ZN3GXS17EndLoadOBJExtPlttEv.cpp",
       "ordinal": 0
     },
     {
-      "symbol": "LoadOBJExtPltt",
+      "symbol": "_ZN3GXS14LoadOBJExtPlttEPKvjj",
       "address": "0x02055e38",
       "size": "0x00000074",
       "legacy_source": "src/_ZN3GXS14LoadOBJExtPlttEPKvjj.cpp",
       "ordinal": 1
     },
     {
-      "symbol": "BeginLoadOBJExtPltt",
+      "symbol": "_ZN3GXS19BeginLoadOBJExtPlttEv",
       "address": "0x02055eac",
       "size": "0x00000024",
       "legacy_source": "src/_ZN3GXS19BeginLoadOBJExtPlttEv.cpp",
       "ordinal": 2
     },
     {
-      "symbol": "EndLoadBGExtPltt",
+      "symbol": "_ZN3GXS16EndLoadBGExtPlttEv",
       "address": "0x02055ed0",
       "size": "0x0000004c",
       "legacy_source": "src/_ZN3GXS16EndLoadBGExtPlttEv.cpp",
       "ordinal": 3
     },
     {
-      "symbol": "LoadBGExtPltt",
+      "symbol": "_ZN3GXS13LoadBGExtPlttEPKvjj",
       "address": "0x02055f1c",
       "size": "0x00000074",
       "legacy_source": "src/_ZN3GXS13LoadBGExtPlttEPKvjj.cpp",
       "ordinal": 4
     },
     {
-      "symbol": "BeginLoadBGExtPltt",
+      "symbol": "_ZN3GXS18BeginLoadBGExtPlttEv",
       "address": "0x02055f90",
       "size": "0x00000024",
       "legacy_source": "src/_ZN3GXS18BeginLoadBGExtPlttEv.cpp",
@@ -97,7 +97,7 @@
       "ordinal": 10
     },
     {
-      "symbol": "LoadBG1Char",
+      "symbol": "_ZN2GX11LoadBG1CharEPKvjj",
       "address": "0x02056194",
       "size": "0x00000060",
       "legacy_source": "src/_ZN2GX11LoadBG1CharEPKvjj.cpp",
@@ -111,7 +111,7 @@
       "ordinal": 12
     },
     {
-      "symbol": "LoadBG0Char",
+      "symbol": "_ZN2GX11LoadBG0CharEPKvjj",
       "address": "0x02056254",
       "size": "0x00000060",
       "legacy_source": "src/_ZN2GX11LoadBG0CharEPKvjj.cpp",
@@ -181,7 +181,7 @@
       "ordinal": 22
     },
     {
-      "symbol": "LoadOBJ",
+      "symbol": "_ZN2GX7LoadOBJEPKvjj",
       "address": "0x02056614",
       "size": "0x00000060",
       "legacy_source": "src/_ZN2GX7LoadOBJEPKvjj.cpp",
@@ -209,7 +209,7 @@
       "ordinal": 26
     },
     {
-      "symbol": "LoadOBJPltt",
+      "symbol": "_ZN2GX11LoadOBJPlttEPKvjj",
       "address": "0x020567a0",
       "size": "0x00000068",
       "legacy_source": "src/_ZN2GX11LoadOBJPlttEPKvjj.cpp",

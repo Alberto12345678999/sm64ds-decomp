@@ -9,7 +9,7 @@
  * S41: RTTI ov002:0x0210b000 names daSCoin_c; D1 0x020f03c4 size 0x30,
  * D0 0x020f03f4 size 0x44; no destructor body in this TU (@symbol only).
  *
- * deslop leftovers:
+ * NOTES:
  * - SpawnStar copies the marker's position through an int * at its mPosX:
  *   member reads (marker->mPos.x or marker->mPosX, ...) size-DIFF.
  * - LinkToBlock's ID tests go through the int-returning HasActorID: a
@@ -27,12 +27,9 @@
 #include "daObjHatenaBlock_c.h"
 #include "daObjPushblock_c.h"
 #include "Sound.h"
+#include "math/CalcLib.h"
 
-extern "C" {
-int Vec3_Dist(const Vector3 *a, const Vector3 *b);
-unsigned char DecIfAbove0_Byte(unsigned char *p);
 extern SharedFilePtr data_ov002_0210d9a8;
-}
 
 /* int-returning, so the ROM materializes the 0/1 of each ID test before
  * branching on it; a direct `actorID == id` does not. */

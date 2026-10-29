@@ -36,20 +36,16 @@ enum d_s_mg_single3_d_base_AssetId {
 /* SDK calls this file makes. */
 namespace GX {
 void SetGraphicsMode(int, int, int);
-void LoadOBJPltt(const void *, u32, u32);
+void LoadOBJPltt(const void*, u32, u32);
 }
 namespace GXS {
 void LoadBGPltt(const void*, u32, u32);
 void LoadOBJPltt(const void*, u32, u32);
 }
-namespace G2S {
-/* local extern: G2.h is not included in this TU. */
-extern "C" void *GetBG3CharPtr();
-}
+namespace G2S { u32 GetBG3CharPtr(); }
 namespace CP15 { void FlushAndInvalidateDataCache(u32 address, u32 length); }
 namespace G3X {
-/* local extern: G3X.h is not included in this TU. */
-extern "C" void SetFog(int enable, int, int, int);
+void SetFog(int enable, int, int, int);
 }
 
 extern "C" {

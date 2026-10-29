@@ -17,8 +17,8 @@
 /* fwd */
 struct msg;
 struct Message {
-    u8  pad_000[0x196];
-    u8  unk_196;            /* 0x196 */
+    u8 pad_000[0x196];
+    u8 unk_196; /* 0x196 */
 #ifdef __cplusplus
     /* methods */
 
@@ -32,6 +32,7 @@ struct Message {
        compiler's @NNN temporaries, so naming it would renumber every TU
        that includes this header, and the TU manifests pin those numbers. */
     static void AddChar(u8);
+    static void AddCharVS(u8);
     static int UpdateWindow();
     static void Update();
     static void ResetAllGlobals();

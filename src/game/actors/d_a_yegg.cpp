@@ -1278,7 +1278,7 @@ void func_ov002_020edca4(daYegg_c* self)
  * out, re-enters state 1 and returns 1. Any other case returns 0. */
 int daYegg_c::func_ov002_020eddc4()
 {
-    struct dActor_c* actor;
+    Player *actor;
     struct dActor_c* other;
     u32 id;
     u32 flags;
@@ -1287,7 +1287,7 @@ int daYegg_c::func_ov002_020eddc4()
     id = mdCcAc_c.otherOwner;
     if (id == 0) goto fail;
 
-    actor = dActor_c::FindWithID(id);
+    actor = static_cast<Player *>(dActor_c::FindWithID(id));
     if (actor == 0) goto fail;
 
     if (actor == (struct dActor_c*)mPlayer) goto fail;
@@ -1305,7 +1305,7 @@ int daYegg_c::func_ov002_020eddc4()
                 pos.x = mPosX;
                 pos.y = mPosY;
                 pos.z = mPosZ;
-                ((Player *)actor)->Hurt(pos, 1, 0xc000, 1, 0, 1);
+                actor->Hurt(pos, 1, 0xc000, 1, 0, 1);
             }
         }
     }

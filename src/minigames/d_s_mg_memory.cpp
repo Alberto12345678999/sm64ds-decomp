@@ -58,8 +58,7 @@ extern dScMgMemory_cCardState sMemoryCardTable[];
 extern "C" dScMgMemory_cPlayerState sMemoryPlayerTable[];
 
 namespace GX {
-/* local extern: GX.h is not included in this TU. */
-extern "C" void LoadOBJPltt(void const *, unsigned int, unsigned int);
+void LoadOBJPltt(void const *, unsigned int, unsigned int);
 }
 
 namespace GXS {

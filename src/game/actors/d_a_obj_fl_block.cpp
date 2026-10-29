@@ -14,21 +14,16 @@
  * (.text 0x021116c4..0x02111980).
  */
 
-// leftovers:
-// - mMeshCollider.SetFile with a Fix12<int> scale local size-DIFFs
-//   InitResources 0xac->0xb8. The scalar extern stays.
-// - IsClsnInRange(Fix12<int>, Fix12<int>) size-DIFFs Behavior 0xa4->0xc0.
-//   The scalar extern called as (this, 0, 0) matches.
+// Notes (each measured with mwccarm 2004/b56):
 // - mMeshCollider.clipRadius = 0x150000 size-DIFFs Behavior 0xa4->0xa0.
 //   func_020393a4 is the call the ROM makes.
 // - Assigning beforeClsnCallback size-DIFFs InitResources 0xac->0xa8.
-//   Assigning stoodOnCallback from func_ov022_0211193c size-DIFFs 0xac->0xa8.
-//   func_020393d4 and func_020393c4 stay.
+//   Assigning stoodOnCallback from StoodOnCallback size-DIFFs 0xac->0xa8.
+//   func_020393d4 and func_020393c4 stay; d_bg_w.cpp defines them and no
+//   header declares them.
 // - Putting the limit on the left of the compare
 //   (`mMaxPosY - 0xc8000 > mPosY`, `mMaxPosY < mPosY`) keeps Behavior at
 //   0xa4 and changes its words. mPosY on the left matches.
-// - The callback func_ov022_0211193c and its helper func_ov022_0211191c
-//   keep their address names and stay free extern "C" functions.
 // - g_profile_FL_BLOCK lives outside this TU.
 // - data_ov064_0211bb0c is an unnamed row in its own module.
 // - The two file handles live at the bottom of this file; the compiler's
@@ -37,10 +32,7 @@
 //   resource-family functions, recorded as aliases in the manifest.
 
 /* Runtime asset handles resolved through the overlay 0 file table. */
-enum daObjFl_Block_c_AssetId {
-    ASSET_FL_BLOCK_BMD = 0x05f1,
-    ASSET_FL_BLOCK_KCL = 0x05f2
-};
+enum daObjFl_Block_c_AssetId { ASSET_FL_BLOCK_BMD = 0x05f1, ASSET_FL_BLOCK_KCL = 0x05f2 };
 
 #include "daObjFl_Block_c.h"
 #include "SharedFilePtr.h"
@@ -59,7 +51,6 @@ struct FlBlockCollisionFilePtr : SharedFilePtr {
     ~FlBlockCollisionFilePtr();
 };
 
-extern "C" {
 /* This TU's two file handles: the block model and its collision file.
  * InitResources loads both, CleanupResources releases them. Defined at the
  * end of this file so the constructors do not enter .text. */
@@ -67,15 +58,12 @@ extern FlBlockModelFilePtr data_ov022_02114558;
 extern FlBlockCollisionFilePtr data_ov022_02114550;
 extern char data_ov064_0211bb0c[];
 
-/* Scalar ABI. The real members take Fix12<int> by value. */
-extern void hold_d_a_obj_fl_block(dBgW_KcMbg *self, char *kcl, const Matrix4x3 *mtx, int scale,
-                                  s16 angleY, char *clps);
-
-/* Stores at dBgW+0x0c, +0x18 and +0x1c. Spelling matches the C definitions. */
+extern "C" {
+/* local extern: stores at dBgW+0x0c, +0x18 and +0x1c. d_bg_w.cpp defines
+ * them and no header declares them. */
 void func_020393a4(int *mesh, int range);
 void func_020393d4(int *mesh, int callback);
 void func_020393c4(int *mesh, int callback);
-void func_ov022_0211191c(daObjFl_Block_c *self, dActor_c *other);
 }
 
 // @symbol daObjFl_Block_c_classInit
@@ -87,8 +75,7 @@ void func_ov022_0211191c(daObjFl_Block_c *self, dActor_c *other);
  * `new daObjFl_Block_c` is the whole sequence the loose factory spelled by
  * hand: fBase_c::operator new(0x328), dBgActor_c's base constructor, then the
  * vptr store. */
-extern "C" daObjFl_Block_c *daObjFl_Block_c_classInit(void)
-{
+extern "C" daObjFl_Block_c *daObjFl_Block_c_classInit(void) {
     return new daObjFl_Block_c;
 }
 
@@ -97,45 +84,41 @@ extern "C" daObjFl_Block_c *daObjFl_Block_c_classInit(void)
  * long_calls keeps the pooled absolute tail call. */
 #pragma push
 #pragma long_calls on
-// @symbol func_ov022_0211193c
-extern "C" void func_ov022_0211193c(void *collider, daObjFl_Block_c *self, dActor_c *other)
-{
-    func_ov022_0211191c(self, other);
+// @symbol _ZN15daObjFl_Block_c15StoodOnCallbackEP4dBgWPS_P8dActor_c
+void daObjFl_Block_c::StoodOnCallback(dBgW *collider, daObjFl_Block_c *self, dActor_c *other) {
+    self->OnStoodOn(other);
 }
 #pragma pop
 
-// @symbol func_ov022_0211191c
+// @symbol _ZN15daObjFl_Block_c9OnStoodOnEP8dActor_c
 /* The player (actor 0xbf) touched the block: raise mHadClsn, which Behavior
  * reads to decide whether to sink. */
-extern "C" void func_ov022_0211191c(daObjFl_Block_c *self, dActor_c *other)
-{
+void daObjFl_Block_c::OnStoodOn(dActor_c *other) {
     u8 isPlayer = other->actorID == 0xbf;
     if (isPlayer)
-        self->mHadClsn = 1;
+        mHadClsn = 1;
 }
 
 // @symbol _ZN15daObjFl_Block_c13InitResourcesEv
-s32 daObjFl_Block_c::InitResources()
-{
+s32 daObjFl_Block_c::InitResources() {
     mModel.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(data_ov022_02114558), 1, -1);
     UpdateModelPosAndRotY();
     UpdateClsnPosAndRot();
 
     char *kcl = dBgW_Kc::LoadFile(data_ov022_02114550);
     ((dBgW_KcMbg *)(&mMeshCollider))
-        ->dBgW_KcMbg::SetFile((KCL_File *)(kcl), *(&mClsnMat), 0x199, mAngleY,
+        ->dBgW_KcMbg::SetFile((KCL_File *)(kcl), mClsnMat, 0x199, mAngleY,
                               *(CLPS_Block *)(data_ov064_0211bb0c));
 
     func_020393d4((int *)&mMeshCollider, (int)&dBgW::UpdatePosWithVelocity);
-    func_020393c4((int *)&mMeshCollider, (int)&func_ov022_0211193c);
+    func_020393c4((int *)&mMeshCollider, (int)&StoodOnCallback);
 
     mMaxPosY = mPosY;
     return 1;
 }
 
 // @symbol _ZN15daObjFl_Block_c8BehaviorEv
-s32 daObjFl_Block_c::Behavior()
-{
+s32 daObjFl_Block_c::Behavior() {
     func_020393a4((int *)&mMeshCollider, 0x150000);
 
     if (mHadClsn) {
@@ -158,15 +141,13 @@ s32 daObjFl_Block_c::Behavior()
 }
 
 // @symbol _ZN15daObjFl_Block_c6RenderEv
-s32 daObjFl_Block_c::Render()
-{
+s32 daObjFl_Block_c::Render() {
     mModel.Render(0);
     return 1;
 }
 
 // @symbol _ZN15daObjFl_Block_c16CleanupResourcesEv
-s32 daObjFl_Block_c::CleanupResources()
-{
+s32 daObjFl_Block_c::CleanupResources() {
     if (mMeshCollider.IsEnabled())
         mMeshCollider.Disable();
 

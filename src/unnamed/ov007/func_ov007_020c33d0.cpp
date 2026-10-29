@@ -3,12 +3,9 @@
 // Matched byte-for-byte with mwccarm 1.2/sp2p3 (ov007).
 
 namespace GX {
-/* local extern: GX.h is not included in this TU. */
-extern "C" void LoadBG0Char(const void *p, unsigned int a, unsigned int b);
-/* local extern: GX.h is not included in this TU. */
-extern "C" void LoadBG1Char(const void *p, unsigned int a, unsigned int b);
-/* local extern: GX.h is not included in this TU. */
-extern "C" void LoadOBJ(const void *p, unsigned int a, unsigned int b);
+void LoadBG0Char(const void *p, unsigned int a, unsigned int b);
+void LoadBG1Char(const void *p, unsigned int a, unsigned int b);
+void LoadOBJ(const void *p, unsigned int a, unsigned int b);
 }
 
 namespace GXS {

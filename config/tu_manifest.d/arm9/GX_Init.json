@@ -36,14 +36,14 @@
       "ordinal": 1
     },
     {
-      "symbol": "SetGraphicsMode",
+      "symbol": "_ZN2GX15SetGraphicsModeEiii",
       "address": "0x02053ad8",
       "size": "0x00000074",
       "legacy_source": "src/_ZN2GX15SetGraphicsModeEiii.cpp",
       "ordinal": 2
     },
     {
-      "symbol": "DispOn",
+      "symbol": "_ZN2GX6DispOnEv",
       "address": "0x02053b4c",
       "size": "0x0000004c",
       "legacy_source": "src/_ZN2GX6DispOnEv.cpp",

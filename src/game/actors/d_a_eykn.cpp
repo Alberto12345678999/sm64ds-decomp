@@ -331,7 +331,7 @@ idCheck:
 
     if (mdCcAcPos_c.otherOwner == 0) return;
 
-    dActor_c *f = FindWithID(mdCcAcPos_c.otherOwner);
+    Player *f = static_cast<Player *>(FindWithID(mdCcAcPos_c.otherOwner));
     if (f == 0) return;
 
     int isPlayer = (int)(f->actorID == kPlayer);
@@ -350,7 +350,7 @@ idCheck:
     hv.x = mPosX;
     hv.y = mPosY;
     hv.z = mPosZ;
-    ((Player *)f)->Hurt(hv, 2, 0xc000, 1, 0, 1);
+    f->Hurt(hv, 2, 0xc000, 1, 0, 1);
 }
 
 

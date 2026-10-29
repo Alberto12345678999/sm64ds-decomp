@@ -20,13 +20,10 @@
  * inline destructor in include/daObjTdWater_c.h emits the retail D1/D0 pair
  * first and emits no D2 body.
  *
- * deslop leftovers:
- * - dBgW_KcMbg::SetFile 6az: InitResources
- *   passes Fix12<int> by value; the header method form size-DIFFs.
+ * What stays:
  * - data_ov032_02113afc / 02113af4 / 02112f64 / 02112fb8 BMD / KCL / BTA /
  *   CLPS handles; this TU consumes them, overlay .data owns them.
  * - S14: g_profile_TD_WATER stays outside the licensed .text.
- * - Event::GetBit has no shared header; every caller declares it locally.
  * - common.h first (dBgActor_c.h must see common.h ahead of dExtSimpleModel_c.h).
  * - no Player.h / dCamera_c.h.
  *
@@ -41,16 +38,14 @@
  */
 
 /* Runtime asset handles resolved through the overlay 0 file table. */
-enum d_a_obj_td_water_AssetId {
-    ASSET_TD_OBJ_WATER_BMD = 0x06b7,
-    ASSET_TD_OBJ_WATER_KCL = 0x06b8
-};
+enum d_a_obj_td_water_AssetId { ASSET_TD_OBJ_WATER_BMD = 0x06b7, ASSET_TD_OBJ_WATER_KCL = 0x06b8 };
 
 #include "common.h"
 #include "daObjTdWater_c.h"
 #include "SharedFilePtr.h"
 #include "dBgW.h"
 #include "dBgW_Kc.h"
+#include "Event.h"
 
 struct KCL_File;
 struct CLPS_Block;
@@ -69,20 +64,10 @@ struct TdWaterClsnFileHandle : SharedFilePtr {
     ~TdWaterClsnFileHandle();
 };
 
-extern "C" {
 extern TdWaterModelFilePtr data_ov032_02113afc;   /* the water model's BMD */
 extern TdWaterClsnFileHandle data_ov032_02113af4; /* the collision KCL */
-extern BTA_File      data_ov032_02112f64;   /* the scrolling texture animation */
-extern CLPS_Block    data_ov032_02112fb8;
-
-/* 6az: both SetFile calls take Fix12<int> by value. */
-extern void hold_d_a_obj_td_water(dBgW_KcMbg *self, KCL_File *kcl, const Matrix4x3 &mat, int scale,
-                                  s16 angleY, CLPS_Block &clps);
-}
-
-/* Event has no shared header anywhere in the tree -- every caller declares it
-   locally, so this matches the house spelling rather than inventing one. */
-namespace Event { s32 GetBit(u32 bit); }
+extern BTA_File data_ov032_02112f64;              /* the scrolling texture animation */
+extern CLPS_Block data_ov032_02112fb8;
 
 /* -------------------------------------------------------------------------- */
 /* -------------------------------------------------------------------------- */
@@ -94,14 +79,12 @@ namespace Event { s32 GetBit(u32 bit); }
  * inline operator new; dBgActor_c's C2, the derived vptr store, and
  * dExtAnmTexSRT_c at 0x320 are the implicit constructor. The null check
  * is the one `new` itself emits. */
-extern "C" daObjTdWater_c *daObjTdWater_c_classInit(void)
-{
+extern "C" daObjTdWater_c *daObjTdWater_c_classInit(void) {
     return new daObjTdWater_c();
 }
 
 // @symbol _ZN14daObjTdWater_c13InitResourcesEv
-s32 daObjTdWater_c::InitResources()
-{
+s32 daObjTdWater_c::InitResources() {
     mModel.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(data_ov032_02113afc), 1, 0x14);
 
     /* The BMD the SharedFilePtr is holding: the ROM re-reads it out of the
@@ -113,9 +96,7 @@ s32 daObjTdWater_c::InitResources()
     UpdateClsnPosAndRot();
 
     KCL_File *kcl = (KCL_File *)dBgW_Kc::LoadFile(data_ov032_02113af4);
-    /* 6az: header SetFile takes Fix12<int> by value. */
-    ((dBgW_KcMbg *)(&mMeshCollider))
-        ->dBgW_KcMbg::SetFile(kcl, mClsnMat, 0x1000, mAngleY, data_ov032_02112fb8);
+    mMeshCollider.SetFile(kcl, mClsnMat, 0x1000, mAngleY, data_ov032_02112fb8);
     mMeshCollider.Enable(this);
 
     /* The water only survives the spawn while the level's event bit 0xe is
@@ -124,8 +105,7 @@ s32 daObjTdWater_c::InitResources()
 }
 
 // @symbol _ZN14daObjTdWater_c8BehaviorEv
-s32 daObjTdWater_c::Behavior()
-{
+s32 daObjTdWater_c::Behavior() {
     mTextureTransformer.speed = 0x1000;
     mTextureTransformer.Advance();
 
@@ -135,16 +115,14 @@ s32 daObjTdWater_c::Behavior()
 }
 
 // @symbol _ZN14daObjTdWater_c6RenderEv
-s32 daObjTdWater_c::Render()
-{
+s32 daObjTdWater_c::Render() {
     mTextureTransformer.Update(mModel.data);
     mModel.Render(0);
     return 1;
 }
 
 // @symbol _ZN14daObjTdWater_c16CleanupResourcesEv
-s32 daObjTdWater_c::CleanupResources()
-{
+s32 daObjTdWater_c::CleanupResources() {
     if (mMeshCollider.IsEnabled())
         mMeshCollider.Disable();
 

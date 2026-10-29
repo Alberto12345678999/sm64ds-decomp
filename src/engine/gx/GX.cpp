@@ -38,8 +38,8 @@ extern void MultiCopy_Int(int *src, int *dst, int len);
 
 namespace GX {
 
-// @symbol BeginLoadTex
-extern "C" void BeginLoadTex() {
+// @symbol _ZN2GX12BeginLoadTexEv
+void BeginLoadTex() {
     int r = func_0205417c();
     int i = r * 6;
     data_020a60b8 = r;
@@ -51,8 +51,8 @@ extern "C" void BeginLoadTex() {
 // VRAM texture upload with banked destination: below-top goes to the base
 // window, above-top to the secondary bank, straddling splits into two DMA (or
 // CPU copy) halves.
-// @symbol LoadTex
-extern "C" void LoadTex(const void *src, unsigned int offset, unsigned int size) {
+// @symbol _ZN2GX7LoadTexEPKvjj
+void LoadTex(const void *src, unsigned int offset, unsigned int size) {
     unsigned int dst;
     int base = data_020a60bc;
     if (base == 0) {
@@ -86,8 +86,9 @@ extern "C" void LoadTex(const void *src, unsigned int offset, unsigned int size)
 
 // Ends a banked texture upload: waits on the upload DMA channel if one is
 // active, restores the texture bank, then clears the four upload-window globals.
-// @symbol EndLoadTex
-extern "C" void EndLoadTex() {
+// @symbol _ZN2GX10EndLoadTexEv
+void EndLoadTex()
+{
     if (data_02099fd0 != -1) {
         func_02059fa8(data_02099fd0);
     }
@@ -98,8 +99,8 @@ extern "C" void EndLoadTex() {
     data_020a60b8 = 0;
 }
 
-// @symbol BeginLoadTexPltt
-extern "C" void BeginLoadTexPltt() {
+// @symbol _ZN2GX16BeginLoadTexPlttEv
+void BeginLoadTexPltt() {
     int r = func_02054168();
     data_020a60b4 = r;
     data_020a60b0 = (int)data_02086314[r >> 4] << 12;
@@ -107,8 +108,8 @@ extern "C" void BeginLoadTexPltt() {
 
 // Loads a texture palette into VRAM: async DMA when a channel is configured
 // (data_02099fd0 != -1), otherwise MultiCopy_Int.
-// @symbol LoadTexPltt
-extern "C" void LoadTexPltt(const void *src, u32 destSlotAddr, u32 size) {
+// @symbol _ZN2GX11LoadTexPlttEPKvjj
+void LoadTexPltt(const void *src, u32 destSlotAddr, u32 size){
     void *dest = (void *)(data_020a60b0 + destSlotAddr);
     s32 dmaCh = data_02099fd0;
     if (dmaCh != -1) {
@@ -118,8 +119,8 @@ extern "C" void LoadTexPltt(const void *src, u32 destSlotAddr, u32 size) {
     }
 }
 
-// @symbol EndLoadTexPltt
-extern "C" void EndLoadTexPltt() {
+// @symbol _ZN2GX14EndLoadTexPlttEv
+void EndLoadTexPltt(){
     u32 dmaId = data_02099fd0;
     if (dmaId != (u32)-1) {
         func_02059fa8(dmaId);
@@ -130,8 +131,8 @@ extern "C" void EndLoadTexPltt() {
 }
 
 // Loads BG palette data to main-screen (GX) palette VRAM at 0x05000000.
-// @symbol LoadBGPltt
-extern "C" void LoadBGPltt(const void *src, unsigned int offset, unsigned int size) {
+// @symbol _ZN2GX10LoadBGPlttEPKvjj
+void LoadBGPltt(const void* src, unsigned int offset, unsigned int size){
     int channel = data_02099fd0;
     if (channel != -1) {
         DMASyncHalfTransfer(channel, (void*)src, (void*)(offset + 0x05000000), size);
@@ -139,4 +140,5 @@ extern "C" void LoadBGPltt(const void *src, unsigned int offset, unsigned int si
         MultiCopyHalf(src, (void*)(offset + 0x05000000), size);
     }
 }
+
 }

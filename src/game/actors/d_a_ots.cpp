@@ -456,7 +456,7 @@ void daOts_c::func_ov064_02116bac(){
  * is silent. */
 void daOts_c::func_ov064_02116754()
 {
-    dActor_c* hitPlayer;
+    Player *hitPlayer;
     s32 hitFlags;
     u32 id;
 
@@ -466,7 +466,7 @@ void daOts_c::func_ov064_02116754()
     if (id == 0)
         return;
 
-    hitPlayer = dActor_c::FindWithID(id);
+    hitPlayer = static_cast<Player *>(dActor_c::FindWithID(id));
     if (!hitPlayer)
         return;
 
@@ -477,7 +477,7 @@ void daOts_c::func_ov064_02116754()
     }
 
     hitFlags = (s32)this->mdCcAc_c.hitFlags;
-    if ((hitFlags & kHitAttackMask) || ((Player *)hitPlayer)->mIsMetal != 0) {
+    if ((hitFlags & kHitAttackMask) || hitPlayer->mIsMetal != 0) {
         this->mPrevAngleY = hitPlayer->mAngleY;
         if (hitPlayer->param1 == 2)
             this->mHorzSpeed = kHitSpeedHeavy;
@@ -509,8 +509,7 @@ void daOts_c::func_ov064_02116754()
             v[0] = 0x2000;
             v[1] = 0;
             v[2] = 0;
-            KillByInvincibleChar(*(Vector3_16 *)v, *(Player *)hitPlayer,
-                                 CONFIG(this)->eggAimHeight);
+            KillByInvincibleChar(*(Vector3_16 *)v, *hitPlayer, CONFIG(this)->eggAimHeight);
             this->PlayHitSound();
             return;
         }
@@ -527,7 +526,7 @@ void daOts_c::func_ov064_02116754()
         return;
     }
 
-    if (this->JumpedOnByPlayer(this->mdCcAc_c, *(Player *)hitPlayer) != 0) {
+    if (this->JumpedOnByPlayer(this->mdCcAc_c, *hitPlayer) != 0) {
         this->mPrevAngleY = hitPlayer->mAngleY;
         if (hitPlayer->param1 == 2)
             this->mHorzSpeed = kHitSpeedHeavy;
@@ -541,7 +540,7 @@ void daOts_c::func_ov064_02116754()
         return;
     }
 
-    if (((Player *)hitPlayer)->IsOnShell() != 0) {
+    if (hitPlayer->IsOnShell() != 0) {
         hitPlayer->mHorzSpeed = -this->mHorzSpeed;
         this->mPrevAngleY = (s16)(this->mAngleY + 0x8000);
         this->mHorzSpeed = kHitSpeedLight;
@@ -554,7 +553,7 @@ void daOts_c::func_ov064_02116754()
         return;
     }
 
-    if (((Player *)hitPlayer)->mIsVanish != 0)
+    if (hitPlayer->mIsVanish != 0)
         return;
 
     tail().mState = STATE_KNOCKED_BACK;
@@ -566,7 +565,7 @@ void daOts_c::func_ov064_02116754()
         v.x = this->mPosX;
         v.y = this->mPosY;
         v.z = this->mPosZ;
-        if (((Player *)hitPlayer)->Hurt(v, 0, 0x14000, 1, 0, 1) != 0) {
+        if (hitPlayer->Hurt(v, 0, 0x14000, 1, 0, 1) != 0) {
             func_ov064_02115f98((char*)hitPlayer);
         }
     }

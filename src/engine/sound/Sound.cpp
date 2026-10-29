@@ -145,7 +145,6 @@ extern int data_0209b4a8;
 extern int data_0209b4ac;
 extern int data_0209b4b0[];
 extern char data_0209b4b4[];
-extern char data_0209b53c[];
 extern int data_0209baa0;
 extern char data_0209d574[];
 extern unsigned char data_0209f250;
@@ -177,13 +176,21 @@ typedef struct SndRegEntry {
     struct SndRegEntry *next; /* 0x10 - bucket chain, away from the head */
 } SndRegEntry;
 
+extern "C" void func_02011a5c(void *vc);
+
 typedef struct SndRegTable {
     int counter;                 /* 0x00 - handed out as the unique id */
     unsigned char cursor;        /* 0x04 - round-robin cursor into entries */
     unsigned char pad5[3];
     SndRegEntry entries[0x40];   /* 0x08 */
     SndRegEntry *buckets[16];    /* 0x508 - chain heads by id&0xf */
+
+    SndRegTable() {
+        func_02011a5c(this);
+    }
 } SndRegTable;
+
+SndRegTable data_0209b53c;
 
 namespace Sound {
 
@@ -261,8 +268,9 @@ void StopLoadedMusic_Layer1(unsigned int arg)
     func_0204fa2c(data_0209b4a0, arg);
 }
 
-// @symbol PauseMusic
-extern "C" void PauseMusic(void) {
+// @symbol _ZN5Sound10PauseMusicEv
+void PauseMusic(void)
+{
     int state = data_0209f2f8;
     if (state == 2 || state == 5 || state == 4 || state == 0x32) {
         if (data_0208e420 < 0) {
@@ -280,8 +288,9 @@ extern "C" void PauseMusic(void) {
     func_0204f9c4(0xd, 1);
 }
 
-// @symbol UnpauseMusic
-extern "C" void UnpauseMusic(void) {
+// @symbol _ZN5Sound12UnpauseMusicEv
+void UnpauseMusic(void)
+{
     signed char s = data_0209f2f8;
     if (s == 2 || s == 5 || s == 4 || s == 0x32) {
         signed char saved = data_0208e420;
@@ -613,7 +622,7 @@ extern "C" void func_0201251c(int a, int b, int c, int d)
 // @symbol Sound_PlayIfNotActive
 extern "C" int Sound_PlayIfNotActive(int a, int b, int c, int d)
 {
-    char *o = (char *)func_02011934(data_0209b53c, a);
+    char *o = (char *)func_02011934((char *)&data_0209b53c, a);
     if (o) {
         *(unsigned char *)(o + 6) = 1;
         return *(int *)o;
@@ -621,7 +630,7 @@ extern "C" int Sound_PlayIfNotActive(int a, int b, int c, int d)
     /* original TU declared func_0201186c's #4 as int (def is short):
        the call site passes d untruncated -- cast through an int-arity
        pointer to reproduce it without the narrowing sequence */
-    return ((int (*)(char *, int, int, int))func_0201186c)(data_0209b53c, b, c, d);
+    return ((int (*)(char *, int, int, int))func_0201186c)((char *)&data_0209b53c, b, c, d);
 }
 
 // @symbol func_02012468
@@ -632,7 +641,7 @@ extern "C" int func_02012468(int a, int b, int c, int d, int e, int f, int g, sh
     char *p;
 
     x = Sound_PlayIfNotActive(a, b, c, h);
-    p = (char *)func_02011934(data_0209b53c, x);
+    p = (char *)func_02011934((char *)&data_0209b53c, x);
     if (p != 0)
         func_02012860(p + 8, dd, e, f, g);
     return x;
@@ -664,14 +673,14 @@ int PlayLong(u32 handle, u32 a, u32 b, const Vector3 &pos, s16 e)
     if (func_02048a1c((int *)&pos, a, b) == 0)
         return 0;
 
-    char *slot = (char *)func_02011934(data_0209b53c, handle);
+    char *slot = (char *)func_02011934((char *)&data_0209b53c, handle);
     if (slot) {
         *(char *)(slot + 6) = 1;
         func_020123c8((int)(slot + 8), a, b, (int)&pos);
         return *(int *)slot;
     }
 
-    return func_0201179c(data_0209b53c, a, b, (int)&pos, e);
+    return func_0201179c((char *)&data_0209b53c, a, b, (int)&pos, e);
 }
 
 }
@@ -687,13 +696,13 @@ extern "C" int func_0201226c(int a0, int a1, int a2, int a3, int a4, short a5)
 {
     void *p;
     if (func_02048a1c((int *)a3, a1, a2) == 0) return 0;
-    p = func_02011934(data_0209b53c, a0);
+    p = func_02011934((char *)&data_0209b53c, a0);
     if (p != 0) {
         *(unsigned char *)((char *)p + 6) = 1;
         func_02048c30((char *)p + 8, a3, a4);
         return *(int *)p;
     }
-    return func_020116c4(data_0209b53c, a1, a2, a3, a4, a5);
+    return func_020116c4((char *)&data_0209b53c, a1, a2, a3, a4, a5);
 }
 
 // @symbol func_02012194
@@ -701,7 +710,7 @@ extern "C" int func_02012194(char *c, int a1, int a2, int a3, int s0, int s1, sh
 {
     char *e;
     if (func_02048a1c((int *)s1, a1, a2) == 0) return 0;
-    e = (char *)func_02011934(data_0209b53c, (int)c);
+    e = (char *)func_02011934((char *)&data_0209b53c, (int)c);
     if (e != 0) {
         char *slot = e + 8;
         e[6] = 1;
@@ -709,8 +718,8 @@ extern "C" int func_02012194(char *c, int a1, int a2, int a3, int s0, int s1, sh
         func_0204f7fc(slot, a3, s0);
         return *(int *)e;
     } else {
-        char *n = (char *)func_0201179c(data_0209b53c, a1, a2, s1, s2);
-        char *e2 = (char *)func_02011934(data_0209b53c, (int)n);
+        char *n = (char *)func_0201179c((char *)&data_0209b53c, a1, a2, s1, s2);
+        char *e2 = (char *)func_02011934((char *)&data_0209b53c, (int)n);
         if (e2 != 0)
             func_0204f7fc(e2 + 8, a3, s0);
         return (int)n;
@@ -766,8 +775,9 @@ void LoadGroupAndSetBank(int a, int b)
     data_0209b478 = 0;
 }
 
-// @symbol LoadInitialGroup
-extern "C" void LoadInitialGroup(int group) {
+// @symbol _ZN5Sound16LoadInitialGroupEi
+void LoadInitialGroup(int group)
+{
     LoadGroupAndSetBank(group, 0x20);
 }
 
@@ -1216,7 +1226,7 @@ extern "C" void func_020133bc(void)
     func_0204f94c(&data_0209b4a0);
     func_0204f94c(&data_0209b4b0);
     func_0204f94c(&data_0209b4a4);
-    func_02011a28(data_0209b53c);
+    func_02011a28((char *)&data_0209b53c);
     func_02048f34(&data_0209b4b4);
     func_020506fc(2);
     func_02049cd8(&data_0209baa0, 0x1000, 0);

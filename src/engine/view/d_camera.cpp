@@ -97,7 +97,7 @@ extern s8 data_0209f2f8;
 extern s32 data_0209f32c;
 extern void *data_0209f394[];
 extern dClipper data_0209f43c;
-extern s32 data_0209fc48;
+extern s32 gRunningKuppaScript;
 extern Matrix4x3 data_020a0e68;
 extern void *data_ov002_0210c3b0;
 extern void *data_ov002_0210c3e0[2];
@@ -107,7 +107,7 @@ extern "C" {
    every caller here. */
 extern int func_020092c4(void *self, Vec3 *out, Vec3 *target);
 extern void func_0200928c(void *cam);
-extern void func_0200ee8c(int arg0);
+extern void RunStarCameraScript(int arg0);
 extern s32 Math_Function_0203b14c(s32 *p, s32 tgt, s32 rate, s32 lim, s32 step);
 extern int StartWithFarCamera();
 extern void *GetViewObj(int idx);
@@ -210,12 +210,10 @@ struct OAM {
 struct G2x {
     static void SetBlendAlpha(volatile unsigned short *, int, int, int, int);
 };
-namespace G3i {
-/* local extern: G3i.h is not included in this TU. */
-extern "C" void PerspectiveW_(Fix12i, Fix12i, Fix12i, Fix12i, Fix12i, Fix12i, int, Matrix4x3 *);
-/* local extern: G3i.h is not included in this TU. */
-extern "C" void LookAt_(const Vector3 *, const Vector3 *, const Vector3 *, bool, Matrix4x3 *);
-}
+struct G3i {
+    static void PerspectiveW_(Fix12i, Fix12i, Fix12i, Fix12i, Fix12i, Fix12i, int, Matrix4x3 *);
+    static void LookAt_(const Vector3 *, const Vector3 *, const Vector3 *, bool, Matrix4x3 *);
+};
 
 /* @symbol dCamera_c_classInit
  * Allocation factory historically labelled as the dCamera_c constructor. Its first action
@@ -286,7 +284,7 @@ int dCamera_c::Behavior()
     }
     temp_r1 = mFlags;
     if (!(temp_r1 & 8)) {
-        enum Bool b = (enum Bool)(data_0209fc48 != 0);
+        enum Bool b = (enum Bool)(gRunningKuppaScript != 0);
         if (b != FALSE) goto block_7;
     } else {
 block_7:
@@ -300,7 +298,7 @@ block_7:
     }
 
     if ((u8)(data_0209f294 | (data_0209f2c4 | data_0209f20c)) == 0 && !(data_0209b454 & 0x40000000)) {
-        enum Bool b2 = (enum Bool)(data_0209fc48 != 0);
+        enum Bool b2 = (enum Bool)(gRunningKuppaScript != 0);
         if (b2 == FALSE) {
             if (mFlags & 0x2000) {
                 Math_Function_0203b0fc((int *)&mFovBlend, 0x1000, 0x88, 0x7fffffff);
@@ -423,7 +421,7 @@ int dCamera_c::Render()
         sp[5] = self->mPrevPos.z;
     }
 
-    if (!(data_0209fc48 != 0 ? 1 : 0)) {
+    if (!(gRunningKuppaScript != 0 ? 1 : 0)) {
         s32 f = self->mFlags;
         if (!(f & 8)) {
             if ((u8 *)self->mMode == &data_0208738c) {
@@ -722,7 +720,7 @@ void func_0200d4b0(char* self, unsigned int playerID, int arg2)
         ((struct dCamera_c *)self)->mOrbitTargetYaw = ((struct dCamera_c *)self)->mAngleY;
         other = (struct dActor_c *)((struct dCamera_c *)self)->mTargetPlayer;
         other->mFlags |= 0x20000000;
-        func_0200ee8c(arg2);
+        RunStarCameraScript(arg2);
     }
 }
 

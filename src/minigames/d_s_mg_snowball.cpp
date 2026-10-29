@@ -116,8 +116,7 @@ struct SPS {
 #define pfromid(id) ((int *)Particle::System::FromUniqueID(id))
 
 namespace G3X {
-/* local extern: G3X.h is not included in this TU. */
-extern "C" void SetFog(int enable, int blend, int slope, int offset);
+void SetFog(int enable, int blend, int slope, int offset);
 }
 
 extern "C" {

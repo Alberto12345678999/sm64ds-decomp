@@ -25,12 +25,12 @@
  * without a separate leaf D2 body; out of line mwccarm emits D0 ahead of D1
  * and adds the D2 the ROM never carried. */
 struct daObjTdFuta_c : dBgActor_c {
-    virtual s32 InitResources();           /* slot  0 */
-    virtual s32 CleanupResources();        /* slot  3 */
-    virtual s32 Behavior();                /* slot  6 */
-    virtual s32 Render();                  /* slot  9 */
+    virtual s32 InitResources();    /* slot  0 */
+    virtual s32 CleanupResources(); /* slot  3 */
+    virtual s32 Behavior();         /* slot  6 */
+    virtual s32 Render();           /* slot  9 */
 
-    virtual ~daObjTdFuta_c() {}            /* slots 16 (D1), 17 (D0) */
+    virtual ~daObjTdFuta_c() {} /* slots 16 (D1), 17 (D0) */
 };
 
 #ifndef SM64DS_PLATFORM_PC

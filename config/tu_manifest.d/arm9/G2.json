@@ -20,7 +20,7 @@
   ],
   "functions": [
     {
-      "symbol": "GetBG3CharPtr",
+      "symbol": "_ZN3G2S13GetBG3CharPtrEv",
       "address": "0x02054d38",
       "size": "0x00000050",
       "legacy_source": "src/_ZN3G2S13GetBG3CharPtrEv.cpp",
@@ -41,14 +41,14 @@
       "ordinal": 2
     },
     {
-      "symbol": "GetBG2CharPtr",
+      "symbol": "_ZN2G213GetBG2CharPtrEv",
       "address": "0x02054e30",
       "size": "0x00000058",
       "legacy_source": "src/_ZN2G213GetBG2CharPtrEv.cpp",
       "ordinal": 3
     },
     {
-      "symbol": "GetBG1CharPtr",
+      "symbol": "_ZN3G2S13GetBG1CharPtrEv",
       "address": "0x02054e88",
       "size": "0x00000020",
       "legacy_source": "src/_ZN3G2S13GetBG1CharPtrEv.cpp",
@@ -62,7 +62,7 @@
       "ordinal": 5
     },
     {
-      "symbol": "GetBG0CharPtr",
+      "symbol": "_ZN3G2S13GetBG0CharPtrEv",
       "address": "0x02054edc",
       "size": "0x00000020",
       "legacy_source": "src/_ZN3G2S13GetBG0CharPtrEv.cpp",
@@ -83,7 +83,7 @@
       "ordinal": 8
     },
     {
-      "symbol": "GetBG3ScrPtr",
+      "symbol": "_ZN2G212GetBG3ScrPtrEv",
       "address": "0x02054fb0",
       "size": "0x0000008c",
       "legacy_source": "src/_ZN2G212GetBG3ScrPtrEv.cpp",
@@ -97,7 +97,7 @@
       "ordinal": 10
     },
     {
-      "symbol": "GetBG2ScrPtr",
+      "symbol": "_ZN2G212GetBG2ScrPtrEv",
       "address": "0x020550bc",
       "size": "0x0000008c",
       "legacy_source": "src/_ZN2G212GetBG2ScrPtrEv.cpp",
@@ -111,7 +111,7 @@
       "ordinal": 12
     },
     {
-      "symbol": "GetBG1ScrPtr",
+      "symbol": "_ZN2G212GetBG1ScrPtrEv",
       "address": "0x02055168",
       "size": "0x00000034",
       "legacy_source": "src/_ZN2G212GetBG1ScrPtrEv.cpp",
@@ -125,7 +125,7 @@
       "ordinal": 14
     },
     {
-      "symbol": "GetBG0ScrPtr",
+      "symbol": "_ZN2G212GetBG0ScrPtrEv",
       "address": "0x020551bc",
       "size": "0x00000034",
       "legacy_source": "src/_ZN2G212GetBG0ScrPtrEv.cpp",

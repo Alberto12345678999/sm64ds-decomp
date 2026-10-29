@@ -14,9 +14,10 @@
  * the same pragma lays .text down in source order, so this file is ROM-ascending.
  */
 
-// leftovers: func_020393d4 is a 4-byte store into dBgW's callback slot;
-// naming belongs with dBgW in arm9. UpdateShadow is void: its early exit
-// leaves no value, and Behavior ignores it.
+// Notes: func_020393d4 is the out-of-line store into the collider's
+// beforeClsnCallback; d_bg_w.cpp defines it and no header declares it.
+// UpdateShadow is void: its early exit leaves no value, and Behavior
+// ignores it.
 
 /* The two registry factories close the run in ROM order:
  * daObjCtRotateBlock_c_classInit_CT_MECHA02 (0x02119ebc, historical alias
@@ -47,6 +48,7 @@ enum daObjCtRotateBlock_c_AssetId {
 #include "Sound.h"
 #include "nitro/fx/fx.h"
 #include "math/Approach.h"
+#include "math/MtxStack.h"
 
 /* Per-variant records are 0xc bytes. The first word is a SharedFilePtr. */
 extern char data_ov065_0211cfd0[];
@@ -70,29 +72,23 @@ struct RotateBlockCollisionFilePtr : SharedFilePtr {
 };
 
 extern "C" {
-extern void Matrix4x3_FromRotationY(void *m, short ang);
 extern void Matrix4x3_FromRotationZXYExt(void *m, int x, int y, int z);
 extern void MulVec3Mat4x3(void *src, void *mtx, void *dst);
 extern void AddVec3(void *a, void *b, void *c);
 extern u16 DecIfAbove0_Short(u16 *p);
 extern int RandomIntInternal(int *seed);
-extern void hold_d_a_obj_ct_rotate_block(void *mc, void *kcl, void *mtx, int fix, s16 s,
-                                         void *clps);
 extern void func_020393d4(void *p, void *v);
+}
+
 extern short data_02082214[];
 extern u8 data_0209f2c0;
 extern int data_0209e650;
-extern s32 data_020a0e68[];
-}
-
 
 #pragma defer_codegen off
 
 // @symbol _ZN20daObjCtRotateBlock_cD1Ev
 // @symbol _ZN20daObjCtRotateBlock_cD0Ev
-daObjCtRotateBlock_c::~daObjCtRotateBlock_c()
-{
-}
+daObjCtRotateBlock_c::~daObjCtRotateBlock_c() {}
 
 // @symbol _ZN20daObjCtRotateBlock_c12UpdateShadowEv
 void daObjCtRotateBlock_c::UpdateShadow() {
@@ -100,12 +96,16 @@ void daObjCtRotateBlock_c::UpdateShadow() {
     int bval = mFloorY;
     int aval = mPosY;
     int diff = aval - bval;
-    if (diff < 0) diff = -diff;
+    if (diff < 0)
+        diff = -diff;
     if (diff > 0x9c4000)
         return;
     b = 0x32000;
     d = 0x190000;
-    if (mUnevenGround) { b = 0x17c000; d = b; }
+    if (mUnevenGround) {
+        b = 0x17c000;
+        d = b;
+    }
     Matrix4x3_FromRotationY(&mShadowMat, mAngleY);
     mShadowMat.m[9] = mPosX >> 3;
     mShadowMat.m[10] = (mFloorY + 0x1000) >> 3;
@@ -120,8 +120,7 @@ void daObjCtRotateBlock_c::UpdateShadow() {
 }
 
 // @symbol _ZN20daObjCtRotateBlock_c10UpdateClsnEv
-void daObjCtRotateBlock_c::UpdateClsn()
-{
+void daObjCtRotateBlock_c::UpdateClsn() {
     mClsnMat = mModel.mat4x3;
     mClsnMat.m[9] = mPosX;
     mClsnMat.m[10] = mPosY + mOffsetY;
@@ -130,8 +129,7 @@ void daObjCtRotateBlock_c::UpdateClsn()
 }
 
 // @symbol _ZN20daObjCtRotateBlock_c11UpdateModelEv
-void daObjCtRotateBlock_c::UpdateModel()
-{
+void daObjCtRotateBlock_c::UpdateModel() {
     Matrix4x3_FromRotationZXYExt(&mModel.mat4x3, 0, mAngleY, mAngleZ);
     mModel.mat4x3.m[9] = mPosX >> 3;
     mModel.mat4x3.m[10] = (mPosY + mOffsetY) >> 3;
@@ -143,8 +141,7 @@ void daObjCtRotateBlock_c::UpdateModel()
 }
 
 // @symbol _ZN20daObjCtRotateBlock_c16CleanupResourcesEv
-int daObjCtRotateBlock_c::CleanupResources()
-{
+int daObjCtRotateBlock_c::CleanupResources() {
     if (mMeshCollider.IsEnabled())
         mMeshCollider.Disable();
     ((SharedFilePtr *)data_ov065_0211c0a8[mVariant])->Release();
@@ -154,8 +151,7 @@ int daObjCtRotateBlock_c::CleanupResources()
 }
 
 // @symbol _ZN20daObjCtRotateBlock_c6RenderEv
-int daObjCtRotateBlock_c::Render()
-{
+int daObjCtRotateBlock_c::Render() {
     int flags;
     int b;
     flags = mFlags;
@@ -169,8 +165,7 @@ int daObjCtRotateBlock_c::Render()
 }
 
 // @symbol _ZN20daObjCtRotateBlock_c8BehaviorEv
-int daObjCtRotateBlock_c::Behavior()
-{
+int daObjCtRotateBlock_c::Behavior() {
     if (data_0209f2c0 != 3) {
         switch (mState) {
         case 0:
@@ -211,8 +206,7 @@ int daObjCtRotateBlock_c::Behavior()
 }
 
 // @symbol _ZN20daObjCtRotateBlock_c13InitResourcesEv
-int daObjCtRotateBlock_c::InitResources()
-{
+int daObjCtRotateBlock_c::InitResources() {
     u16 id = actorID;
 
     if (id != 0x6c) {
@@ -247,15 +241,13 @@ int daObjCtRotateBlock_c::InitResources()
         s32 oi = idx * 0xc;
         void *kcl = dBgW_Kc::LoadFile(*(SharedFilePtr *)*(void **)(data_ov065_0211cfd4 + oi));
         ((dBgW_KcMbg *)(&mMeshCollider))
-            ->dBgW_KcMbg::SetFile((KCL_File *)(kcl), *(const Matrix4x3 *)(&mClsnMat), 0x1000,
-                                  mAngleY,
+            ->dBgW_KcMbg::SetFile((KCL_File *)(kcl), mClsnMat, 0x1000, mAngleY,
                                   *(CLPS_Block *)(*(void **)((char *)data_ov065_0211cfd8 + oi)));
     } else {
         s32 oi = idx * 0xc;
         void *kcl = dBgW_Kc::LoadFile(*(SharedFilePtr *)*(void **)(data_ov065_0211cfd4 + oi));
         ((dBgW_KcMbg *)(&mMeshCollider))
-            ->dBgW_KcMbg::SetFile((KCL_File *)(kcl), *(const Matrix4x3 *)(&mClsnMat), 0x199,
-                                  mAngleY,
+            ->dBgW_KcMbg::SetFile((KCL_File *)(kcl), mClsnMat, 0x199, mAngleY,
                                   *(CLPS_Block *)(*(void **)((char *)data_ov065_0211cfd8 + oi)));
     }
 
@@ -274,9 +266,9 @@ int daObjCtRotateBlock_c::InitResources()
         va.x = 0x64000;
         va.z = 0x64000;
 
-        Matrix4x3_FromRotationY(data_020a0e68, mAngleY);
-        MulVec3Mat4x3(&va, data_020a0e68, &vb);
-        AddVec3(&vb, &mPosX, &vb);
+        Matrix4x3_FromRotationY(&data_020a0e68, mAngleY);
+        MulVec3Mat4x3(&va, &data_020a0e68, &vb);
+        AddVec3(&vb, &mPos, &vb);
         vb.y -= 0xd2000;
 
         dBgCh_Gnd ground;
@@ -305,14 +297,12 @@ int daObjCtRotateBlock_c::InitResources()
 }
 
 // @symbol daObjCtRotateBlock_c_classInit_CT_MECHA02
-extern "C" daObjCtRotateBlock_c *daObjCtRotateBlock_c_classInit_CT_MECHA02()
-{
+extern "C" daObjCtRotateBlock_c *daObjCtRotateBlock_c_classInit_CT_MECHA02() {
     return new daObjCtRotateBlock_c();
 }
 
 // @symbol daObjCtRotateBlock_c_classInit_CT_MECHA01
-extern "C" daObjCtRotateBlock_c *daObjCtRotateBlock_c_classInit_CT_MECHA01()
-{
+extern "C" daObjCtRotateBlock_c *daObjCtRotateBlock_c_classInit_CT_MECHA01() {
     return new daObjCtRotateBlock_c();
 }
 

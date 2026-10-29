@@ -18,28 +18,28 @@
  * parameter inserted an lsl/lsr pair at each of them. Parameters stay
  * unnamed: a name here takes an @NNN in every includer. */
 namespace GX {
-extern "C" void DispOn(void);
-extern "C" void SetGraphicsMode(int, int, int);
-extern "C" void DisableAllBanks(void);
-extern "C" void SetBankForBG(int);
-extern "C" void SetBankForOBJ(int);
-extern "C" void SetBankForTex(int);
-extern "C" void SetBankForTexPltt(int);
-extern "C" void SetBankForSubBG(int);
-extern "C" void SetBankForSubOBJ(int);
-extern "C" void SetBankForSubBGExtPltt(int);
-extern "C" void SetBankForSubOBJExtPltt(int);
-extern "C" void BeginLoadTex(void);
-extern "C" void LoadTex(const void *, unsigned int, unsigned int);
-extern "C" void EndLoadTex(void);
-extern "C" void BeginLoadTexPltt(void);
-extern "C" void LoadTexPltt(const void *, unsigned int, unsigned int);
-extern "C" void EndLoadTexPltt(void);
-extern "C" void LoadBGPltt(const void *, unsigned int, unsigned int);
-extern "C" void LoadOBJPltt(const void *, unsigned int, unsigned int);
-extern "C" void LoadOBJ(const void *, unsigned int, unsigned int);
-extern "C" void LoadBG0Char(const void *, unsigned int, unsigned int);
-extern "C" void LoadBG1Char(const void *, unsigned int, unsigned int);
+void DispOn(void);
+void SetGraphicsMode(int, int, int);
+void DisableAllBanks(void);
+void SetBankForBG(int);
+void SetBankForOBJ(int);
+void SetBankForTex(int);
+void SetBankForTexPltt(int);
+void SetBankForSubBG(int);
+void SetBankForSubOBJ(int);
+void SetBankForSubBGExtPltt(int);
+void SetBankForSubOBJExtPltt(int);
+void BeginLoadTex(void);
+void LoadTex(const void *, unsigned int, unsigned int);
+void EndLoadTex(void);
+void BeginLoadTexPltt(void);
+void LoadTexPltt(const void *, unsigned int, unsigned int);
+void EndLoadTexPltt(void);
+void LoadBGPltt(const void *, unsigned int, unsigned int);
+void LoadOBJPltt(const void *, unsigned int, unsigned int);
+void LoadOBJ(const void *, unsigned int, unsigned int);
+void LoadBG0Char(const void *, unsigned int, unsigned int);
+void LoadBG1Char(const void *, unsigned int, unsigned int);
 }
 
 namespace GXS {
@@ -48,12 +48,12 @@ void LoadBGPltt(const void *, unsigned int, unsigned int);
 void LoadOBJPltt(const void *, unsigned int, unsigned int);
 void LoadBG0Char(const void *, unsigned int, unsigned int);
 void LoadBG1Char(const void *, unsigned int, unsigned int);
-extern "C" void BeginLoadBGExtPltt(void);
-extern "C" void LoadBGExtPltt(const void *, unsigned int, unsigned int);
-extern "C" void EndLoadBGExtPltt(void);
-extern "C" void BeginLoadOBJExtPltt(void);
-extern "C" void LoadOBJExtPltt(const void *, unsigned int, unsigned int);
-extern "C" void EndLoadOBJExtPltt(void);
+void BeginLoadBGExtPltt(void);
+void LoadBGExtPltt(const void *, unsigned int, unsigned int);
+void EndLoadBGExtPltt(void);
+void BeginLoadOBJExtPltt(void);
+void LoadOBJExtPltt(const void *, unsigned int, unsigned int);
+void EndLoadOBJExtPltt(void);
 }
 
 #endif

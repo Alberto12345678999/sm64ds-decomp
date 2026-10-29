@@ -28,7 +28,7 @@ int strcmp(const char *, const char *);
 char *strchr(const char *, char);
 
 /* Assertion failure (src/cstd3.cpp): file, expression, function, line. */
-extern "C" void __assert(const char *, const char *, const char *, int);
+void __assert(const char *, const char *, const char *, int);
 }
 
 #endif

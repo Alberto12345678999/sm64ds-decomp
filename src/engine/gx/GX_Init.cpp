@@ -142,8 +142,8 @@ void func_02053b98(void) {
 
 namespace GX {
 
-// @symbol DispOn
-extern "C" void DispOn() {
+// @symbol _ZN2GX6DispOnEv
+void DispOn() {
     data_02099fcc = 1;
     if (data_020a6084 != 0)
         REG_DISPCNT =
@@ -152,8 +152,8 @@ extern "C" void DispOn() {
         REG_DISPCNT |= DISPMODE_GRAPHICS << DISPCNT_MODE_SHIFT;
 }
 
-// @symbol SetGraphicsMode
-extern "C" void SetGraphicsMode(int dispMode, int bgMode, int bg0As3d) {
+// @symbol _ZN2GX15SetGraphicsModeEiii
+void SetGraphicsMode(int dispMode, int bgMode, int bg0As3d) {
     u32 cnt = REG_DISPCNT;
     data_020a6084 = (u16)dispMode;
     if (data_02099fcc == 0)

@@ -24,16 +24,16 @@
  * independently pinning both member types, offsets and the total class size.
  */
 struct daObjTbox_c : dActor_c {
-    u32 unk_0d0;                         /* 0x0d0 -- not accessed by this TU */
-    dExtAnmModel_c mAnmModel;            /* 0x0d4 */
-    dCcAc_c mCylinder;                   /* 0x138 */
-    s32 mState;                          /* 0x16c -- indexes the three PMF pairs */
-    u16 mStateTimer;                     /* 0x170 -- opening/star countdown */
-    u8 mOrder;                           /* 0x172 -- required chest order, 1-based */
-    u8 mIsLastChest;                     /* 0x173 -- this chest will spawn the star */
-    u8 mStarID;                          /* 0x174 -- 0xff means no star */
-    s8 mTrackedStarID;                   /* 0x175 -- marker slot from TrackStar */
-    u8 mPad176[0x2];                     /* 0x176 */
+    u32 unk_0d0;              /* 0x0d0 -- not accessed by this TU */
+    dExtAnmModel_c mAnmModel; /* 0x0d4 */
+    dCcAc_c mCylinder;        /* 0x138 */
+    s32 mState;               /* 0x16c -- indexes the three PMF pairs */
+    u16 mStateTimer;          /* 0x170 -- opening/star countdown */
+    u8 mOrder;                /* 0x172 -- required chest order, 1-based */
+    u8 mIsLastChest;          /* 0x173 -- this chest will spawn the star */
+    u8 mStarID;               /* 0x174 -- 0xff means no star */
+    s8 mTrackedStarID;        /* 0x175 -- marker slot from TrackStar */
+    u8 mPad176[0x2];          /* 0x176 */
 
     typedef void (daObjTbox_c::*StateFunc)();
 
@@ -45,12 +45,12 @@ struct daObjTbox_c : dActor_c {
      * compiler-generated: the vptr store, then dCcAc_c at 0x138 and dExtAnmModel_c
      * at 0x0d4 in reverse construction order, then the dActor_c base; D0 also
      * returns the object to the actor heap. */
-    virtual ~daObjTbox_c() {}          /* slots 16, 17 */
+    virtual ~daObjTbox_c() {} /* slots 16, 17 */
 
-    virtual int InitResources();         /* slot  0 */
-    virtual int CleanupResources();      /* slot  3 */
-    virtual int Behavior();              /* slot  6 */
-    virtual int Render();                /* slot  9 */
+    virtual int InitResources();    /* slot  0 */
+    virtual int CleanupResources(); /* slot  3 */
+    virtual int Behavior();         /* slot  6 */
+    virtual int Render();           /* slot  9 */
 
     void InitState0();
     void State0();
@@ -66,8 +66,7 @@ struct daObjTbox_c : dActor_c {
 
 #ifndef SM64DS_PLATFORM_PC
 /* ROM layout under mwccarm; host ABI divergence is tracked separately. */
-typedef char daObjTbox_c_size_must_be_0x178[
-    sizeof(daObjTbox_c) == 0x178 ? 1 : -1];
+typedef char daObjTbox_c_size_must_be_0x178[sizeof(daObjTbox_c) == 0x178 ? 1 : -1];
 #endif
 
 #endif

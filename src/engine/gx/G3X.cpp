@@ -44,13 +44,12 @@ extern "C" void func_02055624(void)
     *(volatile unsigned int *)0x4000454 = 0;
 }
 
-namespace G3X {
-// @symbol SetFog
+// @symbol _ZN3G3X6SetFogEiiii
 /* The Nitro SDK's G3X_SetFog(BOOL enable, GXFogBlend, GXFogSlope, int): the
    flag is an int. The body tests it the same either way, and dScStage_c's
    RenderFog passes the stage's fog byte with no 0/1 conversion, which a bool
    parameter would insert. */
-extern "C" void SetFog(int enable, int a, int b, int c) {
+void G3X::SetFog(int enable, int a, int b, int c) {
     if (enable) {
         *(volatile unsigned short *)0x400035c = (unsigned short)c;
         *(volatile unsigned short *)0x4000060 =
@@ -59,14 +58,11 @@ extern "C" void SetFog(int enable, int a, int b, int c) {
         *(volatile unsigned short *)0x4000060 = *(volatile unsigned short *)0x4000060 & 0xcf7f;
     }
 }
-}
 
 // FOG_TABLE (0x4000360) takes the whole 32-byte table from the caller buffer.
-namespace G3X {
-// @symbol SetFogTable
-extern "C" void SetFogTable(void *table) {
+// @symbol _ZN3G3X11SetFogTableEPv
+void G3X::SetFogTable(void *table) {
     Copy32Bytes(table, (void *)0x4000360);
-}
 }
 
 // @symbol func_020555a4
@@ -74,14 +70,12 @@ extern "C" void func_020555a4(void *dst) {
     MultiCopyHalf(dst, (void *)0x04000380, 0x40);
 }
 
-namespace G3X {
-// @symbol SetClearColor
-extern "C" void SetClearColor(unsigned short a, int b, int c, int d, bool e) {
+// @symbol _ZN3G3X13SetClearColorEtiiib
+void G3X::SetClearColor(unsigned short a, int b, int c, int d, bool e) {
     unsigned int v = (a | (b << 16)) | (d << 24);
     if (*(int *)&e) v |= 0x8000;  // bool slot reads whole-word (see leftovers)
     *(volatile unsigned int *)0x4000350 = v;
     *(volatile unsigned short *)0x4000354 = (unsigned short)c;
-}
 }
 
 // @symbol func_020554bc

@@ -33,7 +33,7 @@ src/engine/collision/d_bg_w.cpp
 # dExtModel_c::SetFile lives in src/engine/model/d_ext_model.cpp, which slice 4b
 # already compiles; smoke_actor links that slice, so listing it again
 # would define the class twice.
-src/InvMat4x3.c
+src/InvMat4x3.cpp
 # cstd is one production translation unit; the func_02053200 helper this slice
 # used to name separately lives in it with the rest of the namespace.
 src/cstd.cpp

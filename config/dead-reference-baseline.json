@@ -378,6 +378,10 @@
    "ref": "tools/check_src_tu_compiles.py"
   },
   {
+   "file": "notes/agents/handoffs/pr2456-final-composition-0910.md",
+   "ref": "src/unnamed/ov065/__sinit_ov065_0211c110.cpp"
+  },
+  {
    "file": "notes/agents/handoffs/pr2868-source-repair-0920.md",
    "ref": "include/BookShot.h"
   },
@@ -392,6 +396,10 @@
   {
    "file": "notes/agents/handoffs/prod-kuruma-0907-daObjKm1_Kurumajiku_c.md",
    "ref": "config/converted-baseline.json"
+  },
+  {
+   "file": "notes/agents/handoffs/prod-pkn-0907-daPkn_c.md",
+   "ref": "src/unnamed/ov084/__sinit_ov084_02130654.cpp"
   },
   {
    "file": "notes/agents/handoffs/prod-sanbo-0907-daSanbo_c.md",
@@ -507,6 +515,10 @@
   },
   {
    "file": "notes/agents/handoffs/readable-ov021-newslift-0925.md",
+   "ref": "src/unnamed/ov021/__sinit_ov021_02113500.c"
+  },
+  {
+   "file": "notes/agents/handoffs/readable-ov021-newslift-0925.md",
    "ref": "tools/check_src_tu_compiles.py"
   },
   {
@@ -596,6 +608,10 @@
   {
    "file": "notes/agents/handoffs/readable-ov084-pkn-0925.md",
    "ref": "include/decl_Animation.h"
+  },
+  {
+   "file": "notes/agents/handoffs/readable-ov084-pkn-0925.md",
+   "ref": "src/unnamed/ov084/__sinit_ov084_02130654.cpp"
   },
   {
    "file": "notes/agents/handoffs/readable-ov084-pkn-0925.md",
@@ -1339,7 +1355,15 @@
   },
   {
    "file": "notes/sinit-ownership-wave-resource-handles.md",
+   "ref": "src/unnamed/ov002/__sinit_ov002_02100f84.c"
+  },
+  {
+   "file": "notes/sinit-ownership-wave-resource-handles.md",
    "ref": "src/unnamed/ov009/__sinit_ov009_02112458.c"
+  },
+  {
+   "file": "notes/sinit-ownership-wave-resource-handles.md",
+   "ref": "src/unnamed/ov009/__sinit_ov009_02112524.c"
   },
   {
    "file": "notes/sinit-ownership-wave-resource-handles.md",
@@ -1348,6 +1372,10 @@
   {
    "file": "notes/sinit-wave-a-ownership.md",
    "ref": "src/game/actors/daPiano_c/__sinit_ov063_0211e5fc.c"
+  },
+  {
+   "file": "notes/sinit-wave-a-ownership.md",
+   "ref": "src/unnamed/ov002/__sinit_ov002_02100f84.c"
   },
   {
    "file": "notes/smartball-provenance.md",

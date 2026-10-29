@@ -55,10 +55,8 @@
 #include "dScMgPachinko_c.h"
 
 namespace GX {
-/* local extern: GX.h is not included in this TU. */
-extern "C" void LoadBGPltt(const void *p, u32 a, u32 b);
-/* local extern: GX.h is not included in this TU. */
-extern "C" void LoadOBJPltt(const void *p, u32 a, u32 b);
+void LoadBGPltt(const void *p, u32 a, u32 b);
+void LoadOBJPltt(const void *p, u32 a, u32 b);
 }
 
 namespace GXS {
@@ -155,17 +153,14 @@ struct Matrix2x2 { int _00, _01, _10, _11; };
 #define SCENE_OFF(member) ((int)&((dScMgPachinko_c *)0)->member)
 
 namespace G2 {
-/* local extern: G2.h is not included in this TU. */
-extern "C" void *GetBG2CharPtr();
-/* local extern: G2.h is not included in this TU. */
-extern "C" void *GetBG2ScrPtr();
+    void *GetBG2CharPtr();
+    void *GetBG2ScrPtr();
 }
 
 namespace G2S {
     unsigned GetBG2CharPtr();
     unsigned GetBG2ScrPtr();
-    /* local extern: G2.h is not included in this TU. */
-    extern "C" void *GetBG3CharPtr();
+    unsigned GetBG3CharPtr();
 }
 
 namespace cstd {

@@ -116,15 +116,12 @@ struct OAM {
 };
 
 namespace G2 {
-/* local extern: G2.h is not included in this TU. */
-extern "C" void *GetBG2CharPtr();
+void *GetBG2CharPtr();
 }
 
 namespace G2S {
-/* local extern: G2.h is not included in this TU. */
-extern "C" unsigned int GetBG0CharPtr();
-/* local extern: G2.h is not included in this TU. */
-extern "C" unsigned int GetBG1CharPtr();
+unsigned int GetBG0CharPtr();
+unsigned int GetBG1CharPtr();
 }
 
 /* data_0209f2d8 (CURRENT_GAMEMODE) is 2 while the fall-in-front-of-castle

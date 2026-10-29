@@ -116,6 +116,9 @@ src/game/actors/d_a_obj_kuruma.cpp:
 src/game/actors/d_a_obj_kurumajiku.cpp:
     complete
     .text start:0x020b69e4 end:0x020b6d28
+    .init start:0x02100f84 end:0x02101064
+    .ctor start:0x021080ec end:0x021080f0
+    .bss start:0x0210dda0 end:0x0210de00
 
 src/game/actors/d_a_obj_lava.cpp:
     complete
@@ -190,17 +193,10 @@ src/game/actors/d_a_obj_cannon_shutter.cpp:
 
 src/game/player/Player.cpp:
     complete
-    .text start:0x020bccfc end:0x020e6a08
+    .text start:0x020bccfc end:0x020e6c0c
     .init start:0x021019d0 end:0x02106e40
     .bss start:0x0210e14c end:0x0210f8d8
 
-src/Color_Interp.c:
-    complete
-    .text start:0x020e6a08 end:0x020e6a78
-
-src/unnamed/ov002/func_ov002_020e6a78.c:
-    complete
-    .text start:0x020e6a78 end:0x020e6c0c
 src/game/player/d_a_ply.cpp:
     complete
     .text start:0x020e6c0c end:0x020e6c40
@@ -217,15 +213,15 @@ src/game/actors/StarCamera_Spawn.cpp:
     complete
     .text start:0x020ebe5c end:0x020ebe8c
 
-src/game/actors/d_a_star_base.c:
+src/game/actors/d_a_star_base.cpp:
     complete
     .text start:0x020ebe8c end:0x020ebed4
 
-src/game/actors/d_a_star_silver_star.c:
+src/game/actors/d_a_star_silver_star.cpp:
     complete
     .text start:0x020ebed4 end:0x020ebf30
 
-src/game/actors/d_a_star_star.c:
+src/game/actors/d_a_star_star.cpp:
     complete
     .text start:0x020ebf30 end:0x020ebf8c
 
@@ -333,17 +329,12 @@ src/game/actors/d_a_propeller_heyho_fire.cpp:
     .ctor start:0x02108134 end:0x02108138
     .bss start:0x02111190 end:0x021111a0
 
-src/unnamed/ov002/__sinit_ov002_02100560.c:
+src/unnamed/ov002/__sinit_ov002_02100560.cpp:
     complete
     .init start:0x02100560 end:0x02100938
 
 
-src/unnamed/ov002/__sinit_ov002_02100f84.c:
-    complete
-    .init start:0x02100f84 end:0x02101064
-
-
-src/unnamed/ov002/__sinit_ov002_02107370.c:
+src/unnamed/ov002/__sinit_ov002_02107370.cpp:
     complete
     .init start:0x02107370 end:0x02107f88
 

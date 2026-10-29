@@ -119,13 +119,9 @@ extern dScMgJump_c::StatePmf pmf_dScMgJump_c_State_Idle_2;
 extern dScMgJump_c::StatePmf pmf_dScMgJump_c_State_Play;
 }
 
-namespace GX {
-/* local extern: GX.h is not included in this TU. */
-extern "C" void LoadOBJPltt(const void *src, unsigned int offset, unsigned int size);
-}
+namespace GX   { void LoadOBJPltt(const void *src, unsigned int offset, unsigned int size); }
 namespace G3X {
-/* local extern: G3X.h is not included in this TU. */
-extern "C" void SetFog(int enable, int mode, int slope, int offset);
+void SetFog(int enable, int mode, int slope, int offset);
 }
 namespace cstd { s32 fdiv(s32 a, s32 b); }
 

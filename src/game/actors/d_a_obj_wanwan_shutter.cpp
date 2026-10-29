@@ -1,15 +1,13 @@
 //cpp
-/* leftovers:
- * - dBgW_KcMbg::SetFile, dBgActor_c::IsClsnInRange and
- *   Particle::System::NewSimple stay mangled. Each takes Fix12<int>
- *   by value.
+/* daObjWanwanShutter_c, the Bob-omb Battlefield Chain Chomp fence
+ * (WANWAN_SHUTTER). This is the fence, not the chomp.
+ *
+ * NOTES:
+ * - Break (0x02112ea8) is called by daWanwan_c when the chomp breaks out.
  * - The model and collision handles are local SharedFilePtr
  *   subclasses. The manifest aliases them to the ROM symbols.
  * - The destructor stays inline in the header.
  * - dBgActor_c.h is included first so common.h wins over dExtSimpleModel_c.h.
- *
- * daObjWanwanShutter_c, the Bob-omb Battlefield Chain Chomp fence
- * (WANWAN_SHUTTER). This is the fence, not the chomp.
  */
 /* daObjWanwanShutter_c.h FIRST: it pulls in dBgActor_c.h, which must reach
    common.h ahead of dExtSimpleModel_c.h or the wrong Matrix4x3 spelling wins. */
@@ -21,6 +19,7 @@ enum d_a_obj_wanwan_shutter_AssetId {
 
 #include "daObjWanwanShutter_c.h"
 #include "Sound.h"
+#include "Particle__System.h"
 #include "SharedFilePtr.h"
 
 /* 8-byte file handles. The model uses func_02017acc / func_02017ab4 and the
@@ -36,36 +35,16 @@ struct WanwanShutterClsnFilePtr : SharedFilePtr {
     ~WanwanShutterClsnFilePtr();
 };
 
-typedef char WanwanShutterModelFilePtr_size_must_be_8[
-    sizeof(WanwanShutterModelFilePtr) == 8 ? 1 : -1];
-typedef char WanwanShutterClsnFilePtr_size_must_be_8[
-    sizeof(WanwanShutterClsnFilePtr) == 8 ? 1 : -1];
-
-extern "C" {
-/* dBgActor_c::IsClsnInRange(Fix12<int>, Fix12<int>) -- reached through the
-   mangled name because the two by-value Fix12<int> parameters are wall 6az
-   on ov014/daObjWanwanShutter_c::Behavior. */
-
-/* dBgW_KcMbg::SetFile -- same wall on ov014/daObjWanwanShutter_c::InitResources:
-   its by-value Fix12<int> scale makes a member call cost stack the ROM does
-   not spend. */
-extern void hold_d_a_obj_wanwan_shutter(dBgW_KcMbg *self, KCL_File *kcl, Matrix4x3 *mat, int scale,
-                                        s16 angY, void *clps);
-
-/* Particle::System::NewSimple -- same wall on func_ov014_02112ea8: three
-   by-value Fix12<int> coordinates. */
-namespace Particle {
-struct System {
-    static void NewSimple(unsigned int t, int x, int y, int z);
-};
-}
+typedef char
+    WanwanShutterModelFilePtr_size_must_be_8[sizeof(WanwanShutterModelFilePtr) == 8 ? 1 : -1];
+typedef char
+    WanwanShutterClsnFilePtr_size_must_be_8[sizeof(WanwanShutterClsnFilePtr) == 8 ? 1 : -1];
 
 /* This overlay's file handles and collision-parameter block. The two handles
    are constructed by this TU's static initializer. */
-extern WanwanShutterModelFilePtr data_ov014_021149c0;   /* the BMD model */
-extern WanwanShutterClsnFilePtr data_ov014_021149b8;   /* the KCL collision mesh */
-extern CLPS_Block    data_ov014_02114558;
-}
+extern WanwanShutterModelFilePtr data_ov014_021149c0; /* the BMD model */
+extern WanwanShutterClsnFilePtr data_ov014_021149b8;  /* the KCL collision mesh */
+extern CLPS_Block data_ov014_02114558;
 
 // @symbol daObjWanwanShutter_c_classInit
 /* Reconstructed source-style name. Historical alias: ChainChompFence_Spawn.
@@ -75,46 +54,34 @@ extern CLPS_Block    data_ov014_02114558;
  * inline operator new; 0x02113090 calls dBgActor_c's C2 and the store at
  * 0x0211309c lays down this class's vptr. The null check is the one `new`
  * itself emits. */
-extern "C" daObjWanwanShutter_c *daObjWanwanShutter_c_classInit(void)
-{
+extern "C" daObjWanwanShutter_c *daObjWanwanShutter_c_classInit(void) {
     return new daObjWanwanShutter_c();
 }
 
 // @symbol _ZN20daObjWanwanShutter_c13InitResourcesEv
 /* Vtable slot 0. Loads the fence's model and collision mesh and plants both at
    the actor's position. Scale 0x1000 is 1.0. */
-int daObjWanwanShutter_c::InitResources()
-{
+int daObjWanwanShutter_c::InitResources() {
     mModel.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(data_ov014_021149c0), 1, -1);
     UpdateModelPosAndRotY();
     UpdateClsnPosAndRot();
     {
         KCL_File *kcl = (KCL_File *)dBgW_Kc::LoadFile(data_ov014_021149b8);
-        /* MEASURED on ov014/daObjWanwanShutter_c::InitResources: this one call
-           has to keep the mangled spelling. Its third parameter is a by-value
-           Fix12<int> -- wall 6az -- and materialising one costs stack traffic
-           the ROM does not have. */
-        ((dBgW_KcMbg *)(&mMeshCollider))
-            ->dBgW_KcMbg::SetFile(kcl, *(&mClsnMat), 0x1000, mAngleY,
-                                  *(CLPS_Block *)(&data_ov014_02114558));
+        mMeshCollider.SetFile(kcl, mClsnMat, 0x1000, mAngleY, data_ov014_02114558);
     }
     return 1;
 }
 
 // @symbol _ZN20daObjWanwanShutter_c8BehaviorEv
-int daObjWanwanShutter_c::Behavior()
-{
+int daObjWanwanShutter_c::Behavior() {
     if (mDisabled != 0)
         return 1;
-    /* MEASURED on ov014/daObjWanwanShutter_c::Behavior: the two by-value
-       Fix12<int> parameters are wall 6az. */
     IsClsnInRange(0, 0);
     return 1;
 }
 
 // @symbol _ZN20daObjWanwanShutter_c6RenderEv
-int daObjWanwanShutter_c::Render()
-{
+int daObjWanwanShutter_c::Render() {
     if (mDisabled != 0)
         return 1;
     mModel.Render(0);
@@ -122,8 +89,7 @@ int daObjWanwanShutter_c::Render()
 }
 
 // @symbol _ZN20daObjWanwanShutter_c16CleanupResourcesEv
-int daObjWanwanShutter_c::CleanupResources()
-{
+int daObjWanwanShutter_c::CleanupResources() {
     if (mMeshCollider.IsEnabled())
         mMeshCollider.Disable();
     data_ov014_021149c0.Release();
@@ -131,22 +97,18 @@ int daObjWanwanShutter_c::CleanupResources()
     return 1;
 }
 
-// @symbol func_ov014_02112ea8
+// @symbol _ZN20daObjWanwanShutter_c5BreakEv
 /* The chomp's "break the fence" trigger, reached from daWanwan_c when the
    chomp finishes its lunge at the gate. Plays bank-3 sound 0xf at camera-space
    position, spawns particle 0x1e 300.0 above the fence, poofs, sets mDisabled
-   so Behavior/Render go idle, and drops the collider out of the world.
- *
- * Keeps its placeholder label: daWanwan_c calls it as a free function, and
- * coining a method name is out of scope for this TU. */
-extern "C" void func_ov014_02112ea8(daObjWanwanShutter_c *a)
-{
+   so Behavior/Render go idle, and drops the collider out of the world. */
+void daObjWanwanShutter_c::Break() {
     Vector3 v[2];
-    Sound::PlayBank3(0xf, a->mCamSpacePos);
+    Sound::PlayBank3(0xf, mCamSpacePos);
     {
-        int ty = a->mPosY;
-        int tz = a->mPosZ;
-        int tx = a->mPosX;
+        int ty = mPosY;
+        int tz = mPosZ;
+        int tx = mPosX;
         v[0].x = tx;
         v[0].y = ty + 0x12c000;
         v[0].z = tz;
@@ -155,10 +117,10 @@ extern "C" void func_ov014_02112ea8(daObjWanwanShutter_c *a)
     v[1].x = v[0].x;
     v[1].y = v[0].y;
     v[1].z = v[0].z;
-    a->PoofDustAt(v[1]);
-    a->mDisabled = 1;
-    if (a->mMeshCollider.IsEnabled())
-        a->mMeshCollider.Disable();
+    PoofDustAt(v[1]);
+    mDisabled = 1;
+    if (mMeshCollider.IsEnabled())
+        mMeshCollider.Disable();
 }
 
 // @symbol _ZN20daObjWanwanShutter_cD1Ev

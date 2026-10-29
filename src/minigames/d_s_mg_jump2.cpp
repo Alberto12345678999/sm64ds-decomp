@@ -151,12 +151,10 @@ extern s16 data_02082614;
 }
 
 namespace GX {
-/* local extern: GX.h is not included in this TU. */
-extern "C" void LoadOBJPltt(const void *src, unsigned int offset, unsigned int size);
+void LoadOBJPltt(const void *src, unsigned int offset, unsigned int size);
 }
 namespace G3X {
-/* local extern: G3X.h is not included in this TU. */
-extern "C" void SetFog(int enable, int mode, int slope, int offset);
+void SetFog(int enable, int mode, int slope, int offset);
 }
 namespace cstd {
 s32 fdiv(s32 a, s32 b);

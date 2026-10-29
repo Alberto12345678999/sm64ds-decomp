@@ -92,8 +92,7 @@ extern "C" dScMgMemory2_cState sMemory2StateTable[];
 extern "C" dScMgMemory2_cState sMemory2RoundTable[];
 
 namespace GX {
-/* local extern: GX.h is not included in this TU. */
-extern "C" void LoadOBJPltt(void const *, unsigned int, unsigned int);
+void LoadOBJPltt(void const *, unsigned int, unsigned int);
 }
 
 namespace GXS {

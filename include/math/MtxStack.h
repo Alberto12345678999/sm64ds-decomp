@@ -24,9 +24,11 @@ extern "C" {
 
 void Matrix4x3_FromRotationY(void *m, int angle);
 void Matrix4x3_FromTranslation(Matrix4x3 *m, int x, int y, int z);
+void Matrix4x3_ApplyInPlaceToRotationX(Matrix4x3 *, short);
 void Matrix4x3_ApplyInPlaceToRotationY(Matrix4x3 *m, short angle);
 void Matrix4x3_ApplyInPlaceToTranslation(Matrix4x3 *m, int x, int y, int z);
 void Matrix4x3_ApplyInPlaceToRotationXYZExt(void *m, int x, int y, int z);
+void Matrix4x3_ApplyInPlaceToRotationZ(Matrix4x3 *, short);
 void MulMat4x3Mat4x3(const int *a, const int *b, int *out);
 
 extern Matrix4x3 data_020a0e68;

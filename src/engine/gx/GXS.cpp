@@ -16,21 +16,21 @@
 #include "GX.h"
 
 namespace G2 {
-extern "C" void *GetBG0ScrPtr(void);
-extern "C" void *GetBG1ScrPtr(void);
-extern "C" void *GetBG2CharPtr(void);
-extern "C" void *GetBG2ScrPtr(void);
-extern "C" void *GetBG3ScrPtr(void);
+void *GetBG0ScrPtr(void);
+void *GetBG1ScrPtr(void);
+void *GetBG2CharPtr(void);
+void *GetBG2ScrPtr(void);
+void *GetBG3ScrPtr(void);
 }
 
 namespace G2S {
-extern "C" void *GetBG0CharPtr(void);
+unsigned int GetBG0CharPtr(void);
 unsigned int GetBG0ScrPtr(void);
-extern "C" void *GetBG1CharPtr(void);
+unsigned int GetBG1CharPtr(void);
 unsigned int GetBG1ScrPtr(void);
 unsigned int GetBG2CharPtr(void);
 unsigned int GetBG2ScrPtr(void);
-extern "C" void *GetBG3CharPtr(void);
+unsigned int GetBG3CharPtr(void);
 unsigned int GetBG3ScrPtr(void);
 }
 
@@ -80,8 +80,8 @@ void LoadBGPltt(const void *src, unsigned int offset, unsigned int size) {
 namespace GX {
 
 // Loads OBJ palette data to main screen (GX) palette VRAM at 0x05000200.
-// @symbol LoadOBJPltt
-extern "C" void LoadOBJPltt(const void *src, unsigned int offset, unsigned int size) {
+// @symbol _ZN2GX11LoadOBJPlttEPKvjj
+void LoadOBJPltt(const void *src, unsigned int offset, unsigned int size) {
     int channel = data_02099fd0;
     if (channel != -1) {
         DMASyncHalfTransfer(channel, src, (void *)((char *)0x05000200 + offset), size);
@@ -140,8 +140,8 @@ namespace GX {
 // Copies count words from src to VRAM address (0x6400000 + offset) -- main
 // OBJ VRAM. Needs opt_propagation off: the constant is kept out of the
 // address arithmetic.
-// @symbol LoadOBJ
-extern "C" void LoadOBJ(const void *src, unsigned int offset, unsigned int count) {
+// @symbol _ZN2GX7LoadOBJEPKvjj
+void LoadOBJ(const void *src, unsigned int offset, unsigned int count) {
     unsigned int channel = data_02099fd0;
     unsigned int base = 0x6400000;
     if (channel != (unsigned int)-1) {
@@ -275,8 +275,8 @@ void func_020562b4(const void *src, u32 offset, u32 count) {
 namespace GX {
 
 // Loads character data into MAIN BG0 VRAM (G2::GetBG0CharPtr, 0x2054efc).
-// @symbol LoadBG0Char
-extern "C" void LoadBG0Char(const void *src, unsigned int offset, unsigned int count) {
+// @symbol _ZN2GX11LoadBG0CharEPKvjj
+void LoadBG0Char(const void *src, unsigned int offset, unsigned int count) {
     void *base = func_02054efc();
     unsigned int channel = data_02099fd0;
     if (channel != (unsigned int)-1) {
@@ -305,8 +305,8 @@ void LoadBG0Char(const void *src, u32 offset, u32 size) {
 namespace GX {
 
 // Loads character data into MAIN BG1 VRAM (G2::GetBG1CharPtr, 0x2054ea8).
-// @symbol LoadBG1Char
-extern "C" void LoadBG1Char(const void *src, unsigned int offset, unsigned int count) {
+// @symbol _ZN2GX11LoadBG1CharEPKvjj
+void LoadBG1Char(const void *src, unsigned int offset, unsigned int count) {
     void *base = func_02054ea8();
     unsigned int channel = data_02099fd0;
     if (channel != (unsigned int)-1) {
@@ -384,15 +384,15 @@ void func_02055fb4(const void *src, u32 offset, u32 size) {
 
 namespace GXS {
 
-// @symbol BeginLoadBGExtPltt
+// @symbol _ZN3GXS18BeginLoadBGExtPlttEv
 // Clears the sub-engine BG ext-palette enable bit and unmaps the bank back to
 // LCDC (func_02054118); the result is held for EndLoadBGExtPltt.
-extern "C" void BeginLoadBGExtPltt() {
+void BeginLoadBGExtPltt() {
     data_020a60a4 = func_02054118();
 }
 
-// @symbol LoadBGExtPltt
-extern "C" void LoadBGExtPltt(const void *src, u32 destSlotAddr, u32 size) {
+// @symbol _ZN3GXS13LoadBGExtPlttEPKvjj
+void LoadBGExtPltt(const void *src, u32 destSlotAddr, u32 size) {
     u32 dmaId = data_02099fd0;
     if (dmaId != (u32)-1) {
         func_02059fd0(dmaId, (int)src, (int)(destSlotAddr + GXS_BG_EXT_PLTT_BASE), size, 0, 0);
@@ -401,8 +401,8 @@ extern "C" void LoadBGExtPltt(const void *src, u32 destSlotAddr, u32 size) {
     }
 }
 
-// @symbol EndLoadBGExtPltt
-extern "C" void EndLoadBGExtPltt() {
+// @symbol _ZN3GXS16EndLoadBGExtPlttEv
+void EndLoadBGExtPltt() {
     u32 dmaId = data_02099fd0;
     if (dmaId != (u32)-1) {
         func_02059fa8(dmaId);
@@ -411,15 +411,15 @@ extern "C" void EndLoadBGExtPltt() {
     data_020a60a4 = 0;
 }
 
-// @symbol BeginLoadOBJExtPltt
+// @symbol _ZN3GXS19BeginLoadOBJExtPlttEv
 // The OBJ counterpart (func_020540f0); the result is held for
 // EndLoadOBJExtPltt.
-extern "C" void BeginLoadOBJExtPltt() {
+void BeginLoadOBJExtPltt() {
     data_020a60a8 = func_020540f0();
 }
 
-// @symbol LoadOBJExtPltt
-extern "C" void LoadOBJExtPltt(const void *src, u32 destSlotAddr, u32 size) {
+// @symbol _ZN3GXS14LoadOBJExtPlttEPKvjj
+void LoadOBJExtPltt(const void *src, u32 destSlotAddr, u32 size) {
     u32 dmaId = data_02099fd0;
     if (dmaId != (u32)-1) {
         func_02059fd0(dmaId, (int)src, (int)(destSlotAddr + GXS_OBJ_EXT_PLTT_BASE), size, 0, 0);
@@ -428,8 +428,8 @@ extern "C" void LoadOBJExtPltt(const void *src, u32 destSlotAddr, u32 size) {
     }
 }
 
-// @symbol EndLoadOBJExtPltt
-extern "C" void EndLoadOBJExtPltt() {
+// @symbol _ZN3GXS17EndLoadOBJExtPlttEv
+void EndLoadOBJExtPltt() {
     u32 dmaId = data_02099fd0;
     if (dmaId != (u32)-1) {
         func_02059fa8(dmaId);

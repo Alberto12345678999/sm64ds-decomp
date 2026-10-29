@@ -49,7 +49,7 @@
       "ordinal": 1
     },
     {
-      "symbol": "_ZN12daObjHeart_c19func_ov002_020bc664Ev",
+      "symbol": "_ZN12daObjHeart_c17UpdateModelMatrixEv",
       "address": "0x020bc664",
       "size": "0x00000040",
       "legacy_source": "src/func_ov002_020bc664.c",
@@ -593,12 +593,12 @@
   },
   "defined_symbol_renames": [
     {
-      "from": "@555",
+      "from": "@615",
       "to": "@560",
       "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
     },
     {
-      "from": "@556",
+      "from": "@616",
       "to": "@561",
       "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
     }

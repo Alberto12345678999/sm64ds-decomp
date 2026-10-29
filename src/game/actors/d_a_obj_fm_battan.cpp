@@ -33,53 +33,40 @@
  *   func_020393d4: InitResources stores dBgW::UpdatePosWithTransform on
  *   mMeshCollider; dBgW.h has no setter.
  *   func_0200fa04 is Behavior's impact dust; no named method in this TU.
- *   AddVec3 / Matrix4x3_FromRotationY / Matrix4x3_FromRotationXYZExt: no
- *   shared header this TU can take without a wider change.
+ *   AddVec3 / Matrix4x3_FromRotationXYZExt: no shared header declares
+ *   them.
  *   data_ov023_02112088 / 02112080 are resource handles this TU's sinit
  *   owns; data_ov064_0211ba4c (CLPS) is overlay .data; data_02082214 is the
  *   sine table.
  *   No Player.h / dCamera_c.h.
  */
 
-// leftovers:
-// - func_020393d4: InitResources stores dBgW::UpdatePosWithTransform on
-//   mMeshCollider; dBgW.h has no setter.
-// - func_0200fa04 is Behavior's impact dust; no named method in this TU.
-// - AddVec3 / Matrix4x3_FromRotationY / Matrix4x3_FromRotationXYZExt: no
-//   shared header this TU can take without a wider change.
-// - data_ov023_02112088 / 02112080 are resource handles this TU's sinit
-//   owns; data_ov064_0211ba4c (CLPS) is overlay .data; data_02082214 is the
-//   sine table.
-// - No Player.h / dCamera_c.h here.
-
 /* Runtime asset handles resolved through the overlay 0 file table. */
-enum d_a_obj_fm_battan_AssetId {
-    ASSET_FM_BATTAN_BMD = 0x0616,
-    ASSET_FM_BATTAN_KCL = 0x0617
-};
+enum d_a_obj_fm_battan_AssetId { ASSET_FM_BATTAN_BMD = 0x0616, ASSET_FM_BATTAN_KCL = 0x0617 };
 
 #include "daObjFm_Battan_c.h"
 #include "SpawnInfo.h"
 #include "SharedFilePtr.h"
 #include "Sound.h"
 #include "nitro/fx/fx.h"
+#include "math/MtxStack.h"
 
 /* A local Vector3 value would make mwccarm emit its vague-linkage destructor.
  * These calls only require the three-word ABI value, so keep that value POD. */
-struct BattanVector3 { s32 x, y, z; };
+struct BattanVector3 {
+    s32 x, y, z;
+};
 
+/* local extern: no shared header declares these. */
+extern CLPS_Block data_ov064_0211ba4c;
 extern "C" {
-extern char data_ov064_0211ba4c[];
 extern s16 data_02082214[];
 
-extern void Matrix4x3_FromRotationY(void *, s16);
 extern void Matrix4x3_FromRotationXYZExt(void *, int, int, int);
 extern void AddVec3(BattanVector3 *, BattanVector3 *, BattanVector3 *);
 extern void func_0200fa04(dActor_c *, BattanVector3 *, int);
 
-/* Known by-value Fix12 compiler wall: the typed declaration is present in
- * dBgW_KcMbg.h, but this narrow caller seam preserves retail's register ABI. */
-
+/* The 8-byte store into the mesh collider's +0x18 callback slot. */
 extern void func_020393d4(int *, int);
 }
 
@@ -100,12 +87,8 @@ struct BattanCollisionFilePtr : SharedFilePtr {
     ~BattanCollisionFilePtr();
 };
 
-extern "C" BattanModelFilePtr data_ov023_02112088;
-extern "C" BattanCollisionFilePtr data_ov023_02112080;
-
 BattanModelFilePtr data_ov023_02112088(ASSET_FM_BATTAN_BMD);
 BattanCollisionFilePtr data_ov023_02112080(ASSET_FM_BATTAN_KCL);
-
 
 // @symbol daObjFm_Battan_c_classInit
 /* Every instruction the cartridge has here falls out of the one `new`.
@@ -113,41 +96,25 @@ BattanCollisionFilePtr data_ov023_02112080(ASSET_FM_BATTAN_KCL);
  * fBase_c::operator new; the implicit constructor calls dBgActor_c's C2,
  * stores this class's vptr, and constructs mShadowModel. The null check is
  * the one `new` itself emits. */
-extern "C" daObjFm_Battan_c *daObjFm_Battan_c_classInit()
-{
+extern "C" daObjFm_Battan_c *daObjFm_Battan_c_classInit() {
     return new daObjFm_Battan_c();
 }
 
 extern "C" SpawnInfo<daObjFm_Battan_c> g_profile_FM_BATTAN = {
-    daObjFm_Battan_c_classInit,
-    0x0054,
-    0x0124,
-    0x02000000,
-    0,
-    0x00500000,
-    0x01000000,
-    0x01000000
-};
-
+    daObjFm_Battan_c_classInit, 0x0054, 0x0124, 0x02000000, 0, 0x00500000, 0x01000000, 0x01000000};
 
 // @symbol _ZN16daObjFm_Battan_c13InitResourcesEv
-int daObjFm_Battan_c::InitResources()
-{
+int daObjFm_Battan_c::InitResources() {
     mModel.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(data_ov023_02112088), 1, -1);
     mShadowModel.InitCuboid();
     UpdateModelTransform();
     UpdateClsnPosAndRot();
 
     KCL_File *file = (KCL_File *)dBgW_Kc::LoadFile(data_ov023_02112080);
-    /* MEASURED: by-value Fix12<int> scale; see notes/mwccarm-codegen.md 6az. */
-    ((dBgW_KcMbg *)(&mMeshCollider))
-        ->dBgW_KcMbg::SetFile(file, *(&mClsnMat), 0x1000, mAngleY,
-                              *(CLPS_Block *)(data_ov064_0211ba4c));
+    mMeshCollider.SetFile(file, mClsnMat, 0x1000, mAngleY, data_ov064_0211ba4c);
     /* Stores dBgW::UpdatePosWithTransform at mMeshCollider+0x18; dBgW.h has
        no setter, so this stays the 8-byte store helper. */
-    func_020393d4(
-        (int *)&mMeshCollider,
-        (int)&dBgW::UpdatePosWithTransform);
+    func_020393d4((int *)&mMeshCollider, (int)&dBgW::UpdatePosWithTransform);
     mMeshCollider.Enable(this);
 
     mAngVelX = 0;
@@ -156,10 +123,8 @@ int daObjFm_Battan_c::InitResources()
     return 1;
 }
 
-
 // @symbol _ZN16daObjFm_Battan_c8BehaviorEv
-int daObjFm_Battan_c::Behavior()
-{
+int daObjFm_Battan_c::Behavior() {
     switch (mState) {
     case 0:
         if (DistToCPlayer() < 0x3e8000) {
@@ -187,7 +152,6 @@ int daObjFm_Battan_c::Behavior()
             pos.x = mPosX;
             pos.y = mPosY;
             pos.z = mPosZ;
-            /* MEASURED: by-value Fix12<int> (notes/mwccarm-codegen.md 6az). */
             Earthquake(*(const Vector3 *)&pos, 0x04000000);
             Sound::PlayBank3(0x44, mCamSpacePos);
 
@@ -239,18 +203,14 @@ int daObjFm_Battan_c::Behavior()
     return 1;
 }
 
-
 // @symbol _ZN16daObjFm_Battan_c6RenderEv
-int daObjFm_Battan_c::Render()
-{
+int daObjFm_Battan_c::Render() {
     mModel.Render(0);
     return 1;
 }
 
-
 // @symbol _ZN16daObjFm_Battan_c16CleanupResourcesEv
-int daObjFm_Battan_c::CleanupResources()
-{
+int daObjFm_Battan_c::CleanupResources() {
     mMeshCollider.Disable();
     data_ov023_02112088.Release();
     data_ov023_02112080.Release();
@@ -258,10 +218,8 @@ int daObjFm_Battan_c::CleanupResources()
 }
 
 // @symbol _ZN16daObjFm_Battan_c20UpdateModelTransformEv
-void daObjFm_Battan_c::UpdateModelTransform()
-{
-    Matrix4x3_FromRotationXYZExt(
-        &mModel.mat4x3, mAngleX, mAngleY, mAngleZ);
+void daObjFm_Battan_c::UpdateModelTransform() {
+    Matrix4x3_FromRotationXYZExt(&mModel.mat4x3, mAngleX, mAngleY, mAngleZ);
     mModel.mat4x3.m[9] = mPosX >> 3;
     mModel.mat4x3.m[10] = mPosY >> 3;
     mModel.mat4x3.m[11] = mPosZ >> 3;

@@ -82,8 +82,8 @@ struct daObjYajirusi_c {
     void DisappearPoofDustAt(const Vector3 &pos);
     void MarkForDestruction();
 
-    /* Shadow matrix at +0x348. The address is the name. */
-    void func_ov098_02137c8c();
+    /* Shadow matrix at +0x348. */
+    void UpdateShadowMatrix();
 };
 
 static_assert(offsetof(daObjYajirusi_c, actorID) == 0x00c, "daObjYajirusi_c actorID");
@@ -107,7 +107,7 @@ struct daObjYajirusi_c : dBgActor_c {
     dExtShadowModel_c mShadowModel;         /* 0x320 */
     /* Behavior passes `mShadowMat' as the `Matrix4x3 &' argument of
        dActor_c::DropShadowScaleXYZ, with mShadowModel as the argument before
-       it; func_ov098_02137c8c builds it. A Matrix4x3 is 0x30 bytes, so it
+       it; UpdateShadowMatrix builds it. A Matrix4x3 is 0x30 bytes, so it
        ends at 0x378. Raw bytes rather than a Matrix4x3, whose Vector3 would
        bring a destructor (see the .cpp). Was a u8 marker and pad_349. */
     u8 mShadowMat[0x30]; /* 0x348 */
@@ -141,8 +141,8 @@ struct daObjYajirusi_c : dBgActor_c {
     virtual void Kill();                            /* slot 31 */
 
     /* Shadow matrix at +0x348: yaw, then position >> 3 in the translation
-       words. Not virtual. The address is the name. */
-    void func_ov098_02137c8c();
+       words. Not virtual. */
+    void UpdateShadowMatrix();
 };
 
 typedef char daObjYajirusi_c_size_must_be_0x380[sizeof(daObjYajirusi_c) == 0x380 ? 1 : -1];

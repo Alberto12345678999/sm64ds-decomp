@@ -45,10 +45,8 @@ enum dScMgCurling2_c_AssetId {
 #include "G2x.h"
 
 namespace G2 {
-/* local extern: G2.h is not included in this TU. */
-extern "C" void *GetBG0ScrPtr(void);
-/* local extern: G2.h is not included in this TU. */
-extern "C" void *GetBG2ScrPtr(void);
+void *GetBG0ScrPtr(void);
+void *GetBG2ScrPtr(void);
 }
 
 namespace G2S {
@@ -56,10 +54,8 @@ unsigned GetBG2CharPtr(void);
 }
 
 namespace GX {
-/* local extern: GX.h is not included in this TU. */
-extern "C" void LoadBGPltt(const void *p, u32 a, u32 b);
-/* local extern: GX.h is not included in this TU. */
-extern "C" void LoadOBJPltt(const void *p, u32 a, u32 b);
+void LoadBGPltt(const void *p, u32 a, u32 b);
+void LoadOBJPltt(const void *p, u32 a, u32 b);
 }
 
 namespace GXS {

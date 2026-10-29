@@ -11,29 +11,19 @@
  * FUNCTION ORDER IS THE REVERSE OF THE ROM'S. Highest-address first.
  * The destructor is inline in include/daObjWc_Obj02_c.h (D1 then D0, no D2).
  *
- * deslop leftovers:
- * - dBgW_KcMbg::SetFile 6az: InitResources passes Fix12<int> by value; the
- *   header method form size-DIFFs.
- * - dBgActor_c::IsClsnInRangeOnScreen 6az: Behavior; header method form
- *   refused (include/dBgActor_c.h).
+ * What stays:
  * - func_020393d4 / func_020393c4: InitResources stores
- *   dBgW::UpdatePosWithTransform and &func_ov029_021116e4 on mMeshCollider;
+ *   dBgW::UpdatePosWithTransform and &StoodOnCallback on mMeshCollider;
  *   dBgW.h has no setter.
  * - func_02012694: Behavior plays 0x17b at mCamSpacePosX.
  * - data_ov029_02114250 / 02114248 are this TU's BMD/KCL file handles;
  *   data_ov029_0211302c the CLPS block stays unowned overlay data.
- * - func_ov029_021116c4 / 021116e4 stay placeholder labels (BeforeClsn
- *   veneer + player-id trigger). decl_common.h's `extern int` DATA view of
- *   021116e4 forces the namespaced definition.
  * - S14: g_profile_WC_OBJ02 stays outside the licensed .text.
  * - common.h first (InitResources SetFile matrix argument).
  */
 
 /* Runtime asset handles resolved through the overlay 0 file table. */
-enum d_a_obj_wc_obj02_AssetId {
-    ASSET_WC_OBJ02_BMD = 0x06ce,
-    ASSET_WC_OBJ02_KCL = 0x06cf
-};
+enum d_a_obj_wc_obj02_AssetId { ASSET_WC_OBJ02_BMD = 0x06ce, ASSET_WC_OBJ02_KCL = 0x06cf };
 
 #include "common.h"
 #include "daObjWc_Obj02_c.h"
@@ -53,19 +43,16 @@ struct WcObj02CollisionFilePtr : SharedFilePtr {
     ~WcObj02CollisionFilePtr();
 };
 
+/* local extern: no shared header declares these. */
 extern "C" {
 void func_02012694(int a, void *p);
-extern void hold_d_a_obj_wc_obj02(dBgW_KcMbg *self, KCL_File *file, Matrix4x3 *mat, int scale,
-                                  short angY, CLPS_Block &clps);
-void func_020393d4(int *p, int v);
-void func_020393c4(int *p, int v);
+void func_020393d4(dBgW *bgw, void *fn);
+void func_020393c4(dBgW *bgw, void *fn);
+}
+
 extern WcObj02ModelFilePtr data_ov029_02114250;
 extern WcObj02CollisionFilePtr data_ov029_02114248;
 extern CLPS_Block data_ov029_0211302c;
-/* (RESOLVED): CONFLICT -- alternate declaration of
- * _ZN10dBgActor_c21UpdateModelPosAndRotYEv / 19UpdateClsnPosAndRotEv from
- * Behavior vs InitResources; both are now the real dBgActor_c methods. */
-}
 
 /* -------------------------------------------------------------------------- */
 /* -------------------------------------------------------------------------- */
@@ -73,48 +60,37 @@ extern CLPS_Block data_ov029_0211302c;
 /* Reconstructed source-style name; exact original SM64DS spelling is not
  * preserved. Historical alias: ArrowLift_Spawn. Attribution stays on
  * daObjWc_Obj02_c_classInit. */
-extern "C" daObjWc_Obj02_c *daObjWc_Obj02_c_classInit()
-{
+extern "C" daObjWc_Obj02_c *daObjWc_Obj02_c_classInit() {
     return new daObjWc_Obj02_c();
 }
 
 /* -------------------------------------------------------------------------- */
 /* -------------------------------------------------------------------------- */
-// Arg-shifting tail-call veneer. Drops the first argument and forwards the next two;
-// #pragma long_calls emits the pooled `ldr ip,[pc,#8]; bx ip` absolute tail-call.
-// (create dropped the legacy pragma; restored and bracketed. The int-returning
-// view of the callee is this veneer's own, namespaced -- the definition below is void.)
-namespace tail_6c4 { extern "C" int func_ov029_021116c4(void *a, void *b); }
+/* The mesh collider's stood-on callback gets three arguments; OnStoodOn
+ * wants the last two. long_calls emits the pooled `ldr ip,[pc,#8]; bx ip`
+ * absolute tail call. */
 #pragma long_calls on
-/* decl_common.h declares this name as `extern int` DATA (InitResources takes its
- * address through that view); the function definition lives in a namespace so both
- * spellings of the one C symbol can coexist. */
-namespace fndef_e4 {
-// @symbol func_ov029_021116e4
-extern "C" int func_ov029_021116e4(void *a, void *b, void *c)
-{
-    return tail_6c4::func_ov029_021116c4(b, c);
-}
+// @symbol _ZN15daObjWc_Obj02_c15StoodOnCallbackEPvPS_P8dActor_c
+void daObjWc_Obj02_c::StoodOnCallback(void *collider, daObjWc_Obj02_c *self, dActor_c *other) {
+    self->OnStoodOn(other);
 }
 #pragma long_calls off
 
 /* -------------------------------------------------------------------------- */
 /* -------------------------------------------------------------------------- */
-/* BeforeClsn helper: if the other actor's actorID is PLAYER (0xbf), arm
- * mTriggered. The unsigned char temporary is load-bearing. */
-// @symbol func_ov029_021116c4
-extern "C" void func_ov029_021116c4(char *a, char *b)
-{
-    unsigned char ok = ((dActor_c *)b)->actorID == 0xbf;
+/* Arms mTriggered when the actor standing on the lift is the player (0xbf).
+ * The unsigned char temporary is load-bearing. */
+// @symbol _ZN15daObjWc_Obj02_c9OnStoodOnEP8dActor_c
+void daObjWc_Obj02_c::OnStoodOn(dActor_c *other) {
+    unsigned char ok = other->actorID == 0xbf;
     if (ok)
-        ((daObjWc_Obj02_c *)a)->mTriggered = 1;
+        mTriggered = 1;
 }
 
 /* -------------------------------------------------------------------------- */
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN15daObjWc_Obj02_c13InitResourcesEv
-int daObjWc_Obj02_c::InitResources()
-{
+int daObjWc_Obj02_c::InitResources() {
     {
         BMD_File *bmd = (BMD_File *)dExtSimpleModel_c::LoadFile(data_ov029_02114250);
         mModel.SetFile(bmd, 1, -1);
@@ -123,14 +99,13 @@ int daObjWc_Obj02_c::InitResources()
     UpdateClsnPosAndRot();
     {
         KCL_File *kcl = (KCL_File *)dBgW_Kc::LoadFile(data_ov029_02114248);
-        ((dBgW_KcMbg *)(&mMeshCollider))
-            ->dBgW_KcMbg::SetFile(kcl, *(&mClsnMat), 0x199, mAngleY, data_ov029_0211302c);
+        mMeshCollider.SetFile(kcl, mClsnMat, 0x199, mAngleY, data_ov029_0211302c);
     }
     {
         mPrevAngleY += 0x4000;
-        func_020393d4((int *)&mMeshCollider, (int)&dBgW::UpdatePosWithTransform);
+        func_020393d4(&mMeshCollider, (void *)&dBgW::UpdatePosWithTransform);
     }
-    func_020393c4((int *)&mMeshCollider, (int)&func_ov029_021116e4);
+    func_020393c4(&mMeshCollider, (void *)&StoodOnCallback);
     mTravelDist = 0;
     mStateTimer = 0;
     mTriggered = 0;
@@ -141,8 +116,7 @@ int daObjWc_Obj02_c::InitResources()
 /* -------------------------------------------------------------------------- */
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN15daObjWc_Obj02_c8BehaviorEv
-int daObjWc_Obj02_c::Behavior()
-{
+int daObjWc_Obj02_c::Behavior() {
     switch (mState) {
     case 0:
         if (mTriggered != 0) {
@@ -189,8 +163,7 @@ int daObjWc_Obj02_c::Behavior()
 /* -------------------------------------------------------------------------- */
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN15daObjWc_Obj02_c6RenderEv
-int daObjWc_Obj02_c::Render()
-{
+int daObjWc_Obj02_c::Render() {
     mModel.Render(0);
     return 1;
 }
@@ -198,8 +171,7 @@ int daObjWc_Obj02_c::Render()
 /* -------------------------------------------------------------------------- */
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN15daObjWc_Obj02_c16CleanupResourcesEv
-int daObjWc_Obj02_c::CleanupResources()
-{
+int daObjWc_Obj02_c::CleanupResources() {
     if (mMeshCollider.IsEnabled()) {
         mMeshCollider.Disable();
     }

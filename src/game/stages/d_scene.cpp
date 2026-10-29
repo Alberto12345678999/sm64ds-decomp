@@ -51,6 +51,8 @@ struct FaderVTable {
 };
 struct FaderObject { FaderVTable *vt; };
 
+namespace GX { void DisableAllBanks(); }
+
 extern "C" {
 extern int  func_02053c10(int enable);
 extern int  func_02053be0(int enable);
@@ -80,12 +82,13 @@ extern void Initialise3dGraphics(int arg);
 
 extern fBase_c *data_0209f5c0;
 
-extern dFdColor_c data_0209f5e8;
-
 extern void *data_0209f1e4;
 extern void func_02011b7c(void);
 
-extern char data_0209b53c[];
+/* Sound.cpp's sound-object registry; only its address is needed here.
+   local extern: SndRegTable is Sound.cpp's own type, no header declares it. */
+struct SndRegTable;
+extern SndRegTable data_0209b53c;
 extern void func_02011974(void *object);
 
 extern u8 data_02092660;
@@ -93,7 +96,6 @@ extern u8 data_02092660;
 extern u8   data_0209f1e0;
 
 extern dFdBrightness_c *data_0209f5bc;
-extern dFdBrightness_c data_0209f5d0;
 extern u16  data_02092664;
 
 extern void func_02023544(void);
@@ -107,6 +109,16 @@ extern int func_02013edc(u32 sceneID, u32 param, int a);
 
 extern dFdBrightness_c *data_0209d4ac;
 }
+
+/* The scene's two global faders: the colour fade every scene change runs
+   (SetAndStopColorFader, StartSceneFade) and the plain brightness fade
+   BeforeBehavior falls back to. Namespace-scope objects with inline
+   constructors and real destructors, so mwcc emits __sinit_d_scene.cpp to
+   build them in this order and register their destructors (was the
+   handwritten __sinit_02074edc). Other TUs reach them by these address
+   names. */
+dFdColor_c data_0209f5e8;
+dFdBrightness_c data_0209f5d0;
 
 // @symbol _ZN8dScene_c22ResetHardwareRegistersEv
 void dScene_c::ResetHardwareRegisters()
@@ -212,21 +224,12 @@ void dScene_c::ResetHardwareRegisters()
 }
 
 namespace GX {
-// @symbol DisableAllBanks
-extern "C" void DisableAllBanks() {
-    func_02053f58();
-    func_02054018();
-    func_02054004();
-    func_02053f6c();
-    func_02053fa8();
-    func_02053f94();
-    func_02053f80();
-    func_02053fe0();
-    func_02053fbc();
-    func_02053f44();
-    func_02053f30();
-    func_02053f08();
-    func_02053ee0();
+// @symbol _ZN2GX15DisableAllBanksEv
+void DisableAllBanks(){
+ func_02053f58(); func_02054018(); func_02054004(); func_02053f6c();
+ func_02053fa8(); func_02053f94(); func_02053f80(); func_02053fe0();
+ func_02053fbc(); func_02053f44(); func_02053f30(); func_02053f08();
+ func_02053ee0();
 }
 }
 
@@ -287,7 +290,7 @@ int dScene_c::BeforeCleanupResources()
 {
     if (!fBase_c::BeforeCleanupResources())
         return 0;
-    func_02011974(data_0209b53c);
+    func_02011974(&data_0209b53c);
     return 1;
 }
 

@@ -144,8 +144,7 @@ int GetBG0ScrPtr();
 }
 
 namespace GX {
-/* local extern: GX.h is not included in this TU. */
-extern "C" void LoadOBJPltt(const void *data, unsigned int offset, unsigned int size);
+void LoadOBJPltt(const void *data, unsigned int offset, unsigned int size);
 }
 
 namespace GXS {

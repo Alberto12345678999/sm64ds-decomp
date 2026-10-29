@@ -33,26 +33,26 @@
  */
 struct daObjCtRotateBlock_c : dBgActor_c {
     dExtSimpleModel_c mRotatingModel; /* 0x320 the part that turns */
-    s32 mOffsetY;              /* 0x370 hop added to mPosY */
-    u16 mWaitTimer;            /* 0x374 DecIfAbove0_Short countdown */
-    u8 mState;                 /* 0x376 0 wait, 1 hop, 2 turn */
-    u8 mVariant;               /* 0x377 actor 0x6c or 0x6d */
-    s16 mTargetAngleZ;         /* 0x378 ApproachLinear target */
-    u8 mUnevenGround;          /* 0x37a the two floor probes disagreed */
-    u8 mPad37b;                /* 0x37b */
-    s32 mFloorY;               /* 0x37c ground height under the cube */
-    dExtShadowModel_c mShadowModel;  /* 0x380 */
-    Matrix4x3 mShadowMat;      /* 0x3a8 */
+    s32 mOffsetY;                     /* 0x370 hop added to mPosY */
+    u16 mWaitTimer;                   /* 0x374 DecIfAbove0_Short countdown */
+    u8 mState;                        /* 0x376 0 wait, 1 hop, 2 turn */
+    u8 mVariant;                      /* 0x377 actor 0x6c or 0x6d */
+    s16 mTargetAngleZ;                /* 0x378 ApproachLinear target */
+    u8 mUnevenGround;                 /* 0x37a the two floor probes disagreed */
+    u8 mPad37b;                       /* 0x37b */
+    s32 mFloorY;                      /* 0x37c ground height under the cube */
+    dExtShadowModel_c mShadowModel;   /* 0x380 */
+    Matrix4x3 mShadowMat;             /* 0x3a8 */
 
     /* OUT OF LINE, DECLARED FIRST: the key function. The TU defines it first
        under `#pragma defer_codegen off`, which emits D1 then D0 -- the
        cartridge's order -- then a D2 the cartridge has no home for. */
-    virtual ~daObjCtRotateBlock_c();      /* slots 16, 17 */
+    virtual ~daObjCtRotateBlock_c(); /* slots 16, 17 */
 
-    virtual s32 InitResources();          /* slot  0 */
-    virtual s32 CleanupResources();       /* slot  3 */
-    virtual s32 Behavior();               /* slot  6 */
-    virtual s32 Render();                 /* slot  9 */
+    virtual s32 InitResources();    /* slot  0 */
+    virtual s32 CleanupResources(); /* slot  3 */
+    virtual s32 Behavior();         /* slot  6 */
+    virtual s32 Render();           /* slot  9 */
 
     /* These three routines are anonymous in the image. Their names describe
      * their exclusive calls and field effects; they are not claimed as
@@ -64,8 +64,8 @@ struct daObjCtRotateBlock_c : dBgActor_c {
 
 #ifndef SM64DS_PLATFORM_PC
 /* ROM layout under mwccarm; host ABI divergence is tracked separately. */
-typedef char daObjCtRotateBlock_c_size_must_be_0x3d8[
-    sizeof(daObjCtRotateBlock_c) == 0x3d8 ? 1 : -1];
+typedef char
+    daObjCtRotateBlock_c_size_must_be_0x3d8[sizeof(daObjCtRotateBlock_c) == 0x3d8 ? 1 : -1];
 #endif
 
 #endif
