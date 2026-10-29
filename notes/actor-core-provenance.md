@@ -141,10 +141,11 @@ base. A declaration on `fBase_c` does NOT reach `dActor_c` (two levels down), no
 classes `fBase_c`'s copy changes are `fBase_c` itself and `dBase_c` -- the two
 whose D0 the ROM shows inlining it. `dEnemyBase_c` carries its own copy for the
 same reason: it is a flattened struct that does not derive from `dActor_c` in
-these headers. The one `src/` file that still declares a local
-`struct dActor_c : fBase_c` (`EndKuppaScript.cpp`) uses its own local shadow
-`fBase_c`, not this one, so it is out of scope too. There used to be a second,
-the one-function shard behind `func_ov002_020b7e1c`; the daObjMarioCap_c
+these headers. No `src/` file still declares a local `struct dActor_c :
+fBase_c`. The `EndKuppaScript` shard did, with its own shadow `fBase_c`; the
+KuppaScript TU ([src/KuppaScript.cpp](../src/KuppaScript.cpp)) replaced it and
+uses the real `dActor_c`. There was a second, the one-function shard behind
+`func_ov002_020b7e1c`; the daObjMarioCap_c
 promotion folded it into
 [src/game/actors/d_a_obj_mario_cap.cpp](../src/game/actors/d_a_obj_mario_cap.cpp), where the
 real `dActor_c` and `fBase_c` are in scope and the shadow is gone.

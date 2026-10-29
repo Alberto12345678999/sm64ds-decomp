@@ -1129,7 +1129,8 @@
     }
   },
   "notes": [
-    "Native sprite continuation owns596additional bytes:17OamAttr lists544bytes plus five/eight-pointer tables52bytes. All are actual native object bytes, with no new padding. Interior aliases0211cb80,0211d1ac and0211d1c8 name existing pointer/attribute words and add no storage. Earlier84-byte inventory windows were not object extents; cb64 is32bytes through cb84. Original artwork identifiers remain unproven. The observed4-byte layout table atc6e8 and separate scene helper/initializer/BSS reconstruction remain excluded."
+    "Native sprite continuation owns596additional bytes:17OamAttr lists544bytes plus five/eight-pointer tables52bytes. All are actual native object bytes, with no new padding. Interior aliases0211cb80,0211d1ac and0211d1c8 name existing pointer/attribute words and add no storage. Earlier84-byte inventory windows were not object extents; cb64 is32bytes through cb84. Original artwork identifiers remain unproven. The observed4-byte layout table atc6e8 and separate scene helper/initializer/BSS reconstruction remain excluded.",
+    "2026-10-28: the hole above this entry is closed. src/game/stages/d_s_entry_methods.cpp now licenses 0x021165b0..0x0211a854, so the two parts of dScEntry_c's unit abut; joining them is the next promotion."
   ],
   "verification": {
     "linkcheck": {
@@ -1142,7 +1143,7 @@
         "compile": true,
         "link": true,
         "checkModules": true,
-        "checkSymbols": false,
+        "checkSymbols": true,
         "rom": true
       },
       "tuRange": {

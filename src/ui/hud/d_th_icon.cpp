@@ -4,8 +4,8 @@
  * RTTI names dThIcon_c. Both virtuals are defined out of line here;
  * constructor and destructor are inline in include/dThIcon_c.h, so this
  * TU anchors the vague-linkage group and emits no C1/C2/D0/D1/D2.
- * The unit spans ov001 .text 0x020ab41c..0x020ab5f8: the select helper
- * func_ov001_020ab41c, the pen test TouchArea_Update, Render, Behavior, then the icon placement
+ * The unit spans ov001 .text 0x020ab41c..0x020ab5f8: Select, the pen
+ * test TouchArea_Update, Render, Behavior, then the icon placement
  * helper func_ov001_020ab5b0. The press pulse func_ov001_020ab3f0 just
  * below it is defined in d_cap_icon.cpp.
  *
@@ -16,8 +16,8 @@
  * in the object. No optimisation pragma is needed.
  *
  * The field names are coined (see include/dThIcon_c.h); the cartridge
- * carries none. func_ov001_020ab41c, TouchArea_Update and
- * func_ov001_020ab5b0 keep C linkage: the ov004/ov006/ov075 callers
+ * carries none. TouchArea_Update and func_ov001_020ab5b0 keep C
+ * linkage: the ov004/ov006/ov075 callers
  * declare them as C functions that take the icon as a char * or void *.
  */
 
@@ -108,13 +108,13 @@ extern "C" int TouchArea_Update(char *c, int player) {
     return ret;
 }
 
-// @symbol func_ov001_020ab41c
+// @symbol _ZN9dThIcon_c6SelectEv
 /* Light the icon a menu has just picked: an unlit icon simply turns on, a
  * lit one plays the press pulse. The lowest address in this unit. */
-extern "C" void func_ov001_020ab41c(dThIcon_c *icon) {
-    if (icon->mOn == 0) {
-        icon->mOn = 1;
+void dThIcon_c::Select() {
+    if (mOn == 0) {
+        mOn = 1;
         return;
     }
-    func_ov001_020ab3f0(icon);
+    func_ov001_020ab3f0(this);
 }
