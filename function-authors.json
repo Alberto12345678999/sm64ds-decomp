@@ -7371,7 +7371,7 @@
     },
     "arm9:0x020441cc": {
       "author": "andrewboudreau",
-      "name": "func_020441cc"
+      "name": "_ZN11ProcessTree5Thing13func_020441ccEv"
     },
     "arm9:0x0204424c": {
       "author": "tangosdev",
