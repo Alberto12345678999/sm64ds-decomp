@@ -171,7 +171,7 @@ s32 dScBoot_c::Behavior() {
             }
             return 1;
         }
-        LoadMessageBankForLanguage();
+        Message::LoadText();
     }
 
     if (data_0209f5bc->IsAtStart() != 0) {

@@ -1276,7 +1276,6 @@ extern void func_0201d418(int, int);
 extern void func_0201d850(u32 course);
 extern void Message_DrawCenteredLine(int, int);
 extern void func_0201fc88(s16);
-extern void func_0201fe08(void);
 extern void func_02020388(int);
 extern void func_02022260(void);
 extern u32 func_02022a4c(s32, s32, s32);

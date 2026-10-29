@@ -7,7 +7,7 @@
  * are word-identical to their single-player twins, in the same order:
  * func_02030fa8 (func_0200f0bc), func_02031154 (func_0201ab6c), func_020313d8
  * (func_0201adac), AddCharVS (Message::AddChar), func_02031e00
- * (func_0201b7cc), SetTextGlobalsVS (func_0201cb2c), func_02033a80
+ * (func_0201b7cc), SetTextGlobalsVS (Message::SetTextGlobals), func_02033a80
  * (func_0201cfb8), func_02034098 (func_0201d590) and Message_DrawCenteredLineVS
  * (Message_DrawCenteredLine). The other functions are VS variants of other
  * sizes. Twins take the single-player name plus `VS` where that name exists.
@@ -138,11 +138,9 @@ void func_02033464(int arg0, int arg1, int arg2);
 void func_020337ec(void);
 void func_020338b0(int a, int b, short c, int d);
 void func_02033a80(int arg0);
-void func_02033ae0(int arg);
 void func_02033bb8(int param0);
 void func_02033e50(int p0, int p1);
 void func_02034098(void);
-void func_02034414(unsigned short n);
 void func_020345b0(int arg0);
 void LoadFont3D(void);
 }
@@ -1492,8 +1490,10 @@ extern "C" void func_02033a80(int arg0) {
     func_02033e50(0xcf, 0x68);
 }
 
-// @symbol func_02033ae0
-extern "C" void func_02033ae0(int arg) {
+// @symbol _ZN7Message24DisplayOptionsMenuTextVSEs
+/* The VS twin of Message::DisplayOptionsMenuText: the same two option lines and
+   centred footer, drawn from the VS text tables. */
+void Message::DisplayOptionsMenuTextVS(s16 arg) {
     volatile int li;
     volatile unsigned short ls;
     int p, s;
@@ -1769,8 +1769,10 @@ void Message::DisplayPauseTextVS(unsigned short n) {
     Message_DrawCenteredLineVS(0x200, 0x20);
 }
 
-// @symbol func_02034414
-extern "C" void func_02034414(unsigned short n) {
+// @symbol _ZN7Message21DisplayDontSaveTextVSEt
+/* The VS twin of Message::DisplayDontSaveText: message `n` in the box, then the
+   two centred answer lines. */
+void Message::DisplayDontSaveTextVS(unsigned short n) {
     volatile int li;
     volatile unsigned short ls;
     int p, s;

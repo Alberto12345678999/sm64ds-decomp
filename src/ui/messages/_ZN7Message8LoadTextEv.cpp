@@ -1,12 +1,18 @@
+//cpp
+#include "Message.h"
 #include "MessageBank.h"
 
+extern "C" {
 extern int GetOwnerLanguage(void);
 extern void *LoadFile(int id);
-extern void ParseMessageBankSections(void);
+}
 extern void *gMessageBankBase;
 
-void LoadMessageBankForLanguage(void)
-{
+/* Loads the message bank for the console's language and splits it with
+   SetTextGlobals. The VS build's Message::LoadTextVS has the same descending
+   language chain, but points at text tables linked into arm9 instead of
+   loading a file. */
+void Message::LoadText() {
     if (GetOwnerLanguage() == 5) {
         gMessageBankBase = LoadFile(MESSAGE_BANK_SPN_ASSET);
     } else if (GetOwnerLanguage() == 4) {
@@ -18,5 +24,5 @@ void LoadMessageBankForLanguage(void)
     } else {
         gMessageBankBase = LoadFile(MESSAGE_BANK_ENG_ASSET);
     }
-    ParseMessageBankSections();
+    SetTextGlobals();
 }
