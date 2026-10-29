@@ -327,21 +327,9 @@ src/ui/menus/unit020b2cdc.cpp:
     complete
     .text start:0x020b2cdc end:0x020b3edc
 
-src/unnamed/ov007/func_ov007_020b3edc.cpp:
+src/ui/menus/unit020b3edc.cpp:
     complete
-    .text start:0x020b3edc end:0x020b3f20
-
-src/unnamed/ov007/func_ov007_020b3f20.cpp:
-    complete
-    .text start:0x020b3f20 end:0x020b40c0
-
-src/unnamed/ov007/func_ov007_020b40c0.cpp:
-    complete
-    .text start:0x020b40c0 end:0x020b4100
-
-src/unnamed/ov007/func_ov007_020b4100.cpp:
-    complete
-    .text start:0x020b4100 end:0x020b413c
+    .text start:0x020b3edc end:0x020b413c
 
 src/unnamed/ov007/func_ov007_020b413c.c:
     complete
