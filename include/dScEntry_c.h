@@ -141,7 +141,7 @@ extern dScEntry_c::StepSet EntryFadeOutSteps;
 
 struct dScEntry_c::graphCallback_c : dGraph_c::callback_c {
     void *compressedBg2Screen; /* 0x04 */
-    void *entryScene;          /* 0x08 */
+    dScEntry_c *entryScene;    /* 0x08 -- the scene whose icons GraphCallback2 renders */
     s32 bg2ScreenBase;         /* 0x0c - BG2 screen block, written to bits 8..12 */
     u8 unk_010[0x1c];          /* 0x10 */
 

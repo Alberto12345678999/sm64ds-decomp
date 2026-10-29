@@ -1105,6 +1105,18 @@
       ]
     },
     "LoadFile": {
+      "src/game/stages/d_s_boot_methods.cpp": [
+        "return:void *"
+      ],
+      "src/game/stages/d_s_entry_methods.cpp": [
+        "return:void *"
+      ],
+      "src/game/stages/d_s_game_over.cpp": [
+        "return:void *"
+      ],
+      "src/game/stages/d_s_stage_methods.cpp": [
+        "return:void *"
+      ],
       "src/game/stages/d_s_star_sel_methods.cpp": [
         "return:void *"
       ],
@@ -10038,6 +10050,12 @@
       ]
     },
     "data_0209d4a8": {
+      "src/minigames/d_s_mg_d3d_base.cpp": [
+        "return:void *"
+      ],
+      "src/unnamed/arm9/0201/func_02019404.c": [
+        "return:void *"
+      ],
       "src/minigames/d_s_mg_base.cpp": [
         "return:void * *"
       ],

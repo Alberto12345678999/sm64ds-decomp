@@ -48,6 +48,7 @@ enum dScStage_c_AssetId { ASSET_D_2D_UPR_COURSE_CLEAR_MESSAGE_NCL_BIN = 0x025a }
 #include "types.h"
 #include "G2.h"
 #include "dFdBrightness_c.h"
+#include "dFdColor_c.h"
 #include "dScStage_c.h"
 #include "Timer.h"
 #include "decl_common.h"
@@ -79,6 +80,8 @@ enum dScStage_c_AssetId { ASSET_D_2D_UPR_COURSE_CLEAR_MESSAGE_NCL_BIN = 0x025a }
 #include "GX.h"
 #include "cstd.h"
 #include "daMugenBGM_c.h"
+#include "math/CalcLib.h"
+#include "dGraph_c.h"
 
 struct OamAttr;
 struct Matrix2x2 {
@@ -132,6 +135,8 @@ int IsButtonInputValid(void);
 int SublevelToLevel(int lv);
 int GetOwnerLanguage(void);
 void GiveLives(int n);
+/* local extern: the plain ROM Deallocate at 0x02018144, not Memory::Deallocate;
+   only decl_common.h's catch-all declares it, and that is not a header home. */
 void Deallocate(void *ptr);
 void SetBg2Offset(int x, int y);
 void SetBg3Offset(int x, int y);
@@ -139,7 +144,7 @@ void SetBg1Offset(int x, int y);
 void SetSubBg0Offset(int x, int y);
 void SetSubBg1Offset(int x, int y);
 int func_02029408(void);
-int LoadFile(int handle);
+void *LoadFile(int handle);
 void SetControllerMode(unsigned char m);
 unsigned int LoadCompressedFileAt(unsigned short id, void *dst);
 int GetSoundMode(void);
@@ -326,7 +331,11 @@ extern u16 *data_0209214c[];
 extern s32 data_02092208[];
 extern u8 data_0209caa0[];
 extern s32 data_0209cef0;
-extern void *data_0209d4a8;
+/* The one graph callback the frame dispatchers poll (func_02018ec0 and
+   friends): the scene registers its own object here and clears it on the way
+   out. dGraph_c::callback_c is the ROM-proven base of every scene's nested
+   graphCallback_c (include/dGraph_c.h). */
+extern dGraph_c::callback_c *data_0209d4a8;
 extern s32 data_0209e650;
 extern u8 data_0209f1f4;
 extern u8 data_0209f1f8;
@@ -375,7 +384,7 @@ extern int data_0209f3e8[];
 extern int data_0209f40c[];
 extern u32 data_0209f4f8[][16];
 extern dFdBrightness_c *data_0209f5bc;
-extern unsigned short data_0209f5e8;
+extern dFdColor_c data_0209f5e8;
 extern int gRunningKuppaScript;
 extern u8 data_0209fcc8;
 extern PadData data_020a0e58[];
@@ -454,7 +463,7 @@ int IsLevelTinyHugeIslandOutside(int level);
 int IsLevelInsideCastle(int level);
 int GetSoundGroupID(int group, int sub);
 void func_0202deac(int levelID);
-s32 GetLevelPart(s32 level);
+s8 GetLevelPart(s32 level);
 
 /* Defined elsewhere. */
 void OpenCannonInLevel(s8 levelID);
@@ -642,7 +651,7 @@ void dScStage_c::LC_Render() {
         return;
 
     {
-        void *p = (void *)LoadFile(ASSET_D_2D_UPR_COURSE_CLEAR_MESSAGE_NCL_BIN);
+        void *p = LoadFile(ASSET_D_2D_UPR_COURSE_CLEAR_MESSAGE_NCL_BIN);
         GX::LoadOBJPltt((void *)((char *)p + (((unsigned int)data_0209f2a8 >> 2) << 5)), 0x1c0,
                         0x10);
         Deallocate(p);
@@ -3427,7 +3436,7 @@ extern "C" void LoadLevel(int levelID, u32 entranceID, int starID, u32 arg3, s8 
 
     if (data_02092110 < 0) {
         dScene_c::SetAndStopColorFader();
-        *(unsigned short *)((char *)&data_0209f5e8 + 0xc) = 0;
+        data_0209f5e8.color = 0;
     }
     data_02092110 = levelID;
     data_0209f268 = entranceID;
@@ -4224,7 +4233,6 @@ int dScStage_c::Behavior() {
 #define TOUCH_DATA ((TouchInfo *)gTouchHeld)
 
 extern "C" {
-u8 DecIfAbove0_Byte(u8 *p);
 s16 atan2_hold_d_s_stage_methods_1(int y, int x);
 }
 
@@ -4731,7 +4739,7 @@ int dScStage_c::InitResources() {
         *bg1Control = *bg1Control & ~0x40;
         data_0209d454 = 0x18;
         data_0209f204 = 0;
-        data_0209d4a8 = (void *)&data_0209f3c4;
+        data_0209d4a8 = (dGraph_c::callback_c *)&data_0209f3c4;
         data_0209b454 = 0;
         func_02039218();
         ResetKuppaScript();

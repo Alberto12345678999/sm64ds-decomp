@@ -101,7 +101,7 @@ extern short data_ov075_0211d94a[];
 
 #define SH(base, i) (*(short*)((char*)(base) + (i)*4))
 
-extern "C" void func_ov075_021160dc(char *c);
+extern "C" void func_ov075_021160dc(dScEntry_c *scene);
 
 /* Written first so D1 and D0 are emitted first, as in the cartridge. The
  * body is empty: tearing down the four OamAnimations and the nine icon_c
@@ -274,23 +274,21 @@ void func_ov075_02115e8c(char *rawIcon, int iconType, int iconIndex, short x, sh
 }
 
 // @symbol func_ov075_0211601c
-void func_ov075_0211601c(char *object, int scene, int screenBase) {
-    dScEntry_c::graphCallback_c *callback = (dScEntry_c::graphCallback_c *)object;
-    callback->entryScene = (void *)scene;
+void func_ov075_0211601c(dScEntry_c::graphCallback_c *callback, dScEntry_c *scene, int screenBase) {
+    callback->entryScene = scene;
     callback->bg2ScreenBase = screenBase;
 }
 
 // @symbol func_ov075_02116028
-void func_ov075_02116028(int *object, int screenBase) {
-    dScEntry_c::graphCallback_c *callback = (dScEntry_c::graphCallback_c *)object;
+void func_ov075_02116028(dScEntry_c::graphCallback_c *callback, int screenBase) {
     callback->bg2ScreenBase = screenBase;
 }
 
 // @symbol func_ov075_02116030
-void func_ov075_02116030(void *object, int screen) {
+void func_ov075_02116030(void *object, void *screen) {
     dScEntry_c::graphCallback_c *callback = (dScEntry_c::graphCallback_c *)object;
     if (callback->compressedBg2Screen == 0)
-        callback->compressedBg2Screen = (void *)screen;
+        callback->compressedBg2Screen = screen;
 }
 }
 
@@ -308,7 +306,7 @@ int dScEntry_c::graphCallback_c::GraphCallback2() {
     }
 
     if (entryScene != 0)
-        func_ov075_021160dc((char *)entryScene);
+        func_ov075_021160dc(entryScene);
 
     return 1;
 }
@@ -317,8 +315,7 @@ int dScEntry_c::graphCallback_c::GraphCallback2() {
 dScEntry_c::graphCallback_c::graphCallback_c() : compressedBg2Screen(0), entryScene(0) {}
 
 // @symbol func_ov075_021160dc
-extern "C" void func_ov075_021160dc(char *rawScene) {
-    dScEntry_c *scene = (dScEntry_c *)rawScene;
+extern "C" void func_ov075_021160dc(dScEntry_c *scene) {
     int iconCount = scene->mIconCount;
     int iconIndex = 0;
     if (iconCount <= 0)
@@ -470,7 +467,7 @@ extern "C" void func_ov075_0211621c(char *c) {
                 p = (int *)OAM::Render(zC, (OamAttr *)data_ov075_0211c8b0,
                                        xbase + 0x1c + i * stride, yIcon, minus1, minus1, scale, zC);
                 if (p != 0) {
-                    int *q = (int *)((int)(p + 1));
+                    int *q = p + 1;
                     int val = *q;
                     *q = (val & (~0x3ff)) |
                          ((data_0209f310[pid] + (((u32)(val << 22)) >> 22)) & 0x3ff);
@@ -490,7 +487,7 @@ extern "C" void func_ov075_0211621c(char *c) {
                                                xbase + 0x14 + i * stride, yNum, minus1, minus1,
                                                scale, zD);
                         if (p != 0) {
-                            int *q = (int *)((int)(p + 1));
+                            int *q = p + 1;
                             int val = *q;
                             *q = (val & (~0x3ff)) |
                                  ((hundreds + (((u32)(val << 22)) >> 22)) & 0x3ff);
@@ -504,7 +501,7 @@ extern "C" void func_ov075_0211621c(char *c) {
                                                xbase + dx + i * stride, yNum, minus1, minus1, scale,
                                                zE);
                         if (p != 0) {
-                            int *q = (int *)((int)(p + 1));
+                            int *q = p + 1;
                             int val = *q;
                             *q = (val & (~0x3ff)) | ((tens + (((u32)(val << 22)) >> 22)) & 0x3ff);
                         }
@@ -516,7 +513,7 @@ extern "C" void func_ov075_0211621c(char *c) {
                                            xbase + dx + i * stride, yNum, minus1, minus1, scale,
                                            zF);
                     if (p != 0) {
-                        int *q = (int *)((int)(p + 1));
+                        int *q = p + 1;
                         int val = *q;
                         *q = (val & (~0x3ff)) | (((((u32)(val << 22)) >> 22) + (rem % 10)) & 0x3ff);
                     }

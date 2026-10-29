@@ -68,7 +68,13 @@ extern char data_0209e674[];
 extern dFdBrightness_c *data_0209f5bc;
 extern u16 data_020a0e58[];
 extern u8 data_0209f2d8;
+/* The scene-wide colour fader, dScene_c's dFdColor_c in
+   src/game/stages/d_scene.cpp. Element 6 is its u16 `color` at offset 0xc.
+   local extern: spelled as a u16 array because including dFdColor_c.h adds
+   named parameters that renumber this TU's compiler-numbered string pool
+   (sTitleLevelEntries' 54 rodata relocations move with it). */
 extern u16 data_0209f5e8[];
+#define SCENE_FADE_COLOR data_0209f5e8[6]
 extern int data_020a0d90[];
 extern u8 data_0209d45c[];
 extern u8 data_0208ee44[];
@@ -272,7 +278,7 @@ s32 dScTitle_c::Behavior() {
             SetPlayerGlobals();
             SetNumPlayers(1);
             dScene_c::StartSceneFade(4, 0, 0);
-            data_0209f5e8[6] = 0x7fff;
+            SCENE_FADE_COLOR = 0x7fff;
         }
     } else {
         u16 v = data_020a0e58[0];
