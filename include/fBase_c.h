@@ -44,6 +44,7 @@
    declarations of one name in a single TU, which mwcc rejects. */
 extern "C" void _ZN6Memory10DeallocateEPvPN5mHeap6Heap_tE(void *, void *);
 extern "C" void *data_020a0eac;
+#include "Memory.h"
 
 struct fBase_c {
     /* Intrusive scene-graph node owned by every actor. */
@@ -168,7 +169,9 @@ struct fBase_c {
        This inline overload reaches only fBase_c and dBase_c --
        CW inlines it from the class itself or its IMMEDIATE base -- which is why
        include/dActor_c.h carries its own copy. */
-    void operator delete(void *ptr) { _ZN6Memory10DeallocateEPvPN5mHeap6Heap_tE(ptr, data_020a0eac); }
+    void operator delete(void *ptr) {
+        Memory::Deallocate(ptr, (mHeap::Heap_t *)data_020a0eac);
+    }
 };
 
 #else

@@ -71,7 +71,9 @@ struct KCL_File {
     u32 zShift;            /* 0x34 */
 };
 
-extern "C" void _ZN6Memory16operator_delete2EPv(void *);
+namespace Memory {
+void operator_delete2(void *);
+}
 
 struct dBgW_Kc : dBgW {
     KCL_File *kclFile;        /* 0x20 */
@@ -155,8 +157,9 @@ struct dBgW_Kc : dBgW {
        Inline, and in the IMMEDIATE base -- mwcc inlines it only when it finds it
        in the class or one level up, as include/dActor_c.h records. No layout
        effect: a non-virtual inline member adds no field and no vtable slot. */
-    void operator delete(void *ptr) { _ZN6Memory16operator_delete2EPv(ptr); }
-
+    void operator delete(void *ptr) {
+        Memory::operator_delete2(ptr);
+    }
 };
 
 #ifndef SM64DS_PLATFORM_PC

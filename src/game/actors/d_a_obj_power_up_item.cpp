@@ -93,7 +93,9 @@ enum {
     CHARACTER_YOSHI = 3
 };
 
-namespace cstd { int fdiv(int, int); }
+namespace cstd {
+int fdiv(int, int);
+}
 
 extern "C" {
 extern u8 DecIfAbove0_Byte(u8* p);

@@ -102,7 +102,7 @@
       "ordinal": 11
     },
     {
-      "symbol": "_ZN3OAM12EnableSubOAMEv",
+      "symbol": "_ZN3OAM12EnableSubOAMEP6OamTmp",
       "address": "0x020219f0",
       "size": "0x00000014",
       "legacy_source": "src/_ZN3OAM12EnableSubOAMEv.cpp",

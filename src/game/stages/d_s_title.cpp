@@ -31,9 +31,6 @@
  *   spelled `void *` -- the one spelling neither call site has to cast away
  *   from. Until the ownership is narrowed, the original form stays
  *   uncertain, and the free form is only what this TU reproduces.
- * - OAM::EnableSubOAM keeps its legacy call-site declaration: Render
- *   passes the address of a stack slot in r0 even though the canonical
- *   static function takes no arguments. This is a call-site ABI leftover.
  */
 
 #include "dScTitle_c.h"
@@ -44,20 +41,15 @@
 #include "dFdBrightness_c.h"
 #include "G2.h"
 #include "GX.h"
+#include "OAM.h"
 
 /* SetFaders stores the fade controller here; slot 5 waits for the entrance fade. */
 
-/* Stack slot whose address is retained by the matched Render call. */
+/* Stack slot whose address Render passes to OAM::EnableSubOAM. The callee
+ * does not read it; the call still has to materialize the pointer in r0. */
 struct OamTmp {
     int x;
 };
-
-namespace OAM {
-void EnableSubOAM(OamTmp *);
-/* local extern: the matched Render passes &tmp in r0; the header's
-   static EnableSubOAM() takes no argument */
-extern "C" void _ZN3OAM12EnableSubOAMEv(OamTmp *);
-}
 
 /* ROM symbols this TU references that no header in the tree declares yet,
  * spelt by their exact final names under C linkage the way decl_common.h
@@ -312,7 +304,7 @@ s32 dScTitle_c::Behavior() {
 // @symbol _ZN10dScTitle_c6RenderEv
 s32 dScTitle_c::Render() {
     OamTmp tmp;
-    OAM::_ZN3OAM12EnableSubOAMEv(&tmp);
+    OAM::EnableSubOAM(&tmp);
     {
         int idx = data_0209e664;
         unsigned int v = ((data_0209b2f4 - data_0209b2f8 + 2) << 3) & 0xff;

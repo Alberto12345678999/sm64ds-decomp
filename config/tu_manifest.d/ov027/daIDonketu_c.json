@@ -554,27 +554,27 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@465",
+      "from": "@470",
       "to": "@72",
       "evidence": "emitted destructor-registration node name collides with the configured @463 on ov100 on main; @72 is unused everywhere and shorter than the original"
     },
     {
-      "from": "@467",
+      "from": "@472",
       "to": "@73",
       "evidence": "emitted destructor-registration node name collides with the configured @465 on ov100 on main; @73 is unused everywhere and shorter than the original"
     },
     {
-      "from": "@469",
+      "from": "@474",
       "to": "@74",
       "evidence": "emitted destructor-registration node name collides with the configured @467 on ov100 on main; @74 is unused everywhere and shorter than the original"
     },
     {
-      "from": "@466",
+      "from": "@471",
       "to": "@601",
       "evidence": "batch-5 atdup: @464 collides cross-module (temps are fleet-global); renumber to unused same-length @601"
     },
     {
-      "from": "@468",
+      "from": "@473",
       "to": "@598",
       "evidence": "batch-5 atdup: @466 collides cross-module (temps are fleet-global); renumber to unused same-length @598"
     }

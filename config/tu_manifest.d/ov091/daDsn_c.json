@@ -580,17 +580,17 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@690",
+      "from": "@695",
       "to": "@795",
       "evidence": "compiler-local __register_global_object node; renamed to an unused fleet temp of equal length | compiler temp; retiring this TU's named-parameter extern \"C\" helper and Particle stub declarations lowers the per-TU @NNN uniquifier and including Particle__System.h raises it, so mwcc emits it under this name now"
     },
     {
-      "from": "@691",
+      "from": "@696",
       "to": "@791",
       "evidence": "compiler-local __register_global_object node; @629 is taken on main by ov064 data, renamed to an unused fleet temp of equal length | compiler temp; retiring this TU's named-parameter extern \"C\" helper and Particle stub declarations lowers the per-TU @NNN uniquifier and including Particle__System.h raises it, so mwcc emits it under this name now"
     },
     {
-      "from": "@692",
+      "from": "@697",
       "to": "@789",
       "evidence": "compiler-local __register_global_object node; renamed to an unused fleet temp of equal length | compiler temp; retiring this TU's named-parameter extern \"C\" helper and Particle stub declarations lowers the per-TU @NNN uniquifier and including Particle__System.h raises it, so mwcc emits it under this name now"
     }

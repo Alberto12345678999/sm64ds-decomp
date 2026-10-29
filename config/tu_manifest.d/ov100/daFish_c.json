@@ -631,32 +631,32 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@759",
+      "from": "@764",
       "to": "@152",
       "evidence": "compiler temporary; mwcc numbers it @679 per TU and ov070 daKrpa_c (this batch) also defines a global @679, so the scratch link collides"
     },
     {
-      "from": "@760",
+      "from": "@765",
       "to": "@153",
       "evidence": "compiler temporary; mwcc numbers it @680 per TU and ov070 daKrpa_c (this batch) also defines a global @680, so the scratch link collides"
     },
     {
-      "from": "@761",
+      "from": "@766",
       "to": "@154",
       "evidence": "compiler temporary; mwcc numbers it @681 per TU and ov070 daKrpa_c (this batch) also defines a global @681, so the scratch link collides"
     },
     {
-      "from": "@762",
+      "from": "@767",
       "to": "@155",
       "evidence": "compiler temporary; mwcc numbers it @682 per TU and ov070 daKrpa_c (this batch) also defines a global @682, so the scratch link collides"
     },
     {
-      "from": "@763",
+      "from": "@768",
       "to": "@156",
       "evidence": "compiler temporary; mwcc numbers it @683 per TU and ov070 daKrpa_c (this batch) also defines a global @683, so the scratch link collides"
     },
     {
-      "from": "@764",
+      "from": "@769",
       "to": "@157",
       "evidence": "compiler temporary; mwcc numbers it @684 per TU and ov070 daKrpa_c (this batch) also defines a global @684, so the scratch link collides"
     }

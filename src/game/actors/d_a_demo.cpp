@@ -502,23 +502,17 @@ extern int func_ov002_020f2990(char *c);
 extern void func_ov002_020f5f0c(C* c, int idx);
 extern void func_ov002_020f5fe4(char *c);
 /* local extern dropped: decl_common.h declares func_ov002_020f6514(unsigned char*, void*, unsigned char) */
-/* local extern: the D1 address handed to func_020731dc; ~Vector3 is inline in types.h. */
-extern void *_ZN7Vector3D1Ev(void *object);
 extern unsigned int ReadUnalignedInt(unsigned char *p);
 extern void func_02012694(unsigned int, void*);
 extern short ReadUnalignedShort(unsigned char *p);
 extern s16 Vec3_HorzAngle(const struct Vector3 *v0, const struct Vector3 *v1);
 /* local extern dropped: decl_common.h declares data_ov002_0210bc88 as 'int'; callers cast the address */
 extern void AddVec3(Vec3 *a, Vec3 *b, Vec3 *c);
-extern void func_020731dc(void *object, void *destructor, void **node);
 extern void MulVec3Mat4x3(Vector3 *v, Matrix4x3 *m, Vector3 *dst);
 extern int* Vec3_LslInPlace(int *v, int sh);
 extern u16 gKuppaScriptFrame;
 extern char *data_0209f318;
 extern int data_ov002_0210b614;
-extern int data_ov002_02110b0c;
-extern int data_ov002_02110c20[];
-extern int data_ov002_02110db8;
 extern int data_ov002_0210b958;
 /* local extern dropped: decl_common.h declares data_0209b41c */
 extern s16 Vec3_VertAngle(const struct Vector3* v1, const struct Vector3* v0);
@@ -529,15 +523,7 @@ extern void Math_Function_0203b0fc(int* p, int target, int scale, int max);
 extern void Vec3_Sub(Vec3* out, Vec3* a, Vec3* b);
 extern void Vec3_MulScalar(Vec3* out, const Vec3* in, int scale);
 extern void Vec3_Add(Vec3* out, Vec3* a, Vec3* b);
-extern int data_ov002_02110b04;
-extern int data_ov002_02110afc;
-extern int data_ov002_02110b08;
-extern int data_ov002_02110df4[];
-extern int data_ov002_02110e0c[];
-extern int data_ov002_02110e18[];
-extern int data_ov002_02110de8[];
-extern int data_ov002_02110e00[];
-extern int data_ov002_02110dac[];
+
 /* local extern dropped: decl_common.h declares data_0209b41c */
 extern int data_0208ee44;
 extern int data_ov002_0210b970[3];
@@ -545,7 +531,6 @@ extern unsigned char data_0209f250;
 extern void *data_0209f394[];
 extern void Vec3_RotateYAndTranslate(int *out, int *in, short angle, int *src);
 extern int data_ov002_0210b964[3];
-extern int data_ov002_02110ddc[3];
 /* local extern dropped: decl_common.h declares func_02008b4c(void*,void*,void*,void*) */
 extern Fix12i Vec3_Dist(const Vector3 *a, const Vector3 *b);
 extern Fix12i Vec3_HorzLen(const Vector3 *v);
@@ -573,7 +558,6 @@ extern PMF3 data_ov002_0210b8e0;
 extern PMF3 data_ov002_0210b8d8;
 extern PMF3 data_ov002_0210b8d0;
 extern PMF3 data_ov002_0210b8c8;
-extern int data_ov002_02110b00;
 extern PMF3 data_ov002_0211104c[24];
 extern void Vec3_Asr(Vec3 *d, Vec3 *s, int sh);
 extern void Matrix4x3_FromTranslation(Matrix4x3 *m, s32 x, s32 y, s32 z);
@@ -641,6 +625,80 @@ extern JugemModelFile data_ov085_0213074c;
 /* TUBUILD CONFLICT -- alternate declaration of Vec3_VertAngle, from the legacy file for func_ov002_020f7bb8, NOT applied: extern s16 Vec3_VertAngle(const Vector3 *v1, const Vector3 *v0); */
 /* TUBUILD CONFLICT -- alternate declaration of Vec3_HorzAngle, from the legacy file for func_ov002_020f7bb8, NOT applied: extern s16 Vec3_HorzAngle(const Vector3 *v0, const Vector3 *v1); */
 /* TUBUILD CONFLICT -- alternate declaration of _ZN4cstd5atan2E5Fix12IiES1_, from the legacy file for func_ov002_020f7bb8, NOT applied: extern s16 _ZN4cstd5atan2E5Fix12IiES1_(Fix12i y, Fix12i x); */
+/* BSS between the four function-local Vector3 statics. Each object is
+   its own section so the linker can place the statics at their retail
+   addresses. The five char objects match decl_common.h; the following
+   symbol is 8-aligned so the slot stays 8 bytes. */
+int data_ov002_02110b00;
+char data_ov002_02110b10[8];
+char data_ov002_02110b18[8];
+char data_ov002_02110b20[8];
+char data_ov002_02110b28[8];
+char data_ov002_02110b30[8];
+char data_ov002_02110b38[8];
+char data_ov002_02110b40[8];
+char data_ov002_02110b48[8];
+char data_ov002_02110b50;
+__attribute__((aligned(8))) char data_ov002_02110b58[8];
+char data_ov002_02110b60[8];
+char data_ov002_02110b68[8];
+char data_ov002_02110b70;
+__attribute__((aligned(8))) char data_ov002_02110b78;
+__attribute__((aligned(8))) char data_ov002_02110b80[8];
+char data_ov002_02110b88[8];
+char data_ov002_02110b90[8];
+char data_ov002_02110b98;
+__attribute__((aligned(8))) char data_ov002_02110ba0[8];
+char data_ov002_02110ba8[8];
+char data_ov002_02110bb0[8];
+char data_ov002_02110bb8[8];
+char data_ov002_02110bc0[8];
+char data_ov002_02110bc8[8];
+char data_ov002_02110bd0[8];
+char data_ov002_02110bd8[8];
+char data_ov002_02110be0[8];
+char data_ov002_02110be8[8];
+char data_ov002_02110bf0[8];
+char data_ov002_02110bf8[8];
+char data_ov002_02110c00[8];
+char data_ov002_02110c08[8];
+char data_ov002_02110c10[8];
+char data_ov002_02110c18;
+char data_ov002_02110c2c[12];
+char data_ov002_02110c38[12];
+char data_ov002_02110c44[12];
+char data_ov002_02110c50[12];
+char data_ov002_02110c5c[12];
+char data_ov002_02110c68[12];
+char data_ov002_02110c74[12];
+char data_ov002_02110c80[12];
+char data_ov002_02110c8c[12];
+char data_ov002_02110c98[12];
+char data_ov002_02110ca4[12];
+char data_ov002_02110cb0[12];
+char data_ov002_02110cbc[12];
+char data_ov002_02110cc8[12];
+char data_ov002_02110cd4[12];
+char data_ov002_02110ce0[12];
+char data_ov002_02110cec[12];
+char data_ov002_02110cf8[12];
+char data_ov002_02110d04[12];
+char data_ov002_02110d10[12];
+char data_ov002_02110d1c[12];
+char data_ov002_02110d28[12];
+char data_ov002_02110d34[12];
+char data_ov002_02110d40[12];
+char data_ov002_02110d4c[12];
+char data_ov002_02110d58[12];
+char data_ov002_02110d64[12];
+char data_ov002_02110d70[12];
+char data_ov002_02110d7c[12];
+char data_ov002_02110d88[12];
+char data_ov002_02110d94[12];
+char data_ov002_02110da0[12];
+char data_ov002_02110dc4[12];
+char data_ov002_02110dd0[12];
+int data_ov002_02110ddc[3];
 /* TUBUILD CONFLICT -- alternate declaration of data_0209b41c, from the legacy file for _ZN8daDemo_c6RenderEv, NOT applied: extern M48 data_0209b41c; */
 }
 
@@ -3952,15 +4010,9 @@ int daDemo_c::func_ov002_020f6c60(void *arg1, int arg2, int arg3)
   this->mOpacity = 0x1f;
   if ((*flag) == 0)
   {
-    if ((data_ov002_02110b0c & 1) == 0)
-    {
-      data_ov002_02110c20[0] = 0xffdd6000;
-      data_ov002_02110c20[1] = 0xbe4000;
-      data_ov002_02110c20[2] = 0x2ae000;
-      func_020731dc(data_ov002_02110c20, (void *)(&_ZN7Vector3D1Ev), (void **) (&data_ov002_02110db8));
-      data_ov002_02110b0c |= 1;
-    }
-    func_ov002_020f6f48((Vector3 *) data_ov002_02110c20, 0x20);
+      /* First call stores the look-at point and registers ~Vector3(). */
+      static __attribute__((aligned(8))) Vector3 sLookTarget(0xffdd6000, 0xbe4000, 0x2ae000);
+      func_ov002_020f6f48(&sLookTarget, 0x20);
   }
   else
   {
@@ -4224,8 +4276,8 @@ int daDemo_c::func_ov002_020f7410(unsigned char *in, int sel)
 /* Script handler 3. On the start frame, when arg1[0] is non-zero, it sets
  * fixed angles and clears mRate. Every frame Math_Function_0203b0fc moves
  * mRate toward 1.0 (arg1[0] non-zero) or 0, and the vector at mAnmModel +
- * 0x64 (the param_c tail base) becomes base + (data_ov002_02110e0c - base) *
- * mRate, with base data_ov002_02110df4 or data_ov002_02110e18 by the same
+ * 0x64 (the param_c tail base) becomes base + (sViewEnd - base) *
+ * mRate, with base sViewStart or sViewIdle by the same
  * test. mPos = that vector times INV_VIEW_MATRIX_ASR_3, then << 3; mMagnitude
  * approaches arg1[0] << 12 by arg1[1] << 8 and drives mOpacity. */
 
@@ -4246,38 +4298,21 @@ int daDemo_c::func_ov002_020f7538(unsigned char *arg1, int arg2)
         this->mRate = 0;
     }
 
-    if (!(data_ov002_02110b04 & 1)) {
-        data_ov002_02110df4[0] = 0x2800;
-        data_ov002_02110df4[1] = 0xfffee900;
-        data_ov002_02110df4[2] = -0x4200;
-        func_020731dc(data_ov002_02110df4, (void *)_ZN7Vector3D1Ev, (void **)data_ov002_02110de8);
-        data_ov002_02110b04 |= 1;
-    }
-    if (!(data_ov002_02110afc & 1)) {
-        data_ov002_02110e0c[0] = 0x3300;
-        data_ov002_02110e0c[1] = 0xfffee900;
-        data_ov002_02110e0c[2] = -0x5e00;
-        func_020731dc(data_ov002_02110e0c, (void *)_ZN7Vector3D1Ev, (void **)data_ov002_02110e00);
-        data_ov002_02110afc |= 1;
-    }
-    if (!(data_ov002_02110b08 & 1)) {
-        data_ov002_02110e18[0] = 0x4c00;
-        data_ov002_02110e18[1] = -0xf200;
-        data_ov002_02110e18[2] = -0xff00;
-        func_020731dc(data_ov002_02110e18, (void *)_ZN7Vector3D1Ev, (void **)data_ov002_02110dac);
-        data_ov002_02110b08 |= 1;
-    }
+    /* First call stores each view-space endpoint and registers ~Vector3(). */
+    static Vector3 sViewStart(0x2800, 0xfffee900, -0x4200);
+    static Vector3 sViewEnd(0x3300, 0xfffee900, -0x5e00);
+    static Vector3 sViewIdle(0x4c00, -0xf200, -0xff00);
 
     if (f1 != 0) {
-        base = data_ov002_02110df4;
+        base = (int *)&sViewStart;
         scale = 0x1000;
     } else {
-        base = data_ov002_02110e18;
+        base = (int *)&sViewIdle;
         scale = 0;
     }
 
     Math_Function_0203b0fc(&this->mRate, scale, 0x40, 0x100);
-    Vec3_Sub(&diff, (Vec3 *)data_ov002_02110e0c, (Vec3 *)base);
+    Vec3_Sub(&diff, (Vec3 *)&sViewEnd, (Vec3 *)base);
     tmp.x = diff.x;
     tmp.y = diff.y;
     tmp.z = diff.z;

@@ -6500,34 +6500,24 @@ void dScMgSmartball_c::AfterCleanupResources(u32 vfSuccess) {
 
 #pragma pop
 
-/* The scene factory and its empty particle-element constructor share this unit.
-   The factory stays hand-built; include/dScMgSmartball_c.h says why it is not
-   `new dScMgSmartball_c` yet. */
-extern int _ZTV16dScMgSmartball_c[];
-/* local extern: the hand-built factory runs dScMgBase_c's base-object
-   constructor on raw storage, which C++ spells only inside a derived
-   class's own constructor. */
-extern "C" void *_ZN11dScMgBase_cC2Ev(void *p);
+/* The scene factory and its empty particle-element constructor share this unit. */
 extern "C" void SmartballObj_ElemCtor(void);
+
+/* Inline, so the factory below holds it: dScMgBase_c's C2 and this class's
+   vtable are the compiler's, then the four arrays the destructor tears down. */
+inline dScMgSmartball_c::dScMgSmartball_c() {
+    __cxa_vec_ctor(mPopupPos, 5, 8, (void *)func_0203d738, (void *)NullDestructor_0203d47c);
+    __cxa_vec_ctor(mDustPos, 0x10, 8, (void *)func_0203d738, (void *)NullDestructor_0203d47c);
+    __cxa_vec_ctor(mDustVel, 0x10, 8, (void *)func_0203d738, (void *)NullDestructor_0203d47c);
+    __cxa_vec_ctor(mSparks, 0x40, 0x24, (void *)SmartballObj_ElemCtor,
+                   (void *)SmartballObj_ElemDtor);
+}
 
 // @symbol dScMgSmartball_c_classInit
 /* Allocates and constructs the scene; returns null if allocation fails.
  * Historical alias: MgBingoBallSlotsShot_Spawn. */
 extern "C" void *dScMgSmartball_c_classInit(void) {
-    dScMgSmartball_c *scene = (dScMgSmartball_c *)fBase_c::operator new(0x629c);
-    if (scene != 0) {
-        _ZN11dScMgBase_cC2Ev(scene);
-        *(int *)scene = (int)&_ZTV16dScMgSmartball_c[2];
-        __cxa_vec_ctor(scene->mPopupPos, 5, 8, (void *)func_0203d738,
-                       (void *)NullDestructor_0203d47c);
-        __cxa_vec_ctor(scene->mDustPos, 0x10, 8, (void *)func_0203d738,
-                       (void *)NullDestructor_0203d47c);
-        __cxa_vec_ctor(scene->mDustVel, 0x10, 8, (void *)func_0203d738,
-                       (void *)NullDestructor_0203d47c);
-        __cxa_vec_ctor(scene->mSparks, 0x40, 0x24, (void *)SmartballObj_ElemCtor,
-                       (void *)SmartballObj_ElemDtor);
-    }
-    return scene;
+    return new dScMgSmartball_c;
 }
 
 // @symbol SmartballObj_ElemCtor

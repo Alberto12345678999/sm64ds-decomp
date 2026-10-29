@@ -1395,72 +1395,72 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@1049",
+      "from": "@1054",
       "to": "@1090",
       "evidence": "Compiler temporary identity established by exact initializer relocation position and complete owned-object bytes/relocations versus unchanged TU baseline. | compiler temp; ApproachLinear's Vector3 overload is now declared in math/Approach.h, retiring this TU's named-parameter local extern, so mwcc emits it under this lower number (re-keyed by address)"
     },
     {
-      "from": "@1050",
+      "from": "@1055",
       "to": "@1091",
       "evidence": "Compiler temporary identity established by exact initializer relocation position and complete owned-object bytes/relocations versus unchanged TU baseline. | compiler temp; ApproachLinear's Vector3 overload is now declared in math/Approach.h, retiring this TU's named-parameter local extern, so mwcc emits it under this lower number (re-keyed by address)"
     },
     {
-      "from": "@1051",
+      "from": "@1056",
       "to": "@1092",
       "evidence": "Compiler temporary identity established by exact initializer relocation position and complete owned-object bytes/relocations versus unchanged TU baseline. | compiler temp; ApproachLinear's Vector3 overload is now declared in math/Approach.h, retiring this TU's named-parameter local extern, so mwcc emits it under this lower number (re-keyed by address)"
     },
     {
-      "from": "@1052",
+      "from": "@1057",
       "to": "@1093",
       "evidence": "Compiler temporary identity established by exact initializer relocation position and complete owned-object bytes/relocations versus unchanged TU baseline. | compiler temp; ApproachLinear's Vector3 overload is now declared in math/Approach.h, retiring this TU's named-parameter local extern, so mwcc emits it under this lower number (re-keyed by address)"
     },
     {
-      "from": "@1054",
+      "from": "@1059",
       "to": "@1095",
       "evidence": "Compiler temporary identity established by exact initializer relocation position and complete owned-object bytes/relocations versus unchanged TU baseline. | compiler temp; ApproachLinear's Vector3 overload is now declared in math/Approach.h, retiring this TU's named-parameter local extern, so mwcc emits it under this lower number (re-keyed by address)"
     },
     {
-      "from": "@1056",
+      "from": "@1061",
       "to": "@1097",
       "evidence": "Compiler temporary identity established by exact initializer relocation position and complete owned-object bytes/relocations versus unchanged TU baseline. | compiler temp; ApproachLinear's Vector3 overload is now declared in math/Approach.h, retiring this TU's named-parameter local extern, so mwcc emits it under this lower number (re-keyed by address)"
     },
     {
-      "from": "@1058",
+      "from": "@1063",
       "to": "@1099",
       "evidence": "Compiler temporary identity established by exact initializer relocation position and complete owned-object bytes/relocations versus unchanged TU baseline. | compiler temp; ApproachLinear's Vector3 overload is now declared in math/Approach.h, retiring this TU's named-parameter local extern, so mwcc emits it under this lower number (re-keyed by address)"
     },
     {
-      "from": "@1060",
+      "from": "@1065",
       "to": "@1101",
       "evidence": "Compiler temporary identity established by exact initializer relocation position and complete owned-object bytes/relocations versus unchanged TU baseline. | compiler temp; ApproachLinear's Vector3 overload is now declared in math/Approach.h, retiring this TU's named-parameter local extern, so mwcc emits it under this lower number (re-keyed by address)"
     },
     {
-      "from": "@1062",
+      "from": "@1067",
       "to": "@1103",
       "evidence": "Compiler temporary identity established by exact initializer relocation position and complete owned-object bytes/relocations versus unchanged TU baseline. | compiler temp; ApproachLinear's Vector3 overload is now declared in math/Approach.h, retiring this TU's named-parameter local extern, so mwcc emits it under this lower number (re-keyed by address)"
     },
     {
-      "from": "@1064",
+      "from": "@1069",
       "to": "@1105",
       "evidence": "Compiler temporary identity established by exact initializer relocation position and complete owned-object bytes/relocations versus unchanged TU baseline. | compiler temp; ApproachLinear's Vector3 overload is now declared in math/Approach.h, retiring this TU's named-parameter local extern, so mwcc emits it under this lower number (re-keyed by address)"
     },
     {
-      "from": "@1066",
+      "from": "@1071",
       "to": "@1107",
       "evidence": "Compiler temporary identity established by exact initializer relocation position and complete owned-object bytes/relocations versus unchanged TU baseline. | compiler temp; ApproachLinear's Vector3 overload is now declared in math/Approach.h, retiring this TU's named-parameter local extern, so mwcc emits it under this lower number (re-keyed by address)"
     },
     {
-      "from": "@1068",
+      "from": "@1073",
       "to": "@1109",
       "evidence": "Compiler temporary identity established by exact initializer relocation position and complete owned-object bytes/relocations versus unchanged TU baseline. | compiler temp; ApproachLinear's Vector3 overload is now declared in math/Approach.h, retiring this TU's named-parameter local extern, so mwcc emits it under this lower number (re-keyed by address)"
     },
     {
-      "from": "@1070",
+      "from": "@1075",
       "to": "@1111",
       "evidence": "Compiler temporary identity established by exact initializer relocation position and complete owned-object bytes/relocations versus unchanged TU baseline. | compiler temp; ApproachLinear's Vector3 overload is now declared in math/Approach.h, retiring this TU's named-parameter local extern, so mwcc emits it under this lower number (re-keyed by address)"
     },
     {
-      "from": "@1072",
+      "from": "@1077",
       "to": "@1113",
       "evidence": "Compiler temporary identity established by exact initializer relocation position and complete owned-object bytes/relocations versus unchanged TU baseline. | compiler temp; ApproachLinear's Vector3 overload is now declared in math/Approach.h, retiring this TU's named-parameter local extern, so mwcc emits it under this lower number (re-keyed by address)"
     }

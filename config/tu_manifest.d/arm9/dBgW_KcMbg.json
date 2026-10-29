@@ -187,7 +187,7 @@
   "data": [],
   "bss": [
     {
-      "symbol": "@251",
+      "symbol": "@260",
       "address": "0x020a0d00",
       "size": "0xc",
       "evidence": "compiler-generated destructor-registration node for data_020a0d0c; retail __sinit_0207501c passes it as the third __register_global_object argument",
@@ -460,10 +460,17 @@
       "evidence": "mwcc emits the ctor-table object local; DSD exposes owned symbols globally and cannot encode a local symbols.txt entry"
     },
     {
-      "symbol": "@251",
+      "symbol": "@260",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local destructor-registration node is a configured initializer relocation destination at 0x020a0d00"
+    }
+  ],
+  "defined_symbol_renames": [
+    {
+      "from": "@253",
+      "to": "@260",
+      "evidence": "the compiler emits @253, which ov015 daObjBkBillboard_c already defines as a global, so the pin is the unused @260"
     }
   ],
   "relocations": [
@@ -512,7 +519,7 @@
       "source": "0x02075050",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@251",
+      "symbol": "@260",
       "addend": 0,
       "target_module": "arm9",
       "target_address": "0x020a0d00"

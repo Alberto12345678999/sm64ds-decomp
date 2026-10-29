@@ -521,12 +521,12 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@361",
+      "from": "@363",
       "to": "@97",
       "evidence": "mwcc numbers this registration node @363 per TU and ov036 already defines a global @363, so the scratch link would multiply-define it | re-keyed by __sinit relocation-site order after the actor cleanup member conversions shifted the TU's @NNN uniquifier"
     },
     {
-      "from": "@362",
+      "from": "@364",
       "to": "@96",
       "evidence": "mwcc numbers this registration node @364 per TU and ov036 already defines a global @364, so the scratch link would multiply-define it | re-keyed by __sinit relocation-site order after the actor cleanup member conversions shifted the TU's @NNN uniquifier"
     }
