@@ -2680,49 +2680,9 @@ src/unnamed/arm9/0205/func_0205a358.cpp:
     complete
     .text start:0x0205a358 end:0x0205a448
 
-src/MultiStore16.c:
+src/engine/mi/MI_Memory.c:
     complete
-    .text start:0x0205a448 end:0x0205a460
-
-src/MultiCopyHalf.c:
-    complete
-    .text start:0x0205a460 end:0x0205a47c
-
-src/MultiStore_Int.c:
-    complete
-    .text start:0x0205a47c end:0x0205a490
-
-src/MultiCopy_Int.c:
-    complete
-    .text start:0x0205a490 end:0x0205a4a8
-
-src/MultiStore32Bytes.c:
-    complete
-    .text start:0x0205a4a8 end:0x0205a4f4
-
-src/MultiCopy32Bytes.c:
-    complete
-    .text start:0x0205a4f4 end:0x0205a52c
-
-src/Copy32Bytes.c:
-    complete
-    .text start:0x0205a52c end:0x0205a548
-
-src/Copy36Bytes.c:
-    complete
-    .text start:0x0205a548 end:0x0205a564
-
-src/Copy48Bytes.c:
-    complete
-    .text start:0x0205a564 end:0x0205a588
-
-src/unnamed/arm9/0205/func_0205a588.c:
-    complete
-    .text start:0x0205a588 end:0x0205a61c
-
-src/CpuCopy8.c:
-    complete
-    .text start:0x0205a61c end:0x0205a74c
+    .text start:0x0205a448 end:0x0205a74c
 
 src/unnamed/arm9/0205/func_0205a74c.c:
     complete
