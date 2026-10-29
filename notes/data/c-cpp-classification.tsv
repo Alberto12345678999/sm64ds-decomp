@@ -5550,12 +5550,7 @@ src/unnamed/ov007/func_ov007_020be9ac.c	PURE-C	ov007				1		None		-
 src/unnamed/ov007/func_ov007_020beaa0.c	PURE-C	ov007				1		None		-
 src/unnamed/ov007/func_ov007_020beb80.c	WEAK-refs-only	ov007				1		None		-
 src/unnamed/ov007/func_ov007_020bed60.c	WEAK-refs-only	ov007				1		None		-
-src/unnamed/ov007/func_ov007_020bee14.c	PURE-C	ov007				1		None		-
 src/unnamed/ov007/func_ov007_020beeb0.c	WEAK-refs-only	ov007				1		None		-
-src/unnamed/ov007/func_ov007_020bf304.c	PURE-C	ov007				1		None		-
-src/unnamed/ov007/func_ov007_020bf428.c	PURE-C	ov007				1		None		-
-src/unnamed/ov007/func_ov007_020bf57c.c	PURE-C	ov007				1		None		-
-src/unnamed/ov007/func_ov007_020bf630.c	PURE-C	ov007				1		None		-
 src/unnamed/ov007/func_ov007_020bf690.c	WEAK-refs-only	ov007				1		None		-
 src/unnamed/ov007/func_ov007_020bf790.c	WEAK-refs-only	ov007				1		None		-
 src/unnamed/ov007/func_ov007_020bfbdc.c	WEAK-refs-only	ov007				1		None		-
