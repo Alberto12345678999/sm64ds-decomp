@@ -983,7 +983,7 @@
     "criteria": {
       "every_declared_function_defined": "PASS",
       "every_declared_function_bytes_match": "PASS",
-      "declared_function_set_equals_defined_function_set": "FAIL-BY-DESIGN -- 1 unlicensed section/symbol(s), 0 compiler-only policy error(s)",
+      "declared_function_set_equals_defined_function_set": "FAIL-BY-DESIGN -- 18 unlicensed section/symbol(s), 1 compiler-only policy error(s)",
       "functions_occur_in_expected_order": "PASS",
       "relocation_destinations_verified": "PASS"
     },
@@ -1375,89 +1375,89 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@125",
+      "from": "@124",
       "to": "data_ov004_020bfda8",
-      "evidence": "compiler temp: mwcc numbers this destructor-registration node @125; it is renamed to the configured name at 0x020bfda8. Paired by relocation: the emitted reference lands where the retail reference does. No bytes or relocations change."
+      "evidence": "compiler temp: mwcc numbers this destructor-registration node @124; it is renamed to the configured name at 0x020bfda8. Paired by relocation: the emitted reference lands where the retail reference does. No bytes or relocations change."
     },
     {
-      "from": "@119",
+      "from": "@118",
       "to": "data_ov004_020bfdb4",
-      "evidence": "compiler temp: mwcc numbers this destructor-registration node @119; it is renamed to the configured name at 0x020bfdb4. Paired by relocation: the emitted reference lands where the retail reference does. No bytes or relocations change."
+      "evidence": "compiler temp: mwcc numbers this destructor-registration node @118; it is renamed to the configured name at 0x020bfdb4. Paired by relocation: the emitted reference lands where the retail reference does. No bytes or relocations change."
     },
     {
-      "from": "@131",
+      "from": "@130",
       "to": "data_ov004_020bfdc0",
-      "evidence": "compiler temp: mwcc numbers this destructor-registration node @131; it is renamed to the configured name at 0x020bfdc0. Paired by relocation: the emitted reference lands where the retail reference does. No bytes or relocations change."
+      "evidence": "compiler temp: mwcc numbers this destructor-registration node @130; it is renamed to the configured name at 0x020bfdc0. Paired by relocation: the emitted reference lands where the retail reference does. No bytes or relocations change."
     },
     {
-      "from": "@94",
+      "from": "@93",
       "to": "data_ov004_020bfdcc",
-      "evidence": "compiler temp: mwcc numbers this destructor-registration node @94; it is renamed to the configured name at 0x020bfdcc. Paired by relocation: the emitted reference lands where the retail reference does. No bytes or relocations change."
+      "evidence": "compiler temp: mwcc numbers this destructor-registration node @93; it is renamed to the configured name at 0x020bfdcc. Paired by relocation: the emitted reference lands where the retail reference does. No bytes or relocations change."
     },
     {
-      "from": "@91",
+      "from": "@90",
       "to": "data_ov004_020bfdd8",
-      "evidence": "compiler temp: mwcc numbers this destructor-registration node @91; it is renamed to the configured name at 0x020bfdd8. Paired by relocation: the emitted reference lands where the retail reference does. No bytes or relocations change."
+      "evidence": "compiler temp: mwcc numbers this destructor-registration node @90; it is renamed to the configured name at 0x020bfdd8. Paired by relocation: the emitted reference lands where the retail reference does. No bytes or relocations change."
     },
     {
-      "from": "@97",
+      "from": "@96",
       "to": "data_ov004_020bfde4",
-      "evidence": "compiler temp: mwcc numbers this destructor-registration node @97; it is renamed to the configured name at 0x020bfde4. Paired by relocation: the emitted reference lands where the retail reference does. No bytes or relocations change."
+      "evidence": "compiler temp: mwcc numbers this destructor-registration node @96; it is renamed to the configured name at 0x020bfde4. Paired by relocation: the emitted reference lands where the retail reference does. No bytes or relocations change."
     },
     {
-      "from": "@122",
+      "from": "@121",
       "to": "data_ov004_020bfdf0",
-      "evidence": "compiler temp: mwcc numbers this destructor-registration node @122; it is renamed to the configured name at 0x020bfdf0. Paired by relocation: the emitted reference lands where the retail reference does. No bytes or relocations change."
+      "evidence": "compiler temp: mwcc numbers this destructor-registration node @121; it is renamed to the configured name at 0x020bfdf0. Paired by relocation: the emitted reference lands where the retail reference does. No bytes or relocations change."
     },
     {
-      "from": "@134",
+      "from": "@133",
       "to": "data_ov004_020bfdfc",
-      "evidence": "compiler temp: mwcc numbers this destructor-registration node @134; it is renamed to the configured name at 0x020bfdfc. Paired by relocation: the emitted reference lands where the retail reference does. No bytes or relocations change."
+      "evidence": "compiler temp: mwcc numbers this destructor-registration node @133; it is renamed to the configured name at 0x020bfdfc. Paired by relocation: the emitted reference lands where the retail reference does. No bytes or relocations change."
     },
     {
-      "from": "@116",
+      "from": "@115",
       "to": "data_ov004_020bfe08",
-      "evidence": "compiler temp: mwcc numbers this destructor-registration node @116; it is renamed to the configured name at 0x020bfe08. Paired by relocation: the emitted reference lands where the retail reference does. No bytes or relocations change."
+      "evidence": "compiler temp: mwcc numbers this destructor-registration node @115; it is renamed to the configured name at 0x020bfe08. Paired by relocation: the emitted reference lands where the retail reference does. No bytes or relocations change."
     },
     {
-      "from": "@114",
+      "from": "@113",
       "to": "data_ov004_020bfe14",
-      "evidence": "compiler temp: mwcc numbers this destructor-registration node @114; it is renamed to the configured name at 0x020bfe14. Paired by relocation: the emitted reference lands where the retail reference does. No bytes or relocations change."
+      "evidence": "compiler temp: mwcc numbers this destructor-registration node @113; it is renamed to the configured name at 0x020bfe14. Paired by relocation: the emitted reference lands where the retail reference does. No bytes or relocations change."
     },
     {
-      "from": "@88",
+      "from": "@87",
       "to": "data_ov004_020bfe20",
-      "evidence": "compiler temp: mwcc numbers this destructor-registration node @88; it is renamed to the configured name at 0x020bfe20. Paired by relocation: the emitted reference lands where the retail reference does. No bytes or relocations change."
+      "evidence": "compiler temp: mwcc numbers this destructor-registration node @87; it is renamed to the configured name at 0x020bfe20. Paired by relocation: the emitted reference lands where the retail reference does. No bytes or relocations change."
     },
     {
-      "from": "@111",
+      "from": "@110",
       "to": "data_ov004_020bfe2c",
-      "evidence": "compiler temp: mwcc numbers this destructor-registration node @111; it is renamed to the configured name at 0x020bfe2c. Paired by relocation: the emitted reference lands where the retail reference does. No bytes or relocations change."
+      "evidence": "compiler temp: mwcc numbers this destructor-registration node @110; it is renamed to the configured name at 0x020bfe2c. Paired by relocation: the emitted reference lands where the retail reference does. No bytes or relocations change."
     },
     {
-      "from": "@108",
+      "from": "@107",
       "to": "data_ov004_020bfe38",
-      "evidence": "compiler temp: mwcc numbers this destructor-registration node @108; it is renamed to the configured name at 0x020bfe38. Paired by relocation: the emitted reference lands where the retail reference does. No bytes or relocations change."
+      "evidence": "compiler temp: mwcc numbers this destructor-registration node @107; it is renamed to the configured name at 0x020bfe38. Paired by relocation: the emitted reference lands where the retail reference does. No bytes or relocations change."
     },
     {
-      "from": "@105",
+      "from": "@104",
       "to": "data_ov004_020bfe44",
-      "evidence": "compiler temp: mwcc numbers this destructor-registration node @105; it is renamed to the configured name at 0x020bfe44. Paired by relocation: the emitted reference lands where the retail reference does. No bytes or relocations change."
+      "evidence": "compiler temp: mwcc numbers this destructor-registration node @104; it is renamed to the configured name at 0x020bfe44. Paired by relocation: the emitted reference lands where the retail reference does. No bytes or relocations change."
     },
     {
-      "from": "@102",
+      "from": "@101",
       "to": "data_ov004_020bfe50",
-      "evidence": "compiler temp: mwcc numbers this destructor-registration node @102; it is renamed to the configured name at 0x020bfe50. Paired by relocation: the emitted reference lands where the retail reference does. No bytes or relocations change."
+      "evidence": "compiler temp: mwcc numbers this destructor-registration node @101; it is renamed to the configured name at 0x020bfe50. Paired by relocation: the emitted reference lands where the retail reference does. No bytes or relocations change."
     },
     {
-      "from": "@128",
+      "from": "@127",
       "to": "data_ov004_020bfe5c",
-      "evidence": "compiler temp: mwcc numbers this destructor-registration node @128; it is renamed to the configured name at 0x020bfe5c. Paired by relocation: the emitted reference lands where the retail reference does. No bytes or relocations change."
+      "evidence": "compiler temp: mwcc numbers this destructor-registration node @127; it is renamed to the configured name at 0x020bfe5c. Paired by relocation: the emitted reference lands where the retail reference does. No bytes or relocations change."
     },
     {
-      "from": "@100",
+      "from": "@99",
       "to": "data_ov004_020bfe68",
-      "evidence": "compiler temp: mwcc numbers this destructor-registration node @100; it is renamed to the configured name at 0x020bfe68. Paired by relocation: the emitted reference lands where the retail reference does. No bytes or relocations change."
+      "evidence": "compiler temp: mwcc numbers this destructor-registration node @99; it is renamed to the configured name at 0x020bfe68. Paired by relocation: the emitted reference lands where the retail reference does. No bytes or relocations change."
     }
   ]
 }
