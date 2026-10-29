@@ -23305,18 +23305,6 @@
         "arity:5"
       ]
     },
-    "Mg_DrawLine": {
-      "src/minigames/d_s_mg_amida.cpp": [
-        "return:int"
-      ],
-      "src/minigames/d_s_mg_teresa.cpp": [
-        "return:int"
-      ],
-      "src/minigames/d_s_mg_trampoline2.cpp": [
-        "param:#1 int",
-        "return:int"
-      ]
-    },
     "Mg_DrawSpriteList": {
       "src/minigames/d_s_mg_base.cpp": [
         "param:#2 int",

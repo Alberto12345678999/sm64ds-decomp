@@ -159,7 +159,7 @@
       "ordinal": 16
     },
     {
-      "symbol": "func_ov102_0214b988",
+      "symbol": "_ZN7daBmb_c19func_ov102_0214b988Ev",
       "address": "0x0214b988",
       "size": "0x000000a8",
       "legacy_source": "src/func_ov102_0214b988.cpp",

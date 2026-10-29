@@ -159,7 +159,6 @@ extern "C" void Mg_CommitRecords(void *scene);
 int GetGameLanguage(void);
 void DrawOamSprite(void *a0, void *a1, int a2, void *a3);
 int RenderOamMainScreen(int a0, int a1, int a2, int a3, int a4);
-extern void Mg_DrawLine(void *a, int b, int c, int d, int e, int f, int g);
 extern int func_020126e8(int a);
 extern int func_02012468(int a, int b, int c, int d, int e, int f, int g, short h);
 extern short sTrmpGoalRow;
@@ -272,7 +271,6 @@ int sTrmpPuffXByLanguage[] = {(int)sTrmpPuffEnglish, (int)sTrmpPuffSpanish, (int
 /* TUBUILD CONFLICT -- alternate declaration of MultiStore16, from the legacy file for func_ov006_02121d64, NOT applied: void MultiStore16(u16 val, char *dst, int nbytes); */
 /* TUBUILD CONFLICT -- alternate declaration of func_02012718, from the legacy file for func_ov006_02121d64, NOT applied: void func_02012718(void *a, int b); */
 /* TUBUILD CONFLICT -- alternate declaration of RandomIntInternal, from the legacy file for func_ov006_02121d64, NOT applied: int RandomIntInternal(int *seed); */
-/* TUBUILD CONFLICT -- alternate declaration of Mg_DrawLine, from the legacy file for func_ov006_02121d64, NOT applied: void Mg_DrawLine(void *a, int b, int c, int d, int e, int f, int g); */
 /* TUBUILD CONFLICT -- alternate declaration of func_020126e8, from the legacy file for func_ov006_02121d64, NOT applied: int func_020126e8(int a); */
 /* TUBUILD CONFLICT -- alternate declaration of func_02012468, from the legacy file for func_ov006_02121d64, NOT applied: int func_02012468(int a, int b, int c, int d, int e, int f, int g, short h); */
 /* TUBUILD CONFLICT -- alternate declaration of sTrmpStartTouchX, from the legacy file for func_ov006_02121f04, NOT applied: extern short sTrmpStartTouchX; */
@@ -463,7 +461,6 @@ void dScMgTrampoline_c::BeginIntro() {
 
 // @symbol _ZN17dScMgTrampoline_c10StateIntroEv
 void dScMgTrampoline_c::StateIntro() {
-    char *c = (char *)this;
     int counter;
 
     TrmpLine_UpdateAll();
@@ -503,7 +500,7 @@ void dScMgTrampoline_c::StateIntro() {
               << 2) >>
              12);
 
-        Mg_DrawLine(c, oldY, oldZ, mTouchX, mTouchY, 2, 0xc);
+        Mg_DrawLine(oldY, oldZ, mTouchX, mTouchY, 2, 0xc);
 
         mDragSoundHandle =
             func_02012468(mDragSoundHandle, 2, 0x1b0, 2, 0, func_020126e8(mixRaw), 0, 0);
@@ -719,8 +716,7 @@ void dScMgTrampoline_c::UpdateTouchInput() {
 
     i = ACTIVE_SLOT;
     if (TOUCH_REC(gTouchHeld)[i][0] != 0) {
-        Mg_DrawLine(this, mTouchX, mTouchY, TOUCH_REC(gTouchX)[i][0], TOUCH_REC(gTouchY)[i][0], 2,
-                    4);
+        Mg_DrawLine(mTouchX, mTouchY, TOUCH_REC(gTouchX)[i][0], TOUCH_REC(gTouchY)[i][0], 2, 4);
         i = ACTIVE_SLOT;
         mTouchX = TOUCH_REC(gTouchX)[i][0];
         mTouchY = TOUCH_REC(gTouchY)[i][0];
