@@ -46,10 +46,6 @@ extern int data_0208ee44;
 extern int sMgGraphCallback[];
 
 /* arm9 / ov004 helpers with no project header. */
-int   func_02053ea0(void);
-int   func_02053eb0(void);
-void  func_02054140(void);
-void  func_02054154(void);
 void  func_02054430(int);
 void  func_02054748(int);
 void  func_02056674(const void *src, unsigned int offset, unsigned int count);
@@ -85,7 +81,7 @@ namespace Particle { void RenderAll(); }
 // @symbol D3D_CaptureToMain
 extern "C" void D3D_CaptureToMain(void) {
     *(volatile unsigned short *)0x4000304 |= 0x8000;
-    func_02054140();
+    GX::ResetBankForSubOBJ();
     GX::SetBankForSubBG(4);
     func_02054430(8);
     *(volatile unsigned int *)0x4000064 = 0x80330010;
@@ -103,7 +99,7 @@ extern "C" void D3D_CaptureToMain(void) {
 extern "C" void D3D_CaptureToSub(void)
 {
     *(volatile unsigned short *)0x4000304 &= ~0x8000;
-    func_02054154();
+    GX::ResetBankForSubBG();
     GX::SetBankForSubOBJ(8);
     func_02054430(4);
     *(volatile int *)0x4000064 = 0x80360010;
@@ -163,8 +159,8 @@ extern "C" void D3D_ClearCaptureTable(void)
 // @symbol D3D_InitDualScreen
 extern "C" void D3D_InitDualScreen(void)
 {
-    func_02054154();
-    func_02054140();
+    GX::ResetBankForSubBG();
+    GX::ResetBankForSubOBJ();
     GX::SetBankForSubOBJ(8);
     GX::SetBankForSubBG(4);
     *(unsigned int *)0x4001000 &= ~0x300010;
@@ -176,7 +172,7 @@ extern "C" void D3D_InitDualScreen(void)
  * constant changes the code. */
 int dScMgD3DBase_c::InitSubScreenBg()
 {
-    mSavedSubObjBank = func_02053ea0();
+    mSavedSubObjBank = GX::GetBankForSubOBJ();
     GX::SetBankForSubOBJ(0x100);
     LoadCompressedFileAt(sD3DCommonNcgByLanguage[GetGameLanguage()], (void *)0x6600000);
     {
@@ -184,7 +180,7 @@ int dScMgD3DBase_c::InitSubScreenBg()
         DecompressLZ16((void *)sD3DSubScreenBgByLanguage[GetGameLanguage()], dst);
     }
     GX::SetBankForSubOBJ(mSavedSubObjBank);
-    mSubBgBank = func_02053eb0();
+    mSubBgBank = GX::GetBankForSubBG();
     GX::SetBankForSubBG(0x80);
     {
         volatile u16 *p = (volatile u16*)0x400100a;
@@ -414,9 +410,9 @@ int dScMgD3DBase_c::SaveScreenForMenu()
     D3D_InitDualScreen();
     GXS::LoadOBJPltt(sD3DSubObjPalette, 0x100, 0x100);
     data_0209e660 = 0;
-    mSubBgBank = func_02053eb0();
+    mSubBgBank = GX::GetBankForSubBG();
     GX::SetBankForSubBG(0x80);
-    mSavedSubObjBank = func_02053ea0();
+    mSavedSubObjBank = GX::GetBankForSubOBJ();
     GX::SetBankForSubOBJ(0x100);
     return dScMgBase_c::SaveScreenForMenu();
 }
