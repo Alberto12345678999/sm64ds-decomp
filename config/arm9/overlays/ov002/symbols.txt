@@ -1659,11 +1659,11 @@ __sinit_d_a_propeller_heyho_fire.cpp kind:function(arm,size=0x3c) addr:0x0210809
 @948 kind:data(any) addr:0x02108180
 @942 kind:data(any) addr:0x02108188
 @944 kind:data(any) addr:0x02108190
-@984 kind:data(any) addr:0x02108198
+@262 kind:data(any) addr:0x02108198
 @954 kind:data(any) addr:0x021081a0
 @950 kind:data(any) addr:0x021081a8
 @952 kind:data(any) addr:0x021081b0
-@962 kind:data(any) addr:0x021081b8
+@266 kind:data(any) addr:0x021081b8
 _ZTI12dEnemyBase_c kind:data(any) addr:0x021081c0
 _ZTS12dEnemyBase_c kind:data(any) addr:0x021081cc
 data_ov002_021081e4 kind:data(any) addr:0x021081e4

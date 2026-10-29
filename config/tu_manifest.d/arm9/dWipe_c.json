@@ -213,7 +213,7 @@
   ],
   "bss": [
     {
-      "symbol": "@335",
+      "symbol": "@261",
       "address": "0x0209f610",
       "size": "0xc",
       "evidence": "compiler-generated destructor-registration node for data_0209f61c; retail __sinit_02074f80 passes it as the third __register_global_object argument",
@@ -476,7 +476,7 @@
       "source": "0x02074fb4",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@335",
+      "symbol": "@261",
       "addend": 0,
       "target_module": "arm9",
       "target_address": "0x0209f610"
@@ -714,10 +714,17 @@
       "evidence": "mwcc emits the ctor-table object local; DSD exposes owned symbols globally and cannot encode a local symbols.txt entry"
     },
     {
-      "symbol": "@335",
+      "symbol": "@261",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local destructor-registration node is a configured initializer relocation destination at 0x0209f610"
+    }
+  ],
+  "defined_symbol_renames": [
+    {
+      "from": "@333",
+      "to": "@261",
+      "evidence": "the compiler emits @333, which ov033 daObjTtWater_c already defines as a global, so the pin is the unused @261"
     }
   ]
 }

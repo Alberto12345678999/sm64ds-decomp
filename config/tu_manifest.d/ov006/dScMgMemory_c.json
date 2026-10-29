@@ -2245,127 +2245,127 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@1543",
+      "from": "@1545",
       "to": "pmf_dScMgMemory_c_StateSetup",
       "evidence": "Native compiler-local member pointer; exact handler target and zero adjustment identify the existing PMF label. Native local binding retained."
     },
     {
-      "from": "@1545",
+      "from": "@1547",
       "to": "pmf_dScMgMemory_c_StatePlay",
       "evidence": "Native compiler-local member pointer; exact handler target and zero adjustment identify the existing PMF label. Native local binding retained."
     },
     {
-      "from": "@1547",
+      "from": "@1549",
       "to": "pmf_dScMgMemory_c_StateJudge",
       "evidence": "Native compiler-local member pointer; exact handler target and zero adjustment identify the existing PMF label. Native local binding retained."
     },
     {
-      "from": "@1549",
+      "from": "@1551",
       "to": "pmf_dScMgMemory_c_StateResult",
       "evidence": "Native compiler-local member pointer; exact handler target and zero adjustment identify the existing PMF label. Native local binding retained."
     },
     {
-      "from": "@1551",
+      "from": "@1553",
       "to": "pmf_dScMgMemory_c_StateExit",
       "evidence": "Native compiler-local member pointer; exact handler target and zero adjustment identify the existing PMF label. Native local binding retained."
     },
     {
-      "from": "@1553",
+      "from": "@1555",
       "to": "pmf_dScMgMemory_c_RoundStart",
       "evidence": "Native compiler-local member pointer; exact handler target and zero adjustment identify the existing PMF label. Native local binding retained."
     },
     {
-      "from": "@1555",
+      "from": "@1557",
       "to": "pmf_dScMgMemory_c_RoundDealEasy",
       "evidence": "Native compiler-local member pointer; exact handler target and zero adjustment identify the existing PMF label. Native local binding retained."
     },
     {
-      "from": "@1557",
+      "from": "@1559",
       "to": "pmf_dScMgMemory_c_RoundDealNormal",
       "evidence": "Native compiler-local member pointer; exact handler target and zero adjustment identify the existing PMF label. Native local binding retained."
     },
     {
-      "from": "@1559",
+      "from": "@1561",
       "to": "pmf_dScMgMemory_c_RoundDealHard",
       "evidence": "Native compiler-local member pointer; exact handler target and zero adjustment identify the existing PMF label. Native local binding retained."
     },
     {
-      "from": "@1561",
+      "from": "@1563",
       "to": "pmf_dScMgMemory_c_RoundWaitDeal",
       "evidence": "Native compiler-local member pointer; exact handler target and zero adjustment identify the existing PMF label. Native local binding retained."
     },
     {
-      "from": "@1563",
+      "from": "@1565",
       "to": "pmf_dScMgMemory_c_RoundReveal",
       "evidence": "Native compiler-local member pointer; exact handler target and zero adjustment identify the existing PMF label. Native local binding retained."
     },
     {
-      "from": "@1565",
+      "from": "@1567",
       "to": "pmf_dScMgMemory_c_ResultWait",
       "evidence": "Native compiler-local member pointer; exact handler target and zero adjustment identify the existing PMF label. Native local binding retained."
     },
     {
-      "from": "@1567",
+      "from": "@1569",
       "to": "pmf_dScMgMemory_c_ResultReward",
       "evidence": "Native compiler-local member pointer; exact handler target and zero adjustment identify the existing PMF label. Native local binding retained."
     },
     {
-      "from": "@1569",
+      "from": "@1571",
       "to": "pmf_dScMgMemory_c_ResultTurnCards",
       "evidence": "Native compiler-local member pointer; exact handler target and zero adjustment identify the existing PMF label. Native local binding retained."
     },
     {
-      "from": "@1571",
+      "from": "@1573",
       "to": "pmf_dScMgMemory_c_ResultFinish",
       "evidence": "Native compiler-local member pointer; exact handler target and zero adjustment identify the existing PMF label. Native local binding retained."
     },
     {
-      "from": "@1573",
+      "from": "@1575",
       "to": "pmf_dScMgMemory_c_CardMove",
       "evidence": "Native compiler-local member pointer; exact handler target and zero adjustment identify the existing PMF label. Native local binding retained."
     },
     {
-      "from": "@1575",
+      "from": "@1577",
       "to": "pmf_dScMgMemory_c_CardIdle",
       "evidence": "Native compiler-local member pointer; exact handler target and zero adjustment identify the existing PMF label. Native local binding retained."
     },
     {
-      "from": "@1577",
+      "from": "@1579",
       "to": "pmf_dScMgMemory_c_CardSelect",
       "evidence": "Native compiler-local member pointer; exact handler target and zero adjustment identify the existing PMF label. Native local binding retained."
     },
     {
-      "from": "@1579",
+      "from": "@1581",
       "to": "pmf_dScMgMemory_c_CardFlipUp",
       "evidence": "Native compiler-local member pointer; exact handler target and zero adjustment identify the existing PMF label. Native local binding retained."
     },
     {
-      "from": "@1581",
+      "from": "@1583",
       "to": "pmf_dScMgMemory_c_CardWait",
       "evidence": "Native compiler-local member pointer; exact handler target and zero adjustment identify the existing PMF label. Native local binding retained."
     },
     {
-      "from": "@1583",
+      "from": "@1585",
       "to": "pmf_dScMgMemory_c_CardFlipDown",
       "evidence": "Native compiler-local member pointer; exact handler target and zero adjustment identify the existing PMF label. Native local binding retained."
     },
     {
-      "from": "@1585",
+      "from": "@1587",
       "to": "pmf_dScMgMemory_c_CardFlyAway",
       "evidence": "Native compiler-local member pointer; exact handler target and zero adjustment identify the existing PMF label. Native local binding retained."
     },
     {
-      "from": "@1587",
+      "from": "@1589",
       "to": "pmf_dScMgMemory_c_PlayerDrop",
       "evidence": "Native compiler-local member pointer; exact handler target and zero adjustment identify the existing PMF label. Native local binding retained."
     },
     {
-      "from": "@1589",
+      "from": "@1591",
       "to": "pmf_dScMgMemory_c_PlayerMove",
       "evidence": "Native compiler-local member pointer; exact handler target and zero adjustment identify the existing PMF label. Native local binding retained."
     },
     {
-      "from": "@1591",
+      "from": "@1593",
       "to": "pmf_dScMgMemory_c_PlayerWait",
       "evidence": "Native compiler-local member pointer; exact handler target and zero adjustment identify the existing PMF label. Native local binding retained."
     }

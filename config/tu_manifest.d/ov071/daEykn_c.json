@@ -760,52 +760,52 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@528",
+      "from": "@533",
       "to": "@182",
       "evidence": "Compiler-local registration node at ov071:0x02123058; fleet-unique short label changes no storage or relocation."
     },
     {
-      "from": "@529",
+      "from": "@534",
       "to": "@183",
       "evidence": "Compiler-local registration node at ov071:0x02123064; fleet-unique short label changes no storage or relocation."
     },
     {
-      "from": "@530",
+      "from": "@535",
       "to": "@184",
       "evidence": "Compiler-local registration node at ov071:0x02123070; fleet-unique short label changes no storage or relocation."
     },
     {
-      "from": "@531",
+      "from": "@536",
       "to": "@185",
       "evidence": "Compiler-local registration node at ov071:0x0212307c; fleet-unique short label changes no storage or relocation."
     },
     {
-      "from": "@543",
+      "from": "@548",
       "to": "pmf_daEykn_c_St_Die_Main",
       "evidence": "Native eight-byte member-pointer literal identified by exact state method relocation and zero this adjustment."
     },
     {
-      "from": "@535",
+      "from": "@540",
       "to": "pmf_daEykn_c_St_Wait_Main",
       "evidence": "Native eight-byte member-pointer literal identified by exact state method relocation and zero this adjustment."
     },
     {
-      "from": "@537",
+      "from": "@542",
       "to": "pmf_daEykn_c_St_Attack_Init",
       "evidence": "Native eight-byte member-pointer literal identified by exact state method relocation and zero this adjustment."
     },
     {
-      "from": "@533",
+      "from": "@538",
       "to": "pmf_daEykn_c_St_Wait_Init",
       "evidence": "Native eight-byte member-pointer literal identified by exact state method relocation and zero this adjustment."
     },
     {
-      "from": "@541",
+      "from": "@546",
       "to": "pmf_daEykn_c_St_Die_Init",
       "evidence": "Native eight-byte member-pointer literal identified by exact state method relocation and zero this adjustment."
     },
     {
-      "from": "@539",
+      "from": "@544",
       "to": "pmf_daEykn_c_St_Attack_Main",
       "evidence": "Native eight-byte member-pointer literal identified by exact state method relocation and zero this adjustment."
     }

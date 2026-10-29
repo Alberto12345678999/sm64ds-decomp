@@ -2062,147 +2062,147 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@1688",
+      "from": "@1690",
       "to": "pmf_dScMgMemory2_c_ResultWait",
       "evidence": "Unique eight-byte native member-pointer constant identified by exact method relocation destination and zero adjustment; source retains correctly typed header method."
     },
     {
-      "from": "@1661",
+      "from": "@1663",
       "to": "pmf_dScMgMemory2_c_StatePlay",
       "evidence": "Unique eight-byte native member-pointer constant identified by exact method relocation destination and zero adjustment; source retains correctly typed header method."
     },
     {
-      "from": "@1710",
+      "from": "@1712",
       "to": "pmf_dScMgMemory2_c_PlayerDrop",
       "evidence": "Unique eight-byte native member-pointer constant identified by exact method relocation destination and zero adjustment; source retains correctly typed header method."
     },
     {
-      "from": "@1675",
+      "from": "@1677",
       "to": "pmf_dScMgMemory2_c_RoundDealHard",
       "evidence": "Unique eight-byte native member-pointer constant identified by exact method relocation destination and zero adjustment; source retains correctly typed header method."
     },
     {
-      "from": "@1659",
+      "from": "@1661",
       "to": "pmf_dScMgMemory2_c_StateSetup",
       "evidence": "Unique eight-byte native member-pointer constant identified by exact method relocation destination and zero adjustment; source retains correctly typed header method."
     },
     {
-      "from": "@1698",
+      "from": "@1700",
       "to": "pmf_dScMgMemory2_c_CardIdle",
       "evidence": "Unique eight-byte native member-pointer constant identified by exact method relocation destination and zero adjustment; source retains correctly typed header method."
     },
     {
-      "from": "@1667",
+      "from": "@1669",
       "to": "pmf_dScMgMemory2_c_StateExit",
       "evidence": "Unique eight-byte native member-pointer constant identified by exact method relocation destination and zero adjustment; source retains correctly typed header method."
     },
     {
-      "from": "@1677",
+      "from": "@1679",
       "to": "pmf_dScMgMemory2_c_RoundDealFourth",
       "evidence": "Unique eight-byte native member-pointer constant identified by exact method relocation destination and zero adjustment; source retains correctly typed header method."
     },
     {
-      "from": "@1673",
+      "from": "@1675",
       "to": "pmf_dScMgMemory2_c_RoundDealNormal",
       "evidence": "Unique eight-byte native member-pointer constant identified by exact method relocation destination and zero adjustment; source retains correctly typed header method."
     },
     {
-      "from": "@1679",
+      "from": "@1681",
       "to": "pmf_dScMgMemory2_c_RoundShowCards",
       "evidence": "Unique eight-byte native member-pointer constant identified by exact method relocation destination and zero adjustment; source retains correctly typed header method."
     },
     {
-      "from": "@1683",
+      "from": "@1685",
       "to": "pmf_dScMgMemory2_c_RoundReadyCards",
       "evidence": "Unique eight-byte native member-pointer constant identified by exact method relocation destination and zero adjustment; source retains correctly typed header method."
     },
     {
-      "from": "@1686",
+      "from": "@1688",
       "to": "pmf_dScMgMemory2_c_RoundReveal",
       "evidence": "Unique eight-byte native member-pointer constant identified by exact method relocation destination and zero adjustment; source retains correctly typed header method."
     },
     {
-      "from": "@1700",
+      "from": "@1702",
       "to": "pmf_dScMgMemory2_c_CardSelect",
       "evidence": "Unique eight-byte native member-pointer constant identified by exact method relocation destination and zero adjustment; source retains correctly typed header method."
     },
     {
-      "from": "@1714",
+      "from": "@1716",
       "to": "pmf_dScMgMemory2_c_PlayerWait",
       "evidence": "Unique eight-byte native member-pointer constant identified by exact method relocation destination and zero adjustment; source retains correctly typed header method."
     },
     {
-      "from": "@1663",
+      "from": "@1665",
       "to": "pmf_dScMgMemory2_c_StateJudge",
       "evidence": "Unique eight-byte native member-pointer constant identified by exact method relocation destination and zero adjustment; source retains correctly typed header method."
     },
     {
-      "from": "@1669",
+      "from": "@1671",
       "to": "pmf_dScMgMemory2_c_RoundStart",
       "evidence": "Unique eight-byte native member-pointer constant identified by exact method relocation destination and zero adjustment; source retains correctly typed header method."
     },
     {
-      "from": "@1671",
+      "from": "@1673",
       "to": "pmf_dScMgMemory2_c_RoundDealEasy",
       "evidence": "Unique eight-byte native member-pointer constant identified by exact method relocation destination and zero adjustment; source retains correctly typed header method."
     },
     {
-      "from": "@1708",
+      "from": "@1710",
       "to": "pmf_dScMgMemory2_c_CardFlyAway",
       "evidence": "Unique eight-byte native member-pointer constant identified by exact method relocation destination and zero adjustment; source retains correctly typed header method."
     },
     {
-      "from": "@1706",
+      "from": "@1708",
       "to": "pmf_dScMgMemory2_c_CardFlipDown",
       "evidence": "Unique eight-byte native member-pointer constant identified by exact method relocation destination and zero adjustment; source retains correctly typed header method."
     },
     {
-      "from": "@1704",
+      "from": "@1706",
       "to": "pmf_dScMgMemory2_c_CardWait",
       "evidence": "Unique eight-byte native member-pointer constant identified by exact method relocation destination and zero adjustment; source retains correctly typed header method."
     },
     {
-      "from": "@1702",
+      "from": "@1704",
       "to": "pmf_dScMgMemory2_c_CardFlipUp",
       "evidence": "Unique eight-byte native member-pointer constant identified by exact method relocation destination and zero adjustment; source retains correctly typed header method."
     },
     {
-      "from": "@1694",
+      "from": "@1696",
       "to": "pmf_dScMgMemory2_c_ResultFinish",
       "evidence": "Unique eight-byte native member-pointer constant identified by exact method relocation destination and zero adjustment; source retains correctly typed header method."
     },
     {
-      "from": "@1665",
+      "from": "@1667",
       "to": "pmf_dScMgMemory2_c_StateResult",
       "evidence": "Unique eight-byte native member-pointer constant identified by exact method relocation destination and zero adjustment; source retains correctly typed header method."
     },
     {
-      "from": "@1696",
+      "from": "@1698",
       "to": "pmf_dScMgMemory2_c_CardMove",
       "evidence": "Unique eight-byte native member-pointer constant identified by exact method relocation destination and zero adjustment; source retains correctly typed header method."
     },
     {
-      "from": "@1681",
+      "from": "@1683",
       "to": "pmf_dScMgMemory2_c_RoundHideCards",
       "evidence": "Unique eight-byte native member-pointer constant identified by exact method relocation destination and zero adjustment; source retains correctly typed header method."
     },
     {
-      "from": "@1684",
+      "from": "@1686",
       "to": "pmf_dScMgMemory2_c_RoundWaitDeal",
       "evidence": "Unique eight-byte native member-pointer constant identified by exact method relocation destination and zero adjustment; source retains correctly typed header method."
     },
     {
-      "from": "@1690",
+      "from": "@1692",
       "to": "pmf_dScMgMemory2_c_ResultReward",
       "evidence": "Unique eight-byte native member-pointer constant identified by exact method relocation destination and zero adjustment; source retains correctly typed header method."
     },
     {
-      "from": "@1692",
+      "from": "@1694",
       "to": "pmf_dScMgMemory2_c_ResultTurnCards",
       "evidence": "Unique eight-byte native member-pointer constant identified by exact method relocation destination and zero adjustment; source retains correctly typed header method."
     },
     {
-      "from": "@1712",
+      "from": "@1714",
       "to": "pmf_dScMgMemory2_c_PlayerMove",
       "evidence": "Unique eight-byte native member-pointer constant identified by exact method relocation destination and zero adjustment; source retains correctly typed header method."
     }

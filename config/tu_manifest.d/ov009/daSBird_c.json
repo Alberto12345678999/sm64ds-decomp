@@ -841,32 +841,32 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@360",
+      "from": "@362",
       "to": "@263",
       "evidence": "compiler temp: state 0 descriptor (StateSpawnFlock); re-keyed by relocation target after the daSBird_c fold (one TU, defer_codegen off)"
     },
     {
-      "from": "@362",
+      "from": "@364",
       "to": "@265",
       "evidence": "compiler temp: state 1 descriptor (StateWaitForPlayer); re-keyed by relocation target after the daSBird_c fold (one TU, defer_codegen off)"
     },
     {
-      "from": "@364",
+      "from": "@366",
       "to": "data_ov009_021138fc",
       "evidence": "compiler temp: state 2 descriptor (StateLaunchFlock), formerly a named definition; re-keyed by relocation target after the daSBird_c fold (one TU, defer_codegen off)"
     },
     {
-      "from": "@366",
+      "from": "@368",
       "to": "@267",
       "evidence": "compiler temp: state 3 descriptor (StateFly); re-keyed by relocation target after the daSBird_c fold (one TU, defer_codegen off)"
     },
     {
-      "from": "@640",
+      "from": "@642",
       "to": "@381",
       "evidence": "compiler-local model registration node; re-keyed by relocation target after the daSBird_c fold (one TU, defer_codegen off)"
     },
     {
-      "from": "@641",
+      "from": "@643",
       "to": "@382",
       "evidence": "compiler-local animation registration node; re-keyed by relocation target after the daSBird_c fold (one TU, defer_codegen off)"
     }

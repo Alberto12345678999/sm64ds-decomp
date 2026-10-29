@@ -4517,7 +4517,7 @@ data_0209b128 kind:bss addr:0x0209b128
 data_0209b138 kind:bss addr:0x0209b138
 gKuppaScriptNumPlayers kind:bss addr:0x0209b270
 gKuppaScriptFrame kind:bss addr:0x0209b274
-@552 kind:bss addr:0x0209b278
+@259 kind:bss addr:0x0209b278
 gKuppaScriptPlayerIDs kind:bss addr:0x0209b284
 data_0209b294 kind:bss addr:0x0209b294
 gDemoActorIDs kind:bss addr:0x0209b2a4
@@ -4847,9 +4847,9 @@ data_0209f4f8 kind:bss addr:0x0209f4f8
 data_0209f5b8 kind:bss addr:0x0209f5b8
 data_0209f5bc kind:bss addr:0x0209f5bc
 data_0209f5c0 kind:bss addr:0x0209f5c0
-@330 kind:bss addr:0x0209f5c4
+@332 kind:bss addr:0x0209f5c4
 data_0209f5d0 kind:bss addr:0x0209f5d0
-@329 kind:bss addr:0x0209f5dc
+@331 kind:bss addr:0x0209f5dc
 data_0209f5e8 kind:bss addr:0x0209f5e8
 data_0209f5f8 kind:bss addr:0x0209f5f8
 data_0209f5fc kind:bss addr:0x0209f5fc
@@ -4857,7 +4857,7 @@ data_0209f600 kind:bss addr:0x0209f600
 data_0209f604 kind:bss addr:0x0209f604
 data_0209f608 kind:bss addr:0x0209f608
 data_0209f60c kind:bss addr:0x0209f60c
-@335 kind:bss addr:0x0209f610
+@261 kind:bss addr:0x0209f610
 data_0209f61c kind:bss addr:0x0209f61c
 data_0209f648 kind:bss addr:0x0209f648
 gRunningKuppaScript kind:bss addr:0x0209fc48
@@ -4926,7 +4926,7 @@ data_020a0c78 kind:bss addr:0x020a0c78
 data_020a0c80 kind:bss addr:0x020a0c80
 data_020a0ce0 kind:bss addr:0x020a0ce0
 data_020a0cec kind:bss addr:0x020a0cec
-@251 kind:bss addr:0x020a0d00
+@260 kind:bss addr:0x020a0d00
 data_020a0d0c kind:bss addr:0x020a0d0c
 data_020a0d1c kind:bss addr:0x020a0d1c
 data_020a0d60 kind:bss addr:0x020a0d60

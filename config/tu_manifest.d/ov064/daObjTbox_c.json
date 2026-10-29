@@ -879,42 +879,42 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@698",
+      "from": "@703",
       "to": "@618",
       "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin | re-keyed by __sinit relocation-site order after including the shared math/Sound headers (their inline statics) shifted the TU's @NNN uniquifier"
     },
     {
-      "from": "@699",
+      "from": "@704",
       "to": "@619",
       "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin | re-keyed by __sinit relocation-site order after including the shared math/Sound headers (their inline statics) shifted the TU's @NNN uniquifier"
     },
     {
-      "from": "@701",
+      "from": "@706",
       "to": "@621",
       "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin | re-keyed by __sinit relocation-site order after including the shared math/Sound headers (their inline statics) shifted the TU's @NNN uniquifier"
     },
     {
-      "from": "@703",
+      "from": "@708",
       "to": "@623",
       "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin | re-keyed by __sinit relocation-site order after including the shared math/Sound headers (their inline statics) shifted the TU's @NNN uniquifier"
     },
     {
-      "from": "@705",
+      "from": "@710",
       "to": "@625",
       "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin | re-keyed by __sinit relocation-site order after including the shared math/Sound headers (their inline statics) shifted the TU's @NNN uniquifier"
     },
     {
-      "from": "@707",
+      "from": "@712",
       "to": "@627",
       "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin | re-keyed by __sinit relocation-site order after including the shared math/Sound headers (their inline statics) shifted the TU's @NNN uniquifier"
     },
     {
-      "from": "@709",
+      "from": "@714",
       "to": "@629",
       "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin | re-keyed by __sinit relocation-site order after including the shared math/Sound headers (their inline statics) shifted the TU's @NNN uniquifier"
     },
     {
-      "from": "@711",
+      "from": "@716",
       "to": "@631",
       "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin | re-keyed by __sinit relocation-site order after including the shared math/Sound headers (their inline statics) shifted the TU's @NNN uniquifier"
     }

@@ -318,7 +318,7 @@
       "ordinal": 39
     },
     {
-      "symbol": "__arraydtor$192",
+      "symbol": "__arraydtor$194",
       "address": "0x020b67bc",
       "size": "0x00000024",
       "legacy_source": "src/func_ov004_020b67bc.c",
@@ -360,7 +360,7 @@
     "Text only: this unit's .data (0x020bc7d0..0x020bc83c) and .bss (0x020bf9e4..0x020bfa56) stay ROM-owned and are reached by extern, as the one-function sources did; __sinit_ov004_020b9ad0 stays its own enrolled source.",
     "Folded from 43 one-function sources. The per-source extern declarations disagreed on type for a handful of symbols (sMgCoinsStep, sMgCoins, gMgScene, the ApproachLinear / Vec2_Sub spellings); the single declaration set in the unit source picks one type each and the bodies cast to match. ApproachLinear and ApproachLinear2 are declared as the C++ overloads (int&, int, int) and (short&, short, short), which mangle to the ROM's _Z14ApproachLinearRiii and _Z15ApproachLinear2Rsss.",
     "Struct copies of the entry templates go through structs whose only member is an int[2]; plain {int a, b} structs scalarize under C++ and miss the ROM's block move by two words in eight functions.",
-    "2026-10-28 static-initializer fold: the file defines `Sprite sMgCoins[0x14]`. mwcc emits __sinit_unit020b4aa4.cpp byte- and relocation-identical to the retired src/unnamed/ov004/__sinit_ov004_020b9ad0.c, and the old MgCoins_Cleanup / Coin_Destroy / Coin_Construct are now the compiler's __arraydtor$192 and Sprite's inline D1/C1, emitted after the initializer in ROM order (the unit020cd744 TrmpLine shape)."
+    "2026-10-28 static-initializer fold: the file defines `Sprite sMgCoins[0x14]`. mwcc emits __sinit_unit020b4aa4.cpp byte- and relocation-identical to the retired src/unnamed/ov004/__sinit_ov004_020b9ad0.c, and the old MgCoins_Cleanup / Coin_Destroy / Coin_Construct are now the compiler's __arraydtor$194 and Sprite's inline D1/C1, emitted after the initializer in ROM order (the unit020cd744 TrmpLine shape)."
   ],
   "verification": {
     "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",
@@ -528,7 +528,7 @@
       "evidence": "mwcc emits the ctor-table object local; DSD exposes owned symbols globally and cannot encode a local symbols.txt entry"
     },
     {
-      "symbol": "__arraydtor$192",
+      "symbol": "__arraydtor$194",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local array destructor thunk for sMgCoins; it is a configured initializer relocation destination at 0x020b67bc"
@@ -596,7 +596,7 @@
       "source": "0x020b9b1c",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "__arraydtor$192",
+      "symbol": "__arraydtor$194",
       "addend": 0,
       "target_module": "ov004",
       "target_address": "0x020b67bc"
@@ -624,7 +624,7 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@193",
+      "from": "@195",
       "to": "data_ov004_020bfa28",
       "evidence": "compiler temp: mwcc numbers this destructor-registration node @193, and ov073 already defines @193; it is renamed to the configured name at 0x020bfa28. Paired by relocation: the emitted reference lands where the retail reference does. No bytes or relocations change."
     }
