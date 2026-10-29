@@ -2339,64 +2339,9 @@ src/func_02048234.c:
     complete
     .text start:0x02048234 end:0x02048528
 
-src/unnamed/arm9/0204/func_02048528.c:
-    complete
-    .text start:0x02048528 end:0x020485f0
-
-src/unnamed/arm9/0204/func_020485f0.c:
-    complete
-    .text start:0x020485f0 end:0x02048720
-
-src/unnamed/arm9/0204/func_02048720.c:
-    complete
-    .text start:0x02048720 end:0x02048908
-
-src/unnamed/arm9/0204/func_02048908.c:
-    complete
-    .text start:0x02048908 end:0x02048a18
-
-src/unnamed/arm9/0204/func_02048a18.c:
-    complete
-    .text start:0x02048a18 end:0x02048a1c
-
-src/unnamed/arm9/0204/func_02048a1c.c:
-    complete
-    .text start:0x02048a1c end:0x02048af4
-
-src/unnamed/arm9/0204/func_02048af4.c:
-    complete
-    .text start:0x02048af4 end:0x02048c30
-
-src/unnamed/arm9/0204/func_02048c30.c:
-    complete
-    .text start:0x02048c30 end:0x02048d80
-
-src/unnamed/arm9/0204/func_02048d80.c:
-    complete
-    .text start:0x02048d80 end:0x02048e54
-
-src/unnamed/arm9/0204/func_02048e54.cpp:
-    complete
-    .text start:0x02048e54 end:0x02048e74
-
-src/unnamed/arm9/0204/func_02048e74.cpp:
-    complete
-    .text start:0x02048e74 end:0x02048e94
-
-src/unnamed/arm9/0204/func_02048e94.cpp:
-    complete
-    .text start:0x02048e94 end:0x02048eb4
-
 src/engine/sound/Sound2.cpp:
     complete
-    .text start:0x02048eb4 end:0x02048f34
-
-src/unnamed/arm9/0204/func_02048f34.c:
-    complete
-    .text start:0x02048f34 end:0x02049018
-src/func_02049018.c:
-    complete
-    .text start:0x02049018 end:0x020490b0
+    .text start:0x02048528 end:0x020490b0
 
 src/unnamed/arm9/0204/func_020490b0.cpp:
     complete

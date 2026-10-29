@@ -9604,28 +9604,6 @@
         "return:int []"
       ]
     },
-    "data_02099fa8": {
-      "src/unnamed/arm9/0204/func_02048af4.c": [
-        "return:unsigned int"
-      ],
-      "src/unnamed/arm9/0204/func_02048c30.c": [
-        "return:unsigned int"
-      ],
-      "src/unnamed/arm9/0204/func_02048f34.c": [
-        "return:volatile unsigned int"
-      ]
-    },
-    "data_02099fac": {
-      "src/unnamed/arm9/0204/func_02048908.c": [
-        "return:int"
-      ],
-      "src/unnamed/arm9/0204/func_02048d80.c": [
-        "return:int"
-      ],
-      "src/unnamed/arm9/0204/func_02048f34.c": [
-        "return:volatile unsigned int"
-      ]
-    },
     "data_02099fd0": {
       "src/engine/gx/G3X.cpp": [
         "return:int"
@@ -11274,21 +11252,6 @@
     "data_020a4bdc": {
       "src/engine/model/Model4.cpp": [
         "return:unsigned int"
-      ]
-    },
-    "data_020a4bec": {
-      "src/unnamed/arm9/0204/func_02048f34.c": [
-        "return:int *"
-      ]
-    },
-    "data_020a4bf8": {
-      "src/unnamed/arm9/0204/func_02048f34.c": [
-        "return:Elem []"
-      ]
-    },
-    "data_020a4c18": {
-      "src/unnamed/arm9/0204/func_02048f34.c": [
-        "return:Elem []"
       ]
     },
     "data_020a4c70": {
@@ -20624,22 +20587,6 @@
         "return:void"
       ]
     },
-    "func_02049018": {
-      "src/unnamed/arm9/0204/func_02048528.c": [
-        "param:#1 int *",
-        "return:unsigned int"
-      ],
-      "src/unnamed/arm9/0204/func_020485f0.c": [
-        "param:#1 int *",
-        "return:unsigned int"
-      ],
-      "src/unnamed/arm9/0204/func_02048af4.c": [
-        "param:#1 int *"
-      ],
-      "src/unnamed/arm9/0204/func_02048c30.c": [
-        "param:#1 int *"
-      ]
-    },
     "func_020497a0": {
       "src/unnamed/arm9/0204/func_02049ba8.c": [
         "param:#1 int",
@@ -20835,20 +20782,11 @@
       ]
     },
     "func_0204f924": {
-      "src/unnamed/arm9/0204/func_02048528.c": [
-        "param:#2 int"
-      ],
-      "src/unnamed/arm9/0204/func_020485f0.c": [
-        "param:#2 int"
-      ],
-      "src/unnamed/arm9/0204/func_02048af4.c": [
-        "param:#2 int"
-      ],
-      "src/unnamed/arm9/0204/func_02048c30.c": [
-        "param:#2 int"
-      ],
       "src/ui/menus/unit020bd9e4.cpp": [
         "param:#1 int *",
+        "param:#2 int"
+      ],
+      "src/engine/sound/Sound2.cpp": [
         "param:#2 int"
       ]
     },
@@ -20859,12 +20797,6 @@
     },
     "func_0204fa2c": {
       "src/engine/sound/Sound.cpp": [
-        "return:void"
-      ],
-      "src/unnamed/arm9/0204/func_02048af4.c": [
-        "return:void"
-      ],
-      "src/unnamed/arm9/0204/func_02048c30.c": [
         "return:void"
       ],
       "src/ui/menus/unit020bd9e4.cpp": [
@@ -26394,6 +26326,16 @@
     "func_ov075_02116128": {
       "src/game/stages/d_s_entry_methods.cpp": [
         "param:#1 char *"
+      ]
+    },
+    "func_02048a1c": {
+      "src/engine/sound/Sound.cpp": [
+        "param:#1 int *"
+      ]
+    },
+    "func_02048d80": {
+      "src/engine/sound/Sound.cpp": [
+        "param:#2 int *"
       ]
     }
   },
