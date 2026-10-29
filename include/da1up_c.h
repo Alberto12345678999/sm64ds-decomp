@@ -145,7 +145,7 @@ struct da1up_c : dEnemyBase_c {
     void func_ov002_020aeee4();
     void func_ov002_020aefb8();
     void func_ov002_020af0c0();
-    int  func_ov002_020af1dc();
+    Player *func_ov002_020af1dc();
     int  func_ov002_020af218(int range);
     int  func_ov002_020af248(int n);
     void func_ov002_020af3a8();

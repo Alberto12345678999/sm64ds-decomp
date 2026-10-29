@@ -281,7 +281,7 @@ int daHuwa_c::Behavior() {
     case kStateChase: {
         Player *player;
         ApproachLinear(mHorzSpeed, 0x4000, 0x1000);
-        player = (Player *)ClosestPlayer();
+        player = ClosestPlayer();
         if (player != 0) {
             int *src = (int *)((int)player + 0x5c);
             int playerPos[3];

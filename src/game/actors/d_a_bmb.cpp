@@ -777,7 +777,7 @@ extern "C" {
 
 // @symbol func_ov102_0214b53c
 void func_ov102_0214b53c(char *c) {
-    extern void *func_ov002_020e496c(char *c);
+    extern void *func_ov002_020e496c(Player * c);
     extern void Math_Function_0203b14c(void *out, int a1, int a2, int a3, int a4);
     extern void Matrix4x3_FromRotationY(void *m, int angle);
     extern void MulMat4x3Mat4x3(void *a, void *b, void *out);
@@ -806,7 +806,7 @@ void func_ov102_0214b53c(char *c) {
         int haveMtx = (int)((self->mFlags & 0x4000) != 0);
         Player *player0;
         if (((haveMtx != 0) && ((player0 = self->mCarrier) != 0)) && (player0->mCarryMatrix != 0)) {
-            char *ret = (char *)func_ov002_020e496c((char *)player0);
+            char *ret = (char *)func_ov002_020e496c(player0);
             u8 idx = 0;
             if (self->mCarrier->IsFrontSliding() != 0) {
                 idx = 1;
@@ -1230,8 +1230,8 @@ void func_ov102_0214ae1c(void *cv) {
         w.x = self->mPosX;
         w.y = self->mPosY;
         w.z = self->mPosZ;
-        ((Player *)self->mEatingPlayer)->Hurt(*(Vector3 *)&w, self->mHurtDamage, 0xc000, 1, 0, 1);
-        ((Player *)self->mEatingPlayer)->func_ov002_020d718c();
+        self->mEatingPlayer->Hurt(*(Vector3 *)&w, self->mHurtDamage, 0xc000, 1, 0, 1);
+        self->mEatingPlayer->func_ov002_020d718c();
         self->mEatingPlayer = 0;
     }
     func_ov102_0214baa0((char *)self);
@@ -1321,7 +1321,7 @@ int func_ov102_0214ab1c(void *selfv) {
 
     self->mFlags &= ~0x10000000u;
 
-    player = (Player *)self->mEatingPlayer;
+    player = self->mEatingPlayer;
     if (player != 0) {
         if (player->IsInsideOfCannon() != 0) {
             goto shocked;

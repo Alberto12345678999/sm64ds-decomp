@@ -781,7 +781,7 @@ mCapActorAlive once no cap actor exists any more. Always returns 1. */
 int daKpa_c::Behavior()
 {
     RandomIntInternal(&data_0209e650);
-    mTargetPlayer = (dActor_c *)ClosestPlayer();
+    mTargetPlayer = ClosestPlayer();
     if (mTargetPlayer != 0) {
         mAngleToTarget = Vec3_HorzAngle(&mPos, &mTargetPlayer->mPos);
         mDistToTarget = Vec3_HorzDist(&mPos, &mTargetPlayer->mPos);
@@ -908,10 +908,12 @@ skip_13:
     bowser->func_ov060_021123a0(1);
     if (this->mdCcAc_c.otherOwner == 0) return;
     if (!(this->mdCcAc_c.hitFlags & 0x1000)) return;
-    dActor_c *player = dActor_c::FindWithID(this->mdCcAc_c.otherOwner);
+    Player *player = static_cast<Player *>(dActor_c::FindWithID(this->mdCcAc_c.otherOwner));
     if (!player) return;
-    if (static_cast<Player*>(player)->IsCollectingCap()) return;
-    if (!static_cast<Player*>(player)->TryGrab(*this)) return;
+    if (player->IsCollectingCap())
+        return;
+    if (!player->TryGrab(*this))
+        return;
     /* Read through one pointer on purpose: copying bowser->mAngleX/Y/Z member
      * by member builds 4 bytes shorter (measured). */
     s16 *ip = &bowser->mAngleX;
@@ -977,7 +979,7 @@ void daKpaTail_c::func_ov060_02115c1c(){
         return;
     }
 
-    held = static_cast<Player *>(this->mHeldPlayer);
+    held = this->mHeldPlayer;
     if (held == 0) goto tail;
 
     cond = (int)(held->mHeldObj != 0);
@@ -991,7 +993,7 @@ void daKpaTail_c::func_ov060_02115c1c(){
 
 do_drop:
     this->mState = BOWSER_TAIL_COOLDOWN;
-    static_cast<Player*>(this->mHeldPlayer)->DropActor();
+    this->mHeldPlayer->DropActor();
     this->mHeldPlayer = 0;
     bowser->func_ov060_021123c8();
     bowser->mHoldState = BOWSER_HOLD_RELEASE_AFTER_ANIM;
@@ -1232,7 +1234,7 @@ when GetTalkState() returns -1, go to BOWSER_STATE_JUMP for variant 1 and
 BOWSER_STATE_IDLE otherwise, advance, set mCutsceneStep to 4 and run
 func_ov060_02111f08 once (its step 4 clears bit 0x8 of Camera::mFlags). */
 void daKpa_c::func_ov060_02115518(){
-    void *player = this->mTargetPlayer;
+    Player *player = this->mTargetPlayer;
     if (player == 0)
     {
         return;
@@ -1240,8 +1242,7 @@ void daKpa_c::func_ov060_02115518(){
     switch (this->mTalkStep)
     {
         case 0:
-            if (static_cast<Player*>(player)->StartTalk(*this, 1) == 0)
-            {
+            if (player->StartTalk(*this, 1) == 0) {
                 return;
             }
             this->mState = BOWSER_STATE_INTRO;
@@ -1249,8 +1250,7 @@ void daKpa_c::func_ov060_02115518(){
             return;
 
         case 1:
-            if (static_cast<Player*>(player)->GetTalkState() != 0)
-            {
+            if (player->GetTalkState() != 0) {
                 return;
             }
             {
@@ -1289,8 +1289,8 @@ void daKpa_c::func_ov060_02115518(){
                 pos[1] = y2;
                 pos[2] = sz * scale + z;
                 msg = (s16) msgs[this->mVariantID];
-                if (static_cast<Player*>(this->mTargetPlayer)->ShowMessage(*this, msg, reinterpret_cast<const Vector3*>(pos), zero, zero) == 0)
-                {
+                if (this->mTargetPlayer->ShowMessage(
+                        *this, msg, reinterpret_cast<const Vector3 *>(pos), zero, zero) == 0) {
                     return;
                 }
             }
@@ -1299,8 +1299,7 @@ void daKpa_c::func_ov060_02115518(){
             return;
 
         case 2:
-            if (static_cast<Player*>(player)->GetTalkState() != (-1))
-            {
+            if (player->GetTalkState() != (-1)) {
                 return;
             }
             if ((this->mVariantID) == 1)
@@ -1972,7 +1971,7 @@ int daKpa_c::func_ov060_021145d4(){
         func_02012694(BOWSER_SND_LAND, (const Vector3 *)(&this->mCamSpacePosX));
         if(this->mVariantID == 0){
             b = (this->mDistToTarget >= 0x352000);
-            if(!static_cast<Player*>(this->mTargetPlayer)->IsInAir())
+            if (!this->mTargetPlayer->IsInAir())
                 func_ov002_020c56f0((unsigned char *)this->mTargetPlayer, b);
         }
         return 1;
@@ -2133,8 +2132,8 @@ otherwise start animation 0x14; then restart the animation from frame 0. */
 void daKpa_c::func_ov060_021140c0(){
     int new_var;
     if (this->mTimer == 0) {
-        void* player = this->mTargetPlayer;
-        if (player == 0 || static_cast<Player*>(player)->GetHealth() > 4) {
+        Player *player = this->mTargetPlayer;
+        if (player == 0 || player->GetHealth() > 4) {
             s32 rnd = RandomIntInternal(&data_0209e650);
             u32 hi = ((u32)rnd) >> 16;
             u32 m = hi % 10u;
@@ -2840,22 +2839,23 @@ int daKpa_c::func_ov060_021130c0(){
         inner = this->mTalkStep;
         switch (inner) {
         case 0:
-            if (static_cast<Player*>(this->mTargetPlayer)->StartTalk(*this, 1)) {
+            if (this->mTargetPlayer->StartTalk(*this, 1)) {
                 Sound::ChangeMusicVolume(0x14, 0x15666);
                 this->mTalkStep++;
             }
             break;
 
         case 1:
-            if (static_cast<Player*>(this->mTargetPlayer)->GetTalkState() == 0) {
+            if (this->mTargetPlayer->GetTalkState() == 0) {
                 int msg = (this->mVariantID == 0) ? 0xcd : 0xcf;
-                if (static_cast<Player*>(this->mTargetPlayer)->ShowMessage(*this, msg, reinterpret_cast<const Vector3*>(&this->mPosX), 0, 2))
+                if (this->mTargetPlayer->ShowMessage(
+                        *this, msg, reinterpret_cast<const Vector3 *>(&this->mPosX), 0, 2))
                     this->mTalkStep++;
             }
             break;
 
         case 2:
-            if (static_cast<Player*>(this->mTargetPlayer)->GetTalkState() == -1) {
+            if (this->mTargetPlayer->GetTalkState() == -1) {
                 this->mStepCounter++;
                 this->mTalkStep++;
                 func_ov060_02111cc0(4, 0x40000000);
@@ -2901,14 +2901,15 @@ int daKpa_c::func_ov060_02112ee0(){
 
         switch (this->mTalkStep) {
         case 0:
-            if (static_cast<Player*>(this->mTargetPlayer)->StartTalk(*this, 1))
+            if (this->mTargetPlayer->StartTalk(*this, 1))
                 this->mTalkStep++;
             break;
 
         case 1:
-            if (static_cast<Player*>(this->mTargetPlayer)->GetTalkState() == 0) {
+            if (this->mTargetPlayer->GetTalkState() == 0) {
                 unsigned m = (NumStars() != 0x96) ? 0xd1 : 0xd2;
-                if (static_cast<Player*>(this->mTargetPlayer)->ShowMessage(*this, m, reinterpret_cast<const Vector3*>(&this->mPosX), 0, 2)) {
+                if (this->mTargetPlayer->ShowMessage(
+                        *this, m, reinterpret_cast<const Vector3 *>(&this->mPosX), 0, 2)) {
                     this->mTalkStep++;
                     Message::PrepareTalk();
                 }
@@ -2916,7 +2917,7 @@ int daKpa_c::func_ov060_02112ee0(){
             break;
 
         case 2:
-            if (static_cast<Player*>(this->mTargetPlayer)->GetTalkState() == -1) {
+            if (this->mTargetPlayer->GetTalkState() == -1) {
                 Sound::StopLoadedMusic_Layer1(0x3c);
                 func_ov060_021135fc();
                 this->mStepCounter++;
@@ -3218,7 +3219,7 @@ void daKpa_c::func_ov060_02112724(){
         break;
     }
 
-    this->mSwingSpeed = ((Player *)this->mGrabbedPlayer)->mAngleYSpeed;
+    this->mSwingSpeed = this->mGrabbedPlayer->mAngleYSpeed;
     v = this->mSwingSpeed;
     a = this->mGrabbedPlayer->mAngleY;
     if (v < 0) {

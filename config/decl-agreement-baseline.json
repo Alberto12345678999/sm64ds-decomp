@@ -23101,6 +23101,14 @@
         "param:#4 int"
       ]
     },
+    "func_ov002_020db5f4": {
+      "src/game/actors/d_a_bombking.cpp": [
+        "param:#2 dActor_c *"
+      ],
+      "src/game/actors/d_a_holhei.cpp": [
+        "param:#2 dActor_c *"
+      ]
+    },
     "func_ov002_020de3d0": {
       "include/decl_common.h": [
         "param:#1 void *"
@@ -23180,7 +23188,6 @@
         "return:char *"
       ],
       "src/runtime/actor/d_actor.cpp": [
-        "param:#1 Player *",
         "return:void *"
       ]
     },

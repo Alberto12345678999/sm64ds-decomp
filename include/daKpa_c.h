@@ -62,13 +62,10 @@ struct daKpa_c : dActor_c {
        whatever hit it. */
     dCcAcPos_c mdCcAcPos_c;   /* 0x360 */
     /* A POINTER, not an s32. daKpa_c::Behavior assigns it straight from
-       dActor_c::ClosestPlayer() and then re-spelt every read of the slot as
-       `*(dActor_c **)((char *)&mTargetPlayer)`; typing it here deletes all three
-       of those casts. Declared dActor_c* rather than Player* on purpose --
-       Player.h is not includable here, and dActor_c is the base at offset 0, so
-       the ClosestPlayer() result converts with no adjustment. */
-    dActor_c *mTargetPlayer;      /* 0x3a0 */
-    dActor_c *mGrabbedPlayer;     /* 0x3a4 -- the Player holding the tail; null when nobody does */
+       dActor_c::ClosestPlayer(), so it is a Player *; dActor_c.h's forward
+       declaration of Player is enough for the member. */
+    Player *mTargetPlayer;  /* 0x3a0 */
+    Player *mGrabbedPlayer; /* 0x3a4 -- the Player holding the tail; null when nobody does */
     /* uniqueID of the KOOPATAIL actor (ID 278) that InitResources spawns. */
     s32 mTailUniqueID;            /* 0x3a8 */
     /* uniqueID of the KOOPA2BG actor (ID 166) found with FindWithActorID. The
