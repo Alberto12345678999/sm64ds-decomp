@@ -58,13 +58,41 @@ struct dScEntry_c : dScene_c {
     u8 mIconCount;            /* 0x280 -- live entries of mIcons */
     u8 mSelectedIcon;         /* 0x281 */
     u8 mStepPhase;            /* 0x282 -- substate within the current step */
-    u8 mFadeBrightness; /* 0x283 -- sub-screen blend brightness, restored after a step change */
-    u8 mFadeTick;             /* 0x284 -- steps the fade every other frame */
-    u8 mIsFading;             /* 0x285 -- while set, Behavior runs the fade and nothing else */
-    u8 pad_286;               /* 0x286 */
-    u8 mDisconnectHideMask;   /* 0x287 -- main-screen layers hidden on disconnect */
+    u8 mFadeBrightness;     /* 0x283 -- sub-screen blend brightness, restored after a step change */
+    u8 mFadeTick;           /* 0x284 -- steps the fade every other frame */
+    u8 mIsFading;           /* 0x285 -- while set, Behavior runs the fade and nothing else */
+    u8 pad_286;             /* 0x286 */
+    u8 mDisconnectHideMask; /* 0x287 -- main-screen layers hidden on disconnect */
 
     // Names inferred from the step table and multiplayer/UI consumers.
+    void TallyRoundWinners();
+    s32 InitResultResources();
+    s32 InitEntryResources();
+    void LeaveSettings();
+    int func_ov075_02116ce4();
+    void ResetMatchRecords();
+    void UpdateSettingsSync();
+    void EnterSettingsSync();
+    void RenderSoundSettings();
+    void UpdateSoundSettings();
+    void EnterSoundSettings();
+    void RenderControlSettings();
+    void UpdateControlSettings();
+    void EnterControlSettings();
+    void EnterQuitMessage();
+    void UpdateQuit();
+    void EnterQuit();
+    void UpdateQuitConfirm();
+    void EnterQuitConfirm();
+    void UpdateRematchSync();
+    void EnterRematchSync();
+    void RenderWinCounts();
+    void UpdateRematchPrompt();
+    void EnterRematchPrompt();
+    void RenderResults();
+    void UpdateResults();
+    void EnterResults();
+    void func_ov075_02118a78();
     void SetSteps(const StepSet *steps);
     void ChangeStepsAfterDelay(const StepSet *steps, s32 delay);
     void ChangeStepsWithFade(const StepSet *steps);

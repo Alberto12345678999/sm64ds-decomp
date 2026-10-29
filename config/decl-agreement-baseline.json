@@ -649,7 +649,7 @@
       "src/ui/hud/d_meter.cpp": [
         "param:#2 int"
       ],
-      "src/unnamed/ov075/func_ov075_02116ad4.cpp": [
+      "src/game/stages/d_s_entry_methods.cpp": [
         "param:#2 int"
       ]
     },
@@ -1132,14 +1132,11 @@
       "src/unnamed/arm9/0200/func_0200f13c.cpp": [
         "param:#1 unsigned int"
       ],
-      "src/unnamed/ov075/func_ov075_02116818.cpp": [
-        "param:#1 int"
-      ],
-      "src/unnamed/ov075/func_ov075_02116ad4.cpp": [
-        "param:#1 int"
-      ],
       "src/unnamed/arm9/0200/func_0200f220.cpp": [
         "param:#1 unsigned int"
+      ],
+      "src/game/stages/d_s_entry_methods.cpp": [
+        "param:#1 int"
       ]
     },
     "LoadFile": {
@@ -1193,12 +1190,6 @@
       "src/unnamed/arm9/0200/func_0200f13c.cpp": [
         "param:#1 unsigned short",
         "return:void *"
-      ],
-      "src/unnamed/ov075/func_ov075_02116818.cpp": [
-        "return:void *"
-      ],
-      "src/unnamed/ov075/func_ov075_02116ad4.cpp": [
-        "return:void *"
       ]
     },
     "LoadFont": {
@@ -1218,9 +1209,6 @@
         "param:#1 int"
       ],
       "src/ProcessKuppaScript.cpp": [
-        "param:#1 unsigned int"
-      ],
-      "src/game/stages/d_s_entry_readiness.cpp": [
         "param:#1 unsigned int"
       ]
     },
@@ -5631,12 +5619,6 @@
       "src/minigames/d_s_mini_gm.cpp": [
         "return:void *"
       ],
-      "src/unnamed/ov075/func_ov075_02116ad4.cpp": [
-        "return:void *"
-      ],
-      "src/unnamed/ov075/func_ov075_0211705c.cpp": [
-        "return:unsigned short *"
-      ],
       "src/unnamed/ov075/func_ov075_0211919c.c": [
         "return:unsigned short *"
       ]
@@ -6134,11 +6116,6 @@
         "return:int"
       ]
     },
-    "_ZN3OAM14BOUNCING_ARROWE": {
-      "src/unnamed/ov075/func_ov075_02116f40.cpp": [
-        "kind:data"
-      ]
-    },
     "_ZN3OAM4COINE": {
       "src/game/stages/d_s_star_sel_methods.cpp": [
         "return:void * []"
@@ -6164,18 +6141,6 @@
         "return:int"
       ],
       "src/unnamed/arm9/0202/func_0202048c.cpp": [
-        "return:int"
-      ],
-      "src/unnamed/ov075/func_ov075_02116f40.cpp": [
-        "param:#1 bool",
-        "return:int"
-      ],
-      "src/unnamed/ov075/func_ov075_02117590.cpp": [
-        "param:#1 bool",
-        "param:#8 OamAttr *",
-        "return:int"
-      ],
-      "src/unnamed/ov075/func_ov075_021184b0.cpp": [
         "return:int"
       ]
     },
@@ -6206,9 +6171,6 @@
       ],
       "src/unnamed/ov075/func_ov075_0211621c.c": [
         "return:int *"
-      ],
-      "src/unnamed/ov075/func_ov075_021184b0.cpp": [
-        "return:int"
       ],
       "src/unnamed/ov075/func_ov075_021194e4.cpp": [
         "param:#1 bool",
@@ -9605,11 +9567,6 @@
         "return:Quat"
       ]
     },
-    "data_02092778": {
-      "src/game/stages/d_s_entry_readiness.cpp": [
-        "return:unsigned char []"
-      ]
-    },
     "data_02099368": {
       "src/unnamed/ov002/func_ov002_020d6dac.c": [
         "return:void * []"
@@ -9695,14 +9652,6 @@
     "data_0209b2a4": {
       "src/ResetKuppaScript.c": [
         "return:int []"
-      ]
-    },
-    "data_0209b2e4": {
-      "src/unnamed/ov075/func_ov075_02116e00.c": [
-        "return:unsigned char []"
-      ],
-      "src/game/stages/d_s_entry_readiness.cpp": [
-        "return:unsigned char []"
       ]
     },
     "data_0209b2e8": {
@@ -9952,9 +9901,6 @@
       "src/minigames/d_s_mg_smartball.cpp": [
         "return:unsigned char []"
       ],
-      "src/unnamed/ov075/func_ov075_02117918.cpp": [
-        "return:unsigned char []"
-      ],
       "src/unnamed/ov075/func_ov075_0211919c.c": [
         "return:unsigned char []"
       ]
@@ -9975,12 +9921,6 @@
         "return:unsigned char []"
       ],
       "src/minigames/d_s_mg_bsc.cpp": [
-        "return:unsigned char []"
-      ],
-      "src/unnamed/ov075/func_ov075_02117918.cpp": [
-        "return:unsigned char []"
-      ],
-      "src/unnamed/ov075/func_ov075_02117bc4.c": [
         "return:unsigned char []"
       ]
     },
@@ -10712,10 +10652,7 @@
       "src/minigames/d_mg3d_heyho_obj_adapter.cpp": [
         "return:GObj *"
       ],
-      "src/unnamed/ov075/func_ov075_02116818.cpp": [
-        "return:void *"
-      ],
-      "src/unnamed/ov075/func_ov075_02116ad4.cpp": [
+      "src/game/stages/d_s_entry_methods.cpp": [
         "return:void *"
       ]
     },
@@ -10795,9 +10732,6 @@
       ]
     },
     "data_0209fc68": {
-      "src/unnamed/ov075/func_ov075_02116c38.cpp": [
-        "return:int []"
-      ],
       "src/_ZN10dScEntry_c17EnterMatchLoadingEv.cpp": [
         "return:int *"
       ],
@@ -10927,7 +10861,7 @@
       "src/unnamed/arm9/0203/func_0203bc7c.c": [
         "return:InputPair []"
       ],
-      "src/unnamed/ov075/func_ov075_0211867c.cpp": [
+      "src/game/stages/d_s_entry_methods.cpp": [
         "return:unsigned char []"
       ]
     },
@@ -16067,15 +16001,6 @@
       "src/unnamed/ov075/__sinit_ov075_0211bb00.c": [
         "return:char []"
       ],
-      "src/unnamed/ov075/func_ov075_021173a8.cpp": [
-        "return:int"
-      ],
-      "src/unnamed/ov075/func_ov075_02117d80.cpp": [
-        "return:int"
-      ],
-      "src/unnamed/ov075/func_ov075_02118378.cpp": [
-        "return:int"
-      ],
       "src/_ZN10dScEntry_c17EnterCourseSelectEv.cpp": [
         "return:int"
       ],
@@ -16107,25 +16032,7 @@
       ]
     },
     "EntryCourseSelectSteps": {
-      "src/unnamed/ov075/func_ov075_02116ad4.cpp": [
-        "return:unsigned char []"
-      ],
       "src/unnamed/ov075/func_ov075_021190a4.c": [
-        "return:int"
-      ]
-    },
-    "data_ov075_0211d810": {
-      "src/unnamed/ov075/func_ov075_02117d80.cpp": [
-        "return:int []"
-      ]
-    },
-    "data_ov075_0211d870": {
-      "src/unnamed/ov075/func_ov075_02118248.cpp": [
-        "return:int"
-      ]
-    },
-    "data_ov075_0211d888": {
-      "src/unnamed/ov075/func_ov075_02117c0c.cpp": [
         "return:int"
       ]
     },
@@ -17598,14 +17505,6 @@
     },
     "func_02012790": {
       "src/unnamed/arm9/0201/func_020199a4.c": [
-        "param:#1 int",
-        "return:void"
-      ],
-      "src/unnamed/ov075/func_ov075_02116ebc.c": [
-        "param:#1 int",
-        "return:void"
-      ],
-      "src/unnamed/ov075/func_ov075_02117f5c.c": [
         "param:#1 int",
         "return:void"
       ]
@@ -19592,32 +19491,6 @@
         "param:#1 unsigned char"
       ]
     },
-    "func_02020028": {
-      "src/unnamed/ov075/func_ov075_0211763c.cpp": [
-        "param:#2 unsigned char"
-      ]
-    },
-    "func_02020124": {
-      "src/unnamed/ov075/func_ov075_02116e44.cpp": [
-        "return:int"
-      ]
-    },
-    "func_02020168": {
-      "src/unnamed/ov075/func_ov075_02116e44.cpp": [
-        "return:int"
-      ],
-      "src/unnamed/ov075/func_ov075_02117e84.c": [
-        "return:int"
-      ],
-      "src/unnamed/ov075/func_ov075_0211867c.cpp": [
-        "return:int"
-      ]
-    },
-    "func_020201f0": {
-      "src/game/stages/d_s_entry_readiness.cpp": [
-        "return:int"
-      ]
-    },
     "func_02020254": {
       "src/unnamed/arm9/0202/func_0202027c.c": [
         "return:int"
@@ -19626,11 +19499,6 @@
     "func_020202dc": {
       "src/_ZN10dScEntry_c18UpdateCourseSelectEv.cpp": [
         "arity:0"
-      ]
-    },
-    "func_02020364": {
-      "src/game/stages/d_s_entry_readiness.cpp": [
-        "return:int"
       ]
     },
     "func_0202043c": {
@@ -19642,12 +19510,6 @@
     "func_0202044c": {
       "src/unnamed/arm9/0202/func_0202043c.c": [
         "param:#1 int"
-      ]
-    },
-    "func_02020820": {
-      "src/unnamed/ov075/func_ov075_021188b4.cpp": [
-        "param:#5 int",
-        "param:#6 int"
       ]
     },
     "func_02022260": {
@@ -19723,9 +19585,6 @@
       "src/game/stages/d_s_mb.cpp": [
         "arity:0"
       ],
-      "src/unnamed/ov075/func_ov075_02118a78.c": [
-        "arity:0"
-      ],
       "src/_ZN10dScEntry_c16UpdatePlayerSyncEv.cpp": [
         "param:#1 int"
       ]
@@ -19745,10 +19604,6 @@
       ]
     },
     "func_02033464": {
-      "src/unnamed/ov075/func_ov075_02116818.cpp": [
-        "param:#1 unsigned short",
-        "param:#2 signed char"
-      ],
       "src/unnamed/ov075/func_ov075_02119b34.c": [
         "param:#1 unsigned char",
         "param:#2 signed char",
@@ -19756,15 +19611,6 @@
       ]
     },
     "func_020338b0": {
-      "src/unnamed/ov075/func_ov075_02116ebc.c": [
-        "param:#3 int"
-      ],
-      "src/unnamed/ov075/func_ov075_02117ac4.cpp": [
-        "param:#3 int"
-      ],
-      "src/unnamed/ov075/func_ov075_02117f5c.c": [
-        "param:#3 int"
-      ],
       "src/_ZN10dScEntry_c17EnterCourseSelectEv.cpp": [
         "param:#3 int"
       ],
@@ -19776,14 +19622,6 @@
       ],
       "src/unnamed/ov075/func_ov075_02119dc4.cpp": [
         "param:#3 int"
-      ]
-    },
-    "func_02033ae0": {
-      "src/unnamed/ov075/func_ov075_0211705c.cpp": [
-        "return:int"
-      ],
-      "src/unnamed/ov075/func_ov075_021173a8.cpp": [
-        "return:int"
       ]
     },
     "func_02035354": {
@@ -26356,14 +26194,6 @@
       ]
     },
     "func_ov075_02115e8c": {
-      "src/unnamed/ov075/func_ov075_02117d80.cpp": [
-        "param:#4 int",
-        "param:#5 int"
-      ],
-      "src/unnamed/ov075/func_ov075_02118378.cpp": [
-        "param:#4 int",
-        "param:#5 int"
-      ],
       "src/unnamed/ov075/func_ov075_02119918.c": [
         "param:#4 int",
         "param:#5 int"
@@ -26373,36 +26203,12 @@
         "param:#5 int"
       ]
     },
-    "func_ov075_02116128": {
-      "src/unnamed/ov075/func_ov075_02116818.cpp": [
-        "param:#1 char *"
-      ],
-      "src/unnamed/ov075/func_ov075_02117fe4.cpp": [
-        "param:#1 char *"
-      ]
-    },
-    "func_ov075_02116818": {
-      "src/game/stages/d_s_entry_methods.cpp": [
-        "return:void"
-      ]
-    },
     "func_ov075_02116c8c": {
       "src/_ZN10dScEntry_c18UpdateMatchLoadingEv.cpp": [
         "arity:1"
       ]
     },
-    "func_ov075_02116ce4": {
-      "src/unnamed/ov075/func_ov075_02117e84.c": [
-        "arity:1"
-      ]
-    },
     "func_ov075_02116d40": {
-      "src/unnamed/ov075/func_ov075_02116e44.cpp": [
-        "arity:1"
-      ],
-      "src/unnamed/ov075/func_ov075_0211867c.cpp": [
-        "arity:1"
-      ],
       "src/_ZN10dScEntry_c18UpdateCourseSelectEv.cpp": [
         "arity:1"
       ],
@@ -26410,19 +26216,6 @@
         "arity:1"
       ],
       "src/game/stages/d_s_entry_methods.cpp": [
-        "arity:1"
-      ]
-    },
-    "func_ov075_02116d9c": {
-      "src/unnamed/ov075/func_ov075_0211705c.cpp": [
-        "param:#1 void *"
-      ],
-      "src/unnamed/ov075/func_ov075_0211763c.cpp": [
-        "param:#1 void *"
-      ]
-    },
-    "func_ov075_02116e00": {
-      "src/unnamed/ov075/func_ov075_02116ad4.cpp": [
         "arity:1"
       ]
     },
@@ -26435,14 +26228,6 @@
       "src/game/stages/d_s_entry_methods.cpp": [
         "param:#2 void *",
         "return:int"
-      ],
-      "src/unnamed/ov075/func_ov075_02117e84.c": [
-        "param:#2 void *",
-        "return:int"
-      ],
-      "src/unnamed/ov075/func_ov075_02118248.cpp": [
-        "param:#1 int",
-        "param:#2 int *"
       ]
     },
     "func_ov075_0211a100": {
@@ -26450,19 +26235,7 @@
         "param:#2 void *"
       ]
     },
-    "func_ov075_0211a148": {
-      "src/unnamed/ov075/func_ov075_02116c38.cpp": [
-        "param:#2 void *"
-      ],
-      "src/unnamed/ov075/func_ov075_02116e44.cpp": [
-        "param:#2 void *",
-        "return:int"
-      ]
-    },
     "func_ov075_0211a194": {
-      "src/unnamed/ov075/func_ov075_02116ad4.cpp": [
-        "param:#2 const void *"
-      ],
       "src/unnamed/ov075/func_ov075_02119cc0.c": [
         "return:int"
       ]
@@ -26722,6 +26495,32 @@
     "data_ov012_02111cd0": {
       "src/game/actors/d_a_obj_c0_switch.cpp": [
         "return:CLPS_Block"
+      ]
+    },
+    "func_02020028": {
+      "src/game/stages/d_s_entry_methods.cpp": [
+        "param:#2 unsigned char"
+      ]
+    },
+    "func_020201f0": {
+      "src/game/stages/d_s_entry_methods.cpp": [
+        "return:int"
+      ]
+    },
+    "func_02020820": {
+      "src/game/stages/d_s_entry_methods.cpp": [
+        "param:#5 int",
+        "param:#6 int"
+      ]
+    },
+    "func_02033ae0": {
+      "src/game/stages/d_s_entry_methods.cpp": [
+        "return:int"
+      ]
+    },
+    "func_ov075_02116128": {
+      "src/game/stages/d_s_entry_methods.cpp": [
+        "param:#1 char *"
       ]
     }
   },
