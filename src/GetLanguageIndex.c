@@ -1,12 +1,12 @@
-typedef int s32;
+#include "types.h"
 
 extern s32 GetOwnerLanguage(void);
 
-s32 func_0200f0bc(void)
-{
+/* The console language as an index into the per-language asset tables:
+   English 0, French 1, German 2, Italian 3, Spanish 4; anything else 0. */
+s32 GetLanguageIndex(void) {
     s32 lang = GetOwnerLanguage();
-    switch (lang)
-    {
+    switch (lang) {
     case 2:
         return 1;
     case 3:

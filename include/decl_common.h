@@ -767,7 +767,7 @@ extern int func_02008b4c(void*, void*, void*, void*);
 extern int func_0200ca50(void*);
 extern int func_0200cae4(void*);
 extern int IsStarCameraScript3Running(void);
-extern int func_0200f0bc(void);
+extern int GetLanguageIndex(void);
 extern int func_02013890(int, int);
 extern int func_02013a44(void);
 extern int func_02013c84(int, void*, int, void*);

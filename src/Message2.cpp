@@ -148,10 +148,10 @@ void Message::PrepareTalk() {
     data_0209d664 = 1;
 }
 
-extern "C" {
-
-// @symbol func_0201ab6c
-void func_0201ab6c(void) {
+// @symbol _ZN7Message9AddChoiceEv
+/* Text code 2: marks an answer choice. Arg 0 sets the cursor row; 1..3 record
+   the choice position and set the choice mode Update then drives. */
+void Message::AddChoice() {
 
     struct S {
         u8 b[8];
@@ -167,25 +167,27 @@ void func_0201ab6c(void) {
         idx = data_0209d68c;
         data_0209d68c = idx + 1;
         data_0209d6e4[idx] = data_0209d6b0;
-        Message::AddChar(0x4d);
+        AddChar(0x4d);
         data_0209d694 = 1;
         break;
     case 2:
         idx = data_0209d68c;
         data_0209d68c = idx + 1;
         data_0209d6e4[idx] = data_0209d6b4;
-        Message::AddChar(0x4d);
+        AddChar(0x4d);
         data_0209d694 = 2;
         break;
     case 3:
         idx = data_0209d68c;
         data_0209d68c = idx + 1;
         data_0209d6e4[idx] = data_0209d6b4;
-        Message::AddChar(0x4d);
+        AddChar(0x4d);
         data_0209d694 = 3;
         break;
     }
 }
+
+extern "C" {
 
 // @symbol func_0201aca4
 void func_0201aca4(void) {
@@ -234,10 +236,11 @@ void func_0201aca4(void) {
         break;
     }
 }
+}
 
-// @symbol func_0201adac
-void func_0201adac(void) {
-    /* Calls Message::AddChar twice with the font byte and the next byte.
+// @symbol _ZN7Message11AddCharPairEv
+void Message::AddCharPair() {
+    /* Text code 3. Calls AddChar twice with the font byte and the next byte.
        Index is data_0209d6f4 bytes [3] and [4], looked up in data_0208ee6c. */
 
     struct MsgTextChar {
@@ -249,9 +252,11 @@ void func_0201adac(void) {
     };
     struct MsgTextChar *state = (struct MsgTextChar *)data_0209d6f4;
     u16 idx = state->indexLo | (state->indexHi << 8);
-    Message::AddChar(data_0208ee6c[idx]);
-    Message::AddChar((data_0208ee6c[idx] + 1) & 0xff);
+    AddChar(data_0208ee6c[idx]);
+    AddChar((data_0208ee6c[idx] + 1) & 0xff);
 }
+
+extern "C" {
 
 // @symbol func_0201adfc
 void func_0201adfc(void) {
@@ -547,9 +552,12 @@ void func_0201b6f8(int mode) {
         }
     }
 }
+}
 
-// @symbol func_0201b7cc
-void func_0201b7cc(void) {
+// @symbol _ZN7Message10LayoutLineEv
+/* Lays out the next text line: glyphs until 0xfd (line end) or 0xff (message
+   end), 0xfe runs a text code. Then picks the next Update state. */
+void Message::LayoutLine() {
     int added = 0;
 
     data_0209d678 = data_0209d65c & 7;
@@ -656,12 +664,11 @@ void func_0201b7cc(void) {
             }
 
         default:
-            Message::AddChar(c);
+            AddChar(c);
             added = 1;
             data_0209d6f4 = data_0209d6f4 + 1;
         }
     }
-}
 }
 
 // @symbol _ZN7Message12UpdateWindowEv
@@ -774,7 +781,7 @@ void Message::Update() {
             func_0201b6f8(0);
             data_0209d65c = (u8)((*(u16 *)(data_0209d6f0 + 4) - data_0209d6b0) >> 1);
         }
-        func_0201b7cc();
+        LayoutLine();
         return;
     }
     case 2: {
@@ -791,7 +798,7 @@ void Message::Update() {
         }
         data_0209d6bc = 1;
         data_0209d65c = 0;
-        func_0201b7cc();
+        LayoutLine();
         return;
     }
     case 4: {

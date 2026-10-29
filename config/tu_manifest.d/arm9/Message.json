@@ -90,7 +90,7 @@
       "ordinal": 9
     },
     {
-      "symbol": "func_0201d590",
+      "symbol": "Message_DrawLineBG2",
       "address": "0x0201d590",
       "size": "0x00000110",
       "legacy_source": "src/unnamed/arm9/0201/func_0201d590.cpp",
