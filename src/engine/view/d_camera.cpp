@@ -18,9 +18,9 @@
  *   only take their address.
  * - CleanupResources keeps both null checks. The second is the
  *   inlined deleting destructor.
- * - The handlers below 0x0200bec4 stay out of this file.
- *   func_0200bb28 needs opt_common_subs off, and that pragma is
- *   TU-global, while Behavior needs it on.
+ * - The handlers below 0x0200bec4 stay out of this file for now.
+ *   func_0200bb28's shard matches without opt_common_subs off, so
+ *   that pragma no longer blocks folding them.
  */
 #include "dCamera_c.h"
 #include "Player.h"
