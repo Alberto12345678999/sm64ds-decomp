@@ -4408,21 +4408,21 @@
   "data": [],
   "bss": [
     {
-      "symbol": "_ZGVsLevelIntroOff$4421",
+      "symbol": "_ZGVsLevelIntroOff$4424",
       "address": "0x0210e14c",
       "size": "0x4",
       "binding": "STB_GLOBAL",
       "evidence": "guard of func_ov002_020c44c4's sLevelIntroOff; the function tests and sets bit 0 exactly as retail"
     },
     {
-      "symbol": "_ZGVsAnchorOff$6220",
+      "symbol": "_ZGVsAnchorOff$6223",
       "address": "0x0210e150",
       "size": "0x4",
       "binding": "STB_GLOBAL",
       "evidence": "guard of func_ov002_020c8a4c's sAnchorOff"
     },
     {
-      "symbol": "_ZGVsDoorMsgOff$6248",
+      "symbol": "_ZGVsDoorMsgOff$6251",
       "address": "0x0210e154",
       "size": "0x4",
       "binding": "STB_GLOBAL",
@@ -4436,7 +4436,7 @@
       "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
     },
     {
-      "symbol": "_ZGVsTalkOff$4645",
+      "symbol": "_ZGVsTalkOff$4648",
       "address": "0x0210e15c",
       "size": "0x4",
       "binding": "STB_GLOBAL",
@@ -4450,7 +4450,7 @@
       "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
     },
     {
-      "symbol": "_ZGVsStarDoorOff$6914",
+      "symbol": "_ZGVsStarDoorOff$6917",
       "address": "0x0210e164",
       "size": "0x4",
       "binding": "STB_GLOBAL",
@@ -7782,7 +7782,7 @@
       "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
     },
     {
-      "symbol": "@4648",
+      "symbol": "@4651",
       "address": "0x0210f1ac",
       "size": "0xc",
       "binding": "STB_GLOBAL",
@@ -7852,7 +7852,7 @@
       "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
     },
     {
-      "symbol": "sTalkOff$4645",
+      "symbol": "sTalkOff$4648",
       "address": "0x0210f224",
       "size": "0xc",
       "binding": "STB_GLOBAL",
@@ -7985,7 +7985,7 @@
       "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
     },
     {
-      "symbol": "@6917",
+      "symbol": "@6920",
       "address": "0x0210f308",
       "size": "0xc",
       "binding": "STB_GLOBAL",
@@ -8020,14 +8020,14 @@
       "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
     },
     {
-      "symbol": "sStarDoorOff$6914",
+      "symbol": "sStarDoorOff$6917",
       "address": "0x0210f344",
       "size": "0xc",
       "binding": "STB_GLOBAL",
       "evidence": "TryEnterStarDoor's function-local static Vector3(0, 0, 0x64000)"
     },
     {
-      "symbol": "@4424",
+      "symbol": "@4427",
       "address": "0x0210f350",
       "size": "0xc",
       "binding": "STB_GLOBAL",
@@ -8083,7 +8083,7 @@
       "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
     },
     {
-      "symbol": "sLevelIntroOff$4421",
+      "symbol": "sLevelIntroOff$4424",
       "address": "0x0210f3b0",
       "size": "0xc",
       "binding": "STB_GLOBAL",
@@ -8720,7 +8720,7 @@
       "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
     },
     {
-      "symbol": "@6251",
+      "symbol": "@6254",
       "address": "0x0210f7f4",
       "size": "0xc",
       "binding": "STB_GLOBAL",
@@ -8748,7 +8748,7 @@
       "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
     },
     {
-      "symbol": "sDoorMsgOff$6248",
+      "symbol": "sDoorMsgOff$6251",
       "address": "0x0210f824",
       "size": "0xc",
       "binding": "STB_GLOBAL",
@@ -8818,7 +8818,7 @@
       "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
     },
     {
-      "symbol": "@6223",
+      "symbol": "@6226",
       "address": "0x0210f89c",
       "size": "0xc",
       "binding": "STB_GLOBAL",
@@ -8846,7 +8846,7 @@
       "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
     },
     {
-      "symbol": "sAnchorOff$6220",
+      "symbol": "sAnchorOff$6223",
       "address": "0x0210f8cc",
       "size": "0xc",
       "binding": "STB_GLOBAL",
@@ -9082,91 +9082,91 @@
   ],
   "symbol_binding_rewrites": [
     {
-      "symbol": "_ZGVsLevelIntroOff$4421",
+      "symbol": "_ZGVsLevelIntroOff$4424",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "mwcc emits the function-local static guard local; symbols.txt homes it at 0x0210e14c"
     },
     {
-      "symbol": "@4424",
+      "symbol": "@4427",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local destructor node for sLevelIntroOff is a configured relocation destination at 0x0210f350"
     },
     {
-      "symbol": "sLevelIntroOff$4421",
+      "symbol": "sLevelIntroOff$4424",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "mwcc emits the function-local static local; symbols.txt homes it at 0x0210f3b0"
     },
     {
-      "symbol": "_ZGVsTalkOff$4645",
+      "symbol": "_ZGVsTalkOff$4648",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "mwcc emits the function-local static guard local; symbols.txt homes it at 0x0210e15c"
     },
     {
-      "symbol": "@4648",
+      "symbol": "@4651",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local destructor node for sTalkOff is a configured relocation destination at 0x0210f1ac"
     },
     {
-      "symbol": "sTalkOff$4645",
+      "symbol": "sTalkOff$4648",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "mwcc emits the function-local static local; symbols.txt homes it at 0x0210f224"
     },
     {
-      "symbol": "_ZGVsAnchorOff$6220",
+      "symbol": "_ZGVsAnchorOff$6223",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "mwcc emits the function-local static guard local; symbols.txt homes it at 0x0210e150"
     },
     {
-      "symbol": "@6223",
+      "symbol": "@6226",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local destructor node for sAnchorOff is a configured relocation destination at 0x0210f89c"
     },
     {
-      "symbol": "sAnchorOff$6220",
+      "symbol": "sAnchorOff$6223",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "mwcc emits the function-local static local; symbols.txt homes it at 0x0210f8cc"
     },
     {
-      "symbol": "_ZGVsDoorMsgOff$6248",
+      "symbol": "_ZGVsDoorMsgOff$6251",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "mwcc emits the function-local static guard local; symbols.txt homes it at 0x0210e154"
     },
     {
-      "symbol": "@6251",
+      "symbol": "@6254",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local destructor node for sDoorMsgOff is a configured relocation destination at 0x0210f7f4"
     },
     {
-      "symbol": "sDoorMsgOff$6248",
+      "symbol": "sDoorMsgOff$6251",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "mwcc emits the function-local static local; symbols.txt homes it at 0x0210f824"
     },
     {
-      "symbol": "_ZGVsStarDoorOff$6914",
+      "symbol": "_ZGVsStarDoorOff$6917",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "mwcc emits the function-local static guard local; symbols.txt homes it at 0x0210e164"
     },
     {
-      "symbol": "@6917",
+      "symbol": "@6920",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local destructor node for sStarDoorOff is a configured relocation destination at 0x0210f308"
     },
     {
-      "symbol": "sStarDoorOff$6914",
+      "symbol": "sStarDoorOff$6917",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "mwcc emits the function-local static local; symbols.txt homes it at 0x0210f344"

@@ -262,42 +262,42 @@
   "data": [],
   "bss": [
     {
-      "symbol": "_ZGVsEnterPos$1003",
+      "symbol": "_ZGVsEnterPos$1008",
       "address": "0x0214870c",
       "size": "0x4",
       "binding": "STB_GLOBAL",
       "evidence": "guard word of func_ov100_021451c4's function-local static sEnterPos; the function tests and sets bit 0 exactly as retail"
     },
     {
-      "symbol": "_ZGVsDoorOff$1175",
+      "symbol": "_ZGVsDoorOff$1180",
       "address": "0x02148710",
       "size": "0x4",
       "binding": "STB_GLOBAL",
       "evidence": "guard word of InitResources' function-local static sDoorOff; InitResources tests and sets bit 0 exactly as retail"
     },
     {
-      "symbol": "_ZGVsEnterNeg$1007",
+      "symbol": "_ZGVsEnterNeg$1012",
       "address": "0x02148714",
       "size": "0x4",
       "binding": "STB_GLOBAL",
       "evidence": "guard word of func_ov100_021451c4's function-local static sEnterNeg; the function tests and sets bit 0 exactly as retail"
     },
     {
-      "symbol": "_ZGVsBackOff$777",
+      "symbol": "_ZGVsBackOff$782",
       "address": "0x02148718",
       "size": "0x4",
       "binding": "STB_GLOBAL",
       "evidence": "guard word of func_ov100_02144a38's function-local static sBackOff; the function tests and sets bit 0 exactly as retail"
     },
     {
-      "symbol": "_ZGVsKeyOff$781",
+      "symbol": "_ZGVsKeyOff$786",
       "address": "0x0214871c",
       "size": "0x4",
       "binding": "STB_GLOBAL",
       "evidence": "guard word of func_ov100_02144a38's function-local static sKeyOff; the function tests and sets bit 0 exactly as retail"
     },
     {
-      "symbol": "_ZGVsFrontOff$773",
+      "symbol": "_ZGVsFrontOff$778",
       "address": "0x02148720",
       "size": "0x4",
       "binding": "STB_GLOBAL",
@@ -402,7 +402,7 @@
       "evidence": "destructor-registration node for sBackOff; func_ov100_02144a38 passes it to __register_global_object. Emitted @780. ov095 defines @780 and ov006 unit020cd744 defines @817, so the pin is the unused same-length @821"
     },
     {
-      "symbol": "sBackOff$777",
+      "symbol": "sBackOff$782",
       "address": "0x0214879c",
       "size": "0xc",
       "binding": "STB_GLOBAL",
@@ -423,7 +423,7 @@
       "evidence": "destructor-registration node for sDoorOff; InitResources passes it to __register_global_object. Emitted @1178, which ov089 already defines, so renamed to the unused same-length @1088"
     },
     {
-      "symbol": "sDoorOff$1175",
+      "symbol": "sDoorOff$1180",
       "address": "0x021487c0",
       "size": "0xc",
       "binding": "STB_GLOBAL",
@@ -444,14 +444,14 @@
       "evidence": "destructor-registration node for sKeyOff; func_ov100_02144a38 passes it to __register_global_object. Emitted @784, which ov091 already defines, so renamed to the unused same-length @819"
     },
     {
-      "symbol": "sEnterPos$1003",
+      "symbol": "sEnterPos$1008",
       "address": "0x021487e4",
       "size": "0xc",
       "binding": "STB_GLOBAL",
       "evidence": "func_ov100_021451c4's function-local static Vector3(0, 0, 0x64000)"
     },
     {
-      "symbol": "sKeyOff$781",
+      "symbol": "sKeyOff$786",
       "address": "0x021487f0",
       "size": "0xc",
       "binding": "STB_GLOBAL",
@@ -465,7 +465,7 @@
       "evidence": "destructor-registration node for sEnterNeg; func_ov100_021451c4 passes it to __register_global_object. Emitted @1010, which ov080 already defines, so renamed to the unused same-length @1084"
     },
     {
-      "symbol": "sEnterNeg$1007",
+      "symbol": "sEnterNeg$1012",
       "address": "0x02148808",
       "size": "0xc",
       "binding": "STB_GLOBAL",
@@ -535,7 +535,7 @@
       "evidence": "compiler-generated destructor-registration node for the 0x440 resource handle"
     },
     {
-      "symbol": "sFrontOff$773",
+      "symbol": "sFrontOff$778",
       "address": "0x02148880",
       "size": "0xc",
       "binding": "STB_GLOBAL",
@@ -1281,13 +1281,13 @@
       "evidence": "compiler-local resource-handle registration node is a configured initializer relocation destination at 0x02148898"
     },
     {
-      "symbol": "_ZGVsEnterPos$1003",
+      "symbol": "_ZGVsEnterPos$1008",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "function-local static guard; DSD requires a configured global symbol at 0x0214870c"
     },
     {
-      "symbol": "sEnterPos$1003",
+      "symbol": "sEnterPos$1008",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "function-local static Vector3; DSD requires a configured global symbol at 0x021487e4"
@@ -1299,13 +1299,13 @@
       "evidence": "compiler-local destructor-registration node; DSD requires a configured global symbol at 0x021487cc"
     },
     {
-      "symbol": "_ZGVsDoorOff$1175",
+      "symbol": "_ZGVsDoorOff$1180",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "function-local static guard; DSD requires a configured global symbol at 0x02148710"
     },
     {
-      "symbol": "sDoorOff$1175",
+      "symbol": "sDoorOff$1180",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "function-local static Vector3; DSD requires a configured global symbol at 0x021487c0"
@@ -1317,13 +1317,13 @@
       "evidence": "compiler-local destructor-registration node; DSD requires a configured global symbol at 0x021487b4"
     },
     {
-      "symbol": "_ZGVsEnterNeg$1007",
+      "symbol": "_ZGVsEnterNeg$1012",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "function-local static guard; DSD requires a configured global symbol at 0x02148714"
     },
     {
-      "symbol": "sEnterNeg$1007",
+      "symbol": "sEnterNeg$1012",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "function-local static Vector3; DSD requires a configured global symbol at 0x02148808"
@@ -1335,13 +1335,13 @@
       "evidence": "compiler-local destructor-registration node; DSD requires a configured global symbol at 0x021487fc"
     },
     {
-      "symbol": "_ZGVsBackOff$777",
+      "symbol": "_ZGVsBackOff$782",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "function-local static guard; DSD requires a configured global symbol at 0x02148718"
     },
     {
-      "symbol": "sBackOff$777",
+      "symbol": "sBackOff$782",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "function-local static Vector3; DSD requires a configured global symbol at 0x0214879c"
@@ -1353,13 +1353,13 @@
       "evidence": "compiler-local destructor-registration node; DSD requires a configured global symbol at 0x02148790"
     },
     {
-      "symbol": "_ZGVsKeyOff$781",
+      "symbol": "_ZGVsKeyOff$786",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "function-local static guard; DSD requires a configured global symbol at 0x0214871c"
     },
     {
-      "symbol": "sKeyOff$781",
+      "symbol": "sKeyOff$786",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "function-local static Vector3; DSD requires a configured global symbol at 0x021487f0"
@@ -1371,13 +1371,13 @@
       "evidence": "compiler-local destructor-registration node; DSD requires a configured global symbol at 0x021487d8"
     },
     {
-      "symbol": "_ZGVsFrontOff$773",
+      "symbol": "_ZGVsFrontOff$778",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "function-local static guard; DSD requires a configured global symbol at 0x02148720"
     },
     {
-      "symbol": "sFrontOff$773",
+      "symbol": "sFrontOff$778",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "function-local static Vector3; DSD requires a configured global symbol at 0x02148880"
@@ -2153,92 +2153,92 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@584",
+      "from": "@580",
       "to": "@570",
       "evidence": "resource-handle registration node. The sinit's relocations map the previous @579 onto @575 after the six function-local Vector3 statics (uniform -4, same targets, same order). Licensed under the existing pin @570"
     },
     {
-      "from": "@585",
+      "from": "@581",
       "to": "@571",
       "evidence": "mwcc numbers this resource-handle registration node @561 per TU; daObjHeart_c's emitted object already carries @561 globally, so the scratch link would multiply-define it"
     },
     {
-      "from": "@590",
+      "from": "@586",
       "to": "@566",
       "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @580 now; licensed under the existing pin @566"
     },
     {
-      "from": "@593",
+      "from": "@589",
       "to": "@569",
       "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @583 now; licensed under the existing pin @569"
     },
     {
-      "from": "@582",
+      "from": "@578",
       "to": "@558",
       "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @572 now; licensed under the existing pin @558"
     },
     {
-      "from": "@592",
+      "from": "@588",
       "to": "@568",
       "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @582 now; licensed under the existing pin @568"
     },
     {
-      "from": "@583",
+      "from": "@579",
       "to": "@559",
       "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @573 now; licensed under the existing pin @559"
     },
     {
-      "from": "@591",
+      "from": "@587",
       "to": "@567",
       "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @581 now; licensed under the existing pin @567"
     },
     {
-      "from": "@586",
+      "from": "@582",
       "to": "@562",
       "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @576 now; licensed under the existing pin @562"
     },
     {
-      "from": "@587",
+      "from": "@583",
       "to": "@563",
       "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @577 now; licensed under the existing pin @563"
     },
     {
-      "from": "@588",
+      "from": "@584",
       "to": "@564",
       "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @578 now; licensed under the existing pin @564"
     },
     {
-      "from": "@589",
+      "from": "@585",
       "to": "@565",
       "evidence": "resource-handle registration node. The sinit's relocations map the previous @584 onto @580 after the six function-local Vector3 statics (uniform -4, same targets, same order). Licensed under the existing pin @565"
     },
     {
-      "from": "@785",
+      "from": "@781",
       "to": "@764",
       "evidence": "sFrontOff's registration node. ov091 already defines @776, and objisolate cannot grow a name, so this maps the compiled name to the unused same-length @764"
     },
     {
-      "from": "@789",
+      "from": "@785",
       "to": "@821",
       "evidence": "sBackOff's registration node. ov095 defines the compiled @780 and ov006 unit020cd744 defines @817, so this maps it to the unused same-length @821"
     },
     {
-      "from": "@793",
+      "from": "@789",
       "to": "@819",
       "evidence": "sKeyOff's registration node. ov091 already defines @784, and objisolate cannot grow a name, so this maps the compiled name to the unused same-length @819"
     },
     {
-      "from": "@1015",
+      "from": "@1011",
       "to": "@1082",
       "evidence": "sEnterPos's registration node. ov065 already defines @1006, and objisolate cannot grow a name, so this maps the compiled name to the unused same-length @1082"
     },
     {
-      "from": "@1019",
+      "from": "@1015",
       "to": "@1084",
       "evidence": "sEnterNeg's registration node. ov080 already defines @1010, and objisolate cannot grow a name, so this maps the compiled name to the unused same-length @1084"
     },
     {
-      "from": "@1187",
+      "from": "@1183",
       "to": "@1088",
       "evidence": "sDoorOff's registration node. ov089 already defines @1178, and objisolate cannot grow a name, so this maps the compiled name to the unused same-length @1088"
     }
