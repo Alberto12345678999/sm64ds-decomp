@@ -38,7 +38,8 @@
  * .data object at its retail address. The original order is not
  * recoverable. gRunningKuppaScript and gSavedKuppaScript are not here:
  * they sit in a second .bss run (0x0209fc48), apart from this file's
- * other state, and one object cannot place a definition in two runs.
+ * other state, and one object cannot place a definition in two runs. By
+ * link order that run is d_view.cpp's.
  *
  * The file is ROM-ascending under `#pragma defer_codegen off`, which also
  * keeps ProcessKuppaScript's opt_common_subs bracket to that one function.

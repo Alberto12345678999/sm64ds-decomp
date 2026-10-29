@@ -116,7 +116,6 @@ extern void SetBg1Offset(int a, int b);
 extern void SetBg3Offset(int a, int b);
 extern void SetSubBg1Offset(int a, int b);
 extern void func_0201b6f8(int a);
-extern void func_0201b7cc(void);
 extern void func_0201b388(int a);
 extern void func_0201b100(int a);
 extern int func_0201fb4c(void);
@@ -137,7 +136,7 @@ void func_0201cebc(short a0);
 void func_0201cfb8(int arg0);
 void LoadControllerModeText(int param0);
 void func_0201d418(int p0, int p1);
-void func_0201d590(void);
+void Message_DrawLineBG2(void);
 void Message_DrawCenteredLine(int a, int b);
 void func_0201d850(u32 arg0);
 void func_0201e220(int arg);
@@ -321,7 +320,7 @@ extern "C" void LoadControllerModeText(int param0)
     data_0209d668 = 1;
     data_0209d6a8 = 0;
     data_0209d674 = 0;
-    func_0201d590();
+    Message_DrawLineBG2();
 
     n = data_0209d6b0;
     m = (n + 7) / 8;
@@ -341,7 +340,7 @@ extern "C" void LoadControllerModeText(int param0)
     }
 
     data_0209d6d4++;
-    func_0201d590();
+    Message_DrawLineBG2();
     n = data_0209d6b0;
     m = (n + 7) / 8;
     {
@@ -364,7 +363,7 @@ extern "C" void LoadControllerModeText(int param0)
     }
 
     data_0209d6d4++;
-    func_0201d590();
+    Message_DrawLineBG2();
     n = data_0209d6b0;
     m = (n + 7) / 8;
     {
@@ -451,7 +450,7 @@ extern "C" void func_0201d418(int p0, int p1) {
                 } while (i < n);
             }
         }
-        func_0201b7cc();
+        Message::LayoutLine();
         func_0201b388(n);
         data_0209d6c0 = 1;
         data_0209d6a8 = data_0209d6a8 + n;
@@ -461,8 +460,10 @@ extern "C" void func_0201d418(int p0, int p1) {
 }
 #pragma pop
 
-// @symbol func_0201d590
-extern "C" void func_0201d590(void) {
+// @symbol Message_DrawLineBG2
+/* Lays out the current message line into the main BG2 tiles at
+   data_0209d674 and advances it. The caller writes the screen map. */
+extern "C" void Message_DrawLineBG2(void) {
     volatile int li;
     int n;
     int idx = data_0209d6d4;
@@ -570,7 +571,7 @@ extern "C" void func_0201d850(u32 arg0)
         data_0209d6f0 = (u8 *)ep;
         base = data_0209d6fc + 0x28 + *(s32 *)((char *)data_0209d70c + 4);
         data_0209d6f4 = base + *(s32 *)ep;
-        func_0201b7cc();
+        Message::LayoutLine();
         Message::AddChar(0x4d);
 
         num = (arg0 + 1) & 0xff;
@@ -620,7 +621,7 @@ L_r4_else:
             data_0209d6f4 = sum;
             data_0209d6f4 = sum + 3;
         }
-        func_0201b7cc();
+        Message::LayoutLine();
 
         n = (u8)((data_0209d6b0 + 7) / 8);
         func_0201b388(n);
@@ -680,7 +681,7 @@ L_r4_else:
             s32 base = data_0209d6fc + 0x28 + *(s32 *)((char *)data_0209d70c + 4);
             data_0209d6f4 = base + *(s32 *)data_0209d6f0;
         }
-        func_0201b7cc();
+        Message::LayoutLine();
         data_0209d65c = 0;
 
         n = (u8)((data_0209d6b0 + 7) / 8);
@@ -718,7 +719,7 @@ L_r4_else:
             s32 base = data_0209d6fc + 0x28 + *(s32 *)((char *)data_0209d70c + 4);
             data_0209d6f4 = base + *(s32 *)data_0209d6f0;
         }
-        func_0201b7cc();
+        Message::LayoutLine();
 
         n = (u8)((data_0209d6b0 + 7) / 8);
         func_0201b388(n);
@@ -754,7 +755,7 @@ L_r4_else:
         data_0209d6f0 = (u8 *)ep;
         base = data_0209d6fc + 0x28 + *(s32 *)((char *)data_0209d70c + 4);
         data_0209d6f4 = base + *(s32 *)ep;
-        func_0201b7cc();
+        Message::LayoutLine();
 
         n = (u8)((data_0209d6b0 + 7) / 8);
         func_0201b388(n);
@@ -914,7 +915,7 @@ void Message::DisplayText(int t) {
         q2[i] = (u16)(i + 0x200 + cnt);
     }
 
-    func_0201b7cc();
+    LayoutLine();
     func_0201b388(data_0209d6a8);
 }
 
@@ -986,7 +987,7 @@ void Message::DisplayStarNameForStarSelect(unsigned int msg)
         q[i] = (u16)(i + 0x280);
     }
 
-    func_0201b7cc();
+    LayoutLine();
     func_0201b388(data_0209d6a8);
 }
 
@@ -1042,7 +1043,7 @@ void Message::DisplayCourseNameForStarSelect(u32 base)
     } while (div < 0x40);
 
     SetSubBg1Offset(0, 0);
-    func_0201b7cc();
+    LayoutLine();
     func_0201b388(data_0209d6a8);
 
     if (data_0209d6d4 >= 0x1a5) {
@@ -1076,7 +1077,7 @@ void Message::DisplayCourseNameForStarSelect(u32 base)
         div2++;
     } while (div2 < 0x40);
 
-    func_0201b7cc();
+    LayoutLine();
     func_0201b388(data_0209d6a8);
 }
 
@@ -1256,7 +1257,7 @@ extern "C" void func_0201ef50(int arg)
         new_var = new_var + sl;
         li2 = 0;
         MultiStore_Int(li2, (int *) new_var, 0x800);
-        func_0201b7cc();
+        Message::LayoutLine();
         func_0201b388(0x20);
         sl = (u16) (sl + 0x800);
         data_0209d6e0 = data_0209d6e0 + 0x40;

@@ -55,6 +55,9 @@
 struct Sound {
     static void PlayBank2_2D(unsigned int);
 };
+
+void CopyToViewMat(const Matrix4x3 *);
+
 extern "C" {
 void MulVec3Mat4x3(void *, void *, void *);
 void Matrix4x3_ApplyInPlaceToRotationZ(void *, short);
@@ -81,7 +84,6 @@ short Vec3_VertAngle(const void *, const void *);
 void Vec3_MulScalar(void *, void *, int);
 void Vec3_MulScalarInPlace(int *, int);
 void Vec3_Sub(void *, void *, void *);
-void _Z13CopyToViewMatPK9Matrix4x3(void *);
 void SharedFilePtr_Construct_TexSeq(void *, unsigned int);
 void SharedFilePtr_Destruct_Anim(void *);
 void SharedFilePtr_Destruct_TexSeq(void *);
@@ -2609,7 +2611,7 @@ void Camera_UpdateMatrices(struct dCamera_c *self) {
 
     G3i::LookAt_(&self->eye, &up, &self->target, true, (Matrix4x3 *)&self->viewMat);
 
-    _Z13CopyToViewMatPK9Matrix4x3(&self->viewMat);
+    CopyToViewMat((const Matrix4x3 *)&self->viewMat);
 
     data_0209f43c.Func_020156DC(0x1555, self->angle, 0x1000, 0x1388000);
 }

@@ -6,7 +6,7 @@
 extern "C" {
 
 extern void func_02019028(void);
-extern s32 func_02030fa8(void);
+extern s32 GetLanguageIndexVS(void);
 extern void* func_02054ea8(void);
 extern void DecompressLZ16(const void* src, void* dst);
 extern void SetBg1Offset(int a, int b);
@@ -58,16 +58,16 @@ void func_02030500(void)
     *(volatile u16*)0x400100a = (*(volatile u16*)0x400100a & 0x43) | 8;
     *(volatile u16*)0x400100a &= ~0x40;
 
-    DecompressLZ16(data_020927b0[func_02030fa8()], func_02054ea8());
-    DecompressLZ16(data_020927b0[func_02030fa8()], G2S::GetBG1CharPtr());
+    DecompressLZ16(data_020927b0[GetLanguageIndexVS()], func_02054ea8());
+    DecompressLZ16(data_020927b0[GetLanguageIndexVS()], G2S::GetBG1CharPtr());
 
     GX::LoadBGPltt(&data_0209440c, 0, 0x40);
     GXS::LoadBGPltt(&data_0209440c, 0, 0x40);
 
     if (data_0209fc58 & 0x30) {
-        p = data_020927d8[func_02030fa8()];
+        p = data_020927d8[GetLanguageIndexVS()];
     } else {
-        p = data_020927c4[func_02030fa8()];
+        p = data_020927c4[GetLanguageIndexVS()];
     }
     DecompressLZ16(p, G2::GetBG1ScrPtr());
     DecompressLZ16(p, G2S::GetBG1ScrPtr());

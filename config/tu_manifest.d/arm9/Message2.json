@@ -33,7 +33,7 @@
       "ordinal": 1
     },
     {
-      "symbol": "func_0201ab6c",
+      "symbol": "_ZN7Message9AddChoiceEv",
       "address": "0x0201ab6c",
       "size": "0x00000138",
       "legacy_source": "src/unnamed/arm9/0201/func_0201ab6c.c",
@@ -47,7 +47,7 @@
       "ordinal": 3
     },
     {
-      "symbol": "func_0201adac",
+      "symbol": "_ZN7Message11AddCharPairEv",
       "address": "0x0201adac",
       "size": "0x00000050",
       "legacy_source": "src/unnamed/arm9/0201/func_0201adac.c",
@@ -89,7 +89,7 @@
       "ordinal": 9
     },
     {
-      "symbol": "func_0201b7cc",
+      "symbol": "_ZN7Message10LayoutLineEv",
       "address": "0x0201b7cc",
       "size": "0x000003fc",
       "legacy_source": "src/unnamed/arm9/0201/func_0201b7cc.c",
@@ -116,7 +116,7 @@
   "notes": [
     "Message2 is the name the talk-window job reserved (tree Name2 style). It is not the menu-text TU src/Message.cpp.",
     "Definitions are written ROM-ascending under #pragma defer_codegen off, so .text emits in source order. func_0201b388's opt_common_subs off is a push/pop bracket; under deferred codegen it would apply last-wins to the whole file.",
-    "EXTENDED 2026-10-15 through 0x0201cb2c: func_0201adfc, func_0201b100, func_0201b388, Message::AddChar, func_0201b6f8, func_0201b7cc, Message::UpdateWindow and Message::Update folded in from their per-function shards. The earlier stop note (func_0201adfc.c not reproducing on 2004/b56) was stale: that shard byte-matched on main, and it matches inside this TU as well. The callers keep the byte-forced _ZN7Message7AddCharEc(int) spelling, because a char parameter makes every call site narrow its argument and the ROM's call sites don't."
+    "EXTENDED 2026-10-15 through 0x0201cb2c: func_0201adfc, func_0201b100, func_0201b388, Message::AddChar, func_0201b6f8, Message::LayoutLine, Message::UpdateWindow and Message::Update folded in from their per-function shards. The earlier stop note (func_0201adfc.c not reproducing on 2004/b56) was stale: that shard byte-matched on main, and it matches inside this TU as well. The callers keep the byte-forced _ZN7Message7AddCharEc(int) spelling, because a char parameter makes every call site narrow its argument and the ROM's call sites don't."
   ],
   "verification": {
     "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",

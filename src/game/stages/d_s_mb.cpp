@@ -89,7 +89,7 @@ int dScMB_c::graphCallback_c::GraphCallback3() {
     OAM::Reset();
 
     if (mEnabled != 0) {
-        int language = func_0200f0bc();
+        int language = GetLanguageIndex();
         void *sprite = data_0208a0f8[language];
 
         if (mStillTimer == 0) {
@@ -179,8 +179,8 @@ s32 dScMB_c::Behavior() {
     case 0:
         if (func_0203d8fc() == 0)
             break;
-        DecompressLZ16(data_0208a0e4[func_0200f0bc()], (void *)0x6400000);
-        DecompressLZ16(data_0208a0e4[func_0200f0bc()], (void *)0x6600000);
+        DecompressLZ16(data_0208a0e4[GetLanguageIndex()], (void *)0x6400000);
+        DecompressLZ16(data_0208a0e4[GetLanguageIndex()], (void *)0x6600000);
         data_0209d45c = 0x10;
         data_0209d454 = 0x10;
         *(volatile u32 *)0x4000000 = (*(volatile u32 *)0x4000000 & ~0x1f00) | 0x1000;

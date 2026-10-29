@@ -789,7 +789,7 @@ matched: yes</title></rect><rect x="225.55" y="104.89" width="10.21" height="7.3
 module: arm9
 addr: 0x0200f04c
 size: 112 bytes
-matched: yes</title></rect><rect x="235.75" y="104.89" width="11.67" height="7.36" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0200f0bc
+matched: yes</title></rect><rect x="235.75" y="104.89" width="11.67" height="7.36" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>GetLanguageIndex
 module: arm9
 addr: 0x0200f0bc
 size: 128 bytes
@@ -3177,7 +3177,7 @@ matched: yes</title></rect><rect x="18.90" y="211.15" width="4.89" height="7.14"
 module: arm9
 addr: 0x0201ab38
 size: 52 bytes
-matched: yes</title></rect><rect x="23.79" y="211.15" width="29.31" height="7.14" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0201ab6c
+matched: yes</title></rect><rect x="23.79" y="211.15" width="29.31" height="7.14" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7Message9AddChoiceEv
 module: arm9
 addr: 0x0201ab6c
 size: 312 bytes
@@ -3185,7 +3185,7 @@ matched: yes</title></rect><rect x="53.10" y="211.15" width="24.80" height="7.14
 module: arm9
 addr: 0x0201aca4
 size: 264 bytes
-matched: yes</title></rect><rect x="77.90" y="211.15" width="7.52" height="7.14" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0201adac
+matched: yes</title></rect><rect x="77.90" y="211.15" width="7.52" height="7.14" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7Message11AddCharPairEv
 module: arm9
 addr: 0x0201adac
 size: 80 bytes
@@ -3209,7 +3209,7 @@ matched: yes</title></rect><rect x="301.50" y="211.15" width="19.92" height="7.1
 module: arm9
 addr: 0x0201b6f8
 size: 212 bytes
-matched: yes</title></rect><rect x="5.00" y="218.29" width="42.36" height="16.15" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0201b7cc
+matched: yes</title></rect><rect x="5.00" y="218.29" width="42.36" height="16.15" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7Message10LayoutLineEv
 module: arm9
 addr: 0x0201b7cc
 size: 1020 bytes
@@ -3265,7 +3265,7 @@ matched: yes</title></rect><rect x="305.81" y="218.29" width="15.61" height="16.
 module: arm9
 addr: 0x0201d418
 size: 376 bytes
-matched: yes</title></rect><rect x="5.00" y="234.44" width="13.10" height="13.92" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0201d590
+matched: yes</title></rect><rect x="5.00" y="234.44" width="13.10" height="13.92" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>Message_DrawLineBG2
 module: arm9
 addr: 0x0201d590
 size: 272 bytes
@@ -4589,7 +4589,7 @@ matched: yes</title></rect><rect x="281.05" y="399.12" width="40.36" height="5.7
 module: arm9
 addr: 0x02030e4c
 size: 348 bytes
-matched: yes</title></rect><rect x="5.00" y="404.91" width="6.87" height="12.49" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02030fa8
+matched: yes</title></rect><rect x="5.00" y="404.91" width="6.87" height="12.49" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>GetLanguageIndexVS
 module: arm9
 addr: 0x02030fa8
 size: 128 bytes
@@ -4597,7 +4597,7 @@ matched: yes</title></rect><rect x="11.87" y="404.91" width="16.11" height="12.4
 module: arm9
 addr: 0x02031028
 size: 300 bytes
-matched: yes</title></rect><rect x="27.98" y="404.91" width="16.76" height="12.49" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02031154
+matched: yes</title></rect><rect x="27.98" y="404.91" width="16.76" height="12.49" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7Message11AddChoiceVSEv
 module: arm9
 addr: 0x02031154
 size: 312 bytes
@@ -4605,7 +4605,7 @@ matched: yes</title></rect><rect x="44.74" y="404.91" width="17.83" height="12.4
 module: arm9
 addr: 0x0203128c
 size: 332 bytes
-matched: yes</title></rect><rect x="62.57" y="404.91" width="4.30" height="12.49" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020313d8
+matched: yes</title></rect><rect x="62.57" y="404.91" width="4.30" height="12.49" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7Message13AddCharPairVSEv
 module: arm9
 addr: 0x020313d8
 size: 80 bytes
@@ -4633,7 +4633,7 @@ matched: yes</title></rect><rect x="186.09" y="404.91" width="16.11" height="12.
 module: arm9
 addr: 0x02031cd4
 size: 300 bytes
-matched: yes</title></rect><rect x="202.20" y="404.91" width="54.78" height="12.49" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02031e00
+matched: yes</title></rect><rect x="202.20" y="404.91" width="54.78" height="12.49" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7Message12LayoutLineVSEv
 module: arm9
 addr: 0x02031e00
 size: 1020 bytes
@@ -4697,7 +4697,7 @@ matched: yes</title></rect><rect x="251.52" y="417.40" width="23.79" height="16.
 module: arm9
 addr: 0x02033e50
 size: 584 bytes
-matched: yes</title></rect><rect x="275.31" y="417.40" width="11.08" height="16.47" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02034098
+matched: yes</title></rect><rect x="275.31" y="417.40" width="11.08" height="16.47" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>Message_DrawLineBG2VS
 module: arm9
 addr: 0x02034098
 size: 272 bytes

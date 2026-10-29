@@ -114,7 +114,6 @@ extern unsigned short data_020a0e5a[][2];
 extern u16 data_020a0e58[];
 int IsStarCollectedInLevel(s8 levelID, s32 starID);
 void OamRender10_d_s_star_sel_methods(int, void *, int, int, int, int, int, int, int, int);
-void _Z13CopyToViewMatPK9Matrix4x3(const Matrix4x3 *);
 void Matrix4x3_FromTranslation(Matrix4x3 *, s32, s32, s32);
 void Matrix4x3_ApplyInPlaceToRotationY(Matrix4x3 *, s16);
 void Matrix4x3_ApplyInPlaceToScale(Matrix4x3 *, s32, s32, s32);
@@ -144,6 +143,8 @@ extern u8 data_ov001_020abbf4;
  * this file consumes it as `!= 0`. The declaration in SaveData.h is the one
  * they all already held. */
 }
+
+void CopyToViewMat(const Matrix4x3 *);
 
 // @symbol _ZN12dScStarSel_cD1Ev
 // ROM 0x020addfc, size 0x58; vtable slot 16. Written first so D1 and D0 are
@@ -483,7 +484,7 @@ s32 dScStarSel_c::Render() {
                            0x1000, 1, 0);
         G3i::LookAt_((const Vector3 *)&data_ov003_020b132c, (const Vector3 *)&data_ov003_020b1338,
                      (const Vector3 *)&data_ov003_020b1344, true, &mtx);
-        _Z13CopyToViewMatPK9Matrix4x3(&mtx);
+        CopyToViewMat(&mtx);
 
         /* The plates are 0x18000 apart, centred on x = 0, and sit at y = 0x28000. */
         x = -(((s32)PLATE_COUNT(this) - 1) * 0x18000 / 2);

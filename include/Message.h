@@ -33,6 +33,13 @@ struct Message {
        that includes this header, and the TU manifests pin those numbers. */
     static void AddChar(u8);
     static void AddCharVS(u8);
+    /* Text-code handlers (MSG_GEN_TEXT_FUNCS) and the line layout pass. */
+    static void AddChoice();
+    static void AddChoiceVS();
+    static void AddCharPair();
+    static void AddCharPairVS();
+    static void LayoutLine();
+    static void LayoutLineVS();
     static int UpdateWindow();
     static void Update();
     static void ResetAllGlobals();

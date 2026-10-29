@@ -8753,6 +8753,24 @@ compiler-emitted sinit (1UpLogo, brq and snowball on main print it too). That's 
 limitation, not a regression. A function-local static emits no sinit, so unit020bfec0 verifies
 with no EXTRA lines. linkcheck is the gate here, and all three TUs are SCRATCH-DATA-VERIFIED.
 
+**Heyho (dMg3DHeyhoObjAdapter_c, 2026-10-27).** Six separate function-local statics, not one
+array: `static Vector3 sHeyho_StartMotionFlyIn_Left256(-0x100000, 0, 0)` and the Right256,
+Regroup left/right, and React left/right twins (`+0x100000`). Declared where the hand-written
+guard blocks were, including after `Heyho_React`'s two early returns. Sizes stayed
+`Heyho_StartMotionFlyIn` `0x1a8`, `Heyho_StartMotionRegroup` `0x1a8`, `Heyho_React` `0x1d8`.
+The guards sit between this TU's own counters (`sHeyhoUnsettledCount`, `sJumpComboCount`,
+`sHeyhoScorePopups`, `sHeyhoLayout`, `sHeyhos`, `sHeyhoCount`). Node and storage then run
+through `data_ov006_021403b8` (3 ints) to `sJumpAdapters` (`char *[3]`). That whole window,
+`0x02140300..0x02140400`, is this TU's; `dMgJump3DMario` starts at `0x02140400`. Claim the
+span. Define the plain globals with no initializer. An initializer would grow the file-handle
+`__sinit`, which stayed `0x68` and still relocates to `@1287` / `@1288` (pins `@1336` /
+`@1337`). The six statics did not move those nodes. Map each `@NNN` from the function's pool
+relocation, not by adding a constant. `@167`, `@171`, `@225`, and `@229` were already defined
+in ov064, ov100, ov080, and ov070, so `defined_symbol_renames` sends them to the unused
+same-length `@174`, `@175`, `@235`, and `@236`. `@320` and `@324` were free and stay.
+`Heyho_CheckHitA` matched only as `((Obj **)sJumpAdapters)[i]`; a local `Obj **` was 4 bytes
+short.
+
 `unit020cd744` (TrmpItem) went the whole-TU way, because its nine function-local unit
 vectors' `.bss` is interleaved with file globals and ring-model handles.
 The file defines its globals, `TrmpLine sTrmpLines[4]` (mwcc emits the old
@@ -8894,6 +8912,11 @@ What each one needed beyond §6df:
 - KuppaScript's `gRunningKuppaScript`/`gSavedKuppaScript` (0x0209fc48/0x0209fc4c) sit in a
   second `.bss` run, apart from the rest of the file's state at 0x0209b270. One object
   cannot place its definitions in two runs, so they stay `extern` and unclaimed.
+  arm9 `.bss` follows `.text` TU order. The pair starts where d_wipe.cpp's scanline tables
+  end (`data_0209f648` + 0x600). Next comes the 0x0209fc50 run, read from 0x0203094c on.
+  Between those, only `func_0202fd2c` in d_view.cpp, which zeroes both words, touches them,
+  so they are that TU's `.bss` and not KuppaScript's. Its manifest is still text-only, with
+  RTTI externalized.
 - Three owners are unpromoted shard runs:
   - `__sinit_02074dc4`: the Timer neighbour (`func_0201964c`/`func_0201973c`).
   - `__sinit_02074e0c`: `func_0201aa18`/`func_0201aaec`, between IRQ2 and Message2.
