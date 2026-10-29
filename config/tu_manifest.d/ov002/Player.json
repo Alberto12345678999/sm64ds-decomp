@@ -28,6 +28,11 @@
       "name": ".init",
       "start": "0x021019d0",
       "end": "0x02106e40"
+    },
+    {
+      "name": ".bss",
+      "start": "0x0210e14c",
+      "end": "0x0210f8d8"
     }
   ],
   "functions": [
@@ -4401,7 +4406,4453 @@
     }
   ],
   "data": [],
-  "bss": [],
+  "bss": [
+    {
+      "symbol": "_ZGVsLevelIntroOff$4424",
+      "address": "0x0210e14c",
+      "size": "0x4",
+      "binding": "STB_GLOBAL",
+      "evidence": "guard of func_ov002_020c44c4's sLevelIntroOff; the function tests and sets bit 0 exactly as retail"
+    },
+    {
+      "symbol": "_ZGVsAnchorOff$6223",
+      "address": "0x0210e150",
+      "size": "0x4",
+      "binding": "STB_GLOBAL",
+      "evidence": "guard of func_ov002_020c8a4c's sAnchorOff"
+    },
+    {
+      "symbol": "_ZGVsDoorMsgOff$6251",
+      "address": "0x0210e154",
+      "size": "0x4",
+      "binding": "STB_GLOBAL",
+      "evidence": "guard of func_ov002_020c8b78's sDoorMsgOff"
+    },
+    {
+      "symbol": "data_ov002_0210e158",
+      "address": "0x0210e158",
+      "size": "0x4",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "_ZGVsTalkOff$4648",
+      "address": "0x0210e15c",
+      "size": "0x4",
+      "binding": "STB_GLOBAL",
+      "evidence": "guard of ShowMessage2's sTalkOff"
+    },
+    {
+      "symbol": "data_ov002_0210e160",
+      "address": "0x0210e160",
+      "size": "0x4",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "_ZGVsStarDoorOff$6917",
+      "address": "0x0210e164",
+      "size": "0x4",
+      "binding": "STB_GLOBAL",
+      "evidence": "guard of TryEnterStarDoor's sStarDoorOff"
+    },
+    {
+      "symbol": "data_ov002_0210e168",
+      "address": "0x0210e168",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e170",
+      "address": "0x0210e170",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e178",
+      "address": "0x0210e178",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e180",
+      "address": "0x0210e180",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e188",
+      "address": "0x0210e188",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e190",
+      "address": "0x0210e190",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e198",
+      "address": "0x0210e198",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e1a0",
+      "address": "0x0210e1a0",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e1a8",
+      "address": "0x0210e1a8",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e1b0",
+      "address": "0x0210e1b0",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e1b8",
+      "address": "0x0210e1b8",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e1c0",
+      "address": "0x0210e1c0",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e1c8",
+      "address": "0x0210e1c8",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e1d0",
+      "address": "0x0210e1d0",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e1d8",
+      "address": "0x0210e1d8",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e1e0",
+      "address": "0x0210e1e0",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e1e8",
+      "address": "0x0210e1e8",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e1f0",
+      "address": "0x0210e1f0",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e1f8",
+      "address": "0x0210e1f8",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e200",
+      "address": "0x0210e200",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e208",
+      "address": "0x0210e208",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e210",
+      "address": "0x0210e210",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e218",
+      "address": "0x0210e218",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e220",
+      "address": "0x0210e220",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e228",
+      "address": "0x0210e228",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e230",
+      "address": "0x0210e230",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e238",
+      "address": "0x0210e238",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e240",
+      "address": "0x0210e240",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e248",
+      "address": "0x0210e248",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e250",
+      "address": "0x0210e250",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e258",
+      "address": "0x0210e258",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e260",
+      "address": "0x0210e260",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e268",
+      "address": "0x0210e268",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e270",
+      "address": "0x0210e270",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e278",
+      "address": "0x0210e278",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e280",
+      "address": "0x0210e280",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e288",
+      "address": "0x0210e288",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e290",
+      "address": "0x0210e290",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e298",
+      "address": "0x0210e298",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e2a0",
+      "address": "0x0210e2a0",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e2a8",
+      "address": "0x0210e2a8",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e2b0",
+      "address": "0x0210e2b0",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e2b8",
+      "address": "0x0210e2b8",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e2c0",
+      "address": "0x0210e2c0",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e2c8",
+      "address": "0x0210e2c8",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e2d0",
+      "address": "0x0210e2d0",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e2d8",
+      "address": "0x0210e2d8",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e2e0",
+      "address": "0x0210e2e0",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e2e8",
+      "address": "0x0210e2e8",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e2f0",
+      "address": "0x0210e2f0",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e2f8",
+      "address": "0x0210e2f8",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e300",
+      "address": "0x0210e300",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e308",
+      "address": "0x0210e308",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e310",
+      "address": "0x0210e310",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e318",
+      "address": "0x0210e318",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e320",
+      "address": "0x0210e320",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e328",
+      "address": "0x0210e328",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e330",
+      "address": "0x0210e330",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e338",
+      "address": "0x0210e338",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e340",
+      "address": "0x0210e340",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e348",
+      "address": "0x0210e348",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e350",
+      "address": "0x0210e350",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e358",
+      "address": "0x0210e358",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e360",
+      "address": "0x0210e360",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e368",
+      "address": "0x0210e368",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e370",
+      "address": "0x0210e370",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e378",
+      "address": "0x0210e378",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e380",
+      "address": "0x0210e380",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e388",
+      "address": "0x0210e388",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e390",
+      "address": "0x0210e390",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e398",
+      "address": "0x0210e398",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e3a0",
+      "address": "0x0210e3a0",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e3a8",
+      "address": "0x0210e3a8",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e3b0",
+      "address": "0x0210e3b0",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e3b8",
+      "address": "0x0210e3b8",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e3c0",
+      "address": "0x0210e3c0",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e3c8",
+      "address": "0x0210e3c8",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e3d0",
+      "address": "0x0210e3d0",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e3d8",
+      "address": "0x0210e3d8",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e3e0",
+      "address": "0x0210e3e0",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e3e8",
+      "address": "0x0210e3e8",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e3f0",
+      "address": "0x0210e3f0",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e3f8",
+      "address": "0x0210e3f8",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e400",
+      "address": "0x0210e400",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e408",
+      "address": "0x0210e408",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e410",
+      "address": "0x0210e410",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e418",
+      "address": "0x0210e418",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e420",
+      "address": "0x0210e420",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e428",
+      "address": "0x0210e428",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e430",
+      "address": "0x0210e430",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e438",
+      "address": "0x0210e438",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e440",
+      "address": "0x0210e440",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e448",
+      "address": "0x0210e448",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e450",
+      "address": "0x0210e450",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e458",
+      "address": "0x0210e458",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e460",
+      "address": "0x0210e460",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e468",
+      "address": "0x0210e468",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e470",
+      "address": "0x0210e470",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e478",
+      "address": "0x0210e478",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e480",
+      "address": "0x0210e480",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e488",
+      "address": "0x0210e488",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e490",
+      "address": "0x0210e490",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e498",
+      "address": "0x0210e498",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e4a0",
+      "address": "0x0210e4a0",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e4a8",
+      "address": "0x0210e4a8",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e4b0",
+      "address": "0x0210e4b0",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e4b8",
+      "address": "0x0210e4b8",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e4c0",
+      "address": "0x0210e4c0",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e4c8",
+      "address": "0x0210e4c8",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e4d0",
+      "address": "0x0210e4d0",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e4d8",
+      "address": "0x0210e4d8",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e4e0",
+      "address": "0x0210e4e0",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e4e8",
+      "address": "0x0210e4e8",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e4f0",
+      "address": "0x0210e4f0",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e4f8",
+      "address": "0x0210e4f8",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e500",
+      "address": "0x0210e500",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e508",
+      "address": "0x0210e508",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e510",
+      "address": "0x0210e510",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e518",
+      "address": "0x0210e518",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e520",
+      "address": "0x0210e520",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e528",
+      "address": "0x0210e528",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e530",
+      "address": "0x0210e530",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e538",
+      "address": "0x0210e538",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e540",
+      "address": "0x0210e540",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e548",
+      "address": "0x0210e548",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e550",
+      "address": "0x0210e550",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e558",
+      "address": "0x0210e558",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e560",
+      "address": "0x0210e560",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e568",
+      "address": "0x0210e568",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e570",
+      "address": "0x0210e570",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e578",
+      "address": "0x0210e578",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e580",
+      "address": "0x0210e580",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e588",
+      "address": "0x0210e588",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e590",
+      "address": "0x0210e590",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e598",
+      "address": "0x0210e598",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e5a0",
+      "address": "0x0210e5a0",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e5a8",
+      "address": "0x0210e5a8",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e5b0",
+      "address": "0x0210e5b0",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e5b8",
+      "address": "0x0210e5b8",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e5c0",
+      "address": "0x0210e5c0",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e5c8",
+      "address": "0x0210e5c8",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e5d0",
+      "address": "0x0210e5d0",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e5d8",
+      "address": "0x0210e5d8",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e5e0",
+      "address": "0x0210e5e0",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e5e8",
+      "address": "0x0210e5e8",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e5f0",
+      "address": "0x0210e5f0",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e5f8",
+      "address": "0x0210e5f8",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e600",
+      "address": "0x0210e600",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e608",
+      "address": "0x0210e608",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e610",
+      "address": "0x0210e610",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e618",
+      "address": "0x0210e618",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e620",
+      "address": "0x0210e620",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e628",
+      "address": "0x0210e628",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e630",
+      "address": "0x0210e630",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e638",
+      "address": "0x0210e638",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e640",
+      "address": "0x0210e640",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e648",
+      "address": "0x0210e648",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e650",
+      "address": "0x0210e650",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e658",
+      "address": "0x0210e658",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e660",
+      "address": "0x0210e660",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e668",
+      "address": "0x0210e668",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e670",
+      "address": "0x0210e670",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e678",
+      "address": "0x0210e678",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e680",
+      "address": "0x0210e680",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e688",
+      "address": "0x0210e688",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e690",
+      "address": "0x0210e690",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e698",
+      "address": "0x0210e698",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e6a0",
+      "address": "0x0210e6a0",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e6a8",
+      "address": "0x0210e6a8",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e6b0",
+      "address": "0x0210e6b0",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e6b8",
+      "address": "0x0210e6b8",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e6c0",
+      "address": "0x0210e6c0",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e6c8",
+      "address": "0x0210e6c8",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e6d0",
+      "address": "0x0210e6d0",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e6d8",
+      "address": "0x0210e6d8",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e6e0",
+      "address": "0x0210e6e0",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e6e8",
+      "address": "0x0210e6e8",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e6f0",
+      "address": "0x0210e6f0",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e6f8",
+      "address": "0x0210e6f8",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e700",
+      "address": "0x0210e700",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e708",
+      "address": "0x0210e708",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e710",
+      "address": "0x0210e710",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e718",
+      "address": "0x0210e718",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e720",
+      "address": "0x0210e720",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e728",
+      "address": "0x0210e728",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e730",
+      "address": "0x0210e730",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e738",
+      "address": "0x0210e738",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e740",
+      "address": "0x0210e740",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e748",
+      "address": "0x0210e748",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e750",
+      "address": "0x0210e750",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e758",
+      "address": "0x0210e758",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e760",
+      "address": "0x0210e760",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e768",
+      "address": "0x0210e768",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e770",
+      "address": "0x0210e770",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e778",
+      "address": "0x0210e778",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e780",
+      "address": "0x0210e780",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e788",
+      "address": "0x0210e788",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e790",
+      "address": "0x0210e790",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e798",
+      "address": "0x0210e798",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e7a0",
+      "address": "0x0210e7a0",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e7a8",
+      "address": "0x0210e7a8",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e7b0",
+      "address": "0x0210e7b0",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e7b8",
+      "address": "0x0210e7b8",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e7c0",
+      "address": "0x0210e7c0",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e7c8",
+      "address": "0x0210e7c8",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e7d0",
+      "address": "0x0210e7d0",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e7d8",
+      "address": "0x0210e7d8",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e7e0",
+      "address": "0x0210e7e0",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e7e8",
+      "address": "0x0210e7e8",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e7f0",
+      "address": "0x0210e7f0",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e7f8",
+      "address": "0x0210e7f8",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e800",
+      "address": "0x0210e800",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e808",
+      "address": "0x0210e808",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e810",
+      "address": "0x0210e810",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e818",
+      "address": "0x0210e818",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e820",
+      "address": "0x0210e820",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e828",
+      "address": "0x0210e828",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e830",
+      "address": "0x0210e830",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e838",
+      "address": "0x0210e838",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e840",
+      "address": "0x0210e840",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e848",
+      "address": "0x0210e848",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e850",
+      "address": "0x0210e850",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e858",
+      "address": "0x0210e858",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e860",
+      "address": "0x0210e860",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e868",
+      "address": "0x0210e868",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e870",
+      "address": "0x0210e870",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e878",
+      "address": "0x0210e878",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e880",
+      "address": "0x0210e880",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e888",
+      "address": "0x0210e888",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e890",
+      "address": "0x0210e890",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e898",
+      "address": "0x0210e898",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e8a0",
+      "address": "0x0210e8a0",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e8a8",
+      "address": "0x0210e8a8",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e8b0",
+      "address": "0x0210e8b0",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e8b8",
+      "address": "0x0210e8b8",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e8c0",
+      "address": "0x0210e8c0",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e8c8",
+      "address": "0x0210e8c8",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e8d0",
+      "address": "0x0210e8d0",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e8d8",
+      "address": "0x0210e8d8",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e8e0",
+      "address": "0x0210e8e0",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e8e8",
+      "address": "0x0210e8e8",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e8f0",
+      "address": "0x0210e8f0",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e8f8",
+      "address": "0x0210e8f8",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e900",
+      "address": "0x0210e900",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e908",
+      "address": "0x0210e908",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e910",
+      "address": "0x0210e910",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e918",
+      "address": "0x0210e918",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e920",
+      "address": "0x0210e920",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e928",
+      "address": "0x0210e928",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e930",
+      "address": "0x0210e930",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e938",
+      "address": "0x0210e938",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e940",
+      "address": "0x0210e940",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e948",
+      "address": "0x0210e948",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e950",
+      "address": "0x0210e950",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e958",
+      "address": "0x0210e958",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e960",
+      "address": "0x0210e960",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e968",
+      "address": "0x0210e968",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e970",
+      "address": "0x0210e970",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e978",
+      "address": "0x0210e978",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e980",
+      "address": "0x0210e980",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e988",
+      "address": "0x0210e988",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e990",
+      "address": "0x0210e990",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e998",
+      "address": "0x0210e998",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e9a0",
+      "address": "0x0210e9a0",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e9a8",
+      "address": "0x0210e9a8",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e9b0",
+      "address": "0x0210e9b0",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e9b8",
+      "address": "0x0210e9b8",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e9c0",
+      "address": "0x0210e9c0",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e9c8",
+      "address": "0x0210e9c8",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e9d0",
+      "address": "0x0210e9d0",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e9d8",
+      "address": "0x0210e9d8",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e9e0",
+      "address": "0x0210e9e0",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e9e8",
+      "address": "0x0210e9e8",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e9f0",
+      "address": "0x0210e9f0",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210e9f8",
+      "address": "0x0210e9f8",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210ea00",
+      "address": "0x0210ea00",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210ea08",
+      "address": "0x0210ea08",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210ea10",
+      "address": "0x0210ea10",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210ea18",
+      "address": "0x0210ea18",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210ea20",
+      "address": "0x0210ea20",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210ea28",
+      "address": "0x0210ea28",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210ea30",
+      "address": "0x0210ea30",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210ea38",
+      "address": "0x0210ea38",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210ea40",
+      "address": "0x0210ea40",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210ea48",
+      "address": "0x0210ea48",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210ea50",
+      "address": "0x0210ea50",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210ea58",
+      "address": "0x0210ea58",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210ea60",
+      "address": "0x0210ea60",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210ea68",
+      "address": "0x0210ea68",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210ea70",
+      "address": "0x0210ea70",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210ea78",
+      "address": "0x0210ea78",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210ea80",
+      "address": "0x0210ea80",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210ea88",
+      "address": "0x0210ea88",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210ea90",
+      "address": "0x0210ea90",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210ea98",
+      "address": "0x0210ea98",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210eaa0",
+      "address": "0x0210eaa0",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210eaa8",
+      "address": "0x0210eaa8",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210eab0",
+      "address": "0x0210eab0",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210eab8",
+      "address": "0x0210eab8",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210eac0",
+      "address": "0x0210eac0",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210eac8",
+      "address": "0x0210eac8",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210ead0",
+      "address": "0x0210ead0",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210ead8",
+      "address": "0x0210ead8",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210eae0",
+      "address": "0x0210eae0",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210eae8",
+      "address": "0x0210eae8",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210eaf0",
+      "address": "0x0210eaf0",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210eaf8",
+      "address": "0x0210eaf8",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210eb00",
+      "address": "0x0210eb00",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210eb08",
+      "address": "0x0210eb08",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210eb10",
+      "address": "0x0210eb10",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210eb18",
+      "address": "0x0210eb18",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210eb20",
+      "address": "0x0210eb20",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210eb28",
+      "address": "0x0210eb28",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210eb30",
+      "address": "0x0210eb30",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210eb38",
+      "address": "0x0210eb38",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210eb40",
+      "address": "0x0210eb40",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210eb48",
+      "address": "0x0210eb48",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210eb50",
+      "address": "0x0210eb50",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210eb58",
+      "address": "0x0210eb58",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210eb60",
+      "address": "0x0210eb60",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210eb68",
+      "address": "0x0210eb68",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210eb70",
+      "address": "0x0210eb70",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210eb78",
+      "address": "0x0210eb78",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210eb80",
+      "address": "0x0210eb80",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210eb88",
+      "address": "0x0210eb88",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210eb90",
+      "address": "0x0210eb90",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210eb98",
+      "address": "0x0210eb98",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210eba0",
+      "address": "0x0210eba0",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210eba8",
+      "address": "0x0210eba8",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210ebb0",
+      "address": "0x0210ebb0",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210ebb8",
+      "address": "0x0210ebb8",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210ebc0",
+      "address": "0x0210ebc0",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210ebc8",
+      "address": "0x0210ebc8",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210ebd0",
+      "address": "0x0210ebd0",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210ebd8",
+      "address": "0x0210ebd8",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210ebe0",
+      "address": "0x0210ebe0",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210ebe8",
+      "address": "0x0210ebe8",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210ebf0",
+      "address": "0x0210ebf0",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210ebf8",
+      "address": "0x0210ebf8",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210ec00",
+      "address": "0x0210ec00",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210ec08",
+      "address": "0x0210ec08",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210ec10",
+      "address": "0x0210ec10",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210ec18",
+      "address": "0x0210ec18",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210ec20",
+      "address": "0x0210ec20",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210ec28",
+      "address": "0x0210ec28",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210ec30",
+      "address": "0x0210ec30",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210ec38",
+      "address": "0x0210ec38",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210ec40",
+      "address": "0x0210ec40",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210ec48",
+      "address": "0x0210ec48",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210ec50",
+      "address": "0x0210ec50",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210ec58",
+      "address": "0x0210ec58",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210ec60",
+      "address": "0x0210ec60",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210ec68",
+      "address": "0x0210ec68",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210ec70",
+      "address": "0x0210ec70",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210ec78",
+      "address": "0x0210ec78",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210ec80",
+      "address": "0x0210ec80",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210ec88",
+      "address": "0x0210ec88",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210ec90",
+      "address": "0x0210ec90",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210ec98",
+      "address": "0x0210ec98",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210eca0",
+      "address": "0x0210eca0",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210eca8",
+      "address": "0x0210eca8",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210ecb0",
+      "address": "0x0210ecb0",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210ecb8",
+      "address": "0x0210ecb8",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210ecc0",
+      "address": "0x0210ecc0",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210ecc8",
+      "address": "0x0210ecc8",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210ecd0",
+      "address": "0x0210ecd0",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210ecd8",
+      "address": "0x0210ecd8",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210ece0",
+      "address": "0x0210ece0",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210ece8",
+      "address": "0x0210ece8",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210ecf0",
+      "address": "0x0210ecf0",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210ecf8",
+      "address": "0x0210ecf8",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210ed00",
+      "address": "0x0210ed00",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210ed08",
+      "address": "0x0210ed08",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210ed10",
+      "address": "0x0210ed10",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210ed18",
+      "address": "0x0210ed18",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210ed20",
+      "address": "0x0210ed20",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210ed28",
+      "address": "0x0210ed28",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210ed30",
+      "address": "0x0210ed30",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210ed38",
+      "address": "0x0210ed38",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210ed40",
+      "address": "0x0210ed40",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210ed48",
+      "address": "0x0210ed48",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210ed50",
+      "address": "0x0210ed50",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210ed58",
+      "address": "0x0210ed58",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210ed60",
+      "address": "0x0210ed60",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210ed68",
+      "address": "0x0210ed68",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210ed74",
+      "address": "0x0210ed74",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210ed80",
+      "address": "0x0210ed80",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210ed8c",
+      "address": "0x0210ed8c",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210ed98",
+      "address": "0x0210ed98",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210eda4",
+      "address": "0x0210eda4",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210edb0",
+      "address": "0x0210edb0",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210edbc",
+      "address": "0x0210edbc",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210edc8",
+      "address": "0x0210edc8",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210edd4",
+      "address": "0x0210edd4",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210ede0",
+      "address": "0x0210ede0",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210edec",
+      "address": "0x0210edec",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210edf8",
+      "address": "0x0210edf8",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210ee04",
+      "address": "0x0210ee04",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210ee10",
+      "address": "0x0210ee10",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210ee1c",
+      "address": "0x0210ee1c",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210ee28",
+      "address": "0x0210ee28",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210ee34",
+      "address": "0x0210ee34",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210ee40",
+      "address": "0x0210ee40",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210ee4c",
+      "address": "0x0210ee4c",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210ee58",
+      "address": "0x0210ee58",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210ee64",
+      "address": "0x0210ee64",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210ee70",
+      "address": "0x0210ee70",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210ee7c",
+      "address": "0x0210ee7c",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210ee88",
+      "address": "0x0210ee88",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210ee94",
+      "address": "0x0210ee94",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210eea0",
+      "address": "0x0210eea0",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210eeac",
+      "address": "0x0210eeac",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210eeb8",
+      "address": "0x0210eeb8",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210eec4",
+      "address": "0x0210eec4",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210eed0",
+      "address": "0x0210eed0",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210eedc",
+      "address": "0x0210eedc",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210eee8",
+      "address": "0x0210eee8",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210eef4",
+      "address": "0x0210eef4",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210ef00",
+      "address": "0x0210ef00",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210ef0c",
+      "address": "0x0210ef0c",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210ef18",
+      "address": "0x0210ef18",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210ef24",
+      "address": "0x0210ef24",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210ef30",
+      "address": "0x0210ef30",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210ef3c",
+      "address": "0x0210ef3c",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210ef48",
+      "address": "0x0210ef48",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210ef54",
+      "address": "0x0210ef54",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210ef60",
+      "address": "0x0210ef60",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210ef6c",
+      "address": "0x0210ef6c",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210ef78",
+      "address": "0x0210ef78",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210ef84",
+      "address": "0x0210ef84",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210ef90",
+      "address": "0x0210ef90",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210ef9c",
+      "address": "0x0210ef9c",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210efa8",
+      "address": "0x0210efa8",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210efb4",
+      "address": "0x0210efb4",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210efc0",
+      "address": "0x0210efc0",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210efcc",
+      "address": "0x0210efcc",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210efd8",
+      "address": "0x0210efd8",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210efe4",
+      "address": "0x0210efe4",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210eff0",
+      "address": "0x0210eff0",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210effc",
+      "address": "0x0210effc",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f008",
+      "address": "0x0210f008",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f014",
+      "address": "0x0210f014",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f020",
+      "address": "0x0210f020",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f02c",
+      "address": "0x0210f02c",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f038",
+      "address": "0x0210f038",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f044",
+      "address": "0x0210f044",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f050",
+      "address": "0x0210f050",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f05c",
+      "address": "0x0210f05c",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f068",
+      "address": "0x0210f068",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f074",
+      "address": "0x0210f074",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f080",
+      "address": "0x0210f080",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f08c",
+      "address": "0x0210f08c",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f098",
+      "address": "0x0210f098",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f0a4",
+      "address": "0x0210f0a4",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f0b0",
+      "address": "0x0210f0b0",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f0bc",
+      "address": "0x0210f0bc",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f0c8",
+      "address": "0x0210f0c8",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f0d4",
+      "address": "0x0210f0d4",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f0e0",
+      "address": "0x0210f0e0",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f0ec",
+      "address": "0x0210f0ec",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f0f8",
+      "address": "0x0210f0f8",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f104",
+      "address": "0x0210f104",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f110",
+      "address": "0x0210f110",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f11c",
+      "address": "0x0210f11c",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f128",
+      "address": "0x0210f128",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f134",
+      "address": "0x0210f134",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f140",
+      "address": "0x0210f140",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f14c",
+      "address": "0x0210f14c",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f158",
+      "address": "0x0210f158",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f164",
+      "address": "0x0210f164",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f170",
+      "address": "0x0210f170",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f17c",
+      "address": "0x0210f17c",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f188",
+      "address": "0x0210f188",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f194",
+      "address": "0x0210f194",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f1a0",
+      "address": "0x0210f1a0",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "@4651",
+      "address": "0x0210f1ac",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "destructor-registration node for sTalkOff; ShowMessage2 passes it to __register_global_object"
+    },
+    {
+      "symbol": "data_ov002_0210f1b8",
+      "address": "0x0210f1b8",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f1c4",
+      "address": "0x0210f1c4",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f1d0",
+      "address": "0x0210f1d0",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f1dc",
+      "address": "0x0210f1dc",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f1e8",
+      "address": "0x0210f1e8",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f1f4",
+      "address": "0x0210f1f4",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f200",
+      "address": "0x0210f200",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f20c",
+      "address": "0x0210f20c",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f218",
+      "address": "0x0210f218",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "sTalkOff$4648",
+      "address": "0x0210f224",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "ShowMessage2's function-local static Vector3(0, 0x64000, 0x64000)"
+    },
+    {
+      "symbol": "data_ov002_0210f230",
+      "address": "0x0210f230",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f23c",
+      "address": "0x0210f23c",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f248",
+      "address": "0x0210f248",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f254",
+      "address": "0x0210f254",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f260",
+      "address": "0x0210f260",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f26c",
+      "address": "0x0210f26c",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f278",
+      "address": "0x0210f278",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f284",
+      "address": "0x0210f284",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f290",
+      "address": "0x0210f290",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f29c",
+      "address": "0x0210f29c",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f2a8",
+      "address": "0x0210f2a8",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f2b4",
+      "address": "0x0210f2b4",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f2c0",
+      "address": "0x0210f2c0",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f2cc",
+      "address": "0x0210f2cc",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f2d8",
+      "address": "0x0210f2d8",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f2e4",
+      "address": "0x0210f2e4",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f2f0",
+      "address": "0x0210f2f0",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f2fc",
+      "address": "0x0210f2fc",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "@6920",
+      "address": "0x0210f308",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "destructor-registration node for sStarDoorOff"
+    },
+    {
+      "symbol": "data_ov002_0210f314",
+      "address": "0x0210f314",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f320",
+      "address": "0x0210f320",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f32c",
+      "address": "0x0210f32c",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f338",
+      "address": "0x0210f338",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "sStarDoorOff$6917",
+      "address": "0x0210f344",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "TryEnterStarDoor's function-local static Vector3(0, 0, 0x64000)"
+    },
+    {
+      "symbol": "@4427",
+      "address": "0x0210f350",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "destructor-registration node for sLevelIntroOff"
+    },
+    {
+      "symbol": "data_ov002_0210f35c",
+      "address": "0x0210f35c",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f368",
+      "address": "0x0210f368",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f374",
+      "address": "0x0210f374",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f380",
+      "address": "0x0210f380",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f38c",
+      "address": "0x0210f38c",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f398",
+      "address": "0x0210f398",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f3a4",
+      "address": "0x0210f3a4",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "sLevelIntroOff$4424",
+      "address": "0x0210f3b0",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "func_ov002_020c44c4's function-local static Vector3(0, 0x96000, 0x64000)"
+    },
+    {
+      "symbol": "data_ov002_0210f3bc",
+      "address": "0x0210f3bc",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f3c8",
+      "address": "0x0210f3c8",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f3d4",
+      "address": "0x0210f3d4",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f3e0",
+      "address": "0x0210f3e0",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f3ec",
+      "address": "0x0210f3ec",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f3f8",
+      "address": "0x0210f3f8",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f404",
+      "address": "0x0210f404",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f410",
+      "address": "0x0210f410",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f41c",
+      "address": "0x0210f41c",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f428",
+      "address": "0x0210f428",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f434",
+      "address": "0x0210f434",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f440",
+      "address": "0x0210f440",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f44c",
+      "address": "0x0210f44c",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f458",
+      "address": "0x0210f458",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f464",
+      "address": "0x0210f464",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f470",
+      "address": "0x0210f470",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f47c",
+      "address": "0x0210f47c",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f488",
+      "address": "0x0210f488",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f494",
+      "address": "0x0210f494",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f4a0",
+      "address": "0x0210f4a0",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f4ac",
+      "address": "0x0210f4ac",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f4b8",
+      "address": "0x0210f4b8",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f4c4",
+      "address": "0x0210f4c4",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f4d0",
+      "address": "0x0210f4d0",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f4dc",
+      "address": "0x0210f4dc",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f4e8",
+      "address": "0x0210f4e8",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f4f4",
+      "address": "0x0210f4f4",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f500",
+      "address": "0x0210f500",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f50c",
+      "address": "0x0210f50c",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f518",
+      "address": "0x0210f518",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f524",
+      "address": "0x0210f524",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f530",
+      "address": "0x0210f530",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f53c",
+      "address": "0x0210f53c",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f548",
+      "address": "0x0210f548",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f554",
+      "address": "0x0210f554",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f560",
+      "address": "0x0210f560",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f56c",
+      "address": "0x0210f56c",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f578",
+      "address": "0x0210f578",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f584",
+      "address": "0x0210f584",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f590",
+      "address": "0x0210f590",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f59c",
+      "address": "0x0210f59c",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f5a8",
+      "address": "0x0210f5a8",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f5b4",
+      "address": "0x0210f5b4",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f5c0",
+      "address": "0x0210f5c0",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f5cc",
+      "address": "0x0210f5cc",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f5d8",
+      "address": "0x0210f5d8",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f5e4",
+      "address": "0x0210f5e4",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f5f0",
+      "address": "0x0210f5f0",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f5fc",
+      "address": "0x0210f5fc",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f608",
+      "address": "0x0210f608",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f614",
+      "address": "0x0210f614",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f620",
+      "address": "0x0210f620",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f62c",
+      "address": "0x0210f62c",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f638",
+      "address": "0x0210f638",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f644",
+      "address": "0x0210f644",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f650",
+      "address": "0x0210f650",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f65c",
+      "address": "0x0210f65c",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f668",
+      "address": "0x0210f668",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f674",
+      "address": "0x0210f674",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f680",
+      "address": "0x0210f680",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f68c",
+      "address": "0x0210f68c",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f698",
+      "address": "0x0210f698",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f6a4",
+      "address": "0x0210f6a4",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f6b0",
+      "address": "0x0210f6b0",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f6bc",
+      "address": "0x0210f6bc",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f6c8",
+      "address": "0x0210f6c8",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f6d4",
+      "address": "0x0210f6d4",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f6e0",
+      "address": "0x0210f6e0",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f6ec",
+      "address": "0x0210f6ec",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f6f8",
+      "address": "0x0210f6f8",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f704",
+      "address": "0x0210f704",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f710",
+      "address": "0x0210f710",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f71c",
+      "address": "0x0210f71c",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f728",
+      "address": "0x0210f728",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f734",
+      "address": "0x0210f734",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f740",
+      "address": "0x0210f740",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f74c",
+      "address": "0x0210f74c",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f758",
+      "address": "0x0210f758",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f764",
+      "address": "0x0210f764",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f770",
+      "address": "0x0210f770",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f77c",
+      "address": "0x0210f77c",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f788",
+      "address": "0x0210f788",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f794",
+      "address": "0x0210f794",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f7a0",
+      "address": "0x0210f7a0",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f7ac",
+      "address": "0x0210f7ac",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f7b8",
+      "address": "0x0210f7b8",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f7c4",
+      "address": "0x0210f7c4",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f7d0",
+      "address": "0x0210f7d0",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f7dc",
+      "address": "0x0210f7dc",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f7e8",
+      "address": "0x0210f7e8",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "@6254",
+      "address": "0x0210f7f4",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "destructor-registration node for sDoorMsgOff"
+    },
+    {
+      "symbol": "data_ov002_0210f800",
+      "address": "0x0210f800",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f80c",
+      "address": "0x0210f80c",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f818",
+      "address": "0x0210f818",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "sDoorMsgOff$6251",
+      "address": "0x0210f824",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "func_ov002_020c8b78's function-local static Vector3(0, 0x96000, 0x64000)"
+    },
+    {
+      "symbol": "data_ov002_0210f830",
+      "address": "0x0210f830",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f83c",
+      "address": "0x0210f83c",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f848",
+      "address": "0x0210f848",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f854",
+      "address": "0x0210f854",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f860",
+      "address": "0x0210f860",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f86c",
+      "address": "0x0210f86c",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f878",
+      "address": "0x0210f878",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f884",
+      "address": "0x0210f884",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f890",
+      "address": "0x0210f890",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "@6226",
+      "address": "0x0210f89c",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "destructor-registration node for sAnchorOff"
+    },
+    {
+      "symbol": "data_ov002_0210f8a8",
+      "address": "0x0210f8a8",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f8b4",
+      "address": "0x0210f8b4",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "data_ov002_0210f8c0",
+      "address": "0x0210f8c0",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "zero-initialized storage in this TU's .bss claim; no constructor"
+    },
+    {
+      "symbol": "sAnchorOff$6223",
+      "address": "0x0210f8cc",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "func_ov002_020c8a4c's function-local static Vector3(0, 0, 0x12c000)"
+    }
+  ],
   "init": [
     {
       "symbol": "__sinit_ov002_021019d0",
@@ -4576,6 +9027,12 @@
           "end": "0x02106e40",
           "differingBytes": 0,
           "firstDiff": null
+        },
+        {
+          "section": ".bss",
+          "start": "0x0210e14c",
+          "end": "0x0210f8d8",
+          "comparison": "NOBITS -- symbol/module gates"
         }
       ],
       "objectAudit": {
@@ -4614,6 +9071,107 @@
       "linkerOutput": null
     }
   },
+  "undefined_symbol_aliases": [
+    {
+      "symbol": "__register_global_object",
+      "canonical_symbol": "func_020731dc",
+      "canonical_module": "arm9",
+      "canonical_address": "0x020731dc",
+      "evidence": "the initializer and the five function-local Vector3 statics call the compiler name; retail relocations name func_020731dc at this address"
+    }
+  ],
+  "symbol_binding_rewrites": [
+    {
+      "symbol": "_ZGVsLevelIntroOff$4424",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "mwcc emits the function-local static guard local; symbols.txt homes it at 0x0210e14c"
+    },
+    {
+      "symbol": "@4427",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "compiler-local destructor node for sLevelIntroOff is a configured relocation destination at 0x0210f350"
+    },
+    {
+      "symbol": "sLevelIntroOff$4424",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "mwcc emits the function-local static local; symbols.txt homes it at 0x0210f3b0"
+    },
+    {
+      "symbol": "_ZGVsTalkOff$4648",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "mwcc emits the function-local static guard local; symbols.txt homes it at 0x0210e15c"
+    },
+    {
+      "symbol": "@4651",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "compiler-local destructor node for sTalkOff is a configured relocation destination at 0x0210f1ac"
+    },
+    {
+      "symbol": "sTalkOff$4648",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "mwcc emits the function-local static local; symbols.txt homes it at 0x0210f224"
+    },
+    {
+      "symbol": "_ZGVsAnchorOff$6223",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "mwcc emits the function-local static guard local; symbols.txt homes it at 0x0210e150"
+    },
+    {
+      "symbol": "@6226",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "compiler-local destructor node for sAnchorOff is a configured relocation destination at 0x0210f89c"
+    },
+    {
+      "symbol": "sAnchorOff$6223",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "mwcc emits the function-local static local; symbols.txt homes it at 0x0210f8cc"
+    },
+    {
+      "symbol": "_ZGVsDoorMsgOff$6251",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "mwcc emits the function-local static guard local; symbols.txt homes it at 0x0210e154"
+    },
+    {
+      "symbol": "@6254",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "compiler-local destructor node for sDoorMsgOff is a configured relocation destination at 0x0210f7f4"
+    },
+    {
+      "symbol": "sDoorMsgOff$6251",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "mwcc emits the function-local static local; symbols.txt homes it at 0x0210f824"
+    },
+    {
+      "symbol": "_ZGVsStarDoorOff$6917",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "mwcc emits the function-local static guard local; symbols.txt homes it at 0x0210e164"
+    },
+    {
+      "symbol": "@6920",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "compiler-local destructor node for sStarDoorOff is a configured relocation destination at 0x0210f308"
+    },
+    {
+      "symbol": "sStarDoorOff$6917",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "mwcc emits the function-local static local; symbols.txt homes it at 0x0210f344"
+    }
+  ],
   "relocations": [
     {
       "section": ".init",
