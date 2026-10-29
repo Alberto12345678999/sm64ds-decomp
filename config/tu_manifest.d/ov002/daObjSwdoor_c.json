@@ -45,7 +45,7 @@
       "ordinal": 1
     },
     {
-      "symbol": "func_ov002_020baba8",
+      "symbol": "_ZN13daObjSwdoor_c20CleanupResourcesFromEP18ResourceDescriptor",
       "address": "0x020baba8",
       "size": "0x00000048",
       "legacy_source": "src/func_ov002_020baba8.cpp",
@@ -59,14 +59,14 @@
       "ordinal": 3
     },
     {
-      "symbol": "func_ov002_020bac18",
+      "symbol": "_ZN13daObjSwdoor_c13UpdateShutterEv",
       "address": "0x020bac18",
       "size": "0x000000f8",
       "legacy_source": "src/func_ov002_020bac18.c",
       "ordinal": 4
     },
     {
-      "symbol": "func_ov002_020bad10",
+      "symbol": "_ZN13daObjSwdoor_c17InitResourcesFromEP18ResourceDescriptor",
       "address": "0x020bad10",
       "size": "0x000000c0",
       "legacy_source": "src/func_ov002_020bad10.c",
@@ -171,7 +171,8 @@
     "func_ov002_020baba8, func_ov002_020bac18 and func_ov002_020bad10 keep their address-derived names. None occupies a vtable slot in any class in the image and nothing in the ROM names any of them, so a coined English name would be invention, not recovery.",
     "ONE DECLARATION WAS RECONCILED ACROSS THE FOLD, and it is the only source change beyond moving text: the pre-fold shard for 0x020bac18 declared _ZN10dBgActor_c21UpdateModelPosAndRotYEv as returning void and the shard for 0x020bad10 declared it as returning int. One TU can carry only one spelling; the int form is kept and both call sites discard the result, so the choice is codegen-neutral. It is proved codegen-neutral by the 4/4 byte match below, which covers both call sites. The shard for 0x020bac18 also carried file-local `typedef unsigned char u8` and `typedef struct { int x, y, z; } Vector3` declarations, and the shard for 0x020bad10 a file-local `typedef int Fix12`; all three name types the header already supplies (and `Fix12` is a class template once the header is in scope), so they are dropped and the header's spellings used.",
     "POST-PROMOTION `tubuild.py linkcheck` IS STRUCTURALLY UNAVAILABLE TO THIS ENTRY, and that is not a defect in it. Once the single intact delinks.txt entry exists, linkcheck treats the source as an enrolled intact-object candidate and routes its object through tools/tu_production.prepare_intact_object, which refuses any entry that does not claim a non-text section: 'intact production requires one .text claim and at least one non-text claim'. This TU claims .text only, because the class has no factory, no g_profile row and no owned data. The proof of record for this entry is therefore the PRE-PROMOTION whole-range link recorded below (scratch-link-verified, full ROM built and byte-identical to the stock control), which is the same state the other promoted text-only entries in this series carry, plus tools/rombuild.py against the real tree. production_mode is deliberately left unset, as it is on the rest of this series.",
-    "FORCING FUNCTIONS AND PRAGMA. This TU compiles under `#pragma defer_codegen off` and carries two uncalled functions, daObjSwdoor_c_EmitDeletingDestructor and daObjSwdoor_c_EmitDestructor, recorded as compiler_only_output deadstrip rows. They are the parse-time trigger that places D0 then D1 ahead of the real members and are not in the ROM. The destructor itself stays inline in include/daObjSwdoor_c.h because the class's descendants inline its vptr store."
+    "FORCING FUNCTIONS AND PRAGMA. This TU compiles under `#pragma defer_codegen off` and carries two uncalled functions, daObjSwdoor_c_EmitDeletingDestructor and daObjSwdoor_c_EmitDestructor, recorded as compiler_only_output deadstrip rows. They are the parse-time trigger that places D0 then D1 ahead of the real members and are not in the ROM. The destructor itself stays inline in include/daObjSwdoor_c.h because the class's descendants inline its vptr store.",
+    "ACTOR CLEANUP (1028). The three shared helpers are members of daObjSwdoor_c: func_ov002_020bad10 is InitResourcesFrom(ResourceDescriptor*), func_ov002_020baba8 is CleanupResourcesFrom(ResourceDescriptor*) and func_ov002_020bac18 is UpdateShutter(), declared in include/daObjSwdoor_c.h (ResourceDescriptor forward-declared there, as include/daObjFallBlock_c.h does). Both leaves, daObjBSwdoor_c (ov014) and daObjCvShutter_c (ov021), call them as members. All byte-identical; source order is unchanged under defer_codegen off. DecIfAbove0_Byte comes from math/CalcLib.h and SetFile is a plain member call."
   ],
   "verification": {
     "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",

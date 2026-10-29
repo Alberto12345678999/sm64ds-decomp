@@ -2808,52 +2808,52 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@362",
+      "from": "@364",
       "to": "@346",
       "evidence": "compiler-local __register_global_object node; @360 is taken on main by ov023 bss, renamed to an unused fleet temp of equal length"
     },
     {
-      "from": "@363",
+      "from": "@365",
       "to": "@347",
       "evidence": "compiler-local __register_global_object node; @361 is taken on main by ov036 bss, renamed to an unused fleet temp of equal length"
     },
     {
-      "from": "@364",
+      "from": "@366",
       "to": "@348",
       "evidence": "compiler-local __register_global_object node; @362 is taken on main by ov036 bss, renamed to an unused fleet temp of equal length"
     },
     {
-      "from": "@365",
+      "from": "@367",
       "to": "@349",
       "evidence": "compiler-local __register_global_object node; @363 is taken on main by ov036 bss, renamed to an unused fleet temp of equal length"
     },
     {
-      "from": "@366",
+      "from": "@368",
       "to": "@350",
       "evidence": "compiler-local __register_global_object node; @364 is taken on main by ov036 bss, renamed to an unused fleet temp of equal length"
     },
     {
-      "from": "@367",
+      "from": "@369",
       "to": "@351",
       "evidence": "compiler-local __register_global_object node; @365 is taken on main by ov036 bss, renamed to an unused fleet temp of equal length"
     },
     {
-      "from": "@368",
+      "from": "@370",
       "to": "@352",
       "evidence": "compiler-local __register_global_object node; @366 is taken on main by ov036 bss, renamed to an unused fleet temp of equal length"
     },
     {
-      "from": "@369",
+      "from": "@371",
       "to": "@353",
       "evidence": "compiler-local __register_global_object node; @367 is taken on main by ov036 bss, renamed to an unused fleet temp of equal length"
     },
     {
-      "from": "@370",
+      "from": "@372",
       "to": "@354",
       "evidence": "compiler-local __register_global_object node; @368 is taken on main by ov036 bss, renamed to an unused fleet temp of equal length"
     },
     {
-      "from": "@371",
+      "from": "@373",
       "to": "@355",
       "evidence": "compiler-local __register_global_object node; @369 is taken on main by ov036 bss, renamed to an unused fleet temp of equal length"
     }

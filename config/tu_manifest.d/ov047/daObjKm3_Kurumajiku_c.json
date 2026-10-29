@@ -1202,14 +1202,14 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@366",
+      "from": "@363",
       "to": "@977",
-      "evidence": "Actual compiler-local node @378 maps to the existing configured destination @977; byte/relocation identity proves this spelling-only preparation. Older @364/@365 numbering is historical."
+      "evidence": "Actual compiler-local node @378 maps to the existing configured destination @977; byte/relocation identity proves this spelling-only preparation. Older @364/@365 numbering is historical. | re-keyed by __sinit relocation-site order after the actor cleanup member conversions shifted the TU's @NNN uniquifier"
     },
     {
-      "from": "@367",
+      "from": "@364",
       "to": "@980",
-      "evidence": "Actual compiler-local node @379 maps to the existing configured destination @980; byte/relocation identity proves this spelling-only preparation. Older @364/@365 numbering is historical."
+      "evidence": "Actual compiler-local node @379 maps to the existing configured destination @980; byte/relocation identity proves this spelling-only preparation. Older @364/@365 numbering is historical. | re-keyed by __sinit relocation-site order after the actor cleanup member conversions shifted the TU's @NNN uniquifier"
     }
   ],
   "symbol_binding_rewrites": [

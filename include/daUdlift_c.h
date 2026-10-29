@@ -64,6 +64,11 @@ struct daUdlift_c : dBgActor_c {
     void StateMoveDown();           /* 2 */
     void StateStop();               /* 3 */
     void StateStopAtBottom();       /* 4 */
+
+    /* Rider hook. InitResources stores OnMeshClsnTouch as mMeshCollider's
+       callback word; it forwards the colliding player to LatchRider. */
+    static void OnMeshClsnTouch(void *, daUdlift_c *, Player *);
+    void LatchRider(Player *);
 };
 
 #ifndef SM64DS_PLATFORM_PC

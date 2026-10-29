@@ -2019,12 +2019,12 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@368",
+      "from": "@365",
       "to": "@955",
       "evidence": "Current pinned compiler emits model destructor-registration node @380; canonical configured identity is @955. Earlier promotion used @366/@367, which conflicted with ov036; those old temporary ordinals are historical, not current output. Complete native initializer relocation sites preserve the mapping."
     },
     {
-      "from": "@369",
+      "from": "@366",
       "to": "@957",
       "evidence": "Current pinned compiler emits collision destructor-registration node @381; canonical configured identity is @957. Earlier promotion used @366/@367, which conflicted with ov036; those old temporary ordinals are historical, not current output. Complete native initializer relocation sites preserve the mapping."
     }

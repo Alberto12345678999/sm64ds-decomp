@@ -141,6 +141,7 @@ struct daBmb_c : dEnemyBase_c {
     void State5();
     void func_ov102_0214bd90();
     void func_ov102_0214b03c();
+    void func_ov102_0214b988();
 };
 
 #ifndef SM64DS_PLATFORM_PC

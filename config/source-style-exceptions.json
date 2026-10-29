@@ -174,8 +174,16 @@
       "rule": "unknown-field",
       "match": "unk_287",
       "count": 1,
-      "reason": "dScEntry_c::InitResources clears byte 0x287, moved verbatim from the retired src/_ZN10dScEntry_c13InitResourcesEv.cpp (`self->unk_287 = 0` on main). include/dScEntry_c.h names the field unk_287. Its other users are unnamed raw-offset helpers in the same unit (func_ov075_02117e84 and func_ov075_02118378 store 0 and 0xe; func_ov075_02119dc4 clears it as a bit mask out of data_0209d45c), and data_0209d45c's role is itself unproven, so no name is invented. Follow-up: rename the header field when those helpers fold into this class and data_0209d45c is identified.",
+      "reason": "dScEntry_c::InitResources clears byte 0x287, moved verbatim from the retired src/_ZN10dScEntry_c13InitResourcesEv.cpp (`self->unk_287 = 0` on main). include/dScEntry_c.h names the field unk_287. Its other users are in the same unit (UpdateRematchSync and EnterRematchPrompt store 0 and 0xe; func_ov075_02119dc4 clears it as a bit mask out of data_0209d45c), and data_0209d45c's role is itself unproven, so no name is invented. Follow-up: rename the header field when those helpers fold into this class and data_0209d45c is identified.",
       "evidence": "src/_ZN10dScEntry_c13InitResourcesEv.cpp on main line 95; include/dScEntry_c.h line 33 (`u8 unk_287; /* 0x287 */`); ROM ov075 dScEntry_c::InitResources TEXT-VERIFIED in ov075/d_s_entry_methods"
+    },
+    {
+      "path": "src/game/stages/d_s_entry_methods.cpp",
+      "rule": "raw-offset",
+      "match": "(int*)(data_0209ee90+0x1d4",
+      "count": 1,
+      "reason": "dScEntry_c::RenderWinCounts, folded from src/unnamed/ov075/func_ov075_02117fe4.cpp, reads the base score at data_0209ee90+0x1d4 then adds the player's win count, the same access d_s_entry.cpp's 0211621c helper carries an exception for. The arm9 global's layout is not reconstructed. Follow-up: recover its owning arm9 type and verify all consumers before substituting a shared field.",
+      "evidence": "src/game/stages/d_s_entry_methods.cpp owns ov075 0x021165b0..0x0211a854. 67/67 functions byte-match the ROM under mwccarm 2004/b56 with relocation destinations checked (tools/tubuild.py verify ov075/d_s_entry_methods); rombuild 106/106 exact."
     },
     {
       "path": "src/Message.cpp",
@@ -960,14 +968,6 @@
       "count": 1,
       "reason": "daKinopio_c::UpdateModelPose addresses its shadow model (0x16c) and shadow transform (0x1c4) through `char *c = (char *)this`, as the file header records the ROM reading this block with ldm/stm. Spelling the member call with the declared members mShadowModel/mShadowTransform was measured: UpdateModelPose stops matching (tubuild verify ov085/daKinopio_c 14/15). So the call casts the same offsets the old extern call passed as `c + 0x16c`/`c + 0x1c4`. Follow-up: retire with the rest of this function's offset view.",
       "evidence": "tools/tubuild.py verify ov085/daKinopio_c: cast form TEXT-VERIFIED, member-name form 14/15"
-    },
-    {
-      "path": "src/unnamed/ov075/func_ov075_0211aeb8.cpp",
-      "rule": "raw-offset",
-      "match": "(short*)(c+0xa0",
-      "count": 1,
-      "reason": "Carried unchanged from src/unnamed/ov075/func_ov075_0211aeb8.c by the .c -> .cpp migration. Git no longer pairs the rename once the 7-line file gains its //cpp marker, the cstd.h include and the extern \"C\" block, so the gate reads the whole file as new. The cast is not new. Follow-up: type the argument when its class is identified.",
-      "evidence": "origin/main:src/unnamed/ov075/func_ov075_0211aeb8.c carries the same *(short*)(c+0xa0) read; tools/source_style.py --base origin/main"
     },
     {
       "path": "src/unnamed/arm9/0200/func_0200af20.cpp",

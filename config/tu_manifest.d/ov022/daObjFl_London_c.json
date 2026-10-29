@@ -54,7 +54,7 @@
       "ordinal": 1
     },
     {
-      "symbol": "func_ov022_02111a1c",
+      "symbol": "_ZN16daObjFl_London_c17UpdateModelMatrixEv",
       "address": "0x02111a1c",
       "size": "0x00000048",
       "legacy_source": "src/func_ov022_02111a1c.c",
@@ -977,12 +977,12 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@417",
+      "from": "@411",
       "to": "@418",
       "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @432 now; licensed under the existing pin @418"
     },
     {
-      "from": "@416",
+      "from": "@410",
       "to": "@417",
       "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @431 now; licensed under the existing pin @417"
     }

@@ -47,12 +47,9 @@ struct dWipe_c : dFdColor_c {
 
     virtual ~dWipe_c();                          /* slots 0 (D1), 1 (D0) */
     virtual void AdvanceFade();                  /* slot 2 */
-    /* Slot 3 is declared one-argument so the vtable spells the ROM's
-       `_ZN7dWipe_c15SetBackwardTimeEj`; the definition in the TU is a
-       two-parameter extern "C" function under that same name -- the ROM's
-       function forwards a second argument in r2 to the base call, which a
-       real one-argument member cannot emit (measured, notes/scene-provenance.md). */
-    virtual int  SetBackwardTime(u32 frames);    /* slot 3 */
+    /* Slot 3. `extra` is forwarded and not read; the colour-fade body
+       ignores it too. Callers pass 0. */
+    virtual int SetBackwardTime(u32 frames, u32); /* slot 3 */
     virtual int  SetForwardTime(u32 frames);     /* slot 4 */
     virtual int  IsAtStart();                    /* slot 5 */
     virtual int  IsAtEnd();                      /* slot 6 */

@@ -507,7 +507,7 @@
       "ordinal": 68
     },
     {
-      "symbol": "_Z23LoadMinimapChangeObjecti5Fix12IiEh",
+      "symbol": "_Z23LoadMinimapChangeObjectiia",
       "address": "0x0202a994",
       "size": "0x00000098",
       "legacy_source": "src/_Z23LoadMinimapChangeObjecti5Fix12IiEh.c",

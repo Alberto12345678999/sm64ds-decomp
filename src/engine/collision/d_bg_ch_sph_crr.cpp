@@ -3,16 +3,7 @@
 // against the KCL collider registry, with a dBgPi base record for the best
 // hit and mClsnResult1/2/3 holding the floor / wall / underneath hits.
 // DetectClsn and the two registry scans live in d_bg_ch_sph_crr_query.cpp.
-//
-// leftovers: the hit-record forwarders call dBgPi::RecordHit by its mangled
-// name: they take int triID, and the member's s16 parameter emits an sxth.
 #include "dBgCh_SphCrr.h"
-
-extern "C" {
-/* local extern: dBgPi::RecordHit by its mangled name -- the forwarders take
-   int triID byte-required; the member's s16 parameter emits sxth here. */
-void _ZN5dBgPi9RecordHitEsP11SurfaceInfo(void *res, int triID, void *info);
-}
 
 // @symbol _ZN12dBgCh_SphCrrC1Ev
 dBgCh_SphCrr::dBgCh_SphCrr() : mWallRejectHalfExtent(0) {}
@@ -119,7 +110,7 @@ void dBgCh_SphCrr::GetPushOutBounds(Vector3 *outMin, Vector3 *outMax) {
    3 = underneath): one copies the surface hit, one the collider identity. */
 // @symbol _ZN12dBgCh_SphCrr14RecordFloorHitEiPv
 void dBgCh_SphCrr::RecordFloorHit(int triID, void *src) {
-    _ZN5dBgPi9RecordHitEsP11SurfaceInfo(&mClsnResult1, triID, src);
+    mClsnResult1.RecordHit(triID, (SurfaceInfo *)src);
 }
 
 // @symbol _ZN12dBgCh_SphCrr16SetFloorColliderEiiP8dActor_cP4dBgW
@@ -129,7 +120,7 @@ void dBgCh_SphCrr::SetFloorCollider(int i, int clsnID, dActor_c *owner, dBgW *co
 
 // @symbol _ZN12dBgCh_SphCrr13RecordWallHitEiPv
 void dBgCh_SphCrr::RecordWallHit(int triID, void *src) {
-    _ZN5dBgPi9RecordHitEsP11SurfaceInfo(&mClsnResult2, triID, src);
+    mClsnResult2.RecordHit(triID, (SurfaceInfo *)src);
 }
 
 // @symbol _ZN12dBgCh_SphCrr15SetWallColliderEiiP8dActor_cP4dBgW
@@ -139,7 +130,7 @@ void dBgCh_SphCrr::SetWallCollider(int i, int clsnID, dActor_c *owner, dBgW *col
 
 // @symbol _ZN12dBgCh_SphCrr14RecordUnderHitEiPv
 void dBgCh_SphCrr::RecordUnderHit(int triID, void *src) {
-    _ZN5dBgPi9RecordHitEsP11SurfaceInfo(&mClsnResult3, triID, src);
+    mClsnResult3.RecordHit(triID, (SurfaceInfo *)src);
 }
 
 // @symbol _ZN12dBgCh_SphCrr16SetUnderColliderEiiP8dActor_cP4dBgW

@@ -10,7 +10,7 @@
     "class label(s): daObjKurumajiku_c",
     "module sinit corroboration: 26 sinit(s) / 26 .ctor entries, sinit_vs_tu=ok, corroborated=False (module-wide, NOT narrowed to this one TU -- see notes/tu-reconstruction-pilot-report.md sec 2 for the by-hand narrowing step)",
     "DESTRUCTOR FOLD. The licensed run is now 0x020b69e4..0x020b6c54 (6 functions), with _ZN17daObjKurumajiku_cD0Ev at 0x020b69e4 (size 0x58) and _ZN17daObjKurumajiku_cD1Ev at 0x020b6a3c (size 0x44) as its first two members; their per-function shard sources and delinks entries are retired and merged into this TU's. The lever is the one src/game/actors/d_a_obj_dorifu.cpp records: `#pragma defer_codegen off` before the includes, the file written in ROM-ascending order, and two uncalled forcing functions at the top -- `delete p` (the deleting destructor, D0) then `p->~X()` (the complete-object destructor, D1) -- which make mwccarm emit the inline destructor's two variants at parse time in the cartridge's D0-then-D1 order, with no D2. The forcers are compiler_only_output deadstrip rows. Measured by tubuild.py verify: 6/6 MATCH, objisolate clean, reloc destinations clean, emission order ROM-ascending.",
-    "HELPER TAIL FOLD (2026-10-10): func_ov002_020b6c54 (0x020b6c54..0x020b6d28, 0xd4) abuts this TU's old .text end (0x020b6c54) with no gap and is now inside it; src/game/actors/d_a_obj_lava.cpp starts exactly at 0x020b6d28 above it. Membership: it is the shared setup helper of this abstract class, the sibling of the cleanup helper func_ov002_020b6ac8 already here. It calls this TU's func_ov002_020b6a80, writes this class's mMountedActorIds (+0x320..+0x330) with the uniqueIDs of four spawned riders, and its only callers are the InitResources of the two descendants, daObjKm1_Kurumajiku_c (ov043) and daObjKm3_Kurumajiku_c (ov047), whose destructors store _ZTV17daObjKurumajiku_c. Appended last in the file (this TU emits .text in source order under #pragma defer_codegen off); its #pragma opt_strength_reduction off is kept in a push/pop around it."
+    "HELPER TAIL FOLD (2026-10-10): func_ov002_020b6c54, now InitResourcesFrom (0x020b6c54..0x020b6d28, 0xd4) abuts this TU's old .text end (0x020b6c54) with no gap and is now inside it; src/game/actors/d_a_obj_lava.cpp starts exactly at 0x020b6d28 above it. Membership: it is the shared setup helper of this abstract class, the sibling of the cleanup helper func_ov002_020b6ac8 already here. It calls this TU's func_ov002_020b6a80, writes this class's mMountedActorIds (+0x320..+0x330) with the uniqueIDs of four spawned riders, and its only callers are the InitResources of the two descendants, daObjKm1_Kurumajiku_c (ov043) and daObjKm3_Kurumajiku_c (ov047), whose destructors store _ZTV17daObjKurumajiku_c. Appended last in the file (this TU emits .text in source order under #pragma defer_codegen off); its #pragma opt_strength_reduction off is kept in a push/pop around it."
   ],
   "sections": [
     {
@@ -50,14 +50,14 @@
       "ordinal": 1
     },
     {
-      "symbol": "func_ov002_020b6a80",
+      "symbol": "_ZN17daObjKurumajiku_c20UpdateModelTransformEv",
       "address": "0x020b6a80",
       "size": "0x00000048",
       "legacy_source": "src/func_ov002_020b6a80.c",
       "ordinal": 2
     },
     {
-      "symbol": "func_ov002_020b6ac8",
+      "symbol": "_ZN17daObjKurumajiku_c20CleanupResourcesFromEPNS_9ResourcesE",
       "address": "0x020b6ac8",
       "size": "0x00000048",
       "legacy_source": "src/func_ov002_020b6ac8.cpp",
@@ -78,7 +78,7 @@
       "ordinal": 5
     },
     {
-      "symbol": "func_ov002_020b6c54",
+      "symbol": "_ZN17daObjKurumajiku_c17InitResourcesFromEPNS_9ResourcesEj",
       "address": "0x020b6c54",
       "size": "0x000000d4",
       "legacy_source": "src/unnamed/ov002/func_ov002_020b6c54.c",
@@ -221,7 +221,7 @@
   ],
   "notes": [
     "Partial promotion: two compiler-spelled methods (Render, Behavior) and two linker-named C helpers. All four functions use named actor/model/collider fields. No source enrollment or licensed range changed during the review repair. [Superseded by the destructor fold: the pair is now in this TU, emitted by two forcing functions under defer_codegen off.]",
-    "func_ov002_020b6a80 retains the char* entry required by the existing shared declaration and setup caller, then recovers the base type locally. Its matrix is mModel.mat4x3, not the collision matrix; translation is world position divided by eight. The inherited scalar IsClsnInRange bridge matches its actual definition, not an asserted by-value Fix12 ABI.",
+    "UpdateModelTransform (formerly func_ov002_020b6a80) is a member; with its siblings CleanupResourcesFrom (func_ov002_020b6ac8) and InitResourcesFrom (func_ov002_020b6c54) it takes the base-class this and the descendant's Resources record, byte-identical to the old char* / void* C entry points. Its matrix is mModel.mat4x3, not the collision matrix; translation is world position divided by eight. The inherited scalar IsClsnInRange bridge matches its actual definition, not an asserted by-value Fix12 ABI.",
     "Cleanup restores the pre-PR opaque void*/void* C boundary. Both current callers pass an unadjusted empty derived object and a descriptor containing SharedFilePtr* model/collision followed by CLPS_Block*. The common axle owns the reconstructed daObjKurumajiku_c::Resources layout, corroborated by both descendant records and the shared setup helper. Named collider and descriptor accesses pass strict bytes. Distinct caller-side pointer spellings remain interface reconstruction debt; void* is not full declaration agreement.",
     "Fourteen bounded review variants are recorded as exact source patches in notes/experiments/pr2873-source-repair-0920.json. Named model/collider/descriptor accesses and mAngleZ += 0x100 match. A comparison widened to int is retained: direct, bool and masked-integer tests emit a 0x110-byte Behavior instead of retail 0x11c. Noncompound angle assignment also fails. The angle increment precedes the suppression test.",
     "Historical producer report: the original PR listed a fourteen-form destructor grid (inline/header/order variants, implicit destructor and odr-use arrangements) but did not commit exact variant artifacts. That report is not a reproduced universal barrier. This review measures the unchanged inline-header form only: duplicate D1 then D0; both bodies and relocations match their retained retail homes. No destructor-definition change or forced-emission workaround is proposed. [Superseded by the destructor fold: the pair is now in this TU, emitted by two forcing functions under defer_codegen off.]",
@@ -466,22 +466,22 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@337",
+      "from": "@415",
       "to": "data_ov002_0210ddac",
       "evidence": "compiler temp mapped to 0x0210ddac by the retail initializer relocation at the same pool offset; no bytes or relocations change"
     },
     {
-      "from": "@340",
+      "from": "@418",
       "to": "data_ov002_0210ddb8",
       "evidence": "compiler temp mapped to 0x0210ddb8 by the retail initializer relocation at the same pool offset; no bytes or relocations change"
     },
     {
-      "from": "@343",
+      "from": "@421",
       "to": "data_ov002_0210ddc4",
       "evidence": "compiler temp mapped to 0x0210ddc4 by the retail initializer relocation at the same pool offset; no bytes or relocations change"
     },
     {
-      "from": "@346",
+      "from": "@424",
       "to": "data_ov002_0210dda0",
       "evidence": "compiler temp mapped to 0x0210dda0 by the retail initializer relocation at the same pool offset; no bytes or relocations change"
     }

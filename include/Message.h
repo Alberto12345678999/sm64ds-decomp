@@ -17,8 +17,8 @@
 /* fwd */
 struct msg;
 struct Message {
-    u8  pad_000[0x196];
-    u8  unk_196;            /* 0x196 */
+    u8 pad_000[0x196];
+    u8 unk_196; /* 0x196 */
 #ifdef __cplusplus
     /* methods */
 
@@ -32,12 +32,15 @@ struct Message {
        compiler's @NNN temporaries, so naming it would renumber every TU
        that includes this header, and the TU manifests pin those numbers. */
     static void AddChar(u8);
+    static void AddCharVS(u8);
     static int UpdateWindow();
     static void Update();
     static void ResetAllGlobals();
     static void DisplaySaveMenuText(u16 msgID);
     static void DisplayLevelClearText(u16 msgID, u8 course);
+    static void SetTextGlobals();
     static void SetTextGlobalsVS();
+    static void LoadText();
 
     /* The rest of the display entry points. `Et` is u16, `Eth` is (u16, u8),
        `Ej` is u32 -- all read off the mangled name.
@@ -59,8 +62,10 @@ struct Message {
     static void DisplayVsExitText(u16 msgID);
     static void DisplayPauseTextVS(u16 msgID);
     static void DisplayDontSaveText(u16 msgID);
+    static void DisplayDontSaveTextVS(u16);
     static void DisplaySaveStatusText(u16 msgID);
     static void DisplayOptionsMenuText(s16 msgID);
+    static void DisplayOptionsMenuTextVS(s16);
     static void DisplayControllerModeText(u16 msgID);
     static void DisplayStarNameForStarSelect(u32 star);
     static void DisplayCourseNameForStarSelect(u32 course);

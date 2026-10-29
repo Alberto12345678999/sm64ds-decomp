@@ -59,7 +59,9 @@ void Vec3_MulScalar(void *out, void *v, int s);
 void SubVec3(void *a, void *b, void *c);
 }
 
-namespace cstd { int fdiv(int a, int b); }
+namespace cstd {
+int fdiv(int a, int b);
+}
 
 #pragma defer_codegen off
 

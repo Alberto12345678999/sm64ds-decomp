@@ -804,13 +804,13 @@ void OAM::RenderSub(OamAttr *data, s32 x, s32 y, s32 palette, s32 priority)
 }
 
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN3OAM12EnableSubOAMEv
-/* ROM ordinal 12 -- OAM::EnableSubOAM()
+// @symbol _ZN3OAM12EnableSubOAMEP6OamTmp
+/* ROM ordinal 12 -- OAM::EnableSubOAM(OamTmp *)
  * 0x020219f0  size 0x14 */
-u32 OAM::EnableSubOAM()
-{
+u32 OAM::EnableSubOAM(OamTmp *tmp) {
     /* Despite the name it only writes zero -- the flag is "sub OAM
-     * suppressed", so enabling is clearing it. The u32 return is a fiction
+     * suppressed", so enabling is clearing it. tmp is the caller's stack
+     * slot; this body does not read it. The u32 return is a fiction
      * the ROM does not honour: the function falls off its end without
      * setting r0. The `(long) 0` cast is preserved verbatim. */
     data_0209e660 = (long)0;

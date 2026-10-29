@@ -899,17 +899,17 @@
   "externalized_output": [],
   "defined_symbol_renames": [
     {
-      "from": "@669",
+      "from": "@674",
       "to": "@547",
       "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin | compiler temp; dropping the dead named-parameter typedef and hold declarations and including Particle__System.h and math/MtxStack.h in place of the local stubs move the per-TU @NNN uniquifier, so mwcc emits it under this name now"
     },
     {
-      "from": "@670",
+      "from": "@675",
       "to": "@545",
       "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin | compiler temp; dropping the dead named-parameter typedef and hold declarations and including Particle__System.h and math/MtxStack.h in place of the local stubs move the per-TU @NNN uniquifier, so mwcc emits it under this name now"
     },
     {
-      "from": "@671",
+      "from": "@676",
       "to": "@549",
       "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin | compiler temp; dropping the dead named-parameter typedef and hold declarations and including Particle__System.h and math/MtxStack.h in place of the local stubs move the per-TU @NNN uniquifier, so mwcc emits it under this name now"
     }

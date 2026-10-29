@@ -25,36 +25,30 @@
  * ROM function is written first. Do not reorder. The compiler places the D1/D0
  * pair on its own.
  *
- * Known limits:
- * - dBgW_KcMbg::SetFile and dBgActor_c::IsClsnInRange stay mangled -- both
- *   take Fix12<int> by value (wall 6az); a member call homes the argument and
- *   size-DIFFs InitResources / Behavior.
+ * Notes:
  * - func_020393d4 / func_020393c4 are 4-byte stores into dBgW's callback
  *   slots, and func_020393a4 / func_02039394 write its collision extents.
- *   This TU calls them; naming belongs with dBgW in arm9.
+ *   d_bg_w.cpp defines them and no header declares them.
  * - The three pointers this class's file table holds -- the ov022 .bss
  *   SharedFilePtrs at 0x02114500 and 0x02114508, and the ov064 CLPS block at
  *   0x0211bbac -- are unnamed rows in their modules' data. The two handles
  *   are this TU's own .bss, defined at the bottom; the CLPS block is
  *   ov064's.
- * - The run ends with the trigger helper func_ov022_02111558, the collision
- *   callback func_ov022_02111564 that InitResources installs, and the registry
- *   factory daObjFl_Ring_c_classInit; the two helpers keep their address names
- *   and stay free extern "C" functions.
+ * - The run ends with the trigger helper OnStoodOn, the collision callback
+ *   StoodOnCallback that InitResources installs, and the registry factory
+ *   daObjFl_Ring_c_classInit.
  * - g_profile_FL_RING, the registry row that names that factory, is ov022
  *   .data at 0x02113cf4 and lives outside this TU.
  */
 
 /* Runtime asset handles resolved through the overlay 0 file table. */
-enum daObjFl_Ring_c_AssetId {
-    ASSET_FL_RING_BMD = 0x060e,
-    ASSET_FL_RING_KCL = 0x060f
-};
+enum daObjFl_Ring_c_AssetId { ASSET_FL_RING_BMD = 0x060e, ASSET_FL_RING_KCL = 0x060f };
 
 #include "daObjFl_Ring_c.h"
 #include "SharedFilePtr.h"
 #include "daObj_volcanoCannon_c.h"
 #include "Sound.h"
+#include "math/CalcLib.h"
 
 /* This class's own file table, ov022 .data at 0x02113cc8: the model and
  * collision SharedFilePtrs (ov022 .bss 0x02114500 / 0x02114508, defined at
@@ -64,7 +58,7 @@ enum daObjFl_Ring_c_AssetId {
 struct daObjFl_Ring_c_Files {
     SharedFilePtr *mModelFile;
     SharedFilePtr *mClsnFile;
-    void          *mClps;
+    void *mClps;
 };
 
 /* 8-byte file handles. The model uses func_02017acc / func_02017ab4 and the
@@ -80,23 +74,16 @@ struct RingCollisionFilePtr : SharedFilePtr {
     ~RingCollisionFilePtr();
 };
 
-extern "C" {
 extern daObjFl_Ring_c_Files data_ov022_02113cc8;
 extern RingModelFilePtr gFlRingModelFile;
 extern RingCollisionFilePtr gFlRingCollisionFile;
 
-u16 DecIfAbove0_Short(u16 *p);
-u8  DecIfAbove0_Byte(u8 *p);
-int ApproachAngle(s16 *p, int target, int a, int b, int c);
-
-extern void hold_d_a_obj_fl_ring(void *self, void *kcl, void *mtx, int scale, s16 angleY,
-                                 void *clps);
-
+extern "C" {
+/* local extern: d_bg_w.cpp defines these and no header declares them. */
 void func_020393a4(void *p, int v);
 void func_02039394(void *p, int v);
 void func_020393d4(void *p, void *fn);
 void func_020393c4(void *p, void *fn);
-void func_ov022_02111558(daObjFl_Ring_c *self, dActor_c *other);
 }
 
 /* dActor_c::mFlags bit 0x08 is written by the framework while the actor is
@@ -115,8 +102,7 @@ static inline int IsOffScreen(dActor_c *actor) {
  * `new daObjFl_Ring_c` is the whole sequence the loose factory spelled by
  * hand: fBase_c::operator new(0x328), dBgActor_c's base constructor, then the
  * vptr store. */
-extern "C" daObjFl_Ring_c *daObjFl_Ring_c_classInit(void)
-{
+extern "C" daObjFl_Ring_c *daObjFl_Ring_c_classInit(void) {
     return new daObjFl_Ring_c;
 }
 
@@ -125,27 +111,21 @@ extern "C" daObjFl_Ring_c *daObjFl_Ring_c_classInit(void)
  * long_calls keeps the pooled absolute tail call. */
 #pragma push
 #pragma long_calls on
-// @symbol func_ov022_02111564
-extern "C" void func_ov022_02111564(void *collider, daObjFl_Ring_c *self, dActor_c *other)
-{
-    func_ov022_02111558(self, other);
+// @symbol _ZN14daObjFl_Ring_c15StoodOnCallbackEP4dBgWPS_P8dActor_c
+void daObjFl_Ring_c::StoodOnCallback(dBgW *collider, daObjFl_Ring_c *self, dActor_c *other) {
+    self->OnStoodOn(other);
 }
 #pragma pop
 
-// @symbol func_ov022_02111558
+// @symbol _ZN14daObjFl_Ring_c9OnStoodOnEP8dActor_c
 /* Something touched the ring: raise mTriggered, which the next Behavior
  * reads once and clears. */
-extern "C" void func_ov022_02111558(daObjFl_Ring_c *self, dActor_c *other)
-{
-    self->mTriggered = 1;
+void daObjFl_Ring_c::OnStoodOn(dActor_c *other) {
+    mTriggered = 1;
 }
 
 // @symbol _ZN14daObjFl_Ring_c13InitResourcesEv
-/* dBgW_KcMbg::SetFile takes Fix12<int> by value. An ordinary member call
- * triggers mwccarm's by-value-class parameter homing and changes the ROM ABI,
- * so that one call deliberately keeps the measured register-level spelling. */
-s32 daObjFl_Ring_c::InitResources()
-{
+s32 daObjFl_Ring_c::InitResources() {
     void *f = dExtSimpleModel_c::LoadFile(*data_ov022_02113cc8.mModelFile);
     mModel.SetFile((BMD_File *)f, 1, -1);
     UpdateModelPosAndRotY();
@@ -153,11 +133,11 @@ s32 daObjFl_Ring_c::InitResources()
 
     void *k = dBgW_Kc::LoadFile(*data_ov022_02113cc8.mClsnFile);
     ((dBgW_KcMbg *)(&mMeshCollider))
-        ->dBgW_KcMbg::SetFile((KCL_File *)(k), *(const Matrix4x3 *)(&mClsnMat), 0x199, mAngleY,
+        ->dBgW_KcMbg::SetFile((KCL_File *)(k), mClsnMat, 0x199, mAngleY,
                               *(CLPS_Block *)(data_ov022_02113cc8.mClps));
 
     func_020393d4(&mMeshCollider, (void *)dBgW::UpdatePosAndAngs);
-    func_020393c4(&mMeshCollider, (void *)func_ov022_02111564);
+    func_020393c4(&mMeshCollider, (void *)StoodOnCallback);
 
     /* The ring's own Z channel carries its spin rate, not an angle: it rests
        at -0x100 per frame unless the map row gave it one. */
@@ -168,10 +148,7 @@ s32 daObjFl_Ring_c::InitResources()
 }
 
 // @symbol _ZN14daObjFl_Ring_c8BehaviorEv
-/* IsClsnInRange takes two Fix12<int> by value; see InitResources for why that
- * one call keeps the measured register-level spelling. */
-s32 daObjFl_Ring_c::Behavior()
-{
+s32 daObjFl_Ring_c::Behavior() {
     switch (mState) {
     case 0:
         /* Turning: once the cooldown is spent and mTriggered is set, slow
@@ -207,8 +184,7 @@ s32 daObjFl_Ring_c::Behavior()
             v[1] = mPosY;
             v[2] = mPosZ;
             v[1] = mPosY + 0x1f4000;
-            s = (daObj_volcanoCannon_c *)dActor_c::Spawn(
-                0xf3, 0, *(Vector3 *)v, 0, mAreaId, -1);
+            s = (daObj_volcanoCannon_c *)dActor_c::Spawn(0xf3, 0, *(Vector3 *)v, 0, mAreaId, -1);
             s->mSpawner = this;
             s->mKillPosY = mPosY;
             {
@@ -237,15 +213,13 @@ s32 daObjFl_Ring_c::Behavior()
 }
 
 // @symbol _ZN14daObjFl_Ring_c6RenderEv
-s32 daObjFl_Ring_c::Render()
-{
+s32 daObjFl_Ring_c::Render() {
     mModel.Render(0);
     return 1;
 }
 
 // @symbol _ZN14daObjFl_Ring_c16CleanupResourcesEv
-s32 daObjFl_Ring_c::CleanupResources()
-{
+s32 daObjFl_Ring_c::CleanupResources() {
     if (mMeshCollider.IsEnabled())
         mMeshCollider.Disable();
 

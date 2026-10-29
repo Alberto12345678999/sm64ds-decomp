@@ -203,7 +203,7 @@
       "ordinal": 25
     },
     {
-      "symbol": "_ZN5dBgPi9RecordHitEsP11SurfaceInfo",
+      "symbol": "_ZN5dBgPi9RecordHitEiP11SurfaceInfo",
       "address": "0x02037fd4",
       "size": "0x00000018",
       "legacy_source": "src/engine/collision/dBgPi.cpp",

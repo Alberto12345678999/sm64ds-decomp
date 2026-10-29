@@ -8802,13 +8802,14 @@ ov075 (two).
 
 ## 6dg. arm9 static initializers folded into their owners (2026-10-27)
 
-Seven of the 23 handwritten arm9 `__sinit_0207xxxx` shards are now emitted by their owner TU.
+Eight of the 23 handwritten arm9 `__sinit_0207xxxx` shards are now emitted by their owner TU.
 Each owner defines the object instead of declaring it `extern`, following the §6df recipe.
 arm9 `.init`/`.ctor` and `.bss` follow `.text` TU order, so each initializer's owner sits
 between its neighbours' owners. The object's readers confirm it.
 
 | shard | owner | object |
 |---|---|---|
+| `__sinit_02073e6c` | `KuppaScript.cpp` | the Kuppa scripts and camera paths (`.data` 0x0208751c..0x0208a0e0), `data_0209b294`, the script fader |
 | `__sinit_02074d90` | `d_actor.cpp` | `data_0209b468`, the actor list (`ActorList`, first/last) |
 | `__sinit_02074da8` | `Sound.cpp` | `data_0209b53c`, the sound registry (`SndRegTable`) |
 | `__sinit_02074edc` | `d_scene.cpp` | `data_0209f5e8`/`data_0209f5d0`, the scene faders |
@@ -8848,6 +8849,36 @@ What each one needed beyond §6df:
   the object, so the rest of the TU's `.bss` stays unclaimed. Configured names inside the
   object (`data_020a0d1c` and `data_020a0d60`, the scratch line's `dBgPi` base and
   `lineEnd`) do not get in the way.
+- **Pointer bytes in a byte array are a dynamic initializer.** `__sinit_02073e6c` is the
+  KuppaScript scripts' own initializer. A script is a `u8[]` whose records hold unaligned
+  addresses of other scripts and camera paths, spelled `(u32)&p & 0xff, ((u32)&p >> 8) & 0xff,
+  ...`. Each such byte is not a constant, so mwcc leaves it zero in `.data` and stores it in
+  the TU's sinit, which is how retail's 0xf24 of `strb` comes about. The masks are
+  load-bearing: spelled with `(u8)` casts and no `& 0xff`, the same stores come out 0x5c
+  bytes short (24 fewer `and #0xff`, where retail masks a byte it keeps for a later store).
+  The stores run
+  in definition order, so the 38 patched scripts must be defined in the order retail patches
+  them. The fader's inline constructor and registration come last, from its definition.
+- **`.data` and `.bss` are size-sorted as one list.** mwcc gives each object its own section
+  and orders a TU's `.data` and `.bss` sections together by a heapsort on object size over
+  the reversed definition order (equal sizes are left in whatever order the heap gives). The
+  registration node is created at the object's definition, just before it. KuppaScript's
+  definitions follow its dependencies: each script after what it names, the patched scripts
+  in retail's store order, the fader last. That order gives retail's `.bss` but not its
+  `.data`, so the manifest's addresses order the `.data` sections (tubuild's owned-section
+  reordering).
+- **The last script is declared two bytes long.** `data_02089dcc` is 0x312 bytes and ends
+  at 0x0208a0de; the two zero bytes to 0x0208a0e0 are linker `ALIGN(4)` fill. The claim
+  cannot end at 0x0208a0de (dsd extends the unsized symbol to the next one, and a 2-byte
+  ROM gap there is itself aligned to 0x0208a0e0 by `ALIGNALL(4)`; the baseline link of
+  that trial came out 32 bytes long), and tubuild's `terminal_linker_fill` licenses fill only for a claim that owns a
+  whole module section, which arm9's `.data` is not. The source declares the array `[0x314]`
+  so the object covers the fill; the bytes are unchanged and the `.bss` order holds.
+  A simulated-annealing search found definition orders that give retail's `.data` alone,
+  but none that also gives its `.bss` with the fader after the patched scripts. The
+  original order is not recoverable.
+- **False relocations in data.** dsd had read 11 words of script bytes (frame numbers and
+  arguments such as `00 00 14 02`) as pointers. They are dropped from `config/arm9/relocs.txt`.
 - **A claim end needs a configured anchor.** tubuild accepts a `.bss` claim only if both
   ends are a `symbols.txt` address or a delinks bound. The registry ends at 0x0209ba84.
   After it comes an unreferenced 0x1c-byte gap, then `data_0209baa0`, the 32-byte-aligned
@@ -8860,8 +8891,9 @@ What each one needed beyond §6df:
   `func_0200d7a4`) from `.rodata` PMF constants at 0x02086bc8... Folding it means modelling
   the tables as pointer-to-member statics with named `dCamera_c` methods, and claiming the
   `.rodata` constants.
-- `__sinit_02073e6c` (0xf24) builds the KuppaScript tables (`data_0209b2a4` readers
-  `EndKuppaScript`/`ResetKuppaScript`). Those are not a TU in `src/`.
+- KuppaScript's `gRunningKuppaScript`/`gSavedKuppaScript` (0x0209fc48/0x0209fc4c) sit in a
+  second `.bss` run, apart from the rest of the file's state at 0x0209b270. One object
+  cannot place its definitions in two runs, so they stay `extern` and unclaimed.
 - Three owners are unpromoted shard runs:
   - `__sinit_02074dc4`: the Timer neighbour (`func_0201964c`/`func_0201973c`).
   - `__sinit_02074e0c`: `func_0201aa18`/`func_0201aaec`, between IRQ2 and Message2.
@@ -8883,3 +8915,40 @@ What each one needed beyond §6df:
 - `__sinit_02074dbc`, `02074dc0`, `02074e80`, `020750b4` and `02075150` are each a bare
   `bx lr` with no relocations. Only TU order locates them, and none of the promoted
   candidates emits an initializer.
+
+## 6dh. Two per-function pragmas retired: a folded-away null guard replaces `opt_propagation off` (func_ov007_020b8690), and `opt_common_subs off` on func_0200bb28 was inert (2026-10-29)
+
+**func_ov007_020b8690.** The ROM clears two globals with
+`ldr r2,=&0210345c / mov r0,#0 / ldr r1,=&02103458 / str r0,[r2] / strh r0,[r1]`.
+Under propagation, every spelling gives the same 5-word mismatch
+(`ldr r1 / mov r2,#0 / ldr r0`). That holds for plain stores, chained `a = b = 0`, a
+zero local, pointer locals, reference or pointer inline helpers with the zero as an
+argument or in the body, every type for the two globals, `register`, and an indexed
+store. The zero is coloured last because its def comes before the two address loads.
+The ROM colours it first, so its def comes after both addresses. `opt_propagation off`
+got that order only because the named pointer locals `pa`/`pb` survive. Even without
+the launder casts, `int *pa = &x; short *pb = &y; *pa = 0; *pb = 0;` matches under the
+pragma.
+
+A dead null guard on the pointer locals gives the same result with propagation on:
+
+```c
+    int *pa = &data_ov007_0210345c;
+    short *pb = &data_ov007_02103458;
+    if (pa != 0 && pb != 0) {
+        *pa = 0;
+        *pb = 0;
+    }
+```
+
+The guard folds away (no compare is emitted). The join it makes keeps both locals alive
+past propagation. `if (pa == 0 || pb == 0) return;`, `*(pa ? pa : pa) = 0` and
+`pb = pb ? pb : pb` also match. A guard on only one pointer gives 4 or 5 mismatches,
+and so does a guard on the bare `&global` with no local. This is the 6cz self-select
+booster. In the entry block it costs no block split. A function whose ROM order needs a
+named local that survives propagation can take this shape instead of a pragma.
+
+**func_0200bb28.** The shard matches 2004/b56 with and without `#pragma opt_common_subs off`.
+That holds on current main and on the shard as it stood before c2ca658710. The pragma was
+inert, so it no longer blocks folding the camera handlers below 0x0200bec4 into a unit
+that keeps CSE on for `dCamera_c::Behavior`. That fold is still to do.

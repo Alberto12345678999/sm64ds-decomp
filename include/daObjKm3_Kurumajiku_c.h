@@ -18,14 +18,14 @@
 struct daObjKm3_Kurumajiku_c : daObjKurumajiku_c {
     /* Inline empty dtor: mwccarm emits D1 then D0. */
     virtual ~daObjKm3_Kurumajiku_c() {}
-    int CleanupResources();                /* slot  3 */
-    int InitResources();                   /* slot  0 */
+    int CleanupResources(); /* slot  3 */
+    int InitResources();    /* slot  0 */
 };
 
 #ifndef SM64DS_PLATFORM_PC
 /* ROM layout under mwccarm; host ABI divergence is tracked separately. */
-typedef char daObjKm3_Kurumajiku_c_size_must_be_0x330[
-    sizeof(daObjKm3_Kurumajiku_c) == 0x330 ? 1 : -1];
+typedef char
+    daObjKm3_Kurumajiku_c_size_must_be_0x330[sizeof(daObjKm3_Kurumajiku_c) == 0x330 ? 1 : -1];
 #endif
 
 #endif /* DAOBJKM3_KURUMAJIKU_C_H */

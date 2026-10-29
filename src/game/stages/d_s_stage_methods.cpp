@@ -376,7 +376,7 @@ extern int data_0209f40c[];
 extern u32 data_0209f4f8[][16];
 extern dFdBrightness_c *data_0209f5bc;
 extern unsigned short data_0209f5e8;
-extern int data_0209fc48;
+extern int gRunningKuppaScript;
 extern u8 data_0209fcc8;
 extern PadData data_020a0e58[];
 extern u16 data_020a0e5a[];
@@ -3333,7 +3333,7 @@ extern "C" int func_0202a980(void) {
     return ((LevelInfo *)data_0209f340)->minimapTilesFile;
 }
 
-// @symbol _Z23LoadMinimapChangeObjecti5Fix12IiEh
+// @symbol _Z23LoadMinimapChangeObjectiia
 /* data_0209f314 points at mTexAnimSlots (InitResources stores it). Each
    0xc-byte slot doubles as the per-area record: HideArea/ShowArea toggle its
    mActive byte, and mBlockList heads a sorted list of these minimap-change
@@ -3350,7 +3350,7 @@ struct MinimapChangeNode {
     struct MinimapChangeNode *next; /* 0x0c */
 };
 
-extern "C" void _Z23LoadMinimapChangeObjecti5Fix12IiEh(int idx, Fix12i val, u8 h) {
+void LoadMinimapChangeObject(int idx, Fix12i val, s8 h) {
     struct MinimapChangeNode *nn = (MinimapChangeNode *)::operator new(sizeof(MinimapChangeNode));
     StageTexAnimSlot *e = &((StageTexAnimSlot *)data_0209f314)[idx];
     struct MinimapChangeNode *cur = (MinimapChangeNode *)e->mBlockList;
@@ -4183,7 +4183,7 @@ int dScStage_c::Behavior() {
             if ((b1 && data_0209fc68 == 0) || (((SaveData *)data_0209caa0)->flags2 & 0x80)) {
                 int b2 = (st == 2);
                 if (b2 == 0) {
-                    int b3 = (data_0209fc48 != 0);
+                    int b3 = (gRunningKuppaScript != 0);
                     if (b3 == 0) {
                         if (data_0209f300 == 0) {
                             u32 pj = gActivePlayerSlot;
@@ -4234,7 +4234,7 @@ void dScStage_c::CheckInput() {
     if (isVsMode == false) {
         int modeIsTwo = (mode == 2);
         if (modeIsTwo != false || !(((SaveData *)data_0209caa0)->flags2 & 0x80) ||
-            (data_0209d660 == 0 && (int)(data_0209fc48 != 0) != false)) {
+            (data_0209d660 == 0 && (int)(gRunningKuppaScript != 0) != false)) {
             {
                 CamInput *control = (CamInput *)data_0209f498;
                 int playerIndex;
@@ -4357,7 +4357,7 @@ void dScStage_c::CheckInput() {
             }
         }
         {
-            int skipButtonMapping = (data_0209fc48 != 0);
+            int skipButtonMapping = (gRunningKuppaScript != 0);
             if (skipButtonMapping == false) {
                 u16 *buttonMap = data_0209214c[control->mode];
                 u32 buttonIndex = 0;
@@ -4837,7 +4837,7 @@ int dScStage_c::InitResources() {
 
         int vsModeMusic = (data_0209f2d8 == 1) ? 1 : 0;
         if (vsModeMusic == 0) {
-            int skipMusicSetup = (data_0209fc48 != 0) ? 1 : 0;
+            int skipMusicSetup = (gRunningKuppaScript != 0) ? 1 : 0;
             if (skipMusicSetup == 0) {
                 if (!IsLevelInsideCastle(data_0209f2f8) || !IsLevelInsideCastle(previousSublevel)) {
                     if (!IsLevelTinyHugeIslandOutside(data_0209f2f8) ||
@@ -4974,7 +4974,7 @@ void dScStage_c::LoadGraphics2D(bool vsMode, int sublevel) {
     }
 
     if ((int)(data_0209f2d8 == 0) != 0 && (((SaveData *)data_0209caa0)->flags2 & 0x80) == 0 &&
-        (int)(data_0209fc48 != 0) == 0) {
+        (int)(gRunningKuppaScript != 0) == 0) {
         BG0CNT_SUB &= ~3;
         BG0CNT_SUB &= ~0x40;
         BG0CNT_SUB = (BG0CNT_SUB & 0x43) | 0xd000;

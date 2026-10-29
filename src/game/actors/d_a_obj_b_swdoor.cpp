@@ -14,10 +14,10 @@
  * inline ~daObjBSwdoor_c() in daObjBSwdoor_c.h emits D1 then D0, no D2.
  *
  * Notes:
- * - func_ov002_020bad10 / func_ov002_020baba8 / func_ov002_020bac18 are
- *   daObjSwdoor_c's setup / teardown / step (the base leaves those slots
- *   pure virtual). They are defined in d_a_obj_swdoor.cpp and keep their
- *   labels there. The setup helper loads data_ov014_021145c4 slot 0 with
+ * - daObjSwdoor_c::InitResourcesFrom / CleanupResourcesFrom / UpdateShutter
+ *   are the base's setup / teardown / step (the base leaves those slots
+ *   pure virtual), defined in d_a_obj_swdoor.cpp. The setup helper loads
+ *   data_ov014_021145c4 slot 0 with
  *   dExtSimpleModel_c::LoadFile, slot 1 with dBgW_Kc::LoadFile, slot 2 as
  *   CLPS into SetFile, and writes daObjSwdoor_c's four byte fields from
  *   param1.
@@ -59,13 +59,6 @@ struct BSwdoorClsnFilePtr : SharedFilePtr {
 typedef char BSwdoorModelFilePtr_size_must_be_8[sizeof(BSwdoorModelFilePtr) == 8 ? 1 : -1];
 typedef char BSwdoorClsnFilePtr_size_must_be_8[sizeof(BSwdoorClsnFilePtr) == 8 ? 1 : -1];
 
-/* local extern: d_a_obj_swdoor.cpp defines these; no header declares them. */
-extern "C" {
-int func_ov002_020bad10(daObjSwdoor_c *self, ResourceDescriptor *descriptor);
-int func_ov002_020baba8(daObjSwdoor_c *self, ResourceDescriptor *descriptor);
-int func_ov002_020bac18(daObjSwdoor_c *self);
-}
-
 extern ResourceDescriptor data_ov014_021145c4;
 
 // @symbol daObjBSwdoor_c_classInit
@@ -75,14 +68,14 @@ extern "C" daObjBSwdoor_c *daObjBSwdoor_c_classInit() {
 
 // @symbol _ZN14daObjBSwdoor_c13InitResourcesEv
 s32 daObjBSwdoor_c::InitResources() {
-    s32 r = func_ov002_020bad10(this, &data_ov014_021145c4);
+    s32 r = InitResourcesFrom(&data_ov014_021145c4);
     mMeshCollider.Enable(this);
     return r;
 }
 
 // @symbol _ZN14daObjBSwdoor_c8BehaviorEv
 s32 daObjBSwdoor_c::Behavior() {
-    s32 r = func_ov002_020bac18(this);
+    s32 r = UpdateShutter();
     UpdateClsnPosAndRot();
     return r;
 }
@@ -91,7 +84,7 @@ s32 daObjBSwdoor_c::Behavior() {
 /* Cross-overlay tail-call. #pragma long_calls is positional in 2004/b56. */
 #pragma long_calls on
 s32 daObjBSwdoor_c::CleanupResources() {
-    return func_ov002_020baba8(this, &data_ov014_021145c4);
+    return CleanupResourcesFrom(&data_ov014_021145c4);
 }
 #pragma long_calls off
 /* -------------------------------------------------------------------------- */

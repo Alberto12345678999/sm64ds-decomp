@@ -50,35 +50,35 @@
       "ordinal": 1
     },
     {
-      "symbol": "func_ov002_020feb50",
+      "symbol": "_ZN24daPropeller_Heyho_Fire_c14CheckPlayerHitEv",
       "address": "0x020feb50",
       "size": "0x00000144",
       "legacy_source": "src/func_ov002_020feb50.cpp",
       "ordinal": 2
     },
     {
-      "symbol": "func_ov002_020fec94",
+      "symbol": "_ZN24daPropeller_Heyho_Fire_c6State0Ev",
       "address": "0x020fec94",
       "size": "0x00000084",
       "legacy_source": "src/func_ov002_020fec94.c",
       "ordinal": 3
     },
     {
-      "symbol": "func_ov002_020fed18",
+      "symbol": "_ZN24daPropeller_Heyho_Fire_c10InitState0Ev",
       "address": "0x020fed18",
       "size": "0x00000014",
       "legacy_source": "src/func_ov002_020fed18.c",
       "ordinal": 4
     },
     {
-      "symbol": "func_ov002_020fed2c",
+      "symbol": "_ZN24daPropeller_Heyho_Fire_c8SetStateEPNS_5StateE",
       "address": "0x020fed2c",
       "size": "0x00000050",
       "legacy_source": "src/func_ov002_020fed2c.cpp",
       "ordinal": 5
     },
     {
-      "symbol": "func_ov002_020fed7c",
+      "symbol": "_ZN24daPropeller_Heyho_Fire_c17UpdateModelMatrixEv",
       "address": "0x020fed7c",
       "size": "0x00000074",
       "legacy_source": "src/func_ov002_020fed7c.c",

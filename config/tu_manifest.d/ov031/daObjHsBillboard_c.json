@@ -49,7 +49,7 @@
       "ordinal": 1
     },
     {
-      "symbol": "func_ov031_02111214",
+      "symbol": "_ZN18daObjHsBillboard_c20UpdateModelTransformEv",
       "address": "0x02111214",
       "size": "0x00000040",
       "legacy_source": "src/func_ov031_02111214.c",
@@ -720,24 +720,24 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@280",
+      "from": "@357",
       "to": "@278",
-      "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @292 now; licensed under the existing pin @278"
+      "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @292 now; licensed under the existing pin @278 | re-keyed by __sinit relocation-site order after the actor cleanup member conversions shifted the TU's @NNN uniquifier"
     },
     {
-      "from": "@279",
+      "from": "@356",
       "to": "@277",
-      "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @291 now; licensed under the existing pin @277"
+      "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @291 now; licensed under the existing pin @277 | re-keyed by __sinit relocation-site order after the actor cleanup member conversions shifted the TU's @NNN uniquifier"
     },
     {
-      "from": "@277",
+      "from": "@354",
       "to": "@275",
-      "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @289 now; licensed under the existing pin @275"
+      "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @289 now; licensed under the existing pin @275 | re-keyed by __sinit relocation-site order after the actor cleanup member conversions shifted the TU's @NNN uniquifier"
     },
     {
-      "from": "@278",
+      "from": "@355",
       "to": "@276",
-      "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @290 now; licensed under the existing pin @276"
+      "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @290 now; licensed under the existing pin @276 | re-keyed by __sinit relocation-site order after the actor cleanup member conversions shifted the TU's @NNN uniquifier"
     }
   ]
 }

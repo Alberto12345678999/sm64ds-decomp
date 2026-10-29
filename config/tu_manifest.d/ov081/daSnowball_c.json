@@ -9,7 +9,7 @@
   "boundary_evidence": [
     "contiguous run 0x02125f14..0x021264b4, 12 functions, each delink complete and abutting: D1, D0, five helpers, five virtuals",
     "ROM RTTI for vtable 0x02128abc is daSnowball_c: _ZTI12daSnowball_c at 0x02128a7c, string 12daSnowball_c at 0x02128a88",
-    "The five helpers between D0 and CleanupResources are this class's: InitResources installs the state record handled by func_ov081_021261d4, Behavior calls func_ov081_02126224, and func_ov081_021260fc/02125fb8 read daSnowball_c fields (+0x380 spawn height, +0x388). The next function, daSnowball_c_classInit at 0x021264b4, was folded in by the 0930c classInit fold (below).",
+    "The five helpers between D0 and CleanupResources are this class's: InitResources installs the state record through SetState (0x021261d4), Behavior calls UpdateModelMatrix (0x02126224), and State0/HandleContact (0x021260fc/0x02125fb8) read daSnowball_c fields (+0x380 spawn height, +0x388). The next function, daSnowball_c_classInit at 0x021264b4, was folded in by the 0930c classInit fold (below).",
     "classInit fold (0930c): the SNOWBALL registry factory daSnowball_c_classInit (0x021264b4, 0x50) abuts the run's end 0x021264b4 with no gap and no other symbol between; tu_map left it in its own unlabelled unit because it cuts on symbol name. The widened range 0x02125f14..0x02126504 (13 functions) ends where the daGmch_c TU (src/game/actors/d_a_gmch.cpp) begins.",
     "the compiler-generated __sinit_d_a_snowball.cpp is byte-identical to retail __sinit_ov081_021284b4 (0x3c, three ABS32 relocations). It copies the two pointer-to-member descriptors at 0x02128a6c and 0x02128a74 into the state record at 0x02128eb4. The ctor word at 0x0212882c points at that initializer."
   ],
@@ -56,35 +56,35 @@
       "ordinal": 1
     },
     {
-      "symbol": "func_ov081_02125fb8",
+      "symbol": "_ZN12daSnowball_c13HandleContactEv",
       "address": "0x02125fb8",
       "size": "0x00000144",
       "legacy_source": "src/func_ov081_02125fb8.c",
       "ordinal": 2
     },
     {
-      "symbol": "_ZN12daSnowball_c19func_ov081_021260fcEv",
+      "symbol": "_ZN12daSnowball_c6State0Ev",
       "address": "0x021260fc",
       "size": "0x000000bc",
       "legacy_source": "src/func_ov081_021260fc.cpp",
       "ordinal": 3
     },
     {
-      "symbol": "_ZN12daSnowball_c19func_ov081_021261b8Ev",
+      "symbol": "_ZN12daSnowball_c10InitState0Ev",
       "address": "0x021261b8",
       "size": "0x0000001c",
       "legacy_source": "src/func_ov081_021261b8.c",
       "ordinal": 4
     },
     {
-      "symbol": "func_ov081_021261d4",
+      "symbol": "_ZN12daSnowball_c8SetStateEP19daSnowball_StateRec",
       "address": "0x021261d4",
       "size": "0x00000050",
       "legacy_source": "src/func_ov081_021261d4.cpp",
       "ordinal": 5
     },
     {
-      "symbol": "func_ov081_02126224",
+      "symbol": "_ZN12daSnowball_c17UpdateModelMatrixEv",
       "address": "0x02126224",
       "size": "0x00000074",
       "legacy_source": "src/func_ov081_02126224.c",
@@ -248,7 +248,7 @@
       "source": "0x02128a6c",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "_ZN12daSnowball_c19func_ov081_021261b8Ev",
+      "symbol": "_ZN12daSnowball_c10InitState0Ev",
       "addend": 0,
       "target_module": "ov081",
       "target_address": "0x021261b8"
@@ -258,7 +258,7 @@
       "source": "0x02128a74",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "_ZN12daSnowball_c19func_ov081_021260fcEv",
+      "symbol": "_ZN12daSnowball_c6State0Ev",
       "addend": 0,
       "target_module": "ov081",
       "target_address": "0x021260fc"
@@ -282,7 +282,7 @@
       "disposition": "deadstrip-duplicate",
       "canonical_module": "arm9",
       "canonical_address": "0x020072c0",
-      "reason": "Vector3's four-byte inline destructor, vague linkage from the Vector3 local in func_ov081_02125fb8. The cartridge's copy is arm9:0x020072c0."
+      "reason": "Vector3's four-byte inline destructor, vague linkage from the Vector3 local in HandleContact (0x02125fb8). The cartridge's copy is arm9:0x020072c0."
     },
     {
       "symbol": "_ZTV12daSnowball_c",
@@ -557,12 +557,12 @@
   },
   "defined_symbol_renames": [
     {
-      "from": "@694",
+      "from": "@818",
       "to": "@701",
       "evidence": "Measured compiler input after removing the obsolete native actor-call declarations; exact section index, offset, size, binding, body and complete incoming/outgoing typed graph preserve this canonical descriptor identity."
     },
     {
-      "from": "@696",
+      "from": "@820",
       "to": "@703",
       "evidence": "Measured compiler input after removing the obsolete native actor-call declarations; exact section index, offset, size, binding, body and complete incoming/outgoing typed graph preserve this canonical descriptor identity."
     }

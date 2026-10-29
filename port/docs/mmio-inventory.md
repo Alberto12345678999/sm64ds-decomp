@@ -72,8 +72,8 @@ or used as a DMA destination — it cannot be redirected by redefining an lvalue
 - `src/cstd_sqrt.cpp:9` — `while(*(volatile unsigned short*)0x40002b0 & 0x8000);`
 - `src/func_02013f4c.cpp:93` — `while ((int)*(volatile u16*)0x4000006 >= 0xc0) {}`
 - `src/func_02013f4c.cpp:94` — `while ((int)*(volatile u16*)0x4000006 < 0xc0) {}`
-- `src/func_02049018.c:17` — `while (*(volatile unsigned short *)0x40002b0 & 0x8000);`
-- `src/func_02049018.c:18` — `while (*(volatile unsigned short *)0x40002b0 & 0x8000);`
+- `src/engine/sound/Sound2.cpp:87` — `while (*(volatile unsigned short *)0x40002b0 & 0x8000)`
+- `src/engine/sound/Sound2.cpp:89` — `while (*(volatile unsigned short *)0x40002b0 & 0x8000)`
 - `src/cstd.cpp:2` — `while (*(volatile unsigned short *)0x40002b0 & 0x8000)`
 - `src/unnamed/arm9/0205/func_02053320.c:32` — `while (*(volatile unsigned short *)0x40002b0 & 0x8000) {`
 

@@ -51,15 +51,13 @@
  * destructor now lets the compiler perform the member teardown. Render calls
  * mBetIcon.Render() directly and retains the ROM's virtual dispatch.
  *
- * dScMgSlot1_c_classInit remains an explicit C-ABI factory: a `new` reproduces
- * its bytes, but the inline dThIcon_c constructor would store a different
- * address for that ov001 vtable than the ROM does (see the factory). Its
- * allocation size, object pointer, member pointer and vtable symbols are
- * nevertheless typed; only the construction sequence remains explicit.
+ * The constructor is inline in src/minigames/d_s_mg_slots.cpp, so
+ * dScMgSlot1_c_classInit, a plain `new dScMgSlot1_c`, holds it: the base
+ * constructor, mBetIcon, and the three marker clears.
  *
  * 0x4684 and 0x4690 are two SlotBlink markers (0xc bytes each) and 0x469c
- * a SlotLamp (0x8 bytes): the factory clears them through SlotBlink_Clear and
- * SlotLamp_Clear, Behavior starts and ticks them, and Render draws the two
+ * a SlotLamp (0x8 bytes): the constructor clears them through SlotBlink_Clear
+ * and SlotLamp_Clear, Behavior starts and ticks them, and Render draws the two
  * blinks. The class methods only pass their addresses to those helpers; the
  * helpers' own stores and reads give the two structs their fields.
  *
@@ -155,6 +153,7 @@ struct dScMgSlot1_c : dScMgBase_c {
         virtual void Render();
     };
 
+    dScMgSlot1_c();
     virtual ~dScMgSlot1_c();
     virtual s32 InitResources(); /* slot  0 */
     virtual s32 Behavior();      /* slot  6 -- ov006 0x0210c9e0, byte-exact */

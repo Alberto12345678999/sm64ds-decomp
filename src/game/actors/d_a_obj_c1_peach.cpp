@@ -38,7 +38,9 @@ enum daObjC1Peach_c_AssetId {
 #include "SharedFilePtr.h"
 #include "nitro/fx/fx.h"
 
-namespace cstd { int fdiv(int a, int b); }
+namespace cstd {
+int fdiv(int a, int b);
+}
 
 /* The cartridge's ctor/dtor imports are the functions the wrapper's aliases
  * name. */

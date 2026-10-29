@@ -45,14 +45,14 @@
       "ordinal": 1
     },
     {
-      "symbol": "func_ov002_020b6074",
+      "symbol": "_ZN15daObjGuragura_c17UpdateModelMatrixEv",
       "address": "0x020b6074",
       "size": "0x00000088",
       "legacy_source": "src/func_ov002_020b6074.cpp",
       "ordinal": 2
     },
     {
-      "symbol": "func_ov002_020b60fc",
+      "symbol": "_ZN15daObjGuragura_c20CleanupResourcesFromEP18ResourceDescriptor",
       "address": "0x020b60fc",
       "size": "0x00000048",
       "legacy_source": "src/func_ov002_020b60fc.c",
@@ -73,21 +73,21 @@
       "ordinal": 5
     },
     {
-      "symbol": "func_ov002_020b6244",
+      "symbol": "_ZN15daObjGuragura_c17InitResourcesFromEP18ResourceDescriptor",
       "address": "0x020b6244",
       "size": "0x00000088",
       "legacy_source": "src/func_ov002_020b6244.c",
       "ordinal": 6
     },
     {
-      "symbol": "func_ov002_020b62cc",
+      "symbol": "_ZN15daObjGuragura_c10TiltTowardEPh",
       "address": "0x020b62cc",
       "size": "0x000000a8",
       "legacy_source": "src/func_ov002_020b62cc.c",
       "ordinal": 7
     },
     {
-      "symbol": "func_ov002_020b6374",
+      "symbol": "_ZN15daObjGuragura_c15StoodOnCallbackEPvPS_Ph",
       "address": "0x020b6374",
       "size": "0x00000014",
       "legacy_source": "src/func_ov002_020b6374.c",
@@ -112,7 +112,7 @@
       "disposition": "deadstrip-duplicate",
       "canonical_module": "arm9",
       "canonical_address": "0x020072c0",
-      "reason": "Vector3 declares an empty destructor in include/types.h -- the ROM destroys arrays of it -- so the two members here that hold a Vector3 by value (func_ov002_020b62cc's v and axis, func_ov002_020b6074's v) odr-use its trivial vague-linkage D1 and mwccarm re-emits it alongside the licensed text. The cartridge keeps one copy at arm9:0x020072c0, kind:function(arm,size=0x4), and src/_ZN7Vector3D1Ev.cpp already owns that delinks entry; rombuild compares this object's body against those cartridge bytes and refuses anything but byte-identical vague-linkage output before discarding the duplicate."
+      "reason": "Vector3 declares an empty destructor in include/types.h -- the ROM destroys arrays of it -- so the two members here that hold a Vector3 by value (TiltToward's v and axis, UpdateModelMatrix's v) odr-use its trivial vague-linkage D1 and mwccarm re-emits it alongside the licensed text. The cartridge keeps one copy at arm9:0x020072c0, kind:function(arm,size=0x4), and src/_ZN7Vector3D1Ev.cpp already owns that delinks entry; rombuild compares this object's body against those cartridge bytes and refuses anything but byte-identical vague-linkage output before discarding the duplicate."
     },
     {
       "symbol": "_ZTV15daObjGuragura_c",
@@ -196,7 +196,7 @@
     "Seeded by tools/tubuild.py create (6 members, the tu_map span) and then re-cut by hand. See boundary_evidence for the call-site census that moves the run's right edge out to 0x020b6388, rules out func_ov002_020b5f9c and func_ov002_020b5fc4 on the left, and excludes the destructor pair from the licensed range. [Superseded: the licensed range now includes the destructor pair; see the last boundary_evidence entry.]",
     "THREE PREVIOUSLY UNATTRIBUTED FUNCTIONS ARE FOLDED IN BEYOND WHAT build/tu_map.json COULD SEE. func_ov002_020b6244 is this class's shared setup half, reached by an ordinary call from each leaf's own InitResources rather than through a vtable slot, because the class is abstract in slots 0 and 3. func_ov002_020b6374 is the dBgW callback that setup installs, and func_ov002_020b62cc is the body that callback forwards to; each is named by exactly one word in the whole image, and both of those words lie inside this run. tu_map cannot see any of the three: none carries a mangled name or a vtable slot, so no label bounds the run on the right.",
     "The class is ABSTRACT: vtable slots 0 (InitResources) and 3 (CleanupResources) are bare zero words with no relocation, and each of the two leaves supplies its own 0x14-byte InitResources/CleanupResources that loads the shared helper and tail-calls it. There is no factory and no g_profile row in ov002 for this class, which is why the entry claims no data, no ctor and no BSS.",
-    "func_ov002_020b6074, func_ov002_020b60fc, func_ov002_020b6244, func_ov002_020b62cc and func_ov002_020b6374 keep their address-derived names. None occupies a vtable slot in any class in the image and nothing in the ROM names any of them, so a coined English name would be invention, not recovery.",
+    "UpdateModelMatrix (0x020b6074), CleanupResourcesFrom (0x020b60fc), InitResourcesFrom (0x020b6244), TiltToward (0x020b62cc) and StoodOnCallback (0x020b6374) are member names coined from their bodies. None occupies a vtable slot in any class in the image and nothing in the ROM names any of them. InitResourcesFrom, CleanupResourcesFrom and StoodOnCallback follow daObjFallBlock_c's spelling for the same three roles.",
     "ONE SOURCE-LEVEL CHANGE WAS FORCED BY THE LANGUAGE MODE, and it is byte-neutral: src/func_ov002_020b6244.c declared the fourth parameter of _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block through a file-local typedef of Fix12 to int. Fix12 is a class template in include/types.h, so in a C++ TU that typedef is a redefinition and mwccarm rejects it (typename redefined). The parameter is spelled int directly instead -- what the mangled name's by-value Fix12<int> lowers to, and the spelling the matched sibling ov002/daObjKaitendai_c already uses for the same call. All seven members match after the change.",
     "POST-PROMOTION tubuild.py linkcheck IS STRUCTURALLY UNAVAILABLE TO THIS ENTRY, and that is not a defect in it. Once the single intact delinks.txt entry exists, linkcheck treats the source as an enrolled intact-object candidate and routes its object through tools/tu_production.prepare_intact_object, which refuses any entry that does not claim a non-text section: intact production requires one .text claim and at least one non-text claim. This TU claims .text only, because the class has no factory, no g_profile row and no owned data. The proof of record for this entry is therefore the pre-promotion scratch link recorded below (scratch-link-verified, full ROM built and byte-identical to the stock control), plus tools/rombuild.py against the real tree. production_mode is deliberately left unset, as it is on the other promoted text-only entries.",
     "FORCING FUNCTIONS AND PRAGMA. This TU compiles under `#pragma defer_codegen off` and carries two uncalled functions, daObjGuragura_c_EmitDeletingDestructor and daObjGuragura_c_EmitDestructor, recorded as compiler_only_output deadstrip rows. They are the parse-time trigger that places D0 then D1 ahead of the real members and are not in the ROM. The destructor itself stays inline in include/daObjGuragura_c.h because the class's descendants inline its vptr store."

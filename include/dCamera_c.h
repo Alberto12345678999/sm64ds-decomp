@@ -66,7 +66,10 @@ struct dCamera_c : dView_c {
     s32 mInvCosFov; /* 0x108 */
     /* Render packs these four bytes into the VIEWPORT register (0x04000580). */
     u8 mViewport[4];              /* 0x10c */
-    s32 mTargetPlayer;            /* 0x110 */
+    /* The actor the camera follows: InitResources stores the current
+       player-list entry here. Readers test actorID == 0xbf before treating it
+       as a Player, so it is declared as the dActor_c it is checked as. */
+    dActor_c *mTargetPlayer; /* 0x110 */
     /* King Bob-omb, King Whomp, Chief Chilly, Goomboss, Bowser and the
        mirror-room Luigi store themselves here every frame; Behavior clears it
        at the end of each frame. In a type-7 camera area func_0200c394 aims
@@ -98,8 +101,8 @@ struct dCamera_c : dView_c {
        (func_0200cb58 stores table + N * 0x28). Its +0x10/+0x14/+0x20 are the
        distances func_0200cce4 places lookAt and pos by, +0x24 the field-of-view
        angle func_0200ca50 eases mFovAngle toward, and +0x26 a flag halfword.
-       The record is CamMode, defined in d_camera.cpp (func_02009e70 has its
-       own view of it); consumers that never read it see only the tag. */
+       The record is CamMode, defined in d_camera.cpp; consumers that never
+       read it see only the tag. */
     struct CamMode *mMode; /* 0x13c */
     /* The mode record func_0200c66c last chose from the floor's camera
        behaviour and view object (it skips data_02087094); func_0200cf40 seeds

@@ -11,13 +11,13 @@ struct System {
  *
  * How it is driven. ProcessKuppaScript walks the current script's records
  * (s[0] record length, s[1] command, s[2..3] start frame, s[4..5] end frame,
- * compared against data_0209b274). Commands 0x12 and up go to
- * func_0200e494: the command byte is used as a param1. func_0200e55c looks
- * for a live actor with that param1 among the 16 IDs at data_0209b2a4; if
- * none, func_0200e4e4 spawns actor 0x160 with that param1 into a free slot.
+ * compared against gKuppaScriptFrame). Commands 0x12 and up go to
+ * RunDemoCommand: the command byte is used as a param1. FindDemoActor looks
+ * for a live actor with that param1 among the 16 IDs at gDemoActorIDs; if
+ * none, SpawnDemoActor spawns actor 0x160 with that param1 into a free slot.
  * func_ov002_020f7d74 then calls entry s[6] of the 24-entry daDemo_c::*
  * table data_ov002_0211104c with (s + 7, start, end). Handlers that compare
- * a frame against data_0209b274 are acting on the record's first or last
+ * a frame against gKuppaScriptFrame are acting on the record's first or last
  * frame.
  *
  * Handler table, index -> member (func_ov002_020fXXXX):
@@ -77,7 +77,7 @@ struct System {
  *   falling off the end; the callees are declared int so the passthrough
  *   is spelled.
  *   func_ov002_020f7d74, the dispatcher, stays extern "C" and free: its
- *   caller func_0200e494 is arm9 C.
+ *   caller RunDemoCommand (src/KuppaScript.cpp) binds it by that name.
  *   func_ov002_020f26d4 is a ldr/bx veneer that tail-calls
  *   func_ov002_020f2630 through a raw void(*)(void); a member pointer
  *   cannot spell that cast, so both stay free.
@@ -502,23 +502,17 @@ extern int func_ov002_020f2990(char *c);
 extern void func_ov002_020f5f0c(C* c, int idx);
 extern void func_ov002_020f5fe4(char *c);
 /* local extern dropped: decl_common.h declares func_ov002_020f6514(unsigned char*, void*, unsigned char) */
-/* local extern: the D1 address handed to func_020731dc; ~Vector3 is inline in types.h. */
-extern void *_ZN7Vector3D1Ev(void *object);
 extern unsigned int ReadUnalignedInt(unsigned char *p);
 extern void func_02012694(unsigned int, void*);
 extern short ReadUnalignedShort(unsigned char *p);
 extern s16 Vec3_HorzAngle(const struct Vector3 *v0, const struct Vector3 *v1);
 /* local extern dropped: decl_common.h declares data_ov002_0210bc88 as 'int'; callers cast the address */
 extern void AddVec3(Vec3 *a, Vec3 *b, Vec3 *c);
-extern void func_020731dc(void *object, void *destructor, void **node);
 extern void MulVec3Mat4x3(Vector3 *v, Matrix4x3 *m, Vector3 *dst);
 extern int* Vec3_LslInPlace(int *v, int sh);
-extern u16 data_0209b274;
+extern u16 gKuppaScriptFrame;
 extern char *data_0209f318;
 extern int data_ov002_0210b614;
-extern int data_ov002_02110b0c;
-extern int data_ov002_02110c20[];
-extern int data_ov002_02110db8;
 extern int data_ov002_0210b958;
 /* local extern dropped: decl_common.h declares data_0209b41c */
 extern s16 Vec3_VertAngle(const struct Vector3* v1, const struct Vector3* v0);
@@ -529,15 +523,7 @@ extern void Math_Function_0203b0fc(int* p, int target, int scale, int max);
 extern void Vec3_Sub(Vec3* out, Vec3* a, Vec3* b);
 extern void Vec3_MulScalar(Vec3* out, const Vec3* in, int scale);
 extern void Vec3_Add(Vec3* out, Vec3* a, Vec3* b);
-extern int data_ov002_02110b04;
-extern int data_ov002_02110afc;
-extern int data_ov002_02110b08;
-extern int data_ov002_02110df4[];
-extern int data_ov002_02110e0c[];
-extern int data_ov002_02110e18[];
-extern int data_ov002_02110de8[];
-extern int data_ov002_02110e00[];
-extern int data_ov002_02110dac[];
+
 /* local extern dropped: decl_common.h declares data_0209b41c */
 extern int data_0208ee44;
 extern int data_ov002_0210b970[3];
@@ -545,7 +531,6 @@ extern unsigned char data_0209f250;
 extern void *data_0209f394[];
 extern void Vec3_RotateYAndTranslate(int *out, int *in, short angle, int *src);
 extern int data_ov002_0210b964[3];
-extern int data_ov002_02110ddc[3];
 /* local extern dropped: decl_common.h declares func_02008b4c(void*,void*,void*,void*) */
 extern Fix12i Vec3_Dist(const Vector3 *a, const Vector3 *b);
 extern Fix12i Vec3_HorzLen(const Vector3 *v);
@@ -573,7 +558,6 @@ extern PMF3 data_ov002_0210b8e0;
 extern PMF3 data_ov002_0210b8d8;
 extern PMF3 data_ov002_0210b8d0;
 extern PMF3 data_ov002_0210b8c8;
-extern int data_ov002_02110b00;
 extern PMF3 data_ov002_0211104c[24];
 extern void Vec3_Asr(Vec3 *d, Vec3 *s, int sh);
 extern void Matrix4x3_FromTranslation(Matrix4x3 *m, s32 x, s32 y, s32 z);
@@ -619,8 +603,8 @@ extern JugemModelFile data_ov085_0213074c;
 /* TUBUILD CONFLICT -- alternate declaration of _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE, from the legacy file for func_ov002_020f71c4, NOT applied: extern int _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE( unsigned int a, unsigned int b, int p2, int p3, int p4, void* p5, void* p6); */
 /* TUBUILD CONFLICT -- alternate declaration of _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE, from the legacy file for func_ov002_020f72bc, NOT applied: extern u32 _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE( u32 slot, u32 effectID, Fix12i x, Fix12i y, Fix12i z, const void* rot, struct Callback* cb); */
 /* TUBUILD CONFLICT -- alternate declaration of _Z14ApproachLinearRiii, from the legacy file for func_ov002_020f7384, NOT applied: extern int _Z14ApproachLinearRiii(int* v, int target, int step); */
-/* TUBUILD CONFLICT -- alternate declaration of data_0209b274, from the legacy file for func_ov002_020f7384, NOT applied: extern unsigned short data_0209b274; */
-/* TUBUILD CONFLICT -- alternate declaration of data_0209b274, from the legacy file for func_ov002_020f7410, NOT applied: extern unsigned short data_0209b274; */
+/* TUBUILD CONFLICT -- alternate declaration of gKuppaScriptFrame, from the legacy file for func_ov002_020f7384, NOT applied: extern unsigned short gKuppaScriptFrame; */
+/* TUBUILD CONFLICT -- alternate declaration of gKuppaScriptFrame, from the legacy file for func_ov002_020f7410, NOT applied: extern unsigned short gKuppaScriptFrame; */
 /* TUBUILD CONFLICT -- alternate declaration of MulVec3Mat4x3, from the legacy file for func_ov002_020f7410, NOT applied: extern void MulVec3Mat4x3(void *out, void *m, void *v); */
 /* TUBUILD CONFLICT -- alternate declaration of Vec3_LslInPlace, from the legacy file for func_ov002_020f7410, NOT applied: extern void Vec3_LslInPlace(void *v, int sh); */
 /* TUBUILD CONFLICT -- alternate declaration of _Z14ApproachLinearRiii, from the legacy file for func_ov002_020f7410, NOT applied: extern int _Z14ApproachLinearRiii(int *p, int target, int step); */
@@ -628,12 +612,12 @@ extern JugemModelFile data_ov085_0213074c;
 /* TUBUILD CONFLICT -- alternate declaration of MulVec3Mat4x3, from the legacy file for func_ov002_020f7538, NOT applied: extern void MulVec3Mat4x3(void* a, void* b, void* c); */
 /* TUBUILD CONFLICT -- alternate declaration of Vec3_LslInPlace, from the legacy file for func_ov002_020f7538, NOT applied: extern void Vec3_LslInPlace(void* v, int n); */
 /* TUBUILD CONFLICT -- alternate declaration of _Z14ApproachLinearRiii, from the legacy file for func_ov002_020f7538, NOT applied: extern int _Z14ApproachLinearRiii(int* dst, int target, int step); */
-/* TUBUILD CONFLICT -- alternate declaration of data_0209b274, from the legacy file for func_ov002_020f7538, NOT applied: extern unsigned short data_0209b274; */
-/* TUBUILD CONFLICT -- alternate declaration of data_0209b274, from the legacy file for func_ov002_020f7780, NOT applied: extern unsigned short data_0209b274; */
+/* TUBUILD CONFLICT -- alternate declaration of gKuppaScriptFrame, from the legacy file for func_ov002_020f7538, NOT applied: extern unsigned short gKuppaScriptFrame; */
+/* TUBUILD CONFLICT -- alternate declaration of gKuppaScriptFrame, from the legacy file for func_ov002_020f7780, NOT applied: extern unsigned short gKuppaScriptFrame; */
 /* TUBUILD CONFLICT -- alternate declaration of data_0209f318, from the legacy file for func_ov002_020f7780, NOT applied: extern void *data_0209f318; */
 /* TUBUILD CONFLICT -- alternate declaration of Math_Function_0203b0fc, from the legacy file for func_ov002_020f7780, NOT applied: extern void Math_Function_0203b0fc(int *p, int target, int scale, int max); */
 /* TUBUILD CONFLICT -- alternate declaration of Vec3_HorzAngle, from the legacy file for func_ov002_020f7780, NOT applied: extern short Vec3_HorzAngle(const int *v0, const int *v1); */
-/* TUBUILD CONFLICT -- alternate declaration of data_0209b274, from the legacy file for func_ov002_020f79c0, NOT applied: extern unsigned short data_0209b274; */
+/* TUBUILD CONFLICT -- alternate declaration of gKuppaScriptFrame, from the legacy file for func_ov002_020f79c0, NOT applied: extern unsigned short gKuppaScriptFrame; */
 /* TUBUILD CONFLICT -- alternate declaration of Math_Function_0203b0fc, from the legacy file for func_ov002_020f79c0, NOT applied: extern void Math_Function_0203b0fc(int *p, int target, int scale, int max); */
 /* TUBUILD CONFLICT -- alternate declaration of ApproachAngle, from the legacy file for func_ov002_020f79c0, NOT applied: extern int ApproachAngle(short *cur, short target, int divisor, int band, int maxStep); */
 /* TUBUILD CONFLICT -- alternate declaration of data_0209f318, from the legacy file for func_ov002_020f7bb8, NOT applied: extern void *data_0209f318; */
@@ -641,6 +625,80 @@ extern JugemModelFile data_ov085_0213074c;
 /* TUBUILD CONFLICT -- alternate declaration of Vec3_VertAngle, from the legacy file for func_ov002_020f7bb8, NOT applied: extern s16 Vec3_VertAngle(const Vector3 *v1, const Vector3 *v0); */
 /* TUBUILD CONFLICT -- alternate declaration of Vec3_HorzAngle, from the legacy file for func_ov002_020f7bb8, NOT applied: extern s16 Vec3_HorzAngle(const Vector3 *v0, const Vector3 *v1); */
 /* TUBUILD CONFLICT -- alternate declaration of _ZN4cstd5atan2E5Fix12IiES1_, from the legacy file for func_ov002_020f7bb8, NOT applied: extern s16 _ZN4cstd5atan2E5Fix12IiES1_(Fix12i y, Fix12i x); */
+/* BSS between the four function-local Vector3 statics. Each object is
+   its own section so the linker can place the statics at their retail
+   addresses. The five char objects match decl_common.h; the following
+   symbol is 8-aligned so the slot stays 8 bytes. */
+int data_ov002_02110b00;
+char data_ov002_02110b10[8];
+char data_ov002_02110b18[8];
+char data_ov002_02110b20[8];
+char data_ov002_02110b28[8];
+char data_ov002_02110b30[8];
+char data_ov002_02110b38[8];
+char data_ov002_02110b40[8];
+char data_ov002_02110b48[8];
+char data_ov002_02110b50;
+__attribute__((aligned(8))) char data_ov002_02110b58[8];
+char data_ov002_02110b60[8];
+char data_ov002_02110b68[8];
+char data_ov002_02110b70;
+__attribute__((aligned(8))) char data_ov002_02110b78;
+__attribute__((aligned(8))) char data_ov002_02110b80[8];
+char data_ov002_02110b88[8];
+char data_ov002_02110b90[8];
+char data_ov002_02110b98;
+__attribute__((aligned(8))) char data_ov002_02110ba0[8];
+char data_ov002_02110ba8[8];
+char data_ov002_02110bb0[8];
+char data_ov002_02110bb8[8];
+char data_ov002_02110bc0[8];
+char data_ov002_02110bc8[8];
+char data_ov002_02110bd0[8];
+char data_ov002_02110bd8[8];
+char data_ov002_02110be0[8];
+char data_ov002_02110be8[8];
+char data_ov002_02110bf0[8];
+char data_ov002_02110bf8[8];
+char data_ov002_02110c00[8];
+char data_ov002_02110c08[8];
+char data_ov002_02110c10[8];
+char data_ov002_02110c18;
+char data_ov002_02110c2c[12];
+char data_ov002_02110c38[12];
+char data_ov002_02110c44[12];
+char data_ov002_02110c50[12];
+char data_ov002_02110c5c[12];
+char data_ov002_02110c68[12];
+char data_ov002_02110c74[12];
+char data_ov002_02110c80[12];
+char data_ov002_02110c8c[12];
+char data_ov002_02110c98[12];
+char data_ov002_02110ca4[12];
+char data_ov002_02110cb0[12];
+char data_ov002_02110cbc[12];
+char data_ov002_02110cc8[12];
+char data_ov002_02110cd4[12];
+char data_ov002_02110ce0[12];
+char data_ov002_02110cec[12];
+char data_ov002_02110cf8[12];
+char data_ov002_02110d04[12];
+char data_ov002_02110d10[12];
+char data_ov002_02110d1c[12];
+char data_ov002_02110d28[12];
+char data_ov002_02110d34[12];
+char data_ov002_02110d40[12];
+char data_ov002_02110d4c[12];
+char data_ov002_02110d58[12];
+char data_ov002_02110d64[12];
+char data_ov002_02110d70[12];
+char data_ov002_02110d7c[12];
+char data_ov002_02110d88[12];
+char data_ov002_02110d94[12];
+char data_ov002_02110da0[12];
+char data_ov002_02110dc4[12];
+char data_ov002_02110dd0[12];
+int data_ov002_02110ddc[3];
 /* TUBUILD CONFLICT -- alternate declaration of data_0209b41c, from the legacy file for _ZN8daDemo_c6RenderEv, NOT applied: extern M48 data_0209b41c; */
 }
 
@@ -3929,43 +3987,32 @@ int daDemo_c::func_ov002_020f6c60(void *arg1, int arg2, int arg3)
 {
   u8 *flag = (u8 *) arg1;
   Vec3 v;
-  if (arg2 == data_0209b274)
-  {
-    if ((*flag) != 0)
-    {
-      int r = (inline_fn(RandomIntInternal(&data_0209e650)) >> 20) & 0xfff;
-      int m = FX_MUL(r, 0xa000);
-      this->mMagnitude = m + 0x19000;
-    }
-    AddVec3((Vec3 *)(&this->mPosX), (Vec3 *)&((dCamera_c *)data_0209f318)->pos,
-            (Vec3 *)(&this->mPosX));
-    if (arg2 > 0x2bc)
-    {
-      this->mPosY -= 0x96000;
-    }
-    if (arg2 != data_ov002_0210b614)
-    {
-        func_0201267c(0x6a, &this->mCamSpacePos);
-        data_ov002_0210b614 = arg2;
-    }
+  if (arg2 == gKuppaScriptFrame) {
+      if ((*flag) != 0) {
+          int r = (inline_fn(RandomIntInternal(&data_0209e650)) >> 20) & 0xfff;
+          int m = FX_MUL(r, 0xa000);
+          this->mMagnitude = m + 0x19000;
+      }
+      AddVec3((Vec3 *)(&this->mPosX), (Vec3 *)&((dCamera_c *)data_0209f318)->pos,
+              (Vec3 *)(&this->mPosX));
+      if (arg2 > 0x2bc) {
+          this->mPosY -= 0x96000;
+      }
+      if (arg2 != data_ov002_0210b614) {
+          func_0201267c(0x6a, &this->mCamSpacePos);
+          data_ov002_0210b614 = arg2;
+      }
   }
-  if (arg3 == data_0209b274)
-  {
-    this->mOpacity = 0;
-    return 1;
+  if (arg3 == gKuppaScriptFrame) {
+      this->mOpacity = 0;
+      return 1;
   }
   this->mOpacity = 0x1f;
   if ((*flag) == 0)
   {
-    if ((data_ov002_02110b0c & 1) == 0)
-    {
-      data_ov002_02110c20[0] = 0xffdd6000;
-      data_ov002_02110c20[1] = 0xbe4000;
-      data_ov002_02110c20[2] = 0x2ae000;
-      func_020731dc(data_ov002_02110c20, (void *)(&_ZN7Vector3D1Ev), (void **) (&data_ov002_02110db8));
-      data_ov002_02110b0c |= 1;
-    }
-    func_ov002_020f6f48((Vector3 *) data_ov002_02110c20, 0x20);
+      /* First call stores the look-at point and registers ~Vector3(). */
+      static __attribute__((aligned(8))) Vector3 sLookTarget(0xffdd6000, 0xbe4000, 0x2ae000);
+      func_ov002_020f6f48(&sLookTarget, 0x20);
   }
   else
   {
@@ -4064,7 +4111,7 @@ int daDemo_c::func_ov002_020f7020()
 
 int daDemo_c::func_ov002_020f7038(int a, int arg)
 {
-    if (arg == data_0209b274) {
+    if (arg == gKuppaScriptFrame) {
         mParticleID[0] = 0;
         mParticleID[1] = 0;
         mParticleID[2] = 0;
@@ -4108,7 +4155,7 @@ int daDemo_c::func_ov002_020f7038(int a, int arg)
 int daDemo_c::func_ov002_020f71c4(int a, int arg)
 {
     if (arg == 0) {
-        if (arg == data_0209b274) {
+        if (arg == gKuppaScriptFrame) {
             this->mMagnitude = 0x10000;
         }
         ApproachLinear(this->mMagnitude, 0x1f000, 0x3e3);
@@ -4165,11 +4212,13 @@ int daDemo_c::func_ov002_020f72bc()
 int daDemo_c::func_ov002_020f7384(unsigned char *flag, int val)
 {
     if (*flag != 0) {
-        if (val == data_0209b274) func_02012790(0x17);
+        if (val == gKuppaScriptFrame)
+            func_02012790(0x17);
         ApproachLinear(this->mPosY, 0xfa000, 0xa000);
         this->mOpacity = 0x1f;
     } else {
-        if (val == data_0209b274) func_02012790(0x16);
+        if (val == gKuppaScriptFrame)
+            func_02012790(0x16);
         if (ApproachLinear(this->mPosY, 0x32000, 0x5000) != 0)
             this->mOpacity = 0;
     }
@@ -4193,7 +4242,7 @@ int daDemo_c::func_ov002_020f7410(unsigned char *in, int sel)
     int a = in[0] << 12;
     int b = in[1] << 8;
     int t;
-    if (a != 0 && sel == data_0209b274) {
+    if (a != 0 && sel == gKuppaScriptFrame) {
         register Vector3 *p = ((param_c &)*(simpleModel_c *)this->mModel).mScale;
         p->x = -0x5d00;
         p->y = 0x1800;
@@ -4227,8 +4276,8 @@ int daDemo_c::func_ov002_020f7410(unsigned char *in, int sel)
 /* Script handler 3. On the start frame, when arg1[0] is non-zero, it sets
  * fixed angles and clears mRate. Every frame Math_Function_0203b0fc moves
  * mRate toward 1.0 (arg1[0] non-zero) or 0, and the vector at mAnmModel +
- * 0x64 (the param_c tail base) becomes base + (data_ov002_02110e0c - base) *
- * mRate, with base data_ov002_02110df4 or data_ov002_02110e18 by the same
+ * 0x64 (the param_c tail base) becomes base + (sViewEnd - base) *
+ * mRate, with base sViewStart or sViewIdle by the same
  * test. mPos = that vector times INV_VIEW_MATRIX_ASR_3, then << 3; mMagnitude
  * approaches arg1[0] << 12 by arg1[1] << 8 and drives mOpacity. */
 
@@ -4242,45 +4291,28 @@ int daDemo_c::func_ov002_020f7538(unsigned char *arg1, int arg2)
     int scale;
     Vec3 tmp, diff, scaled, sum;
 
-    if (f1 != 0 && arg2 == data_0209b274) {
+    if (f1 != 0 && arg2 == gKuppaScriptFrame) {
         this->mAngleX = 0xd00;
         this->mAngleY = -0x7300;
         this->mAngleZ = 0x2f00;
         this->mRate = 0;
     }
 
-    if (!(data_ov002_02110b04 & 1)) {
-        data_ov002_02110df4[0] = 0x2800;
-        data_ov002_02110df4[1] = 0xfffee900;
-        data_ov002_02110df4[2] = -0x4200;
-        func_020731dc(data_ov002_02110df4, (void *)_ZN7Vector3D1Ev, (void **)data_ov002_02110de8);
-        data_ov002_02110b04 |= 1;
-    }
-    if (!(data_ov002_02110afc & 1)) {
-        data_ov002_02110e0c[0] = 0x3300;
-        data_ov002_02110e0c[1] = 0xfffee900;
-        data_ov002_02110e0c[2] = -0x5e00;
-        func_020731dc(data_ov002_02110e0c, (void *)_ZN7Vector3D1Ev, (void **)data_ov002_02110e00);
-        data_ov002_02110afc |= 1;
-    }
-    if (!(data_ov002_02110b08 & 1)) {
-        data_ov002_02110e18[0] = 0x4c00;
-        data_ov002_02110e18[1] = -0xf200;
-        data_ov002_02110e18[2] = -0xff00;
-        func_020731dc(data_ov002_02110e18, (void *)_ZN7Vector3D1Ev, (void **)data_ov002_02110dac);
-        data_ov002_02110b08 |= 1;
-    }
+    /* First call stores each view-space endpoint and registers ~Vector3(). */
+    static Vector3 sViewStart(0x2800, 0xfffee900, -0x4200);
+    static Vector3 sViewEnd(0x3300, 0xfffee900, -0x5e00);
+    static Vector3 sViewIdle(0x4c00, -0xf200, -0xff00);
 
     if (f1 != 0) {
-        base = data_ov002_02110df4;
+        base = (int *)&sViewStart;
         scale = 0x1000;
     } else {
-        base = data_ov002_02110e18;
+        base = (int *)&sViewIdle;
         scale = 0;
     }
 
     Math_Function_0203b0fc(&this->mRate, scale, 0x40, 0x100);
-    Vec3_Sub(&diff, (Vec3 *)data_ov002_02110e0c, (Vec3 *)base);
+    Vec3_Sub(&diff, (Vec3 *)&sViewEnd, (Vec3 *)base);
     tmp.x = diff.x;
     tmp.y = diff.y;
     tmp.z = diff.z;
@@ -4310,7 +4342,7 @@ int daDemo_c::func_ov002_020f7780(void *unused, int mode)
 {
     dCamera_c *cam = (dCamera_c *)data_0209f318;
 
-    if (mode == data_0209b274) {
+    if (mode == gKuppaScriptFrame) {
         if (mode == 0) {
             data_0208ee44 = 3;
             return 1;
@@ -4396,7 +4428,7 @@ int daDemo_c::func_ov002_020f7780(void *unused, int mode)
 int daDemo_c::func_ov002_020f79c0(void *unused, int mode)
 {
 
-    if (mode == data_0209b274) {
+    if (mode == gKuppaScriptFrame) {
         this->mMagnitude = 0x578000;
         *&this->mPhase = -0x1000;
         *&this->mPhaseStep = 0x800;
@@ -4468,7 +4500,7 @@ int daDemo_c::func_ov002_020f7bb8(unsigned char *p, u16 id)
     int i;
 
     this->mOpacity = 0;
-    if (id == data_0209b274) {
+    if (id == gKuppaScriptFrame) {
         this->mMagnitude = 0;
         this->mPhase = 0;
     }

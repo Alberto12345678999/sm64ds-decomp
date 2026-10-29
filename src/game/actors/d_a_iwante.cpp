@@ -372,8 +372,7 @@ extern void func_020393c4(void *p, void *v);
 extern void func_020393d4(void *p, void *v);
 extern void func_020398fc(void *p);
 
-/* ---- arm9 / ov002 methods, mangled ROM spelling ---- */
-extern void _Z14ApproachLinearR7Vector3RKS_5Fix12IiE(void *out, void *tgt, int step);
+/* Unreferenced. */
 extern void hold_d_a_iwante(void *self, void *kcl, void *mtx, int fix, short s, void *clps);
 }
 extern "C" {
@@ -1090,7 +1089,7 @@ int Eyerok::func_ov066_021171b0()
         break;
     }
     case 1:
-        _Z14ApproachLinearR7Vector3RKS_5Fix12IiE(&mPosX, &mTargetPosX, 0x28000);
+        ApproachLinear(mPos, *(Vector3 *)&mTargetPosX, 0x28000);
         if (Vec3_Dist(&mPosX, &mTargetPosX) > 0x28000)
             break;
         mPosX = mTargetPosX;
@@ -1113,7 +1112,7 @@ int Eyerok::func_ov066_021171b0()
     case 2:
         if (mTimer1 != 0)
             break;
-        _Z14ApproachLinearR7Vector3RKS_5Fix12IiE(&mPosX, &mTargetPosX, 0x32000);
+        ApproachLinear(mPos, *(Vector3 *)&mTargetPosX, 0x32000);
         if (Vec3_Dist(&mPosX, &mTargetPosX) > 0x32000)
             break;
         mPosX = mTargetPosX;
@@ -1253,7 +1252,7 @@ int Eyerok::func_ov066_021175e8()
         }
         break;
     case 1:
-        _Z14ApproachLinearR7Vector3RKS_5Fix12IiE(&mPosX, &mTargetPosX, 0x28000);
+        ApproachLinear(mPos, *(Vector3 *)&mTargetPosX, 0x28000);
         if (Vec3_Dist(&mPosX, &mTargetPosX) <= 0x28000) {
             mTimer1 = 0xa;
             mFlags = 0x2000000;
@@ -1266,7 +1265,7 @@ int Eyerok::func_ov066_021175e8()
         break;
     case 2:
         if (mTimer1 == 0)
-            _Z14ApproachLinearR7Vector3RKS_5Fix12IiE(&mPosX, &mTargetPosX, 0x32000);
+            ApproachLinear(mPos, *(Vector3 *)&mTargetPosX, 0x32000);
         if (Vec3_Dist(&mPosX, &mTargetPosX) <= 0x32000) {
             func_ov066_02116ac4(0x7d0000);
             mPosX = mTargetPosX;

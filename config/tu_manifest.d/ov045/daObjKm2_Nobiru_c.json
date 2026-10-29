@@ -139,7 +139,7 @@
   ],
   "notes": [
     "Stretching platform, ov045 .text 0x02111840..0x02111ad4, 9 functions. Factory daObjKm2_Nobiru_c_classInit starts at the end of the span and stays in src/d_a_obj_km2_nobiru.c.",
-    "Out-of-line destructor under defer_codegen off emits D1, D0, then a homeless D2. SetFile and SetScaleY stay the mangled Fix12<int> calls; the method spelling DIFFs. func_0203aad0 and func_020396c0 stay calls; the scaleY field and unk_48 store DIFF."
+    "Out-of-line destructor under defer_codegen off emits D1, D0, then a homeless D2. SetFile and SetScaleY are member calls; under the scalar Fix12i they cost nothing. func_0203aad0 and func_020396c0 stay calls; the scaleY field and unk_48 store DIFF."
   ],
   "verification": {
     "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",
@@ -615,14 +615,14 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@428",
+      "from": "@506",
       "to": "@405",
-      "evidence": "compiler-local registration node; @420 is taken by ov035 on main, renamed to an unused fleet temp of equal length"
+      "evidence": "compiler-local registration node; @420 is taken by ov035 on main, renamed to an unused fleet temp of equal length | re-keyed by __sinit relocation-site order after including math/MtxStack.h (its inline statics) shifted the TU's @NNN uniquifier"
     },
     {
-      "from": "@429",
+      "from": "@507",
       "to": "@408",
-      "evidence": "compiler-local registration node; @421 is taken by ov035 on main, renamed to an unused fleet temp of equal length"
+      "evidence": "compiler-local registration node; @421 is taken by ov035 on main, renamed to an unused fleet temp of equal length | re-keyed by __sinit relocation-site order after including math/MtxStack.h (its inline statics) shifted the TU's @NNN uniquifier"
     }
   ]
 }

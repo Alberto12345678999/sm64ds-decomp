@@ -111,7 +111,7 @@ int daObjC1Hikari_c::Behavior() {
         Player *p;
         if (!Sound::PlaySmallSecretSound(this, mSoundTimers))
             return 1;
-        p = (Player *)mTalkPlayer;
+        p = mTalkPlayer;
 
         vIn.x = -0x3b0000;
         vIn.y = 0x200000;
@@ -146,9 +146,10 @@ int daObjC1Hikari_c::Behavior() {
                     HikariVec3 *op = (HikariVec3 *)&o->mPosX;
                     hv = *op;
                     if (AngleDiff(Vec3_HorzAngle(&mPos, (const Vector3 *)&hv), mAngleY) < 0x4000) {
-                        if (((Player *)o)->mSurfaceType == 0xd) {
-                            if (((Player *)o)->StartTalk(*this, false)) {
-                                mTalkPlayer = o;
+                        Player *player = static_cast<Player *>(o);
+                        if (player->mSurfaceType == 0xd) {
+                            if (player->StartTalk(*this, false)) {
+                                mTalkPlayer = player;
                                 mSoundTimers[0] = 0;
                             }
                         }

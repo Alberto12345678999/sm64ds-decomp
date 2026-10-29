@@ -29,8 +29,8 @@ struct dActor_c;
  * matching _ZTI/_ZTS pair under the ROM's own name.
  */
 struct daObjHmBskt_c : dBgActor_c {
-    dBgCh_Actr mWithMeshClsn;       /* 0x320 */
-    dActor_c *mStarActor;           /* 0x4dc -- Spawn(0xb2, ...) result */
+    dBgCh_Actr mWithMeshClsn; /* 0x320 */
+    dActor_c *mStarActor;     /* 0x4dc -- Spawn(0xb2, ...) result */
 
     /* --- vtable --- */
     /* MEASURED -- INLINE ON PURPOSE. Out of line, mwccarm emits the
@@ -38,16 +38,17 @@ struct daObjHmBskt_c : dBgActor_c {
        has D1 at 0x021111a0 and D0 at 0x021111ec and no D2. */
     virtual ~daObjHmBskt_c() {}
 
-    virtual s32 InitResources();     /* slot 0 */
-    virtual s32 CleanupResources();  /* slot 3 */
-    virtual s32 Behavior();          /* slot 6 */
-    virtual s32 Render();            /* slot 9 */
+    virtual s32 InitResources();    /* slot 0 */
+    virtual s32 CleanupResources(); /* slot 3 */
+    virtual s32 Behavior();         /* slot 6 */
+    virtual s32 Render();           /* slot 9 */
+
+    int CheckLanding(dBgCh_Actr *);
 };
 
 #ifndef SM64DS_PLATFORM_PC
 /* ROM layout under mwccarm; host ABI divergence is tracked separately. */
-typedef char daObjHmBskt_c_size_must_be_0x4e0[
-    sizeof(daObjHmBskt_c) == 0x4e0 ? 1 : -1];
+typedef char daObjHmBskt_c_size_must_be_0x4e0[sizeof(daObjHmBskt_c) == 0x4e0 ? 1 : -1];
 #endif
 
 #endif /* DAOBJHMBSKT_C_H */

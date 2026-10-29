@@ -1384,42 +1384,42 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@506",
+      "from": "@510",
       "to": "data_ov021_021149c0",
       "evidence": "compiler temp mapped to 0x021149c0 by the retail initializer relocation at the same pool offset; no bytes or relocations change | registration nodes renumber after the shared-header includes and the deleted named-parameter declarations; re-keyed by __sinit relocation site order"
     },
     {
-      "from": "@507",
+      "from": "@511",
       "to": "data_ov021_02114a14",
       "evidence": "compiler temp mapped to 0x02114a14 by the retail initializer relocation at the same pool offset; no bytes or relocations change | registration nodes renumber after the shared-header includes and the deleted named-parameter declarations; re-keyed by __sinit relocation site order"
     },
     {
-      "from": "@508",
+      "from": "@512",
       "to": "data_ov021_021149e4",
       "evidence": "compiler temp mapped to 0x021149e4 by the retail initializer relocation at the same pool offset; no bytes or relocations change | registration nodes renumber after the shared-header includes and the deleted named-parameter declarations; re-keyed by __sinit relocation site order"
     },
     {
-      "from": "@509",
+      "from": "@513",
       "to": "data_ov021_021149f0",
       "evidence": "compiler temp mapped to 0x021149f0 by the retail initializer relocation at the same pool offset; no bytes or relocations change | registration nodes renumber after the shared-header includes and the deleted named-parameter declarations; re-keyed by __sinit relocation site order"
     },
     {
-      "from": "@511",
+      "from": "@515",
       "to": "data_ov021_021149fc",
       "evidence": "compiler temp mapped to 0x021149fc by the retail initializer relocation at the same pool offset; no bytes or relocations change | registration nodes renumber after the shared-header includes and the deleted named-parameter declarations; re-keyed by __sinit relocation site order"
     },
     {
-      "from": "@514",
+      "from": "@518",
       "to": "data_ov021_02114a08",
       "evidence": "compiler temp mapped to 0x02114a08 by the retail initializer relocation at the same pool offset; no bytes or relocations change | registration nodes renumber after the shared-header includes and the deleted named-parameter declarations; re-keyed by __sinit relocation site order"
     },
     {
-      "from": "@517",
+      "from": "@521",
       "to": "data_ov021_021149d8",
       "evidence": "compiler temp mapped to 0x021149d8 by the retail initializer relocation at the same pool offset; no bytes or relocations change | registration nodes renumber after the shared-header includes and the deleted named-parameter declarations; re-keyed by __sinit relocation site order"
     },
     {
-      "from": "@520",
+      "from": "@524",
       "to": "data_ov021_021149cc",
       "evidence": "compiler temp mapped to 0x021149cc by the retail initializer relocation at the same pool offset; no bytes or relocations change | registration nodes renumber after the shared-header includes and the deleted named-parameter declarations; re-keyed by __sinit relocation site order"
     }

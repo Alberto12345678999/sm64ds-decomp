@@ -210,7 +210,7 @@ via `(u32)&` / `(int)&`, and they point at globals, function pointers, and overl
 descriptors:
 
 ```c
-if (g == (int)&data_02089608)                     /* src/ContinueKuppaScriptIfNecessary.cpp:21 */
+if (g == (int)&data_02089608)                     /* the ContinueKuppaScriptIfNecessary shard, since folded */
 (int)&func_02034fbc                                /* src/func_02034da4.c:48 — function ptr */
 LoadOverlay((int)&overlay_0)                       /* src/func_0201a2f8.cpp:44 */
 ```

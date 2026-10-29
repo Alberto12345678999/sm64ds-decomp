@@ -48,56 +48,56 @@
       "ordinal": 1
     },
     {
-      "symbol": "func_ov027_02111994",
+      "symbol": "_ZN10daPgDfdr_c17UpdateModelMatrixEv",
       "address": "0x02111994",
       "size": "0x00000094",
       "legacy_source": "src/func_ov027_02111994.cpp",
       "ordinal": 2
     },
     {
-      "symbol": "_ZN10daPgDfdr_c19func_ov027_02111a28Ev",
+      "symbol": "_ZN10daPgDfdr_c9StateWalkEv",
       "address": "0x02111a28",
       "size": "0x00000104",
       "legacy_source": "src/func_ov027_02111a28.c",
       "ordinal": 3
     },
     {
-      "symbol": "func_ov027_02111b2c",
+      "symbol": "_ZN10daPgDfdr_c13InitStateWalkEv",
       "address": "0x02111b2c",
       "size": "0x0000011c",
       "legacy_source": "src/func_ov027_02111b2c.cpp",
       "ordinal": 4
     },
     {
-      "symbol": "func_ov027_02111c48",
+      "symbol": "_ZN10daPgDfdr_c9StateTurnEv",
       "address": "0x02111c48",
       "size": "0x00000060",
       "legacy_source": "src/func_ov027_02111c48.c",
       "ordinal": 5
     },
     {
-      "symbol": "func_ov027_02111ca8",
+      "symbol": "_ZN10daPgDfdr_c13InitStateTurnEv",
       "address": "0x02111ca8",
       "size": "0x00000054",
       "legacy_source": "src/func_ov027_02111ca8.cpp",
       "ordinal": 6
     },
     {
-      "symbol": "_ZN10daPgDfdr_c19func_ov027_02111cfcEv",
+      "symbol": "_ZN10daPgDfdr_c17CallStateBehaviorEv",
       "address": "0x02111cfc",
       "size": "0x0000003c",
       "legacy_source": "src/func_ov027_02111cfc.cpp",
       "ordinal": 7
     },
     {
-      "symbol": "_ZN10daPgDfdr_c19func_ov027_02111d38Ev",
+      "symbol": "_ZN10daPgDfdr_c13CallStateInitEv",
       "address": "0x02111d38",
       "size": "0x00000038",
       "legacy_source": "src/func_ov027_02111d38.cpp",
       "ordinal": 8
     },
     {
-      "symbol": "_ZN10daPgDfdr_c19func_ov027_02111d70Ei",
+      "symbol": "_ZN10daPgDfdr_c8SetStateEi",
       "address": "0x02111d70",
       "size": "0x0000001c",
       "legacy_source": "src/func_ov027_02111d70.c",
@@ -1076,32 +1076,32 @@
   "production_mode": "intact-object",
   "defined_symbol_renames": [
     {
-      "from": "@742",
+      "from": "@808",
       "to": "@741",
       "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
     },
     {
-      "from": "@743",
+      "from": "@809",
       "to": "@760",
       "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
     },
     {
-      "from": "@744",
+      "from": "@810",
       "to": "@761",
       "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
     },
     {
-      "from": "@745",
+      "from": "@811",
       "to": "@762",
       "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
     },
     {
-      "from": "@746",
+      "from": "@812",
       "to": "@763",
       "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
     },
     {
-      "from": "@747",
+      "from": "@813",
       "to": "@201",
       "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
     }

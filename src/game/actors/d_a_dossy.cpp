@@ -24,9 +24,9 @@
 //   CleanupResources and InitResources. Casting `c + (i << 9) + 0x150` to
 //   DorriePlatform * is 4 bytes longer, and `(char *)mPlatforms + (i << 9)`
 //   is 12 bytes longer.
-// - The seven parameter names on the prototypes of Matrix4x3_FromRotationY,
-//   DecIfAbove0_Short and the two mangled method externs hold the @NNN
-//   count: removing the gotos from func_ov065_021183c8 and
+// - The seven parameter names on Matrix4x3_FromRotationY,
+//   DecIfAbove0_Short and the four extra names on BgchInitAt_ hold the
+//   @NNN count: removing the gotos from func_ov065_021183c8 and
 //   func_ov065_021180d4 dropped it by 7, and these 7 names put it back.
 // - daDossyCap_c::Render tests the cap-icon flag as `(flags << 30) >> 31`.
 //   `>> 1 & 1` selects asr/ands instead of lsl/lsrs.

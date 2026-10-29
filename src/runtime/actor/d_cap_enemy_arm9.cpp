@@ -15,10 +15,6 @@
  * Source order is reverse ROM order. The constructor is written before D1.
  *
  * leftovers:
- *  - dExtModel_c::SetFile has no header member, so AddCap keeps the mangled
- *    extern for it; SharedFilePtr::Release's return value feeds AddCap's
- *    failure path, so that call keeps the int-returning mangled spelling
- *    too (the member returns void).
  *  - The 0x17f flags byte (mCapIcon.mFlags high byte) and the 0xf4 shadow
  *    flags word have no member names; the measured ldrb/launder forms stay.
  *    AddCap's mFlags &= ~1 and its mCapId store also keep the laundered
@@ -37,10 +33,6 @@
 #include "decl_common.h"
 
 extern "C" {
-/* local extern: the failed-load path tail-calls Release and returns whatever
-   it leaves in r0; SharedFilePtr::Release is void, so the member call cannot
-   say that. */
-extern int _ZN13SharedFilePtr7ReleaseEv(void *sfp);
 extern SharedFilePtr *data_ov002_020ff028[];
 
 extern unsigned char data_0209f2d8;
@@ -103,7 +95,9 @@ int dCapEnemy_c::AddCap(unsigned int param)
     int ok = mModel.SetFile((BMD_File *)file, 1, -1);
     if (ok == 0) {
         mCapId = 6;
-        return _ZN13SharedFilePtr7ReleaseEv(data_ov002_020ff028[mCapId]);
+        /* Release is void. The value it leaves in r0 is AddCap's result. */
+        data_ov002_020ff028[mCapId]->Release();
+        return;
     }
 
     *(int *)(((long long)(int)&mFlags)) &= ~1;
@@ -193,7 +187,7 @@ int dCapEnemy_c::GetCapEatenOffIt(const Vector3 & v_)
     if (p != 0 && p != (unsigned char *)this) {
         unsigned char idx;
         ((dEnemyBase_c *)p)->mEatingPlayer = mEatingPlayer;
-        ((Player *)mEatingPlayer)->mObjInMouth = (s32)p;
+        mEatingPlayer->mObjInMouth = (s32)p;
         ((dActor_c *)p)->mFlags |= 0x20000;
         mFlags &= ~0x20000;
         mEatingPlayer = 0;

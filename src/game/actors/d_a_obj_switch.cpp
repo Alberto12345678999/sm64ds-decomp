@@ -40,7 +40,9 @@ enum daObjSwitch_c_AssetId {
 #include "daStar_c.h"
 #include "nitro/fx/fx.h"
 
-namespace cstd { Fix12i fdiv(Fix12i numerator, Fix12i denominator); }
+namespace cstd {
+Fix12i fdiv(Fix12i numerator, Fix12i denominator);
+}
 
 namespace Event { int ClearBit(unsigned int bit); void SetBit(unsigned int bit); }
 

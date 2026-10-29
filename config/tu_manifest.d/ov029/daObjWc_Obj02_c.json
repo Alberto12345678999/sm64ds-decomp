@@ -77,14 +77,14 @@
       "ordinal": 5
     },
     {
-      "symbol": "func_ov029_021116c4",
+      "symbol": "_ZN15daObjWc_Obj02_c9OnStoodOnEP8dActor_c",
       "address": "0x021116c4",
       "size": "0x00000020",
       "legacy_source": "src/func_ov029_021116c4.cpp",
       "ordinal": 6
     },
     {
-      "symbol": "func_ov029_021116e4",
+      "symbol": "_ZN15daObjWc_Obj02_c15StoodOnCallbackEPvPS_P8dActor_c",
       "address": "0x021116e4",
       "size": "0x00000014",
       "legacy_source": "src/func_ov029_021116e4.c",
@@ -184,12 +184,12 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@423",
+      "from": "@417",
       "to": "@138",
       "evidence": "compiler temporary; mwcc numbers it @437 per TU and ov096 daTor_c (this batch) also defines a global @437, so the scratch link collides"
     },
     {
-      "from": "@424",
+      "from": "@418",
       "to": "@438",
       "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @440 now (twelve named locals retired from InitResources and Behavior); licensed under the existing pin @438"
     }

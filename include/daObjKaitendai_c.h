@@ -4,6 +4,8 @@
 #include "types.h"
 #include "dBgActor_c.h"
 
+struct ResourceDescriptor;
+
 /* The abstract base of the turntable platforms: the discs that spin in place and
  * carry Mario round with them. `kaitendai` is a revolving stand.
  *
@@ -73,7 +75,12 @@ struct daObjKaitendai_c : dBgActor_c {
        function before eligible.py and rombuild.py judge it -- checked on this
        file, not assumed. */
     s32 Behavior();
-    s32 Render();                      /* slot 9, ov002 0x020b66f0 -- mModel.Render(0) */
+    s32 Render(); /* slot 9, ov002 0x020b66f0 -- mModel.Render(0) */
+    /* The shared halves of slots 0 and 3 that every leaf calls with its own
+       file table: ov002 0x020b676c (load, place, seed the spin step) and
+       0x020b66a8 (disable the mesh, release both files). */
+    int InitResourcesFrom(ResourceDescriptor *, s16);
+    int CleanupResourcesFrom(ResourceDescriptor *);
     /* THE NULL SLOTS THE NOTE ABOVE ALREADY NAMES, SPELT SO THE COMPILER AGREES.
        mwccarm lays down a bare 0x00000000 with no relocation for a pure virtual --
        there is no __cxa_pure_virtual in this image for it to point at -- so a zero
@@ -87,8 +94,8 @@ struct daObjKaitendai_c : dBgActor_c {
        pure-specifier is only valid on a declaration carrying the keyword, and a
        pure virtual has no body to emit, so it can never become the key function:
        whichever virtual was first and non-inline before is still first now. */
-    virtual s32 InitResources() = 0;        /* slot  0 */
-    virtual s32 CleanupResources() = 0;     /* slot  3 */
+    virtual s32 InitResources() = 0;    /* slot  0 */
+    virtual s32 CleanupResources() = 0; /* slot  3 */
 };
 
 #ifndef SM64DS_PLATFORM_PC
