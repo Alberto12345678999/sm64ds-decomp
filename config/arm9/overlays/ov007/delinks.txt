@@ -765,37 +765,9 @@ src/ui/menus/unit020bd9e4.cpp:
     complete
     .text start:0x020bd9e4 end:0x020be0dc
 
-src/unnamed/ov007/func_ov007_020be0dc.cpp:
+src/ui/menus/unit020be0dc.cpp:
     complete
-    .text start:0x020be0dc end:0x020be3bc
-
-src/unnamed/ov007/func_ov007_020be3bc.cpp:
-    complete
-    .text start:0x020be3bc end:0x020be47c
-
-src/unnamed/ov007/func_ov007_020be47c.c:
-    complete
-    .text start:0x020be47c end:0x020be50c
-
-src/unnamed/ov007/func_ov007_020be50c.c:
-    complete
-    .text start:0x020be50c end:0x020be684
-
-src/unnamed/ov007/func_ov007_020be684.c:
-    complete
-    .text start:0x020be684 end:0x020be7a8
-
-src/unnamed/ov007/func_ov007_020be7a8.c:
-    complete
-    .text start:0x020be7a8 end:0x020be850
-
-src/unnamed/ov007/func_ov007_020be850.c:
-    complete
-    .text start:0x020be850 end:0x020be8b8
-
-src/unnamed/ov007/func_ov007_020be8b8.cpp:
-    complete
-    .text start:0x020be8b8 end:0x020be964
+    .text start:0x020be0dc end:0x020be964
 
 src/unnamed/ov007/func_ov007_020be964.c:
     complete
