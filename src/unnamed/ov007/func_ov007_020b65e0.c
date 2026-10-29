@@ -7,7 +7,7 @@ extern void func_ov007_020c2018(int a);
 extern void func_ov007_020c22f8(int a);
 extern void func_ov007_020c9080(int a);
 extern void func_ov007_020c3d1c(void *p);
-extern void func_ov007_020c1620(int a);
+extern void func_ov007_020c1620(void *tex);
 extern void func_ov007_020b3edc(int a);
 extern void func_ov007_020c9460(int a);
 extern int func_ov007_020b4bd4(int *a);
@@ -79,7 +79,7 @@ void func_ov007_020b65e0(void)
 
     for (i = 0; i < 0xb; i++) {
         if (WORK->textures[i] != 0) {
-            func_ov007_020c1620((int)WORK->textures[i]);
+            func_ov007_020c1620(WORK->textures[i]);
             WORK->textures[i] = 0;
         }
     }
