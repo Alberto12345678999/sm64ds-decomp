@@ -7088,3 +7088,4 @@ ov004	0x020b67e0	Coin_Destroy	_ZN6SpriteD1Ev	Sprite::~Sprite: the empty inline e
 ov004	0x020b67e4	Coin_Construct	_ZN6SpriteC1Ev	Sprite::Sprite: the empty inline element constructor sMgCoins' initializer passes to __cxa_vec_ctor; same address, same body
 ov004	0x020b9b24	__sinit_ov004_020b9b24	__sinit_d_mg_ps_opt.cpp	d_mg_ps_opt.cpp's compiler-emitted static initializer for the PsOptHalfSize tables; the shard is folded into the TU; same address, same body
 ov009	0x0211145c	func_ov009_0211145c	_ZN9daSBird_c16StateLaunchFlockEv	daSBird_c::StateLaunchFlock: state 2 of the PMF table, spawns the flock and takes off in one step; was a free function taking the bird pointer, now a member; same address, same body
+ov004	0x020ae5c4	Mg_DrawLine	_ZN11dScMgBase_c11Mg_DrawLineEiiiiii	dScMgBase_c::Mg_DrawLine: was a free function taking the object as its first argument, now a member; same address, same body
