@@ -6,20 +6,28 @@
   "status": "promoted",
   "boundary_confidence": "high",
   "boundary_evidence": [
-    "Contiguous linker run 0x020073a0..0x0200e494: the 16 named dCamera_c members and 37 state handlers from 0x0200bec4 up, and below them the 88 follow modes, states and script ops func_020073a0..func_0200bb28 (fold of 86 shards). Bounded above by the cutscene-actor helpers at 0x0200e494 (different data table, no camera receiver).",
+    "Contiguous linker run 0x020072c4..0x0200e494: the 16 named dCamera_c members and 37 state handlers from 0x0200bec4 up, and below them the 88 follow modes, states and script ops func_020073a0..func_0200bb28 (fold of 86 shards). Bounded above by the cutscene-actor helpers at 0x0200e494 (different data table, no camera receiver).",
     "CLASS IDENTITY FROM ROM RTTI: _ZTS9dCamera_c at arm9 0x02086e6c, _ZTI9dCamera_c at 0x02086ee4, _ZTV9dCamera_c at 0x02086f84 with InitResources/Render/Behavior/CleanupResources/OnPendingDestroy in the inherited fBase_c slots; dCamera_c_classInit (0x0200e444) writes the dBase_c->dView_c->dCamera_c vptr sequence. The tree's `Camera` name was stale; class_rename carried the rename Camera->dCamera_c across 145 files.",
     "ChangeState's mangling _ZN9dCamera_c11ChangeStateEPNS_5StateE proves the nested State type the header forward-declares.",
-    "LOWER EDGE (private data): func_020073a0 is the lowest function that reads this TU's .data -- data_02086ed8, an offset triple between _ZTI7dView_c (0x02086ecc) and _ZTI9dCamera_c (0x02086ee4), read by nothing else. The run's other private .data (the triples 0x02086e84..0x02086ec0, the script-op member-function constants 0x02086bc0..0x02086e38 loaded by func_02008550, the follow rates 0x02086cc8/0x02086d50 of func_0200bb28) is interleaved with g_profile_CAMERA and the dCamera_c RTTI, and the mode records 0x02086fcc..0x0208747c are shared between func_02009e70 and func_0200c394/func_0200c66c/Behavior/GoBehindPlayer. The controller records data_0209f49c (bss) are read only by func_0200bb28 and func_02009e70. func_020072c4 below reads no data and stays a shard; the D1/D0 pair and its helpers at 0x0200705c..0x020072c4 are their own TU (src/engine/view/d_camera_dtor.cpp).",
-    "Pragmas: none added. #4479 showed opt_common_subs off inert for func_0200bb28, which matches under the file's defaults."
+    "LOWER EDGE (private data): func_020073a0 is the lowest function that reads this TU's .data -- data_02086ed8, an offset triple between _ZTI7dView_c (0x02086ecc) and _ZTI9dCamera_c (0x02086ee4), read by nothing else. The run's other private .data (the triples 0x02086e84..0x02086ec0, the script-op member-function constants 0x02086bc0..0x02086e38 loaded by func_02008550, the follow rates 0x02086cc8/0x02086d50 of func_0200bb28) is interleaved with g_profile_CAMERA and the dCamera_c RTTI, and the mode records 0x02086fcc..0x0208747c are shared between func_02009e70 and func_0200c394/func_0200c66c/Behavior/GoBehindPlayer. The controller records data_0209f49c (bss) are read only by func_0200bb28 and func_02009e70. the D1/D0 pair and its helpers at 0x0200705c..0x020072c4 are their own TU (src/engine/view/d_camera_dtor.cpp).",
+    "Pragmas: none added. #4479 showed opt_common_subs off inert for func_0200bb28, which matches under the file's defaults.",
+    "func_020072c4 (0x020072c4..0x020073a0) folded in as the low edge. Its only reference is the script-op member-function constant data_02086ca8 in this TU's .data, between the constants for func_020071e0 and func_020073a0. Below it, _ZN7Vector3D1Ev at 0x020072c0 ends the d_camera_dtor.cpp object, so no other TU can sit between. Defined last in source; deferred codegen emits it first."
   ],
   "sections": [
     {
       "name": ".text",
-      "start": "0x020073a0",
+      "start": "0x020072c4",
       "end": "0x0200e494"
     }
   ],
   "functions": [
+    {
+      "symbol": "func_020072c4",
+      "address": "0x020072c4",
+      "size": "0x000000dc",
+      "legacy_source": "src/unnamed/arm9/0200/func_020072c4.cpp",
+      "ordinal": 35
+    },
     {
       "symbol": "func_020073a0",
       "address": "0x020073a0",
@@ -1020,15 +1028,23 @@
     "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",
     "toolchain": "tools/mwccarm/2004/b56/mwccarm.exe",
     "flags": "-O4,p -enum int -lang c++ -char signed -interworking -proc arm946e -gccext,on -msgstyle gcc -Cpp_exceptions off",
-    "object": "build/tu/arm9-dCamera_c/dCamera_c.o (gitignored)",
+    "object": "build/tu/arm9-dCamera_c/d_camera.o (gitignored)",
     "comparison": "tools/match.py extract_func+compare (bytes/relocs) AND tools/objisolate.py plan() (relocation type/addend) AND tools/reloc_audit.py check_destinations() (relocation target identity)",
-    "functions_matched": 141,
-    "functions_declared": 141,
+    "functions_matched": 142,
+    "functions_declared": 142,
     "compilerOnlyOutput": {
-      "requested": [],
-      "deadstripped": [],
+      "requested": [
+        "_ZN7Vector3D1Ev"
+      ],
+      "deadstripped": [
+        "_ZN7Vector3D1Ev"
+      ],
+      "droppedSections": [
+        19
+      ],
       "data": [],
-      "dataExternalized": []
+      "dataExternalized": [],
+      "canonicalDuplicates": []
     },
     "criteria": {
       "every_declared_function_defined": "PASS",

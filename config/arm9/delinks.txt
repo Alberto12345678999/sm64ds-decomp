@@ -87,13 +87,9 @@ src/engine/view/d_camera_dtor.cpp:
     complete
     .text start:0x0200705c end:0x020072c4
 
-src/unnamed/arm9/0200/func_020072c4.cpp:
-    complete
-    .text start:0x020072c4 end:0x020073a0
-
 src/engine/view/d_camera.cpp:
     complete
-    .text start:0x020073a0 end:0x0200e494
+    .text start:0x020072c4 end:0x0200e494
 
 src/KuppaScript.cpp:
     complete
