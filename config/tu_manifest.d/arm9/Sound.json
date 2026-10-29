@@ -280,7 +280,7 @@
       "ordinal": 36
     },
     {
-      "symbol": "_ZN5Sound16LoadInitialGroupEi",
+      "symbol": "LoadInitialGroup",
       "address": "0x02011ffc",
       "legacy_source": "src/_ZN5Sound16LoadInitialGroupEi.cpp",
       "size": "0x00000010",
@@ -574,14 +574,14 @@
       "ordinal": 78
     },
     {
-      "symbol": "_ZN5Sound12UnpauseMusicEv",
+      "symbol": "UnpauseMusic",
       "address": "0x02012ee4",
       "legacy_source": "src/_ZN5Sound12UnpauseMusicEv.cpp",
       "size": "0x000000ac",
       "ordinal": 79
     },
     {
-      "symbol": "_ZN5Sound10PauseMusicEv",
+      "symbol": "PauseMusic",
       "address": "0x02012f90",
       "legacy_source": "src/_ZN5Sound10PauseMusicEv.cpp",
       "size": "0x000000c0",

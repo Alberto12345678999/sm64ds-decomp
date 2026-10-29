@@ -261,9 +261,8 @@ void StopLoadedMusic_Layer1(unsigned int arg)
     func_0204fa2c(data_0209b4a0, arg);
 }
 
-// @symbol _ZN5Sound10PauseMusicEv
-void PauseMusic(void)
-{
+// @symbol PauseMusic
+extern "C" void PauseMusic(void) {
     int state = data_0209f2f8;
     if (state == 2 || state == 5 || state == 4 || state == 0x32) {
         if (data_0208e420 < 0) {
@@ -281,9 +280,8 @@ void PauseMusic(void)
     func_0204f9c4(0xd, 1);
 }
 
-// @symbol _ZN5Sound12UnpauseMusicEv
-void UnpauseMusic(void)
-{
+// @symbol UnpauseMusic
+extern "C" void UnpauseMusic(void) {
     signed char s = data_0209f2f8;
     if (s == 2 || s == 5 || s == 4 || s == 0x32) {
         signed char saved = data_0208e420;
@@ -768,9 +766,8 @@ void LoadGroupAndSetBank(int a, int b)
     data_0209b478 = 0;
 }
 
-// @symbol _ZN5Sound16LoadInitialGroupEi
-void LoadInitialGroup(int group)
-{
+// @symbol LoadInitialGroup
+extern "C" void LoadInitialGroup(int group) {
     LoadGroupAndSetBank(group, 0x20);
 }
 

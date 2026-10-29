@@ -17,7 +17,7 @@ extern void* func_0205d23c(void* p, int n);
 extern void func_0205c91c(void);
 extern void _ZN6Memory10DeallocateEPv(void*);
 extern void _ZN5Sound19LoadGroupAndSetBankEii(int a, int b);
-extern void _ZN5Sound16LoadInitialGroupEi(int group);
+extern void LoadInitialGroup(int group);
 extern void LoadFont(int id);
 
 extern int OVERLAY_0_ID;
@@ -51,7 +51,7 @@ void func_0201a2f8(int unused) {
     if (cond) {
         _ZN5Sound19LoadGroupAndSetBankEii(0x2f, 0x36);
     } else {
-        _ZN5Sound16LoadInitialGroupEi(0);
+        LoadInitialGroup(0);
     }
     if (cond) return;
     LoadFont(0);

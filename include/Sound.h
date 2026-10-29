@@ -108,9 +108,9 @@ bool PlaySub(u32, u32, u32, Fix12i, bool);
 int ChangeMusicVolume(u32, Fix12i);
 extern "C" int PlaySecretSound(dActor_c *actor, u16 *counter);
 
-void PauseMusic();
-void UnpauseMusic();
-void LoadInitialGroup(int group);
+extern "C" void PauseMusic();
+extern "C" void UnpauseMusic();
+extern "C" void LoadInitialGroup(int group);
 void LoadGroupAndSetBank(int, int);
 void LoadAndSetMusic_Layer1(int);
 void StopLoadedMusic_Layer1(u32);

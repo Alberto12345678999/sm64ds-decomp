@@ -1281,7 +1281,7 @@ extern void BeginLoadOBJExtPltt(void);
 extern void _ZN3IRQ11DisableIRQsEj(unsigned int);
 extern void _ZN4CP1514FlushDataCacheEjj(unsigned int, unsigned int);
 extern void _ZN5Sound12PlayBank2_2DEj(unsigned int);
-extern void _ZN5Sound16LoadInitialGroupEi(int);
+extern void LoadInitialGroup(int);
 extern void _ZN5Sound19LoadGroupAndSetBankEii(int, int);
 extern void _ZN5Sound21ResetPlayerVoiceGroupEv(void);
 extern void _ZN5Sound22LoadAndSetMusic_Layer1Ei(int);
