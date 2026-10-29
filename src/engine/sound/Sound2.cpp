@@ -480,7 +480,7 @@ void *func_02048720(Vector3 *v, int kind, int id) {
 }
 
 // @symbol func_020485f0
-void func_020485f0(int *thiz, Vector3 *a) {
+void func_020485f0(SoundHandle **thiz, Vector3 *a) {
     int r5 = a->x >> 12;
     unsigned int x;
     u16 r4;
@@ -520,7 +520,7 @@ void func_020485f0(int *thiz, Vector3 *a) {
 }
 
 // @symbol func_02048528
-void func_02048528(int *thiz, Vector3 *a) {
+void func_02048528(SoundHandle **thiz, Vector3 *a) {
     int r4 = a->x >> 12;
     unsigned int x;
     int v;
