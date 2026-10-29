@@ -76,14 +76,14 @@
       "ordinal": 5
     },
     {
-      "symbol": "func_ov045_021114a8",
+      "symbol": "_ZN16daObjKm2_Agaru_c9OnStoodOnEP8dActor_c",
       "address": "0x021114a8",
       "size": "0x00000020",
       "legacy_source": "src/func_ov045_021114a8.cpp",
       "ordinal": 6
     },
     {
-      "symbol": "func_ov045_021114c8",
+      "symbol": "_ZN16daObjKm2_Agaru_c15StoodOnCallbackEPvPS_P8dActor_c",
       "address": "0x021114c8",
       "size": "0x00000014",
       "legacy_source": "src/func_ov045_021114c8.c",
@@ -589,12 +589,12 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@412",
+      "from": "@401",
       "to": "@407",
       "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @421 now; licensed under the existing pin @407"
     },
     {
-      "from": "@411",
+      "from": "@400",
       "to": "@406",
       "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @420 now; licensed under the existing pin @406"
     }

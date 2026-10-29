@@ -442,12 +442,12 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@467",
+      "from": "@461",
       "to": "@333",
       "evidence": "mwcc numbers this destructor-registration node @462 per TU; @462 is already licensed globally elsewhere on the fleet surface, so the scratch link would multiply-define it"
     },
     {
-      "from": "@468",
+      "from": "@462",
       "to": "@334",
       "evidence": "mwcc numbers this destructor-registration node @463 per TU; @463 is already licensed globally elsewhere on the fleet surface, so the scratch link would multiply-define it"
     }

@@ -54,63 +54,63 @@
       "ordinal": 1
     },
     {
-      "symbol": "_ZN9daKirai_c19func_ov060_021184bcEv",
+      "symbol": "_ZN9daKirai_c6DisarmEv",
       "address": "0x021184bc",
       "size": "0x00000088",
       "legacy_source": "src/func_ov060_021184bc.c",
       "ordinal": 2
     },
     {
-      "symbol": "_ZN9daKirai_c19func_ov060_02118544EP7Vector3",
+      "symbol": "_ZN9daKirai_c16IsInTriggerRangeEP7Vector3",
       "address": "0x02118544",
       "size": "0x00000080",
       "legacy_source": "src/func_ov060_02118544.c",
       "ordinal": 3
     },
     {
-      "symbol": "_ZN9daKirai_c19func_ov060_021185c4Ev",
+      "symbol": "_ZN9daKirai_c7ExplodeEv",
       "address": "0x021185c4",
       "size": "0x000000cc",
       "legacy_source": "src/func_ov060_021185c4.c",
       "ordinal": 4
     },
     {
-      "symbol": "_ZN9daKirai_c19func_ov060_02118690Ev",
+      "symbol": "_ZN9daKirai_c20UpdateModelTransformEv",
       "address": "0x02118690",
       "size": "0x00000048",
       "legacy_source": "src/func_ov060_02118690.c",
       "ordinal": 5
     },
     {
-      "symbol": "_ZN9daKirai_c19func_ov060_021186d8Ev",
+      "symbol": "_ZN9daKirai_c5RearmEv",
       "address": "0x021186d8",
       "size": "0x00000050",
       "legacy_source": "src/func_ov060_021186d8.c",
       "ordinal": 6
     },
     {
-      "symbol": "_ZN9daKirai_c19func_ov060_02118728Ev",
+      "symbol": "_ZN9daKirai_c10StateSpentEv",
       "address": "0x02118728",
       "size": "0x0000010c",
       "legacy_source": "src/func_ov060_02118728.c",
       "ordinal": 7
     },
     {
-      "symbol": "_ZN9daKirai_c19func_ov060_02118834Ev",
+      "symbol": "_ZN9daKirai_c14StateExplodingEv",
       "address": "0x02118834",
       "size": "0x000000b4",
       "legacy_source": "src/func_ov060_02118834.c",
       "ordinal": 8
     },
     {
-      "symbol": "_ZN9daKirai_c19func_ov060_021188e8Ev",
+      "symbol": "_ZN9daKirai_c13StateSwellingEv",
       "address": "0x021188e8",
       "size": "0x00000088",
       "legacy_source": "src/func_ov060_021188e8.c",
       "ordinal": 9
     },
     {
-      "symbol": "_ZN9daKirai_c19func_ov060_02118970Ev",
+      "symbol": "_ZN9daKirai_c10StateArmedEv",
       "address": "0x02118970",
       "size": "0x00000140",
       "legacy_source": "src/func_ov060_02118970.c",
@@ -158,28 +158,28 @@
       "address": "0x0211aa30",
       "size": "0x8",
       "binding": "STB_GLOBAL",
-      "evidence": "compiler temporary pointer-to-member descriptor; its first word relocates to _ZN9daKirai_c19func_ov060_02118970Ev"
+      "evidence": "compiler temporary pointer-to-member descriptor; its first word relocates to _ZN9daKirai_c10StateArmedEv"
     },
     {
       "symbol": "@709",
       "address": "0x0211aa48",
       "size": "0x8",
       "binding": "STB_GLOBAL",
-      "evidence": "compiler temporary pointer-to-member descriptor; its first word relocates to _ZN9daKirai_c19func_ov060_021188e8Ev"
+      "evidence": "compiler temporary pointer-to-member descriptor; its first word relocates to _ZN9daKirai_c13StateSwellingEv"
     },
     {
       "symbol": "@711",
       "address": "0x0211aa40",
       "size": "0x8",
       "binding": "STB_GLOBAL",
-      "evidence": "compiler temporary pointer-to-member descriptor; its first word relocates to _ZN9daKirai_c19func_ov060_02118834Ev"
+      "evidence": "compiler temporary pointer-to-member descriptor; its first word relocates to _ZN9daKirai_c14StateExplodingEv"
     },
     {
       "symbol": "@713",
       "address": "0x0211aa38",
       "size": "0x8",
       "binding": "STB_GLOBAL",
-      "evidence": "compiler temporary pointer-to-member descriptor; its first word relocates to _ZN9daKirai_c19func_ov060_02118728Ev"
+      "evidence": "compiler temporary pointer-to-member descriptor; its first word relocates to _ZN9daKirai_c10StateSpentEv"
     }
   ],
   "bss": [
@@ -732,7 +732,7 @@
       "source": "0x0211aa30",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "_ZN9daKirai_c19func_ov060_02118970Ev",
+      "symbol": "_ZN9daKirai_c10StateArmedEv",
       "addend": 0,
       "target_module": "ov060",
       "target_address": "0x02118970"
@@ -742,7 +742,7 @@
       "source": "0x0211aa38",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "_ZN9daKirai_c19func_ov060_02118728Ev",
+      "symbol": "_ZN9daKirai_c10StateSpentEv",
       "addend": 0,
       "target_module": "ov060",
       "target_address": "0x02118728"
@@ -752,7 +752,7 @@
       "source": "0x0211aa40",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "_ZN9daKirai_c19func_ov060_02118834Ev",
+      "symbol": "_ZN9daKirai_c14StateExplodingEv",
       "addend": 0,
       "target_module": "ov060",
       "target_address": "0x02118834"
@@ -762,7 +762,7 @@
       "source": "0x0211aa48",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "_ZN9daKirai_c19func_ov060_021188e8Ev",
+      "symbol": "_ZN9daKirai_c13StateSwellingEv",
       "addend": 0,
       "target_module": "ov060",
       "target_address": "0x021188e8"
@@ -770,29 +770,29 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@707",
+      "from": "@838",
       "to": "@707",
-      "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @727 now; licensed under the existing pin @707"
+      "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @727 now; licensed under the existing pin @707 | compiler temp; dropping the dead named-parameter hold declaration and including Particle__System.h and math/MtxStack.h in place of the local stubs move the per-TU @NNN uniquifier, so mwcc emits it under this name now"
     },
     {
-      "from": "@713",
+      "from": "@844",
       "to": "@713",
-      "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @733 now; licensed under the existing pin @713"
+      "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @733 now; licensed under the existing pin @713 | compiler temp; dropping the dead named-parameter hold declaration and including Particle__System.h and math/MtxStack.h in place of the local stubs move the per-TU @NNN uniquifier, so mwcc emits it under this name now"
     },
     {
-      "from": "@711",
+      "from": "@842",
       "to": "@711",
-      "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @731 now; licensed under the existing pin @711"
+      "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @731 now; licensed under the existing pin @711 | compiler temp; dropping the dead named-parameter hold declaration and including Particle__System.h and math/MtxStack.h in place of the local stubs move the per-TU @NNN uniquifier, so mwcc emits it under this name now"
     },
     {
-      "from": "@709",
+      "from": "@840",
       "to": "@709",
-      "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @729 now; licensed under the existing pin @709"
+      "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @729 now; licensed under the existing pin @709 | compiler temp; dropping the dead named-parameter hold declaration and including Particle__System.h and math/MtxStack.h in place of the local stubs move the per-TU @NNN uniquifier, so mwcc emits it under this name now"
     },
     {
-      "from": "@705",
+      "from": "@836",
       "to": "@705",
-      "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @725 now; licensed under the existing pin @705"
+      "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @725 now; licensed under the existing pin @705 | compiler temp; dropping the dead named-parameter hold declaration and including Particle__System.h and math/MtxStack.h in place of the local stubs move the per-TU @NNN uniquifier, so mwcc emits it under this name now"
     }
   ]
 }

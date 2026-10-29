@@ -31,7 +31,7 @@
  *
  * THE SIX STATE PAIRS are not guesses from code adjacency. The static
  * initializer at 0x02122018 copies twelve ROM pointer-to-member constants into
- * data_ov072_02122b64 in the exact pairs documented below. SetState indexes
+ * gBgSnmBdyStates in the exact pairs documented below. SetState indexes
  * that table at state * 0x10 and CallStateInit invokes the first PMF of the
  * pair; CallStateBehavior invokes the second. Descriptive original names are
  * absent, so the ROM-evidenced indices are retained: State<N>/InitState<N>

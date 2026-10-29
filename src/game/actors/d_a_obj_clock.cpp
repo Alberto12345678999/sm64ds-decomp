@@ -7,7 +7,7 @@
  * the destructor pair at the end is the one exception, because the
  * compiler picks the order inside a D0/D1 group.
  *
- * leftovers (measured under mwccarm 2004/b56, left in the matching form):
+ * Notes (measured under mwccarm 2004/b56):
  * - the widened `int isLongHand` stays: folding actorID == 0x125 into the
  *   if sizes InitResources 0x70 -> 0x64; a ternary, or
  *   mHandIndex = actorID != 0x125, sizes it 0x70 -> 0x60.
@@ -16,7 +16,7 @@
  *   bounds sizes it 0xe0; folding the two stopped quadrants into one test
  *   sizes it 0xf8; mAngleZ = mAngleZ + step sizes it 0xfc; testing
  *   mHandIndex before IsAreaShowing stays 0x100 and 5 words differ.
- * - func_ov013_02111430 keeps the three memberwise mat4x3.t stores:
+ * - UpdateModelTransform keeps the three memberwise mat4x3.t stores:
  *   assigning a Vector3 sizes it 0x50 against 0x48.
  * - data_ov013_021116ac (per-hand speeds) and data_ov013_021116b0 (model
  *   handles) keep linker names: this TU reads them; it does not own that
@@ -42,18 +42,16 @@ struct ClockModelFilePtr : SharedFilePtr {
 extern "C" {
 extern void Matrix4x3_FromRotationZXYExt(void *, int, int, int);
 int IsAreaShowing(int areaId);
-extern s8 data_02092110;             /* current level id; hands advance while it is not positive */
-extern u8 data_0209f2c0;              /* clock setting: 0 slow, 1 fast, 2 random, 3 stopped */
+}
+
+extern s8 data_02092110; /* current level id; hands advance while it is not positive */
+extern u8 data_0209f2c0; /* clock setting: 0 slow, 1 fast, 2 random, 3 stopped */
 extern s16 data_ov013_021116ac[];
 extern SharedFilePtr *data_ov013_021116b0[];
 extern ClockModelFilePtr data_ov013_02112294;
 extern ClockModelFilePtr data_ov013_0211229c;
-}
 
-enum {
-    ACTOR_CLOCK_SHORT = 0x124,
-    ACTOR_CLOCK_LONG = 0x125
-};
+enum { ACTOR_CLOCK_SHORT = 0x124, ACTOR_CLOCK_LONG = 0x125 };
 
 enum {
     CLOCK_SETTING_SLOW = 0,
@@ -67,14 +65,12 @@ enum {
  * would be daObjClock_c_classInit for both. CLOCK_SHORT at 0x02090230 and
  * CLOCK_LONG at 0x0208ffa8 are the ROM debug strings. */
 // @symbol daObjClock_c_classInit_CLOCK_LONG
-extern "C" daObjClock_c *daObjClock_c_classInit_CLOCK_LONG()
-{
+extern "C" daObjClock_c *daObjClock_c_classInit_CLOCK_LONG() {
     return new daObjClock_c();
 }
 
 // @symbol daObjClock_c_classInit_CLOCK_SHORT
-extern "C" daObjClock_c *daObjClock_c_classInit_CLOCK_SHORT()
-{
+extern "C" daObjClock_c *daObjClock_c_classInit_CLOCK_SHORT() {
     return new daObjClock_c();
 }
 
@@ -108,8 +104,7 @@ extern "C" SpawnInfo<daObjClock_c> g_profile_CLOCK_SHORT = {
 /* Hand 0 is the long hand, hand 1 the short. The actorID test stays in an
  * int: folding it into the if sizes this 0x64 against 0x70, and a ternary
  * or mHandIndex = actorID != 0x125 sizes it 0x60. */
-int daObjClock_c::InitResources()
-{
+int daObjClock_c::InitResources() {
     int isLongHand = actorID == ACTOR_CLOCK_LONG;
     if (isLongHand)
         mHandIndex = 0;
@@ -117,7 +112,7 @@ int daObjClock_c::InitResources()
         mHandIndex = 1;
     mModel.SetFile((BMD_File *)dExtSimpleModel_c::LoadFile(*data_ov013_021116b0[mHandIndex]), 1,
                    -1);
-    func_ov013_02111430();
+    UpdateModelTransform();
     return 1;
 }
 
@@ -129,8 +124,7 @@ int daObjClock_c::InitResources()
  * Dropping the repeated lower bounds sizes this 0xe0. Folding the two
  * stopped quadrants sizes it 0xf8. mAngleZ = mAngleZ + step sizes it 0xfc.
  * Testing mHandIndex before IsAreaShowing is 5 words off. */
-int daObjClock_c::Behavior()
-{
+int daObjClock_c::Behavior() {
     if (data_02092110 <= 0) {
         mAngleZ += data_ov013_021116ac[mHandIndex];
     } else if (IsAreaShowing(mAreaId) && mHandIndex == 0) {
@@ -146,31 +140,28 @@ int daObjClock_c::Behavior()
         else if (angle >= 0xe000)
             data_0209f2c0 = CLOCK_SETTING_STOPPED;
     }
-    func_ov013_02111430();
+    UpdateModelTransform();
     return 1;
 }
 
 // @symbol _ZN12daObjClock_c6RenderEv
-int daObjClock_c::Render()
-{
+int daObjClock_c::Render() {
     mModel.Render(0);
     return 1;
 }
 
 // @symbol _ZN12daObjClock_c16CleanupResourcesEv
-int daObjClock_c::CleanupResources()
-{
+int daObjClock_c::CleanupResources() {
     data_ov013_021116b0[mHandIndex]->Release();
     return 1;
 }
 
-// @symbol _ZN12daObjClock_c19func_ov013_02111430Ev
+// @symbol _ZN12daObjClock_c20UpdateModelTransformEv
 /* Rebuild mModel.mat4x3 from the actor angles and from position >> 3.
  * Assigning a Vector3 to mat4x3.t sizes this 0x50 against 0x48.
  * The marker above is not decoration -- without it tools/tiers.py folds this
  * body into the preceding member's fragment. */
-void daObjClock_c::func_ov013_02111430()
-{
+void daObjClock_c::UpdateModelTransform() {
     Matrix4x3_FromRotationZXYExt(&mModel.mat4x3, mAngleX, mAngleY, mAngleZ);
     mModel.mat4x3.t.x = mPosX >> 3;
     mModel.mat4x3.t.y = mPosY >> 3;

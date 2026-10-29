@@ -52,7 +52,7 @@
       "ordinal": 1
     },
     {
-      "symbol": "_ZN16daObjKi_Hasira_c19func_ov016_02112a9cEv",
+      "symbol": "_ZN16daObjKi_Hasira_c17UpdateModelMatrixEv",
       "address": "0x02112a9c",
       "size": "0x00000048",
       "legacy_source": "src/func_ov016_02112a9c.c",
@@ -603,12 +603,12 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@659",
+      "from": "@708",
       "to": "@160",
       "evidence": "emitted destructor-registration node collides with ov002 @657; renumber to fleet-free name of the same length"
     },
     {
-      "from": "@660",
+      "from": "@709",
       "to": "@161",
       "evidence": "emitted destructor-registration node renumbered alongside @657 so both nodes leave the collision-prone emission range; @161 is unused everywhere and the same length"
     }

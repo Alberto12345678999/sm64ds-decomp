@@ -6,21 +6,14 @@
  * profile 130 to FLYING_CARPET. ov036 is RR. Not buranko / hane /
  * guruguru (siblings in this overlay).
  *
- * deslop
- * classInit is `return new daObjRcCarpet_c()`; dPathLiftActor_c's
+ * Notes:
+ * - classInit is `return new daObjRcCarpet_c()`; dPathLiftActor_c's
  *   implicit constructor inlines into it, as in d_a_obj_path_lift.cpp.
- * Leftover: dExtAnmModel_c::SetAnim and dBgW_KcMbg::SetFile stay mangled
- *   -- both take Fix12<int> by value (wall 6az); a method call homes
- *   the argument and size-DIFFs InitResources.
- * Leftover: dBgActor_c::IsClsnInRange stays mangled -- header method
- *   form is Undefined (Fix12i mangles as i; ROM is Fix12<int>).
- * Leftover: func_020393d4 is an 8-byte store into dBgW+0x18
- *   (beforeClsnCallback). This TU calls it; naming belongs with
- *   dBgW in arm9.
- * Leftover: func_ov036_021122c0 / 0211224c keep ROM labels.
- * Leftover: data_ov002_0210d9f0 and data_ov036_02112b28 CLPS stay
- *   outside this TU. The three ov036 handles are file-scope objects
- *   at the bottom of this file.
+ * - func_020393d4 is an 8-byte store into dBgW+0x18 (beforeClsnCallback);
+ *   dBgW.h has no setter. Matrix4x3_FromRotationXYZExt has no header either.
+ * - data_ov002_0210d9f0 and data_ov036_02112b28 CLPS stay outside this TU.
+ *   The three ov036 handles are file-scope objects at the bottom of this
+ *   file.
  */
 
 /* Runtime asset handles resolved through the overlay 0 file table. */
@@ -43,8 +36,8 @@ struct FlyingCarpetResources {
     CLPS_Block *clps;
 };
 
-typedef char FlyingCarpetResources_size_must_be_0x0c[
-    sizeof(FlyingCarpetResources) == 0x0c ? 1 : -1];
+typedef char
+    FlyingCarpetResources_size_must_be_0x0c[sizeof(FlyingCarpetResources) == 0x0c ? 1 : -1];
 
 /* Retail constructs these 8-byte handles in this order and registers
  * their destructors. The wrapper names are local; the ctor/dtor
@@ -64,7 +57,6 @@ struct CarpetCollisionFilePtr : SharedFilePtr {
     ~CarpetCollisionFilePtr();
 };
 
-extern "C" {
 extern SharedFilePtr data_ov002_0210d9f0;
 extern CarpetModelFilePtr gRcCarpetModelFile;
 extern CarpetAnimationFilePtr gRcCarpetWaitAnimationFile;
@@ -72,27 +64,16 @@ extern CarpetCollisionFilePtr gRcCarpetCollisionFile;
 extern CLPS_Block data_ov036_02112b28;
 
 /* Retail resource-pointer table at ov036:0x02113f58. */
-FlyingCarpetResources data_ov036_02113f58 = {
-    &gRcCarpetModelFile,
-    &gRcCarpetCollisionFile,
-    &data_ov036_02112b28
-};
+FlyingCarpetResources data_ov036_02113f58 = {&gRcCarpetModelFile, &gRcCarpetCollisionFile,
+                                             &data_ov036_02112b28};
 
-
-extern void hold_d_a_obj_rc_carpet(dBgW_KcMbg *collider, KCL_File *file, const Matrix4x3 *matrix,
-                                   Fix12i scale, s16 angle, CLPS_Block *clps);
-extern void func_020393d4(dBgW *collider, void *callback);
-extern void Matrix4x3_FromRotationXYZExt(
-    Matrix4x3 *matrix, s16 x, s16 y, s16 z);
+extern "C" {
+void func_020393d4(dBgW *collider, void *callback);
+void Matrix4x3_FromRotationXYZExt(Matrix4x3 *matrix, s16 x, s16 y, s16 z);
 }
 
-
-extern "C" void func_ov036_021122c0(daObjRcCarpet_c *self);
-extern "C" void func_ov036_0211224c(daObjRcCarpet_c *self);
-
 // @symbol daObjRcCarpet_c_classInit
-extern "C" daObjRcCarpet_c *daObjRcCarpet_c_classInit()
-{
+extern "C" daObjRcCarpet_c *daObjRcCarpet_c_classInit() {
     return new daObjRcCarpet_c();
 }
 
@@ -108,20 +89,16 @@ extern "C" SpawnInfo<daObjRcCarpet_c> g_profile_RC_CARPET = {
 };
 
 // @symbol _ZN15daObjRcCarpet_c13InitResourcesEv
-int daObjRcCarpet_c::InitResources()
-{
+int daObjRcCarpet_c::InitResources() {
     dExtSimpleModel_c::LoadFile(data_ov002_0210d9f0);
     void *modelFile = dExtSimpleModel_c::LoadFile(*data_ov036_02113f58.model);
     mAnmModel.SetFile((BMD_File *)modelFile, 1, -1);
     dExtFrameCtrl_c::LoadFile(gRcCarpetWaitAnimationFile);
     mAnmModel.SetAnim((BCA_File *)gRcCarpetWaitAnimationFile.filePtr, 0, 0x1000, 0);
-    func_ov036_021122c0(this);
+    UpdateModelTransform();
     UpdateClsnPosAndRot();
-    KCL_File *collisionFile =
-        (KCL_File *)dBgW_Kc::LoadFile(*data_ov036_02113f58.collision);
-    ((dBgW_KcMbg *)(&mMeshCollider))
-        ->dBgW_KcMbg::SetFile(collisionFile, *(&mClsnMat), 0x199, mAngleY,
-                              *(data_ov036_02113f58.clps));
+    KCL_File *collisionFile = (KCL_File *)dBgW_Kc::LoadFile(*data_ov036_02113f58.collision);
+    mMeshCollider.SetFile(collisionFile, mClsnMat, 0x199, mAngleY, *data_ov036_02113f58.clps);
     func_020393d4(&mMeshCollider, (void *)&dBgW::UpdatePosAndAngs);
     mPathSpeed = 0xa000;
     mHorzSpeed = mPathSpeed;
@@ -132,23 +109,21 @@ int daObjRcCarpet_c::InitResources()
 }
 
 // @symbol _ZN15daObjRcCarpet_c8BehaviorEv
-int daObjRcCarpet_c::Behavior()
-{
+int daObjRcCarpet_c::Behavior() {
     if (mAfterClsnRan)
         ApproachLinear(mRideDipY, -0x14000, 0x5000);
     else
         ApproachLinear(mRideDipY, 0, 0x5000);
     BaseBehavior();
     mAnmModel.Advance();
-    func_ov036_021122c0(this);
-    func_ov036_0211224c(this);
+    UpdateModelTransform();
+    UpdateClsnTransform();
     IsClsnInRange(0, 0);
     return 1;
 }
 
 // @symbol _ZN15daObjRcCarpet_c6RenderEv
-int daObjRcCarpet_c::Render()
-{
+int daObjRcCarpet_c::Render() {
     if (mWaitTimer < 0x5a && (mWaitTimer & 1))
         return 1;
     mAnmModel.Render(0);
@@ -156,8 +131,7 @@ int daObjRcCarpet_c::Render()
 }
 
 // @symbol _ZN15daObjRcCarpet_c16CleanupResourcesEv
-int daObjRcCarpet_c::CleanupResources()
-{
+int daObjRcCarpet_c::CleanupResources() {
     if (mMeshCollider.IsEnabled())
         mMeshCollider.Disable();
     data_ov002_0210d9f0.Release();
@@ -167,24 +141,21 @@ int daObjRcCarpet_c::CleanupResources()
     return 1;
 }
 
-// @symbol func_ov036_021122c0
-extern "C" void func_ov036_021122c0(daObjRcCarpet_c *self)
-{
-    Matrix4x3_FromRotationXYZExt(&self->mAnmModel.mat4x3, self->mAngleX, self->mAngleY,
-                                 self->mAngleZ);
-    self->mAnmModel.mat4x3.m[9] = self->mPosX >> 3;
-    self->mAnmModel.mat4x3.m[10] = (self->mPosY + self->mRideDipY) >> 3;
-    self->mAnmModel.mat4x3.m[11] = self->mPosZ >> 3;
+// @symbol _ZN15daObjRcCarpet_c20UpdateModelTransformEv
+void daObjRcCarpet_c::UpdateModelTransform() {
+    Matrix4x3_FromRotationXYZExt(&mAnmModel.mat4x3, mAngleX, mAngleY, mAngleZ);
+    mAnmModel.mat4x3.m[9] = mPosX >> 3;
+    mAnmModel.mat4x3.m[10] = (mPosY + mRideDipY) >> 3;
+    mAnmModel.mat4x3.m[11] = mPosZ >> 3;
 }
 
-// @symbol func_ov036_0211224c
-extern "C" void func_ov036_0211224c(daObjRcCarpet_c *self)
-{
-    self->mClsnMat = self->mAnmModel.mat4x3;
-    self->mClsnMat.m[9] = self->mPosX;
-    self->mClsnMat.m[10] = self->mPosY + self->mRideDipY;
-    self->mClsnMat.m[11] = self->mPosZ;
-    self->mMeshCollider.Transform(self->mClsnMat, self->mAngleY);
+// @symbol _ZN15daObjRcCarpet_c19UpdateClsnTransformEv
+void daObjRcCarpet_c::UpdateClsnTransform() {
+    mClsnMat = mAnmModel.mat4x3;
+    mClsnMat.m[9] = mPosX;
+    mClsnMat.m[10] = mPosY + mRideDipY;
+    mClsnMat.m[11] = mPosZ;
+    mMeshCollider.Transform(mClsnMat, mAngleY);
 }
 /* ROM ordinals 0/1 are emitted by the inline virtual destructor:*/
 // @symbol _ZN15daObjRcCarpet_cD1Ev

@@ -52,10 +52,9 @@
  * implementation, so it is not part of this recovery.
  *
  * All four bytes still match; the symbol names were placeholders
- * (func_ov013_0211xxxx) before the rename. func_ov013_02111238, the small
- * helper both InitResources and Behavior call, now lives in the same TU but
- * stays a free function under its func_ name -- it is not a vtable slot, and
- * nothing in the cartridge says whether it is a member.
+ * (func_ov013_0211xxxx) before the rename. UpdateModelTransform
+ * (0x02111238), the small helper both InitResources and Behavior call, is a
+ * non-virtual member: it takes the object in r0 and touches only its fields.
  *
  * REAL METHODS, NOT THE FREE-FUNCTION IDIOM. Older recoveries (daDoor_c before
  * its promotion, src/runtime/actor/ActorBase.cpp) declare the override here but define
@@ -91,13 +90,13 @@
 #ifdef __cplusplus
 
 struct daObjClockHuriko_c : dActor_c {
-    u8  pad_0d0[0x4];
+    u8 pad_0d0[0x4];
     /* Named by the implicit constructor's _ZN17dExtSimpleModel_cC1Ev call at +0xd4 -- a
        relocation the ROM build checks. */
     dExtSimpleModel_c mModel; /* 0x0d4 */
 
-    s16 mAngSpeed;               /* 0x124 -- swing speed, see SIZE above */
-    u8  pad_126[0x2];
+    s16 mAngSpeed; /* 0x124 -- swing speed, see SIZE above */
+    u8 pad_126[0x2];
 
     /* --- vtable. The destructor is INLINE, and that is load-bearing rather
        than a style choice. Out of line, mwccarm emits D0 before D1 -- the
@@ -117,10 +116,12 @@ struct daObjClockHuriko_c : dActor_c {
        Now real daObjClockHuriko_c:: methods, defined in
        src/game/actors/d_a_obj_clock_huriko.cpp; the earlier free-function-under-a-
        mangled-symbol idiom is gone with the promotion. --- */
-    virtual s32 InitResources();          /* slot 0 */
-    virtual s32 CleanupResources();       /* slot 3 */
-    virtual s32 Behavior();               /* slot 6 */
-    virtual s32 Render();                 /* slot 9 */
+    virtual s32 InitResources();    /* slot 0 */
+    virtual s32 CleanupResources(); /* slot 3 */
+    virtual s32 Behavior();         /* slot 6 */
+    virtual s32 Render();           /* slot 9 */
+
+    void UpdateModelTransform();
 };
 
 /* Holds the chain to the size the factory's operator new(0x128) evidences.

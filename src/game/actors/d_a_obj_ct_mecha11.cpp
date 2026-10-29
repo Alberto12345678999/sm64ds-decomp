@@ -22,9 +22,9 @@
  * unit and ov035's .text.
  */
 
-// leftovers: func_020393a4 /
-// func_02039394 / func_020393d4 / func_020396c0 are small stores into dBgW's
-// fields and callback slots; naming belongs with dBgW in arm9.
+// Notes: func_020393a4 / func_02039394 / func_020393d4 / func_020396c0 are
+// the out-of-line stores into the collider's range fields and callback slot;
+// d_bg_w.cpp defines them and no header declares them.
 
 /* Runtime asset handles resolved through the overlay 0 file table. */
 enum daObjCtMecha11_c_AssetId {
@@ -39,10 +39,7 @@ enum daObjCtMecha11_c_AssetId {
 #include "SharedFilePtr.h"
 #include "dBgCh_Gnd.h"
 #include "nitro/fx/fx.h"
-
-/* Vector3 declares a destructor. A real local would emit one this function
- * does not call. */
-struct V3 { int x, y, z; };
+#include "math/MtxStack.h"
 
 /* Resource handles constructed by this TU's static initializer. The
  * constructor and destructor bodies stay out of line; mwcc registers them. */
@@ -57,30 +54,26 @@ struct Mecha11ClsnFilePtr : SharedFilePtr {
 };
 
 extern "C" {
-extern void Matrix4x3_FromRotationY(void *m, short ang);
 extern void Matrix4x3_FromRotationXYZExt(void *m, int x, int y, int z);
-extern short data_02082214[];
-extern Mecha11ClsnFilePtr RotatingClockHand_ClsnFile;
-extern Mecha11ModelFilePtr RotatingClockHand_ModelFile;
 extern int DecIfAbove0_Short(char *p);
 extern int RandomIntInternal(char *p);
 extern void func_020393a4(int *p, int v);
 extern void func_02039394(int *p, int v);
+extern void func_020393d4(void *p, void *v);
+extern void func_020396c0(void *p, int value);
+}
+
+extern short data_02082214[];
+extern Mecha11ClsnFilePtr RotatingClockHand_ClsnFile;
+extern Mecha11ModelFilePtr RotatingClockHand_ModelFile;
 extern unsigned char data_0209f2c0[];
 extern int data_0209e650[];
 extern short data_ov035_02112b80[];
-extern void hold_d_a_obj_ct_mecha11(void *self, KCL_File *f, const Matrix4x3 &m, int fix, short sh,
-                                    CLPS_Block &b);
-extern void func_020393d4(void *p, void *v);
-extern void func_020396c0(void *p, int value);
 extern CLPS_Block data_ov035_02112238;
-}
 
 // @symbol _ZN16daObjCtMecha11_cD1Ev
 // @symbol _ZN16daObjCtMecha11_cD0Ev
-daObjCtMecha11_c::~daObjCtMecha11_c()
-{
-}
+daObjCtMecha11_c::~daObjCtMecha11_c() {}
 
 // @symbol _ZN16daObjCtMecha11_c12UpdateShadowEv
 void daObjCtMecha11_c::UpdateShadow() {
@@ -90,7 +83,8 @@ void daObjCtMecha11_c::UpdateShadow() {
         return;
     int clipD = ad + 0x350000;
     int half = ad / 2;
-    if (clipD < 0x350000) clipD = 0x350000;
+    if (clipD < 0x350000)
+        clipD = 0x350000;
     mClipOffsetY = -half;
     mClipRadius = (int)(clipD + ((unsigned)clipD >> 31)) >> 4;
     Matrix4x3_FromRotationY(&mShadowMat, mAngleY);
@@ -105,8 +99,7 @@ void daObjCtMecha11_c::UpdateShadow() {
 }
 
 // @symbol _ZN16daObjCtMecha11_c11UpdateModelEv
-void daObjCtMecha11_c::UpdateModel()
-{
+void daObjCtMecha11_c::UpdateModel() {
     Matrix4x3_FromRotationXYZExt(&mModel.mat4x3, mAngleX, mAngleY, mAngleZ);
     mModel.mat4x3.m[9] = mPosX >> 3;
     mModel.mat4x3.m[10] = mPosY >> 3;
@@ -114,8 +107,7 @@ void daObjCtMecha11_c::UpdateModel()
 }
 
 // @symbol _ZN16daObjCtMecha11_c16CleanupResourcesEv
-int daObjCtMecha11_c::CleanupResources()
-{
+int daObjCtMecha11_c::CleanupResources() {
     if (mMeshCollider.IsEnabled()) {
         mMeshCollider.Disable();
     }
@@ -125,22 +117,22 @@ int daObjCtMecha11_c::CleanupResources()
 }
 
 // @symbol _ZN16daObjCtMecha11_c6RenderEv
-int daObjCtMecha11_c::Render()
-{
+int daObjCtMecha11_c::Render() {
     mModel.Render(0);
     return 1;
 }
 
 // @symbol _ZN16daObjCtMecha11_c8BehaviorEv
-int daObjCtMecha11_c::Behavior()
-{
+int daObjCtMecha11_c::Behavior() {
     unsigned char idx = data_0209f2c0[0];
     mPrevAngleX = data_ov035_02112b80[idx];
     if (idx == 2) {
         if (DecIfAbove0_Short((char *)&mRandTimer) == 0) {
             int r = (unsigned short)((unsigned)RandomIntInternal((char *)data_0209e650) >> 16);
-            if ((unsigned)r >= 0x7fff) mRandDirection = 1;
-            else mRandDirection = -1;
+            if ((unsigned)r >= 0x7fff)
+                mRandDirection = 1;
+            else
+                mRandDirection = -1;
             mRandTimer = (short)((r % 4 + 1) * 0x1e);
             mRandFrames = mRandTimer;
         } else {
@@ -166,8 +158,7 @@ int daObjCtMecha11_c::Behavior()
 }
 
 // @symbol _ZN16daObjCtMecha11_c13InitResourcesEv
-int daObjCtMecha11_c::InitResources()
-{
+int daObjCtMecha11_c::InitResources() {
     void *mf = dExtSimpleModel_c::LoadFile(RotatingClockHand_ModelFile);
     mModel.SetFile((BMD_File *)mf, 1, -1);
     mShadowModel.InitCuboid();
@@ -176,16 +167,15 @@ int daObjCtMecha11_c::InitResources()
     KCL_File *kf = (KCL_File *)dBgW_Kc::LoadFile(RotatingClockHand_ClsnFile);
     ((dBgW_KcMbg *)(&mMeshCollider))
         ->dBgW_KcMbg::SetFile(kf, mClsnMat, 0x1000, mAngleY, data_ov035_02112238);
-    func_020393d4(&mMeshCollider,
-                  (void *)&dBgW::UpdatePosWithTransform);
+    func_020393d4(&mMeshCollider, (void *)&dBgW::UpdatePosWithTransform);
     func_020396c0(&mMeshCollider, 0);
-    V3 v;
+    Vector3 v;
     v.x = mPosX;
     v.y = mPosY;
     v.z = mPosZ;
     v.y = v.y - 0xa000;
     dBgCh_Gnd rg;
-    rg.SetObjAndPos(*(Vector3 *)&v, (dActor_c *)0);
+    rg.SetObjAndPos(v, (dActor_c *)0);
     mFloorPosY = v.y;
     if (rg.DetectClsn() != 0)
         mFloorPosY = rg.clsnY;
@@ -197,8 +187,7 @@ int daObjCtMecha11_c::InitResources()
  * later EAD lineage supplies classInit. Exact original spelling is not
  * preserved. Historical alias: SpinningPlatform_Spawn. */
 // @symbol daObjCtMecha11_c_classInit
-extern "C" daObjCtMecha11_c *daObjCtMecha11_c_classInit()
-{
+extern "C" daObjCtMecha11_c *daObjCtMecha11_c_classInit() {
     return new daObjCtMecha11_c();
 }
 

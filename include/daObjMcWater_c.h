@@ -27,9 +27,9 @@
 
 struct daObjMcWater_c : dBgActor_c {
     u8 unk_31e[0x2];
-    dExtAnmTexSRT_c mTexTransformer;    /* 0x320 -- Behavior re-forces
+    dExtAnmTexSRT_c mTexTransformer; /* 0x320 -- Behavior re-forces
                                            speed to 0x1000 every frame */
-    u8 unk_334[0x4];                    /* 0x334 -- allocation tail; nothing
+    u8 unk_334[0x4];                 /* 0x334 -- allocation tail; nothing
                                            in the eight matched bodies reads
                                            or writes it */
 
@@ -40,10 +40,14 @@ struct daObjMcWater_c : dBgActor_c {
        so this class's TU still homes _ZTV/_ZTI/_ZTS. */
     virtual ~daObjMcWater_c() {}
 
-    virtual int InitResources();       /* slot  0 */
-    virtual int CleanupResources();    /* slot  3 */
-    virtual int Behavior();            /* slot  6 */
-    virtual int Render();              /* slot  9 */
+    virtual int InitResources();    /* slot  0 */
+    virtual int CleanupResources(); /* slot  3 */
+    virtual int Behavior();         /* slot  6 */
+    virtual int Render();           /* slot  9 */
+
+    /* Spawn the seven WATERFALL actors (0xc5) at the positions the save
+       state and game mode select. */
+    void SpawnWaterfalls();
 };
 
 #ifndef SM64DS_PLATFORM_PC

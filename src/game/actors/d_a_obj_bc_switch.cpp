@@ -76,15 +76,9 @@
  *
  * NO PRAGMAS. None of the nine legacy sources carried one.
  *
- * deslop leftovers:
- * - dBgW_KcMbg::SetFile 6az: InitResources' by-value Fix12<int> scale makes
- *   the header method form size-DIFF.
- * - dBgActor_c::IsClsnInRange 6az: Behavior's two by-value Fix12<int>
- *   parameters; the header method form is refused by the bytes
- *   (include/dBgActor_c.h).
- * - Sound::ChangeMusicVolume 6az: Behavior passes Fix12<int> by value.
- * - func_020393c4: InitResources stores func_ov002_020f15b8 on
- *   mMeshCollider; dBgW.h has no setter.
+ * Notes:
+ * - func_020393c4 (d_bg_w.cpp, no header) stores StoodOnCallback as
+ *   mMeshCollider's stood-on callback.
  * - data_ov002_0210d6f4 CLPS handle: this TU claims .text only.
  * - InitResources 0x32a: named mCoinTimerSeed CSE's the field address.
  *   Keep (u16*)(c+0x300)[0x15] / ((int)c+0x32a).
@@ -96,8 +90,8 @@
  *   [3] 0x020f1290  src/_ZN16daObjBC_Switch_c6RenderEv.cpp
  *   [4] 0x020f12c8  src/_ZN16daObjBC_Switch_c8BehaviorEv.cpp
  *   [5] 0x020f1468  src/_ZN16daObjBC_Switch_c13InitResourcesEv.cpp
- *   [6] 0x020f1578  src/func_ov002_020f1578.c
- *   [7] 0x020f15b8  src/func_ov002_020f15b8.c
+ *   [6] 0x020f1578  src/func_ov002_020f1578.c (now OnStoodOn)
+ *   [7] 0x020f15b8  src/func_ov002_020f15b8.c (now StoodOnCallback)
  *   [8] 0x020f15cc  src/daObjBC_Switch_c_classInit.c
  */
 
@@ -113,6 +107,7 @@ enum d_a_obj_bc_switch_AssetId {
 #include "SharedFilePtr.h"
 #include "decl_common.h"
 #include "Event.h"
+#include "Sound.h"
 
 /* File 1084 / 1085 resource handles. The static initializer registers
  * their destructors; the spellings are this TU's, mapped onto
@@ -128,22 +123,15 @@ struct BcSwitchCollisionFilePtr : SharedFilePtr {
     ~BcSwitchCollisionFilePtr();
 };
 
-namespace Sound {
-s32 ChangeMusicVolume(u32 a, s32 vol);
-}
-
-extern "C" {
 extern BcSwitchCollisionFilePtr daObjBC_Switch_c_ClsnFile;
 extern BcSwitchModelFilePtr daObjBC_Switch_c_ModelFile;
+
+/* arm9 / ov002 C helpers with no shared header. */
+extern "C" {
 extern u8 IsAreaShowing(s32 idx);
 extern u16 DecIfAbove0_Short(u16 *p);
-/* dBgActor_c::IsClsnInRange(Fix12<int>, Fix12<int>) -- wall 6az on Behavior. */
-/* dBgW_KcMbg::SetFile -- wall 6az on InitResources. */
-extern void hold_d_a_obj_bc_switch(dBgW_KcMbg *self, KCL_File *file, Matrix4x3 *mat, int scale,
-                                   short angY, void *clps);
-extern "C" void func_020393c4(void* p, void* v);
-extern int func_ov002_020dd8b8(void* c);
-extern void func_ov002_020f1578(daObjBC_Switch_c *c, char *arg);
+extern void func_020393c4(void *p, void *v);
+extern int func_ov002_020dd8b8(void *c);
 }
 
 /* Actor ID 0xbf is PLAYER. This int-returning predicate is what makes the
@@ -164,31 +152,29 @@ static inline int IsPlayerActor(dActor_c *actor) {
  * inline operator new; 0x020f15e0 calls dBgActor_c's C2 and the store at
  * 0x020f15ec lays down this class's vptr. The null check is the one `new`
  * itself emits. */
-extern "C" daObjBC_Switch_c *daObjBC_Switch_c_classInit(void)
-{
+extern "C" daObjBC_Switch_c *daObjBC_Switch_c_classInit(void) {
     return new daObjBC_Switch_c();
 }
 
 /* -------------------------------------------------------------------------- */
 /* -------------------------------------------------------------------------- */
-// @symbol func_ov002_020f15b8
-extern "C" {  /* .c-derived member: C linkage for the whole block */
-void func_ov002_020f15b8(void* a, void* b, void* c) {
-    func_ov002_020f1578((daObjBC_Switch_c *)b, (char*)c);
-}
+// @symbol _ZN16daObjBC_Switch_c15StoodOnCallbackEP4dBgWP8dActor_cS3_
+/* The callback InitResources installs: drops the collider argument and
+   forwards (switch, other). */
+void daObjBC_Switch_c::StoodOnCallback(dBgW *collider, dActor_c *self, dActor_c *other) {
+    ((daObjBC_Switch_c *)self)->OnStoodOn(other);
 }
 
 /* -------------------------------------------------------------------------- */
 /* -------------------------------------------------------------------------- */
-// @symbol func_ov002_020f1578
-extern "C" {  /* .c-derived member: C linkage for the whole block */
-void func_ov002_020f1578(daObjBC_Switch_c *c, char *arg){
-    /* arg is the colliding actor; Player.h is out of scope. */
-    if (!IsPlayerActor((dActor_c *)arg))
+// @symbol _ZN16daObjBC_Switch_c9OnStoodOnEP8dActor_c
+/* A player standing on the switch presses it once func_ov002_020dd8b8
+   accepts the contact. */
+void daObjBC_Switch_c::OnStoodOn(dActor_c *other) {
+    if (!IsPlayerActor(other))
         return;
-    if (func_ov002_020dd8b8(arg) != 0)
-        c->mPressed = 1;
-}
+    if (func_ov002_020dd8b8(other) != 0)
+        mPressed = 1;
 }
 
 /* -------------------------------------------------------------------------- */
@@ -218,15 +204,14 @@ void func_ov002_020f1578(daObjBC_Switch_c *c, char *arg){
  * shrinks the function by 16 bytes (measured).
  */
 /* The name comes from vtable slot identity, not from the image. */
-int daObjBC_Switch_c::InitResources()
-{
-    char* c = (char*)this;
-    void* bmd;
-    void* kcl;
+int daObjBC_Switch_c::InitResources() {
+    char *c = (char *)this;
+    void *bmd;
+    void *kcl;
     int y;
     unsigned int x;
     unsigned short val;
-    unsigned short* p;
+    unsigned short *p;
 
     bmd = dExtSimpleModel_c::LoadFile(daObjBC_Switch_c_ModelFile);
     mModel.SetFile((BMD_File *)bmd, 1, -1);
@@ -236,15 +221,12 @@ int daObjBC_Switch_c::InitResources()
     UpdateClsnPosAndRot();
 
     kcl = dBgW_Kc::LoadFile(daObjBC_Switch_c_ClsnFile);
-    /* MEASURED on ov002/daObjBC_Switch_c::InitResources: this one call has
-       to keep the mangled spelling. Its third parameter is a by-value
-       Fix12<int> -- wall 6az -- and materialising one costs stack traffic
-       the ROM does not have. */
+    /* Collision scale 0x199 is 0.1 in 20.12. */
     ((dBgW_KcMbg *)(&mMeshCollider))
         ->dBgW_KcMbg::SetFile((KCL_File *)kcl, *(&mClsnMat), 0x199, mAngleY,
                               *(CLPS_Block *)(&data_ov002_0210d6f4));
 
-    func_020393c4(&mMeshCollider, (void*)&func_ov002_020f15b8);
+    func_020393c4(&mMeshCollider, (void *)&StoodOnCallback);
 
     mPressed = 0;
 
@@ -257,7 +239,7 @@ int daObjBC_Switch_c::InitResources()
     mCoinTimerSeed = (x >> 8) & 0xff;
     mHomeAreaId = mAreaId;
     val = mCoinTimerSeed;
-    p = (unsigned short*)(c + 0x300);
+    p = (unsigned short *)(c + 0x300);
 
     if (val == 0xff || val == 0) {
         p = (unsigned short *)(c + 0x300);
@@ -294,8 +276,7 @@ int daObjBC_Switch_c::InitResources()
  * Position and collision are updated regardless, and the collider only when the
  * player is within 0x1f4000.
  */
-s32 daObjBC_Switch_c::Behavior()
-{
+s32 daObjBC_Switch_c::Behavior() {
     u16 t;
 
     if (mPressed == 1) {
@@ -334,8 +315,6 @@ s32 daObjBC_Switch_c::Behavior()
         }
     }
     UpdateModelPosAndRotY();
-    /* MEASURED on ov002/daObjBC_Switch_c::Behavior: the two by-value
-       Fix12<int> parameters are wall 6az. */
     if (IsClsnInRange(0x1f4000, 0) != 0)
         UpdateClsnPosAndRot();
     return 1;
@@ -350,8 +329,7 @@ s32 daObjBC_Switch_c::Behavior()
  * toward mStopPosY once pressed, so this comparison IS the visibility rule --
  * the switch vanishes exactly when it bottoms out, with no separate flag.
  */
-int daObjBC_Switch_c::Render()
-{
+int daObjBC_Switch_c::Render() {
     if (mPosY > mStopPosY)
         mModel.Render(0);
     return 1;
@@ -365,8 +343,7 @@ int daObjBC_Switch_c::Render()
  * Disables the collider if it is still enabled -- so a second cleanup is
  * harmless -- then releases the model and collision files.
  */
-int daObjBC_Switch_c::CleanupResources()
-{
+int daObjBC_Switch_c::CleanupResources() {
     if (mMeshCollider.IsEnabled())
         mMeshCollider.Disable();
     daObjBC_Switch_c_ModelFile.Release();

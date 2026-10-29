@@ -22,6 +22,7 @@
 #include "dExtBlendAnmModel_c.h"
 #include "dExtAnmTexPat_c.h"
 #include "dExtShadowModel_c.h"
+#include "private/ov075_entry_mesh.h"
 
 /* One figure on the entry stage. mMoveState and mAnimState index the two
  * pointer-to-member state tables in src/game/stages/d_ent_obj.cpp; the fields
@@ -127,25 +128,18 @@ struct dEntObj_c : dBase_c {
     dExtSimpleModel_c mModel;        /* 0x86c */
     dExtAnmModel_c mAnmModel;        /* 0x8bc */
     UnknownVsPlayer mPlayers[4];     /* 0x920 */
-    /* 0xe80 -- the 0xa8-byte entry-menu grid mesh (EntryMesh,
-       include/private/ov075_entry_mesh.h), spelled as its first byte plus
-       pad_e81. Every use passes its address to the mesh functions:
-       func_ov075_0211b458 (init), 0211b418 (behavior), 0211b3d8 (render),
-       0211ab38 (touch) and 0211b3b8 (cleanup: hands mVertices to
-       func_0203cbc0). Was unk_e80. */
-    u8 mMesh;
-    u8 pad_e81[0xa7];
-    s32 mCamPosX;      /* 0xf28 */
-    s32 mCamPosY;      /* 0xf2c */
-    s32 mCamPosZ;      /* 0xf30 */
-    s32 mCamTargetX;   /* 0xf34 */
-    s32 mCamTargetY;   /* 0xf38 */
-    s32 mCamTargetZ;   /* 0xf3c */
-    u8 mAnimActive;    /* 0xf40 */
-    u8 mState;         /* 0xf41 */
-    u8 mFocusedPlayer; /* 0xf42 */
-    u8 mPlayerCount;   /* 0xf43 */
-    u8 mSuspended;     /* 0xf44 */
+    EntryMesh mMesh;                 /* 0xe80 -- the entry-menu grid mesh */
+    s32 mCamPosX;                    /* 0xf28 */
+    s32 mCamPosY;                    /* 0xf2c */
+    s32 mCamPosZ;                    /* 0xf30 */
+    s32 mCamTargetX;                 /* 0xf34 */
+    s32 mCamTargetY;                 /* 0xf38 */
+    s32 mCamTargetZ;                 /* 0xf3c */
+    u8 mAnimActive;                  /* 0xf40 */
+    u8 mState;                       /* 0xf41 */
+    u8 mFocusedPlayer;               /* 0xf42 */
+    u8 mPlayerCount;                 /* 0xf43 */
+    u8 mSuspended;                   /* 0xf44 */
 
     virtual ~dEntObj_c();
     virtual int InitResources();

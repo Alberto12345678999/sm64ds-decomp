@@ -28,24 +28,20 @@
  * word-compared by nothing, so the 31 slots are proved and those two words are
  * not.
  *
- * deslop leftovers:
- * - dExtAnmModel_c::SetAnim 6az: InitResources' by-value Fix12<int> speed makes
- *   the header method form size-DIFF.
- * - func_ov002_020bc488 keeps its unnamed ROM spelling; the image gives it
- *   neither a member name nor a `this`.
+ * NOTES:
+ * - UpdateModelTransform (0x020bc488) is this class's only non-virtual
+ *   member; InitResources is its one caller.
  * - data_ov002_0210e0d4 / _0210e0dc keep their ROM bss names. The model
  *   handle constructs through func_02017acc; the animation handle
  *   constructs through SharedFilePtr::Construct.
- * - common.h is not first: this file wants math/Matrix.h's Matrix4x3 so
- *   mAnmModel.mat4x3.t is a Vector3.
- * - No Player.h / dCamera_c.h.
+ * - common.h is not included: this file wants math/Matrix.h's Matrix4x3 so
+ *   mAnmModel.mat4x3.t is a Vector3, which is also why
+ *   Matrix4x3_FromRotationY is declared locally rather than taken from
+ *   math/MtxStack.h (that header pulls in common.h).
  */
 
 /* Runtime asset handles resolved through the overlay 0 file table. */
-enum d_a_obj_wakame_AssetId {
-    ASSET_OBJ_WAKAME_BMD = 0x0495,
-    ASSET_OBJ_WAKAME_WAIT_BCA = 0x0496
-};
+enum d_a_obj_wakame_AssetId { ASSET_OBJ_WAKAME_BMD = 0x0495, ASSET_OBJ_WAKAME_WAIT_BCA = 0x0496 };
 
 #include "daObjWakame_c.h"
 #include "SharedFilePtr.h"
@@ -60,21 +56,15 @@ struct WakameAnimationFileHandle : SharedFilePtr {
     WakameAnimationFileHandle(unsigned int fileId);
     ~WakameAnimationFileHandle();
 };
-typedef char WakameModelFilePtr_size_must_be_8[
-    sizeof(WakameModelFilePtr) == 8 ? 1 : -1];
-typedef char WakameAnimationFileHandle_size_must_be_8[
-    sizeof(WakameAnimationFileHandle) == 8 ? 1 : -1];
+typedef char WakameModelFilePtr_size_must_be_8[sizeof(WakameModelFilePtr) == 8 ? 1 : -1];
+typedef char
+    WakameAnimationFileHandle_size_must_be_8[sizeof(WakameAnimationFileHandle) == 8 ? 1 : -1];
 
-extern "C" {
-void Matrix4x3_FromRotationY(Matrix4x3 *m, s16 angleY);
+/* local extern: math/MtxStack.h's spelling needs common.h (see above). */
+extern "C" void Matrix4x3_FromRotationY(Matrix4x3 *m, s16 angleY);
 
-/* dExtAnmModel_c::SetAnim -- wall 6az on InitResources. */
-
-extern WakameModelFilePtr data_ov002_0210e0dc;          /* BMD model */
-extern WakameAnimationFileHandle data_ov002_0210e0d4;  /* BCA animation */
-
-void func_ov002_020bc488(daObjWakame_c *t);
-}
+extern WakameModelFilePtr data_ov002_0210e0dc;        /* BMD model */
+extern WakameAnimationFileHandle data_ov002_0210e0d4; /* BCA animation */
 
 /* -------------------------------------------------------------------------- */
 /* -------------------------------------------------------------------------- */
@@ -89,22 +79,19 @@ void func_ov002_020bc488(daObjWakame_c *t);
  * 0x020bc5c8 lays down this class's vptr, and 0x020bc5d0 constructs
  * mAnmModel. The null check is the one `new` itself emits. */
 // @symbol daObjWakame_c_classInit
-extern "C" daObjWakame_c *daObjWakame_c_classInit(void)
-{
+extern "C" daObjWakame_c *daObjWakame_c_classInit(void) {
     return new daObjWakame_c();
 }
 
 /* -------------------------------------------------------------------------- */
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN13daObjWakame_c13InitResourcesEv
-s32 daObjWakame_c::InitResources()
-{
+s32 daObjWakame_c::InitResources() {
     void *m = dExtSimpleModel_c::LoadFile(data_ov002_0210e0dc);
     mAnmModel.SetFile((BMD_File *)m, 1, -1);
     void *a = dExtFrameCtrl_c::LoadFile(data_ov002_0210e0d4);
-    /* MEASURED: by-value Fix12<int> speed is wall 6az. */
     mAnmModel.SetAnim((BCA_File *)a, 0, 0x1000, 0);
-    func_ov002_020bc488(this);
+    UpdateModelTransform();
     return 1;
 }
 
@@ -115,8 +102,7 @@ s32 daObjWakame_c::InitResources()
    implicit conversion in front of it: Advance is dExtFrameCtrl_c's, dExtFrameCtrl_c sits at
    +0x50 inside a dExtAnmModel_c, and the member is at +0xd4. Nothing else happens --
    a seaweed's whole per-frame behaviour is to advance its animation. */
-s32 daObjWakame_c::Behavior()
-{
+s32 daObjWakame_c::Behavior() {
     mAnmModel.Advance();
     return 1;
 }
@@ -129,8 +115,7 @@ s32 daObjWakame_c::Behavior()
    `blx r2` calls through it. mwccarm does not devirtualize this even though the
    member's dynamic type is known here, so the ordinary member call is the right
    spelling and the null argument is Render's `const Vector3 *scale`. */
-s32 daObjWakame_c::Render()
-{
+s32 daObjWakame_c::Render() {
     mAnmModel.Render(0);
     return 1;
 }
@@ -138,8 +123,7 @@ s32 daObjWakame_c::Render()
 /* -------------------------------------------------------------------------- */
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN13daObjWakame_c16CleanupResourcesEv
-s32 daObjWakame_c::CleanupResources()
-{
+s32 daObjWakame_c::CleanupResources() {
     data_ov002_0210e0dc.Release();
     data_ov002_0210e0d4.Release();
     return 1;
@@ -147,15 +131,14 @@ s32 daObjWakame_c::CleanupResources()
 
 /* -------------------------------------------------------------------------- */
 /* -------------------------------------------------------------------------- */
-// @symbol func_ov002_020bc488
-/* Posts the actor's placement into the model's transform. The >> 3 is the
-   ROM's, and this file does not explain it. */
-extern "C" void func_ov002_020bc488(daObjWakame_c *t)
-{
-    Matrix4x3_FromRotationY(&t->mAnmModel.mat4x3, t->mAngleY);
-    t->mAnmModel.mat4x3.t.x = t->mPosX >> 3;
-    t->mAnmModel.mat4x3.t.y = t->mPosY >> 3;
-    t->mAnmModel.mat4x3.t.z = t->mPosZ >> 3;
+// @symbol _ZN13daObjWakame_c20UpdateModelTransformEv
+/* Posts the actor's placement into the model's transform. Model matrices
+   are in eighths of a unit, hence the >> 3. */
+void daObjWakame_c::UpdateModelTransform() {
+    Matrix4x3_FromRotationY(&mAnmModel.mat4x3, mAngleY);
+    mAnmModel.mat4x3.t.x = mPosX >> 3;
+    mAnmModel.mat4x3.t.y = mPosY >> 3;
+    mAnmModel.mat4x3.t.z = mPosZ >> 3;
 }
 
 /* -------------------------------------------------------------------------- */

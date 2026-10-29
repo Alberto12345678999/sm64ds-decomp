@@ -16,18 +16,18 @@
  * 0xe4 + 0x34 = 0x118, closing on the allocation.
  */
 struct daObjFire_c : dActor_c {
-    u8      pad_0d0[0x4];
-    Vector3 mFlamePos;       /* 0x0d4 */
-    u8      mDisappearTimer; /* 0x0e0 */
-    u8      pad_0e1[0x3];
-    dCcAc_c mdCcAc_c;        /* 0x0e4 */
+    u8 pad_0d0[0x4];
+    Vector3 mFlamePos;  /* 0x0d4 */
+    u8 mDisappearTimer; /* 0x0e0 */
+    u8 pad_0e1[0x3];
+    dCcAc_c mdCcAc_c; /* 0x0e4 */
 
     /* Inline and first: out-of-line mwccarm emits D0 before D1; retail
        has D1 at 0x020b5734 below D0 at 0x020b5764. */
     virtual ~daObjFire_c() {}
-    virtual int  InitResources();               /* slot  0 */
-    virtual int  Behavior();                    /* slot  6 */
-    virtual s32  OnYoshiTryEat();               /* slot 18 */
+    virtual int InitResources();                /* slot  0 */
+    virtual int Behavior();                     /* slot  6 */
+    virtual s32 OnYoshiTryEat();                /* slot 18 */
     virtual void OnTurnIntoEgg(Player &player); /* slot 19 */
 };
 

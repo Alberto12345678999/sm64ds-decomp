@@ -26,18 +26,18 @@ struct daObjRc_Guruguru_c : dBgActor_c {
        first derived byte at 0x31e and sizeof stays 0x320. InitResources seeds
        it with -0x80, or with mAngleZ when the level author set one, and
        Behavior adds it to mAngleY every frame -- that is the whole spin. */
-    s16 mAngVelY;             /* 0x31e */
+    s16 mAngVelY; /* 0x31e */
 
     /* MEASURED -- INLINE ON PURPOSE. The class TU is the only place these
        two are emitted; with the body out of line mwcc emits D0 ahead of D1
        and the ROM has D1 first (rombuild refuses the object outright). An
        inline body also drops the D2 variant the cartridge never carried. */
-    virtual ~daObjRc_Guruguru_c() {}           /* slots 16 (D1), 17 (D0) */
+    virtual ~daObjRc_Guruguru_c() {} /* slots 16 (D1), 17 (D0) */
 
-    virtual s32   InitResources();         /* slot  0 */
-    virtual s32   CleanupResources();      /* slot  3 */
-    virtual s32   Behavior();              /* slot  6 */
-    virtual s32   Render();                /* slot  9 */
+    virtual s32 InitResources();    /* slot  0 */
+    virtual s32 CleanupResources(); /* slot  3 */
+    virtual s32 Behavior();         /* slot  6 */
+    virtual s32 Render();           /* slot  9 */
 };
 
 #ifndef SM64DS_PLATFORM_PC

@@ -26,13 +26,13 @@
 #include "dBgActor_c.h"
 
 struct daObjCannonShutter_c : dBgActor_c {
-    u8  pad_31e[0x2];
-    s32 mHomePosX;                      /* 0x320 */
-    s32 mHomePosY;                      /* 0x324 */
-    s32 mHomePosZ;                      /* 0x328 */
-    u8 mOpening;                       /* 0x32c */
-    u8 mOpenPhase;                       /* 0x32d */
-    u8 mCannonOpen;                       /* 0x32e */
+    u8 pad_31e[0x2];
+    s32 mHomePosX;  /* 0x320 */
+    s32 mHomePosY;  /* 0x324 */
+    s32 mHomePosZ;  /* 0x328 */
+    u8 mOpening;    /* 0x32c */
+    u8 mOpenPhase;  /* 0x32d */
+    u8 mCannonOpen; /* 0x32e */
 
     /* INLINE IS LOAD-BEARING. Out of line, mwccarm emits D0 before D1
        (cartridge is 0x020bc8f4 D1 then 0x020bc938 D0) plus a D2 with no ROM
@@ -44,12 +44,13 @@ struct daObjCannonShutter_c : dBgActor_c {
     int CleanupResources();
     int InitResources();
     int Render();
-    void func_ov002_020bc990();
+    void StartOpening();
 };
 
 #ifndef SM64DS_PLATFORM_PC
 /* ROM layout under mwccarm; host ABI divergence is tracked separately. */
-typedef char daObjCannonShutter_c_size_must_be_0x330[sizeof(daObjCannonShutter_c) == 0x330 ? 1 : -1];
+typedef char
+    daObjCannonShutter_c_size_must_be_0x330[sizeof(daObjCannonShutter_c) == 0x330 ? 1 : -1];
 #endif
 
 #endif /* __cplusplus */

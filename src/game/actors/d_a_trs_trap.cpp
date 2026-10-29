@@ -133,7 +133,6 @@ extern "C" {
 void func_ov063_0211c684(char *p);
 void func_ov063_0211c6f8(daTrsTrap_c *c);
 void func_ov063_0211c82c(char *p);
-void func_ov063_0211d28c(dBgW *clsn, daTrsTrap_c *self, dActor_c *actor);
 /* dBgW callback-word stores (see above). */
 void func_020393d4(int *p, int v);
 void func_020393c4(int *p, int v);
@@ -546,7 +545,7 @@ int daTrsTrap_c::InitResources()
     }
 
     func_020393d4((int *)&mMovingMeshCollider, (int)&dBgW::UpdatePosAndAngs);
-    func_020393c4((int *)&mMovingMeshCollider, (int)&func_ov063_0211d28c);
+    func_020393c4((int *)&mMovingMeshCollider, (int)&daTrsTrap_c::OnMeshClsnTouch);
     mMovingMeshCollider.Enable(this);
 
     if (mIndex == 2) {

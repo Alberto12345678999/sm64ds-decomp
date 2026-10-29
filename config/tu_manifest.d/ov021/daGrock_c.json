@@ -58,35 +58,35 @@
       "ordinal": 2
     },
     {
-      "symbol": "func_ov021_02112294",
+      "symbol": "_ZN9daGrock_c9SpawnStarEv",
       "address": "0x02112294",
       "size": "0x00000068",
       "legacy_source": "src/func_ov021_02112294.c",
       "ordinal": 3
     },
     {
-      "symbol": "func_ov021_021122fc",
+      "symbol": "_ZN9daGrock_c20UpdateModelTransformEv",
       "address": "0x021122fc",
       "size": "0x000000b4",
       "legacy_source": "src/func_ov021_021122fc.cpp",
       "ordinal": 4
     },
     {
-      "symbol": "func_ov021_021123b0",
+      "symbol": "_ZN9daGrock_c17HandleCylinderHitEv",
       "address": "0x021123b0",
       "size": "0x00000194",
       "legacy_source": "src/func_ov021_021123b0.c",
       "ordinal": 5
     },
     {
-      "symbol": "func_ov021_02112544",
+      "symbol": "_ZN9daGrock_c19HandleMeshCollisionEv",
       "address": "0x02112544",
       "size": "0x00000270",
       "legacy_source": "src/func_ov021_02112544.cpp",
       "ordinal": 6
     },
     {
-      "symbol": "func_ov021_021127b4",
+      "symbol": "_ZN9daGrock_c19ApplyGravityAndMoveEv",
       "address": "0x021127b4",
       "size": "0x00000044",
       "legacy_source": "src/func_ov021_021127b4.c",
@@ -581,9 +581,9 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@864",
+      "from": "@971",
       "to": "@887",
-      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az) | compiler temp; wave 3 of the mangled-call cleanup deletes this TU's local _ZN externs ahead of it, lowering the per-TU @NNN uniquifier"
+      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az) | compiler temp; wave 3 of the mangled-call cleanup deletes this TU's local _ZN externs ahead of it, lowering the per-TU @NNN uniquifier | compiler temp; the five rock helpers becoming members, and including SharedFilePtr.h, Particle__System.h, math/MtxStack.h and cstd.h in place of the local stubs, move the per-TU @NNN uniquifier, so mwcc emits it under this name now"
     }
   ]
 }

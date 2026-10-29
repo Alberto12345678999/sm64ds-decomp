@@ -14,24 +14,20 @@
  *
  * FUNCTION ORDER IS DELIBERATELY THE REVERSE OF THE ROM'S.
  *
- * deslop leftovers:
- * - func_020228dc / func_0202293c: blue/red flame particle wrappers
- *   (effects 0x117 / 0x118). No recovered names.
+ * func_020228dc / func_0202293c are the arm9 blue/red flame particle
+ * wrappers (effects 0x117 / 0x118). Their names are not recovered and no
+ * header declares them.
  */
 
 #include "daObjFire_c.h"
 #include "SpawnInfo.h"
 #include "Player.h"
+#include "Particle__System.h"
 
 extern "C" {
 u8 DecIfAbove0_Byte(u8 *value);
 u32 func_020228dc(Fix12i x, Fix12i y, Fix12i z);
 u32 func_0202293c(Fix12i x, Fix12i y, Fix12i z);
-namespace Particle {
-struct System {
-    static void NewSimple(u32 id, Fix12i x, Fix12i y, Fix12i z);
-};
-}
 }
 
 /* Actor ID 0x13d is BLUE_FLAME, 0xbf is PLAYER. dActor_c::mFlags bit
@@ -51,14 +47,12 @@ static inline int IsPlayerActor(dActor_c *actor) {
 }
 
 // @symbol daObjFire_c_classInit_OBJ_RED_FIRE
-extern "C" daObjFire_c *daObjFire_c_classInit_OBJ_RED_FIRE()
-{
+extern "C" daObjFire_c *daObjFire_c_classInit_OBJ_RED_FIRE() {
     return new daObjFire_c();
 }
 
 // @symbol daObjFire_c_classInit_OBJ_BLUE_FIRE
-extern "C" daObjFire_c *daObjFire_c_classInit_OBJ_BLUE_FIRE()
-{
+extern "C" daObjFire_c *daObjFire_c_classInit_OBJ_BLUE_FIRE() {
     return new daObjFire_c();
 }
 
@@ -87,19 +81,15 @@ extern "C" SpawnInfo<daObjFire_c> g_profile_OBJ_BLUE_FIRE = {
 };
 
 // @symbol _ZN11daObjFire_c13OnYoshiTryEatEv
-s32 daObjFire_c::OnYoshiTryEat()
-{
+s32 daObjFire_c::OnYoshiTryEat() {
     return 5;
 }
 
 // @symbol _ZN11daObjFire_c13OnTurnIntoEggER6Player
-void daObjFire_c::OnTurnIntoEgg(Player &player)
-{
-}
+void daObjFire_c::OnTurnIntoEgg(Player &player) {}
 
 // @symbol _ZN11daObjFire_c13InitResourcesEv
-int daObjFire_c::InitResources()
-{
+int daObjFire_c::InitResources() {
     mdCcAc_c.Init(this, 0x41000, 0x41000, 0x200002, 0x8000);
     mFlamePos.x = mPosX;
     mFlamePos.y = mPosY;
@@ -108,8 +98,7 @@ int daObjFire_c::InitResources()
 }
 
 // @symbol _ZN11daObjFire_c8BehaviorEv
-int daObjFire_c::Behavior()
-{
+int daObjFire_c::Behavior() {
     Vector3 pos;
     Vector3 particlePos;
     Vector3 dust;

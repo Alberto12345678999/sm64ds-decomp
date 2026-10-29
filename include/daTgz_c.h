@@ -35,7 +35,7 @@ struct daTgz_c : dActor_c {
        the shadow helper writes the translation as position >> 3. Twelve
        words, not Matrix4x3: this header must not pick a Matrix4x3 spelling. */
     s32 mShadowMatrix[12];               /* 0x3a0 */
-    /* PMF pair. func_ov077_02125e94 stores data_ov077_02127c28 + i*16.
+    /* PMF pair. func_ov077_02125e94 stores &gTgzStates[i] (d_a_tgz.cpp).
        func_ov077_02125e5c calls slot 0; func_ov077_02125e20 calls slot 1. */
     void *mStateDesc;                    /* 0x3d0 */
     /* Player stored when a hit sends the Spiny into state 2. */
@@ -70,6 +70,20 @@ struct daTgz_c : dActor_c {
     int InitResources();
     void OnPendingDestroy();             /* slot 12 -- empty body in the ROM */
     int Render();
+
+    /* State handlers, named by gTgzStates in d_a_tgz.cpp. */
+    int func_ov077_021253a4();
+    int func_ov077_02125480();
+    int func_ov077_02125550();
+    int func_ov077_021256b4();
+    int func_ov077_02125830();
+    int func_ov077_021258dc();
+    int func_ov077_02125908();
+    int func_ov077_02125a0c();
+    int func_ov077_02125a54();
+    void func_ov077_02125b1c();
+    int func_ov077_02125bb4();
+    int func_ov077_02125dd4();
 };
 
 #ifndef SM64DS_PLATFORM_PC

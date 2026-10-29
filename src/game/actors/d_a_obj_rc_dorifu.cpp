@@ -17,10 +17,9 @@
  * daObjRc_Dorifu_c, RC_DORIFU registry). Retail does not
  * store that spelling.
  *
- * deslop
- * Leftover: the BMD/KCL SharedFilePtrs and CLPS_Block are still
- *   data_ov036_*. The CLPS words sit before this TU's claimed
- *   .data (typeinfo at 0x02113e4c); the SharedFilePtrs are BSS.
+ * Note: the BMD/KCL SharedFilePtrs and CLPS_Blocks keep their
+ * data_ov036_* linker names. The CLPS words sit before this TU's claimed
+ * .data (typeinfo at 0x02113e4c); the SharedFilePtrs are BSS.
  */
 
 /* Runtime asset handles resolved through the overlay 0 file table. */
@@ -40,13 +39,11 @@ enum d_a_obj_rc_dorifu_AssetId {
 #include "daObjRc_Dorifu_c.h"
 #include "SpawnInfo.h"
 
-extern "C" {
 extern CLPS_Block data_ov036_02112be8;
 extern CLPS_Block data_ov036_02112c08;
 extern CLPS_Block data_ov036_02112a88;
 extern CLPS_Block data_ov036_02112b88;
 extern CLPS_Block data_ov036_02112ae8;
-}
 
 /* File-scope objects at the end of this file construct the ten resource
  * handles (model files 1690/1692/1694/1696/1698, collision files
@@ -64,7 +61,6 @@ struct RcDorifuCollisionFilePtr : SharedFilePtr {
     ~RcDorifuCollisionFilePtr();
 };
 
-extern "C" {
 extern RcDorifuModelFilePtr data_ov036_0211411c;
 extern RcDorifuCollisionFilePtr data_ov036_021140f4;
 extern RcDorifuModelFilePtr data_ov036_021140fc;
@@ -75,11 +71,9 @@ extern RcDorifuModelFilePtr data_ov036_02114104;
 extern RcDorifuCollisionFilePtr data_ov036_02114114;
 extern RcDorifuModelFilePtr data_ov036_0211410c;
 extern RcDorifuCollisionFilePtr data_ov036_021140dc;
-}
 
 // @symbol daObjRc_Dorifu_c_classInit
-extern "C" daObjRc_Dorifu_c *daObjRc_Dorifu_c_classInit()
-{
+extern "C" daObjRc_Dorifu_c *daObjRc_Dorifu_c_classInit() {
     return new daObjRc_Dorifu_c();
 }
 
@@ -92,26 +86,22 @@ extern "C" SpawnInfo<daObjRc_Dorifu_c> g_profile_RC_DORIFU = {
     0x00500000,
     0x01000000,
     0x02000000,
-    0
-};
+    0};
 
-extern "C" daObjDorifuResources data_ov036_02113e88[5] = {
+daObjDorifuResources data_ov036_02113e88[5] = {
     {&data_ov036_0211411c, &data_ov036_021140f4, &data_ov036_02112be8},
     {&data_ov036_021140fc, &data_ov036_021140d4, &data_ov036_02112c08},
     {&data_ov036_021140e4, &data_ov036_021140ec, &data_ov036_02112a88},
     {&data_ov036_02114104, &data_ov036_02114114, &data_ov036_02112b88},
-    {&data_ov036_0211410c, &data_ov036_021140dc, &data_ov036_02112ae8}
-};
+    {&data_ov036_0211410c, &data_ov036_021140dc, &data_ov036_02112ae8}};
 
 // @symbol _ZN16daObjRc_Dorifu_c13InitResourcesEv
-s32 daObjRc_Dorifu_c::InitResources()
-{
+s32 daObjRc_Dorifu_c::InitResources() {
     return daObjDorifu_c::InitResources(data_ov036_02113e88);
 }
 
 // @symbol _ZN16daObjRc_Dorifu_c16CleanupResourcesEv
-s32 daObjRc_Dorifu_c::CleanupResources()
-{
+s32 daObjRc_Dorifu_c::CleanupResources() {
     return daObjDorifu_c::CleanupResources(data_ov036_02113e88);
 }
 

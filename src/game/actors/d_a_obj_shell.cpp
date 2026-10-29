@@ -29,19 +29,13 @@
  * inline destructor in include/daObjShell_c.h emits the retail D1/D0 pair
  * first and emits no D2 body.
  *
- * leftovers:
- * - Player::Hurt keeps its C ABI spelling: its real declaration passes
- *   Fix12<int> by value, which mwccarm lowers differently at a C++ call site.
+ * What stays:
  * - func_0201267c is still a linker name; it is the positional-sound entry
  *   point both state transitions use.
- * - func_ov064_0211a9b4 is this TU's own still-unnamed helper. Its body is
- *   structurally the twin of the already named
- *   daObjTbox_c::UpdateModelTransform two TUs earlier in this same overlay,
- *   but the cartridge records no name for it, and coining one is a rename PR
- *   rather than this one. It is written here as the member it is, under its
- *   address name.
  * - the three file handles at 0x0211c9bc/0x0211c9c4/0x0211c9cc are defined at
  *   the end of this file. Their constructors are not written out here.
+ * - Behavior's hurtFrom is an int[3] handed to Hurt as a Vector3. Declaring
+ *   it as a Vector3 in the frame struct changes the codegen.
  */
 
 /* Runtime asset handles resolved through the overlay 0 file table. */
@@ -56,6 +50,8 @@ enum daObjShell_c_AssetId {
 #include "SharedFilePtr.h"
 #include "dCc_c.h"
 #include "Sound.h"
+#include "Particle__System.h"
+#include "math/MtxStack.h"
 
 /* 8-byte file handles. The model uses func_02017acc / func_02017ab4; both
  * animations use SharedFilePtr::Construct / SharedFilePtr_Destruct_Anim.
@@ -71,23 +67,10 @@ struct ShellAnimationFilePtr : SharedFilePtr {
 };
 
 /* Actor ids are from symbols/actor_debug_names.tsv. */
-enum {
-    ACTOR_PLAYER = 191
-};
+enum { ACTOR_PLAYER = 191 };
 
-enum {
-    STATE_SHUT = 0,
-    STATE_LUNGE = 1
-};
+enum { STATE_SHUT = 0, STATE_LUNGE = 1 };
 
-extern "C" {
-void Matrix4x3_FromRotationY(Matrix4x3 *, s32);
-/* The positional-sound entry point; takes the actor's camera-space position. */
-namespace Particle {
-struct System {
-    static int NewSimple(unsigned id, int x, int y, int z);
-};
-}
 /* This overlay's three file handles: the model, the lunge animation and the
  * idle animation. InitResources loads all three, CleanupResources releases
  * them, and Behavior swaps between the two animations. Defined at the end
@@ -95,7 +78,6 @@ struct System {
 extern ShellAnimationFilePtr data_ov064_0211c9bc;
 extern ShellModelFilePtr data_ov064_0211c9c4;
 extern ShellAnimationFilePtr data_ov064_0211c9cc;
-}
 
 // @symbol daObjShell_c_classInit
 /* Reconstructed source-style name: the cartridge proves daObjShell_c through
@@ -117,8 +99,7 @@ extern ShellAnimationFilePtr data_ov064_0211c9cc;
  * allocator as a real class member, so the factory is a plain `new` and the
  * ROM's own allocator call is what the compiler emits.
  */
-extern "C" daObjShell_c *daObjShell_c_classInit()
-{
+extern "C" daObjShell_c *daObjShell_c_classInit() {
     return new daObjShell_c();
 }
 
@@ -126,15 +107,14 @@ extern "C" daObjShell_c *daObjShell_c_classInit()
 /* Both animations are loaded, then the model; the clam starts on the idle
  * animation at 0x0211c9bc. The cylinder is 0x64000 in both radius and height.
  */
-int daObjShell_c::InitResources()
-{
+int daObjShell_c::InitResources() {
     dExtFrameCtrl_c::LoadFile(data_ov064_0211c9cc);
     dExtFrameCtrl_c::LoadFile(data_ov064_0211c9bc);
     BMD_File *modelFile = (BMD_File *)dExtSimpleModel_c::LoadFile(data_ov064_0211c9c4);
     mAnmModel.SetFile(modelFile, 1, -1);
     mAnmModel.SetAnim((BCA_File *)data_ov064_0211c9bc.filePtr, 0x40000000, 0x1000, 0);
     mdCcAc_c.Init(this, 0x64000, 0x64000, 0x200004, 0);
-    func_ov064_0211a9b4();
+    UpdateModelTransform();
     mState = STATE_SHUT;
     return 1;
 }
@@ -165,8 +145,7 @@ int daObjShell_c::InitResources()
  * decrement and the timer increment -- were not load-bearing and are gone;
  * one compile settles each, and the idiom is per-site.
  */
-int daObjShell_c::Behavior()
-{
+int daObjShell_c::Behavior() {
     struct {
         int shutPuff[3];
         int lungePuff[3];
@@ -186,8 +165,7 @@ int daObjShell_c::Behavior()
             mStateTimer = 0;
             mdCcAc_c.flags &= ~1;
         } else {
-            if (mStateTimer > 0x96 &&
-                DistToCPlayer() < 0x1f4000) {
+            if (mStateTimer > 0x96 && DistToCPlayer() < 0x1f4000) {
                 func_0201267c(0x26, &mCamSpacePos);
                 u.lungePuff[0] = mPosX;
                 u.lungePuff[1] = mPosY;
@@ -239,8 +217,7 @@ int daObjShell_c::Behavior()
 }
 
 // @symbol _ZN12daObjShell_c6RenderEv
-int daObjShell_c::Render()
-{
+int daObjShell_c::Render() {
     mAnmModel.Render(0);
     return 1;
 }
@@ -252,25 +229,19 @@ int daObjShell_c::Render()
  * between. InitResources loads them animations-first; the release order here
  * is model-first, which is the ROM's and is reproduced verbatim.
  */
-int daObjShell_c::CleanupResources()
-{
+int daObjShell_c::CleanupResources() {
     data_ov064_0211c9c4.Release();
     data_ov064_0211c9cc.Release();
     data_ov064_0211c9bc.Release();
     return 1;
 }
 
-// @symbol _ZN12daObjShell_c19func_ov064_0211a9b4Ev
+// @symbol _ZN12daObjShell_c20UpdateModelTransformEv
 /* Rebuilds the model's world matrix from the actor's facing angle and its
  * position, the position scaled down by 8 the way every dExtAnmModel_c actor in
- * this overlay does it. InitResources calls it once, at spawn.
- *
- * Keeps its address name: daObjTbox_c, promoted just before this TU in the
- * same overlay, has a structurally identical helper named
- * UpdateModelTransform, but the cartridge records no name for this one and
- * coining one belongs in a rename PR. */
-void daObjShell_c::func_ov064_0211a9b4()
-{
+ * this overlay does it. InitResources calls it once, at spawn. Named after
+ * daObjTbox_c::UpdateModelTransform, its twin two TUs earlier in this overlay. */
+void daObjShell_c::UpdateModelTransform() {
     Matrix4x3_FromRotationY(&mAnmModel.mat4x3, mAngleY);
     mAnmModel.mat4x3.t.x = mPosX >> 3;
     mAnmModel.mat4x3.t.y = mPosY >> 3;

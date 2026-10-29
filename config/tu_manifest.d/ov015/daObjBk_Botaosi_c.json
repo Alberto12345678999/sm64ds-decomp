@@ -70,21 +70,21 @@
       "ordinal": 4
     },
     {
-      "symbol": "func_ov015_02111414",
+      "symbol": "_ZN17daObjBk_Botaosi_c9HandleHitEP8dActor_c",
       "address": "0x02111414",
       "size": "0x000000dc",
       "legacy_source": "src/func_ov015_02111414.c",
       "ordinal": 5
     },
     {
-      "symbol": "func_ov015_021114f0",
+      "symbol": "_ZN17daObjBk_Botaosi_c12UpdateShadowEv",
       "address": "0x021114f0",
       "size": "0x0000017c",
       "legacy_source": "src/func_ov015_021114f0.c",
       "ordinal": 6
     },
     {
-      "symbol": "func_ov015_0211166c",
+      "symbol": "_ZN17daObjBk_Botaosi_c17UpdateModelMatrixEv",
       "address": "0x0211166c",
       "size": "0x00000048",
       "legacy_source": "src/func_ov015_0211166c.c",
@@ -241,12 +241,12 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@840",
+      "from": "@902",
       "to": "@46",
       "evidence": "mwcc numbers this model registration node @836 per TU and ov063 already defines a global @836, so the scratch link would multiply-define it | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az) | re-keyed again when InitResources dropped the _ZN9dBgCh_GndC1Ev local extern and its word storage for a real dBgCh_Gnd local"
     },
     {
-      "from": "@841",
+      "from": "@903",
       "to": "@47",
       "evidence": "mwcc numbers this collision registration node @837 per TU and ov063 already defines a global @837, so the scratch link would multiply-define it | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az) | re-keyed again when InitResources dropped the _ZN9dBgCh_GndC1Ev local extern and its word storage for a real dBgCh_Gnd local"
     }

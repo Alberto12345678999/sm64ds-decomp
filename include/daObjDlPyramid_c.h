@@ -18,7 +18,7 @@
 #include "dExtSimpleModel_c.h"
 
 struct daObjDlPyramid_c : dBgActor_c {
-    u8  pad_31e[0x2];
+    u8 pad_31e[0x2];
     /* The class's own model. NOT "mModel": dBgActor_c's inherited
        dExtSimpleModel_c at 0xd4 already owns that name. */
     dExtSimpleModel_c mTopModel; /* 0x320 */
@@ -26,16 +26,16 @@ struct daObjDlPyramid_c : dBgActor_c {
        `const Matrix4x3 &' argument of dBgW_KcMbg::SetFile, and the per-frame
        collider update rebuilds it from the yaw and the actor position.
        0x370 + 0x30 lands exactly on mHomePosX. */
-    Matrix4x3 mClsnMat2;              /* 0x370 */
-    s32 mHomePosX;                    /* 0x3a0 -- InitResources copies mPosX/Y/Z here */
-    s32 mHomePosY;                    /* 0x3a4 */
-    s32 mHomePosZ;                    /* 0x3a8 */
-    s32 mSpinParticleID;                      /* 0x3ac */
-    s16 mAngVelY;                      /* 0x3b0 */
-    u16 mStateTimer;                      /* 0x3b2 */
-    s16 mSoundTimer;                      /* 0x3b4 */
-    u8 mNumTagsTriggered;                       /* 0x3b6 */
-    u8 mState;                       /* 0x3b7 */
+    Matrix4x3 mClsnMat2;  /* 0x370 */
+    s32 mHomePosX;        /* 0x3a0 -- InitResources copies mPosX/Y/Z here */
+    s32 mHomePosY;        /* 0x3a4 */
+    s32 mHomePosZ;        /* 0x3a8 */
+    s32 mSpinParticleID;  /* 0x3ac */
+    s16 mAngVelY;         /* 0x3b0 */
+    u16 mStateTimer;      /* 0x3b2 */
+    s16 mSoundTimer;      /* 0x3b4 */
+    u8 mNumTagsTriggered; /* 0x3b6 */
+    u8 mState;            /* 0x3b7 */
 
     /* --- vtable --- */
     virtual ~daObjDlPyramid_c();
@@ -44,6 +44,11 @@ struct daObjDlPyramid_c : dBgActor_c {
     int CleanupResources();
     int InitResources();
     int Render();
+
+    void FinishDescent();     /* dust, event 0xe, then remove the top */
+    void Descend();           /* one frame of the wobble, bob, spin and sink */
+    void UpdateClsnMatrix();  /* yaw + position into mClsnMat2 and the collider */
+    void UpdateModelMatrix(); /* yaw + position >> 3 into mTopModel */
 };
 
 #ifndef SM64DS_PLATFORM_PC

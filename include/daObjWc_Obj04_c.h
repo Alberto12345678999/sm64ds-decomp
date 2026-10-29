@@ -38,11 +38,11 @@
 
 struct daObjWc_Obj04_c : dBgActor_c {
     dExtSimpleModel_c mModel2; /* 0x320 */
-    Matrix4x3 mClsnMat2;      /* 0x370 */
-    u16 mStateTimer;          /* 0x3a0 */
-    u8  mState;               /* 0x3a2 */
-    u8  mVisible;             /* 0x3a3 */
-    u8  mEventID;             /* 0x3a4 */
+    Matrix4x3 mClsnMat2;       /* 0x370 */
+    u16 mStateTimer;           /* 0x3a0 */
+    u8 mState;                 /* 0x3a2 */
+    u8 mVisible;               /* 0x3a3 */
+    u8 mEventID;               /* 0x3a4 */
 
     /* Overrides of fBase_c's slots 0, 3, 6 and 9. Virtualness is inherited. */
     int InitResources();
@@ -50,13 +50,15 @@ struct daObjWc_Obj04_c : dBgActor_c {
     int Behavior();
     int Render();
 
-    virtual ~daObjWc_Obj04_c() {}     /* slots 16 (D1), 17 (D0) */
+    void UpdateClsnMatrix();  /* ov029 0x021126dc */
+    void UpdateModelMatrix(); /* ov029 0x02112710 */
+
+    virtual ~daObjWc_Obj04_c() {} /* slots 16 (D1), 17 (D0) */
 };
 
 #ifndef SM64DS_PLATFORM_PC
 /* ROM layout under mwccarm; host ABI divergence is tracked separately. */
-typedef char daObjWc_Obj04_c_size_must_be_0x3a8[
-    sizeof(daObjWc_Obj04_c) == 0x3a8 ? 1 : -1];
+typedef char daObjWc_Obj04_c_size_must_be_0x3a8[sizeof(daObjWc_Obj04_c) == 0x3a8 ? 1 : -1];
 #endif
 
 #endif /* __cplusplus */
