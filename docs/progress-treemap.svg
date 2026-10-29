@@ -12177,7 +12177,7 @@ matched: yes</title></rect><rect x="257.00" y="930.89" width="52.03" height="14.
 module: arm9
 addr: 0x02073a24
 size: 1096 bytes
-matched: yes</title></rect><rect x="257.00" y="945.03" width="52.03" height="49.97" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_02073e6c
+matched: yes</title></rect><rect x="257.00" y="945.03" width="52.03" height="49.97" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_KuppaScript.cpp
 module: arm9
 addr: 0x02073e6c
 size: 3876 bytes
