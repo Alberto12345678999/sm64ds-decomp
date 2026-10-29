@@ -8860,9 +8860,8 @@ What each one needed beyond §6df:
   `func_0200d7a4`) from `.rodata` PMF constants at 0x02086bc8... Folding it means modelling
   the tables as pointer-to-member statics with named `dCamera_c` methods, and claiming the
   `.rodata` constants.
-- `__sinit_02073e6c` (0xf24) builds the KuppaScript tables (`gDemoActorIDs` readers
-  `EndKuppaScript`/`ResetKuppaScript`). Those are now the text-only TU
-  `src/KuppaScript.cpp`, which does not claim this initializer or its `.bss`.
+- `__sinit_02073e6c` (0xf24) builds the KuppaScript tables (`data_0209b2a4` readers
+  `EndKuppaScript`/`ResetKuppaScript`). Those are not a TU in `src/`.
 - Three owners are unpromoted shard runs:
   - `__sinit_02074dc4`: the Timer neighbour (`func_0201964c`/`func_0201973c`).
   - `__sinit_02074e0c`: `func_0201aa18`/`func_0201aaec`, between IRQ2 and Message2.
