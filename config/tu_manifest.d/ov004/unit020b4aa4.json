@@ -624,9 +624,22 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@193",
+      "from": "@199",
       "to": "data_ov004_020bfa28",
-      "evidence": "compiler temp: mwcc numbers this destructor-registration node @193, and ov073 already defines @193; it is renamed to the configured name at 0x020bfa28. Paired by relocation: the emitted reference lands where the retail reference does. No bytes or relocations change."
+      "evidence": "compiler temp: mwcc numbers this destructor-registration node @199 now that dScMgBase_c.h declares Mg_DrawLine (+6 from @193; ov073 already defines @193). It is renamed to the configured name at 0x020bfa28. Paired by relocation: the emitted reference lands where the retail reference does. No bytes or relocations change."
+    },
+    {
+      "from": "__arraydtor$198",
+      "to": "__arraydtor$192",
+      "owned_function": {
+        "module": "ov004",
+        "address": "0x020b67bc",
+        "size": "0x00000024",
+        "function_ordinal": 40,
+        "raw_type": "STT_FUNC",
+        "raw_binding": "STB_LOCAL"
+      },
+      "evidence": "the sMgCoins array destructor thunk; mwccarm emits it as __arraydtor$198 once dScMgBase_c.h declares Mg_DrawLine (+6 from __arraydtor$192); renamed onto the configured __arraydtor$192 at 0x020b67bc."
     }
   ]
 }
