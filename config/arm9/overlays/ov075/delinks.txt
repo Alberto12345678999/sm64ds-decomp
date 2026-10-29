@@ -177,74 +177,7 @@ src/game/stages/d_s_entry_methods.cpp:
 
 src/game/stages/d_s_entry_entry.cpp:
     complete
-    .text start:0x0211a854 end:0x0211a948
-
-src/unnamed/ov075/func_ov075_0211a948.c:
-    complete
-    .text start:0x0211a948 end:0x0211aa00
-
-src/unnamed/ov075/func_ov075_0211aa00.c:
-    complete
-    .text start:0x0211aa00 end:0x0211aa94
-
-src/unnamed/ov075/func_ov075_0211aa94.cpp:
-    complete
-    .text start:0x0211aa94 end:0x0211ab38
-
-src/unnamed/ov075/func_ov075_0211ab38.c:
-    complete
-    .text start:0x0211ab38 end:0x0211ad60
-src/unnamed/ov075/func_ov075_0211ad60.c:
-    complete
-    .text start:0x0211ad60 end:0x0211addc
-
-src/unnamed/ov075/func_ov075_0211addc.cpp:
-    complete
-    .text start:0x0211addc end:0x0211aea4
-
-src/unnamed/ov075/func_ov075_0211aea4.c:
-    complete
-    .text start:0x0211aea4 end:0x0211aeb8
-
-src/unnamed/ov075/func_ov075_0211aeb8.cpp:
-    complete
-    .text start:0x0211aeb8 end:0x0211af0c
-
-src/unnamed/ov075/func_ov075_0211af0c.c:
-    complete
-    .text start:0x0211af0c end:0x0211af84
-
-src/unnamed/ov075/func_ov075_0211af84.c:
-    complete
-    .text start:0x0211af84 end:0x0211afb0
-
-src/unnamed/ov075/func_ov075_0211afb0.c:
-    complete
-    .text start:0x0211afb0 end:0x0211b1cc
-
-src/unnamed/ov075/func_ov075_0211b1cc.c:
-    complete
-    .text start:0x0211b1cc end:0x0211b260
-
-src/unnamed/ov075/func_ov075_0211b260.c:
-    complete
-    .text start:0x0211b260 end:0x0211b3b8
-
-src/unnamed/ov075/func_ov075_0211b3b8.c:
-    complete
-    .text start:0x0211b3b8 end:0x0211b3d8
-
-src/unnamed/ov075/func_ov075_0211b3d8.cpp:
-    complete
-    .text start:0x0211b3d8 end:0x0211b418
-
-src/unnamed/ov075/func_ov075_0211b418.cpp:
-    complete
-    .text start:0x0211b418 end:0x0211b458
-
-src/unnamed/ov075/func_ov075_0211b458.cpp:
-    complete
-    .text start:0x0211b458 end:0x0211b524
+    .text start:0x0211a854 end:0x0211b524
 
 src/unnamed/ov075/__sinit_ov075_0211bb00.c:
     complete

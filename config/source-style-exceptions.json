@@ -962,14 +962,6 @@
       "evidence": "tools/tubuild.py verify ov085/daKinopio_c: cast form TEXT-VERIFIED, member-name form 14/15"
     },
     {
-      "path": "src/unnamed/ov075/func_ov075_0211aeb8.cpp",
-      "rule": "raw-offset",
-      "match": "(short*)(c+0xa0",
-      "count": 1,
-      "reason": "Carried unchanged from src/unnamed/ov075/func_ov075_0211aeb8.c by the .c -> .cpp migration. Git no longer pairs the rename once the 7-line file gains its //cpp marker, the cstd.h include and the extern \"C\" block, so the gate reads the whole file as new. The cast is not new. Follow-up: type the argument when its class is identified.",
-      "evidence": "origin/main:src/unnamed/ov075/func_ov075_0211aeb8.c carries the same *(short*)(c+0xa0) read; tools/source_style.py --base origin/main"
-    },
-    {
       "path": "src/unnamed/arm9/0200/func_0200af20.cpp",
       "rule": "handspelled-member",
       "match": "_ZN8dClipper13Func_020156DCEisii",

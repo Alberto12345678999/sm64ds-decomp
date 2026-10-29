@@ -476,10 +476,10 @@
         "param:#2 Vec3 *",
         "param:#3 Vec3 *"
       ],
-      "src/unnamed/ov075/func_ov075_0211ab38.c": [
-        "param:#1 Vec3 *",
-        "param:#2 Vec3 *",
-        "param:#3 Vec3 *"
+      "src/game/stages/d_s_entry_entry.cpp": [
+        "param:#1 const EntryMeshVec *",
+        "param:#2 const EntryMeshVec *",
+        "param:#3 EntryMeshVec *"
       ]
     },
     "DMAStartTransfer": {
@@ -931,7 +931,9 @@
       "src/unnamed/ov007/func_ov007_020bfe4c.cpp": [
         "return:void"
       ],
-      "src/unnamed/ov075/func_ov075_0211aa00.c": [
+      "src/game/stages/d_s_entry_entry.cpp": [
+        "param:#1 Matrix4x3 *",
+        "param:#2 Matrix4x3 *",
         "return:void"
       ]
     },
@@ -1547,10 +1549,6 @@
         "param:#1 Matrix4x3 *",
         "param:#2 Matrix4x3 *",
         "param:#3 Matrix4x3 *"
-      ],
-      "src/unnamed/ov075/func_ov075_0211afb0.c": [
-        "param:#1 const void *",
-        "param:#2 const void *"
       ]
     },
     "MulVec3Mat3x3": {
@@ -1814,13 +1812,13 @@
         "param:#1 Vec3 *",
         "param:#2 Vec3 *"
       ],
-      "src/unnamed/ov075/func_ov075_0211ab38.c": [
-        "param:#1 Vec3 *",
-        "param:#2 Vec3 *"
-      ],
       "src/engine/model/ModelComponents.cpp": [
         "param:#1 Vec3 *",
         "param:#2 Vec3 *"
+      ],
+      "src/game/stages/d_s_entry_entry.cpp": [
+        "param:#1 const EntryMeshVec *",
+        "param:#2 EntryMeshVec *"
       ]
     },
     "NormalizeVec3IfNonZero": {
@@ -2937,6 +2935,11 @@
       "src/unnamed/ov007/func_ov007_020c8010.cpp": [
         "param:#1 int",
         "param:#2 int"
+      ],
+      "src/game/stages/d_s_entry_entry.cpp": [
+        "param:#1 const EntryMeshVec *",
+        "param:#2 const EntryMeshVec *",
+        "param:#3 EntryMeshVec *"
       ]
     },
     "SublevelToLevel": {
@@ -3254,9 +3257,9 @@
         "param:#1 Vector3 *",
         "param:#2 Vector3 *"
       ],
-      "src/unnamed/ov075/func_ov075_0211ab38.c": [
-        "param:#1 Vector3 *",
-        "param:#2 Vector3 *"
+      "src/game/stages/d_s_entry_entry.cpp": [
+        "param:#1 EntryMeshVec *",
+        "param:#2 const EntryMeshVec *"
       ]
     },
     "Vec3_AsrInPlace": {
@@ -3947,11 +3950,6 @@
         "param:#2 const Vector3 *",
         "param:#3 const Vector3 *"
       ],
-      "src/unnamed/ov075/func_ov075_0211ab38.c": [
-        "param:#1 Vector3 *",
-        "param:#2 Vector3 *",
-        "param:#3 Vector3 *"
-      ],
       "src/unnamed/arm9/0200/func_02008cb4.cpp": [
         "param:#1 Vector3 *",
         "param:#2 Vector3 *",
@@ -3966,6 +3964,11 @@
         "param:#1 Vector3 *",
         "param:#2 Vector3 *",
         "param:#3 Vector3 *"
+      ],
+      "src/game/stages/d_s_entry_entry.cpp": [
+        "param:#1 EntryMeshVec *",
+        "param:#2 const EntryMeshVec *",
+        "param:#3 const Vector3 *"
       ]
     },
     "Vec3_VertAngle": {
@@ -9506,9 +9509,6 @@
       "src/game/stages/d_s_star_sel_methods.cpp": [
         "return:void * []"
       ],
-      "src/game/stages/d_s_entry_entry.cpp": [
-        "return:char []"
-      ],
       "src/game/stages/d_s_entry_methods.cpp": [
         "return:char []"
       ]
@@ -9797,9 +9797,6 @@
       ],
       "src/minigames/unit020cd744.cpp": [
         "return:char []"
-      ],
-      "src/unnamed/ov075/func_ov075_0211afb0.c": [
-        "return:int"
       ]
     },
     "data_0209b454": {
@@ -16149,11 +16146,6 @@
         "return:int"
       ]
     },
-    "data_ov075_0211d980": {
-      "src/unnamed/ov075/__sinit_ov075_0211c51c.c": [
-        "return:int []"
-      ]
-    },
     "data_ov077_02127230": {
       "src/game/actors/d_a_jgm.cpp": [
         "return:SharedFilePtr * []"
@@ -17728,19 +17720,12 @@
       ]
     },
     "func_020178b4": {
-      "src/unnamed/ov075/__sinit_ov075_0211c51c.c": [
-        "arity:0",
-        "return:void"
-      ],
       "src/unnamed/ov080/__sinit_ov080_02127b2c.c": [
         "arity:0",
         "return:void"
       ]
     },
     "func_020178cc": {
-      "src/unnamed/ov075/__sinit_ov075_0211c51c.c": [
-        "return:void"
-      ],
       "src/unnamed/ov080/__sinit_ov080_02127b2c.c": [
         "return:void"
       ]
@@ -20218,11 +20203,6 @@
       ],
       "src/unnamed/ov002/func_ov002_020e3e00.cpp": [
         "arity:4"
-      ]
-    },
-    "func_0203cbc0": {
-      "src/unnamed/ov075/func_ov075_0211b3b8.c": [
-        "return:int"
       ]
     },
     "func_0203ccd4": {
@@ -26472,21 +26452,6 @@
         "return:int"
       ]
     },
-    "func_ov075_0211a948": {
-      "src/unnamed/ov075/func_ov075_0211afb0.c": [
-        "arity:1"
-      ]
-    },
-    "func_ov075_0211aa94": {
-      "src/unnamed/ov075/func_ov075_0211b458.cpp": [
-        "return:void"
-      ]
-    },
-    "func_ov075_0211ab38": {
-      "include/decl_common.h": [
-        "param:#2 int *"
-      ]
-    },
     "func_ov079_02123d4c": {
       "src/game/actors/d_a_btn.cpp": [
         "arity:1",
@@ -26658,12 +26623,6 @@
         "return:SharedFilePtr"
       ]
     },
-    "func_02045ad8": {
-      "src/unnamed/ov075/func_ov075_0211aa94.cpp": [
-        "arity:1",
-        "return:int"
-      ]
-    },
     "gBombkingThrowAnimationFile": {
       "src/unnamed/ov078/__sinit_ov078_02126660.cpp": [
         "return:SharedFilePtr"
@@ -26727,6 +26686,12 @@
     "data_ov012_02111cd0": {
       "src/game/actors/d_a_obj_c0_switch.cpp": [
         "return:CLPS_Block"
+      ]
+    },
+    "func_02045ad8": {
+      "src/game/stages/d_s_entry_entry.cpp": [
+        "arity:1",
+        "return:int"
       ]
     }
   },

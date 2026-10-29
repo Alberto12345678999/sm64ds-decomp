@@ -6510,18 +6510,9 @@ src/dScEntry_c_classInit_RESULT.c	S1-stores-rom-vptr	ov075			stores _ZTV8dScene_
 src/func_ov075_0211a834.c	PURE-C	ov075				1		None		-
 src/func_ov075_0211a838.c	PURE-C	ov075				1		None		-
 src/dScEntry_c_classInit_ENTRY.c	S1-stores-rom-vptr	ov075			stores _ZTV8dScene_c	1		None	_ZTV8dScene_c	-
-src/unnamed/ov075/func_ov075_0211aa00.c	PURE-C	ov075				1		None		-
 src/unnamed/ov075/func_ov075_0211aa94.c	WEAK-refs-only	ov075				1		None		-
-src/unnamed/ov075/func_ov075_0211ab38.c	PURE-C	ov075				1		None		-
 src/unnamed/ov075/func_ov075_0211abb0.c	PURE-C	ov075				1		None		-
-src/unnamed/ov075/func_ov075_0211ad60.c	PURE-C	ov075				1		None		-
-src/unnamed/ov075/func_ov075_0211aea4.c	PURE-C	ov075				1		None		-
 src/unnamed/ov075/func_ov075_0211aeb8.c	WEAK-refs-only	ov075				1		None		-
-src/unnamed/ov075/func_ov075_0211af0c.c	PURE-C	ov075				1		None		-
-src/unnamed/ov075/func_ov075_0211af84.c	PURE-C	ov075				1		None		-
-src/unnamed/ov075/func_ov075_0211b1cc.c	PURE-C	ov075				1	inert	None		-
-src/unnamed/ov075/func_ov075_0211b260.c	PURE-C	ov075				1		None		-
-src/unnamed/ov075/func_ov075_0211b3b8.c	PURE-C	ov075				1		None		-
 src/func_ov077_02123814.c	PURE-C	ov077				1		None		-
 src/func_ov077_02123880.c	WEAK-refs-only	ov077				1		None		-
 src/func_ov077_02123fcc.c	WEAK-refs-only	ov077				1		None		-

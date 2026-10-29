@@ -28016,7 +28016,7 @@
     "dEntObj_c"
    ],
    "n_functions_map": 48,
-   "n_files": 48,
+   "n_files": 43,
    "files": [
     "src/_ZN9dEntObj_cD1Ev.cpp",
     "src/_ZN9dEntObj_cD0Ev.c",
@@ -28060,16 +28060,11 @@
     "src/_ZN9dEntObj_c8BehaviorEv.cpp",
     "src/_ZN9dEntObj_c13InitResourcesEv.cpp",
     "src/dEntObj_c_classInit.cpp",
-    "src/func_ov075_02115a88.c",
-    "src/unnamed/ov075/func_ov075_0211ab38.c",
-    "src/unnamed/ov075/func_ov075_0211b3b8.c",
-    "src/unnamed/ov075/func_ov075_0211b3d8.cpp",
-    "src/unnamed/ov075/func_ov075_0211b418.cpp",
-    "src/unnamed/ov075/func_ov075_0211b458.cpp"
+    "src/func_ov075_02115a88.c"
    ],
    "ext_mix": {
-    ".cpp": 21,
-    ".c": 27
+    ".cpp": 18,
+    ".c": 25
    },
    "ext_kind": "mixed",
    "n_asm_files": 0,
@@ -28245,17 +28240,15 @@
    "end": "0x211ab38",
    "classes": [],
    "n_functions_map": 7,
-   "n_files": 6,
+   "n_files": 4,
    "files": [
     "src/dScEntry_c_classInit_RESULT.c",
     "src/func_ov075_0211a834.c",
     "src/func_ov075_0211a838.c",
-    "src/dScEntry_c_classInit_ENTRY.c",
-    "src/unnamed/ov075/func_ov075_0211aa00.c",
-    "src/unnamed/ov075/func_ov075_0211aa94.c"
+    "src/dScEntry_c_classInit_ENTRY.c"
    ],
    "ext_mix": {
-    ".c": 6
+    ".c": 4
    },
    "ext_kind": "c",
    "n_asm_files": 0,
@@ -28298,22 +28291,9 @@
    "end": "0x211b3b8",
    "classes": [],
    "n_functions_map": 10,
-   "n_files": 9,
-   "files": [
-    "src/unnamed/ov075/func_ov075_0211abb0.c",
-    "src/unnamed/ov075/func_ov075_0211ad60.c",
-    "src/unnamed/ov075/func_ov075_0211addc.cpp",
-    "src/unnamed/ov075/func_ov075_0211aea4.c",
-    "src/unnamed/ov075/func_ov075_0211aeb8.c",
-    "src/unnamed/ov075/func_ov075_0211af0c.c",
-    "src/unnamed/ov075/func_ov075_0211af84.c",
-    "src/unnamed/ov075/func_ov075_0211b1cc.c",
-    "src/unnamed/ov075/func_ov075_0211b260.c"
-   ],
-   "ext_mix": {
-    ".c": 8,
-    ".cpp": 1
-   },
+   "n_files": 0,
+   "files": [],
+   "ext_mix": {},
    "ext_kind": "mixed",
    "n_asm_files": 0,
    "n_incomplete": 1,
