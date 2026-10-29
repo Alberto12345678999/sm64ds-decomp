@@ -4404,12 +4404,12 @@ gMgPHeyhoWaitAnimFile kind:bss addr:0x02140338
 sHeyho_StartMotionFlyIn_Left256$164 kind:bss addr:0x02140364
 @175 kind:bss addr:0x02140370
 sHeyho_StartMotionFlyIn_Right256$168 kind:bss addr:0x0214037c
-@235 kind:bss addr:0x02140388
+@241 kind:bss addr:0x02140388
 sHeyho_StartMotionRegroup_Left256$222 kind:bss addr:0x02140394
-@236 kind:bss addr:0x021403a0
+@242 kind:bss addr:0x021403a0
 sHeyho_StartMotionRegroup_Right256$226 kind:bss addr:0x021403ac
 data_ov006_021403b8 kind:bss addr:0x021403b8
-@320 kind:bss addr:0x021403c4
+@243 kind:bss addr:0x021403c4
 sHeyho_React_Left256$317 kind:bss addr:0x021403d0
 @324 kind:bss addr:0x021403dc
 sHeyho_React_Right256$321 kind:bss addr:0x021403e8

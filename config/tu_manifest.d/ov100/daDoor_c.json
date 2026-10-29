@@ -395,11 +395,11 @@
       "evidence": "compiler-generated destructor-registration node for the 0x9c0b resource handle"
     },
     {
-      "symbol": "@817",
+      "symbol": "@821",
       "address": "0x02148790",
       "size": "0xc",
       "binding": "STB_GLOBAL",
-      "evidence": "destructor-registration node for sBackOff; func_ov100_02144a38 passes it to __register_global_object. Emitted @780, which ov095 already defines, so renamed to the unused same-length @817"
+      "evidence": "destructor-registration node for sBackOff; func_ov100_02144a38 passes it to __register_global_object. Emitted @780. ov095 defines @780 and ov006 unit020cd744 defines @817, so the pin is the unused same-length @821"
     },
     {
       "symbol": "sBackOff$777",
@@ -1347,7 +1347,7 @@
       "evidence": "function-local static Vector3; DSD requires a configured global symbol at 0x0214879c"
     },
     {
-      "symbol": "@817",
+      "symbol": "@821",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local destructor-registration node; DSD requires a configured global symbol at 0x02148790"
@@ -2219,8 +2219,8 @@
     },
     {
       "from": "@780",
-      "to": "@817",
-      "evidence": "sBackOff's registration node. ov095 already defines @780, and objisolate cannot grow a name, so this maps the compiled name to the unused same-length @817"
+      "to": "@821",
+      "evidence": "sBackOff's registration node. ov095 defines the compiled @780 and ov006 unit020cd744 defines @817, so this maps it to the unused same-length @821"
     },
     {
       "from": "@784",

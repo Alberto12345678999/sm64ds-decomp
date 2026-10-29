@@ -259,7 +259,7 @@ gObjDoor2BoroModelFile kind:bss addr:0x0214876c
 gObjDoor1ModelFile kind:bss addr:0x02148774
 data_ov100_0214877c kind:bss addr:0x0214877c
 @566 kind:bss addr:0x02148784
-@817 kind:bss addr:0x02148790
+@821 kind:bss addr:0x02148790
 sBackOff$777 kind:bss addr:0x0214879c
 @569 kind:bss addr:0x021487a8
 @1088 kind:bss addr:0x021487b4

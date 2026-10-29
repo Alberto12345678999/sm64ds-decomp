@@ -521,11 +521,11 @@
       "evidence": "Heyho_StartMotionFlyIn's function-local static Vector3(0x100000, 0, 0)"
     },
     {
-      "symbol": "@235",
+      "symbol": "@241",
       "address": "0x02140388",
       "size": "0xc",
       "binding": "STB_GLOBAL",
-      "evidence": "destructor-registration node for sHeyho_StartMotionRegroup_Left256. mwcc emits @225, which ov080 already defines, so the pin is the unused same-length @235"
+      "evidence": "destructor-registration node for sHeyho_StartMotionRegroup_Left256. mwcc emits @225. ov080 defines @225 and ov006 unit020cd744 defines @235, so the pin is the unused same-length @241"
     },
     {
       "symbol": "sHeyho_StartMotionRegroup_Left256$222",
@@ -535,11 +535,11 @@
       "evidence": "Heyho_StartMotionRegroup's function-local static Vector3(-0x100000, 0, 0)"
     },
     {
-      "symbol": "@236",
+      "symbol": "@242",
       "address": "0x021403a0",
       "size": "0xc",
       "binding": "STB_GLOBAL",
-      "evidence": "destructor-registration node for sHeyho_StartMotionRegroup_Right256. mwcc emits @229, which ov070 already defines, so the pin is the unused same-length @236"
+      "evidence": "destructor-registration node for sHeyho_StartMotionRegroup_Right256. mwcc emits @229. ov070 defines @229 and ov006 unit020cd744 defines @236, so the pin is the unused same-length @242"
     },
     {
       "symbol": "sHeyho_StartMotionRegroup_Right256$226",
@@ -555,11 +555,11 @@
       "evidence": "three ints Heyho_SpawnAll reads and writes while picking a fly-in path"
     },
     {
-      "symbol": "@320",
+      "symbol": "@243",
       "address": "0x021403c4",
       "size": "0xc",
       "binding": "STB_GLOBAL",
-      "evidence": "destructor-registration node for sHeyho_React_Left256; Heyho_React passes it as the third __register_global_object argument. Unused in every module, so the compiled name stays"
+      "evidence": "destructor-registration node for sHeyho_React_Left256. mwcc emits @320, which ov006 unit020cd744 also defines, so the pin is the unused same-length @243"
     },
     {
       "symbol": "sHeyho_React_Left256$317",
@@ -1091,7 +1091,7 @@
       "evidence": "function-local static Vector3; DSD requires a configured global at 0x0214037c"
     },
     {
-      "symbol": "@235",
+      "symbol": "@241",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local destructor-registration node; DSD requires a configured global at 0x02140388"
@@ -1103,7 +1103,7 @@
       "evidence": "function-local static Vector3; DSD requires a configured global at 0x02140394"
     },
     {
-      "symbol": "@236",
+      "symbol": "@242",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local destructor-registration node; DSD requires a configured global at 0x021403a0"
@@ -1115,7 +1115,7 @@
       "evidence": "function-local static Vector3; DSD requires a configured global at 0x021403ac"
     },
     {
-      "symbol": "@320",
+      "symbol": "@243",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local destructor-registration node; DSD requires a configured global at 0x021403c4"
@@ -1274,13 +1274,18 @@
     },
     {
       "from": "@225",
-      "to": "@235",
-      "evidence": "registration node of sHeyho_StartMotionRegroup_Left256. Regroup's pool word relocates to this node. ov080 already defines @225, so this row maps it to the unused same-length @235."
+      "to": "@241",
+      "evidence": "registration node of sHeyho_StartMotionRegroup_Left256. ov080 defines the compiled @225 and ov006 unit020cd744 defines @235, so this maps it to the unused same-length @241."
     },
     {
       "from": "@229",
-      "to": "@236",
-      "evidence": "registration node of sHeyho_StartMotionRegroup_Right256. Regroup's pool word relocates to this node. ov070 already defines @229, so this row maps it to the unused same-length @236."
+      "to": "@242",
+      "evidence": "registration node of sHeyho_StartMotionRegroup_Right256. ov070 defines the compiled @229 and ov006 unit020cd744 defines @236, so this maps it to the unused same-length @242."
+    },
+    {
+      "from": "@320",
+      "to": "@243",
+      "evidence": "registration node of sHeyho_React_Left256. ov006 unit020cd744 also defines the compiled @320, so this maps it to the unused same-length @243."
     }
   ]
 }
