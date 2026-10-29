@@ -889,7 +889,7 @@ int func_0202a96c(void);
 int func_0202a958(void);
 extern u8 data_0209f2e8;
 extern u16* data_0209f334;
-extern s32 data_0209fc48;
+extern s32 gRunningKuppaScript;
 }
 
 #pragma opt_strength_reduction off
@@ -988,7 +988,7 @@ int dMap_c::InitResources()
         int b1 = (data_0209f2d8 == 0);
         if (b1) {
             if (!(data_0209caa0[2] & 0x80)) {
-                int b3 = (data_0209fc48 != 0);
+                int b3 = (gRunningKuppaScript != 0);
                 if (!b3) {
                     mInvScale = (mTargetInvScale) << 1;
                     mAngle = 0;

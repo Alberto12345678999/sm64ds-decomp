@@ -802,11 +802,6 @@
         "return:int"
       ]
     },
-    "GetStarCameraSetting": {
-      "src/unnamed/arm9/0200/func_0200ee8c.c": [
-        "return:int"
-      ]
-    },
     "GetViewObj": {
       "src/engine/view/d_camera.cpp": [
         "return:void *"
@@ -1204,9 +1199,6 @@
     "LoadLevelNoReturn": {
       "include/decl_common.h": [
         "param:#1 int"
-      ],
-      "src/ProcessKuppaScript.cpp": [
-        "param:#1 unsigned int"
       ]
     },
     "Math_Function_0203b0fc": {
@@ -2036,21 +2028,6 @@
     "RotatingClockHand_ModelFile": {
       "src/unnamed/ov035/__sinit_ov035_02111fc0.c": [
         "return:int []"
-      ]
-    },
-    "RunKuppaScript": {
-      "src/unnamed/arm9/0200/func_0200ee8c.c": [
-        "return:void"
-      ],
-      "src/unnamed/arm9/0200/func_0200eec8.c": [
-        "return:void"
-      ],
-      "src/ContinueKuppaScriptIfNecessary.cpp": [
-        "param:#1 int",
-        "return:void"
-      ],
-      "src/StartIntroCutscene.cpp": [
-        "return:void"
       ]
     },
     "SetStarMarker": {
@@ -9417,9 +9394,6 @@
     "data_020890a0": {
       "src/unnamed/arm9/0207/__sinit_02073e6c.c": [
         "return:unsigned char []"
-      ],
-      "src/StartIntroCutscene.cpp": [
-        "return:void *"
       ]
     },
     "data_02089608": {
@@ -9600,27 +9574,9 @@
         "return:int"
       ]
     },
-    "data_0209b270": {
-      "src/ResetKuppaScript.c": [
-        "return:unsigned char []"
-      ]
-    },
-    "data_0209b284": {
-      "src/ResetKuppaScript.c": [
-        "return:int []"
-      ],
-      "src/unnamed/arm9/0200/func_0200e5fc.cpp": [
-        "return:int []"
-      ]
-    },
     "data_0209b294": {
       "src/unnamed/arm9/0207/__sinit_02073e6c.c": [
         "return:unsigned char []"
-      ]
-    },
-    "data_0209b2a4": {
-      "src/ResetKuppaScript.c": [
-        "return:int []"
       ]
     },
     "data_0209b2e8": {
@@ -9718,9 +9674,6 @@
       ]
     },
     "data_0209b454": {
-      "src/EndKuppaScript.cpp": [
-        "return:int"
-      ],
       "src/game/actors/d_a_obj_key.cpp": [
         "return:int"
       ],
@@ -9877,9 +9830,6 @@
       ]
     },
     "data_0209d45c": {
-      "src/ProcessKuppaScript.cpp": [
-        "return:signed char"
-      ],
       "src/game/stages/d_s_title.cpp": [
         "return:unsigned char []"
       ],
@@ -10001,11 +9951,11 @@
       ]
     },
     "data_0209d4b0": {
-      "src/ProcessKuppaScript.cpp": [
-        "return:dFdBrightness_c *"
-      ],
       "src/unnamed/arm9/0201/func_02018ec0.c": [
         "return:void *"
+      ],
+      "src/KuppaScript.cpp": [
+        "return:dFdBrightness_c *"
       ]
     },
     "data_0209d4b4": {
@@ -10203,9 +10153,6 @@
       ]
     },
     "data_0209f21c": {
-      "src/ResetKuppaScript.c": [
-        "return:unsigned char []"
-      ],
       "src/game/actors/d_a_snowman.cpp": [
         "return:unsigned char []"
       ]
@@ -10216,11 +10163,6 @@
       ],
       "src/runtime/actor/d_actor.cpp": [
         "return:unsigned char []"
-      ]
-    },
-    "data_0209f224": {
-      "src/unnamed/arm9/0200/func_0200ee8c.c": [
-        "return:signed char"
       ]
     },
     "data_0209f228": {
@@ -10268,9 +10210,6 @@
       ],
       "src/game/actors/d_a_wanwan2.cpp": [
         "return:unsigned char []"
-      ],
-      "src/ContinueKuppaScriptIfNecessary.cpp": [
-        "return:int"
       ]
     },
     "data_0209f2f4": {
@@ -10377,6 +10316,9 @@
       ],
       "src/unnamed/ov002/func_ov002_020df34c.cpp": [
         "return:dCamera_c *"
+      ],
+      "src/KuppaScript.cpp": [
+        "return:dCamera_c *"
       ]
     },
     "data_0209f338": {
@@ -10419,6 +10361,9 @@
       ],
       "src/unnamed/ov002/func_ov002_020dd908.c": [
         "return:char * []"
+      ],
+      "src/KuppaScript.cpp": [
+        "return:dActor_c * []"
       ]
     },
     "data_0209f3a4": {
@@ -10574,9 +10519,6 @@
       ]
     },
     "data_0209f5bc": {
-      "src/ProcessKuppaScript.cpp": [
-        "return:UnkVis *"
-      ],
       "src/game/stages/d_s_stage_methods.cpp": [
         "return:UnkVis *"
       ],
@@ -10643,25 +10585,6 @@
     },
     "data_0209f61c": {
       "src/unnamed/arm9/0207/__sinit_02074f80.c": [
-        "return:int []"
-      ]
-    },
-    "data_0209fc48": {
-      "src/ProcessKuppaScript.cpp": [
-        "return:unsigned char *"
-      ],
-      "src/ResetKuppaScript.c": [
-        "return:int []"
-      ],
-      "src/RunKuppaScript.c": [
-        "return:void *"
-      ]
-    },
-    "data_0209fc4c": {
-      "src/ProcessKuppaScript.cpp": [
-        "return:unsigned int"
-      ],
-      "src/ResetKuppaScript.c": [
         "return:int []"
       ]
     },
@@ -10815,9 +10738,6 @@
       ]
     },
     "data_020a0e58": {
-      "src/ProcessKuppaScript.cpp": [
-        "return:unsigned char []"
-      ],
       "src/game/stages/d_s_stage_methods.cpp": [
         "return:PadData []"
       ],
@@ -10828,6 +10748,9 @@
         "return:InputPair []"
       ],
       "src/game/stages/d_s_entry_methods.cpp": [
+        "return:unsigned char []"
+      ],
+      "src/KuppaScript.cpp": [
         "return:unsigned char []"
       ]
     },
@@ -12768,11 +12691,6 @@
     "data_ov002_02110acc": {
       "src/unnamed/ov002/__sinit_ov002_02107304.c": [
         "return:int []"
-      ]
-    },
-    "data_ov002_02110aec": {
-      "src/ProcessKuppaScript.cpp": [
-        "return:unsigned int"
       ]
     },
     "data_ov002_02110b50": {
@@ -17072,46 +16990,6 @@
       ],
       "src/runtime/actor/d_actor.cpp": [
         "arity:2"
-      ]
-    },
-    "func_0200e494": {
-      "src/ProcessKuppaScript.cpp": [
-        "param:#2 int",
-        "param:#3 int"
-      ]
-    },
-    "func_0200e4e4": {
-      "src/unnamed/arm9/0200/func_0200e494.c": [
-        "param:#1 int",
-        "return:int"
-      ]
-    },
-    "func_0200e55c": {
-      "src/unnamed/arm9/0200/func_02008028.c": [
-        "param:#1 int",
-        "return:Obj *"
-      ],
-      "src/unnamed/arm9/0200/func_0200e494.c": [
-        "param:#1 int",
-        "return:int"
-      ]
-    },
-    "func_0200e5ac": {
-      "src/ProcessKuppaScript.cpp": [
-        "param:#2 int",
-        "param:#3 int"
-      ]
-    },
-    "func_0200e5fc": {
-      "src/unnamed/arm9/0200/func_0200e5ac.cpp": [
-        "param:#1 int",
-        "return:int"
-      ]
-    },
-    "func_0200e6d8": {
-      "src/unnamed/arm9/0200/func_0200e5ac.cpp": [
-        "param:#1 int",
-        "return:int"
       ]
     },
     "func_0200fa04": {
@@ -23470,14 +23348,6 @@
         "return:dActor_c *"
       ]
     },
-    "func_ov002_020f7d74": {
-      "src/unnamed/arm9/0200/func_0200e494.c": [
-        "param:#1 int",
-        "param:#3 void *",
-        "param:#4 void *",
-        "return:int"
-      ]
-    },
     "Mg_GetLastRecordRank": {
       "src/minigames/d_s_mg_base.cpp": [
         "arity:2"
@@ -26299,6 +26169,37 @@
     "func_ov075_02116128": {
       "src/game/stages/d_s_entry_methods.cpp": [
         "param:#1 char *"
+      ]
+    },
+    "FindDemoActor": {
+      "src/unnamed/arm9/0200/func_02008028.c": [
+        "param:#1 int",
+        "return:Obj *"
+      ]
+    },
+    "data_0209f224": {
+      "src/KuppaScript.cpp": [
+        "return:signed char"
+      ]
+    },
+    "func_02008550": {
+      "src/KuppaScript.cpp": [
+        "param:#1 dCamera_c *"
+      ]
+    },
+    "func_ov002_020f7d74": {
+      "src/KuppaScript.cpp": [
+        "return:int"
+      ]
+    },
+    "gRunningKuppaScript": {
+      "src/KuppaScript.cpp": [
+        "return:unsigned char *"
+      ]
+    },
+    "gSavedKuppaScript": {
+      "src/engine/view/d_view.cpp": [
+        "return:int"
       ]
     },
     "func_02048a1c": {

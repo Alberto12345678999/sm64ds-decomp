@@ -438,81 +438,9 @@ src/engine/view/d_camera.cpp:
     complete
     .text start:0x0200bec4 end:0x0200e494
 
-src/unnamed/arm9/0200/func_0200e494.c:
+src/KuppaScript.cpp:
     complete
-    .text start:0x0200e494 end:0x0200e4e4
-
-src/unnamed/arm9/0200/func_0200e4e4.cpp:
-    complete
-    .text start:0x0200e4e4 end:0x0200e55c
-
-src/unnamed/arm9/0200/func_0200e55c.cpp:
-    complete
-    .text start:0x0200e55c end:0x0200e5ac
-
-src/unnamed/arm9/0200/func_0200e5ac.cpp:
-    complete
-    .text start:0x0200e5ac end:0x0200e5fc
-
-src/unnamed/arm9/0200/func_0200e5fc.cpp:
-    complete
-    .text start:0x0200e5fc end:0x0200e6d8
-
-src/unnamed/arm9/0200/func_0200e6d8.cpp:
-    complete
-    .text start:0x0200e6d8 end:0x0200e728
-
-src/unnamed/arm9/0200/func_0200e728.c:
-    complete
-    .text start:0x0200e728 end:0x0200e748
-
-src/ReadUnalignedInt.c:
-    complete
-    .text start:0x0200e748 end:0x0200e768
-
-src/ReadUnalignedShort.c:
-    complete
-    .text start:0x0200e768 end:0x0200e780
-
-src/ReadUnalignedUshort.c:
-    complete
-    .text start:0x0200e780 end:0x0200e798
-
-src/EndKuppaScript.cpp:
-    complete
-    .text start:0x0200e798 end:0x0200e8d4
-
-src/ProcessKuppaScript.cpp:
-    complete
-    .text start:0x0200e8d4 end:0x0200ee68
-
-src/unnamed/arm9/0200/func_0200ee68.c:
-    complete
-    .text start:0x0200ee68 end:0x0200ee8c
-
-src/unnamed/arm9/0200/func_0200ee8c.c:
-    complete
-    .text start:0x0200ee8c end:0x0200eec8
-
-src/unnamed/arm9/0200/func_0200eec8.c:
-    complete
-    .text start:0x0200eec8 end:0x0200eedc
-
-src/StartIntroCutscene.cpp:
-    complete
-    .text start:0x0200eedc end:0x0200ef04
-
-src/RunKuppaScript.c:
-    complete
-    .text start:0x0200ef04 end:0x0200ef80
-
-src/ContinueKuppaScriptIfNecessary.cpp:
-    complete
-    .text start:0x0200ef80 end:0x0200f04c
-
-src/ResetKuppaScript.c:
-    complete
-    .text start:0x0200f04c end:0x0200f0bc
+    .text start:0x0200e494 end:0x0200f0bc
 
 src/unnamed/arm9/0200/func_0200f0bc.c:
     complete
