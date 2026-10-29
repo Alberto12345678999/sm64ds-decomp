@@ -29,6 +29,7 @@
 #include "dScStarSel_c.h"
 #include "decl_common.h"
 #include "dFdBrightness_c.h"
+#include "dFdColor_c.h"
 #include "OAM.h"
 #include "SaveData.h"
 #include "Message.h"
@@ -663,7 +664,7 @@ u8 DecIfAbove0_Byte(u8 *p);
 u16 DecIfAbove0_Short(u16 *p);
 
 extern dFdBrightness_c *data_0209f5bc;
-extern u16 data_0209f5e8[];
+extern dFdColor_c data_0209f5e8;
 }
 
 s32 dScStarSel_c::Behavior() {
@@ -689,7 +690,7 @@ s32 dScStarSel_c::Behavior() {
             if (EXIT_DELAY(this) == 0 ||
                 (SublevelToLevel(data_02092110) > 0xe && IsButtonInputValid() != 0)) {
                 StartSceneFade(3, 0, 0);
-                data_0209f5e8[6] = 0x7fff;
+                data_0209f5e8.color = 0x7fff;
                 if (SublevelToLevel(data_02092110) <= 0xe) {
                     data_0209f1f0 = SELECTED_PLATE(this) + 1;
                 } else {
@@ -960,7 +961,7 @@ enum ZN12dScStarSel_c13InitResourcesEv_AssetId {
 extern "C" {
 void Enable3dEngines(void);
 void *LoadFile(int);
-void DecompressLZ16(void *, u32);
+void DecompressLZ16(void *, void *);
 int IsStarCollected(int, int);
 
 extern u8 data_0209d45c;
@@ -1040,14 +1041,14 @@ s32 dScStarSel_c::InitResources() {
         REG16(0x400000C) = (REG16(0x400000C) & 0x43) | 0x1610;
         REG16(0x400000C) &= ~0x40;
         file = LoadFile(ASSET_D_2D_PLAYER_SELECT_KOOPA_BG_NCG_BIN);
-        DecompressLZ16(file, (u32)G2::GetBG2CharPtr());
+        DecompressLZ16(file, G2::GetBG2CharPtr());
         Deallocate(file);
         file = LoadFile(ASSET_D_2D_PLAYER_SELECT_KOOPA_BG_NCL_BIN);
         GX::LoadBGPltt(file, 0, 0x1A0);
         GXS::LoadBGPltt(file, 0, 2);
         Deallocate(file);
         file = LoadFile(ASSET_D_2D_PLAYER_SELECT_KOOPA_BG_NSC_BIN);
-        DecompressLZ16(file, (u32)G2::GetBG2ScrPtr());
+        DecompressLZ16(file, G2::GetBG2ScrPtr());
         Deallocate(file);
         SetBg2Offset(0, 0);
         data_0209d45c |= 4;
@@ -1067,13 +1068,13 @@ s32 dScStarSel_c::InitResources() {
         } else {
             file = LoadFile(ASSET_D_2D_SCENARIO_PLAYER_SELECT_COURSE_NUMBER_BG_NCG_BIN);
         }
-        DecompressLZ16(file, (u32)G2::GetBG2CharPtr());
+        DecompressLZ16(file, G2::GetBG2CharPtr());
         Deallocate(file);
         file = LoadFile(ASSET_D_2D_SCENARIO_PLAYER_SELECT_COURSE_NUMBER_BG_NCL_BIN);
         GX::LoadBGPltt(file, 0, 0x1A0);
         Deallocate(file);
         file = LoadFile(ASSET_D_2D_SCENARIO_PLAYER_SELECT_COURSE_NUMBER_BG_NSC_BIN);
-        DecompressLZ16(file, (u32)G2::GetBG2ScrPtr());
+        DecompressLZ16(file, G2::GetBG2ScrPtr());
         Deallocate(file);
         SetBg2Offset(0, -4);
         data_0209d45c |= 4;
@@ -1090,13 +1091,13 @@ s32 dScStarSel_c::InitResources() {
     } else {
         file = LoadFile(ASSET_D_2D_CMN_ICON_E_NCG_BIN);
     }
-    DecompressLZ16(file, 0x06400000);
+    DecompressLZ16(file, (void *)0x06400000);
     Deallocate(file);
     file = LoadFile(ASSET_D_2D_BTM_ICON_NCG_BIN);
     {
         char *a5 = (char *)0x06400000;
         a5 += 0x2000;
-        DecompressLZ16(file, (u32)a5);
+        DecompressLZ16(file, a5);
     }
     Deallocate(file);
     if (GetOwnerLanguage() == 5) {
@@ -1126,7 +1127,7 @@ s32 dScStarSel_c::InitResources() {
     } else {
         file = LoadFile(ASSET_D_2D_SCENARIO_PLAYER_SELECT_NCG_BIN);
     }
-    DecompressLZ16(file, 0x06600000);
+    DecompressLZ16(file, (void *)0x06600000);
     Deallocate(file);
     file = LoadFile(ASSET_D_2D_SCENARIO_PLAYER_SELECT_NCL_BIN);
     GXS::LoadOBJPltt(file, 0, 0x200);
@@ -1138,7 +1139,7 @@ s32 dScStarSel_c::InitResources() {
         {
             char *a6 = (char *)0x06600000;
             a6 += 0x4000;
-            DecompressLZ16(file, (u32)a6);
+            DecompressLZ16(file, a6);
         }
         Deallocate(file);
         file = LoadFile(ASSET_D_2D_PLAYER_SELECT_MARIO_8BIT_NCL_BIN);
@@ -1152,7 +1153,7 @@ s32 dScStarSel_c::InitResources() {
         {
             char *a6 = (char *)0x06600000;
             a6 += 0x4000;
-            DecompressLZ16(file, (u32)a6);
+            DecompressLZ16(file, a6);
         }
         Deallocate(file);
         file = LoadFile(ASSET_D_2D_PLAYER_SELECT_LUIGI_8BIT_NCL_BIN);
@@ -1166,7 +1167,7 @@ s32 dScStarSel_c::InitResources() {
         {
             char *a6 = (char *)0x06600000;
             a6 += 0x4000;
-            DecompressLZ16(file, (u32)a6);
+            DecompressLZ16(file, a6);
         }
         Deallocate(file);
         file = LoadFile(ASSET_D_2D_PLAYER_SELECT_WARIO_8BIT_NCL_BIN);
@@ -1180,7 +1181,7 @@ s32 dScStarSel_c::InitResources() {
         {
             char *a6 = (char *)0x06600000;
             a6 += 0x4000;
-            DecompressLZ16(file, (u32)a6);
+            DecompressLZ16(file, a6);
         }
         Deallocate(file);
         file = LoadFile(ASSET_D_2D_PLAYER_SELECT_YOSHI_8BIT_NCL_BIN);

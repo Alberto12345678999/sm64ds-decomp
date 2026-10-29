@@ -45,8 +45,7 @@ extern u8 data_0209d45c;
 extern dFdColor_c data_0209f5e8;
 
 u32 LoadCompressedFileAt(u16 fileID, void *target);
-int LoadFile(int handle);
-
+void *LoadFile(int handle);
 
 void DecompressLZ16(const void *src, void *dst);
 
@@ -198,7 +197,7 @@ s32 dScBoot_c::Behavior() {
                     StartSceneFade(func_0203da3c() != 0 ? 6 : 1, 0, 0);
                 } else if (mState == STATE_BOOT_WAIT && keysHeld == 0xf03) { /* A+B+X+Y+L+R */
                     u16 langFileID;
-                    int palette;
+                    void *palette;
 
                     if (GetOwnerLanguage() == 5) {
                         langFileID = 0xb00d;
@@ -213,8 +212,8 @@ s32 dScBoot_c::Behavior() {
                     }
                     LoadCompressedFileAt(langFileID, (void *)G2S::GetBG1CharPtr());
                     palette = LoadFile(0x9807);
-                    GXS::LoadBGPltt((const void *)palette, 0, 0x1c0);
-                    Deallocate((void *)palette);
+                    GXS::LoadBGPltt(palette, 0, 0x1c0);
+                    Deallocate(palette);
                     LoadCompressedFileAt(ASSET_D_2D_FRAMEWORK_INITIALIZE_NSC_BIN,
                                          (void *)G2S::GetBG1ScrPtr());
                     LoadCompressedFileAt(0x9803, (char *)G2S::GetBG1ScrPtr() + 0x800);

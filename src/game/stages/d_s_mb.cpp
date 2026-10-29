@@ -29,7 +29,7 @@
 
 extern "C" {
 void MultiStore16(u16 val, char *dst, int nbytes);
-void DecompressLZ16(int src, void *dst);
+void DecompressLZ16(void *src, void *dst);
 
 void func_020308b4(void);
 
@@ -48,7 +48,11 @@ extern s16 data_02082214[];
 
 extern u8 data_0209d45c;
 extern u8 data_0209d454;
-extern void *data_0209d4a8;
+/* The one graph callback the frame dispatchers poll (func_02018ec0 and
+   friends): the scene registers its own object here and clears it on the way
+   out. dGraph_c::callback_c is the ROM-proven base of every scene's nested
+   graphCallback_c (include/dGraph_c.h). */
+extern dGraph_c::callback_c *data_0209d4a8;
 extern int data_0208ee44;
 }
 
@@ -64,6 +68,9 @@ dScMB_c::graphCallback_c data_020a0c68;
 dScMB_c::~dScMB_c() {}
 
 // @symbol func_02034b1c
+/* The untyped parameter pair is measured, not sloppy: spelling `c` as
+   dScMB_c::graphCallback_c * (or `owner` as dScMB_c *, with `this` at the one
+   call site) moves this function's bytes. The casts stay. */
 void func_02034b1c(void *c, int owner) {
     dScMB_c::graphCallback_c *callback = (dScMB_c::graphCallback_c *)c;
     callback->mOwner = (void *)owner;
@@ -71,7 +78,7 @@ void func_02034b1c(void *c, int owner) {
     callback->mStillTimer = 0;
     callback->mEnabled = 1;
     callback->mAdvancing = 1;
-    *(u8 *)((char *)c + 0xf) = 0;
+    callback->mUnusedFlag = 0;
 }
 
 // @symbol _ZN7dScMB_c15graphCallback_c14GraphCallback3Ev
@@ -172,8 +179,8 @@ s32 dScMB_c::Behavior() {
     case 0:
         if (func_0203d8fc() == 0)
             break;
-        DecompressLZ16((int)data_0208a0e4[GetLanguageIndex()], (void *)0x6400000);
-        DecompressLZ16((int)data_0208a0e4[GetLanguageIndex()], (void *)0x6600000);
+        DecompressLZ16(data_0208a0e4[GetLanguageIndex()], (void *)0x6400000);
+        DecompressLZ16(data_0208a0e4[GetLanguageIndex()], (void *)0x6600000);
         data_0209d45c = 0x10;
         data_0209d454 = 0x10;
         *(volatile u32 *)0x4000000 = (*(volatile u32 *)0x4000000 & ~0x1f00) | 0x1000;
@@ -278,7 +285,7 @@ s32 dScMB_c::InitResources() {
     {
         char *vram = (char *)0x6400000;
         vram += 0x1280;
-        DecompressLZ16((int)&data_0209446c, vram);
+        DecompressLZ16(&data_0209446c, vram);
     }
     GX::LoadOBJPltt((const void *)&data_0209444c, 0, 0x20);
     GX::LoadOBJPltt((const void *)&data_020945d0, 0xa0, 0x20);
@@ -298,7 +305,7 @@ s32 dScMB_c::InitResources() {
     *(volatile u32 *)0x4001000 |= 0x10000;
     func_02034b1c(&data_020a0c68, (int)this);
 
-    *(void **)&data_0209d4a8 = &data_020a0c68;
+    data_0209d4a8 = &data_020a0c68;
     mStep = 0;
     mTimeout = 0;
     dScene_c::SetFaders(&fader);
