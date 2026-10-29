@@ -32,7 +32,9 @@ enum daObjEwmIceBlock_c_AssetId {
 #include "daObjEwmIceBlock_c.h"
 #include "SharedFilePtr.h"
 
-namespace cstd { int fdiv(int a, int b); }
+namespace cstd {
+int fdiv(int a, int b);
+}
 
 extern "C" {
 extern SharedFilePtr *data_ov056_02113314[];

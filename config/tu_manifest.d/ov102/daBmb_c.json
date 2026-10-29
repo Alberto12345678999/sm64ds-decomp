@@ -159,7 +159,7 @@
       "ordinal": 16
     },
     {
-      "symbol": "func_ov102_0214b988",
+      "symbol": "_ZN7daBmb_c19func_ov102_0214b988Ev",
       "address": "0x0214b988",
       "size": "0x000000a8",
       "legacy_source": "src/func_ov102_0214b988.cpp",
@@ -1369,32 +1369,32 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@502",
+      "from": "@507",
       "to": "data_ov102_0214e9d0",
       "evidence": "compiler temp mapped to 0x0214e9d0 by the retail initializer relocation at the same pool offset; no bytes or relocations change"
     },
     {
-      "from": "@503",
+      "from": "@508",
       "to": "data_ov102_0214e9dc",
       "evidence": "compiler temp mapped to 0x0214e9dc by the retail initializer relocation at the same pool offset; no bytes or relocations change"
     },
     {
-      "from": "@505",
+      "from": "@510",
       "to": "data_ov102_0214ea0c",
       "evidence": "compiler temp mapped to 0x0214ea0c by the retail initializer relocation at the same pool offset; no bytes or relocations change"
     },
     {
-      "from": "@508",
+      "from": "@513",
       "to": "data_ov102_0214e9f4",
       "evidence": "compiler temp mapped to 0x0214e9f4 by the retail initializer relocation at the same pool offset; no bytes or relocations change"
     },
     {
-      "from": "@511",
+      "from": "@516",
       "to": "data_ov102_0214ea00",
       "evidence": "compiler temp mapped to 0x0214ea00 by the retail initializer relocation at the same pool offset; no bytes or relocations change"
     },
     {
-      "from": "@514",
+      "from": "@519",
       "to": "data_ov102_0214e9e8",
       "evidence": "compiler temp mapped to 0x0214e9e8 by the retail initializer relocation at the same pool offset; no bytes or relocations change"
     }

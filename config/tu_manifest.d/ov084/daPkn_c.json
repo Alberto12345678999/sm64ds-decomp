@@ -1009,82 +1009,82 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@487",
+      "from": "@492",
       "to": "data_ov084_02130e44",
       "evidence": "compiler temp mapped to 0x02130e44 by the retail initializer relocation at the same pool offset; no bytes or relocations change"
     },
     {
-      "from": "@488",
+      "from": "@493",
       "to": "data_ov084_02130e50",
       "evidence": "compiler temp mapped to 0x02130e50 by the retail initializer relocation at the same pool offset; no bytes or relocations change"
     },
     {
-      "from": "@489",
+      "from": "@494",
       "to": "data_ov084_02130e68",
       "evidence": "compiler temp mapped to 0x02130e68 by the retail initializer relocation at the same pool offset; no bytes or relocations change"
     },
     {
-      "from": "@490",
+      "from": "@495",
       "to": "data_ov084_02130e74",
       "evidence": "compiler temp mapped to 0x02130e74 by the retail initializer relocation at the same pool offset; no bytes or relocations change"
     },
     {
-      "from": "@491",
+      "from": "@496",
       "to": "data_ov084_02130e5c",
       "evidence": "compiler temp mapped to 0x02130e5c by the retail initializer relocation at the same pool offset; no bytes or relocations change"
     },
     {
-      "from": "@492",
+      "from": "@497",
       "to": "data_ov084_02130e2c",
       "evidence": "compiler temp mapped to 0x02130e2c by the retail initializer relocation at the same pool offset; no bytes or relocations change"
     },
     {
-      "from": "@493",
+      "from": "@498",
       "to": "data_ov084_02130e38",
       "evidence": "compiler temp mapped to 0x02130e38 by the retail initializer relocation at the same pool offset; no bytes or relocations change"
     },
     {
-      "from": "@495",
+      "from": "@500",
       "to": "data_ov084_02130bb4",
       "evidence": "compiler temp mapped to 0x02130bb4 by the retail initializer relocation at the same pool offset; no bytes or relocations change"
     },
     {
-      "from": "@497",
+      "from": "@502",
       "to": "data_ov084_02130ba4",
       "evidence": "compiler temp mapped to 0x02130ba4 by the retail initializer relocation at the same pool offset; no bytes or relocations change"
     },
     {
-      "from": "@499",
+      "from": "@504",
       "to": "data_ov084_02130bbc",
       "evidence": "compiler temp mapped to 0x02130bbc by the retail initializer relocation at the same pool offset; no bytes or relocations change"
     },
     {
-      "from": "@501",
+      "from": "@506",
       "to": "data_ov084_02130bac",
       "evidence": "compiler temp mapped to 0x02130bac by the retail initializer relocation at the same pool offset; no bytes or relocations change"
     },
     {
-      "from": "@503",
+      "from": "@508",
       "to": "data_ov084_02130bc4",
       "evidence": "compiler temp mapped to 0x02130bc4 by the retail initializer relocation at the same pool offset; no bytes or relocations change"
     },
     {
-      "from": "@505",
+      "from": "@510",
       "to": "data_ov084_02130bcc",
       "evidence": "compiler temp mapped to 0x02130bcc by the retail initializer relocation at the same pool offset; no bytes or relocations change"
     },
     {
-      "from": "@507",
+      "from": "@512",
       "to": "data_ov084_02130bdc",
       "evidence": "compiler temp mapped to 0x02130bdc by the retail initializer relocation at the same pool offset; no bytes or relocations change"
     },
     {
-      "from": "@509",
+      "from": "@514",
       "to": "data_ov084_02130bd4",
       "evidence": "compiler temp mapped to 0x02130bd4 by the retail initializer relocation at the same pool offset; no bytes or relocations change"
     },
     {
-      "from": "@511",
+      "from": "@516",
       "to": "data_ov084_02130be4",
       "evidence": "compiler temp mapped to 0x02130be4 by the retail initializer relocation at the same pool offset; no bytes or relocations change"
     }

@@ -70,7 +70,7 @@ struct dScMgTrampoline_c : dScMgD3DBase_c {
        this class; Behavior dispatches the same eight-byte pointer-to-member
        every frame. The State/Begin/Update names are coined from the
        matched bodies; the ROM symbols were address-only. */
-    void StateDone();      /* ov006 0x02121774 */
+    static void StateDone(); /* ov006 0x02121774 */
     void StateWaitExit();  /* ov006 0x02121778 */
     void StateResults();   /* ov006 0x02121848 */
     void StatePlay();      /* ov006 0x021218fc */

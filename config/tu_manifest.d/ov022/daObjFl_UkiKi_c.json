@@ -409,12 +409,12 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@338",
+      "from": "@340",
       "to": "data_ov022_02114634",
       "evidence": "compiler temp mapped to 0x02114634 by the retail initializer relocation at the same pool offset; no bytes or relocations change"
     },
     {
-      "from": "@339",
+      "from": "@341",
       "to": "data_ov022_02114628",
       "evidence": "compiler temp mapped to 0x02114628 by the retail initializer relocation at the same pool offset; no bytes or relocations change"
     }

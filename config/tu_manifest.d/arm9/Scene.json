@@ -190,7 +190,7 @@
   "data": [],
   "bss": [
     {
-      "symbol": "@330",
+      "symbol": "@332",
       "address": "0x0209f5c4",
       "size": "0xc",
       "evidence": "compiler-generated destructor-registration node for data_0209f5d0; retail __sinit_02074edc passes it as the third argument of the second __register_global_object call (pool word 0x02074f7c)",
@@ -204,7 +204,7 @@
       "binding": "STB_GLOBAL"
     },
     {
-      "symbol": "@329",
+      "symbol": "@331",
       "address": "0x0209f5dc",
       "size": "0xc",
       "evidence": "compiler-generated destructor-registration node for data_0209f5e8; retail __sinit_02074edc passes it as the third argument of the first __register_global_object call (pool word 0x02074f70)",
@@ -551,13 +551,13 @@
       "evidence": "mwcc emits the ctor-table object local; DSD exposes owned symbols globally and cannot encode a local symbols.txt entry"
     },
     {
-      "symbol": "@329",
+      "symbol": "@331",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local destructor-registration node is a configured initializer relocation destination at 0x0209f5dc"
     },
     {
-      "symbol": "@330",
+      "symbol": "@332",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local destructor-registration node is a configured initializer relocation destination at 0x0209f5c4"
@@ -639,7 +639,7 @@
       "source": "0x02074f70",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@329",
+      "symbol": "@331",
       "addend": 0,
       "target_module": "arm9",
       "target_address": "0x0209f5dc"
@@ -669,7 +669,7 @@
       "source": "0x02074f7c",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@330",
+      "symbol": "@332",
       "addend": 0,
       "target_module": "arm9",
       "target_address": "0x0209f5c4"

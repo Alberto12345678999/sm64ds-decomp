@@ -43,8 +43,6 @@ enum d_a_star_gate_AssetId {
 #include "dCamera_c.h"
 #include "math/Approach.h"
 
-struct dCamera_c;
-
 extern "C" {
 int func_ov100_02144fcc(...);
 unsigned char DecIfAbove0_Byte(unsigned char *p);

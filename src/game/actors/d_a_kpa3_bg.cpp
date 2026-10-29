@@ -34,9 +34,11 @@
  * - The three handlers keep their address names.
  * - func_ov060_02117db8 parses as C (cplusplus off): the same body as
  *   C++ DIFFs. It reaches the members through a struct daKpa3Bg_c *.
- *   dActor_c::Earthquake, PoofDustAt and fBase_c::MarkForDestruction
- *   stay mangled because the body is C. func_02012694 plays bank-3 sound
- *   0xbc at a point written into mCamSpacePos, restored afterwards.
+ *   Earthquake, PoofDustAt and MarkForDestruction go through
+ *   kpaCallEarthquake, kpaCallPoof and kpaCallDestroy. A member call in
+ *   the C body DIFFs; the bridges inline to the same calls.
+ *   func_02012694 plays bank-3 sound 0xbc at a point written into
+ *   mCamSpacePos, restored afterwards.
  * - dBgW_KcMbg::SetFile is called through its mangled name, with the
  *   Fix12<int> argument passed as a raw int.
  * - func_020393d4 stores dBgW::UpdatePosWithTransform.
@@ -60,15 +62,10 @@ extern "C" {
 typedef struct Vec3 { int x, y, z; } Vec3;
 
 void Vec3_AsrInPlace(Vec3 *v, int n);
-void MulVec3Mat4x3(Vec3 *in, void *m, void *out);
-void func_02012694(int a, void *p);
-void CopyTexPalFromLevelModel(void *p);
-// local extern: func_ov060_02117db8 is parsed as C and cannot call the member.
-void _ZN8dActor_c10EarthquakeERK7Vector3i(void *self, Vec3 *v, int fix);
-// local extern: func_ov060_02117db8 is parsed as C and cannot call the member.
-void _ZN8dActor_c10PoofDustAtERK7Vector3(void *self, Vec3 *v);
-// local extern: the C body of func_ov060_02117db8 calls it, as above.
-void _ZN7fBase_c18MarkForDestructionEv(void *self);
+/* Unnamed on purpose: see the @NNN note in the banner. */
+void MulVec3Mat4x3(Vec3 *, void *, void *);
+void func_02012694(int, void *);
+void CopyTexPalFromLevelModel(void *);
 
 extern u16 data_ov060_0211956c[];
 extern s16 data_02082214[];
@@ -81,7 +78,8 @@ extern SharedFilePtr *data_ov060_0211953c[];
 extern CLPS_Block *data_ov060_0211a980[];
 extern int data_0208e738;
 
-extern void hold_d_a_kpa3_bg(void *self, KCL_File *f, const Matrix4x3 &m, int fix, short sh,
+/* Three parameter names dropped: kpaCallDestroy took those @NNN slots. */
+extern void hold_d_a_kpa3_bg(void *, KCL_File *, const Matrix4x3 &, int fix, short sh,
                              CLPS_Block &b);
 void func_020393d4(void *p, void *v);
 void func_020393c4(void *p, void *v);
@@ -203,7 +201,6 @@ int daKpa3Bg_c::func_ov060_021181b4() {
         mState = 1;
         return 1;
     }
-    return (int)koopa;
 }
 
 // @symbol _ZN10daKpa3Bg_c19func_ov060_021180e0Ev
@@ -237,6 +234,18 @@ void daKpa3Bg_c::func_ov060_021180e0()
     if (dropAfter < mTimer)
         mState = 2;
     (*timer)++;
+}
+
+/* The C body cannot spell a member call. These inline to the direct calls.
+   They sit above the @symbol so that marker stays on the C function. */
+static inline void kpaCallEarthquake(daKpa3Bg_c *self, Vec3 *v, int fix) {
+    self->Earthquake(*(const Vector3 *)v, fix);
+}
+static inline void kpaCallPoof(daKpa3Bg_c *self, Vec3 *v) {
+    self->PoofDustAt(*(const Vector3 *)v);
+}
+static inline void kpaCallDestroy(daKpa3Bg_c *self) {
+    self->MarkForDestruction();
 }
 
 // @symbol _ZN10daKpa3Bg_c19func_ov060_02117db8Ev
@@ -300,7 +309,7 @@ void _ZN10daKpa3Bg_c19func_ov060_02117db8Ev(struct daKpa3Bg_c *self) {
         eq.x = self->mPosX;
         eq.y = self->mPosY;
         eq.z = self->mPosZ;
-        _ZN8dActor_c10EarthquakeERK7Vector3i(self, &eq, 0x7d0000);
+        kpaCallEarthquake(self, &eq, 0x7d0000);
         self->mVertSpeed = 0x8000;
         self->mVertAccel = 0;
     }
@@ -323,7 +332,7 @@ void _ZN10daKpa3Bg_c19func_ov060_02117db8Ev(struct daKpa3Bg_c *self) {
         dust1.x = x;
         dust1.y = y;
         dust1.z = z;
-        _ZN8dActor_c10PoofDustAtERK7Vector3(self, &dust1);
+        kpaCallPoof(self, &dust1);
 
         a = ((int)(u16)(s16)(mul - 0x14b0) >> 4) * 2;
         x = k * (s16)data_02082214[a] + (bx << 12);
@@ -335,7 +344,7 @@ void _ZN10daKpa3Bg_c19func_ov060_02117db8Ev(struct daKpa3Bg_c *self) {
         dust2.x = x;
         dust2.y = y;
         dust2.z = z;
-        _ZN8dActor_c10PoofDustAtERK7Vector3(self, &dust2);
+        kpaCallPoof(self, &dust2);
     }
 
     {
@@ -347,7 +356,7 @@ void _ZN10daKpa3Bg_c19func_ov060_02117db8Ev(struct daKpa3Bg_c *self) {
         *posY += self->mVertSpeed;
     }
     if (self->mPhase > 0x12cu)
-        _ZN7fBase_c18MarkForDestructionEv(self);
+        kpaCallDestroy(self);
     self->mPhase++;
 }
 #pragma cplusplus on

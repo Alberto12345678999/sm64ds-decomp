@@ -8934,3 +8934,39 @@ What each one needed beyond §6df:
   `bx lr` with no relocations. Only TU order locates them, and none of the promoted
   candidates emits an initializer.
 
+## 6dh. Two per-function pragmas retired: a folded-away null guard replaces `opt_propagation off` (func_ov007_020b8690), and `opt_common_subs off` on func_0200bb28 was inert (2026-10-29)
+
+**func_ov007_020b8690.** The ROM clears two globals with
+`ldr r2,=&0210345c / mov r0,#0 / ldr r1,=&02103458 / str r0,[r2] / strh r0,[r1]`.
+Under propagation, every spelling gives the same 5-word mismatch
+(`ldr r1 / mov r2,#0 / ldr r0`). That holds for plain stores, chained `a = b = 0`, a
+zero local, pointer locals, reference or pointer inline helpers with the zero as an
+argument or in the body, every type for the two globals, `register`, and an indexed
+store. The zero is coloured last because its def comes before the two address loads.
+The ROM colours it first, so its def comes after both addresses. `opt_propagation off`
+got that order only because the named pointer locals `pa`/`pb` survive. Even without
+the launder casts, `int *pa = &x; short *pb = &y; *pa = 0; *pb = 0;` matches under the
+pragma.
+
+A dead null guard on the pointer locals gives the same result with propagation on:
+
+```c
+    int *pa = &data_ov007_0210345c;
+    short *pb = &data_ov007_02103458;
+    if (pa != 0 && pb != 0) {
+        *pa = 0;
+        *pb = 0;
+    }
+```
+
+The guard folds away (no compare is emitted). The join it makes keeps both locals alive
+past propagation. `if (pa == 0 || pb == 0) return;`, `*(pa ? pa : pa) = 0` and
+`pb = pb ? pb : pb` also match. A guard on only one pointer gives 4 or 5 mismatches,
+and so does a guard on the bare `&global` with no local. This is the 6cz self-select
+booster. In the entry block it costs no block split. A function whose ROM order needs a
+named local that survives propagation can take this shape instead of a pragma.
+
+**func_0200bb28.** The shard matches 2004/b56 with and without `#pragma opt_common_subs off`.
+That holds on current main and on the shard as it stood before c2ca658710. The pragma was
+inert, so it no longer blocks folding the camera handlers below 0x0200bec4 into a unit
+that keeps CSE on for `dCamera_c::Behavior`. That fold is still to do.

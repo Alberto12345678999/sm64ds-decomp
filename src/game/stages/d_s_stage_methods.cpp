@@ -3333,7 +3333,7 @@ extern "C" int func_0202a980(void) {
     return ((LevelInfo *)data_0209f340)->minimapTilesFile;
 }
 
-// @symbol _Z23LoadMinimapChangeObjecti5Fix12IiEh
+// @symbol _Z23LoadMinimapChangeObjectiia
 /* data_0209f314 points at mTexAnimSlots (InitResources stores it). Each
    0xc-byte slot doubles as the per-area record: HideArea/ShowArea toggle its
    mActive byte, and mBlockList heads a sorted list of these minimap-change
@@ -3350,7 +3350,7 @@ struct MinimapChangeNode {
     struct MinimapChangeNode *next; /* 0x0c */
 };
 
-extern "C" void _Z23LoadMinimapChangeObjecti5Fix12IiEh(int idx, Fix12i val, u8 h) {
+void LoadMinimapChangeObject(int idx, Fix12i val, s8 h) {
     struct MinimapChangeNode *nn = (MinimapChangeNode *)::operator new(sizeof(MinimapChangeNode));
     StageTexAnimSlot *e = &((StageTexAnimSlot *)data_0209f314)[idx];
     struct MinimapChangeNode *cur = (MinimapChangeNode *)e->mBlockList;

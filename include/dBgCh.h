@@ -71,7 +71,9 @@
 
 #include "types.h"
 
-extern "C" void _ZN6Memory16operator_delete2EPv(void *);
+namespace Memory {
+void operator_delete2(void *ptr);
+}
 
 struct CLPS;
 struct dActor_c;
@@ -103,7 +105,9 @@ struct dBgCh {
        finds it in the class or one level up, as include/dActor_c.h records.
        No layout effect: a non-virtual inline member adds no field and no
        vtable slot. */
-    void operator delete(void *ptr) { _ZN6Memory16operator_delete2EPv(ptr); }
+    void operator delete(void *ptr) {
+        Memory::operator_delete2(ptr);
+    }
 
     /* --- non-virtual --- */
     /* DECLARED, never defined in this header; the definition lives in

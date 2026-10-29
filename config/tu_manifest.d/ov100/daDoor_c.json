@@ -2153,92 +2153,92 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@575",
+      "from": "@584",
       "to": "@570",
       "evidence": "resource-handle registration node. The sinit's relocations map the previous @579 onto @575 after the six function-local Vector3 statics (uniform -4, same targets, same order). Licensed under the existing pin @570"
     },
     {
-      "from": "@576",
+      "from": "@585",
       "to": "@571",
-      "evidence": "resource-handle registration node. The sinit's relocations map the previous @580 onto @576 after the six function-local Vector3 statics (uniform -4, same targets, same order). Licensed under the existing pin @571"
+      "evidence": "mwcc numbers this resource-handle registration node @561 per TU; daObjHeart_c's emitted object already carries @561 globally, so the scratch link would multiply-define it"
     },
     {
-      "from": "@581",
+      "from": "@590",
       "to": "@566",
-      "evidence": "resource-handle registration node. The sinit's relocations map the previous @585 onto @581 after the six function-local Vector3 statics (uniform -4, same targets, same order). Licensed under the existing pin @566"
+      "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @580 now; licensed under the existing pin @566"
     },
     {
-      "from": "@584",
+      "from": "@593",
       "to": "@569",
-      "evidence": "resource-handle registration node. The sinit's relocations map the previous @588 onto @584 after the six function-local Vector3 statics (uniform -4, same targets, same order). Licensed under the existing pin @569"
-    },
-    {
-      "from": "@573",
-      "to": "@558",
-      "evidence": "resource-handle registration node. The sinit's relocations map the previous @577 onto @573 after the six function-local Vector3 statics (uniform -4, same targets, same order). Licensed under the existing pin @558"
-    },
-    {
-      "from": "@583",
-      "to": "@568",
-      "evidence": "resource-handle registration node. The sinit's relocations map the previous @587 onto @583 after the six function-local Vector3 statics (uniform -4, same targets, same order). Licensed under the existing pin @568"
-    },
-    {
-      "from": "@574",
-      "to": "@559",
-      "evidence": "resource-handle registration node. The sinit's relocations map the previous @578 onto @574 after the six function-local Vector3 statics (uniform -4, same targets, same order). Licensed under the existing pin @559"
+      "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @583 now; licensed under the existing pin @569"
     },
     {
       "from": "@582",
+      "to": "@558",
+      "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @572 now; licensed under the existing pin @558"
+    },
+    {
+      "from": "@592",
+      "to": "@568",
+      "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @582 now; licensed under the existing pin @568"
+    },
+    {
+      "from": "@583",
+      "to": "@559",
+      "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @573 now; licensed under the existing pin @559"
+    },
+    {
+      "from": "@591",
       "to": "@567",
-      "evidence": "resource-handle registration node. The sinit's relocations map the previous @586 onto @582 after the six function-local Vector3 statics (uniform -4, same targets, same order). Licensed under the existing pin @567"
+      "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @581 now; licensed under the existing pin @567"
     },
     {
-      "from": "@577",
+      "from": "@586",
       "to": "@562",
-      "evidence": "resource-handle registration node. The sinit's relocations map the previous @581 onto @577 after the six function-local Vector3 statics (uniform -4, same targets, same order). Licensed under the existing pin @562"
+      "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @576 now; licensed under the existing pin @562"
     },
     {
-      "from": "@578",
+      "from": "@587",
       "to": "@563",
-      "evidence": "resource-handle registration node. The sinit's relocations map the previous @582 onto @578 after the six function-local Vector3 statics (uniform -4, same targets, same order). Licensed under the existing pin @563"
+      "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @577 now; licensed under the existing pin @563"
     },
     {
-      "from": "@579",
+      "from": "@588",
       "to": "@564",
-      "evidence": "resource-handle registration node. The sinit's relocations map the previous @583 onto @579 after the six function-local Vector3 statics (uniform -4, same targets, same order). Licensed under the existing pin @564"
+      "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @578 now; licensed under the existing pin @564"
     },
     {
-      "from": "@580",
+      "from": "@589",
       "to": "@565",
       "evidence": "resource-handle registration node. The sinit's relocations map the previous @584 onto @580 after the six function-local Vector3 statics (uniform -4, same targets, same order). Licensed under the existing pin @565"
     },
     {
-      "from": "@776",
+      "from": "@785",
       "to": "@764",
       "evidence": "sFrontOff's registration node. ov091 already defines @776, and objisolate cannot grow a name, so this maps the compiled name to the unused same-length @764"
     },
     {
-      "from": "@780",
+      "from": "@789",
       "to": "@821",
       "evidence": "sBackOff's registration node. ov095 defines the compiled @780 and ov006 unit020cd744 defines @817, so this maps it to the unused same-length @821"
     },
     {
-      "from": "@784",
+      "from": "@793",
       "to": "@819",
       "evidence": "sKeyOff's registration node. ov091 already defines @784, and objisolate cannot grow a name, so this maps the compiled name to the unused same-length @819"
     },
     {
-      "from": "@1006",
+      "from": "@1015",
       "to": "@1082",
       "evidence": "sEnterPos's registration node. ov065 already defines @1006, and objisolate cannot grow a name, so this maps the compiled name to the unused same-length @1082"
     },
     {
-      "from": "@1010",
+      "from": "@1019",
       "to": "@1084",
       "evidence": "sEnterNeg's registration node. ov080 already defines @1010, and objisolate cannot grow a name, so this maps the compiled name to the unused same-length @1084"
     },
     {
-      "from": "@1178",
+      "from": "@1187",
       "to": "@1088",
       "evidence": "sDoorOff's registration node. ov089 already defines @1178, and objisolate cannot grow a name, so this maps the compiled name to the unused same-length @1088"
     }

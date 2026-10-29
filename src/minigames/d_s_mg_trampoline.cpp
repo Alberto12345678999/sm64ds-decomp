@@ -80,12 +80,12 @@ typedef struct Vec2s {
     s16 x, y;
 } Vec2s;
 
-/* Raw storage form of mwccarm's eight-byte single-inheritance PMF. Behavior
-   gives the live scene storage its dScMgTrampoline_c::State meaning at the
-   dispatch site; these descriptors retain the raw form because direct
-   namespace-scope PMF initialization makes
-   mwccarm 2004/b56 emit a __sinit, .ctor entry, and five anonymous data
-   temporaries that the cartridge does not contain. */
+/* Eight-byte state descriptors. A namespace-scope pointer-to-member is not
+   static data on this class: the named object moves to .bss, __sinit grows
+   by 0xb4, a .ctor word appears, and the RELA lands on an anonymous temp.
+   StateDone is empty, so it is static and its address is an ordinary
+   function pointer (same mangling). The other four read members and stay
+   a raw (code, 0) pair. */
 struct P2 {
     int a, b;
 };
@@ -159,7 +159,6 @@ extern "C" void Mg_CommitRecords(void *scene);
 int GetGameLanguage(void);
 void DrawOamSprite(void *a0, void *a1, int a2, void *a3);
 int RenderOamMainScreen(int a0, int a1, int a2, int a3, int a4);
-extern void Mg_DrawLine(void *a, int b, int c, int d, int e, int f, int g);
 extern int func_020126e8(int a);
 extern int func_02012468(int a, int b, int c, int d, int e, int f, int g, short h);
 extern short sTrmpGoalRow;
@@ -211,11 +210,9 @@ extern void Trmp3DMario_DrawAll(void);
 extern void TrmpLine_DrawAll(void);
 
 dScMgTrampoline_c *dScMgTrampoline_c_classInit(void);
-/* Literal aliases used only to make the five ROM PMF relocations static data.
-   Their definitions below are real compiler-spelled C++ members. Each is a
-   local extern: a pointer to member cannot convert to the int word a P2
-   entry holds, so dScMgTrampoline_c.h's declarations cannot fill the table. */
-extern "C" void _ZN17dScMgTrampoline_c9StateDoneEv(void);      /* local extern: PMF -> int */
+/* The four non-static state methods. A pointer to member does not convert
+   to the int word a descriptor holds. StateDone is static, so the
+   descriptor below names it directly. */
 extern "C" void _ZN17dScMgTrampoline_c13StateWaitExitEv(void); /* local extern: PMF -> int */
 extern "C" void _ZN17dScMgTrampoline_c12StateResultsEv(void);  /* local extern: PMF -> int */
 extern "C" void _ZN17dScMgTrampoline_c9StatePlayEv(void);      /* local extern: PMF -> int */
@@ -233,7 +230,7 @@ extern int sMgTextSpritesItalian[];
 
 /* Data owned by the same original TU. */
 P2 pmf_dScMgTrampoline_c_StateWaitExit = {(int)_ZN17dScMgTrampoline_c13StateWaitExitEv, 0};
-P2 pmf_dScMgTrampoline_c_StateDone = {(int)_ZN17dScMgTrampoline_c9StateDoneEv, 0};
+P2 pmf_dScMgTrampoline_c_StateDone = {(int)&dScMgTrampoline_c::StateDone, 0};
 P2 pmf_dScMgTrampoline_c_StateIntro = {(int)_ZN17dScMgTrampoline_c10StateIntroEv, 0};
 BaseSpawnInfo<dScMgTrampoline_c> g_profile_MG_TRAMPOLINE = {
     dScMgTrampoline_c_classInit,
@@ -272,7 +269,6 @@ int sTrmpPuffXByLanguage[] = {(int)sTrmpPuffEnglish, (int)sTrmpPuffSpanish, (int
 /* TUBUILD CONFLICT -- alternate declaration of MultiStore16, from the legacy file for func_ov006_02121d64, NOT applied: void MultiStore16(u16 val, char *dst, int nbytes); */
 /* TUBUILD CONFLICT -- alternate declaration of func_02012718, from the legacy file for func_ov006_02121d64, NOT applied: void func_02012718(void *a, int b); */
 /* TUBUILD CONFLICT -- alternate declaration of RandomIntInternal, from the legacy file for func_ov006_02121d64, NOT applied: int RandomIntInternal(int *seed); */
-/* TUBUILD CONFLICT -- alternate declaration of Mg_DrawLine, from the legacy file for func_ov006_02121d64, NOT applied: void Mg_DrawLine(void *a, int b, int c, int d, int e, int f, int g); */
 /* TUBUILD CONFLICT -- alternate declaration of func_020126e8, from the legacy file for func_ov006_02121d64, NOT applied: int func_020126e8(int a); */
 /* TUBUILD CONFLICT -- alternate declaration of func_02012468, from the legacy file for func_ov006_02121d64, NOT applied: int func_02012468(int a, int b, int c, int d, int e, int f, int g, short h); */
 /* TUBUILD CONFLICT -- alternate declaration of sTrmpStartTouchX, from the legacy file for func_ov006_02121f04, NOT applied: extern short sTrmpStartTouchX; */
@@ -463,7 +459,6 @@ void dScMgTrampoline_c::BeginIntro() {
 
 // @symbol _ZN17dScMgTrampoline_c10StateIntroEv
 void dScMgTrampoline_c::StateIntro() {
-    char *c = (char *)this;
     int counter;
 
     TrmpLine_UpdateAll();
@@ -503,7 +498,7 @@ void dScMgTrampoline_c::StateIntro() {
               << 2) >>
              12);
 
-        Mg_DrawLine(c, oldY, oldZ, mTouchX, mTouchY, 2, 0xc);
+        Mg_DrawLine(oldY, oldZ, mTouchX, mTouchY, 2, 0xc);
 
         mDragSoundHandle =
             func_02012468(mDragSoundHandle, 2, 0x1b0, 2, 0, func_020126e8(mixRaw), 0, 0);
@@ -521,7 +516,6 @@ void dScMgTrampoline_c::BeginPlay() {
 }
 
 // @symbol _ZN17dScMgTrampoline_c12UpdateScrollEv
-
 void dScMgTrampoline_c::UpdateScroll() {
     int q = sTrmpComboCount / 10;
     int old = mLevel;
@@ -719,8 +713,7 @@ void dScMgTrampoline_c::UpdateTouchInput() {
 
     i = ACTIVE_SLOT;
     if (TOUCH_REC(gTouchHeld)[i][0] != 0) {
-        Mg_DrawLine(this, mTouchX, mTouchY, TOUCH_REC(gTouchX)[i][0], TOUCH_REC(gTouchY)[i][0], 2,
-                    4);
+        Mg_DrawLine(mTouchX, mTouchY, TOUCH_REC(gTouchX)[i][0], TOUCH_REC(gTouchY)[i][0], 2, 4);
         i = ACTIVE_SLOT;
         mTouchX = TOUCH_REC(gTouchX)[i][0];
         mTouchY = TOUCH_REC(gTouchY)[i][0];

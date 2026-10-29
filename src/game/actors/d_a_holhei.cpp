@@ -53,7 +53,7 @@ extern "C" {
 extern short func_02010844(void* unused, Vector3* v, short angle);
 extern void func_02012694(int a, void *p);
 extern int daHolhei_c_ChangeState(daHolhei_c *self, HolheiState *p);
-extern int func_ov002_020db5f4(void *c, void *arg);
+extern int func_ov002_020db5f4(Player *c, dActor_c *arg);
 extern int func_ov002_020db54c(int p, int a, int b, int s);
 extern void func_0200d8c8(void* cam, void* v, int strength);
 extern int data_02092138;
@@ -315,7 +315,7 @@ extern "C" void func_ov062_02116edc(daHolhei_c *self) {
     Math_Function_0203b14c(&self->mCarryOffsX, data_ov062_0211df10[idx].x, 0x800, 0x3e8000, 4);
     Math_Function_0203b14c(&self->mCarryOffsY, data_ov062_0211df10[idx].y, 0x800, 0x3e8000, 4);
     Math_Function_0203b14c(&self->mCarryOffsZ, data_ov062_0211df10[idx].z, 0x800, 0x3e8000, 4);
-    void* r = self->UpdateCarry(*(Player *)self->mHeld, *(Vector3 *)&self->mCarryOffsX);
+    void *r = self->UpdateCarry(*self->mHeld, *(Vector3 *)&self->mCarryOffsX);
     struct M12w { int w[12]; };
     *(M12w *)&self->mModel.mat4x3 = *(M12w *)r;
 }
@@ -740,23 +740,24 @@ extern "C" void func_ov062_02116010(daHolhei_c *self)
         return;
     if (!IsPlayerActor(a))
         return;
+    Player *player = static_cast<Player *>(a);
     angle = self->HorzAngleToCPlayer();
     angle = AngleDiff(angle, self->mAngleY);
     if (angle > 0x2000) {
         if ((self->mdCc_c.hitFlags & 0x1000) == 0)
             return;
         self->mFlags |= 0x80;
-        if (((Player *)a)->TryGrab(*self) == 0)
+        if (player->TryGrab(*self) == 0)
             return;
-        self->mHeld = a;
+        self->mHeld = player;
         self->mdCc_c.flags |= 2;
         self->mHorzSpeed = 0;
         ::daHolhei_c_ChangeState(self, &data_ov062_0211dea0);
         return;
     }
-    if (func_ov002_020db5f4(a, self) == 0)
+    if (func_ov002_020db5f4(player, self) == 0)
         return;
-    self->mHeld = a;
+    self->mHeld = player;
     self->mHorzSpeed = 0;
     ::daHolhei_c_ChangeState(self, &data_ov062_0211def0);
 }

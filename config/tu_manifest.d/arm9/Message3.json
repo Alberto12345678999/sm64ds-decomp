@@ -7,7 +7,7 @@
   "boundary_confidence": "high",
   "boundary_evidence": [
     "contiguous linker run: 0x02030fa8..0x02034a78, 35 function(s), gapless in config/arm9/delinks.txt.",
-    "VS TWIN: 0x02030fa8..0x02034a78 is the Message text code compiled a second time for the VS build. Masking relocated words, nine functions are word-identical to their single-player twins at the same relative order: func_0200f0bc->func_02030fa8, func_0201ab6c->func_02031154, func_0201adac->func_020313d8, Message::AddChar->Message::AddCharVS, func_0201b7cc->func_02031e00, func_0201cb2c->Message::SetTextGlobalsVS, func_0201cfb8->func_02033a80, func_0201d590->func_02034098, Message_DrawCenteredLine->Message_DrawCenteredLineVS. The rest are VS-specific variants (other sizes) in the same order.",
+    "VS TWIN: 0x02030fa8..0x02034a78 is the Message text code compiled a second time for the VS build. Masking relocated words, nine functions are word-identical to their single-player twins at the same relative order: func_0200f0bc->func_02030fa8, func_0201ab6c->func_02031154, func_0201adac->func_020313d8, Message::AddChar->Message::AddCharVS, func_0201b7cc->func_02031e00, Message::SetTextGlobals->Message::SetTextGlobalsVS, func_0201cfb8->func_02033a80, func_0201d590->func_02034098, Message_DrawCenteredLine->Message_DrawCenteredLineVS. The rest are VS-specific variants (other sizes) in the same order.",
     "TOP EDGE: src/unnamed/arm9/0203/func_02030e4c.c (0x02030e4c..0x02030fa8) ends where the run begins; neither it nor any shard below it has a masked twin in the single-player text code, and func_02030fa8 (twin of func_0200f0bc) is the first. BOTTOM EDGE: src/game/stages/d_s_mb.cpp begins at 0x02034a78, a different class TU."
   ],
   "sections": [
@@ -274,7 +274,7 @@
       "ordinal": 23
     },
     {
-      "symbol": "func_02033ae0",
+      "symbol": "_ZN7Message24DisplayOptionsMenuTextVSEs",
       "address": "0x02033ae0",
       "size": "0x000000d8",
       "legacy_source": "src/unnamed/arm9/0203/func_02033ae0.c",
@@ -316,7 +316,7 @@
       "ordinal": 29
     },
     {
-      "symbol": "func_02034414",
+      "symbol": "_ZN7Message21DisplayDontSaveTextVSEt",
       "address": "0x02034414",
       "size": "0x000000f0",
       "legacy_source": "src/unnamed/arm9/0203/func_02034414.cpp",

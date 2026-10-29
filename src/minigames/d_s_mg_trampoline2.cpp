@@ -156,7 +156,6 @@ extern int Trmp2_PickFaceA(int kind);
 extern int Trmp2_PickFaceB(int kind);
 extern void func_0203cc28(int *vector, int angle);
 extern char *TrmpItem_Spawn(int resource, int *up, int variant, int face);
-extern int Mg_DrawLine(int a, int b, int c, int d, int e, int f, int g);
 extern int func_020126e8(int a);
 extern int func_02012468(int a, int b, int c, int d, int e, int f, int g, short h);
 extern int pmf_dScMgTrampoline2_c_StateDone[];
@@ -224,7 +223,6 @@ extern int sMgTextSpritesItalian[];
 /* TUBUILD CONFLICT -- alternate declaration of MultiStore16, from the legacy file for func_ov006_02124088, NOT applied: extern void MultiStore16(u16 val, char *dst, int nbytes); */
 /* TUBUILD CONFLICT -- alternate declaration of func_02012718, from the legacy file for func_ov006_02124088, NOT applied: extern void func_02012718(void *a, int b); */
 /* TUBUILD CONFLICT -- alternate declaration of func_02012468, from the legacy file for func_ov006_02124088, NOT applied: extern int func_02012468(int a, int b, int c, int d, int e, int f, int g, int h); */
-/* TUBUILD CONFLICT -- alternate declaration of Mg_DrawLine, from the legacy file for func_ov006_02124088, NOT applied: extern int Mg_DrawLine(void *a, int b, int c, int d, int e, int f, int g); */
 /* TUBUILD CONFLICT -- alternate declaration of sTrmpStartTouchY, from the legacy file for func_ov006_02124228, NOT applied: extern short sTrmpStartTouchY; */
 /* TUBUILD CONFLICT -- alternate declaration of GetGameLanguage, from the legacy file for _ZN18dScMgTrampoline2_c11CanEndStateEi, NOT applied: extern int GetGameLanguage(void); */
 /* TUBUILD CONFLICT -- alternate declaration of GetGameLanguage, from the legacy file for _ZN18dScMgTrampoline2_c10StartRoundEi, NOT applied: extern "C" s32 GetGameLanguage(void); */
@@ -236,12 +234,9 @@ extern int sMgTextSpritesItalian[];
 /* TUBUILD CONFLICT -- alternate declaration of _ZN2GX10LoadBGPlttEPKvjj, from the legacy file for func_ov006_021245a8, NOT applied: extern void _ZN2GX10LoadBGPlttEPKvjj(const void *p, u32 a, u32 b); */
 
 dScMgTrampoline2_c *dScMgTrampoline2_c_classInit(void);
-/* Literal aliases used only to make the five ROM PMF relocations static data.
-   Their definitions below are real compiler-spelled C++ members. Each is a
-   local extern: a pointer to member cannot convert to the int word a record
-   entry holds, so dScMgTrampoline2_c.h's declarations cannot fill the
-   table. */
-extern "C" void _ZN18dScMgTrampoline2_c9StateDoneEv(void);      /* local extern: PMF -> int */
+/* The four non-static state methods. A pointer to member does not convert
+   to the int word a descriptor holds. StateDone is static, so the
+   descriptor below names it directly. */
 extern "C" void _ZN18dScMgTrampoline2_c13StateWaitExitEv(void); /* local extern: PMF -> int */
 extern "C" void _ZN18dScMgTrampoline2_c12StateResultsEv(void);  /* local extern: PMF -> int */
 extern "C" void _ZN18dScMgTrampoline2_c9StatePlayEv(void);      /* local extern: PMF -> int */
@@ -254,7 +249,7 @@ BaseSpawnInfo<dScMgTrampoline2_c> g_profile_MG_TRAMPOLINE2 = {
     0x181,
     0x181,
 };
-int pmf_dScMgTrampoline2_c_StateDone[] = {(int)_ZN18dScMgTrampoline2_c9StateDoneEv, 0};
+int pmf_dScMgTrampoline2_c_StateDone[] = {(int)&dScMgTrampoline2_c::StateDone, 0};
 P2 pmf_dScMgTrampoline2_c_StateIntro = {{(int)_ZN18dScMgTrampoline2_c10StateIntroEv, 0}};
 StateValue pmf_dScMgTrampoline2_c_StateWaitExit = {
     {(int)_ZN18dScMgTrampoline2_c13StateWaitExitEv, 0}};
@@ -474,7 +469,7 @@ void dScMgTrampoline2_c::StateIntro() {
               << 2) >>
              12);
 
-        Mg_DrawLine((int)this, old9c, old9e, mTouchX, mTouchY, 2, 0xc);
+        Mg_DrawLine(old9c, old9e, mTouchX, mTouchY, 2, 0xc);
 
         mDragSoundHandle =
             func_02012468(mDragSoundHandle, 2, 0x1b0, 2, 0, func_020126e8(mixRaw), 0, 0);
@@ -649,8 +644,7 @@ void dScMgTrampoline2_c::UpdateTouchInput() {
 
     i = ACTIVE_SLOT;
     if (TOUCH_REC(gTouchHeld)[i][0] != 0) {
-        Mg_DrawLine((int)this, mTouchX, mTouchY, TOUCH_REC(gTouchX)[i][0], TOUCH_REC(gTouchY)[i][0],
-                    2, 4);
+        Mg_DrawLine(mTouchX, mTouchY, TOUCH_REC(gTouchX)[i][0], TOUCH_REC(gTouchY)[i][0], 2, 4);
         i = ACTIVE_SLOT;
         mTouchX = TOUCH_REC(gTouchX)[i][0];
         mTouchY = TOUCH_REC(gTouchY)[i][0];

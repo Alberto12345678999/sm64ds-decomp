@@ -34,7 +34,9 @@
 
 #ifdef __cplusplus
 
-extern "C" void _ZN6Memory16operator_delete2EPv(void *);
+namespace Memory {
+void operator_delete2(void *);
+}
 
 struct dExtBlendAnmModel_c : dExtAnmModel_c {
     Fix12i blendWeight;        /* 0x64 - 0x1000 is 1.0 */
@@ -77,7 +79,9 @@ struct dExtBlendAnmModel_c : dExtAnmModel_c {
        Declaring it here picks the same deallocator both bases name, and also
        satisfies the rule in include/dActor_c.h that mwcc only inlines the member
        when it is in the class or its immediate base. */
-    void operator delete(void *ptr) { _ZN6Memory16operator_delete2EPv(ptr); }
+    void operator delete(void *ptr) {
+        Memory::operator_delete2(ptr);
+    }
 };
 
 #ifndef SM64DS_PLATFORM_PC

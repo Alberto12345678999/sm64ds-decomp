@@ -24,7 +24,9 @@
 
 #ifdef __cplusplus
 
-extern "C" void _ZN6Memory16operator_delete2EPv(void *);
+namespace Memory {
+void operator_delete2(void *);
+}
 
 struct dExtAnm2Model_c : dExtAnmModel_c {
     u32 otherFile;             /* 0x64 - the second animation's BCA, stored as a word */
@@ -64,7 +66,9 @@ struct dExtAnm2Model_c : dExtAnmModel_c {
        Declaring it here picks the same deallocator both bases name, and also
        satisfies the rule in include/dActor_c.h that mwcc only inlines the member
        when it is in the class or its immediate base. */
-    void operator delete(void *ptr) { _ZN6Memory16operator_delete2EPv(ptr); }
+    void operator delete(void *ptr) {
+        Memory::operator_delete2(ptr);
+    }
 };
 
 #ifndef SM64DS_PLATFORM_PC

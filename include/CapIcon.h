@@ -18,7 +18,9 @@ struct dActor_c;
  */
 #ifdef __cplusplus
 
-extern "C" void _ZN6Memory16operator_delete2EPv(void *ptr);
+namespace Memory {
+void operator_delete2(void *);
+}
 
 /* Lifecycle declarations have no inline bodies: owners must emit calls
  * to the ROM-owned constructor and destructor rather than duplicating
@@ -47,7 +49,9 @@ struct dCapIcon_c {
     virtual ~dCapIcon_c();
     void Unlink();
     void func_ov001_020ab228(char *a1, int idx, int a3, unsigned char a5);
-    void operator delete(void *ptr) { _ZN6Memory16operator_delete2EPv(ptr); }
+    void operator delete(void *ptr) {
+        Memory::operator_delete2(ptr);
+    }
 };
 
 typedef dCapIcon_c CapIcon;

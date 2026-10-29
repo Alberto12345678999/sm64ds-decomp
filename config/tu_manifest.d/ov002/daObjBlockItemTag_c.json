@@ -494,22 +494,22 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@795",
+      "from": "@800",
       "to": "@131",
       "evidence": "compiler temporary .data image; mwcc numbers it @802 per TU (the @NNN numbering shifted when cleanup added the daShl_c/daStar_c/daStarBase_c includes); renamed to a fleet-unique name because anonymous compiler temporaries collide across TUs in the scratch link"
     },
     {
-      "from": "@797",
+      "from": "@802",
       "to": "@132",
       "evidence": "compiler temporary .data image; mwcc numbers it @804 per TU (the @NNN numbering shifted when cleanup added the daShl_c/daStar_c/daStarBase_c includes); renamed to a fleet-unique name because anonymous compiler temporaries collide across TUs in the scratch link"
     },
     {
-      "from": "@799",
+      "from": "@804",
       "to": "@133",
       "evidence": "compiler temporary .data image; mwcc numbers it @806 per TU (the @NNN numbering shifted when cleanup added the daShl_c/daStar_c/daStarBase_c includes); renamed to a fleet-unique name because anonymous compiler temporaries collide across TUs in the scratch link"
     },
     {
-      "from": "@801",
+      "from": "@806",
       "to": "@134",
       "evidence": "compiler temporary .data image; mwcc numbers it @808 per TU (the @NNN numbering shifted when cleanup added the daShl_c/daStar_c/daStarBase_c includes); renamed to a fleet-unique name because anonymous compiler temporaries collide across TUs in the scratch link"
     }

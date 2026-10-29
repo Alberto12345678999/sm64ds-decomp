@@ -1172,22 +1172,22 @@
   },
   "defined_symbol_renames": [
     {
-      "from": "@449",
+      "from": "@453",
       "to": "@396",
       "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az) | compiler temp; including math/MtxStack.h for Matrix4x3_FromRotationY and spelling the cylinder offset as a plain Vector3 (retiring the SnwmnCylOffset wrapper) move this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now"
     },
     {
-      "from": "@450",
+      "from": "@454",
       "to": "@397",
       "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az) | compiler temp; including math/MtxStack.h for Matrix4x3_FromRotationY and spelling the cylinder offset as a plain Vector3 (retiring the SnwmnCylOffset wrapper) move this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now"
     },
     {
-      "from": "@451",
+      "from": "@455",
       "to": "@398",
       "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az) | compiler temp; including math/MtxStack.h for Matrix4x3_FromRotationY and spelling the cylinder offset as a plain Vector3 (retiring the SnwmnCylOffset wrapper) move this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now"
     },
     {
-      "from": "@452",
+      "from": "@456",
       "to": "@399",
       "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin | compiler temp; batch 5 of the Fix12 rename deletes this TU's named-parameter local externs ahead of it, lowering the per-TU @NNN uniquifier, so mwcc emits it under this name now (notes/mwccarm-codegen.md 6az) | compiler temp; including math/MtxStack.h for Matrix4x3_FromRotationY and spelling the cylinder offset as a plain Vector3 (retiring the SnwmnCylOffset wrapper) move this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now"
     }

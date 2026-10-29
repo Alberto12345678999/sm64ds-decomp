@@ -105,7 +105,7 @@ unsigned int func_0201277c(unsigned int soundID);
  * mIsBalloon, mIsMega and mScaleY. The definition takes char *. */
 void func_ov002_020e4374(char *player, int *depth, int *radius);
 /* Returns mBodyModels[GetBodyModelID(mBodyModelId, 1)] as int. */
-int func_ov002_020e496c(char *player);
+int func_ov002_020e496c(Player *player);
 
 void func_0203c178(Matrix4x3 *m, int sx, int sy, int sz);
 void MulMat3x3Mat3x3(const int *a, const int *b, int *dst);
@@ -200,7 +200,7 @@ int daLuigi_c::Render() {
         return 1;
 
     player = CurrentPlayer();
-    body = (dExtSimpleModel_c *)func_ov002_020e496c((char *)player);
+    body = (dExtSimpleModel_c *)func_ov002_020e496c(player);
 
     comps = &mAnmModel.data;
     file = comps->modelFile;

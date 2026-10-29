@@ -39,7 +39,7 @@ struct dScMgTrampoline2_c : dScMgD3DBase_c {
        uses: eight-byte PMF records in .data, dispatched by Behavior every
        frame. The State/Begin names are coined from the matched bodies; the
        ROM symbols were address-only. */
-    void StateDone();        /* ov006 0x02123b20 */
+    static void StateDone(); /* ov006 0x02123b20 */
     void StateWaitExit();    /* ov006 0x02123b24 */
     void StateResults();     /* ov006 0x02123bf4 */
     void StatePlay();        /* ov006 0x02123cb4 */

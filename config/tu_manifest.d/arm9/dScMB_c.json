@@ -149,6 +149,16 @@
       "reason": "Compiler-generated base-object destructor. dScMB_c is never a base subobject. The cartridge carries D1 at 0x02034a78 and D0 at 0x02034ac0; no symbols.txt row defines a D2 and nothing relocates to one."
     },
     {
+      "symbol": "_ZN8dScene_cD2Ev",
+      "disposition": "deadstrip",
+      "reason": "vague-linkage base-object destructor helper from dScene_c's inline destructor; the licensed bodies inline it, it has no configured ROM symbol and no inbound relocation"
+    },
+    {
+      "symbol": "_ZN7dBase_cD2Ev",
+      "disposition": "deadstrip",
+      "reason": "vague-linkage base-object destructor helper from dBase_c's inline destructor; the licensed bodies inline it, it has no configured ROM symbol and no inbound relocation"
+    },
+    {
       "symbol": "_ZTI7fBase_c",
       "disposition": "deadstrip-data",
       "canonical_module": "arm9",

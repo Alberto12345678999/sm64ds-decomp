@@ -763,7 +763,7 @@ int daStar_c::Behavior()
     if (UpdateYoshiEat(mWithMeshClsn) != 0) {
         int state = mState;
         if (state >= STATE_COLLECT_BEGIN && state <= STATE_COLLECT_TALK && mEatingPlayer != 0) {
-            ((Player *)mEatingPlayer)->func_ov002_020d718c();
+            mEatingPlayer->func_ov002_020d718c();
             mEatingPlayer = 0;
             mFlags &= ~0xe0000;
             func_ov002_020e84ec();
@@ -772,7 +772,7 @@ int daStar_c::Behavior()
         }
         if ((data_0209b454 & CUTSCENE_FLAG) != 0) {
             if ((int)((mFlags & CUTSCENE_FLAG) != 0) != 0) {
-                dActor_c *p = (dActor_c *)mEatingPlayer;
+                dActor_c *p = mEatingPlayer;
                 if (p != 0)
                     p->mFlags |= CUTSCENE_FLAG;
             }

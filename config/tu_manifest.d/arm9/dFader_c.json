@@ -34,7 +34,7 @@
       "ordinal": 0
     },
     {
-      "symbol": "_ZN10dFdDummy_c15SetBackwardTimeEj",
+      "symbol": "_ZN10dFdDummy_c15SetBackwardTimeEjj",
       "address": "0x020171f0",
       "size": "0x0000002c",
       "legacy_source": "src/_ZN10dFdDummy_c15SetBackwardTimeEj.cpp",
@@ -181,7 +181,7 @@
       "ordinal": 21
     },
     {
-      "symbol": "_ZN15dFdBrightness_c15SetBackwardTimeEj",
+      "symbol": "_ZN15dFdBrightness_c15SetBackwardTimeEjj",
       "address": "0x020176d8",
       "size": "0x00000048",
       "legacy_source": "src/engine/fader/_ZN15dFdBrightness_c15SetBackwardTimeEj.cpp",
@@ -581,7 +581,7 @@
       "source": "0x0208ea78",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "_ZN10dFdDummy_c15SetBackwardTimeEj",
+      "symbol": "_ZN10dFdDummy_c15SetBackwardTimeEjj",
       "addend": 0,
       "target_module": "arm9",
       "target_address": "0x020171f0"
@@ -691,7 +691,7 @@
       "source": "0x0208eaa8",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "_ZN15dFdBrightness_c15SetBackwardTimeEj",
+      "symbol": "_ZN15dFdBrightness_c15SetBackwardTimeEjj",
       "addend": 0,
       "target_module": "arm9",
       "target_address": "0x020176d8"
@@ -801,7 +801,7 @@
       "source": "0x0208ead8",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "_ZN15dFdBrightness_c15SetBackwardTimeEj",
+      "symbol": "_ZN15dFdBrightness_c15SetBackwardTimeEjj",
       "addend": 0,
       "target_module": "arm9",
       "target_address": "0x020176d8"
@@ -941,7 +941,7 @@
       "source": "0x0208eb38",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "_ZN15dFdBrightness_c15SetBackwardTimeEj",
+      "symbol": "_ZN15dFdBrightness_c15SetBackwardTimeEjj",
       "addend": 0,
       "target_module": "arm9",
       "target_address": "0x020176d8"

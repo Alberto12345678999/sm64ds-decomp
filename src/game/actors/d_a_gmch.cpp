@@ -167,7 +167,9 @@ struct System {
 typedef void BgchInitAt_(void *self, void *actor, int a, int b, void *v, int c);
 }
 
-namespace cstd { int fdiv(int a, int b); }
+namespace cstd {
+int fdiv(int a, int b);
+}
 
 // @symbol _ZN8daGmch_cD1Ev
 // @symbol _ZN8daGmch_cD0Ev

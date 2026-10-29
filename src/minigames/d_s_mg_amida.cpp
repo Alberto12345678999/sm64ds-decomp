@@ -92,7 +92,6 @@ extern "C" {
 /* --- shared ov004 and main helpers --- */
 extern void Mg_RenderSpriteBoth(void *a0, int a1, int a2, int a3, int a4);
 extern void Mg_DrawScoreTally(void *a0, int a1, int a2, int a3);
-extern int Mg_DrawLine(void *a, int b, int c, int d, int e, int f, int g);
 extern void MultiCopyHalf(void *dst, void *src, int nbytes);
 extern void MultiStore16(u16 val, void *dst, int nbytes);
 extern int RandomIntInternal(int *seed);
@@ -624,7 +623,7 @@ void dScMgAmida_c::HandlePen() {
             this->mPenTapped = 1;
             return;
         }
-        Mg_DrawLine(this, oldX, oldY, this->mPen.x, this->mPen.y, this->mLineColor, 1);
+        Mg_DrawLine(oldX, oldY, this->mPen.x, this->mPen.y, this->mLineColor, 1);
         if (this->mPenTapped == 1) {
             this->mPenSoundHandle = func_02012468(this->mPenSoundHandle, 2, 0xde, 4, 0, 0,
                                                   func_020126e8(this->mPen.x << 12), 0);
@@ -804,13 +803,13 @@ void dScMgAmida_c::HandlePen() {
                 if (hit == 0) {
                     ClearStroke();
                     this->mLineCommit = 1;
-                    Mg_DrawLine(this, a.x, a.y, b.x, b.y, this->mLineColor, 1);
+                    Mg_DrawLine(a.x, a.y, b.x, b.y, this->mLineColor, 1);
                     if (a.x < b.x) {
-                        Mg_DrawLine(this, a.x - 1, a.y, a.x - 1, a.y, this->mLineColor, 1);
-                        Mg_DrawLine(this, b.x + 1, b.y, b.x + 1, b.y, this->mLineColor, 1);
+                        Mg_DrawLine(a.x - 1, a.y, a.x - 1, a.y, this->mLineColor, 1);
+                        Mg_DrawLine(b.x + 1, b.y, b.x + 1, b.y, this->mLineColor, 1);
                     } else {
-                        Mg_DrawLine(this, a.x + 1, a.y, a.x + 1, a.y, this->mLineColor, 1);
-                        Mg_DrawLine(this, b.x - 1, b.y, b.x - 1, b.y, this->mLineColor, 1);
+                        Mg_DrawLine(a.x + 1, a.y, a.x + 1, a.y, this->mLineColor, 1);
+                        Mg_DrawLine(b.x - 1, b.y, b.x - 1, b.y, this->mLineColor, 1);
                     }
                     this->mLineCommit = 0;
                     Amida_SaveBgChars(this);
@@ -849,7 +848,7 @@ int dScMgAmida_c::ProbeRung(Point p1, Point p2) {
     startX = p1.x;
     this->mPrev.x = startX;
     this->mPrev.y = startY;
-    Mg_DrawLine(this, p1.x, p1.y, p2.x, p2.y, this->mLineColor, 1);
+    Mg_DrawLine(p1.x, p1.y, p2.x, p2.y, this->mLineColor, 1);
     this->mProbeMode = 0;
     return this->mProbeHit;
 }
@@ -1620,15 +1619,15 @@ void dScMgAmida_c::SetupRound() {
     }
 
     if (IsVariant2() != 0) {
-        Mg_DrawLine(this, 0x20, -0xb4, 0x20, mLineEndY, mLineColor, 1);
-        Mg_DrawLine(this, 0x60, -0xb4, 0x60, mLineEndY, mLineColor, 1);
-        Mg_DrawLine(this, 0xa0, -0xb4, 0xa0, mLineEndY, mLineColor, 1);
-        Mg_DrawLine(this, 0xe0, -0xb4, 0xe0, mLineEndY, mLineColor, 1);
+        Mg_DrawLine(0x20, -0xb4, 0x20, mLineEndY, mLineColor, 1);
+        Mg_DrawLine(0x60, -0xb4, 0x60, mLineEndY, mLineColor, 1);
+        Mg_DrawLine(0xa0, -0xb4, 0xa0, mLineEndY, mLineColor, 1);
+        Mg_DrawLine(0xe0, -0xb4, 0xe0, mLineEndY, mLineColor, 1);
     } else {
-        Mg_DrawLine(this, 0x20, -0xd4, 0x20, mLineEndY, mLineColor, 1);
-        Mg_DrawLine(this, 0x60, -0xd4, 0x60, mLineEndY, mLineColor, 1);
-        Mg_DrawLine(this, 0xa0, -0xd4, 0xa0, mLineEndY, mLineColor, 1);
-        Mg_DrawLine(this, 0xe0, -0xd4, 0xe0, mLineEndY, mLineColor, 1);
+        Mg_DrawLine(0x20, -0xd4, 0x20, mLineEndY, mLineColor, 1);
+        Mg_DrawLine(0x60, -0xd4, 0x60, mLineEndY, mLineColor, 1);
+        Mg_DrawLine(0xa0, -0xd4, 0xa0, mLineEndY, mLineColor, 1);
+        Mg_DrawLine(0xe0, -0xd4, 0xe0, mLineEndY, mLineColor, 1);
     }
 
     mLineCount++;
@@ -1717,7 +1716,7 @@ void dScMgAmida_c::SetupRound() {
                 if (skip[i] == 0) {
                     int x = rungs[i].x;
                     int y = rungs[i].y - 0x20;
-                    Mg_DrawLine(this, x, y, x + 0x40, y, mLineColor, 1);
+                    Mg_DrawLine(x, y, x + 0x40, y, mLineColor, 1);
                 }
             }
             break;
@@ -1729,7 +1728,7 @@ void dScMgAmida_c::SetupRound() {
                 if (skip[i] == 0) {
                     int x = rungs[i].x;
                     int y = rungs[i].y - 0x20;
-                    Mg_DrawLine(this, x, y, x + 0x40, y, mLineColor, 1);
+                    Mg_DrawLine(x, y, x + 0x40, y, mLineColor, 1);
                 }
             }
             break;
@@ -1743,9 +1742,9 @@ void dScMgAmida_c::SetupRound() {
     if (IsVariant2() == 0) {
         int v = *(int *)(sAmidaPatternExtraRungs + mPatternIndex * 0x1c);
         if (v != 0 && v == 1) {
-            Mg_DrawLine(this, 0x60, 0x2d, 0xa0, 0x2d, mLineColor, 1);
-            Mg_DrawLine(this, 0x20, 0x5a, 0x60, 0x5a, mLineColor, 1);
-            Mg_DrawLine(this, 0xa0, 0x5a, 0xe0, 0x5a, mLineColor, 1);
+            Mg_DrawLine(0x60, 0x2d, 0xa0, 0x2d, mLineColor, 1);
+            Mg_DrawLine(0x20, 0x5a, 0x60, 0x5a, mLineColor, 1);
+            Mg_DrawLine(0xa0, 0x5a, 0xe0, 0x5a, mLineColor, 1);
         }
     }
 

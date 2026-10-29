@@ -125,11 +125,6 @@ void Matrix4x3_ApplyInPlaceToRotationZXYExt(Matrix4x3 *m, int x, int y, int z);
 void Matrix4x3_ApplyInPlaceToRotationXYZExt(Matrix4x3 *m, int x, int y, int z);
 void MulVec3Mat4x3(Vector3 *v, Matrix4x3 *m, Vector3 *out);
 void MulMat4x3Mat4x3(void *m1, void *m0, void *mF);
-
-/* Header methods take Fix12<int> by value. Brace-init compiles and homes
-   the argument (see Known limits). These scalars are the calls that
-   match. */
-int _Z14ApproachLinearR7Vector3RKS_5Fix12IiE(Vector3 &cur, const Vector3 &target, int step);
 }
 
 /* Render's per-segment bend table, one 0xc record per body bone.
@@ -160,7 +155,9 @@ struct MorayStarCarrier {
 
 extern "C" MorayRenderStep data_ov016_02114908[];
 
-namespace cstd { int fdiv(int a, int b); }
+namespace cstd {
+int fdiv(int a, int b);
+}
 
 /* Out of line, and FIRST in this ROM-ascending file: that puts D1 and D0 at
  * 0x021111a0 / 0x02111208, the two lowest addresses in the unit.
@@ -412,7 +409,7 @@ int daMoray_c::func_ov016_02111758()
         worldTarget.x += this->mHomePosX;
         worldTarget.y += this->mHomePosY;
         worldTarget.z += this->mHomePosZ;
-        _Z14ApproachLinearR7Vector3RKS_5Fix12IiE(this->mPos, worldTarget, 0x14000);
+        ApproachLinear(this->mPos, worldTarget, 0x14000);
     }
     if (this->mBlendAnmModel.Finished()) {
         this->mHorzSpeed = 0;
@@ -448,7 +445,7 @@ int daMoray_c::func_ov016_021118b4()
     worldTarget.x += this->mHomePosX;
     worldTarget.y += this->mHomePosY;
     worldTarget.z += this->mHomePosZ;
-    _Z14ApproachLinearR7Vector3RKS_5Fix12IiE(this->mPos, worldTarget, 0x14000);
+    ApproachLinear(this->mPos, worldTarget, 0x14000);
     if (Vec3_Dist(&this->mPos, &worldTarget) < 0x14000) {
         func_02012694(0xfa, &this->mCamSpacePos);
         func_ov016_02111bf0(&data_ov016_02114dbc);
@@ -493,8 +490,7 @@ int daMoray_c::func_ov016_021119ec()
     int dy;
 
     if (Vec3_Dist(&this->mPos, (const Vector3 *)&this->mHomePosX) > 0xa000) {
-        _Z14ApproachLinearR7Vector3RKS_5Fix12IiE(this->mPos, *(const Vector3 *)&this->mHomePosX,
-                                                 0x5000);
+        ApproachLinear(this->mPos, *(const Vector3 *)&this->mHomePosX, 0x5000);
         return 1;
     }
 

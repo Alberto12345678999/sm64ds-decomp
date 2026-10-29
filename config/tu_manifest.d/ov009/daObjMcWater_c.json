@@ -731,117 +731,117 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@359",
+      "from": "@361",
       "to": "data_ov009_02113c78",
       "evidence": "compiler temp mapped to 0x02113c78 by the retail initializer relocation at the same pool offset; no bytes or relocations change | re-keyed by __sinit relocation-site order after the actor cleanup member conversions shifted the TU's @NNN uniquifier"
     },
     {
-      "from": "@360",
+      "from": "@362",
       "to": "data_ov009_02113cc0",
       "evidence": "compiler temp mapped to 0x02113cc0 by the retail initializer relocation at the same pool offset; no bytes or relocations change | re-keyed by __sinit relocation-site order after the actor cleanup member conversions shifted the TU's @NNN uniquifier"
     },
     {
-      "from": "@362",
+      "from": "@364",
       "to": "data_ov009_02113d74",
       "evidence": "compiler temp mapped to 0x02113d74 by the retail initializer relocation at the same pool offset; no bytes or relocations change | re-keyed by __sinit relocation-site order after the actor cleanup member conversions shifted the TU's @NNN uniquifier"
     },
     {
-      "from": "@365",
+      "from": "@367",
       "to": "data_ov009_02113d80",
       "evidence": "compiler temp mapped to 0x02113d80 by the retail initializer relocation at the same pool offset; no bytes or relocations change | re-keyed by __sinit relocation-site order after the actor cleanup member conversions shifted the TU's @NNN uniquifier"
     },
     {
-      "from": "@368",
+      "from": "@370",
       "to": "data_ov009_02113d08",
       "evidence": "compiler temp mapped to 0x02113d08 by the retail initializer relocation at the same pool offset; no bytes or relocations change | re-keyed by __sinit relocation-site order after the actor cleanup member conversions shifted the TU's @NNN uniquifier"
     },
     {
-      "from": "@371",
+      "from": "@373",
       "to": "data_ov009_02113d14",
       "evidence": "compiler temp mapped to 0x02113d14 by the retail initializer relocation at the same pool offset; no bytes or relocations change | re-keyed by __sinit relocation-site order after the actor cleanup member conversions shifted the TU's @NNN uniquifier"
     },
     {
-      "from": "@374",
+      "from": "@376",
       "to": "data_ov009_02113d5c",
       "evidence": "compiler temp mapped to 0x02113d5c by the retail initializer relocation at the same pool offset; no bytes or relocations change | re-keyed by __sinit relocation-site order after the actor cleanup member conversions shifted the TU's @NNN uniquifier"
     },
     {
-      "from": "@377",
+      "from": "@379",
       "to": "data_ov009_02113d50",
       "evidence": "compiler temp mapped to 0x02113d50 by the retail initializer relocation at the same pool offset; no bytes or relocations change | re-keyed by __sinit relocation-site order after the actor cleanup member conversions shifted the TU's @NNN uniquifier"
     },
     {
-      "from": "@380",
+      "from": "@382",
       "to": "data_ov009_02113d44",
       "evidence": "compiler temp mapped to 0x02113d44 by the retail initializer relocation at the same pool offset; no bytes or relocations change | re-keyed by __sinit relocation-site order after the actor cleanup member conversions shifted the TU's @NNN uniquifier"
     },
     {
-      "from": "@382",
+      "from": "@384",
       "to": "data_ov009_02113d2c",
       "evidence": "compiler temp mapped to 0x02113d2c by the retail initializer relocation at the same pool offset; no bytes or relocations change | re-keyed by __sinit relocation-site order after the actor cleanup member conversions shifted the TU's @NNN uniquifier"
     },
     {
-      "from": "@385",
+      "from": "@387",
       "to": "data_ov009_02113d20",
       "evidence": "compiler temp mapped to 0x02113d20 by the retail initializer relocation at the same pool offset; no bytes or relocations change | re-keyed by __sinit relocation-site order after the actor cleanup member conversions shifted the TU's @NNN uniquifier"
     },
     {
-      "from": "@388",
+      "from": "@390",
       "to": "data_ov009_02113c90",
       "evidence": "compiler temp mapped to 0x02113c90 by the retail initializer relocation at the same pool offset; no bytes or relocations change | re-keyed by __sinit relocation-site order after the actor cleanup member conversions shifted the TU's @NNN uniquifier"
     },
     {
-      "from": "@391",
+      "from": "@393",
       "to": "data_ov009_02113c84",
       "evidence": "compiler temp mapped to 0x02113c84 by the retail initializer relocation at the same pool offset; no bytes or relocations change | re-keyed by __sinit relocation-site order after the actor cleanup member conversions shifted the TU's @NNN uniquifier"
     },
     {
-      "from": "@394",
+      "from": "@396",
       "to": "data_ov009_02113cfc",
       "evidence": "compiler temp mapped to 0x02113cfc by the retail initializer relocation at the same pool offset; no bytes or relocations change | re-keyed by __sinit relocation-site order after the actor cleanup member conversions shifted the TU's @NNN uniquifier"
     },
     {
-      "from": "@397",
+      "from": "@399",
       "to": "data_ov009_02113cf0",
       "evidence": "compiler temp mapped to 0x02113cf0 by the retail initializer relocation at the same pool offset; no bytes or relocations change | re-keyed by __sinit relocation-site order after the actor cleanup member conversions shifted the TU's @NNN uniquifier"
     },
     {
-      "from": "@400",
+      "from": "@402",
       "to": "data_ov009_02113cb4",
       "evidence": "compiler temp mapped to 0x02113cb4 by the retail initializer relocation at the same pool offset; no bytes or relocations change | re-keyed by __sinit relocation-site order after the actor cleanup member conversions shifted the TU's @NNN uniquifier"
     },
     {
-      "from": "@402",
+      "from": "@404",
       "to": "data_ov009_02113ccc",
       "evidence": "compiler temp mapped to 0x02113ccc by the retail initializer relocation at the same pool offset; no bytes or relocations change | re-keyed by __sinit relocation-site order after the actor cleanup member conversions shifted the TU's @NNN uniquifier"
     },
     {
-      "from": "@405",
+      "from": "@407",
       "to": "data_ov009_02113cd8",
       "evidence": "compiler temp mapped to 0x02113cd8 by the retail initializer relocation at the same pool offset; no bytes or relocations change | re-keyed by __sinit relocation-site order after the actor cleanup member conversions shifted the TU's @NNN uniquifier"
     },
     {
-      "from": "@408",
+      "from": "@410",
       "to": "data_ov009_02113ce4",
       "evidence": "compiler temp mapped to 0x02113ce4 by the retail initializer relocation at the same pool offset; no bytes or relocations change | re-keyed by __sinit relocation-site order after the actor cleanup member conversions shifted the TU's @NNN uniquifier"
     },
     {
-      "from": "@411",
+      "from": "@413",
       "to": "data_ov009_02113d68",
       "evidence": "compiler temp mapped to 0x02113d68 by the retail initializer relocation at the same pool offset; no bytes or relocations change | re-keyed by __sinit relocation-site order after the actor cleanup member conversions shifted the TU's @NNN uniquifier"
     },
     {
-      "from": "@414",
+      "from": "@416",
       "to": "data_ov009_02113ca8",
       "evidence": "compiler temp mapped to 0x02113ca8 by the retail initializer relocation at the same pool offset; no bytes or relocations change | re-keyed by __sinit relocation-site order after the actor cleanup member conversions shifted the TU's @NNN uniquifier"
     },
     {
-      "from": "@417",
+      "from": "@419",
       "to": "data_ov009_02113d38",
       "evidence": "compiler temp mapped to 0x02113d38 by the retail initializer relocation at the same pool offset; no bytes or relocations change | re-keyed by __sinit relocation-site order after the actor cleanup member conversions shifted the TU's @NNN uniquifier"
     },
     {
-      "from": "@420",
+      "from": "@422",
       "to": "data_ov009_02113c9c",
       "evidence": "compiler temp mapped to 0x02113c9c by the retail initializer relocation at the same pool offset; no bytes or relocations change | re-keyed by __sinit relocation-site order after the actor cleanup member conversions shifted the TU's @NNN uniquifier"
     }

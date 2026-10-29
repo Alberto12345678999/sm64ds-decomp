@@ -599,9 +599,8 @@ void dBgPi::SetCollider(int idx, int uid, dActor_c *actor, dBgW *clsn)
     collider = clsn;
 }
 
-// @symbol _ZN5dBgPi9RecordHitEsP11SurfaceInfo
-void dBgPi::RecordHit(s16 triID, SurfaceInfo *src)
-{
+// @symbol _ZN5dBgPi9RecordHitEiP11SurfaceInfo
+void dBgPi::RecordHit(int triID, SurfaceInfo *src) {
     triangleID = triID;
     func_02037de8(&surface, src);
 }

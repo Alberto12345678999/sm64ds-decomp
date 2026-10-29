@@ -19,7 +19,8 @@ extern s16 Vec3_HorzAngle(const struct Vec3 *v0, const struct Vec3 *v1);
 extern s16 Vec3_VertAngle(const struct Vec3 *v1, const struct Vec3 *v0);
 extern int func_020091f8(void *a, void *b, int c, int d);
 extern u32 func_020093f4(void *p, int x);
-extern int func_02009138(int *thiz, int arg);
+struct dCamera_c;
+extern int func_02009138(struct dCamera_c *cam, int dist);
 extern void func_020089d8(void *p);
 /* File-local view of dCamera_c (include/dCamera_c.h is C++): the fields this
  * state touches, with the header's names. */
@@ -125,7 +126,7 @@ int func_02005110(char *self) {
     }
     {
         u32 r = func_020093f4((void *)self, mode);
-        if (func_02009138((int *)self, r) == 0) {
+        if (func_02009138((struct dCamera_c *)self, r) == 0) {
             func_020089d8((void *)self);
         }
     }

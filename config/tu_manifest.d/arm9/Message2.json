@@ -7,7 +7,7 @@
   "boundary_confidence": "medium",
   "boundary_evidence": [
     "contiguous linker run: 0x0201ab04..0x0201cb2c, 13 function(s), gapless in config/arm9/delinks.txt.",
-    "TOP EDGE: src/unnamed/arm9/0201/func_0201aaec.c (0x0201aaec..0x0201ab04) ends where Message::EndTalk begins. BOTTOM EDGE: src/ui/messages/func_0201cb2c.c (ParseMessageBankSections, the message-bank parser) begins at 0x0201cb2c. The Message talk-window run is 0x0201AB04..0x0201CB2C, and this file now covers all of it.",
+    "TOP EDGE: src/unnamed/arm9/0201/func_0201aaec.c (0x0201aaec..0x0201ab04) ends where Message::EndTalk begins. BOTTOM EDGE: src/ui/messages/_ZN7Message14SetTextGlobalsEv.cpp (Message::SetTextGlobals, the message-bank parser) begins at 0x0201cb2c. The Message talk-window run is 0x0201AB04..0x0201CB2C, and this file now covers all of it.",
     "EndTalk, PrepareTalk, AddChar, UpdateWindow and Update are Message methods declared in include/Message.h (AddChar, UpdateWindow and Update were added to it by this extension). The eight address-named helpers stay extern \"C\" under their existing names."
   ],
   "sections": [

@@ -91,10 +91,10 @@ void dFdBrightness_c::AdvanceFade()
 }
 #endif
 
-/* Fade out over `frames` frames: the same rate with the sign flipped. */
-// @symbol _ZN15dFdBrightness_c15SetBackwardTimeEj
-int dFdBrightness_c::SetBackwardTime(u32 frames)
-{
+/* Fade out over `frames` frames: the same rate with the sign flipped.
+   `extra` is not read. Callers still pass it (always 0). */
+// @symbol _ZN15dFdBrightness_c15SetBackwardTimeEjj
+int dFdBrightness_c::SetBackwardTime(u32 frames, u32 extra) {
     if (frames == 0) {
         speed = -(Fix12i)0x1000;
     } else {
@@ -283,9 +283,8 @@ void dFdDummy_c::AdvanceFade()
 
 /* dFdDummy_c::SetBackwardTime -- writes speed = -0x1000, then a genuine
    virtual call through slot 5 (same inherited bodies as below). */
-// @symbol _ZN10dFdDummy_c15SetBackwardTimeEj
-int dFdDummy_c::SetBackwardTime(u32)
-{
+// @symbol _ZN10dFdDummy_c15SetBackwardTimeEjj
+int dFdDummy_c::SetBackwardTime(u32, u32) {
     speed = -0x1000;
     return IsAtStart();
 }

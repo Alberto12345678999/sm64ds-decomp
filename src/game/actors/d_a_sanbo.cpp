@@ -65,8 +65,9 @@ enum daSanbo_c_AssetId {
 
 enum { SANBO_HEAD = 0xf0, SANBO_BODY = 0xf1 };
 
-namespace cstd { int fdiv(int, int); }
-
+namespace cstd {
+int fdiv(int, int);
+}
 
 extern "C" {
 extern void Vec3_Asr(struct Vector3* d, struct Vector3* s, int sh);

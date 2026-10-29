@@ -12,8 +12,8 @@ struct Vector3_16f;
  * defer_codegen off: D1 0x021120c4, D0 0x02112104, D2 deadstripped.
  */
 // leftovers:
-// - Particle::System::New and NewSimple, Player::BlowAway and
-//   HasFinishedTalking stay mangled. This TU passes Fix12<int> by value.
+// - Particle::System::New and NewSimple stay mangled. This TU passes
+//   Fix12<int> by value.
 // - SnowmanBreathParticle is a coined name. ov027 has no type string for
 //   the member struct.
 // - mInvModelMat stays flat words. A Matrix4x3 member reorders the
@@ -25,7 +25,6 @@ struct Vector3_16f;
 
 #include "daSnmBth_c.h"
 #include "decl_common.h"
-#include "decl_Player.h"
 #include "SharedFilePtr.h"
 #include "types.h"
 #include "dExtSimpleModel_c.h"
