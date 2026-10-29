@@ -263,21 +263,20 @@ int daObj_Mip_Key_c::ChangeState(MipKeyState *p) {
 // @symbol _ZN15daObj_Mip_Key_c20UpdateModelAndShadowEv
 
 void daObj_Mip_Key_c::UpdateModelAndShadow() {
-    daObj_Mip_Key_c *thiz = this;
     // Whole Matrix4x3 assignment emits six extra words under 2004/b56.
     // Preserve the measured flat 48-byte copy until the shared type is resolved.
     typedef struct {
         int w[12];
     } MipKeyM48;
     Vector3 v;
-    Vec3_Asr(&v, &thiz->mPos, 3);
+    Vec3_Asr(&v, &mPos, 3);
     Matrix4x3_FromTranslation(&data_020a0e68, v.x, v.y, v.z);
-    Matrix4x3_ApplyInPlaceToRotationXYZExt(&data_020a0e68, thiz->mAngleX, thiz->mAngleY,
-                                           thiz->mAngleZ);
-    *(MipKeyM48 *)(&thiz->mModel.mat4x3) = *(MipKeyM48 *)&data_020a0e68;
-    Matrix4x3_FromTranslation(&data_020a0e68, thiz->mPosX >> 3, (thiz->mPosY - 0x32000) >> 3,
-                              thiz->mPosZ >> 3);
-    thiz->DropShadowRadHeight(thiz->mShadowModel, thiz->mModel.mat4x3, 0x23000, 0x12c000, 0xf);
+    Matrix4x3_ApplyInPlaceToRotationXYZExt(&data_020a0e68, mAngleX, mAngleY,
+                                           mAngleZ);
+    *(MipKeyM48 *)(&mModel.mat4x3) = *(MipKeyM48 *)&data_020a0e68;
+    Matrix4x3_FromTranslation(&data_020a0e68, mPosX >> 3, (mPosY - 0x32000) >> 3,
+                              mPosZ >> 3);
+    DropShadowRadHeight(mShadowModel, mModel.mat4x3, 0x23000, 0x12c000, 0xf);
 }
 
 // @symbol _ZN15daObj_Mip_Key_c16CleanupResourcesEv
