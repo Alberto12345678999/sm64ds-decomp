@@ -131,7 +131,6 @@ void func_ov075_02116028(int *, int);
 void func_020338b0(int, int, short, int);
 void func_02033464(int, int, int);
 void func_ov075_02115e8c(char *, int, int, short, short);
-void func_02034414(unsigned short);
 void func_02030a38(void);
 void func_02030a78(void);
 void func_02030a6c(void);
@@ -230,7 +229,6 @@ void func_0200f13c(void);
 void DecompressLZ16(void *src, int dst);
 int GetSoundMode(void);
 void SetSoundMode(int mode);
-int func_02033ae0(int a);
 void TurnBacklightOn(void);
 void TurnBacklightOff(void);
 void SetControllerMode(unsigned char mode);
@@ -715,7 +713,7 @@ void dScEntry_c::UpdateSoundSettings() {
                     func_ov001_020ab3f0(&mIcons[0]);
                 }
                 SetSoundMode(newmode);
-                func_02033ae0((s16)(GetSoundMode() + 9));
+                Message::DisplayOptionsMenuTextVS((s16)(GetSoundMode() + 9));
                 mIcons[2].Select();
                 func_02012790(100);
             }
@@ -789,7 +787,7 @@ void dScEntry_c::UpdateSoundSettings() {
 void dScEntry_c::EnterSoundSettings() {
     func_ov075_02116030(&data_ov075_0211d71c, LoadFile(data_ov075_0211ca08[func_0200f0bc()]));
 
-    func_02033ae0((s16)(GetSoundMode() + 9));
+    Message::DisplayOptionsMenuTextVS((s16)(GetSoundMode() + 9));
 
     data_0209d454 |= 5;
     G2x::SetBlendBrightness((volatile unsigned short *)0x4000050, 0xb, ~5);
@@ -1040,7 +1038,7 @@ void dScEntry_c::UpdateQuitConfirm() {
     func_02012790(0x98);
 }
 
-/* The ENTRY scene (actorID 6) only has func_02034414 draw sub-screen
+/* The ENTRY scene (actorID 6) only has Message::DisplayDontSaveTextVS draw sub-screen
  * message 0x19; the RESULT scene loads file 0x9802, draws message 0x16
  * and takes the rematch prompt's render step. The mode test is a static
  * inline predicate (the ROM materializes the bool), and the render step
@@ -1056,12 +1054,12 @@ void dScEntry_c::EnterQuitConfirm() {
 
     data_0209d454 = data_0209d454 & ~1;
     if (IsEntryScene(this)) {
-        func_02034414(0x19);
+        Message::DisplayDontSaveTextVS(0x19);
     } else {
         data_0209d454 = data_0209d454 & ~4;
         fh = LoadFile(0x9802);
         func_ov075_02116030(&data_ov075_0211d71c, fh);
-        func_02034414(0x16);
+        Message::DisplayDontSaveTextVS(0x16);
         data_0209d454 = data_0209d454 | 4;
         mRenderStep = data_ov075_0211d810.render;
     }
@@ -1852,7 +1850,7 @@ extern "C" void func_ov075_021197e8(dScEntry_c *self) {
 extern "C" void func_ov075_02119918(dScEntry_c *self) {
     data_0209d454 = data_0209d454 & ~1;
     func_ov075_02116028((int *)&data_ov075_0211d71c, 2);
-    func_02034414(0x11);
+    Message::DisplayDontSaveTextVS(0x11);
 
     data_0209d454 = data_0209d454 | 5;
     self->mSelectedIcon = 1;

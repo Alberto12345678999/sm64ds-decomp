@@ -968,7 +968,7 @@ src/Message2.cpp:
     complete
     .text start:0x0201ab04 end:0x0201cb2c
 
-src/ui/messages/func_0201cb2c.c:
+src/ui/messages/_ZN7Message14SetTextGlobalsEv.cpp:
     complete
     .text start:0x0201cb2c end:0x0201cb7c
 
@@ -980,7 +980,7 @@ src/LoadFont.cpp:
     complete
     .text start:0x0201fcd4 end:0x0201fe08
 
-src/ui/messages/func_0201fe08.c:
+src/ui/messages/_ZN7Message8LoadTextEv.cpp:
     complete
     .text start:0x0201fe08 end:0x0201fec8
 

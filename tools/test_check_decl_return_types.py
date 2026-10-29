@@ -605,11 +605,10 @@ class ReadsTheDefinitionAndNotADeclaration(unittest.TestCase):
                                "src/func_ov002_020d4748.cpp")])
 
     def test_a_row_with_no_body_anywhere_is_counted_not_guessed(self):
-        """One row on main is this: the body was renamed out of the family.
+        """A row whose body was renamed out of the family.
 
-        src/ui/messages/func_0201fe08.c defines
-        LoadMessageBankForLanguage, and decl_common.h still carries the old
-        name. Counting it is how that shows up instead of being invisible.
+        The body defines a recovered name and decl_common.h still carries the
+        old one. Counting it is how that shows up instead of being invisible.
         """
         with Tree("extern void func_0201fe08(void);\n",
                   src={"func_0201fe08.c":

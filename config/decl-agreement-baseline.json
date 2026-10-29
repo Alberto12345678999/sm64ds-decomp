@@ -1176,7 +1176,7 @@
       "src/ui/hud/d_meter.cpp": [
         "return:void *"
       ],
-      "src/ui/messages/func_0201fe08.c": [
+      "src/ui/messages/_ZN7Message8LoadTextEv.cpp": [
         "return:void *"
       ],
       "src/unnamed/arm9/0200/func_0200f13c.cpp": [
@@ -25716,8 +25716,8 @@
       ]
     },
     "gMessageBankBase": {
-      "src/ui/messages/func_0201fe08.c": [
-        "return:void *"
+      "src/ui/messages/_ZN7Message14SetTextGlobalsEv.cpp": [
+        "return:int"
       ]
     },
     "gPFlowerCloseModelFile": {
@@ -25951,11 +25951,6 @@
       "src/game/stages/d_s_entry_methods.cpp": [
         "param:#5 int",
         "param:#6 int"
-      ]
-    },
-    "func_02033ae0": {
-      "src/game/stages/d_s_entry_methods.cpp": [
-        "return:int"
       ]
     },
     "func_ov075_02116128": {
