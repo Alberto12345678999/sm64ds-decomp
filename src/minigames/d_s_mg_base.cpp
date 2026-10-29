@@ -1135,8 +1135,7 @@ void dScMgBase_c::PaintSquare(int cx, int cy, int colour, int size) {
  *   slot); the horizontal loop compares x1 itself.
  * - adx and ady are copied before their sign tests, in that order. Testing in
  *   the other order swaps the register pair and the flag reuse. */
-void dScMgBase_c::Mg_DrawLine(int x0, int y0, int x1, int y1, int colour, int size)
-{
+void dScMgBase_c::Mg_DrawLine(int x0, int y0, int x1, int y1, int colour, int size) {
     int dx, dy, adx, ady, err;
     int yy1;
     if (x0 == x1 && y0 == y1) {

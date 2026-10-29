@@ -111,10 +111,7 @@ void  func_ov102_0214c0b8(void *self);
 void  GiveCoins(int who, int count);
 int   SurfaceInfo_TestFlag0x20(int *si);
 /* 0x0203b0e8. Not declared in math/CalcLib.h (a shared header); callers spell it int, int. */
-int   AngleDiff(int, int);
-
-
-
+int AngleDiff(int, int);
 
 /* Hoisted out of four member bodies.  A class member function may not sit in a
    block-scope linkage specification, so daBmb_c::State1/3/4/5 cannot carry their
@@ -483,13 +480,16 @@ void func_ov102_0214beb4(void *cv)
     self->mTurnCount += 1;
     Player *o = self->mChasePlayer;
     if (o == 0) {
-        *(short *)&self->mTargetAngY = Vec3_HorzAngle((const Vector3 *)&self->mPosX, (const Vector3 *)&self->mHomePosX);
-        if (Vec3_Dist((const Vector3 *)&self->mPosX, (const Vector3 *)&self->mHomePosX) >= 0x500000) return;
+        *(short *)&self->mTargetAngY =
+            Vec3_HorzAngle((const Vector3 *)&self->mPosX, (const Vector3 *)&self->mHomePosX);
+        if (Vec3_Dist((const Vector3 *)&self->mPosX, (const Vector3 *)&self->mHomePosX) >= 0x500000)
+            return;
         unsigned int r = RandomIntInternal(&data_0209e650);
         *(short *)&self->mTargetAngY += (short)(r >> 0x10);
         return;
     }
-    *(short *)&self->mTargetAngY = Vec3_HorzAngle((const Vector3 *)&self->mPosX, (const Vector3 *)&o->mPosX);
+    *(short *)&self->mTargetAngY =
+        Vec3_HorzAngle((const Vector3 *)&self->mPosX, (const Vector3 *)&o->mPosX);
 }
 
 }
@@ -745,8 +745,7 @@ void daBmb_c::State5()
  * ======================================================================== */
 
 // @symbol _ZN7daBmb_c19func_ov102_0214b988Ev
-void daBmb_c::func_ov102_0214b988()
-{
+void daBmb_c::func_ov102_0214b988() {
     Player *pl;
     struct Vector3 v;
 

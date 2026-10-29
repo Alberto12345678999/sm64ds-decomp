@@ -894,8 +894,8 @@ int daKing_Donketu_c::func_ov073_0212005c() {
 struct BCA_File;
 int daKing_Donketu_c::func_ov073_02120098() {
     mEdgeRecovered = 0;
-    mBlendAnmModel.SetAnim(*(BCA_File *)((BCA_File *)gKingIceDonketuJumpEdAnimationFile.filePtr),
-                           4, 0x40000000, 0x1000, 0);
+    mBlendAnmModel.SetAnim(*(BCA_File *)((BCA_File *)gKingIceDonketuJumpEdAnimationFile.filePtr), 4,
+                           0x40000000, 0x1000, 0);
     return 1;
 }
 
@@ -938,7 +938,7 @@ int daKing_Donketu_c::func_ov073_021200e0()
         s16 horz;
         ApproachLinear(mAngleX, 0, 0x2000);
         horz = Vec3_HorzAngle(&mPos, (const Vector3 *)&mSpawnPosX);
-        Vec3_VertAngle((const void*)&mPosX, (const void*)&mSpawnPosX);
+        Vec3_VertAngle((const void *)&mPosX, (const void *)&mSpawnPosX);
         ApproachLinear(mPrevAngleY, horz, 0x800);
         offset.x = 0;
         offset.y = 0;
