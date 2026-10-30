@@ -9071,15 +9071,7 @@
       "linkerOutput": null
     }
   },
-  "undefined_symbol_aliases": [
-    {
-      "symbol": "__register_global_object",
-      "canonical_symbol": "func_020731dc",
-      "canonical_module": "arm9",
-      "canonical_address": "0x020731dc",
-      "evidence": "the initializer and the five function-local Vector3 statics call the compiler name; retail relocations name func_020731dc at this address"
-    }
-  ],
+  "undefined_symbol_aliases": [],
   "symbol_binding_rewrites": [
     {
       "symbol": "_ZGVsLevelIntroOff$4424",
@@ -9266,7 +9258,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -9286,7 +9278,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -9306,7 +9298,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -9326,7 +9318,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -9346,7 +9338,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -9366,7 +9358,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -9386,7 +9378,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -9406,7 +9398,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -9426,7 +9418,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -9446,7 +9438,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -9466,7 +9458,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -9486,7 +9478,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -9506,7 +9498,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -9526,7 +9518,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -9546,7 +9538,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -9566,7 +9558,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -9586,7 +9578,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -9606,7 +9598,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -9626,7 +9618,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -9646,7 +9638,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -9666,7 +9658,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -9686,7 +9678,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -9706,7 +9698,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -9726,7 +9718,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -9746,7 +9738,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -9766,7 +9758,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -9786,7 +9778,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -9806,7 +9798,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -9826,7 +9818,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -9846,7 +9838,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -9866,7 +9858,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -9886,7 +9878,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -9906,7 +9898,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -9926,7 +9918,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -9946,7 +9938,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -9966,7 +9958,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -9986,7 +9978,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -10006,7 +9998,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -10026,7 +10018,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -10046,7 +10038,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -10066,7 +10058,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -10086,7 +10078,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -10106,7 +10098,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -10126,7 +10118,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -10146,7 +10138,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -10166,7 +10158,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -10186,7 +10178,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -10206,7 +10198,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -10226,7 +10218,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -10246,7 +10238,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -10266,7 +10258,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -10286,7 +10278,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -10306,7 +10298,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -10326,7 +10318,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -10346,7 +10338,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -10366,7 +10358,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -10386,7 +10378,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -10406,7 +10398,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -10426,7 +10418,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -10446,7 +10438,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -10466,7 +10458,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -10486,7 +10478,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -10506,7 +10498,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -10526,7 +10518,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -10546,7 +10538,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -10566,7 +10558,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -10586,7 +10578,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -10606,7 +10598,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -10626,7 +10618,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -10646,7 +10638,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -10666,7 +10658,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -10686,7 +10678,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -10706,7 +10698,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -10726,7 +10718,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -10746,7 +10738,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -10766,7 +10758,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -10786,7 +10778,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -10806,7 +10798,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -10826,7 +10818,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -10846,7 +10838,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -10866,7 +10858,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -10886,7 +10878,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -10906,7 +10898,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -10926,7 +10918,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -10946,7 +10938,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -10966,7 +10958,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -10986,7 +10978,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -11006,7 +10998,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -11026,7 +11018,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -11046,7 +11038,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -11066,7 +11058,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -11086,7 +11078,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -11106,7 +11098,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -11126,7 +11118,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -11146,7 +11138,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -11166,7 +11158,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -11186,7 +11178,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -11206,7 +11198,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -11226,7 +11218,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -11246,7 +11238,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -11266,7 +11258,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -11286,7 +11278,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -11306,7 +11298,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -11326,7 +11318,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -11346,7 +11338,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -11366,7 +11358,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -11386,7 +11378,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -11406,7 +11398,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -11426,7 +11418,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -11446,7 +11438,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -11466,7 +11458,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -11486,7 +11478,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -11506,7 +11498,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -11526,7 +11518,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -11546,7 +11538,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -11566,7 +11558,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -11586,7 +11578,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -11606,7 +11598,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -11626,7 +11618,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -11646,7 +11638,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -11666,7 +11658,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -11686,7 +11678,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -11706,7 +11698,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -11726,7 +11718,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -11746,7 +11738,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -11766,7 +11758,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -11786,7 +11778,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -11806,7 +11798,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -11826,7 +11818,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -11846,7 +11838,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -11866,7 +11858,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -11886,7 +11878,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -11906,7 +11898,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -11926,7 +11918,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -11946,7 +11938,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -11966,7 +11958,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -11986,7 +11978,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -12006,7 +11998,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -12026,7 +12018,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -12046,7 +12038,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -12066,7 +12058,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -12086,7 +12078,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -12106,7 +12098,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -12126,7 +12118,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -12146,7 +12138,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -12166,7 +12158,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -15146,7 +15138,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -15166,7 +15158,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -15186,7 +15178,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -15206,7 +15198,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -15226,7 +15218,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -15246,7 +15238,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -15266,7 +15258,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -15286,7 +15278,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -15306,7 +15298,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -15326,7 +15318,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -15346,7 +15338,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -15366,7 +15358,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -15386,7 +15378,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -15406,7 +15398,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -15426,7 +15418,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -15446,7 +15438,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -15466,7 +15458,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -15486,7 +15478,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -15506,7 +15498,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -15526,7 +15518,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -15546,7 +15538,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -15566,7 +15558,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -15586,7 +15578,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -15606,7 +15598,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -15626,7 +15618,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -15646,7 +15638,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -15666,7 +15658,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -15686,7 +15678,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -15706,7 +15698,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -15726,7 +15718,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -15746,7 +15738,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -15766,7 +15758,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -15786,7 +15778,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -15806,7 +15798,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -15826,7 +15818,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -15846,7 +15838,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -15866,7 +15858,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -15886,7 +15878,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -15906,7 +15898,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -15926,7 +15918,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -15946,7 +15938,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -15966,7 +15958,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -15986,7 +15978,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -16006,7 +15998,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -16026,7 +16018,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -16046,7 +16038,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -16066,7 +16058,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -16086,7 +16078,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -16106,7 +16098,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -16126,7 +16118,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -16146,7 +16138,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -16166,7 +16158,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -16186,7 +16178,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -16206,7 +16198,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -16226,7 +16218,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -16246,7 +16238,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -16266,7 +16258,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -16286,7 +16278,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -16306,7 +16298,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -16326,7 +16318,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -16346,7 +16338,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -16366,7 +16358,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -16386,7 +16378,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -16406,7 +16398,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -16426,7 +16418,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -16446,7 +16438,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -16466,7 +16458,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -16486,7 +16478,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -16506,7 +16498,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -16526,7 +16518,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -16546,7 +16538,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -16566,7 +16558,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -16586,7 +16578,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -16606,7 +16598,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -16626,7 +16618,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -16646,7 +16638,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -16666,7 +16658,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -16686,7 +16678,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -16706,7 +16698,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -16726,7 +16718,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -16746,7 +16738,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -16766,7 +16758,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -16786,7 +16778,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -16806,7 +16798,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -16826,7 +16818,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -16846,7 +16838,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -16866,7 +16858,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -16886,7 +16878,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -16906,7 +16898,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -16926,7 +16918,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -16946,7 +16938,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -16966,7 +16958,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -16986,7 +16978,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -17006,7 +16998,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -17026,7 +17018,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -17046,7 +17038,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -17066,7 +17058,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -17086,7 +17078,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -17106,7 +17098,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -17126,7 +17118,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -17146,7 +17138,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -17166,7 +17158,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -17186,7 +17178,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -17206,7 +17198,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -17226,7 +17218,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -17246,7 +17238,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -17266,7 +17258,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -17286,7 +17278,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -17306,7 +17298,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -17326,7 +17318,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -17346,7 +17338,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -17366,7 +17358,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -17386,7 +17378,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -17406,7 +17398,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -17426,7 +17418,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -17446,7 +17438,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -17466,7 +17458,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -17486,7 +17478,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -17506,7 +17498,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -17526,7 +17518,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -17546,7 +17538,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -17566,7 +17558,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -17586,7 +17578,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -17606,7 +17598,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -17626,7 +17618,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -17646,7 +17638,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -17666,7 +17658,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -17686,7 +17678,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -17706,7 +17698,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -17726,7 +17718,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -17746,7 +17738,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -17766,7 +17758,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -17786,7 +17778,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -17806,7 +17798,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -17826,7 +17818,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -17846,7 +17838,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -17866,7 +17858,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -17886,7 +17878,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -17906,7 +17898,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -17926,7 +17918,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -17946,7 +17938,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -17966,7 +17958,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -17986,7 +17978,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -18006,7 +17998,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -18026,7 +18018,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -18046,7 +18038,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -20996,7 +20988,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -21016,7 +21008,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -21036,7 +21028,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -21056,7 +21048,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -21076,7 +21068,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -21096,7 +21088,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -21116,7 +21108,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -21136,7 +21128,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -21156,7 +21148,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -21176,7 +21168,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -21196,7 +21188,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -21216,7 +21208,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -21236,7 +21228,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -21256,7 +21248,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -21276,7 +21268,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -21296,7 +21288,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -21316,7 +21308,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -21336,7 +21328,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -21356,7 +21348,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -21376,7 +21368,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -21396,7 +21388,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -21416,7 +21408,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -21436,7 +21428,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -21456,7 +21448,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -21476,7 +21468,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -21496,7 +21488,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -21516,7 +21508,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -21536,7 +21528,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -21556,7 +21548,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -21576,7 +21568,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -21596,7 +21588,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -21616,7 +21608,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -21636,7 +21628,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -21656,7 +21648,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -21676,7 +21668,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -21696,7 +21688,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -21716,7 +21708,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -21736,7 +21728,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -21756,7 +21748,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -21776,7 +21768,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -21796,7 +21788,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -21816,7 +21808,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -21836,7 +21828,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -21856,7 +21848,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -21876,7 +21868,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -21896,7 +21888,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -21916,7 +21908,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -21936,7 +21928,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -21956,7 +21948,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -21976,7 +21968,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -21996,7 +21988,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -22016,7 +22008,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -22036,7 +22028,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -22056,7 +22048,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -22076,7 +22068,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -22096,7 +22088,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -22116,7 +22108,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -22136,7 +22128,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -22156,7 +22148,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -22176,7 +22168,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -22196,7 +22188,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -22216,7 +22208,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -22236,7 +22228,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -22256,7 +22248,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -22276,7 +22268,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -22296,7 +22288,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -22316,7 +22308,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -22336,7 +22328,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -22356,7 +22348,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -22376,7 +22368,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -22396,7 +22388,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -22416,7 +22408,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -22436,7 +22428,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -22456,7 +22448,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -22476,7 +22468,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -22496,7 +22488,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -22516,7 +22508,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -22536,7 +22528,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -22556,7 +22548,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -22576,7 +22568,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -22596,7 +22588,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -22616,7 +22608,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -22636,7 +22628,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -22656,7 +22648,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -22676,7 +22668,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -22696,7 +22688,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -22716,7 +22708,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -22736,7 +22728,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -22756,7 +22748,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -22776,7 +22768,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -22796,7 +22788,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },
@@ -22816,7 +22808,7 @@
       "type": "R_ARM_PC24",
       "kind": "arm_call",
       "addend": -8,
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "target_module": "arm9",
       "target_address": "0x020731dc"
     },

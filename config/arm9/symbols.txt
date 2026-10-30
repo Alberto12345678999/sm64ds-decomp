@@ -3043,7 +3043,7 @@ func_02072ed0 kind:function(arm,size=0x6c) addr:0x02072ed0
 __destroy_global_chain kind:function(arm,size=0x58) addr:0x02072f3c
 __call_static_initializers kind:function(arm,size=0x38) addr:0x02072f94
 __throw_catch_compare kind:function(arm,size=0x210) addr:0x02072fcc
-func_020731dc kind:function(arm,size=0x20) addr:0x020731dc
+__register_global_object kind:function(arm,size=0x20) addr:0x020731dc
 _ZSt9terminatev kind:function(arm,size=0x24) addr:0x020731fc
 _ZSt9dthandlerv kind:function(arm,size=0xc) addr:0x02073220
 func_0207322c kind:function(arm,size=0xc) addr:0x0207322c
@@ -5279,6 +5279,6 @@ data_020aa0d4 kind:bss addr:0x020aa0d4
 data_020aa1d4 kind:bss addr:0x020aa1d4
 data_020aa2d4 kind:bss addr:0x020aa2d4
 signal_funcs kind:bss addr:0x020aa3d4
-data_020aa3f0 kind:bss addr:0x020aa3f0
+__global_destructor_chain kind:bss addr:0x020aa3f0
 data_020aa3f4 kind:bss addr:0x020aa3f4
 data_020aa3f8 kind:bss addr:0x020aa3f8

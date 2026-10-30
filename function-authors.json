@@ -12171,7 +12171,7 @@
     },
     "arm9:0x020731dc": {
       "author": "tangosdev",
-      "name": "func_020731dc"
+      "name": "__register_global_object"
     },
     "arm9:0x020731fc": {
       "author": "tangosdev",

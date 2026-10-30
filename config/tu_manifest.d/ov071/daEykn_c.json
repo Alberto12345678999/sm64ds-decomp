@@ -927,13 +927,6 @@
       "canonical_module": "arm9",
       "canonical_address": "0x02017984",
       "evidence": "Inferred local resource-family ABI import targets the same arm9 function as the original initializer relocation."
-    },
-    {
-      "symbol": "__register_global_object",
-      "canonical_symbol": "func_020731dc",
-      "canonical_module": "arm9",
-      "canonical_address": "0x020731dc",
-      "evidence": "Compiler destructor registration calls the unchanged original arm9 helper."
     }
   ],
   "relocations": [
@@ -952,7 +945,7 @@
       "source": "0x021228e8",
       "type": "R_ARM_PC24",
       "kind": "arm_call",
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "addend": -8,
       "target_module": "arm9",
       "target_address": "0x020731dc"
@@ -972,7 +965,7 @@
       "source": "0x02122904",
       "type": "R_ARM_PC24",
       "kind": "arm_call",
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "addend": -8,
       "target_module": "arm9",
       "target_address": "0x020731dc"
@@ -992,7 +985,7 @@
       "source": "0x02122920",
       "type": "R_ARM_PC24",
       "kind": "arm_call",
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "addend": -8,
       "target_module": "arm9",
       "target_address": "0x020731dc"
@@ -1012,7 +1005,7 @@
       "source": "0x0212293c",
       "type": "R_ARM_PC24",
       "kind": "arm_call",
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "addend": -8,
       "target_module": "arm9",
       "target_address": "0x020731dc"

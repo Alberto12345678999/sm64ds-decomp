@@ -3,17 +3,18 @@ struct Node72 {
     void (*fn)(void *object, int v);
     void *object;
 };
-extern struct Node72 *data_020aa3f0;
+extern struct Node72 *__global_destructor_chain;
 
 /* __destroy_global_chain: pop each node that __register_global_object
-   (func_020731dc) pushed, newest first, and call its destructor on its
-   object with -1. exit calls it. */
+   pushed, newest first, and call its destructor on its object with -1.
+   exit calls it. */
 void __destroy_global_chain(void) {
-    struct Node72 *head = data_020aa3f0;
-    if (head == 0) return;
+    struct Node72 *head = __global_destructor_chain;
+    if (head == 0)
+        return;
     do {
-        data_020aa3f0 = head->next;
+        __global_destructor_chain = head->next;
         head->fn(head->object, -1);
-        head = data_020aa3f0;
+        head = __global_destructor_chain;
     } while (head != 0);
 }

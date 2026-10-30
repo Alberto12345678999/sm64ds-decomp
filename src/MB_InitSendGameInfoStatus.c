@@ -16,7 +16,7 @@ extern void MBi_ClearSendStatus(void);
    state 1 (pick a record) and clears the send counters. The parent setup
    func_02068ae8 calls it after it clears the file table.
 
-   Later SDKs have one more statement, `sMb.sendVolatCallback = 0;`. It
+   Later SDKs have one more statement, `sSendVolatCallback = NULL;`. It
    clears the hook that MB_SetSendVolatCallback installs. This SDK has no
    such hook: its MBi_SendVolatBeacon (func_02067f68) calls no callback, so
    there is nothing to clear. That is the same kind of older-SDK difference
