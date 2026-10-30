@@ -13,9 +13,9 @@ struct OverlaySlot {
 extern struct OverlaySlot data_0209d3c4[];
 
 /* UnloadOverlay for an overlay that may not be loaded: free its slot, and if
-   it had one, unload ARM9 overlay `key` (FS_UnloadOverlay) and, unless
-   func_0203d7b8 says otherwise, poison its RAM (func_02017fd0). Where
-   UnloadOverlay crashes on an overlay with no slot, this returns. */
+   it had one, unload ARM9 overlay `key` and, unless func_0203d7b8 says
+   otherwise, poison its RAM (func_02017fd0). Where UnloadOverlay crashes on
+   an overlay with no slot, this returns. */
 void func_02017e94(int key) {
     FSOverlayInfo info;
     struct OverlaySlot *found = 0;

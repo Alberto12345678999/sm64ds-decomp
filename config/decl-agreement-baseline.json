@@ -9490,11 +9490,6 @@
         "return:int"
       ]
     },
-    "func_02060b64": {
-      "src/CARDi_ReadRom.cpp": [
-        "param:#1 char *"
-      ]
-    },
     "func_0206cf98": {
       "src/FS_EndOverlay.cpp": [
         "return:void"
@@ -20432,11 +20427,6 @@
         "param:#2 void *"
       ]
     },
-    "FSi_InitRom": {
-      "src/FS_Init.c": [
-        "param:#1 int"
-      ]
-    },
     "func_0205da94": {
       "src/FSi_InitRom.c": [
         "kind:data"
@@ -20667,16 +20657,6 @@
         "param:#5 void *",
         "param:#6 int",
         "return:int"
-      ]
-    },
-    "func_02060ebc": {
-      "src/CARDi_ReadCard.c": [
-        "param:#1 char *"
-      ]
-    },
-    "func_02060f60": {
-      "src/unnamed/arm9/0206/func_020607e8.c": [
-        "return:void"
       ]
     },
     "func_02061128": {

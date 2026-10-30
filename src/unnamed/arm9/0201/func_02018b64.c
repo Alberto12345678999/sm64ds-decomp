@@ -27,9 +27,9 @@ typedef struct Pair {
 } Pair;
 
 extern void FS_InitFile(void *s);
-extern void FS_GetOverlayFileID(Pair *dst, void *src);
+extern void FS_GetOverlayFileID(Pair *dst, const FSOverlayInfo *p_ovi);
 extern int myFS_OpenFileFast(void *a, Pair bc);
-extern void FS_ClearOverlayImage(void *info);
+extern void FS_ClearOverlayImage(FSOverlayInfo *p_ovi);
 extern int myFS_ReadFile(void *a, int b, int c);
 extern void func_0206d32c(int a, int b, int c, int d);
 extern int FS_CloseFile(void *self);

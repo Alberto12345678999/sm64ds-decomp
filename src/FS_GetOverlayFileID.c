@@ -10,8 +10,7 @@ struct Pair {
 
 extern int data_020a8074;
 
-void FS_GetOverlayFileID(struct Pair *dst, void *ovi) {
-    const FSOverlayInfo *p_ovi = ovi;
+void FS_GetOverlayFileID(struct Pair *dst, const FSOverlayInfo *p_ovi) {
     struct Pair ret;
     ret.arc = &data_020a8074;
     ret.file_id = p_ovi->header.file_id;

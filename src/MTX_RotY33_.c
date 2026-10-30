@@ -2,9 +2,10 @@
 // in the original (SDK/runtime primitive: block copy, matrix/math, CP15, context
 // switch, etc.), so there is no C to decompile it to -- the asm block is the
 // faithful source. Counts as matched (asm-primitive policy), not a C transcription.
-// MTX_RotY33_ @ 0x0205256c (arm9, Thumb): the Nitro SDK's FX_mtx33.c Y rotation,
-// {c, 0, -s, 0, 1, 0, s, 0, c} from (sin, cos) with 4096 = 1.0, as
-// pret/pokediamond's asm body has it.
+// MTX_RotY33_ @ 0x0205256c (arm9, Thumb): build 3x3 fx32 Y-rotation matrix
+// from (sin, cos): {c, 0, -s, 0, 1, 0, s, 0, c} with 4096 = 1.0. Identified as
+// the Nitro SDK's FX_mtx33.c MTX_RotY33_ from pret's FX_mtx33.c, whose body
+// is the same instructions.
 #pragma thumb on
 asm void MTX_RotY33_(int *m, int s, int c) {
     str r2, [r0, #0]
