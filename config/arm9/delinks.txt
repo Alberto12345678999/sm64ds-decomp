@@ -2257,29 +2257,9 @@ src/engine/os/OS_Arena.cpp:
     complete
     .text start:0x02058cd0 end:0x02059040
 
-src/unnamed/arm9/0205/func_02059040.cpp:
+src/engine/os/OS_Alloc.cpp:
     complete
-    .text start:0x02059040 end:0x020590fc
-
-src/unnamed/arm9/0205/func_020590fc.cpp:
-    complete
-    .text start:0x020590fc end:0x02059170
-
-src/unnamed/arm9/0205/func_02059170.cpp:
-    complete
-    .text start:0x02059170 end:0x0205929c
-
-src/unnamed/arm9/0205/func_0205929c.c:
-    complete
-    .text start:0x0205929c end:0x02059364
-
-src/unnamed/arm9/0205/func_02059364.c:
-    complete
-    .text start:0x02059364 end:0x0205938c
-
-src/unnamed/arm9/0205/func_0205938c.c:
-    complete
-    .text start:0x0205938c end:0x020593a8
+    .text start:0x02059040 end:0x020593a8
 
 src/engine/cp15/CP15_TCM.cpp:
     complete

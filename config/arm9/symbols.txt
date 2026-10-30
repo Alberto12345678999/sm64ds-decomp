@@ -2444,12 +2444,12 @@ OS_GetArenaLo kind:function(arm,size=0x14) addr:0x02058ea0
 OS_GetArenaHi kind:function(arm,size=0x14) addr:0x02058eb4
 OS_InitArenaEx kind:function(arm,size=0x60) addr:0x02058ec8
 OS_InitArena kind:function(arm,size=0x118) addr:0x02058f28
-func_02059040 kind:function(arm,size=0xbc) addr:0x02059040
-func_020590fc kind:function(arm,size=0x74) addr:0x020590fc
-func_02059170 kind:function(arm,size=0x12c) addr:0x02059170
-func_0205929c kind:function(arm,size=0xc8) addr:0x0205929c
-func_02059364 kind:function(arm,size=0x28) addr:0x02059364
-func_0205938c kind:function(arm,size=0x1c) addr:0x0205938c
+OS_InitAlloc kind:function(arm,size=0xbc) addr:0x02059040
+OS_FreeToHeap kind:function(arm,size=0x74) addr:0x020590fc
+OS_AllocFromHeap kind:function(arm,size=0x12c) addr:0x02059170
+DLInsert kind:function(arm,size=0xc8) addr:0x0205929c
+DLExtract kind:function(arm,size=0x28) addr:0x02059364
+DLAddFront kind:function(arm,size=0x1c) addr:0x0205938c
 _ZN4CP1510EnableDTCMEv kind:function(arm,size=0x10) addr:0x020593a8
 _ZN4CP1518GetDTCMBaseAddressEv kind:function(arm,size=0x14) addr:0x020593b8
 _ZN4CP159EnableMPUEv kind:function(arm,size=0x10) addr:0x020593cc
@@ -5170,7 +5170,7 @@ data_020a6148 kind:bss addr:0x020a6148
 data_020a6188 kind:bss addr:0x020a6188
 data_020a621c kind:bss addr:0x020a621c
 data_020a6378 kind:bss addr:0x020a6378
-data_020a637c kind:bss addr:0x020a637c
+OSiHeapInfo kind:bss addr:0x020a637c
 data_020a63a0 kind:bss addr:0x020a63a0
 data_020a63a4 kind:bss addr:0x020a63a4
 data_020a63a8 kind:bss addr:0x020a63a8

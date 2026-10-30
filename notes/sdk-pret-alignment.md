@@ -52,7 +52,7 @@ check against, and they don't.
 | OS_message.c | 0x020587e4..0x02058960 | 3 of 5, in pret's source order reversed; OS_JamMessage and OS_ReadMessage dropped by the linker: folded as arm9/OS_Message |
 | OS_mutex.c | 0x02058960..0x02058bb0 | 7 of 7 plus 1, in pret's source order reversed, from an older SDK (16-bit thread-id queues, OS_TryLockMutex does not enqueue, OSi_EnqueueTail links after the head); 1 extra (func_02058960, the held-list unlink pret has in OS_thread.c): folded as arm9/OS_Mutex |
 | OS_arena.c | 0x02058cd0..0x02059040 | 9 of 10: 6 exact, 3 drift from an older SDK (OS_InitArenaEx 0x80 to 0x60, OS_GetInitArenaHi 0x130 to 0xac, OS_GetInitArenaLo 0xec to 0x74), in pret's source order reversed; OS_AllocFromArenaHi dropped by the linker: folded as arm9/OS_Arena |
-| OS_alloc.c | 0x020590fc..0x020593a8 | 5/5 exact; func_02059040 below it is unexplained |
+| OS_alloc.c | 0x02059040..0x020593a8 | 5/5 exact, in pret's source order reversed, plus OS_InitAlloc (0x02059040) by body, which pret leaves out: folded as arm9/OS_Alloc |
 | OS_exception.c | 0x020593f4..0x02059624 | 5 of 5 plus 1: 4 exact, OS_InitException 0x70 to 0x90 (it also tests OS_GetConsoleType), 1 extra (OS_SetUserExceptionHandler, not in pret's revision); the three asm functions first, then the C bodies reversed: folded as arm9/OS_Exception |
 | OS_tick.c | 0x02059640..0x02059824 | 4 of 5, all exact, in pret's source order reversed; OS_IsTickAvailable dropped by the linker: folded as arm9/OS_Tick |
 | OS_alarm.c | 0x02059824..0x02059cb4 | 9 of 9: 8 exact, OSi_ArrangeTimer 0x118 to 0x11c; asm OSi_AlarmHandler first, then the C bodies reversed: folded as arm9/OS_Alarm |

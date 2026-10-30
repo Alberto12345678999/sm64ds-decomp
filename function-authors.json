@@ -9783,27 +9783,27 @@
     },
     "arm9:0x02059040": {
       "author": "tangosdev",
-      "name": "func_02059040"
+      "name": "OS_InitAlloc"
     },
     "arm9:0x020590fc": {
       "author": "tangosdev",
-      "name": "func_020590fc"
+      "name": "OS_FreeToHeap"
     },
     "arm9:0x02059170": {
       "author": "tangosdev",
-      "name": "func_02059170"
+      "name": "OS_AllocFromHeap"
     },
     "arm9:0x0205929c": {
       "author": "ruspecial",
-      "name": "func_0205929c"
+      "name": "DLInsert"
     },
     "arm9:0x02059364": {
       "author": "tangosdev",
-      "name": "func_02059364"
+      "name": "DLExtract"
     },
     "arm9:0x0205938c": {
       "author": "tangosdev",
-      "name": "func_0205938c"
+      "name": "DLAddFront"
     },
     "arm9:0x020593a8": {
       "author": "tangosdev",
