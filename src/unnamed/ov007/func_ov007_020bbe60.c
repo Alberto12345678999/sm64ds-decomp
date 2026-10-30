@@ -1,9 +1,7 @@
 #include "types.h"
 #include "Ov007Work.h"
 #include "nitro/fx/fx.h"
-extern void func_ov007_020c6784(void *object, int count, const int *pointCounts,
-                                const void *xCoords, const void *yCoords,
-                                const int *const *progressThresholds, int mode);
+#include "Ov007Picker.h"
 
 /* Six portrait drawings, selected by a two-way selector and three-step cycle.
  * Plotting the byte coordinates produces Mario, Luigi and Yoshi portraits.
@@ -54,7 +52,7 @@ extern char *data_ov007_02104ba0;
 /* data_ov007_02104ba0, the 0x4c-byte picker scene; names as in
  * unit020b8f50, only the slots this file touches. */
 typedef struct Ov007PickerScene {
-    void *picker; /* 0x00: func_ov007_020c690c */
+    Ov007Picker *picker; /* 0x00: func_ov007_020c690c */
     char pad_04[0x34];
     int replayFrames; /* 0x38 */
 } Ov007PickerScene;

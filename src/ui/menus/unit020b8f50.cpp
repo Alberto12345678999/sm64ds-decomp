@@ -151,7 +151,6 @@ extern int func_ov007_020c5d5c(void *o);
 extern int func_ov007_020c5db0(void *p);
 extern void func_ov007_020c5dec(void *c);
 extern void func_ov007_020c5ef0(void *o);
-extern void *func_ov007_020c690c(int a0, int a1, int a2, int a3, void *a4, void *a5);
 extern int func_ov007_020c8f98(void *p);
 extern void func_ov007_020c9080(int);
 extern void *func_ov007_020c908c(void *r5);
@@ -1315,8 +1314,8 @@ void func_ov007_020b9880(int a0, int a1) {
     data_ov007_02104ba0 = (char *)func_ov007_020c3df4(0, 0x4c);
     data_ov007_02104b9c = (Ov007PickerSprites *)func_ov007_020c3df4(0, 0x14);
 
-    SCENE->picker = (Ov007Picker *)func_ov007_020c690c(0xc8, 0x1f4, 0x1f4, (int)WORK->cameras[0],
-                                                       &data_ov007_020d7b60, data_ov007_020d7b80);
+    SCENE->picker = func_ov007_020c690c(0xc8, 0x1f4, 0x1f4, WORK->cameras[0], &data_ov007_020d7b60,
+                                        data_ov007_020d7b80);
 
     SCENE->states[0] = (Ov007MenuState *)func_ov007_020c9388(0);
     SCENE->states[1] = (Ov007MenuState *)func_ov007_020c9388(-1);

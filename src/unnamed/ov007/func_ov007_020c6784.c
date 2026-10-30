@@ -9,9 +9,8 @@ extern int func_ov007_020c5db0(void *c);
  * (mode 0 int coordinates, func_ov007_020c2b38; mode 1 byte coordinates,
  * func_ov007_020c2acc) and its spring chain (func_ov007_020c6e68), then
  * sets groupCount and totalPoints. */
-void func_ov007_020c6784(void *object, int count, const int *pointCounts, const void *xCoords,
+void func_ov007_020c6784(Ov007Picker *self, int count, const int *pointCounts, const void *xCoords,
                          const void *yCoords, const int *const *progressThresholds, int mode) {
-    Ov007Picker *self = (Ov007Picker *)object;
     int i;
     func_ov007_020c3ce4();
     func_ov007_020c6724(self, 1);

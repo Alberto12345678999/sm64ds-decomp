@@ -136,6 +136,11 @@ void func_ov007_020c6724(Ov007Picker *picker, int flag);
 void func_ov007_020c6d20(Ov007Picker *picker, int idx);
 void func_ov007_020c6d90(Ov007Picker *picker, int idx);
 void func_ov007_020c6e68(Ov007Picker *picker, int idx);
+void func_ov007_020c6784(Ov007Picker *picker, int count, const int *pointCounts,
+                         const void *xCoords, const void *yCoords,
+                         const int *const *progressThresholds, int mode);
+Ov007Picker *func_ov007_020c690c(int maxGroups, int maxPoints, int pathCapacity,
+                                 struct Ov007Camera *camera, void *params, void *springConstants);
 
 #ifdef __cplusplus
 }
