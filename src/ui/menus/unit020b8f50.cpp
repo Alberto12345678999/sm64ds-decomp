@@ -27,10 +27,15 @@
  * Edges: every function here touches this scene's bss block
  * 0x02104b98..0x02104ba4 or calls one that does, and nothing below the range
  * touches it. The next function, func_ov007_020bbe60, also uses the block
- * (it loads a portrait drawing into the picker) but owns the portrait
- * stroke tables in .rodata and .data, so it is left in its own file. The
- * previous function, func_ov007_020b8ec0, touches no data and is called
- * only by the module whose bss block ends at 0x02104b98.
+ * (it loads a portrait drawing into the picker), but it stays in its own
+ * file, the intact object ov007/AnimationPathSets that owns the portrait
+ * stroke tables. The .rodata layout does not let one TU hold both: this
+ * unit's own tables (0x020d7b54..0x020d7c28) lie between
+ * unit020b797c's and func_ov007_020bd1c0's, in text order, while the
+ * stroke counts at 0x020cdb34 lie inside the portrait coordinate block
+ * that follows unit020b2764's .rodata. The previous function,
+ * func_ov007_020b8ec0, touches no data and is called only by the module
+ * whose bss block ends at 0x02104b98.
  *
  * Emission order: mwccarm 2004/b56 emits one .text section per function in
  * the reverse of source order, so the highest-address function is written
@@ -1133,28 +1138,28 @@ int func_ov007_020ba05c(void) {
                 unsigned int cnt;
                 Ov007StrokePath *o;
                 int flag;
-                int y;
                 int x;
+                int y;
                 o = ((Ov007PickerScene *)r3)->picker->path;
                 r5 = 0;
                 flag = 0;
                 cnt = o->pointCount;
-                y = r4->cur.x;
-                x = r4->cur.y;
+                x = r4->cur.x;
+                y = r4->cur.y;
                 if (cnt >= 2) {
                     int idx = cnt - 2;
-                    int dz = o->yCoords[idx] >> 12;
+                    int dy = o->yCoords[idx] >> 12;
                     int rz = r4->deltaY;
-                    int dx = (o->xCoords[idx] >> 12) - y;
+                    int dx = (o->xCoords[idx] >> 12) - x;
                     int dd = r4->deltaX * r4->deltaX + rz * rz;
                     int dd2;
-                    dz -= x;
-                    dd2 = dx * dx + dz * dz;
+                    dy -= y;
+                    dd2 = dx * dx + dy * dy;
                     if (dd >= 0x100 && dd2 <= 4)
                         flag = 1;
                 }
                 if (flag == 0) {
-                    r5 = func_ov007_020c65bc(((Ov007PickerScene *)r3)->picker, y, x,
+                    r5 = func_ov007_020c65bc(((Ov007PickerScene *)r3)->picker, x, y,
                                              ((Ov007PickerScene *)r3)->strokeTime >> 12);
                     func_ov007_020bdbcc(r4->deltaX, r4->deltaY);
                 } else {

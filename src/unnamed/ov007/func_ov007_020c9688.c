@@ -3,8 +3,10 @@
  *
  * Builds a sprite bank from a sprite file (func_ov007_020b6d40 builds six
  * into the display record's spriteBanks). The block index
- * func_ov007_020c9a2c fills carries two counted lists; the bank
- * func_ov007_020c12ac allocates carries the two output tables.
+ * func_ov007_020c9a2c fills carries two counted lists, list A in
+ * blockData[0] and list B in blockData[3] (index offsets 0x44 and 0x50),
+ * each a count word followed by its entries; the bank func_ov007_020c12ac
+ * allocates carries the two output tables.
  *
  * The first pass walks list A, the cells. Each cell's header word gives
  * the number of 0x14-byte OAM records that follow it; each record is

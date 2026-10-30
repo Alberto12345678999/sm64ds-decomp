@@ -35,9 +35,10 @@ typedef struct Ov007BinFile {
 typedef char Ov007BinFile_size_must_be_0x84[sizeof(Ov007BinFile) == 0x84 ? 1 : -1];
 #endif
 
-/* Indexes the blocks of the file at address `file`. Every caller takes the
- * address from an int table in ov007's data (data_ov007_020d7e28 and its
- * neighbours), so it stays an int here. */
+/* Indexes the blocks of the file at address `file`, passed as an int: either
+ * an entry of one of ov007's int tables (func_ov007_020b6d40 reads
+ * data_ov007_020d7e28 and its neighbours) or a cached file pointer cast to
+ * int (func_ov007_020bcdb8, from func_ov007_020b3f20). */
 void func_ov007_020c9a2c(Ov007BinFile *f, int file);
 
 #ifdef __cplusplus
