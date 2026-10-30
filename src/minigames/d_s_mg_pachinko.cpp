@@ -1658,6 +1658,7 @@ void PachinkoBall_AimAtTarget(char *base, int i) {
 #pragma pop
 
 // @symbol PachinkoBall_CheckFall
+/* mBall[idx] compiles to 0x70 bytes. This function is 0x78, so the stride cursor stays. */
 void PachinkoBall_CheckFall(char *thiz, int idx) {
     unsigned char *flag = (unsigned char *)(thiz + BALL_OFF(fallPlayed)) + idx * 0x38;
     char *e;
@@ -2265,6 +2266,7 @@ void PachinkoBobOmb_ClearAll(char *p)
 }
 
 // @symbol PachinkoBobOmb_DrawAll
+/* A dScMgPachinko_shot walk from mShot compiles to 0x7c bytes. This function is 0x78. */
 void PachinkoBobOmb_DrawAll(char *thiz) {
     int i;
     for (i = 0; i < 0x30; i++, thiz += 0x38) {

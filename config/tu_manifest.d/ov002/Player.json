@@ -2172,7 +2172,7 @@
       "ordinal": 304
     },
     {
-      "symbol": "func_ov002_020cede0",
+      "symbol": "_ZN6Player19func_ov002_020cede0Ev",
       "address": "0x020cede0",
       "size": "0x000001a4",
       "legacy_source": "src/func_ov002_020cede0.cpp",
@@ -3642,7 +3642,7 @@
       "ordinal": 514
     },
     {
-      "symbol": "func_ov002_020de428",
+      "symbol": "_ZN6Player19func_ov002_020de428Ev",
       "address": "0x020de428",
       "size": "0x00000034",
       "legacy_source": "src/unnamed/ov002/func_ov002_020de428.c",
@@ -3782,7 +3782,7 @@
       "ordinal": 534
     },
     {
-      "symbol": "func_ov002_020df7ac",
+      "symbol": "_ZN6Player19func_ov002_020df7acEv",
       "address": "0x020df7ac",
       "size": "0x00000048",
       "legacy_source": "src/unnamed/ov002/func_ov002_020df7ac.c",
@@ -3796,7 +3796,7 @@
       "ordinal": 536
     },
     {
-      "symbol": "func_ov002_020df840",
+      "symbol": "_ZN6Player19func_ov002_020df840EPvP7Vector3",
       "address": "0x020df840",
       "size": "0x000000b0",
       "legacy_source": "src/unnamed/ov002/func_ov002_020df840.c",
@@ -8966,18 +8966,18 @@
       "droppedSections": [
         19,
         214,
-        794,
-        818,
-        824,
-        1002,
-        1180,
-        1181,
-        1188,
-        1189,
-        1190,
-        1191,
+        809,
+        833,
+        839,
+        1017,
+        1195,
+        1196,
+        1203,
+        1204,
         1205,
-        1206
+        1206,
+        1840,
+        1841
       ],
       "data": [
         "_ZTV6Player"
@@ -9170,6 +9170,83 @@
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "mwcc emits the function-local static local; symbols.txt homes it at 0x0210f344"
+    }
+  ],
+  "defined_symbol_renames": [
+    {
+      "from": "_ZGVsLevelIntroOff$4421",
+      "to": "_ZGVsLevelIntroOff$4424",
+      "evidence": "compiler temp; named-parameter dCamera_c externs deleted in Player.cpp lowered this uniquifier by 2 plus 1 from the collision headers (measured; daBtn_c and daWanwan_c header delta 0)"
+    },
+    {
+      "from": "@4424",
+      "to": "@4427",
+      "evidence": "compiler temp; named-parameter dCamera_c externs deleted in Player.cpp lowered this uniquifier by 2 plus 1 from the collision headers (measured; daBtn_c and daWanwan_c header delta 0)"
+    },
+    {
+      "from": "sLevelIntroOff$4421",
+      "to": "sLevelIntroOff$4424",
+      "evidence": "compiler temp; named-parameter dCamera_c externs deleted in Player.cpp lowered this uniquifier by 2 plus 1 from the collision headers (measured; daBtn_c and daWanwan_c header delta 0)"
+    },
+    {
+      "from": "_ZGVsTalkOff$4643",
+      "to": "_ZGVsTalkOff$4648",
+      "evidence": "compiler temp; named-parameter dCamera_c externs deleted in Player.cpp lowered this uniquifier by 4 plus 1 from the collision headers (measured; daBtn_c and daWanwan_c header delta 0)"
+    },
+    {
+      "from": "@4646",
+      "to": "@4651",
+      "evidence": "compiler temp; named-parameter dCamera_c externs deleted in Player.cpp lowered this uniquifier by 4 plus 1 from the collision headers (measured; daBtn_c and daWanwan_c header delta 0)"
+    },
+    {
+      "from": "sTalkOff$4643",
+      "to": "sTalkOff$4648",
+      "evidence": "compiler temp; named-parameter dCamera_c externs deleted in Player.cpp lowered this uniquifier by 4 plus 1 from the collision headers (measured; daBtn_c and daWanwan_c header delta 0)"
+    },
+    {
+      "from": "_ZGVsAnchorOff$6217",
+      "to": "_ZGVsAnchorOff$6223",
+      "evidence": "compiler temp; named-parameter dCamera_c externs deleted in Player.cpp lowered this uniquifier by 5 plus 1 from the collision headers (measured; daBtn_c and daWanwan_c header delta 0)"
+    },
+    {
+      "from": "@6220",
+      "to": "@6226",
+      "evidence": "compiler temp; named-parameter dCamera_c externs deleted in Player.cpp lowered this uniquifier by 5 plus 1 from the collision headers (measured; daBtn_c and daWanwan_c header delta 0)"
+    },
+    {
+      "from": "sAnchorOff$6217",
+      "to": "sAnchorOff$6223",
+      "evidence": "compiler temp; named-parameter dCamera_c externs deleted in Player.cpp lowered this uniquifier by 5 plus 1 from the collision headers (measured; daBtn_c and daWanwan_c header delta 0)"
+    },
+    {
+      "from": "_ZGVsDoorMsgOff$6245",
+      "to": "_ZGVsDoorMsgOff$6251",
+      "evidence": "compiler temp; named-parameter dCamera_c externs deleted in Player.cpp lowered this uniquifier by 5 plus 1 from the collision headers (measured; daBtn_c and daWanwan_c header delta 0)"
+    },
+    {
+      "from": "@6248",
+      "to": "@6254",
+      "evidence": "compiler temp; named-parameter dCamera_c externs deleted in Player.cpp lowered this uniquifier by 5 plus 1 from the collision headers (measured; daBtn_c and daWanwan_c header delta 0)"
+    },
+    {
+      "from": "sDoorMsgOff$6245",
+      "to": "sDoorMsgOff$6251",
+      "evidence": "compiler temp; named-parameter dCamera_c externs deleted in Player.cpp lowered this uniquifier by 5 plus 1 from the collision headers (measured; daBtn_c and daWanwan_c header delta 0)"
+    },
+    {
+      "from": "_ZGVsStarDoorOff$6910",
+      "to": "_ZGVsStarDoorOff$6917",
+      "evidence": "compiler temp; named-parameter dCamera_c externs deleted in Player.cpp lowered this uniquifier by 6 plus 1 from the collision headers (measured; daBtn_c and daWanwan_c header delta 0)"
+    },
+    {
+      "from": "@6913",
+      "to": "@6920",
+      "evidence": "compiler temp; named-parameter dCamera_c externs deleted in Player.cpp lowered this uniquifier by 6 plus 1 from the collision headers (measured; daBtn_c and daWanwan_c header delta 0)"
+    },
+    {
+      "from": "sStarDoorOff$6910",
+      "to": "sStarDoorOff$6917",
+      "evidence": "compiler temp; named-parameter dCamera_c externs deleted in Player.cpp lowered this uniquifier by 6 plus 1 from the collision headers (measured; daBtn_c and daWanwan_c header delta 0)"
     }
   ],
   "relocations": [
@@ -27582,83 +27659,6 @@
       "symbol": "data_ov002_0210a3f4",
       "target_module": "ov002",
       "target_address": "0x0210a3f4"
-    }
-  ],
-  "defined_symbol_renames": [
-    {
-      "from": "_ZGVsLevelIntroOff$4423",
-      "to": "_ZGVsLevelIntroOff$4424",
-      "evidence": "Shared collision headers changed the compiler local counter. Complete before/after objects preserve allocated bytes, section properties, symbol attributes and relocation destinations; keep the configured retail identity. See notes/collision-readability-1027.md."
-    },
-    {
-      "from": "@4426",
-      "to": "@4427",
-      "evidence": "Shared collision headers changed the compiler local counter. Complete before/after objects preserve allocated bytes, section properties, symbol attributes and relocation destinations; keep the configured retail identity. See notes/collision-readability-1027.md."
-    },
-    {
-      "from": "sLevelIntroOff$4423",
-      "to": "sLevelIntroOff$4424",
-      "evidence": "Shared collision headers changed the compiler local counter. Complete before/after objects preserve allocated bytes, section properties, symbol attributes and relocation destinations; keep the configured retail identity. See notes/collision-readability-1027.md."
-    },
-    {
-      "from": "_ZGVsTalkOff$4647",
-      "to": "_ZGVsTalkOff$4648",
-      "evidence": "Shared collision headers changed the compiler local counter. Complete before/after objects preserve allocated bytes, section properties, symbol attributes and relocation destinations; keep the configured retail identity. See notes/collision-readability-1027.md."
-    },
-    {
-      "from": "@4650",
-      "to": "@4651",
-      "evidence": "Shared collision headers changed the compiler local counter. Complete before/after objects preserve allocated bytes, section properties, symbol attributes and relocation destinations; keep the configured retail identity. See notes/collision-readability-1027.md."
-    },
-    {
-      "from": "sTalkOff$4647",
-      "to": "sTalkOff$4648",
-      "evidence": "Shared collision headers changed the compiler local counter. Complete before/after objects preserve allocated bytes, section properties, symbol attributes and relocation destinations; keep the configured retail identity. See notes/collision-readability-1027.md."
-    },
-    {
-      "from": "_ZGVsAnchorOff$6222",
-      "to": "_ZGVsAnchorOff$6223",
-      "evidence": "Shared collision headers changed the compiler local counter. Complete before/after objects preserve allocated bytes, section properties, symbol attributes and relocation destinations; keep the configured retail identity. See notes/collision-readability-1027.md."
-    },
-    {
-      "from": "@6225",
-      "to": "@6226",
-      "evidence": "Shared collision headers changed the compiler local counter. Complete before/after objects preserve allocated bytes, section properties, symbol attributes and relocation destinations; keep the configured retail identity. See notes/collision-readability-1027.md."
-    },
-    {
-      "from": "sAnchorOff$6222",
-      "to": "sAnchorOff$6223",
-      "evidence": "Shared collision headers changed the compiler local counter. Complete before/after objects preserve allocated bytes, section properties, symbol attributes and relocation destinations; keep the configured retail identity. See notes/collision-readability-1027.md."
-    },
-    {
-      "from": "_ZGVsDoorMsgOff$6250",
-      "to": "_ZGVsDoorMsgOff$6251",
-      "evidence": "Shared collision headers changed the compiler local counter. Complete before/after objects preserve allocated bytes, section properties, symbol attributes and relocation destinations; keep the configured retail identity. See notes/collision-readability-1027.md."
-    },
-    {
-      "from": "@6253",
-      "to": "@6254",
-      "evidence": "Shared collision headers changed the compiler local counter. Complete before/after objects preserve allocated bytes, section properties, symbol attributes and relocation destinations; keep the configured retail identity. See notes/collision-readability-1027.md."
-    },
-    {
-      "from": "sDoorMsgOff$6250",
-      "to": "sDoorMsgOff$6251",
-      "evidence": "Shared collision headers changed the compiler local counter. Complete before/after objects preserve allocated bytes, section properties, symbol attributes and relocation destinations; keep the configured retail identity. See notes/collision-readability-1027.md."
-    },
-    {
-      "from": "_ZGVsStarDoorOff$6916",
-      "to": "_ZGVsStarDoorOff$6917",
-      "evidence": "Shared collision headers changed the compiler local counter. Complete before/after objects preserve allocated bytes, section properties, symbol attributes and relocation destinations; keep the configured retail identity. See notes/collision-readability-1027.md."
-    },
-    {
-      "from": "@6919",
-      "to": "@6920",
-      "evidence": "Shared collision headers changed the compiler local counter. Complete before/after objects preserve allocated bytes, section properties, symbol attributes and relocation destinations; keep the configured retail identity. See notes/collision-readability-1027.md."
-    },
-    {
-      "from": "sStarDoorOff$6916",
-      "to": "sStarDoorOff$6917",
-      "evidence": "Shared collision headers changed the compiler local counter. Complete before/after objects preserve allocated bytes, section properties, symbol attributes and relocation destinations; keep the configured retail identity. See notes/collision-readability-1027.md."
     }
   ]
 }

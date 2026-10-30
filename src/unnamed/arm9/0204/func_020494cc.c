@@ -1,14 +1,5 @@
 #include "types.h"
-/* NitroSystem's NNSSndHandle and NNSSndSeqPlayer, cut to the sequence number
-   (the layout as the Sonic Rush Adventure decomp spells it; SoundEngine.cpp's
-   struct E1 is the same object, its fader at 0x1c, player number at 0x3c). */
-typedef struct NNSSndSeqPlayer {
-    u8 pad[0x38];
-    u16 seqNo; /* 0x38 */
-} NNSSndSeqPlayer;
-typedef struct NNSSndHandle {
-    NNSSndSeqPlayer *player;
-} NNSSndHandle;
+#include "nnsys/snd/player.h"
 extern u16 data_020a4c48[];
 extern int data_020a4c4c[];
 extern int data_020a4c54[];

@@ -138,7 +138,7 @@ void Camera_InitDealerView(char *);
 void Mg_DrawCredits(char *, int, int, int);
 void Dealer_Draw(char *);
 extern "C" void MgCoins_Update(void);
-extern "C" void Dealer_Update(char *p);
+extern "C" void Dealer_Update(Dealer *p);
 void LoadCard2SubBg3(void);
 s32 GetGameLanguage(void);
 void *LoadFile(int handle);
@@ -1245,7 +1245,7 @@ s32 dScMgMemory2_c::Render() {
 s32 dScMgMemory2_c::Behavior() {
     (this->*sMemory2StateTable[mState])();
     MgCoins_Update();
-    Dealer_Update((char *)&mDealer);
+    Dealer_Update(&mDealer);
     return 1;
 }
 

@@ -74,7 +74,7 @@ void Mg_DrawScoreTally(char *a0, int a1, int a2, int a3);
 void Dealer_Draw(void *p);
 int Dealer_IsIdle(void *p);
 void MgCoins_Update(void);
-void Dealer_Update(void *c);
+void Dealer_Update(Dealer *c);
 void Dealer_StartShuffle(char *c, int unused, short a2, int a3);
 void MgCoins_Reset(char *p);
 void FreeGfxSlotsById(int arg);

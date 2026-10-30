@@ -1,17 +1,9 @@
 //cpp
 #include "types.h"
 #include "CP15.h"
+#include "nitro/fs/overlay.h"
 
 extern "C" {
-
-/* The head of NitroSDK's FSOverlayInfo (see LoadOverlay.c), as far as this
-   reads it. */
-typedef struct FSOverlayInfo {
-    u32 id;            /* +0 */
-    void *ram_address; /* +4 */
-    u32 ram_size;      /* +8 */
-    u32 bss_size;      /* +c */
-} FSOverlayInfo;
 
 extern void MultiStore_Int(u32 val, void *dst, u32 size);
 
@@ -25,9 +17,9 @@ void func_02017fd0(FSOverlayInfo *info) {
     u32 len;
     volatile u32 fillVal;
 
-    ramSize = info->ram_size;
-    bssSize = info->bss_size;
-    ptr = info->ram_address;
+    ramSize = info->header.ram_size;
+    bssSize = info->header.bss_size;
+    ptr = info->header.ram_address;
     len = ramSize + bssSize;
 
     CP15::InvalidateInstructionCache((u32)ptr, len);

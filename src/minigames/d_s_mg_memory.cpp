@@ -93,7 +93,7 @@ void Camera_InitDealerView(char *p);
 void Mg_DrawCredits(char *c, int a, int b, int d);
 void Dealer_Draw(char *p);
 void MgCoins_Update(void);
-int Dealer_Update(void *p);
+int Dealer_Update(Dealer *p);
 void LoadCard2SubBg3(void);
 s32 GetGameLanguage(void);
 void *LoadFile(int handle);

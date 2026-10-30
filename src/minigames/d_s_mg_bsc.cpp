@@ -70,7 +70,7 @@ void Mg_DrawCredits(void *scene, int a1, int a2, int a3);
 void Mg_DrawScoreTally(void *scene, int a1, int a2, int a3);
 void Dealer_Draw(void *table);
 void MgCoins_Update(void);
-void Dealer_Update(char *c);
+void Dealer_Update(Dealer *c);
 extern unsigned char data_0209d45c[];
 extern int data_0208ee44[];
 extern void LoadCard2SubBg3(void);
@@ -130,7 +130,7 @@ s32 dScMgBSC_c::InitResources() {
 s32 dScMgBSC_c::Behavior() {
     (this->*sBSCStateTable[mState])();
     MgCoins_Update();
-    Dealer_Update((char *)&mDealer);
+    Dealer_Update(&mDealer);
     return 1;
 }
 

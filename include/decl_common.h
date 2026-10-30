@@ -19,6 +19,7 @@
    form, so no declaration here relies on C++ mangling. The remaining 72 resolve
    to neither spelling and are unresolvable with or without this guard. */
 struct Player;
+struct MascotWalker;
 
 #ifdef __cplusplus
 extern "C" {
@@ -831,7 +832,6 @@ extern int func_ov002_020ce324(void*);
 extern int func_ov002_020ce5f8(void*);
 extern int func_ov002_020ceb54(char*);
 extern int func_ov002_020cedb0(void*, int);
-extern int func_ov002_020cede0(void*);
 extern int func_ov002_020cf20c(char*);
 extern int func_ov002_020cf700(void*);
 extern int func_ov002_020cfaf0(void*);
@@ -1207,12 +1207,7 @@ extern int func_0200c66c(void*, void*, int*, int*, int*);
 extern void func_0200c9e0(void*, s32*, s32*);
 extern void func_0200ca14(void*, unsigned char, int);
 extern void func_0200cb58(void*, int);
-extern void func_0200d10c(void*, unsigned char);
 extern void func_0200d1e4(char*);
-extern void func_0200d63c(void*, unsigned char);
-extern void func_0200d6b4(void*, unsigned char);
-extern void func_0200d768(void*, unsigned char);
-extern void func_0200d7a4(void*, u8);
 extern void func_0200d858(void*, const struct Vector3*);
 extern void func_0200d89c(char*);
 extern void func_0200f13c(void);
@@ -1356,7 +1351,6 @@ extern void func_ov002_020dcafc(char*);
 extern void func_ov002_020dd5ec(void*);
 extern void func_ov002_020dd8f4(struct Player *);
 extern void func_ov002_020de3d0(void*, s16*, s16*);
-extern void func_ov002_020de428(void*);
 extern void func_ov002_020de968(void*);
 extern void func_ov002_020e032c(void*);
 extern void func_ov002_020e04a4(void*);
@@ -1419,7 +1413,7 @@ extern void MiniGm_LoadGroupIcons(void*);
 extern void Camera_ProjectToScreen16(void*, char*, short*);
 extern void MascotWalker_StartNextPath(void*);
 extern void MascotWalker_Draw(char*);
-extern void MascotWalker_Load(char*);
+extern void MascotWalker_Load(struct MascotWalker *);
 extern void Dealer_ResetMatrices(char*);
 extern void Dealer_PlayWin(void*);
 extern void Dealer_PlayLose(void*);
@@ -1492,7 +1486,6 @@ extern void HanaPopup_UpdateAll();
 extern void HanaPopup_ClearAll(void);
 extern void Wiggler_DrawTarget(void *);
 extern void Wiggler_DrawField(void *);
-extern void Wiggler_UpdateSway(char*);
 extern void Wiggler_Move(char*);
 extern void Hana_LoadBackground(void);
 extern void Jump2Popup_DrawAll(void);
