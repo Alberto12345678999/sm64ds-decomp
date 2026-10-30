@@ -127,11 +127,11 @@ struct dScStage_c : dScene_c {
        func_020308a8 reports the load finished. */
     s32 mWaitingForLoad; /* 0x9c4 */
 
-    /* Scene-graph hooks: vtable slots 1/2 of dScStage_c::graphCallback_c.
-       Non-virtual on purpose -- declaring them virtual would make this TU emit
-       a vtable the delink ranges do not own. */
-    int GraphCallback1();
-    int GraphCallback2();
+    /* ROM class N10dScStage_c15graphCallback_c (RTTI 0x02092164, vtable
+       0x02092188). The body, with the two hooks virtual, lives in
+       d_s_stage_methods.cpp. A definition here would renumber mwcc @NNN in
+       every TU that includes this header. */
+    class graphCallback_c;
 };
 
 #ifndef SM64DS_PLATFORM_PC
