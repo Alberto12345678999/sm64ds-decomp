@@ -12,9 +12,10 @@
 // and no handler installed.
 //
 // Entry (src/Entry.c), the ARM9 startup code, calls it once: after the DTCM, palette and
-// OAM clears, and before the jump to the game. That is the place and job ARM's runtime documents for _fp_init ("initialize the
-// floating-point status register before performing any floating-point operations"). ARM
-// does not specify _fp_init's body, so that name stays a lead.
+// OAM clears, and before the jump to the game. That is the place and job ARM's runtime
+// documents for _fp_init ("initialize the floating-point status register before
+// performing any floating-point operations"). ARM does not specify _fp_init's body, so
+// that name stays a lead.
 //
 // Assembly in the original, like the whole runtime block it belongs to: it keeps r0 live
 // across a `bl` with only `{lr}` pushed, relying on the callee returning its result in r0

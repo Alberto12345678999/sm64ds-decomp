@@ -19,8 +19,7 @@
 // Assembly in the original: the two arguments are preserved across the `bl` by pushing
 // the argument registers themselves, `stmdb sp!, {r0, r1, r2, r12, lr}`. Pushing r0-r2
 // and ip is not a frame any compiler builds -- mwccarm would move the arguments into
-// callee-saved registers and push those instead. Saving ip alongside them only makes
-// sense for a hand-written routine keeping the stack eight-byte aligned by hand.
+// callee-saved registers and push those instead.
 
 extern void *func_0207322c(void);
 
