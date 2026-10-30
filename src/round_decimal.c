@@ -63,6 +63,6 @@ void round_decimal(Decimal *dec, int new_length) {
         return;
     }
     if (new_length == 0)
-        goto reset; /* kept: MSL'dec round_decimal shares the zero result this way */
+        goto reset; /* kept: MSL's round_decimal shares the zero result this way */
     dec->sig.length = new_length;
 }

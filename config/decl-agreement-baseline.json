@@ -21413,11 +21413,6 @@
         "param:#1 long double"
       ]
     },
-    "round_decimal": {
-      "src/float2str.c": [
-        "param:#1 decimal *"
-      ]
-    },
     "double2hex": {
       "src/unnamed/arm9/0206/func_0206e4a4.c": [
         "param:#1 long double"

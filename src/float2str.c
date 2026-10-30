@@ -3,6 +3,8 @@
  * for %e/%E/%f/%F/%g/%G, handling inf/nan, sign and alternate form.
  * Returns pointer to first character, or NULL if result would exceed 509 chars.
  */
+#include "Decimal.h"
+
 typedef struct {
     unsigned char justification_options;
     unsigned char sign_options;
@@ -22,22 +24,12 @@ typedef struct {
     short digits;
 } decform;
 
-typedef struct {
-    unsigned char sgn;
-    unsigned char unused;
-    short exp;
-    struct {
-        unsigned char length;
-        unsigned char text[36];
-    } sig;
-} decimal;
-
 enum { only_minus = 0, sign_always = 1, space_holder = 2 };
 
-extern void __num2dec(decform *f, double x, decimal *d);
+extern void __num2dec(decform *f, double x, Decimal *d);
 extern int func_01ff9e2c(double a, double b);                      /* double less-than */
 extern char *func_020706b0(char *dst, const char *src);           /* strcpy */
-extern void round_decimal(decimal *d, int digits);
+extern void round_decimal(Decimal *d, int digits);
 extern unsigned short data_02086a58[];                            /* ctype map */
 extern char data_0209a5ec[]; /* "-INF" */
 extern char data_0209a5f4[]; /* "-inf" */
@@ -62,7 +54,7 @@ char *float2str(double x, char *buff_end, print_format format) {
     char sign;
     int alt;
     int digits;
-    decimal dec;
+    Decimal dec;
     volatile unsigned char *p;
 
     form.style = 0;
@@ -104,7 +96,7 @@ char *float2str(double x, char *buff_end, print_format format) {
         return (char *)p;
 
     case 'N':
-        if (dec.sgn) {
+        if (dec.sign) {
             p = (unsigned char *)buff_end - 5;
             if (ISUPPER(code))
                 func_020706b0((char *)p, data_0209a604);
@@ -198,7 +190,7 @@ char *float2str(double x, char *buff_end, print_format format) {
 
         *--p = *dec.sig.text;
 
-        if (dec.sgn)
+        if (dec.sign)
             *--p = '-';
         else if (sign_opt == sign_always)
             *--p = '+';
@@ -252,7 +244,7 @@ char *float2str(double x, char *buff_end, print_format format) {
         } else
             *--p = '0';
 
-        if (dec.sgn)
+        if (dec.sign)
             *--p = '-';
         else if (sign_opt == sign_always)
             *--p = '+';

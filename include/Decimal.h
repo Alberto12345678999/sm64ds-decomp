@@ -3,11 +3,12 @@
 
 /* MSL's decimal type, behind the conversions of src/ansi_fp.c (__ull2dec,
    __timesdec, __str2dec, __two_exp, __rounddec, __dorounddecup,
-   __must_round, __num2dec) and printf.c's round_decimal. Before ansi_fp.c
-   was one file, __timesdec carried this exact layout as a file-scope copy
-   while __str2dec and __rounddec carried flattened partial views of the
-   same bytes (`struct S`, `struct T`), which is what made their declarations
-   of __dorounddecup disagree with its definition.
+   __must_round, __num2dec) and printf.c's float2str and round_decimal.
+   Before ansi_fp.c was one file, __timesdec carried this exact layout as a
+   file-scope copy while __str2dec and __rounddec carried flattened partial
+   views of the same bytes (`struct S`, `struct T`), which is what made their
+   declarations of __dorounddecup disagree with its definition. float2str
+   kept a local `decimal` with a 36-byte text until it took this type.
 
    DELIBERATELY DEPENDENCY-FREE, mirroring OamAttr.h: every field is a raw C
    type (unsigned char, char, short), never a project typedef, so this header
