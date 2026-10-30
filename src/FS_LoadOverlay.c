@@ -1,24 +1,25 @@
+#include "nitro/fs/overlay.h"
 extern int func_02018c00(void *info, int proc, int id);
-extern int func_02018b64(void *info);
+extern int func_02018b64(FSOverlayInfo *info);
 extern void Crash(void);
 extern void func_0205dd9c(char *self);
 extern void func_ov001_020aa420(void);
 
 int FS_LoadOverlay(int proc, int id) {
-    char info[0x24];
+    FSOverlayInfo info;
     unsigned int ram;
     unsigned int sum;
-    if (!func_02018c00(info, proc, id) || !func_02018b64(info))
+    if (!func_02018c00(&info, proc, id) || !func_02018b64(&info))
         return 0;
-    ram = *(unsigned int *)(info + 4);
+    ram = (unsigned int)info.header.ram_address;
     /* goto kept: an || guard around Crash() colours ram/sum differently (4 forms tried) */
     if (ram >= (unsigned int)func_ov001_020aa420) {
-        sum = ram + *(unsigned int *)(info + 8);
-        if (sum + *(unsigned int *)(info + 0xc) <= 0x214eaa0u)
+        sum = ram + info.header.ram_size;
+        if (sum + info.header.bss_size <= 0x214eaa0u)
             goto start;
     }
     Crash();
 start:
-    func_0205dd9c(info);
+    func_0205dd9c((char *)&info);
     return 1;
 }

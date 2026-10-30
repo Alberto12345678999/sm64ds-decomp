@@ -4,6 +4,10 @@ extern void func_0203f6a4(int v);
 extern short data_020a0f18;
 extern short data_020a0f34;
 
+/* Begin measuring once WM has initialized: clear the outcome, seed the
+   best busy ratio above any real one (0x65, past 100 percent) and measure
+   from channel 1. No allowed channel ends with -9, a refused request with
+   -3; otherwise enter state 1. */
 void func_0203f8a4(void) {
     int r;
     data_020a0f18 = 0;

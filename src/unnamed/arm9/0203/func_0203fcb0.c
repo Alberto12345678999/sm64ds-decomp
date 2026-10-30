@@ -2,8 +2,10 @@ extern int func_020622f0(void *cb);
 extern void func_02040408(void);
 extern int data_020a0f94;
 
-int func_0203fcb0(void)
-{
+/* Power the wireless hardware on: func_020622f0 sends WM command 5 (the
+   SDK's WM_APIID_POWER_ON, stop state only) with func_02040408 as the
+   callback. As func_0203fc74 otherwise. */
+int func_0203fcb0(void) {
     if (func_020622f0((void *)func_02040408) != 2) {
         data_020a0f94 = 1;
         return 0;
