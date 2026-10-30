@@ -8386,7 +8386,7 @@ int Player::St_CameraZoom_Init()
   struct CameraRaw* cam = data_0209f318;
   int pid = *(unsigned char*)((char*)&mPlayerNo);
   func_0200d064(cam, pid);
-  ((::dCamera_c *)cam)->func_0200d7e0(*(unsigned char*)((char*)&mPlayerNo));
+  ((::dCamera_c *)cam)->func_0200d7e0(*(unsigned char *)((char *)&mPlayerNo));
   this->SetAnim(0x47, 0, 0x1000, 0);
   data_0209f28c=0;
   return 1;
@@ -10181,7 +10181,7 @@ int Player::St_Swim_Init()
   mVertAccel=0;
   mTerminalVelocity=-0xc000;
   mIsUnderwater=1;
-  ((::dCamera_c *)*(void**)data_0209f318)->func_0200d768(mPlayerNo);
+  ((::dCamera_c *)*(void **)data_0209f318)->func_0200d768(mPlayerNo);
   mPrevVertSpeed=mVertSpeed;
   mHorzSpeed=0;
   mVertSpeed=0;
@@ -19789,8 +19789,7 @@ void func_ov002_020de3d0(int a0, short* r1, short* r2){
 // @symbol _ZN6Player19func_ov002_020de428Ev
 /* 0x74 is mCamSpacePos and 0x70c is mStateArg; St_Balloon_Main counts the
  * latter down and calls this on a bounce. */
-void Player::func_ov002_020de428()
-{
+void Player::func_ov002_020de428() {
     if (mStateArg)
         return;
     Sound::PlayBank0(0xbd, mCamSpacePos);

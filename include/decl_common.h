@@ -1423,7 +1423,7 @@ extern void MiniGm_LoadGroupIcons(void*);
 extern void Camera_ProjectToScreen16(void*, char*, short*);
 extern void MascotWalker_StartNextPath(void*);
 extern void MascotWalker_Draw(char*);
-extern void MascotWalker_Load(struct MascotWalker*);
+extern void MascotWalker_Load(struct MascotWalker *);
 extern void Dealer_ResetMatrices(char*);
 extern void Dealer_PlayWin(void*);
 extern void Dealer_PlayLose(void*);

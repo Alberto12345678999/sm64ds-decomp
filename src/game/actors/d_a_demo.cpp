@@ -1044,8 +1044,7 @@ void func_ov002_020f26d4(void) {
 /* ROM ordinal 12 -- func_ov002_020f26e0, 0x020f26e0, size 0xb0 */
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN8daDemo_c9StaffRoll19func_ov002_020f26e0Ev
-void StaffRoll::func_ov002_020f26e0()
-{
+void StaffRoll::func_ov002_020f26e0() {
     /* The kira callback's tracking records: dPa_c.h keeps them as opaque
        words, so OamEnt views each one as the sparkle sprite it draws. */
     struct OamEnt *e = (struct OamEnt *)this->kira.trackingRecords;
@@ -3098,8 +3097,7 @@ void func_ov002_020f5ad4(char* c)
 /* ROM ordinal 73 -- func_ov002_020f5b24, 0x020f5b24, size 0x58 */
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN8daDemo_c9StaffRoll19func_ov002_020f5b24Ev
-void StaffRoll::func_ov002_020f5b24()
-{
+void StaffRoll::func_ov002_020f5b24() {
     data_0209d454 &= ~6;
     data_0209d454 |= 8;
     func_ov002_020f2f64((char *)this);
@@ -3457,10 +3455,10 @@ void func_ov002_020f5f60(char *c)
 // @symbol func_ov002_020f5f8c
 extern "C" {  /* .c-derived member: C linkage for the whole block */
 int func_ov002_020f5f8c(void* c){
-  ((StaffRoll *)c)->func_ov002_020f26e0();
-  func_ov002_020f3978((char*)c);
-  func_ov002_020f2eac(c);
-  return func_ov002_020f2990((char*)c);
+    ((StaffRoll *)c)->func_ov002_020f26e0();
+    func_ov002_020f3978((char *)c);
+    func_ov002_020f2eac(c);
+    return func_ov002_020f2990((char *)c);
 }
 }
 

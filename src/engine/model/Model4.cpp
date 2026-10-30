@@ -462,11 +462,20 @@ extern "C" void func_02045ec4(char *self, unsigned int value, int index)
 }
 
 // @symbol func_02045e70
-extern "C" void func_02045e70(char *self, void *arg1)
-{
-    struct Sub { char _pad[0x24]; int count; };
-    struct Element { char pad[0x2c]; unsigned int flags; char pad2[0x30 - 0x2c - 4]; };
-    struct Obj { struct Sub *pad0; struct Element *arr; };
+extern "C" void func_02045e70(char *self, void *arg1) {
+    struct Sub {
+        char _pad[0x24];
+        int count;
+    };
+    struct Element {
+        char pad[0x2c];
+        unsigned int flags;
+        char pad2[0x30 - 0x2c - 4];
+    };
+    struct Obj {
+        struct Sub *pad0;
+        struct Element *arr;
+    };
     struct Obj *obj = (struct Obj *)self;
     int i;
     int count = obj->pad0->count;

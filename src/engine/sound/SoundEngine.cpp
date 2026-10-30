@@ -215,15 +215,15 @@ struct D {
 struct Q { int f0, f4, f8, fc, f10; };
 struct T {
     int f0, f4;
-    int f8;                 
-    int fc;                 
-    int f10;                
-    int f14;                
-    int f18;                
+    int f8;
+    int fc;
+    int f10;
+    int f14;
+    int f18;
     int f1c, f20, f24, f28;
-    int f2c;                
-    void (*f30)(int, int, int, int, int);   
-    int f34;                
+    int f2c;
+    void (*f30)(int, int, int, int, int);
+    int f34;
     void func_020500a4();
 };
 struct Inner {
@@ -373,19 +373,19 @@ struct Node_204f63c { unsigned short f0[4]; unsigned int f10[2]; unsigned int f1
 struct HeapAllocator_204f504 {
     int unk0;
     int unk4;
-    void* unk8;  
-    void* unkc;  
+    void *unk8;
+    void *unkc;
 };
 struct HeapAllocator_204f460 {
     char pad[0x04];
-    NestedHeapIterator* owner;  
-    char pad2[0x35];             
-    unsigned char sortKey;       
+    NestedHeapIterator *owner;
+    char pad2[0x35];
+    unsigned char sortKey;
     void func_0204f214(int);
 };
 struct HeapAllocator_204f400 {
     char pad[0x3d];
-    unsigned char sortKey; 
+    unsigned char sortKey;
 };
 struct Elem_204f278 {
     /* 0x00 */ char pad_00[8];
@@ -1269,7 +1269,7 @@ void HeapOwner::func_02051244() {
 end:
     ((SolidHeapAllocator *)(this->heap))->Reset(3);
     func_02050fb0();
-    ((void(*)(void *thiz))func_02050fd4)(this);
+    ((void (*)(void *thiz))func_02050fd4)(this);
 }
 
 // @symbol func_020511d4
@@ -1333,7 +1333,7 @@ void HeapOwner::func_020510a4(int n) {
     ((SolidHeapAllocator *)(this->heap))->LoadState(n);
     func_02050fb0();
     ((SolidHeapAllocator *)(this->heap))->SaveState(this->iter.mCount);
-    ((void(*)(void *thiz))func_02050fd4)(this);
+    ((void (*)(void *thiz))func_02050fd4)(this);
 }
 
 // @symbol func_02051074
@@ -1742,7 +1742,8 @@ extern "C" int func_020503a4(int a, int b, int c, int d, int p5, int p6, int p7,
         ((void(*)(int a, int b, int c, int d, int e, u32 f, int g, int h, int i, int j))func_0205aa10)(3, fmt1, c, pp8 != 0 ? 1 : 2, 0, qlen, pp10, 0, align, p12);
         ((void(*)(int a, int b, int c, u32 d, int e, int f, int g))func_0205ab6c)(1, fmt2, c, qlen, pp8, p6, p7);
         if (handle >= 0) {
-            ((void(*)(int a, int b, int c, int d, void *e))func_0205ab28)(handle, total + chunk, total, (int)_ZN1T13func_020500a4Ev, g);
+            ((void (*)(int a, int b, int c, int d, void *e))func_0205ab28)(
+                handle, total + chunk, total, (int)_ZN1T13func_020500a4Ev, g);
         }
         if (a == 1) {
             ((void(*)(int a, int b, int c, int d))func_0205a958)(3, 3, 1, 1);
@@ -1836,8 +1837,7 @@ extern "C" void func_020501b8(void)
 }
 
 // @symbol _ZN1T13func_020500a4Ev
-void T::func_020500a4()
-{
+void T::func_020500a4() {
     int quot = this->f14 / this->f2c;
     int prod = quot * this->f18;
     int e6 = this->fc + prod;
@@ -1861,7 +1861,8 @@ void T::func_020500a4()
     {
         int *pf18 = (int *)((int)&this->f18);
         *pf18 = *pf18 + 1;
-        if (this->f18 >= this->f2c) this->f18 = 0;
+        if (this->f18 >= this->f2c)
+            this->f18 = 0;
     }
 }
 
@@ -2068,7 +2069,8 @@ extern "C" int func_0204fa3c(int owner, void *b, u32 c)
 {
     char *r4;
     void *res;
-    r4 = (char *)((void *(*)(void *a, u32 elemSize, u32 p2, u32 p3, u32 p4))func_020511d4)(b, c + 0x14, (u32)_ZN12Elem_204f27813func_0204f278Ev, 0, 0);
+    r4 = (char *)((void *(*)(void *a, u32 elemSize, u32 p2, u32 p3, u32 p4))func_020511d4)(
+        b, c + 0x14, (u32)_ZN12Elem_204f27813func_0204f278Ev, 0, 0);
     if (!r4) return 0;
     ((Elem_204f278 *)r4)->owner = 0;
     ((Elem_204f278 *)r4)->playerIndex = owner;
@@ -2083,7 +2085,7 @@ extern "C" int func_0204fa3c(int owner, void *b, u32 c)
 // @symbol func_0204fa2c
 extern "C" int func_0204fa2c(int *p, int fade)
 {
-    return ((int(*)(u8 *thiz, int fade))_ZN2E113func_0204f5a0Ei)((u8 *)*p, fade);
+    return ((int (*)(u8 *thiz, int fade))_ZN2E113func_0204f5a0Ei)((u8 *)*p, fade);
 }
 
 // @symbol func_0204f9c4
@@ -2225,22 +2227,21 @@ extern "C" void func_0204f630(void) {
 // @symbol _ZN2E113func_0204f600Eiii
 int E1::func_0204f600(int seqData, int seqOffset, int bank) {
     func_0205adc4((void *)this->f3c, seqData, seqOffset, bank);
-    ((void(*)(void *thiz))func_0204f4bc)(this);
+    ((void (*)(void *thiz))func_0204f4bc)(this);
     this->cmdTag = func_0205afb4();
     this->f2c = 1;
     return 1;
 }
 
 // @symbol _ZN2E113func_0204f5a0Ei
-void E1::func_0204f5a0(int arg1)
-{
+void E1::func_0204f5a0(int arg1) {
     struct E1 *e = (struct E1 *)this;
     if (this == 0)
         return;
     if (e->f2c == 0)
         return;
     if (arg1 == 0) {
-        ((void(*)(void *c))func_0204f3e0)(this);
+        ((void (*)(void *c))func_0204f3e0)(this);
         return;
     }
     func_02052494(&e->fade, 0, arg1);
@@ -2377,15 +2378,15 @@ void Elem_204f278::func_0204f278() {
 void HeapAllocator_204f460::func_0204f214(int b) {
     void *node = this->owner;
     if (node != 0) {
-        ((NestedHeapIterator*)(node))->Remove((HeapAllocator*)(this));
+        ((NestedHeapIterator *)(node))->Remove((HeapAllocator *)(this));
         this->owner = 0;
     }
-    ((NestedHeapIterator*)(((char*)&data_020a4d60)))->Remove((HeapAllocator*)(this));
+    ((NestedHeapIterator *)(((char *)&data_020a4d60)))->Remove((HeapAllocator *)(this));
     this->sortKey = (unsigned char)b;
     if (node != 0) {
-        ((void(*)(void* node, void* self))func_0204f460)(node, this);
+        ((void (*)(void *node, void *self))func_0204f460)(node, this);
     }
-    ((void(*)(void* self))func_0204f400)(this);
+    ((void (*)(void *self))func_0204f400)(this);
 }
 
 // @symbol func_0204f1e8

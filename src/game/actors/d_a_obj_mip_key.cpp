@@ -271,11 +271,9 @@ void daObj_Mip_Key_c::UpdateModelAndShadow() {
     Vector3 v;
     Vec3_Asr(&v, &mPos, 3);
     Matrix4x3_FromTranslation(&data_020a0e68, v.x, v.y, v.z);
-    Matrix4x3_ApplyInPlaceToRotationXYZExt(&data_020a0e68, mAngleX, mAngleY,
-                                           mAngleZ);
+    Matrix4x3_ApplyInPlaceToRotationXYZExt(&data_020a0e68, mAngleX, mAngleY, mAngleZ);
     *(MipKeyM48 *)(&mModel.mat4x3) = *(MipKeyM48 *)&data_020a0e68;
-    Matrix4x3_FromTranslation(&data_020a0e68, mPosX >> 3, (mPosY - 0x32000) >> 3,
-                              mPosZ >> 3);
+    Matrix4x3_FromTranslation(&data_020a0e68, mPosX >> 3, (mPosY - 0x32000) >> 3, mPosZ >> 3);
     DropShadowRadHeight(mShadowModel, mModel.mat4x3, 0x23000, 0x12c000, 0xf);
 }
 

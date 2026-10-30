@@ -628,16 +628,14 @@ void func_0200d858(void *self, const struct Vector3 *offset)
 }
 
 // @symbol _ZN9dCamera_c13func_0200d81cEi
-void dCamera_c::func_0200d81c(int playerID)
-{
+void dCamera_c::func_0200d81c(int playerID) {
     if (playerID != (int)data_0209f250)
         return;
     ChangeState((dCamera_c::State *)&data_0209b008);
 }
 
 // @symbol _ZN9dCamera_c13func_0200d7e0Ei
-void dCamera_c::func_0200d7e0(int playerID)
-{
+void dCamera_c::func_0200d7e0(int playerID) {
     if (playerID != (int)data_0209f250)
         return;
     ChangeState((dCamera_c::State *)&data_0209b098);
@@ -658,15 +656,13 @@ void dCamera_c::func_0200d768(unsigned char playerID) {
 }
 
 // @symbol _ZN9dCamera_c13func_0200d72cEh
-void dCamera_c::func_0200d72c(unsigned char playerID)
-{
+void dCamera_c::func_0200d72c(unsigned char playerID) {
     if (playerID == *(unsigned char *)&data_0209f250)
         ChangeState((dCamera_c::State *)&data_0209b028);
 }
 
 // @symbol _ZN9dCamera_c13func_0200d6f0Eh
-void dCamera_c::func_0200d6f0(unsigned char playerID)
-{
+void dCamera_c::func_0200d6f0(unsigned char playerID) {
     if (playerID == *(unsigned char *)&data_0209f250)
     {
         ChangeState((dCamera_c::State *)&data_0209b038);
@@ -688,16 +684,14 @@ void dCamera_c::func_0200d678(unsigned char playerID) {
 }
 
 // @symbol _ZN9dCamera_c13func_0200d63cEh
-void dCamera_c::func_0200d63c(unsigned char playerID)
-{
+void dCamera_c::func_0200d63c(unsigned char playerID) {
     if (playerID != *(unsigned char *)&data_0209f250)
         return;
     ChangeState((dCamera_c::State *)&data_0209b068);
 }
 
 // @symbol _ZN9dCamera_c13func_0200d5fcEi
-void dCamera_c::func_0200d5fc(int playerID)
-{
+void dCamera_c::func_0200d5fc(int playerID) {
     if (playerID == data_0209f250) {
         ChangeState((dCamera_c::State *)&data_0209b078);
         func_0200cb58(this, 5);
@@ -712,8 +706,7 @@ void dCamera_c::func_0200d5c0(unsigned char playerID) {
 }
 
 // @symbol _ZN9dCamera_c13func_0200d580Ei
-void dCamera_c::func_0200d580(int playerID)
-{
+void dCamera_c::func_0200d580(int playerID) {
     if (playerID != data_0209f250)
         return;
     ChangeState((dCamera_c::State *)&data_0209b078);
@@ -766,8 +759,7 @@ void dCamera_c::func_0200d438(unsigned char playerID) {
 }
 
 // @symbol _ZN9dCamera_c13func_0200d3f8EhPv
-void dCamera_c::func_0200d3f8(unsigned char playerID, void *ptr)
-{
+void dCamera_c::func_0200d3f8(unsigned char playerID, void *ptr) {
     unsigned char tmp = *(unsigned char *)&data_0209f250;
     if (playerID != tmp)
         return;
