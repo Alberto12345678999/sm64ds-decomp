@@ -53,9 +53,7 @@
 #include "Ov007Sprite.h"
 #include "Ov007Work.h"
 #include "Ov007Model.h"
-
-/* The 0x1c-byte figure func_ov007_020beaa0 builds (unit020be0dc). */
-typedef struct Ov007Figure Ov007Figure;
+#include "Ov007Figure.h"
 
 extern "C" {
 

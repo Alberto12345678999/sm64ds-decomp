@@ -3,6 +3,7 @@
 #include "Ov007Work.h"
 #include "Ov007Camera.h"
 #include "Ov007Model.h"
+#include "Ov007Figure.h"
 extern "C" {
 void func_ov007_020bc02c(void* a, void* b);
 void func_ov007_020be9ac(void* a, void* b, void* c);
@@ -12,13 +13,6 @@ extern char *data_ov007_0210342c;
 /* The extern keeps the tree's char * spelling (the declaration-agreement
  * gate); the typed view is reached through a cast macro. */
 #define WORK ((Ov007Work *)data_ov007_0210342c)
-
-/* The 0x1c-byte record func_ov007_020beaa0 builds around an Ov007Model;
- * names as in func_ov007_020b0da0, medium-confidence. */
-struct Ov007Figure {
-    char pad_00[4];
-    Ov007Model *model; /* 0x04: func_ov007_020bc6d4 */
-};
 
 /* Poses the manager model and both figures against camera 0's view matrix,
  * scales the model by modelGrowth, then renders all three. */

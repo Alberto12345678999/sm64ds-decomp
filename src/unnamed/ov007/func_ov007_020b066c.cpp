@@ -3,6 +3,7 @@
 #include "Ov007Work.h"
 #include "Ov007Settings.h"
 #include "Ov007Model.h"
+#include "Ov007Figure.h"
 
 extern "C" {
 extern void func_ov007_020b283c(void);
@@ -16,13 +17,6 @@ extern void func_ov007_020bd1c0(int i);
 extern void func_ov007_020b131c(void);
 extern char *data_ov007_0210342c;
 }
-
-/* The 0x1c-byte record func_ov007_020beaa0 builds around an Ov007Model;
- * names as in func_ov007_020b0da0. */
-struct Ov007Figure {
-    char pad_00[4];
-    Ov007Model *model; /* 0x04: func_ov007_020bc6d4 */
-};
 
 /* The extern keeps the tree's char * spelling; the typed view is reached
  * through a cast macro. */

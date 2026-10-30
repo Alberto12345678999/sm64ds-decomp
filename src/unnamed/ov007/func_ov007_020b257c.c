@@ -1,14 +1,8 @@
 #include "Ov007Work.h"
 #include "Ov007Model.h"
+#include "Ov007Figure.h"
 
 extern char* data_ov007_0210342c;
-
-/* The 0x1c-byte record func_ov007_020beaa0 builds around an Ov007Model;
- * names as in func_ov007_020b0da0, medium-confidence. */
-typedef struct Ov007Figure {
-    char pad_00[4];
-    Ov007Model *model; /* 0x04: func_ov007_020bc6d4 */
-} Ov007Figure;
 
 #define WORK ((Ov007Work*)data_ov007_0210342c)
 

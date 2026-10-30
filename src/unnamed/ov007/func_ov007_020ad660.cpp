@@ -8,6 +8,7 @@
 #include "Ov007Item.h"
 #include "Ov007Model.h"
 #include "Ov007LayerSlot.h"
+#include "Ov007Figure.h"
 
 extern "C" {
 
@@ -20,13 +21,6 @@ extern void func_ov007_020c02d8(void *a, int b, u16 c);
 extern void RequestScreenFade(int a, int b, int c);
 extern void func_ov007_020c1d8c(int a);
 extern void func_ov007_020ada70(void);
-
-/* The 0x1c-byte record func_ov007_020beaa0 builds around an Ov007Model;
- * names as in func_ov007_020b0da0. */
-typedef struct Ov007Figure {
-    char pad_00[4];
-    Ov007Model *model; /* 0x04: func_ov007_020bc6d4 */
-} Ov007Figure;
 
 /* The extern keeps this file's u8[] spelling; the manager pointer is stored there. */
 #define WORK (*(Ov007Work **)data_ov007_0210342c)
