@@ -11527,7 +11527,7 @@
     },
     "arm9:0x020684a8": {
       "author": "ruspecial",
-      "name": "func_020684a8"
+      "name": "MB_InitSendGameInfoStatus"
     },
     "arm9:0x020684d0": {
       "author": "tangosdev",
