@@ -1754,7 +1754,7 @@ src/func_020233d4.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0202/func_020233f0.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0202/func_020233f4.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0202/func_02023408.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0202/func_0202345c.c	PURE-C	arm9				1		None		-
+src/unnamed/arm9/0202/func_0202345c.cpp	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0202/func_02023498.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0202/func_02023544.c	PURE-C	arm9				1		None		-
 src/d_s_boot.c	S1-stores-rom-vptr	arm9			stores _ZTV8dScene_c	1		None	_ZTV8dScene_c	-
@@ -1785,7 +1785,7 @@ src/func_0202f58c.c	PURE-C	arm9				1		None		-
 src/func_0202fb30.c	WEAK-refs-only	arm9				1		None		-
 src/func_0202fc40.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0202/func_0202fd2c.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0202/func_0202ffec.c	PURE-C					0		None		NONMATCHING-draft;not-in-delinks
+src/Quaternion_Multiply.c	PURE-C					0		None		NONMATCHING-draft;not-in-delinks
 src/unnamed/arm9/0203/func_02030500.c	WEAK-refs-only	arm9				1		None		-
 src/unnamed/arm9/0203/func_02030790.c	WEAK-refs-only	arm9				1		None		-
 src/unnamed/arm9/0203/func_02030838.c	PURE-C	arm9				1		None		-

@@ -2,61 +2,70 @@
 #include "types.h"
 #include "G2.h"
 #include "GX.h"
+#include "nitro/hw/registers.h"
 
 extern "C" {
 
-extern void func_02019028(void);
+extern void Disable3dEngines(void);
 extern s32 GetLanguageIndexVS(void);
-extern void* func_02054ea8(void);
-extern void DecompressLZ16(const void* src, void* dst);
+extern void *func_02054ea8(void);
+extern void DecompressLZ16(const void *src, void *dst);
 extern void SetBg1Offset(int a, int b);
 extern void SetSubBg1Offset(int a, int b);
 
+/* The visible-plane masks of the two engines, kept beside DISPCNT bits 8-12
+   (BG0-BG3, OBJ): d_a_demo.cpp sets and clears bits here and writes the
+   mask back to the register the same way. */
 extern u8 data_0209d45c;
 extern u8 data_0209d454;
-extern void* data_020927b0[];
-extern void* data_020927c4[];
-extern void* data_020927d8[];
+extern void *data_020927b0[];
+extern void *data_020927c4[];
+extern void *data_020927d8[];
 extern u8 data_0209440c;
 extern u8 data_0209fc58;
 
-void func_02030500(void)
-{
+/* Put up the same language-indexed BG1 picture on both screens: hide every
+   plane, map the VRAM banks, set engine A to graphics mode 1, load the
+   characters, palette and one of two screen maps (data_0209fc58 bits 4-5
+   choose) on both engines, then show BG1 alone. */
+void func_02030500(void) {
     u32 tmp;
-    void* p;
+    void *p;
 
     data_0209d45c = 0;
     data_0209d454 = 0;
-    *(volatile u32*)0x4000000 &= ~0x1f00;
-    *(volatile u32*)0x4001000 &= ~0x1f00;
+    REG_DISPCNT &= ~0x1f00;
+    REG_DISPCNT_SUB &= ~0x1f00;
 
-    func_02019028();
+    Disable3dEngines();
     GX::DisableAllBanks();
     GX::SetBankForBG(1);
     GX::SetBankForOBJ(2);
     GX::SetBankForSubBG(4);
     GX::SetBankForSubOBJ(8);
 
-    tmp = *(volatile u32*)0x4000000 & ~0x7000000;
-    *(volatile u32*)0x4000000 = tmp;
-    tmp = *(volatile u32*)0x4000000 & ~0x38000000;
-    *(volatile u32*)0x4000000 = tmp;
-    *(volatile u16*)0x4000304 |= 0x8000;
-    *(volatile u16*)0x4000050 = 0;
-    *(volatile u16*)0x4001050 = 0;
-    tmp = *(volatile u32*)0x4000000 & ~0xe000;
-    *(volatile u32*)0x4000000 = tmp;
-    *(volatile u32*)0x4001000 &= ~0xe000;
+    /* engine A's character and screen base offsets (bits 24-26, 27-29) to 0 */
+    tmp = REG_DISPCNT & ~0x7000000;
+    REG_DISPCNT = tmp;
+    tmp = REG_DISPCNT & ~0x38000000;
+    REG_DISPCNT = tmp;
+    REG_POWCNT1 |= 0x8000; /* bit 15: engine A on the top screen */
+    REG_BLDCNT = 0;
+    REG_DB_BLDCNT = 0;
+    /* the window enables (bits 13-15) off on both engines */
+    tmp = REG_DISPCNT & ~0xe000;
+    REG_DISPCNT = tmp;
+    REG_DISPCNT_SUB &= ~0xe000;
     GX::SetGraphicsMode(1, 0, 0);
 
-    *(volatile u32*)0x4000000 &= 0xffcfffef;
-    *(volatile u16*)0x400000a = (*(volatile u16*)0x400000a & 0x43) | 8;
-    *(volatile u16*)0x400000a &= ~0x40;
+    REG_DISPCNT &= 0xffcfffef;
+    REG_BG1CNT = (REG_BG1CNT & 0x43) | 8;
+    REG_BG1CNT &= ~0x40;
     GXS::SetGraphicsMode(0);
 
-    *(volatile u32*)0x4001000 &= 0xffcfffef;
-    *(volatile u16*)0x400100a = (*(volatile u16*)0x400100a & 0x43) | 8;
-    *(volatile u16*)0x400100a &= ~0x40;
+    REG_DISPCNT_SUB &= 0xffcfffef;
+    REG_DB_BG1CNT = (REG_DB_BG1CNT & 0x43) | 8;
+    REG_DB_BG1CNT &= ~0x40;
 
     DecompressLZ16(data_020927b0[GetLanguageIndexVS()], func_02054ea8());
     DecompressLZ16(data_020927b0[GetLanguageIndexVS()], G2S::GetBG1CharPtr());
@@ -72,14 +81,14 @@ void func_02030500(void)
     DecompressLZ16(p, G2::GetBG1ScrPtr());
     DecompressLZ16(p, G2S::GetBG1ScrPtr());
 
-    *(volatile u16*)0x400000a &= ~3;
-    *(volatile u16*)0x400100a &= ~3;
+    REG_BG1CNT &= ~3; /* priority 0 */
+    REG_DB_BG1CNT &= ~3;
     SetBg1Offset(0, 0);
     SetSubBg1Offset(0, 0);
 
     data_0209d45c = 2;
     data_0209d454 = 2;
-    *(volatile u32*)0x4000000 = (*(volatile u32*)0x4000000 & ~0x1f00) | 0x200;
-    *(volatile u32*)0x4001000 = (*(volatile u32*)0x4001000 & ~0x1f00) | 0x200;
+    REG_DISPCNT = (REG_DISPCNT & ~0x1f00) | 0x200;
+    REG_DISPCNT_SUB = (REG_DISPCNT_SUB & ~0x1f00) | 0x200;
 }
 }

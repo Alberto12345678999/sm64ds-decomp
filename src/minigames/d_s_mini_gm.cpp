@@ -27,7 +27,7 @@
  *   call it. Naming belongs in arm9.
  * Leftover: _ZN7dWipe_c13func_0202ec9cEi is the wipe start helper. This
  *   TU's UpdateGameSelect hands it data_0209f61c.
- * Leftover: func_02019028 / func_020233f4 are arm9 graphics-setup
+ * Leftover: Disable3dEngines / func_020233f4 are arm9 graphics-setup
  *   tails. This TU's InitResources calls them.
  * Leftover: sMiniGmGroupBases group-base table,
  *   sMiniGmBgFiles / sMiniGmIconPalettes / sMiniGmIconChars
@@ -183,7 +183,7 @@ s32 dScMiniGm_c::InitResources()
     LoadArchive(0);
     data_0209f5f8 = 0;
     Sound::LoadGroupAndSetBank(0x27, 5);
-    func_02019028();
+    Disable3dEngines();
 
     if (!(data_0209caa0[0x48 / 4] & 0x80000000)) {
         tbl = sMiniGmRows;

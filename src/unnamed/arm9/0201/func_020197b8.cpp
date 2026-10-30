@@ -3,6 +3,7 @@
 #include "G2x.h"
 #include "IRQ.h"
 #include "dScene_c.h"
+#include "nitro/hw/registers.h"
 
 extern "C" {
 
@@ -33,8 +34,8 @@ unsigned short func_0203da80(unsigned short);
 int func_02030e4c(void);
 
 void func_020197b8(void) {
-    G2x::SetBlendBrightness((volatile unsigned short *)0x4000050, 0x3f, 0x1f);
-    G2x::SetBlendBrightness((volatile unsigned short *)0x4001050, 0x3f, 0x1f);
+    G2x::SetBlendBrightness(&REG_BLDCNT, 0x3f, 0x1f);
+    G2x::SetBlendBrightness(&REG_DB_BLDCNT, 0x3f, 0x1f);
     do {
         unsigned short v;
         data_0209d50c = 0xb; func_02019ac4();
