@@ -26,11 +26,11 @@ always the address of a function in `config/arm9/symbols.txt` (53 of 53).
 
 A function gets an entry exactly when it makes a call. Leaf functions get no
 entry even if they push registers (func_0206ca7c, func_02071910,
-`ReadSignedVarInt`, `__throw_catch_compare`). The two 0xc-byte entries (func_02071784
-and `std::dthandler` at 0x02073220) are tail calls through `ldr ip, =target; bx ip`. So a function that
-pushes `lr` and calls something but has **no** entry was built with exceptions
-off. That is the signal used below. A leaf between two blocks cannot be
-assigned to either one.
+`ReadSignedVarInt`, `__throw_catch_compare`). The two 0xc-byte entries
+(func_02071784 and `std::dthandler` at 0x02073220) are tail calls through
+`ldr ip, =target; bx ip`. So a function that pushes `lr` and calls something
+but has **no** entry was built with exceptions off. That is the signal used
+below. A leaf between two blocks cannot be assigned to either one.
 
 To rerun it: read the triples, then mark every function with a `bl`/`blx`
 and no entry. The scratch script matched `bl`/`blx` words and

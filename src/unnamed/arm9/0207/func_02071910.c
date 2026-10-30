@@ -3,7 +3,7 @@
  * header (read by func_02071864) says the frame saved, walking down from the
  * top of its save area, step mSP past the frame, and return the restored
  * return address (mGPR[14]) for func_02072dac to look up the caller's
- * action table. The view extends func_02072168.c's ThrowContext with the
+ * action table. The view extends func_02072168.cpp's ThrowContext with the
  * frame-header fields func_02071864 fills.
  *
  * func_02071910 at 0x02071910, size 0x64
