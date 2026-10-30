@@ -1,10 +1,12 @@
+#include "Ov007BgLayer.h"
+
 /* The 0x48-byte 2D display record func_ov007_020b7594 builds; names as
  * there. */
 typedef struct Ov007Display {
     void *oamListMain;   /* 0x00 */
     void *oamListSub;    /* 0x04 */
-    void *bgListMain;    /* 0x08 */
-    void *bgListSub;     /* 0x0c */
+    Ov007BgList *bgListMain; /* 0x08 */
+    Ov007BgList *bgListSub;  /* 0x0c */
     void *oamMain;       /* 0x10 */
     void *oamSub;        /* 0x14 */
     int transitionCount; /* 0x18 */

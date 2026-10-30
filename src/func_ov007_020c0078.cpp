@@ -15,10 +15,7 @@ extern "C" {
  */
 extern short data_02082214[];
 
-/* c keeps the char * spelling of the definition; `cam` is the typed view. */
-void func_ov007_020c0078(char* c)
-{
-    Ov007Camera *cam = (Ov007Camera *)c;
+void func_ov007_020c0078(Ov007Camera *cam) {
     int a;
     *(int *)0x4000580 = cam->viewportMinX | (cam->viewportMinY << 8) | (cam->viewportMaxX << 16) |
                         (cam->viewportMaxY << 24);
@@ -27,6 +24,6 @@ void func_ov007_020c0078(char* c)
     G3i::PerspectiveW_(data_02082214[a * 2], data_02082214[a * 2 + 1], (int)(cam->aspect >> 0x14),
                        cam->nearZ, cam->farZ, 0x1000, 1, (Matrix4x3 *)cam->projMatrix);
 
-    *(int*)0x400044c = 0;
+    *(int *)0x400044c = 0;
 }
 }

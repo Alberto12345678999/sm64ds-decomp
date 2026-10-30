@@ -12,7 +12,7 @@
  * centre row.
  *
  * Both callers (func_ov007_020be0dc, func_ov007_020be7a8) pass the manager's
- * cameras[0]. `actor` keeps the tree's char * spelling; `cam` is the typed view.
+ * cameras[0].
  *
  * ONE SPELLING IS LOAD-BEARING and it is a declaration RANK, not a type (notes 6cc/6k):
  * `z` and its absolute-value fix-up are read FIRST, ahead of the angle, the table base
@@ -35,8 +35,7 @@ extern "C" {
 void MulVec3Mat4x3(void* v, void* m, void* out);
 extern short data_02082214[];
 
-void func_ov007_020bfd70(char *actor, void *pos, int *outX, int *outY) {
-    Ov007Camera *cam = (Ov007Camera *)actor;
+void func_ov007_020bfd70(Ov007Camera *cam, void *pos, int *outX, int *outY) {
     int out[3];
     MulVec3Mat4x3(pos, &cam->viewMatrix, out);
     int z = out[2];

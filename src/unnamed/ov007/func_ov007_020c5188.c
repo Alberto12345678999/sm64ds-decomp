@@ -16,7 +16,7 @@ void func_ov007_020c5188(char *sb, int arg1) {
     int p;
     int oc;
     int count;
-    int stride;
+    int damping;
     int fp;
     int r8;
     int start_fp;
@@ -29,7 +29,7 @@ void func_ov007_020c5188(char *sb, int arg1) {
     Vector3 *max;
 
     p = arg1;
-    stride = self->params->damping;
+    damping = self->params->damping;
     count = 1 << p;
     backup = self->pos;
     min = &self->boundsMin;
@@ -61,7 +61,7 @@ void func_ov007_020c5188(char *sb, int arg1) {
                             Ov007Follower *node = r5->items[r8];
                             func_ov007_020c7b2c(self->groupLinks[fp][r8], self->springConstants[2],
                                                 self->springConstants[3]);
-                            func_ov007_020c81a0(node, stride, p);
+                            func_ov007_020c81a0(node, damping, p);
                             {
                                 Vector3 *pt = node->target;
                                 if (min->x > pt->x) {

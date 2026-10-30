@@ -17,11 +17,10 @@
  * - func_ov007_020bff38 steps the three tweens while their `tweening` bits
  *   are set.
  *
- * Left unnamed, as func_ov007_020c0128 writes them: the word at 0x00, the
- * u16 at 0x34 (zeroed beside the two angles) and the ints at 0xcc (0x1000)
- * and 0xd0 (0xc00). No reader names them. */
+ * word00, half34, wordCC and wordD0 are written only by
+ * func_ov007_020c0128; no reader names them. */
 typedef struct Ov007Camera {
-    char pad_00[4];
+    int word00;               /* 0x00: cleared on reset; no reader found */
     unsigned int tweening;    /* 0x04: bit 0 eye, bit 1 target, bit 2 distance */
     Vector3 eye;              /* 0x08 */
     Vector3 target;           /* 0x14 */
@@ -29,7 +28,8 @@ typedef struct Ov007Camera {
     int distance;             /* 0x2c */
     unsigned short elevation; /* 0x30 */
     unsigned short azimuth;   /* 0x32 */
-    char pad_34[4];
+    unsigned short half34;    /* 0x34: cleared beside the two angles; no reader found */
+    char pad_36[2];
     Ov007VecTween *eyeTween;    /* 0x38: func_ov007_020c8f64, bound to eye */
     Ov007VecTween *targetTween; /* 0x3c: func_ov007_020c8f64, bound to target */
     Ov007Tween *distanceTween;  /* 0x40: func_ov007_020c908c, bound to distance */
@@ -46,7 +46,8 @@ typedef struct Ov007Camera {
     long long aspect; /* 0xbc: PerspectiveW_ takes it >> 0x14 */
     int nearZ;        /* 0xc4 */
     int farZ;         /* 0xc8 */
-    char pad_cc[8];
+    int wordCC;       /* 0xcc: 0x1000 on reset; no reader found */
+    int wordD0;       /* 0xd0: 0xc00 on reset; no reader found */
     /* 0xd4: a u16 angle; the sine table is indexed with it >> 4 */
     unsigned short fovy;
 } Ov007Camera;

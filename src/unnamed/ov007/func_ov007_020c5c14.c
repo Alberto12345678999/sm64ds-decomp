@@ -1,7 +1,7 @@
 #include "Ov007Picker.h"
 #include "Ov007Camera.h"
 
-extern void func_ov007_020bfe4c(void *camera, int x, int y, int z, void *out);
+extern void func_ov007_020bfe4c(Ov007Camera *camera, int x, int y, int z, void *out);
 /* The index of the first point at each axis minimum and maximum. */
 extern void func_ov007_020c2f14(void *points, int pointCount, int *outMinX, int *outMaxX,
                                 int *outMinY, int *outMaxY, int *outMinZ, int *outMaxZ);

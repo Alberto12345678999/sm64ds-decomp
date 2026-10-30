@@ -5,7 +5,7 @@
 
 extern int func_ov007_020c25fc(Ov007StrokePath *path, int x, int y, int minLen, int maxLen,
                                int minTurn);
-extern void func_ov007_020bfe4c(char *camera, int x, int y, int z, Vector3 *out);
+extern void func_ov007_020bfe4c(Ov007Camera *camera, int x, int y, int z, Vector3 *out);
 
 /* Appends screen point (x, y), in pixels, to the stroke being drawn. When
  * func_ov007_020c25fc takes it, the point gets `progress` as its progress
@@ -25,7 +25,7 @@ int func_ov007_020c65bc(char *t, int x, int y, int progress) {
             int idx = last + 1;
             path->progressThresholds[idx] = progress;
             p->totalPoints++;
-            func_ov007_020bfe4c((char *)p->camera, path->xCoords[idx], path->yCoords[idx],
+            func_ov007_020bfe4c(p->camera, path->xCoords[idx], path->yCoords[idx],
                                 -p->camera->distance, &p->pathPoints[idx]);
             ret = 1;
         }

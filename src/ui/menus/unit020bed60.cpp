@@ -99,7 +99,7 @@ extern int func_020531a4(int a);
 extern char *func_ov007_020b2cdc(void);
 extern int func_ov007_020b42d8(int index);
 extern void func_ov007_020bce70(int n, int m);
-extern void func_ov007_020bfe4c(void *camera, int x, int y, int z, void *out);
+extern void func_ov007_020bfe4c(Ov007Camera *camera, int x, int y, int z, void *out);
 extern int func_ov007_020c1da0(int i);
 extern int func_ov007_020c30ac(Vector3 *arr, int count, void *target, int arg4, int *out);
 extern unsigned short func_ov007_020c3be0(int t, int a, int b);

@@ -7,9 +7,9 @@
 
 /* Reconstructed names and layout, not an original class identity. */
 
-/* The overlay's 0xd8-byte camera (func_ov007_020c023c). It stays
- * incomplete here: each consumer that reads it defines the tag with only the
- * slots it touches. */
+/* The overlay's 0xd8-byte camera (func_ov007_020c023c), defined in
+ * Ov007Camera.h. Only a pointer is held here, so the tag stays incomplete
+ * and Picker consumers are not made to see math/Matrix.h's Matrix4x3. */
 struct Ov007Camera;
 
 /* The 0x20-byte picker parameters, data_ov007_020d7b60
@@ -30,7 +30,9 @@ typedef struct Ov007PickerParams {
     int closeFactor;
 } Ov007PickerParams;
 
+#ifndef SM64DS_PLATFORM_PC
 typedef char Ov007PickerParams_size_must_be_0x20[sizeof(Ov007PickerParams) == 0x20 ? 1 : -1];
+#endif
 
 /* The 0xd0-byte touch picker that func_ov007_020c690c allocates and
  * func_ov007_020c684c resets. The player draws a stroke into `path`. Each
@@ -107,7 +109,9 @@ typedef struct Ov007Picker {
     Vector3 boundsMax;
 } Ov007Picker;
 
+#ifndef SM64DS_PLATFORM_PC
 typedef char Ov007Picker_size_must_be_0xd0[sizeof(Ov007Picker) == 0xd0 ? 1 : -1];
 typedef char Ov007Picker_camera_must_be_at_0xa8[(int)&((Ov007Picker *)0)->camera == 0xa8 ? 1 : -1];
+#endif
 
 #endif

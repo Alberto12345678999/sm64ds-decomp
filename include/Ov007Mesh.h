@@ -23,7 +23,9 @@ typedef struct Ov007MeshParams {
     int restZ; /* 0x14: the z func_ov007_020cbbb0 builds every point at */
 } Ov007MeshParams;
 
+#ifndef SM64DS_PLATFORM_PC
 typedef char Ov007MeshParams_size_must_be_0x18[sizeof(Ov007MeshParams) == 0x18 ? 1 : -1];
+#endif
 
 /* The 0x38-byte grid mesh that func_ov007_020cbbb0 builds and
  * func_ov007_020cbb04 frees (data_ov007_02104bd4[0]): a grid of spring
@@ -45,7 +47,9 @@ typedef struct Ov007Mesh {
     int *texOffsetT;           /* 0x34: its tv scratch */
 } Ov007Mesh;
 
+#ifndef SM64DS_PLATFORM_PC
 typedef char Ov007Mesh_size_must_be_0x38[sizeof(Ov007Mesh) == 0x38 ? 1 : -1];
+#endif
 
 /* The 0x2c-byte texture record func_ov007_020c15ec fills (see unit020c1404). */
 struct Ov007Texture;
@@ -70,7 +74,9 @@ typedef struct Ov007MeshMaterial {
     s32 polygonId;   /* 0x30: POLYGON_ATTR bits 24-29 */
 } Ov007MeshMaterial;
 
+#ifndef SM64DS_PLATFORM_PC
 typedef char Ov007MeshMaterial_size_must_be_0x34[sizeof(Ov007MeshMaterial) == 0x34 ? 1 : -1];
+#endif
 
 /* data_ov007_020d7c9c, the wave template; chances are per mille. */
 typedef struct Ov007MeshWaveParams {
@@ -81,6 +87,11 @@ typedef struct Ov007MeshWaveParams {
     u16 keepChance; /* 0x0e: chance each tick a running wave keeps pushing */
     u16 idleChance; /* 0x10: chance a re-roll goes idle instead of picking a line */
 } Ov007MeshWaveParams;
+
+#ifndef SM64DS_PLATFORM_PC
+/* data_ov007_020d7c9c runs 0x14 bytes to the next symbol. */
+typedef char Ov007MeshWaveParams_size_must_be_0x14[sizeof(Ov007MeshWaveParams) == 0x14 ? 1 : -1];
+#endif
 
 /* The 0x1c-byte record func_ov007_020ca2a8 builds and func_ov007_020ca1d4
  * ticks: waves[0] runs down a mesh column and waves[1] along a row (2 and 3
@@ -93,6 +104,8 @@ typedef struct Ov007MeshWave {
     Ov007MeshWaveParams *params; /* 0x18: func_ov007_020ca2a8's argument */
 } Ov007MeshWave;
 
+#ifndef SM64DS_PLATFORM_PC
 typedef char Ov007MeshWave_size_must_be_0x1c[sizeof(Ov007MeshWave) == 0x1c ? 1 : -1];
+#endif
 
 #endif

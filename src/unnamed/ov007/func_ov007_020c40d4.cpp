@@ -13,7 +13,7 @@ typedef struct Ov007SpriteItem {
 
 void *func_ov007_020c11ac(int n);
 void *func_ov007_020c3df4(int, int);
-void func_ov007_020c4090(void *);
+void func_ov007_020c4090(Ov007SpriteItem *item);
 
 /* Allocates a sprite item around a fresh OAM node with room for animCount
  * animations, then resets it (func_ov007_020c4090). */

@@ -3,13 +3,10 @@
 extern s16 data_02082214[];
 
 /* Places the eye on the orbit around the target: distance away, at the
- * camera's elevation and azimuth. c keeps the char * spelling of the
- * definition; `cam` is the typed view. out/base stay pointers into eye and
+ * camera's elevation and azimuth. out/base stay pointers into eye and
  * target: spelled cam->eye.x .. cam->target.z directly, the function
  * compiles 16 bytes short. */
-void func_ov007_020bffb8(char *c)
-{
-    Ov007Camera *cam = (Ov007Camera *)c;
+void func_ov007_020bffb8(Ov007Camera *cam) {
     s32 *out = &cam->eye.x;
     s32 *base = &cam->target.x;
     s32 angleA = cam->elevation;

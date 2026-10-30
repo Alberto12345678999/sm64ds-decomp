@@ -5,18 +5,13 @@
 
 extern "C" {
 
-
-extern void InvMat4x3(void* dst, void* out);
-extern void MulVec3Mat4x3(void* v, void* m, void* res);
+extern void InvMat4x3(void *dst, void *out);
+extern void MulVec3Mat4x3(void *v, void *m, void *res);
 extern short data_02082214[];
 
 /* Unprojects the screen point (a, b), in 20.12 pixels, at depth c through
- * the camera's fovy and inverse view matrix. thiz keeps the char * spelling
- * of the definition; `cam` is the typed view. */
-
-void func_ov007_020bfe4c(char* thiz, int a, int b, int c, Vector3* out)
-{
-    Ov007Camera *cam = (Ov007Camera *)thiz;
+ * the camera's fovy and inverse view matrix. */
+void func_ov007_020bfe4c(Ov007Camera *cam, int a, int b, int c, Vector3 *out) {
     Vector3 v;
     Matrix4x3 inv;
     int ang, i, cosv, sinv, ac, f1;

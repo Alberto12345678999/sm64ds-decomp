@@ -149,7 +149,7 @@ extern void func_ov007_020bda8c(int a, int b);
 extern void func_ov007_020bdbcc(int a0, int a1);
 extern void func_ov007_020bde2c(int idx);
 extern int func_ov007_020bdeb0(int a);
-extern void func_ov007_020bfe4c(void *o, int x, int y, int z, void *out);
+extern void func_ov007_020bfe4c(Ov007Camera *cam, int x, int y, int z, void *out);
 extern int func_ov007_020c1da0(int i);
 extern int func_ov007_020c3ba8(int);
 extern int func_ov007_020c3be0(int t, int a, int b);

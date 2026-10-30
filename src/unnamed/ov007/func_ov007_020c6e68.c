@@ -22,7 +22,7 @@ extern int func_020531a4(int a);
 extern int func_ov007_020c3df4(int a, void *b);
 extern Ov007Link *func_ov007_020c80a4(void);
 extern void func_ov007_020c8010(Ov007Link *link, Ov007Follower *from, Ov007Follower *to);
-extern void func_ov007_020bfe4c(char *thiz, int a, int b, int c, Vector3 *out);
+extern void func_ov007_020bfe4c(Ov007Camera *cam, int a, int b, int c, Vector3 *out);
 
 extern Ov007PointList *func_ov007_020c798c(int springMode, int count, int pointMass, int flags);
 extern void func_ov007_020c7804(Ov007PointList *list);
@@ -86,8 +86,7 @@ void func_ov007_020c6e68(char *picker, int idx) {
                 Ov007Camera *a8 = self->camera;
                 int base = (int)self->groupPoints[idx];
                 Vector3 *out = (Vector3 *)(base + flag);
-                func_ov007_020bfe4c((char *)a8, grp->xCoords[i], grp->yCoords[i], -a8->distance,
-                                    out);
+                func_ov007_020bfe4c(a8, grp->xCoords[i], grp->yCoords[i], -a8->distance, out);
             }
             {
                 int base_d = (int)self->groupPointCopies[idx];

@@ -4,7 +4,7 @@ extern void *func_ov007_020c3df4(int a, int size);
 extern void func_ov007_020c684c(void *self);
 extern Ov007Follower *func_ov007_020c844c(Vector3 *p, int q);
 extern Ov007Link *func_ov007_020c80a4(void);
-extern void func_ov007_020c8010(void *self, void *a, void *b);
+extern void func_ov007_020c8010(Ov007Link *link, Ov007Follower *from, Ov007Follower *to);
 extern int func_ov007_020c2c68(int a, int b, int c);
 extern void func_ov007_020c6724(void *self, int flag);
 

@@ -2,8 +2,9 @@
 #include "Ov007Spring.h"
 
 /* func_ov007_020c7560's mode 2: a damped spring in x and y. The offset of
- * from - to past dir, times stiffness (Q12), pushes the two ends apart,
- * and each end is damped by its own velocity times damping. */
+ * from - to past dir, times stiffness (Q12), pulls it back toward dir: from
+ * gets -stiffness * (offset - dir) and to the opposite. Each end is damped
+ * by its own velocity times damping. */
 void func_ov007_020c7b2c(Ov007Link *link, int stiffness, int damping) {
     int dx;
     int dy;

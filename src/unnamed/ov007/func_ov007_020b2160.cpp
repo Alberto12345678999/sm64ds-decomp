@@ -8,7 +8,7 @@ extern "C" {
 typedef int Fix12;
 
 extern void func_ov007_020bff38(Ov007Camera *cam);
-extern void func_ov007_020bffb8(char *c);
+extern void func_ov007_020bffb8(Ov007Camera *cam);
 
 extern char *data_ov007_0210342c;
 extern short data_02082214[];
@@ -36,7 +36,7 @@ void func_ov007_020b2160(int mode) {
                            (int)(WORK->cameras[0]->aspect >> 0x14), WORK->cameras[0]->nearZ,
                            WORK->cameras[0]->farZ, 0x1000, 1, (Matrix4x3 *)0);
         func_ov007_020bff38(WORK->cameras[0]);
-        func_ov007_020bffb8((char *)WORK->cameras[0]);
+        func_ov007_020bffb8(WORK->cameras[0]);
         G3i::LookAt_(&WORK->cameras[0]->eye, &WORK->cameras[0]->up, &WORK->cameras[0]->target, true,
                      &WORK->cameras[0]->viewMatrix);
         break;

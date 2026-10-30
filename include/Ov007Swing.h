@@ -30,7 +30,9 @@ typedef struct Ov007SwingParams {
     s16 maxNormalY; /* 0x2e */
 } Ov007SwingParams;
 
+#ifndef SM64DS_PLATFORM_PC
 typedef char Ov007SwingParams_size_must_be_0x30[sizeof(Ov007SwingParams) == 0x30 ? 1 : -1];
+#endif
 
 /* The 0x70-byte record func_ov007_020ca010 builds and func_ov007_020c9fa0
  * frees, one per menu item (data_ov007_02104bd4[4..11]); medium-confidence
@@ -57,6 +59,8 @@ typedef struct Ov007Swing {
     Ov007Link *yLinks[2];      /* 0x68 */
 } Ov007Swing;
 
+#ifndef SM64DS_PLATFORM_PC
 typedef char Ov007Swing_size_must_be_0x70[sizeof(Ov007Swing) == 0x70 ? 1 : -1];
+#endif
 
 #endif

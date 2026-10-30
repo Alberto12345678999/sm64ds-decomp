@@ -3,7 +3,7 @@
 extern char* func_ov007_020c3df4(int,int);
 extern Ov007VecTween *func_ov007_020c8f64(Vector3 *out);
 extern void *func_ov007_020c908c(void *out);
-extern void func_ov007_020c0128(void*);
+extern void func_ov007_020c0128(Ov007Camera *cam);
 
 /* Allocates a camera, binds each of its three tweens to the field it drives
  * and resets it (func_ov007_020c0128). */
