@@ -799,6 +799,7 @@ GetSceneOverlayID kind:function(arm,size=0xac) addr:0x0201a7dc
 IsMinigameActorID kind:function(arm,size=0x2c) addr:0x0201a888
 func_0201a8b4 kind:function(arm,size=0xb8) addr:0x0201a8b4
 func_0201a96c kind:function(arm,size=0x80) addr:0x0201a96c
+func_0201a96c_body kind:label(arm) addr:0x0201a96c
 func_0201a9ec kind:function(arm,size=0x10) addr:0x0201a9ec
 func_0201a9fc kind:function(arm,size=0x1c) addr:0x0201a9fc
 func_0201aa18 kind:function(arm,size=0x38) addr:0x0201aa18
@@ -808,6 +809,7 @@ func_0201aab0 kind:function(arm,size=0x18) addr:0x0201aab0
 func_0201aac8 kind:function(arm,size=0xc) addr:0x0201aac8
 func_0201aad4 kind:function(arm,size=0x18) addr:0x0201aad4
 func_0201aaec kind:function(arm,size=0x18) addr:0x0201aaec
+_ZN13WatchdogAlarmD1Ev kind:label(arm) addr:0x0201aaec
 _ZN7Message7EndTalkEv kind:function(arm,size=0x34) addr:0x0201ab04
 _ZN7Message11PrepareTalkEv kind:function(arm,size=0x34) addr:0x0201ab38
 _ZN7Message9AddChoiceEv kind:function(arm,size=0x138) addr:0x0201ab6c
@@ -3044,6 +3046,7 @@ func_02072f3c kind:function(arm,size=0x58) addr:0x02072f3c
 func_02072f94 kind:function(arm,size=0x38) addr:0x02072f94
 func_02072fcc kind:function(arm,size=0x210) addr:0x02072fcc
 func_020731dc kind:function(arm,size=0x20) addr:0x020731dc
+__register_global_object kind:label(arm) addr:0x020731dc
 func_020731fc kind:function(arm,size=0x24) addr:0x020731fc
 func_02073220 kind:function(arm,size=0xc) addr:0x02073220
 func_0207322c kind:function(arm,size=0xc) addr:0x0207322c
@@ -3083,7 +3086,7 @@ __sinit_Sound.cpp kind:function(arm,size=0x14) addr:0x02074da8
 __sinit_02074dbc kind:function(arm,size=0x4) addr:0x02074dbc
 __sinit_02074dc0 kind:function(arm,size=0x4) addr:0x02074dc0
 __sinit_02074dc4 kind:function(arm,size=0x48) addr:0x02074dc4
-__sinit_02074e0c kind:function(arm,size=0x38) addr:0x02074e0c
+__sinit_func_0201a96c.cpp kind:label(arm) addr:0x02074e0c
 __sinit_02074e44 kind:function(arm,size=0x3c) addr:0x02074e44
 __sinit_02074e80 kind:function(arm,size=0x4) addr:0x02074e80
 __sinit_02074e84 kind:function(arm,size=0x58) addr:0x02074e84
@@ -3214,7 +3217,7 @@ __ptmf_null kind:data(any) addr:0x02086b58
 .p__sinit_02074dbc kind:data(word) addr:0x02086b70
 .p__sinit_02074dc0 kind:data(word) addr:0x02086b74
 .p__sinit_02074dc4 kind:data(word) addr:0x02086b78
-.p__sinit_02074e0c kind:data(word) addr:0x02086b7c
+.p__sinit_func_0201a96c.cpp kind:data(word) addr:0x02086b7c local
 .p__sinit_02074e44 kind:data(word) addr:0x02086b80
 .p__sinit_02074e80 kind:data(word) addr:0x02086b84
 .p__sinit_02074e84 kind:data(word) addr:0x02086b88
@@ -4644,7 +4647,7 @@ data_0209d518 kind:bss addr:0x0209d518
 data_0209d51c kind:bss addr:0x0209d51c
 data_0209d520 kind:bss addr:0x0209d520
 data_0209d524 kind:bss addr:0x0209d524
-data_0209d528 kind:bss addr:0x0209d528
+@91 kind:bss addr:0x0209d528 local
 data_0209d534 kind:bss addr:0x0209d534
 data_0209d574 kind:bss addr:0x0209d574
 data_0209d5b8 kind:bss addr:0x0209d5b8

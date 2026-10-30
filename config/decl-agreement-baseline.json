@@ -9879,11 +9879,23 @@
       ]
     },
     "data_0209d574": {
-      "src/unnamed/arm9/0207/__sinit_02074e0c.c": [
-        "return:int []"
+      "src/engine/sound/Sound.cpp": [
+        "return:char []"
       ],
       "src/runtime/filesystem/InitializeAssetHandleTable.c": [
         "return:int"
+      ],
+      "src/unnamed/arm9/0201/func_020199a4.c": [
+        "return:char []"
+      ],
+      "src/unnamed/arm9/0201/func_0201a054.cpp": [
+        "return:char []"
+      ],
+      "src/unnamed/arm9/0201/func_0201fec8.c": [
+        "return:char []"
+      ],
+      "src/unnamed/arm9/0201/func_0201ffcc.c": [
+        "return:char []"
       ]
     },
     "data_0209d65c": {
@@ -18418,7 +18430,9 @@
         "return:void"
       ],
       "src/unnamed/arm9/0201/func_0201ffcc.c": [
-        "param:#1 char *"
+        "param:#1 char *",
+        "param:#2 unsigned char",
+        "return:unsigned char"
       ],
       "src/runtime/filesystem/InitializeAssetHandleTable.c": [
         "param:#1 int *",
@@ -18446,11 +18460,6 @@
         "return:int"
       ]
     },
-    "func_0201aa18": {
-      "src/unnamed/arm9/0207/__sinit_02074e0c.c": [
-        "return:void"
-      ]
-    },
     "func_0201aa50": {
       "src/unnamed/arm9/0201/func_0201a8b4.c": [
         "param:#2 unsigned int",
@@ -18475,11 +18484,6 @@
     "func_0201aad4": {
       "src/unnamed/arm9/0201/func_0201aa18.c": [
         "param:#1 void *"
-      ]
-    },
-    "func_0201aaec": {
-      "src/unnamed/arm9/0207/__sinit_02074e0c.c": [
-        "kind:data"
       ]
     },
     "func_0201cebc": {
