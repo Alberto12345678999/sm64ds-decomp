@@ -27,7 +27,7 @@ typedef signed int s32;
 extern int func_02065a4c(int x);
 extern FileShareNode *func_02041ce0(void *area, int offset, int size);
 extern FileShareNode *func_02041c64(void *area, int offset, int size);
-extern FileShareNode *func_02041c2c(void *area, int offset);
+extern FileShareNode *func_02041c2c(void *area, int blockId);
 extern void func_020657fc(int key);
 extern void func_02041ae8(void *base, void *node);
 extern void func_020423c8(void);

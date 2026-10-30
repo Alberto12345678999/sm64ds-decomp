@@ -34,6 +34,7 @@
 extern "C" {
 
 /* The SDK's MB_COMM_PSTATE_* values this file uses. */
+#define MB_COMM_PSTATE_INIT_COMPLETE 1
 #define MB_COMM_PSTATE_CONNECTED 2
 #define MB_COMM_PSTATE_DISCONNECTED 3
 #define MB_COMM_PSTATE_KICKED 4
@@ -114,7 +115,7 @@ typedef char
 #endif
 
 /* NitroSDK MB_BlockInfo, one block's place as func_02067530
- * (MBi_get_blockinfo) gives it. The tag is that file's. */
+ * (pmd-sky's MBi_Get_BlockInfo) gives it. The tag is that file's. */
 struct Out {
     int child_recv_buff_addr; /* 0x0 */
     u32 size;                 /* 0x4 */
@@ -148,7 +149,7 @@ typedef struct WMMpRecvData {
 /* Leading fields of NitroSDK WMStartParentCallback, the argument the WM
  * parent callback (func_02069994) passes for CONNECTED (code 0),
  * DISCONNECTED (code 1) and BEACON_SENT (code 0x1c). Codes 0xff (a failed
- * WM call, from func_0206879c: {apiid, errcode}) and 0x100 (any other WM
+ * WM call, from MBi_CheckWmErrcode: {apiid, errcode}) and 0x100 (any other WM
  * result) read only the WMCallback header the SDK callbacks all share. */
 typedef struct WmStartParentCallback {
     u16 apiid;        /* 0x00 */
@@ -172,8 +173,8 @@ extern int func_02067530(struct Out *bi, char *table, u32 block, char *dlinfo);
 /* local extern: defined void, but it hands back func_020688fc's result,
    which the senders here return. */
 extern int func_02067f2c(u32 size, u32 pollbmp, u32 buf);
-extern void func_02068410(void);
-extern void func_0206853c(char *self, void *src, u32 flags, int s);
+extern void MB_SendGameInfoBeacon(void);
+extern void MB_UpdateGameInfoMember(char *self, void *src, u32 flags, int s);
 extern int func_0206881c(void);
 
 void MBi_CommCallParentError(u16 aid, u16 errcode);
@@ -216,8 +217,10 @@ void *MB_CommGetChildUser(u16 aid) {
 }
 
 // @symbol MB_CommGetChildrenNumber
-int MB_CommGetChildrenNumber(void) {
-    return data_020a9db8 ? MB_WORK->mChildCount : 0;
+u8 MB_CommGetChildrenNumber(void) {
+    if (data_020a9db8)
+        return MB_WORK->mChildCount;
+    return 0;
 }
 
 /* The child at aid can be booted once it has the whole download. */
@@ -291,7 +294,7 @@ void MBi_CommParentCallback(int type, char *arg) {
 
     switch (type) {
     case 0x15:
-        MBi_CommChangeParentState(0, 1, arg);
+        MBi_CommChangeParentState(0, MB_COMM_PSTATE_INIT_COMPLETE, arg);
         break;
     case 0x11:
         MBi_CommChangeParentState(0, MB_COMM_PSTATE_END, 0);
@@ -355,11 +358,11 @@ void MBi_CommParentCallback(int type, char *arg) {
             if (e->mFiles->mActive != 0) {
                 u16 f48 = e->mFiles->mEntryChanged;
                 if (f48 != 0) {
-                    /* the game info record func_0206853c refreshes sits after
+                    /* the game info record MB_UpdateGameInfoMember refreshes sits after
                      * the 0xe4 bytes of mHeader that MBi_CommParentSendDlFileInfo
                      * sends */
-                    func_0206853c((char *)&MB_WORK->mFiles[i].mHeader[0xe4], MB_WORK->mChildUser,
-                                  e->mFiles->mEntryBitmap, f48);
+                    MB_UpdateGameInfoMember((char *)&MB_WORK->mFiles[i].mHeader[0xe4],
+                                            MB_WORK->mChildUser, e->mFiles->mEntryBitmap, f48);
                     /* the signed-index stepped form; MB_FILE (unsigned sizeof)
                      * or e reallocates registers */
                     ((MbParentWork *)(data_020a9db8 + i * (int)sizeof(MbParentFile)))
@@ -367,7 +370,7 @@ void MBi_CommParentCallback(int type, char *arg) {
                 }
             }
         }
-        func_02068410();
+        MB_SendGameInfoBeacon();
         break;
     }
     case 0xff: {

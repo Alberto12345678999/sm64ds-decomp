@@ -33,29 +33,29 @@ typedef struct RomHeaderView {
     RomStaticRegion sub; /* 0x38 -- ARM7 static */
 } RomHeaderView;
 
-/* The NitroSDK MBGameInfo tail written here (func_02068680.c's view names
+/* The NitroSDK MBGameInfo tail written here (MBi_MakeGameInfo.c's view names
  * the fields before it): seqNoFixed takes the next value of the counter at
  * data_020a9d28, fileNo the file's mFiles index. The record sits at
  * mHeader + 0xe4, as MB_Parent.cpp reaches it. */
 typedef struct MBGameInfo {
     u8 pad_000[0x4ab];
     u8 seqNoFixed; /* 0x4ab */
-    u8 seqNoVolat; /* 0x4ac -- func_0206853c.c */
+    u8 seqNoVolat; /* 0x4ac -- MB_UpdateGameInfoMember.c */
     u8 fileNo;     /* 0x4ad */
 } MBGameInfo;
 
-extern int func_020687f8(void);
+extern int MBi_IsStarted(void);
 extern void func_020678a4(void *out, void *in, void *dst);
 extern int func_02067604(void *a, void *b);
-extern void func_02068680(void *dst, void *src, void *extra);
-extern void func_020684d0(void *n);
+extern void MBi_MakeGameInfo(void *dst, void *src, void *extra);
+extern void MB_AddGameInfo(void *n);
 
 #pragma opt_strength_reduction off
 
 /* NitroSDK MB_RegisterFile(game_reg, buf): file a game registry and its ROM
  * image in the first free mFiles slot (refusing a 17th file or the same
  * registry twice), build its download header, block table and game record,
- * add the record to the beacon list (func_020684d0) and mark the slot
+ * add the record to the beacon list (MB_AddGameInfo) and mark the slot
  * active with only the parent entered. */
 int func_02067928(void *a, void *b)
 {
@@ -69,7 +69,7 @@ int func_02067928(void *a, void *b)
     idx = 0xff;
 
     state = IRQ::Disable();
-    if (!func_020687f8()) {
+    if (!MBi_IsStarted()) {
         IRQ::Restore(state);
         return 0;
     }
@@ -105,11 +105,11 @@ int func_02067928(void *a, void *b)
         return 0;
     }
 
-    func_02068680(&MB_WORK->mFiles[idx].mHeader[0xe4], a, MB_WORK->mParentUser);
+    MBi_MakeGameInfo(&MB_WORK->mFiles[idx].mHeader[0xe4], a, MB_WORK->mParentUser);
 
     ((MBGameInfo *)&MB_WORK->mFiles[idx].mHeader[0xe4])->fileNo = (u8)idx;
 
-    func_020684d0(&MB_WORK->mFiles[idx].mHeader[0xe4]);
+    MB_AddGameInfo(&MB_WORK->mFiles[idx].mHeader[0xe4]);
 
     {
         u8 id = data_020a9d28;

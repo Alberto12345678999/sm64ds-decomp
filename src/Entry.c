@@ -9,7 +9,7 @@ extern void do_autoload(void);
 extern void MultiStore_Int(void);
 extern void func_01ffafd4(void);
 extern void func_02019780(void);
-extern void func_02072f94(void);
+extern void __call_static_initializers(void);
 asm void Entry(void) {
     mov     ip, #0x4000000
     str     ip, [ip, #0x208]
@@ -53,7 +53,7 @@ asm void Entry(void) {
     str     r0, [r1]
     bl      func_01ffafd4
     bl      func_02019780
-    bl      func_02072f94
+    bl      __call_static_initializers
     ldr     r1, =0x2007000
     ldr     lr, =0xffff0000
     bx      r1

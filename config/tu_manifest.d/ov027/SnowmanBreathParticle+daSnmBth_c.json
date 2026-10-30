@@ -543,22 +543,14 @@
       "evidence": "Expose the exact owned compiler-local symbol under the DSD global symbol surface without altering its storage or relocations."
     }
   ],
-  "undefined_symbol_aliases": [
-    {
-      "symbol": "__register_global_object",
-      "canonical_symbol": "func_020731dc",
-      "canonical_module": "arm9",
-      "canonical_address": "0x020731dc",
-      "evidence": "Native destructor registration targets the same arm9 helper as the original ROM call at 0x02112f9c."
-    }
-  ],
+  "undefined_symbol_aliases": [],
   "relocations": [
     {
       "section": ".init",
       "source": "0x02112f9c",
       "type": "R_ARM_PC24",
       "kind": "arm_call",
-      "symbol": "func_020731dc",
+      "symbol": "__register_global_object",
       "addend": -8,
       "target_module": "arm9",
       "target_address": "0x020731dc"

@@ -25,6 +25,10 @@ inline u64 shr_n(u64 x, int n, int *pj)
     return x;
 }
 
+/* Soft-double multiply by 10 for func_0206a928: significand + significand/4
+   (x * 5/4), exponent + 3 (x * 8), renormalized. The double is passed and
+   returned as raw bits; its byte reads and writes go through the cluster's
+   u16 read-modify-write macros. */
 u64 func_0206c244(u64 d)
 {
     int sign;

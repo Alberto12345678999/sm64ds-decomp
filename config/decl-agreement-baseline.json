@@ -279,9 +279,6 @@
       "src/SharedFilePtr.cpp": [
         "arity:3"
       ],
-      "src/engine/os/OS_OwnerInfo.c": [
-        "arity:3"
-      ],
       "src/engine/save/SaveData.cpp": [
         "arity:3"
       ],
@@ -303,15 +300,6 @@
       "src/unnamed/arm9/0204/func_020426f8.c": [
         "arity:3"
       ],
-      "src/unnamed/arm9/0205/func_0205d28c.c": [
-        "arity:3"
-      ],
-      "src/unnamed/arm9/0205/func_0205d2b0.c": [
-        "arity:3"
-      ],
-      "src/unnamed/arm9/0205/func_0205d2dc.c": [
-        "arity:3"
-      ],
       "src/FS_LoadOverlayInfo.c": [
         "arity:3"
       ],
@@ -319,9 +307,6 @@
         "arity:3"
       ],
       "src/unnamed/arm9/0206/func_0206071c.cpp": [
-        "arity:3"
-      ],
-      "src/WM_StartConnect.cpp": [
         "arity:3"
       ],
       "src/unnamed/arm9/0206/func_02063ea8.c": [
@@ -410,6 +395,15 @@
         "arity:3"
       ],
       "src/engine/mb/MB_Parent.cpp": [
+        "arity:3"
+      ],
+      "src/engine/fs/FS_Archive.cpp": [
+        "arity:3"
+      ],
+      "src/WM_StartConnect.cpp": [
+        "arity:3"
+      ],
+      "src/engine/os/OS_OwnerInfo.c": [
         "arity:3"
       ]
     },
@@ -632,11 +626,7 @@
       "src/unnamed/arm9/0201/func_020184e0.cpp": [
         "return:void"
       ],
-      "src/unnamed/arm9/0205/func_0205c9b8.c": [
-        "param:#1 int *",
-        "return:void"
-      ],
-      "src/unnamed/arm9/0206/func_020685cc.c": [
+      "src/MBi_ReadIconInfo.c": [
         "param:#1 int *",
         "return:void"
       ],
@@ -657,10 +647,6 @@
         "param:#1 char *",
         "param:#2 char *"
       ],
-      "src/unnamed/arm9/0205/func_0205c9b8.c": [
-        "param:#1 int *",
-        "return:void"
-      ],
       "src/FSi_LoadOverlayInfoCore.c": [
         "param:#1 void *",
         "param:#2 void *"
@@ -669,9 +655,12 @@
         "param:#1 void *",
         "param:#2 void *"
       ],
-      "src/unnamed/arm9/0206/func_020685cc.c": [
+      "src/MBi_ReadIconInfo.c": [
         "param:#1 int *",
         "return:void"
+      ],
+      "src/engine/fs/FS_Archive.cpp": [
+        "param:#1 int *"
       ]
     },
     "GetLevelPart": {
@@ -1500,7 +1489,7 @@
       "src/WM_StepDataSharing.cpp": [
         "param:#3 unsigned int"
       ],
-      "src/unnamed/arm9/0206/func_02068680.c": [
+      "src/MBi_MakeGameInfo.c": [
         "param:#1 int"
       ],
       "src/unnamed/arm9/0206/func_020690b0.c": [
@@ -3640,19 +3629,19 @@
       "src/WM_Finish.c": [
         "param:#2 int"
       ],
-      "src/WM_GetMPSendBufferSize.cpp": [
-        "arity:3"
+      "src/unnamed/arm9/0206/func_0206259c.c": [
+        "param:#2 int"
       ],
       "src/WM_Disconnect.cpp": [
         "arity:6"
       ],
-      "src/WM_StartConnect.cpp": [
-        "param:#2 int"
+      "src/WM_GetMPSendBufferSize.cpp": [
+        "arity:3"
       ],
       "src/WM_SetParentParameter.cpp": [
         "param:#2 int"
       ],
-      "src/unnamed/arm9/0206/func_0206259c.c": [
+      "src/WM_StartConnect.cpp": [
         "param:#2 int"
       ],
       "src/WM_StartMPEx.cpp": [
@@ -3660,14 +3649,8 @@
       ]
     },
     "WM_GetSystemWork": {
-      "src/WM_GetLinkLevel.cpp": [
-        "return:void *"
-      ],
       "src/WM_GetAllowedChannel.cpp": [
         "return:void *"
-      ],
-      "src/WM_GetMPSendBufferSize.cpp": [
-        "return:int *"
       ],
       "src/WM_SetPortCallback.cpp": [
         "return:char *"
@@ -3675,22 +3658,10 @@
       "src/WM_SetIndCallback.cpp": [
         "return:void *"
       ],
-      "src/WM_StartConnect.cpp": [
-        "return:int *"
-      ],
-      "src/WM_StartScan.cpp": [
-        "return:char *"
-      ],
       "src/WM_Initialize.c": [
         "return:int *"
       ],
       "src/WM_Enable.c": [
-        "return:int *"
-      ],
-      "src/WM_SetMPDataToPortEx.cpp": [
-        "return:int *"
-      ],
-      "src/WM_StartMPEx.cpp": [
         "return:int *"
       ],
       "src/unnamed/arm9/0206/func_02062d10.cpp": [
@@ -3698,35 +3669,31 @@
       ],
       "src/WM_MeasureChannel.c": [
         "return:int *"
+      ],
+      "src/WM_GetLinkLevel.cpp": [
+        "return:void *"
+      ],
+      "src/WM_GetMPSendBufferSize.cpp": [
+        "return:int *"
+      ],
+      "src/WM_SetMPDataToPortEx.cpp": [
+        "return:int *"
+      ],
+      "src/WM_StartConnect.cpp": [
+        "return:int *"
+      ],
+      "src/WM_StartMPEx.cpp": [
+        "return:int *"
+      ],
+      "src/WM_StartScan.cpp": [
+        "return:char *"
       ]
     },
     "WM_SendCommand": {
-      "src/WM_Disconnect.cpp": [
-        "param:#1 int",
-        "param:#2 int",
-        "param:#3 int"
-      ],
-      "src/WM_StartConnect.cpp": [
-        "arity:2"
-      ],
-      "src/WM_StartScan.cpp": [
-        "arity:2"
-      ],
-      "src/WM_SetParentParameter.cpp": [
-        "param:#1 int",
-        "param:#2 int",
-        "param:#3 void *"
-      ],
-      "src/WM_SetMPDataToPortEx.cpp": [
-        "arity:9"
-      ],
       "src/unnamed/arm9/0206/func_0206259c.c": [
         "param:#1 int",
         "param:#2 int",
         "param:#3 int"
-      ],
-      "src/WM_StartMPEx.cpp": [
-        "arity:12"
       ],
       "src/unnamed/arm9/0206/func_02063574.c": [
         "arity:5"
@@ -3738,6 +3705,28 @@
       ],
       "src/unnamed/arm9/0206/func_02063648.cpp": [
         "arity:8"
+      ],
+      "src/WM_Disconnect.cpp": [
+        "param:#1 int",
+        "param:#2 int",
+        "param:#3 int"
+      ],
+      "src/WM_SetMPDataToPortEx.cpp": [
+        "arity:9"
+      ],
+      "src/WM_SetParentParameter.cpp": [
+        "param:#1 int",
+        "param:#2 int",
+        "param:#3 void *"
+      ],
+      "src/WM_StartConnect.cpp": [
+        "arity:2"
+      ],
+      "src/WM_StartMPEx.cpp": [
+        "arity:12"
+      ],
+      "src/WM_StartScan.cpp": [
+        "arity:2"
       ]
     },
     "_Z11UpdateAngleRssis": {
@@ -5258,12 +5247,6 @@
       "src/Crash.cpp": [
         "return:void"
       ],
-      "src/unnamed/arm9/0205/func_0205c864.cpp": [
-        "return:int"
-      ],
-      "src/unnamed/arm9/0205/func_0205caa8.cpp": [
-        "return:int"
-      ],
       "src/WM_SetPortCallback.cpp": [
         "return:int"
       ],
@@ -5277,9 +5260,6 @@
         "return:int"
       ],
       "src/unnamed/arm9/0206/func_02065af0.cpp": [
-        "return:int"
-      ],
-      "src/unnamed/arm9/0206/func_0206703c.cpp": [
         "return:int"
       ],
       "src/unnamed/arm9/0206/func_02068e4c.cpp": [
@@ -5313,33 +5293,6 @@
         "return:void"
       ],
       "src/engine/fs/FS_Command.cpp": [
-        "return:void"
-      ],
-      "src/FS_ResumeArchive.cpp": [
-        "return:void"
-      ],
-      "src/unnamed/arm9/0205/func_0205c864.cpp": [
-        "return:void"
-      ],
-      "src/unnamed/arm9/0205/func_0205caa8.cpp": [
-        "return:void"
-      ],
-      "src/FS_ReleaseArchiveName.cpp": [
-        "return:void"
-      ],
-      "src/FS_RegisterArchiveName.cpp": [
-        "return:void"
-      ],
-      "src/unnamed/arm9/0205/func_0205cd5c.cpp": [
-        "return:void"
-      ],
-      "src/FSi_SendCommand.cpp": [
-        "return:void"
-      ],
-      "src/FSi_ExecuteAsyncCommand.cpp": [
-        "return:void"
-      ],
-      "src/FSi_NextCommand.cpp": [
         "return:void"
       ],
       "src/unnamed/arm9/0205/func_0205d3e4.cpp": [
@@ -5381,16 +5334,6 @@
         "return:void"
       ],
       "src/unnamed/arm9/0206/func_02065af0.cpp": [
-        "return:void"
-      ],
-      "src/unnamed/arm9/0206/func_0206703c.cpp": [
-        "param:#1 int",
-        "return:void"
-      ],
-      "src/unnamed/arm9/0206/func_020671b4.cpp": [
-        "return:void"
-      ],
-      "src/MB_CommSetParentStateCallback.cpp": [
         "return:void"
       ],
       "src/unnamed/arm9/0206/func_02067928.cpp": [
@@ -10394,16 +10337,6 @@
         "return:char * []"
       ]
     },
-    "data_020a805c": {
-      "src/unnamed/arm9/0205/func_0205da94.c": [
-        "return:unsigned int"
-      ]
-    },
-    "data_020a8060": {
-      "src/unnamed/arm9/0205/func_0205db2c.c": [
-        "return:unsigned int"
-      ]
-    },
     "data_020a8114": {
       "src/unnamed/arm9/0205/func_0205ff08.c": [
         "return:int"
@@ -10458,7 +10391,7 @@
       ]
     },
     "data_020a9d2c": {
-      "src/unnamed/arm9/0206/func_0206834c.c": [
+      "src/MBi_InitSendFixedBeacon.c": [
         "return:unsigned char"
       ],
       "src/unnamed/arm9/0206/func_02068398.c": [
@@ -10471,7 +10404,7 @@
       ]
     },
     "data_020a9db4": {
-      "src/unnamed/arm9/0206/func_020687f8.c": [
+      "src/MBi_IsStarted.c": [
         "return:unsigned char"
       ],
       "src/unnamed/arm9/0206/func_0206881c.c": [
@@ -10491,9 +10424,6 @@
       ]
     },
     "data_020a9db8": {
-      "src/MB_CommSetParentStateCallback.cpp": [
-        "return:SomeObj *"
-      ],
       "src/unnamed/arm9/0206/func_02067604.c": [
         "return:void *"
       ],
@@ -15140,16 +15070,11 @@
       ]
     },
     "func_01ff8000": {
-      "src/unnamed/arm9/0207/func_020708b4.c": [
+      "src/ldexp.c": [
         "kind:function"
       ],
       "src/CARDi_TryReadCardDma.cpp": [
         "kind:data"
-      ]
-    },
-    "func_01ff859c": {
-      "src/unnamed/arm9/0207/func_02070c68.c": [
-        "return:unsigned long long"
       ]
     },
     "func_01ff9378": {
@@ -18917,14 +18842,6 @@
         "param:#3 void (*)(void *)"
       ]
     },
-    "OS_GetMacAddress": {
-      "src/unnamed/arm9/0203/func_0203db64.c": [
-        "param:#1 void *"
-      ],
-      "src/unnamed/arm9/0206/func_02068e4c.cpp": [
-        "param:#1 void *"
-      ]
-    },
     "func_0205a588": {
       "include/decl_common.h": [
         "arity:3",
@@ -18945,16 +18862,10 @@
       "src/unnamed/arm9/0204/func_02040c34.c": [
         "arity:3"
       ],
-      "src/FS_InitArchive.c": [
-        "arity:3"
-      ],
       "src/FS_StartOverlay.c": [
         "arity:3"
       ],
       "src/FS_ClearOverlayImage.cpp": [
-        "arity:3"
-      ],
-      "src/WM_StartConnect.cpp": [
         "arity:3"
       ],
       "src/unnamed/arm9/0206/func_020647fc.c": [
@@ -18974,48 +18885,40 @@
       ],
       "src/engine/mb/MB_Parent.cpp": [
         "arity:3"
-      ]
-    },
-    "FSi_ReleaseCommand": {
-      "src/unnamed/arm9/0205/func_0205caa8.cpp": [
-        "param:#1 int *"
       ],
-      "src/FSi_NextCommand.cpp": [
-        "param:#1 Node *"
+      "src/engine/fs/FS_Archive.cpp": [
+        "arity:3"
+      ],
+      "src/WM_StartConnect.cpp": [
+        "arity:3"
       ]
     },
     "FS_SetArchiveProc": {
       "src/unnamed/arm9/0204/func_020423dc.c": [
-        "param:#2 void *"
-      ]
-    },
-    "FS_ResumeArchive": {
-      "src/unnamed/arm9/0205/func_0205c91c.c": [
-        "return:void"
-      ]
-    },
-    "func_0205c864": {
-      "src/unnamed/arm9/0205/func_0205caa8.cpp": [
-        "return:void"
-      ]
-    },
-    "func_0205c91c": {
-      "src/func_0201a2f8.cpp": [
-        "arity:0",
-        "return:void"
-      ]
-    },
-    "func_0205caa8": {
-      "src/unnamed/arm9/0204/func_020423dc.c": [
-        "arity:0",
-        "return:void"
+        "param:#2 void *",
+        "param:#3 int"
       ]
     },
     "FS_LoadArchive": {
       "src/unnamed/arm9/0204/func_020423dc.c": [
         "param:#7 void *",
         "param:#8 void *",
-        "return:void"
+        "return:void",
+        "param:#2 int",
+        "param:#3 int",
+        "param:#4 int",
+        "param:#5 int",
+        "param:#6 int"
+      ],
+      "src/engine/sound/SoundEngine.cpp": [
+        "param:#1 int *",
+        "param:#2 int",
+        "param:#3 int",
+        "param:#4 int",
+        "param:#5 int",
+        "param:#6 int",
+        "param:#7 int",
+        "param:#8 int"
       ]
     },
     "FSi_SendCommand": {
@@ -19035,16 +18938,6 @@
         "param:#1 struct Obj *"
       ]
     },
-    "FSi_ExecuteAsyncCommand": {
-      "src/unnamed/arm9/0205/func_0205cd5c.cpp": [
-        "param:#1 int"
-      ]
-    },
-    "FSi_NextCommand": {
-      "src/unnamed/arm9/0205/func_0205cd5c.cpp": [
-        "return:int"
-      ]
-    },
     "FS_FindArchive": {
       "src/unnamed/arm9/0204/func_02042254.cpp": [
         "return:void *"
@@ -19055,37 +18948,11 @@
       "src/unnamed/arm9/0204/func_020424c0.cpp": [
         "return:void *"
       ],
-      "src/FS_RegisterArchiveName.cpp": [
-        "return:void *"
-      ],
       "src/unnamed/arm9/0206/func_02067bfc.cpp": [
         "param:#1 int *",
         "return:void *"
       ],
       "src/func_0201a2f8.cpp": [
-        "return:void *"
-      ]
-    },
-    "func_0205d28c": {
-      "src/unnamed/arm9/0205/func_0205c9b8.c": [
-        "arity:0"
-      ]
-    },
-    "func_0205d2b0": {
-      "src/FS_LoadArchive.c": [
-        "arity:0",
-        "return:void"
-      ]
-    },
-    "func_0205d2dc": {
-      "src/FS_LoadArchive.c": [
-        "arity:0",
-        "return:void"
-      ]
-    },
-    "FSi_GetPackedName": {
-      "src/FS_RegisterArchiveName.cpp": [
-        "param:#2 void *",
         "return:void *"
       ]
     },
@@ -19096,23 +18963,13 @@
       ]
     },
     "func_0205d518": {
-      "src/unnamed/arm9/0206/func_020685cc.c": [
+      "src/MBi_ReadIconInfo.c": [
         "param:#2 int"
       ]
     },
     "func_0205d568": {
       "src/unnamed/arm9/0205/func_0205d518.c": [
         "arity:2"
-      ]
-    },
-    "func_0205d5e8": {
-      "src/myFS_ReadFile.c": [
-        "param:#1 int"
-      ],
-      "src/unnamed/arm9/0205/func_0205c9b8.c": [
-        "param:#1 int *",
-        "param:#2 void *",
-        "return:void"
       ]
     },
     "func_0205d688": {
@@ -19131,27 +18988,6 @@
     },
     "FS_Init": {
       "src/unnamed/arm9/0201/func_02018aa4.c": [
-        "return:int"
-      ]
-    },
-    "func_0205da94": {
-      "src/FSi_InitRom.c": [
-        "kind:data"
-      ]
-    },
-    "func_0205db24": {
-      "src/FSi_InitRom.c": [
-        "kind:data"
-      ]
-    },
-    "func_0205db2c": {
-      "src/FSi_InitRom.c": [
-        "kind:data"
-      ]
-    },
-    "func_0205db78": {
-      "src/unnamed/arm9/0205/func_0205db2c.c": [
-        "arity:0",
         "return:int"
       ]
     },
@@ -19237,17 +19073,6 @@
         "return:int"
       ]
     },
-    "CARDi_ReadRom": {
-      "src/unnamed/arm9/0205/func_0205db2c.c": [
-        "param:#1 int",
-        "param:#2 int",
-        "param:#3 int",
-        "param:#4 int",
-        "param:#5 void *",
-        "param:#6 int",
-        "return:int"
-      ]
-    },
     "func_02061128": {
       "src/unnamed/arm9/0201/func_02019ebc.c": [
         "param:#1 int (*)(void)"
@@ -19263,11 +19088,6 @@
         "param:#1 int"
       ]
     },
-    "WM_GetMPSendBufferSize": {
-      "src/WM_StartMPEx.cpp": [
-        "return:int"
-      ]
-    },
     "WM_SetPortCallback": {
       "src/unnamed/arm9/0206/func_020690b0.c": [
         "param:#2 void *"
@@ -19281,38 +19101,9 @@
         "param:#1 void *"
       ]
     },
-    "WM_StartConnect": {
-      "src/unnamed/arm9/0203/func_0203fb5c.c": [
-        "param:#1 void *",
-        "param:#3 int"
-      ],
-      "src/unnamed/arm9/0206/func_020690b0.c": [
-        "param:#1 void *",
-        "param:#3 int"
-      ]
-    },
-    "WM_StartScan": {
-      "src/unnamed/arm9/0206/func_020690b0.c": [
-        "param:#1 void *"
-      ]
-    },
     "WM_StartParent": {
       "src/unnamed/arm9/0203/func_0203fb98.c": [
         "param:#1 void *"
-      ],
-      "src/unnamed/arm9/0206/func_02069994.c": [
-        "param:#1 void *"
-      ]
-    },
-    "WmCheckParentParameter": {
-      "src/WM_SetParentParameter.cpp": [
-        "return:void"
-      ]
-    },
-    "WM_SetParentParameter": {
-      "src/unnamed/arm9/0203/func_0203fbc4.c": [
-        "param:#1 void *",
-        "param:#2 int"
       ],
       "src/unnamed/arm9/0206/func_02069994.c": [
         "param:#1 void *"
@@ -19354,50 +19145,8 @@
         "param:#1 void *"
       ]
     },
-    "WM_SetMPDataToPort": {
-      "src/unnamed/arm9/0204/func_02041930.c": [
-        "return:int"
-      ],
-      "src/unnamed/arm9/0206/func_020627e8.cpp": [
-        "return:int"
-      ],
-      "src/WM_StepDataSharing.cpp": [
-        "return:int"
-      ],
-      "src/WM_StartDataSharing.cpp": [
-        "param:#1 void (*)(void *)",
-        "return:int"
-      ],
-      "src/unnamed/arm9/0206/func_02068a28.c": [
-        "param:#5 int",
-        "param:#6 int"
-      ]
-    },
-    "WM_SetMPDataToPortEx": {
-      "src/WM_SetMPDataToPort.c": [
-        "param:#5 int",
-        "return:void"
-      ]
-    },
     "func_0206259c": {
       "src/unnamed/arm9/0203/func_0203fd64.c": [
-        "param:#1 void *"
-      ]
-    },
-    "WM_StartMPEx": {
-      "src/unnamed/arm9/0203/func_0203faa8.c": [
-        "param:#1 void *",
-        "param:#2 unsigned int",
-        "param:#3 unsigned short",
-        "param:#4 unsigned int",
-        "param:#7 int"
-      ],
-      "src/unnamed/arm9/0206/func_020690b0.c": [
-        "param:#1 void *",
-        "param:#3 unsigned short",
-        "param:#7 int"
-      ],
-      "src/unnamed/arm9/0206/func_02069994.c": [
         "param:#1 void *"
       ]
     },
@@ -19450,7 +19199,7 @@
         "param:#5 int",
         "param:#6 int"
       ],
-      "src/unnamed/arm9/0206/func_020681b8.c": [
+      "src/MBi_SendFixedBeacon.c": [
         "param:#5 int",
         "param:#6 int"
       ]
@@ -19702,21 +19451,21 @@
       ]
     },
     "func_02068398": {
-      "src/unnamed/arm9/0206/func_02068410.c": [
+      "src/MB_SendGameInfoBeacon.c": [
         "return:int"
       ]
     },
-    "func_02068514": {
-      "src/unnamed/arm9/0206/func_02068680.c": [
+    "mystrlen": {
+      "src/MBi_MakeGameInfo.c": [
         "param:#1 int"
       ]
     },
-    "func_020685cc": {
-      "src/unnamed/arm9/0206/func_02068680.c": [
+    "MBi_ReadIconInfo": {
+      "src/MBi_MakeGameInfo.c": [
         "param:#2 void *"
       ]
     },
-    "func_02068680": {
+    "MBi_MakeGameInfo": {
       "src/unnamed/arm9/0206/func_02067928.cpp": [
         "param:#3 void *"
       ]
@@ -19935,7 +19684,7 @@
         "return:void"
       ]
     },
-    "func_0206e4a4": {
+    "__pformatter": {
       "src/unnamed/arm9/0206/func_0206e3dc.c": [
         "param:#1 void (*)(void)",
         "param:#3 unsigned int",
@@ -19943,22 +19692,17 @@
         "return:unsigned int"
       ]
     },
-    "func_0206ece0": {
+    "float2str": {
       "src/unnamed/arm9/0206/func_0206e4a4.c": [
         "param:#1 long double"
       ]
     },
-    "func_0206f338": {
-      "src/unnamed/arm9/0206/func_0206ece0.c": [
-        "param:#1 decimal *"
-      ]
-    },
-    "func_0206f46c": {
+    "double2hex": {
       "src/unnamed/arm9/0206/func_0206e4a4.c": [
         "param:#1 long double"
       ]
     },
-    "func_0206fd6c": {
+    "parse_format": {
       "src/unnamed/arm9/0206/func_0206e4a4.c": [
         "param:#1 const unsigned char *"
       ]
@@ -19974,22 +19718,12 @@
         "return:void"
       ]
     },
-    "func_02071708": {
-      "src/unnamed/arm9/0207/func_02070c68.c": [
-        "arity:1"
-      ]
-    },
     "func_02071790": {
       "src/unnamed/arm9/0207/func_02071be8.c": [
         "arity:3"
       ],
       "src/unnamed/arm9/0207/func_02071f1c.c": [
         "arity:3"
-      ]
-    },
-    "func_0207180c": {
-      "src/unnamed/arm9/0207/func_02072dac.c": [
-        "return:unsigned char *"
       ]
     },
     "func_02071844": {
@@ -20017,7 +19751,7 @@
       ]
     },
     "func_02071988": {
-      "src/unnamed/arm9/0207/func_020719ec.c": [
+      "src/__read_console.c": [
         "return:unsigned char"
       ]
     },
@@ -20074,7 +19808,7 @@
         "param:#1 void *"
       ]
     },
-    "func_02072fcc": {
+    "__throw_catch_compare": {
       "src/unnamed/arm9/0207/func_02071d3c.c": [
         "param:#1 int",
         "param:#2 int",
@@ -20133,21 +19867,21 @@
         "return:int"
       ]
     },
-    "func_02073244": {
+    "__cxa_vec_delete": {
       "include/decl_common.h": [
         "param:#1 void *",
         "param:#4 void (*)(void *)"
       ]
     },
     "func_02073300": {
-      "src/unnamed/arm9/0207/func_02073244.c": [
+      "src/__cxa_vec_delete.c": [
         "param:#1 int",
         "param:#2 int",
         "param:#3 int",
         "param:#4 int"
       ]
     },
-    "func_02073470": {
+    "__cxa_vec_new": {
       "src/game/stages/d_s_stage_methods.cpp": [
         "param:#1 int",
         "param:#2 int",
@@ -22381,6 +22115,126 @@
     "func_02067f2c": {
       "src/engine/mb/MB_Parent.cpp": [
         "return:int"
+      ]
+    },
+    "FS_UnloadArchive": {
+      "src/unnamed/arm9/0204/func_020423dc.c": [
+        "param:#1 int *"
+      ]
+    },
+    "FS_OpenFileDirect": {
+      "src/myFS_ReadFile.c": [
+        "param:#1 int"
+      ],
+      "src/engine/fs/FS_Archive.cpp": [
+        "param:#2 FSArchive *",
+        "param:#3 unsigned int",
+        "param:#4 unsigned int",
+        "param:#5 unsigned int"
+      ]
+    },
+    "FS_RegisterArchiveName": {
+      "src/engine/sound/SoundEngine.cpp": [
+        "param:#3 void *"
+      ]
+    },
+    "data_020a8064": {
+      "src/engine/fs/FS_Rom.cpp": [
+        "return:CARDRomRegion"
+      ]
+    },
+    "data_020a806c": {
+      "src/engine/fs/FS_Rom.cpp": [
+        "return:CARDRomRegion"
+      ]
+    },
+    "data_020a8074": {
+      "src/engine/fs/FS_Rom.cpp": [
+        "return:FSArchive"
+      ]
+    },
+    "OS_GetMacAddress": {
+      "src/unnamed/arm9/0203/func_0203db64.c": [
+        "param:#1 void *"
+      ],
+      "src/unnamed/arm9/0206/func_02068e4c.cpp": [
+        "param:#1 void *"
+      ]
+    },
+    "WM_GetMPSendBufferSize": {
+      "src/WM_StartMPEx.cpp": [
+        "return:int"
+      ]
+    },
+    "WM_SetMPDataToPort": {
+      "src/WM_StartDataSharing.cpp": [
+        "param:#1 void (*)(void *)",
+        "return:int"
+      ],
+      "src/WM_StepDataSharing.cpp": [
+        "return:int"
+      ],
+      "src/unnamed/arm9/0204/func_02041930.c": [
+        "return:int"
+      ],
+      "src/unnamed/arm9/0206/func_020627e8.cpp": [
+        "return:int"
+      ],
+      "src/unnamed/arm9/0206/func_02068a28.c": [
+        "param:#5 int",
+        "param:#6 int"
+      ]
+    },
+    "WM_SetMPDataToPortEx": {
+      "src/WM_SetMPDataToPort.c": [
+        "param:#5 int",
+        "return:void"
+      ]
+    },
+    "WM_SetParentParameter": {
+      "src/unnamed/arm9/0203/func_0203fbc4.c": [
+        "param:#1 void *",
+        "param:#2 int"
+      ],
+      "src/unnamed/arm9/0206/func_02069994.c": [
+        "param:#1 void *"
+      ]
+    },
+    "WM_StartConnect": {
+      "src/unnamed/arm9/0203/func_0203fb5c.c": [
+        "param:#1 void *",
+        "param:#3 int"
+      ],
+      "src/unnamed/arm9/0206/func_020690b0.c": [
+        "param:#1 void *",
+        "param:#3 int"
+      ]
+    },
+    "WM_StartMPEx": {
+      "src/unnamed/arm9/0203/func_0203faa8.c": [
+        "param:#1 void *",
+        "param:#2 unsigned int",
+        "param:#3 unsigned short",
+        "param:#4 unsigned int",
+        "param:#7 int"
+      ],
+      "src/unnamed/arm9/0206/func_020690b0.c": [
+        "param:#1 void *",
+        "param:#3 unsigned short",
+        "param:#7 int"
+      ],
+      "src/unnamed/arm9/0206/func_02069994.c": [
+        "param:#1 void *"
+      ]
+    },
+    "WM_StartScan": {
+      "src/unnamed/arm9/0206/func_020690b0.c": [
+        "param:#1 void *"
+      ]
+    },
+    "WmCheckParentParameter": {
+      "src/WM_SetParentParameter.cpp": [
+        "return:void"
       ]
     }
   },

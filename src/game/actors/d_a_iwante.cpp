@@ -2867,13 +2867,13 @@ extern "C" Eyerok *daIwante_c_classInit(void)
 /* ---- the static initializer's objects. __sinit_d_a_iwante.cpp, emitted from
  * these definitions at the bottom of the file, constructs the 22 resource
  * handles (3 model, 10 animation, 4 texture-sequence, 5 collision) and
- * registers each with its destructor through func_020731dc, then copies the
+ * registers each with its destructor through __register_global_object, then copies the
  * 38 pointer-to-member records into the 19 state descriptors. The record
  * and descriptor definitions are in the initializer's own order; the 22
  * handles are in the order it constructs them. The constructor and
  * destructor of each handle kind are the ROM's per-kind entry points
- * (aliased in this unit's manifest), and func_020731dc is the register
- * call the compiler emits as __register_global_object. */
+ * (aliased in this unit's manifest), and the register call is the
+ * runtime's own __register_global_object. */
 
 /* The 38 pointer-to-member records (ov066 .data 0x0211abe8..0x0211ad18) are ROM
  * data this unit only names. A member-pointer initializer is not static here:

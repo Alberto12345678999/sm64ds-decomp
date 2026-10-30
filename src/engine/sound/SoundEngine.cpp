@@ -486,7 +486,7 @@ extern u16 SND_CalcChannelVolume(s32 x);
 extern void func_0205b6b0(void *c);
 extern void func_0205b6f4(void *c);
 extern void func_0205b78c(struct Node *base, int index, struct Node *arg);
-extern int func_0205caa8(void *thiz);
+extern int FS_UnloadArchive(void *thiz);
 extern int FS_LoadArchive(int *self, int a1, int a2, int a3, int a4, int a5, int a6, int a7);
 extern void FS_ReleaseArchiveName(void *thiz);
 extern int FS_RegisterArchiveName(void *thiz, void *a, void *b);
@@ -2634,7 +2634,8 @@ extern "C" int func_0204ee40(struct S82 *self, char *name, char *p) {
 // @symbol func_0204ee10
 extern "C" int func_0204ee10(void *thiz)
 {
-    if (!func_0205caa8(thiz)) return 0;
+    if (!FS_UnloadArchive(thiz))
+        return 0;
     FS_ReleaseArchiveName(thiz);
     return 1;
 }

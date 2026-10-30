@@ -8,12 +8,12 @@
  * (data_020a9d40, sent as 0x70 bytes); only the fields this function touches
  * are spelled out.
  *
- * MBGameInfo extends func_0206853c.c's view (fixed part, volatile part,
+ * MBGameInfo extends MB_UpdateGameInfoMember.c's view (fixed part, volatile part,
  * seqNoVolat) with broadcastedPlayerFlag (0x4a8, bit i+1 set as child i is
  * copied, compared against nowPlayerFlag to finish), seqNoFixed (0x4ab),
- * fileNo (0x4ad, six bits in the beacon) and ggid (0x4b0, func_02068680
+ * fileNo (0x4ad, six bits in the beacon) and ggid (0x4b0, MBi_MakeGameInfo
  * fills it from the registry). The send status's seqNoVolat (0xe) is the
- * copy func_02068188 latches from the record; when it is stale that function
+ * copy MBi_InitSendVolatBeacon latches from the record; when it is stale that function
  * restarts the volatile send. beaconNo (0x11) is post-incremented into
  * beacon byte 7 on every send. */
 typedef struct MBGameInfo {
@@ -71,7 +71,7 @@ extern MbBeacon data_020a9d40;
 extern u16 data_020a9d48[];
 extern u8 data_020a9d50[];
 
-extern void func_02068188(void);
+extern void MBi_InitSendVolatBeacon(void);
 extern void MultiStore16(u16 val, char *dst, int nbytes);
 extern void MultiCopyHalf(void *src, void *dst, int n);
 extern u16 func_02067ee4(u16 *p, int len);
@@ -96,7 +96,7 @@ void func_02067f68(void)
 
     if (((MbBeaconSendStatus *)data_020a9d2c)->seqNoVolat !=
         ((MbBeaconSendStatus *)data_020a9d2c)->nowGameInfop->seqNoVolat) {
-        func_02068188();
+        MBi_InitSendVolatBeacon();
     }
 
     ptr = ((MbBeaconSendStatus *)data_020a9d2c)->nowGameInfop;
