@@ -9,8 +9,8 @@ extern int PXI_IsCallbackReady(int tag, int proc);
 extern void DMASyncFillTransfer(int ch, void *dst, int val, int len);
 extern void func_0206116c(void);
 extern int func_02061c88(int idx, int b, int c);
-extern void func_02058940(void *s, int *v1, int v2);
-extern int func_02058894(void *q, void *val, int flag);
+extern void OS_InitMessageQueue(void *s, int *v1, int v2);
+extern int OS_SendMessage(void *q, void *val, int flag);
 extern void PXI_SetFifoRecvCallback(int tag, void *callback);
 
 extern u16 data_020a89a8;
@@ -63,12 +63,12 @@ int func_020616e8(void *buf, int ch)
             func_02061c88((u16)i, 0, 0);
     }
 
-    func_02058940(&data_020a89b0, &data_020a89c4, 0xa);
+    OS_InitMessageQueue(&data_020a89b0, &data_020a89c4, 0xa);
     {
         int i;
         char *p = &data_020a8a40[0];
         for (i = 0; i < 0xa; i++) {
-            func_02058894(&data_020a89b0, p, 1);
+            OS_SendMessage(&data_020a89b0, p, 1);
             p += 0x100;
         }
     }

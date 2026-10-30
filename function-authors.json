@@ -9671,15 +9671,15 @@
     },
     "arm9:0x020587e4": {
       "author": "ruspecial",
-      "name": "func_020587e4"
+      "name": "OS_ReceiveMessage"
     },
     "arm9:0x02058894": {
       "author": "tangosdev",
-      "name": "func_02058894"
+      "name": "OS_SendMessage"
     },
     "arm9:0x02058940": {
       "author": "tangosdev",
-      "name": "func_02058940"
+      "name": "OS_InitMessageQueue"
     },
     "arm9:0x02058960": {
       "author": "tangosdev",
@@ -9687,31 +9687,31 @@
     },
     "arm9:0x02058988": {
       "author": "tangosdev",
-      "name": "func_02058988"
+      "name": "OSi_DequeueItem"
     },
     "arm9:0x020589ac": {
       "author": "tangosdev",
-      "name": "func_020589ac"
+      "name": "OSi_EnqueueTail"
     },
     "arm9:0x020589d4": {
       "author": "tangosdev",
-      "name": "func_020589d4"
+      "name": "OS_TryLockMutex"
     },
     "arm9:0x02058a44": {
       "author": "tangosdev",
-      "name": "func_02058a44"
+      "name": "OSi_UnlockAllMutex"
     },
     "arm9:0x02058a94": {
       "author": "tangosdev",
-      "name": "func_02058a94"
+      "name": "OS_UnlockMutex"
     },
     "arm9:0x02058b08": {
       "author": "tangosdev",
-      "name": "func_02058b08"
+      "name": "OS_LockMutex"
     },
     "arm9:0x02058b9c": {
       "author": "tangosdev",
-      "name": "func_02058b9c"
+      "name": "OS_InitMutex"
     },
     "arm9:0x02058bb0": {
       "author": "tangosdev",

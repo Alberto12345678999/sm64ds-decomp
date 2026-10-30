@@ -39,11 +39,9 @@ struct HeapAllocator_204f400;
 struct HeapAllocator_204f460;
 struct HeapAllocator_204f504;
 struct HeapAllocator_205212c;
-struct MsgQueue;
 struct Node_204f63c;
 struct Obj_2050fd4;
 struct Obj_205212c;
-struct S58940;
 struct S_204f720;
 
 typedef short s16;
@@ -422,7 +420,7 @@ extern struct E data_020a5578[];
 extern int data_020a55f8;
 extern int data_020a55fc;
 extern int data_020a5600;
-extern int data_020a5614;
+extern void *data_020a5614[]; /* the message array of data_020a5600 */
 extern struct D data_020a5634;
 extern int data_020a5684;
 extern struct Q data_020a5718[];
@@ -436,9 +434,9 @@ extern void OS_WakeupThreadDirect(void *thread);
 /* local extern: as above */
 extern void OS_CreateThread(void *thread, void *func, void *arg, void *stack,
                             unsigned int stackSize, unsigned int prio);
-extern int func_020587e4(struct MsgQueue *self, u32 *msg, int flags);
-extern int func_02058894(struct Q *q, int val, int flag);
-extern void func_02058940(struct S58940 *s, int v1, int v2);
+extern int OS_ReceiveMessage(void *mq, void **msg, int flags);
+extern int OS_SendMessage(void *mq, void *msg, int flags);
+extern void OS_InitMessageQueue(void *mq, void **msgArray, int msgCount);
 extern void func_0205a82c(void);
 extern void func_0205a958(void *a, int b, int c, int d);
 extern void func_0205a98c(void *a, int b);
@@ -1672,7 +1670,7 @@ extern "C" void func_020506fc(int arg)
     if (data_020a55fc != 0)
         return;
     data_020a55f8 = 0;
-    ((void(*)(int *s, int *v1, int v2))func_02058940)(&data_020a5600, &data_020a5614, 8);
+    OS_InitMessageQueue(&data_020a5600, data_020a5614, 8);
     OS_CreateThread(&data_020a5684, (void *)func_02050038, 0, &data_020a5bb8, 0x400, arg);
     data_020a55fc = 1;
     OS_WakeupThreadDirect(&data_020a5684);
@@ -1784,7 +1782,8 @@ extern "C" void func_020502b8(void)
         void *x = func_0205afb4();
         ((void(*)(int a))func_0205b070)(1);
         ((void(*)(unsigned int c))func_0205afe0)((unsigned int)x);
-        while (((int(*)(void *a, int b, int c))func_020587e4)(&data_020a5600, 0, 0) != 0) {}
+        while (OS_ReceiveMessage(&data_020a5600, 0, 0) != 0) {
+        }
     }
     if (d->f24 != 0) func_0204f11c(d->f24);
     if (d->f1c != 0) func_0204f15c((void *)d->f1c);
@@ -1851,7 +1850,7 @@ extern "C" void func_020500a4(struct T *thiz)
         slot->f8 = prod;
         slot->fc = e6;
         slot->f10 = e5;
-        ((void(*)(void *a, void *slot, int c))func_02058894)(&data_020a5600, slot, 0);
+        OS_SendMessage(&data_020a5600, slot, 0);
         data_020a55f8 = data_020a55f8 + 1;
         if (data_020a55f8 >= 8) data_020a55f8 = 0;
     } else {
@@ -1872,7 +1871,7 @@ extern "C" void func_02050038(void)
     struct Outer *r;
     void *out;
     for (;;) {
-        ((void(*)(void *a, void **out, int c))func_020587e4)(&data_020a5600, &out, 1);
+        OS_ReceiveMessage(&data_020a5600, &out, 1);
         r = (struct Outer *)out;
         ((void (*)(unsigned int a, unsigned int b))CP15::InvalidateDataCache)((unsigned int)r->hc,
                                                                               (unsigned int)r->h4);

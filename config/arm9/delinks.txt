@@ -2237,49 +2237,13 @@ src/unnamed/arm9/0205/func_020587dc.c:
     complete
     .text start:0x020587dc end:0x020587e4
 
-src/unnamed/arm9/0205/func_020587e4.cpp:
+src/engine/os/OS_Message.cpp:
     complete
-    .text start:0x020587e4 end:0x02058894
+    .text start:0x020587e4 end:0x02058960
 
-src/unnamed/arm9/0205/func_02058894.cpp:
+src/engine/os/OS_Mutex.cpp:
     complete
-    .text start:0x02058894 end:0x02058940
-
-src/unnamed/arm9/0205/func_02058940.c:
-    complete
-    .text start:0x02058940 end:0x02058960
-
-src/unnamed/arm9/0205/func_02058960.c:
-    complete
-    .text start:0x02058960 end:0x02058988
-
-src/unnamed/arm9/0205/func_02058988.c:
-    complete
-    .text start:0x02058988 end:0x020589ac
-
-src/unnamed/arm9/0205/func_020589ac.c:
-    complete
-    .text start:0x020589ac end:0x020589d4
-
-src/unnamed/arm9/0205/func_020589d4.cpp:
-    complete
-    .text start:0x020589d4 end:0x02058a44
-
-src/unnamed/arm9/0205/func_02058a44.c:
-    complete
-    .text start:0x02058a44 end:0x02058a94
-
-src/unnamed/arm9/0205/func_02058a94.cpp:
-    complete
-    .text start:0x02058a94 end:0x02058b08
-
-src/unnamed/arm9/0205/func_02058b08.cpp:
-    complete
-    .text start:0x02058b08 end:0x02058b9c
-
-src/unnamed/arm9/0205/func_02058b9c.c:
-    complete
-    .text start:0x02058b9c end:0x02058bb0
+    .text start:0x02058960 end:0x02058bb0
 
 src/engine/cp15/CP15.cpp:
     .text start:0x02058bb0 end:0x02058c84

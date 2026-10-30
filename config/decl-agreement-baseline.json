@@ -5657,9 +5657,6 @@
       "src/unnamed/arm9/0205/func_0205865c.cpp": [
         "return:void"
       ],
-      "src/unnamed/arm9/0205/func_02058894.cpp": [
-        "return:void"
-      ],
       "src/unnamed/arm9/0205/func_02059040.cpp": [
         "return:void"
       ],
@@ -20458,29 +20455,33 @@
         "param:#2 void *"
       ]
     },
-    "func_020587e4": {
+    "OS_ReceiveMessage": {
       "src/WM_SendCommand.cpp": [
         "param:#2 void * *",
         "return:void"
+      ],
+      "src/engine/sound/SoundEngine.cpp": [
+        "param:#2 void * *"
       ]
     },
-    "func_02058894": {
+    "OS_SendMessage": {
       "src/WM_SendCommand.cpp": [
         "param:#2 void *",
         "return:void"
       ],
       "src/unnamed/arm9/0206/func_020616e8.cpp": [
         "param:#2 void *"
+      ],
+      "src/engine/sound/SoundEngine.cpp": [
+        "param:#2 void *"
       ]
     },
-    "func_02058940": {
+    "OS_InitMessageQueue": {
       "src/unnamed/arm9/0206/func_020616e8.cpp": [
         "param:#2 int *"
-      ]
-    },
-    "func_02058988": {
-      "src/unnamed/arm9/0205/func_02058a94.cpp": [
-        "param:#2 char *"
+      ],
+      "src/engine/sound/SoundEngine.cpp": [
+        "param:#2 void * *"
       ]
     },
     "OS_AllocFromArenaLo": {
