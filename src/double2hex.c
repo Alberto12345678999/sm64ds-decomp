@@ -1,5 +1,5 @@
 /* double2hex @ 0x0206f46c (arm9, size 0x3b4)   [mwccarm 2004/b56]
- * MSL printf helper hex_double2str: formats a double backwards into buff_end
+ * MSL printf helper double2hex: formats a double backwards into buff_end
  * as the C99 %a/%A hexadecimal form "0x1.<hex digits>p<exp>", handling
  * zero/inf/nan, sign and alternate form. Sibling of float2str,
  * which does %e/%f/%g. Returns a pointer to the first character, or NULL if the

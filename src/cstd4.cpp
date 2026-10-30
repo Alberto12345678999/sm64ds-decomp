@@ -558,7 +558,7 @@ extern unsigned char *parse_format(unsigned char *format_string, char **arg, pri
 
 extern int func_0206e450(char *obj, const void *src, unsigned int n);
 extern int __pformatter(int (*WriteProc)(void *, const char *, size_t), void *WriteProcArg,
-                         const unsigned char *format_str, char *arg);
+                        const unsigned char *format_str, char *arg);
 extern char *float2str(double x, char *buff_end, print_format format);
 extern char *double2hex(double x, char *buff_end, print_format format);
 extern char *longlong2str(long long num, char *buff_end, print_format format);
@@ -640,7 +640,7 @@ unsigned int func_0206e3dc(char *buf, unsigned int len,
     ctx.len = len;
     ctx.z = 0;
     r = __pformatter((int (*)(void *, const char *, size_t))func_0206e450, &ctx,
-                      (const unsigned char *)fmtAddr, (char *)val);
+                     (const unsigned char *)fmtAddr, (char *)val);
     if (buf == 0) return r;
     if (r < len) {
         buf[r] = 0;
@@ -683,7 +683,7 @@ int func_0206e450(char *obj, const void *src, unsigned int n)
  */
 // @symbol __pformatter
 int __pformatter(int (*WriteProc)(void *, const char *, size_t), void *WriteProcArg,
-                  const unsigned char *format_str, char *arg)
+                 const unsigned char *format_str, char *arg)
 {
     int num_chars;
     long long long_long_num;
