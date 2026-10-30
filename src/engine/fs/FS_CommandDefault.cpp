@@ -2,7 +2,7 @@
 /* The file system's default commands (the Nitro SDK's fs_command_default.c),
  * arm9 .text 0x0205bbdc..0x0205c5e4.
  *
- * FSi_TranslateCommand (func_0205c5e4) falls back to the table
+ * FSi_TranslateCommand (src/engine/fs/FS_Command.cpp) falls back to the table
  * fsi_default_command when an archive's proc leaves a command to the
  * default: entry n runs FS_COMMAND n. pret/pokediamond's NitroSDK
  * FS_command_default.c has the same nine commands in the same table order.
@@ -213,7 +213,7 @@ typedef struct FSiSyncReadParam {
     u32 pos;        /* 0x04 */
 } FSiSyncReadParam;
 
-int func_0205c5e4(void *p_file, int command); /* FSi_TranslateCommand */
+int FSi_TranslateCommand(FSFile *p_file, int command);
 void FS_InitFile(void *p_file);
 void CpuCopy8(const void *src, void *dst, u32 size);
 void OS_SleepThread(u16 *queue);
@@ -270,7 +270,7 @@ void FSi_SeekDirDirect(FSFile *p_dir, u32 id) {
     p_dir->arg.seekdir.pos.pos = 0;
     p_dir->arg.seekdir.pos.index = 0;
     p_dir->arg.seekdir.pos.own_id = (u16)id;
-    func_0205c5e4(p_dir, FS_COMMAND_SEEKDIR);
+    FSi_TranslateCommand(p_dir, FS_COMMAND_SEEKDIR);
 }
 
 /* Compare len characters, ignoring the case of A-Z. */
@@ -411,7 +411,7 @@ int FSi_FindPathCommand(FSFile *p_dir) {
 
     FSDirEntry entry;
 
-    func_0205c5e4(p_dir, FS_COMMAND_SEEKDIR);
+    FSi_TranslateCommand(p_dir, FS_COMMAND_SEEKDIR);
 
     for (c = *path; c != '\0'; path += (*path != '\0') ? 1 : 0, c = *path) {
         len = 0;
@@ -445,7 +445,7 @@ int FSi_FindPathCommand(FSFile *p_dir) {
         p_dir->arg.readdir.skip_string = 0;
 
         for (;;) {
-            if (func_0205c5e4(p_dir, FS_COMMAND_READDIR) != FS_RESULT_SUCCESS)
+            if (FSi_TranslateCommand(p_dir, FS_COMMAND_READDIR) != FS_RESULT_SUCCESS)
                 return FS_RESULT_FAILURE;
             if (want_dir != entry.is_directory)
                 continue;
@@ -459,7 +459,7 @@ int FSi_FindPathCommand(FSFile *p_dir) {
         if (want_dir != 0) {
             FSi_CopyDirPos(&p_dir->arg.seekdir.pos, &entry.dir_id);
             path = path + len;
-            func_0205c5e4(p_dir, FS_COMMAND_SEEKDIR);
+            FSi_TranslateCommand(p_dir, FS_COMMAND_SEEKDIR);
             continue;
         }
 
@@ -517,13 +517,13 @@ int FSi_GetPathCommand(FSFile *p_file) {
                     cnt = tmp.prop.dir.parent;
                 tmp.arg.readdir.p_entry = &entry;
                 tmp.arg.readdir.skip_string = 1;
-                if (func_0205c5e4(&tmp, FS_COMMAND_READDIR) == FS_RESULT_SUCCESS) {
+                if (FSi_TranslateCommand(&tmp, FS_COMMAND_READDIR) == FS_RESULT_SUCCESS) {
                     for (;;) {
                         if (entry.is_directory == 0 && entry.file_id.file_id == file_id) {
                             dir_id = tmp.prop.dir.pos.own_id;
                             break;
                         }
-                        if (func_0205c5e4(&tmp, FS_COMMAND_READDIR) != FS_RESULT_SUCCESS)
+                        if (FSi_TranslateCommand(&tmp, FS_COMMAND_READDIR) != FS_RESULT_SUCCESS)
                             break;
                     }
                 }
@@ -558,13 +558,13 @@ int FSi_GetPathCommand(FSFile *p_file) {
                 FSi_SeekDirDirect(&tmp, tmp.prop.dir.parent);
                 tmp.arg.readdir.p_entry = &entry;
                 tmp.arg.readdir.skip_string = 1;
-                if (func_0205c5e4(&tmp, FS_COMMAND_READDIR) == FS_RESULT_SUCCESS) {
+                if (FSi_TranslateCommand(&tmp, FS_COMMAND_READDIR) == FS_RESULT_SUCCESS) {
                     for (;;) {
                         if (entry.is_directory != 0 && entry.dir_id.own_id == i) {
                             cnt += entry.name_len + 1;
                             break;
                         }
-                        if (func_0205c5e4(&tmp, FS_COMMAND_READDIR) != FS_RESULT_SUCCESS)
+                        if (FSi_TranslateCommand(&tmp, FS_COMMAND_READDIR) != FS_RESULT_SUCCESS)
                             break;
                     }
                 }
@@ -607,11 +607,11 @@ int FSi_GetPathCommand(FSFile *p_file) {
         if (file_id != FS_INVALID_ID) {
             tmp.arg.readdir.p_entry = &entry;
             tmp.arg.readdir.skip_string = 0;
-            if (func_0205c5e4(&tmp, FS_COMMAND_READDIR) == FS_RESULT_SUCCESS) {
+            if (FSi_TranslateCommand(&tmp, FS_COMMAND_READDIR) == FS_RESULT_SUCCESS) {
                 for (;;) {
                     if (entry.is_directory == 0 && entry.file_id.file_id == file_id)
                         break;
-                    if (func_0205c5e4(&tmp, FS_COMMAND_READDIR) != FS_RESULT_SUCCESS)
+                    if (FSi_TranslateCommand(&tmp, FS_COMMAND_READDIR) != FS_RESULT_SUCCESS)
                         break;
                 }
             }
@@ -634,7 +634,7 @@ int FSi_GetPathCommand(FSFile *p_file) {
                 tmp.arg.readdir.skip_string = 0;
                 *(buf + count - 1) = '/';
                 count--;
-                if (func_0205c5e4(&tmp, FS_COMMAND_READDIR) == FS_RESULT_SUCCESS) {
+                if (FSi_TranslateCommand(&tmp, FS_COMMAND_READDIR) == FS_RESULT_SUCCESS) {
                     for (;;) {
                         if (entry.is_directory != 0 && entry.dir_id.own_id == dir_id) {
                             int n = entry.name_len;
@@ -642,7 +642,7 @@ int FSi_GetPathCommand(FSFile *p_file) {
                             count -= n;
                             break;
                         }
-                        if (func_0205c5e4(&tmp, FS_COMMAND_READDIR) != FS_RESULT_SUCCESS)
+                        if (FSi_TranslateCommand(&tmp, FS_COMMAND_READDIR) != FS_RESULT_SUCCESS)
                             break;
                     }
                 }
@@ -668,7 +668,7 @@ int FSi_OpenFileFastCommand(FSFile *p_file) {
     p_file->arg.openfiledirect.top = fat.top;
     p_file->arg.openfiledirect.bottom = fat.bottom;
     p_file->arg.openfiledirect.index = index;
-    return func_0205c5e4(p_file, FS_COMMAND_OPENFILEDIRECT);
+    return FSi_TranslateCommand(p_file, FS_COMMAND_OPENFILEDIRECT);
 }
 
 // @symbol FSi_OpenFileDirectCommand

@@ -123,9 +123,12 @@ extern "C" int func_0203b3c0(int* list, struct Node* n)
 
 /* The two pre-order walk steps over the same links, at the bottom of the
  * run. func_020431c4 (ActorBase.cpp) and ProcessTree::Thing::func_020441cc
- * (fListNode.cpp) walk the scene tree with them. NSMBW's fTrNdBa_c has
- * getTreeNext and getTreeNextNotChild with the same two bodies, but nothing
- * in this ROM names them, so they keep their address names. */
+ * (fListNode.cpp) walk the scene tree with them. NSMBW's c_tree.cpp has
+ * cTreeNd_c::getTreeNext and getTreeNextNotChild with the same two bodies,
+ * last in a file whose six functions (ctor, forcedClear, addTreeNode,
+ * removeTreeNode, getTreeNext, getTreeNextNotChild) are this run in reverse
+ * emission order; nothing in this ROM names them, so they keep their
+ * address names. */
 
 /* The pre-order successor of `node`: its first child, else the first node
  * after its subtree (func_0203b358). */

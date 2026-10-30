@@ -4,16 +4,16 @@
 extern "C" {
 
 extern void func_0205c864(int *thiz);
-extern void func_0205c788(int *p, int n);
+extern void FSi_ReleaseCommand(int *p, int n);
 
-/* NitroSDK FSFile, the link field followed here (func_0205d044.cpp's name). */
+/* NitroSDK FSFile, the link field followed here (FSi_NextCommand.cpp's name). */
 typedef struct FSFile {
     struct FSFile *prev; /* 0x00 -- link.prev */
     struct FSFile *next; /* 0x04 -- link.next */
 } FSFile;
 
 /* NitroSDK FSArchive, the fields cleared here; names follow the SDK's, as
- * func_0205d044.cpp and func_0205c9b8.c spell them. */
+ * FSi_NextCommand.cpp and func_0205c9b8.c spell them. */
 typedef struct FSArchive {
     char pad_00[0x10];
     unsigned int flag; /* 0x10 */
@@ -32,8 +32,8 @@ typedef struct FSArchive {
 
 /* NitroSDK FS_UnloadArchive(p_arc): if the archive is loaded
  * (FS_ARCHIVE_FLAG_LOADED, 2), suspend it (func_0205c864), mark it
- * UNLOADING (0x80), cancel every queued command (func_0205c788 =
- * FSi_ReleaseCommand with FS_RESULT_CANCELED, 3), clear its table and base
+ * UNLOADING (0x80), cancel every queued command (FSi_ReleaseCommand
+ * with FS_RESULT_CANCELED, 3), clear its table and base
  * addresses and drop CANCELING | LOADED | UNLOADING (0xa2). */
 int func_0205caa8(int *thiz)
 {
@@ -51,7 +51,7 @@ int func_0205caa8(int *thiz)
             FSFile *n;
             do {
                 n = p->next;
-                func_0205c788((int *)p, 3);
+                FSi_ReleaseCommand((int *)p, 3);
                 p = n;
             } while (n != 0);
         }

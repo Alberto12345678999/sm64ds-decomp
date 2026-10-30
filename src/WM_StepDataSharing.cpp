@@ -45,7 +45,7 @@ typedef struct WMDataSharingInfo {
     u16 reserved[1];   /* 0x41e */
 } WMDataSharingInfo;
 
-/* WM_GetSystemWork's WMArm9Buf and its WMStatus, as func_020631dc views
+/* WM_GetSystemWork's WMArm9Buf and its WMStatus, as WM_StartDataSharing views
  * them. 0x86 (the children the parent's sets wait for) has no name in any
  * view yet, so it is read by offset below. */
 typedef struct WMStatus {

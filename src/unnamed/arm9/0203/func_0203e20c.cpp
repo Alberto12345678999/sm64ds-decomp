@@ -37,7 +37,7 @@ extern void func_0203e978(void);
 extern int OS_GetTickLo(void);
 extern void func_02068e4c(void *a, void *b, u16 c, u16 d, u16 e, int f);
 extern void func_02068dc8(int a, int b, int c);
-extern void func_020672a4(u32 val);
+extern void MB_CommSetParentStateCallback(u32 val);
 extern void func_0203e9a8(u32 a0, int sel, int a2);
 extern int func_02068ae8(int param0);
 extern int func_02067e70(void *obj);
@@ -49,7 +49,7 @@ extern void *func_020671b4(u16 idx);
 extern int func_02067250(u16 a);
 extern int func_0206703c(u16 arg0, int sel);
 extern void CpuCopy8(const void *src, void *dst, unsigned int size);
-extern int func_02067138(u16 idx);
+extern int MB_CommIsBootable(u16 idx);
 extern void func_02068a54(void);
 
 #define H(base, off) (*(u16 *)((char *)(base) + (off)))
@@ -64,7 +64,7 @@ extern void func_02068a54(void);
    seats up to three children: a child in state 0xa is answered with 1,
    one past the third with 0, and once data_020a0f70 is up and all are
    counted every child is answered with 2. Step 4 waits until each seated
-   child is ready (func_02067138), step 5 answers them with 3, and step 6
+   child is ready (MB_CommIsBootable), step 5 answers them with 3, and step 6
    ends it. A stop request (data_020a0f40) in step 3, or a child lost in
    steps 4 and 5, jumps to step 6; a lost child also sets link error bit
    4. Every frame the local input record data_020a1040 is copied into all
@@ -105,7 +105,7 @@ void func_0203e20c(void)
         data_020a0f20 = (u16)OS_GetTickLo();
         func_02068e4c(data_020a0f3c, data_020a10fc, H(data_020a1064, 6), H(data_020a1064, 8), data_020a0f20, 1);
         func_02068dc8(0x1fe, 8, 3);
-        func_020672a4((u32)func_0203e9a8);
+        MB_CommSetParentStateCallback((u32)func_0203e9a8);
         func_02068ae8(data_020a0f28);
         size = func_02067e70(0);
         p = Memory::Allocate(size, 0x20);
@@ -198,7 +198,7 @@ void func_0203e20c(void)
         u8 *p = &data_020a0f9d;
         int k = 1;
         do {
-            if (*p != 0 && func_02067138(k) != 1) {
+            if (*p != 0 && MB_CommIsBootable(k) != 1) {
                 ok = 0;
             }
             k += 1;

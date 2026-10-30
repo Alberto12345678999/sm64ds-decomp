@@ -22,16 +22,22 @@ typedef struct {
 
 extern void Crash(void);
 extern void MultiCopyHalf(const void *src, void *dst, u32 count);
-extern int func_02061674(void);
-extern void func_0206116c(void);
+extern int WM_Finish(void);
+extern void WmClearFifoRecvFlag(void);
 extern u32 *data_020a89ac;
 extern BufT data_020a89ec;
 extern char data_020a8a00;
 
-void func_02061188(int unused, u16 *msg, int flag) {
+/* NitroSDK wm_system.c's static WmReceiveFifo, the PXI receive callback
+ * WM_Init installs for tag 0xa: msg is the WMCallback ARM7 left in the
+ * fifo7to9 buffer (data_020a89ac[4]). Unless err, dispatch it to the
+ * indication callback, the port callback or the callback registered for
+ * its API id, call WM_Finish after a successful WM_APIID_END (2), and
+ * otherwise end in WmClearFifoRecvFlag. */
+void WmReceiveFifo(int tag, u16 *msg, int err) {
     u16 op;
 
-    if (flag != 0)
+    if (err != 0)
         return;
 
     CP15::InvalidateDataCache(data_020a89ac[4], 0x100);
@@ -110,16 +116,18 @@ void func_02061188(int unused, u16 *msg, int flag) {
         }
 
         if (msg[0] == 2 && msg[1] == 0) {
-            func_02061674();
+            WM_Finish();
             return;
         }
     }
 
     CP15::InvalidateDataCache(data_020a89ac[4], 0x100);
-    func_0206116c();
+    WmClearFifoRecvFlag();
 }
 
-void func_0206116c(void) {
+/* NitroSDK wm_system.c's static WmClearFifoRecvFlag: clear bit 0 of the
+ * WM callback-control halfword shared with ARM7 (0x027fff96). */
+void WmClearFifoRecvFlag(void) {
     u16 *p = (u16 *)0x027fff96;
     if (*p & 1)
         *p &= ~1;

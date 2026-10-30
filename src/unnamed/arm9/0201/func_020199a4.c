@@ -1,4 +1,5 @@
 #include "types.h"
+#include "nitro/spi/pm.h"
 
 enum { false, true };
 
@@ -8,8 +9,6 @@ extern int func_0203d974(void);
 extern void func_02012790(int n);
 extern void func_02019dfc(void);
 extern void func_02011dc0(void);
-extern int func_0205f66c(int n);
-extern int func_0205f650(void);
 extern void func_02019ed0(void);
 extern void func_02011db4(void);
 extern unsigned char data_0209f1d8;
@@ -93,7 +92,7 @@ void func_02019ac4(void) {
                     data_0209d4f4 = 1;
                 }
                 if (skip != 0)
-                    func_0205f66c(0);
+                    PM_SetLCDPower(0);
                 data_0209d4ec = 3;
             } else {
                 data_0209d504 = tv - delta;
@@ -110,7 +109,7 @@ void func_02019ac4(void) {
         }
     }
     if (data_0209d4ec == 4) {
-        if (func_0205f650() == 1 || func_0205f66c(1) == 1) {
+        if (PM_GetLCDPower() == 1 || PM_SetLCDPower(1) == 1) {
             if (data_0209d4f4 != 0) {
                 func_02011db4();
                 data_0209d4f4 = 0;
@@ -153,7 +152,7 @@ void func_02019ac4(void) {
 }
 
 void func_02019a58(void) {
-    while (func_0205f650() != 1 && func_0205f66c(1) != 1) {
+    while (PM_GetLCDPower() != 1 && PM_SetLCDPower(1) != 1) {
         func_0201a4d0();
     }
 

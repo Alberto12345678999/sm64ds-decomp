@@ -63,8 +63,8 @@ typedef struct WMArm9Buf {
  * (aid 0) primes the four sets, registers its port receive callback
  * (func_02062bdc) and sends the first set (two in double mode); a child
  * registers func_02062aa4 and waits. */
-int func_020631dc(u8 *self, int port, int aidBitmap, int dataLength, int doubleMode) {
-    WMDataSharingInfo *dsInfo = (WMDataSharingInfo *)self;
+int WM_StartDataSharing(WMDataSharingInfo *dsInfo, int port, int aidBitmap, int dataLength,
+                        int doubleMode) {
     u16 childMask = 1;
     WMArm9Buf *sys;
     int r;
@@ -84,7 +84,7 @@ int func_020631dc(u8 *self, int port, int aidBitmap, int dataLength, int doubleM
     if (sys->status->mp_flag == 0)
         return 3;
 
-    if (self == 0)
+    if (dsInfo == 0)
         return 6;
     if ((u32)port >= 0x10)
         return 6;
@@ -99,7 +99,7 @@ int func_020631dc(u8 *self, int port, int aidBitmap, int dataLength, int doubleM
     }
 
     zero = 0;
-    MultiStore32Bytes(zero, (int *)self, 0x420);
+    MultiStore32Bytes(zero, (int *)dsInfo, 0x420);
 
     dsInfo->writeIndex = 0;
     dsInfo->sendIndex = 0;
@@ -139,7 +139,7 @@ int func_020631dc(u8 *self, int port, int aidBitmap, int dataLength, int doubleM
         for (i = 0; i < 4; i++)
             dsInfo->ds[i].aidHeader = (u16)(dsInfo->aidBitmap & (childMask | 1));
 
-        WM_SetPortCallback(port, (int)func_02062bdc, (int)self);
+        WM_SetPortCallback(port, (int)func_02062bdc, (int)dsInfo);
 
         cur = dsInfo->ds;
         for (n = 0; n < ((dsInfo->doubleMode == 1) ? 2 : 1); n++) {
@@ -161,7 +161,7 @@ int func_020631dc(u8 *self, int port, int aidBitmap, int dataLength, int doubleM
         }
     } else {
         dsInfo->sendIndex = 3;
-        WM_SetPortCallback(port, (int)func_02062aa4, (int)self);
+        WM_SetPortCallback(port, (int)func_02062aa4, (int)dsInfo);
     }
 
     return 0;
