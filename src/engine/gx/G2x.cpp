@@ -14,7 +14,7 @@
 #include "G2x.h"
 #include "types.h"
 
-struct Matrix2x2 { int m[4]; };
+#include "Matrix2x2.h"
 
 // @symbol _ZN3G2x12SetBGyAffineEPVtP9Matrix2x2iiii
 /* Loads a background's affine transform into the hardware registers behind `p`.
@@ -29,18 +29,18 @@ struct Matrix2x2 { int m[4]; };
  * resolves them into the single origin the hardware actually takes. */
 void G2x::SetBGyAffine(volatile unsigned short *p, Matrix2x2 *m, int a, int b, int c, int d)
 {
-    u16 pa = (u16)(s16)(m->m[0] >> 4);
-    u16 pb = (u16)(s16)(m->m[1] >> 4);
+    u16 pa = (u16)(s16)(m->m00 >> 4);
+    u16 pb = (u16)(s16)(m->m01 >> 4);
     *(volatile unsigned int *)p = pa | (pb << 16);
 
-    u16 pc = (u16)(s16)(m->m[2] >> 4);
-    u16 pd = (u16)(s16)(m->m[3] >> 4);
+    u16 pc = (u16)(s16)(m->m10 >> 4);
+    u16 pd = (u16)(s16)(m->m11 >> 4);
     *(volatile unsigned int *)(p + 2) = pc | (pd << 16);
 
     int dx = c - a;
     int dy = d - b;
-    int x = m->m[0] * dx + m->m[1] * dy + (a << 12);
-    int y = m->m[2] * dx + m->m[3] * dy + (b << 12);
+    int x = m->m00 * dx + m->m01 * dy + (a << 12);
+    int y = m->m10 * dx + m->m11 * dy + (b << 12);
 
     *(volatile int *)(p + 4) = x >> 4;
     *(volatile int *)(p + 6) = y >> 4;

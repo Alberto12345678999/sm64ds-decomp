@@ -14,6 +14,7 @@ struct dExtAnmTexSRT_c;
  * include/Particle__SysTracker.h; see notes/scene-provenance.md and
  * notes/system-provenance.md for the field evidence. */
 #include "Particle__SysTracker.h"
+#include "Matrix2x2.h"
 #include "dGraph_c.h"
 
 /* One per level texture animation, eight slots' worth at dScStage_c+0x8bc.
@@ -140,10 +141,7 @@ struct dScStage_c : dScene_c {
    UpdateMinimap fills them. */
 class dScStage_c::graphCallback_c : public dGraph_c::callback_c {
 public:
-    /* The 2x2 fixed-point matrix. Spelled as four words because Matrix2x2 is
-       still a file-local type, defined five different ways in five TUs; the
-       one SetBGyAffine call casts. */
-    int matrix[4];        /* 0x04 */
+    Matrix2x2 matrix;     /* 0x04 -- seeded to 1.0 by __sinit_02074edc */
     volatile u32 originX; /* 0x14 */
     volatile u32 originY; /* 0x18 */
     volatile u32 targetX; /* 0x1c */
