@@ -3,10 +3,6 @@
 extern void func_ov007_020c1d8c(int i);
 extern void func_ov007_020b20e8(void);
 extern void func_ov007_020b4b5c(struct Ov007ItemView *view, int camera);
-extern char *data_ov007_0210342c;
-/* The extern keeps the tree's char * spelling (the declaration-agreement
- * gate); the typed view is reached through a cast macro. */
-#define WORK ((Ov007Work *)data_ov007_0210342c)
 
 /* Resets the manager's per-visit state, re-aims camera 1
  * (func_ov007_020b20e8) and puts every item view back at its home point

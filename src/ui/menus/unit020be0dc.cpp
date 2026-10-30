@@ -151,7 +151,6 @@ typedef char
     Ov007ParticleSprites_size_must_be_0x108[sizeof(Ov007ParticleSprites) == 0x108 ? 1 : -1];
 
 extern Ov007ParticleSprites *data_ov007_02104bc0;
-extern char *data_ov007_0210342c;
 extern int data_ov007_02103230;
 extern int data_ov007_02103234;
 extern int data_ov007_020d7c6c;
@@ -185,9 +184,6 @@ extern void func_ov007_020bc53c(Ov007Model *model);
 extern void func_ov007_020bc6b4(Ov007Model *model, void *files, int count);
 extern Ov007Model *func_ov007_020bc6d4(void *file, int flags);
 
-/* The extern keeps the tree's char * spelling of the work block; the typed
- * view is reached through a cast macro. */
-#define WORK ((Ov007Work *)data_ov007_0210342c)
 #define SPRITES data_ov007_02104bc0
 
 // @symbol func_ov007_020beb80

@@ -49,7 +49,6 @@ static const int *const *sPortraitStrokeProgressThresholds[6] = {
     data_ov007_020d80ec, data_ov007_020d8574, data_ov007_020d8724,
     data_ov007_020d7fac, data_ov007_020d83e4, data_ov007_020d8264};
 
-extern char *data_ov007_0210342c;
 extern char *data_ov007_02104ba0;
 
 /* data_ov007_02104ba0, the 0x4c-byte picker scene; names as in
@@ -60,7 +59,6 @@ typedef struct Ov007PickerScene {
     int replayFrames; /* 0x38 */
 } Ov007PickerScene;
 
-#define WORK ((Ov007Work *)data_ov007_0210342c)
 #define SCENE ((Ov007PickerScene *)data_ov007_02104ba0)
 
 /* The per-figure stroke stages as a pointer: indexing through it, not

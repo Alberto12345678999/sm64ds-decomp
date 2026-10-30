@@ -3,10 +3,6 @@
 #include "Ov007Work.h"
 #include "Ov007OamNode.h"
 #include "Ov007Item.h"
-extern char *data_ov007_0210342c;
-/* The extern keeps the tree's char * spelling (the declaration-agreement
- * gate); the typed view is reached through a cast macro. */
-#define WORK ((Ov007Work *)data_ov007_0210342c)
 
 extern void Sprite_SetAnimation(Ov007OamNode *node, int animIndex, int mode, int rev, int frame);
 
@@ -118,7 +114,7 @@ int func_ov007_020ae558(Ov007ItemNode *self) {
                 ret = 7;
             else {
                 /* the ROM reloads the work pointer here */
-                Ov007Work *g2 = (Ov007Work *)*(char *volatile *)&data_ov007_0210342c;
+                Ov007Work *g2 = *(Ov007Work *volatile *)&data_ov007_0210342c;
                 short menuState = g2->states[1]->currentState;
                 u8 nodeAnim = g2->itemNodes[1]->node->animIndex;
                 int x;

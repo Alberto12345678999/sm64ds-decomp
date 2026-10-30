@@ -1,7 +1,6 @@
 #include "types.h"
 #include "Ov007Work.h"
 #include "Ov007Display.h"
-extern char *data_ov007_0210342c;
 extern int data_ov007_020d7e28[];
 extern int data_ov007_020d7e38[];
 extern int data_ov007_020d7e50[];
@@ -18,10 +17,6 @@ extern struct Ov007ItemNode *func_ov007_020ade58(int index);
 extern void func_ov007_020b72d8(Ov007Display *d, int n);
 extern Ov007BgLayer *func_ov007_020c95fc(void *a, int b, int c);
 extern struct Ov007LayerSlot *func_ov007_020adc08(int type, Ov007BgLayer *layer);
-
-/* The extern keeps the tree's char * spelling; the typed view is reached
- * through a cast macro. */
-#define WORK ((Ov007Work *)data_ov007_0210342c)
 
 #pragma opt_strength_reduction off
 #pragma opt_common_subs off

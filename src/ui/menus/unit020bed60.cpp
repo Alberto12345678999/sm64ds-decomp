@@ -64,7 +64,6 @@ typedef struct Ov007Point {
 } Ov007Point;
 
 extern Ov007MeshScene *data_ov007_02104bd4;
-extern char *data_ov007_0210342c;
 extern struct Vector3 data_ov007_020d7d60;
 extern Ov007MeshParams data_ov007_020d7cb0;
 extern u8 data_ov007_020d7c98[];
@@ -107,9 +106,6 @@ extern Ov007MeshMaterial *func_ov007_020cbf8c(Ov007MeshMaterial *src);
 void func_ov007_020bed60(int arg0, int arg1, int arg2);
 void func_ov007_020beeb0(void);
 
-/* The extern keeps the tree's char * spelling of the work block; the typed
- * view is reached through a cast macro. */
-#define WORK ((Ov007Work *)data_ov007_0210342c)
 #define SCENE data_ov007_02104bd4
 
 /* func_ov007_020bf57c's copy of an Ov007Sprite. Ov007Sprite holds two

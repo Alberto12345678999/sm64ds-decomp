@@ -73,11 +73,6 @@ typedef struct Ov007ItemFlags {
     char pad_04[8];
 } Ov007ItemFlags;
 
-/* The work block. The extern keeps the tree's char * spelling (the
- * declaration-agreement gate); the typed view is reached through WORK. */
-extern char *data_ov007_0210342c;
-#define WORK ((Ov007Work *)data_ov007_0210342c)
-
 /* Which of items 0x16 / 0x17 was picked: 1 while the choice is open,
  * 2 for 0x16, 3 for 0x17. */
 extern int data_ov007_02103428;

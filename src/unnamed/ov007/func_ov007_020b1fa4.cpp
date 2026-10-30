@@ -10,9 +10,6 @@ extern "C" {
 extern void func_ov007_020c0128(Ov007Camera *cam);
 extern void func_ov007_020bffb8(Ov007Camera *cam);
 extern void func_ov007_020c0078(Ov007Camera *cam);
-extern char* data_ov007_0210342c;
-
-#define WORK ((Ov007Work *)data_ov007_0210342c)
 
 /* preset: 1 (func_ov007_020b10dc), 4 (func_ov007_020b0a20), 2 and 3. */
 void func_ov007_020b1fa4(int preset) {

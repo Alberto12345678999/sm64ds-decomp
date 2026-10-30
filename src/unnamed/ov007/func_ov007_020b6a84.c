@@ -9,11 +9,6 @@ extern struct Ov007Pad *func_ov007_020c2304(void);
 extern void *func_ov007_020c908c(void *r5);
 extern int func_ov007_020c3df4(int a, void *b);
 extern void func_02059eb0(unsigned char *dst);
-extern char *data_ov007_0210342c;
-
-/* The extern keeps the tree's char * spelling (the declaration-agreement
- * gate); the typed view is reached through a cast macro. */
-#define WORK ((Ov007Work *)data_ov007_0210342c)
 
 void func_ov007_020b6a84(void) {
     unsigned char buf[0x54];

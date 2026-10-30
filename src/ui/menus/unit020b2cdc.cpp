@@ -73,7 +73,6 @@ typedef char Ov007Cursor_size_must_be_0x1c[sizeof(Ov007Cursor) == 0x1c ? 1 : -1]
 
 extern Ov007Cursor *data_ov007_02103360;
 extern int data_ov007_02103364;
-extern char *data_ov007_0210342c;
 
 extern unsigned char data_ov007_020d7dc0[];
 extern unsigned char data_ov007_020d7dc8[];
@@ -99,10 +98,8 @@ extern void func_ov007_020c92d0(char *record);
 extern void func_ov007_020c937c(void *state);
 extern void *func_ov007_020c9388(int initialState);
 
-/* The work-block extern keeps the tree's char * spelling; the typed view is
- * reached through a cast macro. */
+/* The menu cursor (data_ov007_02103360). */
 #define CURSOR data_ov007_02103360
-#define WORK ((Ov007Work *)data_ov007_0210342c)
 
 // @symbol func_ov007_020b3e84
 /* Writes the current item's position, in pixels, as a 1 x 0 rectangle. */

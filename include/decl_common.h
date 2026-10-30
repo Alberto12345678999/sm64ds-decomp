@@ -1649,7 +1649,6 @@ extern void *sMgMainCamera;
 extern void *sD3DLanguageFile;
 extern void *sJumpBackFile;
 extern void *sRouletteLandedRacer;
-extern void*data_ov007_0210342c;
 extern void*data_ov010_021122f8;
 extern void*data_ov016_021136dc[];
 extern void*data_ov016_021136e4[];

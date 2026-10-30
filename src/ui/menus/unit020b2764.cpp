@@ -64,8 +64,6 @@ typedef struct Ov007CornerPair {
     u16 inner;
 } Ov007CornerPair;
 
-extern char *data_ov007_0210342c;
-
 extern int data_ov007_020ccc48[2];             /* [figureIndex]: model file */
 extern Ov007CornerPair data_ov007_020ccc50[3]; /* colours at blend 0 */
 extern Ov007CornerPair data_ov007_020ccc5c[3]; /* colours at blend 0x1000 */
@@ -96,10 +94,6 @@ extern int func_ov007_020c44c4(void *sprite);
 extern int func_ov007_020c44e4(int count);
 
 void func_ov007_020b283c(void);
-
-/* The extern keeps the tree's char * spelling of the work block; the typed
- * view is reached through a cast macro. */
-#define WORK ((Ov007Work *)data_ov007_0210342c)
 
 // @symbol func_ov007_020b2bd4
 /* Loads figure figureIndex's model at the given stroke stage and returns

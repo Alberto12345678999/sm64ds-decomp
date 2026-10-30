@@ -2,11 +2,6 @@
 #include "Ov007Work.h"
 #include "Ov007Settings.h"
 
-extern char *data_ov007_0210342c;
-/* The extern keeps the tree's char * spelling (the declaration-agreement
- * gate); the typed view is reached through a cast macro. */
-#define WORK ((Ov007Work *)data_ov007_0210342c)
-
 extern void func_ov007_020c1d78(int i);
 extern void func_ov007_020b0244(void);
 extern void func_ov007_020b7d94(int kind);

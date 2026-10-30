@@ -108,13 +108,11 @@ typedef struct Vec3Words {
     Fix12i w[3];
 } Vec3Words;
 
-extern char *data_ov007_0210342c;
 extern char *data_ov007_02104ba0;
 extern Ov007PickerSprites *data_ov007_02104b9c;
 /* func_ov007_020ba368's settle counter, -1 until the drawing is complete */
 extern s16 data_ov007_02104b98[];
 
-#define WORK ((Ov007Work *)data_ov007_0210342c)
 #define SCENE ((Ov007PickerScene *)data_ov007_02104ba0)
 #define SPRITES data_ov007_02104b9c
 
