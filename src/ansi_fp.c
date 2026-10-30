@@ -2,13 +2,14 @@
  * formats: arm9 .text 0x02070b98..0x02071784, 10 functions.
  *
  * The run is MSL's ansi_fp.c in its own order. mwccarm emits .text in
- * reverse source order, and read from the top of the ROM down the run is
+ * reverse source order, and read from the highest address down the run is
  * the trailing-zero count, __must_round, __dorounddecup, __rounddec,
  * __ull2dec, __timesdec, __str2dec, __two_exp, __num2dec_internal and
  * __num2dec: the order of the Petari decomp's ansi_fp.c, which also has the
  * trailing-zero count at its top (as an inline over a compiler builtin).
- * MSL's __equals_dec, __less_dec, __minus_dec and __dec2num are not in this
- * ROM: nothing calls them, so the linker dropped them.
+ * Petari's (Wii) copy also has __equals_dec, __less_dec, __minus_dec and
+ * __dec2num; Spirit Tracks' ARM MSL ansi_fp.c, which has this run's order
+ * exactly, has none of them.
  *
  * BOTTOM EDGE: ldexp (0x020708b4..0x02070b98) is MSL's s_ldexp.c, its own
  * file. TOP EDGE: func_02071784 begins where the run ends.
@@ -56,10 +57,14 @@ extern unsigned char data_0209a6f8[];
    the low end, then count the low set bits of the complemented byte.
    __num2dec_internal uses it to strip the significand's low zeros. The
    variadic signature keeps w0 in memory for the byte walk.
-   It keeps its address name. The Petari decomp's ansi_fp.c has an inline
-   count_trailing over a compiler builtin here, and the Advance Wars DS
-   decomp calls the function __cnt_trail_zeros, but no MSL source gives the
-   out-of-line function a name. */
+   It keeps its address name. MSL's ansi_fp.c calls this one-word counter
+   __count_trailing_zerol (an out-of-line static in the Wind Waker decomp's
+   copy, a static inline in Spirit Tracks' ARM copy) through an inline
+   __count_trailing_zero(double) with this same low-word-first shape; the
+   Petari decomp has an inline count_trailing over a compiler builtin
+   instead, and the Advance Wars DS decomp calls it __cnt_trail_zeros. The
+   algorithms differ, so the body does not confirm either name. */
+// @symbol func_02071708
 int func_02071708(int w0, ...) {
     unsigned char *p;
     int count;
@@ -92,6 +97,7 @@ int func_02071708(int w0, ...) {
    digits digits rounds up. 1 when the first dropped digit is above 5, or is
    5 with a non-zero digit after it, or is exactly 5 after an odd last kept
    digit (half to even). Otherwise -1. */
+// @symbol __must_round
 int __must_round(const Decimal *d, int digits) {
     const u8 *p = d->sig.text + digits;
     u8 e = *p;
@@ -113,6 +119,7 @@ int __must_round(const Decimal *d, int digits) {
 /* MSL __dorounddecup: increment the decimal significand, propagating carry
    into the exponent. Real C, no asm hatch; the investigation is in
    notes/mwccarm-codegen.md 9a(3). */
+// @symbol __dorounddecup
 void __dorounddecup(Decimal *d, int len) {
     unsigned char *base = d->sig.text;
     unsigned char *p = base + len - 1;
@@ -134,6 +141,7 @@ void __dorounddecup(Decimal *d, int len) {
 /* MSL __rounddec: cut the significand to length digits, then round up
    (__dorounddecup) when __must_round says so: above half,
    or exactly half with an odd last kept digit. */
+// @symbol __rounddec
 void __rounddec(Decimal *value, int length) {
     int r;
     if (length <= 0)
@@ -150,6 +158,7 @@ void __rounddec(Decimal *value, int length) {
 /* MSL __ull2dec: v as a Decimal. Digit values (0..9, not ASCII) are
    generated low first, the string is reversed, and the exponent is
    length - 1. 0 gives length 0. */
+// @symbol __ull2dec
 void __ull2dec(Decimal *result, unsigned long long v) {
     result->sign = 0;
     result->sig.length = 0;
@@ -174,6 +183,7 @@ void __ull2dec(Decimal *result, unsigned long long v) {
     result->exp = (short)(result->sig.length - 1);
 }
 
+// @symbol __timesdec
 void __timesdec(Decimal *result, const Decimal *x, const Decimal *y) {
     unsigned int accumulator = 0;
     unsigned char mantissa[64];
@@ -245,6 +255,7 @@ void __timesdec(Decimal *result, const Decimal *x, const Decimal *y) {
     }
 }
 
+// @symbol __str2dec
 void __str2dec(Decimal *result, unsigned char *digits, short exp) {
     int i;
     unsigned char c;
@@ -283,6 +294,7 @@ docall:
    Any other n is 2^(n/2) squared (__timesdec, the Decimal multiply),
    times one more 2 or 0.5 when n is odd. __num2dec_internal
    calls it to scale the binary exponent. */
+// @symbol __two_exp
 void __two_exp(Decimal *out, int n) {
     Decimal half;
     Decimal copy;
@@ -366,6 +378,7 @@ void __two_exp(Decimal *out, int n) {
     }
 }
 
+// @symbol __num2dec_internal
 void __num2dec_internal(char *out, double x) {
     int e;
     double t1;
@@ -457,6 +470,7 @@ void __num2dec_internal(char *out, double x) {
  * digits (capped at 32), then turn the digit values into ASCII. decform is
  * MSL's layout, as in float2str.c, which calls this. The pragma covers only
  * this function: it is the last one in the file. */
+// @symbol __num2dec
 #pragma opt_strength_reduction off
 void __num2dec(void *a0, double x, void *d) {
     int n;
