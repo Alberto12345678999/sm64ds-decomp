@@ -3044,8 +3044,8 @@ __destroy_global_chain kind:function(arm,size=0x58) addr:0x02072f3c
 __call_static_initializers kind:function(arm,size=0x38) addr:0x02072f94
 __throw_catch_compare kind:function(arm,size=0x210) addr:0x02072fcc
 __register_global_object kind:function(arm,size=0x20) addr:0x020731dc
-func_020731fc kind:function(arm,size=0x24) addr:0x020731fc
-func_02073220 kind:function(arm,size=0xc) addr:0x02073220
+_ZSt9terminatev kind:function(arm,size=0x24) addr:0x020731fc
+_ZSt9dthandlerv kind:function(arm,size=0xc) addr:0x02073220
 func_0207322c kind:function(arm,size=0xc) addr:0x0207322c
 func_02073238 kind:function(arm,size=0xc) addr:0x02073238
 __cxa_vec_delete kind:function(arm,size=0x48) addr:0x02073244
@@ -4473,7 +4473,7 @@ data_0209a6ec kind:data(any) addr:0x0209a6ec
 data_0209a6f0 kind:data(any) addr:0x0209a6f0
 data_0209a6f4 kind:data(any) addr:0x0209a6f4
 data_0209a6f8 kind:data(any) addr:0x0209a6f8
-data_0209a6fc kind:data(any) addr:0x0209a6fc
+_ZSt8thandler kind:data(any) addr:0x0209a6fc
 _ZTISt9type_info kind:data(any) addr:0x0209a700
 _ZTIN3abi21__vmi_class_type_infoE kind:data(any) addr:0x0209a708
 _ZTIN3abi20__si_class_type_infoE kind:data(any) addr:0x0209a714
@@ -5266,11 +5266,11 @@ data_020a9dec kind:bss addr:0x020a9dec
 data_020a9e00 kind:bss addr:0x020a9e00
 data_020a9e04 kind:bss addr:0x020a9e04
 data_020a9ec0 kind:bss addr:0x020a9ec0
-data_020a9ec8 kind:bss addr:0x020a9ec8
-data_020a9ecc kind:bss addr:0x020a9ecc
-data_020a9ed0 kind:bss addr:0x020a9ed0
-data_020a9ed4 kind:bss addr:0x020a9ed4
-data_020a9ed8 kind:bss addr:0x020a9ed8
+__console_exit kind:bss addr:0x020a9ec8
+__stdio_exit kind:bss addr:0x020a9ecc
+__atexit_curr_func kind:bss addr:0x020a9ed0
+__aborting kind:bss addr:0x020a9ed4
+__atexit_funcs kind:bss addr:0x020a9ed8
 data_020a9fd8 kind:bss addr:0x020a9fd8
 data_020a9ffc kind:bss addr:0x020a9ffc
 data_020aa020 kind:bss addr:0x020aa020
@@ -5278,7 +5278,7 @@ data_020aa0ac kind:bss addr:0x020aa0ac
 data_020aa0d4 kind:bss addr:0x020aa0d4
 data_020aa1d4 kind:bss addr:0x020aa1d4
 data_020aa2d4 kind:bss addr:0x020aa2d4
-data_020aa3d4 kind:bss addr:0x020aa3d4
+signal_funcs kind:bss addr:0x020aa3d4
 __global_destructor_chain kind:bss addr:0x020aa3f0
 data_020aa3f4 kind:bss addr:0x020aa3f4
 data_020aa3f8 kind:bss addr:0x020aa3f8

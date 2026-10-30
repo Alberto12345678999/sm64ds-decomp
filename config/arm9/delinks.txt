@@ -3767,7 +3767,7 @@ src/__end__catch.c:
     complete
     .text start:0x02071ba0 end:0x02071be8
 
-src/unnamed/arm9/0207/func_02071be8.c:
+src/unnamed/arm9/0207/func_02071be8.cpp:
     complete
     .text start:0x02071be8 end:0x02071ccc
 
@@ -3775,7 +3775,7 @@ src/unnamed/arm9/0207/func_02071ccc.c:
     complete
     .text start:0x02071ccc end:0x02071d3c
 
-src/unnamed/arm9/0207/func_02071d3c.c:
+src/unnamed/arm9/0207/func_02071d3c.cpp:
     complete
     .text start:0x02071d3c end:0x02071f1c
 
@@ -3787,11 +3787,11 @@ src/unnamed/arm9/0207/func_02071f88.c:
     complete
     .text start:0x02071f88 end:0x02072014
 
-src/unnamed/arm9/0207/func_02072014.c:
+src/unnamed/arm9/0207/func_02072014.cpp:
     complete
     .text start:0x02072014 end:0x02072168
 
-src/unnamed/arm9/0207/func_02072168.c:
+src/unnamed/arm9/0207/func_02072168.cpp:
     complete
     .text start:0x02072168 end:0x020729f4
 
@@ -3827,11 +3827,11 @@ src/__register_global_object.c:
     complete
     .text start:0x020731dc end:0x020731fc
 
-src/unnamed/arm9/0207/func_020731fc.c:
+src/_ZSt9terminatev.cpp:
     complete
     .text start:0x020731fc end:0x02073220
 
-src/unnamed/arm9/0207/func_02073220.c:
+src/_ZSt9dthandlerv.cpp:
     complete
     .text start:0x02073220 end:0x0207322c
 

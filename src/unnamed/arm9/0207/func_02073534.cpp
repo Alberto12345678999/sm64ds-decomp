@@ -17,9 +17,11 @@
 // This is the cleanup __cxa_vec_new calls when an element constructor throws
 // partway through building an array.
 
-extern "C" void func_020731fc(void);
-
 typedef void (*dtor_t)(void *);
+
+namespace std {
+void terminate();
+}
 
 extern "C" void func_02073534(void *base, void *current, unsigned int size, dtor_t dtor)
 {
@@ -30,6 +32,6 @@ extern "C" void func_02073534(void *base, void *current, unsigned int size, dtor
             dtor(p);
         }
     } catch (...) {
-        func_020731fc();
+        std::terminate();
     }
 }
