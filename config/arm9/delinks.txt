@@ -2202,9 +2202,13 @@ src/Copy48BytesFixed.c:
     complete
     .text start:0x02056c1c end:0x02056c40
 
-src/IRQ.cpp:
+src/engine/os/OS_IrqTable.cpp:
     complete
-    .text start:0x02056c40 end:0x02057014
+    .text start:0x02056c40 end:0x02056d64
+
+src/engine/os/OS_Interrupt.cpp:
+    complete
+    .text start:0x02056d64 end:0x02057014
 
 src/unnamed/arm9/0205/func_02057014.c:
     complete

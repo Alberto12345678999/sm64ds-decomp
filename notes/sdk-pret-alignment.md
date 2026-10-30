@@ -31,7 +31,7 @@ SetFogTable and the 0x18 table loader after SetClearColor come in the other orde
 | OS_system.c | 0x02059d08..0x02059d98, 8/8 | arm9/IRQ3 | yes; IRQ3 leaves out OS_SpinWait (func_02059d8c, the asm hatch) on purpose |
 | OS_tcm.c, OS_protectionUnit.c | 1 and 2 exact | arm9/CP15_TCM, arm9/CP15_ProtectionUnit | yes |
 | OS_cache.c | 0x02058bdc.., 5 exact + 1 drift | arm9/CP15 | yes |
-| OS_irqTable.c + OS_interrupt.c | 0x02056c40..0x02056d64, then ..0x02057000 | arm9/IRQ (one TU) | no: IRQ holds two SDK files |
+| OS_irqTable.c + OS_interrupt.c | 0x02056c40..0x02056d64, then ..0x02057014 | arm9/OS_IrqTable + arm9/OS_Interrupt | fixed: arm9/IRQ held both files; split at 0x02056d64 (func_02057000 is OS_InitIrqTable, 0x14 here) |
 | GX_load2d.c + GX_load3d.c | 0x02055dec..0x020568cc, then ..0x02056c1c | arm9/GXS + arm9/GX | no: split by namespace at 0x02056870, not at the file edge 0x020568cc |
 | GX_g2.c | func_020551f0 + the 3 G2x members | arm9/G2x | partial: G2x_ChangeBlendBrightness_ (func_020551f0) is outside it |
 | GX_g3x.c | 0x020553c0..0x02055998 | arm9/G3X (6 of ~14) | partial |
