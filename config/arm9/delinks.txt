@@ -90,6 +90,9 @@ src/engine/view/d_camera_dtor.cpp:
 src/engine/view/d_camera.cpp:
     complete
     .text start:0x020072c4 end:0x0200e494
+    .init start:0x02073a24 end:0x02073e6c
+    .ctor start:0x02086b60 end:0x02086b64
+    .bss start:0x0209b008 end:0x0209b138
 
 src/KuppaScript.cpp:
     complete
@@ -4277,10 +4280,6 @@ src/unnamed/arm9/0207/func_02073534.cpp:
 src/typeinfo.cpp:
     complete
     .text start:0x0207359c end:0x020736f4
-
-src/unnamed/arm9/0207/__sinit_02073a24.c:
-    complete
-    .init start:0x02073a24 end:0x02073e6c
 
 src/unnamed/arm9/0207/__sinit_02074dbc.c:
     complete
