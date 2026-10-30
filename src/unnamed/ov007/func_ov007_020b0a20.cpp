@@ -30,10 +30,7 @@ typedef struct Ov007Model {
     char pad_00[0x18];
     Ov007AnimPlayer *boneAnim; /* 0x18 */
     char pad_1c[0x24];
-    /* 0x40: ModelComponents::Render's scale (func_ov007_020bbff0) */
-    int scaleX;
-    int scaleY;
-    int scaleZ;
+    Vector3 scale; /* 0x40: ModelComponents::Render's scale (func_ov007_020bbff0) */
 } Ov007Model;
 
 /* The 0x1c-byte record func_ov007_020beaa0 builds around an Ov007Model;
@@ -117,9 +114,9 @@ void func_ov007_020b0a20(void) {
         func_ov007_020be964(WORK->figure);
         func_ov007_020c0638(WORK->layerSlots[6]->layer, 0, 0, 0);
         func_ov007_020b797c();
-        model->scaleZ = (func_ov007_020aebac() == 0) ? 0xDAC : 0x1770;
-        model->scaleY = model->scaleZ;
-        model->scaleX = model->scaleY;
+        model->scale.z = (func_ov007_020aebac() == 0) ? 0xDAC : 0x1770;
+        model->scale.y = model->scale.z;
+        model->scale.x = model->scale.y;
     }
     if (ticks == 1) {
         if (noSaveFiles != 0) {
@@ -144,9 +141,9 @@ void func_ov007_020b0a20(void) {
             } else {
                 v = cstd::div((v - 0x10) << 12, 4);
             }
-            model->scaleZ = 0x1770 - FX_MUL(v, 0x9C4);
-            model->scaleY = model->scaleZ;
-            model->scaleX = model->scaleY;
+            model->scale.z = 0x1770 - FX_MUL(v, 0x9C4);
+            model->scale.y = model->scale.z;
+            model->scale.x = model->scale.y;
         }
     }
     if (model->boneAnim->anim != -1 &&
@@ -179,9 +176,9 @@ void func_ov007_020b0a20(void) {
     func_ov007_020b131c();
     WORK->states[1]->requestedState = 0xA;
     WORK->figure->update = 0;
-    model->scaleZ = 0x1000;
-    model->scaleY = model->scaleZ;
-    model->scaleX = model->scaleY;
+    model->scale.z = 0x1000;
+    model->scale.y = model->scale.z;
+    model->scale.x = model->scale.y;
     WORK->itemNodes[8]->item->state->requestedState = 1;
 }
 }

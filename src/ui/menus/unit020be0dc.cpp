@@ -273,7 +273,7 @@ extern void func_ov007_020c3d1c(void *p);
 extern int func_ov007_020c3df4(int a, void *b);
 extern void func_ov007_020c3e7c(char *c);
 extern void func_ov007_020c3ee8(int *c, int x);
-extern void *func_ov007_020c3f00(int *r6, void *r4);
+extern void *func_ov007_020c3f00(int *layout, int extraAnims);
 extern void func_ov007_020c3fe4(void *self);
 
 /* the figure and its files */
@@ -571,7 +571,7 @@ void func_ov007_020be50c(void) {
     t = (int *)WORK->display->spriteBanks;
 
     SPRITES = (Ov007ParticleSprites *)func_ov007_020c3df4(0, (void *)sizeof(Ov007ParticleSprites));
-    SPRITES->group = (Ov007SpriteGroup *)func_ov007_020c3f00(&data_ov007_020d7c6c, (void *)2);
+    SPRITES->group = (Ov007SpriteGroup *)func_ov007_020c3f00(&data_ov007_020d7c6c, 2);
 
     SPRITES->tracking = (TrackingRecord *)func_ov007_020c3df4(
         (int)&data_ov007_02103234, (void *)(data_ov007_020d7c6c * sizeof(TrackingRecord)));

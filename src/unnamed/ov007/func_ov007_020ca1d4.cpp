@@ -71,7 +71,7 @@ extern void *func_ov007_020c3df4(int a, int b);
 extern void *func_ov007_020c9388(int initialState);
 extern void func_ov007_020c937c(void *state);
 extern int func_ov007_020c3d1c(void *);
-extern void func_ov007_020c92d0(int a);
+extern void func_ov007_020c92d0(void *state);
 
 /* Steps wave i over the mesh: while it holds a line and keepChance wins it
  * adds a travelling sine to the z force of every point on that line;
@@ -81,109 +81,118 @@ extern void func_ov007_020c92d0(int a);
 void func_ov007_020ca308(char *self, char *t, int i) {
     Ov007MeshWave *wave = (Ov007MeshWave *)self;
     Ov007Mesh *mesh = (Ov007Mesh *)t;
-    Ov007MenuState *e;
-    Ov007MeshWaveParams *h;
-    int cur;
-    int amp;
-    int cnt;
-    int a;
-    int b;
-    int w;
-    int timer;
+    Ov007MenuState *state;
+    Ov007MeshWaveParams *params;
+    int line;
+    int amplitude;
+    int count;
+    int speed;
+    int spread;
+    int lines;
+    int ticks;
     int j;
-    int ph;
+    int phase;
 
-    e = wave->waves[i];
-    h = wave->params;
-    a = h->speed;
-    cur = e->currentState;
-    b = h->spread;
-    amp = h->amplitude;
+    state = wave->waves[i];
+    params = wave->params;
+    speed = params->speed;
+    line = state->currentState;
+    spread = params->spread;
+    amplitude = params->amplitude;
 
-    if (e->stateTicks == 0)
+    if (state->stateTicks == 0)
         wave->waves[i]->stateTicks = func_ov007_020c3ba8(0x3c);
-    timer = wave->waves[i]->stateTicks;
+    ticks = wave->waves[i]->stateTicks;
 
     if (i == 0 || i == 2) {
-        Ov007Grid *q = mesh->grid;
-        cnt = q->rows;
-        w = q->columns;
+        Ov007Grid *grid = mesh->grid;
+        count = grid->rows;
+        lines = grid->columns;
     } else if (i == 1 || i == 3) {
-        Ov007Grid *q = mesh->grid;
-        cnt = q->columns;
-        w = q->rows;
+        Ov007Grid *grid = mesh->grid;
+        count = grid->columns;
+        lines = grid->rows;
     }
 
-    if (cur >= 0 && cur < w) {
-        int c = h->keepChance;
-        if (func_ov007_020c3ba8(10000) <= c * 10 - 1) {
+    if (line >= 0 && line < lines) {
+        int keep = params->keepChance;
+        if (func_ov007_020c3ba8(10000) <= keep * 10 - 1) {
             u16 base;
-            u16 step = (u16)cstd::div(b, cnt);
+            u16 step = (u16)cstd::div(spread, count);
             j = 0;
-            base = (u16)(timer * a);
-            if (cnt <= 0)
+            base = (u16)(ticks * speed);
+            if (count <= 0)
                 return;
-            ph = j;
+            phase = j;
             do {
-                s16 s = data_02082214[((u16)(base + ph) >> 4) * 2];
-                int val = FX_MUL(amp, s);
+                s16 sine = data_02082214[((u16)(base + phase) >> 4) * 2];
+                int val = FX_MUL(amplitude, sine);
                 if (i == 0) {
-                    mesh->grid->rowLists[j]->items[cur]->force[2] += val;
+                    mesh->grid->rowLists[j]->items[line]->force[2] += val;
                 } else if (i == 1) {
-                    mesh->grid->rowLists[cur]->items[j]->force[2] += val;
+                    mesh->grid->rowLists[line]->items[j]->force[2] += val;
                 }
                 j++;
-                ph += step;
-            } while (j < cnt);
+                phase += step;
+            } while (j < count);
             return;
         }
     }
 
-    if (cur == -1) {
-        if (cur != -1)
+    if (line == -1) {
+        if (line != -1)
             return;
-        if (timer < h->minIdle)
+        if (ticks < params->minIdle)
             return;
     }
     {
-        int pr = h->idleChance;
-        if (func_ov007_020c3ba8(10000) <= pr * 10 - 1) {
+        int idle = params->idleChance;
+        if (func_ov007_020c3ba8(10000) <= idle * 10 - 1) {
             wave->waves[i]->requestedState = -1;
             return;
         }
     }
-    wave->waves[i]->requestedState = func_ov007_020c3ba8(w);
+    wave->waves[i]->requestedState = func_ov007_020c3ba8(lines);
 }
 
-void *func_ov007_020ca2a8(void *arg) {
-    int *obj = (int *)func_ov007_020c3df4(0, 0x1c);
+/* Allocates a mesh wave over the template params: four idle waves
+ * (func_ov007_020c9388(-2)), no delay. */
+void *func_ov007_020ca2a8(void *params) {
+    Ov007MeshWave *wave = (Ov007MeshWave *)func_ov007_020c3df4(0, sizeof(Ov007MeshWave));
     int i;
     for (i = 0; i < 4; i++) {
-        (obj + i)[2] = (int)func_ov007_020c9388(-2);
+        wave->waves[i] = (Ov007MenuState *)func_ov007_020c9388(-2);
     }
-    obj[6] = (int)arg;
-    obj[1] = 0;
-    obj[0] = 0;
-    return obj;
+    wave->params = (Ov007MeshWaveParams *)params;
+    wave->delay = 0;
+    wave->frame = 0;
+    return wave;
 }
 
+/* Frees a mesh wave and its four wave states. c keeps the callers' char *
+ * spelling; `wave` is the typed view. */
 int func_ov007_020ca26c(char *c) {
+    Ov007MeshWave *wave = (Ov007MeshWave *)c;
     int i;
     for (i = 0; i < 4; i++) {
-        func_ov007_020c937c((void *)((int *)(c + 8))[i]);
+        func_ov007_020c937c(wave->waves[i]);
     }
     return func_ov007_020c3d1c(c);
 }
 
-void func_ov007_020ca1d4(char *self, int arg1) {
+/* One tick of a mesh wave over mesh: once the delay has run out, ticks the
+ * four wave states and steps waves 0 and 1 (func_ov007_020ca308); counts
+ * frame up every call. */
+void func_ov007_020ca1d4(char *self, int mesh) {
+    Ov007MeshWave *wave = (Ov007MeshWave *)self;
     int i;
-    if (*(int *)(self + 4) <= 0) {
+    if (wave->delay <= 0) {
         for (i = 0; i < 4; i++) {
-            func_ov007_020c92d0(((int *)(self + 8))[i]);
+            func_ov007_020c92d0(wave->waves[i]);
             switch (i) {
             case 0:
             case 1:
-                func_ov007_020ca308(self, (char *)arg1, i);
+                func_ov007_020ca308(self, (char *)mesh, i);
                 break;
             case 2:
             case 3:
@@ -191,10 +200,10 @@ void func_ov007_020ca1d4(char *self, int arg1) {
             }
         }
     } else {
-        (*(int *)(((int)self + 4)))--;
-        if (*(int *)(self + 4) <= 0)
-            *(int *)(self + 4) = 0;
+        wave->delay--;
+        if (wave->delay <= 0)
+            wave->delay = 0;
     }
-    (*(int *)(self))++;
+    wave->frame++;
 }
 }
