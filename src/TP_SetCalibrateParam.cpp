@@ -9,7 +9,6 @@
 
 extern "C" {
 
-extern TPWork data_020a80cc;
 
 void TP_SetCalibrateParam(s16 *arg) {
     u32 state;

@@ -5,11 +5,11 @@ extern char* data_020a9db8;
 /* NitroSDK MBi_get_blockinfo(bi, table, block, dlinfo): find the segment
  * holding block number val (the last segment whose first block is <= it),
  * then give the block's receive address, size (the rest of the segment,
- * capped at mBlockSize), source offset and segment number. func_0206610c
+ * capped at mBlockSize), source offset and segment number. MBi_CommParentSendBlock
  * calls it for the block it is about to send.
  *
  * The views are func_02067604's MbSegmentInfo, MbDownloadFileInfoHeader
- * and MB_BlockInfoTable. The result keeps func_0206610c's struct Out tag
+ * and MB_BlockInfoTable. The result keeps MBi_CommParentSendBlock's struct Out tag
  * (its declaration names the parameter type) with the SDK's MB_BlockInfo
  * field names. */
 typedef struct MbSegmentInfo {
