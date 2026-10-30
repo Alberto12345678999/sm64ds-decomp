@@ -4,16 +4,17 @@
   "source": "src/engine/save/SaveData2.cpp",
   "promoted_source": "src/engine/save/SaveData2.cpp",
   "status": "promoted",
-  "boundary_confidence": "medium",
+  "boundary_confidence": "high",
   "boundary_evidence": [
-    "Contiguous .text span 0x02042804..0x02042f68: the two SaveData cart I/O statics, gapless in config/arm9/delinks.txt, both complete.",
-    "BOTTOM EDGE: func_020427f8 (src/unnamed/arm9/0204/func_020427f8.c) below; TOP EDGE: func_02042f68 (src/unnamed/arm9/0204/func_02042f68.c) above. The run is not contiguous with arm9/SaveData (0x02013ad4..0x02013e80), so it is a separate original file."
+    "Contiguous .text span 0x02042804..0x02042fe4: the two SaveData cart I/O statics and their setup func_02042f68, gapless in config/arm9/delinks.txt, all complete.",
+    "Shared private data: the 8-byte magic data_020a4b40 is referenced (relocs.txt: from 0x02042c34, 0x02042f60, 0x02042fe0) by these three functions and nothing else in arm9 or any overlay. func_02042f68 writes it; SaveDataToCart writes it with each block and ReadDataFromCart checks it.",
+    "BOTTOM EDGE: func_020427f8 (src/unnamed/arm9/0204/func_020427f8.c) below touches no data. TOP EDGE: src/runtime/actor/ActorBase.cpp begins at 0x02042fe4. The run is not contiguous with arm9/SaveData (0x02013ad4..0x02013e80), so it is a separate original file."
   ],
   "sections": [
     {
       "name": ".text",
       "start": "0x02042804",
-      "end": "0x02042f68"
+      "end": "0x02042fe4"
     }
   ],
   "functions": [
@@ -30,13 +31,21 @@
       "size": "0x32c",
       "ordinal": 1,
       "legacy_source": "src/_ZN8SaveData14SaveDataToCartEPcjj.cpp"
+    },
+    {
+      "symbol": "func_02042f68",
+      "address": "0x02042f68",
+      "size": "0x7c",
+      "ordinal": 2,
+      "legacy_source": "src/unnamed/arm9/0204/func_02042f68.c"
     }
   ],
   "data": [],
   "bss": [],
   "compiler_only_output": [],
   "notes": [
-    "New TU named after the tree class SaveData (include/SaveData.h) with the numeric suffix style already used in the tree (Name2.cpp, as in d_s_mg_jump2.cpp), per Juan's 2026-10-11 new-file and placeholder-name rules. Reverse source order: higher addresses at the top of the file."
+    "New TU named after the tree class SaveData (include/SaveData.h) with the numeric suffix style already used in the tree (Name2.cpp, as in d_s_mg_jump2.cpp), per Juan's 2026-10-11 new-file and placeholder-name rules. Reverse source order: higher addresses at the top of the file.",
+    "func_02042f68 was folded in from its own source once the data_020a4b40 references tied it to the cart I/O pair (2026-10-30). It stays extern \"C\" under its address name: no symbol or cross-reference gives one. Any verification.linkcheck block predates the fold."
   ],
   "verification": {
     "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",
@@ -44,8 +53,8 @@
     "flags": "-O4,p -enum int -lang c++ -char signed -interworking -proc arm946e -gccext,on -msgstyle gcc -Cpp_exceptions off",
     "object": "build/tu/arm9-SaveData2/SaveData2.o (gitignored)",
     "comparison": "tools/match.py extract_func+compare (bytes/relocs) AND tools/objisolate.py plan() (relocation type/addend) AND tools/reloc_audit.py check_destinations() (relocation target identity)",
-    "functions_matched": 2,
-    "functions_declared": 2,
+    "functions_matched": 3,
+    "functions_declared": 3,
     "compilerOnlyOutput": {
       "requested": [],
       "deadstripped": [],

@@ -1728,11 +1728,7 @@ src/unnamed/arm9/0204/func_020427f8.c:
 
 src/engine/save/SaveData2.cpp:
     complete
-    .text start:0x02042804 end:0x02042f68
-
-src/unnamed/arm9/0204/func_02042f68.c:
-    complete
-    .text start:0x02042f68 end:0x02042fe4
+    .text start:0x02042804 end:0x02042fe4
 
 src/runtime/actor/ActorBase.cpp:
     complete

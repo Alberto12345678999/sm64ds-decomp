@@ -2152,7 +2152,6 @@ src/unnamed/arm9/0204/func_02042778.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0204/func_02042784.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0204/func_020427c4.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0204/func_020427f8.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0204/func_02042f68.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0204/func_020433b8.c	PURE-C	arm9				1		None		-
 src/func_02043810.c	PURE-C	arm9				1		None		-
 src/func_02043880.c	WEAK-refs-only	arm9				1		None		-

@@ -19579,9 +19579,6 @@
       "src/unnamed/arm9/0204/func_02040c34.c": [
         "arity:3"
       ],
-      "src/unnamed/arm9/0204/func_02042f68.c": [
-        "arity:3"
-      ],
       "src/FS_InitArchive.c": [
         "arity:3"
       ],
