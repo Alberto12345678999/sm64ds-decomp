@@ -10371,19 +10371,19 @@
     },
     "arm9:0x0205c864": {
       "author": "tangosdev",
-      "name": "func_0205c864"
+      "name": "FS_SuspendArchive"
     },
     "arm9:0x0205c91c": {
       "author": "tangosdev",
-      "name": "func_0205c91c"
+      "name": "FS_UnloadArchiveTables"
     },
     "arm9:0x0205c9b8": {
       "author": "andrewboudreau",
-      "name": "func_0205c9b8"
+      "name": "FS_LoadArchiveTables"
     },
     "arm9:0x0205caa8": {
       "author": "ruspecial",
-      "name": "func_0205caa8"
+      "name": "FS_UnloadArchive"
     },
     "arm9:0x0205cb68": {
       "author": "ruspecial",
@@ -10403,7 +10403,7 @@
     },
     "arm9:0x0205cd5c": {
       "author": "tangosdev",
-      "name": "func_0205cd5c"
+      "name": "FS_NotifyArchiveAsyncEnd"
     },
     "arm9:0x0205cdf4": {
       "author": "tangosdev",
@@ -10427,15 +10427,15 @@
     },
     "arm9:0x0205d28c": {
       "author": "tangosdev",
-      "name": "func_0205d28c"
+      "name": "FSi_ReadMemoryCore"
     },
     "arm9:0x0205d2b0": {
       "author": "tangosdev",
-      "name": "func_0205d2b0"
+      "name": "FSi_WriteMemCallback"
     },
     "arm9:0x0205d2dc": {
       "author": "tangosdev",
-      "name": "func_0205d2dc"
+      "name": "FSi_ReadMemCallback"
     },
     "arm9:0x0205d304": {
       "author": "andrewboudreau",
@@ -10475,7 +10475,7 @@
     },
     "arm9:0x0205d5e8": {
       "author": "tangosdev",
-      "name": "func_0205d5e8"
+      "name": "FS_OpenFileDirect"
     },
     "arm9:0x0205d644": {
       "author": "tangosdev",
@@ -10507,7 +10507,7 @@
     },
     "arm9:0x0205d94c": {
       "author": "ruspecial",
-      "name": "func_0205d94c"
+      "name": "FS_TryLoadTable"
     },
     "arm9:0x0205d96c": {
       "author": "andrewboudreau",
@@ -10515,19 +10515,19 @@
     },
     "arm9:0x0205da94": {
       "author": "tangosdev",
-      "name": "func_0205da94"
+      "name": "FSi_RomArchiveProc"
     },
     "arm9:0x0205db24": {
       "author": "tangosdev",
-      "name": "func_0205db24"
+      "name": "FSi_WriteDummyCallback"
     },
     "arm9:0x0205db2c": {
       "author": "andrewboudreau",
-      "name": "func_0205db2c"
+      "name": "FSi_ReadRomCallback"
     },
     "arm9:0x0205db78": {
       "author": "ruspecial",
-      "name": "func_0205db78"
+      "name": "FSi_OnRomReadDone"
     },
     "arm9:0x0205db88": {
       "author": "tangosdev",
