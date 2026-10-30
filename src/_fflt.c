@@ -1,8 +1,9 @@
 // HAND-ASM PRIMITIVE: byte-faithful asm-block match (assembly-only primitive). Per asm policy.
 //
-// func_01ffa4bc at 0x01ffa4bc (ITCM) -- 32-bit integer to float conversion, the inverse
-// of func_01ffa344 above it and part of the same soft-float runtime block. Assembly in
-// the original.
+// _fflt at 0x01ffa4bc (ITCM), also known as func_01ffa4bc -- signed 32-bit integer to float
+// conversion. Toolchain runtime, shipped as assembly; there is no C source for it in the
+// game. The name is the one mwccarm 2004/b56 itself emits a `bl` to for `(float)i` on an
+// int (checked by compiling that expression).
 //
 // Takes the sign off into r2, normalises with `clz`, and builds the result from the
 // 0x9e exponent bias directly. If the eight bits shifted out of the bottom are non-zero
@@ -18,7 +19,7 @@
 extern int func_0207322c(void);
 extern void func_0206ddcc(void);
 
-asm float func_01ffa4bc(int value)
+asm float _fflt(int value)
 {
     ands r2, r0, #0x80000000
     rsbmi r0, r0, #0

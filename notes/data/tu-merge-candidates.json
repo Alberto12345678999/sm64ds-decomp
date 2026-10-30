@@ -10927,7 +10927,7 @@
    "n_files": 3,
    "files": [
     "src/Entry.c",
-    "src/unnamed/arm9/0200/func_020048d8.c",
+    "src/MIi_UncompressBackward.c",
     "src/AutoloadCallback.c"
    ],
    "ext_mix": {
@@ -11054,10 +11054,10 @@
    "n_files": 2903,
    "files": [
     "src/engine/cp15/CP15_SystemSetup.cpp",
-    "src/unnamed/arm9/0200/func_02005000.c",
-    "src/unnamed/arm9/0200/func_02005060.c",
-    "src/unnamed/arm9/0200/func_02005098.c",
-    "src/unnamed/arm9/0200/func_020050dc.c",
+    "src/unnamed/arm9/0200/func_02005000.cpp",
+    "src/unnamed/arm9/0200/func_02005060.cpp",
+    "src/unnamed/arm9/0200/func_02005098.cpp",
+    "src/unnamed/arm9/0200/func_020050dc.cpp",
     "src/unnamed/arm9/0200/func_02005110.c",
     "src/unnamed/arm9/0200/func_02005324.c",
     "src/func_02005348.c",
@@ -14222,8 +14222,8 @@
    "n_functions_map": 5,
    "n_files": 2,
    "files": [
-    "src/unnamed/arm9/01ff/func_01ffa344.c",
-    "src/unnamed/arm9/01ff/func_01ffa4bc.c"
+    "src/_ffix.c",
+    "src/_fflt.c"
    ],
    "ext_mix": {
     ".c": 2
@@ -14379,13 +14379,13 @@
    "n_functions_map": 7,
    "n_files": 7,
    "files": [
-    "src/unnamed/arm9/01ff/func_01ffdb28.c",
+    "src/OSi_DoBoot.c",
     "src/OSReadROMArea.c",
     "src/unnamed/arm9/01ff/func_01ffdd08.c",
     "src/unnamed/arm9/01ff/func_01ffdd98.c",
     "src/DMAStartTransferFB.c",
     "src/DMAStartTransfer.c",
-    "src/unnamed/arm9/01ff/func_01ffde98.c"
+    "src/MI_SendGXCommand.c"
    ],
    "ext_mix": {
     ".c": 7
@@ -31265,7 +31265,7 @@
    "n_functions_map": 3,
    "n_files": 1,
    "files": [
-    "src/unnamed/arm9/01ff/func_01ff859c.c"
+    "src/_ll_ufrom_d.c"
    ],
    "ext_mix": {
     ".c": 1

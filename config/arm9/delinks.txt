@@ -34,11 +34,11 @@ src/Entry.c:
     complete
     .text start:0x02004800 end:0x020048d8
 
-src/unnamed/arm9/0200/func_020048d8.c:
+src/MIi_UncompressBackward.c:
     complete
     .text start:0x020048d8 end:0x0200497c
 
-src/unnamed/arm9/0200/func_0200497c.c:
+src/do_autoload.c:
     complete
     .text start:0x0200497c end:0x020049ec
 
@@ -50,19 +50,19 @@ src/engine/cp15/CP15_SystemSetup.cpp:
     complete
     .text start:0x020049f0 end:0x02004ad8
 
-src/unnamed/arm9/0200/func_02005000.c:
+src/unnamed/arm9/0200/func_02005000.cpp:
     complete
     .text start:0x02005000 end:0x02005060
 
-src/unnamed/arm9/0200/func_02005060.c:
+src/unnamed/arm9/0200/func_02005060.cpp:
     complete
     .text start:0x02005060 end:0x02005098
 
-src/unnamed/arm9/0200/func_02005098.c:
+src/unnamed/arm9/0200/func_02005098.cpp:
     complete
     .text start:0x02005098 end:0x020050dc
 
-src/unnamed/arm9/0200/func_020050dc.c:
+src/unnamed/arm9/0200/func_020050dc.cpp:
     complete
     .text start:0x020050dc end:0x02005110
 

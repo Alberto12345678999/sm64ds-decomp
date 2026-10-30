@@ -17,8 +17,8 @@ VBlankIntrWait kind:function(thumb,size=0x6) addr:0x020046c2
 WaitByLoop kind:function(thumb,size=0x4) addr:0x0200472a
 Mod kind:function(thumb,size=0x6) addr:0x02004782
 Entry kind:function(arm,size=0xd8) addr:0x02004800
-func_020048d8 kind:function(arm,size=0xa4) addr:0x020048d8
-func_0200497c kind:function(arm,size=0x70) addr:0x0200497c
+MIi_UncompressBackward kind:function(arm,size=0xa4) addr:0x020048d8
+do_autoload kind:function(arm,size=0x70) addr:0x0200497c
 AutoloadCallback kind:function(arm,size=0x4) addr:0x020049ec
 _ZN4CP1511SystemSetupEv kind:function(arm,size=0xe8) addr:0x020049f0
 BuildInfo kind:data(any) addr:0x02004ad8
