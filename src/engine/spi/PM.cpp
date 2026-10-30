@@ -4,8 +4,9 @@
  *
  * Each command sender takes the channel lock (PMi_Lock) and sends one to
  * three words to the ARM7 on PXI tag 8 (PMi_SendPxiData); all but
- * PMi_SendSleepStart first store a completion callback and its argument. PMi_CommonCallback, the tag's receive callback,
- * stores any reply and finishes through PMi_CallCallbackAndUnlock. Each
+ * PMi_SendSleepStart first store a completion callback and its argument.
+ * PMi_CommonCallback, the tag's receive callback, stores any reply and
+ * finishes through PMi_CallCallbackAndUnlock. Each
  * synchronous form passes PMi_DummyCallback, which stores the result in a
  * stack word, and spins in PMi_WaitBusy until the lock drops.
  *
