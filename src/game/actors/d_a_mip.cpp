@@ -1276,11 +1276,9 @@ void daMip_c::RenderMirrorImage()
  * objects rather than dereferenced as a type, so it stays an s32 and those four
  * comparisons are what identify the states.
  *
- * The block before dExtFrameCtrl_c::Advance is the ARM/Itanium pointer-to-member
- * sequence written out -- adjustment word, virtual bit, vtable index or direct
- * address -- run on whatever mState points at. It is kept verbatim because there
- * is no recovered type for the descriptor to call a member through. `c` is the
- * char* base that sequence adds the adjustment to.
+ * The block before Advance calls MipStatePair::b, the record's second
+ * pointer-to-member, on the daMip_cSelf shadow. mState stays an s32: the four
+ * comparisons above identify the states by address. `c` is the char* this.
  *
  * mEatenTimer's increment is a byte update through (long long)(int)&mEatenTimer.
  * `mEatenTimer = mEatenTimer + 1` shrinks Behavior from 0x5cc to 0x5c0. */
@@ -1424,18 +1422,10 @@ int daMip_c::Behavior()
     DecIfAbove0_Short(&mStateTimer);
 
     {
-        int* p = *(int**)&mState;
-        if (p[2] != 0) {
-            int* q = p + 2;
-            int adj = q[1];
-            void* thiz = c + (adj >> 1);
-            void (*fn)(void*);
-            if (adj & 1)
-                fn = *(void(**)(void*))(*(char**)thiz + q[0]);
-            else
-                fn = (void(*)(void*))q[0];
-            fn(thiz);
-        }
+        daMip_cSelf *self = (daMip_cSelf *)c;
+        MipStatePair *state = *(MipStatePair **)&mState;
+        if (state->b != 0)
+            (self->*(state->b))();
     }
 
     mAnmModel.Advance();

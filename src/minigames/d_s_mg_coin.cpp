@@ -1063,7 +1063,6 @@ void dScMgCoin_c::Block_StateResting() {}
 /* A block dropping onto its coin's row. It stops at the row height from
    sCoinBlockDropRowY, takes the coin's x and rests (state 4). */
 void dScMgCoin_c::Block_StateDropOnCoin(int index) {
-    char *thiz = (char *)this;
     int off = index * 0x1c;
     int new_var;
     int *pa = &mBlocks[index].vy;
@@ -1072,19 +1071,19 @@ void dScMgCoin_c::Block_StateDropOnCoin(int index) {
        record order; mBlocks[index].vy moves bytes */
     *pb = (*pb) + (*(int *)((char *)&mBlocks[0].vy + off));
     *(int *)((char *)&mBlocks[0].vy + off) = (*pa) + 0x400;
-    int look = sCoinBlockDropRowY[((dScMgCoin_c *)(thiz + off))->mBlocks[0].row];
+    int look = sCoinBlockDropRowY[mBlocks[index].row];
     if (((*pb) >> 12) <= look) {
         return;
     }
-    new_var = ((dScMgCoin_c *)(thiz + off))->mBlocks[0].coin * 0x18;
-    char *g = thiz + new_var;
-    ((dScMgCoin_c *)(thiz + off))->mBlocks[0].x = ((dScMgCoin_c *)g)->mCoins[0].x;
+    new_var = mBlocks[index].coin * 0x18;
+    char *g = (char *)this + new_var;
+    mBlocks[index].x = ((dScMgCoin_c *)g)->mCoins[0].x;
     *pb = look << 12;
     *pa = 0;
-    ((dScMgCoin_c *)(thiz + off))->mBlocks[0].vx = 0;
-    ((dScMgCoin_c *)(thiz + off))->mBlocks[0].state = 4;
+    mBlocks[index].vx = 0;
+    mBlocks[index].state = 4;
     pa += 0;
-    ((dScMgCoin_c *)(thiz + off))->mBlocks[0].visible = 0;
+    mBlocks[index].visible = 0;
 }
 
 // @symbol _ZN11dScMgCoin_c17Block_StateWanderEi
@@ -1258,14 +1257,13 @@ void dScMgCoin_c::Block_ClampToWalls(int idx) {
    moving the scene goes to phase 2, the score starts running and the start
    sound plays. */
 void dScMgCoin_c::Block_UpdateAll() {
-    char *thiz = (char *)this;
     int n = 0;
     int i = 0;
-    char *p = thiz;
+    char *p = (char *)this;
     for (; i < 0x28; i++) {
         if (((dScMgCoin_c *)p)->mBlocks[0].active != 0) {
             (this->*sCoinBlockStateTable[((dScMgCoin_c *)p)->mBlocks[0].state].pmf)(i);
-            /* mBlocks[0].state; the member spelling moves bytes */
+            /* mBlocks[i].state; the member spelling moves bytes */
             if (*(unsigned char *)(p + 0x4000 + 0x675) != 4)
                 n++;
             this->Block_Animate(i);

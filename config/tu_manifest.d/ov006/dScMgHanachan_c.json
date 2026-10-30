@@ -1469,17 +1469,19 @@
     "compilerOnlyOutput": {
       "requested": [
         "_ZN15dScMgHanachan_cD2Ev",
-        "_ZN10Vec2_ea914D1Ev"
+        "_ZN10Vec2_ea914D1Ev",
+        "_ZN7Vector2D1Ev"
       ],
       "deadstripped": [
         "_ZN10Vec2_ea914D1Ev",
-        "_ZN15dScMgHanachan_cD2Ev"
+        "_ZN15dScMgHanachan_cD2Ev",
+        "_ZN7Vector2D1Ev"
       ],
       "droppedSections": [
         11,
         12,
-        33,
-        195,
+        15,
+        34,
         196,
         197,
         198,
@@ -1495,7 +1497,8 @@
         208,
         209,
         210,
-        211
+        211,
+        212
       ],
       "data": [
         "_ZTI7fBase_c",
@@ -1523,7 +1526,17 @@
         "_ZTS8dScene_c",
         "_ZTV15dScMgHanachan_c"
       ],
-      "canonicalDuplicates": []
+      "canonicalDuplicates": [
+        {
+          "symbol": "_ZN7Vector2D1Ev",
+          "canonicalSymbol": "NullDestructor_0203d47c",
+          "module": "arm9",
+          "address": "0x0203d47c",
+          "size": 4,
+          "bodySha256": "379bec29dccd0a93c94826144d7ef6e42fab64ef195a3b8313a16926f66f388f",
+          "relocations": 0
+        }
+      ]
     },
     "criteria": {
       "every_declared_function_defined": "PASS",
@@ -1943,24 +1956,24 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@1147",
+      "from": "@1148",
       "to": "pmf_Wiggler_StateWait",
-      "evidence": "Compiler-local native PMF matched uniquely by consumer function and relocation offset; target and full8-byte record independently verified. Re-keyed +6 (from @1139) when dScMgBase_c.h gained Mg_DrawLine."
+      "evidence": "Compiler-local native PMF matched uniquely by consumer function and relocation offset; target and full8-byte record independently verified. Re-keyed +6 (from @1139) when dScMgBase_c.h gained Mg_DrawLine. Re-keyed from @1147 to @1148 when Wiggler_UpdateSway read state through one Wiggler *; same consumer and relocation offset."
     },
     {
-      "from": "@2180",
+      "from": "@2181",
       "to": "pmf_dScMgHanachan_c_Phase_WaitIntro",
-      "evidence": "Compiler-local native PMF matched uniquely by consumer function and relocation offset; target and full8-byte record independently verified. Re-keyed +6 (from @2172) when dScMgBase_c.h gained Mg_DrawLine."
+      "evidence": "Compiler-local native PMF matched uniquely by consumer function and relocation offset; target and full8-byte record independently verified. Re-keyed +6 (from @2172) when dScMgBase_c.h gained Mg_DrawLine. Re-keyed from @2180 to @2181 when Wiggler_UpdateSway read state through one Wiggler *; same consumer and relocation offset."
     },
     {
-      "from": "@1093",
+      "from": "@1094",
       "to": "pmf_Wiggler_TurnTowardAim",
-      "evidence": "Compiler-local native PMF matched uniquely by consumer function and relocation offset; target and full8-byte record independently verified. Re-keyed +6 (from @1085) when dScMgBase_c.h gained Mg_DrawLine."
+      "evidence": "Compiler-local native PMF matched uniquely by consumer function and relocation offset; target and full8-byte record independently verified. Re-keyed +6 (from @1085) when dScMgBase_c.h gained Mg_DrawLine. Re-keyed from @1093 to @1094 when Wiggler_UpdateSway read state through one Wiggler *; same consumer and relocation offset."
     },
     {
-      "from": "@1144",
+      "from": "@1145",
       "to": "pmf_Wiggler_StateMoveB",
-      "evidence": "Compiler-local native PMF matched uniquely by consumer function and relocation offset; target and full8-byte record independently verified. Re-keyed +6 (from @1136) when dScMgBase_c.h gained Mg_DrawLine."
+      "evidence": "Compiler-local native PMF matched uniquely by consumer function and relocation offset; target and full8-byte record independently verified. Re-keyed +6 (from @1136) when dScMgBase_c.h gained Mg_DrawLine. Re-keyed from @1144 to @1145 when Wiggler_UpdateSway read state through one Wiggler *; same consumer and relocation offset."
     },
     {
       "from": "@684",
@@ -1973,114 +1986,114 @@
       "evidence": "Compiler-local native PMF matched uniquely by consumer function and relocation offset; target and full8-byte record independently verified. Re-keyed +6 (from @839) when dScMgBase_c.h gained Mg_DrawLine."
     },
     {
-      "from": "@1810",
+      "from": "@1811",
       "to": "pmf_dScMgHanachan_c_Phase_Result",
-      "evidence": "Compiler-local native PMF matched uniquely by consumer function and relocation offset; target and full8-byte record independently verified. Re-keyed +6 (from @1802) when dScMgBase_c.h gained Mg_DrawLine."
+      "evidence": "Compiler-local native PMF matched uniquely by consumer function and relocation offset; target and full8-byte record independently verified. Re-keyed +6 (from @1802) when dScMgBase_c.h gained Mg_DrawLine. Re-keyed from @1810 to @1811 when Wiggler_UpdateSway read state through one Wiggler *; same consumer and relocation offset."
     },
     {
-      "from": "@1066",
+      "from": "@1067",
       "to": "pmf_Wiggler_StateMoveA",
-      "evidence": "Compiler-local native PMF matched uniquely by consumer function and relocation offset; target and full8-byte record independently verified. Re-keyed +6 (from @1058) when dScMgBase_c.h gained Mg_DrawLine."
+      "evidence": "Compiler-local native PMF matched uniquely by consumer function and relocation offset; target and full8-byte record independently verified. Re-keyed +6 (from @1058) when dScMgBase_c.h gained Mg_DrawLine. Re-keyed from @1066 to @1067 when Wiggler_UpdateSway read state through one Wiggler *; same consumer and relocation offset."
     },
     {
-      "from": "@1068",
+      "from": "@1069",
       "to": "pmf_Wiggler_StateWait_3",
-      "evidence": "Compiler-local native PMF matched uniquely by consumer function and relocation offset; target and full8-byte record independently verified. Re-keyed +6 (from @1060) when dScMgBase_c.h gained Mg_DrawLine."
+      "evidence": "Compiler-local native PMF matched uniquely by consumer function and relocation offset; target and full8-byte record independently verified. Re-keyed +6 (from @1060) when dScMgBase_c.h gained Mg_DrawLine. Re-keyed from @1068 to @1069 when Wiggler_UpdateSway read state through one Wiggler *; same consumer and relocation offset."
     },
     {
-      "from": "@1796",
+      "from": "@1797",
       "to": "pmf_dScMgHanachan_c_Phase_Play",
-      "evidence": "Compiler-local native PMF matched uniquely by consumer function and relocation offset; target and full8-byte record independently verified. Re-keyed +6 (from @1788) when dScMgBase_c.h gained Mg_DrawLine."
+      "evidence": "Compiler-local native PMF matched uniquely by consumer function and relocation offset; target and full8-byte record independently verified. Re-keyed +6 (from @1788) when dScMgBase_c.h gained Mg_DrawLine. Re-keyed from @1796 to @1797 when Wiggler_UpdateSway read state through one Wiggler *; same consumer and relocation offset."
     },
     {
-      "from": "@1056",
+      "from": "@1057",
       "to": "pmf_Wiggler_TurnTowardAim_3",
-      "evidence": "Compiler-local native PMF matched uniquely by consumer function and relocation offset; target and full8-byte record independently verified. Re-keyed +6 (from @1048) when dScMgBase_c.h gained Mg_DrawLine."
+      "evidence": "Compiler-local native PMF matched uniquely by consumer function and relocation offset; target and full8-byte record independently verified. Re-keyed +6 (from @1048) when dScMgBase_c.h gained Mg_DrawLine. Re-keyed from @1056 to @1057 when Wiggler_UpdateSway read state through one Wiggler *; same consumer and relocation offset."
     },
     {
-      "from": "@1106",
+      "from": "@1107",
       "to": "pmf_Wiggler_Update",
-      "evidence": "Compiler-local native PMF matched uniquely by consumer function and relocation offset; target and full8-byte record independently verified. Re-keyed +6 (from @1098) when dScMgBase_c.h gained Mg_DrawLine."
+      "evidence": "Compiler-local native PMF matched uniquely by consumer function and relocation offset; target and full8-byte record independently verified. Re-keyed +6 (from @1098) when dScMgBase_c.h gained Mg_DrawLine. Re-keyed from @1106 to @1107 when Wiggler_UpdateSway read state through one Wiggler *; same consumer and relocation offset."
     },
     {
-      "from": "@1103",
+      "from": "@1104",
       "to": "pmf_Wiggler_StateMoveA_2",
-      "evidence": "Compiler-local native PMF matched uniquely by consumer function and relocation offset; target and full8-byte record independently verified. Re-keyed +6 (from @1095) when dScMgBase_c.h gained Mg_DrawLine."
+      "evidence": "Compiler-local native PMF matched uniquely by consumer function and relocation offset; target and full8-byte record independently verified. Re-keyed +6 (from @1095) when dScMgBase_c.h gained Mg_DrawLine. Re-keyed from @1103 to @1104 when Wiggler_UpdateSway read state through one Wiggler *; same consumer and relocation offset."
     },
     {
-      "from": "@2136",
+      "from": "@2137",
       "to": "pmf_dScMgHanachan_c_Phase_Play_2",
-      "evidence": "Compiler-local native PMF matched uniquely by consumer function and relocation offset; target and full8-byte record independently verified. Re-keyed +6 (from @2128) when dScMgBase_c.h gained Mg_DrawLine."
+      "evidence": "Compiler-local native PMF matched uniquely by consumer function and relocation offset; target and full8-byte record independently verified. Re-keyed +6 (from @2128) when dScMgBase_c.h gained Mg_DrawLine. Re-keyed from @2136 to @2137 when Wiggler_UpdateSway read state through one Wiggler *; same consumer and relocation offset."
     },
     {
-      "from": "@1180",
+      "from": "@1181",
       "to": "pmf_Wiggler_StateHold",
-      "evidence": "Compiler-local native PMF matched uniquely by consumer function and relocation offset; target and full8-byte record independently verified. Re-keyed +6 (from @1172) when dScMgBase_c.h gained Mg_DrawLine."
+      "evidence": "Compiler-local native PMF matched uniquely by consumer function and relocation offset; target and full8-byte record independently verified. Re-keyed +6 (from @1172) when dScMgBase_c.h gained Mg_DrawLine. Re-keyed from @1180 to @1181 when Wiggler_UpdateSway read state through one Wiggler *; same consumer and relocation offset."
     },
     {
-      "from": "@1746",
+      "from": "@1747",
       "to": "pmf_Wiggler_TurnTowardAim_4",
-      "evidence": "Compiler-local native PMF matched uniquely by consumer function and relocation offset; target and full8-byte record independently verified. Re-keyed +6 (from @1738) when dScMgBase_c.h gained Mg_DrawLine."
+      "evidence": "Compiler-local native PMF matched uniquely by consumer function and relocation offset; target and full8-byte record independently verified. Re-keyed +6 (from @1738) when dScMgBase_c.h gained Mg_DrawLine. Re-keyed from @1746 to @1747 when Wiggler_UpdateSway read state through one Wiggler *; same consumer and relocation offset."
     },
     {
-      "from": "@1140",
+      "from": "@1141",
       "to": "pmf_Wiggler_MoveBounce",
-      "evidence": "Compiler-local native PMF matched uniquely by consumer function and relocation offset; target and full8-byte record independently verified. Re-keyed +6 (from @1132) when dScMgBase_c.h gained Mg_DrawLine."
+      "evidence": "Compiler-local native PMF matched uniquely by consumer function and relocation offset; target and full8-byte record independently verified. Re-keyed +6 (from @1132) when dScMgBase_c.h gained Mg_DrawLine. Re-keyed from @1140 to @1141 when Wiggler_UpdateSway read state through one Wiggler *; same consumer and relocation offset."
     },
     {
-      "from": "@1137",
+      "from": "@1138",
       "to": "pmf_Wiggler_TurnTowardAim_5",
-      "evidence": "Compiler-local native PMF matched uniquely by consumer function and relocation offset; target and full8-byte record independently verified. Re-keyed +6 (from @1129) when dScMgBase_c.h gained Mg_DrawLine."
+      "evidence": "Compiler-local native PMF matched uniquely by consumer function and relocation offset; target and full8-byte record independently verified. Re-keyed +6 (from @1129) when dScMgBase_c.h gained Mg_DrawLine. Re-keyed from @1137 to @1138 when Wiggler_UpdateSway read state through one Wiggler *; same consumer and relocation offset."
     },
     {
-      "from": "@1126",
+      "from": "@1127",
       "to": "pmf_Wiggler_TurnTowardAim_6",
-      "evidence": "Compiler-local native PMF matched uniquely by consumer function and relocation offset; target and full8-byte record independently verified. Re-keyed +6 (from @1118) when dScMgBase_c.h gained Mg_DrawLine."
+      "evidence": "Compiler-local native PMF matched uniquely by consumer function and relocation offset; target and full8-byte record independently verified. Re-keyed +6 (from @1118) when dScMgBase_c.h gained Mg_DrawLine. Re-keyed from @1126 to @1127 when Wiggler_UpdateSway read state through one Wiggler *; same consumer and relocation offset."
     },
     {
-      "from": "@1076",
+      "from": "@1077",
       "to": "pmf_Wiggler_StateHold_2",
-      "evidence": "Compiler-local native PMF matched uniquely by consumer function and relocation offset; target and full8-byte record independently verified. Re-keyed +6 (from @1068) when dScMgBase_c.h gained Mg_DrawLine."
+      "evidence": "Compiler-local native PMF matched uniquely by consumer function and relocation offset; target and full8-byte record independently verified. Re-keyed +6 (from @1068) when dScMgBase_c.h gained Mg_DrawLine. Re-keyed from @1076 to @1077 when Wiggler_UpdateSway read state through one Wiggler *; same consumer and relocation offset."
     },
     {
-      "from": "@1172",
+      "from": "@1173",
       "to": "pmf_Wiggler_StateWait_4",
-      "evidence": "Compiler-local native PMF matched uniquely by consumer function and relocation offset; target and full8-byte record independently verified. Re-keyed +6 (from @1164) when dScMgBase_c.h gained Mg_DrawLine."
+      "evidence": "Compiler-local native PMF matched uniquely by consumer function and relocation offset; target and full8-byte record independently verified. Re-keyed +6 (from @1164) when dScMgBase_c.h gained Mg_DrawLine. Re-keyed from @1172 to @1173 when Wiggler_UpdateSway read state through one Wiggler *; same consumer and relocation offset."
     },
     {
-      "from": "@1696",
+      "from": "@1697",
       "to": "pmf_Wiggler_CheckOffLeftB",
-      "evidence": "Compiler-local native PMF matched uniquely by consumer function and relocation offset; target and full8-byte record independently verified. Re-keyed +6 (from @1688) when dScMgBase_c.h gained Mg_DrawLine."
+      "evidence": "Compiler-local native PMF matched uniquely by consumer function and relocation offset; target and full8-byte record independently verified. Re-keyed +6 (from @1688) when dScMgBase_c.h gained Mg_DrawLine. Re-keyed from @1696 to @1697 when Wiggler_UpdateSway read state through one Wiggler *; same consumer and relocation offset."
     },
     {
-      "from": "@1630",
+      "from": "@1631",
       "to": "pmf_Wiggler_MoveBounce_2",
-      "evidence": "Compiler-local native PMF matched uniquely by consumer function and relocation offset; target and full8-byte record independently verified. Re-keyed +6 (from @1622) when dScMgBase_c.h gained Mg_DrawLine."
+      "evidence": "Compiler-local native PMF matched uniquely by consumer function and relocation offset; target and full8-byte record independently verified. Re-keyed +6 (from @1622) when dScMgBase_c.h gained Mg_DrawLine. Re-keyed from @1630 to @1631 when Wiggler_UpdateSway read state through one Wiggler *; same consumer and relocation offset."
     },
     {
-      "from": "@934",
+      "from": "@933",
       "to": "pmf_Wiggler_TurnTowardAim_7",
-      "evidence": "Compiler-local native PMF matched uniquely by consumer function and relocation offset; target and full8-byte record independently verified. Re-keyed +6 (from @926) when dScMgBase_c.h gained Mg_DrawLine."
+      "evidence": "Compiler-local native PMF matched uniquely by consumer function and relocation offset; target and full8-byte record independently verified. Re-keyed +6 (from @926) when dScMgBase_c.h gained Mg_DrawLine. Re-keyed from @934 to @933 when Wiggler_UpdateSway read state through one Wiggler *; same consumer and relocation offset."
     },
     {
-      "from": "@1562",
+      "from": "@1563",
       "to": "pmf_Wiggler_CheckOffLeftA",
-      "evidence": "Compiler-local native PMF matched uniquely by consumer function and relocation offset; target and full8-byte record independently verified. Re-keyed +6 (from @1554) when dScMgBase_c.h gained Mg_DrawLine."
+      "evidence": "Compiler-local native PMF matched uniquely by consumer function and relocation offset; target and full8-byte record independently verified. Re-keyed +6 (from @1554) when dScMgBase_c.h gained Mg_DrawLine. Re-keyed from @1562 to @1563 when Wiggler_UpdateSway read state through one Wiggler *; same consumer and relocation offset."
     },
     {
-      "from": "@1847",
+      "from": "@1848",
       "to": "pmf_dScMgHanachan_c_Phase_WaitIntro_2",
-      "evidence": "Compiler-local native PMF matched uniquely by consumer function and relocation offset; target and full8-byte record independently verified. Re-keyed +6 (from @1839) when dScMgBase_c.h gained Mg_DrawLine."
+      "evidence": "Compiler-local native PMF matched uniquely by consumer function and relocation offset; target and full8-byte record independently verified. Re-keyed +6 (from @1839) when dScMgBase_c.h gained Mg_DrawLine. Re-keyed from @1847 to @1848 when Wiggler_UpdateSway read state through one Wiggler *; same consumer and relocation offset."
     },
     {
-      "from": "@1837",
+      "from": "@1838",
       "to": "pmf_dScMgHanachan_c_Phase_WaitTouch",
-      "evidence": "Compiler-local native PMF matched uniquely by consumer function and relocation offset; target and full8-byte record independently verified. Re-keyed +6 (from @1829) when dScMgBase_c.h gained Mg_DrawLine."
+      "evidence": "Compiler-local native PMF matched uniquely by consumer function and relocation offset; target and full8-byte record independently verified. Re-keyed +6 (from @1829) when dScMgBase_c.h gained Mg_DrawLine. Re-keyed from @1837 to @1838 when Wiggler_UpdateSway read state through one Wiggler *; same consumer and relocation offset."
     },
     {
-      "from": "@1834",
+      "from": "@1835",
       "to": "pmf_Hana_StateNoneB",
-      "evidence": "Compiler-local native PMF matched uniquely by consumer function and relocation offset; target and full8-byte record independently verified. Re-keyed +6 (from @1826) when dScMgBase_c.h gained Mg_DrawLine."
+      "evidence": "Compiler-local native PMF matched uniquely by consumer function and relocation offset; target and full8-byte record independently verified. Re-keyed +6 (from @1826) when dScMgBase_c.h gained Mg_DrawLine. Re-keyed from @1834 to @1835 when Wiggler_UpdateSway read state through one Wiggler *; same consumer and relocation offset."
     },
     {
       "from": "@909",
@@ -2088,34 +2101,34 @@
       "evidence": "Compiler-local native PMF matched uniquely by consumer function and relocation offset; target and full8-byte record independently verified. Re-keyed +6 (from @901) when dScMgBase_c.h gained Mg_DrawLine."
     },
     {
-      "from": "@2046",
+      "from": "@2047",
       "to": "pmf_Wiggler_TurnTowardAim_9",
-      "evidence": "Compiler-local native PMF matched uniquely by consumer function and relocation offset; target and full8-byte record independently verified. Re-keyed +6 (from @2038) when dScMgBase_c.h gained Mg_DrawLine."
+      "evidence": "Compiler-local native PMF matched uniquely by consumer function and relocation offset; target and full8-byte record independently verified. Re-keyed +6 (from @2038) when dScMgBase_c.h gained Mg_DrawLine. Re-keyed from @2046 to @2047 when Wiggler_UpdateSway read state through one Wiggler *; same consumer and relocation offset."
     },
     {
-      "from": "@1956",
+      "from": "@1957",
       "to": "pmf_Hana_StateNoneA",
-      "evidence": "Compiler-local native PMF matched uniquely by consumer function and relocation offset; target and full8-byte record independently verified. Re-keyed +6 (from @1948) when dScMgBase_c.h gained Mg_DrawLine."
+      "evidence": "Compiler-local native PMF matched uniquely by consumer function and relocation offset; target and full8-byte record independently verified. Re-keyed +6 (from @1948) when dScMgBase_c.h gained Mg_DrawLine. Re-keyed from @1956 to @1957 when Wiggler_UpdateSway read state through one Wiggler *; same consumer and relocation offset."
     },
     {
-      "from": "@1970",
+      "from": "@1971",
       "to": "pmf_dScMgHanachan_c_Phase_WaitTouch_2",
-      "evidence": "Compiler-local native PMF matched uniquely by consumer function and relocation offset; target and full8-byte record independently verified. Re-keyed +6 (from @1962) when dScMgBase_c.h gained Mg_DrawLine."
+      "evidence": "Compiler-local native PMF matched uniquely by consumer function and relocation offset; target and full8-byte record independently verified. Re-keyed +6 (from @1962) when dScMgBase_c.h gained Mg_DrawLine. Re-keyed from @1970 to @1971 when Wiggler_UpdateSway read state through one Wiggler *; same consumer and relocation offset."
     },
     {
-      "from": "@1982",
+      "from": "@1983",
       "to": "pmf_Hana_StateNoneB_2",
-      "evidence": "Compiler-local native PMF matched uniquely by consumer function and relocation offset; target and full8-byte record independently verified. Re-keyed +6 (from @1974) when dScMgBase_c.h gained Mg_DrawLine."
+      "evidence": "Compiler-local native PMF matched uniquely by consumer function and relocation offset; target and full8-byte record independently verified. Re-keyed +6 (from @1974) when dScMgBase_c.h gained Mg_DrawLine. Re-keyed from @1982 to @1983 when Wiggler_UpdateSway read state through one Wiggler *; same consumer and relocation offset."
     },
     {
-      "from": "@2023",
+      "from": "@2024",
       "to": "pmf_dScMgHanachan_c_Phase_Result_2",
-      "evidence": "Compiler-local native PMF matched uniquely by consumer function and relocation offset; target and full8-byte record independently verified. Re-keyed +6 (from @2015) when dScMgBase_c.h gained Mg_DrawLine."
+      "evidence": "Compiler-local native PMF matched uniquely by consumer function and relocation offset; target and full8-byte record independently verified. Re-keyed +6 (from @2015) when dScMgBase_c.h gained Mg_DrawLine. Re-keyed from @2023 to @2024 when Wiggler_UpdateSway read state through one Wiggler *; same consumer and relocation offset."
     },
     {
-      "from": "@2073",
+      "from": "@2074",
       "to": "pmf_Wiggler_TurnTowardAim_10",
-      "evidence": "Compiler-local native PMF matched uniquely by consumer function and relocation offset; target and full8-byte record independently verified. Re-keyed +6 (from @2065) when dScMgBase_c.h gained Mg_DrawLine."
+      "evidence": "Compiler-local native PMF matched uniquely by consumer function and relocation offset; target and full8-byte record independently verified. Re-keyed +6 (from @2065) when dScMgBase_c.h gained Mg_DrawLine. Re-keyed from @2073 to @2074 when Wiggler_UpdateSway read state through one Wiggler *; same consumer and relocation offset."
     }
   ]
 }
