@@ -8724,9 +8724,9 @@ except for the size, 0xd0 against 0xd4. An inline `operator new(size_t, int extr
 
 Some sources built a static by hand: three stores, then
 `__register_global_object(&obj, _ZN7Vector3D1Ev, &node)`, either in a separate
-`__sinit_<addr>.c` shard or under a hand-tested guard word. `include/types.h` gives `Vector3` a non-trivial
-`~Vector3() {}` and a `(Fix12i, Fix12i, Fix12i)` constructor, so declaring the object does
-the same thing:
+`__sinit_<addr>.c` shard or under a hand-tested guard word. `include/types.h` gives `Vector3`
+a non-trivial `~Vector3() {}` and a `(Fix12i, Fix12i, Fix12i)` constructor, so declaring the
+object does the same thing:
 
 - **File scope:** `static Vector3 sMapScreenCenter(0x80000, 0, 0x60000);`. mwcc emits
   `__sinit_d_map.cpp` (0x48, identical to retail `__sinit_ov002_0210804c`), its `.ctor` word,
