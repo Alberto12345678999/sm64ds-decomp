@@ -1160,6 +1160,14 @@
       "count": 3,
       "reason": "These addresses are stored as int descriptor words in daDemo static initializers. Spelling them as member pointers emitted @NNN temps instead of the retail relocations. Each name already occurs once in this file on main; the fold adds the extern and one use.",
       "evidence": "ov002/daDemo_c linkcheck SCRATCH-DATA-VERIFIED, .init 0xc18 IDENTICAL, head 115d0d6d5c0. Member-pointer aggregates were measured and dropped because they relocated through @NNN."
+    },
+    {
+      "path": "src/game/actors/d_a_demo.cpp",
+      "rule": "handspelled-member",
+      "match": "_ZN8daDemo_c9StaffRoll19func_ov002_020f5b24Ev",
+      "count": 2,
+      "reason": "Main turned func_ov002_020f5b24 into StaffRoll::func_ov002_020f5b24. The static descriptor still stores that function's address. A pointer-to-member is not that address, so the initializer names the mangled symbol.",
+      "evidence": "include/daDemo_c.h declares StaffRoll::func_ov002_020f5b24. The descriptor data_ov002_0210b7b8 stored func_ov002_020f5b24 before that rename. mwccarm compiled the mangled spelling."
     }
   ]
 }

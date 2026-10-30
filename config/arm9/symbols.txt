@@ -3086,7 +3086,7 @@ __sinit_Sound.cpp kind:function(arm,size=0x14) addr:0x02074da8
 __sinit_02074dbc kind:function(arm,size=0x4) addr:0x02074dbc
 __sinit_02074dc0 kind:function(arm,size=0x4) addr:0x02074dc0
 __sinit_Timer.cpp kind:function(arm,size=0x48) addr:0x02074dc4
-__sinit_func_0201a96c.cpp kind:label(arm) addr:0x02074e0c
+__sinit_func_0201a96c.cpp kind:function(arm,size=0x38) addr:0x02074e0c
 __sinit_02074e44 kind:function(arm,size=0x3c) addr:0x02074e44
 __sinit_02074e80 kind:function(arm,size=0x4) addr:0x02074e80
 __sinit_02074e84 kind:function(arm,size=0x58) addr:0x02074e84

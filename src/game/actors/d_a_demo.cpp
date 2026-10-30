@@ -4794,6 +4794,9 @@ extern int
 _ZN8daDemo_c19func_ov002_020f6e48EPh(daDemo_c *,
                                      unsigned char *);      /* local extern: descriptor address */
 extern int _ZN8daDemo_c19func_ov002_020f7020Ev(daDemo_c *); /* local extern: descriptor address */
+/* StaffRoll::func_ov002_020f5b24 is a method on current main. The descriptor
+   word still wants that function's address. */
+extern void _ZN8daDemo_c9StaffRoll19func_ov002_020f5b24Ev(void);
 
 int data_ov002_0210b658[2] = {(int)0x81f020f0, (int)0xffff0100};
 int data_ov002_0210b6e8[2] = {(int)0x81f020f0, (int)0xffff0118};
@@ -4843,7 +4846,7 @@ W data_ov002_0210b798 = {(int)func_ov002_020f335c, 0};
 W data_ov002_0210b7a0 = {(int)func_ov002_020f340c, 0};
 W data_ov002_0210b7a8 = {(int)func_ov002_020f5848, 0};
 W data_ov002_0210b7b0 = {(int)func_ov002_020f34bc, 0};
-W data_ov002_0210b7b8 = {(int)func_ov002_020f5b24, 0};
+W data_ov002_0210b7b8 = {(int)_ZN8daDemo_c9StaffRoll19func_ov002_020f5b24Ev, 0};
 W data_ov002_0210b7c0 = {(int)func_ov002_020f5b7c, 0};
 W data_ov002_0210b7c8 = {(int)func_ov002_020f5b88, 0};
 W data_ov002_0210b7d0 = {(int)func_ov002_020f3740, 0};
