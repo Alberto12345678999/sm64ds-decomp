@@ -1,5 +1,5 @@
 //cpp
-/* NitroSDK wm_system.c WM_ReadStatus: copy the status block ARM7 shares
+/* NitroSDK wm_sync.c WM_ReadStatus: copy the status block ARM7 shares
  * (0x930 bytes, invalidated from the data cache first) into statusBuf.
  * WM_ERRCODE_ILLEGAL_STATE (3) before WM_Init, WM_ERRCODE_INVALID_PARAM
  * (6) for a null statusBuf, else WM_ERRCODE_SUCCESS. */

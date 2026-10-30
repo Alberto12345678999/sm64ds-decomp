@@ -27,7 +27,7 @@ typedef struct FSFile {
     char pad_00[8];
     FSArchive *arc; /* 0x08 */
     char pad_0c[0x2c - 0xc];
-    FSDirPos dir_pos;   /* 0x2c -- prop.dir.pos */
+    FSDirPos pos;       /* 0x2c -- arg.findpath.pos */
     char *path;         /* 0x38 -- arg.findpath.path */
     int find_directory; /* 0x3c */
     int result;         /* 0x40 -- the FSFileID or FSDirPos to fill */
@@ -79,7 +79,7 @@ int FSi_FindPath(FSFile *p_dir, char *path, int p_file_id, int p_dir_pos) {
 
     p_dir->arc = pos.arc;
     p_dir->path = path;
-    p_dir->dir_pos = pos;
+    p_dir->pos = pos;
     if (p_dir_pos != 0) {
         p_dir->find_directory = 1;
         p_dir->result = p_dir_pos;

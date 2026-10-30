@@ -5,8 +5,15 @@ extern unsigned char data_0208ee3c[];
 extern int data_0209d4b8[];
 extern unsigned char data_0209d4b4[];
 
+/* Empty. */
 void func_0201973c(void) {}
 
+/* Boot setup (func_0201a054). If both screens' backlights read off
+   (func_0205f8e0, PM_GetBackLight's shape: PMIC control bit 3 for the
+   top, bit 2 for the bottom), the backlight setting data_0208ee3c, which
+   TurnBacklightOff clears and the pause menu's option screen shows,
+   starts off. Then seed the random state data_0209d4b8 with 1234 and
+   apply the sound mode again (SetSoundMode(GetSoundMode's byte)). */
 void func_020196cc(void) {
     int a, b;
     if (func_0205f8e0(&a, &b) == 0 && a == 0) {

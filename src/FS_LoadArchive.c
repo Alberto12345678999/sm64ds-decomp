@@ -1,9 +1,9 @@
-/* NitroSDK FS_archive.c FS_LoadArchive: point a registered archive at its
- * data. base is the offset reads add, fat/fat_size and fnt/fnt_size the two
- * tables (each also kept in a _bak copy), and read_func/write_func the media callbacks, defaulting to the
- * memory ones (func_0205d2dc, func_0205d2b0). Table reads go through
- * read_func, no table memory is loaded yet, and the archive is marked
- * FS_ARCHIVE_FLAG_LOADED (2). Always TRUE. */
+/* NitroSDK FS_archive.c FS_LoadArchive: point a registered archive at its data.
+ * base is the offset reads add, fat/fat_size and fnt/fnt_size the two tables
+ * (each also kept in a _bak copy), and read_func/write_func the media
+ * callbacks, defaulting to the memory ones (func_0205d2dc, func_0205d2b0).
+ * Table reads go through read_func, no table memory is loaded yet, and the
+ * archive is marked FS_ARCHIVE_FLAG_LOADED (2). Always TRUE. */
 extern void func_0205d2dc(void);
 extern void func_0205d2b0(void);
 

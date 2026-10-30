@@ -1,5 +1,5 @@
 //cpp
-/* NitroSDK wm_standard.c's two precondition checks. data_020a89a8 is the
+/* NitroSDK wm_system.c's two precondition checks. data_020a89a8 is the
  * flag WM_Init sets once; data_020a89ac the ARM9 system work buffer,
  * whose second word points at the status block ARM7 shares (its first
  * halfword the WM state). */

@@ -1,4 +1,4 @@
-/* NitroSDK wm_measure.c WM_MeasureChannel: measure how busy channel is.
+/* NitroSDK wm_etc.c WM_MeasureChannel: measure how busy channel is.
  * Refuse unless WM is IDLE (2), register callback for API 0x1e
  * (MEASURE_CHANNEL), write the request into the ARM9-to-ARM7 FIFO buffer
  * (the API id, then ccaMode, edThreshold, channel and measureTime in

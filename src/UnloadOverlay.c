@@ -1,9 +1,7 @@
 #include "nitro/fs/overlay.h"
 extern void Crash(void);
 extern void FS_UnloadOverlay(int a, int b);
-extern void func_02018c00(void *info, int b, int c);
 extern int func_0203d7b8(void);
-extern void func_02017fd0(void *info);
 
 /* A loaded-overlay slot (see func_02017e60.c): the overlay id, -1 when the
    slot is free, and the RAM range the overlay occupies. */

@@ -1,7 +1,8 @@
 //cpp
 /* NitroSDK SPI_tp.c TP_CalcCalibrateParam: derive the calibration from
- * two raw/screen point pairs through the CP divider; 1 when a point or a
- * result is out of range. */
+ * two raw/screen point pairs through the CP divider. 1 when a point is out
+ * of range, when the two points share a raw or screen coordinate, or when a
+ * result does not fit. */
 #include "types.h"
 #include "IRQ.h"
 

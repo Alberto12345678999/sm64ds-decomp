@@ -1,7 +1,8 @@
 /* NitroSDK FS_overlay.c FS_StartOverlay: once an overlay's image is in RAM,
  * a multiboot child (the halfword at 0x027ffc40 reads 2) checks the digest of
  * an overlay flagged authenticated (FSi_CompareDigest against its 20-byte
- * entry at data_0209a7ec), clearing the image and crashing on failure; then
+ * entry at data_0209a7ec). It clears the image and crashes when the check
+ * fails, and also when the overlay is not flagged authenticated at all; then
  * the image is decompressed in place when flagged compressed
  * (MIi_UncompressBackward, given the end of the compressed image), and its
  * static initializers run from sinit_init to sinit_init_end. This SDK has no

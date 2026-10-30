@@ -8,7 +8,7 @@
   "boundary_evidence": [
     "One contiguous run 0x020610ac..0x0206116c, 4 functions, gapless in config/arm9/delinks.txt. Read from the highest address down (mwccarm emits .text in reverse source order) it is: init (func_02061138, installs IRQ::GameCardIREQMCHandler on IE bit 20, the card IREQ_MC line), set callback (func_02061128, stores data_020a89a4), terminate (func_020610fc, sends PXI channel 0xd word 2 and hangs), IRQ handler (IRQ::GameCardIREQMCHandler, sets data_020a89a0 and runs the data_020a89a4 callback).",
     "Every member touches the pull-out state: the handler, its callback word data_020a89a4, the flag data_020a89a0, or the terminate path only the handler calls.",
-    "TOP EDGE: func_0206116c clears bit 0 of the halfword at 0x027fff96 and is called by func_02061188, func_02061674 and WM_Init, the card request code above; nothing in this run calls it.",
+    "TOP EDGE: func_0206116c clears bit 0 of the halfword at 0x027fff96 and is called by func_02061188, func_02061674 and WM_Init, the WM system code above; nothing in this run calls it.",
     "BOTTOM EDGE: CARDi_Request is the FS-channel (PXI 0xb) card command sender, with its own cache-flush and IRQ-lock pattern; it shares no state with this run.",
     "Medium, not high: the SDK file and function names are inferred from behaviour; the game's names for this run are coined, apart from the community name IRQ::GameCardIREQMCHandler."
   ],
