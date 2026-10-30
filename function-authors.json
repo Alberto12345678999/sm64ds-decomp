@@ -11503,15 +11503,15 @@
     },
     "arm9:0x02068188": {
       "author": "tangosdev",
-      "name": "func_02068188"
+      "name": "MBi_InitSendVolatBeacon"
     },
     "arm9:0x020681b8": {
       "author": "lunavyqo",
-      "name": "func_020681b8"
+      "name": "MBi_SendFixedBeacon"
     },
     "arm9:0x0206834c": {
       "author": "tangosdev",
-      "name": "func_0206834c"
+      "name": "MBi_InitSendFixedBeacon"
     },
     "arm9:0x02068398": {
       "author": "andrewboudreau",
@@ -11519,11 +11519,11 @@
     },
     "arm9:0x02068410": {
       "author": "tangosdev",
-      "name": "func_02068410"
+      "name": "MB_SendGameInfoBeacon"
     },
     "arm9:0x02068484": {
       "author": "tangosdev",
-      "name": "func_02068484"
+      "name": "MBi_ClearSendStatus"
     },
     "arm9:0x020684a8": {
       "author": "ruspecial",
@@ -11531,31 +11531,31 @@
     },
     "arm9:0x020684d0": {
       "author": "tangosdev",
-      "name": "func_020684d0"
+      "name": "MB_AddGameInfo"
     },
     "arm9:0x02068514": {
       "author": "tangosdev",
-      "name": "func_02068514"
+      "name": "mystrlen"
     },
     "arm9:0x0206853c": {
       "author": "ruspecial",
-      "name": "func_0206853c"
+      "name": "MB_UpdateGameInfoMember"
     },
     "arm9:0x020685cc": {
       "author": "tangosdev",
-      "name": "func_020685cc"
+      "name": "MBi_ReadIconInfo"
     },
     "arm9:0x02068680": {
       "author": "tangosdev",
-      "name": "func_02068680"
+      "name": "MBi_MakeGameInfo"
     },
     "arm9:0x0206879c": {
       "author": "tangosdev",
-      "name": "func_0206879c"
+      "name": "MBi_CheckWmErrcode"
     },
     "arm9:0x020687f8": {
       "author": "tangosdev",
-      "name": "func_020687f8"
+      "name": "MBi_IsStarted"
     },
     "arm9:0x0206881c": {
       "author": "tangosdev",

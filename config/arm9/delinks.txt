@@ -3660,15 +3660,15 @@ src/unnamed/arm9/0206/func_02067f68.c:
     complete
     .text start:0x02067f68 end:0x02068188
 
-src/unnamed/arm9/0206/func_02068188.c:
+src/MBi_InitSendVolatBeacon.c:
     complete
     .text start:0x02068188 end:0x020681b8
 
-src/unnamed/arm9/0206/func_020681b8.c:
+src/MBi_SendFixedBeacon.c:
     complete
     .text start:0x020681b8 end:0x0206834c
 
-src/unnamed/arm9/0206/func_0206834c.c:
+src/MBi_InitSendFixedBeacon.c:
     complete
     .text start:0x0206834c end:0x02068398
 
@@ -3676,11 +3676,11 @@ src/unnamed/arm9/0206/func_02068398.c:
     complete
     .text start:0x02068398 end:0x02068410
 
-src/unnamed/arm9/0206/func_02068410.c:
+src/MB_SendGameInfoBeacon.c:
     complete
     .text start:0x02068410 end:0x02068484
 
-src/unnamed/arm9/0206/func_02068484.c:
+src/MBi_ClearSendStatus.c:
     complete
     .text start:0x02068484 end:0x020684a8
 
@@ -3688,31 +3688,31 @@ src/unnamed/arm9/0206/func_020684a8.c:
     complete
     .text start:0x020684a8 end:0x020684d0
 
-src/unnamed/arm9/0206/func_020684d0.c:
+src/MB_AddGameInfo.c:
     complete
     .text start:0x020684d0 end:0x02068514
 
-src/unnamed/arm9/0206/func_02068514.c:
+src/mystrlen.c:
     complete
     .text start:0x02068514 end:0x0206853c
 
-src/unnamed/arm9/0206/func_0206853c.c:
+src/MB_UpdateGameInfoMember.c:
     complete
     .text start:0x0206853c end:0x020685cc
 
-src/unnamed/arm9/0206/func_020685cc.c:
+src/MBi_ReadIconInfo.c:
     complete
     .text start:0x020685cc end:0x02068680
 
-src/unnamed/arm9/0206/func_02068680.c:
+src/MBi_MakeGameInfo.c:
     complete
     .text start:0x02068680 end:0x0206879c
 
-src/unnamed/arm9/0206/func_0206879c.c:
+src/MBi_CheckWmErrcode.c:
     complete
     .text start:0x0206879c end:0x020687f8
 
-src/unnamed/arm9/0206/func_020687f8.c:
+src/MBi_IsStarted.c:
     complete
     .text start:0x020687f8 end:0x0206881c
 

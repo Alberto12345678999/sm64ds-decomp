@@ -14,7 +14,7 @@ extern char *data_020a9db8;
 /* Leading fields of NitroSDK WMStartParentCallback, the argument the WM
  * parent callback (func_02069994) passes for CONNECTED (code 0),
  * DISCONNECTED (code 1) and BEACON_SENT (code 0x1c). Codes 0xff (a failed
- * WM call, from func_0206879c: {apiid, errcode}) and 0x100 (any other WM
+ * WM call, from MBi_CheckWmErrcode: {apiid, errcode}) and 0x100 (any other WM
  * result) read only the WMCallback header the SDK callbacks all share. */
 typedef struct WmStartParentCallback {
     u16 apiid;        /* 0x00 */
@@ -31,8 +31,8 @@ extern void func_0205a588(void *dst, int val, u32 size);
 extern int func_0206881c(void);
 extern void func_020664b4(int a);
 extern void func_02065f78(void);
-extern void func_0206853c(char *self, void *src, u32 flags, int s);
-extern void func_02068410(void);
+extern void MB_UpdateGameInfoMember(char *self, void *src, u32 flags, int s);
+extern void MB_SendGameInfoBeacon(void);
 extern void func_02065eb8(void *a, short s);
 extern void MultiStore32Bytes(u32 val, void *dst, int len);
 
@@ -106,15 +106,15 @@ void func_02066a94(int arg0, char *arg1)
             if (e->mFiles->mActive != 0) {
                 u16 f48 = e->mFiles->mEntryChanged;
                 if (f48 != 0) {
-                    /* the game info record func_0206853c refreshes sits after
+                    /* the game info record MB_UpdateGameInfoMember refreshes sits after
                      * the 0xe4 bytes of mHeader that func_020662c0 sends */
-                    func_0206853c((char *)&MB_WORK->mFiles[i].mHeader[0xe4], MB_WORK->mChildUser,
-                                  e->mFiles->mEntryBitmap, f48);
+                    MB_UpdateGameInfoMember((char *)&MB_WORK->mFiles[i].mHeader[0xe4],
+                                            MB_WORK->mChildUser, e->mFiles->mEntryBitmap, f48);
                     MB_FILE(i)->mEntryChanged = 0;
                 }
             }
         }
-        func_02068410();
+        MB_SendGameInfoBeacon();
         break;
     }
     case 0xff: {

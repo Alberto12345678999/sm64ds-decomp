@@ -38,8 +38,14 @@ extern int func_020688b4(void);
 extern int func_02068844(void);
 extern int func_02063648(int a0, int *src, int len, int a3, int arg5, int arg6, u8 arg7);
 
-void func_020681b8(void)
-{
+/* NitroSDK MBi_SendFixedBeacon (mb_gameinfo.c), beacon send state 3: copy
+   the next 0x62-byte piece of the game record's fixed part into the beacon
+   (data_020a9d40), zero-filling a short last piece, stamp the record's
+   attributes and the checksum, and set the beacon. After the last piece go
+   to state 4. Newer SDKs take ggid, tgid and attr as parameters; this one
+   reads them itself (func_020688e4, func_020688cc, func_020688b4,
+   func_02068844). */
+void MBi_SendFixedBeacon(void) {
     volatile u16 v;
 
     {

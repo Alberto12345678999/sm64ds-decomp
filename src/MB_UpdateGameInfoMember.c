@@ -5,9 +5,9 @@ extern void MultiCopyHalf(void *dst, void *src, int n);
  * each, 0x14a in all) into the game record's volatile part, count the
  * children in nowPlayerFlag (bits 1..15) plus the parent into nowPlayerNum,
  * store the flags with the parent's bit 0 set, and bump seqNoVolat so the
- * beacon (func_02068188, func_02067f68) sends the volatile part again.
+ * beacon (MBi_InitSendVolatBeacon, func_02067f68) sends the volatile part again.
  * func_02066a94 calls it for each registered file whose entries changed.
- * The view extends func_02068680.c's MBGameInfo with changePlayerFlag,
+ * The view extends MBi_MakeGameInfo.c's MBGameInfo with changePlayerFlag,
  * member and seqNoVolat, which only this function writes; only the fields
  * it touches are spelled out. */
 typedef struct MBGameInfo {
@@ -21,8 +21,7 @@ typedef struct MBGameInfo {
     unsigned char seqNoVolat;        /* 0x4ac -- the beacon compares it */
 } MBGameInfo;
 
-void func_0206853c(char *self, void *src, unsigned int flags, int s)
-{
+void MB_UpdateGameInfoMember(char *self, void *src, unsigned int flags, int s) {
     MBGameInfo *gameInfo = (MBGameInfo *)self;
     int i;
     int cnt;

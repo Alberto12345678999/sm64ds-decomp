@@ -46,8 +46,8 @@ typedef struct MbParentWork {
 
 /* NitroSDK MBGameRegistry, the game record a file was registered with
  * (MbParentFile.mGameRegistry; func_02067928 stores its first argument there
- * and hands the same pointer to MBi_MakeGameInfo, func_02068680). Same shape
- * and names as func_02068680's view. */
+ * and hands the same pointer to MBi_MakeGameInfo). Same shape
+ * and names as MBi_MakeGameInfo's view. */
 typedef struct MBGameRegistry {
     int romFilePathp;           /* 0x00 */
     int gameNamep;              /* 0x04 -- u16 string */

@@ -42,7 +42,7 @@ extern u16 data_020a9db0;
 extern char data_020a9dc0[];
 
 extern int func_020621b8(void *fn);
-extern void func_0206879c(int a, int b);
+extern void MBi_CheckWmErrcode(int a, int b);
 extern int func_02061c20(void *p);
 extern int func_02063574(void *fn, int a, int b, int c);
 extern int func_02061ee4(void *fn, void *p);
@@ -120,7 +120,7 @@ void func_020690b0(char *arg0)
     if (w->resetting != 0) {
         if (*(u16 *)arg0 == 1) {
             if (*(u16 *)(arg0 + 2) == 0) {
-                func_0206879c(2, func_020621b8((void *)func_020690b0));
+                MBi_CheckWmErrcode(2, func_020621b8((void *)func_020690b0));
                 return;
             }
             w->resetting = 0;
@@ -143,8 +143,8 @@ void func_020690b0(char *arg0)
     case 0:
         if (*(u16 *)(arg0 + 2) == 0) {
             DISPATCH(0x15, arg0);
-            func_0206879c(0x83, func_02061c20(&w->status));
-            func_0206879c(0x1d, func_02063574((void *)func_020690b0, 0xffff, 0x28, 5));
+            MBi_CheckWmErrcode(0x83, func_02061c20(&w->status));
+            MBi_CheckWmErrcode(0x1d, func_02063574((void *)func_020690b0, 0xffff, 0x28, 5));
             return;
         }
         DISPATCH(0x100, arg0);
@@ -162,7 +162,7 @@ void func_020690b0(char *arg0)
             SCAN_PARAM->bssid[2] = 0xffff;
             w->scanContinue = 1;
             w->scanNextChannel = 1;
-            func_0206879c(0xa, func_02061ee4((void *)func_020690b0, data_020a9dc0));
+            MBi_CheckWmErrcode(0xa, func_02061ee4((void *)func_020690b0, data_020a9dc0));
             return;
         }
         DISPATCH(0x100, arg0);
@@ -179,16 +179,16 @@ void func_020690b0(char *arg0)
                 if (w->scanContinue == 0)
                     return;
                 if (w->scanNextChannel != 0 && func_0206a29c(data_020a9dc0) == 0)
-                    func_0206879c(2, func_02068a74());
-                func_0206879c(0xa, func_02061ee4((void *)func_020690b0, data_020a9dc0));
+                    MBi_CheckWmErrcode(2, func_02068a74());
+                MBi_CheckWmErrcode(0xa, func_02061ee4((void *)func_020690b0, data_020a9dc0));
                 return;
             case 4:
                 DISPATCH(5, arg0);
                 if (w->scanContinue == 0)
                     return;
                 if (w->scanNextChannel != 0 && func_0206a29c(data_020a9dc0) == 0)
-                    func_0206879c(2, func_02068a74());
-                func_0206879c(0xa, func_02061ee4((void *)func_020690b0, data_020a9dc0));
+                    MBi_CheckWmErrcode(2, func_02068a74());
+                MBi_CheckWmErrcode(0xa, func_02061ee4((void *)func_020690b0, data_020a9dc0));
                 return;
             default:
                 DISPATCH(0x100, arg0);
@@ -201,7 +201,7 @@ void func_020690b0(char *arg0)
 
     case 0xb:
         if (*(u16 *)(arg0 + 2) == 0) {
-            func_0206879c(0xc, func_02061e38((void *)func_020690b0, w->connectBssDesc, 0));
+            MBi_CheckWmErrcode(0xc, func_02061e38((void *)func_020690b0, w->connectBssDesc, 0));
             return;
         }
         DISPATCH(0x100, arg0);
@@ -217,7 +217,8 @@ void func_020690b0(char *arg0)
                 DISPATCH(6, arg0);
                 w->childBitmap = 1;
                 if (func_02061c88(1, (void *)func_02069918, 0) != 0) return;
-                func_0206879c(0xe, func_020625fc((void *)func_020690b0, (int)w->recvBuf,
+                MBi_CheckWmErrcode(0xe,
+                                   func_020625fc((void *)func_020690b0, (int)w->recvBuf,
                                                  w->recvBufSize, (int)w->sendBuf, w->sendBufSize,
                                                  (u16)(w->mpContinuous == 0), 0, 0, 0, 1, 1));
                 return;

@@ -4,7 +4,7 @@ extern char *data_020a9db4;
 extern char *data_020a9db8;
 
 extern int func_02061c20(int *arg);
-extern void func_0206879c(int x, int kind);
+extern void MBi_CheckWmErrcode(int x, int kind);
 extern int func_02061ce4(void *x);
 extern int func_02063574(void *a, int b, int c, int d);
 extern int func_020620b0(void *self, char *o);
@@ -56,9 +56,9 @@ void func_02069994(char *arg0)
     switch (cb->apiid) {
     case 0x0:
         if (cb->errcode == 0) {
-            func_0206879c(0x83, func_02061c20((int *)&WM_WORK->status));
-            func_0206879c(0x80, func_02061ce4((void*) func_02069994));
-            func_0206879c(0x1D, func_02063574((void*) func_02069994, 0xFFFF, 0x28, 5));
+            MBi_CheckWmErrcode(0x83, func_02061c20((int *)&WM_WORK->status));
+            MBi_CheckWmErrcode(0x80, func_02061ce4((void *)func_02069994));
+            MBi_CheckWmErrcode(0x1D, func_02063574((void *)func_02069994, 0xFFFF, 0x28, 5));
             return;
         }
         DISPATCH(0x100, arg0);
@@ -66,7 +66,8 @@ void func_02069994(char *arg0)
 
     case 0x1D:
         if (cb->errcode == 0) {
-            func_0206879c(7, func_020620b0((void *)func_02069994, (char *)&WM_WORK->parentParam));
+            MBi_CheckWmErrcode(7,
+                               func_020620b0((void *)func_02069994, (char *)&WM_WORK->parentParam));
             return;
         }
         DISPATCH(0x100, arg0);
@@ -74,12 +75,12 @@ void func_02069994(char *arg0)
 
     case 0x7:
         DISPATCH(0x15, arg0);
-        func_0206879c(0x19, func_020635d8((void*) func_02069994, 1));
+        MBi_CheckWmErrcode(0x19, func_020635d8((void *)func_02069994, 1));
         return;
 
     case 0x19:
         if (cb->errcode == 0) {
-            func_0206879c(8, func_02061fdc((void*) func_02069994));
+            MBi_CheckWmErrcode(8, func_02061fdc((void *)func_02069994));
             return;
         }
         DISPATCH(0x100, arg0);
@@ -91,7 +92,7 @@ void func_02069994(char *arg0)
             case 0:
                 return;
             case 7:
-                func_0206879c(0x83, func_02061c20((int *)&WM_WORK->status));
+                MBi_CheckWmErrcode(0x83, func_02061c20((int *)&WM_WORK->status));
                 WM_WORK->childBitmap = WM_WORK->status.child_bitmap;
                 DISPATCH(0, arg0);
                 /* WmStatus +0x10: a BOOL WM_ReadStatus fills in; which SDK
@@ -107,10 +108,10 @@ void func_02069994(char *arg0)
                         if (WM_WORK->mpContinuous != 0) {
                             v = 0;
                         }
-                        func_0206879c(0xE,
-                                      func_020625fc((void *)func_02069994, (int)WM_WORK->recvBuf,
-                                                    WM_WORK->recvBufSize, (int)WM_WORK->sendBuf,
-                                                    WM_WORK->sendBufSize, (u16)v, 0, 0, 0, 1, 1));
+                        MBi_CheckWmErrcode(
+                            0xE, func_020625fc((void *)func_02069994, (int)WM_WORK->recvBuf,
+                                               WM_WORK->recvBufSize, (int)WM_WORK->sendBuf,
+                                               WM_WORK->sendBufSize, (u16)v, 0, 0, 0, 1, 1));
                         return;
                     }
                 }
@@ -120,7 +121,7 @@ void func_02069994(char *arg0)
                 DISPATCH(0x19, (void *)0);
                 return;
             case 9:
-                func_0206879c(0x83, func_02061c20((int *)&WM_WORK->status));
+                MBi_CheckWmErrcode(0x83, func_02061c20((int *)&WM_WORK->status));
                 WM_WORK->childBitmap = WM_WORK->status.child_bitmap;
                 DISPATCH(1, arg0);
                 return;
@@ -171,7 +172,7 @@ void func_02069994(char *arg0)
 
     case 0x1:
         if (cb->errcode == 0) {
-            func_0206879c(2, func_020621b8((void*) func_02069994));
+            MBi_CheckWmErrcode(2, func_020621b8((void *)func_02069994));
             return;
         }
         WM_WORK->resetting = 0;
@@ -193,7 +194,7 @@ void func_02069994(char *arg0)
         if (cb->errcode != 0) {
             return;
         }
-        func_0206879c(0x83, func_02061c20((int *)&WM_WORK->status));
+        MBi_CheckWmErrcode(0x83, func_02061c20((int *)&WM_WORK->status));
         WM_WORK->childBitmap = WM_WORK->status.child_bitmap;
         return;
 

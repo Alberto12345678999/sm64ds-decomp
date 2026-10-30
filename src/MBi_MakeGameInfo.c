@@ -1,8 +1,8 @@
 extern void MultiStore16(unsigned short val, char *dst, int nbytes);
-extern int func_020685cc(int a, void *b, int flag);
+extern int MBi_ReadIconInfo(int a, void *b, int flag);
 extern void MultiStore32Bytes(unsigned val, void *dst, int len);
 extern void MultiCopyHalf(int a, void *dst, int n);
-extern int func_02068514(int p);
+extern int mystrlen(int p);
 
 /* NitroSDK MBi_MakeGameInfo(gameInfo, mbGameList, parent): build the
  * multiboot game record a parent beacons from the game's registry entry.
@@ -10,10 +10,12 @@ extern int func_02068514(int p);
  * data_020a9db8 work block, with data_020a9db8 + 0x1300 as the parent's
  * user record. The views follow the SDK's MBGameRegistry and MBGameInfo:
  * the whole record is 0x4b8 bytes (the MI_CpuClear16 = MultiStore16
- * length), func_020685cc reads the icon's 0x20-byte palette and 0x200-byte
+ * length), MBi_ReadIconInfo reads the icon's 0x20-byte palette and 0x200-byte
  * character data from the two path names, and the parent user record is the
  * 0x16-byte MBUserInfo. Only the fields this function touches are spelled
- * out. */
+ * out. One argument differs from newer SDKs, which copy the introduction
+ * as sizeof(gameIntroduction): here it is sized by mystrlen, like the
+ * game name. */
 typedef struct MBGameRegistry {
     int romFilePathp;           /* 0x00 */
     int gameNamep;              /* 0x04 -- u16 string */
@@ -46,15 +48,15 @@ typedef struct MBGameInfo {
 typedef char MBGameInfo_size_must_be_0x4b8[sizeof(MBGameInfo) == 0x4b8 ? 1 : -1];
 #endif
 
-void func_02068680(char *dst, MBGameRegistry *src, int parent) {
+void MBi_MakeGameInfo(char *dst, MBGameRegistry *src, int parent) {
     MBGameInfo *info = (MBGameInfo *)dst;
     volatile unsigned short tmp;
     volatile int z;
     tmp = 0;
     MultiStore16(tmp, dst, 0x4b8);
     info->dataAttr = 0;
-    if (func_020685cc(src->iconCharPathp, dst, 1) == 0 |
-        func_020685cc(src->iconPalettePathp, dst, 0) == 0) {
+    if (MBi_ReadIconInfo(src->iconCharPathp, dst, 1) == 0 |
+        MBi_ReadIconInfo(src->iconPalettePathp, dst, 0) == 0) {
         info->dataAttr = 1;
         z = 0;
         MultiStore32Bytes(z, dst, 0x220);
@@ -65,9 +67,9 @@ void func_02068680(char *dst, MBGameRegistry *src, int parent) {
     }
     info->maxPlayerNum = src->maxPlayerNum;
     MultiCopyHalf(src->gameNamep, info->gameName,
-                  (unsigned)(func_02068514(src->gameNamep) << 0x11) >> 0x10);
+                  (unsigned)(mystrlen(src->gameNamep) << 0x11) >> 0x10);
     MultiCopyHalf(src->gameIntroductionp, info->gameIntroduction,
-                  (unsigned)(func_02068514(src->gameIntroductionp) << 0x11) >> 0x10);
+                  (unsigned)(mystrlen(src->gameIntroductionp) << 0x11) >> 0x10);
     info->nowPlayerNum = 1;
     info->nowPlayerFlag = 1;
     info->broadcastedPlayerFlag = 1;

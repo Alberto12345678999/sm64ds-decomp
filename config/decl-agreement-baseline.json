@@ -691,7 +691,7 @@
         "param:#1 int *",
         "return:void"
       ],
-      "src/unnamed/arm9/0206/func_020685cc.c": [
+      "src/MBi_ReadIconInfo.c": [
         "param:#1 int *",
         "return:void"
       ],
@@ -724,7 +724,7 @@
         "param:#1 void *",
         "param:#2 void *"
       ],
-      "src/unnamed/arm9/0206/func_020685cc.c": [
+      "src/MBi_ReadIconInfo.c": [
         "param:#1 int *",
         "return:void"
       ]
@@ -1595,7 +1595,7 @@
       "src/unnamed/arm9/0206/func_02062df0.cpp": [
         "param:#3 unsigned int"
       ],
-      "src/unnamed/arm9/0206/func_02068680.c": [
+      "src/MBi_MakeGameInfo.c": [
         "param:#1 int"
       ],
       "src/unnamed/arm9/0206/func_020690b0.c": [
@@ -11146,7 +11146,7 @@
       ]
     },
     "data_020a9d2c": {
-      "src/unnamed/arm9/0206/func_0206834c.c": [
+      "src/MBi_InitSendFixedBeacon.c": [
         "return:unsigned char"
       ],
       "src/unnamed/arm9/0206/func_02068398.c": [
@@ -11159,7 +11159,7 @@
       ]
     },
     "data_020a9db4": {
-      "src/unnamed/arm9/0206/func_020687f8.c": [
+      "src/MBi_IsStarted.c": [
         "return:unsigned char"
       ],
       "src/unnamed/arm9/0206/func_0206881c.c": [
@@ -20313,7 +20313,7 @@
       ]
     },
     "func_0205d518": {
-      "src/unnamed/arm9/0206/func_020685cc.c": [
+      "src/MBi_ReadIconInfo.c": [
         "param:#2 int"
       ]
     },
@@ -20820,7 +20820,7 @@
         "param:#5 int",
         "param:#6 int"
       ],
-      "src/unnamed/arm9/0206/func_020681b8.c": [
+      "src/MBi_SendFixedBeacon.c": [
         "param:#5 int",
         "param:#6 int"
       ]
@@ -21159,21 +21159,21 @@
       ]
     },
     "func_02068398": {
-      "src/unnamed/arm9/0206/func_02068410.c": [
+      "src/MB_SendGameInfoBeacon.c": [
         "return:int"
       ]
     },
-    "func_02068514": {
-      "src/unnamed/arm9/0206/func_02068680.c": [
+    "mystrlen": {
+      "src/MBi_MakeGameInfo.c": [
         "param:#1 int"
       ]
     },
-    "func_020685cc": {
-      "src/unnamed/arm9/0206/func_02068680.c": [
+    "MBi_ReadIconInfo": {
+      "src/MBi_MakeGameInfo.c": [
         "param:#2 void *"
       ]
     },
-    "func_02068680": {
+    "MBi_MakeGameInfo": {
       "src/unnamed/arm9/0206/func_02067928.cpp": [
         "param:#3 void *"
       ]
