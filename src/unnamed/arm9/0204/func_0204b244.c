@@ -5,7 +5,7 @@
 #define reg_G3_POLYGON_ATTR (*(volatile u32 *)0x040004a4)
 
 /* The SPL field names here (such as dbbScale, textureTileCountS/T,
- * polygonRotAxis, polygonReferencePlane, polygonIDs) are pret's lib/spl
+ * polygonRotAxis, polygonReferencePlane, polygonIDs) are pret's SPL
  * coinages, kept so the two can be read side by side. */
 /* The particle definition's header (func_0204a730's PtclData; SPL's
  * SPLResourceHeader), as far as this draw reads it: the polygon rotation axis
