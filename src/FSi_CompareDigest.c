@@ -2,14 +2,14 @@
  * key (fsi_digest_key_ptr and fsi_digest_key_len, data_0209a04c and
  * data_0209a050) and compare the 20-byte result with spec_digest a word at a
  * time. */
-void func_0205a588(void* p, int v, int n);
-void CpuCopy8(int a, void* b, int c);
-void DGT_Hash2CalcHmac(void* a, int b, int c, void* d, int e);
+void func_0205a588(void *dst, int value, int size);
+void CpuCopy8(const void *src, void *dst, unsigned int size);
+void DGT_Hash2CalcHmac(void *out, void *msg, int msglen, void *key, int keylen);
 
-extern int data_0209a04c;
+extern void *data_0209a04c;
 extern int data_0209a050;
 
-int FSi_CompareDigest(char *spec_digest, int src, int len) {
+int FSi_CompareDigest(char *spec_digest, void *src, int len) {
     int digest[5];
     int digest_key[16];
     unsigned int i;

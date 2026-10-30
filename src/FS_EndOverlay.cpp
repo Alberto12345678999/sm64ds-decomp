@@ -38,8 +38,9 @@ void FS_EndOverlay(FSOverlayInfo *p_ovi) {
         region_top = (u32)p_ovi->header.ram_address;
         image_bottom = (u32)p_ovi->header.ram_address + p_ovi->header.ram_size;
         /* the bss end: the image end plus the total size less the image */
-        region_bottom = image_bottom + (u32)((int)(p_ovi->header.ram_size + p_ovi->header.bss_size) -
-                                             p_ovi->header.ram_size);
+        region_bottom =
+            image_bottom +
+            (u32)((int)(p_ovi->header.ram_size + p_ovi->header.bss_size) - p_ovi->header.ram_size);
         tail = 0;
         saved = IRQ::Disable();
         prev = 0;

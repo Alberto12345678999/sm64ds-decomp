@@ -9474,7 +9474,6 @@
     "FSi_CompareDigest": {
       "src/unnamed/arm9/0205/func_0205db88.cpp": [
         "param:#1 Obj *",
-        "param:#2 void *",
         "param:#3 void *",
         "return:unsigned int"
       ]
