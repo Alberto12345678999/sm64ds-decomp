@@ -1,3 +1,5 @@
+#include "nitro/os/spinLock.h"
+
 extern void *data_020a8060;
 extern int data_020a805c;
 extern int data_020a8064[2];
@@ -7,7 +9,6 @@ extern int data_0209a048;
 extern int func_0205da94;
 extern int func_0205db2c;
 extern int func_0205db24;
-extern int func_02057020(void);
 extern void func_02060890(void);
 extern void func_0205cd34(void *o);
 extern int func_0205cc80(void *thiz, void *a, void *b);
@@ -24,7 +25,7 @@ void func_0205d96c(void *arg)
     int *b;
 
     data_020a8060 = arg;
-    data_020a805c = func_02057020();
+    data_020a805c = OS_GetLockID();
     data_020a8064[0] = 0;
     data_020a8064[1] = 0;
     data_020a806c[0] = 0;

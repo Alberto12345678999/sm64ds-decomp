@@ -2154,37 +2154,9 @@ src/unnamed/arm9/0205/func_020553c0.c:
     complete
     .text start:0x020553c0 end:0x02055454
 
-src/unnamed/arm9/0205/func_02055454.c:
-    complete
-    .text start:0x02055454 end:0x02055464
-
-src/unnamed/arm9/0205/func_02055464.c:
-    complete
-    .text start:0x02055464 end:0x02055490
-
-src/unnamed/arm9/0205/func_02055490.c:
-    complete
-    .text start:0x02055490 end:0x020554bc
-
 src/engine/gx/G3X.cpp:
     complete
-    .text start:0x020554bc end:0x020556d0
-
-src/unnamed/arm9/0205/func_020556d0.c:
-    complete
-    .text start:0x020556d0 end:0x02055780
-
-src/func_02055780.c:
-    complete
-    .text start:0x02055780 end:0x020557b4
-
-src/unnamed/arm9/0205/func_020557b4.c:
-    complete
-    .text start:0x020557b4 end:0x0205583c
-
-src/unnamed/arm9/0205/func_0205583c.c:
-    complete
-    .text start:0x0205583c end:0x02055998
+    .text start:0x02055454 end:0x02055998
 
 src/engine/gx/G3i.cpp:
     complete
@@ -2210,81 +2182,9 @@ src/engine/os/OS_Interrupt.cpp:
     complete
     .text start:0x02056d64 end:0x02057014
 
-src/unnamed/arm9/0205/func_02057014.c:
+src/engine/os/OS_SpinLock.cpp:
     complete
-    .text start:0x02057014 end:0x02057020
-
-src/unnamed/arm9/0205/func_02057020.c:
-    complete
-    .text start:0x02057020 end:0x02057078
-
-src/unnamed/arm9/0205/func_02057078.c:
-    complete
-    .text start:0x02057078 end:0x020570a8
-
-src/unnamed/arm9/0205/func_020570a8.c:
-    complete
-    .text start:0x020570a8 end:0x020570b8
-
-src/unnamed/arm9/0205/func_020570b8.c:
-    complete
-    .text start:0x020570b8 end:0x020570c0
-
-src/unnamed/arm9/0205/func_020570c0.c:
-    complete
-    .text start:0x020570c0 end:0x020570d8
-
-src/unnamed/arm9/0205/func_020570d8.c:
-    complete
-    .text start:0x020570d8 end:0x020570f0
-
-src/unnamed/arm9/0205/func_020570f0.c:
-    complete
-    .text start:0x020570f0 end:0x0205710c
-
-src/unnamed/arm9/0205/func_0205710c.c:
-    complete
-    .text start:0x0205710c end:0x02057128
-
-src/unnamed/arm9/0205/func_02057128.c:
-    complete
-    .text start:0x02057128 end:0x02057140
-
-src/unnamed/arm9/0205/func_02057140.c:
-    complete
-    .text start:0x02057140 end:0x02057158
-
-src/unnamed/arm9/0205/func_02057158.c:
-    complete
-    .text start:0x02057158 end:0x02057178
-
-src/unnamed/arm9/0205/func_02057178.c:
-    complete
-    .text start:0x02057178 end:0x02057198
-
-src/unnamed/arm9/0205/func_02057198.cpp:
-    complete
-    .text start:0x02057198 end:0x02057218
-
-src/unnamed/arm9/0205/func_02057218.c:
-    complete
-    .text start:0x02057218 end:0x02057228
-
-src/unnamed/arm9/0205/func_02057228.cpp:
-    complete
-    .text start:0x02057228 end:0x020572b8
-
-src/unnamed/arm9/0205/func_020572b8.c:
-    complete
-    .text start:0x020572b8 end:0x020572c8
-
-src/unnamed/arm9/0205/func_020572c8.c:
-    complete
-    .text start:0x020572c8 end:0x02057320
-
-src/unnamed/arm9/0205/func_02057320.cpp:
-    complete
-    .text start:0x02057320 end:0x02057410
+    .text start:0x02057014 end:0x02057410
 
 src/unnamed/arm9/0205/func_02057410.c:
     complete
@@ -2608,7 +2508,7 @@ src/IRQ3.cpp:
     .text start:0x02059d08 end:0x02059d8c
     complete
 
-src/unnamed/arm9/0205/func_02059d8c.c:
+src/OS_SpinWait.c:
     complete
     .text start:0x02059d8c end:0x02059d98
 
@@ -2684,7 +2584,7 @@ src/engine/mi/MI_Memory.c:
     complete
     .text start:0x0205a448 end:0x0205a74c
 
-src/unnamed/arm9/0205/func_0205a74c.c:
+src/MI_SwapWord.c:
     complete
     .text start:0x0205a74c end:0x0205a754
 
@@ -3354,41 +3254,9 @@ src/unnamed/arm9/0205/func_0205ff20.cpp:
     complete
     .text start:0x0205ff20 end:0x0205ff70
 
-src/unnamed/arm9/0205/func_0205ff70.c:
+src/engine/card/CARD_Common.cpp:
     complete
-    .text start:0x0205ff70 end:0x0205ff80
-
-src/unnamed/arm9/0205/func_0205ff80.c:
-    complete
-    .text start:0x0205ff80 end:0x0205ff90
-
-src/unnamed/arm9/0205/func_0205ff90.c:
-    complete
-    .text start:0x0205ff90 end:0x0205ffb0
-
-src/unnamed/arm9/0205/func_0205ffb0.c:
-    complete
-    .text start:0x0205ffb0 end:0x0205ffd0
-
-src/unnamed/arm9/0205/func_0205ffd0.cpp:
-    complete
-    .text start:0x0205ffd0 end:0x0206002c
-
-src/unnamed/arm9/0206/func_0206002c.cpp:
-    complete
-    .text start:0x0206002c end:0x020600e0
-
-src/unnamed/arm9/0206/func_020600e0.cpp:
-    complete
-    .text start:0x020600e0 end:0x02060188
-
-src/unnamed/arm9/0206/func_02060188.cpp:
-    complete
-    .text start:0x02060188 end:0x02060228
-
-src/unnamed/arm9/0206/func_02060228.c:
-    complete
-    .text start:0x02060228 end:0x020602bc
+    .text start:0x0205ff70 end:0x020602bc
 
 src/unnamed/arm9/0206/func_020602bc.cpp:
     complete
@@ -3446,15 +3314,15 @@ src/unnamed/arm9/0206/func_02060890.c:
     complete
     .text start:0x02060890 end:0x0206090c
 
-src/unnamed/arm9/0206/func_0206090c.c:
+src/CARD_WaitRomAsync.c:
     complete
     .text start:0x0206090c end:0x02060918
 
-src/unnamed/arm9/0206/func_02060918.cpp:
+src/CARDi_ReadRom.cpp:
     complete
     .text start:0x02060918 end:0x02060a30
 
-src/unnamed/arm9/0206/func_02060a30.c:
+src/CARDi_ReadRomSyncCore.c:
     complete
     .text start:0x02060a30 end:0x02060a64
 
@@ -4201,33 +4069,9 @@ src/unnamed/arm9/0206/func_0206a29c.c:
     complete
     .text start:0x0206a29c end:0x0206a318
 
-src/unnamed/arm9/0206/func_0206a318.c:
+src/engine/ctrdg/CTRDG_Common.cpp:
     complete
-    .text start:0x0206a318 end:0x0206a37c
-
-src/unnamed/arm9/0206/func_0206a37c.cpp:
-    complete
-    .text start:0x0206a37c end:0x0206a3a4
-
-src/unnamed/arm9/0206/func_0206a3a4.cpp:
-    complete
-    .text start:0x0206a3a4 end:0x0206a424
-
-src/unnamed/arm9/0206/func_0206a424.c:
-    complete
-    .text start:0x0206a424 end:0x0206a458
-
-src/unnamed/arm9/0206/func_0206a458.c:
-    complete
-    .text start:0x0206a458 end:0x0206a4a0
-
-src/unnamed/arm9/0206/func_0206a4a0.c:
-    complete
-    .text start:0x0206a4a0 end:0x0206a5c0
-
-src/unnamed/arm9/0206/func_0206a5c0.c:
-    complete
-    .text start:0x0206a5c0 end:0x0206a600
+    .text start:0x0206a318 end:0x0206a600
 
 src/unnamed/arm9/0206/func_0206a600.c:
     complete
