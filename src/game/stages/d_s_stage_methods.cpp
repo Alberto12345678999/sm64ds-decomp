@@ -82,6 +82,7 @@ enum dScStage_c_AssetId { ASSET_D_2D_UPR_COURSE_CLEAR_MESSAGE_NCL_BIN = 0x025a }
 #include "daMugenBGM_c.h"
 #include "math/CalcLib.h"
 #include "dGraph_c.h"
+#include "dClipper.h"
 
 struct OamAttr;
 struct Matrix2x2 {
@@ -97,6 +98,27 @@ struct StageGraphCallbackView {
     s32 targetX;
     s32 targetY;
 };
+
+/* dScStage_c::graphCallback_c. Slots 1 and 2 are this TU's hooks; 0 and 3
+   stay on dGraph_c::callback_c. No user constructor: the implicit one stores
+   the base vptr, then this vtable, and leaves the matrix and affine words
+   zero. That is the first half of __sinit_d_s_stage_methods.cpp. */
+class dScStage_c::graphCallback_c : public dGraph_c::callback_c {
+public:
+    Matrix2x2 matrix; /* 0x04 -- data_0209f3c8 */
+    s32 originX;      /* 0x14 */
+    s32 originY;      /* 0x18 */
+    s32 targetX;      /* 0x1c */
+    s32 targetY;      /* 0x20 */
+
+    virtual int GraphCallback1();
+    virtual int GraphCallback2();
+};
+
+/* Definition order is the static-init order. dClipper's virtual destructor
+   is what makes mwcc register it; the callback has none. */
+dScStage_c::graphCallback_c data_0209f3c4;
+dClipper data_0209f43c;
 
 /* TU-local overlay of the per-controller input records at data_0209f498,
  * 0x18 apart. CheckInput fills them from the pad and the touch screen each
@@ -251,14 +273,6 @@ extern void *data_ov001_020acb68[];
 struct MinimapDesc {
     u32 w[4];
 };
-/* data_0209f3c4 is the stage's graph callback object (InitResources hands
-   it to data_0209d4a8). Its last four words are StageGraphCallbackView's
-   BG3 affine origin and target, which GraphCallback2 passes to SetBGyAffine
-   and UpdateMinimap sets. */
-struct MinimapState {
-    char _pad[0x14];
-    volatile u32 originX, originY, targetX, targetY;
-};
 /* SetNextLevel's return table: level, return level, entrance. */
 struct LevelReturnEntry {
     s8 level;
@@ -376,11 +390,14 @@ extern short *data_0209f348;
 extern void *data_0209f354;
 extern unsigned char data_0209f370[];
 extern unsigned char data_0209f37c[];
-extern void *data_0209f394[];
-extern void *data_0209f3a4[];
-extern MinimapState data_0209f3c4;
+/* These fill the .bss between the dClipper registration node (0x0209f388),
+   the graph callback (0x0209f3c4, 0x24 bytes) and dClipper (0x0209f43c).
+   data_0209f3e8 runs through 0x0209f43c so data_0209f40c and STAR_MARKERS
+   stay interior labels, not a second object at the same address. */
+void *data_0209f394[4];
+void *data_0209f3a4[8];
 extern MinimapDesc data_0209f3c8;
-extern int data_0209f3e8[];
+int data_0209f3e8[21];
 extern int data_0209f40c[];
 extern u32 data_0209f4f8[][16];
 extern dFdBrightness_c *data_0209f5bc;
@@ -2744,27 +2761,21 @@ int IsButtonInputValid(void) {
 }
 }
 
-// @symbol _ZN10dScStage_c14GraphCallback2Ev
-/* The callback object GraphCallback2 reads through `this`: vptr at +0 (never
-   touched as data), a fixed-point 2x2 matrix at +0x4 that the object's
-   static-init constructor at 0x02074edc seeds with 0x1000 (1.0), and the four
-   affine words after it (StageGraphCallbackView). */
-
-/* Nullary, and a member: vtable slot 2 of dScStage_c::graphCallback_c (RTTI
-   si-child of dGraph_c::callback_c). Every dispatcher -- func_02018ec0,
-   func_02018efc -- calls it as `ldr r1,[r0]; ldr r1,[r1,#8]; blx r1` with
-   r0 = the callback object and r1 never set as an argument. Sets the BG3
-   affine transform from the object's matrix. */
-s32 dScStage_c::GraphCallback2() {
+// @symbol _ZN10dScStage_c15graphCallback_c14GraphCallback2Ev
+/* Vtable slot 2. Every dispatcher calls it as `ldr r1,[r0]; ldr r1,[r1,#8];
+   blx r1` with r0 = the callback object. The cast keeps the BG3 affine
+   loads on the view the ROM uses; the matrix at +0x4 is zero until
+   UpdateMinimap, not seeded by the static initializer. */
+s32 dScStage_c::graphCallback_c::GraphCallback2() {
     StageGraphCallbackView *callback = (StageGraphCallbackView *)this;
     G2x::SetBGyAffine((volatile unsigned short *)REG_DB_BG3PA, &callback->matrix, callback->originX,
                       callback->originY, callback->targetX, callback->targetY);
     return 1;
 }
 
-// @symbol _ZN10dScStage_c14GraphCallback1Ev
-/* Vtable slot 1 of dScStage_c::graphCallback_c: render every particle. */
-int dScStage_c::GraphCallback1() {
+// @symbol _ZN10dScStage_c15graphCallback_c14GraphCallback1Ev
+/* Vtable slot 1: render every particle. */
+int dScStage_c::graphCallback_c::GraphCallback1() {
     Particle::RenderAll();
     return 1;
 }

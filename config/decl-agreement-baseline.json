@@ -9121,9 +9121,6 @@
       ]
     },
     "data_0208ee14": {
-      "src/unnamed/arm9/0207/__sinit_02074e84.cpp": [
-        "return:char"
-      ],
       "src/unnamed/arm9/0207/__sinit_02074fb8.c": [
         "return:int"
       ],
@@ -10344,12 +10341,8 @@
         "return:void * []"
       ],
       "src/ui/hud/d_map.cpp": [
+        "return:int []",
         "return:Obj * []"
-      ]
-    },
-    "data_0209f3c4": {
-      "src/unnamed/arm9/0207/__sinit_02074e84.cpp": [
-        "return:void volatile *"
       ]
     },
     "data_0209f3e8": {
@@ -10373,9 +10366,6 @@
         "return:char []"
       ],
       "src/runtime/actor/d_actor.cpp": [
-        "return:char"
-      ],
-      "src/unnamed/arm9/0207/__sinit_02074e84.cpp": [
         "return:char"
       ]
     },
