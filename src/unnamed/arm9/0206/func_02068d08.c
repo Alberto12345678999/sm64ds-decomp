@@ -1,5 +1,5 @@
 #include "WmWork.h"
-extern void func_02068834(int v);
+extern void MBi_SetMaxScanTime(int v);
 extern int WM_Initialize(int a, int b, int c);
 extern int WM_SetIndCallback(int x);
 extern char *data_020a9db4;
@@ -14,7 +14,7 @@ int func_02068d08(void)
     WM_WORK->childBitmap = 0;
     WM_WORK->resetting = 0;
     *(short *)(data_020a9db4 + 0x1e48) = 0; /* in WmWork.pad_1e2e: no reader here */
-    func_02068834(0xa);
+    MBi_SetMaxScanTime(0xa);
     do {
         ret = WM_Initialize((int)WM_WORK->wmSysBuf, (int)WM_WORK->stateCallback, data_020a9db0);
     } while (ret == 4);

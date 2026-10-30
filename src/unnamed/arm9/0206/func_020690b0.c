@@ -12,7 +12,7 @@
  *   wmSysBuf        buffer arg of WM_Initialize (id 0, WM_Initialize)
  *   parentParam     func_020620b0 (id 7, WM_SetParentParameter); KS_Flag at
  *                   +0x12 and the max sizes at +0x32/+0x34 are its size check;
- *                   func_02068844 packs entry/MB/KS/CS into WM_ATTR_FLAG_*
+ *                   MBi_GetAttribute packs entry/MB/KS/CS into WM_ATTR_FLAG_*
  *   scanBuf         WMScanParam.scanBuf; DMA'd into parents[i].bssDesc
  *   parent/childMaxSize   set by func_02068dc8, copied into parentParam
  *   sendBuf/recvBuf, sendBufSize/recvBufSize   WM_StartMP (func_020625fc)
@@ -28,7 +28,7 @@
  *                   callbacks only accept the RESET and END results
  *   mpStarted       set on WM_StartMP's MP_START state (0xa)
  *   childBitmap     WmStatus.child_bitmap after a parent-side (dis)connect, 1
- *                   on the child's CONNECTED; gates func_0206a230
+ *                   on the child's CONNECTED; gates MBi_IsSendEnabled
  *   mpContinuous    nonzero passes mpFreq 0 (continuous) to WM_StartMP
  *   parentCount, lastParentIndex   the parents[] fill count / last hit
  *   aid             WMStartConnectCallback.aid on CONNECTED
@@ -50,7 +50,7 @@ extern int func_02061e38(void *fn, int a, int b);
 extern int WM_SetPortCallback(int a, void *fn, int c);
 extern int func_020625fc(void *fn, int a, u16 b, int c, u16 d, u16 e, int f,
                          int g, int h, int i, int j);
-extern int func_0206a230(void);
+extern int MBi_IsSendEnabled(void);
 extern int func_0206a29c(void *p);
 extern int func_02068a74(void);
 extern void func_02069918(char *arg0);
@@ -241,7 +241,7 @@ void func_020690b0(char *arg0)
         switch (*(u16 *)(arg0 + 4)) {
         case 0xa:
             w->mpStarted = 1;
-            if (func_0206a230() == 0) return;
+            if (MBi_IsSendEnabled() == 0) return;
             DISPATCH(0x19, 0);
             return;
         case 0xc:
@@ -265,7 +265,7 @@ void func_020690b0(char *arg0)
         return;
 
     case 0x15:
-        if (func_0206a230() == 0) return;
+        if (MBi_IsSendEnabled() == 0) return;
         DISPATCH(0x19, 0);
         return;
 

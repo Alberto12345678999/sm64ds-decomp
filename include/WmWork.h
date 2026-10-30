@@ -4,7 +4,7 @@
 /* NitroSDK WM views over the wireless work buffer data_020a9db4 (0x3700
  * bytes, carved by func_02068e4c). SDK field names where the SDK has one;
  * per-field evidence is in func_020690b0.c's banner. Plain C types: some of
- * the consumers (func_02068d08, func_0206a230) do not include types.h. */
+ * the consumers (func_02068d08, MBi_IsSendEnabled) do not include types.h. */
 typedef struct {
     unsigned char bytes[0xc0];
 } WmBssDesc; /* WMBssDesc */

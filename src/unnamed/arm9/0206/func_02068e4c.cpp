@@ -14,7 +14,7 @@ extern int data_020a9db4;
 extern short data_020a9db0;
 extern u16 *data_0209a084;
 
-int func_02069038(void) {
+int MBi_GetBeaconPeriodDispersion(void) {
     unsigned char buf[12];
     int i;
     int sum;
@@ -99,7 +99,7 @@ int func_02068e4c(int a0, u16 *a1, int a2, int a3, u16 a4, int a5) {
         hdr->tgid = (short)a4;
         hdr->entryFlag = 1;
         hdr->multiBootFlag = 0;
-        hdr->beaconPeriod = (u16)(func_02069038() + 0xc8);
+        hdr->beaconPeriod = (u16)(MBi_GetBeaconPeriodDispersion() + 0xc8);
         hdr->maxEntry = 0xf;
     }
     ((WmWork *)base1)->mpSending = 0;

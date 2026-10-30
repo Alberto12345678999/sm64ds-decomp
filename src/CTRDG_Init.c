@@ -9,7 +9,7 @@ extern void PXI_Init(void);
 extern int PXI_IsCallbackReady(int tag, int proc);
 extern void PXI_SetFifoRecvCallback(int tag, void *callback);
 extern void func_0206a6d0(void);
-extern void func_0206a694(int tag, int data);
+extern void CTRDGi_CallbackForInitModuleInfo(int tag, int data);
 extern void func_0206a634(int tag, int data);
 
 extern int data_020a9de8;         /* the init flag */
@@ -23,7 +23,7 @@ void CTRDG_Init(void) {
     PXI_Init();
     while (PXI_IsCallbackReady(PXI_FIFO_TAG_CTRDG, PXI_PROC_ARM7) == 0)
         ;
-    PXI_SetFifoRecvCallback(PXI_FIFO_TAG_CTRDG, (void *)func_0206a694);
+    PXI_SetFifoRecvCallback(PXI_FIFO_TAG_CTRDG, (void *)CTRDGi_CallbackForInitModuleInfo);
     func_0206a6d0();
     PXI_SetFifoRecvCallback(PXI_FIFO_TAG_CTRDG, 0);
     PXI_SetFifoRecvCallback(PXI_FIFO_TAG_CTRDG, (void *)func_0206a634);

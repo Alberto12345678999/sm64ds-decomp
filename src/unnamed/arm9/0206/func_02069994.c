@@ -11,7 +11,7 @@ extern int func_020620b0(void *self, char *o);
 extern int func_020635d8(void *a, int b);
 extern int WM_StartParent(void *x);
 extern int func_020625fc(void *arg0, int arg1, int arg2, int arg3, u16 arg4, u16 arg5, u16 arg6, int arg7, int arg8, int arg9, int arg10);
-extern int func_0206a230(void);
+extern int MBi_IsSendEnabled(void);
 extern int WM_End(void *x);
 
 #define DISPATCH(a, b) WM_WORK->userCallback((a), (b))
@@ -115,7 +115,7 @@ void func_02069994(char *arg0)
                         return;
                     }
                 }
-                if (func_0206a230() == 0) {
+                if (MBi_IsSendEnabled() == 0) {
                     return;
                 }
                 DISPATCH(0x19, (void *)0);
@@ -199,7 +199,7 @@ void func_02069994(char *arg0)
         return;
 
     case 0x15:
-        if (func_0206a230() == 0) {
+        if (MBi_IsSendEnabled() == 0) {
             return;
         }
         DISPATCH(0x19, (void *)0);

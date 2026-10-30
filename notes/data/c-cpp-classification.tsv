@@ -2825,9 +2825,9 @@ src/MBi_MakeGameInfo.c	PURE-C	arm9				1		None		-
 src/MBi_CheckWmErrcode.c	PURE-C	arm9				1		None		-
 src/MBi_IsStarted.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0206/func_0206881c.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0206/func_02068834.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0206/func_02068844.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0206/func_020688b4.c	PURE-C	arm9				1		None		-
+src/MBi_SetMaxScanTime.c	PURE-C	arm9				1		None		-
+src/MBi_GetAttribute.c	PURE-C	arm9				1		None		-
+src/MBi_GetTgid.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0206/func_020688cc.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0206/func_020688e4.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0206/func_020688fc.c	PURE-C	arm9				1		None		-

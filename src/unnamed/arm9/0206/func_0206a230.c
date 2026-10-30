@@ -3,7 +3,7 @@
 
 extern char *data_020a9db4;
 
-int func_0206a230(void)
+int MBi_IsSendEnabled(void)
 {
     char *r2; /* not WmWork *: a typed local re-colours r2/ip/r3 */
     unsigned int r0;
