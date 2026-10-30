@@ -9,13 +9,29 @@
     "tu_map CANNOT segment this module: tools/tu_map.py emits `main` as ONE unit covering 0x20049f0..0x20707a4. There is no tubuild.py create candidate id for Timer -- hand-cut from the cartridge, the same route arm9/Scene and arm9/dScBoot_c took.",
     "contiguous linker run: 0x02019584..0x02019664, 5 function(s), gapless in config/arm9/delinks.txt (each entry's end is the next entry's start, all five marked `complete`).",
     "TOP EDGE: GetSoundMode (0x02019574..0x02019584) ends exactly where the run begins -- it is the tail of the Sound TU (SetSoundMode/GetSoundMode), not a Timer member. BOTTOM EDGE: TurnBacklightOff (0x02019664..0x02019698) opens the power-management/system run.",
-    "CLASS COMPLETE: _ZN5Timer* names the whole class -- the cartridge has exactly these four methods plus func_0201964c, the C1 constructor (calls ResetTimer, returns this; its only caller is the __sinit_02074dc4 static-init of the singleton Timer). No RTTI/vtable for Timer (a plain struct, sizeof 0xc per the sizeof assert history on include/Timer.hpp). Every Timer:: symbol in config/arm9/symbols.txt is inside the run."
+    "CLASS COMPLETE: _ZN5Timer* names the whole class -- the cartridge has exactly these four methods plus func_0201964c, the C1 constructor (calls ResetTimer, returns this; its only caller is __sinit_Timer.cpp on the singleton Timer). No RTTI/vtable for Timer (a plain struct, sizeof 0xc per the sizeof assert history on include/Timer.hpp). Every Timer:: symbol in config/arm9/symbols.txt is inside the run.",
+    "static initializer: __sinit_02074dc4 (.init 0x02074dc4..0x02074e0c, .ctor word 0x02086b78) seeds data_0209d4b8 to 1, registers func_0201973c on node data_0209d4bc, then calls func_0201964c on data_0209d4c8. arm9 .init and .ctor follow .text TU order: Sound.cpp's .ctor ends at 0x02086b70, and the two empty sinits at 0x02086b70 and 0x02086b74 sit between that TU and this one. The .bss run 0x0209d4b8..0x0209d4d4 is the seed, its node and the Timer, and data_0209d4d4 follows it."
   ],
   "sections": [
     {
       "name": ".text",
       "start": "0x02019584",
       "end": "0x02019664"
+    },
+    {
+      "name": ".init",
+      "start": "0x02074dc4",
+      "end": "0x02074e0c"
+    },
+    {
+      "name": ".ctor",
+      "start": "0x02086b78",
+      "end": "0x02086b7c"
+    },
+    {
+      "name": ".bss",
+      "start": "0x0209d4b8",
+      "end": "0x0209d4d4"
     }
   ],
   "functions": [
@@ -56,13 +72,51 @@
     }
   ],
   "data": [],
-  "bss": [],
-  "compiler_only_output": [],
+  "bss": [
+    {
+      "symbol": "data_0209d4b8",
+      "address": "0x0209d4b8",
+      "size": "0x4",
+      "evidence": "the shared random seed (one s32). Retail __sinit_02074dc4 calls func_0203b9b4 on it with 1, then registers func_0201973c. Readers pass it to RandomIntInternal. data_0209d4bc, the registration node, follows it.",
+      "binding": "STB_GLOBAL"
+    },
+    {
+      "symbol": "data_0209d4bc",
+      "address": "0x0209d4bc",
+      "size": "0xc",
+      "evidence": "compiler-generated destructor-registration node for data_0209d4b8 (mwcc emits it as @40); retail __sinit_02074dc4 passes it as the third __register_global_object argument",
+      "binding": "STB_GLOBAL"
+    },
+    {
+      "symbol": "data_0209d4c8",
+      "address": "0x0209d4c8",
+      "size": "0xc",
+      "evidence": "the namespace-scope Timer (sizeof 0xc). Retail __sinit_02074dc4 calls func_0201964c on it and registers no destructor. The stage, the HUD and the player already declare it as Timer. data_0209d4d4 follows it.",
+      "binding": "STB_GLOBAL"
+    }
+  ],
+  "compiler_only_output": [
+    {
+      "symbol": "_ZN7RngSeedD1Ev",
+      "disposition": "deadstrip-duplicate",
+      "canonical_symbol": "func_0201973c",
+      "canonical_module": "arm9",
+      "canonical_address": "0x0201973c",
+      "reason": "RngSeed's inline empty destructor is the registration callback retail stores for data_0209d4b8. mwcc emits it as vague STB_LOPROC bx lr, the same four bytes as func_0201973c (arm9:0x0201973c, still defined in func_020196cc.c). That function is not defined in this object, so the duplicate is discarded and the initializer's reference becomes the import."
+    },
+    {
+      "symbol": "sTimerInit",
+      "disposition": "deadstrip",
+      "reason": "File-local one-byte object whose only job is to call func_0201964c(&data_0209d4c8) after the seed's destructor registration. Timer has no constructor, so the call cannot be Timer::Timer() without renaming func_0201964c. The constructor body does not touch this, the initializer does not reference the object, and the cartridge has no symbol for it."
+    }
+  ],
   "notes": [
     "HAND-BUILT manifest entry, not tools/tubuild.py create output -- the `main` module is unsegmentable, so there is no create candidate id.",
-    "Timer is a leaf utility struct (s64 mTime at 0x0, u8 mIsRunning at 0x8): no vtable, no RTTI. Its C1 ctor func_0201964c is absorbed from its .c shard under the address name -- extern \"C\" keeps the emitted symbol; Timer::Timer() would rename it. compiler_only_output is empty.",
-    "func_02059650 (the IRQ-guarded 64-bit tick reader, REG_TM0CNT_L + data_020a6438) stays extern from decl_common.h -- it is its own TU, not a Timer member.",
-    "#pragma defer_codegen off makes mwccarm emit .text in source order; the ROM's order is ascending (GetTime, StopTimer, StartTimer, ResetTimer) and so is the file's."
+    "Timer is a leaf utility struct (s64 mTime at 0x0, u8 mIsRunning at 0x8): no vtable, no RTTI. Its C1 ctor func_0201964c stays an extern \"C\" helper under its address name; Timer::Timer() would rename it.",
+    "func_02059650 (the IRQ-guarded 64-bit tick reader, REG_TM0CNT_L + data_020a6438) is declared locally. decl_common.h also declares it, but that header's `extern int data_0209d4b8` cannot be included into the TU that defines the object. It is its own TU, not a Timer member.",
+    "#pragma defer_codegen off makes mwccarm emit .text in source order; the ROM's order is ascending (GetTime, StopTimer, StartTimer, ResetTimer, func_0201964c) and so is the file's.",
+    "Static initializer folded: data_0209d4b8 (RngSeed, one s32 seeded to 1) and data_0209d4c8 (the Timer) are defined in this TU. mwcc emits __sinit_Timer.cpp: func_0203b9b4, __register_global_object of the vague destructor, then func_0201964c. The handwritten src/unnamed/arm9/0207/__sinit_02074dc4.c is retired. The node is renamed from @40 (already ov081's) to data_0209d4bc. The vague destructor is a canonical duplicate of func_0201973c, which stays where it is. sTimerInit is the sequencing object and is deadstripped.",
+    "LOCAL WORKER NOTE: this machine's stock dump is the EU image (gamecode ASMP), so the scratch link built ROM sha256 ddab9300b24aeae254192c2a30d812b07ece3adff83230e75c865ed915c9de40 -- byte-identical to this tree's stock build -- while the recorded rom.sha256 carries the fleet-canonical stock SHA-256 that every other intact entry on main shares (d1506e90efae5e2d2cf119926a4ac2a291bd5ca78349d09d5024e1a918c478e8). The divergent bytes are NDS container/packaging fields outside every module range; the content proof is identical either way (moduleSetSha256 f9852ffaf80ef19662ab5535df4b13b935188ac3087b5b1d4561c089e4dd802b, symbol inventory and tuRanges all equal the canonical records)."
   ],
   "verification": {
     "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",
@@ -84,6 +138,248 @@
       "declared_function_set_equals_defined_function_set": "PASS",
       "functions_occur_in_expected_order": "PASS",
       "relocation_destinations_verified": "PASS"
+    },
+    "linkcheck": {
+      "round": "tools/tubuild.py linkcheck -- scratch dsd delink+lcf, whole-tree mwccarm, mwldarm link, linked-range and module byte comparison, dsd check symbols --fail, full ROM build",
+      "result": "scratch-data-verified",
+      "scratch": "build/tu/arm9-Timer/link (gitignored)",
+      "phases": {
+        "delink": true,
+        "lcf": true,
+        "compile": true,
+        "link": true,
+        "checkModules": true,
+        "checkSymbols": true,
+        "rom": true
+      },
+      "tuRange": {
+        "start": "0x02019584",
+        "end": "0x02019664",
+        "differingBytes": 0,
+        "firstDiff": null
+      },
+      "tuRanges": [
+        {
+          "section": ".text",
+          "start": "0x02019584",
+          "end": "0x02019664",
+          "differingBytes": 0,
+          "firstDiff": null
+        },
+        {
+          "section": ".init",
+          "start": "0x02074dc4",
+          "end": "0x02074e0c",
+          "differingBytes": 0,
+          "firstDiff": null
+        },
+        {
+          "section": ".ctor",
+          "start": "0x02086b78",
+          "end": "0x02086b7c",
+          "differingBytes": 0,
+          "firstDiff": null
+        },
+        {
+          "section": ".bss",
+          "start": "0x0209d4b8",
+          "end": "0x0209d4d4",
+          "comparison": "NOBITS -- symbol/module gates"
+        }
+      ],
+      "objectAudit": {
+        "counts": {
+          "LICENSED": 10
+        },
+        "emittedTextOrderIsRomAscending": true,
+        "nonLicensedSymbols": [],
+        "unlicensedSections": []
+      },
+      "nontextSectionOrder": {
+        "groups": [
+          {
+            "section": ".init",
+            "original": [
+              20
+            ],
+            "desired": [
+              20
+            ]
+          },
+          {
+            "section": ".ctor",
+            "original": [
+              18
+            ],
+            "desired": [
+              18
+            ]
+          },
+          {
+            "section": ".bss",
+            "original": [
+              6,
+              7,
+              8
+            ],
+            "desired": [
+              6,
+              7,
+              8
+            ]
+          }
+        ],
+        "objisolate": null,
+        "errors": null
+      },
+      "linkedStorageAliases": null,
+      "symbolCheckNewVsBaseline": [],
+      "symbolCheckErrors": [],
+      "symbolCheckBaselineErrors": [],
+      "moduleSetSha256": "f9852ffaf80ef19662ab5535df4b13b935188ac3087b5b1d4561c089e4dd802b",
+      "rom": {
+        "bytes": 16777216,
+        "sha256": "d1506e90efae5e2d2cf119926a4ac2a291bd5ca78349d09d5024e1a918c478e8",
+        "matchesStockRom": true
+      },
+      "linkerOutput": null
     }
-  }
+  },
+  "production_mode": "intact-object",
+  "init": [
+    {
+      "symbol": "__sinit_Timer.cpp",
+      "address": "0x02074dc4",
+      "size": "0x48",
+      "binding": "STB_GLOBAL",
+      "evidence": "compiler-generated static initializer for data_0209d4b8 and data_0209d4c8 is raw-byte-identical to retail __sinit_02074dc4 (0x48: seed store via func_0203b9b4, one registration, func_0201964c, four pool words)"
+    }
+  ],
+  "ctor": [
+    {
+      "symbol": ".p__sinit_Timer.cpp",
+      "address": "0x02086b78",
+      "size": "0x4",
+      "binding": "STB_GLOBAL",
+      "evidence": "compiler-generated constructor-table word relocates to the owned initializer exactly as retail"
+    }
+  ],
+  "undefined_symbol_aliases": [
+    {
+      "symbol": "__register_global_object",
+      "canonical_symbol": "func_020731dc",
+      "canonical_module": "arm9",
+      "canonical_address": "0x020731dc",
+      "evidence": "compiler-generated static initialization call shape and the direct retail reference in this initializer"
+    }
+  ],
+  "symbol_binding_rewrites": [
+    {
+      "symbol": "__sinit_Timer.cpp",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "mwcc emits the TU initializer local; DSD requires a configured global relocation destination at the same exact address"
+    },
+    {
+      "symbol": ".p__sinit_Timer.cpp",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "mwcc emits the ctor-table object local; DSD exposes owned symbols globally and cannot encode a local symbols.txt entry"
+    },
+    {
+      "symbol": "data_0209d4bc",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "compiler-local destructor-registration node is a configured initializer relocation destination at 0x0209d4bc"
+    }
+  ],
+  "defined_symbol_renames": [
+    {
+      "from": "@40",
+      "to": "data_0209d4bc",
+      "evidence": "compiler temp: the destructor-registration node for data_0209d4b8. mwcc numbers it @40, which ov081 already defines, so it keeps its configured address name"
+    }
+  ],
+  "relocations": [
+    {
+      "section": ".init",
+      "source": "0x02074dd4",
+      "type": "R_ARM_PC24",
+      "kind": "arm_call",
+      "symbol": "func_0203b9b4",
+      "addend": -8,
+      "target_module": "arm9",
+      "target_address": "0x0203b9b4"
+    },
+    {
+      "section": ".init",
+      "source": "0x02074de4",
+      "type": "R_ARM_PC24",
+      "kind": "arm_call",
+      "symbol": "func_020731dc",
+      "addend": -8,
+      "target_module": "arm9",
+      "target_address": "0x020731dc"
+    },
+    {
+      "section": ".init",
+      "source": "0x02074dec",
+      "type": "R_ARM_PC24",
+      "kind": "arm_call",
+      "symbol": "func_0201964c",
+      "addend": -8,
+      "target_module": "arm9",
+      "target_address": "0x0201964c"
+    },
+    {
+      "section": ".init",
+      "source": "0x02074dfc",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_0209d4b8",
+      "addend": 0,
+      "target_module": "arm9",
+      "target_address": "0x0209d4b8"
+    },
+    {
+      "section": ".init",
+      "source": "0x02074e00",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "func_0201973c",
+      "addend": 0,
+      "target_module": "arm9",
+      "target_address": "0x0201973c"
+    },
+    {
+      "section": ".init",
+      "source": "0x02074e04",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_0209d4bc",
+      "addend": 0,
+      "target_module": "arm9",
+      "target_address": "0x0209d4bc"
+    },
+    {
+      "section": ".init",
+      "source": "0x02074e08",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_0209d4c8",
+      "addend": 0,
+      "target_module": "arm9",
+      "target_address": "0x0209d4c8"
+    },
+    {
+      "section": ".ctor",
+      "source": "0x02086b78",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "__sinit_Timer.cpp",
+      "addend": 0,
+      "target_module": "arm9",
+      "target_address": "0x02074dc4"
+    }
+  ]
 }

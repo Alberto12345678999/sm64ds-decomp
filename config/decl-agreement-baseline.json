@@ -9848,6 +9848,45 @@
       ]
     },
     "data_0209d4b8": {
+      "include/decl_common.h": [
+        "return:int"
+      ],
+      "src/minigames/d_mg3d_esp_anim_set.cpp": [
+        "return:int"
+      ],
+      "src/minigames/d_s_mg_coin.cpp": [
+        "return:int"
+      ],
+      "src/minigames/d_s_mg_curling.cpp": [
+        "return:int"
+      ],
+      "src/minigames/d_s_mg_curling2.cpp": [
+        "return:int"
+      ],
+      "src/minigames/d_s_mg_flower.cpp": [
+        "return:int"
+      ],
+      "src/minigames/d_s_mg_memory.cpp": [
+        "return:int"
+      ],
+      "src/minigames/d_s_mg_memory2.cpp": [
+        "return:int"
+      ],
+      "src/minigames/d_s_mg_pachinko.cpp": [
+        "return:int"
+      ],
+      "src/minigames/d_s_mg_pachinko2.cpp": [
+        "return:int"
+      ],
+      "src/minigames/d_s_mg_smartball.cpp": [
+        "return:int"
+      ],
+      "src/minigames/d_s_mg_snowball.cpp": [
+        "return:int"
+      ],
+      "src/minigames/d_s_mg_sound.cpp": [
+        "return:int"
+      ],
       "src/unnamed/arm9/0201/func_020196cc.c": [
         "return:int []"
       ]
