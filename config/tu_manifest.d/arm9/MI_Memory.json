@@ -9,7 +9,7 @@
     "One contiguous run of the Nitro SDK's mi_memory.c, 0x0205a448..0x0205a74c: 11 functions, gapless in config/arm9/delinks.txt. pret/pokediamond's arm9/lib/NitroSDK/src/MI_memory.c, compiled with its own pinned mwccarm 1.2/sp2p3, emits 13 functions; 11 of them land here in the same order with identical sizes (CpuClear16 0x18, CpuCopy16 0x1c, CpuClear32 0x14, CpuCopy32 0x18, CpuClearFast 0x4c, CpuCopyFast 0x38, Copy32B 0x1c, Copy36B 0x1c, Copy48B 0x24, CpuFill8 0x94, CpuCopy8 0x130). The two absent ones, MIi_CpuSend32 and MI_Copy64B, are functions this game never calls; the linker dropped them. No function in the run is unexplained.",
     "The SDK spells every member as an asm function. The two shards written as C (MultiStore16, MultiCopyHalf = CpuClear16, CpuCopy16) take pret's asm bodies, which assemble to the same ROM bytes; as C they would be deferred and emitted after the asm functions, out of ROM order.",
     "BOTTOM EDGE: func_0205a358 (ends 0x0205a448) closes a run that opens with func_0205a21c and func_0205a290, which have the sizes of mi_dma_gxcommand.c's MIi_DMACallback (0x74) and MIi_FIFOCallback (0xc8). That run is the GX-command DMA file, not this one.",
-    "TOP EDGE: func_0205a74c (0x0205a74c..0x0205a754, `swp r0, r0, [r1]`) is mi_swap.c's MI_SwapWord, the whole of that SDK file, and stays its own source."
+    "TOP EDGE: MI_SwapWord (0x0205a74c..0x0205a754, `swp r0, r0, [r1]`) is mi_swap.c, the whole of that SDK file, and stays its own source (src/MI_SwapWord.c)."
   ],
   "sections": [
     {
