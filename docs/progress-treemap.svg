@@ -12089,7 +12089,7 @@ matched: yes</title></rect><rect x="242.26" y="927.31" width="6.98" height="50.7
 module: arm9
 addr: 0x02072fcc
 size: 528 bytes
-matched: yes</title></rect><rect x="242.26" y="978.08" width="6.98" height="3.08" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020731dc
+matched: yes</title></rect><rect x="242.26" y="978.08" width="6.98" height="3.08" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__register_global_object
 module: arm9
 addr: 0x020731dc
 size: 32 bytes
