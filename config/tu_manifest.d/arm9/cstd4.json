@@ -33,21 +33,21 @@
       "ordinal": 1
     },
     {
-      "symbol": "func_0206dac4",
+      "symbol": "__exit",
       "address": "0x0206dac4",
       "size": "0x00000134",
       "legacy_source": "src/unnamed/arm9/0206/func_0206dac4.c",
       "ordinal": 2
     },
     {
-      "symbol": "func_0206dbf8",
+      "symbol": "exit",
       "address": "0x0206dbf8",
       "size": "0x00000054",
       "legacy_source": "src/unnamed/arm9/0206/func_0206dbf8.c",
       "ordinal": 3
     },
     {
-      "symbol": "func_0206dc4c",
+      "symbol": "abort",
       "address": "0x0206dc4c",
       "size": "0x00000030",
       "legacy_source": "src/unnamed/arm9/0206/func_0206dc4c.c",

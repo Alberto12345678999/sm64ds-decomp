@@ -11835,15 +11835,15 @@
     },
     "arm9:0x0206dac4": {
       "author": "ruspecial",
-      "name": "func_0206dac4"
+      "name": "__exit"
     },
     "arm9:0x0206dbf8": {
       "author": "tangosdev",
-      "name": "func_0206dbf8"
+      "name": "exit"
     },
     "arm9:0x0206dc4c": {
       "author": "tangosdev",
-      "name": "func_0206dc4c"
+      "name": "abort"
     },
     "arm9:0x0206dc7c": {
       "author": "ruspecial",
@@ -11971,7 +11971,7 @@
     },
     "arm9:0x0207037c": {
       "author": "tangosdev",
-      "name": "func_0207037c"
+      "name": "raise"
     },
     "arm9:0x020704cc": {
       "author": "tangosdev",

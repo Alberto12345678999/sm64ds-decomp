@@ -20250,11 +20250,6 @@
         "return:int"
       ]
     },
-    "func_0207037c": {
-      "src/cstd4.cpp": [
-        "return:void"
-      ]
-    },
     "func_02071790": {
       "src/unnamed/arm9/0207/func_02071be8.c": [
         "arity:3"

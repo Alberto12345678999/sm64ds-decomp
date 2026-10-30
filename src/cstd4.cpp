@@ -39,7 +39,7 @@ void __builtin_trap(void)
 extern "C" {
 #pragma push
 #pragma defer_codegen off
-// @symbol func_0206dac4
+// @symbol __exit
 extern int OS_TryLockMutex(void *p);
 extern void OS_LockMutex(void *p);
 extern void OS_UnlockMutex(void *p);
@@ -54,7 +54,13 @@ extern volatile int data_020a9ed0;
 extern void (*volatile data_020a9ed8[])(void);
 extern void (*data_020a9ec8)(void);
 
-int func_0206dac4(int a)
+/* MSL __exit, statement for statement with Spirit Tracks' copy of
+   abort_exit_arm_eabi.c: run the atexit functions newest first inside the
+   inlined atexit_funcs_access critical region (data_020a9ed8 is
+   __atexit_funcs, data_020a9ed0 __atexit_curr_func), call __console_exit
+   (data_020a9ec8) once, fflush(NULL) (func_0206e06c), then leave through
+   func_02071784, the _ExitProcess veneer. */
+void __exit(int status)
 {
     if (OS_TryLockMutex(&data_020aa020) == 0) {
         data_020a9fd8 = data_020a6134.current->id;
@@ -88,14 +94,17 @@ int func_0206dac4(int a)
 
 #pragma push
 #pragma defer_codegen off
-typedef void (*FP0206dbf8)(void);
+typedef void (*exit_proc)(void);
 
 extern int data_020a9ed4;
-extern FP0206dbf8 data_020a9ecc;
+extern exit_proc data_020a9ecc;
 void __destroy_global_chain(void);
 
-// @symbol func_0206dbf8
-int func_0206dbf8(int a) {
+/* MSL exit: unless abort is under way (data_020a9ed4 is __aborting),
+   destroy the static objects (__destroy_global_chain) and call
+   __stdio_exit (data_020a9ecc) once; then __exit(status). */
+// @symbol exit
+void exit(int status) {
     if (data_020a9ed4 == 0) {
         __destroy_global_chain();
         if (data_020a9ecc != 0) {
@@ -103,20 +112,22 @@ int func_0206dbf8(int a) {
             data_020a9ecc = 0;
         }
     }
-    return func_0206dac4(a);
+    __exit(status);
 }
 #pragma pop
 
 #pragma push
 #pragma defer_codegen off
-void func_0207037c(int a);
+int raise(int sig);
 extern int data_020a9ed4;
 
-// @symbol func_0206dc4c
-void func_0206dc4c(void) {
-    func_0207037c(1);
+/* MSL abort: raise(SIGABRT), which is 1 here; set __aborting so exit skips
+   the static destructors; then exit(EXIT_FAILURE). */
+// @symbol abort
+void abort(void) {
+    raise(1);
     data_020a9ed4 = 1;
-    func_0206dbf8(1);
+    exit(1);
 }
 #pragma pop
 
@@ -203,7 +214,7 @@ float func_0206ddcc(float a, int op) {
  */
 extern int func_02073238(void);
 extern int func_01ffb008(int a, int b);
-extern void func_0207037c(int idx);
+extern int raise(int sig);
 
 typedef void (*DispatchFn)(int a0, Pair p1, Pair p2, unsigned int flags);
 
@@ -245,7 +256,7 @@ void func_0206de14(int a0, Pair p1, Pair p2, unsigned int flags)
 
   if (fn == 0)
   {
-    func_0207037c(2);
+    raise(2);
   }
   fn(a0, p1, p2, flags);
 }
