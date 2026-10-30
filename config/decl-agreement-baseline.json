@@ -13528,9 +13528,6 @@
       "src/unnamed/ov007/func_ov007_020ada70.cpp": [
         "return:void *"
       ],
-      "src/unnamed/ov007/func_ov007_020adb84.c": [
-        "return:int *"
-      ],
       "src/unnamed/ov007/func_ov007_020adc08.c": [
         "return:int *"
       ],
@@ -13552,20 +13549,11 @@
       "src/unnamed/ov007/func_ov007_020aec94.c": [
         "return:int *"
       ],
-      "src/unnamed/ov007/func_ov007_020af0e4.c": [
-        "return:int *"
-      ],
       "src/unnamed/ov007/func_ov007_020af12c.c": [
         "return:int *"
       ],
       "src/unnamed/ov007/func_ov007_020af390.c": [
         "return:S *"
-      ],
-      "src/unnamed/ov007/func_ov007_020af434.c": [
-        "return:char []"
-      ],
-      "src/unnamed/ov007/func_ov007_020af4dc.c": [
-        "return:char []"
       ],
       "src/unnamed/ov007/func_ov007_020b0548.c": [
         "return:int"
@@ -13573,23 +13561,11 @@
       "src/unnamed/ov007/func_ov007_020b0a20.cpp": [
         "return:Game *"
       ],
-      "src/unnamed/ov007/func_ov007_020b10dc.c": [
-        "return:char []"
-      ],
-      "src/unnamed/ov007/func_ov007_020b11bc.c": [
-        "return:void *"
-      ],
       "src/unnamed/ov007/func_ov007_020b1224.c": [
         "return:void *"
       ],
       "src/unnamed/ov007/func_ov007_020b131c.c": [
         "return:int * []"
-      ],
-      "src/unnamed/ov007/func_ov007_020b155c.c": [
-        "return:char []"
-      ],
-      "src/unnamed/ov007/func_ov007_020b1604.c": [
-        "return:void *"
       ],
       "src/unnamed/ov007/func_ov007_020b2454.c": [
         "return:void *"
@@ -13619,17 +13595,8 @@
       "src/unnamed/ov007/func_ov007_020b5f64.c": [
         "return:unsigned char []"
       ],
-      "src/unnamed/ov007/func_ov007_020b647c.c": [
-        "return:int []"
-      ],
       "src/unnamed/ov007/func_ov007_020b68e8.c": [
         "return:int []"
-      ],
-      "src/unnamed/ov007/func_ov007_020b693c.c": [
-        "return:void * []"
-      ],
-      "src/unnamed/ov007/func_ov007_020b69c4.c": [
-        "return:unsigned char *"
       ],
       "src/unnamed/ov007/func_ov007_020b6cd0.c": [
         "return:Foo *"
@@ -13639,9 +13606,6 @@
       ],
       "src/ui/menus/unit020b8f50.cpp": [
         "return:unsigned char []"
-      ],
-      "src/unnamed/ov007/func_ov007_020bca40.c": [
-        "return:char []"
       ],
       "src/unnamed/ov007/func_ov007_020bce70.cpp": [
         "return:S *"
@@ -24246,9 +24210,6 @@
       ]
     },
     "func_ov007_020b8f8c": {
-      "src/unnamed/ov007/func_ov007_020af0e4.c": [
-        "return:short *"
-      ],
       "src/unnamed/ov007/func_ov007_020af12c.c": [
         "return:short *"
       ]
@@ -24318,19 +24279,10 @@
       "include/decl_common.h": [
         "arity:1"
       ],
-      "src/unnamed/ov007/func_ov007_020af84c.c": [
-        "arity:1"
-      ],
       "src/unnamed/ov007/func_ov007_020b0834.c": [
         "arity:1"
       ],
       "src/unnamed/ov007/func_ov007_020b0a20.cpp": [
-        "arity:1"
-      ],
-      "src/unnamed/ov007/func_ov007_020b10dc.c": [
-        "arity:1"
-      ],
-      "src/unnamed/ov007/func_ov007_020b1718.cpp": [
         "arity:1"
       ],
       "src/ui/menus/unit020b2cdc.cpp": [
@@ -24424,9 +24376,6 @@
       ]
     },
     "func_ov007_020c02d8": {
-      "src/unnamed/ov007/func_ov007_020adb84.c": [
-        "return:int"
-      ],
       "src/unnamed/ov007/func_ov007_020adc08.c": [
         "param:#1 int"
       ]
@@ -25458,10 +25407,6 @@
         "arity:1"
       ],
       "src/ui/menus/unit020b2cdc.cpp": [
-        "arity:1",
-        "return:void"
-      ],
-      "src/unnamed/ov007/func_ov007_020b65e0.c": [
         "arity:1",
         "return:void"
       ],

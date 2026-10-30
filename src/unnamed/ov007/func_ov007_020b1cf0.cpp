@@ -73,7 +73,7 @@ void func_ov007_020b1cf0(void) {
     if (hi == 8 && r5 == 0) {
         int anim;
         WORK->states[2]->requestedState = 3;
-        anim = (*(int *)(data_ov007_0210342c + 0xec) == 1) ? 0x3d : 0x14;
+        anim = (WORK->figureIndex == 1) ? 0x3d : 0x14;
         func_ov007_020b2614(0, anim, 8);
     }
 
