@@ -8932,7 +8932,7 @@ What each one needed beyond §6df:
   so they are that TU's `.bss` and not KuppaScript's. Its manifest is still text-only, with
   RTTI externalized.
 - Three owners are unpromoted shard runs:
-  - `__sinit_02074dc4`: the Timer neighbour (`func_0201964c`/`func_0201973c`).
+  - `__sinit_02074dc4` is folded into `src/Timer.cpp` (`__sinit_Timer.cpp`): RngSeed `data_0209d4b8` plus the Timer `data_0209d4c8`.
   - `__sinit_02074e0c`: `func_0201aa18`/`func_0201aaec`, between IRQ2 and Message2.
   - `__sinit_02074e44`: `data_0209e650`, next to `data_0209e64c` of the unpromoted
     0x0201fec8..0x02020820 run.
