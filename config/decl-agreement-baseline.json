@@ -12460,7 +12460,7 @@
     },
     "sRouletteTiles": {
       "src/unnamed/ov006/__sinit_ov006_021322bc.c": [
-        "return:S8"
+        "return:TileXY"
       ]
     },
     "sSoundPop10Table": {
@@ -14556,7 +14556,7 @@
     },
     "data_ov075_0211d650": {
       "src/unnamed/ov075/__sinit_ov075_0211bb00.c": [
-        "return:int"
+        "return:void * []"
       ]
     },
     "data_ov075_0211d71c": {
@@ -14571,21 +14571,6 @@
       ],
       "src/unnamed/ov075/func_ov075_021196d0.c": [
         "return:char []"
-      ]
-    },
-    "data_ov075_0211d72c": {
-      "src/unnamed/ov075/__sinit_ov075_0211bb00.c": [
-        "return:int"
-      ]
-    },
-    "data_ov075_0211d740": {
-      "src/unnamed/ov075/__sinit_ov075_0211bb00.c": [
-        "return:int"
-      ]
-    },
-    "data_ov075_0211d754": {
-      "src/unnamed/ov075/__sinit_ov075_0211bb00.c": [
-        "return:int"
       ]
     },
     "EntryPlayerSelectIntroSteps": {
@@ -14606,11 +14591,6 @@
     "data_ov075_0211d930": {
       "src/unnamed/ov075/func_ov075_02119dc4.cpp": [
         "return:int []"
-      ]
-    },
-    "data_ov075_0211d948": {
-      "src/unnamed/ov075/__sinit_ov075_0211bb00.c": [
-        "return:int"
       ]
     },
     "data_ov077_02127230": {
