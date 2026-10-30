@@ -67,6 +67,10 @@ typedef struct TPWork {
     volatile u16 mCommandFlags;       /* 0x36 */
 } TPWork;
 
+/* The one work block, as include/nitro/card/card_common.h declares cardi_common.
+   Every TP function reaches it by this name. */
+extern TPWork data_020a80cc;
+
 #ifndef SM64DS_PLATFORM_PC
 /* ROM layout under mwccarm; host ABI divergence is tracked separately. */
 typedef char TPData_size_must_be_0x8[sizeof(struct TPData) == 0x8 ? 1 : -1];
