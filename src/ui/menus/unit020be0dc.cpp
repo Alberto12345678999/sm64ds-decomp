@@ -268,7 +268,7 @@ extern void func_0204dab4(void *sys, TrackingRecord *buf, int count, unsigned in
 extern void func_0204dc84(char *self);
 extern void Sprite_SetAnimation(char *c, int r1, int r2, int r3, int sp0);
 extern void *func_ov007_020b7690(int i);
-extern void func_ov007_020bfd70(char *actor, void *pos, int *outX, int *outY);
+extern void func_ov007_020bfd70(struct Ov007Camera *cam, void *pos, int *outX, int *outY);
 extern void func_ov007_020c3d1c(void *p);
 extern int func_ov007_020c3df4(int a, void *b);
 extern void func_ov007_020c3e7c(char *c);
@@ -508,7 +508,7 @@ void func_ov007_020be7a8(void *pos, unsigned short *outX, unsigned short *outY, 
     int x;
     int y;
 
-    func_ov007_020bfd70((char *)WORK->cameras[0], pos, &x, &y);
+    func_ov007_020bfd70(WORK->cameras[0], pos, &x, &y);
 
     if (WORK->cameraPreset == 4) {
         y = y + 0x14b;
@@ -691,7 +691,7 @@ int func_ov007_020be0dc(void) {
         }
 
         pos = &BONE0->t;
-        func_ov007_020bfd70((char *)WORK->cameras[0], pos, &sp4, &sp8);
+        func_ov007_020bfd70(WORK->cameras[0], pos, &sp4, &sp8);
 
         {
             Ov007Work *P = WORK;

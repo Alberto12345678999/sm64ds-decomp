@@ -1,13 +1,6 @@
-extern void func_ov007_020c7804(void *list);
+#include "Ov007Spring.h"
 
-/* The 0x10-byte grid func_ov007_020c73f0 builds; names as in
- * func_ov007_020c7240. */
-typedef struct Ov007Grid {
-    int columns;        /* 0x00 */
-    int rows;           /* 0x04 */
-    void **rowLists;    /* 0x08: one per row, columns points each */
-    void **columnLists; /* 0x0c: one per column, rows points each */
-} Ov007Grid;
+extern void func_ov007_020c7804(void *list);
 
 /* Binds the links of every row list, then every column list
  * (func_ov007_020c7804). */

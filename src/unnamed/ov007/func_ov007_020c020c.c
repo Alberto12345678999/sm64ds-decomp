@@ -1,11 +1,4 @@
-/* The 0xd8-byte camera func_ov007_020c023c allocates; names as there, only
- * the three tweens this file frees. */
-typedef struct Ov007Camera {
-    char pad_00[0x38];
-    void *eyeTween;      /* 0x38: func_ov007_020c8f64's vector tween */
-    void *targetTween;   /* 0x3c: func_ov007_020c8f64's vector tween */
-    void *distanceTween; /* 0x40: func_ov007_020c908c's scalar tween */
-} Ov007Camera;
+#include "Ov007Camera.h"
 
 /* The free veneers that sit just ahead of each tween's allocator; both
  * reach the free hook func_ov007_020c3d1c with the pointer still in r0. */

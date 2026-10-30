@@ -4,6 +4,7 @@
 #include "Ov007MenuState.h"
 #include "Ov007Sprite.h"
 #include "Ov007Work.h"
+#include "Ov007Settings.h"
 #include "cstd.h"
 
 extern "C" {
@@ -49,24 +50,21 @@ typedef struct Ov007ItemView {
 /* The extern keeps this file's u8[] spelling; the manager pointer is stored there. */
 #define WORK (*(Ov007Work **)data_ov007_0210342c)
 
-/* The 0x3c-byte record at Ov007Work's settings; names as in unit020b413c,
- * only the slot this file reads. */
-struct Ov007Settings {
-    u8 *bootArgs; /* 0x00: byte 9 picks which of items 0xc and 0xd is live */
-};
-
 extern unsigned short func_ov007_020c3be0(int t, int a, int b);
 extern void func_ov007_020b5f64(void *a);
-extern void func_ov007_020c8f98(int a);
+extern int func_ov007_020c8f98(struct Ov007Tween *tw);
 
 /* One frame of a menu item's look. Kind 0 items wiggle: rotZ follows a
  * sine at 72 degrees per frame, decaying over wiggleFrames, 4 degrees deep
  * for item 0 and 8 for the rest. The kind then picks how the item's level
- * shows: fade, or 1 - slideOut while it slides out (states 3 and 4), as the
- * sprite's alpha, or for kind 3 as its colour from grey (0x4210) to white.
- * Kind 7 moves the texture origin for item 9 and whichever of 0xc/0xd is
- * live. Items 0xe..0x10 also run func_ov007_020b5f64, and the slide tween
- * steps. */
+ * shows as the sprite's alpha: fade for kinds 0, 2 and 6; 1 - slideOut for
+ * kind 8 in any state and for kinds 3 and 4 in states 3 and 4; otherwise
+ * kind 4 fades and kind 3 shows fade as its colour, from grey (0x4210) to
+ * white. Kind 7 moves the texture origin by width for the backlight
+ * buttons: the one that would change the setting (item 0xc, turn on, while
+ * backlightOn is clear; 0xd, turn off, while it is set) always, and item 9
+ * and the button for the current setting only in state 2. Items 0xe..0x10
+ * also run func_ov007_020b5f64, and the slide tween steps. */
 void func_ov007_020b5bf0(Ov007ItemView *view) {
     Ov007Item *item = view->item;
     int dims = 0;
@@ -135,16 +133,17 @@ void func_ov007_020b5bf0(Ov007ItemView *view) {
             break;
         case 7: {
             u16 id = item->id;
-            u8 *bootArgs = WORK->settings->bootArgs;
+            Ov007BootArgs *bootArgs = WORK->settings->bootArgs;
             s16 v = item->state->currentState;
 
-            if ((v == 2 &&
-                 (id == 9 || (id == 0xc && bootArgs[9] != 0) || (id == 0xd && bootArgs[9] == 0))) ||
-                (id == 0xc && bootArgs[9] == 0) || (id == 0xd && bootArgs[9] != 0)) {
+            if ((v == 2 && (id == 9 || (id == 0xc && bootArgs->backlightOn != 0) ||
+                            (id == 0xd && bootArgs->backlightOn == 0))) ||
+                (id == 0xc && bootArgs->backlightOn == 0) ||
+                (id == 0xd && bootArgs->backlightOn != 0)) {
                 Ov007Sprite *sprite = view->sprite;
                 sprite->texS = sprite->width;
-            } else if (v != 2 && (id == 9 || (id == 0xc && bootArgs[9] != 0) ||
-                                  (id == 0xd && bootArgs[9] == 0))) {
+            } else if (v != 2 && (id == 9 || (id == 0xc && bootArgs->backlightOn != 0) ||
+                                  (id == 0xd && bootArgs->backlightOn == 0))) {
                 view->sprite->texS = 0;
             }
             break;
@@ -188,6 +187,6 @@ void func_ov007_020b5bf0(Ov007ItemView *view) {
     if ((u32)(u16)(item->id + 0xfff2) <= 2u) {
         func_ov007_020b5f64(view);
     }
-    func_ov007_020c8f98((int)view->slideTween);
+    func_ov007_020c8f98(view->slideTween);
 }
 }

@@ -1,6 +1,7 @@
 //cpp
 #include "Ov007MenuState.h"
 #include "Ov007Work.h"
+#include "Ov007Settings.h"
 
 extern "C" {
 extern void func_ov007_020b283c(void);
@@ -27,30 +28,6 @@ struct Ov007Model {
 struct Ov007Figure {
     char pad_00[4];
     Ov007Model *model; /* 0x04: func_ov007_020bc6d4 */
-};
-
-/* func_ov007_020b7138's second argument: dScDSMT_c's byte-packed
- * download-play table (data_0209b340); only the slot this file reads. */
-struct Ov007BootArgs {
-    int bootFlags; /* 0x00 */
-    /* 0x04: dScDSMT_c::InitResources stores 1 here (when data_0209f1e0 is
-     * set), CleanupResources 2 */
-    int status;
-};
-
-/* The 0x3c-byte record func_ov007_020b6a84 allocates; names as in
- * func_ov007_020aec94, only the slots this file touches. */
-struct Ov007Settings {
-    Ov007BootArgs *bootArgs; /* 0x00 */
-    char pad_04[0x33];
-    /* 0x37 / 0x38: what the owner's dispatcher (func_ov007_020cc600) returns
-     * for command 0x14 (read the three save files) and 0x15 (read the
-     * minigame data): 1 when the read failed */
-    unsigned char filesFailed;
-    unsigned char minigamesFailed;
-    /* 0x39: func_ov007_020b7d94's kind, the window menu state 9 opens before
-     * the choice goes through (func_ov007_020b0834); cleared here */
-    unsigned char dialogKind;
 };
 
 typedef char Ov007Model_visible_must_be_at_0x94[(int)&((Ov007Model *)0)->visible == 0x94 ? 1 : -1];

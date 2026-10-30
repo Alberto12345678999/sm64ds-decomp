@@ -1,6 +1,7 @@
 #include "Ov007MenuState.h"
 #include "Ov007Tween.h"
 #include "Ov007Work.h"
+#include "Ov007Settings.h"
 
 extern int func_ov007_020c8f98(void *p);
 extern void func_ov007_020c1d78(int i);
@@ -12,20 +13,6 @@ extern void RequestScreenFade(int a, int b, int c);
 extern void func_ov007_020b8188(int slot, void *records, int alt);
 extern void func_ov007_020c0638(int a, int b, int c, int d);
 extern void func_ov007_020b8070(int n);
-
-/* func_ov007_020b7138's second argument: dScDSMT_c's byte-packed
- * download-play table (data_0209b340); only the slot this file reads. */
-typedef struct Ov007BootArgs {
-    char pad_00[0xb];
-    /* 0x0b: flags1 bit 0 of the loaded save file */
-    unsigned char fileUsed[3];
-} Ov007BootArgs;
-
-/* The 0x3c-byte record func_ov007_020b6a84 allocates; only the slot this
- * file reads. */
-typedef struct Ov007Settings {
-    Ov007BootArgs *bootArgs; /* 0x00 */
-} Ov007Settings;
 
 /* The 0xc-byte record func_ov007_020adc08 returns; names as in
  * func_ov007_020adc08, only the layer read here. */

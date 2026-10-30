@@ -47,6 +47,7 @@ int func_ov002_020f035c(unsigned int sel, int normalY) {
     return normalY <= threshold;
 }
 
+/* Returns the slide loss factor (fx12) for surface class sel. */
 int func_ov002_020f030c(int sel) {
     switch (sel) {
     case 4:
@@ -63,6 +64,7 @@ int func_ov002_020f030c(int sel) {
     }
 }
 
+/* Returns the slide acceleration (fx12) for surface class sel. */
 int func_ov002_020f02c8(int sel) {
     switch (sel) {
     case 4:

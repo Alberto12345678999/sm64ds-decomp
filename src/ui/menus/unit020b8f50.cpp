@@ -47,44 +47,10 @@
 #include "Ov007Tween.h"
 #include "Ov007StrokePath.h"
 #include "Ov007Touch.h"
+#include "Ov007Picker.h"
+#include "Ov007Camera.h"
 
 extern "C" {
-
-/* The 0xd0-byte touch picker func_ov007_020c690c builds; names as in
- * func_ov007_020c684c, only the slots this file touches. */
-typedef struct Ov007Picker {
-    char pad_00[8];
-    /* 0x08: committed strokes; func_ov007_020c6550 commits the stroke as
-     * group groupCount and counts it, func_ov007_020c6724 clears it */
-    int groupCount;
-    char pad_0c[8];
-    /* 0x14, medium confidence: func_ov007_020c6784 seeds it with
-     * func_ov007_020c5db0's point total over the stroke and every group;
-     * undo and redo take a group's capacity out or put it back */
-    int totalPoints;
-    /* 0x18: one six-int row of data_ov007_020d7b80 (func_ov007_020ba9bc) */
-    int *springConstants;
-    char pad_1c[4];
-    Ov007StrokePath *path; /* 0x20: the stroke being drawn (func_ov007_020c2c68) */
-    char pad_24[0x14];
-    Ov007StrokePath **groups; /* 0x38: committed strokes (func_ov007_020c6d20) */
-    char pad_3c[0x1c];
-    int hitGroup;      /* 0x58: picked group, -1 = none */
-    int hitIndex;      /* 0x5c: picked point in that group, -1 = none */
-    Vector3 hitOffset; /* 0x60 */
-    char pad_6c[4];
-    Vector3 pos;       /* 0x70 */
-    Vector3 restPos;   /* 0x7c: func_ov007_020c6af0 snapshots pos here */
-    Vector3 posOffset; /* 0x88: func_ov007_020c5188 adds it to pos for one step */
-    char pad_94[0x18];
-    /* 0xac/0xb0: the draw limit; func_ov007_020c4dfc draws whole groups up
-     * to limitGroup and that group's first limitIndex points */
-    int limitGroup;
-    int limitIndex;
-    char pad_b4[4];
-    Vector3 boundsMin; /* 0xb8: func_ov007_020c510c, the clamp rectangle */
-    Vector3 boundsMax; /* 0xc4 */
-} Ov007Picker;
 
 /* data_ov007_02104ba0: the 0x4c-byte scene record func_ov007_020b9880
  * allocates. */
@@ -143,11 +109,6 @@ typedef struct Ov007Pad {
     u32 heldFrames[12];
 } Ov007Pad;
 
-typedef struct Ov007Camera {
-    char pad_00[0x2c];
-    int distance; /* 0x2c: func_ov007_020bffb8 places the eye this far from the target */
-} Ov007Camera;
-
 typedef struct Ov007Item {
     u16 id; /* 0x00 */
     char pad_02[2];
@@ -188,7 +149,7 @@ extern void func_ov007_020bda8c(int a, int b);
 extern void func_ov007_020bdbcc(int a0, int a1);
 extern void func_ov007_020bde2c(int idx);
 extern int func_ov007_020bdeb0(int a);
-extern void func_ov007_020bfe4c(void *o, int x, int y, int z, void *out);
+extern void func_ov007_020bfe4c(Ov007Camera *cam, int x, int y, int z, void *out);
 extern int func_ov007_020c1da0(int i);
 extern int func_ov007_020c3ba8(int);
 extern int func_ov007_020c3be0(int t, int a, int b);

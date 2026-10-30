@@ -1233,7 +1233,7 @@ extern void func_02016a14(void*, int);
 extern void func_02016aac(void*, int, int);
 extern void func_02016acc(void*, int);
 extern void func_02017e94(int);
-extern void func_02019028(void);
+extern void Disable3dEngines(void);
 extern void func_0201a428(void);
 extern void func_0201cd08(int);
 extern void func_0201cebc(int);
