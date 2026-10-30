@@ -1,13 +1,11 @@
 //cpp
-extern "C" {
-
 /* func_02072168 @ 0x02072168 (arm9, size 0x880)   [mwccarm 1.2/base, 1.2/sp2, 1.2/sp2p3, 2004/b56]
  * C++ exception unwinder: interprets a function's exception-action table, running
  * the destructors of everything live in the frame, until it reaches `end`. (An
  * earlier banner called it a wireless bytecode VM and a sibling of func_020690b0;
  * the ThrowContext/CatchInfo evidence below says otherwise.) When s->mAction runs
  * out, func_02071910 unwinds one frame, func_02072dac finds that frame's table
- * (func_020731fc terminates when none covers the PC) and func_02071864 reads the
+ * (std::terminate runs when none covers the PC) and func_02071864 reads the
  * frame header. LEB128 operands come via ReadSignedVarInt (signed) / func_02071a50
  * (unsigned); each destroy action ends in a 4-byte destructor address. Opcode bits:
  * 0x20/0x40 take the operand from c->mGPR[] instead of the frame at c->mFP, and
@@ -27,6 +25,12 @@ extern "C" {
  *   - the `fl = fl ? fl : fl;` self-selects and the volatile k in case 0x10 pin
  *     flag webs; inherited from the 195->12 structural draft.
  */
+namespace std {
+void terminate();
+}
+
+extern "C" {
+
 #pragma opt_loop_invariants off
 typedef void (*F2)(int, int);
 typedef void (*F1)(int);
@@ -64,7 +68,6 @@ typedef struct CatchInfo {
 
 extern int func_02071910(char *c, char *s);
 extern void func_02072dac(int a, char *s);
-extern void func_020731fc(void);
 extern void func_02071864(char *c, char *s);
 extern unsigned char *ReadSignedVarInt(unsigned char *p, int *out);
 extern unsigned char *func_02071a50(unsigned char *p, int *out);
@@ -81,7 +84,7 @@ void func_02072168(ThrowContext *c, ActionIterator *s, char *end) {
         if (p == 0) {
             func_02072dac(func_02071910((char *)c, (char *)s), (char *)s);
             if (s->mActionTable == 0)
-                func_020731fc();
+                std::terminate();
             func_02071864((char *)c, (char *)s);
             p = s->mAction;
             if (p == 0)
@@ -464,7 +467,7 @@ void func_02072168(ThrowContext *c, ActionIterator *s, char *end) {
             break;
         }
         default:
-            func_020731fc();
+            std::terminate();
             break;
         }
         if ((op & 0x80) != 0)

@@ -3927,11 +3927,11 @@ src/unnamed/arm9/0207/func_020731dc.c:
     complete
     .text start:0x020731dc end:0x020731fc
 
-src/unnamed/arm9/0207/func_020731fc.c:
+src/_ZSt9terminatev.cpp:
     complete
     .text start:0x020731fc end:0x02073220
 
-src/unnamed/arm9/0207/func_02073220.c:
+src/_ZSt9dthandlerv.cpp:
     complete
     .text start:0x02073220 end:0x0207322c
 

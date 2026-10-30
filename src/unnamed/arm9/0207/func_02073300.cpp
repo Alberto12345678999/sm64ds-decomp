@@ -25,9 +25,11 @@
 // confirms the name, and its body does not follow GCC's __cxa_vec_dtor
 // statement for statement.
 
-extern "C" void func_020731fc(void);
-
 typedef void (*dtor_t)(void *);
+
+namespace std {
+void terminate();
+}
 
 extern "C" void func_02073300(void *block, unsigned int n, unsigned int size, dtor_t dtor)
 {
@@ -49,7 +51,7 @@ extern "C" void func_02073300(void *block, unsigned int n, unsigned int size, dt
                     } while (--n);
                 }
             } catch (...) {
-                func_020731fc();
+                std::terminate();
             }
             throw;
         }

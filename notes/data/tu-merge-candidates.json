@@ -14054,8 +14054,8 @@
     "src/__call_static_initializers.c",
     "src/__throw_catch_compare.c",
     "src/unnamed/arm9/0207/func_020731dc.c",
-    "src/unnamed/arm9/0207/func_020731fc.c",
-    "src/unnamed/arm9/0207/func_02073220.c",
+    "src/_ZSt9terminatev.cpp",
+    "src/_ZSt9dthandlerv.cpp",
     "src/unnamed/arm9/0207/func_0207322c.c"
    ],
    "ext_mix": {

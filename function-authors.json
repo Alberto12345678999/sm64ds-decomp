@@ -12175,11 +12175,11 @@
     },
     "arm9:0x020731fc": {
       "author": "tangosdev",
-      "name": "func_020731fc"
+      "name": "_ZSt9terminatev"
     },
     "arm9:0x02073220": {
       "author": "ruspecial",
-      "name": "func_02073220"
+      "name": "_ZSt9dthandlerv"
     },
     "arm9:0x0207322c": {
       "author": "tangosdev",
