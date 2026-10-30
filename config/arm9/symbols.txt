@@ -3076,7 +3076,7 @@ data_02073768 kind:data(any) addr:0x02073768
 data_0207377c kind:data(any) addr:0x0207377c
 data_02073794 kind:data(any) addr:0x02073794
 data_020737a8 kind:data(any) addr:0x020737a8
-__sinit_02073a24 kind:function(arm,size=0x448) addr:0x02073a24
+__sinit_d_camera.cpp kind:function(arm,size=0x448) addr:0x02073a24
 __sinit_KuppaScript.cpp kind:function(arm,size=0xf24) addr:0x02073e6c
 __sinit_d_actor.cpp kind:function(arm,size=0x18) addr:0x02074d90
 __sinit_Sound.cpp kind:function(arm,size=0x14) addr:0x02074da8
@@ -3086,7 +3086,7 @@ __sinit_Timer.cpp kind:function(arm,size=0x48) addr:0x02074dc4
 __sinit_02074e0c kind:function(arm,size=0x38) addr:0x02074e0c
 __sinit_02074e44 kind:function(arm,size=0x3c) addr:0x02074e44
 __sinit_02074e80 kind:function(arm,size=0x4) addr:0x02074e80
-__sinit_02074e84 kind:function(arm,size=0x58) addr:0x02074e84
+__sinit_d_s_stage_methods.cpp kind:function(arm,size=0x58) addr:0x02074e84
 __sinit_d_scene.cpp kind:function(arm,size=0xa4) addr:0x02074edc
 __sinit_d_wipe.cpp kind:function(arm,size=0x38) addr:0x02074f80
 __sinit_d_s_mb.cpp kind:function(arm,size=0x2c) addr:0x02074fb8
@@ -3098,7 +3098,7 @@ __sinit_020750b8 kind:function(arm,size=0x34) addr:0x020750b8
 __sinit_020750ec kind:function(arm,size=0x30) addr:0x020750ec
 __sinit_0207511c kind:function(arm,size=0x34) addr:0x0207511c
 __sinit_02075150 kind:function(arm,size=0x4) addr:0x02075150
-__sinit_02075154 kind:function(arm,size=0xdc) addr:0x02075154
+__sinit_fListNode.cpp kind:function(arm,size=0xdc) addr:0x02075154
 data_02075230 kind:data(any) addr:0x02075230
 data_02075238 kind:data(any) addr:0x02075238
 data_02075244 kind:data(any) addr:0x02075244
@@ -3207,7 +3207,7 @@ data_02086a30 kind:data(any) addr:0x02086a30
 data_02086a58 kind:data(any) addr:0x02086a58
 data_02086b58 kind:data(any) addr:0x02086b58
 __ptmf_null kind:data(any) addr:0x02086b58
-.p__sinit_02073a24 kind:data(word) addr:0x02086b60
+.p__sinit_d_camera.cpp kind:data(word) addr:0x02086b60
 .p__sinit_KuppaScript.cpp kind:data(word) addr:0x02086b64
 .p__sinit_d_actor.cpp kind:data(word) addr:0x02086b68
 .p__sinit_Sound.cpp kind:data(word) addr:0x02086b6c
@@ -3217,7 +3217,7 @@ __ptmf_null kind:data(any) addr:0x02086b58
 .p__sinit_02074e0c kind:data(word) addr:0x02086b7c
 .p__sinit_02074e44 kind:data(word) addr:0x02086b80
 .p__sinit_02074e80 kind:data(word) addr:0x02086b84
-.p__sinit_02074e84 kind:data(word) addr:0x02086b88
+.p__sinit_d_s_stage_methods.cpp kind:data(word) addr:0x02086b88
 .p__sinit_d_scene.cpp kind:data(word) addr:0x02086b8c
 .p__sinit_d_wipe.cpp kind:data(word) addr:0x02086b90
 .p__sinit_d_s_mb.cpp kind:data(word) addr:0x02086b94
@@ -3229,7 +3229,7 @@ __ptmf_null kind:data(any) addr:0x02086b58
 .p__sinit_020750ec kind:data(word) addr:0x02086bac
 .p__sinit_0207511c kind:data(word) addr:0x02086bb0
 .p__sinit_02075150 kind:data(word) addr:0x02086bb4
-.p__sinit_02075154 kind:data(word) addr:0x02086bb8
+.p__sinit_fListNode.cpp kind:data(word) addr:0x02086bb8
 data_02086bc0 kind:data(any) addr:0x02086bc0
 data_02086bc8 kind:data(any) addr:0x02086bc8
 data_02086bd0 kind:data(any) addr:0x02086bd0

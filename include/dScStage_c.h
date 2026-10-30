@@ -135,23 +135,15 @@ struct dScStage_c : dScene_c {
 
    RTTI names the class: _ZTIN10dScStage_c15graphCallback_cE at 0x02092164 and
    _ZTSN10dScStage_c15graphCallback_cE at 0x02092198, with the vtable between
-   them -- the same _ZTI/_ZTV/_ZTS run dScMB_c::graphCallback_c has, and the
-   same 0x10 span of four slots, which is exactly dGraph_c::callback_c's four
-   virtuals. __sinit_02074e84 writes the base vptr (dGraph_c::callback_c's
-   table) and then the derived one, the base-then-derived pair that proved the
-   sibling classes.
-
-   LAYOUT. The object runs 0x0209f3c4..0x0209f3e8, 0x24: the base's vptr, then
-   the 2x2 fixed-point matrix the static initializer seeds with 0x1000, then
-   the four BG3 affine words GraphCallback2 hands to G2x::SetBGyAffine and
-   UpdateMinimap writes. The four are volatile because UpdateMinimap's stores
-   are. */
+   them. The static initializer in d_s_stage_methods.cpp writes the base vptr
+   and then this vtable. The matrix and the four affine words stay zero there;
+   UpdateMinimap fills them. */
 class dScStage_c::graphCallback_c : public dGraph_c::callback_c {
 public:
     /* The 2x2 fixed-point matrix. Spelled as four words because Matrix2x2 is
        still a file-local type, defined five different ways in five TUs; the
        one SetBGyAffine call casts. */
-    int matrix[4];        /* 0x04 -- seeded to 1.0 by __sinit_02074edc */
+    int matrix[4];        /* 0x04 */
     volatile u32 originX; /* 0x14 */
     volatile u32 originY; /* 0x18 */
     volatile u32 targetX; /* 0x1c */

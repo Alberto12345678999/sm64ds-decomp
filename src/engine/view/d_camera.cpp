@@ -21,8 +21,9 @@
  *   cplusplus-off regions.
  * - Vec3 remains the POD scratch triple in the older handlers. Native
  *   collision results use Vector3 and its empty destructor.
- * - The state records in the 0x0209b008 table stay int. These bodies
- *   only take their address.
+ * - The 0x0209b008 state table is nineteen dCamera_c::State records
+ *   defined at the bottom of this file. These bodies only take their
+ *   address.
  * - CleanupResources keeps both null checks. The second is the
  *   inlined deleting destructor.
  * - The controller records at 0x0209f498 are read through the separate
@@ -51,25 +52,26 @@ struct System {
 
 typedef struct { int x, y, z; } Vec3;	/* POD triple for the C bodies */
 
-/* dCamera_c's state objects are 0x10-byte records in the 0x0209b008 table; every
-   use here is by address, so `int` gives the linker the symbol while the
-   structures stay opaque. */
-extern int data_0209b018;
-extern int data_0209b028;
-extern int data_0209b038;
-extern int data_0209b048;
-extern int data_0209b058;
-extern int data_0209b068;
-extern int data_0209b078;
-extern int data_0209b088;
-extern int data_0209b098;
-extern int data_0209b0a8;
-extern int data_0209b0b8;
-extern int data_0209b0d8;
-extern int data_0209b0f8;
-extern int data_0209b108;
-extern int data_0209b118;
-extern int data_0209b128;
+/* Defined at the bottom of this file; every use here only takes the address. */
+extern dCamera_c::State data_0209b008;
+extern dCamera_c::State data_0209b018;
+extern dCamera_c::State data_0209b028;
+extern dCamera_c::State data_0209b038;
+extern dCamera_c::State data_0209b048;
+extern dCamera_c::State data_0209b058;
+extern dCamera_c::State data_0209b068;
+extern dCamera_c::State data_0209b078;
+extern dCamera_c::State data_0209b088;
+extern dCamera_c::State data_0209b098;
+extern dCamera_c::State data_0209b0a8;
+extern dCamera_c::State data_0209b0b8;
+extern dCamera_c::State data_0209b0c8;
+extern dCamera_c::State data_0209b0d8;
+extern dCamera_c::State data_0209b0e8;
+extern dCamera_c::State data_0209b0f8;
+extern dCamera_c::State data_0209b108;
+extern dCamera_c::State data_0209b118;
+extern dCamera_c::State data_0209b128;
 extern Matrix4x3 data_0209b41c;
 extern unsigned int data_0209b454;
 
@@ -4222,3 +4224,40 @@ int func_020072c4(dCamera_c *cam) {
     return 1;
 }
 }
+
+/* Nineteen camera states, definition order is retail __sinit order. Each
+   record is two CamPmf (enter at +0, execute at +8), plain-copied from the
+   .data member-function constants. mwcc emits __sinit_d_camera.cpp from
+   these, which was the handwritten __sinit_02073a24. */
+struct dCamera_c::State {
+    CamPmf enter;
+    CamPmf exec;
+};
+
+extern CamPmf data_02086d28, data_02086c28, data_02086da8, data_02086c30, data_02086c48,
+    data_02086c40, data_02086c98, data_02086c58, data_02086c68, data_02086bf8, data_02086d58,
+    data_02086d48, data_02086c70, data_02086bf0, data_02086db8, data_02086d30, data_02086c10,
+    data_02086d90, data_02086be8, data_02086be0, data_02086d10, data_02086c00, data_02086c08,
+    data_02086bc8, data_02086c18, data_02086db0, data_02086bd0, data_02086e40, data_02086ce0,
+    data_02086e28, data_02086e18, data_02086e10, data_02086e00, data_02086df8, data_02086de8,
+    data_02086de0, data_02086dd0, data_02086dc8;
+
+dCamera_c::State data_0209b008 = {data_02086d28, data_02086c28};
+dCamera_c::State data_0209b018 = {data_02086da8, data_02086c30};
+dCamera_c::State data_0209b028 = {data_02086c48, data_02086c40};
+dCamera_c::State data_0209b038 = {data_02086c98, data_02086c58};
+dCamera_c::State data_0209b048 = {data_02086c68, data_02086bf8};
+dCamera_c::State data_0209b058 = {data_02086d58, data_02086d48};
+dCamera_c::State data_0209b068 = {data_02086c70, data_02086bf0};
+dCamera_c::State data_0209b078 = {data_02086db8, data_02086d30};
+dCamera_c::State data_0209b088 = {data_02086c10, data_02086d90};
+dCamera_c::State data_0209b098 = {data_02086be8, data_02086be0};
+dCamera_c::State data_0209b0a8 = {data_02086d10, data_02086c00};
+dCamera_c::State data_0209b0b8 = {data_02086c08, data_02086bc8};
+dCamera_c::State data_0209b0c8 = {data_02086c18, data_02086db0};
+dCamera_c::State data_0209b0d8 = {data_02086bd0, data_02086e40};
+dCamera_c::State data_0209b0e8 = {data_02086ce0, data_02086e28};
+dCamera_c::State data_0209b0f8 = {data_02086e18, data_02086e10};
+dCamera_c::State data_0209b108 = {data_02086e00, data_02086df8};
+dCamera_c::State data_0209b118 = {data_02086de8, data_02086de0};
+dCamera_c::State data_0209b128 = {data_02086dd0, data_02086dc8};

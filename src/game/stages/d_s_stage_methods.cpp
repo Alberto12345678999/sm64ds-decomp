@@ -82,13 +82,20 @@ enum dScStage_c_AssetId { ASSET_D_2D_UPR_COURSE_CLEAR_MESSAGE_NCL_BIN = 0x025a }
 #include "daMugenBGM_c.h"
 #include "math/CalcLib.h"
 #include "dGraph_c.h"
+#include "dClipper.h"
 
 struct OamAttr;
 struct Matrix2x2 {
     int m[4];
 };
 
-// Partial view of the graph callback object, not the playable scene.
+/* Definition order is the static-init order. The callback's implicit
+   constructor stores the base vptr, then this vtable, and leaves the matrix
+   and affine words zero. dClipper's virtual destructor is what makes mwcc
+   register it; the callback has none. */
+dScStage_c::graphCallback_c data_0209f3c4;
+dClipper data_0209f43c;
+
 /* TU-local overlay of the per-controller input records at data_0209f498,
  * 0x18 apart. CheckInput fills them from the pad and the touch screen each
  * frame; ResetInput clears them; the pause screen polls the mode byte at
@@ -359,10 +366,14 @@ extern short *data_0209f348;
 extern void *data_0209f354;
 extern unsigned char data_0209f370[];
 extern unsigned char data_0209f37c[];
-extern void *data_0209f394[];
-extern void *data_0209f3a4[];
-extern dScStage_c::graphCallback_c data_0209f3c4;
-extern int data_0209f3e8[];
+/* These fill the .bss between the dClipper registration node (0x0209f388),
+   the graph callback (0x0209f3c4, 0x24 bytes) and dClipper (0x0209f43c).
+   data_0209f3e8 runs through 0x0209f43c so data_0209f40c and STAR_MARKERS
+   stay interior labels, not a second object at the same address. */
+void *data_0209f394[4];
+void *data_0209f3a4[8];
+extern MinimapDesc data_0209f3c8;
+int data_0209f3e8[21];
 extern int data_0209f40c[];
 extern u32 data_0209f4f8[][16];
 extern dFdBrightness_c *data_0209f5bc;
@@ -2727,11 +2738,9 @@ int IsButtonInputValid(void) {
 }
 
 // @symbol _ZN10dScStage_c15graphCallback_c14GraphCallback2Ev
-/* Nullary, and a member: vtable slot 2 of dScStage_c::graphCallback_c (RTTI
-   si-child of dGraph_c::callback_c). Every dispatcher -- func_02018ec0,
-   func_02018efc -- calls it as `ldr r1,[r0]; ldr r1,[r1,#8]; blx r1` with
-   r0 = the callback object and r1 never set as an argument. Sets the BG3
-   affine transform from the object's matrix. */
+/* Vtable slot 2. Every dispatcher calls it as `ldr r1,[r0]; ldr r1,[r1,#8];
+   blx r1` with r0 = the callback object. The matrix at +0x4 stays zero until
+   UpdateMinimap; the static initializer does not seed it. */
 int dScStage_c::graphCallback_c::GraphCallback2() {
     G2x::SetBGyAffine((volatile unsigned short *)REG_DB_BG3PA, (Matrix2x2 *)matrix, originX,
                       originY, targetX, targetY);

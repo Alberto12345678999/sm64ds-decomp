@@ -7,49 +7,63 @@
   "boundary_confidence": "medium",
   "boundary_evidence": [
     "NOT FROM tu_map. tools/tu_map.py reports the arm9 `main` module as UNDER-SEGMENTED -- one unit 0x20049f0..0x20707a4 with 2984 functions and 73 class labels -- so there is no tu_map boundary and no `tubuild.py create` candidate id. Every line below is hand-derived.",
-    "contiguous run 0x0203b3c0..0x0203b4dc: the four functions tile the span exactly, 0x78 + 0x74 + 0x18 + 0x18 = 0x120 = end-start, no hole and no tail (recomputed from config/arm9/symbols.txt). No foreign symbol lies inside it.",
-    "class-label homogeneity is total: both symbols are _ZN7fBase_c9SceneNode*, i.e. members of the nested class fBase_c::SceneNode, and there are no others anywhere in the image.",
+    "contiguous run 0x0203b358..0x0203b4dc: the six functions tile the span exactly, 0x3c + 0x2c + 0x78 + 0x74 + 0x18 + 0x18 = 0x184 = end-start, no hole and no tail (recomputed from config/arm9/symbols.txt). No foreign symbol lies inside it.",
+    "class-label homogeneity: the two labelled symbols are _ZN7fBase_c9SceneNode*, members of the nested class fBase_c::SceneNode, and there are no others anywhere in the image. The four unlabelled functions below them all work the same parent/child/prev/next links.",
     "SEPARATE FROM ActorBase'S OWN TU, and this is the load-bearing negative. These are the only two _ZN7fBase_c* functions outside the class's main run at 0x02043444..0x02043f4c, and they sit 0x8000 bytes below it. A single object's .text is placed contiguously by the linker, so one TU cannot occupy two regions 0x8000 apart -- merging them into arm9/ActorBase would require exactly that. arm9/ActorBase is independently TEXT-VERIFIED over the full 0x02043444..0x02043f4c run without them, which confirms the split from the other side.",
     "neighbourhood attribution: 0x0203b2xx-0x0203b4xx is the intrusive-list primitive stretch -- func_0203b20c, func_0203b244, func_0203b27c and func_0203b3c0 all live there, and every one of them is called from ActorBase's own members (AfterInitResources, AfterCleanupResources, func_02043880). This pair sits at the TOP of that stretch, which is consistent with a scene-graph-node TU adjacent to the list code it is built on.",
-    "neighbours on both sides carry a different label: func_0203b394 ends at 0x0203b3c0 below, and _ZN4cstd5atan2E5Fix12IiES1_ begins at 0x0203b4dc above -- a cstd math routine, which is certainly a different TU.",
-    "CONFIDENCE IS medium, NOT high, and the reason is stated rather than hidden: the two list primitives immediately below the members (func_0203b3c0, func_0203b438) are absorbed on contiguity and shared list-node concern -- both operate on the same parent/child/prev/next layout SceneNode::Reset clears, and both are called from fBase_c's own routines -- but they keep their address-given names, so nothing positively proves the original .cpp spelled them as SceneNode members. The lower boundary at 0x0203b3c0 is therefore a floor supported by the stop at func_0203b394, which carries no scene-node affinity. The upper boundary at 0x0203b4dc is strong (a cstd template instantiation cannot share a TU with an actor scene node).",
+    "neighbours on both sides carry a different shape or label: func_0203b2ec (a two-word list insert) ends at 0x0203b358 below, and _ZN4cstd5atan2Eii begins at 0x0203b4dc above -- a cstd math routine, which is certainly a different TU.",
+    "CONFIDENCE IS medium, NOT high. The four functions below the members are absorbed on contiguity and node shape, not on a symbol: func_0203b438 (add) and func_0203b3c0 (remove) edit the parent/child/prev/next links SceneNode::Reset clears, and func_0203b394 / func_0203b358 walk them in pre-order (first child, else next sibling of the nearest ancestor that has one). They keep their address-given names, so nothing in the ROM proves the original .cpp spelled them as SceneNode members. The lower boundary at 0x0203b358 is a node-shape change: func_0203b2ec, func_0203b27c and func_0203b244 below are two-word (next/prev, head/tail) list primitives. The upper boundary at 0x0203b4dc is strong (a cstd template instantiation cannot share a TU with an actor scene node).",
     "static-initialiser attribution: no help. main has 23 sinits / 23 .ctor entries, sinit_vs_tu 'ok', corroborated=false, and this run touches no dynamically-initialised static storage -- the object emits no .init, no .bss and no .data."
   ],
   "sections": [
     {
       "name": ".text",
-      "start": "0x0203b3c0",
+      "start": "0x0203b358",
       "end": "0x0203b4dc"
     }
   ],
   "functions": [
     {
+      "symbol": "func_0203b358",
+      "address": "0x0203b358",
+      "size": "0x0000003c",
+      "legacy_source": "src/unnamed/arm9/0203/func_0203b358.c",
+      "ordinal": 0
+    },
+    {
+      "symbol": "func_0203b394",
+      "address": "0x0203b394",
+      "size": "0x0000002c",
+      "legacy_source": "src/unnamed/arm9/0203/func_0203b394.c",
+      "ordinal": 1
+    },
+    {
       "symbol": "func_0203b3c0",
       "address": "0x0203b3c0",
       "size": "0x00000078",
       "legacy_source": "src/func_0203b3c0.c",
-      "ordinal": 0
+      "ordinal": 2
     },
     {
       "symbol": "func_0203b438",
       "address": "0x0203b438",
       "size": "0x00000074",
       "legacy_source": "src/func_0203b438.c",
-      "ordinal": 1
+      "ordinal": 3
     },
     {
       "symbol": "_ZN7fBase_c9SceneNode5ResetEv",
       "address": "0x0203b4ac",
       "size": "0x00000018",
       "legacy_source": "src/_ZN7fBase_c9SceneNode5ResetEv.c",
-      "ordinal": 2
+      "ordinal": 4
     },
     {
       "symbol": "_ZN7fBase_c9SceneNodeC1Ev",
       "address": "0x0203b4c4",
       "size": "0x00000018",
       "legacy_source": "src/_ZN7fBase_c9SceneNodeC1Ev.c",
-      "ordinal": 3
+      "ordinal": 5
     }
   ],
   "data": [],
@@ -65,7 +79,8 @@
     "Hand-assembled, not generated by `tubuild.py create`: tu_map cannot segment arm9/main. The entry was built through tubuild.build_manifest_entry so the schema is the tool's own; boundary_confidence and boundary_evidence were then replaced with hand-derived values.",
     "This is the 0x30-byte OUTLIER of the fBase_c assignment: 25 _ZN7fBase_c* function symbols exist in the image, 23 in the main run (see arm9/ActorBase) and these 2 here. include/fBase_c.h records the split.",
     "Both licensed functions are genuine `fBase_c::SceneNode` member definitions. `SceneNode` is nested in `fBase_c`, and `fBase_c`'s already-existing constructor is declared explicitly so introducing the nested constructor does not change implicit-constructor code generation. The affected-header production sweep compiled 2,124 sources and reproduced all 106 modules exactly.",
-    "mwccarm emits the C2 base-object constructor beside the ROM-resident C1. The exact compiler_only_output policy dead-strips C2 because it has no configured ROM home and no surviving reference; the licensed C1 and Reset members remain byte- and relocation-exact. Reset() clears only the first four words and deliberately leaves the owner back-pointer at +0x10 alone; fBase_c's constructor writes that one."
+    "mwccarm emits the C2 base-object constructor beside the ROM-resident C1. The exact compiler_only_output policy dead-strips C2 because it has no configured ROM home and no surviving reference; the licensed C1 and Reset members remain byte- and relocation-exact. Reset() clears only the first four words and deliberately leaves the owner back-pointer at +0x10 alone; fBase_c's constructor writes that one.",
+    "func_0203b394 and func_0203b358, the scene tree's two pre-order walk steps, were folded in from their own sources (2026-10-30). Both now take fBase_c::SceneNode, the type ActorBase.cpp already declared them with. NSMBW's fTrNdBa_c::getTreeNext / getTreeNextNotChild have the same bodies; that is a naming lead, not a ROM name, so they keep their address names. The verification.linkcheck block predates the fold."
   ],
   "verification": {
     "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",
@@ -73,8 +88,8 @@
     "flags": "-O4,p -enum int -lang c++ -char signed -interworking -proc arm946e -gccext,on -msgstyle gcc -Cpp_exceptions off",
     "object": "build/tu/arm9-ActorBase_SceneNode/ActorBase_SceneNode.o (gitignored)",
     "comparison": "tools/match.py extract_func+compare (bytes/relocs) AND tools/objisolate.py plan() (relocation type/addend) AND tools/reloc_audit.py check_destinations() (relocation target identity)",
-    "functions_matched": 4,
-    "functions_declared": 4,
+    "functions_matched": 6,
+    "functions_declared": 6,
     "criteria": {
       "every_declared_function_defined": "PASS",
       "every_declared_function_bytes_match": "PASS",
@@ -125,11 +140,12 @@
         "_ZN7fBase_c9SceneNodeC2Ev"
       ],
       "droppedSections": [
-        10,
-        11
+        13,
+        14
       ],
       "data": [],
-      "dataExternalized": []
+      "dataExternalized": [],
+      "canonicalDuplicates": []
     }
   },
   "partial_isolation": {
