@@ -59,8 +59,8 @@ extern FlBlockCollisionFilePtr data_ov022_02114550;
 extern char data_ov064_0211bb0c[];
 
 extern "C" {
-/* local extern: stores at dBgW+0x0c, +0x18 and +0x1c. d_bg_w.cpp defines
- * them and no header declares them. */
+/* local extern: stores the callbacks at dBgW+0x18 and +0x1c. d_bg_w.cpp
+ * defines them and no header declares them. */
 void func_020393d4(int *mesh, int callback);
 void func_020393c4(int *mesh, int callback);
 }

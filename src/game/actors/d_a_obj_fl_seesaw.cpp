@@ -49,8 +49,8 @@ extern char data_ov064_0211bacc[];
 extern "C" {
 void Matrix4x3_FromRotationXYZExt(void *m, int x, int y, int z);
 
-/* local extern: stores at dBgW+0x0c and +0x1c. d_bg_w.cpp defines them
- * and no header declares them. */
+/* local extern: stores beforeClsnCallback at dBgW+0x18. d_bg_w.cpp
+ * defines it and no header declares it. */
 void func_020393d4(int *mesh, int callback);
 }
 

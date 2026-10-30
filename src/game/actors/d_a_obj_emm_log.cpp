@@ -52,9 +52,6 @@ struct EmmLogCollisionFilePtr : SharedFilePtr {
 extern short data_02082214[];
 extern daObjEmmLog_c_Resources data_ov052_021124d4;
 
-/* local extern: writes the mesh active range at dBgW+0x0c; the definition
-   is C and has no shared header. */
-
 // @symbol daObjEmmLog_c_classInit
 extern "C" daObjEmmLog_c *daObjEmmLog_c_classInit() {
     return new daObjEmmLog_c();

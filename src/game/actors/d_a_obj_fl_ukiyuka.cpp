@@ -35,8 +35,6 @@ enum daObjFl_Ukiyuka_c_AssetId {
 #include "SharedFilePtr.h"
 #include "dBgW.h"
 
-extern "C" {
-}
 extern daObjUkiyuka_c::Resources data_ov022_021140d4[];
 
 /* Emission order is ROM order: the destructor pair must stay first.
