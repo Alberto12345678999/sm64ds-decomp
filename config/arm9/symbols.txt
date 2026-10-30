@@ -1093,7 +1093,7 @@ func_0202deac kind:function(arm,size=0x28) addr:0x0202deac
 _Z17LoadLevelOverlaysi kind:function(arm,size=0x9c) addr:0x0202ded4
 _Z26LoadOrUnloadObjectOverlaysPFviEi kind:function(arm,size=0x118) addr:0x0202df70
 dScStage_c_classInit kind:function(arm,size=0x90) addr:0x0202e088
-func_0202e118 kind:function(arm,size=0x28) addr:0x0202e118
+GetStageDebugName kind:function(arm,size=0x28) addr:0x0202e118
 _ZN8dScene_cD1Ev kind:function(arm,size=0x30) addr:0x0202e140
 _ZN8dScene_cD0Ev kind:function(arm,size=0x44) addr:0x0202e170
 _ZN8dScene_c20SetAndStopColorFaderEv kind:function(arm,size=0x2c) addr:0x0202e1b4
@@ -4224,7 +4224,7 @@ data_0209253c kind:data(any) addr:0x0209253c
 data_0209254c kind:data(any) addr:0x0209254c
 data_0209255c kind:data(any) addr:0x0209255c
 data_02092570 kind:data(any) addr:0x02092570
-data_02092584 kind:data(any) addr:0x02092584
+STAGE_DEBUG_NAMES kind:data(any) addr:0x02092584
 data_02092654 kind:data(any) addr:0x02092654
 data_02092660 kind:data(any) addr:0x02092660
 data_02092664 kind:data(any) addr:0x02092664

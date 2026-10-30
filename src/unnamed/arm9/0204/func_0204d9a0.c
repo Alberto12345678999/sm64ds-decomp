@@ -1,24 +1,25 @@
-struct Node {
-    struct Node* prev;
-    struct Node* next;
-};
+/* The particle engine's intrusive list; see func_0204d8e8. */
+typedef struct Node {
+    struct Node *next; /* 0x0 */
+    struct Node *prev; /* 0x4 */
+} Node;
 
-struct List {
-    struct Node* tail;
-    int count;
-};
+typedef struct List {
+    Node *head; /* 0x0 */
+    int count;  /* 0x4 */
+} List;
 
-void func_0204d9a0(struct List* list, struct Node* node)
-{
-    struct Node* old = list->tail;
+/* Push node onto the front of list. */
+void func_0204d9a0(List *list, Node *node) {
+    Node *old = list->head;
     if (old == 0) {
-        list->tail = node;
-        node->next = node->prev = 0;
+        list->head = node;
+        node->prev = node->next = 0;
     } else {
-        node->prev = old;
-        node->next = 0;
-        list->tail->next = node;
-        list->tail = node;
+        node->next = old;
+        node->prev = 0;
+        list->head->prev = node;
+        list->head = node;
     }
-    *(int*)(((int)list + 4)) += 1;
+    list->count++;
 }

@@ -976,14 +976,6 @@
       "count": 2,
       "reason": "Respelled by the dClipper::Func_020156DC parameter correction (u16 -> s16 fov angle; both ROM callers pass a short angle loaded with ldrsh and unconverted): src/unnamed/arm9/0200/func_0200af20.c on main carried the same 2 occurrence(s) as _ZN8dClipper13Func_020156DCEitii. The shard is C++ now, but the member takes a by-value Fix12<int> (the Fix12 wall), so the call keeps the scalar mangled spelling; see the file's local extern note.",
       "evidence": "origin/main:src/unnamed/arm9/0200/func_0200af20.c 2x _ZN8dClipper13Func_020156DCEitii; head 2x _ZN8dClipper13Func_020156DCEisii; tools/source_style.py --base origin/main"
-    },
-    {
-      "path": "src/unnamed/arm9/0201/func_02019440.c",
-      "rule": "handspelled-member",
-      "match": "_ZN2GX18DisableBankForLCDCEv",
-      "count": 2,
-      "reason": "This TU is C, so it cannot name a C++ namespaced function and include/GX.h's `GX::DisableBankForLCDC` spelling is unusable here. The symbol was func_02053f58 before this PR named the GX VRAM bank reset/disable/get families after the gGXState field each one releases; every other caller of the 26 renamed symbols is C++ and takes the namespace spelling. Follow-up: the handspelled pair goes away when this one-function-per-file boot helper is reconstructed as C++.",
-      "evidence": "src/engine/gx/GX_VramCnt.cpp defines it as GX::DisableBankForLCDC under // @symbol _ZN2GX18DisableBankForLCDCEv, one DisableVramBanks(&data_020a6088.lcdc) call; config/arm9/symbols.txt row addr:0x02053f58 size=0x14; name_roundtrip --symbol _ZN2GX18DisableBankForLCDCEv ROUND-TRIPS under the 2004/b56 pin; match.py 41/41 MATCH over GX_VramCnt.cpp and this TU verified renames-only (1 reloc destination, 1 symbol name) against its pre-rename object"
     }
   ]
 }

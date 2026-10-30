@@ -13,7 +13,7 @@ typedef struct {
     struct Col4 touch; /* 0x04 */
     u16 flags;         /* 0x0c -- 0x8000 set every frame here */
     u16 keys;          /* 0x0e -- pressed buttons (PAD_Read inlined) */
-    u16 inputYaw;      /* 0x10 -- the camera's input yaw */
+    s16 inputYaw;      /* 0x10 -- the camera's input yaw (GetAngleToCamera reads it ldrsh) */
     u8 unk12[0x10];
     u8 unk22;
     u8 unk23;

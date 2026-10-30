@@ -1,7 +1,6 @@
 #include "types.h"
 /* Three-stop RGB555 colour ramp entry (SPL's SPLColorAnim). */
-struct ColorRamp
-{
+struct ColorRamp {
     u16 startColor;
     u16 endColor;
     u8 stop1;
@@ -14,7 +13,7 @@ struct ColorRamp
 /* The particle definition's header (func_0204a730's PtclData; SPL's
  * SPLResourceHeader). 0x12 is the particle's base colour: the ramp runs
  * startColor -> color -> endColor, and func_0204c584 spawns a particle with
- * it (its `tex` there; the ramp is its `texAnim` view). */
+ * it (`color` there too; the ramp is its `colorAnim` view). */
 struct PtclData {
     char pad0[0x12];
     u16 color; /* 0x12 */
@@ -28,8 +27,7 @@ struct PtclDef {
     struct ColorRamp *colorAnim; /* 0x08 */
 };
 
-struct Particle
-{
+struct Particle {
     char pad0[0x3a];
     u16 color;
 };
@@ -43,13 +41,11 @@ void func_0204d294(struct Particle *ptcl, struct PtclDef *data, int age) {
     u8 stop2 = ramp->stop2;
     u8 stop3 = ramp->stop3;
 
-    if (age < stop1)
-    {
+    if (age < stop1) {
         ptcl->color = ramp->startColor;
         return;
     }
-    if (age < stop2)
-    {
+    if (age < stop2) {
         u16 hiColor = header->color;
         u16 loColor = ramp->startColor;
         u16 flags = ramp->flags;
@@ -83,8 +79,7 @@ void func_0204d294(struct Particle *ptcl, struct PtclDef *data, int age) {
         ptcl->color = (u16)(red | (green << 5) | (blue << 10));
         return;
     }
-    if (age < stop3)
-    {
+    if (age < stop3) {
         u16 loColor = header->color;
         u16 hiColor = ramp->endColor;
         u16 flags = ramp->flags;
