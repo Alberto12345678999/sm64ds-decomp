@@ -1,7 +1,5 @@
 #include "Ov007Item.h"
 
-typedef long long s64;
-
 /* Puts the item at its home position plus the slide offset scaled by t
  * (Q12, clamped to 0..1). */
 void func_ov007_020aeb34(Ov007Item *item, int t) {

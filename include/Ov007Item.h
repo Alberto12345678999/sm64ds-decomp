@@ -6,13 +6,17 @@
 #include "Ov007OamNode.h"
 
 /* Reconstructed layouts and names, not recovered class identity: the ov007
- * menu's selectable items. func_ov007_020b4c04 builds one per layout row
- * through func_ov007_020aea6c, func_ov007_020ade58 pairs each with its OAM
- * sprite, and func_ov007_020ae834 ticks its state. */
+ * menu's selectable items, all allocated by func_ov007_020aea6c. Two callers
+ * build separate sets: func_ov007_020ade58 builds nine from
+ * data_ov007_020ccbc4 with no hit box, each paired with its own OAM node;
+ * func_ov007_020b4c04 builds 0x18 item views from data_ov007_020d76e8 with
+ * hit boxes, each paired with an Ov007Sprite. func_ov007_020ae834 ticks an
+ * item's state. */
 
-/* The 10-byte layout row an item points at (func_ov007_020b4c04 passes
- * data_ov007_020d76e8 + index * 10). func_ov007_020ae810 seeds the item
- * position from home; func_ov007_020aeb34 slides it by slide. */
+/* The 10-byte layout row an item points at (func_ov007_020ade58 passes
+ * data_ov007_020ccbc4 + index * 10, func_ov007_020b4c04 data_ov007_020d76e8
+ * + index * 10). func_ov007_020ae810 seeds the item position from home;
+ * func_ov007_020aeb34 slides it by slide. */
 typedef struct Ov007ItemLayout {
     u16 kind;   /* 0x0: func_ov007_020b5bf0 switches on it; func_ov007_020b44ec skips 0xa */
     s16 homeX;  /* 0x2 */
