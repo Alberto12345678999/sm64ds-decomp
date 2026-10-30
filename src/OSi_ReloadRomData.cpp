@@ -1,6 +1,7 @@
 //cpp
 #include "types.h"
 #include "CP15.h"
+#include "nitro/os/spinLock.h"
 
 extern "C" {
 
@@ -17,8 +18,6 @@ extern void func_02059dd4(s32 param);
 extern void OSi_ReloadRomData(void);
 extern void OSi_DoBoot(void);
 extern vu16 data_020a645c;
-extern int func_02057020(void);
-extern void func_0205710c(int lockId);
 extern void OSReadROMArea(u32 romOffset, u32 dest, u32 size);
 
 /* OS_ResetSystem at 0x01ffdd98 (ITCM) -- NitroSDK soft reset, with OSi_DoResetSystem
@@ -62,15 +61,16 @@ void OS_ResetSystem(u32 resetArg) {
  * the SDK's OSi_ReadCardRom32.
  *
  * pret/pokediamond's later version adds a rom-base offset and disables interrupts around
- * the cache flush. This one starts with func_0205710c((u16)func_02057020()), the shape of
- * the later OS_ResetSystem's CARD_LockRom((u16)OS_GetLockID()).
+ * the cache flush. This one starts with OS_TryLockCard((u16)OS_GetLockID()) (the SDK's
+ * os_spinLock.c, src/engine/os/OS_SpinLock.cpp), the shape of the later OS_ResetSystem's
+ * CARD_LockRom((u16)OS_GetLockID()).
  */
 void OSi_ReloadRomData(void) {
     u32 romOffset = ROM_HEADER_ARM9_ROM_OFFSET;
     u32 dest = ROM_HEADER_ARM9_RAM_ADDR;
     u32 size = ROM_HEADER_ARM9_SIZE;
 
-    func_0205710c((u16)func_02057020());
+    OS_TryLockCard((u16)OS_GetLockID());
     CP15::FlushAndInvalidateDataCache();
 
     if (romOffset < ROM_SECURE_AREA_END) {

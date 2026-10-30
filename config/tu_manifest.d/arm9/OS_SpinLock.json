@@ -1,0 +1,189 @@
+{
+  "id": "arm9/OS_SpinLock",
+  "module": "arm9",
+  "source": "src/engine/os/OS_SpinLock.cpp",
+  "promoted_source": "src/engine/os/OS_SpinLock.cpp",
+  "status": "promoted",
+  "boundary_confidence": "high",
+  "boundary_evidence": [
+    "One contiguous run of the Nitro SDK's os_spinLock.c, 0x02057014..0x02057410: 19 functions, gapless in config/arm9/delinks.txt. pret/pokediamond's arm9/lib/NitroSDK/src/OS_spinLock.c defines OS_InitLock, OSi_DoLockByWord, OS_TryLockByWord, OSi_DoUnlockByWord, OS_UnlockByWord, OSi_DoTryLockByWord, OS_LockCartridge, OS_UnlockCartridge, OS_TryLockCartridge, the four card/cartridge bus helpers, OS_TryLockCard, OS_UnlockCard, OS_ReadOwnerOfLockWord, and the asm OS_UnLockCartridge, OS_GetLockID and OS_ReleaseLockID. 18 of them are here, each identified by its body as well as its size (the bus helpers by which EXMEMCNT bit they set or clear: 0x80 cartridge, 0x800 card). OS_LockCartridge is absent because nothing in this game calls it.",
+    "One extra member: OSi_WaitByLoop (0x020570a8, 0x10) calls OS_SpinWait(0x1000). The lock loops call it between retries, which is where pret's tree has an inline wait.",
+    "Order: mwccarm emits an asm function where it stands and defers the C bodies, emitting them in reverse. The three asm functions (OS_UnLockCartridge, OS_GetLockID, OS_ReleaseLockID) open the run, then the C functions come in reverse source order down to OS_InitLock at 0x02057320, the first function in the SDK file.",
+    "BOTTOM EDGE: func_02057000 at 0x02057000 is OS_InitIrqTable, the last function of os_interrupt.c (arm9/OS_Interrupt).",
+    "TOP EDGE: func_02057410 (0x02057410..0x02057ce8) is a vsnprintf-style formatter (buffer, length, format, argument list), not a lock routine."
+  ],
+  "sections": [
+    {
+      "name": ".text",
+      "start": "0x02057014",
+      "end": "0x02057410"
+    }
+  ],
+  "functions": [
+    {
+      "symbol": "OS_UnLockCartridge",
+      "address": "0x02057014",
+      "size": "0x0000000c",
+      "legacy_source": "src/unnamed/arm9/0205/func_02057014.c",
+      "ordinal": 0
+    },
+    {
+      "symbol": "OS_GetLockID",
+      "address": "0x02057020",
+      "size": "0x00000058",
+      "legacy_source": "src/unnamed/arm9/0205/func_02057020.c",
+      "ordinal": 1
+    },
+    {
+      "symbol": "OS_ReleaseLockID",
+      "address": "0x02057078",
+      "size": "0x00000030",
+      "legacy_source": "src/unnamed/arm9/0205/func_02057078.c",
+      "ordinal": 2
+    },
+    {
+      "symbol": "OSi_WaitByLoop",
+      "address": "0x020570a8",
+      "size": "0x00000010",
+      "legacy_source": "src/unnamed/arm9/0205/func_020570a8.c",
+      "ordinal": 3
+    },
+    {
+      "symbol": "OS_ReadOwnerOfLockWord",
+      "address": "0x020570b8",
+      "size": "0x00000008",
+      "legacy_source": "src/unnamed/arm9/0205/func_020570b8.c",
+      "ordinal": 4
+    },
+    {
+      "symbol": "OSi_FreeCardBus",
+      "address": "0x020570c0",
+      "size": "0x00000018",
+      "legacy_source": "src/unnamed/arm9/0205/func_020570c0.c",
+      "ordinal": 5
+    },
+    {
+      "symbol": "OSi_AllocateCardBus",
+      "address": "0x020570d8",
+      "size": "0x00000018",
+      "legacy_source": "src/unnamed/arm9/0205/func_020570d8.c",
+      "ordinal": 6
+    },
+    {
+      "symbol": "OS_UnlockCard",
+      "address": "0x020570f0",
+      "size": "0x0000001c",
+      "legacy_source": "src/unnamed/arm9/0205/func_020570f0.c",
+      "ordinal": 7
+    },
+    {
+      "symbol": "OS_TryLockCard",
+      "address": "0x0205710c",
+      "size": "0x0000001c",
+      "legacy_source": "src/unnamed/arm9/0205/func_0205710c.c",
+      "ordinal": 8
+    },
+    {
+      "symbol": "OSi_FreeCartridgeBus",
+      "address": "0x02057128",
+      "size": "0x00000018",
+      "legacy_source": "src/unnamed/arm9/0205/func_02057128.c",
+      "ordinal": 9
+    },
+    {
+      "symbol": "OSi_AllocateCartridgeBus",
+      "address": "0x02057140",
+      "size": "0x00000018",
+      "legacy_source": "src/unnamed/arm9/0205/func_02057140.c",
+      "ordinal": 10
+    },
+    {
+      "symbol": "OS_TryLockCartridge",
+      "address": "0x02057158",
+      "size": "0x00000020",
+      "legacy_source": "src/unnamed/arm9/0205/func_02057158.c",
+      "ordinal": 11
+    },
+    {
+      "symbol": "OS_UnlockCartridge",
+      "address": "0x02057178",
+      "size": "0x00000020",
+      "legacy_source": "src/unnamed/arm9/0205/func_02057178.c",
+      "ordinal": 12
+    },
+    {
+      "symbol": "OSi_DoTryLockByWord",
+      "address": "0x02057198",
+      "size": "0x00000080",
+      "legacy_source": "src/unnamed/arm9/0205/func_02057198.cpp",
+      "ordinal": 13
+    },
+    {
+      "symbol": "OS_UnlockByWord",
+      "address": "0x02057218",
+      "size": "0x00000010",
+      "legacy_source": "src/unnamed/arm9/0205/func_02057218.c",
+      "ordinal": 14
+    },
+    {
+      "symbol": "OSi_DoUnlockByWord",
+      "address": "0x02057228",
+      "size": "0x00000090",
+      "legacy_source": "src/unnamed/arm9/0205/func_02057228.cpp",
+      "ordinal": 15
+    },
+    {
+      "symbol": "OS_TryLockByWord",
+      "address": "0x020572b8",
+      "size": "0x00000010",
+      "legacy_source": "src/unnamed/arm9/0205/func_020572b8.c",
+      "ordinal": 16
+    },
+    {
+      "symbol": "OSi_DoLockByWord",
+      "address": "0x020572c8",
+      "size": "0x00000058",
+      "legacy_source": "src/unnamed/arm9/0205/func_020572c8.c",
+      "ordinal": 17
+    },
+    {
+      "symbol": "OS_InitLock",
+      "address": "0x02057320",
+      "size": "0x000000f0",
+      "legacy_source": "src/unnamed/arm9/0205/func_02057320.cpp",
+      "ordinal": 18
+    }
+  ],
+  "data": [],
+  "bss": [],
+  "relocations": [],
+  "compiler_only_output": [],
+  "notes": [
+    "Hand-assembled, following arm9/MI_Memory and arm9/OS_Interrupt: tu_map cannot segment arm9/main.",
+    "Every symbol was renamed from its func_ name to the SDK name in this change (symbols/actor_renames.tsv records the evidence).",
+    "Text-only: OS_InitLock's once-flag (pret's static isInitialized) stays the extern data_020a6124. The file claims no data.",
+    "OS_SpinWait (src/OS_SpinWait.c, os_system.c) and MI_SwapWord (src/MI_SwapWord.c, mi_swap.c) belong to other SDK files and stay their own sources."
+  ],
+  "verification": {
+    "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",
+    "toolchain": "tools/mwccarm/2004/b56/mwccarm.exe",
+    "flags": "-O4,p -enum int -lang c++ -char signed -interworking -proc arm946e -gccext,on -msgstyle gcc -Cpp_exceptions off",
+    "object": "build/tu/arm9-OS_SpinLock/OS_SpinLock.o (gitignored)",
+    "comparison": "tools/match.py extract_func+compare (bytes/relocs) AND tools/objisolate.py plan() (relocation type/addend) AND tools/reloc_audit.py check_destinations() (relocation target identity)",
+    "functions_matched": 19,
+    "functions_declared": 19,
+    "compilerOnlyOutput": {
+      "requested": [],
+      "deadstripped": [],
+      "data": [],
+      "dataExternalized": []
+    },
+    "criteria": {
+      "every_declared_function_defined": "PASS",
+      "every_declared_function_bytes_match": "PASS",
+      "declared_function_set_equals_defined_function_set": "PASS",
+      "functions_occur_in_expected_order": "PASS",
+      "relocation_destinations_verified": "PASS"
+    }
+  }
+}

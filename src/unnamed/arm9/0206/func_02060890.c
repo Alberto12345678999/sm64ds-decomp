@@ -1,4 +1,5 @@
-extern void func_0206002c(void);
+#include "nitro/card/card_common.h"
+
 extern void func_02061138(void);
 extern void func_02060a64(void);
 extern char data_020a8180[];
@@ -23,7 +24,7 @@ typedef struct CardCommon {
 } CardCommon;
 
 /* NitroSDK CARD_Init: once, mark the block initialized and clear the
- * request, set up the card thread and PXI callback (func_0206002c), then
+ * request, set up the card thread and PXI callback (CARDi_InitCommon), then
  * install func_02060a64 (the ROM read routine) in data_020a8780 and call
  * func_02061138. */
 void func_02060890(void)
@@ -38,7 +39,7 @@ void func_02060890(void)
     g->mDma = -1;
     g->mCallback = 0;
     g->mCallbackArg = 0;
-    func_0206002c();
+    CARDi_InitCommon();
     data_020a8780 = (void *)func_02060a64;
     func_02061138();
 }

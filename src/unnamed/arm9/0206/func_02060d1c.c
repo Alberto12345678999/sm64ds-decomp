@@ -21,7 +21,7 @@ typedef struct CardCommon {
     int mDma; /* 0x24 */
 } CardCommon;
 
-/* data_020a8780: the ROM read routine func_02060890 installs (func_02060a30
+/* data_020a8780: the ROM read routine func_02060890 installs (CARDi_ReadRomSyncCore
  * calls it with the block), then the ROMCTRL value written to 0x040001a4. */
 typedef struct CardRomStat {
     void *read_func; /* 0x00 */

@@ -1,7 +1,7 @@
 //cpp
 #include "types.h"
 extern "C" int func_0205ba3c(int bit, int word);
-extern "C" void func_02059d8c(int x);
+extern "C" void OS_SpinWait(unsigned int cycles);
 extern "C" int IPCSend(unsigned int a, unsigned int c, unsigned int b);
 extern "C" void OS_SleepThread(u16 *x);
 
@@ -48,7 +48,7 @@ extern "C" int func_02060f60(CardCommon *thiz, int v, int count) {
         thiz->mFlags |= 2;
         if (func_0205ba3c(0xb, 1) == 0) {
             do {
-                func_02059d8c(0x64);
+                OS_SpinWait(0x64);
             } while (func_0205ba3c(0xb, 1) == 0);
         }
         func_02060f60(thiz, 0, 1);
