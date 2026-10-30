@@ -4,8 +4,11 @@ extern void func_ov007_020c1448(void *tex, int texGen, int repeat, int flip, int
 extern void func_ov007_020c1404(void *tex);
 extern void func_ov007_020c49bc(int a0, int a1, int a2, int a3, int a4, int a5, u16 *a6, int a7);
 extern int data_ov007_0210325c;
-void func_ov007_020c4684(u8 *self, int color, int p3, int p4, int flags, s16 *vec) {
-    Ov007Sprite *s;
+/* Draws the sprite's textured quad in `color` at `alpha` (0-31) with
+ * polygon id `polygonId`, offset by `vec`; `flags` is the sprite's
+ * drawFlags for the plain pass (func_ov007_020c421c passes 0 for its
+ * shadow pass). */
+void func_ov007_020c4684(Ov007Sprite *s, int color, int alpha, int polygonId, int flags, s16 *vec) {
     s16 sx;
     s16 *v;
     int new_var2;
@@ -32,7 +35,6 @@ void func_ov007_020c4684(u8 *self, int color, int p3, int p4, int flags, s16 *ve
     u16 x0;
     u16 y1;
     u16 x1;
-    s = (Ov007Sprite *)self;
     sx = s->texS;
     sy = s->texT;
     v = vec;
@@ -47,7 +49,7 @@ void func_ov007_020c4684(u8 *self, int color, int p3, int p4, int flags, s16 *ve
     } else {
         tilemap = 0;
     }
-    if (p3 == 0) {
+    if (alpha == 0) {
         return;
     }
     tex = (int *)s->frames[s->frame];
@@ -60,7 +62,7 @@ void func_ov007_020c4684(u8 *self, int color, int p3, int p4, int flags, s16 *ve
     func_ov007_020c1404(tex);
     orig_tw = tw;
     new_var2 = flags;
-    *((volatile int *)0x040004A4) = ((s->polygonAttr | 0x80) | (p4 << 24)) | (p3 << 16);
+    *((volatile int *)0x040004A4) = ((s->polygonAttr | 0x80) | (polygonId << 24)) | (alpha << 16);
     if (tex != 0) {
         if (us == 1) {
             tw = s->width;

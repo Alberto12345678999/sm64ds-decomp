@@ -89,11 +89,6 @@ extern int func_ov007_020c1da0(int i);
 extern void func_ov007_020c2090(char *c);
 extern void func_ov007_020c3d1c(void *self);
 extern int func_ov007_020c3df4(int a, void *b);
-extern void func_ov007_020c421c(char *r4);
-extern void func_ov007_020c4388(char *r0, int r1);
-extern void func_ov007_020c43bc(void *, int);
-extern int func_ov007_020c44c4(char *a);
-extern int func_ov007_020c44e4(int count);
 extern void func_ov007_020c92d0(char *record);
 extern void func_ov007_020c937c(void *state);
 extern void *func_ov007_020c9388(int initialState);
@@ -158,7 +153,7 @@ void func_ov007_020b3d30(Ov007Sprite *sprite, int idx) {
         sprite->depth = -0x10c0;
     else
         sprite->depth = (int)0xffffef38;
-    func_ov007_020c43bc(sprite, (int)WORK->cameras[1]);
+    func_ov007_020c43bc(sprite, WORK->cameras[1]);
 }
 
 // @symbol func_ov007_020b3c54
@@ -643,7 +638,7 @@ void func_ov007_020b30b0(void) {
         return;
     data_ov007_02103360 = (Ov007Cursor *)func_ov007_020c3df4(0, (void *)0x1c);
     data_ov007_02103360->state = (Ov007MenuState *)func_ov007_020c9388(0xff);
-    data_ov007_02103360->sprite = (Ov007Sprite *)func_ov007_020c44e4(1);
+    data_ov007_02103360->sprite = func_ov007_020c44e4(1);
     data_ov007_02103360->mode = 1;
     data_ov007_02103360->dirPressed = -1;
     data_ov007_02103360->confirm = 0;
@@ -664,7 +659,7 @@ void func_ov007_020b3050(void) {
     if (data_ov007_02103360 == 0)
         return;
     func_ov007_020c937c(data_ov007_02103360->state);
-    func_ov007_020c44c4((char *)data_ov007_02103360->sprite);
+    func_ov007_020c44c4(data_ov007_02103360->sprite);
     func_ov007_020c3d1c(data_ov007_02103360);
     data_ov007_02103360 = 0;
 }
@@ -773,8 +768,8 @@ void func_ov007_020b2cf0(void) {
     }
     data_ov007_02103360->sprite->screenX = prod_c + (x << 12);
     data_ov007_02103360->sprite->screenY = prod_e + (y << 12);
-    func_ov007_020c4388((char *)data_ov007_02103360->sprite, (int)WORK->cameras[1]);
-    func_ov007_020c421c((char *)data_ov007_02103360->sprite);
+    func_ov007_020c4388(data_ov007_02103360->sprite, WORK->cameras[1]);
+    func_ov007_020c421c(data_ov007_02103360->sprite);
 }
 
 // @symbol func_ov007_020b2cdc

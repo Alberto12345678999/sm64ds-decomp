@@ -134,11 +134,6 @@ extern int func_ov007_020c3ba8(int);
 extern int func_ov007_020c3be0(int t, int a, int b);
 extern void func_ov007_020c3d1c(void *);
 extern void *func_ov007_020c3df4(int a, int b);
-extern void func_ov007_020c421c(char *r4);
-extern void func_ov007_020c4388(char *r0, int r1);
-extern void func_ov007_020c43bc(void *a, int b);
-extern int func_ov007_020c44c4(int r4);
-extern void *func_ov007_020c44e4(int a);
 extern void func_ov007_020c4dfc(void *c, int a1, int a2, int a3);
 extern void func_ov007_020c4e98(void *c, int a1, int a2, int a3, int a4, int a5, int a6);
 extern void func_ov007_020c4f50(void *c, int a1, int a2, int a3, int a4);
@@ -1353,7 +1348,7 @@ void func_ov007_020b9880(int a0, int a1) {
     sp10 = 1;
 
     for (var_sl = 0; var_sl < 2; var_sl++) {
-        SPRITES->sprites[var_sl] = (Ov007Sprite *)func_ov007_020c44e4(sp10);
+        SPRITES->sprites[var_sl] = func_ov007_020c44e4(sp10);
         sprite = SPRITES->sprites[var_sl];
 
         if (var_sl == 0) {
@@ -1374,11 +1369,11 @@ void func_ov007_020b9880(int a0, int a1) {
         sprite->height = (s16)sp18;
         sprite->alpha = sp1c;
 
-        func_ov007_020c43bc(sprite, (int)WORK->cameras[1]);
-        func_ov007_020c4388((char *)sprite, (int)WORK->cameras[1]);
+        func_ov007_020c43bc(sprite, WORK->cameras[1]);
+        func_ov007_020c4388(sprite, WORK->cameras[1]);
     }
 
-    SPRITES->sprites[2] = (Ov007Sprite *)func_ov007_020c44e4(1);
+    SPRITES->sprites[2] = func_ov007_020c44e4(1);
     temp_r5 = SPRITES->sprites[2];
     temp_r5->width = 0x48;
     temp_r5->height = 8;
@@ -1389,7 +1384,7 @@ void func_ov007_020b9880(int a0, int a1) {
     temp_r5->drawFlags = temp_r5->drawFlags | 2;
     temp_r5->polygonId = 0x19;
 
-    SPRITES->sprites[3] = (Ov007Sprite *)func_ov007_020c44e4(1);
+    SPRITES->sprites[3] = func_ov007_020c44e4(1);
     temp_r5 = SPRITES->sprites[3];
     temp_r5->width = 0x48;
     temp_r5->height = 8;
@@ -1402,8 +1397,8 @@ void func_ov007_020b9880(int a0, int a1) {
     SPRITES->sprites[2]->depth = itemSprite->depth - 0x10;
     SPRITES->sprites[3]->depth = itemSprite->depth - 0xff;
 
-    func_ov007_020c43bc(SPRITES->sprites[2], (int)WORK->cameras[1]);
-    func_ov007_020c43bc(SPRITES->sprites[3], (int)WORK->cameras[1]);
+    func_ov007_020c43bc(SPRITES->sprites[2], WORK->cameras[1]);
+    func_ov007_020c43bc(SPRITES->sprites[3], WORK->cameras[1]);
 
     SCENE->strokeTime = 0;
     SCENE->tweens[0]->to = 0x800;
@@ -1443,10 +1438,10 @@ void func_ov007_020b9770(void) {
     func_ov007_020c9080((int)SCENE->tweens[1]);
 
     for (i = 0; i < 2; i++)
-        func_ov007_020c44c4((int)SPRITES->sprites[i]);
+        func_ov007_020c44c4(SPRITES->sprites[i]);
 
-    func_ov007_020c44c4((int)SPRITES->sprites[2]);
-    func_ov007_020c44c4((int)SPRITES->sprites[3]);
+    func_ov007_020c44c4(SPRITES->sprites[2]);
+    func_ov007_020c44c4(SPRITES->sprites[3]);
     func_ov007_020c3d1c(SCENE);
     data_ov007_02104ba0 = 0;
     func_ov007_020c3d1c(SPRITES);
@@ -1642,7 +1637,7 @@ void func_ov007_020b91b4(void) {
 }
 
 // @symbol func_ov007_020b8fd4
-void func_ov007_020b8fd4(int param) {
+void func_ov007_020b8fd4(Ov007Camera *camera) {
     int v;
     int mode;
     int d;
@@ -1676,10 +1671,10 @@ void func_ov007_020b8fd4(int param) {
             b->screenY += (-d) << 8;
             break;
         }
-        func_ov007_020c4388((char *)SPRITES->sprites[1], (int)WORK->cameras[1]);
+        func_ov007_020c4388(SPRITES->sprites[1], WORK->cameras[1]);
     }
-    func_ov007_020c421c((char *)SPRITES->sprites[0]);
-    func_ov007_020c421c((char *)SPRITES->sprites[1]);
+    func_ov007_020c421c(SPRITES->sprites[0]);
+    func_ov007_020c421c(SPRITES->sprites[1]);
 
     {
         Ov007PickerScene *c;
@@ -1716,10 +1711,10 @@ void func_ov007_020b8fd4(int param) {
     p_c->scaleX = 0x1000 - scale;
     p_10->screenX = p5->item->posX;
     p_10->screenY = p5->item->posY;
-    func_ov007_020c4388((char *)p_c, param);
-    func_ov007_020c4388((char *)p_10, param);
-    func_ov007_020c421c((char *)p_c);
-    func_ov007_020c421c((char *)p_10);
+    func_ov007_020c4388(p_c, camera);
+    func_ov007_020c4388(p_10, camera);
+    func_ov007_020c421c(p_c);
+    func_ov007_020c421c(p_10);
 }
 
 // @symbol func_ov007_020b8fb4
