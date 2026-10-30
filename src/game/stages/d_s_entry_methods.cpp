@@ -78,7 +78,7 @@ int func_0203d9b4(void);
 void LoadTextNarcs(void);
 int LoadArchive(int idx);
 void func_0200f220(void);
-int LoadFile(int handle);
+void *LoadFile(int handle);
 void SetBg0Offset(int a, int b);
 void SetBg2Offset(int a, int b);
 void SetBg3Offset(int a, int b);
@@ -91,10 +91,14 @@ void UnloadArchive(int i);
 void func_02030aa4(int arg);
 int func_0203da9c(void);
 void func_02020028(int a, unsigned char b);
-void func_ov075_0211601c(char *c, int a, int b);
+void func_ov075_0211601c(dScEntry_c::graphCallback_c *, dScEntry_c *, int);
 }
 
-extern void *data_0209d4a8;
+/* The one graph callback the frame dispatchers poll (func_02018ec0 and
+   friends): the scene registers its own object here and clears it on the way
+   out. dGraph_c::callback_c is the ROM-proven base of every scene's nested
+   graphCallback_c (include/dGraph_c.h). */
+extern dGraph_c::callback_c *data_0209d4a8;
 extern u8 data_0209d45c;
 extern u8 data_0209d454;
 extern u8 data_0209f4ae[];
@@ -126,8 +130,16 @@ void func_02020124(void);
 int func_0203d890(void);
 u32 LoadCompressedFileAt(int, void *);
 int Sound_PlayIfNotActive(int, int, int, int);
-void func_ov075_02116030(void *, int);
-void func_ov075_02116028(int *, int);
+void func_ov075_02116030(dScEntry_c::graphCallback_c *, void *);
+void func_ov075_02116028(dScEntry_c::graphCallback_c *, int);
+}
+
+/* The entry scene's one global graph callback, ov075 .bss 0x0211d71c. The
+   generated decl_common.h catch-all declares that storage `void *`, so its real
+   type is spelled once here instead of at each of the eighteen call sites. */
+#define ENTRY_GRAPH_CALLBACK ((dScEntry_c::graphCallback_c *)&data_ov075_0211d71c)
+
+extern "C" {
 void func_020338b0(int, int, short, int);
 void func_02033464(int, int, int);
 void func_ov075_02115e8c(char *, int, int, short, short);
@@ -226,7 +238,7 @@ void func_02033390(int a);
 void func_02032f9c(int a);
 int func_02030958(int val);
 void func_0200f13c(void);
-void DecompressLZ16(void *src, int dst);
+void DecompressLZ16(void *src, void *dst);
 int GetSoundMode(void);
 void SetSoundMode(int mode);
 void TurnBacklightOn(void);
@@ -246,7 +258,7 @@ void PrepareVsMode(void);
 void LoadLevelNoReturn(int levelID, u32 entranceID, u32 mode, u32 arg3);
 extern u8 data_02092778;
 u8 func_02020364(int player);
-int func_020201f0(int);
+u8 func_020201f0(int);
 }
 
 namespace G2 {
@@ -410,7 +422,7 @@ s32 dScEntry_c::InitResultResources() {
     *(volatile u16 *)0x400000a = (u16)(*(volatile u16 *)0x400000a & ~0x40);
 
     LoadCompressedFileAt(0x8413, G2::GetBG2CharPtr());
-    tmp = (void *)LoadFile(0x8414);
+    tmp = LoadFile(0x8414);
     GX::LoadBGPltt(tmp, 0, 0x1c0);
     Deallocate(tmp);
 
@@ -438,7 +450,7 @@ s32 dScEntry_c::InitResultResources() {
     }
 
     LoadCompressedFileAt(data_ov075_0211c990[GetLanguageIndex()], (void *)0x6400000);
-    tmp = (void *)LoadFile(0x8415);
+    tmp = LoadFile(0x8415);
     GX::LoadOBJPltt(tmp, 0, 0x140);
     Deallocate(tmp);
 
@@ -447,7 +459,7 @@ s32 dScEntry_c::InitResultResources() {
     sub = (char *)0x6600000;
     LoadCompressedFileAt(0x8402, sub);
     LoadCompressedFileAt(data_ov075_0211c97c[GetLanguageIndex()], sub + 0x6000);
-    tmp = (void *)LoadFile(0x8403);
+    tmp = LoadFile(0x8403);
     GXS::LoadOBJPltt(tmp, 0, 0x200);
     Deallocate(tmp);
 
@@ -504,15 +516,15 @@ s32 dScEntry_c::InitEntryResources() {
             LoadCompressedFileAt(ASSET_D_2D_BATTLE_FRAMEWORK_GAMESTART_P_NSC_BIN,
                                  G2S::GetBG2ScrPtr());
         }
-        DecompressLZ16(data_0208a0e4[GetLanguageIndex()], 0x6600000);
+        DecompressLZ16(data_0208a0e4[GetLanguageIndex()], (void *)0x6600000);
     }
     LoadCompressedFileAt(data_ov075_0211c9a4[GetLanguageIndex()], (void *)0x6400000);
 
-    tmp = (void *)LoadFile(0x8412);
+    tmp = LoadFile(0x8412);
     GX::LoadOBJPltt(tmp, 0, 0xc0);
     Deallocate(tmp);
 
-    tmp = (void *)LoadFile(0x980b);
+    tmp = LoadFile(0x980b);
     GX::LoadBGPltt(tmp, 0, 0xc0);
     Deallocate(tmp);
 
@@ -633,7 +645,7 @@ void dScEntry_c::UpdateSettingsSync() {
 void dScEntry_c::EnterSettingsSync() {
     data_0209d45c &= ~4;
     data_0209d454 &= ~1;
-    func_ov075_02116028((int *)&data_ov075_0211d71c, 6);
+    func_ov075_02116028(ENTRY_GRAPH_CALLBACK, 6);
     func_020338b0(0x145, 0xb0, 0x1d, -1);
     data_0209d454 |= 5;
     mIconCount = 0;
@@ -785,7 +797,7 @@ void dScEntry_c::UpdateSoundSettings() {
 
 // @symbol _ZN10dScEntry_c18EnterSoundSettingsEv
 void dScEntry_c::EnterSoundSettings() {
-    func_ov075_02116030(&data_ov075_0211d71c, LoadFile(data_ov075_0211ca08[GetLanguageIndex()]));
+    func_ov075_02116030(ENTRY_GRAPH_CALLBACK, LoadFile(data_ov075_0211ca08[GetLanguageIndex()]));
 
     Message::DisplayOptionsMenuTextVS((s16)(GetSoundMode() + 9));
 
@@ -949,7 +961,7 @@ void dScEntry_c::EnterControlSettings() {
     data_0209d454 &= ~5;
 
     r = GetLanguageIndex();
-    func_ov075_02116030(&data_ov075_0211d71c, LoadFile(data_ov075_0211c9b8[r]));
+    func_ov075_02116030(ENTRY_GRAPH_CALLBACK, LoadFile(data_ov075_0211c9b8[r]));
 
     if (mSelectedIcon == 0)
         SetBg2Offset(0, 0);
@@ -971,7 +983,7 @@ void dScEntry_c::EnterControlSettings() {
 void dScEntry_c::EnterQuitMessage() {
     data_0209d45c = data_0209d45c & (~0xe);
     data_0209d454 = data_0209d454 & (~1);
-    func_ov075_02116028((int *)&data_ov075_0211d71c, 6);
+    func_ov075_02116028(ENTRY_GRAPH_CALLBACK, 6);
     func_020338b0(0x145, 0xb0, 0x17, -1);
     data_0209d454 = data_0209d454 | 5;
     mIconCount = 0;
@@ -1050,7 +1062,7 @@ static inline int IsEntryScene(const dScEntry_c *scene) {
 
 // @symbol _ZN10dScEntry_c16EnterQuitConfirmEv
 void dScEntry_c::EnterQuitConfirm() {
-    int fh;
+    void *fh;
 
     data_0209d454 = data_0209d454 & ~1;
     if (IsEntryScene(this)) {
@@ -1058,7 +1070,7 @@ void dScEntry_c::EnterQuitConfirm() {
     } else {
         data_0209d454 = data_0209d454 & ~4;
         fh = LoadFile(0x9802);
-        func_ov075_02116030(&data_ov075_0211d71c, fh);
+        func_ov075_02116030(ENTRY_GRAPH_CALLBACK, fh);
         Message::DisplayDontSaveTextVS(0x16);
         data_0209d454 = data_0209d454 | 4;
         mRenderStep = data_ov075_0211d810.render;
@@ -1098,7 +1110,7 @@ void dScEntry_c::UpdateRematchSync() {
 // @symbol _ZN10dScEntry_c16EnterRematchSyncEv
 void dScEntry_c::EnterRematchSync() {
     data_0209d454 &= ~1;
-    func_ov075_02116028((int *)&data_ov075_0211d71c, 6);
+    func_ov075_02116028(ENTRY_GRAPH_CALLBACK, 6);
     func_020338b0(0x145, 0xb0, 0x1d, -1);
     data_0209d454 |= 5;
     mIconCount = 0;
@@ -1212,8 +1224,8 @@ void dScEntry_c::UpdateRematchPrompt() {
 // @symbol _ZN10dScEntry_c18EnterRematchPromptEv
 void dScEntry_c::EnterRematchPrompt() {
     data_0209d454 &= ~5;
-    func_ov075_02116028((int *)&data_ov075_0211d71c, 1);
-    func_ov075_02116030(&data_ov075_0211d71c, LoadFile(0x9801));
+    func_ov075_02116028(ENTRY_GRAPH_CALLBACK, 1);
+    func_ov075_02116030(ENTRY_GRAPH_CALLBACK, LoadFile(0x9801));
     LoadCompressedFileAt(0x8407, G2S::GetBG3ScrPtr());
     Message::DisplayVsExitText(0x1f);
 
@@ -1569,8 +1581,8 @@ void dScEntry_c::EnterCourseSelect() {
 
     data_0209d45c &= ~4;
     data_0209d454 &= ~5;
-    func_ov075_02116028((int *)&data_ov075_0211d71c, 1);
-    func_ov075_02116030((void *)&data_ov075_0211d71c, LoadFile(0x8409));
+    func_ov075_02116028(ENTRY_GRAPH_CALLBACK, 1);
+    func_ov075_02116030(ENTRY_GRAPH_CALLBACK, LoadFile(0x8409));
     LoadCompressedFileAt(0x8407, G2S::GetBG3ScrPtr());
 
     if (func_0203d9b4() != 0)
@@ -1720,8 +1732,8 @@ void dScEntry_c::EnterPlayerSync() {
     // Download-play clients and non-host stations install the waiting screen.
     if (func_0203d974()) {
         data_0209d454 &= ~5;
-        int screen = LoadFile(0x8409);
-        func_ov075_02116030((void *)&data_ov075_0211d71c, screen);
+        void *screen = LoadFile(0x8409);
+        func_ov075_02116030(ENTRY_GRAPH_CALLBACK, screen);
         func_020338b0(0x225, 0xb0, 0x1d, -1);
         data_0209d454 |= 5;
         mIconCount = 0;
@@ -1789,7 +1801,7 @@ extern "C" void func_ov075_02119640(dScEntry_c *self) {
 extern "C" void func_ov075_021196d0(dScEntry_c *self) {
     self->mEntObj->func_ov075_02115134();
     data_0209d454 &= ~5;
-    func_ov075_02116030((void *)&data_ov075_0211d71c, (int)data_0209b2e8);
+    func_ov075_02116030(ENTRY_GRAPH_CALLBACK, data_0209b2e8);
     data_0209b2e8 = 0;
     func_020338b0(0x225, 0xb0, 0x1d, -1);
     data_0209d454 |= 5;
@@ -1849,7 +1861,7 @@ extern "C" void func_ov075_021197e8(dScEntry_c *self) {
 // @symbol func_ov075_02119918
 extern "C" void func_ov075_02119918(dScEntry_c *self) {
     data_0209d454 = data_0209d454 & ~1;
-    func_ov075_02116028((int *)&data_ov075_0211d71c, 2);
+    func_ov075_02116028(ENTRY_GRAPH_CALLBACK, 2);
     Message::DisplayDontSaveTextVS(0x11);
 
     data_0209d454 = data_0209d454 | 5;
@@ -1951,7 +1963,7 @@ extern "C" void func_ov075_02119b34(dScEntry_c *self) {
 // @symbol func_ov075_02119c38
 extern "C" void func_ov075_02119c38(dScEntry_c *self) {
     data_0209d454 &= ~1;
-    func_ov075_02116028((int *)&data_ov075_0211d71c, 1);
+    func_ov075_02116028(ENTRY_GRAPH_CALLBACK, 1);
     func_020337ec();
     data_0209d454 |= 5;
     func_ov075_02115e8c((char *)&self->mIcons[0], 0xa, 0, 0x80, 0xa8);
@@ -2013,7 +2025,7 @@ void dScEntry_c::HandlePlayerDisconnect(const StepSet *resumeSteps) {
     }
     disconnectFlags = data_0209fc58;
     if (HasConnectionError()) {
-        func_ov075_02116028((int *)&data_ov075_0211d71c, 5);
+        func_ov075_02116028(ENTRY_GRAPH_CALLBACK, 5);
         func_02030a78();
         {
             if ((disconnectFlags & 0x30) != 0 || mBehaviorStep == data_ov075_0211d920) {
@@ -2035,7 +2047,7 @@ void dScEntry_c::HandlePlayerDisconnect(const StepSet *resumeSteps) {
         func_02012790(0x123);
         mEntObj->mSuspended = 1;
     } else {
-        func_ov075_02116028((int *)&data_ov075_0211d71c, 6);
+        func_ov075_02116028(ENTRY_GRAPH_CALLBACK, 6);
         if ((func_0203d974() && data_0209fc5c[0] == 0) ||
             (func_0203d9b4() && activePeerMask == 0)) {
             if (func_0203d974())
@@ -2102,7 +2114,7 @@ s32 dScEntry_c::CleanupResources() {
         Deallocate(data_0209b2e8);
         data_0209b2e8 = (void *)0;
     }
-    data_0209d4a8 = (void *)0;
+    data_0209d4a8 = 0;
     Sound::UnsetPlayerVoiceGroup();
     CleanCommonModelDataArr();
     return 1;
@@ -2168,7 +2180,6 @@ s32 dScEntry_c::Behavior() {
 /* Slot 0. */
 // @symbol _ZN10dScEntry_c13InitResourcesEv
 s32 dScEntry_c::InitResources() {
-    char *rawScene = (char *)this;
     Enable3dEngines();
     func_0200f2cc();
 
@@ -2183,12 +2194,12 @@ s32 dScEntry_c::InitResources() {
     }
 
     {
-        void *paletteData = (void *)LoadFile(0x9807);
+        void *paletteData = LoadFile(0x9807);
         GXS::LoadBGPltt(paletteData, 0, 0xe0);
         Deallocate(paletteData);
     }
     {
-        void *paletteData = (void *)LoadFile(0x8406);
+        void *paletteData = LoadFile(0x8406);
         GXS::LoadBGPltt(paletteData, 0xe0, 0x120);
         Deallocate(paletteData);
     }
@@ -2226,7 +2237,7 @@ s32 dScEntry_c::InitResources() {
             InitEntryResources();
             if (param1 == 0) {
                 if (func_0203da3c() == 0) {
-                    data_0209b2e8 = (void *)LoadFile(0x8409);
+                    data_0209b2e8 = LoadFile(0x8409);
                     UnloadArchive(0);
                     func_02030aa4(3);
                 }
@@ -2240,8 +2251,8 @@ s32 dScEntry_c::InitResources() {
         }
     }
 
-    func_ov075_0211601c((char *)&data_ov075_0211d71c, (int)rawScene, 1);
-    data_0209d4a8 = &data_ov075_0211d71c;
+    func_ov075_0211601c(ENTRY_GRAPH_CALLBACK, this, 1);
+    data_0209d4a8 = ENTRY_GRAPH_CALLBACK;
     Sound::LoadInitialGroup(0x2b);
 
     {

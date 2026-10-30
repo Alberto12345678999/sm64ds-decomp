@@ -24,7 +24,9 @@ struct dScGameOver_c : dScene_c {
     s16 mGlyphX[8];               /* 0x050 -- per-glyph x; 060c slides it to the 020b1774 target */
     s16 mGlyphY[8];               /* 0x060 -- per-glyph y; fixed 0x60, read by Render */
     s16 mGlyphDelay[8];           /* 0x070 -- per-glyph drop-in delay; counted down by 060c */
-    s16 unk_080[8];               /* 0x080 -- zeroed by InitResources, never read back */
+    s16 mGlyphUnused[8];          /* 0x080 -- the fourth per-glyph array, zeroed by
+                                     InitResources beside the three above; nothing in
+                                     the recovered ROM reads it back. Name coined. */
     u8  mCursorState;             /* 0x090 -- 0 = pick, 1 = countdown-and-commit */
     u8  mSelection;               /* 0x091 -- 0 = yes (continue), 1 = no */
     u8  mCommitTimer;             /* 0x092 -- counts down, then commits the selection */
