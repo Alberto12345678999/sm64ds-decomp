@@ -1,8 +1,10 @@
-// HAND-ASM PRIMITIVE: byte-faithful asm-block match (assembly-only runtime primitive).
-// Bulk hardware-FIFO/command-port write: pushes 4 zeroed registers via 32 identical
-// no-writeback stmia to the fixed address in r0 (a FIFO port, not memory). No C compiler
-// emits 32 identical stores to the same address; this is a hand-unrolled port flush. Per asm policy.
-asm void func_020553c0(void)
+// HAND-ASM PRIMITIVE: the Nitro SDK's GXi_NopClearFifo128_ (gx_g3x.c, asm in
+// pret/pokediamond too): pushes 128 zero words into the FIFO port at r0, four per
+// store, through 32 no-writeback stmia.
+// It is the first function of gx_g3x.c but stays its own source: port/tools/hostgen.py
+// skips any file holding an asm block, and the port hostgens G3X.cpp for
+// func_02055780 (port/ntr/runtime.cpp supplies this function on host).
+asm void func_020553c0(unsigned addr)
 {
     mov r1, #0
     mov r2, #0
