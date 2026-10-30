@@ -417,7 +417,7 @@
       "evidence": "pointer-to-member constant copied into the state table; targets _ZN7daMky_c11EnterState7Ev"
     },
     {
-      "symbol": "@1135",
+      "symbol": "@1169",
       "address": "0x02115af0",
       "size": "0x8",
       "binding": "STB_GLOBAL",
@@ -515,14 +515,14 @@
       "evidence": "pointer-to-member constant copied into the state table; targets _ZN7daMky_c11EnterState5Ev"
     },
     {
-      "symbol": "@1134",
+      "symbol": "@1163",
       "address": "0x02115b60",
       "size": "0x8",
       "binding": "STB_GLOBAL",
       "evidence": "pointer-to-member constant copied into the state table; targets _ZN7daMky_c19func_ov030_02113ff0Ev"
     },
     {
-      "symbol": "@1132",
+      "symbol": "@1161",
       "address": "0x02115b68",
       "size": "0x8",
       "binding": "STB_GLOBAL",
@@ -657,7 +657,7 @@
       "evidence": "registration node for one file-scope object with a destructor"
     },
     {
-      "symbol": "@1094",
+      "symbol": "@1144",
       "address": "0x02115d70",
       "size": "0xc",
       "binding": "STB_GLOBAL",
@@ -671,14 +671,14 @@
       "evidence": "registration node for one file-scope object with a destructor"
     },
     {
-      "symbol": "@1096",
+      "symbol": "@1146",
       "address": "0x02115d88",
       "size": "0xc",
       "binding": "STB_GLOBAL",
       "evidence": "registration node for one file-scope object with a destructor"
     },
     {
-      "symbol": "@1106",
+      "symbol": "@1148",
       "address": "0x02115d94",
       "size": "0xc",
       "binding": "STB_GLOBAL",
@@ -692,28 +692,28 @@
       "evidence": "registration node for one file-scope object with a destructor"
     },
     {
-      "symbol": "@1108",
+      "symbol": "@1150",
       "address": "0x02115dac",
       "size": "0xc",
       "binding": "STB_GLOBAL",
       "evidence": "registration node for one file-scope object with a destructor"
     },
     {
-      "symbol": "@1112",
+      "symbol": "@1152",
       "address": "0x02115db8",
       "size": "0xc",
       "binding": "STB_GLOBAL",
       "evidence": "registration node for one file-scope object with a destructor"
     },
     {
-      "symbol": "@1114",
+      "symbol": "@1154",
       "address": "0x02115dc4",
       "size": "0xc",
       "binding": "STB_GLOBAL",
       "evidence": "registration node for one file-scope object with a destructor"
     },
     {
-      "symbol": "@1130",
+      "symbol": "@1159",
       "address": "0x02115dd0",
       "size": "0xc",
       "binding": "STB_GLOBAL",
@@ -1131,7 +1131,7 @@
       "source": "0x02114d08",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@1094",
+      "symbol": "@1144",
       "addend": 0,
       "target_module": "ov030",
       "target_address": "0x02115d70"
@@ -1151,7 +1151,7 @@
       "source": "0x02114d14",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@1096",
+      "symbol": "@1146",
       "addend": 0,
       "target_module": "ov030",
       "target_address": "0x02115d88"
@@ -1171,7 +1171,7 @@
       "source": "0x02114d20",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@1106",
+      "symbol": "@1148",
       "addend": 0,
       "target_module": "ov030",
       "target_address": "0x02115d94"
@@ -1191,7 +1191,7 @@
       "source": "0x02114d2c",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@1108",
+      "symbol": "@1150",
       "addend": 0,
       "target_module": "ov030",
       "target_address": "0x02115dac"
@@ -1211,7 +1211,7 @@
       "source": "0x02114d38",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@1112",
+      "symbol": "@1152",
       "addend": 0,
       "target_module": "ov030",
       "target_address": "0x02115db8"
@@ -1231,7 +1231,7 @@
       "source": "0x02114d44",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@1114",
+      "symbol": "@1154",
       "addend": 0,
       "target_module": "ov030",
       "target_address": "0x02115dc4"
@@ -1251,7 +1251,7 @@
       "source": "0x02114d4c",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@1130",
+      "symbol": "@1159",
       "addend": 0,
       "target_module": "ov030",
       "target_address": "0x02115dd0"
@@ -1271,7 +1271,7 @@
       "source": "0x02114d54",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@1132",
+      "symbol": "@1161",
       "addend": 0,
       "target_module": "ov030",
       "target_address": "0x02115b68"
@@ -1281,7 +1281,7 @@
       "source": "0x02114d58",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@1134",
+      "symbol": "@1163",
       "addend": 0,
       "target_module": "ov030",
       "target_address": "0x02115b60"
@@ -1291,7 +1291,7 @@
       "source": "0x02114d5c",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@1135",
+      "symbol": "@1169",
       "addend": 0,
       "target_module": "ov030",
       "target_address": "0x02115af0"
@@ -1861,53 +1861,53 @@
   "defined_symbol_renames": [
     {
       "from": "@2061",
-      "to": "@1094",
-      "evidence": "mwcc emits @2061; that name is already used in another module, so it is renamed to the unused same-length @1094"
+      "to": "@1144",
+      "evidence": "mwcc emits @2061; that name is already used in another module, so it is renamed to the unused same-length @1144"
     },
     {
       "from": "@2062",
-      "to": "@1096",
-      "evidence": "mwcc emits @2062; that name is already used in another module, so it is renamed to the unused same-length @1096"
+      "to": "@1146",
+      "evidence": "mwcc emits @2062; that name is already used in another module, so it is renamed to the unused same-length @1146"
     },
     {
       "from": "@2063",
-      "to": "@1106",
-      "evidence": "mwcc emits @2063; that name is already used in another module, so it is renamed to the unused same-length @1106"
+      "to": "@1148",
+      "evidence": "mwcc emits @2063; that name is already used in another module, so it is renamed to the unused same-length @1148"
     },
     {
       "from": "@2064",
-      "to": "@1108",
-      "evidence": "mwcc emits @2064; that name is already used in another module, so it is renamed to the unused same-length @1108"
+      "to": "@1150",
+      "evidence": "mwcc emits @2064; that name is already used in another module, so it is renamed to the unused same-length @1150"
     },
     {
       "from": "@2065",
-      "to": "@1112",
-      "evidence": "mwcc emits @2065; that name is already used in another module, so it is renamed to the unused same-length @1112"
+      "to": "@1152",
+      "evidence": "mwcc emits @2065; that name is already used in another module, so it is renamed to the unused same-length @1152"
     },
     {
       "from": "@2066",
-      "to": "@1114",
-      "evidence": "mwcc emits @2066; that name is already used in another module, so it is renamed to the unused same-length @1114"
+      "to": "@1154",
+      "evidence": "mwcc emits @2066; that name is already used in another module, so it is renamed to the unused same-length @1154"
     },
     {
       "from": "@2067",
-      "to": "@1130",
-      "evidence": "mwcc emits @2067; that name is already used in another module, so it is renamed to the unused same-length @1130"
+      "to": "@1159",
+      "evidence": "mwcc emits @2067; that name is already used in another module, so it is renamed to the unused same-length @1159"
     },
     {
       "from": "@2069",
-      "to": "@1132",
-      "evidence": "mwcc emits @2069; that name is already used in another module, so it is renamed to the unused same-length @1132"
+      "to": "@1161",
+      "evidence": "mwcc emits @2069; that name is already used in another module, so it is renamed to the unused same-length @1161"
     },
     {
       "from": "@2071",
-      "to": "@1134",
-      "evidence": "mwcc emits @2071; that name is already used in another module, so it is renamed to the unused same-length @1134"
+      "to": "@1163",
+      "evidence": "mwcc emits @2071; that name is already used in another module, so it is renamed to the unused same-length @1163"
     },
     {
       "from": "@2073",
-      "to": "@1135",
-      "evidence": "mwcc emits @2073; that name is already used in another module, so it is renamed to the unused same-length @1135"
+      "to": "@1169",
+      "evidence": "mwcc emits @2073; that name is already used in another module, so it is renamed to the unused same-length @1169"
     }
   ],
   "symbol_binding_rewrites": [
@@ -1924,19 +1924,19 @@
       "evidence": "mwcc emits the ctor-table slot local; DSD exposes it globally"
     },
     {
-      "symbol": "@1132",
+      "symbol": "@1161",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local pointer-to-member constant is a configured relocation destination"
     },
     {
-      "symbol": "@1134",
+      "symbol": "@1163",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local pointer-to-member constant is a configured relocation destination"
     },
     {
-      "symbol": "@1135",
+      "symbol": "@1169",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local pointer-to-member constant is a configured relocation destination"
@@ -2080,43 +2080,43 @@
       "evidence": "compiler-local registration node is a configured relocation destination"
     },
     {
-      "symbol": "@1094",
+      "symbol": "@1144",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local registration node is a configured relocation destination"
     },
     {
-      "symbol": "@1096",
+      "symbol": "@1146",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local registration node is a configured relocation destination"
     },
     {
-      "symbol": "@1106",
+      "symbol": "@1148",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local registration node is a configured relocation destination"
     },
     {
-      "symbol": "@1108",
+      "symbol": "@1150",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local registration node is a configured relocation destination"
     },
     {
-      "symbol": "@1112",
+      "symbol": "@1152",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local registration node is a configured relocation destination"
     },
     {
-      "symbol": "@1114",
+      "symbol": "@1154",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local registration node is a configured relocation destination"
     },
     {
-      "symbol": "@1130",
+      "symbol": "@1159",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local registration node is a configured relocation destination"
