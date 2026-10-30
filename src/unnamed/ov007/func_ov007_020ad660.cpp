@@ -27,11 +27,6 @@ typedef struct Ov007LayerSlot {
     u8 kind;               /* 0x08: func_ov007_020b6d40's slot index, 0..7 */
 } Ov007LayerSlot;
 
-/* The 0x1c record func_ov007_020b4c04 returns; only its item here. */
-typedef struct Ov007ItemView {
-    Ov007Item *item; /* 0x00 */
-} Ov007ItemView;
-
 /* The 0x1c-byte record func_ov007_020beaa0 builds around an Ov007Model;
  * names as in func_ov007_020b0da0. */
 typedef struct Ov007Figure {

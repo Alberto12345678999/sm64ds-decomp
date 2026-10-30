@@ -10,12 +10,6 @@ extern "C" {
 extern u8 data_ov007_0210342c[];
 extern short data_02082214[];
 
-/* The 0x1c record func_ov007_020b4c04 returns (Ov007Work::itemViews); only
- * its item here. */
-typedef struct Ov007ItemView {
-    Ov007Item *item; /* 0x00 */
-} Ov007ItemView;
-
 typedef char
     Ov007Work_itemViews_must_be_at_0x114[(int)&((Ov007Work *)0)->itemViews == 0x114 ? 1 : -1];
 

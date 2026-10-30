@@ -61,11 +61,31 @@ typedef struct Ov007ItemNode {
     Ov007OamNode *node; /* 0x04: func_ov007_020c11ac; Sprite_SetAnimation's target */
 } Ov007ItemNode;
 
+struct Ov007Sprite;
+struct Ov007Tween;
+
+/* The 0x1c-byte record func_ov007_020b4c04 returns (freed by
+ * func_ov007_020b4bd4, stored in Ov007Work's itemViews by
+ * func_ov007_020b693c): an item, its sprite, and the slide
+ * func_ov007_020b5f64 moves it along, from slideFrom to slideTo by slideT. */
+typedef struct Ov007ItemView {
+    Ov007Item *item;               /* 0x00 */
+    struct Ov007Sprite *sprite;    /* 0x04: func_ov007_020c44e4 */
+    s32 pad_08;                    /* 0x08: cleared by func_ov007_020b4c04; no reader found */
+    s32 slideT;                    /* 0x0c: slideTween output, 0..0x1000 */
+    struct Ov007Tween *slideTween; /* 0x10: func_ov007_020c908c, bound to slideT */
+    s16 slideFromX;                /* 0x14 */
+    s16 slideFromY;                /* 0x16 */
+    s16 slideToX;                  /* 0x18 */
+    s16 slideToY;                  /* 0x1a */
+} Ov007ItemView;
+
 #ifndef SM64DS_PLATFORM_PC
 typedef char Ov007ItemLayout_size_must_be_0xa[sizeof(Ov007ItemLayout) == 0xa ? 1 : -1];
 typedef char Ov007HitBox_size_must_be_0x14[sizeof(Ov007HitBox) == 0x14 ? 1 : -1];
 typedef char Ov007Item_size_must_be_0x2c[sizeof(Ov007Item) == 0x2c ? 1 : -1];
 typedef char Ov007ItemNode_size_must_be_0x8[sizeof(Ov007ItemNode) == 0x8 ? 1 : -1];
+typedef char Ov007ItemView_size_must_be_0x1c[sizeof(Ov007ItemView) == 0x1c ? 1 : -1];
 #endif
 
 #endif

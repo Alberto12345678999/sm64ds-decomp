@@ -21,7 +21,7 @@ extern void func_ov007_020af12c(void);
 extern void func_ov007_020aef78(void);
 extern void func_ov007_020af390(void);
 extern void func_ov007_020b0324(void);
-extern void func_ov007_020b44ec(int a);
+extern void func_ov007_020b44ec(struct Ov007ItemView *view);
 extern void func_ov007_020add3c(struct Ov007ItemNode *self);
 extern void func_ov007_020ad660(int a);
 extern char *data_ov007_0210342c;
@@ -75,7 +75,7 @@ void func_ov007_020aed98(void)
 
     WORK->chosenItemId = -1;
     for (i = 0; i < 0x18; i++) {
-        func_ov007_020b44ec((int)WORK->itemViews[i]);
+        func_ov007_020b44ec(WORK->itemViews[i]);
     }
     for (i = 0; i < 9; i++) {
         func_ov007_020add3c(WORK->itemNodes[i]);

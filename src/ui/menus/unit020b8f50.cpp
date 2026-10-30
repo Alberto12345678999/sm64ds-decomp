@@ -110,11 +110,6 @@ typedef struct Ov007Pad {
     u32 heldFrames[12];
 } Ov007Pad;
 
-typedef struct Ov007ItemView {
-    Ov007Item *item;     /* 0x00 */
-    Ov007Sprite *sprite; /* 0x04 */
-} Ov007ItemView;
-
 /* func_ov007_020baa10 copies pos as three words. */
 typedef struct Vec3Words {
     Fix12i w[3];

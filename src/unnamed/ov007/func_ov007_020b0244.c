@@ -5,12 +5,6 @@
 extern void func_ov007_020c0638(int a, int b, int c, int d);
 extern char *data_ov007_0210342c;
 
-/* The 0x1c record func_ov007_020b4c04 returns; names as in
- * func_ov007_020b9880, only the slot read here. */
-typedef struct Ov007ItemView {
-    Ov007Item *item; /* 0x00 */
-} Ov007ItemView;
-
 /* The 0xc-byte record func_ov007_020adc08 returns; names as there, only the
  * layer read here. */
 typedef struct Ov007LayerSlot {

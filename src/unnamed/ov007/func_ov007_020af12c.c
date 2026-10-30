@@ -2,11 +2,6 @@
 #include "Ov007Work.h"
 #include "Ov007Item.h"
 
-/* func_ov007_020b4c04's 0x1c-byte item view; names as in unit020b413c. */
-typedef struct Ov007ItemView {
-    Ov007Item *item; /* 0x00 */
-} Ov007ItemView;
-
 /* Returns the picker scene's states[0] (unit020b8f50). */
 extern int func_ov007_020b8f8c(void);
 extern void func_ov007_020c1d78(int i);

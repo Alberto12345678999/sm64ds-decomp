@@ -2,7 +2,7 @@
 
 extern void func_ov007_020c1d8c(int i);
 extern void func_ov007_020b20e8(void);
-extern void func_ov007_020b4b5c(void *view, int camera);
+extern void func_ov007_020b4b5c(struct Ov007ItemView *view, int camera);
 extern char *data_ov007_0210342c;
 /* The extern keeps the tree's char * spelling (the declaration-agreement
  * gate); the typed view is reached through a cast macro. */

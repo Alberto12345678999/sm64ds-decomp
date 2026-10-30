@@ -45,12 +45,6 @@
 
 extern "C" {
 
-/* The 0x1c record func_ov007_020b4c04 returns (names as in that file). */
-typedef struct Ov007ItemView {
-    Ov007Item *item;     /* 0x00 */
-    Ov007Sprite *sprite; /* 0x04: func_ov007_020c44e4 */
-} Ov007ItemView;
-
 /* The 0x28-byte light func_ov007_020c241c allocates; func_ov007_020c232c
  * writes +0x22 to LIGHT_COLOR. Only that slot is spelled. */
 typedef struct Ov007Light {

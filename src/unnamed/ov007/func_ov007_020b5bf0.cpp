@@ -13,19 +13,11 @@ extern "C" {
 extern short data_02082214[];
 extern u8 data_ov007_0210342c[];
 
-/* The 0x1c record func_ov007_020b4c04 returns (names as in that file). */
-typedef struct Ov007ItemView {
-    Ov007Item *item;               /* 0x00 */
-    Ov007Sprite *sprite;           /* 0x04: func_ov007_020c44e4 */
-    char pad_08[8];                /* 0x08 */
-    struct Ov007Tween *slideTween; /* 0x10: func_ov007_020c908c */
-} Ov007ItemView;
-
 /* The extern keeps this file's u8[] spelling; the manager pointer is stored there. */
 #define WORK (*(Ov007Work **)data_ov007_0210342c)
 
 extern unsigned short func_ov007_020c3be0(int t, int a, int b);
-extern void func_ov007_020b5f64(void *a);
+extern void func_ov007_020b5f64(Ov007ItemView *view);
 extern int func_ov007_020c8f98(struct Ov007Tween *tw);
 
 /* One frame of a menu item's look. Kind 0 items wiggle: rotZ follows a

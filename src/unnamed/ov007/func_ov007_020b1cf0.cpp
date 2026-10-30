@@ -13,11 +13,6 @@ extern void func_ov007_020b2614(int a, int b, int c);
 extern int func_ov007_020c1da0(int i);
 extern void func_ov007_020aec94(int r4);
 
-/* The 0x1c record func_ov007_020b4c04 returns; only its item here. */
-typedef struct Ov007ItemView {
-    Ov007Item *item; /* 0x00 */
-} Ov007ItemView;
-
 /* The 0x70-byte key record func_ov007_020c2304 allocates;
  * func_ov007_020c20b8 copies keys into prevKeys, then reads KEYINPUT. */
 typedef struct Ov007Pad {

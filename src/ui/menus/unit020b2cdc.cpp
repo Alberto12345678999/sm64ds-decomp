@@ -88,11 +88,6 @@ typedef struct Ov007Pad {
 
 typedef char Ov007Pad_size_must_be_0x70[sizeof(Ov007Pad) == 0x70 ? 1 : -1];
 
-typedef struct Ov007ItemView {
-    Ov007Item *item;     /* 0x00 */
-    Ov007Sprite *sprite; /* 0x04: func_ov007_020b2cf0 places the cursor on it */
-} Ov007ItemView;
-
 extern Ov007Cursor *data_ov007_02103360;
 extern int data_ov007_02103364;
 extern char *data_ov007_0210342c;
