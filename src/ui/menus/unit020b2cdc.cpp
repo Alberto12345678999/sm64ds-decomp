@@ -89,7 +89,7 @@ extern int func_ov007_020c1da0(int i);
 extern void func_ov007_020c2090(char *c);
 extern void func_ov007_020c3d1c(void *self);
 extern void *func_ov007_020c3df4(const char *name, int size);
-extern void func_ov007_020c92d0(char *record);
+extern void func_ov007_020c92d0(Ov007MenuState *state);
 extern void func_ov007_020c937c(void *state);
 extern void *func_ov007_020c9388(int initialState);
 
@@ -706,7 +706,7 @@ void func_ov007_020b2e64(char *self) {
             r4v = 1;
     }
     CURSOR->confirm = r4v;
-    func_ov007_020c92d0((char *)CURSOR->state);
+    func_ov007_020c92d0(CURSOR->state);
 
     if (CURSOR->state->currentState != 0xff) {
         func_ov007_020b3360();

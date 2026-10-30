@@ -22,7 +22,7 @@
  * one OR so the request-0 store is emitted once; the function is void.
  */
 
-extern void func_ov007_020c92d0(void *s);
+extern void func_ov007_020c92d0(Ov007MenuState *state);
 extern int func_ov007_020aeaec(Ov007Item *item, int flag, int lo, int hi);
 extern void func_ov007_020ae810(Ov007Item *item);
 extern void func_ov007_020aeb34(Ov007Item *item, int t);

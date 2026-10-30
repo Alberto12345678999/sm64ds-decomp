@@ -16,7 +16,7 @@ extern void *func_ov007_020c3df4(const char *name, int b);
 extern void *func_ov007_020c9388(int initialState);
 extern void func_ov007_020c937c(void *state);
 extern int func_ov007_020c3d1c(void *);
-extern void func_ov007_020c92d0(void *state);
+extern void func_ov007_020c92d0(Ov007MenuState *state);
 
 /* Steps wave i over the mesh: while it holds a line and keepChance wins it
  * adds a travelling sine to the z force of every point on that line;

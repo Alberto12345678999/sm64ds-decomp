@@ -20,6 +20,7 @@
    to neither spelling and are unresolvable with or without this guard. */
 struct Player;
 struct MascotWalker;
+struct Ov007MenuState;
 
 #ifdef __cplusplus
 extern "C" {
@@ -1536,7 +1537,7 @@ extern void func_ov007_020c775c(struct Vector3*);
 extern void func_ov007_020c7b2c(int, int, int);
 extern void func_ov007_020c81a0(void*, int, int);
 extern void func_ov007_020c831c(void*, int, int);
-extern void func_ov007_020c92d0(char*);
+extern void func_ov007_020c92d0(struct Ov007MenuState*);
 extern void func_ov014_02111ebc(void*, int);
 extern void func_ov018_021123d0(char*, int);
 extern void func_ov025_021112e0(char*);

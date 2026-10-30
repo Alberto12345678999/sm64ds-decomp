@@ -159,7 +159,7 @@ extern void func_ov007_020c5ef0(void *o);
 extern int func_ov007_020c8f98(void *p);
 extern void func_ov007_020c9080(int);
 extern void *func_ov007_020c908c(void *r5);
-extern void func_ov007_020c92d0(void *p);
+extern void func_ov007_020c92d0(Ov007MenuState *state);
 extern void func_ov007_020c937c(void *state);
 extern void *func_ov007_020c9388(int a);
 
