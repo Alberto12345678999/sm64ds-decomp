@@ -3,8 +3,6 @@
 #include "nitro/card/card_common.h"
 extern "C" {
 extern char data_020a8180[];
-extern int data_020a6134[];
-void OS_SleepThread(void* p);
 int func_0206071c(void* g);
 }
 namespace IRQ { unsigned int Disable(); void Restore(unsigned int); }
@@ -20,7 +18,7 @@ struct Sched {
     char pad30[0x34-0x30];
     u32 flags;  // 0x34
     char pad38[0xd4-0x38];
-    char sub[4]; // 0xd4
+    u16 sub; // 0xd4
 };
 
 extern "C" int func_02060558(int a, int b, int c, int d, int e, int f)
@@ -29,7 +27,7 @@ extern "C" int func_02060558(int a, int b, int c, int d, int e, int f)
     unsigned int irq = IRQ::Disable();
     if (g->flags & 4) {
         do {
-            OS_SleepThread(g->sub);
+            OS_SleepThread(&g->sub);
         } while (g->flags & 4);
     }
     u32* fp = (u32*)((unsigned long long)((int)g + 0x34));
@@ -44,7 +42,7 @@ extern "C" int func_02060558(int a, int b, int c, int d, int e, int f)
         CARDi_SetTask((CARDiTask)func_0206071c);
         return 1;
     }
-    *(int*)(data_020a8180 + 0xd0) = data_020a6134[2];
+    *(OSThread **)(data_020a8180 + 0xd0) = data_020a6134.current;
     func_0206071c(g);
     return (*(int**)g)[0] == 0;
 }

@@ -1,9 +1,8 @@
 //cpp
 #include "types.h"
+#include "nitro/os/thread.h"
 extern "C" {
 extern char data_020a8180[];
-extern int data_020a6134[];
-void OS_SleepThread(void* p);
 void func_02060364(int arg);
 void func_020607e8(void* thiz);
 }
@@ -16,7 +15,7 @@ struct Sched {
     char pad30[0x34-0x30];
     u32 flags;  // 0x34
     char pad38[0xd4-0x38];
-    char sub[4]; // 0xd4
+    u16 sub; // 0xd4
 };
 
 extern "C" void func_020603c8(int arg)
@@ -25,7 +24,7 @@ extern "C" void func_020603c8(int arg)
     unsigned int irq = IRQ::Disable();
     if (g->flags & 4) {
         do {
-            OS_SleepThread(g->sub);
+            OS_SleepThread(&g->sub);
         } while (g->flags & 4);
     }
     u32* fp = (u32*)((unsigned long long)((int)g + 0x34));
@@ -34,6 +33,6 @@ extern "C" void func_020603c8(int arg)
     func_02060364(arg);
     g->d = 0;
     g->e = 0;
-    *(int*)(data_020a8180 + 0xd0) = data_020a6134[2];
+    *(OSThread **)(data_020a8180 + 0xd0) = data_020a6134.current;
     func_020607e8(g);
 }

@@ -44,8 +44,10 @@ extern int OS_GetConsoleType(void);
 extern void SDK_IRQ_STACKSIZE(void);
 extern void SDK_SYS_STACKSIZE(void);
 
-extern unsigned int data_020a6378; /* OSi_Initialized */
-extern char data_023c0000;         /* HW_DTCM */
+/* OSi_Initialized. OS_Thread.cpp takes this word's address as the top of
+ * OSi_IdleThreadStack, which ends here. */
+extern unsigned int data_020a6378;
+extern short data_023c0000[]; /* HW_DTCM */
 
 unsigned int OS_GetArenaHi(int id);
 unsigned int OS_GetArenaLo(int id);
@@ -102,16 +104,16 @@ unsigned int OS_GetInitArenaHi(int id) {
     case OS_ARENA_ITCM:
         return 0x2000000;
     case OS_ARENA_DTCM: {
-        u32 irqStackLo = (u32)&data_023c0000 + 0x3f80 - (s32)SDK_IRQ_STACKSIZE;
+        u32 irqStackLo = (u32)data_023c0000 + 0x3f80 - (s32)SDK_IRQ_STACKSIZE;
         u32 sysStackLo;
 
         if (!(s32)SDK_SYS_STACKSIZE) {
-            sysStackLo = (u32)&data_023c0000;
+            sysStackLo = (u32)data_023c0000;
             if (sysStackLo < 0x23c0020) {
                 sysStackLo = 0x23c0020;
             }
         } else if ((s32)SDK_SYS_STACKSIZE < 0) {
-            sysStackLo = (u32)&data_023c0000 - (s32)SDK_SYS_STACKSIZE;
+            sysStackLo = (u32)data_023c0000 - (s32)SDK_SYS_STACKSIZE;
         } else {
             sysStackLo = irqStackLo - (s32)SDK_SYS_STACKSIZE;
         }

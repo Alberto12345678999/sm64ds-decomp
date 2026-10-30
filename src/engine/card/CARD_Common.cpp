@@ -26,24 +26,13 @@
 extern "C" {
 
 /* local extern: no header declares these yet. Their SDK names: Crash is
- * OS_Terminate, PXI_SetFifoRecvCallback, MultiStore32Bytes
- * MIi_CpuClearFast, func_020602bc CARDi_TaskThread and func_02060310
- * CARDi_OnFifoRecv. */
+ * OS_Terminate, MultiStore32Bytes MIi_CpuClearFast, func_020602bc
+ * CARDi_TaskThread and func_02060310 CARDi_OnFifoRecv. */
 extern void Crash(void);
-extern void OS_SleepThread(void *queue);
-extern void OS_WakeupThread(void *queue);
-extern u32 OS_GetThreadPriority(void *thread);
-extern int OS_SetThreadPriority(void *thread, u32 priority);
-extern void OS_WakeupThreadDirect(void *thread);
-extern void OS_CreateThread(void *thread, void *func, void *arg, void *stack, u32 stackSize,
-                            u32 priority);
 extern void PXI_SetFifoRecvCallback(int tag, void *callback);
 extern void MultiStore32Bytes(unsigned val, int *dst, int len);
 extern void func_020602bc(void);
 extern void func_02060310(int tag, int data, int err);
-
-/* OSi_ThreadInfo; word 2 is the current thread. */
-extern int data_020a6134[];
 
 #define OS_LOCK_ID_ERROR (-3)
 #define CARD_TARGET_NONE 0
@@ -68,21 +57,21 @@ void CARDi_SetTask(void (*task)(CARDiCommon *)) {
     u32 priority = p->priority;
     switch (priority) {
     case CARD_THREAD_PRIORITY_HIGHER:
-        priority = OS_GetThreadPriority((int *)data_020a6134[2]);
+        priority = OS_GetThreadPriority(data_020a6134.current);
         if (priority != 0)
             priority -= 1;
         break;
     case CARD_THREAD_PRIORITY_LOWER:
-        priority = OS_GetThreadPriority((int *)data_020a6134[2]);
+        priority = OS_GetThreadPriority(data_020a6134.current);
         if (priority < 0x1f)
             priority += 1;
         break;
     }
-    OS_SetThreadPriority(p->thread, priority);
-    p->cur_th = p->thread;
+    OS_SetThreadPriority(&p->thread, priority);
+    p->cur_th = &p->thread;
     p->task_func = task;
     p->flag |= CARD_STAT_TASK;
-    OS_WakeupThreadDirect(p->thread);
+    OS_WakeupThreadDirect(&p->thread);
 }
 
 // @symbol CARDi_LockResource
@@ -138,8 +127,9 @@ void CARDi_InitCommon(void) {
     p->lock_queue = 0;
     p->busy_q = 0;
     p->priority = CARD_THREAD_PRIORITY_DEFAULT;
-    OS_CreateThread(p->thread, (void *)func_020602bc, 0, &data_020a8760, 0x400, p->priority);
-    OS_WakeupThreadDirect(p->thread);
+    OS_CreateThread(&p->thread, (void (*)(void *))func_020602bc, 0, &data_020a8760, 0x400,
+                    p->priority);
+    OS_WakeupThreadDirect(&p->thread);
     PXI_SetFifoRecvCallback(0xb, (void *)func_02060310);
 }
 

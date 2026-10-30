@@ -1,14 +1,13 @@
 /* Overlay 0 boot entry: resolve the asset paths into the persistent file-ID table.
  * InitializeAssetHandleTable is a descriptive name, not a recovered ROM name.
  */
+#include "nitro/os/thread.h"
+
 extern int data_0209d574;
-extern int data_020a6134[];
 extern int data_ov000_020bd4b8[];
 
 extern int func_0201a9ec(int *timer);
 extern int func_02018a58(int count);
-extern unsigned int OS_GetThreadPriority(int thread);
-extern int OS_SetThreadPriority(int thread, unsigned int priority);
 extern int func_020189f0(int path);
 extern void func_02018a40(unsigned handle, int fileId);
 extern int func_0201a9fc(int *timer);
@@ -21,8 +20,7 @@ void InitializeAssetHandleTable(void) {
     int savedTimerState = func_0201a9ec(&data_0209d574);
     func_02018a58(ASSET_HANDLE_COUNT);
 
-    /* The scheduler's word at offset 0x08 holds the current thread. */
-    int currentThread = data_020a6134[2];
+    OSThread *currentThread = data_020a6134.current;
     unsigned int savedPriority = OS_GetThreadPriority(currentThread);
     OS_SetThreadPriority(currentThread, ASSET_LOOKUP_PRIORITY);
 

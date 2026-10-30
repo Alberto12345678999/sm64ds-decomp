@@ -16,6 +16,7 @@
  */
 
 #include "types.h"
+#include "nitro/os/thread.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -44,12 +45,12 @@ typedef struct CARDiCommon {
     CARDiTask task_func;     /* 0x30 */
     volatile u32 flag;       /* 0x34 -- CARD_STAT_* */
     int priority;            /* 0x38 */
-    u8 thread[0x94];         /* 0x3c -- OSThread */
-    void *cur_th;            /* 0xd0 */
+    OSThread thread;         /* 0x3c -- the card task thread */
+    OSThread *cur_th;        /* 0xd0 -- the thread the request runs on */
     u16 busy_q;              /* 0xd4 -- OSThreadQueue */
 } CARDiCommon;
 
-void CARDi_SetTask(void (*)(struct CARDiCommon *));
+void CARDi_SetTask(CARDiTask);
 void CARDi_InitCommon(void);
 int CARDi_WaitAsync(void);
 void CARD_LockRom(u16);

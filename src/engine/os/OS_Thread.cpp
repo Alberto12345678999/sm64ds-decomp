@@ -28,13 +28,13 @@
 #include "types.h"
 #include "IRQ.h"
 #include "CP15.h"
+#include "nitro/os/thread.h"
 
 /* The SDK's nitro/types.h spellings; include/types.h has no BOOL. */
 typedef int BOOL;
 #define TRUE 1
 #define FALSE 0
 
-#define OS_THREAD_MAX_NUM 16
 #define OS_THREAD_LAUNCHER_PRIORITY 16
 #define OS_THREAD_PRIORITY_MAX 31
 
@@ -47,49 +47,6 @@ typedef int BOOL;
 #define OSi_STACK_CHECKNUM_BOTTOM 0xfddb597dUL
 #define OSi_STACK_CHECKNUM_TOP 0x7bf9dd5bUL
 #define OSi_STACK_CHECKNUM_WARN 0x597dfbd9UL
-
-typedef struct OSContext {
-    u32 cpsr;            /* 0x00 */
-    u32 r[13];           /* 0x04 */
-    u32 sp;              /* 0x38 */
-    u32 lr;              /* 0x3c */
-    u32 pc_plus4;        /* 0x40 */
-    u32 sp_svc;          /* 0x44 */
-    u8 cp_context[0x1c]; /* 0x48 -- divider / sqrt state */
-} OSContext;
-
-typedef struct OSMutexQueue {
-    void *head; /* 0x00 */
-    void *tail; /* 0x04 */
-} OSMutexQueue;
-
-typedef struct OSThread {
-    OSContext context;       /* 0x00 */
-    s32 state;               /* 0x64 */
-    struct OSThread *next;   /* 0x68 -- the priority-sorted thread list */
-    u32 id;                  /* 0x6c */
-    u32 priority;            /* 0x70 */
-    void *profiler;          /* 0x74 */
-    void *mutex;             /* 0x78 */
-    OSMutexQueue mutexQueue; /* 0x7c */
-    u32 stackTop;            /* 0x84 */
-    u32 stackBottom;         /* 0x88 */
-    u32 stackWarningOffset;  /* 0x8c */
-    u16 joinQueue;           /* 0x90 -- a mask of thread ids */
-} OSThread;
-
-typedef void (*OSSwitchThreadCallback)(OSThread *from, OSThread *to);
-
-typedef struct OSThreadInfo {
-    u16 isNeedRescheduling;                /* 0x00 */
-    u16 max_entry;                         /* 0x02 */
-    u16 irqDepth;                          /* 0x04 */
-    u16 padding;                           /* 0x06 */
-    OSThread *current;                     /* 0x08 */
-    OSThread *list;                        /* 0x0c */
-    OSSwitchThreadCallback switchCallback; /* 0x10 */
-    OSThread *entry[OS_THREAD_MAX_NUM];    /* 0x14 */
-} OSThreadInfo;
 
 #ifndef SM64DS_PLATFORM_PC
 /* The ROM's layout: the idle and launcher threads sit 0x94 apart, and the
@@ -119,20 +76,14 @@ extern void func_02058a44(OSThread *thread);
 extern OSSwitchThreadCallback data_020a6128; /* OSi_SystemCallbackInSwitchThread */
 extern OSThread **data_020a612c;             /* OSi_CurrentThreadPtr */
 extern BOOL data_020a6130;                   /* OSi_IsThreadInitialized */
-extern OSThreadInfo data_020a6134;           /* OSi_ThreadInfo */
 extern OSThread data_020a6188;               /* OSi_IdleThread */
-extern OSThread data_020a621c;               /* OSi_LauncherThread */
-extern u32 data_020a6378[];                  /* the end of OSi_IdleThreadStack */
-extern char data_023c0000;                   /* HW_DTCM */
+/* The word just past OSi_IdleThreadStack (200 bytes from 0x020a62b0): its
+ * address is the idle stack's top. The word itself is OS_Arena.cpp's
+ * OSi_Initialized. */
+extern u32 data_020a6378;
+extern short data_023c0000[]; /* HW_DTCM */
 
-void OS_ExitThread(void);
-void OS_RescheduleThread(void);
-OSThread *OS_SelectThread(void);
-void OS_WakeupThread(u16 *queue);
-void OS_SleepThread(u16 *queue);
 OSSwitchThreadCallback OS_SetSwitchThreadCallback(OSSwitchThreadCallback callback);
-void OS_CreateThread(OSThread *thread, void (*func)(void *), void *arg, void *stack, u32 stackSize,
-                     u32 prio);
 void OSi_IdleThreadProc(void *unused);
 
 // @symbol OSi_GetUnusedThreadId
@@ -212,9 +163,9 @@ void OS_InitThread(void) {
     if ((s32)SDK_SYS_STACKSIZE == 0) {
         stackLo = 0x23c0020 - (s32)SDK_SYS_STACKSIZE;
     } else {
-        stackLo = (u32)&data_023c0000 + 0x3fc0 - (s32)SDK_IRQ_STACKSIZE - (s32)SDK_SYS_STACKSIZE;
+        stackLo = (u32)data_023c0000 + 0x3fc0 - (s32)SDK_IRQ_STACKSIZE - (s32)SDK_SYS_STACKSIZE;
     }
-    stackHi = (u32)&data_023c0000 + 0x3fc0 - (s32)SDK_IRQ_STACKSIZE;
+    stackHi = (u32)data_023c0000 + 0x3fc0 - (s32)SDK_IRQ_STACKSIZE;
 
     data_020a621c.stackBottom = stackHi;
     data_020a621c.stackTop = stackLo;
@@ -230,7 +181,7 @@ void OS_InitThread(void) {
 
     OS_SetSwitchThreadCallback(0);
 
-    OS_CreateThread(&data_020a6188, OSi_IdleThreadProc, 0, data_020a6378, 200,
+    OS_CreateThread(&data_020a6188, OSi_IdleThreadProc, 0, &data_020a6378, 200,
                     OS_THREAD_PRIORITY_MAX);
 
     data_020a6188.priority = OS_THREAD_PRIORITY_MAX + 1;

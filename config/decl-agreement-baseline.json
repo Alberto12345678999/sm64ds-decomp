@@ -1821,15 +1821,6 @@
       "src/_ZN3IRQ13VBlankHandlerEv.cpp": [
         "param:#1 int *"
       ],
-      "src/unnamed/arm9/0205/func_02058a44.c": [
-        "arity:0"
-      ],
-      "src/unnamed/arm9/0205/func_02058a94.cpp": [
-        "param:#1 char *"
-      ],
-      "src/unnamed/arm9/0206/func_0206081c.cpp": [
-        "param:#1 char *"
-      ],
       "src/IRQ2.cpp": [
         "param:#1 int *"
       ]
@@ -5582,9 +5573,6 @@
       "src/Crash.cpp": [
         "return:void"
       ],
-      "src/unnamed/arm9/0201/func_02019f10.cpp": [
-        "return:void"
-      ],
       "src/unnamed/arm9/0204/func_02040c34.c": [
         "return:int"
       ],
@@ -5678,15 +5666,6 @@
       "src/unnamed/arm9/0205/func_02058894.cpp": [
         "return:void"
       ],
-      "src/unnamed/arm9/0205/func_020589d4.cpp": [
-        "return:void"
-      ],
-      "src/unnamed/arm9/0205/func_02058a94.cpp": [
-        "return:void"
-      ],
-      "src/unnamed/arm9/0205/func_02058b08.cpp": [
-        "return:void"
-      ],
       "src/unnamed/arm9/0205/func_02059040.cpp": [
         "return:void"
       ],
@@ -5749,12 +5728,6 @@
         "return:void"
       ],
       "src/unnamed/arm9/0206/func_020602bc.cpp": [
-        "return:void"
-      ],
-      "src/unnamed/arm9/0206/func_02060484.cpp": [
-        "return:void"
-      ],
-      "src/unnamed/arm9/0206/func_0206081c.cpp": [
         "return:void"
       ],
       "src/unnamed/arm9/0206/func_02060b64.cpp": [
@@ -10036,11 +10009,6 @@
         "return:int"
       ]
     },
-    "data_0209d5b8": {
-      "src/unnamed/arm9/0201/func_0201a244.cpp": [
-        "return:char []"
-      ]
-    },
     "data_0209d65c": {
       "src/_ZN7Message6UpdateEv.cpp": [
         "return:signed char"
@@ -11171,12 +11139,6 @@
     "data_020a6134": {
       "src/unnamed/arm9/0207/func_0207037c.c": [
         "return:char * []"
-      ],
-      "src/cstd6.cpp": [
-        "return:char * []"
-      ],
-      "src/engine/os/OS_Thread.cpp": [
-        "return:OSThreadInfo"
       ]
     },
     "data_020a637c": {
@@ -11474,17 +11436,8 @@
       "src/engine/cp15/CP15_SystemSetup.cpp": [
         "return:char []"
       ],
-      "src/engine/os/OS_Thread.cpp": [
-        "return:char"
-      ],
-      "src/engine/os/OS_Arena.cpp": [
-        "return:char"
-      ],
       "src/IRQ2.cpp": [
         "return:char []"
-      ],
-      "src/engine/os/OS_Alarm.cpp": [
-        "return:char"
       ]
     },
     "data_ov002_020ff480": {
@@ -18893,9 +18846,6 @@
     "func_0201a03c": {
       "src/Crash.cpp": [
         "arity:2"
-      ],
-      "src/main.cpp": [
-        "kind:data"
       ]
     },
     "func_0201a244": {
@@ -20658,24 +20608,6 @@
         "param:#2 int"
       ]
     },
-    "OS_GetThreadPriority": {
-      "src/runtime/filesystem/InitializeAssetHandleTable.c": [
-        "param:#1 int"
-      ]
-    },
-    "OS_SetThreadPriority": {
-      "src/runtime/filesystem/InitializeAssetHandleTable.c": [
-        "param:#1 int"
-      ]
-    },
-    "OS_WakeupThreadDirect": {
-      "src/unnamed/arm9/0206/func_0206081c.cpp": [
-        "param:#1 char *"
-      ],
-      "src/unnamed/arm9/0206/func_02060e38.cpp": [
-        "param:#1 Obj *"
-      ]
-    },
     "OS_CreateThread": {
       "src/unnamed/arm9/0201/func_02019f10.cpp": [
         "param:#2 void *"
@@ -20683,16 +20615,8 @@
       "src/unnamed/arm9/0204/func_02042200.c": [
         "param:#2 void *"
       ],
-      "src/engine/card/CARD_Common.cpp": [
-        "param:#2 void *"
-      ],
       "src/engine/sound/SoundEngine.cpp": [
         "param:#2 void *"
-      ],
-      "src/unnamed/arm9/0201/func_0201a244.cpp": [
-        "param:#2 int",
-        "param:#3 int",
-        "param:#4 int"
       ]
     },
     "func_020587e4": {
@@ -20782,11 +20706,6 @@
       "src/unnamed/arm9/0201/func_0201aa50.c": [
         "arity:5",
         "return:int"
-      ]
-    },
-    "func_02059e04": {
-      "src/OS_InitReset.c": [
-        "arity:0"
       ]
     },
     "func_02059f2c": {
@@ -21324,11 +21243,6 @@
       "src/unnamed/arm9/0205/func_0205f77c.cpp": [
         "param:#1 unsigned short",
         "param:#2 unsigned short"
-      ]
-    },
-    "func_0205fcfc": {
-      "src/PM_Init.c": [
-        "arity:0"
       ]
     },
     "func_0205ff00": {
@@ -22034,16 +21948,6 @@
     },
     "func_02069918": {
       "src/unnamed/arm9/0206/func_020690b0.c": [
-        "arity:0"
-      ]
-    },
-    "func_0206a634": {
-      "src/CTRDG_Init.c": [
-        "arity:0"
-      ]
-    },
-    "func_0206a694": {
-      "src/CTRDG_Init.c": [
         "arity:0"
       ]
     },
@@ -25692,31 +25596,6 @@
     "func_02048d80": {
       "src/engine/sound/Sound.cpp": [
         "param:#2 int *"
-      ]
-    },
-    "OS_IsThreadTerminated": {
-      "src/unnamed/arm9/0201/func_0201a1bc.cpp": [
-        "param:#1 int *"
-      ]
-    },
-    "data_020a621c": {
-      "src/engine/os/OS_Thread.cpp": [
-        "return:OSThread"
-      ]
-    },
-    "func_02058a44": {
-      "src/engine/os/OS_Thread.cpp": [
-        "param:#1 OSThread *"
-      ]
-    },
-    "data_020a6378": {
-      "src/engine/os/OS_Thread.cpp": [
-        "return:unsigned int []"
-      ]
-    },
-    "data_020a9dec": {
-      "src/unnamed/arm9/0206/func_0206a600.c": [
-        "return:int (*)(int)"
       ]
     }
   },

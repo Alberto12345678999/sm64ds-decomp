@@ -52,7 +52,7 @@ extern void Crash(void); /* OS_Terminate */
 
 extern u16 data_020a6440;           /* OSi_UseAlarm */
 extern OSiAlarmQueue data_020a6444; /* OSi_AlarmQueue */
-extern char data_023c0000;          /* HW_DTCM */
+extern short data_023c0000[];       /* HW_DTCM */
 
 void OSi_AlarmHandler(void);
 void OSi_InsertAlarm(OSAlarm *alarm, u64 fire);
@@ -203,7 +203,7 @@ void OSi_ArrangeTimer(void) {
     REG_TM1CNT_H = 0;
     IRQ::DisableIRQs(OS_IE_TIMER1);
     /* OS_SetIrqCheckFlag: HW_INTR_CHECK_BUF, DTCM + 0x3ff8. */
-    *(int *)((int)&data_023c0000 + 0x3ff8) |= OS_IE_TIMER1;
+    *(int *)((int)data_023c0000 + 0x3ff8) |= OS_IE_TIMER1;
     tick = func_02059650();
     alarm = data_020a6444.head;
     if (alarm == 0)

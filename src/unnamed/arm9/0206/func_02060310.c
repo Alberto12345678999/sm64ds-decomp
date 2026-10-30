@@ -1,5 +1,6 @@
+#include "nitro/os/thread.h"
+
 extern unsigned char data_020a8180;
-extern void OS_WakeupThreadDirect(void *self);
 
 void func_02060310(int a, int b, int c)
 {
@@ -9,6 +10,6 @@ void func_02060310(int a, int b, int c)
         unsigned int val = *addr;
         val &= ~0x20u;
         *addr = val;
-        OS_WakeupThreadDirect(*(void **)(base + 0xd0));
+        OS_WakeupThreadDirect(*(OSThread **)(base + 0xd0));
     }
 }

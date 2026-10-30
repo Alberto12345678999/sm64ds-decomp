@@ -431,7 +431,9 @@ extern NestedHeapIterator data_020a5bbc;
 extern NestedHeapIterator data_020a5bc8;
 extern struct Ent data_020a5bd4[];
 extern void func_0204ebb8(void *alloc);
+/* local extern: the sound thread is untyped storage here (void *) */
 extern void OS_WakeupThreadDirect(void *thread);
+/* local extern: as above */
 extern void OS_CreateThread(void *thread, void *func, void *arg, void *stack,
                             unsigned int stackSize, unsigned int prio);
 extern int func_020587e4(struct MsgQueue *self, u32 *msg, int flags);

@@ -3,8 +3,11 @@
  * Matched byte-for-byte with mwccarm 1.2/sp2p3 (arm9 main).
  */
 extern char data_020a11e4[];
+/* local extern: the thread is untyped storage here (void *) */
 extern int OS_IsThreadTerminated(void *p);
+/* local extern: as above */
 extern void OS_WakeupThreadDirect(void *p);
+/* local extern: as above */
 extern void OS_JoinThread(void *p);
 
 void func_020421b4(void)

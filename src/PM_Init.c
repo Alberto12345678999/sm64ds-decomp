@@ -15,7 +15,7 @@ extern int data_020a8114[2];
 extern PmEntry data_020a8138[4];
 extern char data_020a8124;
 extern int data_020a8110;
-extern void func_0205fcfc(void); /* the tag-8 receive callback */
+extern void func_0205fcfc(int tag, unsigned int data, int err); /* the tag-8 receive callback */
 extern void PXI_Init(void);
 /* PXI_IsCallbackReady and PXI_SetFifoRecvCallback (src/engine/pxi/PXI_Fifo.cpp). */
 extern int PXI_IsCallbackReady(int tag, int proc);
