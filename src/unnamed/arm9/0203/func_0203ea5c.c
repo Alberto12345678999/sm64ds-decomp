@@ -1,17 +1,18 @@
 #include "types.h"
+/* A calibrated touch-panel sample (func_0203df40's Col4; NitroSDK TPData's
+   x, y, touch, validity). */
+struct Col4 {
+    u16 x, y, touch, validity;
+};
+
+/* The per-frame input record, named as func_0203df40's view: data_020a1040 is
+   the local one, data_020a1154 the four players'. */
 typedef struct {
-    s32 unk0;
-    u8 unk4;
-    u8 unk5;
-    u8 unk6;
-    u8 unk7;
-    u8 unk8;
-    u8 unk9;
-    u8 unkA;
-    u8 unkB;
-    u16 unkC;
-    u16 unkE;
-    u16 unk10;
+    s32 frame;         /* 0x00 */
+    struct Col4 touch; /* 0x04 */
+    u16 flags;         /* 0x0c */
+    u16 keys;          /* 0x0e */
+    s16 inputYaw;      /* 0x10 */
     u8 unk12[0x10];
     u8 unk22;
     u8 unk23;
@@ -42,8 +43,15 @@ extern u8 data_020a0ef0;
 extern u16 data_020a0f1c;
 extern u16 data_020a0f28;
 extern u8 data_020a0ef8;
+/* data_020a1020.. is the packet this console sends each frame, packed from
+   the local record and unpacked the same way into data_020a1154 below: +0x0
+   flags, +0x2 frame, +0x6 keys, +0x8/+0x9/+0xa touch x/y/touch (one byte
+   each), +0xb inputYaw, +0xd data_020a0f08, +0xe data_020a0f00, +0xf the
+   0x11 bytes at Rec 0x12. While data_020a0ef8 counts down it carries instead
+   a chunk index at +0x2 and one of the 0x16-byte chunks at data_020a10a4 at
+   +0x3. */
 extern u16 data_020a1020;
-extern u16 data_020a104c;
+extern u16 data_020a104c; /* data_020a1040.flags */
 extern u8 data_020a1022;
 extern u8 data_020a1023[0x16];
 extern u16 data_020a1026;
@@ -55,23 +63,23 @@ extern u8 data_020a102d;
 extern u8 data_020a102e;
 extern u8 data_020a102f[0x11];
 extern Rec data_020a1040;
-extern u8 data_020a1044;
-extern u8 data_020a1046;
-extern u8 data_020a1048;
-extern u16 data_020a104e;
-extern u16 data_020a1050;
+extern u8 data_020a1044;  /* data_020a1040.touch.x */
+extern u8 data_020a1046;  /* data_020a1040.touch.y */
+extern u8 data_020a1048;  /* data_020a1040.touch.touch */
+extern u16 data_020a104e; /* data_020a1040.keys */
+extern u16 data_020a1050; /* data_020a1040.inputYaw */
 extern u8 data_020a0f08;
 extern u8 data_020a0f00;
-extern u8 data_020a1052[0x11];
+extern u8 data_020a1052[0x11]; /* data_020a1040.unk12 */
 extern u8 data_020a10a4[0x16];
 extern u8 data_020a10ba[0x16];
 extern u8 data_020a10d0[0x16];
 extern u8 data_020a10e6[0x16];
 extern u8 data_020a1112[0x16];
 extern u8 data_020a0f04;
-extern u16 data_020a1160;
+extern u16 data_020a1160; /* data_020a1154[0].flags */
 extern Rec data_020a1154[4];
-extern Rec data_020a1178;
+extern Rec data_020a1178; /* data_020a1154[1] */
 extern u8 data_020a0f10;
 extern u8 data_020a0fa6[24];
 extern u8 data_020a0fbe[24];
@@ -79,8 +87,12 @@ extern s16 data_020a0f2c;
 extern u16 data_020a0f30;
 extern u8 data_020a0efc;
 
-void func_0203ea5c(void)
-{
+/* The link step for modes 1 and 2 (func_0203df40): pack the local input
+   record into the send packet (see data_020a1020), hand it to the link, and
+   unpack each player's received packet (func_0204068c, by player index) into
+   data_020a1154. The copies take their sizes from sp14 (2: flags, keys,
+   inputYaw), sp18 (4: frame), sp1c (0x11) and sp24 (0x24, a record). */
+void func_0203ea5c(void) {
     s32 sp4;
     s32 sp8;
     s32 sp28;
@@ -162,17 +174,17 @@ void func_0203ea5c(void)
                 data_020a0ef8 -= 1;
             }
             if (data_020a0ef8 != 0) {
-                if ((u32) data_020a0ef8 > 4U) {
-                    sp2c = (u8) sp10;
+                if ((u32)data_020a0ef8 > 4U) {
+                    sp2c = (u8)sp10;
                 } else {
                     sp2c = data_020a0ef8 - 1;
                 }
-                data_020a1040.unkC = (u16) (data_020a1040.unkC | 1);
+                data_020a1040.flags = (u16)(data_020a1040.flags | 1);
                 CpuCopy8(&data_020a104c, &data_020a1020, sp14);
                 CpuCopy8(&sp2c, &data_020a1022, 1);
-                CpuCopy8((u8 *) ((sp2c * 0x16) + (s32) &data_020a10a4), &data_020a1023, 0x16);
+                CpuCopy8((u8 *)((sp2c * 0x16) + (s32)&data_020a10a4), &data_020a1023, 0x16);
             } else {
-                data_020a1040.unkC = (u16) (data_020a1040.unkC & 0xFFFE);
+                data_020a1040.flags = (u16)(data_020a1040.flags & 0xFFFE);
             }
         }
         if (data_020a0ef8 == 0) {
@@ -212,12 +224,12 @@ void func_0203ea5c(void)
             if (temp_r0_3 != 0) {
                 data_020a0f1c |= 0xC000;
             }
-            if (data_020a1154[0].unkC & 0x2000) {
+            if (data_020a1154[0].flags & 0x2000) {
                 sp8 = 1;
             }
             break;
         case 4:
-            if ((data_020a1040.unkC & 0x4000) && (data_020a1154[0].unkC & 0x2000)) {
+            if ((data_020a1040.flags & 0x4000) && (data_020a1154[0].flags & 0x2000)) {
                 sp8 = 1;
             } else {
                 temp_r0_4 = func_020406b4(&data_020a1020, &sp2e);
@@ -225,7 +237,7 @@ void func_0203ea5c(void)
                 if (temp_r0_4 != 0) {
                     data_020a0f1c |= 0xC000;
                 }
-                if (data_020a1040.unkC & 0x4000) {
+                if (data_020a1040.flags & 0x4000) {
                     sp8 = 1;
                 }
             }
@@ -242,15 +254,15 @@ void func_0203ea5c(void)
             temp_r0_6 = func_0204068c(0U);
             if (temp_r0_6 != 0) {
                 CpuCopy8(temp_r0_6, &data_020a1160, sp14);
-                if (data_020a1154[0].unkC & 0x8000) {
-                    if (data_020a1154[0].unkC & 1) {
+                if (data_020a1154[0].flags & 0x8000) {
+                    if (data_020a1154[0].flags & 1) {
                         if (data_020a0f10 != 0) {
                             CpuCopy8(temp_r0_6 + 2, &sp2c, 1);
                             switch (sp2c) {
                             default:
                                 break;
                             case 0:
-                                data_020a1040.unkC = (u16) (data_020a1040.unkC & 0xFFFE);
+                                data_020a1040.flags = (u16)(data_020a1040.flags & 0xFFFE);
                                 func_0205a588(&data_020a10a4, 0, 0x16);
                                 CpuCopy8(temp_r0_6 + 3, &data_020a10a4, 0x16);
                                 break;
@@ -276,15 +288,15 @@ void func_0203ea5c(void)
                             temp_r5 = func_0204068c(var_r7);
                             func_0205a588(var_r6, 0, sp24);
                             if (temp_r5 != 0) {
-                                CpuCopy8(temp_r5, &var_r6->unkC, sp14);
-                                if (var_r6->unkC & 0x8000) {
+                                CpuCopy8(temp_r5, &var_r6->flags, sp14);
+                                if (var_r6->flags & 0x8000) {
                                     data_02099e18 += 1;
                                     CpuCopy8(temp_r5 + 2, var_r6, sp18);
-                                    CpuCopy8(temp_r5 + 6, &var_r6->unkE, sp14);
-                                    CpuCopy8(temp_r5 + 8, &var_r6->unk4, 1);
-                                    CpuCopy8(temp_r5 + 9, &var_r6->unk6, 1);
-                                    CpuCopy8(temp_r5 + 0xA, &var_r6->unk8, 1);
-                                    CpuCopy8(temp_r5 + 0xB, &var_r6->unk10, sp14);
+                                    CpuCopy8(temp_r5 + 6, &var_r6->keys, sp14);
+                                    CpuCopy8(temp_r5 + 8, &var_r6->touch.x, 1);
+                                    CpuCopy8(temp_r5 + 9, &var_r6->touch.y, 1);
+                                    CpuCopy8(temp_r5 + 0xA, &var_r6->touch.touch, 1);
+                                    CpuCopy8(temp_r5 + 0xB, &var_r6->inputYaw, sp14);
                                     CpuCopy8(temp_r5 + 0xF, var_r6->unk12, sp1c);
                                     if ((data_020a0f10 != 0) && (var_r7 == 0)) {
                                         CpuCopy8(temp_r5 + 0xD, &data_020a0f08, 1);
@@ -294,8 +306,8 @@ void func_0203ea5c(void)
                             }
                             var_r6 += 1;
                             var_r7 += 1;
-                        } while ((s32) var_r7 < 4);
-                        if (data_020a1154[data_020a0f10].unkC & 0x8000) {
+                        } while ((s32)var_r7 < 4);
+                        if (data_020a1154[data_020a0f10].flags & 0x8000) {
                             if (data_020a0f10 == 0) {
                                 if (data_020a0ef8 == 0) {
                                     n75 = data_02099e18;
@@ -304,7 +316,7 @@ void func_0203ea5c(void)
                                         var_r6_2 = 1;
                                         var_r2 = 1;
                                         do {
-                                            temp_r1 = var_r5->unkC;
+                                            temp_r1 = var_r5->flags;
                                             if ((temp_r1 & 0x8000) && !(temp_r1 & 1)) {
                                                 var_r6_2 = 0;
                                                 break;
@@ -338,12 +350,12 @@ void func_0203ea5c(void)
                                         }
                                     }
                                 }
-                                if ((u32) data_02099e18 > 1U) {
+                                if ((u32)data_02099e18 > 1U) {
                                     var_r6_4 = &data_020a1178;
                                     var_r3 = 1;
                                     var_r5_3 = 1;
                                     do {
-                                        temp_r2 = var_r6_4->unkC;
+                                        temp_r2 = var_r6_4->flags;
                                         if ((temp_r2 & 0x8000) && !(temp_r2 & 0x4000)) {
                                             var_r3 = 0;
                                             break;
@@ -351,21 +363,22 @@ void func_0203ea5c(void)
                                         var_r6_4 += 1;
                                         var_r5_3 += 1;
                                     } while (var_r5_3 < 4);
-                                    if ((var_r3 != 0) && !(data_020a1154[0].unkC & 0x2000) && !(data_020a1040.unkC & 0x2000)) {
-                                        if ((u32) data_02099e18 > 2U) {
+                                    if ((var_r3 != 0) && !(data_020a1154[0].flags & 0x2000) &&
+                                        !(data_020a1040.flags & 0x2000)) {
+                                        if ((u32)data_02099e18 > 2U) {
                                             func_02040a84();
                                             func_02040a5c();
                                         }
                                         data_020a0f2c = 0;
                                         do {
                                         } while (func_0203fd64() != 1);
-                                        data_020a1040.unkC = (u16) (data_020a1040.unkC | 0x2000);
+                                        data_020a1040.flags = (u16)(data_020a1040.flags | 0x2000);
                                     }
                                     var_r5_4 = &data_020a1178;
                                     var_r2_2 = 0;
                                     var_r3_2 = 1;
                                     do {
-                                        temp_r1_2 = var_r5_4->unkC;
+                                        temp_r1_2 = var_r5_4->flags;
                                         if ((temp_r1_2 & 0x8000) && (temp_r1_2 & 0x4000)) {
                                             var_r2_2 = 1;
                                             break;
@@ -373,19 +386,21 @@ void func_0203ea5c(void)
                                         var_r5_4 += 1;
                                         var_r3_2 += 1;
                                     } while (var_r3_2 < 4);
-                                    if ((var_r2_2 == 0) && (data_020a1154[0].unkC & 0x2000) && (data_020a1040.unkC & 0x2000)) {
+                                    if ((var_r2_2 == 0) && (data_020a1154[0].flags & 0x2000) &&
+                                        (data_020a1040.flags & 0x2000)) {
                                         data_020a0f2c = 1;
                                         do {
                                         } while (func_0203fd64() != 1);
-                                        data_020a1040.unkC = (u16) (data_020a1040.unkC & 0xDFFF);
+                                        data_020a1040.flags = (u16)(data_020a1040.flags & 0xDFFF);
                                     }
                                 }
                             }
                             var_r0 = 0;
                             var_r1 = data_020a1154;
                             do {
-                                if ((var_r1->unkC & 0x8000) && (var_r1->unk0 != data_020a1154[data_020a0f10].unk0)) {
-                                    data_020a1040.unk0 = data_020a1154[0].unk0;
+                                if ((var_r1->flags & 0x8000) &&
+                                    (var_r1->frame != data_020a1154[data_020a0f10].frame)) {
+                                    data_020a1040.frame = data_020a1154[0].frame;
                                     data_020a0f1c |= 2;
                                     if (data_020a0efc == 0) {
                                         sp8 = 0;
@@ -423,7 +438,7 @@ void func_0203ea5c(void)
         var_r2_3 = 0;
         cur133 = &data_020a1154[data_020a0f10];
         do {
-            if (var_r4->unkC & 0x8000) {
+            if (var_r4->flags & 0x8000) {
                 temp_r1_3 = cur133->unk22;
                 temp_r0_9 = var_r4->unk22;
                 if (temp_r0_9 != temp_r1_3) {
@@ -437,7 +452,7 @@ void func_0203ea5c(void)
             var_r2_3 += 1;
             var_r4 += 1;
         } while (var_r2_3 < 4);
-        if ((data_020a1154[0].unkC & 0x2000) || (data_020a1040.unkC & 0x4000)) {
+        if ((data_020a1154[0].flags & 0x2000) || (data_020a1040.flags & 0x4000)) {
             data_020a0efc = 3;
         }
         if (data_020a0efc != 0) {
@@ -445,7 +460,7 @@ void func_0203ea5c(void)
             data_020a1040.unk22 = 0;
             data_020a1040.unk22 = 0;
             data_020a0f30 = 0;
-            data_020a1040.unkC = (u16) (data_020a1040.unkC & 0xEFFF);
+            data_020a1040.flags = (u16)(data_020a1040.flags & 0xEFFF);
             data_020a0efc -= 1;
         }
         if (data_020a0efc != 0) {
@@ -455,7 +470,7 @@ void func_0203ea5c(void)
         var_r4_2 = 1;
         var_r2_4 = 0;
         do {
-            temp_r1_4 = var_r3_3->unkC;
+            temp_r1_4 = var_r3_3->flags;
             if ((temp_r1_4 & 0x8000) && !(temp_r1_4 & 0x1000)) {
                 var_r4_2 = 0;
                 break;
@@ -463,14 +478,14 @@ void func_0203ea5c(void)
             var_r2_4 += 1;
             var_r3_3 += 1;
         } while (var_r2_4 < 4);
-        temp_r0 = data_020a1040.unkC & 0x1000;
+        temp_r0 = data_020a1040.flags & 0x1000;
         if (temp_r0 == 0) {
             return;
         }
         if (var_r4_2 == 0) {
             return;
         }
-        data_020a1040.unkC = (u16) (data_020a1040.unkC & 0xEFFF);
+        data_020a1040.flags = (u16)(data_020a1040.flags & 0xEFFF);
         data_020a0f30 = 1;
         return;
     }
