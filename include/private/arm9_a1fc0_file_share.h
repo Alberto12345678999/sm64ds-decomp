@@ -173,7 +173,7 @@ typedef struct FileShareWork {
     int mParentPacketSize; /* 0x28 -- parent MP send size; func_02040f30 sets it
                               from the WBT sync's peer packet size + 0xe */
     int mChildPacketSize;  /* 0x2c -- child MP send size, likewise */
-    unsigned short mPort;  /* 0x30 -- a1; func_02061c88 registers the port
+    unsigned short mPort;  /* 0x30 -- a1; WM_SetPortCallback registers the port
                               callback on it, func_02041930 sends on it */
     unsigned char pad_032[0x40e];
     unsigned char mArea[sizeof(FileShareParentArea)]; /* 0x440 -- FileShareParentArea

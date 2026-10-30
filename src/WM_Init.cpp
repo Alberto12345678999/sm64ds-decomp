@@ -1,4 +1,13 @@
 //cpp
+/* NitroSDK wm_system.c WM_Init: take buf (0x1300 bytes, 32-byte aligned)
+ * as the WM system buffer, once. ILLEGAL_STATE (3) on a second call,
+ * INVALID_PARAM (6) for a null or misaligned buf or a DMA channel past 3,
+ * WM_DISABLE (4) when ARM7 has no WM handler on PXI tag 0xa. Then clear
+ * the buffer with DMA channel ch and carve ARM7's work area, the status
+ * block and the two FIFO buffers out of it, clear bit 0 of the shared
+ * halfword at 0x027fff96 (func_0206116c), clear every port callback, fill
+ * the free-buffer queue with the ten 0x100-byte FIFO blocks and install
+ * the PXI receive callback (func_02061188). */
 #include "types.h"
 #include "CP15.h"
 
@@ -8,20 +17,19 @@ extern void PXI_Init(void);
 extern int PXI_IsCallbackReady(int tag, int proc);
 extern void DMASyncFillTransfer(int ch, void *dst, int val, int len);
 extern void func_0206116c(void);
-extern int func_02061c88(int idx, int b, int c);
+extern int WM_SetPortCallback(int idx, int b, int c);
 extern void OS_InitMessageQueue(void *s, int *v1, int v2);
 extern int OS_SendMessage(void *q, void *val, int flag);
 extern void PXI_SetFifoRecvCallback(int tag, void *callback);
 
 extern u16 data_020a89a8;
 extern int *data_020a89ac;
-extern int data_020a89b0;
+extern void *data_020a89b0; /* the free FIFO-buffer message queue */
 extern int data_020a89c4;
 extern char data_020a8a40[];
 extern void func_02061188(void);
 
-int func_020616e8(void *buf, int ch)
-{
+int WM_Init(void *buf, int ch) {
     if (data_020a89a8 != 0)
         return 3;
     data_020a89a8 = 1;
@@ -60,7 +68,7 @@ int func_020616e8(void *buf, int ch)
     {
         int i;
         for (i = 0; i < 0x10; i++)
-            func_02061c88((u16)i, 0, 0);
+            WM_SetPortCallback((u16)i, 0, 0);
     }
 
     OS_InitMessageQueue(&data_020a89b0, &data_020a89c4, 0xa);

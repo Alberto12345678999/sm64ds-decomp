@@ -3095,7 +3095,7 @@ src/WM_CheckStateEx.cpp:
     complete
     .text start:0x02061428 end:0x020614d0
 
-src/unnamed/arm9/0206/func_020614d0.cpp:
+src/WMi_CheckIdle.cpp:
     complete
     .text start:0x020614d0 end:0x02061548
 src/WM_GetSystemWork.c:
@@ -3114,7 +3114,7 @@ src/unnamed/arm9/0206/func_02061674.c:
     complete
     .text start:0x02061674 end:0x020616e8
 
-src/unnamed/arm9/0206/func_020616e8.cpp:
+src/WM_Init.cpp:
     complete
     .text start:0x020616e8 end:0x020618b8
 
@@ -3122,7 +3122,7 @@ src/unnamed/arm9/0206/func_020618b8.cpp:
     complete
     .text start:0x020618b8 end:0x02061960
 
-src/unnamed/arm9/0206/func_02061960.cpp:
+src/WM_GetAllowedChannel.cpp:
     complete
     .text start:0x02061960 end:0x020619ac
 
@@ -3138,15 +3138,15 @@ src/unnamed/arm9/0206/func_02061b9c.cpp:
     complete
     .text start:0x02061b9c end:0x02061c20
 
-src/unnamed/arm9/0206/func_02061c20.cpp:
+src/WM_ReadStatus.cpp:
     complete
     .text start:0x02061c20 end:0x02061c88
 
-src/unnamed/arm9/0206/func_02061c88.cpp:
+src/WM_SetPortCallback.cpp:
     complete
     .text start:0x02061c88 end:0x02061ce4
 
-src/unnamed/arm9/0206/func_02061ce4.cpp:
+src/WM_SetIndCallback.cpp:
     complete
     .text start:0x02061ce4 end:0x02061d30
 
@@ -3162,7 +3162,7 @@ src/unnamed/arm9/0206/func_02061ee4.cpp:
     complete
     .text start:0x02061ee4 end:0x02061fdc
 
-src/unnamed/arm9/0206/func_02061fdc.c:
+src/WM_StartParent.c:
     complete
     .text start:0x02061fdc end:0x02062024
 
@@ -3174,31 +3174,31 @@ src/unnamed/arm9/0206/func_020620b0.cpp:
     complete
     .text start:0x020620b0 end:0x020621b8
 
-src/unnamed/arm9/0206/func_020621b8.c:
+src/WM_End.c:
     complete
     .text start:0x020621b8 end:0x02062200
 
-src/unnamed/arm9/0206/func_02062200.c:
+src/WM_Reset.c:
     complete
     .text start:0x02062200 end:0x02062240
 
-src/unnamed/arm9/0206/func_02062240.c:
+src/WM_Initialize.c:
     complete
     .text start:0x02062240 end:0x020622a8
 
-src/unnamed/arm9/0206/func_020622a8.c:
+src/WM_PowerOff.c:
     complete
     .text start:0x020622a8 end:0x020622f0
 
-src/unnamed/arm9/0206/func_020622f0.c:
+src/WM_PowerOn.c:
     complete
     .text start:0x020622f0 end:0x02062338
 
-src/unnamed/arm9/0206/func_02062338.c:
+src/WM_Disable.c:
     complete
     .text start:0x02062338 end:0x02062380
 
-src/unnamed/arm9/0206/func_02062380.c:
+src/WM_Enable.c:
     complete
     .text start:0x02062380 end:0x020623ec
 
@@ -3222,7 +3222,7 @@ src/unnamed/arm9/0206/func_02062734.c:
     complete
     .text start:0x02062734 end:0x02062778
 
-src/unnamed/arm9/0206/func_02062778.c:
+src/WM_GetSharedDataAddress.c:
     complete
     .text start:0x02062778 end:0x020627e8
 
@@ -3246,7 +3246,7 @@ src/unnamed/arm9/0206/func_02062d10.cpp:
     complete
     .text start:0x02062d10 end:0x02062df0
 
-src/unnamed/arm9/0206/func_02062df0.cpp:
+src/WM_StepDataSharing.cpp:
     complete
     .text start:0x02062df0 end:0x020631dc
 
@@ -3254,7 +3254,7 @@ src/unnamed/arm9/0206/func_020631dc.cpp:
     complete
     .text start:0x020631dc end:0x020634fc
 
-src/unnamed/arm9/0206/func_020634fc.c:
+src/WM_MeasureChannel.c:
     complete
     .text start:0x020634fc end:0x02063574
 

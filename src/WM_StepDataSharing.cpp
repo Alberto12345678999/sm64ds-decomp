@@ -60,7 +60,7 @@ typedef struct WMArm9Buf {
     WMStatus *status; /* 0x04 */
 } WMArm9Buf;
 
-int func_02062df0(u8 *self, u8 *sendData, u8 *receiveData) {
+int WM_StepDataSharing(u8 *self, u8 *sendData, u8 *receiveData) {
     WMDataSharingInfo *dsInfo = (WMDataSharingInfo *)self;
     /* the system work, then the return code: a separate WMArm9Buf * local
      * recolours the registers */

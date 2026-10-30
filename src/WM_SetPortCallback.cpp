@@ -3,7 +3,7 @@
 
 extern "C" {
 
-extern int func_0206152c(void);
+extern int WMi_CheckInitialized(void);
 extern char *WM_GetSystemWork(void);
 
 /* WM_GetSystemWork's WMArm9Buf, the per-port tables this function fills,
@@ -15,12 +15,12 @@ typedef struct WMArm9Buf {
     void *portCallbackArgument[16]; /* 0x0ec */
 } WMArm9Buf;
 
-/* NitroSDK WM_SetPortCallback(port, callback, arg): unless WM is not
- * initialised (func_0206152c's error), store the port's receive callback
- * and its argument with interrupts off. */
-int func_02061c88(int port, int callback, int arg) {
+/* NitroSDK wm_system.c WM_SetPortCallback: store port's receive callback
+ * and its argument, with interrupts off. ILLEGAL_STATE (3) before WM_Init
+ * (WMi_CheckInitialized), else WM_ERRCODE_SUCCESS. */
+int WM_SetPortCallback(int port, int callback, int arg) {
     int token = IRQ::Disable();
-    int r = func_0206152c();
+    int r = WMi_CheckInitialized();
     if (r != 0) {
         IRQ::Restore(token);
         return r;

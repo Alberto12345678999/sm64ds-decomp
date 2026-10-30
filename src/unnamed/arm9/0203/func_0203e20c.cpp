@@ -44,7 +44,7 @@ extern int func_02067e70(void *obj);
 extern int func_02067bfc(int a, void *b, int c);
 extern int func_02067928(void *a, void *b);
 extern void func_0205a588(void *dst, int val, unsigned int size);
-extern int func_02061c20(int *arg);
+extern int WM_ReadStatus(int *arg);
 extern void *func_020671b4(u16 idx);
 extern int func_02067250(u16 a);
 extern int func_0206703c(u16 arg0, int sel);
@@ -131,7 +131,7 @@ void func_0203e20c(void)
             p11 += 0x16;
         } while (i2 < 4);
 
-        func_02061c20(&data_020a1680);
+        WM_ReadStatus(&data_020a1680);
 
         pIdx = &data_020a0f9d;
         base1112 = data_020a1112;

@@ -10923,11 +10923,11 @@
     },
     "arm9:0x020614d0": {
       "author": "tangosdev",
-      "name": "func_020614d0"
+      "name": "WMi_CheckIdle"
     },
     "arm9:0x0206152c": {
       "author": "tangosdev",
-      "name": "func_0206152c"
+      "name": "WMi_CheckInitialized"
     },
     "arm9:0x02061548": {
       "author": "tangosdev",
@@ -10947,7 +10947,7 @@
     },
     "arm9:0x020616e8": {
       "author": "tangosdev",
-      "name": "func_020616e8"
+      "name": "WM_Init"
     },
     "arm9:0x020618b8": {
       "author": "tangosdev",
@@ -10955,7 +10955,7 @@
     },
     "arm9:0x02061960": {
       "author": "tangosdev",
-      "name": "func_02061960"
+      "name": "WM_GetAllowedChannel"
     },
     "arm9:0x020619ac": {
       "author": "tangosdev",
@@ -10971,15 +10971,15 @@
     },
     "arm9:0x02061c20": {
       "author": "tangosdev",
-      "name": "func_02061c20"
+      "name": "WM_ReadStatus"
     },
     "arm9:0x02061c88": {
       "author": "tangosdev",
-      "name": "func_02061c88"
+      "name": "WM_SetPortCallback"
     },
     "arm9:0x02061ce4": {
       "author": "tangosdev",
-      "name": "func_02061ce4"
+      "name": "WM_SetIndCallback"
     },
     "arm9:0x02061d30": {
       "author": "tangosdev",
@@ -10995,7 +10995,7 @@
     },
     "arm9:0x02061fdc": {
       "author": "tangosdev",
-      "name": "func_02061fdc"
+      "name": "WM_StartParent"
     },
     "arm9:0x02062024": {
       "author": "tangosdev",
@@ -11007,31 +11007,31 @@
     },
     "arm9:0x020621b8": {
       "author": "tangosdev",
-      "name": "func_020621b8"
+      "name": "WM_End"
     },
     "arm9:0x02062200": {
       "author": "tangosdev",
-      "name": "func_02062200"
+      "name": "WM_Reset"
     },
     "arm9:0x02062240": {
       "author": "tangosdev",
-      "name": "func_02062240"
+      "name": "WM_Initialize"
     },
     "arm9:0x020622a8": {
       "author": "tangosdev",
-      "name": "func_020622a8"
+      "name": "WM_PowerOff"
     },
     "arm9:0x020622f0": {
       "author": "tangosdev",
-      "name": "func_020622f0"
+      "name": "WM_PowerOn"
     },
     "arm9:0x02062338": {
       "author": "tangosdev",
-      "name": "func_02062338"
+      "name": "WM_Disable"
     },
     "arm9:0x02062380": {
       "author": "tangosdev",
-      "name": "func_02062380"
+      "name": "WM_Enable"
     },
     "arm9:0x020623ec": {
       "author": "tangosdev",
@@ -11055,7 +11055,7 @@
     },
     "arm9:0x02062778": {
       "author": "tangosdev",
-      "name": "func_02062778"
+      "name": "WM_GetSharedDataAddress"
     },
     "arm9:0x020627e8": {
       "author": "tangosdev",
@@ -11079,7 +11079,7 @@
     },
     "arm9:0x02062df0": {
       "author": "andrewboudreau",
-      "name": "func_02062df0"
+      "name": "WM_StepDataSharing"
     },
     "arm9:0x020631dc": {
       "author": "ruspecial",
@@ -11087,7 +11087,7 @@
     },
     "arm9:0x020634fc": {
       "author": "tangosdev",
-      "name": "func_020634fc"
+      "name": "WM_MeasureChannel"
     },
     "arm9:0x02063574": {
       "author": "tangosdev",
