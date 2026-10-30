@@ -6,67 +6,60 @@
   "status": "promoted",
   "boundary_confidence": "high",
   "boundary_evidence": [
-    "contiguous linker run: 0x02056870..0x02056c1c, 7 function(s), gapless in config/arm9/delinks.txt (each entry's end is the next entry's start).",
-    "TOP EDGE: GXS::LoadBGPltt (0x02056808..0x02056870) ends exactly where the run begins -- a different namespace, so the GX TU starts at the boundary.",
-    "BOTTOM EDGE: Copy48BytesFixed (0x02056c1c) starts exactly where the run ends -- a C helper, so the run is one original TU.",
+    "One contiguous run of the Nitro SDK's gx_load3d.c, 0x020568cc..0x02056c1c: 6 functions. pret/pokediamond's arm9/lib/NitroSDK/src/GX_load3d.c, compiled with its own pinned mwccarm 1.2/sp2p3, emits 10: the four clear-image loaders, then GX_EndLoadTexPltt 0x58, GX_LoadTexPltt 0x74, GX_BeginLoadTexPltt 0x48, GX_EndLoadTex 0x70, GX_LoadTex 0x164, GX_BeginLoadTex 0x80. The last six land here in that order, five at pret's sizes and LoadTex at 0x14c (SDK version drift). The clear-image loaders are absent because nothing in this game calls them.",
+    "BOTTOM EDGE: GX::LoadBGPltt at 0x02056870 is GX_LoadBGPltt, gx_load2d.c's last function (arm9/GXS); the edge is the file edge 0x020568cc, not the GX/GXS namespace change at 0x02056870.",
+    "TOP EDGE: Copy48BytesFixed (0x02056c1c) is a hand-assembled MI block-copy primitive.",
     "GX is a namespace (Nitro SDK family), not a class: no this, no vtable, no layout -- plain static functions only."
   ],
   "sections": [
     {
       "name": ".text",
-      "start": "0x02056870",
+      "start": "0x020568cc",
       "end": "0x02056c1c"
     }
   ],
   "functions": [
     {
-      "symbol": "_ZN2GX10LoadBGPlttEPKvjj",
-      "address": "0x02056870",
-      "size": "0x0000005c",
-      "legacy_source": "src/_ZN2GX10LoadBGPlttEPKvjj.cpp",
-      "ordinal": 0
-    },
-    {
       "symbol": "_ZN2GX14EndLoadTexPlttEv",
       "address": "0x020568cc",
       "size": "0x00000058",
       "legacy_source": "src/_ZN2GX14EndLoadTexPlttEv.cpp",
-      "ordinal": 1
+      "ordinal": 0
     },
     {
       "symbol": "_ZN2GX11LoadTexPlttEPKvjj",
       "address": "0x02056924",
       "size": "0x00000074",
       "legacy_source": "src/_ZN2GX11LoadTexPlttEPKvjj.cpp",
-      "ordinal": 2
+      "ordinal": 1
     },
     {
       "symbol": "_ZN2GX16BeginLoadTexPlttEv",
       "address": "0x02056998",
       "size": "0x00000048",
       "legacy_source": "src/_ZN2GX16BeginLoadTexPlttEv.cpp",
-      "ordinal": 3
+      "ordinal": 2
     },
     {
       "symbol": "_ZN2GX10EndLoadTexEv",
       "address": "0x020569e0",
       "size": "0x00000070",
       "legacy_source": "src/_ZN2GX10EndLoadTexEv.cpp",
-      "ordinal": 4
+      "ordinal": 3
     },
     {
       "symbol": "_ZN2GX7LoadTexEPKvjj",
       "address": "0x02056a50",
       "size": "0x0000014c",
       "legacy_source": "src/_ZN2GX7LoadTexEPKvjj.cpp",
-      "ordinal": 5
+      "ordinal": 4
     },
     {
       "symbol": "_ZN2GX12BeginLoadTexEv",
       "address": "0x02056b9c",
       "size": "0x00000080",
       "legacy_source": "src/_ZN2GX12BeginLoadTexEv.cpp",
-      "ordinal": 6
+      "ordinal": 5
     }
   ],
   "data": [],
@@ -78,8 +71,8 @@
     "flags": "-O4,p -enum int -lang c99 -char signed -interworking -proc arm946e -gccext,on -msgstyle gcc -Cpp_exceptions off",
     "object": "build/tu/arm9-GX/GX.o (gitignored)",
     "comparison": "tools/match.py extract_func+compare (bytes/relocs) AND tools/objisolate.py plan() (relocation type/addend) AND tools/reloc_audit.py check_destinations() (relocation target identity)",
-    "functions_matched": 7,
-    "functions_declared": 7,
+    "functions_matched": 6,
+    "functions_declared": 6,
     "compilerOnlyOutput": {
       "requested": [],
       "deadstripped": [],

@@ -13,7 +13,7 @@ extern "C" {
 extern void func_ov007_020c32e8(void *a, int b, int c, int d);
 
 extern void RequestScreenFade(int a, int b, int c);
-extern void *data_ov007_0210342c;
+extern char *data_ov007_0210342c;
 extern void func_ov007_020adb84(void);
 
 /* The 8-byte palette record func_ov007_020c3398 allocates:
@@ -38,7 +38,7 @@ typedef char Ov007Display_size_must_be_0x30[sizeof(Ov007Display) == 0x30 ? 1 : -
  * copies row 0xc..0xf (0xc by default) of palette 1 into sub OBJ palette
  * row 0xc and starts a screen fade into func_ov007_020adb84. */
 void func_ov007_020ada70(void) {
-    Ov007Work *g = (Ov007Work *)*(void **)&data_ov007_0210342c;
+    Ov007Work *g = (Ov007Work *)data_ov007_0210342c;
     short st = g->paletteState->currentState;
     Ov007Display *r5 = g->display;
     int n = 0xc;

@@ -7,7 +7,7 @@ typedef struct Ov007Display {
     char pad_00[0x20];
     int characterCount; /* 0x20 */
     /* 0x24: func_ov007_020c99d8 character records; func_ov007_020c33d0
-     * loads one into OBJ VRAM */
+     * loads one into a chosen BG or OBJ character VRAM */
     void **characters;
     int paletteCount; /* 0x28 */
     void **palettes;  /* 0x2c: func_ov007_020c9988 palettes */

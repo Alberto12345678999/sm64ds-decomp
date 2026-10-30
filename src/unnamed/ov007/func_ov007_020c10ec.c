@@ -2,8 +2,8 @@
  * here. Roles are from its drawer func_ov007_020c0b78, the animation step
  * func_ov007_020c0d70 (whose mode/rev/frame/tick/changed names are kept),
  * Sprite_SetAnimation and the child list func_ov007_020c10b0 builds
- * (owner/head/next as there). The word at +0x40 has no reader found yet and
- * stays raw on `c`. */
+ * (owner/head/next as there); prev is the OAM node list's back link
+ * (func_ov007_020c0af4). */
 typedef struct Ov007OamNode {
     int x;       /* 0x00: Q12 screen x; func_ov007_020c0b78 adds it to the parent's */
     int y;       /* 0x04: Q12 screen y */
@@ -26,11 +26,12 @@ typedef struct Ov007OamNode {
     struct Ov007OamNode *owner; /* 0x34: func_ov007_020c10b0 */
     struct Ov007OamNode *head;  /* 0x38: first child */
     struct Ov007OamNode *next;  /* 0x3c: next sibling */
+    struct Ov007OamNode *prev;  /* 0x40: previous node in its OAM list */
 } Ov007OamNode;
 
-typedef char Ov007OamNode_size_must_be_0x40[sizeof(Ov007OamNode) == 0x40 ? 1 : -1];
+typedef char Ov007OamNode_size_must_be_0x44[sizeof(Ov007OamNode) == 0x44 ? 1 : -1];
 
-void func_ov007_020c10ec(char* c) {
+void func_ov007_020c10ec(char *c) {
     Ov007OamNode *n = (Ov007OamNode *)c;
     int i;
     n->y = 0;
@@ -48,8 +49,8 @@ void func_ov007_020c10ec(char* c) {
     n->frame = 0;
     n->tick = 0;
     n->changed = 0;
-    *(int*)(c + 0x40) = 0;
-    n->next = (Ov007OamNode *)*(int *)(c + 0x40);
+    n->prev = 0;
+    n->next = n->prev;
     n->head = n->next;
     n->owner = n->head;
     for (i = 0; i < n->animCount; i++) {

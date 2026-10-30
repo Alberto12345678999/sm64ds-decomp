@@ -10,7 +10,7 @@ extern "C" {
  */
 struct Obj { char pad[0x20]; unsigned int cur; unsigned int end; };
 
-extern int func_02018d48(struct Obj *a, void *b, unsigned int c);
+extern int myFS_ReadFile(struct Obj *a, void *b, unsigned int c);
 extern int func_02018568(void *a);
 extern unsigned int func_02018ac4(void *p);
 extern void DecompressLZ16(void *src, void *dst);
@@ -26,7 +26,7 @@ unsigned int func_0201834c(struct Obj *self, int flag)
     if (len > 8) {
         void *buf = Memory::Allocate(len, -4);
         CP15::FlushAndInvalidateDataCache((unsigned int)buf, len);
-        int r = func_02018d48(self, buf, len);
+        int r = myFS_ReadFile(self, buf, len);
         if (r != len) return result;
         if (func_02018568(buf) != 0) {
             len = func_02018ac4((void *)((char *)buf + 4));

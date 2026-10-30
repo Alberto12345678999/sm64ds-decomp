@@ -22,7 +22,7 @@ typedef struct Vec3Words {
 #include "Ov007Work.h"
 extern short data_02082214[];
 
-extern void Matrix4x3_LoadIdentity(void* mat);
+extern void Matrix4x3_LoadIdentity(void *mat);
 
 /* Reconstructed layouts and names, not recovered class identity; only the
  * slots this file touches.
@@ -46,6 +46,18 @@ typedef struct Ov007Figure {
     void *update;
 } Ov007Figure;
 
+/* The 0x2c-byte record func_ov007_020aea6c allocates; only the slot this
+ * file touches. */
+typedef struct Ov007Item {
+    char pad_00[4];
+    Ov007MenuState *state; /* 0x04: func_ov007_020c9388(1) */
+} Ov007Item;
+
+/* The 8-byte record func_ov007_020ade58 returns. */
+typedef struct Ov007ItemNode {
+    Ov007Item *item; /* 0x00 */
+} Ov007ItemNode;
+
 typedef char Ov007Model_size_must_be_0x98[sizeof(Ov007Model) == 0x98 ? 1 : -1];
 typedef char Ov007Figure_size_must_be_0x1c[sizeof(Ov007Figure) == 0x1c ? 1 : -1];
 
@@ -66,13 +78,13 @@ typedef char Ov007Figure_size_must_be_0x1c[sizeof(Ov007Figure) == 0x1c ? 1 : -1]
  * hook at the top. The offset lands in bone 0's translation. arg0 keeps the
  * void * spelling of the definition; `figure` is the typed view. */
 #pragma opt_common_subs off
-void func_ov007_020b0da0(void* arg0) {
+void func_ov007_020b0da0(void *arg0) {
     Ov007Figure *figure = (Ov007Figure *)arg0;
     Ov007Model *obj = figure->model;
     Ov007MenuState *st = WORK->states[1];
     int counter = st->stateTicks;
     Matrix4x3 *mat = obj->model->transforms;
-    void* ret = func_ov007_020aebac();
+    void *ret = func_ov007_020aebac();
 
     if (counter == 1) {
         obj->visible = 1;
@@ -101,11 +113,7 @@ void func_ov007_020b0da0(void* arg0) {
                         *pflag |= OV007_FIGURE_TOUCHED;
                         data_ov007_02103340 = counter;
                         func_ov007_020bdeb0(0x34);
-                        {
-                            char *t0 = *(char **)WORK->itemNodes[8];
-                            char *t1 = *(char **)(t0 + 4);
-                            *(short *)(t1 + 2) = 4;
-                        }
+                        WORK->itemNodes[8]->item->state->requestedState = 4;
                     }
                 }
             }

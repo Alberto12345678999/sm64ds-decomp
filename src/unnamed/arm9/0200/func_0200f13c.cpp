@@ -1,17 +1,26 @@
 //cpp
 #include "types.h"
+#include "G2.h"
+#include "GX.h"
+
 extern "C" {
 s32 GetLanguageIndex(void);
 u32 LoadCompressedFileAt(unsigned int fileID, void *target);
 void *LoadFile(u16 fileID);
 void Deallocate(void *ptr);
 }
-namespace G2 { void *GetBG2CharPtr(); void *GetBG2ScrPtr(); }
-namespace GX { void LoadOBJPltt(void const *, unsigned int, unsigned int); }
-namespace GXS { void LoadOBJPltt(void const *, unsigned int, unsigned int); }
+
+/* Per-language file IDs, indexed by GetLanguageIndex(). */
 extern unsigned int data_0208a148[];
 extern unsigned int data_0208a15c[];
 extern unsigned int data_0208a120[];
+
+/* Loads the main-engine BG2 graphics (language-specific character data and
+ * the three screens 0x9808..0x980a), main OBJ character data at 0x2000 into
+ * OBJ VRAM (0x06400000) with palette file 0x980f, and sub OBJ character data
+ * at 0x800 into sub OBJ VRAM (0x06600000) with palette file 0x8400. Called from
+ * src/game/stages/d_s_entry_methods.cpp and src/game/stages/d_s_mb.cpp; the
+ * latter runs func_0200f220 (the sub-engine BGs) just before it. */
 extern "C" void func_0200f13c(void) {
     s32 i = GetLanguageIndex();
     LoadCompressedFileAt(data_0208a148[i], G2::GetBG2CharPtr());
