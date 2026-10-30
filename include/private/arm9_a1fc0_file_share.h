@@ -17,8 +17,8 @@ enum { FILE_SHARE_NODE_SIZE = 0xcc0 }; /* node slot stride, sizeof(FileShareNode
 
 typedef struct FileShareNode {
     struct FileShareNode *mNext; /* 0x00 -- list link (func_02041bbc moves nodes) */
-    /* 0x04 -- func_020658c0 registers it (offset, size, 0x20-byte name,
-     * data); func_02041c2c finds a node by its offset */
+    /* 0x04 -- func_020658c0 (WBT_RegisterBlock) registers it (block id,
+     * size, 0x20-byte name, data); func_02041c2c finds a node by its id */
     unsigned char mRegion[0x34];
     /* 0x38 -- FS_InitFile here; func_02042254 opens, reads and closes the
      * region's file through it, func_020412f0 refills a page through it */

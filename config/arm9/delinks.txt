@@ -3827,7 +3827,7 @@ src/__throw_catch_compare.c:
     complete
     .text start:0x02072fcc end:0x020731dc
 
-src/unnamed/arm9/0207/func_020731dc.c:
+src/__register_global_object.c:
     complete
     .text start:0x020731dc end:0x020731fc
 
