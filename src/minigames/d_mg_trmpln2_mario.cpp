@@ -71,6 +71,52 @@ extern "C" BCA_File *sTrmpAnimJump, *sTrmpAnimDoubleJump1, *sTrmpAnimWallJump, *
     *sTrmpAnimRollJumpEnd, *sTrmpAnimWalk, *sTrmpAnimDoubleJump2, *sTrmpAnimJumpEnd, *sTrmpAnimTurn,
     *sTrmpAnimTurnEnd, *sTrmpAnimBounce, *sTrmpAnimStruggle, *sTrmpAnimSdown;
 extern "C" BCA_File **sTrmpBounceAnimTable[];
+/* The model handle constructs through func_02017a24. The thirteen animation
+ * handles construct through SharedFilePtr::Construct. Neither ctor nor dtor
+ * is defined here. */
+struct Trmpln2ModelFilePtr : SharedFilePtr {
+    Trmpln2ModelFilePtr(unsigned int fileId);
+    ~Trmpln2ModelFilePtr();
+};
+struct Trmpln2MarioAnimFilePtr : SharedFilePtr {
+    Trmpln2MarioAnimFilePtr(unsigned int fileId);
+    ~Trmpln2MarioAnimFilePtr();
+};
+typedef char Trmpln2ModelFilePtr_size[sizeof(Trmpln2ModelFilePtr) == 8 ? 1 : -1];
+typedef char Trmpln2MarioAnimFilePtr_size[sizeof(Trmpln2MarioAnimFilePtr) == 8 ? 1 : -1];
+/* Goal slots. Vector3(x, y, z) matches the first slot of each bank. The
+ * other ten store through an unsigned int*, and every slot registers one
+ * destructor. ~TrmpGoal is not defined here. */
+struct TrmpGoal {
+    int x, y, z;
+    TrmpGoal(int px, int py, int pz, int) {
+        x = px;
+        y = py;
+        z = pz;
+    }
+    TrmpGoal(int px, int py, int pz) {
+        unsigned int *p = (unsigned int *)this;
+        p[0] = (unsigned int)px;
+        p[1] = (unsigned int)py;
+        p[2] = (unsigned int)pz;
+    }
+    ~TrmpGoal();
+};
+typedef char TrmpGoal_size[sizeof(TrmpGoal) == 0xc ? 1 : -1];
+extern Trmpln2ModelFilePtr sTrmpMarioModelFile;
+extern Trmpln2MarioAnimFilePtr sTrmpMarioJumpAnimFile;
+extern Trmpln2MarioAnimFilePtr sTrmpMarioDoubleJump1AnimFile;
+extern Trmpln2MarioAnimFilePtr sTrmpMarioWallJumpAnimFile;
+extern Trmpln2MarioAnimFilePtr sTrmpMarioHangUpAnimFile;
+extern Trmpln2MarioAnimFilePtr sTrmpMarioRollJumpEndAnimFile;
+extern Trmpln2MarioAnimFilePtr sTrmpMarioWalkAnimFile;
+extern Trmpln2MarioAnimFilePtr sTrmpMarioDoubleJump2AnimFile;
+extern Trmpln2MarioAnimFilePtr sTrmpMarioJumpEndAnimFile;
+extern Trmpln2MarioAnimFilePtr sTrmpMarioTurnAnimFile;
+extern Trmpln2MarioAnimFilePtr sTrmpMarioTurnEndAnimFile;
+extern Trmpln2MarioAnimFilePtr sTrmpMarioRollJumpAnimFile;
+extern Trmpln2MarioAnimFilePtr sTrmpMarioStruggleAnimFile;
+extern Trmpln2MarioAnimFilePtr sTrmpMarioSdownAnimFile;
 struct W2 {
     int w[2];
 };
@@ -1101,21 +1147,6 @@ namespace ns_020ca430 {
 extern "C" {
 typedef struct BMD_File BMD_File;
 
-extern "C" SharedFilePtr sTrmpMarioModelFile;
-extern "C" SharedFilePtr sTrmpMarioJumpAnimFile;
-extern "C" SharedFilePtr sTrmpMarioDoubleJump1AnimFile;
-extern "C" SharedFilePtr sTrmpMarioWallJumpAnimFile;
-extern "C" SharedFilePtr sTrmpMarioHangUpAnimFile;
-extern "C" SharedFilePtr sTrmpMarioRollJumpEndAnimFile;
-extern "C" SharedFilePtr sTrmpMarioWalkAnimFile;
-extern "C" SharedFilePtr sTrmpMarioDoubleJump2AnimFile;
-extern "C" SharedFilePtr sTrmpMarioJumpEndAnimFile;
-extern "C" SharedFilePtr sTrmpMarioTurnAnimFile;
-extern "C" SharedFilePtr sTrmpMarioTurnEndAnimFile;
-extern "C" SharedFilePtr sTrmpMarioRollJumpAnimFile;
-extern "C" SharedFilePtr sTrmpMarioStruggleAnimFile;
-extern "C" SharedFilePtr sTrmpMarioSdownAnimFile;
-
 extern "C" char *sMgMainCamera;
 
 extern void Camera_ProjectToScreen16(char *p, void *q, short *s);
@@ -1155,11 +1186,6 @@ int Trmp2Mario_Load(char *c) {
 }
 // ---- Trmp2Mario_Destruct
 namespace ns_020ca604 {
-extern "C" SharedFilePtr sTrmpMarioModelFile, sTrmpMarioJumpAnimFile, sTrmpMarioDoubleJump1AnimFile,
-    sTrmpMarioWallJumpAnimFile, sTrmpMarioHangUpAnimFile, sTrmpMarioRollJumpEndAnimFile,
-    sTrmpMarioWalkAnimFile, sTrmpMarioDoubleJump2AnimFile, sTrmpMarioJumpEndAnimFile,
-    sTrmpMarioTurnAnimFile, sTrmpMarioTurnEndAnimFile, sTrmpMarioRollJumpAnimFile,
-    sTrmpMarioStruggleAnimFile, sTrmpMarioSdownAnimFile;
 }
 
 /* mAnmModel's destructor, then the ring and base adapters' (each storing its
@@ -2963,20 +2989,6 @@ namespace ns_020cce0c {
 extern "C" {
 typedef struct BMD_File BMD_File;
 
-extern "C" SharedFilePtr sTrmpMarioModelFile;
-extern "C" SharedFilePtr sTrmpMarioJumpAnimFile;
-extern "C" SharedFilePtr sTrmpMarioDoubleJump1AnimFile;
-extern "C" SharedFilePtr sTrmpMarioWallJumpAnimFile;
-extern "C" SharedFilePtr sTrmpMarioHangUpAnimFile;
-extern "C" SharedFilePtr sTrmpMarioRollJumpEndAnimFile;
-extern "C" SharedFilePtr sTrmpMarioWalkAnimFile;
-extern "C" SharedFilePtr sTrmpMarioDoubleJump2AnimFile;
-extern "C" SharedFilePtr sTrmpMarioJumpEndAnimFile;
-extern "C" SharedFilePtr sTrmpMarioTurnAnimFile;
-extern "C" SharedFilePtr sTrmpMarioTurnEndAnimFile;
-extern "C" SharedFilePtr sTrmpMarioRollJumpAnimFile;
-extern "C" SharedFilePtr sTrmpMarioStruggleAnimFile;
-
 extern "C" char *sMgMainCamera;
 
 extern void Camera_ProjectToScreen16(char *p, void *q, short *s);
@@ -3015,11 +3027,6 @@ int Trmp3DMario_Load(char *c) {
 }
 // ---- Trmp3DMario_Destruct
 namespace ns_020ccfc8 {
-extern "C" SharedFilePtr sTrmpMarioModelFile, sTrmpMarioJumpAnimFile, sTrmpMarioDoubleJump1AnimFile,
-    sTrmpMarioWallJumpAnimFile, sTrmpMarioHangUpAnimFile, sTrmpMarioRollJumpEndAnimFile,
-    sTrmpMarioWalkAnimFile, sTrmpMarioDoubleJump2AnimFile, sTrmpMarioJumpEndAnimFile,
-    sTrmpMarioTurnAnimFile, sTrmpMarioTurnEndAnimFile, sTrmpMarioRollJumpAnimFile,
-    sTrmpMarioStruggleAnimFile;
 }
 
 /* mAnmModel's destructor, then the base adapter's (storing its vptr back),
@@ -3315,3 +3322,94 @@ void dMgTrmpObjAdapter_c::Clear() {
 dMgTrmpObjAdapter_c::dMgTrmpObjAdapter_c() {
     mContact = 0;
 }
+
+/* Zero-filled .bss that sits in the same span as the handles. None of these
+ * is dynamic. The anim pointers are already declared extern "C" above. */
+extern "C" {
+BCA_File *sTrmpAnimJump;
+BCA_File *sTrmpAnimDoubleJump1;
+BCA_File *sTrmpAnimWallJump;
+BCA_File *sTrmpAnimHangUp;
+BCA_File *sTrmpAnimRollJumpEnd;
+BCA_File *sTrmpAnimWalk;
+BCA_File *sTrmpAnimDoubleJump2;
+BCA_File *sTrmpAnimJumpEnd;
+BCA_File *sTrmpAnimTurn;
+BCA_File *sTrmpAnimTurnEnd;
+BCA_File *sTrmpAnimBounce;
+BCA_File *sTrmpAnimStruggle;
+BCA_File *sTrmpAnimSdown;
+char *sTrmp3DMarios;
+char *sTrmp2Marios;
+int sTrmpMariosOnLedges;
+int sTrmpGoalSlotCursor;
+int sTrmpComboCount;
+int sTrmpMariosInPlay;
+int sTrmp3DMarioCount;
+int data_ov006_02140598;
+int sTrmpItemHitsOff;
+int sTrmp2MarioTarget;
+int sTrmp2MarioCount;
+}
+
+/* Definition order is the retail __sinit order. The rodata words are copied
+ * at startup, so these stay dynamic. */
+extern int sTrmpRowBaseHeights[];
+extern int data_ov006_0212e000;
+extern int data_ov006_0212e020;
+extern int data_ov006_0212dffc;
+extern int data_ov006_0212e008;
+extern int data_ov006_0212e004;
+extern int data_ov006_0212e010;
+extern int data_ov006_0212e00c;
+extern int data_ov006_0212e018;
+extern int data_ov006_0212e014;
+extern int data_ov006_0212dff8;
+extern int data_ov006_0212e01c;
+
+Trmpln2ModelFilePtr sTrmpMarioModelFile(0x216);
+Trmpln2MarioAnimFilePtr sTrmpMarioJumpAnimFile(0x8078);
+Trmpln2MarioAnimFilePtr sTrmpMarioDoubleJump1AnimFile(0x801d);
+Trmpln2MarioAnimFilePtr sTrmpMarioWallJumpAnimFile(0x80be);
+Trmpln2MarioAnimFilePtr sTrmpMarioHangUpAnimFile(0x8071);
+Trmpln2MarioAnimFilePtr sTrmpMarioRollJumpEndAnimFile(0x808f);
+Trmpln2MarioAnimFilePtr sTrmpMarioWalkAnimFile(0x80b4);
+Trmpln2MarioAnimFilePtr sTrmpMarioDoubleJump2AnimFile(0x801e);
+Trmpln2MarioAnimFilePtr sTrmpMarioJumpEndAnimFile(0x8077);
+Trmpln2MarioAnimFilePtr sTrmpMarioTurnAnimFile(0x80ac);
+Trmpln2MarioAnimFilePtr sTrmpMarioTurnEndAnimFile(0x80ab);
+Trmpln2MarioAnimFilePtr sTrmpMarioRollJumpAnimFile(0x808e);
+Trmpln2MarioAnimFilePtr sTrmpMarioStruggleAnimFile(0x80a4);
+Trmpln2MarioAnimFilePtr sTrmpMarioSdownAnimFile(0x8092);
+
+extern "C" {
+int sTrmpRowHeights[2] = { sTrmpRowBaseHeights[0], sTrmpRowBaseHeights[1] };
+int sTrmp3DFallSpeed = data_ov006_0212e000;
+int sTrmp3DGravityStep = data_ov006_0212e020;
+int sTrmp3DJumpOffSpeed = data_ov006_0212dffc;
+int sTrmp3DBounceScale = data_ov006_0212e008;
+int sTrmp3DHardBounceScale = data_ov006_0212e004;
+}
+
+TrmpGoal sTrmpGoalSlots((int)-0x50000, 0x100000, 0, 0);
+TrmpGoal data_ov006_02140784((int)-0x30000, 0x100000, 0);
+TrmpGoal data_ov006_02140790(0x10000, 0x100000, 0);
+TrmpGoal data_ov006_0214079c(0x10000, 0x100000, 0);
+TrmpGoal data_ov006_021407a8(0x30000, 0x100000, 0);
+TrmpGoal data_ov006_021407b4(0x50000, 0x100000, 0);
+
+extern "C" {
+int sTrmp2FallSpeed[1] = { data_ov006_0212e010 };
+int sTrmp2GravityStep = data_ov006_0212e00c;
+int data_ov006_0214053c = data_ov006_0212e018;
+int sTrmpSpeedScale = data_ov006_0212e014;
+int sTrmp2RiseSpeedMax[1] = { data_ov006_0212dff8 };
+int sTrmp2DriftScale = data_ov006_0212e01c;
+}
+
+TrmpGoal data_ov006_021407c0((int)-0x50000, 0x100000, 0, 0);
+TrmpGoal data_ov006_021407cc((int)-0x30000, 0x100000, 0);
+TrmpGoal data_ov006_021407d8(0x10000, 0x100000, 0);
+TrmpGoal data_ov006_021407e4(0x10000, 0x100000, 0);
+TrmpGoal data_ov006_021407f0(0x30000, 0x100000, 0);
+TrmpGoal data_ov006_021407fc(0x50000, 0x100000, 0);

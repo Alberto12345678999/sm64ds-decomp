@@ -12393,10 +12393,8 @@
     },
     "sTrmp3DFallSpeed": {
       "src/minigames/d_mg_trmpln2_mario.cpp": [
-        "return:int"
-      ],
-      "src/unnamed/ov006/__sinit_ov006_0212f6b4.cpp": [
-        "return:int"
+        "return:int",
+        "return:int []"
       ]
     },
     "sTrmpAnimRollJumpEnd": {
@@ -12476,6 +12474,9 @@
     "sTrmp2RiseSpeedMax": {
       "include/decl_common.h": [
         "return:int []"
+      ],
+      "src/minigames/d_mg_trmpln2_mario.cpp": [
+        "return:int"
       ]
     },
     "sTrmp2FallSpeed": {
@@ -12483,6 +12484,7 @@
         "return:int []"
       ],
       "src/minigames/d_mg_trmpln2_mario.cpp": [
+        "return:int",
         "return:int []"
       ]
     },
@@ -12502,16 +12504,6 @@
         "return:int",
         "return:void *",
         "return:void * []"
-      ]
-    },
-    "sTrmpMarioModelFile": {
-      "src/unnamed/ov006/__sinit_ov006_0212f6b4.cpp": [
-        "return:int []"
-      ]
-    },
-    "sTrmpGoalSlots": {
-      "src/unnamed/ov006/__sinit_ov006_0212f6b4.cpp": [
-        "return:Vector3"
       ]
     },
     "sTrmpItems": {
@@ -16343,10 +16335,6 @@
       "src/unnamed/ov006/__sinit_ov006_0212f52c.c": [
         "kind:data"
       ],
-      "src/unnamed/ov006/__sinit_ov006_0212f6b4.cpp": [
-        "arity:0",
-        "return:void"
-      ],
       "src/unnamed/ov006/__sinit_ov006_02130a08.c": [
         "arity:0",
         "return:void"
@@ -16357,10 +16345,6 @@
     },
     "func_02017a24": {
       "src/unnamed/ov006/__sinit_ov006_0212f52c.c": [
-        "return:void"
-      ],
-      "src/unnamed/ov006/__sinit_ov006_0212f6b4.cpp": [
-        "param:#2 int",
         "return:void"
       ],
       "src/unnamed/ov006/__sinit_ov006_02130a08.c": [
