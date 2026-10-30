@@ -21,7 +21,7 @@ src/game/actors/d_a_obj_hm_maruta.cpp:
 src/game/actors/d_a_mky.cpp:
     complete
     .text start:0x02111688 end:0x02114690
-
-src/unnamed/ov030/__sinit_ov030_02114924.cpp:
-    complete
     .init start:0x02114924 end:0x02114dd0
+    .ctor start:0x02114dd8 end:0x02114ddc
+    .data start:0x02115ac8 end:0x02115b78
+    .bss start:0x02115cd0 end:0x02115ebc
