@@ -4018,10 +4018,6 @@
         "return:int",
         "return:void"
       ],
-      "src/minigames/d_s_mg_base.cpp": [
-        "param:#1 int *",
-        "return:int"
-      ],
       "src/minigames/d_s_mg_trampoline.cpp": [
         "param:#1 int *",
         "return:int"
@@ -4155,9 +4151,6 @@
         "param:#1 short &",
         "param:#1 short *",
         "return:void"
-      ],
-      "src/minigames/d_s_mg_base.cpp": [
-        "param:#1 short *"
       ],
       "src/minigames/d_s_mg_trampoline.cpp": [
         "param:#1 short *"
@@ -5073,9 +5066,6 @@
       ]
     },
     "_ZN2G212GetBG0ScrPtrEv": {
-      "src/minigames/d_s_mg_base.cpp": [
-        "return:int"
-      ],
       "src/minigames/d_s_mg_trampoline2.cpp": [
         "return:char *"
       ],
@@ -5084,9 +5074,6 @@
       ]
     },
     "_ZN2G212GetBG1ScrPtrEv": {
-      "src/minigames/d_s_mg_base.cpp": [
-        "return:int"
-      ],
       "src/unnamed/ov075/func_ov075_02116128.cpp": [
         "return:unsigned short *"
       ]
@@ -5094,9 +5081,6 @@
     "_ZN2G212GetBG2ScrPtrEv": {
       "src/game/stages/d_s_stage_methods.cpp": [
         "return:char *"
-      ],
-      "src/minigames/d_s_mg_base.cpp": [
-        "return:int"
       ],
       "src/minigames/d_s_mg_flower.cpp": [
         "return:char *"
@@ -5115,9 +5099,6 @@
       ]
     },
     "_ZN2G212GetBG3ScrPtrEv": {
-      "src/minigames/d_s_mg_base.cpp": [
-        "return:int"
-      ],
       "src/minigames/d_s_mg_slots.cpp": [
         "return:char *"
       ],
@@ -5132,10 +5113,6 @@
       "src/minigames/d_s_mg_flower.cpp": [
         "return:char *"
       ],
-      "src/minigames/d_s_mg_base.cpp": [
-        "return:int",
-        "return:int *"
-      ],
       "src/minigames/d_s_mg_slots.cpp": [
         "return:char *"
       ],
@@ -5144,11 +5121,6 @@
       ],
       "src/unnamed/arm9/0201/func_0201b100.c": [
         "return:unsigned int"
-      ]
-    },
-    "_ZN2GX10LoadBGPlttEPKvjj": {
-      "src/minigames/d_s_mg_base.cpp": [
-        "return:int"
       ]
     },
     "_ZN2GX7LoadTexEPKvjj": {
@@ -5162,9 +5134,6 @@
       ],
       "src/minigames/d_s_mini_gm.cpp": [
         "return:void *"
-      ],
-      "src/minigames/d_s_mg_base.cpp": [
-        "return:int"
       ],
       "src/minigames/d_s_mg_slots.cpp": [
         "return:char *"
@@ -5186,10 +5155,6 @@
       "src/minigames/d_s_mg_smartball.cpp": [
         "return:void *"
       ],
-      "src/minigames/d_s_mg_base.cpp": [
-        "return:int",
-        "return:void *"
-      ],
       "src/minigames/d_s_mg_slots.cpp": [
         "return:char *"
       ]
@@ -5197,9 +5162,6 @@
     "_ZN3G2S12GetBG2ScrPtrEv": {
       "src/game/stages/d_s_game_over.cpp": [
         "return:void *"
-      ],
-      "src/minigames/d_s_mg_base.cpp": [
-        "return:int"
       ],
       "src/minigames/d_s_mg_slots.cpp": [
         "return:void *"
@@ -5224,9 +5186,6 @@
       "src/minigames/d_s_mini_gm.cpp": [
         "return:void *"
       ],
-      "src/minigames/d_s_mg_base.cpp": [
-        "return:int"
-      ],
       "src/minigames/d_s_mg_slots.cpp": [
         "return:char *"
       ],
@@ -5244,10 +5203,6 @@
       "src/minigames/d_s_mini_gm.cpp": [
         "return:void *"
       ],
-      "src/minigames/d_s_mg_base.cpp": [
-        "return:int",
-        "return:int *"
-      ],
       "src/minigames/d_s_mg_slots.cpp": [
         "return:char *"
       ],
@@ -5258,17 +5213,7 @@
         "return:int"
       ]
     },
-    "_ZN3G2S13GetBG1CharPtrEv": {
-      "src/minigames/d_s_mg_base.cpp": [
-        "return:int",
-        "return:int *"
-      ]
-    },
     "_ZN3G2S13GetBG2CharPtrEv": {
-      "src/minigames/d_s_mg_base.cpp": [
-        "return:int",
-        "return:int *"
-      ],
       "src/minigames/d_s_mg_slots.cpp": [
         "return:void *"
       ],
@@ -5285,10 +5230,6 @@
       ],
       "src/game/actors/d_a_demo.cpp": [
         "return:char *"
-      ],
-      "src/minigames/d_s_mg_base.cpp": [
-        "return:int",
-        "return:int *"
       ],
       "src/minigames/d_s_mg_smartball.cpp": [
         "return:char *"
@@ -5311,11 +5252,6 @@
       ],
       "src/minigames/unit020bfec0.cpp": [
         "param:#4 int",
-        "return:int"
-      ]
-    },
-    "_ZN3GXS10LoadBGPlttEPKvjj": {
-      "src/minigames/d_s_mg_base.cpp": [
         "return:int"
       ]
     },
@@ -5582,9 +5518,6 @@
       "src/engine/view/d_camera.cpp": [
         "param:#1 bool"
       ],
-      "src/minigames/d_s_mg_base.cpp": [
-        "return:int"
-      ],
       "src/minigames/d_s_mg_pachinko.cpp": [
         "param:#8 void *",
         "return:int"
@@ -5596,9 +5529,6 @@
       ],
       "src/game/stages/d_s_mb.cpp": [
         "return:void"
-      ],
-      "src/minigames/d_s_mg_base.cpp": [
-        "return:int"
       ],
       "src/minigames/d_s_mg_cup.cpp": [
         "return:int"
@@ -5631,10 +5561,6 @@
       "src/game/actors/d_a_demo.cpp": [
         "param:#1 int"
       ],
-      "src/minigames/d_s_mg_base.cpp": [
-        "param:#1 int",
-        "return:int"
-      ],
       "src/ui/hud/d_map.cpp": [
         "param:#1 int"
       ]
@@ -5651,15 +5577,9 @@
       ],
       "src/game/actors/d_a_demo.cpp": [
         "return:int"
-      ],
-      "src/minigames/d_s_mg_base.cpp": [
-        "return:int"
       ]
     },
     "_ZN4CP1527FlushAndInvalidateDataCacheEjj": {
-      "src/minigames/d_s_mg_base.cpp": [
-        "param:#1 void *"
-      ],
       "src/minigames/d_s_mg_smartball.cpp": [
         "param:#1 void *"
       ],
@@ -6059,9 +5979,6 @@
       ],
       "src/game/actors/d_a_trs.cpp": [
         "return:int"
-      ],
-      "src/minigames/d_s_mg_base.cpp": [
-        "return:void"
       ],
       "src/runtime/actor/d_actor.cpp": [
         "return:int"
@@ -9024,12 +8941,6 @@
       ]
     },
     "gMgMenuRow": {
-      "src/minigames/d_s_mg_base.cpp": [
-        "return:char",
-        "return:char []",
-        "return:int",
-        "return:unsigned short"
-      ],
       "src/minigames/d_s_mini_gm.cpp": [
         "return:MgEntry"
       ]
@@ -11831,14 +11742,6 @@
         "return:int"
       ]
     },
-    "sMgSpriteTables": {
-      "src/minigames/d_s_mg_base.cpp": [
-        "return:char * []",
-        "return:int *",
-        "return:void * * []",
-        "return:void * []"
-      ]
-    },
     "sMgWorkBuffer": {
       "src/minigames/d_s_mg_base.cpp": [
         "return:int []"
@@ -11850,15 +11753,6 @@
       ],
       "src/minigames/d_mg_state.cpp": [
         "return:Base *"
-      ],
-      "src/minigames/d_s_mg_base.cpp": [
-        "return:Base *",
-        "return:C *",
-        "return:char * []",
-        "return:int",
-        "return:int *",
-        "return:int * []",
-        "return:void *"
       ],
       "src/minigames/unit020b2c84.cpp": [
         "return:Obj *"
@@ -11878,17 +11772,11 @@
       ]
     },
     "sMgFxPool": {
-      "src/minigames/d_s_mg_base.cpp": [
-        "return:Elem []"
-      ],
       "src/unnamed/ov004/func_ov004_020b2c58.c": [
         "return:void *"
       ]
     },
     "sMgBannerGfxSlotUsed": {
-      "src/minigames/d_s_mg_base.cpp": [
-        "return:char []"
-      ],
       "src/minigames/unit020b2c84.cpp": [
         "return:unsigned char []"
       ]
@@ -15805,12 +15693,6 @@
     "func_02012e1c": {
       "src/minigames/d_s_mg_base.cpp": [
         "arity:1"
-      ]
-    },
-    "func_02013580": {
-      "src/minigames/d_s_mg_base.cpp": [
-        "param:#1 unsigned int",
-        "return:unsigned int"
       ]
     },
     "func_020139b8": {
@@ -20855,14 +20737,7 @@
     },
     "Mg_SetSessionBest": {
       "src/minigames/d_s_mg_base.cpp": [
-        "arity:1",
         "return:int"
-      ]
-    },
-    "Mg_GetSaveTable": {
-      "src/minigames/d_s_mg_base.cpp": [
-        "arity:0",
-        "return:unsigned int"
       ]
     },
     "Ov004_LoadFile": {
@@ -20916,11 +20791,6 @@
     },
     "Mg_DrawSpriteListEntry": {
       "include/decl_common.h": [
-        "param:#2 void *",
-        "param:#3 void *",
-        "return:int"
-      ],
-      "src/minigames/d_s_mg_base.cpp": [
         "param:#2 void *",
         "param:#3 void *",
         "return:int"
@@ -20983,11 +20853,6 @@
         "return:void"
       ]
     },
-    "Mg_DrawTally": {
-      "src/minigames/d_s_mg_base.cpp": [
-        "param:#2 unsigned int"
-      ]
-    },
     "Mg_DrawRecordRow": {
       "src/minigames/d_s_mg_base.cpp": [
         "param:#1 void *"
@@ -21021,16 +20886,6 @@
       ],
       "src/minigames/d_s_mg_slots.cpp": [
         "param:#1 int"
-      ]
-    },
-    "Mg_SubCredits": {
-      "src/minigames/d_s_mg_base.cpp": [
-        "param:#2 void *"
-      ]
-    },
-    "Mg_AddCredits": {
-      "src/minigames/d_s_mg_base.cpp": [
-        "param:#2 void *"
       ]
     },
     "Mg_RenderSpriteOnNoMtx": {
@@ -21079,7 +20934,6 @@
     },
     "Banner_Init": {
       "src/minigames/d_s_mg_base.cpp": [
-        "param:#1 Elem *",
         "param:#3 int",
         "param:#4 int"
       ]
@@ -21132,11 +20986,6 @@
     "Mg_ResetBannerLayout": {
       "include/decl_common.h": [
         "arity:1"
-      ]
-    },
-    "_ZN10dMgPsOpt_c6UpdateEv": {
-      "src/minigames/d_s_mg_base.cpp": [
-        "return:int"
       ]
     },
     "Camera_InitDealerView": {
