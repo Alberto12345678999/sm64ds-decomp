@@ -3733,13 +3733,9 @@ src/__register_global_object.c:
     complete
     .text start:0x020731dc end:0x020731fc
 
-src/_ZSt9terminatev.cpp:
+src/NMWException.cpp:
     complete
-    .text start:0x020731fc end:0x02073220
-
-src/_ZSt9dthandlerv.cpp:
-    complete
-    .text start:0x02073220 end:0x0207322c
+    .text start:0x020731fc end:0x0207322c
 
 src/unnamed/arm9/0207/func_0207322c.c:
     complete

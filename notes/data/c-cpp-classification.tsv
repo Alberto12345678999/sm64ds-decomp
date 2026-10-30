@@ -2936,8 +2936,6 @@ src/__destroy_global_chain.c	PURE-C	arm9				1		None		-
 src/__call_static_initializers.c	PURE-C	arm9				1		None		-
 src/__throw_catch_compare.c	PURE-C	arm9				1		None		-
 src/__register_global_object.c	PURE-C	arm9				1		None		-
-src/_ZSt9terminatev.cpp	PURE-C	arm9				1		None		-
-src/_ZSt9dthandlerv.cpp	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0207/func_0207322c.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0207/func_02073238.c	PURE-C	arm9				1		None		-
 src/__cxa_vec_delete.c	PURE-C	arm9				1		None		-
