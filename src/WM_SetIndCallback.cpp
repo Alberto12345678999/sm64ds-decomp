@@ -1,5 +1,5 @@
 //cpp
-/* NitroSDK wm_system.c WM_SetIndCallback: install callback for the
+/* NitroSDK wm_sync.c WM_SetIndCallback: install callback for the
  * indications ARM7 sends outside any request's own callback, with
  * interrupts off. WM_ERRCODE_ILLEGAL_STATE (3) before WM_Init, else
  * WM_ERRCODE_SUCCESS. */

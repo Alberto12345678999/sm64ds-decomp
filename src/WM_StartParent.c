@@ -1,7 +1,8 @@
-/* NitroSDK wm_standard.c WM_StartParent: IDLE to PARENT, with the parameters WM_SetParentParameter set. Refuse unless WM is
- * in state IDLE (2), register callback for API 8 (START_PARENT) and send
- * that command with no parameters; WM_ERRCODE_OPERATING (2) once it is
- * queued, the callback reporting the result. */
+/* NitroSDK wm_standard.c WM_StartParent: IDLE to PARENT, with the parameters
+ * WM_SetParentParameter set. Refuse unless WM is in state IDLE (2), register
+ * callback for API 8 (START_PARENT) and send that command with no parameters;
+ * WM_ERRCODE_OPERATING (2) once it is queued, the callback reporting the
+ * result. */
 extern int WM_CheckStateEx(int paramNum, ...);
 extern void WM_SetCallbackTable(int i, int val);
 extern int WM_SendCommand(short id, unsigned short paramNum, ...);

@@ -33,6 +33,18 @@ void func_020132d8(void);
 unsigned short func_0203da80(unsigned short);
 int func_02030e4c(void);
 
+/* The main loop (main.cpp), never returning. data_0209d50c records the
+   step it is in. Each frame: the lid check (func_02019ac4), the frame
+   start (func_02019390), the touch and button records (func_0203bb60,
+   func_0203bc7c), the soft reset check (func_02023498), the scene spawn
+   and the process lists (dScene_c::SpawnIfNecessary, func_02044120),
+   GraphCallback1 (func_02019404), the frame count data_020a0db0, the 3D
+   swap request (func_020190b8) with the VBlank IRQ held, the frame wait
+   (func_0201a4bc) and the link step (func_0201ffcc). The active player's
+   button word also goes into the 32-entry ring data_0209d534. Then the sound
+   update (func_020132d8, once data_0209b480 says sound is up) and, with
+   the link started or a link error up, the session check
+   (func_02030e4c). */
 void func_020197b8(void) {
     G2x::SetBlendBrightness(&REG_BLDCNT, 0x3f, 0x1f);
     G2x::SetBlendBrightness(&REG_DB_BLDCNT, 0x3f, 0x1f);

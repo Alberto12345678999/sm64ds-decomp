@@ -4,12 +4,9 @@
  * command bit (8); on a send failure set its error bit and report
  * (3, 4, 0) to the user callback. */
 #include "types.h"
+#include "IRQ.h"
 extern "C" {
 int PXI_SendWordByFifo(int a, int b, int c);
-}
-namespace IRQ {
-unsigned int Disable();
-void Restore(unsigned int);
 }
 struct S {
     void (*fn)(int, int, int);

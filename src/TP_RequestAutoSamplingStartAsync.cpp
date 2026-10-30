@@ -1,14 +1,11 @@
 //cpp
 /* NitroSDK SPI_tp.c TP_RequestAutoSamplingStartAsync(vcount, frequency,
  * samplingBufs, bufSize): record the ring, clear each sample's touch, then
- * send the auto-sampling command (1, bit 2) over PXI tag 6. */
+ * send the auto-sampling command 1 (flag 2) over PXI tag 6. */
 #include "types.h"
+#include "IRQ.h"
 extern "C" {
 int PXI_SendWordByFifo(unsigned int a, unsigned int c, unsigned int b);
-}
-namespace IRQ {
-unsigned int Disable();
-void Restore(unsigned int);
 }
 
 struct S {
@@ -25,23 +22,23 @@ struct S {
 extern S data_020a80cc;
 
 #pragma opt_strength_reduction off
-extern "C" void TP_RequestAutoSamplingStartAsync(unsigned int a, unsigned int b, int x,
-                                                 unsigned int count) {
+extern "C" void TP_RequestAutoSamplingStartAsync(unsigned int vcount, unsigned int frequency,
+                                                 int samplingBufs, unsigned int bufSize) {
     unsigned int i;
     unsigned int irq;
     int ok;
 
-    data_020a80cc.f10 = x;
+    data_020a80cc.f10 = samplingBufs;
     data_020a80cc.fc = 0;
-    data_020a80cc.fe = (u16)b;
-    data_020a80cc.f14 = (u16)count;
-    for (i = 0; i < count; i++) {
+    data_020a80cc.fe = (u16)frequency;
+    data_020a80cc.f14 = (u16)bufSize;
+    for (i = 0; i < bufSize; i++) {
         *(u16 *)(data_020a80cc.f10 + (i << 3) + 4) = 0;
     }
     irq = IRQ::Disable();
-    if (PXI_SendWordByFifo(6, (b & 0xff) | 0x2000100, 0) < 0)
+    if (PXI_SendWordByFifo(6, (frequency & 0xff) | 0x2000100, 0) < 0)
         ok = 0;
-    else if (PXI_SendWordByFifo(6, a | 0x1010000, 0) < 0)
+    else if (PXI_SendWordByFifo(6, vcount | 0x1010000, 0) < 0)
         ok = 0;
     else
         ok = 1;

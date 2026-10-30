@@ -1,6 +1,6 @@
 //cpp
 /* NitroSDK SPI_tp.c TP_RequestSamplingAsync: send the one-shot sampling
- * command (0, bit 1) over PXI tag 6; on a send failure set its error bit
+ * command 0 (flag 1) over PXI tag 6; on a send failure set its error bit
  * and report (0, 4, 0) to the user callback. */
 #include "IRQ.h"
 

@@ -15,7 +15,7 @@ typedef struct WMArm9Buf {
     void *portCallbackArgument[16]; /* 0x0ec */
 } WMArm9Buf;
 
-/* NitroSDK wm_system.c WM_SetPortCallback: store port's receive callback
+/* NitroSDK wm_sync.c WM_SetPortCallback: store port's receive callback
  * and its argument, with interrupts off. ILLEGAL_STATE (3) before WM_Init
  * (WMi_CheckInitialized), else WM_ERRCODE_SUCCESS. */
 int WM_SetPortCallback(int port, int callback, int arg) {

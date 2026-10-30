@@ -3,15 +3,19 @@
 
 /*
  * NitroSDK FSOverlayInfo, the record FS_LoadOverlayInfo (and the game's
- * copy of it, func_02018c00) fills: overlay `id`'s 0x20-byte entry from the overlay table, then the
- * target processor at +0x20. The names are the SDK's, as pret's pokediamond
- * FS_overlay.h spells them. That later SDK appends a CARDRomRegion
- * file_pos after target (0x2c bytes); this one stops at 0x24, the size
- * the byte-matched stack frames of LoadOverlay, UnloadOverlay and
- * FS_LoadOverlay reserve.
+ * copy of it, func_02018c00) fills: overlay `id`'s 0x20-byte entry from the
+ * overlay table, then the target processor at +0x20. The names are the
+ * SDK's, as pret's pokediamond FS_overlay.h spells them. That later SDK
+ * appends a CARDRomRegion file_pos after target (0x2c bytes); this one
+ * stops at 0x24, the size the byte-matched stack frames of LoadOverlay,
+ * UnloadOverlay and FS_LoadOverlay reserve.
  */
 
 #include "types.h"
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 typedef void (*FSOverlayInitFunc)(void);
 
@@ -33,5 +37,15 @@ typedef struct FSOverlayInfo {
 } FSOverlayInfo;
 
 typedef char FSOverlayInfo_size_must_be_0x24[sizeof(FSOverlayInfo) == 0x24 ? 1 : -1];
+
+/* The game's copy of FS_LoadOverlayInfo: fill info with overlay id's table
+   entry for target (0 ARM9, 1 ARM7); 0 if id is past the table. */
+int func_02018c00(FSOverlayInfo *info, int target, int id);
+/* Poison an unloaded overlay's code and bss with an undefined instruction. */
+void func_02017fd0(FSOverlayInfo *info);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif
