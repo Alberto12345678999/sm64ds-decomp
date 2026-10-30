@@ -19,6 +19,13 @@
 // the length as 0xc4, which is the whole range including the pad, so the symbol
 // table already had this one boundary right.
 //
+// The name is the compiler's: mwccarm emits a call to __cxa_vec_new for
+// `new T[n]` of a class with a constructor and a destructor (a probe of
+// `new T[7]` compiled with the ROM's flags leaves __cxa_vec_new undefined),
+// and the parameters and cookie are the Itanium C++ ABI's. Player.cpp and
+// dScStage_c::InitResources call it by name because their element
+// constructors are passed by address.
+//
 // The fifth argument arrives on the stack and the handler reads it back from
 // [fp,#0x40]: 9 pushed registers plus the 0x1c frame put the first stacked
 // argument exactly there.
@@ -34,9 +41,8 @@ typedef void (*dtor_t)(void *);
 
 extern "C" void func_02073534(void *base, void *current, unsigned int size, dtor_t dtor);
 
-extern "C" void *func_02073470(unsigned int n, unsigned int elem_size,
-                               unsigned int cookie_size, ctor_t ctor, dtor_t dtor)
-{
+extern "C" void *__cxa_vec_new(unsigned int n, unsigned int elem_size, unsigned int cookie_size,
+                               ctor_t ctor, dtor_t dtor) {
     char *block = (char *)Memory::operator_new2(n * elem_size + cookie_size);
     if (!block) {
         return 0;

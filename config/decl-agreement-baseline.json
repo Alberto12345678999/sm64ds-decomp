@@ -21597,7 +21597,7 @@
         "param:#4 int"
       ]
     },
-    "func_02073470": {
+    "__cxa_vec_new": {
       "src/game/stages/d_s_stage_methods.cpp": [
         "param:#1 int",
         "param:#2 int",

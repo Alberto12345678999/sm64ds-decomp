@@ -7426,3 +7426,4 @@ arm9	0x020685cc	func_020685cc	MBi_ReadIconInfo	NitroSDK mb_gameinfo.c, matches s
 arm9	0x02068680	func_02068680	MBi_MakeGameInfo	NitroSDK mb_gameinfo.c, matches statement for statement; the introduction copy is sized by mystrlen
 arm9	0x0206879c	func_0206879c	MBi_CheckWmErrcode	NitroSDK mb_wm.c, matches statement for statement
 arm9	0x020687f8	func_020687f8	MBi_IsStarted	NitroSDK mb_wm.c, matches statement for statement
+arm9	0x02073470	func_02073470	__cxa_vec_new	mwccarm emits a call to __cxa_vec_new by name for new T[n] of a class with a ctor and dtor (probe: new T[7] leaves an undefined __cxa_vec_new); this is the only array-new helper in the runtime, with the Itanium (count, size, padding, ctor, dtor) parameters and cookie layout

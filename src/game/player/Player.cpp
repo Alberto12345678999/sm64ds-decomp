@@ -23958,7 +23958,7 @@ s32 Player::InitResources()
     void func_ov002_020e6330(void* p);
     void func_ov002_020e6350(void* p);
     void func_ov002_020e5948(void* p);
-    void* func_02073470(int a, int b, int c, void* d, void* e);
+    void *__cxa_vec_new(int a, int b, int c, void *d, void *e);
     void func_ov002_020e63a4(void* p);
     void func_02035644(void* p, int a);
     void func_ov002_020d6368(void* p);
@@ -24038,7 +24038,7 @@ Ld0:
     func_ov002_020e5948(c);
     if (changed != 0) ((Player *)(c))->func_ov002_020beabc();
     mTrailPos =
-        (Vector3 *)func_02073470(0x32, 0xc, 8, (void *)func_0203d384, (void *)_ZN7Vector3D1Ev);
+        (Vector3 *)__cxa_vec_new(0x32, 0xc, 8, (void *)func_0203d384, (void *)_ZN7Vector3D1Ev);
     mTrailFlags = (u8 *)Memory::operator_new2(0x32);
     *(void **)(&mHeldObjQueue) = Memory::operator_new2(0x14);
     __builtin__clear((void*)mHeldObjQueue, 0x14);

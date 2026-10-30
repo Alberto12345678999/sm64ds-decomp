@@ -3,7 +3,7 @@
 #pragma exceptions on
 
 // The whole family is source-built now: __cxa_vec_cleanup at 0x0207328c, this one,
-// __cxa_vec_ctor at 0x020733a8, func_02073470 and func_02073534.
+// __cxa_vec_ctor at 0x020733a8, __cxa_vec_new and func_02073534.
 //
 // MSL C++ runtime array-destroy-with-rethrow helper, the sibling of
 // __cxa_vec_cleanup at 0x0207328c. Runs `dtor` over the `n` elements of `size`

@@ -2784,7 +2784,7 @@ extern "C" void UpdateMinimap(MinimapDesc *desc, u32 a, u32 b, u32 c, u32 d) {
 
 // @symbol StartEntranceFaderWipe
 /* The fader wipe array. dScStage_c::InitResources fills data_0209f324 with
-   func_02073470(7, 0x60, 8, &dFdWipe_cC1, &dFdWipe_cD1): seven objects of 0x60,
+   __cxa_vec_new(7, 0x60, 8, &dFdWipe_cC1, &dFdWipe_cD1): seven objects of 0x60,
    which is sizeof(dFdWipe_c). dScStage_c::CleanupResources tears the array
    down and zeroes it. */
 extern "C" void StartEntranceFaderWipe(int index) {
@@ -4468,7 +4468,7 @@ extern "C" {
 void EndKuppaScript(void);
 void UnloadArchive(int);
 // local extern: the fader array's destructor is passed by address to
-// __cxa_vec_delete here and to func_02073470 in InitResources, which member
+// __cxa_vec_delete here and to __cxa_vec_new in InitResources, which member
 // syntax cannot express.
 void _ZN9dFdWipe_cD1Ev(void *thiz);
 }
@@ -4604,10 +4604,10 @@ int func_0203da9c(void);
 int func_0203da3c(void);
 u32 func_0203dad4(void);
 void func_0203b9b4(int *p, int v);
-void *func_02073470(int a, int b, int c, void *ctor, void *dtor);
+void *__cxa_vec_new(int a, int b, int c, void *ctor, void *dtor);
 void func_ov001_020ab2e4(void);
 // local extern: the fader array's constructor is passed by address to
-// func_02073470, which member syntax cannot express.
+// __cxa_vec_new, which member syntax cannot express.
 void *_ZN9dFdWipe_cC1Ev(void *thiz);
 }
 
@@ -4829,7 +4829,7 @@ int dScStage_c::InitResources() {
         }
 
         data_0209f324 =
-            func_02073470(7, 0x60, 8, (void *)&_ZN9dFdWipe_cC1Ev, (void *)&_ZN9dFdWipe_cD1Ev);
+            __cxa_vec_new(7, 0x60, 8, (void *)&_ZN9dFdWipe_cC1Ev, (void *)&_ZN9dFdWipe_cD1Ev);
         int faderIndex = 0;
         int faderOffset = 0;
         do {

@@ -12207,7 +12207,7 @@
     },
     "arm9:0x02073470": {
       "author": "tangosdev",
-      "name": "func_02073470"
+      "name": "__cxa_vec_new"
     },
     "arm9:0x02073534": {
       "author": "tangosdev",
