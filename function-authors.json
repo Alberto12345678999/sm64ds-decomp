@@ -10355,11 +10355,11 @@
     },
     "arm9:0x0205c5e4": {
       "author": "tangosdev",
-      "name": "func_0205c5e4"
+      "name": "FSi_TranslateCommand"
     },
     "arm9:0x0205c788": {
       "author": "lplaat",
-      "name": "func_0205c788"
+      "name": "FSi_ReleaseCommand"
     },
     "arm9:0x0205c7c4": {
       "author": "tangosdev",
@@ -10407,23 +10407,23 @@
     },
     "arm9:0x0205cdf4": {
       "author": "tangosdev",
-      "name": "func_0205cdf4"
+      "name": "FSi_SendCommand"
     },
     "arm9:0x0205cf5c": {
       "author": "tangosdev",
-      "name": "func_0205cf5c"
+      "name": "FSi_ExecuteSyncCommand"
     },
     "arm9:0x0205cfa4": {
       "author": "ruspecial",
-      "name": "func_0205cfa4"
+      "name": "FSi_ExecuteAsyncCommand"
     },
     "arm9:0x0205d044": {
       "author": "tangosdev",
-      "name": "func_0205d044"
+      "name": "FSi_NextCommand"
     },
     "arm9:0x0205d23c": {
       "author": "tangosdev",
-      "name": "func_0205d23c"
+      "name": "FS_FindArchive"
     },
     "arm9:0x0205d28c": {
       "author": "tangosdev",
@@ -10439,7 +10439,7 @@
     },
     "arm9:0x0205d304": {
       "author": "andrewboudreau",
-      "name": "func_0205d304"
+      "name": "FSi_GetPackedName"
     },
     "arm9:0x0205d368": {
       "author": "tangosdev",
@@ -10499,11 +10499,11 @@
     },
     "arm9:0x0205d8d8": {
       "author": "tangosdev",
-      "name": "func_0205d8d8"
+      "name": "FSi_AppendToList"
     },
     "arm9:0x0205d920": {
       "author": "tangosdev",
-      "name": "func_0205d920"
+      "name": "FSi_CutFromList"
     },
     "arm9:0x0205d94c": {
       "author": "ruspecial",
@@ -10663,79 +10663,79 @@
     },
     "arm9:0x0205f5c0": {
       "author": "tangosdev",
-      "name": "func_0205f5c0"
+      "name": "PMi_SendLEDPatternCommand"
     },
     "arm9:0x0205f5fc": {
       "author": "tangosdev",
-      "name": "func_0205f5fc"
+      "name": "PMi_SendLEDPatternCommandAsync"
     },
     "arm9:0x0205f650": {
       "author": "tangosdev",
-      "name": "func_0205f650"
+      "name": "PM_GetLCDPower"
     },
     "arm9:0x0205f66c": {
       "author": "ruspecial",
-      "name": "func_0205f66c"
+      "name": "PM_SetLCDPower"
     },
     "arm9:0x0205f68c": {
       "author": "tangosdev",
-      "name": "func_0205f68c"
+      "name": "PMi_SetLCDPower"
     },
     "arm9:0x0205f77c": {
       "author": "andrewboudreau",
-      "name": "func_0205f77c"
+      "name": "PM_GoSleepMode"
     },
     "arm9:0x0205f8b0": {
       "author": "tangosdev",
-      "name": "func_0205f8b0"
+      "name": "PMi_SendPxiData"
     },
     "arm9:0x0205f8e0": {
       "author": "ruspecial",
-      "name": "func_0205f8e0"
+      "name": "PM_GetBackLight"
     },
     "arm9:0x0205f958": {
       "author": "tangosdev",
-      "name": "func_0205f958"
+      "name": "PM_ForceToPowerOff"
     },
     "arm9:0x0205f994": {
       "author": "ruspecial",
-      "name": "func_0205f994"
+      "name": "PM_ForceToPowerOffAsync"
     },
     "arm9:0x0205f9ac": {
       "author": "tangosdev",
-      "name": "func_0205f9ac"
+      "name": "PM_SetBackLight"
     },
     "arm9:0x0205f9e8": {
       "author": "tangosdev",
-      "name": "func_0205f9e8"
+      "name": "PM_SetBackLightAsync"
     },
     "arm9:0x0205fa78": {
       "author": "tangosdev",
-      "name": "func_0205fa78"
+      "name": "PMi_SetLED"
     },
     "arm9:0x0205fab4": {
       "author": "tangosdev",
-      "name": "func_0205fab4"
+      "name": "PMi_SetLEDAsync"
     },
     "arm9:0x0205fb1c": {
       "author": "tangosdev",
-      "name": "func_0205fb1c"
+      "name": "PMi_ReadRegister"
     },
     "arm9:0x0205fb58": {
       "author": "lunavyqo",
-      "name": "func_0205fb58"
+      "name": "PMi_ReadRegisterAsync"
     },
     "arm9:0x0205fbd0": {
       "author": "tangosdev",
-      "name": "func_0205fbd0"
+      "name": "PM_SendUtilityCommandAsync"
     },
     "arm9:0x0205fc44": {
       "author": "tangosdev",
-      "name": "func_0205fc44"
+      "name": "PMi_SendSleepStart"
     },
     "arm9:0x0205fcfc": {
       "author": "tangosdev",
-      "name": "func_0205fcfc"
+      "name": "PMi_CommonCallback"
     },
     "arm9:0x0205fde8": {
       "author": "tangosdev",
@@ -10743,19 +10743,19 @@
     },
     "arm9:0x0205feac": {
       "author": "ruspecial",
-      "name": "func_0205feac"
+      "name": "PMi_CallCallbackAndUnlock"
     },
     "arm9:0x0205ff00": {
       "author": "tangosdev",
-      "name": "func_0205ff00"
+      "name": "PMi_DummyCallback"
     },
     "arm9:0x0205ff08": {
       "author": "tangosdev",
-      "name": "func_0205ff08"
+      "name": "PMi_WaitBusy"
     },
     "arm9:0x0205ff20": {
       "author": "tangosdev",
-      "name": "func_0205ff20"
+      "name": "PMi_Lock"
     },
     "arm9:0x0205ff70": {
       "author": "ruspecial",
@@ -10911,11 +10911,11 @@
     },
     "arm9:0x0206116c": {
       "author": "tangosdev",
-      "name": "func_0206116c"
+      "name": "WmClearFifoRecvFlag"
     },
     "arm9:0x02061188": {
       "author": "andrewboudreau",
-      "name": "func_02061188"
+      "name": "WmReceiveFifo"
     },
     "arm9:0x02061428": {
       "author": "tangosdev",
@@ -10943,7 +10943,7 @@
     },
     "arm9:0x02061674": {
       "author": "tangosdev",
-      "name": "func_02061674"
+      "name": "WM_Finish"
     },
     "arm9:0x020616e8": {
       "author": "tangosdev",
@@ -11083,7 +11083,7 @@
     },
     "arm9:0x020631dc": {
       "author": "ruspecial",
-      "name": "func_020631dc"
+      "name": "WM_StartDataSharing"
     },
     "arm9:0x020634fc": {
       "author": "tangosdev",
@@ -11371,79 +11371,79 @@
     },
     "arm9:0x02065eb8": {
       "author": "tangosdev",
-      "name": "func_02065eb8"
+      "name": "MBi_CommCallParentError"
     },
     "arm9:0x02065edc": {
       "author": "tangosdev",
-      "name": "func_02065edc"
+      "name": "IsChildAidValid"
     },
     "arm9:0x02065ef8": {
       "author": "tangosdev",
-      "name": "func_02065ef8"
+      "name": "MBi_Calc_NextSendBlock"
     },
     "arm9:0x02065f08": {
       "author": "tangosdev",
-      "name": "func_02065f08"
+      "name": "MBi_Calc_SendBlock"
     },
     "arm9:0x02065f78": {
       "author": "andrewboudreau",
-      "name": "func_02065f78"
+      "name": "MBi_CommParentSendData"
     },
     "arm9:0x0206610c": {
       "author": "tangosdev",
-      "name": "func_0206610c"
+      "name": "MBi_CommParentSendBlock"
     },
     "arm9:0x020662c0": {
       "author": "tangosdev",
-      "name": "func_020662c0"
+      "name": "MBi_CommParentSendDlFileInfo"
     },
     "arm9:0x02066470": {
       "author": "tangosdev",
-      "name": "func_02066470"
+      "name": "MBi_CommParentSendMsg"
     },
     "arm9:0x020664b4": {
       "author": "tangosdev",
-      "name": "func_020664b4"
+      "name": "MBi_CommParentRecvData"
     },
     "arm9:0x0206655c": {
       "author": "tangosdev",
-      "name": "func_0206655c"
+      "name": "MBi_CommParentRecvDataPerChild"
     },
     "arm9:0x02066a94": {
       "author": "andrewboudreau",
-      "name": "func_02066a94"
+      "name": "MBi_CommParentCallback"
     },
     "arm9:0x02066fb0": {
       "author": "andrewboudreau",
-      "name": "func_02066fb0"
+      "name": "MBi_CommChangeParentStateCallbackOnly"
     },
     "arm9:0x02066fec": {
       "author": "andrewboudreau",
-      "name": "func_02066fec"
+      "name": "MBi_CommChangeParentState"
     },
     "arm9:0x0206703c": {
       "author": "tangosdev",
-      "name": "func_0206703c"
+      "name": "MB_CommResponseRequest"
     },
     "arm9:0x02067138": {
       "author": "tangosdev",
-      "name": "func_02067138"
+      "name": "MB_CommIsBootable"
     },
     "arm9:0x02067194": {
       "author": "tangosdev",
-      "name": "func_02067194"
+      "name": "MB_CommGetChildrenNumber"
     },
     "arm9:0x020671b4": {
       "author": "tangosdev",
-      "name": "func_020671b4"
+      "name": "MB_CommGetChildUser"
     },
     "arm9:0x02067250": {
       "author": "tangosdev",
-      "name": "func_02067250"
+      "name": "MB_CommGetParentState"
     },
     "arm9:0x020672a4": {
       "author": "tangosdev",
-      "name": "func_020672a4"
+      "name": "MB_CommSetParentStateCallback"
     },
     "arm9:0x020672d0": {
       "author": "tangosdev",

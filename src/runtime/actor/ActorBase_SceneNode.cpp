@@ -1,16 +1,25 @@
 //cpp
 /* fBase_c::SceneNode -- the intrusive scene-graph node every actor carries
- * (arm9 0x0203b3c0..0x0203b4dc).
+ * (arm9 0x0203b358..0x0203b4dc).
  *
- * Four functions, written first-to-last because mwccarm emits .text in reverse
- * source order. Reset clears the four links and deliberately leaves the owner
- * back-pointer at +0x10 alone; fBase_c's own constructor writes that one
- * (see the Manager ctor in include/fBase_c.h).
+ * Six functions, written in descending address order because mwccarm emits
+ * .text in reverse source order: the two members, the tree's add and remove,
+ * and its two pre-order walk steps. Every one works the node's
+ * parent/child/prev/next links. Below the run, func_0203b2ec and its
+ * neighbours are two-word list primitives, a different node shape. Reset
+ * clears the four links and deliberately leaves the owner back-pointer at
+ * +0x10 alone; fBase_c's own constructor writes that one (see the Manager
+ * ctor in include/fBase_c.h).
  *
- * deslop: no leftovers. Both members are real, fully typed, and named by the
- * ROM's own symbols.
+ * deslop leftovers: the two members are real, fully typed, and named by the
+ * ROM's own symbols, but the tree's add/remove (func_0203b438,
+ * func_0203b3c0) still work through shadow structs and all four helpers
+ * keep their address names.
  */
 #include "fBase_c.h"
+
+/* Defined last below (reverse emission); func_0203b394 calls it. */
+extern "C" fBase_c::SceneNode *func_0203b358(fBase_c::SceneNode *node);
 
 #ifndef SM64DS_PLATFORM_PC
 /* Five words: parent, child, prev, next, owner. fBase_c.h asserts the whole
@@ -33,7 +42,7 @@ void fBase_c::SceneNode::Reset()
     next = 0;
 }
 
-/* ROM ordinals 0..1 -- the run's backward neighbours, absorbed in descending
+/* ROM ordinals 2..3 -- the members' backward neighbours, absorbed in descending
  * address order (reverse emission). Each keeps its own namespace so the
  * file-local struct tags do not collide; the functions themselves keep C
  * linkage under their existing names. Bodies as recovered. */
@@ -110,4 +119,39 @@ extern "C" int func_0203b3c0(int* list, struct Node* n)
     }
     return 1;
 }
+}
+
+/* The two pre-order walk steps over the same links, at the bottom of the
+ * run. func_020431c4 (ActorBase.cpp) and ProcessTree::Thing::func_020441cc
+ * (fListNode.cpp) walk the scene tree with them. NSMBW's c_tree.cpp has
+ * cTreeNd_c::getTreeNext and getTreeNextNotChild with the same two bodies,
+ * last in a file whose six functions (ctor, forcedClear, addTreeNode,
+ * removeTreeNode, getTreeNext, getTreeNextNotChild) are this run in reverse
+ * emission order; nothing in this ROM names them, so they keep their
+ * address names. */
+
+/* The pre-order successor of `node`: its first child, else the first node
+ * after its subtree (func_0203b358). */
+// @symbol func_0203b394
+extern "C" fBase_c::SceneNode *func_0203b394(fBase_c::SceneNode *node) {
+    fBase_c::SceneNode *p = node->child;
+    if (p == 0)
+        p = func_0203b358(node);
+    return p;
+}
+
+/* The first node after `node`'s subtree: its next sibling, else the next
+ * sibling of the nearest ancestor that has one; 0 past the root. */
+// @symbol func_0203b358
+extern "C" fBase_c::SceneNode *func_0203b358(fBase_c::SceneNode *node) {
+    fBase_c::SceneNode *n;
+    if (node->next)
+        return node->next;
+    n = node->parent;
+    while (n) {
+        if (n->next)
+            return n->next;
+        n = n->parent;
+    }
+    return 0;
 }

@@ -15,7 +15,8 @@ extern unsigned int data_020a0f64;
 extern unsigned int data_020a0f68;
 extern unsigned int data_020a0f60;
 
-extern void func_0203fdac(void);
+struct WMStartMPCallback;
+extern void func_0203fdac(struct WMStartMPCallback *cb);
 
 extern int func_020625fc(void *fn, unsigned int a, unsigned short b, unsigned int c,
                          unsigned short s0, unsigned short s1,

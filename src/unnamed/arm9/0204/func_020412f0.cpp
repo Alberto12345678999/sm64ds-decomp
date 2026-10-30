@@ -25,9 +25,9 @@ typedef signed short s16;
 typedef signed int s32;
 
 extern int func_02065a4c(int x);
-extern void *func_02041ce0(void *base, int a, int b);
-extern void *func_02041c64(void *base, int a, int b);
-extern void *func_02041c2c(void *base, int key);
+extern FileShareNode *func_02041ce0(void *area, int offset, int size);
+extern FileShareNode *func_02041c64(void *area, int offset, int size);
+extern FileShareNode *func_02041c2c(void *area, int offset);
 extern void func_020657fc(int key);
 extern void func_02041ae8(void *base, void *node);
 extern void func_020423c8(void);
@@ -110,14 +110,14 @@ void func_020412f0(char *thiz)
                 area->mResizeChildren |= (1 << sb);
                 area->mOpenChildren |= (1 << sb);
             } else {
-                FileShareNode *p = (FileShareNode *)func_02041ce0(base, unk18v, nib1);
+                FileShareNode *p = func_02041ce0(base, unk18v, nib1);
 
                 if (p != 0) {
                     area->mReplyPending |= (1 << sb);
                     *(int *)(base + r6 + 4) = p->mFileId;
                     p->mRefCount += 1;
                 } else {
-                    FileShareNode *q = (FileShareNode *)func_02041c64(base, unk18v, nib1);
+                    FileShareNode *q = func_02041c64(base, unk18v, nib1);
                     q->mWaitingChildren |= (1 << sb);
                 }
 
@@ -130,7 +130,7 @@ void func_020412f0(char *thiz)
             FileShareNode *p;
 
             area->mReplyPending |= (1 << sb);
-            p = (FileShareNode *)func_02041c2c(base, m->w1);
+            p = func_02041c2c(base, m->w1);
 
             if (p != 0) {
                 p->mRefCount -= 1;
@@ -166,7 +166,7 @@ void func_020412f0(char *thiz)
         }
 
         n->data_ptr = 0;
-        p = (FileShareNode *)func_02041c2c(base, key);
+        p = func_02041c2c(base, key);
         if (p == 0)
             break;
 

@@ -16,7 +16,7 @@ extern int WM_End(void *x);
 
 #define DISPATCH(a, b) WM_WORK->userCallback((a), (b))
 
-/* NitroSDK WM callback arguments, as func_02066a94.c and func_02040014.c
+/* NitroSDK WM callback arguments, as MB_Parent.cpp and func_02040014.c
  * spell them. Every one starts with WMCallback's apiid/errcode; the switch
  * below picks the shape by apiid. */
 typedef struct WmCallback {

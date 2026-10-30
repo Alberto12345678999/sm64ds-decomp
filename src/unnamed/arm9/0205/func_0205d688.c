@@ -1,7 +1,7 @@
 /* NitroSDK FSi_ReadFileCore(p_file, dst, len, async): clamp len to what is
  * left between prop.file.pos and prop.file.bottom (and to 0), store the
  * request in arg.readfile, and send FS_COMMAND_READFILE (0) through
- * func_0205cdf4 (FSi_SendCommand). A synchronous caller (async == 0; FS_ReadFile)
+ * FSi_SendCommand. A synchronous caller (async == 0; FS_ReadFile)
  * marks the file FS_FILE_STATUS_SYNC (4) first, waits in func_0205d3f4
  * (FS_WaitAsync) and returns the bytes the position moved, or -1 on failure;
  * func_0205d3e4 (FS_ReadFileAsync) returns the clamped length at once. Field
@@ -33,7 +33,7 @@ typedef struct FSFile {
     } arg; /* 0x2c */
 } FSFile;
 
-extern int func_0205cdf4(void *self, int a);
+extern int FSi_SendCommand(void *self, int a);
 extern int func_0205d3f4(void *self);
 int func_0205d688(char *self, int dst, int len, int async) {
     FSFile *p_file = (FSFile *)self;
@@ -59,7 +59,7 @@ int func_0205d688(char *self, int dst, int len, int async) {
     if (is_async == 0) {
         p_file->stat |= 4;
     }
-    func_0205cdf4(self, 0);
+    FSi_SendCommand(self, 0);
     if (is_async == 0) {
         if (func_0205d3f4(self)) {
             n = p_file->prop.file.pos - oldpos;

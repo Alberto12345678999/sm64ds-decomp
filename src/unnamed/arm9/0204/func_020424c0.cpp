@@ -34,7 +34,7 @@ typedef struct {
 extern WorkInfo data_020a1fc0;
 extern int data_02099e6c;
 
-extern void *func_0205d23c(void *a, int b);
+extern void *FS_FindArchive(void *a, int b);
 extern void FS_InitFile(int *s);
 extern int func_0205d5e8(char *self, int a1, int a2, int a3, int a4);
 extern int FS_ReadFile(int a, int b, int c);
@@ -80,7 +80,7 @@ void func_020424c0(void) {
         int roundedSize;
         int j;
 
-        sb = func_0205d23c(&data_02099e6c, 3);
+        sb = FS_FindArchive(&data_02099e6c, 3);
         buf = (char *)fp + 4;
         FS_InitFile(local);
         j = 0;

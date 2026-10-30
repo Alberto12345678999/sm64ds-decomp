@@ -20,7 +20,7 @@
  *   mpSending       set while WM_SetMPDataToPort is pending, cleared in its
  *                   callback (id 0xf)
  *   initialized     set after WM_Initialize, cleared in the WM_End callback
- *   userCallback    every DISPATCH; func_02068ae8 installs func_02066a94
+ *   userCallback    every DISPATCH; func_02068ae8 installs MBi_CommParentCallback
  *   connectBssDesc  WM_StartConnect's pInfo (func_02061e38, id 0xc)
  *   mode            func_02068ae8 sets 1 (parent); func_020688fc's case 2
  *                   sends through this (child) callback

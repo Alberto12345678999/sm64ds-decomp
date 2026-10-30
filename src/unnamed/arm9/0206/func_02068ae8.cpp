@@ -12,16 +12,16 @@ extern char *data_020a9db4;
 extern char *data_020a9db8;
 
 /* Typed through a cast: the other declarations of data_020a9db8 spell it as
- * a byte pointer (func_02066a94.c's MB_WORK). */
+ * a byte pointer (MB_Parent.cpp's MB_WORK). */
 #define MB_WORK ((MbParentWork *)data_020a9db8)
 
 extern void MultiStore16(u16 val, char *dst, int nbytes);
-extern void func_020672a4(u32 val);
+extern void MB_CommSetParentStateCallback(u32 val);
 extern void func_0205a588(void *dst, int val, u32 size);
 extern void func_020684a8(void);
 extern int func_02068d08(void);
 
-extern void func_02066a94(int arg0, char *arg1);
+extern void MBi_CommParentCallback(int arg0, char *arg1);
 extern void func_02069994(char *arg0);
 
 /* NitroSDK MB_StartParent-style setup of the multiboot parent: record the
@@ -48,7 +48,7 @@ int func_02068ae8(int param0)
     sp0 = 0;
     MultiStore16(sp0, (char *)MB_WORK->mChildUser, 0x60a0);
 
-    func_020672a4(cb);
+    MB_CommSetParentStateCallback(cb);
 
     MB_WORK->mBlockSize = WM_WORK->parentMaxSize - 6;
     MB_WORK->mReqPieceSize = WM_WORK->childMaxSize - 2;
@@ -66,7 +66,7 @@ int func_02068ae8(int param0)
     func_0205a588(MB_WORK->mChildResponse, 0, 0x1e);
 
     WM_WORK->mode = 1;
-    WM_WORK->userCallback = (void (*)(int, void *))func_02066a94;
+    WM_WORK->userCallback = (void (*)(int, void *))MBi_CommParentCallback;
     WM_WORK->stateCallback = func_02069994;
 
     WM_WORK->parentParam.parentMaxSize = WM_WORK->parentMaxSize;

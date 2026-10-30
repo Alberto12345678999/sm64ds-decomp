@@ -6,8 +6,9 @@
  * still one function per file under src/, each named for its TP_ function
  * (TP_Init.c, TP_GetCalibratedPoint.c, ..., TPi_TpCallback.c).
  *
- * Member names are coined from how the sibling functions use them; the
- * cartridge carries none. Nothing here is a recovered spelling.
+ * TPData and its members are the SDK's own spellings (they match pret's
+ * pokediamond and pmd-sky tp.h). TPWork's members are coined from how the
+ * sibling functions use them; the cartridge carries no names.
  */
 
 #include "types.h"
@@ -19,7 +20,7 @@ extern "C" {
 /* One panel sample. TP_GetCalibratedPoint transforms a raw pair into screen
    coordinates and copies the other two words through unchanged, so the first
    two are the axes and the last two the touch and validity flags the SDK
-   carries alongside them. func_0205fcfc's Col4 is the same four words. */
+   carries alongside them. func_0203df40's input record carries one at +0x4. */
 typedef struct TPData {
     u16 x;        /* 0x0 */
     u16 y;        /* 0x2 */
@@ -29,9 +30,10 @@ typedef struct TPData {
 
 /* tp.c's state, data_020a80cc.
  *
- * SIZE 0x38, fixed two ways: the next symbol row, data_020a8104, is exactly
- * 0x38 past the start, and the last member is the volatile halfword pair the
- * command helpers poll at +0x34/+0x36.
+ * SIZE 0x38, fixed two ways: the first symbol row past the interior
+ * data_020a80e4 (below) is data_020a8104, exactly 0x38 from the start, and
+ * the last member is the volatile halfword pair the command helpers poll at
+ * +0x34/+0x36.
  *
  * Offsets from the sibling functions: TPi_TpCallback, the PXI receive
  * callback, calls mCallback, fills mBuf, advances mIndex through
@@ -47,9 +49,9 @@ typedef struct TPData {
  * every relocation target. The compiler reaches it as data_020a80cc + 0x18,
  * which resolves to the same word.
  *
- * mSamplingBufs is a TPData array: TP_RequestAutoSamplingStartAsync clears each entry's third
- * word with a byte stride of 8 (`(i << 3) + 4`), and TPi_TpCallback indexes it
- * by mIndex with that same stride. */
+ * mSamplingBufs is a TPData array: TP_RequestAutoSamplingStartAsync clears
+ * each entry's third word with a byte stride of 8 (`(i << 3) + 4`), and
+ * TPi_TpCallback indexes it by mIndex with that same stride. */
 typedef struct TPWork {
     void (*mCallback)(int, int, int); /* 0x00 */
     TPData mBuf;                      /* 0x04 -- the last sample */

@@ -2,11 +2,11 @@
  * 1000). A tick is 64 system-clock cycles (OSi_TICK_TIMERCONTROL runs timer
  * 0 at prescaler 64), and HW_SYSTEM_CLOCK is the SDK's 33514000.
  * The quotient goes through _ll_udiv. */
-typedef unsigned long long u64;
+#include "types.h"
 
 #define HW_SYSTEM_CLOCK 33514000
 
-extern u64 OS_GetTick(void);
+extern s64 OS_GetTick(void);
 
 u64 func_02042784(void)
 {

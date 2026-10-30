@@ -29,13 +29,13 @@
  * touches it. The next function, func_ov007_020bbe60, also uses the block
  * (it loads a portrait drawing into the picker), but it stays in its own
  * file, the intact object ov007/AnimationPathSets that owns the portrait
- * stroke tables. The .rodata layout does not let one TU hold both: this
- * unit's own tables (0x020d7b54..0x020d7c28) lie between
- * unit020b797c's and func_ov007_020bd1c0's, in text order, while the
- * stroke counts at 0x020cdb34 lie inside the portrait coordinate block
- * that follows unit020b2764's .rodata. The previous function,
- * func_ov007_020b8ec0, touches no data and is called only by the module
- * whose bss block ends at 0x02104b98.
+ * stroke tables. The .rodata layout does not let one TU hold both: the
+ * tables these functions read (0x020d7b54..0x020d7c28) lie between the
+ * ones unit020b797c and func_ov007_020bd1c0 read, in text order, while
+ * the stroke counts at 0x020cdb34 lie inside the portrait coordinate
+ * block that follows the .rodata unit020b2764's functions read. The
+ * previous function, func_ov007_020b8ec0, touches no data and is called
+ * only by the module whose bss block ends at 0x02104b98.
  *
  * Emission order: mwccarm 2004/b56 emits one .text section per function in
  * the reverse of source order, so the highest-address function is written
@@ -1149,9 +1149,9 @@ int func_ov007_020ba05c(void) {
                 if (cnt >= 2) {
                     int idx = cnt - 2;
                     int dy = o->yCoords[idx] >> 12;
-                    int rz = r4->deltaY;
+                    int moveY = r4->deltaY;
                     int dx = (o->xCoords[idx] >> 12) - x;
-                    int dd = r4->deltaX * r4->deltaX + rz * rz;
+                    int dd = r4->deltaX * r4->deltaX + moveY * moveY;
                     int dd2;
                     dy -= y;
                     dd2 = dx * dx + dy * dy;

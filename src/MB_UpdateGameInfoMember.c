@@ -6,7 +6,7 @@ extern void MultiCopyHalf(void *dst, void *src, int n);
  * children in nowPlayerFlag (bits 1..15) plus the parent into nowPlayerNum,
  * store the flags with the parent's bit 0 set, and bump seqNoVolat so the
  * beacon (MBi_InitSendVolatBeacon, func_02067f68) sends the volatile part again.
- * func_02066a94 calls it for each registered file whose entries changed.
+ * MBi_CommParentCallback calls it for each registered file whose entries changed.
  * The view extends MBi_MakeGameInfo.c's MBGameInfo with changePlayerFlag,
  * member and seqNoVolat, which only this function writes; only the fields
  * it touches are spelled out. */

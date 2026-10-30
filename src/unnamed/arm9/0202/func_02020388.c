@@ -1,6 +1,6 @@
-int func_0203da9c(void);
-int GetPlayerFlagByte(int handle, int i);
-void func_0203db3c(int i, unsigned char v);
+extern int func_0203da9c(void);
+extern unsigned char GetPlayerFlagByte(int player, int byte);
+extern void func_0203db3c(int byte, int value);
 
 /* If handle is this console's index, clears bits 4-6 of its link
    settings byte 0, the field IsPlayerWarping reads. Player::

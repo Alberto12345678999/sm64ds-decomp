@@ -1,5 +1,5 @@
 extern int WM_PowerOff(void *cb);
-extern void func_02040388(void);
+extern void func_02040388(unsigned short *cb);
 extern int data_020a0f94;
 
 /* Power the wireless hardware off: WM_PowerOff sends WM command 6 (the

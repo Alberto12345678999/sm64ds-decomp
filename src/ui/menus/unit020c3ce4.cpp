@@ -1,5 +1,5 @@
 //cpp
-/* unit020c3ce4 -- ov007 unit 0x020c3ce4..0x020c3e4c: 7 functions, .text only.
+/* unit020c3ce4 -- ov007 unit 0x020c3ce4..0x020c3e7c: 9 functions, .text only.
  *
  * The title menu's memory hooks. ov007 is the title and file-select menu
  * program that dScDSMT_c hosts; outside dScDSMT_c it has no ROM RTTI or
@@ -15,13 +15,18 @@
  * 0 while it is unset). func_ov007_020c3d40 allocates and zero-fills,
  * picking the store routine by the size's low bits. func_ov007_020c3df4's
  * first argument (the callers pass a heap-name string) is not forwarded.
+ * The two .data hook words start out pointing at this unit's own defaults,
+ * func_ov007_020c3e4c (free) and func_ov007_020c3e64 (alloc), which go to
+ * the OS heap: arena 0, the current heap.
  *
  * Edges: the two .data hook words 0x02103254 / 0x02103258 and the bss word
- * 0x02104c14 are referenced only by these functions. The next function,
- * func_ov007_020c3e4c, has no ov007 caller or data. The left edge is
- * medium: func_ov007_020c3bc8 stores a magic word into the neighbouring
- * .data word 0x02103250 and may belong here, but the colour blend
- * func_ov007_020c3be0 between them references no data at all.
+ * 0x02104c14 are referenced only by these functions, and the two defaults
+ * are referenced only by those .data words (no code calls or loads them).
+ * The next function, func_ov007_020c3e7c, frees a sprite group and only
+ * calls in through func_ov007_020c3d1c. The left edge is medium:
+ * func_ov007_020c3bc8 stores a magic word into the neighbouring .data word
+ * 0x02103250 and may belong here, but the colour blend func_ov007_020c3be0
+ * between them references no data at all.
  *
  * Emission order: mwccarm 2004/b56 emits one .text section per function in
  * the reverse of source order, so the highest-address function is written
@@ -34,7 +39,7 @@ extern "C" {
 
 typedef int (*Ov007QueryHook)(void);
 typedef void (*Ov007FreeHook)(void *);
-typedef int (*Ov007AllocHook)(void *);
+typedef void *(*Ov007AllocHook)(unsigned int size);
 
 extern Ov007QueryHook data_ov007_02104c14;
 extern Ov007FreeHook data_ov007_02103254;
@@ -44,6 +49,22 @@ extern void MultiStore32Bytes(unsigned val, int *dst, int len);
 extern void MultiStore_Int(int val, int *dst, int len);
 extern void MultiStore16(unsigned short val, char *dst, int nbytes);
 extern void func_0205a588(int a, int b, int c);
+
+/* local extern: no include/ header declares the OS heap entry points. */
+extern void *OS_AllocFromHeap(int id, int heap, unsigned int size);
+extern void OS_FreeToHeap(int id, int heap, void *ptr);
+
+// @symbol func_ov007_020c3e64
+/* The alloc hook's default (data_ov007_02103258's initial value). */
+void *func_ov007_020c3e64(unsigned int size) {
+    return OS_AllocFromHeap(0, -1, size);
+}
+
+// @symbol func_ov007_020c3e4c
+/* The free hook's default (data_ov007_02103254's initial value). */
+void func_ov007_020c3e4c(void *ptr) {
+    OS_FreeToHeap(0, -1, ptr);
+}
 
 // @symbol func_ov007_020c3e3c
 void func_ov007_020c3e3c(int v) {
@@ -61,8 +82,12 @@ void func_ov007_020c3e1c(int v) {
 }
 
 // @symbol func_ov007_020c3df4
-int func_ov007_020c3df4(int a, void *b) {
-    return data_ov007_02103258(b);
+/* The hook is typed as its default, func_ov007_020c3e64 (size in, block
+ * out). This definition keeps its (int, void *) -> int spelling because
+ * its callers' externs disagree on it (most say void *(int, int)), so the
+ * size and the block are converted here; the bytes are the same. */
+int func_ov007_020c3df4(int heapName, void *size) {
+    return (int)data_ov007_02103258((unsigned int)size);
 }
 
 // @symbol func_ov007_020c3d40
