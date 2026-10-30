@@ -2,18 +2,24 @@
 #define PXI_FIFO_TAG_PM 8
 #define PXI_PROC_ARM7 1
 
-/* The four command slots at 0x020a8138, 8 bytes each. The halfword at +0 is
-   the reply-arrived flag: PM_Init clears all four, func_0205fb58 clears one
-   before sending, and the tag-8 receive callback func_0205fcfc sets it when
-   cmds 0x70..0x73 answer. The word at +4 carries its own label,
-   data_020a813c, which func_0205fcfc dereferences as a short * to store the
-   reply -- so the two symbols are one array seen twice. Unifying them is a
-   separate reconstruction; this type stops at the layout all three consumers
-   already agree on. */
+/* The four command slots at 0x020a8138, 8 bytes each: a reply-arrived flag and
+   the caller's destination for the reply.
+
+   The word at +4 used to carry its own symbol row, data_020a813c, because the
+   only two accesses to it both reach it at that address: func_0205fb58 stores
+   the caller's pointer there before sending, and func_0205fcfc dereferences it
+   to deposit a 0x70..0x73 reply. One array, seen twice. Spelling it as this
+   struct's second field makes mwcc fold the +4 into the pool literal and name
+   data_020a8138 with a RELA addend of 4, which resolves to the same
+   0x020a813c the config records.
+
+   `reply` is a short *: func_0205fcfc stores a halfword through it. `flag` is
+   set by that same callback when the reply lands, cleared by func_0205fb58
+   before sending and by PM_Init for all four slots. Both names are coined. */
 typedef struct {
     unsigned short flag;
     unsigned short pad;
-    int arg;
+    short *reply;
 } PmEntry;
 
 extern unsigned short data_020a8104; /* the init flag */

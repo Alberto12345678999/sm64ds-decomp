@@ -5224,7 +5224,6 @@ data_020a8110 kind:bss addr:0x020a8110
 data_020a8114 kind:bss addr:0x020a8114
 data_020a8124 kind:bss addr:0x020a8124
 data_020a8138 kind:bss addr:0x020a8138
-data_020a813c kind:bss addr:0x020a813c
 data_020a8160 kind:bss addr:0x020a8160
 data_020a8180 kind:bss addr:0x020a8180
 data_020a81bc kind:bss addr:0x020a81bc

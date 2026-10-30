@@ -2016,6 +2016,17 @@ into a pool literal. The wildcarded byte oracle accepts it; the link gate reject
 right, it is a CONFIG symbol-merge change, not a source spelling -- see the dsd symbol-split
 note in the session log.
 
+**RESOLVED (2026-10-30).** Both halves of that verdict have since been settled, and the
+WRONG-DEST half no longer reproduces. Destination resolution is addend-aware now
+(`reloc_audit.resolve_candidate`, `linkcheck.func_relocs_typed`): an `R_ARM_ABS32` against
+`data_020a8138` with a RELA addend of 4 resolves to 0x020a813c, which is exactly what
+`config/arm9/relocs.txt` records, so `match.py --strict-relocs` passes the merged spelling.
+The config half was real and is the actual fix: `bss` rows carry no `size=`, so each runs to
+the next, which made `data_020a8138` **four bytes** -- and `PM_Init` has always looped over
+four 8-byte slots there, so the interior label contradicted a matched function independently
+of any merge. Removing the `data_020a813c` row gives `data_020a8138` its true 0x28 extent.
+Do not re-derive this as a wall; re-measure it.
+
 ## 7c. Third arm9 head cascade (2026-07-22, 7 matches) -- the head's deep tail still pays
 
 Opus 6/11 at 40.5K tok/landed on a div 2-17 pool (BETTER than the div 2-6 pools of 7a/7b),
