@@ -1,17 +1,12 @@
 //cpp
 #include "IRQ.h"
+#include "nitro/spi/tp.h"
 
 extern "C" {
 
 int IPCSend(int cmd, int a, int b);
 
-typedef struct {
-    void (*fp)(int,int,int);
-    char pad[0x34 - 4];
-    volatile unsigned short s34;
-    volatile unsigned short s36;
-} G_t;
-extern G_t data_020a80cc;
+extern TPWork data_020a80cc;
 
 void func_0205f040(void)
 {
@@ -20,14 +15,14 @@ void func_0205f040(void)
     if (!ok) {
         void (*fp)(int,int,int);
         IRQ::Restore(saved);
-        fp = data_020a80cc.fp;
-        data_020a80cc.s34 |= 1;
+        fp = data_020a80cc.mCallback;
+        data_020a80cc.mErrFlags |= 1;
         if (fp == 0) return;
         fp(0, 4, 0);
         return;
     }
-    data_020a80cc.s36 |= 1;
-    data_020a80cc.s34 &= ~1;
+    data_020a80cc.mCommandFlags |= 1;
+    data_020a80cc.mErrFlags &= ~1;
     IRQ::Restore(saved);
 }
 }

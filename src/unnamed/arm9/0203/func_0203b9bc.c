@@ -1,15 +1,11 @@
 #include "types.h"
-/* NitroSDK TPData: one touch-panel sample. The tag is func_0205ea28's
-   (TP_GetCalibratedPoint), whose definition spells the same record V4. */
-struct V4 {
-    u16 x, y, touch, validity;
-};
+#include "nitro/spi/tp.h"
 
-extern volatile struct V4 data_020a0df8[];
-extern struct V4 data_020a0dd8;
+extern volatile TPData data_020a0df8[];
+extern TPData data_020a0dd8;
 
 extern int func_0205edc8(void);
-extern void func_0205ea28(struct V4 *dst, struct V4 *src);
+extern void func_0205ea28(TPData *dst, TPData *src);
 
 /* Read the touch panel through the auto-sampling ring func_0203bbc0 starts
    (data_020a0df8, nine samples, four samples a frame). Of the four samples
@@ -20,8 +16,8 @@ extern void func_0205ea28(struct V4 *dst, struct V4 *src);
    all it becomes a release at (0xff, 0xff), and anything in between keeps
    the last point.
    func_0203df40 copies the result into the local input record. */
-void func_0203b9bc(struct V4 *out) {
-    struct V4 tmp[4];
+void func_0203b9bc(TPData *out) {
+    TPData tmp[4];
     int i;
     int flag;
     int idx;
