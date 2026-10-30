@@ -18,7 +18,7 @@
 // enabled the routine leaves through func_0206dd30 or func_0206dc7c carrying a packed
 // exception code.
 
-extern int func_0207322c(void);
+extern void *func_0207322c(void);
 extern void func_0206dd30(void);
 extern void func_0206dc7c(void);
 

@@ -1,13 +1,13 @@
 #include "Ov007BgLayer.h"
 
-extern int *func_ov007_020c3df4(int, int);
+extern void *func_ov007_020c3df4(int heapName, int size);
 extern void func_ov007_020c0a44(Ov007BgLayer *layer);
 extern int func_ov007_020c3d1c(void);
 
 /* Allocates a BG layer for BG bg at priority, over the width x height-tile
  * screen buffer screen. */
 Ov007BgLayer *func_ov007_020c0aa8(void *screen, int bg, int priority, u16 width, u16 height) {
-    Ov007BgLayer *layer = (Ov007BgLayer *)func_ov007_020c3df4(0, sizeof(Ov007BgLayer));
+    Ov007BgLayer *layer = func_ov007_020c3df4(0, sizeof(Ov007BgLayer));
     func_ov007_020c0a44(layer);
     layer->screen = screen;
     layer->width = width;
