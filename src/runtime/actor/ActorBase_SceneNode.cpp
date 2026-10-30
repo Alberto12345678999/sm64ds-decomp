@@ -11,8 +11,10 @@
  * +0x10 alone; fBase_c's own constructor writes that one (see the Manager
  * ctor in include/fBase_c.h).
  *
- * deslop: no leftovers. Both members are real, fully typed, and named by the
- * ROM's own symbols.
+ * deslop leftovers: the two members are real, fully typed, and named by the
+ * ROM's own symbols, but the tree's add/remove (func_0203b438,
+ * func_0203b3c0) still work through shadow structs and all four helpers
+ * keep their address names.
  */
 #include "fBase_c.h"
 

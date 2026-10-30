@@ -7,7 +7,7 @@
   "boundary_confidence": "high",
   "boundary_evidence": [
     "Contiguous .text span 0x02042804..0x02042fe4: the two SaveData cart I/O statics and their setup func_02042f68, gapless in config/arm9/delinks.txt, all complete.",
-    "Shared private data: the 8-byte magic data_020a4b40 is referenced (relocs.txt: from 0x02042c34, 0x02042f60, 0x02042fe0) by these three functions and nothing else in arm9 or any overlay. func_02042f68 writes it; SaveDataToCart writes it with each block and ReadDataFromCart checks it.",
+    "Shared private data: the 8-byte magic data_020a4b40 is referenced (relocs.txt: from 0x02042c34, 0x02042f60, 0x02042fe0) by these three functions and nothing else in arm9 or any overlay. func_02042f68 writes it; SaveDataToCart writes it to the cart with each block and ReadDataFromCart checks it. In .bss it sits directly below ActorBase's block (0x020a4b48..0x020a4b5c), matching the .text order SaveData2 then ActorBase.cpp.",
     "BOTTOM EDGE: func_020427f8 (src/unnamed/arm9/0204/func_020427f8.c) below touches no data. TOP EDGE: src/runtime/actor/ActorBase.cpp begins at 0x02042fe4. The run is not contiguous with arm9/SaveData (0x02013ad4..0x02013e80), so it is a separate original file."
   ],
   "sections": [
@@ -45,7 +45,7 @@
   "compiler_only_output": [],
   "notes": [
     "New TU named after the tree class SaveData (include/SaveData.h) with the numeric suffix style already used in the tree (Name2.cpp, as in d_s_mg_jump2.cpp), per Juan's 2026-10-11 new-file and placeholder-name rules. Reverse source order: higher addresses at the top of the file.",
-    "func_02042f68 was folded in from its own source once the data_020a4b40 references tied it to the cart I/O pair (2026-10-30). It stays extern \"C\" under its address name: no symbol or cross-reference gives one. Any verification.linkcheck block predates the fold."
+    "func_02042f68 was folded in from its own source once the data_020a4b40 references tied it to the cart I/O pair (2026-10-30). It stays extern \"C\" under its address name: no symbol or cross-reference gives one."
   ],
   "verification": {
     "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",

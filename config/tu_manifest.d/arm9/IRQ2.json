@@ -4,11 +4,12 @@
   "source": "src/IRQ2.cpp",
   "promoted_source": "src/IRQ2.cpp",
   "status": "promoted",
-  "boundary_confidence": "high",
+  "boundary_confidence": "medium",
   "boundary_evidence": [
     "Contiguous linker run arm9:0x0201a4bc..0x0201a5cc, 4 functions, gapless in config/arm9/delinks.txt.",
     "Shared private data: the two OSThreadQueue halfwords data_0209d4fc and data_0209d500 are referenced (relocs.txt) by these four functions and nothing else in arm9 or any overlay. func_0201a4e4 clears them, VBlankHandler wakes them, and func_0201a4d0 / func_0201a4bc sleep on them.",
-    "TOP EDGE: func_0201a490 (0x0201a490..0x0201a4bc) calls the data_0209a03c hook on data_0208ee60 and touches neither queue. BOTTOM EDGE: func_0201a5cc (0x0201a5cc..0x0201a5f8) installs the scene's actor create hooks data_020a4b58 / data_020a4b5c.",
+    "TOP EDGE: func_0201a490 (0x0201a490..0x0201a4bc) calls the data_0209a03c hook on data_0208ee60 and touches neither queue. BOTTOM EDGE: func_0201a5cc (0x0201a5cc..0x0201a5f8) installs the scene's actor create hooks data_020a4b58 / data_020a4b5c. Both edges are negative evidence only.",
+    "Counter-evidence for the outer edges: the unowned .bss block 0x0209d4d4..0x0209d528 interleaves the queue words with words used by Crash (0x0209d4d8), func_0201a614 (4e0), the main loops func_020197b8..func_02019f64 (4e4..4f4, 504..510, 51c) and func_0201a1bc (4f8, 518), and data_0209d4f0 / data_0209d514 are shared between VBlankHandler and the main loops. If that block is one TU's .bss, IRQ2 is part of a larger unit around 0x02019740..0x0201a754.",
     "The file name is the tree class IRQ plus the numeric suffix already used for a second translation unit."
   ],
   "sections": [

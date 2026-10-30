@@ -73,8 +73,8 @@ extern "C" void func_0201a4d0(void) {
 
 // 0x0201a4bc (0x14)
 // @symbol func_0201a4bc
-/* The main loop's frame wait (func_020197b8 raises data_0209d4f0 around
- * it). */
+/* The main loops' frame wait (func_020197b8 and func_020199a4 raise
+ * data_0209d4f0 around it). */
 extern "C" void func_0201a4bc(void) {
     OS_SleepThread(&data_0209d500);
 }
