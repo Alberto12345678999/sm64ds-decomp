@@ -409,14 +409,23 @@ than observed.
 
 `bss` rows in `config/**/symbols.txt` carry no `size=`, so each row's extent runs
 to the next row. A row whose successor sits inside the object it names therefore
-**understates that object**, and the ROM build sizes the delinked block from the
-row, not from the source's type.
+**understates that object**.
 
-Two of these were fixed in one week: `data_020a8138` (the PM command slots) was
-four bytes because `data_020a813c` labelled the `+4` field of its own entries,
+Two of these surfaced in one week: `data_020a8138` (the PM command slots) runs
+four bytes because `data_020a813c` labels the `+4` field of its own entries,
 while `PM_Init` loops over four 8-byte slots; `data_0209f3c4` (the stage graph
-callback) was four bytes -- just the vptr -- because `data_0209f3c8` labelled its
+callback) runs four bytes -- just the vptr -- because `data_0209f3c8` labels its
 matrix member. In both cases the config contradicted an already-matched function.
+
+**Neither row could be deleted.** `dsd delink` needs a symbol at every
+`relocs.txt` target, and `relocs.txt` has no addend field, so an interior row
+that some load points at must stay (deleting `data_020a813c` failed PR
+validation with `No symbol found for relocation ... to 0x020a813c`; #4526 hit
+the same wall at 0x020a80e4 and 0x020a81bc). The fix is on the source side:
+spell the access through the outer object (`data_020a8138[i].reply`), so mwcc
+names the outer symbol with a RELA addend that resolves to the same address
+`relocs.txt` records (see `notes/mwccarm-codegen.md`, and the comments in
+`include/nitro/spi/pm.h` and at `UpdateMinimap` in `d_s_stage_methods.cpp`).
 
 **A sweep does not find more of them, and it is worth knowing why.** Measured on
 arm9 (787 `bss` rows, 588 with extent <= 8):
@@ -446,7 +455,9 @@ object:
 
 > after giving a `bss` symbol a real type, compare `sizeof` that type against the
 > distance to the next row in its module's `symbols.txt`, and if the type spans a
-> following row, that row is an interior label of the same object.
+> following row, that row is an interior label of the same object: spell its
+> accesses through the outer object's type, and keep the row if `relocs.txt`
+> targets it.
 
 The detectors above remain useful as a worklist in the other direction: the `bss`
 objects whose source reaches furthest past their first row are where recovering a
