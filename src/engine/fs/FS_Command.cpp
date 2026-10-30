@@ -16,6 +16,7 @@
  */
 #include "types.h"
 #include "IRQ.h"
+#include "nitro/os/thread.h"
 
 extern "C" {
 
@@ -64,8 +65,6 @@ typedef char FSArchive_size_must_be_0x50[sizeof(FSArchive) == 0x50 ? 1 : -1];
 extern int (*fsi_default_command[])(FSFile *p_file);
 
 void FSi_CutFromList(FSFile *elem);
-void OS_SleepThread(u16 *queue);
-void OS_WakeupThread(u16 *queue);
 
 // @symbol FSi_ReleaseCommand
 void FSi_ReleaseCommand(FSFile *p_file, int ret) {

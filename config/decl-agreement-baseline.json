@@ -303,15 +303,6 @@
       "src/unnamed/arm9/0205/func_02059f2c.c": [
         "arity:3"
       ],
-      "src/unnamed/arm9/0205/func_0205d28c.c": [
-        "arity:3"
-      ],
-      "src/unnamed/arm9/0205/func_0205d2b0.c": [
-        "arity:3"
-      ],
-      "src/unnamed/arm9/0205/func_0205d2dc.c": [
-        "arity:3"
-      ],
       "src/FS_LoadOverlayInfo.c": [
         "arity:3"
       ],
@@ -410,6 +401,9 @@
         "arity:3"
       ],
       "src/engine/mb/MB_Parent.cpp": [
+        "arity:3"
+      ],
+      "src/engine/fs/FS_Archive.cpp": [
         "arity:3"
       ]
     },
@@ -678,10 +672,6 @@
       "src/unnamed/arm9/0201/func_020184e0.cpp": [
         "return:void"
       ],
-      "src/unnamed/arm9/0205/func_0205c9b8.c": [
-        "param:#1 int *",
-        "return:void"
-      ],
       "src/MBi_ReadIconInfo.c": [
         "param:#1 int *",
         "return:void"
@@ -703,10 +693,6 @@
         "param:#1 char *",
         "param:#2 char *"
       ],
-      "src/unnamed/arm9/0205/func_0205c9b8.c": [
-        "param:#1 int *",
-        "return:void"
-      ],
       "src/FSi_LoadOverlayInfoCore.c": [
         "param:#1 void *",
         "param:#2 void *"
@@ -718,6 +704,9 @@
       "src/MBi_ReadIconInfo.c": [
         "param:#1 int *",
         "return:void"
+      ],
+      "src/engine/fs/FS_Archive.cpp": [
+        "param:#1 int *"
       ]
     },
     "GetLevelPart": {
@@ -5364,12 +5353,6 @@
       "src/unnamed/arm9/0205/func_0205a358.cpp": [
         "return:int"
       ],
-      "src/unnamed/arm9/0205/func_0205c864.cpp": [
-        "return:int"
-      ],
-      "src/unnamed/arm9/0205/func_0205caa8.cpp": [
-        "return:int"
-      ],
       "src/WM_SetPortCallback.cpp": [
         "return:int"
       ],
@@ -5383,9 +5366,6 @@
         "return:int"
       ],
       "src/unnamed/arm9/0206/func_02065af0.cpp": [
-        "return:int"
-      ],
-      "src/unnamed/arm9/0206/func_0206703c.cpp": [
         "return:int"
       ],
       "src/unnamed/arm9/0206/func_02068e4c.cpp": [
@@ -5434,33 +5414,6 @@
       "src/engine/fs/FS_Command.cpp": [
         "return:void"
       ],
-      "src/FS_ResumeArchive.cpp": [
-        "return:void"
-      ],
-      "src/unnamed/arm9/0205/func_0205c864.cpp": [
-        "return:void"
-      ],
-      "src/unnamed/arm9/0205/func_0205caa8.cpp": [
-        "return:void"
-      ],
-      "src/FS_ReleaseArchiveName.cpp": [
-        "return:void"
-      ],
-      "src/FS_RegisterArchiveName.cpp": [
-        "return:void"
-      ],
-      "src/unnamed/arm9/0205/func_0205cd5c.cpp": [
-        "return:void"
-      ],
-      "src/FSi_SendCommand.cpp": [
-        "return:void"
-      ],
-      "src/FSi_ExecuteAsyncCommand.cpp": [
-        "return:void"
-      ],
-      "src/FSi_NextCommand.cpp": [
-        "return:void"
-      ],
       "src/unnamed/arm9/0205/func_0205d3e4.cpp": [
         "return:void"
       ],
@@ -5503,16 +5456,6 @@
         "return:void"
       ],
       "src/unnamed/arm9/0206/func_02065af0.cpp": [
-        "return:void"
-      ],
-      "src/unnamed/arm9/0206/func_0206703c.cpp": [
-        "param:#1 int",
-        "return:void"
-      ],
-      "src/unnamed/arm9/0206/func_020671b4.cpp": [
-        "return:void"
-      ],
-      "src/MB_CommSetParentStateCallback.cpp": [
         "return:void"
       ],
       "src/unnamed/arm9/0206/func_02067928.cpp": [
@@ -10580,16 +10523,6 @@
         "return:void *"
       ]
     },
-    "data_020a805c": {
-      "src/unnamed/arm9/0205/func_0205da94.c": [
-        "return:unsigned int"
-      ]
-    },
-    "data_020a8060": {
-      "src/unnamed/arm9/0205/func_0205db2c.c": [
-        "return:unsigned int"
-      ]
-    },
     "data_020a8114": {
       "src/unnamed/arm9/0205/func_0205ff08.c": [
         "return:int"
@@ -10677,9 +10610,6 @@
       ]
     },
     "data_020a9db8": {
-      "src/MB_CommSetParentStateCallback.cpp": [
-        "return:SomeObj *"
-      ],
       "src/unnamed/arm9/0206/func_02067604.c": [
         "return:void *"
       ],
@@ -19097,9 +19027,6 @@
       "src/unnamed/arm9/0204/func_02040c34.c": [
         "arity:3"
       ],
-      "src/FS_InitArchive.c": [
-        "arity:3"
-      ],
       "src/FS_StartOverlay.c": [
         "arity:3"
       ],
@@ -19125,6 +19052,9 @@
         "arity:3"
       ],
       "src/engine/mb/MB_Parent.cpp": [
+        "arity:3"
+      ],
+      "src/engine/fs/FS_Archive.cpp": [
         "arity:3"
       ]
     },
@@ -19164,46 +19094,32 @@
         "param:#2 int"
       ]
     },
-    "FSi_ReleaseCommand": {
-      "src/unnamed/arm9/0205/func_0205caa8.cpp": [
-        "param:#1 int *"
-      ],
-      "src/FSi_NextCommand.cpp": [
-        "param:#1 Node *"
-      ]
-    },
     "FS_SetArchiveProc": {
       "src/unnamed/arm9/0204/func_020423dc.c": [
-        "param:#2 void *"
-      ]
-    },
-    "FS_ResumeArchive": {
-      "src/unnamed/arm9/0205/func_0205c91c.c": [
-        "return:void"
-      ]
-    },
-    "func_0205c864": {
-      "src/unnamed/arm9/0205/func_0205caa8.cpp": [
-        "return:void"
-      ]
-    },
-    "func_0205c91c": {
-      "src/func_0201a2f8.cpp": [
-        "arity:0",
-        "return:void"
-      ]
-    },
-    "func_0205caa8": {
-      "src/unnamed/arm9/0204/func_020423dc.c": [
-        "arity:0",
-        "return:void"
+        "param:#2 void *",
+        "param:#3 int"
       ]
     },
     "FS_LoadArchive": {
       "src/unnamed/arm9/0204/func_020423dc.c": [
         "param:#7 void *",
         "param:#8 void *",
-        "return:void"
+        "return:void",
+        "param:#2 int",
+        "param:#3 int",
+        "param:#4 int",
+        "param:#5 int",
+        "param:#6 int"
+      ],
+      "src/engine/sound/SoundEngine.cpp": [
+        "param:#1 int *",
+        "param:#2 int",
+        "param:#3 int",
+        "param:#4 int",
+        "param:#5 int",
+        "param:#6 int",
+        "param:#7 int",
+        "param:#8 int"
       ]
     },
     "FSi_SendCommand": {
@@ -19223,16 +19139,6 @@
         "param:#1 struct Obj *"
       ]
     },
-    "FSi_ExecuteAsyncCommand": {
-      "src/unnamed/arm9/0205/func_0205cd5c.cpp": [
-        "param:#1 int"
-      ]
-    },
-    "FSi_NextCommand": {
-      "src/unnamed/arm9/0205/func_0205cd5c.cpp": [
-        "return:int"
-      ]
-    },
     "FS_FindArchive": {
       "src/unnamed/arm9/0204/func_02042254.cpp": [
         "return:void *"
@@ -19243,37 +19149,11 @@
       "src/unnamed/arm9/0204/func_020424c0.cpp": [
         "return:void *"
       ],
-      "src/FS_RegisterArchiveName.cpp": [
-        "return:void *"
-      ],
       "src/unnamed/arm9/0206/func_02067bfc.cpp": [
         "param:#1 int *",
         "return:void *"
       ],
       "src/func_0201a2f8.cpp": [
-        "return:void *"
-      ]
-    },
-    "func_0205d28c": {
-      "src/unnamed/arm9/0205/func_0205c9b8.c": [
-        "arity:0"
-      ]
-    },
-    "func_0205d2b0": {
-      "src/FS_LoadArchive.c": [
-        "arity:0",
-        "return:void"
-      ]
-    },
-    "func_0205d2dc": {
-      "src/FS_LoadArchive.c": [
-        "arity:0",
-        "return:void"
-      ]
-    },
-    "FSi_GetPackedName": {
-      "src/FS_RegisterArchiveName.cpp": [
-        "param:#2 void *",
         "return:void *"
       ]
     },
@@ -19293,16 +19173,6 @@
         "arity:2"
       ]
     },
-    "func_0205d5e8": {
-      "src/myFS_ReadFile.c": [
-        "param:#1 int"
-      ],
-      "src/unnamed/arm9/0205/func_0205c9b8.c": [
-        "param:#1 int *",
-        "param:#2 void *",
-        "return:void"
-      ]
-    },
     "func_0205d688": {
       "src/FS_ReadFile.c": [
         "param:#1 int"
@@ -19319,27 +19189,6 @@
     },
     "FS_Init": {
       "src/unnamed/arm9/0201/func_02018aa4.c": [
-        "return:int"
-      ]
-    },
-    "func_0205da94": {
-      "src/FSi_InitRom.c": [
-        "kind:data"
-      ]
-    },
-    "func_0205db24": {
-      "src/FSi_InitRom.c": [
-        "kind:data"
-      ]
-    },
-    "func_0205db2c": {
-      "src/FSi_InitRom.c": [
-        "kind:data"
-      ]
-    },
-    "func_0205db78": {
-      "src/unnamed/arm9/0205/func_0205db2c.c": [
-        "arity:0",
         "return:int"
       ]
     },
@@ -19422,17 +19271,6 @@
     },
     "func_0206071c": {
       "src/unnamed/arm9/0206/func_02060558.cpp": [
-        "return:int"
-      ]
-    },
-    "CARDi_ReadRom": {
-      "src/unnamed/arm9/0205/func_0205db2c.c": [
-        "param:#1 int",
-        "param:#2 int",
-        "param:#3 int",
-        "param:#4 int",
-        "param:#5 void *",
-        "param:#6 int",
         "return:int"
       ]
     },
@@ -22386,6 +22224,42 @@
     "func_02067f2c": {
       "src/engine/mb/MB_Parent.cpp": [
         "return:int"
+      ]
+    },
+    "FS_UnloadArchive": {
+      "src/unnamed/arm9/0204/func_020423dc.c": [
+        "param:#1 int *"
+      ]
+    },
+    "FS_OpenFileDirect": {
+      "src/myFS_ReadFile.c": [
+        "param:#1 int"
+      ],
+      "src/engine/fs/FS_Archive.cpp": [
+        "param:#2 FSArchive *",
+        "param:#3 unsigned int",
+        "param:#4 unsigned int",
+        "param:#5 unsigned int"
+      ]
+    },
+    "FS_RegisterArchiveName": {
+      "src/engine/sound/SoundEngine.cpp": [
+        "param:#3 void *"
+      ]
+    },
+    "data_020a8064": {
+      "src/engine/fs/FS_Rom.cpp": [
+        "return:CARDRomRegion"
+      ]
+    },
+    "data_020a806c": {
+      "src/engine/fs/FS_Rom.cpp": [
+        "return:CARDRomRegion"
+      ]
+    },
+    "data_020a8074": {
+      "src/engine/fs/FS_Rom.cpp": [
+        "return:FSArchive"
       ]
     }
   },

@@ -1,9 +1,11 @@
 #include "types.h"
 extern void CpuCopy8(const void *src, void *dst, unsigned int size);
 
-/* NitroSDK MB_ReadMultiBootParentBssDesc: on a download-play child, rebuild
- * the parent's WMBssDesc from the copy the boot loader left at 0x027ffc42
- * (valid when the halfword at 0x027ffc40 is 2, a multiboot child). The
+/* On a download-play child, rebuild the parent's WMBssDesc from the copy
+ * the boot loader left at 0x027ffc42. The copy is valid when the halfword at
+ * 0x027ffc40 is 2, a multiboot child: pret's pokediamond MB_mb.h has this
+ * MBParam layout. The name lead is the SDK's MB_ReadMultiBootParentBssDesc,
+ * but no pret repository carries its body, so the address name stays. The
  * first 0x3c bytes come over as-is; the game info is then filled in from
  * the arguments, with the parent's ggid and tgid taken from the first six
  * bytes of its SSID. Field names follow the SDK's WMBssDesc/WMGameInfo;

@@ -2582,85 +2582,9 @@ src/engine/fs/FS_Command.cpp:
     complete
     .text start:0x0205c5e4 end:0x0205c7c4
 
-src/FS_SetArchiveProc.c:
+src/engine/fs/FS_Archive.cpp:
     complete
-    .text start:0x0205c7c4 end:0x0205c7e4
-
-src/FS_ResumeArchive.cpp:
-    complete
-    .text start:0x0205c7e4 end:0x0205c864
-
-src/unnamed/arm9/0205/func_0205c864.cpp:
-    complete
-    .text start:0x0205c864 end:0x0205c91c
-
-src/unnamed/arm9/0205/func_0205c91c.c:
-    complete
-    .text start:0x0205c91c end:0x0205c9b8
-
-src/unnamed/arm9/0205/func_0205c9b8.c:
-    complete
-    .text start:0x0205c9b8 end:0x0205caa8
-
-src/unnamed/arm9/0205/func_0205caa8.cpp:
-    complete
-    .text start:0x0205caa8 end:0x0205cb68
-
-src/FS_LoadArchive.c:
-    complete
-    .text start:0x0205cb68 end:0x0205cbe4
-
-src/FS_ReleaseArchiveName.cpp:
-    complete
-    .text start:0x0205cbe4 end:0x0205cc80
-
-src/FS_RegisterArchiveName.cpp:
-    complete
-    .text start:0x0205cc80 end:0x0205cd34
-
-src/FS_InitArchive.c:
-    complete
-    .text start:0x0205cd34 end:0x0205cd5c
-
-src/unnamed/arm9/0205/func_0205cd5c.cpp:
-    complete
-    .text start:0x0205cd5c end:0x0205cdf4
-
-src/FSi_SendCommand.cpp:
-    complete
-    .text start:0x0205cdf4 end:0x0205cf5c
-
-src/FSi_ExecuteSyncCommand.c:
-    complete
-    .text start:0x0205cf5c end:0x0205cfa4
-
-src/FSi_ExecuteAsyncCommand.cpp:
-    complete
-    .text start:0x0205cfa4 end:0x0205d044
-
-src/FSi_NextCommand.cpp:
-    complete
-    .text start:0x0205d044 end:0x0205d23c
-
-src/FS_FindArchive.cpp:
-    complete
-    .text start:0x0205d23c end:0x0205d28c
-
-src/unnamed/arm9/0205/func_0205d28c.c:
-    complete
-    .text start:0x0205d28c end:0x0205d2b0
-
-src/unnamed/arm9/0205/func_0205d2b0.c:
-    complete
-    .text start:0x0205d2b0 end:0x0205d2dc
-
-src/unnamed/arm9/0205/func_0205d2dc.c:
-    complete
-    .text start:0x0205d2dc end:0x0205d304
-
-src/FSi_GetPackedName.c:
-    complete
-    .text start:0x0205d304 end:0x0205d368
+    .text start:0x0205c7c4 end:0x0205d368
 
 src/unnamed/arm9/0205/func_0205d368.c:
     complete
@@ -2685,7 +2609,7 @@ src/unnamed/arm9/0205/func_0205d568.c:
     complete
     .text start:0x0205d568 end:0x0205d5e8
 
-src/unnamed/arm9/0205/func_0205d5e8.c:
+src/FS_OpenFileDirect.c:
     complete
     .text start:0x0205d5e8 end:0x0205d644
 
@@ -2717,29 +2641,9 @@ src/FSi_CutFromList.c:
     complete
     .text start:0x0205d920 end:0x0205d94c
 
-src/unnamed/arm9/0205/func_0205d94c.c:
+src/engine/fs/FS_Rom.cpp:
     complete
-    .text start:0x0205d94c end:0x0205d96c
-
-src/FSi_InitRom.c:
-    complete
-    .text start:0x0205d96c end:0x0205da94
-
-src/unnamed/arm9/0205/func_0205da94.c:
-    complete
-    .text start:0x0205da94 end:0x0205db24
-
-src/unnamed/arm9/0205/func_0205db24.c:
-    complete
-    .text start:0x0205db24 end:0x0205db2c
-
-src/unnamed/arm9/0205/func_0205db2c.c:
-    complete
-    .text start:0x0205db2c end:0x0205db78
-
-src/unnamed/arm9/0205/func_0205db78.c:
-    complete
-    .text start:0x0205db78 end:0x0205db88
+    .text start:0x0205d94c end:0x0205db88
 
 src/unnamed/arm9/0205/func_0205db88.cpp:
     complete

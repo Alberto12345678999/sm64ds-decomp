@@ -1,0 +1,97 @@
+{
+  "id": "arm9/FS_Rom",
+  "module": "arm9",
+  "source": "src/engine/fs/FS_Rom.cpp",
+  "promoted_source": "src/engine/fs/FS_Rom.cpp",
+  "status": "promoted",
+  "boundary_confidence": "high",
+  "boundary_evidence": [
+    "One contiguous run of the Nitro SDK's FS_rom.c, 0x0205d94c..0x0205db88: 6 functions, gapless in config/arm9/delinks.txt. Each is identified by its body against pret's pokediamond FS_rom.c. FS_TryLoadTable is instruction for instruction pret's. FSi_InitRom stores the DMA channel and a card lock id, clears the two overlay-table regions, runs CARD_Init and registers the archive as \"rom\". It then loads the archive from the ROM header's FAT and FNT at 0x027ffe48 and 0x027ffe40. FSi_RomArchiveProc locks the card ROM on command 9 and unlocks it on 10, refuses 1 and leaves the rest to the default. FSi_WriteDummyCallback fails. FSi_ReadRomCallback is an asynchronous card read that returns PROC_ASYNC. FSi_OnRomReadDone ends the archive's command.",
+    "Order: mwccarm emits the bodies in reverse, so FS_TryLoadTable, pret's last, is lowest and FSi_OnRomReadDone, pret's first, is highest. The ROM keeps pret's source order reversed.",
+    "Older SDK: FSi_InitRom has no multiboot-child branch, so pret's FSi_ReadDummyCallback and FSi_EmptyArchiveProc are absent, and FS_SetArchiveProc runs only after the header check passes. There is no FS_SetDefaultDMA, and FSi_OnRomReadDone does not test CARD_IsPulledOut.",
+    "BOTTOM EDGE: FSi_CutFromList (0x0205d920..0x0205d94c) ends the run below. It is not one of pret's FS_rom.c functions.",
+    "TOP EDGE: func_0205db88 (0x0205db88..0x0205dc0c) is in no pret FS_rom.c. It writes an overlay-table region (data_020a8064 or data_020a806c) after an FSi_CompareDigest check. FS_overlay.c reads the same regions, so the shared data does not place it in either file, and it stays a shard. FS_UnloadOverlay at 0x0205dc0c is the lowest function of FS_overlay.c."
+  ],
+  "sections": [
+    {
+      "name": ".text",
+      "start": "0x0205d94c",
+      "end": "0x0205db88"
+    }
+  ],
+  "functions": [
+    {
+      "symbol": "FS_TryLoadTable",
+      "address": "0x0205d94c",
+      "size": "0x00000020",
+      "legacy_source": "src/unnamed/arm9/0205/func_0205d94c.c",
+      "ordinal": 0
+    },
+    {
+      "symbol": "FSi_InitRom",
+      "address": "0x0205d96c",
+      "size": "0x00000128",
+      "legacy_source": "src/FSi_InitRom.c",
+      "ordinal": 1
+    },
+    {
+      "symbol": "FSi_RomArchiveProc",
+      "address": "0x0205da94",
+      "size": "0x00000090",
+      "legacy_source": "src/unnamed/arm9/0205/func_0205da94.c",
+      "ordinal": 2
+    },
+    {
+      "symbol": "FSi_WriteDummyCallback",
+      "address": "0x0205db24",
+      "size": "0x00000008",
+      "legacy_source": "src/unnamed/arm9/0205/func_0205db24.c",
+      "ordinal": 3
+    },
+    {
+      "symbol": "FSi_ReadRomCallback",
+      "address": "0x0205db2c",
+      "size": "0x0000004c",
+      "legacy_source": "src/unnamed/arm9/0205/func_0205db2c.c",
+      "ordinal": 4
+    },
+    {
+      "symbol": "FSi_OnRomReadDone",
+      "address": "0x0205db78",
+      "size": "0x00000010",
+      "legacy_source": "src/unnamed/arm9/0205/func_0205db78.c",
+      "ordinal": 5
+    }
+  ],
+  "data": [],
+  "bss": [],
+  "relocations": [],
+  "compiler_only_output": [],
+  "notes": [
+    "Hand-assembled, following arm9/FS_Archive: tu_map cannot segment arm9/main.",
+    "FS_TryLoadTable, FSi_RomArchiveProc, FSi_WriteDummyCallback, FSi_ReadRomCallback and FSi_OnRomReadDone were renamed from their func_ names in this change. symbols/actor_renames.tsv records the evidence. FSi_InitRom kept its name.",
+    "Text-only. The data symbols keep their address names and their owners: data_020a8060 (fsi_default_dma_no), data_020a805c (fsi_card_lock_id), data_020a8064 and data_020a806c (fsi_ovt9 and fsi_ovt7), data_020a8074 (fsi_arc_rom) and data_0209a048 (\"rom\")."
+  ],
+  "verification": {
+    "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",
+    "toolchain": "tools/mwccarm/2004/b56/mwccarm.exe",
+    "flags": "-O4,p -enum int -lang c++ -char signed -interworking -proc arm946e -gccext,on -msgstyle gcc -Cpp_exceptions off",
+    "object": "build/tu/arm9-FS_Rom/FS_Rom.o (gitignored)",
+    "comparison": "tools/match.py extract_func+compare (bytes/relocs) AND tools/objisolate.py plan() (relocation type/addend) AND tools/reloc_audit.py check_destinations() (relocation target identity)",
+    "functions_matched": 6,
+    "functions_declared": 6,
+    "compilerOnlyOutput": {
+      "requested": [],
+      "deadstripped": [],
+      "data": [],
+      "dataExternalized": []
+    },
+    "criteria": {
+      "every_declared_function_defined": "PASS",
+      "every_declared_function_bytes_match": "PASS",
+      "declared_function_set_equals_defined_function_set": "PASS",
+      "functions_occur_in_expected_order": "PASS",
+      "relocation_destinations_verified": "PASS"
+    }
+  }
+}

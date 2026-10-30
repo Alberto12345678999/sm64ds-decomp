@@ -25,8 +25,7 @@ struct FSFile {
 
 extern int FSi_SendCommand(FSFile *p_file, int command);
 
-int func_0205d5e8(char* self, int a1, int a2, int a3, int a4)
-{
+int FS_OpenFileDirect(char *self, int a1, int a2, int a3, int a4) {
     FSFile *p_file = (FSFile *)self;
     int* p;
     p_file->arc = a1;

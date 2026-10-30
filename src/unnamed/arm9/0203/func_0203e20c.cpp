@@ -31,7 +31,7 @@ extern u16 data_020a11c4[4];
 extern s32 data_020a1680;
 extern u8 data_020a1780[];
 
-extern int MB_CommGetChildrenNumber(void);
+extern u8 MB_CommGetChildrenNumber(void);
 extern void func_0203f9d4(int a0, int a1);
 extern void func_0203e978(void);
 extern int OS_GetTickLo(void);
