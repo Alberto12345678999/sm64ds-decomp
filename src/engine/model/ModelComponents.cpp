@@ -107,9 +107,9 @@ typedef struct Vec3w { int w[3]; } Vec3w;
 struct Buf8 { s16 v[8]; };
 struct MeshPart {
     int count;
-    unsigned char* ids;
-    int f8;
-    int fc;
+    unsigned char *ids;
+    u32 dlSize;
+    const void *dl;
 };
 struct MeshEntry {
     int count;
@@ -151,7 +151,8 @@ void func_020527e8(Mtx43 *m, int x, int y, int z);
 void NormalizeVec3(Vec3 *a, Vec3 *b);
 void func_020458a8(void *src, void *dst);
 void Geometry_MatrixMultiply3x3(void *m);
-void func_0205a358(int a0, int a1, int a2, int a3, int a4);
+void MI_SendGXCommandAsync(u32 dmaNo, const void *src, u32 commandLength, void (*callback)(void *),
+                           void *arg);
 void MI_WaitDma(u32 dmaNo);
 extern Vec3 data_02099f88;
 extern u32 data_020a4bd4;
@@ -166,7 +167,7 @@ void func_02055388(void *m);
 void MulMat3x3Mat3x3(void *a, void *b, void *dst);
 void func_02052514(void *a, void *b);
 void func_02055998(int *n);
-void MI_SendGXCommand(int a, int b, int c);
+void MI_SendGXCommand(u32 dmaNo, const void *src, u32 commandLength);
 void func_02044b30(char *obj, int idx);
 void func_02044534(char *self, int index, Mtx43 *mtx, Vec3 *light);
 void func_0204488c(char *self, int index, int *color);
@@ -484,9 +485,9 @@ void func_02044b30(char *obj, int idx)
 
 struct Part {
     int count;
-    unsigned char* cmd;
-    int f8;
-    int fc;
+    unsigned char *cmd;
+    u32 dlSize;
+    const void *dl;
 };
 struct Entry {
     int count;
@@ -575,7 +576,7 @@ void func_0204488c(char* self, int index, int* color)
             *(volatile int*)0x400044c = 0;
         }
 
-        MI_SendGXCommand(3, part->fc, part->f8);
+        MI_SendGXCommand(3, part->dl, part->dlSize);
     }
 }
 }
@@ -596,7 +597,6 @@ void func_02044534(char* self, int index, Mtx43* mtx, Vec3* light)
     int z24;
     int two;
     int z2c;
-    int z30;
     int three;
     Vec3 dirv;
     Mtx43 mw;
@@ -632,7 +632,6 @@ void func_02044534(char* self, int index, Mtx43* mtx, Vec3* light)
     two = 2;
     t0 = i;
     z2c = t0;
-    z30 = t0;
     three = 3;
     j0 = i;
 
@@ -705,8 +704,7 @@ void func_02044534(char* self, int index, Mtx43* mtx, Vec3* light)
                 j++;
             } while (j < part->count);
         }
-        { int a5 = z30; int a4 = z30;
-        func_0205a358(three, part->fc, part->f8, a4, a5); }
+        MI_SendGXCommandAsync(three, part->dl, part->dlSize, 0, 0);
         MI_WaitDma(three);
         i = i + 1;
         cnt = e->count;

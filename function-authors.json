@@ -9999,15 +9999,15 @@
     },
     "arm9:0x0205a21c": {
       "author": "tangosdev",
-      "name": "func_0205a21c"
+      "name": "MIi_DMACallback"
     },
     "arm9:0x0205a290": {
       "author": "tangosdev",
-      "name": "func_0205a290"
+      "name": "MIi_FIFOCallback"
     },
     "arm9:0x0205a358": {
       "author": "tangosdev",
-      "name": "func_0205a358"
+      "name": "MI_SendGXCommandAsync"
     },
     "arm9:0x0205a448": {
       "author": "tangosdev",

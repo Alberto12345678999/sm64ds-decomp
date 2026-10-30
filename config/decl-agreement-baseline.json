@@ -454,12 +454,6 @@
       "src/MI_SendGXCommand.c": [
         "param:#2 void *",
         "param:#3 void *"
-      ],
-      "src/func_0205a290.cpp": [
-        "param:#1 int",
-        "param:#2 int",
-        "param:#3 int",
-        "param:#4 int"
       ]
     },
     "DeathTable_GetBit": {
@@ -15211,11 +15205,6 @@
         "param:#1 int",
         "param:#2 int",
         "param:#3 int"
-      ],
-      "src/engine/model/ModelComponents.cpp": [
-        "param:#1 int",
-        "param:#2 int",
-        "param:#3 int"
       ]
     },
     "MIi_UncompressBackward": {
@@ -18854,13 +18843,6 @@
         "arity:1"
       ]
     },
-    "OSi_EnterDmaCallback": {
-      "src/func_0205a290.cpp": [
-        "param:#1 int",
-        "param:#2 void *",
-        "param:#3 int"
-      ]
-    },
     "OS_CreateThread": {
       "src/unnamed/arm9/0201/func_02019f10.cpp": [
         "param:#2 void *"
@@ -18947,11 +18929,6 @@
       ],
       "src/unnamed/arm9/0206/func_02068e4c.cpp": [
         "param:#1 void *"
-      ]
-    },
-    "func_0205a358": {
-      "src/engine/model/ModelComponents.cpp": [
-        "param:#4 int"
       ]
     },
     "func_0205a588": {

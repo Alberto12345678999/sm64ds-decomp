@@ -2528,8 +2528,6 @@ src/unnamed/arm9/0205/func_02059c18.c	WEAK-refs-only	arm9				1		None		-
 src/unnamed/arm9/0205/func_02059cb4.c	WEAK-refs-only	arm9				1		None		-
 src/unnamed/arm9/0205/func_02059d98.c	PURE-C					0		None		NONMATCHING-draft;not-in-delinks
 src/MI_SetWramBank.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0205/func_0205a21c.c	WEAK-refs-only	arm9				1		None		-
-src/func_0205a290.c	WEAK-refs-only	arm9				1		None		-
 src/unnamed/arm9/0205/func_0205a588.c	PURE-C					0		None		NONMATCHING-draft;not-in-delinks
 src/SND_Init.c	PURE-C	arm9				1		None		-
 src/SND_CalcChannelVolume.c	PURE-C	arm9				1		None		-

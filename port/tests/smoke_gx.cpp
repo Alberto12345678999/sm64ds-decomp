@@ -3,10 +3,10 @@
 // Opie's test_bmd proved the ntr layer renders b_mario_all.bmd when the
 // harness pushes the display-list words into the FIFO itself. This smoke
 // replaces exactly that one step with the GAME's machinery: each list is
-// handed to func_0205a358, whose chunk pump (max 0x1d8 bytes per DMA)
+// handed to MI_SendGXCommandAsync, whose chunk pump (max 0x1d8 bytes per DMA)
 // spin-waits on GXSTAT, registers the FIFO-half-empty IRQ handler, DMAs
 // GXFIFO-timed chunks and finishes through the DMA-channel callback chain
-// (func_0205a290 -> OSi_EnterDmaCallback -> func_0205a21c). If the pump delivers
+// (MIi_FIFOCallback -> OSi_EnterDmaCallback -> MIi_DMACallback). If the pump delivers
 // the same words, the assembled triangles must be BYTE-IDENTICAL to the
 // harness pass -- that is the check, not a lookalike threshold.
 #include <cmath>
@@ -22,9 +22,9 @@
 #include "ntr/ppu.h"
 
 extern "C" {
-void func_0205a358(int ch, int src, int size, void (*cb)(int), int arg);
+void MI_SendGXCommandAsync(int ch, int src, int size, void (*cb)(int), int arg);
 void func_02055780(void);           /* the game's FIFO flush + busy wait */
-extern int data_020a6460[8];        /* [0] = pump busy flag */
+extern int MIi_GXDmaParams[8];     /* [0] = pump busy flag */
 }
 
 static int g_failures;
@@ -108,8 +108,8 @@ static void submit_via_game(const ntr::BmdModel &m)
             ntr::gx_bind_texture(nullptr, 0, 0);
 
         const ntr::BmdModel::DisplayList &dl = m.dlists[di];
-        func_0205a358(0, (int)(m.data.data() + dl.offset), (int)dl.size, 0, 0);
-        CHECK(data_020a6460[0] == 0);   /* the pump drained and cleared busy */
+        MI_SendGXCommandAsync(0, (int)(m.data.data() + dl.offset), (int)dl.size, 0, 0);
+        CHECK(MIi_GXDmaParams[0] == 0); /* the pump drained and cleared busy */
     }
     ntr::gx_bind_texture(nullptr, 0, 0);
     func_02055780();                    /* the game's FIFO flush (128 NOPs) */

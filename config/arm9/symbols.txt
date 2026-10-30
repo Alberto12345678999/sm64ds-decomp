@@ -2498,9 +2498,9 @@ MI_DmaFill32Async kind:function(arm,size=0xa8) addr:0x0205a064
 DMASyncHalfTransfer kind:function(arm,size=0x54) addr:0x0205a10c
 DMASyncWordTransfer kind:function(arm,size=0x54) addr:0x0205a160
 DMASyncFillTransfer kind:function(arm,size=0x68) addr:0x0205a1b4
-func_0205a21c kind:function(arm,size=0x74) addr:0x0205a21c
-func_0205a290 kind:function(arm,size=0xc8) addr:0x0205a290
-func_0205a358 kind:function(arm,size=0xf0) addr:0x0205a358
+MIi_DMACallback kind:function(arm,size=0x74) addr:0x0205a21c
+MIi_FIFOCallback kind:function(arm,size=0xc8) addr:0x0205a290
+MI_SendGXCommandAsync kind:function(arm,size=0xf0) addr:0x0205a358
 MultiStore16 kind:function(arm,size=0x18) addr:0x0205a448
 MultiCopyHalf kind:function(arm,size=0x1c) addr:0x0205a460
 MultiStore_Int kind:function(arm,size=0x14) addr:0x0205a47c
@@ -5185,7 +5185,7 @@ data_020a644c kind:bss addr:0x020a644c
 data_020a6450 kind:bss addr:0x020a6450
 OSi_IsInitReset kind:bss addr:0x020a6458
 OSi_IsResetOccurred kind:bss addr:0x020a645c
-data_020a6460 kind:bss addr:0x020a6460
+MIi_GXDmaParams kind:bss addr:0x020a6460
 data_020a6480 kind:bss addr:0x020a6480
 data_020a6484 kind:bss addr:0x020a6484
 data_020a6488 kind:bss addr:0x020a6488

@@ -9,7 +9,7 @@
     "One contiguous run of the Nitro SDK's mi_dma.c, 0x02059f58..0x0205a21c: 7 functions, gapless in config/arm9/delinks.txt, each identified by its body against pret's pokediamond MI_dma.c. MI_DmaFill32 (DMASyncFillTransfer), MI_DmaCopy32 (DMASyncWordTransfer) and MI_DmaCopy16 (DMASyncHalfTransfer) wait for the channel, start it through MIi_DmaSetParams_wait_noInt (DMAStartTransferFB) and wait again. MI_DmaFill32Async and MI_DmaCopy32Async run the callback at once for size 0, otherwise MI_WaitDma, OSi_EnterDmaCallback when there is a callback, and MIi_DmaSetParams (DMAStartTransfer). MI_WaitDma spins on the enable bit; MI_StopDma clears the timing and enable bits with IRQs disabled.",
     "Order: pret's file defines MI_DmaFill32, MI_DmaCopy32, MI_DmaCopy16, MI_DmaFill32Async, MI_DmaCopy32Async, MI_WaitDma and MI_StopDma in that relative order, between which this game calls nothing else. mwccarm emits the bodies in reverse, so MI_StopDma is lowest and MI_DmaFill32 highest. The MIi_DmaSetParams family is in ITCM (0x01ffde00, 0x01ffde50), not here.",
     "BOTTOM EDGE: MI_SetWramBank (0x02059f48..0x02059f58), the whole of mi_wram.c, which stays its own source (src/MI_SetWramBank.c).",
-    "TOP EDGE: func_0205a21c at 0x0205a21c, the lowest of mi_dma_gxcommand.c (MIi_DMACallback in pret's pokediamond MI_dma_gxcommand.c)."
+    "TOP EDGE: MIi_DMACallback at 0x0205a21c, the lowest function of mi_dma_gxcommand.c (arm9/MI_DmaGXCommand)."
   ],
   "sections": [
     {
