@@ -1,5 +1,5 @@
 extern int WM_Disable(void *cb);
-extern void func_02040504(unsigned short *result);
+extern void func_02040504(unsigned short *cb);
 extern int data_020a0f94;
 
 /* Disable the wireless hardware: WM_Disable sends WM command 4 (the

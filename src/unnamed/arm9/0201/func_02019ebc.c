@@ -1,4 +1,5 @@
-/* CARD_PullOut.cpp's CardCallback: nonzero tells the handler to stop. */
+/* CARD_PullOut.cpp's CardCallback: nonzero lets the handler terminate
+   (func_020610fc); zero returns. */
 extern void func_02061128(int (*callback)(void));
 extern int func_02019f10(void);
 

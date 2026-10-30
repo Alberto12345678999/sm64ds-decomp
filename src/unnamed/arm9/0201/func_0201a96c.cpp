@@ -4,11 +4,10 @@
 
 extern "C" {
 
-/* The watchdog alarm at data_0209d574; layout and names are func_0201aa18's.
- */
+/* The watchdog alarm at data_0209d574; layout and names are func_0201aa18's. */
 typedef struct {
     char alarm[0x2c]; /* 0x00 -- OSAlarm */
-    char pad_2c[4];
+    char unread_2c[4];
     u64 limit;      /* 0x30 */
     char base[0x8]; /* 0x38 -- u64 tick, reset by func_0201a9fc */
     u8 suspended;   /* 0x40 */

@@ -13,20 +13,21 @@ extern void CpuCopy8(void *dst, void *src, int n);
 
 /* The card half of func_02018c00: read overlay table entry index (0x20
    bytes) straight out of archive's ROM, the table offset and length coming
-   from the cartridge header (arm9Offset/arm9Size or arm7Offset/arm7Size).
+   from the cartridge header (ovt9Offset/ovt9Size or ovt7Offset/ovt7Size,
+   header +0x50..+0x5c).
    0 past the end. */
-int func_02018cbc(FSOverlayInfo *info, int flag, int index, int archive, int arm9Offset,
-                  int arm9Size, int arm7Offset, int arm7Size) {
+int func_02018cbc(FSOverlayInfo *info, int flag, int index, int archive, int ovt9Offset,
+                  int ovt9Size, int ovt7Offset, int ovt7Size) {
     char file[0x48];
     int off;
     int base;
     int size;
     if (flag == 0) {
-        size = arm9Size;
-        base = arm9Offset;
+        size = ovt9Size;
+        base = ovt9Offset;
     } else {
-        size = arm7Size;
-        base = arm7Offset;
+        size = ovt7Size;
+        base = ovt7Offset;
     }
     off = index << 5;
     if ((unsigned int)off >= (unsigned int)size)

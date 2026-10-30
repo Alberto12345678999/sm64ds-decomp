@@ -94,7 +94,7 @@ void func_02020028(int a, unsigned char b);
 void func_ov075_0211601c(dScEntry_c::graphCallback_c *, dScEntry_c *, int);
 }
 
-/* The one graph callback the frame dispatchers poll (func_02018ec0 and
+/* The one graph callback the frame dispatchers poll (func_02019390 and
    friends): the scene registers its own object here and clears it on the way
    out. dGraph_c::callback_c is the ROM-proven base of every scene's nested
    graphCallback_c (include/dGraph_c.h). */

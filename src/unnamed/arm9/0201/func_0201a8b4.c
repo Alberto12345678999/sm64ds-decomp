@@ -11,7 +11,7 @@ extern void func_02013f28(void);
 
 typedef struct WatchdogAlarm {
     char alarm[0x2c]; /* 0x00 -- OSAlarm */
-    char pad_2c[4];
+    char unread_2c[4];
     unsigned long long limit; /* 0x30 */
     unsigned long long base;  /* 0x38 */
 } WatchdogAlarm;

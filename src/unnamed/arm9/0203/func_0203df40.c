@@ -34,18 +34,18 @@ extern void func_02040724(void);
    func_0203e20c) and count the frame. When the mode has just dropped back to
    0 from 1 or 2, it shuts the link down with func_02040724. */
 void func_0203df40(void) {
-    TPData col;
+    TPData sample;
     u8 sel;
 
     data_020a1040.keys =
         ((*(volatile u16 *)0x4000130 | *(volatile u16 *)0x27fffa8) ^ 0x2fff) & 0x2fff;
 
-    func_0203b9bc(&col);
+    func_0203b9bc(&sample);
 
-    data_020a1040.touch.x = col.x;
-    data_020a1040.touch.y = col.y;
-    data_020a1040.touch.touch = col.touch;
-    data_020a1040.touch.validity = col.validity;
+    data_020a1040.touch.x = sample.x;
+    data_020a1040.touch.y = sample.y;
+    data_020a1040.touch.touch = sample.touch;
+    data_020a1040.touch.validity = sample.validity;
     data_020a1040.flags |= 0x8000;
 
     sel = data_020a0f04;

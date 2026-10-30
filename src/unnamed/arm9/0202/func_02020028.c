@@ -2,7 +2,7 @@ extern unsigned char GetPlayerFlagByte(int player, int byte);
 extern void func_0203db3c(int byte, int value);
 
 /* The writer twin of GetControllerMode: bits 0-1 of link settings byte 4
-   (GetPlayerFlagByte reads player i's copy, func_0203db3c writes this
+   (GetPlayerFlagByte reads any player's copy, func_0203db3c writes this
    console's) become mode, the rest of player's byte kept. dScEntry_c::
    UpdateControlSettings calls it with this console's index right after
    SetControllerMode, so the other consoles see the choice. */

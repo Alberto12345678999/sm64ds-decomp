@@ -3,7 +3,7 @@ extern int WM_Initialize(int a0, int a1, int a2);
 extern void func_0203f6a4(int v);
 extern int data_02099e20;
 extern int data_020a0f90;
-extern void func_0203f920(unsigned short *result);
+extern void func_0203f920(unsigned short *cb);
 
 /* Pick a quiet wireless channel. sysBuf is the WM system buffer
    (func_0203e20c allocates 0xb000 bytes), callback the one that receives
