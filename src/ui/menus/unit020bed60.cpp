@@ -39,6 +39,7 @@
 #include "Ov007Sprite.h"
 #include "Ov007Touch.h"
 #include "Ov007Work.h"
+#include "Ov007Spring.h"
 
 extern "C" {
 
@@ -73,13 +74,6 @@ typedef struct Ov007Light {
     char pad_00[0x22];
     u16 color; /* 0x22 */
 } Ov007Light;
-
-/* Reconstructed layouts, not recovered class identity; names as in
- * func_ov007_020ca5f0 and func_ov007_020ca308, only the slots this
- * file reads. */
-typedef struct Ov007Grid {
-    int columns; /* 0x00 */
-} Ov007Grid;
 
 /* The 0x38-byte grid mesh func_ov007_020cbbb0 builds. */
 typedef struct Ov007Mesh {

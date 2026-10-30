@@ -1,4 +1,6 @@
 //cpp
+#include "Ov007Picker.h"
+
 extern "C" {
 extern void func_ov007_020bfe4c(void *o, int x, int y, int z, void *out);
 
@@ -19,16 +21,6 @@ struct Ov007Camera {
 typedef struct {
     int x, y, z;
 } Vec3;
-
-/* The 0xd0-byte touch picker func_ov007_020c690c builds; names as in
-   func_ov007_020c684c, only the slots this function touches. */
-struct Ov007Picker {
-    char pad_00[0xa8];
-    Ov007Camera *camera; /* 0xa8 */
-    char pad_ac[0xc];
-    Vec3 boundsMin; /* 0xb8 */
-    Vec3 boundsMax; /* 0xc4 */
-};
 
 /* Unprojects the camera's screen rectangle at the camera distance into the
    picker's clamp rectangle; screen y runs down, so the two y bounds swap. */

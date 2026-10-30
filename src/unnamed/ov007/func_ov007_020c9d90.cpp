@@ -1,27 +1,12 @@
 //cpp
 #include "types.h"
 #include "cstd.h"
+#include "Ov007Spring.h"
 
 extern "C" {
 
 /* Reconstructed layouts and names, not recovered class identity; only the
  * slots this file touches. */
-
-/* A follower as func_ov007_020c844c builds it: the position it moves. */
-typedef struct Ov007Follower {
-    Vector3 *target; /* 0x0 */
-} Ov007Follower;
-
-typedef struct Ov007PointList {
-    Ov007Follower **items; /* 0x0 */
-} Ov007PointList;
-
-/* The grid func_ov007_020c73f0 builds; names as in func_ov007_020c7240. */
-typedef struct Ov007Grid {
-    int columns;               /* 0x00 */
-    int rows;                  /* 0x04 */
-    Ov007PointList **rowLists; /* 0x08 */
-} Ov007Grid;
 
 /* data_ov007_02104bd4[0], the grid mesh func_ov007_020cbbb0 builds; names
  * as in func_ov007_020ca5f0. */

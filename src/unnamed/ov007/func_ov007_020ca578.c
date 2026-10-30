@@ -1,28 +1,8 @@
+#include "Ov007Spring.h"
+
 typedef long long s64;
 
 extern void func_ov007_020ca578(char* self, int i, int j, int t);
-
-/* Reconstructed layouts, not recovered class identity; names as in
- * func_ov007_020c83fc and func_ov007_020ca308, only the slots this
- * file touches. */
-typedef struct Ov007Follower {
-    char pad_00[0x10];
-    int force[3]; /* 0x10: accumulated per frame, cleared at the end of each step */
-    char pad_1c[4];
-    int flags; /* 0x20: bit 0 skips the step (target held) */
-} Ov007Follower;
-
-typedef char
-    Ov007Follower_flags_must_be_at_0x20[(int)&((Ov007Follower *)0)->flags == 0x20 ? 1 : -1];
-
-typedef struct Ov007PointList {
-    Ov007Follower **items; /* 0x0 */
-} Ov007PointList;
-
-typedef struct Ov007Grid {
-    char pad_00[8];
-    Ov007PointList **rowLists; /* 0x08: one per row, columns points each */
-} Ov007Grid;
 
 /* data_ov007_02104bd4[0], the 0x38-byte grid mesh func_ov007_020cbbb0
  * builds; 0x0c..0x23 is its template copy. */
@@ -64,5 +44,5 @@ void func_ov007_020ca578(char* self, int i, int j, int t)
         val = (int)(((s64)(0x1000 - t) * lo + (s64)t * hi) >> 0xc);
     }
 
-    lr->force[2] += val;
+    lr->force.z += val;
 }

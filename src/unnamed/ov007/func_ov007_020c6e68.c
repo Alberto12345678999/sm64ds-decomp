@@ -1,7 +1,7 @@
 // @symbol func_ov007_020c6e68
 #include "common.h"
 #include "nitro/fx/fx.h"
-#include "Ov007StrokePath.h"
+#include "Ov007Picker.h"
 
 /* Builds group `idx`'s spring chain: a point list over the stroke's points
  * (func_ov007_020c798c), each point's position (the stroke point
@@ -19,62 +19,18 @@
 extern int func_ov007_020c249c(Ov007StrokePath *path);
 extern int func_020531a4(int a);
 extern int func_ov007_020c3df4(int a, void *b);
-extern void *func_ov007_020c80a4(void);
-extern void func_ov007_020c8010(void *a, int *b, int *c);
+extern Ov007Link *func_ov007_020c80a4(void);
+extern void func_ov007_020c8010(Ov007Link *link, Ov007Follower *from, Ov007Follower *to);
 extern void func_ov007_020bfe4c(char *thiz, int a, int b, int c, Vector3 *out);
-
-/* A point and a point list as func_ov007_020c5a6c spells them. */
-typedef struct Ov007Point {
-    Vector3 *pos; /* 0x0 */
-} Ov007Point;
-
-typedef struct Ov007PointList {
-    Ov007Point **items; /* 0x0 */
-} Ov007PointList;
 
 extern Ov007PointList *func_ov007_020c798c(int springMode, int count, int pointMass, int flags);
 extern void func_ov007_020c7804(Ov007PointList *list);
-
-/* The picker's +0x1c (func_ov007_020c690c's params); names as in
- * func_ov007_020c65bc and func_ov007_020c6d20, only the slots this file
- * reads. */
-typedef struct Ov007PickerParams {
-    int pointMass; /* 0x00: Q12, each group's points (func_ov007_020c798c) */
-    char pad_04[0x18];
-    /* 0x1c: Q12; a group closes when its ends are within its length times
-     * this */
-    int closeFactor;
-} Ov007PickerParams;
 
 /* The overlay's camera (func_ov007_020c023c); only the slot this file reads. */
 typedef struct Ov007Camera {
     char pad_00[0x2c];
     int distance; /* 0x2c: func_ov007_020bffb8 places the eye this far from the target */
 } Ov007Camera;
-
-/* The 0xd0-byte touch picker func_ov007_020c690c builds (names as in that
- * file). */
-typedef struct Ov007Picker {
-    char pad_00[0x1c];
-    Ov007PickerParams *params; /* 0x1c: func_ov007_020c690c's params */
-    char pad_20[8];
-    Vector3 **groupPoints;      /* 0x28: per group, the points unprojected through camera */
-    Vector3 **groupPointCopies; /* 0x2c: per group, a copy of groupPoints */
-    char pad_30[4];
-    void ***groupLinks;          /* 0x34: per group, one link per point from posPoint */
-    Ov007StrokePath **groups;    /* 0x38: committed strokes (func_ov007_020c6d20) */
-    Ov007PointList **pointLists; /* 0x3c: func_ov007_020c798c, per group */
-    /* 0x40: per group, the link appended here after the per-point ones;
-     * func_ov007_020c6174 measures it from the group's first point */
-    void **headLinks;
-    void **tailLinks; /* 0x44: likewise from the group's last point */
-    char pad_48[0x24];
-    void *posPoint; /* 0x6c: func_ov007_020c844c's Point over pos */
-    char pad_70[0x38];
-    Ov007Camera *camera; /* 0xa8 */
-} Ov007Picker;
-
-typedef char Ov007Picker_camera_must_be_at_0xa8[(int)&((Ov007Picker *)0)->camera == 0xa8 ? 1 : -1];
 
 /* The parameter keeps func_ov007_020c6d20's char * spelling (the
  * declaration-agreement gate); the typed view is a local. */
@@ -118,18 +74,18 @@ void func_ov007_020c6e68(char *picker, int idx) {
 
     self->groupPoints[idx] = (Vector3 *)func_ov007_020c3df4(0, (void *)flag);
     self->groupPointCopies[idx] = (Vector3 *)func_ov007_020c3df4(0, (void *)flag);
-    self->groupLinks[idx] = (void **)func_ov007_020c3df4(0, (void *)(count << 2));
+    self->groupLinks[idx] = (Ov007Link **)func_ov007_020c3df4(0, (void *)(count << 2));
 
     i = 0;
     if (count > 0) {
         flag = 0;
         do {
-            void *p = func_ov007_020c80a4();
+            Ov007Link *p = func_ov007_020c80a4();
             self->groupLinks[idx][i] = p;
-            func_ov007_020c8010(p, (int *)self->posPoint, (int *)sb->items[i]);
+            func_ov007_020c8010(p, self->posPoint, sb->items[i]);
             {
                 int base = (int)self->groupPoints[idx];
-                sb->items[i]->pos = (Vector3 *)(base + flag);
+                sb->items[i]->target = (Vector3 *)(base + flag);
             }
             {
                 Ov007Camera *a8 = self->camera;

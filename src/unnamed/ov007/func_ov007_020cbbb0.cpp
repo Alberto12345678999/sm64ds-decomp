@@ -2,29 +2,11 @@
 #include "types.h"
 #include "nitro/fx/fx.h"
 #include "cstd.h"
+#include "Ov007Spring.h"
 
 extern "C" {
 
 /* Reconstructed layouts and names, not recovered class identity. */
-
-/* A follower as func_ov007_020c844c builds it; names as in
- * func_ov007_020c83fc, only the slots this file touches. */
-typedef struct Ov007Follower {
-    Vector3 *target; /* 0x00 */
-    char pad_04[0x1c];
-    int flags; /* 0x20: bit 0 pins the point */
-} Ov007Follower;
-
-typedef struct Ov007PointList {
-    Ov007Follower **items; /* 0x0 */
-} Ov007PointList;
-
-/* The grid func_ov007_020c73f0 builds; names as in func_ov007_020c7240. */
-typedef struct Ov007Grid {
-    int columns;               /* 0x00 */
-    int rows;                  /* 0x04 */
-    Ov007PointList **rowLists; /* 0x08 */
-} Ov007Grid;
 
 /* The 0x18-byte template (data_ov007_020d7cb0), copied whole into the
  * mesh. Its words, named as in func_ov007_020cba78 and func_ov007_020ca578,
@@ -55,7 +37,7 @@ typedef char Ov007Mesh_size_must_be_0x38[sizeof(Ov007Mesh) == 0x38 ? 1 : -1];
 
 extern void *func_ov007_020c3df4(int a, int size);
 extern void *func_ov007_020c73f0(int a, int b, int c, int d);
-extern void *func_ov007_020c80a4(void);
+extern Ov007Link *func_ov007_020c80a4(void);
 extern void func_ov007_020c72d0(void *g);
 extern void func_ov007_020c8010(void *node, void *a, void *b);
 extern void func_ov007_020cb3dc(void *ctx);

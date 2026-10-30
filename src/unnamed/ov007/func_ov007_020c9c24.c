@@ -1,11 +1,12 @@
 #include "types.h"
 #include "nitro/fx/fx.h"
+#include "Ov007Spring.h"
 #pragma opt_common_subs off
 
-extern void func_ov007_020c7a84(char *p, int f1, int f2);
-extern void func_ov007_020c80c8(char *o, int a, int s);
-extern void func_ov007_020c7560(void *self, int r6, int r5);
-extern void func_ov007_020c7504(int *self, int b, int c);
+extern void func_ov007_020c7a84(Ov007Link *link, int stiffness, int damping);
+extern void func_ov007_020c80c8(Ov007Follower *f, int damping, int shift);
+extern void func_ov007_020c7560(Ov007PointList *list, int stiffness, int damping);
+extern void func_ov007_020c7504(Ov007PointList *list, int damping, int shift);
 
 /* Reconstructed layouts and names, not recovered class identity; only the
  * slots this file touches.
@@ -20,15 +21,6 @@ typedef struct Ov007Mesh {
     char pad_00[0x2c];
     Ov007Normal *vertexNormals; /* 0x2c: one per point (func_ov007_020cb4b0) */
 } Ov007Mesh;
-
-/* A point and a point list as func_ov007_020c5a6c spells them. */
-typedef struct Ov007Point {
-    Vector3 *pos; /* 0x0 */
-} Ov007Point;
-
-typedef struct Ov007PointList {
-    Ov007Point **items; /* 0x0 */
-} Ov007PointList;
 
 /* The template func_ov007_020ca010 builds every Ov007Swing from
  * (data_ov007_020d7cc8). */
@@ -65,10 +57,10 @@ typedef struct Ov007Swing {
      * (func_ov007_020ca010) and this file moves it */
     Ov007PointList *chain;
     char pad_20[0x30];
-    void *xPoints[2]; /* 0x50: the side points spread along x (func_ov007_020c844c) */
-    void *yPoints[2]; /* 0x58: spread along y */
-    void *xLinks[2];  /* 0x60: xPoints[i] to the mesh (func_ov007_020c9d90) */
-    void *yLinks[2];  /* 0x68 */
+    Ov007Follower *xPoints[2]; /* 0x50: the side points spread along x (func_ov007_020c844c) */
+    Ov007Follower *yPoints[2]; /* 0x58: spread along y */
+    Ov007Link *xLinks[2];      /* 0x60: xPoints[i] to the mesh (func_ov007_020c9d90) */
+    Ov007Link *yLinks[2];      /* 0x68 */
 } Ov007Swing;
 
 typedef char Ov007Swing_size_must_be_0x70[sizeof(Ov007Swing) == 0x70 ? 1 : -1];
@@ -88,11 +80,11 @@ void func_ov007_020c9c24(int *o, int arg1) {
 
     for (i = 0; i < 2; i++) {
         ctx = self->params;
-        func_ov007_020c7a84((char *)self->xLinks[i], ctx->sideStiffness, ctx->sideDamping);
-        func_ov007_020c80c8((char *)self->xPoints[i], 0, arg1);
+        func_ov007_020c7a84(self->xLinks[i], ctx->sideStiffness, ctx->sideDamping);
+        func_ov007_020c80c8(self->xPoints[i], 0, arg1);
         ctx = self->params;
-        func_ov007_020c7a84((char *)self->yLinks[i], ctx->sideStiffness, ctx->sideDamping);
-        func_ov007_020c80c8((char *)self->yPoints[i], 0, arg1);
+        func_ov007_020c7a84(self->yLinks[i], ctx->sideStiffness, ctx->sideDamping);
+        func_ov007_020c80c8(self->yPoints[i], 0, arg1);
     }
 
     n = &self->mesh->vertexNormals[self->meshPoint];
@@ -113,11 +105,11 @@ void func_ov007_020c9c24(int *o, int arg1) {
         ny = (s16)(-bnd);
 
     scale = ctx->normalScale;
-    self->chain->items[0]->pos->x = FX_MUL(nx, scale);
+    self->chain->items[0]->target->x = FX_MUL(nx, scale);
     scale = self->params->normalScale;
-    self->chain->items[0]->pos->y = FX_MUL(ny, scale);
+    self->chain->items[0]->target->y = FX_MUL(ny, scale);
 
     ctx = self->params;
     func_ov007_020c7560(self->chain, ctx->chainStiffness, ctx->chainDamping);
-    func_ov007_020c7504((int *)self->chain, 0, arg1);
+    func_ov007_020c7504(self->chain, 0, arg1);
 }

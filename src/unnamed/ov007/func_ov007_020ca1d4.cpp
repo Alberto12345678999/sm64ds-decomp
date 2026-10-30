@@ -3,35 +3,12 @@
 #include "nitro/fx/fx.h"
 #include "Ov007MenuState.h"
 #include "cstd.h"
+#include "Ov007Spring.h"
 
 extern "C" {
 
 #pragma opt_common_subs off
 #pragma opt_strength_reduction off
-
-/* The 0x24-byte follower func_ov007_020c844c allocates; names as in
- * func_ov007_020c83fc, only the slot this file adds to. */
-typedef struct Ov007Follower {
-    char pad_00[0x10];
-    int force[3]; /* 0x10: accumulated per frame, cleared at the end of each step */
-    char pad_1c[8];
-} Ov007Follower;
-
-/* A point list as func_ov007_020c798c builds it (names as in
- * func_ov007_020c9a84). */
-typedef struct Ov007PointList {
-    Ov007Follower **items; /* 0x0 */
-    int count;             /* 0x4 */
-} Ov007PointList;
-
-/* The 0x10-byte grid func_ov007_020c73f0 builds: rows lists of columns
- * points, and the same points again as columns lists of rows. */
-typedef struct Ov007Grid {
-    int columns;                  /* 0x00 */
-    int rows;                     /* 0x04 */
-    Ov007PointList **rowLists;    /* 0x08: one per row, columns points each */
-    Ov007PointList **columnLists; /* 0x0c: one per column, rows points each */
-} Ov007Grid;
 
 /* data_ov007_02104bd4[0], the 0x38-byte grid mesh func_ov007_020cbbb0
  * builds; names as in func_ov007_020ca5f0, only the slot this file reads. */
@@ -60,8 +37,6 @@ typedef struct Ov007MeshWave {
     Ov007MenuState *waves[4];    /* 0x08: func_ov007_020c9388(-2) */
     Ov007MeshWaveParams *params; /* 0x18: func_ov007_020ca2a8's argument */
 } Ov007MeshWave;
-
-typedef char Ov007Follower_size_must_be_0x24[sizeof(Ov007Follower) == 0x24 ? 1 : -1];
 
 typedef char Ov007MeshWave_size_must_be_0x1c[sizeof(Ov007MeshWave) == 0x1c ? 1 : -1];
 
@@ -128,9 +103,9 @@ void func_ov007_020ca308(char *self, char *t, int i) {
                 s16 sine = data_02082214[((u16)(base + phase) >> 4) * 2];
                 int val = FX_MUL(amplitude, sine);
                 if (i == 0) {
-                    mesh->grid->rowLists[j]->items[line]->force[2] += val;
+                    mesh->grid->rowLists[j]->items[line]->force.z += val;
                 } else if (i == 1) {
-                    mesh->grid->rowLists[line]->items[j]->force[2] += val;
+                    mesh->grid->rowLists[line]->items[j]->force.z += val;
                 }
                 j++;
                 phase += step;

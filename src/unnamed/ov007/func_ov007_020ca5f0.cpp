@@ -2,6 +2,7 @@
 #include "types.h"
 #include "nitro/fx/fx.h"
 #include "cstd.h"
+#include "Ov007Spring.h"
 
 extern "C" {
 
@@ -15,13 +16,6 @@ extern void func_ov007_020ca86c(int a0, int a1, int a2, int a3, int s0);
  * mesh func_ov007_020cbbb0 builds (func_ov007_020caeac/020ca86c emit it);
  * a2 is data_ov007_02104bd4[1] or [2], a 0x34-byte material record
  * func_ov007_020cbf8c copies from a template (see func_ov007_020bee14). */
-
-/* The 0x10-byte grid func_ov007_020c73f0 builds; names as in
- * func_ov007_020cbb04, only the slots this file reads. */
-typedef struct Ov007Grid {
-    int columns; /* 0x00 */
-    int rows;    /* 0x04 */
-} Ov007Grid;
 
 /* The 0x2c-byte texture record func_ov007_020c15ec fills; names as in that
  * file, only the slots this file reads. */

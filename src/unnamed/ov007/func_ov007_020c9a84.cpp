@@ -1,6 +1,7 @@
 //cpp
 #include "types.h"
 #include "cstd.h"
+#include "Ov007Spring.h"
 
 extern "C" {
 
@@ -9,12 +10,6 @@ extern "C" {
 struct Vec3;
 extern void SubVec3(struct Vec3 *a, struct Vec3 *b, struct Vec3 *c);
 extern int func_020538b8(int x, int y);
-
-/* A point list as func_ov007_020c798c builds it; only the count is read. */
-typedef struct Ov007PointList {
-    void **items; /* 0x0 */
-    int count;    /* 0x4 */
-} Ov007PointList;
 
 /* The template func_ov007_020ca010 builds every Ov007Swing from
  * (data_ov007_020d7cc8); names as in func_ov007_020c9c24, only the slots

@@ -1,74 +1,20 @@
-#include "types.h"
-#include "Ov007StrokePath.h"
-
-/* The 0xd0-byte touch picker this function builds. Names follow
- * func_ov007_020c5a6c's own struct and the readers cited per slot; only the
- * slots this file touches are spelled.
- *
- * Left raw, no reader found to name it: +0x30 (cleared). It stays on the
- * char * alias `o` of the allocation; the named slots go through `p`. */
-typedef struct Ov007Picker {
-    char pad_00[0xc];
-    int maxGroups; /* 0x0c: func_ov007_020c6550 stops committing at it */
-    int maxPoints; /* 0x10: func_ov007_020c65bc stops appending at it */
-    char pad_14[4];
-    /* 0x18: three (stiffness, damping) pairs that func_ov007_020c5188
-     * hands to the spring steps: [0..1] func_ov007_020c7560 per point list,
-     * [2..3] func_ov007_020c7b2c per groupLinks entry, [4..5] the same for
-     * headLinks/tailLinks. func_ov007_020c7b2c scales the stretch by the
-     * first and the velocity by the second. */
-    int *springConstants;
-    /* 0x1c: func_ov007_020c65bc reads its +8/+0xc/+0x10 point thresholds,
-     * func_ov007_020c6e68 its +0x1c factor */
-    void *params;
-    Ov007StrokePath *path; /* 0x20: the stroke being drawn (func_ov007_020c2c68) */
-    /* 0x24: pathCapacity points; func_ov007_020c65bc unprojects each appended point
-     * into it through `camera` */
-    Vector3 *pathPoints;
-    Vector3 **groupPoints;      /* 0x28: func_ov007_020c6e68, per group */
-    Vector3 **groupPointCopies; /* 0x2c: func_ov007_020c6e68 copies groupPoints */
-    char pad_30[4];
-    /* 0x34: per group, one link per point from posPoint (func_ov007_020c6e68) */
-    void ***groupLinks;
-    Ov007StrokePath **groups; /* 0x38: committed strokes (func_ov007_020c6d20) */
-    void **pointLists;        /* 0x3c: func_ov007_020c798c, per group */
-    /* 0x40: per group, the link func_ov007_020c6e68 appends after the
-     * per-point ones; func_ov007_020c6174 measures it from the group's first
-     * point to groupPointCopies[headLinkGroups[i]][headLinkPoints[i]] */
-    void **headLinks;
-    /* 0x44: likewise from the group's last point (pointCount - 1) to
-     * groupPointCopies[tailLinkGroups[i]][tailLinkPoints[i]] */
-    void **tailLinks;
-    u16 *headLinkGroups; /* 0x48: per group, 0xffff = unset (this file) */
-    u16 *tailLinkGroups; /* 0x4c */
-    u16 *headLinkPoints; /* 0x50 */
-    u16 *tailLinkPoints; /* 0x54 */
-    char pad_58[0x14];
-    void *posPoint; /* 0x6c: func_ov007_020c844c's Point over pos */
-    Vector3 pos;    /* 0x70 */
-    char pad_7c[0x18];
-    /* 0x94: func_ov007_020c844c's Point over anchorPos, as posPoint is over
-     * pos; `link`'s from end, freed by func_ov007_020c6684 */
-    void *anchorPoint;
-    Vector3 anchorPos; /* 0x98: func_ov007_020c5a6c mode 2 moves it to the hit point */
-    void *link;        /* 0xa4: func_ov007_020c80a4; from anchorPoint to posPoint */
-    void *camera;      /* 0xa8: func_ov007_020c65bc unprojects through it */
-} Ov007Picker;
-
-typedef char Ov007Picker_camera_must_be_at_0xa8[(int)&((Ov007Picker *)0)->camera == 0xa8 ? 1 : -1];
+#include "Ov007Picker.h"
 
 extern void *func_ov007_020c3df4(int a, int size);
 extern void func_ov007_020c684c(void *self);
-extern void *func_ov007_020c844c(void *p, int q);
-extern void *func_ov007_020c80a4(void);
+extern Ov007Follower *func_ov007_020c844c(Vector3 *p, int q);
+extern Ov007Link *func_ov007_020c80a4(void);
 extern void func_ov007_020c8010(void *self, void *a, void *b);
 extern int func_ov007_020c2c68(int a, int b, int c);
 extern void func_ov007_020c6724(void *self, int flag);
 
+/* Allocates the 0xd0-byte picker and its per-group tables for maxGroups
+ * strokes, resets it (func_ov007_020c684c), builds the pos and anchor
+ * followers joined by `link`, and a stroke path of pathCapacity points;
+ * func_ov007_020c6724 then clears the groups. */
 void *func_ov007_020c690c(int maxGroups, int maxPoints, int pathCapacity, int camera, void *params,
                           void *springConstants) {
-    char *o = (char *)func_ov007_020c3df4(0, 0xd0);
-    Ov007Picker *p = (Ov007Picker *)o;
+    Ov007Picker *p = (Ov007Picker *)func_ov007_020c3df4(0, 0xd0);
     int n4 = maxGroups << 2;
     int n2;
     int i;
@@ -77,13 +23,13 @@ void *func_ov007_020c690c(int maxGroups, int maxPoints, int pathCapacity, int ca
     p->maxPoints = maxPoints;
     p->springConstants = (int *)springConstants;
     p->params = params;
-    p->camera = (void *)camera;
+    p->camera = (struct Ov007Camera *)camera;
 
     p->groupPoints = (Vector3 **)func_ov007_020c3df4(0, n4);
     p->groupPointCopies = (Vector3 **)func_ov007_020c3df4(0, n4);
-    *(s32 *)(o + 0x30) = 0;
+    p->word30 = 0;
     p->groups = (Ov007StrokePath **)func_ov007_020c3df4(0, n4);
-    p->pointLists = (void **)func_ov007_020c3df4(0, n4);
+    p->pointLists = (Ov007PointList **)func_ov007_020c3df4(0, n4);
 
     n2 = maxGroups << 1;
     p->headLinkGroups = (u16 *)func_ov007_020c3df4(0, n2);
@@ -91,9 +37,9 @@ void *func_ov007_020c690c(int maxGroups, int maxPoints, int pathCapacity, int ca
     p->headLinkPoints = (u16 *)func_ov007_020c3df4(0, n2);
     p->tailLinkPoints = (u16 *)func_ov007_020c3df4(0, n2);
 
-    p->groupLinks = (void ***)func_ov007_020c3df4(0, n4);
-    p->headLinks = (void **)func_ov007_020c3df4(0, n4);
-    p->tailLinks = (void **)func_ov007_020c3df4(0, n4);
+    p->groupLinks = (Ov007Link ***)func_ov007_020c3df4(0, n4);
+    p->headLinks = (Ov007Link **)func_ov007_020c3df4(0, n4);
+    p->tailLinks = (Ov007Link **)func_ov007_020c3df4(0, n4);
 
     func_ov007_020c684c(p);
 
