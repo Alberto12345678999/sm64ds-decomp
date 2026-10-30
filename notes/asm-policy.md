@@ -93,7 +93,7 @@ drafts, not losses.
 **2026-07-25 (later)** — while writing C for those 106, the veneer subset (cross-overlay
 tail-calls) was found matchable after all: `#pragma long_calls on` forces mwccarm to emit the
 pooled `ldr ip,[pc]; bx ip` indirect tail-call, and 45 of them matched from real C and were
-removed from the asm-only set. Separately, two `swp` primitives (`func_0205a74c`,
+removed from the asm-only set. Separately, two `swp` primitives (`func_0205a74c`, now `MI_SwapWord`, and
 `func_0206dab4`) and two more CP15 `mrc` reads (`func_0206da94`, `func_0206da9c`, missed by the
 ten above) were restored to matched under the test — `swp` was added to the list at that time.
 

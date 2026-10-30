@@ -56,34 +56,14 @@ extern int data_020a6134[];
 #define CARD_THREAD_PRIORITY_HIGHER 0x20
 #define CARD_THREAD_PRIORITY_LOWER 0x21
 
-struct CARDiCommon;
-typedef void (*CARDiTask)(CARDiCommon *);
-
-/* NitroSDK CARDiCommon, this SDK's layout. */
-struct CARDiCommon {
-    int *cmd;                /* 0x00 -- the PXI command block; word 0 is the result */
-    s32 command;             /* 0x04 */
-    volatile int lock_owner; /* 0x08 -- OS_LOCK_ID_ERROR when free */
-    volatile int lock_ref;   /* 0x0c */
-    u16 lock_queue;          /* 0x10 -- OSThreadQueue */
-    u16 pad12;               /* 0x12 */
-    int lock_target;         /* 0x14 -- CARD_TARGET_* */
-    u8 pad18[0x18];          /* 0x18 -- src, dst, len, dma, callback, arg */
-    CARDiTask task_func;     /* 0x30 */
-    volatile u32 flag;       /* 0x34 -- CARD_STAT_* */
-    int priority;            /* 0x38 */
-    u8 thread[0x94];         /* 0x3c -- OSThread */
-    void *cur_th;            /* 0xd0 */
-    u16 busy_q;              /* 0xd4 -- OSThreadQueue */
-};
-
 extern CARDiCommon data_020a8180; /* cardi_common */
 extern int data_020a8160[];       /* cardi_arg, 0x20 bytes */
 /* The word just past cardi_thread_stack (0x400 bytes): its address is the
  * stack's top. */
 extern int *data_020a8760;
 
-void CARDi_SetTask(void *task) {
+// @symbol CARDi_SetTask
+void CARDi_SetTask(void (*task)(CARDiCommon *)) {
     CARDiCommon *const p = &data_020a8180;
     u32 priority = p->priority;
     switch (priority) {
@@ -100,11 +80,12 @@ void CARDi_SetTask(void *task) {
     }
     OS_SetThreadPriority(p->thread, priority);
     p->cur_th = p->thread;
-    p->task_func = (CARDiTask)task;
+    p->task_func = task;
     p->flag |= CARD_STAT_TASK;
     OS_WakeupThreadDirect(p->thread);
 }
 
+// @symbol CARDi_LockResource
 void CARDi_LockResource(int owner, int target) {
     CARDiCommon *const p = &data_020a8180;
     unsigned int saved = IRQ::Disable();
@@ -122,6 +103,7 @@ void CARDi_LockResource(int owner, int target) {
     IRQ::Restore(saved);
 }
 
+// @symbol CARDi_UnlockResource
 void CARDi_UnlockResource(int owner, int target) {
     CARDiCommon *p = &data_020a8180;
     unsigned int saved = IRQ::Disable();
@@ -140,6 +122,7 @@ void CARDi_UnlockResource(int owner, int target) {
     IRQ::Restore(saved);
 }
 
+// @symbol CARDi_InitCommon
 void CARDi_InitCommon(void) {
     CARDiCommon *p = &data_020a8180;
     p->lock_owner = OS_LOCK_ID_ERROR;
@@ -160,6 +143,7 @@ void CARDi_InitCommon(void) {
     PXI_SetFifoRecvCallback(0xb, (void *)func_02060310);
 }
 
+// @symbol CARDi_WaitAsync
 int CARDi_WaitAsync(void) {
     CARDiCommon *const p = &data_020a8180;
     unsigned int saved = IRQ::Disable();
@@ -169,20 +153,24 @@ int CARDi_WaitAsync(void) {
     return *p->cmd == 0;
 }
 
+// @symbol CARD_LockRom
 void CARD_LockRom(u16 lockID) {
     CARDi_LockResource(lockID, CARD_TARGET_ROM);
     OS_TryLockCard(lockID);
 }
 
+// @symbol CARD_UnlockRom
 void CARD_UnlockRom(u16 lockID) {
     OS_UnlockCard(lockID);
     CARDi_UnlockResource(lockID, CARD_TARGET_ROM);
 }
 
+// @symbol CARD_LockBackup
 void CARD_LockBackup(u16 lockID) {
     CARDi_LockResource(lockID, CARD_TARGET_BACKUP);
 }
 
+// @symbol CARD_UnlockBackup
 void CARD_UnlockBackup(u16 lockID) {
     CARDi_UnlockResource(lockID, CARD_TARGET_BACKUP);
 }

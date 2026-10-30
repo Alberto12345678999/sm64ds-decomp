@@ -11320,6 +11320,9 @@
       ],
       "src/engine/card/CARD_Common.cpp": [
         "return:CARDiCommon"
+      ],
+      "src/unnamed/arm9/0206/func_02060890.c": [
+        "return:CARDiCommon"
       ]
     },
     "data_020a8780": {

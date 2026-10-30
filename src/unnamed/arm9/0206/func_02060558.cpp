@@ -41,7 +41,7 @@ extern "C" int func_02060558(int a, int b, int c, int d, int e, int f)
     g->d = d;
     g->e = e;
     if (f != 0) {
-        CARDi_SetTask((void *)func_0206071c);
+        CARDi_SetTask((CARDiTask)func_0206071c);
         return 1;
     }
     *(int*)(data_020a8180 + 0xd0) = data_020a6134[2];

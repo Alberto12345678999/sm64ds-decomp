@@ -62,7 +62,7 @@ int func_02060484(int dst, int src, int len, int callback, int arg, int is_async
     g->mCallback = callback;
     g->mCallbackArg = arg;
     if (is_async != 0) {
-        CARDi_SetTask((void *)func_0206062c);
+        CARDi_SetTask((CARDiTask)func_0206062c);
         return 1;
     }
     /* through the symbol, not g: the ROM reloads its address (via g, 4 bytes shorter) */

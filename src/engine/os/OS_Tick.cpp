@@ -35,6 +35,7 @@ extern volatile u64 data_020a6438; /* OSi_TickCounter */
 
 void OSi_CountUpTick(void);
 
+// @symbol OS_InitTick
 void OS_InitTick(void) {
     if (data_020a6430 != 0)
         return;
@@ -49,6 +50,7 @@ void OS_InitTick(void) {
     data_020a6434 = 0;
 }
 
+// @symbol OSi_CountUpTick
 void OSi_CountUpTick(void) {
     data_020a6438++;
     if (data_020a6434 != 0) {
@@ -60,6 +62,7 @@ void OSi_CountUpTick(void) {
     OSi_EnterTimerCallback(0, (u32)OSi_CountUpTick, 0);
 }
 
+// @symbol func_02059650
 long long func_02059650(void) {
     u32 saved = IRQ::Disable();
     volatile u16 countL = REG_TM0CNT_L;
@@ -70,6 +73,7 @@ long long func_02059650(void) {
     return ((long long)countH << 16) | (int)countL;
 }
 
+// @symbol OS_GetTickLo
 int OS_GetTickLo(void) {
     return REG_TM0CNT_L;
 }
