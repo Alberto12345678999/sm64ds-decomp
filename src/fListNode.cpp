@@ -11,8 +11,9 @@
  *   void *: ActorBase.cpp and ShowCrashScreen.c spell it that way, and
  *   the fLiNdBa_c destructor's old fLiNdBa_c * spelling was a second claim
  *   on the same word.
- * - The list heads are int [] as in ActorBase.cpp. decl_common.h still
- *   spells data_020a4b6c as int; that disagreement is banked.
+ * - The five list heads are defined here. ActorBase.cpp still spells them
+ *   int []; that spelling is banked. decl_common.h spells data_020a4b6c as
+ *   int, which is the plurality.
  * - The address-named helpers keep their linker names. Their roles are
  *   read from the bytes; the original names are not known.
  */
@@ -24,7 +25,6 @@ extern "C" {
 extern void *data_020a4b68;
 extern int data_02099f24;
 extern int data_02082178[];
-extern int data_020a4ba8[], data_020a4b88[], data_020a4b78[], data_020a4b98[], data_020a4b6c[];
 extern void *func_02043fdc(void *list);
 }
 
@@ -59,25 +59,53 @@ struct Node {
 struct Thing {
     Node *head;   // 0
     PMF callback; // 4
+
+    Thing(PMF &p) { callback = p; head = 0; }
 };
 
 extern "C" void *func_020441cc(Thing *thiz);
 }
+
+/* The five process-list heads func_02044120 walks. The tree sentinel is three
+ * words (head, then the callback). Each list sentinel is four (head, tail,
+ * then the callback). The callbacks are the ROM's pointer-to-member constants;
+ * copying them is not a constant expression, so mwcc emits __sinit_fListNode.cpp
+ * (was the handwritten __sinit_02075154) in this definition order. No destructor
+ * is registered. ActorBase.cpp still reaches the heads by their address names. */
+struct fBase_c;
+typedef int (fBase_c::*ProcessCallback)();
+
+extern ProcessTree::PMF data_02099f60;
+extern ProcessCallback data_02099f70, data_02099f48, data_02099f68, data_02099f50;
+
+struct ProcessList {
+    fLiNdBaPr_c *head;
+    fLiNdBaPr_c *tail;
+    ProcessCallback callback;
+
+    ProcessList(ProcessCallback &p) { head = 0; tail = 0; callback = p; }
+};
+
+ProcessTree::Thing data_020a4b6c(data_02099f60);
+ProcessList data_020a4b88(data_02099f70);
+ProcessList data_020a4b78(data_02099f48);
+ProcessList data_020a4b98(data_02099f68);
+ProcessList data_020a4ba8(data_02099f50);
 
 /* One frame: walk each process list, recording the phase number in
  * data_02099f24 while it runs. */
 // @symbol func_02044120
 extern "C" void func_02044120(void) {
     data_02099f24 = 4;
-    func_02043fdc(data_020a4ba8);
+    func_02043fdc(&data_020a4ba8);
     data_02099f24 = 2;
-    func_02043fdc(data_020a4b88);
+    func_02043fdc(&data_020a4b88);
     data_02099f24 = 3;
-    func_02043fdc(data_020a4b78);
+    func_02043fdc(&data_020a4b78);
     data_02099f24 = 5;
-    func_02043fdc(data_020a4b98);
+    func_02043fdc(&data_020a4b98);
     data_02099f24 = 1;
-    ProcessTree::func_020441cc((ProcessTree::Thing *)data_020a4b6c);
+    ProcessTree::func_020441cc(&data_020a4b6c);
     data_02099f24 = 0;
 }
 
