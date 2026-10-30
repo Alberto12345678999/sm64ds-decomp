@@ -11653,7 +11653,7 @@
     "src/unnamed/arm9/0201/func_02018b64.c",
     "src/unnamed/arm9/0201/func_02018c00.c",
     "src/unnamed/arm9/0201/func_02018cbc.c",
-    "src/unnamed/arm9/0201/func_02018d48.c",
+    "src/myFS_ReadFile.c",
     "src/unnamed/arm9/0201/func_02018d98.c",
     "src/unnamed/arm9/0201/func_02018dc4.c",
     "src/unnamed/arm9/0201/func_02018e00.c",

@@ -1820,7 +1820,7 @@
       ]
     },
     "OS_SleepThread": {
-      "src/unnamed/arm9/0201/func_02018d48.c": [
+      "src/myFS_ReadFile.c": [
         "param:#1 int"
       ],
       "src/unnamed/arm9/0205/func_0205cdf4.cpp": [
@@ -19014,7 +19014,7 @@
         "return:void"
       ]
     },
-    "func_02018d48": {
+    "myFS_ReadFile": {
       "src/SharedFilePtr.cpp": [
         "param:#1 void *",
         "param:#2 void *",
@@ -19042,12 +19042,12 @@
         "param:#2 void *"
       ]
     },
-    "func_02018d98": {
+    "myFS_OpenFile": {
       "src/unnamed/arm9/0201/func_02018934.cpp": [
         "param:#2 int"
       ]
     },
-    "func_02018dc4": {
+    "myFS_OpenFileFast": {
       "src/unnamed/arm9/0201/func_020182bc.c": [
         "arity:2"
       ],
@@ -19061,12 +19061,12 @@
         "arity:2"
       ]
     },
-    "func_02018e00": {
+    "myFS_OpenFileDirect": {
       "src/unnamed/arm9/0201/func_02018c00.c": [
         "param:#1 void *"
       ]
     },
-    "func_02018e3c": {
+    "myFS_ConvertPathToFileID": {
       "src/unnamed/arm9/0201/func_02018434.c": [
         "param:#2 int",
         "return:void"
@@ -21460,7 +21460,7 @@
       ]
     },
     "func_0205d4a0": {
-      "src/unnamed/arm9/0201/func_02018d48.c": [
+      "src/myFS_ReadFile.c": [
         "param:#1 int",
         "param:#2 void *"
       ]
@@ -21476,7 +21476,7 @@
       ]
     },
     "func_0205d5e8": {
-      "src/unnamed/arm9/0201/func_02018d48.c": [
+      "src/myFS_ReadFile.c": [
         "param:#1 int"
       ],
       "src/unnamed/arm9/0205/func_0205c9b8.c": [

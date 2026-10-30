@@ -2895,23 +2895,23 @@
     },
     "arm9:0x02018d48": {
       "author": "tangosdev",
-      "name": "func_02018d48"
+      "name": "myFS_ReadFile"
     },
     "arm9:0x02018d98": {
       "author": "tangosdev",
-      "name": "func_02018d98"
+      "name": "myFS_OpenFile"
     },
     "arm9:0x02018dc4": {
       "author": "tangosdev",
-      "name": "func_02018dc4"
+      "name": "myFS_OpenFileFast"
     },
     "arm9:0x02018e00": {
       "author": "tangosdev",
-      "name": "func_02018e00"
+      "name": "myFS_OpenFileDirect"
     },
     "arm9:0x02018e3c": {
       "author": "tangosdev",
-      "name": "func_02018e3c"
+      "name": "myFS_ConvertPathToFileID"
     },
     "arm9:0x02018e68": {
       "author": "tangosdev",

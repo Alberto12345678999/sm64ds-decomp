@@ -383,7 +383,7 @@ src/unnamed/arm9/0201/func_02018b64.c:
 src/unnamed/arm9/0201/func_02018c00.c:
     complete
     .text start:0x02018c00 end:0x02018d48
-src/unnamed/arm9/0201/func_02018d48.c:
+src/myFS_ReadFile.c:
     complete
     .text start:0x02018d48 end:0x02018ea0
 src/engine/graph/d_graph_c_callback.cpp:

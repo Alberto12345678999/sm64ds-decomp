@@ -1630,7 +1630,7 @@ src/unnamed/arm9/0201/func_02018ac4.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0201/func_02018b64.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0201/func_02018c00.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0201/func_02018cbc.c	PURE-C	arm9				1		None		-
-src/unnamed/arm9/0201/func_02018d48.c	PURE-C	arm9				1		None		-
+src/myFS_ReadFile.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0201/func_02018d98.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0201/func_02018dc4.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/0201/func_02018e00.c	PURE-C	arm9				1		None		-
