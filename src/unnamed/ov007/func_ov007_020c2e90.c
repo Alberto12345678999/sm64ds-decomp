@@ -1,14 +1,17 @@
-extern int func_02053274(int a, int b);
+#include "Ov007StrokePath.h"
 
-struct S { char pad[8]; unsigned short w8; unsigned short wa; };
+/* The distance |a - b| between two Q12 3-vectors (src/cstd.cpp). */
+extern int func_02053274(int *a, int *b);
 
-int func_ov007_020c2e90(struct S *s, int b, int c, int d, int e)
-{
-    int r;
-    if (s->w8 != 0 && d >= 0 && e >= 0) {
-        if (s->w8 < s->wa) {
-            r = func_02053274(b, c);
-            return (d << 12) <= r && r <= (e << 12);
+/* Whether a point at a may follow the last point, at b: always while the path
+ * is empty or either bound is negative; otherwise only with room left and
+ * the distance within minLen .. maxLen (whole units, compared in Q12). */
+int func_ov007_020c2e90(Ov007StrokePath *path, int *a, int *b, int minLen, int maxLen) {
+    int dist;
+    if (path->pointCount != 0 && minLen >= 0 && maxLen >= 0) {
+        if (path->pointCount < path->capacity) {
+            dist = func_02053274(a, b);
+            return (minLen << 12) <= dist && dist <= (maxLen << 12);
         }
         return 0;
     }

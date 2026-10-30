@@ -151,10 +151,13 @@ struct Base {
     char pad[0xa4];
     s32 mCredits; /* 0x0a8 */
 };
-/* Call view of the installed dFdBrightness_c at data_0209f5bc.
-   The ROM sets r2 = 0 at each timing call here; the shared declarations take
-   only frames. Keep the extra-argument call shape without changing the
-   shared fader interface. The original purpose of r2 is unknown. */
+/* Call view of the installed dFdBrightness_c at data_0209f5bc. The shared
+   declarations now take the second word too (slot 4 was widened to
+   SetForwardTime(u32, u32) alongside slot 3), so every call here could be a
+   real virtual call on dFdBrightness_c -- except that deleting this struct
+   frees its four named parameters and renumbers this TU's compiler locals
+   (sEnterTable$191 -> $187), which config rows key on. Retiring it is a label
+   remap, kept separate from the arity correction. */
 struct FaderCallView {
     virtual void v0();
     virtual void v1();

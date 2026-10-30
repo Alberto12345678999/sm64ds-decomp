@@ -1,0 +1,77 @@
+{
+  "id": "ov007/unit020b2764",
+  "module": "ov007",
+  "source": "src/ui/menus/unit020b2764.cpp",
+  "promoted_source": "src/ui/menus/unit020b2764.cpp",
+  "status": "promoted",
+  "boundary_confidence": "medium",
+  "boundary_evidence": [
+    "contiguous run 0x020b2764..0x020b2cdc, 4 functions, all byte-matched from the one unit source. A sub-range of build/tu_map.json's unattributed ov007 unit 0x020ad660..0x020b6eb4, which the map cannot cut: no ROM RTTI, vtable or static initializer falls in it.",
+    ".rodata interleave: data_ov007_020ccc48 (func_ov007_020b283c, func_ov007_020b2bd4) lies before data_ov007_020ccc50 and data_ov007_020ccc5c (func_ov007_020b2764, nothing else), and those before data_ov007_020ccc68 and data_ov007_020ccc80 (func_ov007_020b283c, func_ov007_020b2bd4); one unit's .rodata is contiguous, so the three functions share a unit.",
+    "func_ov007_020b2998 references no ov007 data, but it is the one caller of func_ov007_020b2bd4, calls func_ov007_020b283c first and builds exactly what func_ov007_020b283c frees. func_ov007_020b2bd4 alone uses the bss words 0x02103348..0x02103360.",
+    "start edge (medium): func_ov007_020b2728 draws a quad (func_ov007_020c421c) and references no ov007 data, so nothing ties it to the run; it is left out. End edge: the next function, func_ov007_020b2cdc, starts unit020b2cdc (bss 0x02103360)."
+  ],
+  "sections": [
+    {
+      "name": ".text",
+      "start": "0x020b2764",
+      "end": "0x020b2cdc"
+    }
+  ],
+  "functions": [
+    {
+      "symbol": "func_ov007_020b2764",
+      "address": "0x020b2764",
+      "size": "0x000000d8",
+      "legacy_source": "src/unnamed/ov007/func_ov007_020b2764.c",
+      "ordinal": 0
+    },
+    {
+      "symbol": "func_ov007_020b283c",
+      "address": "0x020b283c",
+      "size": "0x0000015c",
+      "legacy_source": "src/unnamed/ov007/func_ov007_020b283c.c",
+      "ordinal": 1
+    },
+    {
+      "symbol": "func_ov007_020b2998",
+      "address": "0x020b2998",
+      "size": "0x0000023c",
+      "legacy_source": "src/unnamed/ov007/func_ov007_020b2998.c",
+      "ordinal": 2
+    },
+    {
+      "symbol": "func_ov007_020b2bd4",
+      "address": "0x020b2bd4",
+      "size": "0x00000108",
+      "legacy_source": "src/unnamed/ov007/func_ov007_020b2bd4.c",
+      "ordinal": 3
+    }
+  ],
+  "data": [],
+  "bss": [],
+  "compiler_only_output": [
+    {
+      "symbol": "_ZN7Vector3D1Ev",
+      "disposition": "deadstrip-duplicate",
+      "canonical_module": "arm9",
+      "canonical_address": "0x020072c0",
+      "reason": "include/types.h gives Vector3 an empty inline destructor, so a TU that builds a Vector3 local re-emits it with vague linkage; func_ov007_020b2998 builds one (the zero position it hands func_ov007_020b7708). The cartridge keeps exactly one copy at arm9:0x020072c0, kind:function(arm,size=0x4), owned by the enrolled src/engine/view/d_camera_dtor.cpp. This object's copy is the identical 4-byte `bx lr` body with no relocations; rombuild compares the body against those cartridge bytes before discarding the duplicate."
+    }
+  ],
+  "notes": [
+    "Text-only fold of four one-function shards; the callees' declarations keep their definitions' spellings, so typed values are cast where they are handed over. func_ov007_020b283c's set is a long long only for the register allocation (see its comment)."
+  ],
+  "verification": {
+    "round": "tools/match.py per function against the one unit source -- text-only, whole TU compiled",
+    "toolchain": "tools/mwccarm/2004/b56/mwccarm.exe",
+    "flags": "-O4,p -enum int -lang c++ -char signed -interworking -proc arm946e -gccext,on -msgstyle gcc -Cpp_exceptions off",
+    "functions_matched": 4,
+    "functions_declared": 4,
+    "criteria": {
+      "every_declared_function_defined": "PASS",
+      "every_declared_function_bytes_match": "PASS",
+      "functions_occur_in_expected_order": "PASS"
+    }
+  }
+}

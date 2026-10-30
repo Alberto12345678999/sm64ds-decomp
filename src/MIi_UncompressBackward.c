@@ -1,9 +1,17 @@
 // HAND-ASM PRIMITIVE: byte-faithful asm-block match (assembly-only runtime primitive).
-// LZ-style backward decompressor: reads the packed size/header via ldmdb, walks the
-// buffer backwards emitting literals/back-references by a rolling bit flag, then cleans
-// the data cache (mcr p15). The backward ldmdb walk and the cache maintenance are not
-// expressible in C under our flags. Per asm policy.
-asm void func_020048d8(void)
+//
+// MIi_UncompressBackward at 0x020048d8 -- NitroSDK crt0. Decompresses an LZ-packed image
+// in place, back to front: r0 is the end of the packed data, the two words below it give
+// the packed size (low 24 bits), the header length (top byte) and how far the output
+// grows past r0. A flag byte selects, bit by bit from the top, a literal byte or a
+// 12-bit-distance back-reference, and the output range is then cleaned from the data
+// cache and invalidated from the instruction cache. _start (src/Entry.c) runs it on the
+// static image and src/unnamed/arm9/0205/func_0205dd9c.c on compressed overlays.
+//
+// The name and the instruction list are pret/pokediamond's crt0.c, where this is an
+// `asm` function too. r4-r7 are pushed by hand and the backward `ldmdb` header read has
+// no C spelling. Per asm policy.
+asm void MIi_UncompressBackward(void)
 {
     cmp     r0, #0
     beq     L_end

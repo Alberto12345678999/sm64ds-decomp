@@ -1,6 +1,8 @@
 //cpp
 #include "types.h"
 #include "cstd.h"
+#include "dCamera_c.h"
+#include "Player.h"
 
 extern "C" {
 
@@ -17,63 +19,41 @@ extern void Vec3_Sub(struct Vec3 *out, struct Vec3 *a, struct Vec3 *b);
 extern void Vec3_MulScalarInPlace(int *v, int s);
 extern s16 Vec3_HorzAngle(const struct Vec3 *v0, const struct Vec3 *v1);
 extern s16 Vec3_VertAngle(const struct Vec3 *v1, const struct Vec3 *v0);
-extern int func_020091f8(void *a, void *b, int c, int d);
-extern u32 func_020093f4(void *p, int x);
-struct dCamera_c;
-extern int func_02009138(struct dCamera_c *cam, int dist);
-extern void func_020089d8(void *p);
-/* File-local view of dCamera_c (include/dCamera_c.h is C++): the fields this
- * state touches, with the header's names. */
-typedef struct {
-    u8 pad_000[0x110];
-    char *mTargetPlayer; /* 0x110 */
-    u8 pad_114[0x8];
-    /* LookAtExit points it at an actor's position. */
-    struct Vec3 *mLookTarget; /* 0x11c */
-    u8 pad_120[0x5c];
-    s16 mAngleY; /* 0x17c */
-} CameraView;
+extern int func_020091f8(dCamera_c *cam, Vector3 *lookAt, int angleY, int angleX);
+extern u32 func_020093f4(void *cam, int dist);
+extern int func_02009138(dCamera_c *cam, int dist);
+extern void func_020089d8(dCamera_c *cam);
 
-#ifndef SM64DS_PLATFORM_PC
-typedef char CameraView_angle_y_must_be_at_0x17c[(((int)(&((CameraView *)0)->mAngleY)) == 0x17c)
-                                                     ? (1)
-                                                     : (-1)];
-#endif
-
-/* The target player's position and facing, as include/dActor_c.h's C view
- * places them. Its u8 at 0x724 is Player.h's mOwlFarCamera, read raw: this
- * is a C file and cannot include the C++-only Player.h. */
-typedef struct {
-    u8 pad_000[0x5c];
-    struct Vec3 mPos; /* 0x05c */
-    u8 pad_068[0x26];
-    s16 mAngleY; /* 0x08e */
-} ActorView;
-
-int func_02005110(char *self) {
-    CameraView *cam = (CameraView *)self;
+/* Camera state main for following the player. The eye target is the
+ * player's position raised by 0x64000. With no mLookTarget the camera looks
+ * there along the player's facing, from 0x48000 away, or 0xd0000 while the
+ * player's mOwlFarCamera is set. With one, it aims at the midpoint between the
+ * two (pulled back to at most 0x30000 from the eye), and turns off the line
+ * to the target by up to 0x2000, less as the target gets farther than 0x200000
+ * from the player. The pitch is clamped to +-0x2800. */
+int func_02005110(dCamera_c *cam) {
     struct Vec3 eye;
     struct Vec3 aim;
     struct Vec3 *target;
     s32 horzAngle;
-    s32 mode;
+    s32 eyeDist;
     {
-        struct Vec3 *p = &((ActorView *)cam->mTargetPlayer)->mPos;
+        struct Vec3 *p = (struct Vec3 *)&((Player *)cam->mTargetPlayer)->mPos;
         eye.x = p->x;
         eye.y = p->y;
         eye.z = p->z;
         eye.y += 0x64000;
     }
-    mode = 0x48000;
-    target = cam->mLookTarget;
+    eyeDist = 0x48000;
+    target = (struct Vec3 *)cam->mLookTarget;
     if (target == 0) {
         aim.x = eye.x;
         aim.y = eye.y;
         aim.z = eye.z;
-        if ((*((u8 *)(cam->mTargetPlayer + 0x724))) != 0) {
-            mode = 0xd0000;
+        if (((Player *)cam->mTargetPlayer)->mOwlFarCamera != 0) {
+            eyeDist = 0xd0000;
         }
-        horzAngle = ((ActorView *)cam->mTargetPlayer)->mAngleY;
+        horzAngle = cam->mTargetPlayer->mAngleY;
     } else {
         struct Vec3 diff;
         struct Vec3 sum;
@@ -98,8 +78,8 @@ int func_02005110(char *self) {
         }
         fall = 0x2000;
         {
-            struct Vec3 *playerPos = &((ActorView *)cam->mTargetPlayer)->mPos;
-            s32 fallDist = Vec3_Dist(cam->mLookTarget, playerPos);
+            struct Vec3 *playerPos = (struct Vec3 *)&((Player *)cam->mTargetPlayer)->mPos;
+            s32 fallDist = Vec3_Dist((struct Vec3 *)cam->mLookTarget, playerPos);
             s32 t = fallDist - 0x200000;
             if (t > 0) {
                 s16 scaled = (s16)(((((s64)t) << 2) + 0x800) >> 12);
@@ -109,11 +89,12 @@ int func_02005110(char *self) {
                 fall -= scaled;
             }
         }
-        s16 diffAngle = Vec3_HorzAngle(cam->mLookTarget, &eye) - cam->mAngleY;
+        s16 diffAngle = Vec3_HorzAngle((struct Vec3 *)cam->mLookTarget, &eye) - cam->mAngleY;
         fall = (diffAngle >= 0) ? (-fall) : (fall);
+        /* Does nothing, but without it the build does not match the ROM. */
         if ((!newAim.x) && (!newAim.x)) {
         }
-        horzAngle = (s16)(Vec3_HorzAngle(cam->mLookTarget, &eye) + fall);
+        horzAngle = (s16)(Vec3_HorzAngle((struct Vec3 *)cam->mLookTarget, &eye) + fall);
     }
     {
         s32 vert = Vec3_VertAngle(&aim, &eye);
@@ -122,12 +103,12 @@ int func_02005110(char *self) {
         } else if (vert > 0x2800) {
             vert = 0x2800;
         }
-        func_020091f8(self, &aim, horzAngle, vert);
+        func_020091f8(cam, (Vector3 *)&aim, horzAngle, vert);
     }
     {
-        u32 r = func_020093f4((void *)self, mode);
-        if (func_02009138((struct dCamera_c *)self, r) == 0) {
-            func_020089d8((void *)self);
+        u32 r = func_020093f4(cam, eyeDist);
+        if (func_02009138(cam, r) == 0) {
+            func_020089d8(cam);
         }
     }
     return 1;

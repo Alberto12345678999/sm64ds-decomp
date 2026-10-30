@@ -622,7 +622,8 @@ int GetBankForSubOBJ(void) {
 extern "C" {
 
 /* The size in bytes of a set of banks: A-D are 128 KiB, E 64 KiB, F, G
- * and I 16 KiB, H 32 KiB. */
+ * and I 16 KiB, H 32 KiB. The SDK's static GX_GetSizeOfX_; of its
+ * GX_GetSizeOf* wrappers this game links only Tex and TexPltt (below). */
 // @symbol func_02053e4c
 int func_02053e4c(int mask) {
     int size = 0;
@@ -647,11 +648,13 @@ int func_02053e4c(int mask) {
     return size;
 }
 
+// GX_GetSizeOfTex
 // @symbol func_02053e34
 int func_02053e34(void) {
     return func_02053e4c(data_020a6088.tex);
 }
 
+// GX_GetSizeOfTexPltt
 // @symbol func_02053e1c
 int func_02053e1c(void) {
     return func_02053e4c(data_020a6088.texPltt);

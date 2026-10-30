@@ -35,7 +35,7 @@ typedef struct Ov007Palette {
 typedef struct Ov007Display {
     char pad_00[0x24];
     /* 0x24: four func_ov007_020c99d8 character records; func_ov007_020c33d0
-     * loads one into OBJ VRAM */
+     * loads one into a chosen BG or OBJ character VRAM */
     void **characters;
     char pad_28[4];
     Ov007Palette **palettes; /* 0x2c: six func_ov007_020c9988 palettes */
@@ -56,8 +56,7 @@ typedef char Ov007Display_size_must_be_0x40[sizeof(Ov007Display) == 0x40 ? 1 : -
 #pragma opt_strength_reduction off
 #pragma opt_common_subs off
 
-void func_ov007_020b6d40(void)
-{
+void func_ov007_020b6d40(void) {
     Ov007Display *c;
     int i;
     int tmp;
