@@ -13662,7 +13662,7 @@
     "src/MBi_InitSendFixedBeacon.c",
     "src/MB_SendGameInfoBeacon.c",
     "src/MBi_ClearSendStatus.c",
-    "src/unnamed/arm9/0206/func_020684a8.c",
+    "src/MB_InitSendGameInfoStatus.c",
     "src/MB_AddGameInfo.c",
     "src/mystrlen.c",
     "src/MB_UpdateGameInfoMember.c",

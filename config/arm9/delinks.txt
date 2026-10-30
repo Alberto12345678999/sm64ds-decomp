@@ -3413,7 +3413,7 @@ src/MBi_ClearSendStatus.c:
     complete
     .text start:0x02068484 end:0x020684a8
 
-src/unnamed/arm9/0206/func_020684a8.c:
+src/MB_InitSendGameInfoStatus.c:
     complete
     .text start:0x020684a8 end:0x020684d0
 

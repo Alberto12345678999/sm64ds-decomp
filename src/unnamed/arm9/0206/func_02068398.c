@@ -6,9 +6,14 @@
  * +0x4ac byte and moves the controller to state 2. Returns 0 with no default.
  *
  * It sits where mb_gameinfo.c has MBi_ReadyBeaconSendStatus and does its
- * job, but it keeps its address name: the reference body also sets an
- * empty beacon (WM_SetGameInfo) when the list is empty, and this one only
- * returns 0, so the bodies do not match statement for statement.
+ * job, but it keeps its address name. With an empty list the later SDKs'
+ * body (HeartGold, Lego Star Wars II) also sets an empty beacon,
+ * WM_SetGameInfo(0, bsendBuff, 0x70, MBi_GetGgid(), MBi_GetTgid(), 8),
+ * and this one only returns 0. The send-volat hook missing from
+ * MB_InitSendGameInfoStatus is a feature this SDK lacks. This one is a
+ * behaviour difference instead: once the last game is removed, this parent
+ * leaves its last beacon up, where the later SDKs replace it with an empty
+ * one.
  *
  * Matched 2004/b56. The fallback is written as the `||` arm of an if/else:
  * both failed tests then reach `res = sel`, a two-predecessor block that

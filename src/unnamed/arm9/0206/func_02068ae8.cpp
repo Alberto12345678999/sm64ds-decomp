@@ -18,7 +18,7 @@ extern char *data_020a9db8;
 extern void MultiStore16(u16 val, char *dst, int nbytes);
 extern void MB_CommSetParentStateCallback(u32 val);
 extern void func_0205a588(void *dst, int val, u32 size);
-extern void func_020684a8(void);
+extern void MB_InitSendGameInfoStatus(void);
 extern int func_02068d08(void);
 
 extern void MBi_CommParentCallback(int arg0, char *arg1);
@@ -75,7 +75,7 @@ int func_02068ae8(int param0)
     WM_WORK->parentParam.childMaxSize = WM_WORK->childMaxSize;
     WM_WORK->recvBufSize = (((WM_WORK->parentParam.childMaxSize + 0xe) * 0xf + 0x29) & ~0x1f) << 1;
 
-    func_020684a8();
+    MB_InitSendGameInfoStatus();
     result = func_02068d08();
 
     IRQ::Restore(saved);

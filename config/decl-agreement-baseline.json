@@ -19393,10 +19393,6 @@
       "src/WM_StartDataSharing.cpp": [
         "param:#1 void (*)(void *)",
         "return:int"
-      ],
-      "src/unnamed/arm9/0206/func_02068a28.c": [
-        "param:#5 int",
-        "param:#6 int"
       ]
     },
     "func_02062428": {
@@ -19771,27 +19767,12 @@
         "return:void"
       ]
     },
-    "func_02068e44": {
-      "src/unnamed/arm9/0206/func_02068dc8.c": [
-        "arity:3"
-      ]
-    },
     "func_02068e4c": {
       "src/unnamed/arm9/0203/func_0203e20c.cpp": [
         "param:#1 void *",
         "param:#3 unsigned short",
         "param:#4 unsigned short",
         "return:void"
-      ]
-    },
-    "func_020690b0": {
-      "src/unnamed/arm9/0206/func_020688fc.c": [
-        "arity:0"
-      ]
-    },
-    "func_02069918": {
-      "src/unnamed/arm9/0206/func_020690b0.c": [
-        "arity:0"
       ]
     },
     "func_0206a928": {
@@ -19850,16 +19831,6 @@
       ],
       "src/unnamed/arm9/0206/func_0206d32c.c": [
         "param:#1 const SavedIntState *"
-      ]
-    },
-    "func_0206dab4": {
-      "src/unnamed/arm9/0206/func_0206cf98.c": [
-        "arity:2",
-        "return:unsigned int"
-      ],
-      "src/unnamed/arm9/0206/func_0206d32c.c": [
-        "arity:2",
-        "return:unsigned int"
       ]
     },
     "func_0206dc7c": {
@@ -19990,22 +19961,12 @@
         "return:int"
       ]
     },
-    "func_0207037c": {
-      "src/cstd4.cpp": [
-        "return:void"
-      ]
-    },
     "func_02071790": {
       "src/unnamed/arm9/0207/func_02071be8.c": [
         "arity:3"
       ],
       "src/unnamed/arm9/0207/func_02071f1c.c": [
         "arity:3"
-      ]
-    },
-    "func_02071844": {
-      "src/unnamed/arm9/0207/func_02072dac.c": [
-        "arity:2"
       ]
     },
     "func_02071864": {
@@ -20121,11 +20082,6 @@
         "return:int"
       ],
       "src/_fsub.c": [
-        "return:int"
-      ]
-    },
-    "func_02073238": {
-      "src/cstd4.cpp": [
         "return:int"
       ]
     },
