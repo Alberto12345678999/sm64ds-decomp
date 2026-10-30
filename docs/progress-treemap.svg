@@ -4817,7 +4817,7 @@ matched: yes</title></rect><rect x="54.04" y="441.63" width="4.63" height="2.90"
 module: arm9
 addr: 0x02035428
 size: 20 bytes
-matched: yes</title></rect><rect x="58.66" y="441.63" width="2.78" height="2.90" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0203543c
+matched: yes</title></rect><rect x="58.66" y="441.63" width="2.78" height="2.90" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZNK5dBgCh16IsDetectingToxicEv
 module: arm9
 addr: 0x0203543c
 size: 12 bytes
@@ -4825,15 +4825,15 @@ matched: yes</title></rect><rect x="61.44" y="441.63" width="4.63" height="2.90"
 module: arm9
 addr: 0x02035448
 size: 20 bytes
-matched: yes</title></rect><rect x="66.06" y="441.63" width="2.78" height="2.90" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0203545c
+matched: yes</title></rect><rect x="66.06" y="441.63" width="2.78" height="2.90" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZNK5dBgCh12IsCameraModeEv
 module: arm9
 addr: 0x0203545c
 size: 12 bytes
-matched: yes</title></rect><rect x="68.84" y="441.63" width="4.63" height="2.90" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02035468
+matched: yes</title></rect><rect x="68.84" y="441.63" width="4.63" height="2.90" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5dBgCh16EnableCameraModeEv
 module: arm9
 addr: 0x02035468
 size: 20 bytes
-matched: yes</title></rect><rect x="73.46" y="441.63" width="2.78" height="2.90" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0203547c
+matched: yes</title></rect><rect x="73.46" y="441.63" width="2.78" height="2.90" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZNK5dBgCh16IsDetectingWaterEv
 module: arm9
 addr: 0x0203547c
 size: 12 bytes
@@ -4845,7 +4845,7 @@ matched: yes</title></rect><rect x="80.87" y="441.63" width="4.63" height="2.90"
 module: arm9
 addr: 0x0203549c
 size: 20 bytes
-matched: yes</title></rect><rect x="85.49" y="441.63" width="2.78" height="2.90" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020354b0
+matched: yes</title></rect><rect x="85.49" y="441.63" width="2.78" height="2.90" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZNK5dBgCh19IsDetectingOrdinaryEv
 module: arm9
 addr: 0x020354b0
 size: 12 bytes
@@ -5105,7 +5105,7 @@ matched: yes</title></rect><rect x="319.10" y="444.53" width="2.32" height="15.0
 module: arm9
 addr: 0x02037430
 size: 52 bytes
-matched: yes</title></rect><rect x="5.00" y="459.58" width="5.34" height="5.02" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02037464
+matched: yes</title></rect><rect x="5.00" y="459.58" width="5.34" height="5.02" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN9dBgCh_Gnd11ResetResultEv
 module: arm9
 addr: 0x02037464
 size: 40 bytes
@@ -5149,7 +5149,7 @@ matched: yes</title></rect><rect x="57.38" y="459.58" width="3.74" height="5.02"
 module: arm9
 addr: 0x020375ec
 size: 28 bytes
-matched: yes</title></rect><rect x="61.12" y="459.58" width="13.90" height="5.02" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN9dBgCh_Lin13func_02037608Ev
+matched: yes</title></rect><rect x="61.12" y="459.58" width="13.90" height="5.02" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN9dBgCh_Lin11ResetResultEv
 module: arm9
 addr: 0x02037608
 size: 104 bytes
@@ -5201,7 +5201,7 @@ matched: yes</title></rect><rect x="170.16" y="459.58" width="1.07" height="5.02
 module: arm9
 addr: 0x02037938
 size: 8 bytes
-matched: yes</title></rect><rect x="171.23" y="459.58" width="1.60" height="5.02" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN12dBgCh_SphCrr13func_02037940Eh
+matched: yes</title></rect><rect x="171.23" y="459.58" width="1.60" height="5.02" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN12dBgCh_SphCrr13SetQueryFlagsEh
 module: arm9
 addr: 0x02037940
 size: 12 bytes
@@ -5249,7 +5249,7 @@ matched: yes</title></rect><rect x="234.83" y="459.58" width="8.55" height="5.02
 module: arm9
 addr: 0x02037b1c
 size: 64 bytes
-matched: yes</title></rect><rect x="243.38" y="459.58" width="21.91" height="5.02" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN12dBgCh_SphCrr13func_02037b5cEv
+matched: yes</title></rect><rect x="243.38" y="459.58" width="21.91" height="5.02" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN12dBgCh_SphCrr10ResetQueryEv
 module: arm9
 addr: 0x02037b5c
 size: 164 bytes
@@ -5297,7 +5297,7 @@ matched: yes</title></rect><rect x="39.26" y="464.60" width="22.17" height="1.33
 module: arm9
 addr: 0x02037de8
 size: 44 bytes
-matched: yes</title></rect><rect x="61.43" y="464.60" width="6.05" height="1.33" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02037e14
+matched: yes</title></rect><rect x="61.43" y="464.60" width="6.05" height="1.33" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZNK4CLPS12IsCameraOnlyEv
 module: arm9
 addr: 0x02037e14
 size: 12 bytes
@@ -5305,7 +5305,7 @@ matched: yes</title></rect><rect x="67.48" y="464.60" width="6.05" height="1.33"
 module: arm9
 addr: 0x02037e20
 size: 12 bytes
-matched: yes</title></rect><rect x="73.52" y="464.60" width="6.05" height="1.33" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02037e2c
+matched: yes</title></rect><rect x="73.52" y="464.60" width="6.05" height="1.33" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZNK4CLPS19IsCameraPassThroughEv
 module: arm9
 addr: 0x02037e2c
 size: 12 bytes
@@ -5549,31 +5549,31 @@ matched: yes</title></rect><rect x="168.93" y="475.61" width="32.40" height="1.4
 module: arm9
 addr: 0x02039348
 size: 68 bytes
-matched: yes</title></rect><rect x="201.33" y="475.61" width="3.81" height="1.41" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0203938c
+matched: yes</title></rect><rect x="201.33" y="475.61" width="3.81" height="1.41" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZNK4dBgW14GetClipOffsetYEv
 module: arm9
 addr: 0x0203938c
 size: 8 bytes
-matched: yes</title></rect><rect x="205.14" y="475.61" width="3.81" height="1.41" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02039394
+matched: yes</title></rect><rect x="205.14" y="475.61" width="3.81" height="1.41" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN4dBgW14SetClipOffsetYEi
 module: arm9
 addr: 0x02039394
 size: 8 bytes
-matched: yes</title></rect><rect x="208.96" y="475.61" width="3.81" height="1.41" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0203939c
+matched: yes</title></rect><rect x="208.96" y="475.61" width="3.81" height="1.41" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZNK4dBgW13GetClipRadiusEv
 module: arm9
 addr: 0x0203939c
 size: 8 bytes
-matched: yes</title></rect><rect x="212.77" y="475.61" width="3.81" height="1.41" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020393a4
+matched: yes</title></rect><rect x="212.77" y="475.61" width="3.81" height="1.41" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN4dBgW13SetClipRadiusEi
 module: arm9
 addr: 0x020393a4
 size: 8 bytes
-matched: yes</title></rect><rect x="216.58" y="475.61" width="3.81" height="1.41" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020393ac
+matched: yes</title></rect><rect x="216.58" y="475.61" width="3.81" height="1.41" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZNK4dBgW16GetActorUniqueIDEv
 module: arm9
 addr: 0x020393ac
 size: 8 bytes
-matched: yes</title></rect><rect x="220.39" y="475.61" width="3.81" height="1.41" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020393b4
+matched: yes</title></rect><rect x="220.39" y="475.61" width="3.81" height="1.41" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZNK4dBgW8GetActorEv
 module: arm9
 addr: 0x020393b4
 size: 8 bytes
-matched: yes</title></rect><rect x="224.21" y="475.61" width="3.81" height="1.41" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020393bc
+matched: yes</title></rect><rect x="224.21" y="475.61" width="3.81" height="1.41" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZNK4dBgW18GetStoodOnCallbackEv
 module: arm9
 addr: 0x020393bc
 size: 8 bytes
@@ -5581,7 +5581,7 @@ matched: yes</title></rect><rect x="228.02" y="475.61" width="3.81" height="1.41
 module: arm9
 addr: 0x020393c4
 size: 8 bytes
-matched: yes</title></rect><rect x="231.83" y="475.61" width="3.81" height="1.41" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020393cc
+matched: yes</title></rect><rect x="231.83" y="475.61" width="3.81" height="1.41" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZNK4dBgW21GetBeforeClsnCallbackEv
 module: arm9
 addr: 0x020393cc
 size: 8 bytes
@@ -5593,15 +5593,15 @@ matched: yes</title></rect><rect x="239.46" y="475.61" width="9.53" height="1.41
 module: arm9
 addr: 0x020393dc
 size: 20 bytes
-matched: yes</title></rect><rect x="248.99" y="475.61" width="5.72" height="1.41" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020393f0
+matched: yes</title></rect><rect x="248.99" y="475.61" width="5.72" height="1.41" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN4dBgW14ClearSlotIndexEv
 module: arm9
 addr: 0x020393f0
 size: 12 bytes
-matched: yes</title></rect><rect x="254.70" y="475.61" width="3.81" height="1.41" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020393fc
+matched: yes</title></rect><rect x="254.70" y="475.61" width="3.81" height="1.41" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN4dBgW12SetSlotIndexEi
 module: arm9
 addr: 0x020393fc
 size: 8 bytes
-matched: yes</title></rect><rect x="258.52" y="475.61" width="3.81" height="1.41" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02039404
+matched: yes</title></rect><rect x="258.52" y="475.61" width="3.81" height="1.41" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZNK4dBgW12GetSlotIndexEv
 module: arm9
 addr: 0x02039404
 size: 8 bytes
@@ -5637,7 +5637,7 @@ matched: yes</title></rect><rect x="5.00" y="477.02" width="43.40" height="5.75"
 module: arm9
 addr: 0x02039488
 size: 372 bytes
-matched: yes</title></rect><rect x="48.40" y="477.02" width="4.20" height="5.75" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020395fc
+matched: yes</title></rect><rect x="48.40" y="477.02" width="4.20" height="5.75" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN4dBgW8SetActorEP8dActor_c
 module: arm9
 addr: 0x020395fc
 size: 36 bytes
@@ -5645,7 +5645,7 @@ matched: yes</title></rect><rect x="52.60" y="477.02" width="0.47" height="5.75"
 module: arm9
 addr: 0x02039620
 size: 4 bytes
-matched: yes</title></rect><rect x="53.07" y="477.02" width="6.07" height="5.75" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02039624
+matched: yes</title></rect><rect x="53.07" y="477.02" width="6.07" height="5.75" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN4dBgW5ResetEv
 module: arm9
 addr: 0x02039624
 size: 52 bytes
@@ -5665,11 +5665,11 @@ matched: yes</title></rect><rect x="67.07" y="477.02" width="4.20" height="5.75"
 module: arm9
 addr: 0x0203969c
 size: 36 bytes
-matched: yes</title></rect><rect x="71.27" y="477.02" width="1.87" height="5.75" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020396c0
+matched: yes</title></rect><rect x="71.27" y="477.02" width="1.87" height="5.75" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7dBgW_Kc21SetEdgeToleranceShiftEi
 module: arm9
 addr: 0x020396c0
 size: 16 bytes
-matched: yes</title></rect><rect x="73.14" y="477.02" width="0.93" height="5.75" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020396d0
+matched: yes</title></rect><rect x="73.14" y="477.02" width="0.93" height="5.75" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7dBgW_Kc17SetDepthDirMinDotEi
 module: arm9
 addr: 0x020396d0
 size: 8 bytes
@@ -18497,11 +18497,11 @@ matched: yes</title></rect><rect x="453.76" y="964.05" width="7.40" height="21.2
 module: ov002
 addr: 0x020fe960
 size: 236 bytes
-matched: yes</title></rect><rect x="453.76" y="985.28" width="7.40" height="2.52" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov002_020fea4c
+matched: yes</title></rect><rect x="453.76" y="985.28" width="7.40" height="2.52" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZNK8dM3dGLin6GetEndEv
 module: ov002
 addr: 0x020fea4c
 size: 28 bytes
-matched: yes</title></rect><rect x="453.76" y="987.80" width="7.40" height="2.52" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov002_020fea68
+matched: yes</title></rect><rect x="453.76" y="987.80" width="7.40" height="2.52" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZNK8dM3dGLin8GetStartEv
 module: ov002
 addr: 0x020fea68
 size: 28 bytes
