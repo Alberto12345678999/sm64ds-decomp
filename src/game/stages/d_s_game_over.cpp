@@ -169,7 +169,7 @@ s32 dScGameOver_c::InitResources() {
     void *f;
     int i;
 
-    func_02019028();
+    Disable3dEngines();
     GX::DisableAllBanks();
     GX::SetBankForBG(1);
     GX::SetBankForOBJ(0x40);

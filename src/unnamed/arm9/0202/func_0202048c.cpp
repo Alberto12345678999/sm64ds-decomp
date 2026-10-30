@@ -17,8 +17,7 @@ extern short data_02082214[];
  * current frame's OamAttr list (func_0202044c copies it from the frame
  * table), and `affine` gates drawing at all. `screen` picks the engine
  * (0 main, 1 sub, 2 both, the main copy 0xc0 lower). */
-extern "C" void func_0202048c(char* a0, int a1, int a2)
-{
+extern "C" void func_0202048c(char *a0, int a1, int a2) {
     OamAnimation *anim = (OamAnimation *)a0;
 
     if (anim->affine == 0)
@@ -56,6 +55,9 @@ extern "C" void func_0202048c(char* a0, int a1, int a2)
     m[2] = -((ta * f0c + 0x800) >> 12);
     m[3] = (tb * f0c + 0x800) >> 12;
 
+    /* The first OamAttr's first word is attr0 | attr1 << 16: bits 28 and 29
+       are attr1's horizontal and vertical flip. They are folded into the
+       matrix here, because in an affine sprite those bits pick the matrix. */
     if (*(int *)anim->tile & 0x10000000) {
         m[0] = -m[0];
         m[1] = -m[1];

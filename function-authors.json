@@ -2979,7 +2979,7 @@
     },
     "arm9:0x02019028": {
       "author": "tangosdev",
-      "name": "func_02019028"
+      "name": "Disable3dEngines"
     },
     "arm9:0x02019070": {
       "author": "tangosdev",
