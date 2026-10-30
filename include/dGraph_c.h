@@ -18,8 +18,12 @@
  * func_02019100) and call `ldr r1,[r0]; ldr r1,[r1,#slot*4]; blx r1` with
  * r0 = the object -- vptr dispatch, r1 never set as an argument, so every
  * slot is nullary. func_02018ec0 and func_02018efc have the same shape but
- * call slot 2 (AdvanceFade) of the stage wipe and scene faders
- * (data_0209d4b0, data_0209d4ac), not of this class. An earlier reading
+ * call slot 2 of a fader instead, the virtual dFader_c::AdvanceFade:
+ * data_0209d4b0 is the active transition fader (stage wipe or KuppaScript
+ * colour fade; d_s_stage_methods.cpp points it at a dFdWipe_c, and
+ * KuppaScript.cpp at the dFdColor_c data_0209b294 for KS_WHITE/BLACK_FADE_*
+ * and clears it on KS_LOAD_LEVEL), and data_0209d4ac is the scene fader.
+ * Neither is this class. An earlier reading
  * ("a table of plain function addresses, therefore static") is falsified by
  * the RTTI header on that table and by the base-then-derived vptr store
  * pairs in the derived classes' constructors (e.g. 0x02074edc).
