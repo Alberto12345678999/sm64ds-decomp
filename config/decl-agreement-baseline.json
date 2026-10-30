@@ -19653,10 +19653,6 @@
       "src/WM_StartDataSharing.cpp": [
         "param:#1 void (*)(void *)",
         "return:int"
-      ],
-      "src/unnamed/arm9/0206/func_02068a28.c": [
-        "param:#5 int",
-        "param:#6 int"
       ]
     },
     "func_02062428": {
@@ -20031,27 +20027,12 @@
         "return:void"
       ]
     },
-    "func_02068e44": {
-      "src/unnamed/arm9/0206/func_02068dc8.c": [
-        "arity:3"
-      ]
-    },
     "func_02068e4c": {
       "src/unnamed/arm9/0203/func_0203e20c.cpp": [
         "param:#1 void *",
         "param:#3 unsigned short",
         "param:#4 unsigned short",
         "return:void"
-      ]
-    },
-    "func_020690b0": {
-      "src/unnamed/arm9/0206/func_020688fc.c": [
-        "arity:0"
-      ]
-    },
-    "func_02069918": {
-      "src/unnamed/arm9/0206/func_020690b0.c": [
-        "arity:0"
       ]
     },
     "func_0206a928": {

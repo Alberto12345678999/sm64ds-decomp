@@ -53,7 +53,7 @@ extern int func_020625fc(void *fn, int a, u16 b, int c, u16 d, u16 e, int f,
 extern int func_0206a230(void);
 extern int func_0206a29c(void *p);
 extern int func_02068a74(void);
-extern void func_02069918(void);
+extern void func_02069918(char *arg0);
 extern void _ZN4CP1519InvalidateDataCacheEjj(u32 addr, u32 n);
 extern void DMASyncHalfTransfer(u32 ch, void *src, void *dst, u32 n);
 extern void MultiCopyHalf(void *src, void *dst, u32 n);
