@@ -7,11 +7,11 @@ extern "C" {
 typedef unsigned short u16;
 typedef unsigned char u8;
 
-extern void func_0206a3a4(int arg0, int *out);
+extern void func_0206a3a4(u16 lockID, int *out);
 extern void func_0206a458(int *out);
 extern void DMASyncHalfTransfer(unsigned int channel, void *src, void *dst, unsigned int numHalfs);
 extern void func_0206a424(int *self);
-extern void func_0206a37c(int a, int *p);
+extern void func_0206a37c(u16 lockID, int *p);
 extern void MultiCopy_Int(int *dst, int *src, int len);
 extern void func_0206a318(void *arg);
 extern void WaitByLoop(int n);

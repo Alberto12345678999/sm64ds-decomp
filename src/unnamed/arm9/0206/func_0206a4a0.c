@@ -1,8 +1,8 @@
 #include "types.h"
-extern void func_0206a3a4(int arg0, int *out);
+extern void func_0206a3a4(u16 lockID, int *out);
 extern void func_0206a458(int *out);
 extern void func_0206a424(int *out);
-extern void func_0206a37c(int a, int *p);
+extern void func_0206a37c(u16 lockID, int *p);
 
 extern u16 data_020a9de0[];
 

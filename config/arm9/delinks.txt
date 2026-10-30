@@ -2182,81 +2182,9 @@ src/engine/os/OS_Interrupt.cpp:
     complete
     .text start:0x02056d64 end:0x02057014
 
-src/unnamed/arm9/0205/func_02057014.c:
+src/engine/os/OS_SpinLock.cpp:
     complete
-    .text start:0x02057014 end:0x02057020
-
-src/unnamed/arm9/0205/func_02057020.c:
-    complete
-    .text start:0x02057020 end:0x02057078
-
-src/unnamed/arm9/0205/func_02057078.c:
-    complete
-    .text start:0x02057078 end:0x020570a8
-
-src/unnamed/arm9/0205/func_020570a8.c:
-    complete
-    .text start:0x020570a8 end:0x020570b8
-
-src/unnamed/arm9/0205/func_020570b8.c:
-    complete
-    .text start:0x020570b8 end:0x020570c0
-
-src/unnamed/arm9/0205/func_020570c0.c:
-    complete
-    .text start:0x020570c0 end:0x020570d8
-
-src/unnamed/arm9/0205/func_020570d8.c:
-    complete
-    .text start:0x020570d8 end:0x020570f0
-
-src/unnamed/arm9/0205/func_020570f0.c:
-    complete
-    .text start:0x020570f0 end:0x0205710c
-
-src/unnamed/arm9/0205/func_0205710c.c:
-    complete
-    .text start:0x0205710c end:0x02057128
-
-src/unnamed/arm9/0205/func_02057128.c:
-    complete
-    .text start:0x02057128 end:0x02057140
-
-src/unnamed/arm9/0205/func_02057140.c:
-    complete
-    .text start:0x02057140 end:0x02057158
-
-src/unnamed/arm9/0205/func_02057158.c:
-    complete
-    .text start:0x02057158 end:0x02057178
-
-src/unnamed/arm9/0205/func_02057178.c:
-    complete
-    .text start:0x02057178 end:0x02057198
-
-src/unnamed/arm9/0205/func_02057198.cpp:
-    complete
-    .text start:0x02057198 end:0x02057218
-
-src/unnamed/arm9/0205/func_02057218.c:
-    complete
-    .text start:0x02057218 end:0x02057228
-
-src/unnamed/arm9/0205/func_02057228.cpp:
-    complete
-    .text start:0x02057228 end:0x020572b8
-
-src/unnamed/arm9/0205/func_020572b8.c:
-    complete
-    .text start:0x020572b8 end:0x020572c8
-
-src/unnamed/arm9/0205/func_020572c8.c:
-    complete
-    .text start:0x020572c8 end:0x02057320
-
-src/unnamed/arm9/0205/func_02057320.cpp:
-    complete
-    .text start:0x02057320 end:0x02057410
+    .text start:0x02057014 end:0x02057410
 
 src/unnamed/arm9/0205/func_02057410.c:
     complete
@@ -2580,7 +2508,7 @@ src/IRQ3.cpp:
     .text start:0x02059d08 end:0x02059d8c
     complete
 
-src/unnamed/arm9/0205/func_02059d8c.c:
+src/OS_SpinWait.c:
     complete
     .text start:0x02059d8c end:0x02059d98
 
@@ -2656,7 +2584,7 @@ src/engine/mi/MI_Memory.c:
     complete
     .text start:0x0205a448 end:0x0205a74c
 
-src/unnamed/arm9/0205/func_0205a74c.c:
+src/MI_SwapWord.c:
     complete
     .text start:0x0205a74c end:0x0205a754
 

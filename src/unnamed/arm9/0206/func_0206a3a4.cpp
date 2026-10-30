@@ -1,21 +1,18 @@
 //cpp
 #include "IRQ.h"
+#include "nitro/os/spinLock.h"
 
 extern "C" {
 
-typedef unsigned short u16;
-extern int func_020570b8(u16 *p);
-extern int func_02057158(void *p);
 extern void WaitByLoop(int n);
 
-void func_0206a3a4(void *arg0, int *out)
-{
+void func_0206a3a4(u16 lockID, int *out) {
     for (;;) {
         out[1] = IRQ::Disable();
-        out[0] = func_020570b8((u16 *)0x27fffe8) & 0x40;
+        out[0] = OS_ReadOwnerOfLockCartridge() & OS_MAINP_LOCKED_FLAG;
         if (out[0] != 0)
             return;
-        if (func_02057158(arg0) == 0)
+        if (OS_TryLockCartridge(lockID) == 0)
             return;
         IRQ::Restore(out[1]);
         WaitByLoop(1);

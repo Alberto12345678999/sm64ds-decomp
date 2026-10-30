@@ -28,7 +28,7 @@ SetFogTable and the 0x18 table loader after SetClearColor come in the other orde
 | GX.c | 0x02053a90.. (7 exact, GX_Init drifts 0x184 to 0x15c) | arm9/GX_Init | yes, both edges |
 | GX_bgcnt.c | 0x02054d38..0x020551f0, 16/16 exact | arm9/G2 | yes, both edges |
 | GX_vramcnt.c | 0x02053ea0..0x02054d38, 37 exact + 1 drift | arm9/GX_VramCnt | top edge yes; the TU also takes 3 functions below (0x02053e1c..0x02053ea0) that pret's file doesn't have |
-| OS_system.c | 0x02059d08..0x02059d98, 8/8 | arm9/IRQ3 | yes; IRQ3 leaves out OS_SpinWait (func_02059d8c, the asm hatch) on purpose |
+| OS_system.c | 0x02059d08..0x02059d98, 8/8 | arm9/IRQ3 | yes; IRQ3 leaves out OS_SpinWait (src/OS_SpinWait.c, the asm hatch) on purpose |
 | OS_tcm.c, OS_protectionUnit.c | 1 and 2 exact | arm9/CP15_TCM, arm9/CP15_ProtectionUnit | yes |
 | OS_cache.c | 0x02058bdc.., 5 exact + 1 drift | arm9/CP15 | yes |
 | OS_irqTable.c + OS_interrupt.c | 0x02056c40..0x02056d64, then ..0x02057014 | arm9/OS_IrqTable + arm9/OS_Interrupt | fixed: arm9/IRQ held both files; split at 0x02056d64 (func_02057000 is OS_InitIrqTable, 0x14 here) |
@@ -47,10 +47,10 @@ check against, and they don't.
 |---|---|---|
 | MI_memory.c | 0x0205a448..0x0205a74c | 11/11 exact, 2 pret functions dropped by the linker: folded as arm9/MI_Memory |
 | FX_mtx33.c | 0x020524f0..0x020527c0 | 6 exact, 1 extra 0x3c function here (func_02052514) |
-| OS_spinLock.c | 0x02057014..0x02057410 | 17 exact, 1 drift, 1 extra (func_020570a8) |
+| OS_spinLock.c | 0x02057014..0x02057410 | 18 of 19: 17 exact, OSi_DoLockByWord 0x54 to 0x58, OS_LockCartridge dropped by the linker, 1 extra (OSi_WaitByLoop, out of line here): folded as arm9/OS_SpinLock |
 | OS_alloc.c | 0x020590fc..0x020593a8 | 5/5 exact; func_02059040 below it is unexplained |
 | OS_exception.c, OS_tick.c, OS_alarm.c | 0x020593f4..0x02059cb4 | 4, 4 and 8 exact, edges unresolved |
 | SND_interface.c | 0x0205a8f0..0x0205adf8 | 21 exact, 2 drift, 3 extra |
 
 The single-function SDK files sit between these runs: GX_state.c's GX_InitGXState
-is func_02053d9c (0x80), and MI_swap.c's MI_SwapWord is func_0205a74c.
+is func_02053d9c (0x80), and MI_swap.c's MI_SwapWord is src/MI_SwapWord.c (0x0205a74c).

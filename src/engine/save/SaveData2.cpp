@@ -13,14 +13,13 @@
 #include "types.h"
 #include "decl_common.h"
 #include "SaveData.h"
+#include "nitro/os/spinLock.h"
 
 extern "C" {
 int func_0203da3c(void);
 u32 func_0206045c(void);
-int func_02057020(void);
 void func_0205ff80(u16 a);
 void func_0205ff70(u16 a);
-void func_02057078(u16 a);
 int func_02060558(u32 addr, void* buf, u32 len, int d, int e, int f);
 int func_02060484(int a, int b, int c, int d, int e, int f);
 }
@@ -79,7 +78,7 @@ int SaveData::SaveDataToCart(char* data, u32 size, u32 fileID)
         }
     }
 
-    lockID = func_02057020();
+    lockID = OS_GetLockID();
     if (lockID == -3)
         return 1;
 
@@ -97,7 +96,7 @@ int SaveData::SaveDataToCart(char* data, u32 size, u32 fileID)
         retry++;
         if (retry > 0) {
             func_0205ff70((u16)lockID);
-            func_02057078((u16)lockID);
+            OS_ReleaseLockID((u16)lockID);
             return 1;
         }
     }
@@ -118,13 +117,13 @@ int SaveData::SaveDataToCart(char* data, u32 size, u32 fileID)
         retry2++;
         if (retry2 > 0) {
             func_0205ff70((u16)lockID);
-            func_02057078((u16)lockID);
+            OS_ReleaseLockID((u16)lockID);
             return 1;
         }
     }
 
     func_0205ff70((u16)lockID);
-    func_02057078((u16)lockID);
+    OS_ReleaseLockID((u16)lockID);
     return 0;
 }
 
@@ -168,7 +167,7 @@ int SaveData::ReadDataFromCart(char* buf, u32 len, u32 slot)
         return 1;
     if (len > half - off - 10)
         return 1;
-    lock = func_02057020();
+    lock = OS_GetLockID();
     if (lock == -3)
         return 1;
     func_0205ff80((u16)lock);
@@ -207,7 +206,7 @@ int SaveData::ReadDataFromCart(char* buf, u32 len, u32 slot)
                       ((u8)buf[j] & 0xFF);
             }
             if (sum == crc) {
-                func_02057078((u16)lock);
+                OS_ReleaseLockID((u16)lock);
                 return 0;
             }
         }
@@ -226,12 +225,12 @@ int SaveData::ReadDataFromCart(char* buf, u32 len, u32 slot)
         retry2++;
         if (retry2 > 0) {
             func_0205ff70((u16)lock);
-            func_02057078((u16)lock);
+            OS_ReleaseLockID((u16)lock);
             return 1;
         }
     }
     func_0205ff70((u16)lock);
-    func_02057078((u16)lock);
+    OS_ReleaseLockID((u16)lock);
     pd = data_020a4b40;
     pm = magic;
     for (i = 0; i < 8; i++, pd++, pm++) {

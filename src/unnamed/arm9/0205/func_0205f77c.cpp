@@ -6,7 +6,7 @@ struct IRQ {
     static void Restore(unsigned int);
 };
 struct CP15 { static void WaitForInterrupt(); };
-extern "C" void func_02059d8c(int x);
+extern "C" void OS_SpinWait(unsigned int cycles);
 extern "C" int func_0205fc44(unsigned short a, unsigned short b);
 extern "C" int func_0205f68c(int mode, int arg1, int arg2, int arg3);
 extern "C" int func_0205f958(void);
@@ -39,7 +39,7 @@ extern "C" int func_0205f77c(int mode, int arg1, int arg2)
         ;
 
     CP15::WaitForInterrupt();
-    func_02059d8c(0x332340);
+    OS_SpinWait(0x332340);
     if (mode & 8) {
         if (*(volatile unsigned int *)0x4000214 & 0x100000) flag = 1;
     }

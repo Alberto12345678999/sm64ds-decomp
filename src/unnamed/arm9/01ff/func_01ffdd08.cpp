@@ -1,6 +1,7 @@
 //cpp
 #include "types.h"
 #include "CP15.h"
+#include "nitro/os/spinLock.h"
 
 extern "C" {
 
@@ -17,8 +18,6 @@ extern void func_02059dd4(s32 param);
 extern void func_01ffdd08(void);
 extern void func_01ffdb28(void);
 extern vu16 data_020a645c;
-extern int func_02057020(void);
-extern void func_0205710c(int lockId);
 extern void OSReadROMArea(u32 romOffset, u32 dest, u32 size);
 
 /* func_01ffdd98 at 0x01ffdd98 (ITCM). Soft reset: hand the caller's argument to the
@@ -95,8 +94,8 @@ void func_01ffdd98(u32 resetArg) {
  * shortened, offset pulled up to 0x8000 - and only the tail is reloaded; the secure-area
  * part is already resident in RAM from boot. ARM7 starts at 0x1b4800 and is copied whole.
  *
- * func_02057020 / func_0205710c keep their func_ names from config/arm9/symbols.txt.
- * The low-halfword truncation of func_02057020's result is the same idiom already in
+ * OS_GetLockID / OS_TryLockCard are the SDK's os_spinLock.c (src/engine/os/OS_SpinLock.cpp).
+ * The low-halfword truncation of OS_GetLockID's result is the same idiom already in
  * src/unnamed/arm9/0205/func_0205865c.cpp and src/engine/save/SaveData2.cpp.
  */
 void func_01ffdd08(void) {
@@ -104,7 +103,7 @@ void func_01ffdd08(void) {
     u32 dest = ROM_HEADER_ARM9_RAM_ADDR;
     u32 size = ROM_HEADER_ARM9_SIZE;
 
-    func_0205710c((u16)func_02057020());
+    OS_TryLockCard((u16)OS_GetLockID());
     CP15::FlushAndInvalidateDataCache();
 
     if (romOffset < ROM_SECURE_AREA_END) {
