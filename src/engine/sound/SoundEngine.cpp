@@ -2628,7 +2628,8 @@ extern "C" int func_0204ee40(struct S82 *self, char *name, char *p) {
 // @symbol func_0204ee10
 extern "C" int func_0204ee10(void *thiz)
 {
-    if (!FS_UnloadArchive(thiz)) return 0;
+    if (!FS_UnloadArchive(thiz))
+        return 0;
     FS_ReleaseArchiveName(thiz);
     return 1;
 }
