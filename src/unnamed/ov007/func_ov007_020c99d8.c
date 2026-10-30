@@ -26,11 +26,10 @@ typedef char Ov007BinFile_size_must_be_0x84[sizeof(Ov007BinFile) == 0x84 ? 1 : -
 typedef char Ov007CharBlock_size_must_be_0xc[sizeof(Ov007CharBlock) == 0xc ? 1 : -1];
 
 extern void func_ov007_020c9a2c(void *buf, int x);
-extern void func_ov007_020c3550(int a, int b, int c, int d);
+extern void *func_ov007_020c3550(const void *tiles, int width, int height, int is8bpp);
 
 /* Builds the character record for file x: its tiles follow block 0's header. */
-int func_ov007_020c99d8(int x)
-{
+int func_ov007_020c99d8(int x) {
     Ov007BinFile buf;
     Ov007CharBlock *ip;
     unsigned char a;
@@ -51,5 +50,5 @@ int func_ov007_020c99d8(int x)
     } else {
         d = TRUE;
     }
-    func_ov007_020c3550((int)(ip + 1), b, c, d);
+    return (int)func_ov007_020c3550(ip + 1, b, c, d);
 }

@@ -34,7 +34,7 @@ typedef struct Ov007Display {
     char pad_00[0x24];
     /* 0x24: func_ov007_020b7320 allocates the table (count at +0x20),
      * func_ov007_020b6d40 fills it with four func_ov007_020c99d8 character
-     * records; func_ov007_020c33d0 loads one into OBJ VRAM */
+     * records; func_ov007_020c33d0 loads one into VRAM */
     Ov007CharRecord **characters;
     char pad_28[4];
     /* 0x2c: func_ov007_020b7320 allocates the table, func_ov007_020b6d40
