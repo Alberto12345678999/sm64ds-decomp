@@ -1,29 +1,34 @@
 //cpp
 #include "IRQ.h"
+#include "nitro/os/thread.h"
 
 extern "C" {
 
-struct Obj {
-    int field0;
-    int field4;
-    int count;
+/* The Nitro SDK's OSMutex, this SDK's layout (see func_02058b9c.c). */
+struct OSMutex {
+    u16 queue;        /* 0x00 */
+    OSThread *thread; /* 0x04 -- the owner, 0 while free */
+    s32 count;        /* 0x08 */
 };
-extern struct Obj data_020a6134;
-int func_020589d4(struct Obj *o) {
+
+/* The Nitro SDK's OS_TryLockMutex: lock the mutex when it is free or the
+ * current thread already owns it. This SDK's version does not link the
+ * mutex into the owner's held-mutex list. */
+int func_020589d4(struct OSMutex *mutex) {
     unsigned int saved = IRQ::Disable();
-    int g = (&data_020a6134)->count;
-    int ret;
-    if (o->field4 == 0) {
-        o->field4 = g;
-        *(int *)(((int)o + 8)) = *(int *)(((int)o + 8)) + 1;
-        ret = 1;
-    } else if (o->field4 == g) {
-        *(int *)(((int)o + 8)) = *(int *)(((int)o + 8)) + 1;
-        ret = 1;
+    OSThread *current = data_020a6134.current;
+    int locked;
+    if (mutex->thread == 0) {
+        mutex->thread = current;
+        mutex->count++;
+        locked = 1;
+    } else if (mutex->thread == current) {
+        mutex->count++;
+        locked = 1;
     } else {
-        ret = 0;
+        locked = 0;
     }
     IRQ::Restore(saved);
-    return ret;
+    return locked;
 }
 }

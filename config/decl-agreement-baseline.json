@@ -1750,10 +1750,6 @@
         "param:#1 Vector3 *",
         "param:#2 Vector3 *"
       ],
-      "src/unnamed/ov007/func_ov007_020c8de0.c": [
-        "param:#1 Vec3 *",
-        "param:#2 Vec3 *"
-      ],
       "src/engine/model/ModelComponents.cpp": [
         "param:#1 Vec3 *",
         "param:#2 Vec3 *"
@@ -1812,15 +1808,6 @@
     "OS_WakeupThread": {
       "src/_ZN3IRQ13VBlankHandlerEv.cpp": [
         "param:#1 int *"
-      ],
-      "src/unnamed/arm9/0205/func_02058a44.c": [
-        "arity:0"
-      ],
-      "src/unnamed/arm9/0205/func_02058a94.cpp": [
-        "param:#1 char *"
-      ],
-      "src/unnamed/arm9/0206/func_0206081c.cpp": [
-        "param:#1 char *"
       ],
       "src/IRQ2.cpp": [
         "param:#1 int *"
@@ -5518,12 +5505,6 @@
       "src/unnamed/arm9/0204/func_0204175c.cpp": [
         "return:void"
       ],
-      "src/unnamed/arm9/0205/func_02059788.cpp": [
-        "return:void"
-      ],
-      "src/unnamed/arm9/0205/func_02059c18.cpp": [
-        "return:void"
-      ],
       "src/unnamed/arm9/0205/func_0205a358.cpp": [
         "return:void"
       ],
@@ -5533,12 +5514,6 @@
     },
     "_ZN3IRQ11DisableIRQsEj": {
       "include/decl_common.h": [
-        "return:void"
-      ],
-      "src/unnamed/arm9/0205/func_02059834.cpp": [
-        "return:void"
-      ],
-      "src/unnamed/arm9/0205/func_02059bc0.cpp": [
         "return:void"
       ],
       "src/unnamed/arm9/0205/func_02059cb4.c": [
@@ -5560,9 +5535,6 @@
       "src/unnamed/arm9/0201/func_0201a4e4.c": [
         "param:#2 void (*)(void)"
       ],
-      "src/unnamed/arm9/0205/func_02059788.cpp": [
-        "param:#2 void (*)(void)"
-      ],
       "src/unnamed/arm9/0205/func_0205a358.cpp": [
         "param:#2 void (*)(void)"
       ],
@@ -5581,28 +5553,14 @@
         "return:void"
       ]
     },
-    "_ZN3IRQ6EnableEv": {
-      "src/unnamed/arm9/0205/func_02057e34.cpp": [
-        "return:void"
-      ]
-    },
     "_ZN3IRQ7DisableEv": {
       "src/Crash.cpp": [
-        "return:void"
-      ],
-      "src/unnamed/arm9/0201/func_02019f10.cpp": [
         "return:void"
       ],
       "src/unnamed/arm9/0204/func_02040c34.c": [
         "return:int"
       ],
-      "src/unnamed/arm9/0205/func_020581a8.cpp": [
-        "return:void"
-      ],
       "src/unnamed/arm9/0205/func_02059040.cpp": [
-        "return:int"
-      ],
-      "src/unnamed/arm9/0205/func_02059950.cpp": [
         "return:int"
       ],
       "src/unnamed/arm9/0205/func_0205a358.cpp": [
@@ -5686,28 +5644,10 @@
       "src/unnamed/arm9/0204/func_02049c48.cpp": [
         "return:void"
       ],
-      "src/unnamed/arm9/0205/func_02057e48.cpp": [
-        "return:void"
-      ],
-      "src/unnamed/arm9/0205/func_02057e84.cpp": [
-        "return:void"
-      ],
-      "src/unnamed/arm9/0205/func_02058200.cpp": [
-        "return:void"
-      ],
       "src/unnamed/arm9/0205/func_0205865c.cpp": [
         "return:void"
       ],
       "src/unnamed/arm9/0205/func_02058894.cpp": [
-        "return:void"
-      ],
-      "src/unnamed/arm9/0205/func_020589d4.cpp": [
-        "return:void"
-      ],
-      "src/unnamed/arm9/0205/func_02058a94.cpp": [
-        "return:void"
-      ],
-      "src/unnamed/arm9/0205/func_02058b08.cpp": [
         "return:void"
       ],
       "src/unnamed/arm9/0205/func_02059040.cpp": [
@@ -5717,12 +5657,6 @@
         "return:void"
       ],
       "src/unnamed/arm9/0205/func_02059170.cpp": [
-        "return:void"
-      ],
-      "src/unnamed/arm9/0205/func_02059650.cpp": [
-        "return:void"
-      ],
-      "src/unnamed/arm9/0205/func_02059950.cpp": [
         "return:void"
       ],
       "src/unnamed/arm9/0205/func_02059f58.cpp": [
@@ -5778,12 +5712,6 @@
         "return:void"
       ],
       "src/unnamed/arm9/0206/func_020602bc.cpp": [
-        "return:void"
-      ],
-      "src/unnamed/arm9/0206/func_02060484.cpp": [
-        "return:void"
-      ],
-      "src/unnamed/arm9/0206/func_0206081c.cpp": [
         "return:void"
       ],
       "src/unnamed/arm9/0206/func_02060b64.cpp": [
@@ -6007,11 +5935,6 @@
       ],
       "src/unnamed/arm9/0201/func_02017060.c": [
         "return:unsigned int"
-      ]
-    },
-    "_ZN4cstd3divEii": {
-      "src/unnamed/ov007/func_ov007_020cbbb0.cpp": [
-        "return:long long"
       ]
     },
     "_ZN4cstd5atan2E5Fix12IiES1_": {
@@ -10057,11 +9980,6 @@
         "return:int"
       ]
     },
-    "data_0209d5b8": {
-      "src/unnamed/arm9/0201/func_0201a244.cpp": [
-        "return:char []"
-      ]
-    },
     "data_0209d65c": {
       "src/_ZN7Message6UpdateEv.cpp": [
         "return:signed char"
@@ -11184,94 +11102,14 @@
         "return:unsigned short []"
       ]
     },
-    "data_020a612c": {
-      "src/unnamed/arm9/0205/func_02058308.c": [
-        "return:void *"
-      ]
-    },
     "data_020a6134": {
-      "src/unnamed/arm9/0205/func_02057e48.cpp": [
-        "return:IRQState"
-      ],
-      "src/unnamed/arm9/0205/func_02057e84.cpp": [
-        "return:ListHead"
-      ],
-      "src/unnamed/arm9/0205/func_02058308.c": [
-        "return:Mgr"
-      ],
       "src/unnamed/arm9/0207/func_0207037c.c": [
         "return:char * []"
-      ],
-      "src/cstd6.cpp": [
-        "return:char * []"
-      ]
-    },
-    "data_020a6188": {
-      "src/unnamed/arm9/0205/func_02057e84.cpp": [
-        "return:Node"
-      ],
-      "src/unnamed/arm9/0205/func_02058308.c": [
-        "return:char []"
-      ]
-    },
-    "data_020a621c": {
-      "src/unnamed/arm9/0205/func_02058308.c": [
-        "return:char []"
-      ]
-    },
-    "data_020a6378": {
-      "src/unnamed/arm9/0205/func_02058f28.c": [
-        "return:unsigned int"
       ]
     },
     "data_020a637c": {
       "src/unnamed/arm9/0205/func_02059170.cpp": [
         "return:int * []"
-      ]
-    },
-    "data_020a63a0": {
-      "src/unnamed/arm9/0205/func_0205950c.cpp": [
-        "return:MPUFunc"
-      ],
-      "src/unnamed/arm9/0205/func_02059578.c": [
-        "return:int []"
-      ],
-      "src/unnamed/arm9/0205/func_02059594.c": [
-        "return:int"
-      ]
-    },
-    "data_020a63a4": {
-      "src/unnamed/arm9/0205/func_0205950c.cpp": [
-        "return:unsigned int"
-      ],
-      "src/unnamed/arm9/0205/func_02059578.c": [
-        "return:int []"
-      ]
-    },
-    "data_020a63a8": {
-      "src/unnamed/arm9/0205/func_02059594.c": [
-        "return:int"
-      ]
-    },
-    "data_020a63ac": {
-      "src/unnamed/arm9/0205/func_0205950c.cpp": [
-        "return:unsigned int"
-      ]
-    },
-    "data_020a6438": {
-      "src/unnamed/arm9/0205/func_02059650.cpp": [
-        "return:volatile unsigned int []"
-      ],
-      "src/unnamed/arm9/0205/func_02059700.c": [
-        "return:volatile unsigned long long"
-      ],
-      "src/unnamed/arm9/0205/func_02059788.cpp": [
-        "return:int"
-      ]
-    },
-    "data_020a6440": {
-      "src/unnamed/arm9/0205/func_02059bc0.cpp": [
-        "return:volatile unsigned short"
       ]
     },
     "data_020a645c": {
@@ -11385,19 +11223,11 @@
       ]
     },
     "data_020a8114": {
-      "src/unnamed/arm9/0205/func_0205fde8.c": [
-        "return:int []"
-      ],
       "src/unnamed/arm9/0205/func_0205ff08.c": [
         "return:int"
       ],
       "src/unnamed/arm9/0205/func_0205ff20.cpp": [
         "return:unsigned int"
-      ]
-    },
-    "data_020a8138": {
-      "src/unnamed/arm9/0205/func_0205fde8.c": [
-        "return:short"
       ]
     },
     "data_020a8180": {
@@ -11417,6 +11247,9 @@
         "return:G"
       ],
       "src/engine/card/CARD_Common.cpp": [
+        "return:CARDiCommon"
+      ],
+      "src/unnamed/arm9/0206/func_02060890.c": [
         "return:CARDiCommon"
       ]
     },
@@ -11562,26 +11395,12 @@
         "return:unsigned short"
       ]
     },
-    "data_020a9dec": {
-      "src/unnamed/arm9/0206/func_0206a88c.c": [
-        "return:int"
-      ]
-    },
     "data_023c0000": {
       "src/_ZN3IRQ13VBlankHandlerEv.cpp": [
         "return:char []"
       ],
       "src/engine/cp15/CP15_SystemSetup.cpp": [
         "return:char []"
-      ],
-      "src/unnamed/arm9/0205/func_02058308.c": [
-        "return:char"
-      ],
-      "src/unnamed/arm9/0205/func_02058df4.c": [
-        "return:char"
-      ],
-      "src/unnamed/arm9/0205/func_02059834.cpp": [
-        "return:int"
       ],
       "src/IRQ2.cpp": [
         "return:char []"
@@ -18863,9 +18682,6 @@
     "func_0201a03c": {
       "src/Crash.cpp": [
         "arity:2"
-      ],
-      "src/main.cpp": [
-        "kind:data"
       ]
     },
     "func_0201a244": {
@@ -20563,14 +20379,7 @@
         "return:int"
       ]
     },
-    "func_02056e4c": {
-      "src/unnamed/arm9/0205/func_02059700.c": [
-        "param:#1 int",
-        "param:#2 void *",
-        "param:#3 int"
-      ]
-    },
-    "func_02056e98": {
+    "OSi_EnterDmaCallback": {
       "src/func_02059fd0.c": [
         "param:#1 int",
         "param:#2 void *",
@@ -20621,40 +20430,15 @@
         "param:#2 int"
       ]
     },
-    "func_02057e7c": {
-      "src/runtime/filesystem/InitializeAssetHandleTable.c": [
-        "param:#1 int"
-      ]
-    },
-    "func_02057e84": {
-      "src/runtime/filesystem/InitializeAssetHandleTable.c": [
-        "param:#1 int"
-      ]
-    },
-    "func_02058048": {
-      "src/unnamed/arm9/0206/func_0206081c.cpp": [
-        "param:#1 char *"
-      ]
-    },
-    "func_02058200": {
+    "OS_CreateThread": {
       "src/unnamed/arm9/0201/func_02019f10.cpp": [
-        "param:#2 void *",
-        "param:#4 void *"
+        "param:#2 void *"
       ],
       "src/unnamed/arm9/0204/func_02042200.c": [
-        "param:#2 void *",
-        "param:#3 void *",
-        "param:#4 void *"
+        "param:#2 void *"
       ],
-      "src/engine/card/CARD_Common.cpp": [
-        "param:#2 void *",
-        "param:#4 void *"
-      ]
-    },
-    "func_02058568": {
-      "src/unnamed/arm9/0205/func_02058200.cpp": [
-        "param:#2 int",
-        "param:#3 int"
+      "src/engine/sound/SoundEngine.cpp": [
+        "param:#2 void *"
       ]
     },
     "func_020587e4": {
@@ -20682,12 +20466,7 @@
         "param:#2 char *"
       ]
     },
-    "func_02058a44": {
-      "src/unnamed/arm9/0205/func_020581a8.cpp": [
-        "param:#1 Obj581 *"
-      ]
-    },
-    "func_02058cd0": {
+    "OS_AllocFromArenaLo": {
       "src/engine/heap/Heap.cpp": [
         "param:#1 unsigned int",
         "param:#2 int",
@@ -20695,26 +20474,20 @@
         "return:void *"
       ]
     },
-    "func_02058d58": {
+    "OS_SetArenaLo": {
       "src/engine/heap/Heap.cpp": [
         "param:#1 unsigned int",
         "param:#2 int",
         "return:int"
       ]
     },
-    "func_02058df4": {
-      "src/unnamed/arm9/0205/func_02058ec8.cpp": [
-        "param:#1 int",
-        "return:unsigned int"
-      ]
-    },
-    "func_02058ea0": {
+    "OS_GetArenaLo": {
       "src/engine/heap/Heap.cpp": [
         "param:#1 unsigned int",
         "return:int"
       ]
     },
-    "func_02058eb4": {
+    "OS_GetArenaHi": {
       "src/engine/heap/Heap.cpp": [
         "param:#1 unsigned int",
         "return:int"
@@ -20738,60 +20511,23 @@
         "return:void *"
       ]
     },
-    "func_0205947c": {
-      "src/unnamed/arm9/0205/func_02059468.c": [
-        "arity:0"
-      ]
-    },
-    "func_02059624": {
-      "src/unnamed/arm9/0205/func_02059bc0.cpp": [
-        "param:#1 unsigned int"
-      ]
-    },
     "func_02059650": {
       "src/unnamed/arm9/0204/func_02042784.c": [
         "return:unsigned long long"
       ],
       "src/unnamed/arm9/0204/func_020427c4.c": [
         "return:unsigned long long"
-      ],
-      "src/unnamed/arm9/0205/func_02059834.cpp": [
-        "return:unsigned long long"
-      ],
-      "src/unnamed/arm9/0205/func_02059a60.c": [
-        "return:unsigned long long"
-      ],
-      "src/unnamed/arm9/0205/func_02059c18.cpp": [
-        "arity:1"
       ]
     },
-    "func_02059950": {
+    "OS_CancelAlarm": {
       "src/unnamed/arm9/0201/func_0201aaa4.c": [
         "arity:0"
       ]
     },
-    "func_020599e8": {
+    "OS_SetAlarm": {
       "src/unnamed/arm9/0201/func_0201aa50.c": [
         "arity:5",
         "return:int"
-      ]
-    },
-    "func_02059a60": {
-      "src/unnamed/arm9/0205/func_020599e8.cpp": [
-        "param:#2 long long"
-      ]
-    },
-    "func_02059c18": {
-      "src/unnamed/arm9/0205/func_02059950.cpp": [
-        "param:#1 Node *"
-      ],
-      "src/unnamed/arm9/0205/func_02059a60.c": [
-        "param:#1 Node *"
-      ]
-    },
-    "func_02059e04": {
-      "src/unnamed/arm9/0205/func_02059e48.c": [
-        "arity:0"
       ]
     },
     "func_02059f2c": {
@@ -21329,11 +21065,6 @@
       "src/unnamed/arm9/0205/func_0205f77c.cpp": [
         "param:#1 unsigned short",
         "param:#2 unsigned short"
-      ]
-    },
-    "func_0205fcfc": {
-      "src/unnamed/arm9/0205/func_0205fde8.c": [
-        "arity:0"
       ]
     },
     "func_0205ff00": {
@@ -22039,16 +21770,6 @@
     },
     "func_02069918": {
       "src/unnamed/arm9/0206/func_020690b0.c": [
-        "arity:0"
-      ]
-    },
-    "func_0206a634": {
-      "src/unnamed/arm9/0206/func_0206a88c.c": [
-        "arity:0"
-      ]
-    },
-    "func_0206a694": {
-      "src/unnamed/arm9/0206/func_0206a88c.c": [
         "arity:0"
       ]
     },
@@ -23960,20 +23681,10 @@
         "param:#4 int"
       ]
     },
-    "func_ov007_020c076c": {
-      "src/unnamed/ov007/func_ov007_020c03b0.c": [
-        "param:#1 Node *"
-      ]
-    },
     "func_ov007_020c0a9c": {
       "src/unnamed/ov007/func_ov007_020b73b4.c": [
         "arity:1",
         "return:void"
-      ]
-    },
-    "func_ov007_020c0aa8": {
-      "src/unnamed/ov007/func_ov007_020c95fc.c": [
-        "param:#4 unsigned short"
       ]
     },
     "func_ov007_020c0af4": {
@@ -24018,12 +23729,6 @@
       ],
       "src/unnamed/ov007/func_ov007_020c40b4.cpp": [
         "return:void"
-      ]
-    },
-    "func_ov007_020c11ac": {
-      "src/unnamed/ov007/func_ov007_020c40d4.cpp": [
-        "param:#1 void *",
-        "return:int"
       ]
     },
     "func_ov007_020c12ac": {
@@ -24162,10 +23867,6 @@
         "param:#1 int",
         "param:#5 int",
         "return:void"
-      ],
-      "src/unnamed/ov007/func_ov007_020c9d90.cpp": [
-        "param:#1 Vec3 *",
-        "param:#3 Vec3 *"
       ]
     },
     "func_ov007_020c32e8": {
@@ -24594,14 +24295,6 @@
         "param:#1 int"
       ]
     },
-    "func_ov007_020c6784": {
-      "src/unnamed/ov007/func_ov007_020bbe60.c": [
-        "param:#3 int",
-        "param:#4 int",
-        "param:#5 int",
-        "param:#6 int"
-      ]
-    },
     "func_ov007_020c690c": {
       "src/ui/menus/unit020b8f50.cpp": [
         "param:#5 void *",
@@ -24629,11 +24322,6 @@
         "param:#5 void *"
       ]
     },
-    "func_ov007_020c7348": {
-      "src/unnamed/ov007/func_ov007_020c73f0.c": [
-        "param:#1 S *"
-      ]
-    },
     "func_ov007_020c73f0": {
       "src/unnamed/ov007/func_ov007_020cbbb0.cpp": [
         "return:void *"
@@ -24649,37 +24337,14 @@
         "param:#1 Vector3 *"
       ]
     },
-    "func_ov007_020c78b0": {
-      "src/unnamed/ov007/func_ov007_020c798c.c": [
-        "arity:0"
-      ]
-    },
     "func_ov007_020c78dc": {
       "src/unnamed/ov007/func_ov007_020c7368.c": [
         "param:#1 int"
       ]
     },
-    "func_ov007_020c798c": {
-      "src/unnamed/ov007/func_ov007_020c6e68.c": [
-        "param:#1 int",
-        "return:void *"
-      ],
-      "src/unnamed/ov007/func_ov007_020c73f0.c": [
-        "param:#1 int",
-        "param:#3 int",
-        "return:T *"
-      ]
-    },
     "func_ov007_020c7b2c": {
       "include/decl_common.h": [
         "param:#1 int"
-      ]
-    },
-    "func_ov007_020c8010": {
-      "src/unnamed/ov007/func_ov007_020c9d90.cpp": [
-        "param:#1 int",
-        "param:#2 int",
-        "param:#3 Cell *"
       ]
     },
     "func_ov007_020c8098": {
@@ -24700,11 +24365,6 @@
         "return:void"
       ]
     },
-    "func_ov007_020c80a4": {
-      "src/unnamed/ov007/func_ov007_020c798c.c": [
-        "return:int"
-      ]
-    },
     "func_ov007_020c80c8": {
       "src/unnamed/ov007/func_ov007_020c71c0.c": [
         "param:#1 int"
@@ -24723,10 +24383,6 @@
     "func_ov007_020c844c": {
       "src/unnamed/ov007/func_ov007_020c690c.c": [
         "param:#1 void *"
-      ],
-      "src/unnamed/ov007/func_ov007_020c798c.c": [
-        "param:#2 void *",
-        "return:int"
       ]
     },
     "func_ov007_020c86c4": {
@@ -24817,9 +24473,6 @@
       "src/ui/menus/unit020b8f50.cpp": [
         "param:#1 T *",
         "return:int"
-      ],
-      "src/unnamed/ov007/func_ov007_020ca1d4.cpp": [
-        "param:#1 int"
       ]
     },
     "func_ov007_020c934c": {
@@ -24906,11 +24559,6 @@
     "func_ov007_020ca2a8": {
       "src/ui/menus/unit020bed60.cpp": [
         "return:int"
-      ]
-    },
-    "func_ov007_020ca308": {
-      "src/unnamed/ov007/func_ov007_020ca1d4.cpp": [
-        "param:#2 int"
       ]
     },
     "func_ov007_020ca578": {

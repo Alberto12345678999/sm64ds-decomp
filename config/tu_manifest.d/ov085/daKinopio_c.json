@@ -278,7 +278,8 @@
     "tubuild create warning (RESOLVED): CONFLICT: extern declaration '_ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as' differs between the legacy file that used to hold _ZN11daKinopio_c12St_Talk_MainEv and the one that held _ZN11daKinopio_c13InitResourcesEv; kept the first, the other is commented out for review -- RECONCILED: `char *` against `void *` return; the six parameters agreed. Kept `void *` and cast where a char pointer is wanted. Both callers match.",
     "tubuild create warning (RESOLVED): CONFLICT: extern declaration 'NumStars' differs between the legacy file that used to hold _ZN11daKinopio_c12St_Talk_MainEv and the one that held _ZN11daKinopio_c13InitResourcesEv; kept the first, the other is commented out for review -- RECONCILED: `extern u8 NumStars();` against `extern u8 NumStars(void);`. The `u8` return agreed; only the empty parameter list differed. Kept `(void)`.",
     "tubuild create warning (RESOLVED): CONFLICT: extern declaration 'IsStarCollectedInCurLevel' differs between the legacy file that used to hold _ZN11daKinopio_c12St_Talk_MainEv and the one that held _ZN11daKinopio_c13InitResourcesEv; kept the first, the other is commented out for review -- RECONCILED: this is the one row the merge could not settle by taking a looser spelling: St_Talk_Main declared it with NO parameters, InitResources as `int IsStarCollectedInCurLevel(int)`, and the two cannot coexist under C linkage. The cartridge settles it. At 0x021292e4 St_Talk_Main loads mStarID with `ldrb r0,[r6,#0x20c]`, compares it against 0xff and falls through to the call at 0x021292f0 with that value still in r0, so the ROM is passing the argument. The zero-argument spelling reproduced those bytes only because the preceding comparison happened to leave it in the right register. The TU declares the one-parameter form and St_Talk_Main passes mStarID explicitly; St_Talk_Main and InitResources both still match byte for byte.",
-    "Static initializer folded: the model and two animation handles (ids 0x35c..0x35e) and the two {init, main, name} state records are real definitions in d_a_kinopio.cpp, replacing the handwritten src/unnamed/ov085/__sinit_ov085_0212f2a8.cpp. mwcc emits __sinit_d_a_kinopio.cpp (0xf8), its .ctor word, the four PMF literals, the two name strings and the registration nodes itself; all are byte- and relocation-identical to retail. The state record's third word is the state's name string, so daKinopio_c::State::unk_10 becomes const char *name. Ownership: ov085 .init, .ctor and .bss run in .text TU order; d_a_kinopio is the first .text TU, this initializer is the first in .init, its .ctor word is the first, and its .bss 0x02130480..0x021304bc ends where d_a_peach's begins; the literals name only this TU's state handlers. The same change licenses the TU's whole .data run 0x0212fe20..0x0212ff34 (strings, PMF literals, _ZTI/_ZTS, the new typed g_profile_KINOPIO, the state records and the vtable, whose 0x84-byte storage starts at 0x0212feb0, two words ahead of the configured address point) and makes the TU intact-object."
+    "Static initializer folded: the model and two animation handles (ids 0x35c..0x35e) and the two {init, main, name} state records are real definitions in d_a_kinopio.cpp, replacing the handwritten src/unnamed/ov085/__sinit_ov085_0212f2a8.cpp. mwcc emits __sinit_d_a_kinopio.cpp (0xf8), its .ctor word, the four PMF literals, the two name strings and the registration nodes itself; all are byte- and relocation-identical to retail. The state record's third word is the state's name string, so daKinopio_c::State::unk_10 becomes const char *name. Ownership: ov085 .init, .ctor and .bss run in .text TU order; d_a_kinopio is the first .text TU, this initializer is the first in .init, its .ctor word is the first, and its .bss 0x02130480..0x021304bc ends where d_a_peach's begins; the literals name only this TU's state handlers. The same change licenses the TU's whole .data run 0x0212fe20..0x0212ff34 (strings, PMF literals, _ZTI/_ZTS, the new typed g_profile_KINOPIO, the state records and the vtable, whose 0x84-byte storage starts at 0x0212feb0, two words ahead of the configured address point) and makes the TU intact-object.",
+    "Collision property member calls replace local helper declarations. Reconciled 9 compiler-local source identities after complete before/after objects proved equal allocated payloads/types/flags/sizes/alignments, symbol attributes/order and relocation destinations (42 sections, 195 relocations). Retail destination identities are unchanged; see notes/collision-readability-1027.md."
   ],
   "verification": {
     "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",
@@ -604,47 +605,47 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@469",
+      "from": "@468",
       "to": "data_ov085_02130498",
       "evidence": "compiler temp mapped to 0x02130498 by the retail initializer relocation at the same pool offset; no bytes or relocations change"
     },
     {
-      "from": "@470",
+      "from": "@469",
       "to": "data_ov085_021304a4",
       "evidence": "compiler temp mapped to 0x021304a4 by the retail initializer relocation at the same pool offset; no bytes or relocations change"
     },
     {
-      "from": "@471",
+      "from": "@470",
       "to": "data_ov085_021304b0",
       "evidence": "compiler temp mapped to 0x021304b0 by the retail initializer relocation at the same pool offset; no bytes or relocations change"
     },
     {
-      "from": "@868",
+      "from": "@867",
       "to": "data_ov085_0212fe40",
       "evidence": "compiler temp mapped to 0x0212fe40 by the retail initializer relocation at the same pool offset; no bytes or relocations change"
     },
     {
-      "from": "@870",
+      "from": "@869",
       "to": "data_ov085_0212fe48",
       "evidence": "compiler temp mapped to 0x0212fe48 by the retail initializer relocation at the same pool offset; no bytes or relocations change"
     },
     {
-      "from": "@873",
+      "from": "@872",
       "to": "data_ov085_0212fe30",
       "evidence": "compiler temp mapped to 0x0212fe30 by the retail initializer relocation at the same pool offset; no bytes or relocations change"
     },
     {
-      "from": "@875",
+      "from": "@874",
       "to": "data_ov085_0212fe38",
       "evidence": "compiler temp mapped to 0x0212fe38 by the retail initializer relocation at the same pool offset; no bytes or relocations change"
     },
     {
-      "from": "@871",
+      "from": "@870",
       "to": "data_ov085_0212fe28",
       "evidence": "compiler temp mapped to 0x0212fe28 by the retail initializer relocation at the same pool offset; no bytes or relocations change"
     },
     {
-      "from": "@876",
+      "from": "@875",
       "to": "data_ov085_0212fe20",
       "evidence": "compiler temp mapped to 0x0212fe20 by the retail initializer relocation at the same pool offset; no bytes or relocations change"
     }

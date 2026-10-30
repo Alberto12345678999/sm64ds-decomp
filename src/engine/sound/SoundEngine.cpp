@@ -431,8 +431,11 @@ extern NestedHeapIterator data_020a5bbc;
 extern NestedHeapIterator data_020a5bc8;
 extern struct Ent data_020a5bd4[];
 extern void func_0204ebb8(void *alloc);
-extern void func_02058048(struct Obj *self);
-extern void func_02058200(char *self, int a1, int a2, int end, int arg4, int arg5);
+/* local extern: the sound thread is untyped storage here (void *) */
+extern void OS_WakeupThreadDirect(void *thread);
+/* local extern: as above */
+extern void OS_CreateThread(void *thread, void *func, void *arg, void *stack,
+                            unsigned int stackSize, unsigned int prio);
 extern int func_020587e4(struct MsgQueue *self, u32 *msg, int flags);
 extern int func_02058894(struct Q *q, int val, int flag);
 extern void func_02058940(struct S58940 *s, int v1, int v2);
@@ -1670,9 +1673,9 @@ extern "C" void func_020506fc(int arg)
         return;
     data_020a55f8 = 0;
     ((void(*)(int *s, int *v1, int v2))func_02058940)(&data_020a5600, &data_020a5614, 8);
-    ((void(*)(int *a, void (*f)(void), int c, int *d, int e, int g))func_02058200)(&data_020a5684, func_02050038, 0, ((int*)&data_020a5bb8), 0x400, arg);
+    OS_CreateThread(&data_020a5684, (void *)func_02050038, 0, &data_020a5bb8, 0x400, arg);
     data_020a55fc = 1;
-    ((void(*)(int *a))func_02058048)(&data_020a5684);
+    OS_WakeupThreadDirect(&data_020a5684);
 }
 
 // @symbol func_020503a4

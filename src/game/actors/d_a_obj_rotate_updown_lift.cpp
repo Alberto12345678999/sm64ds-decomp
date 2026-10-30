@@ -144,10 +144,8 @@ void SubVec3(void *a, void *b, void *c);
 int LenVec3(void *v);
 int Vec3_HorzDist(const Vector3 *a, const Vector3 *b);
 void func_02012694(unsigned int id, const Vector3 *pos);
-/* dBgW range/callback setters. Their C definitions take int *; the calls
-   cast &mMeshCollider. */
-void func_020393a4(int *collider, int range);
-void func_02039394(int *collider, int range);
+/* dBgW callback setter. Its C definition takes int *; the call casts
+   &mMeshCollider. */
 void func_020393d4(int *collider, void *callback);
 
 namespace Particle {
@@ -465,8 +463,8 @@ int daObjRotateUpdownLift_c::Behavior()
         isHs = (isHs == 0x1e);
         if (isHs == 0) {
             func_ov091_02131160();
-            func_020393a4((int *)&mMeshCollider, 0x150000);
-            func_02039394((int *)&mMeshCollider, 0x1000);
+            mMeshCollider.SetClipRadius(0x150000);
+            mMeshCollider.SetClipOffsetY(0x1000);
             if (IsClsnInRange(0x150000, 0x1000) != 0)
                 UpdateClsnPosAndRot();
         } else {

@@ -303,7 +303,7 @@ without ever establishing it. These are shared exit stubs the symbol table split
 ## Worked attempt: func_02057078, now OS_ReleaseLockID (bucket A, and why A is bucket A)
 
 Recorded because it is the evidence that the primitives resist conversion, not just an
-assertion. It is the NitroSDK `OS_ReleaseLockID` sibling of `func_02057020`.
+assertion. It is the NitroSDK `OS_ReleaseLockID` sibling of `func_02057020`, now `OS_GetLockID`.
 
 ```arm
 ROM:  ldr r3,=tbl / cmp r0,#0x60 / addpl r3,r3,#4 / subpl r0,r0,#0x60

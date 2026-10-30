@@ -405,32 +405,32 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@915",
+      "from": "@914",
       "to": "@574",
       "evidence": "compiler temp; the types.h Vector3 ctors advance this TU's per-TU @NNN counter, so mwcc emits it as @872 where main emits @855; licensed under the existing pin @574 | re-keyed by __sinit relocation-site order after the actor cleanup member conversions shifted the TU's @NNN uniquifier"
     },
     {
-      "from": "@916",
+      "from": "@915",
       "to": "@575",
       "evidence": "compiler temp; the types.h Vector3 ctors advance this TU's per-TU @NNN counter, so mwcc emits it as @873 where main emits @856; licensed under the existing pin @575 | re-keyed by __sinit relocation-site order after the actor cleanup member conversions shifted the TU's @NNN uniquifier"
     },
     {
-      "from": "@917",
+      "from": "@916",
       "to": "@576",
       "evidence": "compiler temp; the types.h Vector3 ctors advance this TU's per-TU @NNN counter, so mwcc emits it as @874 where main emits @857; licensed under the existing pin @576 | re-keyed by __sinit relocation-site order after the actor cleanup member conversions shifted the TU's @NNN uniquifier"
     },
     {
-      "from": "@918",
+      "from": "@917",
       "to": "@577",
       "evidence": "compiler temp; the types.h Vector3 ctors advance this TU's per-TU @NNN counter, so mwcc emits it as @875 where main emits @858; licensed under the existing pin @577 | re-keyed by __sinit relocation-site order after the actor cleanup member conversions shifted the TU's @NNN uniquifier"
     },
     {
-      "from": "@919",
+      "from": "@918",
       "to": "@578",
       "evidence": "compiler temp; the types.h Vector3 ctors advance this TU's per-TU @NNN counter, so mwcc emits it as @876 where main emits @859; licensed under the existing pin @578 | re-keyed by __sinit relocation-site order after the actor cleanup member conversions shifted the TU's @NNN uniquifier"
     },
     {
-      "from": "@920",
+      "from": "@919",
       "to": "@572",
       "evidence": "compiler temp; the types.h Vector3 ctors advance this TU's per-TU @NNN counter, so mwcc emits it as @877 where main emits @860; licensed under the existing pin @572 | re-keyed by __sinit relocation-site order after the actor cleanup member conversions shifted the TU's @NNN uniquifier"
     }
@@ -833,7 +833,8 @@
     "tubuild create warning (RESOLVED): CONFLICT: extern declaration 'func_02012694' differs between the legacy file that used to hold func_ov073_02122034 and the one that held func_ov073_02122200; kept the first, the other is commented out for review",
     "tubuild create warning (RESOLVED): CONFLICT: extern declaration 'DecIfAbove0_Short' differs between the legacy file that used to hold func_ov073_021220c0 and the one that held func_ov073_02122200; kept the first, the other is commented out for review",
     "tubuild create warning (RESOLVED): CONFLICT: extern declaration '_ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_' differs between the legacy file that used to hold func_ov073_02122034 and the one that held _ZN13daObjEwbIce_c4KillEv; kept the first, the other is commented out for review",
-    "tubuild create warning (RESOLVED): CONFLICT: extern declaration '_ZN10dBgActor_c19UpdateClsnPosAndRotEv' differs between the legacy file that used to hold _ZN13daObjEwbIce_c8BehaviorEv and the one that held _ZN13daObjEwbIce_c13InitResourcesEv; kept the first, the other is commented out for review"
+    "tubuild create warning (RESOLVED): CONFLICT: extern declaration '_ZN10dBgActor_c19UpdateClsnPosAndRotEv' differs between the legacy file that used to hold _ZN13daObjEwbIce_c8BehaviorEv and the one that held _ZN13daObjEwbIce_c13InitResourcesEv; kept the first, the other is commented out for review",
+    "Collision property member calls replace local helper declarations. Reconciled 6 compiler-local source identities after complete before/after objects proved equal allocated payloads/types/flags/sizes/alignments, symbol attributes/order and relocation destinations (53 sections, 169 relocations). Retail destination identities are unchanged; see notes/collision-readability-1027.md."
   ],
   "verification": {
     "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",

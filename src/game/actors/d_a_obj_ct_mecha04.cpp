@@ -13,7 +13,7 @@
 // What stays, and why (each measured; simplifying changes the emitted bytes):
 // dBgW_KcMbg::SetFile / DropShadowScaleXYZ / dBgActor_c::IsClsnInRange are
 // header member calls whose headers spell Fix12 as Fix12i, a plain s32
-// (6az). func_020393c4 / func_020393bc
+// (6az). func_020393c4 / dBgW::GetStoodOnCallback
 // store/load dBgW+0x1c -- the ROM's own call, not an inlineable assignment
 // (no setter).
 // common.h first: UpdateShadow writes mShadowMat.m[9..11] on the flat 12-word
@@ -82,7 +82,6 @@ extern s16 data_02082214[];       /* sin/cos pair per (angle >> 4) index */
  * header. */
 extern "C" {
 extern void func_020393c4(dBgW *collider, void *callback);
-extern int func_020393bc(dBgW *collider);
 }
 
 /* mFlags 0x08 is the framework's off-screen bit (dActor_c.h bit table). */
@@ -206,7 +205,7 @@ int daObjCtMecha04_c::Behavior() {
         IsClsnInRange(0, 0);
     } else {
         if (!IsOffScreen(this)) {
-            if (!func_020393bc(&mMeshCollider)) {
+            if (!mMeshCollider.GetStoodOnCallback()) {
                 func_020393c4(&mMeshCollider, (void *)&daObjCtMecha04_c::AfterClsnCallback);
             }
 

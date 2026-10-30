@@ -6,7 +6,7 @@
 // handed to func_0205a358, whose chunk pump (max 0x1d8 bytes per DMA)
 // spin-waits on GXSTAT, registers the FIFO-half-empty IRQ handler, DMAs
 // GXFIFO-timed chunks and finishes through the DMA-channel callback chain
-// (func_0205a290 -> func_02056e98 -> func_0205a21c). If the pump delivers
+// (func_0205a290 -> OSi_EnterDmaCallback -> func_0205a21c). If the pump delivers
 // the same words, the assembled triangles must be BYTE-IDENTICAL to the
 // harness pass -- that is the check, not a lookalike threshold.
 #include <cmath>

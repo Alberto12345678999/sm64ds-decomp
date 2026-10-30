@@ -16,7 +16,7 @@
 
 // Notes (each measured with mwccarm 2004/b56):
 // - mMeshCollider.clipRadius = 0x150000 size-DIFFs Behavior 0xa4->0xa0.
-//   func_020393a4 is the call the ROM makes.
+//   dBgW::SetClipRadius is the call the ROM makes.
 // - Assigning beforeClsnCallback size-DIFFs InitResources 0xac->0xa8.
 //   Assigning stoodOnCallback from StoodOnCallback size-DIFFs 0xac->0xa8.
 //   func_020393d4 and func_020393c4 stay; d_bg_w.cpp defines them and no
@@ -59,9 +59,8 @@ extern FlBlockCollisionFilePtr data_ov022_02114550;
 extern char data_ov064_0211bb0c[];
 
 extern "C" {
-/* local extern: stores at dBgW+0x0c, +0x18 and +0x1c. d_bg_w.cpp defines
- * them and no header declares them. */
-void func_020393a4(int *mesh, int range);
+/* local extern: stores the callbacks at dBgW+0x18 and +0x1c. d_bg_w.cpp
+ * defines them and no header declares them. */
 void func_020393d4(int *mesh, int callback);
 void func_020393c4(int *mesh, int callback);
 }
@@ -119,7 +118,7 @@ s32 daObjFl_Block_c::InitResources() {
 
 // @symbol _ZN15daObjFl_Block_c8BehaviorEv
 s32 daObjFl_Block_c::Behavior() {
-    func_020393a4((int *)&mMeshCollider, 0x150000);
+    mMeshCollider.SetClipRadius(0x150000);
 
     if (mHadClsn) {
         /* Sink, but no lower than 200 below the spawn height. */

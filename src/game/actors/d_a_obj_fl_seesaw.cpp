@@ -11,8 +11,8 @@
  * factory daObjFl_Seesaw_c_classInit comes last. Do not reorder.
  *
  * Notes:
- * - func_020393a4 and func_020393d4 store into dBgW internals. d_bg_w.cpp
- *   defines them and no header declares them.
+ * - dBgW::SetClipRadius and func_020393d4 store into dBgW internals. d_bg_w.cpp
+ *   defines them; the callback setters remain local.
  * - data_ov022_021145a8 (the seesaw BMD), data_ov022_021145a0 (the KCL)
  *   and data_ov064_0211bacc (the CLPS row SetFile is handed) are unnamed
  *   data rows in their own modules.
@@ -49,9 +49,8 @@ extern char data_ov064_0211bacc[];
 extern "C" {
 void Matrix4x3_FromRotationXYZExt(void *m, int x, int y, int z);
 
-/* local extern: stores at dBgW+0x0c and +0x1c. d_bg_w.cpp defines them
- * and no header declares them. */
-void func_020393a4(int *mesh, int range);
+/* local extern: stores beforeClsnCallback at dBgW+0x18. d_bg_w.cpp
+ * defines it and no header declares it. */
 void func_020393d4(int *mesh, int callback);
 }
 
@@ -91,7 +90,7 @@ s32 daObjFl_Seesaw_c::Render() {
 /* Slot 6. */
 // @symbol _ZN16daObjFl_Seesaw_c8BehaviorEv
 s32 daObjFl_Seesaw_c::Behavior() {
-    func_020393a4((int *)&mMeshCollider, 0x650000);
+    mMeshCollider.SetClipRadius(0x650000);
     if (DecIfAbove0_Byte(&mSwingCooldown) == 0) {
         mAngleX += mSwingStep;
         if (mAngleX >= 0x400 || mAngleX <= -0x400) {

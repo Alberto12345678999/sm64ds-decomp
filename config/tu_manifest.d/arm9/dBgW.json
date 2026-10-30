@@ -88,49 +88,49 @@
       "ordinal": 8
     },
     {
-      "symbol": "func_0203938c",
+      "symbol": "_ZNK4dBgW14GetClipOffsetYEv",
       "address": "0x0203938c",
       "size": "0x00000008",
       "legacy_source": "src/func_0203938c.c",
       "ordinal": 9
     },
     {
-      "symbol": "func_02039394",
+      "symbol": "_ZN4dBgW14SetClipOffsetYEi",
       "address": "0x02039394",
       "size": "0x00000008",
       "legacy_source": "src/func_02039394.c",
       "ordinal": 10
     },
     {
-      "symbol": "func_0203939c",
+      "symbol": "_ZNK4dBgW13GetClipRadiusEv",
       "address": "0x0203939c",
       "size": "0x00000008",
       "legacy_source": "src/func_0203939c.c",
       "ordinal": 11
     },
     {
-      "symbol": "func_020393a4",
+      "symbol": "_ZN4dBgW13SetClipRadiusEi",
       "address": "0x020393a4",
       "size": "0x00000008",
       "legacy_source": "src/func_020393a4.c",
       "ordinal": 12
     },
     {
-      "symbol": "func_020393ac",
+      "symbol": "_ZNK4dBgW16GetActorUniqueIDEv",
       "address": "0x020393ac",
       "size": "0x00000008",
       "legacy_source": "src/func_020393ac.c",
       "ordinal": 13
     },
     {
-      "symbol": "func_020393b4",
+      "symbol": "_ZNK4dBgW8GetActorEv",
       "address": "0x020393b4",
       "size": "0x00000008",
       "legacy_source": "src/func_020393b4.c",
       "ordinal": 14
     },
     {
-      "symbol": "func_020393bc",
+      "symbol": "_ZNK4dBgW18GetStoodOnCallbackEv",
       "address": "0x020393bc",
       "size": "0x00000008",
       "legacy_source": "src/func_020393bc.c",
@@ -144,7 +144,7 @@
       "ordinal": 16
     },
     {
-      "symbol": "func_020393cc",
+      "symbol": "_ZNK4dBgW21GetBeforeClsnCallbackEv",
       "address": "0x020393cc",
       "size": "0x00000008",
       "legacy_source": "src/func_020393cc.c",
@@ -165,21 +165,21 @@
       "ordinal": 19
     },
     {
-      "symbol": "func_020393f0",
+      "symbol": "_ZN4dBgW14ClearSlotIndexEv",
       "address": "0x020393f0",
       "size": "0x0000000c",
       "legacy_source": "src/func_020393f0.c",
       "ordinal": 20
     },
     {
-      "symbol": "func_020393fc",
+      "symbol": "_ZN4dBgW12SetSlotIndexEi",
       "address": "0x020393fc",
       "size": "0x00000008",
       "legacy_source": "src/func_020393fc.c",
       "ordinal": 21
     },
     {
-      "symbol": "func_02039404",
+      "symbol": "_ZNK4dBgW12GetSlotIndexEv",
       "address": "0x02039404",
       "size": "0x00000008",
       "legacy_source": "src/func_02039404.c",
@@ -242,7 +242,7 @@
       "ordinal": 30
     },
     {
-      "symbol": "func_020395fc",
+      "symbol": "_ZN4dBgW8SetActorEP8dActor_c",
       "address": "0x020395fc",
       "size": "0x00000024",
       "legacy_source": "src/func_020395fc.c",
@@ -256,7 +256,7 @@
       "ordinal": 32
     },
     {
-      "symbol": "func_02039624",
+      "symbol": "_ZN4dBgW5ResetEv",
       "address": "0x02039624",
       "size": "0x00000034",
       "legacy_source": "src/func_02039624.c",
@@ -291,14 +291,14 @@
       "ordinal": 37
     },
     {
-      "symbol": "func_020396c0",
+      "symbol": "_ZN7dBgW_Kc21SetEdgeToleranceShiftEi",
       "address": "0x020396c0",
       "size": "0x00000010",
       "legacy_source": "src/func_020396c0.c",
       "ordinal": 38
     },
     {
-      "symbol": "func_020396d0",
+      "symbol": "_ZN7dBgW_Kc17SetDepthDirMinDotEi",
       "address": "0x020396d0",
       "size": "0x00000008",
       "legacy_source": "src/func_020396d0.c",

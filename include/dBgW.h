@@ -24,8 +24,8 @@
  *   slot 11    GetAngularVelY()                 - 0 here
  *   slot 12    GetVelocity(Vector3 &)           - zeroes it here
  *
- * THE DESTRUCTOR IS DECLARED FIRST AND NEVER DEFINED AS A METHOD -- the
- * key-function arrangement from include/dExtModel_c.h.
+ * THE DESTRUCTOR IS DECLARED FIRST; its out-of-line definition in
+ * d_bg_w.cpp owns the vtable.
  *
  * THE TWO DESTRUCTOR BODIES. Both are `ldr r1,[pc,#4]; str r1,[r0]; bx lr'
  * storing the vtable word, and they are byte-identical -- but the compiler
@@ -55,7 +55,7 @@
  * in the vtable, 0x020397fc direct-called), so "only one body is ever
  * emitted" does not hold for this family.
  *
- * LAYOUT is pinned by the shared init func_02039624 (called from C2) and
+ * LAYOUT is pinned by the Reset member (called from C2) and
  * Enable/Disable/IsEnabled: 0x18 in the slot byte means "not enabled",
  * and enabled colliders live in the 0x18-entry table at data_020a0c80.
  */
@@ -75,15 +75,15 @@ struct SurfaceInfo;
 struct Vector3_16 { s16 x, y, z; };
 #endif
 
-namespace Memory {
-void operator_delete2(void *);
-}
+#include "Memory.h"
 
 struct dBgW;
 /* dBgW::BeforeClsn's hook. Its parameters stay named: each name is one of every
    consumer TU's @NNN numbers, as they were when the member spelled the type inline. */
 typedef void (*BeforeClsnCallback)(dBgW *self, dActor_c *actor, dBgPi *res, Vector3 *pos,
                                    Vector3_16 *motionAng, Vector3_16 *ang);
+
+typedef void (*StoodOnCallback)(dBgW *, dActor_c *, dActor_c *);
 
 struct dBgW {
     /* 0x00 is the vptr, placed implicitly by the first virtual declaration. */
@@ -99,7 +99,7 @@ struct dBgW {
     BeforeClsnCallback beforeClsnCallback; /* 0x18 */
     /* Run by func_02038234 when an actor commits a floor hit on this collider
        (dBgCh_Actr's floor-result path), as (collider, owner, actor). */
-    void (*stoodOnCallback)(dBgW *, dActor_c *, dActor_c *); /* 0x1c */
+    StoodOnCallback stoodOnCallback; /* 0x1c */
 
     /* --- vtable, in ROM order. Do not reorder. --- */
     virtual ~dBgW();                          /* slots 0/1 */
@@ -126,6 +126,22 @@ struct dBgW {
     int Enable(dActor_c *actor);
     int Disable();
     int IsEnabled();
+
+    /* Inferred from constructor/file setup, Enable/Disable and query scans.
+       Reset clears per-object state; it does not remove a registry entry. */
+    void Reset();
+    void SetActor(dActor_c *);
+    dActor_c *GetActor() const;
+    s32 GetActorUniqueID() const;
+    int GetSlotIndex() const;
+    void SetSlotIndex(int);
+    void ClearSlotIndex();
+    void SetClipRadius(Fix12i);
+    Fix12i GetClipRadius() const;
+    void SetClipOffsetY(Fix12i);
+    Fix12i GetClipOffsetY() const;
+    BeforeClsnCallback GetBeforeClsnCallback() const;
+    StoodOnCallback GetStoodOnCallback() const;
 
     /* --- static: the stock BeforeClsn callbacks. Call sites take their
        addresses and store them via func_020393d4; BeforeClsn invokes the

@@ -5,12 +5,6 @@
  * colliders read back through GetClsnPos; mProbeHeight is the default ray
  * length. DetectClsn (0x02038f44) and DetectClsnSlot0 live in
  * d_bg_ch_sph_crr_query.cpp with the other registry scans. */
-/* leftovers:
- * func_02037464 stays a free extern "C" function taking the query: its two
- * d_bg_ch_sph_crr_query.cpp call sites (dBgCh_Gnd::DetectClsn and
- * DetectClsnSlot0) call it as a free symbol, so a member spelling would
- * rename linkage out from under that TU.
- */
 #include "dBgCh_Gnd.h"
 
 // @symbol _ZN9dBgCh_GndC1Ev
@@ -44,12 +38,12 @@ void dBgCh_Gnd::SetObjAndPos(const Vector3 &pos, dActor_c *actor)
     SetActor(actor);
 }
 
-// @symbol func_02037464
+// @symbol _ZN9dBgCh_Gnd11ResetResultEv
 /* Hit-record reset at the run's left edge (reverse emission lands the last
  * definition lowest): clears the embedded dBgPi hit, flags "no floor"
  * (0x80000000) and clears the hit byte. */
-extern "C" void func_02037464(dBgCh_Gnd *query) {
-    query->dBgPi::Reset();
-    query->clsnY = 0x80000000;
-    query->hasClsn = 0;
+void dBgCh_Gnd::ResetResult() {
+    dBgPi::Reset();
+    clsnY = 0x80000000;
+    hasClsn = 0;
 }

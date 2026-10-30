@@ -1,7 +1,7 @@
 #include "types.h"
 extern void func_0203f6e8(s16 v);
 extern int func_0203f818(int arg);
-extern int func_02059640(void);
+extern int OS_GetTickLo(void);
 extern int __aeabi_idiv(int a, int b);
 
 extern u16 data_020a0f34;
@@ -32,7 +32,7 @@ void func_0203f714(struct S* s)
     }
     r = func_0203f818((u16)(v + 1));
     if (r == 1) {
-        int n = func_02059640();
+        int n = OS_GetTickLo();
         int idx = n % data_020a0ef4;
         data_020a0f18 = data_020a0fd0[idx];
         func_0203f6e8(data_020a0f18);

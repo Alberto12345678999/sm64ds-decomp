@@ -450,7 +450,8 @@
     "daPeach_c declares its destructor inside the class body, so mwccarm emits D1 at 0x02129d18 and D0 at 0x02129d60 from PeachDemandCompleteDtor (a destructor call) and PeachDemandDeletingDtor (a delete-expression). Those two functions are non-static: a static demand leaves a size-0 STB_LOCAL after its section is dropped, and promotion refuses that. Nothing references them, so the link removes the symbols. They are not in the ROM. include/daPeach_c.h is unchanged.",
     "func_ov085_02129f8c used to call a file-static normalize, and that call is the only relocated word besides FindWithID. The cartridge has cmp r0, #0 at +0x40 (e3500000), not a BL. Returning through both arms of `if (r == 0) goto done` keeps the compare and the 0x50-byte body. tubuild verify is 25/25 MATCH, and that word is the compare in the object. The promoted delink is one complete span, so dsd no longer serves this function from ROM bytes.",
     "Static initializer folded: the model and seven animation handles (ids 0x3f0..0x3f9) and the five {init, behavior} state records are real definitions in d_a_peach.cpp, replacing the handwritten src/unnamed/ov085/__sinit_ov085_0212f3a0.cpp. mwcc emits __sinit_d_a_peach.cpp (0x24c), its .ctor word, the ten PMF literals and the registration nodes itself; all are byte- and relocation-identical to retail. Ownership: ov085 .init, .ctor and .bss run in .text TU order; d_a_peach follows d_a_kinopio in .text, this initializer follows kinopio's, its .ctor word 0x0212fdf4 sits between kinopio's and d_a_mip's, its .bss 0x021304bc..0x021305ac runs from kinopio's end to mip's start, and the literals name only this TU's state handlers. The same change licenses the TU's whole .data run 0x0212ff34..0x0213003c (PMF literals, _ZTS/_ZTI, the new typed g_profile_PEACH_PRINCESS and the vtable, whose 0x84-byte storage starts at 0x0212ffb8, two words ahead of the configured address point) and makes the TU intact-object.",
-    "Actor cleanup b17: func_ov085_02129f8c became the member daPeach_c::IsTouchingPlayer; math/CalcLib.h and math/MtxStack.h replace local stubs (byte-identical; @NNN re-keyed)."
+    "Actor cleanup b17: func_ov085_02129f8c became the member daPeach_c::IsTouchingPlayer; math/CalcLib.h and math/MtxStack.h replace local stubs (byte-identical; @NNN re-keyed).",
+    "Collision property member calls replace local helper declarations. Reconciled 18 compiler-local source identities after complete before/after objects proved equal allocated payloads/types/flags/sizes/alignments, symbol attributes/order and relocation destinations (67 sections, 192 relocations). Retail destination identities are unchanged; see notes/collision-readability-1027.md."
   ],
   "verification": {
     "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",
@@ -860,92 +861,92 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@531",
+      "from": "@530",
       "to": "data_ov085_02130538",
       "evidence": "compiler temp mapped to 0x02130538 by the retail initializer relocation at the same pool offset; no bytes or relocations change | re-keyed by __sinit relocation-site order after including the shared math/CalcLib.h and math/MtxStack.h headers (their inline statics) shifted the TU's @NNN uniquifier"
     },
     {
-      "from": "@532",
+      "from": "@531",
       "to": "data_ov085_02130544",
       "evidence": "compiler temp mapped to 0x02130544 by the retail initializer relocation at the same pool offset; no bytes or relocations change | re-keyed by __sinit relocation-site order after including the shared math/CalcLib.h and math/MtxStack.h headers (their inline statics) shifted the TU's @NNN uniquifier"
     },
     {
-      "from": "@533",
+      "from": "@532",
       "to": "data_ov085_02130550",
       "evidence": "compiler temp mapped to 0x02130550 by the retail initializer relocation at the same pool offset; no bytes or relocations change | re-keyed by __sinit relocation-site order after including the shared math/CalcLib.h and math/MtxStack.h headers (their inline statics) shifted the TU's @NNN uniquifier"
     },
     {
-      "from": "@534",
+      "from": "@533",
       "to": "data_ov085_021304fc",
       "evidence": "compiler temp mapped to 0x021304fc by the retail initializer relocation at the same pool offset; no bytes or relocations change | re-keyed by __sinit relocation-site order after including the shared math/CalcLib.h and math/MtxStack.h headers (their inline statics) shifted the TU's @NNN uniquifier"
     },
     {
-      "from": "@535",
+      "from": "@534",
       "to": "data_ov085_02130508",
       "evidence": "compiler temp mapped to 0x02130508 by the retail initializer relocation at the same pool offset; no bytes or relocations change | re-keyed by __sinit relocation-site order after including the shared math/CalcLib.h and math/MtxStack.h headers (their inline statics) shifted the TU's @NNN uniquifier"
     },
     {
-      "from": "@536",
+      "from": "@535",
       "to": "data_ov085_02130514",
       "evidence": "compiler temp mapped to 0x02130514 by the retail initializer relocation at the same pool offset; no bytes or relocations change | re-keyed by __sinit relocation-site order after including the shared math/CalcLib.h and math/MtxStack.h headers (their inline statics) shifted the TU's @NNN uniquifier"
     },
     {
-      "from": "@537",
+      "from": "@536",
       "to": "data_ov085_02130520",
       "evidence": "compiler temp mapped to 0x02130520 by the retail initializer relocation at the same pool offset; no bytes or relocations change | re-keyed by __sinit relocation-site order after including the shared math/CalcLib.h and math/MtxStack.h headers (their inline statics) shifted the TU's @NNN uniquifier"
     },
     {
-      "from": "@538",
+      "from": "@537",
       "to": "data_ov085_0213052c",
       "evidence": "compiler temp mapped to 0x0213052c by the retail initializer relocation at the same pool offset; no bytes or relocations change | re-keyed by __sinit relocation-site order after including the shared math/CalcLib.h and math/MtxStack.h headers (their inline statics) shifted the TU's @NNN uniquifier"
     },
     {
-      "from": "@540",
+      "from": "@539",
       "to": "data_ov085_0212ff7c",
       "evidence": "compiler temp mapped to 0x0212ff7c by the retail initializer relocation at the same pool offset; no bytes or relocations change | re-keyed by __sinit relocation-site order after including the shared math/CalcLib.h and math/MtxStack.h headers (their inline statics) shifted the TU's @NNN uniquifier"
     },
     {
-      "from": "@542",
+      "from": "@541",
       "to": "data_ov085_0212ff64",
       "evidence": "compiler temp mapped to 0x0212ff64 by the retail initializer relocation at the same pool offset; no bytes or relocations change | re-keyed by __sinit relocation-site order after including the shared math/CalcLib.h and math/MtxStack.h headers (their inline statics) shifted the TU's @NNN uniquifier"
     },
     {
-      "from": "@544",
+      "from": "@543",
       "to": "data_ov085_0212ff44",
       "evidence": "compiler temp mapped to 0x0212ff44 by the retail initializer relocation at the same pool offset; no bytes or relocations change | re-keyed by __sinit relocation-site order after including the shared math/CalcLib.h and math/MtxStack.h headers (their inline statics) shifted the TU's @NNN uniquifier"
     },
     {
-      "from": "@546",
+      "from": "@545",
       "to": "data_ov085_0212ff6c",
       "evidence": "compiler temp mapped to 0x0212ff6c by the retail initializer relocation at the same pool offset; no bytes or relocations change | re-keyed by __sinit relocation-site order after including the shared math/CalcLib.h and math/MtxStack.h headers (their inline statics) shifted the TU's @NNN uniquifier"
     },
     {
-      "from": "@548",
+      "from": "@547",
       "to": "data_ov085_0212ff4c",
       "evidence": "compiler temp mapped to 0x0212ff4c by the retail initializer relocation at the same pool offset; no bytes or relocations change | re-keyed by __sinit relocation-site order after including the shared math/CalcLib.h and math/MtxStack.h headers (their inline statics) shifted the TU's @NNN uniquifier"
     },
     {
-      "from": "@550",
+      "from": "@549",
       "to": "data_ov085_0212ff74",
       "evidence": "compiler temp mapped to 0x0212ff74 by the retail initializer relocation at the same pool offset; no bytes or relocations change | re-keyed by __sinit relocation-site order after including the shared math/CalcLib.h and math/MtxStack.h headers (their inline statics) shifted the TU's @NNN uniquifier"
     },
     {
-      "from": "@552",
+      "from": "@551",
       "to": "data_ov085_0212ff54",
       "evidence": "compiler temp mapped to 0x0212ff54 by the retail initializer relocation at the same pool offset; no bytes or relocations change | re-keyed by __sinit relocation-site order after including the shared math/CalcLib.h and math/MtxStack.h headers (their inline statics) shifted the TU's @NNN uniquifier"
     },
     {
-      "from": "@554",
+      "from": "@553",
       "to": "data_ov085_0212ff5c",
       "evidence": "compiler temp mapped to 0x0212ff5c by the retail initializer relocation at the same pool offset; no bytes or relocations change | re-keyed by __sinit relocation-site order after including the shared math/CalcLib.h and math/MtxStack.h headers (their inline statics) shifted the TU's @NNN uniquifier"
     },
     {
-      "from": "@556",
+      "from": "@555",
       "to": "data_ov085_0212ff3c",
       "evidence": "compiler temp mapped to 0x0212ff3c by the retail initializer relocation at the same pool offset; no bytes or relocations change | re-keyed by __sinit relocation-site order after including the shared math/CalcLib.h and math/MtxStack.h headers (their inline statics) shifted the TU's @NNN uniquifier"
     },
     {
-      "from": "@558",
+      "from": "@557",
       "to": "data_ov085_0212ff34",
       "evidence": "compiler temp mapped to 0x0212ff34 by the retail initializer relocation at the same pool offset; no bytes or relocations change | re-keyed by __sinit relocation-site order after including the shared math/CalcLib.h and math/MtxStack.h headers (their inline statics) shifted the TU's @NNN uniquifier"
     }

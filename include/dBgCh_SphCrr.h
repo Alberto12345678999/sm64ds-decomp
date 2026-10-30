@@ -64,7 +64,7 @@ struct dBgCh_SphCrr : dBgCh, dBgPi, dM3dGSph {
     /* Normal of the floor contact with the greatest Y component. The retail
        KCL query copies SurfaceInfo's normal at 0x01ffbe6c, then compares its
        Y against mFloorNormal.y before saving all three words at
-       0x01ffd094..0x01ffd0a8 through SetFloorNormal. Reset (func_02037b5c)
+       0x01ffd094..0x01ffd0a8 through SetFloorNormal. Reset (ResetQuery)
        uses (0, -0x1000, 0), so the first accepted floor replaces it;
        dBgCh_Actr copies it into its mGroundNormal on a grounded frame. */
     Vector3 mFloorNormal; /* 0x0fc */
@@ -140,8 +140,9 @@ struct dBgCh_SphCrr : dBgCh, dBgPi, dM3dGSph {
     /* Members the ROM keeps unnamed; each takes the SphCrr object as its
        first argument in the cartridge call graph and drives the evidenced
        fields above. */
-    void func_02037940(u8 flags_);
-    void func_02037b5c();
+    void SetQueryFlags(u8 flags_);
+    /* Inferred: clear flags, hit records, displacement and floor normal. */
+    void ResetQuery();
     int  func_02038824();
     int  func_02038a38();
 };

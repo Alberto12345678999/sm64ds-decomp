@@ -90,14 +90,14 @@
    ]
   },
   "arm9:0x02058308": {
-   "name": "func_02058308",
+   "name": "OS_InitThread",
    "missing": [
     "func_00000000",
     "func_00000600"
    ]
   },
   "arm9:0x02058df4": {
-   "name": "func_02058df4",
+   "name": "OS_GetInitArenaHi",
    "missing": [
     "func_00000000",
     "func_00000600"

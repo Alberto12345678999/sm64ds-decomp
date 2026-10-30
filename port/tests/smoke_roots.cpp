@@ -11,8 +11,8 @@ typedef unsigned int u32;
 struct HeapS;
 extern "C" {
 HeapS *_ZN5mHeap6Heap_t13SetupRootHeapEv(void);
-int func_02058ea0(void *);
-int func_02058eb4(void *);
+int OS_GetArenaLo(void *);
+int OS_GetArenaHi(void *);
 }
 namespace Memory {
 void *Allocate(u32 size);
@@ -31,8 +31,8 @@ int main(void)
 {
     HeapS *root = _ZN5mHeap6Heap_t13SetupRootHeapEv();
     CHECK(root != NULL);
-    char *arena_lo = (char *)(size_t)func_02058ea0(0);
-    char *arena_hi = (char *)(size_t)func_02058eb4(0);
+    char *arena_lo = (char *)(size_t)OS_GetArenaLo(0);
+    char *arena_hi = (char *)(size_t)OS_GetArenaHi(0);
 
     /* allocations land inside the host arena and are usable */
     void *a = Memory::Allocate(256);

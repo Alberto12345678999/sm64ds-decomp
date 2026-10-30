@@ -39,8 +39,8 @@ extern "C" {
 // 32-bit value and a 64-bit parameter agreeing on a host they do not.
 u32 ROOT_HEAP_ARENA_ID;
 
-int func_02058ea0(u32) { arena_init(); return (int)(size_t)g_lo; }   /* arena lo */
-int func_02058eb4(u32) { arena_init(); return (int)(size_t)g_hi; }   /* arena hi */
+int OS_GetArenaLo(u32) { arena_init(); return (int)(size_t)g_lo; }   /* arena lo */
+int OS_GetArenaHi(u32) { arena_init(); return (int)(size_t)g_hi; }   /* arena hi */
 
 /* align `lo` up by `align`, bounded by hi -- mirrors OS_AllocFromArenaLo's
  * pre-alignment step as SetupRootHeap uses it */
@@ -50,10 +50,10 @@ int func_02059040(u32, int lo, int hi, int align)
     return (lo + align - 1) & ~(align - 1);
 }
 
-void func_02058d58(u32, int newLo) { g_lo = (char *)(size_t)newLo; }  /* set lo */
+void OS_SetArenaLo(u32, int newLo) { g_lo = (char *)(size_t)newLo; }  /* set lo */
 
 /* carve `size` bytes aligned `align` from the low side */
-void *func_02058cd0(u32, int size, int align)
+void *OS_AllocFromArenaLo(u32, int size, int align)
 {
     arena_init();
     char *p = (char *)(((size_t)g_lo + align - 1) & ~(size_t)(align - 1));

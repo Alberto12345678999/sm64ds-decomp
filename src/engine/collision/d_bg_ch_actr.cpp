@@ -889,7 +889,7 @@ void dBgCh_Actr::UpdateExtraContinous()
 // @symbol _ZN10dBgCh_Actr12Unk_0203589cEv
 void dBgCh_Actr::Unk_0203589c()
 {
-    mSphereClsn.func_02037b5c();
+    mSphereClsn.ResetQuery();
 }
 
 // @symbol func_02035860

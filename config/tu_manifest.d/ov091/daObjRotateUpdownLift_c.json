@@ -197,7 +197,8 @@
     "tubuild create warning (RESOLVED): CONFLICT: extern declaration '_ZN10dBgActor_c19UpdateClsnPosAndRotEv' differs between the legacy file that used to hold _ZN23daObjRotateUpdownLift_c8BehaviorEv and the one that held _ZN23daObjRotateUpdownLift_c13InitResourcesEv; kept the first, the other is commented out for review",
     "classInit fold (0930c): both factories are folded in last, in ROM order (HS_UPDOWN_LIFT then UPDOWN_LIFT), under the file's `#pragma defer_codegen off`, each as `return new daObjRotateUpdownLift_c();`. Each retired one-function source hand-called fBase_c::operator new(936 = 0x3a8), dBgActor_c's C2 constructor, this class's vtable store and dExtShadowModel_c's C1 constructor at 0x320; daObjRotateUpdownLift_c has no user-declared constructor, so the synthesized one reproduces that sequence. The new-expression makes mwccarm emit _ZN10dBgActor_cD2Ev, licensed as a compiler_only_output deadstrip row. tubuild verify: 13/13 MATCH, objisolate clean, reloc-destinations clean, TEXT-VERIFIED. Retired src/d_a_obj_rotate_updown_lift_hs_updown_lift.c and src/d_a_obj_rotate_updown_lift_updown_lift.c; their credit carries in attribution.json as path#symbol overrides.",
     "Static initializer folded: the two RotateUpdownLiftModelFile handles (files 0x493/0x61f), the two RotateUpdownLiftCollisionFilePtr handles (files 0x494/0x620) and their destructor-registration nodes move out of the handwritten src/unnamed shard into src/game/actors/d_a_obj_rotate_updown_lift.cpp. The emitted .init, .ctor and .bss are byte-identical to retail __sinit_ov091_02134524 with the same instruction sequence, literal pool order and relocation sites; the handwritten shard is retired. @1006/@1007/@1008/@1009 all clashed with the fleet and are renamed (@1006->@776, @1007->@659, @1008->@656, @1009->@639, skipping the in-flight ov095 seesaw @155). The .bss claim 0x02135440..0x02135490 ends exactly at the next symbol; no bound row is needed. The retired shard's converted-baseline row is dropped per the c62c3266 precedent.",
-    "LOCAL WORKER NOTE: this machine's EU stock dump builds sha256 ddab9300b24aeae254192c2a30d812b07ece3adff83230e75c865ed915c9de40 (per #3691); the recorded rom.sha256 is the fleet-canonical d1506e90...c478e8 that every intact entry shares."
+    "LOCAL WORKER NOTE: this machine's EU stock dump builds sha256 ddab9300b24aeae254192c2a30d812b07ece3adff83230e75c865ed915c9de40 (per #3691); the recorded rom.sha256 is the fleet-canonical d1506e90...c478e8 that every intact entry shares.",
+    "Collision property member calls replace local helper declarations. Reconciled 4 compiler-local source identities after complete before/after objects proved equal allocated payloads/types/flags/sizes/alignments, symbol attributes/order and relocation destinations (37 sections, 187 relocations). Retail destination identities are unchanged; see notes/collision-readability-1027.md."
   ],
   "compiler_only_output": [
     {
@@ -585,22 +586,22 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@1015",
+      "from": "@1010",
       "to": "@776",
       "evidence": "mwcc numbers this registration node @1006 per TU and the fleet already defines a global @1006, so the scratch link would multiply-define it | compiler temp; wave 3 of the mangled-call cleanup deletes this TU's local _ZN externs ahead of it, lowering the per-TU @NNN uniquifier"
     },
     {
-      "from": "@1016",
+      "from": "@1011",
       "to": "@659",
       "evidence": "mwcc numbers this registration node @1007 per TU and the fleet already defines a global @1007, so the scratch link would multiply-define it | compiler temp; wave 3 of the mangled-call cleanup deletes this TU's local _ZN externs ahead of it, lowering the per-TU @NNN uniquifier"
     },
     {
-      "from": "@1017",
+      "from": "@1012",
       "to": "@656",
       "evidence": "mwcc numbers this registration node @1008 per TU and the fleet already defines a global @1008, so the scratch link would multiply-define it | compiler temp; wave 3 of the mangled-call cleanup deletes this TU's local _ZN externs ahead of it, lowering the per-TU @NNN uniquifier"
     },
     {
-      "from": "@1018",
+      "from": "@1013",
       "to": "@639",
       "evidence": "mwcc numbers this registration node @1009 per TU and the fleet already defines a global @1009, so the scratch link would multiply-define it | compiler temp; wave 3 of the mangled-call cleanup deletes this TU's local _ZN externs ahead of it, lowering the per-TU @NNN uniquifier"
     }

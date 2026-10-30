@@ -163,7 +163,7 @@ int dBgW_KcMbgSclY::DetectClsn(dBgCh_SphCrr &sphere) {
     dBgCh_SphCrr localSphere;
     localSphere.SetObjAndSphere(localCentre, localRadius, 0);
     localSphere.mWallRejectHalfExtent = localExtraExtent;
-    localSphere.func_02037940(sphere.flags);
+    localSphere.SetQueryFlags(sphere.flags);
     (dBgCh &)localSphere = sphere;
     hit = dBgW_Kc::DetectClsn(localSphere);
     if (hit) {
