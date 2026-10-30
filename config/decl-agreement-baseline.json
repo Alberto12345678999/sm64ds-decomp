@@ -1761,9 +1761,6 @@
       "src/_ZN3IRQ13VBlankHandlerEv.cpp": [
         "param:#1 int *"
       ],
-      "src/IRQ2.cpp": [
-        "param:#1 int *"
-      ],
       "src/CARDi_EndTask.cpp": [
         "param:#1 char *"
       ]
@@ -4666,11 +4663,6 @@
         "return:void"
       ]
     },
-    "_ZN11fLiNdBaPr_cD1Ev": {
-      "src/runtime/actor/ActorBase.cpp": [
-        "return:void"
-      ]
-    },
     "_ZN12dEnemyBase_c14UpdateYoshiEatER10dBgCh_Actr": {
       "src/game/actors/d_a_star.cpp": [
         "param:#2 char *"
@@ -5400,9 +5392,6 @@
         "param:#2 void (*)(void)"
       ],
       "src/unnamed/arm9/0205/func_0205a358.cpp": [
-        "param:#2 void (*)(void)"
-      ],
-      "src/IRQ2.cpp": [
         "param:#2 void (*)(void)"
       ],
       "src/CARDi_TryReadCardDma.cpp": [
@@ -9485,17 +9474,11 @@
       ]
     },
     "data_0209d4fc": {
-      "src/unnamed/arm9/0201/func_0201a4bc.c": [
-        "return:char []"
-      ],
       "src/unnamed/arm9/0201/func_0201a4e4.c": [
         "return:unsigned short"
       ]
     },
     "data_0209d500": {
-      "src/unnamed/arm9/0201/func_0201a4bc.c": [
-        "return:char []"
-      ],
       "src/unnamed/arm9/0201/func_0201a4e4.c": [
         "return:unsigned short"
       ]
@@ -19547,9 +19530,6 @@
       "src/unnamed/arm9/0204/func_02040c34.c": [
         "arity:3"
       ],
-      "src/unnamed/arm9/0204/func_02042f68.c": [
-        "arity:3"
-      ],
       "src/FS_InitArchive.c": [
         "arity:3"
       ],
@@ -23200,18 +23180,6 @@
     "func_ov075_02116128": {
       "src/game/stages/d_s_entry_methods.cpp": [
         "param:#1 char *"
-      ]
-    },
-    "func_0203b358": {
-      "src/runtime/actor/ActorBase.cpp": [
-        "param:#1 fBase_c::SceneNode *",
-        "return:fBase_c::SceneNode *"
-      ]
-    },
-    "func_0203b394": {
-      "src/runtime/actor/ActorBase.cpp": [
-        "param:#1 fBase_c::SceneNode *",
-        "return:fBase_c::SceneNode *"
       ]
     },
     "func_02042fe4": {

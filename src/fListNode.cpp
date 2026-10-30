@@ -17,6 +17,7 @@
  *   read from the bytes; the original names are not known.
  */
 #include "fListNode.h"
+#include "fBase_c.h"
 
 #pragma defer_codegen off
 
@@ -88,7 +89,9 @@ extern "C" int func_020441bc(int i) {
 }
 
 namespace ProcessTree {
-extern "C" void *func_0203b394(Node *n);
+/* local extern: ActorBase_SceneNode.cpp defines it; no header declares it.
+   Node is this file's view of the same fBase_c::SceneNode. */
+extern "C" fBase_c::SceneNode *func_0203b394(fBase_c::SceneNode *node);
 
 /* Walk a tree list, calling the descriptor's callback on each owner.
  * Unlike func_02043fdc, it does not set data_020a4b68. */
@@ -99,7 +102,7 @@ void *Thing::func_020441cc() {
         return (void *)1;
     node = this->head;
     while (node) {
-        Node *next = (Node *)func_0203b394(node);
+        Node *next = (Node *)func_0203b394((fBase_c::SceneNode *)node);
         (node->obj->*this->callback)();
         node = next;
     }

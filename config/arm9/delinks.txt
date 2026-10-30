@@ -523,12 +523,9 @@ src/unnamed/arm9/0201/func_0201a490.c:
     complete
     .text start:0x0201a490 end:0x0201a4bc
 
-src/unnamed/arm9/0201/func_0201a4bc.c:
-    complete
-    .text start:0x0201a4bc end:0x0201a4e4
 src/IRQ2.cpp:
     complete
-    .text start:0x0201a4e4 end:0x0201a5cc
+    .text start:0x0201a4bc end:0x0201a5cc
 
 src/unnamed/arm9/0201/func_0201a5cc.c:
     complete
@@ -998,17 +995,9 @@ src/func_0203b2ec.c:
     complete
     .text start:0x0203b2ec end:0x0203b358
 
-src/unnamed/arm9/0203/func_0203b358.c:
-    complete
-    .text start:0x0203b358 end:0x0203b394
-
-src/unnamed/arm9/0203/func_0203b394.c:
-    complete
-    .text start:0x0203b394 end:0x0203b3c0
-
 src/runtime/actor/ActorBase_SceneNode.cpp:
     complete
-    .text start:0x0203b3c0 end:0x0203b4dc
+    .text start:0x0203b358 end:0x0203b4dc
 
 src/cstd_atan2.cpp:
     complete
@@ -1731,11 +1720,7 @@ src/unnamed/arm9/0204/func_020427f8.c:
 
 src/engine/save/SaveData2.cpp:
     complete
-    .text start:0x02042804 end:0x02042f68
-
-src/unnamed/arm9/0204/func_02042f68.c:
-    complete
-    .text start:0x02042f68 end:0x02042fe4
+    .text start:0x02042804 end:0x02042fe4
 
 src/runtime/actor/ActorBase.cpp:
     complete
