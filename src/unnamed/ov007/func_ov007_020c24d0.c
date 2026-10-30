@@ -1,61 +1,58 @@
-extern void func_ov007_020c2d44(void *s, int i);
+#include "Ov007StrokePath.h"
 
-struct E12 { int a, b, c; };
+extern void func_ov007_020c2d44(Ov007StrokePath *path, int n);
 
-struct S {
-    int state;          // +0
-    int flag;           // +4
-    unsigned short count; // +8
-    char pad[0x18 - 0xa];
-    int *p18;           // +0x18
-    unsigned short *p1c; // +0x1c
-    int *p20;           // +0x20
-    int *p24;           // +0x24
-    int *p28;           // +0x28
-    struct E12 *p2c;    // +0x2c
-};
+/* One 12-byte point of the alternate representation's pointStorage. */
+typedef struct Ov007PathPoint {
+    int x, y, z;
+} Ov007PathPoint;
 
-void func_ov007_020c24d0(struct S *s, int arg1)
-{
-    int *p18;
-    int *p24;
-    int *p28;
-    unsigned short *p1c;
+/* Removes point idx from the path, shifting every later point (and its
+ * segment length and progress threshold) down one; a planar path then
+ * recomputes the segment that now ends at idx. */
+void func_ov007_020c24d0(Ov007StrokePath *path, int idx) {
+    int *lengths;
+    int *xs;
+    int *ys;
+    unsigned short *angles;
     int i;
 
-    if (s->count == 0)
+    if (path->pointCount == 0)
         return;
-    if (arg1 >= s->count)
+    if (idx >= path->pointCount)
         return;
-    (*(unsigned short *)(((int)s + 8)))--;
-    if (arg1 == s->count)
+    path->pointCount--;
+    if (idx == path->pointCount)
         return;
 
-    i = (int)(((long long)arg1));
-    while (i < s->count) {
-        switch (s->state) {
-        case 0:
-            p24 = s->p24;
-            p24[i] = p24[i + 1];
-            p28 = s->p28;
-            p28[i] = p28[i + 1];
-            p1c = s->p1c;
-            p1c[i] = p1c[i + 1];
+    /* The round trip through long long is load-bearing: it gives i its own
+     * register apart from idx, which the plain copy and a for loop do not. */
+    i = (int)(long long)idx;
+    while (i < path->pointCount) {
+        switch (path->representation) {
+        case OV007_PATH_PLANAR:
+            xs = path->xCoords;
+            xs[i] = xs[i + 1];
+            ys = path->yCoords;
+            ys[i] = ys[i + 1];
+            angles = path->segmentAngles;
+            angles[i] = angles[i + 1];
             break;
         case 1:
-            s->p2c[i] = s->p2c[i + 1];
+            ((Ov007PathPoint *)path->pointStorage)[i] =
+                ((Ov007PathPoint *)path->pointStorage)[i + 1];
             break;
         }
-        p18 = s->p18;
-        p18[i] = p18[i + 1];
-        if (s->flag & 1)
-            s->p20[i] = s->p20[i + 1];
+        lengths = path->segmentLengths;
+        lengths[i] = lengths[i + 1];
+        if (path->flags & OV007_PATH_HAS_PROGRESS)
+            path->progressThresholds[i] = path->progressThresholds[i + 1];
         i++;
     }
 
-    switch (s->state) {
-    case 0:
-        func_ov007_020c2d44(s, arg1);
+    switch (path->representation) {
+    case OV007_PATH_PLANAR:
+        func_ov007_020c2d44(path, idx);
         break;
     case 1:
         break;

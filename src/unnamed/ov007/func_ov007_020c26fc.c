@@ -1,12 +1,10 @@
 #include "Ov007StrokePath.h"
 
-extern void func_ov007_020c3054(int* arr, int n, int* pmin, int* pmax);
+extern void func_ov007_020c3054(int *arr, int n, int *pmin, int *pmax);
 
 /* Recomputes the stroke path's extrema: clears both index triples, then for a
  * planar path stores the indices of its smallest and largest X and Y. */
-void func_ov007_020c26fc(char* c)
-{
-    Ov007StrokePath *path = (Ov007StrokePath *)c;
+void func_ov007_020c26fc(Ov007StrokePath *path) {
     int mn0 = 0, mn1 = 0, mx0 = 0, mx1 = 0;
     /* The clear chain reloads each slot unsigned (ldrh), as func_ov007_020c29b4's
      * u16 view does; reading the header's s16 directly emits ldrsh. */
@@ -18,7 +16,8 @@ void func_ov007_020c26fc(char* c)
     path->maxPointIndices[0] = *(u16 *)&path->maxPointIndices[1];
     int x = path->representation;
     if (x != 0) {
-        if (x == 1) return;
+        if (x == 1)
+            return;
         return;
     }
     func_ov007_020c3054(path->xCoords, path->pointCount, &mn0, &mx0);
