@@ -21,9 +21,11 @@
  * MB_CommSetParentStateCallback, the first in source, is the highest in the
  * ROM.
  *
- * This SDK is older than pmd-sky's. There is no block cache:
- * MBi_Calc_SendBlock has no cache check, MBi_CommParentSendBlock reads
- * straight from the file, and pmd-sky's MBi_ReloadCache is absent.
+ * This SDK is older than pmd-sky's. It has no any_recv_bitmap:
+ * MBi_Calc_SendBlock steps every active file with children waiting, not only
+ * those a child asked a block of in this receive. It has no block cache
+ * either: MBi_CommParentSendBlock copies straight from the file's source
+ * address, and pmd-sky's MBi_ReloadCache is absent.
  */
 #include "types.h"
 #include "IRQ.h"
@@ -62,10 +64,11 @@ extern u8 data_0209a078;
 #define MB_FILE(i) (((MbParentWork *)(data_020a9db8 + (i) * sizeof(MbParentFile)))->mFiles)
 
 /* Child i's response, reached the same stepped way, one halfword per index.
- * Compiled as C++, a plain MB_WORK->mChildResponse[i] that is read and then
- * written back has its address shared between the two, with 0x1754 pooled
- * and indexed by register: two words longer than the cartridge's
- * +0x1700, #0x54. MBi_CommParentRecvDataPerChild needs it once. */
+ * Compiled as C++, a plain MB_WORK->mChildResponse[idx] pools 0x1754 and
+ * indexes by register instead of the cartridge's +0x1700, #0x54.
+ * MBi_CommParentRecvDataPerChild needs two respellings to match: this macro
+ * for its switch read (plain, one word longer) and [aid - 1] for case 10's
+ * write (through [idx], two words longer). */
 #define MB_RESPONSE(i) (((MbParentWork *)(data_020a9db8 + (i) * sizeof(u16)))->mChildResponse[0])
 
 typedef void (*MBCommPStateCallback)(u32 child_aid, u32 status, void *arg);
@@ -357,6 +360,8 @@ void MBi_CommParentCallback(int type, char *arg) {
                      * sends */
                     func_0206853c((char *)&MB_WORK->mFiles[i].mHeader[0xe4], MB_WORK->mChildUser,
                                   e->mFiles->mEntryBitmap, f48);
+                    /* the signed-index stepped form; MB_FILE (unsigned sizeof)
+                     * or e reallocates registers */
                     ((MbParentWork *)(data_020a9db8 + i * (int)sizeof(MbParentFile)))
                         ->mFiles->mEntryChanged = 0;
                 }
@@ -585,7 +590,7 @@ void MBi_CommParentRecvDataPerChild(void *arg, u32 aid) {
             return;
         if (MB_WORK->mChildResponse[idx] != 5)
             return;
-        MB_WORK->mChildResponse[aid - 1] = 0;
+        MB_WORK->mChildResponse[aid - 1] = 0; /* [aid - 1], not [idx]: see MB_RESPONSE */
         MBi_CommChangeParentState(aid, MB_COMM_PSTATE_BOOT_REQUEST, 0);
         return;
 
@@ -695,6 +700,7 @@ int MBi_CommParentSendBlock(void) {
     loopCount = 0;
     do {
         {
+            /* re-read through a volatile: MB_WORK is one word shorter */
             MbParentWork *g = *(MbParentWork *volatile *)&data_020a9db8;
             g->mCurrentFile = (g->mCurrentFile + 1) % 16;
         }

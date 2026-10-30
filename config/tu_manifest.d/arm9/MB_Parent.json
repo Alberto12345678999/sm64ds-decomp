@@ -9,7 +9,7 @@
     "One contiguous run of the Nitro SDK's mb_parent.c, 0x02065eb8..0x020672d0: 19 functions, gapless in config/arm9/delinks.txt. pret's pmd-sky carries this file as assembly in overlay_00, and 18 of the 19 are matched to its functions by body: the parent states each one sets (MBi_CommChangeParentState's word at pPwork+0x14e8), the message types it sends (0, 1, 2, 3, 4, 5, 6) and receives (7, 8, 9, 10), and the WM callback codes MBi_CommParentCallback switches on.",
     "MB_CommGetChildrenNumber (0x02067194) is not in pmd-sky. Its body returns the accepted-children count at pPwork+0x1535, the byte MBi_CommParentRecvDataPerChild raises and MBi_CommParentCallback lowers, and the name is the SDK's public mb.h API for that count. It sits between MB_CommIsBootable and MB_CommGetChildUser.",
     "Order: MB_CommSetParentStateCallback is highest and MBi_CommCallParentError lowest, the reverse of pret's pmd-sky's order. mwccarm emits the bodies in reverse, so MB_CommSetParentStateCallback comes first in the source.",
-    "Older SDK: no block cache. MBi_Calc_SendBlock has no cache check, MBi_CommParentSendBlock reads the block straight from the file, and pmd-sky's MBi_ReloadCache is absent.",
+    "Older SDK: no any_recv_bitmap (MBi_Calc_SendBlock has no per-file 'asked this receive' test, and MBi_CommParentRecvData/RecvDataPerChild neither clear nor set it) and no block cache (MBi_CommParentSendBlock reads straight from the file, pmd-sky's MBi_ReloadCache is absent).",
     "BOTTOM EDGE: func_02065de4 (0x02065de4..0x02065eb8) and the functions below it are block-header helpers, not mb_parent.c: func_02065d5c's body matches pret's pmd-sky's MBi_MakeParentSendBuffer, which pmd-sky places outside its MB parent run.",
     "TOP EDGE: func_020672d0 (0x020672d0) starts the next file. func_02067480's body matches pmd-sky's MBi_IsAbleToRecv, which pmd-sky also places outside its MB parent run."
   ],
@@ -162,7 +162,7 @@
   "notes": [
     "Hand-assembled, following arm9/PM: tu_map cannot segment arm9/main.",
     "MB_CommIsBootable and MB_CommSetParentStateCallback kept their names. The other 17 were renamed from their func_ names in this change (symbols/actor_renames.tsv records the evidence).",
-    "Text-only. pPwork (data_020a9db8) and data_0209a078 stay with their owners and keep their address names."
+    "Text-only. pPwork (data_020a9db8) and data_0209a078 (the SDK's function-local `static s8 prev_fid = -1` of MBi_CommParentSendDLFileInfo; ROM byte 0xff) are not delinked by any source and keep their address names."
   ],
   "verification": {
     "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",
