@@ -1645,17 +1645,17 @@ MkyAnimFilePtr gMonkeyWait4AnimationFile(ASSET_MONKEY_WAIT4_BCA);
 /* Eleven {enter, update} pairs. Brace-init is what makes __sinit copy the
  * 22 pointer-to-member constants; a constructor body here scalarizes. */
 extern "C" daMky_c::StateFunctions data_ov030_02115e0c[11] = {
-    { &daMky_c::EnterState0, &daMky_c::func_ov030_02113ff0 },
-    { &daMky_c::EnterState1, &daMky_c::func_ov030_02113d20 },
-    { &daMky_c::EnterState2, &daMky_c::func_ov030_02113b38 },
-    { &daMky_c::EnterState3, &daMky_c::func_ov030_021136b0 },
-    { &daMky_c::EnterState4, &daMky_c::func_ov030_02113324 },
-    { &daMky_c::EnterState5, &daMky_c::func_ov030_02113094 },
-    { &daMky_c::EnterState6, &daMky_c::func_ov030_02112da0 },
-    { &daMky_c::EnterState7, &daMky_c::func_ov030_02112a84 },
-    { &daMky_c::EnterState8, &daMky_c::func_ov030_02112578 },
-    { &daMky_c::EnterState9, &daMky_c::func_ov030_02112400 },
-    { &daMky_c::EnterState10, &daMky_c::func_ov030_021122b0 },
+    {&daMky_c::EnterState0, &daMky_c::func_ov030_02113ff0},
+    {&daMky_c::EnterState1, &daMky_c::func_ov030_02113d20},
+    {&daMky_c::EnterState2, &daMky_c::func_ov030_02113b38},
+    {&daMky_c::EnterState3, &daMky_c::func_ov030_021136b0},
+    {&daMky_c::EnterState4, &daMky_c::func_ov030_02113324},
+    {&daMky_c::EnterState5, &daMky_c::func_ov030_02113094},
+    {&daMky_c::EnterState6, &daMky_c::func_ov030_02112da0},
+    {&daMky_c::EnterState7, &daMky_c::func_ov030_02112a84},
+    {&daMky_c::EnterState8, &daMky_c::func_ov030_02112578},
+    {&daMky_c::EnterState9, &daMky_c::func_ov030_02112400},
+    {&daMky_c::EnterState10, &daMky_c::func_ov030_021122b0},
 };
 
 /* Vector3(x, y, z) matches only the first offset. The other three store
@@ -1684,4 +1684,3 @@ MkyOff data_ov030_02115ddc(0x1c000, -0x42000, 0x18000, 0);
 MkyOff data_ov030_02115de8(0x1c000, -0x28000, 0x28000);
 MkyOff data_ov030_02115df4(0x2b000, -0x42000, 0x18000);
 MkyOff data_ov030_02115e00(0x30000, -0x1e000, 0x1e000);
-

@@ -60,7 +60,10 @@ struct Thing {
     Node *head;   // 0
     PMF callback; // 4
 
-    Thing(PMF &p) { callback = p; head = 0; }
+    Thing(PMF &p) {
+        callback = p;
+        head = 0;
+    }
     void *func_020441cc();
 };
 }
@@ -82,7 +85,11 @@ struct ProcessList {
     fLiNdBaPr_c *tail;
     ProcessCallback callback;
 
-    ProcessList(ProcessCallback &p) { head = 0; tail = 0; callback = p; }
+    ProcessList(ProcessCallback &p) {
+        head = 0;
+        tail = 0;
+        callback = p;
+    }
 };
 
 ProcessTree::Thing data_020a4b6c(data_02099f60);
