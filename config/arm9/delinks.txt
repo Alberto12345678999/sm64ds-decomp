@@ -2164,11 +2164,11 @@ src/engine/gx/G3i.cpp:
 
 src/engine/gx/GXS.cpp:
     complete
-    .text start:0x02055dec end:0x02056870
+    .text start:0x02055dec end:0x020568cc
 
 src/engine/gx/GX.cpp:
     complete
-    .text start:0x02056870 end:0x02056c1c
+    .text start:0x020568cc end:0x02056c1c
 
 src/Copy48BytesFixed.c:
     complete
