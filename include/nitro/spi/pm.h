@@ -38,16 +38,22 @@ struct D020a8114 {
 };
 extern struct D020a8114 data_020a8114;
 
-/* The four register-read slots at 0x020a8138, 8 bytes each. PM_Init clears
-   every `flag`, PMi_ReadRegisterAsync clears one and stores its buffer in
-   `arg`, and PMi_CommonCallback sets it when commands 0x70..0x73 answer. The
-   word at +4 carries its own label, data_020a813c, which PMi_CommonCallback
-   reads as the short * it stores the reply through, so the two symbols are
-   one array seen twice. */
+/* The four register-read slots at 0x020a8138, 8 bytes each: a reply-arrived
+   flag and the caller's destination for the reply. PM_Init clears every
+   `flag`; PMi_ReadRegisterAsync clears one and stores the caller's buffer in
+   `reply`; PMi_CommonCallback stores the halfword reply to commands
+   0x70..0x73 through `reply` and sets `flag`.
+
+   `reply` also has its own symbol row, data_020a813c, because both of its
+   accesses reach it at that address. As this struct's second field, mwcc
+   folds the +4 into the pool literal and names data_020a8138 with a RELA
+   addend of 4, which resolves to the same 0x020a813c relocs.txt records. The
+   row stays: dsd needs a symbol at every relocs.txt target. Both field names
+   are coined. */
 typedef struct {
     unsigned short flag;
     unsigned short pad;
-    int arg;
+    short *reply;
 } PmEntry;
 extern PmEntry data_020a8138[4];
 
