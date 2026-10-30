@@ -312,8 +312,15 @@ struct HeapObj {
     /* 0x0c */ char pad_0c[0x20];
     /* 0x2c */ u8 state; /* 0 once released */
 };
+/* NitroSDK FSArchive (0x50 bytes, laid out in src/engine/fs/FS_Archive.cpp);
+   this file only passes its address on. */
+typedef struct FSArchive {
+    char opaque[0x50];
+} FSArchive;
+typedef int (*FS_ARCHIVE_READ_FUNC)(FSArchive *p_arc, void *dst, u32 pos, u32 size);
+typedef int (*FS_ARCHIVE_WRITE_FUNC)(FSArchive *p_arc, const void *src, u32 pos, u32 size);
 struct S82 {
-    /* 0x00 */ char pad0[0x50];    /* NitroSDK FSArchive */
+    /* 0x00 */ FSArchive arc;
     /* 0x50 */ char *narc;         /* the file func_0204ef9c checked for 'NARC' */
     /* 0x54 */ unsigned char *f54; /* its FATB block */
     /* 0x58 */ unsigned char *f58; /* its FIMG data */
@@ -487,9 +494,10 @@ extern void func_0205b6b0(void *c);
 extern void func_0205b6f4(void *c);
 extern void func_0205b78c(struct Node *base, int index, struct Node *arg);
 extern int FS_UnloadArchive(void *thiz);
-extern int FS_LoadArchive(int *self, int a1, int a2, int a3, int a4, int a5, int a6, int a7);
+extern int FS_LoadArchive(FSArchive *p_arc, u32 base, u32 fat, u32 fat_size, u32 fnt, u32 fnt_size,
+                          FS_ARCHIVE_READ_FUNC read_func, FS_ARCHIVE_WRITE_FUNC write_func);
 extern void FS_ReleaseArchiveName(void *thiz);
-extern int FS_RegisterArchiveName(void *thiz, void *a, void *b);
+extern int FS_RegisterArchiveName(FSArchive *p_arc, const char *name, int name_len);
 extern void FS_InitArchive(void *o);
 extern int func_0205d368(void *o, int r1, int sel);
 extern int func_0205d568(Node *node, int b, ...);
@@ -2618,13 +2626,12 @@ extern "C" int func_0204ee40(struct S82 *self, char *name, char *p) {
     fimg_off = fimg + 8;
     self->f58 = (unsigned char *)fimg_off;
 
-    if (FS_RegisterArchiveName(self, (void *)name, (void *)cstd::strlen(name)) == 0)
+    if (FS_RegisterArchiveName(&self->arc, name, cstd::strlen(name)) == 0)
         return 0;
 
-    if (((int (*)(void *p, int a, int b0, int b4, int c0, int c4, void *fn1,
-                  void *fn2))FS_LoadArchive)(
-            self, (int)fimg_off, (int)(fatb + 0xc) - (int)fimg_off, *(int *)(fatb + 4) - 0xc,
-            (int)(fntb + 8) - (int)fimg_off, *(int *)(fntb + 4) - 8, 0, 0))
+    if (FS_LoadArchive(&self->arc, (u32)fimg_off, (u32)(fatb + 0xc) - (u32)fimg_off,
+                       *(u32 *)(fatb + 4) - 0xc, (u32)(fntb + 8) - (u32)fimg_off,
+                       *(u32 *)(fntb + 4) - 8, 0, 0))
         return 1;
 
     FS_ReleaseArchiveName(self);

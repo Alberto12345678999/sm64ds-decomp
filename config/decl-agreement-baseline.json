@@ -18909,16 +18909,6 @@
         "param:#4 int",
         "param:#5 int",
         "param:#6 int"
-      ],
-      "src/engine/sound/SoundEngine.cpp": [
-        "param:#1 int *",
-        "param:#2 int",
-        "param:#3 int",
-        "param:#4 int",
-        "param:#5 int",
-        "param:#6 int",
-        "param:#7 int",
-        "param:#8 int"
       ]
     },
     "FSi_SendCommand": {
@@ -22131,11 +22121,6 @@
         "param:#3 unsigned int",
         "param:#4 unsigned int",
         "param:#5 unsigned int"
-      ]
-    },
-    "FS_RegisterArchiveName": {
-      "src/engine/sound/SoundEngine.cpp": [
-        "param:#3 void *"
       ]
     },
     "data_020a8064": {
