@@ -1,13 +1,24 @@
 //cpp
+/* NitroSDK SPI_tp.c TP_RequestSetStabilityAsync(retry, range): send
+ * the set-stability command (3) to the ARM7 over PXI tag 6 and mark its
+ * command bit (8); on a send failure set its error bit and report
+ * (3, 4, 0) to the user callback. */
 #include "types.h"
 extern "C" {
 int PXI_SendWordByFifo(int a, int b, int c);
 }
-namespace IRQ { unsigned int Disable(); void Restore(unsigned int); }
-struct S { void (*fn)(int,int,int); char pad[0x30]; volatile u16 f34; volatile u16 f36; };
+namespace IRQ {
+unsigned int Disable();
+void Restore(unsigned int);
+}
+struct S {
+    void (*fn)(int, int, int);
+    char pad[0x30];
+    volatile u16 f34;
+    volatile u16 f36;
+};
 extern S data_020a80cc;
-extern "C" void func_0205edd8(int a, int b)
-{
+extern "C" void TP_RequestSetStabilityAsync(int a, int b) {
     unsigned int irq = IRQ::Disable();
     int ok;
     if (PXI_SendWordByFifo(6, a | 0x2000300, 0) < 0)

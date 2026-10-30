@@ -2828,59 +2828,59 @@ src/ARMMathSaveState.c:
     complete
     .text start:0x0205e988 end:0x0205e9fc
 
-src/unnamed/arm9/0205/func_0205e9fc.c:
+src/TP_CheckError.c:
     complete
     .text start:0x0205e9fc end:0x0205ea10
 
-src/unnamed/arm9/0205/func_0205ea10.c:
+src/TP_WaitBusy.c:
     complete
     .text start:0x0205ea10 end:0x0205ea28
 
-src/unnamed/arm9/0205/func_0205ea28.c:
+src/TP_GetCalibratedPoint.c:
     complete
     .text start:0x0205ea28 end:0x0205eb58
 
-src/unnamed/arm9/0205/func_0205eb58.cpp:
+src/TP_CalcCalibrateParam.cpp:
     complete
     .text start:0x0205eb58 end:0x0205edc8
 
-src/unnamed/arm9/0205/func_0205edc8.c:
+src/TP_GetLatestIndexInAuto.c:
     complete
     .text start:0x0205edc8 end:0x0205edd8
 
-src/unnamed/arm9/0205/func_0205edd8.cpp:
+src/TP_RequestSetStabilityAsync.cpp:
     complete
     .text start:0x0205edd8 end:0x0205eeac
 
-src/unnamed/arm9/0205/func_0205eeac.cpp:
+src/TP_RequestAutoSamplingStartAsync.cpp:
     complete
     .text start:0x0205eeac end:0x0205efc0
 
-src/unnamed/arm9/0205/func_0205efc0.c:
+src/TP_WaitCalibratedResult.c:
     complete
     .text start:0x0205efc0 end:0x0205efe0
 
-src/unnamed/arm9/0205/func_0205efe0.c:
+src/TP_GetCalibratedResult.c:
     complete
     .text start:0x0205efe0 end:0x0205f040
 
-src/unnamed/arm9/0205/func_0205f040.cpp:
+src/TP_RequestSamplingAsync.cpp:
     complete
     .text start:0x0205f040 end:0x0205f0e0
 
-src/unnamed/arm9/0205/func_0205f0e0.cpp:
+src/TP_SetCalibrateParam.cpp:
     complete
     .text start:0x0205f0e0 end:0x0205f1e4
 
-src/unnamed/arm9/0205/func_0205f1e4.c:
+src/TP_GetUserInfo.c:
     complete
     .text start:0x0205f1e4 end:0x0205f270
 
-src/unnamed/arm9/0205/func_0205f270.c:
+src/TP_Init.c:
     complete
     .text start:0x0205f270 end:0x0205f300
 
-src/unnamed/arm9/0205/func_0205f300.c:
+src/TPi_TpCallback.c:
     complete
     .text start:0x0205f300 end:0x0205f5c0
 

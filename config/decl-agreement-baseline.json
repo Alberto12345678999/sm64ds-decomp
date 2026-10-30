@@ -824,12 +824,12 @@
       "src/unnamed/arm9/0201/func_02019f10.cpp": [
         "return:IPCStatus"
       ],
-      "src/unnamed/arm9/0205/func_0205edd8.cpp": [
+      "src/TP_RequestSetStabilityAsync.cpp": [
         "param:#1 int",
         "param:#2 int",
         "param:#3 int"
       ],
-      "src/unnamed/arm9/0205/func_0205f040.cpp": [
+      "src/TP_RequestSamplingAsync.cpp": [
         "param:#1 int",
         "param:#2 int",
         "param:#3 int"
@@ -5599,10 +5599,10 @@
       "src/unnamed/arm9/0205/func_0205d3e4.cpp": [
         "return:void"
       ],
-      "src/unnamed/arm9/0205/func_0205eb58.cpp": [
+      "src/TP_CalcCalibrateParam.cpp": [
         "return:void"
       ],
-      "src/unnamed/arm9/0205/func_0205f0e0.cpp": [
+      "src/TP_SetCalibrateParam.cpp": [
         "return:void"
       ],
       "src/unnamed/arm9/0205/func_0205ff20.cpp": [
@@ -11056,25 +11056,25 @@
       ]
     },
     "data_020a80cc": {
-      "src/unnamed/arm9/0205/func_0205e9fc.c": [
+      "src/TP_CheckError.c": [
         "return:unsigned char []"
       ],
-      "src/unnamed/arm9/0205/func_0205ea10.c": [
+      "src/TP_WaitBusy.c": [
         "return:unsigned char []"
       ],
-      "src/unnamed/arm9/0205/func_0205ea28.c": [
+      "src/TP_GetCalibratedPoint.c": [
         "return:unsigned short []"
       ],
-      "src/unnamed/arm9/0205/func_0205edc8.c": [
+      "src/TP_GetLatestIndexInAuto.c": [
         "return:unsigned short []"
       ],
-      "src/unnamed/arm9/0205/func_0205f040.cpp": [
+      "src/TP_RequestSamplingAsync.cpp": [
         "return:G_t"
       ],
-      "src/unnamed/arm9/0205/func_0205f0e0.cpp": [
+      "src/TP_SetCalibrateParam.cpp": [
         "return:Glob"
       ],
-      "src/unnamed/arm9/0205/func_0205f270.c": [
+      "src/TP_Init.c": [
         "return:char []"
       ]
     },
@@ -20430,18 +20430,8 @@
         "return:void"
       ]
     },
-    "func_0205ea28": {
-      "src/unnamed/arm9/0203/func_0203b9bc.c": [
-        "param:#1 Col *",
-        "param:#2 Col *"
-      ],
-      "src/unnamed/arm9/0205/func_0205efe0.c": [
-        "param:#1 H4 *",
-        "param:#2 H4 *"
-      ]
-    },
-    "func_0205eb58": {
-      "src/unnamed/arm9/0205/func_0205f1e4.c": [
+    "TP_CalcCalibrateParam": {
+      "src/TP_GetUserInfo.c": [
         "param:#1 int",
         "param:#2 int",
         "param:#3 int",
@@ -20454,7 +20444,7 @@
         "return:int"
       ]
     },
-    "func_0205eeac": {
+    "TP_RequestAutoSamplingStartAsync": {
       "src/unnamed/arm9/0203/func_0203bbc0.c": [
         "param:#1 int",
         "param:#2 int",
@@ -20462,19 +20452,14 @@
         "param:#4 int"
       ]
     },
-    "func_0205efe0": {
-      "src/unnamed/arm9/0205/func_0205efc0.c": [
-        "return:void"
-      ]
-    },
-    "func_0205f1e4": {
+    "TP_GetUserInfo": {
       "src/unnamed/arm9/0203/func_0203bbc0.c": [
         "param:#1 void *",
         "return:void"
       ]
     },
-    "func_0205f300": {
-      "src/unnamed/arm9/0205/func_0205f270.c": [
+    "TPi_TpCallback": {
+      "src/TP_Init.c": [
         "arity:0"
       ]
     },

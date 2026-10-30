@@ -1,9 +1,15 @@
 //cpp
+/* NitroSDK SPI_tp.c TP_RequestAutoSamplingStartAsync(vcount, frequency,
+ * samplingBufs, bufSize): record the ring, clear each sample's touch, then
+ * send the auto-sampling command (1, bit 2) over PXI tag 6. */
 #include "types.h"
 extern "C" {
 int PXI_SendWordByFifo(unsigned int a, unsigned int c, unsigned int b);
 }
-namespace IRQ { unsigned int Disable(); void Restore(unsigned int); }
+namespace IRQ {
+unsigned int Disable();
+void Restore(unsigned int);
+}
 
 struct S {
     void (*fn)(int, int, int);
@@ -19,8 +25,8 @@ struct S {
 extern S data_020a80cc;
 
 #pragma opt_strength_reduction off
-extern "C" void func_0205eeac(unsigned int a, unsigned int b, int x, unsigned int count)
-{
+extern "C" void TP_RequestAutoSamplingStartAsync(unsigned int a, unsigned int b, int x,
+                                                 unsigned int count) {
     unsigned int i;
     unsigned int irq;
     int ok;

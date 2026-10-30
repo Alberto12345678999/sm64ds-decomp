@@ -10607,59 +10607,59 @@
     },
     "arm9:0x0205e9fc": {
       "author": "tangosdev",
-      "name": "func_0205e9fc"
+      "name": "TP_CheckError"
     },
     "arm9:0x0205ea10": {
       "author": "tangosdev",
-      "name": "func_0205ea10"
+      "name": "TP_WaitBusy"
     },
     "arm9:0x0205ea28": {
       "author": "tangosdev",
-      "name": "func_0205ea28"
+      "name": "TP_GetCalibratedPoint"
     },
     "arm9:0x0205eb58": {
       "author": "tangosdev",
-      "name": "func_0205eb58"
+      "name": "TP_CalcCalibrateParam"
     },
     "arm9:0x0205edc8": {
       "author": "tangosdev",
-      "name": "func_0205edc8"
+      "name": "TP_GetLatestIndexInAuto"
     },
     "arm9:0x0205edd8": {
       "author": "tangosdev",
-      "name": "func_0205edd8"
+      "name": "TP_RequestSetStabilityAsync"
     },
     "arm9:0x0205eeac": {
       "author": "tangosdev",
-      "name": "func_0205eeac"
+      "name": "TP_RequestAutoSamplingStartAsync"
     },
     "arm9:0x0205efc0": {
       "author": "tangosdev",
-      "name": "func_0205efc0"
+      "name": "TP_WaitCalibratedResult"
     },
     "arm9:0x0205efe0": {
       "author": "tangosdev",
-      "name": "func_0205efe0"
+      "name": "TP_GetCalibratedResult"
     },
     "arm9:0x0205f040": {
       "author": "tangosdev",
-      "name": "func_0205f040"
+      "name": "TP_RequestSamplingAsync"
     },
     "arm9:0x0205f0e0": {
       "author": "tangosdev",
-      "name": "func_0205f0e0"
+      "name": "TP_SetCalibrateParam"
     },
     "arm9:0x0205f1e4": {
       "author": "andrewboudreau",
-      "name": "func_0205f1e4"
+      "name": "TP_GetUserInfo"
     },
     "arm9:0x0205f270": {
       "author": "tangosdev",
-      "name": "func_0205f270"
+      "name": "TP_Init"
     },
     "arm9:0x0205f300": {
       "author": "tangosdev",
-      "name": "func_0205f300"
+      "name": "TPi_TpCallback"
     },
     "arm9:0x0205f5c0": {
       "author": "tangosdev",

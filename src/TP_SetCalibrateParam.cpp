@@ -1,4 +1,8 @@
 //cpp
+/* NitroSDK SPI_tp.c TP_SetCalibrateParam, an older revision of pret's
+ * SPI_tp.s (no zero dot-size branch): NULL clears the calibrated flag
+ * (+0x30), else store x0/xDotSize and y0/yDotSize with their divider
+ * inverses (0x10000000 / dot size) at +0x18..+0x2c and set it. */
 #include "types.h"
 #include "IRQ.h"
 
@@ -17,8 +21,7 @@ typedef struct {
 
 extern Glob data_020a80cc;
 
-void func_0205f0e0(s16 *arg)
-{
+void TP_SetCalibrateParam(s16 *arg) {
     u32 state;
     unsigned long long vv;
 

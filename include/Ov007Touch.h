@@ -5,7 +5,7 @@
 
 /* Reconstructed layouts and names, not recovered class identity.
  *
- * Ov007TouchSample is one stylus reading in the shape func_0205efc0 fills
+ * Ov007TouchSample is one stylus reading in the shape TP_WaitCalibratedResult fills
  * (the SDK's x/y/touch/validity record): func_ov007_020c1db0 patches an axis
  * from the previous frame when validity bit 0 (x) or bit 1 (y) is set. */
 typedef struct Ov007TouchSample {

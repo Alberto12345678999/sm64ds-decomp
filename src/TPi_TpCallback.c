@@ -1,3 +1,7 @@
+/* NitroSDK SPI_tp.c TPi_TpCallback: the PXI tag 6 receive callback
+ * TP_Init installs. Decodes the x:12/y:12/touch:1/validity:2 sample word,
+ * updates the state and per-command error/busy bits, and calls the user
+ * callback. */
 #include "types.h"
 typedef struct {
     u32 x : 12;
@@ -32,8 +36,7 @@ extern S data_020a80cc;
 extern void Crash(void);
 
 #pragma opt_strength_reduction off
-void func_0205f300(int a0, unsigned int a1, int a2)
-{
+void TPi_TpCallback(int a0, unsigned int a1, int a2) {
     u16 msg = (u16)a1;
     u32 bit = (u32)(msg & 0x7f00) << 8 >> 16;
 

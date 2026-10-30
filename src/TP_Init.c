@@ -2,17 +2,17 @@
 extern void PXI_Init(void);
 extern int PXI_IsCallbackReady(int tag, int proc);
 extern void PXI_SetFifoRecvCallback(int tag, void *callback);
-extern void func_0205f300(void);
+extern void TPi_TpCallback(void);
 
 extern char data_020a80c8[];
 extern char data_020a80cc[];
 
 /* The touch-panel work at data_020a80cc (NitroSDK tp.c's state). Offsets
- * from the sibling TP functions: func_0205f300, the PXI receive callback,
+ * from the sibling TP functions: TPi_TpCallback, the PXI receive callback,
  * calls mCallback, fills mBuf, advances mIndex through mSamplingBufs up to
  * mBufSize, sets mState and the per-command bits in mErrFlags /
- * mCommandFlags; func_0205eeac sets up auto sampling (mSamplingBufs,
- * mIndex, mFrequency, mBufSize); func_0205f0e0 fills mCalibration and sets
+ * mCommandFlags; TP_RequestAutoSamplingStartAsync sets up auto sampling (mSamplingBufs,
+ * mIndex, mFrequency, mBufSize); TP_SetCalibrateParam fills mCalibration and sets
  * mCalibrated, or clears mCalibrated when given no parameters. */
 typedef struct {
     void (*mCallback)(int, int, int); /* 0x00 */
@@ -31,9 +31,9 @@ typedef struct {
 
 #define TP_WORK (*(TpWork *)data_020a80cc)
 
-void func_0205f270(void)
-{
-    if (*(u16 *)data_020a80c8 != 0) return;
+void TP_Init(void) {
+    if (*(u16 *)data_020a80c8 != 0)
+        return;
     *(u16 *)data_020a80c8 = 1;
     PXI_Init();
     TP_WORK.mState = 0;
@@ -45,5 +45,5 @@ void func_0205f270(void)
     TP_WORK.mErrFlags = 0;
     while (PXI_IsCallbackReady(6, 1) == 0)
         ;
-    PXI_SetFifoRecvCallback(6, (void *)func_0205f300);
+    PXI_SetFifoRecvCallback(6, (void *)TPi_TpCallback);
 }
