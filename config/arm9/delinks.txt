@@ -2211,7 +2211,7 @@ src/ARMRestoreContext.c:
 src/unnamed/arm9/0205/func_0205865c.cpp:
     complete
     .text start:0x0205865c end:0x020587dc
-src/unnamed/arm9/0205/func_020587dc.c:
+src/OS_IsRunOnEmulator.c:
     complete
     .text start:0x020587dc end:0x020587e4
 
@@ -2359,202 +2359,27 @@ src/DecompressLZ16.c:
     complete
     .text start:0x0205a754 end:0x0205a82c
 
-src/unnamed/arm9/0205/func_0205a82c.c:
+src/SND_Init.c:
     complete
     .text start:0x0205a82c end:0x0205a86c
 
-src/Snd_SendCommand.c:
+src/engine/sound/SND_Interface.cpp:
     complete
-    .text start:0x0205a86c end:0x0205a8c4
+    .text start:0x0205a86c end:0x0205adf8
 
-src/unnamed/arm9/0205/func_0205a8c4.c:
+src/engine/sound/SND_Command.cpp:
     complete
-    .text start:0x0205a8c4 end:0x0205a8f0
+    .text start:0x0205adf8 end:0x0205b470
 
-src/SNDi_SetTrackParam.c:
+src/engine/sound/SND_Alarm.cpp:
     complete
-    .text start:0x0205a8f0 end:0x0205a924
+    .text start:0x0205b470 end:0x0205b554
 
-src/SNDi_SetPlayerParam.c:
+src/engine/sound/SND_Work.cpp:
     complete
-    .text start:0x0205a924 end:0x0205a958
+    .text start:0x0205b554 end:0x0205b63c
 
-src/unnamed/arm9/0205/func_0205a958.c:
-    complete
-    .text start:0x0205a958 end:0x0205a98c
-
-src/unnamed/arm9/0205/func_0205a98c.c:
-    complete
-    .text start:0x0205a98c end:0x0205a9b8
-
-src/unnamed/arm9/0205/func_0205a9b8.c:
-    complete
-    .text start:0x0205a9b8 end:0x0205a9e4
-
-src/unnamed/arm9/0205/func_0205a9e4.c:
-    complete
-    .text start:0x0205a9e4 end:0x0205aa10
-
-src/unnamed/arm9/0205/func_0205aa10.c:
-    complete
-    .text start:0x0205aa10 end:0x0205aa68
-
-src/unnamed/arm9/0205/func_0205aa68.c:
-    complete
-    .text start:0x0205aa68 end:0x0205aa9c
-
-src/unnamed/arm9/0205/func_0205aa9c.c:
-    complete
-    .text start:0x0205aa9c end:0x0205aac8
-
-src/unnamed/arm9/0205/func_0205aac8.c:
-    complete
-    .text start:0x0205aac8 end:0x0205aaf4
-
-src/SND_SetTrackMute.c:
-    complete
-    .text start:0x0205aaf4 end:0x0205ab28
-
-src/unnamed/arm9/0205/func_0205ab28.c:
-    complete
-    .text start:0x0205ab28 end:0x0205ab6c
-
-src/unnamed/arm9/0205/func_0205ab6c.c:
-    complete
-    .text start:0x0205ab6c end:0x0205abb8
-
-src/unnamed/arm9/0205/func_0205abb8.c:
-    complete
-    .text start:0x0205abb8 end:0x0205ac28
-
-src/unnamed/arm9/0205/func_0205ac28.c:
-    complete
-    .text start:0x0205ac28 end:0x0205ac5c
-
-src/SND_SetTrackModSpeed.c:
-    complete
-    .text start:0x0205ac5c end:0x0205ac84
-
-src/SND_SetTrackModDepth.c:
-    complete
-    .text start:0x0205ac84 end:0x0205acac
-
-src/SND_SetTrackPan.c:
-    complete
-    .text start:0x0205acac end:0x0205acd4
-
-src/SND_SetTrackPitch.c:
-    complete
-    .text start:0x0205acd4 end:0x0205acfc
-
-src/SND_SetTrackVolume.c:
-    complete
-    .text start:0x0205acfc end:0x0205ad24
-
-src/SND_SetPlayerChannelPriority.c:
-    complete
-    .text start:0x0205ad24 end:0x0205ad3c
-
-src/SND_SetPlayerVolume.c:
-    complete
-    .text start:0x0205ad3c end:0x0205ad54
-
-src/SND_SetPlayerTempoRatio.c:
-    complete
-    .text start:0x0205ad54 end:0x0205ad6c
-
-src/unnamed/arm9/0205/func_0205ad6c.c:
-    complete
-    .text start:0x0205ad6c end:0x0205ad98
-
-src/SND_StopSeq.c:
-    complete
-    .text start:0x0205ad98 end:0x0205adc4
-
-src/SND_StartSeq.c:
-    complete
-    .text start:0x0205adc4 end:0x0205adf8
-
-src/unnamed/arm9/0205/func_0205adf8.c:
-    complete
-    .text start:0x0205adf8 end:0x0205ae30
-
-src/func_0205ae30.c:
-    complete
-    .text start:0x0205ae30 end:0x0205ae64
-
-src/unnamed/arm9/0205/func_0205ae64.c:
-    complete
-    .text start:0x0205ae64 end:0x0205aed0
-
-src/unnamed/arm9/0205/func_0205aed0.cpp:
-    complete
-    .text start:0x0205aed0 end:0x0205af00
-
-src/unnamed/arm9/0205/func_0205af00.c:
-    complete
-    .text start:0x0205af00 end:0x0205af78
-src/unnamed/arm9/0205/func_0205af78.c:
-    complete
-    .text start:0x0205af78 end:0x0205afb4
-
-src/unnamed/arm9/0205/func_0205afb4.c:
-    complete
-    .text start:0x0205afb4 end:0x0205afe0
-
-src/unnamed/arm9/0205/func_0205afe0.c:
-    complete
-    .text start:0x0205afe0 end:0x0205b070
-
-src/func_0205b070.cpp:
-    complete
-    .text start:0x0205b070 end:0x0205b1a4
-
-src/unnamed/arm9/0205/func_0205b1a4.c:
-    complete
-    .text start:0x0205b1a4 end:0x0205b1d8
-
-src/unnamed/arm9/0205/func_0205b1d8.c:
-    complete
-    .text start:0x0205b1d8 end:0x0205b274
-
-src/unnamed/arm9/0205/func_0205b274.c:
-    complete
-    .text start:0x0205b274 end:0x0205b358
-
-src/unnamed/arm9/0205/func_0205b358.c:
-    complete
-    .text start:0x0205b358 end:0x0205b470
-
-src/unnamed/arm9/0205/func_0205b470.c:
-    complete
-    .text start:0x0205b470 end:0x0205b4d0
-
-src/unnamed/arm9/0205/func_0205b4d0.c:
-    complete
-    .text start:0x0205b4d0 end:0x0205b504
-
-src/unnamed/arm9/0205/func_0205b504.c:
-    complete
-    .text start:0x0205b504 end:0x0205b524
-
-src/unnamed/arm9/0205/func_0205b524.c:
-    complete
-    .text start:0x0205b524 end:0x0205b554
-
-src/unnamed/arm9/0205/func_0205b554.cpp:
-    complete
-    .text start:0x0205b554 end:0x0205b5d4
-
-src/unnamed/arm9/0205/func_0205b5d4.cpp:
-    complete
-    .text start:0x0205b5d4 end:0x0205b608
-
-src/unnamed/arm9/0205/func_0205b608.cpp:
-    complete
-    .text start:0x0205b608 end:0x0205b63c
-
-src/unnamed/arm9/0205/func_0205b63c.c:
+src/SND_CalcChannelVolume.c:
     complete
     .text start:0x0205b63c end:0x0205b6b0
 

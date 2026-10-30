@@ -1,0 +1,82 @@
+{
+  "id": "arm9/SND_Alarm",
+  "module": "arm9",
+  "source": "src/engine/sound/SND_Alarm.cpp",
+  "promoted_source": "src/engine/sound/SND_Alarm.cpp",
+  "status": "promoted",
+  "boundary_confidence": "high",
+  "boundary_evidence": [
+    "One contiguous run of the Nitro SDK's SND_alarm.c, 0x0205b470..0x0205b554: 4 functions, gapless in config/arm9/delinks.txt, each identified by its body against pret's pokediamond SND_alarm.c over the 8-entry {cb, data, id} table at data_020a7f60.",
+    "Order: pret's file defines exactly these four. mwccarm emits the bodies in reverse, so SNDi_CallAlarmHandler, pret's last, is lowest and SND_AlarmInit, pret's first, highest.",
+    "BOTTOM EDGE: SND_CommandInit, the highest of SND_command.c (arm9/SND_Command), ends at 0x0205b470.",
+    "TOP EDGE: SNDi_InitSharedWork at 0x0205b554, the lowest of SND_work.c (arm9/SND_Work)."
+  ],
+  "sections": [
+    {
+      "name": ".text",
+      "start": "0x0205b470",
+      "end": "0x0205b554"
+    }
+  ],
+  "functions": [
+    {
+      "symbol": "SNDi_CallAlarmHandler",
+      "address": "0x0205b470",
+      "size": "0x00000060",
+      "legacy_source": "src/unnamed/arm9/0205/func_0205b470.c",
+      "ordinal": 0
+    },
+    {
+      "symbol": "SNDi_SetAlarmHandler",
+      "address": "0x0205b4d0",
+      "size": "0x00000034",
+      "legacy_source": "src/unnamed/arm9/0205/func_0205b4d0.c",
+      "ordinal": 1
+    },
+    {
+      "symbol": "SNDi_IncAlarmId",
+      "address": "0x0205b504",
+      "size": "0x00000020",
+      "legacy_source": "src/unnamed/arm9/0205/func_0205b504.c",
+      "ordinal": 2
+    },
+    {
+      "symbol": "SND_AlarmInit",
+      "address": "0x0205b524",
+      "size": "0x00000030",
+      "legacy_source": "src/unnamed/arm9/0205/func_0205b524.c",
+      "ordinal": 3
+    }
+  ],
+  "data": [],
+  "bss": [],
+  "relocations": [],
+  "compiler_only_output": [],
+  "notes": [
+    "Hand-assembled, following arm9/FS_Rom: tu_map cannot segment arm9/main.",
+    "All four were renamed from their func_ names in this change. symbols/actor_renames.tsv records the evidence.",
+    "Text-only. data_020a7f60 (sCallbackTable) keeps its address name and owner."
+  ],
+  "verification": {
+    "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",
+    "toolchain": "tools/mwccarm/2004/b56/mwccarm.exe",
+    "flags": "-O4,p -enum int -lang c++ -char signed -interworking -proc arm946e -gccext,on -msgstyle gcc -Cpp_exceptions off",
+    "object": "build/tu/arm9-SND_Alarm/SND_Alarm.o (gitignored)",
+    "comparison": "tools/match.py extract_func+compare (bytes/relocs) AND tools/objisolate.py plan() (relocation type/addend) AND tools/reloc_audit.py check_destinations() (relocation target identity)",
+    "functions_matched": 4,
+    "functions_declared": 4,
+    "compilerOnlyOutput": {
+      "requested": [],
+      "deadstripped": [],
+      "data": [],
+      "dataExternalized": []
+    },
+    "criteria": {
+      "every_declared_function_defined": "PASS",
+      "every_declared_function_bytes_match": "PASS",
+      "declared_function_set_equals_defined_function_set": "PASS",
+      "functions_occur_in_expected_order": "PASS",
+      "relocation_destinations_verified": "PASS"
+    }
+  }
+}

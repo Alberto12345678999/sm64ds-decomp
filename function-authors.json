@@ -9667,7 +9667,7 @@
     },
     "arm9:0x020587dc": {
       "author": "tangosdev",
-      "name": "func_020587dc"
+      "name": "OS_IsRunOnEmulator"
     },
     "arm9:0x020587e4": {
       "author": "ruspecial",
@@ -10063,15 +10063,15 @@
     },
     "arm9:0x0205a82c": {
       "author": "tangosdev",
-      "name": "func_0205a82c"
+      "name": "SND_Init"
     },
     "arm9:0x0205a86c": {
       "author": "tangosdev",
-      "name": "Snd_SendCommand"
+      "name": "PushCommand_impl"
     },
     "arm9:0x0205a8c4": {
       "author": "tangosdev",
-      "name": "func_0205a8c4"
+      "name": "SNDi_SetSurroundDecay"
     },
     "arm9:0x0205a8f0": {
       "author": "tangosdev",
@@ -10083,35 +10083,35 @@
     },
     "arm9:0x0205a958": {
       "author": "tangosdev",
-      "name": "func_0205a958"
+      "name": "SND_SetOutputSelector"
     },
     "arm9:0x0205a98c": {
       "author": "tangosdev",
-      "name": "func_0205a98c"
+      "name": "SND_InvalidateWaveData"
     },
     "arm9:0x0205a9b8": {
       "author": "tangosdev",
-      "name": "func_0205a9b8"
+      "name": "SND_InvalidateBankData"
     },
     "arm9:0x0205a9e4": {
       "author": "tangosdev",
-      "name": "func_0205a9e4"
+      "name": "SND_InvalidateSeqData"
     },
     "arm9:0x0205aa10": {
       "author": "tangosdev",
-      "name": "func_0205aa10"
+      "name": "SND_SetupChannelPcm"
     },
     "arm9:0x0205aa68": {
       "author": "tangosdev",
-      "name": "func_0205aa68"
+      "name": "SND_SetChannelVolume"
     },
     "arm9:0x0205aa9c": {
       "author": "tangosdev",
-      "name": "func_0205aa9c"
+      "name": "SND_UnlockChannel"
     },
     "arm9:0x0205aac8": {
       "author": "tangosdev",
-      "name": "func_0205aac8"
+      "name": "SND_LockChannel"
     },
     "arm9:0x0205aaf4": {
       "author": "tangosdev",
@@ -10119,19 +10119,19 @@
     },
     "arm9:0x0205ab28": {
       "author": "tangosdev",
-      "name": "func_0205ab28"
+      "name": "SND_SetupAlarm"
     },
     "arm9:0x0205ab6c": {
       "author": "tangosdev",
-      "name": "func_0205ab6c"
+      "name": "SND_SetupCapture"
     },
     "arm9:0x0205abb8": {
       "author": "tangosdev",
-      "name": "func_0205abb8"
+      "name": "SND_StopTimer"
     },
     "arm9:0x0205ac28": {
       "author": "tangosdev",
-      "name": "func_0205ac28"
+      "name": "SND_StartTimer"
     },
     "arm9:0x0205ac5c": {
       "author": "tangosdev",
@@ -10167,7 +10167,7 @@
     },
     "arm9:0x0205ad6c": {
       "author": "tangosdev",
-      "name": "func_0205ad6c"
+      "name": "SND_PauseSeq"
     },
     "arm9:0x0205ad98": {
       "author": "tangosdev",
@@ -10179,95 +10179,95 @@
     },
     "arm9:0x0205adf8": {
       "author": "tangosdev",
-      "name": "func_0205adf8"
+      "name": "AllocCommand"
     },
     "arm9:0x0205ae30": {
       "author": "tangosdev",
-      "name": "func_0205ae30"
+      "name": "RequestCommandProc"
     },
     "arm9:0x0205ae64": {
       "author": "tangosdev",
-      "name": "func_0205ae64"
+      "name": "InitPXI"
     },
     "arm9:0x0205aed0": {
       "author": "tangosdev",
-      "name": "func_0205aed0"
+      "name": "PxiFifoCallback"
     },
     "arm9:0x0205af00": {
       "author": "tangosdev",
-      "name": "func_0205af00"
+      "name": "SND_CountWaitingCommand"
     },
     "arm9:0x0205af20": {
       "author": "tangosdev",
-      "name": "func_0205af20"
+      "name": "SND_CountReservedCommand"
     },
     "arm9:0x0205af4c": {
       "author": "tangosdev",
-      "name": "func_0205af4c"
+      "name": "SND_CountFreeCommand"
     },
     "arm9:0x0205af78": {
       "author": "tangosdev",
-      "name": "func_0205af78"
+      "name": "SND_IsFinishedCommandTag"
     },
     "arm9:0x0205afb4": {
       "author": "tangosdev",
-      "name": "func_0205afb4"
+      "name": "SND_GetCurrentCommandTag"
     },
     "arm9:0x0205afe0": {
       "author": "tangosdev",
-      "name": "func_0205afe0"
+      "name": "SND_WaitForCommandProc"
     },
     "arm9:0x0205b070": {
       "author": "andrewboudreau",
-      "name": "func_0205b070"
+      "name": "SND_FlushCommand"
     },
     "arm9:0x0205b1a4": {
       "author": "tangosdev",
-      "name": "func_0205b1a4"
+      "name": "SND_PushCommand"
     },
     "arm9:0x0205b1d8": {
       "author": "tangosdev",
-      "name": "func_0205b1d8"
+      "name": "SND_AllocCommand"
     },
     "arm9:0x0205b274": {
       "author": "tangosdev",
-      "name": "func_0205b274"
+      "name": "SND_RecvCommandReply"
     },
     "arm9:0x0205b358": {
       "author": "tangosdev",
-      "name": "func_0205b358"
+      "name": "SND_CommandInit"
     },
     "arm9:0x0205b470": {
       "author": "tangosdev",
-      "name": "func_0205b470"
+      "name": "SNDi_CallAlarmHandler"
     },
     "arm9:0x0205b4d0": {
       "author": "ruspecial",
-      "name": "func_0205b4d0"
+      "name": "SNDi_SetAlarmHandler"
     },
     "arm9:0x0205b504": {
       "author": "ruspecial",
-      "name": "func_0205b504"
+      "name": "SNDi_IncAlarmId"
     },
     "arm9:0x0205b524": {
       "author": "tangosdev",
-      "name": "func_0205b524"
+      "name": "SND_AlarmInit"
     },
     "arm9:0x0205b554": {
       "author": "tangosdev",
-      "name": "func_0205b554"
+      "name": "SNDi_InitSharedWork"
     },
     "arm9:0x0205b5d4": {
       "author": "tangosdev",
-      "name": "func_0205b5d4"
+      "name": "SNDi_GetFinishedCommandTag"
     },
     "arm9:0x0205b608": {
       "author": "tangosdev",
-      "name": "func_0205b608"
+      "name": "SND_GetPlayerStatus"
     },
     "arm9:0x0205b63c": {
       "author": "tangosdev",
-      "name": "func_0205b63c"
+      "name": "SND_CalcChannelVolume"
     },
     "arm9:0x0205b6b0": {
       "author": "tangosdev",

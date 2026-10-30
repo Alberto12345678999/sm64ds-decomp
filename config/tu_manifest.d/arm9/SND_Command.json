@@ -1,0 +1,160 @@
+{
+  "id": "arm9/SND_Command",
+  "module": "arm9",
+  "source": "src/engine/sound/SND_Command.cpp",
+  "promoted_source": "src/engine/sound/SND_Command.cpp",
+  "status": "promoted",
+  "boundary_confidence": "high",
+  "boundary_evidence": [
+    "One contiguous run of the Nitro SDK's SND_command.c, 0x0205adf8..0x0205b470: 15 functions, gapless in config/arm9/delinks.txt. Each is identified by its body against pret's pokediamond SND_command.c: the free, reserve and waiting lists of 256 SNDCommand records, the PXI FIFO tag 7 sends, and the finished- and current-command tags.",
+    "Order: pret's file defines exactly these fifteen, its four statics last. mwccarm emits the bodies in reverse, so AllocCommand, pret's last, is lowest and SND_CommandInit, pret's first, is highest, with pret's order reversed between.",
+    "Older SDK: nothing disables interrupts around the lists and nothing spins with OS_SpinWait on a full FIFO. SND_FlushCommand has no SND_CMD_FLAG_IMMEDIATE, and there is no IsCommandAvailable: SND_AllocCommand and InitPXI give up when OS_IsRunOnEmulator is TRUE.",
+    "BOTTOM EDGE: SND_StartSeq, the highest of SND_interface.c (arm9/SND_Interface), ends at 0x0205adf8.",
+    "TOP EDGE: SNDi_CallAlarmHandler at 0x0205b470, the lowest of SND_alarm.c (arm9/SND_Alarm)."
+  ],
+  "sections": [
+    {
+      "name": ".text",
+      "start": "0x0205adf8",
+      "end": "0x0205b470"
+    }
+  ],
+  "functions": [
+    {
+      "symbol": "AllocCommand",
+      "address": "0x0205adf8",
+      "size": "0x00000038",
+      "legacy_source": "src/unnamed/arm9/0205/func_0205adf8.c",
+      "ordinal": 0
+    },
+    {
+      "symbol": "RequestCommandProc",
+      "address": "0x0205ae30",
+      "size": "0x00000034",
+      "legacy_source": "src/func_0205ae30.c",
+      "ordinal": 1
+    },
+    {
+      "symbol": "InitPXI",
+      "address": "0x0205ae64",
+      "size": "0x0000006c",
+      "legacy_source": "src/unnamed/arm9/0205/func_0205ae64.c",
+      "ordinal": 2
+    },
+    {
+      "symbol": "PxiFifoCallback",
+      "address": "0x0205aed0",
+      "size": "0x00000030",
+      "legacy_source": "src/unnamed/arm9/0205/func_0205aed0.cpp",
+      "ordinal": 3
+    },
+    {
+      "symbol": "SND_CountWaitingCommand",
+      "address": "0x0205af00",
+      "size": "0x00000020",
+      "legacy_source": "src/unnamed/arm9/0205/func_0205af00.c",
+      "ordinal": 4
+    },
+    {
+      "symbol": "SND_CountReservedCommand",
+      "address": "0x0205af20",
+      "size": "0x0000002c",
+      "legacy_source": "src/unnamed/arm9/0205/func_0205af00.c",
+      "ordinal": 5
+    },
+    {
+      "symbol": "SND_CountFreeCommand",
+      "address": "0x0205af4c",
+      "size": "0x0000002c",
+      "legacy_source": "src/unnamed/arm9/0205/func_0205af00.c",
+      "ordinal": 6
+    },
+    {
+      "symbol": "SND_IsFinishedCommandTag",
+      "address": "0x0205af78",
+      "size": "0x0000003c",
+      "legacy_source": "src/unnamed/arm9/0205/func_0205af78.c",
+      "ordinal": 7
+    },
+    {
+      "symbol": "SND_GetCurrentCommandTag",
+      "address": "0x0205afb4",
+      "size": "0x0000002c",
+      "legacy_source": "src/unnamed/arm9/0205/func_0205afb4.c",
+      "ordinal": 8
+    },
+    {
+      "symbol": "SND_WaitForCommandProc",
+      "address": "0x0205afe0",
+      "size": "0x00000090",
+      "legacy_source": "src/unnamed/arm9/0205/func_0205afe0.c",
+      "ordinal": 9
+    },
+    {
+      "symbol": "SND_FlushCommand",
+      "address": "0x0205b070",
+      "size": "0x00000134",
+      "legacy_source": "src/func_0205b070.cpp",
+      "ordinal": 10
+    },
+    {
+      "symbol": "SND_PushCommand",
+      "address": "0x0205b1a4",
+      "size": "0x00000034",
+      "legacy_source": "src/unnamed/arm9/0205/func_0205b1a4.c",
+      "ordinal": 11
+    },
+    {
+      "symbol": "SND_AllocCommand",
+      "address": "0x0205b1d8",
+      "size": "0x0000009c",
+      "legacy_source": "src/unnamed/arm9/0205/func_0205b1d8.c",
+      "ordinal": 12
+    },
+    {
+      "symbol": "SND_RecvCommandReply",
+      "address": "0x0205b274",
+      "size": "0x000000e4",
+      "legacy_source": "src/unnamed/arm9/0205/func_0205b274.c",
+      "ordinal": 13
+    },
+    {
+      "symbol": "SND_CommandInit",
+      "address": "0x0205b358",
+      "size": "0x00000118",
+      "legacy_source": "src/unnamed/arm9/0205/func_0205b358.c",
+      "ordinal": 14
+    }
+  ],
+  "data": [],
+  "bss": [],
+  "relocations": [],
+  "compiler_only_output": [],
+  "notes": [
+    "Hand-assembled, following arm9/FS_Rom: tu_map cannot segment arm9/main.",
+    "All fifteen were renamed from their func_ names in this change. symbols/actor_renames.tsv records the evidence.",
+    "Text-only. The data symbols keep their address names and owners: data_020a6484 (sFreeList), data_020a6488 (sFinishedTag), data_020a648c and data_020a6490 (sReserveList and its end), data_020a6494 (sFreeListEnd), data_020a6498..data_020a64a0 (the waiting queue's read and write indexes and count), data_020a64a4 (sCurrentTag), data_020a64a8 (sWaitingCommandListQueue), data_020a64e0 (sSharedWork), data_020a6760 (sCommandArray, with the labels data_020a7760 and data_020a7f48 inside it)."
+  ],
+  "verification": {
+    "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",
+    "toolchain": "tools/mwccarm/2004/b56/mwccarm.exe",
+    "flags": "-O4,p -enum int -lang c++ -char signed -interworking -proc arm946e -gccext,on -msgstyle gcc -Cpp_exceptions off",
+    "object": "build/tu/arm9-SND_Command/SND_Command.o (gitignored)",
+    "comparison": "tools/match.py extract_func+compare (bytes/relocs) AND tools/objisolate.py plan() (relocation type/addend) AND tools/reloc_audit.py check_destinations() (relocation target identity)",
+    "functions_matched": 15,
+    "functions_declared": 15,
+    "compilerOnlyOutput": {
+      "requested": [],
+      "deadstripped": [],
+      "data": [],
+      "dataExternalized": []
+    },
+    "criteria": {
+      "every_declared_function_defined": "PASS",
+      "every_declared_function_bytes_match": "PASS",
+      "declared_function_set_equals_defined_function_set": "PASS",
+      "functions_occur_in_expected_order": "PASS",
+      "relocation_destinations_verified": "PASS"
+    }
+  }
+}

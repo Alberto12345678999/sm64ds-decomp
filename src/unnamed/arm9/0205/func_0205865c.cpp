@@ -5,7 +5,7 @@
 extern "C" {
 
 extern int func_02058690(void);
-extern int func_020587dc(void);
+extern int OS_IsRunOnEmulator(void);
 extern int func_0205865c(void);
 extern int data_0209a040; /* OSi_ConsoleTypeCache, initialised to -1 */
 
@@ -13,7 +13,7 @@ int OS_GetConsoleType(void) {
     if (data_0209a040 == -1) {
         int r4 = func_02058690();
         int flags;
-        if (func_020587dc())
+        if (OS_IsRunOnEmulator())
             flags = r4 | 0x10000000;
         else if (func_0205865c())
             flags = r4 | 0x40000000;

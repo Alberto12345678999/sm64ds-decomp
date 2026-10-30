@@ -774,11 +774,6 @@
       ]
     },
     "PXI_SendWordByFifo": {
-      "src/func_0205ae30.c": [
-        "param:#1 int",
-        "param:#2 int",
-        "param:#3 int"
-      ],
       "src/unnamed/arm9/0201/func_02019f10.cpp": [
         "return:IPCStatus"
       ],
@@ -2571,43 +2566,6 @@
     "ShowArea": {
       "src/game/actors/d_a_star_gate.cpp": [
         "return:int"
-      ]
-    },
-    "Snd_SendCommand": {
-      "src/unnamed/arm9/0205/func_0205a8c4.c": [
-        "param:#2 void *"
-      ],
-      "src/unnamed/arm9/0205/func_0205a958.c": [
-        "param:#2 void *"
-      ],
-      "src/unnamed/arm9/0205/func_0205a98c.c": [
-        "param:#2 void *"
-      ],
-      "src/unnamed/arm9/0205/func_0205a9b8.c": [
-        "param:#2 void *"
-      ],
-      "src/unnamed/arm9/0205/func_0205a9e4.c": [
-        "param:#2 void *"
-      ],
-      "src/unnamed/arm9/0205/func_0205aa10.c": [
-        "param:#2 unsigned int",
-        "param:#4 unsigned int",
-        "param:#5 unsigned int"
-      ],
-      "src/unnamed/arm9/0205/func_0205aa68.c": [
-        "param:#2 void *"
-      ],
-      "src/unnamed/arm9/0205/func_0205aa9c.c": [
-        "param:#2 void *"
-      ],
-      "src/unnamed/arm9/0205/func_0205aac8.c": [
-        "param:#2 void *"
-      ],
-      "src/unnamed/arm9/0205/func_0205ac28.c": [
-        "param:#2 void *"
-      ],
-      "src/unnamed/arm9/0205/func_0205ad6c.c": [
-        "param:#2 void *"
       ]
     },
     "Sound_PlayBank1Panned": {
@@ -5424,9 +5382,6 @@
         "return:void"
       ],
       "src/unnamed/arm9/0204/func_020424c0.cpp": [
-        "return:void"
-      ],
-      "src/unnamed/arm9/0205/func_0205865c.cpp": [
         "return:void"
       ],
       "src/unnamed/arm9/0205/func_02059f58.cpp": [
@@ -8983,11 +8938,6 @@
         "param:#1 int *"
       ]
     },
-    "func_0205b470": {
-      "src/unnamed/arm9/0205/func_0205aed0.cpp": [
-        "param:#1 void *"
-      ]
-    },
     "func_0205b78c": {
       "src/engine/sound/SoundEngine.cpp": [
         "param:#1 struct Node *",
@@ -10532,60 +10482,6 @@
     "data_020a6134": {
       "src/unnamed/arm9/0207/func_0207037c.c": [
         "return:char * []"
-      ]
-    },
-    "data_020a6484": {
-      "src/unnamed/arm9/0205/func_0205b274.c": [
-        "return:void * *"
-      ],
-      "src/unnamed/arm9/0205/func_0205b358.c": [
-        "return:N5b358 *"
-      ]
-    },
-    "data_020a6488": {
-      "src/unnamed/arm9/0205/func_0205af78.c": [
-        "return:unsigned int"
-      ],
-      "src/unnamed/arm9/0205/func_0205afb4.c": [
-        "return:void *"
-      ]
-    },
-    "data_020a648c": {
-      "src/func_0205b070.cpp": [
-        "return:volatile int"
-      ],
-      "src/unnamed/arm9/0205/func_0205b358.c": [
-        "return:int"
-      ]
-    },
-    "data_020a6494": {
-      "src/unnamed/arm9/0205/func_0205b274.c": [
-        "return:void * *"
-      ]
-    },
-    "data_020a649c": {
-      "src/unnamed/arm9/0205/func_0205b358.c": [
-        "return:int"
-      ]
-    },
-    "data_020a64a4": {
-      "src/unnamed/arm9/0205/func_0205afb4.c": [
-        "return:void *"
-      ]
-    },
-    "data_020a64a8": {
-      "src/unnamed/arm9/0205/func_0205b274.c": [
-        "return:void * * []"
-      ]
-    },
-    "data_020a6760": {
-      "src/unnamed/arm9/0205/func_0205b358.c": [
-        "return:N5b358 []"
-      ]
-    },
-    "data_020a7fc0": {
-      "src/unnamed/arm9/0205/func_0205b358.c": [
-        "return:void *"
       ]
     },
     "data_020a805c": {
@@ -19229,42 +19125,6 @@
       ],
       "src/engine/mb/MB_Parent.cpp": [
         "arity:3"
-      ]
-    },
-    "func_0205a8c4": {
-      "src/unnamed/arm9/0204/func_02049c48.cpp": [
-        "param:#1 int"
-      ]
-    },
-    "func_0205aed0": {
-      "src/unnamed/arm9/0205/func_0205ae64.c": [
-        "arity:0"
-      ]
-    },
-    "func_0205b070": {
-      "src/unnamed/arm9/0205/func_0205b1d8.c": [
-        "return:void"
-      ]
-    },
-    "func_0205b1d8": {
-      "src/Snd_SendCommand.c": [
-        "return:Node5b1a4 *"
-      ]
-    },
-    "func_0205b274": {
-      "src/func_0205b070.cpp": [
-        "return:int"
-      ],
-      "src/unnamed/arm9/0205/func_0205afe0.c": [
-        "return:int"
-      ],
-      "src/unnamed/arm9/0205/func_0205b1d8.c": [
-        "return:int"
-      ]
-    },
-    "func_0205b4d0": {
-      "src/unnamed/arm9/0205/func_0205ab28.c": [
-        "param:#2 int"
       ]
     },
     "FSi_ReleaseCommand": {

@@ -70,7 +70,7 @@ typedef struct {
     int len;
     int f18;
     int pad1c;
-    void* f20;
+    u32 f20;
     int f24;
     int f28;
 } G_t;
@@ -252,7 +252,7 @@ struct C {
     /* 0x20 */ int f20;     /* current block, wraps at blockCount */
     /* 0x24 */ int volume;  /* func_0204fe5c: plus each channel's data_020a5578 entry */
     /* 0x28 */ int f28;     /* alarm number from func_0204f0d8 */
-    /* 0x2c */ int f2c;     /* first argument to func_0205ac28 / func_0205abb8 */
+    /* 0x2c */ int f2c;     /* first argument to SND_StartTimer / SND_StopTimer */
     /* 0x30 */ int chanCount;
     /* 0x34 */ unsigned char chans[1]; /* chanCount channel numbers */
     void func_0204fce8(void *);
@@ -271,9 +271,9 @@ struct E1 {
     /* 0x1c */ struct Obj2 fade;      /* volume ramp, 0x7f00 when reset */
     /* 0x2c */ unsigned char f2c;     /* 0 free, 1 started, 2 fading out */
     /* 0x2d */ unsigned char started; /* set once cmdTag has finished */
-    /* 0x2e */ unsigned char unk2e;   /* last value sent with func_0205ad6c */
+    /* 0x2e */ unsigned char unk2e;   /* last value sent with SND_PauseSeq */
     /* 0x2f */ unsigned char pad_2f;
-    /* 0x30 */ void *cmdTag; /* func_0205afb4(), polled with func_0205af78 */
+    /* 0x30 */ u32 cmdTag; /* SND_GetCurrentCommandTag(), polled with SND_IsFinishedCommandTag */
     /* 0x34 */ unsigned short unk34;
     /* 0x36 */ unsigned char pad_36[6];
     /* 0x3c */ unsigned char f3c; /* player number */
@@ -446,20 +446,24 @@ extern void OS_CreateThread(void *thread, void *func, void *arg, void *stack,
 extern int OS_ReceiveMessage(void *mq, void **msg, int flags);
 extern int OS_SendMessage(void *mq, void *msg, int flags);
 extern void OS_InitMessageQueue(void *mq, void **msgArray, int msgCount);
-extern void func_0205a82c(void);
-extern void func_0205a958(void *a, int b, int c, int d);
-extern void func_0205a98c(void *a, int b);
-extern void func_0205a9b8(void *a, int b);
-extern void func_0205a9e4(void *a, int b);
-extern void func_0205aa10(unsigned int p0, unsigned int p1, int p2, unsigned int p3, unsigned int p4, unsigned int p5, unsigned int p6, unsigned int p7, unsigned int p8, unsigned int p9);
-extern void func_0205aa68(void *a, int b, int c);
-extern void func_0205aa9c(void *a, int b);
-extern void func_0205aac8(void *a, int b);
+extern void SND_Init(void);
+extern void SND_SetOutputSelector(s32 left, s32 right, s32 channel1, s32 channel3);
+extern void SND_InvalidateWaveData(const void *start, const void *end);
+extern void SND_InvalidateBankData(const void *start, const void *end);
+extern void SND_InvalidateSeqData(const void *start, const void *end);
+extern void SND_SetupChannelPcm(s32 chn, s32 waveFormat, const void *dataAddr, s32 loopMode,
+                                s32 loopStart, s32 dataLen, s32 volume, s32 chnDataShift, s32 timer,
+                                s32 pan);
+extern void SND_SetChannelVolume(u32 chnBitMask, s32 volume, s32 chnDataShift);
+extern void SND_UnlockChannel(u32 chnBitMask, u32 flags);
+extern void SND_LockChannel(u32 chnBitMask, u32 flags);
 extern void SND_SetTrackMute(s32 player, u32 trackBitMask, int flag);
-extern void func_0205ab28(int a, int b, int c, int d, int e);
-extern void func_0205ab6c(unsigned int a, unsigned int b, int c, int d, unsigned int e, unsigned int f, unsigned int g);
-extern void func_0205abb8(int a, int b, int c, int d);
-extern void func_0205ac28(void *a, int b, int c, int d);
+extern void SND_SetupAlarm(s32 alarm, u32 tick, u32 period, void (*cb)(void *userData),
+                           void *userData);
+extern void SND_SetupCapture(s32 capture, s32 format, void *bufferPtr, u32 length, int loopFlag,
+                             s32 in, s32 out);
+extern void SND_StopTimer(u32 chnBitMask, u32 capBitMask, u32 alarmBitMask, u32 flags);
+extern void SND_StartTimer(u32 chnBitMask, u32 capBitMask, u32 alarmBitMask, u32 flags);
 extern void SND_SetTrackModSpeed(s32 player, u32 trackBitMask, s32 speed);
 extern void SND_SetTrackModDepth(s32 player, u32 trackBitMask, s32 depth);
 extern void SND_SetTrackPan(s32 player, u32 trackBitMask, s32 pan);
@@ -468,16 +472,17 @@ extern void SND_SetTrackVolume(s32 player, u32 trackBitMask, s32 volume);
 extern void SND_SetPlayerChannelPriority(s32 player, s32 prio);
 extern void SND_SetPlayerVolume(s32 player, s32 volume);
 extern void SND_SetPlayerTempoRatio(s32 player, s32 ratio);
-extern void func_0205ad6c(void *a, int b);
+extern void SND_PauseSeq(s32 player, int flag);
 extern void SND_StopSeq(s32 player);
-extern void SND_StartSeq(s32 player, int seqBase, int seqOffset, int bank);
-extern int func_0205af78(unsigned int x);
-extern void *func_0205afb4(void);
-extern void func_0205afe0(unsigned int c);
-extern int func_0205b070(int x);
-extern void **func_0205b274(int flag);
-extern unsigned int func_0205b608(void);
-extern u16 func_0205b63c(int x);
+extern void SND_StartSeq(s32 player, const void *seqBasePtr, u32 seqOffset,
+                         struct SNDBankData *bankData);
+extern int SND_IsFinishedCommandTag(u32 tag);
+extern u32 SND_GetCurrentCommandTag(void);
+extern void SND_WaitForCommandProc(u32 tag);
+extern int SND_FlushCommand(u32 flags);
+extern const struct SNDCommand *SND_RecvCommandReply(u32 flags);
+extern u32 SND_GetPlayerStatus(void);
+extern u16 SND_CalcChannelVolume(s32 x);
 extern void func_0205b6b0(void *c);
 extern void func_0205b6f4(void *c);
 extern void func_0205b78c(struct Node *base, int index, struct Node *arg);
@@ -960,20 +965,20 @@ extern "C" int func_02051a98(void *p0, void *p1, unsigned int p2, void *p3,
 // @symbol func_02051a88
 extern "C" int func_02051a88(int a, int b)
 {
-    return ((int(*)(int a, int b))func_0205a9e4)(a, a + b);
+    return ((int (*)(int a, int b))SND_InvalidateSeqData)(a, a + b);
 }
 
 // @symbol func_02051a68
 extern "C" void func_02051a68(unsigned char *c, int off)
 {
-    ((void(*)(void *c, void *p))func_0205a9b8)(c, c + off);
+    SND_InvalidateBankData(c, c + off);
     func_0205b6f4((void *)(c));
 }
 
 // @symbol func_02051a48
 extern "C" void func_02051a48(unsigned char *c, int off)
 {
-    ((void(*)(void *c, void *p))func_0205a98c)(c, c + off);
+    SND_InvalidateWaveData(c, c + off);
     func_0205b6b0((void *)(c));
 }
 
@@ -1194,20 +1199,20 @@ extern "C" void func_02051454(int a, int b, unsigned int c) {
 extern "C" void func_02051420(char *a, int b, int c, int d)
 {
     ((void(*)(char *a, int c, int d))func_02051454)(a, c, d);
-    ((void(*)(char *a, char *b))func_0205a9e4)(a, a + b);
+    SND_InvalidateSeqData(a, a + b);
 }
 
 // @symbol func_020513e4
 extern "C" void func_020513e4(char *a, int b, int c, int d) {
     ((extern void(*)(void *a, int c, int d))func_02051454)(a, c, d);
-    func_0205a9b8((void *)(a),  (int)(a + b));
+    SND_InvalidateBankData(a, a + b);
     ((extern void(*)(void *a))func_0205b6f4)(a);
 }
 
 // @symbol func_020513a8
 extern "C" void func_020513a8(char *a, int b, int c, int d) {
     ((extern void(*)(void *a, int c, int d))func_02051454)(a, c, d);
-    func_0205a98c((void *)(a),  (int)(a + b));
+    SND_InvalidateWaveData(a, a + b);
     ((extern void(*)(void *a))func_0205b6b0)(a);
 }
 
@@ -1370,9 +1375,9 @@ extern "C" s32 func_02050fd4(struct Obj_2050fd4 *self) {
 // @symbol func_02050fb0
 extern "C" void func_02050fb0(void)
 {
-    void *r = func_0205afb4();
-    ((void(*)(int))func_0205b070)(0x1);
-    ((void(*)(void *))func_0205afe0)(r);
+    u32 r = SND_GetCurrentCommandTag();
+    SND_FlushCommand(1);
+    SND_WaitForCommandProc(r);
 }
 
 // @symbol func_02050f34
@@ -1632,7 +1637,7 @@ extern "C" void func_020508a0(void)
     v = ((int(*)(s32 *p))func_02052458)(sub) >> 8;
     if (v == g->f4c)
         return;
-    func_0205aa68((void *)g->f20, v, 0);
+    SND_SetChannelVolume(g->f20, v, 0);
     g->f4c = v;
 }
 
@@ -1728,19 +1733,19 @@ extern "C" int func_020503a4(int a, int b, int c, int d, int p5, int p6, int p7,
             return 0;
         }
         qlen = (u32)dd >> 2;
-        ((void(*)(int a, int b, int c, int d, int e, u32 f, int g, int h, int i, int j))func_0205aa10)(1, fmt1, b, pp8 != 0 ? 1 : 2, 0, qlen, pp10, 0, align, p11);
-        ((void(*)(int a, int b, int c, u32 d, int e, int f, int g))func_0205ab6c)(0, fmt2, b, qlen, pp8, p6, p7);
-        ((void(*)(int a, int b, int c, int d, int e, u32 f, int g, int h, int i, int j))func_0205aa10)(3, fmt1, c, pp8 != 0 ? 1 : 2, 0, qlen, pp10, 0, align, p12);
-        ((void(*)(int a, int b, int c, u32 d, int e, int f, int g))func_0205ab6c)(1, fmt2, c, qlen, pp8, p6, p7);
+        SND_SetupChannelPcm(1, fmt1, (void *)b, pp8 != 0 ? 1 : 2, 0, qlen, pp10, 0, align, p11);
+        SND_SetupCapture(0, fmt2, (void *)b, qlen, pp8, p6, p7);
+        SND_SetupChannelPcm(3, fmt1, (void *)c, pp8 != 0 ? 1 : 2, 0, qlen, pp10, 0, align, p12);
+        SND_SetupCapture(1, fmt2, (void *)c, qlen, pp8, p6, p7);
         if (handle >= 0) {
-            ((void (*)(int a, int b, int c, int d, void *e))func_0205ab28)(
+            ((void (*)(int a, int b, int c, int d, void *e))SND_SetupAlarm)(
                 handle, total + chunk, total, (int)_ZN1T13func_020500a4Ev, g);
         }
         if (a == 1) {
-            ((void(*)(int a, int b, int c, int d))func_0205a958)(3, 3, 1, 1);
+            SND_SetOutputSelector(3, 3, 1, 1);
         }
         if (handle >= 0) m = 1 << handle; else m = 0;
-        ((void(*)(int a, int b, int c, int d))func_0205ac28)(mode, 3, m, 0);
+        SND_StartTimer(mode, 3, m, 0);
         g->f0 = 1;
         g->f4 = a;
         g->f1c = 0xa;
@@ -1770,18 +1775,19 @@ extern "C" void func_020502b8(void)
     int has = (d->f28 >= 0);
     int mask = has ? (1 << d->f28) : 0;
 
-    func_0205abb8(d->f20, d->f24, mask, 0);
+    SND_StopTimer(d->f20, d->f24, mask, 0);
     if (has) {
-        void *x = func_0205afb4();
-        ((void(*)(int a))func_0205b070)(1);
-        ((void(*)(unsigned int c))func_0205afe0)((unsigned int)x);
+        u32 x = SND_GetCurrentCommandTag();
+        SND_FlushCommand(1);
+        SND_WaitForCommandProc(x);
         while (OS_ReceiveMessage(&data_020a5600, 0, 0) != 0) {
         }
     }
     if (d->f24 != 0) func_0204f11c(d->f24);
     if (d->f1c != 0) func_0204f15c((void *)d->f1c);
     if (has) func_0204f0b8(d->f28);
-    if (d->f4 == 1) ((void(*)(void *a, int b, int c, int d))func_0205a958)(0, 0, 0, 0);
+    if (d->f4 == 1)
+        SND_SetOutputSelector(0, 0, 0, 0);
     d->f0 = 0;
 }
 
@@ -1791,7 +1797,7 @@ extern "C" void func_02050258(void)
     struct D *G = &data_020a5634;
     int sh;
     int mask;
-    void *p;
+    u32 p;
     if (G->f0 == 0)
         return;
     sh = G->f28;
@@ -1799,10 +1805,10 @@ extern "C" void func_02050258(void)
         mask = 1 << sh;
     else
         mask = 0;
-    ((void (*)(int a, int b, int mask, int d))func_0205abb8)(G->f20, G->f24, mask, 0);
-    p = func_0205afb4();
-    ((void(*)(int v))func_0205b070)(1);
-    ((void(*)(void *p))func_0205afe0)(p);
+    SND_StopTimer(G->f20, G->f24, mask, 0);
+    p = SND_GetCurrentCommandTag();
+    SND_FlushCommand(1);
+    SND_WaitForCommandProc(p);
 }
 
 // @symbol func_020501b8
@@ -1824,7 +1830,7 @@ extern "C" void func_020501b8(void)
     {
         int sh = g->f28;
         int mask = (sh >= 0) ? (1 << sh) : 0;
-        func_0205ac28(g->f20, g->f24, mask, 0);
+        SND_StartTimer(g->f20, g->f24, mask, 0);
     }
 }
 
@@ -1888,7 +1894,7 @@ extern "C" void func_02050008(struct Obj1 *o) {
 extern "C" void func_0204ffcc(char *self)
 {
     struct C *c = (struct C *)self;
-    ((void (*)(int a, int b, int c, int d))func_0205ac28)(c->f2c, 0, 1 << c->f28, 0);
+    SND_StartTimer(c->f2c, 0, 1 << c->f28, 0);
     c->fc |= 2;
 }
 
@@ -1903,10 +1909,10 @@ extern "C" void func_0204ff9c(struct Obj0 *o) {
 extern "C" void func_0204ff48(struct C *p) {
     if (!((p->fc << 30) >> 31))
         return;
-    func_0205abb8(p->f2c, 0, 1 << p->f28, 0);
-    void *x = func_0205afb4();
-    ((void(*)(int))func_0205b070)(1);
-    ((void(*)(unsigned))func_0205afe0)((unsigned)x);
+    SND_StopTimer(p->f2c, 0, 1 << p->f28, 0);
+    u32 x = SND_GetCurrentCommandTag();
+    SND_FlushCommand(1);
+    SND_WaitForCommandProc(x);
 }
 
 // @symbol func_0204fed0
@@ -1917,7 +1923,7 @@ extern "C" void func_0204fed0(struct C *c) {
         c->func_0204fce8((void *)1);
         IRQ::Restore(saved);
     }
-    ((void(*)(int a, int b, int c, int d))func_0205ac28)(c->f2c, 0, 1 << c->f28, 0);
+    SND_StartTimer(c->f2c, 0, 1 << c->f28, 0);
 }
 
 // @symbol func_0204fe5c
@@ -1932,8 +1938,8 @@ extern "C" void func_0204fe5c(char *obj, int arg1)
         }
         do {
             unsigned char idx = new_var = c->chans[i];
-            int r = ((int (*)(int arg))func_0205b63c)(c->volume + data_020a5578[idx].field4);
-            func_0205aa68((void *)(1 << idx), r & 0xff, r >> 8);
+            int r = SND_CalcChannelVolume(c->volume + data_020a5578[idx].field4);
+            SND_SetChannelVolume(1 << idx, r & 0xff, r >> 8);
             i++;
         } while (i < c->chanCount);
     }
@@ -1942,13 +1948,13 @@ extern "C" void func_0204fe5c(char *obj, int arg1)
 // @symbol func_0204fde8
 extern "C" void func_0204fde8(struct C *obj) {
     if ((int)(obj->fc << 0x1e) >> 0x1f) {
-        void* p;
+        u32 p;
         int *flags = &obj->fc;
-        func_0205abb8(obj->f2c, 0, 1 << obj->f28, 0);
+        SND_StopTimer(obj->f2c, 0, 1 << obj->f28, 0);
         *flags &= ~2;
-        p = ((void*(*)(void))func_0205afb4)();
-        ((void(*)(int a))func_0205b070)(1);
-        ((void(*)(void* p))func_0205afe0)(p);
+        p = SND_GetCurrentCommandTag();
+        SND_FlushCommand(1);
+        SND_WaitForCommandProc(p);
     }
     ((void (*)(struct C *obj))func_0204fda4)(obj);
 }
@@ -2009,7 +2015,7 @@ extern "C" void func_0204fafc(void) {
     unsigned int mask;
     int v;
 
-    mask = func_0205b608();
+    mask = SND_GetPlayerStatus();
     node = (struct E1 *)(((NestedHeapIterator *)(((char *)&data_020a4d60)))->Next(0));
     if (node == 0) {
         return;
@@ -2018,7 +2024,7 @@ extern "C" void func_0204fafc(void) {
         next = (struct E1 *)(((NestedHeapIterator *)(((char *)&data_020a4d60)))
                                  ->Next((HeapAllocator *)(node)));
         if (node->started == 0) {
-            if (func_0205af78((u32)node->cmdTag)) {
+            if (SND_IsFinishedCommandTag(node->cmdTag)) {
                 node->started = 1;
             }
         }
@@ -2281,9 +2287,9 @@ extern "C" void func_0204f630(void) {
 
 // @symbol _ZN2E113func_0204f600Eiii
 int E1::func_0204f600(int seqData, int seqOffset, int bank) {
-    SND_StartSeq(this->f3c, seqData, seqOffset, bank);
+    SND_StartSeq(this->f3c, (const void *)seqData, seqOffset, (struct SNDBankData *)bank);
     ((void (*)(void *thiz))func_0204f4bc)(this);
-    this->cmdTag = func_0205afb4();
+    this->cmdTag = SND_GetCurrentCommandTag();
     this->f2c = 1;
     return 1;
 }
@@ -2310,7 +2316,7 @@ extern "C" void func_0204f558(struct E1 *self, int val) {
         return;
     if (val == self->unk2e)
         return;
-    ((void (*)(int a, int b))func_0205ad6c)(self->f3c, val);
+    SND_PauseSeq(self->f3c, val);
     self->unk2e = (unsigned char)val;
 }
 
@@ -2455,7 +2461,7 @@ extern "C" void func_0204f1e8(void) {
 extern "C" int func_0204f194(unsigned int a) {
     if (a == 0) return 1;
     if (a & data_020a4d50) return 0;
-    func_0205aac8((void *)a, 0);
+    SND_LockChannel(a, 0);
     data_020a4d50 |= a;
     return 1;
 }
@@ -2465,7 +2471,7 @@ extern "C" void func_0204f15c(void *node)
 {
     if (node == 0)
         return;
-    func_0205aa9c(node, 0);
+    SND_UnlockChannel((u32)node, 0);
     data_020a4d50 &= ~(unsigned int)node;
 }
 
@@ -2511,7 +2517,7 @@ extern "C" int func_0204f0b8(unsigned int bit)
 extern "C" void func_0204f070(void){
   if (data_020a4d44 != 0) return;
   data_020a4d44 = 1;
-  func_0205a82c();
+  SND_Init();
   func_0204f1e8();
   func_02050950();
   func_0204fc40();
@@ -2520,23 +2526,23 @@ extern "C" void func_0204f070(void){
 // @symbol func_0204f03c
 extern "C" void func_0204f03c(void)
 {
-    while (((int(*)(int))func_0205b274)(0) != 0)
+    while (SND_RecvCommandReply(0) != 0)
         ;
     func_0204fafc();
     func_020508a0();
     func_020522c4();
-    ((void(*)(int))func_0205b070)(0);
+    SND_FlushCommand(0);
 }
 
 // @symbol func_0204effc
 extern "C" void func_0204effc(void) {
-    void* p;
+    u32 p;
     func_0205227c();
     func_02050258();
-    func_0205abb8(0, 0, 0, 0);
-    p = ((void*(*)(void))func_0205afb4)();
-    ((void(*)(int a))func_0205b070)(1);
-    ((void(*)(void* p))func_0205afe0)(p);
+    SND_StopTimer(0, 0, 0, 0);
+    p = SND_GetCurrentCommandTag();
+    SND_FlushCommand(1);
+    SND_WaitForCommandProc(p);
 }
 
 // @symbol func_0204efe0
