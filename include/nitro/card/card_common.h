@@ -48,13 +48,13 @@ typedef void (*MIDmaCallback)(void *);
  * the request block ARM7 reads and answers in. pret's revision appends the
  * backup device's spec. */
 typedef struct CARDiCommandArg {
-    s32 result;    /* 0x00 -- CARD_RESULT_* */
-    s32 type;      /* 0x04 -- CARDBackupType */
-    u32 id;        /* 0x08 */
-    u32 src;       /* 0x0c */
-    u32 dest;      /* 0x10 */
-    u32 len;       /* 0x14 */
-    u8 pad_18[8];  /* 0x18 */
+    s32 result;   /* 0x00 -- CARD_RESULT_* */
+    s32 type;     /* 0x04 -- CARDBackupType */
+    u32 id;       /* 0x08 */
+    u32 src;      /* 0x0c */
+    u32 dest;     /* 0x10 */
+    u32 len;      /* 0x14 */
+    u8 pad_18[8]; /* 0x18 */
 } CARDiCommandArg;
 
 struct CARDiCommon;
@@ -65,27 +65,27 @@ typedef void (*CARDiTask)(struct CARDiCommon *);
  * pret's revision adds request-type, retry and mode fields. The card
  * thread's 0x400-byte stack follows it, at 0x020a8360. */
 typedef struct CARDiCommon {
-    CARDiCommandArg *cmd;    /* 0x00 */
-    s32 command;             /* 0x04 -- the last CARD_REQ_* sent */
-    volatile int lock_owner; /* 0x08 -- OS_LOCK_ID_ERROR when free */
-    volatile int lock_ref;   /* 0x0c */
-    u16 lock_queue;          /* 0x10 -- OSThreadQueue */
-    u16 pad12;               /* 0x12 */
-    int lock_target;         /* 0x14 -- CARD_TARGET_* */
-    u32 src;                 /* 0x18 */
-    u32 dst;                 /* 0x1c */
-    u32 len;                 /* 0x20 */
-    u32 dma;                 /* 0x24 -- the DMA channel; ~0 for none */
-    MIDmaCallback callback;  /* 0x28 */
-    void *callback_arg;      /* 0x2c */
-    CARDiTask task_func;     /* 0x30 */
-    volatile u32 flag;       /* 0x34 -- CARD_STAT_* */
-    int priority;            /* 0x38 */
-    OSThread thread;         /* 0x3c -- the card task thread */
-    OSThread *cur_th;        /* 0xd0 -- the thread the request runs on */
-    u16 busy_q;              /* 0xd4 -- OSThreadQueue */
-    u16 pad_d6;              /* 0xd6 */
-    u8 dummy[8];             /* 0xd8 */
+    CARDiCommandArg *cmd;            /* 0x00 */
+    s32 command;                     /* 0x04 -- the last CARD_REQ_* sent */
+    volatile int lock_owner;         /* 0x08 -- OS_LOCK_ID_ERROR when free */
+    volatile int lock_ref;           /* 0x0c */
+    u16 lock_queue;                  /* 0x10 -- OSThreadQueue */
+    u16 pad12;                       /* 0x12 */
+    int lock_target;                 /* 0x14 -- CARD_TARGET_* */
+    u32 src;                         /* 0x18 */
+    u32 dst;                         /* 0x1c */
+    u32 len;                         /* 0x20 */
+    u32 dma;                         /* 0x24 -- the DMA channel; ~0 for none */
+    MIDmaCallback callback;          /* 0x28 */
+    void *callback_arg;              /* 0x2c */
+    CARDiTask task_func;             /* 0x30 */
+    volatile u32 flag;               /* 0x34 -- CARD_STAT_* */
+    int priority;                    /* 0x38 */
+    OSThread thread;                 /* 0x3c -- the card task thread */
+    OSThread *cur_th;                /* 0xd0 -- the thread the request runs on */
+    u16 busy_q;                      /* 0xd4 -- OSThreadQueue */
+    u16 pad_d6;                      /* 0xd6 */
+    u8 dummy[8];                     /* 0xd8 */
     u8 backup_cache_page_buf[0x100]; /* 0xe0 */
 } CARDiCommon;
 

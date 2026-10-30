@@ -9,7 +9,7 @@ extern int data_0209a048;
 extern int func_0205da94;
 extern int func_0205db2c;
 extern int func_0205db24;
-extern void func_02060890(void);
+extern void CARD_Init(void);
 extern void func_0205cd34(void *o);
 extern int func_0205cc80(void *thiz, void *a, void *b);
 extern void func_0205c7c4(int *p, int a, int b);
@@ -30,7 +30,7 @@ void func_0205d96c(void *arg)
     data_020a8064[1] = 0;
     data_020a806c[0] = 0;
     data_020a806c[1] = 0;
-    func_02060890();
+    CARD_Init();
 
     a = A;
     b = B;

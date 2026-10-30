@@ -1,87 +1,61 @@
 //cpp
 #include "types.h"
+#include "CP15.h"
+#include "IRQ.h"
+#include "nitro/card/card_common.h"
 extern "C" int PXI_IsCallbackReady(int tag, int proc);
 extern "C" void OS_SpinWait(unsigned int cycles);
 extern "C" int IPCSend(unsigned int a, unsigned int c, unsigned int b);
-extern "C" void OS_SleepThread(u16 *x);
-
-namespace CP15 {
-    void FlushAndInvalidateDataCache(unsigned int a, unsigned int b);
-    void DrainWriteBuffer();
-}
-namespace IRQ {
-    unsigned int Disable();
-    void Restore(unsigned int x);
-}
-
-/* The request block shared with ARM7 (NitroSDK CARDiCommandArg); the name
- * of its first field follows func_02060484.cpp's view. */
-struct ChunkRequest {
-    int mResult; /* 0x00 -- 0 (CARD_RESULT_SUCCESS), 4 (TIMEOUT) retried */
-};
-
-/* The card access state block cardi_common (NitroSDK CARDiCommon), the
- * fields this function touches; names as func_02060484.cpp spells them. */
-struct CardCommon {
-    ChunkRequest *mRequest; /* 0x00 */
-    /* 0x04 -- the request type sent to ARM7 (NitroSDK command): stored here
-     * before each send; only this function writes it */
-    int mCommand;
-    char pad_08[0x2c];
-    /* 0x34 -- CARD_STAT_* bits: 2 once the INIT request has been sent, 0x20
-     * while a request is out (ARM7's reply clears it) */
-    int mFlags;
-};
 
 /* NitroSDK CARDi_Request(p, req_type, retry_count): the first time, wait
  * for ARM7's FS PXI callback (tag 0xb) and send the INIT request (0)
  * recursively; then flush the request block and send req_type until the
  * result is not TIMEOUT (4) or the retries run out, sleeping until ARM7
- * clears the 0x20 flag. INIT also sends the request block's address.
+ * clears CARD_STAT_REQ. INIT also sends the request block's address.
  * Returns whether the request succeeded. */
 #pragma opt_loop_invariants off
-extern "C" int CARDi_Request(CardCommon *thiz, int v, int count) {
+extern "C" int CARDi_Request(CARDiCommon *p, s32 req_type, s32 retry_count) {
     unsigned int saved;
     int r;
 
-    if (!(*(volatile int *)&thiz->mFlags & 2)) {
-        thiz->mFlags |= 2;
+    if (!(p->flag & CARD_STAT_INIT_CMD)) {
+        p->flag |= CARD_STAT_INIT_CMD;
         if (PXI_IsCallbackReady(0xb, 1) == 0) {
             do {
                 OS_SpinWait(0x64);
             } while (PXI_IsCallbackReady(0xb, 1) == 0);
         }
-        CARDi_Request(thiz, 0, 1);
+        CARDi_Request(p, CARD_REQ_INIT, 1);
     }
 
-    CP15::FlushAndInvalidateDataCache((unsigned int)thiz->mRequest, 0x20);
+    CP15::FlushAndInvalidateDataCache((unsigned int)p->cmd, sizeof(*p->cmd));
     CP15::DrainWriteBuffer();
 
     do {
-        thiz->mCommand = v;
-        thiz->mFlags |= 0x20;
+        p->command = req_type;
+        p->flag |= CARD_STAT_REQ;
 
-        while (IPCSend(0xb, v, 1) < 0) {
+        while (IPCSend(0xb, req_type, 1) < 0) {
         }
 
-        if (v == 0) {
-            ChunkRequest *q = thiz->mRequest;
+        if (req_type == CARD_REQ_INIT) {
+            CARDiCommandArg *q = p->cmd;
             while (IPCSend(0xb, (unsigned int)q, 1) < 0) {
             }
         }
 
         saved = IRQ::Disable();
-        while (thiz->mFlags & 0x20) {
-            OS_SleepThread((u16 *)0);
+        while (p->flag & CARD_STAT_REQ) {
+            OS_SleepThread(0);
         }
         IRQ::Restore(saved);
 
-        r = thiz->mRequest->mResult;
-        if (r != 4) {
+        r = p->cmd->result;
+        if (r != CARD_RESULT_TIMEOUT) {
             break;
         }
-        count--;
-    } while (count > 0);
+        retry_count--;
+    } while (retry_count > 0);
 
-    return r == 0;
+    return r == CARD_RESULT_SUCCESS;
 }

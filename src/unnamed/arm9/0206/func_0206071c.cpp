@@ -1,62 +1,40 @@
 //cpp
+/* The backup read task func_02060558 runs (the receive mode of pret's
+ * CARDi_RequestStreamCommandCore): request up to a page from backup address
+ * src into backup_cache_page_buf (CARD_REQ_READ_BACKUP), copy it out to dst,
+ * and advance until len is 0 or a request fails; then end the task. */
+#include "types.h"
 #include "CP15.h"
+#include "nitro/card/card_common.h"
 
 extern "C" {
 
 #pragma opt_loop_invariants off
-extern int CARDi_Request(void *thiz, int a, int b);
-extern void CpuCopy8(void *a, int b, unsigned int c);
-extern void CARDi_EndTask(void *thiz);
+/* MI_CpuCopy8 */
+extern void CpuCopy8(const void *src, void *dst, unsigned int len);
 
-/* The request block a chunk is handed over in (NitroSDK CARDiCommandArg);
- * names as func_0206062c.cpp spells them. */
-typedef struct ChunkRequest {
-    unsigned char pad_00[0xc];
-    int mSrc;          /* 0x0c */
-    int mDst;          /* 0x10 */
-    unsigned int mLen; /* 0x14 */
-} ChunkRequest;
+void func_0206071c(CARDiCommon *p) {
+    u32 len;
+    u8 *buf;
 
-/* The card access state block cardi_common (NitroSDK CARDiCommon), the
- * fields this function touches; names as func_0206062c.cpp and
- * func_02060484.cpp spell them. */
-typedef struct CardCommon {
-    ChunkRequest *mRequest; /* 0x00 */
-    unsigned char pad_04[0x14];
-    int mSrc;                /* 0x18 -- backup address */
-    int mDst;                /* 0x1c -- RAM destination */
-    unsigned int mRemaining; /* 0x20 */
-    unsigned char pad_24[0xbc];
-    char mBuffer[0x100]; /* 0xe0 -- one chunk, cache-invalidated before each request */
-} CardCommon;
-
-/* The card thread's backup-read task, the reverse of func_0206062c: request
- * up to 0x100 bytes from backup address mSrc into mBuffer (request 6), copy
- * them out to mDst, and advance until mRemaining is 0 or a request fails;
- * then end the task (CARDi_EndTask). */
-void func_0206071c(char *thiz) {
-    CardCommon *p = (CardCommon *)thiz;
-    unsigned int n;
-    char *e0;
-
-    e0 = p->mBuffer;
+    buf = p->backup_cache_page_buf;
 
     do {
-        n = p->mRemaining;
-        if (n > 0x100)
-            n = 0x100;
-        CP15::InvalidateDataCache((unsigned int)p->mBuffer, 0x100);
-        p->mRequest->mSrc = p->mSrc;
-        p->mRequest->mDst = (int)p->mBuffer;
-        p->mRequest->mLen = n;
-        if (CARDi_Request(thiz, 6, 1) == 0)
+        len = p->len;
+        if (len > sizeof(p->backup_cache_page_buf))
+            len = sizeof(p->backup_cache_page_buf);
+        CP15::InvalidateDataCache((u32)p->backup_cache_page_buf, sizeof(p->backup_cache_page_buf));
+        p->cmd->src = p->src;
+        p->cmd->dest = (u32)p->backup_cache_page_buf;
+        p->cmd->len = len;
+        if (!CARDi_Request(p, CARD_REQ_READ_BACKUP, 1))
             break;
-        CpuCopy8(e0, p->mDst, n);
-        p->mSrc += n;
-        p->mDst += n;
-        p->mRemaining -= n;
-    } while (p->mRemaining != 0);
+        CpuCopy8(buf, (void *)p->dst, len);
+        p->src += len;
+        p->dst += len;
+        p->len -= len;
+    } while (p->len != 0);
 
-    CARDi_EndTask(thiz);
+    CARDi_EndTask(p);
 }
 }

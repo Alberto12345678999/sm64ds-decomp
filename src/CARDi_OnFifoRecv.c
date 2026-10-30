@@ -7,8 +7,7 @@
 
 #define PXI_FIFO_TAG_FS 0xb
 
-void CARDi_OnFifoRecv(int tag, u32 data, int err)
-{
+void CARDi_OnFifoRecv(int tag, u32 data, int err) {
     if (tag == PXI_FIFO_TAG_FS && err) {
         CARDiCommon *const p = &cardi_common;
         p->flag &= ~CARD_STAT_REQ;

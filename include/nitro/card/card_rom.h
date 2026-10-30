@@ -3,7 +3,7 @@
 
 /*
  * Card ROM reads, under the NitroSDK's own names (card_rom.c). Each body is
- * still its own file; CARD_Init is func_02060890.
+ * still its own file.
  *
  * The parameters are unnamed on purpose: a named parameter in a shared
  * declaration costs every including C++ file an @NNN number.

@@ -1,33 +1,23 @@
-void CpuCopy8(void* dst, void* src, int len);
+/* NitroSDK CARDi_ReadFromCache (card_rom.c): if the page cache holds the
+ * page src is in, copy what the transfer needs from it and advance. Returns
+ * whether bytes are left to read. */
+#include "nitro/card/card_rom.h"
 
-typedef struct {
-    char pad0[0x18];
-    int f18;
-    int f1c;
-    int f20;
-} G;
-extern G cardi_common;
+/* MI_CpuCopy8 */
+extern void CpuCopy8(const void *src, void *dst, unsigned int len);
 
-typedef struct {
-    char pad0[8];
-    int f8;
-} Arg;
-
-int CARDi_ReadFromCache(Arg* a)
-{
-    G* g = &cardi_common;
-    int base = g->f18 & ~0x1ff;
-    if (base == a->f8) {
-        int off = g->f18 - base;
-        int len = 0x200 - off;
-        if ((unsigned int)len > (unsigned int)g->f20) len = g->f20;
-        CpuCopy8((char*)a + 0x20 + off, (void*)g->f1c, len);
-        int *p18 = (int*)((int)g + 0x18);
-        int *p1c = (int*)((int)g + 0x1c);
-        *p18 += len;
-        int *p20 = (int*)((int)g + 0x20);
-        *p1c += len;
-        *p20 -= len;
+int CARDi_ReadFromCache(CARDRomStat *p) {
+    CARDiCommon *c = &cardi_common;
+    u32 cur_page = c->src & ~(CARD_ROM_PAGE_SIZE - 1);
+    if (cur_page == (u32)p->cache_page) {
+        u32 mod = c->src - cur_page;
+        u32 len = CARD_ROM_PAGE_SIZE - mod;
+        if (len > c->len)
+            len = c->len;
+        CpuCopy8(p->cache_buf + mod, (void *)c->dst, len);
+        c->src += len;
+        c->dst += len;
+        c->len -= len;
     }
-    return g->f20 != 0;
+    return c->len != 0;
 }

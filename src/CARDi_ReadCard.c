@@ -1,61 +1,63 @@
-typedef struct {
-    unsigned char pad[0x18];
-    unsigned int src;
-    unsigned int dst;
-    unsigned int size;
-} CardXferState;
+/* NitroSDK CARDi_ReadCard (card_rom.c): the CPU read routine CARD_Init
+ * installs in rom_stat. Read a page at a time: straight to dst when the
+ * transfer is page-aligned, word-aligned and at least a page long, else into
+ * the page cache and out through CARDi_ReadFromCache. Stop when len runs
+ * out. */
+#include "nitro/card/card_rom.h"
 
-extern CardXferState cardi_common;
+#define REG_CARD_CNT (*(volatile u32 *)0x040001a4)
+#define REG_CARD_DATA (*(volatile u32 *)0x04100010)
+#define CARD_DATA_READY 0x00800000
+#define CARD_START 0x80000000
 
-extern void CARDi_SetRomOp(unsigned int a, unsigned int b);
-extern int CARDi_ReadFromCache(char *self);
+extern void CARDi_SetRomOp(u32 cmd1, u32 cmd2);
+extern int CARDi_ReadFromCache(CARDRomStat *p);
 
-int CARDi_ReadCard(char *self) {
-    CardXferState *g = &cardi_common;
-    unsigned int *buf;
-    unsigned int *altBuf = (unsigned int *)(self + 0x20);
-    volatile unsigned int *romctrl = (volatile unsigned int *)0x40001A4;
-    volatile unsigned int *fifoData = (volatile unsigned int *)0x4100010;
-    unsigned int mask = (unsigned int)-0x200;
+void CARDi_ReadCard(CARDRomStat *p) {
+    CARDiCommon *c = &cardi_common;
+    u32 *dst;
+    u32 *cache = (u32 *)p->cache_buf;
+    u32 mask = ~(CARD_ROM_PAGE_SIZE - 1);
 
     for (;;) {
-        unsigned int src = g->src;
-        unsigned int aligned = src & mask;
-        unsigned int i;
-        unsigned int status;
-        unsigned int cmd;
+        u32 src = c->src;
+        u32 page = src & mask;
+        u32 pos;
+        u32 ctrl;
+        u32 cnt;
 
-        if (aligned == src && (g->dst & 3) == 0 && g->size >= 0x200) {
-            buf = (unsigned int *)g->dst;
+        if (page == src && (c->dst & 3) == 0 && c->len >= CARD_ROM_PAGE_SIZE) {
+            dst = (u32 *)c->dst;
         } else {
-            buf = altBuf;
-            *(unsigned int *)(self + 8) = aligned;
+            dst = cache;
+            p->cache_page = (u8 *)page;
         }
 
-        CARDi_SetRomOp((aligned >> 8) | 0xb7000000, aligned << 0x18);
+        CARDi_SetRomOp((page >> 8) | 0xb7000000, page << 24);
 
-        cmd = *(unsigned int *)(self + 4);
-        i = 0;
-        *romctrl = cmd;
+        cnt = p->ctrl;
+        pos = 0;
+        REG_CARD_CNT = cnt;
         do {
-            status = *romctrl;
-            if (status & 0x800000) {
-                unsigned int val = *fifoData;
-                if (i < 0x200) {
-                    buf[i] = val;
-                    i++;
+            ctrl = REG_CARD_CNT;
+            if (ctrl & CARD_DATA_READY) {
+                u32 data = REG_CARD_DATA;
+                if (pos < CARD_ROM_PAGE_SIZE) {
+                    dst[pos] = data;
+                    pos++;
                 }
             }
-        } while (status & 0x80000000);
+        } while (ctrl & CARD_START);
 
-        if (buf == (unsigned int *)*(volatile unsigned int *)&cardi_common.dst) {
-            cardi_common.src += 0x200;
-            cardi_common.dst += 0x200;
-            cardi_common.size -= 0x200;
-            if (cardi_common.size == 0) return cardi_common.size;
+        if (dst == (u32 *)*(volatile u32 *)&cardi_common.dst) {
+            cardi_common.src += CARD_ROM_PAGE_SIZE;
+            cardi_common.dst += CARD_ROM_PAGE_SIZE;
+            cardi_common.len -= CARD_ROM_PAGE_SIZE;
+            if (cardi_common.len == 0)
+                return;
         } else {
-            int rc = CARDi_ReadFromCache(self);
-            if (rc == 0) return rc;
+            if (!CARDi_ReadFromCache(p))
+                return;
         }
     }
 }

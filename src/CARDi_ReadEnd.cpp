@@ -1,48 +1,30 @@
 //cpp
+/* NitroSDK CARDi_ReadEnd (card_rom.c): a ROM read is done. Mark the request
+ * successful, then end it as CARDi_EndTask does: clear the busy and task
+ * bits, wake the waiters and, if it is waiting (CARD_STAT_RECV), the card
+ * thread, and run the callback. */
 #include "types.h"
 #include "IRQ.h"
-#include "nitro/os/thread.h"
+#include "nitro/card/card_common.h"
 
 extern "C" {
 
-typedef struct {
-    u32 *f0;            /* 0x00 */
-    char pad4[0x24];    /* 0x04 */
-    void (*cb)(void *); /* 0x28 */
-    void *cb_arg;       /* 0x2c */
-    char pad30[4];      /* 0x30 */
-    u32 flags;          /* 0x34 */
-    char pad38[4];      /* 0x38 */
-    OSThread thread;    /* 0x3c -- the card task thread */
-    char padd0[4];      /* 0xd0 */
-    u16 fd4;            /* 0xd4 */
-} G;
-
-extern G cardi_common;
-
 void CARDi_ReadEnd(void) {
-    int gi = (int)&cardi_common;
-    G *g = (G *)gi;
-    void (*cb)(void *) = g->cb;
-    void *arg = g->cb_arg;
-    u32 s;
-    u32 *pf;
+    CARDiCommon *const p = &cardi_common;
+    MIDmaCallback callback = p->callback;
+    void *arg = p->callback_arg;
+    u32 mask;
 
-    *g->f0 = 0;
-    s = IRQ::Disable();
-    pf = (u32 *)((gi + 0x34));
-    {
-        u32 val = *pf;
-        val &= ~0xc;
-        *pf = val;
+    p->cmd->result = CARD_RESULT_SUCCESS;
+    mask = IRQ::Disable();
+    p->flag &= ~(CARD_STAT_BUSY | CARD_STAT_TASK);
+    OS_WakeupThread(&p->busy_q);
+    if (p->flag & CARD_STAT_RECV) {
+        OS_WakeupThreadDirect(&p->thread);
     }
-    OS_WakeupThread(&g->fd4);
-    if (g->flags & 0x10) {
-        OS_WakeupThreadDirect(&g->thread);
-    }
-    IRQ::Restore(s);
-    if (cb) {
-        cb(arg);
+    IRQ::Restore(mask);
+    if (callback) {
+        callback(arg);
     }
 }
 }

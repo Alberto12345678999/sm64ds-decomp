@@ -30,21 +30,17 @@ extern "C" {
 extern void Crash(void);
 extern void PXI_SetFifoRecvCallback(int tag, void *callback);
 extern void MultiStore32Bytes(unsigned val, int *dst, int len);
-extern void CARDi_TaskThread(void *arg);
-extern void CARDi_OnFifoRecv(int tag, u32 data, int err);
 
 #define OS_LOCK_ID_ERROR (-3)
 #define CARD_TARGET_NONE 0
 #define CARD_TARGET_ROM 1
 #define CARD_TARGET_BACKUP 2
-#define CARD_STAT_BUSY 0x4
-#define CARD_STAT_TASK 0x8
 #define CARD_THREAD_PRIORITY_DEFAULT 4
 /* Relative priorities: one step above / below the calling thread. */
 #define CARD_THREAD_PRIORITY_HIGHER 0x20
 #define CARD_THREAD_PRIORITY_LOWER 0x21
 
-extern int cardi_arg[];       /* cardi_arg, 0x20 bytes */
+extern CARDiCommandArg cardi_arg;
 /* The word just past cardi_thread_stack (0x400 bytes): its address is the
  * stack's top. */
 extern int *data_020a8760;
@@ -86,7 +82,7 @@ void CARDi_LockResource(int owner, int target) {
         p->lock_target = target;
     }
     ++p->lock_ref;
-    *p->cmd = 0;
+    p->cmd->result = CARD_RESULT_SUCCESS;
     IRQ::Restore(saved);
 }
 
@@ -105,7 +101,7 @@ void CARDi_UnlockResource(int owner, int target) {
             OS_WakeupThread(&p->lock_queue);
         }
     }
-    *p->cmd = 0;
+    p->cmd->result = CARD_RESULT_SUCCESS;
     IRQ::Restore(saved);
 }
 
@@ -115,13 +111,13 @@ void CARDi_InitCommon(void) {
     p->lock_owner = OS_LOCK_ID_ERROR;
     p->lock_ref = 0;
     p->lock_target = CARD_TARGET_NONE;
-    p->cmd = cardi_arg;
+    p->cmd = &cardi_arg;
     {
         /* MI_CpuFillFast's value: the ROM passes it through a stack slot. */
         volatile u32 fill = 0;
-        MultiStore32Bytes(fill, cardi_arg, 0x20);
+        MultiStore32Bytes(fill, (int *)&cardi_arg, sizeof(cardi_arg));
     }
-    CP15::FlushAndInvalidateDataCache((unsigned int)cardi_arg, 0x20);
+    CP15::FlushAndInvalidateDataCache((unsigned int)&cardi_arg, sizeof(cardi_arg));
     p->lock_queue = 0;
     p->busy_q = 0;
     p->priority = CARD_THREAD_PRIORITY_DEFAULT;
@@ -137,7 +133,7 @@ int CARDi_WaitAsync(void) {
     while (p->flag & CARD_STAT_BUSY)
         OS_SleepThread(&p->busy_q);
     IRQ::Restore(saved);
-    return *p->cmd == 0;
+    return p->cmd->result == CARD_RESULT_SUCCESS;
 }
 
 // @symbol CARD_LockRom

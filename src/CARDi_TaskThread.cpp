@@ -14,7 +14,9 @@ void CARDi_TaskThread(void *arg) {
     CARDiCommon *const p = &cardi_common;
     for (;;) {
         u32 bak_psr = IRQ::Disable();
-        while ((p->flag & CARD_STAT_TASK) == 0) {
+        for (;;) {
+            if (p->flag & CARD_STAT_TASK)
+                break;
             p->cur_th = &p->thread;
             OS_SleepThread(0);
         }

@@ -420,6 +420,9 @@
       ],
       "src/unnamed/arm9/0203/func_0203e20c.cpp": [
         "arity:3"
+      ],
+      "src/CARDi_ReadFromCache.c": [
+        "arity:3"
       ]
     },
     "CrossVec3": {
@@ -11263,40 +11266,6 @@
         "return:unsigned int"
       ]
     },
-    "data_020a8180": {
-      "src/engine/card/CARD_Common.cpp": [
-        "return:CARDiCommon"
-      ],
-      "src/unnamed/arm9/0206/func_02060890.c": [
-        "return:CARDiCommon"
-      ],
-      "src/CARDi_OnFifoRecv.c": [
-        "return:unsigned char"
-      ],
-      "src/CARDi_OnReadCard.cpp": [
-        "return:G"
-      ],
-      "src/CARDi_ReadCard.c": [
-        "return:CardXferState"
-      ],
-      "src/CARDi_ReadEnd.cpp": [
-        "return:G"
-      ],
-      "src/CARDi_ReadFromCache.c": [
-        "return:G"
-      ]
-    },
-    "data_020a8780": {
-      "src/CARDi_ReadRomSyncCore.c": [
-        "return:CARDRomStat"
-      ],
-      "src/unnamed/arm9/0206/func_02060890.c": [
-        "return:void *"
-      ],
-      "src/CARDi_SetCardDma.c": [
-        "return:char []"
-      ]
-    },
     "data_020a89ac": {
       "src/WM_GetSystemWork.c": [
         "return:int"
@@ -21161,9 +21130,8 @@
     },
     "func_02060558": {
       "src/engine/save/SaveData2.cpp": [
-        "param:#1 unsigned int",
-        "param:#2 void *",
-        "param:#3 unsigned int"
+        "param:#4 int",
+        "param:#5 int"
       ]
     },
     "func_0206071c": {
@@ -21180,12 +21148,6 @@
         "param:#5 void *",
         "param:#6 int",
         "return:int"
-      ]
-    },
-    "func_02060a64": {
-      "src/unnamed/arm9/0206/func_02060890.c": [
-        "arity:0",
-        "return:void"
       ]
     },
     "func_02060ebc": {
@@ -25173,6 +25135,15 @@
       ],
       "src/CARDi_ReadEnd.cpp": [
         "param:#1 Obj *"
+      ]
+    },
+    "func_02060484": {
+      "src/engine/save/SaveData2.cpp": [
+        "param:#1 int",
+        "param:#2 int",
+        "param:#3 int",
+        "param:#4 int",
+        "param:#5 int"
       ]
     }
   },

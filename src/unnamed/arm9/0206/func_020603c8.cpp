@@ -1,38 +1,32 @@
 //cpp
+/* The backup identify request (NitroSDK CARD_IdentifyBackup's shape): wait
+ * for the card to be free and claim it, select the backup device type
+ * (func_02060364), clear the callback, then run the identify task
+ * func_020607e8 on this thread. */
 #include "types.h"
-#include "nitro/os/thread.h"
+#include "IRQ.h"
+#include "nitro/card/card_common.h"
+
 extern "C" {
-extern char cardi_common[];
-void func_02060364(int arg);
-void func_020607e8(void* thiz);
-}
-namespace IRQ { unsigned int Disable(); void Restore(unsigned int); }
 
-struct Sched {
-    char pad00[0x28];
-    int d;      // 0x28
-    int e;      // 0x2c
-    char pad30[0x34-0x30];
-    u32 flags;  // 0x34
-    char pad38[0xd4-0x38];
-    u16 sub; // 0xd4
-};
+void func_02060364(int type);
+void func_020607e8(CARDiCommon *p);
 
-extern "C" void func_020603c8(int arg)
-{
-    Sched* g = (Sched*)cardi_common;
-    unsigned int irq = IRQ::Disable();
-    if (g->flags & 4) {
-        do {
-            OS_SleepThread(&g->sub);
-        } while (g->flags & 4);
+void func_020603c8(int type) {
+    CARDiCommon *const p = &cardi_common;
+
+    {
+        u32 mask = IRQ::Disable();
+        while (p->flag & CARD_STAT_BUSY)
+            OS_SleepThread(&p->busy_q);
+        p->flag |= CARD_STAT_BUSY;
+        IRQ::Restore(mask);
     }
-    u32* fp = (u32*)((unsigned long long)((int)g + 0x34));
-    *fp |= 4;
-    IRQ::Restore(irq);
-    func_02060364(arg);
-    g->d = 0;
-    g->e = 0;
-    *(OSThread **)(cardi_common + 0xd0) = data_020a6134.current;
-    func_020607e8(g);
+
+    func_02060364(type);
+    p->callback = 0;
+    p->callback_arg = 0;
+    cardi_common.cur_th = data_020a6134.current;
+    func_020607e8(p);
+}
 }
